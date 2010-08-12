@@ -43,6 +43,7 @@ class MainMenuBar(wx.MenuBar):
         shipBrowserItem = wx.MenuItem(fitMenu, wx.ID_ANY, "Ship &Browser")
         shipBrowserItem.SetBitmap(bitmapLoader.getBitmap("ship_small"))
         fitMenu.AppendItem(shipBrowserItem)
+        fitMenu.AppendSeparator()
         fitMenu.Append(wx.ID_EDIT, "&Rename", "Rename this fit.")
         fitMenu.Append(wx.ID_COPY)
         fitMenu.Append(wx.ID_DELETE)
