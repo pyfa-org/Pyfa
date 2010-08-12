@@ -21,8 +21,11 @@ import os.path
 import config
 import wx
 
-def getBitmap(name, parent):
-    bitmap = wx.StaticBitmap(parent)
+def getStaticBitmap(name, parent):
+    static = wx.StaticBitmap(parent)
+    static.SetBitmap(getBitmap(name))
+    return static
+
+def getBitmap(name):
     path = os.path.join(config.path, "icons", name + ".png")
-    bitmap.SetBitmap(wx.Image(path).ConvertToBitmap())
-    return bitmap
+    return wx.Image(path).ConvertToBitmap()

@@ -18,6 +18,7 @@
 #===============================================================================
 
 import wx
+import bitmapLoader
 
 class MainMenuBar(wx.MenuBar):
     def __init__(self):
@@ -30,28 +31,36 @@ class MainMenuBar(wx.MenuBar):
         fileMenu.Append(wx.ID_OPEN, "&Import", "Import a fit into pyfa.")
         fileMenu.Append(wx.ID_SAVEAS, "&Export", "Export the fit to another format.")
         fileMenu.AppendSeparator()
-        fileMenu.Append(wx.ID_EXIT,"E&xit"," Terminate the program.")
+        fileMenu.Append(wx.ID_EXIT)
 
 
         # Edit menu
         editMenu = wx.Menu()
         self.Append(editMenu, "&Edit")
 
-        editMenu.Append(wx.ID_UNDO, "&Undo", "Undo the last action on this fit.")
-        editMenu.Append(wx.ID_REDO, "&Redo", "Redo the last undone action.")
-        editMenu.Append(wx.ID_UNDELETE, "Un&delete", "Recover the last deleted fit, if any.")
+        editMenu.Append(wx.ID_UNDO)
+        editMenu.Append(wx.ID_REDO)
+        editMenu.Append(wx.ID_UNDELETE)
 
         # Fit menu
         fitMenu = wx.Menu()
         self.Append(fitMenu, "F&it")
 
-        fitMenu.Append(wx.ID_NEW, "&New", "Create a new fit.").GetBitmap()
-        fitMenu.Append(wx.ID_EDIT, "&Rename", "Rename this fit.").GetBitmap()
-        fitMenu.Append(wx.ID_COPY, "&Copy", "Copy this fit.").GetBitmap()
-        fitMenu.Append(wx.ID_DELETE, "&Delete", "Delete this fit.").GetBitmap()
+        fitMenu.Append(wx.ID_NEW)
+        fitMenu.Append(wx.ID_EDIT, "&Rename", "Rename this fit.")
+        fitMenu.Append(wx.ID_COPY)
+        fitMenu.Append(wx.ID_DELETE)
+
+        # Character menu
+        charMenu = wx.Menu()
+        self.Append(charMenu, "&Character")
+
+        charEditItem = wx.MenuItem(charMenu, wx.ID_ANY, "Character Editor")
+        charEditItem.SetBitmap(bitmapLoader.getBitmap("character"))
+        charMenu.AppendItem(charEditItem)
 
         # Help menu
         helpMenu = wx.Menu()
         self.Append(helpMenu, "&Help")
-        helpMenu.Append(wx.ID_ABOUT, "&About", "About this program")
+        helpMenu.Append(wx.ID_ABOUT)
         helpMenu.Append(wx.ID_HELP, "User manual", "User manual")
