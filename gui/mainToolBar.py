@@ -32,6 +32,11 @@ class MainToolBar(wx.ToolBar):
         self.AddLabelTool(wx.ID_SAVEAS, "Export fit", wx.ArtProvider.GetBitmap(wx.ART_FILE_SAVE_AS, wx.ART_TOOLBAR))
 
         self.AddSeparator()
+        self.AddLabelTool(wx.ID_UNDO, "Undo last action", wx.ArtProvider.GetBitmap(wx.ART_UNDO, wx.ART_TOOLBAR))
+        self.AddLabelTool(wx.ID_REDO, "Redo last action", wx.ArtProvider.GetBitmap(wx.ART_REDO, wx.ART_TOOLBAR))
+
+        self.AddSeparator()
         self.AddLabelTool(wx.ID_ANY, "Ship Browser", bitmapLoader.getBitmap("ship_big"))
         self.AddLabelTool(wx.ID_ANY, "Character Editor", bitmapLoader.getBitmap("character_big"))
+
         self.Realize()

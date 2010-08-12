@@ -36,7 +36,6 @@ class MainMenuBar(wx.MenuBar):
 
         editMenu.Append(wx.ID_UNDO)
         editMenu.Append(wx.ID_REDO)
-        editMenu.Append(wx.ID_UNDELETE)
 
         # Fit menu
         fitMenu = wx.Menu()
@@ -47,6 +46,7 @@ class MainMenuBar(wx.MenuBar):
         fitMenu.Append(wx.ID_EDIT, "&Rename", "Rename this fit.")
         fitMenu.Append(wx.ID_COPY)
         fitMenu.Append(wx.ID_DELETE)
+        fitMenu.Append(wx.ID_UNDELETE)
         fitMenu.AppendSeparator()
         fitMenu.Append(wx.ID_OPEN, "&Import", "Import a fit into pyfa.")
         fitMenu.Append(wx.ID_SAVEAS, "&Export", "Export the fit to another format.")
