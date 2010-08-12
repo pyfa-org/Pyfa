@@ -27,10 +27,6 @@ class MainMenuBar(wx.MenuBar):
         # File menu
         fileMenu = wx.Menu()
         self.Append(fileMenu, "&File")
-
-        fileMenu.Append(wx.ID_OPEN, "&Import", "Import a fit into pyfa.")
-        fileMenu.Append(wx.ID_SAVEAS, "&Export", "Export the fit to another format.")
-        fileMenu.AppendSeparator()
         fileMenu.Append(wx.ID_EXIT)
 
 
@@ -45,18 +41,22 @@ class MainMenuBar(wx.MenuBar):
         # Fit menu
         fitMenu = wx.Menu()
         self.Append(fitMenu, "F&it")
-
-        fitMenu.Append(wx.ID_NEW)
+        shipBrowserItem = wx.MenuItem(fitMenu, wx.ID_ANY, "Ship &Browser")
+        shipBrowserItem.SetBitmap(bitmapLoader.getBitmap("ship_small"))
+        fitMenu.AppendItem(shipBrowserItem)
         fitMenu.Append(wx.ID_EDIT, "&Rename", "Rename this fit.")
         fitMenu.Append(wx.ID_COPY)
         fitMenu.Append(wx.ID_DELETE)
+        fitMenu.AppendSeparator()
+        fitMenu.Append(wx.ID_OPEN, "&Import", "Import a fit into pyfa.")
+        fitMenu.Append(wx.ID_SAVEAS, "&Export", "Export the fit to another format.")
 
         # Character menu
         charMenu = wx.Menu()
         self.Append(charMenu, "&Character")
 
-        charEditItem = wx.MenuItem(charMenu, wx.ID_ANY, "Character Editor")
-        charEditItem.SetBitmap(bitmapLoader.getBitmap("character"))
+        charEditItem = wx.MenuItem(charMenu, wx.ID_ANY, "Character &Editor")
+        charEditItem.SetBitmap(bitmapLoader.getBitmap("character_small"))
         charMenu.AppendItem(charEditItem)
 
         # Help menu
