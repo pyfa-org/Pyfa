@@ -17,12 +17,21 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 #===============================================================================
 
-from gui.mainFrame import MainFrame
 import wx
-import os
-import sys
+from gui import bitmapLoader
 
-if __name__ == "__main__":
-    pyfa = wx.App(False)
-    MainFrame()
-    pyfa.MainLoop()
+class MainToolBar(wx.ToolBar):
+    def __init__(self, parent):
+        wx.ToolBar.__init__(self, parent, wx.ID_ANY)
+
+        self.AddControl(bitmapLoader.getBitmap("ships", self))
+        self.AddLabelTool(wx.ID_NEW, "New fit", wx.ArtProvider.GetBitmap(wx.ART_NEW, wx.ART_TOOLBAR))
+        self.AddLabelTool(wx.ID_COPY, "Copy fit", wx.ArtProvider.GetBitmap(wx.ART_COPY, wx.ART_TOOLBAR))
+        self.AddLabelTool(wx.ID_DELETE, "Delete fit", wx.ArtProvider.GetBitmap(wx.ART_DELETE, wx.ART_TOOLBAR))
+
+        self.AddSeparator()
+        self.AddLabelTool(wx.ID_OPEN, "Import fit", wx.ArtProvider.GetBitmap(wx.ART_FILE_OPEN, wx.ART_TOOLBAR))
+        self.AddLabelTool(wx.ID_SAVEAS, "Export fit", wx.ArtProvider.GetBitmap(wx.ART_FILE_SAVE_AS, wx.ART_TOOLBAR))
+
+
+        self.Realize()

@@ -17,12 +17,12 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 #===============================================================================
 
-from gui.mainFrame import MainFrame
+import os.path
+import config
 import wx
-import os
-import sys
 
-if __name__ == "__main__":
-    pyfa = wx.App(False)
-    MainFrame()
-    pyfa.MainLoop()
+def getBitmap(name, parent):
+    bitmap = wx.StaticBitmap(parent)
+    path = os.path.join(config.path, "icons", name + ".png")
+    bitmap.SetBitmap(wx.Image(path).ConvertToBitmap())
+    return bitmap

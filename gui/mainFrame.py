@@ -17,12 +17,16 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 #===============================================================================
 
-from gui.mainFrame import MainFrame
 import wx
-import os
-import sys
+from gui.mainMenuBar import MainMenuBar
+from gui.mainToolBar import MainToolBar
 
-if __name__ == "__main__":
-    pyfa = wx.App(False)
-    MainFrame()
-    pyfa.MainLoop()
+class MainFrame(wx.Frame):
+    def __init__(self):
+        wx.Frame.__init__(self, None, wx.ID_ANY, title="pyfa - Python Fitting Assistant", size=(1200,800))
+        #Show ourselves
+        self.Show()
+
+        #Add menu
+        self.SetMenuBar(MainMenuBar())
+        self.SetToolBar(MainToolBar(self))
