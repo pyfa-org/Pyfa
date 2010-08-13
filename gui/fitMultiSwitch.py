@@ -17,14 +17,18 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 #===============================================================================
 
-import wx
+import wx.aui
 from gui.fittingView import FittingView
 from gui.statsPane import StatsPane
 
-class FitMultiSwitch(wx.Notebook):
+class FitMultiSwitch(wx.aui.AuiNotebook):
     def __init__(self, parent):
-        wx.Notebook.__init__(self, parent, wx.ID_ANY)
+        wx.aui.AuiNotebook.__init__(self, parent, wx.ID_ANY)
+        self.closeButtonActiveflag = self.GetWindowStyleFlag()
+        self.closeButtonInactiveFlag &= ~(wx.aui.AUI_NB_CLOSE_BUTTON | wx.aui.AUI_NB_CLOSE_ON_ACTIVE_TAB | wx.aui.AUI_NB_CLOSE_ON_ALL_TABS)
+        self.SetArtProvider(wx.aui.AuiSimpleTabArt())
         self.AddPage(wx.Panel(self), "+")
+        self.SetBackgroundColour(parent.GetBackgroundColour())
 
     def AddTab(self):
         p = wx.Panel(self)
