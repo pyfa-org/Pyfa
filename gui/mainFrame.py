@@ -20,13 +20,33 @@
 import wx
 from gui.mainMenuBar import MainMenuBar
 from gui.mainToolBar import MainToolBar
+from gui.marketBrowser import MarketBrowser
+from gui.fittingView import FittingView
+from gui.statsPane import StatsPane
 
 class MainFrame(wx.Frame):
     def __init__(self):
-        wx.Frame.__init__(self, None, wx.ID_ANY, title="pyfa - Python Fitting Assistant", size=(1200,800))
+        wx.Frame.__init__(self, None, wx.ID_ANY, title="pyfa - Python Fitting Assistant", size=(1000,750))
         #Show ourselves
         self.Show()
 
         #Add menu
         self.SetMenuBar(MainMenuBar())
         self.SetToolBar(MainToolBar(self))
+
+        self.splitter = wx.SplitterWindow(self, style = wx.SP_LIVE_UPDATE)
+
+        self.rightPanel = MarketBrowser(self.splitter)
+        self.leftPanel = wx.Panel(self.splitter)
+        self.fittingView = FittingView(self.leftPanel)
+        self.statsPane = StatsPane(self.leftPanel)
+
+        self.leftSizer = wx.BoxSizer(wx.HORIZONTAL)
+
+        self.leftSizer.Add(self.fittingView, 1, wx.EXPAND)
+        self.leftSizer.Add(self.statsPane, 0, wx.EXPAND)
+
+        self.leftPanel.SetSizer(self.leftSizer)
+
+        self.splitter.SplitVertically(self.rightPanel, self.leftPanel)
+        self.splitter.SetMinimumPaneSize(260)
