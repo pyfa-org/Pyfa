@@ -107,3 +107,6 @@ class StatsPane(wx.Panel):
                 gauge = wx.Gauge(self, wx.ID_ANY, 100)
                 setattr(self, "gauge%s" % capitalizedType, gauge)
                 stats.Add(gauge)
+
+            if "cpu" in group:
+                self.sizerResources.Add(wx.StaticLine(self, wx.ID_ANY, style=wx.VERTICAL), 1, wx.EXPAND)
