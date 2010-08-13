@@ -33,5 +33,4 @@ class MarketBrowser(wx.Panel):
         self.itemView = wx.TreeCtrl(self.splitter)
 
         self.splitter.SplitHorizontally(self.marketView, self.itemView)
-        self.splitter.SetSashPosition(-300, True)
         self.splitter.SetMinimumPaneSize(10)

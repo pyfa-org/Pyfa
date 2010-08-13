@@ -39,7 +39,8 @@ class MainFrame(wx.Frame):
         self.fitMultiSwitch.AddTab()
 
         self.splitter.SplitVertically(self.marketBrowser, self.fitMultiSwitch)
-        self.splitter.SetMinimumPaneSize(260)
+        self.splitter.SetMinimumPaneSize(10)
+        self.splitter.SetSashPosition(200)
 
         #Show ourselves
         self.Show()

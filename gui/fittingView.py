@@ -19,7 +19,6 @@
 
 import wx
 
-class FittingView(wx.Panel):
+class FittingView(wx.TreeCtrl):
     def __init__(self, parent):
-        wx.Panel.__init__(self, parent)
-        self.SetBackgroundColour('pink')
+        wx.TreeCtrl.__init__(self, parent, wx.ID_ANY)
