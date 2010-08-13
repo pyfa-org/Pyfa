@@ -24,8 +24,10 @@ from gui.statsPane import StatsPane
 class FitMultiSwitch(wx.aui.AuiNotebook):
     def __init__(self, parent):
         wx.aui.AuiNotebook.__init__(self, parent, wx.ID_ANY)
+
         self.closeButtonActiveflag = self.GetWindowStyleFlag()
-        self.closeButtonInactiveFlag &= ~(wx.aui.AUI_NB_CLOSE_BUTTON | wx.aui.AUI_NB_CLOSE_ON_ACTIVE_TAB | wx.aui.AUI_NB_CLOSE_ON_ALL_TABS)
+        self.closeButtonInactiveFlag = self.closeButtonActiveflag & ~(wx.aui.AUI_NB_CLOSE_BUTTON | wx.aui.AUI_NB_CLOSE_ON_ACTIVE_TAB | wx.aui.AUI_NB_CLOSE_ON_ALL_TABS)
+        self.SetWindowStyle(self.closeButtonActiveflag)
         self.SetArtProvider(wx.aui.AuiSimpleTabArt())
         self.AddPage(wx.Panel(self), "+")
         self.SetBackgroundColour(parent.GetBackgroundColour())
