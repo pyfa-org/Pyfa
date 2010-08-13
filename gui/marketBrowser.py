@@ -22,17 +22,15 @@ import wx
 class MarketBrowser(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent)
-        hbox = wx.BoxSizer(wx.HORIZONTAL)
         vbox = wx.BoxSizer(wx.VERTICAL)
 
         self.splitter = wx.SplitterWindow(self, style = wx.SP_LIVE_UPDATE)
 
         vbox.Add(self.splitter, 1, wx.EXPAND)
-        hbox.Add(vbox, 1, wx.EXPAND)
-        self.SetSizer(hbox)
+        self.SetSizer(vbox)
 
         self.marketView = wx.TreeCtrl(self.splitter)
         self.itemView = wx.TreeCtrl(self.splitter)
 
         self.splitter.SplitHorizontally(self.marketView, self.itemView)
-        self.splitter.SetMinimumPaneSize(400)
+        self.splitter.SetSashPosition(-300, True)

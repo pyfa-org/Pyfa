@@ -18,27 +18,22 @@
 #===============================================================================
 
 import wx
-from gui.mainMenuBar import MainMenuBar
-from gui.mainToolBar import MainToolBar
-from gui.marketBrowser import MarketBrowser
-from gui.fitMultiSwitch import FitMultiSwitch
+from gui.fittingView import FittingView
+from gui.statsPane import StatsPane
 
-class MainFrame(wx.Frame):
-    def __init__(self):
-        wx.Frame.__init__(self, None, wx.ID_ANY, title="pyfa - Python Fitting Assistant", size=(1000,750))
-        #Show ourselves
-        self.Show()
+class FitMultiSwitch(wx.Notebook):
+    def __init__(self, parent):
+        wx.Notebook.__init__(self, parent, wx.ID_ANY)
+        self.AddPage(wx.Panel(self), "+")
 
-        #Add menu
-        self.SetMenuBar(MainMenuBar())
-        self.SetToolBar(MainToolBar(self))
+    def AddTab(self):
+        p = wx.Panel(self)
+        sizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.splitter = wx.SplitterWindow(self, style = wx.SP_LIVE_UPDATE)
+        sizer.Add(FittingView(p), 1, wx.EXPAND)
+        sizer.Add(StatsPane(p), 0, wx.EXPAND)
 
-        self.marketBrowser = MarketBrowser(self.splitter)
-        self.fitMultiSwitch = FitMultiSwitch(self.splitter)
-
-        self.fitMultiSwitch.AddTab()
-
-        self.splitter.SplitVertically(self.marketBrowser, self.fitMultiSwitch)
-        self.splitter.SetMinimumPaneSize(260)
+        p.SetSizer(sizer)
+        pos = self.GetPageCount() - 1
+        self.InsertPage(pos, p, "Empty tab")
+        self.SetSelection(pos)
