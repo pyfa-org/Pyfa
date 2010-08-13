@@ -26,8 +26,6 @@ from gui.fitMultiSwitch import FitMultiSwitch
 class MainFrame(wx.Frame):
     def __init__(self):
         wx.Frame.__init__(self, None, wx.ID_ANY, title="pyfa - Python Fitting Assistant", size=(1000,750))
-        #Show ourselves
-        self.Show()
 
         #Add menu
         self.SetMenuBar(MainMenuBar())
@@ -42,3 +40,6 @@ class MainFrame(wx.Frame):
 
         self.splitter.SplitVertically(self.marketBrowser, self.fitMultiSwitch)
         self.splitter.SetMinimumPaneSize(260)
+
+        #Show ourselves
+        self.Show()
