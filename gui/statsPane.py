@@ -24,8 +24,11 @@ class StatsPane(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent)
         size = wx.Size()
-        size.SetWidth(315)
+        size.SetWidth(310)
         self.SetMinSize(size)
+
+        boldFont = wx.SystemSettings_GetFont(wx.SYS_DEFAULT_GUI_FONT)
+        boldFont.SetWeight(wx.BOLD)
 
         self.sizerBase = wx.BoxSizer(wx.VERTICAL)
         self.SetSizer(self.sizerBase)
@@ -35,9 +38,7 @@ class StatsPane(wx.Panel):
 
         # Resources header
         self.labelResources = wx.StaticText(self, wx.ID_ANY, "Resources")
-        font = wx.SystemSettings_GetFont(wx.SYS_DEFAULT_GUI_FONT)
-        font.SetWeight(wx.BOLD)
-        self.labelResources.SetFont(font)
+        self.labelResources.SetFont(boldFont)
         sizerHeaderResources.Add(self.labelResources, 0, wx.ALIGN_CENTER)
         sizerHeaderResources.Add(wx.StaticLine(self, wx.ID_ANY), 1, wx.EXPAND)
 
@@ -48,7 +49,7 @@ class StatsPane(wx.Panel):
         # Turret slots, Launcher slots & calibration
         sizerHardResources = wx.FlexGridSizer(3, 4)
         for i in xrange(3):
-            sizerHardResources.AddGrowableCol(i+1)
+            sizerHardResources.AddGrowableCol(i + 1)
 
         sizerResources.Add(sizerHardResources, 1, wx.ALIGN_CENTER)
 
@@ -120,9 +121,7 @@ class StatsPane(wx.Panel):
 
         # Header & EHP
         labelResistances = wx.StaticText(self, wx.ID_ANY, "Resistances")
-        font = wx.SystemSettings_GetFont(wx.SYS_DEFAULT_GUI_FONT)
-        font.SetWeight(wx.BOLD)
-        labelResistances.SetFont(font)
+        labelResistances.SetFont(boldFont)
         sizerHeaderResistances.Add(labelResistances, 0, wx.ALIGN_CENTER)
 
         sizerHeaderResistances.Add(wx.StaticText(self, wx.ID_ANY, " (Effective HP: "), 0, wx.ALIGN_CENTER)
@@ -136,7 +135,7 @@ class StatsPane(wx.Panel):
         # Display table
         sizerResistances = wx.FlexGridSizer(4, 6)
         for i in xrange(5):
-            sizerResistances.AddGrowableCol(i+1)
+            sizerResistances.AddGrowableCol(i + 1)
 
         self.sizerBase.Add(sizerResistances, 0, wx.EXPAND)
 
@@ -170,16 +169,14 @@ class StatsPane(wx.Panel):
         self.sizerBase.Add(sizerHeaderRechargeRates, 0, wx.EXPAND)
 
         labelRecharge = wx.StaticText(self, wx.ID_ANY, "Recharge Rates")
-        font = wx.SystemSettings_GetFont(wx.SYS_DEFAULT_GUI_FONT)
-        font.SetWeight(wx.BOLD)
-        labelRecharge.SetFont(font)
+        labelRecharge.SetFont(boldFont)
 
         sizerHeaderRechargeRates.Add(labelRecharge, 0, wx.ALIGN_CENTER)
         sizerHeaderRechargeRates.Add(wx.StaticLine(self, wx.ID_ANY), 1, wx.EXPAND)
 
         sizerTankStats = wx.FlexGridSizer(3, 5)
         for i in xrange(4):
-            sizerTankStats.AddGrowableCol(i+1)
+            sizerTankStats.AddGrowableCol(i + 1)
 
         self.sizerBase.Add(sizerTankStats, 0, wx.EXPAND)
 
@@ -206,9 +203,7 @@ class StatsPane(wx.Panel):
         self.sizerBase.Add(sizerHeaderFirepower, 0, wx.EXPAND)
 
         labelFirepower = wx.StaticText(self, wx.ID_ANY, "Firepower")
-        font = wx.SystemSettings_GetFont(wx.SYS_DEFAULT_GUI_FONT)
-        font.SetWeight(wx.BOLD)
-        labelFirepower.SetFont(font)
+        labelFirepower.SetFont(boldFont)
 
         sizerHeaderFirepower.Add(labelFirepower, 0, wx.ALIGN_CENTER)
         sizerHeaderFirepower.Add(wx.StaticLine(self, wx.ID_ANY), 1, wx.EXPAND)
@@ -261,3 +256,64 @@ class StatsPane(wx.Panel):
         self.labelDpsTotal = wx.StaticText(self, wx.ID_ANY, "0.0")
         hbox.Add(wx.StaticText(self, wx.ID_ANY, "Total DPS: "), 0, wx.ALIGN_LEFT)
         hbox.Add(self.labelDpsTotal, 0, wx.ALIGN_CENTER)
+
+        # Capacitor
+        sizerHeaderCapacitor = wx.BoxSizer(wx.HORIZONTAL)
+        self.sizerBase.Add(sizerHeaderCapacitor, 0, wx.EXPAND)
+
+        labelCapacitor = wx.StaticText(self, wx.ID_ANY, "Capacitor")
+        labelCapacitor.SetFont(boldFont)
+
+        sizerHeaderCapacitor.Add(labelCapacitor, 0, wx.ALIGN_CENTER)
+        sizerHeaderCapacitor.Add(wx.StaticLine(self, wx.ID_ANY), 1, wx.EXPAND)
+
+        sizerCapacitor = wx.GridSizer(1, 2)
+        self.sizerBase.Add(sizerCapacitor)
+
+        # Capacitor capacity and time
+        baseBox = wx.BoxSizer(wx.HORIZONTAL)
+        sizerCapacitor.Add(baseBox, 1, wx.ALIGN_CENTER)
+
+        baseBox.Add(bitmapLoader.getStaticBitmap("capacitorInfo_big", self), 0, wx.ALIGN_CENTER)
+
+        box = wx.BoxSizer(wx.VERTICAL)
+        baseBox.Add(box, 0, wx.ALIGN_CENTER)
+
+        hbox = wx.BoxSizer(wx.HORIZONTAL)
+        box.Add(hbox, 1, wx.ALIGN_CENTER)
+
+        hbox.Add(wx.StaticText(self, wx.ID_ANY, "Capacity: "), 0, wx.ALIGN_CENTER)
+        self.labelCapacitorCapacity = wx.StaticText(self, wx.ID_ANY, "0.0")
+        hbox.Add(self.labelCapacitorCapacity, 0, wx.ALIGN_CENTER)
+        hbox.Add(wx.StaticText(self, wx.ID_ANY, " Gj"), 0, wx.ALIGN_CENTER)
+
+        hbox = wx.BoxSizer(wx.HORIZONTAL)
+        box.Add(hbox, 1, wx.ALIGN_LEFT)
+
+        hbox.Add(wx.StaticText(self, wx.ID_ANY, "Lasts "), 0, wx.ALIGN_LEFT)
+        self.labelCapacitorTime = wx.StaticText(self, wx.ID_ANY, "0s")
+        hbox.Add(self.labelCapacitorTime, 0, wx.ALIGN_LEFT)
+
+        # Capacitor balance
+        baseBox = wx.BoxSizer(wx.HORIZONTAL)
+        sizerCapacitor.Add(baseBox, 1, wx.ALIGN_CENTER)
+
+        baseBox.Add(bitmapLoader.getStaticBitmap("capacitorRecharge_big", self), 0, wx.ALIGN_CENTER)
+
+        box = wx.BoxSizer(wx.VERTICAL)
+        baseBox.Add(box, 0, wx.ALIGN_CENTER)
+
+        # Recharge
+        chargeSizer = wx.FlexGridSizer(2, 3)
+        box.Add(chargeSizer)
+
+        chargeSizer.Add(wx.StaticText(self, wx.ID_ANY, "+ "), 0, wx.ALIGN_CENTER)
+        self.labelCapacitorRecharge = wx.StaticText(self, wx.ID_ANY, "0.0")
+        chargeSizer.Add(self.labelCapacitorRecharge, 0, wx.ALIGN_CENTER)
+        chargeSizer.Add(wx.StaticText(self, wx.ID_ANY, " Gj/s"), 0, wx.ALIGN_CENTER)
+
+        # Discharge
+        chargeSizer.Add(wx.StaticText(self, wx.ID_ANY, "- "), 0, wx.ALIGN_CENTER)
+        self.labelCapacitorDischarge = wx.StaticText(self, wx.ID_ANY, "0.0")
+        chargeSizer.Add(self.labelCapacitorDischarge, 0, wx.ALIGN_CENTER)
+        chargeSizer.Add(wx.StaticText(self, wx.ID_ANY, " Gj/s"), 0, wx.ALIGN_CENTER)
