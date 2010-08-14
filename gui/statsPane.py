@@ -47,20 +47,23 @@ class StatsPane(wx.Panel):
 
         # Turret slots, Launcher slots & calibration
         sizerHardResources = wx.FlexGridSizer(3, 4)
-        sizerResources.Add(sizerHardResources, 0, wx.ALIGN_CENTER)
+        for i in xrange(3):
+            sizerHardResources.AddGrowableCol(i+1)
+
+        sizerResources.Add(sizerHardResources, 1, wx.ALIGN_CENTER)
 
         for type in ("turret", "launcher"):
             sizerHardResources.Add(bitmapLoader.getStaticBitmap("%s_big" % type, self))
 
             lbl = wx.StaticText(self, wx.ID_ANY, "0")
             setattr(self, "labelAvailable%sHardpoints", lbl)
-            sizerHardResources.Add(lbl, 0, wx.ALIGN_CENTER)
+            sizerHardResources.Add(lbl, 1, wx.ALIGN_CENTER)
 
             sizerHardResources.Add(wx.StaticText(self, wx.ID_ANY, "/"), 0, wx.ALIGN_CENTER)
 
             lbl = wx.StaticText(self, wx.ID_ANY, "0")
             setattr(self, "labelTotal%sHardpoints", lbl)
-            sizerHardResources.Add(lbl, 0, wx.ALIGN_CENTER)
+            sizerHardResources.Add(lbl, 1, wx.ALIGN_CENTER)
 
 
         # Calibration points
@@ -74,12 +77,12 @@ class StatsPane(wx.Panel):
         self.labelTotalCalibrationPoints = wx.StaticText(self, wx.ID_ANY, "0")
         sizerHardResources.Add(self.labelTotalCalibrationPoints, 0, wx.ALIGN_CENTER)
 
-        sizerResources.Add(wx.StaticLine(self, wx.ID_ANY, style=wx.VERTICAL), 1, wx.EXPAND)
+        sizerResources.Add(wx.StaticLine(self, wx.ID_ANY, style=wx.VERTICAL), 0, wx.EXPAND)
 
         #PG, Cpu & drone stuff
         for group in (("cpu", "pg"), ("droneBay", "droneBandwidth")):
             main = wx.BoxSizer(wx.VERTICAL)
-            sizerResources.Add(main, 0, wx.EXPAND)
+            sizerResources.Add(main, 0, wx.ALIGN_CENTER)
             for type in group:
                 capitalizedType = type[0].capitalize() + type[1:]
 
@@ -109,7 +112,7 @@ class StatsPane(wx.Panel):
                 stats.Add(gauge)
 
             if "cpu" in group:
-                sizerResources.Add(wx.StaticLine(self, wx.ID_ANY, style=wx.VERTICAL), 1, wx.EXPAND)
+                sizerResources.Add(wx.StaticLine(self, wx.ID_ANY, style=wx.VERTICAL), 0, wx.EXPAND)
 
         # Resistances
         sizerHeaderResistances = wx.BoxSizer(wx.HORIZONTAL)
@@ -131,7 +134,10 @@ class StatsPane(wx.Panel):
         sizerHeaderResistances.Add(wx.StaticLine(self, wx.ID_ANY), 1, wx.EXPAND)
 
         # Display table
-        sizerResistances = wx.GridSizer(4, 6)
+        sizerResistances = wx.FlexGridSizer(4, 6)
+        for i in xrange(5):
+            sizerResistances.AddGrowableCol(i+1)
+
         self.sizerBase.Add(sizerResistances, 0, wx.EXPAND)
 
         # Add an empty label, then the rest.
@@ -147,7 +153,7 @@ class StatsPane(wx.Panel):
 
             for damageType in ("em", "thermal", "kinetic", "explosive"):
                 box = wx.BoxSizer(wx.HORIZONTAL)
-                sizerResistances.Add(box, 1, wx.EXPAND)
+                sizerResistances.Add(box, 1, wx.ALIGN_CENTER)
 
                 lbl = wx.StaticText(self, wx.ID_ANY, "0.00")
                 setattr(self, "labelResistance%s%s" % (tankType, damageType), lbl)
@@ -158,3 +164,39 @@ class StatsPane(wx.Panel):
             lbl = wx.StaticText(self, wx.ID_ANY, "0")
             setattr(self, "labelResistance%sEhp" % tankType, lbl)
             sizerResistances.Add(lbl, 0, wx.ALIGN_CENTER)
+
+        # Resistances
+        sizerHeaderRechargeRates = wx.BoxSizer(wx.HORIZONTAL)
+        self.sizerBase.Add(sizerHeaderRechargeRates, 0, wx.EXPAND)
+
+        labelRecharge = wx.StaticText(self, wx.ID_ANY, "Recharge Rates")
+        font = wx.SystemSettings_GetFont(wx.SYS_DEFAULT_GUI_FONT)
+        font.SetWeight(wx.BOLD)
+        labelRecharge.SetFont(font)
+
+        sizerHeaderRechargeRates.Add(labelRecharge, 0, wx.ALIGN_CENTER)
+        sizerHeaderRechargeRates.Add(wx.StaticLine(self, wx.ID_ANY), 1, wx.EXPAND)
+
+        sizerTankStats = wx.FlexGridSizer(3, 5)
+        for i in xrange(4):
+            sizerTankStats.AddGrowableCol(i+1)
+
+        self.sizerBase.Add(sizerTankStats, 1, wx.EXPAND)
+
+        #Add an empty label first for correct alignment.
+        sizerTankStats.Add(wx.StaticText(self, wx.ID_ANY, ""), 0)
+        for tankType in ("shieldPassive", "shieldActive", "armorActive", "hullActive"):
+            sizerTankStats.Add(bitmapLoader.getStaticBitmap("%s_big" % tankType, self), 1, wx.ALIGN_CENTER)
+
+        for stability in ("reinforced", "sustained"):
+                sizerTankStats.Add(bitmapLoader.getStaticBitmap("regen%s_big" % stability.capitalize(), self), 0, wx.ALIGN_CENTER)
+                for tankType in ("shieldPassive", "shieldActive", "armorActive", "hullActive"):
+                    tankTypeCap = tankType[0].capitalize() + tankType[1:]
+                    lbl = wx.StaticText(self, wx.ID_ANY, "0.0")
+                    setattr(self, "labelTank%s%s" % (stability.capitalize(), tankTypeCap), lbl)
+
+                    box = wx.BoxSizer(wx.HORIZONTAL)
+                    box.Add(lbl, 1, wx.ALIGN_CENTER)
+                    box.Add(wx.StaticText(self, wx.ID_ANY, " HP/s"), 0, wx.ALIGN_CENTER)
+
+                    sizerTankStats.Add(box, 1, wx.ALIGN_CENTER)
