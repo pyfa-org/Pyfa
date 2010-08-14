@@ -317,3 +317,27 @@ class StatsPane(wx.Panel):
         self.labelCapacitorDischarge = wx.StaticText(self, wx.ID_ANY, "0.0")
         chargeSizer.Add(self.labelCapacitorDischarge, 0, wx.ALIGN_CENTER)
         chargeSizer.Add(wx.StaticText(self, wx.ID_ANY, " Gj/s"), 0, wx.ALIGN_CENTER)
+
+        # Targeting & Misc
+        grid = wx.GridSizer(1, 2)
+        self.sizerBase.Add(grid, 0, wx.EXPAND)
+
+        # Targeting header
+        sizerHeaderTargeting = wx.BoxSizer(wx.HORIZONTAL)
+        grid.Add(sizerHeaderTargeting, 0, wx.EXPAND)
+
+        labelTargeting = wx.StaticText(self, wx.ID_ANY, "Targeting")
+        labelTargeting.SetFont(boldFont)
+
+        sizerHeaderTargeting.Add(labelTargeting, 0, wx.ALIGN_CENTER)
+        sizerHeaderTargeting.Add(wx.StaticLine(self, wx.ID_ANY), 1, wx.EXPAND)
+
+        # Misc header
+        sizerHeaderMisc = wx.BoxSizer(wx.HORIZONTAL)
+        grid.Add(sizerHeaderMisc, 0, wx.EXPAND)
+
+        labelMisc = wx.StaticText(self, wx.ID_ANY, "Misc")
+        labelMisc.SetFont(boldFont)
+
+        sizerHeaderMisc.Add(labelMisc, 0, wx.ALIGN_CENTER)
+        sizerHeaderMisc.Add(wx.StaticLine(self, wx.ID_ANY), 1, wx.EXPAND)
