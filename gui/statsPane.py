@@ -181,7 +181,7 @@ class StatsPane(wx.Panel):
         for i in xrange(4):
             sizerTankStats.AddGrowableCol(i+1)
 
-        self.sizerBase.Add(sizerTankStats, 1, wx.EXPAND)
+        self.sizerBase.Add(sizerTankStats, 0, wx.EXPAND)
 
         #Add an empty label first for correct alignment.
         sizerTankStats.Add(wx.StaticText(self, wx.ID_ANY, ""), 0)
@@ -200,3 +200,64 @@ class StatsPane(wx.Panel):
                     box.Add(wx.StaticText(self, wx.ID_ANY, " HP/s"), 0, wx.ALIGN_CENTER)
 
                     sizerTankStats.Add(box, 1, wx.ALIGN_CENTER)
+
+        # Firepower
+        sizerHeaderFirepower = wx.BoxSizer(wx.HORIZONTAL)
+        self.sizerBase.Add(sizerHeaderFirepower, 0, wx.EXPAND)
+
+        labelFirepower = wx.StaticText(self, wx.ID_ANY, "Firepower")
+        font = wx.SystemSettings_GetFont(wx.SYS_DEFAULT_GUI_FONT)
+        font.SetWeight(wx.BOLD)
+        labelFirepower.SetFont(font)
+
+        sizerHeaderFirepower.Add(labelFirepower, 0, wx.ALIGN_CENTER)
+        sizerHeaderFirepower.Add(wx.StaticLine(self, wx.ID_ANY), 1, wx.EXPAND)
+
+        sizerFirepower = wx.FlexGridSizer(1, 3)
+        for i in xrange(3):
+            sizerFirepower.AddGrowableCol(i)
+
+        self.sizerBase.Add(sizerFirepower, 0, wx.EXPAND)
+
+        for damageType in ("turret", "drone"):
+            baseBox = wx.BoxSizer(wx.HORIZONTAL)
+            sizerFirepower.Add(baseBox, 0, wx.ALIGN_CENTER)
+
+            image = "droneBay" if damageType == "drone" else damageType
+            baseBox.Add(bitmapLoader.getStaticBitmap("%s_big" % image, self), 0, wx.ALIGN_CENTER)
+
+            box = wx.BoxSizer(wx.VERTICAL)
+            baseBox.Add(box, 0, wx.ALIGN_CENTER)
+
+            box.Add(wx.StaticText(self, wx.ID_ANY, damageType.capitalize()), 0, wx.ALIGN_LEFT)
+
+            hbox = wx.BoxSizer(wx.HORIZONTAL)
+            box.Add(hbox, 1, wx.ALIGN_CENTER)
+
+            lbl = wx.StaticText(self, wx.ID_ANY, "0.0")
+            setattr(self, "labelDps%s" % damageType, lbl)
+
+            hbox.Add(lbl, 0, wx.ALIGN_CENTER)
+            hbox.Add(wx.StaticText(self, wx.ID_ANY, " DPS"), 0, wx.ALIGN_CENTER)
+
+        baseBox = wx.BoxSizer(wx.HORIZONTAL)
+        sizerFirepower.Add(baseBox, 0, wx.ALIGN_CENTER)
+
+        baseBox.Add(bitmapLoader.getStaticBitmap("volley_big", self), 0, wx.ALIGN_CENTER)
+
+        box = wx.BoxSizer(wx.VERTICAL)
+        baseBox.Add(box, 1, wx.ALIGN_CENTER)
+
+        hbox = wx.BoxSizer(wx.HORIZONTAL)
+        box.Add(hbox, 1, wx.ALIGN_LEFT)
+
+        self.labelVolleyTotal = wx.StaticText(self, wx.ID_ANY, "0.0")
+        hbox.Add(wx.StaticText(self, wx.ID_ANY, "Volley: "), 0, wx.ALIGN_LEFT)
+        hbox.Add(self.labelVolleyTotal, 0, wx.EXPAND)
+
+        hbox = wx.BoxSizer(wx.HORIZONTAL)
+        box.Add(hbox, 1, wx.ALIGN_CENTER)
+
+        self.labelDpsTotal = wx.StaticText(self, wx.ID_ANY, "0.0")
+        hbox.Add(wx.StaticText(self, wx.ID_ANY, "Total DPS: "), 0, wx.ALIGN_LEFT)
+        hbox.Add(self.labelDpsTotal, 0, wx.ALIGN_CENTER)
