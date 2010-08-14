@@ -34,7 +34,7 @@ class StatsPane(wx.Panel):
         self.SetSizer(self.sizerBase)
 
         sizerHeaderResources = wx.BoxSizer(wx.HORIZONTAL)
-        self.sizerBase.Add(sizerHeaderResources, 0, wx.EXPAND)
+        self.sizerBase.Add(sizerHeaderResources, 0, wx.EXPAND | wx.LEFT, 3)
 
         # Resources header
         self.labelResources = wx.StaticText(self, wx.ID_ANY, "Resources")
@@ -44,7 +44,7 @@ class StatsPane(wx.Panel):
 
         # Resources stuff
         sizerResources = wx.BoxSizer(wx.HORIZONTAL)
-        self.sizerBase.Add(sizerResources, 0, wx.EXPAND)
+        self.sizerBase.Add(sizerResources, 0, wx.EXPAND | wx.LEFT, 3)
 
         # Turret slots, Launcher slots & calibration
         sizerHardResources = wx.FlexGridSizer(3, 2)
@@ -123,7 +123,7 @@ class StatsPane(wx.Panel):
 
         # Resistances
         sizerHeaderResistances = wx.BoxSizer(wx.HORIZONTAL)
-        self.sizerBase.Add(sizerHeaderResistances, 0, wx.EXPAND)
+        self.sizerBase.Add(sizerHeaderResistances, 0, wx.EXPAND | wx.LEFT, 3)
 
         # Header & EHP
         labelResistances = wx.StaticText(self, wx.ID_ANY, "Resistances")
@@ -143,7 +143,7 @@ class StatsPane(wx.Panel):
         for i in xrange(5):
             sizerResistances.AddGrowableCol(i + 1)
 
-        self.sizerBase.Add(sizerResistances, 0, wx.EXPAND)
+        self.sizerBase.Add(sizerResistances, 0, wx.EXPAND | wx.LEFT, 3)
 
         # Add an empty label, then the rest.
         sizerResistances.Add(wx.StaticText(self, wx.ID_ANY))
@@ -172,7 +172,7 @@ class StatsPane(wx.Panel):
 
         # Resistances
         sizerHeaderRechargeRates = wx.BoxSizer(wx.HORIZONTAL)
-        self.sizerBase.Add(sizerHeaderRechargeRates, 0, wx.EXPAND)
+        self.sizerBase.Add(sizerHeaderRechargeRates, 0, wx.EXPAND | wx.LEFT, 3)
 
         labelRecharge = wx.StaticText(self, wx.ID_ANY, "Recharge Rates")
         labelRecharge.SetFont(boldFont)
@@ -184,7 +184,7 @@ class StatsPane(wx.Panel):
         for i in xrange(4):
             sizerTankStats.AddGrowableCol(i + 1)
 
-        self.sizerBase.Add(sizerTankStats, 0, wx.EXPAND)
+        self.sizerBase.Add(sizerTankStats, 0, wx.EXPAND | wx.LEFT, 3)
 
         #Add an empty label first for correct alignment.
         sizerTankStats.Add(wx.StaticText(self, wx.ID_ANY, ""), 0)
@@ -206,7 +206,7 @@ class StatsPane(wx.Panel):
 
         # Firepower
         sizerHeaderFirepower = wx.BoxSizer(wx.HORIZONTAL)
-        self.sizerBase.Add(sizerHeaderFirepower, 0, wx.EXPAND)
+        self.sizerBase.Add(sizerHeaderFirepower, 0, wx.EXPAND | wx.LEFT, 3)
 
         labelFirepower = wx.StaticText(self, wx.ID_ANY, "Firepower")
         labelFirepower.SetFont(boldFont)
@@ -218,7 +218,7 @@ class StatsPane(wx.Panel):
         for i in xrange(3):
             sizerFirepower.AddGrowableCol(i)
 
-        self.sizerBase.Add(sizerFirepower, 0, wx.EXPAND)
+        self.sizerBase.Add(sizerFirepower, 0, wx.EXPAND | wx.LEFT, 3)
 
         for damageType in ("turret", "drone"):
             baseBox = wx.BoxSizer(wx.HORIZONTAL)
@@ -265,7 +265,7 @@ class StatsPane(wx.Panel):
 
         # Capacitor
         sizerHeaderCapacitor = wx.BoxSizer(wx.HORIZONTAL)
-        self.sizerBase.Add(sizerHeaderCapacitor, 0, wx.EXPAND)
+        self.sizerBase.Add(sizerHeaderCapacitor, 0, wx.EXPAND | wx.LEFT, 3)
 
         labelCapacitor = wx.StaticText(self, wx.ID_ANY, "Capacitor")
         labelCapacitor.SetFont(boldFont)
@@ -274,7 +274,7 @@ class StatsPane(wx.Panel):
         sizerHeaderCapacitor.Add(wx.StaticLine(self, wx.ID_ANY), 1, wx.EXPAND)
 
         sizerCapacitor = wx.GridSizer(1, 2)
-        self.sizerBase.Add(sizerCapacitor)
+        self.sizerBase.Add(sizerCapacitor, 0, wx.EXPAND  | wx.LEFT, 3)
 
         # Capacitor capacity and time
         baseBox = wx.BoxSizer(wx.HORIZONTAL)
@@ -326,7 +326,7 @@ class StatsPane(wx.Panel):
 
         # Targeting & Misc
         grid = wx.GridSizer(1, 2)
-        self.sizerBase.Add(grid, 0, wx.EXPAND)
+        self.sizerBase.Add(grid, 0, wx.EXPAND | wx.LEFT, 3)
 
         # Targeting header
         sizerHeaderTargeting = wx.BoxSizer(wx.HORIZONTAL)
@@ -349,7 +349,7 @@ class StatsPane(wx.Panel):
         sizerHeaderMisc.Add(wx.StaticLine(self, wx.ID_ANY), 1, wx.EXPAND)
 
         gridTargetingMisc = wx.GridSizer(1, 2)
-        self.sizerBase.Add(gridTargetingMisc, 0, wx.EXPAND)
+        self.sizerBase.Add(gridTargetingMisc, 0, wx.EXPAND | wx.LEFT, 3)
 
         # Targeting
 
@@ -403,7 +403,7 @@ class StatsPane(wx.Panel):
 
         # Price
         sizerHeaderPrice = wx.BoxSizer(wx.HORIZONTAL)
-        self.sizerBase.Add(sizerHeaderPrice, 0, wx.EXPAND)
+        self.sizerBase.Add(sizerHeaderPrice, 0, wx.EXPAND | wx.LEFT, 3)
 
         labelPrice = wx.StaticText(self, wx.ID_ANY, "Price")
         labelPrice.SetFont(boldFont)
@@ -413,7 +413,7 @@ class StatsPane(wx.Panel):
 
         # Grid for the price stuff.
         gridPrice = wx.GridSizer(1, 3)
-        self.sizerBase.Add(gridPrice, 0, wx.EXPAND)
+        self.sizerBase.Add(gridPrice, 0, wx.EXPAND | wx.LEFT, 3)
 
         for type in ("ship", "fittings", "total"):
             image = "%sPrice_big" % type if type != "ship" else "ship_big"
