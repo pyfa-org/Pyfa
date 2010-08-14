@@ -153,7 +153,7 @@ class StatsPane(wx.Panel):
 
         sizerResistances.Add(wx.StaticText(self, wx.ID_ANY, "EHP"), 0, wx.ALIGN_CENTER)
 
-        for tankType in ("shield", "armor", "hull"):
+        for tankType in ("damagePattern", "shield", "armor", "hull"):
             sizerResistances.Add(bitmapLoader.getStaticBitmap("%s_big" % tankType, self), 0, wx.ALIGN_CENTER)
 
             for damageType in ("em", "thermal", "kinetic", "explosive"):
@@ -166,9 +166,12 @@ class StatsPane(wx.Panel):
 
                 box.Add(wx.StaticText(self, wx.ID_ANY, "%"), 0, wx.ALIGN_CENTER)
 
-            lbl = wx.StaticText(self, wx.ID_ANY, "0")
+
+            lbl = wx.StaticText(self, wx.ID_ANY, "0" if tankType != "damagePattern" else "")
+
             setattr(self, "labelResistance%sEhp" % tankType, lbl)
             sizerResistances.Add(lbl, 0, wx.ALIGN_CENTER)
+
 
         # Resistances
         sizerHeaderRechargeRates = wx.BoxSizer(wx.HORIZONTAL)
