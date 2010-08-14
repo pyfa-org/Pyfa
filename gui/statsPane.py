@@ -341,3 +341,56 @@ class StatsPane(wx.Panel):
 
         sizerHeaderMisc.Add(labelMisc, 0, wx.ALIGN_CENTER)
         sizerHeaderMisc.Add(wx.StaticLine(self, wx.ID_ANY), 1, wx.EXPAND)
+
+        gridTargetingMisc = wx.GridSizer(1, 2)
+        self.sizerBase.Add(gridTargetingMisc, 0, wx.EXPAND)
+
+        # Targeting
+
+        gridTargeting = wx.FlexGridSizer(4, 2)
+        gridTargeting.AddGrowableCol(1)
+        gridTargetingMisc.Add(gridTargeting)
+
+        labels = (("Targets", "Targets", ""),
+                  ("Range", "Range", "km"),
+                  ("Scan res.", "ScanRes", "mm"),
+                  ("Sensor str.", "SensorStr", ""))
+
+        for header, labelShort, unit in labels:
+            gridTargeting.Add(wx.StaticText(self, wx.ID_ANY, "%s: " % header), 0, wx.ALIGN_LEFT)
+
+            box = wx.BoxSizer(wx.HORIZONTAL)
+            gridTargeting.Add(box, 0, wx.ALIGN_LEFT)
+
+            lbl = wx.StaticText(self, wx.ID_ANY, "0")
+            setattr(self, "label%s" % labelShort, lbl)
+            box.Add(lbl, 0, wx.ALIGN_LEFT)
+
+            lblUnit = wx.StaticText(self, wx.ID_ANY, " %s" % unit)
+            setattr(self, "labelUnit%s" % labelShort, lblUnit)
+            box.Add(lblUnit, 0, wx.ALIGN_LEFT)
+
+        # Misc
+
+        gridMisc = wx.FlexGridSizer(4, 2)
+        gridMisc.AddGrowableCol(1)
+        gridTargetingMisc.Add(gridMisc)
+
+        labels = (("Speed", "Speed", "m/s"),
+                  ("Align time", "AlignTime", "s"),
+                  ("Cargo", "Cargo", u"m\u00B3"),
+                  ("Signature", "SigRadius", "m"))
+
+        for header, labelShort, unit in labels:
+            gridMisc.Add(wx.StaticText(self, wx.ID_ANY, "%s: " % header), 0, wx.ALIGN_LEFT)
+
+            box = wx.BoxSizer(wx.HORIZONTAL)
+            gridMisc.Add(box, 0, wx.ALIGN_LEFT)
+
+            lbl = wx.StaticText(self, wx.ID_ANY, "0")
+            setattr(self, "label%s" % labelShort, lbl)
+            box.Add(lbl, 0, wx.ALIGN_LEFT)
+
+            lblUnit = wx.StaticText(self, wx.ID_ANY, " %s" % unit)
+            setattr(self, "labelUnit%s" % labelShort, lblUnit)
+            box.Add(lblUnit, 0, wx.ALIGN_LEFT)
