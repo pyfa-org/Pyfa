@@ -24,7 +24,7 @@ class StatsPane(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent)
         size = wx.Size()
-        size.SetWidth(310)
+        size.SetWidth(330)
         self.SetMinSize(size)
 
         boldFont = wx.SystemSettings_GetFont(wx.SYS_DEFAULT_GUI_FONT)
@@ -44,39 +44,45 @@ class StatsPane(wx.Panel):
 
         # Resources stuff
         sizerResources = wx.BoxSizer(wx.HORIZONTAL)
-        self.sizerBase.Add(sizerResources)
+        self.sizerBase.Add(sizerResources, 0, wx.EXPAND)
 
         # Turret slots, Launcher slots & calibration
-        sizerHardResources = wx.FlexGridSizer(3, 4)
+        sizerHardResources = wx.FlexGridSizer(3, 2)
         for i in xrange(3):
             sizerHardResources.AddGrowableCol(i + 1)
 
         sizerResources.Add(sizerHardResources, 1, wx.ALIGN_CENTER)
 
         for type in ("turret", "launcher"):
-            sizerHardResources.Add(bitmapLoader.getStaticBitmap("%s_big" % type, self))
+            sizerHardResources.Add(bitmapLoader.getStaticBitmap("%s_big" % type, self), 0, wx.ALIGN_CENTER)
+
+            box = wx.BoxSizer(wx.HORIZONTAL)
+            sizerHardResources.Add(box, 0, wx.ALIGN_CENTER)
 
             lbl = wx.StaticText(self, wx.ID_ANY, "0")
             setattr(self, "labelAvailable%sHardpoints", lbl)
-            sizerHardResources.Add(lbl, 1, wx.ALIGN_CENTER)
+            box.Add(lbl, 0, wx.ALIGN_LEFT)
 
-            sizerHardResources.Add(wx.StaticText(self, wx.ID_ANY, "/"), 0, wx.ALIGN_CENTER)
+            box.Add(wx.StaticText(self, wx.ID_ANY, "/"), 0, wx.ALIGN_LEFT)
 
             lbl = wx.StaticText(self, wx.ID_ANY, "0")
             setattr(self, "labelTotal%sHardpoints", lbl)
-            sizerHardResources.Add(lbl, 1, wx.ALIGN_CENTER)
+            box.Add(lbl, 0, wx.ALIGN_LEFT)
 
 
         # Calibration points
         sizerHardResources.Add(bitmapLoader.getStaticBitmap("calibration_big", self))
 
-        self.labelAvailableCalibrationPoints = wx.StaticText(self, wx.ID_ANY, "0")
-        sizerHardResources.Add(self.labelAvailableCalibrationPoints, 0, wx.ALIGN_CENTER)
+        box = wx.BoxSizer(wx.HORIZONTAL)
+        sizerHardResources.Add(box, 0, wx.ALIGN_CENTER)
 
-        sizerHardResources.Add(wx.StaticText(self, wx.ID_ANY, "/"), 0, wx.ALIGN_CENTER)
+        self.labelAvailableCalibrationPoints = wx.StaticText(self, wx.ID_ANY, "0")
+        box.Add(self.labelAvailableCalibrationPoints, 0, wx.ALIGN_LEFT)
+
+        box.Add(wx.StaticText(self, wx.ID_ANY, "/"), 0, wx.ALIGN_LEFT)
 
         self.labelTotalCalibrationPoints = wx.StaticText(self, wx.ID_ANY, "0")
-        sizerHardResources.Add(self.labelTotalCalibrationPoints, 0, wx.ALIGN_CENTER)
+        box.Add(self.labelTotalCalibrationPoints, 0, wx.ALIGN_LEFT)
 
         sizerResources.Add(wx.StaticLine(self, wx.ID_ANY, style=wx.VERTICAL), 0, wx.EXPAND)
 
@@ -394,3 +400,38 @@ class StatsPane(wx.Panel):
             lblUnit = wx.StaticText(self, wx.ID_ANY, " %s" % unit)
             setattr(self, "labelUnit%s" % labelShort, lblUnit)
             box.Add(lblUnit, 0, wx.ALIGN_LEFT)
+
+        # Price
+        sizerHeaderPrice = wx.BoxSizer(wx.HORIZONTAL)
+        self.sizerBase.Add(sizerHeaderPrice, 0, wx.EXPAND)
+
+        labelPrice = wx.StaticText(self, wx.ID_ANY, "Price")
+        labelPrice.SetFont(boldFont)
+
+        sizerHeaderPrice.Add(labelPrice, 0, wx.ALIGN_CENTER)
+        sizerHeaderPrice.Add(wx.StaticLine(self, wx.ID_ANY), 1, wx.EXPAND)
+
+        # Grid for the price stuff.
+        gridPrice = wx.GridSizer(1, 3)
+        self.sizerBase.Add(gridPrice, 0, wx.EXPAND)
+
+        for type in ("ship", "fittings", "total"):
+            image = "%sPrice_big" % type if type != "ship" else "ship_big"
+            box = wx.BoxSizer(wx.HORIZONTAL)
+            gridPrice.Add(box)
+
+            box.Add(bitmapLoader.getStaticBitmap(image, self), 0, wx.ALIGN_CENTER)
+
+            vbox = wx.BoxSizer(wx.VERTICAL)
+            box.Add(vbox, 1, wx.EXPAND)
+
+            vbox.Add(wx.StaticText(self, wx.ID_ANY, type.capitalize()), 0, wx.ALIGN_LEFT)
+
+            hbox = wx.BoxSizer(wx.HORIZONTAL)
+            vbox.Add(hbox)
+
+            lbl = wx.StaticText(self, wx.ID_ANY, "0.00")
+            setattr(self, "labelPrice%s" % type, lbl)
+            hbox.Add(lbl, 0, wx.ALIGN_LEFT)
+
+            hbox.Add(wx.StaticText(self, wx.ID_ANY, " m ISK"), 0, wx.ALIGN_LEFT)
