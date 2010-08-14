@@ -30,16 +30,16 @@ class StatsPane(wx.Panel):
         self.sizerBase = wx.BoxSizer(wx.VERTICAL)
         self.SetSizer(self.sizerBase)
 
-        self.sizerResourcesHeader = wx.BoxSizer(wx.HORIZONTAL)
-        self.sizerBase.Add(self.sizerResourcesHeader, 0, wx.EXPAND)
+        self.sizerHeaderResources = wx.BoxSizer(wx.HORIZONTAL)
+        self.sizerBase.Add(self.sizerHeaderResources, 0, wx.EXPAND)
 
         # Resources header
         self.labelResources = wx.StaticText(self, wx.ID_ANY, "Resources")
         font = wx.SystemSettings_GetFont(wx.SYS_DEFAULT_GUI_FONT)
         font.SetWeight(wx.BOLD)
         self.labelResources.SetFont(font)
-        self.sizerResourcesHeader.Add(self.labelResources, 0)
-        self.sizerResourcesHeader.Add(wx.StaticLine(self, wx.ID_ANY), 1, wx.EXPAND)
+        self.sizerHeaderResources.Add(self.labelResources, 0, wx.ALIGN_CENTER)
+        self.sizerHeaderResources.Add(wx.StaticLine(self, wx.ID_ANY), 1, wx.EXPAND)
 
         # Resources stuff
         self.sizerResources = wx.BoxSizer(wx.HORIZONTAL)
@@ -110,3 +110,25 @@ class StatsPane(wx.Panel):
 
             if "cpu" in group:
                 self.sizerResources.Add(wx.StaticLine(self, wx.ID_ANY, style=wx.VERTICAL), 1, wx.EXPAND)
+
+        # Resistances
+        self.sizerHeaderResistances = wx.BoxSizer(wx.HORIZONTAL)
+        self.sizerBase.Add(self.sizerHeaderResistances, 0, wx.EXPAND)
+
+        # Header & EHP
+        self.labelResistances = wx.StaticText(self, wx.ID_ANY, "Resistances")
+        font = wx.SystemSettings_GetFont(wx.SYS_DEFAULT_GUI_FONT)
+        font.SetWeight(wx.BOLD)
+        self.labelResistances.SetFont(font)
+        self.sizerHeaderResistances.Add(self.labelResistances, 0, wx.ALIGN_CENTER)
+
+        self.labelEhpHeader = wx.StaticText(self, wx.ID_ANY, " (Effective HP: ")
+        self.sizerHeaderResistances.Add(self.labelEhpHeader, 0, wx.ALIGN_CENTER)
+
+        self.labelEhp = wx.StaticText(self, wx.ID_ANY, "0")
+        self.sizerHeaderResistances.Add(self.labelEhp, 0, wx.ALIGN_CENTER)
+
+        self.labelEhpHeader = wx.StaticText(self, wx.ID_ANY, ")")
+        self.sizerHeaderResistances.Add(self.labelEhpHeader, 0, wx.ALIGN_CENTER)
+
+        self.sizerHeaderResistances.Add(wx.StaticLine(self, wx.ID_ANY), 1, wx.EXPAND)
