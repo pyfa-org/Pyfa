@@ -40,7 +40,7 @@ class MainFrame(wx.Frame):
 
         self.splitter.SplitVertically(self.marketBrowser, self.fitMultiSwitch)
         self.splitter.SetMinimumPaneSize(10)
-        self.splitter.SetSashPosition(200)
+        self.splitter.SetSashPosition(300)
 
         #Show ourselves
         self.Show()
