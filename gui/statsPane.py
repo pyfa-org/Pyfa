@@ -47,7 +47,7 @@ class StatsPane(wx.Panel):
 
         # Turret slots, Launcher slots & calibration
         self.sizerHardResources = wx.FlexGridSizer(3, 4)
-        self.sizerResources.Add(self.sizerHardResources, 0, wx.EXPAND)
+        self.sizerResources.Add(self.sizerHardResources, 0, wx.ALIGN_CENTER)
 
         for type in ("turret", "launcher"):
             self.sizerHardResources.Add(bitmapLoader.getStaticBitmap("%s_big" % type, self))
