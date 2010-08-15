@@ -30,7 +30,10 @@ class MainFrame(wx.Frame):
         #Add menu
         self.SetMenuBar(MainMenuBar())
         self.SetToolBar(MainToolBar(self))
-
+	
+	#Register menubar events / only quit for now
+        self.Bind(wx.EVT_MENU, self.ExitApp, id=wx.ID_EXIT)
+        
         self.splitter = wx.SplitterWindow(self, style = wx.SP_LIVE_UPDATE)
 
         self.marketBrowser = MarketBrowser(self.splitter)
@@ -44,3 +47,6 @@ class MainFrame(wx.Frame):
 
         #Show ourselves
         self.Show()
+
+    def ExitApp(self, evt):
+        self.Close() 
