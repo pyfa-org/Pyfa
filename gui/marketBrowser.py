@@ -61,6 +61,8 @@ class MarketBrowser(wx.Panel):
             childId = self.marketView.AppendItem(self.marketRoot, name, iconId, data=wx.TreeItemData(id))
             self.marketView.AppendItem(childId, "dummy")
 
+        self.marketView.SortChildren(self.marketRoot)
+
         #Bind our lookup method to when the tree gets expanded
         self.marketView.Bind(wx.EVT_TREE_ITEM_EXPANDING, self.expandLookup)
         self.marketView.Bind(wx.EVT_TREE_SEL_CHANGED, self.selectionMade)
@@ -81,6 +83,8 @@ class MarketBrowser(wx.Panel):
                 if more:
                     self.marketView.AppendItem(childId, "dummy")
 
+            self.marketView.SortChildren(root)
+
     def selectionMade(self, event):
         self.itemView.DeleteChildren(self.itemRoot)
         self.itemImageList.RemoveAll()
@@ -95,3 +99,5 @@ class MarketBrowser(wx.Panel):
             if iconFile: iconId = self.itemImageList.Add(bitmapLoader.getBitmap(iconFile, "pack"))
             else: iconId = -1
             self.itemView.AppendItem(self.itemRoot, name, iconId, data=wx.TreeItemData(id))
+
+        self.itemView.SortChildren(self.itemRoot)
