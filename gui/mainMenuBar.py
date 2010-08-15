@@ -41,7 +41,7 @@ class MainMenuBar(wx.MenuBar):
         fitMenu = wx.Menu()
         self.Append(fitMenu, "F&it")
         shipBrowserItem = wx.MenuItem(fitMenu, wx.ID_ANY, "Ship &Browser")
-        shipBrowserItem.SetBitmap(bitmapLoader.getBitmap("ship_small"))
+        shipBrowserItem.SetBitmap(bitmapLoader.getBitmap("ship_small", "icons"))
         fitMenu.AppendItem(shipBrowserItem)
         fitMenu.AppendSeparator()
         fitMenu.Append(wx.ID_EDIT, "&Rename", "Rename this fit.")
@@ -57,7 +57,7 @@ class MainMenuBar(wx.MenuBar):
         self.Append(charMenu, "&Character")
 
         charEditItem = wx.MenuItem(charMenu, wx.ID_ANY, "Character &Editor")
-        charEditItem.SetBitmap(bitmapLoader.getBitmap("character_small"))
+        charEditItem.SetBitmap(bitmapLoader.getBitmap("character_small", "icons"))
         charMenu.AppendItem(charEditItem)
 
         # Help menu

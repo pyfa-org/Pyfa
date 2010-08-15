@@ -54,7 +54,7 @@ class StatsPane(wx.Panel):
         sizerResources.Add(sizerHardResources, 1, wx.ALIGN_CENTER)
 
         for type in ("turret", "launcher"):
-            sizerHardResources.Add(bitmapLoader.getStaticBitmap("%s_big" % type, self), 0, wx.ALIGN_CENTER)
+            sizerHardResources.Add(bitmapLoader.getStaticBitmap("%s_big" % type, self, "icons"), 0, wx.ALIGN_CENTER)
 
             box = wx.BoxSizer(wx.HORIZONTAL)
             sizerHardResources.Add(box, 0, wx.ALIGN_CENTER)
@@ -71,7 +71,7 @@ class StatsPane(wx.Panel):
 
 
         # Calibration points
-        sizerHardResources.Add(bitmapLoader.getStaticBitmap("calibration_big", self))
+        sizerHardResources.Add(bitmapLoader.getStaticBitmap("calibration_big", self, "icons"))
 
         box = wx.BoxSizer(wx.HORIZONTAL)
         sizerHardResources.Add(box, 0, wx.ALIGN_CENTER)
@@ -96,7 +96,7 @@ class StatsPane(wx.Panel):
                 base = wx.BoxSizer(wx.HORIZONTAL)
                 main.Add(base, 0, wx.EXPAND)
 
-                base.Add(bitmapLoader.getStaticBitmap(type + "_big", self), 0, wx.ALIGN_CENTER)
+                base.Add(bitmapLoader.getStaticBitmap(type + "_big", self, "icons"), 0, wx.ALIGN_CENTER)
 
                 stats = wx.BoxSizer(wx.VERTICAL)
                 base.Add(stats, 0, wx.EXPAND)
@@ -149,12 +149,12 @@ class StatsPane(wx.Panel):
         sizerResistances.Add(wx.StaticText(self, wx.ID_ANY))
 
         for damageType in ("em", "thermal", "kinetic", "explosive"):
-            sizerResistances.Add(bitmapLoader.getStaticBitmap("%s_big" % damageType, self), 0, wx.ALIGN_CENTER)
+            sizerResistances.Add(bitmapLoader.getStaticBitmap("%s_big" % damageType, self, "icons"), 0, wx.ALIGN_CENTER)
 
         sizerResistances.Add(wx.StaticText(self, wx.ID_ANY, "EHP"), 0, wx.ALIGN_CENTER)
 
         for tankType in ("damagePattern", "shield", "armor", "hull"):
-            sizerResistances.Add(bitmapLoader.getStaticBitmap("%s_big" % tankType, self), 0, wx.ALIGN_CENTER)
+            sizerResistances.Add(bitmapLoader.getStaticBitmap("%s_big" % tankType, self, "icons"), 0, wx.ALIGN_CENTER)
 
             for damageType in ("em", "thermal", "kinetic", "explosive"):
                 box = wx.BoxSizer(wx.HORIZONTAL)
@@ -192,10 +192,10 @@ class StatsPane(wx.Panel):
         #Add an empty label first for correct alignment.
         sizerTankStats.Add(wx.StaticText(self, wx.ID_ANY, ""), 0)
         for tankType in ("shieldPassive", "shieldActive", "armorActive", "hullActive"):
-            sizerTankStats.Add(bitmapLoader.getStaticBitmap("%s_big" % tankType, self), 1, wx.ALIGN_CENTER)
+            sizerTankStats.Add(bitmapLoader.getStaticBitmap("%s_big" % tankType, self, "icons"), 1, wx.ALIGN_CENTER)
 
         for stability in ("reinforced", "sustained"):
-                sizerTankStats.Add(bitmapLoader.getStaticBitmap("regen%s_big" % stability.capitalize(), self), 0, wx.ALIGN_CENTER)
+                sizerTankStats.Add(bitmapLoader.getStaticBitmap("regen%s_big" % stability.capitalize(), self, "icons"), 0, wx.ALIGN_CENTER)
                 for tankType in ("shieldPassive", "shieldActive", "armorActive", "hullActive"):
                     tankTypeCap = tankType[0].capitalize() + tankType[1:]
                     lbl = wx.StaticText(self, wx.ID_ANY, "0.0")
@@ -228,7 +228,7 @@ class StatsPane(wx.Panel):
             sizerFirepower.Add(baseBox, 0, wx.ALIGN_CENTER)
 
             image = "droneBay" if damageType == "drone" else damageType
-            baseBox.Add(bitmapLoader.getStaticBitmap("%s_big" % image, self), 0, wx.ALIGN_CENTER)
+            baseBox.Add(bitmapLoader.getStaticBitmap("%s_big" % image, self, "icons"), 0, wx.ALIGN_CENTER)
 
             box = wx.BoxSizer(wx.VERTICAL)
             baseBox.Add(box, 0, wx.ALIGN_CENTER)
@@ -247,7 +247,7 @@ class StatsPane(wx.Panel):
         baseBox = wx.BoxSizer(wx.HORIZONTAL)
         sizerFirepower.Add(baseBox, 0, wx.ALIGN_CENTER)
 
-        baseBox.Add(bitmapLoader.getStaticBitmap("volley_big", self), 0, wx.ALIGN_CENTER)
+        baseBox.Add(bitmapLoader.getStaticBitmap("volley_big", self, "icons"), 0, wx.ALIGN_CENTER)
 
         box = wx.BoxSizer(wx.VERTICAL)
         baseBox.Add(box, 1, wx.ALIGN_CENTER)
@@ -283,7 +283,7 @@ class StatsPane(wx.Panel):
         baseBox = wx.BoxSizer(wx.HORIZONTAL)
         sizerCapacitor.Add(baseBox, 1, wx.ALIGN_CENTER)
 
-        baseBox.Add(bitmapLoader.getStaticBitmap("capacitorInfo_big", self), 0, wx.ALIGN_CENTER)
+        baseBox.Add(bitmapLoader.getStaticBitmap("capacitorInfo_big", self, "icons"), 0, wx.ALIGN_CENTER)
 
         box = wx.BoxSizer(wx.VERTICAL)
         baseBox.Add(box, 0, wx.ALIGN_CENTER)
@@ -307,7 +307,7 @@ class StatsPane(wx.Panel):
         baseBox = wx.BoxSizer(wx.HORIZONTAL)
         sizerCapacitor.Add(baseBox, 1, wx.ALIGN_CENTER)
 
-        baseBox.Add(bitmapLoader.getStaticBitmap("capacitorRecharge_big", self), 0, wx.ALIGN_CENTER)
+        baseBox.Add(bitmapLoader.getStaticBitmap("capacitorRecharge_big", self, "icons"), 0, wx.ALIGN_CENTER)
 
         box = wx.BoxSizer(wx.VERTICAL)
         baseBox.Add(box, 0, wx.ALIGN_CENTER)
@@ -423,7 +423,7 @@ class StatsPane(wx.Panel):
             box = wx.BoxSizer(wx.HORIZONTAL)
             gridPrice.Add(box)
 
-            box.Add(bitmapLoader.getStaticBitmap(image, self), 0, wx.ALIGN_CENTER)
+            box.Add(bitmapLoader.getStaticBitmap(image, self, "icons"), 0, wx.ALIGN_CENTER)
 
             vbox = wx.BoxSizer(wx.VERTICAL)
             box.Add(vbox, 1, wx.EXPAND)

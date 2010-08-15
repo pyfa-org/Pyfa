@@ -24,7 +24,7 @@ class MainToolBar(wx.ToolBar):
     def __init__(self, parent):
         wx.ToolBar.__init__(self, parent, wx.ID_ANY)
 
-        self.AddCheckLabelTool(wx.ID_ANY, "Ship Browser", bitmapLoader.getBitmap("ship_big"))
-        self.AddLabelTool(wx.ID_ANY, "Character Editor", bitmapLoader.getBitmap("character_big"))
+        self.AddCheckLabelTool(wx.ID_ANY, "Ship Browser", bitmapLoader.getBitmap("ship_big", "icons"))
+        self.AddLabelTool(wx.ID_ANY, "Character Editor", bitmapLoader.getBitmap("character_big", "icons"))
 
         self.Realize()
