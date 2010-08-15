@@ -39,9 +39,9 @@ class MarketBrowser(wx.Panel):
         self.marketView.SetWindowStyleFlag(treeStyle)
 
         listStyle = self.itemView.GetWindowStyleFlag()
-        listStyle |= wx.LC_REPORT | wx.LC_NO_HEADER | wx.LC_SINGLE_SEL | wx.LC_ICON
+        listStyle |= wx.LC_NO_HEADER | wx.LC_SINGLE_SEL | wx.LC_ICON
         self.itemView.SetWindowStyleFlag(listStyle)
-        self.itemView.InsertColumn(0, "Name")
+        self.itemView.InsertColumn(0, "")
 
         self.splitter.SplitHorizontally(self.marketView, self.itemView)
         self.splitter.SetMinimumPaneSize(10)
