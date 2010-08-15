@@ -22,6 +22,8 @@ from gui.mainMenuBar import MainMenuBar
 from gui.mainToolBar import MainToolBar
 from gui.marketBrowser import MarketBrowser
 from gui.fitMultiSwitch import FitMultiSwitch
+from wx.lib.wordwrap import wordwrap
+import aboutData
 
 class MainFrame(wx.Frame):
     def __init__(self):
@@ -33,6 +35,7 @@ class MainFrame(wx.Frame):
 	
 	#Register menubar events / only quit for now
         self.Bind(wx.EVT_MENU, self.ExitApp, id=wx.ID_EXIT)
+        self.Bind(wx.EVT_MENU, self.ShowAboutBox, id=wx.ID_ABOUT)
         
         self.splitter = wx.SplitterWindow(self, style = wx.SP_LIVE_UPDATE)
 
@@ -50,3 +53,12 @@ class MainFrame(wx.Frame):
 
     def ExitApp(self, evt):
         self.Close() 
+
+    def ShowAboutBox(self, evt):
+       info = wx.AboutDialogInfo()
+       info.Name = "pyfa"
+       info.Version = aboutData.versionString
+       info.Description = wordwrap(aboutData.description + "\n\n\nDevelopers: " + aboutData.developers + "\nLicense: " + aboutData.license + " see included " + aboutData.licenseLocation,
+           350, wx.ClientDC(self))
+       info.WebSite = ("http://pyfa.sourceforge.net/", "pyfa home page")
+       wx.AboutBox(info) 
