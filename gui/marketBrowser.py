@@ -31,26 +31,28 @@ class MarketBrowser(wx.Panel):
         vbox.Add(self.splitter, 1, wx.EXPAND)
         self.SetSizer(vbox)
 
-
         self.marketView = wx.TreeCtrl(self.splitter)
-        self.itemView = wx.TreeCtrl(self.splitter)
+        self.itemView = wx.ListView(self.splitter)
 
         treeStyle = self.marketView.GetWindowStyleFlag()
         treeStyle |= wx.TR_HIDE_ROOT
         self.marketView.SetWindowStyleFlag(treeStyle)
-        self.itemView.SetWindowStyleFlag(treeStyle)
+
+        listStyle = self.itemView.GetWindowStyleFlag()
+        listStyle |= wx.LC_REPORT | wx.LC_NO_HEADER | wx.LC_SINGLE_SEL | wx.LC_ICON
+        self.itemView.SetWindowStyleFlag(listStyle)
+        self.itemView.InsertColumn(0, "Name")
 
         self.splitter.SplitHorizontally(self.marketView, self.itemView)
         self.splitter.SetMinimumPaneSize(10)
 
         self.marketRoot = self.marketView.AddRoot("Market")
-        self.itemRoot = self.itemView.AddRoot("Market")
 
         self.marketImageList = wx.ImageList(16, 16)
         self.marketView.SetImageList(self.marketImageList)
 
         self.itemImageList = wx.ImageList(16, 16)
-        self.itemView.SetImageList(self.itemImageList)
+        self.itemView.SetImageList(self.itemImageList, wx.IMAGE_LIST_NORMAL)
 
         cMarket = controller.Market.getInstance()
 
@@ -85,19 +87,27 @@ class MarketBrowser(wx.Panel):
 
             self.marketView.SortChildren(root)
 
+
     def selectionMade(self, event):
-        self.itemView.DeleteChildren(self.itemRoot)
+        self.itemView.DeleteAllItems()
         self.itemImageList.RemoveAll()
 
         root = event.Item
         if self.marketView.GetChildrenCount(root) != 0:
             return
 
-
         cMarket = controller.Market.getInstance()
+        idNameMap = {}
         for id, name, iconFile in cMarket.getItems(self.marketView.GetPyData(root)):
+            item = wx.ListItem()
             if iconFile: iconId = self.itemImageList.Add(bitmapLoader.getBitmap(iconFile, "pack"))
             else: iconId = -1
-            self.itemView.AppendItem(self.itemRoot, name, iconId, data=wx.TreeItemData(id))
+            item.SetImage(iconId)
+            item.SetText(name)
+            item.SetData(id)
+            idNameMap[id] = name
+            self.itemView.InsertItem(item)
 
-        self.itemView.SortChildren(self.itemRoot)
+
+        self.itemView.SetColumnWidth(0, wx.LIST_AUTOSIZE)
+        self.itemView.SortItems(lambda id1, id2: cmp(idNameMap[id1], idNameMap[id2]))

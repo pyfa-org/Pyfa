@@ -38,7 +38,7 @@ class Market():
 
         items = []
         group = eos.db.getMarketGroup(id)
-        for item in group.items:
+        for item in group.items: 
             icon = item.icon.iconFile if item.icon else ""
             items.append((item.ID, item.name, icon))
 
