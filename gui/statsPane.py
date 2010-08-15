@@ -40,7 +40,7 @@ class StatsPane(wx.Panel):
         self.labelResources = wx.StaticText(self, wx.ID_ANY, "Resources")
         self.labelResources.SetFont(boldFont)
         sizerHeaderResources.Add(self.labelResources, 0, wx.ALIGN_CENTER)
-        sizerHeaderResources.Add(wx.StaticLine(self, wx.ID_ANY), 1, wx.EXPAND)
+        sizerHeaderResources.Add(wx.StaticLine(self, wx.ID_ANY), 1, wx.ALIGN_CENTER)
 
         # Resources stuff
         sizerResources = wx.BoxSizer(wx.HORIZONTAL)
@@ -119,7 +119,7 @@ class StatsPane(wx.Panel):
                 stats.Add(gauge)
 
             if "cpu" in group:
-                sizerResources.Add(wx.StaticLine(self, wx.ID_ANY, style=wx.VERTICAL), 0, wx.EXPAND)
+                sizerResources.Add(wx.StaticLine(self, wx.ID_ANY, style=wx.VERTICAL), 0, wx.ALIGN_CENTER)
 
         # Resistances
         sizerHeaderResistances = wx.BoxSizer(wx.HORIZONTAL)
@@ -136,7 +136,7 @@ class StatsPane(wx.Panel):
         sizerHeaderResistances.Add(self.labelEhp, 0, wx.ALIGN_CENTER)
 
         sizerHeaderResistances.Add(wx.StaticText(self, wx.ID_ANY, ")"), 0, wx.ALIGN_CENTER)
-        sizerHeaderResistances.Add(wx.StaticLine(self, wx.ID_ANY), 1, wx.EXPAND)
+        sizerHeaderResistances.Add(wx.StaticLine(self, wx.ID_ANY), 1, wx.ALIGN_CENTER)
 
         # Display table
         sizerResistances = wx.FlexGridSizer(4, 6)
@@ -181,7 +181,7 @@ class StatsPane(wx.Panel):
         labelRecharge.SetFont(boldFont)
 
         sizerHeaderRechargeRates.Add(labelRecharge, 0, wx.ALIGN_CENTER)
-        sizerHeaderRechargeRates.Add(wx.StaticLine(self, wx.ID_ANY), 1, wx.EXPAND)
+        sizerHeaderRechargeRates.Add(wx.StaticLine(self, wx.ID_ANY), 1, wx.ALIGN_CENTER)
 
         sizerTankStats = wx.FlexGridSizer(3, 5)
         for i in xrange(4):
@@ -215,7 +215,7 @@ class StatsPane(wx.Panel):
         labelFirepower.SetFont(boldFont)
 
         sizerHeaderFirepower.Add(labelFirepower, 0, wx.ALIGN_CENTER)
-        sizerHeaderFirepower.Add(wx.StaticLine(self, wx.ID_ANY), 1, wx.EXPAND)
+        sizerHeaderFirepower.Add(wx.StaticLine(self, wx.ID_ANY), 1, wx.ALIGN_CENTER)
 
         sizerFirepower = wx.FlexGridSizer(1, 3)
         for i in xrange(3):
@@ -274,7 +274,7 @@ class StatsPane(wx.Panel):
         labelCapacitor.SetFont(boldFont)
 
         sizerHeaderCapacitor.Add(labelCapacitor, 0, wx.ALIGN_CENTER)
-        sizerHeaderCapacitor.Add(wx.StaticLine(self, wx.ID_ANY), 1, wx.EXPAND)
+        sizerHeaderCapacitor.Add(wx.StaticLine(self, wx.ID_ANY), 1, wx.ALIGN_CENTER)
 
         sizerCapacitor = wx.GridSizer(1, 2)
         self.sizerBase.Add(sizerCapacitor, 0, wx.EXPAND  | wx.LEFT, 3)
@@ -339,7 +339,7 @@ class StatsPane(wx.Panel):
         labelTargeting.SetFont(boldFont)
 
         sizerHeaderTargeting.Add(labelTargeting, 0, wx.ALIGN_CENTER)
-        sizerHeaderTargeting.Add(wx.StaticLine(self, wx.ID_ANY), 1, wx.EXPAND)
+        sizerHeaderTargeting.Add(wx.StaticLine(self, wx.ID_ANY), 1, wx.ALIGN_CENTER)
 
         # Misc header
         sizerHeaderMisc = wx.BoxSizer(wx.HORIZONTAL)
@@ -349,7 +349,7 @@ class StatsPane(wx.Panel):
         labelMisc.SetFont(boldFont)
 
         sizerHeaderMisc.Add(labelMisc, 0, wx.ALIGN_CENTER)
-        sizerHeaderMisc.Add(wx.StaticLine(self, wx.ID_ANY), 1, wx.EXPAND)
+        sizerHeaderMisc.Add(wx.StaticLine(self, wx.ID_ANY), 1, wx.ALIGN_CENTER)
 
         gridTargetingMisc = wx.GridSizer(1, 2)
         self.sizerBase.Add(gridTargetingMisc, 0, wx.EXPAND | wx.LEFT, 3)
@@ -412,7 +412,7 @@ class StatsPane(wx.Panel):
         labelPrice.SetFont(boldFont)
 
         sizerHeaderPrice.Add(labelPrice, 0, wx.ALIGN_CENTER)
-        sizerHeaderPrice.Add(wx.StaticLine(self, wx.ID_ANY), 1, wx.EXPAND)
+        sizerHeaderPrice.Add(wx.StaticLine(self, wx.ID_ANY), 1, wx.ALIGN_CENTER)
 
         # Grid for the price stuff.
         gridPrice = wx.GridSizer(1, 3)
