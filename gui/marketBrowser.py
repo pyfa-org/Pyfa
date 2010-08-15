@@ -53,6 +53,27 @@ class MarketBrowser(wx.Panel):
 
         root = cMarket.getMarketRoot()
         for id, name, iconFile in root:
-            iconId = self.marketImageList.Add(bitmapLoader.getBitmap(iconFile, "pack"))
-            childId = self.marketView.AppendItem(self.marketRoot, name, iconId)
+            if iconFile: iconId = self.marketImageList.Add(bitmapLoader.getBitmap(iconFile, "pack"))
+            else: iconId = -1
+            childId = self.marketView.AppendItem(self.marketRoot, name, iconId, data=wx.TreeItemData(id))
             self.marketView.AppendItem(childId, "dummy")
+
+        #Bind our lookup method to when the tree gets expanded
+        self.marketView.Bind(wx.EVT_TREE_ITEM_EXPANDING, self.expandLookup)
+
+    def expandLookup(self, event):
+        root = event.Item
+        child, cookie = self.marketView.GetFirstChild(root)
+        if self.marketView.GetItemText(child) == "dummy":
+            cMarket = controller.Market.getInstance()
+            #A DUMMY! Keeeel!!! EBUL DUMMY MUST DIAF!
+            self.marketView.Delete(child)
+
+            rootId = self.marketView.GetPyData(root)
+            #Add 'real stoof!' instead
+            for id, name, iconFile, more in cMarket.getChildren(rootId):
+                if iconFile: iconId = self.marketImageList.Add(bitmapLoader.getBitmap(iconFile, "pack"))
+                else: iconId = -1
+                childId = self.marketView.AppendItem(root, name, iconId, data=wx.TreeItemData(id))
+                if more:
+                    self.marketView.AppendItem(childId, "dummy")

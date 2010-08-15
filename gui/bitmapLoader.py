@@ -27,6 +27,7 @@ def getStaticBitmap(name, parent, location):
     return static
 
 locationMap = {"pack": os.path.join(config.homePath, "icons")}
+
 def getBitmap(name,location):
     if location in locationMap:
         location = locationMap[location]

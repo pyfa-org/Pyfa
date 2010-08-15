@@ -32,11 +32,11 @@ class MainFrame(wx.Frame):
         #Add menu
         self.SetMenuBar(MainMenuBar())
         self.SetToolBar(MainToolBar(self))
-	
-	#Register menubar events / only quit for now
+
+    #Register menubar events / only quit for now
         self.Bind(wx.EVT_MENU, self.ExitApp, id=wx.ID_EXIT)
         self.Bind(wx.EVT_MENU, self.ShowAboutBox, id=wx.ID_ABOUT)
-        
+
         self.splitter = wx.SplitterWindow(self, style = wx.SP_LIVE_UPDATE)
 
         self.marketBrowser = MarketBrowser(self.splitter)
@@ -52,13 +52,13 @@ class MainFrame(wx.Frame):
         self.Show()
 
     def ExitApp(self, evt):
-        self.Close() 
+        self.Close()
 
     def ShowAboutBox(self, evt):
        info = wx.AboutDialogInfo()
        info.Name = "pyfa"
        info.Version = aboutData.versionString
-       info.Description = wordwrap(aboutData.description + "\n\n\nDevelopers: " + ",".join(aboutData.developers) + "\nLicense: " + aboutData.license + " see included " + aboutData.licenseLocation,
+       info.Description = wordwrap(aboutData.description + "\n\n\nDevelopers: " + ", ".join(aboutData.developers) + "\nLicense: " + aboutData.license + " see included " + aboutData.licenseLocation,
            350, wx.ClientDC(self))
        info.WebSite = ("http://pyfa.sourceforge.net/", "pyfa home page")
-       wx.AboutBox(info) 
+       wx.AboutBox(info)
