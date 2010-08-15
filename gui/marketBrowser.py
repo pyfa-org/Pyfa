@@ -46,8 +46,11 @@ class MarketBrowser(wx.Panel):
         self.marketRoot = self.marketView.AddRoot("Market")
         self.itemRoot = self.itemView.AddRoot("Market")
 
-        self.marketImageList = wx.ImageList(24, 24)
+        self.marketImageList = wx.ImageList(16, 16)
         self.marketView.SetImageList(self.marketImageList)
+
+        self.itemImageList = wx.ImageList(16, 16)
+        self.itemView.SetImageList(self.itemImageList)
 
         cMarket = controller.Market.getInstance()
 
@@ -60,6 +63,7 @@ class MarketBrowser(wx.Panel):
 
         #Bind our lookup method to when the tree gets expanded
         self.marketView.Bind(wx.EVT_TREE_ITEM_EXPANDING, self.expandLookup)
+        self.marketView.Bind(wx.EVT_TREE_SEL_CHANGED, self.selectionMade)
 
     def expandLookup(self, event):
         root = event.Item
@@ -69,11 +73,25 @@ class MarketBrowser(wx.Panel):
             #A DUMMY! Keeeel!!! EBUL DUMMY MUST DIAF!
             self.marketView.Delete(child)
 
-            rootId = self.marketView.GetPyData(root)
             #Add 'real stoof!' instead
-            for id, name, iconFile, more in cMarket.getChildren(rootId):
+            for id, name, iconFile, more in cMarket.getChildren(self.marketView.GetPyData(root)):
                 if iconFile: iconId = self.marketImageList.Add(bitmapLoader.getBitmap(iconFile, "pack"))
                 else: iconId = -1
                 childId = self.marketView.AppendItem(root, name, iconId, data=wx.TreeItemData(id))
                 if more:
                     self.marketView.AppendItem(childId, "dummy")
+
+    def selectionMade(self, event):
+        self.itemView.DeleteChildren(self.itemRoot)
+        self.itemImageList.RemoveAll()
+
+        root = event.Item
+        if self.marketView.GetChildrenCount(root) != 0:
+            return
+
+
+        cMarket = controller.Market.getInstance()
+        for id, name, iconFile in cMarket.getItems(self.marketView.GetPyData(root)):
+            if iconFile: iconId = self.itemImageList.Add(bitmapLoader.getBitmap(iconFile, "pack"))
+            else: iconId = -1
+            self.itemView.AppendItem(self.itemRoot, name, iconId, data=wx.TreeItemData(id))

@@ -29,6 +29,21 @@ class Market():
 
         return cls.instance
 
+    def getItems(self, id):
+        """
+        Get the items contained in the marketGroup with the passed id.
+        Returns a list, where each element is a tuple container:
+        the id, the name, the icon
+        """
+
+        items = []
+        group = eos.db.getMarketGroup(id)
+        for item in group.items:
+            icon = item.icon.iconFile if item.icon else ""
+            items.append((item.ID, item.name, icon))
+
+        return items
+
     def getChildren(self, id):
         """
         Get the children of the group or marketGroup with the passed id.
