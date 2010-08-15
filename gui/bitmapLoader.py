@@ -26,6 +26,13 @@ def getStaticBitmap(name, parent, location):
     static.SetBitmap(getBitmap(name,location))
     return static
 
+locationMap = {"pack": os.path.join(config.homePath, "icons")}
 def getBitmap(name,location):
-    path = os.path.join(config.path, location, name + ".png")
+    if location in locationMap:
+        location = locationMap[location]
+        path = os.path.join(location, "icon%s.png" % name)
+    else:
+        location = os.path.join(config.path, location)
+        path = os.path.join(location, name + ".png")
+
     return wx.Image(path).ConvertToBitmap()

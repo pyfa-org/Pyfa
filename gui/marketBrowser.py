@@ -18,6 +18,8 @@
 #===============================================================================
 
 import wx
+import controller
+import bitmapLoader
 
 class MarketBrowser(wx.Panel):
     def __init__(self, parent):
@@ -29,8 +31,27 @@ class MarketBrowser(wx.Panel):
         vbox.Add(self.splitter, 1, wx.EXPAND)
         self.SetSizer(vbox)
 
+
         self.marketView = wx.TreeCtrl(self.splitter)
         self.itemView = wx.TreeCtrl(self.splitter)
 
+        treeStyle = self.marketView.GetWindowStyleFlag()
+        treeStyle |= wx.TR_HIDE_ROOT
+        self.marketView.SetWindowStyleFlag(treeStyle)
+        self.itemView.SetWindowStyleFlag(treeStyle)
+
         self.splitter.SplitHorizontally(self.marketView, self.itemView)
         self.splitter.SetMinimumPaneSize(10)
+
+        self.marketRoot = self.marketView.AddRoot("Market")
+        self.itemRoot = self.itemView.AddRoot("Market")
+
+        self.marketImageList = wx.ImageList(24, 24)
+        self.marketView.SetImageList(self.marketImageList)
+
+        cMarket = controller.Market.getInstance()
+
+        root = cMarket.getMarketRoot()
+        for id, name, iconFile in root:
+            iconId = self.marketImageList.Add(bitmapLoader.getBitmap(iconFile, "pack"))
+            self.marketView.AppendItem(self.marketRoot, name, iconId)

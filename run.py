@@ -19,8 +19,6 @@
 
 from gui.mainFrame import MainFrame
 import wx
-import os
-import sys
 
 if __name__ == "__main__":
     pyfa = wx.App(False)
