@@ -54,4 +54,5 @@ class MarketBrowser(wx.Panel):
         root = cMarket.getMarketRoot()
         for id, name, iconFile in root:
             iconId = self.marketImageList.Add(bitmapLoader.getBitmap(iconFile, "pack"))
-            self.marketView.AppendItem(self.marketRoot, name, iconId)
+            childId = self.marketView.AppendItem(self.marketRoot, name, iconId)
+            self.marketView.AppendItem(childId, "dummy")
