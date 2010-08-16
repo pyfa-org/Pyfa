@@ -22,6 +22,7 @@ from gui.mainMenuBar import MainMenuBar
 from gui.mainToolBar import MainToolBar
 from gui.marketBrowser import MarketBrowser
 from gui.fitMultiSwitch import FitMultiSwitch
+from gui.statsPane import StatsPane
 from wx.lib.wordwrap import wordwrap
 import aboutData
 
@@ -41,11 +42,19 @@ class MainFrame(wx.Frame):
         self.splitter = wx.SplitterWindow(self, style = wx.SP_LIVE_UPDATE)
 
         self.marketBrowser = MarketBrowser(self.splitter)
-        self.fitMultiSwitch = FitMultiSwitch(self.splitter)
+        statsFitviewPanel = wx.Panel(self.splitter)
+        sizer = wx.BoxSizer(wx.HORIZONTAL)
+        statsFitviewPanel.SetSizer(sizer)
 
+        self.fitMultiSwitch = FitMultiSwitch(statsFitviewPanel)
         self.fitMultiSwitch.AddTab()
 
-        self.splitter.SplitVertically(self.marketBrowser, self.fitMultiSwitch)
+        self.statsPane = StatsPane(statsFitviewPanel)
+
+        sizer.Add(self.fitMultiSwitch, 1, wx.EXPAND)
+        sizer.Add(self.statsPane, 0, wx.EXPAND)
+
+        self.splitter.SplitVertically(self.marketBrowser, statsFitviewPanel)
         self.splitter.SetMinimumPaneSize(10)
         self.splitter.SetSashPosition(300)
 

@@ -31,7 +31,6 @@ class FitMultiSwitch(wx.Notebook):
         sizer = wx.BoxSizer(wx.HORIZONTAL)
 
         sizer.Add(FittingView(p), 1, wx.EXPAND)
-        sizer.Add(StatsPane(p), 0, wx.EXPAND)
 
         p.SetSizer(sizer)
         pos = self.GetPageCount() - 1
