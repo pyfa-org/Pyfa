@@ -24,6 +24,8 @@ from gui.statsPane import StatsPane
 class FitMultiSwitch(wx.Notebook):
     def __init__(self, parent):
         wx.Notebook.__init__(self, parent, wx.ID_ANY)
+        style = self.GetWindowStyleFlag()
+        self.SetWindowStyleFlag(style | wx.NO_BORDER)
         self.AddPage(wx.Panel(self), "+")
 
     def AddTab(self):
