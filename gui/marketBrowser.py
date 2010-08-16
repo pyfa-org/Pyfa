@@ -107,7 +107,8 @@ class MarketBrowser(wx.Panel):
             else: iconId = -1
 
             index = self.itemView.InsertImageStringItem(sys.maxint, name, iconId)
+            idNameMap[id] = name
             self.itemView.SetItemData(index, id)
 
-
+        self.itemView.SortItems(lambda id1, id2: cmp(idNameMap[id1], idNameMap[id2]))
         self.itemView.SetColumnWidth(0, wx.LIST_AUTOSIZE)
