@@ -36,4 +36,5 @@ def getBitmap(name,location):
         location = os.path.join(config.path, location)
         path = os.path.join(location, name + ".png")
 
-    return wx.Image(path).ConvertToBitmap()
+    if os.path.exists(path):
+        return wx.Image(path).ConvertToBitmap()
