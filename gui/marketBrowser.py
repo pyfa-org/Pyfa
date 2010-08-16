@@ -37,8 +37,7 @@ class MarketBrowser(wx.Panel):
         treeStyle = self.marketView.GetWindowStyleFlag()
         treeStyle |= wx.TR_HIDE_ROOT
         self.marketView.SetWindowStyleFlag(treeStyle)
-        listStyle = self.itemView.GetWindowStyleFlag()
-        listStyle |= wx.LC_NO_HEADER | wx.LC_SINGLE_SEL | wx.LC_ICON | wx.LC_REPORT
+        listStyle = wx.LC_NO_HEADER | wx.LC_SINGLE_SEL | wx.LC_REPORT
         self.itemView.SetWindowStyleFlag(listStyle)
         self.itemView.InsertColumn(0, "")
 
@@ -51,7 +50,7 @@ class MarketBrowser(wx.Panel):
         self.marketView.SetImageList(self.marketImageList)
 
         self.itemImageList = wx.ImageList(16, 16)
-        self.itemView.SetImageList(self.itemImageList, wx.IMAGE_LIST_NORMAL)
+        self.itemView.AssignImageList(self.itemImageList, wx.IMAGE_LIST_NORMAL)
 
         cMarket = controller.Market.getInstance()
 
