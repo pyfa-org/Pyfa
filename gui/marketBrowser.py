@@ -17,6 +17,7 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 #===============================================================================
 
+import sys
 import wx
 import controller
 import bitmapLoader
@@ -32,14 +33,18 @@ class MarketBrowser(wx.Panel):
         self.SetSizer(vbox)
 
         self.marketView = wx.TreeCtrl(self.splitter)
-        self.itemView = wx.ListView(self.splitter)
+        listStyle = wx.LC_REPORT | wx.BORDER_NONE | wx.LC_NO_HEADER | wx.LC_SINGLE_SEL
+        self.itemView = wx.ListCtrl(self.splitter, style = listStyle)
 
         treeStyle = self.marketView.GetWindowStyleFlag()
         treeStyle |= wx.TR_HIDE_ROOT
         self.marketView.SetWindowStyleFlag(treeStyle)
-        listStyle = wx.LC_NO_HEADER | wx.LC_SINGLE_SEL | wx.LC_REPORT
-        self.itemView.SetWindowStyleFlag(listStyle)
-        self.itemView.InsertColumn(0, "")
+
+        info = wx.ListItem()
+        info.m_mask = wx.LIST_MASK_TEXT | wx.LIST_MASK_IMAGE
+        info.m_image = -1
+        info.m_text = "Name"
+        self.itemView.InsertColumnInfo(0, info)
 
         self.splitter.SplitHorizontally(self.marketView, self.itemView)
         self.splitter.SetMinimumPaneSize(10)
@@ -50,7 +55,7 @@ class MarketBrowser(wx.Panel):
         self.marketView.SetImageList(self.marketImageList)
 
         self.itemImageList = wx.ImageList(16, 16)
-        self.itemView.AssignImageList(self.itemImageList, wx.IMAGE_LIST_NORMAL)
+        self.itemView.SetImageList(self.itemImageList, wx.IMAGE_LIST_SMALL)
 
         cMarket = controller.Market.getInstance()
 
@@ -96,16 +101,13 @@ class MarketBrowser(wx.Panel):
 
         cMarket = controller.Market.getInstance()
         idNameMap = {}
+
         for id, name, iconFile in cMarket.getItems(self.marketView.GetPyData(root)):
-            item = wx.ListItem()
             if iconFile: iconId = self.itemImageList.Add(bitmapLoader.getBitmap(iconFile, "pack"))
             else: iconId = -1
-            item.SetImage(iconId)
-            item.SetText(name)
-            item.SetData(id)
-            idNameMap[id] = name
-            self.itemView.InsertItem(item)
+
+            index = self.itemView.InsertImageStringItem(sys.maxint, name, iconId)
+            self.itemView.SetItemData(index, id)
 
 
         self.itemView.SetColumnWidth(0, wx.LIST_AUTOSIZE)
-        self.itemView.SortItems(lambda id1, id2: cmp(idNameMap[id1], idNameMap[id2]))
