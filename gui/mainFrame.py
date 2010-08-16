@@ -28,6 +28,7 @@ import aboutData
 class MainFrame(wx.Frame):
     def __init__(self):
         wx.Frame.__init__(self, None, wx.ID_ANY, title="pyfa - Python Fitting Assistant", size=(1000,700))
+        self.SetMinSize((1000, 750))
 
         #Add menu
         self.SetMenuBar(MainMenuBar())

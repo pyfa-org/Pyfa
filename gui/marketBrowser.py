@@ -47,7 +47,7 @@ class MarketBrowser(wx.Panel):
         self.itemView.InsertColumnInfo(0, info)
 
         self.splitter.SplitHorizontally(self.marketView, self.itemView)
-        self.splitter.SetMinimumPaneSize(10)
+        self.splitter.SetMinimumPaneSize(250)
 
         self.marketRoot = self.marketView.AddRoot("Market")
 
