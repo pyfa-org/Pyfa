@@ -38,8 +38,3 @@ def getBitmap(name,location):
 
     if os.path.exists(path):
         return wx.Image(path).ConvertToBitmap()
-    else:
-        null = wx.NullBitmap
-        null.SetWidth(32)
-        null.SetHeight(32)
-        return null

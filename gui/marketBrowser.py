@@ -61,8 +61,7 @@ class MarketBrowser(wx.Panel):
 
         root = cMarket.getMarketRoot()
         for id, name, iconFile in root:
-            if iconFile: iconId = self.marketImageList.Add(bitmapLoader.getBitmap(iconFile, "pack"))
-            else: iconId = -1
+            iconId = self.addMarketViewImage(iconFile)
             childId = self.marketView.AppendItem(self.marketRoot, name, iconId, data=wx.TreeItemData(id))
             self.marketView.AppendItem(childId, "dummy")
 
@@ -71,6 +70,24 @@ class MarketBrowser(wx.Panel):
         #Bind our lookup method to when the tree gets expanded
         self.marketView.Bind(wx.EVT_TREE_ITEM_EXPANDING, self.expandLookup)
         self.marketView.Bind(wx.EVT_TREE_SEL_CHANGED, self.selectionMade)
+
+    def addMarketViewImage(self, iconFile):
+        if iconFile is None:
+            return -1
+        bitmap = bitmapLoader.getBitmap(iconFile, "pack")
+        if bitmap is None:
+            return -1
+        else:
+            return self.marketImageList.Add(bitmap)
+
+    def addItemViewImage(self, iconFile):
+        if iconFile is None:
+            return -1
+        bitmap = bitmapLoader.getBitmap(iconFile, "pack")
+        if bitmap is None:
+            return -1
+        else:
+            return self.itemImageList.Add(bitmap)
 
     def expandLookup(self, event):
         root = event.Item
@@ -82,8 +99,7 @@ class MarketBrowser(wx.Panel):
 
             #Add 'real stoof!' instead
             for id, name, iconFile, more in cMarket.getChildren(self.marketView.GetPyData(root)):
-                if iconFile: iconId = self.marketImageList.Add(bitmapLoader.getBitmap(iconFile, "pack"))
-                else: iconId = -1
+                iconId = self.addMarketViewImage(iconFile)
                 childId = self.marketView.AppendItem(root, name, iconId, data=wx.TreeItemData(id))
                 if more:
                     self.marketView.AppendItem(childId, "dummy")
@@ -103,9 +119,7 @@ class MarketBrowser(wx.Panel):
         idNameMap = {}
 
         for id, name, iconFile in cMarket.getItems(self.marketView.GetPyData(root)):
-            if iconFile: iconId = self.itemImageList.Add(bitmapLoader.getBitmap(iconFile, "pack"))
-            else: iconId = -1
-
+            iconId = self.addItemViewImage(iconFile)
             index = self.itemView.InsertImageStringItem(sys.maxint, name, iconId)
             idNameMap[id] = name
             self.itemView.SetItemData(index, id)

@@ -24,13 +24,14 @@ from gui.statsPane import StatsPane
 class FitMultiSwitch(wx.Notebook):
     def __init__(self, parent):
         wx.Notebook.__init__(self, parent, wx.ID_ANY)
+        self.fitPanes = []
         self.AddPage(wx.Panel(self), "+")
 
     def AddTab(self):
         p = wx.Panel(self)
         sizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        sizer.Add(FittingView(p), 1, wx.EXPAND)
+        sizer.Add(FittingView(p), 1, wx.EXPAND | wx.RESERVE_SPACE_EVEN_IF_HIDDEN)
 
         p.SetSizer(sizer)
         pos = self.GetPageCount() - 1
