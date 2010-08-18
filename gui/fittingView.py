@@ -19,6 +19,32 @@
 
 import wx
 
-class FittingView(wx.TreeCtrl):
+import gui.builtinViewColumns
+from gui.builtinViewColumns import *
+
+class FittingView(wx.ListCtrl):
+    DEFAULT_COLS = ["Module state", "Module name/slot"]
     def __init__(self, parent):
-        wx.TreeCtrl.__init__(self, parent, wx.ID_ANY)
+        listStyle = wx.LC_REPORT | wx.BORDER_NONE
+        wx.ListCtrl.__init__(self, parent, wx.ID_ANY, style=listStyle)
+
+        self.imageList = wx.ImageList(16, 16)
+        self.SetImageList(self.imageList, wx.IMAGE_LIST_SMALL)
+        self.activeColumns = []
+        self.Bind(wx.EVT_LIST_COL_BEGIN_DRAG, self.resizeChecker)
+        i = 0
+        for colName in FittingView.DEFAULT_COLS:
+            col = gui.builtinViewColumns.getColumn(colName)(self, None)
+            self.activeColumns.append(col)
+
+            info = wx.ListItem()
+            info.m_mask = col.mask
+            info.m_image = col.imageId
+            info.m_text = col.columnText
+            self.InsertColumnInfo(i, info)
+            self.SetColumnWidth(i, wx.LIST_AUTOSIZE_USEHEADER if col.size is wx.LIST_AUTOSIZE else col.size)
+            i += 1
+
+    def resizeChecker(self, event):
+        if self.activeColumns[event.Column].resizable is False:
+            event.Veto()
