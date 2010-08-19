@@ -52,7 +52,7 @@ class MainFrame(wx.Frame):
 
 
         self.shipBrowser = ShipBrowser(marketShipBrowserPanel)
-        self.marketShipBrowserSizer.Add(self.shipBrowser, 1, wx.EXPAND)
+        #self.marketShipBrowserSizer.Add(self.shipBrowser, 1, wx.EXPAND)
 
         statsFitviewPanel = wx.Panel(self.splitter)
         sizer = wx.BoxSizer(wx.HORIZONTAL)

@@ -39,8 +39,14 @@ class MainToolBar(wx.ToolBar):
         newState = self.GetToolState(10)
         mainFrame = gui.mainFrame.MainFrame.getInstance()
 
+
         if newState:
             mainFrame.shipBrowser.build()
+            mainFrame.marketShipBrowserSizer.Detach(mainFrame.marketBrowser)
+            mainFrame.marketShipBrowserSizer.Add(mainFrame.shipBrowser, 1, wx.EXPAND)
+        else:
+            mainFrame.marketShipBrowserSizer.Detach(mainFrame.shipBrowser)
+            mainFrame.marketShipBrowserSizer.Add(mainFrame.marketBrowser, 1, wx.EXPAND)
 
         mainFrame.shipBrowser.Show(newState)
         mainFrame.marketBrowser.Show(not newState)
