@@ -100,9 +100,8 @@ class MainFrame(wx.Frame):
 
         #Ship browser
         self.Bind(wx.EVT_MENU, self.toggleShipBrowser, id=10)
+        self.Bind(wx.EVT_MENU, self.toggleShipBrowser, id=11)
 
     def toggleShipBrowser(self, event):
-        toolbar = self.GetToolBar()
-        toolbar.ToggleTool(10, not toolbar.GetToolState(10))
-        toolbar.toggleShipBrowser(event)
+        self.GetToolBar().toggleShipBrowser(event)
 

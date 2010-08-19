@@ -26,29 +26,41 @@ class MainToolBar(wx.ToolBar):
         style = wx.TB_HORIZONTAL | wx.NO_BORDER | wx.TB_FLAT
         wx.ToolBar.__init__(self, parent, wx.ID_ANY, style=style)
 
-        self.AddCheckLabelTool(10, "Ship Browser", bitmapLoader.getBitmap("ship_big", "icons"), shortHelp="Ship browser")
+        self.AddLabelTool(10, "Ship Browser", bitmapLoader.getBitmap("ship_big", "icons"), shortHelp="Activate Ship Browser")
         self.AddCheckLabelTool(20, "Character Editor", bitmapLoader.getBitmap("character_big", "icons"), shortHelp="Character editor")
 
         self.Bind(wx.EVT_TOOL, self.toggleShipBrowser, id=10)
         self.Bind(wx.EVT_TOOL, self.toggleCharacterBrowser, id=20)
         self.Realize()
-
+        self.shipBrowserState = False
         gui.mainFrame.MainFrame.getInstance().shipBrowser.Hide()
 
     def toggleShipBrowser(self, event):
-        newState = self.GetToolState(10)
+        self.shipBrowserState = not self.shipBrowserState
+        state = self.shipBrowserState
         mainFrame = gui.mainFrame.MainFrame.getInstance()
+        menuBar = mainFrame.GetMenuBar()
 
-
-        if newState:
+        if self.shipBrowserState:
+            self.SetToolNormalBitmap(10, bitmapLoader.getBitmap("market_big", "icons"))
+            self.SetToolShortHelp(10, "Activate Market Browser")
             mainFrame.shipBrowser.build()
             mainFrame.marketShipBrowserSizer.Replace(mainFrame.marketBrowser, mainFrame.shipBrowser)
         else:
+            self.SetToolNormalBitmap(10, bitmapLoader.getBitmap("ship_big", "icons"))
+            self.SetToolShortHelp(10, "Activate Ship Browser")
             mainFrame.marketShipBrowserSizer.Replace(mainFrame.shipBrowser, mainFrame.marketBrowser)
 
-        mainFrame.shipBrowser.Show(newState)
-        mainFrame.marketBrowser.Show(not newState)
+        menuBar.shipBrowserItem.Enable(not state)
+        menuBar.marketBrowserItem.Enable(state)
+
+        mainFrame.shipBrowser.Show(state)
+        mainFrame.marketBrowser.Show(not state)
+
         mainFrame.marketShipBrowserSizer.Layout()
+
+
+
 
     def toggleCharacterBrowser(self, event):
         print event
