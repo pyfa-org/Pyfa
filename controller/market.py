@@ -21,7 +21,8 @@ import eos.db
 
 class Market():
     instance = None
-
+    FORCED_SHIPS = ("Freiki", "Mimir", "Utu", "Adrestia", "Ibis", "Impairor", "Velator", "Reaper")
+    FORCED_GROUPS = ("Rookie ship",)
     @classmethod
     def getInstance(cls):
         if cls.instance == None:
@@ -63,7 +64,7 @@ class Market():
         cat = eos.db.getCategory(6)
         root = []
         for grp in cat.groups:
-            if grp.published == 1:
+            if grp.published == 1 or grp.name in self.FORCED_GROUPS:
                 root.append((grp.ID, grp.name))
 
         return root
@@ -72,7 +73,7 @@ class Market():
         ships = []
         grp = eos.db.getGroup(id)
         for item in grp.items:
-            if item.published == 1:
+            if item.published == 1 or item.name in self.FORCED_SHIPS:
                 ships.append((item.ID, item.name, item.race))
 
         return ships
