@@ -6,22 +6,13 @@ class ShipBrowser(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent)
         vbox = wx.BoxSizer(wx.VERTICAL)
-
-        self.splitter = wx.SplitterWindow(self, style = wx.SP_LIVE_UPDATE)
-
-        vbox.Add(self.splitter, 1, wx.EXPAND)
         self.SetSizer(vbox)
 
-        self.shipView = ShipView(self.splitter)
-
-        listStyle = wx.LC_REPORT | wx.BORDER_NONE | wx.LC_NO_HEADER | wx.LC_SINGLE_SEL
-        self.fitView = wx.ListCtrl(self.splitter, style = listStyle)
+        self.shipView = ShipView(self)
+        vbox.Add(self.shipView, 1, wx.EXPAND)
 
         self.shipImageList = wx.ImageList(16, 16)
         self.shipView.SetImageList(self.shipImageList)
-
-        self.splitter.SplitHorizontally(self.shipView, self.fitView)
-        self.splitter.SetMinimumPaneSize(400)
 
         self.shipRoot = self.shipView.AddRoot("Ships")
 
@@ -78,4 +69,8 @@ class ShipView(wx.TreeCtrl):
         else:
             id1 = self.GetPyData(treeId1)
             id2 = self.GetPyData(treeId2)
-            return cmp(self.races.index(self.idRaceMap[id1] or "None"), self.races.index(self.idRaceMap[id2] or "None"))
+            c = cmp(self.races.index(self.idRaceMap[id1] or "None"), self.races.index(self.idRaceMap[id2] or "None"))
+            if c != 0:
+                return c
+            else:
+                return cmp(self.GetItemText(treeId1), self.GetItemText(treeId2))
