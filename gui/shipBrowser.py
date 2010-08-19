@@ -4,6 +4,7 @@ import bitmapLoader
 
 class ShipBrowser(wx.Panel):
     def __init__(self, parent):
+        self.built = False
         wx.Panel.__init__(self, parent)
         vbox = wx.BoxSizer(wx.VERTICAL)
         self.SetSizer(vbox)
@@ -15,16 +16,6 @@ class ShipBrowser(wx.Panel):
         self.shipView.SetImageList(self.shipImageList)
 
         self.shipRoot = self.shipView.AddRoot("Ships")
-
-        iconId = self.shipImageList.Add(bitmapLoader.getBitmap("ship_small", "icons"))
-
-        cMarket = controller.Market.getInstance()
-        shipRoot = cMarket.getShipRoot()
-        for id, name in shipRoot:
-            childId = self.shipView.AppendItem(self.shipRoot, name, iconId, data=wx.TreeItemData(id))
-            self.shipView.AppendItem(childId, "dummy")
-
-        self.shipView.SortChildren(self.shipRoot)
 
         self.raceImageIds = {}
         self.races = ["amarr", "caldari", "gallente", "minmatar", "ore", "serpentis", "angel", "blood", "sansha", "guristas"]
@@ -39,6 +30,17 @@ class ShipBrowser(wx.Panel):
         self.shipView.races = self.races
         self.shipView.idRaceMap = self.idRaceMap
 
+    def build(self):
+        if not self.built:
+            self.built = True
+            cMarket = controller.Market.getInstance()
+            shipRoot = cMarket.getShipRoot()
+            iconId = self.shipImageList.Add(bitmapLoader.getBitmap("ship_small", "icons"))
+            for id, name in shipRoot:
+                childId = self.shipView.AppendItem(self.shipRoot, name, iconId, data=wx.TreeItemData(id))
+                self.shipView.AppendItem(childId, "dummy")
+
+        self.shipView.SortChildren(self.shipRoot)
     def expandLookup(self, event):
         root = event.Item
         child, cookie = self.shipView.GetFirstChild(root)

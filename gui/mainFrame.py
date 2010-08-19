@@ -40,9 +40,6 @@ class MainFrame(wx.Frame):
         self.SetMinSize((1000, 700))
         self.SetSize((1000, 700))
 
-        #Register menubar events / only quit for now
-        self.Bind(wx.EVT_MENU, self.ExitApp, id=wx.ID_EXIT)
-        self.Bind(wx.EVT_MENU, self.ShowAboutBox, id=wx.ID_ABOUT)
 
         self.splitter = wx.SplitterWindow(self, style = wx.SP_LIVE_UPDATE)
 
@@ -77,6 +74,8 @@ class MainFrame(wx.Frame):
         self.SetMenuBar(MainMenuBar())
         self.SetToolBar(MainToolBar(self))
 
+        self.registerMenu()
+
         #Show ourselves
         self.Show()
 
@@ -84,10 +83,26 @@ class MainFrame(wx.Frame):
         self.Close()
 
     def ShowAboutBox(self, evt):
-       info = wx.AboutDialogInfo()
-       info.Name = "pyfa"
-       info.Version = aboutData.versionString
-       info.Description = wordwrap(aboutData.description + "\n\n\nDevelopers: " + ", ".join(aboutData.developers) + "\nLicense: " + aboutData.license + " see included " + aboutData.licenseLocation,
-           350, wx.ClientDC(self))
-       info.WebSite = ("http://pyfa.sourceforge.net/", "pyfa home page")
-       wx.AboutBox(info)
+        info = wx.AboutDialogInfo()
+        info.Name = "pyfa"
+        info.Version = aboutData.versionString
+        info.Description = wordwrap(aboutData.description + "\n\n\nDevelopers: " + ", ".join(aboutData.developers) + "\nLicense: " + aboutData.license + " see included " + aboutData.licenseLocation,
+            350, wx.ClientDC(self))
+        info.WebSite = ("http://pyfa.sourceforge.net/", "pyfa home page")
+        wx.AboutBox(info)
+
+    def registerMenu(self):
+        # Quit
+        self.Bind(wx.EVT_MENU, self.ExitApp, id=wx.ID_EXIT)
+
+        # About
+        self.Bind(wx.EVT_MENU, self.ShowAboutBox, id=wx.ID_ABOUT)
+
+        #Ship browser
+        self.Bind(wx.EVT_MENU, self.toggleShipBrowser, id=10)
+
+    def toggleShipBrowser(self, event):
+        toolbar = self.GetToolBar()
+        toolbar.ToggleTool(10, not toolbar.GetToolState(10))
+        toolbar.toggleShipBrowser(event)
+

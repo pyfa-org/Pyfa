@@ -29,19 +29,22 @@ class MainToolBar(wx.ToolBar):
         self.AddCheckLabelTool(10, "Ship Browser", bitmapLoader.getBitmap("ship_big", "icons"), shortHelp="Ship browser")
         self.AddCheckLabelTool(20, "Character Editor", bitmapLoader.getBitmap("character_big", "icons"), shortHelp="Character editor")
 
-        self.Bind(wx.EVT_TOOL, self.shipBrowserToggle, id=10)
-        self.Bind(wx.EVT_TOOL, self.characterEditor, id=20)
+        self.Bind(wx.EVT_TOOL, self.toggleShipBrowser, id=10)
+        self.Bind(wx.EVT_TOOL, self.toggleCharacterBrowser, id=20)
         self.Realize()
 
         gui.mainFrame.MainFrame.getInstance().shipBrowser.Hide()
 
-    def shipBrowserToggle(self, event):
+    def toggleShipBrowser(self, event):
         newState = self.GetToolState(10)
         mainFrame = gui.mainFrame.MainFrame.getInstance()
+
+        if newState:
+            mainFrame.shipBrowser.build()
 
         mainFrame.shipBrowser.Show(newState)
         mainFrame.marketBrowser.Show(not newState)
         mainFrame.marketShipBrowserSizer.Layout()
 
-    def characterEditor(self, event):
+    def toggleCharacterBrowser(self, event):
         print event

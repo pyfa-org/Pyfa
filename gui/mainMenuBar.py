@@ -40,7 +40,7 @@ class MainMenuBar(wx.MenuBar):
         # Fit menu
         fitMenu = wx.Menu()
         self.Append(fitMenu, "F&it")
-        shipBrowserItem = wx.MenuItem(fitMenu, wx.ID_ANY, "Ship &Browser")
+        shipBrowserItem = wx.MenuItem(fitMenu, 10, "Toggle Ship &Browser")
         shipBrowserItem.SetBitmap(bitmapLoader.getBitmap("ship_small", "icons"))
         fitMenu.AppendItem(shipBrowserItem)
         fitMenu.AppendSeparator()
@@ -56,7 +56,7 @@ class MainMenuBar(wx.MenuBar):
         charMenu = wx.Menu()
         self.Append(charMenu, "&Character")
 
-        charEditItem = wx.MenuItem(charMenu, wx.ID_ANY, "Character &Editor")
+        charEditItem = wx.MenuItem(charMenu, 20, "Character &Editor")
         charEditItem.SetBitmap(bitmapLoader.getBitmap("character_small", "icons"))
         charMenu.AppendItem(charEditItem)
 
