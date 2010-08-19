@@ -21,7 +21,7 @@ class ShipBrowser(wx.Panel):
         self.shipView.SetImageList(self.shipImageList)
 
         self.splitter.SplitHorizontally(self.shipView, self.fitView)
-        self.splitter.SetMinimumPaneSize(250)
+        self.splitter.SetMinimumPaneSize(400)
 
         self.shipRoot = self.shipView.AddRoot("Ships")
 
@@ -41,6 +41,7 @@ class ShipBrowser(wx.Panel):
             imageId = self.shipImageList.Add(bitmapLoader.getBitmap("race_%s_small" % race, "icons"))
             self.raceImageIds[race] = imageId
 
+        self.races.append("None")
         #Bind our lookup method to when the tree gets expanded
         self.shipView.Bind(wx.EVT_TREE_ITEM_EXPANDING, self.expandLookup)
         self.idRaceMap = {}
@@ -77,4 +78,4 @@ class ShipView(wx.TreeCtrl):
         else:
             id1 = self.GetPyData(treeId1)
             id2 = self.GetPyData(treeId2)
-            return cmp(self.races.index(self.idRaceMap[id1]), self.races.index(self.idRaceMap[id2]))
+            return cmp(self.races.index(self.idRaceMap[id1] or "None"), self.races.index(self.idRaceMap[id2] or "None"))
