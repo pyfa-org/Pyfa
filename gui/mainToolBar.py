@@ -19,12 +19,29 @@
 
 import wx
 from gui import bitmapLoader
+import gui.mainFrame
 
 class MainToolBar(wx.ToolBar):
     def __init__(self, parent):
-        wx.ToolBar.__init__(self, parent, wx.ID_ANY)
+        style = wx.TB_HORIZONTAL | wx.NO_BORDER | wx.TB_FLAT
+        wx.ToolBar.__init__(self, parent, wx.ID_ANY, style=style)
 
-        self.AddCheckLabelTool(wx.ID_ANY, "Ship Browser", bitmapLoader.getBitmap("ship_big", "icons"))
-        self.AddLabelTool(wx.ID_ANY, "Character Editor", bitmapLoader.getBitmap("character_big", "icons"))
+        self.AddCheckLabelTool(10, "Ship Browser", bitmapLoader.getBitmap("ship_big", "icons"), shortHelp="Ship browser")
+        self.AddCheckLabelTool(20, "Character Editor", bitmapLoader.getBitmap("character_big", "icons"), shortHelp="Character editor")
 
+        self.Bind(wx.EVT_TOOL, self.shipBrowserToggle, id=10)
+        self.Bind(wx.EVT_TOOL, self.characterEditor, id=20)
         self.Realize()
+
+        gui.mainFrame.MainFrame.getInstance().shipBrowser.Hide()
+
+    def shipBrowserToggle(self, event):
+        newState = self.GetToolState(10)
+        mainFrame = gui.mainFrame.MainFrame.getInstance()
+
+        mainFrame.shipBrowser.Show(newState)
+        mainFrame.marketBrowser.Show(not newState)
+        mainFrame.marketShipBrowserSizer.Layout()
+
+    def characterEditor(self, event):
+        print event

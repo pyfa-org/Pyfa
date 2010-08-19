@@ -28,7 +28,7 @@ class MarketBrowser(wx.Panel):
         vbox = wx.BoxSizer(wx.VERTICAL)
 
         self.splitter = wx.SplitterWindow(self, style = wx.SP_LIVE_UPDATE)
-
+        
         vbox.Add(self.splitter, 1, wx.EXPAND)
         self.SetSizer(vbox)
 

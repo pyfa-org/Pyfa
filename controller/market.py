@@ -38,7 +38,7 @@ class Market():
 
         items = []
         group = eos.db.getMarketGroup(id)
-        for item in group.items: 
+        for item in group.items:
             icon = item.icon.iconFile if item.icon else ""
             items.append((item.ID, item.name, icon))
 
@@ -59,6 +59,23 @@ class Market():
 
         return children
 
+    def getShipRoot(self):
+        cat = eos.db.getCategory(6)
+        root = []
+        for grp in cat.groups:
+            if grp.published == 1:
+                root.append((grp.ID, grp.name))
+
+        return root
+
+    def getShipList(self, id):
+        ships = []
+        grp = eos.db.getGroup(id)
+        for item in grp.items:
+            if item.published == 1:
+                ships.append((item.ID, item.name, item.race))
+
+        return ships
     def getMarketRoot(self):
         """
         Get the root of the market tree.
@@ -75,6 +92,6 @@ class Market():
         root = []
         for id in marketGroups:
             mg = eos.db.getMarketGroup(id)
-            root.append((id, mg.name, mg.icon.iconFile))
+            root.append((id, mg.name, mg.icon.iconFile if mg.icon else ""))
 
         return root

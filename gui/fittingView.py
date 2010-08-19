@@ -32,6 +32,8 @@ class FittingView(wx.ListCtrl):
         self.SetImageList(self.imageList, wx.IMAGE_LIST_SMALL)
         self.activeColumns = []
         self.Bind(wx.EVT_LIST_COL_BEGIN_DRAG, self.resizeChecker)
+        self.Bind(wx.EVT_LIST_COL_CLICK, self.dragCheck)
+        self.Bind(wx.EVT_LIST_COL_END_DRAG, self.dragCheck)
         i = 0
         for colName in FittingView.DEFAULT_COLS:
             col = gui.builtinViewColumns.getColumn(colName)(self, None)
@@ -48,3 +50,9 @@ class FittingView(wx.ListCtrl):
     def resizeChecker(self, event):
         if self.activeColumns[event.Column].resizable is False:
             event.Veto()
+
+    def dragCheck(self, event):
+        print event
+
+    def dragEnd(self, event):
+        print event

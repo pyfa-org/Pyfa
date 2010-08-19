@@ -23,25 +23,39 @@ from gui.mainToolBar import MainToolBar
 from gui.marketBrowser import MarketBrowser
 from gui.fitMultiSwitch import FitMultiSwitch
 from gui.statsPane import StatsPane
+from gui.shipBrowser import ShipBrowser
 from wx.lib.wordwrap import wordwrap
 import aboutData
 
 class MainFrame(wx.Frame):
+    __instance = None
+    @classmethod
+    def getInstance(cls):
+        return cls.__instance if cls.__instance is not None else MainFrame()
+
     def __init__(self):
         wx.Frame.__init__(self, None, wx.ID_ANY, title="pyfa - Python Fitting Assistant")
+        MainFrame.__instance = self
+
         self.SetMinSize((1000, 700))
 
-        #Add menu
-        self.SetMenuBar(MainMenuBar())
-        self.SetToolBar(MainToolBar(self))
-
-    #Register menubar events / only quit for now
+        #Register menubar events / only quit for now
         self.Bind(wx.EVT_MENU, self.ExitApp, id=wx.ID_EXIT)
         self.Bind(wx.EVT_MENU, self.ShowAboutBox, id=wx.ID_ABOUT)
 
         self.splitter = wx.SplitterWindow(self, style = wx.SP_LIVE_UPDATE)
 
-        self.marketBrowser = MarketBrowser(self.splitter)
+        marketShipBrowserPanel = wx.Panel(self.splitter)
+        self.marketShipBrowserSizer = wx.BoxSizer(wx.VERTICAL)
+        marketShipBrowserPanel.SetSizer(self.marketShipBrowserSizer)
+
+        self.marketBrowser = MarketBrowser(marketShipBrowserPanel)
+        self.marketShipBrowserSizer.Add(self.marketBrowser, 1, wx.EXPAND)
+
+
+        self.shipBrowser = ShipBrowser(marketShipBrowserPanel)
+        self.marketShipBrowserSizer.Add(self.shipBrowser, 1, wx.EXPAND)
+
         statsFitviewPanel = wx.Panel(self.splitter)
         sizer = wx.BoxSizer(wx.HORIZONTAL)
         statsFitviewPanel.SetSizer(sizer)
@@ -54,9 +68,13 @@ class MainFrame(wx.Frame):
         sizer.Add(self.fitMultiSwitch, 1, wx.EXPAND)
         sizer.Add(self.statsPane, 0, wx.EXPAND)
 
-        self.splitter.SplitVertically(self.marketBrowser, statsFitviewPanel)
+        self.splitter.SplitVertically(marketShipBrowserPanel, statsFitviewPanel)
         self.splitter.SetMinimumPaneSize(10)
         self.splitter.SetSashPosition(300)
+
+        #Add menu
+        self.SetMenuBar(MainMenuBar())
+        self.SetToolBar(MainToolBar(self))
 
         #Show ourselves
         self.Show()
