@@ -38,6 +38,7 @@ class MainFrame(wx.Frame):
         MainFrame.__instance = self
 
         self.SetMinSize((1000, 700))
+        self.setSize((1000, 700))
 
         #Register menubar events / only quit for now
         self.Bind(wx.EVT_MENU, self.ExitApp, id=wx.ID_EXIT)
