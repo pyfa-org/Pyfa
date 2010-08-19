@@ -42,11 +42,9 @@ class MainToolBar(wx.ToolBar):
 
         if newState:
             mainFrame.shipBrowser.build()
-            mainFrame.marketShipBrowserSizer.Detach(mainFrame.marketBrowser)
-            mainFrame.marketShipBrowserSizer.Add(mainFrame.shipBrowser, 1, wx.EXPAND)
+            mainFrame.marketShipBrowserSizer.Replace(mainFrame.marketBrowser, mainFrame.shipBrowser)
         else:
-            mainFrame.marketShipBrowserSizer.Detach(mainFrame.shipBrowser)
-            mainFrame.marketShipBrowserSizer.Add(mainFrame.marketBrowser, 1, wx.EXPAND)
+            mainFrame.marketShipBrowserSizer.Replace(mainFrame.shipBrowser, mainFrame.marketBrowser)
 
         mainFrame.shipBrowser.Show(newState)
         mainFrame.marketBrowser.Show(not newState)
