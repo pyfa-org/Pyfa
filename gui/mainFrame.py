@@ -18,6 +18,7 @@
 #===============================================================================
 
 import wx
+from gui import bitmapLoader
 from gui.mainMenuBar import MainMenuBar
 from gui.mainToolBar import MainToolBar
 from gui.marketBrowser import MarketBrowser
@@ -36,6 +37,9 @@ class MainFrame(wx.Frame):
     def __init__(self):
         wx.Frame.__init__(self, None, wx.ID_ANY, title="pyfa - Python Fitting Assistant")
         MainFrame.__instance = self
+
+        i = wx.IconFromBitmap(bitmapLoader.getBitmap("pyfa", "icons"))
+        self.SetIcon(i)
 
         self.SetMinSize((1000, 700))
         self.SetSize((1000, 700))
