@@ -224,11 +224,10 @@ class StatsPane(wx.Panel):
 
         self.sizerBase.Add(sizerFirepower, 0, wx.EXPAND | wx.LEFT, 3)
 
-        for damageType in ("turret", "drone"):
+        for damageType, image in (("weapon", "turret") , ("drone", "droneBay")):
             baseBox = wx.BoxSizer(wx.HORIZONTAL)
             sizerFirepower.Add(baseBox, 0, wx.ALIGN_CENTER)
 
-            image = "droneBay" if damageType == "drone" else damageType
             baseBox.Add(bitmapLoader.getStaticBitmap("%s_big" % image, self, "icons"), 0, wx.ALIGN_CENTER)
 
             box = wx.BoxSizer(wx.VERTICAL)
@@ -295,7 +294,7 @@ class StatsPane(wx.Panel):
         hbox.Add(wx.StaticText(self, wx.ID_ANY, "Capacity: "), 0, wx.ALIGN_CENTER)
         self.labelCapacitorCapacity = wx.StaticText(self, wx.ID_ANY, "0.0")
         hbox.Add(self.labelCapacitorCapacity, 0, wx.ALIGN_CENTER)
-        hbox.Add(wx.StaticText(self, wx.ID_ANY, " Gj"), 0, wx.ALIGN_CENTER)
+        hbox.Add(wx.StaticText(self, wx.ID_ANY, " GJ"), 0, wx.ALIGN_CENTER)
 
         hbox = wx.BoxSizer(wx.HORIZONTAL)
         box.Add(hbox, 1, wx.ALIGN_LEFT)
@@ -320,13 +319,13 @@ class StatsPane(wx.Panel):
         chargeSizer.Add(wx.StaticText(self, wx.ID_ANY, "+ "), 0, wx.ALIGN_CENTER)
         self.labelCapacitorRecharge = wx.StaticText(self, wx.ID_ANY, "0.0")
         chargeSizer.Add(self.labelCapacitorRecharge, 0, wx.ALIGN_CENTER)
-        chargeSizer.Add(wx.StaticText(self, wx.ID_ANY, " Gj/s"), 0, wx.ALIGN_CENTER)
+        chargeSizer.Add(wx.StaticText(self, wx.ID_ANY, " GJ/s"), 0, wx.ALIGN_CENTER)
 
         # Discharge
         chargeSizer.Add(wx.StaticText(self, wx.ID_ANY, "- "), 0, wx.ALIGN_CENTER)
         self.labelCapacitorDischarge = wx.StaticText(self, wx.ID_ANY, "0.0")
         chargeSizer.Add(self.labelCapacitorDischarge, 0, wx.ALIGN_CENTER)
-        chargeSizer.Add(wx.StaticText(self, wx.ID_ANY, " Gj/s"), 0, wx.ALIGN_CENTER)
+        chargeSizer.Add(wx.StaticText(self, wx.ID_ANY, " GJ/s"), 0, wx.ALIGN_CENTER)
 
         # Targeting & Misc
         grid = wx.GridSizer(1, 2)
