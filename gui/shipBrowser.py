@@ -108,10 +108,11 @@ class ShipBrowser(wx.Panel):
         cFit = controller.Fit.getInstance()
         fitID = cFit.newFit(shipID, name)
         childId = self.shipView.AppendItem(root, name, -1, data=wx.TreeItemData(("fit", fitID)))
+        self.shipView.SetItemText(childId, name)
         self.shipView.SortChildren(root)
         self.shipView.Expand(root)
         self.shipView.SelectItem(childId)
-        wx.CallAfter(self.shipView.EditLabel, childId)
+        self.shipView.EditLabel(childId)
 
     def renameFit(self, event):
         root = self.shipView.GetSelection()
