@@ -137,6 +137,7 @@ class ShipBrowser(wx.Panel):
         type, fitID = self.shipView.GetPyData(item)
         cFit = controller.Fit.getInstance()
         cFit.renameFit(fitID, newName)
+        wx.CallAfter(self.shipView.SortChildren, self.shipView.GetItemParent(item))
 
     def deleteFit(self, event):
         root = self.shipView.GetSelection()
