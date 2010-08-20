@@ -38,7 +38,7 @@ class ShipBrowser(wx.Panel):
         self.shipView.Bind(wx.EVT_TREE_ITEM_EXPANDING, self.expandLookup)
         self.shipView.Bind(wx.EVT_TREE_SEL_CHANGED, self.toggleButtons)
         self.shipView.Bind(wx.EVT_TREE_END_LABEL_EDIT, self.changeFitName)
-
+        self.shipView.Bind(wx.EVT_LEFT_DCLICK, self.renameFit)
 
         #Bind buttons
         self.shipMenu.new.Bind(wx.EVT_BUTTON, self.newFit)
