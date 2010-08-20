@@ -28,14 +28,21 @@ class ShipBrowser(wx.Panel):
             self.raceImageIds[race] = imageId
 
         self.races.append("None")
-        #Bind our lookup method to when the tree gets expanded
-        self.shipView.Bind(wx.EVT_TREE_ITEM_EXPANDING, self.expandLookup)
-        self.shipView.Bind(wx.EVT_TREE_SEL_CHANGED, self.toggleButtons)
         self.idRaceMap = {}
         self.shipView.races = self.races
         self.shipView.idRaceMap = self.idRaceMap
 
         self.build()
+
+        #Bind our lookup method to when the tree gets expanded
+        self.shipView.Bind(wx.EVT_TREE_ITEM_EXPANDING, self.expandLookup)
+        self.shipView.Bind(wx.EVT_TREE_SEL_CHANGED, self.toggleButtons)
+        self.shipView.Bind(wx.EVT_TREE_END_LABEL_EDIT, self.changeFitName)
+
+
+        #Bind buttons
+        self.shipMenu.new.Bind(wx.EVT_BUTTON, self.newFit)
+        self.shipMenu.rename.Bind(wx.EVT_BUTTON, self.renameFit)
 
     def build(self):
         if not self.built:
@@ -90,6 +97,35 @@ class ShipBrowser(wx.Panel):
 
             self.shipView.SortChildren(root)
 
+    def newFit(self, event):
+        root = self.shipView.GetSelection()
+        type, shipID = self.shipView.GetPyData(root)
+        if type == "fit":
+            root = self.shipView.GetParent(root)
+            type, shipID = self.shipView.GetPyData(root)
+
+        name = "%s fit" % self.shipView.GetItemText(root)
+        cFit = controller.Fit.getInstance()
+        fitID = cFit.newFit(shipID, name)
+        childId = self.shipView.AppendItem(root, name, -1, data=wx.TreeItemData(("fit", fitID)))
+        self.shipView.SortChildren(root)
+        self.shipView.Expand(root)
+        self.shipView.SelectItem(childId)
+        self.shipView.EditLabel(childId)
+
+    def renameFit(self, event):
+        root = self.shipView.GetSelection()
+        type, _ = self.shipView.GetPyData(root)
+        if type == "fit":
+            self.shipView.EditLabel(root)
+
+    def changeFitName(self, event):
+        item = event.Item
+        newName = self.shipView.GetItemText(item)
+        type, fitID = self.shipView.GetPyData(item)
+        cFit = controller.Fit.getInstance()
+        cFit.renameFit(fitID, newName)
+
 class ShipView(wx.TreeCtrl):
     def __init__(self, parent):
         wx.TreeCtrl.__init__(self, parent)
@@ -99,11 +135,11 @@ class ShipView(wx.TreeCtrl):
 
     def OnCompareItems(self, treeId1, treeId2):
         child, cookie = self.GetFirstChild(treeId1)
-        if child.IsOk():
+        type1, id1 = self.GetPyData(treeId1)
+        type2, id2 = self.GetPyData(treeId2)
+        if type1 in ("fit", "group"):
             return cmp(self.GetItemText(treeId1), self.GetItemText(treeId2))
         else:
-            _, id1 = self.GetPyData(treeId1)
-            _, id2 = self.GetPyData(treeId2)
             c = cmp(self.races.index(self.idRaceMap[id1] or "None"), self.races.index(self.idRaceMap[id2] or "None"))
             if c != 0:
                 return c

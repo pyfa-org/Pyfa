@@ -18,6 +18,7 @@
 #===============================================================================
 
 import eos.db
+import eos.types
 
 class Fit(object):
     instance = None
@@ -35,3 +36,16 @@ class Fit(object):
             names.append(fit.name)
 
         return names
+
+    def newFit(self, shipID, name):
+        fit = eos.types.Fit()
+        fit.ship = eos.types.Ship(eos.db.getItem(shipID))
+        fit.name = name
+        eos.db.saveddata_session.add(fit)
+        eos.db.saveddata_session.flush()
+        return fit.ID
+
+    def renameFit(self, fitID, newName):
+        fit = eos.db.getFit(fitID)
+        fit.name = newName
+        eos.db.saveddata_session.flush()
