@@ -38,7 +38,7 @@ class ShipBrowser(wx.Panel):
         self.shipView.Bind(wx.EVT_TREE_ITEM_EXPANDING, self.expandLookup)
         self.shipView.Bind(wx.EVT_TREE_SEL_CHANGED, self.toggleButtons)
         self.shipView.Bind(wx.EVT_TREE_END_LABEL_EDIT, self.changeFitName)
-        self.shipView.Bind(wx.EVT_LEFT_DCLICK, self.renameFit)
+        self.shipView.Bind(wx.EVT_LEFT_DCLICK, self.renameOrExpand)
 
         #Bind buttons
         self.shipMenu.new.Bind(wx.EVT_BUTTON, self.newFit)
@@ -115,6 +115,17 @@ class ShipBrowser(wx.Panel):
         self.shipView.Expand(root)
         self.shipView.SelectItem(childId)
         self.shipView.EditLabel(childId)
+
+    def renameOrExpand(self, event):
+        root = self.shipView.GetSelection()
+        type, _ = self.shipView.GetPyData(root)
+        if type == "fit":
+            self.shipView.EditLabel(root)
+        else:
+            if not self.shipView.IsExpanded(root):
+                self.shipView.Expand(root)
+            else:
+                self.shipView.Collapse(root)
 
     def renameFit(self, event):
         root = self.shipView.GetSelection()
