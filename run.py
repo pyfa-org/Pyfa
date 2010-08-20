@@ -22,6 +22,5 @@ import wx
 
 if __name__ == "__main__":
     pyfa = wx.App(False)
-    pyfa.SetAppName("pyfa")
     MainFrame()
     pyfa.MainLoop()
