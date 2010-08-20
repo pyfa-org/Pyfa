@@ -30,6 +30,7 @@ class ShipBrowser(wx.Panel):
         self.races.append("None")
         #Bind our lookup method to when the tree gets expanded
         self.shipView.Bind(wx.EVT_TREE_ITEM_EXPANDING, self.expandLookup)
+        self.shipView.Bind(wx.EVT_TREE_SEL_CHANGED, self.toggleButtons)
         self.idRaceMap = {}
         self.shipView.races = self.races
         self.shipView.idRaceMap = self.idRaceMap
@@ -43,10 +44,31 @@ class ShipBrowser(wx.Panel):
             shipRoot = cMarket.getShipRoot()
             iconId = self.shipImageList.Add(bitmapLoader.getBitmap("ship_small", "icons"))
             for id, name in shipRoot:
-                childId = self.shipView.AppendItem(self.shipRoot, name, iconId, data=wx.TreeItemData(id))
+                childId = self.shipView.AppendItem(self.shipRoot, name, iconId, data=wx.TreeItemData(("group", id)))
                 self.shipView.AppendItem(childId, "dummy")
 
         self.shipView.SortChildren(self.shipRoot)
+
+    def toggleButtons(self, event):
+        root = self.shipView.GetSelection()
+        btns = (self.shipMenu.new, self.shipMenu.rename, self.shipMenu.delete, self.shipMenu.copy)
+        if not root.IsOk():
+            for btn in btns:
+                btn.Enable(False)
+        else:
+            type, groupID = self.shipView.GetPyData(root)
+            if type == "fit":
+                for btn in btns:
+                    btn.Enable()
+
+            elif  type == "ship":
+                for btn in btns:
+                    btn.Enable(btn == self.shipMenu.new)
+
+            else:
+                for btn in btns:
+                    btn.Enable(False)
+
     def expandLookup(self, event):
         root = event.Item
         child, cookie = self.shipView.GetFirstChild(root)
@@ -55,11 +77,16 @@ class ShipBrowser(wx.Panel):
             self.shipView.Delete(child)
 
             cMarket = controller.Market.getInstance()
+            cFit = controller.Fit.getInstance()
 
-            for id, name, race in cMarket.getShipList(self.shipView.GetPyData(root)):
-                iconId = self.raceImageIds[race] if race in self.raceImageIds else -1
-                self.idRaceMap[id] = race
-                self.shipView.AppendItem(root, name, iconId, data=wx.TreeItemData(id))
+            type, groupID = self.shipView.GetPyData(root)
+            if type == "group":
+                for id, name, race in cMarket.getShipList(groupID):
+                    iconId = self.raceImageIds[race] if race in self.raceImageIds else -1
+                    self.idRaceMap[id] = race
+                    childId = self.shipView.AppendItem(root, name, iconId, data=wx.TreeItemData(("ship", id)))
+                    for fitID, fitName in cFit.getFitsWithShip(id):
+                        self.shipView.AppendItem(childId, fitName, -1, data=wx.TreeItemData("fit", fitID))
 
             self.shipView.SortChildren(root)
 
@@ -75,8 +102,8 @@ class ShipView(wx.TreeCtrl):
         if child.IsOk():
             return cmp(self.GetItemText(treeId1), self.GetItemText(treeId2))
         else:
-            id1 = self.GetPyData(treeId1)
-            id2 = self.GetPyData(treeId2)
+            _, id1 = self.GetPyData(treeId1)
+            _, id2 = self.GetPyData(treeId2)
             c = cmp(self.races.index(self.idRaceMap[id1] or "None"), self.races.index(self.idRaceMap[id2] or "None"))
             if c != 0:
                 return c
