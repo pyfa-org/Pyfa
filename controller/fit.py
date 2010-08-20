@@ -49,3 +49,9 @@ class Fit(object):
         fit = eos.db.getFit(fitID)
         fit.name = newName
         eos.db.saveddata_session.flush()
+
+    def deleteFit(self, fitID):
+        fit = eos.db.getFit(fitID)
+        eos.db.saveddata_session.delete(fit)
+        eos.db.saveddata_session.flush()
+

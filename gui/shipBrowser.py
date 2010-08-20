@@ -43,6 +43,7 @@ class ShipBrowser(wx.Panel):
         #Bind buttons
         self.shipMenu.new.Bind(wx.EVT_BUTTON, self.newFit)
         self.shipMenu.rename.Bind(wx.EVT_BUTTON, self.renameFit)
+        self.shipMenu.delete.Bind(wx.EVT_BUTTON, self.deleteFit)
 
     def build(self):
         if not self.built:
@@ -126,6 +127,14 @@ class ShipBrowser(wx.Panel):
         type, fitID = self.shipView.GetPyData(item)
         cFit = controller.Fit.getInstance()
         cFit.renameFit(fitID, newName)
+
+    def deleteFit(self, event):
+        root = self.shipView.GetSelection()
+        type, fitID = self.shipView.GetPyData(root)
+        if type == "fit":
+            cFit = controller.Fit.getInstance()
+            cFit.deleteFit(fitID)
+            self.shipView.Delete(root)
 
 class ShipView(wx.TreeCtrl):
     def __init__(self, parent):
