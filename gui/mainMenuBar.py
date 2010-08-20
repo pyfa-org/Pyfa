@@ -40,15 +40,6 @@ class MainMenuBar(wx.MenuBar):
         # Fit menu
         fitMenu = wx.Menu()
         self.Append(fitMenu, "F&it")
-        self.shipBrowserItem = wx.MenuItem(fitMenu, 10, "Activate &Ship Browser")
-        self.shipBrowserItem.SetBitmap(bitmapLoader.getBitmap("ship_small", "icons"))
-        fitMenu.AppendItem(self.shipBrowserItem)
-
-        self.marketBrowserItem = wx.MenuItem(fitMenu, 11, "Activate &Market Browser")
-        self.marketBrowserItem.SetBitmap(bitmapLoader.getBitmap("market_small", "icons"))
-        fitMenu.AppendItem(self.marketBrowserItem)
-        self.marketBrowserItem.Enable(False)
-        fitMenu.AppendSeparator()
         fitMenu.Append(wx.ID_EDIT, "&Rename", "Rename this fit.")
         fitMenu.Append(wx.ID_COPY)
         fitMenu.Append(wx.ID_DELETE)

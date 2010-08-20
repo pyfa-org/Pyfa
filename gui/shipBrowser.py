@@ -34,6 +34,8 @@ class ShipBrowser(wx.Panel):
         self.shipView.races = self.races
         self.shipView.idRaceMap = self.idRaceMap
 
+        self.build()
+
     def build(self):
         if not self.built:
             self.built = True

@@ -43,16 +43,13 @@ class MainFrame(wx.Frame):
 
         self.splitter = wx.SplitterWindow(self, style = wx.SP_LIVE_UPDATE)
 
-        marketShipBrowserPanel = wx.Panel(self.splitter)
-        self.marketShipBrowserSizer = wx.BoxSizer(wx.VERTICAL)
-        marketShipBrowserPanel.SetSizer(self.marketShipBrowserSizer)
+        notebookBrowsers = wx.Notebook(self.splitter, wx.ID_ANY)
 
-        self.marketBrowser = MarketBrowser(marketShipBrowserPanel)
-        self.marketShipBrowserSizer.Add(self.marketBrowser, 1, wx.EXPAND)
+        self.marketBrowser = MarketBrowser(notebookBrowsers)
+        notebookBrowsers.AddPage(self.marketBrowser, "Market")
 
-
-        self.shipBrowser = ShipBrowser(marketShipBrowserPanel)
-        #self.marketShipBrowserSizer.Add(self.shipBrowser, 1, wx.EXPAND)
+        self.shipBrowser = ShipBrowser(notebookBrowsers)
+        notebookBrowsers.AddPage(self.shipBrowser, "Ships")
 
         statsFitviewPanel = wx.Panel(self.splitter)
         sizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -66,13 +63,13 @@ class MainFrame(wx.Frame):
         sizer.Add(self.fitMultiSwitch, 1, wx.EXPAND)
         sizer.Add(self.statsPane, 0, wx.EXPAND)
 
-        self.splitter.SplitVertically(marketShipBrowserPanel, statsFitviewPanel)
+        self.splitter.SplitVertically(notebookBrowsers, statsFitviewPanel)
         self.splitter.SetMinimumPaneSize(10)
         self.splitter.SetSashPosition(300)
 
         #Add menu
         self.SetMenuBar(MainMenuBar())
-        self.SetToolBar(MainToolBar(self))
+        #self.SetToolBar(MainToolBar(self))
 
         self.registerMenu()
 
