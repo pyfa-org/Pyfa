@@ -19,6 +19,7 @@
 
 import eos.db
 import eos.types
+import copy
 
 class Fit(object):
     instance = None
@@ -55,3 +56,9 @@ class Fit(object):
         eos.db.saveddata_session.delete(fit)
         eos.db.saveddata_session.flush()
 
+    def copyFit(self, fitID):
+        fit = eos.db.getFit(fitID)
+        newFit = copy.deepcopy(fit)
+        eos.db.saveddata_session.add(newFit)
+        eos.db.saveddata_session.flush()
+        return newFit.ID
