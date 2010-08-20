@@ -121,7 +121,7 @@ class ShipBrowser(wx.Panel):
 
     def changeFitName(self, event):
         item = event.Item
-        newName = self.shipView.GetItemText(item)
+        newName = event.Label
         type, fitID = self.shipView.GetPyData(item)
         cFit = controller.Fit.getInstance()
         cFit.renameFit(fitID, newName)
