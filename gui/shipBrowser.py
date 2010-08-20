@@ -182,10 +182,7 @@ class ShipMenu(wx.Panel):
         for name, art in (("new", wx.ART_NEW), ("rename", bitmapLoader.getBitmap("rename", "icons")), ("copy", wx.ART_COPY), ("delete", wx.ART_DELETE)):
             bitmap = wx.ArtProvider.GetBitmap(art, wx.ART_BUTTON) if name != "rename" else art
             btn = wx.BitmapButton(self, wx.ID_ANY, bitmap)
-            if size is None:
-                size = btn.GetSize()
-            else:
-                btn.SetSize(size)
+            btn.SetSize((30, 26))
 
             setattr(self, name, btn)
             btn.Enable(False)
