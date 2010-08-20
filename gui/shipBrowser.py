@@ -178,9 +178,15 @@ class ShipMenu(wx.Panel):
         sizer = wx.BoxSizer(wx.HORIZONTAL)
         self.SetSizer(sizer)
 
+        size = None
         for name, art in (("new", wx.ART_NEW), ("rename", bitmapLoader.getBitmap("rename", "icons")), ("copy", wx.ART_COPY), ("delete", wx.ART_DELETE)):
             bitmap = wx.ArtProvider.GetBitmap(art, wx.ART_BUTTON) if name != "rename" else art
             btn = wx.BitmapButton(self, wx.ID_ANY, bitmap)
+            if size is None:
+                size = btn.GetSize()
+            else:
+                btn.SetSize(size)
+
             setattr(self, name, btn)
             btn.Enable(False)
             btn.SetToolTipString("%s fit." % name.capitalize())
