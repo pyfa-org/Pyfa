@@ -121,11 +121,9 @@ class ShipBrowser(wx.Panel):
         type, _ = self.shipView.GetPyData(root)
         if type == "fit":
             self.shipView.EditLabel(root)
-        else:
-            if not self.shipView.IsExpanded(root):
-                self.shipView.Expand(root)
-            else:
-                self.shipView.Collapse(root)
+
+        event.Skip()
+
 
     def renameFit(self, event):
         root = self.shipView.GetSelection()
