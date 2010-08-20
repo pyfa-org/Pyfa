@@ -101,7 +101,7 @@ class ShipBrowser(wx.Panel):
         root = self.shipView.GetSelection()
         type, shipID = self.shipView.GetPyData(root)
         if type == "fit":
-            root = self.shipView.GetParent(root)
+            root = self.shipView.GetItemParent(root)
             type, shipID = self.shipView.GetPyData(root)
 
         name = "%s fit" % self.shipView.GetItemText(root)
@@ -111,7 +111,7 @@ class ShipBrowser(wx.Panel):
         self.shipView.SortChildren(root)
         self.shipView.Expand(root)
         self.shipView.SelectItem(childId)
-        self.shipView.EditLabel(childId)
+        wx.CallAfter(self.shipView.EditLabel, childId)
 
     def renameFit(self, event):
         root = self.shipView.GetSelection()
