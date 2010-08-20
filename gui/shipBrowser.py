@@ -1,6 +1,7 @@
 import wx
 import controller
 import bitmapLoader
+import gui.mainFrame
 
 class ShipBrowser(wx.Panel):
     def __init__(self, parent):
@@ -8,6 +9,9 @@ class ShipBrowser(wx.Panel):
         wx.Panel.__init__(self, parent)
         vbox = wx.BoxSizer(wx.VERTICAL)
         self.SetSizer(vbox)
+
+        self.shipMenu = ShipMenu(self)
+        vbox.Add(self.shipMenu, 0, wx.EXPAND)
 
         self.shipView = ShipView(self)
         vbox.Add(self.shipView, 1, wx.EXPAND)
@@ -76,3 +80,18 @@ class ShipView(wx.TreeCtrl):
                 return c
             else:
                 return cmp(self.GetItemText(treeId1), self.GetItemText(treeId2))
+
+class ShipMenu(wx.Panel):
+    def __init__(self, parent):
+        wx.Panel.__init__(self, parent)
+        self.parent = parent
+
+        sizer = wx.BoxSizer(wx.HORIZONTAL)
+        self.SetSizer(sizer)
+
+        for name, art in (("new", wx.ART_NEW), ("rename", wx.ART_FIND_AND_REPLACE), ("copy", wx.ART_COPY), ("delete", wx.ART_DELETE)):
+            btn = wx.BitmapButton(self, wx.ID_ANY, wx.ArtProvider.GetBitmap(art, wx.ART_BUTTON))
+            setattr(self, name, btn)
+            btn.Enable(False)
+            btn.SetToolTipString("%s fit." % name.capitalize())
+            sizer.Add(btn)
