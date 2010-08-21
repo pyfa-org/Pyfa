@@ -27,8 +27,13 @@ class MarketBrowser(wx.Panel):
         wx.Panel.__init__(self, parent)
         vbox = wx.BoxSizer(wx.VERTICAL)
 
+        #Add a search button on top
+        self.search = wx.SearchCtrl(self, wx.ID_ANY, style=wx.TE_PROCESS_ENTER)
+        self.search.ShowCancelButton(True)
+        vbox.Add(self.search, 0, wx.EXPAND)
+
         self.splitter = wx.SplitterWindow(self, style = wx.SP_LIVE_UPDATE)
-        
+
         vbox.Add(self.splitter, 1, wx.EXPAND)
         self.SetSizer(vbox)
 
@@ -70,6 +75,14 @@ class MarketBrowser(wx.Panel):
         #Bind our lookup method to when the tree gets expanded
         self.marketView.Bind(wx.EVT_TREE_ITEM_EXPANDING, self.expandLookup)
         self.marketView.Bind(wx.EVT_TREE_SEL_CHANGED, self.selectionMade)
+
+        #Setup our buttons for metaGroup selection
+        box = wx.BoxSizer(wx.HORIZONTAL)
+        vbox.Add(box, 0)
+        for name in ("normal", "faction", "complex", "officer"):
+            btn = wx.Button(self, wx.ID_ANY, name.capitalize(), style=wx.BU_EXACTFIT)
+            setattr(self, name, btn)
+            box.Add(btn, 0)
 
     def addMarketViewImage(self, iconFile):
         if iconFile is None:
