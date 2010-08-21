@@ -218,9 +218,12 @@ class ShipMenu(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent)
         self.parent = parent
-
         sizer = wx.BoxSizer(wx.HORIZONTAL)
         self.SetSizer(sizer)
+        
+        p = wx.Panel(self)
+        psizer = wx.BoxSizer(wx.HORIZONTAL)
+        p.SetSizer(psizer)
 
         size = None
         for name, art in (("new", wx.ART_NEW), ("rename", bitmapLoader.getBitmap("rename", "icons")), ("copy", wx.ART_COPY), ("delete", wx.ART_DELETE)):
@@ -228,16 +231,18 @@ class ShipMenu(wx.Panel):
             btn = wx.BitmapButton(self, wx.ID_ANY, bitmap)
             if size is None:
                 size = btn.GetSize()
-            else:
-                btn.SetMinSize(size)
-                btn.SetMaxSize(size)
+            btn.SetMinSize(size)
+            btn.SetMaxSize(size)
 
             btn.Layout()
             setattr(self, name, btn)
             btn.Enable(False)
             btn.SetToolTipString("%s fit." % name.capitalize())
-            sizer.Add(btn, 0, wx.EXPAND)
+            psizer.Add(btn, 0, wx.EXPAND)
 
         self.search = wx.SearchCtrl(parent, wx.ID_ANY, style=wx.TE_PROCESS_ENTER)
         self.search.ShowCancelButton(True)
-        sizer.Add(self.search, 1, wx.EXPAND)
+        psizer.Add(self.search, 1, wx.EXPAND | wx.TOP, 2)
+        p.SetMinSize((wx.SIZE_AUTO_WIDTH, 27))
+        sizer.Add(p, 1, wx.EXPAND)
+        
