@@ -28,6 +28,10 @@ class MarketBrowser(wx.Panel):
         vbox = wx.BoxSizer(wx.VERTICAL)
 
         #Add a search button on top
+
+        #Add a WHOLE panel for ONE SINGLE search button
+        #We have to be able to give the search more size, which can't be done in another way.
+        #(That I found)
         p = wx.Panel(self)
         sizer = wx.BoxSizer(wx.HORIZONTAL)
         p.SetSizer(sizer)
