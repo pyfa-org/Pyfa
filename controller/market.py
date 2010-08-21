@@ -52,7 +52,7 @@ class Market():
         the id, the name, the icon, wether the group has more children.
         """
 
-        group = eos.db.getMarketGroup(id)
+        group = eos.db.getMarketGroup(id, eager="icon")
         children = []
         for child in group.children:
             icon = child.icon.iconFile if child.icon else ""
@@ -71,7 +71,7 @@ class Market():
 
     def getShipList(self, id):
         ships = []
-        grp = eos.db.getGroup(id)
+        grp = eos.db.getGroup(id, eager=("items"))
         for item in grp.items:
             if item.published == 1 or item.name in self.FORCED_SHIPS:
                 ships.append((item.ID, item.name, item.race))
@@ -79,7 +79,7 @@ class Market():
         return ships
 
     def searchShip(self, name):
-        results = eos.db.searchItems(name)
+        results = eos.db.searchItems(name, eager=("group", "group.category"))
         for item in results:
             if item.category.name == "Ship":
                 return (item.group.ID, item.ID)
@@ -99,7 +99,7 @@ class Market():
                         24) #Implants & Boosters
         root = []
         for id in marketGroups:
-            mg = eos.db.getMarketGroup(id)
+            mg = eos.db.getMarketGroup(id, eager="icon")
             root.append((id, mg.name, mg.icon.iconFile if mg.icon else ""))
 
         return root
