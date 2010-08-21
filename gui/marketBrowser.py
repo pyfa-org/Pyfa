@@ -39,7 +39,8 @@ class MarketBrowser(wx.Panel):
         self.search = wx.SearchCtrl(p, wx.ID_ANY, style=wx.TE_PROCESS_ENTER)
         self.search.ShowCancelButton(True)
         sizer.Add(self.search, 1, wx.EXPAND)
-        p.SetMinSize((wx.SIZE_AUTO_WIDTH, 25))
+        currHeight = self.search.GetSize()[1]
+        p.SetMinSize((wx.SIZE_AUTO_WIDTH, currHeight + 3))
 
         self.splitter = wx.SplitterWindow(self, style = wx.SP_LIVE_UPDATE)
 
@@ -86,12 +87,16 @@ class MarketBrowser(wx.Panel):
         self.marketView.Bind(wx.EVT_TREE_SEL_CHANGED, self.selectionMade)
 
         #Setup our buttons for metaGroup selection
+        p = wx.Panel(self)
         box = wx.BoxSizer(wx.HORIZONTAL)
-        vbox.Add(box, 0)
+        p.SetSizer(box)
+        vbox.Add(p, 0, wx.EXPAND)
         for name in ("normal", "faction", "complex", "officer"):
-            btn = wx.Button(self, wx.ID_ANY, name.capitalize(), style=wx.BU_EXACTFIT)
+            btn = wx.Button(p, wx.ID_ANY, name.capitalize(), style=wx.BU_EXACTFIT)
             setattr(self, name, btn)
             box.Add(btn, 0)
+
+        p.SetMinSize((wx.SIZE_AUTO_WIDTH, btn.GetSize()[1] + 3))
 
     def addMarketViewImage(self, iconFile):
         if iconFile is None:
