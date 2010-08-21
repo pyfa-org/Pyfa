@@ -49,6 +49,7 @@ class ShipBrowser(wx.Panel):
         #Bind search
         self.shipMenu.search.Bind(wx.EVT_TEXT_ENTER, self.startSearch)
         self.shipMenu.search.Bind(wx.EVT_SEARCHCTRL_SEARCH_BTN, self.startSearch)
+        self.shipMenu.search.Bind(wx.EVT_SEARCHCTRL_CANCEL_BTN, self.clearSearch)
 
         self.timer = None
 
@@ -166,6 +167,9 @@ class ShipBrowser(wx.Panel):
             self.shipView.SelectItem(childId)
             self.shipView.EditLabel(childId)
 
+    def clearSearch(self, event):
+        self.shipMenu.search.Clear()
+
     def startSearch(self, event):
         text = self.shipMenu.search.GetLineText(0)
         cMarket = controller.Market.getInstance()
@@ -235,4 +239,5 @@ class ShipMenu(wx.Panel):
             sizer.Add(btn, 0, wx.EXPAND)
 
         self.search = wx.SearchCtrl(parent, wx.ID_ANY, style=wx.TE_PROCESS_ENTER)
+        self.search.ShowCancelButton(True)
         sizer.Add(self.search, 1, wx.EXPAND)
