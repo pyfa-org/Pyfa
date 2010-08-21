@@ -97,7 +97,7 @@ class MarketBrowser(wx.Panel):
             setattr(self, name, btn)
             box.Add(btn, 0)
 
-        p.SetMinSize((wx.SIZE_AUTO_WIDTH, btn.GetSize()[1] + 3))
+        p.SetMinSize((wx.SIZE_AUTO_WIDTH, btn.GetSize()[1] + 5))
 
     def addMarketViewImage(self, iconFile):
         if iconFile is None:
