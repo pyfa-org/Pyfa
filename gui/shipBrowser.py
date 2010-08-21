@@ -46,6 +46,12 @@ class ShipBrowser(wx.Panel):
         self.shipMenu.delete.Bind(wx.EVT_BUTTON, self.deleteFit)
         self.shipMenu.copy.Bind(wx.EVT_BUTTON, self.copyFit)
 
+        #Bind search
+        self.shipMenu.search.Bind(wx.EVT_TEXT_ENTER, self.startSearch)
+        self.shipMenu.search.Bind(wx.EVT_SEARCHCTRL_SEARCH_BTN, self.startSearch)
+
+        self.timer = None
+
     def build(self):
         if not self.built:
             self.built = True
@@ -160,6 +166,30 @@ class ShipBrowser(wx.Panel):
             self.shipView.SelectItem(childId)
             self.shipView.EditLabel(childId)
 
+    def startSearch(self, event):
+        text = self.shipMenu.search.GetLineText(0)
+        cMarket = controller.Market.getInstance()
+        result = cMarket.searchShip(text)
+        if result == None:
+            return
+
+        groupID, shipID = result
+        child, cookie = self.shipView.GetFirstChild(self.shipRoot)
+        while child.IsOk():
+            _, currGroupID = self.shipView.GetPyData(child)
+            if currGroupID == groupID:
+                self.shipView.Expand(child)
+                shipChild, shipCookie = self.shipView.GetFirstChild(child)
+                while shipChild.IsOk():
+                    _, currShipID = self.shipView.GetPyData(shipChild)
+                    if shipID == currShipID:
+                        self.shipView.SelectItem(shipChild)
+                        break
+                    shipChild, shipCookie = self.shipView.GetNextChild(child, shipCookie)
+                break
+
+            child, cookie = self.shipView.GetNextChild(self.shipRoot, cookie)
+
 class ShipView(wx.TreeCtrl):
     def __init__(self, parent):
         wx.TreeCtrl.__init__(self, parent)
@@ -203,3 +233,6 @@ class ShipMenu(wx.Panel):
             btn.Enable(False)
             btn.SetToolTipString("%s fit." % name.capitalize())
             sizer.Add(btn, 0, wx.EXPAND)
+
+        self.search = wx.SearchCtrl(parent, wx.ID_ANY, style=wx.TE_PROCESS_ENTER)
+        sizer.Add(self.search, 1, wx.EXPAND)
