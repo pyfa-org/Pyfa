@@ -35,7 +35,7 @@ class MarketBrowser(wx.Panel):
         self.search = wx.SearchCtrl(p, wx.ID_ANY, style=wx.TE_PROCESS_ENTER)
         self.search.ShowCancelButton(True)
         sizer.Add(self.search, 1, wx.EXPAND)
-        p.SetMinSize((wx.SIZE_AUTO_WIDTH, self.search.GetSize()[1]))
+        p.SetMinSize((wx.SIZE_AUTO_WIDTH, 25))
 
         self.splitter = wx.SplitterWindow(self, style = wx.SP_LIVE_UPDATE)
 
