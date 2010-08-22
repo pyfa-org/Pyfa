@@ -93,10 +93,12 @@ class MarketBrowser(wx.Panel):
         p.SetSizer(box)
         vbox.Add(p, 0, wx.EXPAND)
         for name in ("normal", "faction", "complex", "officer"):
-            btn = wx.Button(p, wx.ID_ANY, name.capitalize(), style=wx.BU_EXACTFIT)
+            btn = wx.ToggleButton(p, wx.ID_ANY, name.capitalize(), style=wx.BU_EXACTFIT)
             setattr(self, name, btn)
             box.Add(btn, 1, wx.ALIGN_CENTER)
+            btn.Bind(wx.EVT_TOGGLEBUTTON, self.toggleMetagroup)
 
+        self.normal.SetValue(True)
         p.SetMinSize((wx.SIZE_AUTO_WIDTH, btn.GetSize()[1] + 5))
 
     def addMarketViewImage(self, iconFile):
@@ -154,3 +156,12 @@ class MarketBrowser(wx.Panel):
 
         self.itemView.SortItems(lambda id1, id2: cmp(idNameMap[id1], idNameMap[id2]))
         self.itemView.SetColumnWidth(0, wx.LIST_AUTOSIZE)
+
+    def toggleMetagroup(self, event):
+        ctrl = wx.GetMouseState().ControlDown()
+        if not ctrl:
+            for name in ("normal", "faction", "complex", "officer"):
+                getattr(self, name).SetValue(False)
+
+        event.EventObject.SetValue(True)
+

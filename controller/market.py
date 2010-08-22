@@ -23,12 +23,20 @@ class Market():
     instance = None
     FORCED_SHIPS = ("Freiki", "Mimir", "Utu", "Adrestia", "Ibis", "Impairor", "Velator", "Reaper")
     FORCED_GROUPS = ("Rookie ship",)
+    META_MAP = {"normal": (1, 2,),
+                "faction": (4, 3),
+                "complex": (6,),
+                "officer": (5,)}
+
     @classmethod
     def getInstance(cls):
         if cls.instance == None:
             cls.instance = Market()
 
         return cls.instance
+
+    def __init__(self):
+        self.activeMetas = set()
 
     def getItems(self, id):
         """
@@ -114,3 +122,12 @@ class Market():
             root.append((id, mg.name, mg.icon.iconFile if mg.icon else ""))
 
         return root
+
+    def activateMetaGroup(self, name):
+        self.activeMetas.add(name)
+
+    def disableMetaGroup(self, name):
+        self.activeMetas.remove(name)
+
+    def getVariations(self, item):
+        pass
