@@ -87,6 +87,14 @@ class Market():
 
         return ships
 
+    def searchFits(self, name):
+        results = eos.db.searchFits(name)
+        fits = []
+        for fit in results:
+            fits.append((fit.ID, fit.name, fit.ship.item.race, fit.ship.item.name))
+
+        return fits
+
     def getMarketRoot(self):
         """
         Get the root of the market tree.

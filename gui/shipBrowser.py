@@ -237,6 +237,11 @@ class ShipBrowser(wx.Panel):
             for fitID, fitName in cFit.getFitsWithShip(id):
                 self.searchView.AppendItem(childId, fitName, -1, data=wx.TreeItemData(("fit", fitID)))
 
+        for id, name, shipRace, shipName in cMarket.searchFits(search):
+            iconId = self.raceImageIds[shipRace] if shipRace in self.raceImageIds else -1
+            self.idRaceMap[id] = shipRace
+            self.searchView.AppendItem(self.searchRoot, name, iconId, data=wx.TreeItemData(("fit", id)))
+
         #To make sure that the shipView stays in sync, we'll clear its fits data
         root = self.shipRoot
         child, cookie = self.shipView.GetFirstChild(root)
