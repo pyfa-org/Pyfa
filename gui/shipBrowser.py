@@ -215,7 +215,8 @@ class ShipBrowser(wx.Panel):
         self.viewSizer.Layout()
 
         #GTFO OLD STOOF
-        self.searchView.DeleteChildren(self.searchRoot)
+        self.searchView.DeleteAllItems()
+        self.searchRoot = self.searchView.AddRoot("Search")
 
         #Get NEW STOOF
         search = self.shipMenu.search.GetLineText(0)
