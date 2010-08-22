@@ -239,12 +239,13 @@ class ShipBrowser(wx.Panel):
 
         # Sort fits by fit name, then ship name
         foundFits = cMarket.searchFits(search)
-        foundFits = sorted(foundFits, key=lambda tuple: tuple[2])
-        foundFits = sorted(foundFits, key=lambda tuple: tuple[1])
-        for id, name, shipName in foundFits:
+        if foundFits:
+            foundFits = sorted(foundFits, key=lambda tuple: tuple[2])
+            foundFits = sorted(foundFits, key=lambda tuple: tuple[1])
             iconId = self.shipImageList.Add(bitmapLoader.getBitmap("ship_small", "icons"))
-            rowText = name + " (" + shipName + ")"
-            self.searchView.AppendItem(self.searchRoot, rowText, iconId, data=wx.TreeItemData(("fit", id)))
+            for id, name, shipName in foundFits:
+                rowText = name + " (" + shipName + ")"
+                self.searchView.AppendItem(self.searchRoot, rowText, iconId, data=wx.TreeItemData(("fit", id)))
 
         #To make sure that the shipView stays in sync, we'll clear its fits data
         root = self.shipRoot
