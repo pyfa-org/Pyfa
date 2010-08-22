@@ -61,6 +61,7 @@ class ShipBrowser(wx.Panel):
         self.shipMenu.search.Bind(wx.EVT_TEXT_ENTER, self.startSearch)
         self.shipMenu.search.Bind(wx.EVT_SEARCHCTRL_SEARCH_BTN, self.startSearch)
         self.shipMenu.search.Bind(wx.EVT_SEARCHCTRL_CANCEL_BTN, self.clearSearch)
+        self.shipMenu.search.Bind(wx.EVT_TEXT, self.startSearch)
 
         self.timer = None
 
@@ -207,6 +208,10 @@ class ShipBrowser(wx.Panel):
         self.viewSizer.Layout()
 
     def startSearch(self, event):
+        search = self.shipMenu.search.GetLineText(0)
+        if len(search) < 3:
+            return
+
         self.viewSizer.Replace(self.shipView, self.searchView)
 
         self.shipView.Hide()
@@ -219,7 +224,6 @@ class ShipBrowser(wx.Panel):
         self.searchRoot = self.searchView.AddRoot("Search")
 
         #Get NEW STOOF
-        search = self.shipMenu.search.GetLineText(0)
         cMarket = controller.Market.getInstance()
         cFit = controller.Fit.getInstance()
 
