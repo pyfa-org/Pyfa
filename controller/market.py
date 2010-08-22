@@ -78,11 +78,14 @@ class Market():
 
         return ships
 
-    def searchShip(self, name):
-        results = eos.db.searchItems(name, eager=("group", "group.category"))
+    def searchShips(self, name):
+        results = eos.db.searchItems(name)
+        ships = []
         for item in results:
             if item.category.name == "Ship":
-                return (item.group.ID, item.ID)
+                ships.append((item.ID, item.name, item.race))
+
+        return ships
 
     def getMarketRoot(self):
         """

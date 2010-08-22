@@ -34,7 +34,7 @@ class Fit(object):
         fits = eos.db.getFitsWithShip(id)
         names = []
         for fit in fits:
-            names.append(fit.name)
+            names.append((fit.ID, fit.name))
 
         return names
 
