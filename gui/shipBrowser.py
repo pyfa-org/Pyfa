@@ -188,6 +188,7 @@ class ShipBrowser(wx.Panel):
                     _, currShipID = self.shipView.GetPyData(shipChild)
                     if shipID == currShipID:
                         self.shipView.SelectItem(shipChild)
+                        self.shipView.SetFocus()
                         break
                     shipChild, shipCookie = self.shipView.GetNextChild(child, shipCookie)
                 break
