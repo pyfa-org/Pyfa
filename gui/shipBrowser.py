@@ -237,9 +237,9 @@ class ShipBrowser(wx.Panel):
             for fitID, fitName in cFit.getFitsWithShip(id):
                 self.searchView.AppendItem(childId, fitName, -1, data=wx.TreeItemData(("fit", fitID)))
 
-        # Sort fits by fit name, then ship name
         foundFits = cMarket.searchFits(search)
         if foundFits:
+            # Sort fits by fit name, then ship name
             foundFits = sorted(foundFits, key=lambda tuple: tuple[2])
             foundFits = sorted(foundFits, key=lambda tuple: tuple[1])
             iconId = self.shipImageList.Add(bitmapLoader.getBitmap("ship_small", "icons"))
