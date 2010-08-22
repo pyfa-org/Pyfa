@@ -197,19 +197,22 @@ class ShipBrowser(wx.Panel):
             tree.SelectItem(childId)
             tree.EditLabel(childId)
 
-    def clearSearch(self, event):
-        self.shipMenu.search.Clear()
+    def clearSearch(self, event, clearText=True):
+        if self.getActiveTree() == self.searchView:
+            if clearText:
+                self.shipMenu.search.Clear()
 
-        self.viewSizer.Replace(self.searchView, self.shipView)
+            self.viewSizer.Replace(self.searchView, self.shipView)
 
-        self.shipView.Show()
-        self.searchView.Hide()
+            self.shipView.Show()
+            self.searchView.Hide()
 
-        self.viewSizer.Layout()
+            self.viewSizer.Layout()
 
     def startSearch(self, event):
         search = self.shipMenu.search.GetLineText(0)
         if len(search) < 3:
+            self.clearSearch(event, False)
             return
 
         self.viewSizer.Replace(self.shipView, self.searchView)
