@@ -82,7 +82,7 @@ class Market():
         results = eos.db.searchItems(name)
         ships = []
         for item in results:
-            if item.category.name == "Ship":
+            if item.category.name == "Ship" and (item.published == 1 or item.name in self.FORCED_SHIPS):
                 ships.append((item.ID, item.name, item.race))
 
         return ships
