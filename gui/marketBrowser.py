@@ -95,7 +95,7 @@ class MarketBrowser(wx.Panel):
         for name in ("normal", "faction", "complex", "officer"):
             btn = wx.Button(p, wx.ID_ANY, name.capitalize(), style=wx.BU_EXACTFIT)
             setattr(self, name, btn)
-            box.Add(btn, 0)
+            box.Add(btn, 1, wx.ALIGN_CENTER)
 
         p.SetMinSize((wx.SIZE_AUTO_WIDTH, btn.GetSize()[1] + 5))
 
