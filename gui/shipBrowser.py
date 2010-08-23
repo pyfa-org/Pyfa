@@ -241,12 +241,12 @@ class ShipBrowser(wx.Panel):
         if foundFits:
             iconId = self.shipImageList.Add(bitmapLoader.getBitmap("ship_small", "icons"))
             for id, name, shipName in foundFits:
-                rowText = "%s(%s)" % (name, shipName)
+                rowText = "{0} ({1})".format(name, shipName)
                 self.searchView.AppendItem(self.searchRoot, rowText, iconId, data=wx.TreeItemData(("fit", id)))
 
         self.searchView.SortChildren(self.searchRoot)
-        #To make sure that the shipView stays in sync, we'll clear its fits data
 
+        #To make sure that the shipView stays in sync, we'll clear its fits data
         root = self.shipRoot
         child, cookie = self.shipView.GetFirstChild(root)
         while child.IsOk():
@@ -268,7 +268,7 @@ class ShipView(wx.TreeCtrl):
         type1, id1 = self.GetPyData(treeId1)
         type2, id2 = self.GetPyData(treeId2)
         if type1 != type2:
-            order = ["group", "fit", "ship"]
+            order = ["group", "ship", "fit"]
             return cmp(order.index(type1), order.index(type2))
 
         if type1 in ("fit", "group"):
