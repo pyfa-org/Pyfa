@@ -186,9 +186,9 @@ class MarketBrowser(wx.Panel):
         btn = event.EventObject
         if not ctrl:
             for name in ("normal", "faction", "complex", "officer"):
-                btn = getattr(self, name)
-                btn.SetValue(False)
-                btn.Enable(True)
+                button = getattr(self, name)
+                button.SetValue(False)
+                button.Enable(True)
 
                 cMarket.disableMetaGroup(name)
 
