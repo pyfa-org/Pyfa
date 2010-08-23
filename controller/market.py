@@ -19,6 +19,7 @@
 
 import eos.db
 import eos.types
+from sqlalchemy.sql import or_
 
 class Market():
     instance = None
@@ -28,6 +29,7 @@ class Market():
                 "faction": (4, 3),
                 "complex": (6,),
                 "officer": (5,)}
+    SEARCH_CATEGORIES = ("Drone", "Module", "Subsystem", "Charge", "Implant")
 
     @classmethod
     def getInstance(cls):
@@ -82,12 +84,16 @@ class Market():
         return ships
 
     def searchItems(self, name):
-        results = eos.db.searchItems(name, where=eos.types.Item.published == 1,
-                                     eager=("icon", "metaGroup"))
+        filter = (eos.types.Category.name.in_(self.SEARCH_CATEGORIES), eos.types.Item.published == 1)
+        results = eos.db.searchItems(name, where=filter,
+                                     join=(eos.types.Item.group, eos.types.Group.category),
+                                     eager=("icon", "group.category"))
 
         items = []
         for item in results:
-            items.append((item.ID, item.name, item.metaGroup.ID, item.icon.iconFile if item.icon else ""))
+            if item.category.name in self.SEARCH_CATEGORIES:
+                items.append((item.ID, item.name, item.metaGroup.ID if item.metaGroup else 1, item.icon.iconFile if item.icon else ""))
+
         return items
 
     def searchFits(self, name):

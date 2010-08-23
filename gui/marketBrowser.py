@@ -42,14 +42,18 @@ class MarketBrowser(wx.Panel):
         p.SetMinSize((wx.SIZE_AUTO_WIDTH, 27))
 
         #Bind search
-        self.search.Bind(wx.EVT_TEXT_ENTER, self.startSearch)
-        self.search.Bind(wx.EVT_SEARCHCTRL_SEARCH_BTN, self.startSearch)
+        self.search.Bind(wx.EVT_TEXT_ENTER, self.scheduleSearch)
+        self.search.Bind(wx.EVT_SEARCHCTRL_SEARCH_BTN, self.scheduleSearch)
         self.search.Bind(wx.EVT_SEARCHCTRL_CANCEL_BTN, self.clearSearch)
-        self.search.Bind(wx.EVT_TEXT, self.startSearch)
+        self.search.Bind(wx.EVT_TEXT, self.scheduleSearch)
+        self.Bind(wx.EVT_TIMER, self.startSearch)
 
         #Helper vars for search: INIT EM ALREADY
         self.searching = False
         self.searchResults = None
+
+        self.searchTimer = wx.Timer()
+        self.searchTimer.SetOwner(self)
 
         self.splitter = wx.SplitterWindow(self, style = wx.SP_LIVE_UPDATE)
 
@@ -192,8 +196,12 @@ class MarketBrowser(wx.Panel):
 
         self.selectionMade(event)
 
+    def scheduleSearch(self, event):
+        self.searchTimer.Stop()
+        self.searchTimer.Start(200, wx.TIMER_ONE_SHOT)
+
     def startSearch(self, event):
-        search = self.shipMenu.search.GetLineText(0)
+        search = self.search.GetLineText(0)
         if len(search) < 3:
             self.clearSearch(event, False)
             return
@@ -212,11 +220,17 @@ class MarketBrowser(wx.Panel):
         self.searching = False
 
     def filteredSearchAdd(self):
+        self.itemView.DeleteAllItems()
+        self.itemImageList.RemoveAll()
+
         idNameMap = {}
         cMarket = controller.Market.getInstance()
         for id, name, metaGroupID, iconFile in self.searchResults:
-            if cMarket.isMetaActive(metaGroupID):
+            if cMarket.isMetaIdActive(metaGroupID):
                 iconId = self.addItemViewImage(iconFile)
                 index = self.itemView.InsertImageStringItem(sys.maxint, name, iconId)
                 idNameMap[id] = name
                 self.itemView.SetItemData(index, id)
+
+        self.itemView.SortItems(lambda id1, id2: cmp(idNameMap[id1], idNameMap[id2]))
+        self.itemView.SetColumnWidth(0, wx.LIST_AUTOSIZE)
