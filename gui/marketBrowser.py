@@ -247,7 +247,7 @@ class MarketBrowser(wx.Panel):
 
 class MarketTree(wx.TreeCtrl):
     def __init__(self, parent):
-        wx.TreeCtrl.__init__(parent)
+        wx.TreeCtrl.__init__(self, parent)
 
     def OnEraseBackGround(self, event):
         #Prevent flicker by not letting the parent's method get called.
