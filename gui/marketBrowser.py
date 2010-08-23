@@ -208,7 +208,7 @@ class MarketBrowser(wx.Panel):
 
     def scheduleSearch(self, event):
         self.searchTimer.Stop()
-        self.searchTimer.Start(200, wx.TIMER_ONE_SHOT)
+        self.searchTimer.Start(100, wx.TIMER_ONE_SHOT)
 
     def startSearch(self, event):
         search = self.search.GetLineText(0)
