@@ -42,18 +42,14 @@ class MarketBrowser(wx.Panel):
         p.SetMinSize((wx.SIZE_AUTO_WIDTH, 27))
 
         #Bind search
-        self.search.Bind(wx.EVT_TEXT_ENTER, self.scheduleSearch)
-        self.search.Bind(wx.EVT_SEARCHCTRL_SEARCH_BTN, self.scheduleSearch)
+        self.search.Bind(wx.EVT_TEXT_ENTER, self.startSearch)
+        self.search.Bind(wx.EVT_SEARCHCTRL_SEARCH_BTN, self.startSearch)
         self.search.Bind(wx.EVT_SEARCHCTRL_CANCEL_BTN, self.clearSearch)
-        self.search.Bind(wx.EVT_TEXT, self.scheduleSearch)
-        self.Bind(wx.EVT_TIMER, self.startSearch)
+        self.search.Bind(wx.EVT_TEXT, self.startSearch)
 
         #Helper vars for search: INIT EM ALREADY
         self.searching = False
         self.searchResults = None
-
-        self.searchTimer = wx.Timer()
-        self.searchTimer.SetOwner(self)
 
         self.splitter = wx.SplitterWindow(self, style = wx.SP_LIVE_UPDATE)
 
@@ -212,7 +208,7 @@ class MarketBrowser(wx.Panel):
 
     def startSearch(self, event):
         search = self.search.GetLineText(0)
-        if len(search) < 3:
+        if len(search) < 4:
             self.clearSearch(event, False)
             return
 

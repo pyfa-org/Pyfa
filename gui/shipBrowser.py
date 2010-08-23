@@ -58,13 +58,10 @@ class ShipBrowser(wx.Panel):
         self.shipMenu.copy.Bind(wx.EVT_BUTTON, self.copyFit)
 
         #Bind search
-        self.shipMenu.search.Bind(wx.EVT_TEXT_ENTER, self.scheduleSearch)
-        self.shipMenu.search.Bind(wx.EVT_SEARCHCTRL_SEARCH_BTN, self.scheduleSearch)
+        self.shipMenu.search.Bind(wx.EVT_TEXT_ENTER, self.startSearch)
+        self.shipMenu.search.Bind(wx.EVT_SEARCHCTRL_SEARCH_BTN, self.startSearch)
         self.shipMenu.search.Bind(wx.EVT_SEARCHCTRL_CANCEL_BTN, self.clearSearch)
-        self.shipMenu.search.Bind(wx.EVT_TEXT, self.scheduleSearch)
-        self.Bind(wx.EVT_TIMER, self.startSearch)
-
-        self.searchTimer = wx.Timer(self)
+        self.shipMenu.search.Bind(wx.EVT_TEXT, self.startSearch)
 
         self.timer = None
 
@@ -199,10 +196,6 @@ class ShipBrowser(wx.Panel):
             tree.SetItemText(childId, name)
             tree.SelectItem(childId)
             tree.EditLabel(childId)
-
-    def scheduleSearch(self, event):
-        self.searchTimer.Stop()
-        self.searchTimer.Start(100, wx.TIMER_ONE_SHOT)
 
     def clearSearch(self, event, clearText=True):
         if self.getActiveTree() == self.searchView:
