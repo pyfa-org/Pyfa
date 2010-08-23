@@ -19,7 +19,6 @@
 
 import eos.db
 import eos.types
-from sqlalchemy.sql import or_
 
 class Market():
     instance = None
