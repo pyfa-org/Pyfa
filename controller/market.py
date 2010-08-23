@@ -22,7 +22,7 @@ import eos.types
 
 class Market():
     instance = None
-    FORCED_SHIPS = ("Freiki", "Mimir", "Utu", "Adrestia", "Ibis", "Impairor", "Velator", "Reaper")
+    FORCED_SHIPS = ("Freki", "Mimir", "Utu", "Adrestia", "Ibis", "Impairor", "Velator", "Reaper")
     FORCED_GROUPS = ("Rookie ship",)
     META_MAP = {"normal": (1, 2,),
                 "faction": (4, 3),
