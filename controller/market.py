@@ -136,6 +136,12 @@ class Market():
     def isMetaIdActive(self, meta):
         return meta in self.activeMetas
 
+    def getMetaName(self, metaId):
+        for name, ids in self.META_MAP.items():
+            for id in ids:
+                if metaId == id:
+                    return name
+
     def getVariations(self, marketGroupId):
         if len(self.activeMetas) == 0:
             return tuple()

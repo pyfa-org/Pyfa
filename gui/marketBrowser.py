@@ -186,7 +186,10 @@ class MarketBrowser(wx.Panel):
         btn = event.EventObject
         if not ctrl:
             for name in ("normal", "faction", "complex", "officer"):
-                getattr(self, name).SetValue(False)
+                btn = getattr(self, name)
+                btn.SetValue(False)
+                btn.Enable(True)
+
                 cMarket.disableMetaGroup(name)
 
             btn.SetValue(True)
@@ -231,6 +234,9 @@ class MarketBrowser(wx.Panel):
         self.itemView.DeleteAllItems()
         if clear:
             self.search.Clear()
+
+        for name in ("normal", "faction", "complex", "officer"):
+                getattr(self, name).Enable(True)
         self.searching = False
 
     def filteredSearchAdd(self):
@@ -239,14 +245,23 @@ class MarketBrowser(wx.Panel):
 
         idNameMap = {}
         idGroupMap = {}
+        usedMetas = set()
         cMarket = controller.Market.getInstance()
         for id, name, group, metaGroupID, iconFile in self.searchResults:
+            usedMetas.add(metaGroupID)
             if cMarket.isMetaIdActive(metaGroupID):
                 iconId = self.addItemViewImage(iconFile)
                 index = self.itemView.InsertImageStringItem(sys.maxint, name, iconId)
                 idNameMap[id] = name
                 idGroupMap[id] = group
                 self.itemView.SetItemData(index, id)
+
+        #Gray out empty toggles
+        for name in ("normal", "faction", "complex", "officer"):
+                getattr(self, name).Enable(False)
+
+        for meta in usedMetas:
+            getattr(self, cMarket.getMetaName(meta)).Enable(True)
 
         def sort(id1, id2):
             grp = cmp(idGroupMap[id1], idGroupMap[id2])
