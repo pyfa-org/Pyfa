@@ -56,7 +56,7 @@ class MarketBrowser(wx.Panel):
         vbox.Add(self.splitter, 1, wx.EXPAND)
         self.SetSizer(vbox)
 
-        self.marketView = wx.TreeCtrl(self.splitter)
+        self.marketView = MarketTree(self.splitter)
         listStyle = wx.LC_REPORT | wx.BORDER_NONE | wx.LC_NO_HEADER | wx.LC_SINGLE_SEL
         self.itemView = wx.ListCtrl(self.splitter, style = listStyle)
 
@@ -244,3 +244,11 @@ class MarketBrowser(wx.Panel):
 
         self.itemView.SortItems(lambda id1, id2: cmp(idNameMap[id1], idNameMap[id2]))
         self.itemView.SetColumnWidth(0, wx.LIST_AUTOSIZE)
+
+class MarketTree(wx.TreeCtrl):
+    def __init__(self, parent):
+        wx.TreeCtrl.__init__(parent)
+
+    def OnEraseBackGround(self, event):
+        #Prevent flicker by not letting the parent's method get called.
+        pass

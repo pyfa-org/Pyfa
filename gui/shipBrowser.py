@@ -280,6 +280,10 @@ class ShipView(wx.TreeCtrl):
             else:
                 return cmp(self.GetItemText(treeId1), self.GetItemText(treeId2))
 
+    def OnEraseBackGround(self, event):
+        #Prevent flicker by not letting the parent's method get called.
+        pass
+
 class ShipMenu(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent)
