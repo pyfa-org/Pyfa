@@ -41,6 +41,16 @@ class MarketBrowser(wx.Panel):
         sizer.Add(self.search, 1, wx.EXPAND | wx.TOP, 2)
         p.SetMinSize((wx.SIZE_AUTO_WIDTH, 27))
 
+        #Bind search
+        self.search.Bind(wx.EVT_TEXT_ENTER, self.startSearch)
+        self.search.Bind(wx.EVT_SEARCHCTRL_SEARCH_BTN, self.startSearch)
+        self.search.Bind(wx.EVT_SEARCHCTRL_CANCEL_BTN, self.clearSearch)
+        self.search.Bind(wx.EVT_TEXT, self.startSearch)
+
+        #Helper vars for search: INIT EM ALREADY
+        self.searching = False
+        self.searchResults = None
+
         self.splitter = wx.SplitterWindow(self, style = wx.SP_LIVE_UPDATE)
 
         vbox.Add(self.splitter, 1, wx.EXPAND)
@@ -181,3 +191,32 @@ class MarketBrowser(wx.Panel):
                 cMarket.disableMetaGroup(btn.metaName)
 
         self.selectionMade(event)
+
+    def startSearch(self, event):
+        search = self.shipMenu.search.GetLineText(0)
+        if len(search) < 3:
+            self.clearSearch(event, False)
+            return
+
+        self.searching = True
+        cMarket = controller.Market.getInstance()
+        self.searchResults = cMarket.searchItems(search)
+
+        self.filteredSearchAdd()
+
+    def clearSearch(self, event, clear=True):
+        self.itemImageList.RemoveAll()
+        self.itemView.DeleteAllItems()
+        if clear:
+            self.search.Clear()
+        self.searching = False
+
+    def filteredSearchAdd(self):
+        idNameMap = {}
+        cMarket = controller.Market.getInstance()
+        for id, name, metaGroupID, iconFile in self.searchResults:
+            if cMarket.isMetaActive(metaGroupID):
+                iconId = self.addItemViewImage(iconFile)
+                index = self.itemView.InsertImageStringItem(sys.maxint, name, iconId)
+                idNameMap[id] = name
+                self.itemView.SetItemData(index, id)

@@ -18,6 +18,7 @@
 #===============================================================================
 
 import eos.db
+import eos.types
 
 class Market():
     instance = None
@@ -80,6 +81,15 @@ class Market():
 
         return ships
 
+    def searchItems(self, name):
+        results = eos.db.searchItems(name, where=eos.types.Item.published == 1,
+                                     eager=("icon", "metaGroup"))
+
+        items = []
+        for item in results:
+            items.append((item.ID, item.name, item.metaGroup.ID, item.icon.iconFile if item.icon else ""))
+        return items
+
     def searchFits(self, name):
         results = eos.db.searchFits(name)
         fits = []
@@ -116,6 +126,9 @@ class Market():
         for meta in self.META_MAP[name]:
             if meta in self.activeMetas:
                 self.activeMetas.remove(meta)
+
+    def isMetaIdActive(self, meta):
+        return meta in self.activeMetas
 
     def getVariations(self, marketGroupId):
         if len(self.activeMetas) == 0:
