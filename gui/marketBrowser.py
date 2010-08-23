@@ -97,8 +97,10 @@ class MarketBrowser(wx.Panel):
             setattr(self, name, btn)
             box.Add(btn, 1, wx.ALIGN_CENTER)
             btn.Bind(wx.EVT_TOGGLEBUTTON, self.toggleMetagroup)
+            btn.metaName = name
 
         self.normal.SetValue(True)
+        cMarket.activateMetaGroup("normal")
         p.SetMinSize((wx.SIZE_AUTO_WIDTH, btn.GetSize()[1] + 5))
 
     def addMarketViewImage(self, iconFile):
@@ -141,14 +143,14 @@ class MarketBrowser(wx.Panel):
         self.itemView.DeleteAllItems()
         self.itemImageList.RemoveAll()
 
-        root = event.Item
+        root = self.marketView.GetSelection()
         if self.marketView.GetChildrenCount(root) != 0:
             return
 
         cMarket = controller.Market.getInstance()
         idNameMap = {}
 
-        for id, name, iconFile in cMarket.getItems(self.marketView.GetPyData(root)):
+        for id, name, iconFile in cMarket.getVariations(self.marketView.GetPyData(root)):
             iconId = self.addItemViewImage(iconFile)
             index = self.itemView.InsertImageStringItem(sys.maxint, name, iconId)
             idNameMap[id] = name
@@ -159,9 +161,23 @@ class MarketBrowser(wx.Panel):
 
     def toggleMetagroup(self, event):
         ctrl = wx.GetMouseState().ControlDown()
+        cMarket = controller.Market.getInstance()
+        btn = event.EventObject
         if not ctrl:
             for name in ("normal", "faction", "complex", "officer"):
                 getattr(self, name).SetValue(False)
+                cMarket.disableMetaGroup(name)
 
-        event.EventObject.SetValue(True)
+            btn.SetValue(True)
+            cMarket.activateMetaGroup(btn.metaName)
+        else:
+            # Note: using the old value might seem weird,
+            # But the button hasn't been toggled by wx yet
+            target = btn.GetValue()
+            btn.SetValue(target)
+            if target:
+                cMarket.activateMetaGroup(btn.metaName)
+            else:
+                cMarket.disableMetaGroup(btn.metaName)
 
+        self.selectionMade(event)

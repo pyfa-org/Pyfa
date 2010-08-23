@@ -38,21 +38,6 @@ class Market():
     def __init__(self):
         self.activeMetas = set()
 
-    def getItems(self, id):
-        """
-        Get the items contained in the marketGroup with the passed id.
-        Returns a list, where each element is a tuple container:
-        the id, the name, the icon
-        """
-
-        items = []
-        group = eos.db.getMarketGroup(id)
-        for item in group.items:
-            icon = item.icon.iconFile if item.icon else ""
-            items.append((item.ID, item.name, icon))
-
-        return items
-
     def getChildren(self, id):
         """
         Get the children of the group or marketGroup with the passed id.
@@ -124,10 +109,26 @@ class Market():
         return root
 
     def activateMetaGroup(self, name):
-        self.activeMetas.add(name)
+        for meta in self.META_MAP[name]:
+            self.activeMetas.add(meta)
 
     def disableMetaGroup(self, name):
-        self.activeMetas.remove(name)
+        for meta in self.META_MAP[name]:
+            if meta in self.activeMetas:
+                self.activeMetas.remove(meta)
 
-    def getVariations(self, item):
-        pass
+    def getVariations(self, marketGroupId):
+        if len(self.activeMetas) == 0:
+            return tuple()
+
+        mg = eos.db.getMarketGroup(marketGroupId)
+        l = []
+        for item in mg.items:
+            if item.metaGroup is None and 1 in self.activeMetas:
+                l.append((item.ID, item.name, item.icon.iconFile if item.icon else ""))
+
+            vars = eos.db.getVariations(item, metaGroups = tuple(self.activeMetas), eager="icon")
+            for var in vars:
+                l.append((var.ID, var.name, var.icon.iconFile if var.icon else ""))
+
+        return l
