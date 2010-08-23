@@ -92,7 +92,7 @@ class Market():
         items = []
         for item in results:
             if item.category.name in self.SEARCH_CATEGORIES:
-                items.append((item.ID, item.name, item.metaGroup.ID if item.metaGroup else 1, item.icon.iconFile if item.icon else ""))
+                items.append((item.ID, item.name, item.group.name, item.metaGroup.ID if item.metaGroup else 1, item.icon.iconFile if item.icon else ""))
 
         return items
 

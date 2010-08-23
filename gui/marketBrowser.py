@@ -238,15 +238,23 @@ class MarketBrowser(wx.Panel):
         self.itemImageList.RemoveAll()
 
         idNameMap = {}
+        idGroupMap = {}
         cMarket = controller.Market.getInstance()
-        for id, name, metaGroupID, iconFile in self.searchResults:
+        for id, name, group, metaGroupID, iconFile in self.searchResults:
             if cMarket.isMetaIdActive(metaGroupID):
                 iconId = self.addItemViewImage(iconFile)
                 index = self.itemView.InsertImageStringItem(sys.maxint, name, iconId)
                 idNameMap[id] = name
+                idGroupMap[id] = group
                 self.itemView.SetItemData(index, id)
 
-        self.itemView.SortItems(lambda id1, id2: cmp(idNameMap[id1], idNameMap[id2]))
+        def sort(id1, id2):
+            grp = cmp(idGroupMap[id1], idGroupMap[id2])
+            if grp != 0:
+                return grp
+
+            return cmp(idNameMap[id1], idNameMap[id2])
+        self.itemView.SortItems(sort)
         self.itemView.SetColumnWidth(0, wx.LIST_AUTOSIZE)
 
 class MarketTree(wx.TreeCtrl):
