@@ -216,12 +216,12 @@ class MarketBrowser(wx.Panel):
             self.clearSearch(event, False)
             return
 
+        cMarket = controller.Market.getInstance()
         if not self.searching:
             for name in ("normal", "faction", "complex", "officer"):
                 getattr(self, name).SetValue(True)
-
+                cMarket.activateMetaGroup(name)
         self.searching = True
-        cMarket = controller.Market.getInstance()
         self.searchResults = cMarket.searchItems(search)
 
         self.filteredSearchAdd()
