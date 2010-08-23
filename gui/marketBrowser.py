@@ -261,7 +261,8 @@ class MarketBrowser(wx.Panel):
                 getattr(self, name).Enable(False)
 
         for meta in usedMetas:
-            getattr(self, cMarket.getMetaName(meta)).Enable(True)
+            if meta:
+                getattr(self, cMarket.getMetaName(meta)).Enable(True)
 
         def sort(id1, id2):
             grp = cmp(idGroupMap[id1], idGroupMap[id2])
