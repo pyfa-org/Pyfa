@@ -202,7 +202,7 @@ class ShipBrowser(wx.Panel):
 
     def scheduleSearch(self, event):
         self.searchTimer.Stop()
-        self.searchTimer.Start(100, wx.TIMER_ONE_SHOT)
+        self.searchTimer.Start(50, wx.TIMER_ONE_SHOT)
 
     def clearSearch(self, event, clearText=True):
         if self.getActiveTree() == self.searchView:
