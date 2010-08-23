@@ -157,6 +157,13 @@ class MarketBrowser(wx.Panel):
         self.itemView.DeleteAllItems()
         self.itemImageList.RemoveAll()
 
+        if self.searching:
+            self.searching = False
+            for name in ("faction", "complex", "officer"):
+                getattr(self, name).SetValue(False)
+
+            self.normal.SetValue(True)
+
         root = self.marketView.GetSelection()
         if self.marketView.GetChildrenCount(root) != 0:
             return
@@ -194,7 +201,10 @@ class MarketBrowser(wx.Panel):
             else:
                 cMarket.disableMetaGroup(btn.metaName)
 
-        self.selectionMade(event)
+        if self.searching:
+            self.filteredSearchAdd()
+        else:
+            self.selectionMade(event)
 
     def scheduleSearch(self, event):
         self.searchTimer.Stop()
@@ -205,6 +215,10 @@ class MarketBrowser(wx.Panel):
         if len(search) < 3:
             self.clearSearch(event, False)
             return
+
+        if not self.searching:
+            for name in ("normal", "faction", "complex", "officer"):
+                getattr(self, name).SetValue(True)
 
         self.searching = True
         cMarket = controller.Market.getInstance()
