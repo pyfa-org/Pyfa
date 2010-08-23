@@ -19,7 +19,7 @@
 
 import eos.db
 import eos.types
-import time
+from sqlalchemy.sql import or_
 
 class Market():
     instance = None
@@ -84,7 +84,6 @@ class Market():
         return ships
 
     def searchItems(self, name):
-        t = time.time()
         filter = (eos.types.Category.name.in_(self.SEARCH_CATEGORIES), eos.types.Item.published == 1)
         results = eos.db.searchItems(name, where=filter,
                                      join=(eos.types.Item.group, eos.types.Group.category),
@@ -95,7 +94,6 @@ class Market():
             if item.category.name in self.SEARCH_CATEGORIES:
                 items.append((item.ID, item.name, item.metaGroup.ID if item.metaGroup else 1, item.icon.iconFile if item.icon else ""))
 
-        print time.time() - t
         return items
 
     def searchFits(self, name):
