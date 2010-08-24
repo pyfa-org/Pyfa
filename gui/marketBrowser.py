@@ -170,15 +170,20 @@ class MarketBrowser(wx.Panel):
 
         cMarket = controller.Market.getInstance()
         idNameMap = {}
-
         for id, name, iconFile in cMarket.getVariations(self.marketView.GetPyData(root)):
             iconId = self.addItemViewImage(iconFile)
             index = self.itemView.InsertImageStringItem(sys.maxint, name, iconId)
             idNameMap[id] = name
+            width, _ = self.itemView.GetTextExtent(name)
+
             self.itemView.SetItemData(index, id)
 
         self.itemView.SortItems(lambda id1, id2: cmp(idNameMap[id1], idNameMap[id2]))
         self.itemView.SetColumnWidth(0, wx.LIST_AUTOSIZE)
+        width = self.itemView.GetColumnWidth(0)
+        maxWidth = self.itemView.GetSize()[0]
+        if maxWidth > width:
+            self.itemView.SetColumnWidth(0, maxWidth)
 
     def toggleMetagroup(self, event):
         ctrl = wx.GetMouseState().ControlDown()
@@ -274,8 +279,13 @@ class MarketBrowser(wx.Panel):
                 return grp
 
             return cmp(idNameMap[id1], idNameMap[id2])
+
         self.itemView.SortItems(sort)
         self.itemView.SetColumnWidth(0, wx.LIST_AUTOSIZE)
+        width = self.itemView.GetColumnWidth(0)
+        maxWidth = self.itemView.GetSize()[0]
+        if maxWidth > width:
+            self.itemView.SetColumnWidth(0, maxWidth)
 
 class MarketTree(wx.TreeCtrl):
     def __init__(self, parent):
