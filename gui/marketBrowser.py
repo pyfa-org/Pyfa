@@ -258,11 +258,15 @@ class MarketBrowser(wx.Panel):
 
         #Gray out empty toggles
         for name in ("normal", "faction", "complex", "officer"):
-                getattr(self, name).Enable(False)
+            btn = getattr(self, name)
+            btn.SetValue(False)
+            btn.Enable(False)
 
         for meta in usedMetas:
             if meta:
-                getattr(self, cMarket.getMetaName(meta)).Enable(True)
+                btn = getattr(self, cMarket.getMetaName(meta))
+                btn.SetValue(True)
+                btn.Enable(True)
 
         def sort(id1, id2):
             grp = cmp(idGroupMap[id1], idGroupMap[id2])
