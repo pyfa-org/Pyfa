@@ -22,6 +22,8 @@ import bitmapLoader
 
 class MainMenuBar(wx.MenuBar):
     def __init__(self):
+        self.characterEditorId = wx.NewId()
+
         wx.MenuBar.__init__(self)
 
         # File menu
@@ -47,7 +49,7 @@ class MainMenuBar(wx.MenuBar):
         charMenu = wx.Menu()
         self.Append(charMenu, "&Character")
 
-        charEditItem = wx.MenuItem(charMenu, 20, "Character &Editor\tCTRL+B")
+        charEditItem = wx.MenuItem(charMenu, self.characterEditorId, "Character &Editor\tCTRL+B")
         charEditItem.SetBitmap(bitmapLoader.getBitmap("character_small", "icons"))
         charMenu.AppendItem(charEditItem)
 

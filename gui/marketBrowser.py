@@ -21,6 +21,7 @@ import sys
 import wx
 import controller
 import bitmapLoader
+from gui.itemStats import ItemStatsMenu
 
 class MarketBrowser(wx.Panel):
     def __init__(self, parent):
@@ -116,6 +117,10 @@ class MarketBrowser(wx.Panel):
         self.normal.SetValue(True)
         cMarket.activateMetaGroup("normal")
         p.SetMinSize((wx.SIZE_AUTO_WIDTH, btn.GetSize()[1] + 5))
+
+        #Bind context menus
+        self.itemStatsMenu = ItemStatsMenu()
+        self.itemView.Bind(wx.EVT_CONTEXT_MENU, self.contextMenu)
 
     def addMarketViewImage(self, iconFile):
         if iconFile is None:
@@ -286,6 +291,16 @@ class MarketBrowser(wx.Panel):
         maxWidth = self.itemView.GetSize()[0]
         if maxWidth > width:
             self.itemView.SetColumnWidth(0, maxWidth)
+
+    def contextMenu(self, event):
+        #Check if something is selected, if so, spawn the menu for it
+        selection = self.itemView.GetFirstSelected()
+        if selection == -1:
+            return
+
+        itemId = self.itemView.GetItemData(selection)
+        self.itemStatsMenu.setItem(itemId)
+        self.PopupMenu(self.itemStatsMenu)
 
 class MarketTree(wx.TreeCtrl):
     def __init__(self, parent):
