@@ -24,7 +24,7 @@ class Market():
     instance = None
     FORCED_SHIPS = ("Freki", "Mimir", "Utu", "Adrestia", "Ibis", "Impairor", "Velator", "Reaper")
     FORCED_GROUPS = ("Rookie ship",)
-    META_MAP = {"normal": (1, 2,),
+    META_MAP = {"normal": (1, 2, 14),
                 "faction": (4, 3),
                 "complex": (6,),
                 "officer": (5,)}
