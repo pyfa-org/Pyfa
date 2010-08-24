@@ -18,18 +18,24 @@
 #===============================================================================
 
 import wx
+import gui.mainFrame
 import bitmapLoader
 
 class ItemStatsFrame(wx.Frame):
     def __init__(self):
-        wx.Frame.__init__(self, None, wx.ID_ANY, title="pyfa - Item Stats")
+        wx.Frame.__init__(self,
+                          gui.mainFrame.MainFrame.getInstance(),
+                          wx.ID_ANY, title="pyfa - Item Stats",
+                          style=wx.FRAME_FLOAT_ON_PARENT | wx.DEFAULT_FRAME_STYLE)
 
         i = wx.IconFromBitmap(bitmapLoader.getBitmap("pyfa", "icons"))
         self.SetIcon(i)
 
-        self.SetMinSize((200, 400))
-        self.SetSize((200, 400))
-        self.SetMaxSize((200, 400))
+        self.SetMinSize((500, 300))
+        self.SetSize((500, 300))
+        self.SetMaxSize((500, 300))
+
+        self.Show()
 
 class ItemStatsMenu(wx.Menu):
     def __init__(self):
@@ -37,6 +43,11 @@ class ItemStatsMenu(wx.Menu):
 
         self.showInfoId = wx.NewId()
         self.Append(self.showInfoId, "&Item stats", "moo")
+        self.Bind(wx.EVT_MENU, self.itemStats, id=self.showInfoId)
 
     def setItem(self, itemId):
-        pass
+        self.itemId = itemId
+
+    def itemStats(self, event):
+        ItemStatsFrame()
+
