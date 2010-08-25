@@ -68,7 +68,7 @@ class FitMultiSwitch(wx.Notebook):
             self.ImageList.Remove(self.GetPageImage(i))
 
     def checkRemove(self, event):
-        tab, flags = self.HitTest(event.Position)
+        tab, _ = self.HitTest(event.Position)
         if tab != -1 and tab != self.GetPageCount() - 1:
             self.removeTab(tab)
             #Deleting a tab might have put us on the "+" tab, make sure we don't stay there
@@ -102,7 +102,6 @@ class FitMultiSwitch(wx.Notebook):
 
     def processRename(self, event):
         fitID = event.fitID
-        cFit = controller.Fit.getInstance()
         # Loop through every tab and check if they're our culprit, if so, change tab name
         for i in xrange(self.GetPageCount() - 1):
             view = self.GetPage(i).view
