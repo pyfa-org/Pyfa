@@ -64,6 +64,7 @@ class FittingView(wx.ListCtrl):
 
         self.imageListBase = self.imageList.ImageCount
         self.activeFitID = None
+        self.Hide() #Don't show ourselves at start
 
     def addColumn(self, i, col):
         self.activeColumns.append(col)
@@ -81,3 +82,5 @@ class FittingView(wx.ListCtrl):
     #Gets called from the fitMultiSwitch when it decides its time
     def changeFit(self, fitID):
         self.activeFitID = fitID
+        if fitID == None:
+            self.Hide()

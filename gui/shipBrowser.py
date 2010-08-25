@@ -55,6 +55,7 @@ class ShipBrowser(wx.Panel):
             tree.Bind(wx.EVT_TREE_ITEM_EXPANDING, self.expandLookup)
             tree.Bind(wx.EVT_TREE_SEL_CHANGED, self.toggleButtons)
             tree.Bind(wx.EVT_TREE_END_LABEL_EDIT, self.changeFitName)
+            tree.Bind(wx.EVT_TREE_ITEM_ACTIVATED, self.triggerFitSelect)
 
         #Bind buttons
         self.shipMenu.new.Bind(wx.EVT_BUTTON, self.newFit)
@@ -93,6 +94,16 @@ class ShipBrowser(wx.Panel):
         else:
             return self.shipView
 
+    def triggerFitSelect(self, event):
+        selection = event.Item
+        if selection.IsOk():
+            tree = self.getActiveTree()
+            data = tree.GetPyData(selection)
+            if data is not None:
+                type, fitID = data
+                if type == "fit":
+                    wx.PostEvent(self, FitSelected(fitID=fitID))
+
     def toggleButtons(self, event):
         tree = self.getActiveTree()
         root = tree.GetSelection()
@@ -109,8 +120,6 @@ class ShipBrowser(wx.Panel):
             if type == "fit":
                 for btn in btns:
                     btn.Enable()
-
-                wx.PostEvent(self, FitSelected(fitID=fitID))
 
             elif type == "ship":
                 for btn in btns:
