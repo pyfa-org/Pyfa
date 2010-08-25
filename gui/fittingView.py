@@ -42,6 +42,8 @@ class FittingView(wx.ListCtrl):
         self.Bind(wx.EVT_LIST_COL_CLICK, self.dragCheck)
         self.Bind(wx.EVT_LIST_COL_END_DRAG, self.dragCheck)
 
+        #Listen to when stuff in the ship browser changes
+
         i = 0
         for colName in FittingView.DEFAULT_COLS:
             if colName[0:5] == "attr:":
