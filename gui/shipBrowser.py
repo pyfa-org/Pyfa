@@ -284,11 +284,12 @@ class ShipBrowser(wx.Panel):
     def getSelectedFitID(self):
         tree = self.getActiveTree()
         selection = tree.GetSelection()
-        data = tree.GetPyData(selection)
-        if data is not None:
-            type, fitID = data
-            if type == "fit":
-                return fitID
+        if selection.IsOk():
+            data = tree.GetPyData(selection)
+            if data is not None:
+                type, fitID = data
+                if type == "fit":
+                    return fitID
 
 
 class ShipView(wx.TreeCtrl):
