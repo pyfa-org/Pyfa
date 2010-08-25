@@ -111,7 +111,6 @@ class FitMultiSwitch(wx.Notebook):
 
     def processRemove(self, event):
         fitID = event.fitID
-        cFit = controller.Fit.getInstance()
         for i in xrange(self.GetPageCount() - 2, -1, -1):
             view = self.GetPage(i).view
             if view.activeFitID == fitID:
