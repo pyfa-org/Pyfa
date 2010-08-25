@@ -30,12 +30,13 @@ class FitMultiSwitch(wx.Notebook):
         self.fitPanes = []
         self.AddPage(wx.Panel(self), "+")
         self.Bind(wx.EVT_NOTEBOOK_PAGE_CHANGING, self.checkAdd)
-
+        self.Bind(wx.EVT_MIDDLE_DOWN, self.checkRemove)
         self.shipBrowser = gui.mainFrame.MainFrame.getInstance().shipBrowser
 
         self.shipBrowser.Bind(sb.EVT_FIT_RENAMED, self.processRename)
         self.shipBrowser.Bind(sb.EVT_FIT_SELECTED, self.changeFit)
         self.shipBrowser.Bind(sb.EVT_FIT_REMOVED, self.processRemove)
+
 
         self.imageList = wx.ImageList(16, 16)
         self.SetImageList(self.imageList)
@@ -56,6 +57,23 @@ class FitMultiSwitch(wx.Notebook):
         self.InsertPage(pos, p, "")
         self.setTabTitle(pos, fitID)
         wx.CallAfter(self.ChangeSelection, pos)
+
+    def removeTab(self, i):
+        if self.GetPageCount() > 2:
+            self.ImageList.Remove(self.GetPageImage(i))
+            self.DeletePage(i)
+        else:
+            self.setTabTitle(i, None)
+            self.SetPageImage(i, -1)
+            self.ImageList.Remove(self.GetPageImage(i))
+
+    def checkRemove(self, event):
+        tab, flags = self.HitTest(event.Position)
+        if tab != -1 and tab != self.GetPageCount() - 1:
+            self.removeTab(tab)
+            #Deleting a tab might have put us on the "+" tab, make sure we don't stay there
+            if self.GetSelection() == self.GetPageCount() - 1:
+                self.SetSelection(self.GetPageCount() - 2)
 
     def checkAdd(self, event):
         if event.Selection == self.GetPageCount() - 1:
@@ -97,15 +115,8 @@ class FitMultiSwitch(wx.Notebook):
         for i in xrange(self.GetPageCount() - 2, -1, -1):
             view = self.GetPage(i).view
             if view.activeFitID == fitID:
-                #If we don't have any tabs left except the first one and the + tab
-                #Then we only rename it to empty tab, else we remove
-                if self.GetPageCount() > 2:
-                    self.ImageList.Remove(self.GetPageImage(i))
-                    self.DeletePage(i)
-                else:
-                    self.setTabTitle(i, None)
-                    self.SetPageImage(-1)
-                    self.ImageList.Remove(self.GetPageImage(i))
+                self.removeTab(i)
+
 
         #Deleting a tab might have put us on the "+" tab, make sure we don't stay there
         if self.GetSelection() == self.GetPageCount() - 1:
