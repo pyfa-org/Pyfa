@@ -35,6 +35,7 @@ class FitMultiSwitch(wx.Notebook):
 
         self.shipBrowser.Bind(sb.EVT_FIT_RENAMED, self.processRename)
         self.shipBrowser.Bind(sb.EVT_FIT_SELECTED, self.changeFit)
+        self.shipBrowser.Bind(sb.EVT_FIT_REMOVED, self.processRemove)
 
     def AddTab(self):
         pos = self.GetPageCount() - 1
@@ -77,3 +78,20 @@ class FitMultiSwitch(wx.Notebook):
             view = self.GetPage(i).view
             if view.activeFitID == fitID:
                 self.SetPageText(i, cFit.getFit(fitID).name)
+
+    def processRemove(self, event):
+        fitID = event.fitID
+        cFit = controller.Fit.getInstance()
+        for i in xrange(self.GetPageCount() - 2, -1, -1):
+            view = self.GetPage(i).view
+            if view.activeFitID == fitID:
+                #If we don't have any tabs left except the first one and the + tab
+                #Then we only rename it to empty tab, else we remove
+                if self.GetPageCount() > 2:
+                    self.DeletePage(i)
+                else:
+                    self.SetPageText(i, "Empty Tab")
+
+        #Deleting a tab might have put us on the "+" tab, make sure we don't stay there
+        if self.GetSelection() == self.GetPageCount() - 1:
+            self.SetSelection(self.GetPageCount() - 2)
