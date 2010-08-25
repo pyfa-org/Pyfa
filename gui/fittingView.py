@@ -84,3 +84,5 @@ class FittingView(wx.ListCtrl):
         self.activeFitID = fitID
         if fitID == None:
             self.Hide()
+        else:
+            self.Show()

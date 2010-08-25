@@ -69,6 +69,9 @@ class MultiSwitch(wx.Notebook):
             self.setTabTitle(i, None)
             self.SetPageImage(i, -1)
             self.ImageList.Remove(self.GetPageImage(i))
+            page = self.GetPage(i)
+            if page.type == "fit":
+                page.view.changeFit(None)
 
     def checkRemove(self, event):
         tab, _ = self.HitTest(event.Position)
