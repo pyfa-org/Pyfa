@@ -30,6 +30,7 @@ class Fit(object):
 
         return cls.instance
 
+
     def getFitsWithShip(self, id):
         fits = eos.db.getFitsWithShip(id)
         names = []
@@ -62,3 +63,6 @@ class Fit(object):
         eos.db.saveddata_session.add(newFit)
         eos.db.saveddata_session.flush()
         return newFit.ID
+
+    def getFit(self, fitID):
+        return eos.db.getFit(fitID)

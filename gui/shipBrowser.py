@@ -2,6 +2,12 @@ import wx
 import controller
 import bitmapLoader
 import gui.mainFrame
+import  wx.lib.newevent
+
+FitCreated, EVT_FIT_CREATED = wx.lib.newevent.NewEvent()
+FitRenamed, EVT_FIT_RENAMED = wx.lib.newevent.NewEvent()
+FitRemoved, EVT_FIT_REMOVED = wx.lib.newevent.NewEvent()
+FitSelected, EVT_FIT_SELECTED = wx.lib.newevent.NewEvent()
 
 class ShipBrowser(wx.Panel):
     def __init__(self, parent):
@@ -49,7 +55,6 @@ class ShipBrowser(wx.Panel):
             tree.Bind(wx.EVT_TREE_ITEM_EXPANDING, self.expandLookup)
             tree.Bind(wx.EVT_TREE_SEL_CHANGED, self.toggleButtons)
             tree.Bind(wx.EVT_TREE_END_LABEL_EDIT, self.changeFitName)
-            tree.Bind(wx.EVT_LEFT_DCLICK, self.renameOrExpand)
 
         #Bind buttons
         self.shipMenu.new.Bind(wx.EVT_BUTTON, self.newFit)
@@ -67,6 +72,8 @@ class ShipBrowser(wx.Panel):
         self.searchTimer = wx.Timer(self)
 
         self.timer = None
+
+        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     def build(self):
         if not self.built:
@@ -98,12 +105,14 @@ class ShipBrowser(wx.Panel):
             if data is None:
                 return
 
-            type, groupID = data
+            type, fitID = data
             if type == "fit":
                 for btn in btns:
                     btn.Enable()
 
-            elif  type == "ship":
+                wx.PostEvent(self, FitSelected(fitID=fitID))
+
+            elif type == "ship":
                 for btn in btns:
                     btn.Enable(btn == self.shipMenu.new)
 
@@ -154,17 +163,8 @@ class ShipBrowser(wx.Panel):
         tree.Expand(root)
         tree.SelectItem(childId)
         tree.EditLabel(childId)
-        event.Skip()
 
-    def renameOrExpand(self, event):
-        tree = self.getActiveTree()
-        root = tree.GetSelection()
-        type, _ = tree.GetPyData(root)
-        if type == "fit":
-            tree.EditLabel(root)
-
-        event.Skip()
-
+        wx.PostEvent(self, FitCreated(fitID=fitID))
 
     def renameFit(self, event):
         tree = self.getActiveTree()
@@ -182,8 +182,10 @@ class ShipBrowser(wx.Panel):
         type, fitID = tree.GetPyData(item)
         cFit = controller.Fit.getInstance()
         cFit.renameFit(fitID, newName)
+
         wx.CallAfter(tree.SortChildren, tree.GetItemParent(item))
-        event.Skip()
+
+        wx.PostEvent(self, FitRenamed(fitID=fitID))
 
     def deleteFit(self, event):
         tree = self.getActiveTree()
@@ -194,7 +196,7 @@ class ShipBrowser(wx.Panel):
             cFit.deleteFit(fitID)
             tree.Delete(root)
 
-        event.Skip()
+        wx.PostEvent(self, FitRemoved(fitID=fitID))
 
     def copyFit(self, event):
         tree = self.getActiveTree()
@@ -210,7 +212,7 @@ class ShipBrowser(wx.Panel):
             tree.SelectItem(childId)
             tree.EditLabel(childId)
 
-        event.Skip()
+        wx.PostEvent(self, FitCreated(fitID=newID))
 
     def scheduleSearch(self, event):
         self.searchTimer.Stop()
@@ -278,6 +280,16 @@ class ShipBrowser(wx.Panel):
             child, cookie = self.shipView.GetNextChild(root, cookie)
 
         event.Skip()
+
+    def getSelectedFitID(self):
+        tree = self.getActiveTree()
+        selection = tree.GetSelection()
+        data = tree.GetPyData(selection)
+        if data is not None:
+            type, fitID = data
+            if type == "fit":
+                return fitID
+
 
 class ShipView(wx.TreeCtrl):
     def __init__(self, parent):

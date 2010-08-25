@@ -18,8 +18,9 @@
 #===============================================================================
 
 import wx
-import sys
+import controller
 import gui.builtinViewColumns
+import gui.shipBrowser as sb
 import gui.mainFrame
 from gui.builtinViewColumns import *
 
@@ -40,14 +41,12 @@ class FittingView(wx.ListCtrl):
         self.SetImageList(self.imageList, wx.IMAGE_LIST_SMALL)
         self.activeColumns = []
         self.Bind(wx.EVT_LIST_COL_BEGIN_DRAG, self.resizeChecker)
-        self.Bind(wx.EVT_LIST_COL_CLICK, self.dragCheck)
-        self.Bind(wx.EVT_LIST_COL_END_DRAG, self.dragCheck)
 
-        #Listen to when stuff in the ship browser changes
         mainFrame = gui.mainFrame.MainFrame.getInstance()
-        for tree in (mainFrame.shipBrowser.shipView, mainFrame.shipBrowser.searchView):
-            tree.Bind(wx.EVT_TREE_SEL_CHANGED, self.changeFit)
-            tree.Bind(wx.EVT_TREE_END_LABEL_EDIT, self.renameFit)
+        self.shipBrowser = mainFrame.shipBrowser
+        self.shipView = mainFrame.shipBrowser.shipView
+        self.searchView = mainFrame.shipBrowser.shipView
+        self.switch = mainFrame.fitMultiSwitch
 
         i = 0
         for colName in FittingView.DEFAULT_COLS:
@@ -64,6 +63,7 @@ class FittingView(wx.ListCtrl):
             i += 1
 
         self.imageListBase = self.imageList.ImageCount
+        self.activeFitID = None
 
     def addColumn(self, i, col):
         self.activeColumns.append(col)
@@ -78,16 +78,6 @@ class FittingView(wx.ListCtrl):
         if self.activeColumns[event.Column].resizable is False:
             event.Veto()
 
-    def dragCheck(self, event):
-        print event
-
-    def dragEnd(self, event):
-        print event
-
-    def renameFit(self, event):
-        print event
-        event.Skip()
-
-    def changeFit(self, event):
-        print event
-        event.Skip()
+    #Gets called from the fitMultiSwitch when it decides its time
+    def changeFit(self, fitID):
+        self.activeFitID = fitID
