@@ -23,8 +23,13 @@ import gui.builtinViewColumns
 from gui.builtinViewColumns import *
 
 class FittingView(wx.ListCtrl):
-    DEFAULT_COLS = ["Module state", "Module name/slot"]
-    DEFAULT_ATTR_COLS = ["power", "cpu", "capacitorNeed", "maxRange", "trackingSpeed"]
+    DEFAULT_COLS = ["Module state",
+                    "Module name/slot",
+                    "attr:power",
+                    "attr:cpu",
+                    "attr:capacitorNeed",
+                    "attr:trackingSpeed",
+                    "Max range"]
 
     def __init__(self, parent):
         listStyle = wx.LC_REPORT | wx.BORDER_NONE
@@ -39,16 +44,15 @@ class FittingView(wx.ListCtrl):
 
         i = 0
         for colName in FittingView.DEFAULT_COLS:
-            col = gui.builtinViewColumns.getColumn(colName)(self, None)
-            self.addColumn(i, col)
-            i += 1
+            if colName[0:5] == "attr:":
+                attrName = colName[5:]
+                params = {"showIcon": True,
+                          "displayName": False,
+                          "attribute": attrName}
+                col = gui.builtinViewColumns.getColumn("Attribute Display")(self, params)
+            else:
+                col = gui.builtinViewColumns.getColumn(colName)(self, None)
 
-        for attrName in FittingView.DEFAULT_ATTR_COLS:
-            params = {"showIcon": True,
-                      "displayName": False,
-                      "attribute": attrName}
-
-            col = gui.builtinViewColumns.getColumn("Attribute Display")(self, params)
             self.addColumn(i, col)
             i += 1
 

@@ -22,22 +22,20 @@ from gui.viewColumn import ViewColumn
 from gui import bitmapLoader
 import controller
 
-class AttributeDisplay(ViewColumn):
-    name = "Attribute Display"
-    def __init__(self, fittingView, params):
+class MaxRange(ViewColumn):
+    name = "Max range"
+    def __init__(self, fittingView, params = None):
+        if params == None:
+            params = {"showIcon": True,
+                      "displayName": False}
         ViewColumn.__init__(self, fittingView)
         cAttribute = controller.Attribute.getInstance()
-        info = cAttribute.getAttributeInfo(params["attribute"])
+        info = cAttribute.getAttributeInfo("maxRange")
         self.info = info
         if params["showIcon"]:
-            if info.name == "power":
-                iconFile = "pg_small"
-                iconType = "icons"
-            else:
-                iconFile = info.icon.iconFile if info.icon else None
-                iconType = "pack"
+            iconFile = info.icon.iconFile if info.icon else None
             if iconFile:
-                bitmap = bitmapLoader.getBitmap(iconFile, iconType)
+                bitmap = bitmapLoader.getBitmap(iconFile, "pack")
                 self.imageId = fittingView.imageList.Add(bitmap)
             else:
                 self.imageId = -1
@@ -48,9 +46,9 @@ class AttributeDisplay(ViewColumn):
             self.columnText = info.displayName if info.displayName != "" else info.name
 
     def getText(self, mod):
-        attr = mod.getModifiedItemAttr(self.info.name)
-        if attr:
-            return "%.2f" % attr
+        maxRange = mod.maxRange
+        if maxRange:
+            return "%.2f" % mod.maxRange
         else:
             return ""
 
@@ -58,8 +56,7 @@ class AttributeDisplay(ViewColumn):
         return -1
 
     def getParameters(self):
-        return (("attribute", str, None),
-                ("displayName", bool, False),
+        return (("displayName", bool, False),
                 ("showIcon", bool, True))
 
-builtinViewColumns.registerColumn(AttributeDisplay)
+builtinViewColumns.registerColumn(MaxRange)
