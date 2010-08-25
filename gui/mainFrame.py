@@ -22,7 +22,7 @@ from gui import bitmapLoader
 from gui.mainMenuBar import MainMenuBar
 from gui.mainToolBar import MainToolBar
 from gui.marketBrowser import MarketBrowser
-from gui.fitMultiSwitch import FitMultiSwitch
+from gui.multiSwitch import MultiSwitch
 from gui.statsPane import StatsPane
 from gui.shipBrowser import ShipBrowser
 from wx.lib.wordwrap import wordwrap
@@ -56,16 +56,16 @@ class MainFrame(wx.Frame):
         notebookBrowsers.AddPage(self.shipBrowser, "Ships")
 
         statsFitviewPanel = wx.Panel(self.splitter)
-        sizer = wx.BoxSizer(wx.HORIZONTAL)
-        statsFitviewPanel.SetSizer(sizer)
+        self.statsSizer = wx.BoxSizer(wx.HORIZONTAL)
+        statsFitviewPanel.SetSizer(self.statsSizer)
 
-        self.fitMultiSwitch = FitMultiSwitch(statsFitviewPanel)
+        self.fitMultiSwitch = MultiSwitch(statsFitviewPanel)
         self.fitMultiSwitch.AddTab()
 
         self.statsPane = StatsPane(statsFitviewPanel)
 
-        sizer.Add(self.fitMultiSwitch, 1, wx.EXPAND)
-        sizer.Add(self.statsPane, 0, wx.EXPAND)
+        self.statsSizer.Add(self.fitMultiSwitch, 1, wx.EXPAND)
+        self.statsSizer.Add(self.statsPane, 0, wx.EXPAND)
 
         self.splitter.SplitVertically(notebookBrowsers, statsFitviewPanel)
         self.splitter.SetMinimumPaneSize(10)
