@@ -24,7 +24,7 @@ from gui.fittingView import FittingView
 import gui.shipBrowser as sb
 import controller
 
-class FitMultiSwitch(wx.Notebook):
+class MultiSwitch(wx.Notebook):
     def __init__(self, parent):
         wx.Notebook.__init__(self, parent, wx.ID_ANY)
         self.fitPanes = []
@@ -41,21 +41,24 @@ class FitMultiSwitch(wx.Notebook):
         self.imageList = wx.ImageList(16, 16)
         self.SetImageList(self.imageList)
 
-    def AddTab(self):
+    def AddTab(self, type="fit", frame=None, title=None):
         pos = self.GetPageCount() - 1
 
-        p = wx.Panel(self)
-        sizer = wx.BoxSizer(wx.HORIZONTAL)
-        p.view = FittingView(p)
-        sizer.Add(p.view, 1, wx.EXPAND | wx.RESERVE_SPACE_EVEN_IF_HIDDEN)
+        if type == "fit":
+            p = wx.Panel(self)
+            p.type = "fit"
+            sizer = wx.BoxSizer(wx.HORIZONTAL)
+            p.view = FittingView(p)
+            sizer.Add(p.view, 1, wx.EXPAND | wx.RESERVE_SPACE_EVEN_IF_HIDDEN)
 
-        p.SetSizer(sizer)
+            p.SetSizer(sizer)
 
-        # Get fit name
-        fitID = self.shipBrowser.getSelectedFitID()
-        p.view.changeFit(fitID)
-        self.InsertPage(pos, p, "")
-        self.setTabTitle(pos, fitID)
+            self.InsertPage(pos, p, "")
+            self.setTabTitle(pos, None)
+        else:
+            self.InsertPage(pos, frame, title)
+            frame.type=type
+
         wx.CallAfter(self.ChangeSelection, pos)
 
     def removeTab(self, i):
@@ -78,42 +81,51 @@ class FitMultiSwitch(wx.Notebook):
     def checkAdd(self, event):
         if event.Selection == self.GetPageCount() - 1:
             self.AddTab()
+            #Veto to prevent the + tab from being selected
             event.Veto()
 
     def setTabTitle(self, tab, fitID):
-        if fitID == None:
-            self.SetPageText(tab, "Empty Tab")
-            self.SetPageImage(tab, -1)
-        else:
-            cFit = controller.Fit.getInstance()
-            fit = cFit.getFit(fitID)
-            self.SetPageText(tab, "%s: %s" % (fit.ship.item.name, fit.name))
-            bitmap = bitmapLoader.getBitmap("race_%s_small" % fit.ship.item.race, "icons")
-            imageId = self.imageList.Add(bitmap)
-            self.SetPageImage(tab, imageId)
+        page = self.GetPage(tab)
+        if page.type == "fit":
+            if fitID == None:
+                self.SetPageText(tab, "Empty Tab")
+                self.SetPageImage(tab, -1)
+            else:
+                cFit = controller.Fit.getInstance()
+                fit = cFit.getFit(fitID)
+                self.SetPageText(tab, "%s: %s" % (fit.ship.item.name, fit.name))
+                bitmap = bitmapLoader.getBitmap("race_%s_small" % fit.ship.item.race, "icons")
+                imageId = self.imageList.Add(bitmap)
+                self.SetPageImage(tab, imageId)
 
     def changeFit(self, event):
-        fitID = event.fitID
         selected = self.GetSelection()
-        view = self.GetPage(selected).view
-        #Change title of current tab to new fit
-        self.setTabTitle(selected, fitID)
-        view.changeFit(fitID)
+        page = self.GetPage(selected)
+        if page.type == "fit":
+            fitID = event.fitID
+            view = page.view
+            #Change title of current tab to new fit
+            self.setTabTitle(selected, fitID)
+            view.changeFit(fitID)
 
     def processRename(self, event):
         fitID = event.fitID
         # Loop through every tab and check if they're our culprit, if so, change tab name
         for i in xrange(self.GetPageCount() - 1):
-            view = self.GetPage(i).view
-            if view.activeFitID == fitID:
-                self.setTabTitle(i, fitID)
+            page = self.GetPage(i)
+            if page.type == "fit":
+                view = page.view
+                if view.activeFitID == fitID:
+                    self.setTabTitle(i, fitID)
 
     def processRemove(self, event):
         fitID = event.fitID
         for i in xrange(self.GetPageCount() - 2, -1, -1):
-            view = self.GetPage(i).view
-            if view.activeFitID == fitID:
-                self.removeTab(i)
+            page = self.GetPage(i)
+            if page.type == "fit":
+                view = page.view
+                if view.activeFitID == fitID:
+                    self.removeTab(i)
 
 
         #Deleting a tab might have put us on the "+" tab, make sure we don't stay there
