@@ -26,6 +26,7 @@ class FitMultiSwitch(wx.Notebook):
         wx.Notebook.__init__(self, parent, wx.ID_ANY)
         self.fitPanes = []
         self.AddPage(wx.Panel(self), "+")
+        self.Bind(wx.EVT_NOTEBOOK_PAGE_CHANGING, self.checkAdd)
 
     def AddTab(self):
         p = wx.Panel(self)
@@ -36,4 +37,10 @@ class FitMultiSwitch(wx.Notebook):
         p.SetSizer(sizer)
         pos = self.GetPageCount() - 1
         self.InsertPage(pos, p, "Empty tab")
-        self.SetSelection(pos)
+        wx.CallAfter(self.ChangeSelection, pos)
+
+    def checkAdd(self, event):
+
+        if event.Selection == self.GetPageCount() - 1:
+            self.AddTab()
+            event.Veto()

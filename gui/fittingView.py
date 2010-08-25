@@ -20,6 +20,7 @@
 import wx
 import sys
 import gui.builtinViewColumns
+import gui.mainFrame
 from gui.builtinViewColumns import *
 
 class FittingView(wx.ListCtrl):
@@ -43,6 +44,10 @@ class FittingView(wx.ListCtrl):
         self.Bind(wx.EVT_LIST_COL_END_DRAG, self.dragCheck)
 
         #Listen to when stuff in the ship browser changes
+        mainFrame = gui.mainFrame.MainFrame.getInstance()
+        for tree in (mainFrame.shipBrowser.shipView, mainFrame.shipBrowser.searchView):
+            tree.Bind(wx.EVT_TREE_SEL_CHANGED, self.changeFit)
+            tree.Bind(wx.EVT_TREE_END_LABEL_EDIT, self.renameFit)
 
         i = 0
         for colName in FittingView.DEFAULT_COLS:
@@ -78,3 +83,11 @@ class FittingView(wx.ListCtrl):
 
     def dragEnd(self, event):
         print event
+
+    def renameFit(self, event):
+        print event
+        event.Skip()
+
+    def changeFit(self, event):
+        print event
+        event.Skip()

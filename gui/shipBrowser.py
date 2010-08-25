@@ -111,6 +111,8 @@ class ShipBrowser(wx.Panel):
                 for btn in btns:
                     btn.Enable(False)
 
+        event.Skip()
+
     def expandLookup(self, event):
         tree = self.getActiveTree()
         root = event.Item
@@ -133,6 +135,8 @@ class ShipBrowser(wx.Panel):
 
             tree.SortChildren(root)
 
+        event.Skip()
+
     def newFit(self, event):
         tree = self.getActiveTree()
         root = tree.GetSelection()
@@ -150,6 +154,7 @@ class ShipBrowser(wx.Panel):
         tree.Expand(root)
         tree.SelectItem(childId)
         tree.EditLabel(childId)
+        event.Skip()
 
     def renameOrExpand(self, event):
         tree = self.getActiveTree()
@@ -168,6 +173,8 @@ class ShipBrowser(wx.Panel):
         if type == "fit":
             tree.EditLabel(root)
 
+        event.Skip()
+
     def changeFitName(self, event):
         tree = self.getActiveTree()
         item = event.Item
@@ -176,6 +183,7 @@ class ShipBrowser(wx.Panel):
         cFit = controller.Fit.getInstance()
         cFit.renameFit(fitID, newName)
         wx.CallAfter(tree.SortChildren, tree.GetItemParent(item))
+        event.Skip()
 
     def deleteFit(self, event):
         tree = self.getActiveTree()
@@ -185,6 +193,8 @@ class ShipBrowser(wx.Panel):
             cFit = controller.Fit.getInstance()
             cFit.deleteFit(fitID)
             tree.Delete(root)
+
+        event.Skip()
 
     def copyFit(self, event):
         tree = self.getActiveTree()
@@ -200,9 +210,12 @@ class ShipBrowser(wx.Panel):
             tree.SelectItem(childId)
             tree.EditLabel(childId)
 
+        event.Skip()
+
     def scheduleSearch(self, event):
         self.searchTimer.Stop()
         self.searchTimer.Start(50, wx.TIMER_ONE_SHOT)
+        event.Skip()
 
     def clearSearch(self, event, clearText=True):
         if self.getActiveTree() == self.searchView:
@@ -215,6 +228,8 @@ class ShipBrowser(wx.Panel):
             self.searchView.Hide()
 
             self.viewSizer.Layout()
+
+        event.Skip()
 
     def startSearch(self, event):
         search = self.shipMenu.search.GetLineText(0)
@@ -262,6 +277,7 @@ class ShipBrowser(wx.Panel):
             self.shipView.Collapse(child)
             child, cookie = self.shipView.GetNextChild(root, cookie)
 
+        event.Skip()
 
 class ShipView(wx.TreeCtrl):
     def __init__(self, parent):
