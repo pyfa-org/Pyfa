@@ -21,46 +21,62 @@ import wx
 from gui import bitmapLoader
 import gui.mainFrame
 
-class StatsPane(wx.CollapsiblePane):
+class StatsPane(wx.Panel):
     def collapseChanged(self, event):
         collapsed = event.Collapsed
         if collapsed:
-            self.GetPane().SetMinSize(self.minSize)
+            self.pickerSizer.Replace(self.fullPanel, self.minPanel)
+            self.SetMinSize(self.minSize)
         else:
-            self.GetPane().SetMinSize(self.fullSize)
+            self.pickerSizer.Replace(self.minPanel, self.fullPanel)
+            self.SetMinSize(self.fullSize)
 
+        self.fullPanel.Show(not collapsed)
+        self.minPanel.Show(collapsed)
         gui.mainFrame.MainFrame.getInstance().statsSizer.Layout()
 
     def __init__(self, parent):
-        wx.CollapsiblePane.__init__(self, parent, label="Stats")
-        self.Expand()
-        self.fullSize = wx.Size()
-        pane = self.GetPane()
-        self.fullSize.SetWidth(330)
-        self.SetMinSize(self.fullSize)
+        wx.Panel.__init__(self, parent)
 
+        self.pickerSizer = wx.BoxSizer(wx.VERTICAL)
+        self.SetSizer(self.pickerSizer)
+
+        collapsible = wx.CollapsiblePane(self, label="Stats")
+        collapsible.Expand()
+        collapsible.Bind(wx.EVT_COLLAPSIBLEPANE_CHANGED, self.collapseChanged)
+
+        self.pickerSizer.Add(collapsible, 0, wx.EXPAND)
+
+        self.fullSize = wx.Size()
+        self.fullSize.SetWidth(330)
+        self.fullPanel = wx.Panel(self)
+        self.SetMinSize(self.fullSize)
+        self.pickerSizer.Add(self.fullPanel, 1, wx.EXPAND)
 
         self.minSize = wx.Size()
-        self.minSize.SetWidth(wx.SIZE_AUTO_WIDTH)
+        self.minSize.SetWidth(100)
+        self.minPanel = wx.Panel(self)
+        self.minPanel.Hide()
+        self.minPanel.SetBackgroundColour("cyan")
+        self.minPanel.SetMinSize(self.minSize)
 
 
-        self.Bind(wx.EVT_COLLAPSIBLEPANE_CHANGED, self.collapseChanged)
 
         boldFont = wx.SystemSettings_GetFont(wx.SYS_DEFAULT_GUI_FONT)
         boldFont.SetWeight(wx.BOLD)
 
-
+        #Populate the full panel first
         self.sizerBase = wx.BoxSizer(wx.VERTICAL)
-        pane.SetSizer(self.sizerBase)
+        self.fullPanel.SetSizer(self.sizerBase)
 
         sizerHeaderResources = wx.BoxSizer(wx.HORIZONTAL)
         self.sizerBase.Add(sizerHeaderResources, 0, wx.EXPAND | wx.LEFT, 3)
 
         # Resources header
-        self.labelResources = wx.StaticText(pane, wx.ID_ANY, "Resources")
+        self.labelResources = wx.StaticText(self.fullPanel, wx.ID_ANY, "Resources")
         self.labelResources.SetFont(boldFont)
         sizerHeaderResources.Add(self.labelResources, 0, wx.ALIGN_CENTER)
-        sizerHeaderResources.Add(wx.StaticLine(pane, wx.ID_ANY), 1, wx.ALIGN_CENTER)
+        sizerHeaderResources.Add(wx.StaticLine(self.fullPanel, wx.ID_ANY), 1, wx.ALIGN_CENTER)
 
         # Resources stuff
         sizerResources = wx.BoxSizer(wx.HORIZONTAL)
@@ -74,37 +90,37 @@ class StatsPane(wx.CollapsiblePane):
         sizerResources.Add(sizerHardResources, 1, wx.ALIGN_CENTER)
 
         for type in ("turret", "launcher"):
-            sizerHardResources.Add(bitmapLoader.getStaticBitmap("%s_big" % type, pane, "icons"), 0, wx.ALIGN_CENTER)
+            sizerHardResources.Add(bitmapLoader.getStaticBitmap("%s_big" % type, self.fullPanel, "icons"), 0, wx.ALIGN_CENTER)
 
             box = wx.BoxSizer(wx.HORIZONTAL)
             sizerHardResources.Add(box, 0, wx.ALIGN_CENTER)
 
-            lbl = wx.StaticText(pane, wx.ID_ANY, "0")
-            setattr(pane, "labelAvailable%sHardpoints", lbl)
+            lbl = wx.StaticText(self.fullPanel, wx.ID_ANY, "0")
+            setattr(self.fullPanel, "labelAvailable%sHardpoints", lbl)
             box.Add(lbl, 0, wx.ALIGN_LEFT)
 
-            box.Add(wx.StaticText(pane, wx.ID_ANY, "/"), 0, wx.ALIGN_LEFT)
+            box.Add(wx.StaticText(self.fullPanel, wx.ID_ANY, "/"), 0, wx.ALIGN_LEFT)
 
-            lbl = wx.StaticText(pane, wx.ID_ANY, "0")
+            lbl = wx.StaticText(self.fullPanel, wx.ID_ANY, "0")
             setattr(self, "labelTotal%sHardpoints", lbl)
             box.Add(lbl, 0, wx.ALIGN_LEFT)
 
 
         # Calibration points
-        sizerHardResources.Add(bitmapLoader.getStaticBitmap("calibration_big", pane, "icons"))
+        sizerHardResources.Add(bitmapLoader.getStaticBitmap("calibration_big", self.fullPanel, "icons"))
 
         box = wx.BoxSizer(wx.HORIZONTAL)
         sizerHardResources.Add(box, 0, wx.ALIGN_CENTER)
 
-        self.labelAvailableCalibrationPoints = wx.StaticText(pane, wx.ID_ANY, "0")
+        self.labelAvailableCalibrationPoints = wx.StaticText(self.fullPanel, wx.ID_ANY, "0")
         box.Add(self.labelAvailableCalibrationPoints, 0, wx.ALIGN_LEFT)
 
-        box.Add(wx.StaticText(pane, wx.ID_ANY, "/"), 0, wx.ALIGN_LEFT)
+        box.Add(wx.StaticText(self.fullPanel, wx.ID_ANY, "/"), 0, wx.ALIGN_LEFT)
 
-        self.labelTotalCalibrationPoints = wx.StaticText(pane, wx.ID_ANY, "0")
+        self.labelTotalCalibrationPoints = wx.StaticText(self.fullPanel, wx.ID_ANY, "0")
         box.Add(self.labelTotalCalibrationPoints, 0, wx.ALIGN_LEFT)
 
-        sizerResources.Add(wx.StaticLine(pane, wx.ID_ANY, style=wx.VERTICAL), 0, wx.EXPAND)
+        sizerResources.Add(wx.StaticLine(self.fullPanel, wx.ID_ANY, style=wx.VERTICAL), 0, wx.EXPAND)
 
         #PG, Cpu & drone stuff
         for group in (("cpu", "pg"), ("droneBay", "droneBandwidth")):
@@ -116,7 +132,7 @@ class StatsPane(wx.CollapsiblePane):
                 base = wx.BoxSizer(wx.HORIZONTAL)
                 main.Add(base, 0, wx.EXPAND)
 
-                base.Add(bitmapLoader.getStaticBitmap(type + "_big", pane, "icons"), 0, wx.ALIGN_CENTER)
+                base.Add(bitmapLoader.getStaticBitmap(type + "_big", self.fullPanel, "icons"), 0, wx.ALIGN_CENTER)
 
                 stats = wx.BoxSizer(wx.VERTICAL)
                 base.Add(stats, 0, wx.EXPAND)
@@ -124,40 +140,40 @@ class StatsPane(wx.CollapsiblePane):
                 absolute =  wx.BoxSizer(wx.HORIZONTAL)
                 stats.Add(absolute)
 
-                lbl = wx.StaticText(pane, wx.ID_ANY, "0")
+                lbl = wx.StaticText(self.fullPanel, wx.ID_ANY, "0")
                 setattr(self, "labelAvailable%s" % capitalizedType, lbl)
                 absolute.Add(lbl, 0, wx.ALIGN_CENTER)
 
-                absolute.Add(wx.StaticText(pane, wx.ID_ANY, "/"), 0, wx.ALIGN_CENTER)
+                absolute.Add(wx.StaticText(self.fullPanel, wx.ID_ANY, "/"), 0, wx.ALIGN_CENTER)
 
-                lbl = wx.StaticText(pane, wx.ID_ANY, "0")
+                lbl = wx.StaticText(self.fullPanel, wx.ID_ANY, "0")
                 setattr(self, "labelTotal%s" % capitalizedType, lbl)
                 absolute.Add(lbl, 0, wx.ALIGN_CENTER)
 
-                gauge = wx.Gauge(pane, wx.ID_ANY, 100)
+                gauge = wx.Gauge(self.fullPanel, wx.ID_ANY, 100)
                 gauge.SetMinSize((100, -1))
                 setattr(self, "gauge%s" % capitalizedType, gauge)
                 stats.Add(gauge)
 
             if "cpu" in group:
-                sizerResources.Add(wx.StaticLine(pane, wx.ID_ANY, style=wx.VERTICAL), 0, wx.ALIGN_CENTER)
+                sizerResources.Add(wx.StaticLine(self.fullPanel, wx.ID_ANY, style=wx.VERTICAL), 0, wx.ALIGN_CENTER)
 
         # Resistances
         sizerHeaderResistances = wx.BoxSizer(wx.HORIZONTAL)
         self.sizerBase.Add(sizerHeaderResistances, 0, wx.EXPAND | wx.LEFT, 3)
 
         # Header & EHP
-        labelResistances = wx.StaticText(pane, wx.ID_ANY, "Resistances")
+        labelResistances = wx.StaticText(self.fullPanel, wx.ID_ANY, "Resistances")
         labelResistances.SetFont(boldFont)
         sizerHeaderResistances.Add(labelResistances, 0, wx.ALIGN_CENTER)
 
-        sizerHeaderResistances.Add(wx.StaticText(pane, wx.ID_ANY, " (Effective HP: "), 0, wx.ALIGN_CENTER)
+        sizerHeaderResistances.Add(wx.StaticText(self.fullPanel, wx.ID_ANY, " (Effective HP: "), 0, wx.ALIGN_CENTER)
 
-        self.labelEhp = wx.StaticText(pane, wx.ID_ANY, "0")
+        self.labelEhp = wx.StaticText(self.fullPanel, wx.ID_ANY, "0")
         sizerHeaderResistances.Add(self.labelEhp, 0, wx.ALIGN_CENTER)
 
-        sizerHeaderResistances.Add(wx.StaticText(pane, wx.ID_ANY, ")"), 0, wx.ALIGN_CENTER)
-        sizerHeaderResistances.Add(wx.StaticLine(pane, wx.ID_ANY), 1, wx.ALIGN_CENTER)
+        sizerHeaderResistances.Add(wx.StaticText(self.fullPanel, wx.ID_ANY, ")"), 0, wx.ALIGN_CENTER)
+        sizerHeaderResistances.Add(wx.StaticLine(self.fullPanel, wx.ID_ANY), 1, wx.ALIGN_CENTER)
 
         # Display table
         sizerResistances = wx.FlexGridSizer(4, 6)
@@ -167,28 +183,28 @@ class StatsPane(wx.CollapsiblePane):
         self.sizerBase.Add(sizerResistances, 0, wx.EXPAND | wx.LEFT, 3)
 
         # Add an empty label, then the rest.
-        sizerResistances.Add(wx.StaticText(pane, wx.ID_ANY))
+        sizerResistances.Add(wx.StaticText(self.fullPanel, wx.ID_ANY))
 
         for damageType in ("em", "thermal", "kinetic", "explosive"):
-            sizerResistances.Add(bitmapLoader.getStaticBitmap("%s_big" % damageType, pane, "icons"), 0, wx.ALIGN_CENTER)
+            sizerResistances.Add(bitmapLoader.getStaticBitmap("%s_big" % damageType, self.fullPanel, "icons"), 0, wx.ALIGN_CENTER)
 
-        sizerResistances.Add(wx.StaticText(pane, wx.ID_ANY, "EHP"), 0, wx.ALIGN_CENTER)
+        sizerResistances.Add(wx.StaticText(self.fullPanel, wx.ID_ANY, "EHP"), 0, wx.ALIGN_CENTER)
 
         for tankType in ("damagePattern", "shield", "armor", "hull"):
-            sizerResistances.Add(bitmapLoader.getStaticBitmap("%s_big" % tankType, pane, "icons"), 0, wx.ALIGN_CENTER)
+            sizerResistances.Add(bitmapLoader.getStaticBitmap("%s_big" % tankType, self.fullPanel, "icons"), 0, wx.ALIGN_CENTER)
 
             for damageType in ("em", "thermal", "kinetic", "explosive"):
                 box = wx.BoxSizer(wx.HORIZONTAL)
                 sizerResistances.Add(box, 1, wx.ALIGN_CENTER)
 
-                lbl = wx.StaticText(pane, wx.ID_ANY, "0.00")
+                lbl = wx.StaticText(self.fullPanel, wx.ID_ANY, "0.00")
                 setattr(self, "labelResistance%s%s" % (tankType, damageType), lbl)
                 box.Add(lbl, 0, wx.ALIGN_CENTER)
 
-                box.Add(wx.StaticText(pane, wx.ID_ANY, "%"), 0, wx.ALIGN_CENTER)
+                box.Add(wx.StaticText(self.fullPanel, wx.ID_ANY, "%"), 0, wx.ALIGN_CENTER)
 
 
-            lbl = wx.StaticText(pane, wx.ID_ANY, "0" if tankType != "damagePattern" else "")
+            lbl = wx.StaticText(self.fullPanel, wx.ID_ANY, "0" if tankType != "damagePattern" else "")
 
             setattr(self, "labelResistance%sEhp" % tankType, lbl)
             sizerResistances.Add(lbl, 0, wx.ALIGN_CENTER)
@@ -198,11 +214,11 @@ class StatsPane(wx.CollapsiblePane):
         sizerHeaderRechargeRates = wx.BoxSizer(wx.HORIZONTAL)
         self.sizerBase.Add(sizerHeaderRechargeRates, 0, wx.EXPAND | wx.LEFT, 3)
 
-        labelRecharge = wx.StaticText(pane, wx.ID_ANY, "Recharge Rates")
+        labelRecharge = wx.StaticText(self.fullPanel, wx.ID_ANY, "Recharge Rates")
         labelRecharge.SetFont(boldFont)
 
         sizerHeaderRechargeRates.Add(labelRecharge, 0, wx.ALIGN_CENTER)
-        sizerHeaderRechargeRates.Add(wx.StaticLine(pane, wx.ID_ANY), 1, wx.ALIGN_CENTER)
+        sizerHeaderRechargeRates.Add(wx.StaticLine(self.fullPanel, wx.ID_ANY), 1, wx.ALIGN_CENTER)
 
         sizerTankStats = wx.FlexGridSizer(3, 5)
         for i in xrange(4):
@@ -211,20 +227,20 @@ class StatsPane(wx.CollapsiblePane):
         self.sizerBase.Add(sizerTankStats, 0, wx.EXPAND | wx.LEFT, 3)
 
         #Add an empty label first for correct alignment.
-        sizerTankStats.Add(wx.StaticText(pane, wx.ID_ANY, ""), 0)
+        sizerTankStats.Add(wx.StaticText(self.fullPanel, wx.ID_ANY, ""), 0)
         for tankType in ("shieldPassive", "shieldActive", "armorActive", "hullActive"):
-            sizerTankStats.Add(bitmapLoader.getStaticBitmap("%s_big" % tankType, pane, "icons"), 1, wx.ALIGN_CENTER)
+            sizerTankStats.Add(bitmapLoader.getStaticBitmap("%s_big" % tankType, self.fullPanel, "icons"), 1, wx.ALIGN_CENTER)
 
         for stability in ("reinforced", "sustained"):
-                sizerTankStats.Add(bitmapLoader.getStaticBitmap("regen%s_big" % stability.capitalize(), pane, "icons"), 0, wx.ALIGN_CENTER)
+                sizerTankStats.Add(bitmapLoader.getStaticBitmap("regen%s_big" % stability.capitalize(), self.fullPanel, "icons"), 0, wx.ALIGN_CENTER)
                 for tankType in ("shieldPassive", "shieldActive", "armorActive", "hullActive"):
                     tankTypeCap = tankType[0].capitalize() + tankType[1:]
-                    lbl = wx.StaticText(pane, wx.ID_ANY, "0.0")
+                    lbl = wx.StaticText(self.fullPanel, wx.ID_ANY, "0.0")
                     setattr(self, "labelTank%s%s" % (stability.capitalize(), tankTypeCap), lbl)
 
                     box = wx.BoxSizer(wx.HORIZONTAL)
                     box.Add(lbl, 1, wx.ALIGN_CENTER)
-                    box.Add(wx.StaticText(pane, wx.ID_ANY, " HP/s"), 0, wx.ALIGN_CENTER)
+                    box.Add(wx.StaticText(self.fullPanel, wx.ID_ANY, " HP/s"), 0, wx.ALIGN_CENTER)
 
                     sizerTankStats.Add(box, 1, wx.ALIGN_CENTER)
 
@@ -232,11 +248,11 @@ class StatsPane(wx.CollapsiblePane):
         sizerHeaderFirepower = wx.BoxSizer(wx.HORIZONTAL)
         self.sizerBase.Add(sizerHeaderFirepower, 0, wx.EXPAND | wx.LEFT, 3)
 
-        labelFirepower = wx.StaticText(pane, wx.ID_ANY, "Firepower")
+        labelFirepower = wx.StaticText(self.fullPanel, wx.ID_ANY, "Firepower")
         labelFirepower.SetFont(boldFont)
 
         sizerHeaderFirepower.Add(labelFirepower, 0, wx.ALIGN_CENTER)
-        sizerHeaderFirepower.Add(wx.StaticLine(pane, wx.ID_ANY), 1, wx.ALIGN_CENTER)
+        sizerHeaderFirepower.Add(wx.StaticLine(self.fullPanel, wx.ID_ANY), 1, wx.ALIGN_CENTER)
 
         sizerFirepower = wx.FlexGridSizer(1, 3)
         for i in xrange(3):
@@ -248,26 +264,26 @@ class StatsPane(wx.CollapsiblePane):
             baseBox = wx.BoxSizer(wx.HORIZONTAL)
             sizerFirepower.Add(baseBox, 0, wx.ALIGN_CENTER)
 
-            baseBox.Add(bitmapLoader.getStaticBitmap("%s_big" % image, pane, "icons"), 0, wx.ALIGN_CENTER)
+            baseBox.Add(bitmapLoader.getStaticBitmap("%s_big" % image, self.fullPanel, "icons"), 0, wx.ALIGN_CENTER)
 
             box = wx.BoxSizer(wx.VERTICAL)
             baseBox.Add(box, 0, wx.ALIGN_CENTER)
 
-            box.Add(wx.StaticText(pane, wx.ID_ANY, damageType.capitalize()), 0, wx.ALIGN_LEFT)
+            box.Add(wx.StaticText(self.fullPanel, wx.ID_ANY, damageType.capitalize()), 0, wx.ALIGN_LEFT)
 
             hbox = wx.BoxSizer(wx.HORIZONTAL)
             box.Add(hbox, 1, wx.ALIGN_CENTER)
 
-            lbl = wx.StaticText(pane, wx.ID_ANY, "0.0")
+            lbl = wx.StaticText(self.fullPanel, wx.ID_ANY, "0.0")
             setattr(self, "labelDps%s" % damageType, lbl)
 
             hbox.Add(lbl, 0, wx.ALIGN_CENTER)
-            hbox.Add(wx.StaticText(pane, wx.ID_ANY, " DPS"), 0, wx.ALIGN_CENTER)
+            hbox.Add(wx.StaticText(self.fullPanel, wx.ID_ANY, " DPS"), 0, wx.ALIGN_CENTER)
 
         baseBox = wx.BoxSizer(wx.HORIZONTAL)
         sizerFirepower.Add(baseBox, 0, wx.ALIGN_CENTER)
 
-        baseBox.Add(bitmapLoader.getStaticBitmap("volley_big", pane, "icons"), 0, wx.ALIGN_CENTER)
+        baseBox.Add(bitmapLoader.getStaticBitmap("volley_big", self.fullPanel, "icons"), 0, wx.ALIGN_CENTER)
 
         box = wx.BoxSizer(wx.VERTICAL)
         baseBox.Add(box, 1, wx.ALIGN_CENTER)
@@ -275,26 +291,26 @@ class StatsPane(wx.CollapsiblePane):
         hbox = wx.BoxSizer(wx.HORIZONTAL)
         box.Add(hbox, 1, wx.ALIGN_LEFT)
 
-        self.labelVolleyTotal = wx.StaticText(pane, wx.ID_ANY, "0.0")
-        hbox.Add(wx.StaticText(pane, wx.ID_ANY, "Volley: "), 0, wx.ALIGN_LEFT)
+        self.labelVolleyTotal = wx.StaticText(self.fullPanel, wx.ID_ANY, "0.0")
+        hbox.Add(wx.StaticText(self.fullPanel, wx.ID_ANY, "Volley: "), 0, wx.ALIGN_LEFT)
         hbox.Add(self.labelVolleyTotal, 0, wx.EXPAND)
 
         hbox = wx.BoxSizer(wx.HORIZONTAL)
         box.Add(hbox, 1, wx.ALIGN_CENTER)
 
-        self.labelDpsTotal = wx.StaticText(pane, wx.ID_ANY, "0.0")
-        hbox.Add(wx.StaticText(pane, wx.ID_ANY, "Total DPS: "), 0, wx.ALIGN_LEFT)
+        self.labelDpsTotal = wx.StaticText(self.fullPanel, wx.ID_ANY, "0.0")
+        hbox.Add(wx.StaticText(self.fullPanel, wx.ID_ANY, "Total DPS: "), 0, wx.ALIGN_LEFT)
         hbox.Add(self.labelDpsTotal, 0, wx.ALIGN_CENTER)
 
         # Capacitor
         sizerHeaderCapacitor = wx.BoxSizer(wx.HORIZONTAL)
         self.sizerBase.Add(sizerHeaderCapacitor, 0, wx.EXPAND | wx.LEFT, 3)
 
-        labelCapacitor = wx.StaticText(pane, wx.ID_ANY, "Capacitor")
+        labelCapacitor = wx.StaticText(self.fullPanel, wx.ID_ANY, "Capacitor")
         labelCapacitor.SetFont(boldFont)
 
         sizerHeaderCapacitor.Add(labelCapacitor, 0, wx.ALIGN_CENTER)
-        sizerHeaderCapacitor.Add(wx.StaticLine(pane, wx.ID_ANY), 1, wx.ALIGN_CENTER)
+        sizerHeaderCapacitor.Add(wx.StaticLine(self.fullPanel, wx.ID_ANY), 1, wx.ALIGN_CENTER)
 
         sizerCapacitor = wx.GridSizer(1, 2)
         self.sizerBase.Add(sizerCapacitor, 0, wx.EXPAND  | wx.LEFT, 3)
@@ -303,7 +319,7 @@ class StatsPane(wx.CollapsiblePane):
         baseBox = wx.BoxSizer(wx.HORIZONTAL)
         sizerCapacitor.Add(baseBox, 1, wx.ALIGN_CENTER)
 
-        baseBox.Add(bitmapLoader.getStaticBitmap("capacitorInfo_big", pane, "icons"), 0, wx.ALIGN_CENTER)
+        baseBox.Add(bitmapLoader.getStaticBitmap("capacitorInfo_big", self.fullPanel, "icons"), 0, wx.ALIGN_CENTER)
 
         box = wx.BoxSizer(wx.VERTICAL)
         baseBox.Add(box, 0, wx.ALIGN_CENTER)
@@ -311,23 +327,23 @@ class StatsPane(wx.CollapsiblePane):
         hbox = wx.BoxSizer(wx.HORIZONTAL)
         box.Add(hbox, 1, wx.ALIGN_CENTER)
 
-        hbox.Add(wx.StaticText(pane, wx.ID_ANY, "Capacity: "), 0, wx.ALIGN_CENTER)
-        self.labelCapacitorCapacity = wx.StaticText(pane, wx.ID_ANY, "0.0")
+        hbox.Add(wx.StaticText(self.fullPanel, wx.ID_ANY, "Capacity: "), 0, wx.ALIGN_CENTER)
+        self.labelCapacitorCapacity = wx.StaticText(self.fullPanel, wx.ID_ANY, "0.0")
         hbox.Add(self.labelCapacitorCapacity, 0, wx.ALIGN_CENTER)
-        hbox.Add(wx.StaticText(pane, wx.ID_ANY, " GJ"), 0, wx.ALIGN_CENTER)
+        hbox.Add(wx.StaticText(self.fullPanel, wx.ID_ANY, " GJ"), 0, wx.ALIGN_CENTER)
 
         hbox = wx.BoxSizer(wx.HORIZONTAL)
         box.Add(hbox, 1, wx.ALIGN_LEFT)
 
-        hbox.Add(wx.StaticText(pane, wx.ID_ANY, "Lasts "), 0, wx.ALIGN_LEFT)
-        self.labelCapacitorTime = wx.StaticText(pane, wx.ID_ANY, "0s")
+        hbox.Add(wx.StaticText(self.fullPanel, wx.ID_ANY, "Lasts "), 0, wx.ALIGN_LEFT)
+        self.labelCapacitorTime = wx.StaticText(self.fullPanel, wx.ID_ANY, "0s")
         hbox.Add(self.labelCapacitorTime, 0, wx.ALIGN_LEFT)
 
         # Capacitor balance
         baseBox = wx.BoxSizer(wx.HORIZONTAL)
         sizerCapacitor.Add(baseBox, 1, wx.ALIGN_CENTER)
 
-        baseBox.Add(bitmapLoader.getStaticBitmap("capacitorRecharge_big", pane, "icons"), 0, wx.ALIGN_CENTER)
+        baseBox.Add(bitmapLoader.getStaticBitmap("capacitorRecharge_big", self.fullPanel, "icons"), 0, wx.ALIGN_CENTER)
 
         box = wx.BoxSizer(wx.VERTICAL)
         baseBox.Add(box, 0, wx.ALIGN_CENTER)
@@ -336,16 +352,16 @@ class StatsPane(wx.CollapsiblePane):
         chargeSizer = wx.FlexGridSizer(2, 3)
         box.Add(chargeSizer)
 
-        chargeSizer.Add(wx.StaticText(pane, wx.ID_ANY, "+ "), 0, wx.ALIGN_CENTER)
-        self.labelCapacitorRecharge = wx.StaticText(pane, wx.ID_ANY, "0.0")
+        chargeSizer.Add(wx.StaticText(self.fullPanel, wx.ID_ANY, "+ "), 0, wx.ALIGN_CENTER)
+        self.labelCapacitorRecharge = wx.StaticText(self.fullPanel, wx.ID_ANY, "0.0")
         chargeSizer.Add(self.labelCapacitorRecharge, 0, wx.ALIGN_CENTER)
-        chargeSizer.Add(wx.StaticText(pane, wx.ID_ANY, " GJ/s"), 0, wx.ALIGN_CENTER)
+        chargeSizer.Add(wx.StaticText(self.fullPanel, wx.ID_ANY, " GJ/s"), 0, wx.ALIGN_CENTER)
 
         # Discharge
-        chargeSizer.Add(wx.StaticText(pane, wx.ID_ANY, "- "), 0, wx.ALIGN_CENTER)
-        self.labelCapacitorDischarge = wx.StaticText(pane, wx.ID_ANY, "0.0")
+        chargeSizer.Add(wx.StaticText(self.fullPanel, wx.ID_ANY, "- "), 0, wx.ALIGN_CENTER)
+        self.labelCapacitorDischarge = wx.StaticText(self.fullPanel, wx.ID_ANY, "0.0")
         chargeSizer.Add(self.labelCapacitorDischarge, 0, wx.ALIGN_CENTER)
-        chargeSizer.Add(wx.StaticText(pane, wx.ID_ANY, " GJ/s"), 0, wx.ALIGN_CENTER)
+        chargeSizer.Add(wx.StaticText(self.fullPanel, wx.ID_ANY, " GJ/s"), 0, wx.ALIGN_CENTER)
 
         # Targeting & Misc
         grid = wx.GridSizer(1, 2)
@@ -355,21 +371,21 @@ class StatsPane(wx.CollapsiblePane):
         sizerHeaderTargeting = wx.BoxSizer(wx.HORIZONTAL)
         grid.Add(sizerHeaderTargeting, 0, wx.EXPAND)
 
-        labelTargeting = wx.StaticText(pane, wx.ID_ANY, "Targeting")
+        labelTargeting = wx.StaticText(self.fullPanel, wx.ID_ANY, "Targeting")
         labelTargeting.SetFont(boldFont)
 
         sizerHeaderTargeting.Add(labelTargeting, 0, wx.ALIGN_CENTER)
-        sizerHeaderTargeting.Add(wx.StaticLine(pane, wx.ID_ANY), 1, wx.ALIGN_CENTER)
+        sizerHeaderTargeting.Add(wx.StaticLine(self.fullPanel, wx.ID_ANY), 1, wx.ALIGN_CENTER)
 
         # Misc header
         sizerHeaderMisc = wx.BoxSizer(wx.HORIZONTAL)
         grid.Add(sizerHeaderMisc, 0, wx.EXPAND)
 
-        labelMisc = wx.StaticText(pane, wx.ID_ANY, "Misc")
+        labelMisc = wx.StaticText(self.fullPanel, wx.ID_ANY, "Misc")
         labelMisc.SetFont(boldFont)
 
         sizerHeaderMisc.Add(labelMisc, 0, wx.ALIGN_CENTER)
-        sizerHeaderMisc.Add(wx.StaticLine(pane, wx.ID_ANY), 1, wx.ALIGN_CENTER)
+        sizerHeaderMisc.Add(wx.StaticLine(self.fullPanel, wx.ID_ANY), 1, wx.ALIGN_CENTER)
 
         gridTargetingMisc = wx.GridSizer(1, 2)
         self.sizerBase.Add(gridTargetingMisc, 0, wx.EXPAND | wx.LEFT, 3)
@@ -386,16 +402,16 @@ class StatsPane(wx.CollapsiblePane):
                   ("Sensor str.", "SensorStr", ""))
 
         for header, labelShort, unit in labels:
-            gridTargeting.Add(wx.StaticText(pane, wx.ID_ANY, "%s: " % header), 0, wx.ALIGN_LEFT)
+            gridTargeting.Add(wx.StaticText(self.fullPanel, wx.ID_ANY, "%s: " % header), 0, wx.ALIGN_LEFT)
 
             box = wx.BoxSizer(wx.HORIZONTAL)
             gridTargeting.Add(box, 0, wx.ALIGN_LEFT)
 
-            lbl = wx.StaticText(pane, wx.ID_ANY, "0")
+            lbl = wx.StaticText(self.fullPanel, wx.ID_ANY, "0")
             setattr(self, "label%s" % labelShort, lbl)
             box.Add(lbl, 0, wx.ALIGN_LEFT)
 
-            lblUnit = wx.StaticText(pane, wx.ID_ANY, " %s" % unit)
+            lblUnit = wx.StaticText(self.fullPanel, wx.ID_ANY, " %s" % unit)
             setattr(self, "labelUnit%s" % labelShort, lblUnit)
             box.Add(lblUnit, 0, wx.ALIGN_LEFT)
 
@@ -411,16 +427,16 @@ class StatsPane(wx.CollapsiblePane):
                   ("Signature", "SigRadius", "m"))
 
         for header, labelShort, unit in labels:
-            gridMisc.Add(wx.StaticText(pane, wx.ID_ANY, "%s: " % header), 0, wx.ALIGN_LEFT)
+            gridMisc.Add(wx.StaticText(self.fullPanel, wx.ID_ANY, "%s: " % header), 0, wx.ALIGN_LEFT)
 
             box = wx.BoxSizer(wx.HORIZONTAL)
             gridMisc.Add(box, 0, wx.ALIGN_LEFT)
 
-            lbl = wx.StaticText(pane, wx.ID_ANY, "0")
+            lbl = wx.StaticText(self.fullPanel, wx.ID_ANY, "0")
             setattr(self, "label%s" % labelShort, lbl)
             box.Add(lbl, 0, wx.ALIGN_LEFT)
 
-            lblUnit = wx.StaticText(pane, wx.ID_ANY, " %s" % unit)
+            lblUnit = wx.StaticText(self.fullPanel, wx.ID_ANY, " %s" % unit)
             setattr(self, "labelUnit%s" % labelShort, lblUnit)
             box.Add(lblUnit, 0, wx.ALIGN_LEFT)
 
@@ -428,11 +444,11 @@ class StatsPane(wx.CollapsiblePane):
         sizerHeaderPrice = wx.BoxSizer(wx.HORIZONTAL)
         self.sizerBase.Add(sizerHeaderPrice, 0, wx.EXPAND | wx.LEFT, 3)
 
-        labelPrice = wx.StaticText(pane, wx.ID_ANY, "Price")
+        labelPrice = wx.StaticText(self.fullPanel, wx.ID_ANY, "Price")
         labelPrice.SetFont(boldFont)
 
         sizerHeaderPrice.Add(labelPrice, 0, wx.ALIGN_CENTER)
-        sizerHeaderPrice.Add(wx.StaticLine(pane, wx.ID_ANY), 1, wx.ALIGN_CENTER)
+        sizerHeaderPrice.Add(wx.StaticLine(self.fullPanel, wx.ID_ANY), 1, wx.ALIGN_CENTER)
 
         # Grid for the price stuff.
         gridPrice = wx.GridSizer(1, 3)
@@ -443,18 +459,18 @@ class StatsPane(wx.CollapsiblePane):
             box = wx.BoxSizer(wx.HORIZONTAL)
             gridPrice.Add(box)
 
-            box.Add(bitmapLoader.getStaticBitmap(image, pane, "icons"), 0, wx.ALIGN_CENTER)
+            box.Add(bitmapLoader.getStaticBitmap(image, self.fullPanel, "icons"), 0, wx.ALIGN_CENTER)
 
             vbox = wx.BoxSizer(wx.VERTICAL)
             box.Add(vbox, 1, wx.EXPAND)
 
-            vbox.Add(wx.StaticText(pane, wx.ID_ANY, type.capitalize()), 0, wx.ALIGN_LEFT)
+            vbox.Add(wx.StaticText(self.fullPanel, wx.ID_ANY, type.capitalize()), 0, wx.ALIGN_LEFT)
 
             hbox = wx.BoxSizer(wx.HORIZONTAL)
             vbox.Add(hbox)
 
-            lbl = wx.StaticText(pane, wx.ID_ANY, "0.00")
+            lbl = wx.StaticText(self.fullPanel, wx.ID_ANY, "0.00")
             setattr(self, "labelPrice%s" % type, lbl)
             hbox.Add(lbl, 0, wx.ALIGN_LEFT)
 
-            hbox.Add(wx.StaticText(pane, wx.ID_ANY, " m ISK"), 0, wx.ALIGN_LEFT)
+            hbox.Add(wx.StaticText(self.fullPanel, wx.ID_ANY, " m ISK"), 0, wx.ALIGN_LEFT)
