@@ -18,9 +18,9 @@
 #===============================================================================
 
 import wx
+import bitmapLoader
 import gui.mainFrame
 from gui.fittingView import FittingView
-from gui.statsPane import StatsPane
 import gui.shipBrowser as sb
 import controller
 
@@ -37,6 +37,9 @@ class FitMultiSwitch(wx.Notebook):
         self.shipBrowser.Bind(sb.EVT_FIT_SELECTED, self.changeFit)
         self.shipBrowser.Bind(sb.EVT_FIT_REMOVED, self.processRemove)
 
+        self.imageList = wx.ImageList(16, 16)
+        self.SetImageList(self.imageList)
+
     def AddTab(self):
         pos = self.GetPageCount() - 1
 
@@ -49,13 +52,9 @@ class FitMultiSwitch(wx.Notebook):
 
         # Get fit name
         fitID = self.shipBrowser.getSelectedFitID()
-        if fitID is None:
-            name = "Empty Tab"
-        else:
-            cFit = controller.Fit.getInstance()
-            name = cFit.getFit(fitID).name
 
-        self.InsertPage(pos, p, name)
+        self.InsertPage(pos, p, "")
+        self.setTabTitle(pos, fitID)
         wx.CallAfter(self.ChangeSelection, pos)
 
     def checkAdd(self, event):
@@ -63,21 +62,33 @@ class FitMultiSwitch(wx.Notebook):
             self.AddTab()
             event.Veto()
 
+    def setTabTitle(self, tab, fitID):
+        if fitID == None:
+            self.SetPageText(tab, "Empty Tab")
+        else:
+            cFit = controller.Fit.getInstance()
+            fit = cFit.getFit(fitID)
+            self.SetPageText(tab, "%s: %s" % (fit.ship.item.name, fit.name))
+            bitmap = bitmapLoader.getBitmap("race_%s_small" % fit.ship.item.race, "icons")
+            imageId = self.imageList.Add(bitmap)
+            self.SetPageImage(tab, imageId)
+
     def changeFit(self, event):
         fitID = event.fitID
-        cFit = controller.Fit.getInstance()
         selected = self.GetSelection()
         view = self.GetPage(selected).view
-        self.SetPageText(selected, cFit.getFit(fitID).name)
+        #Change title of current tab to new fit
+        self.setTabTitle(selected, fitID)
         view.changeFit(fitID)
 
     def processRename(self, event):
         fitID = event.fitID
         cFit = controller.Fit.getInstance()
+        # Loop through every tab and check if they're our culprit, if so, change tab name
         for i in xrange(self.GetPageCount() - 1):
             view = self.GetPage(i).view
             if view.activeFitID == fitID:
-                self.SetPageText(i, cFit.getFit(fitID).name)
+                self.setTabTitle(i, fitID)
 
     def processRemove(self, event):
         fitID = event.fitID
@@ -88,9 +99,12 @@ class FitMultiSwitch(wx.Notebook):
                 #If we don't have any tabs left except the first one and the + tab
                 #Then we only rename it to empty tab, else we remove
                 if self.GetPageCount() > 2:
+                    self.ImageList.Remove(self.GetPageImage(i))
                     self.DeletePage(i)
                 else:
-                    self.SetPageText(i, "Empty Tab")
+                    self.setTabTitle(i, None)
+                    self.SetPageImage(-1)
+                    self.ImageList.Remove(self.GetPageImage(i))
 
         #Deleting a tab might have put us on the "+" tab, make sure we don't stay there
         if self.GetSelection() == self.GetPageCount() - 1:
