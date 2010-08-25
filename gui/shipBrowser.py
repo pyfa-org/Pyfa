@@ -311,7 +311,7 @@ class ShipMenu(wx.Panel):
             btn.Layout()
             setattr(self, name, btn)
             btn.Enable(False)
-            btn.SetToolTipString("%s fit." % name.capitalize())
+            btn.SetToolTipString("%s fit" % name.capitalize())
             sizer.Add(btn, 0, wx.EXPAND)
 
         p = wx.Panel(self)
