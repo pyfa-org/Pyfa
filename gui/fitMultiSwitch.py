@@ -52,7 +52,7 @@ class FitMultiSwitch(wx.Notebook):
 
         # Get fit name
         fitID = self.shipBrowser.getSelectedFitID()
-
+        p.view.changeFit(fitID)
         self.InsertPage(pos, p, "")
         self.setTabTitle(pos, fitID)
         wx.CallAfter(self.ChangeSelection, pos)
@@ -65,6 +65,7 @@ class FitMultiSwitch(wx.Notebook):
     def setTabTitle(self, tab, fitID):
         if fitID == None:
             self.SetPageText(tab, "Empty Tab")
+            self.SetPageImage(tab, -1)
         else:
             cFit = controller.Fit.getInstance()
             fit = cFit.getFit(fitID)

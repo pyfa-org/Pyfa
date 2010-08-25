@@ -176,6 +176,9 @@ class ShipBrowser(wx.Panel):
         event.Skip()
 
     def changeFitName(self, event):
+        if event.IsEditCancelled():
+            return
+
         tree = self.getActiveTree()
         item = event.Item
         newName = event.Label
