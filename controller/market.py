@@ -148,7 +148,7 @@ class Market():
         mg = eos.db.getMarketGroup(marketGroupId)
         l = []
         for item in mg.items:
-            if item.metaGroup is None and 1 in self.activeMetas:
+            if 1 in self.activeMetas:
                 l.append((item.ID, item.name, item.icon.iconFile if item.icon else ""))
 
             vars = eos.db.getVariations(item, metaGroups = tuple(self.activeMetas), eager="icon")
