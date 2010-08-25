@@ -1,4 +1,4 @@
-__all__ = ["moduleState", "moduleNameOrSlot"]
+__all__ = ["moduleState", "moduleNameOrSlot", "attributeDisplay"]
 
 columns = {}
 def registerColumn(column):

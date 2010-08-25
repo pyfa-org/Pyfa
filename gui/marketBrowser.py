@@ -179,7 +179,6 @@ class MarketBrowser(wx.Panel):
             iconId = self.addItemViewImage(iconFile)
             index = self.itemView.InsertImageStringItem(sys.maxint, name, iconId)
             idNameMap[id] = name
-            width, _ = self.itemView.GetTextExtent(name)
 
             self.itemView.SetItemData(index, id)
 

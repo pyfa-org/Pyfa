@@ -18,12 +18,14 @@
 #===============================================================================
 
 import wx
-
+import sys
 import gui.builtinViewColumns
 from gui.builtinViewColumns import *
 
 class FittingView(wx.ListCtrl):
     DEFAULT_COLS = ["Module state", "Module name/slot"]
+    DEFAULT_ATTR_COLS = ["power", "cpu", "capacitorNeed", "maxRange", "trackingSpeed"]
+
     def __init__(self, parent):
         listStyle = wx.LC_REPORT | wx.BORDER_NONE
         wx.ListCtrl.__init__(self, parent, wx.ID_ANY, style=listStyle)
@@ -34,18 +36,32 @@ class FittingView(wx.ListCtrl):
         self.Bind(wx.EVT_LIST_COL_BEGIN_DRAG, self.resizeChecker)
         self.Bind(wx.EVT_LIST_COL_CLICK, self.dragCheck)
         self.Bind(wx.EVT_LIST_COL_END_DRAG, self.dragCheck)
+
         i = 0
         for colName in FittingView.DEFAULT_COLS:
             col = gui.builtinViewColumns.getColumn(colName)(self, None)
-            self.activeColumns.append(col)
-
-            info = wx.ListItem()
-            info.m_mask = col.mask
-            info.m_image = col.imageId
-            info.m_text = col.columnText
-            self.InsertColumnInfo(i, info)
-            self.SetColumnWidth(i, wx.LIST_AUTOSIZE_USEHEADER if col.size is wx.LIST_AUTOSIZE else col.size)
+            self.addColumn(i, col)
             i += 1
+
+        for attrName in FittingView.DEFAULT_ATTR_COLS:
+            params = {"showIcon": True,
+                      "displayName": False,
+                      "attribute": attrName}
+
+            col = gui.builtinViewColumns.getColumn("Attribute Display")(self, params)
+            self.addColumn(i, col)
+            i += 1
+
+        self.imageListBase = self.imageList.ImageCount
+
+    def addColumn(self, i, col):
+        self.activeColumns.append(col)
+        info = wx.ListItem()
+        info.m_mask = col.mask
+        info.m_image = col.imageId
+        info.m_text = col.columnText
+        self.InsertColumnInfo(i, info)
+        self.SetColumnWidth(i, wx.LIST_AUTOSIZE_USEHEADER if col.size is wx.LIST_AUTOSIZE else col.size)
 
     def resizeChecker(self, event):
         if self.activeColumns[event.Column].resizable is False:
