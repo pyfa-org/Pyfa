@@ -1,6 +1,16 @@
+#Python specific
 *.pyc
+
+#Kwrite/Gedit/Other crapapps making backups
 *~
+
+#Eclipse
 .project
 .pydevproject
 .settings
+
+#Don't commit any eos snapshots into the pyfa repos
 eos
+
+#Patch files
+*.patch
