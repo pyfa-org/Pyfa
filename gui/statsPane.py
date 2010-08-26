@@ -385,16 +385,19 @@ class StatsPane(wx.Panel):
             box.Add(hbox, 0, wx.ALIGN_CENTER)
 
             hbox.Add(wx.StaticText(parent, wx.ID_ANY, "Total: "), 0, wx.ALIGN_CENTER)
-            self.labelCapacitorCapacity = wx.StaticText(parent, wx.ID_ANY, "0.0")
-            hbox.Add(self.labelCapacitorCapacity, 0, wx.ALIGN_CENTER)
+            lbl = wx.StaticText(parent, wx.ID_ANY, "0.0")
+            setattr(self, "label%sCapacitorCapacity" % panel, lbl)
+            hbox.Add(lbl, 0, wx.ALIGN_CENTER)
+
             hbox.Add(wx.StaticText(parent, wx.ID_ANY, " GJ"), 0, wx.ALIGN_CENTER)
 
             hbox = wx.BoxSizer(wx.HORIZONTAL)
             box.Add(hbox, 0, wx.ALIGN_LEFT)
 
             hbox.Add(wx.StaticText(parent, wx.ID_ANY, "Lasts "), 0, wx.ALIGN_LEFT)
-            self.labelCapacitorTime = wx.StaticText(parent, wx.ID_ANY, "0s")
-            hbox.Add(self.labelCapacitorTime, 0, wx.ALIGN_LEFT)
+            lbl = wx.StaticText(parent, wx.ID_ANY, "0s")
+            setattr(self, "label%sCapacitorTime" % panel, lbl)
+            hbox.Add(lbl, 0, wx.ALIGN_LEFT)
 
             # Capacitor balance
             baseBox = wx.BoxSizer(wx.HORIZONTAL)
@@ -407,14 +410,16 @@ class StatsPane(wx.Panel):
             baseBox.Add(chargeSizer, 0, wx.ALIGN_CENTER)
 
             chargeSizer.Add(wx.StaticText(parent, wx.ID_ANY, "+ "), 0, wx.ALIGN_CENTER)
-            self.labelCapacitorRecharge = wx.StaticText(parent, wx.ID_ANY, "0.0")
-            chargeSizer.Add(self.labelCapacitorRecharge, 0, wx.ALIGN_CENTER)
+            lbl = wx.StaticText(parent, wx.ID_ANY, "0.0")
+            setattr(self, "label%sCapacitorRecharge" % panel, lbl)
+            chargeSizer.Add(lbl, 0, wx.ALIGN_CENTER)
             chargeSizer.Add(wx.StaticText(parent, wx.ID_ANY, " GJ/s"), 0, wx.ALIGN_CENTER)
 
             # Discharge
             chargeSizer.Add(wx.StaticText(parent, wx.ID_ANY, "- "), 0, wx.ALIGN_CENTER)
-            self.labelCapacitorDischarge = wx.StaticText(parent, wx.ID_ANY, "0.0")
-            chargeSizer.Add(self.labelCapacitorDischarge, 0, wx.ALIGN_CENTER)
+            lbl = wx.StaticText(parent, wx.ID_ANY, "0.0")
+            setattr(self, "label%sCapacitorDischarge" % panel, lbl)
+            chargeSizer.Add(lbl, 0, wx.ALIGN_CENTER)
             chargeSizer.Add(wx.StaticText(parent, wx.ID_ANY, " GJ/s"), 0, wx.ALIGN_CENTER)
 
         self.minSizerBase.Add(wx.StaticLine(parent, wx.ID_ANY, style=wx.HORIZONTAL), 0, wx.EXPAND)
@@ -496,14 +501,60 @@ class StatsPane(wx.Panel):
             setattr(self, "labelUnit%s" % labelShort, lblUnit)
             box.Add(lblUnit, 0, wx.ALIGN_LEFT)
 
+
+        # Mini speed & align
+        labelManeuverability = wx.StaticText(self.minPanel, wx.ID_ANY, "Speed")
+        labelManeuverability.SetFont(boldFont)
+        self.minSizerBase.Add(labelManeuverability, 0, wx.ALIGN_CENTER)
+
+        labels = (("Speed", "Speed", "m/s"),
+                  ("Align", "AlignTime", "s"))
+
+        for header, labelShort, unit in labels:
+            sizer = wx.BoxSizer(wx.HORIZONTAL)
+            self.minSizerBase.Add(sizer, 0, wx.ALIGN_LEFT)
+
+            sizer.Add(wx.StaticText(self.minPanel, wx.ID_ANY, "%s: " % header), 0, wx.ALIGN_LEFT)
+
+            box = wx.BoxSizer(wx.HORIZONTAL)
+            sizer.Add(box, 0, wx.ALIGN_LEFT)
+
+            lbl = wx.StaticText(self.minPanel, wx.ID_ANY, "0")
+            setattr(self, "label%s" % labelShort, lbl)
+            box.Add(lbl, 0, wx.ALIGN_LEFT)
+
+            lblUnit = wx.StaticText(self.minPanel, wx.ID_ANY, " %s" % unit)
+            setattr(self, "labelUnit%s" % labelShort, lblUnit)
+            box.Add(lblUnit, 0, wx.ALIGN_LEFT)
+
+        self.minSizerBase.Add(wx.StaticLine(parent, wx.ID_ANY, style=wx.HORIZONTAL), 0, wx.EXPAND)
+
+        # Mini price stuff
+        labelPrice = wx.StaticText(self.minPanel, wx.ID_ANY, "Price")
+        labelPrice.SetFont(boldFont)
+        self.minSizerBase.Add(labelPrice, 0, wx.ALIGN_CENTER)
+
+        image = "totalPrice_big"
+        box = wx.BoxSizer(wx.HORIZONTAL)
+        self.minSizerBase.Add(box)
+
+        box.Add(bitmapLoader.getStaticBitmap(image, self.minPanel, "icons"), 0, wx.ALIGN_CENTER)
+
+        lbl = wx.StaticText(self.minPanel, wx.ID_ANY, "0.00")
+        setattr(self, "labelMiniPriceTotal", lbl)
+        box.Add(lbl, 0, wx.ALIGN_CENTER)
+
+        box.Add(wx.StaticText(self.minPanel, wx.ID_ANY, " m ISK"), 0, wx.ALIGN_CENTER)
+
+
         # Price
         sizerHeaderPrice = wx.BoxSizer(wx.HORIZONTAL)
         self.sizerBase.Add(sizerHeaderPrice, 0, wx.EXPAND | wx.LEFT, 3)
 
         labelPrice = wx.StaticText(self.fullPanel, wx.ID_ANY, "Price")
         labelPrice.SetFont(boldFont)
-
         sizerHeaderPrice.Add(labelPrice, 0, wx.ALIGN_CENTER)
+
         sizerHeaderPrice.Add(wx.StaticLine(self.fullPanel, wx.ID_ANY), 1, wx.ALIGN_CENTER)
 
         # Grid for the price stuff.
