@@ -79,12 +79,6 @@ class StatsPane(wx.Panel):
         sizerResources = wx.BoxSizer(wx.HORIZONTAL)
         self.sizerBase.Add(sizerResources, 0, wx.EXPAND | wx.LEFT, 3)
 
-        # Turret slots, Launcher slots & calibration
-        sizerHardResources = wx.FlexGridSizer(3, 2)
-        for i in xrange(3):
-            sizerHardResources.AddGrowableCol(i + 1)
-
-        sizerResources.Add(sizerHardResources, 1, wx.ALIGN_CENTER)
 
         #Stuff that has to be done for both panels
 
@@ -93,11 +87,16 @@ class StatsPane(wx.Panel):
             # Resources header
             labelResources = wx.StaticText(parent, wx.ID_ANY, "Resources")
             labelResources.SetFont(boldFont)
+            sizer = wx.FlexGridSizer(3, 2)
+            for i in xrange(3):
+                sizer.AddGrowableCol(i + 1)
+
             if panel == "min":
-                sizer = self.minSizerBase
                 self.minSizerBase.Add(labelResources, 0, wx.ALIGN_CENTER)
+                self.minSizerBase.Add(sizer, 1, wx.ALIGN_CENTER)
             else:
-                sizer = sizerHardResources
+                sizerResources.Add(sizer, 1, wx.ALIGN_CENTER)
+
                 sizerHeaderResources.Add(labelResources, 0, wx.ALIGN_CENTER)
                 sizerHeaderResources.Add(wx.StaticLine(self.fullPanel, wx.ID_ANY), 1, wx.ALIGN_CENTER)
 
