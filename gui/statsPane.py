@@ -160,7 +160,7 @@ class StatsPane(wx.Panel):
                         absolute.Add(lbl, 0, wx.ALIGN_CENTER)
 
                         gauge = wx.Gauge(parent, wx.ID_ANY, 100)
-                        gauge.SetMinSize((100, -1))
+                        gauge.SetMinSize((100, 20))
                         setattr(self, "gauge%s" % capitalizedType, gauge)
                         stats.Add(gauge)
 
