@@ -124,41 +124,48 @@ class StatsPane(wx.Panel):
             base.Add(wx.StaticLine(parent, wx.ID_ANY, style=st), 0, wx.EXPAND)
 
 
-        #PG, Cpu & drone stuff
-        for group in (("cpu", "pg"), ("droneBay", "droneBandwidth")):
-            main = wx.BoxSizer(wx.VERTICAL)
-            sizerResources.Add(main, 0, wx.ALIGN_CENTER)
-            for type in group:
-                capitalizedType = type[0].capitalize() + type[1:]
+            #PG, Cpu & drone stuff
+            for i, group in enumerate((("cpu", "pg"), ("droneBay", "droneBandwidth"))):
+                main = wx.BoxSizer(wx.VERTICAL)
+                base.Add(main, 0, wx.ALIGN_CENTER)
+                if i == 0 or panel == "full":
+                    for type in group:
+                        capitalizedType = type[0].capitalize() + type[1:]
+                        bitmap = bitmapLoader.getStaticBitmap(type + "_big", parent, "icons")
+                        stats = wx.BoxSizer(wx.VERTICAL)
+                        absolute =  wx.BoxSizer(wx.HORIZONTAL)
+                        stats.Add(absolute)
 
-                base = wx.BoxSizer(wx.HORIZONTAL)
-                main.Add(base, 0, wx.EXPAND)
+                        if panel == "full":
+                            b = wx.BoxSizer(wx.HORIZONTAL)
+                            main.Add(b, 0, wx.EXPAND)
 
-                base.Add(bitmapLoader.getStaticBitmap(type + "_big", self.fullPanel, "icons"), 0, wx.ALIGN_CENTER)
+                            b.Add(bitmap, 0, wx.ALIGN_CENTER)
 
-                stats = wx.BoxSizer(wx.VERTICAL)
-                base.Add(stats, 0, wx.EXPAND)
+                            b.Add(stats, 0, wx.EXPAND)
+                        else:
+                            main.Add(stats, 0, wx.EXPAND)
+                            absolute.Add(bitmap, 0, wx.ALIGN_CENTER)
 
-                absolute =  wx.BoxSizer(wx.HORIZONTAL)
-                stats.Add(absolute)
 
-                lbl = wx.StaticText(self.fullPanel, wx.ID_ANY, "0")
-                setattr(self, "labelAvailable%s" % capitalizedType, lbl)
-                absolute.Add(lbl, 0, wx.ALIGN_CENTER)
 
-                absolute.Add(wx.StaticText(self.fullPanel, wx.ID_ANY, "/"), 0, wx.ALIGN_CENTER)
+                        lbl = wx.StaticText(parent, wx.ID_ANY, "0")
+                        setattr(self, "labelAvailable%s" % capitalizedType, lbl)
+                        absolute.Add(lbl, 0, wx.ALIGN_CENTER)
 
-                lbl = wx.StaticText(self.fullPanel, wx.ID_ANY, "0")
-                setattr(self, "labelTotal%s" % capitalizedType, lbl)
-                absolute.Add(lbl, 0, wx.ALIGN_CENTER)
+                        absolute.Add(wx.StaticText(parent, wx.ID_ANY, "/"), 0, wx.ALIGN_CENTER)
 
-                gauge = wx.Gauge(self.fullPanel, wx.ID_ANY, 100)
-                gauge.SetMinSize((100, -1))
-                setattr(self, "gauge%s" % capitalizedType, gauge)
-                stats.Add(gauge)
+                        lbl = wx.StaticText(parent, wx.ID_ANY, "0")
+                        setattr(self, "labelTotal%s" % capitalizedType, lbl)
+                        absolute.Add(lbl, 0, wx.ALIGN_CENTER)
 
-            if "cpu" in group:
-                sizerResources.Add(wx.StaticLine(self.fullPanel, wx.ID_ANY, style=wx.VERTICAL), 0, wx.ALIGN_CENTER)
+                        gauge = wx.Gauge(parent, wx.ID_ANY, 100)
+                        gauge.SetMinSize((100, -1))
+                        setattr(self, "gauge%s" % capitalizedType, gauge)
+                        stats.Add(gauge)
+
+                if panel == "min":
+                    base.Add(wx.StaticLine(parent, wx.ID_ANY, style=wx.HORIZONTAL), 0, wx.EXPAND)
 
         # Resistances
         sizerHeaderResistances = wx.BoxSizer(wx.HORIZONTAL)
