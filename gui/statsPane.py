@@ -57,10 +57,13 @@ class StatsPane(wx.Panel):
         self.minSize.SetWidth(100)
         self.minPanel = wx.Panel(self)
         self.minPanel.Hide()
-        self.minPanel.SetBackgroundColour("cyan")
         self.minPanel.SetMinSize(self.minSize)
 
+        minBase = wx.BoxSizer(wx.VERTICAL)
+        self.minPanel.SetSizer(minBase)
 
+        self.minSizerBase = wx.BoxSizer(wx.VERTICAL)
+        minBase.Add(self.minSizerBase, 0, wx.EXPAND | wx.TOP, 15)
 
         boldFont = wx.SystemSettings_GetFont(wx.SYS_DEFAULT_GUI_FONT)
         boldFont.SetWeight(wx.BOLD)
@@ -71,12 +74,6 @@ class StatsPane(wx.Panel):
 
         sizerHeaderResources = wx.BoxSizer(wx.HORIZONTAL)
         self.sizerBase.Add(sizerHeaderResources, 0, wx.EXPAND | wx.LEFT, 3)
-
-        # Resources header
-        self.labelResources = wx.StaticText(self.fullPanel, wx.ID_ANY, "Resources")
-        self.labelResources.SetFont(boldFont)
-        sizerHeaderResources.Add(self.labelResources, 0, wx.ALIGN_CENTER)
-        sizerHeaderResources.Add(wx.StaticLine(self.fullPanel, wx.ID_ANY), 1, wx.ALIGN_CENTER)
 
         # Resources stuff
         sizerResources = wx.BoxSizer(wx.HORIZONTAL)
@@ -89,21 +86,36 @@ class StatsPane(wx.Panel):
 
         sizerResources.Add(sizerHardResources, 1, wx.ALIGN_CENTER)
 
-        for type in ("turret", "launcher"):
-            sizerHardResources.Add(bitmapLoader.getStaticBitmap("%s_big" % type, self.fullPanel, "icons"), 0, wx.ALIGN_CENTER)
+        for panel in ("full", "min"):
+            parent = getattr(self, "%sPanel" % panel)
+            # Resources header
+            labelResources = wx.StaticText(parent, wx.ID_ANY, "Resources")
+            labelResources.SetFont(boldFont)
+            if panel == "min":
+                self.minSizerBase.Add(labelResources, 0, wx.ALIGN_CENTER)
+            else:
+                sizerHeaderResources.Add(labelResources, 0, wx.ALIGN_CENTER)
+                sizerHeaderResources.Add(wx.StaticLine(self.fullPanel, wx.ID_ANY), 1, wx.ALIGN_CENTER)
 
-            box = wx.BoxSizer(wx.HORIZONTAL)
-            sizerHardResources.Add(box, 0, wx.ALIGN_CENTER)
+            for type in ("turret", "launcher"):
+                bitmap = bitmapLoader.getStaticBitmap("%s_big" % type, parent, "icons")
+                box = wx.BoxSizer(wx.HORIZONTAL)
+                if panel == "min":
+                    self.minSizerBase.Add(bitmap, 0, wx.ALIGN_CENTER)
+                    self.minSizerBase.Add(box, 0, wx.ALIGN_CENTER)
+                else:
+                    sizerHardResources.Add(bitmap, 0, wx.ALIGN_CENTER)
+                    sizerHardResources.Add(box, 0, wx.ALIGN_CENTER)
 
-            lbl = wx.StaticText(self.fullPanel, wx.ID_ANY, "0")
-            setattr(self.fullPanel, "labelAvailable%sHardpoints", lbl)
-            box.Add(lbl, 0, wx.ALIGN_LEFT)
+                lbl = wx.StaticText(parent, wx.ID_ANY, "0")
+                setattr(self, "label%sAvailable%sHardpoints" % (panel, type), lbl)
+                box.Add(lbl, 0, wx.ALIGN_LEFT)
 
-            box.Add(wx.StaticText(self.fullPanel, wx.ID_ANY, "/"), 0, wx.ALIGN_LEFT)
+                box.Add(wx.StaticText(parent, wx.ID_ANY, "/"), 0, wx.ALIGN_LEFT)
 
-            lbl = wx.StaticText(self.fullPanel, wx.ID_ANY, "0")
-            setattr(self, "labelTotal%sHardpoints", lbl)
-            box.Add(lbl, 0, wx.ALIGN_LEFT)
+                lbl = wx.StaticText(parent, wx.ID_ANY, "0")
+                setattr(self, "label%sTotal%sHardpoints" % (panel, type), lbl)
+                box.Add(lbl, 0, wx.ALIGN_LEFT)
 
 
         # Calibration points
