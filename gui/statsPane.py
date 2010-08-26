@@ -272,9 +272,14 @@ class StatsPane(wx.Panel):
 
         for stability in ("reinforced", "sustained"):
             miniTankSizer.Add(bitmapLoader.getStaticBitmap("regen%s_big" % stability.capitalize(), self.minPanel, "icons"), 0, wx.ALIGN_CENTER)
-            lbl = wx.StaticText(self.minPanel, wx.ID_ANY, "0.0 HP/S")
+            box = wx.BoxSizer(wx.HORIZONTAL)
+            miniTankSizer.Add(box, 0, wx.ALIGN_CENTER)
+
+            lbl = wx.StaticText(self.minPanel, wx.ID_ANY, "0.0")
             setattr(self, "labelMiniTank%s" % stability, lbl)
-            miniTankSizer.Add(lbl, 0, wx.ALIGN_CENTER)
+            box.Add(lbl, 0, wx.ALIGN_LEFT)
+
+            box.Add(wx.StaticText(self.minPanel, wx.ID_ANY, " HP/S"), 0, wx.ALIGN_LEFT)
 
         self.minSizerBase.Add(wx.StaticLine(parent, wx.ID_ANY, style=wx.HORIZONTAL), 0, wx.EXPAND)
 
@@ -325,87 +330,94 @@ class StatsPane(wx.Panel):
                 targetSizer = sizerFirepower
 
             baseBox = wx.BoxSizer(wx.HORIZONTAL)
-            targetSizer.Add(baseBox, 0, wx.ALIGN_CENTER)
-
-            baseBox.Add(bitmapLoader.getStaticBitmap("volley_big", parent, "icons"), 0, wx.ALIGN_CENTER)
+            targetSizer.Add(baseBox, 0, wx.ALIGN_LEFT)
+            if panel == "full":
+                baseBox.Add(bitmapLoader.getStaticBitmap("volley_big", parent, "icons"), 0, wx.ALIGN_CENTER)
 
             box = wx.BoxSizer(wx.VERTICAL)
             baseBox.Add(box, 1, wx.ALIGN_CENTER)
 
             hbox = wx.BoxSizer(wx.HORIZONTAL)
-            box.Add(hbox, 1, wx.ALIGN_LEFT)
+            box.Add(hbox, 1, wx.ALIGN_LEFT | wx.LEFT, 3)
 
             self.labelVolleyTotal = wx.StaticText(parent, wx.ID_ANY, "0.0")
             hbox.Add(wx.StaticText(parent, wx.ID_ANY, "Volley: "), 0, wx.ALIGN_LEFT)
             hbox.Add(self.labelVolleyTotal, 0, wx.EXPAND)
 
             hbox = wx.BoxSizer(wx.HORIZONTAL)
-            box.Add(hbox, 1, wx.ALIGN_CENTER)
+            box.Add(hbox, 1, wx.ALIGN_LEFT | wx.LEFT, 3)
 
             self.labelDpsTotal = wx.StaticText(parent, wx.ID_ANY, "0.0")
             hbox.Add(wx.StaticText(parent, wx.ID_ANY, "DPS: "), 0, wx.ALIGN_LEFT)
             hbox.Add(self.labelDpsTotal, 0, wx.ALIGN_CENTER)
 
+        self.minSizerBase.Add(wx.StaticLine(parent, wx.ID_ANY, style=wx.HORIZONTAL), 0, wx.EXPAND)
+
         # Capacitor
-        sizerHeaderCapacitor = wx.BoxSizer(wx.HORIZONTAL)
-        self.sizerBase.Add(sizerHeaderCapacitor, 0, wx.EXPAND | wx.LEFT, 3)
+        for panel in ("full", "min"):
+            parent = getattr(self, "%sPanel" % panel)
+            labelCap = wx.StaticText(parent, wx.ID_ANY, "Capacitor")
+            labelCap.SetFont(boldFont)
+            sizerHeaderCapacitor = wx.BoxSizer(wx.HORIZONTAL)
 
-        labelCapacitor = wx.StaticText(self.fullPanel, wx.ID_ANY, "Capacitor")
-        labelCapacitor.SetFont(boldFont)
+            if panel == "min":
+                self.minSizerBase.Add(labelCap, 0, wx.ALIGN_CENTER)
+                sizerCapacitor = self.minSizerBase
+            else:
+                self.sizerBase.Add(sizerHeaderCapacitor, 0, wx.EXPAND | wx.LEFT, 3)
+                sizerHeaderCapacitor.Add(labelCap, 0, wx.ALIGN_CENTER)
+                sizerHeaderCapacitor.Add(wx.StaticLine(self.fullPanel, wx.ID_ANY), 1, wx.ALIGN_CENTER)
+                sizerCapacitor = wx.GridSizer(1, 2)
+                self.sizerBase.Add(sizerCapacitor, 0, wx.EXPAND  | wx.LEFT, 3)
 
-        sizerHeaderCapacitor.Add(labelCapacitor, 0, wx.ALIGN_CENTER)
-        sizerHeaderCapacitor.Add(wx.StaticLine(self.fullPanel, wx.ID_ANY), 1, wx.ALIGN_CENTER)
 
-        sizerCapacitor = wx.GridSizer(1, 2)
-        self.sizerBase.Add(sizerCapacitor, 0, wx.EXPAND  | wx.LEFT, 3)
+            # Capacitor capacity and time
+            baseBox = wx.BoxSizer(wx.HORIZONTAL)
+            sizerCapacitor.Add(baseBox, 0, wx.ALIGN_CENTER)
 
-        # Capacitor capacity and time
-        baseBox = wx.BoxSizer(wx.HORIZONTAL)
-        sizerCapacitor.Add(baseBox, 1, wx.ALIGN_CENTER)
+            if panel == "full":
+                baseBox.Add(bitmapLoader.getStaticBitmap("capacitorInfo_big", parent, "icons"), 0, wx.ALIGN_CENTER)
 
-        baseBox.Add(bitmapLoader.getStaticBitmap("capacitorInfo_big", self.fullPanel, "icons"), 0, wx.ALIGN_CENTER)
+            box = wx.BoxSizer(wx.VERTICAL)
+            baseBox.Add(box, 0)
 
-        box = wx.BoxSizer(wx.VERTICAL)
-        baseBox.Add(box, 0, wx.ALIGN_CENTER)
+            hbox = wx.BoxSizer(wx.HORIZONTAL)
+            box.Add(hbox, 0, wx.ALIGN_CENTER)
 
-        hbox = wx.BoxSizer(wx.HORIZONTAL)
-        box.Add(hbox, 1, wx.ALIGN_CENTER)
+            hbox.Add(wx.StaticText(parent, wx.ID_ANY, "Total: "), 0, wx.ALIGN_CENTER)
+            self.labelCapacitorCapacity = wx.StaticText(parent, wx.ID_ANY, "0.0")
+            hbox.Add(self.labelCapacitorCapacity, 0, wx.ALIGN_CENTER)
+            hbox.Add(wx.StaticText(parent, wx.ID_ANY, " GJ"), 0, wx.ALIGN_CENTER)
 
-        hbox.Add(wx.StaticText(self.fullPanel, wx.ID_ANY, "Capacity: "), 0, wx.ALIGN_CENTER)
-        self.labelCapacitorCapacity = wx.StaticText(self.fullPanel, wx.ID_ANY, "0.0")
-        hbox.Add(self.labelCapacitorCapacity, 0, wx.ALIGN_CENTER)
-        hbox.Add(wx.StaticText(self.fullPanel, wx.ID_ANY, " GJ"), 0, wx.ALIGN_CENTER)
+            hbox = wx.BoxSizer(wx.HORIZONTAL)
+            box.Add(hbox, 0, wx.ALIGN_LEFT)
 
-        hbox = wx.BoxSizer(wx.HORIZONTAL)
-        box.Add(hbox, 1, wx.ALIGN_LEFT)
+            hbox.Add(wx.StaticText(parent, wx.ID_ANY, "Lasts "), 0, wx.ALIGN_LEFT)
+            self.labelCapacitorTime = wx.StaticText(parent, wx.ID_ANY, "0s")
+            hbox.Add(self.labelCapacitorTime, 0, wx.ALIGN_LEFT)
 
-        hbox.Add(wx.StaticText(self.fullPanel, wx.ID_ANY, "Lasts "), 0, wx.ALIGN_LEFT)
-        self.labelCapacitorTime = wx.StaticText(self.fullPanel, wx.ID_ANY, "0s")
-        hbox.Add(self.labelCapacitorTime, 0, wx.ALIGN_LEFT)
+            # Capacitor balance
+            baseBox = wx.BoxSizer(wx.HORIZONTAL)
+            sizerCapacitor.Add(baseBox, 0, wx.ALIGN_TOP)
 
-        # Capacitor balance
-        baseBox = wx.BoxSizer(wx.HORIZONTAL)
-        sizerCapacitor.Add(baseBox, 1, wx.ALIGN_CENTER)
+            baseBox.Add(bitmapLoader.getStaticBitmap("capacitorRecharge_big", parent, "icons"), 0, wx.ALIGN_CENTER)
 
-        baseBox.Add(bitmapLoader.getStaticBitmap("capacitorRecharge_big", self.fullPanel, "icons"), 0, wx.ALIGN_CENTER)
+            # Recharge
+            chargeSizer = wx.FlexGridSizer(2, 3)
+            baseBox.Add(chargeSizer, 0, wx.ALIGN_CENTER)
 
-        box = wx.BoxSizer(wx.VERTICAL)
-        baseBox.Add(box, 0, wx.ALIGN_CENTER)
+            chargeSizer.Add(wx.StaticText(parent, wx.ID_ANY, "+ "), 0, wx.ALIGN_CENTER)
+            self.labelCapacitorRecharge = wx.StaticText(parent, wx.ID_ANY, "0.0")
+            chargeSizer.Add(self.labelCapacitorRecharge, 0, wx.ALIGN_CENTER)
+            chargeSizer.Add(wx.StaticText(parent, wx.ID_ANY, " GJ/s"), 0, wx.ALIGN_CENTER)
 
-        # Recharge
-        chargeSizer = wx.FlexGridSizer(2, 3)
-        box.Add(chargeSizer)
+            # Discharge
+            chargeSizer.Add(wx.StaticText(parent, wx.ID_ANY, "- "), 0, wx.ALIGN_CENTER)
+            self.labelCapacitorDischarge = wx.StaticText(parent, wx.ID_ANY, "0.0")
+            chargeSizer.Add(self.labelCapacitorDischarge, 0, wx.ALIGN_CENTER)
+            chargeSizer.Add(wx.StaticText(parent, wx.ID_ANY, " GJ/s"), 0, wx.ALIGN_CENTER)
 
-        chargeSizer.Add(wx.StaticText(self.fullPanel, wx.ID_ANY, "+ "), 0, wx.ALIGN_CENTER)
-        self.labelCapacitorRecharge = wx.StaticText(self.fullPanel, wx.ID_ANY, "0.0")
-        chargeSizer.Add(self.labelCapacitorRecharge, 0, wx.ALIGN_CENTER)
-        chargeSizer.Add(wx.StaticText(self.fullPanel, wx.ID_ANY, " GJ/s"), 0, wx.ALIGN_CENTER)
-
-        # Discharge
-        chargeSizer.Add(wx.StaticText(self.fullPanel, wx.ID_ANY, "- "), 0, wx.ALIGN_CENTER)
-        self.labelCapacitorDischarge = wx.StaticText(self.fullPanel, wx.ID_ANY, "0.0")
-        chargeSizer.Add(self.labelCapacitorDischarge, 0, wx.ALIGN_CENTER)
-        chargeSizer.Add(wx.StaticText(self.fullPanel, wx.ID_ANY, " GJ/s"), 0, wx.ALIGN_CENTER)
+        self.minSizerBase.Add(wx.StaticLine(parent, wx.ID_ANY, style=wx.HORIZONTAL), 0, wx.EXPAND)
 
         # Targeting & Misc
         grid = wx.GridSizer(1, 2)
