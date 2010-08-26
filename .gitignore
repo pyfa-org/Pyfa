@@ -9,8 +9,5 @@
 .pydevproject
 .settings
 
-#Don't commit any eos snapshots into the pyfa repos
-eos
-
 #Patch files
 *.patch

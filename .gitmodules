@@ -1,0 +1,3 @@
+[submodule "eos"]
+	path = eos
+	url = git://pyfa.git.sourceforge.net/gitroot/pyfa/eos
