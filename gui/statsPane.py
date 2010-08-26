@@ -253,6 +253,31 @@ class StatsPane(wx.Panel):
 
                     sizerTankStats.Add(box, 1, wx.ALIGN_CENTER)
 
+
+        #Mini tank display
+        labelTank = wx.StaticText(parent, wx.ID_ANY, "Tank")
+        labelTank.SetFont(boldFont)
+        self.minSizerBase.Add(labelTank, 0, wx.ALIGN_CENTER)
+        miniTankSizer = wx.FlexGridSizer(3, 2)
+        for i in xrange(2):
+            sizerTankStats.AddGrowableCol(i + 1)
+
+        self.minSizerBase.Add(miniTankSizer, 1, wx.EXPAND)
+
+        miniTankSizer.Add(wx.StaticText(self.minPanel, wx.ID_ANY, ""))
+
+        self.minitankTypeImage = bitmapLoader.getStaticBitmap("shieldPassive_big", self.minPanel, "icons")
+        miniTankSizer.Add(self.minitankTypeImage, 0, wx.ALIGN_CENTER)
+
+
+        for stability in ("reinforced", "sustained"):
+            miniTankSizer.Add(bitmapLoader.getStaticBitmap("regen%s_big" % stability.capitalize(), self.minPanel, "icons"), 0, wx.ALIGN_CENTER)
+            lbl = wx.StaticText(self.minPanel, wx.ID_ANY, "0.0 HP/S")
+            setattr(self, "labelMiniTank%s" % stability, lbl)
+            miniTankSizer.Add(lbl, 0, wx.ALIGN_CENTER)
+
+        self.minSizerBase.Add(wx.StaticLine(parent, wx.ID_ANY, style=wx.HORIZONTAL), 0, wx.EXPAND)
+
         # Firepower
         sizerHeaderFirepower = wx.BoxSizer(wx.HORIZONTAL)
         self.sizerBase.Add(sizerHeaderFirepower, 0, wx.EXPAND | wx.LEFT, 3)
