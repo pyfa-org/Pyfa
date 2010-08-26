@@ -86,26 +86,29 @@ class StatsPane(wx.Panel):
 
         sizerResources.Add(sizerHardResources, 1, wx.ALIGN_CENTER)
 
+        #Stuff that has to be done for both panels
+
         for panel in ("full", "min"):
             parent = getattr(self, "%sPanel" % panel)
             # Resources header
             labelResources = wx.StaticText(parent, wx.ID_ANY, "Resources")
             labelResources.SetFont(boldFont)
             if panel == "min":
+                sizer = self.minSizerBase
                 self.minSizerBase.Add(labelResources, 0, wx.ALIGN_CENTER)
             else:
+                sizer = sizerHardResources
                 sizerHeaderResources.Add(labelResources, 0, wx.ALIGN_CENTER)
                 sizerHeaderResources.Add(wx.StaticLine(self.fullPanel, wx.ID_ANY), 1, wx.ALIGN_CENTER)
 
+            #Turrets & launcher hardslots display
             for type in ("turret", "launcher"):
                 bitmap = bitmapLoader.getStaticBitmap("%s_big" % type, parent, "icons")
                 box = wx.BoxSizer(wx.HORIZONTAL)
-                if panel == "min":
-                    self.minSizerBase.Add(bitmap, 0, wx.ALIGN_CENTER)
-                    self.minSizerBase.Add(box, 0, wx.ALIGN_CENTER)
-                else:
-                    sizerHardResources.Add(bitmap, 0, wx.ALIGN_CENTER)
-                    sizerHardResources.Add(box, 0, wx.ALIGN_CENTER)
+
+                sizer.Add(bitmap, 0, wx.ALIGN_CENTER)
+                sizer.Add(box, 0, wx.ALIGN_CENTER)
+
 
                 lbl = wx.StaticText(parent, wx.ID_ANY, "0")
                 setattr(self, "label%sAvailable%sHardpoints" % (panel, type), lbl)
@@ -117,22 +120,23 @@ class StatsPane(wx.Panel):
                 setattr(self, "label%sTotal%sHardpoints" % (panel, type), lbl)
                 box.Add(lbl, 0, wx.ALIGN_LEFT)
 
+            # Calibration points
+            sizer.Add(bitmapLoader.getStaticBitmap("calibration_big", parent, "icons"), 0, wx.ALIGN_CENTER)
 
-        # Calibration points
-        sizerHardResources.Add(bitmapLoader.getStaticBitmap("calibration_big", self.fullPanel, "icons"))
+            box = wx.BoxSizer(wx.HORIZONTAL)
+            sizer.Add(box, 0, wx.ALIGN_CENTER)
 
-        box = wx.BoxSizer(wx.HORIZONTAL)
-        sizerHardResources.Add(box, 0, wx.ALIGN_CENTER)
+            lbl = wx.StaticText(parent, wx.ID_ANY, "0")
+            box.Add(lbl, 0, wx.ALIGN_LEFT)
+            setattr(self, "label%sAvailableCalibrationPoints" % panel, lbl)
 
-        self.labelAvailableCalibrationPoints = wx.StaticText(self.fullPanel, wx.ID_ANY, "0")
-        box.Add(self.labelAvailableCalibrationPoints, 0, wx.ALIGN_LEFT)
+            box.Add(wx.StaticText(parent, wx.ID_ANY, "/"), 0, wx.ALIGN_LEFT)
 
-        box.Add(wx.StaticText(self.fullPanel, wx.ID_ANY, "/"), 0, wx.ALIGN_LEFT)
+            lbl = wx.StaticText(parent, wx.ID_ANY, "0")
+            setattr(self, "label%sTotalCalibrationPoints" % panel, lbl)
+            box.Add(lbl, 0, wx.ALIGN_LEFT)
 
-        self.labelTotalCalibrationPoints = wx.StaticText(self.fullPanel, wx.ID_ANY, "0")
-        box.Add(self.labelTotalCalibrationPoints, 0, wx.ALIGN_LEFT)
-
-        sizerResources.Add(wx.StaticLine(self.fullPanel, wx.ID_ANY, style=wx.VERTICAL), 0, wx.EXPAND)
+            sizer.Add(wx.StaticLine(parent, wx.ID_ANY, style=wx.VERTICAL), 0, wx.EXPAND)
 
         #PG, Cpu & drone stuff
         for group in (("cpu", "pg"), ("droneBay", "droneBandwidth")):
