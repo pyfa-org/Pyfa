@@ -250,9 +250,6 @@ class StatsPane(wx.Panel):
         sizerHeaderFirepower = wx.BoxSizer(wx.HORIZONTAL)
         self.sizerBase.Add(sizerHeaderFirepower, 0, wx.EXPAND | wx.LEFT, 3)
        
-        labelFirepower = wx.StaticText(self.fullPanel, wx.ID_ANY, "Firepower")
-        labelFirepower.SetFont(boldFont)
-
         for panel in ("full", "min"):
             parent = getattr(self, "%sPanel" % panel)        
             labelFirepower = wx.StaticText(parent, wx.ID_ANY, "Firepower")
