@@ -364,37 +364,37 @@ class StatsPane(wx.Panel):
                 self.minSizerBase.Add(labelCap, 0, wx.ALIGN_CENTER)
                 sizerCapacitor = self.minSizerBase
             else:
-                self.sizerBase.Add(sizerHeaderCapacitor, 0, wx.EXPAND | wx.LEFT, 3)
+                self.sizerBase.Add(sizerHeaderCapacitor, 0, wx.EXPAND | wx.LEFT, 1)
                 sizerHeaderCapacitor.Add(labelCap, 0, wx.ALIGN_CENTER)
                 sizerHeaderCapacitor.Add(wx.StaticLine(self.fullPanel, wx.ID_ANY), 1, wx.ALIGN_CENTER)
                 sizerCapacitor = wx.GridSizer(1, 2)
-                self.sizerBase.Add(sizerCapacitor, 0, wx.EXPAND  | wx.LEFT, 3)
+                self.sizerBase.Add(sizerCapacitor, 0, wx.EXPAND  | wx.LEFT, 1)
 
 
             # Capacitor capacity and time
             baseBox = wx.BoxSizer(wx.HORIZONTAL)
-            sizerCapacitor.Add(baseBox, 0, wx.ALIGN_CENTER)
+            sizerCapacitor.Add(baseBox, 0, wx.ALIGN_LEFT)
 
             if panel == "full":
                 baseBox.Add(bitmapLoader.getStaticBitmap("capacitorInfo_big", parent, "icons"), 0, wx.ALIGN_CENTER)
 
             box = wx.BoxSizer(wx.VERTICAL)
-            baseBox.Add(box, 0)
-
-            hbox = wx.BoxSizer(wx.HORIZONTAL)
-            box.Add(hbox, 0, wx.ALIGN_CENTER)
-
-            hbox.Add(wx.StaticText(parent, wx.ID_ANY, "Total: "), 0, wx.ALIGN_CENTER)
-            lbl = wx.StaticText(parent, wx.ID_ANY, "0.0")
-            setattr(self, "label%sCapacitorCapacity" % panel, lbl)
-            hbox.Add(lbl, 0, wx.ALIGN_CENTER)
-
-            hbox.Add(wx.StaticText(parent, wx.ID_ANY, " GJ"), 0, wx.ALIGN_CENTER)
+            baseBox.Add(box, 0, wx.ALIGN_LEFT)
 
             hbox = wx.BoxSizer(wx.HORIZONTAL)
             box.Add(hbox, 0, wx.ALIGN_LEFT)
 
-            hbox.Add(wx.StaticText(parent, wx.ID_ANY, "Lasts "), 0, wx.ALIGN_LEFT)
+            hbox.Add(wx.StaticText(parent, wx.ID_ANY, "Total: "), 0, wx.ALIGN_LEFT | wx.LEFT, 3)
+            lbl = wx.StaticText(parent, wx.ID_ANY, "0.0")
+            setattr(self, "label%sCapacitorCapacity" % panel, lbl)
+            hbox.Add(lbl, 0, wx.ALIGN_LEFT)
+
+            hbox.Add(wx.StaticText(parent, wx.ID_ANY, " GJ"), 0, wx.ALIGN_LEFT)
+
+            hbox = wx.BoxSizer(wx.HORIZONTAL)
+            box.Add(hbox, 0, wx.ALIGN_LEFT)
+
+            hbox.Add(wx.StaticText(parent, wx.ID_ANY, "Lasts "), 0, wx.ALIGN_LEFT | wx.LEFT, 3)
             lbl = wx.StaticText(parent, wx.ID_ANY, "0s")
             setattr(self, "label%sCapacitorTime" % panel, lbl)
             hbox.Add(lbl, 0, wx.ALIGN_LEFT)
@@ -503,7 +503,7 @@ class StatsPane(wx.Panel):
 
 
         # Mini speed & align
-        labelManeuverability = wx.StaticText(self.miniPanel, wx.ID_ANY, "Speed")
+        labelManeuverability = wx.StaticText(self.miniPanel, wx.ID_ANY, "Agility")
         labelManeuverability.SetFont(boldFont)
         self.minSizerBase.Add(labelManeuverability, 0, wx.ALIGN_CENTER)
 
@@ -514,7 +514,7 @@ class StatsPane(wx.Panel):
             sizer = wx.BoxSizer(wx.HORIZONTAL)
             self.minSizerBase.Add(sizer, 0, wx.ALIGN_LEFT)
 
-            sizer.Add(wx.StaticText(self.miniPanel, wx.ID_ANY, "%s: " % header), 0, wx.ALIGN_LEFT)
+            sizer.Add(wx.StaticText(self.miniPanel, wx.ID_ANY, "%s: " % header), 0, wx.ALIGN_LEFT| wx.LEFT, 3)
 
             box = wx.BoxSizer(wx.HORIZONTAL)
             sizer.Add(box, 0, wx.ALIGN_LEFT)
