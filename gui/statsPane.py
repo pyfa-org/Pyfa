@@ -249,12 +249,12 @@ class StatsPane(wx.Panel):
         # Firepower
         sizerHeaderFirepower = wx.BoxSizer(wx.HORIZONTAL)
         self.sizerBase.Add(sizerHeaderFirepower, 0, wx.EXPAND | wx.LEFT, 3)
-       
+
         for panel in ("full", "min"):
-            parent = getattr(self, "%sPanel" % panel)        
+            parent = getattr(self, "%sPanel" % panel)
             labelFirepower = wx.StaticText(parent, wx.ID_ANY, "Firepower")
             labelFirepower.SetFont(boldFont)
-           
+
             if panel == "min":
                 self.minSizerBase.Add(labelFirepower, 0, wx.ALIGN_CENTER)
             else:
@@ -288,9 +288,10 @@ class StatsPane(wx.Panel):
                     hbox.Add(wx.StaticText(parent, wx.ID_ANY, " DPS"), 0, wx.ALIGN_CENTER)
 
             if panel == "min":
-                targetSizer=self.minSizerBase
+                targetSizer = self.minSizerBase
             else:
-                targetSizer=sizerFirepower
+                targetSizer = sizerFirepower
+
             baseBox = wx.BoxSizer(wx.HORIZONTAL)
             targetSizer.Add(baseBox, 0, wx.ALIGN_CENTER)
 
@@ -310,7 +311,7 @@ class StatsPane(wx.Panel):
             box.Add(hbox, 1, wx.ALIGN_CENTER)
 
             self.labelDpsTotal = wx.StaticText(parent, wx.ID_ANY, "0.0")
-            hbox.Add(wx.StaticText(parent, wx.ID_ANY, "Total DPS: "), 0, wx.ALIGN_LEFT)
+            hbox.Add(wx.StaticText(parent, wx.ID_ANY, "DPS: "), 0, wx.ALIGN_LEFT)
             hbox.Add(self.labelDpsTotal, 0, wx.ALIGN_CENTER)
 
         # Capacitor
