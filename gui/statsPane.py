@@ -25,14 +25,14 @@ class StatsPane(wx.Panel):
     def collapseChanged(self, event):
         collapsed = event.Collapsed
         if collapsed:
-            self.pickerSizer.Replace(self.fullPanel, self.minPanel)
-            self.SetMinSize(self.minSize)
+            self.pickerSizer.Replace(self.fullPanel, self.miniPanel)
+            self.SetMinSize(self.miniSize)
         else:
-            self.pickerSizer.Replace(self.minPanel, self.fullPanel)
+            self.pickerSizer.Replace(self.miniPanel, self.fullPanel)
             self.SetMinSize(self.fullSize)
 
         self.fullPanel.Show(not collapsed)
-        self.minPanel.Show(collapsed)
+        self.miniPanel.Show(collapsed)
         gui.mainFrame.MainFrame.getInstance().statsSizer.Layout()
 
     def __init__(self, parent):
@@ -53,14 +53,14 @@ class StatsPane(wx.Panel):
         self.SetMinSize(self.fullSize)
         self.pickerSizer.Add(self.fullPanel, 1, wx.EXPAND)
 
-        self.minSize = wx.Size()
-        self.minSize.SetWidth(100)
-        self.minPanel = wx.Panel(self)
-        self.minPanel.Hide()
-        self.minPanel.SetMinSize(self.minSize)
+        self.miniSize = wx.Size()
+        self.miniSize.SetWidth(100)
+        self.miniPanel = wx.Panel(self)
+        self.miniPanel.Hide()
+        self.miniPanel.SetMinSize(self.miniSize)
 
         minBase = wx.BoxSizer(wx.VERTICAL)
-        self.minPanel.SetSizer(minBase)
+        self.miniPanel.SetSizer(minBase)
 
         self.minSizerBase = wx.BoxSizer(wx.VERTICAL)
         minBase.Add(self.minSizerBase, 0, wx.EXPAND | wx.TOP, 15)
@@ -81,7 +81,7 @@ class StatsPane(wx.Panel):
 
 
         #Stuff that has to be done for both panels
-        for panel in ("full", "min"):
+        for panel in ("full", "mini"):
             parent = getattr(self, "%sPanel" % panel)
             # Resources header
             labelResources = wx.StaticText(parent, wx.ID_ANY, "Resources")
@@ -90,7 +90,7 @@ class StatsPane(wx.Panel):
             for i in xrange(3):
                 sizer.AddGrowableCol(i + 1)
 
-            if panel == "min":
+            if panel == "mini":
                 base = self.minSizerBase
                 base.Add(labelResources, 0, wx.ALIGN_CENTER)
                 base.Add(sizer, 1, wx.ALIGN_LEFT)
@@ -164,7 +164,7 @@ class StatsPane(wx.Panel):
                         setattr(self, "gauge%s" % capitalizedType, gauge)
                         stats.Add(gauge)
 
-                if panel == "min":
+                if panel == "mini":
                     base.Add(wx.StaticLine(parent, wx.ID_ANY, style=wx.HORIZONTAL), 0, wx.EXPAND)
 
         # Resistances
@@ -264,22 +264,22 @@ class StatsPane(wx.Panel):
 
         self.minSizerBase.Add(miniTankSizer, 1, wx.EXPAND)
 
-        miniTankSizer.Add(wx.StaticText(self.minPanel, wx.ID_ANY, ""))
+        miniTankSizer.Add(wx.StaticText(self.miniPanel, wx.ID_ANY, ""))
 
-        self.minitankTypeImage = bitmapLoader.getStaticBitmap("shieldPassive_big", self.minPanel, "icons")
+        self.minitankTypeImage = bitmapLoader.getStaticBitmap("shieldPassive_big", self.miniPanel, "icons")
         miniTankSizer.Add(self.minitankTypeImage, 0, wx.ALIGN_CENTER)
 
 
         for stability in ("reinforced", "sustained"):
-            miniTankSizer.Add(bitmapLoader.getStaticBitmap("regen%s_big" % stability.capitalize(), self.minPanel, "icons"), 0, wx.ALIGN_CENTER)
+            miniTankSizer.Add(bitmapLoader.getStaticBitmap("regen%s_big" % stability.capitalize(), self.miniPanel, "icons"), 0, wx.ALIGN_CENTER)
             box = wx.BoxSizer(wx.HORIZONTAL)
             miniTankSizer.Add(box, 0, wx.ALIGN_CENTER)
 
-            lbl = wx.StaticText(self.minPanel, wx.ID_ANY, "0.0")
+            lbl = wx.StaticText(self.miniPanel, wx.ID_ANY, "0.0")
             setattr(self, "labelMiniTank%s" % stability, lbl)
             box.Add(lbl, 0, wx.ALIGN_LEFT)
 
-            box.Add(wx.StaticText(self.minPanel, wx.ID_ANY, " HP/S"), 0, wx.ALIGN_LEFT)
+            box.Add(wx.StaticText(self.miniPanel, wx.ID_ANY, " HP/S"), 0, wx.ALIGN_LEFT)
 
         self.minSizerBase.Add(wx.StaticLine(parent, wx.ID_ANY, style=wx.HORIZONTAL), 0, wx.EXPAND)
 
@@ -287,12 +287,12 @@ class StatsPane(wx.Panel):
         sizerHeaderFirepower = wx.BoxSizer(wx.HORIZONTAL)
         self.sizerBase.Add(sizerHeaderFirepower, 0, wx.EXPAND | wx.LEFT, 3)
 
-        for panel in ("full", "min"):
+        for panel in ("full", "mini"):
             parent = getattr(self, "%sPanel" % panel)
             labelFirepower = wx.StaticText(parent, wx.ID_ANY, "Firepower")
             labelFirepower.SetFont(boldFont)
 
-            if panel == "min":
+            if panel == "mini":
                 self.minSizerBase.Add(labelFirepower, 0, wx.ALIGN_CENTER)
             else:
                 sizerHeaderFirepower.Add(labelFirepower, 0, wx.ALIGN_CENTER)
@@ -324,7 +324,7 @@ class StatsPane(wx.Panel):
                     hbox.Add(lbl, 0, wx.ALIGN_CENTER)
                     hbox.Add(wx.StaticText(parent, wx.ID_ANY, " DPS"), 0, wx.ALIGN_CENTER)
 
-            if panel == "min":
+            if panel == "mini":
                 targetSizer = self.minSizerBase
             else:
                 targetSizer = sizerFirepower
@@ -354,13 +354,13 @@ class StatsPane(wx.Panel):
         self.minSizerBase.Add(wx.StaticLine(parent, wx.ID_ANY, style=wx.HORIZONTAL), 0, wx.EXPAND)
 
         # Capacitor
-        for panel in ("full", "min"):
+        for panel in ("full", "mini"):
             parent = getattr(self, "%sPanel" % panel)
             labelCap = wx.StaticText(parent, wx.ID_ANY, "Capacitor")
             labelCap.SetFont(boldFont)
             sizerHeaderCapacitor = wx.BoxSizer(wx.HORIZONTAL)
 
-            if panel == "min":
+            if panel == "mini":
                 self.minSizerBase.Add(labelCap, 0, wx.ALIGN_CENTER)
                 sizerCapacitor = self.minSizerBase
             else:
@@ -503,7 +503,7 @@ class StatsPane(wx.Panel):
 
 
         # Mini speed & align
-        labelManeuverability = wx.StaticText(self.minPanel, wx.ID_ANY, "Speed")
+        labelManeuverability = wx.StaticText(self.miniPanel, wx.ID_ANY, "Speed")
         labelManeuverability.SetFont(boldFont)
         self.minSizerBase.Add(labelManeuverability, 0, wx.ALIGN_CENTER)
 
@@ -514,23 +514,23 @@ class StatsPane(wx.Panel):
             sizer = wx.BoxSizer(wx.HORIZONTAL)
             self.minSizerBase.Add(sizer, 0, wx.ALIGN_LEFT)
 
-            sizer.Add(wx.StaticText(self.minPanel, wx.ID_ANY, "%s: " % header), 0, wx.ALIGN_LEFT)
+            sizer.Add(wx.StaticText(self.miniPanel, wx.ID_ANY, "%s: " % header), 0, wx.ALIGN_LEFT)
 
             box = wx.BoxSizer(wx.HORIZONTAL)
             sizer.Add(box, 0, wx.ALIGN_LEFT)
 
-            lbl = wx.StaticText(self.minPanel, wx.ID_ANY, "0")
+            lbl = wx.StaticText(self.miniPanel, wx.ID_ANY, "0")
             setattr(self, "label%s" % labelShort, lbl)
             box.Add(lbl, 0, wx.ALIGN_LEFT)
 
-            lblUnit = wx.StaticText(self.minPanel, wx.ID_ANY, " %s" % unit)
+            lblUnit = wx.StaticText(self.miniPanel, wx.ID_ANY, " %s" % unit)
             setattr(self, "labelUnit%s" % labelShort, lblUnit)
             box.Add(lblUnit, 0, wx.ALIGN_LEFT)
 
         self.minSizerBase.Add(wx.StaticLine(parent, wx.ID_ANY, style=wx.HORIZONTAL), 0, wx.EXPAND)
 
         # Mini price stuff
-        labelPrice = wx.StaticText(self.minPanel, wx.ID_ANY, "Price")
+        labelPrice = wx.StaticText(self.miniPanel, wx.ID_ANY, "Price")
         labelPrice.SetFont(boldFont)
         self.minSizerBase.Add(labelPrice, 0, wx.ALIGN_CENTER)
 
@@ -538,13 +538,13 @@ class StatsPane(wx.Panel):
         box = wx.BoxSizer(wx.HORIZONTAL)
         self.minSizerBase.Add(box)
 
-        box.Add(bitmapLoader.getStaticBitmap(image, self.minPanel, "icons"), 0, wx.ALIGN_CENTER)
+        box.Add(bitmapLoader.getStaticBitmap(image, self.miniPanel, "icons"), 0, wx.ALIGN_CENTER)
 
-        lbl = wx.StaticText(self.minPanel, wx.ID_ANY, "0.00")
+        lbl = wx.StaticText(self.miniPanel, wx.ID_ANY, "0.00")
         setattr(self, "labelMiniPriceTotal", lbl)
         box.Add(lbl, 0, wx.ALIGN_CENTER)
 
-        box.Add(wx.StaticText(self.minPanel, wx.ID_ANY, " m ISK"), 0, wx.ALIGN_CENTER)
+        box.Add(wx.StaticText(self.miniPanel, wx.ID_ANY, " m ISK"), 0, wx.ALIGN_CENTER)
 
 
         # Price
