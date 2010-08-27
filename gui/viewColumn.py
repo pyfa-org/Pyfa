@@ -42,7 +42,7 @@ class ViewColumn(object):
     def getText(self, mod):
         raise NotImplementedError()
 
-    def getImage(self, mod):
+    def getImageId(self, mod):
         raise NotImplementedError()
 
     def getParameters(self):

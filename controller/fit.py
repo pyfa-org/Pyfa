@@ -42,7 +42,7 @@ class Fit(object):
     def newFit(self, shipID, name):
         fit = eos.types.Fit()
         fit.ship = eos.types.Ship(eos.db.getItem(shipID))
-        fit.name = name 
+        fit.name = name
         eos.db.saveddata_session.add(fit)
         eos.db.saveddata_session.flush()
         return fit.ID
@@ -65,4 +65,6 @@ class Fit(object):
         return newFit.ID
 
     def getFit(self, fitID):
-        return eos.db.getFit(fitID)
+        fit = eos.db.getFit(fitID)
+        fit.fill()
+        return fit

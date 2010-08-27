@@ -34,13 +34,16 @@ class ModuleState(ViewColumn):
                 continue
 
             id = State.__dict__[state]
-            self.stateNameMap[id] = state
+            self.stateNameMap[id] = state.lower()
 
     def getText(self, mod):
         return ""
 
     def getImageId(self, mod):
-        bitmap = bitmapLoader.getBitmap("state_%s_small" % self.stateNameMap[mod.state], "icons")
-        return self.fittingView.imageList.Add(bitmap)
+        if mod.isEmpty():
+            return -1
+        else:
+            bitmap = bitmapLoader.getBitmap("state_%s_small" % self.stateNameMap[mod.state], "icons")
+            return self.fittingView.imageList.Add(bitmap)
 
 builtinViewColumns.registerColumn(ModuleState)

@@ -23,6 +23,7 @@ import gui.builtinViewColumns
 import gui.shipBrowser as sb
 import gui.mainFrame
 from gui.builtinViewColumns import *
+import sys
 
 class FittingView(wx.ListCtrl):
     DEFAULT_COLS = ["Module state",
@@ -73,11 +74,18 @@ class FittingView(wx.ListCtrl):
         info.m_image = col.imageId
         info.m_text = col.columnText
         self.InsertColumnInfo(i, info)
+        col.resized = False
         self.SetColumnWidth(i, wx.LIST_AUTOSIZE_USEHEADER if col.size is wx.LIST_AUTOSIZE else col.size)
 
     def resizeChecker(self, event):
         if self.activeColumns[event.Column].resizable is False:
             event.Veto()
+        else:
+            self.activeColumns[event.Column].resized = True
+
+    def clearItemImages(self):
+        for i in xrange(self.imageList.ImageCount, self.imageListBase, -1):
+            self.imageList.Remove(i)
 
     #Gets called from the fitMultiSwitch when it decides its time
     def changeFit(self, fitID):
@@ -85,4 +93,18 @@ class FittingView(wx.ListCtrl):
         if fitID == None:
             self.Hide()
         else:
+            cFit = controller.Fit.getInstance()
+            fit = cFit.getFit(fitID)
+            self.DeleteAllItems()
+            self.clearItemImages()
+            for mod in fit.modules:
+                index = self.InsertStringItem(sys.maxint, "")
+                for i, col in enumerate(self.activeColumns):
+                    self.SetStringItem(index, i, col.getText(mod), col.getImageId(mod))
+
+            for i, col in enumerate(self.activeColumns):
+                if not col.resized:
+                    self.SetColumnWidth(i, wx.LIST_AUTOSIZE)
+                    if self.GetColumnWidth(i) < 40:
+                        self.SetColumnWidth(i, 40)
             self.Show()
