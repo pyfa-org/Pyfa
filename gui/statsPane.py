@@ -40,8 +40,14 @@ class StatsPane(wx.Panel):
     def fitChanged(self, event):
         cFit = controller.Fit.getInstance()
         fit = cFit.getFit(event.fitID)
-        turretHPUsed = fit.getHardpointsUsed(Hardpoint.TURRET)
-        self.labelFullAvailableTurretHardpoints.SetLabel(str(turretHPUsed))
+        turretHPUsed = str(fit.getHardpointsUsed(Hardpoint.TURRET))
+        self.labelFullAvailableTurretHardpoints.SetLabel(turretHPUsed)
+        self.labelMiniAvailableTurretHardpoints.SetLabel(turretHPUsed)
+
+        turretHPTotal = "%d" % fit.ship.getModifiedItemAttr('turretSlotsLeft')
+        self.labelFullTotalTurretHardpoints.SetLabel(turretHPTotal)
+        self.labelMiniTotalTurretHardpoints.SetLabel(turretHPTotal)
+
         event.Skip()
 
     def __init__(self, parent):
@@ -131,7 +137,7 @@ class StatsPane(wx.Panel):
                 box.Add(wx.StaticText(parent, wx.ID_ANY, "/"), 0, wx.ALIGN_LEFT)
 
                 lbl = wx.StaticText(parent, wx.ID_ANY, "0")
-                setattr(self, "label%sTotal%s%s" % (panel, type.capitalize(), suffix), lbl)
+                setattr(self, "label%sTotal%s%s" % (panel.capitalize(), type.capitalize(), suffix.capitalize()), lbl)
                 box.Add(lbl, 0, wx.ALIGN_LEFT)
 
             st = wx.VERTICAL if panel == "full" else wx.HORIZONTAL
