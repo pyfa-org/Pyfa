@@ -21,7 +21,6 @@ import wx
 import wx.lib.newevent
 import controller
 import gui.builtinViewColumns
-import gui.shipBrowser as sb
 import gui.mainFrame
 from gui.builtinViewColumns import *
 import sys
