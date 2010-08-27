@@ -41,18 +41,33 @@ class StatsPane(wx.Panel):
         cFit = controller.Fit.getInstance()
         fit = cFit.getFit(event.fitID)
 
-        statsMiniFull = (("label%sAvailableTurretHardpoints", lambda: fit.getHardpointsUsed(Hardpoint.TURRET), 0),
+        statsMiniFull = (("label%sUsedTurretHardpoints", lambda: fit.getHardpointsUsed(Hardpoint.TURRET), 0),
                          ("label%sTotalTurretHardpoints", lambda: fit.ship.getModifiedItemAttr('turretSlotsLeft'), 0),
-                         ("label%sAvailableLauncherHardpoints", lambda: fit.getHardpointsUsed(Hardpoint.MISSILE), 0),
+                         ("label%sUsedLauncherHardpoints", lambda: fit.getHardpointsUsed(Hardpoint.MISSILE), 0),
                          ("label%sTotalLauncherHardpoints", lambda: fit.ship.getModifiedItemAttr('launcherSlotsLeft'), 0),
-                         ("label%sAvailableCalibrationPoints", lambda: fit.getCalibrationUsed(), 0),
-                         ("label%sTotalCalibrationPoints", lambda: fit.ship.getModifiedItemAttr('upgradeCapacity'), 0))
+                         ("label%sUsedCalibrationPoints", lambda: fit.getCalibrationUsed(), 0),
+                         ("label%sTotalCalibrationPoints", lambda: fit.ship.getModifiedItemAttr('upgradeCapacity'), 0),
+                         ("label%sUsedPg", lambda: fit.getPgUsed(), 1),
+                         ("label%sUsedCpu", lambda: fit.getCpuUsed(), 1),
+                         ("label%sTotalPg", lambda: fit.ship.getModifiedItemAttr("powerOutput"), 1),
+                         ("label%sTotalCpu", lambda: fit.ship.getModifiedItemAttr("cpuOutput"), 1))
+
+        statsFull = (("labelFullUsedDroneBay", lambda: fit.getDroneBayUsed(), 0),
+                     ("labelFullUsedDroneBandwidth", lambda: fit.getDroneBandwidthUsed(), 0),
+                     ("labelFullTotalDroneBay", lambda: fit.ship.getModifiedItemAttr("droneCapacity"), 0),
+                     ("labelFullTotalDroneBandwidth", lambda: fit.ship.getModifiedItemAttr("droneBandwidth"), 0))
 
         for panel in ("Mini", "Full"):
             for labelName, value, rounding in statsMiniFull:
                 label = getattr(self, labelName % panel)
                 label.SetLabel(("%." + str(rounding) + "f") % (value() if fit is not None else 0))
 
+        for labelName, value, rounding in statsFull:
+            label = getattr(self, labelName)
+            label.SetLabel(("%." + str(rounding) + "f") % (value() if fit is not None else 0))
+
+
+        self.Layout()
         event.Skip()
 
     def __init__(self, parent):
@@ -136,7 +151,7 @@ class StatsPane(wx.Panel):
 
                 suffix = "Points" if type == "calibration" else "Hardpoints"
                 lbl = wx.StaticText(parent, wx.ID_ANY, "0")
-                setattr(self, "label%sAvailable%s%s" % (panel.capitalize(), type.capitalize(), suffix.capitalize()), lbl)
+                setattr(self, "label%sUsed%s%s" % (panel.capitalize(), type.capitalize(), suffix.capitalize()), lbl)
                 box.Add(lbl, 0, wx.ALIGN_LEFT)
 
                 box.Add(wx.StaticText(parent, wx.ID_ANY, "/"), 0, wx.ALIGN_LEFT)
