@@ -104,6 +104,8 @@ class ShipBrowser(wx.Panel):
                 if type == "fit":
                     wx.PostEvent(self.mainFrame, FitSelected(fitID=fitID))
 
+        event.Skip()
+
     def toggleButtons(self, event):
         tree = self.getActiveTree()
         root = tree.GetSelection()
