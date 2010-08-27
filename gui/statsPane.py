@@ -40,7 +40,7 @@ class StatsPane(wx.Panel):
     def fitChanged(self, event):
         cFit = controller.Fit.getInstance()
         fit = cFit.getFit(event.fitID)
-
+        ehp = fit.getEhp()
         statsMiniFull = (("label%sUsedTurretHardpoints", lambda: fit.getHardpointsUsed(Hardpoint.TURRET), 0),
                          ("label%sTotalTurretHardpoints", lambda: fit.ship.getModifiedItemAttr('turretSlotsLeft'), 0),
                          ("label%sUsedLauncherHardpoints", lambda: fit.getHardpointsUsed(Hardpoint.MISSILE), 0),
@@ -50,9 +50,11 @@ class StatsPane(wx.Panel):
                          ("label%sUsedPg", lambda: fit.getPgUsed(), 1),
                          ("label%sUsedCpu", lambda: fit.getCpuUsed(), 1),
                          ("label%sTotalPg", lambda: fit.ship.getModifiedItemAttr("powerOutput"), 1),
-                         ("label%sTotalCpu", lambda: fit.ship.getModifiedItemAttr("cpuOutput"), 1))
+                         ("label%sTotalCpu", lambda: fit.ship.getModifiedItemAttr("cpuOutput"), 1),
+                         ("label%sVolleyTotal", lambda: fit.weaponVolley, 1),
+                         ("label%sDpsTotal", lambda: fit.weaponDPS + fit.droneDPS, 1))
 
-        statsFull = (("labelFullUsedDroneBay", lambda: fit.getDroneBayUsed(), 0),
+        stats = (("labelFullUsedDroneBay", lambda: fit.getDroneBayUsed(), 0),
                      ("labelFullUsedDroneBandwidth", lambda: fit.getDroneBandwidthUsed(), 0),
                      ("labelFullTotalDroneBay", lambda: fit.ship.getModifiedItemAttr("droneCapacity"), 0),
                      ("labelFullTotalDroneBandwidth", lambda: fit.ship.getModifiedItemAttr("droneBandwidth"), 0))
@@ -62,7 +64,7 @@ class StatsPane(wx.Panel):
                 label = getattr(self, labelName % panel)
                 label.SetLabel(("%." + str(rounding) + "f") % (value() if fit is not None else 0))
 
-        for labelName, value, rounding in statsFull:
+        for labelName, value, rounding in stats:
             label = getattr(self, labelName)
             label.SetLabel(("%." + str(rounding) + "f") % (value() if fit is not None else 0))
 
@@ -365,7 +367,7 @@ class StatsPane(wx.Panel):
                     box.Add(hbox, 1, wx.ALIGN_CENTER)
 
                     lbl = wx.StaticText(parent, wx.ID_ANY, "0.0")
-                    setattr(self, "label%sDps%s" % (panel,damageType), lbl)
+                    setattr(self, "label%sDps%s" % (panel.capitalize() ,damageType.capitalize()), lbl)
 
                     hbox.Add(lbl, 0, wx.ALIGN_CENTER)
                     hbox.Add(wx.StaticText(parent, wx.ID_ANY, " DPS"), 0, wx.ALIGN_CENTER)
@@ -386,16 +388,19 @@ class StatsPane(wx.Panel):
             hbox = wx.BoxSizer(wx.HORIZONTAL)
             box.Add(hbox, 1, wx.ALIGN_LEFT | wx.LEFT, 3)
 
-            self.labelVolleyTotal = wx.StaticText(parent, wx.ID_ANY, "0.0")
+            lbl = wx.StaticText(parent, wx.ID_ANY, "0.0")
+            setattr(self, "label%sVolleyTotal" % panel.capitalize(), lbl)
             hbox.Add(wx.StaticText(parent, wx.ID_ANY, "Volley: "), 0, wx.ALIGN_LEFT)
-            hbox.Add(self.labelVolleyTotal, 0, wx.EXPAND)
+            hbox.Add(lbl, 0, wx.EXPAND)
 
             hbox = wx.BoxSizer(wx.HORIZONTAL)
             box.Add(hbox, 1, wx.ALIGN_LEFT | wx.LEFT, 3)
 
-            self.labelDpsTotal = wx.StaticText(parent, wx.ID_ANY, "0.0")
+
+            lbl = wx.StaticText(parent, wx.ID_ANY, "0.0")
+            setattr(self, "label%sDpsTotal" % panel.capitalize(), lbl)
             hbox.Add(wx.StaticText(parent, wx.ID_ANY, "DPS: "), 0, wx.ALIGN_LEFT)
-            hbox.Add(self.labelDpsTotal, 0, wx.ALIGN_CENTER)
+            hbox.Add(lbl, 0, wx.ALIGN_CENTER)
 
         self.minSizerBase.Add(wx.StaticLine(parent, wx.ID_ANY, style=wx.HORIZONTAL), 0, wx.EXPAND)
 
