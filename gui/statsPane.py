@@ -19,11 +19,10 @@
 
 import wx
 from gui import bitmapLoader
-import gui.shipBrowser as sb
 import gui.fittingView as fv
 import gui.mainFrame
 import controller
-
+from eos.types import Slot, Hardpoint
 class StatsPane(wx.Panel):
     def collapseChanged(self, event):
         collapsed = event.Collapsed
@@ -36,15 +35,22 @@ class StatsPane(wx.Panel):
 
         self.fullPanel.Show(not collapsed)
         self.miniPanel.Show(collapsed)
-        gui.mainFrame.MainFrame.getInstance().statsSizer.Layout()
+        self.mainFrame.statsSizer.Layout()
 
     def fitChanged(self, event):
         cFit = controller.Fit.getInstance()
         fit = cFit.getFit(event.fitID)
-        pass
+        turretHPUsed = fit.getHardpointsUsed(Hardpoint.TURRET)
+        self.labelFullAvailableTurretHardpoints.SetLabel(str(turretHPUsed))
+        event.Skip()
 
     def __init__(self, parent):
         wx.Panel.__init__(self, parent)
+
+        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+
+        # Register events
+        self.mainFrame.Bind(fv.FIT_CHANGED, self.fitChanged)
 
         self.pickerSizer = wx.BoxSizer(wx.VERTICAL)
         self.SetSizer(self.pickerSizer)
@@ -119,7 +125,7 @@ class StatsPane(wx.Panel):
 
                 suffix = "Points" if type == "calibration" else "Hardpoints"
                 lbl = wx.StaticText(parent, wx.ID_ANY, "0")
-                setattr(self, "label%sAvailable%s%s" % (panel, type.capitalize(), suffix), lbl)
+                setattr(self, "label%sAvailable%s%s" % (panel.capitalize(), type.capitalize(), suffix.capitalize()), lbl)
                 box.Add(lbl, 0, wx.ALIGN_LEFT)
 
                 box.Add(wx.StaticText(parent, wx.ID_ANY, "/"), 0, wx.ALIGN_LEFT)

@@ -121,3 +121,4 @@ class FittingView(wx.ListCtrl):
                     self.SetColumnWidth(i, 40)
 
         self.SortItems(lambda id1, id2: cmp(slotOrder.index(modSlotMap[id1]), slotOrder.index(modSlotMap[id2])))
+        event.Skip()
