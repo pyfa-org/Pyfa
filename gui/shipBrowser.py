@@ -102,7 +102,7 @@ class ShipBrowser(wx.Panel):
             if data is not None:
                 type, fitID = data
                 if type == "fit":
-                    wx.PostEvent(self, FitSelected(fitID=fitID))
+                    wx.PostEvent(self.mainFrame, FitSelected(fitID=fitID))
 
     def toggleButtons(self, event):
         tree = self.getActiveTree()
@@ -173,7 +173,7 @@ class ShipBrowser(wx.Panel):
         tree.SelectItem(childId)
         tree.EditLabel(childId)
 
-        wx.PostEvent(self, FitCreated(fitID=fitID))
+        wx.PostEvent(self.mainFrame, FitCreated(fitID=fitID))
 
     def renameFit(self, event):
         tree = self.getActiveTree()
@@ -197,7 +197,7 @@ class ShipBrowser(wx.Panel):
 
         wx.CallAfter(tree.SortChildren, tree.GetItemParent(item))
 
-        wx.PostEvent(self, FitRenamed(fitID=fitID))
+        wx.PostEvent(self.mainFrame, FitRenamed(fitID=fitID))
 
     def deleteFit(self, event):
         tree = self.getActiveTree()
@@ -208,7 +208,7 @@ class ShipBrowser(wx.Panel):
             cFit.deleteFit(fitID)
             tree.Delete(root)
 
-        wx.PostEvent(self, FitRemoved(fitID=fitID))
+        wx.PostEvent(self.mainFrame, FitRemoved(fitID=fitID))
 
     def copyFit(self, event):
         tree = self.getActiveTree()
@@ -224,7 +224,7 @@ class ShipBrowser(wx.Panel):
             tree.SelectItem(childId)
             tree.EditLabel(childId)
 
-        wx.PostEvent(self, FitCreated(fitID=newID))
+        wx.PostEvent(self.mainFrame, FitCreated(fitID=newID))
 
     def scheduleSearch(self, event):
         self.searchTimer.Stop()

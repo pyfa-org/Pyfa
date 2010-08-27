@@ -19,7 +19,10 @@
 
 import wx
 from gui import bitmapLoader
+import gui.shipBrowser as sb
+import gui.fittingView as fv
 import gui.mainFrame
+import controller
 
 class StatsPane(wx.Panel):
     def collapseChanged(self, event):
@@ -34,6 +37,11 @@ class StatsPane(wx.Panel):
         self.fullPanel.Show(not collapsed)
         self.miniPanel.Show(collapsed)
         gui.mainFrame.MainFrame.getInstance().statsSizer.Layout()
+
+    def fitChanged(self, event):
+        cFit = controller.Fit.getInstance()
+        fit = cFit.getFit(event.fitID)
+        pass
 
     def __init__(self, parent):
         wx.Panel.__init__(self, parent)

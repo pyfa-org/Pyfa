@@ -45,8 +45,8 @@ class FittingView(wx.ListCtrl):
         self.SetImageList(self.imageList, wx.IMAGE_LIST_SMALL)
         self.activeColumns = []
         self.Bind(wx.EVT_LIST_COL_BEGIN_DRAG, self.resizeChecker)
-        self.Bind(FIT_CHANGED, self.fitChanged)
         mainFrame = gui.mainFrame.MainFrame.getInstance()
+        mainFrame.Bind(FIT_CHANGED, self.fitChanged)
         self.shipBrowser = mainFrame.shipBrowser
         self.shipView = mainFrame.shipBrowser.shipView
         self.searchView = mainFrame.shipBrowser.shipView
@@ -96,7 +96,7 @@ class FittingView(wx.ListCtrl):
         if fitID == None:
             self.Hide()
         else:
-            wx.PostEvent(self, FitChanged(fitID=fitID))
+            wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), FitChanged(fitID=fitID))
             self.Show()
 
     def fitChanged(self, event):

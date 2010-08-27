@@ -31,11 +31,12 @@ class MultiSwitch(wx.Notebook):
         self.AddPage(wx.Panel(self), "+")
         self.Bind(wx.EVT_NOTEBOOK_PAGE_CHANGING, self.checkAdd)
         self.Bind(wx.EVT_MIDDLE_DOWN, self.checkRemove)
-        self.shipBrowser = gui.mainFrame.MainFrame.getInstance().shipBrowser
 
-        self.shipBrowser.Bind(sb.EVT_FIT_RENAMED, self.processRename)
-        self.shipBrowser.Bind(sb.EVT_FIT_SELECTED, self.changeFit)
-        self.shipBrowser.Bind(sb.EVT_FIT_REMOVED, self.processRemove)
+        mainFrame = gui.mainFrame.MainFrame.getInstance()
+
+        mainFrame.Bind(sb.EVT_FIT_RENAMED, self.processRename)
+        mainFrame.Bind(sb.EVT_FIT_SELECTED, self.changeFit)
+        mainFrame.Bind(sb.EVT_FIT_REMOVED, self.processRemove)
 
 
         self.imageList = wx.ImageList(16, 16)
