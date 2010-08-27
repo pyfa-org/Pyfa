@@ -40,13 +40,25 @@ class StatsPane(wx.Panel):
     def fitChanged(self, event):
         cFit = controller.Fit.getInstance()
         fit = cFit.getFit(event.fitID)
+        # Turret Hardpoints used
         turretHPUsed = str(fit.getHardpointsUsed(Hardpoint.TURRET))
         self.labelFullAvailableTurretHardpoints.SetLabel(turretHPUsed)
         self.labelMiniAvailableTurretHardpoints.SetLabel(turretHPUsed)
 
+        # Turret Hardpoints total
         turretHPTotal = "%d" % fit.ship.getModifiedItemAttr('turretSlotsLeft')
         self.labelFullTotalTurretHardpoints.SetLabel(turretHPTotal)
         self.labelMiniTotalTurretHardpoints.SetLabel(turretHPTotal)
+
+        # Missile Hardpoints used
+        missileHPUsed = str(fit.getHardpointsUsed(Hardpoint.MISSILE))
+        self.labelFullAvailableLauncherHardpoints.SetLabel(missileHPUsed)
+        self.labelMiniAvailableLauncherHardpoints.SetLabel(missileHPUsed)
+
+        # Missile Hardpoints total
+        missileHPTotal = "%d" % fit.ship.getModifiedItemAttr('launcherSlotsLeft')
+        self.labelFullTotalLauncherHardpoints.SetLabel(missileHPTotal)
+        self.labelMiniTotalLauncherHardpoints.SetLabel(missileHPTotal)
 
         event.Skip()
 
