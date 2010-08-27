@@ -450,7 +450,8 @@ class StatsPane(wx.Panel):
             setattr(self, "label%sCapacitorCapacity" % panel.capitalize(), lbl)
             hbox.Add(lbl, 0, wx.ALIGN_LEFT)
 
-            hbox.Add(wx.StaticText(parent, wx.ID_ANY, " GJ"), 0, wx.ALIGN_LEFT)
+            if panel == "full":
+                hbox.Add(wx.StaticText(parent, wx.ID_ANY, " GJ"), 0, wx.ALIGN_LEFT)
 
             hbox = wx.BoxSizer(wx.HORIZONTAL)
             box.Add(hbox, 0, wx.ALIGN_LEFT)
