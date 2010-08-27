@@ -78,6 +78,18 @@ class StatsPane(wx.Panel):
             label = getattr(self, labelName)
             label.SetLabel(("%." + str(rounding) + "f") % (value() if fit is not None else 0))
 
+        for tankType in ("shield", "armor", "hull"):
+            for damageType in ("em", "thermal", "kinetic", "explosive"):
+                if fit is not None:
+                    resonanceType = tankType if tankType != "hull" else ""
+                    resonance = "%s%sDamageResonance" % (resonanceType, damageType.capitalize())
+                    resonance = resonance[0].lower() + resonance[1:]
+                    resonance = (1 - fit.ship.getModifiedItemAttr(resonance)) * 100
+                else:
+                    resonance = 0
+
+                lbl = getattr(self, "labelResistance%s%s" % (tankType.capitalize(), damageType.capitalize()))
+                lbl.SetLabel("%.2f" % resonance)
 
         self.Layout()
         event.Skip()
@@ -265,7 +277,7 @@ class StatsPane(wx.Panel):
                 sizerResistances.Add(box, 1, wx.ALIGN_CENTER)
 
                 lbl = wx.StaticText(self.fullPanel, wx.ID_ANY, "0.00")
-                setattr(self, "labelResistance%s%s" % (tankType, damageType), lbl)
+                setattr(self, "labelResistance%s%s" % (tankType.capitalize(), damageType.capitalize()), lbl)
                 box.Add(lbl, 0, wx.ALIGN_CENTER)
 
                 box.Add(wx.StaticText(self.fullPanel, wx.ID_ANY, "%"), 0, wx.ALIGN_CENTER)
