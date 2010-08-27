@@ -40,25 +40,18 @@ class StatsPane(wx.Panel):
     def fitChanged(self, event):
         cFit = controller.Fit.getInstance()
         fit = cFit.getFit(event.fitID)
-        # Turret Hardpoints used
-        turretHPUsed = str(fit.getHardpointsUsed(Hardpoint.TURRET))
-        self.labelFullAvailableTurretHardpoints.SetLabel(turretHPUsed)
-        self.labelMiniAvailableTurretHardpoints.SetLabel(turretHPUsed)
 
-        # Turret Hardpoints total
-        turretHPTotal = "%d" % fit.ship.getModifiedItemAttr('turretSlotsLeft')
-        self.labelFullTotalTurretHardpoints.SetLabel(turretHPTotal)
-        self.labelMiniTotalTurretHardpoints.SetLabel(turretHPTotal)
+        statsMiniFull = (("label%sAvailableTurretHardpoints", lambda: fit.getHardpointsUsed(Hardpoint.TURRET), 0),
+                         ("label%sTotalTurretHardpoints", lambda: fit.ship.getModifiedItemAttr('turretSlotsLeft'), 0),
+                         ("label%sAvailableLauncherHardpoints", lambda: fit.getHardpointsUsed(Hardpoint.MISSILE), 0),
+                         ("label%sTotalLauncherHardpoints", lambda: fit.ship.getModifiedItemAttr('launcherSlotsLeft'), 0),
+                         ("label%sAvailableCalibrationPoints", lambda: fit.getCalibrationUsed(), 0),
+                         ("label%sTotalCalibrationPoints", lambda: fit.ship.getModifiedItemAttr('upgradeCapacity'), 0))
 
-        # Missile Hardpoints used
-        missileHPUsed = str(fit.getHardpointsUsed(Hardpoint.MISSILE))
-        self.labelFullAvailableLauncherHardpoints.SetLabel(missileHPUsed)
-        self.labelMiniAvailableLauncherHardpoints.SetLabel(missileHPUsed)
-
-        # Missile Hardpoints total
-        missileHPTotal = "%d" % fit.ship.getModifiedItemAttr('launcherSlotsLeft')
-        self.labelFullTotalLauncherHardpoints.SetLabel(missileHPTotal)
-        self.labelMiniTotalLauncherHardpoints.SetLabel(missileHPTotal)
+        for panel in ("Mini", "Full"):
+            for labelName, value, rounding in statsMiniFull:
+                label = getattr(self, labelName % panel)
+                label.SetLabel(("%." + str(rounding) + "f") % (value() if fit is not None else 0))
 
         event.Skip()
 
@@ -182,13 +175,13 @@ class StatsPane(wx.Panel):
 
 
                         lbl = wx.StaticText(parent, wx.ID_ANY, "0")
-                        setattr(self, "labelAvailable%s" % capitalizedType, lbl)
+                        setattr(self, "label%sUsed%s" % (panel.capitalize(), capitalizedType), lbl)
                         absolute.Add(lbl, 0, wx.ALIGN_CENTER)
 
                         absolute.Add(wx.StaticText(parent, wx.ID_ANY, "/"), 0, wx.ALIGN_CENTER)
 
                         lbl = wx.StaticText(parent, wx.ID_ANY, "0")
-                        setattr(self, "labelTotal%s" % capitalizedType, lbl)
+                        setattr(self, "label%sTotal%s" % (panel.capitalize(), capitalizedType), lbl)
                         absolute.Add(lbl, 0, wx.ALIGN_CENTER)
 
                         gauge = wx.Gauge(parent, wx.ID_ANY, 100)
