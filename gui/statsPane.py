@@ -45,7 +45,7 @@ class StatsPane(wx.Panel):
                          ("label%sTotalTurretHardpoints", lambda: fit.ship.getModifiedItemAttr('turretSlotsLeft'), 0),
                          ("label%sUsedLauncherHardpoints", lambda: fit.getHardpointsUsed(Hardpoint.MISSILE), 0),
                          ("label%sTotalLauncherHardpoints", lambda: fit.ship.getModifiedItemAttr('launcherSlotsLeft'), 0),
-                         ("label%sUsedCalibrationPoints", lambda: fit.getCalibrationUsed(), 0),
+                         ("label%sUsedCalibrationPoints", lambda: 300, 0),
                          ("label%sTotalCalibrationPoints", lambda: fit.ship.getModifiedItemAttr('upgradeCapacity'), 0),
                          ("label%sUsedPg", lambda: fit.getPgUsed(), 1),
                          ("label%sUsedCpu", lambda: fit.getCpuUsed(), 1),
@@ -136,7 +136,7 @@ class StatsPane(wx.Panel):
                 base.Add(sizer, 1, wx.ALIGN_LEFT)
             else:
                 base = sizerResources
-                base.Add(sizer, 1, wx.ALIGN_CENTER)
+                base.Add(sizer, 0, wx.ALIGN_CENTER)
 
                 sizerHeaderResources.Add(labelResources, 0, wx.ALIGN_CENTER)
                 sizerHeaderResources.Add(wx.StaticLine(self.fullPanel, wx.ID_ANY), 1, wx.ALIGN_CENTER)
@@ -146,8 +146,8 @@ class StatsPane(wx.Panel):
                 bitmap = bitmapLoader.getStaticBitmap("%s_big" % type, parent, "icons")
                 box = wx.BoxSizer(wx.HORIZONTAL)
 
-                sizer.Add(bitmap, 0, wx.ALIGN_CENTER)
-                sizer.Add(box, 0, wx.ALIGN_CENTER)
+                sizer.Add(bitmap, 0, wx.ALIGN_LEFT)
+                sizer.Add(box, 0, wx.ALIGN_LEFT)
 
                 suffix = "Points" if type == "calibration" else "Hardpoints"
                 lbl = wx.StaticText(parent, wx.ID_ANY, "0")
@@ -161,31 +161,34 @@ class StatsPane(wx.Panel):
                 box.Add(lbl, 0, wx.ALIGN_LEFT)
 
             st = wx.VERTICAL if panel == "full" else wx.HORIZONTAL
-            base.Add(wx.StaticLine(parent, wx.ID_ANY, style=st), 0, wx.EXPAND)
+            base.Add(wx.StaticLine(parent, wx.ID_ANY, style=st), 0, wx.EXPAND, wx.LEFT, 3 if panel == "full" else 0)
 
 
             #PG, Cpu & drone stuff
             for i, group in enumerate((("cpu", "pg"), ("droneBay", "droneBandwidth"))):
                 main = wx.BoxSizer(wx.VERTICAL)
-                base.Add(main, 0, wx.ALIGN_CENTER)
+                base.Add(main, 1 if panel == "full" else 0, wx.ALIGN_CENTER)
                 if i == 0 or panel == "full":
                     for type in group:
                         capitalizedType = type[0].capitalize() + type[1:]
                         bitmap = bitmapLoader.getStaticBitmap(type + "_big", parent, "icons")
+                        if panel == "mini":
+                            main.Add(bitmap, 0, wx.ALIGN_CENTER)
+
                         stats = wx.BoxSizer(wx.VERTICAL)
                         absolute =  wx.BoxSizer(wx.HORIZONTAL)
-                        stats.Add(absolute)
+                        stats.Add(absolute, 0, wx.ALIGN_CENTER)
 
                         if panel == "full":
                             b = wx.BoxSizer(wx.HORIZONTAL)
-                            main.Add(b, 0, wx.EXPAND)
+                            main.Add(b, 1, wx.ALIGN_CENTER)
 
                             b.Add(bitmap, 0, wx.ALIGN_CENTER)
 
-                            b.Add(stats, 0, wx.EXPAND)
+                            b.Add(stats, 1, wx.EXPAND)
                         else:
-                            main.Add(stats, 0, wx.EXPAND)
-                            absolute.Add(bitmap, 0, wx.ALIGN_CENTER)
+                            main.Add(stats, 0, wx.ALIGN_CENTER)
+
 
 
 
@@ -200,12 +203,15 @@ class StatsPane(wx.Panel):
                         absolute.Add(lbl, 0, wx.ALIGN_CENTER)
 
                         gauge = wx.Gauge(parent, wx.ID_ANY, 100)
-                        gauge.SetMinSize((100, 20))
+                        gauge.SetMinSize((80, 20))
                         setattr(self, "gauge%s" % capitalizedType, gauge)
-                        stats.Add(gauge)
+                        stats.Add(gauge, 0, wx.ALIGN_CENTER)
 
                 if panel == "mini":
                     base.Add(wx.StaticLine(parent, wx.ID_ANY, style=wx.HORIZONTAL), 0, wx.EXPAND)
+
+                if i == 0 and panel == "full":
+                    base.Add(wx.StaticLine(parent, wx.ID_ANY, style=wx.VERTICAL), 0, wx.EXPAND)
 
         # Resistances
         sizerHeaderResistances = wx.BoxSizer(wx.HORIZONTAL)
