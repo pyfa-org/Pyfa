@@ -98,8 +98,8 @@ class MultiSwitch(wx.Notebook):
                 fit = cFit.getFit(fitID)
                 self.SetPageText(tab, "%s: %s" % (fit.ship.item.name, fit.name))
                 bitmap = bitmapLoader.getBitmap("race_%s_small" % fit.ship.item.race, "icons")
-                imageId = self.imageList.Add(bitmap)
-                self.SetPageImage(tab, imageId)
+                if bitmap:
+                    self.SetPageImage(tab, self.imageList.Add(bitmap))
 
     def changeFit(self, event):
         selected = self.GetSelection()
