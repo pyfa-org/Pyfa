@@ -18,12 +18,16 @@
 #===============================================================================
 
 import wx
+import wx.lib.newevent
 import controller
 import gui.builtinViewColumns
 import gui.shipBrowser as sb
 import gui.mainFrame
 from gui.builtinViewColumns import *
 import sys
+from eos.types import Slot
+
+FitChanged, FIT_CHANGED = wx.lib.newevent.NewEvent()
 
 class FittingView(wx.ListCtrl):
     DEFAULT_COLS = ["Module state",
@@ -42,7 +46,7 @@ class FittingView(wx.ListCtrl):
         self.SetImageList(self.imageList, wx.IMAGE_LIST_SMALL)
         self.activeColumns = []
         self.Bind(wx.EVT_LIST_COL_BEGIN_DRAG, self.resizeChecker)
-
+        self.Bind(FIT_CHANGED, self.fitChanged)
         mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.shipBrowser = mainFrame.shipBrowser
         self.shipView = mainFrame.shipBrowser.shipView
@@ -93,18 +97,28 @@ class FittingView(wx.ListCtrl):
         if fitID == None:
             self.Hide()
         else:
-            cFit = controller.Fit.getInstance()
-            fit = cFit.getFit(fitID)
-            self.DeleteAllItems()
-            self.clearItemImages()
-            for mod in fit.modules:
-                index = self.InsertStringItem(sys.maxint, "")
-                for i, col in enumerate(self.activeColumns):
-                    self.SetStringItem(index, i, col.getText(mod), col.getImageId(mod))
-
-            for i, col in enumerate(self.activeColumns):
-                if not col.resized:
-                    self.SetColumnWidth(i, wx.LIST_AUTOSIZE)
-                    if self.GetColumnWidth(i) < 40:
-                        self.SetColumnWidth(i, 40)
+            wx.PostEvent(self, FitChanged(fitID=fitID))
             self.Show()
+
+    def fitChanged(self, event):
+        cFit = controller.Fit.getInstance()
+        fit = cFit.getFit(event.fitID)
+        self.DeleteAllItems()
+        self.clearItemImages()
+        modSlotMap = {}
+        slotOrder = [Slot.SUBSYSTEM, Slot.HIGH, Slot.MED, Slot.LOW, Slot.RIG]
+
+        for modid, mod in enumerate(fit.modules):
+            index = self.InsertStringItem(sys.maxint, "")
+            for i, col in enumerate(self.activeColumns):
+                self.SetStringItem(index, i, col.getText(mod), col.getImageId(mod))
+                self.SetItemData(index, modid)
+                modSlotMap[modid] = mod.slot
+
+        for i, col in enumerate(self.activeColumns):
+            if not col.resized:
+                self.SetColumnWidth(i, wx.LIST_AUTOSIZE)
+                if self.GetColumnWidth(i) < 40:
+                    self.SetColumnWidth(i, 40)
+
+        self.SortItems(lambda id1, id2: cmp(slotOrder.index(modSlotMap[id1]), slotOrder.index(modSlotMap[id2])))
