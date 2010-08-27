@@ -47,22 +47,32 @@ class StatsPane(wx.Panel):
                          ("label%sTotalLauncherHardpoints", lambda: fit.ship.getModifiedItemAttr('launcherSlotsLeft'), 0),
                          ("label%sUsedCalibrationPoints", lambda: 300, 0),
                          ("label%sTotalCalibrationPoints", lambda: fit.ship.getModifiedItemAttr('upgradeCapacity'), 0),
-                         ("label%sUsedPg", lambda: fit.getPgUsed(), 1),
-                         ("label%sUsedCpu", lambda: fit.getCpuUsed(), 1),
+                         ("label%sUsedPg", lambda: fit.pgUsed, 1),
+                         ("label%sUsedCpu", lambda: fit.cpuUsed, 1),
                          ("label%sTotalPg", lambda: fit.ship.getModifiedItemAttr("powerOutput"), 1),
                          ("label%sTotalCpu", lambda: fit.ship.getModifiedItemAttr("cpuOutput"), 1),
                          ("label%sVolleyTotal", lambda: fit.weaponVolley, 1),
-                         ("label%sDpsTotal", lambda: fit.weaponDPS + fit.droneDPS, 1))
+                         ("label%sDpsTotal", lambda: fit.weaponDPS + fit.droneDPS, 1),
+                         ("label%sCapacitorCapacity", lambda: fit.ship.getModifiedItemAttr("capacitorCapacity"), 1),
+                         ("label%sCapacitorState", lambda: "Stable at " if fit.capState else "Lasts ", 0),
+                         ("label%sCapacitorTime", lambda: ("%.1f%%" if fit.capStable else "%ds") % fit.capState, 0),
+                         ("label%sCapacitorRecharge", lambda: fit.capRecharge, 1),
+                         ("label%sCapacitorDischarge", lambda: fit.capUsed, 1))
 
-        stats = (("labelFullUsedDroneBay", lambda: fit.getDroneBayUsed(), 0),
-                     ("labelFullUsedDroneBandwidth", lambda: fit.getDroneBandwidthUsed(), 0),
+        stats = (("labelFullUsedDroneBay", lambda: fit.droneBayUsed, 0),
+                     ("labelFullUsedDroneBandwidth", lambda: fit.droneBandwidthUsed, 0),
                      ("labelFullTotalDroneBay", lambda: fit.ship.getModifiedItemAttr("droneCapacity"), 0),
                      ("labelFullTotalDroneBandwidth", lambda: fit.ship.getModifiedItemAttr("droneBandwidth"), 0))
 
         for panel in ("Mini", "Full"):
             for labelName, value, rounding in statsMiniFull:
                 label = getattr(self, labelName % panel)
-                label.SetLabel(("%." + str(rounding) + "f") % (value() if fit is not None else 0))
+                value = value() if fit is not None else 0
+                value = value if value is not None else 0
+                if isinstance(value, basestring):
+                    label.SetLabel(value)
+                else:
+                    label.SetLabel(("%." + str(rounding) + "f") % value)
 
         for labelName, value, rounding in stats:
             label = getattr(self, labelName)
@@ -437,7 +447,7 @@ class StatsPane(wx.Panel):
 
             hbox.Add(wx.StaticText(parent, wx.ID_ANY, "Total: "), 0, wx.ALIGN_LEFT | wx.LEFT, 3)
             lbl = wx.StaticText(parent, wx.ID_ANY, "0.0")
-            setattr(self, "label%sCapacitorCapacity" % panel, lbl)
+            setattr(self, "label%sCapacitorCapacity" % panel.capitalize(), lbl)
             hbox.Add(lbl, 0, wx.ALIGN_LEFT)
 
             hbox.Add(wx.StaticText(parent, wx.ID_ANY, " GJ"), 0, wx.ALIGN_LEFT)
@@ -445,9 +455,12 @@ class StatsPane(wx.Panel):
             hbox = wx.BoxSizer(wx.HORIZONTAL)
             box.Add(hbox, 0, wx.ALIGN_LEFT)
 
-            hbox.Add(wx.StaticText(parent, wx.ID_ANY, "Lasts "), 0, wx.ALIGN_LEFT | wx.LEFT, 3)
+            lbl = wx.StaticText(parent, wx.ID_ANY, "Lasts ")
+            hbox.Add(lbl, 0, wx.ALIGN_LEFT | wx.LEFT, 3)
+            setattr(self, "label%sCapacitorState" % panel.capitalize(), lbl)
+
             lbl = wx.StaticText(parent, wx.ID_ANY, "0s")
-            setattr(self, "label%sCapacitorTime" % panel, lbl)
+            setattr(self, "label%sCapacitorTime" % panel.capitalize(), lbl)
             hbox.Add(lbl, 0, wx.ALIGN_LEFT)
 
             # Capacitor balance
@@ -462,14 +475,14 @@ class StatsPane(wx.Panel):
 
             chargeSizer.Add(wx.StaticText(parent, wx.ID_ANY, "+ "), 0, wx.ALIGN_CENTER)
             lbl = wx.StaticText(parent, wx.ID_ANY, "0.0")
-            setattr(self, "label%sCapacitorRecharge" % panel, lbl)
+            setattr(self, "label%sCapacitorRecharge" % panel.capitalize(), lbl)
             chargeSizer.Add(lbl, 0, wx.ALIGN_CENTER)
             chargeSizer.Add(wx.StaticText(parent, wx.ID_ANY, " GJ/s"), 0, wx.ALIGN_CENTER)
 
             # Discharge
             chargeSizer.Add(wx.StaticText(parent, wx.ID_ANY, "- "), 0, wx.ALIGN_CENTER)
             lbl = wx.StaticText(parent, wx.ID_ANY, "0.0")
-            setattr(self, "label%sCapacitorDischarge" % panel, lbl)
+            setattr(self, "label%sCapacitorDischarge" % panel.capitalize(), lbl)
             chargeSizer.Add(lbl, 0, wx.ALIGN_CENTER)
             chargeSizer.Add(wx.StaticText(parent, wx.ID_ANY, " GJ/s"), 0, wx.ALIGN_CENTER)
 
