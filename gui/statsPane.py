@@ -23,6 +23,8 @@ import gui.fittingView as fv
 import gui.mainFrame
 import controller
 from eos.types import Slot, Hardpoint
+from gui import pygauge as PG
+
 class StatsPane(wx.Panel):
     def collapseChanged(self, event):
         collapsed = event.Collapsed
@@ -139,6 +141,7 @@ class StatsPane(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent)
 
+        self._showNormalGauges = False
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
         # Register events
@@ -265,11 +268,21 @@ class StatsPane(wx.Panel):
                         setattr(self, "label%sTotal%s" % (panel.capitalize(), capitalizedType), lbl)
                         absolute.Add(lbl, 0, wx.ALIGN_LEFT)
 
-                        gauge = wx.Gauge(parent, wx.ID_ANY, 100)
-                        gauge.SetMinSize((80, 20))
-                        setattr(self, "gauge%s" % capitalizedType, gauge)
-                        stats.Add(gauge, 0, wx.ALIGN_CENTER)
+# Gauges modif. - Darriele
+                        if self._showNormalGauges == True:
+                            gauge = wx.Gauge(parent, wx.ID_ANY, 100)
+                            gauge.SetMinSize((80, 20))
+                            setattr(self, "gauge%s" % capitalizedType, gauge)
+                            stats.Add(gauge, 0, wx.ALIGN_CENTER)
+                        else:
+                            gauge = PG.PyGauge(parent, wx.ID_ANY, 100)
+                            gauge.SetMinSize((80, 16))
+                            gauge.SetSkipDigitsFlag(True)
+                            gauge.SetValue(100)
+                            gauge.Update(-100,250)
 
+                        setattr(self, "gauge%s" % capitalizedType, gauge)
+                        stats.Add(gauge, 0, wx.ALIGN_CENTER)                            
                 if panel == "mini":
                     base.Add(wx.StaticLine(parent, wx.ID_ANY, style=wx.HORIZONTAL), 0, wx.EXPAND)
 
@@ -307,19 +320,38 @@ class StatsPane(wx.Panel):
             sizerResistances.Add(bitmapLoader.getStaticBitmap("%s_big" % damageType, self.fullPanel, "icons"), 0, wx.ALIGN_CENTER)
 
         sizerResistances.Add(wx.StaticText(self.fullPanel, wx.ID_ANY, "EHP"), 0, wx.ALIGN_CENTER)
+        gaugeColours=( ((26,94,140),(30,60,69)), ((140,26,26),(58,46,47)), ((115,115,115),(52,63,65)), ((140,94,26),(57,58,47)) )
 
         for tankType in ("damagePattern", "shield", "armor", "hull"):
             sizerResistances.Add(bitmapLoader.getStaticBitmap("%s_big" % tankType, self.fullPanel, "icons"), 0, wx.ALIGN_CENTER)
+            currGColour=0
 
             for damageType in ("em", "thermal", "kinetic", "explosive"):
                 box = wx.BoxSizer(wx.HORIZONTAL)
                 sizerResistances.Add(box, 1, wx.ALIGN_CENTER)
 
-                lbl = wx.StaticText(self.fullPanel, wx.ID_ANY, "0.00")
+#Fancy gauges addon
+
+                pgColour= gaugeColours[currGColour]
+                fc = pgColour[0]
+                bc = pgColour[1]
+                currGColour+=1
+                if self._showNormalGauges == True:
+                    lbl = wx.StaticText(self.fullPanel, wx.ID_ANY, "0.00")
+                else:
+                    lbl = PG.PyGauge(self.fullPanel, wx.ID_ANY, 100)
+                    lbl.SetMinSize((40, 16))
+                    lbl.SetBackgroundColour(wx.Colour(bc[0],bc[1],bc[2]))
+                    lbl.SetBarColour(wx.Colour(fc[0],fc[1],fc[2]))
+                    lbl.SetBarGradient()
+                    lbl.SetValue(100)
+                    lbl.SetSkipDigitsFlag(False)
+                    lbl.Update(-100,250)
                 setattr(self, "labelResistance%s%s" % (tankType.capitalize(), damageType.capitalize()), lbl)
                 box.Add(lbl, 0, wx.ALIGN_CENTER)
 
-                box.Add(wx.StaticText(self.fullPanel, wx.ID_ANY, "%"), 0, wx.ALIGN_CENTER)
+                if self._showNormalGauges == True:
+                    box.Add(wx.StaticText(self.fullPanel, wx.ID_ANY, "%"), 0, wx.ALIGN_CENTER)
 
 
             lbl = wx.StaticText(self.fullPanel, wx.ID_ANY, "0" if tankType != "damagePattern" else "")
@@ -485,7 +517,7 @@ class StatsPane(wx.Panel):
                 sizerHeaderCapacitor.Add(wx.StaticLine(self.fullPanel, wx.ID_ANY), 1, wx.ALIGN_CENTER)
                 sizerCapacitor = wx.GridSizer(1, 2)
                 self.sizerBase.Add(sizerCapacitor, 0, wx.EXPAND  | wx.LEFT, 1)
-
+                
 
             # Capacitor capacity and time
             baseBox = wx.BoxSizer(wx.HORIZONTAL)
