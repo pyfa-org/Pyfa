@@ -108,24 +108,25 @@ class StatsPane(wx.Panel):
             for resourceType in ("cpu", "pg", "droneBay", "droneBandwidth"):
                 if fit is not None:
                     if i>1 and panel == "Mini": break
-                    i+=1
                     capitalizedType = resourceType[0].capitalize() + resourceType[1:]
 
                     gauge = getattr(self, "gauge%s%s" % (panel, capitalizedType))
                     resUsed = getattr(fit,"%sUsed" % resourceType)
 
                     if resMax[i]() > 0:
-                        gauge.SetRange(resMax[i-1]())
+                        gauge.SetRange(resMax[i]())
                         gauge.SetValue(resUsed)
+                    i+=1                        
                 else:
                     if i>1 and panel == "Mini": break
-                    i+=1
+
                     capitalizedType = resourceType[0].capitalize() + resourceType[1:]
 
                     gauge = getattr(self, "gauge%s%s" % (panel, capitalizedType))
 
                     gauge.SetRange(100)
-                    gauge.SetValue(0)                    
+                    gauge.SetValue(0)
+                    i+=1
 
         for tankType in ("shield", "armor", "hull"):
             for damageType in ("em", "thermal", "kinetic", "explosive"):
