@@ -39,6 +39,16 @@ class StatsPane(wx.Panel):
         self.miniPanel.Show(collapsed)
         self.mainFrame.statsSizer.Layout()
 
+    def shorten(self, val, digits):
+        if val > 10**10:
+            return ("%." + str(digits)+ "fG") % (val / float(10**9))
+        elif val > 10**7:
+            return ("%." + str(digits)+ "fM") % (val / float(10**6))
+        elif val > 10**4:
+            return ("%." + str(digits )+ "fk") % (val / float(10**3))
+        else:
+            return ("%." + str(digits) + "f") % val
+
     def fitChanged(self, event):
         cFit = controller.Fit.getInstance()
         fit = cFit.getFit(event.fitID)
@@ -84,11 +94,11 @@ class StatsPane(wx.Panel):
                 if isinstance(value, basestring):
                     label.SetLabel(value)
                 else:
-                    label.SetLabel(("%." + str(rounding) + "f") % value)
+                    label.SetLabel(self.shorten(value, rounding))
 
         for labelName, value, rounding in stats:
             label = getattr(self, labelName)
-            label.SetLabel(("%." + str(rounding) + "f") % (value() if fit is not None else 0))
+            label.SetLabel(self.shorten(value() if fit is not None else 0, rounding))
 
 #        resMax = (("cpuTotal", lambda: fit.ship.getModifiedItemAttr("cpuOutput")),
 #                    ("pgTotal", lambda: fit.ship.getModifiedItemAttr("powerOutput")),
@@ -148,7 +158,7 @@ class StatsPane(wx.Panel):
         for tankType in ("shield", "armor", "hull"):
             lbl = getattr(self, "labelResistance%sEhp" % tankType.capitalize())
             if ehp is not None:
-                lbl.SetLabel("%.0f" % ehp[tankType])
+                lbl.SetLabel(self.shorten(ehp[tankType], 0))
             else:
                 lbl.SetLabel("0")
 
