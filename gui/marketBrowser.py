@@ -19,9 +19,13 @@
 
 import sys
 import wx
+import wx.lib.newevent
 import controller
 import bitmapLoader
 from gui.itemStats import ItemStatsMenu
+import gui.mainFrame
+
+ItemSelected, ITEM_SELECTED = wx.lib.newevent.NewEvent()
 
 class MarketBrowser(wx.Panel):
     def __init__(self, parent):
@@ -121,6 +125,9 @@ class MarketBrowser(wx.Panel):
         #Bind context menus
         self.itemStatsMenu = ItemStatsMenu()
         self.itemView.Bind(wx.EVT_CONTEXT_MENU, self.contextMenu)
+        self.itemView.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.itemActivated)
+
+        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     def addMarketViewImage(self, iconFile):
         if iconFile is None:
@@ -300,6 +307,12 @@ class MarketBrowser(wx.Panel):
         itemId = self.itemView.GetItemData(selection)
         self.itemStatsMenu.setItem(itemId)
         self.PopupMenu(self.itemStatsMenu)
+
+    def itemActivated(self, event):
+        id = event.Item.GetData()
+        if id != -1:
+            wx.PostEvent(self.mainFrame, ItemSelected(itemID=id))
+
 
 class MarketTree(wx.TreeCtrl):
     def __init__(self, parent):
