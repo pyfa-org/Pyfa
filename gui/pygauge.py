@@ -87,6 +87,7 @@ class PyGauge(wx.PyWindow):
         self._timerId = wx.NewId()
         self._timer = None
 
+        self._overdrive=0
         self.SetBarGradient((wx.Colour(153,153,153),wx.Colour(204,204,204)))
         self.SetBackgroundColour(wx.Colour(102,102,102))
 
@@ -205,6 +206,12 @@ class PyGauge(wx.PyWindow):
             
         self.SortForDisplay()
         self.Refresh()
+        if value > self._range:
+            self._overdrive = value
+            self._value[0] = self._range
+        else:
+            self._overdrive = value
+            
         for v in self._value:
             if v < 0 or v > self._range:
                 raise Exception("ERROR:\n Gauge value must be between 0 and it's range. ")
@@ -249,7 +256,11 @@ class PyGauge(wx.PyWindow):
 
         if self.GetBarGradient():
             for i, gradient in enumerate(self._barGradientSorted):
-                c1,c2 = gradient
+                if self._overdrive > self._range:
+                    c1 =wx.Colour(255,33,33)
+                    c2 =wx.Colour(255,33,33)
+                else:
+                    c1,c2 = gradient
                 w = rect.width * (float(self._valueSorted[i]) / self._range)
                 r = copy.copy(rect)
                 r.width = w 
@@ -266,10 +277,15 @@ class PyGauge(wx.PyWindow):
         dc.SetTextForeground(wx.Colour(255,255,255))
         font1 = wx.Font(8, wx.SWISS, wx.NORMAL, wx.NORMAL)
         dc.SetFont(font1)
-        if self._skipDigits == True:
-            dc.DrawLabel(str(int(self._value[0]*100/self._range)) + "%", rect, wx.ALIGN_CENTER)
+        if self._overdrive > self._range:
+            value = self._overdrive
         else:
-            dc.DrawLabel(str(round(float(self._value[0]*100/self._range)))+ "%",rect,wx.ALIGN_CENTER)
+            value = self._value[0]
+
+        if self._skipDigits == True:
+            dc.DrawLabel(str(int(value*100/self._range)) + "%", rect, wx.ALIGN_CENTER)
+        else:
+            dc.DrawLabel(str(round(float(value*100/self._range)))+ "%",rect,wx.ALIGN_CENTER)
                     
     def OnTimer(self,event):
         """
