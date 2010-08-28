@@ -68,3 +68,16 @@ class Fit(object):
         fit = eos.db.getFit(fitID)
         fit.fill()
         return fit
+
+    def appendItem(self, fitID, itemID):
+        fit = eos.db.getFit(fitID)
+        item = eos.db.getItem(itemID, eager=("attributes", "group.category"))
+        if item.group.category.name == "Module":
+            fit.modules.append(eos.types.Module(item))
+
+        eos.db.saveddata_session.flush()
+
+    def removeItem(self, fitID, position):
+        fit = eos.db.getFit(fitID)
+        fit.modules.toDummy(position)
+        eos.db.saveddata_session.flush()

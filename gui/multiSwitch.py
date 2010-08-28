@@ -21,6 +21,7 @@ import wx
 import bitmapLoader
 import gui.mainFrame
 from gui.fittingView import FittingView
+import gui.marketBrowser as mb
 import gui.shipBrowser as sb
 import controller
 
@@ -37,7 +38,7 @@ class MultiSwitch(wx.Notebook):
         mainFrame.Bind(sb.EVT_FIT_RENAMED, self.processRename)
         mainFrame.Bind(sb.EVT_FIT_SELECTED, self.changeFit)
         mainFrame.Bind(sb.EVT_FIT_REMOVED, self.processRemove)
-
+        mainFrame.Bind(mb.ITEM_SELECTED, self.itemSelected)
 
         self.imageList = wx.ImageList(16, 16)
         self.SetImageList(self.imageList)
@@ -135,3 +136,9 @@ class MultiSwitch(wx.Notebook):
         #Deleting a tab might have put us on the "+" tab, make sure we don't stay there
         if self.GetSelection() == self.GetPageCount() - 1:
             self.SetSelection(self.GetPageCount() - 2)
+
+    def itemSelected(self, event):
+        selected = self.GetSelection()
+        page = self.GetPage(selected)
+        if page.type == "fit":
+            page.view.appendItem(event.itemID)

@@ -68,7 +68,12 @@ class FittingView(wx.ListCtrl):
 
         self.imageListBase = self.imageList.ImageCount
         self.activeFitID = None
+
+        self.Bind(wx.EVT_LEFT_DCLICK, self.removeItem)
+
         self.Hide() #Don't show ourselves at start
+
+        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     def addColumn(self, i, col):
         self.activeColumns.append(col)
@@ -98,11 +103,32 @@ class FittingView(wx.ListCtrl):
         else:
             self.Show()
 
-        wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), FitChanged(fitID=fitID))
+        wx.PostEvent(self.mainFrame, FitChanged(fitID=fitID))
+
+    def appendItem(self, itemID):
+        fitID = self.activeFitID
+        if fitID != None:
+            cFit = controller.Fit.getInstance()
+            cFit.appendItem(fitID, itemID)
+            wx.PostEvent(self.mainFrame, FitChanged(fitID=fitID))
+
+    def removeItem(self, event):
+        row, _ = self.HitTest(event.Position)
+        if row != -1:
+            cFit = controller.Fit.getInstance()
+            cFit.removeItem(self.activeFitID, self.GetItemData(row))
+
+        wx.PostEvent(self.mainFrame, FitChanged(fitID=self.activeFitID))
 
     def fitChanged(self, event):
         cFit = controller.Fit.getInstance()
         fit = cFit.getFit(event.fitID)
+        selection = []
+        sel = self.GetFirstSelected()
+        while sel != -1:
+            selection.append(sel)
+            sel = self.GetNextSelected(sel)
+
         self.DeleteAllItems()
         self.clearItemImages()
         modSlotMap = {}
@@ -122,4 +148,8 @@ class FittingView(wx.ListCtrl):
                     self.SetColumnWidth(i, 40)
 
         self.SortItems(lambda id1, id2: cmp(slotOrder.index(modSlotMap[id1]), slotOrder.index(modSlotMap[id2])))
+
+        for sel in selection:
+            self.Select(sel)
+
         event.Skip()
