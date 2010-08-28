@@ -92,7 +92,7 @@ class FittingView(wx.ListCtrl):
             self.activeColumns[event.Column].resized = True
 
     def clearItemImages(self):
-        for i in xrange(self.imageList.ImageCount, self.imageListBase, -1):
+        for i in xrange(self.imageList.ImageCount - 1, self.imageListBase, -1):
             self.imageList.Remove(i)
 
     #Gets called from the fitMultiSwitch when it decides its time
