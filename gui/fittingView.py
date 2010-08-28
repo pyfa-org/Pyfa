@@ -134,12 +134,13 @@ class FittingView(wx.ListCtrl):
         modSlotMap = {}
         slotOrder = [Slot.SUBSYSTEM, Slot.HIGH, Slot.MED, Slot.LOW, Slot.RIG]
 
-        for modid, mod in enumerate(fit.modules):
-            index = self.InsertStringItem(sys.maxint, "")
-            for i, col in enumerate(self.activeColumns):
-                self.SetStringItem(index, i, col.getText(mod), col.getImageId(mod))
-                self.SetItemData(index, modid)
-                modSlotMap[modid] = mod.slot
+        if fit is not None:
+            for modid, mod in enumerate(fit.modules):
+                index = self.InsertStringItem(sys.maxint, "")
+                for i, col in enumerate(self.activeColumns):
+                    self.SetStringItem(index, i, col.getText(mod), col.getImageId(mod))
+                    self.SetItemData(index, modid)
+                    modSlotMap[modid] = mod.slot
 
         for i, col in enumerate(self.activeColumns):
             if not col.resized:

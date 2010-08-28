@@ -65,6 +65,9 @@ class Fit(object):
         return newFit.ID
 
     def getFit(self, fitID):
+        if fitID is None:
+            return None
+
         fit = eos.db.getFit(fitID)
         fit.fill()
         return fit
