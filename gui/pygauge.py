@@ -204,9 +204,9 @@ class PyGauge(wx.PyWindow):
             self._value = list(value)
             
         self.SortForDisplay()
-      
+        self.Refresh()
         for v in self._value:
-            if v <= 0 or v > self._range:
+            if v < 0 or v > self._range:
                 raise Exception("ERROR:\n Gauge value must be between 0 and it's range. ")
         
         
@@ -312,6 +312,7 @@ class PyGauge(wx.PyWindow):
         """
         time=abs(value)*50
         if time>500: time=500
+        if time == 0: time=500
         if type(value) != type([]):
             value = [value]
              

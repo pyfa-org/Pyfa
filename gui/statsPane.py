@@ -99,9 +99,12 @@ class StatsPane(wx.Panel):
                     resonance = (1 - fit.ship.getModifiedItemAttr(resonance)) * 100
                 else:
                     resonance = 0
-
+                
                 lbl = getattr(self, "labelResistance%s%s" % (tankType.capitalize(), damageType.capitalize()))
-                lbl.SetLabel("%.2f" % resonance)
+                if self._showNormalGauges == True:
+                    lbl.SetLabel("%.2f" % resonance)
+                else:
+                    lbl.Update(resonance-lbl.GetValue(),250)
 
         ehp = fit.ehp if fit is not None else None
         for tankType in ("shield", "armor", "hull"):
@@ -118,7 +121,6 @@ class StatsPane(wx.Panel):
                 lbl.SetLabel("%.2f" % getattr(damagePattern, "%sAmount" % damageType))
             else:
                 lbl.SetLabel("0.00")
-
 
         for stability in ("reinforced", "sustained"):
             if stability == "reinforced" and fit != None:
@@ -272,8 +274,6 @@ class StatsPane(wx.Panel):
                         if self._showNormalGauges == True:
                             gauge = wx.Gauge(parent, wx.ID_ANY, 100)
                             gauge.SetMinSize((80, 20))
-                            setattr(self, "gauge%s" % capitalizedType, gauge)
-                            stats.Add(gauge, 0, wx.ALIGN_CENTER)
                         else:
                             gauge = PG.PyGauge(parent, wx.ID_ANY, 100)
                             gauge.SetMinSize((80, 16))
@@ -340,7 +340,7 @@ class StatsPane(wx.Panel):
                     lbl = wx.StaticText(self.fullPanel, wx.ID_ANY, "0.00")
                 else:
                     lbl = PG.PyGauge(self.fullPanel, wx.ID_ANY, 100)
-                    lbl.SetMinSize((40, 16))
+                    lbl.SetMinSize((48, 16))
                     lbl.SetBackgroundColour(wx.Colour(bc[0],bc[1],bc[2]))
                     lbl.SetBarColour(wx.Colour(fc[0],fc[1],fc[2]))
                     lbl.SetBarGradient()
