@@ -116,7 +116,7 @@ class StatsPane(wx.Panel):
                     if resMax[i]() > 0:
                         gauge.SetRange(resMax[i]())
                         gauge.SetValue(resUsed)
-                    i+=1                        
+                    i+=1
                 else:
                     if i>1 and panel == "Mini": break
 
@@ -176,6 +176,8 @@ class StatsPane(wx.Panel):
                     lbl.SetLabel("0.0")
 
         self.Layout()
+        self.fullPanel.Layout()
+        self.miniPanel.Layout()
         event.Skip()
 
     def __init__(self, parent):
@@ -286,7 +288,7 @@ class StatsPane(wx.Panel):
 
                         stats = wx.BoxSizer(wx.VERTICAL)
                         absolute =  wx.BoxSizer(wx.HORIZONTAL)
-                        stats.Add(absolute, 0, wx.ALIGN_RIGHT if panel == "full" else wx.ALIGN_CENTER)
+                        stats.Add(absolute, 0, wx.EXPAND)
 
                         if panel == "full":
                             b = wx.BoxSizer(wx.HORIZONTAL)
