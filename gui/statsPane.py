@@ -89,6 +89,34 @@ class StatsPane(wx.Panel):
         for labelName, value, rounding in stats:
             label = getattr(self, labelName)
             label.SetLabel(("%." + str(rounding) + "f") % (value() if fit is not None else 0))
+            
+#        resMax = (("cpuTotal", lambda: fit.ship.getModifiedItemAttr("cpuOutput")),
+#                    ("pgTotal", lambda: fit.ship.getModifiedItemAttr("powerOutput")),
+#                    ("droneBayTotal", lambda: fit.ship.getModifiedItemAttr("droneCapacity")),
+#                    ("droneBandwidthTotal", lambda: fit.ship.getModifiedItemAttr("droneBandwidth")))
+        resMax = (lambda: fit.ship.getModifiedItemAttr("cpuOutput"),
+                    lambda: fit.ship.getModifiedItemAttr("powerOutput"),
+                    lambda: fit.ship.getModifiedItemAttr("droneCapacity"),
+                    lambda: fit.ship.getModifiedItemAttr("droneBandwidth"),
+                    lambda: fit.ship.getModifiedItemAttr("cpuOutput"),
+                    lambda: fit.ship.getModifiedItemAttr("powerOutput"))
+
+        for panel in ("Mini","Full"):
+            i=0
+            for resourceType in ("cpu", "pg", "droneBay", "droneBandwidth"):
+                if fit is not None:
+                    if i>1 and panel == "Mini": break
+                    i+=1
+                    capitalizedType = resourceType[0].capitalize() + resourceType[1:]
+
+                    gauge = getattr(self, "gauge%s%s" % (panel, capitalizedType))
+                    resUsed = getattr(fit,"%sUsed" % resourceType)
+
+# for testing       print resMax[i-1]()
+
+                    gauge.SetRange(resMax[i-1]())
+                    gauge.SetValue(resUsed)
+
 
         for tankType in ("shield", "armor", "hull"):
             for damageType in ("em", "thermal", "kinetic", "explosive"):
@@ -278,8 +306,9 @@ class StatsPane(wx.Panel):
                             gauge = PG.PyGauge(parent, wx.ID_ANY, 100)
                             gauge.SetMinSize((80, 16))
                             gauge.SetSkipDigitsFlag(True)
+                            print "gauge%s%s" % (panel.capitalize(),capitalizedType)
 
-                        setattr(self, "gauge%s" % capitalizedType, gauge)
+                        setattr(self, "gauge%s%s" % (panel.capitalize(),capitalizedType), gauge)
                         stats.Add(gauge, 0, wx.ALIGN_CENTER)                            
                 if panel == "mini":
                     base.Add(wx.StaticLine(parent, wx.ID_ANY, style=wx.HORIZONTAL), 0, wx.EXPAND)
