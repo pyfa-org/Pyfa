@@ -96,8 +96,9 @@ class FittingView(wx.ListCtrl):
         if fitID == None:
             self.Hide()
         else:
-            wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), FitChanged(fitID=fitID))
             self.Show()
+
+        wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), FitChanged(fitID=fitID))
 
     def fitChanged(self, event):
         cFit = controller.Fit.getInstance()
