@@ -320,7 +320,8 @@ class StatsPane(wx.Panel):
             sizerResistances.Add(bitmapLoader.getStaticBitmap("%s_big" % damageType, self.fullPanel, "icons"), 0, wx.ALIGN_CENTER)
 
         sizerResistances.Add(wx.StaticText(self.fullPanel, wx.ID_ANY, "EHP"), 0, wx.ALIGN_CENTER)
-        gaugeColours=( ((26,94,140),(30,60,69)), ((140,26,26),(58,46,47)), ((115,115,115),(52,63,65)), ((140,94,26),(57,58,47)) )
+
+        gaugeColours=( ((38,133,198),(52,86,98)), ((198,38,38),(83,65,67)), ((163,163,163),(74,90,93)), ((198,133,38),(81,83,67)) )
 
         for tankType in ("damagePattern", "shield", "armor", "hull"):
             sizerResistances.Add(bitmapLoader.getStaticBitmap("%s_big" % tankType, self.fullPanel, "icons"), 0, wx.ALIGN_CENTER)
