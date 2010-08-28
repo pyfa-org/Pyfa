@@ -11,8 +11,9 @@ FitSelected, EVT_FIT_SELECTED = wx.lib.newevent.NewEvent()
 
 class ShipBrowser(wx.Panel):
     def __init__(self, parent):
-        self.built = False
         wx.Panel.__init__(self, parent)
+
+        self.built = False
         self.viewSizer = wx.BoxSizer(wx.VERTICAL)
         self.SetSizer(self.viewSizer)
 

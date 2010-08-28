@@ -47,13 +47,14 @@ class MainFrame(wx.Frame):
 
         self.splitter = wx.SplitterWindow(self, style = wx.SP_LIVE_UPDATE)
 
-        notebookBrowsers = wx.Notebook(self.splitter, wx.ID_ANY)
+        self.notebookBrowsers = wx.Notebook(self.splitter, wx.ID_ANY)
+        self.notebookBrowsers.Bind(wx.EVT_LEFT_DOWN, self.mouseHit)
 
-        self.marketBrowser = MarketBrowser(notebookBrowsers)
-        notebookBrowsers.AddPage(self.marketBrowser, "Market")
+        self.marketBrowser = MarketBrowser(self.notebookBrowsers)
+        self.notebookBrowsers.AddPage(self.marketBrowser, "Market")
 
-        self.shipBrowser = ShipBrowser(notebookBrowsers)
-        notebookBrowsers.AddPage(self.shipBrowser, "Ships")
+        self.shipBrowser = ShipBrowser(self.notebookBrowsers)
+        self.notebookBrowsers.AddPage(self.shipBrowser, "Ships")
 
         statsFitviewPanel = wx.Panel(self.splitter)
         self.statsSizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -67,7 +68,7 @@ class MainFrame(wx.Frame):
         self.statsSizer.Add(self.fitMultiSwitch, 1, wx.EXPAND)
         self.statsSizer.Add(self.statsPane, 0, wx.EXPAND)
 
-        self.splitter.SplitVertically(notebookBrowsers, statsFitviewPanel)
+        self.splitter.SplitVertically(self.notebookBrowsers, statsFitviewPanel)
         self.splitter.SetMinimumPaneSize(10)
         self.splitter.SetSashPosition(300)
 
@@ -79,6 +80,11 @@ class MainFrame(wx.Frame):
 
         #Show ourselves
         self.Show()
+
+    def mouseHit(self, event):
+        tab, _ = self.notebookBrowsers.HitTest(event.Position)
+        if tab != -1:
+            self.notebookBrowsers.SetSelection(tab)
 
     def ExitApp(self, evt):
         self.Close()

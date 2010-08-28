@@ -31,6 +31,7 @@ class MarketBrowser(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent)
         vbox = wx.BoxSizer(wx.VERTICAL)
+        self.SetSizer(vbox)
 
         #Add a search button on top
 
@@ -40,6 +41,7 @@ class MarketBrowser(wx.Panel):
         p = wx.Panel(self)
         sizer = wx.BoxSizer(wx.HORIZONTAL)
         p.SetSizer(sizer)
+
         vbox.Add(p, 0, wx.EXPAND)
         self.search = wx.SearchCtrl(p, wx.ID_ANY, style=wx.TE_PROCESS_ENTER)
         self.search.ShowCancelButton(True)
@@ -63,7 +65,6 @@ class MarketBrowser(wx.Panel):
         self.splitter = wx.SplitterWindow(self, style = wx.SP_LIVE_UPDATE)
 
         vbox.Add(self.splitter, 1, wx.EXPAND)
-        self.SetSizer(vbox)
 
         self.marketView = MarketTree(self.splitter)
         listStyle = wx.LC_REPORT | wx.BORDER_NONE | wx.LC_NO_HEADER | wx.LC_SINGLE_SEL
