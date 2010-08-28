@@ -147,12 +147,17 @@ class Market():
 
         mg = eos.db.getMarketGroup(marketGroupId)
         l = []
+        done = set()
         for item in mg.items:
             if 1 in self.activeMetas:
-                l.append((item.ID, item.name, item.icon.iconFile if item.icon else ""))
+                if item not in done:
+                    done.add(item)
+                    l.append((item.ID, item.name, item.icon.iconFile if item.icon else ""))
 
             vars = eos.db.getVariations(item, metaGroups = tuple(self.activeMetas), eager="icon")
             for var in vars:
-                l.append((var.ID, var.name, var.icon.iconFile if var.icon else ""))
+                if var not in done:
+                    done.add(var)
+                    l.append((var.ID, var.name, var.icon.iconFile if var.icon else ""))
 
         return l
