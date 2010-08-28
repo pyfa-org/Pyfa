@@ -183,6 +183,9 @@ class StatsPane(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent)
 
+        font1 = wx.Font(8, wx.SWISS, wx.NORMAL, wx.NORMAL)
+        self.SetFont(font1)
+        
         self._showNormalGauges = False
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
