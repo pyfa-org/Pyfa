@@ -227,7 +227,7 @@ class StatsPane(wx.Panel):
                 box.Add(lbl, 0, wx.ALIGN_LEFT)
 
             st = wx.VERTICAL if panel == "full" else wx.HORIZONTAL
-            base.Add(wx.StaticLine(parent, wx.ID_ANY, style=st), 0, wx.EXPAND, wx.LEFT, 3 if panel == "full" else 0)
+            base.Add(wx.StaticLine(parent, wx.ID_ANY, style=st), 0, wx.EXPAND | wx.LEFT, 3 if panel == "full" else 0)
 
 
             #PG, Cpu & drone stuff
