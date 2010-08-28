@@ -46,7 +46,7 @@ class StatsPane(wx.Panel):
                          ("label%sTotalTurretHardpoints", lambda: fit.ship.getModifiedItemAttr('turretSlotsLeft'), 0),
                          ("label%sUsedLauncherHardpoints", lambda: fit.getHardpointsUsed(Hardpoint.MISSILE), 0),
                          ("label%sTotalLauncherHardpoints", lambda: fit.ship.getModifiedItemAttr('launcherSlotsLeft'), 0),
-                         ("label%sUsedCalibrationPoints", lambda: 300, 0),
+                         ("label%sUsedCalibrationPoints", lambda: fit.calibrationUsed, 0),
                          ("label%sTotalCalibrationPoints", lambda: fit.ship.getModifiedItemAttr('upgradeCapacity'), 0),
                          ("label%sUsedPg", lambda: fit.pgUsed, 1),
                          ("label%sUsedCpu", lambda: fit.cpuUsed, 1),
@@ -89,7 +89,7 @@ class StatsPane(wx.Panel):
         for labelName, value, rounding in stats:
             label = getattr(self, labelName)
             label.SetLabel(("%." + str(rounding) + "f") % (value() if fit is not None else 0))
-            
+
 #        resMax = (("cpuTotal", lambda: fit.ship.getModifiedItemAttr("cpuOutput")),
 #                    ("pgTotal", lambda: fit.ship.getModifiedItemAttr("powerOutput")),
 #                    ("droneBayTotal", lambda: fit.ship.getModifiedItemAttr("droneCapacity")),
@@ -112,8 +112,6 @@ class StatsPane(wx.Panel):
                     gauge = getattr(self, "gauge%s%s" % (panel, capitalizedType))
                     resUsed = getattr(fit,"%sUsed" % resourceType)
 
-# for testing       print resMax[i-1]()
-
                     gauge.SetRange(resMax[i-1]())
                     gauge.SetValue(resUsed)
 
@@ -127,7 +125,7 @@ class StatsPane(wx.Panel):
                     resonance = (1 - fit.ship.getModifiedItemAttr(resonance)) * 100
                 else:
                     resonance = 0
-                
+
                 lbl = getattr(self, "labelResistance%s%s" % (tankType.capitalize(), damageType.capitalize()))
                 if self._showNormalGauges == True:
                     lbl.SetLabel("%.2f" % resonance)
@@ -306,10 +304,9 @@ class StatsPane(wx.Panel):
                             gauge = PG.PyGauge(parent, wx.ID_ANY, 100)
                             gauge.SetMinSize((80, 16))
                             gauge.SetSkipDigitsFlag(True)
-                            print "gauge%s%s" % (panel.capitalize(),capitalizedType)
 
                         setattr(self, "gauge%s%s" % (panel.capitalize(),capitalizedType), gauge)
-                        stats.Add(gauge, 0, wx.ALIGN_CENTER)                            
+                        stats.Add(gauge, 0, wx.ALIGN_CENTER)
                 if panel == "mini":
                     base.Add(wx.StaticLine(parent, wx.ID_ANY, style=wx.HORIZONTAL), 0, wx.EXPAND)
 
@@ -544,7 +541,7 @@ class StatsPane(wx.Panel):
                 sizerHeaderCapacitor.Add(wx.StaticLine(self.fullPanel, wx.ID_ANY), 1, wx.ALIGN_CENTER)
                 sizerCapacitor = wx.GridSizer(1, 2)
                 self.sizerBase.Add(sizerCapacitor, 0, wx.EXPAND  | wx.LEFT, 1)
-                
+
 
             # Capacitor capacity and time
             baseBox = wx.BoxSizer(wx.HORIZONTAL)
