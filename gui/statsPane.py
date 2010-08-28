@@ -40,7 +40,6 @@ class StatsPane(wx.Panel):
     def fitChanged(self, event):
         cFit = controller.Fit.getInstance()
         fit = cFit.getFit(event.fitID)
-        ehp = fit.getEhp()
         statsMiniFull = (("label%sUsedTurretHardpoints", lambda: fit.getHardpointsUsed(Hardpoint.TURRET), 0),
                          ("label%sTotalTurretHardpoints", lambda: fit.ship.getModifiedItemAttr('turretSlotsLeft'), 0),
                          ("label%sUsedLauncherHardpoints", lambda: fit.getHardpointsUsed(Hardpoint.MISSILE), 0),
@@ -52,17 +51,28 @@ class StatsPane(wx.Panel):
                          ("label%sTotalPg", lambda: fit.ship.getModifiedItemAttr("powerOutput"), 1),
                          ("label%sTotalCpu", lambda: fit.ship.getModifiedItemAttr("cpuOutput"), 1),
                          ("label%sVolleyTotal", lambda: fit.weaponVolley, 1),
-                         ("label%sDpsTotal", lambda: fit.weaponDPS + fit.droneDPS, 1),
+                         ("label%sDpsTotal", lambda: fit.totalDPS, 1),
                          ("label%sCapacitorCapacity", lambda: fit.ship.getModifiedItemAttr("capacitorCapacity"), 1),
                          ("label%sCapacitorState", lambda: "Stable at " if fit.capState else "Lasts ", 0),
                          ("label%sCapacitorTime", lambda: ("%.1f%%" if fit.capStable else "%ds") % fit.capState, 0),
                          ("label%sCapacitorRecharge", lambda: fit.capRecharge, 1),
-                         ("label%sCapacitorDischarge", lambda: fit.capUsed, 1))
+                         ("label%sCapacitorDischarge", lambda: fit.capUsed, 1),
+                         ("label%sSpeed", lambda: fit.ship.getModifiedItemAttr("maxVelocity"), 1),
+                         ("label%sAlignTime", lambda: 0, 1))
 
         stats = (("labelFullUsedDroneBay", lambda: fit.droneBayUsed, 0),
                      ("labelFullUsedDroneBandwidth", lambda: fit.droneBandwidthUsed, 0),
                      ("labelFullTotalDroneBay", lambda: fit.ship.getModifiedItemAttr("droneCapacity"), 0),
-                     ("labelFullTotalDroneBandwidth", lambda: fit.ship.getModifiedItemAttr("droneBandwidth"), 0))
+                     ("labelFullTotalDroneBandwidth", lambda: fit.ship.getModifiedItemAttr("droneBandwidth"), 0),
+                     ("labelFullDpsWeapon", lambda: fit.weaponDPS, 1),
+                     ("labelFullDpsDrone", lambda: fit.droneDPS, 1),
+                     ("labelTankSustainedShieldPassive", lambda: fit.calculateShieldRecharge(), 1),
+                     ("labelTargets", lambda: fit.maxTargets, 0),
+                     ("labelRange", lambda: fit.ship.getModifiedItemAttr('maxTargetRange') / 1000, 1),
+                     ("labelScanRes", lambda: fit.ship.getModifiedItemAttr('scanResolution'), 0),
+                     ("labelSensorStr", lambda: fit.scanStrength, 0),
+                     ("labelFullCargo", lambda: fit.extraAttributes["capacity"], 1),
+                     ("labelFullSigRadius", lambda: fit.ship.getModifiedItemAttr("signatureRadius"), 0))
 
         for panel in ("Mini", "Full"):
             for labelName, value, rounding in statsMiniFull:
@@ -91,6 +101,38 @@ class StatsPane(wx.Panel):
                 lbl = getattr(self, "labelResistance%s%s" % (tankType.capitalize(), damageType.capitalize()))
                 lbl.SetLabel("%.2f" % resonance)
 
+        ehp = fit.ehp if fit is not None else None
+        for tankType in ("shield", "armor", "hull"):
+            lbl = getattr(self, "labelResistance%sEhp" % tankType.capitalize())
+            if ehp is not None:
+                lbl.SetLabel("%.0f" % ehp[tankType])
+            else:
+                lbl.SetLabel("0")
+
+        damagePattern = fit.damagePattern if fit is not None else None
+        for damageType in ("em", "thermal", "kinetic", "explosive"):
+            lbl = getattr(self, "labelResistanceDamagepattern%s" % damageType.capitalize())
+            if damagePattern:
+                lbl.SetLabel("%.2f" % getattr(damagePattern, "%sAmount" % damageType))
+            else:
+                lbl.SetLabel("0.00")
+
+
+        for stability in ("reinforced", "sustained"):
+            if stability == "reinforced" and fit != None:
+                tank = fit.sustainableTank
+            elif stability == "sustained" and fit != None:
+                tank = fit.extraAttributes
+            else:
+                tank = None
+
+            for name in ("shield", "armor", "hull"):
+                lbl = getattr(self, "labelTank%s%sActive" % (stability.capitalize(), name.capitalize()))
+                if tank is not None:
+                    lbl.SetLabel("%.1f" % tank["%sRepair" % name])
+                else:
+                    lbl.SetLabel("0.0")
+
         self.Layout()
         event.Skip()
 
@@ -118,7 +160,7 @@ class StatsPane(wx.Panel):
         self.pickerSizer.Add(self.fullPanel, 1, wx.EXPAND)
 
         self.miniSize = wx.Size()
-        self.miniSize.SetWidth(100)
+        self.miniSize.SetWidth(120)
         self.miniPanel = wx.Panel(self)
         self.miniPanel.Hide()
         self.miniPanel.SetMinSize(self.miniSize)
@@ -201,7 +243,7 @@ class StatsPane(wx.Panel):
 
                         stats = wx.BoxSizer(wx.VERTICAL)
                         absolute =  wx.BoxSizer(wx.HORIZONTAL)
-                        stats.Add(absolute, 0, wx.ALIGN_CENTER)
+                        stats.Add(absolute, 0, wx.ALIGN_RIGHT if panel == "full" else wx.ALIGN_CENTER)
 
                         if panel == "full":
                             b = wx.BoxSizer(wx.HORIZONTAL)
@@ -213,18 +255,15 @@ class StatsPane(wx.Panel):
                         else:
                             main.Add(stats, 0, wx.ALIGN_CENTER)
 
-
-
-
                         lbl = wx.StaticText(parent, wx.ID_ANY, "0")
                         setattr(self, "label%sUsed%s" % (panel.capitalize(), capitalizedType), lbl)
-                        absolute.Add(lbl, 0, wx.ALIGN_CENTER)
+                        absolute.Add(lbl, 0, wx.ALIGN_LEFT)
 
-                        absolute.Add(wx.StaticText(parent, wx.ID_ANY, "/"), 0, wx.ALIGN_CENTER)
+                        absolute.Add(wx.StaticText(parent, wx.ID_ANY, "/"), 0, wx.ALIGN_LEFT)
 
                         lbl = wx.StaticText(parent, wx.ID_ANY, "0")
                         setattr(self, "label%sTotal%s" % (panel.capitalize(), capitalizedType), lbl)
-                        absolute.Add(lbl, 0, wx.ALIGN_CENTER)
+                        absolute.Add(lbl, 0, wx.ALIGN_LEFT)
 
                         gauge = wx.Gauge(parent, wx.ID_ANY, 100)
                         gauge.SetMinSize((80, 20))
@@ -285,7 +324,7 @@ class StatsPane(wx.Panel):
 
             lbl = wx.StaticText(self.fullPanel, wx.ID_ANY, "0" if tankType != "damagePattern" else "")
 
-            setattr(self, "labelResistance%sEhp" % tankType, lbl)
+            setattr(self, "labelResistance%sEhp" % tankType.capitalize(), lbl)
             sizerResistances.Add(lbl, 0, wx.ALIGN_CENTER)
 
 
@@ -313,6 +352,10 @@ class StatsPane(wx.Panel):
         for stability in ("reinforced", "sustained"):
                 sizerTankStats.Add(bitmapLoader.getStaticBitmap("regen%s_big" % stability.capitalize(), self.fullPanel, "icons"), 0, wx.ALIGN_CENTER)
                 for tankType in ("shieldPassive", "shieldActive", "armorActive", "hullActive"):
+                    if stability == "reinforced" and tankType == "shieldPassive":
+                        sizerTankStats.Add(wx.StaticText(self.fullPanel, wx.ID_ANY, ""))
+                        continue
+
                     tankTypeCap = tankType[0].capitalize() + tankType[1:]
                     lbl = wx.StaticText(self.fullPanel, wx.ID_ANY, "0.0")
                     setattr(self, "labelTank%s%s" % (stability.capitalize(), tankTypeCap), lbl)
@@ -571,11 +614,11 @@ class StatsPane(wx.Panel):
             gridMisc.Add(box, 0, wx.ALIGN_LEFT)
 
             lbl = wx.StaticText(self.fullPanel, wx.ID_ANY, "0")
-            setattr(self, "label%s" % labelShort, lbl)
+            setattr(self, "labelFull%s" % labelShort, lbl)
             box.Add(lbl, 0, wx.ALIGN_LEFT)
 
             lblUnit = wx.StaticText(self.fullPanel, wx.ID_ANY, " %s" % unit)
-            setattr(self, "labelUnit%s" % labelShort, lblUnit)
+            setattr(self, "labelFullUnit%s" % labelShort, lblUnit)
             box.Add(lblUnit, 0, wx.ALIGN_LEFT)
 
 
@@ -584,7 +627,7 @@ class StatsPane(wx.Panel):
         labelManeuverability.SetFont(boldFont)
         self.minSizerBase.Add(labelManeuverability, 0, wx.ALIGN_CENTER)
 
-        labels = (("Speed", "Speed", "m/s"),
+        labels = (("Vel", "Speed", "m/s"),
                   ("Align", "AlignTime", "s"))
 
         for header, labelShort, unit in labels:
@@ -597,11 +640,11 @@ class StatsPane(wx.Panel):
             sizer.Add(box, 0, wx.ALIGN_LEFT)
 
             lbl = wx.StaticText(self.miniPanel, wx.ID_ANY, "0")
-            setattr(self, "label%s" % labelShort, lbl)
+            setattr(self, "labelMini%s" % labelShort, lbl)
             box.Add(lbl, 0, wx.ALIGN_LEFT)
 
             lblUnit = wx.StaticText(self.miniPanel, wx.ID_ANY, " %s" % unit)
-            setattr(self, "labelUnit%s" % labelShort, lblUnit)
+            setattr(self, "labelMiniUnit%s" % labelShort, lblUnit)
             box.Add(lblUnit, 0, wx.ALIGN_LEFT)
 
         self.minSizerBase.Add(wx.StaticLine(parent, wx.ID_ANY, style=wx.HORIZONTAL), 0, wx.EXPAND)
