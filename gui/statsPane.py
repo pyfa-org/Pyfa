@@ -185,7 +185,7 @@ class StatsPane(wx.Panel):
 
         font1 = wx.Font(8, wx.SWISS, wx.NORMAL, wx.NORMAL)
         self.SetFont(font1)
-        
+
         self._showNormalGauges = False
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
@@ -260,8 +260,8 @@ class StatsPane(wx.Panel):
                 bitmap = bitmapLoader.getStaticBitmap("%s_big" % type, parent, "icons")
                 box = wx.BoxSizer(wx.HORIZONTAL)
 
-                sizer.Add(bitmap, 0, wx.ALIGN_LEFT)
-                sizer.Add(box, 0, wx.ALIGN_LEFT)
+                sizer.Add(bitmap, 0, wx.ALIGN_CENTER)
+                sizer.Add(box, 0, wx.ALIGN_CENTER)
 
                 suffix = "Points" if type == "calibration" else "Hardpoints"
                 lbl = wx.StaticText(parent, wx.ID_ANY, "0")
