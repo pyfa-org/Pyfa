@@ -90,47 +90,6 @@ class StatsPane(wx.Panel):
             label = getattr(self, labelName)
             label.SetLabel(("%." + str(rounding) + "f") % (value() if fit is not None else 0))
 
-        if fit is not None:
-            resMax = (lambda: fit.ship.getModifiedItemAttr("cpuOutput"),
-                    lambda: fit.ship.getModifiedItemAttr("powerOutput"),
-                    lambda: fit.ship.getModifiedItemAttr("droneCapacity"),
-                    lambda: fit.ship.getModifiedItemAttr("droneBandwidth"),
-                    lambda: fit.ship.getModifiedItemAttr("cpuOutput"),
-                    lambda: fit.ship.getModifiedItemAttr("powerOutput"))
-
-        for panel in ("Mini","Full"):
-            i=0
-            for resourceType in ("cpu", "pg", "droneBay", "droneBandwidth"):
-                if fit is not None:
-                    if i>1 and panel == "Mini": break
-
-                    capitalizedType = resourceType[0].capitalize() + resourceType[1:]
-
-                    gauge = getattr(self, "gauge%s%s" % (panel, capitalizedType))
-                    resUsed = getattr(fit,"%sUsed" % resourceType)
-
-                    if resMax[i]() > 0:
-                        gauge.SetRange(resMax[i]())
-                        gauge.SetValue(resUsed)
-                    else:
-                        gauge.SetRange(100)
-                        gauge.SetValue(0)
-                    i+=1
-                else:
-                    if i>1 and panel == "Mini": break
-
-                    capitalizedType = resourceType[0].capitalize() + resourceType[1:]
-
-                    gauge = getattr(self, "gauge%s%s" % (panel, capitalizedType))
-
-                    gauge.SetRange(100)
-                    gauge.SetValue(0)
-                    i+=1
-
-        for labelName, value, rounding in stats:
-            label = getattr(self, labelName)
-            label.SetLabel(("%." + str(rounding) + "f") % (value() if fit is not None else 0))
-
 #        resMax = (("cpuTotal", lambda: fit.ship.getModifiedItemAttr("cpuOutput")),
 #                    ("pgTotal", lambda: fit.ship.getModifiedItemAttr("powerOutput")),
 #                    ("droneBayTotal", lambda: fit.ship.getModifiedItemAttr("droneCapacity")),
@@ -165,7 +124,7 @@ class StatsPane(wx.Panel):
                     gauge = getattr(self, "gauge%s%s" % (panel, capitalizedType))
 
                     gauge.SetRange(100)
-                    gauge.SetValue(0)
+                    gauge.SetValue(0)                    
 
         for tankType in ("shield", "armor", "hull"):
             for damageType in ("em", "thermal", "kinetic", "explosive"):
@@ -347,7 +306,7 @@ class StatsPane(wx.Panel):
                         setattr(self, "label%sTotal%s" % (panel.capitalize(), capitalizedType), lbl)
                         absolute.Add(lbl, 0, wx.ALIGN_LEFT)
 
-                        # Gauges modif. - Darriele
+# Gauges modif. - Darriele
                         if self._showNormalGauges == True:
                             gauge = wx.Gauge(parent, wx.ID_ANY, 100)
                             gauge.SetMinSize((80, 20))
@@ -357,9 +316,7 @@ class StatsPane(wx.Panel):
                             gauge.SetSkipDigitsFlag(True)
 
                         setattr(self, "gauge%s%s" % (panel.capitalize(),capitalizedType), gauge)
-
                         stats.Add(gauge, 0, wx.ALIGN_CENTER)
-
                 if panel == "mini":
                     base.Add(wx.StaticLine(parent, wx.ID_ANY, style=wx.HORIZONTAL), 0, wx.EXPAND)
 
