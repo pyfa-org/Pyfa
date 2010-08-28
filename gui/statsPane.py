@@ -114,8 +114,9 @@ class StatsPane(wx.Panel):
                     gauge = getattr(self, "gauge%s%s" % (panel, capitalizedType))
                     resUsed = getattr(fit,"%sUsed" % resourceType)
 
-                    gauge.SetRange(resMax[i-1]())
-                    gauge.SetValue(resUsed)
+                    if resMax[i]() > 0:
+                        gauge.SetRange(resMax[i-1]())
+                        gauge.SetValue(resUsed)
                 else:
                     if i>1 and panel == "Mini": break
                     i+=1
