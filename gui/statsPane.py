@@ -104,7 +104,7 @@ class StatsPane(wx.Panel):
                 if self._showNormalGauges == True:
                     lbl.SetLabel("%.2f" % resonance)
                 else:
-                    lbl.Update(resonance-lbl.GetValue(),250)
+                    lbl.SetValue(resonance)
 
         ehp = fit.ehp if fit is not None else None
         for tankType in ("shield", "armor", "hull"):
@@ -278,8 +278,6 @@ class StatsPane(wx.Panel):
                             gauge = PG.PyGauge(parent, wx.ID_ANY, 100)
                             gauge.SetMinSize((80, 16))
                             gauge.SetSkipDigitsFlag(True)
-                            gauge.SetValue(100)
-                            gauge.Update(-100,250)
 
                         setattr(self, "gauge%s" % capitalizedType, gauge)
                         stats.Add(gauge, 0, wx.ALIGN_CENTER)                            
@@ -345,9 +343,8 @@ class StatsPane(wx.Panel):
                     lbl.SetBackgroundColour(wx.Colour(bc[0],bc[1],bc[2]))
                     lbl.SetBarColour(wx.Colour(fc[0],fc[1],fc[2]))
                     lbl.SetBarGradient()
-                    lbl.SetValue(100)
                     lbl.SetSkipDigitsFlag(False)
-                    lbl.Update(-100,250)
+
                 setattr(self, "labelResistance%s%s" % (tankType.capitalize(), damageType.capitalize()), lbl)
                 box.Add(lbl, 0, wx.ALIGN_CENTER)
 
