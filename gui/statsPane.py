@@ -94,7 +94,9 @@ class StatsPane(wx.Panel):
 #                    ("pgTotal", lambda: fit.ship.getModifiedItemAttr("powerOutput")),
 #                    ("droneBayTotal", lambda: fit.ship.getModifiedItemAttr("droneCapacity")),
 #                    ("droneBandwidthTotal", lambda: fit.ship.getModifiedItemAttr("droneBandwidth")))
-        resMax = (lambda: fit.ship.getModifiedItemAttr("cpuOutput"),
+
+        if fit is not None:
+            resMax = (lambda: fit.ship.getModifiedItemAttr("cpuOutput"),
                     lambda: fit.ship.getModifiedItemAttr("powerOutput"),
                     lambda: fit.ship.getModifiedItemAttr("droneCapacity"),
                     lambda: fit.ship.getModifiedItemAttr("droneBandwidth"),
@@ -114,7 +116,15 @@ class StatsPane(wx.Panel):
 
                     gauge.SetRange(resMax[i-1]())
                     gauge.SetValue(resUsed)
+                else:
+                    if i>1 and panel == "Mini": break
+                    i+=1
+                    capitalizedType = resourceType[0].capitalize() + resourceType[1:]
 
+                    gauge = getattr(self, "gauge%s%s" % (panel, capitalizedType))
+
+                    gauge.SetRange(100)
+                    gauge.SetValue(0)                    
 
         for tankType in ("shield", "armor", "hull"):
             for damageType in ("em", "thermal", "kinetic", "explosive"):
