@@ -264,15 +264,13 @@ class PyGauge(wx.PyWindow):
                 dc.DrawRectangleRect(r)
 
         dc.SetTextForeground(wx.Colour(255,255,255))
-        font1 = wx.Font(9, wx.MODERN, wx.NORMAL, wx.NORMAL)
+        font1 = wx.Font(8, wx.SWISS, wx.NORMAL, wx.NORMAL)
         dc.SetFont(font1)
         if self._skipDigits == True:
-            textWidth=len(str(int(self._value[0]*100/self._range)) + "%") * 9
-            dc.DrawText(str(int(self._value[0]*100/self._range)) + "%",(rect.width-2)/2 - textWidth/4,(rect.height-11)/2)
+            dc.DrawLabel(str(int(self._value[0]*100/self._range)) + "%", rect, wx.ALIGN_CENTER)
         else:
-            textWidth=len(str(round(float(self._value[0]*100/self._range),1))+ "%")*9
-            dc.DrawText(str(round(float(self._value[0]*100/self._range),1)) + "%",(rect.width-2)/2-textWidth/4,(rect.height-11)/2)
-                        
+            dc.DrawLabel(str(round(float(self._value[0]*100/self._range)))+ "%",rect,wx.ALIGN_CENTER)
+                    
     def OnTimer(self,event):
         """
         Handles the ``wx.EVT_TIMER`` event for L{PyGauge}.
