@@ -270,8 +270,8 @@ class PyGauge(wx.PyWindow):
             textWidth=len(str(int(self._value[0]*100/self._range)) + "%") * 7
             dc.DrawText(str(int(self._value[0]*100/self._range)) + "%",rect.width/2-textWidth/2,(rect.height-8)/2)
         else:
-            textWidth=len(str(round(float(self._value[0]*100/self._range),2))+ "%") * 7
-            dc.DrawText(str(round(float(self._value[0]*100/self._range),2)) + "%",rect.width/2-textWidth/2,(rect.height-8)/2)
+            textWidth=len(str(round(float(self._value[0]*100/self._range),1))+ "%") * 7
+            dc.DrawText(str(round(float(self._value[0]*100/self._range),1)) + "%",rect.width/2-textWidth/2,(rect.height-8)/2)
                         
     def OnTimer(self,event):
         """
