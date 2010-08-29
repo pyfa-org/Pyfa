@@ -56,7 +56,7 @@ class StatsPane(wx.Panel):
                          ("label%sVolleyTotal", lambda: fit.weaponVolley, 1),
                          ("label%sDpsTotal", lambda: fit.totalDPS, 1),
                          ("label%sCapacitorCapacity", lambda: fit.ship.getModifiedItemAttr("capacitorCapacity"), 1),
-                         ("label%sCapacitorState", lambda: "Stable at " if fit.capState else "Lasts ", 0),
+                         ("label%sCapacitorState", lambda: "Stable at " if fit.capStable else "Lasts ", 0),
                          ("label%sCapacitorTime", lambda: ("%.1f%%" if fit.capStable else "%ds") % fit.capState, 0),
                          ("label%sCapacitorRecharge", lambda: fit.capRecharge, 1),
                          ("label%sCapacitorDischarge", lambda: fit.capUsed, 1),
@@ -163,11 +163,12 @@ class StatsPane(wx.Panel):
 
         for stability in ("reinforced", "sustained"):
             if stability == "reinforced" and fit != None:
-                tank = fit.sustainableTank
+                tank = fit.effectiveTank
             elif stability == "sustained" and fit != None:
-                tank = fit.extraAttributes
+                tank = fit.effectiveSustainableTank
             else:
                 tank = None
+
 
             for name in ("shield", "armor", "hull"):
                 lbl = getattr(self, "labelTank%s%sActive" % (stability.capitalize(), name.capitalize()))
@@ -182,7 +183,7 @@ class StatsPane(wx.Panel):
                 maxType, maxAmount = maxTank
                 currAmount = tank["%sRepair" % tankType]
                 if  currAmount > maxAmount:
-                     maxTank = ("%s" % tankType.capitalize(), currAmount)
+                     maxTank = ("%s" % tankType, currAmount)
 
         maxType, maxAmount = maxTank
 
@@ -192,7 +193,7 @@ class StatsPane(wx.Panel):
             self.labelMiniTankUnitReinforced.SetLabel("")
             bitmap = bitmapLoader.getBitmap("%s_big" % maxType, "icons")
         else:
-            self.labelMiniTankReinforced.SetLabel(maxAmount)
+            self.labelMiniTankReinforced.SetLabel(shorten(maxAmount, 1))
             sustainable = fit.sustainableTank["%sRepair" % maxType]
             self.labelMiniTankSustained.SetLabel(shorten(sustainable, 1))
             self.labelMiniTankUnitReinforced.SetLabel(" HP/S")
