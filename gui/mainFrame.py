@@ -27,6 +27,7 @@ from gui.statsPane import StatsPane
 from gui.shipBrowser import ShipBrowser
 from wx.lib.wordwrap import wordwrap
 import aboutData
+from wx._core import PyDeadObjectError
 
 class MainFrame(wx.Frame):
     __instance = None
@@ -87,7 +88,10 @@ class MainFrame(wx.Frame):
             self.notebookBrowsers.SetSelection(tab)
 
     def ExitApp(self, evt):
-        self.Close()
+        try:
+            self.Close()
+        except PyDeadObjectError:
+            pass
 
     def ShowAboutBox(self, evt):
         info = wx.AboutDialogInfo()
