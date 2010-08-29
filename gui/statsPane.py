@@ -45,7 +45,7 @@ class StatsPane(wx.Panel):
         elif val > 10**7:
             return ("%." + str(digits)+ "fM") % (val / float(10**6))
         elif val > 10**4:
-            return ("%." + str(digits )+ "fk") % (val / float(10**3))
+            return ("%." + str(digits)+ "fk") % (val / float(10**3))
         else:
             return ("%." + str(digits) + "f") % val
 
@@ -192,9 +192,6 @@ class StatsPane(wx.Panel):
 
     def __init__(self, parent):
         wx.Panel.__init__(self, parent)
-
-        font1 = wx.Font(8, wx.SWISS, wx.NORMAL, wx.NORMAL)
-        self.SetFont(font1)
 
         self._showNormalGauges = False
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()

@@ -76,7 +76,9 @@ class Fit(object):
         fit = eos.db.getFit(fitID)
         item = eos.db.getItem(itemID, eager=("attributes", "group.category"))
         if item.group.category.name == "Module":
-            fit.modules.append(eos.types.Module(item))
+            m = eos.types.Module(item)
+            if m.fits(fit):
+                fit.modules.append(m)
 
         eos.db.saveddata_session.flush()
 
