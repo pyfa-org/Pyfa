@@ -19,6 +19,7 @@
 
 import eos.db
 import eos.types
+from eos.types import State
 import copy
 
 class Fit(object):
@@ -77,12 +78,21 @@ class Fit(object):
         item = eos.db.getItem(itemID, eager=("attributes", "group.category"))
         if item.group.category.name == "Module":
             m = eos.types.Module(item)
+            if m.isValidState(State.ACTIVE):
+                m.state = State.ACTIVE
+
             if m.fits(fit):
                 fit.modules.append(m)
 
         eos.db.saveddata_session.flush()
+        fit.clear()
+        fit.calculateModifiedAttributes()
+        return fit
 
     def removeItem(self, fitID, position):
         fit = eos.db.getFit(fitID)
         fit.modules.toDummy(position)
         eos.db.saveddata_session.flush()
+        fit.clear()
+        fit.calculateModifiedAttributes()
+        return fit
