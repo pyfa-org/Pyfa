@@ -24,6 +24,7 @@ import gui.mainFrame
 import controller
 from eos.types import Slot, Hardpoint
 from gui import pygauge as PG
+from util import shorten
 
 class StatsPane(wx.Panel):
     def collapseChanged(self, event):
@@ -38,16 +39,6 @@ class StatsPane(wx.Panel):
         self.fullPanel.Show(not collapsed)
         self.miniPanel.Show(collapsed)
         self.mainFrame.statsSizer.Layout()
-
-    def shorten(self, val, digits):
-        if val > 10**10:
-            return ("%." + str(digits)+ "fG") % (val / float(10**9))
-        elif val > 10**7:
-            return ("%." + str(digits)+ "fM") % (val / float(10**6))
-        elif val > 10**4:
-            return ("%." + str(digits)+ "fk") % (val / float(10**3))
-        else:
-            return ("%." + str(digits) + "f") % val
 
     def fitChanged(self, event):
         cFit = controller.Fit.getInstance()
@@ -94,11 +85,11 @@ class StatsPane(wx.Panel):
                 if isinstance(value, basestring):
                     label.SetLabel(value)
                 else:
-                    label.SetLabel(self.shorten(value, rounding))
+                    label.SetLabel(shorten(value, rounding))
 
         for labelName, value, rounding in stats:
             label = getattr(self, labelName)
-            label.SetLabel(self.shorten(value() if fit is not None else 0, rounding))
+            label.SetLabel(shorten(value() if fit is not None else 0, rounding))
 
 #        resMax = (("cpuTotal", lambda: fit.ship.getModifiedItemAttr("cpuOutput")),
 #                    ("pgTotal", lambda: fit.ship.getModifiedItemAttr("powerOutput")),
@@ -158,7 +149,7 @@ class StatsPane(wx.Panel):
         for tankType in ("shield", "armor", "hull"):
             lbl = getattr(self, "labelResistance%sEhp" % tankType.capitalize())
             if ehp is not None:
-                lbl.SetLabel(self.shorten(ehp[tankType], 0))
+                lbl.SetLabel(shorten(ehp[tankType], 0))
             else:
                 lbl.SetLabel("0")
 
@@ -185,6 +176,29 @@ class StatsPane(wx.Panel):
                 else:
                     lbl.SetLabel("0.0")
 
+        maxTank = ("shieldPassive", fit.calculateShieldRecharge())
+        for tankType in ("shield", "armor", "hull"):
+            if tank is not None:
+                maxType, maxAmount = maxTank
+                currAmount = tank["%sRepair" % tankType]
+                if  currAmount > maxAmount:
+                     maxTank = ("%s" % tankType.capitalize(), currAmount)
+
+        maxType, maxAmount = maxTank
+
+        if maxType == "shieldPassive":
+            self.labelMiniTankReinforced.SetLabel("")
+            self.labelMiniTankSustained.SetLabel(shorten(maxAmount, 1))
+            self.labelMiniTankUnitReinforced.SetLabel("")
+            bitmap = bitmapLoader.getBitmap("%s_big" % maxType, "icons")
+        else:
+            self.labelMiniTankReinforced.SetLabel(maxAmount)
+            sustainable = fit.sustainableTank["%sRepair" % maxType]
+            self.labelMiniTankSustained.SetLabel(shorten(sustainable, 1))
+            self.labelMiniTankUnitReinforced.SetLabel(" HP/S")
+            bitmap = bitmapLoader.getBitmap("%sActive_big" % maxType, "icons")
+
+        self.minitankTypeImage.SetBitmap(bitmap)
         self.Layout()
         self.fullPanel.Layout()
         self.miniPanel.Layout()
@@ -320,7 +334,7 @@ class StatsPane(wx.Panel):
                         setattr(self, "label%sTotal%s" % (panel.capitalize(), capitalizedType), lbl)
                         absolute.Add(lbl, 0, wx.ALIGN_LEFT)
 
-# Gauges modif. - Darriele
+                        # Gauges modif. - Darriele
                         if self._showNormalGauges == True:
                             gauge = wx.Gauge(parent, wx.ID_ANY, 100)
                             gauge.SetMinSize((80, 20))
@@ -379,7 +393,7 @@ class StatsPane(wx.Panel):
                 box = wx.BoxSizer(wx.HORIZONTAL)
                 sizerResistances.Add(box, 1, wx.ALIGN_CENTER)
 
-#Fancy gauges addon
+                #Fancy gauges addon
 
                 pgColour= gaugeColours[currGColour]
                 fc = pgColour[0]
@@ -469,10 +483,12 @@ class StatsPane(wx.Panel):
             miniTankSizer.Add(box, 0, wx.ALIGN_CENTER)
 
             lbl = wx.StaticText(self.miniPanel, wx.ID_ANY, "0.0")
-            setattr(self, "labelMiniTank%s" % stability, lbl)
+            setattr(self, "labelMiniTank%s" % stability.capitalize(), lbl)
             box.Add(lbl, 0, wx.ALIGN_LEFT)
 
-            box.Add(wx.StaticText(self.miniPanel, wx.ID_ANY, " HP/S"), 0, wx.ALIGN_LEFT)
+            lbl = wx.StaticText(self.miniPanel, wx.ID_ANY, " HP/S")
+            setattr(self, "labelMiniTankUnit%s" % stability.capitalize(), lbl)
+            box.Add(lbl, 0, wx.ALIGN_LEFT)
 
         self.minSizerBase.Add(wx.StaticLine(parent, wx.ID_ANY, style=wx.HORIZONTAL), 0, wx.EXPAND)
 
