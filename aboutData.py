@@ -21,4 +21,5 @@ versionString = "0.0.1"
 license = "GNU GPL"
 licenseLocation = "gpl.txt"
 developers = ("cncfanatics" , "DarkPhoenix")
+credits = (("Entity: capacitor calculations"), ("Darriele: gui"), ("Aurora: maths"))
 description = "pyfa is the Python Fitting Assistant, a standalone application to create fittings for the EVE-Online SciFi MMORPG.\nThe application is available for many platforms, see the download page for further details. The layout of pyfa is heavily based on EFT, the EVE fitting tool. Although it is a complete rewrite and replacement for EFT, the fittings are still compatible with EFT."
