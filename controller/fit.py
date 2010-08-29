@@ -46,6 +46,7 @@ class Fit(object):
         fit.name = name
         eos.db.saveddata_session.add(fit)
         eos.db.saveddata_session.flush()
+        fit.calculateModifiedAttributes()
         return fit.ID
 
     def renameFit(self, fitID, newName):
