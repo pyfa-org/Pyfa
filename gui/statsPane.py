@@ -177,6 +177,7 @@ class StatsPane(wx.Panel):
                 else:
                     lbl.SetLabel("0.0")
 
+        tank = fit.effectiveTank
         maxTank = ("shieldPassive", fit.calculateShieldRecharge() if fit else 0)
         for tankType in ("shield", "armor", "hull"):
             if tank is not None:
