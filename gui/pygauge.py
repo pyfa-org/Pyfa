@@ -51,7 +51,6 @@ Version 0.1
 
 import wx
 import copy
-import time
 
 class PyGauge(wx.PyWindow):
     """
