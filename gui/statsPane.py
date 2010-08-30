@@ -56,8 +56,6 @@ class StatsPane(wx.Panel):
                          ("label%sVolleyTotal", lambda: fit.weaponVolley, 1),
                          ("label%sDpsTotal", lambda: fit.totalDPS, 1),
                          ("label%sCapacitorCapacity", lambda: fit.ship.getModifiedItemAttr("capacitorCapacity"), 1),
-                         ("label%sCapacitorState", lambda: "Stable at " if fit.capStable else "Lasts ", 0),
-                         ("label%sCapacitorTime", lambda: ("%.1f%%" if fit.capStable else "%ds") % fit.capState, 0),
                          ("label%sCapacitorRecharge", lambda: fit.capRecharge, 1),
                          ("label%sCapacitorDischarge", lambda: fit.capUsed, 1),
                          ("label%sSpeed", lambda: fit.ship.getModifiedItemAttr("maxVelocity"), 1),
@@ -95,6 +93,21 @@ class StatsPane(wx.Panel):
 #                    ("pgTotal", lambda: fit.ship.getModifiedItemAttr("powerOutput")),
 #                    ("droneBayTotal", lambda: fit.ship.getModifiedItemAttr("droneCapacity")),
 #                    ("droneBandwidthTotal", lambda: fit.ship.getModifiedItemAttr("droneBandwidth")))
+
+        # cap stuff
+        capState = fit.capState if fit is not None else 0
+        capStable = fit.capStable if fit is not None else False
+        lblNameTime = "label%sCapacitorTime"
+        lblNameState = "label%sCapacitorState"
+        if isinstance(capState, tuple):
+            t = "%.1f%%-%.1f%%" % capState
+            s = ""
+        else:
+            t = ("%ds" if not capStable else "%.1f%%") % capState
+            s = "Stable: " if capStable else "Lasts "
+        for panel in ("Mini", "Full"):
+            getattr(self, lblNameTime % panel).SetLabel(t)
+            getattr(self, lblNameState % panel).SetLabel(s)
 
         if fit is not None:
             resMax = (lambda: fit.ship.getModifiedItemAttr("cpuOutput"),
