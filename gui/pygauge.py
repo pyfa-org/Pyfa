@@ -222,9 +222,10 @@ class PyGauge(wx.PyWindow):
         
             if not self._timer:
                 self._timer = wx.Timer(self, self._timerId)
+                print "Timer created: %d" % self._timerId
             self._animStep = 0
             self._timer.Start(self._animStep)
-
+            print "Timer started: %d" % self._timerId
         for v in self._value:
             if v < 0 or v > self._range:
                 raise Exception("ERROR:\n Gauge value must be between 0 and it's range. ")
@@ -353,6 +354,7 @@ class PyGauge(wx.PyWindow):
                 
             if stop_timer:
                 self._timer.Stop()
+                print "Timer stopped: %d" % self._timerId
                 self._timerOn=0
             self.SortForDisplay()
 
