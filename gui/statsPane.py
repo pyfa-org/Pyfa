@@ -347,11 +347,12 @@ class StatsPane(wx.Panel):
 
                         setattr(self, "gauge%s%s" % (panel.capitalize(),capitalizedType), gauge)
                         stats.Add(gauge, 0, wx.ALIGN_CENTER)
-                if panel == "mini":
+                if i >0 and panel == "mini":
                     base.Add(wx.StaticLine(parent, wx.ID_ANY, style=wx.HORIZONTAL), 0, wx.EXPAND)
 
                 if i == 0 and panel == "full":
                     base.Add(wx.StaticLine(parent, wx.ID_ANY, style=wx.VERTICAL), 0, wx.EXPAND)
+
 
         # Resistances
         sizerHeaderResistances = wx.BoxSizer(wx.HORIZONTAL)
