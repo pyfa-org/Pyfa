@@ -235,12 +235,12 @@ class PyGauge(wx.PyWindow):
 
         if self.GetBarGradient():
             if self._overdrive > self._range:
-                if self._overdriveToggle==1:
-                    c1 =wx.Colour(255,33,33)
-                    c2 =wx.Colour(255,33,33)
-                else:
+                if self._overdriveToggle==-1:
                     c1 =wx.Colour(200,0,0)
                     c2 =wx.Colour(200,0,0)
+                else:
+                    c1 =wx.Colour(255,0,0)
+                    c2 =wx.Colour(255,0,0)
                 
             else:
                 c1,c2 = self.GetBarGradient()
