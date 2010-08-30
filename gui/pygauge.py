@@ -7,7 +7,7 @@
 # --------------------------------------------------------------------------------- #
 
 """
-PyGauge is a generic Gauge implementation tailored for PYFA (Python Fitting Assistant)
+PyfaGauge is a generic Gauge implementation tailored for PYFA (Python Fitting Assistant)
 It uses the easeOutQuad equation from caurina.transitions.Tweener
 """
 
