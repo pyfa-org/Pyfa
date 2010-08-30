@@ -48,15 +48,17 @@ class PyGauge(wx.PyWindow):
         self._skipDigits = True
         self._timerId = wx.NewId()
         self._timer = None
-
+        self._timerOver = None
         self._oldValue = 0
         self._timerOn = 0
-        self._animDuration = 300
+        self._animDuration = 500
         self._animStep = 0
         self._period = 25
         self._animValue = 0
         self._overdrive = 0
-        
+        self._overdriveTimerId =wx.NewId()
+        self._overdriveToggle=1
+        self._overdriveTimerStarted=False
         self.SetBarGradient((wx.Colour(153,153,153),wx.Colour(204,204,204)))
         self.SetBackgroundColour(wx.Colour(102,102,102))
 
@@ -171,9 +173,16 @@ class PyGauge(wx.PyWindow):
             if value > self._range:
                 self._overdrive = value
                 self._value = self._range
+                if not self._timerOver:
+                    self._timerOver = wx.Timer(self, self._overdriveTimerId)
+                self._timerOver.Start(500)
+                self._overdriveTimerStarted = True
             else:
                 self._overdrive = value
                 self._value = value
+                if self._overdriveTimerStarted:
+                    self._timerOver.Stop()
+                    self._overdriveTimerStarted = False
             if value < 0:
                 self._value = 0
                 self._overdrive = 0
@@ -226,8 +235,13 @@ class PyGauge(wx.PyWindow):
 
         if self.GetBarGradient():
             if self._overdrive > self._range:
-                c1 =wx.Colour(255,33,33)
-                c2 =wx.Colour(255,33,33)
+                if self._overdriveToggle==1:
+                    c1 =wx.Colour(255,33,33)
+                    c2 =wx.Colour(255,33,33)
+                else:
+                    c1 =wx.Colour(0,0,0)
+                    c2 =wx.Colour(0,0,0)
+                
             else:
                 c1,c2 = self.GetBarGradient()
 
@@ -308,10 +322,10 @@ class PyGauge(wx.PyWindow):
             start = 0
             end = oldValue - value
 
-        step=self.OUT_QUAD(self._animStep, start, end, self._animDuration)
+        step=self.OUT_BOUNCE(self._animStep, start, end, self._animDuration)
         self._animStep += self._period
 
-        if self._timerId == event.GetId():
+        if self._timerId == event.GetId() and self._overdriveTimerId != event.GetId():
             stop_timer = False
  
             if self._animStep > self._animDuration:
@@ -331,4 +345,7 @@ class PyGauge(wx.PyWindow):
             if stop_timer:
                 self._timer.Stop()
 
+            self.Refresh()
+        if self._overdriveTimerId == event.GetId():
+            self._overdriveToggle*=-1
             self.Refresh()
