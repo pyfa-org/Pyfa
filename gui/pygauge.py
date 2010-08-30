@@ -87,6 +87,12 @@ class PyGauge(wx.PyWindow):
         self._timerId = wx.NewId()
         self._timer = None
 
+        self._oldValue=0
+        self._timerOn=0
+        self._animDuration=250
+        self._animStep=0
+        self._period=25
+        self._animValue=0
         self._overdrive=0
         self.SetBarGradient((wx.Colour(153,153,153),wx.Colour(204,204,204)))
         self.SetBackgroundColour(wx.Colour(102,102,102))
@@ -198,19 +204,26 @@ class PyGauge(wx.PyWindow):
 
     def SetValue(self, value):
         """ Sets the current position of the gauge. """
+        if self._value[0] == value:
+            self.SortForDisplay()
+            self.Refresh()
+        else:    
+            self._oldValue = self._value[0]
+            if type(value) != type([]):
+                self._value = [value]
+            else:
+                self._value = list(value)
 
-        if type(value) != type([]):
-            self._value = [value]
-        else:
-            self._value = list(value)
-
-        self.SortForDisplay()
-        self.Refresh()
-        if value > self._range:
-            self._overdrive = value
-            self._value[0] = self._range
-        else:
-            self._overdrive = value
+            if value > self._range:
+                self._overdrive = value
+                self._value[0] = self._range
+            else:
+                self._overdrive = value
+        
+            if not self._timer:
+                self._timer = wx.Timer(self, self._timerId)
+            self._animStep = 0
+            self._timer.Start(self._animStep)
 
         for v in self._value:
             if v < 0 or v > self._range:
@@ -246,7 +259,10 @@ class PyGauge(wx.PyWindow):
         dc.SetPen(wx.Pen(colour))
         dc.DrawRectangleRect(rect)
 
-
+        if self._timerOn == 1:
+            value = self._animValue
+        else:
+            value = self._value[0]
         if self._border_colour:
             dc.SetPen(wx.Pen(self.GetBorderColour()))
             dc.DrawRectangleRect(rect)
@@ -261,7 +277,8 @@ class PyGauge(wx.PyWindow):
                     c2 =wx.Colour(255,33,33)
                 else:
                     c1,c2 = gradient
-                w = rect.width * (float(self._valueSorted[i]) / self._range)
+
+                w = rect.width * (float(value) / self._range)
                 r = copy.copy(rect)
                 r.width = w
                 dc.GradientFillLinear(r, c1, c2, wx.EAST)
@@ -269,7 +286,7 @@ class PyGauge(wx.PyWindow):
             for i, colour in enumerate(self._barColourSorted):
                 dc.SetBrush(wx.Brush(colour))
                 dc.SetPen(wx.Pen(colour))
-                w = rect.width * (float(self._valueSorted[i]) / self._range)
+                w = rect.width * (float(value) / self._range)
                 r = copy.copy(rect)
                 r.width = w
                 dc.DrawRectangleRect(r)
@@ -279,13 +296,20 @@ class PyGauge(wx.PyWindow):
         dc.SetFont(font1)
         if self._overdrive > self._range:
             value = self._overdrive
-        else:
-            value = self._value[0]
-
+            
         if self._skipDigits == True:
             dc.DrawLabel("%d%%" % (value*100/self._range), rect, wx.ALIGN_CENTER)
         else:
             dc.DrawLabel("%.1f%%" % (value * 100 / self._range) , rect, wx.ALIGN_CENTER)
+
+    def OUT_QUAD (self, t, b, c, d):
+        t=float(t)
+        b=float(b)
+        c=float(c)
+        d=float(d)
+        
+        t/=d
+        return -c *(t)*(t-2) + b
 
     def OnTimer(self,event):
         """
@@ -293,24 +317,43 @@ class PyGauge(wx.PyWindow):
 
         :param `event`: a timer event
         """
+        oldValue=self._oldValue
+        value=self._value[0]
 
+        direction=1
+
+        if oldValue < value:
+            direction = 1
+            start = 0
+            end = value-oldValue
+        else:
+            start = 0
+            end = oldValue - value
+            direction = -1
+        step=self.OUT_QUAD(self._animStep, start, end, self._animDuration)
+        self._animStep += self._period
+        
         if self._timerId == event.GetId():
-            stop_timer = True
-            for i, v in enumerate(self._value):
-                self._value[i] += self._update_step[i]
+            stop_timer = False
+            self._timerOn=1
 
-                if self._update_step[i] > 0:
-                    if self._value[i] > self._update_value[i]:
-                        self._value[i] = self._update_value[i]
-                    else: stop_timer = False
+            if self._animStep > self._animDuration:
+                stop_timer = True
+
+            if direction == 1:
+                if step < value:
+                    self._animValue = oldValue+step
                 else:
-                    if self._value[i] < self._update_value[i]:
-                        self._value[i] = self._update_value[i]
-                    else: stop_timer = False
-
+                    stop_timer = True
+            else:
+                if (oldValue-step) > value:
+                    self._animValue = oldValue-step
+                else:
+                    stop_timer = True
+                
             if stop_timer:
                 self._timer.Stop()
-
+                self._timerOn=0
             self.SortForDisplay()
 
             self.Refresh()
@@ -355,12 +398,12 @@ class PyGauge(wx.PyWindow):
         if self.GetBarGradient():
             tmp = sorted(zip(self._value,self._barGradient)); tmp.reverse()
             a,b = zip(*tmp)
-            self._valueSorted       = list(a)
+#            self._valueSorted       = list(a)
             self._barGradientSorted = list(b)
         else:
             tmp = sorted(zip(self._value,self._barColour)); tmp.reverse()
             a,b = zip(*tmp)
-            self._valueSorted     = list(a)
+#            self._valueSorted     = list(a)
             self._barColourSorted = list(b)
 
 
