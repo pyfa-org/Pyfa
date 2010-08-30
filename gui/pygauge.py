@@ -51,7 +51,7 @@ class PyGauge(wx.PyWindow):
         self._timerOver = None
         self._oldValue = 0
         self._timerOn = 0
-        self._animDuration = 500
+        self._animDuration = 300
         self._animStep = 0
         self._period = 25
         self._animValue = 0
@@ -322,7 +322,7 @@ class PyGauge(wx.PyWindow):
             start = 0
             end = oldValue - value
 
-        step=self.OUT_BOUNCE(self._animStep, start, end, self._animDuration)
+        step=self.OUT_QUAD(self._animStep, start, end, self._animDuration)
         self._animStep += self._period
 
         if self._timerId == event.GetId() and self._overdriveTimerId != event.GetId():
