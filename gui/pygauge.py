@@ -88,13 +88,13 @@ class PyGauge(wx.PyWindow):
         self._timerId = wx.NewId()
         self._timer = None
 
-        self._oldValue=0
-        self._timerOn=0
-        self._animDuration=2000
-        self._animStep=0
-        self._period=25
-        self._animValue=0
-        self._overdrive=0
+        self._oldValue = 0
+        self._timerOn = 0
+        self._animDuration = 300
+        self._animStep = 0
+        self._period = 25
+        self._animValue = 0
+        self._overdrive = 0
         self.SetBarGradient((wx.Colour(153,153,153),wx.Colour(204,204,204)))
         self.SetBackgroundColour(wx.Colour(102,102,102))
 
@@ -208,7 +208,7 @@ class PyGauge(wx.PyWindow):
         if self._value[0] == value:
             self.SortForDisplay()
             self.Refresh()
-        else:    
+        else:
             self._oldValue = self._value[0]
             if type(value) != type([]):
                 self._value = [value]
@@ -220,13 +220,11 @@ class PyGauge(wx.PyWindow):
                 self._value[0] = self._range
             else:
                 self._overdrive = value
-        
+
             if not self._timer:
                 self._timer = wx.Timer(self, self._timerId)
-                print "Timer created: %d" % self._timerId
             self._animStep = 0
-            self._timer.Start(self._animStep)
-            print "Timer started: %d - %f" % (self._timerId, time.time())
+            self._timer.Start(self._period)
         for v in self._value:
             if v < 0 or v > self._range:
                 raise Exception("ERROR:\n Gauge value must be between 0 and it's range. ")
@@ -298,7 +296,7 @@ class PyGauge(wx.PyWindow):
         dc.SetFont(font1)
         if self._overdrive > self._range:
             value = self._overdrive
-            
+
         if self._skipDigits == True:
             dc.DrawLabel("%d%%" % (value*100/self._range), rect, wx.ALIGN_CENTER)
         else:
@@ -309,7 +307,7 @@ class PyGauge(wx.PyWindow):
         b=float(b)
         c=float(c)
         d=float(d)
-        
+
         t/=d
         return -c *(t)*(t-2) + b
 
@@ -334,7 +332,7 @@ class PyGauge(wx.PyWindow):
             direction = -1
         step=self.OUT_QUAD(self._animStep, start, end, self._animDuration)
         self._animStep += self._period
-        
+
         if self._timerId == event.GetId():
             stop_timer = False
             self._timerOn=1
@@ -352,48 +350,13 @@ class PyGauge(wx.PyWindow):
                     self._animValue = oldValue-step
                 else:
                     stop_timer = True
-                
+
             if stop_timer:
                 self._timer.Stop()
-                print "Timer stopped: %d - %f" % (self._timerId, time.time())
                 self._timerOn=0
             self.SortForDisplay()
 
             self.Refresh()
-
-
-    def Update(self, value, time=0, index=0):
-        """
-        Update the gauge by adding value to it over time milliseconds. Time
-        must be a multiple of 50 milliseconds.
-
-        :param `value`: The value to be added to the gauge.
-        :param `time`: The length of time in ms that it will take to move the gauge
-        """
-        time=abs(value)*50
-        if time>500: time=500
-        if time == 0: time=500
-        if type(value) != type([]):
-            value = [value]
-
-        if len(value) != len(self._value):
-            raise Exception("ERROR:\n len(value) != len(self.GetValue()) ")
-
-        self._update_value = []
-        self._update_step  = []
-        for i, v in enumerate(self._value):
-            if value[i]+v < 0 or value[i]+v > self._range:
-                raise Exception("ERROR2:\n Gauge value must be between 0 and it's range. ")
-
-            self._update_value.append( value[i] +v )
-            self._update_step.append(  float(value[i]) / ( time/50 ) )
-
-        #print self._update_
-
-        if not self._timer:
-            self._timer = wx.Timer(self, self._timerId)
-
-        self._timer.Start(100)
 
     def SortForDisplay(self):
         """ Internal method which sorts things so we draw the longest bar first. """
