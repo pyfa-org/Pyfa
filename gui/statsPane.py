@@ -302,7 +302,7 @@ class StatsPane(wx.Panel):
                 box = wx.BoxSizer(wx.HORIZONTAL)
 
                 sizer.Add(bitmap, 0, wx.ALIGN_CENTER)
-                sizer.Add(box, 0, wx.ALIGN_LEFT)
+                sizer.Add(box, 0, wx.ALIGN_CENTER)
 
                 suffix = "Points" if type == "calibration" else "Hardpoints"
                 lbl = wx.StaticText(parent, wx.ID_ANY, "0")
