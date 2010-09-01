@@ -232,6 +232,11 @@ class StatsPane(wx.Panel):
         self.SetSizer(self.pickerSizer)
 
         collapsible = wx.CollapsiblePane(self, label="Stats")
+
+        colPane=collapsible.GetPane()
+        colPane.SetMinSize(wx.Size(0,0))
+        colPane.SetSize(wx.Size(0,0))
+
         collapsible.Expand()
         collapsible.Bind(wx.EVT_COLLAPSIBLEPANE_CHANGED, self.collapseChanged)
 
