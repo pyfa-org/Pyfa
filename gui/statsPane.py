@@ -354,6 +354,10 @@ class StatsPane(wx.Panel):
                         setattr(self, "label%sTotal%s" % (panel.capitalize(), capitalizedType), lbl)
                         absolute.Add(lbl, 0, wx.ALIGN_LEFT)
 
+                        units = {"cpu":" tf", "pg":" GJ", "droneBandwidth":" mbit/s", "droneBay":u" m\u00B3"}
+                        lbl = wx.StaticText(parent, wx.ID_ANY, "%s" % units[type])
+                        absolute.Add(lbl, 0, wx.ALIGN_LEFT)
+                            
                         # Gauges modif. - Darriele
                         if self._showNormalGauges == True:
                             gauge = wx.Gauge(parent, wx.ID_ANY, 100)
