@@ -7,7 +7,7 @@
 # --------------------------------------------------------------------------------- #
 
 """
-PyGauge is a generic Gauge implementation tailored for PYFA (Python Fitting Assistant)
+PyfaGauge is a generic Gauge implementation tailored for PYFA (Python Fitting Assistant)
 It uses the easeOutQuad equation from caurina.transitions.Tweener
 """
 
@@ -51,7 +51,7 @@ class PyGauge(wx.PyWindow):
         self._timerOver = None
         self._oldValue = 0
         self._timerOn = 0
-        self._animDuration = 500
+        self._animDuration = 400
         self._animStep = 0
         self._period = 25
         self._animValue = 0
@@ -173,16 +173,16 @@ class PyGauge(wx.PyWindow):
             if value > self._range:
                 self._overdrive = value
                 self._value = self._range
-                if not self._timerOver:
-                    self._timerOver = wx.Timer(self, self._overdriveTimerId)
-                self._timerOver.Start(500)
-                self._overdriveTimerStarted = True
+#                if not self._timerOver:
+#                    self._timerOver = wx.Timer(self, self._overdriveTimerId)
+#                self._timerOver.Start(500)
+#                self._overdriveTimerStarted = True
             else:
                 self._overdrive = value
                 self._value = value
-                if self._overdriveTimerStarted:
-                    self._timerOver.Stop()
-                    self._overdriveTimerStarted = False
+#                if self._overdriveTimerStarted:
+#                    self._timerOver.Stop()
+#                    self._overdriveTimerStarted = False
             if value < 0:
                 self._value = 0
                 self._overdrive = 0
@@ -322,10 +322,11 @@ class PyGauge(wx.PyWindow):
             start = 0
             end = oldValue - value
 
-        step=self.OUT_BOUNCE(self._animStep, start, end, self._animDuration)
+        step=self.OUT_QUAD(self._animStep, start, end, self._animDuration)
         self._animStep += self._period
 
-        if self._timerId == event.GetId() and self._overdriveTimerId != event.GetId():
+        if self._timerId == event.GetId():
+#            and self._overdriveTimerId != event.GetId():
             stop_timer = False
  
             if self._animStep > self._animDuration:
@@ -346,6 +347,6 @@ class PyGauge(wx.PyWindow):
                 self._timer.Stop()
 
             self.Refresh()
-        if self._overdriveTimerId == event.GetId():
-            self._overdriveToggle*=-1
-            self.Refresh()
+#        if self._overdriveTimerId == event.GetId():
+#            self._overdriveToggle*=-1
+#            self.Refresh()

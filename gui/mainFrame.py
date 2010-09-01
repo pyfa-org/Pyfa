@@ -105,7 +105,8 @@ class MainFrame(wx.Frame):
     def registerMenu(self):
         # Quit
         self.Bind(wx.EVT_MENU, self.ExitApp, id=wx.ID_EXIT)
-
+        # Widgets Inspector
+        self.Bind(wx.EVT_MENU, self.openWXInspectTool, id=911) 
         # About
         self.Bind(wx.EVT_MENU, self.ShowAboutBox, id=wx.ID_ABOUT)
 
@@ -116,3 +117,15 @@ class MainFrame(wx.Frame):
     def toggleShipBrowser(self, event):
         self.GetToolBar().toggleShipBrowser(event)
 
+    def openWXInspectTool(self,event):
+        from wx.lib.inspection import InspectionTool
+        if not InspectionTool().initialized:
+            InspectionTool().Init()
+
+        # Find a widget to be selected in the tree.  Use either the
+        # one under the cursor, if any, or this frame.
+        wnd = wx.FindWindowAtPointer()
+        if not wnd:
+            wnd = self
+        InspectionTool().Show(wnd, True)
+        

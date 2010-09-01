@@ -232,6 +232,11 @@ class StatsPane(wx.Panel):
         self.SetSizer(self.pickerSizer)
 
         collapsible = wx.CollapsiblePane(self, label="Stats")
+
+        colPane=collapsible.GetPane()
+        colPane.SetMinSize(wx.Size(0,0))
+        colPane.SetSize(wx.Size(0,0))
+
         collapsible.Expand()
         collapsible.Bind(wx.EVT_COLLAPSIBLEPANE_CHANGED, self.collapseChanged)
 
@@ -297,7 +302,7 @@ class StatsPane(wx.Panel):
                 box = wx.BoxSizer(wx.HORIZONTAL)
 
                 sizer.Add(bitmap, 0, wx.ALIGN_CENTER)
-                sizer.Add(box, 0, wx.ALIGN_CENTER)
+                sizer.Add(box, 0, wx.ALIGN_LEFT)
 
                 suffix = "Points" if type == "calibration" else "Hardpoints"
                 lbl = wx.StaticText(parent, wx.ID_ANY, "0")
@@ -349,6 +354,10 @@ class StatsPane(wx.Panel):
                         setattr(self, "label%sTotal%s" % (panel.capitalize(), capitalizedType), lbl)
                         absolute.Add(lbl, 0, wx.ALIGN_LEFT)
 
+                        units = {"cpu":" tf", "pg":" GJ", "droneBandwidth":" mbit/s", "droneBay":u" m\u00B3"}
+                        lbl = wx.StaticText(parent, wx.ID_ANY, "%s" % units[type])
+                        absolute.Add(lbl, 0, wx.ALIGN_LEFT)
+                            
                         # Gauges modif. - Darriele
                         if self._showNormalGauges == True:
                             gauge = wx.Gauge(parent, wx.ID_ANY, 100)
