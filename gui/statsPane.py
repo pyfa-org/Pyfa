@@ -353,7 +353,27 @@ class StatsPane(wx.Panel):
                         lbl = wx.StaticText(parent, wx.ID_ANY, "0")
                         setattr(self, "label%sTotal%s" % (panel.capitalize(), capitalizedType), lbl)
                         absolute.Add(lbl, 0, wx.ALIGN_LEFT)
+                        
+                        if type == "cpu":
+                            lbl = wx.StaticText(parent, wx.ID_ANY, " tf")
+                            setattr(self, "label%sMEASUREUNIT" % capitalizedType, lbl)
+                            absolute.Add(lbl, 0, wx.ALIGN_LEFT)
+                            
+                        if type == "pg":
+                            lbl = wx.StaticText(parent, wx.ID_ANY, " GJ")
+                            setattr(self, "label%sMEASUREUNIT" % capitalizedType, lbl)
+                            absolute.Add(lbl, 0, wx.ALIGN_LEFT)
+                            
+                        if type == "droneBandwidth":
+                            lbl = wx.StaticText(parent, wx.ID_ANY, " mbit/s")
+                            setattr(self, "label%sMEASUREUNIT" % capitalizedType, lbl)
+                            absolute.Add(lbl, 0, wx.ALIGN_LEFT)
 
+                        if type == "droneBay":
+                            lbl = wx.StaticText(parent, wx.ID_ANY, u" m\u00B3")
+                            setattr(self, "label%sMEASUREUNIT" % capitalizedType, lbl)
+                            absolute.Add(lbl, 0, wx.ALIGN_LEFT)
+                            
                         # Gauges modif. - Darriele
                         if self._showNormalGauges == True:
                             gauge = wx.Gauge(parent, wx.ID_ANY, 100)
