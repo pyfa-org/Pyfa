@@ -51,6 +51,7 @@ class MultiSwitch(wx.Notebook):
             p.type = "fit"
             sizer = wx.BoxSizer(wx.HORIZONTAL)
             p.view = FittingView(p)
+
             sizer.Add(p.view, 1, wx.EXPAND | wx.RESERVE_SPACE_EVEN_IF_HIDDEN)
 
             p.SetSizer(sizer)

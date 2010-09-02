@@ -20,6 +20,7 @@
 import wx
 from gui import bitmapLoader
 from gui.mainMenuBar import MainMenuBar
+from gui.additionsPane import AdditionsPane
 from gui.mainToolBar import MainToolBar
 from gui.marketBrowser import MarketBrowser
 from gui.multiSwitch import MultiSwitch
@@ -61,12 +62,20 @@ class MainFrame(wx.Frame):
         self.statsSizer = wx.BoxSizer(wx.HORIZONTAL)
         statsFitviewPanel.SetSizer(self.statsSizer)
 
-        self.fitMultiSwitch = MultiSwitch(statsFitviewPanel)
+        self.fittingPanel = wx.Panel(statsFitviewPanel)
+        fittingSizer = wx.BoxSizer(wx.VERTICAL)
+        self.fittingPanel.SetSizer(fittingSizer)
+        self.statsSizer.Add(self.fittingPanel, 1, wx.EXPAND)
+
+        self.fitMultiSwitch = MultiSwitch(self.fittingPanel)
         self.fitMultiSwitch.AddTab()
+        fittingSizer.Add(self.fitMultiSwitch, 1, wx.EXPAND)
+
+        self.additionsPane = AdditionsPane(self.fittingPanel)
+        fittingSizer.Add(self.additionsPane, 0, wx.EXPAND)
+
 
         self.statsPane = StatsPane(statsFitviewPanel)
-
-        self.statsSizer.Add(self.fitMultiSwitch, 1, wx.EXPAND)
         self.statsSizer.Add(self.statsPane, 0, wx.EXPAND)
 
         self.splitter.SplitVertically(self.notebookBrowsers, statsFitviewPanel)
@@ -106,7 +115,7 @@ class MainFrame(wx.Frame):
         # Quit
         self.Bind(wx.EVT_MENU, self.ExitApp, id=wx.ID_EXIT)
         # Widgets Inspector
-        self.Bind(wx.EVT_MENU, self.openWXInspectTool, id=911) 
+        self.Bind(wx.EVT_MENU, self.openWXInspectTool, id=911)
         # About
         self.Bind(wx.EVT_MENU, self.ShowAboutBox, id=wx.ID_ABOUT)
 
@@ -128,4 +137,4 @@ class MainFrame(wx.Frame):
         if not wnd:
             wnd = self
         InspectionTool().Show(wnd, True)
-        
+
