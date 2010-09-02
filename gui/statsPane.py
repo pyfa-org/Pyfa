@@ -302,7 +302,7 @@ class StatsPane(wx.Panel):
                 box = wx.BoxSizer(wx.HORIZONTAL)
 
                 sizer.Add(bitmap, 0, wx.ALIGN_CENTER)
-                sizer.Add(box, 0, wx.ALIGN_LEFT)
+                sizer.Add(box, 0, wx.ALIGN_CENTER)
 
                 suffix = "Points" if type == "calibration" else "Hardpoints"
                 lbl = wx.StaticText(parent, wx.ID_ANY, "0")
@@ -338,7 +338,7 @@ class StatsPane(wx.Panel):
                             b = wx.BoxSizer(wx.HORIZONTAL)
                             main.Add(b, 1, wx.ALIGN_CENTER)
 
-                            b.Add(bitmap, 0, wx.ALIGN_CENTER)
+                            b.Add(bitmap, 0, wx.ALIGN_BOTTOM)
 
                             b.Add(stats, 1, wx.EXPAND)
                         else:
@@ -364,7 +364,7 @@ class StatsPane(wx.Panel):
                             gauge.SetMinSize((80, 20))
                         else:
                             gauge = PG.PyGauge(parent, wx.ID_ANY, 100)
-                            gauge.SetMinSize((80, 16))
+                            gauge.SetMinSize((80, 23))
                             gauge.SetSkipDigitsFlag(True)
 
                         setattr(self, "gauge%s%s" % (panel.capitalize(),capitalizedType), gauge)
