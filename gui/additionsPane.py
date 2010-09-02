@@ -19,21 +19,38 @@
 
 import wx
 import gui.mainFrame
+from gui.boosterView import BoosterView
+from gui.droneView import DroneView
+from gui.implantView import ImplantView
+from gui.projectedView import ProjectedView
 
 class AdditionsPane(wx.CollapsiblePane):
     def collapseChanged(self, event):
         self.mainFrame.fittingPanel.Layout()
+        self.GetPane().Layout()
 
     def __init__(self, parent):
         wx.CollapsiblePane.__init__(self, parent)
         self.SetLabel("Additions")
         pane = self.GetPane()
 
-        size = wx.Size()
-        size.SetHeight(200)
-        pane.SetSize(size)
+        baseSizer = wx.BoxSizer(wx.HORIZONTAL)
+        pane.SetSizer(baseSizer)
 
         self.Bind(wx.EVT_COLLAPSIBLEPANE_CHANGED, self.collapseChanged)
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+
+        self.notebook = wx.Notebook(pane)
+        size = wx.Size()
+        size.SetHeight(200)
+        self.notebook.SetMinSize(size)
+        baseSizer.Add(self.notebook, 1, wx.EXPAND)
+
+        self.notebook.AddPage(DroneView(self.notebook), "Drones")
+        self.notebook.AddPage(ImplantView(self.notebook), "Implants")
+        self.notebook.AddPage(BoosterView(self.notebook), "Boosters")
+        self.notebook.AddPage(ProjectedView(self.notebook), "Projected")
+
         self.Expand()
+
