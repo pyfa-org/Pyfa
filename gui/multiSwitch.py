@@ -20,7 +20,7 @@
 import wx
 import bitmapLoader
 import gui.mainFrame
-from gui.fittingView import FittingView
+import gui.fittingView as fv
 import gui.marketBrowser as mb
 import gui.shipBrowser as sb
 import controller
@@ -33,12 +33,13 @@ class MultiSwitch(wx.Notebook):
         self.Bind(wx.EVT_NOTEBOOK_PAGE_CHANGING, self.checkAdd)
         self.Bind(wx.EVT_MIDDLE_DOWN, self.checkRemove)
 
-        mainFrame = gui.mainFrame.MainFrame.getInstance()
+        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
-        mainFrame.Bind(sb.EVT_FIT_RENAMED, self.processRename)
-        mainFrame.Bind(sb.EVT_FIT_SELECTED, self.changeFit)
-        mainFrame.Bind(sb.EVT_FIT_REMOVED, self.processRemove)
-        mainFrame.Bind(mb.ITEM_SELECTED, self.itemSelected)
+        self.mainFrame.Bind(wx.EVT_NOTEBOOK_PAGE_CHANGED, self.pageChanged)
+        self.mainFrame.Bind(sb.EVT_FIT_RENAMED, self.processRename)
+        self.mainFrame.Bind(sb.EVT_FIT_SELECTED, self.changeFit)
+        self.mainFrame.Bind(sb.EVT_FIT_REMOVED, self.processRemove)
+        self.mainFrame.Bind(mb.ITEM_SELECTED, self.itemSelected)
 
         self.imageList = wx.ImageList(16, 16)
         self.SetImageList(self.imageList)
@@ -50,7 +51,7 @@ class MultiSwitch(wx.Notebook):
             p = wx.Panel(self)
             p.type = "fit"
             sizer = wx.BoxSizer(wx.HORIZONTAL)
-            p.view = FittingView(p)
+            p.view = fv.FittingView(p)
 
             sizer.Add(p.view, 1, wx.EXPAND | wx.RESERVE_SPACE_EVEN_IF_HIDDEN)
 
@@ -103,6 +104,13 @@ class MultiSwitch(wx.Notebook):
                 bitmap = bitmapLoader.getBitmap("race_%s_small" % fit.ship.item.race, "icons")
                 if bitmap:
                     self.SetPageImage(tab, self.imageList.Add(bitmap))
+
+    def pageChanged(self, event):
+        selection = event.Selection
+        page = self.GetPage(selection)
+        if hasattr(page, "type") and page.type == "fit":
+            fitID = page.view.activeFitID
+            wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=fitID))
 
     def changeFit(self, event):
         selected = self.GetSelection()
