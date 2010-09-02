@@ -442,8 +442,7 @@ class StatsPane(wx.Panel):
                     box.Add(wx.StaticText(self.fullPanel, wx.ID_ANY, "%"), 0, wx.ALIGN_CENTER)
 
 
-            lbl = wx.StaticText(self.fullPanel, wx.ID_ANY, "0" if tankType != "damagePattern" else "")
-
+            lbl = wx.StaticText(self.fullPanel, wx.ID_ANY, "0" if tankType != "damagePattern" else "", wx.DefaultPosition, wx.Size(32,-1), wx.ALIGN_CENTER)
             setattr(self, "labelResistance%sEhp" % tankType.capitalize(), lbl)
             sizerResistances.Add(lbl, 0, wx.ALIGN_CENTER)
 
