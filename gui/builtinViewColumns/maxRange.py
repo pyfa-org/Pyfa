@@ -21,6 +21,7 @@ from gui import builtinViewColumns
 from gui.viewColumn import ViewColumn
 from gui import bitmapLoader
 import controller
+from util import shorten
 
 class MaxRange(ViewColumn):
     name = "Max range"
@@ -51,7 +52,7 @@ class MaxRange(ViewColumn):
     def getText(self, mod):
         maxRange = mod.maxRange
         if maxRange:
-            return "%.2f" % mod.maxRange
+            return "%sm" % shorten(mod.maxRange, 1)
         else:
             return ""
 
