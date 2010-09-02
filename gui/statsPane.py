@@ -40,6 +40,13 @@ class StatsPane(wx.Panel):
         self.miniPanel.Show(collapsed)
         self.mainFrame.statsSizer.Layout()
 
+    def getTextExtentW(self, text):
+        tfont=self.GetFont()
+        mdc=wx.MemoryDC()
+        mdc.SetFont(tfont)
+        width, height = mdc.GetTextExtent( text )
+        return width
+    
     def fitChanged(self, event):
         cFit = controller.Fit.getInstance()
         fit = cFit.getFit(event.fitID)
@@ -282,7 +289,7 @@ class StatsPane(wx.Panel):
             labelResources = wx.StaticText(parent, wx.ID_ANY, "Resources")
             labelResources.SetFont(boldFont)
             sizer = wx.FlexGridSizer(3, 2)
-            sizer.SetMinSize(wx.Size(75,0))
+            sizer.SetMinSize(wx.Size(27 + self.getTextExtentW("400/400"), 0))
             for i in xrange(3):
                 sizer.AddGrowableCol(i + 1)
 
@@ -441,8 +448,7 @@ class StatsPane(wx.Panel):
                 if self._showNormalGauges == True:
                     box.Add(wx.StaticText(self.fullPanel, wx.ID_ANY, "%"), 0, wx.ALIGN_CENTER)
 
-
-            lbl = wx.StaticText(self.fullPanel, wx.ID_ANY, "0" if tankType != "damagePattern" else "", wx.DefaultPosition, wx.Size(32,-1), wx.ALIGN_CENTER)
+            lbl = wx.StaticText(self.fullPanel, wx.ID_ANY, "0" if tankType != "damagePattern" else "", wx.DefaultPosition, wx.Size(self.getTextExtentW("WWWWk"), -1), wx.ALIGN_CENTER)
             setattr(self, "labelResistance%sEhp" % tankType.capitalize(), lbl)
             sizerResistances.Add(lbl, 0, wx.ALIGN_CENTER)
 
