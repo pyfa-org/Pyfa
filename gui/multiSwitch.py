@@ -35,7 +35,7 @@ class MultiSwitch(wx.Notebook):
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
-        self.mainFrame.Bind(wx.EVT_NOTEBOOK_PAGE_CHANGED, self.pageChanged)
+        self.Bind(wx.EVT_NOTEBOOK_PAGE_CHANGED, self.pageChanged)
         self.mainFrame.Bind(sb.EVT_FIT_RENAMED, self.processRename)
         self.mainFrame.Bind(sb.EVT_FIT_SELECTED, self.changeFit)
         self.mainFrame.Bind(sb.EVT_FIT_REMOVED, self.processRemove)
@@ -106,6 +106,7 @@ class MultiSwitch(wx.Notebook):
                     self.SetPageImage(tab, self.imageList.Add(bitmap))
 
     def pageChanged(self, event):
+        print "p"
         selection = event.Selection
         page = self.GetPage(selection)
         if hasattr(page, "type") and page.type == "fit":
