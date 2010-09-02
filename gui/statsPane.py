@@ -250,16 +250,16 @@ class StatsPane(wx.Panel):
         self.pickerSizer.Add(collapsible, 0, wx.EXPAND)
 
         self.fullSize = wx.Size()
-        self.fullSize.SetWidth(330)
+
         self.fullPanel = wx.Panel(self)
-        self.SetMinSize(self.fullSize)
+
         self.pickerSizer.Add(self.fullPanel, 1, wx.EXPAND)
 
         self.miniSize = wx.Size()
-        self.miniSize.SetWidth(120)
+
         self.miniPanel = wx.Panel(self)
         self.miniPanel.Hide()
-        self.miniPanel.SetMinSize(self.miniSize)
+
 
         minBase = wx.BoxSizer(wx.VERTICAL)
         self.miniPanel.SetSizer(minBase)
@@ -828,3 +828,14 @@ class StatsPane(wx.Panel):
             hbox.Add(lbl, 0, wx.ALIGN_LEFT)
 
             hbox.Add(wx.StaticText(self.fullPanel, wx.ID_ANY, " m ISK"), 0, wx.ALIGN_LEFT)
+
+        self.fullPanel.Fit()
+        self.fullSize=self.fullPanel.GetBestSize()
+        self.fullSize.SetWidth( self.fullSize.GetWidth() + 20 )
+        self.fullPanel.SetMinSize( self.fullSize)
+
+        self.miniPanel.Fit()
+        self.miniSize=self.miniPanel.GetBestSize()
+        self.miniSize.SetWidth( self.miniSize.GetWidth() + 20 )
+        self.miniPanel.SetMinSize( self.miniSize)
+        
