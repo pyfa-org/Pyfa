@@ -282,6 +282,7 @@ class StatsPane(wx.Panel):
             labelResources = wx.StaticText(parent, wx.ID_ANY, "Resources")
             labelResources.SetFont(boldFont)
             sizer = wx.FlexGridSizer(3, 2)
+            sizer.SetMinSize(wx.Size(75,0))
             for i in xrange(3):
                 sizer.AddGrowableCol(i + 1)
 
@@ -441,8 +442,7 @@ class StatsPane(wx.Panel):
                     box.Add(wx.StaticText(self.fullPanel, wx.ID_ANY, "%"), 0, wx.ALIGN_CENTER)
 
 
-            lbl = wx.StaticText(self.fullPanel, wx.ID_ANY, "0" if tankType != "damagePattern" else "")
-
+            lbl = wx.StaticText(self.fullPanel, wx.ID_ANY, "0" if tankType != "damagePattern" else "", wx.DefaultPosition, wx.Size(32,-1), wx.ALIGN_CENTER)
             setattr(self, "labelResistance%sEhp" % tankType.capitalize(), lbl)
             sizerResistances.Add(lbl, 0, wx.ALIGN_CENTER)
 
