@@ -72,6 +72,7 @@ class Fit(object):
 
         fit = eos.db.getFit(fitID)
         fit.fill()
+        eos.db.saveddata_session.flush()
         return fit
 
     def appendItem(self, fitID, itemID):
