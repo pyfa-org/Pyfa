@@ -282,6 +282,7 @@ class StatsPane(wx.Panel):
             labelResources = wx.StaticText(parent, wx.ID_ANY, "Resources")
             labelResources.SetFont(boldFont)
             sizer = wx.FlexGridSizer(3, 2)
+            sizer.SetMinSize(wx.Size(75,0))
             for i in xrange(3):
                 sizer.AddGrowableCol(i + 1)
 
