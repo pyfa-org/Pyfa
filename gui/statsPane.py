@@ -372,7 +372,7 @@ class StatsPane(wx.Panel):
                             gauge.SetMinSize((80, 20))
                         else:
                             gauge = PG.PyGauge(parent, wx.ID_ANY, 100)
-                            gauge.SetMinSize((80, 23))
+                            gauge.SetMinSize((self.getTextExtentW("W")*10, 23))
                             gauge.SetSkipDigitsFlag(True)
 
                         setattr(self, "gauge%s%s" % (panel.capitalize(),capitalizedType), gauge)
@@ -831,7 +831,7 @@ class StatsPane(wx.Panel):
 
         self.fullPanel.Fit()
         self.fullSize=self.fullPanel.GetBestSize()
-        self.fullSize.SetWidth( self.fullSize.GetWidth() + 40 )
+        self.fullSize.SetWidth( self.fullSize.GetWidth() + 10 )
         self.fullPanel.SetMinSize( self.fullSize)
 
         self.miniPanel.Fit()
