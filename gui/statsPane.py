@@ -455,10 +455,12 @@ class StatsPane(wx.Panel):
                 if self._showNormalGauges == True:
                     box.Add(wx.StaticText(self.fullPanel, wx.ID_ANY, "%"), 0, wx.ALIGN_CENTER)
 
-            lbl = wx.StaticText(self.fullPanel, wx.ID_ANY, "0" if tankType != "damagePattern" else "", style = wx.ALIGN_CENTRE|wx.ST_NO_AUTORESIZE)
+            box = wx.BoxSizer(wx.HORIZONTAL)
+            lbl = wx.StaticText(self.fullPanel, wx.ID_ANY, "0" if tankType != "damagePattern" else "", style = wx.ALIGN_CENTRE)
             lbl.SetMinSize(wx.Size(self.getTextExtentW("WWWWk"), -1))
+            box.Add(lbl, 1, wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL)
             setattr(self, "labelResistance%sEhp" % tankType.capitalize(), lbl)
-            sizerResistances.Add(lbl, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL)
+            sizerResistances.Add(box, 1, wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_CENTER_VERTICAL | wx.EXPAND)
 
 
         # Resistances
