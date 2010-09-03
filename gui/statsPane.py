@@ -209,7 +209,7 @@ class StatsPane(wx.Panel):
                 maxType, maxAmount = maxTank
                 currAmount = tank["%sRepair" % tankType]
                 if  currAmount > maxAmount:
-                     maxTank = ("%s" % tankType, currAmount)
+                    maxTank = ("%s" % tankType, currAmount)
 
         maxType, maxAmount = maxTank
 
