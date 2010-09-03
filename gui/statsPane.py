@@ -46,7 +46,7 @@ class StatsPane(wx.Panel):
         mdc.SetFont(tfont)
         width, height = mdc.GetTextExtent( text )
         return width
-    
+
     def fitChanged(self, event):
         cFit = controller.Fit.getInstance()
         fit = cFit.getFit(event.fitID)
@@ -95,7 +95,7 @@ class StatsPane(wx.Panel):
         for labelName, value, rounding in stats:
             label = getattr(self, labelName)
             value = value() if fit is not None else 0
-            value = value if value is not None else 0            
+            value = value if value is not None else 0
             label.SetLabel(shorten(value, rounding))
 
         # cap stuff
@@ -163,12 +163,16 @@ class StatsPane(wx.Panel):
                     lbl.SetValue(resonance)
 
         ehp = fit.ehp if fit is not None else None
+        total = 0
         for tankType in ("shield", "armor", "hull"):
             lbl = getattr(self, "labelResistance%sEhp" % tankType.capitalize())
             if ehp is not None:
-                lbl.SetLabel(shorten(ehp[tankType], 0))
+                total += ehp[tankType]
+                lbl.SetLabel(shorten(ehp[tankType], 1))
             else:
                 lbl.SetLabel("0")
+
+        self.labelEhp.SetLabel(shorten(total, 1))
 
         damagePattern = fit.damagePattern if fit is not None else None
         for damageType in ("em", "thermal", "kinetic", "explosive"):
@@ -364,7 +368,7 @@ class StatsPane(wx.Panel):
                         units = {"cpu":" tf", "pg":" GJ", "droneBandwidth":" mbit/s", "droneBay":u" m\u00B3"}
                         lbl = wx.StaticText(parent, wx.ID_ANY, "%s" % units[type])
                         absolute.Add(lbl, 0, wx.ALIGN_LEFT)
-                            
+
                         # Gauges modif. - Darriele
                         if self._showNormalGauges == True:
                             gauge = wx.Gauge(parent, wx.ID_ANY, 100)
@@ -837,4 +841,4 @@ class StatsPane(wx.Panel):
         self.miniSize=self.miniPanel.GetBestSize()
         self.miniSize.SetWidth( self.miniSize.GetWidth() + 30 )
         self.miniPanel.SetMinSize( self.miniSize)
-        
+
