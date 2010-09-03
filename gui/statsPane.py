@@ -168,11 +168,11 @@ class StatsPane(wx.Panel):
             lbl = getattr(self, "labelResistance%sEhp" % tankType.capitalize())
             if ehp is not None:
                 total += ehp[tankType]
-                lbl.SetLabel(shorten(ehp[tankType], 1))
+                lbl.SetLabel(shorten(ehp[tankType], 2))
             else:
                 lbl.SetLabel("0")
 
-        self.labelEhp.SetLabel(shorten(total, 1))
+        self.labelEhp.SetLabel(shorten(total, 2))
 
         damagePattern = fit.damagePattern if fit is not None else None
         for damageType in ("em", "thermal", "kinetic", "explosive"):
