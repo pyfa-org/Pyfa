@@ -581,25 +581,19 @@ class StatsPane(wx.Panel):
             if panel == "full":
                 baseBox.Add(bitmapLoader.getStaticBitmap("volley_big", parent, "icons"), 0, wx.ALIGN_CENTER)
 
-            box = wx.BoxSizer(wx.VERTICAL)
-            baseBox.Add(box, 1, wx.ALIGN_CENTER)
+            gridS = wx.GridSizer(2,2,0,0)
 
-            hbox = wx.BoxSizer(wx.HORIZONTAL)
-            box.Add(hbox, 1, wx.ALIGN_LEFT | wx.LEFT, 3)
+            baseBox.Add(gridS, 0, wx.ALIGN_CENTER)
 
             lbl = wx.StaticText(parent, wx.ID_ANY, "0.0")
             setattr(self, "label%sVolleyTotal" % panel.capitalize(), lbl)
-            hbox.Add(wx.StaticText(parent, wx.ID_ANY, "Volley: "), 0, wx.ALIGN_LEFT)
-            hbox.Add(lbl, 0, wx.EXPAND)
-
-            hbox = wx.BoxSizer(wx.HORIZONTAL)
-            box.Add(hbox, 1, wx.ALIGN_LEFT | wx.LEFT, 3)
-
+            gridS.Add(wx.StaticText(parent, wx.ID_ANY, " Volley: "), 0, wx.ALL | wx.ALIGN_RIGHT)
+            gridS.Add(lbl, 0, wx.ALIGN_LEFT)
 
             lbl = wx.StaticText(parent, wx.ID_ANY, "0.0")
             setattr(self, "label%sDpsTotal" % panel.capitalize(), lbl)
-            hbox.Add(wx.StaticText(parent, wx.ID_ANY, "DPS: "), 0, wx.ALIGN_LEFT)
-            hbox.Add(lbl, 0, wx.ALIGN_CENTER)
+            gridS.Add(wx.StaticText(parent, wx.ID_ANY, " DPS: "), 0, wx.ALL | wx.ALIGN_RIGHT)
+            gridS.Add(lbl, 0, wx.ALIGN_LEFT)
 
         self.minSizerBase.Add(wx.StaticLine(parent, wx.ID_ANY, style=wx.HORIZONTAL), 0, wx.EXPAND)
 
