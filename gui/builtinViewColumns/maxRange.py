@@ -49,12 +49,18 @@ class MaxRange(ViewColumn):
         if params["displayName"] or self.imageId == -1:
             self.columnText = info.displayName if info.displayName != "" else info.name
 
-    def getText(self, mod):
-        maxRange = mod.maxRange
-        if maxRange:
-            return "%sm" % shorten(mod.maxRange, 1)
+    def getText(self, stuff):
+        maxRange = stuff.maxRange if hasattr(stuff, "maxRange") else stuff.getModifiedItemAttr("maxRange")
+        falloff = stuff.getModifiedItemAttr("falloff")
+        if falloff is None:
+            falloff = ""
         else:
-            return ""
+            falloff = "+%sm" % shorten(falloff, 1)
+
+        if maxRange:
+            return "%sm" % shorten(maxRange, 1) + falloff
+        else:
+            return "" + falloff
 
     def getImageId(self, mod):
         return -1

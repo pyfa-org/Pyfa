@@ -45,8 +45,10 @@ class FittingView(wx.ListCtrl):
         self.SetImageList(self.imageList, wx.IMAGE_LIST_SMALL)
         self.activeColumns = []
         self.Bind(wx.EVT_LIST_COL_BEGIN_DRAG, self.resizeChecker)
+
         mainFrame = gui.mainFrame.MainFrame.getInstance()
         mainFrame.Bind(FIT_CHANGED, self.fitChanged)
+
         self.shipBrowser = mainFrame.shipBrowser
         self.shipView = mainFrame.shipBrowser.shipView
         self.searchView = mainFrame.shipBrowser.shipView
