@@ -127,6 +127,7 @@ class FittingView(wx.ListCtrl):
         wx.PostEvent(self.mainFrame, FitChanged(fitID=self.activeFitID))
 
     def fitChanged(self, event):
+        self.Hide()
         cFit = controller.Fit.getInstance()
         fit = cFit.getFit(event.fitID)
         selection = []
@@ -159,4 +160,5 @@ class FittingView(wx.ListCtrl):
         for sel in selection:
             self.Select(sel)
 
+        self.Show()
         event.Skip()

@@ -66,7 +66,7 @@ class StatsPane(wx.Panel):
                          ("label%sCapacitorRecharge", lambda: fit.capRecharge, 1),
                          ("label%sCapacitorDischarge", lambda: fit.capUsed, 1),
                          ("label%sSpeed", lambda: fit.ship.getModifiedItemAttr("maxVelocity"), 1),
-                         ("label%sAlignTime", lambda: 0, 1))
+                         ("label%sAlignTime", lambda: fit.alignTime, 1))
 
         stats = (("labelFullUsedDroneBay", lambda: fit.droneBayUsed, 0),
                      ("labelFullUsedDroneBandwidth", lambda: fit.droneBandwidthUsed, 0),
