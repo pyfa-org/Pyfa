@@ -178,24 +178,25 @@ class MarketBrowser(wx.Panel):
             self.normal.SetValue(True)
 
         root = self.marketView.GetSelection()
-        if self.marketView.GetChildrenCount(root) != 0:
-            return
+        if root.IsOk():
+            if self.marketView.GetChildrenCount(root) != 0:
+                return
 
-        cMarket = controller.Market.getInstance()
-        idNameMap = {}
-        for id, name, iconFile in cMarket.getVariations(self.marketView.GetPyData(root)):
-            iconId = self.addItemViewImage(iconFile)
-            index = self.itemView.InsertImageStringItem(sys.maxint, name, iconId)
-            idNameMap[id] = name
+            cMarket = controller.Market.getInstance()
+            idNameMap = {}
+            for id, name, iconFile in cMarket.getVariations(self.marketView.GetPyData(root)):
+                iconId = self.addItemViewImage(iconFile)
+                index = self.itemView.InsertImageStringItem(sys.maxint, name, iconId)
+                idNameMap[id] = name
 
-            self.itemView.SetItemData(index, id)
+                self.itemView.SetItemData(index, id)
 
-        self.itemView.SortItems(lambda id1, id2: cmp(idNameMap[id1], idNameMap[id2]))
-        self.itemView.SetColumnWidth(0, wx.LIST_AUTOSIZE)
-        width = self.itemView.GetColumnWidth(0)
-        maxWidth = self.itemView.GetSize()[0]
-        if maxWidth > width:
-            self.itemView.SetColumnWidth(0, maxWidth)
+            self.itemView.SortItems(lambda id1, id2: cmp(idNameMap[id1], idNameMap[id2]))
+            self.itemView.SetColumnWidth(0, wx.LIST_AUTOSIZE)
+            width = self.itemView.GetColumnWidth(0)
+            maxWidth = self.itemView.GetSize()[0]
+            if maxWidth > width:
+                self.itemView.SetColumnWidth(0, maxWidth)
 
     def toggleMetagroup(self, event):
         ctrl = wx.GetMouseState().ControlDown()
