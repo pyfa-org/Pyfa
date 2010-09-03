@@ -122,7 +122,7 @@ class FittingView(wx.ListCtrl):
         row, _ = self.HitTest(event.Position)
         if row != -1:
             cFit = controller.Fit.getInstance()
-            cFit.removeItem(self.activeFitID, self.GetItemData(row))
+            cFit.removeItem(self.activeFitID, self.mods[self.GetItemData(row)].position)
 
         wx.PostEvent(self.mainFrame, FitChanged(fitID=self.activeFitID))
 
@@ -141,11 +141,11 @@ class FittingView(wx.ListCtrl):
 
         slotOrder = [Slot.SUBSYSTEM, Slot.HIGH, Slot.MED, Slot.LOW, Slot.RIG]
 
-        mods = fit.modules[:]
-        mods.sort(key=lambda mod: (slotOrder.index(mod.slot), mod.position))
+        self.mods = fit.modules[:]
+        self.mods.sort(key=lambda mod: (slotOrder.index(mod.slot), mod.position))
 
         if fit is not None:
-            for modid, mod in enumerate(mods):
+            for modid, mod in enumerate(self.mods):
                 index = self.InsertStringItem(sys.maxint, "")
                 for i, col in enumerate(self.activeColumns):
                     self.SetStringItem(index, i, col.getText(mod), col.getImageId(mod))
