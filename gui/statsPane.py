@@ -169,10 +169,12 @@ class StatsPane(wx.Panel):
             if ehp is not None:
                 total += ehp[tankType]
                 lbl.SetLabel(shorten(ehp[tankType], 2))
+                lbl.SetToolTip(wx.ToolTip("%s: %d" % (tankType.capitalize(), ehp[tankType])))
             else:
                 lbl.SetLabel("0")
 
         self.labelEhp.SetLabel(shorten(total, 2))
+        self.labelEhp.SetToolTip(wx.ToolTip("Effective: %d" % total))
 
         damagePattern = fit.damagePattern if fit is not None else None
         for damageType in ("em", "thermal", "kinetic", "explosive"):
