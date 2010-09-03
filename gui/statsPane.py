@@ -68,10 +68,10 @@ class StatsPane(wx.Panel):
                          ("label%sSpeed", lambda: fit.ship.getModifiedItemAttr("maxVelocity"), 3, 0, 0),
                          ("label%sAlignTime", lambda: fit.alignTime, 3, 0, 0))
 
-        stats = (("labelFullUsedDroneBay", lambda: fit.droneBayUsed, 0, 0, 0),
-                 ("labelFullUsedDroneBandwidth", lambda: fit.droneBandwidthUsed, 0, 0, 0),
-                 ("labelFullTotalDroneBay", lambda: fit.ship.getModifiedItemAttr("droneCapacity"), 0, 0, 0),
-                 ("labelFullTotalDroneBandwidth", lambda: fit.ship.getModifiedItemAttr("droneBandwidth"), 0, 0, 0),
+        stats = (("labelFullUsedDroneBay", lambda: fit.droneBayUsed, 3, 0, 9),
+                 ("labelFullUsedDroneBandwidth", lambda: fit.droneBandwidthUsed, 3, 0, 9),
+                 ("labelFullTotalDroneBay", lambda: fit.ship.getModifiedItemAttr("droneCapacity"), 3, 0, 9),
+                 ("labelFullTotalDroneBandwidth", lambda: fit.ship.getModifiedItemAttr("droneBandwidth"), 3, 0, 9),
                  ("labelFullDpsWeapon", lambda: fit.weaponDPS, 3, 0, 9),
                  ("labelFullDpsDrone", lambda: fit.droneDPS, 3, 0, 9),
                  ("labelTankSustainedShieldPassive", lambda: fit.calculateShieldRecharge(), 3, 0, 9),

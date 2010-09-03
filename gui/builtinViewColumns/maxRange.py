@@ -55,10 +55,10 @@ class MaxRange(ViewColumn):
         if falloff is None:
             falloff = ""
         else:
-            falloff = "+%sm" % shorten(falloff, 1)
+            falloff = "+%sm" % shorten(falloff, 3, 0, 3)
 
         if maxRange:
-            return "%sm" % shorten(maxRange, 1) + falloff
+            return "%sm" % shorten(maxRange, 3, 0, 3) + falloff
         else:
             return "" + falloff
 
