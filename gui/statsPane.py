@@ -231,6 +231,7 @@ class StatsPane(wx.Panel):
         standardFont = wx.SystemSettings.GetFont(wx.SYS_DEFAULT_GUI_FONT)
         standardFont.SetPointSize(8)
         self.SetFont(standardFont)
+
         # Register events
         self.mainFrame.Bind(fv.FIT_CHANGED, self.fitChanged)
 
@@ -371,7 +372,7 @@ class StatsPane(wx.Panel):
                             gauge.SetMinSize((80, 20))
                         else:
                             gauge = PG.PyGauge(parent, wx.ID_ANY, 100)
-                            gauge.SetMinSize((self.getTextExtentW("W")*10, 23))
+                            gauge.SetMinSize((self.getTextExtentW("1300.0k/1250.0k GJ"), 23))
                             gauge.SetSkipDigitsFlag(True)
 
                         setattr(self, "gauge%s%s" % (panel.capitalize(),capitalizedType), gauge)
