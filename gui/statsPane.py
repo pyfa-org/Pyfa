@@ -89,15 +89,17 @@ class StatsPane(wx.Panel):
                 value = value if value is not None else 0
                 if isinstance(value, basestring):
                     label.SetLabel(value)
+                    label.SetToolTip(wx.ToolTip(value))
                 else:
                     label.SetLabel(shorten(value, rounding))
+                    label.SetToolTip(wx.ToolTip("%.1f" % value))
 
         for labelName, value, rounding in stats:
             label = getattr(self, labelName)
             value = value() if fit is not None else 0
             value = value if value is not None else 0
             label.SetLabel(shorten(value, rounding))
-
+            label.SetToolTip(wx.ToolTip("%.1f" % value))
         # cap stuff
         capState = fit.capState if fit is not None else 0
         capStable = fit.capStable if fit is not None else False
