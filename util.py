@@ -1,4 +1,4 @@
-def shorten(val, prec=4, lowest=-6, highest=9):
+def shorten(val, prec=4, lowest=0, highest=0):
 
     def process(val, prec):
         # Check if we have no integer and some fraction after bunch of zeroes,
