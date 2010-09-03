@@ -94,9 +94,12 @@ class StatsPane(wx.Panel):
 
         for labelName, value, rounding in stats:
             label = getattr(self, labelName)
-            value = value() if fit is not None else 0
-            value = value if value is not None else 0            
-            label.SetLabel(shorten(value, rounding))
+            label.SetLabel(shorten(value() if fit is not None else 0, rounding))
+
+#        resMax = (("cpuTotal", lambda: fit.ship.getModifiedItemAttr("cpuOutput")),
+#                    ("pgTotal", lambda: fit.ship.getModifiedItemAttr("powerOutput")),
+#                    ("droneBayTotal", lambda: fit.ship.getModifiedItemAttr("droneCapacity")),
+#                    ("droneBandwidthTotal", lambda: fit.ship.getModifiedItemAttr("droneBandwidth")))
 
         # cap stuff
         capState = fit.capState if fit is not None else 0
