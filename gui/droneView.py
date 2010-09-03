@@ -57,6 +57,10 @@ class DroneView(wx.ListCtrl):
 
         self.imageListBase = self.imageList.ImageCount
 
+    def OnEraseBackGround(self, event):
+        #Prevent flicker by not letting the parent's method get called.
+        pass
+
     def addColumn(self, i, col):
         self.activeColumns.append(col)
         info = wx.ListItem()

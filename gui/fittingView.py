@@ -77,6 +77,10 @@ class FittingView(wx.ListCtrl):
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
+    def OnEraseBackGround(self, event):
+        #Prevent flicker by not letting the parent's method get called.
+        pass
+
     def addColumn(self, i, col):
         self.activeColumns.append(col)
         info = wx.ListItem()
