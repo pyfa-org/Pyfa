@@ -228,7 +228,9 @@ class StatsPane(wx.Panel):
 
         self._showNormalGauges = False
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-
+        standardFont = wx.SystemSettings.GetFont(wx.SYS_DEFAULT_GUI_FONT)
+        standardFont.SetPointSize(8)
+        self.SetFont(standardFont)
         # Register events
         self.mainFrame.Bind(fv.FIT_CHANGED, self.fitChanged)
 
