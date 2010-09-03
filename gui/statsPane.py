@@ -375,7 +375,7 @@ class StatsPane(wx.Panel):
                             gauge.SetMinSize((80, 20))
                         else:
                             gauge = PG.PyGauge(parent, wx.ID_ANY, 100)
-                            gauge.SetMinSize((self.getTextExtentW("W")*10, 23))
+                            gauge.SetMinSize((self.getTextExtentW("999.9k/1.3M GJ"), 23))
                             gauge.SetSkipDigitsFlag(True)
 
                         setattr(self, "gauge%s%s" % (panel.capitalize(),capitalizedType), gauge)
