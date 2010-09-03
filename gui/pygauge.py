@@ -61,7 +61,9 @@ class PyGauge(wx.PyWindow):
         self._overdriveTimerStarted=False
         self.SetBarGradient((wx.Colour(153,153,153),wx.Colour(204,204,204)))
         self.SetBackgroundColour(wx.Colour(102,102,102))
-
+        self._tooltip = wx.ToolTip("")
+        self.SetToolTip(self._tooltip)
+        self._tooltip.SetTip("0/100")
 
         self.Bind(wx.EVT_PAINT, self.OnPaint)
         self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBackground)
@@ -264,7 +266,7 @@ class PyGauge(wx.PyWindow):
 
         if self._overdrive > self._range:
             value = self._overdrive
-
+        self._tooltip.SetTip("%.2f/%.2f" % (value, self._range))
         if self._skipDigits == True:
             dc.DrawLabel("%d%%" % (value*100/self._range), rect, wx.ALIGN_CENTER)
         else:

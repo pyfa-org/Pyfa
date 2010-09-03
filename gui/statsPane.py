@@ -89,15 +89,17 @@ class StatsPane(wx.Panel):
                 value = value if value is not None else 0
                 if isinstance(value, basestring):
                     label.SetLabel(value)
+                    label.SetToolTip(wx.ToolTip(value))
                 else:
                     label.SetLabel(shorten(value, rounding))
+                    label.SetToolTip(wx.ToolTip("%.1f" % value))
 
         for labelName, value, rounding in stats:
             label = getattr(self, labelName)
             value = value() if fit is not None else 0
             value = value if value is not None else 0
             label.SetLabel(shorten(value, rounding))
-
+            label.SetToolTip(wx.ToolTip("%.1f" % value))
         # cap stuff
         capState = fit.capState if fit is not None else 0
         capStable = fit.capStable if fit is not None else False
@@ -169,10 +171,12 @@ class StatsPane(wx.Panel):
             if ehp is not None:
                 total += ehp[tankType]
                 lbl.SetLabel(shorten(ehp[tankType], 2))
+                lbl.SetToolTip(wx.ToolTip("%s: %d" % (tankType.capitalize(), ehp[tankType])))
             else:
                 lbl.SetLabel("0")
 
         self.labelEhp.SetLabel(shorten(total, 2))
+        self.labelEhp.SetToolTip(wx.ToolTip("Effective: %d" % total))
 
         damagePattern = fit.damagePattern if fit is not None else None
         for damageType in ("em", "thermal", "kinetic", "explosive"):
@@ -313,7 +317,7 @@ class StatsPane(wx.Panel):
                 box = wx.BoxSizer(wx.HORIZONTAL)
 
                 sizer.Add(bitmap, 0, wx.ALIGN_CENTER)
-                sizer.Add(box, 0, wx.ALIGN_CENTER)
+                sizer.Add(box, 0, wx.ALIGN_CENTER_VERTICAL)
 
                 suffix = "Points" if type == "calibration" else "Hardpoints"
                 lbl = wx.StaticText(parent, wx.ID_ANY, "0")
