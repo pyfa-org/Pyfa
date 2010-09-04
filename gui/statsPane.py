@@ -41,10 +41,7 @@ class StatsPane(wx.Panel):
         self.mainFrame.statsSizer.Layout()
 
     def getTextExtentW(self, text):
-        tfont=self.GetFont()
-        mdc=wx.MemoryDC()
-        mdc.SetFont(tfont)
-        width, height = mdc.GetTextExtent( text )
+        width, height = self.GetTextExtent( text )
         return width
 
     def fitChanged(self, event):
