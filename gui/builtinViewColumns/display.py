@@ -19,10 +19,11 @@
 
 import wx
 import gui.mainFrame
+from gui.builtinViewColumns import *
 
 class Display(wx.ListCtrl):
     def __init__(self, parent):
-        from gui.builtinViewColumns import *
+
         wx.ListCtrl.__init__(self, parent, style=wx.LC_REPORT | wx.BORDER_NONE)
 
         self.imageList = wx.ImageList(16, 16)
