@@ -106,7 +106,6 @@ class MultiSwitch(wx.Notebook):
                     self.SetPageImage(tab, self.imageList.Add(bitmap))
 
     def pageChanged(self, event):
-        print "p"
         selection = event.Selection
         page = self.GetPage(selection)
         if hasattr(page, "type") and page.type == "fit":
@@ -123,6 +122,8 @@ class MultiSwitch(wx.Notebook):
             self.setTabTitle(selected, fitID)
             view.changeFit(fitID)
 
+        event.Skip()
+
     def processRename(self, event):
         fitID = event.fitID
         # Loop through every tab and check if they're our culprit, if so, change tab name
@@ -132,6 +133,8 @@ class MultiSwitch(wx.Notebook):
                 view = page.view
                 if view.activeFitID == fitID:
                     self.setTabTitle(i, fitID)
+
+        event.Skip()
 
     def processRemove(self, event):
         fitID = event.fitID
@@ -147,8 +150,12 @@ class MultiSwitch(wx.Notebook):
         if self.GetSelection() == self.GetPageCount() - 1:
             self.SetSelection(self.GetPageCount() - 2)
 
+        event.Skip()
+
     def itemSelected(self, event):
         selected = self.GetSelection()
         page = self.GetPage(selected)
         if page.type == "fit":
             page.view.appendItem(event.itemID)
+
+        event.Skip()

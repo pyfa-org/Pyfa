@@ -19,8 +19,10 @@
 
 import wx
 
+import controller
 import gui.mainFrame
 import gui.fittingView as fv
+import gui.marketBrowser as mb
 import gui.builtinViewColumns.display as d
 
 class DroneView(d.Display):
@@ -33,6 +35,27 @@ class DroneView(d.Display):
     def __init__(self, parent):
         d.Display.__init__(self, parent)
         self.mainFrame.Bind(fv.FIT_CHANGED, self.fitChanged)
+        self.mainFrame.Bind(mb.ITEM_SELECTED, self.addItem)
+        self.Bind(wx.EVT_LEFT_DCLICK, self.removeItem)
 
     def fitChanged(self, event):
-        pass
+        cFit = controller.Fit.getInstance()
+        fit = cFit.getFit(event.fitID)
+
+        self.populate(fit.drones)
+
+    def addItem(self, event):
+        cFit = controller.Fit.getInstance()
+        fitID = self.mainFrame.getActiveFit()
+        cFit.addDrone(fitID, event.itemID)
+        wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=fitID))
+        event.Skip()
+
+    def removeItem(self, event):
+        row, _ = self.HitTest(event.Position)
+        if row != -1:
+            fitID = self.mainFrame.getActiveFit()
+            cFit = controller.Fit.getInstance()
+            cFit.removeDrone(fitID, self.GetItemData(row))
+
+            wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=fitID))

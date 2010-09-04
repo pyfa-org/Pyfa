@@ -29,7 +29,7 @@ class DroneNameAmount(ViewColumn):
         self.columnText = "Name"
 
     def getText(self, drone):
-        return "%dX %s (%d Active)" % (drone.amount, stuff.item.name, drone.amountActive)
+        return "%dx %s (%d Active)" % (drone.amount, drone.item.name, drone.amountActive)
 
     def getImageId(self, mod):
         return -1

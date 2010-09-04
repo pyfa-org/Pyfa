@@ -78,7 +78,7 @@ class Fit(object):
     def appendModule(self, fitID, itemID):
         fit = eos.db.getFit(fitID)
         item = eos.db.getItem(itemID, eager=("attributes", "group.category"))
-        if item.group.category.name == "Module":
+        if item.category.name == "Module":
             m = eos.types.Module(item)
             if m.isValidState(State.ACTIVE):
                 m.state = State.ACTIVE
@@ -86,14 +86,34 @@ class Fit(object):
             if m.fits(fit):
                 fit.modules.append(m)
 
-        eos.db.saveddata_session.flush()
-        fit.clear()
-        fit.calculateModifiedAttributes()
+            eos.db.saveddata_session.flush()
+            fit.clear()
+            fit.calculateModifiedAttributes()
         return fit
 
     def removeModule(self, fitID, position):
         fit = eos.db.getFit(fitID)
         fit.modules.toDummy(position)
+        eos.db.saveddata_session.flush()
+        fit.clear()
+        fit.calculateModifiedAttributes()
+        return fit
+
+    def addDrone(self, fitID, itemID):
+        fit = eos.db.getFit(fitID)
+        item = eos.db.getItem(itemID, eager=("attributes", "group.category"))
+        if item.category.name == "Drone":
+            fit.drones.appendItem(item)
+
+            fit.clear()
+            fit.calculateModifiedAttributes()
+        return fit
+
+
+    def removeDrone(self, fitID, i):
+        fit = eos.db.getFit(fitID)
+        fit.drones.removeItem(fit.drones[i].item, 1)
+
         eos.db.saveddata_session.flush()
         fit.clear()
         fit.calculateModifiedAttributes()

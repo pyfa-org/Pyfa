@@ -20,6 +20,7 @@
 import wx
 import gui.mainFrame
 from gui.builtinViewColumns import *
+import sys
 
 class Display(wx.ListCtrl):
     def __init__(self, parent):
@@ -72,3 +73,30 @@ class Display(wx.ListCtrl):
     def clearItemImages(self):
         for i in xrange(self.imageList.ImageCount - 1, self.imageListBase, -1):
             self.imageList.Remove(i)
+
+    def populate(self, stuff):
+        selection = []
+        sel = self.GetFirstSelected()
+        while sel != -1:
+            selection.append(sel)
+            sel = self.GetNextSelected(sel)
+
+        self.DeleteAllItems()
+        self.clearItemImages()
+
+        if stuff is not None:
+            for id, st in enumerate(stuff):
+                index = self.InsertStringItem(sys.maxint, "")
+                for i, col in enumerate(self.activeColumns):
+                    self.SetStringItem(index, i, col.getText(st), col.getImageId(st))
+                    self.SetItemData(index, id)
+
+
+        for i, col in enumerate(self.activeColumns):
+            if not col.resized:
+                self.SetColumnWidth(i, wx.LIST_AUTOSIZE)
+                if self.GetColumnWidth(i) < 40:
+                    self.SetColumnWidth(i, 40)
+
+        for sel in selection:
+            self.Select(sel)

@@ -31,7 +31,7 @@ class DroneDps(ViewColumn):
         self.imageId = fittingView.imageList.Add(bitmap)
 
     def getText(self, stuff):
-       return stuff.item.name
+       return "%.1f" % stuff.dps
 
     def getImageId(self, mod):
         return -1

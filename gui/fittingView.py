@@ -66,42 +66,20 @@ class FittingView(d.Display):
             cFit = controller.Fit.getInstance()
             cFit.removeModule(self.activeFitID, self.mods[self.GetItemData(row)].position)
 
-        wx.PostEvent(self.mainFrame, FitChanged(fitID=self.activeFitID))
+            wx.PostEvent(self.mainFrame, FitChanged(fitID=self.activeFitID))
 
     def fitChanged(self, event):
-        self.Hide()
         cFit = controller.Fit.getInstance()
         fit = cFit.getFit(event.fitID)
-        selection = []
-        sel = self.GetFirstSelected()
-        while sel != -1:
-            selection.append(sel)
-            sel = self.GetNextSelected(sel)
-
-        self.DeleteAllItems()
-        self.clearItemImages()
 
         slotOrder = [Slot.SUBSYSTEM, Slot.HIGH, Slot.MED, Slot.LOW, Slot.RIG]
 
-        self.mods = fit.modules[:]
-        self.mods.sort(key=lambda mod: (slotOrder.index(mod.slot), mod.position))
-
         if fit is not None:
-            for modid, mod in enumerate(self.mods):
-                index = self.InsertStringItem(sys.maxint, "")
-                for i, col in enumerate(self.activeColumns):
-                    self.SetStringItem(index, i, col.getText(mod), col.getImageId(mod))
-                    self.SetItemData(index, modid)
+            self.mods = fit.modules[:]
+            self.mods.sort(key=lambda mod: (slotOrder.index(mod.slot), mod.position))
+        else:
+            self.mods = None
 
+        self.populate(self.mods)
 
-        for i, col in enumerate(self.activeColumns):
-            if not col.resized:
-                self.SetColumnWidth(i, wx.LIST_AUTOSIZE)
-                if self.GetColumnWidth(i) < 40:
-                    self.SetColumnWidth(i, 40)
-
-        for sel in selection:
-            self.Select(sel)
-
-        self.Show()
         event.Skip()
