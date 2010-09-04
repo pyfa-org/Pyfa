@@ -1,4 +1,5 @@
-__all__ = ["moduleState", "moduleNameOrSlot", "attributeDisplay", "maxRange", "name", "droneDps"]
+__all__ = ["moduleState", "moduleNameOrSlot", "attributeDisplay", "maxRange",
+           "name", "droneDps", "droneNameAmount"]
 
 columns = {}
 def registerColumn(column):

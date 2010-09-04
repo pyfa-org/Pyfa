@@ -17,22 +17,21 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 #===============================================================================
 
-import wx
+from gui import builtinViewColumns
+from gui.viewColumn import ViewColumn
+from gui import bitmapLoader
+from eos.types import Slot
 
-import gui.mainFrame
-import gui.fittingView as fv
-import gui.builtinViewColumns.display as d
+class DroneNameAmount(ViewColumn):
+    name = "Drone Name/Amount"
+    def __init__(self, fittingView, params):
+        ViewColumn.__init__(self, fittingView)
+        self.columnText = "Name"
 
-class DroneView(d.Display):
-    DEFAULT_COLS = ["Drone Name/Amount",
-                    "Drone DPS",
-                    "Max range",
-                    "attr:trackingSpeed",
-                    "attr:maxVelocity"]
+    def getText(self, drone):
+        return "%dX %s (%d Active)" % (drone.amount, stuff.item.name, drone.amountActive)
 
-    def __init__(self, parent):
-        d.Display.__init__(self, parent)
-        self.mainFrame.Bind(fv.FIT_CHANGED, self.fitChanged)
+    def getImageId(self, mod):
+        return -1
 
-    def fitChanged(self, event):
-        pass
+builtinViewColumns.registerColumn(DroneNameAmount)
