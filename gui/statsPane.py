@@ -50,40 +50,40 @@ class StatsPane(wx.Panel):
     def fitChanged(self, event):
         cFit = controller.Fit.getInstance()
         fit = cFit.getFit(event.fitID)
-        statsMiniFull = (("label%sUsedTurretHardpoints", lambda: fit.getHardpointsUsed(Hardpoint.TURRET), 0),
-                         ("label%sTotalTurretHardpoints", lambda: fit.ship.getModifiedItemAttr('turretSlotsLeft'), 0),
-                         ("label%sUsedLauncherHardpoints", lambda: fit.getHardpointsUsed(Hardpoint.MISSILE), 0),
-                         ("label%sTotalLauncherHardpoints", lambda: fit.ship.getModifiedItemAttr('launcherSlotsLeft'), 0),
-                         ("label%sUsedCalibrationPoints", lambda: fit.calibrationUsed, 0),
-                         ("label%sTotalCalibrationPoints", lambda: fit.ship.getModifiedItemAttr('upgradeCapacity'), 0),
-                         ("label%sUsedPg", lambda: fit.pgUsed, 1),
-                         ("label%sUsedCpu", lambda: fit.cpuUsed, 1),
-                         ("label%sTotalPg", lambda: fit.ship.getModifiedItemAttr("powerOutput"), 1),
-                         ("label%sTotalCpu", lambda: fit.ship.getModifiedItemAttr("cpuOutput"), 1),
-                         ("label%sVolleyTotal", lambda: fit.weaponVolley, 1),
-                         ("label%sDpsTotal", lambda: fit.totalDPS, 1),
-                         ("label%sCapacitorCapacity", lambda: fit.ship.getModifiedItemAttr("capacitorCapacity"), 1),
-                         ("label%sCapacitorRecharge", lambda: fit.capRecharge, 1),
-                         ("label%sCapacitorDischarge", lambda: fit.capUsed, 1),
-                         ("label%sSpeed", lambda: fit.ship.getModifiedItemAttr("maxVelocity"), 1),
-                         ("label%sAlignTime", lambda: fit.alignTime, 1))
+        statsMiniFull = (("label%sUsedTurretHardpoints", lambda: fit.getHardpointsUsed(Hardpoint.TURRET), 0, 0, 0),
+                         ("label%sTotalTurretHardpoints", lambda: fit.ship.getModifiedItemAttr('turretSlotsLeft'), 0, 0, 0),
+                         ("label%sUsedLauncherHardpoints", lambda: fit.getHardpointsUsed(Hardpoint.MISSILE), 0, 0, 0),
+                         ("label%sTotalLauncherHardpoints", lambda: fit.ship.getModifiedItemAttr('launcherSlotsLeft'), 0, 0, 0),
+                         ("label%sUsedCalibrationPoints", lambda: fit.calibrationUsed, 0, 0, 0),
+                         ("label%sTotalCalibrationPoints", lambda: fit.ship.getModifiedItemAttr('upgradeCapacity'), 0, 0, 0),
+                         ("label%sUsedPg", lambda: fit.pgUsed, 4, 0, 9),
+                         ("label%sUsedCpu", lambda: fit.cpuUsed, 4, 0, 9),
+                         ("label%sTotalPg", lambda: fit.ship.getModifiedItemAttr("powerOutput"), 4, 0, 9),
+                         ("label%sTotalCpu", lambda: fit.ship.getModifiedItemAttr("cpuOutput"), 4, 0, 9),
+                         ("label%sVolleyTotal", lambda: fit.weaponVolley, 3, 0, 9),
+                         ("label%sDpsTotal", lambda: fit.totalDPS, 3, 0, 9),
+                         ("label%sCapacitorCapacity", lambda: fit.ship.getModifiedItemAttr("capacitorCapacity"), 3, 0, 9),
+                         ("label%sCapacitorRecharge", lambda: fit.capRecharge, 3, 0, 0),
+                         ("label%sCapacitorDischarge", lambda: fit.capUsed, 3, 0, 0),
+                         ("label%sSpeed", lambda: fit.ship.getModifiedItemAttr("maxVelocity"), 3, 0, 0),
+                         ("label%sAlignTime", lambda: fit.alignTime, 3, 0, 0))
 
-        stats = (("labelFullUsedDroneBay", lambda: fit.droneBayUsed, 0),
-                     ("labelFullUsedDroneBandwidth", lambda: fit.droneBandwidthUsed, 0),
-                     ("labelFullTotalDroneBay", lambda: fit.ship.getModifiedItemAttr("droneCapacity"), 0),
-                     ("labelFullTotalDroneBandwidth", lambda: fit.ship.getModifiedItemAttr("droneBandwidth"), 0),
-                     ("labelFullDpsWeapon", lambda: fit.weaponDPS, 1),
-                     ("labelFullDpsDrone", lambda: fit.droneDPS, 1),
-                     ("labelTankSustainedShieldPassive", lambda: fit.calculateShieldRecharge(), 1),
-                     ("labelTargets", lambda: fit.maxTargets, 0),
-                     ("labelRange", lambda: fit.ship.getModifiedItemAttr('maxTargetRange') / 1000, 1),
-                     ("labelScanRes", lambda: fit.ship.getModifiedItemAttr('scanResolution'), 0),
-                     ("labelSensorStr", lambda: fit.scanStrength, 0),
-                     ("labelFullCargo", lambda: fit.extraAttributes["capacity"], 1),
-                     ("labelFullSigRadius", lambda: fit.ship.getModifiedItemAttr("signatureRadius"), 0))
+        stats = (("labelFullUsedDroneBay", lambda: fit.droneBayUsed, 3, 0, 9),
+                 ("labelFullUsedDroneBandwidth", lambda: fit.droneBandwidthUsed, 3, 0, 9),
+                 ("labelFullTotalDroneBay", lambda: fit.ship.getModifiedItemAttr("droneCapacity"), 3, 0, 9),
+                 ("labelFullTotalDroneBandwidth", lambda: fit.ship.getModifiedItemAttr("droneBandwidth"), 3, 0, 9),
+                 ("labelFullDpsWeapon", lambda: fit.weaponDPS, 3, 0, 9),
+                 ("labelFullDpsDrone", lambda: fit.droneDPS, 3, 0, 9),
+                 ("labelTankSustainedShieldPassive", lambda: fit.calculateShieldRecharge(), 3, 0, 9),
+                 ("labelTargets", lambda: fit.maxTargets, 3, 0, 0),
+                 ("labelRange", lambda: fit.ship.getModifiedItemAttr('maxTargetRange') / 1000, 3, 0, 0),
+                 ("labelScanRes", lambda: fit.ship.getModifiedItemAttr('scanResolution'), 3, 0, 0),
+                 ("labelSensorStr", lambda: fit.scanStrength, 3, 0, 0),
+                 ("labelFullCargo", lambda: fit.extraAttributes["capacity"], 3, 0, 9),
+                 ("labelFullSigRadius", lambda: fit.ship.getModifiedItemAttr("signatureRadius"), 3, 0, 9))
 
         for panel in ("Mini", "Full"):
-            for labelName, value, rounding in statsMiniFull:
+            for labelName, value, prec, lowest, highest in statsMiniFull:
                 label = getattr(self, labelName % panel)
                 value = value() if fit is not None else 0
                 value = value if value is not None else 0
@@ -91,14 +91,14 @@ class StatsPane(wx.Panel):
                     label.SetLabel(value)
                     label.SetToolTip(wx.ToolTip(value))
                 else:
-                    label.SetLabel(shorten(value, rounding))
+                    label.SetLabel(shorten(value, prec, lowest, highest))
                     label.SetToolTip(wx.ToolTip("%.1f" % value))
 
-        for labelName, value, rounding in stats:
+        for labelName, value, prec, lowest, highest in stats:
             label = getattr(self, labelName)
             value = value() if fit is not None else 0
             value = value if value is not None else 0
-            label.SetLabel(shorten(value, rounding))
+            label.SetLabel(shorten(value, prec, lowest, highest))
             label.SetToolTip(wx.ToolTip("%.1f" % value))
         # cap stuff
         capState = fit.capState if fit is not None else 0
@@ -170,12 +170,12 @@ class StatsPane(wx.Panel):
             lbl = getattr(self, "labelResistance%sEhp" % tankType.capitalize())
             if ehp is not None:
                 total += ehp[tankType]
-                lbl.SetLabel(shorten(ehp[tankType], 2))
+                lbl.SetLabel(shorten(ehp[tankType], 3, 0, 9))
                 lbl.SetToolTip(wx.ToolTip("%s: %d" % (tankType.capitalize(), ehp[tankType])))
             else:
                 lbl.SetLabel("0")
 
-        self.labelEhp.SetLabel(shorten(total, 2))
+        self.labelEhp.SetLabel(shorten(total, 3, 0, 9))
         self.labelEhp.SetToolTip(wx.ToolTip("Effective: %d" % total))
 
         damagePattern = fit.damagePattern if fit is not None else None
@@ -215,13 +215,13 @@ class StatsPane(wx.Panel):
 
         if maxType == "shieldPassive":
             self.labelMiniTankReinforced.SetLabel("")
-            self.labelMiniTankSustained.SetLabel(shorten(maxAmount, 1))
+            self.labelMiniTankSustained.SetLabel(shorten(maxAmount, 3, 0, 9))
             self.labelMiniTankUnitReinforced.SetLabel("")
             bitmap = bitmapLoader.getBitmap("%s_big" % maxType, "icons")
         else:
-            self.labelMiniTankReinforced.SetLabel(shorten(maxAmount, 1))
+            self.labelMiniTankReinforced.SetLabel(shorten(maxAmount, 3, 0, 9))
             sustainable = fit.sustainableTank["%sRepair" % maxType]
-            self.labelMiniTankSustained.SetLabel(shorten(sustainable, 1))
+            self.labelMiniTankSustained.SetLabel(shorten(sustainable, 3, 0, 9))
             self.labelMiniTankUnitReinforced.SetLabel(" HP/S")
             bitmap = bitmapLoader.getBitmap("%sActive_big" % maxType, "icons")
 
@@ -369,7 +369,7 @@ class StatsPane(wx.Panel):
                         setattr(self, "label%sTotal%s" % (panel.capitalize(), capitalizedType), lbl)
                         absolute.Add(lbl, 0, wx.ALIGN_LEFT)
 
-                        units = {"cpu":" tf", "pg":" GJ", "droneBandwidth":" mbit/s", "droneBay":u" m\u00B3"}
+                        units = {"cpu":" tf", "pg":" MW", "droneBandwidth":" mbit/s", "droneBay":u" m\u00B3"}
                         lbl = wx.StaticText(parent, wx.ID_ANY, "%s" % units[type])
                         absolute.Add(lbl, 0, wx.ALIGN_LEFT)
 
