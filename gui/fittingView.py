@@ -20,15 +20,14 @@
 import wx
 import wx.lib.newevent
 import controller
-import gui.builtinViewColumns
 import gui.mainFrame
-from gui.builtinViewColumns import *
+import gui.builtinViewColumns.display as d
 import sys
 from eos.types import Slot
 
 FitChanged, FIT_CHANGED = wx.lib.newevent.NewEvent()
 
-class FittingView(wx.ListCtrl):
+class FittingView(d.Display):
     DEFAULT_COLS = ["Module state",
                     "Module name/slot",
                     "attr:power",
@@ -38,68 +37,11 @@ class FittingView(wx.ListCtrl):
                     "Max range"]
 
     def __init__(self, parent):
-        listStyle = wx.LC_REPORT | wx.BORDER_NONE
-        wx.ListCtrl.__init__(self, parent, wx.ID_ANY, style=listStyle)
-
-        self.imageList = wx.ImageList(16, 16)
-        self.SetImageList(self.imageList, wx.IMAGE_LIST_SMALL)
-        self.activeColumns = []
-        self.Bind(wx.EVT_LIST_COL_BEGIN_DRAG, self.resizeChecker)
-
-        mainFrame = gui.mainFrame.MainFrame.getInstance()
-        mainFrame.Bind(FIT_CHANGED, self.fitChanged)
-
-        self.shipBrowser = mainFrame.shipBrowser
-        self.shipView = mainFrame.shipBrowser.shipView
-        self.searchView = mainFrame.shipBrowser.shipView
-        self.switch = mainFrame.fitMultiSwitch
-
-        i = 0
-        for colName in FittingView.DEFAULT_COLS:
-            if colName[0:5] == "attr:":
-                attrName = colName[5:]
-                params = {"showIcon": True,
-                          "displayName": False,
-                          "attribute": attrName}
-                col = gui.builtinViewColumns.getColumn("Attribute Display")(self, params)
-            else:
-                col = gui.builtinViewColumns.getColumn(colName)(self, None)
-
-            self.addColumn(i, col)
-            i += 1
-
-        self.imageListBase = self.imageList.ImageCount
-        self.activeFitID = None
-
+        d.Display.__init__(self, parent)
+        self.mainFrame.Bind(FIT_CHANGED, self.fitChanged)
         self.Bind(wx.EVT_LEFT_DCLICK, self.removeItem)
-
         self.Hide() #Don't show ourselves at start
-
-        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-
-    def OnEraseBackGround(self, event):
-        #Prevent flicker by not letting the parent's method get called.
-        pass
-
-    def addColumn(self, i, col):
-        self.activeColumns.append(col)
-        info = wx.ListItem()
-        info.m_mask = col.mask
-        info.m_image = col.imageId
-        info.m_text = col.columnText
-        self.InsertColumnInfo(i, info)
-        col.resized = False
-        self.SetColumnWidth(i, wx.LIST_AUTOSIZE_USEHEADER if col.size is wx.LIST_AUTOSIZE else col.size)
-
-    def resizeChecker(self, event):
-        if self.activeColumns[event.Column].resizable is False:
-            event.Veto()
-        else:
-            self.activeColumns[event.Column].resized = True
-
-    def clearItemImages(self):
-        for i in xrange(self.imageList.ImageCount - 1, self.imageListBase, -1):
-            self.imageList.Remove(i)
+        self.activeFitID = None
 
     #Gets called from the fitMultiSwitch when it decides its time
     def changeFit(self, fitID):

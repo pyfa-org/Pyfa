@@ -21,9 +21,9 @@ import wx
 
 import gui.mainFrame
 import gui.fittingView as fv
-import gui.builtinViewColumns
+import gui.builtinViewColumns.display as d
 
-class DroneView(wx.ListCtrl):
+class DroneView(d.Display):
     DEFAULT_COLS = ["Name",
                     "Drone DPS",
                     "Max range",
@@ -31,51 +31,8 @@ class DroneView(wx.ListCtrl):
                     "attr:maxVelocity"]
 
     def __init__(self, parent):
-        wx.ListCtrl.__init__(self, parent, style=wx.LC_REPORT | wx.BORDER_NONE)
-
-        self.imageList = wx.ImageList(16, 16)
-        self.SetImageList(self.imageList, wx.IMAGE_LIST_SMALL)
-        self.activeColumns = []
-        self.Bind(wx.EVT_LIST_COL_BEGIN_DRAG, self.resizeChecker)
-
-        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+        d.Display.__init__(self, parent)
         self.mainFrame.Bind(fv.FIT_CHANGED, self.fitChanged)
-
-        i = 0
-        for colName in self.DEFAULT_COLS:
-            if colName[0:5] == "attr:":
-                attrName = colName[5:]
-                params = {"showIcon": True,
-                          "displayName": False,
-                          "attribute": attrName}
-                col = gui.builtinViewColumns.getColumn("Attribute Display")(self, params)
-            else:
-                col = gui.builtinViewColumns.getColumn(colName)(self, None)
-
-            self.addColumn(i, col)
-            i += 1
-
-        self.imageListBase = self.imageList.ImageCount
-
-    def OnEraseBackGround(self, event):
-        #Prevent flicker by not letting the parent's method get called.
-        pass
-
-    def addColumn(self, i, col):
-        self.activeColumns.append(col)
-        info = wx.ListItem()
-        info.m_mask = col.mask
-        info.m_image = col.imageId
-        info.m_text = col.columnText
-        self.InsertColumnInfo(i, info)
-        col.resized = False
-        self.SetColumnWidth(i, wx.LIST_AUTOSIZE_USEHEADER if col.size is wx.LIST_AUTOSIZE else col.size)
-
-    def resizeChecker(self, event):
-        if self.activeColumns[event.Column].resizable is False:
-            event.Veto()
-        else:
-            self.activeColumns[event.Column].resized = True
 
     def fitChanged(self, event):
         pass
