@@ -57,14 +57,14 @@ class FittingView(d.Display):
         fitID = self.activeFitID
         if fitID != None:
             cFit = controller.Fit.getInstance()
-            cFit.appendItem(fitID, itemID)
+            cFit.appendModule(fitID, itemID)
             wx.PostEvent(self.mainFrame, FitChanged(fitID=fitID))
 
     def removeItem(self, event):
         row, _ = self.HitTest(event.Position)
         if row != -1:
             cFit = controller.Fit.getInstance()
-            cFit.removeItem(self.activeFitID, self.mods[self.GetItemData(row)].position)
+            cFit.removeModule(self.activeFitID, self.mods[self.GetItemData(row)].position)
 
         wx.PostEvent(self.mainFrame, FitChanged(fitID=self.activeFitID))
 

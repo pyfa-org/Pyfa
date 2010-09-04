@@ -75,7 +75,7 @@ class Fit(object):
         eos.db.saveddata_session.flush()
         return fit
 
-    def appendItem(self, fitID, itemID):
+    def appendModule(self, fitID, itemID):
         fit = eos.db.getFit(fitID)
         item = eos.db.getItem(itemID, eager=("attributes", "group.category"))
         if item.group.category.name == "Module":
@@ -91,7 +91,7 @@ class Fit(object):
         fit.calculateModifiedAttributes()
         return fit
 
-    def removeItem(self, fitID, position):
+    def removeModule(self, fitID, position):
         fit = eos.db.getFit(fitID)
         fit.modules.toDummy(position)
         eos.db.saveddata_session.flush()
