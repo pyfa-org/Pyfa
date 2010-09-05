@@ -57,12 +57,12 @@ class TogglePanel ( wx.Panel ):
 		self.Layout()
 		
 		# Connect Events
-		self.paneLabel.Bind( wx.EVT_LEFT_DCLICK, self.toggleContent )
+		self.paneLabel.Bind( wx.EVT_LEFT_UP, self.toggleContent )
 		self.headerBmp.Bind( wx.EVT_LEFT_UP, self.toggleContent )
-		self.paneLabel.Bind( wx.EVT_ENTER_WINDOW, self.enterWindow )
-		self.paneLabel.Bind( wx.EVT_LEAVE_WINDOW, self.leaveWindow )
-		self.headerBmp.Bind( wx.EVT_ENTER_WINDOW, self.enterWindow )
-		self.headerBmp.Bind( wx.EVT_LEAVE_WINDOW, self.leaveWindow )		
+#		self.paneLabel.Bind( wx.EVT_ENTER_WINDOW, self.enterWindow )
+#		self.paneLabel.Bind( wx.EVT_LEAVE_WINDOW, self.leaveWindow )
+#		self.headerBmp.Bind( wx.EVT_ENTER_WINDOW, self.enterWindow )
+#		self.headerBmp.Bind( wx.EVT_LEAVE_WINDOW, self.leaveWindow )		
 	
 	def __del__( self ):
 		pass
@@ -79,13 +79,13 @@ class TogglePanel ( wx.Panel ):
                 
         def GetNativeTreeItemBitmap(self, mode):
                 
-                bitmap = wx.EmptyBitmap(16, 16)
+                bitmap = wx.EmptyBitmap(18, 18)
                 dc = wx.MemoryDC()
                 dc.SelectObject(bitmap)
-                dc.SetBackground(wx.TheBrushList.FindOrCreateBrush(self.GetBackgroundColour(), wx.SOLID))
+                dc.SetBackground(wx.TheBrushList.FindOrCreateBrush(wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNSHADOW ), wx.SOLID))
                 dc.Clear()
 
-                wx.RendererNative.Get().DrawTreeItemButton(self, dc, wx.Rect(0, 0, 16, 16), wx.CONTROL_EXPANDED if mode == "expanded" else 0)
+                wx.RendererNative.Get().DrawTreeItemButton(self, dc, wx.Rect(0, 0, 18, 18), wx.CONTROL_EXPANDED if mode == "expanded" else 0)
 
                 dc.Destroy()
                 
