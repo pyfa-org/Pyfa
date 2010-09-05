@@ -54,7 +54,7 @@ class AttributeDisplay(ViewColumn):
     def getText(self, mod):
         attr = mod.getModifiedItemAttr(self.info.name)
         if attr:
-            return shorten(attr, 3, 0, 0)
+            return (shorten(attr, 3, 0, 3))
         else:
             return ""
 

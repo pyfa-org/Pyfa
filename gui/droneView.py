@@ -21,16 +21,21 @@ import wx
 
 import controller
 import gui.mainFrame
+from gui import bitmapLoader
 import gui.fittingView as fv
 import gui.marketBrowser as mb
 import gui.builtinViewColumns.display as d
+from gui.builtinViewColumns import registerColumn
+from gui.viewColumn import ViewColumn
 
 class DroneView(d.Display):
-    DEFAULT_COLS = ["Drone Name/Amount",
+    DEFAULT_COLS = ["Activate Drone",
+                    "Deactivate Drone",
+                    "Drone Name/Amount",
                     "Drone DPS",
                     "Max range",
                     "attr:trackingSpeed",
-                    "attr:maxVelocity"]
+                    "attr:maxVelocity",]
 
     def __init__(self, parent):
         d.Display.__init__(self, parent)
@@ -42,7 +47,7 @@ class DroneView(d.Display):
         cFit = controller.Fit.getInstance()
         fit = cFit.getFit(event.fitID)
 
-        self.populate(fit.drones)
+        self.populate(fit.drones if fit is not None else None)
 
     def addItem(self, event):
         cFit = controller.Fit.getInstance()
@@ -59,3 +64,36 @@ class DroneView(d.Display):
             cFit.removeDrone(fitID, self.GetItemData(row))
 
             wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=fitID))
+
+class DroneMore(ViewColumn):
+    name = "Activate Drone"
+    def __init__(self, fittingView, params):
+        ViewColumn.__init__(self, fittingView)
+        bitmap = bitmapLoader.getBitmap("more_small", "icons")
+        self.moreId = fittingView.imageList.Add(bitmap)
+        self.size = 16
+        self.columnText = ""
+
+    def getText(self, drone):
+        return ""
+
+    def getImageId(self, mod):
+        return self.moreId
+
+class DroneLess(ViewColumn):
+    name = "Deactivate Drone"
+    def __init__(self, fittingView, params):
+        ViewColumn.__init__(self, fittingView)
+        bitmap = bitmapLoader.getBitmap("less_small", "icons")
+        self.lessId = fittingView.imageList.Add(bitmap)
+        self.size = 16
+        self.columnText = ""
+
+    def getText(self, drone):
+        return ""
+
+    def getImageId(self, mod):
+        return self.lessId
+
+registerColumn(DroneMore)
+registerColumn(DroneLess)

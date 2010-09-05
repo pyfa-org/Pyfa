@@ -94,8 +94,8 @@ class Display(wx.ListCtrl):
 
         for i, col in enumerate(self.activeColumns):
             if not col.resized:
-                self.SetColumnWidth(i, wx.LIST_AUTOSIZE)
-                if self.GetColumnWidth(i) < 40:
+                self.SetColumnWidth(i, col.size)
+                if self.GetColumnWidth(i) < 40 and col.size == wx.LIST_AUTOSIZE:
                     self.SetColumnWidth(i, 40)
 
         for sel in selection:
