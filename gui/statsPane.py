@@ -24,7 +24,7 @@ import gui.mainFrame
 import controller
 from eos.types import Slot, Hardpoint
 from gui import pygauge as PG
-from util import shorten
+from util import formatAmount
 
 class StatsPane(wx.Panel):
     def collapseChanged(self, event):
@@ -88,14 +88,14 @@ class StatsPane(wx.Panel):
                     label.SetLabel(value)
                     label.SetToolTip(wx.ToolTip(value))
                 else:
-                    label.SetLabel(shorten(value, prec, lowest, highest))
+                    label.SetLabel(formatAmount(value, prec, lowest, highest))
                     label.SetToolTip(wx.ToolTip("%.1f" % value))
 
         for labelName, value, prec, lowest, highest in stats:
             label = getattr(self, labelName)
             value = value() if fit is not None else 0
             value = value if value is not None else 0
-            label.SetLabel(shorten(value, prec, lowest, highest))
+            label.SetLabel(formatAmount(value, prec, lowest, highest))
             label.SetToolTip(wx.ToolTip("%.1f" % value))
         # cap stuff
         capState = fit.capState if fit is not None else 0
@@ -167,12 +167,12 @@ class StatsPane(wx.Panel):
             lbl = getattr(self, "labelResistance%sEhp" % tankType.capitalize())
             if ehp is not None:
                 total += ehp[tankType]
-                lbl.SetLabel(shorten(ehp[tankType], 3, 0, 9))
+                lbl.SetLabel(formatAmount(ehp[tankType], 3, 0, 9))
                 lbl.SetToolTip(wx.ToolTip("%s: %d" % (tankType.capitalize(), ehp[tankType])))
             else:
                 lbl.SetLabel("0")
 
-        self.labelEhp.SetLabel(shorten(total, 3, 0, 9))
+        self.labelEhp.SetLabel(formatAmount(total, 3, 0, 9))
         self.labelEhp.SetToolTip(wx.ToolTip("Effective: %d" % total))
 
         damagePattern = fit.damagePattern if fit is not None else None
@@ -212,13 +212,13 @@ class StatsPane(wx.Panel):
 
         if maxType == "shieldPassive":
             self.labelMiniTankReinforced.SetLabel("")
-            self.labelMiniTankSustained.SetLabel(shorten(maxAmount, 3, 0, 9))
+            self.labelMiniTankSustained.SetLabel(formatAmount(maxAmount, 3, 0, 9))
             self.labelMiniTankUnitReinforced.SetLabel("")
             bitmap = bitmapLoader.getBitmap("%s_big" % maxType, "icons")
         else:
-            self.labelMiniTankReinforced.SetLabel(shorten(maxAmount, 3, 0, 9))
+            self.labelMiniTankReinforced.SetLabel(formatAmount(maxAmount, 3, 0, 9))
             sustainable = fit.sustainableTank["%sRepair" % maxType]
-            self.labelMiniTankSustained.SetLabel(shorten(sustainable, 3, 0, 9))
+            self.labelMiniTankSustained.SetLabel(formatAmount(sustainable, 3, 0, 9))
             self.labelMiniTankUnitReinforced.SetLabel(" HP/S")
             bitmap = bitmapLoader.getBitmap("%sActive_big" % maxType, "icons")
 
@@ -424,7 +424,7 @@ class StatsPane(wx.Panel):
         sizerResistances.Add(wx.StaticText(self.fullPanel, wx.ID_ANY, "EHP"), wx.GBPosition( row, col ), wx.GBSpan( 1, 1 ), wx.ALIGN_CENTER)
         col=0
         row+=1
-        
+
         gaugeColours=( ((38,133,198),(52,86,98)), ((198,38,38),(83,65,67)), ((163,163,163),(74,90,93)), ((198,133,38),(81,83,67)) )
 
         for tankType in ("shield", "armor", "hull", "separator", "damagePattern"):
@@ -436,7 +436,7 @@ class StatsPane(wx.Panel):
                 sizerResistances.Add(wx.StaticLine(self.fullPanel, wx.ID_ANY), wx.GBPosition( row, col ), wx.GBSpan( 1, 6 ), wx.EXPAND|wx.ALIGN_CENTER)
                 row+=1
                 col=0
-              
+
                 continue
             currGColour=0
 
@@ -479,7 +479,7 @@ class StatsPane(wx.Panel):
             row+=1
             col=0
 
-   
+
         # Resistances
         sizerHeaderRechargeRates = wx.BoxSizer(wx.HORIZONTAL)
         self.sizerBase.Add(sizerHeaderRechargeRates, 0, wx.EXPAND | wx.LEFT, 3)

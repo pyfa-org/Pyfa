@@ -21,7 +21,7 @@ from gui import builtinViewColumns
 from gui.viewColumn import ViewColumn
 from gui import bitmapLoader
 import controller
-from util import shorten
+from util import formatAmount
 
 class AttributeDisplay(ViewColumn):
     name = "Attribute Display"
@@ -54,7 +54,7 @@ class AttributeDisplay(ViewColumn):
     def getText(self, mod):
         attr = mod.getModifiedItemAttr(self.info.name)
         if attr:
-            return (shorten(attr, 3, 0, 3))
+            return (formatAmount(attr, 3, 0, 3))
         else:
             return ""
 
