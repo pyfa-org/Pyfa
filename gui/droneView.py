@@ -20,17 +20,14 @@
 import wx
 
 import controller
-import gui.mainFrame
-from gui import bitmapLoader
 import gui.fittingView as fv
 import gui.marketBrowser as mb
 import gui.builtinViewColumns.display as d
-from gui.builtinViewColumns import registerColumn
-from gui.viewColumn import ViewColumn
+from gui.builtinViewColumns.checkbox import Checkbox
+
 
 class DroneView(d.Display):
-    DEFAULT_COLS = ["Activate Drone",
-                    "Deactivate Drone",
+    DEFAULT_COLS = ["Checkbox",
                     "Drone Name/Amount",
                     "Drone DPS",
                     "Max range",
@@ -61,7 +58,7 @@ class DroneView(d.Display):
         row, _ = self.HitTest(event.Position)
         if row != -1:
             col = self.getColumn(event.Position)
-            if col not in (self.getColIndex(DroneMore), self.getColIndex(DroneLess)):
+            if col != self.getColIndex(Checkbox):
                 fitID = self.mainFrame.getActiveFit()
                 cFit = controller.Fit.getInstance()
                 cFit.removeDrone(fitID, self.GetItemData(row))
@@ -71,44 +68,5 @@ class DroneView(d.Display):
         row, _ = self.HitTest(event.Position)
         if row != -1:
             col = self.getColumn(event.Position)
-            cFit = controller.Fit.getInstance()
-            fitID = self.mainFrame.getActiveFit()
-            if col == self.getColIndex(DroneMore):
-                cFit.activateDrone(fitID, row)
-                wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=fitID))
-            elif col == self.getColIndex(DroneLess):
-                cFit.deactivateDrone(fitID, row)
-                wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=fitID))
-
-class DroneMore(ViewColumn):
-    name = "Activate Drone"
-    def __init__(self, fittingView, params):
-        ViewColumn.__init__(self, fittingView)
-        bitmap = bitmapLoader.getBitmap("more_small", "icons")
-        self.moreId = fittingView.imageList.Add(bitmap)
-        self.size = 16
-        self.columnText = ""
-
-    def getText(self, drone):
-        return ""
-
-    def getImageId(self, mod):
-        return self.moreId
-
-class DroneLess(ViewColumn):
-    name = "Deactivate Drone"
-    def __init__(self, fittingView, params):
-        ViewColumn.__init__(self, fittingView)
-        bitmap = bitmapLoader.getBitmap("less_small", "icons")
-        self.lessId = fittingView.imageList.Add(bitmap)
-        self.size = 16
-        self.columnText = ""
-
-    def getText(self, drone):
-        return ""
-
-    def getImageId(self, mod):
-        return self.lessId
-
-registerColumn(DroneMore)
-registerColumn(DroneLess)
+            if col == self.getColIndex(Checkbox):
+                pass
