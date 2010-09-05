@@ -1,14 +1,14 @@
-def shorten(val, prec=4, lowest=0, highest=0, unit = True):
+def shorten(val, prec=4, lowest=0, highest=0):
     if abs(val) >= 1000 and highest >= 3:
         suffixmap = {3 : "k", 6 : "M", 9 : "G"}
         for key in sorted(suffixmap, reverse = True):
             if val >= 10**key and key <= highest:
-                return u"{0}{1}".format(process(val/float(10**key), prec), suffixmap[key] if unit else "")
+                return u"{0}{1}".format(process(val/float(10**key), prec), suffixmap[key])
     elif abs(val) < 1 and val != 0 and lowest <= -3:
         suffixmap = {-6 : u'\u03bc', -3 : "m"}
         for key in sorted(suffixmap, reverse = False):
             if val < 10**(key+3) and key >= lowest:
-                return u"{0}{1}".format(process(val/float(10**key), prec), suffixmap[key] if unit else "")
+                return u"{0}{1}".format(process(val/float(10**key), prec), suffixmap[key])
     else:
         return u"{0}".format(process(val, prec))
 
