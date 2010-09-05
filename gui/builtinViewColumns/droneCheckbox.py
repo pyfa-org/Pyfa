@@ -27,7 +27,7 @@ class DroneCheckbox(ViewColumn):
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
         self.resizable = False
-        self.size = 16
+        self.size = 24
         for name, state in (("checked", wx.CONTROL_CHECKED), ("unchecked", 0)):
             bitmap = wx.EmptyBitmap(16, 16)
             dc = wx.MemoryDC()
