@@ -33,8 +33,8 @@ class TogglePanel ( wx.Panel ):
 #		self.bmpExpanded = self.GetNativeTreeItemBitmap("expanded")
 #		self.bmpCollapsed =  self.GetNativeTreeItemBitmap("")
 
-        self.bmpExpanded = bitmapLoader.getBitmap("up-arrow2","icons")
-        self.bmpCollapsed = bitmapLoader.getBitmap("down-arrow2","icons")
+        self.bmpExpanded = bitmapLoader.getBitmap("down-arrow2","icons")
+        self.bmpCollapsed = bitmapLoader.getBitmap("up-arrow2","icons")
 
         sysTextColour = wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOWTEXT )
 
