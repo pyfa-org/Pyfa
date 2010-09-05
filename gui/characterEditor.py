@@ -28,7 +28,6 @@ class CharacterEditor (wx.Dialog):
         self.SetSizeHintsSz(wx.Size(640, 350), wx.DefaultSize)
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
-
         navSizer = wx.BoxSizer(wx.HORIZONTAL)
 
         self.skillTreeChoice = wx.Choice(self, wx.ID_ANY)
@@ -120,39 +119,6 @@ class NewCharacter (wx.Dialog):
 
         self.Centre(wx.BOTH)
 
-class RenDupCharacter (wx.Dialog):
-    def __init__(self, parent):
-        wx.Dialog.__init__ (self, parent, id=wx.ID_ANY, title=u"Rename / Duplicate character", pos=wx.DefaultPosition, size=wx.Size(395, 101), style=wx.DEFAULT_DIALOG_STYLE)
-
-        self.SetSizeHintsSz(wx.DefaultSize, wx.DefaultSize)
-
-        mainSizer = wx.BoxSizer(wx.HORIZONTAL)
-
-        sbSizerEditBox = wx.StaticBoxSizer(wx.StaticBox(self, wx.ID_ANY, u"Enter character name"), wx.VERTICAL)
-
-        self.inputName = wx.TextCtrl(self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0)
-        sbSizerEditBox.Add(self.inputName, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL | wx.EXPAND, 5)
-
-        self.chkboxDuplicate = wx.CheckBox(self, wx.ID_ANY, u"Duplicate character", wx.DefaultPosition, wx.DefaultSize, 0)
-        sbSizerEditBox.Add(self.chkboxDuplicate, 0, wx.ALL, 5)
-
-        mainSizer.Add(sbSizerEditBox, 1, wx.EXPAND | wx.ALL, 5)
-
-        bSizerButtons = wx.BoxSizer(wx.VERTICAL)
-
-        self.btnOk = wx.Button(self, wx.ID_ANY, u"OK", wx.DefaultPosition, wx.DefaultSize, 0)
-        bSizerButtons.Add(self.btnOk, 0, wx.ALL, 5)
-
-        self.btnCancel = wx.Button(self, wx.ID_ANY, u"Cancel", wx.DefaultPosition, wx.DefaultSize, 0)
-        bSizerButtons.Add(self.btnCancel, 0, wx.ALL, 5)
-
-        mainSizer.Add(bSizerButtons, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
-
-        self.SetSizer(mainSizer)
-        self.Layout()
-
-        self.Centre(wx.BOTH)
-
 class SkillTreeView (wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__ (self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.Size(500, 300), style=wx.TAB_TRAVERSAL)
@@ -178,7 +144,6 @@ class ImplantsTreeView (wx.Panel):
         self.Layout()
 
 class APIView (wx.Panel):
-
     def __init__(self, parent):
         wx.Panel.__init__ (self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.Size(500, 300), style=wx.TAB_TRAVERSAL)
 
