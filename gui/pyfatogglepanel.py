@@ -25,7 +25,7 @@ class TogglePanel ( wx.Panel ):
 		self.SetSizer( self.mainSizer )
 
 		self.headerPanel = wx.Panel(self)
-                self.headerPanel.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_GRAYTEXT) )
+#                self.headerPanel.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_GRAYTEXT) )
 
                 self.mainSizer.Add(self.headerPanel,0,wx.EXPAND,5)
 
@@ -111,7 +111,7 @@ class TogglePanel ( wx.Panel ):
                 bitmap = wx.EmptyBitmap(24, 24)
                 dc = wx.MemoryDC()
                 dc.SelectObject(bitmap)
-                dc.SetBackground(wx.TheBrushList.FindOrCreateBrush(self.headerPanel.GetBackgroundColour(), wx.SOLID))
+                dc.SetBackground(wx.TheBrushList.FindOrCreateBrush(self.parent.GetBackgroundColour(), wx.SOLID))
                 dc.Clear()
 
                 wx.RendererNative.Get().DrawTreeItemButton(self, dc, wx.Rect(0, 0, 24, 24), wx.CONTROL_EXPANDED if mode == "expanded" else 0)
@@ -141,7 +141,7 @@ class TogglePanel ( wx.Panel ):
 	
 	def leaveWindow( self, event ):
 
-                self.headerPanel.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_GRAYTEXT ) )
+                self.headerPanel.SetBackgroundColour( self.parent.GetBackgroundColour() )
                 self.headerPanel.Refresh()                
 
                 pass
