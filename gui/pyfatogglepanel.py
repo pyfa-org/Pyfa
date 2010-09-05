@@ -73,7 +73,7 @@ class TogglePanel ( wx.Panel ):
 		self.contentPanel = wx.Panel(self)
 		self.contentPanel.SetSizer(self.contentSizer)
 		
-#                self.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_3DLIGHT ) )
+                self.SetBackgroundColour( self.parent.GetBackgroundColour() )
                 
 		self.mainSizer.Add( self.contentPanel, 1, wx.EXPAND, 5)
 
