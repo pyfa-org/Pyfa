@@ -20,12 +20,12 @@ class TogglePanel ( wx.Panel ):
 
 		self._toggle = 1
                 self.parent = parent
-                
+                self.bkColour = parent.GetBackgroundColour()
                 self.mainSizer = wx.BoxSizer( wx.VERTICAL )
 		self.SetSizer( self.mainSizer )
 
 		self.headerPanel = wx.Panel(self)
-#                self.headerPanel.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_GRAYTEXT) )
+                self.headerPanel.SetBackgroundColour( self.bkColour)
 
                 self.mainSizer.Add(self.headerPanel,0,wx.EXPAND,5)
 
@@ -73,7 +73,7 @@ class TogglePanel ( wx.Panel ):
 		self.contentPanel = wx.Panel(self)
 		self.contentPanel.SetSizer(self.contentSizer)
 		
-                self.SetBackgroundColour( self.parent.GetBackgroundColour() )
+                self.SetBackgroundColour( self.bkColour )
                 
 		self.mainSizer.Add( self.contentPanel, 1, wx.EXPAND, 5)
 
@@ -141,7 +141,7 @@ class TogglePanel ( wx.Panel ):
 	
 	def leaveWindow( self, event ):
 
-                self.headerPanel.SetBackgroundColour( self.parent.GetBackgroundColour() )
+                self.headerPanel.SetBackgroundColour( self.bkColour )
                 self.headerPanel.Refresh()                
 
                 pass
