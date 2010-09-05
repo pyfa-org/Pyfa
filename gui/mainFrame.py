@@ -27,6 +27,7 @@ from gui.multiSwitch import MultiSwitch
 from gui.statsPane import StatsPane
 from gui.shipBrowser import ShipBrowser
 from wx.lib.wordwrap import wordwrap
+from gui.characterEditor import CharacterEditor
 import aboutData
 from wx._core import PyDeadObjectError
 
@@ -116,6 +117,11 @@ class MainFrame(wx.Frame):
         info.WebSite = ("http://pyfa.sourceforge.net/", "pyfa home page")
         wx.AboutBox(info)
 
+    def showCharacterEditor(self, event):
+        dlg=CharacterEditor(None)
+        dlg.ShowModal()
+        dlg.Destroy()
+
     def registerMenu(self):
         # Quit
         self.Bind(wx.EVT_MENU, self.ExitApp, id=wx.ID_EXIT)
@@ -123,10 +129,8 @@ class MainFrame(wx.Frame):
         self.Bind(wx.EVT_MENU, self.openWXInspectTool, id=911)
         # About
         self.Bind(wx.EVT_MENU, self.ShowAboutBox, id=wx.ID_ABOUT)
-
-        #Ship browser
-        self.Bind(wx.EVT_MENU, self.toggleShipBrowser, id=10)
-        self.Bind(wx.EVT_MENU, self.toggleShipBrowser, id=11)
+        # Char editor
+        self.Bind(wx.EVT_MENU, self.showCharacterEditor, id=self.GetMenuBar().characterEditorId)
 
     def toggleShipBrowser(self, event):
         self.GetToolBar().toggleShipBrowser(event)
