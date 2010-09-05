@@ -106,37 +106,40 @@ class Fit(object):
         fit = eos.db.getFit(fitID)
         item = eos.db.getItem(itemID, eager=("attributes", "group.category"))
         if item.category.name == "Drone":
-            fit.drones.appendItem(item)
+            d = fit.drones.find(item)
+            if d is None or d.amountActive == d.amount or d.amount >= 5:
+                d = eos.types.Drone(item)
+                fit.drones.append(d)
 
+            d.amount += 1
+            eos.db.saveddata_session.flush()
             fit.clear()
             fit.calculateModifiedAttributes()
+
         return fit
 
     def removeDrone(self, fitID, i):
         fit = eos.db.getFit(fitID)
-        fit.drones.removeItem(fit.drones[i].item, 1)
-
-        eos.db.saveddata_session.flush()
-        fit.clear()
-        fit.calculateModifiedAttributes()
-        return fit
-
-    def activateDrone(self, fitID, i):
-        fit = eos.db.getFit(fitID)
         d = fit.drones[i]
-        if d.amountActive < d.amount:
-            d.amountActive += 1
-
-        eos.db.saveddata_session.flush()
-        fit.clear()
-        fit.calculateModifiedAttributes()
-        return fit
-
-    def deactivateDrone(self, fitID, i):
-        fit = eos.db.getFit(fitID)
-        d = fit.drones[i]
+        d.amount -= 1
         if d.amountActive > 0:
             d.amountActive -= 1
+
+        if d.amount == 0:
+            del fit.drones[i]
+
+        eos.db.saveddata_session.flush()
+        fit.clear()
+        fit.calculateModifiedAttributes()
+        return fit
+
+    def toggleDrone(self, fitID, i):
+        fit = eos.db.getFit(fitID)
+        d = fit.drones[i]
+        if d.amount == d.amountActive:
+            d.amountActive = 0
+        else:
+            d.amountActive = d.amount
 
         eos.db.saveddata_session.flush()
         fit.clear()

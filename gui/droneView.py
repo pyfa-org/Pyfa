@@ -23,11 +23,10 @@ import controller
 import gui.fittingView as fv
 import gui.marketBrowser as mb
 import gui.builtinViewColumns.display as d
-from gui.builtinViewColumns.checkbox import Checkbox
-
+from gui.builtinViewColumns.droneCheckbox import DroneCheckbox
 
 class DroneView(d.Display):
-    DEFAULT_COLS = ["Checkbox",
+    DEFAULT_COLS = ["Drone Checkbox",
                     "Drone Name/Amount",
                     "Drone DPS",
                     "Max range",
@@ -58,7 +57,7 @@ class DroneView(d.Display):
         row, _ = self.HitTest(event.Position)
         if row != -1:
             col = self.getColumn(event.Position)
-            if col != self.getColIndex(Checkbox):
+            if col != self.getColIndex(DroneCheckbox):
                 fitID = self.mainFrame.getActiveFit()
                 cFit = controller.Fit.getInstance()
                 cFit.removeDrone(fitID, self.GetItemData(row))
@@ -68,5 +67,8 @@ class DroneView(d.Display):
         row, _ = self.HitTest(event.Position)
         if row != -1:
             col = self.getColumn(event.Position)
-            if col == self.getColIndex(Checkbox):
-                pass
+            if col == self.getColIndex(DroneCheckbox):
+                fitID = self.mainFrame.getActiveFit()
+                cFit = controller.Fit.getInstance()
+                cFit.toggleDrone(fitID, row)
+                wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=fitID))

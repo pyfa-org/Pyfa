@@ -22,14 +22,12 @@ from gui.viewColumn import ViewColumn
 import gui.mainFrame
 import wx
 
-class Checkbox(ViewColumn):
-    name = "Checkbox"
+class DroneCheckbox(ViewColumn):
+    name = "Drone Checkbox"
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
         self.resizable = False
         self.size = 16
-        self.checked = False
-
         for name, state in (("checked", wx.CONTROL_CHECKED), ("unchecked", 0)):
             bitmap = wx.EmptyBitmap(16, 16)
             dc = wx.MemoryDC()
@@ -42,10 +40,10 @@ class Checkbox(ViewColumn):
     def getText(self, mod):
         return ""
 
-    def getImageId(self, mod):
-        if self.checked:
+    def getImageId(self, drone):
+        if drone.amountActive > 0:
             return self.checkedId
         else:
             return self.uncheckedId
 
-builtinViewColumns.registerColumn(Checkbox)
+builtinViewColumns.registerColumn(DroneCheckbox)
