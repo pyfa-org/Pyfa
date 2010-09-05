@@ -816,40 +816,6 @@ class StatsPane(wx.Panel):
         box.Add(wx.StaticText(self.miniPanel, wx.ID_ANY, " m ISK"), 0, wx.ALIGN_CENTER)
 
 
-        # Price
-        sizerHeaderPrice = wx.BoxSizer(wx.HORIZONTAL)
-        self.sizerBase.Add(sizerHeaderPrice, 0, wx.EXPAND | wx.LEFT, 3)
-
-        labelPrice = wx.StaticText(self.fullPanel, wx.ID_ANY, "Price")
-        labelPrice.SetFont(boldFont)
-        sizerHeaderPrice.Add(labelPrice, 0, wx.ALIGN_CENTER)
-
-        sizerHeaderPrice.Add(wx.StaticLine(self.fullPanel, wx.ID_ANY), 1, wx.ALIGN_CENTER)
-
-        # Grid for the price stuff.
-        gridPrice = wx.GridSizer(1, 3)
-        self.sizerBase.Add(gridPrice, 0, wx.EXPAND | wx.LEFT, 3)
-
-        for type in ("ship", "fittings", "total"):
-            image = "%sPrice_big" % type if type != "ship" else "ship_big"
-            box = wx.BoxSizer(wx.HORIZONTAL)
-            gridPrice.Add(box)
-
-            box.Add(bitmapLoader.getStaticBitmap(image, self.fullPanel, "icons"), 0, wx.ALIGN_CENTER)
-
-            vbox = wx.BoxSizer(wx.VERTICAL)
-            box.Add(vbox, 1, wx.EXPAND)
-
-            vbox.Add(wx.StaticText(self.fullPanel, wx.ID_ANY, type.capitalize()), 0, wx.ALIGN_LEFT)
-
-            hbox = wx.BoxSizer(wx.HORIZONTAL)
-            vbox.Add(hbox)
-
-            lbl = wx.StaticText(self.fullPanel, wx.ID_ANY, "0.00")
-            setattr(self, "labelPrice%s" % type, lbl)
-            hbox.Add(lbl, 0, wx.ALIGN_LEFT)
-
-            hbox.Add(wx.StaticText(self.fullPanel, wx.ID_ANY, " m ISK"), 0, wx.ALIGN_LEFT)
 
         # The custom made collapsible panel demo
         priceTPanel = TogglePanel(self.fullPanel)
@@ -884,6 +850,41 @@ class StatsPane(wx.Panel):
             hbox.Add(lbl, 0, wx.ALIGN_LEFT)
 
             hbox.Add(wx.StaticText(priceContentPane, wx.ID_ANY, " m ISK"), 0, wx.ALIGN_LEFT)
+
+        # Price
+        sizerHeaderPrice = wx.BoxSizer(wx.HORIZONTAL)
+        self.sizerBase.Add(sizerHeaderPrice, 0, wx.EXPAND | wx.LEFT, 3)
+
+        labelPrice = wx.StaticText(self.fullPanel, wx.ID_ANY, "Price")
+        labelPrice.SetFont(boldFont)
+        sizerHeaderPrice.Add(labelPrice, 0, wx.ALIGN_CENTER)
+
+        sizerHeaderPrice.Add(wx.StaticLine(self.fullPanel, wx.ID_ANY), 1, wx.ALIGN_CENTER)
+
+        # Grid for the price stuff.
+        gridPrice = wx.GridSizer(1, 3)
+        self.sizerBase.Add(gridPrice, 0, wx.EXPAND | wx.LEFT, 3)
+
+        for type in ("ship", "fittings", "total"):
+            image = "%sPrice_big" % type if type != "ship" else "ship_big"
+            box = wx.BoxSizer(wx.HORIZONTAL)
+            gridPrice.Add(box)
+
+            box.Add(bitmapLoader.getStaticBitmap(image, self.fullPanel, "icons"), 0, wx.ALIGN_CENTER)
+
+            vbox = wx.BoxSizer(wx.VERTICAL)
+            box.Add(vbox, 1, wx.EXPAND)
+
+            vbox.Add(wx.StaticText(self.fullPanel, wx.ID_ANY, type.capitalize()), 0, wx.ALIGN_LEFT)
+
+            hbox = wx.BoxSizer(wx.HORIZONTAL)
+            vbox.Add(hbox)
+
+            lbl = wx.StaticText(self.fullPanel, wx.ID_ANY, "0.00")
+            setattr(self, "labelPrice%s" % type, lbl)
+            hbox.Add(lbl, 0, wx.ALIGN_LEFT)
+
+            hbox.Add(wx.StaticText(self.fullPanel, wx.ID_ANY, " m ISK"), 0, wx.ALIGN_LEFT)
 
 
         self.fullPanel.Fit()
