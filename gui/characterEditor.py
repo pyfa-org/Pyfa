@@ -42,9 +42,16 @@ class CharacterEditor (wx.Dialog):
                    ("import", wx.ART_FILE_OPEN),
                    ("delete", wx.ART_DELETE))
 
+        size = None
         for name, art in buttons:
             bitmap = wx.ArtProvider.GetBitmap(art) if isinstance(art, unicode) else art
             btn = wx.BitmapButton(self, wx.ID_ANY, bitmap)
+            if size is None:
+                size = btn.GetSize()
+
+            btn.SetMinSize(size)
+            btn.SetMaxSize(size)
+
             tooltip = "%s current character" % name.capitalize() if name != "import" else "Import new character"
             btn.SetToolTipString(tooltip)
             setattr(self, "btn%s" % name.capitalize(), btn)
