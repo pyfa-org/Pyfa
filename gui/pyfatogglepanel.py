@@ -20,27 +20,41 @@ class TogglePanel ( wx.Panel ):
 
 		self._toggle = 1
                 self.parent = parent
-                
+
+                self.mainSizer = wx.BoxSizer( wx.VERTICAL )
+		self.SetSizer( self.mainSizer )
+
+		self.headerPanel = wx.Panel(self)
+                self.headerPanel.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNSHADOW ) )
+
+                self.mainSizer.Add(self.headerPanel,0,wx.EXPAND,5)
+
+		
 		self.bmpExpanded = self.GetNativeTreeItemBitmap("expanded")
 		self.bmpCollapsed =  self.GetNativeTreeItemBitmap("")
 		
-		self.headerBmp = wx.StaticBitmap(self)
+		self.headerBmp = wx.StaticBitmap(self.headerPanel )
                 self.headerBmp.SetBitmap( self.bmpExpanded)
-                
-		self.mainSizer = wx.BoxSizer( wx.VERTICAL )
+              
 		
 		headerSizer = wx.BoxSizer( wx.HORIZONTAL )
-		headerSizer.Add( self.headerBmp, 0, wx.TOP|wx.BOTTOM | wx.LEFT, 5 )
+        	self.headerPanel.SetSizer( headerSizer)
+        	
+		hbmpSizer = wx.BoxSizer( wx.VERTICAL )
+		hlblSizer = wx.BoxSizer( wx.VERTICAL )
 		
-		self.paneLabel = wx.StaticText( self, wx.ID_ANY, u"Test", wx.DefaultPosition, wx.DefaultSize, 0 )
-		headerSizer.Add( self.paneLabel, 1, wx.EXPAND | wx.TOP|wx.BOTTOM | wx.RIGHT, 5 )
+		hbmpSizer.Add( self.headerBmp, 0,0, 5 )
+		
+		self.headerLabel = wx.StaticText( self.headerPanel, wx.ID_ANY, u"Test", wx.DefaultPosition, wx.DefaultSize, 0 )
+		hlblSizer.Add( self.headerLabel, 1, wx.EXPAND , 5 )
 
+                headerSizer.Add( hbmpSizer, 0, wx.ALIGN_CENTER_VERTICAL, 5 )
+                headerSizer.Add( hlblSizer, 0, wx.ALIGN_CENTER_VERTICAL, 5 )
 
 		headerFont=parent.GetFont()
 		headerFont.SetWeight(wx.BOLD)
-		self.paneLabel.SetFont(headerFont)
-		
-        	self.mainSizer.Add( headerSizer, 0, wx.EXPAND, 5 )
+		self.headerLabel.SetFont(headerFont)
+
 		
 		self.contentSizer = wx.BoxSizer( wx.VERTICAL )
 		self.contentPanel = wx.Panel(self)
@@ -49,20 +63,22 @@ class TogglePanel ( wx.Panel ):
                 self.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_3DLIGHT ) )
                 
 		self.mainSizer.Add( self.contentPanel, 1, wx.EXPAND, 5)
-		self.SetSizer( self.mainSizer )
 
-                self.paneLabel.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNSHADOW ) )
-                self.headerBmp.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNSHADOW ) )		
 
 		self.Layout()
 		
 		# Connect Events
-		self.paneLabel.Bind( wx.EVT_LEFT_UP, self.toggleContent )
+		self.headerLabel.Bind( wx.EVT_LEFT_UP, self.toggleContent )
 		self.headerBmp.Bind( wx.EVT_LEFT_UP, self.toggleContent )
-#		self.paneLabel.Bind( wx.EVT_ENTER_WINDOW, self.enterWindow )
-#		self.paneLabel.Bind( wx.EVT_LEAVE_WINDOW, self.leaveWindow )
-#		self.headerBmp.Bind( wx.EVT_ENTER_WINDOW, self.enterWindow )
-#		self.headerBmp.Bind( wx.EVT_LEAVE_WINDOW, self.leaveWindow )		
+		self.headerPanel.Bind( wx.EVT_LEFT_UP, self.toggleContent )
+		
+		self.headerLabel.Bind( wx.EVT_ENTER_WINDOW, self.enterWindow )
+		self.headerLabel.Bind( wx.EVT_LEAVE_WINDOW, self.leaveWindow )
+		self.headerBmp.Bind( wx.EVT_ENTER_WINDOW, self.enterWindow )
+		self.headerBmp.Bind( wx.EVT_LEAVE_WINDOW, self.leaveWindow )		
+
+		self.headerPanel.Bind( wx.EVT_ENTER_WINDOW, self.enterWindow )
+		self.headerPanel.Bind( wx.EVT_LEAVE_WINDOW, self.leaveWindow )		
 	
 	def __del__( self ):
 		pass
@@ -75,17 +91,17 @@ class TogglePanel ( wx.Panel ):
                 return self.contentPanel
         
         def SetLabel(self, label):
-                self.paneLabel.SetLabel(label)
+                self.headerLabel.SetLabel(label)
                 
         def GetNativeTreeItemBitmap(self, mode):
                 
-                bitmap = wx.EmptyBitmap(18, 18)
+                bitmap = wx.EmptyBitmap(24, 24)
                 dc = wx.MemoryDC()
                 dc.SelectObject(bitmap)
-                dc.SetBackground(wx.TheBrushList.FindOrCreateBrush(wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNSHADOW ), wx.SOLID))
+                dc.SetBackground(wx.TheBrushList.FindOrCreateBrush(self.headerPanel.GetBackgroundColour(), wx.SOLID))
                 dc.Clear()
 
-                wx.RendererNative.Get().DrawTreeItemButton(self, dc, wx.Rect(0, 0, 18, 18), wx.CONTROL_EXPANDED if mode == "expanded" else 0)
+                wx.RendererNative.Get().DrawTreeItemButton(self, dc, wx.Rect(0, 0, 24, 24), wx.CONTROL_EXPANDED if mode == "expanded" else 0)
 
                 dc.Destroy()
                 
@@ -105,21 +121,16 @@ class TogglePanel ( wx.Panel ):
 	
 	def enterWindow( self, event ):
 
-                self.paneLabel.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_3DDKSHADOW ) )
-                self.headerBmp.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_3DDKSHADOW ) )
-
-                self.headerBmp.Refresh()
-                self.paneLabel.Refresh()
-
+                self.headerPanel.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_3DDKSHADOW ) )
+                self.headerPanel.Refresh()
+                pass
 		event.Skip()
 	
 	def leaveWindow( self, event ):
 
-                self.paneLabel.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNSHADOW ) )
-                self.headerBmp.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNSHADOW ) )
+                self.headerPanel.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNSHADOW ) )
+                self.headerPanel.Refresh()                
 
-                self.headerBmp.Refresh()                
-                self.paneLabel.Refresh()
-
+                pass
 		event.Skip()
 	
