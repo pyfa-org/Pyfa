@@ -58,7 +58,7 @@ class MaxRange(ViewColumn):
             falloff = "+%sm" % shorten(falloff, 3, 0, 3)
 
         if maxRange:
-            return "%sm" % shorten(maxRange, 3, 0, 3) + falloff
+            return "%s" % shorten(maxRange, 3, 0, 3, unit=falloff == "") + falloff
         else:
             return "" + falloff
 
