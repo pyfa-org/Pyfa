@@ -377,7 +377,7 @@ class StatsPane(wx.Panel):
                         else:
                             gauge = PG.PyGauge(parent, wx.ID_ANY, 100)
                             gauge.SetMinSize((self.getTextExtentW("999.9k/1.3M GJ"), 23))
-                            gauge.SetSkipDigitsFlag(True)
+                            gauge.SetFractionDigits(2)
 
                         setattr(self, "gauge%s%s" % (panel.capitalize(),capitalizedType), gauge)
                         stats.Add(gauge, 0, wx.ALIGN_CENTER)
@@ -460,7 +460,7 @@ class StatsPane(wx.Panel):
                     lbl.SetBackgroundColour(wx.Colour(bc[0],bc[1],bc[2]))
                     lbl.SetBarColour(wx.Colour(fc[0],fc[1],fc[2]))
                     lbl.SetBarGradient()
-                    lbl.SetSkipDigitsFlag(False)
+                    lbl.SetFractionDigits(1)
 
                 setattr(self, "labelResistance%s%s" % (tankType.capitalize(), damageType.capitalize()), lbl)
                 box.Add(lbl, 0, wx.ALIGN_CENTER)
