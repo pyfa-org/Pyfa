@@ -64,6 +64,13 @@ class Display(wx.ListCtrl):
         col.resized = False
         self.SetColumnWidth(i, wx.LIST_AUTOSIZE_USEHEADER if col.size is wx.LIST_AUTOSIZE else col.size)
 
+    def getColIndex(self, colClass):
+        for i, col in enumerate(self.activeColumns):
+            if col.__class__ == colClass:
+                return i
+
+        return None
+
     def resizeChecker(self, event):
         if self.activeColumns[event.Column].resizable is False:
             event.Veto()
@@ -100,3 +107,11 @@ class Display(wx.ListCtrl):
 
         for sel in selection:
             self.Select(sel)
+
+    def getColumn(self, point):
+        x = point[0]
+        total = 0
+        for col in xrange(self.GetColumnCount()):
+            total += self.GetColumnWidth(col)
+            if total >= x:
+                return col

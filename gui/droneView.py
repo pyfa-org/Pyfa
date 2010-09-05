@@ -42,6 +42,7 @@ class DroneView(d.Display):
         self.mainFrame.Bind(fv.FIT_CHANGED, self.fitChanged)
         self.mainFrame.Bind(mb.ITEM_SELECTED, self.addItem)
         self.Bind(wx.EVT_LEFT_DCLICK, self.removeItem)
+        self.Bind(wx.EVT_LEFT_DOWN, self.click)
 
     def fitChanged(self, event):
         cFit = controller.Fit.getInstance()
@@ -59,11 +60,25 @@ class DroneView(d.Display):
     def removeItem(self, event):
         row, _ = self.HitTest(event.Position)
         if row != -1:
-            fitID = self.mainFrame.getActiveFit()
-            cFit = controller.Fit.getInstance()
-            cFit.removeDrone(fitID, self.GetItemData(row))
+            col = self.getColumn(event.Position)
+            if col not in (self.getColIndex(DroneMore), self.getColIndex(DroneLess)):
+                fitID = self.mainFrame.getActiveFit()
+                cFit = controller.Fit.getInstance()
+                cFit.removeDrone(fitID, self.GetItemData(row))
+                wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=fitID))
 
-            wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=fitID))
+    def click(self, event):
+        row, _ = self.HitTest(event.Position)
+        if row != -1:
+            col = self.getColumn(event.Position)
+            cFit = controller.Fit.getInstance()
+            fitID = self.mainFrame.getActiveFit()
+            if col == self.getColIndex(DroneMore):
+                cFit.activateDrone(fitID, row)
+                wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=fitID))
+            elif col == self.getColIndex(DroneLess):
+                cFit.deactivateDrone(fitID, row)
+                wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=fitID))
 
 class DroneMore(ViewColumn):
     name = "Activate Drone"

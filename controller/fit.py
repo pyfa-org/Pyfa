@@ -100,6 +100,9 @@ class Fit(object):
         return fit
 
     def addDrone(self, fitID, itemID):
+        if fitID == None:
+            return
+
         fit = eos.db.getFit(fitID)
         item = eos.db.getItem(itemID, eager=("attributes", "group.category"))
         if item.category.name == "Drone":
@@ -109,10 +112,31 @@ class Fit(object):
             fit.calculateModifiedAttributes()
         return fit
 
-
     def removeDrone(self, fitID, i):
         fit = eos.db.getFit(fitID)
         fit.drones.removeItem(fit.drones[i].item, 1)
+
+        eos.db.saveddata_session.flush()
+        fit.clear()
+        fit.calculateModifiedAttributes()
+        return fit
+
+    def activateDrone(self, fitID, i):
+        fit = eos.db.getFit(fitID)
+        d = fit.drones[i]
+        if d.amountActive < d.amount:
+            d.amountActive += 1
+
+        eos.db.saveddata_session.flush()
+        fit.clear()
+        fit.calculateModifiedAttributes()
+        return fit
+
+    def deactivateDrone(self, fitID, i):
+        fit = eos.db.getFit(fitID)
+        d = fit.drones[i]
+        if d.amountActive > 0:
+            d.amountActive -= 1
 
         eos.db.saveddata_session.flush()
         fit.clear()
