@@ -25,6 +25,7 @@ import controller
 from eos.types import Slot, Hardpoint
 from gui import pygauge as PG
 from util import formatAmount
+from gui.pyfatogglepanel import TogglePanel
 
 class StatsPane(wx.Panel):
     def collapseChanged(self, event):
@@ -377,7 +378,7 @@ class StatsPane(wx.Panel):
                         else:
                             gauge = PG.PyGauge(parent, wx.ID_ANY, 100)
                             gauge.SetMinSize((self.getTextExtentW("999.9k/1.3M GJ"), 23))
-                            gauge.SetFractionDigits(2)
+                            gauge.SetSkipDigitsFlag(True)
 
                         setattr(self, "gauge%s%s" % (panel.capitalize(),capitalizedType), gauge)
                         stats.Add(gauge, 0, wx.ALIGN_CENTER)
@@ -460,7 +461,7 @@ class StatsPane(wx.Panel):
                     lbl.SetBackgroundColour(wx.Colour(bc[0],bc[1],bc[2]))
                     lbl.SetBarColour(wx.Colour(fc[0],fc[1],fc[2]))
                     lbl.SetBarGradient()
-                    lbl.SetFractionDigits(1)
+                    lbl.SetSkipDigitsFlag(False)
 
                 setattr(self, "labelResistance%s%s" % (tankType.capitalize(), damageType.capitalize()), lbl)
                 box.Add(lbl, 0, wx.ALIGN_CENTER)
@@ -849,6 +850,41 @@ class StatsPane(wx.Panel):
             hbox.Add(lbl, 0, wx.ALIGN_LEFT)
 
             hbox.Add(wx.StaticText(self.fullPanel, wx.ID_ANY, " m ISK"), 0, wx.ALIGN_LEFT)
+
+        # The custom made collapsible panel demo 
+        priceTPanel = TogglePanel(self.fullPanel)
+        priceTPanel.SetLabel(u"Price")
+
+        self.sizerBase.Add(priceTPanel,0, wx.EXPAND | wx.LEFT | wx.RIGHT, 3)
+        priceContentPane = priceTPanel.GetContentPane()
+
+        # Grid for the price stuff.
+
+        gridPrice = wx.GridSizer(1, 3)
+        priceTPanel.AddSizer(gridPrice)
+
+
+        for type in ("ship", "fittings", "total"):
+            image = "%sPrice_big" % type if type != "ship" else "ship_big"
+            box = wx.BoxSizer(wx.HORIZONTAL)
+            gridPrice.Add(box)
+
+            box.Add(bitmapLoader.getStaticBitmap(image, priceContentPane, "icons"), 0, wx.ALIGN_CENTER)
+
+            vbox = wx.BoxSizer(wx.VERTICAL)
+            box.Add(vbox, 1, wx.EXPAND)
+
+            vbox.Add(wx.StaticText(priceContentPane, wx.ID_ANY, type.capitalize()), 0, wx.ALIGN_LEFT)
+
+            hbox = wx.BoxSizer(wx.HORIZONTAL)
+            vbox.Add(hbox)
+
+            lbl = wx.StaticText(priceContentPane, wx.ID_ANY, "0.00")
+            setattr(self, "labelPrice%s" % type, lbl)
+            hbox.Add(lbl, 0, wx.ALIGN_LEFT)
+
+            hbox.Add(wx.StaticText(priceContentPane, wx.ID_ANY, " m ISK"), 0, wx.ALIGN_LEFT)
+
 
         self.fullPanel.Fit()
         self.fullSize=self.fullPanel.GetBestSize()
