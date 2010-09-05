@@ -20,18 +20,31 @@ class TogglePanel ( wx.Panel ):
 
 		self._toggle = 1
                 self.parent = parent
-
+                
                 self.mainSizer = wx.BoxSizer( wx.VERTICAL )
 		self.SetSizer( self.mainSizer )
 
 		self.headerPanel = wx.Panel(self)
-                self.headerPanel.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNSHADOW ) )
+                self.headerPanel.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_GRAYTEXT) )
 
                 self.mainSizer.Add(self.headerPanel,0,wx.EXPAND,5)
 
 		
-		self.bmpExpanded = self.GetNativeTreeItemBitmap("expanded")
-		self.bmpCollapsed =  self.GetNativeTreeItemBitmap("")
+#		self.bmpExpanded = self.GetNativeTreeItemBitmap("expanded")
+#		self.bmpCollapsed =  self.GetNativeTreeItemBitmap("")
+
+                self.bmpExpanded = bitmapLoader.getBitmap("up-arrow2","icons")
+		self.bmpCollapsed = bitmapLoader.getBitmap("down-arrow2","icons")
+
+		sysTextColour = wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOWTEXT )
+
+                img = self.bmpExpanded.ConvertToImage()
+                img.Replace(0, 0, 0, sysTextColour[0], sysTextColour[1], sysTextColour[2])
+                self.bmpExpanded = wx.BitmapFromImage(img)
+                
+                img = self.bmpCollapsed.ConvertToImage()
+                img.Replace(0, 0, 0, sysTextColour[0], sysTextColour[1], sysTextColour[2])
+                self.bmpCollapsed = wx.BitmapFromImage(img)
 		
 		self.headerBmp = wx.StaticBitmap(self.headerPanel )
                 self.headerBmp.SetBitmap( self.bmpExpanded)
@@ -48,7 +61,7 @@ class TogglePanel ( wx.Panel ):
 		self.headerLabel = wx.StaticText( self.headerPanel, wx.ID_ANY, u"Test", wx.DefaultPosition, wx.DefaultSize, 0 )
 		hlblSizer.Add( self.headerLabel, 1, wx.EXPAND , 5 )
 
-                headerSizer.Add( hbmpSizer, 0, wx.ALIGN_CENTER_VERTICAL, 5 )
+                headerSizer.Add( hbmpSizer, 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 5 )
                 headerSizer.Add( hlblSizer, 0, wx.ALIGN_CENTER_VERTICAL, 5 )
 
 		headerFont=parent.GetFont()
@@ -121,14 +134,14 @@ class TogglePanel ( wx.Panel ):
 	
 	def enterWindow( self, event ):
 
-                self.headerPanel.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_3DDKSHADOW ) )
+                self.headerPanel.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHT ) )
                 self.headerPanel.Refresh()
                 pass
 		event.Skip()
 	
 	def leaveWindow( self, event ):
 
-                self.headerPanel.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNSHADOW ) )
+                self.headerPanel.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_GRAYTEXT ) )
                 self.headerPanel.Refresh()                
 
                 pass
