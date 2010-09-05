@@ -168,6 +168,7 @@ class PyGauge(wx.PyWindow):
     def SetValue(self, value):
         """ Sets the current position of the gauge. """
         if self._value == value:
+            self._overdrive = value
             self.Refresh()
         else:
             self._oldValue = self._value
