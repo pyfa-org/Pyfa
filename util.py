@@ -1,4 +1,4 @@
-def formatAmount(val, prec=4, lowest=0, highest=0):
+def formatAmount(val, prec=3, lowest=0, highest=0):
     """
     Add suffix to value, transform value to match new suffix and round it.
 
@@ -15,7 +15,7 @@ def formatAmount(val, prec=4, lowest=0, highest=0):
     result = u"{0}{1}".format(newMantissa, suffix)
     return result
 
-def suffixizeAmount(val, lowest, highest):
+def suffixizeAmount(val, lowest=-6, highest=9):
     """
     Add suffix to value and transform value to match new suffix.
 
@@ -47,7 +47,7 @@ def suffixizeAmount(val, lowest, highest):
     else:
         return val, ""
 
-def processAmount(val, prec):
+def processAmount(val, prec=3):
     """
     Round number and return as string.
 

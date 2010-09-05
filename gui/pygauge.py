@@ -45,7 +45,7 @@ class PyGauge(wx.PyWindow):
         self._range = range
         self._value = 0
 
-        self._skipDigits = True
+        self._fractionDigits = 0
         self._timerId = wx.NewId()
         self._timer = None
         self._timerOver = None
@@ -100,8 +100,8 @@ class PyGauge(wx.PyWindow):
     SetBarColor = SetBarColour
     GetBarColor = GetBarColour
 
-    def SetSkipDigitsFlag(self,flag):
-        self._skipDigits=flag
+    def SetFractionDigits(self, digits):
+        self._fractionDigits=digits
 
     def GetBarGradient(self):
         """ Returns a tuple containing the gradient start and end colours. """
@@ -189,12 +189,12 @@ class PyGauge(wx.PyWindow):
             if value < 0:
                 self._value = 0
                 self._overdrive = 0
-                
+
             if not self._timer:
                 self._timer = wx.Timer(self, self._timerId)
             self._animStep = 0
             self._timer.Start(self._period)
-           
+
     def OnEraseBackground(self, event):
         """
         Handles the ``wx.EVT_ERASE_BACKGROUND`` event for L{PyGauge}.
@@ -228,7 +228,7 @@ class PyGauge(wx.PyWindow):
         if self._timer:
             if self._timer.IsRunning():
                 value = self._animValue
-                
+
         if self._border_colour:
             dc.SetPen(wx.Pen(self.GetBorderColour()))
             dc.DrawRectangleRect(rect)
@@ -244,7 +244,7 @@ class PyGauge(wx.PyWindow):
                 else:
                     c1 =wx.Colour(255,0,0)
                     c2 =wx.Colour(255,0,0)
-                
+
             else:
                 c1,c2 = self.GetBarGradient()
 
@@ -268,10 +268,8 @@ class PyGauge(wx.PyWindow):
         if self._overdrive > self._range:
             value = self._overdrive
         self._tooltip.SetTip("%.2f/%.2f" % (value, self._range))
-        if self._skipDigits == True:
-            dc.DrawLabel("%d%%" % (value*100/self._range), rect, wx.ALIGN_CENTER)
-        else:
-            dc.DrawLabel("%.1f%%" % (value * 100 / self._range) , rect, wx.ALIGN_CENTER)
+        formatStr = "{0:." + str(self._fractionDigits) + "f}%"
+        dc.DrawLabel(formatStr.format((value*100/self._range)), rect, wx.ALIGN_CENTER)
 
     def OUT_QUAD (self, t, b, c, d):
         t=float(t)
@@ -282,7 +280,7 @@ class PyGauge(wx.PyWindow):
         t/=d
 
         return -c *(t)*(t-2) + b
-		
+
     def OUT_BOUNCE (self, t, b, c, d):
         t=float(t)
         b=float(b)
@@ -304,7 +302,7 @@ class PyGauge(wx.PyWindow):
 		else:
                     t-=(2.625/2.75)
                     return c*(7.5625*(t)*t + .984375) + b
-        
+
 
 
     def OnTimer(self,event):
@@ -331,7 +329,7 @@ class PyGauge(wx.PyWindow):
         if self._timerId == event.GetId():
 #            and self._overdriveTimerId != event.GetId():
             stop_timer = False
- 
+
             if self._animStep > self._animDuration:
                 stop_timer = True
 
