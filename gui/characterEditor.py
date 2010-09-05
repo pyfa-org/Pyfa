@@ -90,6 +90,14 @@ class CharacterEditor (wx.Dialog):
 
         self.Centre(wx.BOTH)
 
+        self.registerEvents()
+
+    def registerEvents(self):
+        self.Bind(wx.EVT_CLOSE, self.closeEvent)
+
+    def closeEvent(self, event):
+        pass
+
 class NewCharacter (wx.Dialog):
     def __init__(self, parent):
         wx.Dialog.__init__ (self, parent, id=wx.ID_ANY, title=u"Create new character", pos=wx.DefaultPosition, size=wx.Size(344, 89), style=wx.DEFAULT_DIALOG_STYLE)
