@@ -31,10 +31,8 @@ class CharacterEditor (wx.Dialog):
 
         navSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        skillTreeChoiceChoices = [u"All level 0", u"All level 5", u"Darriele"]
-        self.skillTreeChoice = wx.Choice(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, skillTreeChoiceChoices, 0)
-        self.skillTreeChoice.SetSelection(0)
-        navSizer.Add(self.skillTreeChoice, 1, wx.ALL | wx.ALIGN_CENTER_VERTICAL | wx.EXPAND, 5)
+        self.skillTreeChoice = wx.Choice(self, wx.ID_ANY)
+        navSizer.Add(self.skillTreeChoice, 1, wx.ALL | wx.EXPAND, 5)
 
         buttons = (("new", wx.ART_NEW),
                    ("rename", bitmapLoader.getBitmap("rename", "icons")),
@@ -52,8 +50,7 @@ class CharacterEditor (wx.Dialog):
             btn.SetMinSize(size)
             btn.SetMaxSize(size)
 
-            tooltip = "%s current character" % name.capitalize() if name != "import" else "Import new character"
-            btn.SetToolTipString(tooltip)
+            btn.SetToolTipString("%s character" % name.capitalize())
             setattr(self, "btn%s" % name.capitalize(), btn)
             navSizer.Add(btn, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 2)
 
@@ -95,7 +92,6 @@ class CharacterEditor (wx.Dialog):
         self.Centre(wx.BOTH)
 
 class NewCharacter (wx.Dialog):
-
     def __init__(self, parent):
         wx.Dialog.__init__ (self, parent, id=wx.ID_ANY, title=u"Create new character", pos=wx.DefaultPosition, size=wx.Size(344, 89), style=wx.DEFAULT_DIALOG_STYLE)
         self.SetSizeHintsSz(wx.DefaultSize, wx.DefaultSize)
@@ -125,7 +121,6 @@ class NewCharacter (wx.Dialog):
         self.Centre(wx.BOTH)
 
 class RenDupCharacter (wx.Dialog):
-
     def __init__(self, parent):
         wx.Dialog.__init__ (self, parent, id=wx.ID_ANY, title=u"Rename / Duplicate character", pos=wx.DefaultPosition, size=wx.Size(395, 101), style=wx.DEFAULT_DIALOG_STYLE)
 
@@ -159,7 +154,6 @@ class RenDupCharacter (wx.Dialog):
         self.Centre(wx.BOTH)
 
 class SkillTreeView (wx.Panel):
-
     def __init__(self, parent):
         wx.Panel.__init__ (self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.Size(500, 300), style=wx.TAB_TRAVERSAL)
 
@@ -172,7 +166,6 @@ class SkillTreeView (wx.Panel):
         self.Layout()
 
 class ImplantsTreeView (wx.Panel):
-
     def __init__(self, parent):
         wx.Panel.__init__ (self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.Size(500, 300), style=wx.TAB_TRAVERSAL)
 
