@@ -35,6 +35,7 @@ class DroneCheckbox(ViewColumn):
             dc.SetBackground(wx.TheBrushList.FindOrCreateBrush(fittingView.GetBackgroundColour(), wx.SOLID))
             dc.Clear()
             wx.RendererNative.Get().DrawCheckBox(fittingView, dc, wx.Rect(0, 0, 16, 16), state)
+            dc.Destroy()
             setattr(self, "%sId" % name, fittingView.imageList.Add(bitmap))
 
     def getText(self, mod):
