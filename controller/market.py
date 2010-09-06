@@ -53,13 +53,14 @@ class Market():
             icon = child.icon.iconFile if child.icon else ""
             children.append((child.ID, child.name, icon, not child.hasTypes))
 
+
         return children
 
     def getShipRoot(self):
         cat = eos.db.getCategory(6)
         root = []
         for grp in cat.groups:
-            if grp.published == 1 or grp.name in self.FORCED_GROUPS:
+            if grp.published  or grp.name in self.FORCED_GROUPS:
                 root.append((grp.ID, grp.name))
 
         return root
@@ -68,7 +69,7 @@ class Market():
         ships = []
         grp = eos.db.getGroup(id, eager=("items"))
         for item in grp.items:
-            if item.published == 1 or item.name in self.FORCED_SHIPS:
+            if item.published  or item.name in self.FORCED_SHIPS:
                 ships.append((item.ID, item.name, item.race))
 
         return ships
@@ -77,13 +78,13 @@ class Market():
         results = eos.db.searchItems(name)
         ships = []
         for item in results:
-            if item.category.name == "Ship" and (item.published == 1 or item.name in self.FORCED_SHIPS):
+            if item.category.name == "Ship" and (item.published or item.name in self.FORCED_SHIPS):
                 ships.append((item.ID, item.name, item.race))
 
         return ships
 
     def searchItems(self, name):
-        filter = (eos.types.Category.name.in_(self.SEARCH_CATEGORIES), eos.types.Item.published == 1)
+        filter = (eos.types.Category.name.in_(self.SEARCH_CATEGORIES), eos.types.Item.published == True)
         results = eos.db.searchItems(name, where=filter,
                                      join=(eos.types.Item.group, eos.types.Group.category),
                                      eager=("icon", "group.category"))
