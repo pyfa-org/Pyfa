@@ -886,14 +886,15 @@ class StatsPane(wx.Panel):
 
             hbox.Add(wx.StaticText(self.fullPanel, wx.ID_ANY, " m ISK"), 0, wx.ALIGN_LEFT)
 
+# The pencil MUST fit in the hole :)
 
         self.fullPanel.Fit()
         self.fullSize=self.fullPanel.GetBestSize()
-        self.fullSize.SetWidth( self.fullSize.GetWidth() + 10 )
+        self.fullSize.SetWidth( self.fullSize.GetWidth())
         self.fullPanel.SetMinSize( self.fullSize)
 
         self.miniPanel.Fit()
         self.miniSize=self.miniPanel.GetBestSize()
-        self.miniSize.SetWidth( self.miniSize.GetWidth() + 30 )
+        self.miniSize.SetWidth( self.miniSize.GetWidth()+30)
         self.miniPanel.SetMinSize( self.miniSize)
 
