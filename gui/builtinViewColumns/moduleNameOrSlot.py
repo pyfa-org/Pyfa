@@ -36,13 +36,13 @@ class ModuleNameOrSlot(ViewColumn):
             self.slotNameMap[id] = slot.lower()
 
     def getText(self, mod):
-        if mod.isEmpty():
+        if mod.isEmpty:
             return "%s Slot" % self.slotNameMap[mod.slot].capitalize()
         else:
             return mod.item.name
 
     def getImageId(self, mod):
-        if mod.isEmpty():
+        if mod.isEmpty:
             bitmap = bitmapLoader.getBitmap("slot_%s_small" % self.slotNameMap[mod.slot], "icons")
             iconId = self.fittingView.imageList.Add(bitmap)
         else:
