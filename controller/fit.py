@@ -45,25 +45,25 @@ class Fit(object):
         fit.ship = eos.types.Ship(eos.db.getItem(shipID))
         fit.name = name
         eos.db.saveddata_session.add(fit)
-        eos.db.saveddata_session.flush()
+        eos.db.saveddata_session.commit()
         fit.calculateModifiedAttributes()
         return fit.ID
 
     def renameFit(self, fitID, newName):
         fit = eos.db.getFit(fitID)
         fit.name = newName
-        eos.db.saveddata_session.flush()
+        eos.db.saveddata_session.commit()
 
     def deleteFit(self, fitID):
         fit = eos.db.getFit(fitID)
         eos.db.saveddata_session.delete(fit)
-        eos.db.saveddata_session.flush()
+        eos.db.saveddata_session.commit()
 
     def copyFit(self, fitID):
         fit = eos.db.getFit(fitID)
         newFit = copy.deepcopy(fit)
         eos.db.saveddata_session.add(newFit)
-        eos.db.saveddata_session.flush()
+        eos.db.saveddata_session.commit()
         return newFit.ID
 
     def getFit(self, fitID):
@@ -72,7 +72,7 @@ class Fit(object):
 
         fit = eos.db.getFit(fitID)
         fit.fill()
-        eos.db.saveddata_session.flush()
+        eos.db.saveddata_session.commit()
         return fit
 
     def appendModule(self, fitID, itemID):
@@ -86,7 +86,7 @@ class Fit(object):
             if m.fits(fit):
                 fit.modules.append(m)
 
-            eos.db.saveddata_session.flush()
+            eos.db.saveddata_session.commit()
             fit.clear()
             fit.calculateModifiedAttributes()
         return fit
@@ -94,7 +94,7 @@ class Fit(object):
     def removeModule(self, fitID, position):
         fit = eos.db.getFit(fitID)
         fit.modules.toDummy(position)
-        eos.db.saveddata_session.flush()
+        eos.db.saveddata_session.commit()
         fit.clear()
         fit.calculateModifiedAttributes()
         return fit
@@ -112,7 +112,7 @@ class Fit(object):
                 fit.drones.append(d)
 
             d.amount += 1
-            eos.db.saveddata_session.flush()
+            eos.db.saveddata_session.commit()
             fit.clear()
             fit.calculateModifiedAttributes()
 
@@ -128,7 +128,7 @@ class Fit(object):
         if d.amount == 0:
             del fit.drones[i]
 
-        eos.db.saveddata_session.flush()
+        eos.db.saveddata_session.commit()
         fit.clear()
         fit.calculateModifiedAttributes()
         return fit
@@ -141,7 +141,7 @@ class Fit(object):
         else:
             d.amountActive = d.amount
 
-        eos.db.saveddata_session.flush()
+        eos.db.saveddata_session.commit()
         fit.clear()
         fit.calculateModifiedAttributes()
         return fit
