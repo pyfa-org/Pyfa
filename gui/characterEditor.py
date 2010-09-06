@@ -24,9 +24,9 @@ import controller
 class CharacterEditor (wx.Dialog):
     def __init__(self, parent):
         wx.Dialog.__init__ (self, parent, id=wx.ID_ANY, title=u"pyfa: Character Editor", pos=wx.DefaultPosition,
-                            size=wx.Size(641, 377), style=wx.CAPTION | wx.DEFAULT_DIALOG_STYLE | wx.MAXIMIZE_BOX | wx.MINIMIZE_BOX | wx.RESIZE_BORDER)
+                            size=wx.Size(641, 450), style=wx.CAPTION | wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER)
 
-        self.SetSizeHintsSz(wx.Size(640, 350), wx.DefaultSize)
+        self.SetSizeHintsSz(wx.Size(640, 450), wx.DefaultSize)
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
         navSizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -78,11 +78,11 @@ class CharacterEditor (wx.Dialog):
         mainSizer.Add(self.viewsNBContainer, 1, wx.EXPAND | wx.ALL, 5)
 
         self.descriptionBox = wx.StaticBox(self, wx.ID_ANY, u"Description")
-        sbSizerDescription = wx.StaticBoxSizer(self.descriptionBox, wx.HORIZONTAL)
+        sbSizerDescription = wx.StaticBoxSizer(self.descriptionBox, wx.HORIZONTAL | wx.RESERVE_SPACE_EVEN_IF_HIDDEN)
 
-        self.description = wx.StaticText(self, wx.ID_ANY, u"Insert descriptions here", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.description = wx.StaticText(self, wx.ID_ANY, u"\n\n\n")
         self.description.Wrap(-1)
-        sbSizerDescription.Add(self.description, 0, wx.ALL, 2)
+        sbSizerDescription.Add(self.description, 0, wx.ALL | wx.RESERVE_SPACE_EVEN_IF_HIDDEN, 2)
 
         mainSizer.Add(sbSizerDescription, 0, wx.ALL | wx.EXPAND, 5)
 
@@ -130,8 +130,6 @@ class CharacterEditor (wx.Dialog):
         else:
             self.description.Hide()
             self.descriptionBox.Hide()
-
-        self.Layout()
 
 
 class NewCharacter (wx.Dialog):
