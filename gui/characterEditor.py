@@ -77,11 +77,12 @@ class CharacterEditor (wx.Dialog):
 
         mainSizer.Add(self.viewsNBContainer, 1, wx.EXPAND | wx.ALL, 5)
 
-        sbSizerDescription = wx.StaticBoxSizer(wx.StaticBox(self, wx.ID_ANY, u"Description"), wx.HORIZONTAL)
+        self.descriptionBox = wx.StaticBox(self, wx.ID_ANY, u"Description")
+        sbSizerDescription = wx.StaticBoxSizer(self.descriptionBox, wx.HORIZONTAL)
 
-        self.m_staticText7 = wx.StaticText(self, wx.ID_ANY, u"Insert descriptions here", wx.DefaultPosition, wx.DefaultSize, 0)
-        self.m_staticText7.Wrap(-1)
-        sbSizerDescription.Add(self.m_staticText7, 0, wx.ALL, 5)
+        self.description = wx.StaticText(self, wx.ID_ANY, u"Insert descriptions here", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.description.Wrap(-1)
+        sbSizerDescription.Add(self.description, 0, wx.ALL, 2)
 
         mainSizer.Add(sbSizerDescription, 0, wx.ALL | wx.EXPAND, 5)
 
@@ -95,8 +96,12 @@ class CharacterEditor (wx.Dialog):
 
         mainSizer.Add(bSizerButtons, 0, wx.ALIGN_RIGHT, 5)
 
+
         self.SetSizer(mainSizer)
         self.Layout()
+
+        self.description.Hide()
+        self.descriptionBox.Hide()
 
         self.Centre(wx.BOTH)
 
@@ -105,12 +110,29 @@ class CharacterEditor (wx.Dialog):
     def registerEvents(self):
         self.Bind(wx.EVT_CLOSE, self.closeEvent)
         self.skillTreeChoice.Bind(wx.EVT_CHOICE, self.charChanged)
+        self.sview.SkillTreeCtrl.Bind(wx.EVT_TREE_SEL_CHANGED, self.updateDescription)
 
     def closeEvent(self, event):
         pass
 
     def charChanged(self, event):
         pass
+
+    def updateDescription(self, event):
+        root = event.Item
+        tree = self.sview.SkillTreeCtrl
+        if tree.GetChildrenCount(root) == 0:
+            cChar = controller.Character.getInstance()
+            self.description.SetLabel(cChar.getDescription(tree.GetPyData(root)))
+            self.description.Wrap(620)
+            self.description.Show()
+            self.descriptionBox.Show()
+        else:
+            self.description.Hide()
+            self.descriptionBox.Hide()
+
+        self.Layout()
+
 
 class NewCharacter (wx.Dialog):
     def __init__(self, parent):

@@ -32,7 +32,7 @@ class Character():
     def getCharacterList(self):
         baseChars = [eos.types.Character.getAll0(), eos.types.Character.getAll5()]
         # Flush incase all0 & all5 weren't in the db yet
-        eos.db.saveddata_session.commit()
+        eos.db.commit()
         return map(lambda c: (c.ID, c.name), eos.db.getCharacterList())
 
     def getSkillGroups(self):
