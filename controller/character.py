@@ -18,6 +18,7 @@
 #===============================================================================
 
 import eos.db
+import eos.types
 
 class Character():
     instance = None
@@ -29,4 +30,18 @@ class Character():
         return cls.instance
 
     def getCharacterList(self):
-        map(lambda c: c.name, eos.db.getCharacterList())
+        baseChars = [eos.types.Character.getAll0(), eos.types.Character.getAll5()]
+        # Flush incase all0 & all5 weren't in the db yet
+        eos.db.saveddata_session.flush()
+        return map(lambda c: (c.ID, c.name), eos.db.getCharacterList())
+
+    def getSkillGroups(self):
+        marketGroup = eos.db.getMarketGroup(150)
+        return map(lambda mg: (mg.ID, mg.name), marketGroup.children)
+
+    def getSkills(self, groupID):
+        marketGroup = eos.db.getMarketGroup(groupID)
+        skills = []
+        for skill in marketGroup.items:
+            skills.append((skill.ID, skill.name))
+        return skills

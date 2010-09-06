@@ -19,6 +19,7 @@
 
 import wx
 from gui import bitmapLoader
+import controller
 
 class CharacterEditor (wx.Dialog):
     def __init__(self, parent):
@@ -30,7 +31,16 @@ class CharacterEditor (wx.Dialog):
         mainSizer = wx.BoxSizer(wx.VERTICAL)
         navSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.skillTreeChoice = wx.Choice(self, wx.ID_ANY)
+        cChar = controller.Character.getInstance()
+        charList = cChar.getCharacterList()
+
+        choices = []
+        self.charIDs = []
+        for ID, name in charList:
+            choices.append(name)
+            self.charIDs.append(ID)
+
+        self.skillTreeChoice = wx.Choice(self, wx.ID_ANY, choices=choices)
         navSizer.Add(self.skillTreeChoice, 1, wx.ALL | wx.EXPAND, 5)
 
         buttons = (("new", wx.ART_NEW),
@@ -57,13 +67,13 @@ class CharacterEditor (wx.Dialog):
 
         self.viewsNBContainer = wx.Notebook(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, 0)
 
-        sview = SkillTreeView(self.viewsNBContainer)
-        iview = ImplantsTreeView(self.viewsNBContainer)
-        aview = APIView(self.viewsNBContainer)
+        self.sview = SkillTreeView(self.viewsNBContainer)
+        self.iview = ImplantsTreeView(self.viewsNBContainer)
+        self.aview = APIView(self.viewsNBContainer)
 
-        self.viewsNBContainer.AddPage(sview, "Skills")
-        self.viewsNBContainer.AddPage(iview, "Implants")
-        self.viewsNBContainer.AddPage(aview, "API")
+        self.viewsNBContainer.AddPage(self.sview, "Skills")
+        self.viewsNBContainer.AddPage(self.iview, "Implants")
+        self.viewsNBContainer.AddPage(self.aview, "API")
 
         mainSizer.Add(self.viewsNBContainer, 1, wx.EXPAND | wx.ALL, 5)
 
@@ -94,8 +104,12 @@ class CharacterEditor (wx.Dialog):
 
     def registerEvents(self):
         self.Bind(wx.EVT_CLOSE, self.closeEvent)
+        self.skillTreeChoice.Bind(wx.EVT_CHOICE, self.charChanged)
 
     def closeEvent(self, event):
+        pass
+
+    def charChanged(self, event):
         pass
 
 class NewCharacter (wx.Dialog):
@@ -133,11 +147,47 @@ class SkillTreeView (wx.Panel):
 
         pmainSizer = wx.BoxSizer(wx.VERTICAL)
 
-        self.SkillTreeCtrl = wx.TreeCtrl(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TR_DEFAULT_STYLE)
+        self.SkillTreeCtrl = wx.TreeCtrl(self, wx.ID_ANY, style=wx.TR_DEFAULT_STYLE | wx.TR_HIDE_ROOT)
         pmainSizer.Add(self.SkillTreeCtrl, 1, wx.EXPAND | wx.ALL, 5)
+
+        self.root = self.SkillTreeCtrl.AddRoot("Skills")
+        self.imageList = wx.ImageList(16, 16)
+        self.SkillTreeCtrl.SetImageList(self.imageList)
+        self.skillBookImageId = self.imageList.Add(bitmapLoader.getBitmap("skill_small", "icons"))
+
+        self.populateSkillTree()
+
+        self.SkillTreeCtrl.Bind(wx.EVT_TREE_ITEM_EXPANDING, self.expandLookup)
 
         self.SetSizer(pmainSizer)
         self.Layout()
+
+    def populateSkillTree(self):
+        cChar = controller.Character.getInstance()
+        groups = cChar.getSkillGroups()
+        imageId = self.skillBookImageId
+        root = self.root
+        tree = self.SkillTreeCtrl
+
+        for id, name in groups:
+            childId = tree.AppendItem(root, name, imageId, data=wx.TreeItemData(id))
+            tree.AppendItem(childId, "dummy")
+
+        self.SkillTreeCtrl.SortChildren(root)
+
+    def expandLookup(self, event):
+        root = event.Item
+        child, cookie = self.SkillTreeCtrl.GetFirstChild(root)
+        if self.SkillTreeCtrl.GetItemText(child) == "dummy":
+            self.SkillTreeCtrl.Delete(child)
+
+            #Get the real intrestin' stuff
+            cChar = controller.Character.getInstance()
+            for id, name in cChar.getSkills(self.SkillTreeCtrl.GetPyData(root)):
+                iconId = self.skillBookImageId
+                self.SkillTreeCtrl.AppendItem(root, name, iconId, data=wx.TreeItemData(id))
+
+            self.SkillTreeCtrl.SortChildren(root)
 
 class ImplantsTreeView (wx.Panel):
     def __init__(self, parent):

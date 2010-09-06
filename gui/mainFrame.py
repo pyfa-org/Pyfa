@@ -21,7 +21,6 @@ import wx
 from gui import bitmapLoader
 from gui.mainMenuBar import MainMenuBar
 from gui.additionsPane import AdditionsPane
-from gui.mainToolBar import MainToolBar
 from gui.marketBrowser import MarketBrowser
 from gui.multiSwitch import MultiSwitch
 from gui.statsPane import StatsPane
