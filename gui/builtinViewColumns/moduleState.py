@@ -40,7 +40,7 @@ class ModuleState(ViewColumn):
         return ""
 
     def getImageId(self, mod):
-        if mod.isEmpty():
+        if mod.isEmpty:
             return -1
         else:
             bitmap = bitmapLoader.getBitmap("state_%s_small" % self.stateNameMap[mod.state], "icons")
