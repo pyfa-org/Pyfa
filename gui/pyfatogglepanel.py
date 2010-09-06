@@ -1,14 +1,30 @@
 # -*- coding: utf-8 -*- 
 
 ###########################################################################
-## Python code generated with wxFormBuilder (version May  4 2010)
-## http://www.wxformbuilder.org/
+## pyfatogllepanel.py
 ##
-## PLEASE DO "NOT" EDIT THIS FILE!
+## Author: Darriele - HomeWorld
+## Serial: 2010090612  (YYYYMMDDII)
+## Project home: http://www.evefit.org - pyfa project
+##               http://www.evefit.org is the home for pyfa / eos  / aurora 
+## Some portions of code are based on
+## AGW:pycollapsiblepane generic implementation of wx.CollapsiblePane
+## AGW:pycollapsiblepane credits ( from the original source file used ):
+##      Andrea Gavana, @ 09 Aug 2007
+##      Latest Revision: 12 Apr 2010, 12.00 GMT
+##
+## Module description:
+##      TogglePanel class is a wx.collipsablepane like implementation that uses
+##      some optimization from awg::pycollipsablepane to provide certain
+##      features tailored for PYFA needs.
+##
+## This module is part of PYFA (PYthon Fitting Assitant) and it shares the same
+## licence ( read PYFA licence notice: gpl.txt )
 ###########################################################################
 
 import wx
 from gui import bitmapLoader
+
 ###########################################################################
 ## Class TogglePanel
 ###########################################################################
@@ -23,7 +39,8 @@ class TogglePanel ( wx.Panel ):
 
         self.bkColour = self.GetBackgroundColour()
 
-#        self.SetBackgroundColour( self.bkColour )
+#       Odd stuff :S
+        self.SetBackgroundColour( self.bkColour )
 
 #       Create the main sizer of this panel
 
@@ -37,7 +54,7 @@ class TogglePanel ( wx.Panel ):
 
         self.mainSizer.Add(self.headerPanel,0,wx.EXPAND,5)
 
-#       Attempt to use native treeitembitmaps - fails on linux distros        
+#       Attempt to use native treeitembitmaps - fails on some linux distros / w.mangers        
 #		self.bmpExpanded = self.GetNativeTreeItemBitmap("expanded")
 #		self.bmpCollapsed =  self.GetNativeTreeItemBitmap("")
 #
@@ -87,6 +104,7 @@ class TogglePanel ( wx.Panel ):
         self.headerLabel.SetFont(headerFont)
 
 #       Create the content panel and its main sizer        
+
         self.contentSizer = wx.BoxSizer( wx.VERTICAL )
         self.contentPanel = wx.Panel(self)
         self.contentPanel.SetSizer(self.contentSizer)
@@ -108,7 +126,7 @@ class TogglePanel ( wx.Panel ):
     
     def AddSizer(self, sizer):
         self.contentSizer.Add(sizer, 1, wx.EXPAND, 5)
-        self.Fit()
+        self.Layout()
     def GetContentPane(self):
         return self.contentPanel
     
@@ -131,23 +149,82 @@ class TogglePanel ( wx.Panel ):
             
     # Virtual event handlers, overide them in your derived class
 
+    def IsCollapsed(self):
+        """ Returns ``True`` if the pane window is currently hidden. """
+        if self._toggle == 1:
+            return False
+        else:
+            return True
+
+
+    def IsExpanded(self):
+        """ Returns ``True`` if the pane window is currently shown. """
+        if self._toggle == 1:
+            return False
+        else:
+            return True
+
+
+    def OnStateChange(self, sz):
+        """
+        Handles the status changes (collapsing/expanding).
+
+        :param `sz`: an instance of `wx.Size`.
+        """
+
+        # minimal size has priority over the best size so set here our min size
+        self.SetMinSize(sz)
+        self.SetSize(sz)
+
+        self.parent.GetSizer().SetSizeHints(self.parent)
+
+                
+        if self.IsCollapsed():
+                # expanded . collapsed transition
+            if self.parent.GetSizer():
+                # we have just set the size hints...
+                sz = self.parent.GetSizer().CalcMin()
+
+                # use SetClientSize() and not SetSize() otherwise the size for
+                # e.g. a wxFrame with a menubar wouldn't be correctly set
+                self.parent.SetClientSize(sz)
+                    
+            else:
+                self.parent.Layout()
+              
+        else:
+                
+                    # collapsed . expanded transition
+
+                    # force our parent to "fit", i.e. expand so that it can honour
+                    # our minimal size
+            self.parent.Fit()
+
+                
+
+
+
     # Toggle the content panel (hide/show)
 
     def toggleContent( self, event ):
-       
+        self.Freeze()   
         if self._toggle == 1:
             self.contentPanel.Hide()
             self.headerBmp.SetBitmap( self.bmpCollapsed)
 
+
         else:
             self.contentPanel.Show()
             self.headerBmp.SetBitmap( self.bmpExpanded)
+
         
         self._toggle *=-1
 
+        self.Thaw()
+        self.OnStateChange(self.GetBestSize())
+
         self.parent.Layout()
-        self.parent.Refresh()
-        event.Skip()
+
 
     # Highlight stuff, not used for now
 
