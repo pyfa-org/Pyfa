@@ -46,5 +46,8 @@ class Character():
             skills.append((skill.ID, skill.name))
         return skills
 
-    def getDescription(self, itemID):
+    def getSkillDescription(self, itemID):
         return eos.db.getItem(itemID).description
+
+    def getGroupDescription(self, groupID):
+        return eos.db.getMarketGroup(groupID).description

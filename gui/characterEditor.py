@@ -101,7 +101,6 @@ class CharacterEditor (wx.Dialog):
         self.Layout()
 
         self.description.Hide()
-        self.descriptionBox.Hide()
 
         self.Centre(wx.BOTH)
 
@@ -121,16 +120,15 @@ class CharacterEditor (wx.Dialog):
     def updateDescription(self, event):
         root = event.Item
         tree = self.sview.SkillTreeCtrl
+        cChar = controller.Character.getInstance()
         if tree.GetChildrenCount(root) == 0:
-            cChar = controller.Character.getInstance()
-            self.description.SetLabel(cChar.getDescription(tree.GetPyData(root)))
-            self.description.Wrap(620)
-            self.description.Show()
-            self.descriptionBox.Show()
+            description = cChar.getSkillDescription(tree.GetPyData(root))
         else:
-            self.description.Hide()
-            self.descriptionBox.Hide()
+            description = cChar.getGroupDescription(tree.GetPyData(root))
 
+        self.description.SetLabel(description)
+        self.description.Wrap(620)
+        self.description.Show()
 
 class NewCharacter (wx.Dialog):
     def __init__(self, parent):
