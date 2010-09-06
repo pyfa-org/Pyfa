@@ -888,6 +888,12 @@ class StatsPane(wx.Panel):
 
 
         self.fullPanel.Fit()
-        self.miniPanel.Fit()
+        self.fullSize=self.fullPanel.GetBestSize()
+        self.fullSize.SetWidth( self.fullSize.GetWidth() + 10 )
+        self.fullPanel.SetMinSize( self.fullSize)
 
+        self.miniPanel.Fit()
+        self.miniSize=self.miniPanel.GetBestSize()
+        self.miniSize.SetWidth( self.miniSize.GetWidth() + 30 )
+        self.miniPanel.SetMinSize( self.miniSize)
 
