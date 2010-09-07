@@ -18,6 +18,7 @@
 #===============================================================================
 
 import wx
+import wx.gizmos
 from gui import bitmapLoader
 import controller
 
@@ -109,26 +110,36 @@ class CharacterEditor (wx.Dialog):
     def registerEvents(self):
         self.Bind(wx.EVT_CLOSE, self.closeEvent)
         self.skillTreeChoice.Bind(wx.EVT_CHOICE, self.charChanged)
-        self.sview.SkillTreeCtrl.Bind(wx.EVT_TREE_SEL_CHANGED, self.updateDescription)
+        self.sview.skillTreeListCtrl.Bind(wx.EVT_TREE_SEL_CHANGED, self.updateDescription)
 
     def closeEvent(self, event):
         pass
 
     def charChanged(self, event):
-        pass
+        event.Skip()
+        self.sview.skillTreeListCtrl.DeleteChildren(self.sview.root)
+        self.sview.populateSkillTree()
 
     def updateDescription(self, event):
         root = event.Item
-        tree = self.sview.SkillTreeCtrl
+        tree = self.sview.skillTreeListCtrl
         cChar = controller.Character.getInstance()
+        data = tree.GetPyData(root)
+        if data == None:
+            return
+
         if tree.GetChildrenCount(root) == 0:
-            description = cChar.getSkillDescription(tree.GetPyData(root))
+            description = cChar.getSkillDescription(data)
         else:
-            description = cChar.getGroupDescription(tree.GetPyData(root))
+            description = cChar.getGroupDescription(data)
 
         self.description.SetLabel(description)
         self.description.Wrap(620)
         self.description.Show()
+
+    def getActiveCharacter(self):
+        selection = self.skillTreeChoice.GetSelection()
+        return self.charIDs[selection] if selection is not None else None
 
 class NewCharacter (wx.Dialog):
     def __init__(self, parent):
@@ -165,17 +176,26 @@ class SkillTreeView (wx.Panel):
 
         pmainSizer = wx.BoxSizer(wx.VERTICAL)
 
-        self.SkillTreeCtrl = wx.TreeCtrl(self, wx.ID_ANY, style=wx.TR_DEFAULT_STYLE | wx.TR_HIDE_ROOT)
-        pmainSizer.Add(self.SkillTreeCtrl, 1, wx.EXPAND | wx.ALL, 5)
+        tree = self.skillTreeListCtrl = wx.gizmos.TreeListCtrl(self, wx.ID_ANY, style=wx.TR_DEFAULT_STYLE | wx.TR_HIDE_ROOT)
+        pmainSizer.Add(tree, 1, wx.EXPAND | wx.ALL, 5)
 
-        self.root = self.SkillTreeCtrl.AddRoot("Skills")
+
         self.imageList = wx.ImageList(16, 16)
-        self.SkillTreeCtrl.SetImageList(self.imageList)
+        tree.SetImageList(self.imageList)
         self.skillBookImageId = self.imageList.Add(bitmapLoader.getBitmap("skill_small", "icons"))
+
+        tree.AddColumn("Skill")
+        tree.AddColumn("Level")
+        tree.SetMainColumn(0)
+
+        self.root = tree.AddRoot("Skills")
+        tree.SetItemText(self.root, "Levels", 1)
+
+        tree.SetColumnWidth(0, 500)
 
         self.populateSkillTree()
 
-        self.SkillTreeCtrl.Bind(wx.EVT_TREE_ITEM_EXPANDING, self.expandLookup)
+        tree.Bind(wx.EVT_TREE_ITEM_EXPANDING, self.expandLookup)
 
         self.SetSizer(pmainSizer)
         self.Layout()
@@ -185,27 +205,31 @@ class SkillTreeView (wx.Panel):
         groups = cChar.getSkillGroups()
         imageId = self.skillBookImageId
         root = self.root
-        tree = self.SkillTreeCtrl
+        tree = self.skillTreeListCtrl
 
         for id, name in groups:
-            childId = tree.AppendItem(root, name, imageId, data=wx.TreeItemData(id))
+            childId = tree.AppendItem(root, name, imageId)
+            tree.SetPyData(childId, id)
             tree.AppendItem(childId, "dummy")
 
-        self.SkillTreeCtrl.SortChildren(root)
+        tree.SortChildren(root)
 
     def expandLookup(self, event):
         root = event.Item
-        child, cookie = self.SkillTreeCtrl.GetFirstChild(root)
-        if self.SkillTreeCtrl.GetItemText(child) == "dummy":
-            self.SkillTreeCtrl.Delete(child)
+        tree = self.skillTreeListCtrl
+        child, cookie = tree.GetFirstChild(root)
+        if tree.GetItemText(child) == "dummy":
+            tree.Delete(child)
 
             #Get the real intrestin' stuff
             cChar = controller.Character.getInstance()
-            for id, name in cChar.getSkills(self.SkillTreeCtrl.GetPyData(root)):
+            char = self.Parent.Parent.getActiveCharacter()
+            for id, name in cChar.getSkills(tree.GetPyData(root)):
                 iconId = self.skillBookImageId
-                self.SkillTreeCtrl.AppendItem(root, name, iconId, data=wx.TreeItemData(id))
+                childId = tree.AppendItem(root, name, iconId, data=wx.TreeItemData(id))
+                tree.SetItemText(childId, str(cChar.getSkillLevel(char, id)), 1)
 
-            self.SkillTreeCtrl.SortChildren(root)
+            tree.SortChildren(root)
 
 class ImplantsTreeView (wx.Panel):
     def __init__(self, parent):
