@@ -170,9 +170,12 @@ class CharacterEditor (wx.Dialog):
         self.skillTreeChoice.SetSelection(id)
         self.btnDelete.Enable(True)
         self.btnRename.Enable(True)
-        self.rename(event)
+        self.btnSave.SetLabel("Create")
+        self.rename(None)
 
     def rename(self, event):
+        if event is not None:
+            self.btnSave.SetLabel("Rename")
         self.skillTreeChoice.Hide()
         self.characterRename.Show()
         self.navSizer.Replace(self.skillTreeChoice, self.characterRename)
@@ -218,7 +221,8 @@ class CharacterEditor (wx.Dialog):
         self.skillTreeChoice.SetSelection(id)
         self.btnDelete.Enable(True)
         self.btnRename.Enable(True)
-        self.rename(event)
+        self.btnSave.SetLabel("Copy")
+        self.rename(None)
 
     def delete(self, event):
         cChar = controller.Character.getInstance()
