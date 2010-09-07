@@ -212,10 +212,24 @@ class CharacterEditor (wx.Dialog):
         self.skillTreeChoice.SetSelection(selection)
 
     def copy(self, event):
-        pass
+        cChar = controller.Character.getInstance()
+        charID = cChar.copy(self.getActiveCharacter())
+        id = self.skillTreeChoice.Append(cChar.getCharName(charID), charID)
+        self.skillTreeChoice.SetSelection(id)
+        self.btnDelete.Enable(True)
+        self.btnRename.Enable(True)
+        self.rename(event)
 
     def delete(self, event):
-        pass
+        cChar = controller.Character.getInstance()
+        cChar.delete(self.getActiveCharacter())
+        sel = self.skillTreeChoice.GetSelection()
+        self.skillTreeChoice.Delete(sel)
+        self.skillTreeChoice.SetSelection(sel - 1)
+        newSelection = self.getActiveCharacter()
+        if cChar.getCharName(newSelection) in ("All 0", "All 5"):
+            self.btnDelete.Enable(False)
+            self.btnRename.Enable(False)
 
 class SkillTreeView (wx.Panel):
     def __init__(self, parent):

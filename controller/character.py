@@ -19,6 +19,7 @@
 
 import eos.db
 import eos.types
+import copy
 
 class Character():
     instance = None
@@ -68,3 +69,13 @@ class Character():
 
     def getCharName(self, charID):
         return eos.db.getCharacter(charID).name
+
+    def copy(self, charID):
+        char = eos.db.getCharacter(charID)
+        newChar = copy.deepcopy(char)
+        eos.db.save(newChar)
+        return newChar.ID
+
+    def delete(self, charID):
+        char = eos.db.getCharacter(charID)
+        eos.db.remove(char)
