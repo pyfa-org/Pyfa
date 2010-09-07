@@ -1,14 +1,14 @@
 # --------------------------------------------------------------------------------- #
 # PYFAGAUGE wxPython IMPLEMENTATION
 #
-# Darriele, @ 30 Aug 2010
-#
+# Darriele, @ 08/30/2010
+# Updated: 09/07/2010 
 # Based on AWG : pygauge code
 # --------------------------------------------------------------------------------- #
 
 """
 PyfaGauge is a generic Gauge implementation tailored for PYFA (Python Fitting Assistant)
-It uses the easeOutQuad equation from caurina.transitions.Tweener
+It uses the easeOutQuad equation from caurina.transitions.Tweener to do the animation stuff
 """
 
 import wx
@@ -168,32 +168,19 @@ class PyGauge(wx.PyWindow):
     def SetValue(self, value):
         """ Sets the current position of the gauge. """
         if self._value == value:
-            self._overdrive = value
             self.Refresh()
         else:
             self._oldValue = self._value
-
-            if value > self._range:
-                self._overdrive = value
-                self._value = self._range
-#                if not self._timerOver:
-#                    self._timerOver = wx.Timer(self, self._overdriveTimerId)
-#                self._timerOver.Start(500)
-#                self._overdriveTimerStarted = True
-            else:
-                self._overdrive = value
-                self._value = value
-#                if self._overdriveTimerStarted:
-#                    self._timerOver.Stop()
-#                    self._overdriveTimerStarted = False
+            self._value = value
             if value < 0:
                 self._value = 0
-                self._overdrive = 0
 
             if not self._timer:
                 self._timer = wx.Timer(self, self._timerId)
             self._animStep = 0
             self._timer.Start(self._period)
+
+        self._tooltip.SetTip("%.2f/%.2f" % (self._value, self._range))
 
     def OnEraseBackground(self, event):
         """
@@ -235,9 +222,8 @@ class PyGauge(wx.PyWindow):
             pad = 1 + self.GetBorderPadding()
             rect.Deflate(pad,pad)
 
-
         if self.GetBarGradient():
-            if self._overdrive > self._range:
+            if value > self._range:
                 if self._overdriveToggle==-1:
                     c1 =wx.Colour(200,0,0)
                     c2 =wx.Colour(200,0,0)
@@ -247,8 +233,10 @@ class PyGauge(wx.PyWindow):
 
             else:
                 c1,c2 = self.GetBarGradient()
-
-            w = rect.width * (float(value) / self._range)
+            if value > self._range:
+                w = rect.width
+            else:
+                w = rect.width * (float(value) / self._range)
             r = copy.copy(rect)
             r.width = w
             dc.GradientFillLinear(r, c1, c2, wx.EAST)
@@ -256,7 +244,10 @@ class PyGauge(wx.PyWindow):
             colour=self.GetBarColour()
             dc.SetBrush(wx.Brush(colour))
             dc.SetPen(wx.Pen(colour))
-            w = rect.width * (float(value) / self._range)
+            if value > self._range:
+                w = rect.width
+            else:
+                w = rect.width * (float(value) / self._range)
             r = copy.copy(rect)
             r.width = w
             dc.DrawRectangleRect(r)
@@ -265,9 +256,6 @@ class PyGauge(wx.PyWindow):
         fontLabel = wx.Font(8, wx.SWISS, wx.NORMAL, wx.NORMAL)
         dc.SetFont(fontLabel)
 
-        if self._overdrive > self._range:
-            value = self._overdrive
-        self._tooltip.SetTip("%.2f/%.2f" % (value, self._range))
         formatStr = "{0:." + str(self._fractionDigits) + "f}%"
         dc.DrawLabel(formatStr.format((value*100/self._range)), rect, wx.ALIGN_CENTER)
 
@@ -327,7 +315,6 @@ class PyGauge(wx.PyWindow):
         self._animStep += self._period
 
         if self._timerId == event.GetId():
-#            and self._overdriveTimerId != event.GetId():
             stop_timer = False
 
             if self._animStep > self._animDuration:
@@ -348,6 +335,4 @@ class PyGauge(wx.PyWindow):
                 self._timer.Stop()
 
             self.Refresh()
-#        if self._overdriveTimerId == event.GetId():
-#            self._overdriveToggle*=-1
-#            self.Refresh()
+
