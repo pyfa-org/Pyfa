@@ -967,18 +967,17 @@ class StatsPane(wx.Panel):
         self.initResistancesPanel( self.mainparent )
 
         self.initRechargePanelFull( self.mainparent )
-
         self.initRechargePanelMini( self.mainparent )
         
-        self.initFirepowerPanel(self.mainparent)
+        self.initFirepowerPanel( self.mainparent )
 
-        self.initCapPanel(self.mainparent)
+        self.initCapPanel( self.mainparent )
 
-        self.initTargetingMiscPanel(self.mainparent)
+        self.initTargetingMiscPanel( self.mainparent )
+        self.initSpeedAlignPanelMini( self.mainparent )
 
-        self.initPricePanelMini(self.mainparent)
-
-        self.initPricePanelFull(self.mainparent)
+        self.initPricePanelMini( self.mainparent )
+        self.initPricePanelFull( self.mainparent )
 
 ###
 
@@ -1430,32 +1429,15 @@ class StatsPane(wx.Panel):
 
     def initTargetingMiscPanel( self, parent):
 
-        # Targeting & Misc
-        grid = wx.GridSizer(1, 2)
-        self.sizerBase.Add(grid, 0, wx.EXPAND | wx.LEFT, 3)
+        tmTPanel = TogglePanel(self.fullPanel)
 
-        # Targeting header
-        sizerHeaderTargeting = wx.BoxSizer(wx.HORIZONTAL)
-        grid.Add(sizerHeaderTargeting, 0, wx.EXPAND)
-
-        labelTargeting = wx.StaticText(self.fullPanel, wx.ID_ANY, "Targeting")
-        labelTargeting.SetFont(self.boldFont)
-
-        sizerHeaderTargeting.Add(labelTargeting, 0, wx.ALIGN_CENTER)
-        sizerHeaderTargeting.Add(wx.StaticLine(self.fullPanel, wx.ID_ANY), 1, wx.ALIGN_CENTER)
-
-        # Misc header
-        sizerHeaderMisc = wx.BoxSizer(wx.HORIZONTAL)
-        grid.Add(sizerHeaderMisc, 0, wx.EXPAND)
-
-        labelMisc = wx.StaticText(self.fullPanel, wx.ID_ANY, "Misc")
-        labelMisc.SetFont(self.boldFont)
-
-        sizerHeaderMisc.Add(labelMisc, 0, wx.ALIGN_CENTER)
-        sizerHeaderMisc.Add(wx.StaticLine(self.fullPanel, wx.ID_ANY), 1, wx.ALIGN_CENTER)
+        # Ugly stuff - we need to improve pyfatogglepanel class to support customized stuff in header
+        tmTPanel.SetLabel(u"Targeting                        Misc")
 
         gridTargetingMisc = wx.GridSizer(1, 2)
-        self.sizerBase.Add(gridTargetingMisc, 0, wx.EXPAND | wx.LEFT, 3)
+        self.sizerBase.Add(tmTPanel, 0, wx.EXPAND | wx.LEFT, 3)
+        ContentPanel = tmTPanel.GetContentPane()
+        tmTPanel.AddSizer(gridTargetingMisc)                   
         # Targeting
 
         gridTargeting = wx.FlexGridSizer(4, 2)
@@ -1468,16 +1450,16 @@ class StatsPane(wx.Panel):
                   ("Sensor str.", "SensorStr", ""))
 
         for header, labelShort, unit in labels:
-            gridTargeting.Add(wx.StaticText(self.fullPanel, wx.ID_ANY, "%s: " % header), 0, wx.ALIGN_LEFT)
+            gridTargeting.Add(wx.StaticText(ContentPanel, wx.ID_ANY, "%s: " % header), 0, wx.ALIGN_LEFT)
 
             box = wx.BoxSizer(wx.HORIZONTAL)
             gridTargeting.Add(box, 0, wx.ALIGN_LEFT)
 
-            lbl = wx.StaticText(self.fullPanel, wx.ID_ANY, "0")
+            lbl = wx.StaticText(ContentPanel, wx.ID_ANY, "0")
             setattr(self, "label%s" % labelShort, lbl)
             box.Add(lbl, 0, wx.ALIGN_LEFT)
 
-            lblUnit = wx.StaticText(self.fullPanel, wx.ID_ANY, " %s" % unit)
+            lblUnit = wx.StaticText(ContentPanel, wx.ID_ANY, " %s" % unit)
             setattr(self, "labelUnit%s" % labelShort, lblUnit)
             box.Add(lblUnit, 0, wx.ALIGN_LEFT)
 
@@ -1493,20 +1475,21 @@ class StatsPane(wx.Panel):
                   ("Signature", "SigRadius", "m"))
 
         for header, labelShort, unit in labels:
-            gridMisc.Add(wx.StaticText(self.fullPanel, wx.ID_ANY, "%s: " % header), 0, wx.ALIGN_LEFT)
+            gridMisc.Add(wx.StaticText(ContentPanel, wx.ID_ANY, "%s: " % header), 0, wx.ALIGN_LEFT)
 
             box = wx.BoxSizer(wx.HORIZONTAL)
             gridMisc.Add(box, 0, wx.ALIGN_LEFT)
 
-            lbl = wx.StaticText(self.fullPanel, wx.ID_ANY, "0")
+            lbl = wx.StaticText(ContentPanel, wx.ID_ANY, "0")
             setattr(self, "labelFull%s" % labelShort, lbl)
             box.Add(lbl, 0, wx.ALIGN_LEFT)
 
-            lblUnit = wx.StaticText(self.fullPanel, wx.ID_ANY, " %s" % unit)
+            lblUnit = wx.StaticText(ContentPanel, wx.ID_ANY, " %s" % unit)
             setattr(self, "labelFullUnit%s" % labelShort, lblUnit)
             box.Add(lblUnit, 0, wx.ALIGN_LEFT)
 
 
+    def initSpeedAlignPanelMini(self, parent):
         # Mini speed & align
         labelManeuverability = wx.StaticText(self.miniPanel, wx.ID_ANY, "Agility")
         labelManeuverability.SetFont(self.boldFont)
