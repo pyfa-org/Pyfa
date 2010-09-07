@@ -51,3 +51,7 @@ class Character():
 
     def getGroupDescription(self, groupID):
         return eos.db.getMarketGroup(groupID).description
+
+    def getSkillLevel(self, charID, skillID):
+        skill = eos.db.getCharacter(charID).getSkill(skillID)
+        return skill.level if skill.learned else "Not learned"
