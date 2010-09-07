@@ -1276,30 +1276,31 @@ class StatsPane(wx.Panel):
             setattr(self, "labelMiniTankUnit%s" % stability.capitalize(), lbl)
             box.Add(lbl, 0, wx.ALIGN_LEFT)
 
-        self.minSizerBase.Add(wx.StaticLine(parent, wx.ID_ANY, style=wx.HORIZONTAL), 0, wx.EXPAND)        
+        self.minSizerBase.Add(wx.StaticLine(self.miniPanel, wx.ID_ANY, style=wx.HORIZONTAL), 0, wx.EXPAND)        
 
     def initFirepowerPanel(self, parent):
 
         # Firepower
-        sizerHeaderFirepower = wx.BoxSizer(wx.HORIZONTAL)
-        self.sizerBase.Add(sizerHeaderFirepower, 0, wx.EXPAND | wx.LEFT, 3)
 
         for panel in ("full", "mini"):
             parent = getattr(self, "%sPanel" % panel)
-            labelFirepower = wx.StaticText(parent, wx.ID_ANY, "Firepower")
-            labelFirepower.SetFont(self.boldFont)
-
             if panel == "mini":
+                labelFirepower = wx.StaticText(parent, wx.ID_ANY, "Firepower")
+                labelFirepower.SetFont(self.boldFont)
+
                 self.minSizerBase.Add(labelFirepower, 0, wx.ALIGN_CENTER)
             else:
-                sizerHeaderFirepower.Add(labelFirepower, 0, wx.ALIGN_CENTER)
-                sizerHeaderFirepower.Add(wx.StaticLine(self.fullPanel, wx.ID_ANY), 1, wx.ALIGN_CENTER)
+                fpTPanel = TogglePanel(self.fullPanel)
+                fpTPanel.SetLabel("Firepower")
 
-            sizerFirepower = wx.FlexGridSizer(1, 3)
-            for i in xrange(3):
-                sizerFirepower.AddGrowableCol(i)
+                sizerFirepower = wx.FlexGridSizer(1, 3)
+                for i in xrange(3):
+                    sizerFirepower.AddGrowableCol(i)
 
-            self.sizerBase.Add(sizerFirepower, 0, wx.EXPAND | wx.LEFT, 3)
+                self.sizerBase.Add(fpTPanel, 0, wx.EXPAND | wx.LEFT, 3)
+                fpTPanel.AddSizer(sizerFirepower)
+                parent = fpTPanel.GetContentPane()
+                
             if panel == "full":
                 for damageType, image in (("weapon", "turret") , ("drone", "droneBay")):
                     baseBox = wx.BoxSizer(wx.HORIZONTAL)
@@ -1345,7 +1346,7 @@ class StatsPane(wx.Panel):
             gridS.Add(wx.StaticText(parent, wx.ID_ANY, " DPS: "), 0, wx.ALL | wx.ALIGN_RIGHT)
             gridS.Add(lbl, 0, wx.ALIGN_LEFT)
 
-        self.minSizerBase.Add(wx.StaticLine(parent, wx.ID_ANY, style=wx.HORIZONTAL), 0, wx.EXPAND)
+        self.minSizerBase.Add(wx.StaticLine(self.miniPanel, wx.ID_ANY, style=wx.HORIZONTAL), 0, wx.EXPAND)
     
 
 
@@ -1374,7 +1375,10 @@ class StatsPane(wx.Panel):
 
             # Capacitor capacity and time
             baseBox = wx.BoxSizer(wx.HORIZONTAL)
-            sizerCapacitor.Add(baseBox, 0, wx.ALIGN_LEFT)
+            if panel == "full":
+                sizerCapacitor.Add(baseBox, 0, wx.ALIGN_CENTER_HORIZONTAL)
+            else:
+                sizerCapacitor.Add(baseBox, 0, wx.ALIGN_LEFT)
 
             if panel == "full":
                 baseBox.Add(bitmapLoader.getStaticBitmap("capacitorInfo_big", parent, "icons"), 0, wx.ALIGN_CENTER)
@@ -1406,7 +1410,10 @@ class StatsPane(wx.Panel):
 
             # Capacitor balance
             baseBox = wx.BoxSizer(wx.HORIZONTAL)
-            sizerCapacitor.Add(baseBox, 0, wx.ALIGN_TOP)
+            if panel == "full":
+                sizerCapacitor.Add(baseBox, 0, wx.ALIGN_CENTER_HORIZONTAL)
+            else:
+                sizerCapacitor.Add(baseBox, 0, wx.ALIGN_TOP)
 
             baseBox.Add(bitmapLoader.getStaticBitmap("capacitorRecharge_big", parent, "icons"), 0, wx.ALIGN_CENTER)
 
@@ -1518,7 +1525,7 @@ class StatsPane(wx.Panel):
             setattr(self, "labelMiniUnit%s" % labelShort, lblUnit)
             box.Add(lblUnit, 0, wx.ALIGN_LEFT)
 
-        self.minSizerBase.Add(wx.StaticLine(parent, wx.ID_ANY, style=wx.HORIZONTAL), 0, wx.EXPAND)        
+        self.minSizerBase.Add(wx.StaticLine(self.miniPanel, wx.ID_ANY, style=wx.HORIZONTAL), 0, wx.EXPAND)        
 
 
     def initPricePanelMini( self, parent):

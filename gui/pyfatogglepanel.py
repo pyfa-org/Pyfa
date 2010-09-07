@@ -125,7 +125,7 @@ class TogglePanel ( wx.Panel ):
         pass
     
     def AddSizer(self, sizer):
-        self.contentSizer.Add(sizer, 1, wx.EXPAND, 5)
+        self.contentSizer.Add(sizer, 1, wx.EXPAND | wx.ALL, 5)
         self.Layout()
     def GetContentPane(self):
         return self.contentPanel
