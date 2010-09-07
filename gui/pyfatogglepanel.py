@@ -4,7 +4,7 @@
 ## pyfatogllepanel.py
 ##
 ## Author: Darriele - HomeWorld
-## Serial: 2010090612  (YYYYMMDDII)
+## Serial: 2010090702  (YYYYMMDDII)
 ## Project home: http://www.evefit.org - pyfa project
 ##               http://www.evefit.org is the home for pyfa / eos  / aurora 
 ## Some portions of code are based on
@@ -125,7 +125,7 @@ class TogglePanel ( wx.Panel ):
         pass
     
     def AddSizer(self, sizer):
-        self.contentSizer.Add(sizer, 1, wx.EXPAND | wx.ALL, 5)
+        self.contentSizer.Add(sizer, 1, wx.EXPAND | wx.ALL, 0)
         self.Layout()
     def GetContentPane(self):
         return self.contentPanel

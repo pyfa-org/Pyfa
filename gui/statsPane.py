@@ -821,41 +821,6 @@ class StatsPane(wx.Panel):
         box.Add(wx.StaticText(self.miniPanel, wx.ID_ANY, " m ISK"), 0, wx.ALIGN_CENTER)
 
 
-
-        # The custom made collapsible panel demo
-        priceTPanel = TogglePanel(self.fullPanel)
-        priceTPanel.SetLabel(u"Price")
-
-        self.sizerBase.Add(priceTPanel,0, wx.EXPAND | wx.LEFT | wx.RIGHT, 3)
-        priceContentPane = priceTPanel.GetContentPane()
-
-        # Grid for the price stuff.
-
-        gridPrice = wx.GridSizer(1, 3)
-        priceTPanel.AddSizer(gridPrice)
-
-
-        for type in ("ship", "fittings", "total"):
-            image = "%sPrice_big" % type if type != "ship" else "ship_big"
-            box = wx.BoxSizer(wx.HORIZONTAL)
-            gridPrice.Add(box)
-
-            box.Add(bitmapLoader.getStaticBitmap(image, priceContentPane, "icons"), 0, wx.ALIGN_CENTER)
-
-            vbox = wx.BoxSizer(wx.VERTICAL)
-            box.Add(vbox, 1, wx.EXPAND)
-
-            vbox.Add(wx.StaticText(priceContentPane, wx.ID_ANY, type.capitalize()), 0, wx.ALIGN_LEFT)
-
-            hbox = wx.BoxSizer(wx.HORIZONTAL)
-            vbox.Add(hbox)
-
-            lbl = wx.StaticText(priceContentPane, wx.ID_ANY, "0.00")
-            setattr(self, "labelPrice%s" % type, lbl)
-            hbox.Add(lbl, 0, wx.ALIGN_LEFT)
-
-            hbox.Add(wx.StaticText(priceContentPane, wx.ID_ANY, " m ISK"), 0, wx.ALIGN_LEFT)
-
         # Price
         sizerHeaderPrice = wx.BoxSizer(wx.HORIZONTAL)
         self.sizerBase.Add(sizerHeaderPrice, 0, wx.EXPAND | wx.LEFT, 3)
@@ -1304,7 +1269,7 @@ class StatsPane(wx.Panel):
             if panel == "full":
                 for damageType, image in (("weapon", "turret") , ("drone", "droneBay")):
                     baseBox = wx.BoxSizer(wx.HORIZONTAL)
-                    sizerFirepower.Add(baseBox, 0, wx.ALIGN_CENTER)
+                    sizerFirepower.Add(baseBox, 0, wx.ALIGN_LEFT)
 
                     baseBox.Add(bitmapLoader.getStaticBitmap("%s_big" % image, parent, "icons"), 0, wx.ALIGN_CENTER)
 
@@ -1376,7 +1341,7 @@ class StatsPane(wx.Panel):
             # Capacitor capacity and time
             baseBox = wx.BoxSizer(wx.HORIZONTAL)
             if panel == "full":
-                sizerCapacitor.Add(baseBox, 0, wx.ALIGN_CENTER_HORIZONTAL)
+                sizerCapacitor.Add(baseBox, 0, wx.ALIGN_LEFT)
             else:
                 sizerCapacitor.Add(baseBox, 0, wx.ALIGN_LEFT)
 
@@ -1442,7 +1407,7 @@ class StatsPane(wx.Panel):
         tmTPanel = TogglePanel(self.fullPanel)
 
         # Ugly stuff - we need to improve pyfatogglepanel class to support customized stuff in header
-        tmTPanel.SetLabel(u"Targeting                        Misc")
+        tmTPanel.SetLabel(u"Targeting && Misc -- beta")
 
         gridTargetingMisc = wx.GridSizer(1, 2)
         self.sizerBase.Add(tmTPanel, 0, wx.EXPAND | wx.LEFT, 3)
@@ -1452,7 +1417,7 @@ class StatsPane(wx.Panel):
 
         gridTargeting = wx.FlexGridSizer(4, 2)
         gridTargeting.AddGrowableCol(1)
-        gridTargetingMisc.Add(gridTargeting)
+        gridTargetingMisc.Add(gridTargeting, 0, wx.ALIGN_CENTER)
 
         labels = (("Targets", "Targets", ""),
                   ("Range", "Range", "km"),
@@ -1477,7 +1442,7 @@ class StatsPane(wx.Panel):
 
         gridMisc = wx.FlexGridSizer(4, 2)
         gridMisc.AddGrowableCol(1)
-        gridTargetingMisc.Add(gridMisc)
+        gridTargetingMisc.Add(gridMisc,0 , wx.ALIGN_CENTER)
 
         labels = (("Speed", "Speed", "m/s"),
                   ("Align time", "AlignTime", "s"),
@@ -1553,7 +1518,7 @@ class StatsPane(wx.Panel):
         priceTPanel = TogglePanel(self.fullPanel)
         priceTPanel.SetLabel(u"Price")
 
-        self.sizerBase.Add(priceTPanel,0, wx.EXPAND | wx.LEFT | wx.RIGHT, 3)
+        self.sizerBase.Add(priceTPanel,0, wx.EXPAND | wx.LEFT, 3)
         priceContentPane = priceTPanel.GetContentPane()
 
         # Grid for the price stuff.
@@ -1565,7 +1530,7 @@ class StatsPane(wx.Panel):
         for type in ("ship", "fittings", "total"):
             image = "%sPrice_big" % type if type != "ship" else "ship_big"
             box = wx.BoxSizer(wx.HORIZONTAL)
-            gridPrice.Add(box)
+            gridPrice.Add(box, 0, wx.ALIGN_CENTER)
 
             box.Add(bitmapLoader.getStaticBitmap(image, priceContentPane, "icons"), 0, wx.ALIGN_CENTER)
 
