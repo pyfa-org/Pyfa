@@ -958,7 +958,7 @@ class StatsPane(wx.Panel):
         self.sizerBase = wx.BoxSizer(wx.VERTICAL)
         self.fullPanel.SetSizer(self.sizerBase)
 
-### TogglePanels
+### TogglePanels + Minipanel stuff (where it's the case)
 
 
 
@@ -1354,19 +1354,22 @@ class StatsPane(wx.Panel):
         # Capacitor
         for panel in ("full", "mini"):
             parent = getattr(self, "%sPanel" % panel)
-            labelCap = wx.StaticText(parent, wx.ID_ANY, "Capacitor")
-            labelCap.SetFont(self.boldFont)
-            sizerHeaderCapacitor = wx.BoxSizer(wx.HORIZONTAL)
 
             if panel == "mini":
+                labelCap = wx.StaticText(parent, wx.ID_ANY, "Capacitor")
+                labelCap.SetFont(self.boldFont)
+                
                 self.minSizerBase.Add(labelCap, 0, wx.ALIGN_CENTER)
                 sizerCapacitor = self.minSizerBase
             else:
-                self.sizerBase.Add(sizerHeaderCapacitor, 0, wx.EXPAND | wx.LEFT, 1)
-                sizerHeaderCapacitor.Add(labelCap, 0, wx.ALIGN_CENTER)
-                sizerHeaderCapacitor.Add(wx.StaticLine(self.fullPanel, wx.ID_ANY), 1, wx.ALIGN_CENTER)
+                capTPanel = TogglePanel(self.fullPanel)
+                capTPanel.SetLabel(u"Capacitor")
+
                 sizerCapacitor = wx.GridSizer(1, 2)
-                self.sizerBase.Add(sizerCapacitor, 0, wx.EXPAND  | wx.LEFT, 1)
+                self.sizerBase.Add(capTPanel, 0, wx.EXPAND  | wx.LEFT, 3)
+                capTPanel.AddSizer(sizerCapacitor)
+                ContentPanel = capTPanel.GetContentPane()
+                parent = ContentPanel
 
 
             # Capacitor capacity and time
