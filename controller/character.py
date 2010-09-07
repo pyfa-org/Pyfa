@@ -55,3 +55,16 @@ class Character():
     def getSkillLevel(self, charID, skillID):
         skill = eos.db.getCharacter(charID).getSkill(skillID)
         return skill.level if skill.learned else "Not learned"
+
+    def rename(self, charID, newName):
+        char = eos.db.getCharacter(charID)
+        char.name = newName
+        eos.db.commit()
+
+    def new(self):
+        char = eos.types.Character("New Character")
+        eos.db.save(char)
+        return char.ID
+
+    def getCharName(self, charID):
+        return eos.db.getCharacter(charID).name

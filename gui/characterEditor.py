@@ -30,24 +30,32 @@ class CharacterEditor (wx.Dialog):
         self.SetSizeHintsSz(wx.Size(640, 450), wx.DefaultSize)
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
-        navSizer = wx.BoxSizer(wx.HORIZONTAL)
+        self.navSizer = wx.BoxSizer(wx.HORIZONTAL)
 
         cChar = controller.Character.getInstance()
         charList = cChar.getCharacterList()
 
-        choices = []
-        self.charIDs = []
-        for ID, name in charList:
-            choices.append(name)
-            self.charIDs.append(ID)
+        self.btnSave = wx.Button(self, wx.ID_SAVE)
+        self.btnSave.Hide()
+        self.btnSave.Bind(wx.EVT_BUTTON, self.processRename)
 
-        self.skillTreeChoice = wx.Choice(self, wx.ID_ANY, choices=choices)
-        navSizer.Add(self.skillTreeChoice, 1, wx.ALL | wx.EXPAND, 5)
+        self.characterRename = wx.TextCtrl(self, wx.ID_ANY, style=wx.TE_PROCESS_ENTER)
+        self.characterRename.Hide()
+        self.characterRename.Bind(wx.EVT_TEXT_ENTER, self.processRename)
+
+        self.skillTreeChoice = wx.Choice(self, wx.ID_ANY, style=wx.CB_READONLY)
+
+        for i, info in enumerate(charList):
+            id, name = info
+            self.skillTreeChoice.Insert(name, i, id)
+
+        self.skillTreeChoice.SetSelection(0)
+
+        self.navSizer.Add(self.skillTreeChoice, 1, wx.ALL | wx.EXPAND, 5)
 
         buttons = (("new", wx.ART_NEW),
-                   ("rename", bitmapLoader.getBitmap("rename", "icons")),
                    ("copy", wx.ART_COPY),
-                   ("import", wx.ART_FILE_OPEN),
+                   ("rename", bitmapLoader.getBitmap("rename", "icons")),
                    ("delete", wx.ART_DELETE))
 
         size = None
@@ -61,10 +69,16 @@ class CharacterEditor (wx.Dialog):
             btn.SetMaxSize(size)
 
             btn.SetToolTipString("%s character" % name.capitalize())
+            btn.Bind(wx.EVT_BUTTON, getattr(self, name))
             setattr(self, "btn%s" % name.capitalize(), btn)
-            navSizer.Add(btn, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 2)
+            self.navSizer.Add(btn, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 2)
 
-        mainSizer.Add(navSizer, 0, wx.ALL | wx.EXPAND, 5)
+        charID = self.getActiveCharacter()
+        if cChar.getCharName(charID) == "All 0":
+            self.btnDelete.Enable(False)
+            self.btnRename.Enable(False)
+
+        mainSizer.Add(self.navSizer, 0, wx.ALL | wx.EXPAND, 5)
 
         self.viewsNBContainer = wx.Notebook(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, 0)
 
@@ -119,6 +133,14 @@ class CharacterEditor (wx.Dialog):
         event.Skip()
         self.sview.skillTreeListCtrl.DeleteChildren(self.sview.root)
         self.sview.populateSkillTree()
+        cChar = controller.Character.getInstance()
+        charID = self.getActiveCharacter()
+        if cChar.getCharName(charID) in ("All 0", "All 5"):
+            self.btnRename.Enable(False)
+            self.btnDelete.Enable(False)
+        else:
+            self.btnRename.Enable(True)
+            self.btnDelete.Enable(True)
 
     def updateDescription(self, event):
         root = event.Item
@@ -138,37 +160,62 @@ class CharacterEditor (wx.Dialog):
         self.description.Show()
 
     def getActiveCharacter(self):
-        selection = self.skillTreeChoice.GetSelection()
-        return self.charIDs[selection] if selection is not None else None
+        selection = self.skillTreeChoice.GetCurrentSelection()
+        return self.skillTreeChoice.GetClientData(selection) if selection is not None else None
 
-class NewCharacter (wx.Dialog):
-    def __init__(self, parent):
-        wx.Dialog.__init__ (self, parent, id=wx.ID_ANY, title=u"Create new character", pos=wx.DefaultPosition, size=wx.Size(344, 89), style=wx.DEFAULT_DIALOG_STYLE)
-        self.SetSizeHintsSz(wx.DefaultSize, wx.DefaultSize)
+    def new(self, event):
+        cChar = controller.Character.getInstance()
+        charID = cChar.new()
+        id = self.skillTreeChoice.Append(cChar.getCharName(charID), charID)
+        self.skillTreeChoice.SetSelection(id)
+        self.btnDelete.Enable(True)
+        self.btnRename.Enable(True)
+        self.rename(event)
 
-        mainSizer = wx.BoxSizer(wx.HORIZONTAL)
+    def rename(self, event):
+        self.skillTreeChoice.Hide()
+        self.characterRename.Show()
+        self.navSizer.Replace(self.skillTreeChoice, self.characterRename)
+        self.characterRename.SetFocus()
+        for btn in (self.btnNew, self.btnCopy, self.btnRename, self.btnDelete):
+            btn.Hide()
+            self.navSizer.Remove(btn)
 
-        sbSizerEditBox = wx.StaticBoxSizer(wx.StaticBox(self, wx.ID_ANY, u"Enter character name"), wx.HORIZONTAL)
+        self.btnSave.Show()
+        self.navSizer.Add(self.btnSave, 0, wx.ALIGN_CENTER)
+        self.navSizer.Layout()
 
-        self.inputName = wx.TextCtrl(self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0)
-        sbSizerEditBox.Add(self.inputName, 1, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
+        cChar = controller.Character.getInstance()
+        currName = cChar.getCharName(self.getActiveCharacter())
+        self.characterRename.SetValue(currName)
+        self.characterRename.SetSelection(0, len(currName))
 
-        mainSizer.Add(sbSizerEditBox, 1, wx.EXPAND | wx.ALL, 5)
+    def processRename(self, event):
+        cChar = controller.Character.getInstance()
+        newName = self.characterRename.GetLineText(0)
+        charID = self.getActiveCharacter()
+        cChar.rename(charID, newName)
 
-        bSizerButtons = wx.BoxSizer(wx.VERTICAL)
+        self.skillTreeChoice.Show()
+        self.characterRename.Hide()
+        self.navSizer.Replace(self.characterRename, self.skillTreeChoice)
+        for btn in (self.btnNew, self.btnCopy, self.btnRename, self.btnDelete):
+            btn.Show()
+            self.navSizer.Add(btn, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 2)
 
-        self.btnOk = wx.Button(self, wx.ID_ANY, u"OK", wx.DefaultPosition, wx.DefaultSize, 0)
-        bSizerButtons.Add(self.btnOk, 0, wx.ALL, 5)
+        self.navSizer.Remove(self.btnSave)
+        self.btnSave.Hide()
+        self.navSizer.Layout()
+        selection = self.skillTreeChoice.GetCurrentSelection()
+        self.skillTreeChoice.Delete(selection)
+        self.skillTreeChoice.Insert(newName, selection, charID)
+        self.skillTreeChoice.SetSelection(selection)
 
-        self.btnCancel = wx.Button(self, wx.ID_ANY, u"Cancel", wx.DefaultPosition, wx.DefaultSize, 0)
-        bSizerButtons.Add(self.btnCancel, 0, wx.ALL, 5)
+    def copy(self, event):
+        pass
 
-        mainSizer.Add(bSizerButtons, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
-
-        self.SetSizer(mainSizer)
-        self.Layout()
-
-        self.Centre(wx.BOTH)
+    def delete(self, event):
+        pass
 
 class SkillTreeView (wx.Panel):
     def __init__(self, parent):
