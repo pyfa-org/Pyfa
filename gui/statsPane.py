@@ -904,7 +904,11 @@ class StatsPane(wx.Panel):
         self.miniPanel.SetMinSize( self.miniSize)
 
 
-    def initWithTogglePanels(self, parent):    
+    def initWithTogglePanels(self, parent):
+
+        self.mainparent = parent
+
+        
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         standardFont = wx.SystemSettings.GetFont(wx.SYS_DEFAULT_GUI_FONT)
         standardFont.SetPointSize(8)
@@ -944,12 +948,56 @@ class StatsPane(wx.Panel):
         self.minSizerBase = wx.BoxSizer(wx.VERTICAL)
         minBase.Add(self.minSizerBase, 0, wx.EXPAND | wx.TOP, 15)
 
-        boldFont = wx.SystemSettings_GetFont(wx.SYS_DEFAULT_GUI_FONT)
-        boldFont.SetWeight(wx.BOLD)
+        self.boldFont = wx.SystemSettings_GetFont(wx.SYS_DEFAULT_GUI_FONT)
+        self.boldFont.SetWeight(wx.BOLD)
+
+        #Temp stuff - should remove it once we are done splitting initWithTogglePanel
+        boldFont = self.boldFont
 
         #Populate the full panel first
         self.sizerBase = wx.BoxSizer(wx.VERTICAL)
         self.fullPanel.SetSizer(self.sizerBase)
+
+### TogglePanels
+
+
+
+        self.initResourcesPanel( self.mainparent)
+
+        self.initResistancesPanel( self.mainparent )
+
+        self.initRechargePanelFull( self.mainparent )
+
+        self.initRechargePanelMini( self.mainparent )
+        
+        self.initFirepowerPanel(self.mainparent)
+
+        self.initCapPanel(self.mainparent)
+
+        self.initTargetingMiscPanel(self.mainparent)
+
+        self.initPricePanelMini(self.mainparent)
+
+        self.initPricePanelFull(self.mainparent)
+
+###
+
+#       Final stuff refit the whole panel
+#
+#       The pencil MUST fit in the hole :)
+
+        self.fullPanel.Fit()
+        self.fullSize=self.fullPanel.GetBestSize()
+        self.fullSize.SetWidth( self.fullSize.GetWidth())
+        self.fullPanel.SetMinSize( self.fullSize)
+
+        self.miniPanel.Fit()
+        self.miniSize=self.miniPanel.GetBestSize()
+        self.miniSize.SetWidth( self.miniSize.GetWidth()+30)
+        self.miniPanel.SetMinSize( self.miniSize)
+
+
+    def initResourcesPanel( self, parent):
 
         sizerHeaderResources = wx.BoxSizer(wx.HORIZONTAL)
         self.sizerBase.Add(sizerHeaderResources, 0, wx.EXPAND | wx.LEFT, 3)
@@ -964,7 +1012,7 @@ class StatsPane(wx.Panel):
             parent = getattr(self, "%sPanel" % panel)
             # Resources header
             labelResources = wx.StaticText(parent, wx.ID_ANY, "Resources")
-            labelResources.SetFont(boldFont)
+            labelResources.SetFont(self.boldFont)
             sizer = wx.FlexGridSizer(3, 2)
             sizer.SetMinSize(wx.Size(27 + self.getTextExtentW("400/400"), 0))
             for i in xrange(3):
@@ -1059,7 +1107,9 @@ class StatsPane(wx.Panel):
 
                 if i == 0 and panel == "full":
                     base.Add(wx.StaticLine(parent, wx.ID_ANY, style=wx.VERTICAL), 0, wx.EXPAND)
+        
 
+    def initResistancesPanel( self, parent):
 
         # Resistances
         sizerHeaderResistances = wx.BoxSizer(wx.HORIZONTAL)
@@ -1067,7 +1117,7 @@ class StatsPane(wx.Panel):
 
         # Header & EHP
         labelResistances = wx.StaticText(self.fullPanel, wx.ID_ANY, "Resistances")
-        labelResistances.SetFont(boldFont)
+        labelResistances.SetFont(self.boldFont)
         sizerHeaderResistances.Add(labelResistances, 0, wx.ALIGN_CENTER)
 
         sizerHeaderResistances.Add(wx.StaticText(self.fullPanel, wx.ID_ANY, " (Effective HP: "), 0, wx.ALIGN_CENTER)
@@ -1151,14 +1201,17 @@ class StatsPane(wx.Panel):
             sizerResistances.Add(box, wx.GBPosition( row, col ), wx.GBSpan( 1, 1 ), wx.ALIGN_CENTER)
             row+=1
             col=0
+        
 
 
-        # Resistances
+    def initRechargePanelFull( self, parent ):
+
+        # RechargeRates
         sizerHeaderRechargeRates = wx.BoxSizer(wx.HORIZONTAL)
         self.sizerBase.Add(sizerHeaderRechargeRates, 0, wx.EXPAND | wx.LEFT, 3)
 
         labelRecharge = wx.StaticText(self.fullPanel, wx.ID_ANY, "Recharge Rates")
-        labelRecharge.SetFont(boldFont)
+        labelRecharge.SetFont(self.boldFont)
 
         sizerHeaderRechargeRates.Add(labelRecharge, 0, wx.ALIGN_CENTER)
         sizerHeaderRechargeRates.Add(wx.StaticLine(self.fullPanel, wx.ID_ANY), 1, wx.ALIGN_CENTER)
@@ -1190,15 +1243,18 @@ class StatsPane(wx.Panel):
                     box.Add(wx.StaticText(self.fullPanel, wx.ID_ANY, " HP/s"), 0, wx.ALIGN_CENTER)
 
                     sizerTankStats.Add(box, 1, wx.ALIGN_CENTER)
+        
 
+
+    def initRechargePanelMini( self, parent):
 
         #Mini tank display
-        labelTank = wx.StaticText(parent, wx.ID_ANY, "Tank")
-        labelTank.SetFont(boldFont)
+        labelTank = wx.StaticText(self.miniPanel, wx.ID_ANY, "Tank")
+        labelTank.SetFont(self.boldFont)
         self.minSizerBase.Add(labelTank, 0, wx.ALIGN_CENTER)
         miniTankSizer = wx.FlexGridSizer(3, 2)
         for i in xrange(2):
-            sizerTankStats.AddGrowableCol(i + 1)
+            miniTankSizer.AddGrowableCol(i + 1)
 
         self.minSizerBase.Add(miniTankSizer, 1, wx.EXPAND)
 
@@ -1221,7 +1277,9 @@ class StatsPane(wx.Panel):
             setattr(self, "labelMiniTankUnit%s" % stability.capitalize(), lbl)
             box.Add(lbl, 0, wx.ALIGN_LEFT)
 
-        self.minSizerBase.Add(wx.StaticLine(parent, wx.ID_ANY, style=wx.HORIZONTAL), 0, wx.EXPAND)
+        self.minSizerBase.Add(wx.StaticLine(parent, wx.ID_ANY, style=wx.HORIZONTAL), 0, wx.EXPAND)        
+
+    def initFirepowerPanel(self, parent):
 
         # Firepower
         sizerHeaderFirepower = wx.BoxSizer(wx.HORIZONTAL)
@@ -1230,7 +1288,7 @@ class StatsPane(wx.Panel):
         for panel in ("full", "mini"):
             parent = getattr(self, "%sPanel" % panel)
             labelFirepower = wx.StaticText(parent, wx.ID_ANY, "Firepower")
-            labelFirepower.SetFont(boldFont)
+            labelFirepower.SetFont(self.boldFont)
 
             if panel == "mini":
                 self.minSizerBase.Add(labelFirepower, 0, wx.ALIGN_CENTER)
@@ -1289,12 +1347,16 @@ class StatsPane(wx.Panel):
             gridS.Add(lbl, 0, wx.ALIGN_LEFT)
 
         self.minSizerBase.Add(wx.StaticLine(parent, wx.ID_ANY, style=wx.HORIZONTAL), 0, wx.EXPAND)
+    
+
+
+    def initCapPanel(self,parent):
 
         # Capacitor
         for panel in ("full", "mini"):
             parent = getattr(self, "%sPanel" % panel)
             labelCap = wx.StaticText(parent, wx.ID_ANY, "Capacitor")
-            labelCap.SetFont(boldFont)
+            labelCap.SetFont(self.boldFont)
             sizerHeaderCapacitor = wx.BoxSizer(wx.HORIZONTAL)
 
             if panel == "mini":
@@ -1363,7 +1425,10 @@ class StatsPane(wx.Panel):
             chargeSizer.Add(lbl, 0, wx.ALIGN_CENTER)
             chargeSizer.Add(wx.StaticText(parent, wx.ID_ANY, " GJ/s"), 0, wx.ALIGN_CENTER)
 
-        self.minSizerBase.Add(wx.StaticLine(parent, wx.ID_ANY, style=wx.HORIZONTAL), 0, wx.EXPAND)
+        self.minSizerBase.Add(wx.StaticLine(parent, wx.ID_ANY, style=wx.HORIZONTAL), 0, wx.EXPAND)        
+
+
+    def initTargetingMiscPanel( self, parent):
 
         # Targeting & Misc
         grid = wx.GridSizer(1, 2)
@@ -1374,7 +1439,7 @@ class StatsPane(wx.Panel):
         grid.Add(sizerHeaderTargeting, 0, wx.EXPAND)
 
         labelTargeting = wx.StaticText(self.fullPanel, wx.ID_ANY, "Targeting")
-        labelTargeting.SetFont(boldFont)
+        labelTargeting.SetFont(self.boldFont)
 
         sizerHeaderTargeting.Add(labelTargeting, 0, wx.ALIGN_CENTER)
         sizerHeaderTargeting.Add(wx.StaticLine(self.fullPanel, wx.ID_ANY), 1, wx.ALIGN_CENTER)
@@ -1384,14 +1449,13 @@ class StatsPane(wx.Panel):
         grid.Add(sizerHeaderMisc, 0, wx.EXPAND)
 
         labelMisc = wx.StaticText(self.fullPanel, wx.ID_ANY, "Misc")
-        labelMisc.SetFont(boldFont)
+        labelMisc.SetFont(self.boldFont)
 
         sizerHeaderMisc.Add(labelMisc, 0, wx.ALIGN_CENTER)
         sizerHeaderMisc.Add(wx.StaticLine(self.fullPanel, wx.ID_ANY), 1, wx.ALIGN_CENTER)
 
         gridTargetingMisc = wx.GridSizer(1, 2)
         self.sizerBase.Add(gridTargetingMisc, 0, wx.EXPAND | wx.LEFT, 3)
-
         # Targeting
 
         gridTargeting = wx.FlexGridSizer(4, 2)
@@ -1445,7 +1509,7 @@ class StatsPane(wx.Panel):
 
         # Mini speed & align
         labelManeuverability = wx.StaticText(self.miniPanel, wx.ID_ANY, "Agility")
-        labelManeuverability.SetFont(boldFont)
+        labelManeuverability.SetFont(self.boldFont)
         self.minSizerBase.Add(labelManeuverability, 0, wx.ALIGN_CENTER)
 
         labels = (("Vel", "Speed", "m/s"),
@@ -1468,11 +1532,14 @@ class StatsPane(wx.Panel):
             setattr(self, "labelMiniUnit%s" % labelShort, lblUnit)
             box.Add(lblUnit, 0, wx.ALIGN_LEFT)
 
-        self.minSizerBase.Add(wx.StaticLine(parent, wx.ID_ANY, style=wx.HORIZONTAL), 0, wx.EXPAND)
+        self.minSizerBase.Add(wx.StaticLine(parent, wx.ID_ANY, style=wx.HORIZONTAL), 0, wx.EXPAND)        
+
+
+    def initPricePanelMini( self, parent):
 
         # Mini price stuff
         labelPrice = wx.StaticText(self.miniPanel, wx.ID_ANY, "Price")
-        labelPrice.SetFont(boldFont)
+        labelPrice.SetFont(self.boldFont)
         self.minSizerBase.Add(labelPrice, 0, wx.ALIGN_CENTER)
 
         image = "totalPrice_big"
@@ -1485,11 +1552,11 @@ class StatsPane(wx.Panel):
         setattr(self, "labelMiniPriceTotal", lbl)
         box.Add(lbl, 0, wx.ALIGN_CENTER)
 
-        box.Add(wx.StaticText(self.miniPanel, wx.ID_ANY, " m ISK"), 0, wx.ALIGN_CENTER)
+        box.Add(wx.StaticText(self.miniPanel, wx.ID_ANY, " m ISK"), 0, wx.ALIGN_CENTER)        
 
 
-
-        # The custom made collapsible panel demo
+    def initPricePanelFull( self, parent):
+        # TogglePanel - Price
         priceTPanel = TogglePanel(self.fullPanel)
         priceTPanel.SetLabel(u"Price")
 
@@ -1524,15 +1591,5 @@ class StatsPane(wx.Panel):
             hbox.Add(wx.StaticText(priceContentPane, wx.ID_ANY, " m ISK"), 0, wx.ALIGN_LEFT)
 
 
-# The pencil MUST fit in the hole :)
 
-        self.fullPanel.Fit()
-        self.fullSize=self.fullPanel.GetBestSize()
-        self.fullSize.SetWidth( self.fullSize.GetWidth())
-        self.fullPanel.SetMinSize( self.fullSize)
-
-        self.miniPanel.Fit()
-        self.miniSize=self.miniPanel.GetBestSize()
-        self.miniSize.SetWidth( self.miniSize.GetWidth()+30)
-        self.miniPanel.SetMinSize( self.miniSize)
 
