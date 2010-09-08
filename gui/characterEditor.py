@@ -25,9 +25,9 @@ import controller
 class CharacterEditor (wx.Dialog):
     def __init__(self, parent):
         wx.Dialog.__init__ (self, parent, id=wx.ID_ANY, title=u"pyfa: Character Editor", pos=wx.DefaultPosition,
-                            size=wx.Size(641, 450), style=wx.CAPTION | wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER)
+                            size=wx.Size(641, 600), style=wx.CAPTION | wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER)
 
-        self.SetSizeHintsSz(wx.Size(640, 450), wx.DefaultSize)
+        self.SetSizeHintsSz(wx.Size(640, 600), wx.DefaultSize)
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
         self.navSizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -43,7 +43,7 @@ class CharacterEditor (wx.Dialog):
         self.characterRename.Hide()
         self.characterRename.Bind(wx.EVT_TEXT_ENTER, self.processRename)
 
-        self.skillTreeChoice = wx.Choice(self, wx.ID_ANY, style=wx.CB_READONLY)
+        self.skillTreeChoice = wx.Choice(self, wx.ID_ANY, style=0)
 
         for i, info in enumerate(charList):
             id, name = info
@@ -95,7 +95,7 @@ class CharacterEditor (wx.Dialog):
         self.descriptionBox = wx.StaticBox(self, wx.ID_ANY, u"Description")
         sbSizerDescription = wx.StaticBoxSizer(self.descriptionBox, wx.HORIZONTAL | wx.RESERVE_SPACE_EVEN_IF_HIDDEN)
 
-        self.description = wx.StaticText(self, wx.ID_ANY, u"\n\n\n")
+        self.description = wx.StaticText(self, wx.ID_ANY, u"\n")
         self.description.Wrap(-1)
         sbSizerDescription.Add(self.description, 0, wx.ALL | wx.RESERVE_SPACE_EVEN_IF_HIDDEN, 2)
 
@@ -114,7 +114,7 @@ class CharacterEditor (wx.Dialog):
 
         self.SetSizer(mainSizer)
         self.Layout()
-
+    
         self.description.Hide()
 
         self.Centre(wx.BOTH)
@@ -154,10 +154,14 @@ class CharacterEditor (wx.Dialog):
             description = cChar.getSkillDescription(data)
         else:
             description = cChar.getGroupDescription(data)
+        if description == None:
+            self.description.SetLabel("Something is missing in EOS check %s" % data)
+        else:
+            self.description.SetLabel(description)
 
-        self.description.SetLabel(description)
-        self.description.Wrap(620)
+        self.description.Wrap(600)
         self.description.Show()
+        self.Layout()
 
     def getActiveCharacter(self):
         selection = self.skillTreeChoice.GetCurrentSelection()
