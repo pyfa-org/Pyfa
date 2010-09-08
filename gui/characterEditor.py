@@ -22,7 +22,7 @@ import wx.gizmos
 from gui import bitmapLoader
 import controller
 
-class CharacterEditor (wx.Dialog):
+class CharacterEditor(wx.Dialog):
     def __init__(self, parent):
         wx.Dialog.__init__ (self, parent, id=wx.ID_ANY, title=u"pyfa: Character Editor", pos=wx.DefaultPosition,
                             size=wx.Size(641, 600), style=wx.CAPTION | wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER)
@@ -92,15 +92,6 @@ class CharacterEditor (wx.Dialog):
 
         mainSizer.Add(self.viewsNBContainer, 1, wx.EXPAND | wx.ALL, 5)
 
-        self.descriptionBox = wx.StaticBox(self, wx.ID_ANY, u"Description")
-        sbSizerDescription = wx.StaticBoxSizer(self.descriptionBox, wx.HORIZONTAL | wx.RESERVE_SPACE_EVEN_IF_HIDDEN)
-
-        self.description = wx.StaticText(self, wx.ID_ANY, u"\n")
-        self.description.Wrap(-1)
-        sbSizerDescription.Add(self.description, 0, wx.ALL | wx.RESERVE_SPACE_EVEN_IF_HIDDEN, 2)
-
-        mainSizer.Add(sbSizerDescription, 0, wx.ALL | wx.EXPAND, 5)
-
         bSizerButtons = wx.BoxSizer(wx.HORIZONTAL)
 
         self.btnOK = wx.Button(self, wx.ID_ANY, u"OK", wx.DefaultPosition, wx.DefaultSize, 0)
@@ -114,8 +105,6 @@ class CharacterEditor (wx.Dialog):
 
         self.SetSizer(mainSizer)
         self.Layout()
-    
-        self.description.Hide()
 
         self.Centre(wx.BOTH)
 
@@ -124,7 +113,6 @@ class CharacterEditor (wx.Dialog):
     def registerEvents(self):
         self.Bind(wx.EVT_CLOSE, self.closeEvent)
         self.skillTreeChoice.Bind(wx.EVT_CHOICE, self.charChanged)
-        self.sview.skillTreeListCtrl.Bind(wx.EVT_TREE_SEL_CHANGED, self.updateDescription)
 
     def closeEvent(self, event):
         pass
@@ -141,27 +129,6 @@ class CharacterEditor (wx.Dialog):
         else:
             self.btnRename.Enable(True)
             self.btnDelete.Enable(True)
-
-    def updateDescription(self, event):
-        root = event.Item
-        tree = self.sview.skillTreeListCtrl
-        cChar = controller.Character.getInstance()
-        data = tree.GetPyData(root)
-        if data == None:
-            return
-
-        if tree.GetChildrenCount(root) == 0:
-            description = cChar.getSkillDescription(data)
-        else:
-            description = cChar.getGroupDescription(data)
-        if description == None:
-            self.description.SetLabel("Something is missing in EOS check %s" % data)
-        else:
-            self.description.SetLabel(description)
-
-        self.description.Wrap(600)
-        self.description.Show()
-        self.Layout()
 
     def getActiveCharacter(self):
         selection = self.skillTreeChoice.GetCurrentSelection()
