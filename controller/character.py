@@ -79,3 +79,17 @@ class Character():
     def delete(self, charID):
         char = eos.db.getCharacter(charID)
         eos.db.remove(char)
+
+    def charList(self, charID, userID, apiKey):
+        char = eos.db.getCharacter(charID)
+        char.apiID = userID
+        char.apiKey = apiKey
+        try:
+            return char.apiCharList()
+        except:
+            return None
+
+    def apiFetch(self, charID, charName):
+        char = eos.db.getCharacter(charID)
+        char.apiFetch(charName)
+        eos.db.commit()

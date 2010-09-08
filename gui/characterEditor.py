@@ -21,6 +21,7 @@ import wx
 import wx.gizmos
 from gui import bitmapLoader
 import controller
+import sys
 
 class CharacterEditor(wx.Dialog):
     def __init__(self, parent):
@@ -73,10 +74,6 @@ class CharacterEditor(wx.Dialog):
             setattr(self, "btn%s" % name.capitalize(), btn)
             self.navSizer.Add(btn, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 2)
 
-        charID = self.getActiveCharacter()
-        if cChar.getCharName(charID) == "All 0":
-            self.btnDelete.Enable(False)
-            self.btnRename.Enable(False)
 
         mainSizer.Add(self.navSizer, 0, wx.ALL | wx.EXPAND, 5)
 
@@ -108,6 +105,10 @@ class CharacterEditor(wx.Dialog):
 
         self.Centre(wx.BOTH)
 
+        charID = self.getActiveCharacter()
+        if cChar.getCharName(charID) == "All 0":
+            self.restrict()
+
         self.registerEvents()
 
     def registerEvents(self):
@@ -117,6 +118,20 @@ class CharacterEditor(wx.Dialog):
     def closeEvent(self, event):
         pass
 
+    def restrict(self):
+        self.btnRename.Enable(False)
+        self.btnDelete.Enable(False)
+        self.aview.inputID.Enable(False)
+        self.aview.inputKey.Enable(False)
+        self.aview.btnFetchCharList.Enable(False)
+
+    def unrestrict(self):
+        self.btnRename.Enable(True)
+        self.btnDelete.Enable(True)
+        self.aview.inputID.Enable(True)
+        self.aview.inputKey.Enable(True)
+        self.aview.btnFetchCharList.Enable(True)
+
     def charChanged(self, event):
         event.Skip()
         self.sview.skillTreeListCtrl.DeleteChildren(self.sview.root)
@@ -124,11 +139,9 @@ class CharacterEditor(wx.Dialog):
         cChar = controller.Character.getInstance()
         charID = self.getActiveCharacter()
         if cChar.getCharName(charID) in ("All 0", "All 5"):
-            self.btnRename.Enable(False)
-            self.btnDelete.Enable(False)
+            self.restrict()
         else:
-            self.btnRename.Enable(True)
-            self.btnDelete.Enable(True)
+            self.unrestrict()
 
     def getActiveCharacter(self):
         selection = self.skillTreeChoice.GetCurrentSelection()
@@ -139,8 +152,7 @@ class CharacterEditor(wx.Dialog):
         charID = cChar.new()
         id = self.skillTreeChoice.Append(cChar.getCharName(charID), charID)
         self.skillTreeChoice.SetSelection(id)
-        self.btnDelete.Enable(True)
-        self.btnRename.Enable(True)
+        self.unrestrict()
         self.btnSave.SetLabel("Create")
         self.rename(None)
 
@@ -190,8 +202,7 @@ class CharacterEditor(wx.Dialog):
         charID = cChar.copy(self.getActiveCharacter())
         id = self.skillTreeChoice.Append(cChar.getCharName(charID), charID)
         self.skillTreeChoice.SetSelection(id)
-        self.btnDelete.Enable(True)
-        self.btnRename.Enable(True)
+        self.unrestrict()
         self.btnSave.SetLabel("Copy")
         self.rename(None)
 
@@ -203,8 +214,7 @@ class CharacterEditor(wx.Dialog):
         self.skillTreeChoice.SetSelection(sel - 1)
         newSelection = self.getActiveCharacter()
         if cChar.getCharName(newSelection) in ("All 0", "All 5"):
-            self.btnDelete.Enable(False)
-            self.btnRename.Enable(False)
+            self.restrict()
 
 class SkillTreeView (wx.Panel):
     def __init__(self, parent):
@@ -283,32 +293,71 @@ class APIView (wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__ (self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.Size(500, 300), style=wx.TAB_TRAVERSAL)
 
-        pmainSizer = wx.BoxSizer(wx.HORIZONTAL)
+        pmainSizer = wx.BoxSizer(wx.VERTICAL)
 
-        fgSizerInput = wx.FlexGridSizer(2, 2, 0, 0)
+        fgSizerInput = wx.FlexGridSizer(3, 2, 0, 0)
         fgSizerInput.AddGrowableCol(1)
         fgSizerInput.SetFlexibleDirection(wx.BOTH)
         fgSizerInput.SetNonFlexibleGrowMode(wx.FLEX_GROWMODE_SPECIFIED)
 
-        self.m_staticIDText = wx.StaticText(self, wx.ID_ANY, u"ID", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.m_staticIDText = wx.StaticText(self, wx.ID_ANY, u"User ID:", wx.DefaultPosition, wx.DefaultSize, 0)
         self.m_staticIDText.Wrap(-1)
         fgSizerInput.Add(self.m_staticIDText, 0, wx.ALL | wx.ALIGN_RIGHT | wx.ALIGN_CENTER_VERTICAL, 5)
 
         self.inputID = wx.TextCtrl(self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0)
         fgSizerInput.Add(self.inputID, 1, wx.ALL | wx.EXPAND, 5)
 
-        self.m_staticKeyText = wx.StaticText(self, wx.ID_ANY, u"API KEY", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.m_staticKeyText = wx.StaticText(self, wx.ID_ANY, u"API key:", wx.DefaultPosition, wx.DefaultSize, 0)
         self.m_staticKeyText.Wrap(-1)
         fgSizerInput.Add(self.m_staticKeyText, 0, wx.ALL | wx.ALIGN_RIGHT | wx.ALIGN_CENTER_VERTICAL, 5)
 
         self.inputKey = wx.TextCtrl(self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0)
         fgSizerInput.Add(self.inputKey, 0, wx.ALL | wx.EXPAND, 5)
 
-        pmainSizer.Add(fgSizerInput, 1, wx.EXPAND, 5)
+        pmainSizer.Add(fgSizerInput, 0, wx.EXPAND, 5)
 
-        self.btnUpdate = wx.Button(self, wx.ID_ANY, u"Update", wx.DefaultPosition, wx.DefaultSize, 0)
-        pmainSizer.Add(self.btnUpdate, 0, wx.ALL | wx.ALIGN_RIGHT, 5)
+        self.btnFetchCharList = wx.Button(self, wx.ID_ANY, u"Fetch Character List")
+        pmainSizer.Add(self.btnFetchCharList, 0, wx.ALL, 5)
+
+        self.btnFetchCharList.Bind(wx.EVT_BUTTON, self.fetchCharList)
+
+        self.charList = wx.ListCtrl(self, wx.ID_ANY, style=wx.LC_REPORT | wx.BORDER_NONE | wx.LC_SINGLE_SEL)
+        pmainSizer.Add(self.charList, 0, wx.EXPAND| wx.ALL, 5)
+
+        info = wx.ListItem()
+        info.m_text = "Character"
+        info.m_mask = wx.LIST_MASK_TEXT
+
+        self.charList.InsertColumnInfo(0, info)
+
+        self.charList.SetMinSize(wx.Size(-1, 100))
+        self.charList.Hide()
+
+        self.btnFetchSkills =  wx.Button(self, wx.ID_ANY, u"Fetch Skills")
+        pmainSizer.Add(self.btnFetchSkills, 0, wx.ALL, 5)
+        self.btnFetchSkills.Hide()
+        self.btnFetchSkills.Bind(wx.EVT_BUTTON, self.fetchSkills)
 
         self.SetSizer(pmainSizer)
         self.Layout()
 
+    def fetchCharList(self, event):
+        cChar = controller.Character.getInstance()
+        list = cChar.charList(self.Parent.Parent.getActiveCharacter(), self.inputID.GetLineText(0), self.inputKey.GetLineText(0))
+        self.charList.DeleteAllItems()
+
+        for charName in list:
+            self.charList.InsertStringItem(sys.maxint, charName)
+
+        self.charList.SetColumnWidth(0, 614)
+        self.charList.Show()
+        self.btnFetchCharList.Hide()
+        self.btnFetchSkills.Show()
+        self.Layout()
+
+    def fetchSkills(self, event):
+        item = self.charList.GetNextItem(-1, wx.LIST_NEXT_ALL, wx.LIST_STATE_SELECTED)
+        charName = self.charList.GetItemText(item)
+        if charName:
+            cChar = controller.Character.getInstance()
+            cChar.apiFetch(self.Parent.Parent.getActiveCharacter(), charName)
