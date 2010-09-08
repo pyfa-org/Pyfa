@@ -124,9 +124,18 @@ class TogglePanel ( wx.Panel ):
         self.headerLabel.Bind( wx.EVT_LEFT_UP, self.toggleContent )
         self.headerBmp.Bind( wx.EVT_LEFT_UP, self.toggleContent )
         self.headerPanel.Bind( wx.EVT_LEFT_UP, self.toggleContent )
+        self.Bind(wx.EVT_PAINT, self.OnPaint)
+        self.headerPanel.Bind(wx.EVT_PAINT, self.OnPaint)
+        self.contentPanel.Bind(wx.EVT_PAINT, self.OnPaint)
+        
             
     def __del__( self ):
         pass
+
+    def OnPaint(self, event):
+        self.contentPanel.Layout()
+        self.headerPanel.Layout()
+        event.Skip()            
 
     def GetHeaderContentSizer(self):
         return self.hcntSizer
