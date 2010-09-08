@@ -46,10 +46,12 @@ class TogglePanel ( wx.Panel ):
 
         self.mainSizer = wx.BoxSizer( wx.VERTICAL )
         self.SetSizer( self.mainSizer )
-
+        parentSize = parent.GetMinSize()
+        
 #       Create the header panel
 
         self.headerPanel = wx.Panel(self)
+
         self.headerPanel.SetBackgroundColour( self.bkColour)
 
         self.mainSizer.Add(self.headerPanel,0,wx.EXPAND,5)
@@ -86,16 +88,18 @@ class TogglePanel ( wx.Panel ):
         headerSizer = wx.BoxSizer( wx.HORIZONTAL )
         self.headerPanel.SetSizer( headerSizer)
         
-        hbmpSizer = wx.BoxSizer( wx.VERTICAL )
-        hlblSizer = wx.BoxSizer( wx.VERTICAL )
+        hbmpSizer = wx.BoxSizer( wx.HORIZONTAL )
+        hlblSizer = wx.BoxSizer( wx.HORIZONTAL )
+        self.hcntSizer = wx.BoxSizer( wx.HORIZONTAL)
         
         hbmpSizer.Add( self.headerBmp, 0,0, 5 )
         
         self.headerLabel = wx.StaticText( self.headerPanel, wx.ID_ANY, u"PYFA", wx.DefaultPosition, wx.DefaultSize, 0 )
-        hlblSizer.Add( self.headerLabel, 1, wx.EXPAND , 5 )
+        hlblSizer.Add( self.headerLabel, 0, wx.EXPAND , 5 )
 
-        headerSizer.Add( hbmpSizer, 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 5 )
-        headerSizer.Add( hlblSizer, 0, wx.ALIGN_CENTER_VERTICAL, 5 )
+        headerSizer.Add( hbmpSizer, 0,  wx.RIGHT, 5 )
+        headerSizer.Add( hlblSizer, 0, wx.RIGHT, 5 )
+        headerSizer.Add( self.hcntSizer, 0, wx.RIGHT, 5)
 
 #       Set the static text font weight to BOLD
 
@@ -123,10 +127,19 @@ class TogglePanel ( wx.Panel ):
             
     def __del__( self ):
         pass
-    
-    def AddSizer(self, sizer):
-        self.contentSizer.Add(sizer, 1, wx.EXPAND | wx.ALL, 0)
+
+    def GetHeaderContentSizer(self):
+        return self.hcntSizer
+
+    def GetHeaderPanel(self):
+        return self.headerPanel
+    def InsertItemInHeader(self, item):
+        self.hcntSizer.Add(item,0,0,0)
         self.Layout()
+    def AddSizer(self, sizer):
+        self.contentSizer.Add(sizer, 0, wx.EXPAND | wx.ALL, 0)
+        self.Layout()
+        
     def GetContentPane(self):
         return self.contentPanel
     
@@ -209,12 +222,16 @@ class TogglePanel ( wx.Panel ):
     def toggleContent( self, event ):
         self.Freeze()   
         if self._toggle == 1:
-            self.contentPanel.Hide()
+#            self.contentPanel.Hide()
+            self.contentMinSize = self.contentPanel.GetSize()
+            self.contentPanel.SetMinSize(wx.Size(self.contentMinSize[0],0))
             self.headerBmp.SetBitmap( self.bmpCollapsed)
 
 
         else:
-            self.contentPanel.Show()
+#            self.contentPanel.Show()
+            self.contentPanel.SetMinSize(self.contentMinSize)
+
             self.headerBmp.SetBitmap( self.bmpExpanded)
 
         
@@ -223,7 +240,7 @@ class TogglePanel ( wx.Panel ):
         self.Thaw()
         self.OnStateChange(self.GetBestSize())
 
-        self.parent.Layout()
+#        self.parent.Layout()
 
 
     # Highlight stuff, not used for now
