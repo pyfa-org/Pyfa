@@ -173,8 +173,9 @@ class StatsPane(wx.Panel):
             else:
                 lbl.SetLabel("0")
 
-        self.labelEhp.SetLabel(formatAmount(total, 3, 0, 9))
+        self.labelEhp.SetLabel("(Effective HP: %s)" % formatAmount(total, 3, 0, 9))
         self.labelEhp.SetToolTip(wx.ToolTip("Effective: %d" % total))
+
 
         damagePattern = fit.damagePattern if fit is not None else None
         for damageType in ("em", "thermal", "kinetic", "explosive"):
@@ -1069,28 +1070,32 @@ class StatsPane(wx.Panel):
                 if i >0 and panel == "mini":
                     base.Add(wx.StaticLine(parent, wx.ID_ANY, style=wx.HORIZONTAL), 0, wx.EXPAND)
 
-                if i == 0 and panel == "full":
-                    base.Add(wx.StaticLine(parent, wx.ID_ANY, style=wx.VERTICAL), 0, wx.EXPAND)
+#                if i == 0 and panel == "full":
+#                    base.Add(wx.StaticLine(parent, wx.ID_ANY, style=wx.VERTICAL), 0, wx.EXPAND)
         
 
     def initResistancesPanel( self, parent):
 
         # Resistances
-        sizerHeaderResistances = wx.BoxSizer(wx.HORIZONTAL)
-        self.sizerBase.Add(sizerHeaderResistances, 0, wx.EXPAND | wx.LEFT, 3)
+        self.resTPanel = TogglePanel(self.fullPanel)
+        resTPanel = self.resTPanel
+        resTPanel.SetLabel("Resistances")
+        ContentPanel = resTPanel.GetContentPane()
+        headerContentSizer = wx.BoxSizer(wx.HORIZONTAL)
+        resTPanel.InsertItemInHeader(headerContentSizer)        
+        headerPanel = resTPanel.GetHeaderPanel()
+        self.sizerBase.Add(resTPanel, 0, wx.EXPAND | wx.LEFT, 3)    
 
-        # Header & EHP
-        labelResistances = wx.StaticText(self.fullPanel, wx.ID_ANY, "Resistances")
-        labelResistances.SetFont(self.boldFont)
-        sizerHeaderResistances.Add(labelResistances, 0, wx.ALIGN_CENTER)
+        # Custom header  EHP
 
-        sizerHeaderResistances.Add(wx.StaticText(self.fullPanel, wx.ID_ANY, " (Effective HP: "), 0, wx.ALIGN_CENTER)
+#        headerContentSizer.Add(wx.StaticText(headerPanel, wx.ID_ANY, " (Effective HP: "))
 
-        self.labelEhp = wx.StaticText(self.fullPanel, wx.ID_ANY, "0")
-        sizerHeaderResistances.Add(self.labelEhp, 0, wx.ALIGN_CENTER)
+        self.labelEhp = wx.StaticText(headerPanel, wx.ID_ANY, " (Effective HP: 0)")
+        headerContentSizer.Add(self.labelEhp, 0)
 
-        sizerHeaderResistances.Add(wx.StaticText(self.fullPanel, wx.ID_ANY, ")"), 0, wx.ALIGN_CENTER)
-        sizerHeaderResistances.Add(wx.StaticLine(self.fullPanel, wx.ID_ANY), 1, wx.ALIGN_CENTER)
+#        headerContentSizer.Add(wx.StaticText(headerPanel, wx.ID_ANY, ")"))
+#        headerContentSizer.Add(wx.StaticLine(headerPanel, wx.ID_ANY), 1, wx.ALIGN_CENTER)
+
 
         # Display table
         col = 0
@@ -1099,16 +1104,18 @@ class StatsPane(wx.Panel):
         for i in xrange(6):
             sizerResistances.AddGrowableCol(i + 1)
 
-        self.sizerBase.Add(sizerResistances, 0, wx.EXPAND | wx.LEFT, 3)
+
+        
+        resTPanel.AddSizer(sizerResistances)
 
         # Add an empty label, then the rest.
-        sizerResistances.Add(wx.StaticText(self.fullPanel, wx.ID_ANY), wx.GBPosition( row, col ), wx.GBSpan( 1, 1 ))
+        sizerResistances.Add(wx.StaticText(ContentPanel, wx.ID_ANY), wx.GBPosition( row, col ), wx.GBSpan( 1, 1 ))
         col+=1
         for damageType in ("em", "thermal", "kinetic", "explosive"):
-            sizerResistances.Add(bitmapLoader.getStaticBitmap("%s_big" % damageType, self.fullPanel, "icons"), wx.GBPosition( row, col ), wx.GBSpan( 1, 1 ), wx.ALIGN_CENTER)
+            sizerResistances.Add(bitmapLoader.getStaticBitmap("%s_big" % damageType, ContentPanel, "icons"), wx.GBPosition( row, col ), wx.GBSpan( 1, 1 ), wx.ALIGN_CENTER)
             col+=1
 
-        sizerResistances.Add(wx.StaticText(self.fullPanel, wx.ID_ANY, "EHP"), wx.GBPosition( row, col ), wx.GBSpan( 1, 1 ), wx.ALIGN_CENTER)
+        sizerResistances.Add(wx.StaticText(ContentPanel, wx.ID_ANY, "EHP"), wx.GBPosition( row, col ), wx.GBSpan( 1, 1 ), wx.ALIGN_CENTER)
         col=0
         row+=1
 
@@ -1116,11 +1123,11 @@ class StatsPane(wx.Panel):
 
         for tankType in ("shield", "armor", "hull", "separator", "damagePattern"):
             if tankType != "separator":
-                sizerResistances.Add(bitmapLoader.getStaticBitmap("%s_big" % tankType, self.fullPanel, "icons"), wx.GBPosition( row, col ), wx.GBSpan( 1, 1 ), wx.ALIGN_CENTER)
+                sizerResistances.Add(bitmapLoader.getStaticBitmap("%s_big" % tankType, ContentPanel, "icons"), wx.GBPosition( row, col ), wx.GBSpan( 1, 1 ), wx.ALIGN_CENTER)
                 col+=1
 
             else:
-                sizerResistances.Add(wx.StaticLine(self.fullPanel, wx.ID_ANY), wx.GBPosition( row, col ), wx.GBSpan( 1, 6 ), wx.EXPAND|wx.ALIGN_CENTER)
+                sizerResistances.Add(wx.StaticLine(ContentPanel, wx.ID_ANY), wx.GBPosition( row, col ), wx.GBSpan( 1, 6 ), wx.EXPAND|wx.ALIGN_CENTER)
                 row+=1
                 col=0
 
@@ -1140,9 +1147,9 @@ class StatsPane(wx.Panel):
                 bc = pgColour[1]
                 currGColour+=1
                 if self._showNormalGauges == True:
-                    lbl = wx.StaticText(self.fullPanel, wx.ID_ANY, "0.00")
+                    lbl = wx.StaticText(ContentPanel, wx.ID_ANY, "0.00")
                 else:
-                    lbl = PG.PyGauge(self.fullPanel, wx.ID_ANY, 100)
+                    lbl = PG.PyGauge(ContentPanel, wx.ID_ANY, 100)
                     lbl.SetMinSize((48, 16))
                     lbl.SetBackgroundColour(wx.Colour(bc[0],bc[1],bc[2]))
                     lbl.SetBarColour(wx.Colour(fc[0],fc[1],fc[2]))
@@ -1153,13 +1160,13 @@ class StatsPane(wx.Panel):
                 box.Add(lbl, 0, wx.ALIGN_CENTER)
 
                 if self._showNormalGauges == True:
-                    box.Add(wx.StaticText(self.fullPanel, wx.ID_ANY, "%"), 0, wx.ALIGN_CENTER)
+                    box.Add(wx.StaticText(ContentPanel, wx.ID_ANY, "%"), 0, wx.ALIGN_CENTER)
                 col+=1
             box = wx.BoxSizer(wx.VERTICAL)
             box.SetMinSize(wx.Size(self.getTextExtentW("WWWWk"), -1))
 
-            lbl = wx.StaticText(self.fullPanel, wx.ID_ANY, "0" if tankType != "damagePattern" else "")
-            box.Add(lbl, 0, wx.ALIGN_CENTER)
+            lbl = wx.StaticText(ContentPanel, wx.ID_ANY, "0" if tankType != "damagePattern" else "", style = wx.ALIGN_CENTRE |wx.ST_NO_AUTORESIZE)
+            box.Add(lbl, 1, wx.ALIGN_CENTER | wx.EXPAND)
 
             setattr(self, "labelResistance%sEhp" % tankType.capitalize(), lbl)
             sizerResistances.Add(box, wx.GBPosition( row, col ), wx.GBSpan( 1, 1 ), wx.ALIGN_CENTER)
