@@ -1171,40 +1171,36 @@ class StatsPane(wx.Panel):
     def initRechargePanelFull( self, parent ):
 
         # RechargeRates
-        sizerHeaderRechargeRates = wx.BoxSizer(wx.HORIZONTAL)
-        self.sizerBase.Add(sizerHeaderRechargeRates, 0, wx.EXPAND | wx.LEFT, 3)
-
-        labelRecharge = wx.StaticText(self.fullPanel, wx.ID_ANY, "Recharge Rates")
-        labelRecharge.SetFont(self.boldFont)
-
-        sizerHeaderRechargeRates.Add(labelRecharge, 0, wx.ALIGN_CENTER)
-        sizerHeaderRechargeRates.Add(wx.StaticLine(self.fullPanel, wx.ID_ANY), 1, wx.ALIGN_CENTER)
+        recTPanel = TogglePanel(self.fullPanel)
+        recTPanel.SetLabel("Recharge rates")
+        ContentPanel = recTPanel.GetContentPane()
 
         sizerTankStats = wx.FlexGridSizer(3, 5)
         for i in xrange(4):
             sizerTankStats.AddGrowableCol(i + 1)
 
-        self.sizerBase.Add(sizerTankStats, 0, wx.EXPAND | wx.LEFT, 3)
+        recTPanel.AddSizer(sizerTankStats)
+        self.sizerBase.Add(recTPanel, 0, wx.EXPAND | wx.LEFT, 3)
 
         #Add an empty label first for correct alignment.
-        sizerTankStats.Add(wx.StaticText(self.fullPanel, wx.ID_ANY, ""), 0)
+        sizerTankStats.Add(wx.StaticText(ContentPanel, wx.ID_ANY, ""), 0)
         for tankType in ("shieldPassive", "shieldActive", "armorActive", "hullActive"):
-            sizerTankStats.Add(bitmapLoader.getStaticBitmap("%s_big" % tankType, self.fullPanel, "icons"), 1, wx.ALIGN_CENTER)
+            sizerTankStats.Add(bitmapLoader.getStaticBitmap("%s_big" % tankType, ContentPanel, "icons"), 1, wx.ALIGN_CENTER)
 
         for stability in ("reinforced", "sustained"):
-                sizerTankStats.Add(bitmapLoader.getStaticBitmap("regen%s_big" % stability.capitalize(), self.fullPanel, "icons"), 0, wx.ALIGN_CENTER)
+                sizerTankStats.Add(bitmapLoader.getStaticBitmap("regen%s_big" % stability.capitalize(), ContentPanel, "icons"), 0, wx.ALIGN_CENTER)
                 for tankType in ("shieldPassive", "shieldActive", "armorActive", "hullActive"):
                     if stability == "reinforced" and tankType == "shieldPassive":
-                        sizerTankStats.Add(wx.StaticText(self.fullPanel, wx.ID_ANY, ""))
+                        sizerTankStats.Add(wx.StaticText(ContentPanel, wx.ID_ANY, ""))
                         continue
 
                     tankTypeCap = tankType[0].capitalize() + tankType[1:]
-                    lbl = wx.StaticText(self.fullPanel, wx.ID_ANY, "0.0")
+                    lbl = wx.StaticText(ContentPanel, wx.ID_ANY, "0.0")
                     setattr(self, "labelTank%s%s" % (stability.capitalize(), tankTypeCap), lbl)
 
                     box = wx.BoxSizer(wx.HORIZONTAL)
                     box.Add(lbl, 1, wx.ALIGN_CENTER)
-                    box.Add(wx.StaticText(self.fullPanel, wx.ID_ANY, " HP/s"), 0, wx.ALIGN_CENTER)
+                    box.Add(wx.StaticText(ContentPanel, wx.ID_ANY, " HP/s"), 0, wx.ALIGN_CENTER)
 
                     sizerTankStats.Add(box, 1, wx.ALIGN_CENTER)
         
