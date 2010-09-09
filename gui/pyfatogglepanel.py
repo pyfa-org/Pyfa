@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*- 
 
 ###########################################################################
 ## pyfatogllepanel.py
@@ -6,7 +6,7 @@
 ## Author: Darriele - HomeWorld
 ## Serial: 2010090702  (YYYYMMDDII)
 ## Project home: http://www.evefit.org - pyfa project
-##               http://www.evefit.org is the home for pyfa / eos  / aurora
+##               http://www.evefit.org is the home for pyfa / eos  / aurora 
 ## Some portions of code are based on
 ## AGW:pycollapsiblepane generic implementation of wx.CollapsiblePane
 ## AGW:pycollapsiblepane credits ( from the original source file used ):
@@ -30,7 +30,7 @@ from gui import bitmapLoader
 ###########################################################################
 
 class TogglePanel ( wx.Panel ):
-
+	
     def __init__( self, parent ):
         wx.Panel.__init__ ( self, parent, id = wx.ID_ANY, pos = wx.DefaultPosition, size = wx.Size( -1,-1 ), style = wx.TAB_TRAVERSAL )
 
@@ -47,7 +47,7 @@ class TogglePanel ( wx.Panel ):
         self.mainSizer = wx.BoxSizer( wx.VERTICAL )
         self.SetSizer( self.mainSizer )
         parentSize = parent.GetMinSize()
-
+        
 #       Create the header panel
 
         self.headerPanel = wx.Panel(self)
@@ -56,7 +56,7 @@ class TogglePanel ( wx.Panel ):
 
         self.mainSizer.Add(self.headerPanel,0,wx.EXPAND,5)
 
-#       Attempt to use native treeitembitmaps - fails on some linux distros / w.mangers
+#       Attempt to use native treeitembitmaps - fails on some linux distros / w.mangers        
 #		self.bmpExpanded = self.GetNativeTreeItemBitmap("expanded")
 #		self.bmpCollapsed =  self.GetNativeTreeItemBitmap("")
 #
@@ -73,27 +73,27 @@ class TogglePanel ( wx.Panel ):
         img = self.bmpExpanded.ConvertToImage()
         img.Replace(0, 0, 0, sysTextColour[0], sysTextColour[1], sysTextColour[2])
         self.bmpExpanded = wx.BitmapFromImage(img)
-
+        
         img = self.bmpCollapsed.ConvertToImage()
         img.Replace(0, 0, 0, sysTextColour[0], sysTextColour[1], sysTextColour[2])
         self.bmpCollapsed = wx.BitmapFromImage(img)
-
+        
 #       Assign the bitmaps to the header static bitmap control
 
         self.headerBmp = wx.StaticBitmap(self.headerPanel )
         self.headerBmp.SetBitmap( self.bmpExpanded)
-
-#       Create the header sizer and append the static bitmap and static text controls
+      
+#       Create the header sizer and append the static bitmap and static text controls        
 
         headerSizer = wx.BoxSizer( wx.HORIZONTAL )
         self.headerPanel.SetSizer( headerSizer)
-
+        
         hbmpSizer = wx.BoxSizer( wx.HORIZONTAL )
         hlblSizer = wx.BoxSizer( wx.HORIZONTAL )
         self.hcntSizer = wx.BoxSizer( wx.HORIZONTAL)
-
+        
         hbmpSizer.Add( self.headerBmp, 0,0, 5 )
-
+        
         self.headerLabel = wx.StaticText( self.headerPanel, wx.ID_ANY, u"PYFA", wx.DefaultPosition, wx.DefaultSize, 0 )
         hlblSizer.Add( self.headerLabel, 0, wx.EXPAND , 5 )
 
@@ -107,18 +107,18 @@ class TogglePanel ( wx.Panel ):
         headerFont.SetWeight(wx.BOLD)
         self.headerLabel.SetFont(headerFont)
 
-#       Create the content panel and its main sizer
+#       Create the content panel and its main sizer        
 
         self.contentSizer = wx.BoxSizer( wx.VERTICAL )
         self.contentPanel = wx.Panel(self)
         self.contentPanel.SetSizer(self.contentSizer)
-
+        
         self.mainSizer.Add( self.contentPanel, 1, wx.EXPAND, 5)
 
 
         self.Layout()
 
-
+        
 
         # Connect Events
         self.headerLabel.Bind( wx.EVT_LEFT_UP, self.toggleContent )
@@ -127,15 +127,15 @@ class TogglePanel ( wx.Panel ):
         self.Bind(wx.EVT_PAINT, self.OnPaint)
         self.headerPanel.Bind(wx.EVT_PAINT, self.OnPaint)
         self.contentPanel.Bind(wx.EVT_PAINT, self.OnPaint)
-
-
+        
+            
     def __del__( self ):
         pass
 
     def OnPaint(self, event):
         self.contentPanel.Layout()
         self.headerPanel.Layout()
-        event.Skip()
+        event.Skip()            
 
     def GetHeaderContentSizer(self):
         return self.hcntSizer
@@ -148,15 +148,15 @@ class TogglePanel ( wx.Panel ):
     def AddSizer(self, sizer):
         self.contentSizer.Add(sizer, 0, wx.EXPAND | wx.ALL, 0)
         self.Layout()
-
+        
     def GetContentPane(self):
         return self.contentPanel
-
+    
     def SetLabel(self, label):
         self.headerLabel.SetLabel(label)
-
+            
     def GetNativeTreeItemBitmap(self, mode):
-
+        
         bitmap = wx.EmptyBitmap(24, 24)
         dc = wx.MemoryDC()
         dc.SelectObject(bitmap)
@@ -166,9 +166,9 @@ class TogglePanel ( wx.Panel ):
         wx.RendererNative.Get().DrawTreeItemButton(self, dc, wx.Rect(0, 0, 24, 24), wx.CONTROL_EXPANDED if mode == "expanded" else 0)
 
         dc.Destroy()
-
-        return bitmap
-
+        
+        return bitmap        
+            
     # Virtual event handlers, overide them in your derived class
 
     def IsCollapsed(self):
@@ -200,7 +200,7 @@ class TogglePanel ( wx.Panel ):
 
         self.parent.GetSizer().SetSizeHints(self.parent)
 
-
+                
         if self.IsCollapsed():
                 # expanded . collapsed transition
             if self.parent.GetSizer():
@@ -210,26 +210,26 @@ class TogglePanel ( wx.Panel ):
                 # use SetClientSize() and not SetSize() otherwise the size for
                 # e.g. a wxFrame with a menubar wouldn't be correctly set
                 self.parent.SetClientSize(sz)
-
+                    
             else:
                 self.parent.Layout()
-
+              
         else:
-
+                
                     # collapsed . expanded transition
 
                     # force our parent to "fit", i.e. expand so that it can honour
                     # our minimal size
             self.parent.Fit()
 
-
+                
 
 
 
     # Toggle the content panel (hide/show)
 
     def toggleContent( self, event ):
-        self.Freeze()
+        self.Freeze()   
         if self._toggle == 1:
 #            self.contentPanel.Hide()
             self.contentMinSize = self.contentPanel.GetSize()
@@ -243,7 +243,7 @@ class TogglePanel ( wx.Panel ):
 
             self.headerBmp.SetBitmap( self.bmpExpanded)
 
-
+        
         self._toggle *=-1
 
         self.Thaw()
@@ -260,11 +260,11 @@ class TogglePanel ( wx.Panel ):
         self.headerPanel.Refresh()
 
         event.Skip()
-
+    
     def leaveWindow( self, event ):
 
         self.headerPanel.SetBackgroundColour( self.bkColour )
-        self.headerPanel.Refresh()
+        self.headerPanel.Refresh()                
 
         event.Skip()
-
+        
