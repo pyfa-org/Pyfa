@@ -91,11 +91,9 @@ class CharacterEditor(wx.Dialog):
 
         bSizerButtons = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.btnOK = wx.Button(self, wx.ID_ANY, u"OK", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.btnOK = wx.Button(self, wx.ID_OK)
         bSizerButtons.Add(self.btnOK, 0, wx.ALL, 5)
 
-        self.btnCancel = wx.Button(self, wx.ID_ANY, u"Cancel", wx.DefaultPosition, wx.DefaultSize, 0)
-        bSizerButtons.Add(self.btnCancel, 0, wx.ALL, 5)
 
         mainSizer.Add(bSizerButtons, 0, wx.ALIGN_RIGHT, 5)
 
