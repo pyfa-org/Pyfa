@@ -133,7 +133,6 @@ class CharacterEditor(wx.Dialog):
         self.aview.btnFetchCharList.Enable(True)
 
     def charChanged(self, event):
-        event.Skip()
         self.sview.skillTreeListCtrl.DeleteChildren(self.sview.root)
         self.sview.populateSkillTree()
         cChar = controller.Character.getInstance()
@@ -155,6 +154,7 @@ class CharacterEditor(wx.Dialog):
         self.unrestrict()
         self.btnSave.SetLabel("Create")
         self.rename(None)
+        self.charChanged(None)
 
     def rename(self, event):
         if event is not None:
@@ -242,8 +242,23 @@ class SkillTreeView (wx.Panel):
         self.populateSkillTree()
 
         tree.Bind(wx.EVT_TREE_ITEM_EXPANDING, self.expandLookup)
+        tree.Bind(wx.EVT_TREE_ITEM_RIGHT_CLICK, self.spawnMenu)
 
+        self.levelChangeMenu = wx.Menu()
+        self.levelIds = {}
+
+        idUnlearned = wx.NewId()
+        self.levelIds[idUnlearned] = "Not Learned"
+        self.levelChangeMenu.Append(idUnlearned, "Unlearn")
+
+        for level in xrange(6):
+            id = wx.NewId()
+            self.levelIds[id] = level
+            self.levelChangeMenu.Append(id, "Level %d" % level)
+
+        self.levelChangeMenu.Bind(wx.EVT_MENU, self.changeLevel)
         self.SetSizer(pmainSizer)
+
         self.Layout()
 
     def populateSkillTree(self):
@@ -273,9 +288,32 @@ class SkillTreeView (wx.Panel):
             for id, name in cChar.getSkills(tree.GetPyData(root)):
                 iconId = self.skillBookImageId
                 childId = tree.AppendItem(root, name, iconId, data=wx.TreeItemData(id))
-                tree.SetItemText(childId, str(cChar.getSkillLevel(char, id)), 1)
+                level = cChar.getSkillLevel(char, id)
+                tree.SetItemText(childId, "Level %d" % level if isinstance(level, int) else level, 1)
 
             tree.SortChildren(root)
+
+    def spawnMenu(self, event):
+        item = event.Item
+        self.skillTreeListCtrl.SelectItem(item)
+        if self.skillTreeListCtrl.GetChildrenCount(item) > 0:
+            return
+
+        cChar = controller.Character.getInstance()
+        charID = self.Parent.Parent.getActiveCharacter()
+        if cChar.getCharName(charID) not in ("All 0", "All 5"):
+            self.PopupMenu(self.levelChangeMenu)
+
+    def changeLevel(self, event):
+        cChar = controller.Character.getInstance()
+        charID = self.Parent.Parent.getActiveCharacter()
+        selection = self.skillTreeListCtrl.GetSelection()
+        skillID = self.skillTreeListCtrl.GetPyData(selection)
+        level = self.levelIds[event.Id]
+
+        self.skillTreeListCtrl.SetItemText(selection, "Level %d" % level if isinstance(level, int) else level, 1)
+        cChar.changeLevel(charID, skillID, level)
+
 
 class ImplantsTreeView (wx.Panel):
     def __init__(self, parent):

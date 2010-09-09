@@ -55,6 +55,7 @@ class Character():
 
     def getSkillLevel(self, charID, skillID):
         skill = eos.db.getCharacter(charID).getSkill(skillID)
+        eos.db.commit()
         return skill.level if skill.learned else "Not learned"
 
     def rename(self, charID, newName):
@@ -92,4 +93,14 @@ class Character():
     def apiFetch(self, charID, charName):
         char = eos.db.getCharacter(charID)
         char.apiFetch(charName)
+        eos.db.commit()
+
+    def changeLevel(self, charID, skillID, level):
+        char = eos.db.getCharacter(charID)
+        skill = char.getSkill(skillID)
+        if level == "Unlearned":
+            skill.learned = False
+        else:
+            skill.level = level
+
         eos.db.commit()
