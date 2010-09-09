@@ -55,7 +55,6 @@ class Character():
 
     def getSkillLevel(self, charID, skillID):
         skill = eos.db.getCharacter(charID).getSkill(skillID)
-        eos.db.commit()
         return skill.level if skill.learned else "Not learned"
 
     def rename(self, charID, newName):
@@ -79,6 +78,7 @@ class Character():
 
     def delete(self, charID):
         char = eos.db.getCharacter(charID)
+        eos.db.commit()
         eos.db.remove(char)
 
     def charList(self, charID, userID, apiKey):
