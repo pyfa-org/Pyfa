@@ -928,7 +928,8 @@ class StatsPane(wx.Panel):
 
 
 
-        self.initResourcesPanel( self.mainparent)
+        self.initResourcesPanelFull( self.mainparent)
+        self.initResourcesPanelMini( self.mainparent)
 
         self.initResistancesPanel( self.mainparent )
 
@@ -962,113 +963,189 @@ class StatsPane(wx.Panel):
         self.miniPanel.SetMinSize( self.miniSize)
 
 
-    def initResourcesPanel( self, parent):
+    def initResourcesPanelFull( self, parent):
 
-        sizerHeaderResources = wx.BoxSizer(wx.HORIZONTAL)
-        self.sizerBase.Add(sizerHeaderResources, 0, wx.EXPAND | wx.LEFT, 3)
 
         # Resources stuff
+        rsrcTPanel = TogglePanel(self.fullPanel)
+        rsrcTPanel.SetLabel("Resources")
+        parent = rsrcTPanel.GetContentPane()
         sizerResources = wx.BoxSizer(wx.HORIZONTAL)
-        self.sizerBase.Add(sizerResources, 0, wx.EXPAND | wx.LEFT, 3)
+        self.sizerBase.Add(rsrcTPanel, 0, wx.EXPAND | wx.LEFT, 3)
 
+        rsrcTPanel.AddSizer(sizerResources)
 
         #Stuff that has to be done for both panels
-        for panel in ("full", "mini"):
-            parent = getattr(self, "%sPanel" % panel)
-            # Resources header
-            labelResources = wx.StaticText(parent, wx.ID_ANY, "Resources")
-            labelResources.SetFont(self.boldFont)
-            sizer = wx.FlexGridSizer(3, 2)
-            sizer.SetMinSize(wx.Size(27 + self.getTextExtentW("400/400"), 0))
-            for i in xrange(3):
-                sizer.AddGrowableCol(i + 1)
+        panel = "full"
+#        parent = getattr(self, "%sPanel" % panel)
 
-            if panel == "mini":
-                base = self.minSizerBase
-                base.Add(labelResources, 0, wx.ALIGN_CENTER)
-                base.Add(sizer, 1, wx.ALIGN_LEFT)
-            else:
-                base = sizerResources
-                base.Add(sizer, 0, wx.ALIGN_CENTER)
+        sizer = wx.FlexGridSizer(3, 2)
+        sizer.SetMinSize(wx.Size(27 + self.getTextExtentW("400/400"), 0))
+        for i in xrange(3):
+            sizer.AddGrowableCol(i + 1)
 
-                sizerHeaderResources.Add(labelResources, 0, wx.ALIGN_CENTER)
-                sizerHeaderResources.Add(wx.StaticLine(self.fullPanel, wx.ID_ANY), 1, wx.ALIGN_CENTER)
+        base = sizerResources
+        base.Add(sizer, 0, wx.ALIGN_CENTER)
 
-            #Turrets & launcher hardslots display
-            for type in ("turret", "launcher", "calibration"):
-                bitmap = bitmapLoader.getStaticBitmap("%s_big" % type, parent, "icons")
-                box = wx.BoxSizer(wx.HORIZONTAL)
+        #Turrets & launcher hardslots display
+        for type in ("turret", "launcher", "calibration"):
+            bitmap = bitmapLoader.getStaticBitmap("%s_big" % type, parent, "icons")
+            box = wx.BoxSizer(wx.HORIZONTAL)
 
-                sizer.Add(bitmap, 0, wx.ALIGN_CENTER)
-                sizer.Add(box, 0, wx.ALIGN_CENTER_VERTICAL)
+            sizer.Add(bitmap, 0, wx.ALIGN_CENTER)
+            sizer.Add(box, 0, wx.ALIGN_CENTER_VERTICAL)
 
-                suffix = "Points" if type == "calibration" else "Hardpoints"
+            suffix = "Points" if type == "calibration" else "Hardpoints"
+            lbl = wx.StaticText(parent, wx.ID_ANY, "0")
+            setattr(self, "label%sUsed%s%s" % (panel.capitalize(), type.capitalize(), suffix.capitalize()), lbl)
+            box.Add(lbl, 0, wx.ALIGN_LEFT)
+
+            box.Add(wx.StaticText(parent, wx.ID_ANY, "/"), 0, wx.ALIGN_LEFT)
+
+            lbl = wx.StaticText(parent, wx.ID_ANY, "0")
+            setattr(self, "label%sTotal%s%s" % (panel.capitalize(), type.capitalize(), suffix.capitalize()), lbl)
+            box.Add(lbl, 0, wx.ALIGN_LEFT)
+
+        st = wx.VERTICAL 
+        base.Add(wx.StaticLine(parent, wx.ID_ANY, style=st), 0, wx.EXPAND | wx.LEFT, 3 if panel == "full" else 0)
+
+
+        #PG, Cpu & drone stuff
+        for i, group in enumerate((("cpu", "pg"), ("droneBay", "droneBandwidth"))):
+            main = wx.BoxSizer(wx.VERTICAL)
+            base.Add(main, 1 , wx.ALIGN_CENTER)
+
+            for type in group:
+                capitalizedType = type[0].capitalize() + type[1:]
+                bitmap = bitmapLoader.getStaticBitmap(type + "_big", parent, "icons")
+
+                stats = wx.BoxSizer(wx.VERTICAL)
+                absolute =  wx.BoxSizer(wx.HORIZONTAL)
+                stats.Add(absolute, 0, wx.EXPAND)
+
+
+                b = wx.BoxSizer(wx.HORIZONTAL)
+                main.Add(b, 1, wx.ALIGN_CENTER)
+
+                b.Add(bitmap, 0, wx.ALIGN_BOTTOM)
+
+                b.Add(stats, 1, wx.EXPAND)
+
+
                 lbl = wx.StaticText(parent, wx.ID_ANY, "0")
-                setattr(self, "label%sUsed%s%s" % (panel.capitalize(), type.capitalize(), suffix.capitalize()), lbl)
-                box.Add(lbl, 0, wx.ALIGN_LEFT)
+                setattr(self, "label%sUsed%s" % (panel.capitalize(), capitalizedType), lbl)
+                absolute.Add(lbl, 0, wx.ALIGN_LEFT)
 
-                box.Add(wx.StaticText(parent, wx.ID_ANY, "/"), 0, wx.ALIGN_LEFT)
+                absolute.Add(wx.StaticText(parent, wx.ID_ANY, "/"), 0, wx.ALIGN_LEFT)
 
                 lbl = wx.StaticText(parent, wx.ID_ANY, "0")
-                setattr(self, "label%sTotal%s%s" % (panel.capitalize(), type.capitalize(), suffix.capitalize()), lbl)
-                box.Add(lbl, 0, wx.ALIGN_LEFT)
+                setattr(self, "label%sTotal%s" % (panel.capitalize(), capitalizedType), lbl)
+                absolute.Add(lbl, 0, wx.ALIGN_LEFT)
 
-            st = wx.VERTICAL if panel == "full" else wx.HORIZONTAL
-            base.Add(wx.StaticLine(parent, wx.ID_ANY, style=st), 0, wx.EXPAND | wx.LEFT, 3 if panel == "full" else 0)
+                units = {"cpu":" tf", "pg":" MW", "droneBandwidth":" mbit/s", "droneBay":u" m\u00B3"}
+                lbl = wx.StaticText(parent, wx.ID_ANY, "%s" % units[type])
+                absolute.Add(lbl, 0, wx.ALIGN_LEFT)
+
+                # Gauges modif. - Darriele
+                if self._showNormalGauges == True:
+                    gauge = wx.Gauge(parent, wx.ID_ANY, 100)
+                    gauge.SetMinSize((80, 20))
+                else:
+                    gauge = PG.PyGauge(parent, wx.ID_ANY, 100)
+                    gauge.SetMinSize((self.getTextExtentW("999.9k/1.3M GJ"), 23))
+                    gauge.SetFractionDigits(2)
+
+                setattr(self, "gauge%s%s" % (panel.capitalize(),capitalizedType), gauge)
+                stats.Add(gauge, 0, wx.ALIGN_CENTER)
+        
+    def initResourcesPanelMini( self, parent):
+
+ 
+
+        #Stuff that has to be done for both panels
+        panel ="mini"
+        parent = getattr(self, "%sPanel" % panel)
+        # Resources header
+        labelResources = wx.StaticText(parent, wx.ID_ANY, "Resources")
+        labelResources.SetFont(self.boldFont)
+        sizer = wx.FlexGridSizer(3, 2)
+        sizer.SetMinSize(wx.Size(27 + self.getTextExtentW("400/400"), 0))
+        for i in xrange(3):
+            sizer.AddGrowableCol(i + 1)
 
 
-            #PG, Cpu & drone stuff
-            for i, group in enumerate((("cpu", "pg"), ("droneBay", "droneBandwidth"))):
-                main = wx.BoxSizer(wx.VERTICAL)
-                base.Add(main, 1 if panel == "full" else 0, wx.ALIGN_CENTER)
-                if i == 0 or panel == "full":
-                    for type in group:
-                        capitalizedType = type[0].capitalize() + type[1:]
-                        bitmap = bitmapLoader.getStaticBitmap(type + "_big", parent, "icons")
-                        if panel == "mini":
-                            main.Add(bitmap, 0, wx.ALIGN_CENTER)
+        base = self.minSizerBase
+        base.Add(labelResources, 0, wx.ALIGN_CENTER)
+        base.Add(sizer, 1, wx.ALIGN_LEFT)
 
-                        stats = wx.BoxSizer(wx.VERTICAL)
-                        absolute =  wx.BoxSizer(wx.HORIZONTAL)
-                        stats.Add(absolute, 0, wx.EXPAND)
+        #Turrets & launcher hardslots display
+        for type in ("turret", "launcher", "calibration"):
+            bitmap = bitmapLoader.getStaticBitmap("%s_big" % type, parent, "icons")
+            box = wx.BoxSizer(wx.HORIZONTAL)
 
-                        if panel == "full":
-                            b = wx.BoxSizer(wx.HORIZONTAL)
-                            main.Add(b, 1, wx.ALIGN_CENTER)
+            sizer.Add(bitmap, 0, wx.ALIGN_CENTER)
+            sizer.Add(box, 0, wx.ALIGN_CENTER_VERTICAL)
 
-                            b.Add(bitmap, 0, wx.ALIGN_BOTTOM)
+            suffix = "Points" if type == "calibration" else "Hardpoints"
+            lbl = wx.StaticText(parent, wx.ID_ANY, "0")
+            setattr(self, "label%sUsed%s%s" % (panel.capitalize(), type.capitalize(), suffix.capitalize()), lbl)
+            box.Add(lbl, 0, wx.ALIGN_LEFT)
 
-                            b.Add(stats, 1, wx.EXPAND)
-                        else:
-                            main.Add(stats, 0, wx.ALIGN_CENTER)
+            box.Add(wx.StaticText(parent, wx.ID_ANY, "/"), 0, wx.ALIGN_LEFT)
 
-                        lbl = wx.StaticText(parent, wx.ID_ANY, "0")
-                        setattr(self, "label%sUsed%s" % (panel.capitalize(), capitalizedType), lbl)
-                        absolute.Add(lbl, 0, wx.ALIGN_LEFT)
+            lbl = wx.StaticText(parent, wx.ID_ANY, "0")
+            setattr(self, "label%sTotal%s%s" % (panel.capitalize(), type.capitalize(), suffix.capitalize()), lbl)
+            box.Add(lbl, 0, wx.ALIGN_LEFT)
 
-                        absolute.Add(wx.StaticText(parent, wx.ID_ANY, "/"), 0, wx.ALIGN_LEFT)
+        st = wx.HORIZONTAL
+        base.Add(wx.StaticLine(parent, wx.ID_ANY, style=st), 0, wx.EXPAND | wx.LEFT, 3 if panel == "full" else 0)
 
-                        lbl = wx.StaticText(parent, wx.ID_ANY, "0")
-                        setattr(self, "label%sTotal%s" % (panel.capitalize(), capitalizedType), lbl)
-                        absolute.Add(lbl, 0, wx.ALIGN_LEFT)
 
-                        units = {"cpu":" tf", "pg":" MW", "droneBandwidth":" mbit/s", "droneBay":u" m\u00B3"}
-                        lbl = wx.StaticText(parent, wx.ID_ANY, "%s" % units[type])
-                        absolute.Add(lbl, 0, wx.ALIGN_LEFT)
+        #PG, Cpu & drone stuff
+        for i, group in enumerate((("cpu", "pg"), ("droneBay", "droneBandwidth"))):
+            main = wx.BoxSizer(wx.VERTICAL)
+            base.Add(main, 0, wx.ALIGN_CENTER)
+            if i == 0:
+                for type in group:
+                    capitalizedType = type[0].capitalize() + type[1:]
+                    bitmap = bitmapLoader.getStaticBitmap(type + "_big", parent, "icons")
+                    
+                    main.Add(bitmap, 0, wx.ALIGN_CENTER)
 
-                        # Gauges modif. - Darriele
-                        if self._showNormalGauges == True:
-                            gauge = wx.Gauge(parent, wx.ID_ANY, 100)
-                            gauge.SetMinSize((80, 20))
-                        else:
-                            gauge = PG.PyGauge(parent, wx.ID_ANY, 100)
-                            gauge.SetMinSize((self.getTextExtentW("999.9k/1.3M GJ"), 23))
-                            gauge.SetFractionDigits(2)
+                    stats = wx.BoxSizer(wx.VERTICAL)
+                    absolute =  wx.BoxSizer(wx.HORIZONTAL)
+                    stats.Add(absolute, 0, wx.EXPAND)
 
-                        setattr(self, "gauge%s%s" % (panel.capitalize(),capitalizedType), gauge)
-                        stats.Add(gauge, 0, wx.ALIGN_CENTER)
-                if i >0 and panel == "mini":
-                    base.Add(wx.StaticLine(parent, wx.ID_ANY, style=wx.HORIZONTAL), 0, wx.EXPAND)
+
+                    main.Add(stats, 0, wx.ALIGN_CENTER)
+
+                    lbl = wx.StaticText(parent, wx.ID_ANY, "0")
+                    setattr(self, "label%sUsed%s" % (panel.capitalize(), capitalizedType), lbl)
+                    absolute.Add(lbl, 0, wx.ALIGN_LEFT)
+
+                    absolute.Add(wx.StaticText(parent, wx.ID_ANY, "/"), 0, wx.ALIGN_LEFT)
+
+                    lbl = wx.StaticText(parent, wx.ID_ANY, "0")
+                    setattr(self, "label%sTotal%s" % (panel.capitalize(), capitalizedType), lbl)
+                    absolute.Add(lbl, 0, wx.ALIGN_LEFT)
+
+                    units = {"cpu":" tf", "pg":" MW", "droneBandwidth":" mbit/s", "droneBay":u" m\u00B3"}
+                    lbl = wx.StaticText(parent, wx.ID_ANY, "%s" % units[type])
+                    absolute.Add(lbl, 0, wx.ALIGN_LEFT)
+
+                    # Gauges modif. - Darriele
+                    if self._showNormalGauges == True:
+                        gauge = wx.Gauge(parent, wx.ID_ANY, 100)
+                        gauge.SetMinSize((80, 20))
+                    else:
+                        gauge = PG.PyGauge(parent, wx.ID_ANY, 100)
+                        gauge.SetMinSize((self.getTextExtentW("999.9k/1.3M GJ"), 23))
+                        gauge.SetFractionDigits(2)
+
+                    setattr(self, "gauge%s%s" % (panel.capitalize(),capitalizedType), gauge)
+                    stats.Add(gauge, 0, wx.ALIGN_CENTER)
+#            if i >0 and panel == "mini":
+        base.Add(wx.StaticLine(parent, wx.ID_ANY, style=wx.HORIZONTAL), 0, wx.EXPAND)
 
 #                if i == 0 and panel == "full":
 #                    base.Add(wx.StaticLine(parent, wx.ID_ANY, style=wx.VERTICAL), 0, wx.EXPAND)
