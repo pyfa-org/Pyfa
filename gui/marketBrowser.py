@@ -254,7 +254,12 @@ class MarketBrowser(wx.Panel):
             self.search.Clear()
 
         for name in ("normal", "faction", "complex", "officer"):
-                getattr(self, name).Enable(True)
+            btn = getattr(self, name)
+            btn.Enable(True)
+            btn.SetValue(False)
+
+        self.normal.SetValue(True)
+
         self.searching = False
 
     def filteredSearchAdd(self):
@@ -281,10 +286,9 @@ class MarketBrowser(wx.Panel):
             btn.Enable(False)
 
         for meta in usedMetas:
-            if meta:
-                btn = getattr(self, cMarket.getMetaName(meta))
-                btn.SetValue(True)
-                btn.Enable(True)
+            btn = getattr(self, cMarket.getMetaName(meta))
+            btn.SetValue(cMarket.isMetaIdActive(meta))
+            btn.Enable(True)
 
         def sort(id1, id2):
             grp = cmp(idGroupMap[id1], idGroupMap[id2])
