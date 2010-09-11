@@ -90,10 +90,11 @@ class ShipBrowser(wx.Panel):
         self.shipView.SortChildren(self.shipRoot)
 
     def getActiveTree(self):
-        if self.searchView.IsShown():
-            return self.searchView
-        else:
-            return self.shipView
+        if self.searchView:
+            if self.searchView.IsShown():
+                return self.searchView
+            else:
+                return self.shipView
 
     def triggerFitSelect(self, event):
         selection = event.Item
@@ -109,6 +110,8 @@ class ShipBrowser(wx.Panel):
 
     def toggleButtons(self, event):
         tree = self.getActiveTree()
+        if tree is None:
+            return
         root = tree.GetSelection()
         btns = (self.shipMenu.new, self.shipMenu.rename, self.shipMenu.delete, self.shipMenu.copy)
         if not root.IsOk():
