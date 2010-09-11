@@ -61,7 +61,7 @@ class PriceViewFull(StatsView):
             setattr(self, "labelPrice%s" % type.capitalize(), lbl)
             hbox.Add(lbl, 0, wx.ALIGN_LEFT)
 
-            hbox.Add(wx.StaticText(contentPanel, wx.ID_ANY, " m ISK"), 0, wx.ALIGN_LEFT)
+            hbox.Add(wx.StaticText(contentPanel, wx.ID_ANY, " ISK"), 0, wx.ALIGN_LEFT)
 
     def refreshPanel(self, fit):
         if fit is not None:
