@@ -90,6 +90,9 @@ class Fit(object):
 
     def removeModule(self, fitID, position):
         fit = eos.db.getFit(fitID)
+        if fit.modules[position].isEmpty:
+            return False
+
         fit.modules.toDummy(position)
         eos.db.commit()
         fit.clear()

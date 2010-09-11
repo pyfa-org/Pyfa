@@ -64,9 +64,10 @@ class FittingView(d.Display):
         row, _ = self.HitTest(event.Position)
         if row != -1:
             cFit = controller.Fit.getInstance()
-            cFit.removeModule(self.activeFitID, self.mods[self.GetItemData(row)].position)
+            trigger = cFit.removeModule(self.activeFitID, self.mods[self.GetItemData(row)].position)
 
-            wx.PostEvent(self.mainFrame, FitChanged(fitID=self.activeFitID))
+            if trigger:
+                wx.PostEvent(self.mainFrame, FitChanged(fitID=self.activeFitID))
 
     def fitChanged(self, event):
         cFit = controller.Fit.getInstance()
