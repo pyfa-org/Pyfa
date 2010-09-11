@@ -32,6 +32,7 @@ class StatsPane(wx.Panel):
                      "capacitorViewFull", "targetingmiscViewFull", "priceViewFull"]
 
     def fitChanged(self, event):
+        print "f"
         cFit = controller.Fit.getInstance()
         fit = cFit.getFit(event.fitID)
         for view in self.views:
@@ -45,8 +46,8 @@ class StatsPane(wx.Panel):
         # Force font size 8
         standardFont = wx.SystemSettings.GetFont(wx.SYS_DEFAULT_GUI_FONT)
         standardFont.SetPointSize(8)
-        self.SetFont(standardFont)        
-        
+        self.SetFont(standardFont)
+
         mainSizer = wx.BoxSizer(wx.VERTICAL)
         self.SetSizer(mainSizer)
 
@@ -61,7 +62,7 @@ class StatsPane(wx.Panel):
 
             view.populatePanel(contentPanel, headerPanel)
             tp.SetLabel(view.getHeaderText(None))
-            
+
             view.refreshPanel(None)
 
             mainSizer.Add(tp, 0, wx.EXPAND | wx.LEFT, 3)

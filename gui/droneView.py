@@ -49,8 +49,10 @@ class DroneView(d.Display):
     def addItem(self, event):
         cFit = controller.Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
-        cFit.addDrone(fitID, event.itemID)
-        wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=fitID))
+        trigger = cFit.addDrone(fitID, event.itemID)
+        if trigger:
+            wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=fitID))
+
         event.Skip()
 
     def removeItem(self, event):

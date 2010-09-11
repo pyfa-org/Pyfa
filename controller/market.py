@@ -19,6 +19,46 @@
 
 import eos.db
 import eos.types
+import wx
+import collections
+import threading
+from sqlalchemy.orm.exc import NoResultFound
+
+class PriceWorkerThread(threading.Thread):
+    def run(self):
+        self.cv = threading.Condition()
+        self.updateRequests = collections.deque()
+        self.scheduled = set()
+        self.processUpdates()
+
+    def processUpdates(self):
+        updateRequests = self.updateRequests
+        cv = self.cv
+
+        while True:
+            cv.acquire()
+
+            while len(updateRequests) == 0:
+                cv.wait()
+
+            # Grab our data and rerelease the lock
+            callback, requests = self.updateRequests.popleft()
+            self.scheduled.clear()
+            cv.release()
+
+            # Grab prices, this is the time-consuming part
+            if len(requests) > 0:
+                eos.types.Price.fetchPrices(*requests)
+
+            callback()
+
+
+    def trigger(self, prices, callbacks):
+        self.cv.acquire()
+        self.updateRequests.append((callbacks, prices))
+        self.scheduled.update(prices)
+        self.cv.notify()
+        self.cv.release()
 
 class Market():
     instance = None
@@ -39,6 +79,10 @@ class Market():
 
     def __init__(self):
         self.activeMetas = set()
+        self.priceCache = {}
+        self.workerThread = PriceWorkerThread()
+        self.workerThread.daemon = True
+        self.workerThread.start()
 
     def getChildren(self, id):
         """
@@ -162,3 +206,36 @@ class Market():
                     l.append((var.ID, var.name, var.icon.iconFile if var.icon else ""))
 
         return l
+
+    def getPrices(self, typeIDs, callback):
+        fetch = set()
+        all = []
+        new = []
+        for typeID in typeIDs:
+            price = self.priceCache.get(typeID)
+            if price is None:
+                try:
+                    price = eos.db.getPrice(typeID)
+                except NoResultFound:
+                    price = eos.types.Price(typeID)
+                    new.append(price)
+
+                self.priceCache[typeID] = price
+
+            all.append(price)
+            if not price.isValid and not price in self.workerThread.scheduled:
+                fetch.add(price)
+
+        def dbAdd():
+            for price in new:
+                eos.db.saveddata_session.add(price)
+                eos.db.saveddata_session.commit()
+                eos.db.saveddata_session.flush()
+
+        def cb():
+            wx.CallAfter(callback, all)
+            wx.CallAfter(dbAdd)
+
+        print map(lambda p: p.typeID, fetch)
+        print map(lambda p: p.typeID, new)
+        self.workerThread.trigger(fetch, cb)

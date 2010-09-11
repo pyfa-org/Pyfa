@@ -106,6 +106,7 @@ class MultiSwitch(wx.Notebook):
                     self.SetPageImage(tab, self.imageList.Add(bitmap))
 
     def pageChanged(self, event):
+        print "p"
         selection = event.Selection
         page = self.GetPage(selection)
         if hasattr(page, "type") and page.type == "fit":
@@ -153,6 +154,7 @@ class MultiSwitch(wx.Notebook):
         event.Skip()
 
     def itemSelected(self, event):
+        print "s"
         selected = self.GetSelection()
         page = self.GetPage(selected)
         if page.type == "fit":

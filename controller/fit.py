@@ -86,7 +86,7 @@ class Fit(object):
             eos.db.commit()
             fit.clear()
             fit.calculateModifiedAttributes()
-        return fit
+        return True
 
     def removeModule(self, fitID, position):
         fit = eos.db.getFit(fitID)
@@ -94,11 +94,11 @@ class Fit(object):
         eos.db.commit()
         fit.clear()
         fit.calculateModifiedAttributes()
-        return fit
+        return True
 
     def addDrone(self, fitID, itemID):
         if fitID == None:
-            return
+            return False
 
         fit = eos.db.getFit(fitID)
         item = eos.db.getItem(itemID, eager=("attributes", "group.category"))
@@ -112,8 +112,9 @@ class Fit(object):
             eos.db.commit()
             fit.clear()
             fit.calculateModifiedAttributes()
-
-        return fit
+            return True
+        else:
+            return False
 
     def removeDrone(self, fitID, i):
         fit = eos.db.getFit(fitID)
@@ -128,7 +129,7 @@ class Fit(object):
         eos.db.commit()
         fit.clear()
         fit.calculateModifiedAttributes()
-        return fit
+        return True
 
     def toggleDrone(self, fitID, i):
         fit = eos.db.getFit(fitID)
@@ -141,4 +142,4 @@ class Fit(object):
         eos.db.commit()
         fit.clear()
         fit.calculateModifiedAttributes()
-        return fit
+        return True
