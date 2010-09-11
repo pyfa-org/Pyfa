@@ -154,7 +154,6 @@ class MultiSwitch(wx.Notebook):
         event.Skip()
 
     def itemSelected(self, event):
-        print "s"
         selected = self.GetSelection()
         page = self.GetPage(selected)
         if page.type == "fit":
