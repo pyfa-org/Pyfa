@@ -39,8 +39,7 @@ class PriceViewFull(StatsView):
 
     def populatePanel(self, contentPanel, headerPanel):
         contentSizer = contentPanel.GetSizer()
-        parent = contentPanel
-        panel = "full"
+        self.panel = contentPanel
         gridPrice = wx.GridSizer(1, 3)
         contentSizer.Add( gridPrice, 0, wx.EXPAND | wx.ALL, 0)
         for type in ("ship", "fittings", "total"):
@@ -65,7 +64,6 @@ class PriceViewFull(StatsView):
             hbox.Add(wx.StaticText(contentPanel, wx.ID_ANY, " m ISK"), 0, wx.ALIGN_LEFT)
 
     def refreshPanel(self, fit):
-        print "r"
         if fit is not None:
             # Compose a list of all the data we need & request it
             typeIDs = []
@@ -85,6 +83,7 @@ class PriceViewFull(StatsView):
             self.labelPriceShip.SetLabel("0.0")
             self.labelPriceFittings.SetLabel("0.0")
             self.labelPriceTotal.SetLabel("0.0")
+            self.panel.Layout()
 
     def processPrices(self, prices):
         shipPrice = prices[0].price
@@ -92,5 +91,6 @@ class PriceViewFull(StatsView):
         self.labelPriceShip.SetLabel(formatAmount(shipPrice, 3, 3, 9))
         self.labelPriceFittings.SetLabel(formatAmount(modPrice, 3, 3, 9))
         self.labelPriceTotal.SetLabel(formatAmount(shipPrice + modPrice, 3, 3, 9))
+        self.panel.Layout()
 
 builtinStatsViews.registerView(PriceViewFull)

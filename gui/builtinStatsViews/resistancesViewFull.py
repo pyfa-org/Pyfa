@@ -37,16 +37,8 @@ class ResistancesViewFull(StatsView):
         return width
 
     def populatePanel(self, contentPanel, headerPanel):
-
         contentSizer = contentPanel.GetSizer()
-
-
-        parent = contentPanel
-        panel = "full"
-
-        # Resistances
-
-
+        self.panel = contentPanel
 
         # Custom header  EHP
         headerContentSizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -66,7 +58,6 @@ class ResistancesViewFull(StatsView):
         headerContentSizer.Add( stCls )
 #        headerContentSizer.Add(wx.StaticLine(headerPanel, wx.ID_ANY), 1, wx.ALIGN_CENTER)
 
-
         # Display table
         col = 0
         row = 0
@@ -75,8 +66,6 @@ class ResistancesViewFull(StatsView):
 
         for i in xrange(6):
             sizerResistances.AddGrowableCol(i + 1)
-
-
 
         # Add an empty label, then the rest.
         sizerResistances.Add(wx.StaticText(contentPanel, wx.ID_ANY), wx.GBPosition( row, col ), wx.GBSpan( 1, 1 ))
@@ -180,5 +169,7 @@ class ResistancesViewFull(StatsView):
                 lbl.SetLabel("%.2f" % getattr(damagePattern, "%sAmount" % damageType))
             else:
                 lbl.SetLabel("0.00")
+
+        self.panel.Layout()
 
 builtinStatsViews.registerView(ResistancesViewFull)

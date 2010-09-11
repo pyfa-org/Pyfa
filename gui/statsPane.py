@@ -32,7 +32,6 @@ class StatsPane(wx.Panel):
                      "capacitorViewFull", "targetingmiscViewFull", "priceViewFull"]
 
     def fitChanged(self, event):
-        print "f"
         cFit = controller.Fit.getInstance()
         fit = cFit.getFit(event.fitID)
         for view in self.views:

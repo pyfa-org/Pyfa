@@ -236,6 +236,4 @@ class Market():
             wx.CallAfter(callback, all)
             wx.CallAfter(dbAdd)
 
-        print map(lambda p: p.typeID, fetch)
-        print map(lambda p: p.typeID, new)
         self.workerThread.trigger(fetch, cb)

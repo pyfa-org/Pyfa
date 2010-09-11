@@ -36,22 +36,15 @@ class FirepowerViewFull(StatsView):
         return width
 
     def populatePanel(self, contentPanel, headerPanel):
-
         contentSizer = contentPanel.GetSizer()
-
-
-        parent = contentPanel
+        parent = self.panel = contentPanel
         panel = "full"
-
 
         sizerFirepower = wx.FlexGridSizer(1, 3)
         for i in xrange(3):
             sizerFirepower.AddGrowableCol(i)
 
-
         contentSizer.Add( sizerFirepower, 0, wx.EXPAND, 0)
-
-
 
         for damageType, image in (("weapon", "turret") , ("drone", "droneBay")):
             baseBox = wx.BoxSizer(wx.HORIZONTAL)
@@ -72,7 +65,6 @@ class FirepowerViewFull(StatsView):
 
             hbox.Add(lbl, 0, wx.ALIGN_CENTER)
             hbox.Add(wx.StaticText(parent, wx.ID_ANY, " DPS"), 0, wx.ALIGN_CENTER)
-
 
         targetSizer = sizerFirepower
 
@@ -95,8 +87,6 @@ class FirepowerViewFull(StatsView):
         gridS.Add(wx.StaticText(parent, wx.ID_ANY, " DPS: "), 0, wx.ALL | wx.ALIGN_RIGHT)
         gridS.Add(lbl, 0, wx.ALIGN_LEFT)
 
-
-
     def refreshPanel(self, fit):
         #If we did anything intresting, we'd update our labels to reflect the new fit's stats here
 
@@ -112,5 +102,6 @@ class FirepowerViewFull(StatsView):
             label.SetLabel(formatAmount(value, prec, lowest, highest))
             label.SetToolTip(wx.ToolTip("%.1f" % value))
 
+        self.panel.Layout()
 
 builtinStatsViews.registerView(FirepowerViewFull)

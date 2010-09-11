@@ -45,9 +45,8 @@ class ResourcesViewFull(StatsView):
         sizerResources = wx.BoxSizer(wx.HORIZONTAL)
         contentSizer.Add( sizerResources, 0, wx.EXPAND, 0)
 
-        parent = contentPanel
+        parent = self.panel = contentPanel
         panel = "full"
-
 
         sizer = wx.FlexGridSizer(3, 2)
         sizer.SetMinSize(wx.Size(27 + self.getTextExtentW("400/400"), 0))
@@ -79,7 +78,6 @@ class ResourcesViewFull(StatsView):
         st = wx.VERTICAL
         base.Add(wx.StaticLine(parent, wx.ID_ANY, style=st), 0, wx.EXPAND | wx.LEFT, 3 if panel == "full" else 0)
 
-
         #PG, Cpu & drone stuff
         for i, group in enumerate((("cpu", "pg"), ("droneBay", "droneBandwidth"))):
             main = wx.BoxSizer(wx.VERTICAL)
@@ -93,14 +91,12 @@ class ResourcesViewFull(StatsView):
                 absolute =  wx.BoxSizer(wx.HORIZONTAL)
                 stats.Add(absolute, 0, wx.EXPAND)
 
-
                 b = wx.BoxSizer(wx.HORIZONTAL)
                 main.Add(b, 1, wx.ALIGN_CENTER)
 
                 b.Add(bitmap, 0, wx.ALIGN_BOTTOM)
 
                 b.Add(stats, 1, wx.EXPAND)
-
 
                 lbl = wx.StaticText(parent, wx.ID_ANY, "0")
                 setattr(self, "label%sUsed%s" % (panel.capitalize(), capitalizedType), lbl)
@@ -124,7 +120,6 @@ class ResourcesViewFull(StatsView):
 
                 setattr(self, "gauge%s%s" % (panel.capitalize(),capitalizedType), gauge)
                 stats.Add(gauge, 0, wx.ALIGN_CENTER)
-
 
     def refreshPanel(self, fit):
         #If we did anything intresting, we'd update our labels to reflect the new fit's stats here
@@ -178,6 +173,6 @@ class ResourcesViewFull(StatsView):
                 gauge.SetValue(0)
                 i+=1
 
-
+        self.panel.Layout()
 
 builtinStatsViews.registerView(ResourcesViewFull)

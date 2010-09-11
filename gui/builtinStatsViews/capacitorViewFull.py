@@ -36,25 +36,16 @@ class CapacitorViewFull(StatsView):
         return width
 
     def populatePanel(self, contentPanel, headerPanel):
-
         contentSizer = contentPanel.GetSizer()
-
-
-        parent = contentPanel
+        parent = self.panel = contentPanel
         panel = "full"
 
         sizerCapacitor = wx.GridSizer(1, 2)
         contentSizer.Add(sizerCapacitor, 0, wx.EXPAND, 0)
-
-
-
         # Capacitor capacity and time
         baseBox = wx.BoxSizer(wx.HORIZONTAL)
 
         sizerCapacitor.Add(baseBox, 0, wx.ALIGN_LEFT)
-
-
-
         baseBox.Add(bitmapLoader.getStaticBitmap("capacitorInfo_big", parent, "icons"), 0, wx.ALIGN_CENTER)
 
         box = wx.BoxSizer(wx.VERTICAL)
@@ -67,7 +58,6 @@ class CapacitorViewFull(StatsView):
         lbl = wx.StaticText(parent, wx.ID_ANY, "0.0")
         setattr(self, "label%sCapacitorCapacity" % panel.capitalize(), lbl)
         hbox.Add(lbl, 0, wx.ALIGN_LEFT)
-
 
         hbox.Add(wx.StaticText(parent, wx.ID_ANY, " GJ"), 0, wx.ALIGN_LEFT)
 
@@ -139,5 +129,6 @@ class CapacitorViewFull(StatsView):
         getattr(self, lblNameTime % panel).SetLabel(t)
         getattr(self, lblNameState % panel).SetLabel(s)
 
+        self.panel.Layout()
 
 builtinStatsViews.registerView(CapacitorViewFull)

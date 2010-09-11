@@ -45,7 +45,6 @@ class FittingView(d.Display):
 
     #Gets called from the fitMultiSwitch when it decides its time
     def changeFit(self, fitID):
-        print "c"
         self.activeFitID = fitID
         if fitID == None:
             self.Hide()
@@ -55,7 +54,6 @@ class FittingView(d.Display):
         wx.PostEvent(self.mainFrame, FitChanged(fitID=fitID))
 
     def appendItem(self, itemID):
-        print "a"
         fitID = self.activeFitID
         if fitID != None:
             cFit = controller.Fit.getInstance()
@@ -63,7 +61,6 @@ class FittingView(d.Display):
             wx.PostEvent(self.mainFrame, FitChanged(fitID=fitID))
 
     def removeItem(self, event):
-        print "i"
         row, _ = self.HitTest(event.Position)
         if row != -1:
             cFit = controller.Fit.getInstance()

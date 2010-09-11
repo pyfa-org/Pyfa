@@ -35,12 +35,9 @@ class TargetingMiscViewFull(StatsView):
         return width
 
     def populatePanel(self, contentPanel, headerPanel):
-
         contentSizer = contentPanel.GetSizer()
 
-
-        parent = contentPanel
-        panel = "full"
+        self.panel = contentPanel
         gridTargetingMisc = wx.FlexGridSizer(1, 3)
         contentSizer.Add( gridTargetingMisc, 0, wx.EXPAND | wx.ALL, 0)
         gridTargetingMisc.AddGrowableCol(0)
@@ -116,5 +113,7 @@ class TargetingMiscViewFull(StatsView):
             value = value if value is not None else 0
             label.SetLabel(formatAmount(value, prec, lowest, highest))
             label.SetToolTip(wx.ToolTip("%.1f" % value))
+
+        self.panel.Layout()
 
 builtinStatsViews.registerView(TargetingMiscViewFull)

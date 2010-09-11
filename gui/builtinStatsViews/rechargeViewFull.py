@@ -36,17 +36,12 @@ class RechargeViewFull(StatsView):
         return width
 
     def populatePanel(self, contentPanel, headerPanel):
-
         contentSizer = contentPanel.GetSizer()
 
-
-        parent = contentPanel
-        panel = "full"
-
+        self.panel = contentPanel
         sizerTankStats = wx.FlexGridSizer(3, 5)
         for i in xrange(4):
             sizerTankStats.AddGrowableCol(i + 1)
-
 
         contentSizer.Add(sizerTankStats, 0, wx.EXPAND, 0)
 
@@ -103,7 +98,7 @@ class RechargeViewFull(StatsView):
             label.SetLabel("0")
 
         label.SetToolTip(wx.ToolTip("%.3f" % value))
-
+        self.panel.Layout()
 
 
 builtinStatsViews.registerView(RechargeViewFull)
