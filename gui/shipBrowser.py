@@ -309,10 +309,7 @@ class ShipBrowser(wx.Panel):
 
 class ShipView(wx.TreeCtrl):
     def __init__(self, parent):
-        wx.TreeCtrl.__init__(self, parent)
-        treeStyle = self.GetWindowStyleFlag()
-        treeStyle |= wx.TR_HIDE_ROOT
-        self.SetWindowStyleFlag(treeStyle)
+        wx.TreeCtrl.__init__(self, parent, style=wx.TR_DEFAULT_STYLE | wx.TR_HIDE_ROOT | wx.TR_EDIT_LABELS)
 
     def OnCompareItems(self, treeId1, treeId2):
         child, cookie = self.GetFirstChild(treeId1)
