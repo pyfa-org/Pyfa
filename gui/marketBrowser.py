@@ -171,11 +171,7 @@ class MarketBrowser(wx.Panel):
         self.itemImageList.RemoveAll()
 
         if self.searching:
-            self.searching = False
-            for name in ("faction", "complex", "officer"):
-                getattr(self, name).SetValue(False)
-
-            self.normal.SetValue(True)
+            self.clearSearch(None, False)
 
         root = self.marketView.GetSelection()
         if root.IsOk():
@@ -253,11 +249,14 @@ class MarketBrowser(wx.Panel):
         if clear:
             self.search.Clear()
 
+        cMarket = controller.Market.getInstance()
         for name in ("normal", "faction", "complex", "officer"):
             btn = getattr(self, name)
             btn.Enable(True)
             btn.SetValue(False)
+            cMarket.disableMetaGroup(btn.metaName)
 
+        cMarket.activateMetaGroup("normal")
         self.normal.SetValue(True)
 
         self.searching = False
