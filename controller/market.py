@@ -60,6 +60,12 @@ class PriceWorkerThread(threading.Thread):
         self.cv.notify()
         self.cv.release()
 
+    def isScheduled(self, price):
+        self.cv.acquire()
+        scheduled = price in self.scheduled
+        self.cv.release()
+        return scheduled
+
 class Market():
     instance = None
     FORCED_SHIPS = ("Freki", "Mimir", "Utu", "Adrestia", "Ibis", "Impairor", "Velator", "Reaper")
@@ -223,7 +229,7 @@ class Market():
                 self.priceCache[typeID] = price
 
             all.append(price)
-            if not price.isValid and not price in self.workerThread.scheduled:
+            if not price.isValid and not self.workerThread.isScheduled(price):
                 fetch.add(price)
 
         def dbAdd():
