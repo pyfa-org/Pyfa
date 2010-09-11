@@ -20,14 +20,8 @@
 import wx
 from gui.statsView import StatsView
 from gui import builtinStatsViews
-
-from gui.pyfatogglepanel import TogglePanel
 from gui import bitmapLoader
-from gui import pygauge as PG
-
-from eos.types import Slot, Hardpoint
-
-from util import formatAmount 
+from util import formatAmount
 
 class CapacitorViewFull(StatsView):
     name = "capacitorViewFull"
@@ -140,7 +134,7 @@ class CapacitorViewFull(StatsView):
             s = ""
         else:
             t = ("%ds" if not capStable else "%.1f%%") % capState
-            s = "Stable: " if capStable else "Lasts "    
+            s = "Stable: " if capStable else "Lasts "
 
         getattr(self, lblNameTime % panel).SetLabel(t)
         getattr(self, lblNameState % panel).SetLabel(s)

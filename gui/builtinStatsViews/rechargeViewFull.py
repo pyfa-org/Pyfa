@@ -20,14 +20,8 @@
 import wx
 from gui.statsView import StatsView
 from gui import builtinStatsViews
-
-from gui.pyfatogglepanel import TogglePanel
 from gui import bitmapLoader
-from gui import pygauge as PG
-
-from eos.types import Slot, Hardpoint
-
-from util import formatAmount 
+from util import formatAmount
 
 class RechargeViewFull(StatsView):
     name = "rechargeViewFull"
@@ -53,7 +47,7 @@ class RechargeViewFull(StatsView):
         for i in xrange(4):
             sizerTankStats.AddGrowableCol(i + 1)
 
-        
+
         contentSizer.Add(sizerTankStats, 0, wx.EXPAND, 0)
 
         #Add an empty label first for correct alignment.
@@ -108,7 +102,7 @@ class RechargeViewFull(StatsView):
             label = getattr(self, "labelTankSustainedShieldPassive")
             label.SetLabel("0")
 
-        label.SetToolTip(wx.ToolTip("%.3f" % value))            
+        label.SetToolTip(wx.ToolTip("%.3f" % value))
 
 
 

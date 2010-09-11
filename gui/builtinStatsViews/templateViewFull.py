@@ -21,14 +21,6 @@ import wx
 from gui.statsView import StatsView
 from gui import builtinStatsViews
 
-from gui.pyfatogglepanel import TogglePanel
-from gui import bitmapLoader
-from gui import pygauge as PG
-
-from eos.types import Slot, Hardpoint
-
-from util import formatAmount 
-
 class FirepowerViewFull(StatsView):
     name = "firepowerViewFull"
     def __init__(self, parent):
@@ -48,7 +40,7 @@ class FirepowerViewFull(StatsView):
 
         parent = contentPanel
         panel = "full"
-        contentSizer.Add( sizerResources, 0, wx.EXPAND | wx.ALL, 0) 
+        contentSizer.Add( sizerResources, 0, wx.EXPAND | wx.ALL, 0)
 
 
 
@@ -56,5 +48,5 @@ class FirepowerViewFull(StatsView):
         #If we did anything intresting, we'd update our labels to reflect the new fit's stats here
 
         pass
-    
+
 builtinStatsViews.registerView(FirepowerViewFull)

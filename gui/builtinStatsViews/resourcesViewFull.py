@@ -20,14 +20,12 @@
 import wx
 from gui.statsView import StatsView
 from gui import builtinStatsViews
-
-from gui.pyfatogglepanel import TogglePanel
 from gui import bitmapLoader
 from gui import pygauge as PG
 
-from eos.types import Slot, Hardpoint
+from eos.types import Hardpoint
 
-from util import formatAmount 
+from util import formatAmount
 
 class ResourcesViewFull(StatsView):
     name = "resourcesViewFull"
@@ -78,7 +76,7 @@ class ResourcesViewFull(StatsView):
             setattr(self, "label%sTotal%s%s" % (panel.capitalize(), type.capitalize(), suffix.capitalize()), lbl)
             box.Add(lbl, 0, wx.ALIGN_LEFT)
 
-        st = wx.VERTICAL 
+        st = wx.VERTICAL
         base.Add(wx.StaticLine(parent, wx.ID_ANY, style=st), 0, wx.EXPAND | wx.LEFT, 3 if panel == "full" else 0)
 
 

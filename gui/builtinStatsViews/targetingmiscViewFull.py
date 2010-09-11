@@ -20,14 +20,7 @@
 import wx
 from gui.statsView import StatsView
 from gui import builtinStatsViews
-
-from gui.pyfatogglepanel import TogglePanel
-from gui import bitmapLoader
-from gui import pygauge as PG
-
-from eos.types import Slot, Hardpoint
-
-from util import formatAmount 
+from util import formatAmount
 
 class TargetingMiscViewFull(StatsView):
     name = "targetingmiscViewFull"
@@ -51,7 +44,7 @@ class TargetingMiscViewFull(StatsView):
         gridTargetingMisc = wx.FlexGridSizer(1, 3)
         contentSizer.Add( gridTargetingMisc, 0, wx.EXPAND | wx.ALL, 0)
         gridTargetingMisc.AddGrowableCol(0)
-        gridTargetingMisc.AddGrowableCol(2)        
+        gridTargetingMisc.AddGrowableCol(2)
         # Targeting
 
         gridTargeting = wx.FlexGridSizer(4, 2)
@@ -122,6 +115,6 @@ class TargetingMiscViewFull(StatsView):
             value = value() if fit is not None else 0
             value = value if value is not None else 0
             label.SetLabel(formatAmount(value, prec, lowest, highest))
-            label.SetToolTip(wx.ToolTip("%.1f" % value))        
-    
+            label.SetToolTip(wx.ToolTip("%.1f" % value))
+
 builtinStatsViews.registerView(TargetingMiscViewFull)

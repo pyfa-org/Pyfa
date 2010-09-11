@@ -20,20 +20,16 @@
 import wx
 from gui.statsView import StatsView
 from gui import builtinStatsViews
-
-from gui.pyfatogglepanel import TogglePanel
 from gui import bitmapLoader
-from gui import pygauge as PG
-
-from eos.types import Slot, Hardpoint
-
-from util import formatAmount 
+from util import formatAmount
+import controller
 
 class PriceViewFull(StatsView):
     name = "priceViewFull"
     def __init__(self, parent):
         StatsView.__init__(self)
         self.parent = parent
+
     def getHeaderText(self, fit):
         return "Price"
 
@@ -42,19 +38,11 @@ class PriceViewFull(StatsView):
         return width
 
     def populatePanel(self, contentPanel, headerPanel):
-
         contentSizer = contentPanel.GetSizer()
-
-
         parent = contentPanel
         panel = "full"
-
-
         gridPrice = wx.GridSizer(1, 3)
-
         contentSizer.Add( gridPrice, 0, wx.EXPAND | wx.ALL, 0)
-
-
         for type in ("ship", "fittings", "total"):
             image = "%sPrice_big" % type if type != "ship" else "ship_big"
             box = wx.BoxSizer(wx.HORIZONTAL)
@@ -71,17 +59,38 @@ class PriceViewFull(StatsView):
             vbox.Add(hbox)
 
             lbl = wx.StaticText(contentPanel, wx.ID_ANY, "0.00")
-            setattr(self, "labelPrice%s" % type, lbl)
+            setattr(self, "labelPrice%s" % type.capitalize(), lbl)
             hbox.Add(lbl, 0, wx.ALIGN_LEFT)
 
             hbox.Add(wx.StaticText(contentPanel, wx.ID_ANY, " m ISK"), 0, wx.ALIGN_LEFT)
 
-
-
-
     def refreshPanel(self, fit):
-        #If we did anything intresting, we'd update our labels to reflect the new fit's stats here
-        #No data available yet
-        pass
-    
+        print "r"
+        if fit is not None:
+            # Compose a list of all the data we need & request it
+            typeIDs = []
+            typeIDs.append(fit.ship.item.ID)
+
+            for mod in fit.modules:
+                if not mod.isEmpty:
+                    typeIDs.append(mod.itemID)
+
+            for drone in fit.drones:
+                for _ in xrange(drone.amount):
+                    typeIDs.append(drone.itemID)
+
+            cMarket = controller.Market.getInstance()
+            cMarket.getPrices(typeIDs, self.processPrices)
+        else:
+            self.labelPriceShip.SetLabel("0.0")
+            self.labelPriceFittings.SetLabel("0.0")
+            self.labelPriceTotal.SetLabel("0.0")
+
+    def processPrices(self, prices):
+        shipPrice = prices[0].price
+        modPrice = sum(map(lambda p: p.price, prices[1:]))
+        self.labelPriceShip.SetLabel(formatAmount(shipPrice, 3, 3, 9))
+        self.labelPriceFittings.SetLabel(formatAmount(modPrice, 3, 3, 9))
+        self.labelPriceTotal.SetLabel(formatAmount(shipPrice + modPrice, 3, 3, 9))
+
 builtinStatsViews.registerView(PriceViewFull)

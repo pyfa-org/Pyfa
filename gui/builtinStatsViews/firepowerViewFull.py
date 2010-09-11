@@ -20,14 +20,8 @@
 import wx
 from gui.statsView import StatsView
 from gui import builtinStatsViews
-
-from gui.pyfatogglepanel import TogglePanel
 from gui import bitmapLoader
-from gui import pygauge as PG
-
-from eos.types import Slot, Hardpoint
-
-from util import formatAmount 
+from util import formatAmount
 
 class FirepowerViewFull(StatsView):
     name = "firepowerViewFull"
@@ -56,8 +50,8 @@ class FirepowerViewFull(StatsView):
 
 
         contentSizer.Add( sizerFirepower, 0, wx.EXPAND, 0)
-        
-              
+
+
 
         for damageType, image in (("weapon", "turret") , ("drone", "droneBay")):
             baseBox = wx.BoxSizer(wx.HORIZONTAL)
@@ -118,5 +112,5 @@ class FirepowerViewFull(StatsView):
             label.SetLabel(formatAmount(value, prec, lowest, highest))
             label.SetToolTip(wx.ToolTip("%.1f" % value))
 
-    
+
 builtinStatsViews.registerView(FirepowerViewFull)

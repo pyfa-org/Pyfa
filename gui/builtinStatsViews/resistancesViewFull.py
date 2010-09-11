@@ -20,14 +20,9 @@
 import wx
 from gui.statsView import StatsView
 from gui import builtinStatsViews
-
-from gui.pyfatogglepanel import TogglePanel
 from gui import bitmapLoader
 from gui import pygauge as PG
-
-from eos.types import Slot, Hardpoint
-
-from util import formatAmount 
+from util import formatAmount
 
 class ResistancesViewFull(StatsView):
     name = "resistancesViewFull"
@@ -60,11 +55,11 @@ class ResistancesViewFull(StatsView):
         stEff = wx.StaticText(headerPanel, wx.ID_ANY, "( Effective HP: ")
         headerContentSizer.Add(stEff)
         headerPanel.GetParent().AddToggleItem(stEff)
-        
+
         self.labelEhp = wx.StaticText(headerPanel, wx.ID_ANY, "0")
         headerContentSizer.Add(self.labelEhp, 0)
         headerPanel.GetParent().AddToggleItem(self.labelEhp)
-        
+
         stCls = wx.StaticText(headerPanel, wx.ID_ANY, " )")
 
         headerPanel.GetParent().AddToggleItem( stCls )
@@ -77,12 +72,12 @@ class ResistancesViewFull(StatsView):
         row = 0
         sizerResistances = wx.GridBagSizer(4, 6)
         contentSizer.Add( sizerResistances, 0, wx.EXPAND , 0)
-        
+
         for i in xrange(6):
             sizerResistances.AddGrowableCol(i + 1)
 
 
-        
+
         # Add an empty label, then the rest.
         sizerResistances.Add(wx.StaticText(contentPanel, wx.ID_ANY), wx.GBPosition( row, col ), wx.GBSpan( 1, 1 ))
         col+=1
