@@ -179,6 +179,7 @@ class ShipBrowser(wx.Panel):
         wx.PostEvent(self.mainFrame, FitCreated(fitID=fitID))
 
     def renameFit(self, event):
+        print "r"
         tree = self.getActiveTree()
         root = tree.GetSelection()
         type, _ = tree.GetPyData(root)
@@ -310,6 +311,8 @@ class ShipBrowser(wx.Panel):
 class ShipView(wx.TreeCtrl):
     def __init__(self, parent):
         wx.TreeCtrl.__init__(self, parent, style=wx.TR_DEFAULT_STYLE | wx.TR_HIDE_ROOT | wx.TR_EDIT_LABELS)
+        self.Bind(wx.EVT_TREE_BEGIN_LABEL_EDIT, self.vetoEdit)
+        self.rename = False
 
     def OnCompareItems(self, treeId1, treeId2):
         child, cookie = self.GetFirstChild(treeId1)
@@ -331,6 +334,14 @@ class ShipView(wx.TreeCtrl):
     def OnEraseBackGround(self, event):
         #Prevent flicker by not letting the parent's method get called.
         pass
+
+    def EditLabel(self, childId):
+        self.rename = True
+        wx.TreeCtrl.EditLabel(self, childId)
+
+    def vetoEdit(self, event):
+        if not self.rename:
+            event.Veto()
 
 class ShipMenu(wx.Panel):
     def __init__(self, parent):
