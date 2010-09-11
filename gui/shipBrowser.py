@@ -343,6 +343,8 @@ class ShipView(wx.TreeCtrl):
         if not self.rename:
             event.Veto()
 
+        self.rename = False
+
 class ShipMenu(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent)
