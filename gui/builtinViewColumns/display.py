@@ -83,6 +83,9 @@ class Display(wx.ListCtrl):
 
     def populate(self, stuff):
         selection = []
+
+        self.Freeze()
+        
         sel = self.GetFirstSelected()
         while sel != -1:
             selection.append(sel)
@@ -107,6 +110,8 @@ class Display(wx.ListCtrl):
 
         for sel in selection:
             self.Select(sel)
+
+        self.Thaw()
 
     def getColumn(self, point):
         x = point[0]
