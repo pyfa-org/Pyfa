@@ -42,7 +42,7 @@ class PriceViewFull(StatsView):
                 self.refreshPanel(self.fit)
             else:
                 self.labelEMStatus.SetLabel("EVE-METRICS prices update retry in: %d seconds" %(self._timerRunsBeforeUpdate - self._timerRuns))
-                self._timerRuns += 5
+                self._timerRuns += 1
             
     def getHeaderText(self, fit):
         return "Price"
@@ -113,7 +113,7 @@ class PriceViewFull(StatsView):
         if shipPrice == None:
             if not self._timer:
                 self._timer = wx.Timer(self.parent, self._timerId)
-            self._timer.Start(5000)
+            self._timer.Start(1000)
             self._timerRuns = 0
         else:
             if self._timer:
