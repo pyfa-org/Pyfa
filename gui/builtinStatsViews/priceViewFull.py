@@ -45,7 +45,7 @@ class PriceViewFull(StatsView):
         for type in ("ship", "fittings", "total"):
             image = "%sPrice_big" % type if type != "ship" else "ship_big"
             box = wx.BoxSizer(wx.HORIZONTAL)
-            gridPrice.Add(box, 0, wx.ALIGN_CENTER)
+            gridPrice.Add(box, 0, wx.ALIGN_TOP)
 
             box.Add(bitmapLoader.getStaticBitmap(image, contentPanel, "icons"), 0, wx.ALIGN_CENTER)
 
