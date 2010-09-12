@@ -112,7 +112,11 @@ class TargetingMiscViewFull(StatsView):
             value = value() if fit is not None else 0
             value = value if value is not None else 0
             label.SetLabel(formatAmount(value, prec, lowest, highest))
-            label.SetToolTip(wx.ToolTip("%.1f" % value))
+            if labelName is not "labelSensorStr":
+                label.SetToolTip(wx.ToolTip("%.1f" % value))
+            else:
+                if fit is not None:
+                    label.SetToolTip(wx.ToolTip("Type: %s - %.1f" % (fit.scanType, value)))
 
         self.panel.Layout()
 
