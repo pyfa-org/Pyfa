@@ -115,7 +115,7 @@ class ResourcesViewFull(StatsView):
                 # Gauges modif. - Darriele
 
                 gauge = PG.PyGauge(parent, wx.ID_ANY, 100)
-                gauge.SetMinSize((self.getTextExtentW("999.9k/1.3M GJ"), 23))
+                gauge.SetMinSize((self.getTextExtentW("1.999M/1.99M MW"), 23))
                 gauge.SetFractionDigits(2)
 
                 setattr(self, "gauge%s%s" % (panel.capitalize(),capitalizedType), gauge)
