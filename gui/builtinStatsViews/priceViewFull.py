@@ -118,7 +118,7 @@ class PriceViewFull(StatsView):
         else:
             if self._timer:
                 self._timer.Stop()
-            self.labelEMStatus.SetLabel("EVE-METRICS Prices update completed.")
+            self.labelEMStatus.SetLabel("")
             modPrice = sum(map(lambda p: p.price or 0, prices[1:]))
             self.labelPriceShip.SetLabel(formatAmount(shipPrice, 3, 3, 9))
             self.labelPriceFittings.SetLabel(formatAmount(modPrice, 3, 3, 9))
