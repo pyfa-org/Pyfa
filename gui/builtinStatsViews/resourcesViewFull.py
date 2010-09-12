@@ -133,8 +133,11 @@ class ResourcesViewFull(StatsView):
                          ("label%sUsedPg", lambda: fit.pgUsed, 4, 0, 9),
                          ("label%sUsedCpu", lambda: fit.cpuUsed, 4, 0, 9),
                          ("label%sTotalPg", lambda: fit.ship.getModifiedItemAttr("powerOutput"), 4, 0, 9),
-                         ("label%sTotalCpu", lambda: fit.ship.getModifiedItemAttr("cpuOutput"), 4, 0, 9))
-
+                         ("label%sTotalCpu", lambda: fit.ship.getModifiedItemAttr("cpuOutput"), 4, 0, 9),
+                         ("label%sUsedDroneBay", lambda: fit.droneBayUsed, 3, 0, 9),
+                         ("label%sUsedDroneBandwidth", lambda: fit.droneBandwidthUsed, 3, 0, 9),
+                         ("label%sTotalDroneBay", lambda: fit.ship.getModifiedItemAttr("droneCapacity"), 3, 0, 9),
+                         ("label%sTotalDroneBandwidth", lambda: fit.ship.getModifiedItemAttr("droneBandwidth"), 3, 0, 9))
         panel = "Full"
         for labelName, value, prec, lowest, highest in stats:
             label = getattr(self, labelName % panel)
