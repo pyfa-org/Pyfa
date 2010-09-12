@@ -62,8 +62,8 @@ class RechargeViewFull(StatsView):
                     setattr(self, "labelTank%s%s" % (stability.capitalize(), tankTypeCap), lbl)
 
                     box = wx.BoxSizer(wx.HORIZONTAL)
-                    box.Add(lbl, 1, wx.EXPAND)
-                    box.Add(wx.StaticText(contentPanel, wx.ID_ANY, " HP/s"), 1, wx.EXPAND)
+                    box.Add(lbl, 0, wx.EXPAND)
+                    box.Add(wx.StaticText(contentPanel, wx.ID_ANY, " HP/s"), 0, wx.EXPAND)
 
                     sizerTankStats.Add(box, 0, wx.ALIGN_CENTRE)
 
