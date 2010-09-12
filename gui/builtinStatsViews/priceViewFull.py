@@ -29,7 +29,21 @@ class PriceViewFull(StatsView):
     def __init__(self, parent):
         StatsView.__init__(self)
         self.parent = parent
-
+        self._timerId = wx.NewId()
+        self._timer = None
+        self.parent.Bind(wx.EVT_TIMER, self.OnTimer)
+        self._timerRunsBeforeUpdate = 60
+        self._timerRuns = 0
+    def OnTimer( self, event):
+        if self._timerId == event.GetId():
+            if self._timerRuns >= self._timerRunsBeforeUpdate:
+                self._timerRuns = 0
+                self._timer.Stop()
+                self.refreshPanel(self.fit)
+            else:
+                self.labelEMStatus.SetLabel("EVE-METRICS prices update retry in: %d seconds" %(self._timerRunsBeforeUpdate - self._timerRuns))
+                self._timerRuns += 5
+            
     def getHeaderText(self, fit):
         return "Price"
 
@@ -62,9 +76,11 @@ class PriceViewFull(StatsView):
             hbox.Add(lbl, 0, wx.ALIGN_LEFT)
 
             hbox.Add(wx.StaticText(contentPanel, wx.ID_ANY, " ISK"), 0, wx.ALIGN_LEFT)
-
+        self.labelEMStatus = wx.StaticText(contentPanel, wx.ID_ANY, "")            
+        contentSizer.Add(self.labelEMStatus,0)
     def refreshPanel(self, fit):
         if fit is not None:
+            self.fit = fit
             # Compose a list of all the data we need & request it
             typeIDs = []
             typeIDs.append(fit.ship.item.ID)
@@ -76,10 +92,17 @@ class PriceViewFull(StatsView):
             for drone in fit.drones:
                 for _ in xrange(drone.amount):
                     typeIDs.append(drone.itemID)
-
+            if self._timer:
+                if self._timer.IsRunning():
+                    self._timer.Stop()
             cMarket = controller.Market.getInstance()
             cMarket.getPrices(typeIDs, self.processPrices)
+            self.labelEMStatus.SetLabel("Updating prices from EVE-METRICS...")
         else:
+            if self._timer:
+                if self._timer.IsRunning():
+                    self._timer.Stop()
+            self.labelEMStatus.SetLabel("")
             self.labelPriceShip.SetLabel("0.0")
             self.labelPriceFittings.SetLabel("0.0")
             self.labelPriceTotal.SetLabel("0.0")
@@ -87,10 +110,19 @@ class PriceViewFull(StatsView):
 
     def processPrices(self, prices):
         shipPrice = prices[0].price
-        modPrice = sum(map(lambda p: p.price, prices[1:]))
-        self.labelPriceShip.SetLabel(formatAmount(shipPrice, 3, 3, 9))
-        self.labelPriceFittings.SetLabel(formatAmount(modPrice, 3, 3, 9))
-        self.labelPriceTotal.SetLabel(formatAmount(shipPrice + modPrice, 3, 3, 9))
-        self.panel.Layout()
+        if shipPrice == None:
+            if not self._timer:
+                self._timer = wx.Timer(self.parent, self._timerId)
+            self._timer.Start(5000)
+            self._timerRuns = 0
+        else:
+            if self._timer:
+                self._timer.Stop()
+            self.labelEMStatus.SetLabel("EVE-METRICS Prices update completed.")
+            modPrice = sum(map(lambda p: p.price or 0, prices[1:]))
+            self.labelPriceShip.SetLabel(formatAmount(shipPrice, 3, 3, 9))
+            self.labelPriceFittings.SetLabel(formatAmount(modPrice, 3, 3, 9))
+            self.labelPriceTotal.SetLabel(formatAmount(shipPrice + modPrice, 3, 3, 9))
+            self.panel.Layout()
 
 builtinStatsViews.registerView(PriceViewFull)
