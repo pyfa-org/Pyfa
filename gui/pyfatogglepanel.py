@@ -50,7 +50,7 @@ class TogglePanel ( wx.Panel ):
 
 #       Create the header panel
 
-        self.headerPanel = wx.Panel(self, style = wx.STATIC_BORDER)
+        self.headerPanel = wx.Panel(self)
 
         self.headerPanel.SetBackgroundColour( self.bkColour)
 
