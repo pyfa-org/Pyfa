@@ -129,7 +129,7 @@ class PriceViewFull(StatsView):
         else:
             if self._timer:
                 self._timer.Stop()
-            #self.labelEMStatus.SetLabel("")
+                self.labelEMStatus.SetLabel("")
             modPrice = sum(map(lambda p: p.price or 0, prices[1:]))
             self.labelPriceShip.SetLabel(formatAmount(shipPrice, 3, 3, 9))
             self.labelPriceShip.SetToolTip(wx.ToolTip("%.2f ISK" % shipPrice))
