@@ -34,6 +34,9 @@ class PriceViewFull(StatsView):
         self.parent.Bind(wx.EVT_TIMER, self.OnTimer)
         self._timerRunsBeforeUpdate = 60
         self._timerRuns = 0
+        self._timerIdUpdate = wx.NewId()
+        self._timerUpdate = None
+        
     def OnTimer( self, event):
         if self._timerId == event.GetId():
             if self._timerRuns >= self._timerRunsBeforeUpdate:
@@ -43,7 +46,9 @@ class PriceViewFull(StatsView):
             else:
                 self.labelEMStatus.SetLabel("EVE-METRICS prices update retry in: %d seconds" %(self._timerRunsBeforeUpdate - self._timerRuns))
                 self._timerRuns += 1
-            
+        if self._timerIdUpdate == event.GetId():
+            self._timerUpdate.Stop()
+            self.labelEMStatus.SetLabel("")
     def getHeaderText(self, fit):
         return "Price"
 
@@ -98,6 +103,12 @@ class PriceViewFull(StatsView):
             cMarket = controller.Market.getInstance()
             cMarket.getPrices(typeIDs, self.processPrices)
             self.labelEMStatus.SetLabel("Updating prices from EVE-METRICS...")
+            if not self._timerUpdate:
+                self._timerUpdate = wx.Timer(self.parent, self._timerIdUpdate)
+            if self._timerUpdate:
+                if not self._timerUpdate.IsRunning():
+                    self._timerUpdate.Start(1000)
+
         else:
             if self._timer:
                 if self._timer.IsRunning():
@@ -118,7 +129,7 @@ class PriceViewFull(StatsView):
         else:
             if self._timer:
                 self._timer.Stop()
-            self.labelEMStatus.SetLabel("")
+                self.labelEMStatus.SetLabel("")
             modPrice = sum(map(lambda p: p.price or 0, prices[1:]))
             self.labelPriceShip.SetLabel(formatAmount(shipPrice, 3, 3, 9))
             self.labelPriceShip.SetToolTip(wx.ToolTip("%.2f ISK" % shipPrice))
