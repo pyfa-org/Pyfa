@@ -61,7 +61,7 @@ class ResistancesViewFull(StatsView):
         # Display table
         col = 0
         row = 0
-        sizerResistances = wx.GridBagSizer(4, 6)
+        sizerResistances = wx.GridBagSizer(0, 0)
         contentSizer.Add( sizerResistances, 0, wx.EXPAND , 0)
 
         for i in xrange(6):
