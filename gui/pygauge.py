@@ -239,7 +239,7 @@ class PyGauge(wx.PyWindow):
                 w = rect.width * (float(value) / self._range)
             r = copy.copy(rect)
             r.width = w
-            dc.GradientFillLinear(r, c1, c2, wx.EAST)
+            dc.GradientFillLinear(r, c1, c2, wx.SOUTH)
         else:
             colour=self.GetBarColour()
             dc.SetBrush(wx.Brush(colour))
