@@ -121,8 +121,11 @@ class PriceViewFull(StatsView):
             self.labelEMStatus.SetLabel("")
             modPrice = sum(map(lambda p: p.price or 0, prices[1:]))
             self.labelPriceShip.SetLabel(formatAmount(shipPrice, 3, 3, 9))
+            self.labelPriceShip.SetToolTip(wx.ToolTip("%.2f ISK" % shipPrice))
             self.labelPriceFittings.SetLabel(formatAmount(modPrice, 3, 3, 9))
+            self.labelPriceFittings.SetToolTip(wx.ToolTip("%.2f ISK" % modPrice))
             self.labelPriceTotal.SetLabel(formatAmount(shipPrice + modPrice, 3, 3, 9))
+            self.labelPriceTotal.SetToolTip(wx.ToolTip("%.2f ISK" % (shipPrice + modPrice)))
             self.panel.Layout()
 
 builtinStatsViews.registerView(PriceViewFull)
