@@ -223,16 +223,16 @@ class PyGauge(wx.PyWindow):
             rect.Deflate(pad,pad)
 
         if self.GetBarGradient():
-            if value > self._range:
-                if self._overdriveToggle==-1:
-                    c1 =wx.Colour(200,0,0)
-                    c2 =wx.Colour(200,0,0)
-                else:
-                    c1 =wx.Colour(255,0,0)
-                    c2 =wx.Colour(255,0,0)
+#            if value > self._range:
+#                if self._overdriveToggle==-1:
+#                    c1 =wx.Colour(200,0,0)
+#                    c2 =wx.Colour(200,0,0)
+#                else:
+#                    c1 =wx.Colour(255,0,0)
+#                    c2 =wx.Colour(255,0,0)
 
-            else:
-                c1,c2 = self.GetBarGradient()
+#            else:
+            c1,c2 = self.GetBarGradient()
             if value > self._range:
                 w = rect.width
             else:
@@ -240,6 +240,13 @@ class PyGauge(wx.PyWindow):
             r = copy.copy(rect)
             r.width = w
             r.height = r.height/2+1
+            if value <= self._range:
+                c1 = map(lambda t: sum(t), zip(c1, (3*w/4,-w,-w,0)))
+                c2 = map(lambda t: sum(t), zip(c2, (3*w/4,-w,-w,0)))
+            else:
+                c1 = map(lambda t: sum(t), zip(c2, (w/3,-w,-w,0)))
+                c2 = wx.Colour(255,0,0)
+
             dc.GradientFillLinear(r, c1, c2, wx.SOUTH)
             r.top = r.height
             dc.GradientFillLinear(r, c1, c2, wx.NORTH)            
