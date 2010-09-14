@@ -46,9 +46,8 @@ class CharacterEditor(wx.Dialog):
 
         self.skillTreeChoice = wx.Choice(self, wx.ID_ANY, style=0)
 
-        for i, info in enumerate(charList):
-            id, name = info
-            self.skillTreeChoice.Insert(name, i, id)
+        for id, name in charList:
+            self.skillTreeChoice.Append(name, id)
 
         self.skillTreeChoice.SetSelection(0)
 

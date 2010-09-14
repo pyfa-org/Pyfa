@@ -44,6 +44,9 @@ class MultiSwitch(wx.Notebook):
         self.imageList = wx.ImageList(16, 16)
         self.SetImageList(self.imageList)
 
+    def getActiveFit(self):
+        return self.GetCurrentPage().view.activeFitID
+
     def AddTab(self, type="fit", frame=None, title=None):
         pos = self.GetPageCount() - 1
 

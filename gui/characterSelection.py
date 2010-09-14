@@ -18,9 +18,15 @@
 #===============================================================================
 
 import wx
+import controller
+from gui import characterEditor as ce
+from gui import fittingView as fv
+import gui.mainFrame
 
 class CharacterSelection(wx.Panel):
     def __init__(self, parent):
+        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+
         wx.Panel.__init__(self, parent)
         mainSizer = wx.BoxSizer(wx.HORIZONTAL)
         self.SetSizer(mainSizer)
@@ -29,3 +35,36 @@ class CharacterSelection(wx.Panel):
 
         self.charChoice = wx.Choice(self)
         mainSizer.Add(self.charChoice, 1, wx.EXPAND)
+
+        self.refreshCharacterList()
+
+        self.Bind(wx.EVT_CHOICE, self.charChanged)
+
+    def getActiveCharacter(self):
+        selection = self.charChoice.GetCurrentSelection()
+        return self.charChoice.GetClientData(selection) if selection is not -1 else None
+
+    def refreshCharacterList(self, event=None):
+        choice = self.charChoice
+        cChar = controller.Character.getInstance()
+        activeChar = self.getActiveCharacter()
+
+        choice.Clear()
+        for id, name in cChar.getCharacterList():
+            currId = choice.Append(name, id)
+            if id == activeChar:
+                choice.SetSelection(currId)
+            elif activeChar is None and name == "All 0":
+                all0 = currId
+
+        if activeChar is None:
+            choice.SetSelection(all0)
+
+    def charChanged(self, event):
+        fitID = self.mainFrame.fitMultiSwitch.getActiveFit()
+        charID = self.getActiveCharacter()
+
+        cFit = controller.Fit.getInstance()
+        cFit.changeChar(fitID, charID)
+
+        wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=fitID))

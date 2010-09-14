@@ -146,3 +146,12 @@ class Fit(object):
         fit.clear()
         fit.calculateModifiedAttributes()
         return True
+
+    def changeChar(self, fitID, charID):
+        if fitID is None or charID is None:
+            return
+
+        fit = eos.db.getFit(fitID)
+        fit.character = eos.db.getCharacter(charID)
+        fit.clear()
+        fit.calculateModifiedAttributes()
