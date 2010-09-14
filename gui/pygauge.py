@@ -242,8 +242,8 @@ class PyGauge(wx.PyWindow):
             r.height = r.height/2+1
             pv= 100 *  (float(value if value <= self._range else self._range) / self._range)
             if value <= self._range:
-                c1 = map(lambda t: sum(t), zip(c1, (3*pv/4,-pv,-pv,0)))
-                c2 = map(lambda t: sum(t), zip(c2, (3*pv/4,-pv,-pv,0)))
+                c1 = map(lambda t: sum(t), zip(c1, (0,pv/3,-pv,0)))
+                c2 = map(lambda t: sum(t), zip(c2, (0,pv/3,-pv,0)))
             else:
                 c1 = map(lambda t: sum(t), zip(c2, (pv/2,-pv/2,-pv/2,0)))
                 c2 = wx.Colour(255,0,0)
