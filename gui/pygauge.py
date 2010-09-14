@@ -59,8 +59,8 @@ class PyGauge(wx.PyWindow):
         self._overdriveTimerId =wx.NewId()
         self._overdriveToggle=1
         self._overdriveTimerStarted=False
-        self.SetBarGradient((wx.Colour(153,153,153),wx.Colour(204,204,204)))
-        self.SetBackgroundColour(wx.Colour(102,102,102))
+        self.SetBarGradient((wx.Colour(119,119,119),wx.Colour(153,153,153)))
+        self.SetBackgroundColour(wx.Colour(51,51,51))
         self._tooltip = wx.ToolTip("")
         self.SetToolTip(self._tooltip)
         self._tooltip.SetTip("0/100")
@@ -239,7 +239,10 @@ class PyGauge(wx.PyWindow):
                 w = rect.width * (float(value) / self._range)
             r = copy.copy(rect)
             r.width = w
+            r.height = r.height/2+1
             dc.GradientFillLinear(r, c1, c2, wx.SOUTH)
+            r.top = r.height
+            dc.GradientFillLinear(r, c1, c2, wx.NORTH)            
         else:
             colour=self.GetBarColour()
             dc.SetBrush(wx.Brush(colour))
