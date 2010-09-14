@@ -19,6 +19,13 @@
 
 import wx
 
-class CharacterSelection(wx.Choice):
+class CharacterSelection(wx.Panel):
     def __init__(self, parent):
-        wx.Choice.__init__(self, parent)
+        wx.Panel.__init__(self, parent)
+        mainSizer = wx.BoxSizer(wx.HORIZONTAL)
+        self.SetSizer(mainSizer)
+
+        mainSizer.Add(wx.StaticText(self, wx.ID_ANY, "Character: "), 0, wx.CENTER)
+
+        self.charChoice = wx.Choice(self)
+        mainSizer.Add(self.charChoice, 1, wx.EXPAND)

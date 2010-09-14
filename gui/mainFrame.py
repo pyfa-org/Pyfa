@@ -27,6 +27,7 @@ from gui.statsPane import StatsPane
 from gui.shipBrowser import ShipBrowser
 from wx.lib.wordwrap import wordwrap
 from gui.characterEditor import CharacterEditor
+from gui.characterSelection import CharacterSelection
 import aboutData
 from wx._core import PyDeadObjectError
 
@@ -74,9 +75,14 @@ class MainFrame(wx.Frame):
         self.additionsPane = AdditionsPane(self.fittingPanel)
         fittingSizer.Add(self.additionsPane, 0, wx.EXPAND)
 
+        self.statsCharPickerSizer = wx.BoxSizer(wx.VERTICAL)
+        self.statsSizer.Add(self.statsCharPickerSizer, 0, wx.EXPAND)
+
+        self.charSelection = CharacterSelection(statsFitviewPanel)
+        self.statsCharPickerSizer.Add(self.charSelection, 0, wx.EXPAND)
 
         self.statsPane = StatsPane(statsFitviewPanel)
-        self.statsSizer.Add(self.statsPane, 0, wx.EXPAND)
+        self.statsCharPickerSizer.Add(self.statsPane, 0, wx.EXPAND)
 
         self.splitter.SplitVertically(self.notebookBrowsers, statsFitviewPanel)
         self.splitter.SetMinimumPaneSize(10)
