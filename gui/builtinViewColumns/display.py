@@ -97,16 +97,6 @@ class Display(wx.ListCtrl):
         if stuff is not None:
             for id, st in enumerate(stuff):
                 index = self.InsertStringItem(sys.maxint, "")
-                for i, col in enumerate(self.activeColumns):
-                    self.SetStringItem(index, i, col.getText(st), col.getImageId(st))
-                    self.SetItemData(index, id)
-
-
-        for i, col in enumerate(self.activeColumns):
-            if not col.resized:
-                self.SetColumnWidth(i, col.size)
-                if self.GetColumnWidth(i) < 40 and col.size == wx.LIST_AUTOSIZE:
-                    self.SetColumnWidth(i, 40)
 
         for sel in selection:
             self.Select(sel)
@@ -121,6 +111,12 @@ class Display(wx.ListCtrl):
             for i, col in enumerate(self.activeColumns):
                 self.SetStringItem(item, i, col.getText(st), col.getImageId(st))
                 self.SetItemData(item, id)
+
+        for i, col in enumerate(self.activeColumns):
+            if not col.resized:
+                self.SetColumnWidth(i, col.size)
+                if self.GetColumnWidth(i) < 40 and col.size == wx.LIST_AUTOSIZE:
+                    self.SetColumnWidth(i, 40)
 
         self.Thaw()
 

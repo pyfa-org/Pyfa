@@ -44,7 +44,9 @@ class DroneView(d.Display):
         cFit = controller.Fit.getInstance()
         fit = cFit.getFit(event.fitID)
 
-        self.populate(fit.drones if fit is not None else None)
+        stuff = fit.drones if fit is not None else None
+        self.populate(stuff)
+        self.refresh(stuff)
 
     def addItem(self, event):
         cFit = controller.Fit.getInstance()

@@ -77,6 +77,7 @@ class Fit(object):
         item = eos.db.getItem(itemID, eager=("attributes", "group.category"))
         m = eos.types.Module(item)
         if m.fits(fit):
+            numSlots = len(fit.modules)
             fit.modules.append(m)
             if m.isValidState(State.ACTIVE):
                 m.state = State.ACTIVE
@@ -86,20 +87,22 @@ class Fit(object):
             fit.fill()
             eos.db.commit()
 
-            return True
+            return numSlots != len(fit.modules)
         else:
             return False
 
     def removeModule(self, fitID, position):
         fit = eos.db.getFit(fitID)
         if fit.modules[position].isEmpty:
-            return False
+            return None
 
+        numSlots = len(fit.modules)
         fit.modules.toDummy(position)
-        eos.db.commit()
         fit.clear()
         fit.calculateModifiedAttributes()
-        return True
+        fit.fill()
+        eos.db.commit()
+        return numSlots != len(fit.modules)
 
     def addDrone(self, fitID, itemID):
         if fitID == None:

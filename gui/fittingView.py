@@ -42,7 +42,6 @@ class FittingView(d.Display):
         self.Bind(wx.EVT_LEFT_DCLICK, self.removeItem)
         self.Hide() #Don't show ourselves at start
         self.activeFitID = None
-        self.ignore = False
 
     #Gets called from the fitMultiSwitch when it decides its time
     def changeFit(self, fitID):
@@ -52,32 +51,26 @@ class FittingView(d.Display):
         else:
             self.Show()
 
-        self.ignore = True
-        wx.PostEvent(self.mainFrame, FitChanged(fitID=fitID))
-        self.ignore = False
         self.slotsChanged()
+        wx.PostEvent(self.mainFrame, FitChanged(fitID=fitID))
 
     def appendItem(self, itemID):
         fitID = self.activeFitID
         if fitID != None:
             cFit = controller.Fit.getInstance()
-            cFit.appendModule(fitID, itemID)
-            self.ignore = True
+            populate = cFit.appendModule(fitID, itemID)
+            if populate: self.slotsChanged()
             wx.PostEvent(self.mainFrame, FitChanged(fitID=fitID))
-            self.ignore = False
-            self.slotsChanged()
 
     def removeItem(self, event):
         row, _ = self.HitTest(event.Position)
         if row != -1:
             cFit = controller.Fit.getInstance()
-            trigger = cFit.removeModule(self.activeFitID, self.mods[self.GetItemData(row)].position)
+            populate = cFit.removeModule(self.activeFitID, self.mods[self.GetItemData(row)].position)
 
-            if trigger:
-                self.ignore = True
+            if populate is not None:
+                if populate: self.slotsChanged(populate)
                 wx.PostEvent(self.mainFrame, FitChanged(fitID=self.activeFitID))
-                self.ignore = False
-                self.slotsChanged()
 
     def generateMods(self):
         cFit = controller.Fit.getInstance()
@@ -96,7 +89,7 @@ class FittingView(d.Display):
         self.populate(self.mods)
 
     def fitChanged(self, event):
-        if self.ignore:
+        if event.fitID != self.activeFitID:
             return
 
         self.generateMods()
