@@ -75,18 +75,20 @@ class Fit(object):
     def appendModule(self, fitID, itemID):
         fit = eos.db.getFit(fitID)
         item = eos.db.getItem(itemID, eager=("attributes", "group.category"))
-        if item.category.name == "Module":
-            m = eos.types.Module(item)
+        m = eos.types.Module(item)
+        if m.fits(fit):
+            fit.modules.append(m)
             if m.isValidState(State.ACTIVE):
                 m.state = State.ACTIVE
 
-            if m.fits(fit):
-                fit.modules.append(m)
-
-            eos.db.commit()
             fit.clear()
             fit.calculateModifiedAttributes()
-        return True
+            fit.fill()
+            eos.db.commit()
+
+            return True
+        else:
+            return False
 
     def removeModule(self, fitID, position):
         fit = eos.db.getFit(fitID)
