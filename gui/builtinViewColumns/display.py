@@ -109,7 +109,18 @@ class Display(wx.ListCtrl):
         for id, st in enumerate(stuff):
             item = self.GetNextItem(item)
             for i, col in enumerate(self.activeColumns):
-                self.SetStringItem(item, i, col.getText(st), col.getImageId(st))
+                colItem = self.GetItem(item, i)
+                oldText = colItem.GetText()
+                oldImageId = colItem.GetImage()
+                newText = col.getText(st)
+                newImageId = col.getImageId(st)
+                if oldText != newText:
+                    colItem.SetText(newText)
+
+                if oldImageId != newImageId:
+                    colItem.SetImage(newImageId)
+
+                self.SetItem(colItem)
                 self.SetItemData(item, id)
 
         for i, col in enumerate(self.activeColumns):
