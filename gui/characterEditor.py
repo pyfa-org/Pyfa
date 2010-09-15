@@ -18,10 +18,14 @@
 #===============================================================================
 
 import wx
+import gui.mainFrame
+import wx.lib.newevent
 import wx.gizmos
 from gui import bitmapLoader
 import controller
 import sys
+
+CharListUpdated, CHAR_LIST_UPDATED = wx.lib.newevent.NewEvent()
 
 class CharacterEditor(wx.Dialog):
     def __init__(self, parent):
@@ -92,7 +96,7 @@ class CharacterEditor(wx.Dialog):
 
         self.btnOK = wx.Button(self, wx.ID_OK)
         bSizerButtons.Add(self.btnOK, 0, wx.ALL, 5)
-
+        self.btnOK.Bind(wx.EVT_BUTTON, self.editingFinished)
 
         mainSizer.Add(bSizerButtons, 0, wx.ALIGN_RIGHT, 5)
 
@@ -107,6 +111,12 @@ class CharacterEditor(wx.Dialog):
             self.restrict()
 
         self.registerEvents()
+
+        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+
+    def editingFinished(self, event):
+        wx.PostEvent(self.mainFrame, CharListUpdated())
+        event.Skip()
 
     def registerEvents(self):
         self.Bind(wx.EVT_CLOSE, self.closeEvent)

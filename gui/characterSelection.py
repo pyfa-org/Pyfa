@@ -39,6 +39,7 @@ class CharacterSelection(wx.Panel):
         self.refreshCharacterList()
 
         self.Bind(wx.EVT_CHOICE, self.charChanged)
+        self.mainFrame.Bind(ce.CHAR_LIST_UPDATED, self.refreshCharacterList)
 
     def getActiveCharacter(self):
         selection = self.charChoice.GetCurrentSelection()
@@ -59,6 +60,9 @@ class CharacterSelection(wx.Panel):
 
         if activeChar is None:
             choice.SetSelection(all0)
+
+        if event is not None:
+            event.Skip()
 
     def charChanged(self, event):
         fitID = self.mainFrame.fitMultiSwitch.getActiveFit()
