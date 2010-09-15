@@ -85,7 +85,7 @@ class Display(wx.ListCtrl):
         selection = []
 
         self.Freeze()
-        
+
         sel = self.GetFirstSelected()
         while sel != -1:
             selection.append(sel)
@@ -110,6 +110,17 @@ class Display(wx.ListCtrl):
 
         for sel in selection:
             self.Select(sel)
+
+        self.Thaw()
+
+    def refresh(self, stuff):
+        self.Freeze()
+        item = -1
+        for id, st in enumerate(stuff):
+            item = self.GetNextItem(item)
+            for i, col in enumerate(self.activeColumns):
+                self.SetStringItem(item, i, col.getText(st), col.getImageId(st))
+                self.SetItemData(item, id)
 
         self.Thaw()
 
