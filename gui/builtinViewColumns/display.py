@@ -114,13 +114,13 @@ class Display(wx.ListCtrl):
                 oldImageId = colItem.GetImage()
                 newText = col.getText(st)
                 newImageId = col.getImageId(st)
-                if oldText != newText:
-                    colItem.SetText(newText)
 
-                if oldImageId != newImageId:
-                    colItem.SetImage(newImageId)
+                colItem.SetText(newText)
+                colItem.SetImage(newImageId)
 
-                self.SetItem(colItem)
+                if oldText != newText or oldImageId != newImageId:
+                    self.SetItem(colItem)
+
                 self.SetItemData(item, id)
 
         for i, col in enumerate(self.activeColumns):

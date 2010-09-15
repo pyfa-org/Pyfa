@@ -59,8 +59,10 @@ class FittingView(d.Display):
         if fitID != None:
             cFit = controller.Fit.getInstance()
             populate = cFit.appendModule(fitID, itemID)
-            if populate: self.slotsChanged()
-            wx.PostEvent(self.mainFrame, FitChanged(fitID=fitID))
+            if populate:
+                self.slotsChanged()
+            if populate is not None:
+                wx.PostEvent(self.mainFrame, FitChanged(fitID=fitID))
 
     def removeItem(self, event):
         row, _ = self.HitTest(event.Position)

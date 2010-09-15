@@ -89,7 +89,7 @@ class Fit(object):
 
             return numSlots != len(fit.modules)
         else:
-            return False
+            return None
 
     def removeModule(self, fitID, position):
         fit = eos.db.getFit(fitID)
