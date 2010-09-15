@@ -42,6 +42,7 @@ class FittingView(d.Display):
         self.Bind(wx.EVT_LEFT_DCLICK, self.removeItem)
         self.Hide() #Don't show ourselves at start
         self.activeFitID = None
+        self.ignore = False
 
     #Gets called from the fitMultiSwitch when it decides its time
     def changeFit(self, fitID):
@@ -51,14 +52,20 @@ class FittingView(d.Display):
         else:
             self.Show()
 
+        self.ignore = True
         wx.PostEvent(self.mainFrame, FitChanged(fitID=fitID))
+        self.ignore = False
+        self.slotsChanged()
 
     def appendItem(self, itemID):
         fitID = self.activeFitID
         if fitID != None:
             cFit = controller.Fit.getInstance()
             cFit.appendModule(fitID, itemID)
+            self.ignore = True
             wx.PostEvent(self.mainFrame, FitChanged(fitID=fitID))
+            self.ignore = False
+            self.slotsChanged()
 
     def removeItem(self, event):
         row, _ = self.HitTest(event.Position)
@@ -67,11 +74,14 @@ class FittingView(d.Display):
             trigger = cFit.removeModule(self.activeFitID, self.mods[self.GetItemData(row)].position)
 
             if trigger:
+                self.ignore = True
                 wx.PostEvent(self.mainFrame, FitChanged(fitID=self.activeFitID))
+                self.ignore = False
+                self.slotsChanged()
 
-    def fitChanged(self, event):
+    def generateMods(self):
         cFit = controller.Fit.getInstance()
-        fit = cFit.getFit(event.fitID)
+        fit = cFit.getFit(self.activeFitID)
 
         slotOrder = [Slot.SUBSYSTEM, Slot.HIGH, Slot.MED, Slot.LOW, Slot.RIG]
 
@@ -81,6 +91,14 @@ class FittingView(d.Display):
         else:
             self.mods = None
 
+    def slotsChanged(self):
+        self.generateMods()
         self.populate(self.mods)
 
+    def fitChanged(self, event):
+        if self.ignore:
+            return
+
+        self.generateMods()
+        self.refresh(self.mods)
         event.Skip()
