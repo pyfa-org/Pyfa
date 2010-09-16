@@ -35,7 +35,7 @@ class CharacterSelection(wx.Panel):
         mainSizer.Add(wx.StaticText(self, wx.ID_ANY, "Character: "), 0, wx.CENTER)
 
         self.charChoice = wx.Choice(self)
-        mainSizer.Add(self.charChoice, 1, wx.EXPAND)
+        mainSizer.Add(self.charChoice, 1, wx.ALIGN_CENTER_VERTICAL)
 
         self.refreshCharacterList()
 
