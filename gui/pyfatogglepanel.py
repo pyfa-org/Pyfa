@@ -38,6 +38,9 @@ class TogglePanel ( wx.Panel ):
         self.parent = parent
 
         self.bkColour = self.GetBackgroundColour()
+        standardFont = wx.SystemSettings.GetFont(wx.SYS_DEFAULT_GUI_FONT)
+        standardFont.SetPointSize(8)
+        self.SetFont(standardFont)
 
 #       Odd stuff :S
 #        self.SetBackgroundColour( self.bkColour )
@@ -52,6 +55,7 @@ class TogglePanel ( wx.Panel ):
 
         self.headerPanel = wx.Panel(self)
         self.headerPanel.InheritAttributes()
+        self.headerPanel.SetFont(standardFont)
 #        self.headerPanel.SetBackgroundColour( self.bkColour)
 
         self.mainSizer.Add(self.headerPanel,0,wx.EXPAND | wx.TOP|wx.BOTTOM|wx.RIGHT, 1)
@@ -103,8 +107,10 @@ class TogglePanel ( wx.Panel ):
 
 #       Set the static text font weight to BOLD
 
-        headerFont=parent.GetFont()
+        headerFont=wx.SystemSettings.GetFont(wx.SYS_DEFAULT_GUI_FONT)
+        headerFont.SetPointSize(8)
         headerFont.SetWeight(wx.BOLD)
+
         self.headerLabel.SetFont(headerFont)
 
 #       Create the content panel and its main sizer
@@ -112,6 +118,8 @@ class TogglePanel ( wx.Panel ):
 
         self.contentSizer = wx.BoxSizer( wx.VERTICAL )
         self.contentPanel = wx.Panel(self)
+        self.contentPanel.SetFont(standardFont)
+
         self.contentPanel.InheritAttributes()
         self.contentPanel.SetSizer(self.contentSizer)
 
