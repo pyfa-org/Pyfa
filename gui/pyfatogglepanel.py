@@ -52,7 +52,7 @@ class TogglePanel ( wx.Panel ):
 
         self.headerPanel = wx.Panel(self)
 
-        self.headerPanel.SetBackgroundColour( self.bkColour)
+#        self.headerPanel.SetBackgroundColour( self.bkColour)
 
         self.mainSizer.Add(self.headerPanel,0,wx.EXPAND | wx.TOP|wx.BOTTOM|wx.RIGHT, 1)
 
