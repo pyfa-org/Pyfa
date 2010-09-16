@@ -104,6 +104,9 @@ class Display(wx.ListCtrl):
         self.Thaw()
 
     def refresh(self, stuff):
+        if stuff == None:
+            return
+        
         self.Freeze()
         item = -1
         for id, st in enumerate(stuff):
