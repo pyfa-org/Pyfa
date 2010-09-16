@@ -37,10 +37,10 @@ class TogglePanel ( wx.Panel ):
         self._toggle = 1
         self.parent = parent
 
-        self.bkColour = parent.GetBackgroundColour()
+#        self.bkColour = parent.GetBackgroundColour()
 
 #       Odd stuff :S
-        self.SetBackgroundColour( self.bkColour )
+#        self.SetBackgroundColour( self.bkColour )
 
 #       Create the main sizer of this panel
 
