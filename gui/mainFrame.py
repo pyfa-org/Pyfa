@@ -79,7 +79,7 @@ class MainFrame(wx.Frame):
         self.statsSizer.Add(self.statsCharPickerSizer, 0, wx.EXPAND)
 
         self.charSelection = CharacterSelection(statsFitviewPanel)
-        self.statsCharPickerSizer.Add(self.charSelection, 0, wx.EXPAND | wx.BOTTOM, 15)
+        self.statsCharPickerSizer.Add(self.charSelection, 0, wx.EXPAND)
 
         self.statsPane = StatsPane(statsFitviewPanel)
         self.statsCharPickerSizer.Add(self.statsPane, 0, wx.EXPAND)
