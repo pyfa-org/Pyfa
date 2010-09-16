@@ -33,7 +33,7 @@ class TogglePanel ( wx.Panel ):
 
     def __init__( self, parent ):
         wx.Panel.__init__ ( self, parent, id = wx.ID_ANY, pos = wx.DefaultPosition, size = wx.Size( -1,-1 ), style = wx.TAB_TRAVERSAL )
-        self.InheritAttributes()
+
         self._toggle = 1
         self.parent = parent
 
