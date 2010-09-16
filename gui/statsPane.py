@@ -43,7 +43,8 @@ class StatsPane(wx.Panel):
         self.SetMinSize((310, -1))
 
         # Use 25% smaller fonts if MAC or force font size to 8 for msw/linux
-        if wx.Platform == "__WXMAC__":
+
+        if "__WXMAC__" in  wx.PlatformInfo :
             self.SetWindowVariant(wx.WINDOW_VARIANT_SMALL)
         else:
             standardFont = wx.SystemSettings.GetFont(wx.SYS_DEFAULT_GUI_FONT)
