@@ -47,7 +47,7 @@ class StatsPane(wx.Panel):
         standardFont.SetPointSize(8)
         self.SetFont(standardFont)
 
-        self.SetBackgroundColour(wx.Colour(151,151,151))
+        self.SetBackgroundColour(parent.GetBackgroundColour())
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
         self.SetSizer(mainSizer)
