@@ -51,7 +51,7 @@ class TogglePanel ( wx.Panel ):
 #       Create the header panel
 
         self.headerPanel = wx.Panel(self)
-
+        self.headerPanel.InheritAttributes()
 #        self.headerPanel.SetBackgroundColour( self.bkColour)
 
         self.mainSizer.Add(self.headerPanel,0,wx.EXPAND | wx.TOP|wx.BOTTOM|wx.RIGHT, 1)
@@ -112,6 +112,7 @@ class TogglePanel ( wx.Panel ):
 
         self.contentSizer = wx.BoxSizer( wx.VERTICAL )
         self.contentPanel = wx.Panel(self)
+        self.contentPanel.InheritAttributes()
         self.contentPanel.SetSizer(self.contentSizer)
 
         self.mainSizer.Add( self.contentPanel, 0, wx.EXPAND | wx.RIGHT | wx.LEFT , 5)
