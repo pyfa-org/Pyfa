@@ -30,6 +30,11 @@ class Character():
 
         return cls.instance
 
+    def all0ID(self):
+        all0 = eos.types.Character.getAll0()
+        eos.db.commit()
+        return all0.ID
+
     def getCharacterList(self):
         baseChars = [eos.types.Character.getAll0(), eos.types.Character.getAll5()]
         # Flush incase all0 & all5 weren't in the db yet

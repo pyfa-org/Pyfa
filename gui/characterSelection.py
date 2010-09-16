@@ -20,6 +20,7 @@
 import wx
 import controller
 from gui import characterEditor as ce
+from gui import shipBrowser as sb
 from gui import fittingView as fv
 import gui.mainFrame
 
@@ -40,6 +41,9 @@ class CharacterSelection(wx.Panel):
 
         self.Bind(wx.EVT_CHOICE, self.charChanged)
         self.mainFrame.Bind(ce.CHAR_LIST_UPDATED, self.refreshCharacterList)
+        self.mainFrame.Bind(fv.FIT_CHANGED, self.fitChanged)
+
+        self.Enable(False)
 
     def getActiveCharacter(self):
         selection = self.charChoice.GetCurrentSelection()
@@ -72,3 +76,31 @@ class CharacterSelection(wx.Panel):
         cFit.changeChar(fitID, charID)
 
         wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=fitID))
+
+    def selectChar(self, charID):
+        choice = self.charChoice
+        numItems = len(choice.GetItems())
+        for i in xrange(numItems):
+            id = choice.GetClientData(i)
+            if id == charID:
+                choice.SetSelection(i)
+                return True
+
+        return False
+
+    def fitChanged(self, event):
+        self.Enable(event.fitID != None)
+
+        choice = self.charChoice
+        cFit = controller.Fit.getInstance()
+        currCharID = choice.GetClientData(choice.GetCurrentSelection())
+        fit = cFit.getFit(event.fitID)
+        newCharID = fit.character.ID if fit is not None else None
+
+        if newCharID == None:
+            cChar = controller.Character.getInstance()
+            self.selectChar(cChar.all0ID())
+        elif currCharID != newCharID:
+            self.selectChar(newCharID)
+
+        event.Skip()

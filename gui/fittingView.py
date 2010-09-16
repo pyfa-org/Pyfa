@@ -40,17 +40,12 @@ class FittingView(d.Display):
         d.Display.__init__(self, parent)
         self.mainFrame.Bind(FIT_CHANGED, self.fitChanged)
         self.Bind(wx.EVT_LEFT_DCLICK, self.removeItem)
-        self.Hide() #Don't show ourselves at start
         self.activeFitID = None
 
     #Gets called from the fitMultiSwitch when it decides its time
     def changeFit(self, fitID):
         self.activeFitID = fitID
-        if fitID == None:
-            self.Hide()
-        else:
-            self.Show()
-
+        self.Show(fitID is not None)
         self.slotsChanged()
         wx.PostEvent(self.mainFrame, FitChanged(fitID=fitID))
 
@@ -91,9 +86,9 @@ class FittingView(d.Display):
         self.populate(self.mods)
 
     def fitChanged(self, event):
-        if event.fitID != self.activeFitID:
-            return
+        if self.activeFitID is not None and self.activeFitID == event.fitID:
+            self.generateMods()
+            self.refresh(self.mods)
 
-        self.generateMods()
-        self.refresh(self.mods)
+        self.Show(self.activeFitID is not None and self.activeFitID == event.fitID)
         event.Skip()

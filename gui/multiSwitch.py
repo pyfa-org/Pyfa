@@ -48,6 +48,9 @@ class MultiSwitch(wx.Notebook):
         return self.GetCurrentPage().view.activeFitID
 
     def AddTab(self, type="fit", frame=None, title=None):
+        #Hide current selection
+        self.GetCurrentPage().Hide()
+
         pos = self.GetPageCount() - 1
 
         if type == "fit":
@@ -59,14 +62,15 @@ class MultiSwitch(wx.Notebook):
             sizer.Add(p.view, 1, wx.EXPAND | wx.RESERVE_SPACE_EVEN_IF_HIDDEN)
 
             p.SetSizer(sizer)
-
             self.InsertPage(pos, p, "")
             self.setTabTitle(pos, None)
         else:
             self.InsertPage(pos, frame, title)
             frame.type=type
 
+        self.ChangeSelection(pos)
         wx.CallAfter(self.ChangeSelection, pos)
+        return pos
 
     def removeTab(self, i):
         if self.GetPageCount() > 2:
@@ -109,12 +113,20 @@ class MultiSwitch(wx.Notebook):
                     self.SetPageImage(tab, self.imageList.Add(bitmap))
 
     def pageChanged(self, event):
-        print "p"
-        selection = event.Selection
+        #On windows, we can't use the CHANGING event as its bugged, so we need to RECHECK here
+        if event.Selection == self.GetPageCount() - 1:
+            selection = self.AddTab()
+        else:
+            selection = event.Selection
+
         page = self.GetPage(selection)
         if hasattr(page, "type") and page.type == "fit":
             fitID = page.view.activeFitID
             wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=fitID))
+        else:
+            wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=None))
+
+        event.Skip()
 
     def changeFit(self, event):
         selected = self.GetSelection()
@@ -148,7 +160,6 @@ class MultiSwitch(wx.Notebook):
                 view = page.view
                 if view.activeFitID == fitID:
                     self.removeTab(i)
-
 
         #Deleting a tab might have put us on the "+" tab, make sure we don't stay there
         if self.GetSelection() == self.GetPageCount() - 1:
