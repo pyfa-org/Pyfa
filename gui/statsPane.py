@@ -40,7 +40,7 @@ class StatsPane(wx.Panel):
 
     def __init__(self, parent):
         wx.Panel.__init__(self, parent)
-        self.SetMinSize((300, -1))
+        self.SetMinSize((310, -1))
 
         # Force font size 8
         standardFont = wx.SystemSettings.GetFont(wx.SYS_DEFAULT_GUI_FONT)
@@ -53,6 +53,8 @@ class StatsPane(wx.Panel):
         self.SetSizer(mainSizer)
 
         self.views = []
+        maxviews = len(self.DEFAULT_VIEWS)
+        i=0
         for viewName in self.DEFAULT_VIEWS:
             view = gui.builtinStatsViews.getView(viewName)( self )
             self.views.append(view)
@@ -67,6 +69,9 @@ class StatsPane(wx.Panel):
             view.refreshPanel(None)
 
             mainSizer.Add(tp, 0, wx.EXPAND | wx.LEFT, 3)
+            if i < maxviews - 1:
+                mainSizer.Add(wx.StaticLine(self, wx.ID_ANY, style=wx.HORIZONTAL), 0, wx.EXPAND | wx.ALL,2)
+            i+=1
             tp.OnStateChange(tp.GetBestSize())
 
 
