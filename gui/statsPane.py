@@ -42,12 +42,13 @@ class StatsPane(wx.Panel):
         wx.Panel.__init__(self, parent)
         self.SetMinSize((310, -1))
 
-        # Force font size 8
-        standardFont = wx.SystemSettings.GetFont(wx.SYS_DEFAULT_GUI_FONT)
-        standardFont.SetPointSize(8)
-        self.SetFont(standardFont)
-
-#        self.SetBackgroundColour(parent.GetBackgroundColour())
+        # Use 25% smaller fonts if MAC or force font size to 8 for msw/linux
+        if wx.Platform == "__WXMAC__":
+            self.SetWindowVariant(wx.WINDOW_VARIANT_SMALL)
+        else:
+            standardFont = wx.SystemSettings.GetFont(wx.SYS_DEFAULT_GUI_FONT)
+            standardFont.SetPointSize(8)
+            self.SetFont(standardFont)
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
         self.SetSizer(mainSizer)
