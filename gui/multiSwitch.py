@@ -49,7 +49,6 @@ class MultiSwitch(wx.Notebook):
 
     def AddTab(self, type="fit", frame=None, title=None):
         #Hide current selection
-        self.GetCurrentPage().Hide()
 
         pos = self.GetPageCount() - 1
 
