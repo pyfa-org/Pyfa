@@ -67,7 +67,7 @@ class MarketBrowser(wx.Panel):
         vbox.Add(self.splitter, 1, wx.EXPAND)
 
         self.marketView = MarketTree(self.splitter)
-        listStyle = wx.LC_REPORT | wx.BORDER_NONE | wx.LC_NO_HEADER | wx.LC_SINGLE_SEL
+        listStyle = wx.LC_REPORT | wx.LC_NO_HEADER | wx.LC_SINGLE_SEL
         self.itemView = wx.ListCtrl(self.splitter, style = listStyle)
 
         treeStyle = self.marketView.GetWindowStyleFlag()
