@@ -72,10 +72,15 @@ class Display(wx.ListCtrl):
         return None
 
     def resizeChecker(self, event):
-        if self.activeColumns[event.Column].resizable is False:
-            event.Veto()
-        else:
-            self.activeColumns[event.Column].resized = True
+        # we veto header cell resize by default till we find a way
+        # to assure a minimal size for the resized header cell
+
+        event.Veto()
+
+#        if self.activeColumns[event.Column].resizable is False:
+#            event.Veto()
+#        else:
+#            self.activeColumns[event.Column].resized = True
 
     def clearItemImages(self):
         for i in xrange(self.imageList.ImageCount - 1, self.imageListBase, -1):
