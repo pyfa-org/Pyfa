@@ -66,7 +66,7 @@ class FittingView(d.Display):
             populate = cFit.removeModule(self.activeFitID, self.mods[self.GetItemData(row)].position)
 
             if populate is not None:
-                if populate: self.slotsChanged(populate)
+                if populate: self.slotsChanged()
                 wx.PostEvent(self.mainFrame, FitChanged(fitID=self.activeFitID))
 
     def generateMods(self):
