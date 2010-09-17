@@ -31,12 +31,12 @@ from gui import bitmapLoader
 
 class TogglePanel ( wx.Panel ):
 
-    def __init__( self, parent ):
+    def __init__( self, parent , forceLayout = -1):
         wx.Panel.__init__ ( self, parent, id = wx.ID_ANY, pos = wx.DefaultPosition, size = wx.Size( -1,-1 ), style = wx.TAB_TRAVERSAL )
 
         self._toggle = 1
         self.parent = parent
-
+        self.forceLayout = forceLayout
         self.bkColour = self.GetBackgroundColour()
 
 #       Odd stuff :S
@@ -251,7 +251,10 @@ class TogglePanel ( wx.Panel ):
         self._toggle *=-1
 
         self.Thaw()
-        self.OnStateChange(self.GetBestSize())
+        if self.forceLayout == -1:
+            self.OnStateChange(self.GetBestSize())
+        else:
+            self.parent.Layout()
 
 #        self.parent.Layout()
 

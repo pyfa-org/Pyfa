@@ -23,21 +23,24 @@ from gui.boosterView import BoosterView
 from gui.droneView import DroneView
 from gui.implantView import ImplantView
 from gui.projectedView import ProjectedView
+from gui.pyfatogglepanel import TogglePanel 
 
-class AdditionsPane(wx.CollapsiblePane):
-    def collapseChanged(self, event):
-        self.mainFrame.fittingPanel.Layout()
-        self.GetPane().Layout()
+class AdditionsPane(TogglePanel):
+#    def collapseChanged(self, event):
+#        self.mainFrame.fittingPanel.Layout()
+#        self.GetPane().Layout()
 
     def __init__(self, parent):
-        wx.CollapsiblePane.__init__(self, parent)
+
+        TogglePanel.__init__(self, parent, forceLayout = 1)
+        
         self.SetLabel("Additions")
-        pane = self.GetPane()
+        pane = self.GetContentPane()
 
         baseSizer = wx.BoxSizer(wx.HORIZONTAL)
         pane.SetSizer(baseSizer)
 
-        self.Bind(wx.EVT_COLLAPSIBLEPANE_CHANGED, self.collapseChanged)
+#        self.Bind(wx.EVT_COLLAPSIBLEPANE_CHANGED, self.collapseChanged)
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
@@ -52,5 +55,5 @@ class AdditionsPane(wx.CollapsiblePane):
         self.notebook.AddPage(BoosterView(self.notebook), "Boosters")
         self.notebook.AddPage(ProjectedView(self.notebook), "Projected")
 
-        self.Expand()
+#        self.Expand()
 
