@@ -19,7 +19,7 @@
 
 import wx
 from gui.statsView import StatsView
-import controller
+import service
 from gui.pyfatogglepanel import TogglePanel
 import gui.builtinStatsViews
 from gui.builtinStatsViews import *
@@ -32,7 +32,7 @@ class StatsPane(wx.Panel):
                      "capacitorViewFull", "targetingmiscViewFull", "priceViewFull"]
 
     def fitChanged(self, event):
-        cFit = controller.Fit.getInstance()
+        cFit = service.Fit.getInstance()
         fit = cFit.getFit(event.fitID)
         for view in self.views:
             view.refreshPanel(fit)

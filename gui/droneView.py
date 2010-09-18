@@ -19,7 +19,7 @@
 
 import wx
 
-import controller
+import service
 import gui.fittingView as fv
 import gui.marketBrowser as mb
 import gui.builtinViewColumns.display as d
@@ -41,7 +41,7 @@ class DroneView(d.Display):
         self.Bind(wx.EVT_LEFT_DOWN, self.click)
 
     def fitChanged(self, event):
-        cFit = controller.Fit.getInstance()
+        cFit = service.Fit.getInstance()
         fit = cFit.getFit(event.fitID)
 
         stuff = fit.drones if fit is not None else None
@@ -49,7 +49,7 @@ class DroneView(d.Display):
         self.refresh(stuff)
 
     def addItem(self, event):
-        cFit = controller.Fit.getInstance()
+        cFit = service.Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
         trigger = cFit.addDrone(fitID, event.itemID)
         if trigger:
@@ -63,7 +63,7 @@ class DroneView(d.Display):
             col = self.getColumn(event.Position)
             if col != self.getColIndex(DroneCheckbox):
                 fitID = self.mainFrame.getActiveFit()
-                cFit = controller.Fit.getInstance()
+                cFit = service.Fit.getInstance()
                 cFit.removeDrone(fitID, self.GetItemData(row))
                 wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=fitID))
 
@@ -73,6 +73,6 @@ class DroneView(d.Display):
             col = self.getColumn(event.Position)
             if col == self.getColIndex(DroneCheckbox):
                 fitID = self.mainFrame.getActiveFit()
-                cFit = controller.Fit.getInstance()
+                cFit = service.Fit.getInstance()
                 cFit.toggleDrone(fitID, row)
                 wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=fitID))

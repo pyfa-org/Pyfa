@@ -20,7 +20,7 @@
 import sys
 import wx
 import wx.lib.newevent
-import controller
+import service
 import bitmapLoader
 from gui.itemStats import ItemStatsMenu
 import gui.mainFrame
@@ -91,7 +91,7 @@ class MarketBrowser(wx.Panel):
         self.itemImageList = wx.ImageList(16, 16)
         self.itemView.SetImageList(self.itemImageList, wx.IMAGE_LIST_SMALL)
 
-        cMarket = controller.Market.getInstance()
+        cMarket = service.Market.getInstance()
 
         root = cMarket.getMarketRoot()
         for id, name, iconFile in root:
@@ -152,7 +152,7 @@ class MarketBrowser(wx.Panel):
         root = event.Item
         child, cookie = self.marketView.GetFirstChild(root)
         if self.marketView.GetItemText(child) == "dummy":
-            cMarket = controller.Market.getInstance()
+            cMarket = service.Market.getInstance()
             #A DUMMY! Keeeel!!! EBUL DUMMY MUST DIAF!
             self.marketView.Delete(child)
 
@@ -178,7 +178,7 @@ class MarketBrowser(wx.Panel):
             if self.marketView.GetChildrenCount(root) != 0:
                 return
 
-            cMarket = controller.Market.getInstance()
+            cMarket = service.Market.getInstance()
             idNameMap = {}
             for id, name, iconFile in cMarket.getVariations(self.marketView.GetPyData(root)):
                 iconId = self.addItemViewImage(iconFile)
@@ -196,7 +196,7 @@ class MarketBrowser(wx.Panel):
 
     def toggleMetagroup(self, event):
         ctrl = wx.GetMouseState().ControlDown()
-        cMarket = controller.Market.getInstance()
+        cMarket = service.Market.getInstance()
         btn = event.EventObject
         if not ctrl:
             for name in ("normal", "faction", "complex", "officer"):
@@ -233,7 +233,7 @@ class MarketBrowser(wx.Panel):
             self.clearSearch(event, False)
             return
 
-        cMarket = controller.Market.getInstance()
+        cMarket = service.Market.getInstance()
         if not self.searching:
             for name in ("normal", "faction", "complex", "officer"):
                 getattr(self, name).SetValue(True)
@@ -249,7 +249,7 @@ class MarketBrowser(wx.Panel):
         if clear:
             self.search.Clear()
 
-        cMarket = controller.Market.getInstance()
+        cMarket = service.Market.getInstance()
         for name in ("normal", "faction", "complex", "officer"):
             btn = getattr(self, name)
             btn.Enable(True)
@@ -268,7 +268,7 @@ class MarketBrowser(wx.Panel):
         idNameMap = {}
         idGroupMap = {}
         usedMetas = set()
-        cMarket = controller.Market.getInstance()
+        cMarket = service.Market.getInstance()
         for id, name, group, metaGroupID, iconFile in self.searchResults:
             usedMetas.add(metaGroupID)
             if cMarket.isMetaIdActive(metaGroupID):

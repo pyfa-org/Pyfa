@@ -19,7 +19,7 @@
 
 import wx
 import wx.lib.newevent
-import controller
+import service
 import gui.mainFrame
 import gui.builtinViewColumns.display as d
 import sys
@@ -52,7 +52,7 @@ class FittingView(d.Display):
     def appendItem(self, itemID):
         fitID = self.activeFitID
         if fitID != None:
-            cFit = controller.Fit.getInstance()
+            cFit = service.Fit.getInstance()
             populate = cFit.appendModule(fitID, itemID)
             if populate:
                 self.slotsChanged()
@@ -62,7 +62,7 @@ class FittingView(d.Display):
     def removeItem(self, event):
         row, _ = self.HitTest(event.Position)
         if row != -1:
-            cFit = controller.Fit.getInstance()
+            cFit = service.Fit.getInstance()
             populate = cFit.removeModule(self.activeFitID, self.mods[self.GetItemData(row)].position)
 
             if populate is not None:
@@ -70,7 +70,7 @@ class FittingView(d.Display):
                 wx.PostEvent(self.mainFrame, FitChanged(fitID=self.activeFitID))
 
     def generateMods(self):
-        cFit = controller.Fit.getInstance()
+        cFit = service.Fit.getInstance()
         fit = cFit.getFit(self.activeFitID)
 
         slotOrder = [Slot.SUBSYSTEM, Slot.HIGH, Slot.MED, Slot.LOW, Slot.RIG]

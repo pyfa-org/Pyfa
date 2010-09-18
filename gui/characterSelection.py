@@ -18,7 +18,7 @@
 #===============================================================================
 
 import wx
-import controller
+import service
 from gui import characterEditor as ce
 from gui import shipBrowser as sb
 from gui import fittingView as fv
@@ -54,7 +54,7 @@ class CharacterSelection(wx.Panel):
 
     def refreshCharacterList(self, event=None):
         choice = self.charChoice
-        cChar = controller.Character.getInstance()
+        cChar = service.Character.getInstance()
         activeChar = self.getActiveCharacter()
 
         choice.Clear()
@@ -75,7 +75,7 @@ class CharacterSelection(wx.Panel):
         fitID = self.mainFrame.fitMultiSwitch.getActiveFit()
         charID = self.getActiveCharacter()
 
-        cFit = controller.Fit.getInstance()
+        cFit = service.Fit.getInstance()
         cFit.changeChar(fitID, charID)
 
         wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=fitID))
@@ -95,13 +95,13 @@ class CharacterSelection(wx.Panel):
         self.Enable(event.fitID != None)
 
         choice = self.charChoice
-        cFit = controller.Fit.getInstance()
+        cFit = service.Fit.getInstance()
         currCharID = choice.GetClientData(choice.GetCurrentSelection())
         fit = cFit.getFit(event.fitID)
         newCharID = fit.character.ID if fit is not None else None
 
         if newCharID == None:
-            cChar = controller.Character.getInstance()
+            cChar = service.Character.getInstance()
             self.selectChar(cChar.all0ID())
         elif currCharID != newCharID:
             self.selectChar(newCharID)

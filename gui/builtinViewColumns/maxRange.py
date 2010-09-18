@@ -20,7 +20,7 @@
 from gui import builtinViewColumns
 from gui.viewColumn import ViewColumn
 from gui import bitmapLoader
-import controller
+import service
 from util import formatAmount
 
 class MaxRange(ViewColumn):
@@ -30,7 +30,7 @@ class MaxRange(ViewColumn):
             params = {"showIcon": True,
                       "displayName": False}
         ViewColumn.__init__(self, fittingView)
-        cAttribute = controller.Attribute.getInstance()
+        cAttribute = service.Attribute.getInstance()
         info = cAttribute.getAttributeInfo("maxRange")
         self.info = info
         if params["showIcon"]:

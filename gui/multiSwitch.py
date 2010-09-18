@@ -23,7 +23,7 @@ import gui.mainFrame
 import gui.fittingView as fv
 import gui.marketBrowser as mb
 import gui.shipBrowser as sb
-import controller
+import service
 
 class MultiSwitch(wx.Notebook):
     def __init__(self, parent):
@@ -104,7 +104,7 @@ class MultiSwitch(wx.Notebook):
                 self.SetPageText(tab, "Empty Tab")
                 self.SetPageImage(tab, -1)
             else:
-                cFit = controller.Fit.getInstance()
+                cFit = service.Fit.getInstance()
                 fit = cFit.getFit(fitID)
                 self.SetPageText(tab, "%s: %s" % (fit.ship.item.name, fit.name))
                 bitmap = bitmapLoader.getBitmap("race_%s_small" % fit.ship.item.race, "icons")

@@ -20,14 +20,14 @@
 from gui import builtinViewColumns
 from gui.viewColumn import ViewColumn
 from gui import bitmapLoader
-import controller
+import service
 from util import formatAmount
 
 class AttributeDisplay(ViewColumn):
     name = "Attribute Display"
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
-        cAttribute = controller.Attribute.getInstance()
+        cAttribute = service.Attribute.getInstance()
         info = cAttribute.getAttributeInfo(params["attribute"])
         self.info = info
         if params["showIcon"]:

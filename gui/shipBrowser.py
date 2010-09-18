@@ -1,5 +1,5 @@
 import wx
-import controller
+import service
 import bitmapLoader
 import gui.mainFrame
 import  wx.lib.newevent
@@ -80,7 +80,7 @@ class ShipBrowser(wx.Panel):
     def build(self):
         if not self.built:
             self.built = True
-            cMarket = controller.Market.getInstance()
+            cMarket = service.Market.getInstance()
             shipRoot = cMarket.getShipRoot()
             iconId = self.shipImageList.Add(bitmapLoader.getBitmap("ship_small", "icons"))
             for id, name in shipRoot:
@@ -145,8 +145,8 @@ class ShipBrowser(wx.Panel):
         if tree.GetItemText(child) == "dummy":
             tree.Delete(child)
 
-            cMarket = controller.Market.getInstance()
-            cFit = controller.Fit.getInstance()
+            cMarket = service.Market.getInstance()
+            cFit = service.Fit.getInstance()
 
             type, groupID = tree.GetPyData(root)
             if type == "group":
@@ -170,7 +170,7 @@ class ShipBrowser(wx.Panel):
             type, shipID = tree.GetPyData(root)
 
         name = "%s fit" % tree.GetItemText(root)
-        cFit = controller.Fit.getInstance()
+        cFit = service.Fit.getInstance()
         fitID = cFit.newFit(shipID, name)
         childId = tree.AppendItem(root, name, -1, data=wx.TreeItemData(("fit", fitID)))
         tree.SetItemText(childId, name)
@@ -199,7 +199,7 @@ class ShipBrowser(wx.Panel):
         item = event.Item
         newName = event.Label
         type, fitID = tree.GetPyData(item)
-        cFit = controller.Fit.getInstance()
+        cFit = service.Fit.getInstance()
         cFit.renameFit(fitID, newName)
 
         wx.CallAfter(tree.SortChildren, tree.GetItemParent(item))
@@ -211,7 +211,7 @@ class ShipBrowser(wx.Panel):
         root = tree.GetSelection()
         type, fitID = tree.GetPyData(root)
         if type == "fit":
-            cFit = controller.Fit.getInstance()
+            cFit = service.Fit.getInstance()
             cFit.deleteFit(fitID)
             tree.Delete(root)
 
@@ -222,7 +222,7 @@ class ShipBrowser(wx.Panel):
         root = tree.GetSelection()
         type, fitID = tree.GetPyData(root)
         if type == "fit":
-            cFit = controller.Fit.getInstance()
+            cFit = service.Fit.getInstance()
             newID = cFit.copyFit(fitID)
             parent = tree.GetItemParent(root)
             name = tree.GetItemText(root)
@@ -270,8 +270,8 @@ class ShipBrowser(wx.Panel):
         self.searchRoot = self.searchView.AddRoot("Search")
 
         #Get NEW STOOF
-        cMarket = controller.Market.getInstance()
-        cFit = controller.Fit.getInstance()
+        cMarket = service.Market.getInstance()
+        cFit = service.Fit.getInstance()
 
         for id, name, race in cMarket.searchShips(search):
             iconId = self.raceImageIds[race] if race in self.raceImageIds else -1

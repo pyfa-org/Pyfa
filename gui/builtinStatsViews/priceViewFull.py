@@ -22,7 +22,7 @@ from gui.statsView import StatsView
 from gui import builtinStatsViews
 from gui import bitmapLoader
 from util import formatAmount
-import controller
+import service
 
 class PriceViewFull(StatsView):
     name = "priceViewFull"
@@ -100,7 +100,7 @@ class PriceViewFull(StatsView):
             if self._timer:
                 if self._timer.IsRunning():
                     self._timer.Stop()
-            cMarket = controller.Market.getInstance()
+            cMarket = service.Market.getInstance()
             cMarket.getPrices(typeIDs, self.processPrices)
             self.labelEMStatus.SetLabel("Updating prices from EVE-METRICS...")
             if not self._timerUpdate:

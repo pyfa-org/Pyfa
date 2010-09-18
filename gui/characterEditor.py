@@ -22,7 +22,7 @@ import gui.mainFrame
 import wx.lib.newevent
 import wx.gizmos
 from gui import bitmapLoader
-import controller
+import service
 import sys
 
 CharListUpdated, CHAR_LIST_UPDATED = wx.lib.newevent.NewEvent()
@@ -37,7 +37,7 @@ class CharacterEditor(wx.Dialog):
         mainSizer = wx.BoxSizer(wx.VERTICAL)
         self.navSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        cChar = controller.Character.getInstance()
+        cChar = service.Character.getInstance()
         charList = cChar.getCharacterList()
 
         self.btnSave = wx.Button(self, wx.ID_SAVE)
@@ -142,7 +142,7 @@ class CharacterEditor(wx.Dialog):
     def charChanged(self, event):
         self.sview.skillTreeListCtrl.DeleteChildren(self.sview.root)
         self.sview.populateSkillTree()
-        cChar = controller.Character.getInstance()
+        cChar = service.Character.getInstance()
         charID = self.getActiveCharacter()
         if cChar.getCharName(charID) in ("All 0", "All 5"):
             self.restrict()
@@ -154,7 +154,7 @@ class CharacterEditor(wx.Dialog):
         return self.skillTreeChoice.GetClientData(selection) if selection is not None else None
 
     def new(self, event):
-        cChar = controller.Character.getInstance()
+        cChar = service.Character.getInstance()
         charID = cChar.new()
         id = self.skillTreeChoice.Append(cChar.getCharName(charID), charID)
         self.skillTreeChoice.SetSelection(id)
@@ -178,13 +178,13 @@ class CharacterEditor(wx.Dialog):
         self.navSizer.Add(self.btnSave, 0, wx.ALIGN_CENTER)
         self.navSizer.Layout()
 
-        cChar = controller.Character.getInstance()
+        cChar = service.Character.getInstance()
         currName = cChar.getCharName(self.getActiveCharacter())
         self.characterRename.SetValue(currName)
         self.characterRename.SetSelection(0, len(currName))
 
     def processRename(self, event):
-        cChar = controller.Character.getInstance()
+        cChar = service.Character.getInstance()
         newName = self.characterRename.GetLineText(0)
         charID = self.getActiveCharacter()
         cChar.rename(charID, newName)
@@ -205,7 +205,7 @@ class CharacterEditor(wx.Dialog):
         self.skillTreeChoice.SetSelection(selection)
 
     def copy(self, event):
-        cChar = controller.Character.getInstance()
+        cChar = service.Character.getInstance()
         charID = cChar.copy(self.getActiveCharacter())
         id = self.skillTreeChoice.Append(cChar.getCharName(charID), charID)
         self.skillTreeChoice.SetSelection(id)
@@ -214,7 +214,7 @@ class CharacterEditor(wx.Dialog):
         self.rename(None)
 
     def delete(self, event):
-        cChar = controller.Character.getInstance()
+        cChar = service.Character.getInstance()
         cChar.delete(self.getActiveCharacter())
         sel = self.skillTreeChoice.GetSelection()
         self.skillTreeChoice.Delete(sel)
@@ -269,7 +269,7 @@ class SkillTreeView (wx.Panel):
         self.Layout()
 
     def populateSkillTree(self):
-        cChar = controller.Character.getInstance()
+        cChar = service.Character.getInstance()
         groups = cChar.getSkillGroups()
         imageId = self.skillBookImageId
         root = self.root
@@ -290,7 +290,7 @@ class SkillTreeView (wx.Panel):
             tree.Delete(child)
 
             #Get the real intrestin' stuff
-            cChar = controller.Character.getInstance()
+            cChar = service.Character.getInstance()
             char = self.Parent.Parent.getActiveCharacter()
             for id, name in cChar.getSkills(tree.GetPyData(root)):
                 iconId = self.skillBookImageId
@@ -306,13 +306,13 @@ class SkillTreeView (wx.Panel):
         if self.skillTreeListCtrl.GetChildrenCount(item) > 0:
             return
 
-        cChar = controller.Character.getInstance()
+        cChar = service.Character.getInstance()
         charID = self.Parent.Parent.getActiveCharacter()
         if cChar.getCharName(charID) not in ("All 0", "All 5"):
             self.PopupMenu(self.levelChangeMenu)
 
     def changeLevel(self, event):
-        cChar = controller.Character.getInstance()
+        cChar = service.Character.getInstance()
         charID = self.Parent.Parent.getActiveCharacter()
         selection = self.skillTreeListCtrl.GetSelection()
         skillID = self.skillTreeListCtrl.GetPyData(selection)
@@ -387,7 +387,7 @@ class APIView (wx.Panel):
         self.Layout()
 
     def fetchCharList(self, event):
-        cChar = controller.Character.getInstance()
+        cChar = service.Character.getInstance()
         list = cChar.charList(self.Parent.Parent.getActiveCharacter(), self.inputID.GetLineText(0), self.inputKey.GetLineText(0))
         self.charList.DeleteAllItems()
 
@@ -404,5 +404,5 @@ class APIView (wx.Panel):
         item = self.charList.GetNextItem(-1, wx.LIST_NEXT_ALL, wx.LIST_STATE_SELECTED)
         charName = self.charList.GetItemText(item)
         if charName:
-            cChar = controller.Character.getInstance()
+            cChar = service.Character.getInstance()
             cChar.apiFetch(self.Parent.Parent.getActiveCharacter(), charName)
