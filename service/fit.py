@@ -72,10 +72,42 @@ class Fit(object):
         eos.db.commit()
         return fit
 
+    def addImplant(self, fitID, itemID):
+        if fitID is None:
+            return False
+
+        fit = eos.db.getFit(fitID)
+        item = eos.db.getItem(itemID, eager=("attributes", "group.category"))
+        try:
+            implant = eos.types.Implant(item)
+        except ValueError:
+            return False
+
+        fit.implants.freeSlot(implant)
+        fit.implants.append(implant)
+        fit.clear()
+        fit.calculateModifiedAttributes()
+        return True
+
+    def removeImplant(self, fitID, position):
+        if fitID is None:
+            return False
+
+        fit = eos.db.getFit(fitID)
+        implant = fit.implants[position]
+        fit.implants.remove(implant)
+        fit.clear()
+        fit.calculateModifiedAttributes()
+        return True
+
     def appendModule(self, fitID, itemID):
         fit = eos.db.getFit(fitID)
         item = eos.db.getItem(itemID, eager=("attributes", "group.category"))
-        m = eos.types.Module(item)
+        try:
+            m = eos.types.Module(item)
+        except ValueError:
+            return False
+
         if m.fits(fit):
             numSlots = len(fit.modules)
             fit.modules.append(m)

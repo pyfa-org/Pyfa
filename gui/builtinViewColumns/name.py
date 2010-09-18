@@ -32,6 +32,16 @@ class StuffName(ViewColumn):
         return stuff.item.name
 
     def getImageId(self, mod):
-        return -1
+        iconFile = mod.item.icon.iconFile if mod.item.icon else ""
+        if iconFile:
+            bitmap = bitmapLoader.getBitmap(iconFile, "pack")
+            if bitmap is None:
+                iconId = -1
+            else:
+                iconId = self.fittingView.imageList.Add(bitmap)
+        else:
+            iconId = -1
+
+        return iconId
 
 builtinViewColumns.registerColumn(StuffName)
