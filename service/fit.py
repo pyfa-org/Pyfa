@@ -100,6 +100,35 @@ class Fit(object):
         fit.calculateModifiedAttributes()
         return True
 
+    def addBooster(self, fitID, itemID):
+        if fitID is None:
+            return False
+
+        fit = eos.db.getFit(fitID)
+        item = eos.db.getItem(itemID, eager=("attributes", "group.category"))
+        try:
+            booster = eos.types.Booster(item)
+        except ValueError:
+            return False
+
+        fit.boosters.freeSlot(booster)
+        fit.boosters.append(booster)
+        fit.clear()
+        fit.calculateModifiedAttributes()
+        return True
+
+    def removeBooster(self, fitID, position):
+        if fitID is None:
+            return False
+
+        fit = eos.db.getFit(fitID)
+        booster = fit.boosters[position]
+        fit.implants.remove(booster)
+        fit.clear()
+        fit.calculateModifiedAttributes()
+        return True
+
+
     def appendModule(self, fitID, itemID):
         fit = eos.db.getFit(fitID)
         item = eos.db.getItem(itemID, eager=("attributes", "group.category"))

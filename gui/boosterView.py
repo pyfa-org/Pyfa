@@ -18,8 +18,44 @@
 #===============================================================================
 
 import wx
+import service
+from gui.builtinViewColumns import display as d
+import gui.fittingView as fv
+import gui.marketBrowser as mb
 
-class BoosterView(wx.Panel):
+class BoosterView(d.Display):
+    DEFAULT_COLS = ["Name",
+                    "attr:boosterness"]
+
     def __init__(self, parent):
-        wx.Panel.__init__(self, parent)
-        self.SetBackgroundColour('blue')
+        d.Display.__init__(self, parent)
+        self.mainFrame.Bind(fv.FIT_CHANGED, self.fitChanged)
+        self.mainFrame.Bind(mb.ITEM_SELECTED, self.addItem)
+        self.Bind(wx.EVT_LEFT_DCLICK, self.removeItem)
+
+    def fitChanged(self, event):
+        cFit = service.Fit.getInstance()
+        fit = cFit.getFit(event.fitID)
+
+        stuff = fit.boosters if fit is not None else None
+        self.populate(stuff)
+        self.refresh(stuff)
+        event.Skip()
+
+    def addItem(self, event):
+        cFit = service.Fit.getInstance()
+        fitID = self.mainFrame.getActiveFit()
+        trigger = cFit.addBooster(fitID, event.itemID)
+        print event.itemID
+        if trigger:
+            wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=fitID))
+
+        event.Skip()
+
+    def removeItem(self, event):
+        row, _ = self.HitTest(event.Position)
+        if row != -1:
+            fitID = self.mainFrame.getActiveFit()
+            cFit = service.Fit.getInstance()
+            cFit.removeBooster(fitID, self.GetItemData(row))
+            wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=fitID))
