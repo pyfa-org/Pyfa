@@ -23,12 +23,10 @@ import eos.db
 
 class PrefetchThread(threading.Thread):
     def run(self):
-        print "skillList"
         eos.db.getItemsByCategory("Skill", eager=("effects", "attributes"))
         cMarket = service.Market.getInstance()
         root = cMarket.getShipRoot()
         for id, _ in root:
-            print "id"
             cMarket.getShipList(id)
 
 prefetch = PrefetchThread()
