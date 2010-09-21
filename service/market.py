@@ -50,7 +50,7 @@ class PriceWorkerThread(threading.Thread):
             if len(requests) > 0:
                 eos.types.Price.fetchPrices(*requests)
 
-            callback()
+            wx.CallAfter(callback)
 
 
     def trigger(self, prices, callbacks):
@@ -244,9 +244,7 @@ class Market():
         return l
 
     def getPrices(self, typeIDs, callback):
-        fetch = set()
-        all = []
-        new = []
+        requests = []
         for typeID in typeIDs:
             price = self.priceCache.get(typeID)
             if price is None:
@@ -254,22 +252,15 @@ class Market():
                     price = eos.db.getPrice(typeID)
                 except NoResultFound:
                     price = eos.types.Price(typeID)
-                    new.append(price)
+                    eos.db.saveddata_session.add(price)
 
+                requests.append(price)
                 self.priceCache[typeID] = price
 
-            all.append(price)
-            if not price.isValid and not self.priceWorkerThread.isScheduled(price):
-                fetch.add(price)
-
-        def dbAdd():
-            for price in new:
-                eos.db.saveddata_session.add(price)
-                eos.db.saveddata_session.commit()
-                eos.db.saveddata_session.flush()
+            requests.append(price)
 
         def cb():
-            wx.CallAfter(callback, all)
-            wx.CallAfter(dbAdd)
+            callback(requests)
+            eos.db.commit()
 
-        self.priceWorkerThread.trigger(fetch, cb)
+        self.priceWorkerThread.trigger(requests, cb)
