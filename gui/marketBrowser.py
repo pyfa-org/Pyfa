@@ -235,7 +235,7 @@ class MarketBrowser(wx.Panel):
                 cMarket.activateMetaGroup(name)
 
         self.searching = True
-        cMarket.searchItems(search, self.filteredSearchAdd)
+        cMarket.searchItems(search, self.populateSearch)
 
     def clearSearch(self, event, clear=True):
         self.itemImageList.RemoveAll()
@@ -255,7 +255,12 @@ class MarketBrowser(wx.Panel):
 
         self.searching = False
 
-    def filteredSearchAdd(self, searchResults):
+    def populateSearch(self, results):
+        self.searchResults = results
+        self.filteredSearchAdd()
+
+    def filteredSearchAdd(self):
+        self.itemView.Freeze()
         self.itemView.DeleteAllItems()
         self.itemImageList.RemoveAll()
 
@@ -263,7 +268,7 @@ class MarketBrowser(wx.Panel):
         idGroupMap = {}
         usedMetas = set()
         cMarket = service.Market.getInstance()
-        for id, name, group, metaGroupID, iconFile in searchResults:
+        for id, name, group, metaGroupID, iconFile in self.searchResults:
             usedMetas.add(metaGroupID)
             if cMarket.isMetaIdActive(metaGroupID):
                 iconId = self.addItemViewImage(iconFile)
@@ -296,6 +301,8 @@ class MarketBrowser(wx.Panel):
         maxWidth = self.itemView.GetSize()[0]
         if maxWidth > width:
             self.itemView.SetColumnWidth(0, maxWidth)
+
+        self.itemView.Thaw()
 
     def contextMenu(self, event):
         #Check if something is selected, if so, spawn the menu for it
