@@ -20,8 +20,15 @@
 
 from gui.mainFrame import MainFrame
 import wx
+import config
+import os.path
+import eos.db
 
 if __name__ == "__main__":
+    #Make sure the saveddata db exists
+    if not os.path.exists(config.saveddata):
+        eos.db.saveddata_meta.create_all()
+
     pyfa = wx.App(False)
     MainFrame()
     pyfa.MainLoop()
