@@ -260,6 +260,9 @@ class MarketBrowser(wx.Panel):
         self.filteredSearchAdd()
 
     def filteredSearchAdd(self):
+        if self.searching is False:
+            return
+
         self.itemView.Freeze()
         self.itemView.DeleteAllItems()
         self.itemImageList.RemoveAll()
