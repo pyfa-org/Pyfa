@@ -46,19 +46,22 @@ class PyGauge(wx.PyWindow):
         self._value = 0
 
         self._fractionDigits = 0
+
         self._timerId = wx.NewId()
         self._timer = None
-        self._timerOver = None
+
         self._oldValue = 0
-        self._timerOn = 0
+
         self._animDuration = 400
         self._animStep = 0
         self._period = 25
         self._animValue = 0
-        self._overdrive = 0
-        self._overdriveTimerId =wx.NewId()
-        self._overdriveToggle=1
-        self._overdriveTimerStarted=False
+
+
+        self._percentage = 0
+        self._oldPercentage = 0
+
+
         self.SetBarGradient((wx.Colour(119,119,119),wx.Colour(153,153,153)))
         self.SetBackgroundColour(wx.Colour(51,51,51))
         self._tooltip = wx.ToolTip("")
@@ -146,6 +149,12 @@ class PyGauge(wx.PyWindow):
 
         return self._range
 
+    def Animate(self):
+        if not self._timer:
+            self._timer = wx.Timer(self, self._timerId)
+        self._animStep = 0
+        self._timer.Start(self._period)
+
     def SetRange(self, range):
         """
         Sets the range of the gauge. The gauge length is its
@@ -154,11 +163,21 @@ class PyGauge(wx.PyWindow):
         :param `range`: The maximum value of the gauge.
         """
 
+        if self._range == range:
+            return
+
         if range <= 0:
-            raise Exception("ERROR:\n Gauge range must be greater than 0.")
+            self._range = 1
+        else:
+            self._range = range
 
-        self._range = range
+        self._oldPercentage = self._percentage
+        self._percentage = (self._value/self._range) * 100
 
+        self.Animate()
+
+        self._tooltip.SetTip("%.2f/%.2f" % (self._value, self._range))        
+      
 
     def GetValue(self):
         """ Returns the current position of the gauge. """
@@ -168,17 +187,15 @@ class PyGauge(wx.PyWindow):
     def SetValue(self, value):
         """ Sets the current position of the gauge. """
         if self._value == value:
-            self.Refresh()
-        else:
-            self._oldValue = self._value
-            self._value = value
-            if value < 0:
-                self._value = 0
+            return
+        
+        self._oldPercentage = self._percentage
+        self._value = value
+        if value < 0:
+            self._value = 0
+        self._percentage = (self._value/self._range) * 100
 
-            if not self._timer:
-                self._timer = wx.Timer(self, self._timerId)
-            self._animStep = 0
-            self._timer.Start(self._period)
+        self.Animate()
 
         self._tooltip.SetTip("%.2f/%.2f" % (self._value, self._range))
 
@@ -206,12 +223,15 @@ class PyGauge(wx.PyWindow):
 
         dc.SetBackground(wx.Brush(self.GetBackgroundColour()))
         dc.Clear()
+
         colour = self.GetBackgroundColour()
+
         dc.SetBrush(wx.Brush(colour))
         dc.SetPen(wx.Pen(colour))
+
         dc.DrawRectangleRect(rect)
 
-        value = self._value
+        value = self._percentage
         if self._timer:
             if self._timer.IsRunning():
                 value = self._animValue
@@ -225,14 +245,15 @@ class PyGauge(wx.PyWindow):
         if self.GetBarGradient():
 
             c1,c2 = self.GetBarGradient()
-            if value > self._range:
+            if value > 100:
                 w = rect.width
             else:
-                w = rect.width * (float(value) / self._range)
+                w = rect.width * (float(value) / 100)
             r = copy.copy(rect)
             r.width = w
             r.height = r.height/2+1
-            pv= 100 *  (float(value) / self._range)
+
+            pv = self._percentage
 
             if pv <= 100:
                 c1 = map(lambda t: sum(t), zip(c1, (0,pv/3,-pv,0)))
@@ -242,15 +263,17 @@ class PyGauge(wx.PyWindow):
                     xv = pv -100
                     c1 = map(lambda t: sum(t), zip(c1, (0,100/3,-100,0)))
                     c1 = map(lambda t: sum(t), zip(c1, (xv*10,-xv*20,0,0)))
+
                     c2 = map(lambda t: sum(t), zip(c2, (0,100/3,-100,0)))                    
                     c2 = map(lambda t: sum(t), zip(c2, (xv*10,-xv*20,0,0)))
-#                    c1 = wx.Colour(170,0,0)
+
                 else:
                     pv = 106
                     xv = pv -100
+
                     c2 = map(lambda t: sum(t), zip(c2, (0,100/3,-100,0)))                    
                     c2 = map(lambda t: sum(t), zip(c2, (xv*15,-xv*20,0,0)))                    
-#                    c2 = map(lambda t: sum(t), zip(c2, (2*pv/3,-pv/2,-pv/2,0)))
+
                     c1 = wx.Colour(255,0,0)
 
             dc.GradientFillLinear(r, c1, c2, wx.SOUTH)
@@ -260,10 +283,10 @@ class PyGauge(wx.PyWindow):
             colour=self.GetBarColour()
             dc.SetBrush(wx.Brush(colour))
             dc.SetPen(wx.Pen(colour))
-            if value > self._range:
+            if value > 100:
                 w = rect.width
             else:
-                w = rect.width * (float(value) / self._range)
+                w = rect.width * (float(value) / 100)
             r = copy.copy(rect)
             r.width = w
             dc.DrawRectangleRect(r)
@@ -273,7 +296,7 @@ class PyGauge(wx.PyWindow):
         dc.SetFont(fontLabel)
 
         formatStr = "{0:." + str(self._fractionDigits) + "f}%"
-        dc.DrawLabel(formatStr.format((value*100/self._range)), rect, wx.ALIGN_CENTER)
+        dc.DrawLabel(formatStr.format(value), rect, wx.ALIGN_CENTER)
 
     def OUT_QUAD (self, t, b, c, d):
         t=float(t)
@@ -315,8 +338,8 @@ class PyGauge(wx.PyWindow):
 
         :param `event`: a timer event
         """
-        oldValue=self._oldValue
-        value=self._value
+        oldValue=self._oldPercentage
+        value=self._percentage
 
         if oldValue < value:
             direction = 1
