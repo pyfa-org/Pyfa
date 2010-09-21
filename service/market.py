@@ -23,48 +23,28 @@ import wx
 import collections
 import threading
 from sqlalchemy.orm.exc import NoResultFound
+import Queue
 
 class PriceWorkerThread(threading.Thread):
     def run(self):
-        self.cv = threading.Condition()
-        self.updateRequests = collections.deque()
-        self.scheduled = set()
+        self.queue = Queue.Queue()
         self.processUpdates()
 
     def processUpdates(self):
-        updateRequests = self.updateRequests
-        cv = self.cv
-
+        queue = self.queue
         while True:
-            cv.acquire()
-
-            while len(updateRequests) == 0:
-                cv.wait()
-
             # Grab our data and rerelease the lock
-            callback, requests = self.updateRequests.popleft()
-            self.scheduled.clear()
-            cv.release()
+            callback, requests = queue.get()
 
             # Grab prices, this is the time-consuming part
             if len(requests) > 0:
                 eos.types.Price.fetchPrices(*requests)
 
             wx.CallAfter(callback)
-
+            queue.task_done()
 
     def trigger(self, prices, callbacks):
-        self.cv.acquire()
-        self.updateRequests.append((callbacks, prices))
-        self.scheduled.update(prices)
-        self.cv.notify()
-        self.cv.release()
-
-    def isScheduled(self, price):
-        self.cv.acquire()
-        scheduled = price in self.scheduled
-        self.cv.release()
-        return scheduled
+        self.queue.put((callbacks, prices))
 
 class SearchWorkerThread(threading.Thread):
     def run(self):
@@ -258,7 +238,6 @@ class Market():
                     price = eos.types.Price(typeID)
                     eos.db.saveddata_session.add(price)
 
-                requests.append(price)
                 self.priceCache[typeID] = price
 
             requests.append(price)
