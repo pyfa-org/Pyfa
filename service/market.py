@@ -229,19 +229,23 @@ class Market():
         mg = eos.db.getMarketGroup(marketGroupId)
         l = []
         done = set()
+        populatedMetas = set()
+
         for item in mg.items:
+            populatedMetas.add(1)
             if 1 in self.activeMetas:
                 if item not in done:
                     done.add(item)
                     l.append((item.ID, item.name, item.icon.iconFile if item.icon else ""))
 
-            vars = eos.db.getVariations(item, metaGroups = tuple(self.activeMetas), eager="icon")
+            vars = eos.db.getVariations(item, eager=("icon", "metaGroup"))
             for var in vars:
-                if var not in done:
+                populatedMetas.add(var.metaGroup.ID)
+                if var not in done and var.metaGroup.ID in self.activeMetas:
                     done.add(var)
                     l.append((var.ID, var.name, var.icon.iconFile if var.icon else ""))
 
-        return l
+        return l, populatedMetas
 
     def getPrices(self, typeIDs, callback):
         requests = []

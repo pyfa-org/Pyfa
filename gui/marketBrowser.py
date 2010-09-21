@@ -179,7 +179,8 @@ class MarketBrowser(wx.Panel):
 
             cMarket = service.Market.getInstance()
             idNameMap = {}
-            for id, name, iconFile in cMarket.getVariations(self.marketView.GetPyData(root)):
+            data, usedMetas = cMarket.getVariations(self.marketView.GetPyData(root))
+            for id, name, iconFile in data:
                 iconId = self.addItemViewImage(iconFile)
                 index = self.itemView.InsertImageStringItem(sys.maxint, name, iconId)
                 idNameMap[id] = name
@@ -192,6 +193,8 @@ class MarketBrowser(wx.Panel):
             maxWidth = self.itemView.GetSize()[0]
             if maxWidth > width:
                 self.itemView.SetColumnWidth(0, maxWidth)
+
+            self.toggleButtons(usedMetas)
 
     def toggleMetagroup(self, event):
         ctrl = wx.GetMouseState().ControlDown()
@@ -259,6 +262,18 @@ class MarketBrowser(wx.Panel):
         self.searchResults = results
         self.filteredSearchAdd()
 
+    def toggleButtons(self, usedMetas):
+        cMarket = service.Market.getInstance()
+        for name in ("normal", "faction", "complex", "officer"):
+            btn = getattr(self, name)
+            btn.SetValue(False)
+            btn.Enable(False)
+
+        for meta in usedMetas:
+            btn = getattr(self, cMarket.getMetaName(meta))
+            btn.SetValue(cMarket.isMetaIdActive(meta))
+            btn.Enable(True)
+
     def filteredSearchAdd(self):
         if self.searching is False:
             return
@@ -281,15 +296,7 @@ class MarketBrowser(wx.Panel):
                 self.itemView.SetItemData(index, id)
 
         #Gray out empty toggles
-        for name in ("normal", "faction", "complex", "officer"):
-            btn = getattr(self, name)
-            btn.SetValue(False)
-            btn.Enable(False)
-
-        for meta in usedMetas:
-            btn = getattr(self, cMarket.getMetaName(meta))
-            btn.SetValue(cMarket.isMetaIdActive(meta))
-            btn.Enable(True)
+        self.toggleButtons(usedMetas)
 
         def sort(id1, id2):
             grp = cmp(idGroupMap[id1], idGroupMap[id2])
