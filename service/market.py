@@ -66,6 +66,41 @@ class PriceWorkerThread(threading.Thread):
         self.cv.release()
         return scheduled
 
+class SearchWorkerThread(threading.Thread):
+    def run(self):
+        self.cv = threading.Condition()
+        self.searchRequest = None
+        self.processSearches()
+
+    def processSearches(self):
+        cv = self.cv
+
+        while True:
+            cv.acquire()
+            while self.searchRequest is None:
+                cv.wait()
+
+            request, callback = self.searchRequest
+            self.searchRequest = None
+            cv.release()
+            filter = (eos.types.Category.name.in_(Market.SEARCH_CATEGORIES), eos.types.Item.published == True)
+            results = eos.db.searchItems(request, where=filter,
+                                         join=(eos.types.Item.group, eos.types.Group.category),
+                                         eager=("icon", "group.category"))
+
+            items = []
+            for item in results:
+                if item.category.name in Market.SEARCH_CATEGORIES:
+                    items.append((item.ID, item.name, item.group.name, item.metaGroup.ID if item.metaGroup else 1, item.icon.iconFile if item.icon else ""))
+
+            wx.CallAfter(callback, items)
+
+    def scheduleSearch(self, text, callback):
+        self.cv.acquire()
+        self.searchRequest = (text, callback)
+        self.cv.notify()
+        self.cv.release()
+
 class Market():
     instance = None
     FORCED_SHIPS = ("Freki", "Mimir", "Utu", "Adrestia", "Ibis", "Impairor", "Velator", "Reaper")
@@ -86,9 +121,14 @@ class Market():
     def __init__(self):
         self.activeMetas = set()
         self.priceCache = {}
-        self.workerThread = PriceWorkerThread()
-        self.workerThread.daemon = True
-        self.workerThread.start()
+
+        self.priceWorkerThread = PriceWorkerThread()
+        self.priceWorkerThread.daemon = True
+        self.priceWorkerThread.start()
+
+        self.searchWorkerThread = SearchWorkerThread()
+        self.searchWorkerThread.daemon = True
+        self.searchWorkerThread.start()
 
     def getChildren(self, id):
         """
@@ -133,18 +173,8 @@ class Market():
 
         return ships
 
-    def searchItems(self, name):
-        filter = (eos.types.Category.name.in_(self.SEARCH_CATEGORIES), eos.types.Item.published == True)
-        results = eos.db.searchItems(name, where=filter,
-                                     join=(eos.types.Item.group, eos.types.Group.category),
-                                     eager=("icon", "group.category"))
-
-        items = []
-        for item in results:
-            if item.category.name in self.SEARCH_CATEGORIES:
-                items.append((item.ID, item.name, item.group.name, item.metaGroup.ID if item.metaGroup else 1, item.icon.iconFile if item.icon else ""))
-
-        return items
+    def searchItems(self, name, callback):
+        self.searchWorkerThread.scheduleSearch(name, callback)
 
     def searchFits(self, name):
         results = eos.db.searchFits(name)
@@ -229,7 +259,7 @@ class Market():
                 self.priceCache[typeID] = price
 
             all.append(price)
-            if not price.isValid and not self.workerThread.isScheduled(price):
+            if not price.isValid and not self.priceWorkerThread.isScheduled(price):
                 fetch.add(price)
 
         def dbAdd():
@@ -242,4 +272,4 @@ class Market():
             wx.CallAfter(callback, all)
             wx.CallAfter(dbAdd)
 
-        self.workerThread.trigger(fetch, cb)
+        self.priceWorkerThread.trigger(fetch, cb)

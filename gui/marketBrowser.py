@@ -53,7 +53,6 @@ class MarketBrowser(wx.Panel):
         self.search.Bind(wx.EVT_SEARCHCTRL_SEARCH_BTN, self.scheduleSearch)
         self.search.Bind(wx.EVT_SEARCHCTRL_CANCEL_BTN, self.clearSearch)
         self.search.Bind(wx.EVT_TEXT, self.scheduleSearch)
-        self.Bind(wx.EVT_TIMER, self.startSearch)
 
         #Helper vars for search: INIT EM ALREADY
         self.searching = False
@@ -224,10 +223,6 @@ class MarketBrowser(wx.Panel):
             self.selectionMade(event)
 
     def scheduleSearch(self, event):
-        self.searchTimer.Stop()
-        self.searchTimer.Start(100, wx.TIMER_ONE_SHOT)
-
-    def startSearch(self, event):
         search = self.search.GetLineText(0)
         if len(search) < 3:
             self.clearSearch(event, False)
@@ -238,10 +233,9 @@ class MarketBrowser(wx.Panel):
             for name in ("normal", "faction", "complex", "officer"):
                 getattr(self, name).SetValue(True)
                 cMarket.activateMetaGroup(name)
-        self.searching = True
-        self.searchResults = cMarket.searchItems(search)
 
-        self.filteredSearchAdd()
+        self.searching = True
+        cMarket.searchItems(search, self.filteredSearchAdd)
 
     def clearSearch(self, event, clear=True):
         self.itemImageList.RemoveAll()
@@ -261,7 +255,7 @@ class MarketBrowser(wx.Panel):
 
         self.searching = False
 
-    def filteredSearchAdd(self):
+    def filteredSearchAdd(self, searchResults):
         self.itemView.DeleteAllItems()
         self.itemImageList.RemoveAll()
 
@@ -269,7 +263,7 @@ class MarketBrowser(wx.Panel):
         idGroupMap = {}
         usedMetas = set()
         cMarket = service.Market.getInstance()
-        for id, name, group, metaGroupID, iconFile in self.searchResults:
+        for id, name, group, metaGroupID, iconFile in searchResults:
             usedMetas.add(metaGroupID)
             if cMarket.isMetaIdActive(metaGroupID):
                 iconId = self.addItemViewImage(iconFile)
