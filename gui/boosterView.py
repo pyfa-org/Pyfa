@@ -46,7 +46,6 @@ class BoosterView(d.Display):
         cFit = service.Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
         trigger = cFit.addBooster(fitID, event.itemID)
-        print event.itemID
         if trigger:
             wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=fitID))
 

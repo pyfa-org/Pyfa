@@ -70,6 +70,7 @@ class Fit(object):
         fit = eos.db.getFit(fitID)
         fit.fill()
         eos.db.commit()
+        fit.calculateModifiedAttributes()
         return fit
 
     def addImplant(self, fitID, itemID):

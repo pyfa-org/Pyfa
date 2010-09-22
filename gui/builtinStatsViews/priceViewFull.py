@@ -36,7 +36,7 @@ class PriceViewFull(StatsView):
         self._timerRuns = 0
         self._timerIdUpdate = wx.NewId()
         self._timerUpdate = None
-        
+
     def OnTimer( self, event):
         if self._timerId == event.GetId():
             if self._timerRuns >= self._timerRunsBeforeUpdate:
@@ -81,7 +81,7 @@ class PriceViewFull(StatsView):
             hbox.Add(lbl, 0, wx.ALIGN_LEFT)
 
             hbox.Add(wx.StaticText(contentPanel, wx.ID_ANY, " ISK"), 0, wx.ALIGN_LEFT)
-        self.labelEMStatus = wx.StaticText(contentPanel, wx.ID_ANY, "")            
+        self.labelEMStatus = wx.StaticText(contentPanel, wx.ID_ANY, "")
         contentSizer.Add(self.labelEMStatus,0)
     def refreshPanel(self, fit):
         if fit is not None:

@@ -182,7 +182,6 @@ class ShipBrowser(wx.Panel):
         wx.PostEvent(self.mainFrame, FitCreated(fitID=fitID))
 
     def renameFit(self, event):
-        print "r"
         tree = self.getActiveTree()
         root = tree.GetSelection()
         type, _ = tree.GetPyData(root)

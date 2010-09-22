@@ -23,48 +23,28 @@ import wx
 import collections
 import threading
 from sqlalchemy.orm.exc import NoResultFound
+import Queue
 
 class PriceWorkerThread(threading.Thread):
     def run(self):
-        self.cv = threading.Condition()
-        self.updateRequests = collections.deque()
-        self.scheduled = set()
+        self.queue = Queue.Queue()
         self.processUpdates()
 
     def processUpdates(self):
-        updateRequests = self.updateRequests
-        cv = self.cv
-
+        queue = self.queue
         while True:
-            cv.acquire()
-
-            while len(updateRequests) == 0:
-                cv.wait()
-
             # Grab our data and rerelease the lock
-            callback, requests = self.updateRequests.popleft()
-            self.scheduled.clear()
-            cv.release()
+            callback, requests = queue.get()
 
             # Grab prices, this is the time-consuming part
             if len(requests) > 0:
                 eos.types.Price.fetchPrices(*requests)
 
             wx.CallAfter(callback)
-
+            queue.task_done()
 
     def trigger(self, prices, callbacks):
-        self.cv.acquire()
-        self.updateRequests.append((callbacks, prices))
-        self.scheduled.update(prices)
-        self.cv.notify()
-        self.cv.release()
-
-    def isScheduled(self, price):
-        self.cv.acquire()
-        scheduled = price in self.scheduled
-        self.cv.release()
-        return scheduled
+        self.queue.put((callbacks, prices))
 
 class SearchWorkerThread(threading.Thread):
     def run(self):
@@ -229,19 +209,23 @@ class Market():
         mg = eos.db.getMarketGroup(marketGroupId)
         l = []
         done = set()
+        populatedMetas = set()
+
         for item in mg.items:
+            populatedMetas.add(1)
             if 1 in self.activeMetas:
                 if item not in done:
                     done.add(item)
                     l.append((item.ID, item.name, item.icon.iconFile if item.icon else ""))
 
-            vars = eos.db.getVariations(item, metaGroups = tuple(self.activeMetas), eager="icon")
+            vars = eos.db.getVariations(item, eager=("icon", "metaGroup"))
             for var in vars:
-                if var not in done:
+                populatedMetas.add(var.metaGroup.ID)
+                if var not in done and var.metaGroup.ID in self.activeMetas:
                     done.add(var)
                     l.append((var.ID, var.name, var.icon.iconFile if var.icon else ""))
 
-        return l
+        return l, populatedMetas
 
     def getPrices(self, typeIDs, callback):
         requests = []
@@ -254,7 +238,6 @@ class Market():
                     price = eos.types.Price(typeID)
                     eos.db.saveddata_session.add(price)
 
-                requests.append(price)
                 self.priceCache[typeID] = price
 
             requests.append(price)
