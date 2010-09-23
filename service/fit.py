@@ -63,6 +63,14 @@ class Fit(object):
         eos.db.save(newFit)
         return newFit.ID
 
+    def clearFit(self, fitID):
+        if fitID is None:
+            return None
+
+        fit = eos.db.getFit(fitID)
+        fit.clear()
+        return fit
+
     def getFit(self, fitID):
         if fitID is None:
             return None

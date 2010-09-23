@@ -18,6 +18,7 @@
 #===============================================================================
 
 import wx
+import service
 from gui import bitmapLoader
 from gui.mainMenuBar import MainMenuBar
 from gui.additionsPane import AdditionsPane
@@ -29,6 +30,7 @@ from wx.lib.wordwrap import wordwrap
 from gui.characterEditor import CharacterEditor
 from gui.characterSelection import CharacterSelection
 import aboutData
+import gui.fittingView as fv
 from wx._core import PyDeadObjectError
 
 class MainFrame(wx.Frame):
@@ -126,6 +128,9 @@ class MainFrame(wx.Frame):
         dlg=CharacterEditor(None)
         dlg.ShowModal()
         dlg.Destroy()
+        cFit = service.Fit.getInstance()
+        cFit.clearFit(self.getActiveFit())
+        wx.PostEvent(self, fv.FitChanged(fitID=self.getActiveFit()))
 
     def registerMenu(self):
         # Quit
