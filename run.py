@@ -18,9 +18,9 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 #===============================================================================
 
+import config
 from gui.mainFrame import MainFrame
 import wx
-import config
 import os.path
 import eos.db
 
