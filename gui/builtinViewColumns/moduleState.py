@@ -27,7 +27,7 @@ class ModuleState(ViewColumn):
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
         self.resizable = False
-        self.size = 16
+        self.size = 20
         self.stateNameMap = {}
         for state in State.__dict__:
             if state[0:2] == "__":
