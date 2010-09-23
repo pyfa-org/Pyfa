@@ -134,7 +134,8 @@ class Display(wx.ListCtrl):
 
                 if oldText != newText or oldImageId != newImageId:
                     self.SetItem(colItem)
-                    self.SetItemState(item, 0 , wx.LIST_STATE_FOCUSED | wx.LIST_STATE_SELECTED)
+
+                self.SetItemState(item, 0 , wx.LIST_STATE_FOCUSED | wx.LIST_STATE_SELECTED)
 
                 self.SetItemData(item, id)
 
