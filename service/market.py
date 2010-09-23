@@ -137,7 +137,7 @@ class Market():
 
     def getShipList(self, id):
         ships = []
-        grp = eos.db.getGroup(id, eager=("items"))
+        grp = eos.db.getGroup(id, eager=("items", "items.marketGroup"))
         for item in grp.items:
             if item.published  or item.name in self.FORCED_SHIPS:
                 ships.append((item.ID, item.name, item.race))
