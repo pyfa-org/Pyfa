@@ -112,6 +112,12 @@ class Display(wx.ListCtrl):
         if stuff == None:
             return
 
+        selection = []
+        sel = self.GetFirstSelected()
+        while sel != -1:
+            selection.append(sel)
+            sel = self.GetNextSelected(sel)
+
         self.Freeze()
         item = -1
         for id, st in enumerate(stuff):
@@ -128,6 +134,7 @@ class Display(wx.ListCtrl):
 
                 if oldText != newText or oldImageId != newImageId:
                     self.SetItem(colItem)
+                    self.SetItemState(item, 0 , wx.LIST_STATE_FOCUSED | wx.LIST_STATE_SELECTED)
 
                 self.SetItemData(item, id)
 
@@ -137,6 +144,8 @@ class Display(wx.ListCtrl):
                 if self.GetColumnWidth(i) < 40 and col.size == wx.LIST_AUTOSIZE:
                     self.SetColumnWidth(i, 40)
 
+        for sel in selection:
+            self.Select(sel)
         self.Thaw()
 
     def getColumn(self, point):
