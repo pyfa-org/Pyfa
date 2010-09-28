@@ -4,7 +4,7 @@
 ## pyfatogllepanel.py
 ##
 ## Author: Darriele - HomeWorld
-## Serial: 2010090702  (YYYYMMDDII)
+## Serial: 2010092801 (YYYYMMDDII)
 ## Project home: http://www.evefit.org - pyfa project
 ##               http://www.evefit.org is the home for pyfa / eos  / aurora
 ## Some portions of code are based on
@@ -20,6 +20,8 @@
 ##
 ## This module is part of PYFA (PYthon Fitting Assitant) and it shares the same
 ## licence ( read PYFA licence notice: gpl.txt )
+##
+## Notes: leave the commented code as it is, those line will be removed someday
 ###########################################################################
 
 import wx
@@ -125,18 +127,18 @@ class TogglePanel ( wx.Panel ):
         self.headerLabel.Bind( wx.EVT_LEFT_UP, self.toggleContent )
         self.headerBmp.Bind( wx.EVT_LEFT_UP, self.toggleContent )
         self.headerPanel.Bind( wx.EVT_LEFT_UP, self.toggleContent )
-        self.Bind(wx.EVT_PAINT, self.OnPaint)
-        self.headerPanel.Bind(wx.EVT_PAINT, self.OnPaint)
-        self.contentPanel.Bind(wx.EVT_PAINT, self.OnPaint)
+#        self.Bind(wx.EVT_PAINT, self.OnPaint)
+#        self.headerPanel.Bind(wx.EVT_PAINT, self.OnPaint)
+#        self.contentPanel.Bind(wx.EVT_PAINT, self.OnPaint)
 
 
     def __del__( self ):
         pass
 
-    def OnPaint(self, event):
-        self.contentPanel.Layout()
-        self.headerPanel.Layout()
-        event.Skip()
+#    def OnPaint(self, event):
+#        self.contentPanel.Layout()
+#        self.headerPanel.Layout()
+#        event.Skip()
 
     def AddToggleItem(self, hitem):
         hitem.Bind( wx.EVT_LEFT_UP, self.toggleContent )
