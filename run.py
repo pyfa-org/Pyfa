@@ -21,11 +21,15 @@
 import config
 from gui.mainFrame import MainFrame
 import wx
+import os
 import os.path
 import eos.db
 
 if __name__ == "__main__":
     #Make sure the saveddata db exists
+    if not os.path.exists(config.homePath):
+        os.mkdir(config.homePath)
+
     if not os.path.exists(config.saveddata):
         eos.db.saveddata_meta.create_all()
 
