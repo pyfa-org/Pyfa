@@ -86,9 +86,13 @@ class FittingView(d.Display):
         self.populate(self.mods)
 
     def fitChanged(self, event):
-        if self.activeFitID is not None and self.activeFitID == event.fitID:
-            self.generateMods()
-            self.refresh(self.mods)
+        try:
+            if self.activeFitID is not None and self.activeFitID == event.fitID:
+                self.generateMods()
+                self.refresh(self.mods)
 
-        self.Show(self.activeFitID is not None and self.activeFitID == event.fitID)
-        event.Skip()
+            self.Show(self.activeFitID is not None and self.activeFitID == event.fitID)
+        except wx._core.PyDeadObjectError:
+            pass
+        finally:
+            event.Skip()

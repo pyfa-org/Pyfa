@@ -44,12 +44,17 @@ class MultiSwitch(wx.Notebook):
         self.imageList = wx.ImageList(16, 16)
         self.SetImageList(self.imageList)
 
+        self.removal = False
+
     def getActiveFit(self):
         return self.GetCurrentPage().view.activeFitID
 
     def AddTab(self, type="fit", frame=None, title=None):
-        #Hide current selection
+        if self.removal:
+            self.SetSelection(self.GetPageCount() - 2)
+            return False
 
+        #Hide current selection
         pos = self.GetPageCount() - 1
 
         if type == "fit":
@@ -67,8 +72,8 @@ class MultiSwitch(wx.Notebook):
             self.InsertPage(pos, frame, title)
             frame.type=type
 
-        self.ChangeSelection(pos)
-        wx.CallAfter(self.ChangeSelection, pos)
+        self.SetSelection(pos)
+        wx.CallAfter(self.SetSelection, pos)
         return pos
 
     def removeTab(self, i):
@@ -86,10 +91,13 @@ class MultiSwitch(wx.Notebook):
     def checkRemove(self, event):
         tab, _ = self.HitTest(event.Position)
         if tab != -1 and tab != self.GetPageCount() - 1:
+            self.removal = True
             self.removeTab(tab)
             #Deleting a tab might have put us on the "+" tab, make sure we don't stay there
             if self.GetSelection() == self.GetPageCount() - 1:
                 self.SetSelection(self.GetPageCount() - 2)
+
+            self.removal = False
 
     def checkAdd(self, event):
         if event.Selection == self.GetPageCount() - 1:
