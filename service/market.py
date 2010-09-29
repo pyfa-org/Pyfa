@@ -164,6 +164,9 @@ class Market():
 
         return fits
 
+    def getImplantTree(self):
+        return self.getChildren(27)
+
     def getMarketRoot(self):
         """
         Get the root of the market tree.

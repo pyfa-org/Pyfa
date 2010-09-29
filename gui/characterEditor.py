@@ -324,13 +324,33 @@ class SkillTreeView (wx.Panel):
 
 
 class ImplantsTreeView (wx.Panel):
+    def addMarketViewImage(self, iconFile):
+        if iconFile is None:
+            return -1
+        bitmap = bitmapLoader.getBitmap(iconFile, "pack")
+        if bitmap is None:
+            return -1
+        else:
+            return self.availableImplantsImageList.Add(bitmap)
+
     def __init__(self, parent):
         wx.Panel.__init__ (self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.Size(500, 300), style=wx.TAB_TRAVERSAL)
 
         pmainSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.availableImplantsTree = wx.TreeCtrl(self, wx.ID_ANY)
-        pmainSizer.Add(self.availableImplantsTree, 1, wx.ALL | wx.EXPAND, 5)
+        availableSizer = wx.BoxSizer(wx.VERTICAL)
+        pmainSizer.Add(availableSizer, 1, wx.ALL | wx.EXPAND, 5)
+
+        self.availableImplantsSearch = wx.SearchCtrl(self, wx.ID_ANY, style=wx.TE_PROCESS_ENTER)
+        self.availableImplantsSearch.ShowCancelButton(True)
+        availableSizer.Add(self.availableImplantsSearch, 0, wx.BOTTOM | wx.EXPAND, 2)
+
+        self.availableImplantsTree = wx.TreeCtrl(self, wx.ID_ANY, style=wx.TR_DEFAULT_STYLE | wx.TR_HIDE_ROOT)
+        root = self.availableRoot = self.availableImplantsTree.AddRoot("Available")
+        self.availableImplantsImageList = wx.ImageList(16, 16)
+        self.availableImplantsTree.SetImageList(self.availableImplantsImageList)
+
+        availableSizer.Add(self.availableImplantsTree, 1, wx.EXPAND)
 
         buttonSizer = wx.BoxSizer(wx.VERTICAL)
         pmainSizer.Add(buttonSizer, 0, wx.TOP, 5)
@@ -340,10 +360,23 @@ class ImplantsTreeView (wx.Panel):
         self.btnRemove = wx.BitmapButton(self, wx.ID_REMOVE, wx.ArtProvider_GetBitmap(wx.ART_DELETE))
         buttonSizer.Add(self.btnRemove, 0)
 
-        self.pluggedImplantsTree = wx.TreeCtrl(self, wx.ID_ANY)
+        self.pluggedImplantsTree = wx.TreeCtrl(self, wx.ID_ANY, style=wx.TR_DEFAULT_STYLE | wx.TR_HIDE_ROOT)
+        self.pluggedImplantsImageList = wx.ImageList(16, 16)
+        self.pluggedRoot = self.pluggedImplantsTree.AddRoot("Plugged")
+        self.pluggedImplantsTree.SetImageList(self.pluggedImplantsImageList)
+
         pmainSizer.Add(self.pluggedImplantsTree, 1, wx.ALL | wx.EXPAND, 5)
 
         self.SetSizer(pmainSizer)
+
+        # Populate the market tree
+        cMarket = service.Market.getInstance()
+        for id, name, iconFile, more in cMarket.getImplantTree():
+                iconId = self.addMarketViewImage(iconFile)
+                childId = self.availableImplantsTree.AppendItem(root, name, iconId, data=wx.TreeItemData(id))
+                if more:
+                    self.availableImplantsTree.AppendItem(childId, "dummy")
+
         self.Layout()
 
 class APIView (wx.Panel):
