@@ -376,7 +376,7 @@ class ShipMenu(wx.Panel):
 
         self.search = wx.SearchCtrl(p, wx.ID_ANY, style=wx.TE_PROCESS_ENTER)
         self.search.ShowCancelButton(True)
-        psizer.Add(self.search, 1, wx.EXPAND | wx.TOP, 2)
-        p.SetMinSize((wx.SIZE_AUTO_WIDTH, 27))
+        psizer.Add(self.search, 1, wx.EXPAND | wx.ALIGN_CENTER_VERTICAL)
+#        p.SetMinSize((wx.SIZE_AUTO_WIDTH, 27))
         sizer.Add(p, 1, wx.EXPAND)
 
