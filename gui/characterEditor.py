@@ -18,6 +18,7 @@
 #===============================================================================
 
 import wx
+import bitmapLoader
 import gui.mainFrame
 import wx.lib.newevent
 import wx.gizmos
@@ -326,10 +327,21 @@ class ImplantsTreeView (wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__ (self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.Size(500, 300), style=wx.TAB_TRAVERSAL)
 
-        pmainSizer = wx.BoxSizer(wx.VERTICAL)
+        pmainSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.ImplantsTreeCtrl = wx.TreeCtrl(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TR_DEFAULT_STYLE)
-        pmainSizer.Add(self.ImplantsTreeCtrl, 1, wx.ALL | wx.EXPAND, 5)
+        self.availableImplantsTree = wx.TreeCtrl(self, wx.ID_ANY)
+        pmainSizer.Add(self.availableImplantsTree, 1, wx.ALL | wx.EXPAND, 5)
+
+        buttonSizer = wx.BoxSizer(wx.VERTICAL)
+        pmainSizer.Add(buttonSizer, 0, wx.TOP, 5)
+
+        self.btnAdd = wx.BitmapButton(self, wx.ID_ADD, bitmapLoader.getBitmap("add_small", "icons"))
+        buttonSizer.Add(self.btnAdd, 0)
+        self.btnRemove = wx.BitmapButton(self, wx.ID_REMOVE, wx.ArtProvider_GetBitmap(wx.ART_DELETE))
+        buttonSizer.Add(self.btnRemove, 0)
+
+        self.pluggedImplantsTree = wx.TreeCtrl(self, wx.ID_ANY)
+        pmainSizer.Add(self.pluggedImplantsTree, 1, wx.ALL | wx.EXPAND, 5)
 
         self.SetSizer(pmainSizer)
         self.Layout()
