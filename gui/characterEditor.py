@@ -217,6 +217,7 @@ class CharacterEditor(wx.Dialog):
         self.unrestrict()
         self.btnSave.SetLabel("Copy")
         self.rename(None)
+        wx.PostEvent(self, CharChanged())
 
     def delete(self, event):
         cChar = service.Character.getInstance()
@@ -228,6 +229,7 @@ class CharacterEditor(wx.Dialog):
         if cChar.getCharName(newSelection) in ("All 0", "All 5"):
             self.restrict()
 
+        wx.PostEvent(self, CharChanged())
 class SkillTreeView (wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__ (self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.Size(500, 300), style=wx.TAB_TRAVERSAL)
