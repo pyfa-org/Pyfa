@@ -377,8 +377,39 @@ class ImplantsTreeView (wx.Panel):
                 if more:
                     self.availableImplantsTree.AppendItem(childId, "dummy")
 
+        #Bind the event to replace dummies by real data
+        self.availableImplantsTree.Bind(wx.EVT_TREE_ITEM_EXPANDING, self.expandLookup)
+        self.availableImplantsTree.SortChildren(self.availableRoot)
         self.Layout()
 
+    def expandLookup(self, event):
+        tree = self.availableImplantsTree
+        root = event.Item
+        child, cookie = tree.GetFirstChild(root)
+        text = tree.GetItemText(child)
+        if text == "dummy" or text == "itemdummy":
+            cMarket = service.Market.getInstance()
+            #A DUMMY! Keeeel!!! EBUL DUMMY MUST DIAF!
+            tree.Delete(child)
+
+        if text == "dummy":
+            #Add 'real stoof!' instead
+            for id, name, iconFile, more in cMarket.getChildren(tree.GetPyData(root)):
+                iconId = self.addMarketViewImage(iconFile)
+                childId = tree.AppendItem(root, name, iconId, data=wx.TreeItemData(id))
+                if more:
+                    tree.AppendItem(childId, "dummy")
+                else:
+                    tree.AppendItem(childId, "itemdummy")
+
+        if text == "itemdummy":
+            cMarket = service.Market.getInstance()
+            data, usedMetas = cMarket.getVariations(tree.GetPyData(root))
+            for id, name, iconFile in data:
+                iconId = self.addMarketViewImage(iconFile)
+                tree.AppendItem(root, name, iconId, data=wx.TreeItemData(id))
+
+        tree.SortChildren(root)
 class APIView (wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__ (self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.Size(500, 300), style=wx.TAB_TRAVERSAL)
