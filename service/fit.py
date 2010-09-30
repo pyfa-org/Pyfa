@@ -230,3 +230,22 @@ class Fit(object):
         fit.character = eos.db.getCharacter(charID)
         fit.clear()
         fit.calculateModifiedAttributes()
+
+    def isAmmo(self, itemID):
+        return eos.db.getItem(itemID).category.name == "Charge"
+
+    def setAmmo(self, fitID, ammoID, modules):
+        if fitID is None:
+            return
+
+        fit = eos.db.getFit(fitID)
+        ammo = eos.db.getItem(ammoID)
+
+        for pos in modules:
+            try:
+                fit.modules[pos].charge = ammo
+            except:
+                pass
+
+        fit.clear()
+        fit.calculateModifiedAttributes()

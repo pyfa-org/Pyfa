@@ -53,11 +53,21 @@ class FittingView(d.Display):
         fitID = self.activeFitID
         if fitID != None:
             cFit = service.Fit.getInstance()
-            populate = cFit.appendModule(fitID, itemID)
-            if populate:
-                self.slotsChanged()
-            if populate is not None:
+            if cFit.isAmmo(itemID):
+                modules = []
+                sel = self.GetFirstSelected()
+                while sel != -1:
+                    modules.append(self.mods[self.GetItemData(sel)].position)
+                    sel = self.GetNextSelected(sel)
+
+                cFit.setAmmo(fitID, itemID, modules)
                 wx.PostEvent(self.mainFrame, FitChanged(fitID=fitID))
+            else:
+                populate = cFit.appendModule(fitID, itemID)
+                if populate:
+                    self.slotsChanged()
+                if populate is not None:
+                    wx.PostEvent(self.mainFrame, FitChanged(fitID=fitID))
 
     def removeItem(self, event):
         row, _ = self.HitTest(event.Position)
