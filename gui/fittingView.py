@@ -34,7 +34,8 @@ class FittingView(d.Display):
                     "attr:cpu",
                     "attr:capacitorNeed",
                     "attr:trackingSpeed",
-                    "Max range"]
+                    "Max range",
+                    "Module Ammo"]
 
     def __init__(self, parent):
         d.Display.__init__(self, parent)
