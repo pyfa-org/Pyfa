@@ -109,3 +109,17 @@ class Character():
             skill.level = level
 
         eos.db.commit()
+
+    def addImplant(self, charID, itemID):
+        char = eos.db.getCharacter(charID)
+        implant = eos.types.Implant(eos.db.getItem(itemID))
+        char.implants.freeSlot(implant.slot)
+        char.implants.append(implant)
+
+    def removeImplant(self, charID, slot):
+        char = eos.db.getCharacter(charID)
+        char.implants.freeSlot(slot)
+
+    def getImplants(self, charID):
+        char = eos.db.getCharacter(charID)
+        return char.implants

@@ -23,9 +23,9 @@ from gui.builtinViewColumns import *
 import sys
 
 class Display(wx.ListCtrl):
-    def __init__(self, parent):
+    def __init__(self, parent, style = 0):
 
-        wx.ListCtrl.__init__(self, parent, style=wx.LC_REPORT | wx.BORDER_NONE)
+        wx.ListCtrl.__init__(self, parent, style=wx.LC_REPORT | wx.BORDER_NONE | style)
 
         self.imageList = wx.ImageList(16, 16)
         self.SetImageList(self.imageList, wx.IMAGE_LIST_SMALL)
@@ -148,6 +148,10 @@ class Display(wx.ListCtrl):
         for sel in selection:
             self.Select(sel)
         self.Thaw()
+
+    def update(self, stuff):
+        self.populate(stuff)
+        self.refresh(stuff)
 
     def getColumn(self, point):
         x = point[0]

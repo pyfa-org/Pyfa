@@ -24,9 +24,11 @@ import wx.lib.newevent
 import wx.gizmos
 from gui import bitmapLoader
 import service
+import gui.builtinViewColumns.display as d
 import sys
 
 CharListUpdated, CHAR_LIST_UPDATED = wx.lib.newevent.NewEvent()
+CharChanged, CHAR_CHANGED = wx.lib.newevent.NewEvent()
 
 class CharacterEditor(wx.Dialog):
     def __init__(self, parent):
@@ -149,6 +151,8 @@ class CharacterEditor(wx.Dialog):
             self.restrict()
         else:
             self.unrestrict()
+
+        wx.PostEvent(self, CharChanged())
 
     def getActiveCharacter(self):
         selection = self.skillTreeChoice.GetCurrentSelection()
@@ -360,10 +364,7 @@ class ImplantsTreeView (wx.Panel):
         self.btnRemove = wx.BitmapButton(self, wx.ID_REMOVE, wx.ArtProvider_GetBitmap(wx.ART_DELETE))
         buttonSizer.Add(self.btnRemove, 0)
 
-        self.pluggedImplantsTree = wx.TreeCtrl(self, wx.ID_ANY, style=wx.TR_DEFAULT_STYLE | wx.TR_HIDE_ROOT)
-        self.pluggedImplantsImageList = wx.ImageList(16, 16)
-        self.pluggedRoot = self.pluggedImplantsTree.AddRoot("Plugged")
-        self.pluggedImplantsTree.SetImageList(self.pluggedImplantsImageList)
+        self.pluggedImplantsTree = AvailableImplantsView(self, style=wx.LC_SINGLE_SEL)
 
         pmainSizer.Add(self.pluggedImplantsTree, 1, wx.ALL | wx.EXPAND, 5)
 
@@ -377,10 +378,36 @@ class ImplantsTreeView (wx.Panel):
                 if more:
                     self.availableImplantsTree.AppendItem(childId, "dummy")
 
+        self.availableImplantsTree.SortChildren(self.availableRoot)
+
         #Bind the event to replace dummies by real data
         self.availableImplantsTree.Bind(wx.EVT_TREE_ITEM_EXPANDING, self.expandLookup)
-        self.availableImplantsTree.SortChildren(self.availableRoot)
+
+        #Bind add & remove buttons
+        self.btnAdd.Bind(wx.EVT_BUTTON, self.addImplant)
+        self.btnRemove.Bind(wx.EVT_BUTTON, self.removeImplant)
+
+        #Bind the change of a character*
+        self.Parent.Parent.Bind(CHAR_CHANGED, self.charChanged)
+        self.Enable(False)
         self.Layout()
+
+    def update(self, implants):
+        self.implants = implants[:]
+        self.implants.sort(key=lambda i: int(i.getModifiedItemAttr("implantness")))
+        self.pluggedImplantsTree.update(self.implants)
+
+    def charChanged(self, event):
+        cChar = service.Character.getInstance()
+        charID = self.Parent.Parent.getActiveCharacter()
+        name = cChar.getCharName(charID)
+        if name == "All 0" or name == "All 5":
+            self.Enable(False)
+        else:
+            self.Enable(True)
+
+        self.update(cChar.getImplants(charID))
+        event.Skip()
 
     def expandLookup(self, event):
         tree = self.availableImplantsTree
@@ -410,6 +437,30 @@ class ImplantsTreeView (wx.Panel):
                 tree.AppendItem(root, name, iconId, data=wx.TreeItemData(id))
 
         tree.SortChildren(root)
+
+    def addImplant(self, event):
+        root = self.availableImplantsTree.GetSelection()
+        cChar = service.Character.getInstance()
+        charID = self.Parent.Parent.getActiveCharacter()
+        itemID = self.availableImplantsTree.GetPyData(root)
+        cChar.addImplant(charID, itemID)
+        self.update(cChar.getImplants(charID))
+
+    def removeImplant(self, event):
+        pos = self.pluggedImplantsTree.GetFirstSelected()
+        if pos != -1:
+            cChar = service.Character.getInstance()
+            charID = self.Parent.Parent.getActiveCharacter()
+            cChar.removeImplant(charID, self.implants[pos].slot)
+            self.update(cChar.getImplants(charID))
+
+class AvailableImplantsView(d.Display):
+    DEFAULT_COLS = ["Name",
+                    "attr:implantness"]
+
+    def __init__(self, parent, style):
+        d.Display.__init__(self, parent, style)
+
 class APIView (wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__ (self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.Size(500, 300), style=wx.TAB_TRAVERSAL)
