@@ -132,7 +132,7 @@ class Fit(object):
 
         fit = eos.db.getFit(fitID)
         booster = fit.boosters[position]
-        fit.implants.remove(booster)
+        fit.boosters.remove(booster)
         fit.clear()
         fit.calculateModifiedAttributes()
         return True
