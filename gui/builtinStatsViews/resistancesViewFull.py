@@ -165,10 +165,10 @@ class ResistancesViewFull(StatsView):
         damagePattern = fit.damagePattern if fit is not None else None
         for damageType in ("em", "thermal", "kinetic", "explosive"):
             lbl = getattr(self, "labelResistanceDamagepattern%s" % damageType.capitalize())
-            if damagePattern:
-                lbl.SetLabel("%.2f" % getattr(damagePattern, "%sAmount" % damageType))
+            if damagePattern is not None:
+                lbl.SetValue(getattr(damagePattern, "%sAmount" % damageType))
             else:
-                lbl.SetLabel("0.00")
+                lbl.SetValue(0)
 
         self.panel.Layout()
 

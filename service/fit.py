@@ -21,6 +21,7 @@ import eos.db
 import eos.types
 from eos.types import State
 import copy
+from service.damagePattern import DamagePattern
 
 class Fit(object):
     instance = None
@@ -44,6 +45,7 @@ class Fit(object):
         fit = eos.types.Fit()
         fit.ship = eos.types.Ship(eos.db.getItem(shipID))
         fit.name = name
+        fit.damagePattern = DamagePattern.getInstance().getDamagePattern("Uniform")
         eos.db.save(fit)
         fit.calculateModifiedAttributes()
         return fit.ID
