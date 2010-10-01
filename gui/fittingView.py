@@ -21,7 +21,7 @@ import wx
 import wx.lib.newevent
 import service
 import gui.mainFrame
-import gui.builtinViewColumns.display as d
+import gui.display as d
 import sys
 from eos.types import Slot
 

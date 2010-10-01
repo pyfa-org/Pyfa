@@ -24,7 +24,7 @@ import wx.lib.newevent
 import wx.gizmos
 from gui import bitmapLoader
 import service
-import gui.builtinViewColumns.display as d
+import gui.display as d
 import sys
 
 CharListUpdated, CHAR_LIST_UPDATED = wx.lib.newevent.NewEvent()

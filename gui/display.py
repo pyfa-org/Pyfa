@@ -20,6 +20,7 @@
 import wx
 import gui.mainFrame
 from gui.builtinViewColumns import *
+import gui.builtinViewColumns
 import sys
 
 class Display(wx.ListCtrl):

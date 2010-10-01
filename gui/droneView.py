@@ -22,7 +22,7 @@ import wx
 import service
 import gui.fittingView as fv
 import gui.marketBrowser as mb
-import gui.builtinViewColumns.display as d
+import gui.display as d
 from gui.builtinViewColumns.droneCheckbox import DroneCheckbox
 
 class DroneView(d.Display):
