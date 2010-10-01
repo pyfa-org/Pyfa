@@ -2,7 +2,7 @@
 # PYFAGAUGE wxPython IMPLEMENTATION
 #
 # Darriele, @ 08/30/2010
-# Updated: 09/07/2010 
+# Updated: 09/07/2010
 # Based on AWG : pygauge code
 # --------------------------------------------------------------------------------- #
 
@@ -166,6 +166,8 @@ class PyGauge(wx.PyWindow):
         if self._range == range:
             return
 
+        range = float(range)
+
         if range <= 0:
             self._range = 1
         else:
@@ -176,8 +178,8 @@ class PyGauge(wx.PyWindow):
 
         self.Animate()
 
-        self._tooltip.SetTip("%.2f/%.2f" % (self._value, self._range))        
-      
+        self._tooltip.SetTip("%.2f/%.2f" % (self._value, self._range))
+
 
     def GetValue(self):
         """ Returns the current position of the gauge. """
@@ -188,7 +190,8 @@ class PyGauge(wx.PyWindow):
         """ Sets the current position of the gauge. """
         if self._value == value:
             return
-        
+
+        value = float(value)
         self._oldPercentage = self._percentage
         self._value = value
         if value < 0:
@@ -264,21 +267,21 @@ class PyGauge(wx.PyWindow):
                     c1 = map(lambda t: sum(t), zip(c1, (0,100/3,-100,0)))
                     c1 = map(lambda t: sum(t), zip(c1, (xv*10,-xv*20,0,0)))
 
-                    c2 = map(lambda t: sum(t), zip(c2, (0,100/3,-100,0)))                    
+                    c2 = map(lambda t: sum(t), zip(c2, (0,100/3,-100,0)))
                     c2 = map(lambda t: sum(t), zip(c2, (xv*10,-xv*20,0,0)))
 
                 else:
                     pv = 106
                     xv = pv -100
 
-                    c2 = map(lambda t: sum(t), zip(c2, (0,100/3,-100,0)))                    
-                    c2 = map(lambda t: sum(t), zip(c2, (xv*15,-xv*20,0,0)))                    
+                    c2 = map(lambda t: sum(t), zip(c2, (0,100/3,-100,0)))
+                    c2 = map(lambda t: sum(t), zip(c2, (xv*15,-xv*20,0,0)))
 
                     c1 = wx.Colour(255,0,0)
 
             dc.GradientFillLinear(r, c1, c2, wx.SOUTH)
             r.top = r.height
-            dc.GradientFillLinear(r, c1, c2, wx.NORTH)            
+            dc.GradientFillLinear(r, c1, c2, wx.NORTH)
         else:
             colour=self.GetBarColour()
             dc.SetBrush(wx.Brush(colour))
