@@ -39,7 +39,7 @@ class ResistancesViewFull(StatsView):
     def populatePanel(self, contentPanel, headerPanel):
         contentSizer = contentPanel.GetSizer()
         self.panel = contentPanel
-
+        self.headerPanel = headerPanel
         # Custom header  EHP
         headerContentSizer = wx.BoxSizer(wx.HORIZONTAL)
         hsizer = headerPanel.GetSizer()
@@ -171,5 +171,7 @@ class ResistancesViewFull(StatsView):
                 lbl.SetValue(0)
 
         self.panel.Layout()
+        self.headerPanel.Layout()
+
 
 builtinStatsViews.registerView(ResistancesViewFull)
