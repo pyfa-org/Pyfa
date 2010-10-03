@@ -46,6 +46,7 @@ class ResourcesViewFull(StatsView):
         contentSizer.Add( sizerResources, 0, wx.EXPAND, 0)
 
         parent = self.panel = contentPanel
+        self.headerPanel = headerPanel
         panel = "full"
 
         sizer = wx.FlexGridSizer(3, 2)
@@ -177,5 +178,6 @@ class ResourcesViewFull(StatsView):
                 i+=1
 
         self.panel.Layout()
+        self.headerPanel.Layout()
 
 builtinStatsViews.registerView(ResourcesViewFull)

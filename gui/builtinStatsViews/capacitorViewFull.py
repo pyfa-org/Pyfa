@@ -38,6 +38,8 @@ class CapacitorViewFull(StatsView):
     def populatePanel(self, contentPanel, headerPanel):
         contentSizer = contentPanel.GetSizer()
         parent = self.panel = contentPanel
+        self.headerPanel = headerPanel
+        
         panel = "full"
 
         sizerCapacitor = wx.GridSizer(1, 2)
@@ -130,5 +132,6 @@ class CapacitorViewFull(StatsView):
         getattr(self, lblNameState % panel).SetLabel(s)
 
         self.panel.Layout()
+        self.headerPanel.Layout()
 
 builtinStatsViews.registerView(CapacitorViewFull)

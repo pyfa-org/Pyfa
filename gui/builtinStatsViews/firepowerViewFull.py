@@ -38,6 +38,8 @@ class FirepowerViewFull(StatsView):
     def populatePanel(self, contentPanel, headerPanel):
         contentSizer = contentPanel.GetSizer()
         parent = self.panel = contentPanel
+        self.headerPanel = headerPanel
+        
         panel = "full"
 
         sizerFirepower = wx.FlexGridSizer(1, 3)
@@ -103,5 +105,6 @@ class FirepowerViewFull(StatsView):
             label.SetToolTip(wx.ToolTip("%.1f" % value))
 
         self.panel.Layout()
+        self.headerPanel.Layout()
 
 builtinStatsViews.registerView(FirepowerViewFull)

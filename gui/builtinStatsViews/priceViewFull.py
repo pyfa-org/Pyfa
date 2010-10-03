@@ -59,6 +59,8 @@ class PriceViewFull(StatsView):
     def populatePanel(self, contentPanel, headerPanel):
         contentSizer = contentPanel.GetSizer()
         self.panel = contentPanel
+        self.headerPanel = headerPanel
+        
         gridPrice = wx.GridSizer(1, 3)
         contentSizer.Add( gridPrice, 0, wx.EXPAND | wx.ALL, 0)
         for type in ("ship", "fittings", "total"):
