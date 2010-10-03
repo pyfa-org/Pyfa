@@ -38,6 +38,7 @@ class TargetingMiscViewFull(StatsView):
         contentSizer = contentPanel.GetSizer()
 
         self.panel = contentPanel
+        self.headerPanel = headerPanel
         gridTargetingMisc = wx.FlexGridSizer(1, 3)
         contentSizer.Add( gridTargetingMisc, 0, wx.EXPAND | wx.ALL, 0)
         gridTargetingMisc.AddGrowableCol(0)
@@ -119,5 +120,6 @@ class TargetingMiscViewFull(StatsView):
                     label.SetToolTip(wx.ToolTip("Type: %s - %.1f" % (fit.scanType, value)))
 
         self.panel.Layout()
+        self.headerPanel.Layout()
 
 builtinStatsViews.registerView(TargetingMiscViewFull)
