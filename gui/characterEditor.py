@@ -256,7 +256,7 @@ class SkillTreeView (wx.Panel):
         self.populateSkillTree()
 
         tree.Bind(wx.EVT_TREE_ITEM_EXPANDING, self.expandLookup)
-        tree.Bind(wx.EVT_TREE_ITEM_RIGHT_CLICK, self.spawnMenu)
+        tree.Bind(wx.EVT_TREE_ITEM_RIGHT_CLICK, self.scheduleMenu)
 
         self.levelChangeMenu = wx.Menu()
         self.levelIds = {}
@@ -307,8 +307,11 @@ class SkillTreeView (wx.Panel):
 
             tree.SortChildren(root)
 
-    def spawnMenu(self, event):
-        item = event.Item
+    def scheduleMenu(self, event):
+        event.Skip()
+        wx.CallAfter(self.spawnMenu, event.Item)
+
+    def spawnMenu(self, item):
         self.skillTreeListCtrl.SelectItem(item)
         if self.skillTreeListCtrl.GetChildrenCount(item) > 0:
             return
