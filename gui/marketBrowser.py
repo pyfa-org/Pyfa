@@ -23,6 +23,7 @@ import wx.lib.newevent
 import service
 import bitmapLoader
 import gui.mainFrame
+from gui.contextMenu import ContextMenu
 
 ItemSelected, ITEM_SELECTED = wx.lib.newevent.NewEvent()
 
@@ -314,13 +315,16 @@ class MarketBrowser(wx.Panel):
 
     def contextMenu(self, event):
         #Check if something is selected, if so, spawn the menu for it
-        selection = self.itemView.GetFirstSelected()
-        if selection == -1:
-            return
+        sel = self.itemView.GetFirstSelected()
+        selection = []
+        cMarket = service.Market.getInstance()
+        while sel != -1:
+            itemId = self.itemView.GetItemData(sel)
+            sel = self.itemView.GetNextSelected(sel)
+            selection.append(cMarket.getItem(itemId))
 
-        itemId = self.itemView.GetItemData(selection)
-        self.itemStatsMenu.setItem(itemId)
-        self.PopupMenu(self.itemStatsMenu)
+        menu = ContextMenu.getMenu(selection, "item")
+        self.PopupMenu(menu)
 
     def itemActivated(self, event):
         id = event.Item.GetData()

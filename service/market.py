@@ -167,6 +167,9 @@ class Market():
     def getImplantTree(self):
         return self.getChildren(27)
 
+    def getItem(self, itemId):
+        return eos.db.getItem(itemId)
+
     def getMarketRoot(self):
         """
         Get the root of the market tree.

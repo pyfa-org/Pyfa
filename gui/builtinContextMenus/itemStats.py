@@ -8,7 +8,7 @@ class ItemStats(ContextMenu):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     def display(self, context, selection):
-        return context in ("ship", "module")
+        return context in ("item", "ship", "module", "ammo")
 
     def getText(self, context, selection):
         return "%s stats" % context.capitalize()
@@ -18,6 +18,8 @@ class ItemStats(ContextMenu):
             fitID = self.mainFrame.getActiveFit()
             cFit = service.Fit.getInstance()
             stuff = cFit.getFit(fitID).ship
+        elif context == "ammo":
+            stuff = selection[0].charge
         else:
             stuff = selection[0]
 

@@ -118,9 +118,17 @@ class FittingView(d.Display):
         cFit = service.Fit.getInstance()
         selection = []
         sel = self.GetFirstSelected()
+        ammo = False
         while sel != -1:
-            selection.append(self.mods[self.GetItemData(sel)])
+            mod = self.mods[self.GetItemData(sel)]
+            if ammo is False and mod.charge is not None:
+                ammo = True
+
+            selection.append(mod)
             sel = self.GetNextSelected(sel)
 
-        menu = ContextMenu.getMenu(selection, "module", "ship")
+        if ammo:
+            menu = ContextMenu.getMenu(selection, "module", "ammo", "ship")
+        else:
+            menu = ContextMenu.getMenu(selection, "module", "ship")
         self.PopupMenu(menu)
