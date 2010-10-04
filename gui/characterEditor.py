@@ -126,7 +126,7 @@ class CharacterEditor(wx.Dialog):
         self.skillTreeChoice.Bind(wx.EVT_CHOICE, self.charChanged)
 
     def closeEvent(self, event):
-        pass
+        event.Skip()
 
     def restrict(self):
         self.btnRename.Enable(False)
