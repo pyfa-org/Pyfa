@@ -39,7 +39,7 @@ class FirepowerViewFull(StatsView):
         contentSizer = contentPanel.GetSizer()
         parent = self.panel = contentPanel
         self.headerPanel = headerPanel
-        
+
         panel = "full"
 
         sizerFirepower = wx.FlexGridSizer(1, 3)
@@ -107,4 +107,4 @@ class FirepowerViewFull(StatsView):
         self.panel.Layout()
         self.headerPanel.Layout()
 
-builtinStatsViews.registerView(FirepowerViewFull)
+FirepowerViewFull.register()

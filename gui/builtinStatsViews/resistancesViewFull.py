@@ -173,5 +173,5 @@ class ResistancesViewFull(StatsView):
         self.panel.Layout()
         self.headerPanel.Layout()
 
+ResistancesViewFull.register()
 
-builtinStatsViews.registerView(ResistancesViewFull)

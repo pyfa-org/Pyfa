@@ -69,4 +69,4 @@ class MaxRange(ViewColumn):
         return (("displayName", bool, False),
                 ("showIcon", bool, True))
 
-builtinViewColumns.registerColumn(MaxRange)
+MaxRange.register()

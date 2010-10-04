@@ -122,4 +122,4 @@ class TargetingMiscViewFull(StatsView):
         self.panel.Layout()
         self.headerPanel.Layout()
 
-builtinStatsViews.registerView(TargetingMiscViewFull)
+TargetingMiscViewFull.register()

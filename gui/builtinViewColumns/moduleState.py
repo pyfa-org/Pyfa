@@ -46,4 +46,4 @@ class ModuleState(ViewColumn):
             bitmap = bitmapLoader.getBitmap("state_%s_small" % self.stateNameMap[mod.state], "icons")
             return self.fittingView.imageList.Add(bitmap)
 
-builtinViewColumns.registerColumn(ModuleState)
+ModuleState.register()

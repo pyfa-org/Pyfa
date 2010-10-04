@@ -23,7 +23,7 @@ class ContextMenu(object):
     menus = set()
     @classmethod
     def register(cls):
-        cls.menus.add(cls())
+        ContextMenu.menus.add(cls())
 
     @classmethod
     def getMenu(cls, *contexts):

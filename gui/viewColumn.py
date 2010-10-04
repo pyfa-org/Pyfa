@@ -25,16 +25,22 @@ class ViewColumn(object):
     Once the missing methods are correctly implemented,
     they can be used as columns in a view.
     '''
-    columns = []
+    columns = {}
     def __init__(self, fittingView):
-        ViewColumn.columns.append(self)
-
         self.fittingView = fittingView
         self.columnText = ""
         self.imageId = -1
         self.size = wx.LIST_AUTOSIZE
         self.mask = wx.LIST_MASK_TEXT | wx.LIST_MASK_IMAGE
         self.resizable = True
+
+    @classmethod
+    def register(cls):
+        ViewColumn.columns[cls.name] = cls
+
+    @classmethod
+    def getColumn(cls, name):
+        return ViewColumn.columns[name]
 
     def getRestrictions(self):
         raise NotImplementedError()
@@ -47,3 +53,5 @@ class ViewColumn(object):
 
     def getParameters(self):
         raise NotImplementedError()
+
+from gui.builtinViewColumns import *

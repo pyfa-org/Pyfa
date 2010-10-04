@@ -58,4 +58,4 @@ class ModuleNameOrSlot(ViewColumn):
 
         return iconId
 
-builtinViewColumns.registerColumn(ModuleNameOrSlot)
+ModuleNameOrSlot.register()

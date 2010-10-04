@@ -44,4 +44,4 @@ class StuffName(ViewColumn):
 
         return iconId
 
-builtinViewColumns.registerColumn(StuffName)
+StuffName.register()

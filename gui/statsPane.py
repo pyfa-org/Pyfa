@@ -22,7 +22,6 @@ from gui.statsView import StatsView
 import service
 from gui.pyfatogglepanel import TogglePanel
 import gui.builtinStatsViews
-from gui.builtinStatsViews import *
 
 import gui.fittingView as fv
 import gui.mainFrame
@@ -58,7 +57,7 @@ class StatsPane(wx.Panel):
         maxviews = len(self.DEFAULT_VIEWS)
         i=0
         for viewName in self.DEFAULT_VIEWS:
-            view = gui.builtinStatsViews.getView(viewName)( self )
+            view = StatsView.getView(viewName)( self )
             self.views.append(view)
 
             tp = TogglePanel(self)

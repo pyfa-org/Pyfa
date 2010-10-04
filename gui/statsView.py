@@ -18,8 +18,17 @@
 #===============================================================================
 
 class StatsView(object):
+    views = {}
     def __init__(self):
         pass
+
+    @classmethod
+    def register(cls):
+        StatsView.views[cls.name] = cls
+
+    @classmethod
+    def getView(cls, name):
+        return cls.views[name]
 
     def populatePanel(self, panel):
         raise NotImplementedError()
@@ -29,3 +38,5 @@ class StatsView(object):
 
     def refreshPanel(self, fit):
         raise NotImplementedError()
+
+from gui.builtinStatsViews import *

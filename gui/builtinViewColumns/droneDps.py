@@ -36,4 +36,4 @@ class DroneDps(ViewColumn):
     def getImageId(self, mod):
         return -1
 
-builtinViewColumns.registerColumn(DroneDps)
+DroneDps.register()

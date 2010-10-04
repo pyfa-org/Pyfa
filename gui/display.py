@@ -19,8 +19,7 @@
 
 import wx
 import gui.mainFrame
-from gui.builtinViewColumns import *
-import gui.builtinViewColumns
+from gui.viewColumn import ViewColumn
 import sys
 
 class Display(wx.ListCtrl):
@@ -42,9 +41,9 @@ class Display(wx.ListCtrl):
                 params = {"showIcon": True,
                           "displayName": False,
                           "attribute": attrName}
-                col = gui.builtinViewColumns.getColumn("Attribute Display")(self, params)
+                col = ViewColumn.getColumn("Attribute Display")(self, params)
             else:
-                col = gui.builtinViewColumns.getColumn(colName)(self, None)
+                col = ViewColumn.getColumn(colName)(self, None)
 
             self.addColumn(i, col)
             i += 1

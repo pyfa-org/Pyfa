@@ -60,7 +60,7 @@ class PriceViewFull(StatsView):
         contentSizer = contentPanel.GetSizer()
         self.panel = contentPanel
         self.headerPanel = headerPanel
-        
+
         gridPrice = wx.GridSizer(1, 3)
         contentSizer.Add( gridPrice, 0, wx.EXPAND | wx.ALL, 0)
         for type in ("ship", "fittings", "total"):
@@ -141,4 +141,4 @@ class PriceViewFull(StatsView):
             self.labelPriceTotal.SetToolTip(wx.ToolTip("%.2f ISK" % (shipPrice + modPrice)))
             self.panel.Layout()
 
-builtinStatsViews.registerView(PriceViewFull)
+PriceViewFull.register()

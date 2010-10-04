@@ -102,5 +102,4 @@ class RechargeViewFull(StatsView):
         self.panel.Layout()
         self.headerPanel.Layout()
 
-
-builtinStatsViews.registerView(RechargeViewFull)
+RechargeViewFull.register()

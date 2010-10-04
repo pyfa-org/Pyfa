@@ -66,4 +66,4 @@ class AttributeDisplay(ViewColumn):
                 ("displayName", bool, False),
                 ("showIcon", bool, True))
 
-builtinViewColumns.registerColumn(AttributeDisplay)
+AttributeDisplay.register()

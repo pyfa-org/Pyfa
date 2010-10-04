@@ -47,4 +47,4 @@ class DroneCheckbox(ViewColumn):
         else:
             return self.uncheckedId
 
-builtinViewColumns.registerColumn(DroneCheckbox)
+DroneCheckbox.register()

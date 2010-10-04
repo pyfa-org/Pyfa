@@ -34,4 +34,4 @@ class DroneNameAmount(ViewColumn):
     def getImageId(self, mod):
         return -1
 
-builtinViewColumns.registerColumn(DroneNameAmount)
+DroneNameAmount.register()

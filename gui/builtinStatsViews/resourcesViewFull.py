@@ -180,4 +180,4 @@ class ResourcesViewFull(StatsView):
         self.panel.Layout()
         self.headerPanel.Layout()
 
-builtinStatsViews.registerView(ResourcesViewFull)
+ResourcesViewFull.register()

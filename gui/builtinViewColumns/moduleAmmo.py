@@ -46,4 +46,4 @@ class ModuleAmmo(ViewColumn):
 
         return iconId
 
-builtinViewColumns.registerColumn(ModuleAmmo)
+ModuleAmmo.register()
