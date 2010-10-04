@@ -22,6 +22,7 @@ import wx.lib.newevent
 import service
 import gui.mainFrame
 import gui.display as d
+from gui.contextMenu import ContextMenu
 import sys
 from eos.types import Slot
 
@@ -41,6 +42,7 @@ class FittingView(d.Display):
         d.Display.__init__(self, parent)
         self.mainFrame.Bind(FIT_CHANGED, self.fitChanged)
         self.Bind(wx.EVT_LEFT_DCLICK, self.removeItem)
+        self.Bind(wx.EVT_RIGHT_DOWN, self.scheduleMenu)
         self.activeFitID = None
 
     #Gets called from the fitMultiSwitch when it decides its time
@@ -107,3 +109,11 @@ class FittingView(d.Display):
             pass
         finally:
             event.Skip()
+
+    def scheduleMenu(self, event):
+        event.Skip()
+        wx.CallAfter(self.spawnMenu)
+
+    def spawnMenu(self):
+        menu = ContextMenu.getMenu("fitting")
+        self.PopupMenu(menu)
