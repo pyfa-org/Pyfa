@@ -27,6 +27,5 @@ class ItemStats(ContextMenu):
             return
 
         dlg=ItemStatsDialog(stuff)
-        dlg.Show()
 
 ItemStats.register()
