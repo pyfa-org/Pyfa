@@ -41,6 +41,10 @@ class Fit(object):
 
         return names
 
+    def getModule(self, fitID, pos):
+        fit = eos.db.getFit(fitID)
+        return fit.modules[pos]
+
     def newFit(self, shipID, name):
         fit = eos.types.Fit()
         fit.ship = eos.types.Ship(eos.db.getItem(shipID))

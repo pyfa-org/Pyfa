@@ -115,5 +115,12 @@ class FittingView(d.Display):
         wx.CallAfter(self.spawnMenu)
 
     def spawnMenu(self):
-        menu = ContextMenu.getMenu("fitting")
+        cFit = service.Fit.getInstance()
+        selection = []
+        sel = self.GetFirstSelected()
+        while sel != -1:
+            selection.append(self.mods[self.GetItemData(sel)])
+            sel = self.GetNextSelected(sel)
+
+        menu = ContextMenu.getMenu(selection, "module", "ship")
         self.PopupMenu(menu)

@@ -23,22 +23,26 @@ import bitmapLoader
 import sys
 
 
-class ItemStatsFrame(wx.Frame):
-    def __init__(self, itemId = -1):
-        wx.Frame.__init__(self,
+class ItemStatsDialog(wx.Dialog):
+    def __init__(self, victim):
+        wx.Dialog.__init__(self,
                           gui.mainFrame.MainFrame.getInstance(),
-                          wx.ID_ANY, title="pyfa - Item Stats",
+                          wx.ID_ANY, title="Item stats",
                           #style=wx.FRAME_FLOAT_ON_PARENT | wx.DEFAULT_FRAME_STYLE)
                           style = wx.CAPTION|wx.CLOSE_BOX|wx.MINIMIZE_BOX|wx.SYSTEM_MENU )
 
+        empty = getattr(victim, "isEmpty", False)
+        if empty:
+            self.Hide()
+            self.Destroy()
+            return
 
-        #itemId must be set by the caller , if not , we put dummy stats.
+        item = getattr(victim, "item", None)
+        if item is None:
+            item = victim
 
+        self.SetTitle("Item Stats: %s" % item.name)
 
-        i = wx.IconFromBitmap(bitmapLoader.getBitmap("pyfa", "icons"))
-        self.SetIcon(i)
-
-        
         self.SetMinSize((500, 300))
         self.SetSize((500, 300))
         self.SetMaxSize((500, 300))
@@ -68,17 +72,17 @@ class ItemStatsMenu(wx.Menu):
 ###########################################################################
 
 class ItemStatsContainer ( wx.Panel ):
-    
+
     def __init__( self, parent, itemId = -1 ):
         wx.Panel.__init__ ( self, parent, id = wx.ID_ANY, pos = wx.DefaultPosition, size = wx.Size( 500,300 ), style = wx.TAB_TRAVERSAL )
 
         #itemId is set by the parent.
 
-         
+
         mainSizer = wx.BoxSizer( wx.VERTICAL )
-        
+
         self.nbContainer = wx.Notebook( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, 0 )
-        
+
         mainSizer.Add( self.nbContainer, 1, wx.EXPAND |wx.ALL, 2 )
 
         self.desc = ItemDescription(self.nbContainer)
@@ -87,35 +91,35 @@ class ItemStatsContainer ( wx.Panel ):
         self.nbContainer.AddPage(self.desc, "Description")
         self.nbContainer.AddPage(self.params, "Attributes")
         self.nbContainer.AddPage(self.reqs, "Requirements")
-        
+
         self.SetSizer( mainSizer )
         self.Layout()
-    
+
     def __del__( self ):
         pass
-    
+
 
 ###########################################################################
 ## Class ItemDescription
 ###########################################################################
 
 class ItemDescription ( wx.Panel ):
-    
+
     def __init__( self, parent, itemId = -1 ):
         wx.Panel.__init__ ( self, parent, id = wx.ID_ANY, pos = wx.DefaultPosition, size = wx.Size( 500,300 ), style = wx.TAB_TRAVERSAL )
- 
+
         #itemId is set by the parent.
 
-        
+
         mainSizer = wx.BoxSizer( wx.VERTICAL )
-        
+
         self.description = wx.StaticText( self, wx.ID_ANY, u"Dummy description", wx.DefaultPosition, wx.DefaultSize, 0 )
         self.description.Wrap( -1 )
         mainSizer.Add( self.description, 1, wx.ALL|wx.EXPAND, 2 )
-        
+
         self.SetSizer( mainSizer )
         self.Layout()
-    
+
     def __del__( self ):
         pass
 
@@ -125,15 +129,15 @@ class ItemDescription ( wx.Panel ):
 ###########################################################################
 
 class ItemParams ( wx.Panel ):
-    
+
     def __init__( self, parent, itemId = -1 ):
         wx.Panel.__init__ ( self, parent, id = wx.ID_ANY, pos = wx.DefaultPosition, size = wx.Size( 500,300 ), style = wx.TAB_TRAVERSAL )
 
         #itemId is set by the parent.
 
-         
+
         mainSizer = wx.BoxSizer( wx.VERTICAL )
-        
+
         self.paramList = wx.ListCtrl( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LC_HRULES
                                       |wx.LC_NO_HEADER
                                       |wx.LC_REPORT
@@ -141,40 +145,40 @@ class ItemParams ( wx.Panel ):
                                       |wx.LC_VRULES
                                       |wx.NO_BORDER)
         mainSizer.Add( self.paramList, 1, wx.ALL|wx.EXPAND, 2 )
-        
+
         self.SetSizer( mainSizer )
 
         self.paramList.InsertColumn(0,"Effect")
         self.paramList.InsertColumn(1,"Value")
         self.paramList.SetColumnWidth(0,250)
-        self.paramList.SetColumnWidth(1,200)        
+        self.paramList.SetColumnWidth(1,200)
         for i in range(50):
             index = self.paramList.InsertStringItem(sys.maxint, "attrib%d" %i)
-            self.paramList.SetStringItem(index, 1, "%d" % index) 
+            self.paramList.SetStringItem(index, 1, "%d" % index)
         self.Layout()
-    
+
     def __del__( self ):
         pass
-	
+
 
 ###########################################################################
 ## Class ItemRequirements
 ###########################################################################
 
 class ItemRequirements ( wx.Panel ):
-	
+
     def __init__( self, parent, itemId = -1):
         wx.Panel.__init__ ( self, parent, id = wx.ID_ANY, pos = wx.DefaultPosition, size = wx.Size( 500,300 ), style = wx.TAB_TRAVERSAL )
 
         #itemId is set by the parent.
 
         mainSizer = wx.BoxSizer( wx.VERTICAL )
-        
+
         self.reqTree = wx.TreeCtrl( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TR_DEFAULT_STYLE
                                     |wx.TR_HIDE_ROOT
                                     |wx.NO_BORDER )
         mainSizer.Add( self.reqTree, 1, wx.ALL|wx.EXPAND, 2 )
-        
+
         self.SetSizer( mainSizer )
         self.root = self.reqTree.AddRoot("WOOT")
         self.reqTree.SetPyData(self.root, None)
@@ -199,5 +203,5 @@ class ItemRequirements ( wx.Panel ):
 
     def __del__( self ):
         pass
-    
+
 

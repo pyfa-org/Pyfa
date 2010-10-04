@@ -20,41 +20,53 @@
 import wx
 
 class ContextMenu(object):
-    menus = set()
+    menus = []
+    activeMenu = {}
     @classmethod
     def register(cls):
-        ContextMenu.menus.add(cls())
+        ContextMenu.menus.append(cls)
 
     @classmethod
-    def getMenu(cls, *contexts):
+    def getMenu(cls, selection, *contexts):
         menu = wx.Menu()
-        for i, m in enumerate(cls.menus):
+        for i, context in enumerate(contexts):
             amount = 0
-            for context in contexts:
-                if m.display(context):
+            for menuHandler in cls.menus:
+                m = menuHandler()
+                if m.display(context, selection):
                     amount += 1
-                    item = wx.MenuItem(menu, wx.ID_ANY, m.getText(context))
-                    bitmap = m.getBitmap(context)
+                    id = wx.NewId()
+                    item = wx.MenuItem(menu, id, m.getText(context, selection))
+                    cls.activeMenu[id] = (m, context, selection)
+
+                    menu.Bind(wx.EVT_MENU, cls.handler)
+                    bitmap = m.getBitmap(context, selection)
                     if bitmap:
                         item.SetBitmap(bitmap)
 
                     menu.AppendItem(item)
 
-            if amount > 0 and i != len(cls.menus) - 1:
+            if amount > 0 and i != len(contexts) - 1:
                 menu.AppendSeparator()
 
         return menu
 
-    def display(self, context):
+    @classmethod
+    def handler(cls, event):
+        m, context, selection = cls.activeMenu[event.Id]
+        cls.activeMenu.clear()
+        m.activate(context, selection)
+
+    def display(self, context, selection):
         raise NotImplementedError()
 
-    def activate(self, context):
+    def activate(self, context, selection):
         raise NotImplementedError()
 
-    def getText(self, context):
+    def getText(self, context, selection):
         raise NotImplementedError()
 
-    def getBitmap(self, context):
+    def getBitmap(self, context, selection):
         return None
 
 from gui.builtinContextMenus import *
