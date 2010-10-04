@@ -125,7 +125,6 @@ class ItemParams (wx.Panel):
             index = self.paramList.InsertStringItem(sys.maxint, name)
             self.paramList.SetStringItem(index, 1, str(attrs[name]) if stuff is not None else str(attrs[name].value))
 
-
         self.Layout()
 
 ###########################################################################

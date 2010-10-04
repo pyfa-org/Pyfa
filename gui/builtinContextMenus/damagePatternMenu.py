@@ -3,17 +3,17 @@ from gui.itemStats import ItemStatsDialog
 import gui.mainFrame
 import service
 
-class ItemStats(ContextMenu):
+class DamagePattern(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     def display(self, context, selection):
-        return context in ("item", "ship", "module", "ammo")
+        return context in ("resistancePane",)
 
     def getText(self, context, selection):
         return "%s stats" % context.capitalize()
 
-    def activate(self, context, selection, i):
+    def activate(self, context, selection):
         if context == "ship":
             fitID = self.mainFrame.getActiveFit()
             cFit = service.Fit.getInstance()

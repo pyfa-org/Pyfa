@@ -122,9 +122,9 @@ class FittingView(d.Display):
         if sel != -1:
             mod = self.mods[self.GetItemData(sel)]
             if not mod.isEmpty:
-                contexts.add("module")
+                contexts.append("module")
                 if mod.charge is not None and "ammo" not in contexts:
-                    contexts.add("ammo")
+                    contexts.append("ammo")
 
                 selection.append(mod)
 

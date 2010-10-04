@@ -35,9 +35,14 @@ class ContextMenu(object):
                 m = menuHandler()
                 if m.display(context, selection):
                     amount += 1
-                    id = wx.NewId()
-                    item = wx.MenuItem(menu, id, m.getText(context, selection))
-                    cls.activeMenu[id] = (m, context, selection)
+                    texts = m.getText(context, selection)
+                    if isinstance(texts, basestring):
+                        texts = (texts,)
+
+                    for i, text in enumerate(texts):
+                        id = wx.NewId()
+                        item = wx.MenuItem(menu, id, text)
+                        cls.activeMenu[id] = (m, context, selection, i)
 
                     menu.Bind(wx.EVT_MENU, cls.handler)
                     bitmap = m.getBitmap(context, selection)
@@ -53,14 +58,14 @@ class ContextMenu(object):
 
     @classmethod
     def handler(cls, event):
-        m, context, selection = cls.activeMenu[event.Id]
+        m, context, selection, i = cls.activeMenu[event.Id]
         cls.activeMenu.clear()
-        m.activate(context, selection)
+        m.activate(context, selection, i)
 
     def display(self, context, selection):
         raise NotImplementedError()
 
-    def activate(self, context, selection):
+    def activate(self, context, selection, i):
         raise NotImplementedError()
 
     def getText(self, context, selection):
