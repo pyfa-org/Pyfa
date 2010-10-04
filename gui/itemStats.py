@@ -118,10 +118,14 @@ class ItemParams (wx.Panel):
         self.paramList.SetColumnWidth(0,250)
         self.paramList.SetColumnWidth(1,200)
         attrs = stuff.itemModifiedAttributes if stuff is not None else item.attributes
+        names = list(attrs.iterkeys())
+        names.sort()
 
-        for name, attr in attrs.iteritems():
+        for name in names:
             index = self.paramList.InsertStringItem(sys.maxint, name)
-            self.paramList.SetStringItem(index, 1, str(attr) if stuff is not None else str(attr.value))
+            self.paramList.SetStringItem(index, 1, str(attrs[name]) if stuff is not None else str(attrs[name].value))
+
+
         self.Layout()
 
 ###########################################################################
