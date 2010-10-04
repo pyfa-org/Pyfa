@@ -47,24 +47,10 @@ class ItemStatsDialog(wx.Dialog):
         self.SetSize((500, 300))
         self.SetMaxSize((500, 300))
         self.mainSizer = wx.BoxSizer(wx.VERTICAL)
-        self.container = ItemStatsContainer(self)
+        self.container = ItemStatsContainer(self, victim, item)
         self.mainSizer.Add(self.container, 1, wx.EXPAND)
         self.SetSizer(self.mainSizer)
         self.Show()
-
-class ItemStatsMenu(wx.Menu):
-    def __init__(self):
-        wx.Menu.__init__(self)
-
-        self.showInfoId = wx.NewId()
-        self.Append(self.showInfoId, "&Item stats", "moo")
-        self.Bind(wx.EVT_MENU, self.itemStats, id=self.showInfoId)
-
-    def setItem(self, itemId):
-        self.itemId = itemId
-
-    def itemStats(self, event):
-        ItemStatsFrame(self.itemId)
 
 
 ###########################################################################
@@ -73,26 +59,21 @@ class ItemStatsMenu(wx.Menu):
 
 class ItemStatsContainer ( wx.Panel ):
 
-    def __init__( self, parent, itemId = -1 ):
-        wx.Panel.__init__ ( self, parent, id = wx.ID_ANY, pos = wx.DefaultPosition, size = wx.Size( 500,300 ), style = wx.TAB_TRAVERSAL )
-
-        #itemId is set by the parent.
-
-
+    def __init__( self, parent, stuff, item):
+        wx.Panel.__init__ ( self, parent )
         mainSizer = wx.BoxSizer( wx.VERTICAL )
 
         self.nbContainer = wx.Notebook( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, 0 )
-
         mainSizer.Add( self.nbContainer, 1, wx.EXPAND |wx.ALL, 2 )
 
-        self.desc = ItemDescription(self.nbContainer)
-        self.params = ItemParams(self.nbContainer)
-        self.reqs = ItemRequirements(self.nbContainer)
+        self.desc = ItemDescription(self.nbContainer, stuff, item)
+        self.params = ItemParams(self.nbContainer, stuff, item)
+        self.reqs = ItemRequirements(self.nbContainer, stuff, item)
         self.nbContainer.AddPage(self.desc, "Description")
         self.nbContainer.AddPage(self.params, "Attributes")
         self.nbContainer.AddPage(self.reqs, "Requirements")
 
-        self.SetSizer( mainSizer )
+        self.SetSizer(mainSizer)
         self.Layout()
 
     def __del__( self ):
@@ -105,32 +86,23 @@ class ItemStatsContainer ( wx.Panel ):
 
 class ItemDescription ( wx.Panel ):
 
-    def __init__( self, parent, itemId = -1 ):
-        wx.Panel.__init__ ( self, parent, id = wx.ID_ANY, pos = wx.DefaultPosition, size = wx.Size( 500,300 ), style = wx.TAB_TRAVERSAL )
+    def __init__(self, parent, stuff, item):
+        wx.Panel.__init__ (self, parent)
+        mainSizer = wx.BoxSizer(wx.VERTICAL)
 
-        #itemId is set by the parent.
+        self.description = wx.TextCtrl(self, wx.ID_ANY, item.description, style=wx.TE_READONLY | wx.TE_MULTILINE)
+        mainSizer.Add(self.description, 1, wx.ALL|wx.EXPAND, 2)
 
-
-        mainSizer = wx.BoxSizer( wx.VERTICAL )
-
-        self.description = wx.StaticText( self, wx.ID_ANY, u"Dummy description", wx.DefaultPosition, wx.DefaultSize, 0 )
-        self.description.Wrap( -1 )
-        mainSizer.Add( self.description, 1, wx.ALL|wx.EXPAND, 2 )
-
-        self.SetSizer( mainSizer )
+        self.SetSizer(mainSizer)
         self.Layout()
-
-    def __del__( self ):
-        pass
-
 
 ###########################################################################
 ## Class ItemParams
 ###########################################################################
 
-class ItemParams ( wx.Panel ):
+class ItemParams (wx.Panel):
 
-    def __init__( self, parent, itemId = -1 ):
+    def __init__(self, parent, stuff, item):
         wx.Panel.__init__ ( self, parent, id = wx.ID_ANY, pos = wx.DefaultPosition, size = wx.Size( 500,300 ), style = wx.TAB_TRAVERSAL )
 
         #itemId is set by the parent.
@@ -157,17 +129,13 @@ class ItemParams ( wx.Panel ):
             self.paramList.SetStringItem(index, 1, "%d" % index)
         self.Layout()
 
-    def __del__( self ):
-        pass
-
-
 ###########################################################################
 ## Class ItemRequirements
 ###########################################################################
 
 class ItemRequirements ( wx.Panel ):
 
-    def __init__( self, parent, itemId = -1):
+    def __init__(self, parent, stuff, item):
         wx.Panel.__init__ ( self, parent, id = wx.ID_ANY, pos = wx.DefaultPosition, size = wx.Size( 500,300 ), style = wx.TAB_TRAVERSAL )
 
         #itemId is set by the parent.
