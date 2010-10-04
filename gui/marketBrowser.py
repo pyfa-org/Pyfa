@@ -22,7 +22,6 @@ import wx
 import wx.lib.newevent
 import service
 import bitmapLoader
-from gui.itemStats import ItemStatsMenu
 import gui.mainFrame
 
 ItemSelected, ITEM_SELECTED = wx.lib.newevent.NewEvent()
@@ -123,7 +122,6 @@ class MarketBrowser(wx.Panel):
         p.SetMinSize((wx.SIZE_AUTO_WIDTH, btn.GetSize()[1] + 5))
 
         #Bind context menus
-        self.itemStatsMenu = ItemStatsMenu()
         self.itemView.Bind(wx.EVT_CONTEXT_MENU, self.contextMenu)
         self.itemView.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.itemActivated)
 
