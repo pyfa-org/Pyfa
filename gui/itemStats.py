@@ -89,11 +89,10 @@ class ItemDescription ( wx.Panel ):
     def __init__(self, parent, stuff, item):
         wx.Panel.__init__ (self, parent)
         mainSizer = wx.BoxSizer(wx.VERTICAL)
+        self.SetSizer(mainSizer)
 
         self.description = wx.TextCtrl(self, wx.ID_ANY, item.description, style=wx.TE_READONLY | wx.TE_MULTILINE)
         mainSizer.Add(self.description, 1, wx.ALL|wx.EXPAND, 2)
-
-        self.SetSizer(mainSizer)
         self.Layout()
 
 ###########################################################################
@@ -101,32 +100,24 @@ class ItemDescription ( wx.Panel ):
 ###########################################################################
 
 class ItemParams (wx.Panel):
-
     def __init__(self, parent, stuff, item):
-        wx.Panel.__init__ ( self, parent, id = wx.ID_ANY, pos = wx.DefaultPosition, size = wx.Size( 500,300 ), style = wx.TAB_TRAVERSAL )
-
-        #itemId is set by the parent.
-
-
+        wx.Panel.__init__ (self, parent)
         mainSizer = wx.BoxSizer( wx.VERTICAL )
 
-        self.paramList = wx.ListCtrl( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LC_HRULES
-                                      |wx.LC_NO_HEADER
-                                      |wx.LC_REPORT
-                                      |wx.LC_SINGLE_SEL
-                                      |wx.LC_VRULES
-                                      |wx.NO_BORDER)
+        self.paramList = wx.ListCtrl(self, wx.ID_ANY,
+                                     style = wx.LC_HRULES | wx.LC_NO_HEADER |wx.LC_REPORT |wx.LC_SINGLE_SEL |wx.LC_VRULES |wx.NO_BORDER)
         mainSizer.Add( self.paramList, 1, wx.ALL|wx.EXPAND, 2 )
-
         self.SetSizer( mainSizer )
 
-        self.paramList.InsertColumn(0,"Effect")
+        self.paramList.InsertColumn(0,"Attribute")
         self.paramList.InsertColumn(1,"Value")
         self.paramList.SetColumnWidth(0,250)
         self.paramList.SetColumnWidth(1,200)
-        for i in range(50):
-            index = self.paramList.InsertStringItem(sys.maxint, "attrib%d" %i)
-            self.paramList.SetStringItem(index, 1, "%d" % index)
+        attrs = stuff.itemModifiedAttributes if stuff is not None else item.attributes
+
+        for name, attr in attrs.iteritems():
+            index = self.paramList.InsertStringItem(sys.maxint, name)
+            self.paramList.SetStringItem(index, 1, str(attr))
         self.Layout()
 
 ###########################################################################
