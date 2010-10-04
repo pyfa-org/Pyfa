@@ -18,6 +18,7 @@
 #===============================================================================
 
 import wx
+import wx.gizmos
 import gui.mainFrame
 import bitmapLoader
 import sys
@@ -127,40 +128,32 @@ class ItemParams (wx.Panel):
 class ItemRequirements ( wx.Panel ):
 
     def __init__(self, parent, stuff, item):
-        wx.Panel.__init__ ( self, parent, id = wx.ID_ANY, pos = wx.DefaultPosition, size = wx.Size( 500,300 ), style = wx.TAB_TRAVERSAL )
+        wx.Panel.__init__ (self, parent, style = wx.TAB_TRAVERSAL)
 
         #itemId is set by the parent.
 
         mainSizer = wx.BoxSizer( wx.VERTICAL )
 
-        self.reqTree = wx.TreeCtrl( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TR_DEFAULT_STYLE
-                                    |wx.TR_HIDE_ROOT
-                                    |wx.NO_BORDER )
-        mainSizer.Add( self.reqTree, 1, wx.ALL|wx.EXPAND, 2 )
+        self.reqTree = wx.gizmos.TreeListCtrl(self, style = wx.TR_DEFAULT_STYLE | wx.TR_HIDE_ROOT | wx.NO_BORDER)
+        self.reqTree.AddColumn("Skill")
+        self.reqTree.AddColumn("Level")
+        self.reqTree.SetMainColumn(0)
 
-        self.SetSizer( mainSizer )
-        self.root = self.reqTree.AddRoot("WOOT")
+        mainSizer.Add(self.reqTree, 1, wx.ALL|wx.EXPAND, 2)
+
+        self.SetSizer(mainSizer)
+        self.root = self.reqTree.AddRoot("WINRARZOR")
         self.reqTree.SetPyData(self.root, None)
 
-        child = self.reqTree.AppendItem(self.root,"Requirements")
-        self.reqTree.SetPyData(child,None)
-        item = self.reqTree.AppendItem(child,"Evilness - 5")
-        self.reqTree.SetPyData(item,None)
+        self.imageList = wx.ImageList(16, 16)
+        self.reqTree.SetImageList(self.imageList)
+        skillBookId = self.imageList.Add(bitmapLoader.getBitmap("skill_small", "icons"))
+        child = self.reqTree.AppendItem(self.root,"Requirements", skillBookId)
+        for skill, level in item.requiredSkills.iteritems():
+            item = self.reqTree.AppendItem(child, skill.name, skillBookId)
+            self.reqTree.SetItemText(item, "%d" % level, 1)
 
-        child = self.reqTree.AppendItem(self.root,"Affecting skills")
-        self.reqTree.SetPyData(child,None)
-        item = self.reqTree.AppendItem(child,"Dummyness")
-        self.reqTree.SetPyData(item,None)
-
-        child = self.reqTree.AppendItem(self.root,"Affecting implants")
-        self.reqTree.SetPyData(child,None)
-        item = self.reqTree.AppendItem(child,"Hardwiring - Inherent Implants 'PWNAGE' OVER-9000")
-        self.reqTree.SetPyData(item,None)
-
-        self.reqTree.ExpandAll()
+        self.reqTree.ExpandAll(self.root)
+        self.reqTree.SetColumnWidth(0, 420)
+        self.reqTree.SetColumnWidth(1, 50)
         self.Layout()
-
-    def __del__( self ):
-        pass
-
-
