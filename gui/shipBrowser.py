@@ -39,7 +39,7 @@ class ShipBrowser(wx.Panel):
         for race in self.races:
             imageId = self.shipImageList.Add(bitmapLoader.getBitmap("race_%s_small" % race, "icons"))
             self.raceImageIds[race] = imageId
-        self.fitIconId = self.shipImageList.Add(bitmapLoader.getBitmap("ship_small", "icons"))
+        self.fitIconId = self.shipImageList.Add(bitmapLoader.getBitmap("fit_small", "icons"))
         self.races.append("None")
         self.idRaceMap = {}
 
