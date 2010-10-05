@@ -39,7 +39,7 @@ class ShipBrowser(wx.Panel):
         for race in self.races:
             imageId = self.shipImageList.Add(bitmapLoader.getBitmap("race_%s_small" % race, "icons"))
             self.raceImageIds[race] = imageId
-
+        self.fitIconId = self.shipImageList.Add(bitmapLoader.getBitmap("ship_small", "icons"))
         self.races.append("None")
         self.idRaceMap = {}
 
@@ -154,8 +154,8 @@ class ShipBrowser(wx.Panel):
                     iconId = self.raceImageIds[race] if race in self.raceImageIds else -1
                     self.idRaceMap[id] = race
                     childId = tree.AppendItem(root, name, iconId, data=wx.TreeItemData(("ship", id)))
-                    for fitID, fitName in cFit.getFitsWithShip(id):
-                        tree.AppendItem(childId, fitName, -1, data=wx.TreeItemData(("fit", fitID)))
+                    for fitID, fitName in cFit.getFitsWithShip(id):                        
+                        tree.AppendItem(childId, fitName, self.fitIconId, data=wx.TreeItemData(("fit", fitID)))
 
             tree.SortChildren(root)
 
@@ -172,7 +172,7 @@ class ShipBrowser(wx.Panel):
         name = "%s fit" % tree.GetItemText(root)
         cFit = service.Fit.getInstance()
         fitID = cFit.newFit(shipID, name)
-        childId = tree.AppendItem(root, name, -1, data=wx.TreeItemData(("fit", fitID)))
+        childId = tree.AppendItem(root, name, self.fitIconId, data=wx.TreeItemData(("fit", fitID)))
         tree.SetItemText(childId, name)
         tree.SortChildren(root)
         tree.Expand(root)
@@ -258,7 +258,8 @@ class ShipBrowser(wx.Panel):
             parent = tree.GetItemParent(root)
             newFit= cFit.getFit(newID)
             name = newFit.name
-            childId = tree.AppendItem(parent, name, -1, data=wx.TreeItemData(("fit", newID)))
+            iconID = tree.GetItemImage(root)
+            childId = tree.AppendItem(parent, name, iconID, data=wx.TreeItemData(("fit", newID)))
             tree.SetItemText(childId, name)
             tree.SelectItem(childId)
             tree.EditLabel(childId)
@@ -285,6 +286,7 @@ class ShipBrowser(wx.Panel):
         event.Skip()
 
     def startSearch(self, event):
+        
         search = self.shipMenu.search.GetLineText(0)
         if len(search) < 3:
             self.clearSearch(event, False)
@@ -309,15 +311,14 @@ class ShipBrowser(wx.Panel):
             iconId = self.raceImageIds[race] if race in self.raceImageIds else -1
             self.idRaceMap[id] = race
             childId = self.searchView.AppendItem(self.searchRoot, name, iconId, data=wx.TreeItemData(("ship", id)))
-            for fitID, fitName in cFit.getFitsWithShip(id):
-                self.searchView.AppendItem(childId, fitName, -1, data=wx.TreeItemData(("fit", fitID)))
+            for fitID, fitName in cFit.getFitsWithShip(id):                
+                self.searchView.AppendItem(childId, fitName, self.fitIconId, data=wx.TreeItemData(("fit", fitID)))
 
         foundFits = cMarket.searchFits(search)
         if foundFits:
-            iconId = self.shipImageList.Add(bitmapLoader.getBitmap("ship_small", "icons"))
             for id, name, shipName in foundFits:
                 rowText = "{0} ({1})".format(name, shipName)
-                self.searchView.AppendItem(self.searchRoot, rowText, iconId, data=wx.TreeItemData(("fit", id)))
+                self.searchView.AppendItem(self.searchRoot, rowText, self.fitIconId, data=wx.TreeItemData(("fit", id)))
 
         self.searchView.SortChildren(self.searchRoot)
 
