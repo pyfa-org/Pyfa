@@ -23,6 +23,7 @@ import wx.lib.newevent
 import service
 import bitmapLoader
 import gui.mainFrame
+from gui.cachingImageList import CachingImageList
 from gui.contextMenu import ContextMenu
 
 ItemSelected, ITEM_SELECTED = wx.lib.newevent.NewEvent()
@@ -84,10 +85,10 @@ class MarketBrowser(wx.Panel):
 
         self.marketRoot = self.marketView.AddRoot("Market")
 
-        self.marketImageList = wx.ImageList(16, 16)
+        self.marketImageList = CachingImageList(16, 16)
         self.marketView.SetImageList(self.marketImageList)
 
-        self.itemImageList = wx.ImageList(16, 16)
+        self.itemImageList = CachingImageList(16, 16)
         self.itemView.SetImageList(self.itemImageList, wx.IMAGE_LIST_SMALL)
 
         cMarket = service.Market.getInstance()
@@ -131,20 +132,14 @@ class MarketBrowser(wx.Panel):
     def addMarketViewImage(self, iconFile):
         if iconFile is None:
             return -1
-        bitmap = bitmapLoader.getBitmap(iconFile, "pack")
-        if bitmap is None:
-            return -1
-        else:
-            return self.marketImageList.Add(bitmap)
+
+        return self.marketImageList.Add(iconFile, "pack")
 
     def addItemViewImage(self, iconFile):
         if iconFile is None:
             return -1
-        bitmap = bitmapLoader.getBitmap(iconFile, "pack")
-        if bitmap is None:
-            return -1
-        else:
-            return self.itemImageList.Add(bitmap)
+        
+        return self.itemImageList.Add(iconFile, "pack")
 
     def expandLookup(self, event):
         root = event.Item
@@ -166,7 +161,6 @@ class MarketBrowser(wx.Panel):
 
     def selectionMade(self, event):
         self.itemView.DeleteAllItems()
-        self.itemImageList.RemoveAll()
 
         if self.searching:
             self.clearSearch(None, False)
@@ -240,7 +234,6 @@ class MarketBrowser(wx.Panel):
         cMarket.searchItems(search, self.populateSearch)
 
     def clearSearch(self, event, clear=True):
-        self.itemImageList.RemoveAll()
         self.itemView.DeleteAllItems()
         if clear:
             self.search.Clear()
@@ -279,7 +272,6 @@ class MarketBrowser(wx.Panel):
 
         self.itemView.Freeze()
         self.itemView.DeleteAllItems()
-        self.itemImageList.RemoveAll()
 
         idNameMap = {}
         idGroupMap = {}
