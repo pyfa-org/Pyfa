@@ -256,7 +256,8 @@ class ShipBrowser(wx.Panel):
             cFit = service.Fit.getInstance()
             newID = cFit.copyFit(fitID)
             parent = tree.GetItemParent(root)
-            name = tree.GetItemText(root)
+            newFit= cFit.getFit(newID)
+            name = newFit.name
             childId = tree.AppendItem(parent, name, -1, data=wx.TreeItemData(("fit", newID)))
             tree.SetItemText(childId, name)
             tree.SelectItem(childId)
