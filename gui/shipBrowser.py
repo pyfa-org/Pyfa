@@ -214,6 +214,7 @@ class ShipBrowser(wx.Panel):
             cFit.deleteFit(fitID)
             tree.Delete(root)
 
+        self.startSearch(None)
         wx.PostEvent(self.mainFrame, FitRemoved(fitID=fitID))
 
     def copyFit(self, event):
@@ -297,7 +298,8 @@ class ShipBrowser(wx.Panel):
             self.shipView.Collapse(child)
             child, cookie = self.shipView.GetNextChild(root, cookie)
 
-        event.Skip()
+        if event is not None:
+            event.Skip()
 
     def getSelectedFitID(self):
         tree = self.getActiveTree()
