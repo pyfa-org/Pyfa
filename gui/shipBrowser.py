@@ -258,7 +258,8 @@ class ShipBrowser(wx.Panel):
             parent = tree.GetItemParent(root)
             newFit= cFit.getFit(newID)
             name = newFit.name
-            childId = tree.AppendItem(parent, name, -1, data=wx.TreeItemData(("fit", newID)))
+            iconID = tree.GetItemImage(root)
+            childId = tree.AppendItem(parent, name, iconID, data=wx.TreeItemData(("fit", newID)))
             tree.SetItemText(childId, name)
             tree.SelectItem(childId)
             tree.EditLabel(childId)
