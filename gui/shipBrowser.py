@@ -201,6 +201,17 @@ class ShipBrowser(wx.Panel):
         cFit = service.Fit.getInstance()
         cFit.renameFit(fitID, newName)
 
+        if tree == self.searchView:
+            def checkRename(item):
+                type, id = tree.GetPyData(item)
+                if type == "fit" and id == fitID:
+                    if tree.GetItemParent(item) == self.searchRoot:
+                        tree.SetItemText(item, "%s (%s)" % (newName, cFit.getFit(fitID).ship.item.name))
+                    else:
+                        tree.SetItemText(item, newName)
+
+            self.checkSearchView(checkRename)
+
         wx.CallAfter(tree.SortChildren, tree.GetItemParent(item))
 
         wx.PostEvent(self.mainFrame, FitRenamed(fitID=fitID))
@@ -214,8 +225,28 @@ class ShipBrowser(wx.Panel):
             cFit.deleteFit(fitID)
             tree.Delete(root)
 
-        self.startSearch(None)
+        if tree == self.searchView:
+            def checkRemoval(item):
+                type, id = tree.GetPyData(item)
+                if type == "fit" and id == fitID:
+                    tree.Delete(item)
+
+            self.checkSearchView(checkRemoval)
         wx.PostEvent(self.mainFrame, FitRemoved(fitID=fitID))
+
+    def checkSearchView(self, callback):
+        tree = self.searchView
+        item, cookie = tree.GetFirstChild(self.searchRoot)
+        while item.IsOk():
+            type, id = tree.GetPyData(item)
+            if type == "ship":
+                child, childCookie = tree.GetFirstChild(item)
+                while child.IsOk():
+                    callback(child)
+                    child, childCookie = tree.GetNextChild(child, childCookie)
+
+            callback(item)
+            item, cookie = tree.GetNextChild(item, cookie)
 
     def copyFit(self, event):
         tree = self.getActiveTree()
@@ -329,7 +360,7 @@ class ShipView(wx.TreeCtrl):
         if type1 in ("fit", "group"):
             return cmp(self.GetItemText(treeId1), self.GetItemText(treeId2))
         else:
-            c = cmp(self.races.index(self.idRaceMap[id1] or "None"), self.races.index(self.idRaceMap[id2] or "None"))
+            c = cmp(self.races.index(self.idRaceMap.get(id1) or "None"), self.races.index(self.idRaceMap.get(id2) or "None"))
             if c != 0:
                 return c
             else:
