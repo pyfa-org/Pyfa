@@ -21,7 +21,9 @@ import wx
 import bitmapLoader
 
 class CachingImageList(wx.ImageList):
-    map = {}
+    def __init__(self):
+        self.map = {}
+
     def Add(self, *loaderArgs):
         id = self.map.get(loaderArgs)
         if id is None:
