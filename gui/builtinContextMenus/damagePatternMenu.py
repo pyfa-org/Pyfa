@@ -27,6 +27,5 @@ class DamagePattern(ContextMenu):
             return
 
         dlg=ItemStatsDialog(stuff)
-        dlg.Show()
 
 ItemStats.register()

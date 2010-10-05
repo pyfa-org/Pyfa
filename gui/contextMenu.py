@@ -39,10 +39,10 @@ class ContextMenu(object):
                     if isinstance(texts, basestring):
                         texts = (texts,)
 
-                    for i, text in enumerate(texts):
+                    for it, text in enumerate(texts):
                         id = wx.NewId()
                         item = wx.MenuItem(menu, id, text)
-                        cls.activeMenu[id] = (m, context, selection, i)
+                        cls.activeMenu[id] = (m, context, selection, it)
 
                     menu.Bind(wx.EVT_MENU, cls.handler)
                     bitmap = m.getBitmap(context, selection)

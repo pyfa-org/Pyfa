@@ -56,6 +56,11 @@ class ItemStatsDialog(wx.Dialog):
         self.SetSizer(self.mainSizer)
         self.Show()
 
+        self.Bind(wx.EVT_CLOSE, self.closeEvent)
+
+    def closeEvent(self, event):
+        self.Destroy()
+        event.Skip()
 
 ###########################################################################
 ## Class ItemStatsContainer
@@ -95,8 +100,8 @@ class ItemDescription ( wx.Panel ):
         mainSizer = wx.BoxSizer(wx.VERTICAL)
         self.SetSizer(mainSizer)
 
-        self.description = wx.TextCtrl(self, wx.ID_ANY, item.description, style=wx.TE_READONLY | wx.TE_MULTILINE)
-        mainSizer.Add(self.description, 1, wx.ALL|wx.EXPAND, 2)
+        self.description = wx.TextCtrl(self, wx.ID_ANY, item.description, style=wx.TE_READONLY | wx.TE_MULTILINE | wx.NO_BORDER)
+        mainSizer.Add(self.description, 1, wx.ALL|wx.EXPAND, 0)
         self.Layout()
 
 ###########################################################################
@@ -110,13 +115,13 @@ class ItemParams (wx.Panel):
 
         self.paramList = wx.ListCtrl(self, wx.ID_ANY,
                                      style = wx.LC_HRULES | wx.LC_NO_HEADER |wx.LC_REPORT |wx.LC_SINGLE_SEL |wx.LC_VRULES |wx.NO_BORDER)
-        mainSizer.Add( self.paramList, 1, wx.ALL|wx.EXPAND, 2 )
+        mainSizer.Add( self.paramList, 1, wx.ALL|wx.EXPAND, 0 )
         self.SetSizer( mainSizer )
 
         self.paramList.InsertColumn(0,"Attribute")
         self.paramList.InsertColumn(1,"Value")
-        self.paramList.SetColumnWidth(0,250)
-        self.paramList.SetColumnWidth(1,200)
+        self.paramList.SetColumnWidth(0,300)
+        self.paramList.SetColumnWidth(1,165)
         attrs = stuff.itemModifiedAttributes if stuff is not None else item.attributes
         names = list(attrs.iterkeys())
         names.sort()
@@ -126,6 +131,7 @@ class ItemParams (wx.Panel):
             self.paramList.SetStringItem(index, 1, str(attrs[name]) if stuff is not None else str(attrs[name].value))
 
         self.Layout()
+     
 
 ###########################################################################
 ## Class ItemRequirements
@@ -145,7 +151,7 @@ class ItemRequirements ( wx.Panel ):
         self.reqTree.AddColumn("Level")
         self.reqTree.SetMainColumn(0)
 
-        mainSizer.Add(self.reqTree, 1, wx.ALL|wx.EXPAND, 2)
+        mainSizer.Add(self.reqTree, 1, wx.ALL|wx.EXPAND, 0)
 
         self.SetSizer(mainSizer)
         self.root = self.reqTree.AddRoot("WINRARZOR")
@@ -161,5 +167,5 @@ class ItemRequirements ( wx.Panel ):
 
         self.reqTree.ExpandAll(self.root)
         self.reqTree.SetColumnWidth(0, 420)
-        self.reqTree.SetColumnWidth(1, 50)
+        self.reqTree.SetColumnWidth(1, 45)
         self.Layout()
