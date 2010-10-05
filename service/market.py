@@ -120,8 +120,7 @@ class Market():
         group = eos.db.getMarketGroup(id, eager="icon")
         children = []
         for child in group.children:
-            icon = child.icon.iconFile if child.icon else ""
-            children.append((child.ID, child.name, icon, not child.hasTypes))
+            children.append((child.ID, child.name, self.figureIcon(child), not child.hasTypes))
 
 
         return children
@@ -186,9 +185,19 @@ class Market():
         root = []
         for id in marketGroups:
             mg = eos.db.getMarketGroup(id, eager="icon")
-            root.append((id, mg.name, mg.icon.iconFile if mg.icon else ""))
+            root.append((id, mg.name, self.figureIcon(mg)))
 
         return root
+
+    def figureIcon(self, mg):
+        if mg.icon:
+            return mg.icon.iconFile
+        else:
+            if mg.hasTypes:
+                item = mg.items[0]
+                return item.icon.iconFile if item.icon else ""
+            else:
+                return self.figureIcon(mg.children[0])
 
     def activateMetaGroup(self, name):
         for meta in self.META_MAP[name]:
