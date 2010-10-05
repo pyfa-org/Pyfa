@@ -22,7 +22,7 @@ import wx.gizmos
 import gui.mainFrame
 import bitmapLoader
 import sys
-
+import random
 
 class ItemStatsDialog(wx.Dialog):
     def __init__(self, victim):
@@ -54,6 +54,17 @@ class ItemStatsDialog(wx.Dialog):
         self.container = ItemStatsContainer(self, victim, item)
         self.mainSizer.Add(self.container, 1, wx.EXPAND)
         self.SetSizer(self.mainSizer)
+
+        parent = gui.mainFrame.MainFrame.getInstance()
+
+        dlgsize = self.GetSize()
+        psize = parent.GetSize()
+        ppos = parent.GetPosition()
+
+        dlgx = random.randint(ppos.x,ppos.x + psize.width - dlgsize.width)
+        dlgy = random.randint(ppos.y,ppos.y + psize.height - dlgsize.height)
+        self.SetPosition((dlgx,dlgy))
+            
         self.Show()
 
         self.Bind(wx.EVT_CLOSE, self.closeEvent)
