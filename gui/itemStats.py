@@ -128,7 +128,7 @@ class AutoListCtrl(wx.ListCtrl, listmix.ListCtrlAutoWidthMixin, listmix.ListRowH
                  size=wx.DefaultSize, style=0):
         wx.ListCtrl.__init__(self, parent, ID, pos, size, style)
         listmix.ListCtrlAutoWidthMixin.__init__(self)
-        listmix.ListRowHighlighter.__init__(self, mode =  1)
+        listmix.ListRowHighlighter.__init__(self)
 
 
 ###########################################################################
@@ -173,7 +173,7 @@ class ItemParams (wx.Panel):
         for name in names:
             index = self.paramList.InsertStringItem(sys.maxint, attrs[name].displayName.capitalize())
             self.paramList.SetStringItem(index, 1, str(attrs[name]) if stuff is not None else str(formatAmount(attrs[name].value, 3, 0, 0)))
-
+        self.paramList.RefreshRows()
         self.Layout()
 
 
@@ -255,6 +255,8 @@ class ItemEffects (wx.Panel):
             else:
                 implemented = "No"
             self.effectList.SetStringItem(index, 2, implemented)
+
+        self.effectList.RefreshRows()
         self.Layout()
 
 
@@ -287,4 +289,5 @@ class ItemAffectedBy (wx.Panel):
         for name in names:
             index = self.effectList.InsertStringItem(sys.maxint, name)
 
+        self.effectList.RefreshRows()
         self.Layout()
