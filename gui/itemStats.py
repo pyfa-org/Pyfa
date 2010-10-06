@@ -152,7 +152,7 @@ class ItemDescription ( wx.Panel ):
 
 
         self.description = wx.html.HtmlWindow(self)
-        self.description.SetStandardFonts(8)
+        self.description.SetStandardFonts(10)
 
         desc = item.description.replace("\r","<br>")
 
