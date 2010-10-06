@@ -1,1 +1,1 @@
-__all__ = ["itemStats"]
+__all__ = ["itemStats", "damagePatternMenu"]

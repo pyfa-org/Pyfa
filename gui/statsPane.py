@@ -22,7 +22,7 @@ from gui.statsView import StatsView
 import service
 from gui.pyfatogglepanel import TogglePanel
 import gui.builtinStatsViews
-
+from gui.contextMenu import ContextMenu
 import gui.fittingView as fv
 import gui.mainFrame
 
@@ -57,11 +57,14 @@ class StatsPane(wx.Panel):
         maxviews = len(self.DEFAULT_VIEWS)
         i=0
         for viewName in self.DEFAULT_VIEWS:
-            view = StatsView.getView(viewName)( self )
-            self.views.append(view)
-
             tp = TogglePanel(self)
             contentPanel = tp.GetContentPane()
+            contentPanel.viewName = viewName
+
+            view = StatsView.getView(viewName)(self)
+            self.views.append(view)
+            contentPanel.Bind(wx.EVT_RIGHT_DOWN, self.contextHandler)
+
             headerPanel = tp.GetHeaderPanel()
 
             view.populatePanel(contentPanel, headerPanel)
@@ -78,3 +81,12 @@ class StatsPane(wx.Panel):
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.mainFrame.Bind(fv.FIT_CHANGED, self.fitChanged)
+
+    def contextHandler(self, event):
+        contentPanel = event.EventObject
+        viewName = contentPanel.viewName
+        menu = ContextMenu.getMenu(None, viewName)
+        if menu is not None:
+            contentPanel.PopupMenu(menu)
+
+        event.Skip()

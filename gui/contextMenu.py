@@ -29,6 +29,7 @@ class ContextMenu(object):
     @classmethod
     def getMenu(cls, selection, *contexts):
         menu = wx.Menu()
+        empty = True
         for i, context in enumerate(contexts):
             amount = 0
             for menuHandler in cls.menus:
@@ -50,11 +51,12 @@ class ContextMenu(object):
                         item.SetBitmap(bitmap)
 
                     menu.AppendItem(item)
+                    empty = False
 
             if amount > 0 and i != len(contexts) - 1:
                 menu.AppendSeparator()
 
-        return menu
+        return menu if not empty else None
 
     @classmethod
     def handler(cls, event):

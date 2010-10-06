@@ -8,7 +8,7 @@ class DamagePattern(ContextMenu):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     def display(self, context, selection):
-        return context in ("resistancePane",)
+        return context in ("resistancesViewFull",)
 
     def getText(self, context, selection):
         return "%s stats" % context.capitalize()
@@ -28,4 +28,4 @@ class DamagePattern(ContextMenu):
 
         dlg=ItemStatsDialog(stuff)
 
-ItemStats.register()
+DamagePattern.register()
