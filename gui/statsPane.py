@@ -63,14 +63,16 @@ class StatsPane(wx.Panel):
 
             view = StatsView.getView(viewName)(self)
             self.views.append(view)
-            contentPanel.Bind(wx.EVT_RIGHT_DOWN, self.contextHandler)
 
             headerPanel = tp.GetHeaderPanel()
 
             view.populatePanel(contentPanel, headerPanel)
             tp.SetLabel(view.getHeaderText(None))
-
             view.refreshPanel(None)
+
+            contentPanel.Bind(wx.EVT_RIGHT_DOWN, self.contextHandler(contentPanel))
+            for child in contentPanel.GetChildren():
+                child.Bind(wx.EVT_RIGHT_DOWN, self.contextHandler(contentPanel))
 
             mainSizer.Add(tp, 0, wx.EXPAND | wx.LEFT, 3)
             if i < maxviews - 1:
@@ -82,11 +84,13 @@ class StatsPane(wx.Panel):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.mainFrame.Bind(fv.FIT_CHANGED, self.fitChanged)
 
-    def contextHandler(self, event):
-        contentPanel = event.EventObject
+    def contextHandler(self, contentPanel):
         viewName = contentPanel.viewName
-        menu = ContextMenu.getMenu(None, viewName)
-        if menu is not None:
-            contentPanel.PopupMenu(menu)
+        def handler(event):
+            menu = ContextMenu.getMenu(None, viewName)
+            if menu is not None:
+                contentPanel.PopupMenu(menu)
 
-        event.Skip()
+            event.Skip()
+
+        return handler
