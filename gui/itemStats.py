@@ -24,6 +24,8 @@ import bitmapLoader
 import sys
 import random
 
+dlgCounter = 0
+
 class ItemStatsDialog(wx.Dialog):
     def __init__(self, victim):
         wx.Dialog.__init__(self,
@@ -31,7 +33,7 @@ class ItemStatsDialog(wx.Dialog):
                           wx.ID_ANY, title="Item stats",
                           #style=wx.FRAME_FLOAT_ON_PARENT | wx.DEFAULT_FRAME_STYLE)
                           style = wx.CAPTION|wx.CLOSE_BOX|wx.MINIMIZE_BOX|wx.SYSTEM_MENU )
-
+        global dlgCounter
         empty = getattr(victim, "isEmpty", False)
         if empty:
             self.Hide()
@@ -60,9 +62,14 @@ class ItemStatsDialog(wx.Dialog):
         dlgsize = self.GetSize()
         psize = parent.GetSize()
         ppos = parent.GetPosition()
-
-        dlgx = random.randint(ppos.x,ppos.x + psize.width - dlgsize.width)
-        dlgy = random.randint(ppos.y,ppos.y + psize.height - dlgsize.height)
+        dlgCounter += 1
+        dlgStep = 30
+        if dlgCounter*dlgStep > ppos.x+psize.width-dlgsize.x:
+            dlgCounter = 1
+        if dlgCounter*dlgStep > ppos.y+psize.height-dlgsize.y:
+            dlgCounter = 1            
+        dlgx = ppos.x + dlgCounter * dlgStep
+        dlgy = ppos.y + dlgCounter * dlgStep
         self.SetPosition((dlgx,dlgy))
             
         self.Show()
