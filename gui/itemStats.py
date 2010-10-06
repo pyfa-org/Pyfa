@@ -157,7 +157,8 @@ class ItemParams (wx.Panel):
 
         self.paramList = AutoListCtrl(self, wx.ID_ANY,
                                      style = #wx.LC_HRULES |
-                                      wx.LC_NO_HEADER |wx.LC_REPORT |wx.LC_SINGLE_SEL |wx.LC_VRULES |wx.NO_BORDER)
+                                      #wx.LC_NO_HEADER |
+                                      wx.LC_REPORT |wx.LC_SINGLE_SEL |wx.LC_VRULES |wx.NO_BORDER)
         mainSizer.Add( self.paramList, 1, wx.ALL|wx.EXPAND, 0 )
         self.SetSizer( mainSizer )
 
@@ -270,7 +271,7 @@ class ItemAffectedBy (wx.Panel):
         self.effectList = AutoListCtrl(self, wx.ID_ANY,
                                      style =
                                        #wx.LC_HRULES |
-                                      wx.LC_NO_HEADER |
+                                      #wx.LC_NO_HEADER |
                                       wx.LC_REPORT |wx.LC_SINGLE_SEL |
                                       #wx.LC_VRULES |
                                       wx.NO_BORDER)
