@@ -22,7 +22,8 @@ import wx.gizmos
 import gui.mainFrame
 import bitmapLoader
 import sys
-import random
+
+from util import formatAmount
 
 class ItemStatsDialog(wx.Dialog):
     counter = 0
@@ -146,8 +147,8 @@ class ItemParams (wx.Panel):
         names.sort()
 
         for name in names:
-            index = self.paramList.InsertStringItem(sys.maxint, name)
-            self.paramList.SetStringItem(index, 1, str(attrs[name]) if stuff is not None else str(attrs[name].value))
+            index = self.paramList.InsertStringItem(sys.maxint, attrs[name].displayName.capitalize())
+            self.paramList.SetStringItem(index, 1, str(attrs[name]) if stuff is not None else str(formatAmount(attrs[name].value, 3, 0, 0)))
 
         self.Layout()
 
