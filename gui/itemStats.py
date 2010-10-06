@@ -23,6 +23,7 @@ import gui.mainFrame
 import bitmapLoader
 import sys
 import  wx.lib.mixins.listctrl  as  listmix
+import wx.html
 
 
 from util import formatAmount
@@ -149,7 +150,14 @@ class ItemDescription ( wx.Panel ):
         mainSizer = wx.BoxSizer(wx.VERTICAL)
         self.SetSizer(mainSizer)
 
-        self.description = wx.TextCtrl(self, wx.ID_ANY, item.description, style=wx.TE_READONLY | wx.TE_MULTILINE | wx.NO_BORDER)
+
+        self.description = wx.html.HtmlWindow(self)
+        self.description.SetStandardFonts(8)
+
+        desc = item.description.replace("\r","<br>")
+
+        self.description.SetPage(desc)
+
         mainSizer.Add(self.description, 1, wx.ALL|wx.EXPAND, 0)
         self.Layout()
 
