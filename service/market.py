@@ -193,11 +193,13 @@ class Market():
         if mg.icon:
             return mg.icon.iconFile
         else:
-            if mg.hasTypes:
+            if mg.hasTypes and len(mg.items) > 0:
                 item = mg.items[0]
                 return item.icon.iconFile if item.icon else ""
-            else:
+            elif len(mg.children) > 0:
                 return self.figureIcon(mg.children[0])
+            else:
+                return ""
 
     def activateMetaGroup(self, name):
         for meta in self.META_MAP[name]:
