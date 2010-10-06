@@ -49,7 +49,7 @@ class ItemStatsDialog(wx.Dialog):
 
         if item.icon is not None:
             self.SetIcon(wx.IconFromBitmap(bitmapLoader.getBitmap(item.icon.iconFile, "pack")))
-        self.SetTitle("Item Stats: %s" % item.name)
+        self.SetTitle("Stats: %s" % item.name)
 
         self.SetMinSize((500, 300))
         self.SetSize((500, 300))
@@ -171,8 +171,8 @@ class ItemParams (wx.Panel):
         names.sort()
 
         for name in names:
-            index = self.paramList.InsertStringItem(sys.maxint, attrs[name].displayName.capitalize())
-            self.paramList.SetStringItem(index, 1, str(attrs[name]) if stuff is not None else str(formatAmount(attrs[name].value, 3, 0, 0)))
+            index = self.paramList.InsertStringItem(sys.maxint, name)
+            self.paramList.SetStringItem(index, 1, str(formatAmount(attrs[name], 3, 0, 0)) if stuff is not None else str(formatAmount(attrs[name].value, 3, 0, 0)))
         self.paramList.RefreshRows()
         self.Layout()
 
