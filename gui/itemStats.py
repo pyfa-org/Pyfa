@@ -122,12 +122,13 @@ class ItemStatsContainer ( wx.Panel ):
 ## Class AutoListCtrl
 ###########################################################################
 
-class AutoListCtrl(wx.ListCtrl, listmix.ListCtrlAutoWidthMixin):
+class AutoListCtrl(wx.ListCtrl, listmix.ListCtrlAutoWidthMixin, listmix.ListRowHighlighter):
 
     def __init__(self, parent, ID, pos=wx.DefaultPosition,
                  size=wx.DefaultSize, style=0):
         wx.ListCtrl.__init__(self, parent, ID, pos, size, style)
         listmix.ListCtrlAutoWidthMixin.__init__(self)
+        listmix.ListRowHighlighter.__init__(self, mode =  1)
 
 
 ###########################################################################
@@ -155,7 +156,8 @@ class ItemParams (wx.Panel):
         mainSizer = wx.BoxSizer( wx.VERTICAL )
 
         self.paramList = AutoListCtrl(self, wx.ID_ANY,
-                                     style = wx.LC_HRULES | wx.LC_NO_HEADER |wx.LC_REPORT |wx.LC_SINGLE_SEL |wx.LC_VRULES |wx.NO_BORDER)
+                                     style = #wx.LC_HRULES |
+                                      wx.LC_NO_HEADER |wx.LC_REPORT |wx.LC_SINGLE_SEL |wx.LC_VRULES |wx.NO_BORDER)
         mainSizer.Add( self.paramList, 1, wx.ALL|wx.EXPAND, 0 )
         self.SetSizer( mainSizer )
 
@@ -222,7 +224,8 @@ class ItemEffects (wx.Panel):
         mainSizer = wx.BoxSizer( wx.VERTICAL )
 
         self.effectList = AutoListCtrl(self, wx.ID_ANY,
-                                     style = wx.LC_HRULES |
+                                     style =
+                                      #wx.LC_HRULES |
                                       #wx.LC_NO_HEADER |
                                       wx.LC_REPORT |wx.LC_SINGLE_SEL |wx.LC_VRULES |wx.NO_BORDER)
         mainSizer.Add( self.effectList, 1, wx.ALL|wx.EXPAND, 0 )
@@ -265,7 +268,8 @@ class ItemAffectedBy (wx.Panel):
         mainSizer = wx.BoxSizer( wx.VERTICAL )
 
         self.effectList = AutoListCtrl(self, wx.ID_ANY,
-                                     style = wx.LC_HRULES |
+                                     style =
+                                       #wx.LC_HRULES |
                                       wx.LC_NO_HEADER |
                                       wx.LC_REPORT |wx.LC_SINGLE_SEL |
                                       #wx.LC_VRULES |
