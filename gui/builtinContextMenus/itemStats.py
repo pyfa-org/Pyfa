@@ -8,7 +8,7 @@ class ItemStats(ContextMenu):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     def display(self, context, selection):
-        return context in ("item", "ship", "module", "ammo")
+        return context in ("item", "ship", "module", "ammo", "skill")
 
     def getText(self, context, selection):
         return "%s stats" % context.capitalize()
