@@ -22,6 +22,8 @@ import wx.gizmos
 import gui.mainFrame
 import bitmapLoader
 import sys
+import  wx.lib.mixins.listctrl  as  listmix
+
 
 from util import formatAmount
 
@@ -103,16 +105,29 @@ class ItemStatsContainer ( wx.Panel ):
         self.params = ItemParams(self.nbContainer, stuff, item)
         self.reqs = ItemRequirements(self.nbContainer, stuff, item)
         self.effects = ItemEffects(self.nbContainer, stuff, item)
+        self.affectedby = ItemAffectedBy(self.nbContainer, stuff, item)
         self.nbContainer.AddPage(self.desc, "Description")
         self.nbContainer.AddPage(self.params, "Attributes")
         self.nbContainer.AddPage(self.reqs, "Requirements")
         self.nbContainer.AddPage(self.effects, "Effects")
+        self.nbContainer.AddPage(self.affectedby, "Affected by")
 
         self.SetSizer(mainSizer)
         self.Layout()
 
     def __del__( self ):
         pass
+
+###########################################################################
+## Class AutoListCtrl
+###########################################################################
+
+class AutoListCtrl(wx.ListCtrl, listmix.ListCtrlAutoWidthMixin):
+
+    def __init__(self, parent, ID, pos=wx.DefaultPosition,
+                 size=wx.DefaultSize, style=0):
+        wx.ListCtrl.__init__(self, parent, ID, pos, size, style)
+        listmix.ListCtrlAutoWidthMixin.__init__(self)
 
 
 ###########################################################################
@@ -139,15 +154,15 @@ class ItemParams (wx.Panel):
         wx.Panel.__init__ (self, parent)
         mainSizer = wx.BoxSizer( wx.VERTICAL )
 
-        self.paramList = wx.ListCtrl(self, wx.ID_ANY,
+        self.paramList = AutoListCtrl(self, wx.ID_ANY,
                                      style = wx.LC_HRULES | wx.LC_NO_HEADER |wx.LC_REPORT |wx.LC_SINGLE_SEL |wx.LC_VRULES |wx.NO_BORDER)
         mainSizer.Add( self.paramList, 1, wx.ALL|wx.EXPAND, 0 )
         self.SetSizer( mainSizer )
 
         self.paramList.InsertColumn(0,"Attribute")
         self.paramList.InsertColumn(1,"Value")
-        self.paramList.SetColumnWidth(0,300)
-        self.paramList.SetColumnWidth(1,165)
+        self.paramList.SetColumnWidth(1,200)
+        self.paramList.setResizeColumn(1)
         attrs = stuff.itemModifiedAttributes if stuff is not None else item.attributes
         names = list(attrs.iterkeys())
         names.sort()
@@ -206,7 +221,7 @@ class ItemEffects (wx.Panel):
         wx.Panel.__init__ (self, parent)
         mainSizer = wx.BoxSizer( wx.VERTICAL )
 
-        self.effectList = wx.ListCtrl(self, wx.ID_ANY,
+        self.effectList = AutoListCtrl(self, wx.ID_ANY,
                                      style = wx.LC_HRULES |
                                       #wx.LC_NO_HEADER |
                                       wx.LC_REPORT |wx.LC_SINGLE_SEL |wx.LC_VRULES |wx.NO_BORDER)
@@ -216,9 +231,14 @@ class ItemEffects (wx.Panel):
         self.effectList.InsertColumn(0,"Name")
         self.effectList.InsertColumn(1,"Description")
         self.effectList.InsertColumn(2,"Implemented")
+        
         self.effectList.SetColumnWidth(0,155)
+        
         self.effectList.SetColumnWidth(1,235)
-        self.effectList.SetColumnWidth(2,90)
+        self.effectList.setResizeColumn(1)
+        
+        self.effectList.SetColumnWidth(2,80)
+
         effects = item.effects
         names = list(effects.iterkeys())
         names.sort()
@@ -231,4 +251,35 @@ class ItemEffects (wx.Panel):
             else:
                 implemented = "No"
             self.effectList.SetStringItem(index, 2, implemented)
+        self.Layout()
+
+
+###########################################################################
+## Class ItemAffectedBy
+###########################################################################
+
+        
+class ItemAffectedBy (wx.Panel):
+    def __init__(self, parent, stuff, item):
+        wx.Panel.__init__ (self, parent)
+        mainSizer = wx.BoxSizer( wx.VERTICAL )
+
+        self.effectList = AutoListCtrl(self, wx.ID_ANY,
+                                     style = wx.LC_HRULES |
+                                      wx.LC_NO_HEADER |
+                                      wx.LC_REPORT |wx.LC_SINGLE_SEL |
+                                      #wx.LC_VRULES |
+                                      wx.NO_BORDER)
+        mainSizer.Add( self.effectList, 1, wx.ALL|wx.EXPAND, 0 )
+        self.SetSizer( mainSizer )
+
+        self.effectList.InsertColumn(0,"Name")
+        self.effectList.setResizeColumn(0)
+        effects = item.effects
+        names = list(effects.iterkeys())
+        names.sort()
+
+        for name in names:
+            index = self.effectList.InsertStringItem(sys.maxint, name)
+
         self.Layout()
