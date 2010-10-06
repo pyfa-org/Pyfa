@@ -40,6 +40,7 @@ class ItemStatsDialog(wx.Dialog):
                            wx.SYSTEM_MENU )
 
         empty = getattr(victim, "isEmpty", False)
+
         if empty:
             self.Hide()
             self.Destroy()
@@ -51,7 +52,10 @@ class ItemStatsDialog(wx.Dialog):
             victim = None
 
         if item.icon is not None:
-            self.SetIcon(wx.IconFromBitmap(bitmapLoader.getBitmap(item.icon.iconFile, "pack")))
+            before,sep,after = item.icon.iconFile.rpartition("_")
+            iconFile = "%s%s%s" % (before,sep,"0%s" % after if len(after) < 2 else after)
+
+            self.SetIcon(wx.IconFromBitmap(bitmapLoader.getBitmap(iconFile, "pack")))
         self.SetTitle("Stats: %s" % item.name)
 
         self.SetMinSize((300, 200))
