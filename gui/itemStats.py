@@ -95,9 +95,11 @@ class ItemStatsContainer ( wx.Panel ):
         self.desc = ItemDescription(self.nbContainer, stuff, item)
         self.params = ItemParams(self.nbContainer, stuff, item)
         self.reqs = ItemRequirements(self.nbContainer, stuff, item)
+        self.effects = ItemEffects(self.nbContainer, stuff, item)
         self.nbContainer.AddPage(self.desc, "Description")
         self.nbContainer.AddPage(self.params, "Attributes")
         self.nbContainer.AddPage(self.reqs, "Requirements")
+        self.nbContainer.AddPage(self.effects, "Effects")
 
         self.SetSizer(mainSizer)
         self.Layout()
@@ -185,4 +187,41 @@ class ItemRequirements ( wx.Panel ):
         self.reqTree.ExpandAll(self.root)
         self.reqTree.SetColumnWidth(0, 420)
         self.reqTree.SetColumnWidth(1, 45)
+        self.Layout()
+
+
+###########################################################################
+## Class ItemEffects
+###########################################################################
+
+class ItemEffects (wx.Panel):
+    def __init__(self, parent, stuff, item):
+        wx.Panel.__init__ (self, parent)
+        mainSizer = wx.BoxSizer( wx.VERTICAL )
+
+        self.effectList = wx.ListCtrl(self, wx.ID_ANY,
+                                     style = wx.LC_HRULES |
+                                      #wx.LC_NO_HEADER |
+                                      wx.LC_REPORT |wx.LC_SINGLE_SEL |wx.LC_VRULES |wx.NO_BORDER)
+        mainSizer.Add( self.effectList, 1, wx.ALL|wx.EXPAND, 0 )
+        self.SetSizer( mainSizer )
+
+        self.effectList.InsertColumn(0,"Name")
+        self.effectList.InsertColumn(1,"Description")
+        self.effectList.InsertColumn(2,"Implemented")
+        self.effectList.SetColumnWidth(0,155)
+        self.effectList.SetColumnWidth(1,235)
+        self.effectList.SetColumnWidth(2,90)
+        effects = item.effects
+        names = list(effects.iterkeys())
+        names.sort()
+
+        for name in names:
+            index = self.effectList.InsertStringItem(sys.maxint, name)
+            self.effectList.SetStringItem(index, 1, str(effects[name].description))
+            if effects[name].isImplemented:
+                implemented = "Yes"
+            else:
+                implemented = "No"
+            self.effectList.SetStringItem(index, 2, implemented)
         self.Layout()
