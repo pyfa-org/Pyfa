@@ -35,7 +35,8 @@ class ItemStatsDialog(wx.Dialog):
                           wx.ID_ANY, title="Item stats",
                           #style=wx.FRAME_FLOAT_ON_PARENT | wx.DEFAULT_FRAME_STYLE)
                           style = wx.CAPTION|wx.CLOSE_BOX|wx.MINIMIZE_BOX|
-                           wx.DEFAULT_FRAME_STYLE|
+                           wx.MAXIMIZE_BOX|
+                           wx.RESIZE_BORDER|
                            wx.SYSTEM_MENU )
 
         empty = getattr(victim, "isEmpty", False)
