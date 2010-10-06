@@ -242,15 +242,13 @@ class ItemEffects (wx.Panel):
         self.SetSizer( mainSizer )
 
         self.effectList.InsertColumn(0,"Name")
-        self.effectList.InsertColumn(1,"Description")
-        self.effectList.InsertColumn(2,"Implemented")
+        self.effectList.InsertColumn(1,"Implemented")
         
-        self.effectList.SetColumnWidth(0,155)
+        self.effectList.SetColumnWidth(0,385)
         
-        self.effectList.SetColumnWidth(1,235)
-        self.effectList.setResizeColumn(1)
+        self.effectList.setResizeColumn(0)
         
-        self.effectList.SetColumnWidth(2,80)
+        self.effectList.SetColumnWidth(1,80)
 
         effects = item.effects
         names = list(effects.iterkeys())
@@ -258,12 +256,13 @@ class ItemEffects (wx.Panel):
 
         for name in names:
             index = self.effectList.InsertStringItem(sys.maxint, name)
-            self.effectList.SetStringItem(index, 1, str(effects[name].description))
+
             if effects[name].isImplemented:
                 implemented = "Yes"
             else:
                 implemented = "No"
-            self.effectList.SetStringItem(index, 2, implemented)
+
+            self.effectList.SetStringItem(index, 1, implemented)
 
         self.effectList.RefreshRows()
         self.Layout()
