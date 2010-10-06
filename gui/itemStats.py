@@ -62,7 +62,10 @@ class ItemStatsDialog(wx.Dialog):
         dlgsize = self.GetSize()
         psize = parent.GetSize()
         ppos = parent.GetPosition()
+        
         ItemStatsDialog.counter += 1
+        self.dlgOrder = ItemStatsDialog.counter
+        
         counter = ItemStatsDialog.counter
         dlgStep = 30
         if counter * dlgStep > ppos.x+psize.width-dlgsize.x or counter * dlgStep > ppos.y+psize.height-dlgsize.y:
@@ -77,6 +80,9 @@ class ItemStatsDialog(wx.Dialog):
         self.Bind(wx.EVT_CLOSE, self.closeEvent)
 
     def closeEvent(self, event):
+        
+        if self.dlgOrder==ItemStatsDialog.counter:
+            ItemStatsDialog.counter -= 1
         self.Destroy()
         event.Skip()
 
