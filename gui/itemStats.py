@@ -24,16 +24,15 @@ import bitmapLoader
 import sys
 import random
 
-dlgCounter = 0
-
 class ItemStatsDialog(wx.Dialog):
+    counter = 0
     def __init__(self, victim):
         wx.Dialog.__init__(self,
                           gui.mainFrame.MainFrame.getInstance(),
                           wx.ID_ANY, title="Item stats",
                           #style=wx.FRAME_FLOAT_ON_PARENT | wx.DEFAULT_FRAME_STYLE)
                           style = wx.CAPTION|wx.CLOSE_BOX|wx.MINIMIZE_BOX|wx.SYSTEM_MENU )
-        global dlgCounter
+
         empty = getattr(victim, "isEmpty", False)
         if empty:
             self.Hide()
@@ -62,16 +61,16 @@ class ItemStatsDialog(wx.Dialog):
         dlgsize = self.GetSize()
         psize = parent.GetSize()
         ppos = parent.GetPosition()
-        dlgCounter += 1
+        ItemStatsDialog.counter += 1
+        counter = ItemStatsDialog.counter
         dlgStep = 30
-        if dlgCounter*dlgStep > ppos.x+psize.width-dlgsize.x:
-            dlgCounter = 1
-        if dlgCounter*dlgStep > ppos.y+psize.height-dlgsize.y:
-            dlgCounter = 1            
-        dlgx = ppos.x + dlgCounter * dlgStep
-        dlgy = ppos.y + dlgCounter * dlgStep
+        if counter * dlgStep > ppos.x+psize.width-dlgsize.x or counter * dlgStep > ppos.y+psize.height-dlgsize.y:
+            ItemStatsDialog.counter = 1
+
+        dlgx = ppos.x + counter * dlgStep
+        dlgy = ppos.y + counter * dlgStep
         self.SetPosition((dlgx,dlgy))
-            
+
         self.Show()
 
         self.Bind(wx.EVT_CLOSE, self.closeEvent)
@@ -149,7 +148,7 @@ class ItemParams (wx.Panel):
             self.paramList.SetStringItem(index, 1, str(attrs[name]) if stuff is not None else str(attrs[name].value))
 
         self.Layout()
-     
+
 
 ###########################################################################
 ## Class ItemRequirements
