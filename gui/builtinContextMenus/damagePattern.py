@@ -13,19 +13,7 @@ class DamagePattern(ContextMenu):
     def getText(self, context, selection):
         return "%s stats" % context.capitalize()
 
-    def activate(self, context, selection):
-        if context == "ship":
-            fitID = self.mainFrame.getActiveFit()
-            cFit = service.Fit.getInstance()
-            stuff = cFit.getFit(fitID).ship
-        elif context == "ammo":
-            stuff = selection[0].charge
-        else:
-            stuff = selection[0]
-
-        if context == "module" and stuff.isEmpty:
-            return
-
-        dlg=ItemStatsDialog(stuff)
+    def activate(self, context, selection, i):
+        pass
 
 DamagePattern.register()

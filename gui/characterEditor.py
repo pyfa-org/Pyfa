@@ -25,6 +25,7 @@ import wx.gizmos
 from gui import bitmapLoader
 import service
 import gui.display as d
+from gui.contextMenu import ContextMenu
 import sys
 
 CharListUpdated, CHAR_LIST_UPDATED = wx.lib.newevent.NewEvent()
@@ -258,7 +259,9 @@ class SkillTreeView (wx.Panel):
         tree.Bind(wx.EVT_TREE_ITEM_EXPANDING, self.expandLookup)
         tree.Bind(wx.EVT_TREE_ITEM_RIGHT_CLICK, self.scheduleMenu)
 
-        self.levelChangeMenu = wx.Menu()
+        self.statsMenu = ContextMenu.getMenu(None, "skill")
+        self.levelChangeMenu = ContextMenu.getMenu(None, "skill") or wx.Menu()
+        self.levelChangeMenu.AppendSeparator()
         self.levelIds = {}
 
         idUnlearned = wx.NewId()
@@ -318,18 +321,26 @@ class SkillTreeView (wx.Panel):
 
         cChar = service.Character.getInstance()
         charID = self.Parent.Parent.getActiveCharacter()
+        cMarket = service.Market.getInstance()
         if cChar.getCharName(charID) not in ("All 0", "All 5"):
+            self.levelChangeMenu.selection = cMarket.getItem(self.skillTreeListCtrl.GetPyData(item))
             self.PopupMenu(self.levelChangeMenu)
+        else:
+            self.statsMenu.selection = cMarket.getItem(self.skillTreeListCtrl.GetPyData(item))
+            self.PopupMenu(self.statsMenu)
 
     def changeLevel(self, event):
-        cChar = service.Character.getInstance()
-        charID = self.Parent.Parent.getActiveCharacter()
-        selection = self.skillTreeListCtrl.GetSelection()
-        skillID = self.skillTreeListCtrl.GetPyData(selection)
-        level = self.levelIds[event.Id]
+        level = self.levelIds.get(event.Id)
+        if level:
+            cChar = service.Character.getInstance()
+            charID = self.Parent.Parent.getActiveCharacter()
+            selection = self.skillTreeListCtrl.GetSelection()
+            skillID = self.skillTreeListCtrl.GetPyData(selection)
 
-        self.skillTreeListCtrl.SetItemText(selection, "Level %d" % level if isinstance(level, int) else level, 1)
-        cChar.changeLevel(charID, skillID, level)
+            self.skillTreeListCtrl.SetItemText(selection, "Level %d" % level if isinstance(level, int) else level, 1)
+            cChar.changeLevel(charID, skillID, level)
+
+        event.Skip()
 
 
 class ImplantsTreeView (wx.Panel):
