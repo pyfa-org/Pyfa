@@ -194,13 +194,11 @@ class ItemRequirements ( wx.Panel ):
         wx.Panel.__init__ (self, parent, style = wx.TAB_TRAVERSAL)
 
         #itemId is set by the parent.
-
+        self.romanNb = ["0","I","II","III","IV","V","VI","VII","VIII","IX","X"]
+        self.skillIdHistory=[]
         mainSizer = wx.BoxSizer( wx.VERTICAL )
 
-        self.reqTree = wx.gizmos.TreeListCtrl(self, style = wx.TR_DEFAULT_STYLE | wx.TR_HIDE_ROOT | wx.NO_BORDER)
-        self.reqTree.AddColumn("Skill")
-        self.reqTree.AddColumn("Level")
-        self.reqTree.SetMainColumn(0)
+        self.reqTree = wx.TreeCtrl(self, style = wx.TR_DEFAULT_STYLE | wx.TR_HIDE_ROOT | wx.NO_BORDER)
 
         mainSizer.Add(self.reqTree, 1, wx.ALL|wx.EXPAND, 0)
 
@@ -211,16 +209,20 @@ class ItemRequirements ( wx.Panel ):
         self.imageList = wx.ImageList(16, 16)
         self.reqTree.SetImageList(self.imageList)
         skillBookId = self.imageList.Add(bitmapLoader.getBitmap("skill_small", "icons"))
-        child = self.reqTree.AppendItem(self.root,"Requirements", skillBookId)
-        for skill, level in item.requiredSkills.iteritems():
-            item = self.reqTree.AppendItem(child, skill.name, skillBookId)
-            self.reqTree.SetItemText(item, "%d" % level, 1)
 
-        self.reqTree.ExpandAll(self.root)
-        self.reqTree.SetColumnWidth(0, 420)
-        self.reqTree.SetColumnWidth(1, 45)
+        self.getFullSkillTree(item,self.root,skillBookId)
+        
+        self.reqTree.ExpandAll()
+
         self.Layout()
 
+    def getFullSkillTree(self,parentSkill,parent,sbIconId):
+        for skill, level in parentSkill.requiredSkills.iteritems():
+            child = self.reqTree.AppendItem(parent,"%s  %s" %(skill.name,self.romanNb[int(level)]), sbIconId)
+            if skill.ID not in self.skillIdHistory:
+                self.getFullSkillTree(skill,child,sbIconId)
+                self.skillIdHistory.append(skill.ID)
+       
 
 ###########################################################################
 ## Class ItemEffects
