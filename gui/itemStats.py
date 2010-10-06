@@ -34,7 +34,9 @@ class ItemStatsDialog(wx.Dialog):
                           gui.mainFrame.MainFrame.getInstance(),
                           wx.ID_ANY, title="Item stats",
                           #style=wx.FRAME_FLOAT_ON_PARENT | wx.DEFAULT_FRAME_STYLE)
-                          style = wx.CAPTION|wx.CLOSE_BOX|wx.MINIMIZE_BOX|wx.SYSTEM_MENU )
+                          style = wx.CAPTION|wx.CLOSE_BOX|wx.MINIMIZE_BOX|
+                           wx.DEFAULT_FRAME_STYLE|
+                           wx.SYSTEM_MENU )
 
         empty = getattr(victim, "isEmpty", False)
         if empty:
@@ -51,9 +53,9 @@ class ItemStatsDialog(wx.Dialog):
             self.SetIcon(wx.IconFromBitmap(bitmapLoader.getBitmap(item.icon.iconFile, "pack")))
         self.SetTitle("Stats: %s" % item.name)
 
-        self.SetMinSize((500, 300))
+        self.SetMinSize((300, 200))
         self.SetSize((500, 300))
-        self.SetMaxSize((500, 300))
+        self.SetMaxSize((500, -1))
         self.mainSizer = wx.BoxSizer(wx.VERTICAL)
         self.container = ItemStatsContainer(self, victim, item)
         self.mainSizer.Add(self.container, 1, wx.EXPAND)
@@ -164,7 +166,7 @@ class ItemParams (wx.Panel):
 
         self.paramList.InsertColumn(0,"Attribute")
         self.paramList.InsertColumn(1,"Value")
-        self.paramList.SetColumnWidth(1,200)
+        self.paramList.SetColumnWidth(1,100)
         self.paramList.setResizeColumn(1)
         attrs = stuff.itemModifiedAttributes if stuff is not None else item.attributes
         names = list(attrs.iterkeys())
