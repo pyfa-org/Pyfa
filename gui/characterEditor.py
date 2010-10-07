@@ -36,6 +36,9 @@ class CharacterEditor(wx.Frame):
         wx.Frame.__init__ (self, parent, id=wx.ID_ANY, title=u"pyfa: Character Editor", pos=wx.DefaultPosition,
                             size=wx.Size(641, 600), style=wx.DEFAULT_FRAME_STYLE|wx.FRAME_FLOAT_ON_PARENT|wx.TAB_TRAVERSAL)
 
+        i = wx.IconFromBitmap(bitmapLoader.getBitmap("character_small", "icons"))
+        self.SetIcon(i)
+
         self.disableWin=wx.WindowDisabler(self)
         self.SetSizeHintsSz(wx.Size(640, 600), wx.DefaultSize)
         self.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNFACE ) )
