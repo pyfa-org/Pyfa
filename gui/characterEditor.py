@@ -331,7 +331,7 @@ class SkillTreeView (wx.Panel):
 
     def changeLevel(self, event):
         level = self.levelIds.get(event.Id)
-        if level:
+        if level is not None:
             cChar = service.Character.getInstance()
             charID = self.Parent.Parent.getActiveCharacter()
             selection = self.skillTreeListCtrl.GetSelection()

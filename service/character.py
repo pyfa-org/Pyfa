@@ -103,7 +103,7 @@ class Character():
     def changeLevel(self, charID, skillID, level):
         char = eos.db.getCharacter(charID)
         skill = char.getSkill(skillID)
-        if level == "Unlearned":
+        if level == "Not Learned":
             skill.learned = False
         else:
             skill.level = level
