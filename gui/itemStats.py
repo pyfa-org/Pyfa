@@ -110,15 +110,20 @@ class ItemStatsContainer ( wx.Panel ):
         mainSizer.Add( self.nbContainer, 1, wx.EXPAND |wx.ALL, 2 )
 
         self.desc = ItemDescription(self.nbContainer, stuff, item)
-        self.params = ItemParams(self.nbContainer, stuff, item)
-        self.reqs = ItemRequirements(self.nbContainer, stuff, item)
-        self.effects = ItemEffects(self.nbContainer, stuff, item)
-        self.affectedby = ItemAffectedBy(self.nbContainer, stuff, item)
         self.nbContainer.AddPage(self.desc, "Description")
+
+        self.params = ItemParams(self.nbContainer, stuff, item)
         self.nbContainer.AddPage(self.params, "Attributes")
+
+        self.reqs = ItemRequirements(self.nbContainer, stuff, item)
         self.nbContainer.AddPage(self.reqs, "Requirements")
+
+        self.effects = ItemEffects(self.nbContainer, stuff, item)
         self.nbContainer.AddPage(self.effects, "Effects")
-        self.nbContainer.AddPage(self.affectedby, "Affected by")
+
+        if stuff is not None:
+            self.affectedby = ItemAffectedBy(self.nbContainer, stuff, item)
+            self.nbContainer.AddPage(self.affectedby, "Affected by")
 
         self.SetSizer(mainSizer)
         self.Layout()
