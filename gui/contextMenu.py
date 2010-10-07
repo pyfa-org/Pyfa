@@ -31,6 +31,7 @@ class ContextMenu(object):
         menu.info = {}
         menu.selection = selection
         empty = True
+        menu.Bind(wx.EVT_MENU, cls.handler)
         for i, context in enumerate(contexts):
             amount = 0
             for menuHandler in cls.menus:
@@ -46,7 +47,6 @@ class ContextMenu(object):
                         item = wx.MenuItem(menu, id, text)
                         menu.info[id] = (m, context, it)
 
-                    menu.Bind(wx.EVT_MENU, cls.handler)
                     bitmap = m.getBitmap(context, selection)
                     if bitmap:
                         item.SetBitmap(bitmap)

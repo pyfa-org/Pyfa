@@ -72,10 +72,10 @@ class ItemStatsDialog(wx.Dialog):
         dlgsize = self.GetSize()
         psize = parent.GetSize()
         ppos = parent.GetPosition()
-        
+
         ItemStatsDialog.counter += 1
         self.dlgOrder = ItemStatsDialog.counter
-        
+
         counter = ItemStatsDialog.counter
         dlgStep = 30
         if counter * dlgStep > ppos.x+psize.width-dlgsize.x or counter * dlgStep > ppos.y+psize.height-dlgsize.y:
@@ -90,7 +90,7 @@ class ItemStatsDialog(wx.Dialog):
         self.Bind(wx.EVT_CLOSE, self.closeEvent)
 
     def closeEvent(self, event):
-        
+
         if self.dlgOrder==ItemStatsDialog.counter:
             ItemStatsDialog.counter -= 1
         self.Destroy()
@@ -218,7 +218,7 @@ class ItemRequirements ( wx.Panel ):
         skillBookId = self.imageList.Add(bitmapLoader.getBitmap("skill_small", "icons"))
 
         self.getFullSkillTree(item,self.root,skillBookId)
-        
+
         self.reqTree.ExpandAll()
 
         self.Layout()
@@ -229,7 +229,7 @@ class ItemRequirements ( wx.Panel ):
             if skill.ID not in self.skillIdHistory:
                 self.getFullSkillTree(skill,child,sbIconId)
                 self.skillIdHistory.append(skill.ID)
-       
+
 
 ###########################################################################
 ## Class ItemEffects
@@ -250,11 +250,11 @@ class ItemEffects (wx.Panel):
 
         self.effectList.InsertColumn(0,"Name")
         self.effectList.InsertColumn(1,"Implemented")
-        
+
         self.effectList.SetColumnWidth(0,385)
-        
+
         self.effectList.setResizeColumn(0)
-        
+
         self.effectList.SetColumnWidth(1,80)
 
         effects = item.effects
@@ -279,24 +279,20 @@ class ItemEffects (wx.Panel):
 ## Class ItemAffectedBy
 ###########################################################################
 
-        
+
 class ItemAffectedBy (wx.Panel):
     def __init__(self, parent, stuff, item):
         wx.Panel.__init__ (self, parent)
-        mainSizer = wx.BoxSizer( wx.VERTICAL )
-
-        self.effectList = AutoListCtrl(self, wx.ID_ANY,
-                                     style =
-                                       #wx.LC_HRULES |
-                                      #wx.LC_NO_HEADER |
-                                      wx.LC_REPORT |wx.LC_SINGLE_SEL |
-                                      #wx.LC_VRULES |
-                                      wx.NO_BORDER)
-        mainSizer.Add( self.effectList, 1, wx.ALL|wx.EXPAND, 0 )
-        self.SetSizer( mainSizer )
+        mainSizer = wx.BoxSizer(wx.VERTICAL)
+        self.effectList = AutoListCtrl(self, wx.ID_ANY, style = wx.LC_REPORT | wx.LC_SINGLE_SEL | wx.NO_BORDER)
+        mainSizer.Add(self.effectList, 1, wx.ALL|wx.EXPAND, 0)
+        self.SetSizer(mainSizer)
 
         self.effectList.InsertColumn(0,"Name")
         self.effectList.setResizeColumn(0)
+
+        print stuff.itemModifiedAttributes._ModifiedAttributeDict__affectedBy
+
         effects = item.effects
         names = list(effects.iterkeys())
         names.sort()
