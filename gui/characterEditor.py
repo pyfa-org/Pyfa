@@ -268,7 +268,7 @@ class SkillTreeView (wx.Panel):
         self.levelIds = {}
 
         idUnlearned = wx.NewId()
-        self.levelIds[idUnlearned] = "Not Learned"
+        self.levelIds[idUnlearned] = "Not learned"
         self.levelChangeMenu.Append(idUnlearned, "Unlearn")
 
         for level in xrange(6):
