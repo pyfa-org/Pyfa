@@ -314,7 +314,8 @@ class MarketBrowser(wx.Panel):
             itemId = self.itemView.GetItemData(sel)
             sel = self.itemView.GetNextSelected(sel)
             selection.append(cMarket.getItem(itemId))
-
+        if len(selection) == 0:
+            return
         menu = ContextMenu.getMenu(selection, "item")
         self.PopupMenu(menu)
 
