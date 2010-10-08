@@ -195,22 +195,29 @@ class ItemParams (wx.Panel):
         
         self.toggleViewBtn = wx.ToggleButton( self, wx.ID_ANY, u"Toggle view mode", wx.DefaultPosition, wx.DefaultSize, 0 )
         bSizer.Add( self.toggleViewBtn, 0, wx.ALIGN_CENTER_VERTICAL)
+        self.refreshBtn = wx.Button( self, wx.ID_ANY, u"Refresh", wx.DefaultPosition, wx.DefaultSize, 0 )
+	bSizer.Add( self.refreshBtn, 0, wx.ALIGN_CENTER_VERTICAL)
 
         mainSizer.Add( bSizer, 0, wx.ALIGN_RIGHT)
 
         self.PopulateList()
+        self.refreshBtn.Bind( wx.EVT_BUTTON, self.RefreshValues )
         self.toggleViewBtn.Bind(wx.EVT_TOGGLEBUTTON,self.ToggleViewMode)
 
-    def ToggleViewMode(self,event):
-        self.toggleView *=-1
-
+    def UpdateList(self):
         self.Freeze()
         self.paramList.ClearAll()
         self.PopulateList()
         self.Thaw()
-       
         self.paramList.resizeLastColumn(100)
-        
+
+    def RefreshValues(self, event):
+        self.UpdateList()        
+        event.Skip()
+
+    def ToggleViewMode(self, event):
+        self.toggleView *=-1
+        self.UpdateList()
         event.Skip()
 
     def PopulateList(self):
