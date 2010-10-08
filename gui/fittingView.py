@@ -42,7 +42,11 @@ class FittingView(d.Display):
         d.Display.__init__(self, parent)
         self.mainFrame.Bind(FIT_CHANGED, self.fitChanged)
         self.Bind(wx.EVT_LEFT_DCLICK, self.removeItem)
-        self.Bind(wx.EVT_RIGHT_DOWN, self.scheduleMenu)
+        if "__WXGTK__" in  wx.PlatformInfo:
+            self.Bind(wx.EVT_RIGHT_UP, self.scheduleMenu)
+        else:
+            self.Bind(wx.EVT_RIGHT_DOWN, self.scheduleMenu)
+            
         self.activeFitID = None
 
     #Gets called from the fitMultiSwitch when it decides its time

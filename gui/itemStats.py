@@ -295,9 +295,7 @@ class ItemAffectedBy (wx.Panel):
 
         self.effectList.InsertColumn(0,"Name")
         self.effectList.setResizeColumn(0)
-
-        print stuff.itemModifiedAttributes._ModifiedAttributeDict__affectedBy
-
+       
         effects = item.effects
         names = list(effects.iterkeys())
         names.sort()

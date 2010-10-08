@@ -125,9 +125,9 @@ class MainFrame(wx.Frame):
         wx.AboutBox(info)
 
     def showCharacterEditor(self, event):
-        dlg=CharacterEditor(None)
-        dlg.ShowModal()
-        dlg.Destroy()
+        dlg=CharacterEditor(self)
+        dlg.Show()
+
         cFit = service.Fit.getInstance()
         cFit.clearFit(self.getActiveFit())
         wx.PostEvent(self, fv.FitChanged(fitID=self.getActiveFit()))

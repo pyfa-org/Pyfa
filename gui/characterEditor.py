@@ -31,13 +31,18 @@ import sys
 CharListUpdated, CHAR_LIST_UPDATED = wx.lib.newevent.NewEvent()
 CharChanged, CHAR_CHANGED = wx.lib.newevent.NewEvent()
 
-class CharacterEditor(wx.Dialog):
+class CharacterEditor(wx.Frame):
     def __init__(self, parent):
-        wx.Dialog.__init__ (self, parent, id=wx.ID_ANY, title=u"pyfa: Character Editor", pos=wx.DefaultPosition,
-                            size=wx.Size(641, 600), style=wx.CAPTION | wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER)
+        wx.Frame.__init__ (self, parent, id=wx.ID_ANY, title=u"pyfa: Character Editor", pos=wx.DefaultPosition,
+                            size=wx.Size(641, 600), style=wx.DEFAULT_FRAME_STYLE|wx.FRAME_FLOAT_ON_PARENT|wx.TAB_TRAVERSAL)
 
+        i = wx.IconFromBitmap(bitmapLoader.getBitmap("character_small", "icons"))
+        self.SetIcon(i)
+
+        self.disableWin=wx.WindowDisabler(self)
         self.SetSizeHintsSz(wx.Size(640, 600), wx.DefaultSize)
-
+        self.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNFACE ) )
+        
         mainSizer = wx.BoxSizer(wx.VERTICAL)
         self.navSizer = wx.BoxSizer(wx.HORIZONTAL)
 
@@ -120,6 +125,7 @@ class CharacterEditor(wx.Dialog):
 
     def editingFinished(self, event):
         wx.PostEvent(self.mainFrame, CharListUpdated())
+        self.Destroy()
         event.Skip()
 
     def registerEvents(self):
@@ -265,7 +271,7 @@ class SkillTreeView (wx.Panel):
         self.levelIds = {}
 
         idUnlearned = wx.NewId()
-        self.levelIds[idUnlearned] = "Not Learned"
+        self.levelIds[idUnlearned] = "Not learned"
         self.levelChangeMenu.Append(idUnlearned, "Unlearn")
 
         for level in xrange(6):

@@ -30,8 +30,7 @@ if __name__ == "__main__":
     if not os.path.exists(config.homePath):
         os.mkdir(config.homePath)
 
-    if not os.path.exists(config.saveddata):
-        eos.db.saveddata_meta.create_all()
+    eos.db.saveddata_meta.create_all()
 
     pyfa = wx.App(False)
     MainFrame()
