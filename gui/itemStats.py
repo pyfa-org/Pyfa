@@ -385,10 +385,51 @@ class ItemAffectedBy (wx.Panel):
     ORDER = [Ship, Module, Drone, Implant, Booster, Skill]
     def __init__(self, parent, stuff, item):
         wx.Panel.__init__ (self, parent)
+        self.stuff = stuff
+        self.item = item
+        self.toggleView = 1
         mainSizer = wx.BoxSizer(wx.VERTICAL)
         self.affectedBy = wx.TreeCtrl(self, style = wx.TR_DEFAULT_STYLE | wx.TR_HIDE_ROOT | wx.NO_BORDER)
         mainSizer.Add(self.affectedBy, 1, wx.ALL|wx.EXPAND, 0)
 
+        self.m_staticline = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
+
+        mainSizer.Add( self.m_staticline, 0, wx.EXPAND)
+        bSizer = wx.BoxSizer( wx.HORIZONTAL )
+
+        self.totalAttrsLabel = wx.StaticText( self, wx.ID_ANY, u" ", wx.DefaultPosition, wx.DefaultSize, 0 )
+        bSizer.Add( self.totalAttrsLabel, 0, wx.ALIGN_CENTER_VERTICAL|wx.RIGHT)
+
+        self.toggleViewBtn = wx.ToggleButton( self, wx.ID_ANY, u"Toggle view mode", wx.DefaultPosition, wx.DefaultSize, 0 )
+        bSizer.Add( self.toggleViewBtn, 0, wx.ALIGN_CENTER_VERTICAL)
+
+        if stuff is not None:
+            self.refreshBtn = wx.Button( self, wx.ID_ANY, u"Refresh", wx.DefaultPosition, wx.DefaultSize, 0 )
+            bSizer.Add( self.refreshBtn, 0, wx.ALIGN_CENTER_VERTICAL)
+            self.refreshBtn.Bind( wx.EVT_BUTTON, self.RefreshTree )
+
+        self.toggleViewBtn.Bind(wx.EVT_TOGGLEBUTTON,self.ToggleViewMode)
+        mainSizer.Add( bSizer, 0, wx.ALIGN_RIGHT)
+        self.SetSizer(mainSizer)
+        self.PopulateTree()
+        self.Layout()
+
+    def UpdateTree(self):
+        self.Freeze()
+        self.affectedBy.DeleteAllItems()
+        self.PopulateTree()
+        self.Thaw()
+
+    def RefreshTree(self, event):
+        self.UpdateTree()
+        event.Skip()
+
+    def ToggleViewMode(self, event):
+        self.toggleView *=-1
+        self.UpdateTree()
+        event.Skip()
+
+    def PopulateTree(self):
         root = self.affectedBy.AddRoot("WINPWNZ0R")
         self.affectedBy.SetPyData(root, None)
 
@@ -396,7 +437,7 @@ class ItemAffectedBy (wx.Panel):
         self.affectedBy.SetImageList(self.imageList)
 
 
-        cont = stuff.itemModifiedAttributes if item == stuff.item else stuff.chargeModifiedAttributes
+        cont = self.stuff.itemModifiedAttributes if self.item == self.stuff.item else self.stuff.chargeModifiedAttributes
         things = {}
         for attrName in cont.iterAfflictions():
             for fit, afflictors in cont.getAfflictions(attrName).iteritems():
@@ -425,11 +466,11 @@ class ItemAffectedBy (wx.Panel):
                 itemIcon = -1
 
             child = self.affectedBy.AppendItem(root, "%s" % itemName if counter == 1 else "%s x %d" % (itemName,counter), itemIcon)
-#            self.effectList.SetItemBackgroundColour(index, color)
+
             if counter > 0:
                 for attrName in attrNames:
-                    attrInfo = stuff.item.attributes.get(attrName)
-                    displayName = attrInfo.displayName if attrInfo else ""
+                    attrInfo = self.stuff.item.attributes.get(attrName)
+                    displayName = (attrInfo.displayName if self.toggleView ==1 else attrInfo.name) if attrInfo else ""
 
                     if attrInfo:
                         if attrInfo.icon is not None:
@@ -443,22 +484,3 @@ class ItemAffectedBy (wx.Panel):
 
                     self.affectedBy.AppendItem(child, "%s" % (displayName if displayName != "" else attrName), attrIcon)
 
-        self.m_staticline = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
-
-        mainSizer.Add( self.m_staticline, 0, wx.EXPAND)
-        bSizer = wx.BoxSizer( wx.HORIZONTAL )
-
-        self.totalAttrsLabel = wx.StaticText( self, wx.ID_ANY, u" ", wx.DefaultPosition, wx.DefaultSize, 0 )
-        bSizer.Add( self.totalAttrsLabel, 0, wx.ALIGN_CENTER_VERTICAL|wx.RIGHT)
-
-        self.toggleViewBtn = wx.ToggleButton( self, wx.ID_ANY, u"Toggle view mode", wx.DefaultPosition, wx.DefaultSize, 0 )
-        bSizer.Add( self.toggleViewBtn, 0, wx.ALIGN_CENTER_VERTICAL)
-
-        if stuff is not None:
-            self.refreshBtn = wx.Button( self, wx.ID_ANY, u"Refresh", wx.DefaultPosition, wx.DefaultSize, 0 )
-            bSizer.Add( self.refreshBtn, 0, wx.ALIGN_CENTER_VERTICAL)
-#            self.refreshBtn.Bind( wx.EVT_BUTTON, self.RefreshValues )
-
-        mainSizer.Add( bSizer, 0, wx.ALIGN_RIGHT)
-        self.SetSizer(mainSizer)
-        self.Layout()
