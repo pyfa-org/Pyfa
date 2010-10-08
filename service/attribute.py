@@ -29,5 +29,5 @@ class Attribute():
         return cls.instance
 
     def getAttributeInfo(self, attributeName):
-        info = eos.db.getAttributeInfo(attributeName)
+        info = eos.db.getAttributeInfo(attributeName, eager=("icon", "unit"))
         return info

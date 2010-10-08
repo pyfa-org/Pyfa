@@ -24,8 +24,7 @@ import bitmapLoader
 import sys
 import  wx.lib.mixins.listctrl  as  listmix
 import wx.html
-from eos.types import Unit
-import service 
+import service
 
 
 from util import formatAmount
@@ -188,7 +187,7 @@ class ItemParams (wx.Panel):
         self.stuff = stuff
         self.item = item
         self.PopulateList()
-        
+
     def ToggleViewMode(self,event):
         self.toggleView *=-1
         self.paramList.ClearAll()
@@ -196,64 +195,62 @@ class ItemParams (wx.Panel):
         self.PopulateList()
 
         event.Skip()
-        
+
     def PopulateList(self):
         self.paramList.InsertColumn(0,"Attribute")
         self.paramList.InsertColumn(1,"Value")
         self.paramList.SetColumnWidth(1,100)
         self.paramList.setResizeColumn(1)
         attrs = self.stuff.itemModifiedAttributes if self.stuff is not None else self.item.attributes
+        attrsInfo = self.item.attributes if self.stuff is None else self.stuff.item.attributes
 
         names = list(attrs.iterkeys())
         names.sort()
 
         idNameMap = {}
         idCount = 0
-        cAttribute = service.Attribute.getInstance()
+        print self.toggleView
         for name in names:
-            if self.stuff is not None:
-                cattr=cAttribute.getAttributeInfo(name)
-            if self.toggleView ==1:
-                attrName = name if self.stuff is not None else attrs[name].name
+            info = attrsInfo.get(name)
+            value = getattr(attrs[name], "value", None) or attrs[name]
+            if self.toggleView != 1:
+                attrName = name
             else:
-                attrName = cattr.displayName if self.stuff is not None else attrs[name].displayName
+                attrName = info.displayName if info else name
 
             index = self.paramList.InsertStringItem(sys.maxint, attrName)
             idNameMap[idCount] = attrName
-            self.paramList.SetItemData(index, idCount) 
+            self.paramList.SetItemData(index, idCount)
             idCount += 1
-            if self.stuff is None:
-                if attrs[name].info.unit:
-                    valueUnit = self.TranslateValueUnit(attrs[name].value, attrs[name].info.unit.displayName, attrs[name].info.unit.name)
-                else:
-                    valueUnit = formatAmount(attrs[name].value, 3, 0, 0)
+
+            if self.toggleView != 1:
+                valueUnit = str(value)
+            elif info and info.unit:
+                valueUnit = self.TranslateValueUnit(value, info.unit.displayName, info.unit.name)
             else:
-                if cattr.unit:
-                    valueUnit = self.TranslateValueUnit(attrs[name],
-                                                        cattr.unit.displayName,
-                                                        cattr.unit.name) if self.toggleView !=1 else "%s %s" % (attrs[name],cattr.unit.displayName)
-                else:
-                    valueUnit = formatAmount(attrs[name], 3, 0, 0)
+                valueUnit = formatAmount(value, 3, 0, 0)
+
             self.paramList.SetStringItem(index, 1, valueUnit)
-                                         
-            
+
+
+
         self.paramList.SortItems(lambda id1, id2: cmp(idNameMap[id1], idNameMap[id2]))
         self.paramList.RefreshRows()
         self.Layout()
 
-    def TranslateValueUnit(self, value, unitName, unitDisplayName):   
-        trans = (("Inverse Absolute Percent", lambda: (1-value)*100,unitName ),
-                 ("Milliseconds", lambda: value/1000,unitName ),
-                 ("Volume", lambda: value,u"m\u00B3"),
-                 ("Sizeclass", lambda: value, ""),
-                 ("typeID",lambda: value,"")
-                 )
+    def TranslateValueUnit(self, value, unitName, unitDisplayName):
+        trans = {"Inverse Absolute Percent": (lambda: (1-value)*100, unitName),
+                 "Milliseconds": (lambda: value / 1000.0, unitName),
+                 "Volume": (lambda: value, u"m\u00B3"),
+                 "Sizeclass": (lambda: value, ""),
+                 "typeID": (lambda: value, "")}
 
-        for unitd,tvalue,unitn in trans:
-            if unitd == unitDisplayName:
-                return "%s %s" % (formatAmount(tvalue(), 3, 0, 0),unitn)
-        return "%s %s" % (formatAmount(value, 3, 0),unitName)
-    
+        override = trans.get(unitDisplayName)
+        if override is not None:
+            return "%s %s" % (formatAmount(override[0](), 3, 0, 0), override[1])
+        else:
+            return "%s %s" % (formatAmount(value, 3, 0),unitName)
+
 ###########################################################################
 ## Class ItemRequirements
 ###########################################################################
@@ -353,7 +350,7 @@ class ItemAffectedBy (wx.Panel):
 
         self.effectList.InsertColumn(0,"Name")
         self.effectList.setResizeColumn(0)
-       
+
         effects = item.effects
         names = list(effects.iterkeys())
         names.sort()
