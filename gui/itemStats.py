@@ -18,15 +18,12 @@
 #===============================================================================
 
 import wx
-import wx.gizmos
 import gui.mainFrame
 import bitmapLoader
 import sys
 import  wx.lib.mixins.listctrl  as  listmix
 import wx.html
-import service
-
-
+from eos.types import Ship, Module, Skill, Booster, Implant, Drone
 from util import formatAmount
 
 class ItemStatsDialog(wx.Dialog):
@@ -385,6 +382,7 @@ class ItemEffects (wx.Panel):
 
 
 class ItemAffectedBy (wx.Panel):
+    ORDER = [Ship, Module, Drone, Implant, Booster, Skill]
     def __init__(self, parent, stuff, item):
         wx.Panel.__init__ (self, parent)
         mainSizer = wx.BoxSizer(wx.VERTICAL)
@@ -404,24 +402,24 @@ class ItemAffectedBy (wx.Panel):
             for fit, afflictors in cont.getAfflictions(attrName).iteritems():
                 for afflictor in afflictors:
                     if afflictor.item.name not in things:
-                        things[afflictor.item.name] = [set(), set()]
+                        things[afflictor.item.name] = [type(afflictor), set(), set()]
 
                     info = things[afflictor.item.name]
-                    info[0].add(afflictor)
-                    info[1].add(attrName)
+                    info[1].add(afflictor)
+                    info[2].add(attrName)
 
-        for itemName, info in things.iteritems():
-#            if wx.Platform in ['__WXGTK__', '__WXMSW__']:
-#                color = wx.SystemSettings_GetColour(wx.SYS_COLOUR_3DLIGHT)
-#            else:
-#                color = wx.Colour(237, 243, 254)
+        order = things.keys()
+        order.sort(key=lambda x: (self.ORDER.index(things[x][0]), x))
+        for itemName in order:
+            info = things[itemName]
 
-            afflictors, attrNames = info
+            afflictorType, afflictors, attrNames = info
             counter = len(afflictors)
 
             baseAfflictor = afflictors.pop()
-            print baseAfflictor
-            if baseAfflictor.item.icon:
+            if afflictorType == Ship:
+                itemIcon = self.imageList.Add(bitmapLoader.getBitmap("ship_small", "icons"))
+            elif baseAfflictor.item.icon:
                 itemIcon = self.imageList.Add(bitmapLoader.getBitmap(baseAfflictor.item.icon.iconFile, "pack"))
             else:
                 itemIcon = -1
