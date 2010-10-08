@@ -31,7 +31,7 @@ from util import formatAmount
 
 class ItemStatsDialog(wx.Dialog):
     counter = 0
-    def __init__(self, victim):
+    def __init__(self, victim, context = None):
         wx.Dialog.__init__(self,
                           gui.mainFrame.MainFrame.getInstance(),
                           wx.ID_ANY, title="Item stats",
@@ -52,19 +52,19 @@ class ItemStatsDialog(wx.Dialog):
         if item is None:
             item = victim
             victim = None
-
+        self.context = context
         if item.icon is not None:
             before,sep,after = item.icon.iconFile.rpartition("_")
             iconFile = "%s%s%s" % (before,sep,"0%s" % after if len(after) < 2 else after)
 
             self.SetIcon(wx.IconFromBitmap(bitmapLoader.getBitmap(iconFile, "pack")))
-        self.SetTitle("Stats: %s" % item.name)
+        self.SetTitle("%s: %s" % ("%s stats" % context.capitalize() if context is not None else "Stats", item.name))
 
         self.SetMinSize((300, 200))
         self.SetSize((500, 300))
         self.SetMaxSize((500, -1))
         self.mainSizer = wx.BoxSizer(wx.VERTICAL)
-        self.container = ItemStatsContainer(self, victim, item)
+        self.container = ItemStatsContainer(self, victim, item, context)
         self.mainSizer.Add(self.container, 1, wx.EXPAND)
         self.SetSizer(self.mainSizer)
 
@@ -103,7 +103,7 @@ class ItemStatsDialog(wx.Dialog):
 
 class ItemStatsContainer ( wx.Panel ):
 
-    def __init__( self, parent, stuff, item):
+    def __init__( self, parent, stuff, item, context = None):
         wx.Panel.__init__ ( self, parent )
         mainSizer = wx.BoxSizer( wx.VERTICAL )
 
@@ -113,7 +113,7 @@ class ItemStatsContainer ( wx.Panel ):
         self.desc = ItemDescription(self.nbContainer, stuff, item)
         self.nbContainer.AddPage(self.desc, "Description")
 
-        self.params = ItemParams(self.nbContainer, stuff, item)
+        self.params = ItemParams(self.nbContainer, stuff, item, context)
         self.nbContainer.AddPage(self.params, "Attributes")
 
         self.reqs = ItemRequirements(self.nbContainer, stuff, item)
@@ -171,7 +171,7 @@ class ItemDescription ( wx.Panel ):
 ###########################################################################
 
 class ItemParams (wx.Panel):
-    def __init__(self, parent, stuff, item):
+    def __init__(self, parent, stuff, item, context = None): 
         wx.Panel.__init__ (self, parent)
         mainSizer = wx.BoxSizer( wx.VERTICAL )
 
@@ -195,13 +195,15 @@ class ItemParams (wx.Panel):
         
         self.toggleViewBtn = wx.ToggleButton( self, wx.ID_ANY, u"Toggle view mode", wx.DefaultPosition, wx.DefaultSize, 0 )
         bSizer.Add( self.toggleViewBtn, 0, wx.ALIGN_CENTER_VERTICAL)
-        self.refreshBtn = wx.Button( self, wx.ID_ANY, u"Refresh", wx.DefaultPosition, wx.DefaultSize, 0 )
-	bSizer.Add( self.refreshBtn, 0, wx.ALIGN_CENTER_VERTICAL)
-
+        if context in ("ship","module"):
+            self.refreshBtn = wx.Button( self, wx.ID_ANY, u"Refresh", wx.DefaultPosition, wx.DefaultSize, 0 )
+            bSizer.Add( self.refreshBtn, 0, wx.ALIGN_CENTER_VERTICAL)
+            self.refreshBtn.Bind( wx.EVT_BUTTON, self.RefreshValues )
+            
         mainSizer.Add( bSizer, 0, wx.ALIGN_RIGHT)
 
         self.PopulateList()
-        self.refreshBtn.Bind( wx.EVT_BUTTON, self.RefreshValues )
+
         self.toggleViewBtn.Bind(wx.EVT_TOGGLEBUTTON,self.ToggleViewMode)
 
     def UpdateList(self):

@@ -26,6 +26,6 @@ class ItemStats(ContextMenu):
         if context == "module" and stuff.isEmpty:
             return
 
-        dlg=ItemStatsDialog(stuff)
+        dlg=ItemStatsDialog(stuff, context)
 
 ItemStats.register()
