@@ -203,11 +203,14 @@ class ItemParams (wx.Panel):
 
     def ToggleViewMode(self,event):
         self.toggleView *=-1
+
         self.Freeze()
         self.paramList.ClearAll()
-
         self.PopulateList()
         self.Thaw()
+       
+        self.paramList.resizeLastColumn(100)
+        
         event.Skip()
 
     def PopulateList(self):
@@ -225,7 +228,9 @@ class ItemParams (wx.Panel):
         idCount = 0
         for name in names:
             info = attrsInfo.get(name)
-            value = getattr(attrs[name], "value", None) or attrs[name]
+
+            value = attrs[name] if self.stuff is not None else attrs[name].value
+
             if self.toggleView != 1:
                 attrName = name
             else:
@@ -242,7 +247,7 @@ class ItemParams (wx.Panel):
                 valueUnit = self.TranslateValueUnit(value, info.unit.displayName, info.unit.name)
             else:
                 valueUnit = formatAmount(value, 3, 0, 0)
-
+                
             self.paramList.SetStringItem(index, 1, valueUnit)
 
 
