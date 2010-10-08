@@ -144,6 +144,17 @@ class AutoListCtrl(wx.ListCtrl, listmix.ListCtrlAutoWidthMixin, listmix.ListRowH
         listmix.ListCtrlAutoWidthMixin.__init__(self)
         listmix.ListRowHighlighter.__init__(self)
 
+###########################################################################
+## Class AutoListCtrl
+###########################################################################
+
+class AutoListCtrlNoHighlight(wx.ListCtrl, listmix.ListCtrlAutoWidthMixin, listmix.ListRowHighlighter):
+
+    def __init__(self, parent, ID, pos=wx.DefaultPosition,
+                 size=wx.DefaultSize, style=0):
+        wx.ListCtrl.__init__(self, parent, ID, pos, size, style)
+        listmix.ListCtrlAutoWidthMixin.__init__(self)
+
 
 ###########################################################################
 ## Class ItemDescription
@@ -377,7 +388,7 @@ class ItemAffectedBy (wx.Panel):
     def __init__(self, parent, stuff, item):
         wx.Panel.__init__ (self, parent)
         mainSizer = wx.BoxSizer(wx.VERTICAL)
-        self.effectList = AutoListCtrl(self, wx.ID_ANY, style = wx.LC_REPORT | wx.LC_SINGLE_SEL | wx.NO_BORDER | wx.LC_NO_HEADER)
+        self.effectList = AutoListCtrlNoHighlight(self, wx.ID_ANY, style = wx.LC_REPORT | wx.LC_SINGLE_SEL | wx.NO_BORDER | wx.LC_NO_HEADER)
         mainSizer.Add(self.effectList, 1, wx.ALL|wx.EXPAND, 0)
         self.SetSizer(mainSizer)
 
@@ -389,6 +400,7 @@ class ItemAffectedBy (wx.Panel):
             cont = stuff.chargeModifiedAttributes
 
         things = {}
+        pthings = []
         for attrName in cont.iterAfflictions():
             for fit, afflictors in cont.getAfflictions(attrName).iteritems():
                 for afflictor in afflictors:
@@ -397,8 +409,26 @@ class ItemAffectedBy (wx.Panel):
 
                     things[afflictor].add(attrName)
 
-        for thing, attrs in things.iteritems():
-            self.effectList.InsertStringItem(sys.maxint, "%s: %s" % (thing.item.name, ', '.join(attrs)))
+        for thing,attr in things.iteritems():
+            if thing.item.name not in pthings:
+                pthings.append(thing.item.name)
 
-        self.effectList.RefreshRows()
+
+        for cat in pthings:
+            if wx.Platform in ['__WXGTK__', '__WXMSW__']:
+                color = wx.SystemSettings_GetColour(wx.SYS_COLOUR_3DLIGHT)
+            else:
+                color = wx.Colour(237, 243, 254)
+
+            index = self.effectList.InsertStringItem(sys.maxint, "%s  - affects attribute" % cat)
+            counter = 0
+            self.effectList.SetItemBackgroundColour(index, color)
+
+            for thing, attrs in things.iteritems():
+                if cat == thing.item.name:
+                    counter += 1
+                    dattrs = attrs
+            if counter > 0:
+                self.effectList.InsertStringItem(sys.maxint, "        %s %s" % ("".join(dattrs), "" if counter == 1 else "x %d" % counter))
+            self.effectList.InsertStringItem(sys.maxint, "")
         self.Layout()
