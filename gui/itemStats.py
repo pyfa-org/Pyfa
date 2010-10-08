@@ -481,5 +481,11 @@ class ItemAffectedBy (wx.Panel):
                     else:
                         attrIcon = self.imageList.Add(bitmapLoader.getBitmap("07_15", "pack"))
 
-                    self.affectedBy.AppendItem(child, "%s %s%.2f" % ((displayName if displayName != "" else attrName), attrModifier, attrAmount), attrIcon)
+                    if attrModifier == "s*":
+                        attrModifier = "*"
+                        penalized = "(penalized)"
+                    else:
+                        penalized = ""
+
+                    self.affectedBy.AppendItem(child, "%s %s%.2f %s" % ((displayName if displayName != "" else attrName), attrModifier, attrAmount, penalized), attrIcon)
 
