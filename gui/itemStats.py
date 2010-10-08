@@ -389,7 +389,6 @@ class ItemAffectedBy (wx.Panel):
             cont = stuff.chargeModifiedAttributes
 
         things = {}
-        pThings=[]
         for attrName in cont.iterAfflictions():
             for fit, afflictors in cont.getAfflictions(attrName).iteritems():
                 for afflictor in afflictors:
@@ -397,10 +396,6 @@ class ItemAffectedBy (wx.Panel):
                         things[afflictor] = set()
 
                     things[afflictor].add(attrName)
-
-        for thing in things.iteritems():
-            if thing not in pThings:
-                pThings.append(thing)
 
         for thing, attrs in things.iteritems():
             self.effectList.InsertStringItem(sys.maxint, "%s: %s" % (thing.item.name, ', '.join(attrs)))
