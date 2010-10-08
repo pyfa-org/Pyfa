@@ -391,46 +391,35 @@ class ItemAffectedBy (wx.Panel):
         self.effectList = AutoListCtrlNoHighlight(self, wx.ID_ANY, style = wx.LC_REPORT | wx.LC_SINGLE_SEL | wx.NO_BORDER | wx.LC_NO_HEADER)
         mainSizer.Add(self.effectList, 1, wx.ALL|wx.EXPAND, 0)
         self.SetSizer(mainSizer)
-
         self.effectList.InsertColumn(0,"Name")
 
-        if item == stuff.item:
-            cont = stuff.itemModifiedAttributes
-        else:
-            cont = stuff.chargeModifiedAttributes
-
+        cont = stuff.itemModifiedAttributes if item == stuff.item else stuff.chargeModifiedAttributes
         things = {}
-        pthings = []
         for attrName in cont.iterAfflictions():
             for fit, afflictors in cont.getAfflictions(attrName).iteritems():
                 for afflictor in afflictors:
                     if afflictor not in things:
-                        things[afflictor] = set()
+                        things[afflictor.item.name] = [afflictor, 0, set()]
 
-                    things[afflictor].add(attrName)
-
-        for thing,attr in things.iteritems():
-            if thing.item.name not in pthings:
-                pthings.append(thing.item.name)
+                    info = things[afflictor.item.name]
+                    info[1] += 1
+                    info[2].add(attrName)
 
 
-        for cat in pthings:
+        for itemName, info in things.iteritems():
             if wx.Platform in ['__WXGTK__', '__WXMSW__']:
                 color = wx.SystemSettings_GetColour(wx.SYS_COLOUR_3DLIGHT)
             else:
                 color = wx.Colour(237, 243, 254)
 
-            counter = 0
-
-            for thing, attrs in things.iteritems():
-                if cat == thing.item.name:
-                    counter += 1
-                    dattrs = attrs
-
-            index = self.effectList.InsertStringItem(sys.maxint, "%s" % cat if counter == 1 else "%s x %d" % (cat,counter))
+            afflictor, counter, attrNames = info
+            index = self.effectList.InsertStringItem(sys.maxint, "%s" % itemName if counter == 1 else "%s x %d" % (itemName,counter))
             self.effectList.SetItemBackgroundColour(index, color)
             if counter > 0:
-                for cattr in dattrs:
-                    self.effectList.InsertStringItem(sys.maxint, "        %s" % cattr)
-#            self.effectList.InsertStringItem(sys.maxint, "")
+                for attrName in attrNames:
+                    attrInfo = stuff.item.attributes.get(attrName)
+                    displayName = attrInfo.displayName if attrInfo else ""
+
+                    self.effectList.InsertStringItem(sys.maxint, "        %s" % (displayName if displayName != "" else attrName))
+
         self.Layout()
