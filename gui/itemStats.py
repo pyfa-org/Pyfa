@@ -183,17 +183,31 @@ class ItemParams (wx.Panel):
         self.SetSizer( mainSizer )
 
         self.toggleView = 1
-        self.paramList.Bind(wx.EVT_MIDDLE_DOWN,self.ToggleViewMode)
         self.stuff = stuff
         self.item = item
+
+        self.m_staticline = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
+	mainSizer.Add( self.m_staticline, 0, wx.EXPAND)        
+        bSizer = wx.BoxSizer( wx.HORIZONTAL )
+        
+        self.totalAttrsLabel = wx.StaticText( self, wx.ID_ANY, u" ", wx.DefaultPosition, wx.DefaultSize, 0 )
+        bSizer.Add( self.totalAttrsLabel, 0, wx.ALIGN_CENTER_VERTICAL|wx.RIGHT)
+        
+        self.toggleViewBtn = wx.ToggleButton( self, wx.ID_ANY, u"Toggle view mode", wx.DefaultPosition, wx.DefaultSize, 0 )
+        bSizer.Add( self.toggleViewBtn, 0, wx.ALIGN_CENTER_VERTICAL)
+
+        mainSizer.Add( bSizer, 0, wx.ALIGN_RIGHT)
+
         self.PopulateList()
+        self.toggleViewBtn.Bind(wx.EVT_TOGGLEBUTTON,self.ToggleViewMode)
 
     def ToggleViewMode(self,event):
         self.toggleView *=-1
+        self.Freeze()
         self.paramList.ClearAll()
 
         self.PopulateList()
-
+        self.Thaw()
         event.Skip()
 
     def PopulateList(self):
@@ -209,7 +223,6 @@ class ItemParams (wx.Panel):
 
         idNameMap = {}
         idCount = 0
-        print self.toggleView
         for name in names:
             info = attrsInfo.get(name)
             value = getattr(attrs[name], "value", None) or attrs[name]
@@ -236,6 +249,7 @@ class ItemParams (wx.Panel):
 
         self.paramList.SortItems(lambda id1, id2: cmp(idNameMap[id1], idNameMap[id2]))
         self.paramList.RefreshRows()
+        self.totalAttrsLabel.SetLabel("%d attributes. " %idCount)
         self.Layout()
 
     def TranslateValueUnit(self, value, unitName, unitDisplayName):
