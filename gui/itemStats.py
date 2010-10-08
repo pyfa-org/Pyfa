@@ -461,5 +461,4 @@ class ItemAffectedBy (wx.Panel):
 
         mainSizer.Add( bSizer, 0, wx.ALIGN_RIGHT)
         self.SetSizer(mainSizer)
-        self.affectedBy.ExpandAll()
         self.Layout()
