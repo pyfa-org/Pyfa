@@ -11,7 +11,8 @@ class DamagePattern(ContextMenu):
         return context in ("resistancesViewFull",)
 
     def getText(self, context, selection):
-        return "%s stats" % context.capitalize()
+        sDP = service.DamagePattern.getInstance()
+        return map(lambda p: p.name, sDP.getDamagePatternList())
 
     def activate(self, context, selection, i):
         pass

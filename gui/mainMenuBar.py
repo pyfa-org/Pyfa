@@ -23,6 +23,7 @@ import bitmapLoader
 class MainMenuBar(wx.MenuBar):
     def __init__(self):
         self.characterEditorId = wx.NewId()
+        self.damagePatternEditorId = wx.NewId()
 
         wx.MenuBar.__init__(self)
 
@@ -46,12 +47,15 @@ class MainMenuBar(wx.MenuBar):
         fitMenu.Append(wx.ID_SAVEAS, "&Export", "Export the fit to another format.")
 
         # Character menu
-        charMenu = wx.Menu()
-        self.Append(charMenu, "&Character")
+        windowMenu = wx.Menu()
+        self.Append(windowMenu, "&Windows")
 
-        charEditItem = wx.MenuItem(charMenu, self.characterEditorId, "Character &Editor\tCTRL+E")
+        charEditItem = wx.MenuItem(windowMenu, self.characterEditorId, "&Character Editor\tCTRL+E")
         charEditItem.SetBitmap(bitmapLoader.getBitmap("character_small", "icons"))
-        charMenu.AppendItem(charEditItem)
+        windowMenu.AppendItem(charEditItem)
+
+        damagePatternEditItem = wx.MenuItem(windowMenu, self.damagePatternEditorId, "Damage Pattern Editor\tCTRL+D")
+        windowMenu.AppendItem(damagePatternEditItem)
 
         # Help menu
         helpMenu = wx.Menu()
