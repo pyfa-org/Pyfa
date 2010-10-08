@@ -236,6 +236,8 @@ class ItemParams (wx.Panel):
         self.paramList.InsertColumn(1,"Value")
         self.paramList.SetColumnWidth(1,100)
         self.paramList.setResizeColumn(1)
+        self.imageList = wx.ImageList(16, 16)
+        self.paramList.SetImageList(self.imageList,wx.IMAGE_LIST_SMALL)
         if self.stuff is None or self.stuff.item == self.item:
             attrs = self.stuff.itemModifiedAttributes if self.stuff is not None else self.item.attributes
             attrsInfo = self.item.attributes if self.stuff is None else self.stuff.item.attributes
@@ -258,7 +260,17 @@ class ItemParams (wx.Panel):
             else:
                 attrName = info.displayName if info else name
 
-            index = self.paramList.InsertStringItem(sys.maxint, attrName)
+            if info:
+                if info.icon is not None:
+                    iconFile = info.icon.iconFile
+                    attrIcon = self.imageList.Add(bitmapLoader.getBitmap(iconFile, "pack"))
+                else:
+                    attrIcon = self.imageList.Add(bitmapLoader.getBitmap("07_15", "pack"))
+            else:
+                attrIcon = self.imageList.Add(bitmapLoader.getBitmap("07_15", "pack"))
+
+
+            index = self.paramList.InsertImageStringItem(sys.maxint, attrName,attrIcon)
             idNameMap[idCount] = attrName
             self.paramList.SetItemData(index, idCount)
             idCount += 1
@@ -269,6 +281,7 @@ class ItemParams (wx.Panel):
                 valueUnit = self.TranslateValueUnit(value, info.unit.displayName, info.unit.name)
             else:
                 valueUnit = formatAmount(value, 3, 0, 0)
+
 
             self.paramList.SetStringItem(index, 1, valueUnit)
 
