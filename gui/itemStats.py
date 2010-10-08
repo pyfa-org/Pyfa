@@ -399,13 +399,11 @@ class ItemAffectedBy (wx.Panel):
             for fit, afflictors in cont.getAfflictions(attrName).iteritems():
                 for afflictor in afflictors:
                     if afflictor.item.name not in things:
-                        things[afflictor.item.name] = [afflictor, 1, set()]
+                        things[afflictor.item.name] = [set(), set()]
 
                     info = things[afflictor.item.name]
-                    if info[0] != afflictor:
-                        info[1] += 1
-
-                    info[2].add(attrName)
+                    info[0].add(afflictor)
+                    info[1].add(attrName)
 
         for itemName, info in things.iteritems():
             if wx.Platform in ['__WXGTK__', '__WXMSW__']:
@@ -413,7 +411,8 @@ class ItemAffectedBy (wx.Panel):
             else:
                 color = wx.Colour(237, 243, 254)
 
-            afflictor, counter, attrNames = info
+            afflictors, attrNames = info
+            counter = len(afflictors)
             index = self.effectList.InsertStringItem(sys.maxint, "%s" % itemName if counter == 1 else "%s x %d" % (itemName,counter))
             self.effectList.SetItemBackgroundColour(index, color)
             if counter > 0:
