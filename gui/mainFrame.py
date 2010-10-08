@@ -78,7 +78,7 @@ class MainFrame(wx.Frame):
         fittingSizer.Add(self.additionsPane, 0, wx.EXPAND)
 
         self.statsCharPickerSizer = wx.BoxSizer(wx.VERTICAL)
-        self.statsSizer.Add(self.statsCharPickerSizer, 0, wx.EXPAND)
+        self.statsSizer.Add(self.statsCharPickerSizer, 0, wx.EXPAND | wx.TOP | wx.RIGHT | wx.LEFT, 3)
 
         self.charSelection = CharacterSelection(statsFitviewPanel)
         self.statsCharPickerSizer.Add(self.charSelection, 0, wx.EXPAND)
