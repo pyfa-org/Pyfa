@@ -409,7 +409,7 @@ class ItemAffectedBy (wx.Panel):
                     info = things[afflictor.item.name]
                     info[0].add(afflictor)
                     info[1].add(attrName)
-        itemIcon = self.imageList.Add(bitmapLoader.getBitmap("skill_small", "icons"))
+
         for itemName, info in things.iteritems():
 #            if wx.Platform in ['__WXGTK__', '__WXMSW__']:
 #                color = wx.SystemSettings_GetColour(wx.SYS_COLOUR_3DLIGHT)
@@ -419,6 +419,12 @@ class ItemAffectedBy (wx.Panel):
             afflictors, attrNames = info
             counter = len(afflictors)
 
+            baseAfflictor = afflictors.pop()
+            print baseAfflictor
+            if baseAfflictor.item.icon:
+                itemIcon = self.imageList.Add(bitmapLoader.getBitmap(baseAfflictor.item.icon.iconFile, "pack"))
+            else:
+                itemIcon = -1
 
             child = self.affectedBy.AppendItem(root, "%s" % itemName if counter == 1 else "%s x %d" % (itemName,counter), itemIcon)
 #            self.effectList.SetItemBackgroundColour(index, color)
