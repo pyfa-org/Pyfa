@@ -24,6 +24,8 @@ import bitmapLoader
 import sys
 import  wx.lib.mixins.listctrl  as  listmix
 import wx.html
+from eos.types import Unit
+import service 
 
 
 from util import formatAmount
@@ -181,21 +183,77 @@ class ItemParams (wx.Panel):
         mainSizer.Add( self.paramList, 1, wx.ALL|wx.EXPAND, 0 )
         self.SetSizer( mainSizer )
 
+        self.toggleView = 1
+        self.paramList.Bind(wx.EVT_MIDDLE_DOWN,self.ToggleViewMode)
+        self.stuff = stuff
+        self.item = item
+        self.PopulateList()
+        
+    def ToggleViewMode(self,event):
+        self.toggleView *=-1
+        self.paramList.ClearAll()
+
+        self.PopulateList()
+
+        event.Skip()
+        
+    def PopulateList(self):
         self.paramList.InsertColumn(0,"Attribute")
         self.paramList.InsertColumn(1,"Value")
         self.paramList.SetColumnWidth(1,100)
         self.paramList.setResizeColumn(1)
-        attrs = stuff.itemModifiedAttributes if stuff is not None else item.attributes
+        attrs = self.stuff.itemModifiedAttributes if self.stuff is not None else self.item.attributes
+
         names = list(attrs.iterkeys())
         names.sort()
 
+        idNameMap = {}
+        idCount = 0
+        cAttribute = service.Attribute.getInstance()
         for name in names:
-            index = self.paramList.InsertStringItem(sys.maxint, name)
-            self.paramList.SetStringItem(index, 1, str(formatAmount(attrs[name], 3, 0, 0)) if stuff is not None else str(formatAmount(attrs[name].value, 3, 0, 0)))
+            if self.stuff is not None:
+                cattr=cAttribute.getAttributeInfo(name)
+            if self.toggleView ==1:
+                attrName = name if self.stuff is not None else attrs[name].name
+            else:
+                attrName = cattr.displayName if self.stuff is not None else attrs[name].displayName
+
+            index = self.paramList.InsertStringItem(sys.maxint, attrName)
+            idNameMap[idCount] = attrName
+            self.paramList.SetItemData(index, idCount) 
+            idCount += 1
+            if self.stuff is None:
+                if attrs[name].info.unit:
+                    valueUnit = self.TranslateValueUnit(attrs[name].value, attrs[name].info.unit.displayName, attrs[name].info.unit.name)
+                else:
+                    valueUnit = formatAmount(attrs[name].value, 3, 0, 0)
+            else:
+                if cattr.unit:
+                    valueUnit = self.TranslateValueUnit(attrs[name],
+                                                        cattr.unit.displayName,
+                                                        cattr.unit.name) if self.toggleView !=1 else "%s %s" % (attrs[name],cattr.unit.displayName)
+                else:
+                    valueUnit = formatAmount(attrs[name], 3, 0, 0)
+            self.paramList.SetStringItem(index, 1, valueUnit)
+                                         
+            
+        self.paramList.SortItems(lambda id1, id2: cmp(idNameMap[id1], idNameMap[id2]))
         self.paramList.RefreshRows()
         self.Layout()
 
+    def TranslateValueUnit(self, value, unitName, unitDisplayName):   
+        trans = (("Inverse Absolute Percent", lambda: (1-value)*100,unitName ),
+                 ("Milliseconds", lambda: value/1000,unitName ),
+                 ("Volume", lambda: value,u"m\u00B3"),
+                 ("Sizeclass", lambda: value, ""),
+                 ("typeID",lambda: value,"")
+                 )
 
+        for unitd,tvalue,unitn in trans:
+            if unitd == unitDisplayName:
+                return "%s %s" % (formatAmount(tvalue(), 3, 0, 0),unitn)
+        return "%s %s" % (formatAmount(value, 3, 0),unitName)
+    
 ###########################################################################
 ## Class ItemRequirements
 ###########################################################################
