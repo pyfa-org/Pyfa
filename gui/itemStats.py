@@ -420,16 +420,17 @@ class ItemAffectedBy (wx.Panel):
             else:
                 color = wx.Colour(237, 243, 254)
 
-            index = self.effectList.InsertStringItem(sys.maxint, "%s" % cat)
             counter = 0
-            self.effectList.SetItemBackgroundColour(index, color)
 
             for thing, attrs in things.iteritems():
                 if cat == thing.item.name:
                     counter += 1
                     dattrs = attrs
+
+            index = self.effectList.InsertStringItem(sys.maxint, "%s" % cat if counter == 1 else "%s x %d" % (cat,counter))
+            self.effectList.SetItemBackgroundColour(index, color)
             if counter > 0:
                 for cattr in dattrs:
-                    self.effectList.InsertStringItem(sys.maxint, "        %s %s" % (cattr, "" if counter == 1 else "x %d" % counter))
+                    self.effectList.InsertStringItem(sys.maxint, "        %s" % cattr)
 #            self.effectList.InsertStringItem(sys.maxint, "")
         self.Layout()
