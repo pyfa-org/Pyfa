@@ -398,13 +398,14 @@ class ItemAffectedBy (wx.Panel):
         for attrName in cont.iterAfflictions():
             for fit, afflictors in cont.getAfflictions(attrName).iteritems():
                 for afflictor in afflictors:
-                    if afflictor not in things:
-                        things[afflictor.item.name] = [afflictor, 0, set()]
+                    if afflictor.item.name not in things:
+                        things[afflictor.item.name] = [afflictor, 1, set()]
 
                     info = things[afflictor.item.name]
-                    info[1] += 1
-                    info[2].add(attrName)
+                    if info[0] != afflictor:
+                        info[1] += 1
 
+                    info[2].add(attrName)
 
         for itemName, info in things.iteritems():
             if wx.Platform in ['__WXGTK__', '__WXMSW__']:
