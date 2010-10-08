@@ -441,20 +441,20 @@ class ItemAffectedBy (wx.Panel):
         things = {}
         for attrName in cont.iterAfflictions():
             for fit, afflictors in cont.getAfflictions(attrName).iteritems():
-                for afflictor in afflictors:
+                for afflictor, modifier, amount in afflictors:
                     if afflictor.item.name not in things:
                         things[afflictor.item.name] = [type(afflictor), set(), set()]
 
                     info = things[afflictor.item.name]
                     info[1].add(afflictor)
-                    info[2].add(attrName)
+                    info[2].add((attrName, modifier, amount))
 
         order = things.keys()
         order.sort(key=lambda x: (self.ORDER.index(things[x][0]), x))
         for itemName in order:
             info = things[itemName]
 
-            afflictorType, afflictors, attrNames = info
+            afflictorType, afflictors, attrData = info
             counter = len(afflictors)
 
             baseAfflictor = afflictors.pop()
@@ -468,7 +468,7 @@ class ItemAffectedBy (wx.Panel):
             child = self.affectedBy.AppendItem(root, "%s" % itemName if counter == 1 else "%s x %d" % (itemName,counter), itemIcon)
 
             if counter > 0:
-                for attrName in attrNames:
+                for attrName, attrModifier, attrAmount in attrData:
                     attrInfo = self.stuff.item.attributes.get(attrName)
                     displayName = (attrInfo.displayName if self.toggleView ==1 else attrInfo.name) if attrInfo else ""
 
@@ -481,6 +481,5 @@ class ItemAffectedBy (wx.Panel):
                     else:
                         attrIcon = self.imageList.Add(bitmapLoader.getBitmap("07_15", "pack"))
 
-
-                    self.affectedBy.AppendItem(child, "%s" % (displayName if displayName != "" else attrName), attrIcon)
+                    self.affectedBy.AppendItem(child, "%s %s%.2f" % ((displayName if displayName != "" else attrName), attrModifier, attrAmount), attrIcon)
 
