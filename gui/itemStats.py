@@ -388,10 +388,15 @@ class ItemAffectedBy (wx.Panel):
     def __init__(self, parent, stuff, item):
         wx.Panel.__init__ (self, parent)
         mainSizer = wx.BoxSizer(wx.VERTICAL)
-        self.effectList = AutoListCtrlNoHighlight(self, wx.ID_ANY, style = wx.LC_REPORT | wx.LC_SINGLE_SEL | wx.NO_BORDER | wx.LC_NO_HEADER)
-        mainSizer.Add(self.effectList, 1, wx.ALL|wx.EXPAND, 0)
-        self.SetSizer(mainSizer)
-        self.effectList.InsertColumn(0,"Name")
+        self.affectedBy = wx.TreeCtrl(self, style = wx.TR_DEFAULT_STYLE | wx.TR_HIDE_ROOT | wx.NO_BORDER)
+        mainSizer.Add(self.affectedBy, 1, wx.ALL|wx.EXPAND, 0)
+
+        root = self.affectedBy.AddRoot("WINPWNZ0R")
+        self.affectedBy.SetPyData(root, None)
+
+        self.imageList = wx.ImageList(16, 16)
+        self.affectedBy.SetImageList(self.imageList)
+
 
         cont = stuff.itemModifiedAttributes if item == stuff.item else stuff.chargeModifiedAttributes
         things = {}
@@ -404,22 +409,42 @@ class ItemAffectedBy (wx.Panel):
                     info = things[afflictor.item.name]
                     info[0].add(afflictor)
                     info[1].add(attrName)
-
+        itemIcon = self.imageList.Add(bitmapLoader.getBitmap("skill_small", "icons"))
         for itemName, info in things.iteritems():
-            if wx.Platform in ['__WXGTK__', '__WXMSW__']:
-                color = wx.SystemSettings_GetColour(wx.SYS_COLOUR_3DLIGHT)
-            else:
-                color = wx.Colour(237, 243, 254)
+#            if wx.Platform in ['__WXGTK__', '__WXMSW__']:
+#                color = wx.SystemSettings_GetColour(wx.SYS_COLOUR_3DLIGHT)
+#            else:
+#                color = wx.Colour(237, 243, 254)
 
             afflictors, attrNames = info
             counter = len(afflictors)
-            index = self.effectList.InsertStringItem(sys.maxint, "%s" % itemName if counter == 1 else "%s x %d" % (itemName,counter))
-            self.effectList.SetItemBackgroundColour(index, color)
+
+
+            child = self.affectedBy.AppendItem(root, "%s" % itemName if counter == 1 else "%s x %d" % (itemName,counter), itemIcon)
+#            self.effectList.SetItemBackgroundColour(index, color)
             if counter > 0:
                 for attrName in attrNames:
                     attrInfo = stuff.item.attributes.get(attrName)
                     displayName = attrInfo.displayName if attrInfo else ""
 
-                    self.effectList.InsertStringItem(sys.maxint, "        %s" % (displayName if displayName != "" else attrName))
+                    self.affectedBy.AppendItem(child, "%s" % (displayName if displayName != "" else attrName), -1)
 
+        self.m_staticline = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
+
+        mainSizer.Add( self.m_staticline, 0, wx.EXPAND)
+        bSizer = wx.BoxSizer( wx.HORIZONTAL )
+
+        self.totalAttrsLabel = wx.StaticText( self, wx.ID_ANY, u" ", wx.DefaultPosition, wx.DefaultSize, 0 )
+        bSizer.Add( self.totalAttrsLabel, 0, wx.ALIGN_CENTER_VERTICAL|wx.RIGHT)
+
+        self.toggleViewBtn = wx.ToggleButton( self, wx.ID_ANY, u"Toggle view mode", wx.DefaultPosition, wx.DefaultSize, 0 )
+        bSizer.Add( self.toggleViewBtn, 0, wx.ALIGN_CENTER_VERTICAL)
+
+        if stuff is not None:
+            self.refreshBtn = wx.Button( self, wx.ID_ANY, u"Refresh", wx.DefaultPosition, wx.DefaultSize, 0 )
+            bSizer.Add( self.refreshBtn, 0, wx.ALIGN_CENTER_VERTICAL)
+#            self.refreshBtn.Bind( wx.EVT_BUTTON, self.RefreshValues )
+
+        mainSizer.Add( bSizer, 0, wx.ALIGN_RIGHT)
+        self.SetSizer(mainSizer)
         self.Layout()
