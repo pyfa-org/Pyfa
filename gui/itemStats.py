@@ -187,16 +187,16 @@ class ItemParams (wx.Panel):
         self.item = item
 
         self.m_staticline = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
-	mainSizer.Add( self.m_staticline, 0, wx.EXPAND)        
+        mainSizer.Add( self.m_staticline, 0, wx.EXPAND)
         bSizer = wx.BoxSizer( wx.HORIZONTAL )
-        
+
         self.totalAttrsLabel = wx.StaticText( self, wx.ID_ANY, u" ", wx.DefaultPosition, wx.DefaultSize, 0 )
         bSizer.Add( self.totalAttrsLabel, 0, wx.ALIGN_CENTER_VERTICAL|wx.RIGHT)
-        
+
         self.toggleViewBtn = wx.ToggleButton( self, wx.ID_ANY, u"Toggle view mode", wx.DefaultPosition, wx.DefaultSize, 0 )
         bSizer.Add( self.toggleViewBtn, 0, wx.ALIGN_CENTER_VERTICAL)
         self.refreshBtn = wx.Button( self, wx.ID_ANY, u"Refresh", wx.DefaultPosition, wx.DefaultSize, 0 )
-	bSizer.Add( self.refreshBtn, 0, wx.ALIGN_CENTER_VERTICAL)
+        bSizer.Add( self.refreshBtn, 0, wx.ALIGN_CENTER_VERTICAL)
 
         mainSizer.Add( bSizer, 0, wx.ALIGN_RIGHT)
 
@@ -212,7 +212,7 @@ class ItemParams (wx.Panel):
         self.paramList.resizeLastColumn(100)
 
     def RefreshValues(self, event):
-        self.UpdateList()        
+        self.UpdateList()
         event.Skip()
 
     def ToggleViewMode(self, event):
@@ -254,7 +254,7 @@ class ItemParams (wx.Panel):
                 valueUnit = self.TranslateValueUnit(value, info.unit.displayName, info.unit.name)
             else:
                 valueUnit = formatAmount(value, 3, 0, 0)
-                
+
             self.paramList.SetStringItem(index, 1, valueUnit)
 
 
@@ -370,19 +370,24 @@ class ItemAffectedBy (wx.Panel):
     def __init__(self, parent, stuff, item):
         wx.Panel.__init__ (self, parent)
         mainSizer = wx.BoxSizer(wx.VERTICAL)
-        self.effectList = AutoListCtrl(self, wx.ID_ANY, style = wx.LC_REPORT | wx.LC_SINGLE_SEL | wx.NO_BORDER)
+        self.effectList = AutoListCtrl(self, wx.ID_ANY, style = wx.LC_REPORT | wx.LC_SINGLE_SEL | wx.NO_BORDER | wx.LC_NO_HEADER)
         mainSizer.Add(self.effectList, 1, wx.ALL|wx.EXPAND, 0)
         self.SetSizer(mainSizer)
 
         self.effectList.InsertColumn(0,"Name")
-        self.effectList.setResizeColumn(0)
 
-        effects = item.effects
-        names = list(effects.iterkeys())
-        names.sort()
+        cont = stuff.itemModifiedAttributes
+        things = {}
+        for attrName in cont.iterAfflictions():
+            for fit, afflictors in cont.getAfflictions(attrName).iteritems():
+                for afflictor in afflictors:
+                    if afflictor not in things:
+                        things[afflictor] = set()
 
-        for name in names:
-            index = self.effectList.InsertStringItem(sys.maxint, name)
+                    things[afflictor].add(attrName)
+
+        for thing, attrs in things.iteritems():
+            self.effectList.InsertStringItem(sys.maxint, "%s: %s" % (thing.item.name, ', '.join(attrs)))
 
         self.effectList.RefreshRows()
         self.Layout()
