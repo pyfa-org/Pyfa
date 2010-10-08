@@ -48,7 +48,7 @@ class ItemStatsDialog(wx.Dialog):
             self.Destroy()
             return
 
-        item = getattr(victim, "item", None)
+        item = getattr(victim, "item", None) if context != "ammo" else getattr(victim, "charge", None)
         if item is None:
             item = victim
             victim = None
@@ -196,7 +196,7 @@ class ItemParams (wx.Panel):
         self.toggleViewBtn = wx.ToggleButton( self, wx.ID_ANY, u"Toggle view mode", wx.DefaultPosition, wx.DefaultSize, 0 )
         bSizer.Add( self.toggleViewBtn, 0, wx.ALIGN_CENTER_VERTICAL)
 
-        if context in ("ship","module"):
+        if stuff is not None:
             self.refreshBtn = wx.Button( self, wx.ID_ANY, u"Refresh", wx.DefaultPosition, wx.DefaultSize, 0 )
             bSizer.Add( self.refreshBtn, 0, wx.ALIGN_CENTER_VERTICAL)
             self.refreshBtn.Bind( wx.EVT_BUTTON, self.RefreshValues )
@@ -228,8 +228,12 @@ class ItemParams (wx.Panel):
         self.paramList.InsertColumn(1,"Value")
         self.paramList.SetColumnWidth(1,100)
         self.paramList.setResizeColumn(1)
-        attrs = self.stuff.itemModifiedAttributes if self.stuff is not None else self.item.attributes
-        attrsInfo = self.item.attributes if self.stuff is None else self.stuff.item.attributes
+        if self.stuff is None or self.stuff.item == self.item:
+            attrs = self.stuff.itemModifiedAttributes if self.stuff is not None else self.item.attributes
+            attrsInfo = self.item.attributes if self.stuff is None else self.stuff.item.attributes
+        else:
+            attrs = self.stuff.chargeModifiedAttributes if self.stuff is not None else self.item.attributes
+            attrsInfo = self.item.attributes if self.stuff is None else self.stuff.charge.attributes
 
         names = list(attrs.iterkeys())
         names.sort()
@@ -379,7 +383,11 @@ class ItemAffectedBy (wx.Panel):
 
         self.effectList.InsertColumn(0,"Name")
 
-        cont = stuff.itemModifiedAttributes
+        if item == stuff.item:
+            cont = stuff.itemModifiedAttributes
+        else:
+            cont = stuff.chargeModifiedAttributes
+
         things = {}
         for attrName in cont.iterAfflictions():
             for fit, afflictors in cont.getAfflictions(attrName).iteritems():

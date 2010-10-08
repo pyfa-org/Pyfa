@@ -18,8 +18,6 @@ class ItemStats(ContextMenu):
             fitID = self.mainFrame.getActiveFit()
             cFit = service.Fit.getInstance()
             stuff = cFit.getFit(fitID).ship
-        elif context == "ammo":
-            stuff = selection[0].charge
         else:
             stuff = selection[0]
 
