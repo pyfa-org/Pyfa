@@ -431,7 +431,17 @@ class ItemAffectedBy (wx.Panel):
                     attrInfo = stuff.item.attributes.get(attrName)
                     displayName = attrInfo.displayName if attrInfo else ""
 
-                    self.affectedBy.AppendItem(child, "%s" % (displayName if displayName != "" else attrName), -1)
+                    if attrInfo:
+                        if attrInfo.icon is not None:
+                            iconFile = attrInfo.icon.iconFile
+                            attrIcon = self.imageList.Add(bitmapLoader.getBitmap(iconFile, "pack"))
+                        else:
+                            attrIcon = self.imageList.Add(bitmapLoader.getBitmap("07_15", "pack"))
+                    else:
+                        attrIcon = self.imageList.Add(bitmapLoader.getBitmap("07_15", "pack"))
+
+
+                    self.affectedBy.AppendItem(child, "%s" % (displayName if displayName != "" else attrName), attrIcon)
 
         self.m_staticline = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
 
@@ -451,4 +461,5 @@ class ItemAffectedBy (wx.Panel):
 
         mainSizer.Add( bSizer, 0, wx.ALIGN_RIGHT)
         self.SetSizer(mainSizer)
+        self.affectedBy.ExpandAll()
         self.Layout()
