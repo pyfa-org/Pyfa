@@ -66,7 +66,7 @@ class PyGauge(wx.PyWindow):
         self.SetBackgroundColour(wx.Colour(51,51,51))
         self._tooltip = wx.ToolTip("")
         self.SetToolTip(self._tooltip)
-        self._tooltip.SetTip("0/100")
+        self._tooltip.SetTip("0/0")
 
         self.Bind(wx.EVT_PAINT, self.OnPaint)
         self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBackground)
@@ -155,7 +155,7 @@ class PyGauge(wx.PyWindow):
         self._animStep = 0
         self._timer.Start(self._period)
 
-    def SetRange(self, range):
+    def SetRange(self, range, reinit = False):
         """
         Sets the range of the gauge. The gauge length is its
         value as a proportion of the range.
@@ -168,17 +168,20 @@ class PyGauge(wx.PyWindow):
 
         range = float(range)
 
-        if range <= 0:
-            self._range = 1
+        if reinit is False:
+            self._oldPercentage = self._percentage
+            self._percentage = (self._value/self._range) * 100
         else:
-            self._range = range
-
-        self._oldPercentage = self._percentage
-        self._percentage = (self._value/self._range) * 100
-
+            self._oldPercentage = self._percentage
+            self._percentage = 0
+            self._value = 0
         self.Animate()
 
-        self._tooltip.SetTip("%.2f/%.2f" % (self._value, self._range))
+        if range <= 0:
+            self._range = 0.01
+        else:
+            self._range = range
+        self._tooltip.SetTip("%.2f/%.2f" % (self._value, self._range if self._range >0.01 else 0))
 
 
     def GetValue(self):
@@ -321,15 +324,15 @@ class PyGauge(wx.PyWindow):
 
         if ((t) < (1/2.75)):
             return c*(7.5625*t*t) + b
-	else:
+        else:
             if (t < (2/2.75)):
                 t-=(1.5/2.75)
-		return c*(7.5625*t*t + .75) + b
-	    else:
+                return c*(7.5625*t*t + .75) + b
+            else:
                 if (t < (2.5/2.75)):
                     t-=(2.25/2.75)
-		    return c*(7.5625*(t)*t + .9375) + b
-		else:
+                    return c*(7.5625*(t)*t + .9375) + b
+                else:
                     t-=(2.625/2.75)
                     return c*(7.5625*(t)*t + .984375) + b
 
