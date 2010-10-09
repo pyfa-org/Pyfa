@@ -27,7 +27,7 @@ from wx.lib.intctrl import IntCtrl
 class DmgPatternEditorDlg ( wx.Dialog ):
 
     def __init__( self, parent ):
-        wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Damage Pattern Editor", pos = wx.DefaultPosition, size = wx.Size( 300,240 ), style = wx.DEFAULT_DIALOG_STYLE )
+        wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Damage Pattern Editor", pos = wx.DefaultPosition, size = wx.Size( 350,240 ), style = wx.DEFAULT_DIALOG_STYLE )
 
         self.SetSizeHintsSz( wx.DefaultSize, wx.DefaultSize )
 
@@ -81,10 +81,6 @@ class DmgPatternEditorDlg ( wx.Dialog ):
         self.editEM = IntCtrl( self, wx.ID_ANY, 0, wx.DefaultPosition, defSize, wx.TE_RIGHT )
         dmgeditSizer.Add( self.editEM, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
-#        self.stEM = wx.StaticText( self, wx.ID_ANY, u"0%", wx.DefaultPosition, wx.DefaultSize, 0 )
-#        self.stEM.Wrap( -1 )
-#        dmgeditSizer.Add( self.stEM, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
-
         self.bmpEM = wx.StaticBitmap( self, wx.ID_ANY, self.embitmap, wx.DefaultPosition, wx.DefaultSize, 0 )
         dmgeditSizer.Add( self.bmpEM, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
@@ -94,17 +90,8 @@ class DmgPatternEditorDlg ( wx.Dialog ):
         self.editTHERM = IntCtrl( self, wx.ID_ANY, 0, wx.DefaultPosition, defSize, 0,  )
         dmgeditSizer.Add( self.editTHERM, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
-#        self.stTHERM = wx.StaticText( self, wx.ID_ANY, u"0%", wx.DefaultPosition, wx.DefaultSize, 0 )
-#        self.stTHERM.Wrap( -1 )
-#        dmgeditSizer.Add( self.stTHERM, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
-
-
         self.editKIN = IntCtrl( self, wx.ID_ANY, 0, wx.DefaultPosition, defSize, wx.TE_RIGHT )
         dmgeditSizer.Add( self.editKIN, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
-
-#        self.stKIN = wx.StaticText( self, wx.ID_ANY, u"0%", wx.DefaultPosition, wx.DefaultSize, 0 )
-#        self.stKIN.Wrap( -1 )
-#        dmgeditSizer.Add( self.stKIN, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
         self.bmpKIN = wx.StaticBitmap( self, wx.ID_ANY, self.kinbitmap, wx.DefaultPosition, wx.DefaultSize, 0 )
         dmgeditSizer.Add( self.bmpKIN, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL, 5 )
@@ -115,10 +102,6 @@ class DmgPatternEditorDlg ( wx.Dialog ):
         self.editEXP = IntCtrl( self, wx.ID_ANY, 0, wx.DefaultPosition, defSize, 0 )
         dmgeditSizer.Add( self.editEXP, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
-#        self.stEXP = wx.StaticText( self, wx.ID_ANY, u"0%", wx.DefaultPosition, wx.DefaultSize, 0 )
-#        self.stEXP.Wrap( -1 )
-#        dmgeditSizer.Add( self.stEXP, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
-
         contentSizer.Add( dmgeditSizer, 1, wx.EXPAND|wx.ALL, 5 )
         self.slfooter = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
         contentSizer.Add( self.slfooter, 0, wx.EXPAND|wx.TOP, 5 )
@@ -127,19 +110,19 @@ class DmgPatternEditorDlg ( wx.Dialog ):
 
         perSizer = wx.BoxSizer( wx.VERTICAL )
 
-        self.stPercentages = wx.StaticText( self, wx.ID_ANY, u"EM: 0% THERM: 0% KIN: 0% EXP: 0%", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.stPercentages = wx.StaticText( self, wx.ID_ANY, u"", wx.DefaultPosition, wx.DefaultSize, 0 )
         self.stPercentages.Wrap( -1 )
         perSizer.Add( self.stPercentages, 0, wx.BOTTOM|wx.LEFT, 5 )
 
         footerSizer.Add( perSizer, 0, 0, 5 )
 
-        totSizer = wx.BoxSizer( wx.VERTICAL )
+        self.totSizer = wx.BoxSizer( wx.VERTICAL )
 
-        self.stTotal = wx.StaticText( self, wx.ID_ANY, u"Total: 0 hp", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.stTotal = wx.StaticText( self, wx.ID_ANY, u"", wx.DefaultPosition, wx.DefaultSize, 0 )
         self.stTotal.Wrap( -1 )
-        totSizer.Add( self.stTotal, 0, wx.ALIGN_RIGHT|wx.BOTTOM|wx.RIGHT, 5 )
+        self.totSizer.Add( self.stTotal, 0, wx.ALIGN_RIGHT|wx.BOTTOM|wx.RIGHT, 5 )
 
-        footerSizer.Add( totSizer, 1, 0, 5 )
+        footerSizer.Add( self.totSizer, 1, 0, 5 )
 
         contentSizer.Add( footerSizer, 0, wx.EXPAND, 5 )
 
@@ -149,17 +132,62 @@ class DmgPatternEditorDlg ( wx.Dialog ):
 
 
         self.Layout()
+        self.ValuesUpdated(None)
         bsize = self.GetBestSize()
         self.SetSize((-1,bsize.height))
 #
 # edit controls are editEM editTHERM editKIN editEXP
+# editctrl values are always stored in self._EM .. _THERM .. _KIN .. _EXP
 #
+
+        self.editEM.SetLimited(True)
+        self.editTHERM.SetLimited(True)
+        self.editKIN.SetLimited(True)
+        self.editEXP.SetLimited(True)
+
+
+        self.editEM.SetMin(0)
+        self.editTHERM.SetMin(0)
+        self.editKIN.SetMin(0)
+        self.editEXP.SetMin(0)
+
+        self.editEM.SetMax(99999)
+        self.editTHERM.SetMax(99999)
+        self.editKIN.SetMax(99999)
+        self.editEXP.SetMax(99999)
+
+
         self.new.Bind(wx.EVT_BUTTON, self.newPattern)
         self.rename.Bind(wx.EVT_BUTTON, self.renamePattern)
         self.delete.Bind(wx.EVT_BUTTON, self.deletePattern)
         self.copy.Bind(wx.EVT_BUTTON, self.copyPattern)
 
+        self.editEM.Bind(wx.EVT_TEXT, self.ValuesUpdated)
+        self.editTHERM.Bind(wx.EVT_TEXT, self.ValuesUpdated)
+        self.editKIN.Bind(wx.EVT_TEXT, self.ValuesUpdated)
+        self.editEXP.Bind(wx.EVT_TEXT, self.ValuesUpdated)
 
+
+    def ValuesUpdated(self,event):
+
+        self._EM = self.editEM.GetValue()
+        self._THERM = self.editTHERM.GetValue()
+        self._KIN = self.editKIN.GetValue()
+        self._EXP = self.editEXP.GetValue()
+        total = self._EM + self._THERM + self._KIN + self._EXP
+        format = "EM: % 3d%% THERM: % 3d%% KIN: % 3d%% EXP: % 3d%%"
+        if total > 0:
+            ltext = format %(self._EM*100/total, self._THERM*100/total, self._KIN*100/total, self._EXP*100/total)
+        else:
+            ltext = format %(0, 0, 0, 0)
+
+        ttext = "Total: % 6d" % (total)
+        self.stPercentages.SetLabel(ltext)
+        self.stTotal.SetLabel(ttext)
+        self.totSizer.Layout()
+
+        if event is not None:
+            event.Skip()
     def newPattern(self,event):
         event.Skip()
 

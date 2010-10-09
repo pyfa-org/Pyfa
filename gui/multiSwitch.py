@@ -78,7 +78,10 @@ class MultiSwitch(wx.Notebook):
 
     def removeTab(self, i):
         if self.GetPageCount() > 2:
-            self.ImageList.Remove(self.GetPageImage(i))
+
+### FIXME - seems that we remove the wrong image from the list
+#            self.ImageList.Remove(self.GetPageImage(i))
+###
             self.DeletePage(i)
         else:
             self.setTabTitle(i, None)
