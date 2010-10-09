@@ -414,7 +414,7 @@ class ItemAffectedBy (wx.Panel):
         mainSizer.Add( self.m_staticline, 0, wx.EXPAND)
         bSizer = wx.BoxSizer( wx.HORIZONTAL )
 
-        self.toggleExpandBtn = wx.ToggleButton( self, wx.ID_ANY, u"Expand/collapse", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.toggleExpandBtn = wx.ToggleButton( self, wx.ID_ANY, u"Expand / Collapse", wx.DefaultPosition, wx.DefaultSize, 0 )
         bSizer.Add( self.toggleExpandBtn, 0, wx.ALIGN_CENTER_VERTICAL)
 
         self.toggleViewBtn = wx.ToggleButton( self, wx.ID_ANY, u"Toggle view mode", wx.DefaultPosition, wx.DefaultSize, 0 )
@@ -542,11 +542,11 @@ class ItemAffectedBy (wx.Panel):
                         penalized = ""
 
                     if self.toggleView == 1:
-                        treeitem = self.affectedBy.AppendItem(child, "%s %s%.2f %s" % ((displayName if displayName != "" else attrName), attrModifier, attrAmount, penalized), attrIcon)
-                        self.affectedBy.SetPyData(treeitem,"%s %s%.2f %s" % (attrName, attrModifier, attrAmount, penalized))
+                        treeitem = self.affectedBy.AppendItem(child, "%s %s %.2f %s" % ((displayName if displayName != "" else attrName), attrModifier, attrAmount, penalized), attrIcon)
+                        self.affectedBy.SetPyData(treeitem,"%s %s %.2f %s" % (attrName, attrModifier, attrAmount, penalized))
                     else:
-                        treeitem = self.affectedBy.AppendItem(child, "%s %s%.2f %s" % (attrName, attrModifier, attrAmount, penalized), attrIcon)
-                        self.affectedBy.SetPyData(treeitem,"%s %s%.2f %s" % ((displayName if displayName != "" else attrName), attrModifier, attrAmount, penalized))
+                        treeitem = self.affectedBy.AppendItem(child, "%s %s %.2f %s" % (attrName, attrModifier, attrAmount, penalized), attrIcon)
+                        self.affectedBy.SetPyData(treeitem,"%s %s %.2f %s" % ((displayName if displayName != "" else attrName), attrModifier, attrAmount, penalized))
 
         self.ExpandCollapseTree()
 
