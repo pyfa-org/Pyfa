@@ -66,7 +66,7 @@ class DmgPatternEditorDlg ( wx.Dialog ):
     self.editEM = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
     dmgeditSizer.Add( self.editEM, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
-    self.stEM = wx.StaticText( self, wx.ID_ANY, u"0% from 0 total dmg", wx.DefaultPosition, wx.DefaultSize, 0 )
+    self.stEM = wx.StaticText( self, wx.ID_ANY, u"0%", wx.DefaultPosition, wx.DefaultSize, 0 )
     self.stEM.Wrap( -1 )
     dmgeditSizer.Add( self.stEM, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
@@ -76,7 +76,7 @@ class DmgPatternEditorDlg ( wx.Dialog ):
     self.editTERM = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
     dmgeditSizer.Add( self.editTERM, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
-    self.stTERM = wx.StaticText( self, wx.ID_ANY, u"0% from 0 total dmg", wx.DefaultPosition, wx.DefaultSize, 0 )
+    self.stTERM = wx.StaticText( self, wx.ID_ANY, u"0%", wx.DefaultPosition, wx.DefaultSize, 0 )
     self.stTERM.Wrap( -1 )
     dmgeditSizer.Add( self.stTERM, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
@@ -86,7 +86,7 @@ class DmgPatternEditorDlg ( wx.Dialog ):
     self.editKIN = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
     dmgeditSizer.Add( self.editKIN, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
-    self.stKIN = wx.StaticText( self, wx.ID_ANY, u"0% from 0 total dmg", wx.DefaultPosition, wx.DefaultSize, 0 )
+    self.stKIN = wx.StaticText( self, wx.ID_ANY, u"0%", wx.DefaultPosition, wx.DefaultSize, 0 )
     self.stKIN.Wrap( -1 )
     dmgeditSizer.Add( self.stKIN, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
@@ -96,7 +96,7 @@ class DmgPatternEditorDlg ( wx.Dialog ):
     self.editEXP = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
     dmgeditSizer.Add( self.editEXP, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
-    self.stEXP = wx.StaticText( self, wx.ID_ANY, u"0% from 0 total dmg", wx.DefaultPosition, wx.DefaultSize, 0 )
+    self.stEXP = wx.StaticText( self, wx.ID_ANY, u"0%", wx.DefaultPosition, wx.DefaultSize, 0 )
     self.stEXP.Wrap( -1 )
     dmgeditSizer.Add( self.stEXP, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
