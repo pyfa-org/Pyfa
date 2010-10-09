@@ -298,8 +298,14 @@ class PyGauge(wx.PyWindow):
             dc.DrawRectangleRect(r)
 
         dc.SetTextForeground(wx.Colour(255,255,255))
-        fontLabel = wx.Font(8, wx.SWISS, wx.NORMAL, wx.NORMAL)
-        dc.SetFont(fontLabel)
+
+        if "__WXMAC__" in  wx.PlatformInfo :
+            self.SetWindowVariant(wx.WINDOW_VARIANT_SMALL)
+        else:
+            standardFont = wx.SystemSettings.GetFont(wx.SYS_DEFAULT_GUI_FONT)
+            standardFont.SetPointSize(8)
+            dc.SetFont(standardFont)
+
 
         formatStr = "{0:." + str(self._fractionDigits) + "f}%"
         dc.DrawLabel(formatStr.format(value), rect, wx.ALIGN_CENTER)
