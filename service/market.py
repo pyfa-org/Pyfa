@@ -167,7 +167,7 @@ class Market():
         return self.getChildren(27)
 
     def getItem(self, itemId):
-        return eos.db.getItem(int(itemId))
+        return eos.db.getItem(itemId)
 
     def getMarketRoot(self):
         """
