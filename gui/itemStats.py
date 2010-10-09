@@ -302,14 +302,18 @@ class ItemParams (wx.Panel):
     def TranslateValueUnit(self, value, unitName, unitDisplayName):
         def itemIDCallback():
             item = service.Market.getInstance().getItem(value)
-            return "%s" % item.name if item is not None else str(value)
+            return "%s (%d)" % (item.name, value) if item is not None else str(value)
+
+        def groupIDCallback():
+            group = service.Market.getInstance().getGroup(value)
+            return "%s (%d)" % (group.name, value) if group is not None else str(value)
 
         trans = {"Inverse Absolute Percent": (lambda: (1-value)*100, unitName),
                  "Milliseconds": (lambda: value / 1000.0, unitName),
                  "Volume": (lambda: value, u"m\u00B3"),
                  "Sizeclass": (lambda: value, ""),
                  "typeID": (itemIDCallback, ""),
-                 "groupID": (itemIDCallback,"")}
+                 "groupID": (groupIDCallback,"")}
 
         override = trans.get(unitDisplayName)
         if override is not None:

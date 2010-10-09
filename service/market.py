@@ -169,6 +169,9 @@ class Market():
     def getItem(self, itemId):
         return eos.db.getItem(itemId)
 
+    def getGroup(self, groupId):
+        return eos.db.getGroup(groupId)
+
     def getMarketRoot(self):
         """
         Get the root of the market tree.
