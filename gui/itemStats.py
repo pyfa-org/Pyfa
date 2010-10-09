@@ -241,7 +241,7 @@ class ItemParams (wx.Panel):
     def PopulateList(self):
         self.paramList.InsertColumn(0,"Attribute")
         self.paramList.InsertColumn(1,"Value")
-        self.paramList.SetColumnWidth(1,100)
+        self.paramList.SetColumnWidth(1,150)
         self.paramList.setResizeColumn(1)
         self.imageList = wx.ImageList(16, 16)
         self.paramList.SetImageList(self.imageList,wx.IMAGE_LIST_SMALL)
@@ -300,7 +300,7 @@ class ItemParams (wx.Panel):
         self.Layout()
 
     def TranslateValueUnit(self, value, unitName, unitDisplayName):
-        def typeIDCallback():
+        def itemIDCallback():
             item = service.Market.getInstance().getItem(value)
             return "%s" % item.name if item is not None else str(value)
 
@@ -308,8 +308,8 @@ class ItemParams (wx.Panel):
                  "Milliseconds": (lambda: value / 1000.0, unitName),
                  "Volume": (lambda: value, u"m\u00B3"),
                  "Sizeclass": (lambda: value, ""),
-                 "typeID": (typeIDCallback, ""),
-                 "groupID": (lambda: value,unitName)}
+                 "typeID": (itemIDCallback, ""),
+                 "groupID": (itemIDCallback,"")}
 
         override = trans.get(unitDisplayName)
         if override is not None:
