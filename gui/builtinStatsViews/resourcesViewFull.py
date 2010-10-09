@@ -115,7 +115,8 @@ class ResourcesViewFull(StatsView):
 
                 # Gauges modif. - Darriele
 
-                gauge = PG.PyGauge(parent, wx.ID_ANY, 100)
+                gauge = PG.PyGauge(parent, wx.ID_ANY, 1)
+                gauge.SetRange(1,True)
                 gauge.SetMinSize((self.getTextExtentW("1.999M/1.99M MW"), 23))
                 gauge.SetFractionDigits(2)
 
@@ -173,7 +174,7 @@ class ResourcesViewFull(StatsView):
 
                 gauge = getattr(self, "gauge%s%s" % (panel, capitalizedType))
 
-                gauge.SetRange(100)
+                gauge.SetRange(0.01,True)
                 gauge.SetValue(0)
                 i+=1
 
