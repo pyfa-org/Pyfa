@@ -123,11 +123,17 @@ class ItemStatsContainer ( wx.Panel ):
             self.affectedby = ItemAffectedBy(self.nbContainer, stuff, item)
             self.nbContainer.AddPage(self.affectedby, "Affected by")
 
+        self.nbContainer.Bind(wx.EVT_LEFT_DOWN, self.mouseHit)
         self.SetSizer(mainSizer)
         self.Layout()
 
     def __del__( self ):
         pass
+
+    def mouseHit(self, event):
+        tab, _ = self.nbContainer.HitTest(event.Position)
+        if tab != -1:
+            self.nbContainer.SetSelection(tab)
 
 ###########################################################################
 ## Class AutoListCtrl
