@@ -25,6 +25,7 @@ import  wx.lib.mixins.listctrl  as  listmix
 import wx.html
 from eos.types import Ship, Module, Skill, Booster, Implant, Drone
 from util import formatAmount
+import service
 
 class ItemStatsDialog(wx.Dialog):
     counter = 0
@@ -293,15 +294,29 @@ class ItemParams (wx.Panel):
         self.Layout()
 
     def TranslateValueUnit(self, value, unitName, unitDisplayName):
+        def typeIDCallback():
+            item = service.Market.getInstance().getItem(value)
+            return "%s" % item.name if item is not None else str(value)
+
         trans = {"Inverse Absolute Percent": (lambda: (1-value)*100, unitName),
                  "Milliseconds": (lambda: value / 1000.0, unitName),
                  "Volume": (lambda: value, u"m\u00B3"),
                  "Sizeclass": (lambda: value, ""),
-                 "typeID": (lambda: value, "")}
+                 "typeID": (typeIDCallback, ""),
+                 "groupID": (lambda: value,unitName)}
 
         override = trans.get(unitDisplayName)
         if override is not None:
-            return "%s %s" % (formatAmount(override[0](), 3, 0, 0), override[1])
+
+            if type(override[0]()) == type(str()):
+                fvalue = override[0]()
+            else:
+                v = override[0]()
+                if isinstance(v, (int, float, long)):
+                    fvalue = formatAmount(v, 3, 0, 0)
+                else:
+                    fvalue = v
+            return "%s %s" % (fvalue , override[1])
         else:
             return "%s %s" % (formatAmount(value, 3, 0),unitName)
 
