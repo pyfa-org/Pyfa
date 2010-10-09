@@ -168,6 +168,11 @@ class PyGauge(wx.PyWindow):
 
         range = float(range)
 
+        if range <= 0:
+            self._range = 0.01
+        else:
+            self._range = range
+
         if reinit is False:
             self._oldPercentage = self._percentage
             self._percentage = (self._value/self._range) * 100
@@ -177,10 +182,7 @@ class PyGauge(wx.PyWindow):
             self._value = 0
         self.Animate()
 
-        if range <= 0:
-            self._range = 0.01
-        else:
-            self._range = range
+
         self._tooltip.SetTip("%.2f/%.2f" % (self._value, self._range if self._range >0.01 else 0))
 
 
