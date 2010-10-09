@@ -400,8 +400,12 @@ class ItemAffectedBy (wx.Panel):
         wx.Panel.__init__ (self, parent)
         self.stuff = stuff
         self.item = item
+
         self.toggleView = 1
+        self.expand = -1
+
         mainSizer = wx.BoxSizer(wx.VERTICAL)
+
         self.affectedBy = wx.TreeCtrl(self, style = wx.TR_DEFAULT_STYLE | wx.TR_HIDE_ROOT | wx.NO_BORDER)
         mainSizer.Add(self.affectedBy, 1, wx.ALL|wx.EXPAND, 0)
 
@@ -410,8 +414,8 @@ class ItemAffectedBy (wx.Panel):
         mainSizer.Add( self.m_staticline, 0, wx.EXPAND)
         bSizer = wx.BoxSizer( wx.HORIZONTAL )
 
-        self.totalAttrsLabel = wx.StaticText( self, wx.ID_ANY, u" ", wx.DefaultPosition, wx.DefaultSize, 0 )
-        bSizer.Add( self.totalAttrsLabel, 0, wx.ALIGN_CENTER_VERTICAL|wx.RIGHT)
+        self.toggleExpandBtn = wx.ToggleButton( self, wx.ID_ANY, u"Expand/collapse", wx.DefaultPosition, wx.DefaultSize, 0 )
+        bSizer.Add( self.toggleExpandBtn, 0, wx.ALIGN_CENTER_VERTICAL)
 
         self.toggleViewBtn = wx.ToggleButton( self, wx.ID_ANY, u"Toggle view mode", wx.DefaultPosition, wx.DefaultSize, 0 )
         bSizer.Add( self.toggleViewBtn, 0, wx.ALIGN_CENTER_VERTICAL)
@@ -422,10 +426,47 @@ class ItemAffectedBy (wx.Panel):
             self.refreshBtn.Bind( wx.EVT_BUTTON, self.RefreshTree )
 
         self.toggleViewBtn.Bind(wx.EVT_TOGGLEBUTTON,self.ToggleViewMode)
+        self.toggleExpandBtn.Bind(wx.EVT_TOGGLEBUTTON,self.ToggleExpand)
+
         mainSizer.Add( bSizer, 0, wx.ALIGN_RIGHT)
         self.SetSizer(mainSizer)
         self.PopulateTree()
         self.Layout()
+
+    def ExpandCollapseTree(self):
+
+        self.Freeze()
+        if self.expand == 1:
+            self.affectedBy.ExpandAll()
+        else:
+            try:
+                self.affectedBy.CollapseAll()
+            except:
+                pass
+
+        self.Thaw()
+
+    def ToggleExpand(self,event):
+        self.expand *= -1
+        self.ExpandCollapseTree()
+
+    def ToggleViewTree(self):
+        self.Freeze()
+
+        root = self.affectedBy.GetRootItem()
+        child,cookie = self.affectedBy.GetFirstChild(root)
+        while child.IsOk():
+            item,childcookie = self.affectedBy.GetFirstChild(child)
+            while item.IsOk():
+                change = self.affectedBy.GetPyData(item)
+                display = self.affectedBy.GetItemText(item)
+                self.affectedBy.SetItemText(item,change)
+                self.affectedBy.SetPyData(item,display)
+                item,childcookie = self.affectedBy.GetNextChild(child,childcookie)
+
+            child,cookie = self.affectedBy.GetNextChild(root,cookie)
+
+        self.Thaw()
 
     def UpdateTree(self):
         self.Freeze()
@@ -439,7 +480,7 @@ class ItemAffectedBy (wx.Panel):
 
     def ToggleViewMode(self, event):
         self.toggleView *=-1
-        self.UpdateTree()
+        self.ToggleViewTree()
         event.Skip()
 
     def PopulateTree(self):
@@ -483,7 +524,7 @@ class ItemAffectedBy (wx.Panel):
             if counter > 0:
                 for attrName, attrModifier, attrAmount in attrData:
                     attrInfo = self.stuff.item.attributes.get(attrName)
-                    displayName = (attrInfo.displayName if self.toggleView ==1 else attrInfo.name) if attrInfo else ""
+                    displayName = attrInfo.displayName if attrInfo else ""
 
                     if attrInfo:
                         if attrInfo.icon is not None:
@@ -500,5 +541,12 @@ class ItemAffectedBy (wx.Panel):
                     else:
                         penalized = ""
 
-                    self.affectedBy.AppendItem(child, "%s %s%.2f %s" % ((displayName if displayName != "" else attrName), attrModifier, attrAmount, penalized), attrIcon)
+                    if self.toggleView == 1:
+                        treeitem = self.affectedBy.AppendItem(child, "%s %s%.2f %s" % ((displayName if displayName != "" else attrName), attrModifier, attrAmount, penalized), attrIcon)
+                        self.affectedBy.SetPyData(treeitem,"%s %s%.2f %s" % (attrName, attrModifier, attrAmount, penalized))
+                    else:
+                        treeitem = self.affectedBy.AppendItem(child, "%s %s%.2f %s" % (attrName, attrModifier, attrAmount, penalized), attrIcon)
+                        self.affectedBy.SetPyData(treeitem,"%s %s%.2f %s" % ((displayName if displayName != "" else attrName), attrModifier, attrAmount, penalized))
+
+        self.ExpandCollapseTree()
 
