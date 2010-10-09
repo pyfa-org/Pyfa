@@ -17,4 +17,6 @@ class DamagePattern(ContextMenu):
 
     def activate(self, context, selection, i):
         dlg=DmgPatternEditorDlg(self.mainFrame)
+        dlg.ShowModal()
+        dlg.Destroy()
 DamagePattern.register()

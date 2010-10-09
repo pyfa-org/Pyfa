@@ -151,8 +151,9 @@ class DmgPatternEditorDlg ( wx.Dialog ):
         self.Layout()
         bsize = self.GetBestSize()
         self.SetSize((-1,bsize.height))
-        self.Show()
-
+#
+# edit controls are editEM editTHERM editKIN editEXP
+#
         self.new.Bind(wx.EVT_BUTTON, self.newPattern)
         self.rename.Bind(wx.EVT_BUTTON, self.renamePattern)
         self.delete.Bind(wx.EVT_BUTTON, self.deletePattern)
