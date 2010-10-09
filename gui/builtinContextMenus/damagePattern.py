@@ -1,5 +1,6 @@
 from gui.contextMenu import ContextMenu
 from gui.itemStats import ItemStatsDialog
+from gui.patternEditor import DmgPatternEditorDlg
 import gui.mainFrame
 import service
 
@@ -15,6 +16,5 @@ class DamagePattern(ContextMenu):
         return map(lambda p: p.name, sDP.getDamagePatternList())
 
     def activate(self, context, selection, i):
-        pass
-
+        dlg=DmgPatternEditorDlg(self.mainFrame)
 DamagePattern.register()
