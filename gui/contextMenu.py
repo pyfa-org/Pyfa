@@ -70,7 +70,6 @@ class ContextMenu(object):
                 selection = (selection,)
 
             m.activate(context, selection, i)
-        event.Skip()
 
     def display(self, context, selection):
         raise NotImplementedError()
