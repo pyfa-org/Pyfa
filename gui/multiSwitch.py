@@ -85,8 +85,9 @@ class MultiSwitch(wx.Notebook):
             self.DeletePage(i)
         else:
             self.setTabTitle(i, None)
+            remIcon = self.GetPageImage(i)
             self.SetPageImage(i, -1)
-            self.ImageList.Remove(self.GetPageImage(i))
+            self.ImageList.Remove(remIcon)
             page = self.GetPage(i)
             if page.type == "fit":
                 page.view.changeFit(None)
