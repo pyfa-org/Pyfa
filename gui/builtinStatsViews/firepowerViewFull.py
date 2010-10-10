@@ -28,6 +28,7 @@ class FirepowerViewFull(StatsView):
     def __init__(self, parent):
         StatsView.__init__(self)
         self.parent = parent
+        self._cachedValues = []
     def getHeaderText(self, fit):
         return "Firepower"
 
@@ -42,14 +43,21 @@ class FirepowerViewFull(StatsView):
 
         panel = "full"
 
-        sizerFirepower = wx.FlexGridSizer(1, 3)
-        for i in xrange(3):
-            sizerFirepower.AddGrowableCol(i)
-
+        sizerFirepower = wx.FlexGridSizer(1, 4)
+        sizerFirepower.AddGrowableCol(2)
+        psize = contentPanel.GetSize()
+        sWidth = psize.width/4
+        print sWidth
         contentSizer.Add( sizerFirepower, 0, wx.EXPAND, 0)
+
+        counter = 0
 
         for damageType, image in (("weapon", "turret") , ("drone", "droneBay")):
             baseBox = wx.BoxSizer(wx.HORIZONTAL)
+            if counter == 1:
+                sizerFirepower.AddSpacer( ( 40, 0), 1, 0, 5 )
+
+            counter += 1
             sizerFirepower.Add(baseBox, 0, wx.ALIGN_LEFT)
 
             baseBox.Add(bitmapLoader.getStaticBitmap("%s_big" % image, parent, "icons"), 0, wx.ALIGN_CENTER)
@@ -62,12 +70,12 @@ class FirepowerViewFull(StatsView):
             hbox = wx.BoxSizer(wx.HORIZONTAL)
             box.Add(hbox, 1, wx.ALIGN_CENTER)
 
-            lbl = wx.StaticText(parent, wx.ID_ANY, "0.0")
+            lbl = wx.StaticText(parent, wx.ID_ANY, "0.0 DPS")
             setattr(self, "label%sDps%s" % (panel.capitalize() ,damageType.capitalize()), lbl)
 
             hbox.Add(lbl, 0, wx.ALIGN_CENTER)
-            hbox.Add(wx.StaticText(parent, wx.ID_ANY, " DPS"), 0, wx.ALIGN_CENTER)
-
+#            hbox.Add(wx.StaticText(parent, wx.ID_ANY, " DPS"), 0, wx.ALIGN_CENTER)
+            self._cachedValues.append(0)
         targetSizer = sizerFirepower
 
         baseBox = wx.BoxSizer(wx.HORIZONTAL)
@@ -84,26 +92,36 @@ class FirepowerViewFull(StatsView):
         gridS.Add(wx.StaticText(parent, wx.ID_ANY, " Volley: "), 0, wx.ALL | wx.ALIGN_RIGHT)
         gridS.Add(lbl, 0, wx.ALIGN_LEFT)
 
+        self._cachedValues.append(0)
+
         lbl = wx.StaticText(parent, wx.ID_ANY, "0.0")
         setattr(self, "label%sDpsTotal" % panel.capitalize(), lbl)
         gridS.Add(wx.StaticText(parent, wx.ID_ANY, " DPS: "), 0, wx.ALL | wx.ALIGN_RIGHT)
+
+        self._cachedValues.append(0)
+
         gridS.Add(lbl, 0, wx.ALIGN_LEFT)
 
     def refreshPanel(self, fit):
         #If we did anything intresting, we'd update our labels to reflect the new fit's stats here
 
-        stats = (("labelFullDpsWeapon", lambda: fit.weaponDPS, 3, 0, 9),
-                 ("labelFullDpsDrone", lambda: fit.droneDPS, 3, 0, 9),
-                 ("labelFullVolleyTotal", lambda: fit.weaponVolley, 3, 0, 9),
-                 ("labelFullDpsTotal", lambda: fit.totalDPS, 3, 0, 9))
+        stats = (("labelFullDpsWeapon", lambda: fit.weaponDPS, 3, 0, 9, "%s DPS",None),
+                 ("labelFullDpsDrone", lambda: fit.droneDPS, 3, 0, 9, "%s DPS", None),
+                 ("labelFullVolleyTotal", lambda: fit.weaponVolley, 3, 0, 9, "%s", "Volley: %.1f"),
+                 ("labelFullDpsTotal", lambda: fit.totalDPS, 3, 0, 9, "%s", None))
 
-        for labelName, value, prec, lowest, highest in stats:
+        counter = 0
+        for labelName, value, prec, lowest, highest, valueFormat, altFormat in stats:
             label = getattr(self, labelName)
             value = value() if fit is not None else 0
             value = value if value is not None else 0
-            label.SetLabel(formatAmount(value, prec, lowest, highest))
-            label.SetToolTip(wx.ToolTip("%.1f" % value))
-
+            if self._cachedValues[counter] != value:
+                valueStr = formatAmount(value, prec, lowest, highest)
+                label.SetLabel(valueFormat % valueStr)
+                tipStr = valueFormat % valueStr if altFormat is None else altFormat % value
+                label.SetToolTip(wx.ToolTip(tipStr))
+                self._cachedValues[counter] = value
+            counter +=1
         self.panel.Layout()
         self.headerPanel.Layout()
 
