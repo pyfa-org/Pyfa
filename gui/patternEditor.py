@@ -34,15 +34,18 @@ class DmgPatternEditorDlg (wx.Dialog):
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
-        headerSizer = wx.BoxSizer(wx.HORIZONTAL)
+        self.headerSizer = headerSizer = wx.BoxSizer(wx.HORIZONTAL)
 
         cDP = service.DamagePattern.getInstance()
 
         self.choices = cDP.getDamagePatternList()
         self.choices.sort(key=lambda p: p.name)
-
         self.ccDmgPattern = wx.Choice(self, choices=map(lambda p: p.name, self.choices))
         self.ccDmgPattern.SetSelection(0)
+
+        self.namePicker = wx.TextCtrl(self)
+        self.namePicker.Hide()
+
         size = None
         headerSizer.Add(self.ccDmgPattern, 1, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT|wx.LEFT, 3)
         buttons = (("new", wx.ART_NEW),
@@ -208,8 +211,14 @@ class DmgPatternEditorDlg (wx.Dialog):
         self.rename.Enable()
         self.delete.Enable()
 
+
     def newPattern(self,event):
-        pass
+        cDP = service.DamagePattern.getInstance()
+        p = cDP.newPattern()
+        self.choices.append(p)
+        id = self.ccDmgPattern.Append(p.name)
+        self.ccDmgPattern.SetSelection(id)
+        self.renamePattern(event)
 
     def renamePattern(self,event):
         event.Skip()
