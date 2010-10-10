@@ -116,7 +116,7 @@ class ResourcesViewFull(StatsView):
                 # Gauges modif. - Darriele
 
                 gauge = PG.PyGauge(parent, wx.ID_ANY, 1)
-                gauge.SetRange(1,True)
+                gauge.SetValueRange(0, 0)
                 gauge.SetMinSize((self.getTextExtentW("1.999M/1.99M MW"), 23))
                 gauge.SetFractionDigits(2)
 
@@ -165,17 +165,16 @@ class ResourcesViewFull(StatsView):
                 gauge = getattr(self, "gauge%s%s" % (panel, capitalizedType))
                 resUsed = getattr(fit,"%sUsed" % resourceType)
 
-                if resMax[i]() > 0:
-                    gauge.SetRange(resMax[i]())
-                    gauge.SetValue(resUsed)
+                gauge.SetValueRange(resUsed, resMax[i]())
+
                 i+=1
             else:
                 capitalizedType = resourceType[0].capitalize() + resourceType[1:]
 
                 gauge = getattr(self, "gauge%s%s" % (panel, capitalizedType))
 
-                gauge.SetRange(0.01,True)
-                gauge.SetValue(0)
+                gauge.SetValueRange(0, 0)
+
                 i+=1
 
         self.panel.Layout()

@@ -52,7 +52,7 @@ class PyGauge(wx.PyWindow):
 
         self._oldValue = 0
 
-        self._animDuration = 400
+        self._animDuration = 600
         self._animStep = 0
         self._period = 25
         self._animValue = 0
@@ -180,6 +180,7 @@ class PyGauge(wx.PyWindow):
             self._oldPercentage = self._percentage
             self._percentage = 0
             self._value = 0
+
         self.Animate()
 
 
@@ -206,6 +207,33 @@ class PyGauge(wx.PyWindow):
         self.Animate()
 
         self._tooltip.SetTip("%.2f/%.2f" % (self._value, self._range))
+
+    def SetValueRange(self, value, range, reinit = False):
+
+        range = float(range)
+
+        if range <= 0:
+            self._range = 0.01
+        else:
+            self._range = range
+
+        value = float(value)
+
+        self._value = value
+        if value < 0:
+            self._value = float(0)
+
+        if reinit is False:
+            self._oldPercentage = self._percentage
+            self._percentage = (self._value/self._range) * 100
+
+        else:
+            self._oldPercentage = self._percentage
+            self._percentage = 0
+
+
+        self.Animate()
+        self._tooltip.SetTip("%.2f/%.2f" % (self._value, self._range if self._range >0.01 else 0))
 
     def OnEraseBackground(self, event):
         """

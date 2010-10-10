@@ -45,6 +45,7 @@ class MultiSwitch(wx.Notebook):
         self.SetImageList(self.imageList)
 
         self.removal = False
+        self.countEvt = 1
 
     def getActiveFit(self):
         return self.GetCurrentPage().view.activeFitID
@@ -105,7 +106,9 @@ class MultiSwitch(wx.Notebook):
 
     def checkAdd(self, event):
         if event.Selection == self.GetPageCount() - 1:
+
             self.AddTab()
+
             #Veto to prevent the + tab from being selected
             event.Veto()
 
@@ -129,13 +132,20 @@ class MultiSwitch(wx.Notebook):
             selection = self.AddTab()
         else:
             selection = event.Selection
+            self.countEvt = 0
 
         page = self.GetPage(selection)
-        if hasattr(page, "type") and page.type == "fit":
-            fitID = page.view.activeFitID
-            wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=fitID))
-        else:
-            wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=None))
+
+        if self.countEvt == 0:
+            if hasattr(page, "type") and page.type == "fit":
+                fitID = page.view.activeFitID
+                wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=fitID))
+            else:
+                wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=None))
+
+        self.countEvt -= 1
+        if self.countEvt < 0:
+            self.countEvt = 1
 
         event.Skip()
 
