@@ -20,6 +20,7 @@
 import wx
 import bitmapLoader
 from wx.lib.intctrl import IntCtrl
+import service
 ###########################################################################
 ## Class DmgPatternEditorDlg
 ###########################################################################
@@ -35,12 +36,20 @@ class DmgPatternEditorDlg (wx.Dialog):
 
         headerSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        ccDmgPatternChoices = [ u"uniform", u"sansha", u"gurista", u"blood raiders", u"drones", u"angels", "cnc" ]
-        self.ccDmgPattern = wx.Choice(self)
+        cDP = service.DamagePattern.getInstance()
+
+        self.choices = cDP.getDamagePatternList()
+        self.choices.sort(key=lambda p: p.name)
+
+        self.ccDmgPattern = wx.Choice(self, choices=map(lambda p: p.name, self.choices))
         self.ccDmgPattern.SetSelection(0)
         size = None
         headerSizer.Add(self.ccDmgPattern, 1, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT|wx.LEFT, 3)
-        for name, art in (("new", wx.ART_NEW), ("rename", bitmapLoader.getBitmap("rename", "icons")), ("copy", wx.ART_COPY), ("delete", wx.ART_DELETE)):
+        buttons = (("new", wx.ART_NEW),
+                   ("copy", wx.ART_COPY),
+                   ("rename", bitmapLoader.getBitmap("rename", "icons")),
+                   ("delete", wx.ART_DELETE))
+        for name, art in buttons:
                 bitmap = wx.ArtProvider.GetBitmap(art, wx.ART_BUTTON) if name != "rename" else art
                 btn = wx.BitmapButton(self, wx.ID_ANY, bitmap)
                 if size is None:
@@ -130,13 +139,9 @@ class DmgPatternEditorDlg (wx.Dialog):
 
 
         self.Layout()
-        self.ValuesUpdated(None)
+        self.ValuesUpdated()
         bsize = self.GetBestSize()
         self.SetSize((-1,bsize.height))
-#
-# edit controls are editEM editTHERM editKIN editEXP
-# editctrl values are always stored in self._EM .. _THERM .. _KIN .. _EXP
-#
 
         self.editEM.SetLimited(True)
         self.editTHERM.SetLimited(True)
@@ -146,7 +151,6 @@ class DmgPatternEditorDlg (wx.Dialog):
 
         self.editEM.SetMin(0)
         self.editTHERM.SetMin(0)
-        self.editKIN.SetMin(0)
         self.editEXP.SetMin(0)
 
         self.editEM.SetMax(99999)
@@ -165,9 +169,10 @@ class DmgPatternEditorDlg (wx.Dialog):
         self.editKIN.Bind(wx.EVT_TEXT, self.ValuesUpdated)
         self.editEXP.Bind(wx.EVT_TEXT, self.ValuesUpdated)
 
+        if self.choices[0].name == "Uniform":
+            self.restrict()
 
-    def ValuesUpdated(self, event):
-
+    def ValuesUpdated(self, event=None):
         self._EM = self.editEM.GetValue()
         self._THERM = self.editTHERM.GetValue()
         self._KIN = self.editKIN.GetValue()
@@ -187,8 +192,24 @@ class DmgPatternEditorDlg (wx.Dialog):
         if event is not None:
             event.Skip()
 
+    def restrict(self):
+        self.editEM.Enable(False)
+        self.editEXP.Enable(False)
+        self.editKIN.Enable(False)
+        self.editTHERM.Enable(False)
+        self.rename.Enable(False)
+        self.delete.Enable(False)
+
+    def unrestrict(self):
+        self.editEM.Enable()
+        self.editEXP.Enable()
+        self.editKIN.Enable()
+        self.editTHERM.Enable()
+        self.rename.Enable()
+        self.delete.Enable()
+
     def newPattern(self,event):
-        event.Skip()
+        pass
 
     def renamePattern(self,event):
         event.Skip()
