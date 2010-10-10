@@ -106,6 +106,8 @@ class MultiSwitch(wx.Notebook):
 
     def checkAdd(self, event):
         if event.Selection == self.GetPageCount() - 1:
+            if "__WXMSW__" not in wx.PlatformInfo:
+                self.countEvt = 1
 
             self.AddTab()
 
@@ -132,7 +134,8 @@ class MultiSwitch(wx.Notebook):
             selection = self.AddTab()
         else:
             selection = event.Selection
-            self.countEvt = 0
+            if "__WXMSW__" in wx.PlatformInfo:
+                self.countEvt = 0
 
         page = self.GetPage(selection)
 
