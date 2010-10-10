@@ -29,6 +29,8 @@ class ResistancesViewFull(StatsView):
     def __init__(self, parent):
         StatsView.__init__(self)
         self.parent = parent
+        self._cachedValues = []
+
     def getHeaderText(self, fit):
         return "Resistances"
 
@@ -114,7 +116,7 @@ class ResistancesViewFull(StatsView):
                 lbl.SetBarGradient()
                 lbl.SetFractionDigits(1)
 
-                setattr(self, "labelResistance%s%s" % (tankType.capitalize(), damageType.capitalize()), lbl)
+                setattr(self, "gaugeResistance%s%s" % (tankType.capitalize(), damageType.capitalize()), lbl)
                 box.Add(lbl, 0, wx.ALIGN_CENTER)
 
                 col+=1
@@ -144,7 +146,7 @@ class ResistancesViewFull(StatsView):
                 else:
                     resonance = 0
 
-                lbl = getattr(self, "labelResistance%s%s" % (tankType.capitalize(), damageType.capitalize()))
+                lbl = getattr(self, "gaugeResistance%s%s" % (tankType.capitalize(), damageType.capitalize()))
 
                 lbl.SetValue(resonance)
 
@@ -165,7 +167,7 @@ class ResistancesViewFull(StatsView):
 
         damagePattern = fit.damagePattern if fit is not None else None
         for damageType in ("em", "thermal", "kinetic", "explosive"):
-            lbl = getattr(self, "labelResistanceDamagepattern%s" % damageType.capitalize())
+            lbl = getattr(self, "gaugeResistanceDamagepattern%s" % damageType.capitalize())
             if damagePattern is not None:
                 lbl.SetValue(getattr(damagePattern, "%sAmount" % damageType))
             else:
