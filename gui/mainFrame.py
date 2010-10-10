@@ -29,6 +29,7 @@ from gui.shipBrowser import ShipBrowser
 from wx.lib.wordwrap import wordwrap
 from gui.characterEditor import CharacterEditor
 from gui.characterSelection import CharacterSelection
+from gui.patternEditor import DmgPatternEditorDlg
 import aboutData
 import gui.fittingView as fv
 from wx._core import PyDeadObjectError
@@ -132,6 +133,11 @@ class MainFrame(wx.Frame):
         cFit.clearFit(self.getActiveFit())
         wx.PostEvent(self, fv.FitChanged(fitID=self.getActiveFit()))
 
+    def showDamagePatternEditor(self, event):
+        dlg=DmgPatternEditorDlg(self)
+        dlg.ShowModal()
+        dlg.Destroy()
+
     def registerMenu(self):
         # Quit
         self.Bind(wx.EVT_MENU, self.ExitApp, id=wx.ID_EXIT)
@@ -141,6 +147,8 @@ class MainFrame(wx.Frame):
         self.Bind(wx.EVT_MENU, self.ShowAboutBox, id=wx.ID_ABOUT)
         # Char editor
         self.Bind(wx.EVT_MENU, self.showCharacterEditor, id=self.GetMenuBar().characterEditorId)
+        # Damage pattern editor
+        self.Bind(wx.EVT_MENU, self.showDamagePatternEditor, id=self.GetMenuBar().damagePatternEditorId)
 
     def toggleShipBrowser(self, event):
         self.GetToolBar().toggleShipBrowser(event)

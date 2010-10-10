@@ -16,7 +16,6 @@ class DamagePattern(ContextMenu):
         return map(lambda p: p.name, sDP.getDamagePatternList())
 
     def activate(self, context, selection, i):
-        dlg=DmgPatternEditorDlg(self.mainFrame)
-        dlg.ShowModal()
-        dlg.Destroy()
+        pass
+
 DamagePattern.register()

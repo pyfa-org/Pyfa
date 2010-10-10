@@ -48,7 +48,7 @@ class MainMenuBar(wx.MenuBar):
 
         # Character menu
         windowMenu = wx.Menu()
-        self.Append(windowMenu, "&Windows")
+        self.Append(windowMenu, "&Window")
 
         charEditItem = wx.MenuItem(windowMenu, self.characterEditorId, "&Character Editor\tCTRL+E")
         charEditItem.SetBitmap(bitmapLoader.getBitmap("character_small", "icons"))
