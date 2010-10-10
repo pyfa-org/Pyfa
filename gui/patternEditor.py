@@ -24,22 +24,22 @@ from wx.lib.intctrl import IntCtrl
 ## Class DmgPatternEditorDlg
 ###########################################################################
 
-class DmgPatternEditorDlg ( wx.Dialog ):
+class DmgPatternEditorDlg (wx.Dialog):
 
-    def __init__( self, parent ):
-        wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Damage Pattern Editor", pos = wx.DefaultPosition, size = wx.Size( 350,240 ), style = wx.DEFAULT_DIALOG_STYLE )
+    def __init__(self, parent):
+        wx.Dialog.__init__ (self, parent, id = wx.ID_ANY, title = u"Damage Pattern Editor", size = wx.Size( 350,240 ))
 
-        self.SetSizeHintsSz( wx.DefaultSize, wx.DefaultSize )
+        self.SetSizeHintsSz(wx.DefaultSize, wx.DefaultSize)
 
-        mainSizer = wx.BoxSizer( wx.VERTICAL )
+        mainSizer = wx.BoxSizer(wx.VERTICAL)
 
-        headerSizer = wx.BoxSizer( wx.HORIZONTAL )
+        headerSizer = wx.BoxSizer(wx.HORIZONTAL)
 
         ccDmgPatternChoices = [ u"uniform", u"sansha", u"gurista", u"blood raiders", u"drones", u"angels", "cnc" ]
-        self.ccDmgPattern = wx.Choice( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, ccDmgPatternChoices, 0 )
-        self.ccDmgPattern.SetSelection( 0 )
+        self.ccDmgPattern = wx.Choice(self)
+        self.ccDmgPattern.SetSelection(0)
         size = None
-        headerSizer.Add( self.ccDmgPattern, 1, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT|wx.LEFT, 3 )
+        headerSizer.Add(self.ccDmgPattern, 1, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT|wx.LEFT, 3)
         for name, art in (("new", wx.ART_NEW), ("rename", bitmapLoader.getBitmap("rename", "icons")), ("copy", wx.ART_COPY), ("delete", wx.ART_DELETE)):
                 bitmap = wx.ArtProvider.GetBitmap(art, wx.ART_BUTTON) if name != "rename" else art
                 btn = wx.BitmapButton(self, wx.ID_ANY, bitmap)
@@ -56,79 +56,77 @@ class DmgPatternEditorDlg ( wx.Dialog ):
                 headerSizer.Add(btn, 0, wx.ALIGN_CENTER_VERTICAL)
 
 
-        mainSizer.Add( headerSizer, 0, wx.EXPAND | wx.ALL, 2 )
+        mainSizer.Add(headerSizer, 0, wx.EXPAND | wx.ALL, 2)
 
-        self.sl = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
-        mainSizer.Add( self.sl, 0, wx.EXPAND|wx.TOP|wx.BOTTOM, 5 )
+        self.sl = wx.StaticLine(self)
+        mainSizer.Add(self.sl, 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 5)
 
-        contentSizer = wx.BoxSizer( wx.VERTICAL )
+        contentSizer = wx.BoxSizer(wx.VERTICAL)
         self.embitmap = bitmapLoader.getBitmap("em_big", "icons")
         self.thermbitmap = bitmapLoader.getBitmap("thermal_big", "icons")
         self.kinbitmap = bitmapLoader.getBitmap("kinetic_big", "icons")
         self.expbitmap = bitmapLoader.getBitmap("explosive_big", "icons")
 
-        dmgeditSizer = wx.FlexGridSizer( 2, 4, 0, 2 )
-        dmgeditSizer.AddGrowableCol( 1 )
-        dmgeditSizer.AddGrowableCol( 2 )
-        dmgeditSizer.SetFlexibleDirection( wx.BOTH )
-        dmgeditSizer.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_SPECIFIED )
+        dmgeditSizer = wx.FlexGridSizer(2, 4, 0, 2)
+        dmgeditSizer.AddGrowableCol(1)
+        dmgeditSizer.AddGrowableCol(2)
+        dmgeditSizer.SetFlexibleDirection(wx.BOTH)
+        dmgeditSizer.SetNonFlexibleGrowMode(wx.FLEX_GROWMODE_SPECIFIED)
 
-        #width,height = self.GetTextExtent("9999999999")
         width = -1
         defSize = wx.Size(width,-1)
 
+        self.editEM = IntCtrl(self, wx.ID_ANY, 0, wx.DefaultPosition, defSize, wx.TE_RIGHT)
+        dmgeditSizer.Add(self.editEM, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
 
-        self.editEM = IntCtrl( self, wx.ID_ANY, 0, wx.DefaultPosition, defSize, wx.TE_RIGHT )
-        dmgeditSizer.Add( self.editEM, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+        self.bmpEM = wx.StaticBitmap(self, wx.ID_ANY, self.embitmap)
+        dmgeditSizer.Add(self.bmpEM, 0, wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_CENTER_VERTICAL, 5)
 
-        self.bmpEM = wx.StaticBitmap( self, wx.ID_ANY, self.embitmap, wx.DefaultPosition, wx.DefaultSize, 0 )
-        dmgeditSizer.Add( self.bmpEM, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL, 5 )
+        self.bmpTHERM = wx.StaticBitmap(self, wx.ID_ANY, self.thermbitmap)
+        dmgeditSizer.Add(self.bmpTHERM, 0, wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_RIGHT, 5)
 
-        self.bmpTHERM = wx.StaticBitmap( self, wx.ID_ANY, self.thermbitmap, wx.DefaultPosition, wx.DefaultSize, 0 )
-        dmgeditSizer.Add( self.bmpTHERM, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_RIGHT, 5 )
+        self.editTHERM = IntCtrl(self, wx.ID_ANY, 0, wx.DefaultPosition, defSize, 0)
+        dmgeditSizer.Add(self.editTHERM, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
 
-        self.editTHERM = IntCtrl( self, wx.ID_ANY, 0, wx.DefaultPosition, defSize, 0,  )
-        dmgeditSizer.Add( self.editTHERM, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+        self.editKIN = IntCtrl(self, wx.ID_ANY, 0, wx.DefaultPosition, defSize, wx.TE_RIGHT)
+        dmgeditSizer.Add(self.editKIN, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
 
-        self.editKIN = IntCtrl( self, wx.ID_ANY, 0, wx.DefaultPosition, defSize, wx.TE_RIGHT )
-        dmgeditSizer.Add( self.editKIN, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+        self.bmpKIN = wx.StaticBitmap(self, wx.ID_ANY, self.kinbitmap)
+        dmgeditSizer.Add(self.bmpKIN, 0, wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_CENTER_VERTICAL, 5)
 
-        self.bmpKIN = wx.StaticBitmap( self, wx.ID_ANY, self.kinbitmap, wx.DefaultPosition, wx.DefaultSize, 0 )
-        dmgeditSizer.Add( self.bmpKIN, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL, 5 )
+        self.bmpEXP = wx.StaticBitmap(self, wx.ID_ANY, self.expbitmap)
+        dmgeditSizer.Add(self.bmpEXP, 0, wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_RIGHT, 5)
 
-        self.bmpEXP = wx.StaticBitmap( self, wx.ID_ANY, self.expbitmap, wx.DefaultPosition, wx.DefaultSize, 0 )
-        dmgeditSizer.Add( self.bmpEXP, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_RIGHT, 5 )
+        self.editEXP = IntCtrl(self, wx.ID_ANY, 0, wx.DefaultPosition, defSize, 0)
+        dmgeditSizer.Add(self.editEXP, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
 
-        self.editEXP = IntCtrl( self, wx.ID_ANY, 0, wx.DefaultPosition, defSize, 0 )
-        dmgeditSizer.Add( self.editEXP, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+        contentSizer.Add(dmgeditSizer, 1, wx.EXPAND | wx.ALL, 5)
+        self.slfooter = wx.StaticLine(self)
+        contentSizer.Add(self.slfooter, 0, wx.EXPAND | wx.TOP, 5)
 
-        contentSizer.Add( dmgeditSizer, 1, wx.EXPAND|wx.ALL, 5 )
-        self.slfooter = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
-        contentSizer.Add( self.slfooter, 0, wx.EXPAND|wx.TOP, 5 )
+        footerSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        footerSizer = wx.BoxSizer( wx.HORIZONTAL )
+        perSizer = wx.BoxSizer(wx.VERTICAL)
 
-        perSizer = wx.BoxSizer( wx.VERTICAL )
+        self.stPercentages = wx.StaticText(self, wx.ID_ANY, u"")
+        self.stPercentages.Wrap(-1)
+        perSizer.Add(self.stPercentages, 0, wx.BOTTOM | wx.LEFT, 5)
 
-        self.stPercentages = wx.StaticText( self, wx.ID_ANY, u"", wx.DefaultPosition, wx.DefaultSize, 0 )
-        self.stPercentages.Wrap( -1 )
-        perSizer.Add( self.stPercentages, 0, wx.BOTTOM|wx.LEFT, 5 )
+        footerSizer.Add(perSizer, 0, 0, 5)
 
-        footerSizer.Add( perSizer, 0, 0, 5 )
+        self.totSizer = wx.BoxSizer(wx.VERTICAL)
 
-        self.totSizer = wx.BoxSizer( wx.VERTICAL )
+        self.stTotal = wx.StaticText(self, wx.ID_ANY, u"")
+        self.stTotal.Wrap(-1)
+        self.totSizer.Add(self.stTotal, 0, wx.ALIGN_RIGHT | wx.BOTTOM | wx.RIGHT, 5)
 
-        self.stTotal = wx.StaticText( self, wx.ID_ANY, u"", wx.DefaultPosition, wx.DefaultSize, 0 )
-        self.stTotal.Wrap( -1 )
-        self.totSizer.Add( self.stTotal, 0, wx.ALIGN_RIGHT|wx.BOTTOM|wx.RIGHT, 5 )
+        footerSizer.Add(self.totSizer, 1, 0, 5)
 
-        footerSizer.Add( self.totSizer, 1, 0, 5 )
+        contentSizer.Add(footerSizer, 0, wx.EXPAND, 5)
 
-        contentSizer.Add( footerSizer, 0, wx.EXPAND, 5 )
+        mainSizer.Add(contentSizer, 1, wx.EXPAND, 0)
 
-        mainSizer.Add( contentSizer, 1, wx.EXPAND, 0 )
-
-        self.SetSizer( mainSizer )
+        self.SetSizer(mainSizer)
 
 
         self.Layout()
@@ -168,7 +166,7 @@ class DmgPatternEditorDlg ( wx.Dialog ):
         self.editEXP.Bind(wx.EVT_TEXT, self.ValuesUpdated)
 
 
-    def ValuesUpdated(self,event):
+    def ValuesUpdated(self, event):
 
         self._EM = self.editEM.GetValue()
         self._THERM = self.editTHERM.GetValue()
@@ -188,6 +186,7 @@ class DmgPatternEditorDlg ( wx.Dialog ):
 
         if event is not None:
             event.Skip()
+
     def newPattern(self,event):
         event.Skip()
 
