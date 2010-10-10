@@ -329,12 +329,13 @@ class PyGauge(wx.PyWindow):
 
         dc.SetTextForeground(wx.Colour(255,255,255))
 
+        standardFont = wx.SystemSettings.GetFont(wx.SYS_DEFAULT_GUI_FONT)
         if "__WXMAC__" in  wx.PlatformInfo :
-            self.SetWindowVariant(wx.WINDOW_VARIANT_SMALL)
+            fsize = 9
         else:
-            standardFont = wx.SystemSettings.GetFont(wx.SYS_DEFAULT_GUI_FONT)
-            standardFont.SetPointSize(8)
-            dc.SetFont(standardFont)
+            fsize = 8
+        standardFont.SetPointSize(fsize)
+        dc.SetFont(standardFont)
 
 
         formatStr = "{0:." + str(self._fractionDigits) + "f}%"
