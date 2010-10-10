@@ -148,8 +148,10 @@ class MultiSwitch(wx.Notebook):
 
         self.countEvt -= 1
         if self.countEvt < 0:
-            self.countEvt = 1
-
+            if "__WXMSW__" not in wx.PlatformInfo:
+                self.countEvt = 0
+            else:
+                self.countEvt = 1
         event.Skip()
 
     def changeFit(self, event):
