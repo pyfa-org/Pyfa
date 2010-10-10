@@ -289,7 +289,7 @@ class PyGauge(wx.PyWindow):
             r.width = w
             r.height = r.height/2+1
 
-            pv = self._percentage
+            pv = value
 
             if pv <= 100:
                 c1 = map(lambda t: sum(t), zip(c1, (0,pv/3,-pv,0)))
