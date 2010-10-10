@@ -36,6 +36,9 @@ class PriceViewFull(StatsView):
         self._timerRuns = 0
         self._timerIdUpdate = wx.NewId()
         self._timerUpdate = None
+        self._cachedShip = 0
+        self._cachedFittings = 0
+        self._cachedTotal = 0
 
     def OnTimer( self, event):
         if self._timerId == event.GetId():
@@ -78,11 +81,11 @@ class PriceViewFull(StatsView):
             hbox = wx.BoxSizer(wx.HORIZONTAL)
             vbox.Add(hbox)
 
-            lbl = wx.StaticText(contentPanel, wx.ID_ANY, "0.00")
+            lbl = wx.StaticText(contentPanel, wx.ID_ANY, "0.00 ISK")
             setattr(self, "labelPrice%s" % type.capitalize(), lbl)
             hbox.Add(lbl, 0, wx.ALIGN_LEFT)
 
-            hbox.Add(wx.StaticText(contentPanel, wx.ID_ANY, " ISK"), 0, wx.ALIGN_LEFT)
+#            hbox.Add(wx.StaticText(contentPanel, wx.ID_ANY, " ISK"), 0, wx.ALIGN_LEFT)
         self.labelEMStatus = wx.StaticText(contentPanel, wx.ID_ANY, "")
         contentSizer.Add(self.labelEMStatus,0)
     def refreshPanel(self, fit):
@@ -116,9 +119,10 @@ class PriceViewFull(StatsView):
                 if self._timer.IsRunning():
                     self._timer.Stop()
             self.labelEMStatus.SetLabel("")
-            self.labelPriceShip.SetLabel("0.0")
-            self.labelPriceFittings.SetLabel("0.0")
-            self.labelPriceTotal.SetLabel("0.0")
+            self.labelPriceShip.SetLabel("0.0 ISK")
+            self.labelPriceFittings.SetLabel("0.0 ISK")
+            self.labelPriceTotal.SetLabel("0.0 ISK")
+            self._cachedFittings = self._cachedShip = self._cachedTotal = 0
             self.panel.Layout()
 
     def processPrices(self, prices):
@@ -133,12 +137,18 @@ class PriceViewFull(StatsView):
                 self._timer.Stop()
                 self.labelEMStatus.SetLabel("")
             modPrice = sum(map(lambda p: p.price or 0, prices[1:]))
-            self.labelPriceShip.SetLabel(formatAmount(shipPrice, 3, 3, 9))
-            self.labelPriceShip.SetToolTip(wx.ToolTip("%.2f ISK" % shipPrice))
-            self.labelPriceFittings.SetLabel(formatAmount(modPrice, 3, 3, 9))
-            self.labelPriceFittings.SetToolTip(wx.ToolTip("%.2f ISK" % modPrice))
-            self.labelPriceTotal.SetLabel(formatAmount(shipPrice + modPrice, 3, 3, 9))
-            self.labelPriceTotal.SetToolTip(wx.ToolTip("%.2f ISK" % (shipPrice + modPrice)))
+            if self._cachedShip != shipPrice:
+                self.labelPriceShip.SetLabel("%s ISK" % formatAmount(shipPrice, 3, 3, 9))
+                self.labelPriceShip.SetToolTip(wx.ToolTip("%.2f ISK" % shipPrice))
+                self._cachedShip = shipPrice
+            if self._cachedFittings != modPrice:
+                self.labelPriceFittings.SetLabel("%s ISK" % formatAmount(modPrice, 3, 3, 9))
+                self.labelPriceFittings.SetToolTip(wx.ToolTip("%.2f ISK" % modPrice))
+                self._cachedFittings = modPrice
+            if self._cachedTotal != (shipPrice+modPrice):
+                self.labelPriceTotal.SetLabel("%s ISK" % formatAmount(shipPrice + modPrice, 3, 3, 9))
+                self.labelPriceTotal.SetToolTip(wx.ToolTip("%.2f ISK" % (shipPrice + modPrice)))
+                self._cachedTotal = shipPrice + modPrice
             self.panel.Layout()
 
 PriceViewFull.register()
