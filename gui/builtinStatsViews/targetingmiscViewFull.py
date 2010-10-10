@@ -27,6 +27,7 @@ class TargetingMiscViewFull(StatsView):
     def __init__(self, parent):
         StatsView.__init__(self)
         self.parent = parent
+        self._cachedValues = []
     def getHeaderText(self, fit):
         return "Targeting && Misc"
 
@@ -61,13 +62,14 @@ class TargetingMiscViewFull(StatsView):
             box = wx.BoxSizer(wx.HORIZONTAL)
             gridTargeting.Add(box, 0, wx.ALIGN_LEFT)
 
-            lbl = wx.StaticText(contentPanel, wx.ID_ANY, "0")
+            lbl = wx.StaticText(contentPanel, wx.ID_ANY, "0 %s" %unit)
             setattr(self, "label%s" % labelShort, lbl)
             box.Add(lbl, 0, wx.ALIGN_LEFT)
 
-            lblUnit = wx.StaticText(contentPanel, wx.ID_ANY, " %s" % unit)
-            setattr(self, "labelUnit%s" % labelShort, lblUnit)
-            box.Add(lblUnit, 0, wx.ALIGN_LEFT)
+#            lblUnit = wx.StaticText(contentPanel, wx.ID_ANY, " %s" % unit)
+#            setattr(self, "labelUnit%s" % labelShort, lblUnit)
+#            box.Add(lblUnit, 0, wx.ALIGN_LEFT)
+            self._cachedValues.append(0)
 
         # Misc
         gridTargetingMisc.Add( wx.StaticLine( contentPanel, wx.ID_ANY, style = wx.VERTICAL),0, wx.EXPAND, 3 )
@@ -86,38 +88,41 @@ class TargetingMiscViewFull(StatsView):
             box = wx.BoxSizer(wx.HORIZONTAL)
             gridMisc.Add(box, 0, wx.ALIGN_LEFT)
 
-            lbl = wx.StaticText(contentPanel, wx.ID_ANY, "0")
+            lbl = wx.StaticText(contentPanel, wx.ID_ANY, "0 %s" % unit)
             setattr(self, "labelFull%s" % labelShort, lbl)
             box.Add(lbl, 0, wx.ALIGN_LEFT)
 
-            lblUnit = wx.StaticText(contentPanel, wx.ID_ANY, " %s" % unit)
-            setattr(self, "labelFullUnit%s" % labelShort, lblUnit)
-            box.Add(lblUnit, 0, wx.ALIGN_LEFT)
-
+#            lblUnit = wx.StaticText(contentPanel, wx.ID_ANY, " %s" % unit)
+#            setattr(self, "labelFullUnit%s" % labelShort, lblUnit)
+#            box.Add(lblUnit, 0, wx.ALIGN_LEFT)
+            self._cachedValues.append(0)
 
 
     def refreshPanel(self, fit):
         #If we did anything intresting, we'd update our labels to reflect the new fit's stats here
 
-        stats = (("labelTargets", lambda: fit.maxTargets, 3, 0, 0),
-                 ("labelRange", lambda: fit.ship.getModifiedItemAttr('maxTargetRange') / 1000, 3, 0, 0),
-                 ("labelScanRes", lambda: fit.ship.getModifiedItemAttr('scanResolution'), 3, 0, 0),
-                 ("labelSensorStr", lambda: fit.scanStrength, 3, 0, 0),
-                 ("labelFullCargo", lambda: fit.extraAttributes["capacity"], 3, 0, 9),
-                 ("labelFullSigRadius", lambda: fit.ship.getModifiedItemAttr("signatureRadius"), 3, 0, 9),
-                 ("labelFullSpeed", lambda: fit.ship.getModifiedItemAttr("maxVelocity"), 3, 0, 0),
-                 ("labelFullAlignTime", lambda: fit.alignTime, 3, 0, 0))
-
-        for labelName, value, prec, lowest, highest in stats:
+        stats = (("labelTargets", lambda: fit.maxTargets, 3, 0, 0, ""),
+                 ("labelRange", lambda: fit.ship.getModifiedItemAttr('maxTargetRange') / 1000, 3, 0, 0, "km"),
+                 ("labelScanRes", lambda: fit.ship.getModifiedItemAttr('scanResolution'), 3, 0, 0, "mm"),
+                 ("labelSensorStr", lambda: fit.scanStrength, 3, 0, 0, ""),
+                 ("labelFullSpeed", lambda: fit.ship.getModifiedItemAttr("maxVelocity"), 3, 0, 0, "m/s"),
+                 ("labelFullAlignTime", lambda: fit.alignTime, 3, 0, 0, "s"),
+                 ("labelFullCargo", lambda: fit.extraAttributes["capacity"], 3, 0, 9, u"m\u00B3"),
+                 ("labelFullSigRadius", lambda: fit.ship.getModifiedItemAttr("signatureRadius"), 3, 0, 9, ""))
+        counter = 0
+        for labelName, value, prec, lowest, highest, unit in stats:
             label = getattr(self, labelName)
             value = value() if fit is not None else 0
             value = value if value is not None else 0
-            label.SetLabel(formatAmount(value, prec, lowest, highest))
-            if labelName is not "labelSensorStr":
-                label.SetToolTip(wx.ToolTip("%.1f" % value))
-            else:
-                if fit is not None:
-                    label.SetToolTip(wx.ToolTip("Type: %s - %.1f" % (fit.scanType, value)))
+            if self._cachedValues[counter] != value:
+                label.SetLabel("%s %s" %(formatAmount(value, prec, lowest, highest), unit))
+                if labelName is not "labelSensorStr":
+                    label.SetToolTip(wx.ToolTip("%.1f" % value))
+                else:
+                    if fit is not None:
+                        label.SetToolTip(wx.ToolTip("Type: %s - %.1f" % (fit.scanType, value)))
+                self._cachedValues[counter] = value
+            counter += 1
 
         self.panel.Layout()
         self.headerPanel.Layout()
