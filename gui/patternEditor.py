@@ -43,8 +43,13 @@ class DmgPatternEditorDlg (wx.Dialog):
         self.ccDmgPattern = wx.Choice(self, choices=map(lambda p: p.name, self.choices))
         self.ccDmgPattern.SetSelection(0)
 
-        self.namePicker = wx.TextCtrl(self)
+        self.namePicker = wx.TextCtrl(self, style=wx.TE_PROCESS_ENTER)
+        self.characterRename.Bind(wx.EVT_TEXT_ENTER, self.processRename)
         self.namePicker.Hide()
+
+        self.btnSave = wx.Button(self, wx.ID_SAVE)
+        self.btnSave.Hide()
+        self.btnSave.Bind(wx.EVT_BUTTON, self.processRename)
 
         size = None
         headerSizer.Add(self.ccDmgPattern, 1, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT|wx.LEFT, 3)
@@ -212,6 +217,8 @@ class DmgPatternEditorDlg (wx.Dialog):
         self.rename.Enable()
         self.delete.Enable()
 
+    def getActivePattern(self):
+        return self.choices[self.ccDmgPattern.GetSelection()]
 
     def newPattern(self,event):
         cDP = service.DamagePattern.getInstance()
@@ -219,10 +226,38 @@ class DmgPatternEditorDlg (wx.Dialog):
         self.choices.append(p)
         id = self.ccDmgPattern.Append(p.name)
         self.ccDmgPattern.SetSelection(id)
-        self.renamePattern(event)
+        self.btnSave.SetLabel("Create")
+        self.renamePattern()
 
-    def renamePattern(self,event):
-        event.Skip()
+    def renamePattern(self,event=None):
+        if event is not None:
+            self.btnSave.SetLabel("Rename")
+
+        self.ccDmgPattern.Hide()
+        self.namePicker.Show()
+        self.headerSizer.Replace(self.ccDmgPattern, self.namePicker)
+        self.namePicker.SetFocus()
+
+        for btn in (self.new, self.rename, self.delete, self.copy):
+            btn.Hide()
+            self.headerSizer.Remove(btn)
+
+        self.headerSizer.Add(self.btnSave, 0, wx.ALIGN_CENTER)
+        self.btnSave.Show()
+        self.headerSizer.Layout()
+
+    def processRename(self, event):
+        cDP = service.DamagePattern.getInstance()
+        cDP.renamePattern(self.getActivePattern(), self.namePicker.GetLineText(0))
+
+        self.headerSizer.Replace(self.namePicker, self.ccDmgPattern)
+        self.ccDmgPattern.Show()
+        self.namePicker.Hide()
+        self.btnSave.Hide()
+        self.headerSizer.Remove(self.btnSave)
+        for btn in (self.new, self.rename, self.delete, self.copy):
+            self.headerSizer.Add(btn, 0, wx.ALIGN_CENTER_VERTICAL)
+            btn.Show()
 
     def copyPattern(self,event):
         event.Skip()
