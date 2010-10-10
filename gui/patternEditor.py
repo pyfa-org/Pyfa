@@ -154,7 +154,7 @@ class DmgPatternEditorDlg (wx.Dialog):
 
         self.editEM.SetMin(0)
         self.editTHERM.SetMin(0)
-        self.editKIN.setMin(0)
+        self.editKIN.SetMin(0)
         self.editEXP.SetMin(0)
 
         self.editEM.SetMax(99999)
