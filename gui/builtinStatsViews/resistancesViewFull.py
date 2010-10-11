@@ -171,8 +171,9 @@ class ResistancesViewFull(StatsView):
 
         for damageType in ("em", "thermal", "kinetic", "explosive"):
             lbl = getattr(self, "gaugeResistanceDamagepattern%s" % damageType.capitalize())
+
             if damagePattern is not None:
-                lbl.SetValue(getattr(damagePattern, "%sAmount" % damageType) / float(total) * 100)
+                lbl.SetValueRange(getattr(damagePattern, "%sAmount" % damageType), total)
             else:
                 lbl.SetValue(0)
 
