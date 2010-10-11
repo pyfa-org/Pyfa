@@ -1,3 +1,5 @@
+import math
+
 def formatAmount(val, prec=3, lowest=0, highest=0):
     """
     Add suffix to value, transform value to match new suffix and round it.
@@ -57,17 +59,10 @@ def processAmount(val, prec=3):
 
     Integer numbers are not rounded, only fractional part.
     """
-    # Check if we have no integer and some fraction after bunch of zeroes,
-    # counting these zeros in process
-    shiftFraction, integersNumber = 0, 0
-    if int(val) == 0 and val != 0:
-        while val < 0.1**(shiftFraction+1):
-            shiftFraction += 1
-    else:
-        while abs(val) >= 10**(integersNumber):
-            integersNumber +=1
-    # We want to show at least (prec) significant numbers in any cases
-    roundFactor = prec + shiftFraction - integersNumber
+    if val == 0: # Logarithm is not defined for zero
+        return "0"
+
+    roundFactor = int(prec - math.ceil(math.log10(abs(val))))
     # But we don't want to round integers
     if roundFactor < 0: roundFactor = 0
     val = round(val, roundFactor)
