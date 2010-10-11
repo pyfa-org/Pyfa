@@ -3,6 +3,7 @@ import gui.mainFrame
 import service
 import gui.fittingView
 import wx
+from gui import bitmapLoader
 
 class DamagePattern(ContextMenu):
     def __init__(self):
@@ -16,14 +17,30 @@ class DamagePattern(ContextMenu):
         self.patterns = sDP.getDamagePatternList()
         self.patterns.sort(key=lambda p: p.name)
         m = map(lambda p: p.name, self.patterns)
-        m.append("Raw")
         return m
 
     def activate(self, context, selection, i):
         sDP = service.DamagePattern.getInstance()
         sFit = service.Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
-        sFit.setDamagePattern(fitID, self.patterns[i] if i < len(self.patterns) else None)
+        sFit.setDamagePattern(fitID, self.patterns[i])
         wx.PostEvent(self.mainFrame, gui.fittingView.FitChanged(fitID=fitID))
+
+    def getBitmap(self, context, selection):
+        sFit = service.Fit.getInstance()
+        fitID = self.mainFrame.getActiveFit()
+        f = sFit.getFit(fitID)
+        dp = f.damagePattern
+        if dp is None:
+            return None
+
+        l = []
+        index = self.patterns.index(dp)
+        bitmap = bitmapLoader.getBitmap("state_active_small", "icons")
+        for i in range(len(self.patterns)):
+            l.append(bitmap if i == index else None)
+
+        return l
+
 
 DamagePattern.register()

@@ -42,14 +42,20 @@ class ContextMenu(object):
                     if isinstance(texts, basestring):
                         texts = (texts,)
 
+                    bitmap = m.getBitmap(context, selection)
+                    multiple = not isinstance(bitmap, wx.Bitmap)
                     for it, text in enumerate(texts):
                         id = wx.NewId()
                         item = wx.MenuItem(menu, id, text)
                         menu.info[id] = (m, context, it)
 
-                        bitmap = m.getBitmap(context, selection)
-                        if bitmap:
-                            item.SetBitmap(bitmap)
+                        if bitmap is not None:
+                            if multiple:
+                                bp = bitmap[it]
+                                if bp:
+                                    item.SetBitmap(bp)
+                            else:
+                                item.SetBitmap(bitmap)
 
                         menu.AppendItem(item)
 
