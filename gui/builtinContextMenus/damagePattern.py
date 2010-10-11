@@ -1,6 +1,4 @@
 from gui.contextMenu import ContextMenu
-from gui.itemStats import ItemStatsDialog
-from gui.patternEditor import DmgPatternEditorDlg
 import gui.mainFrame
 import service
 import gui.fittingView
