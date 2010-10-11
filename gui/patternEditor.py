@@ -288,7 +288,14 @@ class DmgPatternEditorDlg (wx.Dialog):
         self.ccDmgPattern.SetSelection(sel)
 
     def copyPattern(self,event):
-        event.Skip()
+        cDP = service.DamagePattern.getInstance()
+        p = cDP.copyPattern(self.getActivePattern())
+        self.choices.append(p)
+        id = self.ccDmgPattern.Append(p.name)
+        self.ccDmgPattern.SetSelection(id)
+        self.btnSave.SetLabel("Copy")
+        self.renamePattern()
+        self.patternChanged()
 
     def deletePattern(self,event):
         cDP = service.DamagePattern.getInstance()

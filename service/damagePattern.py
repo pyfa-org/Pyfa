@@ -19,6 +19,7 @@
 
 import eos.db
 import eos.types
+import copy
 
 class DamagePattern():
     instance = None
@@ -57,6 +58,11 @@ class DamagePattern():
 
     def deletePattern(self, p):
         eos.db.remove(p)
+
+    def copyPattern(self, p):
+        newP = copy.deepcopy(p)
+        eos.db.save(newP)
+        return newP
 
     def saveChanges(self, p):
         eos.db.save(p)
