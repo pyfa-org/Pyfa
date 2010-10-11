@@ -47,11 +47,12 @@ class ContextMenu(object):
                         item = wx.MenuItem(menu, id, text)
                         menu.info[id] = (m, context, it)
 
-                    bitmap = m.getBitmap(context, selection)
-                    if bitmap:
-                        item.SetBitmap(bitmap)
+                        bitmap = m.getBitmap(context, selection)
+                        if bitmap:
+                            item.SetBitmap(bitmap)
 
-                    menu.AppendItem(item)
+                        menu.AppendItem(item)
+
                     empty = False
 
             if amount > 0 and i != len(contexts) - 1:
