@@ -254,3 +254,13 @@ class Fit(object):
 
         fit.clear()
         fit.calculateModifiedAttributes()
+
+    def setDamagePattern(self, fitID, pattern):
+        if fitID is None:
+            return
+
+        fit = eos.db.getFit(fitID)
+        fit.damagePattern = pattern
+        eos.db.save(fit)
+        fit.clear()
+        fit.calculateModifiedAttributes()

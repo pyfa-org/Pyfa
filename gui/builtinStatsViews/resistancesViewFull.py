@@ -166,10 +166,13 @@ class ResistancesViewFull(StatsView):
         self.labelEhp.SetToolTip(wx.ToolTip("Effective: %d" % total))
 
         damagePattern = fit.damagePattern if fit is not None else None
+        total = sum((damagePattern.emAmount, damagePattern.thermalAmount,
+                    damagePattern.kineticAmount, damagePattern.explosiveAmount)) if damagePattern is not None else 0
+
         for damageType in ("em", "thermal", "kinetic", "explosive"):
             lbl = getattr(self, "gaugeResistanceDamagepattern%s" % damageType.capitalize())
             if damagePattern is not None:
-                lbl.SetValue(getattr(damagePattern, "%sAmount" % damageType))
+                lbl.SetValue(getattr(damagePattern, "%sAmount" % damageType) / float(total) * 100)
             else:
                 lbl.SetValue(0)
 

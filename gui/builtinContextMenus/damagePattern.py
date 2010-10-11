@@ -3,6 +3,8 @@ from gui.itemStats import ItemStatsDialog
 from gui.patternEditor import DmgPatternEditorDlg
 import gui.mainFrame
 import service
+import gui.fittingView
+import wx
 
 class DamagePattern(ContextMenu):
     def __init__(self):
@@ -13,9 +15,15 @@ class DamagePattern(ContextMenu):
 
     def getText(self, context, selection):
         sDP = service.DamagePattern.getInstance()
-        return map(lambda p: p.name, sDP.getDamagePatternList())
+        self.patterns = sDP.getDamagePatternList()
+        self.patterns.sort(key=lambda p: p.name)
+        return map(lambda p: p.name, self.patterns)
 
     def activate(self, context, selection, i):
-        pass
+        sDP = service.DamagePattern.getInstance()
+        sFit = service.Fit.getInstance()
+        fitID = self.mainFrame.getActiveFit()
+        sFit.setDamagePattern(fitID, self.patterns[i])
+        wx.PostEvent(self.mainFrame, gui.fittingView.FitChanged(fitID=fitID))
 
 DamagePattern.register()
