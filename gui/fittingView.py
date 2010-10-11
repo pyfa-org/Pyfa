@@ -33,7 +33,7 @@ class FittingView(d.Display):
                     "Module name/slot",
                     "attr:power",
                     "attr:cpu",
-                    "attr:capacitorNeed",
+                    "Capacitor Usage",
                     "attr:trackingSpeed",
                     "Max range",
                     "Module Ammo"]
@@ -46,7 +46,7 @@ class FittingView(d.Display):
             self.Bind(wx.EVT_RIGHT_UP, self.scheduleMenu)
         else:
             self.Bind(wx.EVT_RIGHT_DOWN, self.scheduleMenu)
-            
+
         self.activeFitID = None
 
     #Gets called from the fitMultiSwitch when it decides its time
