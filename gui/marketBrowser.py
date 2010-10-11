@@ -138,7 +138,7 @@ class MarketBrowser(wx.Panel):
     def addItemViewImage(self, iconFile):
         if iconFile is None:
             return -1
-        
+
         return self.itemImageList.Add(iconFile, "pack")
 
     def expandLookup(self, event):
@@ -316,7 +316,7 @@ class MarketBrowser(wx.Panel):
             selection.append(cMarket.getItem(itemId))
         if len(selection) == 0:
             return
-        menu = ContextMenu.getMenu(selection, "item")
+        menu = ContextMenu.getMenu(selection, "item" if self.searching is False else "itemSearch")
         self.PopupMenu(menu)
 
     def itemActivated(self, event):

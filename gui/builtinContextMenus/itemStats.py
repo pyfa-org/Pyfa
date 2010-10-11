@@ -8,10 +8,10 @@ class ItemStats(ContextMenu):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     def display(self, context, selection):
-        return context in ("item", "ship", "module", "ammo", "skill")
+        return context in ("item", "ship", "module", "ammo", "skill", "itemSearch")
 
     def getText(self, context, selection):
-        return "%s stats" % context.capitalize()
+        return "%s stats" % (context.capitalize() if context != "itemSearch" else "Item")
 
     def activate(self, context, selection, i):
         if context == "ship":
@@ -24,6 +24,6 @@ class ItemStats(ContextMenu):
         if context == "module" and stuff.isEmpty:
             return
 
-        dlg=ItemStatsDialog(stuff, context)
+        dlg=ItemStatsDialog(stuff, context if context != "itemSearch" else "Item")
 
 ItemStats.register()
