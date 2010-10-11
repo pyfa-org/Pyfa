@@ -9,7 +9,7 @@ class DamagePattern(ContextMenu):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     def display(self, context, selection):
-        return context in ("resistancesViewFull",)
+        return context in ("resistancesViewFull",) and self.mainFrame.getActiveFit() is not None
 
     def getText(self, context, selection):
         sDP = service.DamagePattern.getInstance()
