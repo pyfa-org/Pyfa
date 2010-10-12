@@ -23,6 +23,8 @@ from gui import builtinStatsViews
 from gui import bitmapLoader
 from gui import pygauge as PG
 from util import formatAmount
+import service
+import gui.mainFrame
 
 class ResistancesViewFull(StatsView):
     name = "resistancesViewFull"
@@ -30,6 +32,9 @@ class ResistancesViewFull(StatsView):
         StatsView.__init__(self)
         self.parent = parent
         self._cachedValues = []
+        self._toggleEHP = 1
+
+        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     def getHeaderText(self, fit):
         return "Resistances"
@@ -47,9 +52,9 @@ class ResistancesViewFull(StatsView):
         headerContentSizer = wx.BoxSizer(wx.HORIZONTAL)
         hsizer = headerPanel.GetSizer()
         hsizer.Add(headerContentSizer,0,0,0)
-        stEff = wx.StaticText(headerPanel, wx.ID_ANY, "( Effective HP: ")
-        headerContentSizer.Add(stEff)
-        headerPanel.GetParent().AddToggleItem(stEff)
+        self.stEff = wx.StaticText(headerPanel, wx.ID_ANY, "( Effective HP: ")
+        headerContentSizer.Add(self.stEff)
+        headerPanel.GetParent().AddToggleItem(self.stEff)
 
         self.labelEhp = wx.StaticText(headerPanel, wx.ID_ANY, "0")
         headerContentSizer.Add(self.labelEhp, 0)
@@ -76,8 +81,13 @@ class ResistancesViewFull(StatsView):
         for damageType in ("em", "thermal", "kinetic", "explosive"):
             sizerResistances.Add(bitmapLoader.getStaticBitmap("%s_big" % damageType, contentPanel, "icons"), wx.GBPosition( row, col ), wx.GBSpan( 1, 1 ), wx.ALIGN_CENTER)
             col+=1
+        self.stEHPs = wx.StaticText(contentPanel, wx.ID_ANY, "EHP")
+        self.stEHPs.SetToolTip(wx.ToolTip("Click to toggle between effective HP and raw HP"))
 
-        sizerResistances.Add(wx.StaticText(contentPanel, wx.ID_ANY, "EHP"), wx.GBPosition( row, col ), wx.GBSpan( 1, 1 ), wx.ALIGN_CENTER)
+        self.stEHPs.Bind(wx.EVT_LEFT_UP, self.toggleEHP)
+
+
+        sizerResistances.Add(self.stEHPs, wx.GBPosition( row, col ), wx.GBSpan( 1, 1 ), wx.ALIGN_CENTER)
         col=0
         row+=1
 
@@ -131,10 +141,30 @@ class ResistancesViewFull(StatsView):
             row+=1
             col=0
 
+    def toggleEHP(self,event):
+
+
+
+        self._toggleEHP *= -1
+        self.refreshPanel(self._currentFit)
 
 
     def refreshPanel(self, fit):
         #If we did anything intresting, we'd update our labels to reflect the new fit's stats here
+        self._currentFit = fit
+        sDP = service.DamagePattern.getInstance()
+        sFit = service.Fit.getInstance()
+        fitID = self.mainFrame.getActiveFit()
+        if self._toggleEHP == 1:
+            activeDmgPattern = getattr(self.mainFrame,"_activeDmgPattern", sDP.getDamagePattern("Uniform"))
+
+            sFit.setDamagePattern(fitID, activeDmgPattern)
+            self.stEHPs.SetLabel("EHP")
+        else:
+            sFit.setDamagePattern(fitID, None)
+            self.stEHPs.SetLabel("RAW HP")
+        self.stEHPs.SetToolTip(wx.ToolTip("Click to toggle between effective HP and raw HP"))
+
 
         for tankType in ("shield", "armor", "hull"):
             for damageType in ("em", "thermal", "kinetic", "explosive"):
@@ -163,7 +193,13 @@ class ResistancesViewFull(StatsView):
 
 
         self.labelEhp.SetLabel("%s" % formatAmount(total, 3, 0, 9))
-        self.labelEhp.SetToolTip(wx.ToolTip("Effective: %d" % total))
+        if self._toggleEHP == 1:
+            self.stEff.SetLabel("( Effective HP: ")
+            self.labelEhp.SetToolTip(wx.ToolTip("Effective: %d HP" % total))
+        else:
+            self.stEff.SetLabel("( Raw HP: ")
+            self.labelEhp.SetToolTip(wx.ToolTip("Raw: %d HP" % total))
+
 
         damagePattern = fit.damagePattern if fit is not None else None
         total = sum((damagePattern.emAmount, damagePattern.thermalAmount,

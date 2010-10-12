@@ -9,6 +9,7 @@ class DamagePattern(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
+
     def display(self, context, selection):
         return context in ("resistancesViewFull",) and self.mainFrame.getActiveFit() is not None
 
@@ -24,6 +25,7 @@ class DamagePattern(ContextMenu):
         sFit = service.Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
         sFit.setDamagePattern(fitID, self.patterns[i])
+        setattr(self.mainFrame,"_activeDmgPattern",self.patterns[i])
         wx.PostEvent(self.mainFrame, gui.fittingView.FitChanged(fitID=fitID))
 
     def getBitmap(self, context, selection):
