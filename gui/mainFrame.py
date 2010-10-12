@@ -30,6 +30,7 @@ from wx.lib.wordwrap import wordwrap
 from gui.characterEditor import CharacterEditor
 from gui.characterSelection import CharacterSelection
 from gui.patternEditor import DmgPatternEditorDlg
+from gui.importExport import ImportDialog, ExportDialog
 import aboutData
 import gui.fittingView as fv
 from wx._core import PyDeadObjectError
@@ -138,6 +139,16 @@ class MainFrame(wx.Frame):
         dlg.ShowModal()
         dlg.Destroy()
 
+    def showImportDialog(self, event):
+        dlg=ImportDialog(self)
+        dlg.ShowModal()
+        dlg.Destroy()
+
+    def showExportDialog(self, event):
+        dlg=ExportDialog(self)
+        dlg.ShowModal()
+        dlg.Destroy()
+
     def registerMenu(self):
         # Quit
         self.Bind(wx.EVT_MENU, self.ExitApp, id=wx.ID_EXIT)
@@ -149,6 +160,10 @@ class MainFrame(wx.Frame):
         self.Bind(wx.EVT_MENU, self.showCharacterEditor, id=self.GetMenuBar().characterEditorId)
         # Damage pattern editor
         self.Bind(wx.EVT_MENU, self.showDamagePatternEditor, id=self.GetMenuBar().damagePatternEditorId)
+        # Import dialog
+        self.Bind(wx.EVT_MENU, self.showImportDialog, id=wx.ID_OPEN)
+        # Export dialog
+        self.Bind(wx.EVT_MENU, self.showExportDialog, id=wx.ID_SAVEAS)
 
     def toggleShipBrowser(self, event):
         self.GetToolBar().toggleShipBrowser(event)
