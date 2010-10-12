@@ -26,7 +26,8 @@ def getStaticBitmap(name, parent, location):
     static.SetBitmap(getBitmap(name,location))
     return static
 
-locationMap = {"pack": os.path.join(config.staticPath, "icons")}
+locationMap = {"pack": os.path.join(config.staticPath, "icons"),
+               "ships": os.path.join(config.staticPath, "icons", "ships")}
 
 def getBitmap(name,location):
     icon = getImage(name, location)
