@@ -35,18 +35,7 @@ class ShipBrowser(wx.Panel):
                     return fitID
 
 
-class ShipView(wx.Panel):
-    def __init__(self, parent):
-        wx.Panel.__init__(self, parent)
-        headSizer = wx.BoxSizer(wx.VERTICAL)
-        self.SetSizer(headSizer)
-
-        self.stage1 = Stage1(self)
-        headSizer.Add(self.stage1)
-
-        self.currentStage = 1
-
-class Stage1(wx.ListCtrl):
+class ShipView(wx.ListCtrl):
     def __init__(self, parent):
         wx.ListCtrl.__init__(self, parent, style=wx.LC_ICON | wx.LC_AUTOARRANGE | wx.LC_SINGLE_SEL | wx.LC_EDIT_LABELS)
         self.rename = False
@@ -61,9 +50,6 @@ class Stage1(wx.ListCtrl):
         for id, name in shipRoot:
             index = self.InsertImageStringItem(sys.maxint, name, iconId)
             self.SetItemData(index, id)
-
-class Stage2(wx.ListCtrl):
-    pass
 
 class ShipMenu(wx.Panel):
     def __init__(self, parent):
