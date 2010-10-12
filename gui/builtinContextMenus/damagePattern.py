@@ -36,11 +36,10 @@ class DamagePattern(ContextMenu):
         if dp is None:
             return None
 
-        l = []
         index = self.patterns.index(dp)
         bitmap = bitmapLoader.getBitmap("state_active_small", "icons")
-        for i in range(len(self.patterns)):
-            l.append(bitmap if i == index else None)
+        l = [None] * len(self.patterns)
+        l[index] = bitmap
 
         return l
 

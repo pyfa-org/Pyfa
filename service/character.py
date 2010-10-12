@@ -86,6 +86,10 @@ class Character():
         eos.db.commit()
         eos.db.remove(char)
 
+    def getApiDetails(self, charID):
+        char = eos.db.getCharacter(charID)
+        return (char.apiID or "", char.apiKey or "")
+
     def charList(self, charID, userID, apiKey):
         char = eos.db.getCharacter(charID)
         char.apiID = userID
