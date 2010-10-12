@@ -162,7 +162,7 @@ class ResistancesViewFull(StatsView):
             self.stEHPs.SetLabel("EHP")
         else:
             sFit.setDamagePattern(fitID, None)
-            self.stEHPs.SetLabel("RAW HP")
+            self.stEHPs.SetLabel("HP")
         self.stEHPs.SetToolTip(wx.ToolTip("Click to toggle between effective HP and raw HP"))
 
 
