@@ -20,6 +20,8 @@
 import wx
 import service
 import config
+import gui.mainFrame
+import os
 
 class ImportDialog(wx.Dialog):
     def __init__(self, parent):
@@ -140,41 +142,86 @@ class ImportDialog(wx.Dialog):
         self.Fit()
         event.Skip()
 
-class ExportDialog(wx.Dialog):
-    def __init__(self, parent):
-        wx.Dialog.__init__ (self, parent, id=wx.ID_ANY, title=u"Export fit as ...", pos=wx.DefaultPosition, size=wx.Size(-1, -1), style=wx.DEFAULT_DIALOG_STYLE)
+class ExportDialog ( wx.Dialog ):
 
-        self.SetSizeHintsSz(wx.DefaultSize, wx.DefaultSize)
+    def __init__( self, parent ):
+        wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Export fit as ...", pos = wx.DefaultPosition, size = wx.Size( -1,-1 ), style = wx.DEFAULT_DIALOG_STYLE )
 
-        mainSizer = wx.BoxSizer(wx.VERTICAL)
+        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+        self.srvFit = service.fit.Fit.getInstance()
 
-        fileSizer = wx.BoxSizer(wx.HORIZONTAL)
+        self.SetSizeHintsSz( wx.DefaultSize, wx.DefaultSize )
 
-        self.fitFileName = wx.TextCtrl(self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0)
-        fileSizer.Add(self.fitFileName, 1, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
+        mainSizer = wx.BoxSizer( wx.VERTICAL )
 
-        self.cDirPicker = wx.DirPickerCtrl(self, wx.ID_ANY, wx.EmptyString, u"Select a folder", wx.DefaultPosition, wx.DefaultSize, wx.DIRP_DIR_MUST_EXIST)
-        fileSizer.Add(self.cDirPicker, 0, wx.TOP | wx.BOTTOM | wx.ALIGN_CENTER_VERTICAL, 5)
+        fileSizer = wx.BoxSizer( wx.HORIZONTAL )
 
-        self.btnOK = wx.Button(self, wx.ID_ANY, u"OK", wx.DefaultPosition, wx.DefaultSize, 0)
-        fileSizer.Add(self.btnOK, 0, wx.TOP | wx.BOTTOM | wx.ALIGN_CENTER_VERTICAL, 5)
+        self.cFileSavePicker = wx.FilePickerCtrl( self, wx.ID_ANY, wx.EmptyString, u"Select a file", u"*.*", wx.DefaultPosition, wx.DefaultSize, wx.FLP_CHANGE_DIR|wx.FLP_OVERWRITE_PROMPT|wx.FLP_SAVE|wx.FLP_USE_TEXTCTRL )
+        fileSizer.Add( self.cFileSavePicker, 1, wx.ALL, 5 )
 
-        mainSizer.Add(fileSizer, 0, wx.EXPAND, 5)
+        mainSizer.Add( fileSizer, 0, wx.EXPAND, 5 )
 
-        self.m_staticline2 = wx.StaticLine(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL)
-        mainSizer.Add(self.m_staticline2, 0, wx.EXPAND, 5)
+        self.m_staticline2 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
+        self.m_staticline2.SetMinSize( wx.Size( 400,-1 ) )
 
-        choiceSizer = wx.BoxSizer(wx.VERTICAL)
+        mainSizer.Add( self.m_staticline2, 0, wx.EXPAND, 5 )
+
+        choiceSizer = wx.BoxSizer( wx.VERTICAL )
 
         chCtrlChoices = [ u"EFT file", u"XML file", u"EFT && XML file" ]
-        self.chCtrl = wx.RadioBox(self, wx.ID_ANY, u"Choose wisely", wx.DefaultPosition, wx.DefaultSize, chCtrlChoices, 2, wx.RA_SPECIFY_COLS)
-        self.chCtrl.SetSelection(0)
-        choiceSizer.Add(self.chCtrl, 0, wx.EXPAND | wx.ALL, 5)
+        self.chCtrl = wx.RadioBox( self, wx.ID_ANY, u"Export type", wx.DefaultPosition, wx.DefaultSize, chCtrlChoices, 3, wx.RA_SPECIFY_COLS )
+        self.chCtrl.SetSelection( 0 )
+        choiceSizer.Add( self.chCtrl, 0, wx.EXPAND|wx.ALL, 5 )
 
-        mainSizer.Add(choiceSizer, 1, wx.EXPAND, 5)
+        mainSizer.Add( choiceSizer, 1, wx.EXPAND, 5 )
 
-        self.SetSizer(mainSizer)
+        footerSizer = wx.BoxSizer( wx.HORIZONTAL )
+
+        self.stStatus = wx.StaticText( self, wx.ID_ANY, u"", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.stStatus.Wrap( -1 )
+        footerSizer.Add( self.stStatus, 1, wx.ALIGN_CENTER_VERTICAL|wx.TOP|wx.BOTTOM|wx.LEFT, 5 )
+
+        self.bntExport = wx.Button( self, wx.ID_ANY, u"Export", wx.DefaultPosition, wx.DefaultSize, 0 )
+        footerSizer.Add( self.bntExport, 0, wx.ALIGN_CENTER_VERTICAL|wx.TOP|wx.BOTTOM, 5 )
+
+        self.btnOK = wx.Button( self, wx.ID_OK, u"OK", wx.DefaultPosition, wx.DefaultSize, 0 )
+        footerSizer.Add( self.btnOK, 0, wx.TOP|wx.BOTTOM|wx.ALIGN_CENTER_VERTICAL, 5 )
+
+        mainSizer.Add( footerSizer, 0, wx.EXPAND, 5 )
+
+        self.SetSizer( mainSizer )
         self.Layout()
-        mainSizer.Fit(self)
 
-        self.Centre(wx.BOTH)
+        fitID = self.mainFrame.getActiveFit()
+        self.fit = self.srvFit.getFit(fitID)
+        if self.fit is None:
+            self.stStatus.SetLabel("Error: please select a fit before trying to export!")
+            self.cFileSavePicker.Enable( False )
+            self.chCtrl.Enable( False )
+            self.bntExport.Enable( False )
+        else:
+            self.stStatus.SetLabel("Selected fit: %s" % self.fit.name)
+            self.filePath = os.path.join(config.staticPath,self.fit.name)
+            self.cFileSavePicker.SetPath(self.filePath)
+        mainSizer.Fit( self )
+
+        self.Centre( wx.BOTH )
+
+        # Connect Events
+        self.cFileSavePicker.Bind( wx.EVT_FILEPICKER_CHANGED, self.OnFileChoose )
+        self.btnOK.Bind( wx.EVT_BUTTON, self.Close )
+
+
+    # Virtual event handlers, overide them in your derived class
+    def OnFileChoose( self, event ):
+        self.filePath = event.Path
+        event.Skip()
+
+    def Close( self, event ):
+        extensions = ["xml", "txt"]
+        selection  = self.chCtrl.GetSelection()
+        if selection <2:
+            filename = "%s%s" %(self.filePath,extensions[selection])
+        event.Skip()
+
+
