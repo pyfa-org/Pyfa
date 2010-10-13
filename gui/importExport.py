@@ -156,7 +156,7 @@ class ExportDialog ( wx.Dialog ):
 
         fileSizer = wx.BoxSizer( wx.HORIZONTAL )
 
-        self.cFileSavePicker = wx.FilePickerCtrl( self, wx.ID_ANY, wx.EmptyString, u"Select a file", u"*.*", wx.DefaultPosition, wx.DefaultSize, wx.FLP_CHANGE_DIR|wx.FLP_OVERWRITE_PROMPT|wx.FLP_SAVE|wx.FLP_USE_TEXTCTRL )
+        self.cFileSavePicker = wx.FilePickerCtrl( self, wx.ID_ANY, wx.EmptyString, u"Select a file", u"XML files (*.xml)|*.xml|TXT files (*.txt)|*.txt", wx.DefaultPosition, wx.DefaultSize, wx.FLP_CHANGE_DIR|wx.FLP_OVERWRITE_PROMPT|wx.FLP_SAVE|wx.FLP_USE_TEXTCTRL )
         fileSizer.Add( self.cFileSavePicker, 1, wx.ALL, 5 )
 
         mainSizer.Add( fileSizer, 0, wx.EXPAND, 5 )
@@ -211,11 +211,28 @@ class ExportDialog ( wx.Dialog ):
         self.cFileSavePicker.Bind( wx.EVT_FILEPICKER_CHANGED, self.OnFileChoose )
         self.btnOK.Bind( wx.EVT_BUTTON, self.Close )
         self.btnExport.Bind( wx.EVT_BUTTON, self.ExportFit )
+        self.chCtrl.Bind( wx.EVT_RADIOBOX, self.OnExtSelect )
 
 
     # Virtual event handlers, overide them in your derived class
+    def OnExtSelect( self, event ):
+#        selection = self.chCtrl.GetSelection()
+#        if selection == 0:
+#            ext = "XML files (*.xml)|*.xml"
+#        elif selection == 1:
+#            ext = "TXT files (*.txt)|*.txt"
+#        else:
+#            ext = "XML files (*.xml)|*.xml|TXT files (*.txt)|*.txt"
+#        self.cFileSavePicker.SetWildcard(ext)
+        event.Skip()
+
     def OnFileChoose( self, event ):
-        self.filePath = event.Path
+        self.filePath,ext = os.path.splitext(event.Path)
+        self.cFileSavePicker.SetPath(self.filePath)
+        if ext.lower() == "xml":
+            self.chCtrl.SetSelection(0)
+        else:
+            self.chCtrl.SetSelection(1)
         event.Skip()
 
     def ExportFit( self, event ):
