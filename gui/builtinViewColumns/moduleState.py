@@ -29,12 +29,6 @@ class ModuleState(ViewColumn):
         self.resizable = False
         self.size = 20
         self.stateNameMap = {}
-        for state in State.__dict__:
-            if state[0:2] == "__":
-                continue
-
-            id = State.__dict__[state]
-            self.stateNameMap[id] = state.lower()
 
     def getText(self, mod):
         return ""
@@ -43,7 +37,7 @@ class ModuleState(ViewColumn):
         if mod.isEmpty:
             return -1
         else:
-            bitmap = bitmapLoader.getBitmap("state_%s_small" % self.stateNameMap[mod.state], "icons")
+            bitmap = bitmapLoader.getBitmap("state_%s_small" % State.getName(mod.state).lower(), "icons")
             return self.fittingView.imageList.Add(bitmap)
 
 ModuleState.register()

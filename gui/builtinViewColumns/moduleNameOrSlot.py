@@ -27,23 +27,16 @@ class ModuleNameOrSlot(ViewColumn):
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
         self.columnText = "Name"
-        self.slotNameMap = {}
-        for slot in Slot.__dict__:
-            if slot[0:2] == "__":
-                continue
-
-            id = Slot.__dict__[slot]
-            self.slotNameMap[id] = slot.lower()
 
     def getText(self, mod):
         if mod.isEmpty:
-            return "%s Slot" % self.slotNameMap[mod.slot].capitalize()
+            return "%s Slot" % Slot.getName(mod.slot).capitalize()
         else:
             return mod.item.name
 
     def getImageId(self, mod):
         if mod.isEmpty:
-            bitmap = bitmapLoader.getBitmap("slot_%s_small" % self.slotNameMap[mod.slot], "icons")
+            bitmap = bitmapLoader.getBitmap("slot_%s_small" % Slot.getName(mod.slot).lower(), "icons")
             iconId = self.fittingView.imageList.Add(bitmap)
         else:
             iconFile = mod.item.icon.iconFile if mod.item.icon else ""
