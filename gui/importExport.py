@@ -89,17 +89,23 @@ class ImportDialog(wx.Dialog):
         sFit = service.Fit.getInstance()
         if self._toggleEdit == -1:
             if self._fitsFromFile:
-                sFit.saveImportedFits(self._fitsFromFile)
-                self.stStatus.SetLabel("Status: %d fit(s) imported" % len(self._fitsFromFile))
+                try:
+                    sFit.saveImportedFits(self._fitsFromFile)
+                    self.stStatus.SetLabel("Status: %d fit(s) imported" % len(self._fitsFromFile))
+                except:
+                    self.stStatus.SetLabel("Status: Error importing from file!")
                 self._fitsFromFile = None
             else:
                 self.stStatus.SetLabel("Status: No fits were specified. Use Browse button.")
         else:
             buffer = self.tcEdit.GetValue()
             if len(buffer) != 0:
-                self._fitsFromEdit = sFit.importFitFromBuffer(buffer)
-                sFit.saveImportedFits(self._fitsFromEdit)
-                self.stStatus.SetLabel("Status: %d fit(s) imported" % len(self._fitsFromEdit))
+                try:
+                    self._fitsFromEdit = sFit.importFitFromBuffer(buffer)
+                    sFit.saveImportedFits(self._fitsFromEdit)
+                    self.stStatus.SetLabel("Status: %d fit(s) imported" % len(self._fitsFromEdit))
+                except:
+                    self.stStatus.SetLabel("Status: Error importing from text editor!")
             else:
                 self.stStatus.SetLabel("Status: Nothing specified.")
         event.Skip()
@@ -107,8 +113,11 @@ class ImportDialog(wx.Dialog):
 
     def prepareFileFits(self, event):
         sFit = service.Fit.getInstance()
-        self._fitsFromFile = sFit.importFit(event.Path)
-        self.stStatus.SetLabel("Found %d fit(s)." % len(self._fitsFromFile))
+        try:
+            self._fitsFromFile = sFit.importFit(event.Path)
+            self.stStatus.SetLabel("Status: Found %d fit(s)." % len(self._fitsFromFile))
+        except:
+            self.stStatus.SetLabel("Status: Invalid fitting file!")
 
     def ImportFromFile( self, event ):
         print event.Path
