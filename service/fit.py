@@ -269,8 +269,9 @@ class Fit(object):
         f = file(path)
         type, fits = eos.types.Fit.importAuto(f.read())
         output = ""
+
         for fit in fits:
             eos.db.save(fit)
-            output += "Importing %s (%s)" % (fit.name, fit.ship.item.name)
+            output += "Importing %s (%s)\n" % (fit.name, fit.ship.item.name)
 
-        return output
+        return len(fits)
