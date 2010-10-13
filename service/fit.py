@@ -265,6 +265,10 @@ class Fit(object):
         fit.clear()
         fit.calculateModifiedAttributes()
 
+    def exportFit(self, fitID):
+        fit = eos.db.getFit(fitID)
+        return fit.exportEft()
+
     def importFit(self, path):
         f = file(path)
         type, fits = eos.types.Fit.importAuto(f.read())
