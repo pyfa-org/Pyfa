@@ -264,3 +264,13 @@ class Fit(object):
         eos.db.save(fit)
         fit.clear()
         fit.calculateModifiedAttributes()
+
+    def importFit(self, path):
+        f = file(path)
+        type, fits = eos.types.Fit.importAuto(f.read())
+        output = ""
+        for fit in fits:
+            eos.db.save(fit)
+            output += "Importing %s (%s)" % (fit.name, fit.ship.item.name)
+
+        return output
