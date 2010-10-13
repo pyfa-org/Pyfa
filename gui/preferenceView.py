@@ -24,7 +24,7 @@ class PreferenceView(object):
 
     @classmethod
     def register(cls):
-        PreferencesView.views[cls.name] = cls
+        PreferenceView.views[cls.name] = cls
 
     @classmethod
     def getView(cls, name):
