@@ -271,7 +271,7 @@ class Fit(object):
 
     def exportXml(self, *fitIDs):
         fits = map(lambda id: eos.db.getFit(id), fitIDs)
-        return Fit.exportXml(*fits)
+        return eos.types.Fit.exportXml(*fits)
 
     def importFit(self, path):
         f = file(path)

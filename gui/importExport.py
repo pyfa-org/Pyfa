@@ -168,7 +168,7 @@ class ExportDialog ( wx.Dialog ):
 
         choiceSizer = wx.BoxSizer( wx.VERTICAL )
 
-        chCtrlChoices = [ u"EFT file", u"XML file", u"EFT && XML file" ]
+        chCtrlChoices = [ u"XML file", u"EFT file", u"XML && EFT file" ]
         self.chCtrl = wx.RadioBox( self, wx.ID_ANY, u"Export type", wx.DefaultPosition, wx.DefaultSize, chCtrlChoices, 3, wx.RA_SPECIFY_COLS )
         self.chCtrl.SetSelection( 0 )
         choiceSizer.Add( self.chCtrl, 0, wx.EXPAND|wx.ALL, 5 )
@@ -181,8 +181,8 @@ class ExportDialog ( wx.Dialog ):
         self.stStatus.Wrap( -1 )
         footerSizer.Add( self.stStatus, 1, wx.ALIGN_CENTER_VERTICAL|wx.TOP|wx.BOTTOM|wx.LEFT, 5 )
 
-        self.bntExport = wx.Button( self, wx.ID_ANY, u"Export", wx.DefaultPosition, wx.DefaultSize, 0 )
-        footerSizer.Add( self.bntExport, 0, wx.ALIGN_CENTER_VERTICAL|wx.TOP|wx.BOTTOM, 5 )
+        self.btnExport = wx.Button( self, wx.ID_ANY, u"Export", wx.DefaultPosition, wx.DefaultSize, 0 )
+        footerSizer.Add( self.btnExport, 0, wx.ALIGN_CENTER_VERTICAL|wx.TOP|wx.BOTTOM, 5 )
 
         self.btnOK = wx.Button( self, wx.ID_OK, u"OK", wx.DefaultPosition, wx.DefaultSize, 0 )
         footerSizer.Add( self.btnOK, 0, wx.TOP|wx.BOTTOM|wx.ALIGN_CENTER_VERTICAL, 5 )
@@ -192,13 +192,13 @@ class ExportDialog ( wx.Dialog ):
         self.SetSizer( mainSizer )
         self.Layout()
 
-        fitID = self.mainFrame.getActiveFit()
-        self.fit = self.srvFit.getFit(fitID)
+        self.fitID = self.mainFrame.getActiveFit()
+        self.fit = self.srvFit.getFit(self.fitID)
         if self.fit is None:
             self.stStatus.SetLabel("Error: please select a fit before trying to export!")
             self.cFileSavePicker.Enable( False )
             self.chCtrl.Enable( False )
-            self.bntExport.Enable( False )
+            self.btnExport.Enable( False )
         else:
             self.stStatus.SetLabel("Selected fit: %s" % self.fit.name)
             self.filePath = os.path.join(config.staticPath,self.fit.name)
@@ -210,6 +210,7 @@ class ExportDialog ( wx.Dialog ):
         # Connect Events
         self.cFileSavePicker.Bind( wx.EVT_FILEPICKER_CHANGED, self.OnFileChoose )
         self.btnOK.Bind( wx.EVT_BUTTON, self.Close )
+        self.btnExport.Bind( wx.EVT_BUTTON, self.ExportFit )
 
 
     # Virtual event handlers, overide them in your derived class
@@ -217,11 +218,36 @@ class ExportDialog ( wx.Dialog ):
         self.filePath = event.Path
         event.Skip()
 
-    def Close( self, event ):
+    def ExportFit( self, event ):
         extensions = ["xml", "txt"]
+        sFit = service.Fit.getInstance()
         selection  = self.chCtrl.GetSelection()
         if selection <2:
-            filename = "%s%s" %(self.filePath,extensions[selection])
+            filename = "%s.%s" %(self.filePath,extensions[selection])
+            if selection == 0:
+                output = sFit.exportXml(self.fitID)
+            else:
+                output = sFit.exportFit(self.fitID)
+
+            self.WriteFile(filename,output)
+        else:
+            xmlfname = "%s.%s" %(self.filePath,extensions[0])
+            txtfname = "%s.%s" %(self.filePath,extensions[1])
+            xmlbuff = sFit.exportXml(self.fitID)
+            txtbuff = sFit.exportFit(self.fitID)
+            self.WriteFile(xmlfname, xmlbuff)
+            self.WriteFile(txtfname, txtbuff)
+        self.stStatus.SetLabel("%s exported." % self.fit.name)
+        self.chCtrl.Enable(False)
+        self.cFileSavePicker.Enable(False)
+        self.btnExport.Enable(False)
         event.Skip()
 
+    def Close( self, event ):
 
+        event.Skip()
+
+    def WriteFile(self,filename,buffer):
+        ofile = file(filename,"w")
+        ofile.write(buffer)
+        ofile.close()
