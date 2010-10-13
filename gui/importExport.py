@@ -27,6 +27,10 @@ class ImportDialog(wx.Dialog):
         self._toggleEdit = -1
         self.SetSizeHintsSz(wx.DefaultSize, wx.DefaultSize)
         self.SetMinSize((500,300))
+
+        self._fitsFromFile = None
+        self._fitsFromEdit = None
+
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
         headerSizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -34,7 +38,7 @@ class ImportDialog(wx.Dialog):
         self.cFilePicker = wx.FilePickerCtrl(self, wx.ID_ANY, wx.EmptyString, u"Select a fit file", u"*.*", style=wx.FLP_DEFAULT_STYLE | wx.FLP_FILE_MUST_EXIST | wx.FLP_CHANGE_DIR)
         headerSizer.Add(self.cFilePicker, 1, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
 
-        self.tbtnEdit = wx.ToggleButton( self, wx.ID_ANY, u"Live Edit", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.tbtnEdit = wx.ToggleButton( self, wx.ID_ANY, u"Text Edit", wx.DefaultPosition, wx.DefaultSize, 0 )
         headerSizer.Add( self.tbtnEdit, 0, wx.ALIGN_CENTER_VERTICAL|wx.RIGHT, 5 )
 
 
@@ -44,7 +48,7 @@ class ImportDialog(wx.Dialog):
         mainSizer.Add( self.m_staticline2, 0, wx.EXPAND, 5 )
         contentSizer = wx.BoxSizer(wx.VERTICAL)
 
-        self.tcEdit = wx.TextCtrl(self, wx.ID_ANY, u"", style=wx.TE_READONLY|wx.TE_MULTILINE)
+        self.tcEdit = wx.TextCtrl(self, wx.ID_ANY, u"", style=wx.TE_MULTILINE)
         self.tcEdit.SetMinSize( wx.Size( -1,250 ) )
         contentSizer.Add(self.tcEdit, 1, wx.EXPAND, 5)
 
@@ -53,12 +57,15 @@ class ImportDialog(wx.Dialog):
         footerSizer = wx.BoxSizer(wx.HORIZONTAL)
 
 
-        self.stStatus = wx.StaticText( self, wx.ID_ANY, u"Status:", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.stStatus = wx.StaticText( self, wx.ID_ANY, u"Status: File mode.", wx.DefaultPosition, wx.DefaultSize, 0 )
         self.stStatus.Wrap( -1 )
         footerSizer.Add( self.stStatus, 1, wx.ALIGN_CENTER_VERTICAL|wx.LEFT, 5 )
 
+        self.btnImport = wx.Button( self, wx.ID_ANY, u"Import", wx.DefaultPosition, wx.DefaultSize, 0 )
+        footerSizer.Add( self.btnImport, 0, wx.ALIGN_CENTER_VERTICAL|wx.TOP|wx.BOTTOM|wx.RIGHT, 5 )
+
         self.btnOK = wx.Button(self, wx.ID_OK, u"OK", wx.DefaultPosition, wx.DefaultSize, 0)
-        footerSizer.Add(self.btnOK, 0, wx.ALL, 5)
+        footerSizer.Add(self.btnOK, 0, wx.TOP|wx.BOTTOM|wx.RIGHT|wx.ALIGN_CENTER_VERTICAL, 5)
 
         mainSizer.Add(footerSizer, 0, wx.EXPAND, 5)
 
@@ -72,14 +79,36 @@ class ImportDialog(wx.Dialog):
 
         self.Bind( wx.EVT_CLOSE, self.CloseDlg )
         self.btnOK.Bind( wx.EVT_BUTTON, self.CloseDlg )
-        self.cFilePicker.Bind( wx.EVT_FILEPICKER_CHANGED, self.importFits )
+        self.cFilePicker.Bind( wx.EVT_FILEPICKER_CHANGED, self.prepareFileFits )
         self.tbtnEdit.Bind( wx.EVT_TOGGLEBUTTON, self.SwitchEditCtrl )
-
+        self.btnImport.Bind( wx.EVT_BUTTON, self.ImportFittings )
         self.Centre(wx.BOTH)
 
-    def importFits(self, event):
+
+    def ImportFittings( self, event ):
         sFit = service.Fit.getInstance()
-        self.stStatus.SetLabel("Imported %d fit(s)" % (sFit.importFit(event.Path)))
+        if self._toggleEdit == -1:
+            if self._fitsFromFile:
+                sFit.saveImportedFits(self._fitsFromFile)
+                self.stStatus.SetLabel("Status: %d fit(s) imported" % len(self._fitsFromFile))
+                self._fitsFromFile = None
+            else:
+                self.stStatus.SetLabel("Status: No fits were specified. Use Browse button.")
+        else:
+            buffer = self.tcEdit.GetValue()
+            if len(buffer) != 0:
+                self._fitsFromEdit = sFit.importFitFromBuffer(buffer)
+                sFit.saveImportedFits(self._fitsFromEdit)
+                self.stStatus.SetLabel("Status: %d fit(s) imported" % len(self._fitsFromEdit))
+            else:
+                self.stStatus.SetLabel("Status: Nothing specified.")
+        event.Skip()
+
+
+    def prepareFileFits(self, event):
+        sFit = service.Fit.getInstance()
+        self._fitsFromFile = sFit.importFit(event.Path)
+        self.stStatus.SetLabel("Found %d fit(s)." % len(self._fitsFromFile))
 
     def ImportFromFile( self, event ):
         print event.Path
@@ -92,8 +121,12 @@ class ImportDialog(wx.Dialog):
         self._toggleEdit *= -1
         if self._toggleEdit == -1:
             self.tcEdit.Show(False)
+            self.cFilePicker.Enable( True )
+            self.stStatus.SetLabel("Status: File mode.")
         else:
             self.tcEdit.Show(True)
+            self.cFilePicker.Enable( False )
+            self.stStatus.SetLabel("Status: Text edit mode.")
         self.Layout()
         self.Fit()
         event.Skip()

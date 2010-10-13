@@ -268,10 +268,15 @@ class Fit(object):
     def importFit(self, path):
         f = file(path)
         type, fits = eos.types.Fit.importAuto(f.read())
-        output = ""
 
+        return fits
+
+    def importFitFromBuffer(self, buffer):
+        type,fits = eos.types.Fit.importAuto(buffer)
+
+        return fits
+
+    def saveImportedFits(self, fits):
         for fit in fits:
             eos.db.save(fit)
-            output += "Importing %s (%s)\n" % (fit.name, fit.ship.item.name)
-
-        return len(fits)
+        #should return -1 in case of errors
