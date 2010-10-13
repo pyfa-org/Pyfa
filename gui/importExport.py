@@ -18,6 +18,7 @@
 #===============================================================================
 
 import wx
+import service
 
 class ImportDialog(wx.Dialog):
     def __init__(self, parent):
@@ -32,14 +33,11 @@ class ImportDialog(wx.Dialog):
         self.cFilePicker = wx.FilePickerCtrl(self, wx.ID_ANY, wx.EmptyString, u"Select a fit file", u"*.*", style=wx.FLP_DEFAULT_STYLE | wx.FLP_FILE_MUST_EXIST)
         headerSizer.Add(self.cFilePicker, 1, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
 
-        self.btnImportEveXML = wx.Button(self, wx.ID_ANY, u"Import from EVE", wx.DefaultPosition, wx.DefaultSize, 0)
-        headerSizer.Add(self.btnImportEveXML, 0, wx.TOP | wx.BOTTOM | wx.RIGHT | wx.ALIGN_CENTER_VERTICAL, 5)
-
         mainSizer.Add(headerSizer, 0, wx.EXPAND, 5)
 
         contentSizer = wx.BoxSizer(wx.VERTICAL)
 
-        self.tcPreview = wx.TextCtrl(self, wx.ID_ANY, u"THIS IS AN EFT FIT PREVIEW | log", style=wx.TE_READONLY)
+        self.tcPreview = wx.TextCtrl(self, wx.ID_ANY, u"", style=wx.TE_READONLY)
         contentSizer.Add(self.tcPreview, 1, wx.EXPAND, 5)
 
         mainSizer.Add(contentSizer, 1, wx.EXPAND, 5)
@@ -59,7 +57,9 @@ class ImportDialog(wx.Dialog):
 
         self.Centre(wx.BOTH)
 
-
+    def importFits(self, event):
+        sFit = service.Fit.getInstance()
+        self.tcPreview.SetLabel(sFit.importFit(event.Path))
 
 class ExportDialog(wx.Dialog):
     def __init__(self, parent):
