@@ -279,4 +279,3 @@ class Fit(object):
     def saveImportedFits(self, fits):
         for fit in fits:
             eos.db.save(fit)
-        #should return -1 in case of errors
