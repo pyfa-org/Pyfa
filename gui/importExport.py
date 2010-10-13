@@ -29,7 +29,7 @@ class ImportDialog(wx.Dialog):
 
         headerSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.cFilePicker = wx.FilePickerCtrl(self, wx.ID_ANY, wx.EmptyString, u"Select a fit file", u"*.*", wx.DefaultPosition, wx.DefaultSize, wx.FLP_DEFAULT_STYLE)
+        self.cFilePicker = wx.FilePickerCtrl(self, wx.ID_ANY, wx.EmptyString, u"Select a fit file", u"*.*", style=wx.FLP_DEFAULT_STYLE | wx.FLP_FILE_MUST_EXIST)
         headerSizer.Add(self.cFilePicker, 1, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
 
         self.btnImportEveXML = wx.Button(self, wx.ID_ANY, u"Import from EVE", wx.DefaultPosition, wx.DefaultSize, 0)
@@ -39,14 +39,14 @@ class ImportDialog(wx.Dialog):
 
         contentSizer = wx.BoxSizer(wx.VERTICAL)
 
-        self.tcPreview = wx.TextCtrl(self, wx.ID_ANY, u"THIS IS AN EFT FIT PREVIEW | log", wx.DefaultPosition, wx.DefaultSize, wx.TE_READONLY)
+        self.tcPreview = wx.TextCtrl(self, wx.ID_ANY, u"THIS IS AN EFT FIT PREVIEW | log", style=wx.TE_READONLY)
         contentSizer.Add(self.tcPreview, 1, wx.EXPAND, 5)
 
         mainSizer.Add(contentSizer, 1, wx.EXPAND, 5)
 
         footerSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.ckbPreview = wx.CheckBox(self, wx.ID_ANY, u"Preview", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.ckbPreview = wx.CheckBox(self, wx.ID_ANY, u"Preview")
         footerSizer.Add(self.ckbPreview, 1, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
 
         self.btnOK = wx.Button(self, wx.ID_ANY, u"OK", wx.DefaultPosition, wx.DefaultSize, 0)
@@ -58,6 +58,8 @@ class ImportDialog(wx.Dialog):
         self.Layout()
 
         self.Centre(wx.BOTH)
+
+
 
 class ExportDialog(wx.Dialog):
     def __init__(self, parent):
