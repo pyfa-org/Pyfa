@@ -442,7 +442,7 @@ class PyGauge(wx.PyWindow):
             start = 0
             end = oldValue - value
 
-        step=self.OUT_QUART(self._animStep, start, end, self._animDuration)
+        step=self.OUT_QUAD(self._animStep, start, end, self._animDuration)
         self._animStep += self._period
 
         if self._timerId == event.GetId():
