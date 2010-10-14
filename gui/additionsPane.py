@@ -23,7 +23,7 @@ from gui.boosterView import BoosterView
 from gui.droneView import DroneView
 from gui.implantView import ImplantView
 from gui.projectedView import ProjectedView
-from gui.pyfatogglepanel import TogglePanel 
+from gui.pyfatogglepanel import TogglePanel
 
 class AdditionsPane(TogglePanel):
 #    def collapseChanged(self, event):
@@ -33,7 +33,7 @@ class AdditionsPane(TogglePanel):
     def __init__(self, parent):
 
         TogglePanel.__init__(self, parent, forceLayout = 1)
-        
+
         self.SetLabel("Additions")
         pane = self.GetContentPane()
 
@@ -53,7 +53,7 @@ class AdditionsPane(TogglePanel):
         self.notebook.AddPage(DroneView(self.notebook), "Drones")
         self.notebook.AddPage(ImplantView(self.notebook), "Implants")
         self.notebook.AddPage(BoosterView(self.notebook), "Boosters")
-        self.notebook.AddPage(ProjectedView(self.notebook), "Projected")
+#        self.notebook.AddPage(ProjectedView(self.notebook), "Projected")
 
 #        self.Expand()
 
