@@ -53,9 +53,9 @@ class PyGauge(wx.PyWindow):
 
         self._oldValue = 0
 
-        self._animDuration = 600
+        self._animDuration = 700
         self._animStep = 0
-        self._period = 10
+        self._period = 20
         self._animValue = 0
 
 
@@ -210,6 +210,8 @@ class PyGauge(wx.PyWindow):
         self._tooltip.SetTip("%.2f/%.2f" % (self._value, self._range))
 
     def SetValueRange(self, value, range, reinit = False):
+        if self._value == value and self._range == range:
+            return
 
         range = float(range)
 
