@@ -269,6 +269,10 @@ class Fit(object):
         fit = eos.db.getFit(fitID)
         return fit.exportEft()
 
+    def exportDna(self, fitID):
+        fit = eos.db.getFit(fitID)
+        return fit.exportDna()
+
     def exportXml(self, *fitIDs):
         fits = map(lambda id: eos.db.getFit(id), fitIDs)
         return eos.types.Fit.exportXml(*fits)

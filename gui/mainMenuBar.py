@@ -19,6 +19,8 @@
 
 import wx
 import bitmapLoader
+import gui.fittingView
+import gui.mainFrame
 
 class MainMenuBar(wx.MenuBar):
     def __init__(self):
@@ -41,10 +43,19 @@ class MainMenuBar(wx.MenuBar):
         editMenu.Append(wx.ID_REDO)
 
         # Fit menu
-        fitMenu = wx.Menu()
+        self.fitMenu = fitMenu = wx.Menu()
         self.Append(fitMenu, "F&it")
         fitMenu.Append(wx.ID_OPEN, "&Import", "Import a fit into pyfa.")
         fitMenu.Append(wx.ID_SAVEAS, "&Export", "Export the fit to another format.")
+
+        clipboardMenu = wx.Menu()
+        self.idExportDna, self.idExportEft, self.idExportXml = wx.NewId(), wx.NewId(), wx.NewId()
+        clipboardMenu.Append(self.idExportEft, "&EFT", "Copy the EFT export of this fit to the clipboard")
+        clipboardMenu.Append(self.idExportXml, "&XML", "Copy the XML export of this fit to the clipboard")
+        clipboardMenu.Append(self.idExportDna, "&DNA", "Copy the DNA export of this fit to the clipboard")
+
+        fitMenu.AppendMenu(wx.ID_COPY, "To &Clipboard", clipboardMenu, "Export a fit to the clipboard")
+
 
         # Character menu
         windowMenu = wx.Menu()
@@ -65,3 +76,14 @@ class MainMenuBar(wx.MenuBar):
         helpMenu.Append(wx.ID_ABOUT)
         helpMenu.Append(wx.ID_HELP, "User manual", "User manual")
         helpMenu.Append(911,"Open Widgets Inspect tool", "Open Widgets Inspect tool")
+
+
+        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+        self.mainFrame.Bind(gui.fittingView.FIT_CHANGED, self.fitChanged)
+
+    def fitChanged(self, event):
+        enable = event.fitID is not None
+        self.Enable(wx.ID_SAVEAS, enable)
+        self.Enable(wx.ID_COPY, enable)
+        event.Skip()
+
