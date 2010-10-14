@@ -73,11 +73,11 @@ class ImportDialog(wx.Dialog):
 
         self.SetSizer(mainSizer)
 
-        self.tbtnEdit.SetValue( True )
-        self.tcEdit.Show(False)
+        self.tbtnEdit.SetValue( False )
+        self.tcEdit.Enable(False)
 
         self.Layout()
-        self.Fit()
+
 
         self.Bind( wx.EVT_CLOSE, self.CloseDlg )
         self.btnOK.Bind( wx.EVT_BUTTON, self.CloseDlg )
@@ -131,15 +131,14 @@ class ImportDialog(wx.Dialog):
     def SwitchEditCtrl( self, event ):
         self._toggleEdit *= -1
         if self._toggleEdit == -1:
-            self.tcEdit.Show(False)
+            self.tcEdit.Enable(False)
             self.cFilePicker.Enable( True )
             self.stStatus.SetLabel("Status: File mode.")
         else:
-            self.tcEdit.Show(True)
+            self.tcEdit.Enable(True)
             self.cFilePicker.Enable( False )
             self.stStatus.SetLabel("Status: Text edit mode.")
-        self.Layout()
-        self.Fit()
+
         event.Skip()
 
 class ExportDialog ( wx.Dialog ):
