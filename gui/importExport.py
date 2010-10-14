@@ -51,7 +51,7 @@ class ImportDialog(wx.Dialog):
         contentSizer = wx.BoxSizer(wx.VERTICAL)
 
         self.tcEdit = wx.TextCtrl(self, wx.ID_ANY, u"", style=wx.TE_MULTILINE)
-        self.tcEdit.SetMinSize( wx.Size( -1,250 ) )
+
         contentSizer.Add(self.tcEdit, 1, wx.EXPAND, 5)
 
         mainSizer.Add(contentSizer, 1, wx.EXPAND, 5)
