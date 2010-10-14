@@ -160,6 +160,7 @@ class CharacterEditor(wx.Frame):
             self.unrestrict()
 
         wx.PostEvent(self, CharChanged())
+        event.Skip()
 
     def getActiveCharacter(self):
         selection = self.skillTreeChoice.GetCurrentSelection()
@@ -420,6 +421,7 @@ class ImplantsTreeView (wx.Panel):
         self.pluggedImplantsTree.update(self.implants)
 
     def charChanged(self, event):
+        print "charChanged"
         cChar = service.Character.getInstance()
         charID = self.Parent.Parent.getActiveCharacter()
         name = cChar.getCharName(charID)
@@ -541,6 +543,8 @@ class APIView (wx.Panel):
         ID, key = cChar.getApiDetails(self.Parent.Parent.getActiveCharacter())
         self.inputID.SetValue(str(ID))
         self.inputKey.SetValue(key)
+        if event is not None:
+            event.Skip()
 
     def fetchCharList(self, event):
         cChar = service.Character.getInstance()
