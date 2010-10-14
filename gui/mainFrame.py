@@ -157,6 +157,7 @@ class MainFrame(wx.Frame):
         dlg.Destroy()
 
     def registerMenu(self):
+        menuBar = self.GetMenuBar()
         # Quit
         self.Bind(wx.EVT_MENU, self.ExitApp, id=wx.ID_EXIT)
         # Widgets Inspector
@@ -164,15 +165,39 @@ class MainFrame(wx.Frame):
         # About
         self.Bind(wx.EVT_MENU, self.ShowAboutBox, id=wx.ID_ABOUT)
         # Char editor
-        self.Bind(wx.EVT_MENU, self.showCharacterEditor, id=self.GetMenuBar().characterEditorId)
+        self.Bind(wx.EVT_MENU, self.showCharacterEditor, id=menuBar.characterEditorId)
         # Damage pattern editor
-        self.Bind(wx.EVT_MENU, self.showDamagePatternEditor, id=self.GetMenuBar().damagePatternEditorId)
+        self.Bind(wx.EVT_MENU, self.showDamagePatternEditor, id=menuBar.damagePatternEditorId)
         # Import dialog
         self.Bind(wx.EVT_MENU, self.showImportDialog, id=wx.ID_OPEN)
         # Export dialog
         self.Bind(wx.EVT_MENU, self.showExportDialog, id=wx.ID_SAVEAS)
         # Preference dialog
         self.Bind(wx.EVT_MENU, self.showPreferenceDialog, id=wx.ID_PREFERENCES)
+
+        #Clipboard exports
+        self.Bind(wx.EVT_MENU, self.clipboardEft, id=menuBar.idExportEft)
+        self.Bind(wx.EVT_MENU, self.clipboardDna, id=menuBar.idExportDna)
+        self.Bind(wx.EVT_MENU, self.clipboardXml, id=menuBar.idExportXml)
+
+    def clipboardEft(self, event):
+        sFit = service.Fit.getInstance()
+        self.toClipboard(sFit.exportFit(self.getActiveFit()))
+
+    def clipboardDna(self, event):
+        sFit = service.Fit.getInstance()
+        self.toClipboard(sFit.exportDna(self.getActiveFit()))
+
+    def clipboardXml(self, event):
+        sFit = service.Fit.getInstance()
+        self.toClipboard(sFit.exportXml(self.getActiveFit()))
+
+    def toClipboard(self, text):
+        clip = wx.TheClipboard
+        clip.Open()
+        data = wx.TextDataObject(text)
+        clip.SetData(data)
+        clip.Close()
 
     def toggleShipBrowser(self, event):
         self.GetToolBar().toggleShipBrowser(event)
