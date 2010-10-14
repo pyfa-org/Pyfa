@@ -17,24 +17,23 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 #===============================================================================
 
-class PreferenceView(object):
-    views = {}
-    def __init__(self):
-        pass
+import wx
+from gui.preferenceView import PreferenceView
+class PreferenceDialog(wx.Dialog):
 
-    @classmethod
-    def register(cls):
-        PreferenceView.views[cls.title] = cls()
+    def __init__(self, parent):
+        wx.Dialog.__init__(self, parent, id=wx.ID_ANY, size=wx.Size(600, 400), style=wx.DEFAULT_DIALOG_STYLE)
+        mainSizer = wx.BoxSizer(wx.VERTICAL)
 
-    @classmethod
-    def getView(cls, name):
-        return cls.views[name]
+        self.listbook = wx.Listbook(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LB_DEFAULT)
 
-    def populatePanel(self, panel):
-        raise NotImplementedError()
+        mainSizer.Add(self.listbook, 1, wx.EXPAND | wx.ALL, 5)
+        self.SetSizer(mainSizer)
+        self.Layout()
 
-    def refreshPanel(self, fit):
-        raise NotImplementedError()
+        self.Centre(wx.BOTH)
 
-from gui.builtinPreferenceViews import *
-
+        for title, prefView in PreferenceView.views.iteritems():
+            page = wx.Panel(self.listbook)
+            prefView.populatePanel(page)
+            self.listbook.AddPage(page, title)

@@ -57,6 +57,8 @@ class MainMenuBar(wx.MenuBar):
         damagePatternEditItem = wx.MenuItem(windowMenu, self.damagePatternEditorId, "Damage Pattern Editor\tCTRL+D")
         windowMenu.AppendItem(damagePatternEditItem)
 
+        windowMenu.Append(wx.ID_PREFERENCES)
+
         # Help menu
         helpMenu = wx.Menu()
         self.Append(helpMenu, "&Help")

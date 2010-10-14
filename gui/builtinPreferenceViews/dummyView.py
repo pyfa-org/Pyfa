@@ -17,24 +17,15 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 #===============================================================================
 
-class PreferenceView(object):
-    views = {}
-    def __init__(self):
-        pass
+from gui.preferenceView import PreferenceView
 
-    @classmethod
-    def register(cls):
-        PreferenceView.views[cls.title] = cls()
-
-    @classmethod
-    def getView(cls, name):
-        return cls.views[name]
+class DummyView(PreferenceView):
+    title = "Dummy"
 
     def populatePanel(self, panel):
-        raise NotImplementedError()
+        panel.SetBackgroundColour("cyan")
 
     def refreshPanel(self, fit):
-        raise NotImplementedError()
+        pass
 
-from gui.builtinPreferenceViews import *
-
+DummyView.register()

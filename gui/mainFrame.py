@@ -31,6 +31,7 @@ from gui.characterEditor import CharacterEditor
 from gui.characterSelection import CharacterSelection
 from gui.patternEditor import DmgPatternEditorDlg
 from gui.importExport import ImportDialog, ExportDialog
+from gui.preferenceDialog import PreferenceDialog
 import aboutData
 import gui.fittingView as fv
 from wx._core import PyDeadObjectError
@@ -150,6 +151,11 @@ class MainFrame(wx.Frame):
         dlg.ShowModal()
         dlg.Destroy()
 
+    def showPreferenceDialog(self, event):
+        dlg = PreferenceDialog(self)
+        dlg.ShowModal()
+        dlg.Destroy()
+
     def registerMenu(self):
         # Quit
         self.Bind(wx.EVT_MENU, self.ExitApp, id=wx.ID_EXIT)
@@ -165,6 +171,8 @@ class MainFrame(wx.Frame):
         self.Bind(wx.EVT_MENU, self.showImportDialog, id=wx.ID_OPEN)
         # Export dialog
         self.Bind(wx.EVT_MENU, self.showExportDialog, id=wx.ID_SAVEAS)
+        # Preference dialog
+        self.Bind(wx.EVT_MENU, self.showPreferenceDialog, id=wx.ID_PREFERENCES)
 
     def toggleShipBrowser(self, event):
         self.GetToolBar().toggleShipBrowser(event)
