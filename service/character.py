@@ -49,7 +49,8 @@ class Character():
         group = eos.db.getGroup(groupID)
         skills = []
         for skill in group.items:
-            skills.append((skill.ID, skill.name))
+            if skill.published == True:
+                skills.append((skill.ID, skill.name))
         return skills
 
     def getSkillDescription(self, itemID):
