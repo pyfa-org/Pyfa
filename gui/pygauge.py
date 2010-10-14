@@ -53,9 +53,9 @@ class PyGauge(wx.PyWindow):
 
         self._oldValue = 0
 
-        self._animDuration = 600
+        self._animDuration = 700
         self._animStep = 0
-        self._period = 10
+        self._period = 20
         self._animValue = 0
 
 
@@ -210,6 +210,8 @@ class PyGauge(wx.PyWindow):
         self._tooltip.SetTip("%.2f/%.2f" % (self._value, self._range))
 
     def SetValueRange(self, value, range, reinit = False):
+        if self._value == value and self._range == range:
+            return
 
         range = float(range)
 
@@ -296,12 +298,21 @@ class PyGauge(wx.PyWindow):
                 c1 = map(lambda t: sum(t), zip(c1, (0,pv/3,-pv,0)))
                 c2 = map(lambda t: sum(t), zip(c2, (0,pv/3,-pv,0)))
             else:
-                if pv <= 105:
+                if pv <=102.5:
                     xv = pv -100
                     c1 = map(lambda t: sum(t), zip(c1, (0,100/3,-100,0)))
+                    c1 = map(lambda t: sum(t), zip(c1, (xv*10,xv*10,0,0)))
+
+                    c2 = map(lambda t: sum(t), zip(c2, (0,100/3,-100,0)))
+                    c2 = map(lambda t: sum(t), zip(c2, (xv*10,xv*10,0,0)))
+                elif pv <= 105:
+                    xv = pv -102.5
+                    c1 = map(lambda t: sum(t), zip(c1, (0,100/3,-100,0)))
+                    c1 = map(lambda t: sum(t), zip(c1, (2.5*10,2.5*10,0,0)))
                     c1 = map(lambda t: sum(t), zip(c1, (xv*10,-xv*20,0,0)))
 
                     c2 = map(lambda t: sum(t), zip(c2, (0,100/3,-100,0)))
+                    c2 = map(lambda t: sum(t), zip(c2, (2.5*10,2.5*10,0,0)))
                     c2 = map(lambda t: sum(t), zip(c2, (xv*10,-xv*20,0,0)))
 
                 else:
