@@ -42,13 +42,13 @@ class Character():
         return map(lambda c: (c.ID, c.name), eos.db.getCharacterList())
 
     def getSkillGroups(self):
-        marketGroup = eos.db.getMarketGroup(150)
-        return map(lambda mg: (mg.ID, mg.name), marketGroup.children)
+        cat = eos.db.getCategory(16)
+        return map(lambda mg: (mg.ID, mg.name), cat.groups)
 
     def getSkills(self, groupID):
-        marketGroup = eos.db.getMarketGroup(groupID)
+        group = eos.db.getGroup(groupID)
         skills = []
-        for skill in marketGroup.items:
+        for skill in group.items:
             skills.append((skill.ID, skill.name))
         return skills
 
@@ -107,7 +107,7 @@ class Character():
     def changeLevel(self, charID, skillID, level):
         char = eos.db.getCharacter(charID)
         skill = char.getSkill(skillID)
-        if level == "Not Learned":
+        if isinstance(level, basestring):
             skill.learned = False
         else:
             skill.level = level
