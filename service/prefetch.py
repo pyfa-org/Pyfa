@@ -20,22 +20,16 @@
 import threading
 import service
 import eos.db
-import time
-
 class PrefetchThread(threading.Thread):
     def run(self):
         # We're a daemon thread, as such, interpreter might get shut down while we do stuff
         # Make sure we don't throw tracebacks to console
-        print "Prefetch started"
-        time.clock()
-
         eos.db.getItemsByCategory("Skill", eager=("effects", "attributes", "attributes.info.icon", "icon"))
         cMarket = service.Market.getInstance()
         root = cMarket.getShipRoot()
         for id, _ in root:
-	        cMarket.getShipList(id)
+            cMarket.getShipList(id)
 
-	print "Prefetch stopped", time.clock()
-#prefetch = PrefetchThread()
-#prefetch.daemon = True
-#prefetch.start()
+prefetch = PrefetchThread()
+prefetch.daemon = True
+prefetch.start()
