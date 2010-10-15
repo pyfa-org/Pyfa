@@ -43,7 +43,11 @@ class Character():
 
     def getSkillGroups(self):
         cat = eos.db.getCategory(16)
-        return map(lambda mg: (mg.ID, mg.name), cat.groups)
+        groups = []
+        for grp in cat.groups:
+            if grp.published:
+                groups.append((grp.ID, grp.name))
+        return groups
 
     def getSkills(self, groupID):
         group = eos.db.getGroup(groupID)
