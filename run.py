@@ -19,6 +19,26 @@
 #===============================================================================
 
 import config
+
+import apsw
+mem = apsw.Connection(":memory:")
+disk = apsw.Connection(config.gamedata)
+b = mem.backup("main", disk, "main")
+try:
+	while not b.done:
+     		b.step()
+finally:
+	b.finish()
+
+print config.gamedata
+print b.done
+import eos.config
+import sqlite3
+conn = sqlite3.connect(mem)
+eos.config.gamedata_connectionstring = lambda: conn
+
+#print "failed to use apsw to copy gamedata to memory, continueing, but a bit slower"
+
 from gui.mainFrame import MainFrame
 import wx
 import os

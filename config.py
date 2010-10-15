@@ -13,7 +13,9 @@ else:
 homePath = os.path.expanduser(os.path.join("~", ".pyfa"))
 staticPath = homePath
 saveddata = os.path.join(homePath, "saveddata.db")
+gamedata = os.path.join(homePath, "eve.db")
 
 # saveddata db location modifier, shouldn't ever need to touch this
 import eos.config
 eos.config.saveddata_connectionstring = "sqlite:///" + saveddata
+eos.config.saveddata_connectionstring = "sqlite:///" + gamedata
