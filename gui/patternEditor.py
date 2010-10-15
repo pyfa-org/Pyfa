@@ -239,6 +239,7 @@ class DmgPatternEditorDlg (wx.Dialog):
             edit.SetValue(amount)
 
         self.block = False
+        self.ValuesUpdated()
 
     def newPattern(self,event):
         cDP = service.DamagePattern.getInstance()
@@ -270,10 +271,12 @@ class DmgPatternEditorDlg (wx.Dialog):
 
     def processRename(self, event):
         newName = self.namePicker.GetLineText(0)
+        self.stPercentages.SetLabel("")
+        self.stTotal.SetLabel("")
         p = self.getActivePattern()
         for pattern in self.choices:
             if pattern.name == newName and p != pattern:
-                #Invalid choice
+                self.stPercentages.SetLabel("Name already used, please pick another")
                 return
 
         cDP = service.DamagePattern.getInstance()
@@ -292,6 +295,7 @@ class DmgPatternEditorDlg (wx.Dialog):
         self.ccDmgPattern.Delete(sel)
         self.ccDmgPattern.Insert(newName, sel)
         self.ccDmgPattern.SetSelection(sel)
+        self.ValuesUpdated()
 
     def copyPattern(self,event):
         cDP = service.DamagePattern.getInstance()
