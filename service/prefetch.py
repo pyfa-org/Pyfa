@@ -23,13 +23,16 @@ import eos.db
 
 class PrefetchThread(threading.Thread):
     def run(self):
+        print "preload"
         # We're a daemon thread, as such, interpreter might get shut down while we do stuff
         # Make sure we don't throw tracebacks to console
         try:
-            eos.db.getItemsByCategory("Skill", eager=("effects", "attributes", "attributes.icon", "icon"))
+            eos.db.getItemsByCategory("Skill", eager=("effects", "attributes", "attributes.info.icon", "icon"))
+            print "skill"
             cMarket = service.Market.getInstance()
             root = cMarket.getShipRoot()
             for id, _ in root:
+                print id
                 cMarket.getShipList(id)
         except:
             return
