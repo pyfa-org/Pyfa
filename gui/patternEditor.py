@@ -70,7 +70,7 @@ class DmgPatternEditorDlg (wx.Dialog):
                 btn.Layout()
                 setattr(self, name, btn)
                 btn.Enable(True)
-                btn.SetToolTipString("%s fit" % name.capitalize())
+                btn.SetToolTipString("%s pattern" % name.capitalize())
                 headerSizer.Add(btn, 0, wx.ALIGN_CENTER_VERTICAL)
 
 
