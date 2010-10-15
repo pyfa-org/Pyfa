@@ -20,27 +20,28 @@
 
 import config
 
-try:
-    import apsw
-    mem = apsw.Connection(":memory:")
-    disk = apsw.Connection(config.gamedata)
-    b = mem.backup("main", disk, "main")
-    try:
-        while not b.done:
-            b.step()
-    finally:
-        b.finish()
+# try:
+#    import apsw
+#    mem = apsw.Connection(":memory:")
+#    disk = apsw.Connection(config.gamedata)
+#    b = mem.backup("main", disk, "main")
+#    try:
+#        while not b.done:
+#            b.step()
+#    finally:
+#        b.finish()
+#
+#    import eos.config
+#    import sqlite3
+#    conn = sqlite3.connect(mem)
+#    eos.config.gamedata_connectionstring = lambda: conn
+#    import eos.db
+#    eos.db.getItemsByCategory("Skill", eager=("effects", "attributes", "attributes.info.icon", "icon"))
+# except:
+#    print "failed to use apsw to copy gamedata to memory, prefetching instead"
+#    import service.prefetch
 
-    import eos.config
-    import sqlite3
-    conn = sqlite3.connect(mem)
-    eos.config.gamedata_connectionstring = lambda: conn
-    import eos.db
-    eos.db.getItemsByCategory("Skill", eager=("effects", "attributes", "attributes.info.icon", "icon"))
-except:
-    print "failed to use apsw to copy gamedata to memory, prefetching instead"
-    import service.prefetch
-
+import service.prefetch
 from gui.mainFrame import MainFrame
 import wx
 import os
