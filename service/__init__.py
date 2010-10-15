@@ -4,4 +4,4 @@ from service.attribute import Attribute
 from service.character import Character
 from service.damagePattern import DamagePattern
 from service.settings import Settings
-import service.prefetch
+from service import prefetch

@@ -20,7 +20,6 @@
 import eos.db
 import eos.types
 import wx
-import collections
 import threading
 from sqlalchemy.orm.exc import NoResultFound
 import Queue
