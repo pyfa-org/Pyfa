@@ -81,7 +81,7 @@ class ResistancesViewFull(StatsView):
         for damageType in ("em", "thermal", "kinetic", "explosive"):
             sizerResistances.Add(bitmapLoader.getStaticBitmap("%s_big" % damageType, contentPanel, "icons"), wx.GBPosition( row, col ), wx.GBSpan( 1, 1 ), wx.ALIGN_CENTER)
             col+=1
-        self.stEHPs = wx.StaticText(contentPanel, wx.ID_ANY, "EHP")
+        self.stEHPs = wx.StaticText(contentPanel, wx.ID_ANY, "EHP", style = wx.DOUBLE_BORDER)
         self.stEHPs.SetToolTip(wx.ToolTip("Click to toggle between effective HP and raw HP"))
 
         self.stEHPs.Bind(wx.EVT_LEFT_UP, self.toggleEHP)
