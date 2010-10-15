@@ -269,9 +269,15 @@ class DmgPatternEditorDlg (wx.Dialog):
         self.headerSizer.Layout()
 
     def processRename(self, event):
-        cDP = service.DamagePattern.getInstance()
         newName = self.namePicker.GetLineText(0)
-        cDP.renamePattern(self.getActivePattern(), newName)
+        p = self.getActivePattern()
+        for pattern in self.choices:
+            if pattern.name == newName and p != pattern:
+                #Invalid choice
+                return
+
+        cDP = service.DamagePattern.getInstance()
+        cDP.renamePattern(p, newName)
 
         self.headerSizer.Replace(self.namePicker, self.ccDmgPattern)
         self.ccDmgPattern.Show()
