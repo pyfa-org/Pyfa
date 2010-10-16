@@ -180,20 +180,6 @@ class MainFrame(wx.Frame):
         self.Bind(wx.EVT_MENU, self.clipboardDna, id=menuBar.idExportDna)
         self.Bind(wx.EVT_MENU, self.clipboardXml, id=menuBar.idExportXml)
 
-        hiddenMenu = wx.Menu()
-        hiddenMenu.Append(9911,"Delete Tab")
-        self.Bind(wx.EVT_MENU,self.HRemoveTab, id = 9911)
-        actb = [(wx.ACCEL_CTRL, ord('W'), 9911),
-                (wx.ACCEL_CMD, ord('W'), 9911)]
-        atable = wx.AcceleratorTable(actb)
-        self.SetAcceleratorTable(atable)
-
-    def HRemoveTab(self,event):
-        sel = self.fitMultiSwitch.GetSelection()
-        self.fitMultiSwitch.removal = True
-        self.fitMultiSwitch.removeTab(sel)
-        self.fitMultiSwitch.removal = False
-
     def clipboardEft(self, event):
         sFit = service.Fit.getInstance()
         self.toClipboard(sFit.exportFit(self.getActiveFit()))
