@@ -17,7 +17,7 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 #===============================================================================
 
-versionString = "0.0.1"
+versionString = "1.0 pre-alpha"
 license = "GNU GPL"
 licenseLocation = "gpl.txt"
 developers = ("cncfanatics" , "DarkPhoenix", "Darriele")
