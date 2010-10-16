@@ -421,7 +421,6 @@ class ImplantsTreeView (wx.Panel):
         self.pluggedImplantsTree.update(self.implants)
 
     def charChanged(self, event):
-        print "charChanged"
         cChar = service.Character.getInstance()
         charID = self.Parent.Parent.getActiveCharacter()
         name = cChar.getCharName(charID)
