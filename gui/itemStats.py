@@ -87,19 +87,6 @@ class ItemStatsDialog(wx.Dialog):
         self.Show()
 
         self.Bind(wx.EVT_CLOSE, self.closeEvent)
-        hiddenMenu = wx.Menu()
-        hiddenMenu.Append(9912,"Close window")
-        self.Bind(wx.EVT_MENU,self.HCloseWindow, id = 9912)
-        actb = [(wx.ACCEL_CTRL, ord('W'), 9912),
-                (wx.ACCEL_CMD, ord('W'), 9912)]
-        atable = wx.AcceleratorTable(actb)
-        self.SetAcceleratorTable(atable)
-
-    def HCloseWindow(self,event):
-        if self.dlgOrder==ItemStatsDialog.counter:
-            ItemStatsDialog.counter -= 1
-        self.Destroy()
-        event.Skip()
 
     def closeEvent(self, event):
 

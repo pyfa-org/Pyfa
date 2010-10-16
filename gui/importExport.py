@@ -86,17 +86,6 @@ class ImportDialog(wx.Dialog):
         self.btnImport.Bind( wx.EVT_BUTTON, self.ImportFittings )
         self.Centre(wx.BOTH)
 
-        hiddenMenu = wx.Menu()
-        hiddenMenu.Append(9915,"Close window")
-        self.Bind(wx.EVT_MENU,self.HCloseWindow, id = 9915)
-        actb = [(wx.ACCEL_CTRL, ord('W'), 9915),
-                (wx.ACCEL_CMD, ord('W'), 9915)]
-        atable = wx.AcceleratorTable(actb)
-        self.SetAcceleratorTable(atable)
-
-    def HCloseWindow(self,event):
-        self.Destroy()
-        event.Skip()
 
     def ImportFittings( self, event ):
         sFit = service.Fit.getInstance()
@@ -223,18 +212,8 @@ class ExportDialog ( wx.Dialog ):
         self.btnExport.Bind( wx.EVT_BUTTON, self.ExportFit )
         self.chCtrl.Bind( wx.EVT_RADIOBOX, self.OnExtSelect )
 
-        hiddenMenu = wx.Menu()
-        hiddenMenu.Append(9916,"Close window")
-        self.Bind(wx.EVT_MENU,self.HCloseWindow, id = 9916)
-        actb = [(wx.ACCEL_CTRL, ord('W'), 9916),
-                (wx.ACCEL_CMD, ord('W'), 9916)]
-        atable = wx.AcceleratorTable(actb)
-        self.SetAcceleratorTable(atable)
 
-    def HCloseWindow(self,event):
-        self.Destroy()
-        event.Skip()
-
+    # Virtual event handlers, overide them in your derived class
     def OnExtSelect( self, event ):
 #        selection = self.chCtrl.GetSelection()
 #        if selection == 0:

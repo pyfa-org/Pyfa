@@ -122,17 +122,6 @@ class CharacterEditor(wx.Frame):
         self.registerEvents()
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        hiddenMenu = wx.Menu()
-        hiddenMenu.Append(9912,"Close window")
-        self.Bind(wx.EVT_MENU,self.HCloseWindow, id = 9913)
-        actb = [(wx.ACCEL_CTRL, ord('W'), 9913),
-                (wx.ACCEL_CMD, ord('W'), 9913)]
-        atable = wx.AcceleratorTable(actb)
-        self.SetAcceleratorTable(atable)
-
-    def HCloseWindow(self,event):
-        self.Destroy()
-        event.Skip()
 
     def editingFinished(self, event):
         wx.PostEvent(self.mainFrame, CharListUpdated())

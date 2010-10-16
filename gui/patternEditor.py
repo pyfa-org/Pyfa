@@ -180,18 +180,6 @@ class DmgPatternEditorDlg (wx.Dialog):
 
         self.patternChanged()
 
-        hiddenMenu = wx.Menu()
-        hiddenMenu.Append(9914,"Close window")
-        self.Bind(wx.EVT_MENU,self.HCloseWindow, id = 9914)
-        actb = [(wx.ACCEL_CTRL, ord('W'), 9914),
-                (wx.ACCEL_CMD, ord('W'), 9914)]
-        atable = wx.AcceleratorTable(actb)
-        self.SetAcceleratorTable(atable)
-
-    def HCloseWindow(self,event):
-        self.Destroy()
-        event.Skip()
-
     def ValuesUpdated(self, event=None):
         if self.block:
             return
