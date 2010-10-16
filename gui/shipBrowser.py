@@ -104,7 +104,8 @@ class ShipBrowser(wx.Panel):
             if data is not None:
                 type, fitID = data
                 if type == "fit":
-                    wx.PostEvent(self.mainFrame, FitSelected(fitID=fitID))
+                    if self.mainFrame.getActiveFit() != fitID:
+                        wx.PostEvent(self.mainFrame, FitSelected(fitID=fitID))
 
         event.Skip()
 
@@ -154,7 +155,7 @@ class ShipBrowser(wx.Panel):
                     iconId = self.raceImageIds[race] if race in self.raceImageIds else -1
                     self.idRaceMap[id] = race
                     childId = tree.AppendItem(root, name, iconId, data=wx.TreeItemData(("ship", id)))
-                    for fitID, fitName in cFit.getFitsWithShip(id):                        
+                    for fitID, fitName in cFit.getFitsWithShip(id):
                         tree.AppendItem(childId, fitName, self.fitIconId, data=wx.TreeItemData(("fit", fitID)))
 
             tree.SortChildren(root)
@@ -191,6 +192,7 @@ class ShipBrowser(wx.Panel):
         event.Skip()
 
     def changeFitName(self, event):
+        self.triggerFitSelect(event)
         if event.IsEditCancelled():
             return
 
@@ -286,7 +288,7 @@ class ShipBrowser(wx.Panel):
         event.Skip()
 
     def startSearch(self, event):
-        
+
         search = self.shipMenu.search.GetLineText(0)
         if len(search) < 3:
             self.clearSearch(event, False)
@@ -311,7 +313,7 @@ class ShipBrowser(wx.Panel):
             iconId = self.raceImageIds[race] if race in self.raceImageIds else -1
             self.idRaceMap[id] = race
             childId = self.searchView.AppendItem(self.searchRoot, name, iconId, data=wx.TreeItemData(("ship", id)))
-            for fitID, fitName in cFit.getFitsWithShip(id):                
+            for fitID, fitName in cFit.getFitsWithShip(id):
                 self.searchView.AppendItem(childId, fitName, self.fitIconId, data=wx.TreeItemData(("fit", fitID)))
 
         foundFits = cMarket.searchFits(search)
