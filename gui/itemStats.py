@@ -403,10 +403,10 @@ class ItemEffects (wx.Panel):
         for name in names:
             index = self.effectList.InsertStringItem(sys.maxint, name)
 
-            if effects[name].isImplemented:
-                implemented = "Yes"
-            else:
-                implemented = "No"
+            try:
+                implemented = "Yes" if effects[name].isImplemented else "No"
+            except:
+                implemented = "Erroneous"
 
             self.effectList.SetStringItem(index, 1, implemented)
 
