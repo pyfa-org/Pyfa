@@ -421,7 +421,6 @@ class ImplantsTreeView (wx.Panel):
         self.pluggedImplantsTree.update(self.implants)
 
     def charChanged(self, event):
-        print "charChanged"
         cChar = service.Character.getInstance()
         charID = self.Parent.Parent.getActiveCharacter()
         name = cChar.getCharName(charID)
@@ -533,7 +532,12 @@ class APIView (wx.Panel):
         pmainSizer.Add(self.btnFetchSkills, 0, wx.ALL, 5)
         self.btnFetchSkills.Hide()
         self.btnFetchSkills.Bind(wx.EVT_BUTTON, self.fetchSkills)
+        self.stAPITip = wx.StaticText( self, wx.ID_ANY, u"Your API info is available at:", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.stAPITip.Wrap( -1 )
+        pmainSizer.Add( self.stAPITip, 0, wx.ALL, 5 )
 
+        self.hlEveAPI = wx.HyperlinkCtrl( self, wx.ID_ANY, u"http://www.eveonline.com/api/default.asp", u"http://www.eveonline.com/api/default.asp", wx.DefaultPosition, wx.DefaultSize, wx.HL_DEFAULT_STYLE )
+        pmainSizer.Add( self.hlEveAPI, 0, wx.ALL, 5 )
         self.SetSizer(pmainSizer)
         self.Layout()
         self.charChanged(None)

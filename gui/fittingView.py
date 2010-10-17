@@ -49,6 +49,24 @@ class FittingView(d.Display):
 
         self.activeFitID = None
 
+        self.Bind(wx.EVT_KEY_UP, self.kbEvent)
+
+    def kbEvent(self,event):
+        keycode = event.GetKeyCode()
+        if keycode == wx.WXK_DELETE or keycode == wx.WXK_NUMPAD_DELETE:
+            row = self.GetFirstSelected()
+            firstSel = row
+            while row != -1:
+                cFit = service.Fit.getInstance()
+                populate = cFit.removeModule(self.activeFitID, self.mods[self.GetItemData(row)].position)
+                self.Select(row,0)
+                row = self.GetNextSelected(row)
+            if populate is not None:
+                self.Select(firstSel)
+                if populate: self.slotsChanged()
+                wx.PostEvent(self.mainFrame, FitChanged(fitID=self.activeFitID))
+
+        event.Skip()
     #Gets called from the fitMultiSwitch when it decides its time
     def changeFit(self, fitID):
         self.activeFitID = fitID

@@ -54,8 +54,9 @@ class ItemStatsDialog(wx.Dialog):
         if item.icon is not None:
             before,sep,after = item.icon.iconFile.rpartition("_")
             iconFile = "%s%s%s" % (before,sep,"0%s" % after if len(after) < 2 else after)
-
-            self.SetIcon(wx.IconFromBitmap(bitmapLoader.getBitmap(iconFile, "pack")))
+            itemImg = bitmapLoader.getBitmap(iconFile, "pack")
+            if itemImg is not None:
+                self.SetIcon(wx.IconFromBitmap(itemImg))
         self.SetTitle("%s: %s" % ("%s stats" % context.capitalize() if context is not None else "Stats", item.name))
 
         self.SetMinSize((300, 200))

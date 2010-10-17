@@ -32,7 +32,18 @@ class ImplantView(d.Display):
         self.mainFrame.Bind(fv.FIT_CHANGED, self.fitChanged)
         self.mainFrame.Bind(mb.ITEM_SELECTED, self.addItem)
         self.Bind(wx.EVT_LEFT_DCLICK, self.removeItem)
+        self.Bind(wx.EVT_KEY_UP, self.kbEvent)
 
+    def kbEvent(self,event):
+        keycode = event.GetKeyCode()
+        if keycode == wx.WXK_DELETE or keycode == wx.WXK_NUMPAD_DELETE:
+            fitID = self.mainFrame.getActiveFit()
+            cFit = service.Fit.getInstance()
+            row = self.GetFirstSelected()
+            if row != -1:
+                cFit.removeImplant(fitID, self.GetItemData(row))
+                row = self.GetNextSelected(row)
+                wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=fitID))
     def fitChanged(self, event):
         cFit = service.Fit.getInstance()
         fit = cFit.getFit(event.fitID)
