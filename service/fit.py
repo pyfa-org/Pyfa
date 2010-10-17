@@ -180,19 +180,6 @@ class Fit(object):
         eos.db.commit()
         return numSlots != len(fit.modules)
 
-    def swapModules(self, position1, position2):
-        return True
-        fit = eos.db.getFit(fitID)
-        if fit.modules[position1].isEmpty or fit.modules[position2].isEmpty:
-            return None
-
-#        fit.modules[position1], fit.modules[position2] = fit.modules[position2], fit.modules[position1]
-        fit.modules[position1].position = position2
-        fit.modules[position2].position = position1
-        print position1,position2
-        eos.db.commit()
-        return True
-
     def addDrone(self, fitID, itemID):
         if fitID == None:
             return False
