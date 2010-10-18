@@ -261,7 +261,7 @@ class Fit(object):
 
         fit = eos.db.getFit(fitID)
         fit.damagePattern = pattern
-        eos.db.save(fit)
+        eos.db.commit()
         fit.clear()
         fit.calculateModifiedAttributes()
 
