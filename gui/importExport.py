@@ -227,7 +227,6 @@ class ExportDialog ( wx.Dialog ):
 
     def OnFileChoose( self, event ):
         self.filePath,ext = os.path.splitext(event.Path)
-        print ext
         self.cFileSavePicker.SetPath(self.filePath)
         if ext.lower() == ".xml":
             self.chCtrl.SetSelection(0)
