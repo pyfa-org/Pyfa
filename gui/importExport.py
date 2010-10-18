@@ -75,6 +75,7 @@ class ImportDialog(wx.Dialog):
 
         self.tbtnEdit.SetValue( False )
         self.tcEdit.Enable(False)
+        self.btnImport.Enable(False)
 
         self.Layout()
 
@@ -118,12 +119,9 @@ class ImportDialog(wx.Dialog):
         try:
             self._fitsFromFile = sFit.importFit(event.Path)
             self.stStatus.SetLabel("Status: Found %d fit(s)." % len(self._fitsFromFile))
+            self.btnImport.Enable(True)
         except:
             self.stStatus.SetLabel("Status: Invalid fitting file!")
-
-    def ImportFromFile( self, event ):
-        print event.Path
-        event.Skip()
 
     def CloseDlg( self, event ):
         event.Skip()
@@ -134,10 +132,12 @@ class ImportDialog(wx.Dialog):
             self.tcEdit.Enable(False)
             self.cFilePicker.Enable( True )
             self.stStatus.SetLabel("Status: File mode.")
+            self.btnImport.Enable(False)
         else:
             self.tcEdit.Enable(True)
             self.cFilePicker.Enable( False )
             self.stStatus.SetLabel("Status: Text edit mode.")
+            self.btnImport.Enable(True)
 
         event.Skip()
 
