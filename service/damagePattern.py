@@ -49,7 +49,6 @@ class DamagePattern():
     def newPattern(self):
         p = eos.types.DamagePattern(0, 0, 0, 0)
         p.name = ""
-        eos.db.save(p)
         return p
 
     def renamePattern(self, p, newName):

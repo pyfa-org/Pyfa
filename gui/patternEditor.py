@@ -249,7 +249,6 @@ class DmgPatternEditorDlg (wx.Dialog):
         self.ccDmgPattern.SetSelection(id)
         self.btnSave.SetLabel("Create")
         self.renamePattern()
-        self.patternChanged()
 
     def renamePattern(self,event=None):
         if event is not None:
@@ -268,6 +267,8 @@ class DmgPatternEditorDlg (wx.Dialog):
         self.headerSizer.Add(self.btnSave, 0, wx.ALIGN_CENTER)
         self.btnSave.Show()
         self.headerSizer.Layout()
+        if event is not None:
+            event.Skip()
 
     def processRename(self, event):
         newName = self.namePicker.GetLineText(0)
