@@ -107,6 +107,10 @@ class MainFrame(wx.Frame):
         view = self.fitMultiSwitch.GetPage(sel).view
         return view.activeFitID
 
+    def getFittingView(self):
+        sel = self.fitMultiSwitch.GetSelection()
+        return self.fitMultiSwitch.GetPage(sel).view
+
     def mouseHit(self, event):
         tab, _ = self.notebookBrowsers.HitTest(event.Position)
         if tab != -1:

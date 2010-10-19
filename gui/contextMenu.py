@@ -49,6 +49,10 @@ class ContextMenu(object):
                         item = wx.MenuItem(menu, id, text)
                         menu.info[id] = (m, context, it)
 
+                        sub = m.getSubMenu(context, selection, menu, it)
+                        if sub is not None:
+                            item.SetSubMenu(sub)
+
                         if bitmap is not None:
                             if multiple:
                                 bp = bitmap[it]
@@ -77,17 +81,23 @@ class ContextMenu(object):
                 selection = (selection,)
 
             m.activate(context, selection, i)
+        else:
+            event.Skip()
 
     def display(self, context, selection):
         raise NotImplementedError()
 
     def activate(self, context, selection, i):
-        raise NotImplementedError()
+        return None
+
+    def getSubMenu(self, context, selection, menu, i):
+        return None
 
     def getText(self, context, selection):
         raise NotImplementedError()
 
     def getBitmap(self, context, selection):
         return None
+
 
 from gui.builtinContextMenus import *

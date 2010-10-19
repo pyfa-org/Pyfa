@@ -51,6 +51,15 @@ class FittingView(d.Display):
 
         self.Bind(wx.EVT_KEY_UP, self.kbEvent)
 
+    def getSelectedMods(self):
+        sel = []
+        row = self.GetFirstSelected()
+        while row != -1:
+            sel.append(self.mods[self.GetItemData(row)])
+            row = self.GetNextSelected(row)
+
+        return sel
+
     def kbEvent(self,event):
         keycode = event.GetKeyCode()
         if keycode == wx.WXK_DELETE or keycode == wx.WXK_NUMPAD_DELETE:
