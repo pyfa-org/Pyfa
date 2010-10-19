@@ -25,6 +25,7 @@ import gui.display as d
 from gui.contextMenu import ContextMenu
 import sys
 from eos.types import Slot
+from gui.builtinViewColumns.moduleState import ModuleState
 
 FitChanged, FIT_CHANGED = wx.lib.newevent.NewEvent()
 
@@ -50,6 +51,8 @@ class FittingView(d.Display):
         self.activeFitID = None
 
         self.Bind(wx.EVT_KEY_UP, self.kbEvent)
+        self.Bind(wx.EVT_LEFT_DOWN, self.click)
+        self.Bind(wx.EVT_RIGHT_DOWN, self.click)
 
     def getSelectedMods(self):
         sel = []
@@ -106,12 +109,14 @@ class FittingView(d.Display):
     def removeItem(self, event):
         row, _ = self.HitTest(event.Position)
         if row != -1:
-            cFit = service.Fit.getInstance()
-            populate = cFit.removeModule(self.activeFitID, self.mods[self.GetItemData(row)].position)
+            col = self.getColumn(event.Position)
+            if col != self.getColIndex(ModuleState):
+                cFit = service.Fit.getInstance()
+                populate = cFit.removeModule(self.activeFitID, self.mods[self.GetItemData(row)].position)
 
-            if populate is not None:
-                if populate: self.slotsChanged()
-                wx.PostEvent(self.mainFrame, FitChanged(fitID=self.activeFitID))
+                if populate is not None:
+                    if populate: self.slotsChanged()
+                    wx.PostEvent(self.mainFrame, FitChanged(fitID=self.activeFitID))
 
     def generateMods(self):
         cFit = service.Fit.getInstance()
@@ -143,7 +148,8 @@ class FittingView(d.Display):
 
     def scheduleMenu(self, event):
         event.Skip()
-        wx.CallAfter(self.spawnMenu)
+        if self.getColumn(event.Position) != self.getColIndex(ModuleState):
+            wx.CallAfter(self.spawnMenu)
 
     def spawnMenu(self):
         cFit = service.Fit.getInstance()
@@ -163,3 +169,13 @@ class FittingView(d.Display):
 
         menu = ContextMenu.getMenu(selection, *contexts)
         self.PopupMenu(menu)
+
+    def click(self, event):
+        row, _ = self.HitTest(event.Position)
+        if row != -1:
+            col = self.getColumn(event.Position)
+            if col == self.getColIndex(ModuleState):
+                sFit = service.Fit.getInstance()
+                sFit.toggleModulesState(self.mods[self.GetItemData(row)], self.getSelectedMods(), "right" if event.Button == 3 else "left")
+                wx.PostEvent(self.mainFrame, FitChanged(fitID=self.mainFrame.getActiveFit()))
+

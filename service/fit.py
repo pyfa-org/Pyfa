@@ -19,7 +19,7 @@
 
 import eos.db
 import eos.types
-from eos.types import State
+from eos.types import State, Slot
 import copy
 from service.damagePattern import DamagePattern
 
@@ -291,3 +291,41 @@ class Fit(object):
     def saveImportedFits(self, fits):
         for fit in fits:
             eos.db.save(fit)
+
+    def toggleModulesState(self, base, modules, click):
+        proposedState = self.__getProposedState(base, click)
+        if proposedState != base.state:
+            base.state = proposedState
+            for mod in modules:
+                if mod != base:
+                    mod.state = self.__getProposedState(mod, click, proposedState)
+
+        eos.db.commit()
+
+    # Old state : New State
+    transitionMap = {State.OVERHEATED: State.ACTIVE,
+                     State.ACTIVE: State.OFFLINE,
+                     State.OFFLINE: State.ONLINE,
+                     State.ONLINE: State.ACTIVE}
+
+    def __getProposedState(self, mod, click, proposedState=None):
+        if mod.slot in (Slot.RIG, Slot.SUBSYSTEM) or mod.isEmpty:
+            return State.ONLINE
+
+        currState = mod.state
+        if proposedState is not None:
+            state = proposedState
+        elif click == "right":
+            if currState == State.OVERHEATED:
+                state = State.ACTIVE
+            elif mod.isValidState(State.OVERHEATED):
+                state = State.OVERHEATED
+        else:
+            state = self.transitionMap[currState]
+            while not mod.isValidState(state):
+                state =- 1
+
+        if mod.isValidState(state):
+            return state
+        else:
+            return currState
