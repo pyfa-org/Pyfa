@@ -170,8 +170,8 @@ class FittingView(d.Display):
                          mod1.position,
                          mod2.position)
 
-        self.slotsChanged()
-        wx.PostEvent(self.mainFrame, FitChanged(fitID=self.activeFitID))
+        self.generateMods()
+        self.refresh(self.mods)
 
     def generateMods(self):
         cFit = service.Fit.getInstance()
