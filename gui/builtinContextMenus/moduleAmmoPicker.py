@@ -41,7 +41,7 @@ class ModuleAmmoPicker(ContextMenu):
 
         return (-range, damage, charge.name)
 
-    MISSILE_ORDER = ["em", "explosive", "kinetic", "thermal"]
+    MISSILE_ORDER = ["em", "thermal", "kinetic", "explosive"]
     def missileSorter(self, charge):
         for i, type in enumerate(self.MISSILE_ORDER):
             damage = charge.getAttribute("%sDamage" % type)
