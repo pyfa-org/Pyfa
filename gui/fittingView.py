@@ -178,6 +178,7 @@ class FittingView(d.Display):
             col = self.getColumn(event.Position)
             if col == self.getColIndex(ModuleState):
                 sFit = service.Fit.getInstance()
-                sFit.toggleModulesState(self.mods[self.GetItemData(row)], self.getSelectedMods(), "right" if event.Button == 3 else "left")
+                fitID = self.mainFrame.getActiveFit()
+                sFit.toggleModulesState(fitID, self.mods[self.GetItemData(row)], self.getSelectedMods(), "right" if event.Button == 3 else "left")
                 wx.PostEvent(self.mainFrame, FitChanged(fitID=self.mainFrame.getActiveFit()))
 

@@ -292,7 +292,7 @@ class Fit(object):
         for fit in fits:
             eos.db.save(fit)
 
-    def toggleModulesState(self, base, modules, click):
+    def toggleModulesState(self, fitID, base, modules, click):
         proposedState = self.__getProposedState(base, click)
         if proposedState != base.state:
             base.state = proposedState
@@ -301,6 +301,9 @@ class Fit(object):
                     mod.state = self.__getProposedState(mod, click, proposedState)
 
         eos.db.commit()
+        fit = eos.db.getFit(fitID)
+        fit.clear()
+        fit.calculateModifiedAttributes()
 
     # Old state : New State
     transitionMap = {State.OVERHEATED: State.ACTIVE,
