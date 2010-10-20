@@ -40,16 +40,42 @@ class FittingView(d.Display):
                     "attr:cpu",
                     ]
 
+    class FittingViewDrop(wx.PyDropTarget):
+        def __init__(self, dropFn):
+            wx.PyDropTarget.__init__(self)
+            self.dropFn = dropFn
+            # this is really transferring an EvE itemID
+            self.dropData = wx.PyTextDataObject()
+            self.SetDataObject(self.dropData)
+
+        def OnData(self, x, y, t):
+            if self.GetData():
+                self.dropFn(x, y, int(self.dropData.GetText()))
+            return t
+
     def __init__(self, parent):
         d.Display.__init__(self, parent)
         self.mainFrame.Bind(FIT_CHANGED, self.fitChanged)
         self.Bind(wx.EVT_LEFT_DCLICK, self.removeItem)
+        self.Bind(wx.EVT_LIST_BEGIN_DRAG, self.startDrag)
         if "__WXGTK__" in  wx.PlatformInfo:
             self.Bind(wx.EVT_RIGHT_UP, self.scheduleMenu)
         else:
             self.Bind(wx.EVT_RIGHT_DOWN, self.scheduleMenu)
 
+        self.SetDropTarget(self.FittingViewDrop(self.swapItems))
         self.activeFitID = None
+
+    def startDrag(self, event):
+        data = wx.PyTextDataObject()
+        row = event.GetIndex()
+        data.SetText(str(self.GetItemData(row)))
+
+        dropSource = wx.DropSource(self)
+        dropSource.SetData(data)
+        res = dropSource.DoDragDrop()
+
+        # We always copy drag
 
         self.Bind(wx.EVT_KEY_UP, self.kbEvent)
         self.Bind(wx.EVT_LEFT_DOWN, self.click)
@@ -118,6 +144,24 @@ class FittingView(d.Display):
                 if populate is not None:
                     if populate: self.slotsChanged()
                     wx.PostEvent(self.mainFrame, FitChanged(fitID=self.activeFitID))
+
+    def swapItems(self, x, y, itemID):
+
+        srcRow = self.FindItemData(-1,itemID)
+        dstRow, _ = self.HitTest((x, y))
+        if srcRow != -1 and dstRow != -1:
+            cFit = service.Fit.getInstance()
+#            populate = cFit.swapModules(self.activeFitID, self.mods[self.GetItemData(srcRow)].position, self.mods[self.GetItemData(dstRow)].position)
+#            cFit.swapModules(self.GetItemData(srcRow), self.GetItemData(dstRow))
+            src = self.mods[self.GetItemData(srcRow)].position
+            dest = self.mods[self.GetItemData(dstRow)].position
+            self.mods[self.GetItemData(dstRow)].position = src
+            self.mods[self.GetItemData(srcRow)].position = dest
+
+#            if populate is not None:
+            self.slotsChanged()
+            wx.PostEvent(self.mainFrame, FitChanged(fitID=self.activeFitID))
+
 
     def generateMods(self):
         cFit = service.Fit.getInstance()
