@@ -125,7 +125,14 @@ class CapacitorViewFull(StatsView):
             t = "%.1f%%-%.1f%%" % capState
             s = ""
         else:
-            t = ("%ds" if not capStable else "%.1f%%") % capState
+            if capStable:
+                t = "%.1f%%" % capState
+            else:
+                if capState > 60:
+                    t = "%dm%ds" % divmod(capState, 60)
+                else:
+                    t = "%ds" % capState
+
             s = "Stable: " if capStable else "Lasts "
 
         getattr(self, lblNameTime % panel).SetLabel(t)
