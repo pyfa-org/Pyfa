@@ -153,6 +153,8 @@ class ModuleAmmoPicker(ContextMenu):
 
             if defender is not None:
                 m.AppendItem(self.addCharge(sub, defender))
+            if sub is not None:
+                self.addSeperator(sub, "More Damage")
         else:
             self.charges.sort(key=self.nameSorter)
             for charge in self.charges:
