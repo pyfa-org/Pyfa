@@ -57,7 +57,7 @@ class ModuleAmmoPicker(ContextMenu):
         for i, type in enumerate(self.MISSILE_ORDER):
             damage = charge.getAttribute("%sDamage" % type)
             if damage > 0:
-                return (type, damage, charge.name)
+                return (i, damage, charge.name)
 
     def nameSorter(self, charge):
         n = charge.name
