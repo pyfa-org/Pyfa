@@ -321,7 +321,7 @@ class Fit(object):
         if mod.slot in (Slot.RIG, Slot.SUBSYSTEM) or mod.isEmpty:
             return State.ONLINE
 
-        currState = mod.state
+        currState = state = mod.state
         if proposedState is not None:
             state = proposedState
         elif click == "right":
