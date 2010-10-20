@@ -314,10 +314,10 @@ class ItemParams (wx.Panel):
             return "%s (%d)" % (attribute.name.capitalize(), value)
 
         trans = {"Inverse Absolute Percent": (lambda: (1-value)*100, unitName),
-                 "Absolute Percent": (lambda: (value * 100) , unitName),
-                 "Milliseconds": (lambda: value / 1000.0, unitName),
                  "Volume": (lambda: value, u"m\u00B3"),
                  "Sizeclass": (lambda: value, ""),
+                 "Absolute Percent": (lambda: (value * 100) , unitName),
+                 "Milliseconds": (lambda: value / 1000.0, unitName),
                  "typeID": (itemIDCallback, ""),
                  "groupID": (groupIDCallback,""),
                  "attributeID": (attributeIDCallback, "")}

@@ -171,6 +171,7 @@ class FittingView(d.Display):
         self.PopupMenu(menu)
 
     def click(self, event):
+        event.Skip()
         row, _ = self.HitTest(event.Position)
         if row != -1:
             col = self.getColumn(event.Position)
