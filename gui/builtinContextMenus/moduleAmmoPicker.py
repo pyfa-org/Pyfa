@@ -86,7 +86,7 @@ class ModuleAmmoPicker(ContextMenu):
         m = wx.Menu()
         self.chargeIds = {}
         if self.hardpoint == Hardpoint.TURRET:
-            self.addSeperator(m, "Range")
+            self.addSeperator(m, "Long Range")
             items = []
             range = None
             nameBase = None
@@ -119,7 +119,7 @@ class ModuleAmmoPicker(ContextMenu):
             for item in items:
                 m.AppendItem(item)
 
-            self.addSeperator(m, "Damage")
+            self.addSeperator(m, "High Damage")
         elif self.hardpoint == Hardpoint.MISSILE:
             self.charges.sort(key=self.missileSorter)
             type = None
