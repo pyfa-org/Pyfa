@@ -32,12 +32,13 @@ FitChanged, FIT_CHANGED = wx.lib.newevent.NewEvent()
 class FittingView(d.Display):
     DEFAULT_COLS = ["Module state",
                     "Module name/slot",
-                    "attr:power",
-                    "attr:cpu",
+                    "Module Ammo",
                     "Capacitor Usage",
                     "attr:trackingSpeed",
                     "Max range",
-                    "Module Ammo"]
+                    "attr:power",
+                    "attr:cpu",
+                    ]
 
     def __init__(self, parent):
         d.Display.__init__(self, parent)
