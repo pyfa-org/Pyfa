@@ -37,7 +37,7 @@ class ModuleAmmoPicker(ContextMenu):
         s = []
         damage = 0
         range = charge.getAttribute("weaponRangeMultiplier")
-        falloff = charge.getAttribute("fallofMultiplier") or 0
+        falloff = charge.getAttribute("fallofMultiplier") or 1
         types = []
         for type in ("em", "explosive", "kinetic", "thermal"):
             d = charge.getAttribute("%sDamage" % type)
@@ -46,7 +46,7 @@ class ModuleAmmoPicker(ContextMenu):
                 damage += d
 
         s.append(-range)
-        s.append(falloff)
+        s.append(-falloff)
         s.append(charge.name.rsplit()[-2:])
         s.append(damage)
         s.append(charge.name)
