@@ -34,12 +34,23 @@ class ModuleAmmoPicker(ContextMenu):
         pass
 
     def turretSorter(self, charge):
-        range = charge.getAttribute("weaponRangeMultiplier")
+        s = []
         damage = 0
+        range = charge.getAttribute("weaponRangeMultiplier")
+        falloff = charge.getAttribute("fallofMultiplier") or 0
+        types = []
         for type in ("em", "explosive", "kinetic", "thermal"):
-            damage += charge.getAttribute("%sDamage" % type)
+            d = charge.getAttribute("%sDamage" % type)
+            if d > 0:
+                types.append(type)
+                damage += d
 
-        return (-range, damage, charge.name)
+        s.append(-range)
+        s.append(falloff)
+        s.append(charge.name.rsplit()[-2:])
+        s.append(damage)
+        s.append(charge.name)
+        return s
 
     MISSILE_ORDER = ["em", "thermal", "kinetic", "explosive"]
     def missileSorter(self, charge):
@@ -69,26 +80,39 @@ class ModuleAmmoPicker(ContextMenu):
         menu.Bind(wx.EVT_MENU, self.handleAmmoSwitch)
         m = wx.Menu()
         self.chargeIds = {}
-        previousRangeMod = None
         if self.hardpoint == Hardpoint.TURRET:
             idRange = wx.NewId()
             m.Append(idRange, "--- Range ---")
             m.Enable(idRange, False)
             items = []
+            range = None
+            nameBase = None
+            sub = None
             self.charges.sort(key=self.turretSorter)
             for charge in self.charges:
-                currRangeMod = charge.getAttribute("weaponRangeMultiplier")
-                if previousRangeMod is None or previousRangeMod != currRangeMod:
+                currBase = charge.name.rsplit()[-2:]
+                currRange = charge.getAttribute("weaponRangeMultiplier")
+                if nameBase is None or range != currRange or nameBase != currBase:
+                    if sub is not None:
+                        id = wx.NewId()
+                        sub.Append(id, "--- More Damage ---")
+                        sub.Enable(id, False)
+
                     sub = None
                     base = charge
-                    previousRangeMod = currRangeMod
+                    nameBase = currBase
+                    range = currRange
                     item = self.addCharge(m, charge)
                     items.append(item)
                 else:
                     if sub is None:
                         sub = wx.Menu()
+                        id = wx.NewId()
+                        sub.Append(id, "--- Less Damage ---")
+                        sub.Enable(id, False)
                         item.SetSubMenu(sub)
                         sub.AppendItem(self.addCharge(sub, base))
+
                     sub.AppendItem(self.addCharge(sub, charge))
             for item in items:
                 m.AppendItem(item)
