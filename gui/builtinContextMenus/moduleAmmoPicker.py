@@ -76,14 +76,17 @@ class ModuleAmmoPicker(ContextMenu):
 
         return item
 
+    def addSeperator(self, m, text):
+        id = wx.NewId()
+        m.Append(id, "--- %s ---" % text)
+        m.Enable(id, False)
+
     def getSubMenu(self, context, selection, menu, i):
         menu.Bind(wx.EVT_MENU, self.handleAmmoSwitch)
         m = wx.Menu()
         self.chargeIds = {}
         if self.hardpoint == Hardpoint.TURRET:
-            idRange = wx.NewId()
-            m.Append(idRange, "--- Range ---")
-            m.Enable(idRange, False)
+            self.addSeperator(m, "Range")
             items = []
             range = None
             nameBase = None
@@ -94,9 +97,7 @@ class ModuleAmmoPicker(ContextMenu):
                 currRange = charge.getAttribute("weaponRangeMultiplier")
                 if nameBase is None or range != currRange or nameBase != currBase:
                     if sub is not None:
-                        id = wx.NewId()
-                        sub.Append(id, "--- More Damage ---")
-                        sub.Enable(id, False)
+                        self.addSeperator(sub, "More Damage")
 
                     sub = None
                     base = charge
@@ -107,19 +108,18 @@ class ModuleAmmoPicker(ContextMenu):
                 else:
                     if sub is None:
                         sub = wx.Menu()
-                        id = wx.NewId()
-                        sub.Append(id, "--- Less Damage ---")
-                        sub.Enable(id, False)
+                        self.addSeperator(sub, "Less Damage")
                         item.SetSubMenu(sub)
                         sub.AppendItem(self.addCharge(sub, base))
 
                     sub.AppendItem(self.addCharge(sub, charge))
+
+            if sub is not None:
+                self.addSeperator(sub, "More Damage")
             for item in items:
                 m.AppendItem(item)
 
-            idDamage = wx.NewId()
-            m.Append(idDamage, "--- Damage ---")
-            m.Enable(idDamage, False)
+            self.addSeperator(m, "Damage")
         elif self.hardpoint == Hardpoint.MISSILE:
             self.charges.sort(key=self.missileSorter)
             type = None
@@ -133,9 +133,8 @@ class ModuleAmmoPicker(ContextMenu):
 
                 if currType != type or type is None:
                     if sub is not None:
-                        id = wx.NewId()
-                        sub.Append(id, "--- More Damage ---")
-                        sub.Enable(id, False)
+                        self.addSeperator(sub, "More Damage")
+
                     type = currType
                     item = wx.MenuItem(m, wx.ID_ANY, type.capitalize())
                     bitmap = bitmapLoader.getBitmap("%s_small" % type, "icons")
@@ -143,9 +142,7 @@ class ModuleAmmoPicker(ContextMenu):
                         item.SetBitmap(bitmap)
 
                     sub = wx.Menu()
-                    id = wx.NewId()
-                    sub.Append(id, "--- Less Damage ---")
-                    sub.Enable(id, False)
+                    self.addSeperator(sub, "Less Damage")
                     item.SetSubMenu(sub)
                     m.AppendItem(item)
 
