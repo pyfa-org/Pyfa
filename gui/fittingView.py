@@ -65,6 +65,9 @@ class FittingView(d.Display):
 
         self.SetDropTarget(self.FittingViewDrop(self.swapItems))
         self.activeFitID = None
+        self.Bind(wx.EVT_KEY_UP, self.kbEvent)
+        self.Bind(wx.EVT_LEFT_DOWN, self.click)
+        self.Bind(wx.EVT_RIGHT_DOWN, self.click)
 
     def startDrag(self, event):
         data = wx.PyTextDataObject()
@@ -75,11 +78,6 @@ class FittingView(d.Display):
         dropSource.SetData(data)
         res = dropSource.DoDragDrop()
 
-        # We always copy drag
-
-        self.Bind(wx.EVT_KEY_UP, self.kbEvent)
-        self.Bind(wx.EVT_LEFT_DOWN, self.click)
-        self.Bind(wx.EVT_RIGHT_DOWN, self.click)
 
     def getSelectedMods(self):
         sel = []
@@ -228,11 +226,22 @@ class FittingView(d.Display):
     def click(self, event):
         event.Skip()
         row, _ = self.HitTest(event.Position)
+        sel = []
+        curr = self.GetFirstSelected()
+        while curr != -1:
+            sel.append(curr)
+            curr = self.GetNextSelected(curr)
+
+        if curr not in sel:
+            mods = [self.mods[self.GetItemData(row)]]
+        else:
+            mods = self.getSelectedMods()
+
         if row != -1:
             col = self.getColumn(event.Position)
             if col == self.getColIndex(ModuleState):
                 sFit = service.Fit.getInstance()
                 fitID = self.mainFrame.getActiveFit()
-                sFit.toggleModulesState(fitID, self.mods[self.GetItemData(row)], self.getSelectedMods(), "right" if event.Button == 3 else "left")
+                sFit.toggleModulesState(fitID, self.mods[self.GetItemData(row)], mods, "right" if event.Button == 3 else "left")
                 wx.PostEvent(self.mainFrame, FitChanged(fitID=self.mainFrame.getActiveFit()))
 
