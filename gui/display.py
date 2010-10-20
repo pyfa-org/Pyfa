@@ -141,12 +141,15 @@ class Display(wx.ListCtrl):
 
         for i, col in enumerate(self.activeColumns):
             if not col.resized:
-                self.SetColumnWidth(i, wx.LIST_AUTOSIZE_USEHEADER)
-                headerWidth = self.GetColumnWidth(i)
-                self.SetColumnWidth(i, col.size)
-                baseWidth = self.GetColumnWidth(i)
-                if baseWidth < headerWidth:
-                    self.SetColumnWidth(i, headerWidth)
+                if col.size == wx.LIST_AUTOSIZE:
+                    self.SetColumnWidth(i, wx.LIST_AUTOSIZE_USEHEADER)
+                    headerWidth = self.GetColumnWidth(i)
+                    self.SetColumnWidth(i, wx.LIST_AUTOSIZE)
+                    baseWidth = self.GetColumnWidth(i)
+                    if baseWidth < headerWidth:
+                        self.SetColumnWidth(i, headerWidth)
+                else:
+                    self.SetColumnWidth(i, col.size)
 
         for sel in selection:
             self.Select(sel)
