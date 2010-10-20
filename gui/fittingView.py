@@ -146,22 +146,29 @@ class FittingView(d.Display):
                     wx.PostEvent(self.mainFrame, FitChanged(fitID=self.activeFitID))
 
     def swapItems(self, x, y, itemID):
-
         srcRow = self.FindItemData(-1,itemID)
         dstRow, _ = self.HitTest((x, y))
         if srcRow != -1 and dstRow != -1:
-            cFit = service.Fit.getInstance()
-#            populate = cFit.swapModules(self.activeFitID, self.mods[self.GetItemData(srcRow)].position, self.mods[self.GetItemData(dstRow)].position)
-#            cFit.swapModules(self.GetItemData(srcRow), self.GetItemData(dstRow))
-            src = self.mods[self.GetItemData(srcRow)].position
-            dest = self.mods[self.GetItemData(dstRow)].position
-            self.mods[self.GetItemData(dstRow)].position = src
-            self.mods[self.GetItemData(srcRow)].position = dest
+            self._swap(srcRow, dstRow)
 
-#            if populate is not None:
+    def _swap(self, srcRow, dstRow):
+        mod1 = self.mods[self.GetItemData(srcRow)]
+        mod2 = self.mods[self.GetItemData(dstRow)]
+        print mod1.slot, mod2.slot
+        if mod1.slot != mod2.slot:
+            if srcRow > dstRow:
+                self._swap(srcRow, dstRow + 1)
+            else:
+                self._swap(srcRow, dstRow - 1)
+        else:
+            print "swap", mod1.position, mod2.position
+            cFit = service.Fit.getInstance()
+            cFit.swapModules(self.mainFrame.getActiveFit(),
+                             mod1.position,
+                             mod2.position)
+            print mod1.position, mod2.position
             self.slotsChanged()
             wx.PostEvent(self.mainFrame, FitChanged(fitID=self.activeFitID))
-
 
     def generateMods(self):
         cFit = service.Fit.getInstance()
