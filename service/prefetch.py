@@ -24,11 +24,14 @@ class PrefetchThread(threading.Thread):
     def run(self):
         # We're a daemon thread, as such, interpreter might get shut down while we do stuff
         # Make sure we don't throw tracebacks to console
-        eos.db.getItemsByCategory("Skill", eager=("effects", "attributes", "attributes.info.icon", "attributes.info.unit", "icon"))
-        cMarket = service.Market.getInstance()
-        root = cMarket.getShipRoot()
-        for id, _ in root:
-            cMarket.getShipList(id)
+        try:
+            eos.db.getItemsByCategory("Skill", eager=("effects", "attributes", "attributes.info.icon", "attributes.info.unit", "icon"))
+            cMarket = service.Market.getInstance()
+            root = cMarket.getShipRoot()
+            for id, _ in root:
+                cMarket.getShipList(id)
+        except:
+            pass
 
 prefetch = PrefetchThread()
 prefetch.daemon = True
