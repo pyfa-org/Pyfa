@@ -84,6 +84,7 @@ class ModuleAmmoPicker(ContextMenu):
     def getSubMenu(self, context, selection, menu, i):
         menu.Bind(wx.EVT_MENU, self.handleAmmoSwitch)
         m = wx.Menu()
+        m.Bind(wx.EVT_MENU, self.handleAmmoSwitch)
         self.chargeIds = {}
         if self.hardpoint == Hardpoint.TURRET:
             self.addSeperator(m, "Long Range")
@@ -108,6 +109,7 @@ class ModuleAmmoPicker(ContextMenu):
                 else:
                     if sub is None:
                         sub = wx.Menu()
+                        sub.Bind(wx.EVT_MENU, self.handleAmmoSwitch)
                         self.addSeperator(sub, "Less Damage")
                         item.SetSubMenu(sub)
                         sub.AppendItem(self.addCharge(sub, base))
@@ -142,6 +144,7 @@ class ModuleAmmoPicker(ContextMenu):
                         item.SetBitmap(bitmap)
 
                     sub = wx.Menu()
+                    sub.Bind(wx.EVT_MENU, self.handleAmmoSwitch)
                     self.addSeperator(sub, "Less Damage")
                     item.SetSubMenu(sub)
                     m.AppendItem(item)
