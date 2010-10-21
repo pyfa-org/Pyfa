@@ -206,6 +206,23 @@ class Fit(object):
         else:
             return False
 
+    def splitDroneStack(self, fitID, d, amount):
+        if fitID == None:
+            return False
+
+        fit = eos.db.getFit(fitID)
+
+        total = d.amount
+        active = d.amountActive > 0
+        d.amount = amount
+        d.amountActive = amount if active else 0
+
+        newD = eos.types.Drone(d.item)
+        newD.amount = total - amount
+        newD.amountActive = newD.amount if active else 0
+        fit.drones.append(newD)
+        eos.db.commit()
+
     def removeDrone(self, fitID, i):
         fit = eos.db.getFit(fitID)
         d = fit.drones[i]

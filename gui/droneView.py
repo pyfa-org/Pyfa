@@ -49,9 +49,10 @@ class DroneView(d.Display):
         cFit = service.Fit.getInstance()
         fit = cFit.getFit(event.fitID)
 
-        stuff = fit.drones if fit is not None else None
-        self.populate(stuff)
-        self.refresh(stuff)
+        stuff = fit.drones[:] if fit is not None else None
+        if stuff is not None:
+            stuff.sort(key=lambda d: d.item.name)
+        self.update(stuff)
         event.Skip()
 
     def addItem(self, event):
