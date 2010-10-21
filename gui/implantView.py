@@ -76,6 +76,7 @@ class ImplantView(d.Display):
             wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=fitID))
 
     def click(self, event):
+        event.Skip()
         row, _ = self.HitTest(event.Position)
         if row != -1:
             col = self.getColumn(event.Position)
