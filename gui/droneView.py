@@ -55,6 +55,7 @@ class DroneView(d.Display):
         trigger = cFit.addDrone(fitID, event.itemID)
         if trigger:
             wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=fitID))
+            self.mainFrame.additionsPane.select("Drones")
 
         event.Skip()
 

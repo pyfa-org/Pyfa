@@ -63,6 +63,7 @@ class ImplantView(d.Display):
         trigger = cFit.addImplant(fitID, event.itemID)
         if trigger:
             wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=fitID))
+            self.mainFrame.additionsPane.select("Implants")
 
         event.Skip()
 
