@@ -347,7 +347,7 @@ class PyGauge(wx.PyWindow):
             r.width = w
             dc.DrawRectangleRect(r)
 
-        dc.SetTextForeground(wx.Colour(255,255,255))
+
 
         standardFont = wx.SystemSettings.GetFont(wx.SYS_DEFAULT_GUI_FONT)
         if "__WXMAC__" in  wx.PlatformInfo :
@@ -357,8 +357,15 @@ class PyGauge(wx.PyWindow):
         standardFont.SetPointSize(fsize)
         dc.SetFont(standardFont)
 
+        r = copy.copy(rect)
+        r.left +=1
+        r.top +=1
 
         formatStr = "{0:." + str(self._fractionDigits) + "f}%"
+        dc.SetTextForeground(wx.Colour(53,53,53))
+        dc.DrawLabel(formatStr.format(value), r, wx.ALIGN_CENTER)
+
+        dc.SetTextForeground(wx.Colour(255,255,255))
         dc.DrawLabel(formatStr.format(value), rect, wx.ALIGN_CENTER)
 
     def OUT_CIRC (self, t, b, c, d):
