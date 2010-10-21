@@ -22,9 +22,11 @@ import service
 import gui.display as d
 import gui.fittingView as fv
 import gui.marketBrowser as mb
+from gui.builtinViewColumns.implantCheckbox import ImplantCheckbox
 
 class BoosterView(d.Display):
-    DEFAULT_COLS = ["Name",
+    DEFAULT_COLS = ["Implant Checkbox",
+                    "Name",
                     "attr:boosterness"]
 
     def __init__(self, parent):
@@ -32,6 +34,7 @@ class BoosterView(d.Display):
         self.mainFrame.Bind(fv.FIT_CHANGED, self.fitChanged)
         self.mainFrame.Bind(mb.ITEM_SELECTED, self.addItem)
         self.Bind(wx.EVT_LEFT_DCLICK, self.removeItem)
+        self.Bind(wx.EVT_LEFT_DOWN, self.click)
 
     def fitChanged(self, event):
         cFit = service.Fit.getInstance()
@@ -59,3 +62,14 @@ class BoosterView(d.Display):
             cFit = service.Fit.getInstance()
             cFit.removeBooster(fitID, self.GetItemData(row))
             wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=fitID))
+
+    def click(self, event):
+        row, _ = self.HitTest(event.Position)
+        if row != -1:
+            col = self.getColumn(event.Position)
+            if col == self.getColIndex(ImplantCheckbox):
+                fitID = self.mainFrame.getActiveFit()
+                cFit = service.Fit.getInstance()
+                cFit.toggleBooster(fitID, row)
+                wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=fitID))
+

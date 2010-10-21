@@ -24,8 +24,9 @@ class PreferenceDialog(wx.Dialog):
     def __init__(self, parent):
         wx.Dialog.__init__(self, parent, id=wx.ID_ANY, size=wx.Size(600, 400), style=wx.DEFAULT_DIALOG_STYLE)
         mainSizer = wx.BoxSizer(wx.VERTICAL)
-
         self.listbook = wx.Listbook(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LB_DEFAULT)
+        self.listbook.GetListView().SetMinSize((500, -1))
+        self.listbook.GetListView().SetSize((500, -1))
 
         mainSizer.Add(self.listbook, 1, wx.EXPAND | wx.ALL, 5)
         self.SetSizer(mainSizer)

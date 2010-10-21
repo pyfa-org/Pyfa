@@ -244,6 +244,16 @@ class Fit(object):
         fit.calculateModifiedAttributes()
         return True
 
+    def toggleBooster(self, fitID, i):
+        fit = eos.db.getFit(fitID)
+        booster = fit.boosters[i]
+        booster.active = not booster.active
+
+        eos.db.commit()
+        fit.clear()
+        fit.calculateModifiedAttributes()
+        return True
+
     def changeChar(self, fitID, charID):
         if fitID is None or charID is None:
             return
