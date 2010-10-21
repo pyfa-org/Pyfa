@@ -31,19 +31,6 @@ class ModuleAmmo(ViewColumn):
         return mod.charge.name if mod.charge is not None else ""
 
     def getImageId(self, mod):
-        if mod.charge is None:
-            iconId = -1
-        else:
-            iconFile = mod.charge.icon.iconFile if mod.item.icon else ""
-            if iconFile:
-                bitmap = bitmapLoader.getBitmap(iconFile, "pack")
-                if bitmap is None:
-                    iconId = -1
-                else:
-                    iconId = self.fittingView.imageList.Add(bitmap)
-            else:
-                iconId = -1
-
-        return iconId
+        return -1
 
 ModuleAmmo.register()
