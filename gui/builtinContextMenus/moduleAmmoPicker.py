@@ -24,7 +24,7 @@ class ModuleAmmoPicker(ContextMenu):
             validCharges = currCharges
 
         self.charges = list(validCharges)
-        self.hardpoint = mod.hardpoint
+        self.module = mod
         return len(self.charges) > 0
 
     def getText(self, context, selection):
@@ -34,23 +34,15 @@ class ModuleAmmoPicker(ContextMenu):
         pass
 
     def turretSorter(self, charge):
-        s = []
         damage = 0
-        range = charge.getAttribute("weaponRangeMultiplier")
-        falloff = charge.getAttribute("fallofMultiplier") or 1
-        types = []
+        range = self.module.getModifiedItemAttr("maxRange") * charge.getAttribute("weaponRangeMultiplier")
+        falloff = self.module.getModifiedItemAttr("falloff") * (charge.getAttribute("fallofMultiplier") or 1)
         for type in ("em", "explosive", "kinetic", "thermal"):
             d = charge.getAttribute("%sDamage" % type)
             if d > 0:
-                types.append(type)
                 damage += d
 
-        s.append(-range)
-        s.append(-falloff)
-        s.append(charge.name.rsplit()[-2:])
-        s.append(damage)
-        s.append(charge.name)
-        return s
+        return (-range - falloff, charge.name.rsplit()[-2:], damage, charge.name)
 
     MISSILE_ORDER = ["em", "thermal", "kinetic", "explosive"]
     def missileSorter(self, charge):
@@ -86,7 +78,8 @@ class ModuleAmmoPicker(ContextMenu):
         m = wx.Menu()
         m.Bind(wx.EVT_MENU, self.handleAmmoSwitch)
         self.chargeIds = {}
-        if self.hardpoint == Hardpoint.TURRET:
+        hardpoint = self.module.hardpoint
+        if hardpoint == Hardpoint.TURRET:
             self.addSeperator(m, "Long Range")
             items = []
             range = None
@@ -122,7 +115,7 @@ class ModuleAmmoPicker(ContextMenu):
                 m.AppendItem(item)
 
             self.addSeperator(m, "High Damage")
-        elif self.hardpoint == Hardpoint.MISSILE:
+        elif hardpoint == Hardpoint.MISSILE:
             self.charges.sort(key=self.missileSorter)
             type = None
             sub = None

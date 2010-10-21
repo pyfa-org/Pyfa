@@ -22,9 +22,11 @@ import service
 import gui.display as d
 import gui.fittingView as fv
 import gui.marketBrowser as mb
+from gui.builtinViewColumns.implantCheckbox import ImplantCheckbox
 
 class ImplantView(d.Display):
-    DEFAULT_COLS = ["Name",
+    DEFAULT_COLS = ["Implant Checkbox",
+                    "Name",
                     "attr:implantness"]
 
     def __init__(self, parent):
@@ -33,6 +35,7 @@ class ImplantView(d.Display):
         self.mainFrame.Bind(mb.ITEM_SELECTED, self.addItem)
         self.Bind(wx.EVT_LEFT_DCLICK, self.removeItem)
         self.Bind(wx.EVT_KEY_UP, self.kbEvent)
+        self.Bind(wx.EVT_LEFT_DOWN, self.click)
 
     def kbEvent(self,event):
         keycode = event.GetKeyCode()
@@ -44,6 +47,7 @@ class ImplantView(d.Display):
                 cFit.removeImplant(fitID, self.GetItemData(row))
                 row = self.GetNextSelected(row)
                 wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=fitID))
+
     def fitChanged(self, event):
         cFit = service.Fit.getInstance()
         fit = cFit.getFit(event.fitID)
@@ -59,6 +63,7 @@ class ImplantView(d.Display):
         trigger = cFit.addImplant(fitID, event.itemID)
         if trigger:
             wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=fitID))
+            self.mainFrame.additionsPane.select("Implants")
 
         event.Skip()
 
@@ -69,3 +74,13 @@ class ImplantView(d.Display):
             cFit = service.Fit.getInstance()
             cFit.removeImplant(fitID, self.GetItemData(row))
             wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=fitID))
+
+    def click(self, event):
+        row, _ = self.HitTest(event.Position)
+        if row != -1:
+            col = self.getColumn(event.Position)
+            if col == self.getColIndex(ImplantCheckbox):
+                fitID = self.mainFrame.getActiveFit()
+                cFit = service.Fit.getInstance()
+                cFit.toggleImplant(fitID, row)
+                wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=fitID))

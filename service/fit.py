@@ -234,6 +234,16 @@ class Fit(object):
         fit.calculateModifiedAttributes()
         return True
 
+    def toggleImplant(self, fitID, i):
+        fit = eos.db.getFit(fitID)
+        implant = fit.implants[i]
+        implant.active = not implant.active
+
+        eos.db.commit()
+        fit.clear()
+        fit.calculateModifiedAttributes()
+        return True
+
     def changeChar(self, fitID, charID):
         if fitID is None or charID is None:
             return

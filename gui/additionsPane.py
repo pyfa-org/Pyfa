@@ -49,7 +49,6 @@ class AdditionsPane(TogglePanel):
         size.SetHeight(200)
         self.notebook.SetMinSize(size)
         baseSizer.Add(self.notebook, 1, wx.EXPAND)
-
         self.notebook.AddPage(DroneView(self.notebook), "Drones")
         self.notebook.AddPage(ImplantView(self.notebook), "Implants")
         self.notebook.AddPage(BoosterView(self.notebook), "Boosters")
@@ -57,3 +56,6 @@ class AdditionsPane(TogglePanel):
 
 #        self.Expand()
 
+    PANES = ["Drones", "Implants", "Boosters"]
+    def select(self, name):
+        self.notebook.SetSelection(self.PANES.index(name))

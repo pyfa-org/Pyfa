@@ -48,6 +48,7 @@ class BoosterView(d.Display):
         trigger = cFit.addBooster(fitID, event.itemID)
         if trigger:
             wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=fitID))
+            self.mainFrame.additionsPane.select("Boosters")
 
         event.Skip()
 
