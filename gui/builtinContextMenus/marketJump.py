@@ -8,13 +8,14 @@ class MarketJump(ContextMenu):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     def display(self, context, selection):
-        return context in ("module", "ammo", "itemSearch") and (not selection[0].isEmpty if context == "module" else True)
+        return context in ("module", "ammo", "itemSearch", "drone", "implant", "booster") \
+               and (not selection[0].isEmpty if context == "module" else True)
 
     def getText(self, context, selection):
         return "Jump to %s Market Group" % (context.capitalize() if context != "itemSearch" else "Item")
 
     def activate(self, context, selection, i):
-        if context == "module":
+        if context in ("module", "drone", "implant", "booster"):
             item = selection[0].item
         elif context == "ammo":
             item = selection[0].charge
