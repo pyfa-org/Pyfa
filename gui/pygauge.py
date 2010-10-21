@@ -57,6 +57,7 @@ class PyGauge(wx.PyWindow):
         self._animStep = 0
         self._period = 20
         self._animValue = 0
+        self._animDirection = 0
 
 
         self._percentage = 0
@@ -248,7 +249,15 @@ class PyGauge(wx.PyWindow):
         """
 
         pass
+    def CalculateTransitionColor(self, startColor, endColor, delta):
+        sR,sG,sB = startColor
+        eR,eG,eB = endColor
 
+        tR = sR + (eR - sR) *  delta
+        tG = sG + (eG - sG) *  delta
+        tB = sB + (eB - sB) *  delta
+
+        return (tR, tG, tB)
 
     def OnPaint(self, event):
         """
@@ -295,39 +304,30 @@ class PyGauge(wx.PyWindow):
             pv = value
 
             if pv <= 100:
-                c1 = map(lambda t: sum(t), zip(c1, (0,pv/3,-pv,0)))
-                c2 = map(lambda t: sum(t), zip(c2, (0,pv/3,-pv,0)))
+                xv = pv/100
+                c1 = self.CalculateTransitionColor(c1, (122,154,25),xv)
+                c2 = self.CalculateTransitionColor(c2, (153,185,56),xv)
             else:
                 if pv <=101:
+                    #163,206,53  , 132,175,22
                     xv = pv -100
-                    c1 = map(lambda t: sum(t), zip(c1, (0,100/3,-100,0)))
-                    c1 = map(lambda t: sum(t), zip(c1, (xv*10,xv*20,0,0)))
+                    c1 = self.CalculateTransitionColor((122,154,25), (132,175,22), xv)
+                    c2 = self.CalculateTransitionColor((153,185,56), (163,206,53), xv)
 
-                    c2 = map(lambda t: sum(t), zip(c2, (0,100/3,-100,0)))
-                    c2 = map(lambda t: sum(t), zip(c2, (xv*10,xv*20,0,0)))
                 elif pv <= 103:
-                    xv = pv -101
-                    c1 = map(lambda t: sum(t), zip(c1, (0,100/3,-100,0)))
-                    c1 = map(lambda t: sum(t), zip(c1, (1*10,1*20,0,0)))
-                    c1 = map(lambda t: sum(t), zip(c1, (xv*30,-xv*30,0,0)))
+                    #223,146,53 , 192,115,22
+                    xv = (pv -101)/2
+                    c1 = self.CalculateTransitionColor((132,175,22), (192,115,22), xv)
+                    c2 = self.CalculateTransitionColor((163,206,53), (223,146,53), xv)
 
-                    c2 = map(lambda t: sum(t), zip(c2, (0,100/3,-100,0)))
-                    c2 = map(lambda t: sum(t), zip(c2, (1*10,1*20,0,0)))
-                    c2 = map(lambda t: sum(t), zip(c2, (xv*30,-xv*30,0,0)))
                 elif pv <= 105:
-                    xv = pv -103
-                    c1 = map(lambda t: sum(t), zip(c1, (0,100/3,-100,0)))
-                    c1 = map(lambda t: sum(t), zip(c1, (1*10,1*20,0,0)))
-                    c1 = map(lambda t: sum(t), zip(c1, (2*30,-2*30,0,0)))
-                    c1 = map(lambda t: sum(t), zip(c1, (xv*10,-xv*30,0,0)))
-
-
-                    c2 = map(lambda t: sum(t), zip(c2, (0,100/3,-100,0)))
-                    c2 = map(lambda t: sum(t), zip(c2, (1*10,1*20,0,0)))
-                    c2 = map(lambda t: sum(t), zip(c2, (2*30,-2*30,0,0)))
-                    c2 = map(lambda t: sum(t), zip(c2, (xv*10,-xv*30,0,0)))
+                    #243,86,53 , 212, 55, 22
+                    xv = (pv -103)/2
+                    c1 = self.CalculateTransitionColor((192,115,22), (212,55,22), xv)
+                    c2 = self.CalculateTransitionColor((223,146,53), (243,86,53), xv)
 
                 else:
+                    #243,66,53 , 253,6,4
                     pv = 106
                     xv = pv -100
 
@@ -464,8 +464,9 @@ class PyGauge(wx.PyWindow):
             direction = -1
             start = 0
             end = oldValue - value
-
+        self._animDirection = direction
         step=self.OUT_QUAD(self._animStep, start, end, self._animDuration)
+
         self._animStep += self._period
 
         if self._timerId == event.GetId():
@@ -482,6 +483,7 @@ class PyGauge(wx.PyWindow):
             else:
                 if (oldValue-step) > value:
                     self._animValue = oldValue-step
+
                 else:
                     stop_timer = True
 
