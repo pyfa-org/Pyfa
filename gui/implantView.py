@@ -23,6 +23,7 @@ import gui.display as d
 import gui.fittingView as fv
 import gui.marketBrowser as mb
 from gui.builtinViewColumns.activityCheckbox import ActivityCheckbox
+from gui.contextMenu import ContextMenu
 
 class ImplantView(d.Display):
     DEFAULT_COLS = ["Activity Checkbox",
@@ -36,6 +37,10 @@ class ImplantView(d.Display):
         self.Bind(wx.EVT_LEFT_DCLICK, self.removeItem)
         self.Bind(wx.EVT_KEY_UP, self.kbEvent)
         self.Bind(wx.EVT_LEFT_DOWN, self.click)
+        if "__WXGTK__" in  wx.PlatformInfo:
+            self.Bind(wx.EVT_RIGHT_UP, self.scheduleMenu)
+        else:
+            self.Bind(wx.EVT_RIGHT_DOWN, self.scheduleMenu)
 
     def kbEvent(self,event):
         keycode = event.GetKeyCode()
@@ -85,3 +90,18 @@ class ImplantView(d.Display):
                 cFit = service.Fit.getInstance()
                 cFit.toggleImplant(fitID, row)
                 wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=fitID))
+
+    def scheduleMenu(self, event):
+        event.Skip()
+        if self.getColumn(event.Position) != self.getColIndex(ActivityCheckbox):
+            wx.CallAfter(self.spawnMenu)
+
+    def spawnMenu(self):
+        sel = self.GetFirstSelected()
+        if sel != -1:
+            cFit = service.Fit.getInstance()
+            fit = cFit.getFit(self.mainFrame.getActiveFit())
+
+            menu = ContextMenu.getMenu((fit.implants[sel],), "implant")
+            self.PopupMenu(menu)
+

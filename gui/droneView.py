@@ -24,6 +24,7 @@ import gui.fittingView as fv
 import gui.marketBrowser as mb
 import gui.display as d
 from gui.builtinViewColumns.droneCheckbox import DroneCheckbox
+from gui.contextMenu import ContextMenu
 
 class DroneView(d.Display):
     DEFAULT_COLS = ["Drone Checkbox",
@@ -39,6 +40,10 @@ class DroneView(d.Display):
         self.mainFrame.Bind(mb.ITEM_SELECTED, self.addItem)
         self.Bind(wx.EVT_LEFT_DCLICK, self.removeItem)
         self.Bind(wx.EVT_LEFT_DOWN, self.click)
+        if "__WXGTK__" in  wx.PlatformInfo:
+            self.Bind(wx.EVT_RIGHT_UP, self.scheduleMenu)
+        else:
+            self.Bind(wx.EVT_RIGHT_DOWN, self.scheduleMenu)
 
     def fitChanged(self, event):
         cFit = service.Fit.getInstance()
@@ -70,6 +75,7 @@ class DroneView(d.Display):
                 wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=fitID))
 
     def click(self, event):
+        event.Skip()
         row, _ = self.HitTest(event.Position)
         if row != -1:
             col = self.getColumn(event.Position)
@@ -78,3 +84,17 @@ class DroneView(d.Display):
                 cFit = service.Fit.getInstance()
                 cFit.toggleDrone(fitID, row)
                 wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=fitID))
+
+    def scheduleMenu(self, event):
+        event.Skip()
+        if self.getColumn(event.Position) != self.getColIndex(DroneCheckbox):
+            wx.CallAfter(self.spawnMenu)
+
+    def spawnMenu(self):
+        sel = self.GetFirstSelected()
+        if sel != -1:
+            cFit = service.Fit.getInstance()
+            fit = cFit.getFit(self.mainFrame.getActiveFit())
+
+            menu = ContextMenu.getMenu((fit.drones[sel],), "drone")
+            self.PopupMenu(menu)
