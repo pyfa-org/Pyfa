@@ -309,25 +309,21 @@ class PyGauge(wx.PyWindow):
                 c2 = self.CalculateTransitionColor(c2, (153,185,56),xv)
             else:
                 if pv <=101:
-                    #163,206,53  , 132,175,22
                     xv = pv -100
                     c1 = self.CalculateTransitionColor((122,154,25), (132,175,22), xv)
                     c2 = self.CalculateTransitionColor((153,185,56), (163,206,53), xv)
 
                 elif pv <= 103:
-                    #223,146,53 , 192,115,22
                     xv = (pv -101)/2
                     c1 = self.CalculateTransitionColor((132,175,22), (192,115,22), xv)
                     c2 = self.CalculateTransitionColor((163,206,53), (223,146,53), xv)
 
                 elif pv <= 105:
-                    #243,86,53 , 212, 55, 22
                     xv = (pv -103)/2
                     c1 = self.CalculateTransitionColor((192,115,22), (212,55,22), xv)
                     c2 = self.CalculateTransitionColor((223,146,53), (243,86,53), xv)
 
                 else:
-                    #243,66,53 , 253,6,4
                     pv = 106
                     xv = pv -100
 
