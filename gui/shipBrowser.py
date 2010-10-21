@@ -124,7 +124,6 @@ class ShipBrowser(wx.Panel):
                 return
 
             type, fitID = data
-            print type
             if type == "fit":
                 for btn in btns:
                     btn.Enable()
