@@ -131,6 +131,12 @@ class MarketBrowser(wx.Panel):
 
     def jump(self, item):
         mg = item.marketGroup
+        if mg is None and item.metaGroup is not None:
+            mg = item.metaGroup.parent.marketGroup
+
+        if mg is None:
+            return
+
         jumpList = []
         while mg is not None:
             jumpList.append(mg.ID)
