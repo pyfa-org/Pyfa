@@ -33,9 +33,9 @@ class FittingView(d.Display):
     DEFAULT_COLS = ["Module state",
                     "Module name/slot",
                     "Module Ammo",
-                    "Capacitor Usage",
                     "attr:trackingSpeed",
                     "Max range",
+                    "Capacitor Usage",
                     "attr:power",
                     "attr:cpu",
                     ]
