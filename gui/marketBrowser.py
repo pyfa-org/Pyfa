@@ -155,8 +155,8 @@ class MarketBrowser(wx.Panel):
         for i in range(len(jumpList) -1, -1, -1):
             target = jumpList[i]
             child, cookie = self.marketView.GetFirstChild(item)
-            while self.marketView.GetItemPyData(child) != target:
-                child, cookie = self.marketView.GetNextChild(child, cookie)
+            while self.marketView.GetItemPyData(child) != target and child.IsOk():
+                child, cookie = self.marketView.GetNextChild(item, cookie)
 
             item = child
             self.marketView.Expand(item)
