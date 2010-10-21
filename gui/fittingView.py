@@ -226,24 +226,23 @@ class FittingView(d.Display):
         self.PopupMenu(menu)
 
     def click(self, event):
-        event.Skip()
         row, _ = self.HitTest(event.Position)
-        if row != -1:
+        col = self.getColumn(event.Position)
+        if row != -1 and col == self.getColIndex(ModuleState):
             sel = []
             curr = self.GetFirstSelected()
             while curr != -1:
                 sel.append(curr)
                 curr = self.GetNextSelected(curr)
 
-            if curr not in sel:
+            if row not in sel:
                 mods = [self.mods[self.GetItemData(row)]]
             else:
                 mods = self.getSelectedMods()
 
-            col = self.getColumn(event.Position)
-            if col == self.getColIndex(ModuleState):
-                sFit = service.Fit.getInstance()
-                fitID = self.mainFrame.getActiveFit()
-                sFit.toggleModulesState(fitID, self.mods[self.GetItemData(row)], mods, "right" if event.Button == 3 else "left")
-                wx.PostEvent(self.mainFrame, FitChanged(fitID=self.mainFrame.getActiveFit()))
-
+            sFit = service.Fit.getInstance()
+            fitID = self.mainFrame.getActiveFit()
+            sFit.toggleModulesState(fitID, self.mods[self.GetItemData(row)], mods, "right" if event.Button == 3 else "left")
+            wx.PostEvent(self.mainFrame, FitChanged(fitID=self.mainFrame.getActiveFit()))
+        else:
+            event.Skip()
