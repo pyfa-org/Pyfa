@@ -31,13 +31,14 @@ FitChanged, FIT_CHANGED = wx.lib.newevent.NewEvent()
 
 class FittingView(d.Display):
     DEFAULT_COLS = ["Module state",
+                    "Module Ammo Icon",
                     "Module name/slot",
-                    "Module Ammo",
                     "attr:trackingSpeed",
                     "Max range",
                     "Capacitor Usage",
                     "attr:power",
                     "attr:cpu",
+                    "Module Ammo",
                     ]
 
     class FittingViewDrop(wx.PyDropTarget):
