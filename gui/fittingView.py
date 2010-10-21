@@ -70,13 +70,14 @@ class FittingView(d.Display):
         self.Bind(wx.EVT_RIGHT_DOWN, self.click)
 
     def startDrag(self, event):
-        data = wx.PyTextDataObject()
         row = event.GetIndex()
-        data.SetText(str(self.GetItemData(row)))
+        if row != -1:
+            data = wx.PyTextDataObject()
+            data.SetText(str(self.GetItemData(row)))
 
-        dropSource = wx.DropSource(self)
-        dropSource.SetData(data)
-        res = dropSource.DoDragDrop()
+            dropSource = wx.DropSource(self)
+            dropSource.SetData(data)
+            res = dropSource.DoDragDrop()
 
 
     def getSelectedMods(self):
@@ -226,18 +227,18 @@ class FittingView(d.Display):
     def click(self, event):
         event.Skip()
         row, _ = self.HitTest(event.Position)
-        sel = []
-        curr = self.GetFirstSelected()
-        while curr != -1:
-            sel.append(curr)
-            curr = self.GetNextSelected(curr)
-
-        if curr not in sel:
-            mods = [self.mods[self.GetItemData(row)]]
-        else:
-            mods = self.getSelectedMods()
-
         if row != -1:
+            sel = []
+            curr = self.GetFirstSelected()
+            while curr != -1:
+                sel.append(curr)
+                curr = self.GetNextSelected(curr)
+
+            if curr not in sel:
+                mods = [self.mods[self.GetItemData(row)]]
+            else:
+                mods = self.getSelectedMods()
+
             col = self.getColumn(event.Position)
             if col == self.getColIndex(ModuleState):
                 sFit = service.Fit.getInstance()
