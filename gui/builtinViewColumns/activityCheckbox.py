@@ -22,8 +22,8 @@ from gui.viewColumn import ViewColumn
 import gui.mainFrame
 import wx
 
-class ImplantCheckbox(ViewColumn):
-    name = "Implant Checkbox"
+class ActivityCheckbox(ViewColumn):
+    name = "Activity Checkbox"
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
         self.resizable = False
@@ -44,4 +44,4 @@ class ImplantCheckbox(ViewColumn):
     def getImageId(self, implant):
         return self.checkedId if implant.active else self.uncheckedId
 
-ImplantCheckbox.register()
+ActivityCheckbox.register()

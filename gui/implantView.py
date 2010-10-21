@@ -22,10 +22,10 @@ import service
 import gui.display as d
 import gui.fittingView as fv
 import gui.marketBrowser as mb
-from gui.builtinViewColumns.implantCheckbox import ImplantCheckbox
+from gui.builtinViewColumns.activityCheckbox import ActivityCheckbox
 
 class ImplantView(d.Display):
-    DEFAULT_COLS = ["Implant Checkbox",
+    DEFAULT_COLS = ["Activity Checkbox",
                     "Name",
                     "attr:implantness"]
 
@@ -79,7 +79,7 @@ class ImplantView(d.Display):
         row, _ = self.HitTest(event.Position)
         if row != -1:
             col = self.getColumn(event.Position)
-            if col == self.getColIndex(ImplantCheckbox):
+            if col == self.getColIndex(ActivityCheckbox):
                 fitID = self.mainFrame.getActiveFit()
                 cFit = service.Fit.getInstance()
                 cFit.toggleImplant(fitID, row)
