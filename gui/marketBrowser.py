@@ -129,6 +129,25 @@ class MarketBrowser(wx.Panel):
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
+    def jump(self, item):
+        mg = item.marketGroup
+        jumpList = []
+        while mg is not None:
+            jumpList.append(mg.ID)
+            mg = mg.parent
+
+        item = self.marketRoot
+        for i in range(len(jumpList) -1, -1, -1):
+            target = jumpList[i]
+            child, cookie = self.marketView.GetFirstChild(item)
+            while self.marketView.GetItemPyData(child) != target:
+                child, cookie = self.marketView.GetNextChild(child, cookie)
+
+            item = child
+            self.marketView.Expand(item)
+
+        self.marketView.SelectItem(item)
+
     def addMarketViewImage(self, iconFile):
         if iconFile is None:
             return -1

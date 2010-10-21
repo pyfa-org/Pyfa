@@ -1,1 +1,1 @@
-__all__ = ["moduleAmmoPicker", "itemStats", "damagePattern"]
+__all__ = ["moduleAmmoPicker", "itemStats", "damagePattern", "marketJump"]
