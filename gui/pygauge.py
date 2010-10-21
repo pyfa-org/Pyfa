@@ -362,7 +362,7 @@ class PyGauge(wx.PyWindow):
         r.top +=1
 
         formatStr = "{0:." + str(self._fractionDigits) + "f}%"
-        dc.SetTextForeground(wx.Colour(53,53,53))
+        dc.SetTextForeground(wx.Colour(80,80,80))
         dc.DrawLabel(formatStr.format(value), r, wx.ALIGN_CENTER)
 
         dc.SetTextForeground(wx.Colour(255,255,255))
