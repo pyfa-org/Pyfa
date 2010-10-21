@@ -124,6 +124,7 @@ class ShipBrowser(wx.Panel):
                 return
 
             type, fitID = data
+            print type
             if type == "fit":
                 for btn in btns:
                     btn.Enable()
@@ -166,17 +167,25 @@ class ShipBrowser(wx.Panel):
         tree = self.getActiveTree()
         root = tree.GetSelection()
         type, shipID = tree.GetPyData(root)
-        if type == "fit":
-            root = tree.GetItemParent(root)
-            type, shipID = tree.GetPyData(root)
-
-        name = "%s fit" % tree.GetItemText(root)
         cFit = service.Fit.getInstance()
+        noChildren = False
+        if type == "fit":
+            fit = cFit.getFit(shipID)
+            type, shipID = "ship", fit.ship.item.ID
+            name = "%s fit" % fit.ship.item.name
+            if tree == self.searchView:
+                root = self.searchRoot
+                noChildren = True
+        else:
+            name = "%s fit" % tree.GetItemText(root)
+
         fitID = cFit.newFit(shipID, name)
         childId = tree.AppendItem(root, name, self.fitIconId, data=wx.TreeItemData(("fit", fitID)))
         tree.SetItemText(childId, name)
-        tree.SortChildren(root)
-        tree.Expand(root)
+        if not noChildren:
+            tree.SortChildren(root)
+            tree.Expand(root)
+
         tree.SelectItem(childId)
         tree.EditLabel(childId)
 
