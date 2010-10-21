@@ -23,6 +23,7 @@ import wx
 import threading
 from sqlalchemy.orm.exc import NoResultFound
 import Queue
+import traceback
 
 class PriceWorkerThread(threading.Thread):
     def run(self):

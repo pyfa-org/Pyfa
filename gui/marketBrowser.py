@@ -133,6 +133,15 @@ class MarketBrowser(wx.Panel):
         mg = item.marketGroup
         if mg is None and item.metaGroup is not None:
             mg = item.metaGroup.parent.marketGroup
+            cMarket = service.Market.getInstance()
+            for btn in ("normal", "faction", "complex", "officer"):
+                getattr(self, btn).SetValue(False)
+                cMarket.disableMetaGroup(btn)
+
+            metaGroup = item.metaGroup.name.lower()
+            getattr(self, metaGroup).SetValue(True)
+            cMarket.activateMetaGroup(metaGroup)
+            self.searching = False
 
         if mg is None:
             return
@@ -153,6 +162,7 @@ class MarketBrowser(wx.Panel):
             self.marketView.Expand(item)
 
         self.marketView.SelectItem(item)
+        self.searching = True
 
     def addMarketViewImage(self, iconFile):
         if iconFile is None:
