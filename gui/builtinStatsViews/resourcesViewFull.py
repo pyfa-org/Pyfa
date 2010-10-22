@@ -58,8 +58,11 @@ class ResourcesViewFull(StatsView):
         base.Add(sizer, 0, wx.ALIGN_CENTER)
 
         #Turrets & launcher hardslots display
+        tooltipText = {"turret":"Turret hardpoints", "launcher":"Launcher hardpoints", "calibration":"Calibration"}
         for type in ("turret", "launcher", "calibration"):
             bitmap = bitmapLoader.getStaticBitmap("%s_big" % type, parent, "icons")
+            tooltip = wx.ToolTip(tooltipText[type])
+            bitmap.SetToolTip(tooltip)
             box = wx.BoxSizer(wx.HORIZONTAL)
 
             sizer.Add(bitmap, 0, wx.ALIGN_CENTER)
@@ -80,6 +83,7 @@ class ResourcesViewFull(StatsView):
         base.Add(wx.StaticLine(parent, wx.ID_ANY, style=st), 0, wx.EXPAND | wx.LEFT, 3 if panel == "full" else 0)
 
         #PG, Cpu & drone stuff
+        tooltipText = {"cpu":"CPU", "pg":"Power grid", "droneBay":"Drone bay", "droneBandwidth":"Drone bandwidth"}
         for i, group in enumerate((("cpu", "pg"), ("droneBay", "droneBandwidth"))):
             main = wx.BoxSizer(wx.VERTICAL)
             base.Add(main, 1 , wx.ALIGN_CENTER)
@@ -87,6 +91,8 @@ class ResourcesViewFull(StatsView):
             for type in group:
                 capitalizedType = type[0].capitalize() + type[1:]
                 bitmap = bitmapLoader.getStaticBitmap(type + "_big", parent, "icons")
+                tooltip = wx.ToolTip(tooltipText[type])
+                bitmap.SetToolTip(tooltip)
 
                 stats = wx.BoxSizer(wx.VERTICAL)
                 absolute =  wx.BoxSizer(wx.HORIZONTAL)
