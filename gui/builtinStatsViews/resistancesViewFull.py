@@ -167,10 +167,10 @@ class ResistancesViewFull(StatsView):
             activeDmgPattern = getattr(self.mainFrame,"_activeDmgPattern", sDP.getDamagePattern("Uniform"))
 
             sFit.setDamagePattern(fitID, activeDmgPattern)
-            self.stEHPs.SetLabel("EHP")
+            self.stEHPs.SetLabel("  EHP ")
         else:
             sFit.setDamagePattern(fitID, None)
-            self.stEHPs.SetLabel("HP")
+            self.stEHPs.SetLabel("  HP ")
         self.stEHPs.SetToolTip(wx.ToolTip("Click to toggle between effective HP and raw HP"))
 
 
