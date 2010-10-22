@@ -78,7 +78,7 @@ class ResistancesViewFull(StatsView):
         # Add an empty label, then the rest.
         sizerResistances.Add(wx.StaticText(contentPanel, wx.ID_ANY), wx.GBPosition( row, col ), wx.GBSpan( 1, 1 ))
         col+=1
-        toolTipText = {"em" : "EM", "thermal" : "Thermal", "kinetic" : "Kinetic", "explosive" : "Explosive"}
+        toolTipText = {"em" : "Electromagnetic resistance", "thermal" : "Thermal resistance", "kinetic" : "Kinetic resistance", "explosive" : "Explosive resistance"}
         for damageType in ("em", "thermal", "kinetic", "explosive"):
             bitmap = bitmapLoader.getStaticBitmap("%s_big" % damageType, contentPanel, "icons")
             tooltip = wx.ToolTip(toolTipText[damageType])
@@ -97,7 +97,7 @@ class ResistancesViewFull(StatsView):
 
         gaugeColours=( ((38,133,198),(52,86,98)), ((198,38,38),(83,65,67)), ((163,163,163),(74,90,93)), ((198,133,38),(81,83,67)) )
 
-        toolTipText = {"shield" : "Shield", "armor" : "Armor", "hull" : "Hull", "damagePattern" : "Damage Pattern"}
+        toolTipText = {"shield" : "Shield resistances", "armor" : "Armor resistances", "hull" : "Hull resistances", "damagePattern" : "Incoming damage pattern"}
         for tankType in ("shield", "armor", "hull", "separator", "damagePattern"):
             if tankType != "separator":
                 bitmap = bitmapLoader.getStaticBitmap("%s_big" % tankType, contentPanel, "icons")
