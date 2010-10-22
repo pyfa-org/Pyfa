@@ -48,25 +48,33 @@ class RechargeViewFull(StatsView):
 
         #Add an empty label first for correct alignment.
         sizerTankStats.Add(wx.StaticText(contentPanel, wx.ID_ANY, ""), 0)
+        toolTipText = {"shieldPassive" : "Passive Shield Recharge", "shieldActive" : "Active Shield Recharge", "armorActive" : "Armor repair amount", "hullActive" : "Hull repair amount"}
         for tankType in ("shieldPassive", "shieldActive", "armorActive", "hullActive"):
-            sizerTankStats.Add(bitmapLoader.getStaticBitmap("%s_big" % tankType, contentPanel, "icons"), 0, wx.ALIGN_CENTER)
+            bitmap = bitmapLoader.getStaticBitmap("%s_big" % tankType, contentPanel, "icons")
+            tooltip = wx.ToolTip(toolTipText[tankType])
+            bitmap.SetToolTip(tooltip)
+            sizerTankStats.Add(bitmap, 0, wx.ALIGN_CENTER)
 
+        toolTipText = {"reinforced" : "Reinforced", "sustained" : "Sustained"}
         for stability in ("reinforced", "sustained"):
-                sizerTankStats.Add(bitmapLoader.getStaticBitmap("regen%s_big" % stability.capitalize(), contentPanel, "icons"), 0, wx.ALIGN_CENTER)
-                for tankType in ("shieldPassive", "shieldActive", "armorActive", "hullActive"):
-                    if stability == "reinforced" and tankType == "shieldPassive":
-                        sizerTankStats.Add(wx.StaticText(contentPanel, wx.ID_ANY, ""))
-                        continue
+            bitmap = bitmapLoader.getStaticBitmap("regen%s_big" % stability.capitalize(), contentPanel, "icons")
+            tooltip = wx.ToolTip(toolTipText[stability])
+            bitmap.SetToolTip(tooltip)
+            sizerTankStats.Add(bitmap, 0, wx.ALIGN_CENTER)
+            for tankType in ("shieldPassive", "shieldActive", "armorActive", "hullActive"):
+                if stability == "reinforced" and tankType == "shieldPassive":
+                    sizerTankStats.Add(wx.StaticText(contentPanel, wx.ID_ANY, ""))
+                    continue
 
-                    tankTypeCap = tankType[0].capitalize() + tankType[1:]
-                    lbl = wx.StaticText(contentPanel, wx.ID_ANY, "0.0", style = wx.ALIGN_RIGHT)
-                    setattr(self, "labelTank%s%s" % (stability.capitalize(), tankTypeCap), lbl)
+                tankTypeCap = tankType[0].capitalize() + tankType[1:]
+                lbl = wx.StaticText(contentPanel, wx.ID_ANY, "0.0", style = wx.ALIGN_RIGHT)
+                setattr(self, "labelTank%s%s" % (stability.capitalize(), tankTypeCap), lbl)
 
-                    box = wx.BoxSizer(wx.HORIZONTAL)
-                    box.Add(lbl, 0, wx.EXPAND)
-                    box.Add(wx.StaticText(contentPanel, wx.ID_ANY, " HP/s"), 0, wx.EXPAND)
+                box = wx.BoxSizer(wx.HORIZONTAL)
+                box.Add(lbl, 0, wx.EXPAND)
+                box.Add(wx.StaticText(contentPanel, wx.ID_ANY, " HP/s"), 0, wx.EXPAND)
 
-                    sizerTankStats.Add(box, 0, wx.ALIGN_CENTRE)
+                sizerTankStats.Add(box, 0, wx.ALIGN_CENTRE)
 
         contentPanel.Layout()
 
