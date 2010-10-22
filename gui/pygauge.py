@@ -360,13 +360,20 @@ class PyGauge(wx.PyWindow):
         r = copy.copy(rect)
         r.left +=1
         r.top +=1
+        if self._range == 0.01 and self._value > 0:
+            formatStr =  u'\u221e'
+            dc.SetTextForeground(wx.Colour(80,80,80))
+            dc.DrawLabel(formatStr, r, wx.ALIGN_CENTER)
 
-        formatStr = "{0:." + str(self._fractionDigits) + "f}%"
-        dc.SetTextForeground(wx.Colour(80,80,80))
-        dc.DrawLabel(formatStr.format(value), r, wx.ALIGN_CENTER)
+            dc.SetTextForeground(wx.Colour(255,255,255))
+            dc.DrawLabel(formatStr, rect, wx.ALIGN_CENTER)
+        else:
+            formatStr = "{0:." + str(self._fractionDigits) + "f}%"
+            dc.SetTextForeground(wx.Colour(80,80,80))
+            dc.DrawLabel(formatStr.format(value), r, wx.ALIGN_CENTER)
 
-        dc.SetTextForeground(wx.Colour(255,255,255))
-        dc.DrawLabel(formatStr.format(value), rect, wx.ALIGN_CENTER)
+            dc.SetTextForeground(wx.Colour(255,255,255))
+            dc.DrawLabel(formatStr.format(value), rect, wx.ALIGN_CENTER)
 
     def OUT_CIRC (self, t, b, c, d):
         t=float(t)
