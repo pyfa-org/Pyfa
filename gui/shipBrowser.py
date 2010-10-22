@@ -165,6 +165,9 @@ class ShipBrowser(wx.Panel):
     def newFit(self, event):
         tree = self.getActiveTree()
         root = tree.GetSelection()
+        if not root.IsOk():
+            return
+
         type, shipID = tree.GetPyData(root)
         cFit = service.Fit.getInstance()
         noChildren = False
