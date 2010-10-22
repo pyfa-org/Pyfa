@@ -83,7 +83,7 @@ class ResourcesViewFull(StatsView):
         base.Add(wx.StaticLine(parent, wx.ID_ANY, style=st), 0, wx.EXPAND | wx.LEFT, 3 if panel == "full" else 0)
 
         #PG, Cpu & drone stuff
-        tooltipText = {"cpu":"CPU", "pg":"Power grid", "droneBay":"Drone bay", "droneBandwidth":"Drone bandwidth"}
+        tooltipText = {"cpu":"CPU", "pg":"PowerGrid", "droneBay":"Drone bay", "droneBandwidth":"Drone bandwidth"}
         for i, group in enumerate((("cpu", "pg"), ("droneBay", "droneBandwidth"))):
             main = wx.BoxSizer(wx.VERTICAL)
             base.Add(main, 1 , wx.ALIGN_CENTER)

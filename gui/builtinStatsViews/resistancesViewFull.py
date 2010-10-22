@@ -97,7 +97,7 @@ class ResistancesViewFull(StatsView):
 
         gaugeColours=( ((38,133,198),(52,86,98)), ((198,38,38),(83,65,67)), ((163,163,163),(74,90,93)), ((198,133,38),(81,83,67)) )
 
-        toolTipText = {"shield" : "Shield resistances", "armor" : "Armor resistances", "hull" : "Hull resistances", "damagePattern" : "Incoming damage pattern"}
+        toolTipText = {"shield" : "Shield resistance", "armor" : "Armor resistance", "hull" : "Hull resistance", "damagePattern" : "Incoming damage pattern"}
         for tankType in ("shield", "armor", "hull", "separator", "damagePattern"):
             if tankType != "separator":
                 bitmap = bitmapLoader.getStaticBitmap("%s_big" % tankType, contentPanel, "icons")
