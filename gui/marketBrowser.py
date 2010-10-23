@@ -139,6 +139,8 @@ class MarketBrowser(wx.Panel):
                 cMarket.disableMetaGroup(btn)
 
             metaGroup = item.metaGroup.name.lower()
+            #In database the metagroup is deadspace, but in pyfa it's called complex, so rewrite
+            metaGroup = metaGroup if metaGroup != "deadspace" else "complex"
             getattr(self, metaGroup).SetValue(True)
             cMarket.activateMetaGroup(metaGroup)
             self.searching = False
