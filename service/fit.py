@@ -332,8 +332,12 @@ class Fit(object):
         return fits
 
     def saveImportedFits(self, fits):
+        IDs = []
         for fit in fits:
             eos.db.save(fit)
+            IDs.append(fit.ID)
+
+        return IDs
 
     def toggleModulesState(self, fitID, base, modules, click):
         proposedState = self.__getProposedState(base, click)

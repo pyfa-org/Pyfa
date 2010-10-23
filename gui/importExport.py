@@ -22,6 +22,7 @@ import service
 import config
 import gui.mainFrame
 import os
+import gui.shipBrowser
 
 class ImportDialog(wx.Dialog):
     def __init__(self, parent):
@@ -29,7 +30,7 @@ class ImportDialog(wx.Dialog):
         self._toggleEdit = -1
         self.SetSizeHintsSz(wx.DefaultSize, wx.DefaultSize)
         self.SetMinSize((500,300))
-
+        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self._fitsFromFile = None
         self._fitsFromEdit = None
 
@@ -93,8 +94,9 @@ class ImportDialog(wx.Dialog):
         if self._toggleEdit == -1:
             if self._fitsFromFile:
                 try:
-                    sFit.saveImportedFits(self._fitsFromFile)
+                    IDs = sFit.saveImportedFits(self._fitsFromFile)
                     self.stStatus.SetLabel("Status: %d fit(s) imported" % len(self._fitsFromFile))
+                    self._openAfterImport(len(self._fitsFromFile), IDs)
                 except:
                     self.stStatus.SetLabel("Status: Error importing from file!")
                 self._fitsFromFile = None
@@ -105,14 +107,19 @@ class ImportDialog(wx.Dialog):
             if len(buffer) != 0:
                 try:
                     self._fitsFromEdit = sFit.importFitFromBuffer(buffer)
-                    sFit.saveImportedFits(self._fitsFromEdit)
+                    IDs = sFit.saveImportedFits(self._fitsFromEdit)
                     self.stStatus.SetLabel("Status: %d fit(s) imported" % len(self._fitsFromEdit))
+                    self._openAfterImport(len(self._fitsFromEdit), IDs)
                 except:
                     self.stStatus.SetLabel("Status: Error importing from text editor!")
             else:
                 self.stStatus.SetLabel("Status: Nothing specified.")
         event.Skip()
 
+    def _openAfterImport(self, importCount, fitIDs):
+        if importCount == 1:
+            if self.mainFrame.getActiveFit() != fitIDs[0]:
+                wx.PostEvent(self.mainFrame, gui.shipBrowser.FitSelected(fitID=fitIDs[0]))
 
     def prepareFileFits(self, event):
         sFit = service.Fit.getInstance()
