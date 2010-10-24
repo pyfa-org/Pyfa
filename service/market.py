@@ -176,6 +176,13 @@ class Market():
     def getGroup(self, groupId):
         return eos.db.getGroup(groupId)
 
+    MARKET_GROUPS = (9, #Modules
+                    1111, #Rigs
+                    157, #Drones
+                    11, #Ammo
+                    1112, #Subsystems
+                    24) #Implants & Boosters
+
     def getMarketRoot(self):
         """
         Get the root of the market tree.
@@ -183,14 +190,9 @@ class Market():
         the ID, the name and the icon of the group
         """
 
-        marketGroups = (9, #Modules
-                        1111, #Rigs
-                        157, #Drones
-                        11, #Ammo
-                        1112, #Subsystems
-                        24) #Implants & Boosters
+
         root = []
-        for id in marketGroups:
+        for id in self.MARKET_GROUPS:
             mg = eos.db.getMarketGroup(id, eager="icon")
             root.append((id, mg.name, self.figureIcon(mg)))
 

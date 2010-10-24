@@ -131,14 +131,14 @@ class MarketBrowser(wx.Panel):
 
     def jump(self, item):
         mg = item.marketGroup
+        cMarket = service.Market.getInstance()
         if mg is None and item.metaGroup is not None:
             mg = item.metaGroup.parent.marketGroup
-            cMarket = service.Market.getInstance()
             for btn in ("normal", "faction", "complex", "officer"):
                 getattr(self, btn).SetValue(False)
                 cMarket.disableMetaGroup(btn)
 
-            metaGroup = item.metaGroup.name.lower()
+            metaGroup = cMarket.getMetaName(item.metaGroup.ID)
             getattr(self, metaGroup).SetValue(True)
             cMarket.activateMetaGroup(metaGroup)
             self.searching = False
@@ -151,11 +151,16 @@ class MarketBrowser(wx.Panel):
             jumpList.append(mg.ID)
             mg = mg.parent
 
+        cMarket.MARKET_GROUPS
+        for id in cMarket.MARKET_GROUPS:
+            if id in jumpList:
+                jumpList = jumpList[:jumpList.index(id)+1]
+
         item = self.marketRoot
         for i in range(len(jumpList) -1, -1, -1):
             target = jumpList[i]
             child, cookie = self.marketView.GetFirstChild(item)
-            while self.marketView.GetItemPyData(child) != target and child.IsOk():
+            while self.marketView.GetItemPyData(child) != target:
                 child, cookie = self.marketView.GetNextChild(item, cookie)
 
             item = child
