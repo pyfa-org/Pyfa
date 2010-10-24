@@ -48,7 +48,10 @@ class CapacitorViewFull(StatsView):
         baseBox = wx.BoxSizer(wx.HORIZONTAL)
 
         sizerCapacitor.Add(baseBox, 0, wx.ALIGN_LEFT)
-        baseBox.Add(bitmapLoader.getStaticBitmap("capacitorInfo_big", parent, "icons"), 0, wx.ALIGN_CENTER)
+        bitmap = bitmapLoader.getStaticBitmap("capacitorInfo_big", parent, "icons")
+        tooltip = wx.ToolTip("Capacitor stability")
+        bitmap.SetToolTip(tooltip)
+        baseBox.Add(bitmap, 0, wx.ALIGN_CENTER)
 
         box = wx.BoxSizer(wx.VERTICAL)
         baseBox.Add(box, 0, wx.ALIGN_LEFT)
@@ -79,7 +82,10 @@ class CapacitorViewFull(StatsView):
 
         sizerCapacitor.Add(baseBox, 0, wx.ALIGN_CENTER_HORIZONTAL)
 
-        baseBox.Add(bitmapLoader.getStaticBitmap("capacitorRecharge_big", parent, "icons"), 0, wx.ALIGN_CENTER)
+        tooltip = wx.ToolTip("Capacitor throughput")
+        bitmap = bitmapLoader.getStaticBitmap("capacitorRecharge_big", parent, "icons")
+        bitmap.SetToolTip(tooltip)
+        baseBox.Add(bitmap, 0, wx.ALIGN_CENTER)
 
         # Recharge
         chargeSizer = wx.FlexGridSizer(2, 3)
