@@ -25,6 +25,7 @@ from gui import pygauge as PG
 from util import formatAmount
 import service
 import gui.mainFrame
+import gui.fittingView as fv
 
 class ResistancesViewFull(StatsView):
     name = "resistancesViewFull"
@@ -32,8 +33,8 @@ class ResistancesViewFull(StatsView):
         StatsView.__init__(self)
         self.parent = parent
         self._cachedValues = []
-        self._toggleEHP = 1
-
+        self.activeFit = None
+        self.oldPattern = None
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     def getHeaderText(self, fit):
@@ -149,30 +150,37 @@ class ResistancesViewFull(StatsView):
             row+=1
             col=0
 
+        self.stEHPs.SetToolTip(wx.ToolTip("Click to toggle between effective HP and raw HP"))
+
     def toggleEHP(self,event):
+        sFit = service.Fit.getInstance()
+        self.activeFit = self.mainFrame.getActiveFit()
 
+        if self.oldPattern is None:
+            self.oldPattern = sFit.getDamagePattern(self.activeFit)
+            sFit.setDamagePattern(self.activeFit, None)
+            self.stEHPs.SetLabel("  HP ")
+        else:
+            sFit.setDamagePattern(self.activeFit, self.oldPattern)
+            self.oldPattern = None
+            self.stEHPs.SetLabel("  EHP ")
 
-
-        self._toggleEHP *= -1
-        self.refreshPanel(self._currentFit)
-
+        wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=self.activeFit))
 
     def refreshPanel(self, fit):
         #If we did anything intresting, we'd update our labels to reflect the new fit's stats here
-        self._currentFit = fit
-        sDP = service.DamagePattern.getInstance()
-        sFit = service.Fit.getInstance()
-        fitID = self.mainFrame.getActiveFit()
-        if self._toggleEHP == 1:
-            activeDmgPattern = getattr(self.mainFrame,"_activeDmgPattern", sDP.getDamagePattern("Uniform"))
-
-            sFit.setDamagePattern(fitID, activeDmgPattern)
+        if fit is None:
             self.stEHPs.SetLabel("  EHP ")
-        else:
-            sFit.setDamagePattern(fitID, None)
-            self.stEHPs.SetLabel("  HP ")
-        self.stEHPs.SetToolTip(wx.ToolTip("Click to toggle between effective HP and raw HP"))
+        elif fit.ID != self.activeFit:
+            if fit.damagePattern is None:
+                self.stEHPs.SetLabel(" HP ")
+            else:
+                self.stEHPs.SetLabel(" EHP ")
+                sFit = service.Fit.getInstance()
+                sDP = service.DamagePattern.getInstance()
+                sFit.setDamagePattern(fit.ID,  sDP.getDamagePattern("Uniform"))
 
+        self.activeFit = fit.ID if fit is not None else None
 
         for tankType in ("shield", "armor", "hull"):
             for damageType in ("em", "thermal", "kinetic", "explosive"):
@@ -201,7 +209,7 @@ class ResistancesViewFull(StatsView):
 
 
         self.labelEhp.SetLabel("%s" % formatAmount(total, 3, 0, 9))
-        if self._toggleEHP == 1:
+        if self.stEHPs.GetLabel() == " EHP ":
             self.stEff.SetLabel("( Effective HP: ")
             self.labelEhp.SetToolTip(wx.ToolTip("Effective: %d HP" % total))
         else:

@@ -89,16 +89,16 @@ class RechargeViewFull(StatsView):
             else:
                 tank = None
 
-
             for name in ("shield", "armor", "hull"):
                 lbl = getattr(self, "labelTank%s%sActive" % (stability.capitalize(), name.capitalize()))
                 if tank is not None:
                     lbl.SetLabel("%.1f" % tank["%sRepair" % name])
                 else:
                     lbl.SetLabel("0.0")
+
         if fit is not None:
             label = getattr(self, "labelTankSustainedShieldPassive")
-            value = fit.calculateShieldRecharge()
+            value = fit.effectiveTank["passiveShield"]
             label.SetLabel(formatAmount(value, 3, 0, 9))
 
         else:

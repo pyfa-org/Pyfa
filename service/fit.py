@@ -298,6 +298,13 @@ class Fit(object):
         fit.clear()
         fit.calculateModifiedAttributes()
 
+    def getDamagePattern(self, fitID):
+        if fitID is None:
+            return
+
+        fit = eos.db.getFit(fitID)
+        return fit.damagePattern
+
     def setDamagePattern(self, fitID, pattern):
         if fitID is None:
             return
@@ -305,6 +312,7 @@ class Fit(object):
         fit = eos.db.getFit(fitID)
         fit.damagePattern = pattern
         eos.db.commit()
+
         fit.clear()
         fit.calculateModifiedAttributes()
 
