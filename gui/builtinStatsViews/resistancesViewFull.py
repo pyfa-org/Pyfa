@@ -155,13 +155,13 @@ class ResistancesViewFull(StatsView):
     def toggleEHP(self,event):
         sFit = service.Fit.getInstance()
         self.activeFit = self.mainFrame.getActiveFit()
-
-        if self.oldPattern is None:
-            self.oldPattern = sFit.getDamagePattern(self.activeFit)
+        currPattern = sFit.getDamagePattern(self.activeFit)
+        if self.oldPattern is None and currPattern is not None:
+            self.oldPattern = currPattern
             sFit.setDamagePattern(self.activeFit, None)
             self.stEHPs.SetLabel("  HP ")
         else:
-            sFit.setDamagePattern(self.activeFit, self.oldPattern)
+            sFit.setDamagePattern(self.activeFit, self.oldPattern or service.DamagePattern.getInstance().getDamagePattern("Uniform"))
             self.oldPattern = None
             self.stEHPs.SetLabel("  EHP ")
 
