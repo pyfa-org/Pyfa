@@ -175,7 +175,7 @@ class ResistancesViewFull(StatsView):
             if fit.damagePattern is None:
                 self.stEHPs.SetLabel(" HP ")
             else:
-                self.stEHPs.SetLabel(" EHP ")
+                self.stEHPs.SetLabel("  EHP ")
                 sFit = service.Fit.getInstance()
                 sDP = service.DamagePattern.getInstance()
                 sFit.setDamagePattern(fit.ID,  sDP.getDamagePattern("Uniform"))
@@ -209,7 +209,7 @@ class ResistancesViewFull(StatsView):
 
 
         self.labelEhp.SetLabel("%s" % formatAmount(total, 3, 0, 9))
-        if self.stEHPs.GetLabel() == " EHP ":
+        if self.stEHPs.GetLabel() == "  EHP ":
             self.stEff.SetLabel("( Effective HP: ")
             self.labelEhp.SetToolTip(wx.ToolTip("Effective: %d HP" % total))
         else:
