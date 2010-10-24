@@ -170,7 +170,7 @@ class MarketBrowser(wx.Panel):
             self.marketView.Expand(item)
 
         self.marketView.SelectItem(item)
-        self.searching = True
+        self.searching = False
 
     def addMarketViewImage(self, iconFile):
         if iconFile is None:
