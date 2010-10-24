@@ -321,7 +321,7 @@ class ItemParams (wx.Panel):
 
         trans = {"Inverse Absolute Percent": (lambda: (1-value)*100, unitName),
                  "Inversed Modifier Percent": (lambda: (1-value) * 100, unitName),
-                 "Modifier Percent": (lambda: "%+.2f" % ((value-1) * 100), unitName),
+                 "Modifier Percent": (lambda: ("%+.2f" if ((value - 1) * 100) % 1 else "%+d") % ((value - 1) * 100), unitName),
                  "Volume": (lambda: value, u"m\u00B3"),
                  "Sizeclass": (lambda: value, ""),
                  "Absolute Percent": (lambda: (value * 100) , unitName),
