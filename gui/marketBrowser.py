@@ -139,7 +139,9 @@ class MarketBrowser(wx.Panel):
                 cMarket.disableMetaGroup(btn)
 
 
+
             metaGroup = cMarket.getMetaName(item.metaGroup.ID)
+
             getattr(self, metaGroup).SetValue(True)
             cMarket.activateMetaGroup(metaGroup)
             self.searching = False
