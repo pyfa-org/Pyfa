@@ -52,7 +52,6 @@ class MainFrame(wx.Frame):
         self.SetMinSize((1000, 700))
         self.SetSize((1000, 700))
 
-
         self.splitter = wx.SplitterWindow(self, style = wx.SP_LIVE_UPDATE)
 
         self.notebookBrowsers = wx.Notebook(self.splitter, wx.ID_ANY)

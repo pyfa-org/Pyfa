@@ -66,14 +66,11 @@ class CharacterEditor(wx.Frame):
 
         self.navSizer.Add(self.skillTreeChoice, 1, wx.ALL | wx.EXPAND, 5)
 
-        buttons = (("new", wx.ART_NEW),
-                   ("copy", wx.ART_COPY),
-                   ("rename", bitmapLoader.getBitmap("rename", "icons")),
-                   ("delete", wx.ART_DELETE))
-
+        buttons = (("new", wx.ART_NEW), ("copy", wx.ART_COPY), ("rename", bitmapLoader.getBitmap("rename", "icons")), ("delete", wx.ART_DELETE))
+        
         size = None
         for name, art in buttons:
-            bitmap = wx.ArtProvider.GetBitmap(art) if isinstance(art, unicode) else art
+            bitmap = wx.ArtProvider.GetBitmap(art, wx.ART_BUTTON) if name != "rename" else art
             btn = wx.BitmapButton(self, wx.ID_ANY, bitmap)
             if size is None:
                 size = btn.GetSize()
