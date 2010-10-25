@@ -86,7 +86,8 @@ class DroneView(d.Display):
             if col == self.getColIndex(DroneCheckbox):
                 fitID = self.mainFrame.getActiveFit()
                 cFit = service.Fit.getInstance()
-                cFit.toggleDrone(fitID, row)
+                drone = self.drones[row]
+                cFit.toggleDrone(fitID, self.original.index(drone))
                 wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=fitID))
 
     def scheduleMenu(self, event):
