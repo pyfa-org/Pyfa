@@ -47,10 +47,15 @@ class ShipBrowser(wx.Panel):
     def __del__(self):
         pass
 
+    def nameKey(self, info):
+        return info[1]
+
     def stage1(self, event):
         sMarket = service.Market.getInstance()
         self.lpane.RemoveAllChildren()
-        for ID, name in sMarket.getShipRoot():
+        categoryList = sMarket.getShipRoot()
+        categoryList.sort(key=self.nameKey)
+        for ID, name in categoryList:
             self.lpane.AddWidget(CategoryItem(self.lpane, ID, (name, 0)))
 
         self.lpane.Layout()
@@ -60,8 +65,6 @@ class ShipBrowser(wx.Panel):
     def raceNameKey(self, shipInfo):
         return self.RACE_ORDER.index(shipInfo[2]), shipInfo[1]
 
-    def nameKey(self, fitInfo):
-        return fitInfo[1]
 
     def stage2(self, event):
         categoryID = event.categoryID
