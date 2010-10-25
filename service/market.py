@@ -19,6 +19,7 @@
 
 import eos.db
 import eos.types
+import eos.saveddata
 import wx
 import threading
 from sqlalchemy.orm.exc import NoResultFound
@@ -175,6 +176,9 @@ class Market():
 
     def getItem(self, itemId):
         return eos.db.getItem(itemId)
+        
+    def getModule(self, itemObject):
+        return eos.saveddata.Module(itemObject)
 
     def getGroup(self, groupId):
         return eos.db.getGroup(groupId)
