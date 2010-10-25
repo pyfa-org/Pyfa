@@ -178,7 +178,7 @@ class Market():
         return eos.db.getItem(itemId)
         
     def getModule(self, itemObject):
-        return eos.saveddata.Module(itemObject)
+        return eos.saveddata.module.Module(itemObject)
 
     def getGroup(self, groupId):
         return eos.db.getGroup(groupId)
