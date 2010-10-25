@@ -49,9 +49,11 @@ class DroneView(d.Display):
         cFit = service.Fit.getInstance()
         fit = cFit.getFit(event.fitID)
 
-        stuff = fit.drones[:] if fit is not None else None
+        self.original = fit.drones if fit is not None else None
+        self.drones = stuff = fit.drones[:] if fit is not None else None
         if stuff is not None:
             stuff.sort(key=lambda d: d.item.name)
+
         self.update(stuff)
         event.Skip()
 
@@ -72,7 +74,8 @@ class DroneView(d.Display):
             if col != self.getColIndex(DroneCheckbox):
                 fitID = self.mainFrame.getActiveFit()
                 cFit = service.Fit.getInstance()
-                cFit.removeDrone(fitID, self.GetItemData(row))
+                drone = self.drones[self.GetItemData(row)]
+                cFit.removeDrone(fitID, self.original.index(drone))
                 wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=fitID))
 
     def click(self, event):
