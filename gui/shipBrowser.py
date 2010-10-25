@@ -95,7 +95,7 @@ class ListPane (wx.ScrolledWindow):
     def MScrollUp(self, event):
 
         posy = self.GetScrollPos(wx.VERTICAL)
-        posy -= 2
+        posy -= 8
         self.Scroll(0, posy)
         self.RefreshList()
         event.Skip()
@@ -103,7 +103,7 @@ class ListPane (wx.ScrolledWindow):
     def MScrollDown(self, event):
 
         posy = self.GetScrollPos(wx.VERTICAL)
-        posy += 2
+        posy += 8
         self.Scroll(0, posy)
         self.RefreshList()
         event.Skip()
