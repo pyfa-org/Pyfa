@@ -45,7 +45,7 @@ class ShipBrowser(wx.Panel):
         for ID, name in sMarket.getShipRoot():
             self.lpane.AddWidget(CategoryItem(self.lpane, ID, (name, 0)))
 
-        self.Layout()
+        self.lpane.Layout()
         self.Show()
 
     def stage2(self, categoryID):
@@ -54,7 +54,7 @@ class ShipBrowser(wx.Panel):
         for ID, name, race in sMarket.getShipList(categoryID):
             self.lpane.AddWidget(ShipItem(self.lpane, ID, (name, 0), race))
 
-        self.Layout()
+        self.lpane.Layout()
         self.Show()
 
 class HeaderPane (wx.Panel):
@@ -100,6 +100,10 @@ class ListPane (wx.ScrolledWindow):
         widget.Reparent(self)
         self._wList.append(widget)
         self._wCount += 1
+
+    def Layout(self):
+        wx.ScrolledWindow.Layout(self)
+        self.Refresh()
 
     def Refresh(self):
         ypos = 0
