@@ -297,7 +297,7 @@ class ShipItem(wx.Window):
         self.highlighted = 0
         self.editWasShown = 0
 
-        self.tcFitName = wx.TextCtrl(self, wx.ID_ANY, "%s fit" % self.shipName, wx.DefaultPosition, wx.DefaultSize, wx.TE_PROCESS_ENTER)
+        self.tcFitName = wx.TextCtrl(self, wx.ID_ANY, "%s fit" % self.shipName, wx.DefaultPosition, (120,-1), wx.TE_PROCESS_ENTER)
         self.tcFitName.Show(False)
 
         self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBackground)
@@ -445,3 +445,169 @@ class ShipItem(wx.Window):
         mdc.DrawBitmap(self.newBmp, self.editPosX, self.editPosY, 0)
         event.Skip()
 
+class FitItem(wx.Window):
+    def __init__(self, parent, shipID=None, shipFittingInfo=("Test", "cnc's avatar"), itemData=None,
+                 id=wx.ID_ANY, range=100, pos=wx.DefaultPosition,
+                 size=(0, 36), style=0):
+        wx.Window.__init__(self, parent, id, pos, size, style)
+
+        self._itemData = itemData
+
+        self.shipBmp = wx.EmptyBitmap(32, 32)
+        self.shipFittingInfo = shipFittingInfo
+        self.shipName, self.fitName= shipFittingInfo
+        self.newBmp = bitmapLoader.getBitmap("add_small", "icons")
+
+        self.Bind(wx.EVT_PAINT, self.OnPaint)
+        self.editPosX = 0
+        self.editPosY = 0
+        self.highlighted = 0
+        self.editWasShown = 0
+
+        self.tcFitName = wx.TextCtrl(self, wx.ID_ANY, "%s fit" % self.fitName, wx.DefaultPosition, (150,-1), wx.TE_PROCESS_ENTER)
+        self.tcFitName.Show(False)
+
+        self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBackground)
+
+        self.Bind(wx.EVT_LEFT_UP, self.checkPosition)
+        self.Bind(wx.EVT_MOTION, self.cursorCheck)
+
+        self.Bind(wx.EVT_ENTER_WINDOW, self.enterW)
+        self.Bind(wx.EVT_LEAVE_WINDOW, self.leaveW)
+
+        self.tcFitName.Bind(wx.EVT_TEXT_ENTER, self.renameFit)
+        self.tcFitName.Bind(wx.EVT_KILL_FOCUS, self.editLostFocus)
+        self.tcFitName.Bind(wx.EVT_KEY_DOWN, self.editCheckEsc)
+
+    def SetData(self, data):
+        self._itemData = data
+
+    def GetData(self):
+        return self._itemData
+
+    def editLostFocus(self, event):
+        self.tcFitName.Show(False)
+        if self.highlighted == 1:
+            self.editWasShown = 1
+
+    def editCheckEsc(self, event):
+        if event.GetKeyCode() == wx.WXK_ESCAPE:
+            self.tcFitName.Show(False)
+            self.editWasShown = 0
+        else:
+            event.Skip()
+
+    def cursorCheck(self, event):
+        pos = event.GetPosition()
+        if self.NHitTest((self.editPosX, self.editPosY), pos, (16, 16)):
+            self.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
+        else:
+            self.SetCursor(wx.StockCursor(wx.CURSOR_ARROW))
+    def checkPosition(self, event):
+
+        pos = event.GetPosition()
+        x, y = pos
+        if self.NHitTest((self.editPosX, self.editPosY), pos, (16, 16)):
+            if self.editWasShown == 1:
+                self.renameFit()
+                return
+            else:
+                self.Refresh()
+                fnEditSize = self.tcFitName.GetSize()
+                wSize = self.GetSize()
+                fnEditPosX = self.editPosX - fnEditSize.width - 5
+                fnEditPosY = (wSize.height - fnEditSize.height) / 2
+                self.tcFitName.SetPosition((fnEditPosX, fnEditPosY))
+                self.tcFitName.Show(True)
+                self.tcFitName.SetFocus()
+                self.tcFitName.SelectAll()
+                return
+
+        if (not self.NHitTest((self.editPosX, self.editPosY), pos, (16, 16))):
+            self.editWasShown = 0
+            self.Refresh()
+
+
+        event.Skip()
+
+    def renameFit(self, event=None):
+        print "Rename :", self.tcFitName.GetValue(), "add renamed fit "
+        self.tcFitName.Show(False)
+        self.editWasShown = 0
+
+    def NHitTest(self, target, position, area):
+        x, y = target
+        px, py = position
+        aX, aY = area
+        if (px > x and px < x + aX) and (py > y and py < y + aY):
+            return True
+        return False
+    def enterW(self, event):
+        self.highlighted = 1
+        self.Refresh()
+        event.Skip()
+
+    def leaveW(self, event):
+        self.highlighted = 0
+        self.Refresh()
+        event.Skip()
+
+    def OnEraseBackground(self, event):
+        pass
+
+    def OnPaint(self, event):
+        rect = self.GetRect()
+
+        canvas = wx.EmptyBitmap(rect.width, rect.height)
+        mdc = wx.BufferedPaintDC(self)
+        mdc.SelectObject(canvas)
+        r = copy.copy(rect)
+        r.top = 0
+        r.left = 0
+        r.height = r.height / 2
+        if self.highlighted:
+            mdc.SetBackground(wx.Brush(wx.SystemSettings_GetColour(wx.SYS_COLOUR_HIGHLIGHT)))
+            mdc.Clear()
+            mdc.SetTextForeground(wx.SystemSettings_GetColour(wx.SYS_COLOUR_HIGHLIGHTTEXT))
+##
+##            sr = 221
+##            sg = 221
+##            sb = 221
+##
+##            startColor = (sr,sg,sb)
+##
+##            mdc.GradientFillLinear(r,startColor,wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW),wx.SOUTH)
+##            r.top = r.height
+##            mdc.GradientFillLinear(r,startColor,wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW),wx.NORTH)
+##            mdc.SetTextForeground(wx.BLACK)
+            mdc.SetFont(wx.Font(10, wx.SWISS, wx.NORMAL, wx.BOLD, False))
+        else:
+            mdc.SetBackground(wx.Brush(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)))
+            mdc.SetTextForeground(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT))
+            mdc.Clear()
+            mdc.SetFont(wx.Font(9, wx.SWISS, wx.NORMAL, wx.BOLD, False))
+#        mdc.DrawBitmap(self.effBmp,5+(rect.height-40)/2,(rect.height-40)/2,0)
+        mdc.DrawBitmap(self.shipBmp, 5 + (rect.height - 32) / 2, (rect.height - 32) / 2, 0)
+
+
+
+
+        shipName, fitName = self.shipFittingInfo
+
+
+        ypos = (rect.height - 32) / 2
+        textStart = 48
+        xtext, ytext = mdc.GetTextExtent(shipName)
+        mdc.DrawText(shipName, textStart, ypos)
+        ypos += ytext
+
+        mdc.SetFont(wx.Font(9, wx.SWISS, wx.NORMAL, wx.NORMAL, False))
+
+        xtext, ytext = mdc.GetTextExtent("%d fitting(s)")
+        mdc.DrawText("%s" % fitName, textStart, ypos)
+#        mdc.SetFont(wx.Font(7, wx.SWISS, wx.NORMAL, wx.NORMAL, False))
+
+        self.editPosX = rect.width - 20
+        self.editPosY = (rect.height - 16) / 2
+        mdc.DrawBitmap(self.newBmp, self.editPosX, self.editPosY, 0)
+        event.Skip()
