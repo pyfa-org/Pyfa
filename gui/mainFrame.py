@@ -62,6 +62,7 @@ class MainFrame(wx.Frame):
 
         self.shipBrowser = ShipBrowser(self.notebookBrowsers)
         self.notebookBrowsers.AddPage(self.shipBrowser, "Ships")
+        self.notebookBrowsers.SetSelection(1)
 
         statsFitviewPanel = wx.Panel(self.splitter)
         self.statsSizer = wx.BoxSizer(wx.HORIZONTAL)
