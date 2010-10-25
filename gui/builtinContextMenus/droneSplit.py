@@ -32,7 +32,7 @@ class DroneSpinner(wx.Dialog):
         bSizer1 = wx.BoxSizer(wx.HORIZONTAL)
 
         self.spinner = wx.SpinCtrl(self)
-        self.spinner.SetRange(1, drone.amount)
+        self.spinner.SetRange(1, drone.amount - 1)
         self.spinner.SetValue(1)
 
         bSizer1.Add(self.spinner, 0, wx.ALL, 5)
