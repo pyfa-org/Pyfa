@@ -32,7 +32,10 @@ class MainMenuBar(wx.MenuBar):
         # File menu
         fileMenu = wx.Menu()
         self.Append(fileMenu, "&File")
-        fileMenu.Append(wx.ID_CLOSE)
+        if 'wxMSW' in wx.PlatformInfo:
+            fileMenu.Append(wx.ID_CLOSE, "&Close\tCTRL+W", "Close the currently open fit")
+        else:
+            fileMenu.Append(wx.ID_CLOSE)
         fileMenu.Append(wx.ID_EXIT)
 
 
