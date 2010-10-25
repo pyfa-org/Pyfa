@@ -164,8 +164,8 @@ class CategoryItem(wx.Window):
 
         pos = event.GetPosition()
         x,y = pos
-        self.shipBrowser.stage2(self.categoryID)
         event.Skip()
+        self.shipBrowser.stage2(self.categoryID)
 
     def enterW(self,event):
         self.highlighted = 1
