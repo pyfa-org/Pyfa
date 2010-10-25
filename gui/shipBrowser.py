@@ -124,7 +124,9 @@ class ListPane (wx.ScrolledWindow):
         for widget in self._wList:
             self.RemoveChild(widget)
             widget.Hide()
-            widget.Destroy()
+            widget.Close()
+        self._wCount = 0
+        self._wList = []
 
 class CategoryItem(wx.Window):
     def __init__(self, parent, categoryID, shipFittingInfo,
