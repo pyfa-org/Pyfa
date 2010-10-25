@@ -114,6 +114,12 @@ class MainFrame(wx.Frame):
         tab, _ = self.notebookBrowsers.HitTest(event.Position)
         if tab != -1:
             self.notebookBrowsers.SetSelection(tab)
+            
+    def CloseCurrentFit(self, evt):
+        self.fitMultiSwitch.removeTab(self.fitMultiSwitch.GetSelection())
+        #Deleting a tab might have put us on the "+" tab, make sure we don't stay there
+        if self.fitMultiSwitch.GetSelection() == self.fitMultiSwitch.GetPageCount() - 1:
+            self.fitMultiSwitch.SetSelection(self.fitMultiSwitch.GetPageCount() - 2)
 
     def ExitApp(self, evt):
         try:
@@ -163,6 +169,8 @@ class MainFrame(wx.Frame):
         menuBar = self.GetMenuBar()
         # Quit
         self.Bind(wx.EVT_MENU, self.ExitApp, id=wx.ID_EXIT)
+        # Close Tab
+        self.Bind(wx.EVT_MENU, self.CloseCurrentFit, id=wx.ID_CLOSE)
         # Widgets Inspector
         self.Bind(wx.EVT_MENU, self.openWXInspectTool, id=911)
         # About

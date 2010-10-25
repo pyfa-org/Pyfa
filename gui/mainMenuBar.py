@@ -32,6 +32,7 @@ class MainMenuBar(wx.MenuBar):
         # File menu
         fileMenu = wx.Menu()
         self.Append(fileMenu, "&File")
+        fileMenu.Append(wx.ID_CLOSE)
         fileMenu.Append(wx.ID_EXIT)
 
 
