@@ -41,7 +41,7 @@ class ModuleAmmoPicker(ContextMenu):
             d = charge.getAttribute("%sDamage" % type)
             if d > 0:
                 damage += d
-
+                
         return (-range - falloff, charge.name.rsplit()[-2:], damage, charge.name)
 
     MISSILE_ORDER = ["em", "thermal", "kinetic", "explosive"]
@@ -114,7 +114,7 @@ class ModuleAmmoPicker(ContextMenu):
             for item in items:
                 m.AppendItem(item)
 
-            self.addSeperator(m, "High Damage")
+            self.addSeperator(m, "Short Range")
         elif hardpoint == Hardpoint.MISSILE:
             self.charges.sort(key=self.missileSorter)
             type = None

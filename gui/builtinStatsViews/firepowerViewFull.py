@@ -50,7 +50,7 @@ class FirepowerViewFull(StatsView):
 
         counter = 0
 
-        for damageType, image in (("weapon", "turret") , ("drone", "droneBay")):
+        for damageType, image in (("weapon", "turret") , ("drone", "droneDPS")):
             baseBox = wx.BoxSizer(wx.HORIZONTAL)
             if counter == 1:
                 sizerFirepower.AddSpacer( ( 40, 0), 1, 0, 5 )
