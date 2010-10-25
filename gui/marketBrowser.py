@@ -336,8 +336,13 @@ class MarketBrowser(wx.Panel):
             sMarket = service.Market.getInstance()
             item1 = sMarket.getItem(id1)
             item2 = sMarket.getItem(id2)
-
-            return cmp(item1.getAttribute("metaLevel"), item2.getAttribute("metaLevel"))
+            
+            if item1.getAttribute("metaLevel") > item2.getAttribute("metaLevel"):
+                return -1
+            elif item1.getAttribute("metaLevel") == item2.getAttribute("metaLevel"):
+                return 0
+            else:
+                return 1
 
         self.itemView.SortItems(sort)
         self.itemView.SetColumnWidth(0, wx.LIST_AUTOSIZE)
