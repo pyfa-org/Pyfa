@@ -53,11 +53,18 @@ class ShipBrowser(wx.Panel):
         self.lpane.Layout()
         self.Show()
 
+    RACE_ORDER = ["amarr", "caldari", "gallente", "minmatar", "ore", "serpentis", "angel", "blood", "sansha", "guristas"]
+    def raceNameKey(self, shipInfo):
+        return self.RACE_ORDER.index(shipInfo[2]), shipInfo[1]
+
+
     def stage2(self, event):
         categoryID = event.categoryID
         sMarket = service.Market.getInstance()
         self.lpane.RemoveAllChildren()
-        for ID, name, race in sMarket.getShipList(categoryID):
+        shipList = sMarket.getShipList(categoryID)
+        shipList.sort(key=self.raceNameKey)
+        for ID, name, race in shipList:
             self.lpane.AddWidget(ShipItem(self.lpane, ID, (name, 0), race))
 
         self.lpane.Layout()
