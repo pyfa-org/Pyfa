@@ -117,7 +117,7 @@ class MainFrame(wx.Frame):
 
     def ExitApp(self, evt):
         try:
-            service.Settings.getInstance().saveAll()
+            service.SettingsProvider.getInstance().saveAll()
             self.Close()
         except PyDeadObjectError:
             pass
