@@ -19,21 +19,40 @@
 
 import wx
 from gui.statsView import StatsView
-from gui import builtinStatsViews
 from gui import bitmapLoader
 from util import formatAmount
+import gui.mainFrame
+import gui.builtinStatsViews.resistancesViewFull as rvf
+import service
 
 class RechargeViewFull(StatsView):
     name = "rechargeViewFull"
     def __init__(self, parent):
         StatsView.__init__(self)
         self.parent = parent
+        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+        self.mainFrame.Bind(rvf.RAW_HP_ENABLED, self.showRaw)
+        self.mainFrame.Bind(rvf.EFFECTIVE_HP_ENABLED, self.showEffective)
+        self.effective = True
+
     def getHeaderText(self, fit):
         return "Recharge rates"
 
     def getTextExtentW(self, text):
         width, height = self.parent.GetTextExtent( text )
         return width
+
+    def showRaw(self, event):
+        self.effective = False
+        sFit = service.Fit.getInstance()
+        self.refreshPanel(sFit.getFit(self.mainFrame.getActiveFit()))
+        event.Skip()
+
+    def showEffective(self, event):
+        self.effective = True
+        sFit = service.Fit.getInstance()
+        self.refreshPanel(sFit.getFit(self.mainFrame.getActiveFit()))
+        event.Skip()
 
     def populatePanel(self, contentPanel, headerPanel):
         contentSizer = contentPanel.GetSizer()
@@ -83,9 +102,9 @@ class RechargeViewFull(StatsView):
 
         for stability in ("reinforced", "sustained"):
             if stability == "reinforced" and fit != None:
-                tank = fit.effectiveTank
+                tank = fit.effectiveTank if self.effective else fit.tank
             elif stability == "sustained" and fit != None:
-                tank = fit.effectiveSustainableTank
+                tank = fit.effectiveSustainableTank if self.effective else fit.sustainableTank
             else:
                 tank = None
 
@@ -98,7 +117,7 @@ class RechargeViewFull(StatsView):
 
         if fit is not None:
             label = getattr(self, "labelTankSustainedShieldPassive")
-            value = fit.effectiveTank["passiveShield"]
+            value = fit.effectiveTank["passiveShield"] if self.effective else fit.tank["passiveShield"]
             label.SetLabel(formatAmount(value, 3, 0, 9))
 
         else:

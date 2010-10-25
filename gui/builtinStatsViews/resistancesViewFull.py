@@ -27,15 +27,20 @@ import service
 import gui.mainFrame
 import gui.fittingView as fv
 
+EffictiveHpEnabled, EFFECTIVE_HP_ENABLED = wx.lib.newevent.NewEvent()
+RawHpEnabled, RAW_HP_ENABLED = wx.lib.newevent.NewEvent()
+
 class ResistancesViewFull(StatsView):
     name = "resistancesViewFull"
     def __init__(self, parent):
         StatsView.__init__(self)
         self.parent = parent
         self._cachedValues = []
+        self.showEffective = True
         self.activeFit = None
-        self.oldPattern = None
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+        self.mainFrame.Bind(EFFECTIVE_HP_ENABLED, self.ehpSwitch)
+        self.mainFrame.Bind(RAW_HP_ENABLED, self.hpSwitch)
 
     def getHeaderText(self, fit):
         return "Resistances"
@@ -152,34 +157,36 @@ class ResistancesViewFull(StatsView):
 
         self.stEHPs.SetToolTip(wx.ToolTip("Click to toggle between effective HP and raw HP"))
 
-    def toggleEHP(self,event):
-        sFit = service.Fit.getInstance()
-        self.activeFit = self.mainFrame.getActiveFit()
-        currPattern = sFit.getDamagePattern(self.activeFit)
-        if self.oldPattern is None and currPattern is not None:
-            self.oldPattern = currPattern
-            sFit.setDamagePattern(self.activeFit, None)
-            self.stEHPs.SetLabel("  HP ")
+    def toggleEHP(self, event):
+        if self.stEHPs.GetLabel() == "  HP ":
+            wx.PostEvent(self.mainFrame, EffictiveHpEnabled())
         else:
-            sFit.setDamagePattern(self.activeFit, self.oldPattern or service.DamagePattern.getInstance().getDamagePattern("Uniform"))
-            self.oldPattern = None
-            self.stEHPs.SetLabel("  EHP ")
+            wx.PostEvent(self.mainFrame, RawHpEnabled())
 
-        wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=self.activeFit))
+    def ehpSwitch(self, event):
+        self.showEffective = True
+        sFit = service.Fit.getInstance()
+        self.refreshPanel(sFit.getFit(self.mainFrame.getActiveFit()))
+        event.Skip()
+
+    def hpSwitch(self, event):
+        self.showEffective = False
+        sFit = service.Fit.getInstance()
+        self.refreshPanel(sFit.getFit(self.mainFrame.getActiveFit()))
+        event.Skip()
 
     def refreshPanel(self, fit):
         #If we did anything intresting, we'd update our labels to reflect the new fit's stats here
-        if fit is None:
-            self.stEHPs.SetLabel("  EHP ")
-        elif fit.ID != self.activeFit:
-            if fit.damagePattern is None:
-                self.stEHPs.SetLabel(" HP ")
-            else:
-                self.stEHPs.SetLabel("  EHP ")
-                sFit = service.Fit.getInstance()
-                sDP = service.DamagePattern.getInstance()
-                sFit.setDamagePattern(fit.ID,  sDP.getDamagePattern("Uniform"))
+        if fit is None and not self.showEffective:
+            self.showEffective = True
+            wx.PostEvent(self.mainFrame, EffictiveHpEnabled())
+            return
+        elif fit is not None and fit.ID != self.activeFit and not self.showEffective:
+            self.showEffective = True
+            wx.PostEvent(self.mainFrame, EffictiveHpEnabled())
+            return
 
+        self.stEHPs.SetLabel("  EHP " if self.showEffective else "  HP ")
         self.activeFit = fit.ID if fit is not None else None
 
         for tankType in ("shield", "armor", "hull"):
@@ -196,7 +203,7 @@ class ResistancesViewFull(StatsView):
 
                 lbl.SetValue(resonance)
 
-        ehp = fit.ehp if fit is not None else None
+        ehp = (fit.ehp if self.showEffective else fit.hp) if fit is not None else None
         total = 0
         for tankType in ("shield", "armor", "hull"):
             lbl = getattr(self, "labelResistance%sEhp" % tankType.capitalize())
@@ -209,7 +216,7 @@ class ResistancesViewFull(StatsView):
 
 
         self.labelEhp.SetLabel("%s" % formatAmount(total, 3, 0, 9))
-        if self.stEHPs.GetLabel() == "  EHP ":
+        if self.showEffective:
             self.stEff.SetLabel("( Effective HP: ")
             self.labelEhp.SetToolTip(wx.ToolTip("Effective: %d HP" % total))
         else:
@@ -217,7 +224,7 @@ class ResistancesViewFull(StatsView):
             self.labelEhp.SetToolTip(wx.ToolTip("Raw: %d HP" % total))
 
 
-        damagePattern = fit.damagePattern if fit is not None else None
+        damagePattern = fit.damagePattern if fit is not None  and self.showEffective else None
         total = sum((damagePattern.emAmount, damagePattern.thermalAmount,
                     damagePattern.kineticAmount, damagePattern.explosiveAmount)) if damagePattern is not None else 0
 
