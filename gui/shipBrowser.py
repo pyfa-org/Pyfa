@@ -7,6 +7,7 @@ FitRenamed, EVT_FIT_RENAMED = wx.lib.newevent.NewEvent()
 FitSelected, EVT_FIT_SELECTED = wx.lib.newevent.NewEvent()
 FitRemoved, EVT_FIT_REMOVED = wx.lib.newevent.NewEvent()
 Stage2Selected, EVT_SB_STAGE2_SEL = wx.lib.newevent.NewEvent()
+Stage1Selected, EVT_SB_STAGE1_SEL = wx.lib.newevent.NewEvent()
 
 class ShipBrowser(wx.Panel):
     def __init__(self, parent):
@@ -28,7 +29,9 @@ class ShipBrowser(wx.Panel):
         self.Centre(wx.BOTH)
         self.Bind(wx.EVT_SIZE, self.SizeRefreshList)
         self.Bind(EVT_SB_STAGE2_SEL, self.stage2)
-        self.stage1()
+        self.Bind(EVT_SB_STAGE1_SEL, self.stage1)
+
+        self.stage1(None)
 
     def SizeRefreshList(self, event):
         ewidth, eheight = event.GetSize()
@@ -41,7 +44,7 @@ class ShipBrowser(wx.Panel):
     def __del__(self):
         pass
 
-    def stage1(self):
+    def stage1(self, event):
         sMarket = service.Market.getInstance()
         self.lpane.RemoveAllChildren()
         for ID, name in sMarket.getShipRoot():
@@ -66,9 +69,15 @@ class HeaderPane (wx.Panel):
         wx.Panel.__init__ (self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.Size(500, 32), style=wx.TAB_TRAVERSAL)
 
         bSizer3 = wx.BoxSizer(wx.VERTICAL)
-        self.stHeader = wx.StaticText(self, wx.ID_ANY, u"Header --->", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.stHeader = wx.StaticText(self, wx.ID_ANY, u"Back", wx.DefaultPosition, wx.DefaultSize, 0)
         self.stHeader.Wrap(-1)
         bSizer3.Add(self.stHeader, 0, wx.ALL | wx.EXPAND, 5)
+        self.stHeader.Bind(wx.EVT_LEFT_UP,self.OnBack)
+
+
+    def OnBack(self,event):
+        wx.PostEvent(self.Parent,Stage1Selected())
+        event.Skip()
 
 class ListPane (wx.ScrolledWindow):
     def __init__(self, parent):
@@ -139,7 +148,7 @@ class ListPane (wx.ScrolledWindow):
 class CategoryItem(wx.Window):
     def __init__(self, parent, categoryID, shipFittingInfo,
                  id=wx.ID_ANY, range=100, pos=wx.DefaultPosition,
-                 size=(-1,16), style=0):
+                 size=(0,16), style=0):
         wx.Window.__init__(self, parent, id, pos, size, style)
 
         if categoryID:
@@ -253,19 +262,19 @@ class CategoryItem(wx.Window):
 
         event.Skip()
 
-    def Destroy(self):
-        self.Unbind(wx.EVT_PAINT)
-        self.Unbind(wx.EVT_ERASE_BACKGROUND)
-        self.Unbind(wx.EVT_LEFT_UP)
-        self.Unbind(wx.EVT_ENTER_WINDOW)
-        self.Unbind(wx.EVT_LEAVE_WINDOW)
-        self.Close()
+#    def Destroy(self):
+#        self.Unbind(wx.EVT_PAINT)
+#        self.Unbind(wx.EVT_ERASE_BACKGROUND)
+#        self.Unbind(wx.EVT_LEFT_UP)
+#        self.Unbind(wx.EVT_ENTER_WINDOW)
+#        self.Unbind(wx.EVT_LEAVE_WINDOW)
+#        self.Close()
 
 
 class ShipItem(wx.Window):
     def __init__(self, parent, shipID=None, shipFittingInfo=("Test", 2), itemData=None,
                  id=wx.ID_ANY, range=100, pos=wx.DefaultPosition,
-                 size=(-1, 38), style=0):
+                 size=(0, 36), style=0):
         wx.Window.__init__(self, parent, id, pos, size, style)
 
         self._itemData = itemData
