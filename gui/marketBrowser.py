@@ -23,8 +23,10 @@ import wx.lib.newevent
 import service
 import bitmapLoader
 import gui.mainFrame
+import eos.db
 from gui.cachingImageList import CachingImageList
 from gui.contextMenu import ContextMenu
+from eos.saveddata import module
 
 ItemSelected, ITEM_SELECTED = wx.lib.newevent.NewEvent()
 
@@ -333,11 +335,15 @@ class MarketBrowser(wx.Panel):
         self.toggleButtons(usedMetas)
 
         def sort(id1, id2):
-            grp = cmp(idGroupMap[id1], idGroupMap[id2])
-            if grp != 0:
-                return grp
-
-            return cmp(idNameMap[id1], idNameMap[id2])
+            item1 = eos.db.getItem(id1)
+            item2 = eos.db.getItem(id2)
+            
+            if item1.getAttribute("metaLevel") > item2.getAttribute("metaLevel"):
+                return -1
+            elif item1.getAttribute("metaLevel") == item2.getAttribute("metaLevel"):
+                return 0
+            else:
+                return 1
 
         self.itemView.SortItems(sort)
         self.itemView.SetColumnWidth(0, wx.LIST_AUTOSIZE)
