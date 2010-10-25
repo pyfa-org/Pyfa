@@ -30,7 +30,7 @@ class SettingsProvider():
         if cls._instance == None:
             cls._instance = SettingsProvider()
 
-        return cls.instance
+        return cls._instance
 
     def __init__(self):
         if not os.path.exists(self.BASE_PATH):
