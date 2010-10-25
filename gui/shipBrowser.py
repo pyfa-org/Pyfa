@@ -6,8 +6,10 @@ import service
 FitRenamed, EVT_FIT_RENAMED = wx.lib.newevent.NewEvent()
 FitSelected, EVT_FIT_SELECTED = wx.lib.newevent.NewEvent()
 FitRemoved, EVT_FIT_REMOVED = wx.lib.newevent.NewEvent()
-Stage2Selected, EVT_SB_STAGE2_SEL = wx.lib.newevent.NewEvent()
+
 Stage1Selected, EVT_SB_STAGE1_SEL = wx.lib.newevent.NewEvent()
+Stage2Selected, EVT_SB_STAGE2_SEL = wx.lib.newevent.NewEvent()
+Stage3Selected, EVT_SB_STAGE3_SEL = wx.lib.newevent.NewEvent()
 
 class ShipBrowser(wx.Panel):
     def __init__(self, parent):
@@ -30,6 +32,7 @@ class ShipBrowser(wx.Panel):
         self.Bind(wx.EVT_SIZE, self.SizeRefreshList)
         self.Bind(EVT_SB_STAGE2_SEL, self.stage2)
         self.Bind(EVT_SB_STAGE1_SEL, self.stage1)
+        self.Bind(EVT_SB_STAGE3_SEL, self.stage3)
 
         self.stage1(None)
 
@@ -82,7 +85,7 @@ class ShipBrowser(wx.Panel):
         fitList.sort(key=self.nameKey)
         shipName = sMarket.getItem(shipID).name
         for ID, name in fitList:
-            self.lpane.AddWidget(FitItem(ID, (shipName, name)))
+            self.lpane.AddWidget(FitItem(self.lpane, ID, (shipName, name)))
 
         self.lpane.Layout()
         self.Show()
@@ -301,11 +304,13 @@ class ShipItem(wx.Window):
         wx.Window.__init__(self, parent, id, pos, size, style)
 
         self._itemData = itemData
-
+        self.shipID = shipID
         self.shipBmp = wx.EmptyBitmap(32, 32)
         self.shipFittingInfo = shipFittingInfo
         self.shipName, dummy = shipFittingInfo
         self.newBmp = bitmapLoader.getBitmap("add_small", "icons")
+
+        self.shipBrowser = self.Parent.Parent
 
         self.Bind(wx.EVT_PAINT, self.OnPaint)
         self.editPosX = 0
@@ -375,6 +380,7 @@ class ShipItem(wx.Window):
         if (not self.NHitTest((self.editPosX, self.editPosY), pos, (16, 16))):
             self.editWasShown = 0
             self.Refresh()
+            wx.PostEvent(self.shipBrowser,Stage3Selected(shipID=self.shipID))
 
 
         event.Skip()
@@ -383,6 +389,7 @@ class ShipItem(wx.Window):
         print "New :", self.tcFitName.GetValue(), "GTFO from stage2 to stage 3 (refresh stage 3)"
         self.tcFitName.Show(False)
         self.editWasShown = 0
+        wx.PostEvent(self.shipBrowser,Stage3Selected(shipID=self.shipID))
 
     def NHitTest(self, target, position, area):
         x, y = target
@@ -450,11 +457,11 @@ class ShipItem(wx.Window):
         mdc.DrawText(shipName, textStart, ypos)
         ypos += ytext
 
-        mdc.SetFont(wx.Font(9, wx.SWISS, wx.NORMAL, wx.NORMAL, False))
+        mdc.SetFont(wx.Font(8, wx.SWISS, wx.NORMAL, wx.NORMAL, False))
 
         xtext, ytext = mdc.GetTextExtent("%d fitting(s)")
         mdc.DrawText("%d fitting(s)" % fittings, textStart, ypos)
-        mdc.SetFont(wx.Font(7, wx.SWISS, wx.NORMAL, wx.NORMAL, False))
+#        mdc.SetFont(wx.Font(7, wx.SWISS, wx.NORMAL, wx.NORMAL, False))
 
         self.editPosX = rect.width - 20
         self.editPosY = (rect.height - 16) / 2
@@ -468,7 +475,7 @@ class FitItem(wx.Window):
         wx.Window.__init__(self, parent, id, pos, size, style)
 
         self._itemData = itemData
-
+        self.shipID = shipID
         self.shipBmp = wx.EmptyBitmap(32, 32)
         self.shipFittingInfo = shipFittingInfo
         self.shipName, self.fitName= shipFittingInfo
@@ -614,13 +621,13 @@ class FitItem(wx.Window):
         ypos = (rect.height - 32) / 2
         textStart = 48
         xtext, ytext = mdc.GetTextExtent(shipName)
-        mdc.DrawText(shipName, textStart, ypos)
+        mdc.DrawText(fitName, textStart, ypos)
         ypos += ytext
 
-        mdc.SetFont(wx.Font(9, wx.SWISS, wx.NORMAL, wx.NORMAL, False))
+        mdc.SetFont(wx.Font(8, wx.SWISS, wx.NORMAL, wx.NORMAL, False))
 
         xtext, ytext = mdc.GetTextExtent("%d fitting(s)")
-        mdc.DrawText("%s" % fitName, textStart, ypos)
+        mdc.DrawText("%s" % shipName, textStart, ypos)
 #        mdc.SetFont(wx.Font(7, wx.SWISS, wx.NORMAL, wx.NORMAL, False))
 
         self.editPosX = rect.width - 20
