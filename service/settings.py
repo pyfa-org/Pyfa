@@ -28,7 +28,7 @@ class SettingsProvider():
     @classmethod
     def getInstance(cls):
         if cls._instance == None:
-            cls.instance = Settings()
+            cls.instance = SettingsProvider()
 
         return cls.instance
 
