@@ -6,6 +6,7 @@ import service
 FitRenamed, EVT_FIT_RENAMED = wx.lib.newevent.NewEvent()
 FitSelected, EVT_FIT_SELECTED = wx.lib.newevent.NewEvent()
 FitRemoved, EVT_FIT_REMOVED = wx.lib.newevent.NewEvent()
+Stage2Selected, EVT_SB_STAGE2_SEL = wx.lib.newevent.NewEvent()
 
 class ShipBrowser(wx.Panel):
     def __init__(self, parent):
@@ -24,16 +25,17 @@ class ShipBrowser(wx.Panel):
         self.Layout()
         self.Show()
 
-        self.lpane.Refresh()
         self.Centre(wx.BOTH)
         self.Bind(wx.EVT_SIZE, self.SizeRefreshList)
+        self.Bind(EVT_SB_STAGE2_SEL, self.stage2)
         self.stage1()
 
     def SizeRefreshList(self, event):
         ewidth, eheight = event.GetSize()
 ##            if ewidth != self._lastWidth:
 ##                self._lastWidth = ewidth
-        self.lpane.Refresh()
+        self.Layout()
+        self.lpane.RefreshList()
         event.Skip()
 
     def __del__(self):
@@ -48,12 +50,14 @@ class ShipBrowser(wx.Panel):
         self.lpane.Layout()
         self.Show()
 
-    def stage2(self, categoryID):
+    def stage2(self, event):
+        categoryID = event.categoryID
         sMarket = service.Market.getInstance()
         self.lpane.RemoveAllChildren()
         for ID, name, race in sMarket.getShipList(categoryID):
             self.lpane.AddWidget(ShipItem(self.lpane, ID, (name, 0), race))
 
+        self.lpane.Layout()
         self.lpane.Layout()
         self.Show()
 
@@ -84,7 +88,7 @@ class ListPane (wx.ScrolledWindow):
         posy = self.GetScrollPos(wx.VERTICAL)
         posy -= 2
         self.Scroll(0, posy)
-        self.Refresh()
+        self.RefreshList()
         event.Skip()
 
     def MScrollDown(self, event):
@@ -92,7 +96,7 @@ class ListPane (wx.ScrolledWindow):
         posy = self.GetScrollPos(wx.VERTICAL)
         posy += 2
         self.Scroll(0, posy)
-        self.Refresh()
+        self.RefreshList()
         event.Skip()
 
 
@@ -103,9 +107,9 @@ class ListPane (wx.ScrolledWindow):
 
     def Layout(self):
         wx.ScrolledWindow.Layout(self)
-        self.Refresh()
+        self.RefreshList()
 
-    def Refresh(self):
+    def RefreshList(self):
         ypos = 0
         cwidth, cheight = self.GetClientSize()
         for i in xrange(self._wCount):
@@ -164,8 +168,8 @@ class CategoryItem(wx.Window):
 
         pos = event.GetPosition()
         x,y = pos
-        event.Skip()
-        self.shipBrowser.stage2(self.categoryID)
+        categoryID = self.categoryID
+        wx.PostEvent(self.shipBrowser,Stage2Selected(categoryID=categoryID))
 
     def enterW(self,event):
         self.highlighted = 1
