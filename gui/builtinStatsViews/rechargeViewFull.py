@@ -31,8 +31,7 @@ class RechargeViewFull(StatsView):
         StatsView.__init__(self)
         self.parent = parent
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.mainFrame.Bind(rvf.RAW_HP_ENABLED, self.showRaw)
-        self.mainFrame.Bind(rvf.EFFECTIVE_HP_ENABLED, self.showEffective)
+        self.mainFrame.Bind(rvf.EFFECTIVE_HP_TOGGLED, self.toggleEffective)
         self.effective = True
 
     def getHeaderText(self, fit):
@@ -42,14 +41,8 @@ class RechargeViewFull(StatsView):
         width, height = self.parent.GetTextExtent( text )
         return width
 
-    def showRaw(self, event):
-        self.effective = False
-        sFit = service.Fit.getInstance()
-        self.refreshPanel(sFit.getFit(self.mainFrame.getActiveFit()))
-        event.Skip()
-
-    def showEffective(self, event):
-        self.effective = True
+    def toggleEffective(self, event):
+        self.effective = event.effective
         sFit = service.Fit.getInstance()
         self.refreshPanel(sFit.getFit(self.mainFrame.getActiveFit()))
         event.Skip()

@@ -27,8 +27,7 @@ import service
 import gui.mainFrame
 import gui.fittingView as fv
 
-EffictiveHpEnabled, EFFECTIVE_HP_ENABLED = wx.lib.newevent.NewEvent()
-RawHpEnabled, RAW_HP_ENABLED = wx.lib.newevent.NewEvent()
+EffictiveHpToggled, EFFECTIVE_HP_TOGGLED = wx.lib.newevent.NewEvent()
 
 class ResistancesViewFull(StatsView):
     name = "resistancesViewFull"
@@ -39,8 +38,7 @@ class ResistancesViewFull(StatsView):
         self.showEffective = True
         self.activeFit = None
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.mainFrame.Bind(EFFECTIVE_HP_ENABLED, self.ehpSwitch)
-        self.mainFrame.Bind(RAW_HP_ENABLED, self.hpSwitch)
+        self.mainFrame.Bind(EFFECTIVE_HP_TOGGLED, self.ehpSwitch)
 
     def getHeaderText(self, fit):
         return "Resistances"
@@ -158,19 +156,10 @@ class ResistancesViewFull(StatsView):
         self.stEHPs.SetToolTip(wx.ToolTip("Click to toggle between effective HP and raw HP"))
 
     def toggleEHP(self, event):
-        if self.stEHPs.GetLabel() == "  HP ":
-            wx.PostEvent(self.mainFrame, EffictiveHpEnabled())
-        else:
-            wx.PostEvent(self.mainFrame, RawHpEnabled())
+        wx.PostEvent(self.mainFrame, EffictiveHpToggled(effective=self.stEHPs.GetLabel() == "  HP "))
 
     def ehpSwitch(self, event):
-        self.showEffective = True
-        sFit = service.Fit.getInstance()
-        self.refreshPanel(sFit.getFit(self.mainFrame.getActiveFit()))
-        event.Skip()
-
-    def hpSwitch(self, event):
-        self.showEffective = False
+        self.showEffective = event.effective
         sFit = service.Fit.getInstance()
         self.refreshPanel(sFit.getFit(self.mainFrame.getActiveFit()))
         event.Skip()
@@ -179,11 +168,11 @@ class ResistancesViewFull(StatsView):
         #If we did anything intresting, we'd update our labels to reflect the new fit's stats here
         if fit is None and not self.showEffective:
             self.showEffective = True
-            wx.PostEvent(self.mainFrame, EffictiveHpEnabled())
+            wx.PostEvent(self.mainFrame, EffictiveHpToggled(effective=True))
             return
         elif fit is not None and fit.ID != self.activeFit and not self.showEffective:
             self.showEffective = True
-            wx.PostEvent(self.mainFrame, EffictiveHpEnabled())
+            wx.PostEvent(self.mainFrame, EffictiveHpToggled(effective=True))
             return
 
         self.stEHPs.SetLabel("  EHP " if self.showEffective else "  HP ")
