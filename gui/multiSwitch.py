@@ -104,6 +104,14 @@ class MultiSwitch(wx.Notebook):
 
             self.removal = False
 
+    def removeCurrentTab(self):
+        self.removal = True
+        self.removeTab(self.GetSelection())
+        #Deleting a tab might have put us on the "+" tab, make sure we don't stay there
+        if self.GetSelection() == self.GetPageCount() - 1:
+            self.SetSelection(self.GetPageCount() - 2)
+        self.removal = False
+
     def checkAdd(self, event):
         if event.Selection == self.GetPageCount() - 1:
             if "__WXMSW__" not in wx.PlatformInfo:
