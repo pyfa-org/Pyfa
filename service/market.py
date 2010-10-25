@@ -45,7 +45,10 @@ class PriceWorkerThread(threading.Thread):
             except:
                 pass
             finally:
-                queue.task_done()
+                try:
+                    queue.task_done()
+                except:
+                    pass
 
     def trigger(self, prices, callbacks):
         self.queue.put((callbacks, prices))
