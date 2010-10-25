@@ -120,12 +120,16 @@ class ListPane (wx.ScrolledWindow):
             self._wList[i].Refresh()
         self.SetVirtualSize((1, ypos))
 
+    def RemoveChild(self, child):
+        wx.Panel.RemoveChild(self, child)
+        child.Hide()
+        child.Destroy()
+        self._wCount -= 1
+
     def RemoveAllChildren(self):
         for widget in self._wList:
             self.RemoveChild(widget)
-            widget.Hide()
-            widget.Close()
-        self._wCount = 0
+
         self._wList = []
 
 class CategoryItem(wx.Window):
