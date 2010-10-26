@@ -17,6 +17,12 @@ class ShipBrowser(wx.Panel):
         wx.Panel.__init__ (self, parent)
 
         self._lastWidth = 0
+        self._activeStage = 0
+
+        self._stage1Data = -1
+        self._stage2Data = -1
+        self._stage3Data = -1
+
         self.SetSizeHintsSz(wx.DefaultSize, wx.DefaultSize)
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
@@ -48,12 +54,22 @@ class ShipBrowser(wx.Panel):
 
     def __del__(self):
         pass
+    def GetActiveStage(self):
+        return self._activeStage
 
+    def GetStageData(self, stage):
+        if stage == 1:
+            return self._stage1Data
+        if stage == 2:
+            return self._stage2Data
+        if stage == 3:
+            return self._stage3Data
+        return -1
     def nameKey(self, info):
         return info[1]
 
     def stage1(self, event):
-        self.Layout()
+        self._activeStage = 1
         sMarket = service.Market.getInstance()
         self.lpane.RemoveAllChildren()
         categoryList = sMarket.getShipRoot()
@@ -70,7 +86,10 @@ class ShipBrowser(wx.Panel):
 
 
     def stage2(self, event):
+        self._activeStage = 2
         categoryID = event.categoryID
+        self._stage2Data = categoryID
+
         sMarket = service.Market.getInstance()
         self.lpane.RemoveAllChildren()
         shipList = sMarket.getShipList(categoryID)
@@ -82,7 +101,11 @@ class ShipBrowser(wx.Panel):
         self.Show()
 
     def stage3(self, event):
+        self._activeStage = 3
+
         shipID = event.shipID
+        self._stage3Data = shipID
+
         sFit = service.Fit.getInstance()
         sMarket = service.Market.getInstance()
         self.lpane.RemoveAllChildren()
@@ -99,16 +122,48 @@ class HeaderPane (wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__ (self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.Size(500, 32), style=wx.TAB_TRAVERSAL)
 
-        bSizer3 = wx.BoxSizer(wx.VERTICAL)
+        bSizer3 = wx.BoxSizer(wx.HORIZONTAL)
         self.stHeader = wx.StaticText(self, wx.ID_ANY, u"Back", wx.DefaultPosition, wx.DefaultSize, 0)
         self.stHeader.Wrap(-1)
-        bSizer3.Add(self.stHeader, 0, wx.ALL | wx.EXPAND, 5)
+        bSizer3.Add(self.stHeader, 0, wx.ALL , 5)
         self.stHeader.Bind(wx.EVT_LEFT_UP,self.OnBack)
 
+        self.stForward = wx.StaticText(self, wx.ID_ANY, u"Forward", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.stForward.Wrap(-1)
+        bSizer3.Add(self.stForward, 1, wx.ALL , 5)
+        self.stForward.Bind(wx.EVT_LEFT_UP,self.OnForward)
+
+        self.SetSizer(bSizer3)
+        self.Layout()
+
+    def OnForward(self,event):
+        stage = self.Parent.GetActiveStage()
+        stage +=1
+        if stage >3:
+            stage = 3
+            return
+        self.gotoStage(stage)
+        event.Skip()
 
     def OnBack(self,event):
-        wx.PostEvent(self.Parent,Stage1Selected())
+        stage = self.Parent.GetActiveStage()
+        stage -=1
+        if stage <1:
+            stage = 1
+            return
+        self.gotoStage(stage)
         event.Skip()
+    def gotoStage(self,stage):
+        if stage == 1:
+            wx.PostEvent(self.Parent,Stage1Selected())
+        elif stage == 2:
+            categoryID = self.Parent.GetStageData(stage)
+            if categoryID != -1:
+                wx.PostEvent(self.Parent,Stage2Selected(categoryID=categoryID))
+        elif stage == 3:
+            shipID = self.Parent.GetStageData(stage)
+            if shipID != -1:
+                wx.PostEvent(self.Parent,Stage3Selected(shipID=shipID))
 
 class ListPane (wx.ScrolledWindow):
     def __init__(self, parent):
@@ -148,7 +203,7 @@ class ListPane (wx.ScrolledWindow):
     def RefreshList(self, doRefresh = False):
         ypos = 0
         maxy = 0
-        for i in xrange(self._wCount):
+        for i in xrange( len(self._wList) ):
             iwidth, iheight = self._wList[i].GetSize()
             xa, ya = self.CalcScrolledPosition((0, maxy))
             self._wList[i].SetPosition((xa, ya))
@@ -157,21 +212,20 @@ class ListPane (wx.ScrolledWindow):
         cwidth, cheight = self.GetVirtualSize()
 
 
-        for i in xrange(self._wCount):
+        for i in xrange( len(self._wList) ):
             iwidth, iheight = self._wList[i].GetSize()
             self._wList[i].SetSize((cwidth, iheight))
             if doRefresh == True:
                 self._wList[i].Refresh()
 
-    def RemoveChild(self, child):
-        wx.Panel.RemoveChild(self, child)
-        child.Hide()
+    def RemoveWidget(self, child):
         child.Destroy()
-        self._wCount -= 1
+        self._wList.remove(child)
+
 
     def RemoveAllChildren(self):
         for widget in self._wList:
-            self.RemoveChild(widget)
+            widget.Destroy()
 
         self._wList = []
 
@@ -579,12 +633,13 @@ class FitItem(wx.Window):
                 self.copyFit()
                 return
 
-        if (not self.NHitTest((self.renamePosX, self.renamePosY), pos, (16, 16))):
-            if self.editWasShown != 1:
+        if self.editWasShown != 1:
+            activeFitID = self.mainFrame.getActiveFit()
+            if activeFitID != self.fitID:
                 self.selectFit()
-            else:
-                self.editWasShown = 0
-                self.Refresh()
+        else:
+            self.editWasShown = 0
+            self.Refresh()
 
 
 
