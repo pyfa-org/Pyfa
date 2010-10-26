@@ -153,7 +153,7 @@ class MainFrame(wx.Frame):
         sFit = service.Fit.getInstance()
         dlg=wx.FileDialog(
             self,
-            "Pick one or more fitting files to import",
+            "Choose one or more fitting files to import",
             wildcard = "EFT text fitting files (*.cfg)|*.cfg|EvE XML fitting files (*.xml)|*.xml|All Files (*)|*",
             style = wx.FD_OPEN | wx.FD_FILE_MUST_EXIST | wx.FD_MULTIPLE)
         if (dlg.ShowModal() == wx.ID_OK):
@@ -172,8 +172,29 @@ class MainFrame(wx.Frame):
                 wx.PostEvent(self, FitSelected(fitID=fitIDs[0]))
 
     def showExportDialog(self, event):
-        dlg=ExportDialog(self)
-        dlg.ShowModal()
+        dlg=wx.FileDialog(
+            self,
+            "Choose a file to export the current fitting to",
+            wildcard = "EFT text fitting files (*.cfg)|*.cfg|EvE XML fitting files (*.xml)|*.xml",
+            style = wx.FD_SAVE)
+        if (dlg.ShowModal() == wx.ID_OK):
+            sFit = service.Fit.getInstance()
+            format = dlg.GetFilterIndex()
+            output = ""
+            path = dlg.GetPath()
+            if (format == 0):
+                output = sFit.exportFit(self.getActiveFit())
+                path += ".cfg"
+            elif (format == 1):
+                output = sFit.exportXml(self.getActiveFit())
+                path += ".xml"
+            else:
+                print "oops, invalid fit format %d" % format
+                dlg.Destroy()
+                return
+            file = open(path, "w")
+            file.write(output)
+            file.close()
         dlg.Destroy()
 
     def showPreferenceDialog(self, event):
