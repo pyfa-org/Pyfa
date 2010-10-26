@@ -52,7 +52,7 @@ class MainMenuBar(wx.MenuBar):
         self.fitMenu = fitMenu = wx.Menu()
         self.Append(fitMenu, "F&it")
         fitMenu.Append(wx.ID_OPEN, "&Import", "Import a fit into pyfa.")
-        fitMenu.Append(wx.ID_SAVEAS, "&Export", "Export the fit to another format.")
+        fitMenu.Append(wx.ID_SAVEAS, "&Export\tCTRL+S", "Export the fit to another format.")
 
         clipboardMenu = wx.Menu()
         self.idExportDna, self.idExportEft, self.idExportXml = wx.NewId(), wx.NewId(), wx.NewId()
