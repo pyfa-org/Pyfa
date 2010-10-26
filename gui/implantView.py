@@ -57,7 +57,9 @@ class ImplantView(d.Display):
         cFit = service.Fit.getInstance()
         fit = cFit.getFit(event.fitID)
 
-        stuff = fit.implants if fit is not None else None
+        self.original = fit.implants if fit is not None else None
+        self.implants = stuff = fit.implants if fit is not None else None
+        if stuff is not None: stuff.sort(key=lambda implant: implant.slot)
         self.populate(stuff)
         self.refresh(stuff)
         event.Skip()
@@ -77,7 +79,8 @@ class ImplantView(d.Display):
         if row != -1:
             fitID = self.mainFrame.getActiveFit()
             cFit = service.Fit.getInstance()
-            cFit.removeImplant(fitID, self.GetItemData(row))
+            implant = self.implants[self.GetItemData(row)]
+            cFit.removeImplant(fitID, self.original.index(implant))
             wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=fitID))
 
     def click(self, event):
@@ -104,4 +107,3 @@ class ImplantView(d.Display):
 
             menu = ContextMenu.getMenu((fit.implants[sel],), "implant")
             self.PopupMenu(menu)
-
