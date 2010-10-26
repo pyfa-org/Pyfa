@@ -134,6 +134,31 @@ class ShipBrowser(wx.Panel):
         self.lpane.RefreshList()
         self.Show()
 
+class TransientWndSearch(wx.Panel):
+    def __init__(self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition,size=(0,16), style = 0):
+        wx.Panel.__init__(self, parent,id, pos, size, style)
+        mainSizer = wx.BoxSizer(wx.HORIZONTAL)
+        self.search = wx.SearchCtrl(self, wx.ID_ANY, "", style=wx.TE_PROCESS_ENTER)
+        self.search.ShowCancelButton(True)
+        self.search.SetMenu( self.MakeMenu() )
+        mainSizer.Add(self.search,1, wx.EXPAND | wx.ALIGN_CENTER_VERTICAL, 0 )
+        self.SetSizer(mainSizer)
+        self.Fit()
+        self.Layout()
+
+    def MakeMenu(self):
+        menu = wx.Menu()
+        item = menu.Append(-1, "Recent Searches")
+        item.Enable(False)
+        for txt in [ "You can maintain",
+                     "a list of old",
+                     "search strings here",
+                     "and bind EVT_MENU to",
+                     "catch their selections" ]:
+            menu.Append(-1, txt)
+        return menu
+
+
 class HeaderPane (wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__ (self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.Size(500, 32), style=wx.TAB_TRAVERSAL)
@@ -142,6 +167,10 @@ class HeaderPane (wx.Panel):
         self.forwBmp = bitmapLoader.getBitmap("fforward_small","icons")
         self.searchBmp = bitmapLoader.getBitmap("fsearch_small","icons")
         self.newBmp = bitmapLoader.getBitmap("fit_add_small","icons")
+
+        self.toggleSearch = -1
+        self.recentSearches = []
+        self.menu = None
 
         mainSizer = wx.BoxSizer(wx.HORIZONTAL)
 
@@ -166,6 +195,15 @@ class HeaderPane (wx.Panel):
         self.stStatus = wx.StaticText( self, wx.ID_ANY, "", wx.DefaultPosition, wx.DefaultSize, 0 )
         self.stStatus.Wrap( -1 )
         mainSizer.Add(self.stStatus, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL , 5)
+        self.spanel = wx.Panel(self)
+        spsizer = wx.BoxSizer(wx.HORIZONTAL)
+        self.spanel.SetSizer(spsizer)
+
+        self.search = wx.TextCtrl(self.spanel, wx.ID_ANY, "", style=wx.TE_PROCESS_ENTER )
+
+
+        spsizer.Add(self.search,1, wx.ALIGN_CENTER_VERTICAL)
+        mainSizer.Add(self.spanel,1,wx.EXPAND)
 
         self.SetSizer(mainSizer)
 
@@ -185,7 +223,71 @@ class HeaderPane (wx.Panel):
         self.sbNewFit.Bind( wx.EVT_ENTER_WINDOW, self.OnEnterWNewFit )
         self.sbNewFit.Bind( wx.EVT_LEAVE_WINDOW, self.OnLeaveWNewFit )
 
+        self.search.Bind(wx.EVT_TEXT_ENTER, self.doSearch)
+        self.search.Bind(wx.EVT_KILL_FOCUS, self.editLostFocus)
+        self.search.Bind(wx.EVT_KEY_DOWN, self.editCheckEsc)
+        self.search.Bind(wx.EVT_CONTEXT_MENU,self.OnMenu)
+        self.search.Bind(wx.EVT_TEXT, self.scheduleSearch)
+
         self.Layout()
+        self.spanel.Hide()
+
+    def scheduleSearch(self, event):
+        search = self.search.GetValue()
+        if len(search) < 3 and len(search) > 0:
+            print "need more chars/clear search"
+        else:
+            if search:
+                print "DO SEARCH ", search
+
+        event.Skip()
+    def OnMenu(self, event):
+        self.menu = self.MakeMenu()
+        self.PopupMenu(self.menu)
+        pass
+    def OnMenuSelected(self, event):
+        item = self.menu.FindItemById(event.GetId())
+        text = item.GetText()
+        print "menu sel do search:",text
+        self.editLostFocus()
+
+    def MakeMenu(self):
+        menu = wx.Menu()
+        item = menu.Append(-1, "Recent Searches")
+        item.Enable(False)
+        if len(self.recentSearches) > 0:
+            menu.AppendSeparator()
+        for txt in self.recentSearches:
+            if txt:
+                item = menu.Append(-1, txt)
+                menu.Bind(wx.EVT_MENU, self.OnMenuSelected, item)
+        return menu
+
+
+    def editLostFocus(self, event = None):
+        self.spanel.Show(False)
+        if self.menu:
+            self.menu.Destroy()
+
+        stxt = self.search.GetValue()
+        if stxt not in self.recentSearches:
+            self.recentSearches.append(stxt)
+        if len(self.recentSearches) >5:
+            self.recentSearches.remove(self.recentSearches[0])
+        self.search.SetValue("")
+        self.toggleSearch = -1
+
+    def editCheckEsc(self, event):
+        if event.GetKeyCode() == wx.WXK_ESCAPE:
+            self.spanel.Show(False)
+            self.toggleSearch = -1
+        else:
+            event.Skip()
+    def doSearch(self, event):
+        stxt = self.search.GetValue()
+        if stxt:
+            print "ENTER -> Search", stxt
+            self.editLostFocus()
 
     def ToggleNewFitSB(self, toggle):
         self.sbNewFit.Show(toggle)
@@ -193,7 +295,8 @@ class HeaderPane (wx.Panel):
         self.Layout()
 
     def OnEnterWForward(self, event):
-        self.stStatus.SetLabel("Forward")
+        if self.toggleSearch != 1:
+            self.stStatus.SetLabel("Forward")
         stage = self.Parent.GetActiveStage()
 
         if stage < 3:
@@ -214,7 +317,8 @@ class HeaderPane (wx.Panel):
         event.Skip()
 
     def OnEnterWRewind(self, event):
-        self.stStatus.SetLabel("Back")
+        if self.toggleSearch != 1:
+            self.stStatus.SetLabel("Back")
 
         stage = self.Parent.GetActiveStage()
 
@@ -234,7 +338,8 @@ class HeaderPane (wx.Panel):
         event.Skip()
 
     def OnEnterWSearch(self, event):
-        self.stStatus.SetLabel("Search fittings")
+        if self.toggleSearch != 1:
+            self.stStatus.SetLabel("Search fittings")
         self.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
         event.Skip()
 
@@ -244,7 +349,8 @@ class HeaderPane (wx.Panel):
         event.Skip()
 
     def OnEnterWNewFit(self, event):
-        self.stStatus.SetLabel("New fitting")
+        if self.toggleSearch != 1:
+            self.stStatus.SetLabel("New fitting")
         self.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
         event.Skip()
 
@@ -254,9 +360,19 @@ class HeaderPane (wx.Panel):
         event.Skip()
 
     def OnSearch(self, event):
+        self.stStatus.SetLabel("")
+        self.toggleSearch *= -1
+        if self.toggleSearch == 1:
+            self.spanel.Show(True)
+            self.search.SetFocus()
+            self.Layout()
+        else:
+            self.spanel.Show(False)
+            self.Layout()
         event.Skip()
 
     def OnNewFitting(self, event):
+        self.editLostFocus()
         stage = self.Parent.GetActiveStage()
         if stage == 3:
             shipID = self.Parent.GetStageData(stage)
@@ -267,6 +383,7 @@ class HeaderPane (wx.Panel):
         event.Skip()
 
     def OnForward(self,event):
+        self.editLostFocus()
         stage = self.Parent.GetActiveStage()
         stage +=1
         if stage >3:
@@ -280,6 +397,7 @@ class HeaderPane (wx.Panel):
         event.Skip()
 
     def OnBack(self,event):
+        self.editLostFocus()
         stage = self.Parent.GetActiveStage()
         stage -=1
         if stage <1:
