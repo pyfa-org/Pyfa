@@ -26,8 +26,8 @@ class ShipBrowser(wx.Panel):
         self.SetSizeHintsSz(wx.DefaultSize, wx.DefaultSize)
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
-        hpane = HeaderPane(self)
-        mainSizer.Add(hpane, 0, wx.EXPAND)
+        self.hpane = HeaderPane(self)
+        mainSizer.Add(self.hpane, 0, wx.EXPAND)
 
         self.lpane = ListPane(self)
         mainSizer.Add(self.lpane, 1, wx.EXPAND)
@@ -111,6 +111,12 @@ class ShipBrowser(wx.Panel):
         sMarket = service.Market.getInstance()
         self.lpane.RemoveAllChildren()
         fitList = sFit.getFitsWithShip(shipID)
+
+        if len(fitList) == 0:
+            self._stage3Data = -1
+            self.hpane.gotoStage(2)
+            return
+
         fitList.sort(key=self.nameKey)
         shipName = sMarket.getItem(shipID).name
         for ID, name in fitList:
