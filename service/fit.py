@@ -45,10 +45,10 @@ class Fit(object):
         fit = eos.db.getFit(fitID)
         return fit.modules[pos]
 
-    def newFit(self, shipID, name):
+    def newFit(self, shipID, name=None):
         fit = eos.types.Fit()
         fit.ship = eos.types.Ship(eos.db.getItem(shipID))
-        fit.name = name
+        fit.name = name if name is not None else "New %s" % fit.ship.item.name
         fit.damagePattern = DamagePattern.getInstance().getDamagePattern("Uniform")
         eos.db.save(fit)
         fit.calculateModifiedAttributes()
