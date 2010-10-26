@@ -89,7 +89,7 @@ class ShipBrowser(wx.Panel):
         fitList.sort(key=self.nameKey)
         shipName = sMarket.getItem(shipID).name
         for ID, name in fitList:
-            self.lpane.AddWidget(FitItem(self.lpane, ID, (shipName, name)))
+            self.lpane.AddWidget(FitItem(self.lpane, ID, (shipName, name),shipID))
 
         self.lpane.RefreshList()
         self.Show()
@@ -461,25 +461,28 @@ class ShipItem(wx.Window):
         event.Skip()
 
 class FitItem(wx.Window):
-    def __init__(self, parent, shipID=None, shipFittingInfo=("Test", "cnc's avatar"), itemData=None,
+    def __init__(self, parent, fitID=None, shipFittingInfo=("Test", "cnc's avatar"), shipID = None, itemData=None,
                  id=wx.ID_ANY, range=100, pos=wx.DefaultPosition,
                  size=(0, 36), style=0):
         wx.Window.__init__(self, parent, id, pos, size, style)
 
         self._itemData = itemData
+        self.fitID = fitID
         self.shipID = shipID
+        self.shipBrowser = self.Parent.Parent
         self.shipBmp = wx.EmptyBitmap(32, 32)
         self.shipFittingInfo = shipFittingInfo
         self.shipName, self.fitName= shipFittingInfo
-        self.newBmp = bitmapLoader.getBitmap("add_small", "icons")
+        self.renameBmp = bitmapLoader.getBitmap("rename", "icons")
+        self.deleteBmp = bitmapLoader.getBitmap("state_offline_small","icons")
 
         self.Bind(wx.EVT_PAINT, self.OnPaint)
-        self.editPosX = 0
-        self.editPosY = 0
+        self.renamePosX = 0
+        self.renamePosY = 0
         self.highlighted = 0
         self.editWasShown = 0
 
-        self.tcFitName = wx.TextCtrl(self, wx.ID_ANY, "%s fit" % self.fitName, wx.DefaultPosition, (150,-1), wx.TE_PROCESS_ENTER)
+        self.tcFitName = wx.TextCtrl(self, wx.ID_ANY, "%s" % self.fitName, wx.DefaultPosition, (150,-1), wx.TE_PROCESS_ENTER)
         self.tcFitName.Show(False)
 
         self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBackground)
@@ -514,7 +517,7 @@ class FitItem(wx.Window):
 
     def cursorCheck(self, event):
         pos = event.GetPosition()
-        if self.NHitTest((self.editPosX, self.editPosY), pos, (16, 16)):
+        if self.NHitTest((self.renamePosX, self.renamePosY), pos, (16, 16)):
             self.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
         else:
             self.SetCursor(wx.StockCursor(wx.CURSOR_ARROW))
@@ -522,7 +525,7 @@ class FitItem(wx.Window):
 
         pos = event.GetPosition()
         x, y = pos
-        if self.NHitTest((self.editPosX, self.editPosY), pos, (16, 16)):
+        if self.NHitTest((self.renamePosX, self.renamePosY), pos, (16, 16)):
             if self.editWasShown == 1:
                 self.renameFit()
                 return
@@ -530,15 +533,15 @@ class FitItem(wx.Window):
                 self.Refresh()
                 fnEditSize = self.tcFitName.GetSize()
                 wSize = self.GetSize()
-                fnEditPosX = self.editPosX - fnEditSize.width - 5
-                fnEditPosY = (wSize.height - fnEditSize.height) / 2
-                self.tcFitName.SetPosition((fnEditPosX, fnEditPosY))
+                fnrenamePosX = self.renamePosX - fnEditSize.width - 5
+                fnrenamePosY = (wSize.height - fnEditSize.height) / 2
+                self.tcFitName.SetPosition((fnrenamePosX, fnrenamePosY))
                 self.tcFitName.Show(True)
                 self.tcFitName.SetFocus()
                 self.tcFitName.SelectAll()
                 return
 
-        if (not self.NHitTest((self.editPosX, self.editPosY), pos, (16, 16))):
+        if (not self.NHitTest((self.renamePosX, self.renamePosY), pos, (16, 16))):
             self.editWasShown = 0
             self.Refresh()
 
@@ -546,9 +549,10 @@ class FitItem(wx.Window):
         event.Skip()
 
     def renameFit(self, event=None):
-        print "Rename :", self.tcFitName.GetValue(), "add renamed fit "
+        print "Rename :", self.tcFitName.GetValue(), "refresh stage3 "
         self.tcFitName.Show(False)
         self.editWasShown = 0
+        wx.PostEvent(self.shipBrowser,Stage3Selected(shipID=self.shipID))
 
     def NHitTest(self, target, position, area):
         x, y = target
@@ -622,7 +626,11 @@ class FitItem(wx.Window):
         mdc.DrawText("%s" % shipName, textStart, ypos)
 #        mdc.SetFont(wx.Font(7, wx.SWISS, wx.NORMAL, wx.NORMAL, False))
 
-        self.editPosX = rect.width - 20
-        self.editPosY = (rect.height - 16) / 2
-        mdc.DrawBitmap(self.newBmp, self.editPosX, self.editPosY, 0)
+        self.deletePosX = rect.width - self.deleteBmp.GetWidth() - 5
+        self.renamePosX = self.deletePosX - self.renameBmp.GetWidth() - 5
+        self.renamePosY = self.deletePosY =  (rect.height - 16) / 2
+
+
+        mdc.DrawBitmap(self.renameBmp, self.renamePosX, self.renamePosY, 0)
+        mdc.DrawBitmap(self.deleteBmp, self.deletePosX, self.deletePosY, 0)
         event.Skip()
