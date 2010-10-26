@@ -68,9 +68,9 @@ class ResourcesViewFull(StatsView):
             bitmap.SetToolTip(tooltip)
 
             outerBox.Add(bitmap, 0, wx.ALIGN_CENTER)
-            box.Add(outerBox, 0, wx.ALIGN_CENTER)
+            outerBox.Add(box, 0, wx.ALIGN_CENTER)
 
-            sizer.Add(box, 0, wx.ALIGN_CENTER)
+            sizer.Add(outerBox, 0, wx.ALIGN_CENTER)
 
             suffix = {'turret':'Hardpoints', 'launcher':'Hardpoints', 'drones':'Active', 'calibration':'Points'}
             lbl = wx.StaticText(parent, wx.ID_ANY, "0")
