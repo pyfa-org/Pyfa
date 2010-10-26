@@ -460,7 +460,7 @@ class ShipItem(wx.Window):
         if not self.shipBmp:
             self.shipBmp = wx.EmptyBitmap(32, 32)
         self.shipFittingInfo = shipFittingInfo
-        self.shipName, dummy = shipFittingInfo
+        self.shipName, self.shipFits = shipFittingInfo
 
         self.newBmp = bitmapLoader.getBitmap("fit_add_small", "icons")
         self.shipEffBk = bitmapLoader.getBitmap("fshipbk_big","icons")
@@ -543,9 +543,23 @@ class ShipItem(wx.Window):
                 return
 
         if (not self.NHitTest((self.editPosX, self.editPosY), pos, (16, 16))):
-            self.editWasShown = 0
             self.Refresh()
-            wx.PostEvent(self.shipBrowser,Stage3Selected(shipID=self.shipID))
+            if self.shipFits > 0:
+                self.editWasShown = 0
+                wx.PostEvent(self.shipBrowser,Stage3Selected(shipID=self.shipID))
+
+            else:
+                if self.editWasShown == 0:
+                    fnEditSize = self.tcFitName.GetSize()
+                    wSize = self.GetSize()
+                    fnEditPosX = self.editPosX - fnEditSize.width - 5
+                    fnEditPosY = (wSize.height - fnEditSize.height) / 2
+                    self.tcFitName.SetPosition((fnEditPosX, fnEditPosY))
+                    self.tcFitName.Show(True)
+                    self.tcFitName.SetFocus()
+                    self.tcFitName.SelectAll()
+                else:
+                    self.editWasShown = 0
 
 
         event.Skip()
