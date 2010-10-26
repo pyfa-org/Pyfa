@@ -123,18 +123,24 @@ class HeaderPane (wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__ (self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.Size(500, 32), style=wx.TAB_TRAVERSAL)
 
-        bSizer3 = wx.BoxSizer(wx.HORIZONTAL)
-        self.stHeader = wx.StaticText(self, wx.ID_ANY, u"Back", wx.DefaultPosition, wx.DefaultSize, 0)
-        self.stHeader.Wrap(-1)
-        bSizer3.Add(self.stHeader, 0, wx.ALL , 5)
-        self.stHeader.Bind(wx.EVT_LEFT_UP,self.OnBack)
+        self.rewBmp = bitmapLoader.getBitmap("frewind_small","icons")
+        self.forwBmp = bitmapLoader.getBitmap("fforward_small","icons")
+        self.searchBmp = bitmapLoader.getBitmap("fsearch_small","icons")
+        mainSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.stForward = wx.StaticText(self, wx.ID_ANY, u"Forward", wx.DefaultPosition, wx.DefaultSize, 0)
-        self.stForward.Wrap(-1)
-        bSizer3.Add(self.stForward, 1, wx.ALL , 5)
-        self.stForward.Bind(wx.EVT_LEFT_UP,self.OnForward)
+        self.sbRewind = wx.StaticBitmap( self, wx.ID_ANY, self.rewBmp, wx.DefaultPosition, wx.DefaultSize, 0 )
+        mainSizer.Add(self.sbRewind, 0, wx.ALL , 5)
 
-        self.SetSizer(bSizer3)
+        self.sbForward = wx.StaticBitmap( self, wx.ID_ANY, self.forwBmp, wx.DefaultPosition, wx.DefaultSize, 0 )
+        mainSizer.Add(self.sbForward, 0, wx.ALL , 5)
+
+        self.sbSearch = wx.StaticBitmap( self, wx.ID_ANY, self.searchBmp, wx.DefaultPosition, wx.DefaultSize, 0 )
+        mainSizer.Add(self.sbSearch, 0, wx.ALL , 5)
+
+        self.SetSizer(mainSizer)
+
+        self.sbForward.Bind(wx.EVT_LEFT_UP,self.OnForward)
+        self.sbRewind.Bind(wx.EVT_LEFT_UP,self.OnBack)
         self.Layout()
 
     def OnForward(self,event):
