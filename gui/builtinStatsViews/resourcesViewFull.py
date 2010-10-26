@@ -50,7 +50,7 @@ class ResourcesViewFull(StatsView):
         panel = "full"
 
         sizer = wx.FlexGridSizer(2, 2)
-        sizer.SetMinSize(wx.Size(50 + self.getTextExtentW("400/400"), 0))
+        sizer.SetMinSize(wx.Size(36 + self.getTextExtentW("400/400"), 0))
         for i in xrange(3):
             sizer.AddGrowableCol(i + 1)
 
