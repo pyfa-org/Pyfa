@@ -20,6 +20,7 @@
 from gui.viewColumn import ViewColumn
 from gui import bitmapLoader
 import service
+from util import formatAmount
 
 class ModulePrice(ViewColumn):
     name = "Module Price"
@@ -33,15 +34,16 @@ class ModulePrice(ViewColumn):
 
 
     def getText(self, mod):
-        itemPrice = None
+        return False if mod.item is not None else ""
+
+    def delayedText(self, mod, display, colItem):
         def callback(requests):
-            itemPrice = requests[0].price
-        
-        service.Market.getInstance().getPrices([mod.ID], callback)
-        if itemPrice is not None:
-            return "%.0f" % itemPrice
-        else:
-            return ""
+            price = requests[0].price
+            colItem.SetText(formatAmount(price, 3, 3, 9) if price is not None else "")
+            display.SetItem(colItem)
+
+
+        service.Market.getInstance().getPrices([mod.item.ID], callback)
 
     def getImageId(self, mod):
         return -1

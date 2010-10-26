@@ -54,4 +54,7 @@ class ViewColumn(object):
     def getParameters(self):
         raise NotImplementedError()
 
+    def delayedText(self, display, colItem):
+        raise NotImplementedError()
+
 from gui.builtinViewColumns import *
