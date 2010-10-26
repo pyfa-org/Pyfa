@@ -372,7 +372,6 @@ class ShipItem(wx.Window):
         self._itemData = itemData
 
         self.shipRace = itemData
-        print self.shipRace
 
         self.shipID = shipID
         self.shipBmp = None
@@ -385,6 +384,7 @@ class ShipItem(wx.Window):
 
         self.newBmp = bitmapLoader.getBitmap("fit_add_small", "icons")
         self.shipEffBk = bitmapLoader.getBitmap("fshipbk_big","icons")
+        self.raceBmp = bitmapLoader.getBitmap("race_%s_small" % self.shipRace, "icons")
 
         self.shipBrowser = self.Parent.Parent
 
@@ -520,10 +520,15 @@ class ShipItem(wx.Window):
             mdc.Clear()
 
         mdc.SetFont(wx.Font(9, wx.SWISS, wx.NORMAL, wx.BOLD, False))
-        mdc.DrawBitmap(self.shipEffBk,5+(rect.height - self.shipEffBk.GetWidth())/2,(rect.height - self.shipEffBk.GetHeight())/2,0)
+        mdc.DrawBitmap(self.shipEffBk, 5 + (rect.height - self.shipEffBk.GetWidth())/2, (rect.height - self.shipEffBk.GetHeight())/2, 0)
         mdc.DrawBitmap(self.shipBmp, 5 + (rect.height - 32) / 2, (rect.height - 32) / 2, 0)
 
-
+        tempdc = wx.MemoryDCFromDC(mdc)
+        tempdc.DrawBitmap(self.raceBmp,0,0,0)
+#        mdc.Blit(5 + (rect.height - self.raceBmp.GetWidth()) / 2, (rect.height - self.raceBmp.GetHeight()) / 2,
+#                 self.raceBmp.GetWidth(),self.raceBmp.GetHeight(), tempdc, 0, 0, rop = wx.XOR, useMask = True)
+        mdc.DrawBitmap(self.raceBmp, 5 + (rect.height - self.raceBmp.GetWidth()) / 2, (rect.height - self.raceBmp.GetHeight()) / 2, 0)
+        tempdc.SelectObject(wx.NullBitmap)
 
 
         shipName, fittings = self.shipFittingInfo
