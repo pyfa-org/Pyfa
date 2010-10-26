@@ -27,8 +27,8 @@ from gui.contextMenu import ContextMenu
 
 class ImplantView(d.Display):
     DEFAULT_COLS = ["Activity Checkbox",
-                    "Name",
-                    "attr:implantness"]
+                    "attr:implantness",
+                    "Name"]
 
     def __init__(self, parent):
         d.Display.__init__(self, parent)
