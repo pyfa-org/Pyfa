@@ -49,7 +49,7 @@ class ResourcesViewFull(StatsView):
         self.headerPanel = headerPanel
         panel = "full"
 
-        sizer = wx.FlexGridSizer(3, 2)
+        sizer = wx.FlexGridSizer(2, 2)
         sizer.SetMinSize(wx.Size(27 + self.getTextExtentW("400/400"), 0))
         for i in xrange(3):
             sizer.AddGrowableCol(i + 1)
@@ -58,26 +58,30 @@ class ResourcesViewFull(StatsView):
         base.Add(sizer, 0, wx.ALIGN_CENTER)
 
         #Turrets & launcher hardslots display
-        tooltipText = {"turret":"Turret hardpoints", "launcher":"Launcher hardpoints", "drones":"Drones active", "calibration":"Calibration"}
-        for type in ("turret", "launcher", "drones", "calibration"):
+        tooltipText = {"turret":"Turret hardpoints", "drones":"Drones active", "launcher":"Launcher hardpoints", "calibration":"Calibration"}
+        for type in ("turret", "drones", "launcher", "calibration"):
+            outerBox = wx.BoxSizer(wx.VERTICAL)
+            box = wx.BoxSizer(wx.HORIZONTAL)
+
             bitmap = bitmapLoader.getStaticBitmap("%s_big" % type, parent, "icons")
             tooltip = wx.ToolTip(tooltipText[type])
             bitmap.SetToolTip(tooltip)
-            box = wx.BoxSizer(wx.HORIZONTAL)
 
-            sizer.Add(bitmap, 0, wx.ALIGN_CENTER)
-            sizer.Add(box, 0, wx.ALIGN_CENTER_VERTICAL)
+            outerBox.Add(bitmap, 0, wx.ALIGN_CENTER)
+            outerBox.Add(box, 0, wx.ALIGN_CENTER)
 
-            suffix = {'turret':'Hardpoints', 'launcher':'Hardpoints', 'drones':'Active', 'calibration':'Points'}
+            sizer.Add(outerBox, 0, wx.ALIGN_CENTER)
+
+            suffix = {'turret':'Hardpoints', 'drones':'Active', 'launcher':'Hardpoints', 'calibration':'Points'}
             lbl = wx.StaticText(parent, wx.ID_ANY, "0")
             setattr(self, "label%sUsed%s%s" % (panel.capitalize(), type.capitalize(), suffix[type].capitalize()), lbl)
-            box.Add(lbl, 0, wx.ALIGN_LEFT)
+            box.Add(lbl, 0, wx.ALIGN_CENTER)
 
-            box.Add(wx.StaticText(parent, wx.ID_ANY, "/"), 0, wx.ALIGN_LEFT)
+            box.Add(wx.StaticText(parent, wx.ID_ANY, "/"), 0, wx.ALIGN_CENTER)
 
             lbl = wx.StaticText(parent, wx.ID_ANY, "0")
             setattr(self, "label%sTotal%s%s" % (panel.capitalize(), type.capitalize(), suffix[type].capitalize()), lbl)
-            box.Add(lbl, 0, wx.ALIGN_LEFT)
+            box.Add(lbl, 0, wx.ALIGN_CENTER)
 
         base.Add(wx.StaticLine(parent, wx.ID_ANY, style=wx.VERTICAL), 0, wx.EXPAND | wx.LEFT, 3 if panel == "full" else 0)
 
@@ -133,10 +137,10 @@ class ResourcesViewFull(StatsView):
 
         stats = (("label%sUsedTurretHardpoints", lambda: fit.getHardpointsUsed(Hardpoint.TURRET), 0, 0, 0),
                          ("label%sTotalTurretHardpoints", lambda: fit.ship.getModifiedItemAttr('turretSlotsLeft'), 0, 0, 0),
+                         ("label%sUsedDronesActive", lambda: fit.activeDrones, 0, 0, 0),
+                         ("label%sTotalDronesActive", lambda: fit.maxActiveDrones, 0, 0, 0),
                          ("label%sUsedLauncherHardpoints", lambda: fit.getHardpointsUsed(Hardpoint.MISSILE), 0, 0, 0),
                          ("label%sTotalLauncherHardpoints", lambda: fit.ship.getModifiedItemAttr('launcherSlotsLeft'), 0, 0, 0),
-                         ("label%sUsedDronesActive", lambda: fit.usedDronesActive, 0, 0, 0),
-                         ("label%sTotalDronesActive", lambda: fit.ship.totalDronesActive, 0, 0, 0),
                          ("label%sUsedCalibrationPoints", lambda: fit.calibrationUsed, 0, 0, 0),
                          ("label%sTotalCalibrationPoints", lambda: fit.ship.getModifiedItemAttr('upgradeCapacity'), 0, 0, 0),
                          ("label%sUsedPg", lambda: fit.pgUsed, 4, 0, 9),
