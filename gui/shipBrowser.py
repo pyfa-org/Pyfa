@@ -299,7 +299,7 @@ class ShipItem(wx.Window):
         self.shipBmp = wx.EmptyBitmap(32, 32)
         self.shipFittingInfo = shipFittingInfo
         self.shipName, dummy = shipFittingInfo
-        self.newBmp = bitmapLoader.getBitmap("add_small", "icons")
+        self.newBmp = bitmapLoader.getBitmap("fadd", "icons")
 
         self.shipBrowser = self.Parent.Parent
 
@@ -473,8 +473,9 @@ class FitItem(wx.Window):
         self.shipBmp = wx.EmptyBitmap(32, 32)
         self.shipFittingInfo = shipFittingInfo
         self.shipName, self.fitName= shipFittingInfo
-        self.renameBmp = bitmapLoader.getBitmap("rename", "icons")
-        self.deleteBmp = bitmapLoader.getBitmap("state_offline_small","icons")
+        self.copyBmp = bitmapLoader.getBitmap("fadd", "icons")
+        self.renameBmp = bitmapLoader.getBitmap("frename", "icons")
+        self.deleteBmp = bitmapLoader.getBitmap("fdelete","icons")
 
         self.Bind(wx.EVT_PAINT, self.OnPaint)
         self.renamePosX = 0
@@ -628,9 +629,10 @@ class FitItem(wx.Window):
 
         self.deletePosX = rect.width - self.deleteBmp.GetWidth() - 5
         self.renamePosX = self.deletePosX - self.renameBmp.GetWidth() - 5
-        self.renamePosY = self.deletePosY =  (rect.height - 16) / 2
+        self.copyPosX = self.renamePosX - self.copyBmp.GetWidth() -5
+        self.renamePosY = self.deletePosY = self.copyPosY = (rect.height - 16) / 2
 
-
+        mdc.DrawBitmap(self.copyBmp, self.copyPosX, self.copyPosY, 0)
         mdc.DrawBitmap(self.renameBmp, self.renamePosX, self.renamePosY, 0)
         mdc.DrawBitmap(self.deleteBmp, self.deletePosX, self.deletePosY, 0)
         event.Skip()
