@@ -22,6 +22,7 @@ class ShipBrowser(wx.Panel):
         self._stage1Data = -1
         self._stage2Data = -1
         self._stage3Data = -1
+        self._stage3ShipName = ""
 
         self.SetSizeHintsSz(wx.DefaultSize, wx.DefaultSize)
 
@@ -65,11 +66,15 @@ class ShipBrowser(wx.Panel):
         if stage == 3:
             return self._stage3Data
         return -1
+    def GetStage3ShipName(self):
+        return self._stage3ShipName
+
     def nameKey(self, info):
         return info[1]
 
     def stage1(self, event):
         self._activeStage = 1
+        self.hpane.ToggleNewFitSB(False)
         sMarket = service.Market.getInstance()
         self.lpane.RemoveAllChildren()
         categoryList = sMarket.getShipRoot()
@@ -89,7 +94,7 @@ class ShipBrowser(wx.Panel):
         self._activeStage = 2
         categoryID = event.categoryID
         self._stage2Data = categoryID
-
+        self.hpane.ToggleNewFitSB(False)
         sMarket = service.Market.getInstance()
         sFit = service.Fit.getInstance()
         self.lpane.RemoveAllChildren()
@@ -116,9 +121,10 @@ class ShipBrowser(wx.Panel):
             self._stage3Data = -1
             self.hpane.gotoStage(2)
             return
-
+        self.hpane.ToggleNewFitSB(True)
         fitList.sort(key=self.nameKey)
         shipName = sMarket.getItem(shipID).name
+        self._stage3ShipName = shipName
         for ID, name in fitList:
             self.lpane.AddWidget(FitItem(self.lpane, ID, (shipName, name),shipID))
 
@@ -132,6 +138,8 @@ class HeaderPane (wx.Panel):
         self.rewBmp = bitmapLoader.getBitmap("frewind_small","icons")
         self.forwBmp = bitmapLoader.getBitmap("fforward_small","icons")
         self.searchBmp = bitmapLoader.getBitmap("fsearch_small","icons")
+        self.newBmp = bitmapLoader.getBitmap("fit_add_small","icons")
+
         mainSizer = wx.BoxSizer(wx.HORIZONTAL)
 
         self.sbRewind = wx.StaticBitmap( self, wx.ID_ANY, self.rewBmp, wx.DefaultPosition, wx.DefaultSize, 0 )
@@ -142,6 +150,10 @@ class HeaderPane (wx.Panel):
 
         self.sbSearch = wx.StaticBitmap( self, wx.ID_ANY, self.searchBmp, wx.DefaultPosition, wx.DefaultSize, 0 )
         mainSizer.Add(self.sbSearch, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL , 5)
+
+        self.sbNewFit = wx.StaticBitmap( self, wx.ID_ANY, self.newBmp, wx.DefaultPosition, wx.DefaultSize, 0 )
+        mainSizer.Add(self.sbNewFit, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL , 5)
+
         self.stStatus = wx.StaticText( self, wx.ID_ANY, "", wx.DefaultPosition, wx.DefaultSize, 0 )
         self.stStatus.Wrap( -1 )
         mainSizer.Add(self.stStatus, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL , 5)
@@ -160,8 +172,16 @@ class HeaderPane (wx.Panel):
         self.sbSearch.Bind( wx.EVT_ENTER_WINDOW, self.OnEnterWSearch )
         self.sbSearch.Bind( wx.EVT_LEAVE_WINDOW, self.OnLeaveWSearch )
 
+        self.sbNewFit.Bind(wx.EVT_LEFT_UP,self.OnNewFitting)
+        self.sbNewFit.Bind( wx.EVT_ENTER_WINDOW, self.OnEnterWNewFit )
+        self.sbNewFit.Bind( wx.EVT_LEAVE_WINDOW, self.OnLeaveWNewFit )
 
         self.Layout()
+
+    def ToggleNewFitSB(self, toggle):
+        self.sbNewFit.Show(toggle)
+        self.Layout()
+
     def OnEnterWForward(self, event):
         self.stStatus.SetLabel("Forward")
         stage = self.Parent.GetActiveStage()
@@ -204,7 +224,7 @@ class HeaderPane (wx.Panel):
         event.Skip()
 
     def OnEnterWSearch(self, event):
-        self.stStatus.SetLabel("Search fitting")
+        self.stStatus.SetLabel("Search fittings")
         self.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
         event.Skip()
 
@@ -213,7 +233,27 @@ class HeaderPane (wx.Panel):
         self.SetCursor(wx.StockCursor(wx.CURSOR_ARROW))
         event.Skip()
 
+    def OnEnterWNewFit(self, event):
+        self.stStatus.SetLabel("New fitting")
+        self.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
+        event.Skip()
+
+    def OnLeaveWNewFit(self, event):
+        self.stStatus.SetLabel("")
+        self.SetCursor(wx.StockCursor(wx.CURSOR_ARROW))
+        event.Skip()
+
     def OnSearch(self, event):
+        event.Skip()
+
+    def OnNewFitting(self, event):
+        stage = self.Parent.GetActiveStage()
+        if stage == 3:
+            shipID = self.Parent.GetStageData(stage)
+            shipName = self.Parent.GetStage3ShipName()
+            sFit = service.Fit.getInstance()
+            sFit.newFit(shipID, "%s fit" %shipName)
+            wx.PostEvent(self.Parent,Stage3Selected(shipID=shipID))
         event.Skip()
 
     def OnForward(self,event):
