@@ -93,6 +93,9 @@ class ShipBrowser(wx.Panel):
     def stage2(self, event):
         self._activeStage = 2
         categoryID = event.categoryID
+        if self.GetStageData(self._activeStage) != categoryID:
+            self._stage3Data = -1
+
         self._stage2Data = categoryID
         self.hpane.ToggleNewFitSB(False)
         sMarket = service.Market.getInstance()
