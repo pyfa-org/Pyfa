@@ -75,13 +75,13 @@ class ResourcesViewFull(StatsView):
             suffix = {'turret':'Hardpoints', 'launcher':'Hardpoints', 'drones':'Active', 'calibration':'Points'}
             lbl = wx.StaticText(parent, wx.ID_ANY, "0")
             setattr(self, "label%sUsed%s%s" % (panel.capitalize(), type.capitalize(), suffix[type].capitalize()), lbl)
-            box.Add(lbl, 0, wx.ALIGN_LEFT)
+            box.Add(lbl, 0, wx.ALIGN_CENTER)
 
-            box.Add(wx.StaticText(parent, wx.ID_ANY, "/"), 0, wx.ALIGN_LEFT)
+            box.Add(wx.StaticText(parent, wx.ID_ANY, "/"), 0, wx.ALIGN_CENTER)
 
             lbl = wx.StaticText(parent, wx.ID_ANY, "0")
             setattr(self, "label%sTotal%s%s" % (panel.capitalize(), type.capitalize(), suffix[type].capitalize()), lbl)
-            box.Add(lbl, 0, wx.ALIGN_LEFT)
+            box.Add(lbl, 0, wx.ALIGN_CENTER)
 
         base.Add(wx.StaticLine(parent, wx.ID_ANY, style=wx.VERTICAL), 0, wx.EXPAND | wx.LEFT, 3 if panel == "full" else 0)
 
