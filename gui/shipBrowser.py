@@ -460,6 +460,8 @@ class ShipItem(wx.Window):
         self.shipName, self.shipFits = shipFittingInfo
 
         self.newBmp = bitmapLoader.getBitmap("fit_add_small", "icons")
+        self.acceptBmp = bitmapLoader.getBitmap("faccept_small", "icons")
+        self.newToggleBmp = self.newBmp
         self.shipEffBk = bitmapLoader.getBitmap("fshipbk_big","icons")
         self.raceBmp = bitmapLoader.getBitmap("race_%s_small" % self.shipRace, "icons")
 
@@ -528,7 +530,6 @@ class ShipItem(wx.Window):
                 self.createNewFit()
                 return
             else:
-                self.Refresh()
                 fnEditSize = self.tcFitName.GetSize()
                 wSize = self.GetSize()
                 fnEditPosX = self.editPosX - fnEditSize.width - 5
@@ -537,10 +538,11 @@ class ShipItem(wx.Window):
                 self.tcFitName.Show(True)
                 self.tcFitName.SetFocus()
                 self.tcFitName.SelectAll()
+                self.newToggleBmp = self.acceptBmp
+                self.Refresh()
                 return
 
         if (not self.NHitTest((self.editPosX, self.editPosY), pos, (16, 16))):
-            self.Refresh()
             if self.shipFits > 0:
                 self.editWasShown = 0
                 wx.PostEvent(self.shipBrowser,Stage3Selected(shipID=self.shipID))
@@ -555,8 +557,12 @@ class ShipItem(wx.Window):
                     self.tcFitName.Show(True)
                     self.tcFitName.SetFocus()
                     self.tcFitName.SelectAll()
+                    self.newToggleBmp = self.acceptBmp
+                    self.Refresh()
                 else:
                     self.editWasShown = 0
+                    self.newToggleBmp = self.newBmp
+                    self.Refresh()
 
 
         event.Skip()
@@ -668,7 +674,8 @@ class ShipItem(wx.Window):
 
         self.editPosX = rect.width - 20
         self.editPosY = (rect.height - 16) / 2
-        mdc.DrawBitmap(self.newBmp, self.editPosX, self.editPosY, 0)
+
+        mdc.DrawBitmap(self.newToggleBmp, self.editPosX, self.editPosY, 0)
         if self.btnsStatus != "":
             status = "%s" % self.btnsStatus
             xtext, ytext = mdc.GetTextExtent(status)
