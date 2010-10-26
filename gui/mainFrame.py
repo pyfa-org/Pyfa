@@ -181,6 +181,8 @@ class MainFrame(wx.Frame):
         self.Bind(wx.EVT_MENU, self.showImportDialog, id=wx.ID_OPEN)
         # Export dialog
         self.Bind(wx.EVT_MENU, self.showExportDialog, id=wx.ID_SAVEAS)
+        # Import from Clipboard
+        self.Bind(wx.EVT_MENU, self.importFromClipboard, id=wx.ID_PASTE)
         # Preference dialog
         self.Bind(wx.EVT_MENU, self.showPreferenceDialog, id=wx.ID_PREFERENCES)
 
@@ -200,6 +202,10 @@ class MainFrame(wx.Frame):
     def clipboardXml(self, event):
         sFit = service.Fit.getInstance()
         self.toClipboard(sFit.exportXml(self.getActiveFit()))
+        
+    def importFromClipboard(self, event):
+        sFit = service.Fit.getInstance()
+        sFit.saveImportedFits(sFit.importFitFromBuffer(self.fromClipboard()))
 
     def toClipboard(self, text):
         clip = wx.TheClipboard
@@ -207,6 +213,17 @@ class MainFrame(wx.Frame):
         data = wx.TextDataObject(text)
         clip.SetData(data)
         clip.Close()
+        
+    def fromClipboard(self):
+        clip = wx.TheClipboard
+        clip.Open()
+        data = wx.TextDataObject("")
+        if clip.GetData(data):
+            clip.Close()
+            return data.GetText()
+        else:
+            clip.Close()
+            return None
 
     def toggleShipBrowser(self, event):
         self.GetToolBar().toggleShipBrowser(event)
