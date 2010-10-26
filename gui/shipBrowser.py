@@ -523,12 +523,16 @@ class ShipItem(wx.Window):
         mdc.DrawBitmap(self.shipEffBk, 5 + (rect.height - self.shipEffBk.GetWidth())/2, (rect.height - self.shipEffBk.GetHeight())/2, 0)
         mdc.DrawBitmap(self.shipBmp, 5 + (rect.height - 32) / 2, (rect.height - 32) / 2, 0)
 
-        tempdc = wx.MemoryDCFromDC(mdc)
-        tempdc.DrawBitmap(self.raceBmp,0,0,0)
+#        tempdc = wx.MemoryDCFromDC(mdc)
+#        tempdc.DrawBitmap(self.raceBmp,0,0,0)
 #        mdc.Blit(5 + (rect.height - self.raceBmp.GetWidth()) / 2, (rect.height - self.raceBmp.GetHeight()) / 2,
 #                 self.raceBmp.GetWidth(),self.raceBmp.GetHeight(), tempdc, 0, 0, rop = wx.XOR, useMask = True)
-        mdc.DrawBitmap(self.raceBmp, 5 + (rect.height - self.raceBmp.GetWidth()) / 2, (rect.height - self.raceBmp.GetHeight()) / 2, 0)
-        tempdc.SelectObject(wx.NullBitmap)
+#        img = self.raceBmp.ConvertToImage()
+#        img.AdjustChannels(1, 1, 1,0)
+#        self.raceBmp = wx.BitmapFromImage(img)
+#        mdc.DrawBitmap(self.raceBmp, 5 + (rect.height - self.raceBmp.GetWidth()) , (rect.height - self.raceBmp.GetHeight()) , 0)
+#        mdc.DrawBitmap(self.raceBmp, 5 + (rect.height - self.shipBmp.GetWidth()) / 2, (rect.height - self.shipBmp.GetHeight()) / 2, 0)
+#        tempdc.SelectObject(wx.NullBitmap)
 
 
         shipName, fittings = self.shipFittingInfo
@@ -537,13 +541,17 @@ class ShipItem(wx.Window):
         ypos = (rect.height - 32) / 2
         textStart = 48
         xtext, ytext = mdc.GetTextExtent(shipName)
-        mdc.DrawText(shipName, textStart, ypos)
+        mdc.DrawBitmap(self.raceBmp,textStart, ypos + self.raceBmp.GetHeight()/2)
+        mdc.DrawText(shipName, textStart + self.raceBmp.GetWidth() + 4, ypos)
+        textStart += self.raceBmp.GetWidth() + 4
+
         ypos += ytext
 
         mdc.SetFont(wx.Font(8, wx.SWISS, wx.NORMAL, wx.NORMAL, False))
 
         xtext, ytext = mdc.GetTextExtent("%d fitting(s)")
         mdc.DrawText("%d fitting(s)" % fittings, textStart, ypos)
+
 #        mdc.SetFont(wx.Font(7, wx.SWISS, wx.NORMAL, wx.NORMAL, False))
 
         self.editPosX = rect.width - 20
