@@ -154,7 +154,7 @@ class MainFrame(wx.Frame):
         dlg=wx.FileDialog(
             self,
             "Pick one or more fitting files to import",
-            wildcard = "EvE XML fitting files (*.xml)|*.xml|All Files (*.*)|*.*",
+            wildcard = "EFT text fitting files (*.cfg)|*.cfg|EvE XML fitting files (*.xml)|*.xml|All Files (*)|*",
             style = wx.FD_OPEN | wx.FD_FILE_MUST_EXIST | wx.FD_MULTIPLE)
         if (dlg.ShowModal() == wx.ID_OK):
             try:
@@ -254,12 +254,13 @@ class MainFrame(wx.Frame):
         sFit = service.Fit.getInstance()
         saveDialog = wx.FileDialog(
             self,
-            "Choose where to save the backup: ",
+            "Choose where to save the backup",
             wildcard = "EvE XML fitting file (*.xml)|*.xml",
             style = wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT)
         if (saveDialog.ShowModal() == wx.ID_OK):
             filePath = saveDialog.GetPath()
             sFit.backupFits(filePath)
+        saveDialog.Destroy()
 
     def toggleShipBrowser(self, event):
         self.GetToolBar().toggleShipBrowser(event)
