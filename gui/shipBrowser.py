@@ -371,9 +371,10 @@ class ShipItem(wx.Window):
 
         self._itemData = itemData
         self.shipID = shipID
+        self.shipBmp = None
         if shipID:
             self.shipBmp = bitmapLoader.getBitmap(str(shipID),"ships")
-        else:
+        if not self.shipBmp:
             self.shipBmp = wx.EmptyBitmap(32, 32)
         self.shipFittingInfo = shipFittingInfo
         self.shipName, dummy = shipFittingInfo
@@ -551,10 +552,10 @@ class FitItem(wx.Window):
         self.fitID = fitID
         self.shipID = shipID
         self.shipBrowser = self.Parent.Parent
-
+        self.shipBmp = None
         if shipID:
             self.shipBmp = bitmapLoader.getBitmap(str(shipID),"ships")
-        else:
+        if not self.shipBmp:
             self.shipBmp = wx.EmptyBitmap(32, 32)
 
         self.shipFittingInfo = shipFittingInfo
