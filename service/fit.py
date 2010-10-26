@@ -31,6 +31,14 @@ class Fit(object):
             cls.instance = Fit()
 
         return cls.instance
+        
+    def getAllFits(self):
+        fits = eos.db.getFitList()
+        names = []
+        for fit in fits:
+            names.append((fit.ID, fit.name))
+            
+        return names
 
 
     def getFitsWithShip(self, id):

@@ -26,12 +26,14 @@ class MainMenuBar(wx.MenuBar):
     def __init__(self):
         self.characterEditorId = wx.NewId()
         self.damagePatternEditorId = wx.NewId()
+        self.backupFitsId = wx.NewId()
 
         wx.MenuBar.__init__(self)
 
         # File menu
         fileMenu = wx.Menu()
         self.Append(fileMenu, "&File")
+        fileMenu.Append(self.backupFitsId, "&Backup fits", "Backup all fittings to a XML file")
         if 'wxMSW' in wx.PlatformInfo:
             fileMenu.Append(wx.ID_CLOSE, "&Close\tCTRL+W", "Close the currently open fit")
         else:

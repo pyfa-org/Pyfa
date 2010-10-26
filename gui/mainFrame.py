@@ -183,6 +183,8 @@ class MainFrame(wx.Frame):
         self.Bind(wx.EVT_MENU, self.showExportDialog, id=wx.ID_SAVEAS)
         # Import from Clipboard
         self.Bind(wx.EVT_MENU, self.importFromClipboard, id=wx.ID_PASTE)
+        # Backup fits
+        self.Bind(wx.EVT_MENU, self.backupToXml, id=menuBar.backupFitsId)
         # Preference dialog
         self.Bind(wx.EVT_MENU, self.showPreferenceDialog, id=wx.ID_PREFERENCES)
 
@@ -227,6 +229,21 @@ class MainFrame(wx.Frame):
         else:
             clip.Close()
             return None
+            
+    def backupToXml(self, event):
+        sFit = service.Fit.getInstance()
+        saveDialog = wx.FileDialog(
+            self,
+            "Choose where to save the backup: ",
+            wildcard = "EvE XML fitting file (*.xml)|*.xml",
+            style = wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT)
+        if (saveDialog.ShowModal() == wx.ID_OK):
+            filePath = saveDialog.GetPath()
+            allFits = map(lambda x: x[0], sFit.getAllFits())
+            backedUpFits = sFit.exportXml(*allFits)
+            backupFile = open(filePath, "w")
+            backupFile.write(backedUpFits)
+            backupFile.close()
 
     def toggleShipBrowser(self, event):
         self.GetToolBar().toggleShipBrowser(event)
