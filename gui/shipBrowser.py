@@ -596,6 +596,7 @@ class FitItem(wx.Window):
         self.editWasShown = 0
         self.fitName = self.tcFitName.GetValue()
         sFit.renameFit(self.fitID, self.fitName)
+        wx.PostEvent(self.mainFrame, FitRenamed(fitID=self.fitID))
         self.Refresh()
 
     def copyFit(self, event=None):
@@ -607,6 +608,7 @@ class FitItem(wx.Window):
         sFit = service.Fit.getInstance()
         sFit.deleteFit(self.fitID)
         wx.PostEvent(self.shipBrowser,Stage3Selected(shipID=self.shipID))
+        wx.PostEvent(self.mainFrame, FitRemoved(fitID=self.fitID))
 
     def selectFit(self, event=None):
         wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fitID))
