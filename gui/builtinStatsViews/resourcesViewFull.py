@@ -136,7 +136,7 @@ class ResourcesViewFull(StatsView):
                          ("label%sUsedLauncherHardpoints", lambda: fit.getHardpointsUsed(Hardpoint.MISSILE), 0, 0, 0),
                          ("label%sTotalLauncherHardpoints", lambda: fit.ship.getModifiedItemAttr('launcherSlotsLeft'), 0, 0, 0),
                          ("label%sUsedDronesActive", lambda: fit.activeDrones, 0, 0, 0),
-                         ("label%sTotalDronesActive", lambda: fit.ship.maxActiveDrones, 0, 0, 0),
+                         ("label%sTotalDronesActive", lambda: fit.maxActiveDrones, 0, 0, 0),
                          ("label%sUsedCalibrationPoints", lambda: fit.calibrationUsed, 0, 0, 0),
                          ("label%sTotalCalibrationPoints", lambda: fit.ship.getModifiedItemAttr('upgradeCapacity'), 0, 0, 0),
                          ("label%sUsedPg", lambda: fit.pgUsed, 4, 0, 9),
