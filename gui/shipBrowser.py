@@ -136,7 +136,7 @@ class HeaderPane (wx.Panel):
 
         self.sbSearch = wx.StaticBitmap( self, wx.ID_ANY, self.searchBmp, wx.DefaultPosition, wx.DefaultSize, 0 )
         mainSizer.Add(self.sbSearch, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL , 5)
-        self.stStatus = wx.StaticText( self, wx.ID_ANY, "Status", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.stStatus = wx.StaticText( self, wx.ID_ANY, "", wx.DefaultPosition, wx.DefaultSize, 0 )
         self.stStatus.Wrap( -1 )
         mainSizer.Add(self.stStatus, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL , 5)
 
