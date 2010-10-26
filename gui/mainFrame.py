@@ -226,7 +226,9 @@ class MainFrame(wx.Frame):
     def importFromClipboard(self, event):
         sFit = service.Fit.getInstance()
         try:
-            sFit.saveImportedFits(sFit.importFitFromBuffer(self.fromClipboard()))
+            fits = sFit.importFitFromBuffer(self.fromClipboard())
+            IDs = sFit.saveImportedFits(fits)
+            self._openAfterImport(len(fits), IDs)
         except:
             pass
 
