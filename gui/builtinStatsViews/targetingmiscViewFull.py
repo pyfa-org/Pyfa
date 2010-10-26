@@ -54,7 +54,8 @@ class TargetingMiscViewFull(StatsView):
         labels = (("Targets", "Targets", ""),
                   ("Range", "Range", "km"),
                   ("Scan res.", "ScanRes", "mm"),
-                  ("Sensor str.", "SensorStr", ""))
+                  ("Sensor str.", "SensorStr", ""),
+                  ("Drone range", "CtrlRange", "km"))
 
         for header, labelShort, unit in labels:
             gridTargeting.Add(wx.StaticText(contentPanel, wx.ID_ANY, "%s: " % header), 0, wx.ALIGN_LEFT)
@@ -105,6 +106,7 @@ class TargetingMiscViewFull(StatsView):
                  ("labelRange", lambda: fit.ship.getModifiedItemAttr('maxTargetRange') / 1000, 3, 0, 0, "km"),
                  ("labelScanRes", lambda: fit.ship.getModifiedItemAttr('scanResolution'), 3, 0, 0, "mm"),
                  ("labelSensorStr", lambda: fit.scanStrength, 3, 0, 0, ""),
+                 ("labelCtrlRange", lambda: fit.extraAttributes["droneControlRange"] / 1000, 3, 0, 0, "km"),
                  ("labelFullSpeed", lambda: fit.ship.getModifiedItemAttr("maxVelocity"), 3, 0, 0, "m/s"),
                  ("labelFullAlignTime", lambda: fit.alignTime, 3, 0, 0, "s"),
                  ("labelFullCargo", lambda: fit.extraAttributes["capacity"], 3, 0, 9, u"m\u00B3"),
