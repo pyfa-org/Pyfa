@@ -370,6 +370,10 @@ class ShipItem(wx.Window):
         wx.Window.__init__(self, parent, id, pos, size, style)
 
         self._itemData = itemData
+
+        self.shipRace = itemData
+        print self.shipRace
+
         self.shipID = shipID
         self.shipBmp = None
         if shipID:
@@ -378,6 +382,7 @@ class ShipItem(wx.Window):
             self.shipBmp = wx.EmptyBitmap(32, 32)
         self.shipFittingInfo = shipFittingInfo
         self.shipName, dummy = shipFittingInfo
+
         self.newBmp = bitmapLoader.getBitmap("fit_add_small", "icons")
         self.shipEffBk = bitmapLoader.getBitmap("fshipbk_big","icons")
 
