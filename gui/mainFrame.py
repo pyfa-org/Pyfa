@@ -115,7 +115,7 @@ class MainFrame(wx.Frame):
         tab, _ = self.notebookBrowsers.HitTest(event.Position)
         if tab != -1:
             self.notebookBrowsers.SetSelection(tab)
-    
+
     def CloseCurrentFit(self, evt):
         self.fitMultiSwitch.removeCurrentTab()
 
@@ -202,10 +202,13 @@ class MainFrame(wx.Frame):
     def clipboardXml(self, event):
         sFit = service.Fit.getInstance()
         self.toClipboard(sFit.exportXml(self.getActiveFit()))
-        
+
     def importFromClipboard(self, event):
         sFit = service.Fit.getInstance()
-        sFit.saveImportedFits(sFit.importFitFromBuffer(self.fromClipboard()))
+        try:
+            sFit.saveImportedFits(sFit.importFitFromBuffer(self.fromClipboard()))
+        except:
+            pass
 
     def toClipboard(self, text):
         clip = wx.TheClipboard
@@ -213,7 +216,7 @@ class MainFrame(wx.Frame):
         data = wx.TextDataObject(text)
         clip.SetData(data)
         clip.Close()
-        
+
     def fromClipboard(self):
         clip = wx.TheClipboard
         clip.Open()
