@@ -36,10 +36,9 @@ class CapacitorUse(ViewColumn):
 
 
     def getText(self, mod):
-        attr = mod.getModifiedItemAttr("capacitorNeed")
-        cycleTime = mod.getCycleTime()
-        if attr is not None and cycleTime is not None:
-            return "%s%s" % ("+" if attr < 0 else "", (formatAmount(-attr / mod.getCycleTime(), 3, 0, 3)))
+        capUse = mod.capUse
+        if capUse is not None:
+            return "%s%s" % ("+" if capUse < 0 else "", (formatAmount(-capUse, 3, 0, 3)))
         else:
             return ""
 
