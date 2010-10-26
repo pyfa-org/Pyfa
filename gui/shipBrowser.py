@@ -41,7 +41,8 @@ class ShipBrowser(wx.Panel):
 ##            if ewidth != self._lastWidth:
 ##                self._lastWidth = ewidth
         self.Layout()
-        self.lpane.RefreshList()
+        self.lpane.Layout()
+        self.lpane.RefreshList(True)
         event.Skip()
 
     def __del__(self):
@@ -51,6 +52,7 @@ class ShipBrowser(wx.Panel):
         return info[1]
 
     def stage1(self, event):
+        self.Layout()
         sMarket = service.Market.getInstance()
         self.lpane.RemoveAllChildren()
         categoryList = sMarket.getShipRoot()
@@ -58,7 +60,7 @@ class ShipBrowser(wx.Panel):
         for ID, name in categoryList:
             self.lpane.AddWidget(CategoryItem(self.lpane, ID, (name, 0)))
 
-        self.lpane.Layout()
+        self.lpane.RefreshList()
         self.Show()
 
     RACE_ORDER = ["amarr", "caldari", "gallente", "minmatar", "ore", "serpentis", "angel", "blood", "sansha", "guristas", None]
@@ -75,8 +77,7 @@ class ShipBrowser(wx.Panel):
         for ID, name, race in shipList:
             self.lpane.AddWidget(ShipItem(self.lpane, ID, (name, 0), race))
 
-        self.lpane.Layout()
-        self.lpane.Layout()
+        self.lpane.RefreshList()
         self.Show()
 
     def stage3(self, event):
@@ -90,7 +91,7 @@ class ShipBrowser(wx.Panel):
         for ID, name in fitList:
             self.lpane.AddWidget(FitItem(self.lpane, ID, (shipName, name)))
 
-        self.lpane.Layout()
+        self.lpane.RefreshList()
         self.Show()
 
 class HeaderPane (wx.Panel):
@@ -126,7 +127,7 @@ class ListPane (wx.ScrolledWindow):
         posy = self.GetScrollPos(wx.VERTICAL)
         posy -= 8
         self.Scroll(0, posy)
-        self.RefreshList()
+#        self.RefreshList()
         event.Skip()
 
     def MScrollDown(self, event):
@@ -134,7 +135,7 @@ class ListPane (wx.ScrolledWindow):
         posy = self.GetScrollPos(wx.VERTICAL)
         posy += 8
         self.Scroll(0, posy)
-        self.RefreshList()
+#        self.RefreshList()
         event.Skip()
 
 
@@ -143,24 +144,23 @@ class ListPane (wx.ScrolledWindow):
         self._wList.append(widget)
         self._wCount += 1
 
-    def Layout(self):
-        wx.ScrolledWindow.Layout(self)
-        self.RefreshList()
-
-    def RefreshList(self):
+    def RefreshList(self, doRefresh = False):
         ypos = 0
-        cwidth, cheight = self.GetClientSize()
+        maxy = 0
         for i in xrange(self._wCount):
-            xa, ya = self.CalcScrolledPosition((0, ypos))
             iwidth, iheight = self._wList[i].GetSize()
+            xa, ya = self.CalcScrolledPosition((0, maxy))
             self._wList[i].SetPosition((xa, ya))
+            maxy += iheight
+        self.SetVirtualSize((1, maxy))
+        cwidth, cheight = self.GetVirtualSize()
+
+
+        for i in xrange(self._wCount):
+            iwidth, iheight = self._wList[i].GetSize()
             self._wList[i].SetSize((cwidth, iheight))
-
-            ypos += iheight
-
-            self._wList[i].Show()
-            self._wList[i].Refresh()
-        self.SetVirtualSize((1, ypos))
+            if doRefresh == True:
+                self._wList[i].Refresh()
 
     def RemoveChild(self, child):
         wx.Panel.RemoveChild(self, child)
@@ -290,15 +290,6 @@ class CategoryItem(wx.Window):
             mdc.DrawText(fformat, fPosX, fPosY)
 
         event.Skip()
-
-#    def Destroy(self):
-#        self.Unbind(wx.EVT_PAINT)
-#        self.Unbind(wx.EVT_ERASE_BACKGROUND)
-#        self.Unbind(wx.EVT_LEFT_UP)
-#        self.Unbind(wx.EVT_ENTER_WINDOW)
-#        self.Unbind(wx.EVT_LEAVE_WINDOW)
-#        self.Close()
-
 
 class ShipItem(wx.Window):
     def __init__(self, parent, shipID=None, shipFittingInfo=("Test", 2), itemData=None,
