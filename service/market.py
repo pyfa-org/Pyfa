@@ -19,6 +19,7 @@
 
 import eos.db
 import eos.types
+import eos.saveddata
 import wx
 import threading
 from sqlalchemy.orm.exc import NoResultFound
