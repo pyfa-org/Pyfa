@@ -58,8 +58,8 @@ class ResourcesViewFull(StatsView):
         base.Add(sizer, 0, wx.ALIGN_CENTER)
 
         #Turrets & launcher hardslots display
-        tooltipText = {"turret":"Turret hardpoints", "launcher":"Launcher hardpoints", "drones":"Drones active", "calibration":"Calibration"}
-        for type in ("turret", "launcher", "drones", "calibration"):
+        tooltipText = {"turret":"Turret hardpoints", "drones":"Drones active", "launcher":"Launcher hardpoints", "calibration":"Calibration"}
+        for type in ("turret", "drones", "launcher", "calibration"):
             outerBox = wx.BoxSizer(wx.VERTICAL)
             box = wx.BoxSizer(wx.HORIZONTAL)
 
@@ -72,7 +72,7 @@ class ResourcesViewFull(StatsView):
 
             sizer.Add(outerBox, 0, wx.ALIGN_CENTER)
 
-            suffix = {'turret':'Hardpoints', 'launcher':'Hardpoints', 'drones':'Active', 'calibration':'Points'}
+            suffix = {'turret':'Hardpoints', 'drones':'Active', 'launcher':'Hardpoints', 'calibration':'Points'}
             lbl = wx.StaticText(parent, wx.ID_ANY, "0")
             setattr(self, "label%sUsed%s%s" % (panel.capitalize(), type.capitalize(), suffix[type].capitalize()), lbl)
             box.Add(lbl, 0, wx.ALIGN_CENTER)
@@ -137,10 +137,10 @@ class ResourcesViewFull(StatsView):
 
         stats = (("label%sUsedTurretHardpoints", lambda: fit.getHardpointsUsed(Hardpoint.TURRET), 0, 0, 0),
                          ("label%sTotalTurretHardpoints", lambda: fit.ship.getModifiedItemAttr('turretSlotsLeft'), 0, 0, 0),
-                         ("label%sUsedLauncherHardpoints", lambda: fit.getHardpointsUsed(Hardpoint.MISSILE), 0, 0, 0),
-                         ("label%sTotalLauncherHardpoints", lambda: fit.ship.getModifiedItemAttr('launcherSlotsLeft'), 0, 0, 0),
                          ("label%sUsedDronesActive", lambda: fit.activeDrones, 0, 0, 0),
                          ("label%sTotalDronesActive", lambda: fit.maxActiveDrones, 0, 0, 0),
+                         ("label%sUsedLauncherHardpoints", lambda: fit.getHardpointsUsed(Hardpoint.MISSILE), 0, 0, 0),
+                         ("label%sTotalLauncherHardpoints", lambda: fit.ship.getModifiedItemAttr('launcherSlotsLeft'), 0, 0, 0),
                          ("label%sUsedCalibrationPoints", lambda: fit.calibrationUsed, 0, 0, 0),
                          ("label%sTotalCalibrationPoints", lambda: fit.ship.getModifiedItemAttr('upgradeCapacity'), 0, 0, 0),
                          ("label%sUsedPg", lambda: fit.pgUsed, 4, 0, 9),
