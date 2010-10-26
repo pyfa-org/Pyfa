@@ -159,12 +159,9 @@ class HeaderPane (wx.Panel):
     def OnEnterWForward(self, event):
         self.stStatus.SetLabel("Forward")
         stage = self.Parent.GetActiveStage()
-        stage +=1
-        if stage >3:
-            stage = 3
+
         if stage < 3:
-            data = self.Parent.GetStageData(stage)
-            if data != -1:
+            if self.Parent.GetStageData(stage+1) != -1:
                 self.stStatus.Enable()
             else:
                 self.stStatus.Disable()
