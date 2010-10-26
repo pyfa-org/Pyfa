@@ -1,6 +1,7 @@
 import wx
 import copy
 from gui import bitmapLoader
+import gui.mainFrame
 import service
 
 FitRenamed, EVT_FIT_RENAMED = wx.lib.newevent.NewEvent()
@@ -193,6 +194,7 @@ class CategoryItem(wx.Window):
         self.highlighted = 0
         self.editWasShown = 0
 
+        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
         self.Bind(wx.EVT_PAINT, self.OnPaint)
         self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBackground)
@@ -299,7 +301,7 @@ class ShipItem(wx.Window):
         self.shipBmp = wx.EmptyBitmap(32, 32)
         self.shipFittingInfo = shipFittingInfo
         self.shipName, dummy = shipFittingInfo
-        self.newBmp = bitmapLoader.getBitmap("fadd", "icons")
+        self.newBmp = bitmapLoader.getBitmap("fit_add_small", "icons")
 
         self.shipBrowser = self.Parent.Parent
 
@@ -466,6 +468,7 @@ class FitItem(wx.Window):
                  size=(0, 36), style=0):
         wx.Window.__init__(self, parent, id, pos, size, style)
 
+        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self._itemData = itemData
         self.fitID = fitID
         self.shipID = shipID
@@ -473,9 +476,9 @@ class FitItem(wx.Window):
         self.shipBmp = wx.EmptyBitmap(32, 32)
         self.shipFittingInfo = shipFittingInfo
         self.shipName, self.fitName= shipFittingInfo
-        self.copyBmp = bitmapLoader.getBitmap("fadd", "icons")
-        self.renameBmp = bitmapLoader.getBitmap("frename", "icons")
-        self.deleteBmp = bitmapLoader.getBitmap("fdelete","icons")
+        self.copyBmp = bitmapLoader.getBitmap("fit_add_small", "icons")
+        self.renameBmp = bitmapLoader.getBitmap("fit_rename_small", "icons")
+        self.deleteBmp = bitmapLoader.getBitmap("fit_delete_small","icons")
 
         self.Bind(wx.EVT_PAINT, self.OnPaint)
         self.renamePosX = 0
@@ -569,31 +572,45 @@ class FitItem(wx.Window):
         if self.NHitTest((self.deletePosX,self.deletePosY), pos, (16,16)):
             if self.editWasShown != 1:
                 self.deleteFit()
+                return
 
         if self.NHitTest((self.copyPosX,self.copyPosY), pos, (16,16)):
             if self.editWasShown != 1:
                 self.copyFit()
+                return
 
         if (not self.NHitTest((self.renamePosX, self.renamePosY), pos, (16, 16))):
-            self.editWasShown = 0
-            self.Refresh()
+            if self.editWasShown != 1:
+                self.selectFit()
+            else:
+                self.editWasShown = 0
+                self.Refresh()
+
 
 
         event.Skip()
 
     def renameFit(self, event=None):
-        print "Rename :", self.fitName," to", self.tcFitName.GetValue(), " dont forget to rename the fit :>"
+        sFit = service.Fit.getInstance()
         self.tcFitName.Show(False)
         self.editWasShown = 0
         self.fitName = self.tcFitName.GetValue()
+        sFit.renameFit(self.fitID, self.fitName)
         self.Refresh()
 
-    def copyFit(self, event = None):
-        print "Copy"
+    def copyFit(self, event=None):
+        sFit = service.Fit.getInstance()
+        sFit.copyFit(self.fitID)
         wx.PostEvent(self.shipBrowser,Stage3Selected(shipID=self.shipID))
-    def deleteFit(self, event = None):
-        print "Delete"
+
+    def deleteFit(self, event=None):
+        sFit = service.Fit.getInstance()
+        sFit.deleteFit(self.fitID)
         wx.PostEvent(self.shipBrowser,Stage3Selected(shipID=self.shipID))
+
+    def selectFit(self, event=None):
+        wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fitID))
+
     def NHitTest(self, target, position, area):
         x, y = target
         px, py = position
