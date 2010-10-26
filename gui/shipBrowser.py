@@ -366,7 +366,7 @@ class CategoryItem(wx.Window):
 class ShipItem(wx.Window):
     def __init__(self, parent, shipID=None, shipFittingInfo=("Test", 2), itemData=None,
                  id=wx.ID_ANY, range=100, pos=wx.DefaultPosition,
-                 size=(0, 36), style=0):
+                 size=(0, 38), style=0):
         wx.Window.__init__(self, parent, id, pos, size, style)
 
         self._itemData = itemData
@@ -396,6 +396,8 @@ class ShipItem(wx.Window):
 
         self.tcFitName = wx.TextCtrl(self, wx.ID_ANY, "%s fit" % self.shipName, wx.DefaultPosition, (120,-1), wx.TE_PROCESS_ENTER)
         self.tcFitName.Show(False)
+
+        self.btnsStatus = ""
 
         self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBackground)
 
@@ -431,8 +433,15 @@ class ShipItem(wx.Window):
         pos = event.GetPosition()
         if self.NHitTest((self.editPosX, self.editPosY), pos, (16, 16)):
             self.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
+            if self.btnsStatus != "New fit":
+                self.btnsStatus = "New fit"
+                self.Refresh()
         else:
             self.SetCursor(wx.StockCursor(wx.CURSOR_ARROW))
+            if self.btnsStatus != "":
+                self.btnsStatus = ""
+                self.Refresh()
+
     def checkPosition(self, event):
 
         pos = event.GetPosition()
@@ -549,14 +558,31 @@ class ShipItem(wx.Window):
 
         mdc.SetFont(wx.Font(8, wx.SWISS, wx.NORMAL, wx.NORMAL, False))
 
-        xtext, ytext = mdc.GetTextExtent("%d fitting(s)")
-        mdc.DrawText("%d fitting(s)" % fittings, textStart, ypos)
+        if fittings <1:
+            fformat = "No fits"
+        else:
+            if fittings == 1:
+                fformat = "%d fit"
+            else:
+                fformat = "%d fits"
+
+        if fittings>0:
+            xtext, ytext = mdc.GetTextExtent(fformat % fittings)
+        else:
+            xtext, ytext = mdc.GetTextExtent(fformat)
+
+        mdc.DrawText(fformat %fittings if fittings >0 else fformat, textStart, ypos)
 
 #        mdc.SetFont(wx.Font(7, wx.SWISS, wx.NORMAL, wx.NORMAL, False))
 
         self.editPosX = rect.width - 20
         self.editPosY = (rect.height - 16) / 2
         mdc.DrawBitmap(self.newBmp, self.editPosX, self.editPosY, 0)
+        if self.btnsStatus != "":
+            status = "%s" % self.btnsStatus
+            xtext, ytext = mdc.GetTextExtent(status)
+            ytext = (rect.height - ytext)/2
+            mdc.DrawText(status, self.editPosX - xtext -5,ytext)
         event.Skip()
 
 class FitItem(wx.Window):
