@@ -129,19 +129,89 @@ class HeaderPane (wx.Panel):
         mainSizer = wx.BoxSizer(wx.HORIZONTAL)
 
         self.sbRewind = wx.StaticBitmap( self, wx.ID_ANY, self.rewBmp, wx.DefaultPosition, wx.DefaultSize, 0 )
-        mainSizer.Add(self.sbRewind, 0, wx.ALL , 5)
+        mainSizer.Add(self.sbRewind, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL , 5)
 
         self.sbForward = wx.StaticBitmap( self, wx.ID_ANY, self.forwBmp, wx.DefaultPosition, wx.DefaultSize, 0 )
-        mainSizer.Add(self.sbForward, 0, wx.ALL , 5)
+        mainSizer.Add(self.sbForward, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL , 5)
 
         self.sbSearch = wx.StaticBitmap( self, wx.ID_ANY, self.searchBmp, wx.DefaultPosition, wx.DefaultSize, 0 )
-        mainSizer.Add(self.sbSearch, 0, wx.ALL , 5)
+        mainSizer.Add(self.sbSearch, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL , 5)
+        self.stStatus = wx.StaticText( self, wx.ID_ANY, "Status", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.stStatus.Wrap( -1 )
+        mainSizer.Add(self.stStatus, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL , 5)
 
         self.SetSizer(mainSizer)
 
         self.sbForward.Bind(wx.EVT_LEFT_UP,self.OnForward)
+        self.sbForward.Bind( wx.EVT_ENTER_WINDOW, self.OnEnterWForward )
+        self.sbForward.Bind( wx.EVT_LEAVE_WINDOW, self.OnLeaveWForward )
+
         self.sbRewind.Bind(wx.EVT_LEFT_UP,self.OnBack)
+        self.sbRewind.Bind( wx.EVT_ENTER_WINDOW, self.OnEnterWRewind )
+        self.sbRewind.Bind( wx.EVT_LEAVE_WINDOW, self.OnLeaveWRewind )
+
+        self.sbSearch.Bind(wx.EVT_LEFT_UP,self.OnSearch)
+        self.sbSearch.Bind( wx.EVT_ENTER_WINDOW, self.OnEnterWSearch )
+        self.sbSearch.Bind( wx.EVT_LEAVE_WINDOW, self.OnLeaveWSearch )
+
+
         self.Layout()
+    def OnEnterWForward(self, event):
+        self.stStatus.SetLabel("Forward")
+        stage = self.Parent.GetActiveStage()
+        stage +=1
+        if stage >3:
+            stage = 3
+        if stage < 3:
+            data = self.Parent.GetStageData(stage)
+            if data != -1:
+                self.stStatus.Enable()
+            else:
+                self.stStatus.Disable()
+        else:
+            self.stStatus.Disable()
+
+        self.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
+        event.Skip()
+
+    def OnLeaveWForward(self, event):
+        self.stStatus.Enable()
+        self.stStatus.SetLabel("")
+        self.SetCursor(wx.StockCursor(wx.CURSOR_ARROW))
+        event.Skip()
+
+    def OnEnterWRewind(self, event):
+        self.stStatus.SetLabel("Back")
+
+        stage = self.Parent.GetActiveStage()
+
+        if stage > 1:
+            self.stStatus.Enable()
+        else:
+            self.stStatus.Disable()
+
+
+        self.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
+        event.Skip()
+
+    def OnLeaveWRewind(self, event):
+        self.stStatus.Enable()
+        self.stStatus.SetLabel("")
+        self.SetCursor(wx.StockCursor(wx.CURSOR_ARROW))
+        event.Skip()
+
+    def OnEnterWSearch(self, event):
+        self.stStatus.SetLabel("Search fitting")
+        self.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
+        event.Skip()
+
+    def OnLeaveWSearch(self, event):
+        self.stStatus.SetLabel("")
+        self.SetCursor(wx.StockCursor(wx.CURSOR_ARROW))
+        event.Skip()
+
+    def OnSearch(self, event):
+        event.Skip()
 
     def OnForward(self,event):
         stage = self.Parent.GetActiveStage()
@@ -150,6 +220,10 @@ class HeaderPane (wx.Panel):
             stage = 3
             return
         self.gotoStage(stage)
+
+        self.stStatus.Enable()
+        self.stStatus.SetLabel("")
+
         event.Skip()
 
     def OnBack(self,event):
@@ -159,6 +233,10 @@ class HeaderPane (wx.Panel):
             stage = 1
             return
         self.gotoStage(stage)
+
+        self.stStatus.Enable()
+        self.stStatus.SetLabel("")
+
         event.Skip()
     def gotoStage(self,stage):
         if stage == 1:
