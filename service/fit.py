@@ -335,6 +335,13 @@ class Fit(object):
     def exportXml(self, *fitIDs):
         fits = map(lambda id: eos.db.getFit(id), fitIDs)
         return eos.types.Fit.exportXml(*fits)
+        
+    def backupFits(self, path):
+        allFits = map(lambda x: x[0], self.getAllFits())
+        backedUpFits = self.exportXml(*allFits)
+        backupFile = open(path, "w")
+        backupFile.write(backedUpFits)
+        backupFile.close()
 
     def importFit(self, path):
         f = file(path)

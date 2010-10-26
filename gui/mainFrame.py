@@ -239,11 +239,7 @@ class MainFrame(wx.Frame):
             style = wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT)
         if (saveDialog.ShowModal() == wx.ID_OK):
             filePath = saveDialog.GetPath()
-            allFits = map(lambda x: x[0], sFit.getAllFits())
-            backedUpFits = sFit.exportXml(*allFits)
-            backupFile = open(filePath, "w")
-            backupFile.write(backedUpFits)
-            backupFile.close()
+            sFit.backupFits(filePath)
 
     def toggleShipBrowser(self, event):
         self.GetToolBar().toggleShipBrowser(event)
