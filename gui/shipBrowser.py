@@ -91,11 +91,12 @@ class ShipBrowser(wx.Panel):
         self._stage2Data = categoryID
 
         sMarket = service.Market.getInstance()
+        sFit = service.Fit.getInstance()
         self.lpane.RemoveAllChildren()
         shipList = sMarket.getShipList(categoryID)
         shipList.sort(key=self.raceNameKey)
         for ID, name, race in shipList:
-            self.lpane.AddWidget(ShipItem(self.lpane, ID, (name, 0), race))
+            self.lpane.AddWidget(ShipItem(self.lpane, ID, (name, len(sFit.getFitsWithShip(ID))), race))
 
         self.lpane.RefreshList()
         self.Show()
@@ -433,7 +434,8 @@ class ShipItem(wx.Window):
         event.Skip()
 
     def createNewFit(self, event=None):
-        print "New :", self.tcFitName.GetValue(), "GTFO from stage2 to stage 3 (refresh stage 3)"
+        sFit = service.Fit.getInstance()
+        sFit.newFit(self.shipID, self.tcFitName.GetValue())
         self.tcFitName.Show(False)
         self.editWasShown = 0
         wx.PostEvent(self.shipBrowser,Stage3Selected(shipID=self.shipID))
@@ -640,8 +642,6 @@ class FitItem(wx.Window):
         else:
             self.editWasShown = 0
             self.Refresh()
-
-
 
         event.Skip()
 
