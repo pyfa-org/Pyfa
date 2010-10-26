@@ -30,7 +30,6 @@ from wx.lib.wordwrap import wordwrap
 from gui.characterEditor import CharacterEditor
 from gui.characterSelection import CharacterSelection
 from gui.patternEditor import DmgPatternEditorDlg
-from gui.importExport import ImportDialog, ExportDialog
 from gui.preferenceDialog import PreferenceDialog
 import aboutData
 import gui.fittingView as fv
