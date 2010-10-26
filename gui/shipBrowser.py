@@ -151,8 +151,14 @@ class HeaderPane (wx.Panel):
         self.sbForward = wx.StaticBitmap( self, wx.ID_ANY, self.forwBmp, wx.DefaultPosition, wx.DefaultSize, 0 )
         mainSizer.Add(self.sbForward, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL , 5)
 
+        self.sl1 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_VERTICAL )
+        mainSizer.Add( self.sl1, 0, wx.EXPAND |wx.ALL, 5 )
+
         self.sbSearch = wx.StaticBitmap( self, wx.ID_ANY, self.searchBmp, wx.DefaultPosition, wx.DefaultSize, 0 )
         mainSizer.Add(self.sbSearch, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL , 5)
+
+        self.sl2 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_VERTICAL )
+        mainSizer.Add( self.sl2, 0, wx.EXPAND |wx.ALL, 5 )
 
         self.sbNewFit = wx.StaticBitmap( self, wx.ID_ANY, self.newBmp, wx.DefaultPosition, wx.DefaultSize, 0 )
         mainSizer.Add(self.sbNewFit, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL , 5)
@@ -183,6 +189,7 @@ class HeaderPane (wx.Panel):
 
     def ToggleNewFitSB(self, toggle):
         self.sbNewFit.Show(toggle)
+        self.sl2.Show(toggle)
         self.Layout()
 
     def OnEnterWForward(self, event):
@@ -737,7 +744,7 @@ class ShipItem(wx.Window):
 class FitItem(wx.Window):
     def __init__(self, parent, fitID=None, shipFittingInfo=("Test", "cnc's avatar"), shipID = None, itemData=None,
                  id=wx.ID_ANY, range=100, pos=wx.DefaultPosition,
-                 size=(0, 36), style=0):
+                 size=(0, 38), style=0):
         wx.Window.__init__(self, parent, id, pos, size, style)
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
