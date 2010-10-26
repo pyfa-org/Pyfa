@@ -134,31 +134,6 @@ class ShipBrowser(wx.Panel):
         self.lpane.RefreshList()
         self.Show()
 
-class TransientWndSearch(wx.Panel):
-    def __init__(self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition,size=(0,16), style = 0):
-        wx.Panel.__init__(self, parent,id, pos, size, style)
-        mainSizer = wx.BoxSizer(wx.HORIZONTAL)
-        self.search = wx.SearchCtrl(self, wx.ID_ANY, "", style=wx.TE_PROCESS_ENTER)
-        self.search.ShowCancelButton(True)
-        self.search.SetMenu( self.MakeMenu() )
-        mainSizer.Add(self.search,1, wx.EXPAND | wx.ALIGN_CENTER_VERTICAL, 0 )
-        self.SetSizer(mainSizer)
-        self.Fit()
-        self.Layout()
-
-    def MakeMenu(self):
-        menu = wx.Menu()
-        item = menu.Append(-1, "Recent Searches")
-        item.Enable(False)
-        for txt in [ "You can maintain",
-                     "a list of old",
-                     "search strings here",
-                     "and bind EVT_MENU to",
-                     "catch their selections" ]:
-            menu.Append(-1, txt)
-        return menu
-
-
 class HeaderPane (wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__ (self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.Size(500, 32), style=wx.TAB_TRAVERSAL)
