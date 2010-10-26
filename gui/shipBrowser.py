@@ -359,10 +359,14 @@ class ShipItem(wx.Window):
 
         self._itemData = itemData
         self.shipID = shipID
-        self.shipBmp = wx.EmptyBitmap(32, 32)
+        if shipID:
+            self.shipBmp = bitmapLoader.getBitmap(str(shipID),"ships")
+        else:
+            self.shipBmp = wx.EmptyBitmap(32, 32)
         self.shipFittingInfo = shipFittingInfo
         self.shipName, dummy = shipFittingInfo
         self.newBmp = bitmapLoader.getBitmap("fit_add_small", "icons")
+        self.shipEffBk = bitmapLoader.getBitmap("fshipbk_big","icons")
 
         self.shipBrowser = self.Parent.Parent
 
@@ -498,7 +502,7 @@ class ShipItem(wx.Window):
             mdc.Clear()
 
         mdc.SetFont(wx.Font(9, wx.SWISS, wx.NORMAL, wx.BOLD, False))
-#        mdc.DrawBitmap(self.effBmp,5+(rect.height-40)/2,(rect.height-40)/2,0)
+        mdc.DrawBitmap(self.shipEffBk,5+(rect.height - self.shipEffBk.GetWidth())/2,(rect.height - self.shipEffBk.GetHeight())/2,0)
         mdc.DrawBitmap(self.shipBmp, 5 + (rect.height - 32) / 2, (rect.height - 32) / 2, 0)
 
 
@@ -535,12 +539,18 @@ class FitItem(wx.Window):
         self.fitID = fitID
         self.shipID = shipID
         self.shipBrowser = self.Parent.Parent
-        self.shipBmp = wx.EmptyBitmap(32, 32)
+
+        if shipID:
+            self.shipBmp = bitmapLoader.getBitmap(str(shipID),"ships")
+        else:
+            self.shipBmp = wx.EmptyBitmap(32, 32)
+
         self.shipFittingInfo = shipFittingInfo
         self.shipName, self.fitName= shipFittingInfo
         self.copyBmp = bitmapLoader.getBitmap("fit_add_small", "icons")
         self.renameBmp = bitmapLoader.getBitmap("fit_rename_small", "icons")
         self.deleteBmp = bitmapLoader.getBitmap("fit_delete_small","icons")
+        self.shipEffBk = bitmapLoader.getBitmap("fshipbk_big","icons")
 
         self.Bind(wx.EVT_PAINT, self.OnPaint)
         self.renamePosX = 0
@@ -726,6 +736,7 @@ class FitItem(wx.Window):
             mdc.Clear()
         mdc.SetFont(wx.Font(9, wx.SWISS, wx.NORMAL, wx.BOLD, False))
 #        mdc.DrawBitmap(self.effBmp,5+(rect.height-40)/2,(rect.height-40)/2,0)
+        mdc.DrawBitmap(self.shipEffBk,5+(rect.height - self.shipEffBk.GetWidth())/2,(rect.height - self.shipEffBk.GetHeight())/2,0)
         mdc.DrawBitmap(self.shipBmp, 5 + (rect.height - 32) / 2, (rect.height - 32) / 2, 0)
 
 
