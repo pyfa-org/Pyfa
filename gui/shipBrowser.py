@@ -480,8 +480,17 @@ class FitItem(wx.Window):
         self.Bind(wx.EVT_PAINT, self.OnPaint)
         self.renamePosX = 0
         self.renamePosY = 0
+
+        self.deletePosX = 0
+        self.deletePosY = 0
+
+        self.copyPosX = 0
+        self.copyPosY = 0
+
         self.highlighted = 0
         self.editWasShown = 0
+
+        self.btnsStatus = ""
 
         self.tcFitName = wx.TextCtrl(self, wx.ID_ANY, "%s" % self.fitName, wx.DefaultPosition, (150,-1), wx.TE_PROCESS_ENTER)
         self.tcFitName.Show(False)
@@ -520,8 +529,24 @@ class FitItem(wx.Window):
         pos = event.GetPosition()
         if self.NHitTest((self.renamePosX, self.renamePosY), pos, (16, 16)):
             self.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
+            if self.btnsStatus != "Rename":
+                self.btnsStatus = "Rename"
+                self.Refresh()
+        elif self.NHitTest((self.deletePosX, self.deletePosY), pos, (16, 16)):
+            self.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
+            if self.btnsStatus != "Delete":
+                self.btnsStatus = "Delete"
+                self.Refresh()
+        elif self.NHitTest((self.copyPosX, self.copyPosY), pos, (16, 16)):
+            self.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
+            if self.btnsStatus != "Copy":
+                self.btnsStatus = "Copy"
+                self.Refresh()
         else:
             self.SetCursor(wx.StockCursor(wx.CURSOR_ARROW))
+            if self.btnsStatus != "":
+                self.btnsStatus = ""
+                self.Refresh()
     def checkPosition(self, event):
 
         pos = event.GetPosition()
@@ -541,6 +566,13 @@ class FitItem(wx.Window):
                 self.tcFitName.SetFocus()
                 self.tcFitName.SelectAll()
                 return
+        if self.NHitTest((self.deletePosX,self.deletePosY), pos, (16,16)):
+            if self.editWasShown != 1:
+                self.deleteFit()
+
+        if self.NHitTest((self.copyPosX,self.copyPosY), pos, (16,16)):
+            if self.editWasShown != 1:
+                self.copyFit()
 
         if (not self.NHitTest((self.renamePosX, self.renamePosY), pos, (16, 16))):
             self.editWasShown = 0
@@ -550,11 +582,18 @@ class FitItem(wx.Window):
         event.Skip()
 
     def renameFit(self, event=None):
-        print "Rename :", self.tcFitName.GetValue(), "refresh stage3 "
+        print "Rename :", self.fitName," to", self.tcFitName.GetValue(), " dont forget to rename the fit :>"
         self.tcFitName.Show(False)
         self.editWasShown = 0
-        wx.PostEvent(self.shipBrowser,Stage3Selected(shipID=self.shipID))
+        self.fitName = self.tcFitName.GetValue()
+        self.Refresh()
 
+    def copyFit(self, event = None):
+        print "Copy"
+        wx.PostEvent(self.shipBrowser,Stage3Selected(shipID=self.shipID))
+    def deleteFit(self, event = None):
+        print "Delete"
+        wx.PostEvent(self.shipBrowser,Stage3Selected(shipID=self.shipID))
     def NHitTest(self, target, position, area):
         x, y = target
         px, py = position
@@ -612,7 +651,8 @@ class FitItem(wx.Window):
 
 
 
-        shipName, fitName = self.shipFittingInfo
+        shipName = self.shipName
+        fitName = self.fitName
 
 
         ypos = (rect.height - 32) / 2
@@ -623,14 +663,20 @@ class FitItem(wx.Window):
 
         mdc.SetFont(wx.Font(8, wx.SWISS, wx.NORMAL, wx.NORMAL, False))
 
-        xtext, ytext = mdc.GetTextExtent("%d fitting(s)")
+
         mdc.DrawText("%s" % shipName, textStart, ypos)
-#        mdc.SetFont(wx.Font(7, wx.SWISS, wx.NORMAL, wx.NORMAL, False))
+        mdc.SetFont(wx.Font(7, wx.SWISS, wx.NORMAL, wx.NORMAL, False))
 
         self.deletePosX = rect.width - self.deleteBmp.GetWidth() - 5
         self.renamePosX = self.deletePosX - self.renameBmp.GetWidth() - 5
         self.copyPosX = self.renamePosX - self.copyBmp.GetWidth() -5
         self.renamePosY = self.deletePosY = self.copyPosY = (rect.height - 16) / 2
+
+        if self.btnsStatus != "":
+            status = "%s" % self.btnsStatus
+            xtext, ytext = mdc.GetTextExtent(status)
+            ytext = (rect.height - ytext)/2
+            mdc.DrawText(status, self.copyPosX - xtext -5,ytext)
 
         mdc.DrawBitmap(self.copyBmp, self.copyPosX, self.copyPosY, 0)
         mdc.DrawBitmap(self.renameBmp, self.renamePosX, self.renamePosY, 0)
