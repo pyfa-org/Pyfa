@@ -218,12 +218,14 @@ class ListPane (wx.ScrolledWindow):
         self.SetVirtualSize((1, maxy))
         cwidth, cheight = self.GetVirtualSize()
 
-
+        clientW,clientH = self.GetSize()
         for i in xrange( len(self._wList) ):
             iwidth, iheight = self._wList[i].GetSize()
+            itemX,itemY = self._wList[i].GetPosition()
             self._wList[i].SetSize((cwidth, iheight))
             if doRefresh == True:
-                self._wList[i].Refresh()
+                if itemY >=-iheight and itemY< clientH:
+                    self._wList[i].Refresh()
 
     def RemoveWidget(self, child):
         child.Destroy()
