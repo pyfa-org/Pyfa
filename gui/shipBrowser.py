@@ -590,9 +590,10 @@ class ShipItem(wx.Window):
 
         if (not self.NHitTest((self.editPosX, self.editPosY), pos, (16, 16))):
             if self.shipFits > 0:
-                self.editWasShown = 0
-                wx.PostEvent(self.shipBrowser,Stage3Selected(shipID=self.shipID))
-
+                if self.editWasShown == 1:
+                    self.editWasShown = 0
+                else:
+                    wx.PostEvent(self.shipBrowser,Stage3Selected(shipID=self.shipID))
             else:
                 if self.editWasShown == 0:
                     fnEditSize = self.tcFitName.GetSize()
@@ -609,6 +610,7 @@ class ShipItem(wx.Window):
                     self.editWasShown = 0
                     self.newToggleBmp = self.newBmp
                     self.Refresh()
+
 
 
         event.Skip()
