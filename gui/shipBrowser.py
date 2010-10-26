@@ -243,7 +243,7 @@ class CategoryItem(wx.Window):
             mdc.Clear()
 
         mdc.DrawBitmap(self.shipBmp,5+(rect.height-self.shipBmp.GetHeight())/2,(rect.height-self.shipBmp.GetWidth())/2,0)
-        mdc.SetFont(wx.Font(9, wx.SWISS, wx.NORMAL, wx.BOLD, False))
+        mdc.SetFont(wx.Font(8, wx.SWISS, wx.NORMAL, wx.NORMAL, False))
 
 
 
@@ -261,12 +261,12 @@ class CategoryItem(wx.Window):
         mdc.SetFont(wx.Font(8, wx.SWISS, wx.NORMAL, wx.NORMAL, False))
 
         if fittings <1:
-            fformat = "No fittings"
+            fformat = "No fits"
         else:
             if fittings == 1:
-                fformat = "%d fitting"
+                fformat = "%d fit"
             else:
-                fformat = "%d fittings"
+                fformat = "%d fits"
 
         if fittings>0:
             xtext, ytext = mdc.GetTextExtent(fformat % fittings)
@@ -277,10 +277,7 @@ class CategoryItem(wx.Window):
 
         #seems that a scrolled window without scrollbars shown always HasScrollbar ><
 
-        if self.Parent.HasScrollbar(wx.VERTICAL):
-            addX = 20
-        else:
-            addX = 20
+        addX = 5
 
         fPosX = rect.width - addX - xtext
         fPosY = (rect.height -ytext)/2
@@ -430,12 +427,13 @@ class ShipItem(wx.Window):
 ##            r.top = r.height
 ##            mdc.GradientFillLinear(r,startColor,wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW),wx.NORTH)
 ##            mdc.SetTextForeground(wx.BLACK)
-            mdc.SetFont(wx.Font(10, wx.SWISS, wx.NORMAL, wx.BOLD, False))
+
         else:
             mdc.SetBackground(wx.Brush(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)))
             mdc.SetTextForeground(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT))
             mdc.Clear()
-            mdc.SetFont(wx.Font(9, wx.SWISS, wx.NORMAL, wx.BOLD, False))
+
+        mdc.SetFont(wx.Font(9, wx.SWISS, wx.NORMAL, wx.BOLD, False))
 #        mdc.DrawBitmap(self.effBmp,5+(rect.height-40)/2,(rect.height-40)/2,0)
         mdc.DrawBitmap(self.shipBmp, 5 + (rect.height - 32) / 2, (rect.height - 32) / 2, 0)
 
@@ -597,12 +595,12 @@ class FitItem(wx.Window):
 ##            r.top = r.height
 ##            mdc.GradientFillLinear(r,startColor,wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW),wx.NORTH)
 ##            mdc.SetTextForeground(wx.BLACK)
-            mdc.SetFont(wx.Font(10, wx.SWISS, wx.NORMAL, wx.BOLD, False))
+
         else:
             mdc.SetBackground(wx.Brush(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)))
             mdc.SetTextForeground(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT))
             mdc.Clear()
-            mdc.SetFont(wx.Font(9, wx.SWISS, wx.NORMAL, wx.BOLD, False))
+        mdc.SetFont(wx.Font(9, wx.SWISS, wx.NORMAL, wx.BOLD, False))
 #        mdc.DrawBitmap(self.effBmp,5+(rect.height-40)/2,(rect.height-40)/2,0)
         mdc.DrawBitmap(self.shipBmp, 5 + (rect.height - 32) / 2, (rect.height - 32) / 2, 0)
 
