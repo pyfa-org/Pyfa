@@ -48,7 +48,8 @@ class ItemStatsDialog(wx.Dialog):
 
         item = getattr(victim, "item", None) if context != "ammo" else getattr(victim, "charge", None)
         if item is None:
-            item = victim
+            sMarket = service.Market.getInstance()
+            item = sMarket.getItem(victim.ID)
             victim = None
         self.context = context
         if item.icon is not None:
