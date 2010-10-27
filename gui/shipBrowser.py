@@ -246,7 +246,8 @@ class HeaderPane (wx.Panel):
 
         stxt = self.search.GetValue()
         if stxt not in self.recentSearches:
-            self.recentSearches.append(stxt)
+            if stxt:
+                self.recentSearches.append(stxt)
         if len(self.recentSearches) >5:
             self.recentSearches.remove(self.recentSearches[0])
         self.search.SetValue("")
