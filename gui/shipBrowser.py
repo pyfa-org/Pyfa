@@ -16,7 +16,7 @@ Stage3Selected, EVT_SB_STAGE3_SEL = wx.lib.newevent.NewEvent()
 
 class ShipBrowser(wx.Panel):
     def __init__(self, parent):
-        wx.Panel.__init__ (self, parent)
+        wx.Panel.__init__ (self, parent,style = wx.SIMPLE_BORDER if 'wxGTK' in wx.PlatformInfo else wx.DOUBLE_BORDER)
 
         self._lastWidth = 0
         self._activeStage = 0
@@ -29,8 +29,12 @@ class ShipBrowser(wx.Panel):
         self.SetSizeHintsSz(wx.DefaultSize, wx.DefaultSize)
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
+
         self.hpane = HeaderPane(self)
         mainSizer.Add(self.hpane, 0, wx.EXPAND)
+
+        self.m_sl2 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
+        mainSizer.Add( self.m_sl2, 0, wx.EXPAND, 0 )
 
         self.lpane = ListPane(self)
         mainSizer.Add(self.lpane, 1, wx.EXPAND)
@@ -175,14 +179,14 @@ class HeaderPane (wx.Panel):
         self.sbForward.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNFACE ) )
 
         self.sl1 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_VERTICAL )
-        mainSizer.Add( self.sl1, 0, wx.EXPAND |wx.ALL, 5 )
+        mainSizer.Add( self.sl1, 0, wx.EXPAND |wx.LEFT, 5 )
 
         self.sbSearch = PFGenBitmapButton( self, wx.ID_ANY, self.searchBmp, wx.DefaultPosition, bmpSize, wx.BORDER_NONE )
         mainSizer.Add(self.sbSearch, 0, wx.LEFT | wx.TOP | wx.BOTTOM  | wx.ALIGN_CENTER_VERTICAL , 5)
         self.sbSearch.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNFACE ) )
 
         self.sl2 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_VERTICAL )
-        mainSizer.Add( self.sl2, 0, wx.EXPAND |wx.ALL, 5 )
+        mainSizer.Add( self.sl2, 0, wx.EXPAND |wx.LEFT, 5 )
 
         self.sbNewFit = PFGenBitmapButton( self, wx.ID_ANY, self.newBmp, wx.DefaultPosition, bmpSize, wx.BORDER_NONE )
         mainSizer.Add(self.sbNewFit, 0, wx.LEFT | wx.TOP | wx.BOTTOM  | wx.ALIGN_CENTER_VERTICAL , 5)

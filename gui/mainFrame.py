@@ -114,7 +114,7 @@ class MainFrame(wx.Frame):
         tab, _ = self.notebookBrowsers.HitTest(event.Position)
         if tab != -1:
             self.notebookBrowsers.SetSelection(tab)
-    
+
     def CloseCurrentFit(self, evt):
         self.fitMultiSwitch.removeCurrentTab()
 
