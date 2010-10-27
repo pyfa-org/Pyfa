@@ -556,12 +556,8 @@ class CategoryItem(wx.Window):
         wx.PostEvent(self.shipBrowser,Stage2Selected(categoryID=categoryID))
 
     def enterW(self,event):
-        mposx,mposy = self.Parent.ScreenToClient(wx.GetMousePosition())
-        iposx,iposy = self.GetPosition()
-        iwidth, iheight = self.GetSize()
-        if mposy >= iposy and mposy<iposy+iheight:
-            self.highlighted = 1
-            self.Refresh()
+        self.highlighted = 1
+        self.Refresh()
         event.Skip()
 
     def leaveW(self,event):
