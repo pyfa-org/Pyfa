@@ -52,7 +52,10 @@ class AttributeDisplay(ViewColumn):
             self.columnText = info.displayName if info.displayName != "" else info.name
 
     def getText(self, mod):
-        attr = mod.getModifiedItemAttr(self.info.name)
+        if hasattr(mod, "item"):
+            attr = mod.getModifiedItemAttr(self.info.name)
+        else:
+            attr = mod.getAttribute(self.info.name)
         if attr:
             return (formatAmount(attr, 3, 0, 3))
         else:

@@ -29,10 +29,12 @@ class StuffName(ViewColumn):
         self.columnText = "Name"
 
     def getText(self, stuff):
-        return stuff.item.name
+        item = getattr(stuff, "item", stuff)
+        return item.name
 
     def getImageId(self, mod):
-        iconFile = mod.item.icon.iconFile if mod.item.icon else ""
+        item = getattr(mod, "item", mod)
+        iconFile = item.icon.iconFile if item.icon else ""
         if iconFile:
             bitmap = bitmapLoader.getBitmap(iconFile, "pack")
             if bitmap is None:

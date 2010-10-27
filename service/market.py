@@ -74,14 +74,16 @@ class SearchWorkerThread(threading.Thread):
             filter = (eos.types.Category.name.in_(Market.SEARCH_CATEGORIES), eos.types.Item.published == True)
             results = eos.db.searchItems(request, where=filter,
                                          join=(eos.types.Item.group, eos.types.Group.category),
-                                         eager=("icon", "group.category"))
+                                         eager=("icon", "group.category", "metaGroup", "metaGroup.parent"))
 
+            usedMetas = set()
             items = []
             for item in results:
                 if item.category.name in Market.SEARCH_CATEGORIES:
-                    items.append((item.ID, item.name, item.group.name, item.metaGroup.ID if item.metaGroup else 1, item.icon.iconFile if item.icon else ""))
+                    usedMetas.add(item.metaGroup.ID if item.metaGroup else 1)
+                    items.append(item)
 
-            wx.CallAfter(callback, items)
+            wx.CallAfter(callback, (items, usedMetas))
 
     def scheduleSearch(self, text, callback):
         self.cv.acquire()
@@ -237,25 +239,21 @@ class Market():
             return tuple()
 
         mg = eos.db.getMarketGroup(marketGroupId)
-        l = []
-        done = set()
+        l = set()
         populatedMetas = set()
 
         for item in mg.items:
             populatedMetas.add(1)
             if 1 in self.activeMetas:
-                if item not in done:
-                    done.add(item)
-                    l.append((item.ID, item.name, item.icon.iconFile if item.icon else ""))
+                l.add(item)
 
             vars = eos.db.getVariations(item, eager=("icon", "metaGroup"))
             for var in vars:
                 populatedMetas.add(var.metaGroup.ID)
-                if var not in done and var.metaGroup.ID in self.activeMetas:
-                    done.add(var)
-                    l.append((var.ID, var.name, var.icon.iconFile if var.icon else ""))
+                if var.metaGroup.ID in self.activeMetas:
+                    l.add(var)
 
-        return l, populatedMetas
+        return list(l), populatedMetas
 
     def getPrices(self, typeIDs, callback):
         requests = []
