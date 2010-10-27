@@ -244,7 +244,7 @@ class ItemView(d.Display):
     def clearSearch(self, event=None, clear=True):
         self.DeleteAllItems()
         if clear:
-            self.search.Clear()
+            self.marketBrowser.search.Clear()
 
         cMarket = service.Market.getInstance()
         for name in ("normal", "faction", "complex", "officer"):
