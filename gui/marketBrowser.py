@@ -102,6 +102,9 @@ class MarketBrowser(wx.Panel):
         else:
             self.itemView.selectionMade(event)
 
+    def jump(self, item):
+        self.marketView.jump(item)
+
 
 class SearchBox(wx.SearchCtrl):
     def __init__(self, parent):
@@ -151,6 +154,50 @@ class MarketTree(wx.TreeCtrl):
                     self.AppendItem(childId, "dummy")
 
             self.SortChildren(root)
+
+    def jump(self, item):
+        cMarket = service.Market.getInstance()
+        # Refetch items, else it'll try to reuse the object fetched in the other thread
+        # Which makes it go BOOM CRACK DOOM
+        item = cMarket.getItem(item.ID)
+        mg = item.marketGroup
+        if mg is None and item.metaGroup is not None:
+            mg = item.metaGroup.parent.marketGroup
+            for btn in ("normal", "faction", "complex", "officer"):
+                getattr(self, btn).SetValue(False)
+                cMarket.disableMetaGroup(btn)
+
+            metaGroup = cMarket.getMetaName(item.metaGroup.ID)
+
+            getattr(self, metaGroup).SetValue(True)
+            cMarket.activateMetaGroup(metaGroup)
+            self.searching = False
+
+        if mg is None:
+            return
+
+        jumpList = []
+        while mg is not None:
+            jumpList.append(mg.ID)
+            mg = mg.parent
+
+        cMarket.MARKET_GROUPS
+        for id in cMarket.MARKET_GROUPS:
+            if id in jumpList:
+                jumpList = jumpList[:jumpList.index(id)+1]
+
+        item = self.root
+        for i in range(len(jumpList) -1, -1, -1):
+            target = jumpList[i]
+            child, cookie = self.GetFirstChild(item)
+            while self.GetItemPyData(child) != target:
+                child, cookie = self.GetNextChild(item, cookie)
+
+            item = child
+            self.Expand(item)
+
+        self.SelectItem(item)
+        self.searching = False
 
 class ItemView(d.Display):
     DEFAULT_COLS = ["Name"]
