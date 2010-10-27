@@ -183,10 +183,12 @@ class MainFrame(wx.Frame):
             path = dlg.GetPath()
             if (format == 0):
                 output = sFit.exportFit(self.getActiveFit())
-                path += ".cfg"
+                if not path.endswith(".cfg"):
+                    path += ".cfg"
             elif (format == 1):
                 output = sFit.exportXml(self.getActiveFit())
-                path += ".xml"
+                if not path.endswith(".xml"):
+                    path += ".xml"
             else:
                 print "oops, invalid fit format %d" % format
                 dlg.Destroy()
@@ -279,7 +281,9 @@ class MainFrame(wx.Frame):
             style = wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT)
         if (saveDialog.ShowModal() == wx.ID_OK):
             filePath = saveDialog.GetPath()
-            sFit.backupFits(filePath)
+            if not filePath.endswith(".xml"):
+                filePath += ".xml"
+            sFit.backupFits(filePath )
         saveDialog.Destroy()
 
     def toggleShipBrowser(self, event):
