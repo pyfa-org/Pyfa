@@ -48,7 +48,7 @@ class MarketBrowser(wx.Panel):
         self.splitter = wx.SplitterWindow(self, style = wx.SP_LIVE_UPDATE)
         vbox.Add(self.splitter, 1, wx.EXPAND)
 
-        self.marketView = MarketTree(self.splitter)
+        self.marketView = MarketTree(self.splitter, self)
         self.itemView = ItemView(self.splitter, self)
 
         self.splitter.SplitHorizontally(self.marketView, self.itemView)
@@ -112,9 +112,10 @@ class SearchBox(wx.SearchCtrl):
         self.ShowCancelButton(True)
 
 class MarketTree(wx.TreeCtrl):
-    def __init__(self, parent):
+    def __init__(self, parent, marketBrowser):
         wx.TreeCtrl.__init__(self, parent, style=wx.TR_DEFAULT_STYLE | wx.TR_HIDE_ROOT)
         self.root = self.AddRoot("CHRISTMAS TREE!")
+        self.marketBrowser = marketBrowser
 
         self.imageList = CachingImageList(16, 16)
         self.SetImageList(self.imageList)
@@ -164,14 +165,14 @@ class MarketTree(wx.TreeCtrl):
         if mg is None and item.metaGroup is not None:
             mg = item.metaGroup.parent.marketGroup
             for btn in ("normal", "faction", "complex", "officer"):
-                getattr(self, btn).SetValue(False)
+                getattr(self.marketBrowser, btn).SetValue(False)
                 cMarket.disableMetaGroup(btn)
 
             metaGroup = cMarket.getMetaName(item.metaGroup.ID)
 
-            getattr(self, metaGroup).SetValue(True)
+            getattr(self.marketBrowser, metaGroup).SetValue(True)
             cMarket.activateMetaGroup(metaGroup)
-            self.searching = False
+            self.marketBrowser.itemView.searching = False
 
         if mg is None:
             return
@@ -197,7 +198,7 @@ class MarketTree(wx.TreeCtrl):
             self.Expand(item)
 
         self.SelectItem(item)
-        self.searching = False
+        self.marketBrowser.itemView.searching = False
 
 class ItemView(d.Display):
     DEFAULT_COLS = ["Name"]
