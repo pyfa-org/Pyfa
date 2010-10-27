@@ -13,13 +13,15 @@ FitRemoved, EVT_FIT_REMOVED = wx.lib.newevent.NewEvent()
 Stage1Selected, EVT_SB_STAGE1_SEL = wx.lib.newevent.NewEvent()
 Stage2Selected, EVT_SB_STAGE2_SEL = wx.lib.newevent.NewEvent()
 Stage3Selected, EVT_SB_STAGE3_SEL = wx.lib.newevent.NewEvent()
+SearchSelected, EVT_SB_SEARCH_SEL = wx.lib.newevent.NewEvent()
 
 class ShipBrowser(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__ (self, parent,style = 0 if 'wxGTK' in wx.PlatformInfo else wx.DOUBLE_BORDER)
 
         self._lastWidth = 0
-        self._activeStage = 0
+        self._activeStage = 1
+        self._lastStage = 0
 
         self._stage1Data = -1
         self._stage2Data = -1
@@ -47,6 +49,7 @@ class ShipBrowser(wx.Panel):
         self.Bind(EVT_SB_STAGE2_SEL, self.stage2)
         self.Bind(EVT_SB_STAGE1_SEL, self.stage1)
         self.Bind(EVT_SB_STAGE3_SEL, self.stage3)
+        self.Bind(EVT_SB_SEARCH_SEL, self.searchStage)
 
         self.stage1(None)
 
@@ -63,6 +66,8 @@ class ShipBrowser(wx.Panel):
         pass
     def GetActiveStage(self):
         return self._activeStage
+    def GetLastStage(self):
+        return self._lastStage
 
     def GetStageData(self, stage):
         if stage == 1:
@@ -116,7 +121,8 @@ class ShipBrowser(wx.Panel):
         self.Show()
 
     def stage3(self, event):
-        self._activeStage = 3
+        if self._activeStage != 4:
+            self._activeStage = 3
 
         shipID = event.shipID
         self._stage3Data = shipID
@@ -141,21 +147,27 @@ class ShipBrowser(wx.Panel):
         self.Show()
 
     def searchStage(self, event):
+        if self._activeStage != 4:
+            self._lastStage = self._activeStage
+
+        self._activeStage = 4
+
         sMarket = service.Market.getInstance()
-        sFit = service.Market.getInstance()
+        sFit = service.Fit.getInstance()
         query = event.text
 
         self.lpane.RemoveAllChildren()
-        shipList = sMarket.searchShips(query)
-        fitList = sFit.searchFits(query)
+        if query:
+            shipList = sMarket.searchShips(query)
+            fitList = sFit.searchFits(query)
 
-        for ID, name, race in shipList:
-            self.lpane.AddWidget(ShipItem(self.lpane, ID, (name, len(sFit.getFitsWithShip(ID))), race))
+            for ID, name, race in shipList:
+                self.lpane.AddWidget(ShipItem(self.lpane, ID, (name, len(sFit.getFitsWithShip(ID))), race))
 
-        for ID, name, shipID, shipName in fitList:
-            self.lpane.AddWidget(FitItem(self.lpane, ID, (shipName, name), shipID))
+            for ID, name, shipID, shipName in fitList:
+                self.lpane.AddWidget(FitItem(self.lpane, ID, (shipName, name), shipID))
 
-        self.lpane.RefreshList()
+            self.lpane.RefreshList()
         self.Show()
 
 class PFGenBitmapButton(GenBitmapButton):
@@ -177,6 +189,8 @@ class HeaderPane (wx.Panel):
         self.forwBmp = bitmapLoader.getBitmap("fforward_small","icons")
         self.searchBmp = bitmapLoader.getBitmap("fsearch_small","icons")
         self.newBmp = bitmapLoader.getBitmap("fit_add_small","icons")
+
+        self.shipBrowser = self.Parent
 
         self.toggleSearch = -1
         self.recentSearches = []
@@ -269,9 +283,11 @@ class HeaderPane (wx.Panel):
         search = self.search.GetValue()
         if len(search) < 3 and len(search) > 0:
             print "need more chars/clear search"
+            wx.PostEvent(self.shipBrowser,SearchSelected(text=None))
         else:
             if search:
                 print "DO SEARCH ", search
+                wx.PostEvent(self.shipBrowser,SearchSelected(text=search))
 
         event.Skip()
     def OnMenu(self, event):
@@ -284,7 +300,10 @@ class HeaderPane (wx.Panel):
     def OnMenuSelected(self, event):
         item = self.menu.FindItemById(event.GetId())
         text = item.GetText()
+
         print "menu sel do search:",text
+        if len(text)>2 :
+            wx.PostEvent(self.shipBrowser,SearchSelected(text=text))
         self.editLostFocus()
 
     def MakeMenu(self):
@@ -336,8 +355,7 @@ class HeaderPane (wx.Panel):
             event.Skip()
     def doSearch(self, event):
         stxt = self.search.GetValue()
-        if stxt:
-            print "ENTER -> Search", stxt
+        if len(stxt) > 3:
             self.editLostFocus()
 
     def ToggleNewFitSB(self, toggle):
@@ -449,6 +467,9 @@ class HeaderPane (wx.Panel):
     def OnBack(self,event):
         self.editLostFocus()
         stage = self.Parent.GetActiveStage()
+        if stage == 4:
+            self.gotoStage(self.Parent.GetLastStage())
+            return
         stage -=1
         if stage <1:
             stage = 1
@@ -470,6 +491,8 @@ class HeaderPane (wx.Panel):
             shipID = self.Parent.GetStageData(stage)
             if shipID != -1:
                 wx.PostEvent(self.Parent,Stage3Selected(shipID=shipID))
+        else:
+            wx.PostEvent(self.Parent,Stage1Selected())
 
 class ListPane (wx.ScrolledWindow):
     def __init__(self, parent):
