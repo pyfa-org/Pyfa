@@ -261,7 +261,7 @@ class ItemView(d.Display):
 
     def scheduleSearch(self, event):
         search = self.marketBrowser.search.GetLineText(0)
-        if len(search) < 2:
+        if len(search) < 3:
             self.clearSearch(event, False)
             return
 
