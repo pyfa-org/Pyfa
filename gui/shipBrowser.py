@@ -4,6 +4,8 @@ from gui import bitmapLoader
 import gui.mainFrame
 import service
 
+from wx.lib import buttons
+
 FitRenamed, EVT_FIT_RENAMED = wx.lib.newevent.NewEvent()
 FitSelected, EVT_FIT_SELECTED = wx.lib.newevent.NewEvent()
 FitRemoved, EVT_FIT_REMOVED = wx.lib.newevent.NewEvent()
@@ -146,27 +148,27 @@ class HeaderPane (wx.Panel):
         self.toggleSearch = -1
         self.recentSearches = []
         self.menu = None
-        self.inPopup = 0
-
+        self.inPopup = False
+        bmpSize = (16,16)
         mainSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.sbRewind = wx.StaticBitmap( self, wx.ID_ANY, self.rewBmp, wx.DefaultPosition, wx.DefaultSize, 0 )
-        mainSizer.Add(self.sbRewind, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL , 5)
+        self.sbRewind = buttons.GenBitmapButton( self, wx.ID_ANY, self.rewBmp, wx.DefaultPosition, bmpSize, wx.BORDER_NONE )
+        mainSizer.Add(self.sbRewind, 0, wx.LEFT | wx.TOP | wx.BOTTOM | wx.ALIGN_CENTER_VERTICAL , 5)
 
-        self.sbForward = wx.StaticBitmap( self, wx.ID_ANY, self.forwBmp, wx.DefaultPosition, wx.DefaultSize, 0 )
-        mainSizer.Add(self.sbForward, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL , 5)
+        self.sbForward = buttons.GenBitmapButton( self, wx.ID_ANY, self.forwBmp, wx.DefaultPosition, bmpSize, wx.BORDER_NONE )
+        mainSizer.Add(self.sbForward, 0, wx.LEFT | wx.TOP | wx.BOTTOM  | wx.ALIGN_CENTER_VERTICAL , 5)
 
         self.sl1 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_VERTICAL )
         mainSizer.Add( self.sl1, 0, wx.EXPAND |wx.ALL, 5 )
 
-        self.sbSearch = wx.StaticBitmap( self, wx.ID_ANY, self.searchBmp, wx.DefaultPosition, wx.DefaultSize, 0 )
-        mainSizer.Add(self.sbSearch, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL , 5)
+        self.sbSearch = buttons.GenBitmapButton( self, wx.ID_ANY, self.searchBmp, wx.DefaultPosition, bmpSize, wx.BORDER_NONE )
+        mainSizer.Add(self.sbSearch, 0, wx.LEFT | wx.TOP | wx.BOTTOM  | wx.ALIGN_CENTER_VERTICAL , 5)
 
         self.sl2 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_VERTICAL )
         mainSizer.Add( self.sl2, 0, wx.EXPAND |wx.ALL, 5 )
 
-        self.sbNewFit = wx.StaticBitmap( self, wx.ID_ANY, self.newBmp, wx.DefaultPosition, wx.DefaultSize, 0 )
-        mainSizer.Add(self.sbNewFit, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL , 5)
+        self.sbNewFit = buttons.GenBitmapButton( self, wx.ID_ANY, self.newBmp, wx.DefaultPosition, bmpSize, wx.BORDER_NONE )
+        mainSizer.Add(self.sbNewFit, 0, wx.LEFT | wx.TOP | wx.BOTTOM  | wx.ALIGN_CENTER_VERTICAL , 5)
 
         self.stStatus = wx.StaticText( self, wx.ID_ANY, "", wx.DefaultPosition, wx.DefaultSize, 0 )
         self.stStatus.Wrap( -1 )
@@ -183,19 +185,19 @@ class HeaderPane (wx.Panel):
 
         self.SetSizer(mainSizer)
 
-        self.sbForward.Bind(wx.EVT_LEFT_UP,self.OnForward)
+        self.sbForward.Bind(wx.EVT_BUTTON,self.OnForward)
         self.sbForward.Bind( wx.EVT_ENTER_WINDOW, self.OnEnterWForward )
         self.sbForward.Bind( wx.EVT_LEAVE_WINDOW, self.OnLeaveWForward )
 
-        self.sbRewind.Bind(wx.EVT_LEFT_UP,self.OnBack)
+        self.sbRewind.Bind(wx.EVT_BUTTON,self.OnBack)
         self.sbRewind.Bind( wx.EVT_ENTER_WINDOW, self.OnEnterWRewind )
         self.sbRewind.Bind( wx.EVT_LEAVE_WINDOW, self.OnLeaveWRewind )
 
-        self.sbSearch.Bind(wx.EVT_LEFT_UP,self.OnSearch)
+        self.sbSearch.Bind(wx.EVT_BUTTON,self.OnSearch)
         self.sbSearch.Bind( wx.EVT_ENTER_WINDOW, self.OnEnterWSearch )
         self.sbSearch.Bind( wx.EVT_LEAVE_WINDOW, self.OnLeaveWSearch )
 
-        self.sbNewFit.Bind(wx.EVT_LEFT_UP,self.OnNewFitting)
+        self.sbNewFit.Bind(wx.EVT_BUTTON,self.OnNewFitting)
         self.sbNewFit.Bind( wx.EVT_ENTER_WINDOW, self.OnEnterWNewFit )
         self.sbNewFit.Bind( wx.EVT_LEAVE_WINDOW, self.OnLeaveWNewFit )
 
@@ -205,8 +207,19 @@ class HeaderPane (wx.Panel):
         self.search.Bind(wx.EVT_CONTEXT_MENU,self.OnMenu)
         self.search.Bind(wx.EVT_TEXT, self.scheduleSearch)
 
+        self.sbSearch.Bind(wx.EVT_LEFT_DOWN, self.OnLeftDown)
+        self.sbSearch.Bind(wx.EVT_LEFT_UP, self.OnLeftUp)
+
         self.Layout()
         self.spanel.Hide()
+
+    def OnLeftDown(self, event):
+        self.inPopup = True
+        event.Skip()
+
+    def OnLeftUp(self, event):
+        self.inPopup = False
+        event.Skip()
 
     def scheduleSearch(self, event):
         search = self.search.GetValue()
