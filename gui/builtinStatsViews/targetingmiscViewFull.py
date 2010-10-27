@@ -67,9 +67,6 @@ class TargetingMiscViewFull(StatsView):
             setattr(self, "label%s" % labelShort, lbl)
             box.Add(lbl, 0, wx.ALIGN_LEFT)
 
-#            lblUnit = wx.StaticText(contentPanel, wx.ID_ANY, " %s" % unit)
-#            setattr(self, "labelUnit%s" % labelShort, lblUnit)
-#            box.Add(lblUnit, 0, wx.ALIGN_LEFT)
             self._cachedValues.append(0)
 
         # Misc
@@ -80,8 +77,9 @@ class TargetingMiscViewFull(StatsView):
 
         labels = (("Speed", "Speed", "m/s"),
                   ("Align time", "AlignTime", "s"),
-                  ("Cargo", "Cargo", u"m\u00B3"),
-                  ("Signature", "SigRadius", "m"))
+                  ("Signature", "SigRadius", "m"),
+                  #("Warp Speed", "WarpSpeed", "au/s"),
+                  ("Cargo", "Cargo", u"m\u00B3"))
 
         for header, labelShort, unit in labels:
             gridMisc.Add(wx.StaticText(contentPanel, wx.ID_ANY, "%s: " % header), 0, wx.ALIGN_LEFT)
@@ -93,9 +91,6 @@ class TargetingMiscViewFull(StatsView):
             setattr(self, "labelFull%s" % labelShort, lbl)
             box.Add(lbl, 0, wx.ALIGN_LEFT)
 
-#            lblUnit = wx.StaticText(contentPanel, wx.ID_ANY, " %s" % unit)
-#            setattr(self, "labelFullUnit%s" % labelShort, lblUnit)
-#            box.Add(lblUnit, 0, wx.ALIGN_LEFT)
             self._cachedValues.append(0)
 
 
@@ -109,8 +104,9 @@ class TargetingMiscViewFull(StatsView):
                  ("labelCtrlRange", lambda: fit.extraAttributes["droneControlRange"] / 1000, 3, 0, 0, "km"),
                  ("labelFullSpeed", lambda: fit.ship.getModifiedItemAttr("maxVelocity"), 3, 0, 0, "m/s"),
                  ("labelFullAlignTime", lambda: fit.alignTime, 3, 0, 0, "s"),
-                 ("labelFullCargo", lambda: fit.extraAttributes["capacity"], 3, 0, 9, u"m\u00B3"),
-                 ("labelFullSigRadius", lambda: fit.ship.getModifiedItemAttr("signatureRadius"), 3, 0, 9, ""))
+                 ("labelFullSigRadius", lambda: fit.ship.getModifiedItemAttr("signatureRadius"), 3, 0, 9, ""),
+                 #("labelFullWarpSpeed", lambda: fit.warpSpeed, 3, 0, 0, "au/s"),
+                 ("labelFullCargo", lambda: fit.extraAttributes["capacity"], 3, 0, 9, u"m\u00B3"))
         counter = 0
         for labelName, value, prec, lowest, highest, unit in stats:
             label = getattr(self, labelName)
