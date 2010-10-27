@@ -55,8 +55,8 @@ class DmgPatternEditorDlg (wx.Dialog):
         size = None
         headerSizer.Add(self.ccDmgPattern, 1, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT|wx.LEFT, 3)
         buttons = (("new", wx.ART_NEW),
-                   ("copy", wx.ART_COPY),
                    ("rename", bitmapLoader.getBitmap("rename", "icons")),
+                   ("copy", wx.ART_COPY),
                    ("delete", wx.ART_DELETE))
         for name, art in buttons:
                 bitmap = wx.ArtProvider.GetBitmap(art, wx.ART_BUTTON) if name != "rename" else art
@@ -170,8 +170,8 @@ class DmgPatternEditorDlg (wx.Dialog):
 
         self.new.Bind(wx.EVT_BUTTON, self.newPattern)
         self.rename.Bind(wx.EVT_BUTTON, self.renamePattern)
-        self.delete.Bind(wx.EVT_BUTTON, self.deletePattern)
         self.copy.Bind(wx.EVT_BUTTON, self.copyPattern)
+        self.delete.Bind(wx.EVT_BUTTON, self.deletePattern)
 
         self.editEm.Bind(wx.EVT_TEXT, self.ValuesUpdated)
         self.editThermal.Bind(wx.EVT_TEXT, self.ValuesUpdated)
