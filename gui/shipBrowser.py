@@ -5,6 +5,7 @@ import gui.mainFrame
 import service
 
 from wx.lib.buttons import GenBitmapButton
+from pickle import TRUE
 
 FitRenamed, EVT_FIT_RENAMED = wx.lib.newevent.NewEvent()
 FitSelected, EVT_FIT_SELECTED = wx.lib.newevent.NewEvent()
@@ -21,7 +22,8 @@ class ShipBrowser(wx.Panel):
 
         self._lastWidth = 0
         self._activeStage = 1
-        self._lastStage = 0
+        self.browseHist = []
+        self.lastStage = (0,0)
 
         self._stage1Data = -1
         self._stage2Data = -1
@@ -84,7 +86,9 @@ class ShipBrowser(wx.Panel):
         return info[1]
 
     def stage1(self, event):
+
         self._activeStage = 1
+        self.lastdata = 0
         self.hpane.ToggleNewFitSB(False)
         sMarket = service.Market.getInstance()
         self.lpane.RemoveAllChildren()
@@ -102,10 +106,13 @@ class ShipBrowser(wx.Panel):
 
 
     def stage2(self, event):
+        back = event.back
+        if not back:
+            self.browseHist.append( (1,0) )
+
         self._activeStage = 2
         categoryID = event.categoryID
-        if self.GetStageData(self._activeStage) != categoryID:
-            self._stage3Data = -1
+        self.lastdata = categoryID
 
         self._stage2Data = categoryID
         self.hpane.ToggleNewFitSB(False)
@@ -121,11 +128,12 @@ class ShipBrowser(wx.Panel):
         self.Show()
 
     def stage3(self, event):
-        if self._activeStage != 4:
-            self._activeStage = 3
-
+        if not event.back:
+            self.browseHist.append( (2,self._stage2Data) )
         shipID = event.shipID
-        self._stage3Data = shipID
+        self.lastdata = shipID
+
+        self._activeStage = 3
 
         sFit = service.Fit.getInstance()
         sMarket = service.Market.getInstance()
@@ -133,13 +141,16 @@ class ShipBrowser(wx.Panel):
         fitList = sFit.getFitsWithShip(shipID)
 
         if len(fitList) == 0:
-            self._stage3Data = -1
-            self.hpane.gotoStage(2)
+            stage,data = self.browseHist.pop()
+            self.hpane.gotoStage(stage,data)
             return
         self.hpane.ToggleNewFitSB(True)
         fitList.sort(key=self.nameKey)
         shipName = sMarket.getItem(shipID).name
+
         self._stage3ShipName = shipName
+        self._stage3Data = shipID
+        
         for ID, name in fitList:
             self.lpane.AddWidget(FitItem(self.lpane, ID, (shipName, name),shipID))
 
@@ -147,9 +158,11 @@ class ShipBrowser(wx.Panel):
         self.Show()
 
     def searchStage(self, event):
-        if self._activeStage != 4:
-            self._lastStage = self._activeStage
-
+        if self._activeStage !=4:
+            if len(self.browseHist) >0:
+                self.browseHist.append( (self._activeStage, self.lastdata) )
+            else:
+                self.browseHist.append((1,0))
         self._activeStage = 4
 
         sMarket = service.Market.getInstance()
@@ -196,6 +209,7 @@ class HeaderPane (wx.Panel):
         self.recentSearches = []
         self.menu = None
         self.inPopup = False
+        self.inSearch = False
         bmpSize = (16,16)
         self.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNFACE ) )
 
@@ -206,9 +220,9 @@ class HeaderPane (wx.Panel):
         self.sbRewind.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNFACE ) )
         self.sbRewind.SetBitmapSelected(self.rewBmp)
 
-        self.sbForward = PFGenBitmapButton( self, wx.ID_ANY, self.forwBmp, wx.DefaultPosition, bmpSize, wx.BORDER_NONE )
-        mainSizer.Add(self.sbForward, 0, wx.LEFT | wx.TOP | wx.BOTTOM  | wx.ALIGN_CENTER_VERTICAL , 5)
-        self.sbForward.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNFACE ) )
+#        self.sbForward = PFGenBitmapButton( self, wx.ID_ANY, self.forwBmp, wx.DefaultPosition, bmpSize, wx.BORDER_NONE )
+#        mainSizer.Add(self.sbForward, 0, wx.LEFT | wx.TOP | wx.BOTTOM  | wx.ALIGN_CENTER_VERTICAL , 5)
+#        self.sbForward.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNFACE ) )
 
         self.sl1 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_VERTICAL )
         mainSizer.Add( self.sl1, 0, wx.EXPAND |wx.LEFT, 5 )
@@ -243,9 +257,9 @@ class HeaderPane (wx.Panel):
 
         self.SetSizer(mainSizer)
 
-        self.sbForward.Bind(wx.EVT_BUTTON,self.OnForward)
-        self.sbForward.Bind( wx.EVT_ENTER_WINDOW, self.OnEnterWForward )
-        self.sbForward.Bind( wx.EVT_LEAVE_WINDOW, self.OnLeaveWForward )
+#        self.sbForward.Bind(wx.EVT_BUTTON,self.OnForward)
+#        self.sbForward.Bind( wx.EVT_ENTER_WINDOW, self.OnEnterWForward )
+#        self.sbForward.Bind( wx.EVT_LEAVE_WINDOW, self.OnLeaveWForward )
 
         self.sbRewind.Bind(wx.EVT_BUTTON,self.OnBack)
         self.sbRewind.Bind( wx.EVT_ENTER_WINDOW, self.OnEnterWRewind )
@@ -282,14 +296,18 @@ class HeaderPane (wx.Panel):
     def scheduleSearch(self, event):
         search = self.search.GetValue()
         if len(search) < 3 and len(search) > 0:
-            print "need more chars/clear search"
-            wx.PostEvent(self.shipBrowser,SearchSelected(text=None))
+            if self.inSearch == True:
+                stage,data = self.shipBrowser.browseHist.pop()
+                self.gotoStage(stage,data)
+
+                self.inSearch = False
         else:
             if search:
-                print "DO SEARCH ", search
                 wx.PostEvent(self.shipBrowser,SearchSelected(text=search))
+                self.inSearch = True
 
         event.Skip()
+
     def OnMenu(self, event):
         self.inPopup = True
         self.menu = self.MakeMenu()
@@ -447,7 +465,7 @@ class HeaderPane (wx.Panel):
             shipName = self.Parent.GetStage3ShipName()
             sFit = service.Fit.getInstance()
             sFit.newFit(shipID, "%s fit" %shipName)
-            wx.PostEvent(self.Parent,Stage3Selected(shipID=shipID))
+            wx.PostEvent(self.Parent,Stage3Selected(shipID=shipID, back = True))
         event.Skip()
 
     def OnForward(self,event):
@@ -466,31 +484,24 @@ class HeaderPane (wx.Panel):
 
     def OnBack(self,event):
         self.editLostFocus()
-        stage = self.Parent.GetActiveStage()
-        if stage == 4:
-            self.gotoStage(self.Parent.GetLastStage())
-            return
-        stage -=1
-        if stage <1:
-            stage = 1
-            return
-        self.gotoStage(stage)
+
+        if len(self.shipBrowser.browseHist) > 0:
+            stage,data = self.shipBrowser.browseHist.pop()
+
+            self.gotoStage(stage,data)
 
         self.stStatus.Enable()
         self.stStatus.SetLabel("")
 
         event.Skip()
-    def gotoStage(self,stage):
+
+    def gotoStage(self,stage, data = None):
         if stage == 1:
             wx.PostEvent(self.Parent,Stage1Selected())
         elif stage == 2:
-            categoryID = self.Parent.GetStageData(stage)
-            if categoryID != -1:
-                wx.PostEvent(self.Parent,Stage2Selected(categoryID=categoryID))
+            wx.PostEvent(self.Parent,Stage2Selected(categoryID=data, back = True))
         elif stage == 3:
-            shipID = self.Parent.GetStageData(stage)
-            if shipID != -1:
-                wx.PostEvent(self.Parent,Stage3Selected(shipID=shipID))
+            wx.PostEvent(self.Parent,Stage3Selected(shipID=data, back = True))
         else:
             wx.PostEvent(self.Parent,Stage1Selected())
 
@@ -594,7 +605,7 @@ class CategoryItem(wx.Window):
         pos = event.GetPosition()
         x,y = pos
         categoryID = self.categoryID
-        wx.PostEvent(self.shipBrowser,Stage2Selected(categoryID=categoryID))
+        wx.PostEvent(self.shipBrowser,Stage2Selected(categoryID=categoryID, back=False))
 
     def enterW(self,event):
         self.highlighted = 1
@@ -796,7 +807,7 @@ class ShipItem(wx.Window):
                 if self.editWasShown == 1:
                     self.editWasShown = 0
                 else:
-                    wx.PostEvent(self.shipBrowser,Stage3Selected(shipID=self.shipID))
+                    wx.PostEvent(self.shipBrowser,Stage3Selected(shipID=self.shipID, back = True if self.shipBrowser.GetActiveStage() == 4 else False))
             else:
                 if self.editWasShown == 0:
                     fnEditSize = self.tcFitName.GetSize()
@@ -819,7 +830,7 @@ class ShipItem(wx.Window):
         sFit.newFit(self.shipID, self.tcFitName.GetValue())
         self.tcFitName.Show(False)
         self.editWasShown = 0
-        wx.PostEvent(self.shipBrowser,Stage3Selected(shipID=self.shipID))
+        wx.PostEvent(self.shipBrowser,Stage3Selected(shipID=self.shipID, back=False))
 
     def NHitTest(self, target, position, area):
         x, y = target
@@ -1075,12 +1086,12 @@ class FitItem(wx.Window):
     def copyFit(self, event=None):
         sFit = service.Fit.getInstance()
         sFit.copyFit(self.fitID)
-        wx.PostEvent(self.shipBrowser,Stage3Selected(shipID=self.shipID))
+        wx.PostEvent(self.shipBrowser,Stage3Selected(shipID=self.shipID, back=True))
 
     def deleteFit(self, event=None):
         sFit = service.Fit.getInstance()
         sFit.deleteFit(self.fitID)
-        wx.PostEvent(self.shipBrowser,Stage3Selected(shipID=self.shipID))
+        wx.PostEvent(self.shipBrowser,Stage3Selected(shipID=self.shipID, back=True))
         wx.PostEvent(self.mainFrame, FitRemoved(fitID=self.fitID))
 
     def selectFit(self, event=None):
