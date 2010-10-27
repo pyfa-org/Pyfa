@@ -253,8 +253,8 @@ class HeaderPane (wx.Panel):
 
     def editLostFocus(self, event = None):
         self.spanel.Show(False)
-        if self.menu:
-            self.menu.Destroy()
+#        if self.menu:
+#            self.menu.Destroy()
 
         stxt = self.search.GetValue()
         if stxt not in self.recentSearches:
