@@ -45,31 +45,30 @@ class DroneView(d.Display):
         else:
             self.Bind(wx.EVT_RIGHT_DOWN, self.scheduleMenu)
 
+    DRONE_ORDER = ('Light Scout Drones', 'Medium Scout Drones',
+                   'Heavy Attack Drones', 'Sentry Drones', 'Fighters',
+                   'Fighter Bombers', 'Combat Utility Drones',
+                   'Electronic Warfare Drones', 'Logistic Drones', 'Mining Drones')
+    def droneKey(self, drone):
+        item = drone.item
+        if item.marketGroup is None:
+            item = item.metaGroup.parent
+
+        return (self.DRONE_ORDER.index(item.marketGroup.name),
+                drone.item.name)
+
     def fitChanged(self, event):
         cFit = service.Fit.getInstance()
         fit = cFit.getFit(event.fitID)
 
         self.original = fit.drones if fit is not None else None
         self.drones = stuff = fit.drones[:] if fit is not None else None
-        name = lambda d: d.item.name
         if stuff is not None:
-            # Need to fix this sort parameter
-            stuff.sort( key=lambda d: d.item.name )
+            stuff.sort(key=self.droneKey)
 
         self.update(stuff)
         event.Skip()
 
-    DRONE_ORDER = (u'Light Scout Drones', u'Medium Scout Drones', 
-        u'Heavy Attack Drones', u'Sentry Drones', u'Fighters', 
-        u'Fighter Bombers', u'Combat Utility Drones', 
-        u'Electronic Warfare Drones', u'Logistic Drones', u'Mining Drones')
-    def droneKey(self, drone):
-        item = drone.item
-        if item.marketGroup is None:
-            item = item.metaGroup.parent
-
-        return (self.DRONE_ORDER.index(item.marketGroup.name), 
-                drone.item.name)
 
     def addItem(self, event):
         cFit = service.Fit.getInstance()
