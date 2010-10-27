@@ -28,7 +28,7 @@ class ModuleAmmo(ViewColumn):
         self.columnText = "Ammo"
 
     def getText(self, mod):
-        return mod.charge.name if mod.charge is not None else ""
+        return "%s (%s)" % (mod.charge.name, mod.numCharges) if mod.charge is not None else ""
 
     def getImageId(self, mod):
         return -1
