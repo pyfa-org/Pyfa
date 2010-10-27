@@ -4,7 +4,7 @@ from gui import bitmapLoader
 import gui.mainFrame
 import service
 
-from wx.lib import buttons
+from wx.lib.buttons import GenBitmapButton
 
 FitRenamed, EVT_FIT_RENAMED = wx.lib.newevent.NewEvent()
 FitSelected, EVT_FIT_SELECTED = wx.lib.newevent.NewEvent()
@@ -136,6 +136,17 @@ class ShipBrowser(wx.Panel):
         self.lpane.RefreshList()
         self.Show()
 
+class PFGenBitmapButton(GenBitmapButton):
+    def __init__(self, parent, id, bitmap, pos, size, style):
+        GenBitmapButton.__init__(self, parent, id, bitmap, pos, size, style)
+        self.bgcolor = wx.Brush(wx.WHITE)
+
+    def SetBackgroundColour(self, color):
+        self.bgcolor = wx.Brush(color)
+
+    def GetBackgroundBrush(self, dc):
+        return self.bgcolor
+
 class HeaderPane (wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__ (self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.Size(500, 32), style=wx.TAB_TRAVERSAL)
@@ -150,30 +161,41 @@ class HeaderPane (wx.Panel):
         self.menu = None
         self.inPopup = False
         bmpSize = (16,16)
+        self.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNFACE ) )
+
         mainSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.sbRewind = buttons.GenBitmapButton( self, wx.ID_ANY, self.rewBmp, wx.DefaultPosition, bmpSize, wx.BORDER_NONE )
+        self.sbRewind = PFGenBitmapButton( self, wx.ID_ANY, self.rewBmp, wx.DefaultPosition, bmpSize, wx.BORDER_NONE )
         mainSizer.Add(self.sbRewind, 0, wx.LEFT | wx.TOP | wx.BOTTOM | wx.ALIGN_CENTER_VERTICAL , 5)
+        self.sbRewind.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNFACE ) )
+        self.sbRewind.SetBitmapSelected(self.rewBmp)
 
-        self.sbForward = buttons.GenBitmapButton( self, wx.ID_ANY, self.forwBmp, wx.DefaultPosition, bmpSize, wx.BORDER_NONE )
+        self.sbForward = PFGenBitmapButton( self, wx.ID_ANY, self.forwBmp, wx.DefaultPosition, bmpSize, wx.BORDER_NONE )
         mainSizer.Add(self.sbForward, 0, wx.LEFT | wx.TOP | wx.BOTTOM  | wx.ALIGN_CENTER_VERTICAL , 5)
+        self.sbForward.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNFACE ) )
 
         self.sl1 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_VERTICAL )
         mainSizer.Add( self.sl1, 0, wx.EXPAND |wx.ALL, 5 )
 
-        self.sbSearch = buttons.GenBitmapButton( self, wx.ID_ANY, self.searchBmp, wx.DefaultPosition, bmpSize, wx.BORDER_NONE )
+        self.sbSearch = PFGenBitmapButton( self, wx.ID_ANY, self.searchBmp, wx.DefaultPosition, bmpSize, wx.BORDER_NONE )
         mainSizer.Add(self.sbSearch, 0, wx.LEFT | wx.TOP | wx.BOTTOM  | wx.ALIGN_CENTER_VERTICAL , 5)
+        self.sbSearch.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNFACE ) )
 
         self.sl2 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_VERTICAL )
         mainSizer.Add( self.sl2, 0, wx.EXPAND |wx.ALL, 5 )
 
-        self.sbNewFit = buttons.GenBitmapButton( self, wx.ID_ANY, self.newBmp, wx.DefaultPosition, bmpSize, wx.BORDER_NONE )
+        self.sbNewFit = PFGenBitmapButton( self, wx.ID_ANY, self.newBmp, wx.DefaultPosition, bmpSize, wx.BORDER_NONE )
         mainSizer.Add(self.sbNewFit, 0, wx.LEFT | wx.TOP | wx.BOTTOM  | wx.ALIGN_CENTER_VERTICAL , 5)
+        self.sbNewFit.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNFACE ) )
 
         self.stStatus = wx.StaticText( self, wx.ID_ANY, "", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.stStatus.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNFACE ) )
         self.stStatus.Wrap( -1 )
         mainSizer.Add(self.stStatus, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL , 5)
+
         self.spanel = wx.Panel(self)
+        self.spanel.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNFACE ) )
+
         spsizer = wx.BoxSizer(wx.HORIZONTAL)
         self.spanel.SetSizer(spsizer)
 
@@ -443,7 +465,7 @@ class ListPane (wx.ScrolledWindow):
     def MScrollUp(self, event):
 
         posy = self.GetScrollPos(wx.VERTICAL)
-        posy -= 8
+        posy -= 12
         self.Scroll(0, posy)
 #        self.RefreshList()
         event.Skip()
@@ -451,7 +473,7 @@ class ListPane (wx.ScrolledWindow):
     def MScrollDown(self, event):
 
         posy = self.GetScrollPos(wx.VERTICAL)
-        posy += 8
+        posy += 12
         self.Scroll(0, posy)
 #        self.RefreshList()
         event.Skip()
