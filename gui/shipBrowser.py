@@ -228,13 +228,25 @@ class HeaderPane (wx.Panel):
 
     def MakeMenu(self):
         menu = wx.Menu()
-        item = menu.Append(-1, "Recent Searches")
+        normalCMItems = ["Undo","_sep_", "Cut", "Copy","Paste","Delte","_sep_", "Select All"]
+        item = menu.Append(-1, "Recent")
         item.Enable(False)
+
         if len(self.recentSearches) > 0:
             menu.AppendSeparator()
         for txt in self.recentSearches:
             if txt:
                 item = menu.Append(-1, txt)
+                menu.Bind(wx.EVT_MENU, self.OnMenuSelected, item)
+
+        menu.Break()
+
+        for txt in normalCMItems:
+            if txt =="_sep_":
+                menu.AppendSeparator()
+            else:
+                item = menu.Append(-1, txt)
+                item.Enable(False)
                 menu.Bind(wx.EVT_MENU, self.OnMenuSelected, item)
         return menu
 
@@ -343,8 +355,7 @@ class HeaderPane (wx.Panel):
             self.search.SetFocus()
             self.Layout()
         else:
-            self.spanel.Show(False)
-            self.Layout()
+            self.editLostFocus()
         event.Skip()
 
     def OnNewFitting(self, event):
