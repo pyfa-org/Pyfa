@@ -150,7 +150,7 @@ class ShipBrowser(wx.Panel):
 
         self._stage3ShipName = shipName
         self._stage3Data = shipID
-        
+
         for ID, name in fitList:
             self.lpane.AddWidget(FitItem(self.lpane, ID, (shipName, name),shipID))
 
@@ -297,8 +297,11 @@ class HeaderPane (wx.Panel):
         search = self.search.GetValue()
         if len(search) < 3 and len(search) > 0:
             if self.inSearch == True:
-                stage,data = self.shipBrowser.browseHist.pop()
-                self.gotoStage(stage,data)
+                if len(self.shipBrowser.browseHist) > 0:
+                    stage,data = self.shipBrowser.browseHist.pop()
+                    self.gotoStage(stage,data)
+                else:
+                    self.gotoStage(1,0)
 
                 self.inSearch = False
         else:
@@ -911,7 +914,7 @@ class ShipItem(wx.Window):
 
         ypos += ytext
 
-        mdc.SetFont(wx.Font(8, wx.SWISS, wx.NORMAL, wx.NORMAL, False))
+        mdc.SetFont(wx.Font(7, wx.SWISS, wx.NORMAL, wx.NORMAL, False))
 
         if fittings <1:
             fformat = "No fits"
@@ -927,8 +930,6 @@ class ShipItem(wx.Window):
             xtext, ytext = mdc.GetTextExtent(fformat)
 
         mdc.DrawText(fformat %fittings if fittings >0 else fformat, textStart, ypos)
-
-#        mdc.SetFont(wx.Font(7, wx.SWISS, wx.NORMAL, wx.NORMAL, False))
 
         self.editPosX = rect.width - 20
         self.editPosY = (rect.height - 16) / 2
