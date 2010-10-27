@@ -87,6 +87,14 @@ class Fit(object):
         fit.calculateModifiedAttributes()
         return fit
 
+    def searchFits(self, name):
+        results = eos.db.searchFits(name)
+        fits = []
+        for fit in results:
+            fits.append((fit.ID, fit.name, fit.ship.item.ID, fit.ship.item.name))
+
+        return fits
+
     def addImplant(self, fitID, itemID):
         if fitID is None:
             return False

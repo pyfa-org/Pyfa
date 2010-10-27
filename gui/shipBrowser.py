@@ -140,6 +140,24 @@ class ShipBrowser(wx.Panel):
         self.lpane.RefreshList()
         self.Show()
 
+    def searchStage(self, event):
+        sMarket = service.Market.getInstance()
+        sFit = service.Market.getInstance()
+        query = event.text
+
+        self.lpane.RemoveAllChildren()
+        shipList = sMarket.searchShips(query)
+        fitList = sFit.searchFits(query)
+
+        for ID, name, race in shipList:
+            self.lpane.AddWidget(ShipItem(self.lpane, ID, (name, len(sFit.getFitsWithShip(ID))), race))
+
+        for ID, name, shipID, shipName in fitList:
+            self.lpane.AddWidget(FitItem(self.lpane, ID, (shipName, name), shipID))
+
+        self.lpane.RefreshList()
+        self.Show()
+
 class PFGenBitmapButton(GenBitmapButton):
     def __init__(self, parent, id, bitmap, pos, size, style):
         GenBitmapButton.__init__(self, parent, id, bitmap, pos, size, style)
