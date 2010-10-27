@@ -15,7 +15,10 @@ staticPath = homePath
 saveddata = os.path.join(homePath, "saveddata.db")
 gamedata = os.path.join(homePath, "eve.db")
 
-# saveddata db location modifier, shouldn't ever need to touch this
 import eos.config
+
+#Caching modifiers, disable all gamedata caching, its unneeded.
+eos.config.gamedataCache = None
+# saveddata db location modifier, shouldn't ever need to touch this
 eos.config.saveddata_connectionstring = "sqlite:///" + saveddata
 eos.config.gamedata_connectionstring = "sqlite:///" + gamedata

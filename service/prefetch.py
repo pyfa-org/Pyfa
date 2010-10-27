@@ -26,10 +26,6 @@ class PrefetchThread(threading.Thread):
         # Make sure we don't throw tracebacks to console
         try:
             eos.db.getItemsByCategory("Skill", eager=("effects", "attributes", "attributes.info.icon", "attributes.info.unit", "icon"))
-            cMarket = service.Market.getInstance()
-            root = cMarket.getShipRoot()
-            for id, _ in root:
-                cMarket.getShipList(id)
         except:
             pass
 
