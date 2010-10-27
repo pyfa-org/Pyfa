@@ -146,6 +146,7 @@ class HeaderPane (wx.Panel):
         self.toggleSearch = -1
         self.recentSearches = []
         self.menu = None
+        self.inPopup = 0
 
         mainSizer = wx.BoxSizer(wx.HORIZONTAL)
 
@@ -217,9 +218,12 @@ class HeaderPane (wx.Panel):
 
         event.Skip()
     def OnMenu(self, event):
+        self.inPopup = True
         self.menu = self.MakeMenu()
         self.PopupMenu(self.menu)
+        self.inPopup = False
         pass
+
     def OnMenuSelected(self, event):
         item = self.menu.FindItemById(event.GetId())
         text = item.GetText()
@@ -252,6 +256,8 @@ class HeaderPane (wx.Panel):
 
 
     def editLostFocus(self, event = None):
+        if self.inPopup:
+            return
         self.spanel.Show(False)
 #        if self.menu:
 #            self.menu.Destroy()
