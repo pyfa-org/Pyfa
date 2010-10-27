@@ -594,10 +594,10 @@ class CategoryItem(wx.Window):
 
         fPosX = rect.width - addX - xtext
         fPosY = (rect.height -ytext)/2
-        if fittings > 0:
-            mdc.DrawText(fformat % fittings, fPosX, fPosY)
-        else:
-            mdc.DrawText(fformat, fPosX, fPosY)
+#        if fittings > 0:
+#            mdc.DrawText(fformat % fittings, fPosX, fPosY)
+#        else:
+#            mdc.DrawText(fformat, fPosX, fPosY)
 
         event.Skip()
 
