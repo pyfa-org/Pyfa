@@ -1180,7 +1180,11 @@ class FitItem(wx.Window):
     def deleteFit(self, event=None):
         sFit = service.Fit.getInstance()
         sFit.deleteFit(self.fitID)
-        wx.PostEvent(self.shipBrowser,Stage3Selected(shipID=self.shipID, back=True))
+        if self.shipBrowser.GetActiveStage() == 4:
+            wx.PostEvent(self.shipBrowser,SearchSelected(text=self.shipBrowser.hpane.lastSearch,back=True))
+        else:
+            wx.PostEvent(self.shipBrowser,Stage3Selected(shipID=self.shipID, back=True))
+
         wx.PostEvent(self.mainFrame, FitRemoved(fitID=self.fitID))
 
     def selectFit(self, event=None):
