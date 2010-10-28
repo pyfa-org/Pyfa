@@ -247,19 +247,26 @@ class Market():
 
         return list(l), populatedMetas
 
+    def getPriceNow(self, typeID):
+        price = self.priceCache.get(typeID)
+        if price is None:
+            try:
+                price = eos.db.getPrice(typeID)
+            except NoResultFound:
+                price = eos.types.Price(typeID)
+                eos.db.saveddata_session.add(price)
+
+            self.priceCache[typeID] = price
+
+        return price
+
+    def getPricesNow(self, typeIDs):
+        return map(self.getPrice, typeIDs)
+
     def getPrices(self, typeIDs, callback):
         requests = []
         for typeID in typeIDs:
-            price = self.priceCache.get(typeID)
-            if price is None:
-                try:
-                    price = eos.db.getPrice(typeID)
-                except NoResultFound:
-                    price = eos.types.Price(typeID)
-                    eos.db.saveddata_session.add(price)
-
-                self.priceCache[typeID] = price
-
+            price = self.getPriceNow(typeID)
             requests.append(price)
 
         def cb():
