@@ -103,10 +103,10 @@ class FirepowerViewFull(StatsView):
     def refreshPanel(self, fit):
         #If we did anything intresting, we'd update our labels to reflect the new fit's stats here
 
-        stats = (("labelFullDpsWeapon", lambda: fit.weaponDPS, 3, 0, 9, "%s DPS",None),
-                 ("labelFullDpsDrone", lambda: fit.droneDPS, 3, 0, 9, "%s DPS", None),
-                 ("labelFullVolleyTotal", lambda: fit.weaponVolley, 3, 0, 9, "%s", "Volley: %.1f"),
-                 ("labelFullDpsTotal", lambda: fit.totalDPS, 3, 0, 9, "%s", None))
+        stats = (("labelFullDpsWeapon", lambda: fit.weaponDPS, 3, 0, 0, "%s DPS",None),
+                 ("labelFullDpsDrone", lambda: fit.droneDPS, 3, 0, 0, "%s DPS", None),
+                 ("labelFullVolleyTotal", lambda: fit.weaponVolley, 3, 0, 0, "%s", "Volley: %.1f"),
+                 ("labelFullDpsTotal", lambda: fit.totalDPS, 3, 0, 0, "%s", None))
 
         counter = 0
         for labelName, value, prec, lowest, highest, valueFormat, altFormat in stats:
