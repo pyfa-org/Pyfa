@@ -60,8 +60,10 @@ class MainMenuBar(wx.MenuBar):
         clipboardMenu.Append(self.idExportXml, "&XML", "Copy the XML export of this fit to the clipboard")
         clipboardMenu.Append(self.idExportDna, "&DNA", "Copy the DNA export of this fit to the clipboard")
 
-        fitMenu.AppendMenu(wx.ID_COPY, "&To Clipboard", clipboardMenu, "Export a fit to the clipboard")
-        fitMenu.Append(wx.ID_PASTE, "&From Clipboard", "Import a fit from the clipboard")
+        copyText = "&To Clipboard" + ("\tCTRL+C" if 'wxMSW' in wx.PlatformInfo else "")
+        pasteText = "&From Clipboard" + ("\tCTRL+V" if 'wxMSW' in wx.PlatformInfo else "")
+        fitMenu.AppendMenu(wx.ID_COPY, copyText, clipboardMenu, "Export a fit to the clipboard")
+        fitMenu.Append(wx.ID_PASTE, pasteText, "Import a fit from the clipboard")
 
 
         # Character menu
