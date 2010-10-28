@@ -18,14 +18,13 @@
 #===============================================================================
 
 import threading
-import service
-import eos.db
+import eos.types
 class PrefetchThread(threading.Thread):
     def run(self):
         # We're a daemon thread, as such, interpreter might get shut down while we do stuff
         # Make sure we don't throw tracebacks to console
         try:
-            eos.db.getItemsByCategory("Skill", eager=("effects", "attributes", "attributes.info.icon", "attributes.info.unit", "icon"))
+            eos.types.Character.setSkillList(eos.db.getItemsByCategory("Skill", eager=("effects", "attributes", "attributes.info.icon", "attributes.info.unit", "icon")))
         except:
             pass
 
