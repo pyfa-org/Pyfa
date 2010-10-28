@@ -34,6 +34,7 @@ from gui.preferenceDialog import PreferenceDialog
 import aboutData
 import gui.fittingView as fv
 from wx._core import PyDeadObjectError
+import os.path
 
 class MainFrame(wx.Frame):
     __instance = None
@@ -183,10 +184,12 @@ class MainFrame(wx.Frame):
             path = dlg.GetPath()
             if (format == 0):
                 output = sFit.exportFit(self.getActiveFit())
-                path += ".cfg"
+                if '.' not in os.path.basename(path):
+                    path += ".cfg"
             elif (format == 1):
                 output = sFit.exportXml(self.getActiveFit())
-                path += ".xml"
+                if '.' not in os.path.basename(path):
+                    path += ".xml"
             else:
                 print "oops, invalid fit format %d" % format
                 dlg.Destroy()
@@ -279,7 +282,9 @@ class MainFrame(wx.Frame):
             style = wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT)
         if (saveDialog.ShowModal() == wx.ID_OK):
             filePath = saveDialog.GetPath()
-            sFit.backupFits(filePath)
+            if '.' not in os.path.basename(filePath):
+                filePath += ".xml"
+            sFit.backupFits(filePath )
         saveDialog.Destroy()
 
     def toggleShipBrowser(self, event):
