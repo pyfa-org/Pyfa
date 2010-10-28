@@ -54,15 +54,9 @@ class MainMenuBar(wx.MenuBar):
         fitMenu.Append(wx.ID_OPEN, "&Import", "Import a fit into pyfa.")
         fitMenu.Append(wx.ID_SAVEAS, "&Export\tCTRL+S", "Export the fit to another format.")
 
-        clipboardMenu = wx.Menu()
-        self.idExportDna, self.idExportEft, self.idExportXml = wx.NewId(), wx.NewId(), wx.NewId()
-        clipboardMenu.Append(self.idExportEft, "&EFT", "Copy the EFT export of this fit to the clipboard")
-        clipboardMenu.Append(self.idExportXml, "&XML", "Copy the XML export of this fit to the clipboard")
-        clipboardMenu.Append(self.idExportDna, "&DNA", "Copy the DNA export of this fit to the clipboard")
-
         copyText = "&To Clipboard" + ("\tCTRL+C" if 'wxMSW' in wx.PlatformInfo else "")
         pasteText = "&From Clipboard" + ("\tCTRL+V" if 'wxMSW' in wx.PlatformInfo else "")
-        fitMenu.AppendMenu(wx.ID_COPY, copyText, clipboardMenu, "Export a fit to the clipboard")
+        fitMenu.Append(wx.ID_COPY, copyText, "Export a fit to the clipboard")
         fitMenu.Append(wx.ID_PASTE, pasteText, "Import a fit from the clipboard")
 
 

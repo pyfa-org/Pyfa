@@ -230,19 +230,17 @@ class MainFrame(wx.Frame):
         self.Bind(wx.EVT_MENU, self.showPreferenceDialog, id=wx.ID_PREFERENCES)
 
         #Clipboard exports
-        self.Bind(wx.EVT_MENU, self.clipboardEft, id=menuBar.idExportEft)
-        self.Bind(wx.EVT_MENU, self.clipboardDna, id=menuBar.idExportDna)
-        self.Bind(wx.EVT_MENU, self.clipboardXml, id=menuBar.idExportXml)
+        self.Bind(wx.EVT_MENU, self.exportToClipboard, id=wx.ID_COPY)
 
-    def clipboardEft(self, event):
+    def clipboardEft(self):
         sFit = service.Fit.getInstance()
         self.toClipboard(sFit.exportFit(self.getActiveFit()))
 
-    def clipboardDna(self, event):
+    def clipboardDna(self):
         sFit = service.Fit.getInstance()
         self.toClipboard(sFit.exportDna(self.getActiveFit()))
 
-    def clipboardXml(self, event):
+    def clipboardXml(self):
         sFit = service.Fit.getInstance()
         self.toClipboard(sFit.exportXml(self.getActiveFit()))
 
@@ -254,6 +252,9 @@ class MainFrame(wx.Frame):
             self._openAfterImport(len(fits), IDs)
         except:
             pass
+            
+    def exportToClipboard(self, event):
+        sFit = service.Fit.getInstance()
 
     def toClipboard(self, text):
         clip = wx.TheClipboard
