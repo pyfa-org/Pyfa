@@ -31,13 +31,13 @@ class Fit(object):
             cls.instance = Fit()
 
         return cls.instance
-        
+
     def getAllFits(self):
         fits = eos.db.getFitList()
         names = []
         for fit in fits:
             names.append((fit.ID, fit.name))
-            
+
         return names
 
 
@@ -53,10 +53,10 @@ class Fit(object):
         fit = eos.db.getFit(fitID)
         return fit.modules[pos]
 
-    def newFit(self, shipID, name):
+    def newFit(self, shipID, name=None):
         fit = eos.types.Fit()
         fit.ship = eos.types.Ship(eos.db.getItem(shipID))
-        fit.name = name
+        fit.name = name if name is not None else "New %s" % fit.ship.item.name
         fit.damagePattern = DamagePattern.getInstance().getDamagePattern("Uniform")
         eos.db.save(fit)
         fit.calculateModifiedAttributes()
@@ -94,6 +94,14 @@ class Fit(object):
         eos.db.commit()
         fit.calculateModifiedAttributes()
         return fit
+
+    def searchFits(self, name):
+        results = eos.db.searchFits(name)
+        fits = []
+        for fit in results:
+            fits.append((fit.ID, fit.name, fit.ship.item.ID, fit.ship.item.name))
+
+        return fits
 
     def addImplant(self, fitID, itemID):
         if fitID is None:
@@ -160,7 +168,11 @@ class Fit(object):
         except ValueError:
             return False
 
+        if m.item.category.name == "Subsystem":
+            fit.modules.freeSlot(m.getModifiedItemAttr("subSystemSlot"))
+
         if m.fits(fit):
+
             numSlots = len(fit.modules)
             fit.modules.append(m)
             if m.isValidState(State.ACTIVE):
@@ -168,6 +180,7 @@ class Fit(object):
 
             fit.clear()
             fit.calculateModifiedAttributes()
+            self.checkStates(fit, m)
             fit.fill()
             eos.db.commit()
 
@@ -184,6 +197,7 @@ class Fit(object):
         fit.modules.toDummy(position)
         fit.clear()
         fit.calculateModifiedAttributes()
+        self.checkStates(fit, None)
         fit.fill()
         eos.db.commit()
         return numSlots != len(fit.modules)
@@ -335,7 +349,7 @@ class Fit(object):
     def exportXml(self, *fitIDs):
         fits = map(lambda id: eos.db.getFit(id), fitIDs)
         return eos.types.Fit.exportXml(*fits)
-        
+
     def backupFits(self, path):
         allFits = map(lambda x: x[0], self.getAllFits())
         backedUpFits = self.exportXml(*allFits)
@@ -362,6 +376,13 @@ class Fit(object):
 
         return IDs
 
+    def checkStates(self, fit, base):
+        for mod in fit.modules:
+            if mod != base:
+                if not mod.canHaveState(mod.state):
+                    mod.state = State.ONLINE
+
+
     def toggleModulesState(self, fitID, base, modules, click):
         proposedState = self.__getProposedState(base, click)
         if proposedState != base.state:
@@ -372,6 +393,8 @@ class Fit(object):
 
         eos.db.commit()
         fit = eos.db.getFit(fitID)
+        self.checkStates(fit, base)
+
         fit.clear()
         fit.calculateModifiedAttributes()
 

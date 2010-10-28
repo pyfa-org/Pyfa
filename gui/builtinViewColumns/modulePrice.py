@@ -34,7 +34,12 @@ class ModulePrice(ViewColumn):
 
 
     def getText(self, mod):
-        return False if mod.item is not None else ""
+        if mod.item is None:
+            return ""
+
+        sMarket = service.Market.getInstance()
+        price = sMarket.getPriceNow(mod.item.ID).price
+        return formatAmount(price, 3, 3, 9) if price is not None else False
 
     def delayedText(self, mod, display, colItem):
         def callback(requests):

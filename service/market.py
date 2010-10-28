@@ -165,14 +165,6 @@ class Market():
     def searchItems(self, name, callback):
         self.searchWorkerThread.scheduleSearch(name, callback)
 
-    def searchFits(self, name):
-        results = eos.db.searchFits(name)
-        fits = []
-        for fit in results:
-            fits.append((fit.ID, fit.name, fit.ship.item.name))
-
-        return fits
-
     def getImplantTree(self):
         return self.getChildren(27)
 
@@ -228,6 +220,15 @@ class Market():
     def isMetaIdActive(self, meta):
         return meta in self.activeMetas
 
+    def filterItems(self, items):
+        filtered = []
+        activeMetas = self.activeMetas
+        for it in items:
+            if (it.metaGroup.ID if it.metaGroup is not None else 1) in activeMetas:
+                filtered.append(it)
+
+        return filtered
+
     def getMetaName(self, metaId):
         for name, ids in self.META_MAP.items():
             for id in ids:
@@ -255,19 +256,26 @@ class Market():
 
         return list(l), populatedMetas
 
+    def getPriceNow(self, typeID):
+        price = self.priceCache.get(typeID)
+        if price is None:
+            try:
+                price = eos.db.getPrice(typeID)
+            except NoResultFound:
+                price = eos.types.Price(typeID)
+                eos.db.saveddata_session.add(price)
+
+            self.priceCache[typeID] = price
+
+        return price
+
+    def getPricesNow(self, typeIDs):
+        return map(self.getPrice, typeIDs)
+
     def getPrices(self, typeIDs, callback):
         requests = []
         for typeID in typeIDs:
-            price = self.priceCache.get(typeID)
-            if price is None:
-                try:
-                    price = eos.db.getPrice(typeID)
-                except NoResultFound:
-                    price = eos.types.Price(typeID)
-                    eos.db.saveddata_session.add(price)
-
-                self.priceCache[typeID] = price
-
+            price = self.getPriceNow(typeID)
             requests.append(price)
 
         def cb():
