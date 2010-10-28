@@ -78,7 +78,7 @@ class TargetingMiscViewFull(StatsView):
         labels = (("Speed", "Speed", "m/s"),
                   ("Align time", "AlignTime", "s"),
                   ("Signature", "SigRadius", "m"),
-                  #("Warp Speed", "WarpSpeed", "au/s"),
+                  ("Warp Speed", "WarpSpeed", "AU/s"),
                   ("Cargo", "Cargo", u"m\u00B3"))
 
         for header, labelShort, unit in labels:
@@ -105,7 +105,7 @@ class TargetingMiscViewFull(StatsView):
                  ("labelFullSpeed", lambda: fit.ship.getModifiedItemAttr("maxVelocity"), 3, 0, 0, "m/s"),
                  ("labelFullAlignTime", lambda: fit.alignTime, 3, 0, 0, "s"),
                  ("labelFullSigRadius", lambda: fit.ship.getModifiedItemAttr("signatureRadius"), 3, 0, 9, ""),
-                 #("labelFullWarpSpeed", lambda: fit.warpSpeed, 3, 0, 0, "au/s"),
+                 ("labelFullWarpSpeed", lambda: fit.warpSpeed, 3, 0, 0, "AU/s"),
                  ("labelFullCargo", lambda: fit.extraAttributes["capacity"], 3, 0, 9, u"m\u00B3"))
         counter = 0
         for labelName, value, prec, lowest, highest, unit in stats:
