@@ -203,6 +203,8 @@ class HeaderPane (wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__ (self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.Size(500, 32), style=wx.TAB_TRAVERSAL)
 
+        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+
         self.rewBmp = bitmapLoader.getBitmap("frewind_small","icons")
         self.forwBmp = bitmapLoader.getBitmap("fforward_small","icons")
         self.searchBmp = bitmapLoader.getBitmap("fsearch_small","icons")
@@ -531,8 +533,9 @@ class HeaderPane (wx.Panel):
             shipID = self.Parent.GetStageData(stage)
             shipName = self.Parent.GetStage3ShipName()
             sFit = service.Fit.getInstance()
-            sFit.newFit(shipID, "%s fit" %shipName)
+            fitID = sFit.newFit(shipID, "%s fit" %shipName)
             wx.PostEvent(self.Parent,Stage3Selected(shipID=shipID, back = True))
+            wx.PostEvent(self.mainFrame, FitSelected(fitID=fitID))
         event.Skip()
 
     def OnForward(self,event):
@@ -772,6 +775,8 @@ class ShipItem(wx.Window):
                  size=(0, 38), style=0):
         wx.Window.__init__(self, parent, id, pos, size, style)
 
+        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+
         self._itemData = itemData
 
         self.shipRace = itemData
@@ -902,10 +907,11 @@ class ShipItem(wx.Window):
 
     def createNewFit(self, event=None):
         sFit = service.Fit.getInstance()
-        sFit.newFit(self.shipID, self.tcFitName.GetValue())
+        fitID = sFit.newFit(self.shipID, self.tcFitName.GetValue())
         self.tcFitName.Show(False)
         self.editWasShown = 0
         wx.PostEvent(self.shipBrowser,Stage3Selected(shipID=self.shipID, back=False))
+        wx.PostEvent(self.mainFrame, FitSelected(fitID=fitID))
 
     def NHitTest(self, target, position, area):
         x, y = target
@@ -1161,6 +1167,7 @@ class FitItem(wx.Window):
         sFit = service.Fit.getInstance()
         sFit.copyFit(self.fitID)
         wx.PostEvent(self.shipBrowser,Stage3Selected(shipID=self.shipID, back=True))
+        wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fitID))
 
     def deleteFit(self, event=None):
         sFit = service.Fit.getInstance()
