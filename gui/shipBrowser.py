@@ -322,7 +322,7 @@ class HeaderPane (wx.Panel):
         if self.inPopup:
             return
         search = self.search.GetValue()
-        if len(search) < 3:
+        if len(search) < 3 and len(search) > 0:
             if self.inSearch == True:
                 self.inSearch = False
                 if len(self.shipBrowser.browseHist) > 0:
