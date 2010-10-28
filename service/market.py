@@ -220,6 +220,15 @@ class Market():
     def isMetaIdActive(self, meta):
         return meta in self.activeMetas
 
+    def filterItems(self, items):
+        filtered = []
+        activeMetas = self.activeMetas
+        for it in items:
+            if (it.metaGroup.ID if it.metaGroup is not None else 1) in activeMetas:
+                filtered.append(it)
+
+        return filtered
+
     def getMetaName(self, metaId):
         for name, ids in self.META_MAP.items():
             for id in ids:

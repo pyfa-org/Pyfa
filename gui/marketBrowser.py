@@ -286,7 +286,9 @@ class ItemView(d.Display):
 
         self.items = items if items is not None else self.items
         self.usedMetas = usedMetas if usedMetas is not None else self.usedMetas
-        self.update(self.items)
+        sMarket = service.Market.getInstance()
+
+        self.update(sMarket.filterItems(self.items))
 
         #Gray out empty toggles
         self.toggleButtons(self.usedMetas)
