@@ -305,7 +305,7 @@ class HeaderPane (wx.Panel):
         self.sbSearch.Bind(wx.EVT_LEFT_UP, self.OnLeftUp)
 
         self.Layout()
-#        self.spanel.Hide()
+        self.spanel.Hide()
         self.search.Hide()
 
     def OnLeftDown(self, event):
@@ -318,7 +318,7 @@ class HeaderPane (wx.Panel):
 
     def scheduleSearch(self, event):
         if self.inPopup:
-             return
+            return
         search = self.search.GetValue()
         if len(search) < 3 and len(search) >0:
             if self.inSearch == True:
@@ -383,6 +383,7 @@ class HeaderPane (wx.Panel):
             return
         if self.toggleSearch == 1:
             self.search.Show(False)
+            self.spanel.Show(False)
             self.toggleSearch = -1
 
 #        if self.menu:
@@ -400,6 +401,7 @@ class HeaderPane (wx.Panel):
     def editCheckEsc(self, event):
         if event.GetKeyCode() == wx.WXK_ESCAPE:
             self.search.Show(False)
+            self.spanel.Show(False)
             self.toggleSearch = -1
         else:
             event.Skip()
@@ -508,6 +510,7 @@ class HeaderPane (wx.Panel):
             self.toggleSearch = -1
             return
         if not self.search.IsShown():
+            self.spanel.Show(True)
             self.search.Show(True)
             self.search.SetFocus()
             self.toggleSearch = 1
@@ -516,6 +519,7 @@ class HeaderPane (wx.Panel):
 
         else:
             self.search.Show(False)
+            self.spanel.Show(False)
             self.toggleSearch = -1
             self.Layout()
         event.Skip()
