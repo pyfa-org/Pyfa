@@ -345,10 +345,10 @@ class Fit(object):
 
         try:
             sDP = DamagePattern.getInstance()
-            dp = sDP.getDamagePattern("Ammo")
+            dp = sDP.getDamagePattern("Selected Ammo")
         except:
             dp = eos.types.DamagePattern()
-            dp.name = "Ammo"
+            dp.name = "Selected Ammo"
 
         fit = eos.db.getFit(fitID)
         for attr in ("em", "thermal", "kinetic", "explosive"):

@@ -25,7 +25,7 @@ class ModuleAmmo(ViewColumn):
     name = "Module Ammo"
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
-        self.columnText = "Ammo"
+        self.columnText = "Selected Ammo"
 
     def getText(self, mod):
         return "%s (%s)" % (mod.charge.name, mod.numCharges) if mod.charge is not None else ""

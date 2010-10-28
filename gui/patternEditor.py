@@ -227,7 +227,7 @@ class DmgPatternEditorDlg (wx.Dialog):
 
     def patternChanged(self, event=None):
         p = self.getActivePattern()
-        if p.name == "Uniform":
+        if p.name == "Uniform" or p.name == "Selected Ammo":
             self.restrict()
         else:
             self.unrestrict()
