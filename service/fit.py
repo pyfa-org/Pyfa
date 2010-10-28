@@ -23,6 +23,7 @@ from eos.types import State, Slot
 import copy
 from service.damagePattern import DamagePattern
 
+
 class Fit(object):
     instance = None
     @classmethod

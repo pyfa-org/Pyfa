@@ -26,6 +26,26 @@ from sqlalchemy.orm.exc import NoResultFound
 import Queue
 import traceback
 
+class ShipBrowserWorkerThread(threading.Thread):
+    def run(self):
+        self.queue = Queue.Queue()
+        self.processRequests()
+
+    def processRequests(self):
+        queue = self.queue
+        sMarket = Market.getInstance()
+        while True:
+            try:
+                callback, id = queue.get()
+                wx.CallAfter(callback, sMarket.getShipList(id))
+            except:
+                pass
+            finally:
+                try:
+                    queue.task_done()
+                except:
+                    pass
+
 class PriceWorkerThread(threading.Thread):
     def run(self):
         self.queue = Queue.Queue()
@@ -120,6 +140,10 @@ class Market():
         self.searchWorkerThread.daemon = True
         self.searchWorkerThread.start()
 
+        self.shipBrowserWorkerThread = ShipBrowserWorkerThread()
+        self.shipBrowserWorkerThread.daemon = True
+        self.shipBrowserWorkerThread.start()
+
     def getChildren(self, id):
         """
         Get the children of the group or marketGroup with the passed id.
@@ -152,6 +176,9 @@ class Market():
                 ships.append((item.ID, item.name, item.race))
 
         return ships
+
+    def getShipListDelayed(self, id, callback):
+        self.shipBrowserWorkerThread.queue.put((id, callback))
 
     def searchShips(self, name):
         results = eos.db.searchItems(name)
