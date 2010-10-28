@@ -168,7 +168,11 @@ class Fit(object):
         except ValueError:
             return False
 
+        if m.item.category.name == "Subsystem":
+            fit.modules.freeSlot(m.getModifiedItemAttr("subSystemSlot"))
+
         if m.fits(fit):
+
             numSlots = len(fit.modules)
             fit.modules.append(m)
             if m.isValidState(State.ACTIVE):
