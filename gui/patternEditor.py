@@ -40,10 +40,9 @@ class DmgPatternEditorDlg (wx.Dialog):
 
         self.choices = cDP.getDamagePatternList()
         # Remove "Uniform" and "Selected Ammo" Damage Patterns
-        names = map(lambda p: p.name, self.choices)
-        del self.choices[names.index("Uniform")]
-        names.remove("Uniform")
-        del self.choices[names.index("Selected Ammo")]
+        for dp in self.choices:
+            if dp.name in ("Uniform", "Selected Ammo"):
+                self.choices.remove(dp)
         # Sort the remaining list and continue on
         self.choices.sort(key=lambda p: p.name)
         self.ccDmgPattern = wx.Choice(self, choices=map(lambda p: p.name, self.choices))

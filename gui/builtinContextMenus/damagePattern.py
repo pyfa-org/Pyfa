@@ -12,12 +12,11 @@ class DamagePattern(ContextMenu):
     def display(self, context, selection):
         return context in ("resistancesViewFull",) and self.mainFrame.getActiveFit() is not None
 
-    SPCL_PTRN = ("Selected Ammo", "Uniform")
     def getText(self, context, selection):
         sDP = service.DamagePattern.getInstance()
         self.patterns = sDP.getDamagePatternList()
-        self.patterns.sort( key=lambda p: (p.name in
-                            DamagePattern.SPCL_PTRN, p.name) )
+        self.patterns.sort( key=lambda p: (p.name in ["Selected Ammo", 
+                            "Uniform"], p.name) )
         m = map(lambda p: p.name, self.patterns)
         return m
 
