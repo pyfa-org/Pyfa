@@ -338,6 +338,25 @@ class Fit(object):
         fit.clear()
         fit.calculateModifiedAttributes()
 
+    def setAsPattern(self, fitID, ammo):
+        if fitID is None:
+            return
+
+        try:
+            sDP = DamagePattern.getInstance()
+            dp = sDP.getDamagePattern("Ammo")
+        except:
+            dp = eos.types.DamagePattern()
+            dp.name = "Ammo"
+
+        fit = eos.db.getFit(fitID)
+        for attr in ("em", "thermal", "kinetic", "explosive"):
+            setattr(dp, "%sAmount" % attr, ammo.getAttribute("%sDamage" % attr))
+
+        fit.damagePattern = dp
+        fit.clear()
+        fit.calculateModifiedAttributes()
+
     def exportFit(self, fitID):
         fit = eos.db.getFit(fitID)
         return fit.exportEft()

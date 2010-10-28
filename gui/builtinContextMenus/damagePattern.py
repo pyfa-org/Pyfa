@@ -9,7 +9,6 @@ class DamagePattern(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
-
     def display(self, context, selection):
         return context in ("resistancesViewFull",) and self.mainFrame.getActiveFit() is not None
 
