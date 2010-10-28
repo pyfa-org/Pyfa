@@ -23,6 +23,7 @@ from eos.types import State, Slot
 import copy
 from service.damagePattern import DamagePattern
 
+
 class Fit(object):
     instance = None
     @classmethod
@@ -335,6 +336,25 @@ class Fit(object):
         fit.damagePattern = pattern
         eos.db.commit()
 
+        fit.clear()
+        fit.calculateModifiedAttributes()
+
+    def setAsPattern(self, fitID, ammo):
+        if fitID is None:
+            return
+
+        try:
+            sDP = DamagePattern.getInstance()
+            dp = sDP.getDamagePattern("Ammo")
+        except:
+            dp = eos.types.DamagePattern()
+            dp.name = "Ammo"
+
+        fit = eos.db.getFit(fitID)
+        for attr in ("em", "thermal", "kinetic", "explosive"):
+            setattr(dp, "%sAmount" % attr, ammo.getAttribute("%sDamage" % attr))
+
+        fit.damagePattern = dp
         fit.clear()
         fit.calculateModifiedAttributes()
 

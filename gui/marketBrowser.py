@@ -311,7 +311,7 @@ class ItemView(d.Display):
         if sel == -1:
             return
 
-        menu = ContextMenu.getMenu(self.active[sel], "item" if self.searching is False else "itemSearch")
+        menu = ContextMenu.getMenu((self.active[sel],), "item" if self.searching is False else "itemSearch")
         self.PopupMenu(menu)
 
     def itemSort(self, item):

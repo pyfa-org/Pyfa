@@ -89,7 +89,7 @@ class ResistancesViewFull(StatsView):
             bitmap.SetToolTip(tooltip)
             sizerResistances.Add(bitmap, wx.GBPosition( row, col ), wx.GBSpan( 1, 1 ), wx.ALIGN_CENTER)
             col+=1
-        self.stEHPs = wx.StaticText(contentPanel, wx.ID_ANY, "EHP", style = wx.DOUBLE_BORDER)
+        self.stEHPs = wx.StaticText(contentPanel, wx.ID_ANY, "EHP", style = wx.SIMPLE_BORDER if 'wxGTK' in wx.PlatformInfo else wx.DOUBLE_BORDER)
         self.stEHPs.SetToolTip(wx.ToolTip("Click to toggle between effective HP and raw HP"))
 
         self.stEHPs.Bind(wx.EVT_LEFT_UP, self.toggleEHP)
