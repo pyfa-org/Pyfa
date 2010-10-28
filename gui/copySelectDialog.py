@@ -49,6 +49,7 @@ class CopySelectDialog(wx.Dialog):
 
         self.SetSizer(mainSizer)
         self.Fit()
+        self.Center()
 
 
     def Selected(self, event):
