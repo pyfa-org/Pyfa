@@ -255,11 +255,17 @@ class MainFrame(wx.Frame):
             pass
             
     def exportToClipboard(self, event):
-        sFit = service.Fit.getInstance()
         dlg = CopySelectDialog(self)
         dlg.ShowModal()
         selected = dlg.GetSelected()
-        print selected
+        if selected == CopySelectDialog.copyFormatEft:
+            self.clipboardEft()
+        elif selected == CopySelectDialog.copyFormatXml:
+            self.clipboardXml()
+        elif selected == CopySelectDialog.copyFormatDna:
+            self.clipboardDna()
+        else:
+            print "Invalid clipboard export format, we should never get here!"
         dlg.Destroy()
 
     def toClipboard(self, text):
