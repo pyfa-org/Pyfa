@@ -31,6 +31,7 @@ from gui.characterEditor import CharacterEditor
 from gui.characterSelection import CharacterSelection
 from gui.patternEditor import DmgPatternEditorDlg
 from gui.preferenceDialog import PreferenceDialog
+from gui.copySelectDialog import CopySelectDialog
 import aboutData
 import gui.fittingView as fv
 from wx._core import PyDeadObjectError
@@ -255,6 +256,11 @@ class MainFrame(wx.Frame):
             
     def exportToClipboard(self, event):
         sFit = service.Fit.getInstance()
+        dlg = CopySelectDialog(self)
+        dlg.ShowModal()
+        selected = dlg.GetSelected()
+        print selected
+        dlg.Destroy()
 
     def toClipboard(self, text):
         clip = wx.TheClipboard
