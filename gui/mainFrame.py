@@ -253,20 +253,16 @@ class MainFrame(wx.Frame):
             self._openAfterImport(len(fits), IDs)
         except:
             pass
-            
+    
     def exportToClipboard(self, event):
+        CopySelectDict = {CopySelectDialog.copyFormatEft: self.clipboardEft,
+                          CopySelectDialog.copyFormatXml: self.clipboardXml,
+                          CopySelectDialog.copyFormatDna: self.clipboardDna}
         dlg = CopySelectDialog(self)
         dlg.ShowModal()
         selected = dlg.GetSelected()
         try:
-            if selected == CopySelectDialog.copyFormatEft:
-                self.clipboardEft()
-            elif selected == CopySelectDialog.copyFormatXml:
-                self.clipboardXml()
-            elif selected == CopySelectDialog.copyFormatDna:
-                self.clipboardDna()
-            else:
-                print "oops, invalid clipboard export format: %d" % selected
+            CopySelectDict[selected]()
         except:
             pass
         dlg.Destroy()
