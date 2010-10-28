@@ -203,6 +203,8 @@ class HeaderPane (wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__ (self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.Size(500, 32), style=wx.TAB_TRAVERSAL)
 
+        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+
         self.rewBmp = bitmapLoader.getBitmap("frewind_small","icons")
         self.forwBmp = bitmapLoader.getBitmap("fforward_small","icons")
         self.searchBmp = bitmapLoader.getBitmap("fsearch_small","icons")
@@ -320,7 +322,7 @@ class HeaderPane (wx.Panel):
         if self.inPopup:
             return
         search = self.search.GetValue()
-        if len(search) < 3 and len(search) >0:
+        if len(search) < 3:
             if self.inSearch == True:
                 self.inSearch = False
                 if len(self.shipBrowser.browseHist) > 0:
@@ -531,8 +533,9 @@ class HeaderPane (wx.Panel):
             shipID = self.Parent.GetStageData(stage)
             shipName = self.Parent.GetStage3ShipName()
             sFit = service.Fit.getInstance()
-            sFit.newFit(shipID, "%s fit" %shipName)
+            fitID = sFit.newFit(shipID, "%s fit" %shipName)
             wx.PostEvent(self.Parent,Stage3Selected(shipID=shipID, back = True))
+            wx.PostEvent(self.mainFrame, FitSelected(fitID=fitID))
         event.Skip()
 
     def OnForward(self,event):
@@ -772,6 +775,8 @@ class ShipItem(wx.Window):
                  size=(0, 38), style=0):
         wx.Window.__init__(self, parent, id, pos, size, style)
 
+        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+
         self._itemData = itemData
 
         self.shipRace = itemData
@@ -902,10 +907,11 @@ class ShipItem(wx.Window):
 
     def createNewFit(self, event=None):
         sFit = service.Fit.getInstance()
-        sFit.newFit(self.shipID, self.tcFitName.GetValue())
+        fitID = sFit.newFit(self.shipID, self.tcFitName.GetValue())
         self.tcFitName.Show(False)
         self.editWasShown = 0
         wx.PostEvent(self.shipBrowser,Stage3Selected(shipID=self.shipID, back=False))
+        wx.PostEvent(self.mainFrame, FitSelected(fitID=fitID))
 
     def NHitTest(self, target, position, area):
         x, y = target
@@ -1003,8 +1009,8 @@ class ShipItem(wx.Window):
 
         mdc.DrawText(fformat %fittings if fittings >0 else fformat, textStart, ypos)
 
-        self.editPosX = rect.width - 20
-        self.editPosY = (rect.height - 16) / 2
+        self.editPosX = rect.width - self.newToggleBmp.GetWidth() -5
+        self.editPosY = (rect.height - self.newToggleBmp.GetHeight()) / 2
 
         mdc.DrawBitmap(self.newToggleBmp, self.editPosX, self.editPosY, 0)
         mdc.SetFont(wx.Font(7, wx.SWISS, wx.NORMAL, wx.NORMAL, False))
@@ -1013,6 +1019,14 @@ class ShipItem(wx.Window):
             xtext, ytext = mdc.GetTextExtent(status)
             ytext = (rect.height - ytext)/2
             mdc.DrawText(status, self.editPosX - xtext -5,ytext)
+
+        if self.tcFitName.IsShown():
+            fnEditSize = self.tcFitName.GetSize()
+            wSize = self.GetSize()
+            fnEditPosX = self.editPosX - fnEditSize.width -5
+            fnEditPosY = (wSize.height - fnEditSize.height)/2
+            self.tcFitName.SetPosition((fnEditPosX,fnEditPosY))
+
         event.Skip()
 
 class FitItem(wx.Window):
@@ -1161,6 +1175,7 @@ class FitItem(wx.Window):
         sFit = service.Fit.getInstance()
         sFit.copyFit(self.fitID)
         wx.PostEvent(self.shipBrowser,Stage3Selected(shipID=self.shipID, back=True))
+        wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fitID))
 
     def deleteFit(self, event=None):
         sFit = service.Fit.getInstance()
@@ -1269,4 +1284,11 @@ class FitItem(wx.Window):
         mdc.DrawBitmap(self.copyBmp, self.copyPosX, self.copyPosY, 0)
         mdc.DrawBitmap(self.renameBmp, self.renamePosX, self.renamePosY, 0)
         mdc.DrawBitmap(self.deleteBmp, self.deletePosX, self.deletePosY, 0)
+
+        if self.tcFitName.IsShown():
+            fnEditSize = self.tcFitName.GetSize()
+            wSize = self.GetSize()
+            fnEditPosX = self.copyPosX - fnEditSize.width -5
+            fnEditPosY = (wSize.height - fnEditSize.height)/2
+            self.tcFitName.SetPosition((fnEditPosX,fnEditPosY))
         event.Skip()

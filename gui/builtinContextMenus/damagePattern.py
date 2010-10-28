@@ -15,7 +15,8 @@ class DamagePattern(ContextMenu):
     def getText(self, context, selection):
         sDP = service.DamagePattern.getInstance()
         self.patterns = sDP.getDamagePatternList()
-        self.patterns.sort(key=lambda p: p.name)
+        self.patterns.sort( key=lambda p: (p.name in ["Selected Ammo", 
+                            "Uniform"], p.name) )
         m = map(lambda p: p.name, self.patterns)
         return m
 

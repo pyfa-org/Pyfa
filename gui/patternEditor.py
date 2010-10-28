@@ -28,7 +28,7 @@ import service
 class DmgPatternEditorDlg (wx.Dialog):
 
     def __init__(self, parent):
-        wx.Dialog.__init__ (self, parent, id = wx.ID_ANY, title = u"Damage Pattern Editor", size = wx.Size( 350,240 ))
+        wx.Dialog.__init__ (self, parent, id = wx.ID_ANY, title = u"Damage Pattern Editor", size = wx.Size( 400,240 ))
 
         self.SetSizeHintsSz(wx.DefaultSize, wx.DefaultSize)
 
@@ -39,6 +39,11 @@ class DmgPatternEditorDlg (wx.Dialog):
         cDP = service.DamagePattern.getInstance()
 
         self.choices = cDP.getDamagePatternList()
+        # Remove "Uniform" and "Selected Ammo" Damage Patterns
+        for dp in self.choices:
+            if dp.name in ("Uniform", "Selected Ammo"):
+                self.choices.remove(dp)
+        # Sort the remaining list and continue on
         self.choices.sort(key=lambda p: p.name)
         self.ccDmgPattern = wx.Choice(self, choices=map(lambda p: p.name, self.choices))
         self.ccDmgPattern.Bind(wx.EVT_CHOICE, self.patternChanged)
@@ -227,7 +232,7 @@ class DmgPatternEditorDlg (wx.Dialog):
 
     def patternChanged(self, event=None):
         p = self.getActivePattern()
-        if p.name == "Uniform":
+        if p.name == "Uniform" or p.name == "Selected Ammo":
             self.restrict()
         else:
             self.unrestrict()

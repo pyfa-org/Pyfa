@@ -26,7 +26,7 @@ class AmmoPattern(ContextMenu):
         return False
 
     def getText(self, context, selection):
-        return "Set as damage pattern"
+        return "Set as Damage Pattern"
 
     def activate(self, context, selection, i):
         item = selection[0]
