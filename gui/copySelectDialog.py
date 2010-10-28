@@ -24,11 +24,11 @@ class CopySelectDialog(wx.Dialog):
     copyFormatEft = 0
     copyFormatXml = 1
     copyFormatDna = 2
-    
+
     def __init__(self, parent):
-        wx.Dialog.__init__(self, parent, id = wx.ID_ANY, title = u"Select a format", size = wx.Size(200, 125), style = wx.DEFAULT_DIALOG_STYLE)
+        wx.Dialog.__init__(self, parent, id = wx.ID_ANY, title = u"Select a format", size = (-1,-1), style = wx.DEFAULT_DIALOG_STYLE)
         mainSizer = wx.BoxSizer(wx.VERTICAL)
-        
+
         copyFormats = [u"EFT", u"XML", u"DNA"]
         copyFormatTooltips = {CopySelectDialog.copyFormatEft: u"Eve Fitting Tool text format",
                               CopySelectDialog.copyFormatXml: u"EvE native XML format",
@@ -37,23 +37,24 @@ class CopySelectDialog(wx.Dialog):
         selector.Bind(wx.EVT_RADIOBOX, self.Selected)
         for format, tooltip in copyFormatTooltips.iteritems():
             selector.SetItemToolTip(format, tooltip)
-        
+
         self.copyFormat = CopySelectDialog.copyFormatEft
         selector.SetSelection(self.copyFormat)
-        
-        mainSizer.Add(selector)
+
+        mainSizer.Add(selector,0,wx.EXPAND | wx.ALL, 5)
 
         buttonSizer = self.CreateButtonSizer(wx.OK | wx.CANCEL)
         if (buttonSizer):
-            mainSizer.Add(buttonSizer)
-        
+            mainSizer.Add(buttonSizer,0, wx.EXPAND | wx.ALL, 5)
+
         self.SetSizer(mainSizer)
-        
-        
+        self.Fit()
+
+
     def Selected(self, event):
         self.copyFormat = event.GetSelection()
-        
+
     def GetSelected(self):
         return self.copyFormat
-        
-        
+
+
