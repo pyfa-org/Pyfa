@@ -27,8 +27,8 @@ from gui.contextMenu import ContextMenu
 
 class BoosterView(d.Display):
     DEFAULT_COLS = ["Activity Checkbox",
-                    "Name",
-                    "attr:boosterness"]
+                    "attr:boosterness"
+                    "Name"]
 
     def __init__(self, parent):
         d.Display.__init__(self, parent)
