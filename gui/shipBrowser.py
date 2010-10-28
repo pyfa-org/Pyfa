@@ -1019,6 +1019,14 @@ class ShipItem(wx.Window):
             xtext, ytext = mdc.GetTextExtent(status)
             ytext = (rect.height - ytext)/2
             mdc.DrawText(status, self.editPosX - xtext -5,ytext)
+
+        if self.tcFitName.IsShown():
+            fnEditSize = self.tcFitName.GetSize()
+            wSize = self.GetSize()
+            fnEditPosX = self.editPosX - fnEditSize.width -5
+            fnEditPosY = (wSize.height - fnEditSize.height)/2
+            self.tcFitName.SetPosition((fnEditPosX,fnEditPosY))
+
         event.Skip()
 
 class FitItem(wx.Window):
@@ -1276,4 +1284,11 @@ class FitItem(wx.Window):
         mdc.DrawBitmap(self.copyBmp, self.copyPosX, self.copyPosY, 0)
         mdc.DrawBitmap(self.renameBmp, self.renamePosX, self.renamePosY, 0)
         mdc.DrawBitmap(self.deleteBmp, self.deletePosX, self.deletePosY, 0)
+
+        if self.tcFitName.IsShown():
+            fnEditSize = self.tcFitName.GetSize()
+            wSize = self.GetSize()
+            fnEditPosX = self.copyPosX - fnEditSize.width -5
+            fnEditPosY = (wSize.height - fnEditSize.height)/2
+            self.tcFitName.SetPosition((fnEditPosX,fnEditPosY))
         event.Skip()
