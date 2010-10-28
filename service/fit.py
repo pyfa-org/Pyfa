@@ -53,10 +53,10 @@ class Fit(object):
         fit = eos.db.getFit(fitID)
         return fit.modules[pos]
 
-    def newFit(self, shipID, name):
+    def newFit(self, shipID, name=None):
         fit = eos.types.Fit()
         fit.ship = eos.types.Ship(eos.db.getItem(shipID))
-        fit.name = name
+        fit.name = name if name is not None else "New %s" % fit.ship.item.name
         fit.damagePattern = DamagePattern.getInstance().getDamagePattern("Uniform")
         eos.db.save(fit)
         fit.calculateModifiedAttributes()
@@ -94,6 +94,14 @@ class Fit(object):
         eos.db.commit()
         fit.calculateModifiedAttributes()
         return fit
+
+    def searchFits(self, name):
+        results = eos.db.searchFits(name)
+        fits = []
+        for fit in results:
+            fits.append((fit.ID, fit.name, fit.ship.item.ID, fit.ship.item.name))
+
+        return fits
 
     def addImplant(self, fitID, itemID):
         if fitID is None:

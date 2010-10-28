@@ -165,14 +165,6 @@ class Market():
     def searchItems(self, name, callback):
         self.searchWorkerThread.scheduleSearch(name, callback)
 
-    def searchFits(self, name):
-        results = eos.db.searchFits(name)
-        fits = []
-        for fit in results:
-            fits.append((fit.ID, fit.name, fit.ship.item.name))
-
-        return fits
-
     def getImplantTree(self):
         return self.getChildren(27)
 
