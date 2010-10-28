@@ -1009,8 +1009,8 @@ class ShipItem(wx.Window):
 
         mdc.DrawText(fformat %fittings if fittings >0 else fformat, textStart, ypos)
 
-        self.editPosX = rect.width - 20
-        self.editPosY = (rect.height - 16) / 2
+        self.editPosX = rect.width - self.newToggleBmp.GetWidth() -5
+        self.editPosY = (rect.height - self.newToggleBmp.GetHeight()) / 2
 
         mdc.DrawBitmap(self.newToggleBmp, self.editPosX, self.editPosY, 0)
         mdc.SetFont(wx.Font(7, wx.SWISS, wx.NORMAL, wx.NORMAL, False))
