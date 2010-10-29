@@ -118,7 +118,7 @@ class Display(wx.ListCtrl):
             selection.append(sel)
             sel = self.GetNextSelected(sel)
 
-#        self.Freeze()
+        self.Freeze()
         item = -1
         for id, st in enumerate(stuff):
             item = self.GetNextItem(item)
@@ -146,8 +146,9 @@ class Display(wx.ListCtrl):
         for i, col in enumerate(self.activeColumns):
             if not col.resized:
                 if col.size == wx.LIST_AUTOSIZE:
+                    self.SetColumnWidth(i, wx.LIST_AUTOSIZE_USEHEADER)
+                    headerWidth = self.GetColumnWidth(i)
                     self.SetColumnWidth(i, wx.LIST_AUTOSIZE)
-                    headerWidth = 24
                     baseWidth = self.GetColumnWidth(i)
                     if baseWidth < headerWidth:
                         self.SetColumnWidth(i, headerWidth)
@@ -156,7 +157,7 @@ class Display(wx.ListCtrl):
 
         for sel in selection:
             self.Select(sel)
-#        self.Thaw()
+        self.Thaw()
 
     def update(self, stuff):
         self.populate(stuff)
