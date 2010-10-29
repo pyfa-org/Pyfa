@@ -20,6 +20,12 @@
 import os.path
 import config
 import wx
+import collections
+import time
+
+cachedBitmapsCount = 0
+cachedBitmaps = collections.OrderedDict()
+dontUseCachedBitmaps = False
 
 def getStaticBitmap(name, parent, location):
     static = wx.StaticBitmap(parent)
@@ -30,9 +36,36 @@ locationMap = {"pack": os.path.join(config.staticPath, "icons"),
                "ships": os.path.join(config.staticPath, "icons/ships")}
 
 def getBitmap(name,location):
-    icon = getImage(name, location)
-    if icon is not None:
-        return icon.ConvertToBitmap()
+
+    global cachedBitmaps
+    global cachedBitmapsCount
+    global dontUseCachedBitmaps
+
+    if dontUseCachedBitmaps:
+        img = getImage(name, location)
+        if img is not None:
+            return img.ConvertToBitmap()
+
+    path = "%s%s" % (name,location)
+    MAX_BMPS = 500
+#    start = time.clock()
+    if cachedBitmapsCount == MAX_BMPS:
+        cachedBitmaps.popitem(False)
+        cachedBitmapsCount -=1
+
+    if path not in cachedBitmaps:
+        img = getImage(name, location)
+        if img is not None:
+            bmp = img.ConvertToBitmap()
+        else:
+            bmp = None
+        cachedBitmaps[path] = bmp
+        cachedBitmapsCount += 1
+    else:
+        bmp = cachedBitmaps[path]
+
+#    print "#BMPs:%d - Current took: %.8f" % (cachedBitmapsCount,time.clock() - start)
+    return bmp
 
 def getImage(name, location):
     if location in locationMap:
