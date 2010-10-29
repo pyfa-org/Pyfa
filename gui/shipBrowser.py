@@ -1010,8 +1010,9 @@ class ShipItem(wx.Window):
         textStart = 48
         xtext, ytext = mdc.GetTextExtent(shipName)
         mdc.DrawBitmap(self.raceBmp,textStart, ypos + self.raceBmp.GetHeight()/2)
-        mdc.DrawText(shipName, textStart + self.raceBmp.GetWidth() + 4, ypos)
+#        mdc.DrawText(shipName, textStart + self.raceBmp.GetWidth() + 4, ypos)
         textStart += self.raceBmp.GetWidth() + 4
+        sposy = ypos
 
         ypos += ytext
 
@@ -1042,6 +1043,22 @@ class ShipItem(wx.Window):
             xtext, ytext = mdc.GetTextExtent(status)
             ytext = (rect.height - ytext)/2
             mdc.DrawText(status, self.editPosX - xtext -5,ytext)
+        else:
+            xtext =0
+
+        mdc.SetFont(wx.Font(9, wx.SWISS, wx.NORMAL, wx.BOLD, False))
+        fnwidths = mdc.GetPartialTextExtents(shipName)
+        count = 0
+        maxsize = self.editPosX -xtext - 15 - textStart
+        for i in fnwidths:
+            if i<= maxsize:
+                count +=1
+            else:
+                break
+
+        shipName = "%s%s" % (shipName[:count if count >5 else 5],"..." if len(shipName)>count else "")
+        mdc.SetFont(wx.Font(9, wx.SWISS, wx.NORMAL, wx.BOLD, False))
+        mdc.DrawText(shipName, textStart, sposy)
 
         if self.tcFitName.IsShown():
             fnEditSize = self.tcFitName.GetSize()
@@ -1305,17 +1322,19 @@ class FitItem(wx.Window):
             mdc.DrawText(status, self.copyPosX - xtext -5,ytext)
         else:
             xtext = 0
+
+        mdc.SetFont(wx.Font(9, wx.SWISS, wx.NORMAL, wx.BOLD, False))
         fnwidths = mdc.GetPartialTextExtents(fitName)
         count = 0
-        maxsize = self.copyPosX -xtext - 5 - textStart*2
+        maxsize = self.copyPosX -xtext - 15 - textStart
         for i in fnwidths:
-            if i< maxsize:
+            if i <= maxsize:
                 count +=1
             else:
                 break
 
         fitName = "%s%s" % (fitName[:count if count >5 else 5],"..." if len(fitName)>count else "")
-        mdc.SetFont(wx.Font(9, wx.SWISS, wx.NORMAL, wx.BOLD, False))
+
         mdc.DrawText(fitName, textStart, fposy)
 
         mdc.DrawBitmap(self.copyBmp, self.copyPosX, self.copyPosY, 0)
