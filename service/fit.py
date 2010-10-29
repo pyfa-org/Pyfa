@@ -160,6 +160,50 @@ class Fit(object):
         fit.calculateModifiedAttributes()
         return True
 
+    def project(self, fitID, thing):
+        fit = eos.db.getFit(fitID)
+        if isinstance(thing, eos.types.Fit):
+            fit.projectedFits.append(thing)
+        elif thing.category.name == "Drone":
+            d = fit.projectedDrones.find(thing)
+            if d is None or d.amountActive == d.amount or d.amount >= 5:
+                d = eos.types.Drone(thing)
+                fit.projectedDrones.append(d)
+
+            d.amount += 1
+        else:
+            fit.projectedModules.append(eos.types.Module(thing))
+
+        eos.db.commit()
+        fit.clear()
+        fit.calculateModifiedAttributes()
+
+    def toggleProjected(self, fitID, thing, click):
+        fit = eos.db.getFit(fitID)
+        if isinstance(thing, eos.types.Drone):
+            if thing.amount == thing.amountActive:
+                thing.amountActive = 0
+            else:
+                thing.amountActive = thing.amount
+        elif isinstance(thing, eos.types.Module):
+            thing.state = self.__getProposedState(thing, click)
+
+        eos.db.commit()
+        fit.clear()
+        fit.calculateModifiedAttributes()
+
+    def removeProjected(self, fitID, thing):
+        fit = eos.db.getFit(fitID)
+        if isinstance(thing, eos.types.Drone):
+            fit.projectedDrones.remove(thing)
+        elif isinstance(thing, eos.types.Module):
+            fit.projectedModules.remove(thing)
+        else:
+            fit.projectedFits.remove(thing)
+
+        eos.db.commit()
+        fit.clear()
+        fit.calculateModifiedAttributes()
 
     def appendModule(self, fitID, itemID):
         fit = eos.db.getFit(fitID)
@@ -229,12 +273,7 @@ class Fit(object):
         else:
             return False
 
-    def splitDroneStack(self, fitID, d, amount):
-        if fitID == None:
-            return False
-
-        fit = eos.db.getFit(fitID)
-
+    def splitDrones(self, fit, d, amount, l):
         total = d.amount
         active = d.amountActive > 0
         d.amount = amount
@@ -243,8 +282,22 @@ class Fit(object):
         newD = eos.types.Drone(d.item)
         newD.amount = total - amount
         newD.amountActive = newD.amount if active else 0
-        fit.drones.append(newD)
+        l.append(newD)
         eos.db.commit()
+
+    def splitProjectedDroneStack(self, fitID, d, amount):
+        if fitID == None:
+            return False
+
+        fit = eos.db.getFit(fitID)
+        self.splitDrones(fit, d, amount, fit.projectedDrones)
+
+    def splitDroneStack(self, fitID, d, amount):
+        if fitID == None:
+            return False
+
+        fit = eos.db.getFit(fitID)
+        self.splitDrones(fit, d, amount, fit.drones)
 
     def removeDrone(self, fitID, i):
         fit = eos.db.getFit(fitID)

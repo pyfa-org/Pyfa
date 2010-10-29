@@ -16,9 +16,6 @@ class AmmoPattern(ContextMenu):
             return False
 
         item = selection[0]
-        if context == "itemSearch":
-            item = service.Market.getInstance().getItem(item.ID)
-
         for attr in ("emDamage", "thermalDamage", "explosiveDamage", "kineticDamage"):
             if item.getAttribute(attr) is not None:
                 return True
@@ -30,9 +27,6 @@ class AmmoPattern(ContextMenu):
 
     def activate(self, context, selection, i):
         item = selection[0]
-        if context == "itemSearch":
-            item = service.Market.getInstance().getItem(item.ID)
-
         fit = self.mainFrame.getActiveFit()
         sFit = service.Fit.getInstance()
         sFit.setAsPattern(fit, item)

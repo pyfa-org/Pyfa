@@ -158,9 +158,6 @@ class MarketTree(wx.TreeCtrl):
 
     def jump(self, item):
         cMarket = service.Market.getInstance()
-        # Refetch items, else it'll try to reuse the object fetched in the other thread
-        # Which makes it go BOOM CRACK DOOM
-        item = cMarket.getItem(item.ID)
         mg = item.marketGroup
         if mg is None and item.metaGroup is not None:
             mg = item.metaGroup.parent.marketGroup
@@ -311,7 +308,15 @@ class ItemView(d.Display):
         if sel == -1:
             return
 
-        menu = ContextMenu.getMenu((self.active[sel],), "item" if self.searching is False else "itemSearch")
+        item = self.active[sel]
+        # We were searching, this means that our results come from the worker thread
+        # Refetch items, else it'll try to reuse the object fetched in the other thread
+        # Which makes it go BOOM CRACK DOOM
+        if self.searching:
+            sMarket = service.Market.getInstance()
+            item = sMarket.getItem(item.ID)
+
+        menu = ContextMenu.getMenu((item,), "item" if self.searching is False else "itemSearch")
         self.PopupMenu(menu)
 
     def itemSort(self, item):

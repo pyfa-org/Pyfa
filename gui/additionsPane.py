@@ -52,7 +52,7 @@ class AdditionsPane(TogglePanel):
         self.notebook.AddPage(DroneView(self.notebook), "Drones")
         self.notebook.AddPage(ImplantView(self.notebook), "Implants")
         self.notebook.AddPage(BoosterView(self.notebook), "Boosters")
-#        self.notebook.AddPage(ProjectedView(self.notebook), "Projected")
+        self.notebook.AddPage(ProjectedView(self.notebook), "Projected")
 
 #        self.Expand()
 
