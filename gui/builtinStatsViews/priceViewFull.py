@@ -135,7 +135,8 @@ class PriceViewFull(StatsView):
         else:
             if self._timer:
                 self._timer.Stop()
-                self.labelEMStatus.SetLabel("")
+
+            self.labelEMStatus.SetLabel("")
             modPrice = sum(map(lambda p: p.price or 0, prices[1:]))
             if self._cachedShip != shipPrice:
                 self.labelPriceShip.SetLabel("%s ISK" % formatAmount(shipPrice, 3, 3, 9))
