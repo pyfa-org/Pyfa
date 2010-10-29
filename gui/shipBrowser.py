@@ -857,8 +857,9 @@ class ShipItem(wx.Window):
         self.tcFitName.Show(False)
         if self.highlighted == 1:
             self.editWasShown = 1
-            self.newToggleBmp = self.newBmp
-            self.Refresh()
+
+        self.newToggleBmp = self.newBmp
+        self.Refresh()
 
     def editCheckEsc(self, event):
         if event.GetKeyCode() == wx.WXK_ESCAPE:
