@@ -3,10 +3,14 @@ import copy
 from gui import bitmapLoader
 import gui.mainFrame
 import service
-import collections
 
 from wx.lib.buttons import GenBitmapButton
 from pickle import TRUE
+
+try:
+    from collections import OrderedDict
+except ImportError:
+    from compat import OrderedDict
 
 FitRenamed, EVT_FIT_RENAMED = wx.lib.newevent.NewEvent()
 FitSelected, EVT_FIT_SELECTED = wx.lib.newevent.NewEvent()
@@ -26,9 +30,9 @@ class ShipBrowser(wx.Panel):
         self.browseHist = []
         self.lastStage = (0,0)
 
-        self.stage1Cache = collections.OrderedDict()
-        self.stage2Cache = collections.OrderedDict()
-        self.stage3Cache = collections.OrderedDict()
+        self.stage1Cache = OrderedDict()
+        self.stage2Cache = OrderedDict()
+        self.stage3Cache = OrderedDict()
 
         self._stage1Data = -1
         self._stage2Data = -1

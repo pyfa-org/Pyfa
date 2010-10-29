@@ -20,11 +20,15 @@
 import os.path
 import config
 import wx
-import collections
 import time
 
+try:
+    from collections import OrderedDict
+except ImportError:
+    from compat import OrderedDict
+
 cachedBitmapsCount = 0
-cachedBitmaps = collections.OrderedDict()
+cachedBitmaps = OrderedDict()
 dontUseCachedBitmaps = False
 
 def getStaticBitmap(name, parent, location):
