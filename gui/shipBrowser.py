@@ -3,6 +3,7 @@ import copy
 from gui import bitmapLoader
 import gui.mainFrame
 import service
+import collections
 
 from wx.lib.buttons import GenBitmapButton
 from pickle import TRUE
@@ -24,6 +25,10 @@ class ShipBrowser(wx.Panel):
         self._activeStage = 1
         self.browseHist = []
         self.lastStage = (0,0)
+
+        self.stage1Cache = collections.OrderedDict()
+        self.stage2Cache = collections.OrderedDict()
+        self.stage3Cache = collections.OrderedDict()
 
         self._stage1Data = -1
         self._stage2Data = -1
@@ -119,11 +124,25 @@ class ShipBrowser(wx.Panel):
         sMarket = service.Market.getInstance()
         sFit = service.Fit.getInstance()
         self.lpane.RemoveAllChildren()
-        shipList = sMarket.getShipList(categoryID)
-        shipList.sort(key=self.raceNameKey)
-        for ID, name, race in shipList:
-            self.lpane.AddWidget(ShipItem(self.lpane, ID, (name, len(sFit.getFitsWithShip(ID))), race))
 
+        if not self.stage2Cache.has_key(categoryID):
+            content = []
+            shipList = sMarket.getShipList(categoryID)
+            shipList.sort(key=self.raceNameKey)
+            for ID, name, race in shipList:
+                fits = len(sFit.getFitsWithShip(ID))
+                self.lpane.AddWidget(ShipItem(self.lpane, ID, (name, fits), race))
+                content.append((ID,name,fits,race))
+            self.stage2Cache[categoryID]= content
+        else:
+            count = 0
+            for ID,name,fits,race in self.stage2Cache[categoryID]:
+                dbfits = len(sFit.getFitsWithShip(categoryID))
+                if dbfits != fits:
+                    fits = dbfits
+                    self.stage2Cache[categoryID][count]= (ID,name,fits,race)
+                count += 1
+                self.lpane.AddWidget(ShipItem(self.lpane,ID, (name,fits),race))
         self.lpane.RefreshList()
         self.Show()
 
