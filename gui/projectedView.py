@@ -102,7 +102,6 @@ class ProjectedView(d.Display):
                 else:
                     context = "projectedFit"
 
-                print item, context
                 menu = ContextMenu.getMenu((item,), context)
                 self.PopupMenu(menu)
 
