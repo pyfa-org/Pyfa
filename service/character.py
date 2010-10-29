@@ -114,6 +114,7 @@ class Character():
         skill = char.getSkill(skillID)
         if isinstance(level, basestring):
             skill.learned = False
+            skill.level = None
         else:
             skill.level = level
 

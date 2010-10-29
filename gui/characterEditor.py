@@ -27,6 +27,7 @@ import service
 import gui.display as d
 from gui.contextMenu import ContextMenu
 import sys
+import gui.fittingView as fv
 
 CharListUpdated, CHAR_LIST_UPDATED = wx.lib.newevent.NewEvent()
 CharChanged, CHAR_CHANGED = wx.lib.newevent.NewEvent()
@@ -67,7 +68,7 @@ class CharacterEditor(wx.Frame):
         self.navSizer.Add(self.skillTreeChoice, 1, wx.ALL | wx.EXPAND, 5)
 
         buttons = (("new", wx.ART_NEW), ("copy", wx.ART_COPY), ("rename", bitmapLoader.getBitmap("rename", "icons")), ("delete", wx.ART_DELETE))
-        
+
         size = None
         for name, art in buttons:
             bitmap = wx.ArtProvider.GetBitmap(art, wx.ART_BUTTON) if name != "rename" else art
@@ -157,7 +158,8 @@ class CharacterEditor(wx.Frame):
             self.unrestrict()
 
         wx.PostEvent(self, CharChanged())
-        event.Skip()
+        if event is not None:
+            event.Skip()
 
     def getActiveCharacter(self):
         selection = self.skillTreeChoice.GetCurrentSelection()
@@ -235,6 +237,16 @@ class CharacterEditor(wx.Frame):
             self.restrict()
 
         wx.PostEvent(self, CharChanged())
+
+    def Destroy(self):
+        cFit = service.Fit.getInstance()
+        fitID = self.mainFrame.getActiveFit()
+        if fitID is not None:
+            cFit.clearFit(fitID)
+            wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=fitID))
+
+        wx.Frame.Destroy(self)
+
 class SkillTreeView (wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__ (self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.Size(500, 300), style=wx.TAB_TRAVERSAL)

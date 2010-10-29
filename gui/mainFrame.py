@@ -139,10 +139,6 @@ class MainFrame(wx.Frame):
         dlg=CharacterEditor(self)
         dlg.Show()
 
-        cFit = service.Fit.getInstance()
-        cFit.clearFit(self.getActiveFit())
-        wx.PostEvent(self, fv.FitChanged(fitID=self.getActiveFit()))
-
     def showDamagePatternEditor(self, event):
         dlg=DmgPatternEditorDlg(self)
         dlg.ShowModal()
@@ -165,7 +161,7 @@ class MainFrame(wx.Frame):
             except:
                 wx.MessageBox("Error importing from file.", "Error", wx.OK | wx.ICON_ERROR, self)
         dlg.Destroy()
-        
+
     def _openAfterImport(self, importCount, fitIDs):
         if importCount == 1:
             if self.getActiveFit() != fitIDs[0]:
@@ -272,7 +268,7 @@ class MainFrame(wx.Frame):
         else:
             clip.Close()
             return None
-            
+
     def backupToXml(self, event):
         sFit = service.Fit.getInstance()
         saveDialog = wx.FileDialog(
