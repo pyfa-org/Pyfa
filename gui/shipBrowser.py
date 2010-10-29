@@ -1186,10 +1186,14 @@ class FitItem(wx.Window):
         sFit = service.Fit.getInstance()
         self.tcFitName.Show(False)
         self.editWasShown = 0
-        self.fitName = self.tcFitName.GetValue()
-        sFit.renameFit(self.fitID, self.fitName)
-        wx.PostEvent(self.mainFrame, FitRenamed(fitID=self.fitID))
-        self.Refresh()
+        fitName = self.tcFitName.GetValue()
+        if fitName:
+            self.fitName = fitName
+            sFit.renameFit(self.fitID, self.fitName)
+            wx.PostEvent(self.mainFrame, FitRenamed(fitID=self.fitID))
+            self.Refresh()
+        else:
+            self.tcFitName.SetValue(self.fitName)
 
     def copyFit(self, event=None):
         sFit = service.Fit.getInstance()
