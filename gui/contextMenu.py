@@ -68,7 +68,7 @@ class ContextMenu(object):
             if amount > 0 and i != len(contexts) - 1:
                 menu.AppendSeparator()
 
-        return menu if not empty else None
+        return menu
 
     @classmethod
     def handler(cls, event):

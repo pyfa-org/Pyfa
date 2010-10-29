@@ -24,6 +24,7 @@ import service
 import gui.droneView
 from gui.builtinViewColumns.projectedState import ProjectedState
 from gui.contextMenu import ContextMenu
+import eos.types
 
 class ProjectedView(d.Display):
     DEFAULT_COLS = ["Projected State",
@@ -86,14 +87,23 @@ class ProjectedView(d.Display):
         event.Skip()
         row, _ = self.HitTest(event.Position)
         if row != -1:
+            item = self.get(row)
             col = self.getColumn(event.Position)
             if col == self.getColIndex(ProjectedState):
                 fitID = self.mainFrame.getActiveFit()
                 cFit = service.Fit.getInstance()
-                cFit.toggleProjected(fitID, self.get(row), "right" if event.Button == 3 else "left")
+                cFit.toggleProjected(fitID, item, "right" if event.Button == 3 else "left")
                 wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=fitID))
             elif event.Button == 3:
-                menu = ContextMenu.getMenu((self.get(row),), "projectedDrone")
+                if isinstance(item, eos.types.Drone):
+                    context = "projectedDrone"
+                elif isinstance(item, eos.types.Module):
+                    context = "projectedModule"
+                else:
+                    context = "projectedFit"
+
+                print item, context
+                menu = ContextMenu.getMenu((item,), context)
                 self.PopupMenu(menu)
 
     def remove(self, event):

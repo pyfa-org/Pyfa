@@ -8,11 +8,16 @@ class ItemStats(ContextMenu):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     def display(self, context, selection):
-        return context in ("item", "ship", "module", "ammo", "skill", "itemSearch", "drone", "implant", "booster")
+        return context in ("item", "ship", "module", "ammo", "skill",
+                           "itemSearch", "drone", "implant", "booster",
+                           "projectedModule", "projectedDrone")
 
     def getText(self, context, selection):
-        return "%s stats" % (context.capitalize() if context != "itemSearch" else "Item")
+        return "%s stats" % (context.capitalize() if context not in self.REPLACES else self.REPLACES[context])
 
+    REPLACES = {"itemSearch": "Item",
+                "projectedModule": "Module",
+                "projectedDrone": "Drone"}
     def activate(self, context, selection, i):
         if context == "ship":
             fitID = self.mainFrame.getActiveFit()
@@ -24,6 +29,6 @@ class ItemStats(ContextMenu):
         if context == "module" and stuff.isEmpty:
             return
 
-        dlg=ItemStatsDialog(stuff, context if context != "itemSearch" else "Item")
+        dlg=ItemStatsDialog(stuff, context.capitalize() if context not in self.REPLACES else self.REPLACES[context])
 
 ItemStats.register()
