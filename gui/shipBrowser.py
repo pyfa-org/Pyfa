@@ -137,7 +137,7 @@ class ShipBrowser(wx.Panel):
         else:
             count = 0
             for ID,name,fits,race in self.stage2Cache[categoryID]:
-                dbfits = len(sFit.getFitsWithShip(categoryID))
+                dbfits = len(sFit.getFitsWithShip(ID))
                 if dbfits != fits:
                     fits = dbfits
                     self.stage2Cache[categoryID][count]= (ID,name,fits,race)
