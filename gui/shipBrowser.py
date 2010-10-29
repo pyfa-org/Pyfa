@@ -25,9 +25,10 @@ class ShipBrowser(wx.Panel):
         self.browseHist = []
         self.lastStage = (0,0)
 
-        self.stage1Cache = {}
         self.stage2Cache = {}
         self.stage3Cache = {}
+
+        self.categoryList=[]
 
         self._stage1Data = -1
         self._stage2Data = -1
@@ -50,7 +51,6 @@ class ShipBrowser(wx.Panel):
         self.Layout()
         self.Show()
 
-        self.Centre(wx.BOTH)
         self.Bind(wx.EVT_SIZE, self.SizeRefreshList)
         self.Bind(EVT_SB_STAGE2_SEL, self.stage2)
         self.Bind(EVT_SB_STAGE1_SEL, self.stage1)
@@ -96,9 +96,10 @@ class ShipBrowser(wx.Panel):
         self.hpane.ToggleNewFitSB(False)
         sMarket = service.Market.getInstance()
         self.lpane.RemoveAllChildren()
-        categoryList = sMarket.getShipRoot()
-        categoryList.sort(key=self.nameKey)
-        for ID, name in categoryList:
+        if len(self.categoryList) == 0:
+            self.categoryList = sMarket.getShipRoot()
+            self.categoryList.sort(key=self.nameKey)
+        for ID, name in self.categoryList:
             self.lpane.AddWidget(CategoryItem(self.lpane, ID, (name, 0)))
 
         self.lpane.RefreshList()
