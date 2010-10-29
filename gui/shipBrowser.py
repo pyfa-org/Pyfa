@@ -125,7 +125,7 @@ class ShipBrowser(wx.Panel):
         sFit = service.Fit.getInstance()
         self.lpane.RemoveAllChildren()
 
-        if not self.stage2Cache.has_key(categoryID):
+        if categoryID not in self.stage2Cache:
             content = []
             shipList = sMarket.getShipList(categoryID)
             shipList.sort(key=self.raceNameKey)
