@@ -34,7 +34,7 @@ class ShipBrowser(wx.Panel):
         self._stage2Data = -1
         self._stage3Data = -1
         self._stage3ShipName = ""
-
+        self.fitIDMustEditName = -1
         self.SetSizeHintsSz(wx.DefaultSize, wx.DefaultSize)
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
@@ -553,6 +553,7 @@ class HeaderPane (wx.Panel):
             shipName = self.Parent.GetStage3ShipName()
             sFit = service.Fit.getInstance()
             fitID = sFit.newFit(shipID, "%s fit" %shipName)
+            self.shipBrowser.fitIDMustEditName = fitID
             wx.PostEvent(self.Parent,Stage3Selected(shipID=shipID, back = True))
             wx.PostEvent(self.mainFrame, FitSelected(fitID=fitID))
         event.Skip()
@@ -797,6 +798,7 @@ class ShipItem(wx.Window):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
         self._itemData = itemData
+        self.ignoreFurtherFitNameEdit = False
 
         self.shipRace = itemData
 
@@ -829,11 +831,10 @@ class ShipItem(wx.Window):
         self.editPosY = 0
         self.highlighted = 0
         self.editWasShown = 0
-
+        self.btnsStatus = ""
+        self.Refresh()
         self.tcFitName = wx.TextCtrl(self, wx.ID_ANY, "%s fit" % self.shipName, wx.DefaultPosition, (120,-1), wx.TE_PROCESS_ENTER)
         self.tcFitName.Show(False)
-
-        self.btnsStatus = ""
 
         self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBackground)
 
@@ -886,6 +887,7 @@ class ShipItem(wx.Window):
         x, y = pos
         if self.NHitTest((self.editPosX, self.editPosY), pos, (16, 16)):
             if self.editWasShown == 1:
+                self.ignoreFurtherFitNameEdit = True
                 self.createNewFit()
                 return
             else:
@@ -929,6 +931,8 @@ class ShipItem(wx.Window):
         fitID = sFit.newFit(self.shipID, self.tcFitName.GetValue())
         self.tcFitName.Show(False)
         self.editWasShown = 0
+        if not self.ignoreFurtherFitNameEdit:
+            self.shipBrowser.fitIDMustEditName = fitID
         wx.PostEvent(self.shipBrowser,Stage3Selected(shipID=self.shipID, back=False))
         wx.PostEvent(self.mainFrame, FitSelected(fitID=fitID))
 
@@ -1088,7 +1092,12 @@ class FitItem(wx.Window):
         self.btnsStatus = ""
 
         self.tcFitName = wx.TextCtrl(self, wx.ID_ANY, "%s" % self.fitName, wx.DefaultPosition, (150,-1), wx.TE_PROCESS_ENTER)
-        self.tcFitName.Show(False)
+        if self.shipBrowser.fitIDMustEditName != self.fitID:
+            self.tcFitName.Show(False)
+        else:
+            self.tcFitName.SetFocus()
+            self.tcFitName.SelectAll()
+            self.shipBrowser.fitIDMustEditName = -1
 
         self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBackground)
 
@@ -1196,9 +1205,10 @@ class FitItem(wx.Window):
 
     def copyFit(self, event=None):
         sFit = service.Fit.getInstance()
-        sFit.copyFit(self.fitID)
+        fitID = sFit.copyFit(self.fitID)
+        self.shipBrowser.fitIDMustEditName = fitID
         wx.PostEvent(self.shipBrowser,Stage3Selected(shipID=self.shipID, back=True))
-        wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fitID))
+        wx.PostEvent(self.mainFrame, FitSelected(fitID=fitID))
 
     def deleteFit(self, event=None):
         sFit = service.Fit.getInstance()
