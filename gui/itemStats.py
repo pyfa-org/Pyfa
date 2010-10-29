@@ -33,11 +33,8 @@ class ItemStatsDialog(wx.Dialog):
         wx.Dialog.__init__(self,
                           gui.mainFrame.MainFrame.getInstance(),
                           wx.ID_ANY, title="Item stats",
-                          #style=wx.FRAME_FLOAT_ON_PARENT | wx.DEFAULT_FRAME_STYLE)
-                          style = wx.CAPTION|wx.CLOSE_BOX|wx.MINIMIZE_BOX|
-                           wx.MAXIMIZE_BOX|
-                           wx.RESIZE_BORDER|
-                           wx.SYSTEM_MENU )
+                          style = wx.CAPTION | wx.CLOSE_BOX | wx.MINIMIZE_BOX |
+                                  wx.MAXIMIZE_BOX | wx.RESIZE_BORDER| wx.SYSTEM_MENU)
 
         empty = getattr(victim, "isEmpty", False)
 
@@ -535,6 +532,9 @@ class ItemAffectedBy (wx.Panel):
         cont = self.stuff.itemModifiedAttributes if self.item == self.stuff.item else self.stuff.chargeModifiedAttributes
         things = {}
         for attrName in cont.iterAfflictions():
+            if cont[attrName] == (cont.getOriginal(attrName) or 0):
+                continue
+
             for fit, afflictors in cont.getAfflictions(attrName).iteritems():
                 for afflictor, modifier, amount in afflictors:
                     if afflictor.item.name not in things:
