@@ -86,6 +86,16 @@ class Fit(object):
         fit.clear()
         return fit
 
+    def toggleFactorReload(self, fitID):
+        if fitID is None:
+            return None
+
+        fit = eos.db.getFit(fitID)
+        fit.factorReload = not fit.factorReload
+        eos.db.commit()
+        fit.clear()
+        fit.calculateModifiedAttributes()
+
     def getFit(self, fitID):
         if fitID is None:
             return None
