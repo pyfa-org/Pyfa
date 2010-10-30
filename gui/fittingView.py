@@ -249,8 +249,8 @@ class FittingView(d.Display):
         else:
             event.Skip()
 
-    def populate(self, stuff):
-        d.Display.populate(self, stuff)
+    def refresh(self, stuff):
+        d.Display.refresh(self, stuff)
         sFit = service.Fit.getInstance()
         fit = sFit.getFit(self.activeFitID)
         slotMap = {}
