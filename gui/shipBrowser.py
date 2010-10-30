@@ -35,6 +35,8 @@ class ShipBrowser(wx.Panel):
         self._stage3Data = -1
         self._stage3ShipName = ""
         self.fitIDMustEditName = -1
+        self.filterShipsWithNoFits = False
+
         self.SetSizeHintsSz(wx.DefaultSize, wx.DefaultSize)
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
@@ -94,6 +96,7 @@ class ShipBrowser(wx.Panel):
         self._activeStage = 1
         self.lastdata = 0
         self.hpane.ToggleNewFitSB(False)
+        self.hpane.ToggleFitViewModeSB(False)
         sMarket = service.Market.getInstance()
         self.lpane.RemoveAllChildren()
         if len(self.categoryList) == 0:
@@ -121,6 +124,7 @@ class ShipBrowser(wx.Panel):
 
         self._stage2Data = categoryID
         self.hpane.ToggleNewFitSB(False)
+        self.hpane.ToggleFitViewModeSB(True)
         sMarket = service.Market.getInstance()
         sFit = service.Fit.getInstance()
         self.lpane.RemoveAllChildren()
@@ -131,7 +135,12 @@ class ShipBrowser(wx.Panel):
             shipList.sort(key=self.raceNameKey)
             for ID, name, race in shipList:
                 fits = len(sFit.getFitsWithShip(ID))
-                self.lpane.AddWidget(ShipItem(self.lpane, ID, (name, fits), race))
+                if self.filterShipsWithNoFits:
+                    if fits>0:
+                        self.lpane.AddWidget(ShipItem(self.lpane, ID, (name, fits), race))
+                else:
+                    self.lpane.AddWidget(ShipItem(self.lpane, ID, (name, fits), race))
+
                 content.append((ID,name,fits,race))
             self.stage2Cache[categoryID]= content
         else:
@@ -142,7 +151,11 @@ class ShipBrowser(wx.Panel):
                     fits = dbfits
                     self.stage2Cache[categoryID][count]= (ID,name,fits,race)
                 count += 1
-                self.lpane.AddWidget(ShipItem(self.lpane,ID, (name,fits),race))
+                if self.filterShipsWithNoFits:
+                    if fits >0:
+                        self.lpane.AddWidget(ShipItem(self.lpane,ID, (name,fits),race))
+                else:
+                    self.lpane.AddWidget(ShipItem(self.lpane,ID, (name,fits),race))
         self.lpane.RefreshList()
         self.Show()
 
@@ -167,6 +180,7 @@ class ShipBrowser(wx.Panel):
             stage,data = self.browseHist.pop()
             self.hpane.gotoStage(stage,data)
             return
+        self.hpane.ToggleFitViewModeSB(False)
         self.hpane.ToggleNewFitSB(True)
         fitList.sort(key=self.nameKey)
         shipName = sMarket.getItem(shipID).name
@@ -229,10 +243,16 @@ class HeaderPane (wx.Panel):
         self.searchBmp = bitmapLoader.getBitmap("fsearch_small","icons")
         self.newBmp = bitmapLoader.getBitmap("fit_add_small","icons")
         self.resetBmp = bitmapLoader.getBitmap("freset_small","icons")
+        self.switchBmp = bitmapLoader.getBitmap("fit_switch_view_mode_small","icons")
 
         img = self.newBmp.ConvertToImage()
         img.RotateHue(0.625)
         self.newBmp = wx.BitmapFromImage(img)
+
+        img = self.switchBmp.ConvertToImage()
+        img.RotateHue(0.625)
+        self.switchBmp = wx.BitmapFromImage(img)
+
 
         self.shipBrowser = self.Parent
 
@@ -242,6 +262,7 @@ class HeaderPane (wx.Panel):
         self.menu = None
         self.inPopup = False
         self.inSearch = False
+
         bmpSize = (16,16)
         self.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNFACE ) )
 
@@ -274,6 +295,11 @@ class HeaderPane (wx.Panel):
         self.sbNewFit = PFGenBitmapButton( self, wx.ID_ANY, self.newBmp, wx.DefaultPosition, bmpSize, wx.BORDER_NONE )
         mainSizer.Add(self.sbNewFit, 0, wx.LEFT | wx.TOP | wx.BOTTOM  | wx.ALIGN_CENTER_VERTICAL , 5)
         self.sbNewFit.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNFACE ) )
+
+        self.sbSwitchFitView = PFGenBitmapButton( self, wx.ID_ANY, self.switchBmp, wx.DefaultPosition, bmpSize, wx.BORDER_NONE )
+        mainSizer.Add(self.sbSwitchFitView, 0, wx.LEFT | wx.TOP | wx.BOTTOM  | wx.ALIGN_CENTER_VERTICAL , 5)
+        self.sbSwitchFitView.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNFACE ) )
+
 
         self.stStatus = wx.StaticText( self, wx.ID_ANY, "", wx.DefaultPosition, wx.DefaultSize, 0 )
         self.stStatus.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNFACE ) )
@@ -315,6 +341,10 @@ class HeaderPane (wx.Panel):
         self.sbNewFit.Bind(wx.EVT_BUTTON,self.OnNewFitting)
         self.sbNewFit.Bind( wx.EVT_ENTER_WINDOW, self.OnEnterWNewFit )
         self.sbNewFit.Bind( wx.EVT_LEAVE_WINDOW, self.OnLeaveWNewFit )
+
+        self.sbSwitchFitView.Bind(wx.EVT_BUTTON,self.OnSwitch)
+        self.sbSwitchFitView.Bind( wx.EVT_ENTER_WINDOW, self.OnEnterWSwitch )
+        self.sbSwitchFitView.Bind( wx.EVT_LEAVE_WINDOW, self.OnLeaveWSwitch )
 
         self.search.Bind(wx.EVT_TEXT_ENTER, self.doSearch)
         self.search.Bind(wx.EVT_KILL_FOCUS, self.editLostFocus)
@@ -436,6 +466,11 @@ class HeaderPane (wx.Panel):
         self.sl2.Show(toggle)
         self.Layout()
 
+    def ToggleFitViewModeSB(self, toggle):
+        self.sbSwitchFitView.Show(toggle)
+        self.sl2.Show(toggle)
+        self.Layout()
+
     def OnReset(self,event):
         if self.shipBrowser.browseHist:
             self.shipBrowser.browseHist = []
@@ -514,6 +549,17 @@ class HeaderPane (wx.Panel):
         self.SetCursor(wx.StockCursor(wx.CURSOR_ARROW))
         event.Skip()
 
+    def OnEnterWSwitch(self, event):
+        if self.toggleSearch != 1:
+            self.stStatus.SetLabel("Show empty ship groups" if self.shipBrowser.filterShipsWithNoFits else "Hide empty ship groups")
+        self.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
+        event.Skip()
+
+    def OnLeaveWSwitch(self, event):
+        self.stStatus.SetLabel("")
+        self.SetCursor(wx.StockCursor(wx.CURSOR_ARROW))
+        event.Skip()
+
     def OnEnterWNewFit(self, event):
         if self.toggleSearch != 1:
             self.stStatus.SetLabel("New fitting")
@@ -543,6 +589,18 @@ class HeaderPane (wx.Panel):
             self.spanel.Show(False)
             self.toggleSearch = -1
             self.Layout()
+        event.Skip()
+
+    def OnSwitch(self, event):
+        if self.shipBrowser.filterShipsWithNoFits:
+            self.shipBrowser.filterShipsWithNoFits = False
+        else:
+            self.shipBrowser.filterShipsWithNoFits = True
+        self.stStatus.SetLabel("Show empty ship groups" if self.shipBrowser.filterShipsWithNoFits else "Hide empty ship groups")
+        stage = self.shipBrowser.GetActiveStage()
+        if stage == 2:
+            categoryID = self.shipBrowser.GetStageData(stage)
+            wx.PostEvent(self.shipBrowser,Stage2Selected(categoryID=categoryID, back = True))
         event.Skip()
 
     def OnNewFitting(self, event):
