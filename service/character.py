@@ -21,6 +21,7 @@ import eos.db
 import eos.types
 import copy
 import service
+import itertools
 
 class Character():
     instance = None
@@ -138,3 +139,25 @@ class Character():
     def getImplants(self, charID):
         char = eos.db.getCharacter(charID)
         return char.implants
+
+    def checkRequirements(self, fit):
+        toCheck = []
+        reqs = {}
+        for thing in itertools.chain(fit.modules, fit.drones, (fit.ship,)):
+            for attr in ("item", "charge"):
+                subThing = getattr(thing, attr, None)
+                if subThing is not None:
+                    self._checkRequirements(fit, fit.character, subThing, reqs)
+
+        return reqs
+
+    def _checkRequirements(self, fit, char, subThing, reqs):
+        for req, level in subThing.requiredSkills.iteritems():
+            name = req.name
+            info = reqs.get(name)
+            currLevel, subs = info if info is not None else 0, {}
+            if level > currLevel and (char is None or char.getSkill(req).level < level):
+                reqs[name] = (level, subs)
+                self._checkRequirements(fit, char, req, subs)
+
+        return reqs

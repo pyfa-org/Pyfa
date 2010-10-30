@@ -20,7 +20,7 @@
 import wx
 import service
 from gui import characterEditor as ce
-from gui import shipBrowser as sb
+from gui import bitmapLoader
 from gui import fittingView as fv
 import gui.mainFrame
 
@@ -39,6 +39,14 @@ class CharacterSelection(wx.Panel):
 
         self.refreshCharacterList()
 
+        self.skillReqsStaticBitmap = wx.StaticBitmap(self)
+        mainSizer.Add(self.skillReqsStaticBitmap, 0, wx.ALIGN_CENTER_VERTICAL)
+
+        self.cleanSkills = bitmapLoader.getBitmap("skill_big", "icons")
+        self.redSkills = bitmapLoader.getBitmap("skillRed_big", "icons")
+        self.greenSkills = bitmapLoader.getBitmap("skillGreen_big", "icons")
+
+        self.skillReqsStaticBitmap.SetBitmap(self.cleanSkills)
         self.Bind(wx.EVT_CHOICE, self.charChanged)
         self.mainFrame.Bind(ce.CHAR_LIST_UPDATED, self.refreshCharacterList)
         self.mainFrame.Bind(fv.FIT_CHANGED, self.fitChanged)
@@ -101,6 +109,18 @@ class CharacterSelection(wx.Panel):
         currCharID = choice.GetClientData(choice.GetCurrentSelection())
         fit = cFit.getFit(event.fitID)
         newCharID = fit.character.ID if fit is not None else None
+        if event.fitID is None:
+            self.skillReqsStaticBitmap.SetBitmap(self.cleanSkills)
+        else:
+            sCharacter = service.Character.getInstance()
+            reqs = sCharacter.checkRequirements(fit)
+            if len(reqs) == 0:
+                self.skillReqsStaticBitmap.SetBitmap(self.greenSkills)
+                self.skillReqsStaticBitmap.SetToolTip(None)
+            else:
+                tip = self._buildSkillsTooltip(reqs)
+                self.skillReqsStaticBitmap.SetBitmap(self.redSkills)
+                self.skillReqsStaticBitmap.SetToolTipString(tip.strip())
 
         if newCharID == None:
             cChar = service.Character.getInstance()
@@ -109,3 +129,12 @@ class CharacterSelection(wx.Panel):
             self.selectChar(newCharID)
 
         event.Skip()
+
+    def _buildSkillsTooltip(self, reqs, tabulationLevel = 0):
+        tip = ""
+        for name, info in reqs.iteritems():
+            level, more = info
+            tip += "%s%s: %d\n" % ("  " * tabulationLevel, name, level)
+            tip += self._buildSkillsTooltip(more, tabulationLevel + 1)
+
+        return tip
