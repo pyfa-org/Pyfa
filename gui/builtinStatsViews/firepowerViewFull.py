@@ -43,8 +43,8 @@ class FirepowerViewFull(StatsView):
 
         panel = "full"
 
-        sizerFirepower = wx.FlexGridSizer(1, 4)
-        sizerFirepower.AddGrowableCol(2)
+        sizerFirepower = wx.FlexGridSizer(1, 3)
+        sizerFirepower.AddGrowableCol(1)
 
         contentSizer.Add( sizerFirepower, 0, wx.EXPAND, 0)
 
@@ -52,11 +52,9 @@ class FirepowerViewFull(StatsView):
 
         for damageType, image in (("weapon", "turret") , ("drone", "droneDPS")):
             baseBox = wx.BoxSizer(wx.HORIZONTAL)
-            if counter == 1:
-                sizerFirepower.AddSpacer( ( 40, 0), 1, 0, 5 )
 
             counter += 1
-            sizerFirepower.Add(baseBox, 0, wx.ALIGN_LEFT)
+            sizerFirepower.Add(baseBox, 1, wx.ALIGN_LEFT if counter == 0 else wx.ALIGN_CENTER_HORIZONTAL)
 
             baseBox.Add(bitmapLoader.getStaticBitmap("%s_big" % image, parent, "icons"), 0, wx.ALIGN_CENTER)
 
@@ -77,13 +75,13 @@ class FirepowerViewFull(StatsView):
         targetSizer = sizerFirepower
 
         baseBox = wx.BoxSizer(wx.HORIZONTAL)
-        targetSizer.Add(baseBox, 0, wx.ALIGN_LEFT)
+        targetSizer.Add(baseBox, 0, wx.ALIGN_RIGHT)
 
         baseBox.Add(bitmapLoader.getStaticBitmap("volley_big", parent, "icons"), 0, wx.ALIGN_CENTER)
 
         gridS = wx.GridSizer(2,2,0,0)
 
-        baseBox.Add(gridS, 0, wx.ALIGN_LEFT)
+        baseBox.Add(gridS, 0)
 
         lbl = wx.StaticText(parent, wx.ID_ANY, "0.0")
         setattr(self, "label%sVolleyTotal" % panel.capitalize(), lbl)
