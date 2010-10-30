@@ -36,7 +36,6 @@ class ShipBrowser(wx.Panel):
         self._stage3ShipName = ""
         self.fitIDMustEditName = -1
         self.filterShipsWithNoFits = False
-        self.filterGroups = [1022]
 
         self.SetSizeHintsSz(wx.DefaultSize, wx.DefaultSize)
 
@@ -104,8 +103,7 @@ class ShipBrowser(wx.Panel):
             self.categoryList = sMarket.getShipRoot()
             self.categoryList.sort(key=self.nameKey)
         for ID, name in self.categoryList:
-            if ID not in self.filterGroups:
-                self.lpane.AddWidget(CategoryItem(self.lpane, ID, (name, 0)))
+            self.lpane.AddWidget(CategoryItem(self.lpane, ID, (name, 0)))
 
         self.lpane.RefreshList()
         self.Show()
