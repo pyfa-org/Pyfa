@@ -291,7 +291,7 @@ class Fit(object):
         item = eos.db.getItem(itemID, eager=("attributes", "group.category"))
         if item.category.name == "Drone":
             d = fit.drones.find(item)
-            if d is None or d.amountActive == d.amount or d.amount >= 5:
+            if d is None or d.amountActive == d.amount or d.amount >= fit.extraAttributes["maxDronesActive"]:
                 d = eos.types.Drone(item)
                 fit.drones.append(d)
 
