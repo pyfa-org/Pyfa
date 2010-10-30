@@ -253,6 +253,26 @@ class HeaderPane (wx.Panel):
         img.RotateHue(0.625)
         self.switchSelBmp = wx.BitmapFromImage(img)
 
+        img = self.switchBmp.ConvertToImage()
+        img.RotateHue(0.500)
+        self.switchHoverBmp = wx.BitmapFromImage(img)
+
+        img = self.rewBmp.ConvertToImage()
+        img.RotateHue(0.625)
+        self.rewHoverBmp = wx.BitmapFromImage(img)
+
+        img = self.resetBmp.ConvertToImage()
+        img.RotateHue(-1)
+        self.resetHoverBmp = wx.BitmapFromImage(img)
+
+        img = self.searchBmp.ConvertToImage()
+        img.RotateHue(0.625)
+        self.searchHoverBmp = wx.BitmapFromImage(img)
+
+        img = self.newBmp.ConvertToImage()
+        img.RotateHue(0.350)
+        self.newHoverBmp = wx.BitmapFromImage(img)
+
 
         self.shipBrowser = self.Parent
 
@@ -487,11 +507,15 @@ class HeaderPane (wx.Panel):
         if self.toggleSearch != 1:
             self.stStatus.SetLabel("Reset history")
         self.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
+        self.sbReset.SetBitmapLabel(self.resetHoverBmp, False)
+        self.sbReset.Refresh()
         event.Skip()
 
     def OnLeaveWReset(self, event):
         self.stStatus.SetLabel("")
         self.SetCursor(wx.StockCursor(wx.CURSOR_ARROW))
+        self.sbReset.SetBitmapLabel(self.resetBmp, False)
+        self.sbReset.Refresh()
         event.Skip()
 
 
@@ -542,33 +566,45 @@ class HeaderPane (wx.Panel):
         if self.toggleSearch != 1:
             self.stStatus.SetLabel("Search fittings")
         self.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
+        self.sbSearch.SetBitmapLabel(self.searchHoverBmp, False)
+        self.Refresh()
         event.Skip()
 
     def OnLeaveWSearch(self, event):
         self.stStatus.SetLabel("")
         self.SetCursor(wx.StockCursor(wx.CURSOR_ARROW))
+        self.sbSearch.SetBitmapLabel(self.searchBmp, False)
+        self.Refresh()
         event.Skip()
 
     def OnEnterWSwitch(self, event):
         if self.toggleSearch != 1:
             self.stStatus.SetLabel("Show empty ship groups" if self.shipBrowser.filterShipsWithNoFits else "Hide empty ship groups")
         self.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
+        self.sbSwitchFitView.SetBitmapLabel(self.switchHoverBmp, False)
+        self.Refresh()
         event.Skip()
 
     def OnLeaveWSwitch(self, event):
         self.stStatus.SetLabel("")
         self.SetCursor(wx.StockCursor(wx.CURSOR_ARROW))
+        self.sbSwitchFitView.SetBitmapLabel(self.switchBmp if not self.shipBrowser.filterShipsWithNoFits else self.switchSelBmp, False)
+        self.Refresh()
         event.Skip()
 
     def OnEnterWNewFit(self, event):
         if self.toggleSearch != 1:
             self.stStatus.SetLabel("New fitting")
         self.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
+        self.sbNewFit.SetBitmapLabel(self.newHoverBmp, False)
+        self.Refresh()
         event.Skip()
 
     def OnLeaveWNewFit(self, event):
         self.stStatus.SetLabel("")
         self.SetCursor(wx.StockCursor(wx.CURSOR_ARROW))
+        self.sbNewFit.SetBitmapLabel(self.newBmp, False)
+        self.Refresh()
         event.Skip()
 
     def OnSearch(self, event):
