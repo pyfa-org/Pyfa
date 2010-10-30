@@ -36,6 +36,18 @@ import gui.fittingView as fv
 from wx._core import PyDeadObjectError
 import os.path
 
+#dummy panel no paint no erasebk
+class PFPanel(wx.Panel):
+    def __init__(self,parent):
+        wx.Panel.__init__(self,parent)
+        self.Bind(wx.EVT_PAINT, self.OnPaint)
+        self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnBkErase)
+
+    def OnPaint(self, event):
+        event.Skip()
+    def OnBkErase(self, event):
+        pass
+
 class MainFrame(wx.Frame):
     __instance = None
     @classmethod
@@ -45,6 +57,7 @@ class MainFrame(wx.Frame):
     def __init__(self):
         wx.Frame.__init__(self, None, wx.ID_ANY, title="pyfa - Python Fitting Assistant")
         MainFrame.__instance = self
+        self.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNFACE ) )
 
         i = wx.IconFromBitmap(bitmapLoader.getBitmap("pyfa", "icons"))
         self.SetIcon(i)
@@ -52,7 +65,11 @@ class MainFrame(wx.Frame):
         self.SetMinSize((1000, 700))
         self.SetSize((1000, 700))
 
+        mainSizer = wx.BoxSizer(wx.HORIZONTAL)
+
         self.splitter = wx.SplitterWindow(self, style = wx.SP_LIVE_UPDATE)
+
+        mainSizer.Add(self.splitter,1,wx.EXPAND)
 
         self.notebookBrowsers = wx.Notebook(self.splitter, wx.ID_ANY)
         self.notebookBrowsers.Bind(wx.EVT_LEFT_DOWN, self.mouseHit)
@@ -64,34 +81,33 @@ class MainFrame(wx.Frame):
         self.notebookBrowsers.AddPage(self.shipBrowser, "Ships")
         self.notebookBrowsers.SetSelection(1)
 
-        statsFitviewPanel = wx.Panel(self.splitter)
-        self.statsSizer = wx.BoxSizer(wx.HORIZONTAL)
-        statsFitviewPanel.SetSizer(self.statsSizer)
+        self.FitviewAdditionsPanel = PFPanel(self.splitter)
+        faSizer = wx.BoxSizer(wx.VERTICAL)
 
-        self.fittingPanel = wx.Panel(statsFitviewPanel)
-        fittingSizer = wx.BoxSizer(wx.VERTICAL)
-        self.fittingPanel.SetSizer(fittingSizer)
-        self.statsSizer.Add(self.fittingPanel, 1, wx.EXPAND)
-
-        self.fitMultiSwitch = MultiSwitch(self.fittingPanel)
+        self.fitMultiSwitch = MultiSwitch(self.FitviewAdditionsPanel)
         self.fitMultiSwitch.AddTab()
-        fittingSizer.Add(self.fitMultiSwitch, 1, wx.EXPAND)
+        faSizer.Add(self.fitMultiSwitch,1,wx.EXPAND)
 
-        self.additionsPane = AdditionsPane(self.fittingPanel)
-        fittingSizer.Add(self.additionsPane, 0, wx.EXPAND)
+        self.additionsPane = AdditionsPane(self.FitviewAdditionsPanel)
+        faSizer.Add(self.additionsPane, 0, wx.EXPAND)
 
-        self.statsCharPickerSizer = wx.BoxSizer(wx.VERTICAL)
-        self.statsSizer.Add(self.statsCharPickerSizer, 0, wx.EXPAND | wx.TOP | wx.RIGHT | wx.LEFT, 3)
+        self.FitviewAdditionsPanel.SetSizer(faSizer)
 
-        self.charSelection = CharacterSelection(statsFitviewPanel)
-        self.statsCharPickerSizer.Add(self.charSelection, 0, wx.EXPAND)
-
-        self.statsPane = StatsPane(statsFitviewPanel)
-        self.statsCharPickerSizer.Add(self.statsPane, 0, wx.EXPAND)
-
-        self.splitter.SplitVertically(self.notebookBrowsers, statsFitviewPanel)
+        self.splitter.SplitVertically(self.notebookBrowsers, self.FitviewAdditionsPanel)
         self.splitter.SetMinimumPaneSize(200)
         self.splitter.SetSashPosition(300)
+
+        cstatsSizer = wx.BoxSizer(wx.VERTICAL)
+
+        self.charSelection = CharacterSelection(self)
+        cstatsSizer.Add(self.charSelection, 0, wx.EXPAND | wx.TOP | wx.RIGHT | wx.LEFT , 3)
+
+        self.statsPane = StatsPane(self)
+        cstatsSizer.Add(self.statsPane, 0, wx.EXPAND)
+
+        mainSizer.Add(cstatsSizer, 0 , wx.EXPAND)
+
+        self.SetSizer(mainSizer)
 
         #Add menu
         self.SetMenuBar(MainMenuBar())
