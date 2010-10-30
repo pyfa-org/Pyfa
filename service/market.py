@@ -114,7 +114,7 @@ class SearchWorkerThread(threading.Thread):
 class Market():
     instance = None
     FORCED_SHIPS = ("Ibis", "Impairor", "Velator", "Reaper")
-    FORCED_GROUPS = ("Rookie ship",)
+    FORCED_GROUPS = ("Rookie ship")
     META_MAP = {"normal": (1, 2, 14),
                 "faction": (4, 3),
                 "complex": (6,),
@@ -169,7 +169,12 @@ class Market():
         return root
         
 
-    LIMITED_EDITION = ("Gold Magnate", "Silver Magnate", "Guardian-Vexor", "Opux Luxury Yacht", "Armageddon Imperial Issue", "Apocalypse Imperial Issue", "Raven State Issue", "Megathron Federate Issue", "Tempest Tribal Issue", "Apotheosis", "Zephyr", "Primae", "Mimir", "Freki", "Adrestia", "Utu")
+    LIMITED_EDITION = ("Gold Magnate", "Silver Magnate", "Guardian-Vexor", 
+                       "Opux Luxury Yacht", "Armageddon Imperial Issue", 
+                       "Apocalypse Imperial Issue", "Raven State Issue", 
+                       "Megathron Federate Issue", "Tempest Tribal Issue", 
+                       "Apotheosis", "Zephyr", "Primae", "Mimir", "Freki", 
+                       "Adrestia", "Utu")
     def getShipList(self, id):
         ships = []
         if id == -1:
