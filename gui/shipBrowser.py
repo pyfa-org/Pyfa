@@ -251,7 +251,7 @@ class HeaderPane (wx.Panel):
 
         img = self.switchBmp.ConvertToImage()
         img.RotateHue(0.625)
-        self.switchBmp = wx.BitmapFromImage(img)
+        self.switchSelBmp = wx.BitmapFromImage(img)
 
 
         self.shipBrowser = self.Parent
@@ -594,8 +594,10 @@ class HeaderPane (wx.Panel):
     def OnSwitch(self, event):
         if self.shipBrowser.filterShipsWithNoFits:
             self.shipBrowser.filterShipsWithNoFits = False
+            self.sbSwitchFitView.SetBitmapLabel(self.switchBmp,False)
         else:
             self.shipBrowser.filterShipsWithNoFits = True
+            self.sbSwitchFitView.SetBitmapLabel(self.switchSelBmp,False)
         self.stStatus.SetLabel("Show empty ship groups" if self.shipBrowser.filterShipsWithNoFits else "Hide empty ship groups")
         stage = self.shipBrowser.GetActiveStage()
         if stage == 2:
