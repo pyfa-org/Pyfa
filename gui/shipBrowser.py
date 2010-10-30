@@ -859,6 +859,7 @@ class ShipItem(wx.Window):
         if self.highlighted == 1:
             self.editWasShown = 1
         self.newToggleBmp = self.newBmp
+        self.ignoreFurtherFitNameEdit = True
         self.Refresh()
 
     def editCheckEsc(self, event):
