@@ -75,6 +75,7 @@ class MainMenuBar(wx.MenuBar):
         windowMenu.AppendItem(charEditItem)
 
         damagePatternEditItem = wx.MenuItem(windowMenu, self.damagePatternEditorId, "Damage Pattern Editor\tCTRL+D")
+        damagePatternEditItem.SetBitmap(bitmapLoader.getBitmap("damagePattern_small", "icons"))
         windowMenu.AppendItem(damagePatternEditItem)
 
         windowMenu.Append(wx.ID_PREFERENCES)
