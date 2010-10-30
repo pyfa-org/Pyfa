@@ -67,7 +67,7 @@ class CharacterEditor(wx.Frame):
 
         self.navSizer.Add(self.skillTreeChoice, 1, wx.ALL | wx.EXPAND, 5)
 
-        buttons = (("new", wx.ART_NEW), ("copy", wx.ART_COPY), ("rename", bitmapLoader.getBitmap("rename", "icons")), ("delete", wx.ART_DELETE))
+        buttons = (("new", wx.ART_NEW), (("rename", bitmapLoader.getBitmap("rename", "icons")), "copy", wx.ART_COPY), ("delete", wx.ART_DELETE))
 
         size = None
         for name, art in buttons:
