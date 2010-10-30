@@ -78,7 +78,7 @@ class MainMenuBar(wx.MenuBar):
         damagePatternEditItem.SetBitmap(bitmapLoader.getBitmap("damagePattern_small", "icons"))
         windowMenu.AppendItem(damagePatternEditItem)
 
-        windowMenu.Append(wx.ID_PREFERENCES)
+        #windowMenu.Append(wx.ID_PREFERENCES)
 
         # Help menu
         helpMenu = wx.Menu()
