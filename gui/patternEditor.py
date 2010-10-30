@@ -30,6 +30,7 @@ class DmgPatternEditorDlg (wx.Dialog):
     def __init__(self, parent):
         wx.Dialog.__init__ (self, parent, id = wx.ID_ANY, title = u"Damage Pattern Editor", size = wx.Size( 400,240 ))
 
+        self.block = False
         self.SetSizeHintsSz(wx.DefaultSize, wx.DefaultSize)
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
@@ -228,10 +229,16 @@ class DmgPatternEditorDlg (wx.Dialog):
         self.delete.Enable()
 
     def getActivePattern(self):
+        if len(self.choices) == 0:
+            return None
+
         return self.choices[self.ccDmgPattern.GetSelection()]
 
     def patternChanged(self, event=None):
         p = self.getActivePattern()
+        if p is None:
+            return
+
         if p.name == "Uniform" or p.name == "Selected Ammo":
             self.restrict()
         else:
