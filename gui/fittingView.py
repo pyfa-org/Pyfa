@@ -101,10 +101,10 @@ class FittingView(d.Display):
                 populate = cFit.removeModule(self.activeFitID, self.mods[self.GetItemData(row)].position)
                 self.Select(row,0)
                 row = self.GetNextSelected(row)
-            if populate is not None:
-                self.Select(firstSel)
-                if populate: self.slotsChanged()
-                wx.PostEvent(self.mainFrame, FitChanged(fitID=self.activeFitID))
+                if populate is not None:
+                    self.Select(firstSel)
+                    if populate: self.slotsChanged()
+                    wx.PostEvent(self.mainFrame, FitChanged(fitID=self.activeFitID))
 
         event.Skip()
 
