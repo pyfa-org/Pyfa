@@ -42,35 +42,35 @@ class ResourcesViewFull(StatsView):
     def populatePanel(self, contentPanel, headerPanel):
 
         contentSizer = contentPanel.GetSizer()
+        root = wx.BoxSizer(wx.VERTICAL)
+        contentSizer.Add(root, 0, wx.EXPAND, 0)
+
+        sizer = wx.GridSizer(1, 4)
+        root.Add(sizer, 0, wx.EXPAND)
+        root.Add(wx.StaticLine(contentPanel, wx.ID_ANY, style=wx.HORIZONTAL), 0, wx.EXPAND)
+
         sizerResources = wx.BoxSizer(wx.HORIZONTAL)
-        contentSizer.Add( sizerResources, 0, wx.EXPAND, 0)
+        root.Add(sizerResources, 1, wx.EXPAND, 0)
 
         parent = self.panel = contentPanel
         self.headerPanel = headerPanel
         panel = "full"
 
-        sizer = wx.FlexGridSizer(2, 2)
-        sizer.SetMinSize(wx.Size(36 + self.getTextExtentW("400/400"), 0))
-        for i in xrange(3):
-            sizer.AddGrowableCol(i + 1)
 
         base = sizerResources
-        base.Add(sizer, 0, wx.ALIGN_CENTER)
 
         #Turrets & launcher hardslots display
         tooltipText = {"turret":"Turret hardpoints", "drones":"Drones active", "launcher":"Launcher hardpoints", "calibration":"Calibration"}
         for type in ("turret", "drones", "launcher", "calibration"):
-            outerBox = wx.BoxSizer(wx.VERTICAL)
             box = wx.BoxSizer(wx.HORIZONTAL)
 
             bitmap = bitmapLoader.getStaticBitmap("%s_big" % type, parent, "icons")
             tooltip = wx.ToolTip(tooltipText[type])
             bitmap.SetToolTip(tooltip)
 
-            outerBox.Add(bitmap, 0, wx.ALIGN_CENTER)
-            outerBox.Add(box, 0, wx.ALIGN_CENTER)
+            box.Add(bitmap, 0, wx.ALIGN_CENTER)
 
-            sizer.Add(outerBox, 0, wx.ALIGN_CENTER)
+            sizer.Add(box, 0, wx.ALIGN_CENTER)
 
             suffix = {'turret':'Hardpoints', 'drones':'Active', 'launcher':'Hardpoints', 'calibration':'Points'}
             lbl = wx.StaticText(parent, wx.ID_ANY, "0")
@@ -83,7 +83,6 @@ class ResourcesViewFull(StatsView):
             setattr(self, "label%sTotal%s%s" % (panel.capitalize(), type.capitalize(), suffix[type].capitalize()), lbl)
             box.Add(lbl, 0, wx.ALIGN_CENTER)
 
-        base.Add(wx.StaticLine(parent, wx.ID_ANY, style=wx.VERTICAL), 0, wx.EXPAND | wx.LEFT, 3 if panel == "full" else 0)
 
         #PG, Cpu & drone stuff
         tooltipText = {"cpu":"CPU", "pg":"PowerGrid", "droneBay":"Drone bay", "droneBandwidth":"Drone bandwidth"}
