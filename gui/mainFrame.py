@@ -90,7 +90,7 @@ class MainFrame(wx.Frame):
         self.statsCharPickerSizer.Add(self.statsPane, 0, wx.EXPAND)
 
         self.splitter.SplitVertically(self.notebookBrowsers, statsFitviewPanel)
-        self.splitter.SetMinimumPaneSize(10)
+        self.splitter.SetMinimumPaneSize(200)
         self.splitter.SetSashPosition(300)
 
         #Add menu
