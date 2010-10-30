@@ -261,3 +261,5 @@ class FittingView(d.Display):
         for i, mod in enumerate(self.mods):
             if slotMap[mod.slot]:
                 self.SetItemBackgroundColour(i, wx.Colour(255, 51, 51))
+            else:
+                self.SetItemBackgroundColour(i, None)
