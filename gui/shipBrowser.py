@@ -34,6 +34,8 @@ class ShipBrowser(wx.Panel):
         self._stage2Data = -1
         self._stage3Data = -1
         self._stage3ShipName = ""
+        self.fitIDMustEditName = -1
+        self.filterShipsWithNoFits = False
 
         self.SetSizeHintsSz(wx.DefaultSize, wx.DefaultSize)
 
@@ -94,6 +96,7 @@ class ShipBrowser(wx.Panel):
         self._activeStage = 1
         self.lastdata = 0
         self.hpane.ToggleNewFitSB(False)
+        self.hpane.ToggleFitViewModeSB(False)
         sMarket = service.Market.getInstance()
         self.lpane.RemoveAllChildren()
         if len(self.categoryList) == 0:
@@ -121,6 +124,7 @@ class ShipBrowser(wx.Panel):
 
         self._stage2Data = categoryID
         self.hpane.ToggleNewFitSB(False)
+        self.hpane.ToggleFitViewModeSB(True)
         sMarket = service.Market.getInstance()
         sFit = service.Fit.getInstance()
         self.lpane.RemoveAllChildren()
@@ -131,7 +135,12 @@ class ShipBrowser(wx.Panel):
             shipList.sort(key=self.raceNameKey)
             for ID, name, race in shipList:
                 fits = len(sFit.getFitsWithShip(ID))
-                self.lpane.AddWidget(ShipItem(self.lpane, ID, (name, fits), race))
+                if self.filterShipsWithNoFits:
+                    if fits>0:
+                        self.lpane.AddWidget(ShipItem(self.lpane, ID, (name, fits), race))
+                else:
+                    self.lpane.AddWidget(ShipItem(self.lpane, ID, (name, fits), race))
+
                 content.append((ID,name,fits,race))
             self.stage2Cache[categoryID]= content
         else:
@@ -142,7 +151,11 @@ class ShipBrowser(wx.Panel):
                     fits = dbfits
                     self.stage2Cache[categoryID][count]= (ID,name,fits,race)
                 count += 1
-                self.lpane.AddWidget(ShipItem(self.lpane,ID, (name,fits),race))
+                if self.filterShipsWithNoFits:
+                    if fits >0:
+                        self.lpane.AddWidget(ShipItem(self.lpane,ID, (name,fits),race))
+                else:
+                    self.lpane.AddWidget(ShipItem(self.lpane,ID, (name,fits),race))
         self.lpane.RefreshList()
         self.Show()
 
@@ -167,6 +180,7 @@ class ShipBrowser(wx.Panel):
             stage,data = self.browseHist.pop()
             self.hpane.gotoStage(stage,data)
             return
+        self.hpane.ToggleFitViewModeSB(False)
         self.hpane.ToggleNewFitSB(True)
         fitList.sort(key=self.nameKey)
         shipName = sMarket.getItem(shipID).name
@@ -229,10 +243,16 @@ class HeaderPane (wx.Panel):
         self.searchBmp = bitmapLoader.getBitmap("fsearch_small","icons")
         self.newBmp = bitmapLoader.getBitmap("fit_add_small","icons")
         self.resetBmp = bitmapLoader.getBitmap("freset_small","icons")
+        self.switchBmp = bitmapLoader.getBitmap("fit_switch_view_mode_small","icons")
 
         img = self.newBmp.ConvertToImage()
         img.RotateHue(0.625)
         self.newBmp = wx.BitmapFromImage(img)
+
+        img = self.switchBmp.ConvertToImage()
+        img.RotateHue(0.625)
+        self.switchBmp = wx.BitmapFromImage(img)
+
 
         self.shipBrowser = self.Parent
 
@@ -242,6 +262,7 @@ class HeaderPane (wx.Panel):
         self.menu = None
         self.inPopup = False
         self.inSearch = False
+
         bmpSize = (16,16)
         self.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNFACE ) )
 
@@ -274,6 +295,11 @@ class HeaderPane (wx.Panel):
         self.sbNewFit = PFGenBitmapButton( self, wx.ID_ANY, self.newBmp, wx.DefaultPosition, bmpSize, wx.BORDER_NONE )
         mainSizer.Add(self.sbNewFit, 0, wx.LEFT | wx.TOP | wx.BOTTOM  | wx.ALIGN_CENTER_VERTICAL , 5)
         self.sbNewFit.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNFACE ) )
+
+        self.sbSwitchFitView = PFGenBitmapButton( self, wx.ID_ANY, self.switchBmp, wx.DefaultPosition, bmpSize, wx.BORDER_NONE )
+        mainSizer.Add(self.sbSwitchFitView, 0, wx.LEFT | wx.TOP | wx.BOTTOM  | wx.ALIGN_CENTER_VERTICAL , 5)
+        self.sbSwitchFitView.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNFACE ) )
+
 
         self.stStatus = wx.StaticText( self, wx.ID_ANY, "", wx.DefaultPosition, wx.DefaultSize, 0 )
         self.stStatus.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNFACE ) )
@@ -315,6 +341,10 @@ class HeaderPane (wx.Panel):
         self.sbNewFit.Bind(wx.EVT_BUTTON,self.OnNewFitting)
         self.sbNewFit.Bind( wx.EVT_ENTER_WINDOW, self.OnEnterWNewFit )
         self.sbNewFit.Bind( wx.EVT_LEAVE_WINDOW, self.OnLeaveWNewFit )
+
+        self.sbSwitchFitView.Bind(wx.EVT_BUTTON,self.OnSwitch)
+        self.sbSwitchFitView.Bind( wx.EVT_ENTER_WINDOW, self.OnEnterWSwitch )
+        self.sbSwitchFitView.Bind( wx.EVT_LEAVE_WINDOW, self.OnLeaveWSwitch )
 
         self.search.Bind(wx.EVT_TEXT_ENTER, self.doSearch)
         self.search.Bind(wx.EVT_KILL_FOCUS, self.editLostFocus)
@@ -436,6 +466,11 @@ class HeaderPane (wx.Panel):
         self.sl2.Show(toggle)
         self.Layout()
 
+    def ToggleFitViewModeSB(self, toggle):
+        self.sbSwitchFitView.Show(toggle)
+        self.sl2.Show(toggle)
+        self.Layout()
+
     def OnReset(self,event):
         if self.shipBrowser.browseHist:
             self.shipBrowser.browseHist = []
@@ -514,6 +549,17 @@ class HeaderPane (wx.Panel):
         self.SetCursor(wx.StockCursor(wx.CURSOR_ARROW))
         event.Skip()
 
+    def OnEnterWSwitch(self, event):
+        if self.toggleSearch != 1:
+            self.stStatus.SetLabel("Show empty ship groups" if self.shipBrowser.filterShipsWithNoFits else "Hide empty ship groups")
+        self.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
+        event.Skip()
+
+    def OnLeaveWSwitch(self, event):
+        self.stStatus.SetLabel("")
+        self.SetCursor(wx.StockCursor(wx.CURSOR_ARROW))
+        event.Skip()
+
     def OnEnterWNewFit(self, event):
         if self.toggleSearch != 1:
             self.stStatus.SetLabel("New fitting")
@@ -545,6 +591,18 @@ class HeaderPane (wx.Panel):
             self.Layout()
         event.Skip()
 
+    def OnSwitch(self, event):
+        if self.shipBrowser.filterShipsWithNoFits:
+            self.shipBrowser.filterShipsWithNoFits = False
+        else:
+            self.shipBrowser.filterShipsWithNoFits = True
+        self.stStatus.SetLabel("Show empty ship groups" if self.shipBrowser.filterShipsWithNoFits else "Hide empty ship groups")
+        stage = self.shipBrowser.GetActiveStage()
+        if stage == 2:
+            categoryID = self.shipBrowser.GetStageData(stage)
+            wx.PostEvent(self.shipBrowser,Stage2Selected(categoryID=categoryID, back = True))
+        event.Skip()
+
     def OnNewFitting(self, event):
         self.editLostFocus()
         stage = self.Parent.GetActiveStage()
@@ -553,6 +611,7 @@ class HeaderPane (wx.Panel):
             shipName = self.Parent.GetStage3ShipName()
             sFit = service.Fit.getInstance()
             fitID = sFit.newFit(shipID, "%s fit" %shipName)
+            self.shipBrowser.fitIDMustEditName = fitID
             wx.PostEvent(self.Parent,Stage3Selected(shipID=shipID, back = True))
             wx.PostEvent(self.mainFrame, FitSelected(fitID=fitID))
         event.Skip()
@@ -797,6 +856,7 @@ class ShipItem(wx.Window):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
         self._itemData = itemData
+        self.ignoreFurtherFitNameEdit = False
 
         self.shipRace = itemData
 
@@ -829,11 +889,10 @@ class ShipItem(wx.Window):
         self.editPosY = 0
         self.highlighted = 0
         self.editWasShown = 0
-
+        self.btnsStatus = ""
+        self.Refresh()
         self.tcFitName = wx.TextCtrl(self, wx.ID_ANY, "%s fit" % self.shipName, wx.DefaultPosition, (120,-1), wx.TE_PROCESS_ENTER)
         self.tcFitName.Show(False)
-
-        self.btnsStatus = ""
 
         self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBackground)
 
@@ -857,8 +916,9 @@ class ShipItem(wx.Window):
         self.tcFitName.Show(False)
         if self.highlighted == 1:
             self.editWasShown = 1
-            self.newToggleBmp = self.newBmp
-            self.Refresh()
+        self.newToggleBmp = self.newBmp
+        self.ignoreFurtherFitNameEdit = True
+        self.Refresh()
 
     def editCheckEsc(self, event):
         if event.GetKeyCode() == wx.WXK_ESCAPE:
@@ -886,6 +946,7 @@ class ShipItem(wx.Window):
         x, y = pos
         if self.NHitTest((self.editPosX, self.editPosY), pos, (16, 16)):
             if self.editWasShown == 1:
+                self.ignoreFurtherFitNameEdit = True
                 self.createNewFit()
                 return
             else:
@@ -929,6 +990,8 @@ class ShipItem(wx.Window):
         fitID = sFit.newFit(self.shipID, self.tcFitName.GetValue())
         self.tcFitName.Show(False)
         self.editWasShown = 0
+        if not self.ignoreFurtherFitNameEdit:
+            self.shipBrowser.fitIDMustEditName = fitID
         wx.PostEvent(self.shipBrowser,Stage3Selected(shipID=self.shipID, back=False))
         wx.PostEvent(self.mainFrame, FitSelected(fitID=fitID))
 
@@ -1006,8 +1069,9 @@ class ShipItem(wx.Window):
         textStart = 48
         xtext, ytext = mdc.GetTextExtent(shipName)
         mdc.DrawBitmap(self.raceBmp,textStart, ypos + self.raceBmp.GetHeight()/2)
-        mdc.DrawText(shipName, textStart + self.raceBmp.GetWidth() + 4, ypos)
+#        mdc.DrawText(shipName, textStart + self.raceBmp.GetWidth() + 4, ypos)
         textStart += self.raceBmp.GetWidth() + 4
+        sposy = ypos
 
         ypos += ytext
 
@@ -1038,6 +1102,22 @@ class ShipItem(wx.Window):
             xtext, ytext = mdc.GetTextExtent(status)
             ytext = (rect.height - ytext)/2
             mdc.DrawText(status, self.editPosX - xtext -5,ytext)
+        else:
+            xtext =0
+
+        mdc.SetFont(wx.Font(9, wx.SWISS, wx.NORMAL, wx.BOLD, False))
+        fnwidths = mdc.GetPartialTextExtents(shipName)
+        count = 0
+        maxsize = self.editPosX -xtext - 15 - textStart
+        for i in fnwidths:
+            if i<= maxsize:
+                count +=1
+            else:
+                break
+
+        shipName = "%s%s" % (shipName[:count if count >5 else 5],"..." if len(shipName)>count else "")
+        mdc.SetFont(wx.Font(9, wx.SWISS, wx.NORMAL, wx.BOLD, False))
+        mdc.DrawText(shipName, textStart, sposy)
 
         if self.tcFitName.IsShown():
             fnEditSize = self.tcFitName.GetSize()
@@ -1088,7 +1168,12 @@ class FitItem(wx.Window):
         self.btnsStatus = ""
 
         self.tcFitName = wx.TextCtrl(self, wx.ID_ANY, "%s" % self.fitName, wx.DefaultPosition, (150,-1), wx.TE_PROCESS_ENTER)
-        self.tcFitName.Show(False)
+        if self.shipBrowser.fitIDMustEditName != self.fitID:
+            self.tcFitName.Show(False)
+        else:
+            self.tcFitName.SetFocus()
+            self.tcFitName.SelectAll()
+            self.shipBrowser.fitIDMustEditName = -1
 
         self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBackground)
 
@@ -1185,16 +1270,21 @@ class FitItem(wx.Window):
         sFit = service.Fit.getInstance()
         self.tcFitName.Show(False)
         self.editWasShown = 0
-        self.fitName = self.tcFitName.GetValue()
-        sFit.renameFit(self.fitID, self.fitName)
-        wx.PostEvent(self.mainFrame, FitRenamed(fitID=self.fitID))
-        self.Refresh()
+        fitName = self.tcFitName.GetValue()
+        if fitName:
+            self.fitName = fitName
+            sFit.renameFit(self.fitID, self.fitName)
+            wx.PostEvent(self.mainFrame, FitRenamed(fitID=self.fitID))
+            self.Refresh()
+        else:
+            self.tcFitName.SetValue(self.fitName)
 
     def copyFit(self, event=None):
         sFit = service.Fit.getInstance()
-        sFit.copyFit(self.fitID)
+        fitID = sFit.copyFit(self.fitID)
+        self.shipBrowser.fitIDMustEditName = fitID
         wx.PostEvent(self.shipBrowser,Stage3Selected(shipID=self.shipID, back=True))
-        wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fitID))
+        wx.PostEvent(self.mainFrame, FitSelected(fitID=fitID))
 
     def deleteFit(self, event=None):
         sFit = service.Fit.getInstance()
@@ -1291,17 +1381,19 @@ class FitItem(wx.Window):
             mdc.DrawText(status, self.copyPosX - xtext -5,ytext)
         else:
             xtext = 0
+
+        mdc.SetFont(wx.Font(9, wx.SWISS, wx.NORMAL, wx.BOLD, False))
         fnwidths = mdc.GetPartialTextExtents(fitName)
         count = 0
-        maxsize = self.copyPosX -xtext - 5 - textStart*2
+        maxsize = self.copyPosX -xtext - 15 - textStart
         for i in fnwidths:
-            if i< maxsize:
+            if i <= maxsize:
                 count +=1
             else:
                 break
 
         fitName = "%s%s" % (fitName[:count if count >5 else 5],"..." if len(fitName)>count else "")
-        mdc.SetFont(wx.Font(9, wx.SWISS, wx.NORMAL, wx.BOLD, False))
+
         mdc.DrawText(fitName, textStart, fposy)
 
         mdc.DrawBitmap(self.copyBmp, self.copyPosX, self.copyPosY, 0)

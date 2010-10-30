@@ -52,10 +52,10 @@ class MaxRange(ViewColumn):
     def getText(self, stuff):
         maxRange = stuff.maxRange if hasattr(stuff, "maxRange") else stuff.getModifiedItemAttr("maxRange")
         falloff = stuff.getModifiedItemAttr("falloff")
-        if not falloff:
-            falloff = ""
-        else:
+        if falloff:
             falloff = "+%sm" % formatAmount(falloff, 3, 0, 3)
+        else:
+            falloff = ""
 
         if maxRange:
             return "%sm%s" % (formatAmount(maxRange, 3, 0, 3), falloff)
