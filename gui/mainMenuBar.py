@@ -45,8 +45,8 @@ class MainMenuBar(wx.MenuBar):
         editMenu = wx.Menu()
         self.Append(editMenu, "&Edit")
 
-        editMenu.Append(wx.ID_UNDO)
-        editMenu.Append(wx.ID_REDO)
+        #editMenu.Append(wx.ID_UNDO)
+        #editMenu.Append(wx.ID_REDO)
 
         # Fit menu
         self.fitMenu = fitMenu = wx.Menu()
