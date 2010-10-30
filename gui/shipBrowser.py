@@ -305,12 +305,8 @@ class HeaderPane (wx.Panel):
         self.sl1 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_VERTICAL )
         mainSizer.Add( self.sl1, 0, wx.EXPAND |wx.LEFT, 5 )
 
-        self.sbSearch = PFGenBitmapButton( self, wx.ID_ANY, self.searchBmp, wx.DefaultPosition, bmpSize, wx.BORDER_NONE )
-        mainSizer.Add(self.sbSearch, 0, wx.LEFT | wx.TOP | wx.BOTTOM  | wx.ALIGN_CENTER_VERTICAL , 5)
-        self.sbSearch.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNFACE ) )
-
-        self.sl2 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_VERTICAL )
-        mainSizer.Add( self.sl2, 0, wx.EXPAND |wx.LEFT, 5 )
+#        self.sl2 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_VERTICAL )
+#        mainSizer.Add( self.sl2, 0, wx.EXPAND |wx.LEFT, 5 )
 
         self.sbNewFit = PFGenBitmapButton( self, wx.ID_ANY, self.newBmp, wx.DefaultPosition, bmpSize, wx.BORDER_NONE )
         mainSizer.Add(self.sbNewFit, 0, wx.LEFT | wx.TOP | wx.BOTTOM  | wx.ALIGN_CENTER_VERTICAL , 5)
@@ -324,7 +320,7 @@ class HeaderPane (wx.Panel):
         self.stStatus = wx.StaticText( self, wx.ID_ANY, "", wx.DefaultPosition, wx.DefaultSize, 0 )
         self.stStatus.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNFACE ) )
         self.stStatus.Wrap( -1 )
-        mainSizer.Add(self.stStatus, 0, wx.ALL | wx.EXPAND | wx.ALIGN_CENTER_VERTICAL , 5)
+        mainSizer.Add(self.stStatus, 1, wx.ALL | wx.EXPAND | wx.ALIGN_CENTER_VERTICAL , 5)
 
         self.spanel = wx.Panel(self)
         self.spanel.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNFACE ) )
@@ -336,7 +332,11 @@ class HeaderPane (wx.Panel):
 
 
         spsizer.Add(self.search,1, wx.ALIGN_CENTER_VERTICAL)
-        mainSizer.Add(self.spanel,1,wx.EXPAND)
+        mainSizer.Add(self.spanel,1000,wx.EXPAND | wx.LEFT, 5)
+
+        self.sbSearch = PFGenBitmapButton( self, wx.ID_ANY, self.searchBmp, wx.DefaultPosition, bmpSize, wx.BORDER_NONE )
+        mainSizer.Add(self.sbSearch, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL , 5)
+        self.sbSearch.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNFACE ) )
 
         self.SetSizer(mainSizer)
 
@@ -483,12 +483,12 @@ class HeaderPane (wx.Panel):
 
     def ToggleNewFitSB(self, toggle):
         self.sbNewFit.Show(toggle)
-        self.sl2.Show(toggle)
+#        self.sl2.Show(toggle)
         self.Layout()
 
     def ToggleFitViewModeSB(self, toggle):
         self.sbSwitchFitView.Show(toggle)
-        self.sl2.Show(toggle)
+#        self.sl2.Show(toggle)
         self.Layout()
 
     def OnReset(self,event):
