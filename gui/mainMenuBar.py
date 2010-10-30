@@ -33,26 +33,23 @@ class MainMenuBar(wx.MenuBar):
         # File menu
         fileMenu = wx.Menu()
         self.Append(fileMenu, "&File")
-        fileMenu.Append(self.backupFitsId, "&Backup fits", "Backup all fittings to a XML file")
         if 'wxMSW' in wx.PlatformInfo:
             fileMenu.Append(wx.ID_CLOSE, "&Close\tCTRL+W", "Close the currently open fit")
         else:
             fileMenu.Append(wx.ID_CLOSE)
         fileMenu.Append(wx.ID_EXIT)
+        fileMenu.AppendSeparator()
+        fileMenu.Append(self.backupFitsId, "&Backup fits", "Backup all fittings to a XML file")
+        fileMenu.Append(wx.ID_OPEN, "&Import\tCTRL+O", "Import a fit into pyfa.")
+        fileMenu.Append(wx.ID_SAVEAS, "&Export\tCTRL+S", "Export the fit to another format.")
 
 
         # Edit menu
         editMenu = wx.Menu()
         self.Append(editMenu, "&Edit")
 
-        editMenu.Append(wx.ID_UNDO)
-        editMenu.Append(wx.ID_REDO)
-
-        # Fit menu
-        self.fitMenu = fitMenu = wx.Menu()
-        self.Append(fitMenu, "F&it")
-        fitMenu.Append(wx.ID_OPEN, "&Import", "Import a fit into pyfa.")
-        fitMenu.Append(wx.ID_SAVEAS, "&Export\tCTRL+S", "Export the fit to another format.")
+        #editMenu.Append(wx.ID_UNDO)
+        #editMenu.Append(wx.ID_REDO)
 
         clipboardMenu = wx.Menu()
         self.idExportDna, self.idExportEft, self.idExportXml = wx.NewId(), wx.NewId(), wx.NewId()
@@ -60,10 +57,10 @@ class MainMenuBar(wx.MenuBar):
         clipboardMenu.Append(self.idExportXml, "&XML", "Copy the XML export of this fit to the clipboard")
         clipboardMenu.Append(self.idExportDna, "&DNA", "Copy the DNA export of this fit to the clipboard")
 
-        copyText = "&To Clipboard" + ("\tCTRL+C" if 'wxMSW' in wx.PlatformInfo else "")
-        pasteText = "&From Clipboard" + ("\tCTRL+V" if 'wxMSW' in wx.PlatformInfo else "")
-        fitMenu.AppendMenu(wx.ID_COPY, copyText, clipboardMenu, "Export a fit to the clipboard")
-        fitMenu.Append(wx.ID_PASTE, pasteText, "Import a fit from the clipboard")
+        copyText = "Export &To Clipboard" + ("\tCTRL+C" if 'wxMSW' in wx.PlatformInfo else "")
+        pasteText = "Import &From Clipboard" + ("\tCTRL+V" if 'wxMSW' in wx.PlatformInfo else "")
+        editMenu.AppendMenu(wx.ID_COPY, copyText, clipboardMenu, "Export a fit to the clipboard")
+        editMenu.Append(wx.ID_PASTE, pasteText, "Import a fit from the clipboard")
 
 
         # Character menu
