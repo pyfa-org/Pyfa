@@ -52,8 +52,6 @@ class FirepowerViewFull(StatsView):
 
         for damageType, image in (("weapon", "turret") , ("drone", "droneDPS")):
             baseBox = wx.BoxSizer(wx.HORIZONTAL)
-
-            counter += 1
             sizerFirepower.Add(baseBox, 1, wx.ALIGN_LEFT if counter == 0 else wx.ALIGN_CENTER_HORIZONTAL)
 
             baseBox.Add(bitmapLoader.getStaticBitmap("%s_big" % image, parent, "icons"), 0, wx.ALIGN_CENTER)
@@ -72,6 +70,7 @@ class FirepowerViewFull(StatsView):
             hbox.Add(lbl, 0, wx.ALIGN_CENTER)
 #            hbox.Add(wx.StaticText(parent, wx.ID_ANY, " DPS"), 0, wx.ALIGN_CENTER)
             self._cachedValues.append(0)
+            counter += 1
         targetSizer = sizerFirepower
 
         baseBox = wx.BoxSizer(wx.HORIZONTAL)
