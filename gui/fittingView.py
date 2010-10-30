@@ -209,6 +209,8 @@ class FittingView(d.Display):
             wx.CallAfter(self.spawnMenu)
 
     def spawnMenu(self):
+        if self.activeFitID is None:
+            return
         cFit = service.Fit.getInstance()
         selection = []
         sel = self.GetFirstSelected()
