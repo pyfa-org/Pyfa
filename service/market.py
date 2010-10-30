@@ -165,7 +165,8 @@ class Market():
         for grp in cat.groups:
             if grp.published or grp.name in self.FORCED_GROUPS:
                 root.append((grp.ID, grp.name))
-
+        zephyr = eos.db.getGroup("Prototype Exploration Ship")
+        root.remove((zephyr.ID, zephyr.name))
         return root
         
 
