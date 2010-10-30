@@ -49,6 +49,7 @@ class CharacterEditor(wx.Frame):
 
         cChar = service.Character.getInstance()
         charList = cChar.getCharacterList()
+        charList.sort(key=lambda t: t[1])
 
         self.btnSave = wx.Button(self, wx.ID_SAVE)
         self.btnSave.Hide()
@@ -60,14 +61,17 @@ class CharacterEditor(wx.Frame):
 
         self.skillTreeChoice = wx.Choice(self, wx.ID_ANY, style=0)
 
-        for id, name in charList:
-            self.skillTreeChoice.Append(name, id)
-
-        self.skillTreeChoice.SetSelection(0)
+        for id, name, active in charList:
+            i = self.skillTreeChoice.Append(name, id)
+            if active:
+                self.skillTreeChoice.SetSelection(i)
 
         self.navSizer.Add(self.skillTreeChoice, 1, wx.ALL | wx.EXPAND, 5)
 
-        buttons = (("new", wx.ART_NEW), (("rename", bitmapLoader.getBitmap("rename", "icons")), "copy", wx.ART_COPY), ("delete", wx.ART_DELETE))
+        buttons = (("new", wx.ART_NEW),
+                   ("rename", bitmapLoader.getBitmap("rename", "icons")),
+                   ("copy", wx.ART_COPY),
+                   ("delete", wx.ART_DELETE))
 
         size = None
         for name, art in buttons:

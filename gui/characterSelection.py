@@ -58,7 +58,9 @@ class CharacterSelection(wx.Panel):
         activeChar = self.getActiveCharacter()
 
         choice.Clear()
-        for id, name in cChar.getCharacterList():
+        charList = cChar.getCharacterList()
+        cChar.getCharacterList()
+        for id, name, active in charList:
             currId = choice.Append(name, id)
             if id == activeChar:
                 choice.SetSelection(currId)
