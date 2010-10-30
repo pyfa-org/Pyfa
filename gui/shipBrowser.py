@@ -505,7 +505,7 @@ class HeaderPane (wx.Panel):
         else:
             self.stStatus.Disable()
         if self.toggleSearch != 1:
-            self.stStatus.SetLabel("Reset history")
+            self.stStatus.SetLabel("Ship Groups")
         self.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
         self.sbReset.SetBitmapLabel(self.resetHoverBmp, False)
         self.sbReset.Refresh()
@@ -1204,8 +1204,8 @@ class FitItem(wx.Window):
         self.editWasShown = 0
 
         self.btnsStatus = ""
-
-        self.tcFitName = wx.TextCtrl(self, wx.ID_ANY, "%s" % self.fitName, wx.DefaultPosition, (150,-1), wx.TE_PROCESS_ENTER)
+        self.editWidth = 150
+        self.tcFitName = wx.TextCtrl(self, wx.ID_ANY, "%s" % self.fitName, wx.DefaultPosition, (self.editWidth,-1), wx.TE_PROCESS_ENTER)
         if self.shipBrowser.fitIDMustEditName != self.fitID:
             self.tcFitName.Show(False)
         else:
@@ -1441,7 +1441,12 @@ class FitItem(wx.Window):
         if self.tcFitName.IsShown():
             fnEditSize = self.tcFitName.GetSize()
             wSize = self.GetSize()
-            fnEditPosX = self.copyPosX - fnEditSize.width -5
+            fnEditPosX = self.copyPosX - self.editWidth - 5
             fnEditPosY = (wSize.height - fnEditSize.height)/2
-            self.tcFitName.SetPosition((fnEditPosX,fnEditPosY))
+            if fnEditPosX < textStart:
+                self.tcFitName.SetSize((self.editWidth + fnEditPosX - textStart,-1))
+                self.tcFitName.SetPosition((textStart,fnEditPosY))
+            else:
+                self.tcFitName.SetSize((self.editWidth,-1))
+                self.tcFitName.SetPosition((fnEditPosX,fnEditPosY))
         event.Skip()
