@@ -248,3 +248,5 @@ class FittingView(d.Display):
             wx.PostEvent(self.mainFrame, FitChanged(fitID=self.mainFrame.getActiveFit()))
         else:
             event.Skip()
+
+    

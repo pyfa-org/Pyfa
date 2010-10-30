@@ -31,6 +31,7 @@ from gui.characterEditor import CharacterEditor
 from gui.characterSelection import CharacterSelection
 from gui.patternEditor import DmgPatternEditorDlg
 from gui.preferenceDialog import PreferenceDialog
+from gui.copySelectDialog import CopySelectDialog
 import aboutData
 import gui.fittingView as fv
 from wx._core import PyDeadObjectError
@@ -242,19 +243,17 @@ class MainFrame(wx.Frame):
         self.Bind(wx.EVT_MENU, self.showPreferenceDialog, id=wx.ID_PREFERENCES)
 
         #Clipboard exports
-        self.Bind(wx.EVT_MENU, self.clipboardEft, id=menuBar.idExportEft)
-        self.Bind(wx.EVT_MENU, self.clipboardDna, id=menuBar.idExportDna)
-        self.Bind(wx.EVT_MENU, self.clipboardXml, id=menuBar.idExportXml)
+        self.Bind(wx.EVT_MENU, self.exportToClipboard, id=wx.ID_COPY)
 
-    def clipboardEft(self, event):
+    def clipboardEft(self):
         sFit = service.Fit.getInstance()
         self.toClipboard(sFit.exportFit(self.getActiveFit()))
 
-    def clipboardDna(self, event):
+    def clipboardDna(self):
         sFit = service.Fit.getInstance()
         self.toClipboard(sFit.exportDna(self.getActiveFit()))
 
-    def clipboardXml(self, event):
+    def clipboardXml(self):
         sFit = service.Fit.getInstance()
         self.toClipboard(sFit.exportXml(self.getActiveFit()))
 
@@ -266,6 +265,19 @@ class MainFrame(wx.Frame):
             self._openAfterImport(len(fits), IDs)
         except:
             pass
+    
+    def exportToClipboard(self, event):
+        CopySelectDict = {CopySelectDialog.copyFormatEft: self.clipboardEft,
+                          CopySelectDialog.copyFormatXml: self.clipboardXml,
+                          CopySelectDialog.copyFormatDna: self.clipboardDna}
+        dlg = CopySelectDialog(self)
+        dlg.ShowModal()
+        selected = dlg.GetSelected()
+        try:
+            CopySelectDict[selected]()
+        except:
+            pass
+        dlg.Destroy()
 
     def toClipboard(self, text):
         clip = wx.TheClipboard
