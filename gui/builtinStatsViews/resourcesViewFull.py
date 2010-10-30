@@ -61,7 +61,7 @@ class ResourcesViewFull(StatsView):
 
         #Turrets & launcher hardslots display
         tooltipText = {"turret":"Turret hardpoints", "drones":"Drones active", "launcher":"Launcher hardpoints", "calibration":"Calibration"}
-        for type in ("turret", "drones", "launcher", "calibration"):
+        for type in ("turret", "launcher", "drones", "calibration"):
             box = wx.BoxSizer(wx.HORIZONTAL)
 
             bitmap = bitmapLoader.getStaticBitmap("%s_big" % type, parent, "icons")
