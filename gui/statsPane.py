@@ -39,7 +39,7 @@ class StatsPane(wx.Panel):
 
     def __init__(self, parent):
         wx.Panel.__init__(self, parent)
-        self.SetMinSize((310, -1))
+        #self.SetMinSize((250, -1))
 
         # Use 25% smaller fonts if MAC or force font size to 8 for msw/linux
 
