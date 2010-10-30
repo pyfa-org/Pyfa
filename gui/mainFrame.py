@@ -245,6 +245,18 @@ class MainFrame(wx.Frame):
         #Clipboard exports
         self.Bind(wx.EVT_MENU, self.exportToClipboard, id=wx.ID_COPY)
 
+        hiddenMenu = wx.Menu()
+        hiddenMenu.Append(9911,"Delete Tab")
+        self.Bind(wx.EVT_MENU,self.HAddTab, id = 19911)
+        actb = [(wx.ACCEL_CTRL, ord('T'), 19911),
+                (wx.ACCEL_CMD, ord('T'), 19911)]
+        atable = wx.AcceleratorTable(actb)
+        self.SetAcceleratorTable(atable)
+
+    def HAddTab(self,event):
+        self.fitMultiSwitch.AddTab()
+
+
     def clipboardEft(self):
         sFit = service.Fit.getInstance()
         self.toClipboard(sFit.exportFit(self.getActiveFit()))
@@ -265,7 +277,7 @@ class MainFrame(wx.Frame):
             self._openAfterImport(len(fits), IDs)
         except:
             pass
-    
+
     def exportToClipboard(self, event):
         CopySelectDict = {CopySelectDialog.copyFormatEft: self.clipboardEft,
                           CopySelectDialog.copyFormatXml: self.clipboardXml,
