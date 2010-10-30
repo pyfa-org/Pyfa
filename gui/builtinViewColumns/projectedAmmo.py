@@ -25,9 +25,9 @@ class ProjectedAmmo(ViewColumn):
     name = "Projected Ammo"
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
-        self.columnText = "Ammo"
+        self.columnText = ""
         self.slave = gui.builtinViewColumns.moduleAmmo.ModuleAmmo(fittingView, params)
-
+        self.imageId = self.slave.imageId
     def getText(self, stuff):
         if isinstance(stuff, Module):
             return self.slave.getText(stuff)
