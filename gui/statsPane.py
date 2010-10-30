@@ -39,7 +39,6 @@ class StatsPane(wx.Panel):
 
     def __init__(self, parent):
         wx.Panel.__init__(self, parent)
-        #self.SetMinSize((250, -1))
 
         # Use 25% smaller fonts if MAC or force font size to 8 for msw/linux
 
@@ -79,6 +78,9 @@ class StatsPane(wx.Panel):
                 mainSizer.Add(wx.StaticLine(self, wx.ID_ANY, style=wx.HORIZONTAL), 0, wx.EXPAND | wx.ALL,2)
             i+=1
             tp.OnStateChange(tp.GetBestSize())
+
+        width,height = self.GetSize()
+        self.SetMinSize((width+9,-1))
 
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
