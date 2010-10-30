@@ -22,7 +22,7 @@ import eos.types
 from eos.types import State, Slot
 import copy
 from service.damagePattern import DamagePattern
-
+from service.character import Character
 
 class Fit(object):
     instance = None
@@ -32,6 +32,10 @@ class Fit(object):
             cls.instance = Fit()
 
         return cls.instance
+
+    def __init__(self):
+        self.pattern = DamagePattern.getInstance().getDamagePattern("Uniform")
+        self.character = Character.getInstance().all0()
 
     def getAllFits(self):
         fits = eos.db.getFitList()
@@ -58,7 +62,8 @@ class Fit(object):
         fit = eos.types.Fit()
         fit.ship = eos.types.Ship(eos.db.getItem(shipID))
         fit.name = name if name is not None else "New %s" % fit.ship.item.name
-        fit.damagePattern = DamagePattern.getInstance().getDamagePattern("Uniform")
+        fit.damagePattern = self.pattern
+        fit.character = self.character
         eos.db.save(fit)
         fit.calculateModifiedAttributes()
         return fit.ID
@@ -92,6 +97,21 @@ class Fit(object):
 
         fit = eos.db.getFit(fitID)
         fit.factorReload = not fit.factorReload
+        eos.db.commit()
+        fit.clear()
+        fit.calculateModifiedAttributes()
+
+    def switchFit(self, fitID):
+        if fitID is None:
+            return None
+
+        fit = eos.db.getFit(fitID)
+
+        if fit.character != self.character:
+            fit.character = self.character
+        if fit.damagePattern != self.pattern:
+            fit.damagePattern = self.pattern
+
         eos.db.commit()
         fit.clear()
         fit.calculateModifiedAttributes()
@@ -362,7 +382,7 @@ class Fit(object):
             return
 
         fit = eos.db.getFit(fitID)
-        fit.character = eos.db.getCharacter(charID)
+        fit.character = self.character = eos.db.getCharacter(charID)
         fit.clear()
         fit.calculateModifiedAttributes()
 
@@ -395,7 +415,7 @@ class Fit(object):
             return
 
         fit = eos.db.getFit(fitID)
-        fit.damagePattern = pattern
+        fit.damagePattern = self.pattern = pattern
         eos.db.commit()
 
         fit.clear()

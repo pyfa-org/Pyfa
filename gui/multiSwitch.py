@@ -148,8 +148,10 @@ class MultiSwitch(wx.Notebook):
         page = self.GetPage(selection)
 
         if self.countEvt == 0:
+            fitID = page.view.activeFitID
+            sFit = service.Fit.getInstance()
+            sFit.switchFit(fitID)
             if hasattr(page, "type") and page.type == "fit":
-                fitID = page.view.activeFitID
                 wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=fitID))
             else:
                 wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=None))
@@ -168,6 +170,11 @@ class MultiSwitch(wx.Notebook):
         if page.type == "fit":
             fitID = event.fitID
             view = page.view
+
+            #Notify service
+            sFit = service.Fit.getInstance()
+            sFit.switchFit(fitID)
+
             #Change title of current tab to new fit
             self.setTabTitle(selected, fitID)
             view.changeFit(fitID)

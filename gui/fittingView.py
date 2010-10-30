@@ -107,6 +107,7 @@ class FittingView(d.Display):
                 wx.PostEvent(self.mainFrame, FitChanged(fitID=self.activeFitID))
 
         event.Skip()
+
     #Gets called from the fitMultiSwitch when it decides its time
     def changeFit(self, fitID):
         self.activeFitID = fitID
