@@ -37,7 +37,7 @@ class FittingView(d.Display):
                     "attr:cpu",
                     "Capacitor Usage",
                     "Module Price",
-                    "attr:trackingSpeed",
+                    "Module Tracking",
                     "Max range",
                     "Module Ammo",
                     ]
