@@ -113,7 +113,7 @@ class SearchWorkerThread(threading.Thread):
 
 class Market():
     instance = None
-    FORCED_SHIPS = ("Freki", "Mimir", "Utu", "Adrestia", "Ibis", "Impairor", "Velator", "Reaper")
+    FORCED_SHIPS = ("Ibis", "Impairor", "Velator", "Reaper")
     FORCED_GROUPS = ("Rookie ship",)
     META_MAP = {"normal": (1, 2, 14),
                 "faction": (4, 3),
@@ -161,18 +161,27 @@ class Market():
 
     def getShipRoot(self):
         cat = eos.db.getCategory(6)
-        root = []
+        root = [(-1, "Limited Issue Ships")]
         for grp in cat.groups:
-            if grp.published  or grp.name in self.FORCED_GROUPS:
+            if grp.published or grp.name in self.FORCED_GROUPS:
                 root.append((grp.ID, grp.name))
 
         return root
+        
 
+    LIMITED_EDITION = ("Gold Magnate", "Silver Magnate", "Guardian-Vexor", "Opux Luxury Yacht", "Armageddon Imperial Issue", "Apocalypse Imperial Issue", "Raven State Issue", "Megathron Federate Issue", "Tempest Tribal Issue", "Apotheosis", "Zephyr", "Primae", "Mimir", "Freki", "Adrestia", "Utu")
     def getShipList(self, id):
         ships = []
+        if id == -1:
+            for name in self.LIMITED_EDITION:
+                item = eos.db.getItem(name)
+                ships.append((item.ID, item.name, item.race))
+
+            return ships
+
         grp = eos.db.getGroup(id, eager=("items", "items.marketGroup", "items.attributes"))
         for item in grp.items:
-            if item.published  or item.name in self.FORCED_SHIPS:
+            if (item.published or item.name in self.FORCED_SHIPS) and item.name not in self.LIMITED_EDITION:
                 ships.append((item.ID, item.name, item.race))
 
         return ships
