@@ -11,10 +11,13 @@ class ModuleAmmoPicker(ContextMenu):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     def display(self, context, selection):
-        if self.mainFrame.getActiveFit() is None or context != "module":
+        if self.mainFrame.getActiveFit() is None or context not in ("module", "projectedModule"):
             return False
 
-        modules = self.mainFrame.getFittingView().getSelectedMods()
+        if context == "module":
+            modules = self.mainFrame.getFittingView().getSelectedMods()
+        else:
+            modules = (selection[0],)
         validCharges = None
         for mod in modules:
             currCharges = mod.getValidCharges()
@@ -23,6 +26,7 @@ class ModuleAmmoPicker(ContextMenu):
 
             validCharges = currCharges
 
+        self.modules = modules
         self.charges = list(validCharges)
         self.module = mod
         return len(self.charges) > 0
@@ -41,7 +45,7 @@ class ModuleAmmoPicker(ContextMenu):
             d = charge.getAttribute("%sDamage" % type)
             if d > 0:
                 damage += d
-                
+
         return (-range - falloff, charge.name.rsplit()[-2:], damage, charge.name)
 
     MISSILE_ORDER = ["em", "thermal", "kinetic", "explosive"]
@@ -74,6 +78,7 @@ class ModuleAmmoPicker(ContextMenu):
         m.Enable(id, False)
 
     def getSubMenu(self, context, selection, menu, i):
+        self.context = context
         menu.Bind(wx.EVT_MENU, self.handleAmmoSwitch)
         m = wx.Menu()
         m.Bind(wx.EVT_MENU, self.handleAmmoSwitch)
@@ -167,8 +172,8 @@ class ModuleAmmoPicker(ContextMenu):
 
         sFit = service.Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
-        modules = map(lambda mod: mod.position, self.mainFrame.getFittingView().getSelectedMods())
-        sFit.setAmmo(fitID, charge.ID if charge is not None else None, modules)
+
+        sFit.setAmmo(fitID, charge.ID if charge is not None else None, self.modules)
         wx.PostEvent(self.mainFrame, gui.fittingView.FitChanged(fitID=fitID))
 
 ModuleAmmoPicker.register()

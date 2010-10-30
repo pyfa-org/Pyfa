@@ -122,7 +122,7 @@ class FittingView(d.Display):
                 modules = []
                 sel = self.GetFirstSelected()
                 while sel != -1:
-                    modules.append(self.mods[self.GetItemData(sel)].position)
+                    modules.append(self.mods[self.GetItemData(sel)])
                     sel = self.GetNextSelected(sel)
 
                 cFit.setAmmo(fitID, itemID, modules)

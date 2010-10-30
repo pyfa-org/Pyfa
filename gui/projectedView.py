@@ -27,8 +27,10 @@ from gui.contextMenu import ContextMenu
 import eos.types
 
 class ProjectedView(d.Display):
-    DEFAULT_COLS = ["Projected State",
-                    "Projected Name"]
+    DEFAULT_COLS = ["Projected Ammo Icon",
+                    "Projected State",
+                    "Projected Name",
+                    "Projected Ammo"]
 
     def __init__(self, parent):
         d.Display.__init__(self, parent)

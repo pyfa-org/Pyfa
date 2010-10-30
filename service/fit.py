@@ -366,10 +366,9 @@ class Fit(object):
         fit = eos.db.getFit(fitID)
         ammo = eos.db.getItem(ammoID)
 
-        for pos in modules:
-            mod = fit.modules[pos]
+        for mod in modules:
             if mod.isValidCharge(ammo):
-                fit.modules[pos].charge = ammo
+                mod.charge = ammo
 
         fit.clear()
         fit.calculateModifiedAttributes()
