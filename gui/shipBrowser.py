@@ -807,7 +807,7 @@ class ListPane (wx.ScrolledWindow):
         self.SetVirtualSize((1, maxy))
         cwidth, cheight = self.GetVirtualSize()
 
-        if selected and doRefresh:
+        if selected:
             self.ScrollChildIntoView(selected)
 
         clientW,clientH = self.GetSize()
