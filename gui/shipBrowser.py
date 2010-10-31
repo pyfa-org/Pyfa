@@ -1315,6 +1315,11 @@ class FitItem(wx.Window):
 
         self.btnsStatus = ""
         self.editWidth = 150
+
+        self.font9px = wx.Font(9, wx.SWISS, wx.NORMAL, wx.BOLD, False)
+        self.font7px = wx.Font(7, wx.SWISS, wx.NORMAL, wx.NORMAL, False)
+        self.font8px = wx.Font(8, wx.SWISS, wx.NORMAL, wx.NORMAL, False)
+
         self.tcFitName = wx.TextCtrl(self, wx.ID_ANY, "%s" % self.fitName, wx.DefaultPosition, (self.editWidth,-1), wx.TE_PROCESS_ENTER)
         if self.shipBrowser.fitIDMustEditName != self.fitID:
             self.tcFitName.Show(False)
@@ -1520,17 +1525,15 @@ class FitItem(wx.Window):
 
     def OnPaint(self, event):
         rect = self.GetRect()
-
         canvas = wx.EmptyBitmap(rect.width, rect.height)
         mdc = wx.BufferedPaintDC(self)
         mdc.SelectObject(canvas)
+
         r = copy.copy(rect)
-        r.top = 0
-        r.left = 0
+        r.top = r.left = 0
         r.height = r.height / 2
+
         if self.highlighted:
-            mdc.SetBackground(wx.Brush(wx.SystemSettings_GetColour(wx.SYS_COLOUR_HIGHLIGHT)))
-            mdc.Clear()
             mdc.SetTextForeground(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT))
 
             sr = 221
@@ -1542,6 +1545,7 @@ class FitItem(wx.Window):
             mdc.GradientFillLinear(r,startColor,wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW),wx.SOUTH)
             r.top = r.height
             mdc.GradientFillLinear(r,startColor,wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW),wx.NORTH)
+
         else:
             activeFitID = self.mainFrame.getActiveFit()
             if activeFitID == self.fitID:
@@ -1556,12 +1560,13 @@ class FitItem(wx.Window):
                 mdc.SetBackground(wx.Brush((bkR,bkG,bkB)))
             else:
                 mdc.SetBackground(wx.Brush(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)))
+
             mdc.SetTextForeground(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT))
             mdc.Clear()
-        mdc.SetFont(wx.Font(9, wx.SWISS, wx.NORMAL, wx.BOLD, False))
-#        mdc.DrawBitmap(self.effBmp,5+(rect.height-40)/2,(rect.height-40)/2,0)
-        mdc.DrawBitmap(self.shipEffBk,5+(rect.height - self.shipEffBk.GetWidth())/2,(rect.height - self.shipEffBk.GetHeight())/2,0)
-        mdc.DrawBitmap(self.shipBmp, 5 + (rect.height - 32) / 2, (rect.height - 32) / 2, 0)
+
+        mdc.SetFont(self.font9px)
+        mdc.DrawBitmap(self.shipEffBk,5 + (rect.height - self.shipEffBk.GetWidth()) / 2, (rect.height - self.shipEffBk.GetHeight()) / 2,0)
+        mdc.DrawBitmap(self.shipBmp, 5 + (rect.height - self.shipBmp.GetWidth()) / 2, (rect.height - self.shipBmp.GetHeight()) / 2, 0)
 
         shipName = self.shipName
         fitName = self.fitName
@@ -1572,11 +1577,10 @@ class FitItem(wx.Window):
         fposy = ypos
         ypos += ytext
 
-        mdc.SetFont(wx.Font(8, wx.SWISS, wx.NORMAL, wx.NORMAL, False))
-
-
+        mdc.SetFont(self.font8px)
         mdc.DrawText("%s" % shipName, textStart, ypos)
-        mdc.SetFont(wx.Font(7, wx.SWISS, wx.NORMAL, wx.NORMAL, False))
+
+        mdc.SetFont(self.font7px)
 
         self.deletePosX = rect.width - self.deleteBmp.GetWidth() - 5
         self.renamePosX = self.deletePosX - self.renameBmp.GetWidth() - 5
@@ -1591,7 +1595,8 @@ class FitItem(wx.Window):
         else:
             xtext = 0
 
-        mdc.SetFont(wx.Font(9, wx.SWISS, wx.NORMAL, wx.BOLD, False))
+        mdc.SetFont(self.font9px)
+
         fnwidths = mdc.GetPartialTextExtents(fitName)
         count = 0
         maxsize = self.copyPosX -xtext - 15 - textStart
@@ -1620,4 +1625,4 @@ class FitItem(wx.Window):
             else:
                 self.tcFitName.SetSize((self.editWidth,-1))
                 self.tcFitName.SetPosition((fnEditPosX,fnEditPosY))
-        event.Skip()
+
