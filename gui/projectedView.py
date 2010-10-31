@@ -98,13 +98,18 @@ class ProjectedView(d.Display):
                 wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=fitID))
             elif event.Button == 3:
                 if isinstance(item, eos.types.Drone):
-                    context = "projectedDrone"
+                    context = ("projectedDrone",)
                 elif isinstance(item, eos.types.Module):
-                    context = "projectedModule"
+                    if item.charge is not None:
+                        context = ("projectedModule", "projectedAmmo")
+                    else:
+                        context = ("projectedModule",)
                 else:
-                    context = "projectedFit"
+                    context = ("projectedFit",)
 
-                menu = ContextMenu.getMenu((item,), context)
+                print context
+                menu = ContextMenu.getMenu((item,), *context)
+                print menu
                 self.PopupMenu(menu)
 
     def remove(self, event):

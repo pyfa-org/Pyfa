@@ -819,9 +819,9 @@ class CategoryItem(wx.Window):
         r.left = 0
         r.height = r.height / 2
         if self.highlighted:
-            mdc.SetBackground(wx.Brush(wx.SystemSettings_GetColour(wx.SYS_COLOUR_HIGHLIGHT)))
-            mdc.Clear()
-            mdc.SetTextForeground(wx.SystemSettings_GetColour(wx.SYS_COLOUR_HIGHLIGHTTEXT))
+#            mdc.SetBackground(wx.Brush(wx.SystemSettings_GetColour(wx.SYS_COLOUR_HIGHLIGHT)))
+#            mdc.Clear()
+#            mdc.SetTextForeground(wx.SystemSettings_GetColour(wx.SYS_COLOUR_HIGHLIGHTTEXT))
 
             sr = 221
             sg = 221
@@ -832,7 +832,7 @@ class CategoryItem(wx.Window):
             mdc.GradientFillLinear(r,startColor,wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW),wx.SOUTH)
             r.top = r.height
             mdc.GradientFillLinear(r,startColor,wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW),wx.NORTH)
-            mdc.SetTextForeground(wx.BLACK)
+            mdc.SetTextForeground(wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOWTEXT ))
 
         else:
             mdc.SetBackground(wx.Brush(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)))
@@ -1064,9 +1064,9 @@ class ShipItem(wx.Window):
         r.left = 0
         r.height = r.height / 2
         if self.highlighted:
-            mdc.SetBackground(wx.Brush(wx.SystemSettings_GetColour(wx.SYS_COLOUR_HIGHLIGHT)))
-            mdc.Clear()
-            mdc.SetTextForeground(wx.SystemSettings_GetColour(wx.SYS_COLOUR_HIGHLIGHTTEXT))
+#            mdc.SetBackground(wx.Brush(wx.SystemSettings_GetColour(wx.SYS_COLOUR_HIGHLIGHT)))
+#            mdc.Clear()
+#            mdc.SetTextForeground(wx.SystemSettings_GetColour(wx.SYS_COLOUR_HIGHLIGHTTEXT))
 
             sr = 221
             sg = 221
@@ -1077,7 +1077,7 @@ class ShipItem(wx.Window):
             mdc.GradientFillLinear(r,startColor,wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW),wx.SOUTH)
             r.top = r.height
             mdc.GradientFillLinear(r,startColor,wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW),wx.NORTH)
-            mdc.SetTextForeground(wx.BLACK)
+            mdc.SetTextForeground(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT))
 
         else:
             mdc.SetBackground(wx.Brush(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)))
@@ -1371,7 +1371,7 @@ class FitItem(wx.Window):
         if self.highlighted:
             mdc.SetBackground(wx.Brush(wx.SystemSettings_GetColour(wx.SYS_COLOUR_HIGHLIGHT)))
             mdc.Clear()
-            mdc.SetTextForeground(wx.SystemSettings_GetColour(wx.SYS_COLOUR_HIGHLIGHTTEXT))
+            mdc.SetTextForeground(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT))
 
             sr = 221
             sg = 221
@@ -1382,19 +1382,17 @@ class FitItem(wx.Window):
             mdc.GradientFillLinear(r,startColor,wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW),wx.SOUTH)
             r.top = r.height
             mdc.GradientFillLinear(r,startColor,wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW),wx.NORTH)
-            mdc.SetTextForeground(wx.BLACK)
-
         else:
             activeFitID = self.mainFrame.getActiveFit()
             if activeFitID == self.fitID:
                 bkR,bkG,bkB = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
                 if (bkR+bkG+bkB) >(127+127+127):
-                    scale = 0.90
+                    scale = -0x33
                 else:
-                    scale = 1.1
-                bkR *= scale
-                bkG *= scale
-                bkB *= scale
+                    scale = 0x33
+                bkR += scale
+                bkG += scale
+                bkB += scale
                 mdc.SetBackground(wx.Brush((bkR,bkG,bkB)))
             else:
                 mdc.SetBackground(wx.Brush(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)))

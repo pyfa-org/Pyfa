@@ -10,14 +10,16 @@ class ItemStats(ContextMenu):
     def display(self, context, selection):
         return context in ("item", "ship", "module", "ammo", "skill",
                            "itemSearch", "drone", "implant", "booster",
-                           "projectedModule", "projectedDrone")
+                           "projectedModule", "projectedDrone", "projectedAmmo")
 
     def getText(self, context, selection):
         return "%s stats" % (context.capitalize() if context not in self.REPLACES else self.REPLACES[context])
 
     REPLACES = {"itemSearch": "Item",
                 "projectedModule": "Module",
-                "projectedDrone": "Drone"}
+                "projectedDrone": "Drone",
+                "projectedAmmo": "Ammo"}
+
     def activate(self, context, selection, i):
         if context == "ship":
             fitID = self.mainFrame.getActiveFit()

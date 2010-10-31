@@ -43,7 +43,7 @@ class ItemStatsDialog(wx.Dialog):
             self.Destroy()
             return
 
-        item = getattr(victim, "item", None) if context != "ammo" else getattr(victim, "charge", None)
+        item = getattr(victim, "item", None) if context.lower() not in ("projectedammo", "ammo") else getattr(victim, "charge", None)
         if item is None:
             sMarket = service.Market.getInstance()
             item = sMarket.getItem(victim.ID)
