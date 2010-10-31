@@ -2,6 +2,7 @@ import wx
 import copy
 from gui import bitmapLoader
 import gui.mainFrame
+import gui.fittingView as fv
 import service
 
 from wx.lib.buttons import GenBitmapButton
@@ -24,6 +25,7 @@ class ShipBrowser(wx.Panel):
         self._activeStage = 1
         self.browseHist = []
         self.lastStage = (0,0)
+        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
         self.stage2Cache = {}
         self.stage3Cache = {}
@@ -58,8 +60,13 @@ class ShipBrowser(wx.Panel):
         self.Bind(EVT_SB_STAGE1_SEL, self.stage1)
         self.Bind(EVT_SB_STAGE3_SEL, self.stage3)
         self.Bind(EVT_SB_SEARCH_SEL, self.searchStage)
+        self.mainFrame.Bind(fv.FIT_CHANGED, self.RefreshList)
 
         self.stage1(None)
+
+    def RefreshList(self, event):
+        self.lpane.RefreshList(True)
+        event.Skip()
 
     def SizeRefreshList(self, event):
         ewidth, eheight = event.GetSize()
@@ -800,7 +807,7 @@ class ListPane (wx.ScrolledWindow):
         self.SetVirtualSize((1, maxy))
         cwidth, cheight = self.GetVirtualSize()
 
-        if selected and not doRefresh:
+        if selected and doRefresh:
             self.ScrollChildIntoView(selected)
 
         clientW,clientH = self.GetSize()
@@ -1409,7 +1416,6 @@ class FitItem(wx.Window):
         wx.PostEvent(self.mainFrame, FitRemoved(fitID=self.fitID))
 
     def selectFit(self, event=None):
-        self.Parent.RefreshList(True)
         wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fitID))
 
     def NHitTest(self, target, position, area):
