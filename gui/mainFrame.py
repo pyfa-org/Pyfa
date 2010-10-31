@@ -223,8 +223,6 @@ class MainFrame(wx.Frame):
         menuBar = self.GetMenuBar()
         # Quit
         self.Bind(wx.EVT_MENU, self.ExitApp, id=wx.ID_EXIT)
-        # Close Tab
-        self.Bind(wx.EVT_MENU, self.CloseCurrentFit, id=wx.ID_CLOSE)
         # Widgets Inspector
         self.Bind(wx.EVT_MENU, self.openWXInspectTool, id=911)
         # About
@@ -247,17 +245,28 @@ class MainFrame(wx.Frame):
         #Clipboard exports
         self.Bind(wx.EVT_MENU, self.exportToClipboard, id=wx.ID_COPY)
 
-        hiddenMenu = wx.Menu()
-        hiddenMenu.Append(9911,"Delete Tab")
-        self.Bind(wx.EVT_MENU,self.HAddTab, id = 19911)
-        actb = [(wx.ACCEL_CTRL, ord('T'), 19911),
-                (wx.ACCEL_CMD, ord('T'), 19911)]
+        addTabId = wx.NewId()
+        toggleShipMarketId = wx.NewId()
+        # Close Tab
+        self.Bind(wx.EVT_MENU, self.CloseCurrentFit, id=wx.ID_CLOSE)
+        self.Bind(wx.EVT_MENU,self.HAddTab, id = addTabId)
+        self.Bind(wx.EVT_MENU,self.toggleShipMarket, id = toggleShipMarketId)
+
+        actb = [(wx.ACCEL_CTRL, ord('T'), addTabId),
+                (wx.ACCEL_CMD, ord('T'), addTabId),
+                (wx.ACCEL_CTRL, ord("W"), wx.ID_CLOSE),
+                (wx.ACCEL_CMD, ord("W"), wx.ID_CLOSE),
+                (wx.ACCEL_CTRL, ord(" "), toggleShipMarketId),
+                (wx.ACCEL_CMD, ord(" "), toggleShipMarketId)]
         atable = wx.AcceleratorTable(actb)
         self.SetAcceleratorTable(atable)
 
     def HAddTab(self,event):
         self.fitMultiSwitch.AddTab()
 
+    def toggleShipMarket(self, event):
+        sel = self.notebookBrowsers.GetSelection()
+        self.notebookBrowsers.SetSelection(0 if sel == 1 else 1)
 
     def clipboardEft(self):
         sFit = service.Fit.getInstance()
