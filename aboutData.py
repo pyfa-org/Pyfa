@@ -17,9 +17,9 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 #===============================================================================
 
-versionString = "1.0 pre-alpha"
+versionString = "1.0 pre-beta"
 license = "GNU GPL"
 licenseLocation = "gpl.txt"
 developers = ("cncfanatics" , "DarkPhoenix", "Darriele")
 credits = (("Entity: capacitor calculations"), ("Darriele: gui"), ("Aurora: maths"))
-description = "pyfa is the Python Fitting Assistant, a standalone application to create fittings for the EVE-Online SciFi MMORPG.\nThe application is available for many platforms, see the download page for further details. The layout of pyfa is heavily based on EFT, the EVE fitting tool. Although it is a complete rewrite and replacement for EFT, the fittings are still compatible with EFT."
+description = "pyfa is the Python Fitting Assistant, a standalone application to create fittings for the EVE-Online SciFi MMORPG.\nThe application is available for many platforms, see the download page for further details. The layout of pyfa is heavily based on EFT, the EVE fitting tool. Although it is a complete rewrite and replacement for EFT, the fittings are still compatible with EFT.\n\nAll EVE-Online related materials are property of CCP hf.\n\nSilk Icons by famfamfam.com under Creative Commons Attribution 2.5 License"
