@@ -107,9 +107,7 @@ class ProjectedView(d.Display):
                 else:
                     context = ("projectedFit",)
 
-                print context
                 menu = ContextMenu.getMenu((item,), *context)
-                print menu
                 self.PopupMenu(menu)
 
     def remove(self, event):
