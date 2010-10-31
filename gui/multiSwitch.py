@@ -126,7 +126,6 @@ class MultiSwitch(wx.Notebook):
                 self.AddTab()
             else:
                 self.ignorePageChanged = False
-#                self.ChangeSelection(0)
                 event.Veto()
 
             #Veto to prevent the + tab from being selected
@@ -149,7 +148,7 @@ class MultiSwitch(wx.Notebook):
     def pageChanged(self, event):
         #On windows, we can't use the CHANGING event as its bugged, so we need to RECHECK here
         if event.Selection == self.GetPageCount() - 1:
-                selection = self.AddTab()
+            selection = self.AddTab()
         else:
             selection = event.Selection
             if "__WXMSW__" in wx.PlatformInfo:
