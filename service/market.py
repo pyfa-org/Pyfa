@@ -37,7 +37,8 @@ class ShipBrowserWorkerThread(threading.Thread):
         while True:
             try:
                 callback, id = queue.get()
-                wx.CallAfter(callback, sMarket.getShipList(id))
+                list = sMarket.getShipList(id)
+                wx.CallAfter(callback, (id,list))
             except:
                 pass
             finally:
@@ -168,13 +169,13 @@ class Market():
         zephyr = eos.db.getGroup("Prototype Exploration Ship")
         root.remove((zephyr.ID, zephyr.name))
         return root
-        
 
-    LIMITED_EDITION = ("Gold Magnate", "Silver Magnate", "Guardian-Vexor", 
-                       "Opux Luxury Yacht", "Armageddon Imperial Issue", 
-                       "Apocalypse Imperial Issue", "Raven State Issue", 
-                       "Megathron Federate Issue", "Tempest Tribal Issue", 
-                       "Apotheosis", "Zephyr", "Primae", "Mimir", "Freki", 
+
+    LIMITED_EDITION = ("Gold Magnate", "Silver Magnate", "Guardian-Vexor",
+                       "Opux Luxury Yacht", "Armageddon Imperial Issue",
+                       "Apocalypse Imperial Issue", "Raven State Issue",
+                       "Megathron Federate Issue", "Tempest Tribal Issue",
+                       "Apotheosis", "Zephyr", "Primae", "Mimir", "Freki",
                        "Adrestia", "Utu")
     def getShipList(self, id):
         ships = []

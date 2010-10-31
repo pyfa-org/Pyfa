@@ -1,10 +1,13 @@
 import wx
+import wx.animate
 import copy
 from gui import bitmapLoader
 import gui.mainFrame
 import gui.fittingView as fv
 import service
 import time
+import os
+import config
 
 from wx.lib.buttons import GenBitmapButton
 from pickle import TRUE
@@ -120,26 +123,12 @@ class ShipBrowser(wx.Panel):
     def raceNameKey(self, shipInfo):
         return self.RACE_ORDER.index(shipInfo[2]), shipInfo[1]
 
-
-    def stage2(self, event):
-        back = event.back
-        if not back:
-            self.browseHist.append( (1,0) )
-
-        self._activeStage = 2
-        categoryID = event.categoryID
-        self.lastdata = categoryID
-
-        self._stage2Data = categoryID
-        self.hpane.ToggleNewFitSB(False)
-        self.hpane.ToggleFitViewModeSB(True)
-        sMarket = service.Market.getInstance()
+    def stage2Callback(self,data):
+        categoryID, shipList = data
         sFit = service.Fit.getInstance()
-        self.lpane.RemoveAllChildren()
         content = self.stage2Cache.get(categoryID,None)
         if not content:
             content = []
-            shipList = sMarket.getShipList(categoryID)
             shipList.sort(key=self.raceNameKey)
             for ID, name, race in shipList:
                 fits = len(sFit.getFitsWithShip(ID))
@@ -166,6 +155,29 @@ class ShipBrowser(wx.Panel):
                     self.lpane.AddWidget(ShipItem(self.lpane,ID, (name,fits),race))
         self.lpane.RefreshList()
         self.Show()
+        self.lpane.ShowLoading(False)
+
+    def stage2(self, event):
+        back = event.back
+        if not back:
+            self.browseHist.append( (1,0) )
+
+        self._activeStage = 2
+        categoryID = event.categoryID
+        self.lastdata = categoryID
+
+        content = self.stage2Cache.get(categoryID,None)
+        if not content:
+            self.lpane.ShowLoading(True)
+
+        self._stage2Data = categoryID
+        self.hpane.ToggleNewFitSB(False)
+        self.hpane.ToggleFitViewModeSB(True)
+        sMarket = service.Market.getInstance()
+
+        self.lpane.RemoveAllChildren()
+
+        sMarket.getShipListDelayed(self.stage2Callback, categoryID)
 
     def stage3(self, event):
         if event.back == 0:
@@ -715,6 +727,24 @@ class ListPane (wx.ScrolledWindow):
         self.Bind(wx.EVT_SCROLLWIN_LINEUP, self.MScrollUp)
         self.Bind(wx.EVT_SCROLLWIN_LINEDOWN, self.MScrollDown)
         self.Bind(wx.EVT_CHILD_FOCUS, self.OnChildFocus)
+        self.loadingAnim = wx.animate.Animation(os.path.join(config.path,"icons/fit_loading.gif"))
+        self.animCtrl = wx.animate.AnimationCtrl(self, -1, self.loadingAnim)
+        self.animCtrl.SetUseWindowBackgroundColour()
+        self.animCtrl.Hide()
+
+    def ShowLoading(self, mode = True):
+        if mode:
+            self.animCtrl.Play()
+            aweight,aheight = self.animCtrl.GetSize()
+            cweight,cheight = self.GetSize()
+            ax = (cweight - aweight)/2
+            ay = (cheight - aheight)/2
+            self.animCtrl.SetPosition((ax,ay))
+
+            self.animCtrl.Show()
+        else:
+            self.animCtrl.Stop()
+            self.animCtrl.Hide()
 
     def OnChildFocus(self, event):
         event.Skip()
