@@ -1009,6 +1009,11 @@ class ShipItem(wx.Window):
         self.shipRace = itemData
 
         self.shipID = shipID
+
+        self.font9px = wx.Font(9, wx.SWISS, wx.NORMAL, wx.BOLD, False)
+        self.font7px = wx.Font(7, wx.SWISS, wx.NORMAL, wx.NORMAL, False)
+        self.font8px = wx.Font(8, wx.SWISS, wx.NORMAL, wx.NORMAL, False)
+
         self.shipBmp = None
         if shipID:
             self.shipBmp = bitmapLoader.getBitmap(str(shipID),"ships")
@@ -1019,12 +1024,15 @@ class ShipItem(wx.Window):
 
         self.newBmp = bitmapLoader.getBitmap("fit_add_small", "icons")
         self.acceptBmp = bitmapLoader.getBitmap("faccept_small", "icons")
+
         img = self.acceptBmp.ConvertToImage()
         img.RotateHue(0.625)
         self.acceptBmp = wx.BitmapFromImage(img)
+
         self.newToggleBmp = self.newBmp
         self.shipEffBk = bitmapLoader.getBitmap("fshipbk_big","icons")
         self.raceBmp = bitmapLoader.getBitmap("race_%s_small" % self.shipRace, "icons")
+
         if self.shipName == "Apotheosis":
             self.raceMBmp = bitmapLoader.getBitmap("race_jove_small","icons")
         else:
@@ -1176,14 +1184,10 @@ class ShipItem(wx.Window):
         mdc = wx.BufferedPaintDC(self)
         mdc.SelectObject(canvas)
         r = copy.copy(rect)
-        r.top = 0
-        r.left = 0
+        r.top = r.left = 0
         r.height = r.height / 2
-        if self.highlighted:
-#            mdc.SetBackground(wx.Brush(wx.SystemSettings_GetColour(wx.SYS_COLOUR_HIGHLIGHT)))
-#            mdc.Clear()
-#            mdc.SetTextForeground(wx.SystemSettings_GetColour(wx.SYS_COLOUR_HIGHLIGHTTEXT))
 
+        if self.highlighted:
             sr = 221
             sg = 221
             sb = 221
@@ -1200,21 +1204,9 @@ class ShipItem(wx.Window):
             mdc.SetTextForeground(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT))
             mdc.Clear()
 
-        mdc.SetFont(wx.Font(9, wx.SWISS, wx.NORMAL, wx.BOLD, False))
+        mdc.SetFont(self.font9px)
         mdc.DrawBitmap(self.shipEffBk, 5 + (rect.height - self.shipEffBk.GetWidth())/2, (rect.height - self.shipEffBk.GetHeight())/2, 0)
         mdc.DrawBitmap(self.shipBmp, 5 + (rect.height - 32) / 2, (rect.height - 32) / 2, 0)
-
-#        tempdc = wx.MemoryDCFromDC(mdc)
-#        tempdc.DrawBitmap(self.raceBmp,0,0,0)
-#        mdc.Blit(5 + (rect.height - self.raceBmp.GetWidth()) / 2, (rect.height - self.raceBmp.GetHeight()) / 2,
-#                 self.raceBmp.GetWidth(),self.raceBmp.GetHeight(), tempdc, 0, 0, rop = wx.XOR, useMask = True)
-#        img = self.raceBmp.ConvertToImage()
-#        img.AdjustChannels(1, 1, 1,0)
-#        self.raceBmp = wx.BitmapFromImage(img)
-#        mdc.DrawBitmap(self.raceBmp, 5 + (rect.height - self.raceBmp.GetWidth()) , (rect.height - self.raceBmp.GetHeight()) , 0)
-#        mdc.DrawBitmap(self.raceBmp, 5 + (rect.height - self.shipBmp.GetWidth()) / 2, (rect.height - self.shipBmp.GetHeight()) / 2, 0)
-#        tempdc.SelectObject(wx.NullBitmap)
-
 
         shipName, fittings = self.shipFittingInfo
 
@@ -1223,13 +1215,12 @@ class ShipItem(wx.Window):
         textStart = 48
         xtext, ytext = mdc.GetTextExtent(shipName)
         mdc.DrawBitmap(self.raceBmp,textStart, ypos + self.raceBmp.GetHeight()/2)
-#        mdc.DrawText(shipName, textStart + self.raceBmp.GetWidth() + 4, ypos)
         textStart += self.raceBmp.GetWidth() + 4
         sposy = ypos
 
         ypos += ytext
 
-        mdc.SetFont(wx.Font(8, wx.SWISS, wx.NORMAL, wx.NORMAL, False))
+        mdc.SetFont(self.font8px)
 
         if fittings <1:
             fformat = "No fits"
@@ -1250,7 +1241,7 @@ class ShipItem(wx.Window):
         self.editPosY = (rect.height - self.newToggleBmp.GetHeight()) / 2
 
         mdc.DrawBitmap(self.newToggleBmp, self.editPosX, self.editPosY, 0)
-        mdc.SetFont(wx.Font(7, wx.SWISS, wx.NORMAL, wx.NORMAL, False))
+        mdc.SetFont(self.font7px)
         if self.btnsStatus != "":
             status = "%s" % self.btnsStatus
             xtext, ytext = mdc.GetTextExtent(status)
@@ -1259,7 +1250,7 @@ class ShipItem(wx.Window):
         else:
             xtext =0
 
-        mdc.SetFont(wx.Font(9, wx.SWISS, wx.NORMAL, wx.BOLD, False))
+        mdc.SetFont(self.font9px)
         fnwidths = mdc.GetPartialTextExtents(shipName)
         count = 0
         maxsize = self.editPosX -xtext - 15 - textStart
@@ -1270,7 +1261,6 @@ class ShipItem(wx.Window):
                 break
 
         shipName = "%s%s" % (shipName[:count if count >5 else 5],"..." if len(shipName)>count else "")
-        mdc.SetFont(wx.Font(9, wx.SWISS, wx.NORMAL, wx.BOLD, False))
         mdc.DrawText(shipName, textStart, sposy)
 
         if self.tcFitName.IsShown():
