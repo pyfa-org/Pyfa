@@ -69,7 +69,9 @@ class ShipBrowser(wx.Panel):
         self.stage1(None)
 
     def RefreshList(self, event):
-        self.lpane.RefreshList(True)
+        stage = self.GetActiveStage()
+        if stage == 3 or stage == 4:
+            self.lpane.RefreshList(True)
         event.Skip()
 
     def SizeRefreshList(self, event):
