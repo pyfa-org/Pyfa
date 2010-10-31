@@ -35,10 +35,10 @@ class FittingView(d.Display):
                     "Module name/slot",
                     "attr:power",
                     "attr:cpu",
+                    "Max range",
+                    "Module Tracking",
                     "Capacitor Usage",
                     "Module Price",
-                    "Module Tracking",
-                    "Max range",
                     "Module Ammo",
                     ]
 
