@@ -734,14 +734,13 @@ class ListPane (wx.ScrolledWindow):
 
     def ShowLoading(self, mode = True):
         if mode:
-            self.animCtrl.Play()
             aweight,aheight = self.animCtrl.GetSize()
             cweight,cheight = self.GetSize()
             ax = (cweight - aweight)/2
             ay = (cheight - aheight)/2
             self.animCtrl.SetPosition((ax,ay))
-
             self.animCtrl.Show()
+            self.animCtrl.Play()
         else:
             self.animCtrl.Stop()
             self.animCtrl.Hide()
