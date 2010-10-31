@@ -467,18 +467,18 @@ class HeaderPane (wx.Panel):
                 item = menu.Append(-1, txt)
                 menu.Bind(wx.EVT_MENU, self.OnMenuSelected, item)
 
-        if 'wxMSW' in wx.PlatformInfo:
-            menu.Break()
-        else:
-            menu.AppendSeparator()
+#        if 'wxMSW' in wx.PlatformInfo:
+#            menu.Break()
+#        else:
+#            menu.AppendSeparator()
 
-        for txt in normalCMItems:
-            if txt =="_sep_":
-                menu.AppendSeparator()
-            else:
-                item = menu.Append(-1, txt)
-                item.Enable(False)
-                menu.Bind(wx.EVT_MENU, self.OnMenuSelected, item)
+#        for txt in normalCMItems:
+#            if txt =="_sep_":
+#                menu.AppendSeparator()
+#            else:
+#                item = menu.Append(-1, txt)
+#                item.Enable(False)
+#                menu.Bind(wx.EVT_MENU, self.OnMenuSelected, item)
         return menu
 
 
