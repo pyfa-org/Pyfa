@@ -142,19 +142,7 @@ class ShipBrowser(wx.Panel):
 
                 content.append((ID,name,fits,race))
             self.stage2Cache[categoryID]= content
-        else:
-            count = 0
-            for ID,name,fits,race in content:
-                dbfits = len(sFit.getFitsWithShip(ID))
-                if dbfits != fits:
-                    fits = dbfits
-                    self.stage2Cache[categoryID][count]= (ID,name,fits,race)
-                count += 1
-                if self.filterShipsWithNoFits:
-                    if fits >0:
-                        self.lpane.AddWidget(ShipItem(self.lpane,ID, (name,fits),race))
-                else:
-                    self.lpane.AddWidget(ShipItem(self.lpane,ID, (name,fits),race))
+
         self.lpane.RefreshList()
         self.Show()
         self.lpane.ShowLoading(False)
@@ -171,15 +159,30 @@ class ShipBrowser(wx.Panel):
         content = self.stage2Cache.get(categoryID,None)
         if not content:
             self.lpane.ShowLoading(True)
+            self.lpane.RemoveAllChildren()
+            sMarket = service.Market.getInstance()
+            sMarket.getShipListDelayed(self.stage2Callback, categoryID)
+        else:
+            self.lpane.RemoveAllChildren()
+            sFit = service.Fit.getInstance()
+            count = 0
+            for ID,name,fits,race in content:
+                dbfits = len(sFit.getFitsWithShip(ID))
+                if dbfits != fits:
+                    fits = dbfits
+                    self.stage2Cache[categoryID][count]= (ID,name,fits,race)
+                count += 1
+                if self.filterShipsWithNoFits:
+                    if fits >0:
+                        self.lpane.AddWidget(ShipItem(self.lpane,ID, (name,fits),race))
+                else:
+                    self.lpane.AddWidget(ShipItem(self.lpane,ID, (name,fits),race))
+            self.lpane.RefreshList()
+            self.Show()
 
         self._stage2Data = categoryID
         self.hpane.ToggleNewFitSB(False)
         self.hpane.ToggleFitViewModeSB(True)
-        sMarket = service.Market.getInstance()
-
-        self.lpane.RemoveAllChildren()
-
-        sMarket.getShipListDelayed(self.stage2Callback, categoryID)
 
     def stage3(self, event):
         if event.back == 0:
