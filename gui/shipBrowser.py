@@ -167,7 +167,9 @@ class ShipBrowser(wx.Panel):
             sFit = service.Fit.getInstance()
             count = 0
             for ID,name,fits,race in content:
+                start = time.clock()
                 dbfits = len(sFit.getFitsWithShip(ID))
+                print time.clock()-start
                 if dbfits != fits:
                     fits = dbfits
                     self.stage2Cache[categoryID][count]= (ID,name,fits,race)
@@ -242,9 +244,16 @@ class ShipBrowser(wx.Panel):
 
             for ID, name, shipID, shipName,timestamp in fitList:
                 self.lpane.AddWidget(FitItem(self.lpane, ID, (shipName, name,timestamp), shipID))
-
+            if len(shipList) == 0 and len(fitList) == 0 :
+                self.lpane.AddWidget(PFStaticText(self.lpane, label = "No matching results."))
             self.lpane.RefreshList()
         self.Show()
+class PFStaticText(wx.StaticText):
+    def _init__(self,parent, label = wx.EmptyString):
+        wx.StaticText(self,parent,label)
+
+    def GetType(self):
+        return -1
 
 class PFGenBitmapButton(GenBitmapButton):
     def __init__(self, parent, id, bitmap, pos, size, style):
