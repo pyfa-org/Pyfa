@@ -74,16 +74,6 @@ class MainFrame(wx.Frame):
 
         mainSizer.Add(self.splitter,1,wx.EXPAND)
 
-        self.notebookBrowsers = wx.Notebook(self.splitter, wx.ID_ANY)
-        self.notebookBrowsers.Bind(wx.EVT_LEFT_DOWN, self.mouseHit)
-
-        self.marketBrowser = MarketBrowser(self.notebookBrowsers)
-        self.notebookBrowsers.AddPage(self.marketBrowser, "Market")
-
-        self.shipBrowser = ShipBrowser(self.notebookBrowsers)
-        self.notebookBrowsers.AddPage(self.shipBrowser, "Ships")
-        self.notebookBrowsers.SetSelection(1)
-
         self.FitviewAdditionsPanel = PFPanel(self.splitter)
         faSizer = wx.BoxSizer(wx.VERTICAL)
 
@@ -95,6 +85,16 @@ class MainFrame(wx.Frame):
         faSizer.Add(self.additionsPane, 0, wx.EXPAND)
 
         self.FitviewAdditionsPanel.SetSizer(faSizer)
+
+        self.notebookBrowsers = wx.Notebook(self.splitter, wx.ID_ANY)
+        self.notebookBrowsers.Bind(wx.EVT_LEFT_DOWN, self.mouseHit)
+
+        self.marketBrowser = MarketBrowser(self.notebookBrowsers)
+        self.notebookBrowsers.AddPage(self.marketBrowser, "Market")
+
+        self.shipBrowser = ShipBrowser(self.notebookBrowsers)
+        self.notebookBrowsers.AddPage(self.shipBrowser, "Ships")
+        self.notebookBrowsers.SetSelection(1)
 
         self.splitter.SplitVertically(self.notebookBrowsers, self.FitviewAdditionsPanel)
         self.splitter.SetMinimumPaneSize(200)

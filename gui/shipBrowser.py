@@ -697,6 +697,8 @@ class ListPane (wx.ScrolledWindow):
         wx.ScrolledWindow.__init__ (self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.Size(1, 1), style=wx.TAB_TRAVERSAL)
         self._wList = []
         self._wCount = 0
+
+        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW))
 
 
@@ -704,6 +706,12 @@ class ListPane (wx.ScrolledWindow):
         self.SetScrollRate(0, 1)
         self.Bind(wx.EVT_SCROLLWIN_LINEUP, self.MScrollUp)
         self.Bind(wx.EVT_SCROLLWIN_LINEDOWN, self.MScrollDown)
+        self.Bind(wx.EVT_CHILD_FOCUS, self.OnChildFocus)
+
+    def OnChildFocus(self, event):
+        event.Skip()
+        child = event.GetWindow()
+        self.ScrollChildIntoView(child)
 
     def MScrollUp(self, event):
 
@@ -722,6 +730,51 @@ class ListPane (wx.ScrolledWindow):
         event.Skip()
 
 
+    def ScrollChildIntoView(self, child):
+        """
+        Scrolls the panel such that the specified child window is in view.
+        """
+        sppu_x, sppu_y = self.GetScrollPixelsPerUnit()
+        vs_x, vs_y   = self.GetViewStart()
+        cr = child.GetRect()
+        clntsz = self.GetSize()
+        new_vs_x, new_vs_y = -1, -1
+
+        # is it before the left edge?
+        if cr.x < 0 and sppu_x > 0:
+            new_vs_x = vs_x + (cr.x / sppu_x)
+
+        # is it above the top?
+        if cr.y < 0 and sppu_y > 0:
+            new_vs_y = vs_y + (cr.y / sppu_y)
+
+        # For the right and bottom edges, scroll enough to show the
+        # whole control if possible, but if not just scroll such that
+        # the top/left edges are still visible
+
+        # is it past the right edge ?
+        if cr.right > clntsz.width and sppu_x > 0:
+            diff = (cr.right - clntsz.width + 1) / sppu_x
+            if cr.x - diff * sppu_x > 0:
+                new_vs_x = vs_x + diff
+            else:
+                new_vs_x = vs_x + (cr.x / sppu_x)
+
+        # is it below the bottom ?
+        if cr.bottom > clntsz.height and sppu_y > 0:
+            diff = (cr.bottom - clntsz.height + 1) / sppu_y
+            if cr.y - diff * sppu_y > 0:
+                new_vs_y = vs_y + diff
+            else:
+                new_vs_y = vs_y + (cr.y / sppu_y)
+
+        # if we need to adjust
+        if new_vs_x != -1 or new_vs_y != -1:
+            #print "%s: (%s, %s)" % (self.GetName(), new_vs_x, new_vs_y)
+            self.Scroll(new_vs_x, new_vs_y)
+
+
+
     def AddWidget(self, widget):
         widget.Reparent(self)
         self._wList.append(widget)
@@ -730,13 +783,25 @@ class ListPane (wx.ScrolledWindow):
     def RefreshList(self, doRefresh = False):
         ypos = 0
         maxy = 0
+        scrollTo = 0
+        stage = self.Parent.GetActiveStage()
+        fit = self.mainFrame.getActiveFit()
+        selected = None
         for i in xrange( len(self._wList) ):
             iwidth, iheight = self._wList[i].GetSize()
             xa, ya = self.CalcScrolledPosition((0, maxy))
             self._wList[i].SetPosition((xa, ya))
+            if stage == 3 or stage == 4:
+                if self._wList[i].GetType() == 3:
+                    if fit == self._wList[i].fitID:
+                        selected = self._wList[i]
             maxy += iheight
+
         self.SetVirtualSize((1, maxy))
         cwidth, cheight = self.GetVirtualSize()
+
+        if selected and not doRefresh:
+            self.ScrollChildIntoView(selected)
 
         clientW,clientH = self.GetSize()
         for i in xrange( len(self._wList) ):
@@ -786,6 +851,9 @@ class CategoryItem(wx.Window):
         self.Bind(wx.EVT_LEAVE_WINDOW, self.leaveW)
 
         self.shipBrowser = self.Parent.Parent
+
+    def GetType(self):
+        return 1
 
     def checkPosition(self, event):
 
@@ -943,6 +1011,9 @@ class ShipItem(wx.Window):
         self.tcFitName.Bind(wx.EVT_TEXT_ENTER, self.createNewFit)
         self.tcFitName.Bind(wx.EVT_KILL_FOCUS, self.editLostFocus)
         self.tcFitName.Bind(wx.EVT_KEY_DOWN, self.editCheckEsc)
+
+    def GetType(self):
+        return 2
 
     def SetData(self, data):
         self._itemData = data
@@ -1224,6 +1295,9 @@ class FitItem(wx.Window):
         self.tcFitName.Bind(wx.EVT_TEXT_ENTER, self.renameFit)
         self.tcFitName.Bind(wx.EVT_KILL_FOCUS, self.editLostFocus)
         self.tcFitName.Bind(wx.EVT_KEY_DOWN, self.editCheckEsc)
+
+    def GetType(self):
+        return 3
 
     def SetData(self, data):
         self._itemData = data
