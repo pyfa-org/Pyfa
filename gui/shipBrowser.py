@@ -1324,6 +1324,8 @@ class FitItem(wx.Window):
                 self.btnsStatus = ""
                 self.Refresh()
                 self.cleanupTimer.Stop()
+            else:
+                self.cleanupTimer.Stop()
         event.Skip()
 
     def StartCleanupTimer(self):
