@@ -252,7 +252,6 @@ class ItemParams (wx.Panel):
             attrsInfo = self.item.attributes if self.stuff is None else self.stuff.charge.attributes
 
         names = list(attrs.iterkeys())
-        names.extend(("mass", "capacity", "volume"))
         names.sort()
 
         idNameMap = {}
@@ -260,12 +259,10 @@ class ItemParams (wx.Panel):
         for name in names:
             info = attrsInfo.get(name)
 
-            if name in ("mass", "capacity", "volume"):
-                value = getattr(self.item, name, 0)
-            else:
-                att = attrs[name]
-                val = getattr(att, "value", None)
-                value = val if val is not None else att
+
+            att = attrs[name]
+            val = getattr(att, "value", None)
+            value = val if val is not None else att
 
             if self.toggleView != 1:
                 attrName = name
