@@ -36,6 +36,7 @@ class MultiSwitch(wx.Notebook):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
         self.Bind(wx.EVT_NOTEBOOK_PAGE_CHANGED, self.pageChanged)
+        self.Bind(wx.EVT_NAVIGATION_KEY, self.OnNavigate)
         self.mainFrame.Bind(sb.EVT_FIT_RENAMED, self.processRename)
         self.mainFrame.Bind(sb.EVT_FIT_SELECTED, self.changeFit)
         self.mainFrame.Bind(sb.EVT_FIT_REMOVED, self.processRemove)
@@ -46,6 +47,11 @@ class MultiSwitch(wx.Notebook):
 
         self.removal = False
         self.countEvt = 1
+        self.ignorePageChanged = False
+
+    def OnNavigate(self, event):
+        self.ignorePageChanged = True
+        event.Skip()
 
     def getActiveFit(self):
         return self.GetCurrentPage().view.activeFitID
@@ -116,8 +122,12 @@ class MultiSwitch(wx.Notebook):
         if event.Selection == self.GetPageCount() - 1:
             if "__WXMSW__" not in wx.PlatformInfo:
                 self.countEvt = 1
-
-            self.AddTab()
+            if not self.ignorePageChanged:
+                self.AddTab()
+            else:
+                self.ignorePageChanged = False
+#                self.ChangeSelection(0)
+                event.Veto()
 
             #Veto to prevent the + tab from being selected
             event.Veto()
@@ -139,7 +149,7 @@ class MultiSwitch(wx.Notebook):
     def pageChanged(self, event):
         #On windows, we can't use the CHANGING event as its bugged, so we need to RECHECK here
         if event.Selection == self.GetPageCount() - 1:
-            selection = self.AddTab()
+                selection = self.AddTab()
         else:
             selection = event.Selection
             if "__WXMSW__" in wx.PlatformInfo:
