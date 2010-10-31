@@ -114,13 +114,24 @@ class TargetingMiscViewFull(StatsView):
             value = value if value is not None else 0
             if self._cachedValues[counter] != value:
                 label.SetLabel("%s %s" %(formatAmount(value, prec, lowest, highest), unit))
-                if labelName is not "labelSensorStr":
+                # Tooltip stuff
+                RADII = [("Pod",25), ("Interceptor",33), ("Frigate",38), 
+                         ("Destroyer", 83), ("Cruiser", 130),  
+                         ("Battlecruiser", 265),  ("Battleship",420)]
+                if labelName is "labelScanRes":
+                    lockTime = "%s\n" % "Lock Times".center(28)
+                    for size, radius in RADII:
+                        left = "%s [%d]" % (size, radius)
+                        right = "%.1fs" % fit.calculateLockTime(radius)
+                        lockTime += "%-19s : %+5s\n" % (left, right)
+                    # print lockTime # THIS IS ALIGNED!
+                    label.SetToolTip(wx.ToolTip(lockTime))
+                elif labelName is "labelSensorStr":
+                    label.SetToolTip(wx.ToolTip("Type: %s - %.1f" % (fit.scanType, value)))
+                elif fit is not None:
                     label.SetToolTip(wx.ToolTip("%.1f" % value))
-                else:
-                    if fit is not None:
-                        label.SetToolTip(wx.ToolTip("Type: %s - %.1f" % (fit.scanType, value)))
                 self._cachedValues[counter] = value
-            counter += 1
+        counter += 1
 
         self.panel.Layout()
         self.headerPanel.Layout()
