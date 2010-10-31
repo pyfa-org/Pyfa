@@ -1025,7 +1025,10 @@ class ShipItem(wx.Window):
         self.newToggleBmp = self.newBmp
         self.shipEffBk = bitmapLoader.getBitmap("fshipbk_big","icons")
         self.raceBmp = bitmapLoader.getBitmap("race_%s_small" % self.shipRace, "icons")
-        self.raceMBmp = bitmapLoader.getBitmap("fit_delete_small","icons")
+        if self.shipName == "Apotheosis":
+            self.raceMBmp = bitmapLoader.getBitmap("race_jove_small","icons")
+        else:
+            self.raceMBmp = bitmapLoader.getBitmap("fit_delete_small","icons")
 
         if not self.raceBmp:
             self.raceBmp = self.raceMBmp
