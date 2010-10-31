@@ -58,7 +58,9 @@ class MainFrame(wx.Frame):
     def __init__(self):
         wx.Frame.__init__(self, None, wx.ID_ANY, title="pyfa - Python Fitting Assistant")
         MainFrame.__instance = self
-        self.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNFACE ) )
+
+        if 'wxMSW' in wx.PlatformInfo:
+            self.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNFACE ) )
 
         i = wx.IconFromBitmap(bitmapLoader.getBitmap("pyfa", "icons"))
         self.SetIcon(i)
