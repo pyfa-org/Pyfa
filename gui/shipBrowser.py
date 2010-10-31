@@ -1297,6 +1297,8 @@ class FitItem(wx.Window):
         self.cleanupTimer = None
         self.selTimer = None
 
+        self.selectedDelta = 0
+
         self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBackground)
 
         self.Bind(wx.EVT_LEFT_UP, self.checkPosition)
@@ -1309,16 +1311,19 @@ class FitItem(wx.Window):
         self.tcFitName.Bind(wx.EVT_KILL_FOCUS, self.editLostFocus)
         self.tcFitName.Bind(wx.EVT_KEY_DOWN, self.editCheckEsc)
         self.Bind(wx.EVT_TIMER,self.OnTimer)
-
+        self.StartSelectedTimer()
 
     def OnTimer(self, event):
         if self.selTimerID == event.GetId():
             ctimestamp = time.time()
-            interval = 60
+            interval = 3
             if ctimestamp < self.timestamp + interval:
-                delta = ctimestamp / (self.timestamp+interval)
-                selectedAdd = self.selectedColor = CalculateDelta(self,0x22,0x33,delta)
+                delta = (ctimestamp - self.timestamp) / interval
+                self.selectedDelta = self.CalculateDelta(0x0,0x33,delta)
                 self.Refresh()
+            else:
+                self.selectedDelta = 0x33
+                self.selTimer.Stop()
         if self.cleanupTimerID == event.GetId():
             if self.btnsStatus:
                 self.btnsStatus = ""
@@ -1327,6 +1332,10 @@ class FitItem(wx.Window):
             else:
                 self.cleanupTimer.Stop()
         event.Skip()
+    def StartSelectedTimer(self):
+        if not self.selTimer:
+            self.selTimer = wx.Timer(self,self.selTimerID)
+            self.selTimer.Start(100)
 
     def StartCleanupTimer(self):
         if self.cleanupTimer:
@@ -1507,9 +1516,9 @@ class FitItem(wx.Window):
             if activeFitID == self.fitID:
                 bkR,bkG,bkB = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
                 if (bkR+bkG+bkB) >(127+127+127):
-                    scale = -0x33
+                    scale = - self.selectedDelta
                 else:
-                    scale = 0x33
+                    scale = self.selectedDelta
                 bkR += scale
                 bkG += scale
                 bkB += scale
