@@ -167,9 +167,7 @@ class ShipBrowser(wx.Panel):
             sFit = service.Fit.getInstance()
             count = 0
             for ID,name,fits,race in content:
-                start = time.clock()
                 dbfits = len(sFit.getFitsWithShip(ID))
-                print time.clock()-start
                 if dbfits != fits:
                     fits = dbfits
                     self.stage2Cache[categoryID][count]= (ID,name,fits,race)
@@ -248,6 +246,7 @@ class ShipBrowser(wx.Panel):
                 self.lpane.AddWidget(PFStaticText(self.lpane, label = "No matching results."))
             self.lpane.RefreshList()
         self.Show()
+
 class PFStaticText(wx.StaticText):
     def _init__(self,parent, label = wx.EmptyString):
         wx.StaticText(self,parent,label)
