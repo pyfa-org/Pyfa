@@ -4,6 +4,7 @@ from gui import bitmapLoader
 import gui.mainFrame
 import gui.fittingView as fv
 import service
+import time
 
 from wx.lib.buttons import GenBitmapButton
 from pickle import TRUE
@@ -196,7 +197,7 @@ class ShipBrowser(wx.Panel):
         self._stage3Data = shipID
 
         for ID, name, timestamp in fitList:
-            self.lpane.AddWidget(FitItem(self.lpane, ID, (shipName, name),shipID))
+            self.lpane.AddWidget(FitItem(self.lpane, ID, (shipName, name, timestamp),shipID))
 
         self.lpane.RefreshList()
         self.Show()
@@ -222,8 +223,8 @@ class ShipBrowser(wx.Panel):
             for ID, name, race in shipList:
                 self.lpane.AddWidget(ShipItem(self.lpane, ID, (name, len(sFit.getFitsWithShip(ID))), race))
 
-            for ID, name, shipID, shipName in fitList:
-                self.lpane.AddWidget(FitItem(self.lpane, ID, (shipName, name), shipID))
+            for ID, name, shipID, shipName,timestamp in fitList:
+                self.lpane.AddWidget(FitItem(self.lpane, ID, (shipName, name,timestamp), shipID))
 
             self.lpane.RefreshList()
         self.Show()
@@ -1245,7 +1246,7 @@ class ShipItem(wx.Window):
         event.Skip()
 
 class FitItem(wx.Window):
-    def __init__(self, parent, fitID=None, shipFittingInfo=("Test", "cnc's avatar"), shipID = None, itemData=None,
+    def __init__(self, parent, fitID=None, shipFittingInfo=("Test", "cnc's avatar", 0 ), shipID = None, itemData=None,
                  id=wx.ID_ANY, range=100, pos=wx.DefaultPosition,
                  size=(0, 38), style=0):
         wx.Window.__init__(self, parent, id, pos, size, style)
@@ -1262,7 +1263,7 @@ class FitItem(wx.Window):
             self.shipBmp = wx.EmptyBitmap(32, 32)
 
         self.shipFittingInfo = shipFittingInfo
-        self.shipName, self.fitName= shipFittingInfo
+        self.shipName, self.fitName, self.timestamp = shipFittingInfo
         self.copyBmp = bitmapLoader.getBitmap("fit_add_small", "icons")
         self.renameBmp = bitmapLoader.getBitmap("fit_rename_small", "icons")
         self.deleteBmp = bitmapLoader.getBitmap("fit_delete_small","icons")
@@ -1291,6 +1292,11 @@ class FitItem(wx.Window):
             self.tcFitName.SelectAll()
             self.shipBrowser.fitIDMustEditName = -1
 
+        self.selTimerID = wx.NewId()
+        self.cleanupTimerID = wx.NewId()
+        self.cleanupTimer = None
+        self.selTimer = None
+
         self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBackground)
 
         self.Bind(wx.EVT_LEFT_UP, self.checkPosition)
@@ -1302,6 +1308,35 @@ class FitItem(wx.Window):
         self.tcFitName.Bind(wx.EVT_TEXT_ENTER, self.renameFit)
         self.tcFitName.Bind(wx.EVT_KILL_FOCUS, self.editLostFocus)
         self.tcFitName.Bind(wx.EVT_KEY_DOWN, self.editCheckEsc)
+        self.Bind(wx.EVT_TIMER,self.OnTimer)
+
+
+    def OnTimer(self, event):
+        if self.selTimerID == event.GetId():
+            ctimestamp = time.time()
+            interval = 60
+            if ctimestamp < self.timestamp + interval:
+                delta = ctimestamp / (self.timestamp+interval)
+                selectedAdd = self.selectedColor = CalculateDelta(self,0x22,0x33,delta)
+                self.Refresh()
+        if self.cleanupTimerID == event.GetId():
+            if self.btnsStatus:
+                self.btnsStatus = ""
+                self.Refresh()
+                self.cleanupTimer.Stop()
+        event.Skip()
+
+    def StartCleanupTimer(self):
+        if self.cleanupTimer:
+            if self.cleanupTimer.IsRunning():
+                self.cleanupTimer.Stop()
+            self.cleanupTimer.Start(3000)
+        else:
+            self.cleanupTimer = wx.Timer(self,self.cleanupTimerID)
+            self.cleanupTimer.Start(3000)
+
+    def CalculateDelta(self, start, end, delta):
+        return start + (end-start)*delta
 
     def GetType(self):
         return 3
@@ -1331,16 +1366,19 @@ class FitItem(wx.Window):
             if self.btnsStatus != "Rename":
                 self.btnsStatus = "Rename"
                 self.Refresh()
+                self.StartCleanupTimer()
         elif self.NHitTest((self.deletePosX, self.deletePosY), pos, (16, 16)):
             self.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
             if self.btnsStatus != "Delete":
                 self.btnsStatus = "Delete"
                 self.Refresh()
+                self.StartCleanupTimer()
         elif self.NHitTest((self.copyPosX, self.copyPosY), pos, (16, 16)):
             self.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
             if self.btnsStatus != "Copy":
                 self.btnsStatus = "Copy"
                 self.Refresh()
+                self.StartCleanupTimer()
         else:
             self.SetCursor(wx.StockCursor(wx.CURSOR_ARROW))
             if self.btnsStatus != "":
