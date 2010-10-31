@@ -1335,6 +1335,7 @@ class FitItem(wx.Window):
         wx.PostEvent(self.mainFrame, FitRemoved(fitID=self.fitID))
 
     def selectFit(self, event=None):
+        self.Parent.RefreshList(True)
         wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fitID))
 
     def NHitTest(self, target, position, area):
@@ -1384,7 +1385,19 @@ class FitItem(wx.Window):
             mdc.SetTextForeground(wx.BLACK)
 
         else:
-            mdc.SetBackground(wx.Brush(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)))
+            activeFitID = self.mainFrame.getActiveFit()
+            if activeFitID == self.fitID:
+                bkR,bkG,bkB = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
+                if (bkR+bkG+bkB) >(127+127+127):
+                    scale = 0.90
+                else:
+                    scale = 1.1
+                bkR *= scale
+                bkG *= scale
+                bkB *= scale
+                mdc.SetBackground(wx.Brush((bkR,bkG,bkB)))
+            else:
+                mdc.SetBackground(wx.Brush(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)))
             mdc.SetTextForeground(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT))
             mdc.Clear()
         mdc.SetFont(wx.Font(9, wx.SWISS, wx.NORMAL, wx.BOLD, False))
