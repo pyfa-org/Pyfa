@@ -201,7 +201,9 @@ class Fit(object):
 
             d.amount += 1
         else:
-            fit.projectedModules.append(eos.types.Module(thing))
+            module = eos.types.Module(thing)
+            module.state = State.ACTIVE
+            fit.projectedModules.append(module)
 
         eos.db.commit()
         fit.clear()
