@@ -22,8 +22,8 @@ from gui.viewColumn import ViewColumn
 from gui import bitmapLoader
 from eos.types import Slot
 
-class ModuleNameOrSlot(ViewColumn):
-    name = "Module name/slot"
+class ModuleName(ViewColumn):
+    name = "Module Name"
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
         self.columnText = "Name"
@@ -51,4 +51,4 @@ class ModuleNameOrSlot(ViewColumn):
 
         return iconId
 
-ModuleNameOrSlot.register()
+ModuleName.register()
