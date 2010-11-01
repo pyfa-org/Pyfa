@@ -37,7 +37,7 @@ class CapacitorUse(ViewColumn):
 
     def getText(self, mod):
         capUse = mod.capUse
-        if capUse is not None:
+        if capUse:
             return "%s%s" % ("+" if capUse < 0 else "", (formatAmount(-capUse, 3, 0, 3)))
         else:
             return ""
