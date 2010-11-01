@@ -500,26 +500,28 @@ class Fit(object):
         fit.calculateModifiedAttributes()
 
     # Old state : New State
-    transitionMap = {State.OVERHEATED: State.ACTIVE,
-                     State.ACTIVE: State.OFFLINE,
-                     State.OFFLINE: State.ONLINE,
-                     State.ONLINE: State.ACTIVE}
+    localMap = {State.OVERHEATED: State.ACTIVE,
+                State.ACTIVE: State.OFFLINE,
+                State.OFFLINE: State.ONLINE,
+                State.ONLINE: State.ACTIVE}
+    projectedMap = {State.OVERHEATED: State.ACTIVE,
+                    State.ACTIVE: State.OFFLINE,
+                    State.OFFLINE: State.ACTIVE,
+                    State.ONLINE: State.ACTIVE} # Just in case
 
     def __getProposedState(self, mod, click, proposedState=None):
         if mod.slot in (Slot.RIG, Slot.SUBSYSTEM) or mod.isEmpty:
             return State.ONLINE
 
         currState = state = mod.state
+        transitionMap = self.projectedMap if mod.projected else self.localMap
         if proposedState is not None:
             state = proposedState
         elif click == "right":
-            if currState == State.OVERHEATED:
-                state = State.ACTIVE
-            elif mod.isValidState(State.OVERHEATED):
-                state = State.OVERHEATED
+            state = State.OVERHEATED
         else:
-            state = self.transitionMap[currState]
-            while not mod.isValidState(state):
+            state = transitionMap[currState]
+            if not mod.isValidState(state):
                 state =- 1
 
         if mod.isValidState(state):
