@@ -23,7 +23,7 @@ from gui import bitmapLoader
 from eos.types import State
 
 class ModuleState(ViewColumn):
-    name = "Module state"
+    name = "Module State"
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
         self.resizable = False
