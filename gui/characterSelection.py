@@ -115,12 +115,12 @@ class CharacterSelection(wx.Panel):
             sCharacter = service.Character.getInstance()
             reqs = sCharacter.checkRequirements(fit)
             if len(reqs) == 0:
+                tip = "All prerequisites have been met"
                 self.skillReqsStaticBitmap.SetBitmap(self.greenSkills)
-                self.skillReqsStaticBitmap.SetToolTip(None)
             else:
                 tip = self._buildSkillsTooltip(reqs)
                 self.skillReqsStaticBitmap.SetBitmap(self.redSkills)
-                self.skillReqsStaticBitmap.SetToolTipString(tip.strip())
+            self.skillReqsStaticBitmap.SetToolTipString(tip.strip())
 
         if newCharID == None:
             cChar = service.Character.getInstance()
