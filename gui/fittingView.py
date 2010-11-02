@@ -30,9 +30,9 @@ from gui.builtinViewColumns.moduleState import ModuleState
 FitChanged, FIT_CHANGED = wx.lib.newevent.NewEvent()
 
 class FittingView(d.Display):
-    DEFAULT_COLS = ["Module state",
+    DEFAULT_COLS = ["Module State",
                     "Module Ammo Icon",
-                    "Module name/slot",
+                    "Module Name",
                     "attr:power",
                     "attr:cpu",
                     "Max range",
