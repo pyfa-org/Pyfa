@@ -23,6 +23,7 @@ from gui import bitmapLoader
 import service
 from util import formatAmount
 from eos.types import Hardpoint
+import wx
 
 class MaxRange(ViewColumn):
     name = "Module Tracking"
@@ -44,11 +45,15 @@ class MaxRange(ViewColumn):
                     self.imageId = -1
             else:
                 self.imageId = -1
+
+            self.mask = wx.LIST_MASK_IMAGE
+
         else:
             self.imageId = -1
 
         if params["displayName"] or self.imageId == -1:
             self.columnText = info.displayName if info.displayName != "" else info.name
+            self.mask |= wx.LIST_MASK_TEXT
 
     def getText(self, stuff):
         if stuff.hardpoint == Hardpoint.TURRET:

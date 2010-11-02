@@ -21,11 +21,13 @@ from gui.viewColumn import ViewColumn
 from gui import bitmapLoader
 import service
 from util import formatAmount
+import wx
 
 class ModulePrice(ViewColumn):
     name = "Module Price"
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
+        self.mask = wx.LIST_MASK_IMAGE
         bitmap = bitmapLoader.getBitmap("totalPrice_small", "icons")
         if bitmap:
             self.imageId = fittingView.imageList.Add(bitmap)

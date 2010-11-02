@@ -22,10 +22,14 @@ from gui import bitmapLoader
 import service
 from util import formatAmount
 
+import wx
 class CapacitorUse(ViewColumn):
     name = "Capacitor Usage"
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
+
+        self.mask = wx.LIST_MASK_IMAGE
+
         cAttribute = service.Attribute.getInstance()
         info = cAttribute.getAttributeInfo("capacitorNeed")
         bitmap = bitmapLoader.getBitmap(info.icon.iconFile, "pack")

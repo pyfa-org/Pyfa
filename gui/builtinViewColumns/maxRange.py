@@ -22,6 +22,7 @@ from gui.viewColumn import ViewColumn
 from gui import bitmapLoader
 import service
 from util import formatAmount
+import wx
 
 class MaxRange(ViewColumn):
     name = "Max range"
@@ -30,6 +31,7 @@ class MaxRange(ViewColumn):
             params = {"showIcon": True,
                       "displayName": False}
         ViewColumn.__init__(self, fittingView)
+
         cAttribute = service.Attribute.getInstance()
         info = cAttribute.getAttributeInfo("maxRange")
         self.info = info
@@ -43,11 +45,13 @@ class MaxRange(ViewColumn):
                     self.imageId = -1
             else:
                 self.imageId = -1
+            self.mask = wx.LIST_MASK_IMAGE
         else:
             self.imageId = -1
 
         if params["displayName"] or self.imageId == -1:
             self.columnText = info.displayName if info.displayName != "" else info.name
+            self.mask |= wx.LIST_MASK_IMAGE
 
     def getText(self, stuff):
         maxRange = stuff.maxRange if hasattr(stuff, "maxRange") else stuff.getModifiedItemAttr("maxRange")

@@ -20,11 +20,14 @@
 from gui import builtinViewColumns
 from gui.viewColumn import ViewColumn
 from gui import bitmapLoader
-
+import wx
 class ModuleAmmo(ViewColumn):
     name = "Module Ammo"
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
+
+        self.mask = wx.LIST_MASK_IMAGE
+
         self.imageId = fittingView.imageList.Add(bitmapLoader.getBitmap("damagePattern_small", "icons"))
 
     def getText(self, mod):

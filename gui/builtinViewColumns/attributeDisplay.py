@@ -22,6 +22,7 @@ from gui.viewColumn import ViewColumn
 from gui import bitmapLoader
 import service
 from util import formatAmount
+import wx
 
 class AttributeDisplay(ViewColumn):
     name = "Attribute Display"
@@ -45,11 +46,13 @@ class AttributeDisplay(ViewColumn):
                     self.imageId = -1
             else:
                 self.imageId = -1
+            self.mask = wx.LIST_MASK_IMAGE
         else:
             self.imageId = -1
 
         if params["displayName"] or self.imageId == -1:
             self.columnText = info.displayName if info.displayName != "" else info.name
+            self.mask |= wx.LIST_MASK_IMAGE
 
     def getText(self, mod):
         if hasattr(mod, "item"):

@@ -21,6 +21,7 @@ from gui import builtinViewColumns
 from gui.viewColumn import ViewColumn
 from gui import bitmapLoader
 from eos.types import State
+import wx
 
 class ModuleState(ViewColumn):
     name = "Module State"
@@ -28,6 +29,7 @@ class ModuleState(ViewColumn):
         ViewColumn.__init__(self, fittingView)
         self.resizable = False
         self.size = 20
+        self.mask = wx.LIST_MASK_IMAGE
         self.stateNameMap = {}
 
     def getText(self, mod):

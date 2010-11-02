@@ -21,12 +21,14 @@ from gui import builtinViewColumns
 from gui.viewColumn import ViewColumn
 from gui import bitmapLoader
 from eos.types import Slot
+import wx
 
 class StuffName(ViewColumn):
     name = "Name"
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
         self.columnText = "Name"
+        self.mask = wx.LIST_MASK_TEXT
 
     def getText(self, stuff):
         item = getattr(stuff, "item", stuff)

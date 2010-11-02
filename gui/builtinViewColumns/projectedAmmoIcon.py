@@ -20,13 +20,15 @@
 from gui.viewColumn import ViewColumn
 import gui.builtinViewColumns.moduleAmmoIcon
 from eos.types import Module
-
+import wx
 class ProjectedAmmoIcon(ViewColumn):
     name = "Projected Ammo Icon"
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
         self.columnText = ""
         self.size = 20
+        self.mask = wx.LIST_MASK_IMAGE
+
         self.slave = gui.builtinViewColumns.moduleAmmoIcon.ModuleAmmoIcon(fittingView, params)
 
     def getText(self, stuff):

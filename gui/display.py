@@ -57,12 +57,14 @@ class Display(wx.ListCtrl):
     def addColumn(self, i, col):
         self.activeColumns.append(col)
         info = wx.ListItem()
-        info.m_mask = col.mask
+        info.m_mask = col.mask | wx.LIST_MASK_FORMAT | wx.LIST_MASK_WIDTH
         info.m_image = col.imageId
         info.m_text = col.columnText
+        info.m_width = -1
+        info.m_format = wx.LIST_FORMAT_LEFT
         self.InsertColumnInfo(i, info)
         col.resized = False
-        self.SetColumnWidth(i, wx.LIST_AUTOSIZE_USEHEADER if col.size is wx.LIST_AUTOSIZE else col.size)
+        self.SetColumnWidth(i, col.size)
 
     def getColIndex(self, colClass):
         for i, col in enumerate(self.activeColumns):
@@ -116,7 +118,6 @@ class Display(wx.ListCtrl):
             sel = self.GetNextSelected(sel)
 
         item = -1
-        self.sizeLastColumn = wx.LIST_AUTOSIZE_USEHEADER
         for id, st in enumerate(stuff):
             item = self.GetNextItem(item)
             for i, col in enumerate(self.activeColumns):
@@ -135,28 +136,16 @@ class Display(wx.ListCtrl):
 
                 if oldText != newText or oldImageId != newImageId:
                     self.SetItem(colItem)
-                if i == len(self.activeColumns) - 1 and newText:
-                    self.sizeLastColumn = wx.LIST_AUTOSIZE
+
                 self.SetItemState(item, 0 , wx.LIST_STATE_FOCUSED | wx.LIST_STATE_SELECTED)
 
                 self.SetItemData(item, id)
 
         self.Freeze()
-        for i, col in enumerate(self.activeColumns):
-            if not col.resized:
-                if i< len(self.activeColumns) - 1:
-                    if col.size == wx.LIST_AUTOSIZE:
-                        self.SetColumnWidth(i, wx.LIST_AUTOSIZE_USEHEADER)
-                        headerWidth = self.GetColumnWidth(i)
-                        self.SetColumnWidth(i, wx.LIST_AUTOSIZE)
-                        baseWidth = self.GetColumnWidth(i)
-                        if baseWidth < headerWidth:
-                            self.SetColumnWidth(i, headerWidth)
-                    else:
-                        self.SetColumnWidth(i, col.size)
-                else:
-                    self.SetColumnWidth(i,self.sizeLastColumn)
+        for i,col in enumerate(self.activeColumns):
+            self.SetColumnWidth(i, col.size)
         self.Thaw()
+
         for sel in selection:
             self.Select(sel)
 

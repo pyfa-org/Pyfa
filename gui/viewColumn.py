@@ -30,9 +30,9 @@ class ViewColumn(object):
         self.fittingView = fittingView
         self.columnText = ""
         self.imageId = -1
-        self.size = wx.LIST_AUTOSIZE
-        self.mask = wx.LIST_MASK_TEXT | wx.LIST_MASK_IMAGE
-        self.resizable = True
+        self.size = wx.LIST_AUTOSIZE_USEHEADER
+        self.mask = 0
+
 
     @classmethod
     def register(cls):

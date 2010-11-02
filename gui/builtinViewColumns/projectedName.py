@@ -21,12 +21,14 @@ from gui.viewColumn import ViewColumn
 import gui.builtinViewColumns.name
 import gui.builtinViewColumns.droneNameAmount
 from eos.types import Drone
+import wx
 
 class ProjectedName(ViewColumn):
     name = "Projected Name"
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
         self.columnText = "Name"
+        self.mask = wx.LIST_MASK_TEXT
         self.slave = gui.builtinViewColumns.name.StuffName(fittingView, params)
         self.droneSlave = gui.builtinViewColumns.droneNameAmount.DroneNameAmount(fittingView, params)
 

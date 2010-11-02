@@ -21,12 +21,13 @@ from gui import builtinViewColumns
 from gui.viewColumn import ViewColumn
 from gui import bitmapLoader
 from eos.types import Slot
-
+import wx
 class DroneDps(ViewColumn):
     name = "Drone DPS"
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
         self.columnText = ""
+        self.mask = wx.LIST_MASK_IMAGE
         bitmap = bitmapLoader.getBitmap("droneBandwidth_small", "icons")
         self.imageId = fittingView.imageList.Add(bitmap)
 

@@ -260,9 +260,11 @@ class FittingView(d.Display):
         for slotType in Slot.getTypes():
             slot = Slot.getValue(slotType)
             slotMap[slot] = fit.getSlotsFree(slot) < 0
-
+        bkcolor = self.GetBackgroundColour()
         for i, mod in enumerate(self.mods):
             if slotMap[mod.slot]:
                 self.SetItemBackgroundColour(i, wx.Colour(255, 51, 51))
             else:
-                self.SetItemBackgroundColour(i, self.GetBackgroundColour())
+                icolor = self.GetItemBackgroundColour(i)
+                if icolor != bkcolor:
+                    self.SetItemBackgroundColour(i, bkcolor)

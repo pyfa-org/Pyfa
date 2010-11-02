@@ -25,6 +25,7 @@ import gui.builtinViewColumns.moduleState
 import gui.builtinViewColumns.droneCheckbox
 from eos.types import Module, Drone, Fit
 import gui.bitmapLoader
+import wx
 
 class ProjectedState(ViewColumn):
     name = "Projected State"
@@ -32,6 +33,7 @@ class ProjectedState(ViewColumn):
         ViewColumn.__init__(self, view)
         self.columnText = ""
         self.size = 20
+        self.mask = wx.LIST_MASK_IMAGE
         self.fitImageId = view.imageList.Add(gui.bitmapLoader.getBitmap("fit_small", "icons"))
         self.moduleSlave = gui.builtinViewColumns.moduleState.ModuleState(view, params)
         self.droneSlave = gui.builtinViewColumns.droneCheckbox.DroneCheckbox(view, params)
