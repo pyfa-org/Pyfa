@@ -186,7 +186,7 @@ class MainFrame(wx.Frame):
         if importCount == 1:
             if self.getActiveFit() != fitIDs[0]:
                 wx.PostEvent(self, FitSelected(fitID=fitIDs[0]))
-
+        self.shipBrowser.RefreshContent()
     def showExportDialog(self, event):
         dlg=wx.FileDialog(
             self,
