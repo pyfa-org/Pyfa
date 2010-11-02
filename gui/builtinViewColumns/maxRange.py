@@ -51,7 +51,7 @@ class MaxRange(ViewColumn):
 
         if params["displayName"] or self.imageId == -1:
             self.columnText = info.displayName if info.displayName != "" else info.name
-            self.mask |= wx.LIST_MASK_IMAGE
+            self.mask |= wx.LIST_MASK_TEXT
 
     def getText(self, stuff):
         maxRange = stuff.maxRange if hasattr(stuff, "maxRange") else stuff.getModifiedItemAttr("maxRange")

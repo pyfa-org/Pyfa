@@ -27,6 +27,7 @@ class ModuleAmmoIcon(ViewColumn):
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
         self.size = 16
+        self.maxsize = self.size
         self.mask = wx.LIST_MASK_IMAGE
         self.columnText = ""
 
