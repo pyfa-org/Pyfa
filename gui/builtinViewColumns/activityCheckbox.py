@@ -28,6 +28,7 @@ class ActivityCheckbox(ViewColumn):
         ViewColumn.__init__(self, fittingView)
         self.resizable = False
         self.size = 24
+        self.maxsize = self.size
         self.mask = wx.LIST_MASK_WIDTH
         for name, state in (("checked", wx.CONTROL_CHECKED), ("unchecked", 0)):
             bitmap = wx.EmptyBitmap(16, 16)

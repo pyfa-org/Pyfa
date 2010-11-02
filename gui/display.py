@@ -29,7 +29,9 @@ class Display(wx.ListCtrl):
         self.imageList = wx.ImageList(16, 16)
         self.SetImageList(self.imageList, wx.IMAGE_LIST_SMALL)
         self.activeColumns = []
-        self.Bind(wx.EVT_LIST_COL_BEGIN_DRAG, self.resizeChecker)
+        self.columnsMinWidth = []
+        self.Bind(wx.EVT_LIST_COL_END_DRAG, self.resizeChecker)
+        self.Bind(wx.EVT_LIST_COL_BEGIN_DRAG, self.resizeSkip)
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
@@ -45,6 +47,7 @@ class Display(wx.ListCtrl):
                 col = ViewColumn.getColumn(colName)(self, None)
 
             self.addColumn(i, col)
+            self.columnsMinWidth.append(self.GetColumnWidth(i))
             i += 1
 
         info = wx.ListItem()
@@ -76,13 +79,23 @@ class Display(wx.ListCtrl):
     def resizeChecker(self, event):
         # we veto header cell resize by default till we find a way
         # to assure a minimal size for the resized header cell
+        column = event.GetColumn()
+        wx.CallAfter(self.checkColumnSize,column)
+        event.Skip()
 
-        event.Veto()
+    def resizeSkip(self, event):
+        column = event.GetColumn()
+        colItem = self.activeColumns[column]
+        if self.activeColumns[column].maxsize != -1:
+            event.Veto()
+        else:
+            event.Skip()
 
-#        if self.activeColumns[event.Column].resizable is False:
-#            event.Veto()
-#        else:
-#            self.activeColumns[event.Column].resized = True
+    def checkColumnSize(self,column):
+        colItem = self.activeColumns[column]
+        if self.GetColumnWidth(column) < self.columnsMinWidth[column]:
+            self.SetColumnWidth(column,self.columnsMinWidth[column])
+            colItem.resized = True
 
     def clearItemImages(self):
         for i in xrange(self.imageList.ImageCount - 1, self.imageListBase, -1):
@@ -144,18 +157,20 @@ class Display(wx.ListCtrl):
         self.Freeze()
         if 'wxMSW' in wx.PlatformInfo:
             for i,col in enumerate(self.activeColumns):
-                self.SetColumnWidth(i, col.size)
+                if not col.resized:
+                    self.SetColumnWidth(i, col.size)
         else:
             for i, col in enumerate(self.activeColumns):
-                if col.size == wx.LIST_AUTOSIZE_USEHEADER:
-                    self.SetColumnWidth(i, wx.LIST_AUTOSIZE_USEHEADER)
-                    headerWidth = self.GetColumnWidth(i)
-                    self.SetColumnWidth(i, wx.LIST_AUTOSIZE)
-                    baseWidth = self.GetColumnWidth(i)
-                    if baseWidth < headerWidth:
-                        self.SetColumnWidth(i, headerWidth)
-                else:
-                    self.SetColumnWidth(i, col.size)
+                if not col.resized:
+                    if col.size == wx.LIST_AUTOSIZE_USEHEADER:
+                        self.SetColumnWidth(i, wx.LIST_AUTOSIZE_USEHEADER)
+                        headerWidth = self.GetColumnWidth(i)
+                        self.SetColumnWidth(i, wx.LIST_AUTOSIZE)
+                        baseWidth = self.GetColumnWidth(i)
+                        if baseWidth < headerWidth:
+                            self.SetColumnWidth(i, headerWidth)
+                    else:
+                        self.SetColumnWidth(i, col.size)
         self.Thaw()
 
         for sel in selection:

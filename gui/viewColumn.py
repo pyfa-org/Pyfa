@@ -32,6 +32,7 @@ class ViewColumn(object):
         self.imageId = -1
         self.size = wx.LIST_AUTOSIZE_USEHEADER
         self.mask = 0
+        self.maxsize = -1
 
 
     @classmethod
