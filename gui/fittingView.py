@@ -29,6 +29,19 @@ from gui.builtinViewColumns.moduleState import ModuleState
 
 FitChanged, FIT_CHANGED = wx.lib.newevent.NewEvent()
 
+class FittingViewDrop(wx.PyDropTarget):
+        def __init__(self, dropFn):
+            wx.PyDropTarget.__init__(self)
+            self.dropFn = dropFn
+            # this is really transferring an EvE itemID
+            self.dropData = wx.PyTextDataObject()
+            self.SetDataObject(self.dropData)
+
+        def OnData(self, x, y, t):
+            if self.GetData():
+                self.dropFn(x, y, int(self.dropData.GetText()))
+            return t
+
 class FittingView(d.Display):
     DEFAULT_COLS = ["Module State",
                     "Module Ammo Icon",
@@ -42,19 +55,6 @@ class FittingView(d.Display):
                     "Module Ammo",
                     ]
 
-    class FittingViewDrop(wx.PyDropTarget):
-        def __init__(self, dropFn):
-            wx.PyDropTarget.__init__(self)
-            self.dropFn = dropFn
-            # this is really transferring an EvE itemID
-            self.dropData = wx.PyTextDataObject()
-            self.SetDataObject(self.dropData)
-
-        def OnData(self, x, y, t):
-            if self.GetData():
-                self.dropFn(x, y, int(self.dropData.GetText()))
-            return t
-
     def __init__(self, parent):
         d.Display.__init__(self, parent)
         self.Show(False)
@@ -66,7 +66,7 @@ class FittingView(d.Display):
         else:
             self.Bind(wx.EVT_RIGHT_DOWN, self.scheduleMenu)
 
-        self.SetDropTarget(self.FittingViewDrop(self.swapItems))
+        self.SetDropTarget(FittingViewDrop(self.swapItems))
         self.activeFitID = None
         self.Bind(wx.EVT_KEY_UP, self.kbEvent)
         self.Bind(wx.EVT_LEFT_DOWN, self.click)

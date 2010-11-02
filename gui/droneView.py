@@ -26,6 +26,19 @@ import gui.display as d
 from gui.builtinViewColumns.droneCheckbox import DroneCheckbox
 from gui.contextMenu import ContextMenu
 
+class DroneViewDrop(wx.PyDropTarget):
+        def __init__(self, dropFn):
+            wx.PyDropTarget.__init__(self)
+            self.dropFn = dropFn
+            # this is really transferring an EvE itemID
+            self.dropData = wx.PyTextDataObject()
+            self.SetDataObject(self.dropData)
+
+        def OnData(self, x, y, t):
+            if self.GetData():
+                self.dropFn(x, y, int(self.dropData.GetText()))
+            return t
+
 class DroneView(d.Display):
     DEFAULT_COLS = ["Drone Checkbox",
                     "Drone Name/Amount",
@@ -44,6 +57,32 @@ class DroneView(d.Display):
             self.Bind(wx.EVT_RIGHT_UP, self.scheduleMenu)
         else:
             self.Bind(wx.EVT_RIGHT_DOWN, self.scheduleMenu)
+
+
+        self.Bind(wx.EVT_LIST_BEGIN_DRAG, self.startDrag)
+        self.SetDropTarget(DroneViewDrop(self.mergeDrones))
+
+    def startDrag(self, event):
+        row = event.GetIndex()
+        if row != -1:
+            data = wx.PyTextDataObject()
+            data.SetText(str(self.GetItemData(row)))
+
+            dropSource = wx.DropSource(self)
+            dropSource.SetData(data)
+            res = dropSource.DoDragDrop()
+
+    def mergeDrones(self, x, y, itemID):
+        srcRow = self.FindItemData(-1,itemID)
+        dstRow, _ = self.HitTest((x, y))
+        if srcRow != -1 and dstRow != -1:
+            self._merge(srcRow, dstRow)
+
+    def _merge(self, src, dst):
+        sFit = service.Fit.getInstance()
+        fitID = self.mainFrame.getActiveFit()
+        if sFit.mergeDrones(fitID, self.drones[src], self.drones[dst]):
+            wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=fitID))
 
     DRONE_ORDER = ('Light Scout Drones', 'Medium Scout Drones',
                    'Heavy Attack Drones', 'Sentry Drones', 'Fighters',

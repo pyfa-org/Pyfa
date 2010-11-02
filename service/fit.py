@@ -304,6 +304,22 @@ class Fit(object):
         else:
             return False
 
+    def mergeDrones(self, fitID, d1, d2):
+        if fitID == None:
+            return False
+
+        fit = eos.db.getFit(fitID)
+        if d1.item != d2.item:
+            return False
+
+        fit.drones.remove(d1)
+        d2.amount += d1.amount
+        d2.amountActive += d1.amountActive if d1.amountActive > 0 else -d2.amountActive
+        eos.db.commit()
+        fit.clear()
+        fit.calculateModifiedAttributes()
+        return True
+
     def splitDrones(self, fit, d, amount, l):
         total = d.amount
         active = d.amountActive > 0
