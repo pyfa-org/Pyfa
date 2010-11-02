@@ -28,20 +28,24 @@ class MainMenuBar(wx.MenuBar):
         self.damagePatternEditorId = wx.NewId()
         self.backupFitsId = wx.NewId()
 
+        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+
         wx.MenuBar.__init__(self)
 
         # File menu
         fileMenu = wx.Menu()
         self.Append(fileMenu, "&File")
-        if 'wxMSW' in wx.PlatformInfo:
-            fileMenu.Append(wx.ID_CLOSE, "&Close\tCTRL+W", "Close the currently open fit")
-        else:
-            fileMenu.Append(wx.ID_CLOSE)
-        fileMenu.Append(wx.ID_EXIT)
+
+        fileMenu.Append(self.mainFrame.addTabId, "New fitting tab\tCTRL+T", "Close the currently open fit")
+        fileMenu.Append(self.mainFrame.closeTabId, "Close current fitting tab\tCTRL+W", "Close the currently open fit")
         fileMenu.AppendSeparator()
+
         fileMenu.Append(self.backupFitsId, "&Backup fits", "Backup all fittings to a XML file")
         fileMenu.Append(wx.ID_OPEN, "&Import\tCTRL+O", "Import a fit into pyfa.")
         fileMenu.Append(wx.ID_SAVEAS, "&Export\tCTRL+S", "Export the fit to another format.")
+
+        fileMenu.AppendSeparator()
+        fileMenu.Append(wx.ID_EXIT)
 
 
         # Edit menu
@@ -79,7 +83,7 @@ class MainMenuBar(wx.MenuBar):
         helpMenu.Append(911,"Open Widgets Inspect tool", "Open Widgets Inspect tool")
 
 
-        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+
         self.mainFrame.Bind(gui.fittingView.FIT_CHANGED, self.fitChanged)
 
     def fitChanged(self, event):

@@ -112,6 +112,9 @@ class MainFrame(wx.Frame):
 
         self.SetSizer(mainSizer)
 
+        self.addTabId = wx.NewId()
+        self.closeTabId = wx.NewId()
+
         #Add menu
         self.SetMenuBar(MainMenuBar())
         #self.SetToolBar(MainToolBar(self))
@@ -246,17 +249,16 @@ class MainFrame(wx.Frame):
         #Clipboard exports
         self.Bind(wx.EVT_MENU, self.exportToClipboard, id=wx.ID_COPY)
 
-        addTabId = wx.NewId()
         toggleShipMarketId = wx.NewId()
         # Close Tab
-        self.Bind(wx.EVT_MENU, self.CloseCurrentFit, id=wx.ID_CLOSE)
-        self.Bind(wx.EVT_MENU,self.HAddTab, id = addTabId)
+        self.Bind(wx.EVT_MENU, self.CloseCurrentFit, id=self.closeTabId)
+        self.Bind(wx.EVT_MENU,self.HAddTab, id = self.addTabId)
         self.Bind(wx.EVT_MENU,self.toggleShipMarket, id = toggleShipMarketId)
 
-        actb = [(wx.ACCEL_CTRL, ord('T'), addTabId),
-                (wx.ACCEL_CMD, ord('T'), addTabId),
-                (wx.ACCEL_CTRL, ord("W"), wx.ID_CLOSE),
-                (wx.ACCEL_CMD, ord("W"), wx.ID_CLOSE),
+        actb = [(wx.ACCEL_CTRL, ord('T'), self.addTabId),
+                (wx.ACCEL_CMD, ord('T'), self.addTabId),
+                (wx.ACCEL_CTRL, ord("W"), self.closeTabId),
+                (wx.ACCEL_CMD, ord("W"), self.closeTabId),
                 (wx.ACCEL_CTRL, ord(" "), toggleShipMarketId),
                 (wx.ACCEL_CMD, ord(" "), toggleShipMarketId)]
         atable = wx.AcceleratorTable(actb)
