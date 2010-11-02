@@ -1,5 +1,4 @@
 import wx
-import wx.animate
 import copy
 from gui import bitmapLoader
 import gui.mainFrame
@@ -145,7 +144,7 @@ class ShipBrowser(wx.Panel):
 
         self.lpane.RefreshList()
         self.Show()
-        self.lpane.ShowLoading(False)
+#        self.lpane.ShowLoading(False)
 
     def stage2(self, event):
         back = event.back
@@ -158,7 +157,7 @@ class ShipBrowser(wx.Panel):
 
         content = self.stage2Cache.get(categoryID,None)
         if not content:
-            self.lpane.ShowLoading(True)
+#            self.lpane.ShowLoading(True)
             self.lpane.RemoveAllChildren()
             sMarket = service.Market.getInstance()
             sMarket.getShipListDelayed(self.stage2Callback, categoryID)
@@ -740,23 +739,23 @@ class ListPane (wx.ScrolledWindow):
         self.Bind(wx.EVT_SCROLLWIN_LINEUP, self.MScrollUp)
         self.Bind(wx.EVT_SCROLLWIN_LINEDOWN, self.MScrollDown)
         self.Bind(wx.EVT_CHILD_FOCUS, self.OnChildFocus)
-        self.loadingAnim = wx.animate.Animation(os.path.join(config.path,"icons/fit_loading.gif"))
-        self.animCtrl = wx.animate.AnimationCtrl(self, -1, self.loadingAnim)
-        self.animCtrl.SetUseWindowBackgroundColour()
-        self.animCtrl.Hide()
+#        self.loadingAnim = wx.animate.Animation(os.path.join(config.path,"icons/fit_loading.gif"))
+#        self.animCtrl = wx.animate.AnimationCtrl(self, -1, self.loadingAnim)
+#        self.animCtrl.SetUseWindowBackgroundColour()
+#        self.animCtrl.Hide()
 
-    def ShowLoading(self, mode = True):
-        if mode:
-            aweight,aheight = self.animCtrl.GetSize()
-            cweight,cheight = self.GetSize()
-            ax = (cweight - aweight)/2
-            ay = (cheight - aheight)/2
-            self.animCtrl.SetPosition((ax,ay))
-            self.animCtrl.Show()
-            self.animCtrl.Play()
-        else:
-            self.animCtrl.Stop()
-            self.animCtrl.Hide()
+#    def ShowLoading(self, mode = True):
+#        if mode:
+#            aweight,aheight = self.animCtrl.GetSize()
+#            cweight,cheight = self.GetSize()
+#            ax = (cweight - aweight)/2
+#            ay = (cheight - aheight)/2
+#            self.animCtrl.SetPosition((ax,ay))
+#            self.animCtrl.Show()
+#            self.animCtrl.Play()
+#        else:
+#            self.animCtrl.Stop()
+#            self.animCtrl.Hide()
 
     def OnChildFocus(self, event):
         event.Skip()
