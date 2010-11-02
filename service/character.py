@@ -146,8 +146,11 @@ class Character():
         for thing in itertools.chain(fit.modules, fit.drones, (fit.ship,)):
             for attr in ("item", "charge"):
                 subThing = getattr(thing, attr, None)
+                subReqs = {}
                 if subThing is not None:
-                    self._checkRequirements(fit, fit.character, subThing, reqs)
+                    self._checkRequirements(fit, fit.character, subThing, subReqs)
+                    if subReqs:
+                        reqs[subThing] = subReqs
 
         return reqs
 
