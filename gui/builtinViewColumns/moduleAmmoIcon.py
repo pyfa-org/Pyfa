@@ -20,12 +20,13 @@
 from gui import builtinViewColumns
 from gui.viewColumn import ViewColumn
 from gui import bitmapLoader
+import wx
 
 class ModuleAmmoIcon(ViewColumn):
     name = "Module Ammo Icon"
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
-        self.size = 20
+        self.size = 16
         self.columnText = ""
 
     def getText(self, mod):

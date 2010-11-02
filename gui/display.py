@@ -26,7 +26,7 @@ class Display(wx.ListCtrl):
     def __init__(self, parent, style = 0):
 
         wx.ListCtrl.__init__(self, parent, style=wx.LC_REPORT | wx.BORDER_NONE | style)
-
+        self.Show(False)
         self.imageList = wx.ImageList(16, 16)
         self.SetImageList(self.imageList, wx.IMAGE_LIST_SMALL)
         self.activeColumns = []
@@ -48,11 +48,12 @@ class Display(wx.ListCtrl):
             self.addColumn(i, col)
             i += 1
 
-        self.imageListBase = self.imageList.ImageCount
+        info = wx.ListItem()
+        info.m_mask = wx.LIST_MASK_WIDTH
+        self.InsertColumnInfo(i, info)
+        self.SetColumnWidth(i, 0)
 
-    def OnEraseBackGround(self, event):
-        #Prevent flicker by not letting the parent's method get called.
-        pass
+        self.imageListBase = self.imageList.ImageCount
 
     def addColumn(self, i, col):
         self.activeColumns.append(col)
@@ -89,7 +90,6 @@ class Display(wx.ListCtrl):
     def populate(self, stuff):
         selection = []
 
-        self.Freeze()
 
         sel = self.GetFirstSelected()
         while sel != -1:
@@ -106,8 +106,6 @@ class Display(wx.ListCtrl):
         for sel in selection:
             self.Select(sel)
 
-        self.Thaw()
-
     def refresh(self, stuff):
         if stuff == None:
             return
@@ -118,8 +116,8 @@ class Display(wx.ListCtrl):
             selection.append(sel)
             sel = self.GetNextSelected(sel)
 
-        self.Freeze()
         item = -1
+        self.sizeLastColumn = wx.LIST_AUTOSIZE_USEHEADER
         for id, st in enumerate(stuff):
             item = self.GetNextItem(item)
             for i, col in enumerate(self.activeColumns):
@@ -138,26 +136,31 @@ class Display(wx.ListCtrl):
 
                 if oldText != newText or oldImageId != newImageId:
                     self.SetItem(colItem)
-
+                if i == len(self.activeColumns) - 1 and newText:
+                    self.sizeLastColumn = wx.LIST_AUTOSIZE
                 self.SetItemState(item, 0 , wx.LIST_STATE_FOCUSED | wx.LIST_STATE_SELECTED)
 
                 self.SetItemData(item, id)
 
+        self.Freeze()
         for i, col in enumerate(self.activeColumns):
             if not col.resized:
-                if col.size == wx.LIST_AUTOSIZE:
-                    self.SetColumnWidth(i, wx.LIST_AUTOSIZE_USEHEADER)
-                    headerWidth = self.GetColumnWidth(i)
-                    self.SetColumnWidth(i, wx.LIST_AUTOSIZE)
-                    baseWidth = self.GetColumnWidth(i)
-                    if baseWidth < headerWidth:
-                        self.SetColumnWidth(i, headerWidth)
+                if i< len(self.activeColumns) - 1:
+                    if col.size == wx.LIST_AUTOSIZE:
+                        self.SetColumnWidth(i, wx.LIST_AUTOSIZE_USEHEADER)
+                        headerWidth = self.GetColumnWidth(i)
+                        self.SetColumnWidth(i, wx.LIST_AUTOSIZE)
+                        baseWidth = self.GetColumnWidth(i)
+                        if baseWidth < headerWidth:
+                            self.SetColumnWidth(i, headerWidth)
+                    else:
+                        self.SetColumnWidth(i, col.size)
                 else:
-                    self.SetColumnWidth(i, col.size)
-
+                    self.SetColumnWidth(i,self.sizeLastColumn)
+        self.Thaw()
         for sel in selection:
             self.Select(sel)
-        self.Thaw()
+
 
     def update(self, stuff):
         self.populate(stuff)
