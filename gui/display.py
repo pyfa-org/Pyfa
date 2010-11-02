@@ -142,8 +142,20 @@ class Display(wx.ListCtrl):
                 self.SetItemData(item, id)
 
         self.Freeze()
-        for i,col in enumerate(self.activeColumns):
-            self.SetColumnWidth(i, col.size)
+        if 'wxMSW' in wx.PlatformInfo:
+            for i,col in enumerate(self.activeColumns):
+                self.SetColumnWidth(i, col.size)
+        else:
+            for i, col in enumerate(self.activeColumns):
+                if col.size == wx.LIST_AUTOSIZE_USEHEADER:
+                    self.SetColumnWidth(i, wx.LIST_AUTOSIZE_USEHEADER)
+                    headerWidth = self.GetColumnWidth(i)
+                    self.SetColumnWidth(i, wx.LIST_AUTOSIZE)
+                    baseWidth = self.GetColumnWidth(i)
+                    if baseWidth < headerWidth:
+                        self.SetColumnWidth(i, headerWidth)
+                else:
+                    self.SetColumnWidth(i, col.size)
         self.Thaw()
 
         for sel in selection:
