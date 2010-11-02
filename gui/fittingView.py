@@ -57,6 +57,7 @@ class FittingView(d.Display):
 
     def __init__(self, parent):
         d.Display.__init__(self, parent)
+        self.Show(False)
         self.mainFrame.Bind(FIT_CHANGED, self.fitChanged)
         self.Bind(wx.EVT_LEFT_DCLICK, self.removeItem)
         self.Bind(wx.EVT_LIST_BEGIN_DRAG, self.startDrag)
