@@ -30,7 +30,7 @@ class ViewColumn(object):
         self.fittingView = fittingView
         self.columnText = ""
         self.imageId = -1
-        self.size = wx.LIST_AUTOSIZE_USEHEADER
+        self.size = wx.LIST_AUTOSIZE_USEHEADER if 'wxMSW' in wx.PlatformInfo else wx.LIST_AUTOSIZE
         self.mask = 0
 
 
