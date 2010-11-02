@@ -33,7 +33,7 @@ class ProjectedView(d.Display):
                     "Projected Ammo"]
 
     def __init__(self, parent):
-        d.Display.__init__(self, parent)
+        d.Display.__init__(self, parent, style = wx.LC_SINGLE_SEL)
         self.mainFrame.Bind(fv.FIT_CHANGED, self.fitChanged)
         self.Bind(wx.EVT_LEFT_DOWN, self.click)
         self.Bind(wx.EVT_RIGHT_DOWN, self.click)
