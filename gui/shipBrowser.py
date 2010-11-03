@@ -20,6 +20,7 @@ Stage2Selected, EVT_SB_STAGE2_SEL = wx.lib.newevent.NewEvent()
 Stage3Selected, EVT_SB_STAGE3_SEL = wx.lib.newevent.NewEvent()
 SearchSelected, EVT_SB_SEARCH_SEL = wx.lib.newevent.NewEvent()
 
+
 class ShipBrowser(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__ (self, parent,style = 0 if 'wxGTK' in wx.PlatformInfo else wx.DOUBLE_BORDER)
@@ -63,9 +64,15 @@ class ShipBrowser(wx.Panel):
         self.Bind(EVT_SB_STAGE1_SEL, self.stage1)
         self.Bind(EVT_SB_STAGE3_SEL, self.stage3)
         self.Bind(EVT_SB_SEARCH_SEL, self.searchStage)
+
         self.mainFrame.Bind(fv.FIT_CHANGED, self.RefreshList)
 
         self.stage1(None)
+
+    def RefreshContent(self):
+        stage = self.GetActiveStage()
+        stageData = self.GetStageData(stage)
+        self.hpane.gotoStage(stage, stageData)
 
     def RefreshList(self, event):
         stage = self.GetActiveStage()
