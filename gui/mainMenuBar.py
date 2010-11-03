@@ -36,15 +36,15 @@ class MainMenuBar(wx.MenuBar):
         fileMenu = wx.Menu()
         self.Append(fileMenu, "&File")
 
-        fileMenu.Append(self.mainFrame.addTabId, "New fitting tab\tCTRL+T", "Close the currently open fit")
-        fileMenu.Append(self.mainFrame.closeTabId, "Close current fitting tab\tCTRL+W", "Close the currently open fit")
+        fileMenu.Append(self.mainFrame.addTabId, "&New Tab\tCTRL+T", "Open a new fitting tab")
+        fileMenu.Append(self.mainFrame.closeTabId, "&Close Tab\tCTRL+W", "Close the current fit")
         fileMenu.AppendSeparator()
 
         fileMenu.Append(self.backupFitsId, "&Backup fits", "Backup all fittings to a XML file")
         fileMenu.Append(wx.ID_OPEN, "&Import\tCTRL+O", "Import a fit into pyfa.")
         fileMenu.Append(wx.ID_SAVEAS, "&Export\tCTRL+S", "Export the fit to another format.")
-
         fileMenu.AppendSeparator()
+
         fileMenu.Append(wx.ID_EXIT)
 
 
