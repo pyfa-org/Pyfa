@@ -172,7 +172,7 @@ class MainFrame(wx.Frame):
         sFit = service.Fit.getInstance()
         dlg=wx.FileDialog(
             self,
-            "Choose one or more fitting files to import",
+            "Open One Or More Fitting Files",
             wildcard = "EFT text fitting files (*.cfg)|*.cfg|EvE XML fitting files (*.xml)|*.xml|All Files (*)|*",
             style = wx.FD_OPEN | wx.FD_FILE_MUST_EXIST | wx.FD_MULTIPLE)
         if (dlg.ShowModal() == wx.ID_OK):
@@ -193,7 +193,7 @@ class MainFrame(wx.Frame):
     def showExportDialog(self, event):
         dlg=wx.FileDialog(
             self,
-            "Choose a file to export the current fitting to",
+            "Save Fitting As...",
             wildcard = "EFT text fitting files (*.cfg)|*.cfg|EvE XML fitting files (*.xml)|*.xml",
             style = wx.FD_SAVE)
         if (dlg.ShowModal() == wx.ID_OK):
@@ -327,7 +327,7 @@ class MainFrame(wx.Frame):
         sFit = service.Fit.getInstance()
         saveDialog = wx.FileDialog(
             self,
-            "Choose where to save the backup",
+            "Save Backup As...",
             wildcard = "EvE XML fitting file (*.xml)|*.xml",
             style = wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT)
         if (saveDialog.ShowModal() == wx.ID_OK):
