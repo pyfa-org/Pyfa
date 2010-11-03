@@ -68,6 +68,8 @@ class ShipBrowser(wx.Panel):
 
     def RefreshContent(self):
         stage = self.GetActiveStage()
+        if stage == 1:
+            return
         stageData = self.GetStageData(stage)
         self.hpane.gotoStage(stage, stageData)
 
