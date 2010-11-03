@@ -74,6 +74,7 @@ class MultiSwitch(wx.Notebook):
             sizer.Add(p.view, 1, wx.EXPAND | wx.RESERVE_SPACE_EVEN_IF_HIDDEN)
 
             p.SetSizer(sizer)
+            p.Layout()
             self.setTabTitle(pos, None)
         else:
             self.InsertPage(pos, frame, title)
