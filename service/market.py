@@ -29,15 +29,21 @@ import traceback
 class ShipBrowserWorkerThread(threading.Thread):
     def run(self):
         self.queue = Queue.Queue()
+        self.cache = {}
         self.processRequests()
 
     def processRequests(self):
         queue = self.queue
+        cache = self.cache
         sMarket = Market.getInstance()
         while True:
             try:
                 callback, id = queue.get()
-                list = sMarket.getShipList(id)
+                list = cache.get(id)
+                if list is None:
+                    list = sMarket.getShipList(id)
+                    cache[id] = list
+
                 wx.CallAfter(callback, (id,list))
             except:
                 pass

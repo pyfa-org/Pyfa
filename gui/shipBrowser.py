@@ -31,9 +31,6 @@ class ShipBrowser(wx.Panel):
         self.lastStage = (0,0)
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
-        self.stage2Cache = {}
-        self.stage3Cache = {}
-
         self.categoryList=[]
 
         self._stage1Data = -1
@@ -91,8 +88,10 @@ class ShipBrowser(wx.Panel):
 
     def __del__(self):
         pass
+
     def GetActiveStage(self):
         return self._activeStage
+
     def GetLastStage(self):
         return self._lastStage
 
@@ -104,6 +103,7 @@ class ShipBrowser(wx.Panel):
         if stage == 3:
             return self._stage3Data
         return -1
+
     def GetStage3ShipName(self):
         return self._stage3ShipName
 
@@ -134,20 +134,15 @@ class ShipBrowser(wx.Panel):
     def stage2Callback(self,data):
         categoryID, shipList = data
         sFit = service.Fit.getInstance()
-        content = self.stage2Cache.get(categoryID,None)
-        if not content:
-            content = []
-            shipList.sort(key=self.raceNameKey)
-            for ID, name, race in shipList:
-                fits = len(sFit.getFitsWithShip(ID))
-                if self.filterShipsWithNoFits:
-                    if fits>0:
-                        self.lpane.AddWidget(ShipItem(self.lpane, ID, (name, fits), race))
-                else:
-                    self.lpane.AddWidget(ShipItem(self.lpane, ID, (name, fits), race))
 
-                content.append((ID,name,fits,race))
-            self.stage2Cache[categoryID]= content
+        shipList.sort(key=self.raceNameKey)
+        for ID, name, race in shipList:
+            fits = len(sFit.getFitsWithShip(ID))
+            if self.filterShipsWithNoFits:
+                if fits>0:
+                    self.lpane.AddWidget(ShipItem(self.lpane, ID, (name, fits), race))
+            else:
+                self.lpane.AddWidget(ShipItem(self.lpane, ID, (name, fits), race))
 
         self.lpane.RefreshList()
         self.Show()
@@ -162,29 +157,11 @@ class ShipBrowser(wx.Panel):
         categoryID = event.categoryID
         self.lastdata = categoryID
 
-        content = self.stage2Cache.get(categoryID,None)
-        if not content:
+
 #            self.lpane.ShowLoading(True)
-            self.lpane.RemoveAllChildren()
-            sMarket = service.Market.getInstance()
-            sMarket.getShipListDelayed(self.stage2Callback, categoryID)
-        else:
-            self.lpane.RemoveAllChildren()
-            sFit = service.Fit.getInstance()
-            count = 0
-            for ID,name,fits,race in content:
-                dbfits = len(sFit.getFitsWithShip(ID))
-                if dbfits != fits:
-                    fits = dbfits
-                    self.stage2Cache[categoryID][count]= (ID,name,fits,race)
-                count += 1
-                if self.filterShipsWithNoFits:
-                    if fits >0:
-                        self.lpane.AddWidget(ShipItem(self.lpane,ID, (name,fits),race))
-                else:
-                    self.lpane.AddWidget(ShipItem(self.lpane,ID, (name,fits),race))
-            self.lpane.RefreshList()
-            self.Show()
+        self.lpane.RemoveAllChildren()
+        sMarket = service.Market.getInstance()
+        sMarket.getShipListDelayed(self.stage2Callback, categoryID)
 
         self._stage2Data = categoryID
         self.hpane.ToggleNewFitSB(False)
