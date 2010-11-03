@@ -68,7 +68,7 @@ class MultiSwitch(wx.Notebook):
             p = wx.Panel(self)
             self.InsertPage(pos, p, "")
             p.type = "fit"
-            sizer = wx.BoxSizer(wx.HORIZONTAL)
+            sizer = wx.BoxSizer(wx.VERTICAL)
             p.view = fv.FittingView(p)
 
             sizer.Add(p.view, 1, wx.EXPAND | wx.RESERVE_SPACE_EVEN_IF_HIDDEN)
