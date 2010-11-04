@@ -321,7 +321,7 @@ class Fit(object):
         else:
             return False
 
-    def mergeDrones(self, fitID, d1, d2):
+    def mergeDrones(self, fitID, d1, d2, projected=False):
         if fitID == None:
             return False
 
@@ -329,7 +329,11 @@ class Fit(object):
         if d1.item != d2.item:
             return False
 
-        fit.drones.remove(d1)
+        if projected:
+            fit.projectedDrones.remove(d1)
+        else:
+            fit.drones.remove(d1)
+
         d2.amount += d1.amount
         d2.amountActive += d1.amountActive if d1.amountActive > 0 else -d2.amountActive
         eos.db.commit()

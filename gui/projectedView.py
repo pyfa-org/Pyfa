@@ -26,6 +26,20 @@ from gui.builtinViewColumns.projectedState import ProjectedState
 from gui.contextMenu import ContextMenu
 import eos.types
 
+
+class ProjectedViewDrop(wx.PyDropTarget):
+        def __init__(self, dropFn):
+            wx.PyDropTarget.__init__(self)
+            self.dropFn = dropFn
+            # this is really transferring an EvE itemID
+            self.dropData = wx.PyTextDataObject()
+            self.SetDataObject(self.dropData)
+
+        def OnData(self, x, y, t):
+            if self.GetData():
+                self.dropFn(x, y, int(self.dropData.GetText()))
+            return t
+
 class ProjectedView(d.Display):
     DEFAULT_COLS = ["Projected State",
                     "Projected Ammo Icon",
@@ -39,6 +53,34 @@ class ProjectedView(d.Display):
         self.Bind(wx.EVT_RIGHT_DOWN, self.click)
         self.Bind(wx.EVT_LEFT_DCLICK, self.remove)
         self.droneView = gui.droneView.DroneView
+
+        self.Bind(wx.EVT_LIST_BEGIN_DRAG, self.startDrag)
+        self.SetDropTarget(ProjectedViewDrop(self.mergeDrones))
+
+    def startDrag(self, event):
+        row = event.GetIndex()
+        if row != -1 and isinstance(self.get(row), eos.types.Drone):
+            data = wx.PyTextDataObject()
+            data.SetText(str(self.GetItemData(row)))
+
+            dropSource = wx.DropSource(self)
+            dropSource.SetData(data)
+            dropSource.DoDragDrop()
+
+    def mergeDrones(self, x, y, itemID):
+        srcRow = self.FindItemData(-1,itemID)
+        dstRow, _ = self.HitTest((x, y))
+        if srcRow != -1 and dstRow != -1:
+            self._merge(srcRow, dstRow)
+
+    def _merge(self, src, dst):
+        dstDrone = self.get(dst)
+        if isinstance(dstDrone, eos.types.Drone):
+            sFit = service.Fit.getInstance()
+            fitID = self.mainFrame.getActiveFit()
+            if sFit.mergeDrones(fitID, self.get(src), dstDrone, True):
+                wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=fitID))
+
 
     def moduleSort(self, module):
         return module.item.name
