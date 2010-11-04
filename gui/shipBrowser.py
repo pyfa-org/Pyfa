@@ -9,7 +9,7 @@ import os
 import config
 
 from wx.lib.buttons import GenBitmapButton
-from pickle import TRUE
+
 
 FitRenamed, EVT_FIT_RENAMED = wx.lib.newevent.NewEvent()
 FitSelected, EVT_FIT_SELECTED = wx.lib.newevent.NewEvent()
@@ -1265,6 +1265,31 @@ class ShipItem(wx.Window):
 
         event.Skip()
 
+class PFBitmapFrame(wx.Frame):
+    def __init__ (self,parent, pos, bitmap):
+        wx.Frame.__init__(self, parent, id = wx.ID_ANY, title = wx.EmptyString, pos = pos, size = wx.DefaultSize, style = wx.FRAME_SHAPED
+                                                             | wx.NO_BORDER
+                                                             | wx.FRAME_NO_TASKBAR
+                                                             | wx.STAY_ON_TOP)
+        self.SetTransparent(160)
+        self.bitmap = bitmap
+        self.SetSize((bitmap.GetWidth(), bitmap.GetHeight()))
+        self.Bind(wx.EVT_PAINT,self.OnWindowPaint)
+        self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnWindowEraseBk)
+        self.Refresh()
+        self.Show()
+
+    def OnWindowEraseBk(self,event):
+        pass
+
+    def OnWindowPaint(self,event):
+        rect = self.GetRect()
+        canvas = wx.EmptyBitmap(rect.width, rect.height)
+        mdc = wx.BufferedPaintDC(self)
+        mdc.SelectObject(canvas)
+        mdc.DrawBitmap(self.bitmap, 0, 0)
+
+
 class FitItem(wx.Window):
     def __init__(self, parent, fitID=None, shipFittingInfo=("Test", "cnc's avatar", 0 ), shipID = None, itemData=None,
                  id=wx.ID_ANY, range=100, pos=wx.DefaultPosition,
@@ -1289,6 +1314,7 @@ class FitItem(wx.Window):
         self.deleteBmp = bitmapLoader.getBitmap("fit_delete_small","icons")
         self.shipEffBk = bitmapLoader.getBitmap("fshipbk_big","icons")
         self.dragBmp = bitmapLoader.getBitmap("ship_big","icons")
+        self.dragTLFBmp = None
 
         dimg = self.dragBmp.ConvertToImage()
         self.dragCursor = wx.CursorFromImage(dimg)
@@ -1311,6 +1337,10 @@ class FitItem(wx.Window):
         self.editWidth = 150
         self.dragging = False
         self.dragged = False
+        self.dragMotionTrail = 10
+        self.dragMotionTrigger = self.dragMotionTrail
+        self.dragWindow = None
+
 
         self.font9px = wx.Font(9, wx.SWISS, wx.NORMAL, wx.BOLD, False)
         self.font7px = wx.Font(7, wx.SWISS, wx.NORMAL, wx.NORMAL, False)
@@ -1348,7 +1378,7 @@ class FitItem(wx.Window):
 
     def prepareDragging(self, event):
         self.dragging = True
-        self.SetCursor(self.dragCursor)
+        event.Skip()
 
     def OnTimer(self, event):
         if self.selTimerID == event.GetId():
@@ -1409,11 +1439,20 @@ class FitItem(wx.Window):
             event.Skip()
 
     def cursorCheck(self, event):
+        pos = self.ClientToScreen(event.GetPosition())
         if self.dragging:
             if not self.dragged:
-                self.CaptureMouse()
-                self.dragged = True
+                if self.dragMotionTrigger < 0:
+                    self.CaptureMouse()
+                    self.dragWindow = PFBitmapFrame(self, pos, self.dragTLFBmp)
+                    self.dragged = True
+                    self.dragMotionTrigger = self.dragMotionTrail
+                else:
+                    self.dragMotionTrigger -= 1
+            if self.dragWindow:
+                self.dragWindow.SetPosition(pos)
             return
+
         pos = event.GetPosition()
         if self.NHitTest((self.renamePosX, self.renamePosY), pos, (16, 16)):
             self.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
@@ -1440,16 +1479,26 @@ class FitItem(wx.Window):
                 self.Refresh()
 
     def checkPosition(self, event):
-        if self.dragging:
+        if self.dragging and self.dragged:
+            pos = self.ClientToScreen(event.GetPosition())
             self.dragging = False
             self.dragged = False
             self.ReleaseMouse()
+            self.dragWindow.Destroy()
+            msrect = self.mainFrame.fitMultiSwitch.GetRect()
+            mspos = self.mainFrame.fitMultiSwitch.GetPosition()
+            mspos = self.mainFrame.fitMultiSwitch.ClientToScreen(mspos)
+            msrect.x = mspos.x
+            msrect.y = mspos.y
+            if msrect.Contains(pos):
+                if self.mainFrame.getActiveFit():
+                    self.mainFrame.fitMultiSwitch.AddTab()
+                wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fitID))
 
-# Disabled for the moment - need to check if we are dropping in the right place - it will be done later
-#            if self.mainFrame.getActiveFit():
-#                self.mainFrame.fitMultiSwitch.AddTab()
-#            wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fitID))
+            event.Skip()
             return
+        if self.dragging:
+            self.dragging = False
 
         pos = event.GetPosition()
         x, y = pos
@@ -1534,8 +1583,16 @@ class FitItem(wx.Window):
         event.Skip()
 
     def leaveW(self, event):
+        pos = self.ClientToScreen(event.GetPosition())
         self.highlighted = 0
         self.Refresh()
+        if self.dragging:
+            if not self.dragged:
+                self.CaptureMouse()
+                self.dragWindow = PFBitmapFrame(self, pos, self.dragTLFBmp)
+                self.dragged = True
+                self.dragMotionTrigger = self.dragMotionTrail
+            return
         event.Skip()
 
     def OnEraseBackground(self, event):
@@ -1643,3 +1700,9 @@ class FitItem(wx.Window):
             else:
                 self.tcFitName.SetSize((self.editWidth,-1))
                 self.tcFitName.SetPosition((fnEditPosX,fnEditPosY))
+
+        tdc = wx.MemoryDC()
+        self.dragTLFBmp = wx.EmptyBitmap(self.copyPosX, rect.height)
+        tdc.SelectObject(self.dragTLFBmp)
+        tdc.Blit(0, 0, rect.width, rect.height, mdc, 0, 0, wx.COPY)
+        tdc.SelectObject(wx.NullBitmap)
