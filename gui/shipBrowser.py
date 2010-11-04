@@ -1288,6 +1288,11 @@ class FitItem(wx.Window):
         self.renameBmp = bitmapLoader.getBitmap("fit_rename_small", "icons")
         self.deleteBmp = bitmapLoader.getBitmap("fit_delete_small","icons")
         self.shipEffBk = bitmapLoader.getBitmap("fshipbk_big","icons")
+        self.dragBmp = bitmapLoader.getBitmap("ship_big","icons")
+
+        dimg = self.dragBmp.ConvertToImage()
+        self.dragCursor = wx.CursorFromImage(dimg)
+
 
         self.Bind(wx.EVT_PAINT, self.OnPaint)
         self.renamePosX = 0
@@ -1304,6 +1309,8 @@ class FitItem(wx.Window):
 
         self.btnsStatus = ""
         self.editWidth = 150
+        self.dragging = False
+        self.dragged = False
 
         self.font9px = wx.Font(9, wx.SWISS, wx.NORMAL, wx.BOLD, False)
         self.font7px = wx.Font(7, wx.SWISS, wx.NORMAL, wx.NORMAL, False)
@@ -1327,6 +1334,7 @@ class FitItem(wx.Window):
         self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBackground)
 
         self.Bind(wx.EVT_LEFT_UP, self.checkPosition)
+        self.Bind(wx.EVT_LEFT_DOWN, self.prepareDragging)
         self.Bind(wx.EVT_MOTION, self.cursorCheck)
 
         self.Bind(wx.EVT_ENTER_WINDOW, self.enterW)
@@ -1337,6 +1345,10 @@ class FitItem(wx.Window):
         self.tcFitName.Bind(wx.EVT_KEY_DOWN, self.editCheckEsc)
         self.Bind(wx.EVT_TIMER,self.OnTimer)
         self.StartSelectedTimer()
+
+    def prepareDragging(self, event):
+        self.dragging = True
+        self.SetCursor(self.dragCursor)
 
     def OnTimer(self, event):
         if self.selTimerID == event.GetId():
@@ -1357,6 +1369,7 @@ class FitItem(wx.Window):
             else:
                 self.cleanupTimer.Stop()
         event.Skip()
+
     def StartSelectedTimer(self):
         if not self.selTimer:
             self.selTimer = wx.Timer(self,self.selTimerID)
@@ -1396,6 +1409,11 @@ class FitItem(wx.Window):
             event.Skip()
 
     def cursorCheck(self, event):
+        if self.dragging:
+            if not self.dragged:
+                self.CaptureMouse()
+                self.dragged = True
+            return
         pos = event.GetPosition()
         if self.NHitTest((self.renamePosX, self.renamePosY), pos, (16, 16)):
             self.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
@@ -1420,7 +1438,18 @@ class FitItem(wx.Window):
             if self.btnsStatus != "":
                 self.btnsStatus = ""
                 self.Refresh()
+
     def checkPosition(self, event):
+        if self.dragging:
+            self.dragging = False
+            self.dragged = False
+            self.ReleaseMouse()
+
+# Disabled for the moment - need to check if we are dropping in the right place - it will be done later
+#            if self.mainFrame.getActiveFit():
+#                self.mainFrame.fitMultiSwitch.AddTab()
+#            wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fitID))
+            return
 
         pos = event.GetPosition()
         x, y = pos
@@ -1614,4 +1643,3 @@ class FitItem(wx.Window):
             else:
                 self.tcFitName.SetSize((self.editWidth,-1))
                 self.tcFitName.SetPosition((fnEditPosX,fnEditPosY))
-
