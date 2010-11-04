@@ -1499,7 +1499,7 @@ class FitItem(wx.Window):
             msrect.y = mspos.y
             msrect.height -= fvrect.height
             fvrect.y -= msrect.height
-            print fvrect, msrect, pos
+
             if fvrect.Contains(pos):
                 wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fitID))
             elif msrect.Contains(pos):
