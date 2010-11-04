@@ -1489,6 +1489,7 @@ class FitItem(wx.Window):
             mspos = self.mainFrame.fitMultiSwitch.GetPosition()
             cpagewnd = self.mainFrame.fitMultiSwitch.GetCurrentPage()
             fvrect = cpagewnd.GetRect()
+
             fvpos = cpagewnd.GetPosition()
             fvpos = cpagewnd.ClientToScreen(fvpos)
             mspos = self.mainFrame.fitMultiSwitch.ClientToScreen(mspos)
@@ -1497,6 +1498,8 @@ class FitItem(wx.Window):
             msrect.x = mspos.x
             msrect.y = mspos.y
             msrect.height -= fvrect.height
+            fvrect.y -= msrect.height
+            print fvrect, msrect, pos
             if fvrect.Contains(pos):
                 wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fitID))
             elif msrect.Contains(pos):
