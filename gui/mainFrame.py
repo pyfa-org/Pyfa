@@ -334,8 +334,14 @@ class MainFrame(wx.Frame):
             filePath = saveDialog.GetPath()
             if '.' not in os.path.basename(filePath):
                 filePath += ".xml"
-            sFit.backupFits(filePath )
+            self.waitDialog = WaitDialog(self)
+            sFit.backupFits(filePath, self.closeWaitDialog)
+            self.waitDialog.ShowModal()
+
         saveDialog.Destroy()
+
+    def closeWaitDialog(self):
+        self.waitDialog.Destroy()
 
     def toggleShipBrowser(self, event):
         self.GetToolBar().toggleShipBrowser(event)
@@ -352,3 +358,9 @@ class MainFrame(wx.Frame):
             wnd = self
         InspectionTool().Show(wnd, True)
 
+class WaitDialog(wx.Dialog):
+    def __init__(self, parent):
+        wx.Dialog.__init__ (self, parent, id=wx.ID_ANY, title=u"Please wait ...", size=wx.Size(200, 100),
+                           style=wx.DEFAULT_FRAME_STYLE | wx.FRAME_FLOAT_ON_PARENT | wx.TAB_TRAVERSAL)
+
+        wx.StaticText(self, wx.ID_ANY, "Please wait ...")

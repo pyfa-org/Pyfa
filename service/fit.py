@@ -23,6 +23,24 @@ from eos.types import State, Slot
 import copy
 from service.damagePattern import DamagePattern
 from service.character import Character
+import threading
+import wx
+
+class FitBackupThread(threading.Thread):
+    def __init__(self, path, callback):
+        threading.Thread.__init__(self)
+        self.path = path
+        self.callback = callback
+
+    def run(self):
+        path = self.path
+        sFit = Fit.getInstance()
+        allFits = map(lambda x: x[0], sFit.getAllFits())
+        backedUpFits = sFit.exportXml(*allFits)
+        backupFile = open(path, "w")
+        backupFile.write(backedUpFits)
+        backupFile.close()
+        wx.CallAfter(self.callback)
 
 class Fit(object):
     instance = None
@@ -44,7 +62,6 @@ class Fit(object):
             names.append((fit.ID, fit.name))
 
         return names
-
 
     def getFitsWithShip(self, id):
         fits = eos.db.getFitsWithShip(id)
@@ -469,12 +486,9 @@ class Fit(object):
         fits = map(lambda id: eos.db.getFit(id), fitIDs)
         return eos.types.Fit.exportXml(*fits)
 
-    def backupFits(self, path):
-        allFits = map(lambda x: x[0], self.getAllFits())
-        backedUpFits = self.exportXml(*allFits)
-        backupFile = open(path, "w")
-        backupFile.write(backedUpFits)
-        backupFile.close()
+    def backupFits(self, path, callback):
+        thread = FitBackupThread(path, callback)
+        thread.start()
 
     def importFit(self, path):
         f = file(path)
