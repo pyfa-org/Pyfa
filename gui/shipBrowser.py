@@ -1487,13 +1487,23 @@ class FitItem(wx.Window):
             self.dragWindow.Destroy()
             msrect = self.mainFrame.fitMultiSwitch.GetRect()
             mspos = self.mainFrame.fitMultiSwitch.GetPosition()
+            cpagewnd = self.mainFrame.fitMultiSwitch.GetCurrentPage()
+            fvrect = cpagewnd.GetRect()
+            fvpos = cpagewnd.GetPosition()
+            fvpos = cpagewnd.ClientToScreen(fvpos)
             mspos = self.mainFrame.fitMultiSwitch.ClientToScreen(mspos)
+            fvrect.x = fvpos.x
+            fvrect.y = fvpos.y
             msrect.x = mspos.x
             msrect.y = mspos.y
-            if msrect.Contains(pos):
+            msrect.height -= fvrect.height
+            if fvrect.Contains(pos):
+                wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fitID))
+            elif msrect.Contains(pos):
                 if self.mainFrame.getActiveFit():
                     self.mainFrame.fitMultiSwitch.AddTab()
                 wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fitID))
+
 
             event.Skip()
             return
