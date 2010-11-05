@@ -1422,6 +1422,8 @@ class FitItem(wx.Window):
         self.Bind(wx.EVT_LEFT_UP, self.checkPosition)
         self.Bind(wx.EVT_LEFT_DOWN, self.prepareDragging)
         self.Bind(wx.EVT_MOTION, self.cursorCheck)
+        self.Bind(wx.EVT_MOUSE_CAPTURE_LOST, self.OnCaptureLost)
+
 
         self.Bind(wx.EVT_ENTER_WINDOW, self.enterW)
         self.Bind(wx.EVT_LEAVE_WINDOW, self.leaveW)
@@ -1431,6 +1433,12 @@ class FitItem(wx.Window):
         self.tcFitName.Bind(wx.EVT_KEY_DOWN, self.editCheckEsc)
         self.Bind(wx.EVT_TIMER,self.OnTimer)
         self.StartSelectedTimer()
+
+    def OnCaptureLost(self, event):
+        self.dragging = self.dragged = False
+        self.dragMotionTrigger = self.dragMotionTrail
+        if self.dragWindow:
+            self.dragWindow.Show(False)
 
     def prepareDragging(self, event):
         self.dragging = True
@@ -1542,6 +1550,7 @@ class FitItem(wx.Window):
             if self.HasCapture():
                 self.ReleaseMouse()
             self.dragWindow.Show(False)
+            self.dragWindow = None
 
             targetWnd = wx.FindWindowAtPointer()
             msWnd = self.mainFrame.fitMultiSwitch
