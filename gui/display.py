@@ -85,6 +85,10 @@ class Display(wx.ListCtrl):
 
     def resizeSkip(self, event):
         column = event.GetColumn()
+        if column > len (self.activeColumns)-1:
+            self.SetColumnWidth(column, 0)
+            event.Veto()
+            return
         colItem = self.activeColumns[column]
         if self.activeColumns[column].maxsize != -1:
             event.Veto()
