@@ -20,7 +20,6 @@
 from gui import builtinViewColumns
 from gui.viewColumn import ViewColumn
 from gui import bitmapLoader
-from eos.types import Slot
 import wx
 
 class StuffName(ViewColumn):

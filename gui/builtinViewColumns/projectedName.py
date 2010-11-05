@@ -20,8 +20,9 @@
 from gui.viewColumn import ViewColumn
 import gui.builtinViewColumns.name
 import gui.builtinViewColumns.droneNameAmount
-from eos.types import Drone
+from eos.types import Drone, Fit
 import wx
+from gui import bitmapLoader
 
 class ProjectedName(ViewColumn):
     name = "Projected Name"
@@ -29,18 +30,23 @@ class ProjectedName(ViewColumn):
         ViewColumn.__init__(self, fittingView)
         self.columnText = "Name"
         self.mask = wx.LIST_MASK_TEXT
+        self.shipImage = fittingView.imageList.Add(bitmapLoader.getBitmap("ship_small", "icons"))
         self.slave = gui.builtinViewColumns.name.StuffName(fittingView, params)
         self.droneSlave = gui.builtinViewColumns.droneNameAmount.DroneNameAmount(fittingView, params)
 
     def getText(self, stuff):
         if isinstance(stuff, Drone):
             return self.droneSlave.getText(stuff)
+        elif isinstance(stuff, Fit):
+            return "%s (%s)" % (stuff.name, stuff.ship.item.name)
         else:
             return self.slave.getText(stuff)
 
     def getImageId(self, thing):
         if isinstance(thing, Drone):
             return self.droneSlave.getImageId(thing)
+        elif isinstance(thing, Fit):
+            return self.shipImage
         else:
             return self.slave.getImageId(thing)
 
