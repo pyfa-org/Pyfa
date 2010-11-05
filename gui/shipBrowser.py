@@ -1565,6 +1565,9 @@ class FitItem(wx.Window):
                 wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fitID))
             elif targetWnd == cfitWnd.view:
                 wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fitID))
+            elif targetWnd.Parent == cfitWnd.view:
+                wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fitID))
+
             elif targetWnd == msWnd:
 
                 if self.mainFrame.getActiveFit():
