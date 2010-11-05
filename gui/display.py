@@ -99,7 +99,7 @@ class Display(wx.ListCtrl):
         colItem = self.activeColumns[column]
         if self.GetColumnWidth(column) < self.columnsMinWidth[column]:
             self.SetColumnWidth(column,self.columnsMinWidth[column])
-            colItem.resized = True
+        colItem.resized = True
 
     def clearItemImages(self):
         for i in xrange(self.imageList.ImageCount - 1, self.imageListBase, -1):
