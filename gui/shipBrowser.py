@@ -1573,13 +1573,13 @@ class FitItem(wx.Window):
                 if self.mainFrame.getActiveFit():
                     self.mainFrame.fitMultiSwitch.AddTab()
                 wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fitID))
-#            elif targetWnd == pjWnd:
-#                activeFit = self.mainFrame.getActiveFit()
-#                if activeFit:
-#                    fitInst = service.fit.Fit.getInstance()
-#                    draggedFit = fitInst.getFit(self.fitID)
-#                    fitInst.project(activeFit,draggedFit)
-#                    wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=activeFit))
+            elif targetWnd == pjWnd:
+                activeFit = self.mainFrame.getActiveFit()
+                if activeFit:
+                    fitInst = service.fit.Fit.getInstance()
+                    draggedFit = fitInst.getFit(self.fitID)
+                    fitInst.project(activeFit,draggedFit)
+                    wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=activeFit))
 
 
             event.Skip()
