@@ -1271,13 +1271,27 @@ class PFBitmapFrame(wx.Frame):
                                                              | wx.NO_BORDER
                                                              | wx.FRAME_NO_TASKBAR
                                                              | wx.STAY_ON_TOP)
-        self.SetTransparent(160)
+        img = bitmap.ConvertToImage()
+        img.RotateHue(-0.625)
+        bitmap = wx.BitmapFromImage(img)
         self.bitmap = bitmap
         self.SetSize((bitmap.GetWidth(), bitmap.GetHeight()))
         self.Bind(wx.EVT_PAINT,self.OnWindowPaint)
         self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnWindowEraseBk)
         self.Refresh()
         self.Show()
+        if 'wxGTK' in wx.PlatformInfo:
+            self.Bind(wx.EVT_WINDOW_CREATE, self.SetRoundShape)
+        else:
+            self.SetRoundShape()
+
+
+
+    def SetRoundShape(self, event=None):
+        w, h = self.GetSizeTuple()
+        self.SetShape(GetRoundShape( w,h, 5 ) )
+        self.SetTransparent(200)
+
 
     def OnWindowEraseBk(self,event):
         pass
@@ -1288,6 +1302,27 @@ class PFBitmapFrame(wx.Frame):
         mdc = wx.BufferedPaintDC(self)
         mdc.SelectObject(canvas)
         mdc.DrawBitmap(self.bitmap, 0, 0)
+        mdc.SetPen( wx.Pen("#000000", width = 1 ) )
+        mdc.SetBrush( wx.TRANSPARENT_BRUSH )
+        mdc.DrawRoundedRectangle( 0,0,rect.width,rect.height,5 )
+
+
+def GetRoundBitmap( w, h, r ):
+    maskColor = wx.Color(0,0,0)
+    shownColor = wx.Color(5,5,5)
+    b = wx.EmptyBitmap(w,h)
+    dc = wx.MemoryDC(b)
+    dc.SetBrush(wx.Brush(maskColor))
+    dc.DrawRectangle(0,0,w,h)
+    dc.SetBrush(wx.Brush(shownColor))
+    dc.SetPen(wx.Pen(shownColor))
+    dc.DrawRoundedRectangle(0,0,w,h,r)
+    dc.SelectObject(wx.NullBitmap)
+    b.SetMaskColour(maskColor)
+    return b
+
+def GetRoundShape( w, h, r ):
+    return wx.RegionFromBitmap( GetRoundBitmap(w,h,r) )
 
 
 class FitItem(wx.Window):
@@ -1715,7 +1750,7 @@ class FitItem(wx.Window):
                 self.tcFitName.SetPosition((fnEditPosX,fnEditPosY))
 
         tdc = wx.MemoryDC()
-        self.dragTLFBmp = wx.EmptyBitmap(self.copyPosX, rect.height)
+        self.dragTLFBmp = wx.EmptyBitmap((self.copyPosX if self.copyPosX <200 else 200), rect.height)
         tdc.SelectObject(self.dragTLFBmp)
-        tdc.Blit(0, 0, rect.width, rect.height, mdc, 0, 0, wx.COPY)
+        tdc.Blit(0, 0, (self.copyPosX if self.copyPosX <200 else 200), rect.height, mdc, 0, 0, wx.COPY)
         tdc.SelectObject(wx.NullBitmap)
