@@ -1561,6 +1561,9 @@ class FitItem(wx.Window):
             msWnd = self.mainFrame.fitMultiSwitch
             cfitWnd = self.mainFrame.fitMultiSwitch.GetCurrentPage()
 
+            if not targetWnd:
+                return
+
             if targetWnd == cfitWnd:
                 wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fitID))
             elif targetWnd == cfitWnd.view:
