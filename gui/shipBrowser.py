@@ -1516,6 +1516,8 @@ class FitItem(wx.Window):
                 else:
                     self.dragMotionTrigger -= 1
             if self.dragWindow:
+                pos.x += 3
+                pos.y += 3
                 self.dragWindow.SetPosition(pos)
             return
 
