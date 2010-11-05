@@ -1537,37 +1537,29 @@ class FitItem(wx.Window):
 
     def checkPosition(self, event):
         if self.dragging and self.dragged:
-            pos = self.ClientToScreen(event.GetPosition())
             self.dragging = False
             self.dragged = False
-            self.ReleaseMouse()
+            if self.HasCapture():
+                self.ReleaseMouse()
             self.dragWindow.Show(False)
-#            self.dragWindow.Destroy()
-            msrect = self.mainFrame.fitMultiSwitch.GetRect()
-            mspos = self.mainFrame.fitMultiSwitch.GetPosition()
-            cpagewnd = self.mainFrame.fitMultiSwitch.GetCurrentPage()
-            fvrect = cpagewnd.GetRect()
 
-            fvpos = cpagewnd.GetPosition()
-            fvpos = cpagewnd.ClientToScreen(fvpos)
-            mspos = self.mainFrame.fitMultiSwitch.ClientToScreen(mspos)
-            fvrect.x = fvpos.x
-            fvrect.y = fvpos.y
-            msrect.x = mspos.x
-            msrect.y = mspos.y
-            msrect.height -= fvrect.height
-            fvrect.y -= msrect.height
+            targetWnd = wx.FindWindowAtPointer()
+            msWnd = self.mainFrame.fitMultiSwitch
+            cfitWnd = self.mainFrame.fitMultiSwitch.GetCurrentPage()
 
-            if fvrect.Contains(pos):
+            if targetWnd == cfitWnd:
+
                 wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fitID))
-            elif msrect.Contains(pos):
+
+            elif targetWnd == msWnd:
+
                 if self.mainFrame.getActiveFit():
                     self.mainFrame.fitMultiSwitch.AddTab()
                 wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fitID))
 
-
             event.Skip()
             return
+
         if self.dragging:
             self.dragging = False
 
