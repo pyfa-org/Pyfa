@@ -1278,16 +1278,40 @@ class PFBitmapFrame(wx.Frame):
         self.SetSize((bitmap.GetWidth(), bitmap.GetHeight()))
         self.Bind(wx.EVT_PAINT,self.OnWindowPaint)
         self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnWindowEraseBk)
-        self.Refresh()
-        self.Show()
+        self.Bind(wx.EVT_TIMER, self.OnTimer)
+
+        self.timer = wx.Timer(self,wx.ID_ANY)
+        self.direction = 1
+        self.transp = 0
         self.SetRoundShape()
+        self.Refresh()
+        self.Update()
 
+    def OnTimer(self, event):
+        self.transp += 20*self.direction
+        if self.transp > 200:
+            self.transp = 200
+            self.timer.Stop()
+        if self.transp < 0:
+            self.transp = 0
+            self.timer.Stop()
+            wx.Frame.Show(self,False)
+            self.Destroy()
+            return
+        self.SetTransparent(self.transp)
 
-
+    def Show(self, showWnd = True):
+        if showWnd:
+            wx.Frame.Show(self, showWnd)
+            self.direction = 1
+            self.timer.Start(5)
+        else:
+            self.direction = -1
+            self.timer.Start(5)
     def SetRoundShape(self, event=None):
         w, h = self.GetSizeTuple()
         self.SetShape(GetRoundShape( w,h, 5 ) )
-        self.SetTransparent(200)
+        self.SetTransparent(0)
 
 
     def OnWindowEraseBk(self,event):
@@ -1477,6 +1501,7 @@ class FitItem(wx.Window):
                 if self.dragMotionTrigger < 0:
                     self.CaptureMouse()
                     self.dragWindow = PFBitmapFrame(self, pos, self.dragTLFBmp)
+                    self.dragWindow.Show()
                     self.dragged = True
                     self.dragMotionTrigger = self.dragMotionTrail
                 else:
@@ -1516,7 +1541,8 @@ class FitItem(wx.Window):
             self.dragging = False
             self.dragged = False
             self.ReleaseMouse()
-            self.dragWindow.Destroy()
+            self.dragWindow.Show(False)
+#            self.dragWindow.Destroy()
             msrect = self.mainFrame.fitMultiSwitch.GetRect()
             mspos = self.mainFrame.fitMultiSwitch.GetPosition()
             cpagewnd = self.mainFrame.fitMultiSwitch.GetCurrentPage()
@@ -1635,6 +1661,7 @@ class FitItem(wx.Window):
             if not self.dragged:
                 self.CaptureMouse()
                 self.dragWindow = PFBitmapFrame(self, pos, self.dragTLFBmp)
+                self.dragWindow.Show()
                 self.dragged = True
                 self.dragMotionTrigger = self.dragMotionTrail
             return
