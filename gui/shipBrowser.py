@@ -7,6 +7,7 @@ import service
 import time
 import os
 import config
+import service.fit
 
 from wx.lib.buttons import GenBitmapButton
 
@@ -1393,7 +1394,7 @@ class FitItem(wx.Window):
         self.editWidth = 150
         self.dragging = False
         self.dragged = False
-        self.dragMotionTrail = 10
+        self.dragMotionTrail = 5
         self.dragMotionTrigger = self.dragMotionTrail
         self.dragWindow = None
 
@@ -1553,6 +1554,8 @@ class FitItem(wx.Window):
             self.dragWindow = None
 
             targetWnd = wx.FindWindowAtPointer()
+
+            pjWnd = self.mainFrame.additionsPane.projectedPage
             msWnd = self.mainFrame.fitMultiSwitch
             cfitWnd = self.mainFrame.fitMultiSwitch.GetCurrentPage()
 
@@ -1565,6 +1568,14 @@ class FitItem(wx.Window):
                 if self.mainFrame.getActiveFit():
                     self.mainFrame.fitMultiSwitch.AddTab()
                 wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fitID))
+#            elif targetWnd == pjWnd:
+#                activeFit = self.mainFrame.getActiveFit()
+#                if activeFit:
+#                    fitInst = service.fit.Fit.getInstance()
+#                    draggedFit = fitInst.getFit(self.fitID)
+#                    fitInst.project(activeFit,draggedFit)
+#                    wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=activeFit))
+
 
             event.Skip()
             return

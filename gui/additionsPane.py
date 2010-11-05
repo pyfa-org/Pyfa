@@ -26,9 +26,6 @@ from gui.projectedView import ProjectedView
 from gui.pyfatogglepanel import TogglePanel
 
 class AdditionsPane(TogglePanel):
-#    def collapseChanged(self, event):
-#        self.mainFrame.fittingPanel.Layout()
-#        self.GetPane().Layout()
 
     def __init__(self, parent):
 
@@ -40,8 +37,6 @@ class AdditionsPane(TogglePanel):
         baseSizer = wx.BoxSizer(wx.HORIZONTAL)
         pane.SetSizer(baseSizer)
 
-#        self.Bind(wx.EVT_COLLAPSIBLEPANE_CHANGED, self.collapseChanged)
-
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
         self.notebook = wx.Notebook(pane)
@@ -52,9 +47,10 @@ class AdditionsPane(TogglePanel):
         self.notebook.AddPage(DroneView(self.notebook), "Drones")
         self.notebook.AddPage(ImplantView(self.notebook), "Implants")
         self.notebook.AddPage(BoosterView(self.notebook), "Boosters")
-        self.notebook.AddPage(ProjectedView(self.notebook), "Projected")
 
-#        self.Expand()
+        self.projectedPage = ProjectedView(self.notebook)
+        self.notebook.AddPage(self.projectedPage, "Projected")
+
 
     PANES = ["Drones", "Implants", "Boosters"]
     def select(self, name):
