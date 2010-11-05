@@ -1280,10 +1280,7 @@ class PFBitmapFrame(wx.Frame):
         self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnWindowEraseBk)
         self.Refresh()
         self.Show()
-        if 'wxGTK' in wx.PlatformInfo:
-            self.Bind(wx.EVT_WINDOW_CREATE, self.SetRoundShape)
-        else:
-            self.SetRoundShape()
+        self.SetRoundShape()
 
 
 
