@@ -10,11 +10,14 @@ def formatAmount(val, prec=3, lowest=0, highest=0):
     lowest -- lowest order for suffixizing
     highest -- highest order for suffixizing
     """
-    # Separate value to mantissa and suffix
-    mantissa, suffix = suffixizeAmount(val, lowest, highest)
-    # Round mantissa and add suffix
-    newMantissa = processAmount(mantissa, prec)
-    result = u"{0}{1}".format(newMantissa, suffix)
+    if val is None:
+        result = ""
+    else:
+        # Separate value to mantissa and suffix
+        mantissa, suffix = suffixizeAmount(val, lowest, highest)
+        # Round mantissa and add suffix
+        newMantissa = processAmount(mantissa, prec)
+        result = u"{0}{1}".format(newMantissa, suffix)
     return result
 
 def suffixizeAmount(val, lowest=-6, highest=9):
