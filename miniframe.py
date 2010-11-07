@@ -267,6 +267,7 @@ class PFTabRenderer:
 
 
         tx,ty = mdc.GetTextExtent(text)
+        mdc.SetTextForeground(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT))
         mdc.DrawText(text, inc, height / 2 - ty / 2)
 
         mdc.DestroyClippingRegion()
