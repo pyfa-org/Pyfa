@@ -33,6 +33,7 @@ class PFTabRenderer:
 
     def SetSelected(self, sel = True):
         self.selected = sel
+        self.InitColors()
         self._Render()
 
     def GetSelected(self):
@@ -100,7 +101,7 @@ class PFTabRenderer:
         self.tabColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
         self.leftColor = self.CalculateColor(self.tabColor, 0x1F)
         self.rightColor = self.CalculateColor(self.tabColor, 0x2F)
-        self.gradientStartColor = self.CalculateColor(self.tabColor, 0x27)
+        self.gradientStartColor = self.CalculateColor(self.tabColor, 0x17 if self.selected else 0x27)
 
     def CalculateColor(self, color, delta):
         bkR ,bkG , bkB = color
