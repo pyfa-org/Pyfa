@@ -285,6 +285,7 @@ class PFTabsContainer(wx.Window):
         self.height = height
         self.reserved = 24
         self.tabContainerWidth = width - self.reserved
+        self.tabMinWidth = 0
         self.tabShadow = None
 
         self.Bind(wx.EVT_PAINT, self.OnPaint)
@@ -412,13 +413,16 @@ class PFTabsContainer(wx.Window):
         return len(self.tabs)
 
     def AdjustTabsSize(self):
-        self.tabMinWidth = 9000000 # Really, it should be over 9000
+        tabMinWidth = 9000000 # Really, it should be over 9000
         for tab in self.tabs:
             tx,ty = tab.GetMinSize()
-            if self.tabMinWidth > tx:
-                self.tabMinWidth = tx
-        if self.GetTabsCount() * self.tabMinWidth > self.tabContainerWidth:
-            self.tabMinWidth = (self.tabContainerWidth - self.reserved) / self.GetTabsCount()
+            if tabMinWidth > tx:
+               tabMinWidth = tx
+        if self.GetTabsCount() >0:
+            if self.GetTabsCount() * tabMinWidth > self.tabContainerWidth:
+                self.tabMinWidth = (self.tabContainerWidth - self.reserved) / self.GetTabsCount()
+        else:
+            self.tabMinWidth = 0
         for tab in self.tabs:
             tab.SetSize( (self.tabMinWidth, self.height) )
         self.CreateShadow()
