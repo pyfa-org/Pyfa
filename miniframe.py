@@ -1,5 +1,6 @@
 import wx
 import copy
+import time
 
 class PFTabRenderer:
     def __init__(self, size = (36,24), text = wx.EmptyString, img = None, inclination = 6 , closeButton = True, fontSize = 8):
@@ -28,8 +29,13 @@ class PFTabRenderer:
         return self.tabSize
 
     def SetSize(self, size):
+        otw,oth = self.tabSize
         self.tabSize = size
-        self.InitTab()
+        w,h = self.tabSize
+        if h != oth:
+            self.InitTab(True)
+        else:
+            self.InitTab()
 
     def SetSelected(self, sel = True):
         self.selected = sel
@@ -56,7 +62,6 @@ class PFTabRenderer:
         return self.CopyRegion(self.closeBtnRegion)
 
     def GetMinSize(self):
-        self.InitTab()
         mdc = wx.MemoryDC()
         mdc.SetFont(self.font)
         textSizeX, textSizeY = mdc.GetTextExtent(self.text)
@@ -71,7 +76,7 @@ class PFTabRenderer:
         newRegion.IntersectRegion(region)
 
         return newRegion
-    def InitTab(self):
+    def InitTab(self, skipLRzones = False):
         self.tabWidth, self.tabHeight = self.tabSize
 
         # content width is tabWidth - (left+right) zones
@@ -82,11 +87,11 @@ class PFTabRenderer:
         self.rightZoneSpline = []
 
         self.lrZoneWidth = self.inclination * 3
+        if not skipLRzones:
+            self.CreateLRZoneSplines()
 
-        self.CreateLRZoneSplines()
-
-        self.leftRegion = self.CreateLeftRegion()
-        self.rightRegion = self.CreateRightRegion()
+            self.leftRegion = self.CreateLeftRegion()
+            self.rightRegion = self.CreateRightRegion()
 
         self.contentRegion = wx.Region(0, 0, self.contentWidth, self.tabHeight)
         self.tabRegion = None
@@ -425,7 +430,7 @@ class PFTabsContainer(wx.Window):
         self.height = height
         self.reserved = 48
         self.tabContainerWidth = width - self.reserved
-        self.tabMinWidth = 0
+        self.tabMinWidth = width
         self.tabShadow = None
         self.addButton = PFAddRenderer()
         self.addBitmap = self.addButton.Render()
@@ -433,6 +438,7 @@ class PFTabsContainer(wx.Window):
         self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnErase)
         self.Bind(wx.EVT_LEFT_UP, self.OnLeftUp)
         self.Bind(wx.EVT_MOTION, self.OnMotion)
+        self.tabShadow = PFTabRenderer((self.tabMinWidth, self.height))
 
     def OnLeftUp(self, event):
         mposx,mposy = event.GetPosition()
@@ -523,8 +529,10 @@ class PFTabsContainer(wx.Window):
     def OnErase(self, event):
         pass
 
-    def CreateShadow(self):
-        self.tabShadow = PFTabRenderer( (self.tabMinWidth, self.height))
+    def UpdateTabFX(self):
+        w,h = self.tabShadow.GetSize()
+        if w != self.tabMinWidth:
+            self.tabShadow.SetSize((self.tabMinWidth, self.height))
 
     def AddTab(self, title = wx.EmptyString, img = None):
         self.ClearTabsSelected()
@@ -557,6 +565,7 @@ class PFTabsContainer(wx.Window):
         return len(self.tabs)
 
     def AdjustTabsSize(self):
+        start = time.clock()
         tabMinWidth = 9000000 # Really, it should be over 9000
         for tab in self.tabs:
             tx,ty = tab.GetMinSize()
@@ -565,23 +574,26 @@ class PFTabsContainer(wx.Window):
         if self.GetTabsCount() >0:
             if (self.GetTabsCount()) * (tabMinWidth - 9) > self.tabContainerWidth - self.reserved:
                 self.tabMinWidth = float(self.tabContainerWidth - self.reserved) / float(self.GetTabsCount()) + 9
-                print (self.tabMinWidth - 9)*(self.GetTabsCount()), self.tabContainerWidth - self.reserved, "Tabs: %d" % self.GetTabsCount()
             else:
                 self.tabMinWidth = tabMinWidth
-        else:
-            self.tabMinWidth = 1
+
         for tab in self.tabs:
-            tab.SetSize( (self.tabMinWidth, self.height) )
-        self.CreateShadow()
+            w,h = tab.GetSize()
+            if w != self.tabMinWidth:
+                tab.SetSize( (self.tabMinWidth, self.height) )
 
-        shadowBmp = self.tabShadow.Render()
+        if self.GetTabsCount() > 0:
+            self.UpdateTabFX()
 
-        simg = shadowBmp.ConvertToImage()
-        simg.InitAlpha()
-        simg = simg.Blur(2)
-        simg = simg.AdjustChannels(0.8,0.8,0.8,0.3)
+            fxBmp = self.tabShadow.Render()
 
-        self.efxBmp = wx.BitmapFromImage(simg)
+            simg = fxBmp.ConvertToImage()
+            simg.InitAlpha()
+            simg = simg.Blur(2)
+            simg = simg.AdjustChannels(1,1,1,0.3)
+
+            self.efxBmp = wx.BitmapFromImage(simg)
+        print "Adjust for %d took " % self.GetTabsCount(), time.clock() - start
 
 class MiniFrame(wx.Frame):
     def __init__(self):
