@@ -108,7 +108,7 @@ class PFTabRenderer:
         if bkR + bkG + bkB > 127*3:
             scale = - delta
         else:
-            scale = delta
+            scale = delta*2
         return wx.Colour(bkR + scale, bkG + scale, bkR + scale)
 
     def InitTabRegions(self):
@@ -263,7 +263,8 @@ class PFTabRenderer:
             else:
                 break
 
-        text = "%s%s" % (text[:count],"." if len(text)>count else "")
+#        text = "%s%s" % (text[:count],"." if len(text)>count else "")
+        text = "%s" % text[:count]
 
 
         tx,ty = mdc.GetTextExtent(text)
