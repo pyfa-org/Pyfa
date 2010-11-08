@@ -55,9 +55,12 @@ class ModuleAmmoPicker(ContextMenu):
             if damage > 0:
                 return (i, damage, charge.name)
 
+    def numericConverter(self, string):
+        return int(string) if string.isdigit() else string
+
     def nameSorter(self, charge):
-        n = charge.name
-        return (len(n), n)
+        parts = charge.name.split(" ")
+        return map(self.numericConverter, parts)
 
     def addCharge(self, menu, charge):
         id = wx.NewId()
