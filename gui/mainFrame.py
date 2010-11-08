@@ -31,6 +31,7 @@ from gui.characterEditor import CharacterEditor
 from gui.characterSelection import CharacterSelection
 from gui.patternEditor import DmgPatternEditorDlg
 from gui.preferenceDialog import PreferenceDialog
+from gui.graphFrame import GraphFrame
 from gui.copySelectDialog import CopySelectDialog
 import aboutData
 import gui.fittingView as fv
@@ -249,6 +250,9 @@ class MainFrame(wx.Frame):
         #Clipboard exports
         self.Bind(wx.EVT_MENU, self.exportToClipboard, id=wx.ID_COPY)
 
+        #Graphs
+        self.Bind(wx.EVT_MENU, self.openGraphFrame, id=menuBar.graphFrameId)
+
         toggleShipMarketId = wx.NewId()
         # Close Tab
         self.Bind(wx.EVT_MENU, self.CloseCurrentFit, id=self.closeTabId)
@@ -263,6 +267,7 @@ class MainFrame(wx.Frame):
                 (wx.ACCEL_CMD, ord(" "), toggleShipMarketId)]
         atable = wx.AcceleratorTable(actb)
         self.SetAcceleratorTable(atable)
+
 
     def HAddTab(self,event):
         self.fitMultiSwitch.AddTab()
@@ -344,6 +349,10 @@ class MainFrame(wx.Frame):
         if self.waitDialog.timer.IsRunning():
             self.waitDialog.timer.Stop()
         self.waitDialog.Destroy()
+
+    def openGraphFrame(self, event):
+        graphFrame = GraphFrame(self)
+        graphFrame.Show()
 
     def toggleShipBrowser(self, event):
         self.GetToolBar().toggleShipBrowser(event)
