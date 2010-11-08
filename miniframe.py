@@ -422,8 +422,10 @@ class PFTabsContainer(wx.Window):
         if self.GetTabsCount() >0:
             if self.GetTabsCount() * tabMinWidth > self.tabContainerWidth:
                 self.tabMinWidth = (self.tabContainerWidth - self.reserved) / self.GetTabsCount()
+            else:
+                self.tabMinWidth = tabMinWidth
         else:
-            self.tabMinWidth = 0
+            self.tabMinWidth = 1
         for tab in self.tabs:
             tab.SetSize( (self.tabMinWidth, self.height) )
         self.CreateShadow()
