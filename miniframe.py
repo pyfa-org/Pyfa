@@ -114,7 +114,19 @@ class PFTabRenderer:
             scale = - delta
         else:
             scale = delta*2
-        return wx.Colour(bkR + scale, bkG + scale, bkR + scale)
+
+        r = bkR + scale
+        g = bkG + scale
+        b = bkB + scale
+
+        if r > 255: r = 255
+        if r < -1: r = 0
+        if g > 255: g = 255
+        if g < -1: g = 0
+        if b > 255: b = 255
+        if b < -1: b = 0
+
+        return wx.Colour(r,b,g)
 
     def InitTabRegions(self):
         self.tabRegion = wx.Region(0, 0, self.tabWidth, self.tabHeight)
@@ -347,7 +359,19 @@ class PFAddRenderer:
             scale = - delta
         else:
             scale = delta*2
-        return wx.Colour(bkR + scale, bkG + scale, bkR + scale)
+
+        r = bkR + scale
+        g = bkG + scale
+        b = bkB + scale
+
+        if r > 255: r = 255
+        if r < -1: r = 0
+        if g > 255: g = 255
+        if g < -1: g = 0
+        if b > 255: b = 255
+        if b < -1: b = 0
+
+        return wx.Colour(r,b,g)
 
     def Render(self):
         return self.addBitmap
@@ -611,7 +635,7 @@ class MiniFrame(wx.Frame):
         self.font8px = wx.Font(8, wx.SWISS, wx.NORMAL, wx.NORMAL, False)
         self.tabContainer = PFTabsContainer(self, (0,5), (1000,24))
         self.tabContainer.Show()
-        for i in xrange(20):
+        for i in xrange(10):
             self.tabContainer.AddTab("Pyfa TAB #%d Aw" % i)
 
         self.Refresh()
