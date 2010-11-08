@@ -1,5 +1,6 @@
 import wx
 import copy
+import time
 
 class PFTabRenderer:
     def __init__(self, size = (36,24), text = wx.EmptyString, img = None, inclination = 6 , closeButton = True, fontSize = 8):
@@ -29,7 +30,7 @@ class PFTabRenderer:
 
     def SetSize(self, size):
         self.tabSize = size
-        self.InitTab()
+        self.InitTab(True)
 
     def SetSelected(self, sel = True):
         self.selected = sel
@@ -71,7 +72,7 @@ class PFTabRenderer:
         newRegion.IntersectRegion(region)
 
         return newRegion
-    def InitTab(self):
+    def InitTab(self, skipLRZones = False):
         self.tabWidth, self.tabHeight = self.tabSize
 
         # content width is tabWidth - (left+right) zones
@@ -84,9 +85,9 @@ class PFTabRenderer:
         self.lrZoneWidth = self.inclination * 3
 
         self.CreateLRZoneSplines()
-
-        self.leftRegion = self.CreateLeftRegion()
-        self.rightRegion = self.CreateRightRegion()
+        if not skipLRZones:
+            self.leftRegion = self.CreateLeftRegion()
+            self.rightRegion = self.CreateRightRegion()
 
         self.contentRegion = wx.Region(0, 0, self.contentWidth, self.tabHeight)
         self.tabRegion = None
@@ -113,13 +114,14 @@ class PFTabRenderer:
 
     def InitTabRegions(self):
         self.tabRegion = wx.Region(0, 0, self.tabWidth, self.tabHeight)
-        self.tabRegion.IntersectRegion(self.leftRegion)
+        leftRegion = self.CopyRegion(self.leftRegion)
+        self.tabRegion.IntersectRegion(leftRegion)
 
         self.contentRegion.Offset(self.lrZoneWidth, 0)
         self.tabRegion.UnionRegion(self.contentRegion)
-
-        self.rightRegion.Offset(self.tabWidth - self.lrZoneWidth, 0)
-        self.tabRegion.UnionRegion(self.rightRegion)
+        rightRegion = self.CopyRegion(self.rightRegion)
+        rightRegion.Offset(self.tabWidth - self.lrZoneWidth, 0)
+        self.tabRegion.UnionRegion(rightRegion)
         self.closeBtnRegion = wx.Region(self.tabWidth - self.lrZoneWidth - self.cbSize -2 , (self.tabHeight - self.cbSize) / 2 - 2, self.cbSize + 4, self.cbSize + 4)
         cbtRegion = wx.Region(self.tabWidth - self.lrZoneWidth - self.cbSize ,0, self.cbSize, self.tabHeight)
         self.tabRegion.UnionRegion(cbtRegion)
@@ -557,6 +559,7 @@ class PFTabsContainer(wx.Window):
         return len(self.tabs)
 
     def AdjustTabsSize(self):
+        start = time.clock()
         tabMinWidth = 9000000 # Really, it should be over 9000
         for tab in self.tabs:
             tx,ty = tab.GetMinSize()
@@ -565,7 +568,7 @@ class PFTabsContainer(wx.Window):
         if self.GetTabsCount() >0:
             if (self.GetTabsCount()) * (tabMinWidth - 9) > self.tabContainerWidth - self.reserved:
                 self.tabMinWidth = float(self.tabContainerWidth - self.reserved) / float(self.GetTabsCount()) + 9
-                print (self.tabMinWidth - 9)*(self.GetTabsCount()), self.tabContainerWidth - self.reserved, "Tabs: %d" % self.GetTabsCount()
+#                print (self.tabMinWidth - 9)*(self.GetTabsCount()), self.tabContainerWidth - self.reserved, "Tabs: %d" % self.GetTabsCount()
             else:
                 self.tabMinWidth = tabMinWidth
         else:
@@ -582,7 +585,7 @@ class PFTabsContainer(wx.Window):
         simg = simg.AdjustChannels(0.8,0.8,0.8,0.3)
 
         self.efxBmp = wx.BitmapFromImage(simg)
-
+        print "AdjustSize for %d: took " % self.GetTabsCount(), time.clock() - start
 class MiniFrame(wx.Frame):
     def __init__(self):
         wx.Frame.__init__(self, None, -1, 'MEGA Frame',
