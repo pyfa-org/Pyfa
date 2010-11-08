@@ -518,7 +518,7 @@ class PFTabsContainer(wx.Window):
             mdc.DrawBitmap(selected.Render(), selpos, 0, True)
             selected.SetPosition((selpos, 0))
 
-        mdc.DrawBitmap(self.addBitmap, tabsWidth + 6, self.height/2 - self.addBitmap.GetHeight()/2, True)
+        mdc.DrawBitmap(self.addBitmap, round(tabsWidth) + 6, self.height/2 - self.addBitmap.GetHeight()/2, True)
 
     def OnErase(self, event):
         pass
@@ -563,8 +563,9 @@ class PFTabsContainer(wx.Window):
             if tabMinWidth > tx:
                tabMinWidth = tx
         if self.GetTabsCount() >0:
-            if (self.GetTabsCount() - 1) * tabMinWidth > self.tabContainerWidth:
-                self.tabMinWidth = (self.tabContainerWidth - self.reserved) / (self.GetTabsCount() - 1)
+            if (self.GetTabsCount()) * (tabMinWidth - 9) > self.tabContainerWidth - self.reserved:
+                self.tabMinWidth = float(self.tabContainerWidth - self.reserved) / float(self.GetTabsCount()) + 9
+                print (self.tabMinWidth - 9)*(self.GetTabsCount()), self.tabContainerWidth - self.reserved, "Tabs: %d" % self.GetTabsCount()
             else:
                 self.tabMinWidth = tabMinWidth
         else:
@@ -598,7 +599,7 @@ class MiniFrame(wx.Frame):
         self.font8px = wx.Font(8, wx.SWISS, wx.NORMAL, wx.NORMAL, False)
         self.tabContainer = PFTabsContainer(self, (0,5), (1000,24))
         self.tabContainer.Show()
-        for i in xrange(10):
+        for i in xrange(20):
             self.tabContainer.AddTab("Pyfa TAB #%d Aw" % i)
 
         self.Refresh()
