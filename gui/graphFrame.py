@@ -18,9 +18,11 @@
 #===============================================================================
 
 import wx
-import matplotlib as mpl
-from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as Canvas
-from matplotlib.backends.backend_wxagg import NavigationToolbar2Wx as Toolbar
+try:
+    import matplotlib as mpl
+    from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as Canvas
+except:
+    print "problems importing matplotlib, continueing without graphs"
 
 class GraphFrame(wx.Frame):
     def __init__(self, parent):
