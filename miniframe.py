@@ -456,15 +456,17 @@ class PFTabsContainer(wx.Window):
         self.tabs = []
         width, height = size
         self.width  = width
-        self.height = height
+        self.height = height - 3
+        self.containerHeight = height
         self.startDrag = False
         self.dragging = False
         self.reserved = 48
         self.inclination = 6
+        self.dragTrail = 5
         self.dragx = 0
         self.dragy = 0
         self.draggedTab = None
-        self.dragTrigger = 5
+        self.dragTrigger = self.dragTrail
 
         self.tabContainerWidth = width - self.reserved
         self.tabMinWidth = width
@@ -479,7 +481,7 @@ class PFTabsContainer(wx.Window):
         self.Bind(wx.EVT_LEFT_UP, self.OnLeftUp)
         self.Bind(wx.EVT_MOTION, self.OnMotion)
 
-        self.tabShadow = PFTabRenderer((self.tabMinWidth, self.height))
+        self.tabShadow = PFTabRenderer((self.tabMinWidth, self.height), inclination = self.inclination)
 
     def OnLeftDown(self, event):
         mposx,mposy = event.GetPosition()
@@ -490,7 +492,7 @@ class PFTabsContainer(wx.Window):
                 self.startDrag = True
                 tx,ty = tab.GetPosition()
                 self.dragx = mposx - tx
-                self.dragy = 0
+                self.dragy = self.containerHeight - self.height
                 self.Refresh()
 
             self.draggedTab = tab
@@ -501,7 +503,7 @@ class PFTabsContainer(wx.Window):
             self.dragging = False
             self.startDrag = False
             self.draggedTab = None
-            self.dragTrigger = 5
+            self.dragTrigger = self.dragTrail
             self.UpdateTabsPosition()
             self.Refresh()
             if self.HasCapture():
@@ -510,7 +512,7 @@ class PFTabsContainer(wx.Window):
 
         if self.startDrag:
             self.startDrag = False
-            self.dragTrigger = 5
+            self.dragTrigger = self.dragTrail
 
         selTab = self.GetSelectedTab()
 
@@ -625,7 +627,7 @@ class PFTabsContainer(wx.Window):
             if not self.dragging:
                 if self.dragTrigger < 0:
                     self.dragging = True
-                    self.dragTrigger = 5
+                    self.dragTrigger = self.dragTrail
                     self.CaptureMouse()
                 else:
                     self.dragTrigger -= 1
@@ -635,8 +637,8 @@ class PFTabsContainer(wx.Window):
 
                 if dtx < 0:
                     dtx = 0
-                if dtx + w > self.tabContainerWidth + 9:
-                    dtx = self.tabContainerWidth - w + 9
+                if dtx + w > self.tabContainerWidth + self.inclination * 2:
+                    dtx = self.tabContainerWidth - w + self.inclination * 2
                 self.draggedTab.SetPosition( (dtx, self.dragy))
 
                 index = self.GetTabIndex(self.draggedTab)
@@ -648,7 +650,7 @@ class PFTabsContainer(wx.Window):
                     lw,lh = leftTab.GetSize()
                     lx,ly = leftTab.GetPosition()
 
-                    if lx + lw / 2 - 5> dtx:
+                    if lx + lw / 2 - self.inclination * 2 > dtx:
                         self.SwitchTabs(index - 1 , index, self.draggedTab)
                         return
 
@@ -656,7 +658,7 @@ class PFTabsContainer(wx.Window):
                     rw,rh = rightTab.GetSize()
                     rx,ry = rightTab.GetPosition()
 
-                    if rx + rw / 2 + 5 < dtx + w:
+                    if rx + rw / 2 + self.inclination * 2 < dtx + w:
                         self.SwitchTabs(index + 1 , index, self.draggedTab)
                         return
                 self.UpdateTabsPosition(self.draggedTab)
@@ -688,18 +690,18 @@ class PFTabsContainer(wx.Window):
 
 
         for tab in self.tabs:
-            tabsWidth += tab.tabWidth - tab.lrZoneWidth/2
+            tabsWidth += tab.tabWidth - self.inclination*2
 
         pos = tabsWidth
 
-        mdc.DrawBitmap(self.addBitmap, round(tabsWidth) + 6, self.height/2 - self.addBitmap.GetHeight()/2, True)
+        mdc.DrawBitmap(self.addBitmap, round(tabsWidth) + self.inclination*2, self.containerHeight - self.height/2 - self.addBitmap.GetHeight()/2, True)
 
         for i in xrange(len(self.tabs) - 1, -1, -1):
             tab = self.tabs[i]
-            width = tab.tabWidth - tab.lrZoneWidth/2
+            width = tab.tabWidth - self.inclination*2
             posx, posy  = tab.GetPosition()
             if not tab.IsSelected():
-                mdc.DrawBitmap(self.efxBmp, posx, posy)
+                mdc.DrawBitmap(self.efxBmp, posx, posy, True )
                 mdc.DrawBitmap(tab.Render(), posx, posy, True)
             else:
                 selected = tab
@@ -710,11 +712,8 @@ class PFTabsContainer(wx.Window):
             selpos = posx
             selWidth,selHeight = selected.GetSize()
 
-#        mdc.SetPen( wx.Pen( selColor, 1))
-#        mdc.DrawLine(0,self.height-1,selpos,self.height-1)
-#        mdc.DrawLine(selpos + selWidth,self.height-1,self.width,self.height-1)
-        r1 = wx.Rect(0,self.height-1,selpos,1)
-        r2 = wx.Rect(selpos + selWidth,self.height -1, self.width - selpos - selWidth,1)
+        r1 = wx.Rect(0,self.containerHeight-1,selpos,1)
+        r2 = wx.Rect(selpos + selWidth,self.containerHeight -1, self.width - selpos - selWidth,1)
         mdc.GradientFillLinear(r1, startColor, selColor, wx.EAST)
         mdc.GradientFillLinear(r2, selColor, startColor, wx.EAST)
 
@@ -737,7 +736,7 @@ class PFTabsContainer(wx.Window):
     def AddTab(self, title = wx.EmptyString, img = None):
         self.ClearTabsSelected()
 
-        tabRenderer = PFTabRenderer( (120,self.height), title, img)
+        tabRenderer = PFTabRenderer( (120,self.height), title, img, self.inclination)
         tabRenderer.SetSelected(True)
 
         self.tabs.append( tabRenderer )
@@ -777,8 +776,8 @@ class PFTabsContainer(wx.Window):
                tabMinWidth = mw
 
         if self.GetTabsCount() >0:
-            if (self.GetTabsCount()) * (tabMinWidth - 9) > self.tabContainerWidth:
-                self.tabMinWidth = float(self.tabContainerWidth) / float(self.GetTabsCount()) + 9
+            if (self.GetTabsCount()) * (tabMinWidth - self.inclination * 2) > self.tabContainerWidth:
+                self.tabMinWidth = float(self.tabContainerWidth) / float(self.GetTabsCount()) + self.inclination * 2
             else:
                 self.tabMinWidth = tabMinWidth
 
@@ -795,21 +794,21 @@ class PFTabsContainer(wx.Window):
     def UpdateTabsPosition(self, skipTab = None):
         tabsWidth = 0
         for tab in self.tabs:
-            tabsWidth += tab.tabWidth - tab.lrZoneWidth/2
+            tabsWidth += tab.tabWidth - self.inclination*2
 
         pos = tabsWidth
 
         for i in xrange(len(self.tabs) - 1, -1, -1):
             tab = self.tabs[i]
-            width = tab.tabWidth - tab.lrZoneWidth/2
+            width = tab.tabWidth - self.inclination*2
             pos -= width
             if not tab.IsSelected():
-                tab.SetPosition((pos, 0))
+                tab.SetPosition((pos, self.containerHeight - self.height))
             else:
                 selected = tab
                 selpos = pos
         if selected is not skipTab:
-            selected.SetPosition((selpos, 0))
+            selected.SetPosition((selpos, self.containerHeight - self.height))
 
 
     def CalculateColor(self, color, delta):
@@ -835,7 +834,7 @@ class PFTabsContainer(wx.Window):
 class MiniFrame(wx.Frame):
     def __init__(self):
         wx.Frame.__init__(self, None, -1, 'MEGA Frame',
-                size=(1000, 100), style = wx.FRAME_SHAPED)
+                size=(1000, 50), style = wx.FRAME_SHAPED)
         self.Bind(wx.EVT_CLOSE, self.OnCloseWindow)
 #        self.Bind(wx.EVT_PAINT, self.OnPaint)
 #        self.Bind(wx.EVT_ERASE_BACKGROUND,self.OnErase)
@@ -846,7 +845,7 @@ class MiniFrame(wx.Frame):
 
         self.drag = False
         self.font8px = wx.Font(8, wx.SWISS, wx.NORMAL, wx.NORMAL, False)
-        self.tabContainer = PFTabsContainer(self, (0,5), (1000,24))
+        self.tabContainer = PFTabsContainer(self, (0,0), (1000,27))
         self.tabContainer.Show()
         for i in xrange(10):
             self.tabContainer.AddTab("Pyfa TAB #%d Aw" % i)
