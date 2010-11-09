@@ -506,6 +506,8 @@ class PFTabsContainer(wx.Window):
             self.dragTrigger = 5
             self.UpdateTabsPosition()
             self.Refresh()
+            if self.HasCapture():
+                self.ReleaseMouse()
             return
 
         if self.startDrag:
@@ -595,18 +597,23 @@ class PFTabsContainer(wx.Window):
                 if self.dragTrigger < 0:
                     self.dragging = True
                     self.dragTrigger = 5
+                    self.CaptureMouse()
                 else:
                     self.dragTrigger -= 1
             if self.dragging:
-                self.draggedTab.SetPosition( (mposx - self.dragx, self.dragy))
+                dtx = mposx - self.dragx
                 w,h = self.draggedTab.GetSize()
+
+                if dtx < 0:
+                    dtx = 0
+                if dtx + w > self.tabContainerWidth + 9:
+                    dtx = self.tabContainerWidth - w + 9
+                self.draggedTab.SetPosition( (dtx, self.dragy))
 
                 index = self.tabs.index(self.draggedTab)
 
                 leftTab = self.GetTabAtLeft(index)
                 rightTab = self.GetTabAtRight(index)
-
-                dtx = mposx - self.dragx
 
                 if leftTab:
                     lw,lh = leftTab.GetSize()
@@ -741,8 +748,8 @@ class PFTabsContainer(wx.Window):
                tabMinWidth = mw
 
         if self.GetTabsCount() >0:
-            if (self.GetTabsCount()) * (tabMinWidth - 9) > self.tabContainerWidth - self.reserved:
-                self.tabMinWidth = float(self.tabContainerWidth - self.reserved) / float(self.GetTabsCount()) + 9
+            if (self.GetTabsCount()) * (tabMinWidth - 9) > self.tabContainerWidth:
+                self.tabMinWidth = float(self.tabContainerWidth) / float(self.GetTabsCount()) + 9
             else:
                 self.tabMinWidth = tabMinWidth
 
