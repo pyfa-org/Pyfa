@@ -1287,8 +1287,8 @@ class PFBitmapFrame(wx.Frame):
         self.timer = wx.Timer(self,wx.ID_ANY)
         self.direction = 1
         self.transp = 0
-        self.SetRoundShape()
         self.SetSize((bitmap.GetWidth(),bitmap.GetHeight()))
+        self.SetRoundShape()
         self.Refresh()
 
     def OnTimer(self, event):
