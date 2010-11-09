@@ -1288,7 +1288,10 @@ class PFBitmapFrame(wx.Frame):
         self.direction = 1
         self.transp = 0
         self.SetSize((bitmap.GetWidth(),bitmap.GetHeight()))
-        self.SetRoundShape()
+        if 'wxMSW' in wx.PlatformInfo:
+            self.SetRoundShape()
+        else:
+            self.SetTransparent(0)
         self.Refresh()
 
     def OnTimer(self, event):
