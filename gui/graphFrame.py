@@ -35,6 +35,7 @@ from gui import bitmapLoader
 class GraphFrame(wx.Frame):
     def __init__(self, parent, style=wx.DEFAULT_FRAME_STYLE | wx.NO_FULL_REPAINT_ON_RESIZE):
         wx.Frame.__init__(self, parent, style=style)
+        self.CreateStatusBar()
         self.mainSizer = wx.BoxSizer(wx.VERTICAL)
         self.SetSizer(self.mainSizer)
 
@@ -119,14 +120,18 @@ class GraphFrame(wx.Frame):
         success, status = view.getPoints(values)
         if not success:
             #TODO: Add a pwetty statys bar to report errors with
+            self.SetStatusText("Invalid values")
             return
 
         x, y = success, status
 
+        self.subplot.clear()
         self.subplot.plot(x, y)
         self.canvas.draw()
+        self.SetStatusText("")
+
     def onFieldChanged(self, event):
         try:
             self.draw()
         except:
-            pass
+            self.SetStatusText("Invalid values")
