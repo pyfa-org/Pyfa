@@ -944,7 +944,10 @@ class CategoryItem(wx.Window):
             mdc.Clear()
 
         mdc.DrawBitmap(self.shipBmp,5+(rect.height-self.shipBmp.GetHeight())/2,(rect.height-self.shipBmp.GetWidth())/2,0)
-        mdc.SetFont(wx.Font(8, wx.SWISS, wx.NORMAL, wx.NORMAL, False))
+        fontSize = 8
+        if 'wxMAC' in wx.PlatformInfo:
+            fontSize = 10
+        mdc.SetFont(wx.Font(fontSize, wx.SWISS, wx.NORMAL, wx.NORMAL, False))
 
 
 
@@ -1284,9 +1287,12 @@ class PFBitmapFrame(wx.Frame):
         self.timer = wx.Timer(self,wx.ID_ANY)
         self.direction = 1
         self.transp = 0
-        self.SetRoundShape()
+        self.SetSize((bitmap.GetWidth(),bitmap.GetHeight()))
+        if 'wxMSW' in wx.PlatformInfo:
+            self.SetRoundShape()
+        else:
+            self.SetTransparent(0)
         self.Refresh()
-        self.Update()
 
     def OnTimer(self, event):
         self.transp += 20*self.direction

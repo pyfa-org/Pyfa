@@ -73,7 +73,7 @@ class MainFrame(wx.Frame):
 
         self.splitter = wx.SplitterWindow(self, style = wx.SP_LIVE_UPDATE)
 
-        mainSizer.Add(self.splitter,1,wx.EXPAND)
+        mainSizer.Add(self.splitter,1,wx.EXPAND | wx.LEFT, 2)
 
         self.FitviewAdditionsPanel = PFPanel(self.splitter)
         faSizer = wx.BoxSizer(wx.VERTICAL)
