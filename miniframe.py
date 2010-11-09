@@ -486,9 +486,7 @@ class PFTabsContainer(wx.Window):
         if not self.startDrag:
             tab = self.FindTabAtPos(mposx, mposy)
             if tab:
-                for tabs in self.tabs:
-                    tabs.SetSelected(False)
-                tab.SetSelected(True)
+                self.CheckTabSelected(tab, mposx, mposy)
                 self.startDrag = True
                 tx,ty = tab.GetPosition()
                 self.dragx = mposx - tx
@@ -514,35 +512,54 @@ class PFTabsContainer(wx.Window):
             self.startDrag = False
             self.dragTrigger = 5
 
-        seltab = None
-        oldSelTab = None
-        for tab in self.tabs:
-            if tab.GetSelected():
-                oldSelTab = tab
-                break
-        count = 0
-        for tab in self.tabs:
-            tabRegion = tab.GetTabRegion()
-            closeBtnReg = tab.GetCloseButtonRegion()
-            tabPos = tab.GetPosition()
-            tabPosX, tabPosY = tabPos
-            tabRegion.Offset(tabPosX, tabPosY)
-            closeBtnReg.Offset(tabPosX,tabPosY)
+        selTab = self.GetSelectedTab()
 
-            if closeBtnReg.Contains(mposx, mposy):
-                print "Close tab: %s" % tab.text
-                self.DeleteTab(count)
+        if self.CheckTabClose(selTab, mposx, mposy):
+            return
+
+#        if self.CheckTabSelected(selTab, mposx, mposy):
+#            return
+
+        for tab in self.tabs:
+
+            if self.CheckTabClose(tab, mposx, mposy):
                 return
 
-            if tabRegion.Contains(mposx, mposy):
-                tab.SetSelected(True)
-                if tab != oldSelTab:
-                    oldSelTab.SetSelected(False)
-                self.Refresh()
-                print "Selected: %s" %tab.text
-                break
-            count += 1
-        event.Skip()
+#            if self.CheckTabSelected(tab, mposx, mposy):
+#                return
+
+    def GetSelectedTab(self):
+        for tab in self.tabs:
+            if tab.GetSelected():
+                return tab
+
+    def CheckTabSelected(self,tab, mposx, mposy):
+
+        oldSelTab = self.GetSelectedTab()
+        if oldSelTab == tab:
+            return True
+
+        if self.TabHitTest(tab, mposx, mposy):
+            tab.SetSelected(True)
+            if tab != oldSelTab:
+                oldSelTab.SetSelected(False)
+            self.Refresh()
+            print "Selected: %s" %tab.text
+            return True
+        return False
+
+    def CheckTabClose(self, tab, mposx, mposy):
+        closeBtnReg = tab.GetCloseButtonRegion()
+        tabPosX, tabPosY = tab.GetPosition()
+
+        closeBtnReg.Offset(tabPosX,tabPosY)
+
+        if closeBtnReg.Contains(mposx, mposy):
+            print "Close tab: %s" % tab.text
+            index = self.GetTabIndex(tab)
+            self.DeleteTab(index)
+            return True
+        return False
 
     def CheckCloseButtons(self, mposx, mposy):
         dirty = False
@@ -564,14 +581,23 @@ class PFTabsContainer(wx.Window):
             self.Refresh()
 
     def FindTabAtPos(self, x, y):
+        selTab = self.GetSelectedTab()
+        if self.TabHitTest(selTab, x, y):
+            return selTab
+
         for tab in self.tabs:
-            tabRegion = tab.GetTabRegion()
-            tabPos = tab.GetPosition()
-            tabPosX, tabPosY = tabPos
-            tabRegion.Offset(tabPosX, tabPosY)
-            if tabRegion.Contains(x, y):
+            if self.TabHitTest(tab, x, y):
                 return tab
         return None
+
+    def TabHitTest(self, tab, x, y):
+        tabRegion = tab.GetTabRegion()
+        tabPos = tab.GetPosition()
+        tabPosX, tabPosY = tabPos
+        tabRegion.Offset(tabPosX, tabPosY)
+        if tabRegion.Contains(x, y):
+            return True
+        return False
 
     def GetTabAtLeft(self, tabIndex):
         if tabIndex>0:
@@ -589,6 +615,9 @@ class PFTabsContainer(wx.Window):
         self.tabs[src], self.tabs[dest] = self.tabs[dest], self.tabs[src]
         self.UpdateTabsPosition(draggedTab)
         self.Refresh()
+
+    def GetTabIndex(self, tab):
+        return self.tabs.index(tab)
 
     def OnMotion(self, event):
         mposx,mposy = event.GetPosition()
@@ -610,7 +639,7 @@ class PFTabsContainer(wx.Window):
                     dtx = self.tabContainerWidth - w + 9
                 self.draggedTab.SetPosition( (dtx, self.dragy))
 
-                index = self.tabs.index(self.draggedTab)
+                index = self.GetTabIndex(self.draggedTab)
 
                 leftTab = self.GetTabAtLeft(index)
                 rightTab = self.GetTabAtRight(index)
