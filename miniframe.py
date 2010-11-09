@@ -53,6 +53,9 @@ class PFTabRenderer:
             self.closeBtnHovering = hover
             self._Render()
 
+    def GetCloseButtonHoverStatus(self):
+        return self.closeBtnHovering
+
     def GetTabRegion(self):
         nregion = self.CopyRegion(self.tabRegion)
         nregion.SubtractRegion(self.closeBtnRegion) if self.closeButton else self.tabRegion
@@ -105,7 +108,7 @@ class PFTabRenderer:
     def InitColors(self):
         self.tabColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
         self.leftColor = self.CalculateColor(self.tabColor, 0x1F)
-        self.rightColor = self.CalculateColor(self.tabColor, 0x20)
+        self.rightColor = self.CalculateColor(self.tabColor, 0x24)
         self.gradientStartColor = self.CalculateColor(self.tabColor, 0x17 if self.selected else 0x27)
 
     def CalculateColor(self, color, delta):
@@ -120,11 +123,11 @@ class PFTabRenderer:
         b = bkB + scale
 
         if r > 255: r = 255
-        if r < -1: r = 0
+        if r < 0: r = 0
         if g > 255: g = 255
-        if g < -1: g = 0
+        if g < 0: g = 0
         if b > 255: b = 255
-        if b < -1: b = 0
+        if b < 0: b = 0
 
         return wx.Colour(r,b,g)
 
@@ -301,6 +304,7 @@ class PFTabRenderer:
         canvas.SetMaskColour((13,22,31))
 
         self.tabBitmap = canvas
+
 class PFAddRenderer:
     def __init__(self, size = (24,12)):
         self.width, self.height = size
@@ -365,11 +369,11 @@ class PFAddRenderer:
         b = bkB + scale
 
         if r > 255: r = 255
-        if r < -1: r = 0
+        if r < 0: r = 0
         if g > 255: g = 255
-        if g < -1: g = 0
+        if g < 0: g = 0
         if b > 255: b = 255
-        if b < -1: b = 0
+        if b < 0: b = 0
 
         return wx.Colour(r,b,g)
 
@@ -451,17 +455,24 @@ class PFTabsContainer(wx.Window):
         wx.Window.__init__(self, parent, id , pos, size , style = 0)
         self.tabs = []
         width, height = size
+        self.width  = width
         self.height = height
+
         self.reserved = 48
+        self.inclination = 6
+
         self.tabContainerWidth = width - self.reserved
         self.tabMinWidth = width
         self.tabShadow = None
+
         self.addButton = PFAddRenderer()
         self.addBitmap = self.addButton.Render()
+
         self.Bind(wx.EVT_PAINT, self.OnPaint)
         self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnErase)
         self.Bind(wx.EVT_LEFT_UP, self.OnLeftUp)
         self.Bind(wx.EVT_MOTION, self.OnMotion)
+
         self.tabShadow = PFTabRenderer((self.tabMinWidth, self.height))
 
     def OnLeftUp(self, event):
@@ -496,19 +507,30 @@ class PFTabsContainer(wx.Window):
             count += 1
         event.Skip()
 
-    def OnMotion(self, event):
-        mposx,mposy = event.GetPosition()
+    def CheckCloseButtons(self, mposx, mposy):
+        dirty = False
+
         for tab in self.tabs:
             closeBtnReg = tab.GetCloseButtonRegion()
             tabPos = tab.GetPosition()
             tabPosX, tabPosY = tabPos
             closeBtnReg.Offset(tabPosX,tabPosY)
             if closeBtnReg.Contains(mposx,mposy):
-                tab.ShowCloseButtonHovering(True)
+                if not tab.GetCloseButtonHoverStatus():
+                    tab.ShowCloseButtonHovering(True)
+                    dirty = True
             else:
-                tab.ShowCloseButtonHovering(False)
+                if tab.GetCloseButtonHoverStatus():
+                    tab.ShowCloseButtonHovering(False)
+                    dirty = True
+        if dirty:
+            self.Refresh()
 
-        self.Refresh()
+    def OnMotion(self, event):
+        mposx,mposy = event.GetPosition()
+
+        self.CheckCloseButtons(mposx, mposy)
+
         event.Skip()
 
     def OnPaint(self, event):
@@ -525,7 +547,11 @@ class PFTabsContainer(wx.Window):
 
         selected = None
         selpos = 0
+        selWidth = selHeight = 0
+        selColor = self.CalculateColor(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW), 0x24)
+        startColor = self.leftColor = self.CalculateColor(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW), 0x12)
         tabsWidth = 0
+
 
         for tab in self.tabs:
             tabsWidth += tab.tabWidth - tab.lrZoneWidth/2
@@ -547,7 +573,15 @@ class PFTabsContainer(wx.Window):
             mdc.DrawBitmap(self.efxBmp, selpos, 0, True)
             mdc.DrawBitmap(selected.Render(), selpos, 0, True)
             selected.SetPosition((selpos, 0))
+            selWidth,selHeight = selected.GetSize()
 
+#        mdc.SetPen( wx.Pen( selColor, 1))
+#        mdc.DrawLine(0,self.height-1,selpos,self.height-1)
+#        mdc.DrawLine(selpos + selWidth,self.height-1,self.width,self.height-1)
+        r1 = wx.Rect(0,self.height-1,selpos,1)
+        r2 = wx.Rect(selpos + selWidth,self.height -1, self.width - selpos - selWidth,1)
+        mdc.GradientFillLinear(r1, startColor, selColor, wx.EAST)
+        mdc.GradientFillLinear(r2, selColor, startColor, wx.EAST)
         mdc.DrawBitmap(self.addBitmap, round(tabsWidth) + 6, self.height/2 - self.addBitmap.GetHeight()/2, True)
 
     def OnErase(self, event):
@@ -557,6 +591,14 @@ class PFTabsContainer(wx.Window):
         w,h = self.tabShadow.GetSize()
         if w != self.tabMinWidth:
             self.tabShadow.SetSize((self.tabMinWidth, self.height))
+            fxBmp = self.tabShadow.Render()
+
+            simg = fxBmp.ConvertToImage()
+            simg.InitAlpha()
+            simg = simg.Blur(2)
+            simg = simg.AdjustChannels(1,1,1,0.3)
+
+            self.efxBmp = wx.BitmapFromImage(simg)
 
     def AddTab(self, title = wx.EmptyString, img = None):
         self.ClearTabsSelected()
@@ -579,9 +621,12 @@ class PFTabsContainer(wx.Window):
 
         if tabRenderer:
             del tabRenderer
+
         if wasSelected and self.GetTabsCount() > 0:
             if tab > self.GetTabsCount() -1:
                 self.tabs[self.GetTabsCount() - 1].SetSelected(True)
+            else:
+                self.tabs[tab].SetSelected(True)
         self.AdjustTabsSize()
         self.Refresh()
 
@@ -589,12 +634,14 @@ class PFTabsContainer(wx.Window):
         return len(self.tabs)
 
     def AdjustTabsSize(self):
-        start = time.clock()
+
         tabMinWidth = 9000000 # Really, it should be over 9000
+
         for tab in self.tabs:
-            tx,ty = tab.GetMinSize()
-            if tabMinWidth > tx:
-               tabMinWidth = tx
+            mw,mh = tab.GetMinSize()
+            if tabMinWidth > mw:
+               tabMinWidth = mw
+
         if self.GetTabsCount() >0:
             if (self.GetTabsCount()) * (tabMinWidth - 9) > self.tabContainerWidth - self.reserved:
                 self.tabMinWidth = float(self.tabContainerWidth - self.reserved) / float(self.GetTabsCount()) + 9
@@ -609,15 +656,26 @@ class PFTabsContainer(wx.Window):
         if self.GetTabsCount() > 0:
             self.UpdateTabFX()
 
-            fxBmp = self.tabShadow.Render()
 
-            simg = fxBmp.ConvertToImage()
-            simg.InitAlpha()
-            simg = simg.Blur(2)
-            simg = simg.AdjustChannels(1,1,1,0.3)
+    def CalculateColor(self, color, delta):
+        bkR ,bkG , bkB = color
+        if bkR + bkG + bkB > 127*3:
+            scale = - delta
+        else:
+            scale = delta*2
 
-            self.efxBmp = wx.BitmapFromImage(simg)
-        print "Adjust for %d took " % self.GetTabsCount(), time.clock() - start
+        r = bkR + scale
+        g = bkG + scale
+        b = bkB + scale
+
+        if r > 255: r = 255
+        if r < 0: r = 0
+        if g > 255: g = 255
+        if g < 0: g = 0
+        if b > 255: b = 255
+        if b < 0: b = 0
+
+        return wx.Colour(r,b,g)
 
 class MiniFrame(wx.Frame):
     def __init__(self):
