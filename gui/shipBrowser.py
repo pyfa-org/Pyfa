@@ -1288,8 +1288,8 @@ class PFBitmapFrame(wx.Frame):
         self.direction = 1
         self.transp = 0
         self.SetRoundShape()
+        self.SetSize((bitmap.GetWidth(),bitmap.GetHeight()))
         self.Refresh()
-        self.Update()
 
     def OnTimer(self, event):
         self.transp += 20*self.direction
