@@ -504,6 +504,8 @@ class PFTabsContainer(wx.Window):
             self.startDrag = False
             self.draggedTab = None
             self.dragTrigger = 5
+            self.UpdateTabsPosition()
+            self.Refresh()
             return
 
         if self.startDrag:
@@ -569,6 +571,23 @@ class PFTabsContainer(wx.Window):
                 return tab
         return None
 
+    def GetTabAtLeft(self, tabIndex):
+        if tabIndex>0:
+            return self.tabs[tabIndex - 1]
+        else:
+            return None
+
+    def GetTabAtRight(self, tabIndex):
+        if tabIndex < self.GetTabsCount() - 1:
+            return self.tabs[tabIndex + 1]
+        else:
+            return None
+
+    def SwitchTabs(self, src, dest, draggedTab = None):
+        self.tabs[src], self.tabs[dest] = self.tabs[dest], self.tabs[src]
+        self.UpdateTabsPosition(draggedTab)
+        self.Refresh()
+
     def OnMotion(self, event):
         mposx,mposy = event.GetPosition()
         if self.startDrag:
@@ -580,6 +599,31 @@ class PFTabsContainer(wx.Window):
                     self.dragTrigger -= 1
             if self.dragging:
                 self.draggedTab.SetPosition( (mposx - self.dragx, self.dragy))
+                w,h = self.draggedTab.GetSize()
+
+                index = self.tabs.index(self.draggedTab)
+
+                leftTab = self.GetTabAtLeft(index)
+                rightTab = self.GetTabAtRight(index)
+
+                dtx = mposx - self.dragx
+
+                if leftTab:
+                    lw,lh = leftTab.GetSize()
+                    lx,ly = leftTab.GetPosition()
+
+                    if lx + lw / 2 - 5> dtx:
+                        self.SwitchTabs(index - 1 , index, self.draggedTab)
+                        return
+
+                if rightTab:
+                    rw,rh = rightTab.GetSize()
+                    rx,ry = rightTab.GetPosition()
+
+                    if rx + rw / 2 + 5 < dtx + w:
+                        self.SwitchTabs(index + 1 , index, self.draggedTab)
+                        return
+                self.UpdateTabsPosition(self.draggedTab)
                 self.Refresh()
                 return
             return
@@ -712,7 +756,7 @@ class PFTabsContainer(wx.Window):
 
         self.UpdateTabsPosition()
 
-    def UpdateTabsPosition(self):
+    def UpdateTabsPosition(self, skipTab = None):
         tabsWidth = 0
         for tab in self.tabs:
             tabsWidth += tab.tabWidth - tab.lrZoneWidth/2
@@ -728,7 +772,7 @@ class PFTabsContainer(wx.Window):
             else:
                 selected = tab
                 selpos = pos
-        if selected:
+        if selected is not skipTab:
             selected.SetPosition((selpos, 0))
 
 
