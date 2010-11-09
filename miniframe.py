@@ -260,8 +260,8 @@ class PFTabRenderer:
         lrect.width = contentWidth+1
         lrect.height = 1
         mdc.GradientFillLinear(lrect,self.leftColor,self.rightColor, wx.EAST)
-        if not self.selected:
-            mdc.DrawLine(0,height - 1,width,height - 1)
+#        if not self.selected:
+#            mdc.DrawLine(0,height - 1,width,height - 1)
         mdc.SetPen( wx.Pen(self.rightColor, width = 2 ) )
         if self.closeButton:
             cbsize = self.cbSize
@@ -457,9 +457,14 @@ class PFTabsContainer(wx.Window):
         width, height = size
         self.width  = width
         self.height = height
-
+        self.startDrag = False
+        self.dragging = False
         self.reserved = 48
         self.inclination = 6
+        self.dragx = 0
+        self.dragy = 0
+        self.draggedTab = None
+        self.dragTrigger = 5
 
         self.tabContainerWidth = width - self.reserved
         self.tabMinWidth = width
@@ -470,13 +475,41 @@ class PFTabsContainer(wx.Window):
 
         self.Bind(wx.EVT_PAINT, self.OnPaint)
         self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnErase)
+        self.Bind(wx.EVT_LEFT_DOWN, self.OnLeftDown)
         self.Bind(wx.EVT_LEFT_UP, self.OnLeftUp)
         self.Bind(wx.EVT_MOTION, self.OnMotion)
 
         self.tabShadow = PFTabRenderer((self.tabMinWidth, self.height))
 
+    def OnLeftDown(self, event):
+        mposx,mposy = event.GetPosition()
+        if not self.startDrag:
+            tab = self.FindTabAtPos(mposx, mposy)
+            if tab:
+                for tabs in self.tabs:
+                    tabs.SetSelected(False)
+                tab.SetSelected(True)
+                self.startDrag = True
+                tx,ty = tab.GetPosition()
+                self.dragx = mposx - tx
+                self.dragy = 0
+                self.Refresh()
+
+            self.draggedTab = tab
+
     def OnLeftUp(self, event):
         mposx,mposy = event.GetPosition()
+        if self.startDrag and self.dragging:
+            self.dragging = False
+            self.startDrag = False
+            self.draggedTab = None
+            self.dragTrigger = 5
+            return
+
+        if self.startDrag:
+            self.startDrag = False
+            self.dragTrigger = 5
+
         seltab = None
         oldSelTab = None
         for tab in self.tabs:
@@ -526,9 +559,30 @@ class PFTabsContainer(wx.Window):
         if dirty:
             self.Refresh()
 
+    def FindTabAtPos(self, x, y):
+        for tab in self.tabs:
+            tabRegion = tab.GetTabRegion()
+            tabPos = tab.GetPosition()
+            tabPosX, tabPosY = tabPos
+            tabRegion.Offset(tabPosX, tabPosY)
+            if tabRegion.Contains(x, y):
+                return tab
+        return None
+
     def OnMotion(self, event):
         mposx,mposy = event.GetPosition()
-
+        if self.startDrag:
+            if not self.dragging:
+                if self.dragTrigger < 0:
+                    self.dragging = True
+                    self.dragTrigger = 5
+                else:
+                    self.dragTrigger -= 1
+            if self.dragging:
+                self.draggedTab.SetPosition( (mposx - self.dragx, self.dragy))
+                self.Refresh()
+                return
+            return
         self.CheckCloseButtons(mposx, mposy)
 
         event.Skip()
@@ -558,21 +612,22 @@ class PFTabsContainer(wx.Window):
 
         pos = tabsWidth
 
+        mdc.DrawBitmap(self.addBitmap, round(tabsWidth) + 6, self.height/2 - self.addBitmap.GetHeight()/2, True)
+
         for i in xrange(len(self.tabs) - 1, -1, -1):
             tab = self.tabs[i]
             width = tab.tabWidth - tab.lrZoneWidth/2
-            pos -= width
+            posx, posy  = tab.GetPosition()
             if not tab.IsSelected():
-                mdc.DrawBitmap(self.efxBmp, pos, 0)
-                mdc.DrawBitmap(tab.Render(), pos, 0, True)
-                tab.SetPosition((pos, 0))
+                mdc.DrawBitmap(self.efxBmp, posx, posy)
+                mdc.DrawBitmap(tab.Render(), posx, posy, True)
             else:
                 selected = tab
-                selpos = pos
         if selected:
-            mdc.DrawBitmap(self.efxBmp, selpos, 0, True)
-            mdc.DrawBitmap(selected.Render(), selpos, 0, True)
-            selected.SetPosition((selpos, 0))
+            posx, posy  = selected.GetPosition()
+            mdc.DrawBitmap(self.efxBmp, posx, posy, True)
+            mdc.DrawBitmap(selected.Render(), posx, posy, True)
+            selpos = posx
             selWidth,selHeight = selected.GetSize()
 
 #        mdc.SetPen( wx.Pen( selColor, 1))
@@ -582,7 +637,6 @@ class PFTabsContainer(wx.Window):
         r2 = wx.Rect(selpos + selWidth,self.height -1, self.width - selpos - selWidth,1)
         mdc.GradientFillLinear(r1, startColor, selColor, wx.EAST)
         mdc.GradientFillLinear(r2, selColor, startColor, wx.EAST)
-        mdc.DrawBitmap(self.addBitmap, round(tabsWidth) + 6, self.height/2 - self.addBitmap.GetHeight()/2, True)
 
     def OnErase(self, event):
         pass
@@ -655,6 +709,27 @@ class PFTabsContainer(wx.Window):
 
         if self.GetTabsCount() > 0:
             self.UpdateTabFX()
+
+        self.UpdateTabsPosition()
+
+    def UpdateTabsPosition(self):
+        tabsWidth = 0
+        for tab in self.tabs:
+            tabsWidth += tab.tabWidth - tab.lrZoneWidth/2
+
+        pos = tabsWidth
+
+        for i in xrange(len(self.tabs) - 1, -1, -1):
+            tab = self.tabs[i]
+            width = tab.tabWidth - tab.lrZoneWidth/2
+            pos -= width
+            if not tab.IsSelected():
+                tab.SetPosition((pos, 0))
+            else:
+                selected = tab
+                selpos = pos
+        if selected:
+            selected.SetPosition((selpos, 0))
 
 
     def CalculateColor(self, color, delta):
