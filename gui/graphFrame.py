@@ -23,7 +23,6 @@ try:
     mpl.use('wxagg')
     from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as Canvas
     from matplotlib.figure import Figure
-    import mpl_toolkits.axisartist as AA
     enabled = True
 except:
     print "problems importing matplotlib, continueing without graphs"
@@ -45,6 +44,7 @@ class GraphFrame(wx.Frame):
         self.figure = Figure(figsize=(4, 3))
         self.canvas = Canvas(self, -1, self.figure)
         self.subplot = self.figure.add_subplot(111)
+        self.subplot.grid(True)
 
         self.mainSizer.Add(self.canvas, 0, wx.EXPAND)
 
@@ -126,6 +126,7 @@ class GraphFrame(wx.Frame):
         x, y = success, status
 
         self.subplot.clear()
+        self.subplot.grid(True)
         self.subplot.plot(x, y)
         self.canvas.draw()
         self.SetStatusText("")
