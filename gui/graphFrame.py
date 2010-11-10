@@ -72,7 +72,7 @@ class GraphFrame(wx.Frame):
     def getValues(self):
         values = {}
         for fieldName, field in self.fields.iteritems():
-            values[fieldName] = field.GetLabel()
+            values[fieldName] = field.GetValue()
 
         return values
 
