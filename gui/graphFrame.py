@@ -120,7 +120,7 @@ class GraphFrame(wx.Frame):
         success, status = view.getPoints(values)
         if not success:
             #TODO: Add a pwetty statys bar to report errors with
-            self.SetStatusText("Invalid values")
+            self.SetStatusText(status)
             return
 
         x, y = success, status
