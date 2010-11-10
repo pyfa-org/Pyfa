@@ -128,7 +128,6 @@ class ShipBrowser(wx.Panel):
             self.lpane.AddWidget(CategoryItem(self.lpane, ID, (name, 0)))
 
         self.lpane.RefreshList()
-        self.Show()
 
     RACE_ORDER = ["amarr", "caldari", "gallente", "minmatar", "ore", "serpentis", "angel", "blood", "sansha", "guristas", None]
     def raceNameKey(self, shipInfo):
@@ -148,7 +147,6 @@ class ShipBrowser(wx.Panel):
                 self.lpane.AddWidget(ShipItem(self.lpane, ID, (name, fits), race))
 
         self.lpane.RefreshList()
-        self.Show()
 #        self.lpane.ShowLoading(False)
 
     def stage2(self, event):
@@ -203,7 +201,6 @@ class ShipBrowser(wx.Panel):
             self.lpane.AddWidget(FitItem(self.lpane, ID, (shipName, name, timestamp),shipID))
 
         self.lpane.RefreshList()
-        self.Show()
 
     def searchStage(self, event):
         if not event.back:
@@ -231,7 +228,6 @@ class ShipBrowser(wx.Panel):
             if len(shipList) == 0 and len(fitList) == 0 :
                 self.lpane.AddWidget(PFStaticText(self.lpane, label = "No matching results."))
             self.lpane.RefreshList()
-        self.Show()
 
 class PFStaticText(wx.StaticText):
     def _init__(self,parent, label = wx.EmptyString):
@@ -1310,6 +1306,7 @@ class PFBitmapFrame(wx.Frame):
     def Show(self, showWnd = True):
         if showWnd:
             wx.Frame.Show(self, showWnd)
+            self.Parent.SetFocus()
             self.direction = 1
             self.timer.Start(5)
         else:
