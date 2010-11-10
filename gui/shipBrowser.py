@@ -1306,6 +1306,7 @@ class PFBitmapFrame(wx.Frame):
     def Show(self, showWnd = True):
         if showWnd:
             wx.Frame.Show(self, showWnd)
+            self.Parent.SetFocus()
             self.direction = 1
             self.timer.Start(5)
         else:
