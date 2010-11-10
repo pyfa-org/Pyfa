@@ -33,7 +33,7 @@ from gui import bitmapLoader
 
 class GraphFrame(wx.Frame):
     def __init__(self, parent, style=wx.DEFAULT_FRAME_STYLE | wx.NO_FULL_REPAINT_ON_RESIZE):
-        wx.Frame.__init__(self, parent, style=style)
+        wx.Frame.__init__(self, parent, style=style, size=(300, 500))
         self.CreateStatusBar()
         self.mainSizer = wx.BoxSizer(wx.VERTICAL)
         self.SetSizer(self.mainSizer)
