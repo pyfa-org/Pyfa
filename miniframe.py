@@ -123,12 +123,9 @@ class PFTabRenderer:
         g = bkG + scale
         b = bkB + scale
 
-        if r > 255: r = 255
-        if r < 0: r = 0
-        if g > 255: g = 255
-        if g < 0: g = 0
-        if b > 255: b = 255
-        if b < 0: b = 0
+        r = min(max(r,0),255))
+        b = min(max(b,0),255))
+        g = min(max(g,0),255))
 
         return wx.Colour(r,b,g)
 
@@ -369,12 +366,9 @@ class PFAddRenderer:
         g = bkG + scale
         b = bkB + scale
 
-        if r > 255: r = 255
-        if r < 0: r = 0
-        if g > 255: g = 255
-        if g < 0: g = 0
-        if b > 255: b = 255
-        if b < 0: b = 0
+        r = min(max(r,0),255)
+        b = min(max(b,0),255)
+        g = min(max(g,0),255)
 
         return wx.Colour(r,b,g)
 
@@ -761,6 +755,8 @@ class PFTabsContainer(wx.Window):
                 self.tabs[self.GetTabsCount() - 1].SetSelected(True)
             else:
                 self.tabs[tab].SetSelected(True)
+        elif self.GetTabsCount() == 0:
+            self.Destroy()
         self.AdjustTabsSize()
         self.Refresh()
 
