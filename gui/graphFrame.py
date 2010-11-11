@@ -18,6 +18,8 @@
 #===============================================================================
 
 import wx
+import gui.display
+
 try:
     import matplotlib as mpl
     mpl.use('wxagg')
@@ -33,10 +35,17 @@ from gui import bitmapLoader
 
 class GraphFrame(wx.Frame):
     def __init__(self, parent, style=wx.DEFAULT_FRAME_STYLE | wx.NO_FULL_REPAINT_ON_RESIZE):
-        wx.Frame.__init__(self, parent, style=style, size=(300, 500))
+        wx.Frame.__init__(self, parent, style=style, size=(500, 500))
         self.CreateStatusBar()
+        horSizer = wx.BoxSizer(wx.HORIZONTAL)
+        self.SetSizer(horSizer)
+
         self.mainSizer = wx.BoxSizer(wx.VERTICAL)
-        self.SetSizer(self.mainSizer)
+        horSizer.Add(self.mainSizer, 1, wx.EXPAND)
+
+        self.fitList = FitList(self)
+        self.fitList.SetMinSize((200, -1))
+        horSizer.Add(self.fitList, 0, wx.EXPAND)
 
         self.graphSelection = wx.Choice(self, wx.ID_ANY, style=0)
         self.mainSizer.Add(self.graphSelection, 0, wx.EXPAND)
@@ -136,3 +145,17 @@ class GraphFrame(wx.Frame):
             self.draw()
         except:
             self.SetStatusText("Invalid values")
+
+class FitList(wx.Panel):
+    def __init__(self, parent):
+        wx.Panel.__init__(self, parent)
+        self.mainSizer = wx.BoxSizer(wx.VERTICAL)
+        self.SetSizer(self.mainSizer)
+
+        self.mainSizer.Add(wx.StaticText(self, wx.ID_ANY, "Fits: Drag fits onto the list to graph them"), 0, wx.ALIGN_CENTER_HORIZONTAL)
+
+        self.fitList = wx.ListCtrl(self)
+        self.mainSizer.Add(self.fitList, 1, wx.EXPAND)
+
+class FitDisplay(gui.display.Display):
+    pass
