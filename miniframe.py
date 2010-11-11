@@ -453,7 +453,7 @@ class PFAddRenderer:
 
 
 class PFTabsContainer(wx.Window):
-    def __init__(self, parent, pos = (0,0), size = (100,24), id = wx.ID_ANY):
+    def __init__(self, parent, pos = (0,0), size = (100,27), id = wx.ID_ANY):
         wx.Window.__init__(self, parent, id , pos, size , style = 0)
         self.tabs = []
         width, height = size
@@ -549,6 +549,13 @@ class PFTabsContainer(wx.Window):
         for tab in self.tabs:
             if tab.GetSelected():
                 return tab
+        return None
+
+    def GetSelected(self):
+        for tab in self.tabs:
+            if tab.GetSelected():
+                return self.tabs.index(tab)
+        return None
 
     def CheckTabSelected(self,tab, mposx, mposy):
 
@@ -562,6 +569,10 @@ class PFTabsContainer(wx.Window):
                 oldSelTab.SetSelected(False)
             self.Refresh()
             print "Selected: %s" %tab.text
+
+            selTab = self.tabs.index(tab)
+            self.Parent.SetSelected(selTab)
+
             return True
         return False
 
@@ -633,6 +644,9 @@ class PFTabsContainer(wx.Window):
     def SwitchTabs(self, src, dest, draggedTab = None):
         self.tabs[src], self.tabs[dest] = self.tabs[dest], self.tabs[src]
         self.UpdateTabsPosition(draggedTab)
+
+        self.Parent.SwitchPages(src,dest, True)
+
         self.Refresh()
 
     def GetTabIndex(self, tab):
@@ -791,6 +805,8 @@ class PFTabsContainer(wx.Window):
             else:
                 self.tabs[tab].SetSelected(True)
 
+        self.Parent.DeletePage(tab, True)
+
         self.AdjustTabsSize()
         self.Refresh()
 
@@ -811,7 +827,8 @@ class PFTabsContainer(wx.Window):
                 self.tabMinWidth = float(self.tabContainerWidth) / float(self.GetTabsCount()) + self.inclination * 2
             else:
                 self.tabMinWidth = tabMinWidth
-
+        if self.tabMinWidth <1:
+            self.tabMinWidth = 1
         for tab in self.tabs:
             w,h = tab.GetSize()
             if w != self.tabMinWidth:
@@ -859,38 +876,116 @@ class PFTabsContainer(wx.Window):
 
         return wx.Colour(r,g,b)
 
+class PFNotebook(wx.Panel):
+    def __init__(self, parent):
+        wx.Panel.__init__(self, parent, wx.ID_ANY,size = (-1,-1))
+
+        self.pages = []
+        self.activePage = None
+
+        mainSizer = wx.BoxSizer( wx.VERTICAL )
+
+        tabsSizer = wx.BoxSizer( wx.VERTICAL )
+
+        self.tabsContainer = PFTabsContainer(self)
+        tabsSizer.Add( self.tabsContainer, 0, wx.EXPAND )
+
+        mainSizer.Add( tabsSizer, 0, wx.EXPAND, 5 )
+
+        contentSizer = wx.BoxSizer( wx.VERTICAL )
+        self.pageContainer = wx.Panel(self)
+        contentSizer.Add( self.pageContainer, 1, wx.EXPAND, 5 )
+
+        mainSizer.Add( contentSizer, 1, wx.EXPAND, 5 )
+
+        self.SetSizer( mainSizer )
+        self.Bind(wx.EVT_SIZE, self.OnSize)
+        self.Layout()
+#        for i in xrange(10):
+#            self.tabsContainer.AddTab("Pyfa TAB #%d Aw" % i)
+
+    def AddPage(self, tabWnd, tabTitle = wx.EmptyString, tabImage = None):
+        if self.activePage:
+            self.activePage.Hide()
+
+        tabWnd.Reparent(self.pageContainer)
+        self.pageContainer.Layout()
+
+        self.pages.append(tabWnd)
+        self.tabsContainer.AddTab(tabTitle, tabImage)
+
+        self.activePage = tabWnd
+
+    def SetSelected(self, page):
+        oldsel = self.pages.index(self.activePage)
+        if oldsel != page:
+            self.activePage.Hide()
+            self.activePage = self.pages[page]
+            self.ShowActive()
+
+    def DeletePage(self, n, internal = False):
+        page = self.pages[n]
+
+        self.pages.remove(page)
+        page.Hide()
+        page.Destroy()
+
+        if not internal:
+            self.tabsContainer.DeleteTab(n)
+        sel = self.tabsContainer.GetSelected()
+        if sel is not None:
+            self.activePage = self.pages[sel]
+            self.ShowActive()
+
+    def SwitchPages(self, src, dest, internal = False):
+        self.pages[src], self.pages[dest] = self.pages[dest], self.pages[src]
+
+    def ShowActive(self):
+        self.activePage.SetSize(self.pageContainer.GetSize())
+        self.activePage.Show()
+        self.Layout()
+    def OnSize(self, event):
+        w,h= self.GetSize()
+        self.tabsContainer.SetSize((w, -1))
+        self.tabsContainer.UpdateSize()
+        self.tabsContainer.Refresh()
+        self.Layout()
+        size = self.pageContainer.GetSize()
+        if self.activePage:
+            self.activePage.SetSize(size)
+        event.Skip()
+
 class MiniFrame(wx.Frame):
     def __init__(self):
         wx.Frame.__init__(self, None, -1, 'MEGA Frame',
-                size=(1000, 50))
+                size=(1000, 200))
         self.Bind(wx.EVT_CLOSE, self.OnCloseWindow)
-#        self.Bind(wx.EVT_PAINT, self.OnPaint)
-#        self.Bind(wx.EVT_ERASE_BACKGROUND,self.OnErase)
-#        self.Bind(wx.EVT_LEFT_DOWN, self.OnLeftDown)
-#        self.Bind(wx.EVT_LEFT_UP, self.OnLeftUp)
-#        self.Bind(wx.EVT_MOTION, self.OnMotion)
-        self.Bind(wx.EVT_SIZE, self.OnSize)
-        self.SetBackgroundColour( (0xff,0xff,0xff))
+#        self.Bind(wx.EVT_SIZE, self.OnSize)
+        mainSizer = wx.BoxSizer(wx.VERTICAL)
+        self.nb = PFNotebook(self)
 
-        self.drag = False
-        self.font8px = wx.Font(8, wx.SWISS, wx.NORMAL, wx.NORMAL, False)
-        self.tabContainer = PFTabsContainer(self, (0,0), (1000,27))
-        self.tabContainer.Show()
-        for i in xrange(10):
-            self.tabContainer.AddTab("Pyfa TAB #%d Aw" % i)
+        self.nb.AddPage(TestPanel(self),"TEST 1")
+        self.nb.AddPage(TestPanel(self),"TEST 2")
+        self.nb.AddPage(TestPanel(self),"TEST 3")
+        self.nb.AddPage(TestPanel(self),"TEST 4")
+        self.nb.AddPage(TestPanel(self),"TEST 5")
+        self.nb.AddPage(TestPanel(self),"TEST 6")
 
-        self.Refresh()
-    def OnSize(self, event):
-        size = self.GetRect()
-        self.tabContainer.SetSize((size.width, -1))
-        self.tabContainer.UpdateSize()
-        self.tabContainer.Refresh()
-        event.Skip()
-    def OnLeftDown(self, event):
-        event.Skip()
+        mainSizer.Add(self.nb,1,wx.EXPAND)
+        self.SetSizer(mainSizer)
+        self.Layout()
 
-    def OnErase(self, event):
-        pass
+#    def OnSize(self, event):
+#        size = self.GetRect()
+#        self.tabContainer.SetSize((size.width, -1))
+#        self.tabContainer.UpdateSize()
+#        self.tabContainer.Refresh()
+#        event.Skip()
+#    def OnLeftDown(self, event):
+#        event.Skip()
+#
+#    def OnErase(self, event):
+#        pass
     def OnCloseWindow(self, event):
         self.Destroy()
 
@@ -932,6 +1027,35 @@ class MiniFrame(wx.Frame):
 #        mdc.DrawLine(10,34,10,100)
 #        mdc.DrawLine(10,100,tabsWidth + 18,100)
 #        mdc.DrawLine(tabsWidth+18,100,tabsWidth+18,33)
+
+class TestPanel ( wx.Panel ):
+
+    def __init__( self, parent ):
+        wx.Panel.__init__ ( self, parent, id = wx.ID_ANY, pos = wx.DefaultPosition, size = wx.Size( -1,-1 ), style = wx.TAB_TRAVERSAL )
+
+        bSizer4 = wx.BoxSizer( wx.VERTICAL )
+
+        self.m_staticText3 = wx.StaticText( self, wx.ID_ANY, u"TESSSSSSSSSST %s" % time.time(), wx.DefaultPosition, wx.DefaultSize, wx.ALIGN_CENTRE )
+        self.m_staticText3.Wrap( -1 )
+        bSizer4.Add( self.m_staticText3, 1, wx.ALL|wx.EXPAND, 5 )
+
+        self.m_button1 = wx.Button( self, wx.ID_ANY, u"MyButton", wx.DefaultPosition, wx.DefaultSize, 0 )
+        bSizer4.Add( self.m_button1, 0, wx.ALL, 5 )
+
+        self.m_textCtrl1 = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+        bSizer4.Add( self.m_textCtrl1, 0, wx.ALL, 5 )
+
+        self.m_staticline1 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
+        bSizer4.Add( self.m_staticline1, 0, wx.EXPAND |wx.ALL, 5 )
+
+        self.m_gauge1 = wx.Gauge( self, wx.ID_ANY, 100, wx.DefaultPosition, wx.DefaultSize, wx.GA_HORIZONTAL )
+        bSizer4.Add( self.m_gauge1, 0, wx.ALL, 5 )
+        self.SetSizer( bSizer4 )
+        self.Layout()
+
+    def __del__( self ):
+        pass
+
 
 if __name__ == '__main__':
     app = wx.PySimpleApp()
