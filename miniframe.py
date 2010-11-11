@@ -123,9 +123,9 @@ class PFTabRenderer:
         g = bkG + scale
         b = bkB + scale
 
-        r = min(max(r,0),255))
-        b = min(max(b,0),255))
-        g = min(max(g,0),255))
+        r = min(max(r,0),255)
+        b = min(max(b,0),255)
+        g = min(max(g,0),255)
 
         return wx.Colour(r,b,g)
 
