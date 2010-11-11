@@ -1549,6 +1549,15 @@ class FitItem(wx.Window):
                 self.btnsStatus = ""
                 self.Refresh()
 
+    def checkForGraphFrame(self, wnd, gfwnd ):
+
+        while wnd is not None:
+            if wnd == gfwnd:
+                return True
+            else:
+                wnd = wnd.Parent
+        return False
+
     def checkPosition(self, event):
         if self.dragging and self.dragged:
             self.dragging = False
@@ -1563,6 +1572,7 @@ class FitItem(wx.Window):
             pjWnd = self.mainFrame.additionsPane.projectedPage
             msWnd = self.mainFrame.fitMultiSwitch
             cfitWnd = self.mainFrame.fitMultiSwitch.GetCurrentPage()
+            gfWnd = self.mainFrame.graphFrame
 
             if not targetWnd:
                 return
@@ -1586,6 +1596,9 @@ class FitItem(wx.Window):
                     draggedFit = fitInst.getFit(self.fitID)
                     fitInst.project(activeFit,draggedFit)
                     wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=activeFit))
+
+            if self.checkForGraphFrame(targetWnd, gfWnd):
+                self.mainFrame.graphFrame.AppendFitToList(self.fitID)
 
 
             event.Skip()

@@ -145,6 +145,8 @@ class GraphFrame(wx.Frame):
             self.draw()
         except:
             self.SetStatusText("Invalid values")
+    def AppendFitToList(self, fitID):
+        print "Append fit %d" % fitID
 
 class FitList(wx.Panel):
     def __init__(self, parent):
