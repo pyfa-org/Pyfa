@@ -509,6 +509,8 @@ class PFTabsContainer(wx.Window):
             self.startDrag = False
             self.dragTrigger = self.dragTrail
 
+        if self.GetTabsCount() == 0:
+            return
         selTab = self.GetSelectedTab()
 
         if self.CheckTabClose(selTab, mposx, mposy):
@@ -578,6 +580,8 @@ class PFTabsContainer(wx.Window):
             self.Refresh()
 
     def FindTabAtPos(self, x, y):
+        if self.GetTabsCount() == 0:
+            return None
         selTab = self.GetSelectedTab()
         if self.TabHitTest(selTab, x, y):
             return selTab
