@@ -98,7 +98,7 @@ class TargetingMiscViewFull(StatsView):
         #If we did anything intresting, we'd update our labels to reflect the new fit's stats here
 
         stats = (("labelTargets", lambda: fit.maxTargets, 3, 0, 0, ""),
-                 ("labelRange", lambda: fit.ship.getModifiedItemAttr('maxTargetRange') / 1000, 3, 0, 0, "km"),
+                 ("labelRange", lambda: fit.maxTargetRange / 1000, 3, 0, 0, "km"),
                  ("labelScanRes", lambda: fit.ship.getModifiedItemAttr('scanResolution'), 3, 0, 0, "mm"),
                  ("labelSensorStr", lambda: fit.scanStrength, 3, 0, 0, ""),
                  ("labelCtrlRange", lambda: fit.extraAttributes["droneControlRange"] / 1000, 3, 0, 0, "km"),
