@@ -16,7 +16,7 @@ class PFTabRenderer:
         self.selected = False
         self.closeBtnHovering = False
         self.tabBitmap = None
-        self.cbSize = 4
+        self.cbSize = 5
         self.position = (0, 0) # Not used internaly for rendering - helper for tab container
         self.InitTab()
 
@@ -264,11 +264,15 @@ class PFTabRenderer:
         if self.closeButton:
             cbsize = self.cbSize
 
-            if self.closeBtnHovering:
-                mdc.SetPen( wx.Pen( wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT), 1))
-
             cbx = width - self.lrZoneWidth-cbsize
             cby = (height - cbsize)/2
+            if self.closeBtnHovering:
+                mdc.SetPen( wx.Pen( wx.Colour(255,22,22), 0))
+                mdc.SetBrush(wx.Brush(wx.Colour(255,22,22)))
+                mdc.DrawCircle(cbx + cbsize / 2 +1, cby + cbsize / 2 + 1, cbsize)
+                selColor = self.CalculateColor(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT), 255)
+                mdc.SetPen( wx.Pen( selColor, 1))
+
             mdc.DrawLine(cbx, cby, cbx + cbsize + 1 , cby + cbsize + 1 )
             mdc.DrawLine(cbx, cby + cbsize, cbx + cbsize + 1, cby - 1 )
 
