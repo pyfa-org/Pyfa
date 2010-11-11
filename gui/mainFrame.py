@@ -116,6 +116,8 @@ class MainFrame(wx.Frame):
         self.addTabId = wx.NewId()
         self.closeTabId = wx.NewId()
 
+        self.graphFrame = None
+
         #Add menu
         self.SetMenuBar(MainMenuBar())
         #self.SetToolBar(MainToolBar(self))
@@ -351,8 +353,11 @@ class MainFrame(wx.Frame):
         self.waitDialog.Destroy()
 
     def openGraphFrame(self, event):
-        graphFrame = GraphFrame(self)
-        graphFrame.Show()
+        if not self.graphFrame:
+            self.graphFrame = GraphFrame(self)
+            self.graphFrame.Show()
+        else:
+            self.graphFrame.SetFocus()
 
     def toggleShipBrowser(self, event):
         self.GetToolBar().toggleShipBrowser(event)
