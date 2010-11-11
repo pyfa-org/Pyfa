@@ -304,7 +304,10 @@ class PFTabRenderer:
 
         mdc.SelectObject(wx.NullBitmap)
         canvas.SetMaskColour((13,22,31))
-
+        if not self.selected:
+            img = canvas.ConvertToImage()
+            img = img.AdjustChannels(1, 1, 1, 0.8)
+            canvas = wx.BitmapFromImage(img)
         self.tabBitmap = canvas
 
 class PFAddRenderer:
@@ -479,8 +482,19 @@ class PFTabsContainer(wx.Window):
         self.Bind(wx.EVT_LEFT_DOWN, self.OnLeftDown)
         self.Bind(wx.EVT_LEFT_UP, self.OnLeftUp)
         self.Bind(wx.EVT_MOTION, self.OnMotion)
-
+        self.Bind(wx.EVT_SIZE, self.OnSize)
         self.tabShadow = PFTabRenderer((self.tabMinWidth, self.height + 1), inclination = self.inclination)
+
+    def OnSize(self, event):
+        self.UpdateSize()
+        event.Skip()
+
+    def UpdateSize(self):
+        width, dummy = self.GetSize()
+        if width != self.width:
+            self.width = width
+            self.tabContainerWidth = self.width - self.reserved
+            self.AdjustTabsSize()
 
     def OnLeftDown(self, event):
         mposx,mposy = event.GetPosition()
@@ -705,10 +719,10 @@ class PFTabsContainer(wx.Window):
             posx, posy  = tab.GetPosition()
             if not tab.IsSelected():
                 mdc.DrawBitmap(self.efxBmp, posx, posy - 1, True )
-                img = tab.Render().ConvertToImage()
-                img = img.AdjustChannels(1, 1, 1, 0.8)
-                bmp = wx.BitmapFromImage(img)
-                mdc.DrawBitmap(bmp, posx, posy, True)
+#                img = tab.Render().ConvertToImage()
+#                img = img.AdjustChannels(1, 1, 1, 0.8)
+#                bmp = wx.BitmapFromImage(img)
+                mdc.DrawBitmap(tab.Render(), posx, posy, True)
             else:
                 selected = tab
         if selected:
@@ -743,7 +757,7 @@ class PFTabsContainer(wx.Window):
             fxBmp = self.tabShadow.Render()
 
             simg = fxBmp.ConvertToImage()
-            simg.InitAlpha()
+#            simg.InitAlpha()
             simg = simg.Blur(2)
             simg = simg.AdjustChannels(0.2,0.2,0.2,0.3)
 
@@ -848,13 +862,14 @@ class PFTabsContainer(wx.Window):
 class MiniFrame(wx.Frame):
     def __init__(self):
         wx.Frame.__init__(self, None, -1, 'MEGA Frame',
-                size=(1000, 50), style = wx.FRAME_SHAPED)
+                size=(1000, 50))
         self.Bind(wx.EVT_CLOSE, self.OnCloseWindow)
 #        self.Bind(wx.EVT_PAINT, self.OnPaint)
 #        self.Bind(wx.EVT_ERASE_BACKGROUND,self.OnErase)
 #        self.Bind(wx.EVT_LEFT_DOWN, self.OnLeftDown)
 #        self.Bind(wx.EVT_LEFT_UP, self.OnLeftUp)
 #        self.Bind(wx.EVT_MOTION, self.OnMotion)
+        self.Bind(wx.EVT_SIZE, self.OnSize)
         self.SetBackgroundColour( (0xff,0xff,0xff))
 
         self.drag = False
@@ -865,7 +880,12 @@ class MiniFrame(wx.Frame):
             self.tabContainer.AddTab("Pyfa TAB #%d Aw" % i)
 
         self.Refresh()
-
+    def OnSize(self, event):
+        size = self.GetRect()
+        self.tabContainer.SetSize((size.width, -1))
+        self.tabContainer.UpdateSize()
+        self.tabContainer.Refresh()
+        event.Skip()
     def OnLeftDown(self, event):
         event.Skip()
 
