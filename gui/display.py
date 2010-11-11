@@ -37,12 +37,19 @@ class Display(wx.ListCtrl):
 
         i = 0
         for colName in self.DEFAULT_COLS:
-            if colName[0:5] == "attr:":
-                attrName = colName[5:]
-                params = {"showIcon": True,
-                          "displayName": False,
-                          "attribute": attrName}
-                col = ViewColumn.getColumn("Attribute Display")(self, params)
+            if ":" in colName:
+                colName, params = colName.split(":", 1)
+                params = params.split(",")
+                colClass = ViewColumn.getColumn(colName)
+                paramList = colClass.getParameters()
+                paramDict = {}
+                for x, param in enumerate(paramList):
+                    name, type, defaultValue = param
+                    value = params[x] if len(params) > x else defaultValue
+                    if type == bool:
+                        value = bool(value) if value != "False" else False
+                    paramDict[name] = value
+                col = colClass(self, paramDict)
             else:
                 col = ViewColumn.getColumn(colName)(self, None)
 

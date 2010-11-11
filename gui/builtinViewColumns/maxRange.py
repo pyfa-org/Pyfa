@@ -25,7 +25,7 @@ from util import formatAmount
 import wx
 
 class MaxRange(ViewColumn):
-    name = "Max range"
+    name = "Max Range"
     def __init__(self, fittingView, params = None):
         if params == None:
             params = {"showIcon": True,

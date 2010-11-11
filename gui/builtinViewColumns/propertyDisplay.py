@@ -17,70 +17,59 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 #===============================================================================
 
-from gui import builtinViewColumns
 from gui.viewColumn import ViewColumn
 from gui import bitmapLoader
 import service
 from util import formatAmount
-from eos.types import Hardpoint
 import wx
 
-class MaxRange(ViewColumn):
-    name = "Module Tracking"
-    def __init__(self, fittingView, params = None):
-        if params == None:
-            params = {"showIcon": True,
-                      "displayName": False}
+class PropertyDisplay(ViewColumn):
+    name = "prop"
+    def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
         cAttribute = service.Attribute.getInstance()
-        info = cAttribute.getAttributeInfo("trackingSpeed")
+        attributeSlave = params["attributeSlave"] or params["property"]
+        try:
+            info = cAttribute.getAttributeInfo(attributeSlave)
+        except:
+            info = None
+
+        self.mask = 0
+        self.propertyName = params["property"]
         self.info = info
         if params["showIcon"]:
-            iconFile = info.icon.iconFile if info.icon else None
+            if info.name == "power":
+                iconFile = "pg_small"
+                iconType = "icons"
+            else:
+                iconFile = info.icon.iconFile if info.icon else None
+                iconType = "pack"
             if iconFile:
-                bitmap = bitmapLoader.getBitmap(iconFile, "pack")
+                bitmap = bitmapLoader.getBitmap(iconFile, iconType)
                 if bitmap:
                     self.imageId = fittingView.imageList.Add(bitmap)
                 else:
                     self.imageId = -1
             else:
                 self.imageId = -1
-
-            self.mask = wx.LIST_MASK_IMAGE
-
         else:
             self.imageId = -1
 
         if params["displayName"] or self.imageId == -1:
             self.columnText = info.displayName if info.displayName != "" else info.name
-            self.mask |= wx.LIST_MASK_TEXT
 
     def getText(self, stuff):
-        if stuff.hardpoint == Hardpoint.TURRET:
-            return (formatAmount(stuff.getModifiedItemAttr("trackingSpeed"), 3, 0, 3))
-        elif stuff.hardpoint == Hardpoint.MISSILE:
-            if stuff.charge is None:
-                return ""
-
-            cloudSize = stuff.getModifiedChargeAttr("aoeCloudSize")
-            text = "%s%s" % (formatAmount(cloudSize, 3, 0, 3),
-                              stuff.charge.attributes["aoeCloudSize"].unit.displayName)
-
-            aoeVelocity = stuff.getModifiedChargeAttr("aoeVelocity")
-            if aoeVelocity:
-                text = "%s | %s%s" % (text,
-                                       formatAmount(aoeVelocity, 3, 0, 3),
-                                       "m/s") #Hardcoded unit here, m/sec is too long
-
-            return text
+        attr = getattr(stuff, self.propertyName, None)
+        if attr:
+            return (formatAmount(attr, 3, 0, 3))
         else:
             return ""
 
-    def getImageId(self, mod):
-        return -1
-
-    def getParameters(self):
-        return (("displayName", bool, False),
+    @staticmethod
+    def getParameters():
+        return (("property", str, None),
+                ("attributeSlave", str, None),
+                ("displayName", bool, False),
                 ("showIcon", bool, True))
 
-MaxRange.register()
+PropertyDisplay.register()

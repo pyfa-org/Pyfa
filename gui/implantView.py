@@ -22,13 +22,13 @@ import service
 import gui.display as d
 import gui.fittingView as fv
 import gui.marketBrowser as mb
-from gui.builtinViewColumns.activityCheckbox import ActivityCheckbox
+from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
 
 class ImplantView(d.Display):
-    DEFAULT_COLS = ["Activity Checkbox",
+    DEFAULT_COLS = ["State",
                     "attr:implantness",
-                    "Name"]
+                    "Base Name"]
 
     def __init__(self, parent):
         d.Display.__init__(self, parent, style=wx.LC_SINGLE_SEL)
@@ -88,7 +88,7 @@ class ImplantView(d.Display):
         row, _ = self.HitTest(event.Position)
         if row != -1:
             col = self.getColumn(event.Position)
-            if col == self.getColIndex(ActivityCheckbox):
+            if col == self.getColIndex(State):
                 fitID = self.mainFrame.getActiveFit()
                 cFit = service.Fit.getInstance()
                 cFit.toggleImplant(fitID, row)
@@ -96,7 +96,7 @@ class ImplantView(d.Display):
 
     def scheduleMenu(self, event):
         event.Skip()
-        if self.getColumn(event.Position) != self.getColIndex(ActivityCheckbox):
+        if self.getColumn(event.Position) != self.getColIndex(State):
             wx.CallAfter(self.spawnMenu)
 
     def spawnMenu(self):

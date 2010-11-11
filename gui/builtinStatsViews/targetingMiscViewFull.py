@@ -107,6 +107,7 @@ class TargetingMiscViewFull(StatsView):
                  ("labelFullSigRadius", lambda: fit.ship.getModifiedItemAttr("signatureRadius"), 3, 0, 9, ""),
                  ("labelFullWarpSpeed", lambda: fit.warpSpeed, 3, 0, 0, "AU/s"),
                  ("labelFullCargo", lambda: fit.ship.getModifiedItemAttr("capacity"), 3, 0, 9, u"m\u00B3"))
+
         counter = 0
         for labelName, value, prec, lowest, highest, unit in stats:
             label = getattr(self, labelName)
@@ -115,8 +116,8 @@ class TargetingMiscViewFull(StatsView):
             if self._cachedValues[counter] != value:
                 label.SetLabel("%s %s" %(formatAmount(value, prec, lowest, highest), unit))
                 # Tooltip stuff
-                RADII = [("Pod",25), ("Interceptor",33), ("Frigate",38), 
-                         ("Destroyer", 83), ("Cruiser", 130),  
+                RADII = [("Pod",25), ("Interceptor",33), ("Frigate",38),
+                         ("Destroyer", 83), ("Cruiser", 130),
                          ("Battlecruiser", 265),  ("Battleship",420)]
                 if labelName is "labelScanRes":
                     lockTime = "%s\n" % "Lock Times".center(28)

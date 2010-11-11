@@ -1,5 +1,2 @@
-__all__ = ["moduleState", "moduleName", "attributeDisplay", "maxRange",
-           "name", "droneDps", "droneNameAmount", "droneCheckbox", "moduleAmmo",
-           "capacitorUse", "activityCheckbox", "moduleAmmoIcon", "modulePrice",
-           "projectedName", "projectedState", "projectedAmmoIcon", 
-           "projectedAmmo", "moduleTracking"]
+__all__ = ["ammo", "ammoIcon", "attributeDisplay", "baseIcon", "baseName",
+           "capacitorUse", "maxRange", "price", "propertyDisplay", "state", "tracking"]

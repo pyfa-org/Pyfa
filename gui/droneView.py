@@ -23,7 +23,7 @@ import service
 import gui.fittingView as fv
 import gui.marketBrowser as mb
 import gui.display as d
-from gui.builtinViewColumns.droneCheckbox import DroneCheckbox
+from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
 
 class DroneViewDrop(wx.PyDropTarget):
@@ -40,11 +40,12 @@ class DroneViewDrop(wx.PyDropTarget):
             return t
 
 class DroneView(d.Display):
-    DEFAULT_COLS = ["Drone Checkbox",
-                    "Drone Name/Amount",
-                    "Drone DPS",
-                    "Max range",
-                    "attr:trackingSpeed",
+    DEFAULT_COLS = ["State",
+                    "Base Icon",
+                    "Base Name",
+                    "prop:droneDps,droneBandwidth",
+                    "Max Range",
+                    "Tracking",
                     "attr:maxVelocity",]
 
     def __init__(self, parent):
@@ -123,7 +124,7 @@ class DroneView(d.Display):
         row, _ = self.HitTest(event.Position)
         if row != -1:
             col = self.getColumn(event.Position)
-            if col != self.getColIndex(DroneCheckbox):
+            if col != self.getColIndex(State):
                 fitID = self.mainFrame.getActiveFit()
                 cFit = service.Fit.getInstance()
                 drone = self.drones[self.GetItemData(row)]
@@ -135,7 +136,7 @@ class DroneView(d.Display):
         row, _ = self.HitTest(event.Position)
         if row != -1:
             col = self.getColumn(event.Position)
-            if col == self.getColIndex(DroneCheckbox):
+            if col == self.getColIndex(State):
                 fitID = self.mainFrame.getActiveFit()
                 cFit = service.Fit.getInstance()
                 drone = self.drones[row]
@@ -144,7 +145,7 @@ class DroneView(d.Display):
 
     def scheduleMenu(self, event):
         event.Skip()
-        if self.getColumn(event.Position) != self.getColIndex(DroneCheckbox):
+        if self.getColumn(event.Position) != self.getColIndex(State):
             wx.CallAfter(self.spawnMenu)
 
     def spawnMenu(self):

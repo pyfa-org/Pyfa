@@ -23,8 +23,8 @@ import service
 from util import formatAmount
 import wx
 
-class ModulePrice(ViewColumn):
-    name = "Module Price"
+class Price(ViewColumn):
+    name = "Price"
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
         self.mask = wx.LIST_MASK_IMAGE
@@ -35,12 +35,12 @@ class ModulePrice(ViewColumn):
             self.imageId = -1
 
 
-    def getText(self, mod):
-        if mod.item is None:
+    def getText(self, stuff):
+        if stuff.item is None:
             return ""
 
         sMarket = service.Market.getInstance()
-        price = sMarket.getPriceNow(mod.item.ID).price
+        price = sMarket.getPriceNow(stuff.item.ID).price
         return formatAmount(price, 3, 3, 9) if price else False
 
     def delayedText(self, mod, display, colItem):
@@ -49,10 +49,9 @@ class ModulePrice(ViewColumn):
             colItem.SetText(formatAmount(price, 3, 3, 9) if price else "")
             display.SetItem(colItem)
 
-
         service.Market.getInstance().getPrices([mod.item.ID], callback)
 
     def getImageId(self, mod):
         return -1
 
-ModulePrice.register()
+Price.register()

@@ -17,17 +17,20 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 #===============================================================================
 
-from gui import builtinViewColumns
 from gui.viewColumn import ViewColumn
-import gui.mainFrame
+from gui import bitmapLoader
 import wx
+from eos.types import Drone, Module
+from eos.types import State as State_
 
-class DroneCheckbox(ViewColumn):
-    name = "Drone Checkbox"
+class State(ViewColumn):
+    name = "State"
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
         self.resizable = False
         self.size = 24
+        self.maxsize = self.size
+        self.mask = wx.LIST_MASK_WIDTH
         for name, state in (("checked", wx.CONTROL_CHECKED), ("unchecked", 0)):
             bitmap = wx.EmptyBitmap(16, 16)
             dc = wx.MemoryDC()
@@ -41,10 +44,20 @@ class DroneCheckbox(ViewColumn):
     def getText(self, mod):
         return ""
 
-    def getImageId(self, drone):
-        if drone.amountActive > 0:
-            return self.checkedId
+    def getImageId(self, stuff):
+        if isinstance(stuff, Drone):
+            return self.checkedId if stuff.amountActive > 0 else self.uncheckedId
+        elif isinstance(stuff, Module):
+            if stuff.isEmpty:
+                return -1
+            else:
+                bitmap = bitmapLoader.getBitmap("state_%s_small" % State_.getName(stuff.state).lower(), "icons")
+                return self.fittingView.imageList.Add(bitmap)
         else:
-            return self.uncheckedId
+            active = getattr(stuff, "active", None)
+            if active is None:
+                return -1
+            else:
+                return self.checkedId if active else self.uncheckedId
 
-DroneCheckbox.register()
+State.register()

@@ -25,7 +25,7 @@ import gui.display as d
 from gui.contextMenu import ContextMenu
 import sys
 from eos.types import Slot
-from gui.builtinViewColumns.moduleState import ModuleState
+from gui.builtinViewColumns.state import State
 
 FitChanged, FIT_CHANGED = wx.lib.newevent.NewEvent()
 
@@ -43,16 +43,17 @@ class FittingViewDrop(wx.PyDropTarget):
             return t
 
 class FittingView(d.Display):
-    DEFAULT_COLS = ["Module State",
-                    "Module Ammo Icon",
-                    "Module Name",
+    DEFAULT_COLS = ["State",
+                    "Ammo Icon",
+                    "Base Icon",
+                    "Base Name",
                     "attr:power",
                     "attr:cpu",
-                    "Max range",
-                    "Module Tracking",
+                    "Max Range",
+                    "Tracking",
                     "Capacitor Usage",
-                    "Module Price",
-                    "Module Ammo",
+                    "Price",
+                    "Ammo",
                     ]
 
     def __init__(self, parent):
@@ -140,7 +141,7 @@ class FittingView(d.Display):
         row, _ = self.HitTest(event.Position)
         if row != -1:
             col = self.getColumn(event.Position)
-            if col != self.getColIndex(ModuleState):
+            if col != self.getColIndex(State):
                 cFit = service.Fit.getInstance()
                 populate = cFit.removeModule(self.activeFitID, self.mods[self.GetItemData(row)].position)
 
@@ -206,7 +207,7 @@ class FittingView(d.Display):
 
     def scheduleMenu(self, event):
         event.Skip()
-        if self.getColumn(event.Position) != self.getColIndex(ModuleState):
+        if self.getColumn(event.Position) != self.getColIndex(State):
             wx.CallAfter(self.spawnMenu)
 
     def spawnMenu(self):
@@ -233,7 +234,7 @@ class FittingView(d.Display):
     def click(self, event):
         row, _ = self.HitTest(event.Position)
         col = self.getColumn(event.Position)
-        if row != -1 and col == self.getColIndex(ModuleState):
+        if row != -1 and col == self.getColIndex(State):
             sel = []
             curr = self.GetFirstSelected()
             while curr != -1:

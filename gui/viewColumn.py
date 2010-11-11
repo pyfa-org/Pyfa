@@ -47,13 +47,14 @@ class ViewColumn(object):
         raise NotImplementedError()
 
     def getText(self, mod):
-        raise NotImplementedError()
+        return ""
 
     def getImageId(self, mod):
-        raise NotImplementedError()
+        return -1
 
-    def getParameters(self):
-        raise NotImplementedError()
+    @staticmethod
+    def getParameters():
+        return tuple()
 
     def delayedText(self, display, colItem):
         raise NotImplementedError()

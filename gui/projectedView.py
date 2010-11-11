@@ -22,7 +22,7 @@ import gui.display as d
 import gui.fittingView as fv
 import service
 import gui.droneView
-from gui.builtinViewColumns.projectedState import ProjectedState
+from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
 import eos.types
 
@@ -41,10 +41,11 @@ class ProjectedViewDrop(wx.PyDropTarget):
             return t
 
 class ProjectedView(d.Display):
-    DEFAULT_COLS = ["Projected State",
-                    "Projected Ammo Icon",
-                    "Projected Name",
-                    "Projected Ammo"]
+    DEFAULT_COLS = ["State",
+                    "Ammo Icon",
+                    "Base Icon",
+                    "Base Name",
+                    "Ammo"]
 
     def __init__(self, parent):
         d.Display.__init__(self, parent, style = wx.LC_SINGLE_SEL)
@@ -133,7 +134,7 @@ class ProjectedView(d.Display):
         if row != -1:
             item = self.get(row)
             col = self.getColumn(event.Position)
-            if col == self.getColIndex(ProjectedState):
+            if col == self.getColIndex(State):
                 fitID = self.mainFrame.getActiveFit()
                 cFit = service.Fit.getInstance()
                 cFit.toggleProjected(fitID, item, "right" if event.Button == 3 else "left")
@@ -156,7 +157,7 @@ class ProjectedView(d.Display):
         row, _ = self.HitTest(event.Position)
         if row != -1:
             col = self.getColumn(event.Position)
-            if col != self.getColIndex(ProjectedState):
+            if col != self.getColIndex(State):
                 fitID = self.mainFrame.getActiveFit()
                 cFit = service.Fit.getInstance()
                 cFit.removeProjected(fitID, self.get(row))

@@ -20,20 +20,29 @@
 from gui import builtinViewColumns
 from gui.viewColumn import ViewColumn
 from gui import bitmapLoader
-from eos.types import Slot
 import wx
+from eos.types import Drone, Fit, Module, Slot
 
-class DroneNameAmount(ViewColumn):
-    name = "Drone Name/Amount"
+class BaseName(ViewColumn):
+    name = "Base Name"
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
         self.columnText = "Name"
+        self.shipImage = fittingView.imageList.Add(bitmapLoader.getBitmap("ship_small", "icons"))
         self.mask = wx.LIST_MASK_TEXT
 
-    def getText(self, drone):
-        return "%dx %s" % (drone.amount, drone.item.name)
+    def getText(self, stuff):
+        if isinstance(stuff, Drone):
+            return "%dx %s" % (stuff.amount, stuff.item.name)
+        elif isinstance(stuff, Fit):
+            return "%s (%s)" % (stuff.name, stuff.ship.item.name)
+        elif isinstance(stuff, Module):
+            if stuff.isEmpty:
+                return "%s Slot" % Slot.getName(stuff.slot).capitalize()
+            else:
+                return stuff.item.name
+        else:
+            item = getattr(stuff, "item", stuff)
+            return item.name
 
-    def getImageId(self, mod):
-        return -1
-
-DroneNameAmount.register()
+BaseName.register()

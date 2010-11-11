@@ -19,31 +19,37 @@
 
 from gui import builtinViewColumns
 from gui.viewColumn import ViewColumn
-import gui.mainFrame
+from gui import bitmapLoader
 import wx
+from eos.types import Module
 
-class ActivityCheckbox(ViewColumn):
-    name = "Activity Checkbox"
+class AmmoIcon(ViewColumn):
+    name = "Ammo Icon"
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
-        self.resizable = False
-        self.size = 24
+        self.size = 16
         self.maxsize = self.size
-        self.mask = wx.LIST_MASK_WIDTH
-        for name, state in (("checked", wx.CONTROL_CHECKED), ("unchecked", 0)):
-            bitmap = wx.EmptyBitmap(16, 16)
-            dc = wx.MemoryDC()
-            dc.SelectObject(bitmap)
-            dc.SetBackground(wx.TheBrushList.FindOrCreateBrush(fittingView.GetBackgroundColour(), wx.SOLID))
-            dc.Clear()
-            wx.RendererNative.Get().DrawCheckBox(fittingView, dc, wx.Rect(0, 0, 16, 16), state)
-            dc.Destroy()
-            setattr(self, "%sId" % name, fittingView.imageList.Add(bitmap))
+        self.mask = wx.LIST_MASK_IMAGE
+        self.columnText = ""
 
     def getText(self, mod):
         return ""
 
-    def getImageId(self, implant):
-        return self.checkedId if implant.active else self.uncheckedId
+    def getImageId(self, stuff):
+        if not isinstance(stuff, Module):
+            return -1
 
-ActivityCheckbox.register()
+        if stuff.charge is None:
+            return -1
+        else:
+            iconFile = stuff.charge.icon.iconFile if stuff.item.icon else ""
+            if iconFile:
+                bitmap = bitmapLoader.getBitmap(iconFile, "pack")
+                if bitmap is None:
+                    return -1
+                else:
+                    return self.fittingView.imageList.Add(bitmap)
+            else:
+                return -1
+
+AmmoIcon.register()

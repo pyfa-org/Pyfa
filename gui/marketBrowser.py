@@ -198,7 +198,8 @@ class MarketTree(wx.TreeCtrl):
         self.marketBrowser.itemView.searching = False
 
 class ItemView(d.Display):
-    DEFAULT_COLS = ["Name"]
+    DEFAULT_COLS = ["Base Icon",
+                    "Base Name"]
 
     def __init__(self, parent, marketBrowser):
         d.Display.__init__(self, parent)

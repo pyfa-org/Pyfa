@@ -22,32 +22,18 @@ from gui.viewColumn import ViewColumn
 from gui import bitmapLoader
 import wx
 
-class ModuleAmmoIcon(ViewColumn):
-    name = "Module Ammo Icon"
+class Ammo(ViewColumn):
+    name = "Ammo"
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
-        self.size = 16
-        self.maxsize = self.size
         self.mask = wx.LIST_MASK_IMAGE
-        self.columnText = ""
+        self.imageId = fittingView.imageList.Add(bitmapLoader.getBitmap("damagePattern_small", "icons"))
 
-    def getText(self, mod):
-        return ""
+    def getText(self, stuff):
+        return "%s (%s)" % (stuff.charge.name, stuff.numCharges) if getattr(stuff, "charge", None) is not None else ""
+
 
     def getImageId(self, mod):
-        if mod.charge is None:
-            iconId = -1
-        else:
-            iconFile = mod.charge.icon.iconFile if mod.item.icon else ""
-            if iconFile:
-                bitmap = bitmapLoader.getBitmap(iconFile, "pack")
-                if bitmap is None:
-                    iconId = -1
-                else:
-                    iconId = self.fittingView.imageList.Add(bitmap)
-            else:
-                iconId = -1
+        return -1
 
-        return iconId
-
-ModuleAmmoIcon.register()
+Ammo.register()

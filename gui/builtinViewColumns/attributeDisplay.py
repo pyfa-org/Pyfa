@@ -25,7 +25,7 @@ from util import formatAmount
 import wx
 
 class AttributeDisplay(ViewColumn):
-    name = "Attribute Display"
+    name = "attr"
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
         cAttribute = service.Attribute.getInstance()
@@ -67,7 +67,8 @@ class AttributeDisplay(ViewColumn):
     def getImageId(self, mod):
         return -1
 
-    def getParameters(self):
+    @staticmethod
+    def getParameters():
         return (("attribute", str, None),
                 ("displayName", bool, False),
                 ("showIcon", bool, True))
