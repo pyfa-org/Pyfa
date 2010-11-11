@@ -768,8 +768,7 @@ class PFTabsContainer(wx.Window):
                 self.tabs[self.GetTabsCount() - 1].SetSelected(True)
             else:
                 self.tabs[tab].SetSelected(True)
-        elif self.GetTabsCount() == 0:
-            self.Destroy()
+
         self.AdjustTabsSize()
         self.Refresh()
 
@@ -807,7 +806,7 @@ class PFTabsContainer(wx.Window):
             tabsWidth += tab.tabWidth - self.inclination*2
 
         pos = tabsWidth
-
+        selected = None
         for i in xrange(len(self.tabs) - 1, -1, -1):
             tab = self.tabs[i]
             width = tab.tabWidth - self.inclination*2
