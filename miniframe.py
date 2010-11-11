@@ -15,7 +15,7 @@ class PFTabRenderer:
         self.selected = False
         self.closeBtnHovering = False
         self.tabBitmap = None
-        self.cbSize = 6
+        self.cbSize = 4
         self.position = (0, 0) # Not used internaly for rendering - helper for tab container
         self.InitTab()
 
@@ -107,9 +107,9 @@ class PFTabRenderer:
 
     def InitColors(self):
         self.tabColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
-        self.leftColor = self.CalculateColor(self.tabColor, 0x1F)
-        self.rightColor = self.CalculateColor(self.tabColor, 0x24)
-        self.gradientStartColor = self.CalculateColor(self.tabColor, 0x17 if self.selected else 0x27)
+        self.leftColor = self.CalculateColor(self.tabColor, 0x2F)
+        self.rightColor = self.CalculateColor(self.tabColor, 0x44)
+        self.gradientStartColor = self.CalculateColor(self.tabColor, 0x17 if self.selected else 0x20)
 
     def CalculateColor(self, color, delta):
         bkR ,bkG , bkB = color
@@ -129,7 +129,7 @@ class PFTabRenderer:
         if b > 255: b = 255
         if b < 0: b = 0
 
-        return wx.Colour(r,b,g)
+        return wx.Colour(r,g,b)
 
     def InitTabRegions(self):
         self.tabRegion = wx.Region(0, 0, self.tabWidth, self.tabHeight)
@@ -262,17 +262,17 @@ class PFTabRenderer:
         mdc.GradientFillLinear(lrect,self.leftColor,self.rightColor, wx.EAST)
 #        if not self.selected:
 #            mdc.DrawLine(0,height - 1,width,height - 1)
-        mdc.SetPen( wx.Pen(self.rightColor, width = 2 ) )
+        mdc.SetPen( wx.Pen(self.rightColor, width = 1 ) )
         if self.closeButton:
             cbsize = self.cbSize
 
             if self.closeBtnHovering:
-                mdc.SetPen( wx.Pen( wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT), 2))
+                mdc.SetPen( wx.Pen( wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT), 1))
 
             cbx = width - self.lrZoneWidth-cbsize
             cby = (height - cbsize)/2
-            mdc.DrawLine(cbx, cby, cbx + cbsize , cby + cbsize )
-            mdc.DrawLine(cbx, cby + cbsize, cbx + cbsize , cby )
+            mdc.DrawLine(cbx, cby, cbx + cbsize + 1 , cby + cbsize + 1 )
+            mdc.DrawLine(cbx, cby + cbsize, cbx + cbsize + 1, cby - 1 )
 
         mdc.SetClippingRegionAsRegion(self.contentRegion)
         mdc.SetFont(self.font)
@@ -462,7 +462,7 @@ class PFTabsContainer(wx.Window):
         self.dragging = False
         self.reserved = 48
         self.inclination = 6
-        self.dragTrail = 5
+        self.dragTrail = 3
         self.dragx = 0
         self.dragy = 0
         self.draggedTab = None
@@ -481,7 +481,7 @@ class PFTabsContainer(wx.Window):
         self.Bind(wx.EVT_LEFT_UP, self.OnLeftUp)
         self.Bind(wx.EVT_MOTION, self.OnMotion)
 
-        self.tabShadow = PFTabRenderer((self.tabMinWidth, self.height), inclination = self.inclination)
+        self.tabShadow = PFTabRenderer((self.tabMinWidth, self.height + 1), inclination = self.inclination)
 
     def OnLeftDown(self, event):
         mposx,mposy = event.GetPosition()
@@ -684,8 +684,8 @@ class PFTabsContainer(wx.Window):
         selected = None
         selpos = 0
         selWidth = selHeight = 0
-        selColor = self.CalculateColor(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW), 0x24)
-        startColor = self.leftColor = self.CalculateColor(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW), 0x12)
+        selColor = self.CalculateColor(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW), 0x34)
+        startColor = self.leftColor = self.CalculateColor(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW), 0x2f)
         tabsWidth = 0
 
 
@@ -701,19 +701,32 @@ class PFTabsContainer(wx.Window):
             width = tab.tabWidth - self.inclination*2
             posx, posy  = tab.GetPosition()
             if not tab.IsSelected():
-                mdc.DrawBitmap(self.efxBmp, posx, posy, True )
-                mdc.DrawBitmap(tab.Render(), posx, posy, True)
+                mdc.DrawBitmap(self.efxBmp, posx, posy - 1, True )
+                img = tab.Render().ConvertToImage()
+                img = img.AdjustChannels(1, 1, 1, 0.8)
+                bmp = wx.BitmapFromImage(img)
+                mdc.DrawBitmap(bmp, posx, posy, True)
             else:
                 selected = tab
         if selected:
             posx, posy  = selected.GetPosition()
-            mdc.DrawBitmap(self.efxBmp, posx, posy, True)
-            mdc.DrawBitmap(selected.Render(), posx, posy, True)
+            mdc.DrawBitmap(self.efxBmp, posx, posy - 1, True)
+            bmp = selected.Render()
+            if self.dragging:
+                img = bmp.ConvertToImage()
+                img = img.AdjustChannels(1.2, 1.2, 1.2, 0.7)
+                bmp = wx.BitmapFromImage(img)
+
+            mdc.DrawBitmap(bmp, posx, posy, True)
             selpos = posx
             selWidth,selHeight = selected.GetSize()
 
+        if selWidth%2:
+            offset = 1
+        else:
+            offset = 0
         r1 = wx.Rect(0,self.containerHeight-1,selpos,1)
-        r2 = wx.Rect(selpos + selWidth,self.containerHeight -1, self.width - selpos - selWidth,1)
+        r2 = wx.Rect(selpos + selWidth - offset, self.containerHeight -1, self.width - selpos - selWidth,1)
         mdc.GradientFillLinear(r1, startColor, selColor, wx.EAST)
         mdc.GradientFillLinear(r2, selColor, startColor, wx.EAST)
 
@@ -723,13 +736,13 @@ class PFTabsContainer(wx.Window):
     def UpdateTabFX(self):
         w,h = self.tabShadow.GetSize()
         if w != self.tabMinWidth:
-            self.tabShadow.SetSize((self.tabMinWidth, self.height))
+            self.tabShadow.SetSize((self.tabMinWidth, self.height + 1))
             fxBmp = self.tabShadow.Render()
 
             simg = fxBmp.ConvertToImage()
             simg.InitAlpha()
             simg = simg.Blur(2)
-            simg = simg.AdjustChannels(1,1,1,0.3)
+            simg = simg.AdjustChannels(0.2,0.2,0.2,0.3)
 
             self.efxBmp = wx.BitmapFromImage(simg)
 
