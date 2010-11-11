@@ -118,7 +118,7 @@ class CharacterEditor(wx.Frame):
         self.Centre(wx.BOTH)
 
         charID = self.getActiveCharacter()
-        if cChar.getCharName(charID) == "All 0":
+        if cChar.getCharName(charID) in ("All 0", "All 5"):
             self.restrict()
 
         self.registerEvents()
@@ -491,7 +491,7 @@ class ImplantsTreeView (wx.Panel):
             self.update(cChar.getImplants(charID))
 
 class AvailableImplantsView(d.Display):
-    DEFAULT_COLS = ["Name",
+    DEFAULT_COLS = ["Base Name",
                     "attr:implantness"]
 
     def __init__(self, parent, style):
