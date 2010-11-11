@@ -819,14 +819,11 @@ class PFTabsContainer(wx.Window):
         g = bkG + scale
         b = bkB + scale
 
-        if r > 255: r = 255
-        if r < 0: r = 0
-        if g > 255: g = 255
-        if g < 0: g = 0
-        if b > 255: b = 255
-        if b < 0: b = 0
+        r = min(max(r,0),255)
+        g = min(max(g,0),255)
+        b = min(max(b,0),255)
 
-        return wx.Colour(r,b,g)
+        return wx.Colour(r,g,b)
 
 class MiniFrame(wx.Frame):
     def __init__(self):
