@@ -89,6 +89,12 @@ class GraphFrame(wx.Frame):
 
         self.fitList.fitList.Bind(wx.EVT_LEFT_DCLICK, self.removeItem)
         self.mainFrame.Bind(gui.fittingView.FIT_CHANGED, self.draw)
+        self.Bind(wx.EVT_CLOSE, self.close)
+
+    def close(self, event):
+        self.fitList.fitList.Unbind(wx.EVT_LEFT_DCLICK, handler=self.removeItem)
+        self.mainFrame.Unbind(gui.fittingView.FIT_CHANGED, handler=self.draw)
+        event.Skip()
 
     def getView(self):
         return self.graphSelection.GetClientData(self.graphSelection.GetSelection())
@@ -184,6 +190,7 @@ class GraphFrame(wx.Frame):
             self.fits.remove(row)
             self.fitList.fitList.update(self.fits)
             self.draw()
+
 
 class FitList(wx.Panel):
     def __init__(self, parent):
