@@ -27,8 +27,10 @@ try:
     mpl.use('wxagg')
     from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as Canvas
     from matplotlib.figure import Figure
+    enabled = True
 except:
     print "Problems importing matplotlib; continuing without graphs"
+    enabled = False
 
 from gui.graph import Graph
 import service
