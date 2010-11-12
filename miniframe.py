@@ -1,4 +1,13 @@
 #!/usr/bin/env python
+
+# --------------------------------------------------------------------------------- #
+# Pyfa's custom Notebook core python IMPLEMENTATION
+#
+# Darriele (homeworld using gmail point com) - 10/27/2010
+# Updated: 11/11/2010
+#
+# --------------------------------------------------------------------------------- #
+
 import wx
 import copy
 import time

@@ -1283,7 +1283,7 @@ class PFBitmapFrame(wx.Frame):
         self.timer = wx.Timer(self,wx.ID_ANY)
         self.direction = 1
         self.transp = 0
-        self.SetSize((bitmap.GetWidth(),bitmap.GetHeight()))
+        self.SetMinSize((bitmap.GetWidth(),bitmap.GetHeight()))
         if 'wxMSW' in wx.PlatformInfo:
             self.SetRoundShape()
         else:
