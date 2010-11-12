@@ -31,10 +31,10 @@ class FitDpsGraph(Graph):
                             "signatureRadius": "signatureRadius",
                             "velocity": "maxVelocity"}
 
-    propertyLabelMap = {"transversal": "Transversal Speed:",
-                        "distance": "Distance to Target:",
-                        "signatureRadius": "Target Signature Radius:",
-                        "velocity": "Target Velocity:"}
+    propertyLabelMap = {"transversal": "Transversal Speed",
+                        "distance": "Distance to Target",
+                        "signatureRadius": "Target Signature Radius",
+                        "velocity": "Target Velocity"}
 
     def __init__(self):
         Graph.__init__(self)

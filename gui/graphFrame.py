@@ -73,8 +73,8 @@ class GraphFrame(wx.Frame):
         dummyBox = wx.BoxSizer(wx.VERTICAL)
         self.gridPanel.SetSizer(dummyBox)
 
-        self.gridSizer = wx.FlexGridSizer(0, 3)
-        self.gridSizer.AddGrowableCol(2)
+        self.gridSizer = wx.FlexGridSizer(0, 2)
+        self.gridSizer.AddGrowableCol(0)
         dummyBox.Add(self.gridSizer, 0, wx.EXPAND)
 
         for view in Graph.views:
@@ -108,24 +108,11 @@ class GraphFrame(wx.Frame):
 
         #Setup textboxes
         for field, defaultVal in view.getFields().iteritems():
-            if icons:
-                icon = icons.get(field)
-                if icon is not None:
-                    static = wx.StaticBitmap(self.gridPanel)
-                    static.SetBitmap(icon)
-                    sizer.Add(static, 0)
 
-            if labels:
-                label = labels.get(field)
-                label = label if label is not None else field
-            else:
-                label = field
-
-            sizer.Add(wx.StaticText(self.gridPanel, wx.ID_ANY, label), 0)
             textBox = wx.TextCtrl(self.gridPanel, wx.ID_ANY, style=0)
             self.fields[field] = textBox
             textBox.Bind(wx.EVT_TEXT, self.onFieldChanged)
-            sizer.Add(textBox, 1, wx.EXPAND | wx.TOP, 2)
+            sizer.Add(textBox, 1, wx.EXPAND | wx.ALIGN_CENTER_VERTICAL  | wx.ALL, 3)
             if defaultVal is not None:
                 if not isinstance(defaultVal, basestring):
                     defaultVal = ("%f" % defaultVal).rstrip("0")
@@ -134,6 +121,22 @@ class GraphFrame(wx.Frame):
 
                 textBox.ChangeValue(defaultVal)
 
+            imgLabelSizer = wx.BoxSizer(wx.HORIZONTAL)
+            if icons:
+                icon = icons.get(field)
+                if icon is not None:
+                    static = wx.StaticBitmap(self.gridPanel)
+                    static.SetBitmap(icon)
+                    imgLabelSizer.Add(static, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 1)
+
+            if labels:
+                label = labels.get(field)
+                label = label if label is not None else field
+            else:
+                label = field
+
+            imgLabelSizer.Add(wx.StaticText(self.gridPanel, wx.ID_ANY, label), 0, wx.LEFT | wx.RIGHT | wx.ALIGN_CENTER_VERTICAL, 3)
+            sizer.Add(imgLabelSizer, 0, wx.ALIGN_CENTER_VERTICAL)
         self.draw()
 
     def draw(self, event=None):
