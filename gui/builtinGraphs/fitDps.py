@@ -26,15 +26,15 @@ import gui.mainFrame
 import service
 
 class FitDpsGraph(Graph):
-    propertyAttributeMap = {"transversal": "maxVelocity",
+    propertyAttributeMap = {"angle": "maxVelocity",
                             "distance": "maxRange",
                             "signatureRadius": "signatureRadius",
                             "velocity": "maxVelocity"}
 
-    propertyLabelMap = {"transversal": "Transversal Speed",
-                        "distance": "Distance to Target",
-                        "signatureRadius": "Target Signature Radius",
-                        "velocity": "Target Velocity"}
+    propertyLabelMap = {"angle": "Target Angle (degrees)",
+                        "distance": "Distance to Target (m)",
+                        "signatureRadius": "Target Signature Radius (m)",
+                        "velocity": "Target Velocity (m/s)"}
 
     def __init__(self):
         Graph.__init__(self)
