@@ -408,7 +408,7 @@ class PFAddRenderer:
         canvas.SetMaskColour((13,22,31))
 
         img = canvas.ConvertToImage()
-        img.InitAlpha()
+#        img.InitAlpha()
         img = img.AdjustChannels(1, 1, 1, 0.6)
         img = img.Blur(1)
         bbmp = wx.BitmapFromImage(img)
@@ -445,7 +445,7 @@ class PFAddRenderer:
 
         img = canvas.ConvertToImage()
 
-        img.InitAlpha()
+#        img.InitAlpha()
         img = img.AdjustChannels(1, 1, 1, 0.3)
 
         bbmp = wx.BitmapFromImage(img)
