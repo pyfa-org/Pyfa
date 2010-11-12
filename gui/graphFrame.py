@@ -18,6 +18,7 @@
 #===============================================================================
 
 import wx
+import bitmapLoader
 import gui.display
 import gui.fittingView
 
@@ -26,10 +27,8 @@ try:
     mpl.use('wxagg')
     from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as Canvas
     from matplotlib.figure import Figure
-    enabled = True
 except:
-    print "problems importing matplotlib, continueing without graphs"
-    Enabled = False
+    print "Problems importing matplotlib; continuing without graphs"
 
 from gui.graph import Graph
 import service
@@ -37,7 +36,10 @@ import gui.mainFrame
 
 class GraphFrame(wx.Frame):
     def __init__(self, parent, style=wx.DEFAULT_FRAME_STYLE | wx.NO_FULL_REPAINT_ON_RESIZE | wx.FRAME_FLOAT_ON_PARENT):
-        wx.Frame.__init__(self, parent, style=style, size=(500, 500))
+        wx.Frame.__init__(self, parent, title=u"pyfa: Graph Generator", style=style, size=(640, 480))
+
+        i = wx.IconFromBitmap(bitmapLoader.getBitmap("graphs_small", "icons"))
+        self.SetIcon(i)
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.CreateStatusBar()
@@ -51,7 +53,7 @@ class GraphFrame(wx.Frame):
         fit = sFit.getFit(self.mainFrame.getActiveFit())
         self.fits = [fit] if fit is not None else []
         self.fitList = FitList(self)
-        self.fitList.SetMinSize((200, -1))
+        self.fitList.SetMinSize((320, -1))
         horSizer.Add(self.fitList, 0, wx.EXPAND)
         self.fitList.fitList.update(self.fits)
 
