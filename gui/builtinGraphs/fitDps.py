@@ -59,9 +59,7 @@ class FitDpsGraph(Graph):
 
         return icons
 
-    def getPoints(self, fields):
-        sFit = service.Fit.getInstance()
-        fit = sFit.getFit(self.mainFrame.getActiveFit())
+    def getPoints(self, fit, fields):
         fitDps = getattr(self, "fitDps", None)
         if fitDps is None or fitDps.fit != fit:
             fitDps = self.fitDps = FitDps(fit)

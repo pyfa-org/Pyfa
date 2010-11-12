@@ -19,6 +19,7 @@
 
 import wx
 import gui.display
+import gui.fittingView
 
 try:
     import matplotlib as mpl
@@ -31,11 +32,14 @@ except:
     Enabled = False
 
 from gui.graph import Graph
-from gui import bitmapLoader
+import service
+import gui.mainFrame
 
 class GraphFrame(wx.Frame):
-    def __init__(self, parent, style=wx.DEFAULT_FRAME_STYLE | wx.NO_FULL_REPAINT_ON_RESIZE):
+    def __init__(self, parent, style=wx.DEFAULT_FRAME_STYLE | wx.NO_FULL_REPAINT_ON_RESIZE | wx.FRAME_FLOAT_ON_PARENT):
         wx.Frame.__init__(self, parent, style=style, size=(500, 500))
+
+        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.CreateStatusBar()
         horSizer = wx.BoxSizer(wx.HORIZONTAL)
         self.SetSizer(horSizer)
@@ -43,9 +47,13 @@ class GraphFrame(wx.Frame):
         self.mainSizer = wx.BoxSizer(wx.VERTICAL)
         horSizer.Add(self.mainSizer, 1, wx.EXPAND)
 
+        sFit = service.Fit.getInstance()
+        fit = sFit.getFit(self.mainFrame.getActiveFit())
+        self.fits = [fit] if fit is not None else []
         self.fitList = FitList(self)
         self.fitList.SetMinSize((200, -1))
         horSizer.Add(self.fitList, 0, wx.EXPAND)
+        self.fitList.fitList.update(self.fits)
 
         self.graphSelection = wx.Choice(self, wx.ID_ANY, style=0)
         self.mainSizer.Add(self.graphSelection, 0, wx.EXPAND)
@@ -74,6 +82,9 @@ class GraphFrame(wx.Frame):
         self.graphSelection.SetSelection(0)
         self.fields = {}
         self.select(0)
+
+        self.fitList.fitList.Bind(wx.EVT_LEFT_DCLICK, self.removeItem)
+        self.mainFrame.Bind(gui.fittingView.FIT_CHANGED, self.draw)
 
     def getView(self):
         return self.graphSelection.GetClientData(self.graphSelection.GetSelection())
@@ -123,30 +134,49 @@ class GraphFrame(wx.Frame):
 
         self.draw()
 
-    def draw(self):
+    def draw(self, event=None):
         values = self.getValues()
         view = self.getView()
-        success, status = view.getPoints(values)
-        if not success:
-            #TODO: Add a pwetty statys bar to report errors with
-            self.SetStatusText(status)
-            return
-
-        x, y = success, status
-
         self.subplot.clear()
         self.subplot.grid(True)
-        self.subplot.plot(x, y)
+
+        for fit in self.fits:
+            success, status = view.getPoints(fit, values)
+            if not success:
+                #TODO: Add a pwetty statys bar to report errors with
+                self.SetStatusText(status)
+                return
+
+            x, y = success, status
+
+            self.subplot.plot(x, y)
+
         self.canvas.draw()
         self.SetStatusText("")
+        if event is not None:
+            event.Skip()
 
     def onFieldChanged(self, event):
         try:
             self.draw()
         except:
             self.SetStatusText("Invalid values")
+
     def AppendFitToList(self, fitID):
-        print "Append fit %d" % fitID
+        sFit = service.Fit.getInstance()
+        fit = sFit.getFit(fitID)
+        if fit not in self.fits:
+            self.fits.append(fit)
+
+        self.fitList.fitList.update(self.fits)
+        self.draw()
+
+    def removeItem(self, event):
+        row, _ = self.fitList.fitList.HitTest(event.Position)
+        if row != -1:
+            self.fits.remove(row)
+            self.fitList.fitList.update(self.fits)
+            self.draw()
 
 class FitList(wx.Panel):
     def __init__(self, parent):
@@ -156,8 +186,13 @@ class FitList(wx.Panel):
 
         self.mainSizer.Add(wx.StaticText(self, wx.ID_ANY, "Fits: Drag fits onto the list to graph them"), 0, wx.ALIGN_CENTER_HORIZONTAL)
 
-        self.fitList = wx.ListCtrl(self)
+        self.fitList = FitDisplay(self)
         self.mainSizer.Add(self.fitList, 1, wx.EXPAND)
 
 class FitDisplay(gui.display.Display):
-    pass
+    DEFAULT_COLS = ["Base Icon",
+                    "Base Name"]
+
+    def __init__(self, parent):
+        gui.display.Display.__init__(self, parent)
+

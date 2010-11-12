@@ -151,7 +151,8 @@ class ProjectedView(d.Display):
                     context = ("projectedFit",)
 
                 menu = ContextMenu.getMenu((item,), *context)
-                self.PopupMenu(menu)
+                if menu is not None:
+                    self.PopupMenu(menu)
 
     def remove(self, event):
         row, _ = self.HitTest(event.Position)
