@@ -1,5 +1,5 @@
 # --------------------------------------------------------------------------------- #
-# Pyfa's custom Notebook python IMPLEMENTATION
+# Pyfa's custom Notebook core python IMPLEMENTATION
 #
 # Darriele (homeworld using gmail point com) - 10/27/2010
 # Updated: 11/11/2010
