@@ -32,7 +32,7 @@ class FitDpsGraph(Graph):
                             "velocity": "maxVelocity"}
 
     propertyLabelMap = {"angle": "Target Angle (degrees)",
-                        "distance": "Distance to Target (m)",
+                        "distance": "Distance to Target (km)",
                         "signatureRadius": "Target Signature Radius (m)",
                         "velocity": "Target Velocity (m/s)"}
 
