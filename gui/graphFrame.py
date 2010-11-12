@@ -67,16 +67,16 @@ class GraphFrame(wx.Frame):
         self.subplot = self.figure.add_subplot(111)
         self.subplot.grid(True)
 
-        self.mainSizer.Add(self.canvas, 0, wx.EXPAND)
+        self.mainSizer.Add(self.canvas, 1, wx.EXPAND)
 
         self.gridPanel = wx.Panel(self)
-        self.mainSizer.Add(self.gridPanel, 1, wx.EXPAND)
+        self.mainSizer.Add(self.gridPanel, 0, wx.EXPAND)
 
         dummyBox = wx.BoxSizer(wx.VERTICAL)
         self.gridPanel.SetSizer(dummyBox)
 
         self.gridSizer = wx.FlexGridSizer(0, 2)
-        self.gridSizer.AddGrowableCol(0)
+        self.gridSizer.AddGrowableCol(1)
         dummyBox.Add(self.gridSizer, 0, wx.EXPAND)
 
         for view in Graph.views:
