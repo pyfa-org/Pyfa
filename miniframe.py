@@ -218,6 +218,9 @@ class PFTabRenderer:
         region = wx.Region()
         region.UnionBitmapColour(mbmp, wx.Colour(123,123,123))
 
+        img = mbmp.ConvertToImage()
+        img.SaveFile("rightregion.png", wx.BITMAP_TYPE_PNG)
+
         return region
 
     def OffsetPointList(self, list , x, y):
