@@ -715,7 +715,7 @@ class PFTabsContainer(wx.Window):
 
     def OnPaint(self, event):
         rect = self.GetRect()
-        canvas = wx.EmptyBitmap(rect.width, rect.height)
+        canvas = wx.EmptyBitmap(rect.width, rect.height,24)
         mdc = wx.BufferedPaintDC(self)
         mdc.SelectObject(canvas)
 
@@ -784,10 +784,10 @@ class PFTabsContainer(wx.Window):
             fxBmp = self.tabShadow.Render()
 
             simg = fxBmp.ConvertToImage()
-            if not simg.HasAlpha():
-                simg.InitAlpha()
-            simg = simg.Blur(2)
-            simg = simg.AdjustChannels(0.2,0.2,0.2,0.3)
+#            if not simg.HasAlpha():
+#                simg.InitAlpha()
+#            simg = simg.Blur(2)
+#            simg = simg.AdjustChannels(0.2,0.2,0.2,0.3)
 
             self.efxBmp = wx.BitmapFromImage(simg)
 
