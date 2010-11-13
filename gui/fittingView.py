@@ -49,9 +49,9 @@ class FittingView(d.Display):
                     "Base Name",
                     "attr:power",
                     "attr:cpu",
+                    "Capacitor Usage",
                     "Max Range",
                     "Tracking",
-                    "Capacitor Usage",
                     "Price",
                     "Ammo",
                     ]
