@@ -185,9 +185,10 @@ class PFTabRenderer:
 
         mdc.SelectObject(wx.NullBitmap)
 
-        mbmp.SetMaskColour( (123, 123, 123) )
+#        mbmp.SetMaskColour( (123, 123, 123) )
 
-        region = wx.RegionFromBitmap(mbmp)
+        region = wx.Region()
+        region.UnionBitmapColour(mbmp, wx.Colour(123,123,123))
         region.Offset(-1,0)
 
         return region
@@ -214,9 +215,8 @@ class PFTabRenderer:
 
         mdc.SelectObject(wx.NullBitmap)
 
-        mbmp.SetMaskColour( (123, 123, 123) )
-
-        region = wx.RegionFromBitmap(mbmp)
+        region = wx.Region()
+        region.UnionBitmapColour(mbmp, wx.Colour(123,123,123))
 
         return region
 
