@@ -316,10 +316,10 @@ class PFTabRenderer:
 
         mdc.SelectObject(wx.NullBitmap)
         canvas.SetMaskColour((13,22,31))
-        if not self.selected:
-            img = canvas.ConvertToImage()
-            img = img.AdjustChannels(1, 1, 1, 0.8)
-            canvas = wx.BitmapFromImage(img)
+#        if not self.selected:
+#            img = canvas.ConvertToImage()
+#            img = img.AdjustChannels(1, 1, 1, 0.8)
+#            canvas = wx.BitmapFromImage(img)
         self.tabBitmap = canvas
 
 class PFAddRenderer:
@@ -745,7 +745,7 @@ class PFTabsContainer(wx.Window):
             width = tab.tabWidth - self.inclination*2
             posx, posy  = tab.GetPosition()
             if not tab.IsSelected():
-                mdc.DrawBitmap(self.efxBmp, posx, posy - 1, True )
+#                mdc.DrawBitmap(self.efxBmp, posx, posy - 1, True )
 #                img = tab.Render().ConvertToImage()
 #                img = img.AdjustChannels(1, 1, 1, 0.8)
 #                bmp = wx.BitmapFromImage(img)
@@ -754,12 +754,12 @@ class PFTabsContainer(wx.Window):
                 selected = tab
         if selected:
             posx, posy  = selected.GetPosition()
-            mdc.DrawBitmap(self.efxBmp, posx, posy - 1, True)
+#            mdc.DrawBitmap(self.efxBmp, posx, posy - 1, True)
             bmp = selected.Render()
-            if self.dragging:
-                img = bmp.ConvertToImage()
-                img = img.AdjustChannels(1.2, 1.2, 1.2, 0.7)
-                bmp = wx.BitmapFromImage(img)
+#            if self.dragging:
+#                img = bmp.ConvertToImage()
+#                img = img.AdjustChannels(1.2, 1.2, 1.2, 0.7)
+#                bmp = wx.BitmapFromImage(img)
 
             mdc.DrawBitmap(bmp, posx, posy, True)
             selpos = posx
