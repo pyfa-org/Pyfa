@@ -254,8 +254,6 @@ class PFTabRenderer:
         r.top = r.left = 0
         r.height = height
 
-        print "Tab rect", r
-
         mdc.GradientFillLinear(r,self.gradientStartColor,self.tabColor,wx.SOUTH)
         mdc.SetPen( wx.Pen(self.leftColor, width = 1 ) )
 
