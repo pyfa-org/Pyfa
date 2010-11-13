@@ -75,10 +75,13 @@ class PFTabRenderer:
         return self.CopyRegion(self.closeBtnRegion)
 
     def GetMinSize(self):
+        ebmp = wx.EmptyBitmap(1,1)
         mdc = wx.MemoryDC()
+        mdc.SelectObject(ebmp)
         mdc.SetFont(self.font)
         textSizeX, textSizeY = mdc.GetTextExtent(self.text)
         totalSize = self.lrZoneWidth * 2 + textSizeX + self.cbSize*2 if self.closeButton else 0
+        mdc.SelectObject(wx.NullBitmap)
         return (totalSize, self.tabHeight)
 
 
