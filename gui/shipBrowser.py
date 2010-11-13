@@ -722,7 +722,7 @@ class ListPane (wx.ScrolledWindow):
         self.Bind(wx.EVT_SCROLLWIN_LINEUP, self.MScrollUp)
         self.Bind(wx.EVT_SCROLLWIN_LINEDOWN, self.MScrollDown)
         self.Bind(wx.EVT_CHILD_FOCUS, self.OnChildFocus)
-#        self.loadingAnim = wx.animate.Animation(os.path.join(config.path,"icons/fit_loading.gif"))
+#        self.loadingAnim = wx.animate.Animation(os.path.join(config.pyfaPath,"icons/fit_loading.gif"))
 #        self.animCtrl = wx.animate.AnimationCtrl(self, -1, self.loadingAnim)
 #        self.animCtrl.SetUseWindowBackgroundColour()
 #        self.animCtrl.Hide()

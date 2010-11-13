@@ -22,7 +22,7 @@ import os.path
 import config
 
 class SettingsProvider():
-    BASE_PATH = os.path.join(config.homePath, "settings")
+    BASE_PATH = os.path.join(config.savePath, "settings")
     settings = {}
     _instance = None
     @classmethod
