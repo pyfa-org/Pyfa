@@ -92,6 +92,7 @@ class PFTabRenderer:
         newRegion.IntersectRegion(region)
 
         return newRegion
+
     def InitTab(self, skipLRzones = False):
         self.tabWidth, self.tabHeight = self.tabSize
 
@@ -170,21 +171,21 @@ class PFTabRenderer:
 
         mdc = wx.MemoryDC()
 
-        mbmp = wx.EmptyBitmap(width,height)
+        mbmp = wx.EmptyBitmap(width,height,24)
         mdc.SelectObject(mbmp)
 
-        mdc.SetBackground( wx.Brush((255,255,255)))
+        mdc.SetBackground( wx.Brush((123,123,123)))
         mdc.Clear()
 
         mdc.SetPen( wx.Pen("#000000", width = 1 ) )
         mdc.DrawSpline(self.leftZoneSpline)
 
         mdc.SetBrush(wx.Brush((255,255,0)))
-        mdc.FloodFill(inc*2,height-2, wx.Color(0,0,0), wx.FLOOD_BORDER)
+        mdc.FloodFill(inc*2,height-inc, wx.Color(0,0,0), wx.FLOOD_BORDER)
 
         mdc.SelectObject(wx.NullBitmap)
 
-        mbmp.SetMaskColour( (255, 255, 255) )
+        mbmp.SetMaskColour( (123, 123, 123) )
 
         region = wx.RegionFromBitmap(mbmp)
         region.Offset(-1,0)
@@ -199,10 +200,10 @@ class PFTabRenderer:
 
         mdc = wx.MemoryDC()
 
-        mbmp = wx.EmptyBitmap(width,height)
+        mbmp = wx.EmptyBitmap(width,height,24)
         mdc.SelectObject(mbmp)
 
-        mdc.SetBackground( wx.Brush((255,255,255)))
+        mdc.SetBackground( wx.Brush((123,123,123)))
         mdc.Clear()
 
         mdc.SetPen( wx.Pen("#000000", width = 1 ) )
@@ -213,7 +214,7 @@ class PFTabRenderer:
 
         mdc.SelectObject(wx.NullBitmap)
 
-        mbmp.SetMaskColour( (255, 255, 255) )
+        mbmp.SetMaskColour( (123, 123, 123) )
 
         region = wx.RegionFromBitmap(mbmp)
 
