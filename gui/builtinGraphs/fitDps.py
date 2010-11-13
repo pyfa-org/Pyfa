@@ -36,14 +36,17 @@ class FitDpsGraph(Graph):
                         "signatureRadius": "Target Signature Radius (m)",
                         "velocity": "Target Velocity (m/s)"}
 
+    defaults = FitDps.defaults.copy()
+
     def __init__(self):
         Graph.__init__(self)
+        self.defaults["distance"] = "0-20"
         self.name = "DPS"
         self.fitDps = None
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     def getFields(self):
-        return FitDps.defaults
+        return self.defaults
 
     def getLabels(self):
         return self.propertyLabelMap
