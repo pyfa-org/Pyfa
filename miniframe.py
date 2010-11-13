@@ -181,7 +181,9 @@ class PFTabRenderer:
         mdc.DrawSpline(self.leftZoneSpline)
 
         mdc.SetBrush(wx.Brush((255,255,0)))
-        mdc.FloodFill(inc*2,height-inc, wx.Color(123,123,123), wx.FLOOD_SURFACE)
+        ret = mdc.FloodFill(inc*2,height-inc, wx.Color(123,123,123), wx.FLOOD_SURFACE)
+        if not ret:
+            print "FloodFill failed"
 
         mdc.SelectObject(wx.NullBitmap)
 
@@ -211,8 +213,9 @@ class PFTabRenderer:
         mdc.DrawSpline(self.rightZoneSpline)
 
         mdc.SetBrush(wx.Brush((255,255,0)))
-        mdc.FloodFill(inc,height-inc, wx.Color(123,123,123), wx.FLOOD_SURFACE)
-
+        ret = mdc.FloodFill(inc,height-inc, wx.Color(123,123,123), wx.FLOOD_SURFACE)
+        if not ret:
+            print "FloodFill failed"
         mdc.SelectObject(wx.NullBitmap)
 
         region = wx.Region()
