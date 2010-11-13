@@ -180,7 +180,7 @@ class PFTabRenderer:
         mdc.SetPen( wx.Pen("#000000", width = 1 ) )
         mdc.DrawSpline(self.leftZoneSpline)
 
-        mdc.SetBrush(wx.Brush((255,255,0)))
+        mdc.SetBrush(wx.Brush(wx.Colour(255,255,0), wx.SOLID))
         ret = mdc.FloodFill(inc*2,height-inc, wx.Color(123,123,123), wx.FLOOD_SURFACE)
         if not ret:
             print "FloodFill failed"
@@ -206,13 +206,13 @@ class PFTabRenderer:
         mbmp = wx.EmptyBitmap(width,height,24)
         mdc.SelectObject(mbmp)
 
-        mdc.SetBackground( wx.Brush((123,123,123)))
+        mdc.SetBackground( wx.Brush((123,123,123), wx.SOLID))
         mdc.Clear()
 
         mdc.SetPen( wx.Pen("#000000", width = 1 ) )
         mdc.DrawSpline(self.rightZoneSpline)
 
-        mdc.SetBrush(wx.Brush((255,255,0)))
+        mdc.SetBrush(wx.Brush(wx.Colour(255,255,0)))
         ret = mdc.FloodFill(inc,height-inc, wx.Color(123,123,123), wx.FLOOD_SURFACE)
         if not ret:
             print "FloodFill failed"
