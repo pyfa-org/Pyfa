@@ -1,3 +1,6 @@
 [submodule "eos"]
 	path = eos
 	url = git://evefit.org/eos.git
+[submodule "staticdata"]
+	path = staticdata
+	url = git://evefit.org/staticdata.git
