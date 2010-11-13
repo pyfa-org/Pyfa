@@ -420,7 +420,8 @@ class PFAddRenderer:
         canvas.SetMaskColour((13,22,31))
 
         img = canvas.ConvertToImage()
-        img.InitAlpha()
+        if not img.HasAlpha():
+            img.InitAlpha()
         img = img.AdjustChannels(1, 1, 1, 0.6)
         img = img.Blur(1)
         bbmp = wx.BitmapFromImage(img)
@@ -456,8 +457,8 @@ class PFAddRenderer:
         canvas.SetMaskColour((255,255,255))
 
         img = canvas.ConvertToImage()
-
-        img.InitAlpha()
+        if not img.HasAlpha():
+            img.InitAlpha()
         img = img.AdjustChannels(1, 1, 1, 0.3)
 
         bbmp = wx.BitmapFromImage(img)
@@ -783,7 +784,8 @@ class PFTabsContainer(wx.Window):
             fxBmp = self.tabShadow.Render()
 
             simg = fxBmp.ConvertToImage()
-#            simg.InitAlpha()
+            if not simg.HasAlpha():
+                simg.InitAlpha()
             simg = simg.Blur(2)
             simg = simg.AdjustChannels(0.2,0.2,0.2,0.3)
 
