@@ -941,8 +941,8 @@ class CategoryItem(wx.Window):
 
         mdc.DrawBitmap(self.shipBmp,5+(rect.height-self.shipBmp.GetHeight())/2,(rect.height-self.shipBmp.GetWidth())/2,0)
         fontSize = 8
-        if 'wxMAC' in wx.PlatformInfo:
-            fontSize = 10
+        if 'wxMac' in wx.PlatformInfo:
+            fontSize = 12
         mdc.SetFont(wx.Font(fontSize, wx.SWISS, wx.NORMAL, wx.NORMAL, False))
 
 
