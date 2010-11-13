@@ -187,7 +187,7 @@ class GraphFrame(wx.Frame):
     def removeItem(self, event):
         row, _ = self.fitList.fitList.HitTest(event.Position)
         if row != -1:
-            self.fits.remove(row)
+            del self.fits[row]
             self.fitList.fitList.update(self.fits)
             self.draw()
 
