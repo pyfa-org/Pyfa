@@ -513,6 +513,7 @@ class APIView (wx.Panel):
         fgSizerInput.Add(self.m_staticIDText, 0, wx.ALL | wx.ALIGN_RIGHT | wx.ALIGN_CENTER_VERTICAL, 5)
 
         self.inputID = wx.TextCtrl(self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0)
+        self.inputID.Bind(wx.EVT_TEXT, self.removeStyle)
         fgSizerInput.Add(self.inputID, 1, wx.ALL | wx.EXPAND, 5)
 
         self.m_staticKeyText = wx.StaticText(self, wx.ID_ANY, u"API key:", wx.DefaultPosition, wx.DefaultSize, 0)
@@ -520,6 +521,7 @@ class APIView (wx.Panel):
         fgSizerInput.Add(self.m_staticKeyText, 0, wx.ALL | wx.ALIGN_RIGHT | wx.ALIGN_CENTER_VERTICAL, 5)
 
         self.inputKey = wx.TextCtrl(self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0)
+        self.inputKey.Bind(wx.EVT_TEXT, self.removeStyle)
         fgSizerInput.Add(self.inputKey, 0, wx.ALL | wx.EXPAND, 5)
 
         pmainSizer.Add(fgSizerInput, 0, wx.EXPAND, 5)
@@ -554,6 +556,14 @@ class APIView (wx.Panel):
         self.SetSizer(pmainSizer)
         self.Layout()
         self.charChanged(None)
+
+    def removeStyle(self, event):
+        object = event.GetEventObject()
+        value = object.GetLineText(0)
+        object.Clear()
+        object.ChangeValue(value)
+        object.SetModified(True)
+        event.Skip()
 
     def charChanged(self, event):
         cChar = service.Character.getInstance()
