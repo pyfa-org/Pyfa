@@ -68,7 +68,7 @@ class DmgPatternEditorDlg (wx.Dialog):
                 bitmap = wx.ArtProvider.GetBitmap(art, wx.ART_BUTTON) if name != "rename" else art
                 btn = wx.BitmapButton(self, wx.ID_ANY, bitmap)
                 if size is None:
-                        size = btn.GetSize()
+                    size = btn.GetSize()
 
                 btn.SetMinSize(size)
                 btn.SetMaxSize(size)
@@ -152,6 +152,24 @@ class DmgPatternEditorDlg (wx.Dialog):
 
         self.SetSizer(mainSizer)
 
+# <Import&Export>
+        importExport = (("Import", wx.ART_FILE_OPEN),
+                        ("Export", wx.ART_FILE_SAVE_AS))
+        for name, art in importExport:
+                bitmap = wx.ArtProvider.GetBitmap(art, wx.ART_BUTTON)
+                btn = wx.BitmapButton(self, wx.ID_ANY, bitmap)
+                
+                btn.SetMinSize( btn.GetSize() )
+                btn.SetMaxSize( btn.GetSize() )
+
+                btn.Layout()
+                setattr(self, name, btn)
+                btn.Enable(True)
+                btn.SetToolTipString("%s patterns" % name.capitalize())
+                footerSizer.Add(btn, 0, wx.ALIGN_CENTER_HORIZONTAL)
+
+# </Import&Export>
+
 
         self.Layout()
         bsize = self.GetBestSize()
@@ -178,6 +196,8 @@ class DmgPatternEditorDlg (wx.Dialog):
         self.rename.Bind(wx.EVT_BUTTON, self.renamePattern)
         self.copy.Bind(wx.EVT_BUTTON, self.copyPattern)
         self.delete.Bind(wx.EVT_BUTTON, self.deletePattern)
+        self.Import.Bind(wx.EVT_BUTTON, self.importPatterns)
+        self.Export.Bind(wx.EVT_BUTTON, self.exportPatterns)
 
         self.editEm.Bind(wx.EVT_TEXT, self.ValuesUpdated)
         self.editThermal.Bind(wx.EVT_TEXT, self.ValuesUpdated)
@@ -202,9 +222,9 @@ class DmgPatternEditorDlg (wx.Dialog):
         else:
             ltext = format %(0, 0, 0, 0)
 
-        ttext = "Total: % 6d" % (total)
+        #ttext = "Total: % 6d" % (total)
         self.stPercentages.SetLabel(ltext)
-        self.stTotal.SetLabel(ttext)
+        #self.stTotal.SetLabel(ttext)
         self.totSizer.Layout()
 
         if event is not None:
@@ -330,4 +350,10 @@ class DmgPatternEditorDlg (wx.Dialog):
         self.patternChanged()
 
     def __del__( self ):
-                pass
+        pass
+
+    def importPatterns(self, event):
+        print "IMPORT!"
+
+    def exportPatterns(self, event):
+        print "EXPORT!"
