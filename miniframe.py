@@ -75,10 +75,13 @@ class PFTabRenderer:
         return self.CopyRegion(self.closeBtnRegion)
 
     def GetMinSize(self):
+        ebmp = wx.EmptyBitmap(1,1)
         mdc = wx.MemoryDC()
+        mdc.SelectObject(ebmp)
         mdc.SetFont(self.font)
         textSizeX, textSizeY = mdc.GetTextExtent(self.text)
         totalSize = self.lrZoneWidth * 2 + textSizeX + self.cbSize*2 if self.closeButton else 0
+        mdc.SelectObject(wx.NullBitmap)
         return (totalSize, self.tabHeight)
 
 
@@ -89,6 +92,7 @@ class PFTabRenderer:
         newRegion.IntersectRegion(region)
 
         return newRegion
+
     def InitTab(self, skipLRzones = False):
         self.tabWidth, self.tabHeight = self.tabSize
 
@@ -167,23 +171,26 @@ class PFTabRenderer:
 
         mdc = wx.MemoryDC()
 
-        mbmp = wx.EmptyBitmap(width,height)
+        mbmp = wx.EmptyBitmap(width,height,24)
         mdc.SelectObject(mbmp)
 
-        mdc.SetBackground( wx.Brush((255,255,255)))
+        mdc.SetBackground( wx.Brush((123,123,123)))
         mdc.Clear()
 
         mdc.SetPen( wx.Pen("#000000", width = 1 ) )
         mdc.DrawSpline(self.leftZoneSpline)
 
-        mdc.SetBrush(wx.Brush((255,255,0)))
-        mdc.FloodFill(inc*2,height-2, wx.Color(0,0,0), wx.FLOOD_BORDER)
+        mdc.SetBrush(wx.Brush(wx.Colour(255,255,0), wx.SOLID))
+        ret = mdc.FloodFill(inc*2,height-inc, wx.Color(123,123,123), wx.FLOOD_SURFACE)
+        if not ret:
+            print "FloodFill failed"
 
         mdc.SelectObject(wx.NullBitmap)
 
-        mbmp.SetMaskColour( (255, 255, 255) )
+#        mbmp.SetMaskColour( (123, 123, 123) )
 
-        region = wx.RegionFromBitmap(mbmp)
+        region = wx.Region()
+        region.UnionBitmapColour(mbmp, wx.Colour(123,123,123))
         region.Offset(-1,0)
 
         return region
@@ -196,23 +203,23 @@ class PFTabRenderer:
 
         mdc = wx.MemoryDC()
 
-        mbmp = wx.EmptyBitmap(width,height)
+        mbmp = wx.EmptyBitmap(width,height,24)
         mdc.SelectObject(mbmp)
 
-        mdc.SetBackground( wx.Brush((255,255,255)))
+        mdc.SetBackground( wx.Brush((123,123,123), wx.SOLID))
         mdc.Clear()
 
         mdc.SetPen( wx.Pen("#000000", width = 1 ) )
         mdc.DrawSpline(self.rightZoneSpline)
 
-        mdc.SetBrush(wx.Brush((255,255,0)))
-        mdc.FloodFill(inc,height-inc, wx.Color(0,0,0), wx.FLOOD_BORDER)
-
+        mdc.SetBrush(wx.Brush(wx.Colour(255,255,0)))
+        ret = mdc.FloodFill(inc,height-inc, wx.Color(123,123,123), wx.FLOOD_SURFACE)
+        if not ret:
+            print "FloodFill failed"
         mdc.SelectObject(wx.NullBitmap)
 
-        mbmp.SetMaskColour( (255, 255, 255) )
-
-        region = wx.RegionFromBitmap(mbmp)
+        region = wx.Region()
+        region.UnionBitmapColour(mbmp, wx.Colour(123,123,123))
 
         return region
 
@@ -313,10 +320,10 @@ class PFTabRenderer:
 
         mdc.SelectObject(wx.NullBitmap)
         canvas.SetMaskColour((13,22,31))
-        if not self.selected:
-            img = canvas.ConvertToImage()
-            img = img.AdjustChannels(1, 1, 1, 0.8)
-            canvas = wx.BitmapFromImage(img)
+#        if not self.selected:
+#            img = canvas.ConvertToImage()
+#            img = img.AdjustChannels(1, 1, 1, 0.8)
+#            canvas = wx.BitmapFromImage(img)
         self.tabBitmap = canvas
 
 class PFAddRenderer:
@@ -417,7 +424,8 @@ class PFAddRenderer:
         canvas.SetMaskColour((13,22,31))
 
         img = canvas.ConvertToImage()
-        img.InitAlpha()
+        if not img.HasAlpha():
+            img.InitAlpha()
         img = img.AdjustChannels(1, 1, 1, 0.6)
         img = img.Blur(1)
         bbmp = wx.BitmapFromImage(img)
@@ -453,8 +461,8 @@ class PFAddRenderer:
         canvas.SetMaskColour((255,255,255))
 
         img = canvas.ConvertToImage()
-
-        img.InitAlpha()
+        if not img.HasAlpha():
+            img.InitAlpha()
         img = img.AdjustChannels(1, 1, 1, 0.3)
 
         bbmp = wx.BitmapFromImage(img)
@@ -711,7 +719,7 @@ class PFTabsContainer(wx.Window):
 
     def OnPaint(self, event):
         rect = self.GetRect()
-        canvas = wx.EmptyBitmap(rect.width, rect.height)
+        canvas = wx.EmptyBitmap(rect.width, rect.height,24)
         mdc = wx.BufferedPaintDC(self)
         mdc.SelectObject(canvas)
 
@@ -741,7 +749,7 @@ class PFTabsContainer(wx.Window):
             width = tab.tabWidth - self.inclination*2
             posx, posy  = tab.GetPosition()
             if not tab.IsSelected():
-                mdc.DrawBitmap(self.efxBmp, posx, posy - 1, True )
+#                mdc.DrawBitmap(self.efxBmp, posx, posy - 1, True )
 #                img = tab.Render().ConvertToImage()
 #                img = img.AdjustChannels(1, 1, 1, 0.8)
 #                bmp = wx.BitmapFromImage(img)
@@ -750,12 +758,12 @@ class PFTabsContainer(wx.Window):
                 selected = tab
         if selected:
             posx, posy  = selected.GetPosition()
-            mdc.DrawBitmap(self.efxBmp, posx, posy - 1, True)
+#            mdc.DrawBitmap(self.efxBmp, posx, posy - 1, True)
             bmp = selected.Render()
-            if self.dragging:
-                img = bmp.ConvertToImage()
-                img = img.AdjustChannels(1.2, 1.2, 1.2, 0.7)
-                bmp = wx.BitmapFromImage(img)
+#            if self.dragging:
+#                img = bmp.ConvertToImage()
+#                img = img.AdjustChannels(1.2, 1.2, 1.2, 0.7)
+#                bmp = wx.BitmapFromImage(img)
 
             mdc.DrawBitmap(bmp, posx, posy, True)
             selpos = posx
@@ -780,9 +788,10 @@ class PFTabsContainer(wx.Window):
             fxBmp = self.tabShadow.Render()
 
             simg = fxBmp.ConvertToImage()
-#            simg.InitAlpha()
-            simg = simg.Blur(2)
-            simg = simg.AdjustChannels(0.2,0.2,0.2,0.3)
+#            if not simg.HasAlpha():
+#                simg.InitAlpha()
+#            simg = simg.Blur(2)
+#            simg = simg.AdjustChannels(0.2,0.2,0.2,0.3)
 
             self.efxBmp = wx.BitmapFromImage(simg)
 

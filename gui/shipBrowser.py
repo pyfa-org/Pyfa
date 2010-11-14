@@ -1267,12 +1267,12 @@ class ShipItem(wx.Window):
 
 class PFBitmapFrame(wx.Frame):
     def __init__ (self,parent, pos, bitmap):
-        wx.Frame.__init__(self, parent, id = wx.ID_ANY, title = wx.EmptyString, pos = pos, size = wx.DefaultSize, style = wx.FRAME_SHAPED
-                                                             | wx.NO_BORDER
+        wx.Frame.__init__(self, parent, id = wx.ID_ANY, title = wx.EmptyString, pos = pos, size = wx.DefaultSize, style =
+                                                               wx.NO_BORDER
                                                              | wx.FRAME_NO_TASKBAR
                                                              | wx.STAY_ON_TOP)
         img = bitmap.ConvertToImage()
-        img.RotateHue(-0.625)
+        img = img.ConvertToGreyscale()
         bitmap = wx.BitmapFromImage(img)
         self.bitmap = bitmap
         self.SetSize((bitmap.GetWidth(), bitmap.GetHeight()))
@@ -1283,11 +1283,9 @@ class PFBitmapFrame(wx.Frame):
         self.timer = wx.Timer(self,wx.ID_ANY)
         self.direction = 1
         self.transp = 0
-        self.SetMinSize((bitmap.GetWidth(),bitmap.GetHeight()))
-        if 'wxMSW' in wx.PlatformInfo:
-            self.SetRoundShape()
-        else:
-            self.SetTransparent(0)
+        self.SetSize((bitmap.GetWidth(),bitmap.GetHeight()))
+
+        self.SetTransparent(0)
         self.Refresh()
 
     def OnTimer(self, event):
@@ -1312,6 +1310,7 @@ class PFBitmapFrame(wx.Frame):
         else:
             self.direction = -1
             self.timer.Start(5)
+
     def SetRoundShape(self, event=None):
         w, h = self.GetSizeTuple()
         self.SetShape(GetRoundShape( w,h, 5 ) )
@@ -1329,7 +1328,7 @@ class PFBitmapFrame(wx.Frame):
         mdc.DrawBitmap(self.bitmap, 0, 0)
         mdc.SetPen( wx.Pen("#000000", width = 1 ) )
         mdc.SetBrush( wx.TRANSPARENT_BRUSH )
-        mdc.DrawRoundedRectangle( 0,0,rect.width,rect.height,5 )
+        mdc.DrawRectangle( 0,0,rect.width,rect.height)
 
 
 def GetRoundBitmap( w, h, r ):
