@@ -68,6 +68,7 @@ class GraphFrame(wx.Frame):
         self.subplot.grid(True)
 
         self.mainSizer.Add(self.canvas, 1, wx.EXPAND)
+        self.mainSizer.Add(wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL ), 0 , wx.EXPAND)
 
         self.gridPanel = wx.Panel(self)
         self.mainSizer.Add(self.gridPanel, 0, wx.EXPAND)
@@ -198,15 +199,15 @@ class FitList(wx.Panel):
         self.mainSizer = wx.BoxSizer(wx.VERTICAL)
         self.SetSizer(self.mainSizer)
 
-        self.mainSizer.Add(wx.StaticText(self, wx.ID_ANY, "Fits: Drag fits onto the list to graph them"), 0, wx.ALIGN_CENTER_HORIZONTAL)
-
         self.fitList = FitDisplay(self)
         self.mainSizer.Add(self.fitList, 1, wx.EXPAND)
+        fitToolTip = wx.ToolTip("Drag a fit into this list to graph it")
+        self.fitList.SetToolTip(fitToolTip)
 
 class FitDisplay(gui.display.Display):
     DEFAULT_COLS = ["Base Icon",
                     "Base Name"]
 
     def __init__(self, parent):
-        gui.display.Display.__init__(self, parent)
+        gui.display.Display.__init__(self, parent, style = wx.SIMPLE_BORDER)
 

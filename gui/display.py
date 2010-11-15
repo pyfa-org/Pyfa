@@ -25,7 +25,7 @@ import sys
 class Display(wx.ListCtrl):
     def __init__(self, parent, style = 0):
 
-        wx.ListCtrl.__init__(self, parent, style=wx.LC_REPORT | wx.BORDER_NONE | style)
+        wx.ListCtrl.__init__(self, parent, style=wx.LC_REPORT | ( style | wx.BORDER_NONE if not (style & wx.SIMPLE_BORDER) else style) )
         self.imageList = wx.ImageList(16, 16)
         self.SetImageList(self.imageList, wx.IMAGE_LIST_SMALL)
         self.activeColumns = []
