@@ -10,7 +10,7 @@ class BaseIcon(ViewColumn):
         ViewColumn.__init__(self, fittingView)
         self.size = 16
         self.maxsize = self.size
-        self.mask = wx.LIST_MASK_TEXT
+        self.mask = wx.LIST_MASK_IMAGE
         self.columnText = ""
         self.shipImage = fittingView.imageList.Add(bitmapLoader.getBitmap("ship_small", "icons"))
 

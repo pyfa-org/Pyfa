@@ -30,7 +30,7 @@ class State(ViewColumn):
         self.resizable = False
         self.size = 24
         self.maxsize = self.size
-        self.mask = wx.LIST_MASK_WIDTH
+        self.mask = wx.LIST_MASK_IMAGE
         for name, state in (("checked", wx.CONTROL_CHECKED), ("unchecked", 0)):
             bitmap = wx.EmptyBitmap(16, 16)
             dc = wx.MemoryDC()
