@@ -417,6 +417,9 @@ class Fit(object):
 
     def changeChar(self, fitID, charID):
         if fitID is None or charID is None:
+            if charID is not None:
+                self.character = Character.getInstance().all0()
+
             return
 
         fit = eos.db.getFit(fitID)

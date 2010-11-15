@@ -68,15 +68,20 @@ class CharacterSelection(wx.Panel):
         choice.Clear()
         charList = cChar.getCharacterList()
         cChar.getCharacterList()
+        picked = False
+
         for id, name, active in charList:
             currId = choice.Append(name, id)
             if id == activeChar:
                 choice.SetSelection(currId)
-            elif activeChar is None and name == "All 0":
-                all0 = currId
+                picked = True
 
-        if activeChar is None:
-            choice.SetSelection(all0)
+        if not picked:
+            charID = cChar.all0ID()
+            self.selectChar(charID)
+            fitID = self.mainFrame.fitMultiSwitch.getActiveFit()
+            cFit = service.Fit.getInstance()
+            cFit.changeChar(fitID, charID)
 
         if event is not None:
             event.Skip()
