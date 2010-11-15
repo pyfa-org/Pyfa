@@ -74,6 +74,8 @@ class Display(wx.ListCtrl):
         info.m_format = wx.LIST_FORMAT_LEFT
         self.InsertColumnInfo(i, info)
         col.resized = False
+        if i == 0:
+            col.size += 4
         self.SetColumnWidth(i, col.size)
 
     def getColIndex(self, colClass):

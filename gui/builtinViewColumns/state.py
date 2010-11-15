@@ -28,7 +28,7 @@ class State(ViewColumn):
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
         self.resizable = False
-        self.size = 20
+        self.size = 16
         self.maxsize = self.size
         self.mask = wx.LIST_MASK_IMAGE
         for name, state in (("checked", wx.CONTROL_CHECKED), ("unchecked", 0)):
