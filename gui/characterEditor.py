@@ -502,6 +502,7 @@ class APIView (wx.Panel):
         wx.Panel.__init__ (self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.Size(500, 300), style=wx.TAB_TRAVERSAL)
         self.Parent.Parent.Bind(CHAR_CHANGED, self.charChanged)
         pmainSizer = wx.BoxSizer(wx.VERTICAL)
+        self.removing = False
 
         fgSizerInput = wx.FlexGridSizer(3, 2, 0, 0)
         fgSizerInput.AddGrowableCol(1)
@@ -558,11 +559,16 @@ class APIView (wx.Panel):
         self.charChanged(None)
 
     def removeStyle(self, event):
+        if self.removing:
+            return
+
+        self.removing = True
         object = event.GetEventObject()
         value = object.GetLineText(0)
         object.Clear()
         object.ChangeValue(value)
         object.SetModified(True)
+        self.removing = False
         event.Skip()
 
     def charChanged(self, event):
