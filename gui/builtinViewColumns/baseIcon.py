@@ -6,9 +6,9 @@ from eos.types import Drone, Fit, Module, Slot
 
 class BaseIcon(ViewColumn):
     name = "Base Icon"
-    def __init__(self, fittingView, params):
+    def __init__(self, fittingView, params, defaultSize = 16):
         ViewColumn.__init__(self, fittingView)
-        self.size = 16
+        self.size = defaultSize
         self.maxsize = self.size
         self.mask = wx.LIST_MASK_IMAGE
         self.columnText = ""
