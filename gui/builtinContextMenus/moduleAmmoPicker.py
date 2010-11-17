@@ -16,18 +16,18 @@ class ModuleAmmoPicker(ContextMenu):
 
         modules = selection if context == "module" else (selection[0],)
 
-
         validCharges = None
         for mod in modules:
             currCharges = mod.getValidCharges()
-            if validCharges is not None and validCharges != currCharges:
-                return False
+            if len(currCharges) > 0:
+                if validCharges is not None and validCharges != currCharges:
+                    return False
 
-            validCharges = currCharges
+                validCharges = currCharges
+                self.module = mod
 
         self.modules = modules
         self.charges = list(validCharges)
-        self.module = mod
         return len(self.charges) > 0
 
     def getText(self, context, selection):
