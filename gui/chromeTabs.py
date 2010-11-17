@@ -765,7 +765,7 @@ class PFTabsContainer(wx.Panel):
             if ev.isVetoed():
                 return False
 
-            self.Parent.AddPage(wx.Panel(self.Parent))
+            self.Parent.AddPage(wx.Panel(self.Parent, size = (0,0)))
             wx.PostEvent(self.Parent, PageAdded())
             return True
 
