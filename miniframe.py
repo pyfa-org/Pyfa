@@ -11,20 +11,39 @@
 import wx
 import copy
 import time
+from gui import bitmapLoader
 
 class PFTabRenderer:
-    def __init__(self, size = (36,24), text = wx.EmptyString, img = None, inclination = 6 , closeButton = True, fontSize = 8):
+    def __init__(self, size = (36,24), text = wx.EmptyString, img = None, inclination = 6 , closeButton = True, fontSize = 12):
 
         # tab left/right zones inclination
+        self.ctabLeft = bitmapLoader.getImage("ctableft", "icons")
+        self.ctabMiddle = bitmapLoader.getImage("ctabmiddle", "icons")
+        self.ctabRight = bitmapLoader.getImage("ctabright", "icons")
+        self.ctabClose = bitmapLoader.getImage("ctabclose", "icons")
+
+        self.leftWidth = self.ctabLeft.GetWidth()
+        self.rightWidth = self.ctabRight.GetWidth()
+        self.middleWidth = self.ctabMiddle.GetWidth()
+        self.closeBtnWidth  = self.ctabClose.GetWidth()
+
+        width, height = size
+        if width < self.leftWidth + self.rightWidth + self.middleWidth:
+            width = self.leftWidth + self.rightWidth + self.middleWidth
+        if height < self.ctabMiddle.GetHeight():
+            height = self.ctabMiddle.GetHeight()
+
         self.inclination = inclination
         self.text = text
         self.img = img
-        self.tabSize = size
+        self.tabSize = (width, height)
+        print self.tabSize
         self.closeButton = closeButton
         self.fontSize = fontSize
         self.selected = False
         self.closeBtnHovering = False
         self.tabBitmap = None
+        self.tabBackBitmap = None
         self.cbSize = 5
         self.position = (0, 0) # Not used internaly for rendering - helper for tab container
         self.InitTab()
@@ -40,17 +59,20 @@ class PFTabRenderer:
 
     def SetSize(self, size):
         otw,oth = self.tabSize
-        self.tabSize = size
-        w,h = self.tabSize
-        if h != oth:
-            self.InitTab(True)
-        else:
-            self.InitTab()
+        w,h = size
+        if w< self.leftWidth + self.rightWidth + self.middleWidth:
+            w = self.leftWidth + self.rightWidth + self.middleWidth
+        if h < self.ctabMiddle.GetHeight():
+            h = self.ctabMiddle.GetHeight()
+
+        self.tabSize = (w,h)
+
+        self.InitTab()
 
     def SetSelected(self, sel = True):
         self.selected = sel
-        self.InitColors()
-        self._Render()
+        self.InitTab()
+#        self._Render()
 
     def GetSelected(self):
         return self.selected
@@ -80,7 +102,7 @@ class PFTabRenderer:
         mdc.SelectObject(ebmp)
         mdc.SetFont(self.font)
         textSizeX, textSizeY = mdc.GetTextExtent(self.text)
-        totalSize = self.lrZoneWidth * 2 + textSizeX + self.cbSize*2 if self.closeButton else 0
+        totalSize = self.leftWidth + self.rightWidth + textSizeX + self.closeBtnWidth
         mdc.SelectObject(wx.NullBitmap)
         return (totalSize, self.tabHeight)
 
@@ -98,26 +120,80 @@ class PFTabRenderer:
 
         # content width is tabWidth - (left+right) zones
 
-        self.contentWidth = self.tabWidth - self.inclination * 6 - self.cbSize if self.closeButton else 0
-
-        self.leftZoneSpline = []
-        self.rightZoneSpline = []
-
-        self.lrZoneWidth = self.inclination * 3
-        if not skipLRzones:
-            self.CreateLRZoneSplines()
-
-            self.leftRegion = self.CreateLeftRegion()
-            self.rightRegion = self.CreateRightRegion()
-
-        self.contentRegion = wx.Region(0, 0, self.contentWidth, self.tabHeight)
+        self.contentWidth = self.tabWidth - self.leftWidth - self.rightWidth
         self.tabRegion = None
         self.closeBtnRegion = None
-        self.font = wx.Font(self.fontSize, wx.SWISS, wx.NORMAL, wx.NORMAL, False)
 
-        self.InitTabRegions()
+#        self.leftZoneSpline = []
+#        self.rightZoneSpline = []
+#
+#        self.lrZoneWidth = self.inclination * 3
+#        if not skipLRzones:
+#            self.CreateLRZoneSplines()
+#
+#            self.leftRegion = self.CreateLeftRegion()
+#            self.rightRegion = self.CreateRightRegion()
+
+
+        self.font = wx.FontFromPixelSize((0, self.fontSize), wx.SWISS, wx.NORMAL, wx.NORMAL, False)
+
         self.InitColors()
+        self.InitBitmaps()
+
+        self.ComposeTabBack()
+        self.InitTabRegions()
         self._Render()
+
+    def InitBitmaps(self):
+        print self.selected
+        if self.selected:
+            tr,tg,tb = self.tabColor
+            print "sel"
+        else:
+            tr,tg,tb = self.leftColor
+            print "nsel"
+        print tr,tg,tb
+        print self.tabColor, self.rightColor
+        ctabLeft = self.ctabLeft.Copy()
+        ctabRight = self.ctabRight.Copy()
+        ctabMiddle = self.ctabMiddle.Copy()
+        ctabLeft.Replace(0,0,0,tr, tg, tb)
+        ctabRight.Replace(0,0,0,tr, tg, tb)
+        ctabMiddle.Replace(0,0,0,tr, tg, tb)
+        self.ctabLeftBmp = wx.BitmapFromImage(ctabLeft)
+        self.ctabRightBmp = wx.BitmapFromImage(ctabRight)
+        self.ctabMiddleBmp = wx.BitmapFromImage(ctabMiddle)
+        self.ctabCloseBmp = wx.BitmapFromImage(self.ctabClose)
+
+
+
+    def ComposeTabBack(self):
+        bkbmp = wx.EmptyBitmap(self.tabWidth, self.tabHeight)
+        print self.tabWidth, self.contentWidth, self.leftWidth, self.rightWidth
+        mdc = wx.MemoryDC()
+        mdc.SelectObject(bkbmp)
+        mdc.SetBackground( wx.Brush((0x12,0x23,0x32)))
+        mdc.Clear()
+        mdc.DrawBitmap(self.ctabLeftBmp, 0, 0)
+        cm = self.ctabMiddleBmp.ConvertToImage()
+        mimg = cm.Scale(self.contentWidth, self.ctabMiddle.GetHeight(), wx.IMAGE_QUALITY_NORMAL)
+        mbmp = wx.BitmapFromImage(mimg)
+        mdc.DrawBitmap(mbmp, self.leftWidth, 0 )
+        mdc.DrawBitmap(self.ctabRightBmp, self.contentWidth + self.leftWidth, 0 )
+        mdc.SelectObject(wx.NullBitmap)
+        bkbmp.SetMaskColour( (0x12, 0x23, 0x32) )
+        if self.tabBackBitmap:
+            del self.tabBackBitmap
+
+        self.tabBackBitmap = bkbmp
+        img = bkbmp.ConvertToImage()
+        img.SaveFile("test.png", wx.BITMAP_TYPE_PNG)
+
+    def InitTabRegions(self):
+        self.tabRegion = wx.RegionFromBitmap(self.tabBackBitmap)
+        self.closeBtnRegion = wx.RegionFromBitmap(self.ctabCloseBmp)
+        self.closeBtnRegion.Offset(self.contentWidth+self.leftWidth - self.ctabCloseBmp.GetWidth()/2, (self.tabHeight - self.ctabCloseBmp.GetHeight())/2)
+
 
     def InitColors(self):
         self.tabColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
@@ -140,95 +216,82 @@ class PFTabRenderer:
         b = min(max(b,0),255)
         g = min(max(g,0),255)
 
-        return wx.Colour(r,g,b)
+        return wx.Colour(r,g,b,255)
 
-    def InitTabRegions(self):
-        self.tabRegion = wx.Region(0, 0, self.tabWidth, self.tabHeight)
-        self.tabRegion.IntersectRegion(self.leftRegion)
-
-        self.contentRegion.Offset(self.lrZoneWidth, 0)
-        self.tabRegion.UnionRegion(self.contentRegion)
-
-        self.rightRegion.Offset(self.tabWidth - self.lrZoneWidth, 0)
-        self.tabRegion.UnionRegion(self.rightRegion)
-        self.closeBtnRegion = wx.Region(self.tabWidth - self.lrZoneWidth - self.cbSize -2 , (self.tabHeight - self.cbSize) / 2 - 2, self.cbSize + 4, self.cbSize + 4)
-        cbtRegion = wx.Region(self.tabWidth - self.lrZoneWidth - self.cbSize ,0, self.cbSize, self.tabHeight)
-        self.tabRegion.UnionRegion(cbtRegion)
-
-    def CreateLRZoneSplines(self):
-        height = self.tabHeight
-        inc = self.inclination
-
-        self.leftZoneSpline = [wx.Point(0, height), wx.Point(inc * 2/3, height - inc/2), wx.Point(inc+inc/2, 2),
-                 wx.Point(inc * 3, 0)]
-        self.rightZoneSpline = [wx.Point(0, 0), wx.Point(inc+inc/2,2),wx.Point(inc*2 +inc*2/3,height-inc/2), wx.Point(inc*3,height) ]
-
-    def CreateLeftRegion(self):
-
-        width = self.lrZoneWidth + 1
-        height = self.tabHeight + 1
-        inc = self.inclination
-
-        mdc = wx.MemoryDC()
-
-        mbmp = wx.EmptyBitmap(width,height,24)
-        mdc.SelectObject(mbmp)
-
-        mdc.SetBackground( wx.Brush((123,123,123)))
-        mdc.Clear()
-
-        mdc.SetPen( wx.Pen("#000000", width = 1 ) )
-        mdc.DrawSpline(self.leftZoneSpline)
-
-        mdc.SetBrush(wx.Brush(wx.Colour(255,255,0), wx.SOLID))
-        ret = mdc.FloodFill(inc*2,height-inc, wx.Color(123,123,123), wx.FLOOD_SURFACE)
-        if not ret:
-            print "FloodFill failed"
-
-        mdc.SelectObject(wx.NullBitmap)
-
-#        mbmp.SetMaskColour( (123, 123, 123) )
-
-        region = wx.Region()
-        region.UnionBitmapColour(mbmp, wx.Colour(123,123,123))
-        region.Offset(-1,0)
-
-        return region
-
-    def CreateRightRegion(self):
-
-        width = self.lrZoneWidth + 1
-        height = self.tabHeight
-        inc = self.inclination
-
-        mdc = wx.MemoryDC()
-
-        mbmp = wx.EmptyBitmap(width,height,24)
-        mdc.SelectObject(mbmp)
-
-        mdc.SetBackground( wx.Brush((123,123,123), wx.SOLID))
-        mdc.Clear()
-
-        mdc.SetPen( wx.Pen("#000000", width = 1 ) )
-        mdc.DrawSpline(self.rightZoneSpline)
-
-        mdc.SetBrush(wx.Brush(wx.Colour(255,255,0)))
-        ret = mdc.FloodFill(inc,height-inc, wx.Color(123,123,123), wx.FLOOD_SURFACE)
-        if not ret:
-            print "FloodFill failed"
-        mdc.SelectObject(wx.NullBitmap)
-
-        region = wx.Region()
-        region.UnionBitmapColour(mbmp, wx.Colour(123,123,123))
-
-        return region
-
-    def OffsetPointList(self, list , x, y):
-        tlist = []
-        for i in list:
-            tlist.append(wx.Point(i.x + x, i.y + y))
-
-        return tlist
+#    def CreateLRZoneSplines(self):
+#        height = self.tabHeight
+#        inc = self.inclination
+#
+#        self.leftZoneSpline = [wx.Point(0, height), wx.Point(inc * 2/3, height - inc/2), wx.Point(inc+inc/2, 2),
+#                 wx.Point(inc * 3, 0)]
+#        self.rightZoneSpline = [wx.Point(0, 0), wx.Point(inc+inc/2,2),wx.Point(inc*2 +inc*2/3,height-inc/2), wx.Point(inc*3,height) ]
+#
+#    def CreateLeftRegion(self):
+#
+#        width = self.lrZoneWidth + 1
+#        height = self.tabHeight + 1
+#        inc = self.inclination
+#
+#        mdc = wx.MemoryDC()
+#
+#        mbmp = wx.EmptyBitmap(width,height,24)
+#        mdc.SelectObject(mbmp)
+#
+#        mdc.SetBackground( wx.Brush((123,123,123)))
+#        mdc.Clear()
+#
+#        mdc.SetPen( wx.Pen("#000000", width = 1 ) )
+#        mdc.DrawSpline(self.leftZoneSpline)
+#
+#        mdc.SetBrush(wx.Brush(wx.Colour(255,255,0), wx.SOLID))
+#        ret = mdc.FloodFill(inc*2,height-inc, wx.Color(123,123,123), wx.FLOOD_SURFACE)
+#        if not ret:
+#            print "FloodFill failed"
+#
+#        mdc.SelectObject(wx.NullBitmap)
+#
+##        mbmp.SetMaskColour( (123, 123, 123) )
+#
+#        region = wx.Region()
+#        region.UnionBitmapColour(mbmp, wx.Colour(123,123,123))
+#        region.Offset(-1,0)
+#
+#        return region
+#
+#    def CreateRightRegion(self):
+#
+#        width = self.lrZoneWidth + 1
+#        height = self.tabHeight
+#        inc = self.inclination
+#
+#        mdc = wx.MemoryDC()
+#
+#        mbmp = wx.EmptyBitmap(width,height,24)
+#        mdc.SelectObject(mbmp)
+#
+#        mdc.SetBackground( wx.Brush((123,123,123), wx.SOLID))
+#        mdc.Clear()
+#
+#        mdc.SetPen( wx.Pen("#000000", width = 1 ) )
+#        mdc.DrawSpline(self.rightZoneSpline)
+#
+#        mdc.SetBrush(wx.Brush(wx.Colour(255,255,0)))
+#        ret = mdc.FloodFill(inc,height-inc, wx.Color(123,123,123), wx.FLOOD_SURFACE)
+#        if not ret:
+#            print "FloodFill failed"
+#        mdc.SelectObject(wx.NullBitmap)
+#
+#        region = wx.Region()
+#        region.UnionBitmapColour(mbmp, wx.Colour(123,123,123))
+#
+#        return region
+#
+#    def OffsetPointList(self, list , x, y):
+#        tlist = []
+#        for i in list:
+#            tlist.append(wx.Point(i.x + x, i.y + y))
+#
+#        return tlist
 
     def Render(self):
         return self.tabBitmap
@@ -237,10 +300,10 @@ class PFTabRenderer:
         if self.tabBitmap:
             del self.tabBitmap
 
-        inc = self.lrZoneWidth
+        inc = 6
         height = self.tabHeight
         width = self.tabWidth
-        contentWidth = self.contentWidth + self.cbSize if self.closeButton else 0
+        contentWidth = self.contentWidth
 
         rect = wx.Rect(0,0,self.tabWidth, self.tabHeight)
 
@@ -249,50 +312,54 @@ class PFTabRenderer:
         mdc = wx.MemoryDC()
 
         mdc.SelectObject(canvas)
-        mdc.SetBackground(wx.Brush ((13,22,31)))
+        mdc.SetBackground(wx.Brush ((0x12,0x23,0x32)))
         mdc.Clear()
-        mdc.DestroyClippingRegion()
-        mdc.SetClippingRegionAsRegion(self.tabRegion)
+
+#        mdc.SetBackground(wx.Brush ((13,22,31)))
+#        mdc.Clear()
+#        mdc.DestroyClippingRegion()
+#        mdc.SetClippingRegionAsRegion(self.tabRegion)
 
         r = copy.copy(rect)
         r.top = r.left = 0
         r.height = height
-
-        mdc.GradientFillLinear(r,self.gradientStartColor,self.tabColor,wx.SOUTH)
-        mdc.SetPen( wx.Pen(self.leftColor, width = 1 ) )
-
-        dpleft = self.OffsetPointList(self.leftZoneSpline, -1, 0)
-        dpright = self.OffsetPointList(self.rightZoneSpline, inc + contentWidth, 0)
-
-        mdc.DrawSpline(dpleft)
-        mdc.SetPen( wx.Pen(self.rightColor, width = 1 ) )
-        mdc.DrawSpline(dpright)
-
-        lrect = wx.Rect()
-        lrect.left=inc - 1
-        lrect.top=0
-        lrect.width = contentWidth+1
-        lrect.height = 1
-        mdc.GradientFillLinear(lrect,self.leftColor,self.rightColor, wx.EAST)
-#        if not self.selected:
-#            mdc.DrawLine(0,height - 1,width,height - 1)
-        mdc.SetPen( wx.Pen(self.rightColor, width = 1 ) )
-        if self.closeButton:
-            cbsize = self.cbSize
-
-            cbx = width - self.lrZoneWidth-cbsize
-            cby = (height - cbsize)/2
-            if self.closeBtnHovering:
-                mdc.SetPen( wx.Pen( wx.Colour(255,22,22), 0))
-                mdc.SetBrush(wx.Brush(wx.Colour(255,22,22)))
-                mdc.DrawCircle(cbx + cbsize / 2 +1, cby + cbsize / 2 + 1, cbsize)
-                selColor = self.CalculateColor(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT), 255)
-                mdc.SetPen( wx.Pen( selColor, 1))
-
-            mdc.DrawLine(cbx, cby, cbx + cbsize + 1 , cby + cbsize + 1 )
-            mdc.DrawLine(cbx, cby + cbsize, cbx + cbsize + 1, cby - 1 )
-
-        mdc.SetClippingRegionAsRegion(self.contentRegion)
+        mdc.DrawBitmap(self.tabBackBitmap, 0, 0, True)
+#
+##        mdc.GradientFillLinear(r,self.gradientStartColor,self.tabColor,wx.SOUTH)
+##        mdc.SetPen( wx.Pen(self.leftColor, width = 1 ) )
+##
+##        dpleft = self.OffsetPointList(self.leftZoneSpline, -1, 0)
+##        dpright = self.OffsetPointList(self.rightZoneSpline, inc + contentWidth, 0)
+##
+##        mdc.DrawSpline(dpleft)
+##        mdc.SetPen( wx.Pen(self.rightColor, width = 1 ) )
+##        mdc.DrawSpline(dpright)
+##
+##        lrect = wx.Rect()
+##        lrect.left=inc - 1
+##        lrect.top=0
+##        lrect.width = contentWidth+1
+##        lrect.height = 1
+##        mdc.GradientFillLinear(lrect,self.leftColor,self.rightColor, wx.EAST)
+###        if not self.selected:
+###            mdc.DrawLine(0,height - 1,width,height - 1)
+##        mdc.SetPen( wx.Pen(self.rightColor, width = 1 ) )
+##        if self.closeButton:
+##            cbsize = self.cbSize
+##
+##            cbx = width - self.lrZoneWidth-cbsize
+##            cby = (height - cbsize)/2
+##            if self.closeBtnHovering:
+##                mdc.SetPen( wx.Pen( wx.Colour(255,22,22), 0))
+##                mdc.SetBrush(wx.Brush(wx.Colour(255,22,22)))
+##                mdc.DrawCircle(cbx + cbsize / 2 +1, cby + cbsize / 2 + 1, cbsize)
+##                selColor = self.CalculateColor(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT), 255)
+##                mdc.SetPen( wx.Pen( selColor, 1))
+##
+##            mdc.DrawLine(cbx, cby, cbx + cbsize + 1 , cby + cbsize + 1 )
+##            mdc.DrawLine(cbx, cby + cbsize, cbx + cbsize + 1, cby - 1 )
+##
+##        mdc.SetClippingRegionAsRegion(self.contentRegion)
         mdc.SetFont(self.font)
         text = self.text
         fnwidths = mdc.GetPartialTextExtents(text)
@@ -314,12 +381,18 @@ class PFTabRenderer:
         else:
             color = self.CalculateColor(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT), 0x44)
             mdc.SetTextForeground(color)
-        mdc.DrawText(text, inc, height / 2 - ty / 2)
+        mdc.DrawText(text, self.leftWidth, height / 2 - ty / 2)
 
-        mdc.DestroyClippingRegion()
-
+#        mdc.DestroyClippingRegion()
+        if self.closeBtnHovering:
+            mdc.DrawBitmap(self.ctabCloseBmp,self.contentWidth+self.leftWidth - self.ctabCloseBmp.GetWidth()/2,(height - self.ctabCloseBmp.GetHeight())/2)
+        else:
+            cimg = self.ctabCloseBmp.ConvertToImage()
+            cimg = cimg.AdjustChannels(0.7,0.7,0.7,0.3)
+            cbmp = wx.BitmapFromImage(cimg)
+            mdc.DrawBitmap(cbmp,self.contentWidth+self.leftWidth - self.ctabCloseBmp.GetWidth()/2,(height - self.ctabCloseBmp.GetHeight())/2)
         mdc.SelectObject(wx.NullBitmap)
-        canvas.SetMaskColour((13,22,31))
+        canvas.SetMaskColour((0x12,0x23,0x32))
 #        if not self.selected:
 #            img = canvas.ConvertToImage()
 #            img = img.AdjustChannels(1, 1, 1, 0.8)
@@ -719,7 +792,7 @@ class PFTabsContainer(wx.Window):
 
     def OnPaint(self, event):
         rect = self.GetRect()
-        canvas = wx.EmptyBitmap(rect.width, rect.height,24)
+        canvas = wx.EmptyBitmap(rect.width, rect.height)
         mdc = wx.BufferedPaintDC(self)
         mdc.SelectObject(canvas)
 
@@ -746,10 +819,10 @@ class PFTabsContainer(wx.Window):
 
         for i in xrange(len(self.tabs) - 1, -1, -1):
             tab = self.tabs[i]
-            width = tab.tabWidth - self.inclination*2
+            width = tab.tabWidth - 6
             posx, posy  = tab.GetPosition()
             if not tab.IsSelected():
-#                mdc.DrawBitmap(self.efxBmp, posx, posy - 1, True )
+                mdc.DrawBitmap(self.efxBmp, posx, posy - 1, True )
 #                img = tab.Render().ConvertToImage()
 #                img = img.AdjustChannels(1, 1, 1, 0.8)
 #                bmp = wx.BitmapFromImage(img)
@@ -758,7 +831,7 @@ class PFTabsContainer(wx.Window):
                 selected = tab
         if selected:
             posx, posy  = selected.GetPosition()
-#            mdc.DrawBitmap(self.efxBmp, posx, posy - 1, True)
+            mdc.DrawBitmap(self.efxBmp, posx, posy - 1, True)
             bmp = selected.Render()
 #            if self.dragging:
 #                img = bmp.ConvertToImage()
@@ -773,8 +846,8 @@ class PFTabsContainer(wx.Window):
             offset = 1
         else:
             offset = 0
-        r1 = wx.Rect(0,self.containerHeight-1,selpos,1)
-        r2 = wx.Rect(selpos + selWidth - offset, self.containerHeight -1, self.width - selpos - selWidth,1)
+        r1 = wx.Rect(0,self.containerHeight,selpos,1)
+        r2 = wx.Rect(selpos + selWidth - offset, self.containerHeight , self.width - selpos - selWidth,1)
         mdc.GradientFillLinear(r1, startColor, selColor, wx.EAST)
         mdc.GradientFillLinear(r2, selColor, startColor, wx.EAST)
 
@@ -788,10 +861,10 @@ class PFTabsContainer(wx.Window):
             fxBmp = self.tabShadow.Render()
 
             simg = fxBmp.ConvertToImage()
-#            if not simg.HasAlpha():
-#                simg.InitAlpha()
-#            simg = simg.Blur(2)
-#            simg = simg.AdjustChannels(0.2,0.2,0.2,0.3)
+            if not simg.HasAlpha():
+                simg.InitAlpha()
+            simg = simg.Blur(2)
+            simg = simg.AdjustChannels(0.2,0.2,0.2,0.3)
 
             self.efxBmp = wx.BitmapFromImage(simg)
 
@@ -982,16 +1055,18 @@ class MiniFrame(wx.Frame):
         mainSizer = wx.BoxSizer(wx.VERTICAL)
         self.nb = PFNotebook(self)
 
+        mainSizer.Add(self.nb,1,wx.EXPAND)
+        self.SetSizer(mainSizer)
+
         self.nb.AddPage(TestPanel(self),"TEST 1")
         self.nb.AddPage(TestPanel(self),"TEST 2")
         self.nb.AddPage(TestPanel(self),"TEST 3")
         self.nb.AddPage(TestPanel(self),"TEST 4")
-        self.nb.AddPage(TestPanel(self),"TEST 5")
+        self.nb.AddPage(TestPanel(self),"TEST 5WWWWWWWWWWWWWWWWWWWWWWWWWW")
         self.nb.AddPage(TestPanel(self),"TEST 6")
 
-        mainSizer.Add(self.nb,1,wx.EXPAND)
-        self.SetSizer(mainSizer)
         self.Layout()
+
 
 #    def OnSize(self, event):
 #        size = self.GetRect()
