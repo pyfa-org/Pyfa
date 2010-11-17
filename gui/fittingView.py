@@ -102,6 +102,7 @@ class FittingView(d.Display):
 
     def Destroy(self):
         self.parent.Unbind(gui.chromeTabs.EVT_NOTEBOOK_PAGE_CHANGED, handler=self.pageChanged)
+        d.Display.Destroy(self)
 
     def pageChanged(self, event):
         if self.parent.IsActive(self):
