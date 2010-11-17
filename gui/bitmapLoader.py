@@ -83,6 +83,6 @@ def getImage(name, location):
     else:
         location = os.path.join(config.pyfaPath, location)
         path = os.path.join(location, name + ".png")
-    
+
     if os.path.exists(path):
         return wx.Image(path)
