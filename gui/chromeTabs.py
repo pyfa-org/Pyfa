@@ -194,7 +194,7 @@ class PFNotebook(wx.Panel):
         event.Skip()
 
 class PFTabRenderer:
-    def __init__(self, size = (36,24), text = wx.EmptyString, img = None, inclination = 6 , closeButton = True, fontSize = 12):
+    def __init__(self, size = (36,24), text = wx.EmptyString, img = None, inclination = 6 , closeButton = True, fontSize = 14):
 
         # tab left/right zones inclination
         self.ctabLeft = bitmapLoader.getImage("ctableft", "icons")
@@ -449,8 +449,8 @@ class PFTabRenderer:
             else:
                 break
         if count > 2:
-            text = "%s%s" % (text[:count-2],".." if len(text)>count else "")
-    #        text = "%s" % text[:count]
+#            text = "%s%s" % (text[:count],".." if len(text)>count else "")
+            text = "%s" % text[:count]
 
             tx,ty = mdc.GetTextExtent(text)
             if self.selected:
@@ -863,7 +863,7 @@ class PFTabsContainer(wx.Panel):
 
         selected = 0
 
-        mdc.SetBackground (wx.Brush(self.GetBackgroundColour()))
+        mdc.SetBackground (wx.Brush(wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNFACE )))
 #        mdc.SetBackground (wx.Brush((66,113,202)))
         mdc.Clear()
 
