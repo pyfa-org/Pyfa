@@ -176,7 +176,6 @@ class PFNotebook(wx.Panel):
     def SetPageTextIcon(self, i, text=wx.EmptyString, icon=None):
         self.SetPageText(i, text)
         self.SetPageIcon(i, icon)
-        print icon
         self.tabsContainer.AdjustTabsSize()
         self.Refresh()
 
@@ -284,7 +283,7 @@ class PFTabRenderer:
         mdc.SelectObject(ebmp)
         mdc.SetFont(self.font)
         textSizeX, textSizeY = mdc.GetTextExtent(self.text)
-        totalSize = self.leftWidth + self.rightWidth + textSizeX + self.closeBtnWidth + 16
+        totalSize = self.leftWidth + self.rightWidth + textSizeX + self.closeBtnWidth/2 + 16
         mdc.SelectObject(wx.NullBitmap)
         return (totalSize, self.tabHeight)
 
@@ -973,17 +972,20 @@ class PFTabsContainer(wx.Panel):
     def AdjustTabsSize(self):
 
         tabMinWidth = 9000000 # Really, it should be over 9000
-
+        tabMaxWidth = 0
         for tab in self.tabs:
             mw,mh = tab.GetMinSize()
             if tabMinWidth > mw:
-               tabMinWidth = mw
+                tabMinWidth = mw
+            if tabMaxWidth < mw:
+                tabMaxWidth = mw
 
         if self.GetTabsCount() >0:
-            if (self.GetTabsCount()) * (tabMinWidth - self.inclination * 2) > self.tabContainerWidth:
+            if (self.GetTabsCount()) * (tabMaxWidth - self.inclination * 2) > self.tabContainerWidth:
                 self.tabMinWidth = float(self.tabContainerWidth) / float(self.GetTabsCount()) + self.inclination * 2
             else:
-                self.tabMinWidth = tabMinWidth
+                self.tabMinWidth = tabMaxWidth
+
         if self.tabMinWidth <1:
             self.tabMinWidth = 1
         for tab in self.tabs:
