@@ -107,7 +107,8 @@ class PFNotebook(wx.Panel):
 
         oldPage.Destroy()
         page.Reparent(self.pageContainer)
-        page.Layout()
+        wsize = self.pageContainer.GetSize()
+        page.SetSize(wsize)
         page.Show()
 
     def ReplaceActivePage(self, page):
