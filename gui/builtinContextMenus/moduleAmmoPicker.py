@@ -26,6 +26,9 @@ class ModuleAmmoPicker(ContextMenu):
                 validCharges = currCharges
                 self.module = mod
 
+        if validCharges is None:
+            return False
+
         self.modules = modules
         self.charges = list(validCharges)
         return len(self.charges) > 0
