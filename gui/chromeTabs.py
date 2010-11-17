@@ -531,6 +531,7 @@ class PFAddRenderer:
         self.addBitmap = None
 
         self.position = (0,0)
+        self.highlighted = False
 
         self.InitRenderer()
 
@@ -587,6 +588,10 @@ class PFAddRenderer:
 
         return wx.Colour(r,b,g)
 
+    def Highlight(self, highlight = False):
+        self.highlighted = highlight
+        self._Render()
+
     def Render(self):
         return self.addBitmap
 
@@ -609,7 +614,11 @@ class PFAddRenderer:
 #        img = canvas.ConvertToImage()
 #        if not img.HasAlpha():
 #            img.InitAlpha()
-        img = self.addImg.AdjustChannels(1, 1, 1, 0.2)
+        if self.highlighted:
+            alpha = 1
+        else:
+            alpha = 0.3
+        img = self.addImg.AdjustChannels(1, 1, 1, alpha)
 
         bbmp = wx.BitmapFromImage(img)
         self.addBitmap = bbmp
@@ -899,7 +908,22 @@ class PFTabsContainer(wx.Panel):
             return
         self.CheckCloseButtons(mposx, mposy)
 
+        self.CheckAddHighlighted(mposx,mposy)
+
         event.Skip()
+
+    def CheckAddHighlighted(self, mposx, mposy):
+        if not self.showAddButton:
+            return
+        reg = self.addButton.GetRegion()
+        ax,ay = self.addButton.GetPosition()
+        reg.Offset(ax,ay)
+        if reg.Contains(mposx, mposy):
+            self.addButton.Highlight(True)
+        else:
+            self.addButton.Highlight(False)
+
+        self.Refresh()
 
     def OnPaint(self, event):
         rect = self.GetRect()
@@ -928,7 +952,7 @@ class PFTabsContainer(wx.Panel):
         pos = tabsWidth
         if self.showAddButton:
             ax,ay = self.addButton.GetPosition()
-            mdc.DrawBitmap(self.addBitmap, ax, ay, True)
+            mdc.DrawBitmap(self.addButton.Render(), ax, ay, True)
 
         for i in xrange(len(self.tabs) - 1, -1, -1):
             tab = self.tabs[i]
