@@ -304,53 +304,28 @@ class PFTabRenderer:
 class PFAddRenderer:
     def __init__(self, size = (24,12)):
         self.width, self.height = size
-        self.addBitmap = None
+        self.addImg = bitmapLoader.getImage("ctabadd", "icons")
+        self.width = self.addImg.GetWidth()
+        self.height = self.addImg.GetHeight()
         self.spline = []
         self.inclination = 3
         self.region = None
+        self.tbmp = wx.BitmapFromImage(self.addImg)
+        self.addBitmap = None
+
         self.InitRenderer()
 
     def GetSize(self):
         return (self.width, self.height)
 
     def InitRenderer(self):
-        self.CreateSpline()
+
         self.region = self.CreateRegion()
         self._Render()
 
-    def CreateSpline(self):
-        width = self.width
-        height = self.height - 1
-        inc = self.inclination
 
-        self.spline = [wx.Point(0, 0), wx.Point(inc*3/2, height),wx.Point(inc*2 + inc*2/3, height), wx.Point(width, height), wx.Point(width, height),
-                       wx.Point(width - inc, inc), wx.Point(width - inc*2, 0), wx.Point(0, 0), wx.Point(0, 0)]
     def CreateRegion(self):
-        width = self.width
-        height = self.height
-        inc = self.inclination
-
-        mdc = wx.MemoryDC()
-
-        mbmp = wx.EmptyBitmap(width,height)
-        mdc.SelectObject(mbmp)
-
-        mdc.SetBackground( wx.Brush((255,255,255)))
-        mdc.Clear()
-
-        mdc.SetPen( wx.Pen("#000000", width = 1 ) )
-        mdc.DrawSpline(self.spline)
-
-        mdc.SetBrush(wx.Brush((255,255,0)))
-        mdc.FloodFill(width/2,height/2, wx.Color(0,0,0), wx.FLOOD_BORDER)
-
-        mdc.SelectObject(wx.NullBitmap)
-
-        mbmp.SetMaskColour( (255, 255, 255) )
-
-        region = wx.RegionFromBitmap(mbmp)
-#        region.Offset(-1,0)
-
+        region = wx.RegionFromBitmap(self.tbmp)
         return region
 
     def CalculateColor(self, color, delta):
@@ -379,69 +354,24 @@ class PFAddRenderer:
         if self.addBitmap:
             del self.addBitmap
 
-        canvas = wx.EmptyBitmap(self.width, self.height)
+#        canvas = wx.EmptyBitmap(self.width, self.height)
+#
+#        mdc = wx.MemoryDC()
+#        mdc.SelectObject(canvas)
+#
+#        mdc.SetBackground(wx.Brush ((0x12,0x23,0x32)))
+#        mdc.Clear()
+#        mdc.SelectObject(wx.NullBitmap)
+#        canvas.SetMaskColour((255,255,255))
 
-        mdc = wx.MemoryDC()
-        mdc.SelectObject(canvas)
-
-        mdc.SetBackground(wx.Brush ((13,22,31)))
-        mdc.Clear()
-
-        mdc.DestroyClippingRegion()
-        mdc.SetClippingRegionAsRegion(self.region)
-#        mdc.GradientFillLinear(rect, (0x30,0x30,0x30), (0x6f,0x6f,0x6f), wx.SOUTH)
-        mdc.FloodFill(self.width/2,self.height/2, wx.Color(13,22,31), wx.FLOOD_BORDER)
-        mdc.DestroyClippingRegion()
-        mdc.SetPen( wx.Pen( wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT), 1))
-        mdc.DrawSpline(self.spline)
-        mdc.SelectObject(wx.NullBitmap)
-
-        canvas.SetMaskColour((13,22,31))
-
-        img = canvas.ConvertToImage()
-        if not img.HasAlpha():
-            img.InitAlpha()
-        img = img.AdjustChannels(1, 1, 1, 0.6)
-        img = img.Blur(1)
-        bbmp = wx.BitmapFromImage(img)
-
-        del mdc
-        del canvas
-        canvas = wx.EmptyBitmap(self.width, self.height)
-
-        mdc = wx.MemoryDC()
-        mdc.SelectObject(canvas)
-
-        mdc.SetBackground(wx.Brush ((255,255,255 , 0)))
-        mdc.Clear()
-
-        mdc.DrawBitmap(bbmp,0,0,True)
-
-        cx = self.width / 2 - 1
-        cy = self.height / 2
-
-        mdc.SetPen( wx.Pen( wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT), 1))
-        mdc.DrawLine(cx - inc + 1, cy, cx + inc + 1, cy)
-        mdc.DrawLine(cx - inc + 1, cy-1, cx + inc + 1, cy-1)
-        mdc.DrawLine(cx, cy - inc, cx, cy + inc )
-        mdc.DrawLine(cx+1, cy - inc, cx+1, cy + inc )
-
-        self.wColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
-        color = self.CalculateColor(self.wColor, 0x99)
-        mdc.SetPen( wx.Pen( color, 1))
-
-        mdc.DrawSpline(self.spline)
-
-        mdc.SelectObject(wx.NullBitmap)
-        canvas.SetMaskColour((255,255,255))
-
-        img = canvas.ConvertToImage()
-        if not img.HasAlpha():
-            img.InitAlpha()
-        img = img.AdjustChannels(1, 1, 1, 0.3)
+#        img = canvas.ConvertToImage()
+#        if not img.HasAlpha():
+#            img.InitAlpha()
+        img = self.addImg.AdjustChannels(1, 1, 1, 0.2)
 
         bbmp = wx.BitmapFromImage(img)
         self.addBitmap = bbmp
+#        self.addBitmap.SetMaskColour((0x12,0x23,0x32))
 
 
 class PFTabsContainer(wx.Window):
