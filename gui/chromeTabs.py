@@ -30,17 +30,19 @@ class VetoAble():
         return self.__vetoed
 
 class NotebookTabChangeEvent():
+
     def __init__(self, old, new):
         self.__old = old
         self.__new = new
-        self.Selection = property(self.GetSelection)
-        self.OldSelection = property(self.GetOldSelection)
 
     def GetOldSelection(self):
         return self.__old
 
     def GetSelection(self):
         return self.__new
+
+    OldSelection = property(GetOldSelection)
+    Selection = property(GetSelection)
 
 class PageChanging(_PageChanging, NotebookTabChangeEvent, VetoAble):
     def __init__(self, old, new):
@@ -100,6 +102,9 @@ class PFNotebook(wx.Panel):
         return self.pages[i]
 
     def SetPage(self, i, page):
+        if i >= len(self.pages):
+            return
+
         oldPage = self.pages[i]
         self.pages[i] = page
         if oldPage == self.activePage:
@@ -123,7 +128,7 @@ class PFNotebook(wx.Panel):
     def GetSelection(self):
         return self.GetPageIndex(self.activePage)
 
-    def AddPage(self, tabWnd, tabTitle = wx.EmptyString, tabImage = None, showClose = True):
+    def AddPage(self, tabWnd, tabTitle ="Empty Tab", tabImage = None, showClose = True):
         if self.activePage:
             self.activePage.Hide()
 
@@ -659,6 +664,7 @@ class PFTabsContainer(wx.Panel):
             self.Refresh()
             if self.HasCapture():
                 self.ReleaseMouse()
+
             return
 
         if self.startDrag:
@@ -699,21 +705,20 @@ class PFTabsContainer(wx.Panel):
         return None
 
     def CheckTabSelected(self,tab, mposx, mposy):
-
         oldSelTab = self.GetSelectedTab()
         if oldSelTab == tab:
             return True
 
         if self.TabHitTest(tab, mposx, mposy):
             tab.SetSelected(True)
-            if tab != oldSelTab:
-                oldSelTab.SetSelected(False)
+            oldSelTab.SetSelected(False)
 
-            self.Refresh()
             ev = PageChanging(self.tabs.index(oldSelTab), self.tabs.index(tab))
             wx.PostEvent(self.Parent, ev)
             if ev.isVetoed():
                 return False
+
+            self.Refresh()
 
             selTab = self.tabs.index(tab)
             self.Parent.SetSelection(selTab)
@@ -721,6 +726,7 @@ class PFTabsContainer(wx.Panel):
             wx.PostEvent(self.Parent, PageChanged(self.tabs.index(oldSelTab), self.tabs.index(tab)))
 
             return True
+
         return False
 
     def CheckTabClose(self, tab, mposx, mposy):

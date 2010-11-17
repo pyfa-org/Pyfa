@@ -98,6 +98,16 @@ class FittingView(d.Display):
         self.Bind(wx.EVT_KEY_UP, self.kbEvent)
         self.Bind(wx.EVT_LEFT_DOWN, self.click)
         self.Bind(wx.EVT_RIGHT_DOWN, self.click)
+        self.parent.Bind(gui.chromeTabs.EVT_NOTEBOOK_PAGE_CHANGED, self.pageChanged)
+
+    def pageChanged(self, event):
+        if self.parent.IsActive(self):
+            fitID = self.getActiveFit()
+            sFit = service.Fit.getInstance()
+            sFit.switchFit(fitID)
+            wx.PostEvent(self.mainFrame, FitChanged(fitID=fitID))
+
+        event.Skip()
 
     def getActiveFit(self):
         return self.activeFitID
