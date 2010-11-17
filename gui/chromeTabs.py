@@ -29,7 +29,7 @@ class PFNotebook(wx.Panel):
         mainSizer.Add( tabsSizer, 0, wx.EXPAND, 5 )
 
         contentSizer = wx.BoxSizer( wx.VERTICAL )
-        self.pageContainer = wx.Panel(self)
+        self.pageContainer = wx.Panel(self, style = wx.SIMPLE_BORDER)
         contentSizer.Add( self.pageContainer, 1, wx.EXPAND, 5 )
 
         mainSizer.Add( contentSizer, 1, wx.EXPAND, 5 )
@@ -495,9 +495,9 @@ class PFAddRenderer:
 #        self.addBitmap.SetMaskColour((0x12,0x23,0x32))
 
 
-class PFTabsContainer(wx.Window):
+class PFTabsContainer(wx.Panel):
     def __init__(self, parent, pos = (0,0), size = (100,27), id = wx.ID_ANY):
-        wx.Window.__init__(self, parent, id , pos, size , style = 0)
+        wx.Panel.__init__(self, parent, id , pos, size)
         self.tabs = []
         width, height = size
         self.width  = width
@@ -754,7 +754,7 @@ class PFTabsContainer(wx.Window):
 
         selected = 0
 
-        mdc.SetBackground (wx.Brush(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)))
+        mdc.SetBackground (wx.Brush(self.GetBackgroundColour()))
 #        mdc.SetBackground (wx.Brush((66,113,202)))
         mdc.Clear()
 
