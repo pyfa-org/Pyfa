@@ -87,7 +87,8 @@ class PFNotebook(wx.Panel):
         mainSizer.Add( tabsSizer, 0, wx.EXPAND, 5 )
 
         contentSizer = wx.BoxSizer( wx.VERTICAL )
-        self.pageContainer = wx.Panel(self, style = wx.SIMPLE_BORDER)
+        self.pageContainer = wx.Panel(self, style = wx.DOUBLE_BORDER)
+        self.pageContainer.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW))
         contentSizer.Add( self.pageContainer, 1, wx.EXPAND, 5 )
 
         mainSizer.Add( contentSizer, 1, wx.EXPAND, 5 )
@@ -113,7 +114,12 @@ class PFNotebook(wx.Panel):
         oldPage.Destroy()
         page.Reparent(self.pageContainer)
         wsize = self.pageContainer.GetSize()
-        page.SetSize(wsize)
+        bx = wx.SystemSettings_GetMetric(wx.SYS_EDGE_X)
+        by = wx.SystemSettings_GetMetric(wx.SYS_EDGE_Y)
+        ww,wh = wsize
+        ww -= bx * 2
+        wh -= by * 2
+        page.SetSize((ww,wh))
         page.Show()
 
     def ReplaceActivePage(self, page):
@@ -209,8 +215,14 @@ class PFNotebook(wx.Panel):
         self.tabsContainer.Refresh()
         self.Layout()
         size = self.pageContainer.GetSize()
+        bx = wx.SystemSettings_GetMetric(wx.SYS_EDGE_X)
+        by = wx.SystemSettings_GetMetric(wx.SYS_EDGE_Y)
+        ww,wh = size
+        ww -= bx * 2
+        wh -= by * 2
+
         if self.activePage:
-            self.activePage.SetSize(size)
+            self.activePage.SetSize((ww,wh))
         event.Skip()
 
 class PFTabRenderer:
