@@ -434,10 +434,24 @@ class PFAddRenderer:
         self.tbmp = wx.BitmapFromImage(self.addImg)
         self.addBitmap = None
 
+        self.position = (0,0)
+
         self.InitRenderer()
+
+    def GetPosition(self):
+        return self.position
+
+    def SetPosition(self,pos):
+        self.position = pos
 
     def GetSize(self):
         return (self.width, self.height)
+
+    def GetHeight(self):
+        return self.height
+
+    def GetWidth(self):
+        return self.width
 
     def InitRenderer(self):
 
@@ -448,6 +462,17 @@ class PFAddRenderer:
     def CreateRegion(self):
         region = wx.RegionFromBitmap(self.tbmp)
         return region
+
+    def CopyRegion(self, region):
+        rect = region.GetBox()
+
+        newRegion = wx.Region(rect.X, rect.Y, rect.Width, rect.Height)
+        newRegion.IntersectRegion(region)
+
+        return newRegion
+
+    def GetRegion(self):
+        return self.CopyRegion(self.region)
 
     def CalculateColor(self, color, delta):
         bkR ,bkG , bkB = color
@@ -574,6 +599,9 @@ class PFTabsContainer(wx.Panel):
             return
         selTab = self.GetSelectedTab()
 
+        if self.CheckAddButton(mposx, mposy):
+            return
+
         if self.CheckTabClose(selTab, mposx, mposy):
             return
 
@@ -634,6 +662,14 @@ class PFTabsContainer(wx.Panel):
             self.DeleteTab(index)
             return True
         return False
+
+    def CheckAddButton(self, mposx,mposy):
+        reg = self.addButton.GetRegion()
+        ax,ay = self.addButton.GetPosition()
+        reg.Offset(ax,ay)
+        if reg.Contains(mposx, mposy):
+            print "Add Tab"
+            return True
 
     def CheckCloseButtons(self, mposx, mposy):
         dirty = False
@@ -770,8 +806,8 @@ class PFTabsContainer(wx.Panel):
             tabsWidth += tab.tabWidth - self.inclination*2
 
         pos = tabsWidth
-
-        mdc.DrawBitmap(self.addBitmap, round(tabsWidth) + self.inclination*2, self.containerHeight - self.height/2 - self.addBitmap.GetHeight()/2, True)
+        ax,ay = self.addButton.GetPosition()
+        mdc.DrawBitmap(self.addBitmap, ax, ay, True)
 
         for i in xrange(len(self.tabs) - 1, -1, -1):
             tab = self.tabs[i]
@@ -904,7 +940,7 @@ class PFTabsContainer(wx.Panel):
                 selpos = pos
         if selected is not skipTab:
             selected.SetPosition((selpos, self.containerHeight - self.height))
-
+        self.addButton.SetPosition((round(tabsWidth) + self.inclination*2, self.containerHeight - self.height/2 - self.addButton.GetHeight()/2))
 
     def CalculateColor(self, color, delta):
         bkR ,bkG , bkB = color
