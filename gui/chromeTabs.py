@@ -959,8 +959,8 @@ class PFTabsContainer(wx.Panel):
             width = tab.tabWidth - 6
             posx, posy  = tab.GetPosition()
             if not tab.IsSelected():
-                if not 'wxMac' in wx.PlatformInfo:
-                    mdc.DrawBitmap(self.efxBmp, posx, posy, True )
+#                if not 'wxMac' in wx.PlatformInfo:
+                mdc.DrawBitmap(self.efxBmp, posx, posy, True )
                 img = tab.Render().ConvertToImage()
                 img = img.AdjustChannels(1, 1, 1, 0.8)
                 bmp = wx.BitmapFromImage(img)
@@ -969,8 +969,8 @@ class PFTabsContainer(wx.Panel):
                 selected = tab
         if selected:
             posx, posy  = selected.GetPosition()
-            if not 'wxMac' in wx.PlatformInfo:
-                mdc.DrawBitmap(self.efxBmp, posx, posy, True)
+#            if not 'wxMac' in wx.PlatformInfo:
+            mdc.DrawBitmap(self.efxBmp, posx, posy, True)
             bmp = selected.Render()
             if self.dragging:
                 img = bmp.ConvertToImage()
@@ -1002,8 +1002,8 @@ class PFTabsContainer(wx.Panel):
             simg = fxBmp.ConvertToImage()
             if not simg.HasAlpha():
                 simg.InitAlpha()
-            if 'wxMac' not in wx.PlatformInfo:
-                simg = simg.Blur(2)
+#            if 'wxMac' not in wx.PlatformInfo:
+            simg = simg.Blur(2)
             simg = simg.AdjustChannels(0.3,0.3,0.3,0.3)
 
             self.efxBmp = wx.BitmapFromImage(simg)
