@@ -91,7 +91,7 @@ class PFNotebook(wx.Panel):
         self.pageContainer.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW))
         contentSizer.Add( self.pageContainer, 1, wx.EXPAND, 5 )
 
-        mainSizer.Add( contentSizer, 1, wx.EXPAND, 5 )
+        mainSizer.Add( contentSizer, 1, wx.EXPAND | wx.BOTTOM, 2 )
 
         self.SetSizer( mainSizer )
         self.Bind(wx.EVT_SIZE, self.OnSize)
