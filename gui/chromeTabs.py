@@ -106,20 +106,22 @@ class PFNotebook(wx.Panel):
     def SetPageText(self, i, text, refresh=False):
         tab = self.tabsContainer.tabs[i]
         tab.text = text
-        tab._Render()
-        if refresh:
-            self.Refresh()
+#        tab._Render()
+#        if refresh:
+#            self.Refresh()
 
     def SetPageIcon(self, i, icon, refresh=False):
         tab = self.tabsContainer.tabs[i]
-        tab.img = icon
-        tab._Render()
-        if refresh:
-            self.Refresh()
+        tab.tabImg = icon
+#        tab._Render()
+#        if refresh:
+#            self.Refresh()
 
     def SetPageTextIcon(self, i, text=wx.EmptyString, icon=None):
         self.SetPageText(i, text)
         self.SetPageIcon(i, icon)
+        print icon
+        self.tabsContainer.AdjustTabsSize()
         self.Refresh()
 
     def Refresh(self):
@@ -158,7 +160,6 @@ class PFTabRenderer:
 
         self.inclination = inclination
         self.text = text
-        self.img = img
         self.tabSize = (width, height)
         self.closeButton = closeButton
         self.fontSize = fontSize
@@ -374,7 +375,6 @@ class PFTabRenderer:
         r.height = height
         mdc.DrawBitmap(self.tabBackBitmap, 0, 0, True)
 
-
         if self.tabImg:
             bmp = wx.BitmapFromImage(self.tabImg)
             if self.contentWidth > 16:
@@ -521,12 +521,12 @@ class PFAddRenderer:
 
 
 class PFTabsContainer(wx.Panel):
-    def __init__(self, parent, pos = (0,0), size = (100,27), id = wx.ID_ANY):
+    def __init__(self, parent, pos = (0,0), size = (100,24), id = wx.ID_ANY):
         wx.Panel.__init__(self, parent, id , pos, size)
         self.tabs = []
         width, height = size
         self.width  = width
-        self.height = height - 3
+        self.height = height
         self.containerHeight = height
         self.startDrag = False
         self.dragging = False
