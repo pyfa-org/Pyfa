@@ -29,9 +29,25 @@ import gui.shipBrowser
 import sys
 from eos.types import Slot
 from gui.builtinViewColumns.state import State
+import gui.multiSwitch
 
 FitChanged, FIT_CHANGED = wx.lib.newevent.NewEvent()
 
+#Tab spawning handler
+class FitSpawner(gui.multiSwitch.TabSpawner):
+    def __init__(self, multiSwitch):
+        self.multiSwitch = multiSwitch
+        mainFrame = gui.mainFrame.MainFrame.getInstance()
+        mainFrame.Bind(gui.shipBrowser.EVT_FIT_SELECTED, self.fitSelected)
+
+    def fitSelected(self, event):
+        view = FittingView(self.multiSwitch)
+        self.multiSwitch.ReplaceActivePage(view)
+        view.fitSelected(event)
+
+FitSpawner.register()
+
+#Drag'n'drop handler
 class FittingViewDrop(wx.PyDropTarget):
         def __init__(self, dropFn):
             wx.PyDropTarget.__init__(self)
@@ -44,6 +60,7 @@ class FittingViewDrop(wx.PyDropTarget):
             if self.GetData():
                 self.dropFn(x, y, int(self.dropData.GetText()))
             return t
+
 
 class FittingView(d.Display):
     DEFAULT_COLS = ["State",
@@ -127,10 +144,14 @@ class FittingView(d.Display):
         if fitID == self.getActiveFit():
             self.parent.DeletePage(self.parent.GetPageIndex(self))
 
+        event.Skip()
+
     def fitRenamed(self, event):
         fitID = event.fitID
         if fitID == self.getActiveFit():
             self.updateTab()
+
+        event.Skip()
 
     def fitSelected(self, event):
         if self.parent.IsActive(self):
@@ -142,6 +163,8 @@ class FittingView(d.Display):
             sFit.switchFit(fitID)
             wx.PostEvent(self.mainFrame, FitChanged(fitID=fitID))
             self.updateTab()
+
+        event.Skip()
 
     def updateTab(self):
         cFit = service.Fit.getInstance()
@@ -172,6 +195,8 @@ class FittingView(d.Display):
                     if populate is not None:
                         wx.PostEvent(self.mainFrame, FitChanged(fitID=fitID))
 
+        event.Skip()
+
     def removeItem(self, event):
         row, _ = self.HitTest(event.Position)
         if row != -1:
@@ -183,6 +208,8 @@ class FittingView(d.Display):
                 if populate is not None:
                     if populate: self.slotsChanged()
                     wx.PostEvent(self.mainFrame, FitChanged(fitID=self.activeFitID))
+
+        event.Skip()
 
     def swapItems(self, x, y, itemID):
         srcRow = self.FindItemData(-1,itemID)

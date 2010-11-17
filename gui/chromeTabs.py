@@ -99,6 +99,20 @@ class PFNotebook(wx.Panel):
     def GetPage(self, i):
         return self.pages[i]
 
+    def SetPage(self, i, page):
+        oldPage = self.pages[i]
+        self.pages[i] = page
+        if oldPage == self.activePage:
+            self.activePage = page
+
+        oldPage.Destroy()
+        page.Reparent(self.pageContainer)
+        page.Layout()
+        page.Show()
+
+    def ReplaceActivePage(self, page):
+        self.SetPage(self.GetSelection(), page)
+
     def GetSelectedPage(self):
         return self.activePage
 

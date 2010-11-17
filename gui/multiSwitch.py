@@ -19,9 +19,16 @@
 
 import wx
 import gui.chromeTabs
-import gui.fittingView
 
 class MultiSwitch(gui.chromeTabs.PFNotebook):
     def __init__(self, parent):
         gui.chromeTabs.PFNotebook.__init__(self, parent)
-        self.AddPage(gui.fittingView.FittingView(self), "Empty Fit")
+        self.AddPage(wx.Panel(self), "Empty Tab")
+        for type in TabSpawner.tabTypes:
+            type(self)
+
+class TabSpawner(object):
+    tabTypes = []
+    @classmethod
+    def register(cls):
+        TabSpawner.tabTypes.append(cls)
