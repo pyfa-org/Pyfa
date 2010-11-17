@@ -79,7 +79,7 @@ class MainFrame(wx.Frame):
         faSizer = wx.BoxSizer(wx.VERTICAL)
 
         self.fitMultiSwitch = MultiSwitch(self.FitviewAdditionsPanel)
-        self.fitMultiSwitch.AddTab()
+        #self.fitMultiSwitch.AddTab()
         faSizer.Add(self.fitMultiSwitch,1,wx.EXPAND)
 
         self.additionsPane = AdditionsPane(self.FitviewAdditionsPanel)
@@ -128,9 +128,9 @@ class MainFrame(wx.Frame):
         self.Show()
 
     def getActiveFit(self):
-        sel = self.fitMultiSwitch.GetSelection()
-        view = self.fitMultiSwitch.GetPage(sel).view
-        return view.activeFitID
+        p = self.fitMultiSwitch.GetSelectedPage()
+        m = getattr(p, "getActiveFit", None)
+        return m() if m is not None else None
 
     def getFittingView(self):
         sel = self.fitMultiSwitch.GetSelection()

@@ -21,8 +21,11 @@ import wx
 import wx.lib.newevent
 import service
 import gui.mainFrame
+import gui.marketBrowser
+import bitmapLoader
 import gui.display as d
 from gui.contextMenu import ContextMenu
+import gui.shipBrowser
 import sys
 from eos.types import Slot
 from gui.builtinViewColumns.state import State
@@ -59,7 +62,13 @@ class FittingView(d.Display):
     def __init__(self, parent):
         d.Display.__init__(self, parent)
         self.Show(False)
+        self.parent = parent
         self.mainFrame.Bind(FIT_CHANGED, self.fitChanged)
+        self.mainFrame.Bind(gui.shipBrowser.EVT_FIT_SELECTED, self.fitSelected)
+        self.mainFrame.Bind(gui.shipBrowser.EVT_FIT_RENAMED, self.fitRenamed)
+        self.mainFrame.Bind(gui.shipBrowser.EVT_FIT_REMOVED, self.fitRemoved)
+        self.mainFrame.Bind(gui.marketBrowser.ITEM_SELECTED, self.appendItem)
+
         self.Bind(wx.EVT_LEFT_DCLICK, self.removeItem)
         self.Bind(wx.EVT_LIST_BEGIN_DRAG, self.startDrag)
         if "__WXGTK__" in  wx.PlatformInfo:
@@ -72,6 +81,9 @@ class FittingView(d.Display):
         self.Bind(wx.EVT_KEY_UP, self.kbEvent)
         self.Bind(wx.EVT_LEFT_DOWN, self.click)
         self.Bind(wx.EVT_RIGHT_DOWN, self.click)
+
+    def getActiveFit(self):
+        return self.activeFitID
 
     def startDrag(self, event):
         row = event.GetIndex()
@@ -110,32 +122,53 @@ class FittingView(d.Display):
 
         event.Skip()
 
-    #Gets called from the fitMultiSwitch when it decides its time
-    def changeFit(self, fitID):
-        self.activeFitID = fitID
-        self.Show(fitID is not None)
-        self.slotsChanged()
-        wx.PostEvent(self.mainFrame, FitChanged(fitID=fitID))
+    def fitRemoved(self, event):
+        fitID = event.fitID
+        if fitID == self.getActiveFit():
+            self.parent.DeletePage(self.parent.GetPageIndex(self))
 
-    def appendItem(self, itemID):
-        fitID = self.activeFitID
-        if fitID != None:
-            cFit = service.Fit.getInstance()
-            if cFit.isAmmo(itemID):
-                modules = []
-                sel = self.GetFirstSelected()
-                while sel != -1:
-                    modules.append(self.mods[self.GetItemData(sel)])
-                    sel = self.GetNextSelected(sel)
+    def fitRenamed(self, event):
+        fitID = event.fitID
+        if fitID == self.getActiveFit():
+            self.updateTab()
 
-                cFit.setAmmo(fitID, itemID, modules)
-                wx.PostEvent(self.mainFrame, FitChanged(fitID=fitID))
-            else:
-                populate = cFit.appendModule(fitID, itemID)
-                if populate:
-                    self.slotsChanged()
-                if populate is not None:
+    def fitSelected(self, event):
+        if self.parent.IsActive(self):
+            fitID = event.fitID
+            self.activeFitID = fitID
+            self.Show(fitID is not None)
+            self.slotsChanged()
+            wx.PostEvent(self.mainFrame, FitChanged(fitID=fitID))
+            self.updateTab()
+
+    def updateTab(self):
+        cFit = service.Fit.getInstance()
+        fit = cFit.getFit(self.getActiveFit())
+        bitmap = bitmapLoader.getBitmap("race_%s_small", "icons")
+        text = "%s: %s" % (fit.ship.item.name, fit.name)
+        self.parent.SetPageTextIcon(self.parent.GetSelection(), text, bitmap)
+
+    def appendItem(self, event):
+        if self.parent.IsActive(self):
+            itemID = event.itemID
+            fitID = self.activeFitID
+            if fitID != None:
+                cFit = service.Fit.getInstance()
+                if cFit.isAmmo(itemID):
+                    modules = []
+                    sel = self.GetFirstSelected()
+                    while sel != -1:
+                        modules.append(self.mods[self.GetItemData(sel)])
+                        sel = self.GetNextSelected(sel)
+
+                    cFit.setAmmo(fitID, itemID, modules)
                     wx.PostEvent(self.mainFrame, FitChanged(fitID=fitID))
+                else:
+                    populate = cFit.appendModule(fitID, itemID)
+                    if populate:
+                        self.slotsChanged()
+                    if populate is not None:
+                        wx.PostEvent(self.mainFrame, FitChanged(fitID=fitID))
 
     def removeItem(self, event):
         row, _ = self.HitTest(event.Position)

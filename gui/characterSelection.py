@@ -79,7 +79,7 @@ class CharacterSelection(wx.Panel):
         if not picked:
             charID = cChar.all0ID()
             self.selectChar(charID)
-            fitID = self.mainFrame.fitMultiSwitch.getActiveFit()
+            fitID = self.mainFrame.getActiveFit()
             cFit = service.Fit.getInstance()
             cFit.changeChar(fitID, charID)
 
@@ -87,7 +87,7 @@ class CharacterSelection(wx.Panel):
             event.Skip()
 
     def charChanged(self, event):
-        fitID = self.mainFrame.fitMultiSwitch.getActiveFit()
+        fitID = self.mainFrame.getActiveFit()
         charID = self.getActiveCharacter()
 
         cFit = service.Fit.getInstance()

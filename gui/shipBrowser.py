@@ -2,7 +2,7 @@ import wx
 import copy
 from gui import bitmapLoader
 import gui.mainFrame
-import gui.fittingView as fv
+import gui.fittingView
 import service
 import time
 import os
@@ -63,7 +63,7 @@ class ShipBrowser(wx.Panel):
         self.Bind(EVT_SB_STAGE3_SEL, self.stage3)
         self.Bind(EVT_SB_SEARCH_SEL, self.searchStage)
 
-        self.mainFrame.Bind(fv.FIT_CHANGED, self.RefreshList)
+        self.mainFrame.Bind(gui.fittingView.FIT_CHANGED, self.RefreshList)
 
         self.stage1(None)
 
@@ -1594,11 +1594,10 @@ class FitItem(wx.Window):
                     fitInst = service.fit.Fit.getInstance()
                     draggedFit = fitInst.getFit(self.fitID)
                     fitInst.project(activeFit,draggedFit)
-                    wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=activeFit))
+                    wx.PostEvent(self.mainFrame, gui.fittingView.FitChanged(fitID=activeFit))
 
             if self.checkForGraphFrame(targetWnd, gfWnd):
                 self.mainFrame.graphFrame.AppendFitToList(self.fitID)
-
 
             event.Skip()
             return
