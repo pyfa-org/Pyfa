@@ -651,12 +651,12 @@ class PFTabsContainer(wx.Panel):
             self.startDrag = False
             self.dragTrigger = self.dragTrail
 
+        if self.CheckAddButton(mposx, mposy):
+            return
+
         if self.GetTabsCount() == 0:
             return
         selTab = self.GetSelectedTab()
-
-        if self.CheckAddButton(mposx, mposy):
-            return
 
         if self.CheckTabClose(selTab, mposx, mposy):
             return
