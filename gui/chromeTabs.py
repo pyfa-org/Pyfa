@@ -596,7 +596,7 @@ class PFAddRenderer:
 
 
 class PFTabsContainer(wx.Panel):
-    def __init__(self, parent, pos = (0,0), size = (100,24), id = wx.ID_ANY):
+    def __init__(self, parent, pos = (0,0), size = (100,27), id = wx.ID_ANY):
         wx.Panel.__init__(self, parent, id , pos, size)
         self.tabs = []
         width, height = size
@@ -885,7 +885,7 @@ class PFTabsContainer(wx.Panel):
         selected = 0
 
         mdc.SetBackground (wx.Brush(self.GetBackgroundColour()))
-        print self.GetBackgroundColour()
+
 #        mdc.SetBackground (wx.Brush((66,113,202)))
         mdc.Clear()
 
@@ -936,7 +936,7 @@ class PFTabsContainer(wx.Panel):
         r1 = wx.Rect(0,self.containerHeight -1,selpos,1)
         r2 = wx.Rect(0, self.containerHeight -1 , self.width,1)
 #        mdc.GradientFillLinear(r1, startColor, selColor, wx.EAST)
-        mdc.GradientFillLinear(r2, selColor, startColor, wx.EAST)
+#        mdc.GradientFillLinear(r2, selColor, startColor, wx.EAST)
 
     def OnErase(self, event):
         pass
