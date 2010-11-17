@@ -12,6 +12,62 @@ import wx
 import copy
 from gui import bitmapLoader
 
+_PageChanging, EVT_NOTEBOOK_PAGE_CHANGING = wx.lib.newevent.NewEvent()
+_PageChanged, EVT_NOTEBOOK_PAGE_CHANGED = wx.lib.newevent.NewEvent()
+_PageAdding, EVT_NOTEBOOK_PAGE_ADDING = wx.lib.newevent.NewEvent()
+_PageClosing, EVT_NOTEBOOK_PAGE_CLOSING = wx.lib.newevent.NewEvent()
+PageAdded, EVT_NOTEBOOK_PAGE_ADDED = wx.lib.newevent.NewEvent()
+PageClosed, EVT_NOTEBOOK_PAGE_CLOSED = wx.lib.newevent.NewEvent()
+
+class VetoAble():
+    def __init__(self):
+        self.__vetoed = False
+
+    def Veto(self):
+        self.__vetoed = True
+
+    def isVetoed(self):
+        return self.__vetoed
+
+class NotebookTabChangeEvent():
+    def __init__(self, old, new):
+        self.__old = old
+        self.__new = new
+        self.Selection = property(self.GetSelection)
+        self.OldSelection = property(self.GetOldSelection)
+
+    def GetOldSelection(self):
+        return self.__old
+
+    def GetSelection(self):
+        return self.__new
+
+class PageChanging(_PageChanging, NotebookTabChangeEvent, VetoAble):
+    def __init__(self, old, new):
+        NotebookTabChangeEvent.__init__(self, old, new)
+        _PageChanging.__init__(self)
+        VetoAble.__init__(self)
+
+class PageChanged(_PageChanged, NotebookTabChangeEvent):
+    def __init__(self, old, new):
+        NotebookTabChangeEvent.__init__(self, old, new)
+        _PageChanged.__init__(self)
+
+class PageClosing(_PageClosing, VetoAble):
+    def __init__(self, i):
+        self.__index = i
+        _PageClosing.__init__(self)
+        VetoAble.__init__(self)
+        self.Selection = property(self.GetSelection)
+
+    def GetSelection(self):
+        return self.__index
+
+class PageAdding(_PageAdding, VetoAble):
+    def __init__(self):
+        _PageAdding.__init__(self)
+        VetoAble.__init__(self)
+
 class PFNotebook(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent, wx.ID_ANY,size = (-1,-1))
@@ -638,11 +694,17 @@ class PFTabsContainer(wx.Panel):
             tab.SetSelected(True)
             if tab != oldSelTab:
                 oldSelTab.SetSelected(False)
+
             self.Refresh()
-            print "Selected: %s" %tab.text
+            ev = PageChanging(self.tabs.index(oldSelTab), self.tabs.index(tab))
+            wx.PostEvent(self.Parent, ev)
+            if ev.isVetoed():
+                return False
 
             selTab = self.tabs.index(tab)
-            self.Parent.SetSelected(selTab)
+            self.Parent.SetSelection(selTab)
+
+            wx.PostEvent(self.Parent, PageChanged(self.tabs.index(oldSelTab), self.tabs.index(tab)))
 
             return True
         return False
@@ -657,9 +719,15 @@ class PFTabsContainer(wx.Panel):
         closeBtnReg.Offset(tabPosX,tabPosY)
 
         if closeBtnReg.Contains(mposx, mposy):
-            print "Close tab: %s" % tab.text
+            index = self.tabs.index(tab)
+            ev = PageClosing(index)
+            wx.PostEvent(self.Parent, ev)
+            if ev.isVetoed():
+                return False
+
             index = self.GetTabIndex(tab)
             self.DeleteTab(index)
+            wx.PostEvent(self.Parent, PageClosed(index=index))
             return True
         return False
 
@@ -668,7 +736,13 @@ class PFTabsContainer(wx.Panel):
         ax,ay = self.addButton.GetPosition()
         reg.Offset(ax,ay)
         if reg.Contains(mposx, mposy):
-            print "Add Tab"
+            ev = PageAdding()
+            wx.PostEvent(self.Parent, ev)
+            if ev.isVetoed():
+                return False
+
+            self.Parent.AddPage(wx.Panel(self.Parent))
+            wx.PostEvent(self.Parent, PageAdded())
             return True
 
     def CheckCloseButtons(self, mposx, mposy):
