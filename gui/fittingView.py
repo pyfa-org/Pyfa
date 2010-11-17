@@ -146,7 +146,7 @@ class FittingView(d.Display):
     def updateTab(self):
         cFit = service.Fit.getInstance()
         fit = cFit.getFit(self.getActiveFit())
-        bitmap = bitmapLoader.getBitmap("race_%s_small", "icons")
+        bitmap = bitmapLoader.getImage("race_%s_small" % fit.ship.item.race, "icons")
         text = "%s: %s" % (fit.ship.item.name, fit.name)
         self.parent.SetPageTextIcon(self.parent.GetSelection(), text, bitmap)
 
@@ -251,19 +251,17 @@ class FittingView(d.Display):
         cFit = service.Fit.getInstance()
         selection = []
         sel = self.GetFirstSelected()
-        contexts = set()
-        while sel != -1:
+        contexts = []
+        if sel != -1:
             mod = self.mods[self.GetItemData(sel)]
             if not mod.isEmpty:
-                contexts.add("module")
+                contexts.append("module")
                 if mod.charge is not None and "ammo" not in contexts:
-                    contexts.add("ammo")
+                    contexts.append("ammo")
 
                 selection.append(mod)
 
-            sel = self.GetNextSelected(sel)
-
-        contexts.add("ship")
+        contexts.append("ship")
 
         menu = ContextMenu.getMenu(selection, *contexts)
         self.PopupMenu(menu)
