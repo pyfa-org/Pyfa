@@ -186,8 +186,6 @@ class PFTabRenderer:
             del self.tabBackBitmap
 
         self.tabBackBitmap = bkbmp
-        img = bkbmp.ConvertToImage()
-        img.SaveFile("test.png", wx.BITMAP_TYPE_PNG)
 
     def InitTabRegions(self):
         self.tabRegion = wx.RegionFromBitmap(self.tabBackBitmap)
