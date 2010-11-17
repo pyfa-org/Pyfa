@@ -950,7 +950,8 @@ class PFTabsContainer(wx.Panel):
             simg = fxBmp.ConvertToImage()
             if not simg.HasAlpha():
                 simg.InitAlpha()
-            simg = simg.Blur(2)
+            if 'wxMAC' not in wx.PlatformInfo:
+                simg = simg.Blur(2)
             simg = simg.AdjustChannels(0.3,0.3,0.3,0.3)
 
             self.efxBmp = wx.BitmapFromImage(simg)
