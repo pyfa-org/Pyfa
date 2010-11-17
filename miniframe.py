@@ -147,7 +147,7 @@ class PFTabRenderer:
     def InitBitmaps(self):
         print self.selected
         if self.selected:
-            tr,tg,tb = self.tabColor
+            tr,tg,tb = self.rightColor
             print "sel"
         else:
             tr,tg,tb = self.leftColor
@@ -796,7 +796,7 @@ class PFTabsContainer(wx.Window):
 
         selected = 0
 
-        mdc.SetBackground (wx.Brush(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)))
+        mdc.SetBackground (wx.Brush(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOWTEXT)))
 #        mdc.SetBackground (wx.Brush((66,113,202)))
         mdc.Clear()
 
@@ -821,20 +821,20 @@ class PFTabsContainer(wx.Window):
             posx, posy  = tab.GetPosition()
             if not tab.IsSelected():
                 mdc.DrawBitmap(self.efxBmp, posx, posy - 1, True )
-#                img = tab.Render().ConvertToImage()
-#                img = img.AdjustChannels(1, 1, 1, 0.8)
-#                bmp = wx.BitmapFromImage(img)
-                mdc.DrawBitmap(tab.Render(), posx, posy, True)
+                img = tab.Render().ConvertToImage()
+                img = img.AdjustChannels(1, 1, 1, 0.8)
+                bmp = wx.BitmapFromImage(img)
+                mdc.DrawBitmap(bmp, posx, posy, True)
             else:
                 selected = tab
         if selected:
             posx, posy  = selected.GetPosition()
             mdc.DrawBitmap(self.efxBmp, posx, posy - 1, True)
             bmp = selected.Render()
-#            if self.dragging:
-#                img = bmp.ConvertToImage()
-#                img = img.AdjustChannels(1.2, 1.2, 1.2, 0.7)
-#                bmp = wx.BitmapFromImage(img)
+            if self.dragging:
+                img = bmp.ConvertToImage()
+                img = img.AdjustChannels(1.2, 1.2, 1.2, 0.7)
+                bmp = wx.BitmapFromImage(img)
 
             mdc.DrawBitmap(bmp, posx, posy, True)
             selpos = posx
@@ -862,7 +862,7 @@ class PFTabsContainer(wx.Window):
             if not simg.HasAlpha():
                 simg.InitAlpha()
             simg = simg.Blur(2)
-            simg = simg.AdjustChannels(0.2,0.2,0.2,0.3)
+            simg = simg.AdjustChannels(0.9,0.9,0.9,0.6)
 
             self.efxBmp = wx.BitmapFromImage(simg)
 
