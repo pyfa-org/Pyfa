@@ -495,7 +495,11 @@ class PFTabRenderer:
 
 
         canvas.SetMaskColour((0x12,0x23,0x32))
-        self.tabBitmap = canvas
+        img = canvas.ConvertToImage()
+        if not img.HasAlpha():
+            img.InitAlpha()
+        bmp = wx.BitmapFromImage(img)
+        self.tabBitmap = bmp
 
 class PFAddRenderer:
     def __init__(self, size = (24,12)):
