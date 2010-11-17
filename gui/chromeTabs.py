@@ -862,15 +862,8 @@ class PFTabsContainer(wx.Panel):
         mdc.SelectObject(canvas)
 
         selected = 0
-        color = wx.SystemSettings.GetColour( wx.SYS_COLOUR_3DFACE)
-        if 'wxGTK' in wx.PlatformInfo:
-            cr,cg,cb = color
-            cr -= 18
-            cb -= 18
-            cg -= 18
-            color = wx.Colour(cr, cg, cb)
 
-        mdc.SetBackground (wx.Brush(color))
+        mdc.SetBackground (wx.Brush(self.GetBackgroundColour()))
 #        mdc.SetBackground (wx.Brush((66,113,202)))
         mdc.Clear()
 
