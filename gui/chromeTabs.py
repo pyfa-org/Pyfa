@@ -283,7 +283,7 @@ class PFTabRenderer:
         mdc.SelectObject(ebmp)
         mdc.SetFont(self.font)
         textSizeX, textSizeY = mdc.GetTextExtent(self.text)
-        totalSize = self.leftWidth + self.rightWidth + textSizeX + self.closeBtnWidth/2 + 16
+        totalSize = self.leftWidth + self.rightWidth + textSizeX + self.closeBtnWidth/2 + 16 + self.padding*2
         mdc.SelectObject(wx.NullBitmap)
         return (totalSize, self.tabHeight)
 
@@ -442,24 +442,24 @@ class PFTabRenderer:
         text = self.text
         fnwidths = mdc.GetPartialTextExtents(text)
         count = 0
-        maxsize = self.tabWidth - textStart - self.rightWidth - self.padding
+        maxsize = self.tabWidth - textStart - self.rightWidth - self.padding*2
         for i in fnwidths:
             if i <= maxsize:
                 count +=1
             else:
                 break
+        if count > 2:
+            text = "%s%s" % (text[:count-2],".." if len(text)>count else "")
+    #        text = "%s" % text[:count]
 
-#        text = "%s%s" % (text[:count],"." if len(text)>count else "")
-        text = "%s" % text[:count]
+            tx,ty = mdc.GetTextExtent(text)
+            if self.selected:
+                mdc.SetTextForeground(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW))
+            else:
+                color = self.CalculateColor(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW), 0x11)
+                mdc.SetTextForeground(color)
 
-        tx,ty = mdc.GetTextExtent(text)
-        if self.selected:
-            mdc.SetTextForeground(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT))
-        else:
-            color = self.CalculateColor(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT), 0x44)
-            mdc.SetTextForeground(color)
-
-        mdc.DrawText(text, textStart , height / 2 - ty / 2)
+            mdc.DrawText(text, textStart + self.padding , height / 2 - ty / 2)
 
 #        mdc.DestroyClippingRegion()
         if self.closeButton:
@@ -979,7 +979,8 @@ class PFTabsContainer(wx.Panel):
                 tabMinWidth = mw
             if tabMaxWidth < mw:
                 tabMaxWidth = mw
-
+        if tabMaxWidth < 100:
+            tabMaxWidth = 100
         if self.GetTabsCount() >0:
             if (self.GetTabsCount()) * (tabMaxWidth - self.inclination * 2) > self.tabContainerWidth:
                 self.tabMinWidth = float(self.tabContainerWidth) / float(self.GetTabsCount()) + self.inclination * 2
@@ -990,8 +991,7 @@ class PFTabsContainer(wx.Panel):
             self.tabMinWidth = 1
         for tab in self.tabs:
             w,h = tab.GetSize()
-            if w != self.tabMinWidth:
-                tab.SetSize( (self.tabMinWidth, self.height) )
+            tab.SetSize( (self.tabMinWidth, self.height) )
 
         if self.GetTabsCount() > 0:
             self.UpdateTabFX()
