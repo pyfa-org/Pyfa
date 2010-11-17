@@ -37,6 +37,7 @@ import aboutData
 import gui.fittingView as fv
 from wx._core import PyDeadObjectError
 import os.path
+import gui.chromeTabs
 
 #dummy panel no paint no erasebk
 class PFPanel(wx.Panel):
@@ -87,14 +88,15 @@ class MainFrame(wx.Frame):
 
         self.FitviewAdditionsPanel.SetSizer(faSizer)
 
-        self.notebookBrowsers = wx.Notebook(self.splitter, wx.ID_ANY)
-        self.notebookBrowsers.Bind(wx.EVT_LEFT_DOWN, self.mouseHit)
+#        self.notebookBrowsers = wx.Notebook(self.splitter, wx.ID_ANY)
+        self.notebookBrowsers = gui.chromeTabs.PFNotebook(self.splitter, False)
+#        self.notebookBrowsers.Bind(wx.EVT_LEFT_DOWN, self.mouseHit)
 
         self.marketBrowser = MarketBrowser(self.notebookBrowsers)
-        self.notebookBrowsers.AddPage(self.marketBrowser, "Market")
+        self.notebookBrowsers.AddPage(self.marketBrowser, "Market", showClose = False)
 
         self.shipBrowser = ShipBrowser(self.notebookBrowsers)
-        self.notebookBrowsers.AddPage(self.shipBrowser, "Ships")
+        self.notebookBrowsers.AddPage(self.shipBrowser, "Ships", showClose = False)
         self.notebookBrowsers.SetSelection(1)
 
         self.splitter.SplitVertically(self.notebookBrowsers, self.FitviewAdditionsPanel)
@@ -135,10 +137,10 @@ class MainFrame(wx.Frame):
     def getActiveView(self):
         sel = self.fitMultiSwitch.GetSelectedPage()
 
-    def mouseHit(self, event):
-        tab, _ = self.notebookBrowsers.HitTest(event.Position)
-        if tab != -1:
-            self.notebookBrowsers.SetSelection(tab)
+#    def mouseHit(self, event):
+#        tab, _ = self.notebookBrowsers.HitTest(event.Position)
+#        if tab != -1:
+#            self.notebookBrowsers.SetSelection(tab)
 
     def CloseCurrentFit(self, evt):
         self.fitMultiSwitch.removeCurrentTab()

@@ -71,7 +71,7 @@ class PageAdding(_PageAdding, VetoAble):
         VetoAble.__init__(self)
 
 class PFNotebook(wx.Panel):
-    def __init__(self, parent):
+    def __init__(self, parent, canAdd = True):
         wx.Panel.__init__(self, parent, wx.ID_ANY,size = (-1,-1))
 
         self.pages = []
@@ -81,7 +81,7 @@ class PFNotebook(wx.Panel):
 
         tabsSizer = wx.BoxSizer( wx.VERTICAL )
 
-        self.tabsContainer = PFTabsContainer(self)
+        self.tabsContainer = PFTabsContainer(self, canAdd = canAdd)
         tabsSizer.Add( self.tabsContainer, 0, wx.EXPAND )
 
         mainSizer.Add( tabsSizer, 0, wx.EXPAND, 5 )
@@ -417,8 +417,8 @@ class PFTabRenderer:
 
     def InitColors(self):
         self.tabColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
-        self.leftColor = self.CalculateColor(self.tabColor, 0x2F)
-        self.rightColor = self.CalculateColor(self.tabColor, 0x44)
+        self.leftColor = self.CalculateColor(self.tabColor, 0x1F)
+        self.rightColor = self.CalculateColor(self.tabColor, 0x0F)
         self.gradientStartColor = self.CalculateColor(self.tabColor, 0x17 if self.selected else 0x20)
 
     def CalculateColor(self, color, delta):
@@ -426,7 +426,7 @@ class PFTabRenderer:
         if bkR + bkG + bkB > 127*3:
             scale = - delta
         else:
-            scale = delta*2
+            scale = delta
 
         r = bkR + scale
         g = bkG + scale
@@ -491,9 +491,9 @@ class PFTabRenderer:
 
             tx,ty = mdc.GetTextExtent(text)
             if self.selected:
-                mdc.SetTextForeground(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW))
+                mdc.SetTextForeground(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT))
             else:
-                color = self.CalculateColor(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW), 0x11)
+                color = self.CalculateColor(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT), 0x2F)
                 mdc.SetTextForeground(color)
 
             mdc.DrawText(text, textStart + self.padding , height / 2 - ty / 2)
@@ -617,7 +617,7 @@ class PFAddRenderer:
 
 
 class PFTabsContainer(wx.Panel):
-    def __init__(self, parent, pos = (0,0), size = (100,24), id = wx.ID_ANY):
+    def __init__(self, parent, pos = (0,0), size = (100,22), id = wx.ID_ANY, canAdd = True):
         wx.Panel.__init__(self, parent, id , pos, size)
         self.tabs = []
         width, height = size
@@ -633,6 +633,8 @@ class PFTabsContainer(wx.Panel):
         self.dragy = 0
         self.draggedTab = None
         self.dragTrigger = self.dragTrail
+
+        self.showAddButton = canAdd
 
         self.tabContainerWidth = width - self.reserved
         self.tabMinWidth = width
@@ -773,6 +775,8 @@ class PFTabsContainer(wx.Panel):
         return False
 
     def CheckAddButton(self, mposx,mposy):
+        if not self.showAddButton:
+            return
         reg = self.addButton.GetRegion()
         ax,ay = self.addButton.GetPosition()
         reg.Offset(ax,ay)
@@ -922,8 +926,9 @@ class PFTabsContainer(wx.Panel):
             tabsWidth += tab.tabWidth - self.inclination*2
 
         pos = tabsWidth
-        ax,ay = self.addButton.GetPosition()
-        mdc.DrawBitmap(self.addBitmap, ax, ay, True)
+        if self.showAddButton:
+            ax,ay = self.addButton.GetPosition()
+            mdc.DrawBitmap(self.addBitmap, ax, ay, True)
 
         for i in xrange(len(self.tabs) - 1, -1, -1):
             tab = self.tabs[i]

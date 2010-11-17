@@ -24,6 +24,7 @@ from gui.droneView import DroneView
 from gui.implantView import ImplantView
 from gui.projectedView import ProjectedView
 from gui.pyfatogglepanel import TogglePanel
+import gui.chromeTabs
 
 class AdditionsPane(TogglePanel):
 
@@ -39,17 +40,18 @@ class AdditionsPane(TogglePanel):
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
-        self.notebook = wx.Notebook(pane)
+#        self.notebook = wx.Notebook(pane)
+        self.notebook = gui.chromeTabs.PFNotebook(pane, False)
         size = wx.Size()
         size.SetHeight(200)
         self.notebook.SetMinSize(size)
         baseSizer.Add(self.notebook, 1, wx.EXPAND)
-        self.notebook.AddPage(DroneView(self.notebook), "Drones")
-        self.notebook.AddPage(ImplantView(self.notebook), "Implants")
-        self.notebook.AddPage(BoosterView(self.notebook), "Boosters")
+        self.notebook.AddPage(DroneView(self.notebook), "Drones", showClose = False)
+        self.notebook.AddPage(ImplantView(self.notebook), "Implants", showClose = False)
+        self.notebook.AddPage(BoosterView(self.notebook), "Boosters", showClose = False)
 
         self.projectedPage = ProjectedView(self.notebook)
-        self.notebook.AddPage(self.projectedPage, "Projected")
+        self.notebook.AddPage(self.projectedPage, "Projected", showClose = False)
 
 
     PANES = ["Drones", "Implants", "Boosters"]
