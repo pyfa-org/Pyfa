@@ -100,6 +100,9 @@ class FittingView(d.Display):
         self.Bind(wx.EVT_RIGHT_DOWN, self.click)
         self.parent.Bind(gui.chromeTabs.EVT_NOTEBOOK_PAGE_CHANGED, self.pageChanged)
 
+    def Destroy(self):
+        self.parent.Unbind(gui.chromeTabs.EVT_NOTEBOOK_PAGE_CHANGED, handler=self.pageChanged)
+
     def pageChanged(self, event):
         if self.parent.IsActive(self):
             fitID = self.getActiveFit()

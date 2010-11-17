@@ -102,7 +102,7 @@ class PFNotebook(wx.Panel):
         return self.pages[i]
 
     def SetPage(self, i, page):
-        if i >= len(self.pages):
+        if i >= len(self.pages) or i is None or page is None:
             return
 
         oldPage = self.pages[i]
@@ -123,7 +123,7 @@ class PFNotebook(wx.Panel):
         return self.activePage
 
     def GetPageIndex(self, page):
-        return self.pages.index(page)
+        return self.pages.index(page) if page in self.pages else None
 
     def GetSelection(self):
         return self.GetPageIndex(self.activePage)
