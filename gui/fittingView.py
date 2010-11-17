@@ -77,7 +77,7 @@ class FittingView(d.Display):
                     ]
 
     def __init__(self, parent):
-        d.Display.__init__(self, parent)
+        d.Display.__init__(self, parent, size = (0,0))
         self.Show(False)
         self.parent = parent
         self.mainFrame.Bind(FIT_CHANGED, self.fitChanged)
