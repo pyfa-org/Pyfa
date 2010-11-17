@@ -14,10 +14,9 @@ class ModuleAmmoPicker(ContextMenu):
         if self.mainFrame.getActiveFit() is None or context not in ("module", "projectedModule"):
             return False
 
-        if context == "module":
-            modules = self.mainFrame.getFittingView().getSelectedMods()
-        else:
-            modules = (selection[0],)
+        modules = selection if context == "module" else (selection[0],)
+
+
         validCharges = None
         for mod in modules:
             currCharges = mod.getValidCharges()

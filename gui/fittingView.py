@@ -251,17 +251,19 @@ class FittingView(d.Display):
         cFit = service.Fit.getInstance()
         selection = []
         sel = self.GetFirstSelected()
-        contexts = []
-        if sel != -1:
+        contexts = set()
+        while sel != -1:
             mod = self.mods[self.GetItemData(sel)]
             if not mod.isEmpty:
-                contexts.append("module")
+                contexts.add("module")
                 if mod.charge is not None and "ammo" not in contexts:
-                    contexts.append("ammo")
+                    contexts.add("ammo")
 
                 selection.append(mod)
 
-        contexts.append("ship")
+            sel = self.GetNextSelected(sel)
+
+        contexts.add("ship")
 
         menu = ContextMenu.getMenu(selection, *contexts)
         self.PopupMenu(menu)
