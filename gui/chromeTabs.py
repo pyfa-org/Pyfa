@@ -176,11 +176,16 @@ class PFNotebook(wx.Panel):
         self.pages[src], self.pages[dest] = self.pages[dest], self.pages[src]
 
     def ShowActive(self):
-        self.Freeze()
-        self.activePage.SetSize(self.pageContainer.GetSize())
+        size = self.pageContainer.GetSize()
+        bx = wx.SystemSettings_GetMetric(wx.SYS_EDGE_X)
+        by = wx.SystemSettings_GetMetric(wx.SYS_EDGE_Y)
+        ww,wh = size
+        ww -= bx * 2
+        wh -= by * 2
+        self.activePage.SetSize((ww,wh))
         self.activePage.Show()
         self.Layout()
-        self.Thaw()
+
 
     def IsActive(self, page):
         return self.activePage == page
@@ -612,7 +617,7 @@ class PFAddRenderer:
 
 
 class PFTabsContainer(wx.Panel):
-    def __init__(self, parent, pos = (0,0), size = (100,27), id = wx.ID_ANY):
+    def __init__(self, parent, pos = (0,0), size = (100,24), id = wx.ID_ANY):
         wx.Panel.__init__(self, parent, id , pos, size)
         self.tabs = []
         width, height = size
