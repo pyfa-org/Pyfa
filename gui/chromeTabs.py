@@ -863,7 +863,7 @@ class PFTabsContainer(wx.Panel):
 
         selected = 0
 
-        mdc.SetBackground (wx.Brush(wx.SystemSettings.GetColour( wx.SYS_COLOUR_BACKGROUND)))
+        mdc.SetBackground (wx.Brush(wx.SystemSettings.GetColour( wx.SYS_COLOUR_3DFACE if 'wxMSW' in wx.PlatformInfo else wx.SYS_COLOUR_WINDOW)))
 #        mdc.SetBackground (wx.Brush((66,113,202)))
         mdc.Clear()
 
