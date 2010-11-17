@@ -138,6 +138,8 @@ class FittingView(d.Display):
             self.activeFitID = fitID
             self.Show(fitID is not None)
             self.slotsChanged()
+            sFit = service.Fit.getInstance()
+            sFit.switchFit(fitID)
             wx.PostEvent(self.mainFrame, FitChanged(fitID=fitID))
             self.updateTab()
 
