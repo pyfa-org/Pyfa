@@ -154,5 +154,5 @@ class DroneView(d.Display):
             cFit = service.Fit.getInstance()
             fit = cFit.getFit(self.mainFrame.getActiveFit())
 
-            menu = ContextMenu.getMenu((fit.drones[sel],), "drone")
+            menu = ContextMenu.getMenu((self.drones[sel],), "drone")
             self.PopupMenu(menu)

@@ -308,12 +308,17 @@ class Fit(object):
         fit = eos.db.getFit(fitID)
         item = eos.db.getItem(itemID, eager=("attributes", "group.category"))
         if item.category.name == "Drone":
-            d = fit.drones.find(item)
-            if d is None or d.amountActive == d.amount or d.amount >= max(5, fit.extraAttributes["maxActiveDrones"]):
-                d = eos.types.Drone(item)
-                fit.drones.append(d)
+            drone = None
+            for d in fit.drones.find(item):
+                if d is not None and d.amountActive == 0 and d.amount < max(5, fit.extraAttributes["maxActiveDrones"]):
+                    drone = d
+                    break
 
-            d.amount += 1
+            if drone is None:
+                drone = eos.types.Drone(item)
+                fit.drones.append(drone)
+
+            drone.amount += 1
             eos.db.commit()
             fit.clear()
             fit.calculateModifiedAttributes()
