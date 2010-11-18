@@ -495,7 +495,7 @@ class AvailableImplantsView(d.Display):
                     "attr:implantness"]
 
     def __init__(self, parent, style):
-        d.Display.__init__(self, parent, style)
+        d.Display.__init__(self, parent, style=style)
 
 class APIView (wx.Panel):
     def __init__(self, parent):
