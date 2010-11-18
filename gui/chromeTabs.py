@@ -676,17 +676,18 @@ class PFTabsContainer(wx.Panel):
 
     def OnLeftDown(self, event):
         mposx,mposy = event.GetPosition()
-        if not self.startDrag:
-            tab = self.FindTabAtPos(mposx, mposy)
-            if tab:
-                self.CheckTabSelected(tab, mposx, mposy)
-                self.startDrag = True
-                tx,ty = tab.GetPosition()
-                self.dragx = mposx - tx
-                self.dragy = self.containerHeight - self.height
-                self.Refresh()
+        if self.showAddButton:
+            if not self.startDrag:
+                tab = self.FindTabAtPos(mposx, mposy)
+                if tab:
+                    self.CheckTabSelected(tab, mposx, mposy)
+                    self.startDrag = True
+                    tx,ty = tab.GetPosition()
+                    self.dragx = mposx - tx
+                    self.dragy = self.containerHeight - self.height
+                    self.Refresh()
 
-            self.draggedTab = tab
+                self.draggedTab = tab
 
     def OnLeftUp(self, event):
         mposx,mposy = event.GetPosition()
