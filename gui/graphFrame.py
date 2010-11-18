@@ -155,15 +155,18 @@ class GraphFrame(wx.Frame):
         self.subplot.grid(True)
 
         for fit in self.fits:
-            success, status = view.getPoints(fit, values)
-            if not success:
-                #TODO: Add a pwetty statys bar to report errors with
-                self.SetStatusText(status)
-                return
+            try:
+                success, status = view.getPoints(fit, values)
+                if not success:
+                    #TODO: Add a pwetty statys bar to report errors with
+                    self.SetStatusText(status)
+                    return
 
-            x, y = success, status
+                x, y = success, status
 
-            self.subplot.plot(x, y)
+                self.subplot.plot(x, y)
+            except:
+                self.SetStatusText("Invalid values in '%s'" % fit.name)
 
         self.canvas.draw()
         self.SetStatusText("")
@@ -171,10 +174,7 @@ class GraphFrame(wx.Frame):
             event.Skip()
 
     def onFieldChanged(self, event):
-        try:
-            self.draw()
-        except:
-            self.SetStatusText("Invalid values")
+        self.draw()
 
     def AppendFitToList(self, fitID):
         sFit = service.Fit.getInstance()
