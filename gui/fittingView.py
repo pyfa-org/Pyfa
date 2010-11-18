@@ -105,9 +105,12 @@ class FittingView(d.Display):
 
         self.SetDropTarget(FittingViewDrop(self.swapItems))
         self.activeFitID = None
+        self.FVsnapshot = None
+
         self.Bind(wx.EVT_KEY_UP, self.kbEvent)
         self.Bind(wx.EVT_LEFT_DOWN, self.click)
         self.Bind(wx.EVT_RIGHT_DOWN, self.click)
+        self.Bind(wx.EVT_SHOW, self.OnShow)
         self.parent.Bind(gui.chromeTabs.EVT_NOTEBOOK_PAGE_CHANGED, self.pageChanged)
 
     def Destroy(self):
@@ -363,3 +366,34 @@ class FittingView(d.Display):
                 icolor = self.GetItemBackgroundColour(i)
                 if icolor != bkcolor:
                     self.SetItemBackgroundColour(i, bkcolor)
+
+    def OnShow(self, event):
+        if not event.GetShow():
+            self.Snapshot()
+        event.Skip()
+
+    def CanUseSnapshot(self):
+        return True
+
+    def Snapshot(self):
+
+        if self.FVsnapshot:
+            del self.FVsnapshot
+
+        rect = self.GetRect()
+        if rect.height >400:
+            rect.height = 400
+        if rect.width > 576:
+            rect.width = 576
+
+        mdc = wx.MemoryDC()
+        mbmp = wx.EmptyBitmap(rect.width, rect.height)
+        mdc.SelectObject(mbmp)
+
+        pageDC = wx.ClientDC(self)
+
+        mdc.Blit(0, 0, rect.width, rect.height, pageDC, 0, 0)
+
+        mdc.SelectObject(wx.NullBitmap)
+
+        self.FVsnapshot = mbmp

@@ -10,6 +10,7 @@
 
 import wx
 import copy
+import time
 from gui import bitmapLoader
 
 _PageChanging, EVT_NOTEBOOK_PAGE_CHANGING = wx.lib.newevent.NewEvent()
@@ -653,6 +654,16 @@ class PFTabsContainer(wx.Panel):
         self.addButton = PFAddRenderer()
         self.addBitmap = self.addButton.Render()
 
+        self.previewTimer = None
+        self.previewTimerID = wx.ID_ANY
+        self.previewWnd = None
+        self.previewBmp = None
+        self.previewPos = None
+        self.previewTab = None
+
+        self.Bind(wx.EVT_TIMER, self.OnTimer)
+        self.Bind(wx.EVT_LEAVE_WINDOW, self.OnLeaveWindow)
+
         self.Bind(wx.EVT_PAINT, self.OnPaint)
         self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnErase)
         self.Bind(wx.EVT_LEFT_DOWN, self.OnLeftDown)
@@ -917,8 +928,35 @@ class PFTabsContainer(wx.Panel):
         self.CheckCloseButtons(mposx, mposy)
 
         self.CheckAddHighlighted(mposx,mposy)
-
+        self.CheckTabPreview(mposx, mposy)
         event.Skip()
+
+    def CheckTabPreview(self, mposx, mposy):
+        if self.previewWnd:
+            self.previewWnd.Show(False)
+            del self.previewWnd
+            self.previewWnd = None
+        if self.previewTimer:
+            if self.previewTimer.IsRunning():
+                if self.previewWnd:
+                    self.previewTimer.Stop()
+                return
+        for tab in self.tabs:
+            if not tab.GetSelected():
+                if self.TabHitTest(tab, mposx, mposy):
+                    try:
+                        page = self.Parent.GetPage(self.GetTabIndex(tab))
+                        if page.CanUseSnapshot():
+                            if not self.previewTimer:
+                                self.previewTimer = wx.Timer(self, self.previewTimerID)
+
+                            self.previewTab = tab
+                            self.previewBmp = page.FVsnapshot
+                            self.previewTimer.Start(1500, True)
+                            break
+                    except:
+                        pass
+
 
     def CheckAddHighlighted(self, mposx, mposy):
         if not self.showAddButton:
@@ -1117,3 +1155,116 @@ class PFTabsContainer(wx.Panel):
         b = min(max(b,0),255)
 
         return wx.Colour(r,g,b)
+
+    def OnLeaveWindow(self, event):
+        if self.previewWnd:
+            self.previewWnd.Show(False)
+            del self.previewWnd
+            self.previewWnd = None
+        event.Skip()
+
+    def OnTimer(self, event):
+        mposx, mposy = wx.GetMousePosition()
+        cposx, cposy = self.ScreenToClient((mposx, mposy))
+        if self.FindTabAtPos(cposx, cposy) == self.previewTab:
+            if not self.previewTab.GetSelected():
+
+                self.previewWnd = PFNotebookPagePreview(self,(mposx+3,mposy+3), self.previewBmp, self.previewTab.text)
+                self.previewWnd.Show()
+
+        event.Skip()
+
+class PFNotebookPagePreview(wx.Frame):
+    def __init__ (self,parent, pos, bitmap, title):
+        wx.Frame.__init__(self, parent, id = wx.ID_ANY, title = wx.EmptyString, pos = pos, size = wx.DefaultSize, style =
+                                                               wx.NO_BORDER
+                                                             | wx.FRAME_NO_TASKBAR
+                                                             | wx.STAY_ON_TOP)
+        img = bitmap.ConvertToImage()
+        img = img.ConvertToGreyscale()
+        bitmap = wx.BitmapFromImage(img)
+        self.title = title
+        self.bitmap = bitmap
+        self.SetSize((bitmap.GetWidth(), bitmap.GetHeight()))
+        self.Bind(wx.EVT_PAINT,self.OnWindowPaint)
+        self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnWindowEraseBk)
+        self.Bind(wx.EVT_TIMER, self.OnTimer)
+
+        self.timer = wx.Timer(self,wx.ID_ANY)
+        self.timerSleep = None
+        self.timerSleepId = wx.NewId()
+        self.direction = 1
+        self.transp = 0
+        self.SetSize((bitmap.GetWidth(),bitmap.GetHeight()))
+
+        self.SetTransparent(0)
+        self.Refresh()
+
+    def OnTimer(self, event):
+        if event.GetId() == self.timerSleepId:
+            self.direction = -1
+            self.timer.Start(10)
+            return
+        self.transp += 20*self.direction
+        if self.transp > 240:
+            self.transp = 240
+            self.timer.Stop()
+            if not self.timerSleep:
+                self.timerSleep = wx.Timer(self, self.timerSleepId)
+            self.timerSleep.Start(5000, True)
+
+        if self.transp < 0:
+            self.transp = 0
+            self.timer.Stop()
+            wx.Frame.Show(self,False)
+            self.Destroy()
+            return
+        self.SetTransparent(self.transp)
+
+    def RaiseParent(self):
+        wnd = self
+        lastwnd = None
+        while wnd is not None:
+            lastwnd = wnd
+            wnd = wnd.Parent
+        if lastwnd:
+            lastwnd.Raise()
+
+    def Show(self, showWnd = True):
+        if showWnd:
+            wx.Frame.Show(self, showWnd)
+            self.RaiseParent()
+            self.direction = 1
+            self.timer.Start(10)
+        else:
+            self.direction = -1
+            self.timer.Start(10)
+
+
+    def OnWindowEraseBk(self,event):
+        pass
+
+    def OnWindowPaint(self,event):
+        rect = self.GetRect()
+        canvas = wx.EmptyBitmap(rect.width, rect.height)
+        mdc = wx.BufferedPaintDC(self)
+        mdc.SelectObject(canvas)
+        color = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOWTEXT)
+        mdc.SetBackground(wx.Brush(color))
+        mdc.Clear()
+
+        font = wx.FontFromPixelSize((0,14), wx.SWISS, wx.NORMAL,wx.NORMAL, False)
+        mdc.SetFont(font)
+
+        x,y = mdc.GetTextExtent(self.title)
+
+        mdc.SetTextForeground(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW))
+
+        mdc.DrawText(self.title, (rect.width - x)/2, (16 -y)/2)
+
+        mdc.DrawBitmap(self.bitmap, 0, 16)
+
+        mdc.SetPen( wx.Pen("#000000", width = 1 ) )
+        mdc.SetBrush( wx.TRANSPARENT_BRUSH )
+
+        mdc.DrawRectangle( 0, 16, rect.width,rect.height - 16)
