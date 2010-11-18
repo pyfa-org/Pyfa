@@ -41,9 +41,19 @@ class FitSpawner(gui.multiSwitch.TabSpawner):
         mainFrame.Bind(gui.shipBrowser.EVT_FIT_SELECTED, self.fitSelected)
 
     def fitSelected(self, event):
-        view = FittingView(self.multiSwitch)
-        self.multiSwitch.ReplaceActivePage(view)
-        view.fitSelected(event)
+        count = -1
+        for index, page in enumerate(self.multiSwitch.pages):
+            try:
+                if page.activeFitID == event.fitID:
+                    count +=1
+                    self.multiSwitch.SetSelection(index)
+                    break
+            except:
+                pass
+        if count <0:
+            view = FittingView(self.multiSwitch)
+            self.multiSwitch.ReplaceActivePage(view)
+            view.fitSelected(event)
 
 FitSpawner.register()
 
@@ -81,7 +91,7 @@ class FittingView(d.Display):
         self.Show(False)
         self.parent = parent
         self.mainFrame.Bind(FIT_CHANGED, self.fitChanged)
-        self.mainFrame.Bind(gui.shipBrowser.EVT_FIT_SELECTED, self.fitSelected)
+#        self.mainFrame.Bind(gui.shipBrowser.EVT_FIT_SELECTED, self.fitSelected)
         self.mainFrame.Bind(gui.shipBrowser.EVT_FIT_RENAMED, self.fitRenamed)
         self.mainFrame.Bind(gui.shipBrowser.EVT_FIT_REMOVED, self.fitRemoved)
         self.mainFrame.Bind(gui.marketBrowser.ITEM_SELECTED, self.appendItem)
@@ -103,7 +113,7 @@ class FittingView(d.Display):
     def Destroy(self):
         self.parent.Unbind(gui.chromeTabs.EVT_NOTEBOOK_PAGE_CHANGED, handler=self.pageChanged)
         self.mainFrame.Unbind(FIT_CHANGED, handler=self.fitChanged)
-        self.mainFrame.Unbind(gui.shipBrowser.EVT_FIT_SELECTED, handler=self.fitSelected)
+#        self.mainFrame.Unbind(gui.shipBrowser.EVT_FIT_SELECTED, handler=self.fitSelected)
         self.mainFrame.Unbind(gui.shipBrowser.EVT_FIT_RENAMED, handler=self.fitRenamed)
         self.mainFrame.Unbind(gui.shipBrowser.EVT_FIT_REMOVED, handler=self.fitRemoved)
         self.mainFrame.Unbind(gui.marketBrowser.ITEM_SELECTED, handler=self.appendItem)
