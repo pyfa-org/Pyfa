@@ -116,6 +116,11 @@ class PFNotebook(wx.Panel):
         wsize = self.pageContainer.GetSize()
         bx = wx.SystemSettings_GetMetric(wx.SYS_EDGE_X)
         by = wx.SystemSettings_GetMetric(wx.SYS_EDGE_Y)
+        if bx<0:
+            bx = 0
+        if by<0:
+            by = 0
+
         ww,wh = wsize
         ww -= bx * 2
         wh -= by * 2
@@ -226,6 +231,10 @@ class PFNotebook(wx.Panel):
         size = self.pageContainer.GetSize()
         bx = wx.SystemSettings_GetMetric(wx.SYS_EDGE_X)
         by = wx.SystemSettings_GetMetric(wx.SYS_EDGE_Y)
+        if bx<0:
+            bx = 0
+        if by<0:
+            by = 0
         ww,wh = size
         ww -= bx * 2
         wh -= by * 2
