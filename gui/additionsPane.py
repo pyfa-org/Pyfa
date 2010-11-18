@@ -52,6 +52,7 @@ class AdditionsPane(TogglePanel):
 
         self.projectedPage = ProjectedView(self.notebook)
         self.notebook.AddPage(self.projectedPage, "Projected", showClose = False)
+        self.notebook.SetSelection(0)
 
 
     PANES = ["Drones", "Implants", "Boosters"]

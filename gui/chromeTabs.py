@@ -155,6 +155,7 @@ class PFNotebook(wx.Panel):
         if oldsel != page:
             self.activePage.Hide()
             self.activePage = self.pages[page]
+            self.tabsContainer.SetSelected(page)
             self.ShowActive()
 
     def DeletePage(self, n, internal = False):
@@ -739,6 +740,11 @@ class PFTabsContainer(wx.Panel):
             if tab.GetSelected():
                 return self.tabs.index(tab)
         return None
+
+    def SetSelected(self, tabIndex):
+        oldSelTab = self.GetSelectedTab()
+        oldSelTab.SetSelected(False)
+        self.tabs[tabIndex].SetSelected(True)
 
     def CheckTabSelected(self,tab, mposx, mposy):
         oldSelTab = self.GetSelectedTab()
