@@ -1026,7 +1026,7 @@ class PFTabsContainer(wx.Panel):
         for tab in self.tabs:
             tab.SetSelected(False)
 
-    def DeleteTab(self, tab):
+    def DeleteTab(self, tab, external = False):
         tabRenderer = self.tabs[tab]
         wasSelected = tabRenderer.GetSelected()
         self.tabs.remove(tabRenderer)
@@ -1039,8 +1039,8 @@ class PFTabsContainer(wx.Panel):
                 self.tabs[self.GetTabsCount() - 1].SetSelected(True)
             else:
                 self.tabs[tab].SetSelected(True)
-
-        self.Parent.DeletePage(tab, True)
+        if not external:
+            self.Parent.DeletePage(tab, True)
 
         self.AdjustTabsSize()
         self.Refresh()
