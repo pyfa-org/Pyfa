@@ -745,6 +745,7 @@ class PFTabsContainer(wx.Panel):
         oldSelTab = self.GetSelectedTab()
         oldSelTab.SetSelected(False)
         self.tabs[tabIndex].SetSelected(True)
+        self.Refresh()
 
     def CheckTabSelected(self,tab, mposx, mposy):
         oldSelTab = self.GetSelectedTab()
