@@ -114,23 +114,27 @@ class PFNotebook(wx.Panel):
         self.pages[i] = page
         if oldPage == self.activePage:
             self.activePage = page
+            page.Show()
 
         oldPage.Destroy()
         page.Reparent(self.pageContainer)
         wsize = self.pageContainer.GetSize()
-        bx = wx.SystemSettings_GetMetric(wx.SYS_EDGE_X)
-        by = wx.SystemSettings_GetMetric(wx.SYS_EDGE_Y)
+        bx, by = self.GetBorders()
+
+        ww,wh = wsize
+        ww -= bx * 6
+        wh -= by * 6
+        page.SetSize((ww,wh))
+        page.SetPosition((bx,by))
+
+    def GetBorders(self):
+        bx = wx.SystemSettings_GetMetric(wx.SYS_BORDER_X)
+        by = wx.SystemSettings_GetMetric(wx.SYS_BORDER_Y)
         if bx<0:
             bx = 1
         if by<0:
             by = 1
-
-        ww,wh = wsize
-        ww -= bx * 2
-        wh -= by * 2
-        page.SetSize((ww,wh))
-#        page.SetPosition((bx,by))
-        page.Show()
+        return (bx,by)
 
     def ReplaceActivePage(self, page):
         self.SetPage(self.GetSelection(), page)
@@ -191,12 +195,12 @@ class PFNotebook(wx.Panel):
 
     def ShowActive(self):
         size = self.pageContainer.GetSize()
-        bx = wx.SystemSettings_GetMetric(wx.SYS_EDGE_X)
-        by = wx.SystemSettings_GetMetric(wx.SYS_EDGE_Y)
+        bx, by = self.GetBorders()
         ww,wh = size
-        ww -= bx * 2
-        wh -= by * 2
+        ww -= bx * 6
+        wh -= by * 6
         self.activePage.SetSize((ww,wh))
+        self.activePage.SetPosition((bx,by))
         self.activePage.Show()
         self.Layout()
 
@@ -234,19 +238,14 @@ class PFNotebook(wx.Panel):
         self.tabsContainer.Refresh()
         self.Layout()
         size = self.pageContainer.GetSize()
-        bx = wx.SystemSettings_GetMetric(wx.SYS_EDGE_X)
-        by = wx.SystemSettings_GetMetric(wx.SYS_EDGE_Y)
-        if bx<0:
-            bx = 0
-        if by<0:
-            by = 0
+        bx,by = self.GetBorders()
         ww,wh = size
-        ww -= bx * 2
-        wh -= by * 2
+        ww -= bx * 6
+        wh -= by * 6
 
         if self.activePage:
             self.activePage.SetSize((ww,wh))
-#            self.activePage.SetPosition((bx,by))
+            self.activePage.SetPosition((bx,by))
         event.Skip()
 
 class PFTabRenderer:
