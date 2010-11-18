@@ -1570,7 +1570,7 @@ class FitItem(wx.Window):
             targetWnd = wx.FindWindowAtPointer()
 
             pjWnd = self.mainFrame.additionsPane.projectedPage
-            msWnd = self.mainFrame.fitMultiSwitch
+            msWnd = self.mainFrame.fitMultiSwitch.tabsContainer
             cfitWnd = self.mainFrame.fitMultiSwitch.GetCurrentPage()
             gfWnd = self.mainFrame.graphFrame
 
@@ -1579,15 +1579,15 @@ class FitItem(wx.Window):
 
             if targetWnd == cfitWnd:
                 wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fitID))
-            elif targetWnd == cfitWnd.view:
-                wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fitID))
-            elif targetWnd.Parent == cfitWnd.view:
-                wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fitID))
+#            elif targetWnd == cfitWnd.view:
+#                wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fitID))
+#            elif targetWnd.Parent == cfitWnd.view:
+#                wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fitID))
 
             elif targetWnd == msWnd:
 
                 if self.mainFrame.getActiveFit():
-                    self.mainFrame.fitMultiSwitch.AddTab()
+                    self.mainFrame.fitMultiSwitch.AddPage(wx.Panel(self,size = (0,0)))
                 wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fitID))
             elif targetWnd == pjWnd:
                 activeFit = self.mainFrame.getActiveFit()
