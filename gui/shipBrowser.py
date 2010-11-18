@@ -24,7 +24,8 @@ SearchSelected, EVT_SB_SEARCH_SEL = wx.lib.newevent.NewEvent()
 
 class ShipBrowser(wx.Panel):
     def __init__(self, parent):
-        wx.Panel.__init__ (self, parent,style = 0 if 'wxGTK' in wx.PlatformInfo else wx.DOUBLE_BORDER)
+        wx.Panel.__init__ (self, parent,style = 0)
+        # if 'wxGTK' in wx.PlatformInfo else wx.DOUBLE_BORDER)
 
         self._lastWidth = 0
         self._activeStage = 1

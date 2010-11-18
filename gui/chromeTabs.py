@@ -87,7 +87,11 @@ class PFNotebook(wx.Panel):
         mainSizer.Add( tabsSizer, 0, wx.EXPAND, 5 )
 
         contentSizer = wx.BoxSizer( wx.VERTICAL )
-        self.pageContainer = wx.Panel(self, style = wx.DOUBLE_BORDER)
+        if 'wxMSW' in wx.PlatformInfo:
+            style = wx.DOUBLE_BORDER
+        else:
+            style = wx.SIMPLE_BORDER
+        self.pageContainer = wx.Panel(self, style = style)
         self.pageContainer.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW))
         contentSizer.Add( self.pageContainer, 1, wx.EXPAND, 5 )
 
@@ -117,14 +121,15 @@ class PFNotebook(wx.Panel):
         bx = wx.SystemSettings_GetMetric(wx.SYS_EDGE_X)
         by = wx.SystemSettings_GetMetric(wx.SYS_EDGE_Y)
         if bx<0:
-            bx = 0
+            bx = 1
         if by<0:
-            by = 0
+            by = 1
 
         ww,wh = wsize
         ww -= bx * 2
         wh -= by * 2
         page.SetSize((ww,wh))
+#        page.SetPosition((bx,by))
         page.Show()
 
     def ReplaceActivePage(self, page):
@@ -241,6 +246,7 @@ class PFNotebook(wx.Panel):
 
         if self.activePage:
             self.activePage.SetSize((ww,wh))
+#            self.activePage.SetPosition((bx,by))
         event.Skip()
 
 class PFTabRenderer:
@@ -952,8 +958,8 @@ class PFTabsContainer(wx.Panel):
         mdc.SelectObject(canvas)
 
         selected = 0
-
-        mdc.SetBackground (wx.Brush(wx.SystemSettings_GetColour(wx.SYS_COLOUR_MENUBAR)))
+        color = self.GetBackgroundColour()
+        mdc.SetBackground (wx.Brush(color))
 
 #        mdc.SetBackground (wx.Brush((66,113,202)))
         mdc.Clear()
