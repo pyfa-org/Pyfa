@@ -122,8 +122,8 @@ class PFNotebook(wx.Panel):
         bx, by = self.GetBorders()
 
         ww,wh = wsize
-        ww -= bx * 6 if 'wxMSW' in wx.PlatformInfo else 4
-        wh -= by * 6 if 'wxMSW' in wx.PlatformInfo else 4
+        ww -= bx * 4 if 'wxGTK' in wx.PlatformInfo else 6
+        wh -= by * 4 if 'wxGTK' in wx.PlatformInfo else 6
         page.SetSize((ww,wh))
         page.SetPosition((bx,by))
 
@@ -197,8 +197,8 @@ class PFNotebook(wx.Panel):
         size = self.pageContainer.GetSize()
         bx, by = self.GetBorders()
         ww,wh = size
-        ww -= bx * 6 if 'wxMSW' in wx.PlatformInfo else 4
-        wh -= by * 6 if 'wxMSW' in wx.PlatformInfo else 4
+        ww -= bx * 4 if 'wxGTK' in wx.PlatformInfo else 6
+        wh -= by * 4 if 'wxGTK' in wx.PlatformInfo else 6
         self.activePage.SetSize((ww,wh))
         self.activePage.SetPosition((bx,by))
         self.activePage.Show()
@@ -240,8 +240,8 @@ class PFNotebook(wx.Panel):
         size = self.pageContainer.GetSize()
         bx,by = self.GetBorders()
         ww,wh = size
-        ww -= bx * 6 if 'wxMSW' in wx.PlatformInfo else 4
-        wh -= by * 6 if 'wxMSW' in wx.PlatformInfo else 4
+        ww -= bx * 4 if 'wxGTK' in wx.PlatformInfo else 6
+        wh -= by * 4 if 'wxGTK' in wx.PlatformInfo else 6
 
         if self.activePage:
             self.activePage.SetSize((ww,wh))
@@ -957,7 +957,8 @@ class PFTabsContainer(wx.Panel):
         mdc.SelectObject(canvas)
 
         selected = 0
-        color = self.GetBackgroundColour()
+        color = wx.SystemSettings_GetColour(wx.SYS_COLOUR_3DFACE)
+        print color, self.GetBackgroundColour()
         mdc.SetBackground (wx.Brush(color))
 
 #        mdc.SetBackground (wx.Brush((66,113,202)))
