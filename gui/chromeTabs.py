@@ -122,8 +122,8 @@ class PFNotebook(wx.Panel):
         bx, by = self.GetBorders()
 
         ww,wh = wsize
-        ww -= bx * 6
-        wh -= by * 6
+        ww -= bx * 6 if 'wxMSW' in wx.PlatformInfo else 4
+        wh -= by * 6 if 'wxMSW' in wx.PlatformInfo else 4
         page.SetSize((ww,wh))
         page.SetPosition((bx,by))
 
@@ -197,8 +197,8 @@ class PFNotebook(wx.Panel):
         size = self.pageContainer.GetSize()
         bx, by = self.GetBorders()
         ww,wh = size
-        ww -= bx * 6
-        wh -= by * 6
+        ww -= bx * 6 if 'wxMSW' in wx.PlatformInfo else 4
+        wh -= by * 6 if 'wxMSW' in wx.PlatformInfo else 4
         self.activePage.SetSize((ww,wh))
         self.activePage.SetPosition((bx,by))
         self.activePage.Show()
@@ -240,8 +240,8 @@ class PFNotebook(wx.Panel):
         size = self.pageContainer.GetSize()
         bx,by = self.GetBorders()
         ww,wh = size
-        ww -= bx * 6
-        wh -= by * 6
+        ww -= bx * 6 if 'wxMSW' in wx.PlatformInfo else 4
+        wh -= by * 6 if 'wxMSW' in wx.PlatformInfo else 4
 
         if self.activePage:
             self.activePage.SetSize((ww,wh))
