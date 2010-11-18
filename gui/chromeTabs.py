@@ -100,8 +100,7 @@ class PFNotebook(wx.Panel):
         self.SetSizer( mainSizer )
         self.Bind(wx.EVT_SIZE, self.OnSize)
         self.Layout()
-#        for i in xrange(10):
-#            self.tabsContainer.AddTab("Pyfa TAB #%d Aw" % i)
+
 
     def GetPage(self, i):
         return self.pages[i]
@@ -113,19 +112,15 @@ class PFNotebook(wx.Panel):
         oldPage = self.pages[i]
         self.pages[i] = page
         if oldPage == self.activePage:
+            oldPage.Destroy()
             self.activePage = page
-            page.Show()
-
-        oldPage.Destroy()
+        else:
+            oldPage.Destroy()
         page.Reparent(self.pageContainer)
-        wsize = self.pageContainer.GetSize()
-        bx, by = self.GetBorders()
 
-        ww,wh = wsize
-        ww -= bx * 4 if 'wxGTK' in wx.PlatformInfo else 6
-        wh -= by * 4 if 'wxGTK' in wx.PlatformInfo else 6
-        page.SetSize((ww,wh))
-        page.SetPosition((bx,by))
+        if self.activePage == page:
+            self.ShowActive()
+
 
     def GetBorders(self):
         bx = wx.SystemSettings_GetMetric(wx.SYS_BORDER_X)
@@ -211,16 +206,10 @@ class PFNotebook(wx.Panel):
     def SetPageText(self, i, text, refresh=False):
         tab = self.tabsContainer.tabs[i]
         tab.text = text
-#        tab._Render()
-#        if refresh:
-#            self.Refresh()
 
     def SetPageIcon(self, i, icon, refresh=False):
         tab = self.tabsContainer.tabs[i]
         tab.tabImg = icon
-#        tab._Render()
-#        if refresh:
-#            self.Refresh()
 
     def SetPageTextIcon(self, i, text=wx.EmptyString, icon=None):
         self.SetPageText(i, text)
@@ -237,15 +226,9 @@ class PFNotebook(wx.Panel):
         self.tabsContainer.UpdateSize()
         self.tabsContainer.Refresh()
         self.Layout()
-        size = self.pageContainer.GetSize()
-        bx,by = self.GetBorders()
-        ww,wh = size
-        ww -= bx * 4 if 'wxGTK' in wx.PlatformInfo else 6
-        wh -= by * 4 if 'wxGTK' in wx.PlatformInfo else 6
 
         if self.activePage:
-            self.activePage.SetSize((ww,wh))
-            self.activePage.SetPosition((bx,by))
+            self.ShowActive()
         event.Skip()
 
 class PFTabRenderer:
