@@ -932,15 +932,18 @@ class PFTabsContainer(wx.Panel):
         event.Skip()
 
     def CheckTabPreview(self, mposx, mposy):
-        if self.previewWnd:
-            self.previewWnd.Show(False)
-            del self.previewWnd
-            self.previewWnd = None
+
         if self.previewTimer:
             if self.previewTimer.IsRunning():
                 if self.previewWnd:
                     self.previewTimer.Stop()
                 return
+
+        if self.previewWnd:
+            self.previewWnd.Show(False)
+            del self.previewWnd
+            self.previewWnd = None
+
         for tab in self.tabs:
             if not tab.GetSelected():
                 if self.TabHitTest(tab, mposx, mposy):
