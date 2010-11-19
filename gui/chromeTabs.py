@@ -1203,17 +1203,11 @@ class PFNotebookPagePreview(wx.Frame):
         self.Refresh()
 
     def OnTimer(self, event):
-#        if event.GetId() == self.timerSleepId:
-#            self.direction = -1
-#            self.timer.Start(10)
-#            return
         self.transp += 20*self.direction
+
         if self.transp > 240:
             self.transp = 240
             self.timer.Stop()
-#            if not self.timerSleep:
-#                self.timerSleep = wx.Timer(self, self.timerSleepId)
-#            self.timerSleep.Start(5000, True)
 
         if self.transp < 0:
             self.transp = 0
