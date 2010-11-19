@@ -80,7 +80,7 @@ class MainFrame(wx.Frame):
         faSizer = wx.BoxSizer(wx.VERTICAL)
 
         self.fitMultiSwitch = MultiSwitch(self.FitviewAdditionsPanel)
-        #self.fitMultiSwitch.AddTab()
+        #self.fitMultiSwitch.AddPage()
         faSizer.Add(self.fitMultiSwitch,1,wx.EXPAND)
 
         self.additionsPane = AdditionsPane(self.FitviewAdditionsPanel)
@@ -273,7 +273,7 @@ class MainFrame(wx.Frame):
 
 
     def HAddTab(self,event):
-        self.fitMultiSwitch.AddTab()
+        self.fitMultiSwitch.AddPage(wx.Panel(self), "Empty Tab")
 
     def toggleShipMarket(self, event):
         sel = self.notebookBrowsers.GetSelection()
