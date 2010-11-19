@@ -92,8 +92,8 @@ class DmgPatternEditorDlg (wx.Dialog):
         self.expbitmap = bitmapLoader.getBitmap("explosive_big", "icons")
 
         dmgeditSizer = wx.FlexGridSizer(2, 4, 0, 2)
-        dmgeditSizer.AddGrowableCol(1)
-        dmgeditSizer.AddGrowableCol(2)
+        dmgeditSizer.AddGrowableCol(0)
+        dmgeditSizer.AddGrowableCol(3)
         dmgeditSizer.SetFlexibleDirection(wx.BOTH)
         dmgeditSizer.SetNonFlexibleGrowMode(wx.FLEX_GROWMODE_SPECIFIED)
 
@@ -101,28 +101,28 @@ class DmgPatternEditorDlg (wx.Dialog):
         defSize = wx.Size(width,-1)
 
         self.editEm = IntCtrl(self, wx.ID_ANY, 0, wx.DefaultPosition, defSize, wx.TE_RIGHT)
-        dmgeditSizer.Add(self.editEm, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
+        dmgeditSizer.Add(self.editEm, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL | wx.EXPAND, 5)
 
         self.bmpEM = wx.StaticBitmap(self, wx.ID_ANY, self.embitmap)
-        dmgeditSizer.Add(self.bmpEM, 0, wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_CENTER_VERTICAL, 5)
+        dmgeditSizer.Add(self.bmpEM, 0, wx.ALIGN_CENTER_VERTICAL, 5)
 
         self.bmpTHERM = wx.StaticBitmap(self, wx.ID_ANY, self.thermbitmap)
-        dmgeditSizer.Add(self.bmpTHERM, 0, wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_RIGHT, 5)
+        dmgeditSizer.Add(self.bmpTHERM, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_RIGHT, 5)
 
         self.editThermal = IntCtrl(self, wx.ID_ANY, 0, wx.DefaultPosition, defSize, 0)
-        dmgeditSizer.Add(self.editThermal, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
+        dmgeditSizer.Add(self.editThermal, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL | wx.EXPAND, 5)
 
         self.editKinetic = IntCtrl(self, wx.ID_ANY, 0, wx.DefaultPosition, defSize, wx.TE_RIGHT)
-        dmgeditSizer.Add(self.editKinetic, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
+        dmgeditSizer.Add(self.editKinetic, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL | wx.EXPAND, 5)
 
         self.bmpKIN = wx.StaticBitmap(self, wx.ID_ANY, self.kinbitmap)
-        dmgeditSizer.Add(self.bmpKIN, 0, wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_CENTER_VERTICAL, 5)
+        dmgeditSizer.Add(self.bmpKIN, 0, wx.ALIGN_CENTER_VERTICAL, 5)
 
         self.bmpEXP = wx.StaticBitmap(self, wx.ID_ANY, self.expbitmap)
-        dmgeditSizer.Add(self.bmpEXP, 0, wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_RIGHT, 5)
+        dmgeditSizer.Add(self.bmpEXP, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_RIGHT, 5)
 
         self.editExplosive = IntCtrl(self, wx.ID_ANY, 0, wx.DefaultPosition, defSize, 0)
-        dmgeditSizer.Add(self.editExplosive, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
+        dmgeditSizer.Add(self.editExplosive, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL | wx.EXPAND, 5)
 
         contentSizer.Add(dmgeditSizer, 1, wx.EXPAND | wx.ALL, 5)
         self.slfooter = wx.StaticLine(self)
@@ -134,17 +134,17 @@ class DmgPatternEditorDlg (wx.Dialog):
 
         self.stPercentages = wx.StaticText(self, wx.ID_ANY, u"")
         self.stPercentages.Wrap(-1)
-        perSizer.Add(self.stPercentages, 0, wx.BOTTOM | wx.LEFT, 5)
+        perSizer.Add(self.stPercentages, 0, wx.BOTTOM | wx.TOP | wx.LEFT, 5)
 
-        footerSizer.Add(perSizer, 0, 0, 5)
+        footerSizer.Add(perSizer, 1,  wx.ALIGN_CENTER_VERTICAL, 5)
 
         self.totSizer = wx.BoxSizer(wx.VERTICAL)
 
-        self.stTotal = wx.StaticText(self, wx.ID_ANY, u"")
-        self.stTotal.Wrap(-1)
-        self.totSizer.Add(self.stTotal, 0, wx.ALIGN_RIGHT | wx.BOTTOM | wx.RIGHT, 5)
+#        self.stTotal = wx.StaticText(self, wx.ID_ANY, u"LOL")
+#        self.stTotal.Wrap(-1)
+#        self.totSizer.Add(self.stTotal, 0, wx.ALIGN_RIGHT | wx.BOTTOM | wx.RIGHT, 5)
 
-        footerSizer.Add(self.totSizer, 1, 0, 5)
+#        footerSizer.Add(self.totSizer, 1, 0, 5)
 
         contentSizer.Add(footerSizer, 0, wx.EXPAND, 5)
 
@@ -158,7 +158,7 @@ class DmgPatternEditorDlg (wx.Dialog):
         for name, art in importExport:
                 bitmap = wx.ArtProvider.GetBitmap(art, wx.ART_BUTTON)
                 btn = wx.BitmapButton(self, wx.ID_ANY, bitmap)
-                
+
                 btn.SetMinSize( btn.GetSize() )
                 btn.SetMaxSize( btn.GetSize() )
 
@@ -166,7 +166,7 @@ class DmgPatternEditorDlg (wx.Dialog):
                 setattr(self, name, btn)
                 btn.Enable(True)
                 btn.SetToolTipString("%s patterns" % name.capitalize())
-                footerSizer.Add(btn, 0, wx.ALIGN_CENTER_HORIZONTAL)
+                footerSizer.Add(btn, 0, wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_RIGHT)
 
 # </Import&Export>
 
