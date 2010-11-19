@@ -676,15 +676,16 @@ class HeaderPane (wx.Panel):
 class ListPane (wx.ScrolledWindow):
     def __init__(self, parent):
         wx.ScrolledWindow.__init__ (self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.Size(1, 1), style=wx.TAB_TRAVERSAL)
+
         self._wList = []
         self._wCount = 0
 
-        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW))
 
 
         self.SetVirtualSize((1, 1))
         self.SetScrollRate(0, 1)
+
         self.Bind(wx.EVT_SCROLLWIN_LINEUP, self.MScrollUp)
         self.Bind(wx.EVT_SCROLLWIN_LINEDOWN, self.MScrollDown)
         self.Bind(wx.EVT_CHILD_FOCUS, self.OnChildFocus)
@@ -699,6 +700,7 @@ class ListPane (wx.ScrolledWindow):
         posy = self.GetScrollPos(wx.VERTICAL)
         posy -= 12
         self.Scroll(0, posy)
+
         event.Skip()
 
     def MScrollDown(self, event):
@@ -706,6 +708,7 @@ class ListPane (wx.ScrolledWindow):
         posy = self.GetScrollPos(wx.VERTICAL)
         posy += 12
         self.Scroll(0, posy)
+
         event.Skip()
 
 
@@ -760,8 +763,9 @@ class ListPane (wx.ScrolledWindow):
 
     # Override this method if needed ( return False by default if we do not want to scroll to selected widget)
     def IsWidgetSelectedByContext(self, widget):
+        mainFrame = gui.mainFrame.MainFrame.getInstance()
         stage = self.Parent.GetActiveStage()
-        fit = self.mainFrame.getActiveFit()
+        fit = mainFrame.getActiveFit()
         if stage == 3 or stage == 4:
             if self._wList[widget].GetType() == 3:
                 if fit == self._wList[widget].fitID:
