@@ -106,6 +106,8 @@ class FittingView(d.Display):
         self.SetDropTarget(FittingViewDrop(self.swapItems))
         self.activeFitID = None
         self.FVsnapshot = None
+        self.itemCount = 0
+        self.itemRect = 0
 
         self.Bind(wx.EVT_KEY_UP, self.kbEvent)
         self.Bind(wx.EVT_LEFT_DOWN, self.click)
@@ -366,6 +368,8 @@ class FittingView(d.Display):
                 icolor = self.GetItemBackgroundColour(i)
                 if icolor != bkcolor:
                     self.SetItemBackgroundColour(i, bkcolor)
+        self.itemCount = self.GetItemCount()
+        self.itemRect = self.GetItemRect(0)
 
     def OnShow(self, event):
         if not event.GetShow():
@@ -383,8 +387,8 @@ class FittingView(d.Display):
         for i in xrange(4):
             wantedWidth += self.GetColumnWidth(i)
 
-        icount = self.GetItemCount()
-        irect = self.GetItemRect(0)
+        icount = self.itemCount
+        irect = self.itemRect
 
         rect = self.GetRect()
         rect.height = min(irect.height * icount + irect.top, rect.height - 16)
