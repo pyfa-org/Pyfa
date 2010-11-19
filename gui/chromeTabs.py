@@ -1171,12 +1171,8 @@ class PFTabsContainer(wx.Panel):
         if self.FindTabAtPos(cposx, cposy) == self.previewTab:
             if not self.previewTab.GetSelected():
                 page = self.Parent.GetPage(self.GetTabIndex(self.previewTab))
-                if page.Snapshot():
-                    self.previewWnd = PFNotebookPagePreview(self,(mposx+3,mposy+3), page.Snapshot(), self.previewTab.text)
-                    self.previewWnd.Show()
-                else:
-                    if 'wxMac' in wx.PlatformInfo:
-                        print "No Snapshot ?!"
+                self.previewWnd = PFNotebookPagePreview(self,(mposx+3,mposy+3), page.Snapshot(), self.previewTab.text)
+                self.previewWnd.Show()
 
         event.Skip()
 
