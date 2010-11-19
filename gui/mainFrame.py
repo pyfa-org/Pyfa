@@ -143,7 +143,10 @@ class MainFrame(wx.Frame):
 #            self.notebookBrowsers.SetSelection(tab)
 
     def CloseCurrentFit(self, evt):
-        self.fitMultiSwitch.removeCurrentTab()
+        ms = self.fitMultiSwitch
+        page = ms.GetCurrentPage()
+        if page:
+            ms.DeletePage(ms.GetPageIndex(page))
 
     def ExitApp(self, evt):
         try:
