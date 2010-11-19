@@ -110,13 +110,6 @@ class PFListPane(wx.ScrolledWindow):
 
     # Override this method if needed ( return False by default if we do not want to scroll to selected widget)
     def IsWidgetSelectedByContext(self, widget):
-        mainFrame = gui.mainFrame.MainFrame.getInstance()
-        stage = self.Parent.GetActiveStage()
-        fit = mainFrame.getActiveFit()
-        if stage == 3 or stage == 4:
-            if self._wList[widget].GetType() == 3:
-                if fit == self._wList[widget].fitID:
-                    return True
         return False
 
     def RefreshList(self, doRefresh = False):

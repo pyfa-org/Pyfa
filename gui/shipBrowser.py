@@ -8,7 +8,7 @@ import time
 import os
 import config
 import service.fit
-from gui.PfListPane import PFListPane as ListPane
+from gui.PFListPane import PFListPane
 
 from wx.lib.buttons import GenBitmapButton
 
@@ -21,6 +21,21 @@ Stage1Selected, EVT_SB_STAGE1_SEL = wx.lib.newevent.NewEvent()
 Stage2Selected, EVT_SB_STAGE2_SEL = wx.lib.newevent.NewEvent()
 Stage3Selected, EVT_SB_STAGE3_SEL = wx.lib.newevent.NewEvent()
 SearchSelected, EVT_SB_SEARCH_SEL = wx.lib.newevent.NewEvent()
+
+
+class PFWidgetsContainer(PFListPane):
+    def __init(self,parent):
+        PFListPane.__init__(self,parent)
+
+    def IsWidgetSelectedByContext(self, widget):
+        mainFrame = gui.mainFrame.MainFrame.getInstance()
+        stage = self.Parent.GetActiveStage()
+        fit = mainFrame.getActiveFit()
+        if stage == 3 or stage == 4:
+            if self._wList[widget].GetType() == 3:
+                if fit == self._wList[widget].fitID:
+                    return True
+        return False
 
 
 class ShipBrowser(wx.Panel):
@@ -52,7 +67,7 @@ class ShipBrowser(wx.Panel):
         self.m_sl2 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
         mainSizer.Add( self.m_sl2, 0, wx.EXPAND, 0 )
 
-        self.lpane = ListPane(self)
+        self.lpane = PFWidgetsContainer(self)
         mainSizer.Add(self.lpane, 1, wx.EXPAND)
         self.SetSizer(mainSizer)
         self.Layout()
