@@ -165,7 +165,7 @@ class MainFrame(wx.Frame):
         info = wx.AboutDialogInfo()
         info.Name = "pyfa"
         info.Version = aboutData.versionString
-        info.Description = wordwrap(aboutData.description + "\n\n\nDevelopers: " + ", ".join(aboutData.developers) + "\n\nAdditional credits:\n" + "\n".join(aboutData.credits) + "\n\nLicense: " + aboutData.license + " - see included " + aboutData.licenseLocation,
+        info.Description = wordwrap(aboutData.description + "\n\n\nDevelopers: " + ", ".join(aboutData.developers) + "\n\nAdditional credits:\n  " + "\n  ".join(aboutData.credits) + "\n\nLicense: " + aboutData.license + " - see included " + aboutData.licenseLocation,
             550, wx.ClientDC(self))
         info.WebSite = ("http://www.evefit.org/Pyfa", "pyfa home page")
         wx.AboutBox(info)
