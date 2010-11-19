@@ -100,29 +100,29 @@ class DmgPatternEditorDlg (wx.Dialog):
         width = -1
         defSize = wx.Size(width,-1)
 
-        self.editEm = IntCtrl(self, wx.ID_ANY, 0, wx.DefaultPosition, defSize, wx.TE_RIGHT)
-        dmgeditSizer.Add(self.editEm, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL | wx.EXPAND, 5)
-
         self.bmpEM = wx.StaticBitmap(self, wx.ID_ANY, self.embitmap)
-        dmgeditSizer.Add(self.bmpEM, 0, wx.ALIGN_CENTER_VERTICAL, 5)
+        dmgeditSizer.Add(self.bmpEM, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_RIGHT, 5)
+
+        self.editEm = IntCtrl(self, wx.ID_ANY, 0, wx.DefaultPosition, defSize)
+        dmgeditSizer.Add(self.editEm, 0, wx.BOTTOM | wx.TOP | wx.ALIGN_CENTER_VERTICAL, 5)
 
         self.bmpTHERM = wx.StaticBitmap(self, wx.ID_ANY, self.thermbitmap)
-        dmgeditSizer.Add(self.bmpTHERM, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_RIGHT, 5)
+        dmgeditSizer.Add(self.bmpTHERM, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_RIGHT | wx.LEFT, 25)
 
         self.editThermal = IntCtrl(self, wx.ID_ANY, 0, wx.DefaultPosition, defSize, 0)
-        dmgeditSizer.Add(self.editThermal, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL | wx.EXPAND, 5)
-
-        self.editKinetic = IntCtrl(self, wx.ID_ANY, 0, wx.DefaultPosition, defSize, wx.TE_RIGHT)
-        dmgeditSizer.Add(self.editKinetic, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL | wx.EXPAND, 5)
+        dmgeditSizer.Add(self.editThermal, 0, wx.BOTTOM | wx.TOP | wx.ALIGN_CENTER_VERTICAL, 5)
 
         self.bmpKIN = wx.StaticBitmap(self, wx.ID_ANY, self.kinbitmap)
-        dmgeditSizer.Add(self.bmpKIN, 0, wx.ALIGN_CENTER_VERTICAL, 5)
+        dmgeditSizer.Add(self.bmpKIN, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_RIGHT, 5)
+
+        self.editKinetic = IntCtrl(self, wx.ID_ANY, 0, wx.DefaultPosition, defSize)
+        dmgeditSizer.Add(self.editKinetic, 0, wx.BOTTOM | wx.TOP | wx.ALIGN_CENTER_VERTICAL, 5)
 
         self.bmpEXP = wx.StaticBitmap(self, wx.ID_ANY, self.expbitmap)
-        dmgeditSizer.Add(self.bmpEXP, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_RIGHT, 5)
+        dmgeditSizer.Add(self.bmpEXP, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_RIGHT | wx.LEFT, 25)
 
         self.editExplosive = IntCtrl(self, wx.ID_ANY, 0, wx.DefaultPosition, defSize, 0)
-        dmgeditSizer.Add(self.editExplosive, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL | wx.EXPAND, 5)
+        dmgeditSizer.Add(self.editExplosive, 0, wx.BOTTOM | wx.TOP | wx.ALIGN_CENTER_VERTICAL, 5)
 
         contentSizer.Add(dmgeditSizer, 1, wx.EXPAND | wx.ALL, 5)
         self.slfooter = wx.StaticLine(self)
