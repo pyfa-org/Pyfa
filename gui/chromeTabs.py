@@ -949,12 +949,11 @@ class PFTabsContainer(wx.Panel):
                 if self.TabHitTest(tab, mposx, mposy):
                     try:
                         page = self.Parent.GetPage(self.GetTabIndex(tab))
-                        if page.CanUseSnapshot():
+                        if hasattr(page, "Snapshot"):
                             if not self.previewTimer:
                                 self.previewTimer = wx.Timer(self, self.previewTimerID)
 
                             self.previewTab = tab
-                            self.previewBmp = page.FVsnapshot
                             self.previewTimer.Start(1500, True)
                             break
                     except:
@@ -1171,8 +1170,8 @@ class PFTabsContainer(wx.Panel):
         cposx, cposy = self.ScreenToClient((mposx, mposy))
         if self.FindTabAtPos(cposx, cposy) == self.previewTab:
             if not self.previewTab.GetSelected():
-
-                self.previewWnd = PFNotebookPagePreview(self,(mposx+3,mposy+3), self.previewBmp, self.previewTab.text)
+                page = self.Parent.GetPage(self.GetTabIndex(self.previewTab))
+                self.previewWnd = PFNotebookPagePreview(self,(mposx+3,mposy+3), page.Snapshot(), self.previewTab.text)
                 self.previewWnd.Show()
 
         event.Skip()

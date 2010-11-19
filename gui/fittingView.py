@@ -369,19 +369,20 @@ class FittingView(d.Display):
 
     def OnShow(self, event):
         if not event.GetShow():
-            self.Snapshot()
+            self.MakeSnapshot()
         event.Skip()
 
-    def CanUseSnapshot(self):
-        return True
-
     def Snapshot(self):
+        return self.FVsnapshot
+
+    def MakeSnapshot(self):
         if self.FVsnapshot:
             del self.FVsnapshot
 
         wantedWidth = 0
         for i in xrange(4):
             wantedWidth += self.GetColumnWidth(i)
+
         rect = self.GetRect()
         rect.height = min(rect.height, 400)
         rect.width = min(rect.width, wantedWidth)
