@@ -25,7 +25,6 @@ SearchSelected, EVT_SB_SEARCH_SEL = wx.lib.newevent.NewEvent()
 class ShipBrowser(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__ (self, parent,style = 0)
-        # if 'wxGTK' in wx.PlatformInfo else wx.DOUBLE_BORDER)
 
         self._lastWidth = 0
         self._activeStage = 1
@@ -83,8 +82,6 @@ class ShipBrowser(wx.Panel):
 
     def SizeRefreshList(self, event):
         ewidth, eheight = event.GetSize()
-##            if ewidth != self._lastWidth:
-##                self._lastWidth = ewidth
         self.Layout()
         self.lpane.Layout()
         self.lpane.RefreshList(True)
@@ -148,7 +145,6 @@ class ShipBrowser(wx.Panel):
                 self.lpane.AddWidget(ShipItem(self.lpane, ID, (name, fits), race))
 
         self.lpane.RefreshList()
-#        self.lpane.ShowLoading(False)
 
     def stage2(self, event):
         back = event.back
@@ -160,7 +156,6 @@ class ShipBrowser(wx.Panel):
         self.lastdata = categoryID
 
 
-#            self.lpane.ShowLoading(True)
         self.lpane.RemoveAllChildren()
         sMarket = service.Market.getInstance()
         sMarket.getShipListDelayed(self.stage2Callback, categoryID)
@@ -314,15 +309,8 @@ class HeaderPane (wx.Panel):
         self.sbRewind.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNFACE ) )
         self.sbRewind.SetBitmapSelected(self.rewBmp)
 
-#        self.sbForward = PFGenBitmapButton( self, wx.ID_ANY, self.forwBmp, wx.DefaultPosition, bmpSize, wx.BORDER_NONE )
-#        mainSizer.Add(self.sbForward, 0, wx.LEFT | wx.TOP | wx.BOTTOM  | wx.ALIGN_CENTER_VERTICAL , 5)
-#        self.sbForward.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNFACE ) )
-
         self.sl1 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_VERTICAL )
         mainSizer.Add( self.sl1, 0, wx.EXPAND |wx.LEFT, 5 )
-
-#        self.sl2 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_VERTICAL )
-#        mainSizer.Add( self.sl2, 0, wx.EXPAND |wx.LEFT, 5 )
 
         self.sbNewFit = PFGenBitmapButton( self, wx.ID_ANY, self.newBmp, wx.DefaultPosition, bmpSize, wx.BORDER_NONE )
         mainSizer.Add(self.sbNewFit, 0, wx.LEFT | wx.TOP | wx.BOTTOM  | wx.ALIGN_CENTER_VERTICAL , 5)
@@ -356,10 +344,6 @@ class HeaderPane (wx.Panel):
 
         self.SetSizer(mainSizer)
 
-#        self.sbForward.Bind(wx.EVT_BUTTON,self.OnForward)
-#        self.sbForward.Bind( wx.EVT_ENTER_WINDOW, self.OnEnterWForward )
-#        self.sbForward.Bind( wx.EVT_LEAVE_WINDOW, self.OnLeaveWForward )
-
         self.sbReset.Bind(wx.EVT_BUTTON,self.OnReset)
         self.sbReset.Bind( wx.EVT_ENTER_WINDOW, self.OnEnterWReset )
         self.sbReset.Bind( wx.EVT_LEAVE_WINDOW, self.OnLeaveWReset )
@@ -367,7 +351,6 @@ class HeaderPane (wx.Panel):
         self.sbRewind.Bind(wx.EVT_BUTTON,self.OnBack)
         self.sbRewind.Bind( wx.EVT_ENTER_WINDOW, self.OnEnterWRewind )
         self.sbRewind.Bind( wx.EVT_LEAVE_WINDOW, self.OnLeaveWRewind )
-
 
 
         self.sbSearch.Bind(wx.EVT_BUTTON,self.OnSearch)
@@ -450,18 +433,6 @@ class HeaderPane (wx.Panel):
                 item = menu.Append(-1, txt)
                 menu.Bind(wx.EVT_MENU, self.OnMenuSelected, item)
 
-#        if 'wxMSW' in wx.PlatformInfo:
-#            menu.Break()
-#        else:
-#            menu.AppendSeparator()
-
-#        for txt in normalCMItems:
-#            if txt =="_sep_":
-#                menu.AppendSeparator()
-#            else:
-#                item = menu.Append(-1, txt)
-#                item.Enable(False)
-#                menu.Bind(wx.EVT_MENU, self.OnMenuSelected, item)
         return menu
 
 
@@ -472,9 +443,6 @@ class HeaderPane (wx.Panel):
             self.search.Show(False)
             self.spanel.Show(False)
             self.toggleSearch = -1
-
-#        if self.menu:
-#            self.menu.Destroy()
 
         stxt = self.search.GetValue()
         if stxt not in self.recentSearches:
@@ -492,6 +460,7 @@ class HeaderPane (wx.Panel):
             self.toggleSearch = -1
         else:
             event.Skip()
+
     def doSearch(self, event):
         stxt = self.search.GetValue()
         if len(stxt) > 2:
@@ -499,12 +468,10 @@ class HeaderPane (wx.Panel):
 
     def ToggleNewFitSB(self, toggle):
         self.sbNewFit.Show(toggle)
-#        self.sl2.Show(toggle)
         self.Layout()
 
     def ToggleFitViewModeSB(self, toggle):
         self.sbSwitchFitView.Show(toggle)
-#        self.sl2.Show(toggle)
         self.Layout()
 
     def OnReset(self,event):
@@ -533,7 +500,6 @@ class HeaderPane (wx.Panel):
         self.sbReset.SetBitmapLabel(self.resetBmp, False)
         self.sbReset.Refresh()
         event.Skip()
-
 
     def OnEnterWForward(self, event):
         if self.toggleSearch != 1:
@@ -567,7 +533,6 @@ class HeaderPane (wx.Panel):
             self.stStatus.Enable()
         else:
             self.stStatus.Disable()
-
 
         self.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
         event.Skip()
@@ -723,23 +688,6 @@ class ListPane (wx.ScrolledWindow):
         self.Bind(wx.EVT_SCROLLWIN_LINEUP, self.MScrollUp)
         self.Bind(wx.EVT_SCROLLWIN_LINEDOWN, self.MScrollDown)
         self.Bind(wx.EVT_CHILD_FOCUS, self.OnChildFocus)
-#        self.loadingAnim = wx.animate.Animation(os.path.join(config.pyfaPath,"icons/fit_loading.gif"))
-#        self.animCtrl = wx.animate.AnimationCtrl(self, -1, self.loadingAnim)
-#        self.animCtrl.SetUseWindowBackgroundColour()
-#        self.animCtrl.Hide()
-
-#    def ShowLoading(self, mode = True):
-#        if mode:
-#            aweight,aheight = self.animCtrl.GetSize()
-#            cweight,cheight = self.GetSize()
-#            ax = (cweight - aweight)/2
-#            ay = (cheight - aheight)/2
-#            self.animCtrl.SetPosition((ax,ay))
-#            self.animCtrl.Show()
-#            self.animCtrl.Play()
-#        else:
-#            self.animCtrl.Stop()
-#            self.animCtrl.Hide()
 
     def OnChildFocus(self, event):
         event.Skip()
@@ -751,7 +699,6 @@ class ListPane (wx.ScrolledWindow):
         posy = self.GetScrollPos(wx.VERTICAL)
         posy -= 12
         self.Scroll(0, posy)
-#        self.RefreshList()
         event.Skip()
 
     def MScrollDown(self, event):
@@ -759,7 +706,6 @@ class ListPane (wx.ScrolledWindow):
         posy = self.GetScrollPos(wx.VERTICAL)
         posy += 12
         self.Scroll(0, posy)
-#        self.RefreshList()
         event.Skip()
 
 
@@ -803,7 +749,6 @@ class ListPane (wx.ScrolledWindow):
 
         # if we need to adjust
         if new_vs_x != -1 or new_vs_y != -1:
-            #print "%s: (%s, %s)" % (self.GetName(), new_vs_x, new_vs_y)
             self.Scroll(new_vs_x, new_vs_y)
 
 
@@ -920,9 +865,6 @@ class CategoryItem(wx.Window):
         r.left = 0
         r.height = r.height / 2
         if self.highlighted:
-#            mdc.SetBackground(wx.Brush(wx.SystemSettings_GetColour(wx.SYS_COLOUR_HIGHLIGHT)))
-#            mdc.Clear()
-#            mdc.SetTextForeground(wx.SystemSettings_GetColour(wx.SYS_COLOUR_HIGHLIGHTTEXT))
 
             sr = 221
             sg = 221
@@ -982,10 +924,6 @@ class CategoryItem(wx.Window):
 
         fPosX = rect.width - addX - xtext
         fPosY = (rect.height -ytext)/2
-#        if fittings > 0:
-#            mdc.DrawText(fformat % fittings, fPosX, fPosY)
-#        else:
-#            mdc.DrawText(fformat, fPosX, fPosY)
 
         event.Skip()
 
@@ -1579,10 +1517,6 @@ class FitItem(wx.Window):
 
             if targetWnd == cfitWnd:
                 wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fitID))
-#            elif targetWnd == cfitWnd.view:
-#                wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fitID))
-#            elif targetWnd.Parent == cfitWnd.view:
-#                wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fitID))
 
             elif targetWnd == msWnd:
 
