@@ -370,6 +370,9 @@ class FittingView(d.Display):
         self.itemRect = self.GetItemRect(0)
 
     def OnShow(self, event):
+        if 'wxMac' in wx.PlatformInfo:
+            print "SHOW: ", event.GetShow()
+
         if not event.GetShow():
             self.MakeSnapshot()
         event.Skip()
