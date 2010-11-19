@@ -376,15 +376,15 @@ class FittingView(d.Display):
         return True
 
     def Snapshot(self):
-
         if self.FVsnapshot:
             del self.FVsnapshot
 
+        wantedWidth = 0
+        for i in xrange(4):
+            wantedWidth += self.GetColumnWidth(i)
         rect = self.GetRect()
-        if rect.height >400:
-            rect.height = 400
-        if rect.width > 576:
-            rect.width = 576
+        rect.height = min(rect.height, 400)
+        rect.width = min(rect.width, wantedWidth)
 
         mdc = wx.MemoryDC()
         mbmp = wx.EmptyBitmap(rect.width, rect.height)
