@@ -65,3 +65,11 @@ class DamagePattern():
 
     def saveChanges(self, p):
         eos.db.save(p)
+
+    def importPatterns(self):
+        print "Import In Service"
+        eos.importPatterns()
+
+    def exportPatterns(self):
+        print "Export In Service"
+        eos.exportPatterns()
