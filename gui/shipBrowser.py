@@ -1201,11 +1201,9 @@ class FitItem(wx.Window):
         self.renameBmp = bitmapLoader.getBitmap("fit_rename_small", "icons")
         self.deleteBmp = bitmapLoader.getBitmap("fit_delete_small","icons")
         self.shipEffBk = bitmapLoader.getBitmap("fshipbk_big","icons")
-        self.dragBmp = bitmapLoader.getBitmap("ship_big","icons")
+
         self.dragTLFBmp = None
 
-        dimg = self.dragBmp.ConvertToImage()
-        self.dragCursor = wx.CursorFromImage(dimg)
 
 
         self.Bind(wx.EVT_PAINT, self.OnPaint)
