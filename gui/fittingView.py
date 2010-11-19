@@ -383,11 +383,8 @@ class FittingView(d.Display):
         for i in xrange(4):
             wantedWidth += self.GetColumnWidth(i)
 
-        icount = self.GetItemCount()
-        irect = self.GetItemRect(0)
-
         rect = self.GetRect()
-        rect.height = min(irect.height * icount + irect.top, rect.height - 16)
+        rect.height -= 16
         rect.width = min(rect.width, wantedWidth)
 
         mdc = wx.MemoryDC()
