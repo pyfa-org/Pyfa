@@ -1,5 +1,6 @@
 import wx
 import copy
+from gui import bitmapLoader
 
 FleetSelected, EVT_FLEET_SELECTED = wx.lib.newevent.NewEvent()
 
@@ -13,6 +14,13 @@ class FleetItem(wx.Window):
         self.fleetName = fleetName
         self.fleetCount = fleetCount
         self.highlighted = 0
+        self.padding = 5
+        self.fontBig = wx.FontFromPixelSize((0,15),wx.SWISS, wx.NORMAL, wx.BOLD, False)
+        self.fontSmall = wx.FontFromPixelSize((0,13),wx.SWISS, wx.NORMAL, wx.NORMAL, False)
+
+        self.copyBmp = bitmapLoader.getBitmap("fit_add_small", "icons")
+        self.renameBmp = bitmapLoader.getBitmap("fit_rename_small", "icons")
+        self.deleteBmp = bitmapLoader.getBitmap("fit_delete_small","icons")
 
         self.Bind(wx.EVT_PAINT, self.OnPaint)
 
@@ -62,6 +70,27 @@ class FleetItem(wx.Window):
             bdc.SetTextForeground(wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOWTEXT ))
             bdc.Clear()
 
+        suffix = "%d ships" % self.fleetCount if self.fleetCount >1 else "%d ship" % self.fleetCount if self.fleetCount == 1 else "No ships"
+        fleetCount = "Fleet size: %s" % suffix
+        bdc.SetFont(self.fontBig)
+        fnx,fny = bdc.GetTextExtent(self.fleetName)
+
+        bdc.DrawText(self.fleetName, self.padding, (rect.height/2 - fny)/2)
+
+        bdc.SetFont(self.fontSmall)
+        fcx,fcy = bdc.GetTextExtent(fleetCount)
+
+        bdc.DrawText(fleetCount, self.padding, rect.height/2 + (rect.height/2 -fcy) / 2 )
+
+        self.deletePosX = rect.width - self.deleteBmp.GetWidth() - self.padding
+        self.renamePosX = self.deletePosX - self.renameBmp.GetWidth() - self.padding
+        self.copyPosX = self.renamePosX - self.copyBmp.GetWidth() - self.padding
+        self.renamePosY = self.deletePosY = self.copyPosY = (rect.height - self.renameBmp.GetHeight()) / 2
+
+        bdc.DrawBitmap(self.copyBmp, self.copyPosX, self.copyPosY, 0)
+        bdc.DrawBitmap(self.renameBmp, self.renamePosX, self.renamePosY, 0)
+        bdc.DrawBitmap(self.deleteBmp, self.deletePosX, self.deletePosY, 0)
+
     def EnterWindow(self, event):
         self.highlighted = 1
         self.Refresh()
@@ -78,4 +107,4 @@ class FleetBrowser(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent)
         self.SetBackgroundColour("pink")
-        x = FleetItem(self, 1, 1, 1, size = (200,32))
+        x = FleetItem(self, 1, "IMBA Fleet", 23, size = (200,32))
