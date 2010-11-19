@@ -751,7 +751,6 @@ class ListPane (wx.ScrolledWindow):
         posy = self.GetScrollPos(wx.VERTICAL)
         posy -= 12
         self.Scroll(0, posy)
-#        self.RefreshList()
         event.Skip()
 
     def MScrollDown(self, event):
@@ -759,7 +758,6 @@ class ListPane (wx.ScrolledWindow):
         posy = self.GetScrollPos(wx.VERTICAL)
         posy += 12
         self.Scroll(0, posy)
-#        self.RefreshList()
         event.Skip()
 
 
@@ -813,21 +811,28 @@ class ListPane (wx.ScrolledWindow):
         self._wList.append(widget)
         self._wCount += 1
 
+    # Override this method if needed ( return False by default if we do not want to scroll to selected widget)
+    def IsWidgetSelectedByContext(self, widget):
+        stage = self.Parent.GetActiveStage()
+        fit = self.mainFrame.getActiveFit()
+        if stage == 3 or stage == 4:
+            if self._wList[widget].GetType() == 3:
+                if fit == self._wList[widget].fitID:
+                    return True
+        return False
+
     def RefreshList(self, doRefresh = False):
         ypos = 0
         maxy = 0
         scrollTo = 0
-        stage = self.Parent.GetActiveStage()
-        fit = self.mainFrame.getActiveFit()
+
         selected = None
         for i in xrange( len(self._wList) ):
             iwidth, iheight = self._wList[i].GetSize()
             xa, ya = self.CalcScrolledPosition((0, maxy))
             self._wList[i].SetPosition((xa, ya))
-            if stage == 3 or stage == 4:
-                if self._wList[i].GetType() == 3:
-                    if fit == self._wList[i].fitID:
-                        selected = self._wList[i]
+            if self.IsWidgetSelectedByContext(i):
+                selected = self._wList[i]
             maxy += iheight
 
         self.SetVirtualSize((1, maxy))
