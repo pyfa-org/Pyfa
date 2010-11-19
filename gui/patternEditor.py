@@ -305,7 +305,7 @@ class DmgPatternEditorDlg (wx.Dialog):
     def processRename(self, event):
         newName = self.namePicker.GetLineText(0)
         self.stPercentages.SetLabel("")
-        self.stTotal.SetLabel("")
+#        self.stTotal.SetLabel("")
         p = self.getActivePattern()
         for pattern in self.choices:
             if pattern.name == newName and p != pattern:
