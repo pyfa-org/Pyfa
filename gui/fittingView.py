@@ -383,9 +383,12 @@ class FittingView(d.Display):
         for i in xrange(4):
             wantedWidth += self.GetColumnWidth(i)
         rect = self.GetRect()
-        rect.height = min(rect.height, 400)
+#        rect.height = min(rect.height, 400)
         rect.width = min(rect.width, wantedWidth)
+        icount = self.GetItemCount()
+        irect = self.GetItemRect(0)
 
+        rect.height = irect.height* icount + irect.top if irect.height * icount + irect.top < rect.height else rect.height
         mdc = wx.MemoryDC()
         mbmp = wx.EmptyBitmap(rect.width, rect.height)
         mdc.SelectObject(mbmp)

@@ -1198,7 +1198,7 @@ class PFNotebookPagePreview(wx.Frame):
         self.timerSleepId = wx.NewId()
         self.direction = 1
         self.transp = 0
-        self.SetSize((bitmap.GetWidth(),bitmap.GetHeight()))
+        self.SetSize((bitmap.GetWidth(),bitmap.GetHeight()+16))
 
         self.SetTransparent(0)
         self.Refresh()
