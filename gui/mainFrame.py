@@ -144,9 +144,10 @@ class MainFrame(wx.Frame):
 
     def CloseCurrentFit(self, evt):
         ms = self.fitMultiSwitch
-        page = ms.GetCurrentPage()
-        if page:
-            ms.DeletePage(ms.GetPageIndex(page))
+
+        page = ms.GetSelection()
+        if page is not None:
+            ms.DeletePage(page)
 
     def ExitApp(self, evt):
         try:
