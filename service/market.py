@@ -328,7 +328,10 @@ class Market():
             requests.append(price)
 
         def cb():
-            callback(requests)
+            try:
+                callback(requests)
+            except:
+                pass
             eos.db.commit()
 
         self.priceWorkerThread.trigger(requests, cb)
