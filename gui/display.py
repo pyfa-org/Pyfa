@@ -23,9 +23,11 @@ from gui.viewColumn import ViewColumn
 import sys
 
 class Display(wx.ListCtrl):
-    def __init__(self, parent, size = wx.DefaultSize, style = 0):
+    def __init__(self, parent, size = wx.DefaultSize, style = 0, doubleBuffered = True):
 
         wx.ListCtrl.__init__(self, parent,size = size, style=wx.LC_REPORT | ( style | wx.BORDER_NONE if not (style & wx.SIMPLE_BORDER) else style) )
+        self.SetDoubleBuffered(doubleBuffered)
+
         self.imageList = wx.ImageList(16, 16)
         self.SetImageList(self.imageList, wx.IMAGE_LIST_SMALL)
         self.activeColumns = []
@@ -137,6 +139,7 @@ class Display(wx.ListCtrl):
         if stuff == None:
             return
 
+        self.Freeze()
         selection = []
         sel = self.GetFirstSelected()
         while sel != -1:
@@ -162,12 +165,9 @@ class Display(wx.ListCtrl):
 
                 if oldText != newText or oldImageId != newImageId:
                     self.SetItem(colItem)
+                    self.SetItemState(item, 0 , wx.LIST_STATE_FOCUSED | wx.LIST_STATE_SELECTED)
+                    self.SetItemData(item, id)
 
-                self.SetItemState(item, 0 , wx.LIST_STATE_FOCUSED | wx.LIST_STATE_SELECTED)
-
-                self.SetItemData(item, id)
-
-        self.Freeze()
         if 'wxMSW' in wx.PlatformInfo:
             for i,col in enumerate(self.activeColumns):
                 if not col.resized:
