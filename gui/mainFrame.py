@@ -33,6 +33,7 @@ from gui.patternEditor import DmgPatternEditorDlg
 from gui.preferenceDialog import PreferenceDialog
 from gui.graphFrame import GraphFrame
 from gui.copySelectDialog import CopySelectDialog
+from gui.fleetBrowser import FleetBrowser
 import aboutData
 import gui.fittingView as fv
 from wx._core import PyDeadObjectError
@@ -97,6 +98,10 @@ class MainFrame(wx.Frame):
 
         self.shipBrowser = ShipBrowser(self.notebookBrowsers)
         self.notebookBrowsers.AddPage(self.shipBrowser, "Ships", showClose = False)
+
+        self.fleetBrowser = FleetBrowser(self.notebookBrowsers)
+        self.notebookBrowsers.AddPage(self.fleetBrowser, "Fleets", showClose = False)
+
         self.notebookBrowsers.SetSelection(1)
 
         self.splitter.SplitVertically(self.notebookBrowsers, self.FitviewAdditionsPanel)
