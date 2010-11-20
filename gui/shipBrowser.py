@@ -315,14 +315,19 @@ class HeaderPane (wx.Panel):
 
         mainSizer = wx.BoxSizer(wx.HORIZONTAL)
 
+        if 'wxMac' in wx.PlatformInfo:
+            bgcolour = wx.Colour(0, 0, 0, 0)
+        else:
+            bgcolour = wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNFACE )
+
         self.sbReset = PFGenBitmapButton( self, wx.ID_ANY, self.resetBmp, wx.DefaultPosition, bmpSize, wx.BORDER_NONE )
         mainSizer.Add(self.sbReset, 0, wx.LEFT | wx.TOP | wx.BOTTOM | wx.ALIGN_CENTER_VERTICAL , 5)
-        self.sbReset.SetBackgroundColour( wx.Colour(0, 0, 0, 0) )
+        self.sbReset.SetBackgroundColour( bgcolour )
         self.sbReset.SetBitmapSelected(self.resetBmp)
 
         self.sbRewind = PFGenBitmapButton( self, wx.ID_ANY, self.rewBmp, wx.DefaultPosition, bmpSize, wx.BORDER_NONE )
         mainSizer.Add(self.sbRewind, 0, wx.LEFT | wx.TOP | wx.BOTTOM | wx.ALIGN_CENTER_VERTICAL , 5)
-        self.sbRewind.SetBackgroundColour( wx.Colour(0, 0, 0, 0) ) 
+        self.sbRewind.SetBackgroundColour( bgcolour )
         self.sbRewind.SetBitmapSelected(self.rewBmp)
 
         self.sl1 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_VERTICAL )
@@ -330,11 +335,11 @@ class HeaderPane (wx.Panel):
 
         self.sbNewFit = PFGenBitmapButton( self, wx.ID_ANY, self.newBmp, wx.DefaultPosition, bmpSize, wx.BORDER_NONE )
         mainSizer.Add(self.sbNewFit, 0, wx.LEFT | wx.TOP | wx.BOTTOM  | wx.ALIGN_CENTER_VERTICAL , 5)
-        self.sbNewFit.SetBackgroundColour( wx.Colour(0, 0, 0, 0) )
+        self.sbNewFit.SetBackgroundColour( bgcolour ) 
 
         self.sbSwitchFitView = PFGenBitmapButton( self, wx.ID_ANY, self.switchBmp, wx.DefaultPosition, bmpSize, wx.BORDER_NONE )
         mainSizer.Add(self.sbSwitchFitView, 0, wx.LEFT | wx.TOP | wx.BOTTOM  | wx.ALIGN_CENTER_VERTICAL , 5)
-        self.sbSwitchFitView.SetBackgroundColour( wx.Colour(0, 0, 0, 0) )
+        self.sbSwitchFitView.SetBackgroundColour( bgcolour )
 
 
         self.stStatus = wx.StaticText( self, wx.ID_ANY, "", wx.DefaultPosition, wx.DefaultSize, 0 )
