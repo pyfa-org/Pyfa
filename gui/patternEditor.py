@@ -21,6 +21,7 @@ import wx
 import bitmapLoader
 from wx.lib.intctrl import IntCtrl
 import service
+from util import toClipboard, fromClipboard
 ###########################################################################
 ## Class DmgPatternEditorDlg
 ###########################################################################
@@ -344,24 +345,15 @@ class DmgPatternEditorDlg (wx.Dialog):
         pass
 
     def importPatterns(self, event):
-        clip = wx.TheClipboard
-        clip.Open()
-        data = wx.TextDataObject("")
-        if clip.GetData(data):
+        text = fromClipboard()
+        if text:
             sDP = service.DamagePattern.getInstance()
-            sDP.importPatterns( data.GetText() )
+            sDP.importPatterns(text)
             self.stPercentages.SetLabel("Patterns imported from clipboard")
         else:
             self.stPercentages.SetLabel("Could not import from clipboard")
-        clip.Close()
 
     def exportPatterns(self, event):
         sDP = service.DamagePattern.getInstance()
-        text = sDP.exportPatterns()
-
-        clip = wx.TheClipboard
-        clip.Open()
-        data = wx.TextDataObject(text)
-        clip.SetData(data)
+        toClipboard( sDP.exportPatterns() )
         self.stPercentages.SetLabel("Patterns exported to clipboard")
-        clip.Close()

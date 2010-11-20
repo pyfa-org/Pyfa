@@ -1,4 +1,5 @@
 import math
+import wx
 
 def formatAmount(val, prec=3, lowest=0, highest=0):
     """
@@ -72,3 +73,21 @@ def processAmount(val, prec=3):
     # Strip trailing zero for integers and convert to string
     result = str(val)[-2:] == '.0' and str(val)[:-2] or str(val)
     return result
+
+def toClipboard(text):
+    clip = wx.TheClipboard
+    clip.Open()
+    data = wx.TextDataObject(text)
+    clip.SetData(data)
+    clip.Close()
+
+def fromClipboard():
+    clip = wx.TheClipboard
+    clip.Open()
+    data = wx.TextDataObject("")
+    if clip.GetData(data):
+        clip.Close()
+        return data.GetText()
+    else:
+        clip.Close()
+        return None

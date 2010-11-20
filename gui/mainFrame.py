@@ -39,6 +39,7 @@ import gui.fittingView as fv
 from wx._core import PyDeadObjectError
 import os.path
 import gui.chromeTabs
+from util import toClipboard, fromClipboard
 
 #dummy panel no paint no erasebk
 class PFPanel(wx.Panel):
@@ -290,20 +291,20 @@ class MainFrame(wx.Frame):
 
     def clipboardEft(self):
         sFit = service.Fit.getInstance()
-        self.toClipboard(sFit.exportFit(self.getActiveFit()))
+        toClipboard(sFit.exportFit(self.getActiveFit()))
 
     def clipboardDna(self):
         sFit = service.Fit.getInstance()
-        self.toClipboard(sFit.exportDna(self.getActiveFit()))
+        toClipboard(sFit.exportDna(self.getActiveFit()))
 
     def clipboardXml(self):
         sFit = service.Fit.getInstance()
-        self.toClipboard(sFit.exportXml(self.getActiveFit()))
+        toClipboard(sFit.exportXml(self.getActiveFit()))
 
     def importFromClipboard(self, event):
         sFit = service.Fit.getInstance()
         try:
-            fits = sFit.importFitFromBuffer(self.fromClipboard())
+            fits = sFit.importFitFromBuffer(fromClipboard())
             IDs = sFit.saveImportedFits(fits)
             self._openAfterImport(len(fits), IDs)
         except:
@@ -321,24 +322,6 @@ class MainFrame(wx.Frame):
         except:
             pass
         dlg.Destroy()
-
-    def toClipboard(self, text):
-        clip = wx.TheClipboard
-        clip.Open()
-        data = wx.TextDataObject(text)
-        clip.SetData(data)
-        clip.Close()
-
-    def fromClipboard(self):
-        clip = wx.TheClipboard
-        clip.Open()
-        data = wx.TextDataObject("")
-        if clip.GetData(data):
-            clip.Close()
-            return data.GetText()
-        else:
-            clip.Close()
-            return None
 
     def backupToXml(self, event):
         sFit = service.Fit.getInstance()
