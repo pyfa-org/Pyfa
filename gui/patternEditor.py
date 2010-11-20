@@ -348,11 +348,20 @@ class DmgPatternEditorDlg (wx.Dialog):
         pass
 
     def importPatterns(self, event):
-        print "Import in GUI"
-        sDP = service.DamagePattern.getInstance()
-        sDP.importPatterns()
+        clip = wx.TheClipboard
+        clip.Open()
+        data = wx.TextDataObject("")
+        if clip.GetData(data):
+            sDP = service.DamagePattern.getInstance()
+            sDP.importPatterns( data.GetText() )
+        clip.Close()
 
     def exportPatterns(self, event):
-        print "Export in GUI"
         sDP = service.DamagePattern.getInstance()
-        sDP.exportPatterns()
+        text = sDP.exportPatterns()
+
+        clip = wx.TheClipboard
+        clip.Open()
+        data = wx.TextDataObject(text)
+        clip.SetData(data)
+        clip.Close()
