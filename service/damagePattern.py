@@ -81,9 +81,8 @@ class DamagePattern():
     def exportPatterns(self):
         patterns = self.getDamagePatternList()
         for i in xrange(len(patterns) - 1, -1, -1):
-            p = patterns[i]
-            if p.name in ("Uniform", "Selected Ammo"):
-                del p[i]
+            if patterns[i].name in ("Uniform", "Selected Ammo"):
+                del patterns[i]
 
         patterns.sort(key=lambda p: p.name)
         return eos.types.DamagePattern.exportPatterns(*patterns)
