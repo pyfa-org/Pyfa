@@ -73,10 +73,7 @@ class DamagePattern():
         for pattern in imports:
             if pattern.name in lookup:
                 match = lookup[pattern.name]
-                match.emAmount = pattern.emAmount
-                match.thermalAmount = pattern.thermalAmount
-                match.kineticAmount = pattern.kineticAmount
-                match.explosiveAmount = pattern.explosiveAmount
+                match.__dict__.update(pattern.__dict__)
             else:
                 eos.db.save(pattern)
         eos.db.commit()
