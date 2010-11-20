@@ -1417,7 +1417,7 @@ class FitItem(wx.Window):
                     fitInst = service.fit.Fit.getInstance()
                     draggedFit = fitInst.getFit(self.fitID)
                     fitInst.project(activeFit,draggedFit)
-                    wx.PostEvent(self.mainFrame, gui.fittingView.FitChanged(fitID=activeFit))
+                    wx.PostEvent(self.mainFrame, gui.builtingViews.fittingView.FitChanged(fitID=activeFit))
 
             if self.checkForGraphFrame(targetWnd, gfWnd):
                 self.mainFrame.graphFrame.AppendFitToList(self.fitID)

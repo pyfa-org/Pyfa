@@ -28,7 +28,7 @@ class AmmoPattern(ContextMenu):
         fit = self.mainFrame.getActiveFit()
         sFit = service.Fit.getInstance()
         sFit.setAsPattern(fit, item)
-        wx.PostEvent(self.mainFrame, gui.fittingView.FitChanged(fitID=fit))
+        wx.PostEvent(self.mainFrame, gui.builtinViews.fittingView.FitChanged(fitID=fit))
 
     def getBitmap(self, context, selection):
         return None
