@@ -147,10 +147,9 @@ class DmgPatternEditorDlg (wx.Dialog):
 
         self.SetSizer(mainSizer)
 
-# <Import&Export>
-        importExport = (("Import", wx.ART_FILE_OPEN),
-                        ("Export", wx.ART_FILE_SAVE_AS))
-        for name, art in importExport:
+        importExport = (("Import", wx.ART_FILE_OPEN, "from"),
+                        ("Export", wx.ART_FILE_SAVE_AS, "to"))
+        for name, art, direction in importExport:
                 bitmap = wx.ArtProvider.GetBitmap(art, wx.ART_BUTTON)
                 btn = wx.BitmapButton(self, wx.ID_ANY, bitmap)
 
@@ -160,11 +159,8 @@ class DmgPatternEditorDlg (wx.Dialog):
                 btn.Layout()
                 setattr(self, name, btn)
                 btn.Enable(True)
-                btn.SetToolTipString("%s patterns" % name.capitalize())
+                btn.SetToolTipString("%s patterns %s clipboard" % (name, direction) )
                 footerSizer.Add(btn, 0, wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_RIGHT)
-
-# </Import&Export>
-
 
         self.Layout()
         bsize = self.GetBestSize()

@@ -31,17 +31,15 @@ class DamagePattern():
         return cls.instance
 
     def __init__(self):
-        self.getDamagePatternList()
-
-    def getDamagePatternList(self):
-        patterns = eos.db.getDamagePatternList()
-        if len(patterns) == 0:
+        try:
+            uniform = eos.db.getDamagePattern("Uniform")
+        except:
             uniform = eos.types.DamagePattern(25, 25, 25, 25)
             uniform.name = "Uniform"
             eos.db.save(uniform)
-            patterns.append(uniform)
 
-        return patterns
+    def getDamagePatternList(self):
+        return eos.db.getDamagePatternList()
 
     def getDamagePattern(self, name):
         return eos.db.getDamagePattern(name)
@@ -67,8 +65,17 @@ class DamagePattern():
         eos.db.save(p)
 
     def importPatterns(self, text):
-        eos.types.DamagePattern.importPatterns(text)
+        lookup = {}
+        current = self.getDamagePatternList()
+        for pattern in current:
+            lookup[pattern.name] = pattern
+        imports = eos.types.DamagePattern.importPatterns(text)
+        for pattern in imports:
+            if pattern.name in lookup:
+                self.deletePattern( lookup[pattern.name] )
+            eos.db.save(pattern)
 
     def exportPatterns(self):
         patterns = self.getDamagePatternList()
         return eos.types.DamagePattern.exportPatterns(*patterns)
+
