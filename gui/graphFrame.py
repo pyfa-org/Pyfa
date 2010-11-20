@@ -88,12 +88,12 @@ class GraphFrame(wx.Frame):
         self.select(0)
 
         self.fitList.fitList.Bind(wx.EVT_LEFT_DCLICK, self.removeItem)
-        self.mainFrame.Bind(gui.fittingView.FIT_CHANGED, self.draw)
+        self.mainFrame.Bind(gui.builtinViews.fittingView.FIT_CHANGED, self.draw)
         self.Bind(wx.EVT_CLOSE, self.close)
 
     def close(self, event):
         self.fitList.fitList.Unbind(wx.EVT_LEFT_DCLICK, handler=self.removeItem)
-        self.mainFrame.Unbind(gui.fittingView.FIT_CHANGED, handler=self.draw)
+        self.mainFrame.Unbind(gui.builtinViews.fittingView.FIT_CHANGED, handler=self.draw)
         event.Skip()
 
     def getView(self):
