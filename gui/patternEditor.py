@@ -207,7 +207,7 @@ class DmgPatternEditorDlg (wx.Dialog):
         p.kineticAmount = self._KIN = self.editKinetic.GetValue()
         p.explosiveAmount = self._EXP = self.editExplosive.GetValue()
         total = self._EM + self._THERM + self._KIN + self._EXP
-        format = "EM: % 3d%% THERM: % 3d%% KIN: % 3d%% EXP: % 3d%%"
+        format = "EM: %d%%,    THERM: %d%%,    KIN: %d%%,    EXP: %d%%"
         if total > 0:
             ltext = format %(self._EM*100/total, self._THERM*100/total, self._KIN*100/total, self._EXP*100/total)
         else:
