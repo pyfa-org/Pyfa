@@ -147,6 +147,9 @@ class PFNotebook(wx.Panel):
     def GetCurrentPage(self):
         return self.activePage
 
+    def GetPageCount(self):
+        return len(self.pages)
+
     def AddPage(self, tabWnd, tabTitle ="Empty Tab", tabImage = None, showClose = True):
         if self.activePage:
             self.activePage.Hide()
