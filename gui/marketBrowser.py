@@ -43,7 +43,7 @@ class MarketBrowser(wx.Panel):
         vbox.Add(p, 0, wx.EXPAND)
         self.search = SearchBox(p)
         sizer.Add(self.search, 1, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 2)
-        p.SetMinSize((wx.SIZE_AUTO_WIDTH, 27))
+        p.SetMinSize((wx.SIZE_AUTO_WIDTH, 33))
 
         self.splitter = wx.SplitterWindow(self, style = wx.SP_LIVE_UPDATE)
         vbox.Add(self.splitter, 1, wx.EXPAND)
