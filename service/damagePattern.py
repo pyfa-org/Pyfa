@@ -72,8 +72,14 @@ class DamagePattern():
         imports = eos.types.DamagePattern.importPatterns(text)
         for pattern in imports:
             if pattern.name in lookup:
-                self.deletePattern( lookup[pattern.name] )
-            eos.db.save(pattern)
+                match = lookup[pattern.name]
+                match.emAmount = pattern.emAmount
+                match.thermalAmount = pattern.thermalAmount
+                match.kineticAmount = pattern.kineticAmount
+                match.explosiveAmount = pattern.explosiveAmount
+            else:
+                eos.db.save(pattern)
+        eos.db.commit()
 
     def exportPatterns(self):
         patterns = self.getDamagePatternList()
