@@ -28,6 +28,7 @@ class FleetView(wx.gizmos.TreeListCtrl):
         for col in ("Fit", "Shiptype", "Character", "Bonusses"):
             self.AddColumn(col)
 
+        self.SetMainColumn(0)
 
     def populate(self, fleetID):
         sFleet = service.Fleet.getInstance()
@@ -35,7 +36,8 @@ class FleetView(wx.gizmos.TreeListCtrl):
         self.tabManager.SetPageTextIcon(self.tabManager.GetSelection(), f.name)
         self.fleet = f
         self.DeleteAllItems()
-        root = self.AddRoot("FC")
+        root = self.AddRoot("")
+
         self.setEntry(root, f.leader)
 
     def setEntry(self, treeItemId, fit):
