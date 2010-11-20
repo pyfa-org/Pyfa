@@ -40,9 +40,9 @@ class DmgPatternEditorDlg (wx.Dialog):
         cDP = service.DamagePattern.getInstance()
 
         self.choices = cDP.getDamagePatternList()
-        # Remove "Uniform" and "Selected Ammo" Damage Patterns
+        # Remove "Selected Ammo" Damage Patterns
         for dp in self.choices:
-            if dp.name in ("Uniform", "Selected Ammo"):
+            if dp.name is "Selected Ammo":
                 self.choices.remove(dp)
         # Sort the remaining list and continue on
         self.choices.sort(key=lambda p: p.name)
