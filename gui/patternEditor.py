@@ -350,6 +350,9 @@ class DmgPatternEditorDlg (wx.Dialog):
         if clip.GetData(data):
             sDP = service.DamagePattern.getInstance()
             sDP.importPatterns( data.GetText() )
+            self.stPercentages.SetLabel("Patterns imported from clipboard")
+        else:
+            self.stPercentages.SetLabel("Could not import from clipboard")
         clip.Close()
 
     def exportPatterns(self, event):
@@ -360,4 +363,5 @@ class DmgPatternEditorDlg (wx.Dialog):
         clip.Open()
         data = wx.TextDataObject(text)
         clip.SetData(data)
+        self.stPercentages.SetLabel("Patterns exported to clipboard")
         clip.Close()
