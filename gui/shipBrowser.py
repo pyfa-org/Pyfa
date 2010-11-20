@@ -361,7 +361,7 @@ class HeaderPane (wx.Panel):
 
         self.sbSearch = PFGenBitmapButton( self, wx.ID_ANY, self.searchBmp, wx.DefaultPosition, bmpSize, wx.BORDER_NONE )
         mainSizer.Add(self.sbSearch, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL , 5)
-        self.sbSearch.SetBackgroundColour( wx.Colour(0, 0, 0, 0) )
+        self.sbSearch.SetBackgroundColour( bgcolour )
 
         self.SetSizer(mainSizer)
 
