@@ -1,6 +1,7 @@
 import wx.gizmos
 import gui.fleetBrowser
 import service
+from gui import bitmapLoader
 
 #Tab spawning handler
 class FleetSpawner(gui.multiSwitch.TabSpawner):
@@ -25,10 +26,14 @@ class FleetView(wx.gizmos.TreeListCtrl):
         self.imageList = wx.ImageList(16, 16)
         self.SetImageList(self.imageList)
 
-        for col in ("Fit", "Shiptype", "Character", "Bonusses"):
+        for col in ("", "Fit", "Shiptype", "Character", "Bonusses"):
             self.AddColumn(col)
 
-        self.SetMainColumn(0)
+        self.SetMainColumn(1)
+
+        self.icons = {}
+        for icon in ("fb", "fc", "sb", "sc", "wb", "wc"):
+            self.icons[icon] = self.imageList.Add(bitmapLoader.getBitmap("fleet_%s_small" % icon, "icons"))
 
     def populate(self, fleetID):
         sFleet = service.Fleet.getInstance()
@@ -38,16 +43,38 @@ class FleetView(wx.gizmos.TreeListCtrl):
         self.DeleteAllItems()
         root = self.AddRoot("")
 
-        self.setEntry(root, f.leader)
+        self.setEntry(root, f.leader, "fleet", f)
+        for wing in f.wings:
+            wingId = self.AppendItem(root, "")
+            self.setEntry(wingId, wing.leader, "wing", wing)
+            for squad in wing.squads:
+                for member in squad.members:
+                    memberId = self.AppendItem(wingId, "")
+                    self.setEntry(memberId, member, "squad", squad)
 
-    def setEntry(self, treeItemId, fit):
+        self.SetColumnWidth(0, 16)
+        for i in xrange(1, 5):
+            self.SetColumnWidth(i, wx.LIST_AUTOSIZE_USEHEADER)
+            headerWidth = self.GetColumnWidth(i)
+            self.SetColumnWidth(i, wx.LIST_AUTOSIZE)
+            baseWidth = self.GetColumnWidth(i)
+            if baseWidth < headerWidth:
+                self.SetColumnWidth(i, headerWidth)
+
+
+    def setEntry(self, treeItemId, fit, layer, info):
         if fit is None:
             self.SetItemText(treeItemId, "Empty", 0)
         else:
             fleet = self.fleet
-            self.SetItemText(treeItemId, fit.name, 0)
-            self.SetItemText(treeItemId, fit.ship.item.name, 1)
-            self.SetItemText(treeItemId, fit.character.name, 2)
+            if fit == info.booster:
+                self.SetItemImage(treeItemId, self.icons["%sb" % layer[0]], 0)
+            elif fit == info.leader:
+                self.SetItemImage(treeItemId, self.icons["%sc" % layer[0]], 1)
+
+            self.SetItemText(treeItemId, fit.name, 1)
+            self.SetItemText(treeItemId, fit.ship.item.name, 2)
+            self.SetItemText(treeItemId, fit.character.name, 3)
             boosts = fleet.store.getBoosts(fit)
             if boosts:
                 bonusses = []
