@@ -1,7 +1,7 @@
 from gui.contextMenu import ContextMenu
 import gui.mainFrame
 import service
-import gui.fittingView
+import gui.builtinViews.fittingView
 import wx
 from gui import bitmapLoader
 
@@ -15,7 +15,7 @@ class DamagePattern(ContextMenu):
     def getText(self, context, selection):
         sDP = service.DamagePattern.getInstance()
         self.patterns = sDP.getDamagePatternList()
-        self.patterns.sort( key=lambda p: (p.name in ["Selected Ammo", 
+        self.patterns.sort( key=lambda p: (p.name in ["Selected Ammo",
                             "Uniform"], p.name) )
         m = map(lambda p: p.name, self.patterns)
         return m
@@ -26,7 +26,7 @@ class DamagePattern(ContextMenu):
         fitID = self.mainFrame.getActiveFit()
         sFit.setDamagePattern(fitID, self.patterns[i])
         setattr(self.mainFrame,"_activeDmgPattern",self.patterns[i])
-        wx.PostEvent(self.mainFrame, gui.fittingView.FitChanged(fitID=fitID))
+        wx.PostEvent(self.mainFrame, gui.builtinViews.fittingView.FitChanged(fitID=fitID))
 
     def getBitmap(self, context, selection):
         sFit = service.Fit.getInstance()

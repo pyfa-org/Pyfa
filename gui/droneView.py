@@ -20,7 +20,7 @@
 import wx
 
 import service
-import gui.fittingView as fv
+import gui.builtinViews.fittingView as fv
 import gui.marketBrowser as mb
 import gui.display as d
 from gui.builtinViewColumns.state import State

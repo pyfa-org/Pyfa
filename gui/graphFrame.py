@@ -20,7 +20,6 @@
 import wx
 import bitmapLoader
 import gui.display
-import gui.fittingView
 
 try:
     import matplotlib as mpl

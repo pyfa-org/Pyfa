@@ -18,6 +18,8 @@
 #===============================================================================
 
 import eos.db
+from eos.types import Fit, Ship, Character
+from eos.types import Fleet as Fleet_
 
 class Fleet(object):
     instance = None
@@ -38,3 +40,13 @@ class Fleet(object):
             fleetList.append(fleet.ID, fleet.name, fleet.count())
 
         return fleetList
+
+    def getFleet(self, ID):
+        f = Fleet_()
+        f.name = "Test"
+        f.leader = Fit()
+        f.leader.name = "FC"
+        f.leader.ship = Ship(eos.db.getItem("Damnation"))
+        f.character = Character("Moo")
+        f.calculateModifiedAttributes()
+        return f

@@ -20,7 +20,7 @@
 import wx
 import service
 import gui.display as d
-import gui.fittingView as fv
+import gui.builtinViews.fittingView as fv
 import gui.marketBrowser as mb
 from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu

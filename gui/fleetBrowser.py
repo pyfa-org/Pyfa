@@ -1,6 +1,13 @@
 import wx
 import copy
 from gui import bitmapLoader
+import gui.mainFrame
+
+class FleetBrowser(wx.Panel):
+    def __init__(self, parent):
+        wx.Panel.__init__(self, parent)
+        self.SetBackgroundColour("pink")
+        x = FleetItem(self, 1, "IMBA Fleet", 23, size = (200,32))
 
 FleetSelected, EVT_FLEET_SELECTED = wx.lib.newevent.NewEvent()
 
@@ -10,6 +17,7 @@ class FleetItem(wx.Window):
                  size=(0,16), style=0):
         wx.Window.__init__(self, parent, id, pos, size, style)
 
+        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.fleetID = fleetID
         self.fleetName = fleetName
         self.fleetCount = fleetCount
@@ -26,6 +34,11 @@ class FleetItem(wx.Window):
 
         self.Bind(wx.EVT_LEAVE_WINDOW, self.LeaveWindow)
         self.Bind(wx.EVT_ENTER_WINDOW, self.EnterWindow)
+        self.Bind(wx.EVT_LEFT_UP, self.selected)
+
+    def selected(self, event):
+        wx.PostEvent(self.mainFrame, FleetSelected(fleetID=0))
+        event.Skip()
 
     def Rename(self, newName):
         self.fleetName = newName
@@ -102,9 +115,3 @@ class FleetItem(wx.Window):
         event.Skip()
 
 
-
-class FleetBrowser(wx.Panel):
-    def __init__(self, parent):
-        wx.Panel.__init__(self, parent)
-        self.SetBackgroundColour("pink")
-        x = FleetItem(self, 1, "IMBA Fleet", 23, size = (200,32))

@@ -27,7 +27,7 @@ import service
 import gui.display as d
 from gui.contextMenu import ContextMenu
 import sys
-import gui.fittingView as fv
+import gui.builtinViews.fittingView as fv
 
 CharListUpdated, CHAR_LIST_UPDATED = wx.lib.newevent.NewEvent()
 CharChanged, CHAR_CHANGED = wx.lib.newevent.NewEvent()

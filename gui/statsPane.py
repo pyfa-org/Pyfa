@@ -23,7 +23,7 @@ import service
 from gui.pyfatogglepanel import TogglePanel
 import gui.builtinStatsViews
 from gui.contextMenu import ContextMenu
-import gui.fittingView as fv
+import gui.builtinViews.fittingView as fv
 import gui.mainFrame
 
 class StatsPane(wx.Panel):

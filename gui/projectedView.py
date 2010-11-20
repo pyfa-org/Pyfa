@@ -19,7 +19,7 @@
 
 import wx
 import gui.display as d
-import gui.fittingView as fv
+import gui.builtinViews.fittingView as fv
 import service
 import gui.droneView
 from gui.builtinViewColumns.state import State

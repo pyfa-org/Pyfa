@@ -1,10 +1,10 @@
 from gui.contextMenu import ContextMenu
 import gui.mainFrame
 import service
-import gui.fittingView
 import wx
 from gui import bitmapLoader
 from eos.types import Hardpoint
+import gui.builtinViews.fittingView
 
 class ModuleAmmoPicker(ContextMenu):
     def __init__(self):
@@ -179,6 +179,6 @@ class ModuleAmmoPicker(ContextMenu):
         fitID = self.mainFrame.getActiveFit()
 
         sFit.setAmmo(fitID, charge.ID if charge is not None else None, self.modules)
-        wx.PostEvent(self.mainFrame, gui.fittingView.FitChanged(fitID=fitID))
+        wx.PostEvent(self.mainFrame, gui.builtinViews.fittingView.FitChanged(fitID=fitID))
 
 ModuleAmmoPicker.register()

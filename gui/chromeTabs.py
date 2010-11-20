@@ -204,17 +204,23 @@ class PFNotebook(wx.Panel):
     def IsActive(self, page):
         return self.activePage == page
 
-    def SetPageText(self, i, text, refresh=False):
+    def SetPageText(self, i, text, refresh=True):
         tab = self.tabsContainer.tabs[i]
         tab.text = text
+        if refresh:
+            self.tabsContainer.AdjustTabsSize()
+            self.Refresh()
 
-    def SetPageIcon(self, i, icon, refresh=False):
+    def SetPageIcon(self, i, icon, refresh=True):
         tab = self.tabsContainer.tabs[i]
         tab.tabImg = icon
+        if refresh:
+            self.tabsContainer.AdjustTabsSize()
+            self.Refresh()
 
     def SetPageTextIcon(self, i, text=wx.EmptyString, icon=None):
-        self.SetPageText(i, text)
-        self.SetPageIcon(i, icon)
+        self.SetPageText(i, text, False)
+        self.SetPageIcon(i, icon, False)
         self.tabsContainer.AdjustTabsSize()
         self.Refresh()
 

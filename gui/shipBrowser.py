@@ -2,7 +2,7 @@ import wx
 import copy
 from gui import bitmapLoader
 import gui.mainFrame
-import gui.fittingView
+import gui.builtinViews.fittingView
 import service
 import time
 import os
@@ -79,7 +79,7 @@ class ShipBrowser(wx.Panel):
         self.Bind(EVT_SB_STAGE3_SEL, self.stage3)
         self.Bind(EVT_SB_SEARCH_SEL, self.searchStage)
 
-        self.mainFrame.Bind(gui.fittingView.FIT_CHANGED, self.RefreshList)
+        self.mainFrame.Bind(gui.builtinViews.fittingView.FIT_CHANGED, self.RefreshList)
 
         self.stage1(None)
 

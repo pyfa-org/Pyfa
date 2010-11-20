@@ -22,14 +22,13 @@ import wx.lib.newevent
 import service
 import gui.mainFrame
 import gui.marketBrowser
-import bitmapLoader
 import gui.display as d
 from gui.contextMenu import ContextMenu
 import gui.shipBrowser
-import sys
 from eos.types import Slot
 from gui.builtinViewColumns.state import State
 import gui.multiSwitch
+from gui import bitmapLoader
 
 FitChanged, FIT_CHANGED = wx.lib.newevent.NewEvent()
 

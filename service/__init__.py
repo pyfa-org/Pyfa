@@ -4,3 +4,4 @@ from service.attribute import Attribute
 from service.character import Character
 from service.damagePattern import DamagePattern
 from service.settings import SettingsProvider
+from service.fleet import Fleet

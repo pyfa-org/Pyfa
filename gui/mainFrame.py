@@ -35,11 +35,11 @@ from gui.graphFrame import GraphFrame
 from gui.copySelectDialog import CopySelectDialog
 from gui.fleetBrowser import FleetBrowser
 import aboutData
-import gui.fittingView as fv
 from wx._core import PyDeadObjectError
 import os.path
 import gui.chromeTabs
 from util import toClipboard, fromClipboard
+from builtinViews import *
 
 #dummy panel no paint no erasebk
 class PFPanel(wx.Panel):

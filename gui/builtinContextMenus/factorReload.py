@@ -1,7 +1,7 @@
 from gui.contextMenu import ContextMenu
 import gui.mainFrame
 import service
-import gui.fittingView
+import gui.builtinViews.fittingView
 import wx
 from gui import bitmapLoader
 
@@ -19,7 +19,7 @@ class FactorReload(ContextMenu):
         sFit = service.Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
         sFit.toggleFactorReload(fitID)
-        wx.PostEvent(self.mainFrame, gui.fittingView.FitChanged(fitID=fitID))
+        wx.PostEvent(self.mainFrame, gui.builtinViews.fittingView.FitChanged(fitID=fitID))
 
     def getBitmap(self, context, selection):
         sFit = service.Fit.getInstance()

@@ -25,7 +25,7 @@ from gui import pygauge as PG
 from util import formatAmount
 import service
 import gui.mainFrame
-import gui.fittingView as fv
+import gui.builtinViews.fittingView as fv
 
 EffictiveHpToggled, EFFECTIVE_HP_TOGGLED = wx.lib.newevent.NewEvent()
 

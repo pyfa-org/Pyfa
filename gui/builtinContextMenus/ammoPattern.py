@@ -1,9 +1,7 @@
 from gui.contextMenu import ContextMenu
 import gui.mainFrame
 import service
-import gui.fittingView
 import wx
-import gui.fittingView
 from gui import bitmapLoader
 
 class AmmoPattern(ContextMenu):

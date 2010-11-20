@@ -21,7 +21,7 @@ import wx
 import service
 from gui import characterEditor as ce
 from gui import bitmapLoader
-from gui import fittingView as fv
+from gui.builtinViews import fittingView as fv
 import gui.mainFrame
 
 class CharacterSelection(wx.Panel):
