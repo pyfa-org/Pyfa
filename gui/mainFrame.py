@@ -82,7 +82,7 @@ class MainFrame(wx.Frame):
         faSizer = wx.BoxSizer(wx.VERTICAL)
 
         self.fitMultiSwitch = MultiSwitch(self.FitviewAdditionsPanel)
-        #self.fitMultiSwitch.AddPage()
+
         faSizer.Add(self.fitMultiSwitch,1,wx.EXPAND)
 
         self.additionsPane = AdditionsPane(self.FitviewAdditionsPanel)
@@ -90,9 +90,8 @@ class MainFrame(wx.Frame):
 
         self.FitviewAdditionsPanel.SetSizer(faSizer)
 
-#        self.notebookBrowsers = wx.Notebook(self.splitter, wx.ID_ANY)
+
         self.notebookBrowsers = gui.chromeTabs.PFNotebook(self.splitter, False)
-#        self.notebookBrowsers.Bind(wx.EVT_LEFT_DOWN, self.mouseHit)
 
         self.marketBrowser = MarketBrowser(self.notebookBrowsers)
         self.notebookBrowsers.AddPage(self.marketBrowser, "Market", showClose = False)
@@ -142,11 +141,6 @@ class MainFrame(wx.Frame):
 
     def getActiveView(self):
         sel = self.fitMultiSwitch.GetSelectedPage()
-
-#    def mouseHit(self, event):
-#        tab, _ = self.notebookBrowsers.HitTest(event.Position)
-#        if tab != -1:
-#            self.notebookBrowsers.SetSelection(tab)
 
     def CloseCurrentFit(self, evt):
         ms = self.fitMultiSwitch

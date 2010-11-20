@@ -41,6 +41,8 @@ class FitSpawner(gui.multiSwitch.TabSpawner):
 
     def fitSelected(self, event):
         count = -1
+        if self.multiSwitch.GetPageCount() == 0:
+            self.multiSwitch.AddPage(wx.Panel(self.multiSwitch, size = (0,0)), "Empty Tab")
         for index, page in enumerate(self.multiSwitch.pages):
             try:
                 if page.activeFitID == event.fitID:
