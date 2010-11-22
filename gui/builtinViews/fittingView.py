@@ -29,6 +29,7 @@ from eos.types import Slot
 from gui.builtinViewColumns.state import State
 import gui.multiSwitch
 from gui import bitmapLoader
+import gui.shipBrowser
 
 FitChanged, FIT_CHANGED = wx.lib.newevent.NewEvent()
 
@@ -36,13 +37,13 @@ FitChanged, FIT_CHANGED = wx.lib.newevent.NewEvent()
 class FitSpawner(gui.multiSwitch.TabSpawner):
     def __init__(self, multiSwitch):
         self.multiSwitch = multiSwitch
-        mainFrame = gui.mainFrame.MainFrame.getInstance()
+        self.mainFrame = mainFrame = gui.mainFrame.MainFrame.getInstance()
         mainFrame.Bind(gui.shipBrowser.EVT_FIT_SELECTED, self.fitSelected)
 
     def fitSelected(self, event):
         count = -1
         if self.multiSwitch.GetPageCount() == 0:
-            self.multiSwitch.AddPage(wx.Panel(self.multiSwitch, size = (0,0)), "Empty Tab")
+            self.multiSwitch.AddPage()
         for index, page in enumerate(self.multiSwitch.pages):
             try:
                 if page.activeFitID == event.fitID:
@@ -55,6 +56,12 @@ class FitSpawner(gui.multiSwitch.TabSpawner):
             view = FittingView(self.multiSwitch)
             self.multiSwitch.ReplaceActivePage(view)
             view.fitSelected(event)
+
+    def handleDrag(self, type, fitID):
+        if type == "fit":
+            view = FittingView(self.multiSwitch)
+            self.multiSwitch.ReplaceActivePage(view)
+            view.handleDrag(type, fitID)
 
 FitSpawner.register()
 
@@ -114,6 +121,10 @@ class FittingView(d.Display):
         self.Bind(wx.EVT_RIGHT_DOWN, self.click)
         self.Bind(wx.EVT_SHOW, self.OnShow)
         self.parent.Bind(gui.chromeTabs.EVT_NOTEBOOK_PAGE_CHANGED, self.pageChanged)
+
+    def handleDrag(self, type, fitID):
+        if type == "fit":
+            wx.PostEvent(self.mainFrame, gui.shipBrowser.FitSelected(fitID=fitID))
 
     def Destroy(self):
         self.parent.Unbind(gui.chromeTabs.EVT_NOTEBOOK_PAGE_CHANGED, handler=self.pageChanged)
@@ -391,9 +402,14 @@ class FittingView(d.Display):
 
         icount = self.itemCount
         irect = self.itemRect
-
+        if irect:
+            ih = irect.height
+            it = irect.top
+        else:
+            ih = 0
+            it = 0
         rect = self.GetRect()
-        rect.height = min(irect.height * icount + irect.top, rect.height - 16)
+        rect.height = min(ih * icount + it, rect.height - 16)
         rect.width = min(rect.width, wantedWidth)
 
         mdc = wx.MemoryDC()

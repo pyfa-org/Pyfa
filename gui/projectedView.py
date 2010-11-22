@@ -58,6 +58,16 @@ class ProjectedView(d.Display):
         self.Bind(wx.EVT_LIST_BEGIN_DRAG, self.startDrag)
         self.SetDropTarget(ProjectedViewDrop(self.mergeDrones))
 
+    def handleDrag(self, type, fitID):
+        #Those are drags coming from pyfa sources, NOT builtin wx drags
+        if type == "fit":
+            activeFit = self.mainFrame.getActiveFit()
+            if activeFit:
+                sFit = service.Fit.getInstance()
+                draggedFit = sFit.getFit(fitID)
+                sFit.project(activeFit,draggedFit)
+                wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=activeFit))
+
     def startDrag(self, event):
         row = event.GetIndex()
         if row != -1 and isinstance(self.get(row), eos.types.Drone):

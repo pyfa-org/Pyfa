@@ -91,6 +91,10 @@ class GraphFrame(wx.Frame):
         self.mainFrame.Bind(gui.builtinViews.fittingView.FIT_CHANGED, self.draw)
         self.Bind(wx.EVT_CLOSE, self.close)
 
+    def handleDrag(self, type, fitID):
+        if type == "fit":
+            self.AppendFitToList(fitID)
+
     def close(self, event):
         self.fitList.fitList.Unbind(wx.EVT_LEFT_DCLICK, handler=self.removeItem)
         self.mainFrame.Unbind(gui.builtinViews.fittingView.FIT_CHANGED, handler=self.draw)

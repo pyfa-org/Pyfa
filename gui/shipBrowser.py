@@ -335,7 +335,7 @@ class HeaderPane (wx.Panel):
 
         self.sbNewFit = PFGenBitmapButton( self, wx.ID_ANY, self.newBmp, wx.DefaultPosition, bmpSize, wx.BORDER_NONE )
         mainSizer.Add(self.sbNewFit, 0, wx.LEFT | wx.TOP | wx.BOTTOM  | wx.ALIGN_CENTER_VERTICAL , 5)
-        self.sbNewFit.SetBackgroundColour( bgcolour ) 
+        self.sbNewFit.SetBackgroundColour( bgcolour )
 
         self.sbSwitchFitView = PFGenBitmapButton( self, wx.ID_ANY, self.switchBmp, wx.DefaultPosition, bmpSize, wx.BORDER_NONE )
         mainSizer.Add(self.sbSwitchFitView, 0, wx.LEFT | wx.TOP | wx.BOTTOM  | wx.ALIGN_CENTER_VERTICAL , 5)
@@ -1400,32 +1400,21 @@ class FitItem(wx.Window):
 
             targetWnd = wx.FindWindowAtPointer()
 
-            pjWnd = self.mainFrame.additionsPane.projectedPage
-            msWnd = self.mainFrame.fitMultiSwitch.tabsContainer
-            cfitWnd = self.mainFrame.fitMultiSwitch.GetCurrentPage()
-            gfWnd = self.mainFrame.graphFrame
-
             if not targetWnd:
                 return
 
-            if targetWnd == cfitWnd:
-                wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fitID))
+            wnd = targetWnd
+            while wnd is not None:
+                handler = getattr(wnd, "handleDrag", None)
+                if handler:
+                    handler("fit", self.fitID)
+                    break
+                else:
+                    newWnd = targetWnd.Parent
+                    if wnd == newWnd:
+                        break
 
-            elif targetWnd == msWnd:
-
-                if self.mainFrame.getActiveFit():
-                    self.mainFrame.fitMultiSwitch.AddPage(wx.Panel(self,size = (0,0)))
-                wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fitID))
-            elif targetWnd == pjWnd:
-                activeFit = self.mainFrame.getActiveFit()
-                if activeFit:
-                    fitInst = service.fit.Fit.getInstance()
-                    draggedFit = fitInst.getFit(self.fitID)
-                    fitInst.project(activeFit,draggedFit)
-                    wx.PostEvent(self.mainFrame, gui.builtingViews.fittingView.FitChanged(fitID=activeFit))
-
-            if self.checkForGraphFrame(targetWnd, gfWnd):
-                self.mainFrame.graphFrame.AppendFitToList(self.fitID)
+                    wnd = newWnd
 
             event.Skip()
             return
