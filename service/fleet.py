@@ -18,8 +18,8 @@
 #===============================================================================
 
 import eos.db
-from eos.types import Fit, Ship, Character
 from eos.types import Fleet as Fleet_
+import copy
 
 class Fleet(object):
     instance = None
@@ -42,11 +42,23 @@ class Fleet(object):
         return fleetList
 
     def getFleet(self, ID):
-        f = Fleet_()
-        f.name = "Test"
-        f.leader = Fit()
-        f.leader.name = "FC"
-        f.leader.ship = Ship(eos.db.getItem("Damnation"))
-        f.character = Character("Moo")
-        f.calculateModifiedAttributes()
+        f = eos.db.getFleet(ID)
         return f
+
+    def addFleet(self):
+        f = Fleet_()
+        eos.db.save(f)
+        return f
+
+    def renameFleet(self, fleet, newName):
+        fleet.name = newName
+        eos.db.commit()
+
+    def copyFleet(self, fleet):
+        newFleet = copy.deepcopy(fleet)
+        eos.db.save(newFleet)
+        return newFleet
+
+    def deleteFleet(self, fleet):
+        eos.db.remove(fleet)
+
