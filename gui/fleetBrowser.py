@@ -2,14 +2,69 @@ import wx
 import copy
 from gui import bitmapLoader
 import gui.mainFrame
+from gui.PFListPane import PFListPane
+
+FleetSelected, EVT_FLEET_SELECTED = wx.lib.newevent.NewEvent()
+
 
 class FleetBrowser(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent)
-        self.SetBackgroundColour("pink")
-        x = FleetItem(self, 1, "IMBA Fleet", 23, size = (200,32))
 
-FleetSelected, EVT_FLEET_SELECTED = wx.lib.newevent.NewEvent()
+        mainSizer = wx.BoxSizer(wx.VERTICAL)
+
+        self.fleetItemContainer = PFFleetItemContainer(self)
+        for i in xrange(10):
+            self.fleetItemContainer.AddWidget(FleetItem(self, 1, "IMBA Fleet #%d" % i, i, size = (0,32)))
+
+        mainSizer.Add(self.fleetItemContainer, 1, wx.EXPAND)
+        self.SetSizer(mainSizer)
+        self.Layout()
+        self.Bind(wx.EVT_SIZE, self.SizeRefreshList)
+
+    def SizeRefreshList(self, event):
+        ewidth, eheight = event.GetSize()
+        self.Layout()
+        self.fleetItemContainer.Layout()
+        self.fleetItemContainer.RefreshList(True)
+        event.Skip()
+
+class PFFleetItemContainer(PFListPane):
+    def __init__(self,parent):
+        PFListPane.__init__(self,parent)
+        self.selectedWidget = -1
+
+    def IsWidgetSelectedByContext(self, widget):
+        if self.GetWidgetList()[widget].IsSelected():
+            return True
+        return False
+
+    def GetWidgetIndex(self, widgetWnd):
+        return self.GetWidgetList().index(widgetWnd)
+
+    def SelectWidget(self, widgetWnd):
+        wlist = self.GetWidgetList()
+        if self.selectedWidget != -1:
+            wlist[self.selectedWidget].SetSelected(False)
+            wlist[self.selectedWidget].Refresh()
+        windex = self.GetWidgetIndex(widgetWnd)
+        wlist[windex].SetSelected(True)
+        wlist[windex].Refresh()
+        self.selectedWidget = windex
+
+    def RemoveWidget(self, child):
+        child.Destroy()
+        self.selectedWidget = -1
+        self._wList.remove(child)
+
+
+    def RemoveAllChildren(self):
+        for widget in self._wList:
+            widget.Destroy()
+
+        self.selectedWidget = -1
+        self._wList = []
+
 
 class FleetItem(wx.Window):
     def __init__(self, parent, fleetID, fleetName, fleetCount,
@@ -22,6 +77,7 @@ class FleetItem(wx.Window):
         self.fleetName = fleetName
         self.fleetCount = fleetCount
         self.highlighted = 0
+        self.selected = False
         self.padding = 5
         self.fontBig = wx.FontFromPixelSize((0,15),wx.SWISS, wx.NORMAL, wx.BOLD, False)
         self.fontSmall = wx.FontFromPixelSize((0,13),wx.SWISS, wx.NORMAL, wx.NORMAL, False)
@@ -31,12 +87,15 @@ class FleetItem(wx.Window):
         self.deleteBmp = bitmapLoader.getBitmap("fit_delete_small","icons")
 
         self.Bind(wx.EVT_PAINT, self.OnPaint)
+        self.Bind(wx.EVT_ERASE_BACKGROUND, lambda event: None)
 
         self.Bind(wx.EVT_LEAVE_WINDOW, self.LeaveWindow)
         self.Bind(wx.EVT_ENTER_WINDOW, self.EnterWindow)
-        self.Bind(wx.EVT_LEFT_UP, self.selected)
+        self.Bind(wx.EVT_LEFT_UP, self.OnSelect)
 
-    def selected(self, event):
+    def OnSelect(self, event):
+        self.Parent.SelectWidget(self)
+        self.Refresh()
         wx.PostEvent(self.mainFrame, FleetSelected(fleetID=0))
         event.Skip()
 
@@ -48,6 +107,12 @@ class FleetItem(wx.Window):
 
     def Copy(self):
         print "Copy"
+
+    def IsSelected(self):
+        return self.selected
+
+    def SetSelected(self, state = True):
+        self.selected = state
 
     def OnPaint(self, event):
         rect = self.GetRect()
@@ -79,7 +144,12 @@ class FleetItem(wx.Window):
             bdc.SetTextForeground(wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOWTEXT ))
 
         else:
-            bdc.SetBackground(wx.Brush(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)))
+            if self.selected:
+                bkcolor = wx.Colour(221,221,221)
+            else:
+                bkcolor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
+
+            bdc.SetBackground(wx.Brush(bkcolor))
             bdc.SetTextForeground(wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOWTEXT ))
             bdc.Clear()
 

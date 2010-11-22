@@ -27,7 +27,7 @@ import service
 import gui.mainFrame
 import gui.builtinViews.fittingView as fv
 
-EffictiveHpToggled, EFFECTIVE_HP_TOGGLED = wx.lib.newevent.NewEvent()
+EffectiveHpToggled, EFFECTIVE_HP_TOGGLED = wx.lib.newevent.NewEvent()
 
 class ResistancesViewFull(StatsView):
     name = "resistancesViewFull"
@@ -89,10 +89,10 @@ class ResistancesViewFull(StatsView):
             bitmap.SetToolTip(tooltip)
             sizerResistances.Add(bitmap, wx.GBPosition( row, col ), wx.GBSpan( 1, 1 ), wx.ALIGN_CENTER)
             col+=1
-        self.stEHPs = wx.StaticText(contentPanel, wx.ID_ANY, "EHP", style = wx.DOUBLE_BORDER if 'wxMSW' in wx.PlatformInfo else wx.SIMPLE_BORDER)
+        self.stEHPs = wx.Button(contentPanel, style = wx.BU_EXACTFIT, label =  "EHP")
         self.stEHPs.SetToolTip(wx.ToolTip("Click to toggle between effective HP and raw HP"))
 
-        self.stEHPs.Bind(wx.EVT_LEFT_UP, self.toggleEHP)
+        self.stEHPs.Bind(wx.EVT_BUTTON, self.toggleEHP)
 
 
         sizerResistances.Add(self.stEHPs, wx.GBPosition( row, col ), wx.GBSpan( 1, 1 ), wx.ALIGN_CENTER)
@@ -156,7 +156,7 @@ class ResistancesViewFull(StatsView):
         self.stEHPs.SetToolTip(wx.ToolTip("Click to toggle between effective HP and raw HP"))
 
     def toggleEHP(self, event):
-        wx.PostEvent(self.mainFrame, EffictiveHpToggled(effective=self.stEHPs.GetLabel() == "  HP "))
+        wx.PostEvent(self.mainFrame, EffectiveHpToggled(effective=self.stEHPs.GetLabel() == "HP"))
 
     def ehpSwitch(self, event):
         self.showEffective = event.effective
@@ -168,14 +168,14 @@ class ResistancesViewFull(StatsView):
         #If we did anything intresting, we'd update our labels to reflect the new fit's stats here
         if fit is None and not self.showEffective:
             self.showEffective = True
-            wx.PostEvent(self.mainFrame, EffictiveHpToggled(effective=True))
+            wx.PostEvent(self.mainFrame, EffectiveHpToggled(effective=True))
             return
         elif fit is not None and fit.ID != self.activeFit and not self.showEffective:
             self.showEffective = True
-            wx.PostEvent(self.mainFrame, EffictiveHpToggled(effective=True))
+            wx.PostEvent(self.mainFrame, EffectiveHpToggled(effective=True))
             return
 
-        self.stEHPs.SetLabel("  EHP " if self.showEffective else "  HP ")
+        self.stEHPs.SetLabel("EHP" if self.showEffective else "HP")
         self.activeFit = fit.ID if fit is not None else None
 
         for tankType in ("shield", "armor", "hull"):

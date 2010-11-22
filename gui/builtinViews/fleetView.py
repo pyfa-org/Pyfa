@@ -11,6 +11,9 @@ class FleetSpawner(gui.multiSwitch.TabSpawner):
         mainFrame.Bind(gui.fleetBrowser.EVT_FLEET_SELECTED, self.fleetSelected)
 
     def fleetSelected(self, event):
+        if self.multiSwitch.GetPageCount() == 0:
+            self.multiSwitch.AddPage(wx.Panel(self.multiSwitch, size = (0,0)), "Empty Tab")
+
         view = FleetView(self.multiSwitch)
         self.multiSwitch.ReplaceActivePage(view)
         view.populate(event.fleetID)
@@ -19,8 +22,8 @@ class FleetSpawner(gui.multiSwitch.TabSpawner):
 FleetSpawner.register()
 
 class FleetView(wx.gizmos.TreeListCtrl):
-    def __init__(self, parent):
-        wx.gizmos.TreeListCtrl.__init__(self, parent)
+    def __init__(self, parent, size = (0,0)):
+        wx.gizmos.TreeListCtrl.__init__(self, parent, size = size)
 
         self.tabManager = parent
         self.imageList = wx.ImageList(16, 16)
