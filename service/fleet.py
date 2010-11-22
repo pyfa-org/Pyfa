@@ -41,7 +41,7 @@ class Fleet(object):
 
         return fleetList
 
-    def getFleet(self, ID):
+    def getFleetByID(self, ID):
         f = eos.db.getFleet(ID)
         return f
 
@@ -59,9 +59,13 @@ class Fleet(object):
         eos.db.save(newFleet)
         return newFleet
 
+    def copyFleetByID(self, ID):
+        fleet = self.getFleetByID(ID)
+        return self.copyFleet(fleet)
+
     def deleteFleet(self, fleet):
         eos.db.remove(fleet)
 
     def deleteFleetByID(self, ID):
-        fleet = self.getFleet(ID)
+        fleet = self.getFleetByID(ID)
         self.deleteFleet(fleet)

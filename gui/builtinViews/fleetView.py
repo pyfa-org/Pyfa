@@ -41,7 +41,7 @@ class FleetView(wx.gizmos.TreeListCtrl):
 
     def populate(self, fleetID):
         sFleet = service.Fleet.getInstance()
-        f = sFleet.getFleet(fleetID)
+        f = sFleet.getFleetByID(fleetID)
         self.tabManager.SetPageTextIcon(self.tabManager.GetSelection(), f.name)
         self.fleet = f
         self.DeleteAllItems()

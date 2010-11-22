@@ -12,6 +12,7 @@ FleetSelected, EVT_FLEET_SELECTED = wx.lib.newevent.NewEvent()
 FleetItemSelect, EVT_FLEET_ITEM_SELECT = wx.lib.newevent.NewEvent()
 FleetItemDelete, EVT_FLEET_ITEM_DELETE = wx.lib.newevent.NewEvent()
 FleetItemNew, EVT_FLEET_ITEM_NEW = wx.lib.newevent.NewEvent()
+FleetItemCopy, EVT_FLEET_ITEM_COPY = wx.lib.newevent.NewEvent()
 
 
 
@@ -44,6 +45,7 @@ class FleetBrowser(wx.Panel):
         self.Bind(EVT_FLEET_ITEM_NEW, self.AddNewFleetItem)
         self.Bind(EVT_FLEET_ITEM_SELECT, self.SelectFleetItem)
         self.Bind(EVT_FLEET_ITEM_DELETE, self.DeleteFleetItem)
+        self.Bind(EVT_FLEET_ITEM_COPY, self.CopyFleetItem)
 
         self.PopulateFleetList()
 
@@ -52,17 +54,30 @@ class FleetBrowser(wx.Panel):
         newFleet = self.sFleet.addFleet()
         self.sFleet.renameFleet(newFleet, fleetName)
 
-        self.fleetItemContainer.AddWidget(FleetItem(self, newFleet.ID, newFleet.name, newFleet.count()))
-        self.fleetItemContainer.RefreshList()
+        self.AddItem(newFleet.ID, newFleet.name, newFleet.count())
 
     def SelectFleetItem(self, event):
         fleetID = event.fleetID
         self.fleetItemContainer.SelectWidgetByFleetID(fleetID)
         wx.PostEvent(self.mainFrame, FleetSelected(fleetID=fleetID))
 
+    def CopyFleetItem(self, event):
+        fleetID = event.fleetID
+        fleet = self.sFleet.copyFleetByID(fleetID)
+        fleetName = fleet.name + " Copy"
+        self.sFleet.renameFleet(fleet,fleetName)
+
+        self.AddItem(fleet.ID, fleet.name, fleet.count())
+        self.fleetItemContainer.SelectWidgetByFleetID(fleet.ID)
+        wx.PostEvent(self.mainFrame, FleetSelected(fleetID=fleet.ID))
+
     def DeleteFleetItem(self, event):
         self.sFleet.deleteFleetByID(event.fleetID)
         self.PopulateFleetList()
+
+    def AddItem (self, ID, name, count):
+        self.fleetItemContainer.AddWidget(FleetItem(self, ID, name, count))
+        self.fleetItemContainer.RefreshList()
 
     def PopulateFleetList(self):
         self.Freeze()
@@ -261,6 +276,7 @@ class FleetItem(wx.Window):
         self.btnDelete.Bind(wx.EVT_ENTER_WINDOW, self.OnBtnEnterWindow)
 
         self.btnDelete.Bind(wx.EVT_BUTTON, self.OnDelete)
+        self.btnCopy.Bind(wx.EVT_BUTTON, self.OnCopy)
 
         self.Bind(wx.EVT_TIMER, self.OnTimer)
 
@@ -288,8 +304,9 @@ class FleetItem(wx.Window):
         wx.PostEvent(self.Parent.Parent, FleetItemDelete(fleetID = self.fleetID))
         event.Skip()
 
-    def Copy(self):
-        print "Copy"
+    def OnCopy(self, event):
+        wx.PostEvent(self.Parent.Parent, FleetItemCopy(fleetID = self.fleetID))
+        event.Skip()
 
     def IsSelected(self):
         return self.selected

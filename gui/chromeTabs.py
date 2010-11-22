@@ -188,6 +188,9 @@ class PFNotebook(wx.Panel):
         else:
             self.activePage = None
 
+        # The last Page got deleted
+        if len(self.pages) == 0:
+            wx.GetApp().GetTopWindow().Close()
 
     def SwitchPages(self, src, dest, internal = False):
         self.pages[src], self.pages[dest] = self.pages[dest], self.pages[src]
