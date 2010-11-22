@@ -1407,12 +1407,7 @@ class FitItem(wx.Window):
                     handler("fit", self.fitID)
                     break
                 else:
-                    newWnd = targetWnd.Parent
-                    if wnd == newWnd:
-                        break
-
-                    wnd = newWnd
-
+                    wnd = wnd.Parent
             event.Skip()
             return
 
