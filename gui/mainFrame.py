@@ -120,8 +120,8 @@ class MainFrame(wx.Frame):
 
         self.SetSizer(mainSizer)
 
-        self.addTabId = wx.NewId()
-        self.closeTabId = wx.NewId()
+        self.addPageId = wx.NewId()
+        self.closePageId = wx.NewId()
 
         self.graphFrame = None
 
@@ -142,7 +142,7 @@ class MainFrame(wx.Frame):
     def getActiveView(self):
         sel = self.fitMultiSwitch.GetSelectedPage()
 
-    def CloseCurrentFit(self, evt):
+    def CloseCurrentPage(self, evt):
         ms = self.fitMultiSwitch
 
         page = ms.GetSelection()
@@ -261,22 +261,22 @@ class MainFrame(wx.Frame):
         self.Bind(wx.EVT_MENU, self.openGraphFrame, id=menuBar.graphFrameId)
 
         toggleShipMarketId = wx.NewId()
-        # Close Tab
-        self.Bind(wx.EVT_MENU, self.CloseCurrentFit, id=self.closeTabId)
-        self.Bind(wx.EVT_MENU,self.HAddTab, id = self.addTabId)
-        self.Bind(wx.EVT_MENU,self.toggleShipMarket, id = toggleShipMarketId)
+        # Close Page
+        self.Bind(wx.EVT_MENU, self.CloseCurrentPage, id=self.closePageId)
+        self.Bind(wx.EVT_MENU, self.HAddPage, id = self.addPageId)
+        self.Bind(wx.EVT_MENU, self.toggleShipMarket, id = toggleShipMarketId)
 
-        actb = [(wx.ACCEL_CTRL, ord('T'), self.addTabId),
-                (wx.ACCEL_CMD, ord('T'), self.addTabId),
-                (wx.ACCEL_CTRL, ord("W"), self.closeTabId),
-                (wx.ACCEL_CMD, ord("W"), self.closeTabId),
+        actb = [(wx.ACCEL_CTRL, ord('T'), self.addPageId),
+                (wx.ACCEL_CMD, ord('T'), self.addPageId),
+                (wx.ACCEL_CTRL, ord("W"), self.closePageId),
+                (wx.ACCEL_CMD, ord("W"), self.closePageId),
                 (wx.ACCEL_CTRL, ord(" "), toggleShipMarketId),
                 (wx.ACCEL_CMD, ord(" "), toggleShipMarketId)]
         atable = wx.AcceleratorTable(actb)
         self.SetAcceleratorTable(atable)
 
 
-    def HAddTab(self,event):
+    def HAddPage(self,event):
         self.fitMultiSwitch.AddPage(wx.Panel(self, size = (0,0)), "Empty Tab")
 
     def toggleShipMarket(self, event):
