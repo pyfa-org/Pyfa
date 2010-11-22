@@ -37,10 +37,13 @@ class FleetBrowser(wx.Panel):
         self.SetSizer(mainSizer)
         self.Layout()
 
+        self.filter = ""
+
         self.Bind(wx.EVT_SIZE, self.SizeRefreshList)
 
         self.Bind(EVT_FLEET_ITEM_NEW, self.AddNewFleetItem)
         self.Bind(EVT_FLEET_ITEM_SELECT, self.SelectFleetItem)
+        self.Bind(EVT_FLEET_ITEM_DELETE, self.DeleteFleetItem)
 
         self.PopulateFleetList()
 
@@ -57,8 +60,13 @@ class FleetBrowser(wx.Panel):
         self.fleetItemContainer.SelectWidgetByFleetID(fleetID)
         wx.PostEvent(self.mainFrame, FleetSelected(fleetID=fleetID))
 
-    def PopulateFleetList(self, filter = ""):
+    def DeleteFleetItem(self, event):
+        self.sFleet.deleteFleetByID(event.fleetID)
+        self.PopulateFleetList()
+
+    def PopulateFleetList(self):
         self.Freeze()
+        filter = self.filter
         self.fleetItemContainer.RemoveAllChildren()
         fleetList = self.sFleet.getFleetList()
         for fleetID, fleetName, fleetCount in fleetList:
@@ -66,6 +74,9 @@ class FleetBrowser(wx.Panel):
                 self.fleetItemContainer.AddWidget(FleetItem(self, fleetID, fleetName, fleetCount))
         self.fleetItemContainer.RefreshList()
         self.Thaw()
+
+    def SetFilter(self, filter):
+        self.filter = filter
 
     def SizeRefreshList(self, event):
         ewidth, eheight = event.GetSize()
@@ -118,7 +129,8 @@ class FleetBrowserHeader (wx.Panel):
 
     def OnFilterText(self, event):
         filter = self.tcFilter.GetValue()
-        self.Parent.PopulateFleetList(filter)
+        self.Parent.SetFilter(filter)
+        self.Parent.PopulateFleetList()
         event.Skip()
 
     def OnNewFleetItem(self, event):
@@ -244,6 +256,8 @@ class FleetItem(wx.Window):
         self.btnRename.Bind(wx.EVT_ENTER_WINDOW, self.OnBtnEnterWindow)
         self.btnDelete.Bind(wx.EVT_ENTER_WINDOW, self.OnBtnEnterWindow)
 
+        self.btnDelete.Bind(wx.EVT_BUTTON, self.OnDelete)
+
         self.Bind(wx.EVT_TIMER, self.OnTimer)
 
     def OnBtnEnterWindow(self, event):
@@ -266,8 +280,9 @@ class FleetItem(wx.Window):
     def Rename(self, newName):
         self.fleetName = newName
 
-    def Delete(self):
-        print "Delete stuff..."
+    def OnDelete(self, event):
+        wx.PostEvent(self.Parent.Parent, FleetItemDelete(fleetID = self.fleetID))
+        event.Skip()
 
     def Copy(self):
         print "Copy"

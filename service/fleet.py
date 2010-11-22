@@ -62,3 +62,6 @@ class Fleet(object):
     def deleteFleet(self, fleet):
         eos.db.remove(fleet)
 
+    def deleteFleetByID(self, ID):
+        fleet = self.getFleet(ID)
+        self.deleteFleet(fleet)
