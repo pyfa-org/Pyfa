@@ -57,11 +57,15 @@ class FleetBrowser(wx.Panel):
         self.fleetItemContainer.SelectWidgetByFleetID(fleetID)
         wx.PostEvent(self.mainFrame, FleetSelected(fleetID=fleetID))
 
-    def PopulateFleetList(self):
+    def PopulateFleetList(self, filter = ""):
+        self.Freeze()
+        self.fleetItemContainer.RemoveAllChildren()
         fleetList = self.sFleet.getFleetList()
         for fleetID, fleetName, fleetCount in fleetList:
-            self.fleetItemContainer.AddWidget(FleetItem(self, fleetID, fleetName, fleetCount))
+            if fleetName.lower().find(filter.lower()) != -1:
+                self.fleetItemContainer.AddWidget(FleetItem(self, fleetID, fleetName, fleetCount))
         self.fleetItemContainer.RefreshList()
+        self.Thaw()
 
     def SizeRefreshList(self, event):
         ewidth, eheight = event.GetSize()
@@ -107,8 +111,15 @@ class FleetBrowserHeader (wx.Panel):
         self.fbNewFleet.Bind(wx.EVT_LEAVE_WINDOW, self.fbHItemLeaveWindow)
         self.fbNewFleet.Bind(wx.EVT_BUTTON, self.OnNewFleetItem)
 
+        self.tcFilter.Bind(wx.EVT_TEXT, self.OnFilterText)
+
         self.tcFilter.Bind(wx.EVT_ENTER_WINDOW, self.fbFilterEnterWindow)
         self.tcFilter.Bind(wx.EVT_LEAVE_WINDOW, self.fbHItemLeaveWindow)
+
+    def OnFilterText(self, event):
+        filter = self.tcFilter.GetValue()
+        self.Parent.PopulateFleetList(filter)
+        event.Skip()
 
     def OnNewFleetItem(self, event):
         wx.PostEvent(self.Parent, FleetItemNew(fleetName = "New Fleet"))
