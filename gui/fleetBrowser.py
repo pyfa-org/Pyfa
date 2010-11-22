@@ -199,11 +199,14 @@ class FleetItem(wx.Window):
         self.fleetName = fleetName
         self.fleetCount = fleetCount
         self.highlighted = 0
-        self.buttonsHovering = 0
 
         self.buttonsTip = ""
         self.selected = False
         self.padding = 5
+
+        self.cleanupTimer = None
+        self.cleanupTimerId = wx.NewId()
+
         self.fontBig = wx.FontFromPixelSize((0,15),wx.SWISS, wx.NORMAL, wx.BOLD, False)
         self.fontSmall = wx.FontFromPixelSize((0,13),wx.SWISS, wx.NORMAL, wx.NORMAL, False)
 
@@ -241,9 +244,10 @@ class FleetItem(wx.Window):
         self.btnRename.Bind(wx.EVT_ENTER_WINDOW, self.OnBtnEnterWindow)
         self.btnDelete.Bind(wx.EVT_ENTER_WINDOW, self.OnBtnEnterWindow)
 
+        self.Bind(wx.EVT_TIMER, self.OnTimer)
+
     def OnBtnEnterWindow(self, event):
         btn = event.GetEventObject()
-        self.buttonsHovering = 1
         if btn == self.btnCopy:
             self.buttonsTip = "Copy Fleet"
         elif btn == self.btnDelete:
@@ -359,18 +363,41 @@ class FleetItem(wx.Window):
             self.btnDelete.Show(False)
 
     def EnterWindow(self, event):
+        if not self.cleanupTimer:
+            self.cleanupTimer = wx.Timer(self, self.cleanupTimerId)
+        if not self.cleanupTimer.IsRunning():
+            self.cleanupTimer.Start(250)
+
         self.highlighted = 1
-        self.buttonsHovering = 0
         self.buttonsTip = ""
         self.Refresh()
         event.Skip()
 
     def LeaveWindow(self, event):
-        if self.buttonsHovering == 0:
+        mposx, mposy = wx.GetMousePosition()
+        rect = self.GetRect()
+        rect.top = rect.left = 0
+        cx,cy = self.ScreenToClient((mposx,mposy))
+        if not rect.Contains((cx,cy)):
             self.highlighted = 0
             self.Refresh()
+            if self.cleanupTimer:
+                if self.cleanupTimer.IsRunning():
+                    self.cleanupTimer.Stop()
+
         event.Skip()
 
+    def OnTimer(self, event):
+        if event.GetId() == self.cleanupTimerId:
+            mposx, mposy = wx.GetMousePosition()
+            rect = self.GetRect()
+            rect.top = rect.left = 0
+            cx,cy = self.ScreenToClient((mposx,mposy))
+            if not rect.Contains((cx,cy)):
+                self.highlighted = 0
+                self.Refresh()
+                self.cleanupTimer.Stop()
+        event.Skip()
 
 class PFGenBitmapButton(GenBitmapButton):
     def __init__(self, parent, id, bitmap, pos, size, style):
