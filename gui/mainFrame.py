@@ -132,6 +132,7 @@ class MainFrame(wx.Frame):
         self.registerMenu()
 
         #Show ourselves
+        self.Bind(wx.EVT_CLOSE, self.OnClose)
         self.Show()
 
     def getActiveFit(self):
@@ -142,17 +143,29 @@ class MainFrame(wx.Frame):
     def getActiveView(self):
         sel = self.fitMultiSwitch.GetSelectedPage()
 
+    def OnClose(self, event):
+        if 'wxMac' in wx.PlatformInfo:
+            if hasattr(wx.GetApp(), "MacHideApp"):
+                wx.GetApp().MacHideApp()
+            else:
+                self.ExitApp(event)
+            return
+        self.ExitApp(event)
+
     def CloseCurrentFit(self, evt):
         ms = self.fitMultiSwitch
 
         page = ms.GetSelection()
         if page is not None:
             ms.DeletePage(page)
+            return
+        if 'wxMac' in wx.PlatformInfo:
+            self.Close()
 
     def ExitApp(self, evt):
         try:
             service.SettingsProvider.getInstance().saveAll()
-            self.Close()
+            self.Destroy()
         except PyDeadObjectError:
             pass
 
