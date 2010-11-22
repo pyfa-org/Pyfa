@@ -35,6 +35,7 @@ class FleetView(wx.gizmos.TreeListCtrl):
         self.SetMainColumn(1)
 
         self.icons = {}
+        self.addImage = self.imageList.Add(bitmapLoader.getBitmap("add_small", "icons"))
         for icon in ("fb", "fc", "sb", "sc", "wb", "wc"):
             self.icons[icon] = self.imageList.Add(bitmapLoader.getBitmap("fleet_%s_small" % icon, "icons"))
 
@@ -55,19 +56,30 @@ class FleetView(wx.gizmos.TreeListCtrl):
                     memberId = self.AppendItem(wingId, "")
                     self.setEntry(memberId, member, "squad", squad)
 
+            self.addAdder(wingId, "squad")
+
+        self.addAdder(root, "wing")
+
+        self.ExpandAll(root)
         self.SetColumnWidth(0, 16)
         for i in xrange(1, 5):
             self.SetColumnWidth(i, wx.LIST_AUTOSIZE_USEHEADER)
-            headerWidth = self.GetColumnWidth(i)
+            headerWidth = self.GetColumnWidth(i) + 5
             self.SetColumnWidth(i, wx.LIST_AUTOSIZE)
             baseWidth = self.GetColumnWidth(i)
             if baseWidth < headerWidth:
                 self.SetColumnWidth(i, headerWidth)
+            else:
+                self.SetColumnWidth(i, baseWidth)
 
+
+    def addAdder(self, treeItemId, layer):
+        id = self.AppendItem(treeItemId, "Add new %s" % layer.capitalize())
+        self.SetItemImage(id, self.addImage, 1)
 
     def setEntry(self, treeItemId, fit, layer, info):
         if fit is None:
-            self.SetItemText(treeItemId, "Empty", 0)
+            self.SetItemText(treeItemId, "%s Commander" % layer.capitalize(), 1)
         else:
             fleet = self.fleet
             if fit == info.booster:
