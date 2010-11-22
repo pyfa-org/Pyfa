@@ -3,24 +3,45 @@ import copy
 from gui import bitmapLoader
 import gui.mainFrame
 from gui.PFListPane import PFListPane
+import service.fleet
+
+from wx.lib.buttons import GenBitmapButton
 
 FleetSelected, EVT_FLEET_SELECTED = wx.lib.newevent.NewEvent()
+
+FleetItemSelected, EVT_FLEET_ITEM_SELECTED = wx.lib.newevent.NewEvent()
+FleetItemDeleted, EVT_FLEET_ITEM_DELETED = wx.lib.newevent.NewEvent()
+
 
 
 class FleetBrowser(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent)
 
+        self.sFleet = service.fleet.Fleet.getInstance()
+
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
+        self.hpane = FleetBrowserHeader(self)
+        mainSizer.Add(self.hpane, 0, wx.EXPAND)
+
+        self.m_sl2 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
+        mainSizer.Add( self.m_sl2, 0, wx.EXPAND, 0 )
+
         self.fleetItemContainer = PFFleetItemContainer(self)
-        for i in xrange(10):
-            self.fleetItemContainer.AddWidget(FleetItem(self, 1, "IMBA Fleet #%d" % i, i, size = (0,32)))
 
         mainSizer.Add(self.fleetItemContainer, 1, wx.EXPAND)
         self.SetSizer(mainSizer)
         self.Layout()
         self.Bind(wx.EVT_SIZE, self.SizeRefreshList)
+
+        self.PopulateFleetList()
+
+    def PopulateFleetList(self):
+        fleetList = self.sFleet.getFleetList()
+        for fleetID, fleetName, fleetCount in fleetList:
+            self.fleetItemContainer.AddWidget(FleetItem(self, fleetID, fleetName, fleetCount))
+        self.fleetItemContainer.RefreshList()
 
     def SizeRefreshList(self, event):
         ewidth, eheight = event.GetSize()
@@ -28,6 +49,59 @@ class FleetBrowser(wx.Panel):
         self.fleetItemContainer.Layout()
         self.fleetItemContainer.RefreshList(True)
         event.Skip()
+
+
+class FleetBrowserHeader (wx.Panel):
+    def __init__(self, parent):
+        wx.Panel.__init__ (self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.Size(500, 24), style=wx.TAB_TRAVERSAL)
+        self.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNFACE ) )
+
+        self.newBmp = bitmapLoader.getBitmap("fit_add_small","icons")
+        bmpSize = (16,16)
+
+        mainSizer = wx.BoxSizer(wx.HORIZONTAL)
+
+        if 'wxMac' in wx.PlatformInfo:
+            bgcolour = wx.Colour(0, 0, 0, 0)
+        else:
+            bgcolour = wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNFACE )
+
+        self.fbNewFleet = PFGenBitmapButton( self, wx.ID_ANY, self.newBmp, wx.DefaultPosition, bmpSize, wx.BORDER_NONE )
+        mainSizer.Add(self.fbNewFleet, 0, wx.LEFT | wx.TOP | wx.BOTTOM  | wx.ALIGN_CENTER_VERTICAL , 5)
+        self.fbNewFleet.SetBackgroundColour( bgcolour )
+
+        self.sl1 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_VERTICAL )
+        mainSizer.Add( self.sl1, 0, wx.EXPAND |wx.LEFT, 5 )
+
+        self.tcFilter = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+        mainSizer.Add( self.tcFilter, 0, wx.LEFT | wx.ALIGN_CENTER_VERTICAL, 5 )
+
+        self.stStatus = wx.StaticText( self, wx.ID_ANY, u"", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.stStatus.Wrap( -1 )
+        mainSizer.Add( self.stStatus, 1, wx.LEFT | wx.ALIGN_CENTER_VERTICAL, 5 )
+
+        self.SetSizer(mainSizer)
+        self.Layout()
+
+        self.fbNewFleet.Bind(wx.EVT_ENTER_WINDOW, self.fbNewEnterWindow)
+        self.fbNewFleet.Bind(wx.EVT_LEAVE_WINDOW, self.fbHItemLeaveWindow)
+
+        self.tcFilter.Bind(wx.EVT_ENTER_WINDOW, self.fbFilterEnterWindow)
+        self.tcFilter.Bind(wx.EVT_LEAVE_WINDOW, self.fbHItemLeaveWindow)
+
+    def fbNewEnterWindow(self, event):
+        self.stStatus.SetLabel("New fleet")
+        event.Skip()
+
+    def fbHItemLeaveWindow(self, event):
+        self.stStatus.SetLabel("")
+        event.Skip()
+
+    def fbFilterEnterWindow(self, event):
+        self.stStatus.SetLabel("Filter list")
+        event.Skip()
+
+
 
 class PFFleetItemContainer(PFListPane):
     def __init__(self,parent):
@@ -69,7 +143,7 @@ class PFFleetItemContainer(PFListPane):
 class FleetItem(wx.Window):
     def __init__(self, parent, fleetID, fleetName, fleetCount,
                  id=wx.ID_ANY, pos=wx.DefaultPosition,
-                 size=(0,16), style=0):
+                 size=(0,32), style=0):
         wx.Window.__init__(self, parent, id, pos, size, style)
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
@@ -95,7 +169,6 @@ class FleetItem(wx.Window):
 
     def OnSelect(self, event):
         self.Parent.SelectWidget(self)
-        self.Refresh()
         wx.PostEvent(self.mainFrame, FleetSelected(fleetID=0))
         event.Skip()
 
@@ -185,3 +258,13 @@ class FleetItem(wx.Window):
         event.Skip()
 
 
+class PFGenBitmapButton(GenBitmapButton):
+    def __init__(self, parent, id, bitmap, pos, size, style):
+        GenBitmapButton.__init__(self, parent, id, bitmap, pos, size, style)
+        self.bgcolor = wx.Brush(wx.WHITE)
+
+    def SetBackgroundColour(self, color):
+        self.bgcolor = wx.Brush(color)
+
+    def GetBackgroundBrush(self, dc):
+        return self.bgcolor
