@@ -3,12 +3,9 @@ import copy
 from gui import bitmapLoader
 import gui.mainFrame
 import gui.builtinViews.fittingView
-import service
 import time
-import os
-import config
-import service.fit
 from gui.PFListPane import PFListPane
+import service
 
 from wx.lib.buttons import GenBitmapButton
 
