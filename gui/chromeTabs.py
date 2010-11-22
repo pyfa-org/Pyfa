@@ -355,17 +355,6 @@ class PFTabRenderer:
         self.tabRegion = None
         self.closeBtnRegion = None
 
-#        self.leftZoneSpline = []
-#        self.rightZoneSpline = []
-#
-#        self.lrZoneWidth = self.inclination * 3
-#        if not skipLRzones:
-#            self.CreateLRZoneSplines()
-#
-#            self.leftRegion = self.CreateLeftRegion()
-#            self.rightRegion = self.CreateRightRegion()
-
-
         self.font = wx.FontFromPixelSize((0, self.fontSize), wx.SWISS, wx.NORMAL, wx.NORMAL, False)
 
         self.InitColors()
@@ -496,7 +485,7 @@ class PFTabRenderer:
                 count +=1
             else:
                 break
-        if count > 2:
+        if count > 0:
 #            text = "%s%s" % (text[:count],".." if len(text)>count else "")
             text = "%s" % text[:count]
 

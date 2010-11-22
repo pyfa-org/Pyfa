@@ -199,6 +199,9 @@ class FleetItem(wx.Window):
         self.fleetName = fleetName
         self.fleetCount = fleetCount
         self.highlighted = 0
+        self.buttonsHovering = 0
+
+        self.buttonsTip = ""
         self.selected = False
         self.padding = 5
         self.fontBig = wx.FontFromPixelSize((0,15),wx.SWISS, wx.NORMAL, wx.BOLD, False)
@@ -208,6 +211,25 @@ class FleetItem(wx.Window):
         self.renameBmp = bitmapLoader.getBitmap("fit_rename_small", "icons")
         self.deleteBmp = bitmapLoader.getBitmap("fit_delete_small","icons")
 
+        self.btnSize = (18,18)
+
+        if 'wxMac' in wx.PlatformInfo:
+            self.btnbgcolour = wx.Colour(0, 0, 0, 0)
+        else:
+            self.btnbgcolour = wx.SystemSettings.GetColour( wx.SYS_COLOUR_3DFACE)
+
+        self.btnCopy = PFGenBitmapButton( self, wx.ID_ANY, self.copyBmp, wx.DefaultPosition, self.btnSize, wx.BORDER_NONE )
+        self.btnCopy.Show(False)
+        self.btnCopy.SetBackgroundColour( self.btnbgcolour )
+
+        self.btnRename = PFGenBitmapButton( self, wx.ID_ANY, self.renameBmp, wx.DefaultPosition, self.btnSize, wx.BORDER_NONE )
+        self.btnRename.Show(False)
+        self.btnRename.SetBackgroundColour( self.btnbgcolour )
+
+        self.btnDelete = PFGenBitmapButton( self, wx.ID_ANY, self.deleteBmp, wx.DefaultPosition, self.btnSize, wx.BORDER_NONE )
+        self.btnDelete.Show(False)
+        self.btnDelete.SetBackgroundColour( self.btnbgcolour )
+
         self.Bind(wx.EVT_PAINT, self.OnPaint)
         self.Bind(wx.EVT_ERASE_BACKGROUND, lambda event: None)
 
@@ -215,8 +237,25 @@ class FleetItem(wx.Window):
         self.Bind(wx.EVT_ENTER_WINDOW, self.EnterWindow)
         self.Bind(wx.EVT_LEFT_UP, self.OnSelect)
 
+        self.btnCopy.Bind(wx.EVT_ENTER_WINDOW, self.OnBtnEnterWindow)
+        self.btnRename.Bind(wx.EVT_ENTER_WINDOW, self.OnBtnEnterWindow)
+        self.btnDelete.Bind(wx.EVT_ENTER_WINDOW, self.OnBtnEnterWindow)
+
+    def OnBtnEnterWindow(self, event):
+        btn = event.GetEventObject()
+        self.buttonsHovering = 1
+        if btn == self.btnCopy:
+            self.buttonsTip = "Copy Fleet"
+        elif btn == self.btnDelete:
+            self.buttonsTip = "Delete Fleet"
+        elif btn == self.btnRename:
+            self.buttonsTip = "Rename Fleet"
+        else:
+            self.buttonsTip = ""
+        self.Refresh()
+        event.Skip()
+
     def OnSelect(self, event):
-#        self.Parent.SelectWidget(self)
         wx.PostEvent(self.Parent.Parent, FleetItemSelect(fleetID = self.fleetID))
         event.Skip()
 
@@ -286,24 +325,50 @@ class FleetItem(wx.Window):
         fcx,fcy = bdc.GetTextExtent(fleetCount)
 
         bdc.DrawText(fleetCount, self.padding, rect.height/2 + (rect.height/2 -fcy) / 2 )
+        btnWidth,btnHeight = self.btnSize
+        self.deletePosX = rect.width - btnWidth - self.padding
+        self.renamePosX = self.deletePosX - btnWidth
+        # - self.padding
+        self.copyPosX = self.renamePosX - btnWidth
+        # - self.padding
+        self.renamePosY = self.deletePosY = self.copyPosY = (rect.height - btnHeight) / 2
 
-        self.deletePosX = rect.width - self.deleteBmp.GetWidth() - self.padding
-        self.renamePosX = self.deletePosX - self.renameBmp.GetWidth() - self.padding
-        self.copyPosX = self.renamePosX - self.copyBmp.GetWidth() - self.padding
-        self.renamePosY = self.deletePosY = self.copyPosY = (rect.height - self.renameBmp.GetHeight()) / 2
+        if self.highlighted:
+            brush = wx.Brush(self.btnbgcolour)
+            pen = wx.Pen(self.btnbgcolour)
 
-        bdc.DrawBitmap(self.copyBmp, self.copyPosX, self.copyPosY, 0)
-        bdc.DrawBitmap(self.renameBmp, self.renamePosX, self.renamePosY, 0)
-        bdc.DrawBitmap(self.deleteBmp, self.deletePosX, self.deletePosY, 0)
+            bdc.SetPen(pen)
+            bdc.SetBrush(brush)
+
+            tx,ty = bdc.GetTextExtent(self.buttonsTip)
+
+            bdc.DrawRoundedRectangle(self.copyPosX - 8 - tx - self.padding, self.copyPosY-1, rect.width,20, 8)
+            bdc.DrawText(self.buttonsTip,self.copyPosX - tx - self.padding, self.copyPosY + 8 - ty/2)
+
+            self.btnCopy.SetPosition((self.copyPosX, self.copyPosY))
+            self.btnRename.SetPosition((self.renamePosX, self.renamePosY))
+            self.btnDelete.SetPosition((self.deletePosX, self.deletePosY))
+
+            self.btnCopy.Show()
+            self.btnRename.Show()
+            self.btnDelete.Show()
+
+        else:
+            self.btnCopy.Show(False)
+            self.btnRename.Show(False)
+            self.btnDelete.Show(False)
 
     def EnterWindow(self, event):
         self.highlighted = 1
+        self.buttonsHovering = 0
+        self.buttonsTip = ""
         self.Refresh()
         event.Skip()
 
     def LeaveWindow(self, event):
-        self.highlighted = 0
-        self.Refresh()
+        if self.buttonsHovering == 0:
+            self.highlighted = 0
+            self.Refresh()
         event.Skip()
 
 
