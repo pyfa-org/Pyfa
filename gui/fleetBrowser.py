@@ -226,6 +226,10 @@ class FleetItem(wx.Window):
         self.renameBmp = bitmapLoader.getBitmap("fit_rename_small", "icons")
         self.deleteBmp = bitmapLoader.getBitmap("fit_delete_small","icons")
 
+        self.copyBmpGrey = self.GreyBitmap(self.copyBmp)
+        self.renameBmpGrey = self.GreyBitmap(self.renameBmp)
+        self.deleteBmpGrey = self.GreyBitmap(self.deleteBmp)
+
         self.btnSize = (18,18)
 
         if 'wxMac' in wx.PlatformInfo:
@@ -376,12 +380,15 @@ class FleetItem(wx.Window):
             self.btnCopy.Show(False)
             self.btnRename.Show(False)
             self.btnDelete.Show(False)
+            bdc.DrawBitmap(self.copyBmpGrey, self.copyPosX + 1, self.copyPosY + 1 )
+            bdc.DrawBitmap(self.renameBmpGrey, self.renamePosX + 1, self.renamePosY + 1 )
+            bdc.DrawBitmap(self.deleteBmpGrey, self.deletePosX + 1, self.deletePosY + 1 )
 
     def EnterWindow(self, event):
         if not self.cleanupTimer:
             self.cleanupTimer = wx.Timer(self, self.cleanupTimerId)
         if not self.cleanupTimer.IsRunning():
-            self.cleanupTimer.Start(250)
+            self.cleanupTimer.Start(50)
 
         self.highlighted = 1
         self.buttonsTip = ""
@@ -413,6 +420,11 @@ class FleetItem(wx.Window):
                 self.Refresh()
                 self.cleanupTimer.Stop()
         event.Skip()
+
+    def GreyBitmap(self, bitmap):
+        img = bitmap.ConvertToImage()
+        img = img.ConvertToGreyscale()
+        return wx.BitmapFromImage(img)
 
 class PFGenBitmapButton(GenBitmapButton):
     def __init__(self, parent, id, bitmap, pos, size, style):
