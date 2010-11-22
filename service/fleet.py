@@ -37,7 +37,7 @@ class Fleet(object):
         fleetList = []
         fleets = eos.db.getFleetList()
         for fleet in fleets:
-            fleetList.append(fleet.ID, fleet.name, fleet.count())
+            fleetList.append((fleet.ID, fleet.name, fleet.count()))
 
         return fleetList
 

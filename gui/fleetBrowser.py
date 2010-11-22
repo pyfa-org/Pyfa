@@ -9,8 +9,9 @@ from wx.lib.buttons import GenBitmapButton
 
 FleetSelected, EVT_FLEET_SELECTED = wx.lib.newevent.NewEvent()
 
-FleetItemSelected, EVT_FLEET_ITEM_SELECTED = wx.lib.newevent.NewEvent()
-FleetItemDeleted, EVT_FLEET_ITEM_DELETED = wx.lib.newevent.NewEvent()
+FleetItemSelect, EVT_FLEET_ITEM_SELECT = wx.lib.newevent.NewEvent()
+FleetItemDelete, EVT_FLEET_ITEM_DELETE = wx.lib.newevent.NewEvent()
+FleetItemNew, EVT_FLEET_ITEM_NEW = wx.lib.newevent.NewEvent()
 
 
 
@@ -19,6 +20,7 @@ class FleetBrowser(wx.Panel):
         wx.Panel.__init__(self, parent)
 
         self.sFleet = service.fleet.Fleet.getInstance()
+        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
@@ -31,11 +33,29 @@ class FleetBrowser(wx.Panel):
         self.fleetItemContainer = PFFleetItemContainer(self)
 
         mainSizer.Add(self.fleetItemContainer, 1, wx.EXPAND)
+
         self.SetSizer(mainSizer)
         self.Layout()
+
         self.Bind(wx.EVT_SIZE, self.SizeRefreshList)
 
+        self.Bind(EVT_FLEET_ITEM_NEW, self.AddNewFleetItem)
+        self.Bind(EVT_FLEET_ITEM_SELECT, self.SelectFleetItem)
+
         self.PopulateFleetList()
+
+    def AddNewFleetItem(self, event):
+        fleetName = event.fleetName
+        newFleet = self.sFleet.addFleet()
+        self.sFleet.renameFleet(newFleet, fleetName)
+
+        self.fleetItemContainer.AddWidget(FleetItem(self, newFleet.ID, newFleet.name, newFleet.count()))
+        self.fleetItemContainer.RefreshList()
+
+    def SelectFleetItem(self, event):
+        fleetID = event.fleetID
+        self.fleetItemContainer.SelectWidgetByFleetID(fleetID)
+        wx.PostEvent(self.mainFrame, FleetSelected(fleetID=fleetID))
 
     def PopulateFleetList(self):
         fleetList = self.sFleet.getFleetList()
@@ -85,9 +105,13 @@ class FleetBrowserHeader (wx.Panel):
 
         self.fbNewFleet.Bind(wx.EVT_ENTER_WINDOW, self.fbNewEnterWindow)
         self.fbNewFleet.Bind(wx.EVT_LEAVE_WINDOW, self.fbHItemLeaveWindow)
+        self.fbNewFleet.Bind(wx.EVT_BUTTON, self.OnNewFleetItem)
 
         self.tcFilter.Bind(wx.EVT_ENTER_WINDOW, self.fbFilterEnterWindow)
         self.tcFilter.Bind(wx.EVT_LEAVE_WINDOW, self.fbHItemLeaveWindow)
+
+    def OnNewFleetItem(self, event):
+        wx.PostEvent(self.Parent, FleetItemNew(fleetName = "New Fleet"))
 
     def fbNewEnterWindow(self, event):
         self.stStatus.SetLabel("New fleet")
@@ -116,6 +140,12 @@ class PFFleetItemContainer(PFListPane):
     def GetWidgetIndex(self, widgetWnd):
         return self.GetWidgetList().index(widgetWnd)
 
+    def GetWidgetByFleetID(self, fleetID):
+        for widget in self.GetWidgetList():
+            if widget.fleetID == fleetID:
+                return widget
+        return None
+
     def SelectWidget(self, widgetWnd):
         wlist = self.GetWidgetList()
         if self.selectedWidget != -1:
@@ -125,6 +155,11 @@ class PFFleetItemContainer(PFListPane):
         wlist[windex].SetSelected(True)
         wlist[windex].Refresh()
         self.selectedWidget = windex
+
+    def SelectWidgetByFleetID(self, fleetID):
+        widgetWnd = self.GetWidgetByFleetID(fleetID)
+        if widgetWnd:
+            self.SelectWidget(widgetWnd)
 
     def RemoveWidget(self, child):
         child.Destroy()
@@ -146,7 +181,9 @@ class FleetItem(wx.Window):
                  size=(0,32), style=0):
         wx.Window.__init__(self, parent, id, pos, size, style)
 
-        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+#        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+#        self.fleetBrowser = self.mainFrame.fleetBrowser
+#        print self.fleetBrowser
         self.fleetID = fleetID
         self.fleetName = fleetName
         self.fleetCount = fleetCount
@@ -168,8 +205,8 @@ class FleetItem(wx.Window):
         self.Bind(wx.EVT_LEFT_UP, self.OnSelect)
 
     def OnSelect(self, event):
-        self.Parent.SelectWidget(self)
-        wx.PostEvent(self.mainFrame, FleetSelected(fleetID=0))
+#        self.Parent.SelectWidget(self)
+        wx.PostEvent(self.Parent.Parent, FleetItemSelect(fleetID = self.fleetID))
         event.Skip()
 
     def Rename(self, newName):
@@ -229,6 +266,7 @@ class FleetItem(wx.Window):
         suffix = "%d ships" % self.fleetCount if self.fleetCount >1 else "%d ship" % self.fleetCount if self.fleetCount == 1 else "No ships"
         fleetCount = "Fleet size: %s" % suffix
         bdc.SetFont(self.fontBig)
+
         fnx,fny = bdc.GetTextExtent(self.fleetName)
 
         bdc.DrawText(self.fleetName, self.padding, (rect.height/2 - fny)/2)
