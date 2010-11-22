@@ -108,6 +108,9 @@ class PFListPane(wx.ScrolledWindow):
         self._wList.append(widget)
         self._wCount += 1
 
+    def GetWidgetList(self):
+        return self._wList
+
     # Override this method if needed ( return False by default if we do not want to scroll to selected widget)
     def IsWidgetSelectedByContext(self, widget):
         return False
