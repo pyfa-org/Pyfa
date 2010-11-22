@@ -37,8 +37,8 @@ class MainMenuBar(wx.MenuBar):
         fileMenu = wx.Menu()
         self.Append(fileMenu, "&File")
 
-        fileMenu.Append(self.mainFrame.addTabId, "&New Tab\tCTRL+T", "Open a new fitting tab")
-        fileMenu.Append(self.mainFrame.closeTabId, "&Close Tab\tCTRL+W", "Close the current fit")
+        fileMenu.Append(self.mainFrame.addPageId, "&New Tab\tCTRL+T", "Open a new fitting tab")
+        fileMenu.Append(self.mainFrame.closePageId, "&Close Tab\tCTRL+W", "Close the current fit")
         fileMenu.AppendSeparator()
 
         fileMenu.Append(self.backupFitsId, "&Backup fits", "Backup all fittings to a XML file")
