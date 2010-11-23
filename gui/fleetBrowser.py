@@ -451,17 +451,16 @@ class FleetItem(wx.Window):
         self.AdjustFleetNameEditSize(textStart, self.copyPosX - self.editWidth - self.padding)
 
     def AdjustFleetNameEditSize(self, start,end):
-        if self.tcFleetName.IsShown():
-            fnEditSize = self.tcFleetName.GetSize()
-            wSize = self.GetSize()
-            fnEditPosX = end
-            fnEditPosY = (wSize.height - fnEditSize.height)/2
-            if fnEditPosX < start:
-                self.tcFleetName.SetSize((self.editWidth + fnEditPosX - start,-1))
-                self.tcFleetName.SetPosition((start,fnEditPosY))
-            else:
-                self.tcFleetName.SetSize((self.editWidth,-1))
-                self.tcFleetName.SetPosition((fnEditPosX,fnEditPosY))
+        fnEditSize = self.tcFleetName.GetSize()
+        wSize = self.GetSize()
+        fnEditPosX = end
+        fnEditPosY = (wSize.height - fnEditSize.height)/2
+        if fnEditPosX < start:
+            self.tcFleetName.SetSize((self.editWidth + fnEditPosX - start,-1))
+            self.tcFleetName.SetPosition((start,fnEditPosY))
+        else:
+            self.tcFleetName.SetSize((self.editWidth,-1))
+            self.tcFleetName.SetPosition((fnEditPosX,fnEditPosY))
 
 
     def OnEditLostFocus(self, event):
