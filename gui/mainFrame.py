@@ -152,7 +152,10 @@ class MainFrame(wx.Frame):
                 if ms.GetPageCount() == 0:
                     ms.AddPage(wx.Panel(self, size = (0,0)), "Empty Tab", showClose = False )
             else:
-                self.Close()
+                if ms.GetPageCount() == 1:
+                    self.Close()
+                else:
+                    ms.DeletePage(page)
 
     def ExitApp(self, evt):
         try:
