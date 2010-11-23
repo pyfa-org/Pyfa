@@ -46,9 +46,9 @@ class MultiSwitch(gui.chromeTabs.PFNotebook):
         gui.chromeTabs.PFNotebook.AddPage(self, tabWnd, tabTitle, tabImage, True)
 
 
-    def DeletePage(self, n):
+    def DeletePage(self, n, *args, **kwargs):
         if self.GetPageCount() > 1:
-            gui.chromeTabs.PFNotebook.DeletePage(self, n)
+            gui.chromeTabs.PFNotebook.DeletePage(self, n, *args, **kwargs)
         else:
             gui.mainFrame.MainFrame.getInstance().Close()
 
