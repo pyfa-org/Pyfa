@@ -19,7 +19,6 @@
 
 import wx
 import gui.chromeTabs
-import gui.mainFrame
 
 class MultiSwitch(gui.chromeTabs.PFNotebook):
     def __init__(self, parent):
@@ -45,12 +44,6 @@ class MultiSwitch(gui.chromeTabs.PFNotebook):
 
         gui.chromeTabs.PFNotebook.AddPage(self, tabWnd, tabTitle, tabImage, True)
 
-
-    def DeletePage(self, n):
-        if self.GetPageCount() > 1:
-            gui.chromeTabs.PFNotebook.DeletePage(self, n)
-        else:
-            gui.mainFrame.MainFrame.getInstance().Close()
 
 class TabSpawner(object):
     tabTypes = []
