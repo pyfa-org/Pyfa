@@ -413,16 +413,7 @@ class FleetItem(wx.Window):
         textStart = self.padding + self.fleetBmp.GetWidth()
         suffix = "%d ships" % self.fleetCount if self.fleetCount >1 else "%d ship" % self.fleetCount if self.fleetCount == 1 else "No ships"
         fleetCount = "Fleet size: %s" % suffix
-        bdc.SetFont(self.fontBig)
 
-        fnx,fny = bdc.GetTextExtent(self.fleetName)
-
-        bdc.DrawText(self.fleetName, textStart, (rect.height/2 - fny)/2)
-
-        bdc.SetFont(self.fontSmall)
-        fcx,fcy = bdc.GetTextExtent(fleetCount)
-
-        bdc.DrawText(fleetCount, textStart, rect.height/2 + (rect.height/2 -fcy) / 2 )
         btnWidth,btnHeight = self.btnSize
         self.deletePosX = rect.width - btnWidth - self.padding
         self.renamePosX = self.deletePosX - btnWidth
@@ -430,6 +421,10 @@ class FleetItem(wx.Window):
         self.copyPosX = self.renamePosX - btnWidth
         # - self.padding
         self.renamePosY = self.deletePosY = self.copyPosY = (rect.height - btnHeight) / 2
+
+        tx = 0
+
+        bdc.SetFont(self.fontSmall)
 
         if self.highlighted:
             brush = wx.Brush(self.btnbgcolour)
@@ -461,6 +456,39 @@ class FleetItem(wx.Window):
             else:
                 bdc.DrawBitmap(self.renameBmpGrey, self.renamePosX + 1, self.renamePosY + 1 )
             bdc.DrawBitmap(self.deleteBmpGrey, self.deletePosX + 1, self.deletePosY + 1 )
+
+        bdc.SetFont(self.fontBig)
+
+        fnx,fny = bdc.GetTextExtent(self.fleetName)
+
+        fnwidths = bdc.GetPartialTextExtents(self.fleetName)
+
+        count = 0
+        maxsize = self.copyPosX - 8 - tx - textStart
+        for i in fnwidths:
+            if i <= maxsize:
+                count +=1
+            else:
+                break
+        count -= 2
+        bdc.DrawText(self.fleetName[:count] + ".." if count < len(self.fleetName) - 2 else self.fleetName , textStart, (rect.height/2 - fny)/2)
+
+        bdc.SetFont(self.fontSmall)
+
+        fcx,fcy = bdc.GetTextExtent(fleetCount)
+
+        fnwidths = bdc.GetPartialTextExtents(fleetCount)
+
+        count = 0
+        maxsize = self.copyPosX - 8 - tx - textStart
+        for i in fnwidths:
+            if i <= maxsize:
+                count +=1
+            else:
+                break
+
+        count -= 2
+        bdc.DrawText(fleetCount[:count] + ".." if count < len(fleetCount) - 2 else fleetCount, textStart, rect.height/2 + (rect.height/2 -fcy) / 2 )
 
         self.AdjustFleetNameEditSize(textStart, self.copyPosX - self.editWidth - self.padding)
 
