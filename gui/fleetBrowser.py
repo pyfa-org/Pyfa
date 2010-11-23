@@ -257,6 +257,7 @@ class FleetItem(wx.Window):
         self.renameBmp = bitmapLoader.getBitmap("fit_rename_small", "icons")
         self.deleteBmp = bitmapLoader.getBitmap("fit_delete_small","icons")
         self.acceptBmp = bitmapLoader.getBitmap("faccept_small", "icons")
+        self.fleetBmp = bitmapLoader.getBitmap("fleet_item_big", "icons")
 
         self.copyBmpGrey = self.GreyBitmap(self.copyBmp)
         self.renameBmpGrey = self.GreyBitmap(self.renameBmp)
@@ -396,18 +397,20 @@ class FleetItem(wx.Window):
             bdc.SetTextForeground(wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOWTEXT ))
             bdc.Clear()
 
+        bdc.DrawBitmap(self.fleetBmp, 0, (rect.height - self.fleetBmp.GetHeight())/2)
+        textStart = self.padding + self.fleetBmp.GetWidth()
         suffix = "%d ships" % self.fleetCount if self.fleetCount >1 else "%d ship" % self.fleetCount if self.fleetCount == 1 else "No ships"
         fleetCount = "Fleet size: %s" % suffix
         bdc.SetFont(self.fontBig)
 
         fnx,fny = bdc.GetTextExtent(self.fleetName)
 
-        bdc.DrawText(self.fleetName, self.padding, (rect.height/2 - fny)/2)
+        bdc.DrawText(self.fleetName, textStart, (rect.height/2 - fny)/2)
 
         bdc.SetFont(self.fontSmall)
         fcx,fcy = bdc.GetTextExtent(fleetCount)
 
-        bdc.DrawText(fleetCount, self.padding, rect.height/2 + (rect.height/2 -fcy) / 2 )
+        bdc.DrawText(fleetCount, textStart, rect.height/2 + (rect.height/2 -fcy) / 2 )
         btnWidth,btnHeight = self.btnSize
         self.deletePosX = rect.width - btnWidth - self.padding
         self.renamePosX = self.deletePosX - btnWidth
@@ -447,7 +450,6 @@ class FleetItem(wx.Window):
                 bdc.DrawBitmap(self.renameBmpGrey, self.renamePosX + 1, self.renamePosY + 1 )
             bdc.DrawBitmap(self.deleteBmpGrey, self.deletePosX + 1, self.deletePosY + 1 )
 
-        textStart = self.padding
         self.AdjustFleetNameEditSize(textStart, self.copyPosX - self.editWidth - self.padding)
 
     def AdjustFleetNameEditSize(self, start,end):
