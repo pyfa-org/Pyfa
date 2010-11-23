@@ -307,27 +307,6 @@ class FleetItem(wx.Window):
 
         self.Bind(wx.EVT_TIMER, self.OnTimer)
 
-    def EditCheckEsc(self, event):
-        if event.GetKeyCode() == wx.WXK_ESCAPE:
-            self.HideEdit()
-        else:
-            event.Skip()
-
-    def HideEdit(self):
-        self.tcFleetName.Show(False)
-        self.editHasFocus = False
-        self.btnRename.SetBitmapLabel(self.renameBmp, False)
-        self.Refresh()
-
-    def RenameFit(self, event):
-        self.HideEdit()
-
-        newFleetName = self.tcFleetName.GetValue()
-        self.fleetName = newFleetName
-
-        wx.PostEvent(self.Parent.Parent, FleetItemRename(fleetID = self.fleetID, fleetName = self.fleetName))
-        self.Refresh()
-
     def OnSelect(self, event):
         if self.editHasFocus:
             self.HideEdit()
@@ -339,6 +318,7 @@ class FleetItem(wx.Window):
         if self.tcFleetName.IsShown():
             self.HideEdit()
             self.btnRename.SetBitmapLabel(self.renameBmp, False)
+            self.RenameFit(None)
         else:
             if not self.editHasFocus:
                 self.btnRename.SetBitmapLabel(self.acceptBmp,False)
@@ -361,6 +341,15 @@ class FleetItem(wx.Window):
         else:
             wx.PostEvent(self.Parent.Parent, FleetItemCopy(fleetID = self.fleetID))
             event.Skip()
+
+    def RenameFit(self, event):
+        self.HideEdit()
+
+        newFleetName = self.tcFleetName.GetValue()
+        self.fleetName = newFleetName
+
+        wx.PostEvent(self.Parent.Parent, FleetItemRename(fleetID = self.fleetID, fleetName = self.fleetName))
+        self.Refresh()
 
     def IsSelected(self):
         return self.selected
@@ -481,6 +470,19 @@ class FleetItem(wx.Window):
         else:
             self.HideEdit()
         event.Skip()
+
+    def EditCheckEsc(self, event):
+        if event.GetKeyCode() == wx.WXK_ESCAPE:
+            self.HideEdit()
+        else:
+            event.Skip()
+
+    def HideEdit(self):
+        self.tcFleetName.Show(False)
+        self.editHasFocus = False
+        self.btnRename.SetBitmapLabel(self.renameBmp, False)
+        self.Refresh()
+
 
     def OnBtnEnterWindow(self, event):
         btn = event.GetEventObject()
