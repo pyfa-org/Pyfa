@@ -40,6 +40,7 @@ class FleetBrowser(wx.Panel):
         self.Layout()
 
         self.filter = ""
+        self.fleetIDMustEditName = -1
 
         self.Bind(wx.EVT_SIZE, self.SizeRefreshList)
 
@@ -56,6 +57,7 @@ class FleetBrowser(wx.Panel):
         newFleet = self.sFleet.addFleet()
         self.sFleet.renameFleet(newFleet, fleetName)
 
+        self.fleetIDMustEditName = newFleet.ID
         self.AddItem(newFleet.ID, newFleet.name, newFleet.count())
 
     def SelectFleetItem(self, event):
@@ -70,6 +72,7 @@ class FleetBrowser(wx.Panel):
         fleetName = fleet.name + " Copy"
         self.sFleet.renameFleet(fleet,fleetName)
 
+        self.fleetIDMustEditName = fleet.ID
         self.AddItem(fleet.ID, fleet.name, fleet.count())
 
         self.fleetItemContainer.SelectWidgetByFleetID(fleet.ID)
@@ -237,6 +240,7 @@ class FleetItem(wx.Window):
 #        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 #        self.fleetBrowser = self.mainFrame.fleetBrowser
 #        print self.fleetBrowser
+        self.fleetBrowser = self.Parent
         self.fleetID = fleetID
         self.fleetName = fleetName
         self.fleetCount = fleetCount
@@ -285,7 +289,15 @@ class FleetItem(wx.Window):
 
         self.editWidth = 150
         self.tcFleetName = wx.TextCtrl(self, wx.ID_ANY, "%s" % self.fleetName, wx.DefaultPosition, (self.editWidth,-1), wx.TE_PROCESS_ENTER)
-        self.tcFleetName.Show(False)
+
+        if self.fleetBrowser.fleetIDMustEditName != self.fleetID:
+            self.tcFleetName.Show(False)
+        else:
+            self.tcFleetName.SetFocus()
+            self.tcFleetName.SelectAll()
+            self.btnRename.SetBitmapLabel(self.acceptBmp, False)
+            self.editHasFocus = True
+            self.fleetBrowser.fleetIDMustEditName = -1
 
         self.Bind(wx.EVT_PAINT, self.OnPaint)
         self.Bind(wx.EVT_ERASE_BACKGROUND, lambda event: None)
@@ -312,7 +324,7 @@ class FleetItem(wx.Window):
         if self.editHasFocus:
             self.HideEdit()
         else:
-            wx.PostEvent(self.Parent.Parent, FleetItemSelect(fleetID = self.fleetID))
+            wx.PostEvent(self.fleetBrowser, FleetItemSelect(fleetID = self.fleetID))
         event.Skip()
 
     def OnRenameBtn(self, event):
@@ -333,14 +345,14 @@ class FleetItem(wx.Window):
         if self.editHasFocus:
             self.HideEdit()
         else:
-            wx.PostEvent(self.Parent.Parent, FleetItemDelete(fleetID = self.fleetID))
+            wx.PostEvent(self.fleetBrowser, FleetItemDelete(fleetID = self.fleetID))
             event.Skip()
 
     def OnCopyBtn(self, event):
         if self.editHasFocus:
             self.HideEdit()
         else:
-            wx.PostEvent(self.Parent.Parent, FleetItemCopy(fleetID = self.fleetID))
+            wx.PostEvent(self.fleetBrowser, FleetItemCopy(fleetID = self.fleetID))
             event.Skip()
 
     def RenameFit(self, event):
@@ -349,7 +361,7 @@ class FleetItem(wx.Window):
         newFleetName = self.tcFleetName.GetValue()
         self.fleetName = newFleetName
 
-        wx.PostEvent(self.Parent.Parent, FleetItemRename(fleetID = self.fleetID, fleetName = self.fleetName))
+        wx.PostEvent(self.fleetBrowser, FleetItemRename(fleetID = self.fleetID, fleetName = self.fleetName))
         self.Refresh()
 
     def IsSelected(self):
