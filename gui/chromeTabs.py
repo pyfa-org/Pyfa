@@ -118,6 +118,7 @@ class PFNotebook(wx.Panel):
         else:
             oldPage.Destroy()
         page.Reparent(self.pageContainer)
+        self.tabsContainer.tabs[i].closeButton =True
 
         if self.activePage == page:
             self.ShowActive()
@@ -140,6 +141,9 @@ class PFNotebook(wx.Panel):
 
     def GetPageIndex(self, page):
         return self.pages.index(page) if page in self.pages else None
+
+    def CanClosePage(self, pageIndex):
+        return self.tabsContainer.tabs[pageIndex].closeButton
 
     def GetSelection(self):
         return self.GetPageIndex(self.activePage)
@@ -187,6 +191,7 @@ class PFNotebook(wx.Panel):
             self.ShowActive()
         else:
             self.activePage = None
+            self.AddPage(wx.Panel(self, size = (0,0)), "Empty Tab", showClose = False)
 
 
     def SwitchPages(self, src, dest, internal = False):
