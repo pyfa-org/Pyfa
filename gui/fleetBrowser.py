@@ -422,7 +422,17 @@ class FleetItem(wx.Window):
         # - self.padding
         self.renamePosY = self.deletePosY = self.copyPosY = (rect.height - btnHeight) / 2
 
-        tx = 0
+        tx,ty = bdc.GetTextExtent(self.buttonsTip)
+
+        bdc.SetFont(self.fontBig)
+        fnx,fny = bdc.GetTextExtent(self.fleetName)
+        pfn = self.GetPartialText(self.fleetName, bdc, self.copyPosX - 16 - self.padding - tx - textStart, 1)
+        bdc.DrawText(pfn, textStart, (rect.height/2 - fny) / 2)
+
+        bdc.SetFont(self.fontSmall)
+        fcx,fcy = bdc.GetTextExtent(fleetCount)
+        pfc = self.GetPartialText(fleetCount, bdc, self.copyPosX - 16 - self.padding - tx - textStart, 1)
+        bdc.DrawText(pfc, textStart, rect.height/2 + (rect.height/2 -fcy) / 2 )
 
         bdc.SetFont(self.fontSmall)
 
@@ -432,8 +442,6 @@ class FleetItem(wx.Window):
 
             bdc.SetPen(pen)
             bdc.SetBrush(brush)
-
-            tx,ty = bdc.GetTextExtent(self.buttonsTip)
 
             bdc.DrawRoundedRectangle(self.copyPosX - 8 - tx - self.padding, self.copyPosY-1, rect.width,20, 8)
             bdc.DrawText(self.buttonsTip,self.copyPosX - tx - self.padding, self.copyPosY + 8 - ty/2)
@@ -450,47 +458,30 @@ class FleetItem(wx.Window):
             self.btnCopy.Show(False)
             self.btnRename.Show(False)
             self.btnDelete.Show(False)
+
             bdc.DrawBitmap(self.copyBmpGrey, self.copyPosX + 1, self.copyPosY + 1 )
+
             if self.editHasFocus:
                 bdc.DrawBitmap(self.acceptBmpGrey, self.renamePosX + 1, self.renamePosY + 1 )
             else:
                 bdc.DrawBitmap(self.renameBmpGrey, self.renamePosX + 1, self.renamePosY + 1 )
+
             bdc.DrawBitmap(self.deleteBmpGrey, self.deletePosX + 1, self.deletePosY + 1 )
 
-        bdc.SetFont(self.fontBig)
-
-        fnx,fny = bdc.GetTextExtent(self.fleetName)
-
-        fnwidths = bdc.GetPartialTextExtents(self.fleetName)
-
-        count = 0
-        maxsize = self.copyPosX - 8 - tx - textStart
-        for i in fnwidths:
-            if i <= maxsize:
-                count +=1
-            else:
-                break
-        count -= 2
-        bdc.DrawText(self.fleetName[:count] + ".." if count < len(self.fleetName) - 2 else self.fleetName , textStart, (rect.height/2 - fny)/2)
-
-        bdc.SetFont(self.fontSmall)
-
-        fcx,fcy = bdc.GetTextExtent(fleetCount)
-
-        fnwidths = bdc.GetPartialTextExtents(fleetCount)
-
-        count = 0
-        maxsize = self.copyPosX - 8 - tx - textStart
-        for i in fnwidths:
-            if i <= maxsize:
-                count +=1
-            else:
-                break
-
-        count -= 2
-        bdc.DrawText(fleetCount[:count] + ".." if count < len(fleetCount) - 2 else fleetCount, textStart, rect.height/2 + (rect.height/2 -fcy) / 2 )
 
         self.AdjustFleetNameEditSize(textStart, self.copyPosX - self.editWidth - self.padding)
+
+    def GetPartialText(self, text, dc , maxWidth, minChars):
+        textwidths = dc.GetPartialTextExtents(text + "...")
+        count = 0
+
+        for i in textwidths:
+            if i <= maxWidth:
+                count +=1
+            else:
+                break
+
+        return "%s%s" % (text[:count if count > minChars else minChars], "..." if len(text) > count else  "" )
 
     def AdjustFleetNameEditSize(self, start,end):
         fnEditSize = self.tcFleetName.GetSize()
@@ -503,7 +494,6 @@ class FleetItem(wx.Window):
         else:
             self.tcFleetName.SetSize((self.editWidth,-1))
             self.tcFleetName.SetPosition((fnEditPosX,fnEditPosY))
-
 
     def OnEditLostFocus(self, event):
         if self.highlighted == 1:
