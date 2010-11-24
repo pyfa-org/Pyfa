@@ -21,18 +21,12 @@ import wx
 import gui.mainFrame
 from gui.viewColumn import ViewColumn
 import sys
-import platform
 
 class Display(wx.ListCtrl):
-    def __init__(self, parent, size = wx.DefaultSize, style = 0, doubleBuffered = None):
+    def __init__(self, parent, size = wx.DefaultSize, style = 0, doubleBuffered = True):
 
         wx.ListCtrl.__init__(self, parent,size = size, style=wx.LC_REPORT | ( style | wx.BORDER_NONE if not (style & wx.SIMPLE_BORDER) else style) )
-
-        #Autodetect
-        if doubleBuffered is None:
-            self.SetDoubleBuffered("wxMSW" in wx.PlatformInfo and platform.release() != "XP")
-        else:
-            self.SetDoubleBuffered(doubleBuffered)
+        self.SetDoubleBuffered(doubleBuffered)
 
         self.imageList = wx.ImageList(16, 16)
         self.SetImageList(self.imageList, wx.IMAGE_LIST_SMALL)
