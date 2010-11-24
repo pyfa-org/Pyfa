@@ -30,8 +30,7 @@ class Display(wx.ListCtrl):
 
         #Autodetect
         if doubleBuffered is None:
-            if "wxMSW" in wx.PlatformInfo and platform.release() != "XP":
-                    self.SetDoubleBuffered(True)
+            self.SetDoubleBuffered("wxMSW" in wx.PlatformInfo and platform.release() != "XP")
         else:
             self.SetDoubleBuffered(doubleBuffered)
 
