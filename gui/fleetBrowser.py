@@ -422,6 +422,7 @@ class FleetItem(wx.Window):
         # - self.padding
         self.renamePosY = self.deletePosY = self.copyPosY = (rect.height - btnHeight) / 2
 
+        bdc.SetFont(self.fontSmall)
         tx,ty = bdc.GetTextExtent(self.buttonsTip)
 
         bdc.SetFont(self.fontBig)
