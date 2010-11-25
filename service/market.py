@@ -106,9 +106,8 @@ class SearchWorkerThread(threading.Thread):
             usedMetas = set()
             items = []
             for item in results:
-                if item.category.name in Market.SEARCH_CATEGORIES:
-                    usedMetas.add(item.metaGroup.ID if item.metaGroup else 1)
-                    items.append(item)
+                usedMetas.add(item.metaGroup.ID if item.metaGroup else 1)
+                items.append(item)
 
             wx.CallAfter(callback, (items, usedMetas))
 
