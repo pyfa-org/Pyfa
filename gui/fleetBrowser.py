@@ -92,7 +92,9 @@ class FleetBrowser(wx.Panel):
 
     def AddItem (self, ID, name, count):
         self.fleetItemContainer.AddWidget(FleetItem(self, ID, name, count))
-        self.fleetItemContainer.RefreshList()
+        widget = self.fleetItemContainer.GetWidgetByFleetID(ID)
+        self.fleetItemContainer.RefreshList(True)
+        self.fleetItemContainer.ScrollChildIntoView(widget)
 
     def PopulateFleetList(self):
         self.Freeze()
