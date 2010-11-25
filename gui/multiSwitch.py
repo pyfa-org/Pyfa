@@ -29,10 +29,7 @@ class MultiSwitch(gui.chromeTabs.PFNotebook):
         for type in TabSpawner.tabTypes:
             handlers.append(type(self))
 
-    def handleDrag(self, type, info, spawnTab=True):
-        if spawnTab:
-            self.AddPage()
-
+    def handleDrag(self, type, info):
         for handler in self.handlers:
             h = getattr(handler, "handleDrag", None)
             if h:
@@ -40,8 +37,8 @@ class MultiSwitch(gui.chromeTabs.PFNotebook):
 
     def AddPage(self, tabWnd=None, tabTitle="Empty Tab",  tabImage=None):
         if tabWnd is None:
-            tabWnd = wx.Panel(self, size=(0, 0))
-            tabWnd.handleDrag = lambda type, info: self.handleDrag(type, info, False)
+            tabWnd = BlankPage(self)
+            tabWnd.handleDrag = lambda type, info: self.handleDrag(type, info)
 
         gui.chromeTabs.PFNotebook.AddPage(self, tabWnd, tabTitle, tabImage, True)
 
@@ -51,6 +48,10 @@ class MultiSwitch(gui.chromeTabs.PFNotebook):
             gui.chromeTabs.PFNotebook.DeletePage(self, n, *args, **kwargs)
         else:
             gui.mainFrame.MainFrame.getInstance().Close()
+
+class BlankPage(wx.Panel):
+    def __init__(self, parent):
+        wx.Panel.__init__(self, parent, size=(0, 0))
 
 class TabSpawner(object):
     tabTypes = []

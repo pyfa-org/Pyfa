@@ -25,11 +25,10 @@ import gui.marketBrowser
 import gui.display as d
 from gui.contextMenu import ContextMenu
 import gui.shipBrowser
+import gui.multiSwitch
 from eos.types import Slot
 from gui.builtinViewColumns.state import State
-import gui.multiSwitch
 from gui import bitmapLoader
-import gui.shipBrowser
 
 FitChanged, FIT_CHANGED = wx.lib.newevent.NewEvent()
 
@@ -59,8 +58,19 @@ class FitSpawner(gui.multiSwitch.TabSpawner):
 
     def handleDrag(self, type, fitID):
         if type == "fit":
+            for page in self.multiSwitch.pages:
+                if isinstance(page, FittingView) and page.activeFitID == fitID:
+                    index = self.multiSwitch.GetPageIndex(page)
+                    self.multiSwitch.SetSelection(index)
+                    return
+                elif isinstance(page, gui.multiSwitch.BlankPage):
+                    view = FittingView(self.multiSwitch)
+                    self.multiSwitch.ReplaceActivePage(view)
+                    view.handleDrag(type, fitID)
+                    return
+
             view = FittingView(self.multiSwitch)
-            self.multiSwitch.ReplaceActivePage(view)
+            self.multiSwitch.AddPage(view)
             view.handleDrag(type, fitID)
 
 FitSpawner.register()

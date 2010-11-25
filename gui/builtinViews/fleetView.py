@@ -33,11 +33,18 @@ class FleetView(wx.gizmos.TreeListCtrl):
             self.AddColumn(col)
 
         self.SetMainColumn(1)
-
         self.icons = {}
         self.addImage = self.imageList.Add(bitmapLoader.getBitmap("add_small", "icons"))
         for icon in ("fb", "fc", "sb", "sc", "wb", "wc"):
             self.icons[icon] = self.imageList.Add(bitmapLoader.getBitmap("fleet_%s_small" % icon, "icons"))
+
+        self.Bind(wx.EVT_TREE_ITEM_ACTIVATED, self.checkNew)
+
+    def checkNew(self, event):
+        data = self.GetPyData(event.Item)
+        if data and isinstance(data, tuple) and data[0] == "add":
+            layer = data[1]
+            
 
     def populate(self, fleetID):
         sFleet = service.Fleet.getInstance()
@@ -75,9 +82,11 @@ class FleetView(wx.gizmos.TreeListCtrl):
 
     def addAdder(self, treeItemId, layer):
         id = self.AppendItem(treeItemId, "Add new %s" % layer.capitalize())
+        self.SetPyData(id, ("add", layer))
         self.SetItemImage(id, self.addImage, 1)
 
     def setEntry(self, treeItemId, fit, layer, info):
+        self.SetPyData(treeItemId, info)
         if fit is None:
             self.SetItemText(treeItemId, "%s Commander" % layer.capitalize(), 1)
         else:
