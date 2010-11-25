@@ -1202,8 +1202,21 @@ class PFNotebookPagePreview(wx.Frame):
         self.timerSleep = None
         self.timerSleepId = wx.NewId()
         self.direction = 1
+        self.padding = 15
         self.transp = 0
-        self.SetSize((bitmap.GetWidth(),bitmap.GetHeight()+16))
+
+        hfont = wx.FontFromPixelSize((0,14), wx.SWISS, wx.NORMAL,wx.NORMAL, False)
+        self.SetFont(hfont)
+
+        tx, ty = self.GetTextExtent(self.title)
+        tx +=  self.padding * 2
+
+        if bitmap.GetWidth() < tx:
+            width = tx
+        else:
+            width = bitmap.GetWidth()
+
+        self.SetSize((width, bitmap.GetHeight()+16))
 
         self.SetTransparent(0)
         self.Refresh()
@@ -1251,7 +1264,7 @@ class PFNotebookPagePreview(wx.Frame):
         canvas = wx.EmptyBitmap(rect.width, rect.height)
         mdc = wx.BufferedPaintDC(self)
         mdc.SelectObject(canvas)
-        color = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOWTEXT)
+        color = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
         mdc.SetBackground(wx.Brush(color))
         mdc.Clear()
 
@@ -1259,6 +1272,9 @@ class PFNotebookPagePreview(wx.Frame):
         mdc.SetFont(font)
 
         x,y = mdc.GetTextExtent(self.title)
+
+        mdc.SetBrush(wx.Brush(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOWTEXT)))
+        mdc.DrawRectangle(0,0,rect.width,16)
 
         mdc.SetTextForeground(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW))
 
