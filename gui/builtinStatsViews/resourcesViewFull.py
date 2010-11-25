@@ -214,7 +214,7 @@ class ResourcesViewFull(StatsView):
                 gauge = getattr(self, "gauge%s%s" % (panel, capitalizedType))
                 resUsed = getattr(fit,"%sUsed" % resourceType)
 
-                gauge.SetValueRange(resUsed or 0, resMax[i]() or 0)
+                gauge.SetValueRange(resUsed, resMax[i]())
 
                 i+=1
             else:
