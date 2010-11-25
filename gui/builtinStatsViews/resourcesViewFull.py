@@ -151,16 +151,55 @@ class ResourcesViewFull(StatsView):
                          ("label%sTotalDroneBay", lambda: fit.ship.getModifiedItemAttr("droneCapacity"), 3, 0, 9),
                          ("label%sTotalDroneBandwidth", lambda: fit.ship.getModifiedItemAttr("droneBandwidth"), 3, 0, 9))
         panel = "Full"
+        usedTurretHardpoints = 0
+        totalTurretHardpoints = 0
+        usedLauncherHardpoints = 0
+        totalLauncherHardPoints = 0
+
         for labelName, value, prec, lowest, highest in stats:
             label = getattr(self, labelName % panel)
             value = value() if fit is not None else 0
             value = value if value is not None else 0
+            if labelName % panel == "label%sUsedTurretHardpoints" % panel:
+                usedTurretHardpoints = value
+                labelUTH = label
+
+            if labelName % panel == "label%sTotalTurretHardpoints" % panel:
+                totalTurretHardpoints = value
+                labelTTH = label
+
+            if labelName % panel == "label%sUsedLauncherHardpoints" % panel:
+                usedLauncherHardpoints = value
+                labelULH = label
+
+            if labelName % panel == "label%sTotalLauncherHardpoints" % panel:
+                totalLauncherHardPoints = value
+                labelTLH = label
+
             if isinstance(value, basestring):
                 label.SetLabel(value)
                 label.SetToolTip(wx.ToolTip(value))
             else:
                 label.SetLabel(formatAmount(value, prec, lowest, highest))
                 label.SetToolTip(wx.ToolTip("%.1f" % value))
+
+        colorWarn = wx.Colour(204, 51, 51)
+        colorNormal = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOWTEXT)
+
+        if usedTurretHardpoints > totalTurretHardpoints:
+            colorT = colorWarn
+        else:
+            colorT = colorNormal
+        if usedLauncherHardpoints > totalLauncherHardPoints:
+            colorL = colorWarn
+        else:
+            colorL = colorNormal
+
+        labelUTH.SetForegroundColour(colorT)
+        labelTTH.SetForegroundColour(colorT)
+        labelULH.SetForegroundColour(colorL)
+        labelTLH.SetForegroundColour(colorL)
+
         if fit is not None:
             resMax = (lambda: fit.ship.getModifiedItemAttr("cpuOutput"),
                     lambda: fit.ship.getModifiedItemAttr("powerOutput"),
