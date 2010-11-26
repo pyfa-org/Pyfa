@@ -2,6 +2,7 @@ from gui.contextMenu import ContextMenu
 from gui.itemStats import ItemStatsDialog
 import gui.mainFrame
 import service
+import wx
 
 class ItemStats(ContextMenu):
     def __init__(self):
@@ -31,6 +32,22 @@ class ItemStats(ContextMenu):
         if context == "module" and stuff.isEmpty:
             return
 
-        dlg=ItemStatsDialog(stuff, context.capitalize() if context not in self.REPLACES else self.REPLACES[context])
+        mstate = wx.GetMouseState()
+        reuse = False
+
+        if mstate.ControlDown() or mstate.CmdDown():
+            reuse = True
+
+        if self.mainFrame.GetActiveStatsWindow() == None and reuse:
+            dlg=ItemStatsDialog(stuff, context.capitalize() if context not in self.REPLACES else self.REPLACES[context])
+
+        elif reuse:
+            lastWnd = self.mainFrame.GetActiveStatsWindow()
+            pos = lastWnd.GetPosition()
+            dlg=ItemStatsDialog(stuff, context.capitalize() if context not in self.REPLACES else self.REPLACES[context], pos)
+            lastWnd.closeEvent(None)
+
+        else:
+            dlg=ItemStatsDialog(stuff, context.capitalize() if context not in self.REPLACES else self.REPLACES[context])
 
 ItemStats.register()

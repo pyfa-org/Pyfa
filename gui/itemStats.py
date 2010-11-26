@@ -30,10 +30,10 @@ import service
 
 class ItemStatsDialog(wx.Dialog):
     counter = 0
-    def __init__(self, victim, context = None):
+    def __init__(self, victim, context = None, pos = wx.DefaultPosition):
         wx.Dialog.__init__(self,
                           gui.mainFrame.MainFrame.getInstance(),
-                          wx.ID_ANY, title="Item stats",
+                          wx.ID_ANY, title="Item stats", pos = pos,
                           style = wx.CAPTION | wx.CLOSE_BOX | wx.MINIMIZE_BOX |
                                   wx.MAXIMIZE_BOX | wx.RESIZE_BORDER| wx.SYSTEM_MENU)
 
@@ -66,11 +66,11 @@ class ItemStatsDialog(wx.Dialog):
         self.mainSizer.Add(self.container, 1, wx.EXPAND)
         self.SetSizer(self.mainSizer)
 
-        parent = gui.mainFrame.MainFrame.getInstance()
+        self.parentWnd = gui.mainFrame.MainFrame.getInstance()
 
         dlgsize = self.GetSize()
-        psize = parent.GetSize()
-        ppos = parent.GetPosition()
+        psize = self.parentWnd.GetSize()
+        ppos = self.parentWnd.GetPosition()
 
         ItemStatsDialog.counter += 1
         self.dlgOrder = ItemStatsDialog.counter
@@ -82,18 +82,27 @@ class ItemStatsDialog(wx.Dialog):
 
         dlgx = ppos.x + counter * dlgStep
         dlgy = ppos.y + counter * dlgStep
-        self.SetPosition((dlgx,dlgy))
+        if pos == wx.DefaultPosition:
+            self.SetPosition((dlgx,dlgy))
+        else:
+            self.SetPosition(pos)
+        self.parentWnd.RegisterStatsWindow(self)
 
         self.Show()
 
         self.Bind(wx.EVT_CLOSE, self.closeEvent)
+        self.Bind(wx.EVT_ACTIVATE, self.OnActivate)
+
+    def OnActivate(self, event):
+        self.parentWnd.SetActiveStatsWindow(self)
 
     def closeEvent(self, event):
 
         if self.dlgOrder==ItemStatsDialog.counter:
             ItemStatsDialog.counter -= 1
+        self.parentWnd.UnregisterStatsWindow(self)
+
         self.Destroy()
-        event.Skip()
 
 ###########################################################################
 ## Class ItemStatsContainer
