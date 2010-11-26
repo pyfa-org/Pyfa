@@ -30,10 +30,10 @@ import service
 
 class ItemStatsDialog(wx.Dialog):
     counter = 0
-    def __init__(self, victim, context = None, pos = wx.DefaultPosition):
+    def __init__(self, victim, context = None, pos = wx.DefaultPosition, size = wx.DefaultSize, maximized = False):
         wx.Dialog.__init__(self,
                           gui.mainFrame.MainFrame.getInstance(),
-                          wx.ID_ANY, title="Item stats", pos = pos,
+                          wx.ID_ANY, title="Item stats", pos = pos, size = size,
                           style = wx.CAPTION | wx.CLOSE_BOX | wx.MINIMIZE_BOX |
                                   wx.MAXIMIZE_BOX | wx.RESIZE_BORDER| wx.SYSTEM_MENU)
 
@@ -86,6 +86,11 @@ class ItemStatsDialog(wx.Dialog):
             self.SetPosition((dlgx,dlgy))
         else:
             self.SetPosition(pos)
+        if maximized:
+            self.Maximize(True)
+        else:
+            if size != wx.DefaultSize:
+                self.SetSize(size)
         self.parentWnd.RegisterStatsWindow(self)
 
         self.Show()

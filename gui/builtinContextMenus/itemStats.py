@@ -44,7 +44,13 @@ class ItemStats(ContextMenu):
         elif reuse:
             lastWnd = self.mainFrame.GetActiveStatsWindow()
             pos = lastWnd.GetPosition()
-            dlg=ItemStatsDialog(stuff, context.capitalize() if context not in self.REPLACES else self.REPLACES[context], pos)
+            maximized = lastWnd.IsMaximized()
+            if not maximized:
+                size = lastWnd.GetSize()
+            else:
+                size = wx.DefaultSize
+                pos = wx.DefaultPosition
+            dlg=ItemStatsDialog(stuff, context.capitalize() if context not in self.REPLACES else self.REPLACES[context], pos, size, maximized)
             lastWnd.closeEvent(None)
 
         else:
