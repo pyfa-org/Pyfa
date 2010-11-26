@@ -18,10 +18,11 @@
 #===============================================================================
 
 import wx
+import re
 import gui.mainFrame
 import bitmapLoader
 import sys
-import  wx.lib.mixins.listctrl  as  listmix
+import wx.lib.mixins.listctrl  as  listmix
 import wx.html
 from eos.types import Ship, Module, Skill, Booster, Implant, Drone
 from util import formatAmount
@@ -172,8 +173,9 @@ class ItemDescription ( wx.Panel ):
 
 
         self.description = wx.html.HtmlWindow(self)
-
         desc = item.description.replace("\r","<br>")
+        desc = re.sub("<( *)font( *)color( *)=(.*)>", "<b>", desc)
+        desc = re.sub("<( *)/( *)font( *)>","</b>", desc)
 
         self.description.SetPage(desc)
 
