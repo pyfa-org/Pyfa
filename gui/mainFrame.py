@@ -124,6 +124,8 @@ class MainFrame(wx.Frame):
         self.closePageId = wx.NewId()
 
         self.graphFrame = None
+        self.statsWnds = []
+        self.activeStatsWnd = None
 
         #Add menu
         self.SetMenuBar(MainMenuBar())
@@ -133,6 +135,25 @@ class MainFrame(wx.Frame):
 
         #Show ourselves
         self.Show()
+
+    def SetActiveStatsWindow(self, wnd):
+        self.activeStatsWnd = wnd
+
+    def GetActiveStatsWindow(self):
+
+        if self.activeStatsWnd in self.statsWnds:
+            return self.activeStatsWnd
+
+        if len(self.statsWnds) > 0:
+            return self.statsWnds[len(self.statsWnds) - 1]
+        else:
+            return None
+
+    def RegisterStatsWindow(self, wnd):
+        self.statsWnds.append(wnd)
+
+    def UnregisterStatsWindow(self, wnd):
+        self.statsWnds.remove(wnd)
 
     def getActiveFit(self):
         p = self.fitMultiSwitch.GetSelectedPage()

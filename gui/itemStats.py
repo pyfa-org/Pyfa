@@ -18,10 +18,11 @@
 #===============================================================================
 
 import wx
+import re
 import gui.mainFrame
 import bitmapLoader
 import sys
-import  wx.lib.mixins.listctrl  as  listmix
+import wx.lib.mixins.listctrl  as  listmix
 import wx.html
 from eos.types import Ship, Module, Skill, Booster, Implant, Drone
 from util import formatAmount
@@ -29,10 +30,10 @@ import service
 
 class ItemStatsDialog(wx.Dialog):
     counter = 0
-    def __init__(self, victim, context = None):
+    def __init__(self, victim, context = None, pos = wx.DefaultPosition, size = wx.DefaultSize, maximized = False):
         wx.Dialog.__init__(self,
                           gui.mainFrame.MainFrame.getInstance(),
-                          wx.ID_ANY, title="Item stats",
+                          wx.ID_ANY, title="Item stats", pos = pos, size = size,
                           style = wx.CAPTION | wx.CLOSE_BOX | wx.MINIMIZE_BOX |
                                   wx.MAXIMIZE_BOX | wx.RESIZE_BORDER| wx.SYSTEM_MENU)
 
@@ -65,11 +66,11 @@ class ItemStatsDialog(wx.Dialog):
         self.mainSizer.Add(self.container, 1, wx.EXPAND)
         self.SetSizer(self.mainSizer)
 
-        parent = gui.mainFrame.MainFrame.getInstance()
+        self.parentWnd = gui.mainFrame.MainFrame.getInstance()
 
         dlgsize = self.GetSize()
-        psize = parent.GetSize()
-        ppos = parent.GetPosition()
+        psize = self.parentWnd.GetSize()
+        ppos = self.parentWnd.GetPosition()
 
         ItemStatsDialog.counter += 1
         self.dlgOrder = ItemStatsDialog.counter
@@ -81,18 +82,32 @@ class ItemStatsDialog(wx.Dialog):
 
         dlgx = ppos.x + counter * dlgStep
         dlgy = ppos.y + counter * dlgStep
-        self.SetPosition((dlgx,dlgy))
+        if pos == wx.DefaultPosition:
+            self.SetPosition((dlgx,dlgy))
+        else:
+            self.SetPosition(pos)
+        if maximized:
+            self.Maximize(True)
+        else:
+            if size != wx.DefaultSize:
+                self.SetSize(size)
+        self.parentWnd.RegisterStatsWindow(self)
 
         self.Show()
 
         self.Bind(wx.EVT_CLOSE, self.closeEvent)
+        self.Bind(wx.EVT_ACTIVATE, self.OnActivate)
+
+    def OnActivate(self, event):
+        self.parentWnd.SetActiveStatsWindow(self)
 
     def closeEvent(self, event):
 
         if self.dlgOrder==ItemStatsDialog.counter:
             ItemStatsDialog.counter -= 1
+        self.parentWnd.UnregisterStatsWindow(self)
+
         self.Destroy()
-        event.Skip()
 
 ###########################################################################
 ## Class ItemStatsContainer
@@ -172,8 +187,9 @@ class ItemDescription ( wx.Panel ):
 
 
         self.description = wx.html.HtmlWindow(self)
-
         desc = item.description.replace("\r","<br>")
+        desc = re.sub("<( *)font( *)color( *)=(.*)>", "<b>", desc)
+        desc = re.sub("<( *)/( *)font( *)>","</b>", desc)
 
         self.description.SetPage(desc)
 

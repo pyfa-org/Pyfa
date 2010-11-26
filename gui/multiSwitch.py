@@ -19,7 +19,6 @@
 
 import wx
 import gui.chromeTabs
-import gui.mainFrame
 
 class MultiSwitch(gui.chromeTabs.PFNotebook):
     def __init__(self, parent):
@@ -44,10 +43,9 @@ class MultiSwitch(gui.chromeTabs.PFNotebook):
 
 
     def DeletePage(self, n, *args, **kwargs):
-        if self.GetPageCount() > 1:
-            gui.chromeTabs.PFNotebook.DeletePage(self, n, *args, **kwargs)
-        else:
-            gui.mainFrame.MainFrame.getInstance().Close()
+        gui.chromeTabs.PFNotebook.DeletePage(self, n, *args, **kwargs)
+        if self.GetPageCount() == 0:
+            self.AddPage()
 
 class BlankPage(wx.Panel):
     def __init__(self, parent):
