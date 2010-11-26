@@ -122,9 +122,9 @@ class TargetingMiscViewFull(StatsView):
                 if labelName is "labelScanRes":
                     lockTime = "%s\n" % "Lock Times".center(28)
                     for size, radius in RADII:
-                        left = "%s [%d]" % (size, radius)
-                        right = "%.1fs" % fit.calculateLockTime(radius)
-                        lockTime += "%-19s : %+5s\n" % (left, right)
+                        left = "%s [%d] " % (size, radius)
+                        right = "% .1fs" % fit.calculateLockTime(radius)
+                        lockTime += "%s\t%s\n" % (right,left)
                     # print lockTime # THIS IS ALIGNED!
                     label.SetToolTip(wx.ToolTip(lockTime))
                 elif labelName is "labelSensorStr":
