@@ -272,6 +272,7 @@ class PFTabRenderer:
         self.tabBackBitmap = None
         self.cbSize = 5
         self.padding = 4
+        self.font = wx.FontFromPixelSize((0, self.fontSize), wx.SWISS, wx.NORMAL, wx.NORMAL, False)
 
         self.tabImg = img
         self.position = (0, 0) # Not used internaly for rendering - helper for tab container
@@ -354,8 +355,6 @@ class PFTabRenderer:
         self.contentWidth = self.tabWidth - self.leftWidth - self.rightWidth
         self.tabRegion = None
         self.closeBtnRegion = None
-
-        self.font = wx.FontFromPixelSize((0, self.fontSize), wx.SWISS, wx.NORMAL, wx.NORMAL, False)
 
         self.InitColors()
         self.InitBitmaps()
