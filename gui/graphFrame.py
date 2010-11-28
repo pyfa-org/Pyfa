@@ -37,32 +37,38 @@ import gui.mainFrame
 
 class GraphFrame(wx.Frame):
     def __init__(self, parent, style=wx.DEFAULT_FRAME_STYLE | wx.NO_FULL_REPAINT_ON_RESIZE | wx.FRAME_FLOAT_ON_PARENT):
-        wx.Frame.__init__(self, parent, title=u"pyfa: Graph Generator", style=style, size=(640, 480))
+        wx.Frame.__init__(self, parent, title=u"pyfa: Graph Generator", style=style, size=(520, 390))
 
         i = wx.IconFromBitmap(bitmapLoader.getBitmap("graphs_small", "icons"))
         self.SetIcon(i)
-
+        self.SetMinSize((520,390))
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.CreateStatusBar()
-        horSizer = wx.BoxSizer(wx.HORIZONTAL)
-        self.SetSizer(horSizer)
 
         self.mainSizer = wx.BoxSizer(wx.VERTICAL)
-        horSizer.Add(self.mainSizer, 1, wx.EXPAND)
+        self.SetSizer(self.mainSizer)
 
         sFit = service.Fit.getInstance()
         fit = sFit.getFit(self.mainFrame.getActiveFit())
         self.fits = [fit] if fit is not None else []
         self.fitList = FitList(self)
-        self.fitList.SetMinSize((320, -1))
-        horSizer.Add(self.fitList, 0, wx.EXPAND)
+        self.fitList.SetMinSize((270, -1))
+
         self.fitList.fitList.update(self.fits)
 
         self.graphSelection = wx.Choice(self, wx.ID_ANY, style=0)
         self.mainSizer.Add(self.graphSelection, 0, wx.EXPAND)
 
         self.figure = Figure(figsize=(4, 3))
+
+        rgbtuple = wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNFACE ).Get()
+        clr = [c/255. for c in rgbtuple]
+        self.figure.set_facecolor( clr )
+        self.figure.set_edgecolor( clr )
+
         self.canvas = Canvas(self, -1, self.figure)
+        self.canvas.SetBackgroundColour( wx.Colour( *rgbtuple ) )
+
         self.subplot = self.figure.add_subplot(111)
         self.subplot.grid(True)
 
@@ -75,7 +81,7 @@ class GraphFrame(wx.Frame):
         dummyBox = wx.BoxSizer(wx.VERTICAL)
         self.gridPanel.SetSizer(dummyBox)
 
-        self.gridSizer = wx.FlexGridSizer(0, 2)
+        self.gridSizer = wx.FlexGridSizer(0, 4)
         self.gridSizer.AddGrowableCol(1)
         dummyBox.Add(self.gridSizer, 0, wx.EXPAND)
 
@@ -86,6 +92,9 @@ class GraphFrame(wx.Frame):
         self.graphSelection.SetSelection(0)
         self.fields = {}
         self.select(0)
+        self.sl1 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
+        self.mainSizer.Add(self.sl1,0, wx.EXPAND)
+        self.mainSizer.Add(self.fitList, 0, wx.EXPAND)
 
         self.fitList.fitList.Bind(wx.EVT_LEFT_DCLICK, self.removeItem)
         self.mainFrame.Bind(gui.builtinViews.fittingView.FIT_CHANGED, self.draw)
@@ -212,5 +221,5 @@ class FitDisplay(gui.display.Display):
                     "Base Name"]
 
     def __init__(self, parent):
-        gui.display.Display.__init__(self, parent, style = wx.SIMPLE_BORDER)
+        gui.display.Display.__init__(self, parent)
 
