@@ -69,14 +69,17 @@ class DamagePattern():
         current = self.getDamagePatternList()
         for pattern in current:
             lookup[pattern.name] = pattern
-        imports = eos.types.DamagePattern.importPatterns(text)
-        for pattern in imports:
-            if pattern.name in lookup:
-                match = lookup[pattern.name]
-                match.__dict__.update(pattern.__dict__)
-            else:
-                eos.db.save(pattern)
-        eos.db.commit()
+        try:
+            imports = eos.types.DamagePattern.importPatterns(text)
+            for pattern in imports:
+                if pattern.name in lookup:
+                    match = lookup[pattern.name]
+                    match.__dict__.update(pattern.__dict__)
+                else:
+                    eos.db.save(pattern)
+            eos.db.commit()
+        except:
+            pass
 
     def exportPatterns(self):
         patterns = self.getDamagePatternList()

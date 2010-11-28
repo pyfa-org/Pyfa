@@ -20,6 +20,7 @@
 import wx
 import bitmapLoader
 from wx.lib.intctrl import IntCtrl
+from wx.lib.masked.numctrl import NumCtrl
 import service
 from util import toClipboard, fromClipboard
 ###########################################################################
@@ -103,22 +104,26 @@ class DmgPatternEditorDlg (wx.Dialog):
 
         self.bmpEM = wx.StaticBitmap(self, wx.ID_ANY, self.embitmap)
         dmgeditSizer.Add(self.bmpEM, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_RIGHT, 5)
-        self.editEm = IntCtrl(self, wx.ID_ANY, 0, wx.DefaultPosition, defSize)
+        self.editEm = NumCtrl(self, wx.ID_ANY, 0, wx.DefaultPosition, defSize)
+        self.editEm.SetFractionWidth(2)
         dmgeditSizer.Add(self.editEm, 0, wx.BOTTOM | wx.TOP | wx.ALIGN_CENTER_VERTICAL, 5)
 
         self.bmpTHERM = wx.StaticBitmap(self, wx.ID_ANY, self.thermbitmap)
         dmgeditSizer.Add(self.bmpTHERM, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_RIGHT | wx.LEFT, 25)
-        self.editThermal = IntCtrl(self, wx.ID_ANY, 0, wx.DefaultPosition, defSize, 0)
+        self.editThermal = NumCtrl(self, wx.ID_ANY, 0, wx.DefaultPosition, defSize, 0)
+        self.editThermal.SetFractionWidth(2)
         dmgeditSizer.Add(self.editThermal, 0, wx.BOTTOM | wx.TOP | wx.ALIGN_CENTER_VERTICAL, 5)
 
         self.bmpKIN = wx.StaticBitmap(self, wx.ID_ANY, self.kinbitmap)
         dmgeditSizer.Add(self.bmpKIN, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_RIGHT, 5)
-        self.editKinetic = IntCtrl(self, wx.ID_ANY, 0, wx.DefaultPosition, defSize)
+        self.editKinetic = NumCtrl(self, wx.ID_ANY, 0, wx.DefaultPosition, defSize)
+        self.editKinetic.SetFractionWidth(2)
         dmgeditSizer.Add(self.editKinetic, 0, wx.BOTTOM | wx.TOP | wx.ALIGN_CENTER_VERTICAL, 5)
 
         self.bmpEXP = wx.StaticBitmap(self, wx.ID_ANY, self.expbitmap)
         dmgeditSizer.Add(self.bmpEXP, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_RIGHT | wx.LEFT, 25)
-        self.editExplosive = IntCtrl(self, wx.ID_ANY, 0, wx.DefaultPosition, defSize, 0)
+        self.editExplosive = NumCtrl(self, wx.ID_ANY, 0, wx.DefaultPosition, defSize, 0)
+        self.editExplosive.SetFractionWidth(2)
         dmgeditSizer.Add(self.editExplosive, 0, wx.BOTTOM | wx.TOP | wx.ALIGN_CENTER_VERTICAL, 5)
 
         contentSizer.Add(dmgeditSizer, 1, wx.EXPAND | wx.ALL, 5)
@@ -135,12 +140,6 @@ class DmgPatternEditorDlg (wx.Dialog):
         footerSizer.Add(perSizer, 1,  wx.ALIGN_CENTER_VERTICAL, 5)
 
         self.totSizer = wx.BoxSizer(wx.VERTICAL)
-
-#        self.stTotal = wx.StaticText(self, wx.ID_ANY, u"LOL")
-#        self.stTotal.Wrap(-1)
-#        self.totSizer.Add(self.stTotal, 0, wx.ALIGN_RIGHT | wx.BOTTOM | wx.RIGHT, 5)
-
-#        footerSizer.Add(self.totSizer, 1, 0, 5)
 
         contentSizer.Add(footerSizer, 0, wx.EXPAND, 5)
 
@@ -214,9 +213,7 @@ class DmgPatternEditorDlg (wx.Dialog):
         else:
             ltext = format %(0, 0, 0, 0)
 
-        #ttext = "Total: % 6d" % (total)
         self.stPercentages.SetLabel(ltext)
-        #self.stTotal.SetLabel(ttext)
         self.totSizer.Layout()
 
         if event is not None:
@@ -297,7 +294,7 @@ class DmgPatternEditorDlg (wx.Dialog):
     def processRename(self, event):
         newName = self.namePicker.GetLineText(0)
         self.stPercentages.SetLabel("")
-#        self.stTotal.SetLabel("")
+
         p = self.getActivePattern()
         for pattern in self.choices:
             if pattern.name == newName and p != pattern:
