@@ -41,7 +41,6 @@ class GraphFrame(wx.Frame):
 
         i = wx.IconFromBitmap(bitmapLoader.getBitmap("graphs_small", "icons"))
         self.SetIcon(i)
-        self.SetMinSize((520,390))
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.CreateStatusBar()
 
@@ -99,6 +98,9 @@ class GraphFrame(wx.Frame):
         self.fitList.fitList.Bind(wx.EVT_LEFT_DCLICK, self.removeItem)
         self.mainFrame.Bind(gui.builtinViews.fittingView.FIT_CHANGED, self.draw)
         self.Bind(wx.EVT_CLOSE, self.close)
+
+        self.Fit()
+        self.SetMinSize(self.GetSize())
 
     def handleDrag(self, type, fitID):
         if type == "fit":
