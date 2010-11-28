@@ -66,7 +66,7 @@ class ProjectedView(d.Display):
                 sFit = service.Fit.getInstance()
                 draggedFit = sFit.getFit(fitID)
                 sFit.project(activeFit,draggedFit)
-                wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=activeFit))
+                wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=activeFit))
 
     def startDrag(self, event):
         row = event.GetIndex()
@@ -90,7 +90,7 @@ class ProjectedView(d.Display):
             sFit = service.Fit.getInstance()
             fitID = self.mainFrame.getActiveFit()
             if sFit.mergeDrones(fitID, self.get(src), dstDrone, True):
-                wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=fitID))
+                wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
 
     def moduleSort(self, module):
@@ -148,7 +148,7 @@ class ProjectedView(d.Display):
                 fitID = self.mainFrame.getActiveFit()
                 cFit = service.Fit.getInstance()
                 cFit.toggleProjected(fitID, item, "right" if event.Button == 3 else "left")
-                wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=fitID))
+                wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
             elif event.Button == 3:
                 if isinstance(item, eos.types.Drone):
                     context = ("projectedDrone",)
@@ -172,4 +172,4 @@ class ProjectedView(d.Display):
                 fitID = self.mainFrame.getActiveFit()
                 cFit = service.Fit.getInstance()
                 cFit.removeProjected(fitID, self.get(row))
-                wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=fitID))
+                wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))

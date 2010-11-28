@@ -55,7 +55,7 @@ class BoosterView(d.Display):
         fitID = self.mainFrame.getActiveFit()
         trigger = cFit.addBooster(fitID, event.itemID)
         if trigger:
-            wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=fitID))
+            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
             self.mainFrame.additionsPane.select("Boosters")
 
         event.Skip()
@@ -66,7 +66,7 @@ class BoosterView(d.Display):
             fitID = self.mainFrame.getActiveFit()
             cFit = service.Fit.getInstance()
             cFit.removeBooster(fitID, self.GetItemData(row))
-            wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=fitID))
+            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
     def click(self, event):
         event.Skip()
@@ -77,7 +77,7 @@ class BoosterView(d.Display):
                 fitID = self.mainFrame.getActiveFit()
                 cFit = service.Fit.getInstance()
                 cFit.toggleBooster(fitID, row)
-                wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=fitID))
+                wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
 
     def scheduleMenu(self, event):

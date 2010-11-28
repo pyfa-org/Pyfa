@@ -27,7 +27,7 @@ import service
 import gui.display as d
 from gui.contextMenu import ContextMenu
 import sys
-import gui.builtinViews.fittingView as fv
+import gui.globalEvents as GE
 
 CharListUpdated, CHAR_LIST_UPDATED = wx.lib.newevent.NewEvent()
 CharChanged, CHAR_CHANGED = wx.lib.newevent.NewEvent()
@@ -247,7 +247,7 @@ class CharacterEditor(wx.Frame):
         fitID = self.mainFrame.getActiveFit()
         if fitID is not None:
             cFit.clearFit(fitID)
-            wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=fitID))
+            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
         wx.Frame.Destroy(self)
 
