@@ -1,7 +1,7 @@
 from gui.contextMenu import ContextMenu
 from gui.itemStats import ItemStatsDialog
 import gui.mainFrame
-import gui.globalEvents
+import gui.globalEvents as GE
 import service
 import wx
 
