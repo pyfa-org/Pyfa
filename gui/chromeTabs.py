@@ -798,7 +798,7 @@ class PFTabsContainer(wx.Panel):
             self.DeleteTab(index)
             wx.PostEvent(self.Parent, PageClosed(index=index))
             sel = self.GetSelected()
-            if sel:
+            if sel  is not None:
                 wx.PostEvent(self.Parent, PageChanged(-1, sel))
             return True
         return False
