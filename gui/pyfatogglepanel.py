@@ -4,7 +4,7 @@
 ## pyfatogllepanel.py
 ##
 ## Author: Darriele - HomeWorld
-## Serial: 2010092801 (YYYYMMDDII)
+##
 ## Project home: http://www.evefit.org - pyfa project
 ##               http://www.evefit.org is the home for pyfa / eos  / aurora
 ## Some portions of code are based on
@@ -41,34 +41,24 @@ class TogglePanel ( wx.Panel ):
         self.forceLayout = forceLayout
         self.bkColour = self.GetBackgroundColour()
 
-#       Odd stuff :S
-#        self.SetBackgroundColour( self.bkColour )
-
-#       Create the main sizer of this panel
+        #    Create the main sizer of this panel
 
         self.mainSizer = wx.BoxSizer( wx.VERTICAL )
         self.SetSizer( self.mainSizer )
         parentSize = parent.GetMinSize()
 
-#       Create the header panel
+        #    Create the header panel
 
         self.headerPanel = wx.Panel(self)
 
-#        self.headerPanel.SetBackgroundColour( self.bkColour)
-
         self.mainSizer.Add(self.headerPanel,0,wx.EXPAND | wx.TOP|wx.BOTTOM|wx.RIGHT, 1)
 
-#       Attempt to use native treeitembitmaps - fails on some linux distros / w.mangers
-#		self.bmpExpanded = self.GetNativeTreeItemBitmap("expanded")
-#		self.bmpCollapsed =  self.GetNativeTreeItemBitmap("")
-#
-
-#       Load expanded/collapsed bitmaps from the icons folder
+        #    Load expanded/collapsed bitmaps from the icons folder
 
         self.bmpExpanded = bitmapLoader.getBitmap("down-arrow2","icons")
         self.bmpCollapsed = bitmapLoader.getBitmap("up-arrow2","icons")
 
-#       Make the bitmaps have the same color as window text
+        #    Make the bitmaps have the same color as window text
 
         sysTextColour = wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOWTEXT )
 
@@ -80,12 +70,10 @@ class TogglePanel ( wx.Panel ):
         img.Replace(0, 0, 0, sysTextColour[0], sysTextColour[1], sysTextColour[2])
         self.bmpCollapsed = wx.BitmapFromImage(img)
 
-#       Assign the bitmaps to the header static bitmap control
-
         self.headerBmp = wx.StaticBitmap(self.headerPanel )
         self.headerBmp.SetBitmap( self.bmpExpanded)
 
-#       Create the header sizer and append the static bitmap and static text controls
+        #    Create the header sizer and add static bitmap and static text controls to it
 
         headerSizer = wx.BoxSizer( wx.HORIZONTAL )
         self.headerPanel.SetSizer( headerSizer)
@@ -103,14 +91,13 @@ class TogglePanel ( wx.Panel ):
         headerSizer.Add( hlblSizer, 0, wx.RIGHT, 5 )
         headerSizer.Add( self.hcntSizer, 0, wx.RIGHT, 5)
 
-#       Set the static text font weight to BOLD
+        #    Set the static text font weight to BOLD
 
         headerFont=parent.GetFont()
         headerFont.SetWeight(wx.BOLD)
         self.headerLabel.SetFont(headerFont)
 
-#       Create the content panel and its main sizer
-
+        #    Create the content panel and its main sizer
 
         self.contentSizer = wx.BoxSizer( wx.VERTICAL )
         self.contentPanel = wx.Panel(self)
@@ -121,24 +108,14 @@ class TogglePanel ( wx.Panel ):
 
         self.Layout()
 
+        #    Connect Events
 
-
-        # Connect Events
         self.headerLabel.Bind( wx.EVT_LEFT_UP, self.toggleContent )
         self.headerBmp.Bind( wx.EVT_LEFT_UP, self.toggleContent )
         self.headerPanel.Bind( wx.EVT_LEFT_UP, self.toggleContent )
-#        self.Bind(wx.EVT_PAINT, self.OnPaint)
-#        self.headerPanel.Bind(wx.EVT_PAINT, self.OnPaint)
-#        self.contentPanel.Bind(wx.EVT_PAINT, self.OnPaint)
-
 
     def __del__( self ):
         pass
-
-#    def OnPaint(self, event):
-#        self.contentPanel.Layout()
-#        self.headerPanel.Layout()
-#        event.Skip()
 
     def AddToggleItem(self, hitem):
         hitem.Bind( wx.EVT_LEFT_UP, self.toggleContent )
@@ -148,9 +125,11 @@ class TogglePanel ( wx.Panel ):
 
     def GetHeaderPanel(self):
         return self.headerPanel
+
     def InsertItemInHeader(self, item):
         self.hcntSizer.Add(item,0,0,0)
         self.Layout()
+
     def AddSizer(self, sizer):
         self.contentSizer.Add(sizer, 0, wx.EXPAND | wx.ALL, 0)
         self.Layout()
@@ -160,22 +139,6 @@ class TogglePanel ( wx.Panel ):
 
     def SetLabel(self, label):
         self.headerLabel.SetLabel(label)
-
-    def GetNativeTreeItemBitmap(self, mode):
-
-        bitmap = wx.EmptyBitmap(24, 24)
-        dc = wx.MemoryDC()
-        dc.SelectObject(bitmap)
-        dc.SetBackground(wx.TheBrushList.FindOrCreateBrush(self.parent.GetBackgroundColour(), wx.SOLID))
-        dc.Clear()
-
-        wx.RendererNative.Get().DrawTreeItemButton(self, dc, wx.Rect(0, 0, 24, 24), wx.CONTROL_EXPANDED if mode == "expanded" else 0)
-
-        dc.Destroy()
-
-        return bitmap
-
-    # Virtual event handlers, overide them in your derived class
 
     def IsCollapsed(self):
         """ Returns ``True`` if the pane window is currently hidden. """
@@ -229,22 +192,17 @@ class TogglePanel ( wx.Panel ):
             self.parent.Fit()
 
 
-
-
-
     # Toggle the content panel (hide/show)
 
     def toggleContent( self, event ):
         self.Freeze()
         if self._toggle == 1:
-#            self.contentPanel.Hide()
             self.contentMinSize = self.contentPanel.GetSize()
             self.contentPanel.SetMinSize(wx.Size(self.contentMinSize[0],0))
             self.headerBmp.SetBitmap( self.bmpCollapsed)
 
 
         else:
-#            self.contentPanel.Show()
             self.contentPanel.SetMinSize(self.contentMinSize)
 
             self.headerBmp.SetBitmap( self.bmpExpanded)
@@ -257,23 +215,3 @@ class TogglePanel ( wx.Panel ):
             self.OnStateChange(self.GetBestSize())
         else:
             self.parent.Layout()
-
-#        self.parent.Layout()
-
-
-    # Highlight stuff, not used for now
-
-    def enterWindow( self, event ):
-
-        self.headerPanel.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHT ) )
-        self.headerPanel.Refresh()
-
-        event.Skip()
-
-    def leaveWindow( self, event ):
-
-        self.headerPanel.SetBackgroundColour( self.bkColour )
-        self.headerPanel.Refresh()
-
-        event.Skip()
-
