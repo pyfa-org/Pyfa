@@ -191,7 +191,7 @@ class FittingView(d.Display):
                 if populate is not None:
                     self.Select(firstSel)
                     if populate: self.slotsChanged()
-                    wx.PostEvent(self.mainFrame, FitChanged(fitID=self.activeFitID))
+                    wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.activeFitID))
 
         event.Skip()
 
@@ -369,7 +369,7 @@ class FittingView(d.Display):
             sFit = service.Fit.getInstance()
             fitID = self.mainFrame.getActiveFit()
             sFit.toggleModulesState(fitID, self.mods[self.GetItemData(row)], mods, "right" if event.Button == 3 else "left")
-            wx.PostEvent(self.mainFrame, FitChanged(fitID=self.mainFrame.getActiveFit()))
+            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
         else:
             event.Skip()
 
