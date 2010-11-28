@@ -23,8 +23,9 @@ import service
 from gui.pyfatogglepanel import TogglePanel
 import gui.builtinStatsViews
 from gui.contextMenu import ContextMenu
-import gui.builtinViews.fittingView as fv
+#import gui.builtinViews.fittingView as fv
 import gui.mainFrame
+import gui.globalEvents as GE
 
 class StatsPane(wx.Panel):
     DEFAULT_VIEWS = ["resourcesViewFull", "resistancesViewFull" ,"rechargeViewFull", "firepowerViewFull",
@@ -84,7 +85,7 @@ class StatsPane(wx.Panel):
 
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.mainFrame.Bind(fv.FIT_CHANGED, self.fitChanged)
+        self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
 
     def contextHandler(self, contentPanel):
         viewName = contentPanel.viewName

@@ -2,7 +2,7 @@ import wx
 import copy
 from gui import bitmapLoader
 import gui.mainFrame
-import gui.builtinViews.fittingView
+import gui.globalEvents as GE
 import time
 from gui.PFListPane import PFListPane
 import service
@@ -76,7 +76,7 @@ class ShipBrowser(wx.Panel):
         self.Bind(EVT_SB_STAGE3_SEL, self.stage3)
         self.Bind(EVT_SB_SEARCH_SEL, self.searchStage)
 
-        self.mainFrame.Bind(gui.builtinViews.fittingView.FIT_CHANGED, self.RefreshList)
+        self.mainFrame.Bind(GE.FIT_CHANGED, self.RefreshList)
 
         self.stage1(None)
 

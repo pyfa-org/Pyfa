@@ -21,6 +21,7 @@ import wx
 import bitmapLoader
 import gui.mainFrame
 import gui.graphFrame
+import gui.globalEvents as GE
 
 class MainMenuBar(wx.MenuBar):
     def __init__(self):
@@ -90,7 +91,7 @@ class MainMenuBar(wx.MenuBar):
 
 
 
-        self.mainFrame.Bind(gui.builtinViews.fittingView.FIT_CHANGED, self.fitChanged)
+        self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
 
     def fitChanged(self, event):
         enable = event.fitID is not None

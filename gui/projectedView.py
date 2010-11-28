@@ -19,7 +19,7 @@
 
 import wx
 import gui.display as d
-import gui.builtinViews.fittingView as fv
+import gui.globalEvents as GE
 import service
 import gui.droneView
 from gui.builtinViewColumns.state import State
@@ -49,7 +49,7 @@ class ProjectedView(d.Display):
 
     def __init__(self, parent):
         d.Display.__init__(self, parent, style = wx.LC_SINGLE_SEL)
-        self.mainFrame.Bind(fv.FIT_CHANGED, self.fitChanged)
+        self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
         self.Bind(wx.EVT_LEFT_DOWN, self.click)
         self.Bind(wx.EVT_RIGHT_DOWN, self.click)
         self.Bind(wx.EVT_LEFT_DCLICK, self.remove)

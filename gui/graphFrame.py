@@ -20,6 +20,7 @@
 import wx
 import bitmapLoader
 import gui.display
+import gui.globalEvents as GE
 
 try:
     import matplotlib as mpl
@@ -96,7 +97,7 @@ class GraphFrame(wx.Frame):
         self.mainSizer.Add(self.fitList, 0, wx.EXPAND)
 
         self.fitList.fitList.Bind(wx.EVT_LEFT_DCLICK, self.removeItem)
-        self.mainFrame.Bind(gui.builtinViews.fittingView.FIT_CHANGED, self.draw)
+        self.mainFrame.Bind(GE.FIT_CHANGED, self.draw)
         self.Bind(wx.EVT_CLOSE, self.close)
 
         self.Fit()
@@ -108,7 +109,7 @@ class GraphFrame(wx.Frame):
 
     def close(self, event):
         self.fitList.fitList.Unbind(wx.EVT_LEFT_DCLICK, handler=self.removeItem)
-        self.mainFrame.Unbind(gui.builtinViews.fittingView.FIT_CHANGED, handler=self.draw)
+        self.mainFrame.Unbind(GE.FIT_CHANGED, handler=self.draw)
         event.Skip()
 
     def getView(self):
