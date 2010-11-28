@@ -48,6 +48,7 @@ class FitSpawner(gui.multiSwitch.TabSpawner):
                 if page.activeFitID == event.fitID:
                     count +=1
                     self.multiSwitch.SetSelection(index)
+                    wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=event.fitID))
                     break
             except:
                 pass
