@@ -1483,6 +1483,7 @@ class FitItem(wx.Window):
 
     def selectFit(self, event=None):
         wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fitID))
+        self.Parent.RefreshList(True)
 
     def NHitTest(self, target, position, area):
         x, y = target
