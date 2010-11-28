@@ -4,6 +4,7 @@ from gui import bitmapLoader
 import gui.mainFrame
 from gui.PFListPane import PFListPane
 import service.fleet
+from util import GetPartialText
 
 from wx.lib.buttons import GenBitmapButton
 
@@ -429,12 +430,12 @@ class FleetItem(wx.Window):
 
         bdc.SetFont(self.fontBig)
         fnx,fny = bdc.GetTextExtent(self.fleetName)
-        pfn = self.GetPartialText(self.fleetName, bdc, self.copyPosX - 16 - self.padding - tx - textStart, 1)
+        pfn = GetPartialText(bdc, self.fleetName, self.copyPosX - 16 - self.padding - tx - textStart)
         bdc.DrawText(pfn, textStart, (rect.height/2 - fny) / 2)
 
         bdc.SetFont(self.fontSmall)
         fcx,fcy = bdc.GetTextExtent(fleetCount)
-        pfc = self.GetPartialText(fleetCount, bdc, self.copyPosX - 16 - self.padding - tx - textStart, 1)
+        pfc = GetPartialText(bdc, fleetCount,  self.copyPosX - 16 - self.padding - tx - textStart)
         bdc.DrawText(pfc, textStart, rect.height/2 + (rect.height/2 -fcy) / 2 )
 
         bdc.SetFont(self.fontSmall)
@@ -473,18 +474,6 @@ class FleetItem(wx.Window):
 
 
         self.AdjustFleetNameEditSize(textStart, self.copyPosX - self.editWidth - self.padding)
-
-    def GetPartialText(self, text, dc , maxWidth, minChars):
-        textwidths = dc.GetPartialTextExtents(text + "...")
-        count = 0
-
-        for i in textwidths:
-            if i <= maxWidth:
-                count +=1
-            else:
-                break
-
-        return "%s%s" % (text[:count if count > minChars else minChars], "..." if len(text) > count else  "" )
 
     def AdjustFleetNameEditSize(self, start,end):
         fnEditSize = self.tcFleetName.GetSize()
