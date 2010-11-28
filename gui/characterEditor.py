@@ -40,7 +40,7 @@ class CharacterEditor(wx.Frame):
         i = wx.IconFromBitmap(bitmapLoader.getBitmap("character_small", "icons"))
         self.SetIcon(i)
 
-        self.disableWin=wx.WindowDisabler(self)
+        self.disableWin=  wx.WindowDisabler(self)
         self.SetSizeHintsSz(wx.Size(640, 600), wx.DefaultSize)
         self.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNFACE ) )
 
@@ -126,16 +126,18 @@ class CharacterEditor(wx.Frame):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     def editingFinished(self, event):
+        del self.disableWin
         wx.PostEvent(self.mainFrame, CharListUpdated())
         self.Destroy()
-        event.Skip()
 
     def registerEvents(self):
         self.Bind(wx.EVT_CLOSE, self.closeEvent)
         self.skillTreeChoice.Bind(wx.EVT_CHOICE, self.charChanged)
 
     def closeEvent(self, event):
-        event.Skip()
+        del self.disableWin
+        wx.PostEvent(self.mainFrame, CharListUpdated())
+        self.Destroy()
 
     def restrict(self):
         self.btnRename.Enable(False)
