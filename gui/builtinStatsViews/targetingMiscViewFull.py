@@ -130,9 +130,10 @@ class TargetingMiscViewFull(StatsView):
                 elif labelName is "labelSensorStr":
                     label.SetToolTip(wx.ToolTip("Type: %s - %.1f" % (fit.scanType, value)))
                 elif labelName is "labelFullSigRadius":
-                    label.SetToolTip(wx.ToolTip("Probe Size: %.3f" % 
-                        ( float(fit.ship.getModifiedItemAttr("signatureRadius"))
-                        / fit.scanStrength) ))
+                    label.SetToolTip(wx.ToolTip("Probe Size: %.3f" % fit.probeSize))
+                elif labelName is "labelFullWarpSpeed":
+                    label.SetToolTip(wx.ToolTip("Max Warp Distance: %.1f AU" % 
+                        fit.maxWarpDistance))
                 elif fit is not None:
                     label.SetToolTip(wx.ToolTip("%.1f" % value))
                 self._cachedValues[counter] = value

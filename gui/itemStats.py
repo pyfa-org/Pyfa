@@ -569,7 +569,8 @@ class ItemAffectedBy (wx.Panel):
             if afflictorType == Ship:
                 itemIcon = self.imageList.Add(bitmapLoader.getBitmap("ship_small", "icons"))
             elif baseAfflictor.item.icon:
-                itemIcon = self.imageList.Add(bitmapLoader.getBitmap(baseAfflictor.item.icon.iconFile, "pack"))
+                bitmap = bitmapLoader.getBitmap(baseAfflictor.item.icon.iconFile, "pack")
+                itemIcon = self.imageList.Add(bitmap) if bitmap else -1
             else:
                 itemIcon = -1
 
