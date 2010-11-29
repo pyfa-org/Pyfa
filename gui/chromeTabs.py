@@ -150,10 +150,11 @@ class PFNotebook(wx.Panel):
     def GetPageCount(self):
         return len(self.pages)
 
-    def AddPage(self, tabWnd, tabTitle ="Empty Tab", tabImage = None, showClose = True):
+    def AddPage(self, tabWnd = None, tabTitle ="Empty Tab", tabImage = None, showClose = True):
         if self.activePage:
             self.activePage.Hide()
-
+        if not tabWnd:
+            tabWnd = wx.Panel(self)
         tabWnd.Reparent(self.pageContainer)
         self.pageContainer.Layout()
 
@@ -796,6 +797,9 @@ class PFTabsContainer(wx.Panel):
             index = self.GetTabIndex(tab)
             self.DeleteTab(index)
             wx.PostEvent(self.Parent, PageClosed(index=index))
+            sel = self.GetSelected()
+            if sel  is not None:
+                wx.PostEvent(self.Parent, PageChanged(-1, sel))
             return True
         return False
 
@@ -811,7 +815,7 @@ class PFTabsContainer(wx.Panel):
             if ev.isVetoed():
                 return False
 
-            self.Parent.AddPage(wx.Panel(self.Parent, size = (0,0)))
+            self.Parent.AddPage()
             wx.PostEvent(self.Parent, PageAdded())
             return True
 

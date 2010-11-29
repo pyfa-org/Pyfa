@@ -2,6 +2,7 @@ from gui.contextMenu import ContextMenu
 import gui.mainFrame
 import service
 import wx
+import gui.globalEvents as GE
 from gui import bitmapLoader
 
 class AmmoPattern(ContextMenu):
@@ -28,7 +29,7 @@ class AmmoPattern(ContextMenu):
         fit = self.mainFrame.getActiveFit()
         sFit = service.Fit.getInstance()
         sFit.setAsPattern(fit, item)
-        wx.PostEvent(self.mainFrame, gui.builtinViews.fittingView.FitChanged(fitID=fit))
+        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fit))
 
     def getBitmap(self, context, selection):
         return None

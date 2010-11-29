@@ -20,7 +20,7 @@
 import wx
 import service
 import gui.display as d
-import gui.builtinViews.fittingView as fv
+import gui.globalEvents as GE
 import gui.marketBrowser as mb
 from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
@@ -32,7 +32,7 @@ class BoosterView(d.Display):
 
     def __init__(self, parent):
         d.Display.__init__(self, parent, style=wx.LC_SINGLE_SEL)
-        self.mainFrame.Bind(fv.FIT_CHANGED, self.fitChanged)
+        self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
         self.mainFrame.Bind(mb.ITEM_SELECTED, self.addItem)
         self.Bind(wx.EVT_LEFT_DCLICK, self.removeItem)
         self.Bind(wx.EVT_LEFT_DOWN, self.click)
@@ -55,7 +55,7 @@ class BoosterView(d.Display):
         fitID = self.mainFrame.getActiveFit()
         trigger = cFit.addBooster(fitID, event.itemID)
         if trigger:
-            wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=fitID))
+            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
             self.mainFrame.additionsPane.select("Boosters")
 
         event.Skip()
@@ -66,7 +66,7 @@ class BoosterView(d.Display):
             fitID = self.mainFrame.getActiveFit()
             cFit = service.Fit.getInstance()
             cFit.removeBooster(fitID, self.GetItemData(row))
-            wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=fitID))
+            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
     def click(self, event):
         event.Skip()
@@ -77,7 +77,7 @@ class BoosterView(d.Display):
                 fitID = self.mainFrame.getActiveFit()
                 cFit = service.Fit.getInstance()
                 cFit.toggleBooster(fitID, row)
-                wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=fitID))
+                wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
 
     def scheduleMenu(self, event):

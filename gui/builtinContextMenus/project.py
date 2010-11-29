@@ -1,7 +1,7 @@
 from gui.contextMenu import ContextMenu
 import gui.mainFrame
 import service
-import gui.builtinViews.fittingView
+import gui.globalEvents as GE
 import wx
 
 class Project(ContextMenu):
@@ -22,6 +22,6 @@ class Project(ContextMenu):
         sFit = service.Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
         sFit.project(fitID, selection[0])
-        wx.PostEvent(self.mainFrame, gui.builtinViews.fittingView.FitChanged(fitID=fitID))
+        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
 Project.register()

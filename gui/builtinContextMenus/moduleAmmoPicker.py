@@ -4,7 +4,7 @@ import service
 import wx
 from gui import bitmapLoader
 from eos.types import Hardpoint
-import gui.builtinViews.fittingView
+import gui.globalEvents as GE
 
 class ModuleAmmoPicker(ContextMenu):
     def __init__(self):
@@ -179,6 +179,6 @@ class ModuleAmmoPicker(ContextMenu):
         fitID = self.mainFrame.getActiveFit()
 
         sFit.setAmmo(fitID, charge.ID if charge is not None else None, self.modules)
-        wx.PostEvent(self.mainFrame, gui.builtinViews.fittingView.FitChanged(fitID=fitID))
+        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
 ModuleAmmoPicker.register()

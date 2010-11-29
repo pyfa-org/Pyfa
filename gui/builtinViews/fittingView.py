@@ -30,7 +30,7 @@ from eos.types import Slot
 from gui.builtinViewColumns.state import State
 from gui import bitmapLoader
 
-FitChanged, FIT_CHANGED = wx.lib.newevent.NewEvent()
+import gui.globalEvents as GE
 
 #Tab spawning handler
 class FitSpawner(gui.multiSwitch.TabSpawner):
@@ -48,6 +48,7 @@ class FitSpawner(gui.multiSwitch.TabSpawner):
                 if page.activeFitID == event.fitID:
                     count +=1
                     self.multiSwitch.SetSelection(index)
+                    wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=event.fitID))
                     break
             except:
                 pass
@@ -108,7 +109,7 @@ class FittingView(d.Display):
         d.Display.__init__(self, parent, size = (0,0))
         self.Show(False)
         self.parent = parent
-        self.mainFrame.Bind(FIT_CHANGED, self.fitChanged)
+        self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
         self.mainFrame.Bind(gui.shipBrowser.EVT_FIT_RENAMED, self.fitRenamed)
         self.mainFrame.Bind(gui.shipBrowser.EVT_FIT_REMOVED, self.fitRemoved)
         self.mainFrame.Bind(gui.marketBrowser.ITEM_SELECTED, self.appendItem)
@@ -138,7 +139,7 @@ class FittingView(d.Display):
 
     def Destroy(self):
         self.parent.Unbind(gui.chromeTabs.EVT_NOTEBOOK_PAGE_CHANGED, handler=self.pageChanged)
-        self.mainFrame.Unbind(FIT_CHANGED, handler=self.fitChanged)
+        self.mainFrame.Unbind(GE.FIT_CHANGED, handler=self.fitChanged)
         self.mainFrame.Unbind(gui.shipBrowser.EVT_FIT_RENAMED, handler=self.fitRenamed)
         self.mainFrame.Unbind(gui.shipBrowser.EVT_FIT_REMOVED, handler=self.fitRemoved)
         self.mainFrame.Unbind(gui.marketBrowser.ITEM_SELECTED, handler=self.appendItem)
@@ -150,7 +151,7 @@ class FittingView(d.Display):
             fitID = self.getActiveFit()
             sFit = service.Fit.getInstance()
             sFit.switchFit(fitID)
-            wx.PostEvent(self.mainFrame, FitChanged(fitID=fitID))
+            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
         event.Skip()
 
@@ -190,7 +191,7 @@ class FittingView(d.Display):
                 if populate is not None:
                     self.Select(firstSel)
                     if populate: self.slotsChanged()
-                    wx.PostEvent(self.mainFrame, FitChanged(fitID=self.activeFitID))
+                    wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.activeFitID))
 
         event.Skip()
 
@@ -216,7 +217,7 @@ class FittingView(d.Display):
             self.slotsChanged()
             sFit = service.Fit.getInstance()
             sFit.switchFit(fitID)
-            wx.PostEvent(self.mainFrame, FitChanged(fitID=fitID))
+            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
             self.updateTab()
 
         event.Skip()
@@ -242,13 +243,13 @@ class FittingView(d.Display):
                         sel = self.GetNextSelected(sel)
 
                     cFit.setAmmo(fitID, itemID, modules)
-                    wx.PostEvent(self.mainFrame, FitChanged(fitID=fitID))
+                    wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
                 else:
                     populate = cFit.appendModule(fitID, itemID)
                     if populate:
                         self.slotsChanged()
                     if populate is not None:
-                        wx.PostEvent(self.mainFrame, FitChanged(fitID=fitID))
+                        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
         event.Skip()
 
@@ -262,7 +263,7 @@ class FittingView(d.Display):
 
                 if populate is not None:
                     if populate: self.slotsChanged()
-                    wx.PostEvent(self.mainFrame, FitChanged(fitID=self.activeFitID))
+                    wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.activeFitID))
 
         event.Skip()
 
@@ -368,7 +369,7 @@ class FittingView(d.Display):
             sFit = service.Fit.getInstance()
             fitID = self.mainFrame.getActiveFit()
             sFit.toggleModulesState(fitID, self.mods[self.GetItemData(row)], mods, "right" if event.Button == 3 else "left")
-            wx.PostEvent(self.mainFrame, FitChanged(fitID=self.mainFrame.getActiveFit()))
+            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
         else:
             event.Skip()
 

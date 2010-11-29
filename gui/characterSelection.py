@@ -21,7 +21,7 @@ import wx
 import service
 from gui import characterEditor as ce
 from gui import bitmapLoader
-from gui.builtinViews import fittingView as fv
+import gui.globalEvents as GE
 import gui.mainFrame
 
 class CharacterSelection(wx.Panel):
@@ -49,7 +49,7 @@ class CharacterSelection(wx.Panel):
         self.skillReqsStaticBitmap.SetBitmap(self.cleanSkills)
         self.Bind(wx.EVT_CHOICE, self.charChanged)
         self.mainFrame.Bind(ce.CHAR_LIST_UPDATED, self.refreshCharacterList)
-        self.mainFrame.Bind(fv.FIT_CHANGED, self.fitChanged)
+        self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
 
         panelSize = wx.Size(-1,30)
         self.SetMinSize(panelSize)
@@ -93,7 +93,7 @@ class CharacterSelection(wx.Panel):
         cFit = service.Fit.getInstance()
         cFit.changeChar(fitID, charID)
 
-        wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=fitID))
+        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
     def selectChar(self, charID):
         choice = self.charChoice

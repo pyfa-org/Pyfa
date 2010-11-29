@@ -20,11 +20,10 @@
 import wx
 import service
 import gui.display as d
-import gui.builtinViews.fittingView as fv
 import gui.marketBrowser as mb
 from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
-
+import globalEvents as GE
 class ImplantView(d.Display):
     DEFAULT_COLS = ["State",
                     "attr:implantness",
@@ -32,7 +31,7 @@ class ImplantView(d.Display):
 
     def __init__(self, parent):
         d.Display.__init__(self, parent, style=wx.LC_SINGLE_SEL)
-        self.mainFrame.Bind(fv.FIT_CHANGED, self.fitChanged)
+        self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
         self.mainFrame.Bind(mb.ITEM_SELECTED, self.addItem)
         self.Bind(wx.EVT_LEFT_DCLICK, self.removeItem)
         self.Bind(wx.EVT_KEY_UP, self.kbEvent)
@@ -51,7 +50,7 @@ class ImplantView(d.Display):
             if row != -1:
                 cFit.removeImplant(fitID, self.GetItemData(row))
                 row = self.GetNextSelected(row)
-                wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=fitID))
+                wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
     def fitChanged(self, event):
         cFit = service.Fit.getInstance()
@@ -69,7 +68,7 @@ class ImplantView(d.Display):
         fitID = self.mainFrame.getActiveFit()
         trigger = cFit.addImplant(fitID, event.itemID)
         if trigger:
-            wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=fitID))
+            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
             self.mainFrame.additionsPane.select("Implants")
 
         event.Skip()
@@ -81,7 +80,7 @@ class ImplantView(d.Display):
             cFit = service.Fit.getInstance()
             implant = self.implants[self.GetItemData(row)]
             cFit.removeImplant(fitID, self.original.index(implant))
-            wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=fitID))
+            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
     def click(self, event):
         event.Skip()
@@ -92,7 +91,7 @@ class ImplantView(d.Display):
                 fitID = self.mainFrame.getActiveFit()
                 cFit = service.Fit.getInstance()
                 cFit.toggleImplant(fitID, row)
-                wx.PostEvent(self.mainFrame, fv.FitChanged(fitID=fitID))
+                wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
     def scheduleMenu(self, event):
         event.Skip()

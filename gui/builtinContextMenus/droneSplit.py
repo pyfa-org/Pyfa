@@ -1,7 +1,7 @@
 from gui.contextMenu import ContextMenu
 from gui.itemStats import ItemStatsDialog
 import gui.mainFrame
-import gui.builtinViews.fittingView
+import gui.globalEvents as GE
 import service
 import wx
 
@@ -54,5 +54,5 @@ class DroneSpinner(wx.Dialog):
             sFit.splitDroneStack(fitID, self.drone, self.spinner.GetValue())
         else:
             sFit.splitProjectedDroneStack(fitID, self.drone, self.spinner.GetValue())
-        wx.PostEvent(mainFrame, gui.builtinViews.fittingView.FitChanged(fitID=fitID))
+        wx.PostEvent(mainFrame, GE.FitChanged(fitID=fitID))
         event.Skip()
