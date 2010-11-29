@@ -120,7 +120,7 @@ class TargetingMiscViewFull(StatsView):
                          ("Destroyer", 83), ("Cruiser", 130),
                          ("Battlecruiser", 265),  ("Battleship",420)]
                 if labelName is "labelScanRes":
-                    lockTime = "%s\n" % "Lock Times".center(26)
+                    lockTime = "%s\n" % "Lock Times".center(30)
                     for size, radius in RADII:
                         left = "%.1fs" % fit.calculateLockTime(radius)
                         right = "%s [%d]" % (size, radius)
@@ -130,10 +130,9 @@ class TargetingMiscViewFull(StatsView):
                 elif labelName is "labelSensorStr":
                     label.SetToolTip(wx.ToolTip("Type: %s - %.1f" % (fit.scanType, value)))
                 elif labelName is "labelFullSigRadius":
-                    pass
-                    label.SetToolTip(wx.ToolTip("Probe Size: %.1f" % 
+                    label.SetToolTip(wx.ToolTip("Probe Size: %.3f" % 
                         ( float(fit.ship.getModifiedItemAttr("signatureRadius"))
-                        / fit.ship.getModifiedItemAttr("scanResolution")) ))
+                        / fit.scanStrength) ))
                 elif fit is not None:
                     label.SetToolTip(wx.ToolTip("%.1f" % value))
                 self._cachedValues[counter] = value
