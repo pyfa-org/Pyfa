@@ -19,6 +19,7 @@
 
 import wx
 import service
+import config
 from gui import bitmapLoader
 from gui.mainMenuBar import MainMenuBar
 from gui.additionsPane import AdditionsPane
@@ -33,13 +34,17 @@ from gui.patternEditor import DmgPatternEditorDlg
 from gui.preferenceDialog import PreferenceDialog
 from gui.graphFrame import GraphFrame
 from gui.copySelectDialog import CopySelectDialog
-from gui.fleetBrowser import FleetBrowser
 import aboutData
 from wx._core import PyDeadObjectError
 import os.path
 import gui.chromeTabs
 from util import toClipboard, fromClipboard
 from builtinViews import *
+
+#===============================================================================
+# DISABLED for Incursion release
+# from gui.fleetBrowser import FleetBrowser
+#===============================================================================
 
 #dummy panel no paint no erasebk
 class PFPanel(wx.Panel):
@@ -99,8 +104,11 @@ class MainFrame(wx.Frame):
         self.shipBrowser = ShipBrowser(self.notebookBrowsers)
         self.notebookBrowsers.AddPage(self.shipBrowser, "Ships", showClose = False)
 
-        self.fleetBrowser = FleetBrowser(self.notebookBrowsers)
-        self.notebookBrowsers.AddPage(self.fleetBrowser, "Fleets", showClose = False)
+        #=======================================================================
+        # DISABLED for Incursion release
+        # self.fleetBrowser = FleetBrowser(self.notebookBrowsers)
+        # self.notebookBrowsers.AddPage(self.fleetBrowser, "Fleets", showClose = False)
+        #=======================================================================
 
         self.notebookBrowsers.SetSelection(1)
 
@@ -257,7 +265,8 @@ class MainFrame(wx.Frame):
         # Quit
         self.Bind(wx.EVT_MENU, self.ExitApp, id=wx.ID_EXIT)
         # Widgets Inspector
-        self.Bind(wx.EVT_MENU, self.openWXInspectTool, id=911)
+        if config.debug:
+            self.Bind(wx.EVT_MENU, self.openWXInspectTool, id=911)
         # About
         self.Bind(wx.EVT_MENU, self.ShowAboutBox, id=wx.ID_ABOUT)
         # Char editor

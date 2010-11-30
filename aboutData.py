@@ -17,7 +17,7 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 #===============================================================================
 
-versionString = "1.0 beta"
+versionString = "1.0 Stable RC1 - INCURSION"
 license = "pyfa is released under GNU GPL"
 licenseLocation = "gpl.txt"
 developers = ("cncfanatics" , "DarkPhoenix", "Darriele")
