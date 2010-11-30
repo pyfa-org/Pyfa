@@ -582,6 +582,9 @@ class APIView (wx.Panel):
             event.Skip()
 
     def fetchCharList(self, event):
+        if self.inputID.GetLineText(0) == "" or self.inputKey.GetLineText(0) == "":
+            return
+
         cChar = service.Character.getInstance()
         list = cChar.charList(self.Parent.Parent.getActiveCharacter(), self.inputID.GetLineText(0), self.inputKey.GetLineText(0))
         self.charList.DeleteAllItems()
