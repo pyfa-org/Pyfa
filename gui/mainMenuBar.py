@@ -18,6 +18,7 @@
 #===============================================================================
 
 import wx
+import config
 import bitmapLoader
 import gui.mainFrame
 import gui.graphFrame
@@ -87,7 +88,8 @@ class MainMenuBar(wx.MenuBar):
         self.Append(helpMenu, "&Help")
         helpMenu.Append(wx.ID_ABOUT)
         #helpMenu.Append(wx.ID_HELP, "User manual", "User manual")
-        helpMenu.Append(911,"Open Widgets Inspect tool", "Open Widgets Inspect tool")
+        if config.debug:
+            helpMenu.Append(911,"Open Widgets Inspect tool", "Open Widgets Inspect tool")
 
 
 

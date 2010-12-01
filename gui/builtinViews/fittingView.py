@@ -29,6 +29,7 @@ import gui.multiSwitch
 from eos.types import Slot
 from gui.builtinViewColumns.state import State
 from gui import bitmapLoader
+import gui.builtinViews.emptyView
 
 import gui.globalEvents as GE
 
@@ -64,7 +65,7 @@ class FitSpawner(gui.multiSwitch.TabSpawner):
                     index = self.multiSwitch.GetPageIndex(page)
                     self.multiSwitch.SetSelection(index)
                     return
-                elif isinstance(page, gui.multiSwitch.BlankPage):
+                elif isinstance(page, gui.builtinViews.emptyView.BlankPage):
                     view = FittingView(self.multiSwitch)
                     self.multiSwitch.ReplaceActivePage(view)
                     view.handleDrag(type, fitID)

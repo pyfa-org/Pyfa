@@ -504,7 +504,6 @@ class APIView (wx.Panel):
         wx.Panel.__init__ (self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.Size(500, 300), style=wx.TAB_TRAVERSAL)
         self.Parent.Parent.Bind(CHAR_CHANGED, self.charChanged)
         pmainSizer = wx.BoxSizer(wx.VERTICAL)
-        self.removing = False
 
         fgSizerInput = wx.FlexGridSizer(3, 2, 0, 0)
         fgSizerInput.AddGrowableCol(1)
@@ -516,7 +515,6 @@ class APIView (wx.Panel):
         fgSizerInput.Add(self.m_staticIDText, 0, wx.ALL | wx.ALIGN_RIGHT | wx.ALIGN_CENTER_VERTICAL, 5)
 
         self.inputID = wx.TextCtrl(self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0)
-        self.inputID.Bind(wx.EVT_TEXT, self.removeStyle)
         fgSizerInput.Add(self.inputID, 1, wx.ALL | wx.EXPAND, 5)
 
         self.m_staticKeyText = wx.StaticText(self, wx.ID_ANY, u"API key:", wx.DefaultPosition, wx.DefaultSize, 0)
@@ -524,7 +522,6 @@ class APIView (wx.Panel):
         fgSizerInput.Add(self.m_staticKeyText, 0, wx.ALL | wx.ALIGN_RIGHT | wx.ALIGN_CENTER_VERTICAL, 5)
 
         self.inputKey = wx.TextCtrl(self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0)
-        self.inputKey.Bind(wx.EVT_TEXT, self.removeStyle)
         fgSizerInput.Add(self.inputKey, 0, wx.ALL | wx.EXPAND, 5)
 
         pmainSizer.Add(fgSizerInput, 0, wx.EXPAND, 5)
@@ -560,19 +557,6 @@ class APIView (wx.Panel):
         self.Layout()
         self.charChanged(None)
 
-    def removeStyle(self, event):
-        if self.removing:
-            return
-
-        self.removing = True
-        object = event.GetEventObject()
-        value = object.GetLineText(0)
-        object.Clear()
-        object.ChangeValue(value)
-        object.SetModified(True)
-        self.removing = False
-        event.Skip()
-
     def charChanged(self, event):
         cChar = service.Character.getInstance()
         ID, key = cChar.getApiDetails(self.Parent.Parent.getActiveCharacter())
@@ -582,6 +566,9 @@ class APIView (wx.Panel):
             event.Skip()
 
     def fetchCharList(self, event):
+        if self.inputID.GetLineText(0) == "" or self.inputKey.GetLineText(0) == "":
+            return
+
         cChar = service.Character.getInstance()
         list = cChar.charList(self.Parent.Parent.getActiveCharacter(), self.inputID.GetLineText(0), self.inputKey.GetLineText(0))
         self.charList.DeleteAllItems()
