@@ -137,19 +137,22 @@ class PriceViewFull(StatsView):
                 self._timer.Stop()
 
             self.labelEMStatus.SetLabel("")
-            modPrice = sum(map(lambda p: p.price or 0, prices[1:]))
-            if self._cachedShip != shipPrice:
-                self.labelPriceShip.SetLabel("%s ISK" % formatAmount(shipPrice, 3, 3, 9))
-                self.labelPriceShip.SetToolTip(wx.ToolTip("%.2f ISK" % shipPrice))
-                self._cachedShip = shipPrice
-            if self._cachedFittings != modPrice:
-                self.labelPriceFittings.SetLabel("%s ISK" % formatAmount(modPrice, 3, 3, 9))
-                self.labelPriceFittings.SetToolTip(wx.ToolTip("%.2f ISK" % modPrice))
-                self._cachedFittings = modPrice
-            if self._cachedTotal != (shipPrice+modPrice):
-                self.labelPriceTotal.SetLabel("%s ISK" % formatAmount(shipPrice + modPrice, 3, 3, 9))
-                self.labelPriceTotal.SetToolTip(wx.ToolTip("%.2f ISK" % (shipPrice + modPrice)))
-                self._cachedTotal = shipPrice + modPrice
-            self.panel.Layout()
+
+        if shipPrice == None:
+            shipPrice = 0
+        modPrice = sum(map(lambda p: p.price or 0, prices[1:]))
+        if self._cachedShip != shipPrice:
+            self.labelPriceShip.SetLabel("%s ISK" % formatAmount(shipPrice, 3, 3, 9))
+            self.labelPriceShip.SetToolTip(wx.ToolTip("%.2f ISK" % shipPrice))
+            self._cachedShip = shipPrice
+        if self._cachedFittings != modPrice:
+            self.labelPriceFittings.SetLabel("%s ISK" % formatAmount(modPrice, 3, 3, 9))
+            self.labelPriceFittings.SetToolTip(wx.ToolTip("%.2f ISK" % modPrice))
+            self._cachedFittings = modPrice
+        if self._cachedTotal != (shipPrice+modPrice):
+            self.labelPriceTotal.SetLabel("%s ISK" % formatAmount(shipPrice + modPrice, 3, 3, 9))
+            self.labelPriceTotal.SetToolTip(wx.ToolTip("%.2f ISK" % (shipPrice + modPrice)))
+            self._cachedTotal = shipPrice + modPrice
+        self.panel.Layout()
 
 PriceViewFull.register()
