@@ -211,12 +211,17 @@ class Fit(object):
         if isinstance(thing, eos.types.Fit):
             fit.projectedFits.append(thing)
         elif thing.category.name == "Drone":
-            d = fit.projectedDrones.find(thing)
-            if d is None or d.amountActive == d.amount or d.amount >= 5:
-                d = eos.types.Drone(thing)
-                fit.projectedDrones.append(d)
+            drone = None
+            for d in fit.projectedDrones.find(thing):
+                if d is None or d.amountActive == d.amount or d.amount >= 5:
+                    drone = d
+                    break
+                
+            if drone is None:
+                drone = eos.types.Drone(thing)
+                fit.projectedDrones.append(drone)
 
-            d.amount += 1
+            drone.amount += 1
         else:
             module = eos.types.Module(thing)
             module.state = State.ACTIVE
