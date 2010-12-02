@@ -826,7 +826,6 @@ class ShipItem(wx.Window):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
         self._itemData = itemData
-        self.ignoreFurtherFitNameEdit = False
 
         self.shipRace = itemData
 
@@ -901,7 +900,6 @@ class ShipItem(wx.Window):
         if self.highlighted == 1:
             self.editWasShown = 1
         self.newToggleBmp = self.newBmp
-        self.ignoreFurtherFitNameEdit = True
         self.Refresh()
 
     def editCheckEsc(self, event):
@@ -930,7 +928,6 @@ class ShipItem(wx.Window):
         x, y = pos
         if self.NHitTest((self.editPosX, self.editPosY), pos, (16, 16)):
             if self.editWasShown == 1:
-                self.ignoreFurtherFitNameEdit = True
                 self.createNewFit()
                 return
             else:
@@ -974,8 +971,6 @@ class ShipItem(wx.Window):
         fitID = sFit.newFit(self.shipID, self.tcFitName.GetValue())
         self.tcFitName.Show(False)
         self.editWasShown = 0
-        if not self.ignoreFurtherFitNameEdit:
-            self.shipBrowser.fitIDMustEditName = fitID
         wx.PostEvent(self.shipBrowser,Stage3Selected(shipID=self.shipID, back=False))
         wx.PostEvent(self.mainFrame, FitSelected(fitID=fitID))
 
