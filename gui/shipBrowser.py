@@ -21,7 +21,7 @@ SearchSelected, EVT_SB_SEARCH_SEL = wx.lib.newevent.NewEvent()
 
 
 class PFWidgetsContainer(PFListPane):
-    def __init(self,parent):
+    def __init__(self,parent):
         PFListPane.__init__(self,parent)
 
     def IsWidgetSelectedByContext(self, widget):
