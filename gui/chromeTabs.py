@@ -986,10 +986,13 @@ class PFTabsContainer(wx.Panel):
         # additionally somehow the colors get changed when drawing (all RGB values are off by 4)
         # TODO
         if 'wxMac' in wx.PlatformInfo:
-            color = wx.Colour(232, 232, 232)
+            color = wx.Colour(0, 0, 0)
+            brush = wx.Brush(color)
+            brush.MacSetTheme(kThemeBrushDialogBackgroundActive)
         else:
             color = wx.SystemSettings_GetColour(wx.SYS_COLOUR_3DFACE)
-        mdc.SetBackground (wx.Brush(color))
+            brush = wx.Brush(color)
+        mdc.SetBackground (brush)
 
 #        mdc.SetBackground (wx.Brush((66,113,202)))
         mdc.Clear()
