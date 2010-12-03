@@ -107,7 +107,7 @@ class FittingView(d.Display):
                     ]
 
     def __init__(self, parent):
-        d.Display.__init__(self, parent, size = (0,0))
+        d.Display.__init__(self, parent, size = (0,0), style =  wx.BORDER_NONE)
         self.Show(False)
         self.parent = parent
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)

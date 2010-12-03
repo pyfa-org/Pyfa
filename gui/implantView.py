@@ -30,7 +30,7 @@ class ImplantView(d.Display):
                     "Base Name"]
 
     def __init__(self, parent):
-        d.Display.__init__(self, parent, style=wx.LC_SINGLE_SEL)
+        d.Display.__init__(self, parent, style=wx.LC_SINGLE_SEL | wx.BORDER_NONE)
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
         self.mainFrame.Bind(mb.ITEM_SELECTED, self.addItem)
         self.Bind(wx.EVT_LEFT_DCLICK, self.removeItem)
