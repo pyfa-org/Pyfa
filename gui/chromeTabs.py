@@ -417,9 +417,8 @@ class PFTabRenderer:
 
     def InitColors(self):
         self.tabColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
-        self.leftColor = self.CalculateColor(self.tabColor, 0x1F)
-        self.rightColor = self.CalculateColor(self.tabColor, 0x0F)
-        self.gradientStartColor = self.CalculateColor(self.tabColor, 0x17 if self.selected else 0x20)
+        self.leftColor = self.CalculateColor(self.tabColor, 0x60)
+        self.rightColor = self.CalculateColor(self.tabColor, 0x30)
 
     def CalculateColor(self, color, delta):
         bkR ,bkG , bkB = color
@@ -493,7 +492,7 @@ class PFTabRenderer:
             if self.selected:
                 mdc.SetTextForeground(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT))
             else:
-                color = self.CalculateColor(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT), 0x2F)
+                color = self.CalculateColor(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT), 0x20)
                 mdc.SetTextForeground(color)
 
             mdc.DrawText(text, textStart + self.padding , height / 2 - ty / 2)
