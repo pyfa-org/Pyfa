@@ -417,8 +417,8 @@ class PFTabRenderer:
 
     def InitColors(self):
         self.tabColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
-        self.leftColor = self.CalculateColor(self.tabColor, 0x60)
-        self.rightColor = self.CalculateColor(self.tabColor, 0x30)
+        self.leftColor = self.CalculateColor(self.tabColor, 0x40)
+        self.rightColor = self.CalculateColor(self.tabColor, 0x20)
 
     def CalculateColor(self, color, delta):
         bkR ,bkG , bkB = color
@@ -1018,7 +1018,7 @@ class PFTabsContainer(wx.Panel):
 #                if not 'wxMac' in wx.PlatformInfo:
                 mdc.DrawBitmap(self.efxBmp, posx, posy, True )
                 img = tab.Render().ConvertToImage()
-                img = img.AdjustChannels(1, 1, 1, 0.8)
+                img = img.AdjustChannels(1, 1, 1, 0.9)
                 bmp = wx.BitmapFromImage(img)
                 mdc.DrawBitmap(bmp, posx, posy, True)
             else:
