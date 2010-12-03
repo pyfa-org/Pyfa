@@ -470,7 +470,10 @@ class ImplantsTreeView (wx.Panel):
         if text == "itemdummy":
             cMarket = service.Market.getInstance()
             data, usedMetas = cMarket.getVariations(tree.GetPyData(root))
-            for id, name, iconFile in data:
+            for item in data:
+                id = item.ID
+                name = item.name
+                iconFile = item.icon.iconFile
                 iconId = self.addMarketViewImage(iconFile)
                 tree.AppendItem(root, name, iconId, data=wx.TreeItemData(id))
 
