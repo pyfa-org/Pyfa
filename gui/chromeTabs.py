@@ -485,19 +485,14 @@ class PFTabRenderer:
             else:
                 break
         if count > 0:
-#            text = "%s%s" % (text[:count],".." if len(text)>count else "")
             text = "%s" % text[:count]
 
             tx,ty = mdc.GetTextExtent(text)
-            if self.selected:
-                mdc.SetTextForeground(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT))
-            else:
-                color = self.CalculateColor(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT), 0x20)
-                mdc.SetTextForeground(color)
+
+            mdc.SetTextForeground(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT))
 
             mdc.DrawText(text, textStart + self.padding , height / 2 - ty / 2)
 
-#        mdc.DestroyClippingRegion()
         if self.closeButton:
             if self.closeBtnHovering:
                 mdc.DrawBitmap(self.ctabCloseBmp,self.contentWidth+self.leftWidth - self.ctabCloseBmp.GetWidth()/2,(height - self.ctabCloseBmp.GetHeight())/2)
