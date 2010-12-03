@@ -579,7 +579,7 @@ class APIView (wx.Panel):
         for charName in list:
             self.charList.InsertStringItem(sys.maxint, charName)
 
-        self.charList.SetColumnWidth(0, 614)
+        self.charList.SetColumnWidth(0, wx.LIST_AUTOSIZE_USEHEADER)
         self.charList.Show()
         self.btnFetchCharList.Hide()
         self.btnFetchSkills.Show()
