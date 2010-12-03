@@ -26,6 +26,7 @@ from gui import bitmapLoader
 import service
 import gui.display as d
 from gui.contextMenu import ContextMenu
+from wx.lib.buttons import GenBitmapButton
 import sys
 import gui.globalEvents as GE
 
@@ -397,9 +398,9 @@ class ImplantsTreeView (wx.Panel):
         buttonSizer = wx.BoxSizer(wx.VERTICAL)
         pmainSizer.Add(buttonSizer, 0, wx.TOP, 5)
 
-        self.btnAdd = wx.BitmapButton(self, wx.ID_ADD, bitmapLoader.getBitmap("add_small", "icons"))
+        self.btnAdd = GenBitmapButton(self, wx.ID_ADD, bitmapLoader.getBitmap("fit_add_small", "icons"), style = wx.BORDER_NONE)
         buttonSizer.Add(self.btnAdd, 0)
-        self.btnRemove = wx.BitmapButton(self, wx.ID_REMOVE, wx.ArtProvider_GetBitmap(wx.ART_DELETE))
+        self.btnRemove = GenBitmapButton(self, wx.ID_REMOVE, bitmapLoader.getBitmap("fit_delete_small", "icons"), style = wx.BORDER_NONE)
         buttonSizer.Add(self.btnRemove, 0)
 
         self.pluggedImplantsTree = AvailableImplantsView(self, style=wx.LC_SINGLE_SEL)
