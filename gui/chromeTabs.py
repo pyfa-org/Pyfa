@@ -667,7 +667,13 @@ class PFTabsContainer(wx.Panel):
         self.Bind(wx.EVT_LEFT_UP, self.OnLeftUp)
         self.Bind(wx.EVT_MOTION, self.OnMotion)
         self.Bind(wx.EVT_SIZE, self.OnSize)
+        self.Bind(wx.EVT_SYS_COLOUR_CHANGED, self.OnSysColourChanged)
         self.tabShadow = PFTabRenderer((self.tabMinWidth, self.height + 1), inclination = self.inclination)
+
+    def OnSysColourChanged(self, event):
+        for tab in self.tabs:
+            tab.InitTab()
+        self.Refresh()
 
     def OnSize(self, event):
         self.UpdateSize()
