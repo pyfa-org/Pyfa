@@ -997,7 +997,8 @@ class PFTabsContainer(wx.Panel):
         selected = None
         selpos = 0
         selWidth = selHeight = 0
-
+        selColor = self.CalculateColor(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW), 0x66)
+        startColor = self.leftColor = self.CalculateColor(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW), 0x50)
         tabsWidth = 0
 
 
@@ -1014,13 +1015,17 @@ class PFTabsContainer(wx.Panel):
             width = tab.tabWidth - 6
             posx, posy  = tab.GetPosition()
             if not tab.IsSelected():
+#                if not 'wxMac' in wx.PlatformInfo:
                 mdc.DrawBitmap(self.efxBmp, posx, posy, True )
-                bmp = tab.Render()
+                img = tab.Render().ConvertToImage()
+                img = img.AdjustChannels(1, 1, 1, 0.8)
+                bmp = wx.BitmapFromImage(img)
                 mdc.DrawBitmap(bmp, posx, posy, True)
             else:
                 selected = tab
         if selected:
             posx, posy  = selected.GetPosition()
+#            if not 'wxMac' in wx.PlatformInfo:
             mdc.DrawBitmap(self.efxBmp, posx, posy, True)
             bmp = selected.Render()
             if self.dragging:
@@ -1038,6 +1043,8 @@ class PFTabsContainer(wx.Panel):
             offset = 0
         r1 = wx.Rect(0,self.containerHeight -1,selpos,1)
         r2 = wx.Rect(0, self.containerHeight -1 , self.width,1)
+#        mdc.GradientFillLinear(r1, startColor, selColor, wx.EAST)
+#        mdc.GradientFillLinear(r2, selColor, startColor, wx.EAST)
 
     def OnErase(self, event):
         pass
