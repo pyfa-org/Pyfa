@@ -980,14 +980,10 @@ class PFTabsContainer(wx.Panel):
         mdc.SelectObject(canvas)
 
         selected = 0
-        # TODO
-        # This is a hack because on mac os the system colour constants are somehow wrong,
-        # additionally somehow the colors get changed when drawing (all RGB values are off by 4)
-        # TODO
-        if 'wxMac' in wx.PlatformInfo:
-            color = wx.Colour(232, 232, 232)
-        else:
-            color = wx.SystemSettings_GetColour(wx.SYS_COLOUR_3DFACE)
+
+        vattr = self.GetDefaultAttributes()
+        color = vattr.colBg
+
         mdc.SetBackground (wx.Brush(color))
 
 #        mdc.SetBackground (wx.Brush((66,113,202)))
