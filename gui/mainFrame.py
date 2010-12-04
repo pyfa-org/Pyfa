@@ -64,14 +64,14 @@ class MainFrame(wx.Frame):
         wx.Frame.__init__(self, None, wx.ID_ANY, title="pyfa - Python Fitting Assistant")
         MainFrame.__instance = self
 
+        self.LoadMainFrameAttribs()
+
         if 'wxMSW' in wx.PlatformInfo:
             self.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNFACE ) )
 
         i = wx.IconFromBitmap(bitmapLoader.getBitmap("pyfa", "icons"))
         self.SetIcon(i)
 
-        self.SetMinSize((1000, 700))
-        self.SetSize((1000, 700))
 
         mainSizer = wx.BoxSizer(wx.HORIZONTAL)
 
@@ -133,9 +133,33 @@ class MainFrame(wx.Frame):
         #self.SetToolBar(MainToolBar(self))
 
         self.registerMenu()
-
+        self.Bind(wx.EVT_CLOSE, self.OnClose)
         #Show ourselves
         self.Show()
+
+    def LoadMainFrameAttribs(self):
+
+        mainFrameDefaultAttribs = {"wnd_x" : 10, "wnd_y" : 10, "wnd_width":1000, "wnd_height": 700}
+        self.mainFrameAttribs = service.SettingsProvider.getInstance().getSettings("pyfaMainWindowAttribs", mainFrameDefaultAttribs)
+
+        width = self.mainFrameAttribs["wnd_width"]
+        height = self.mainFrameAttribs["wnd_height"]
+
+        x = self.mainFrameAttribs["wnd_x"]
+        y = self.mainFrameAttribs["wnd_y"]
+
+        self.SetPosition((x, y))
+        self.SetSize((width, height))
+        self.SetMinSize((mainFrameDefaultAttribs["wnd_width"], mainFrameDefaultAttribs["wnd_height"]))
+
+    def UpdateMainFrameAttribs(self):
+        width,height = self.GetSize()
+        x,y = self.GetPosition()
+
+        self.mainFrameAttribs["wnd_width"] = width
+        self.mainFrameAttribs["wnd_height"] = height
+        self.mainFrameAttribs["wnd_x"] = x
+        self.mainFrameAttribs["wnd_y"] = y
 
     def SetActiveStatsWindow(self, wnd):
         self.activeStatsWnd = wnd
@@ -171,12 +195,17 @@ class MainFrame(wx.Frame):
         if page is not None:
             ms.DeletePage(page)
 
+    def OnClose(self, event):
+        self.UpdateMainFrameAttribs()
+        service.SettingsProvider.getInstance().saveAll()
+        event.Skip()
+
     def ExitApp(self, evt):
-        try:
-            service.SettingsProvider.getInstance().saveAll()
-            self.Close()
-        except PyDeadObjectError:
-            pass
+#        try:
+        self.Close()
+#        except PyDeadObjectError:
+#            pass
+        event.Skip()
 
     def ShowAboutBox(self, evt):
         info = wx.AboutDialogInfo()

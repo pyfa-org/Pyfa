@@ -40,11 +40,16 @@ class SettingsProvider():
         s = self.settings.get(area)
         if s is None:
             p = os.path.join(self.BASE_PATH, area)
-            if not os.path.exists(p):
-                return
 
-            f = open(p, "rb")
-            info = cPickle.load(f)
+            if not os.path.exists(p):
+                info = {}
+                if defaults:
+                    for item in defaults:
+                        info[item] = defaults[item]
+            else:
+                f = open(p, "rb")
+                info = cPickle.load(f)
+
             self.settings[area] = s = Settings(p, info)
 
         return s
