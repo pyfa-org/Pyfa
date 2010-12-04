@@ -40,11 +40,7 @@ import os.path
 import gui.chromeTabs
 from util import toClipboard, fromClipboard
 from builtinViews import *
-
-#===============================================================================
-# DISABLED for Incursion release
-# from gui.fleetBrowser import FleetBrowser
-#===============================================================================
+from gui.fleetBrowser import FleetBrowser
 
 #dummy panel no paint no erasebk
 class PFPanel(wx.Panel):
@@ -104,11 +100,8 @@ class MainFrame(wx.Frame):
         self.shipBrowser = ShipBrowser(self.notebookBrowsers)
         self.notebookBrowsers.AddPage(self.shipBrowser, "Ships", showClose = False)
 
-        #=======================================================================
-        # DISABLED for Incursion release
-        # self.fleetBrowser = FleetBrowser(self.notebookBrowsers)
-        # self.notebookBrowsers.AddPage(self.fleetBrowser, "Fleets", showClose = False)
-        #=======================================================================
+        self.fleetBrowser = FleetBrowser(self.notebookBrowsers)
+        self.notebookBrowsers.AddPage(self.fleetBrowser, "Fleets", showClose = False)
 
         self.notebookBrowsers.SetSelection(1)
 
