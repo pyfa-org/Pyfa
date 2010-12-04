@@ -112,7 +112,7 @@ class MainFrame(wx.Frame):
         cstatsSizer = wx.BoxSizer(wx.VERTICAL)
 
         self.charSelection = CharacterSelection(self)
-        cstatsSizer.Add(self.charSelection, 0, wx.EXPAND | wx.TOP | wx.RIGHT | wx.LEFT , 3)
+        cstatsSizer.Add(self.charSelection, 0, wx.EXPAND)
 
         self.statsPane = StatsPane(self)
         cstatsSizer.Add(self.statsPane, 0, wx.EXPAND)
