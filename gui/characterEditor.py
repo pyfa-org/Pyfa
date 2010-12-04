@@ -149,6 +149,7 @@ class CharacterEditor(wx.Frame):
         self.aview.btnFetchCharList.Show()
         self.aview.btnFetchSkills.Hide()
         self.aview.charList.Hide()
+        self.aview.stStatus.SetLabel("")
         self.aview.Layout()
 
     def unrestrict(self):
@@ -160,6 +161,7 @@ class CharacterEditor(wx.Frame):
         self.aview.btnFetchCharList.Show()
         self.aview.btnFetchSkills.Hide()
         self.aview.charList.Hide()
+        self.aview.stStatus.SetLabel("")
         self.aview.Layout()
 
     def charChanged(self, event):
@@ -608,5 +610,9 @@ class APIView (wx.Panel):
         item = self.charList.GetNextItem(-1, wx.LIST_NEXT_ALL, wx.LIST_STATE_SELECTED)
         charName = self.charList.GetItemText(item)
         if charName:
-            cChar = service.Character.getInstance()
-            cChar.apiFetch(self.Parent.Parent.getActiveCharacter(), charName)
+            try:
+                cChar = service.Character.getInstance()
+                cChar.apiFetch(self.Parent.Parent.getActiveCharacter(), charName)
+                self.stStatus.SetLabel("Successfully fetched %s\'s skills from EVE API." % charName)
+            except:
+                self.stStatus.SetLabel("Unable to retrieve %s\'s skills!" % charName)
