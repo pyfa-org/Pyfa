@@ -313,6 +313,7 @@ class DmgPatternEditorDlg (wx.Dialog):
         self.ccDmgPattern.Insert(newName, sel)
         self.ccDmgPattern.SetSelection(sel)
         self.ValuesUpdated()
+        self.unrestrict()
 
     def copyPattern(self,event):
         cDP = service.DamagePattern.getInstance()
