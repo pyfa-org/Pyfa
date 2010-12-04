@@ -559,6 +559,8 @@ class APIView (wx.Panel):
 
         self.hlEveAPI = wx.HyperlinkCtrl( self, wx.ID_ANY, u"http://www.eveonline.com/api/default.asp", u"http://www.eveonline.com/api/default.asp", wx.DefaultPosition, wx.DefaultSize, wx.HL_DEFAULT_STYLE )
         pmainSizer.Add( self.hlEveAPI, 0, wx.ALL, 5 )
+        self.stStatus = wx.StaticText(self,  wx.ID_ANY, wx.EmptyString)
+        pmainSizer.Add(self.stStatus, 0, wx.ALL, 5)
         self.SetSizer(pmainSizer)
         self.Layout()
         self.charChanged(None)
@@ -572,12 +574,18 @@ class APIView (wx.Panel):
             event.Skip()
 
     def fetchCharList(self, event):
+        self.stStatus.SetLabel("")
         if self.inputID.GetLineText(0) == "" or self.inputKey.GetLineText(0) == "":
+            self.stStatus.SetLabel("Invalid API ID or KEY!")
             return
 
         cChar = service.Character.getInstance()
         list = cChar.charList(self.Parent.Parent.getActiveCharacter(), self.inputID.GetLineText(0), self.inputKey.GetLineText(0))
         self.charList.DeleteAllItems()
+
+        if not list:
+            self.stStatus.SetLabel("Unable to fetch characters list from EVE API!")
+            return
 
         for charName in list:
             self.charList.InsertStringItem(sys.maxint, charName)
