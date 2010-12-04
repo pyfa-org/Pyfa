@@ -54,7 +54,7 @@ class CharacterSelection(wx.Panel):
         panelSize = wx.Size(-1,30)
         self.SetMinSize(panelSize)
 
-        self.Enable(False)
+        self.charChoice.Enable(False)
 
     def getActiveCharacter(self):
         selection = self.charChoice.GetCurrentSelection()
@@ -107,7 +107,7 @@ class CharacterSelection(wx.Panel):
         return False
 
     def fitChanged(self, event):
-        self.Enable(event.fitID != None)
+        self.charChoice.Enable(event.fitID != None)
 
         choice = self.charChoice
         cFit = service.Fit.getInstance()
@@ -116,6 +116,7 @@ class CharacterSelection(wx.Panel):
         newCharID = fit.character.ID if fit is not None else None
         if event.fitID is None:
             self.skillReqsStaticBitmap.SetBitmap(self.cleanSkills)
+            self.skillReqsStaticBitmap.SetToolTipString("")
         else:
             sCharacter = service.Character.getInstance()
             reqs = sCharacter.checkRequirements(fit)
