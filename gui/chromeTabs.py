@@ -977,14 +977,14 @@ class PFTabsContainer(wx.Panel):
     def OnPaint(self, event):
         rect = self.GetRect()
         canvas = wx.EmptyBitmap(rect.width, rect.height)
-        mdc = wx.BufferedPaintDC(self)
-        mdc.SelectObject(canvas)
+        if "wxGTK" in wx.PlatformInfo:
+            mdc = wx.AutoBufferedPaintDC(self)
+        else:
+            mdc = wx.BufferedPaintDC(self)
+            mdc.SelectObject(canvas)
 
         selected = 0
-        # TODO
-        # This is a hack because on mac os the system colour constants are somehow wrong,
-        # additionally somehow the colors get changed when drawing (all RGB values are off by 4)
-        # TODO
+
         if 'wxMac' in wx.PlatformInfo:
             color = wx.Colour(0, 0, 0)
             brush = wx.Brush(color)
@@ -993,10 +993,10 @@ class PFTabsContainer(wx.Panel):
         else:
             color = wx.SystemSettings_GetColour(wx.SYS_COLOUR_3DFACE)
             brush = wx.Brush(color)
-        mdc.SetBackground (brush)
 
-#        mdc.SetBackground (wx.Brush((66,113,202)))
-        mdc.Clear()
+        if "wxGTK" not in wx.PlatformInfo:
+            mdc.SetBackground (brush)
+            mdc.Clear()
 
         selected = None
         selpos = 0
