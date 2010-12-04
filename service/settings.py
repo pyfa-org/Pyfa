@@ -46,9 +46,17 @@ class SettingsProvider():
                 if defaults:
                     for item in defaults:
                         info[item] = defaults[item]
+
             else:
-                f = open(p, "rb")
-                info = cPickle.load(f)
+                try:
+                    f = open(p, "rb")
+                    info = cPickle.load(f)
+
+                except:
+                    info = {}
+                    if defaults:
+                        for item in defaults:
+                            info[item] = defaults[item]
 
             self.settings[area] = s = Settings(p, info)
 
