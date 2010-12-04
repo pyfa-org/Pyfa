@@ -417,8 +417,8 @@ class PFTabRenderer:
 
     def InitColors(self):
         self.tabColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
-        self.leftColor = self.CalculateColor(self.tabColor, 0x30)
-        self.rightColor = self.CalculateColor(self.tabColor, 0x20)
+        self.leftColor = self.CalculateColor(self.tabColor, 0x40)
+        self.rightColor = self.CalculateColor(self.tabColor, 0x15)
 
     def CalculateColor(self, color, delta):
         bkR ,bkG , bkB = color
@@ -1005,6 +1005,11 @@ class PFTabsContainer(wx.Panel):
         startColor = self.leftColor = self.CalculateColor(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW), 0x50)
         tabsWidth = 0
 
+        bkR ,bkG , bkB = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
+        if bkR + bkG + bkB > 127*3:
+            delta = -0.05
+        else:
+            delta = 0.2
 
         for tab in self.tabs:
             tabsWidth += tab.tabWidth - self.inclination*2
@@ -1019,17 +1024,15 @@ class PFTabsContainer(wx.Panel):
             width = tab.tabWidth - 6
             posx, posy  = tab.GetPosition()
             if not tab.IsSelected():
-#                if not 'wxMac' in wx.PlatformInfo:
                 mdc.DrawBitmap(self.efxBmp, posx, posy, True )
                 img = tab.Render().ConvertToImage()
-                img = img.AdjustChannels(0.95, 0.95, 0.95, 0.75)
+                img = img.AdjustChannels(1 + delta, 1 + delta, 1 + delta, 0.85)
                 bmp = wx.BitmapFromImage(img)
                 mdc.DrawBitmap(bmp, posx, posy, True)
             else:
                 selected = tab
         if selected:
             posx, posy  = selected.GetPosition()
-#            if not 'wxMac' in wx.PlatformInfo:
             mdc.DrawBitmap(self.efxBmp, posx, posy, True)
             bmp = selected.Render()
             if self.dragging:
@@ -1047,8 +1050,6 @@ class PFTabsContainer(wx.Panel):
             offset = 0
         r1 = wx.Rect(0,self.containerHeight -1,selpos,1)
         r2 = wx.Rect(0, self.containerHeight -1 , self.width,1)
-#        mdc.GradientFillLinear(r1, startColor, selColor, wx.EAST)
-#        mdc.GradientFillLinear(r2, selColor, startColor, wx.EAST)
 
     def OnErase(self, event):
         pass
