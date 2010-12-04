@@ -482,11 +482,13 @@ class ImplantsTreeView (wx.Panel):
 
     def addImplant(self, event):
         root = self.availableImplantsTree.GetSelection()
+        nchilds = self.availableImplantsTree.GetChildrenCount(root)
         cChar = service.Character.getInstance()
         charID = self.Parent.Parent.getActiveCharacter()
-        itemID = self.availableImplantsTree.GetPyData(root)
-        cChar.addImplant(charID, itemID)
-        self.update(cChar.getImplants(charID))
+        if nchilds == 0:
+            itemID = self.availableImplantsTree.GetPyData(root)
+            cChar.addImplant(charID, itemID)
+            self.update(cChar.getImplants(charID))
 
     def removeImplant(self, event):
         pos = self.pluggedImplantsTree.GetFirstSelected()
