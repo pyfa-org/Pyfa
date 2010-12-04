@@ -417,7 +417,7 @@ class PFTabRenderer:
 
     def InitColors(self):
         self.tabColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
-        self.leftColor = self.CalculateColor(self.tabColor, 0x40)
+        self.leftColor = self.CalculateColor(self.tabColor, 0x30)
         self.rightColor = self.CalculateColor(self.tabColor, 0x20)
 
     def CalculateColor(self, color, delta):
