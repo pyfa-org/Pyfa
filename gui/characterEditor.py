@@ -146,6 +146,10 @@ class CharacterEditor(wx.Frame):
         self.aview.inputID.Enable(False)
         self.aview.inputKey.Enable(False)
         self.aview.btnFetchCharList.Enable(False)
+        self.aview.btnFetchCharList.Show()
+        self.aview.btnFetchSkills.Hide()
+        self.aview.charList.Hide()
+        self.aview.Layout()
 
     def unrestrict(self):
         self.btnRename.Enable(True)
@@ -153,6 +157,10 @@ class CharacterEditor(wx.Frame):
         self.aview.inputID.Enable(True)
         self.aview.inputKey.Enable(True)
         self.aview.btnFetchCharList.Enable(True)
+        self.aview.btnFetchCharList.Show()
+        self.aview.btnFetchSkills.Hide()
+        self.aview.charList.Hide()
+        self.aview.Layout()
 
     def charChanged(self, event):
         self.sview.skillTreeListCtrl.DeleteChildren(self.sview.root)
