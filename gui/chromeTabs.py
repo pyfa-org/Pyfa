@@ -1022,7 +1022,7 @@ class PFTabsContainer(wx.Panel):
 #                if not 'wxMac' in wx.PlatformInfo:
                 mdc.DrawBitmap(self.efxBmp, posx, posy, True )
                 img = tab.Render().ConvertToImage()
-                img = img.AdjustChannels(1, 1, 1, 0.9)
+                img = img.AdjustChannels(0.95, 0.95, 0.95, 0.75)
                 bmp = wx.BitmapFromImage(img)
                 mdc.DrawBitmap(bmp, posx, posy, True)
             else:
