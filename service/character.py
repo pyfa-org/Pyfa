@@ -103,9 +103,9 @@ class Character():
 
     def charList(self, charID, userID, apiKey):
         char = eos.db.getCharacter(charID)
-        char.apiID = userID
-        char.apiKey = apiKey
         try:
+            char.apiID = userID
+            char.apiKey = apiKey
             return char.apiCharList()
         except:
             return None
