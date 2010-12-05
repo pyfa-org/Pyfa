@@ -202,11 +202,8 @@ class MainFrame(wx.Frame):
         service.SettingsProvider.getInstance().saveAll()
         event.Skip()
 
-    def ExitApp(self, evt):
-#        try:
+    def ExitApp(self, event):
         self.Close()
-#        except PyDeadObjectError:
-#            pass
         event.Skip()
 
     def ShowAboutBox(self, evt):
