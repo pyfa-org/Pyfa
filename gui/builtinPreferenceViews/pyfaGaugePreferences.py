@@ -337,18 +337,18 @@ class PFGaugePref ( wx.Dialog):
 
 
     def InitDefaultColours(self):
-        self.c0100S = wx.Colour(153,153,153)
-        self.c0100E = wx.Colour(153,185,56)
+        self.c0100S = wx.Colour(191, 191, 191, 255)
+        self.c0100E = wx.Colour(128, 255, 0, 255)
 
-        self.c100101S = wx.Colour(153,185,56)
-        self.c100101E = wx.Colour(163,206,53)
+        self.c100101S = wx.Colour(191, 167, 96, 255)
+        self.c100101E = wx.Colour(255, 191, 0, 255)
 
-        self.c101103S = wx.Colour(163,206,53)
-        self.c101103E = wx.Colour(223,146,53)
+        self.c101103S = wx.Colour(255, 191, 0, 255)
+        self.c101103E = wx.Colour(255, 128, 0, 255)
 
-        self.c103105S = wx.Colour(223,146,53)
-        self.c103105E = wx.Colour(243,86,53)
-        self.gradientStart = 31
+        self.c103105S = wx.Colour(255, 128, 0, 255)
+        self.c103105E = wx.Colour(191, 48, 48, 255)
+        self.gradientStart = 95
 
     def SetColours(self):
         self.cp0100S.SetColour(self.c0100S)
@@ -450,6 +450,7 @@ class PFGaugePref ( wx.Dialog):
 
     def RestoreDefaults(self, event):
         self.InitDefaultColours()
+        self.sliderGradientStart.SetValue(self.gradientStart)
         self.SetColours()
 
         event.Skip()
