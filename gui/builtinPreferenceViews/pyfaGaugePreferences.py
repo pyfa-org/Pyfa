@@ -184,10 +184,10 @@ class PFGaugePref ( wx.Dialog):
         self.st0100.Wrap( -1 )
         gSizer1.Add( self.st0100, 1, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
-        self.cp0100S = wx.ColourPickerCtrl( self, wx.ID_ANY, wx.BLACK, wx.DefaultPosition, wx.DefaultSize, wx.CLRP_DEFAULT_STYLE )
+        self.cp0100S = wx.ColourPickerCtrl( self, wx.ID_ANY, wx.BLACK, wx.DefaultPosition, wx.DefaultSize, wx.CLRP_DEFAULT_STYLE | wx.CLRP_SHOW_LABEL )
         gSizer1.Add( self.cp0100S, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
-        self.cp0100E = wx.ColourPickerCtrl( self, wx.ID_ANY, wx.BLACK, wx.DefaultPosition, wx.DefaultSize, wx.CLRP_DEFAULT_STYLE )
+        self.cp0100E = wx.ColourPickerCtrl( self, wx.ID_ANY, wx.BLACK, wx.DefaultPosition, wx.DefaultSize, wx.CLRP_DEFAULT_STYLE | wx.CLRP_SHOW_LABEL )
         gSizer1.Add( self.cp0100E, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
         self.gauge0100S = PFGaugePreview( self, wx.ID_ANY, 33, wx.DefaultPosition, wx.DefaultSize, wx.SIMPLE_BORDER )
@@ -207,10 +207,10 @@ class PFGaugePref ( wx.Dialog):
         self.st100101.Wrap( -1 )
         gSizer2.Add( self.st100101, 1, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
-        self.cp100101S = wx.ColourPickerCtrl( self, wx.ID_ANY, wx.BLACK, wx.DefaultPosition, wx.DefaultSize, wx.CLRP_DEFAULT_STYLE )
+        self.cp100101S = wx.ColourPickerCtrl( self, wx.ID_ANY, wx.BLACK, wx.DefaultPosition, wx.DefaultSize, wx.CLRP_DEFAULT_STYLE | wx.CLRP_SHOW_LABEL )
         gSizer2.Add( self.cp100101S, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
-        self.cp100101E = wx.ColourPickerCtrl( self, wx.ID_ANY, wx.BLACK, wx.DefaultPosition, wx.DefaultSize, wx.CLRP_DEFAULT_STYLE )
+        self.cp100101E = wx.ColourPickerCtrl( self, wx.ID_ANY, wx.BLACK, wx.DefaultPosition, wx.DefaultSize, wx.CLRP_DEFAULT_STYLE | wx.CLRP_SHOW_LABEL )
         gSizer2.Add( self.cp100101E, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
         self.gauge100101S = PFGaugePreview( self, wx.ID_ANY, 33, wx.DefaultPosition, wx.DefaultSize, wx.SIMPLE_BORDER )
@@ -230,10 +230,10 @@ class PFGaugePref ( wx.Dialog):
         self.st101103.Wrap( -1 )
         gSizer3.Add( self.st101103, 1, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
-        self.cp101103S = wx.ColourPickerCtrl( self, wx.ID_ANY, wx.BLACK, wx.DefaultPosition, wx.DefaultSize, wx.CLRP_DEFAULT_STYLE )
+        self.cp101103S = wx.ColourPickerCtrl( self, wx.ID_ANY, wx.BLACK, wx.DefaultPosition, wx.DefaultSize, wx.CLRP_DEFAULT_STYLE | wx.CLRP_SHOW_LABEL )
         gSizer3.Add( self.cp101103S, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
-        self.cp101103E = wx.ColourPickerCtrl( self, wx.ID_ANY, wx.BLACK, wx.DefaultPosition, wx.DefaultSize, wx.CLRP_DEFAULT_STYLE )
+        self.cp101103E = wx.ColourPickerCtrl( self, wx.ID_ANY, wx.BLACK, wx.DefaultPosition, wx.DefaultSize, wx.CLRP_DEFAULT_STYLE | wx.CLRP_SHOW_LABEL )
         gSizer3.Add( self.cp101103E, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
         self.gauge101103S = PFGaugePreview( self, wx.ID_ANY, 33, wx.DefaultPosition, wx.DefaultSize, wx.SIMPLE_BORDER )
@@ -253,10 +253,10 @@ class PFGaugePref ( wx.Dialog):
         self.st103105.Wrap( -1 )
         gSizer4.Add( self.st103105, 1, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
-        self.cp103105S = wx.ColourPickerCtrl( self, wx.ID_ANY, wx.BLACK, wx.DefaultPosition, wx.DefaultSize, wx.CLRP_DEFAULT_STYLE )
+        self.cp103105S = wx.ColourPickerCtrl( self, wx.ID_ANY, wx.BLACK, wx.DefaultPosition, wx.DefaultSize, wx.CLRP_DEFAULT_STYLE | wx.CLRP_SHOW_LABEL )
         gSizer4.Add( self.cp103105S, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
-        self.cp103105E = wx.ColourPickerCtrl( self, wx.ID_ANY, wx.BLACK, wx.DefaultPosition, wx.DefaultSize, wx.CLRP_DEFAULT_STYLE )
+        self.cp103105E = wx.ColourPickerCtrl( self, wx.ID_ANY, wx.BLACK, wx.DefaultPosition, wx.DefaultSize, wx.CLRP_DEFAULT_STYLE | wx.CLRP_SHOW_LABEL )
         gSizer4.Add( self.cp103105E, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
         self.gauge103105S = PFGaugePreview( self, wx.ID_ANY, 33, wx.DefaultPosition, wx.DefaultSize, wx.SIMPLE_BORDER )
