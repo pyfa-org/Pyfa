@@ -296,7 +296,7 @@ class PFGaugePref ( wx.Dialog):
         self.cbLink = wx.CheckBox( self, wx.ID_ANY, u"Link Colors", wx.DefaultPosition, wx.DefaultSize, 0 )
         buttonsSizer.Add( self.cbLink, 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT | wx.LEFT, 5 )
 
-        self.sliderGradientStart = wx.Slider( self, wx.ID_ANY, self.gradientStart, 0, 255, wx.DefaultPosition, wx.DefaultSize, wx.SL_HORIZONTAL|wx.SL_LABELS )
+        self.sliderGradientStart = wx.Slider( self, wx.ID_ANY, self.gradientStart, 0, 255, wx.DefaultPosition, (127,-1), wx.SL_HORIZONTAL|wx.SL_LABELS )
         buttonsSizer.Add( self.sliderGradientStart, 1, wx.EXPAND | wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5 )
 
         self.btnRestore = wx.Button( self, wx.ID_ANY, u"Restore Defaults", wx.DefaultPosition, wx.DefaultSize, 0 )
