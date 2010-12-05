@@ -18,6 +18,12 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 #===============================================================================
 
+import sys
+
+if not hasattr(sys, 'frozen'):
+    import wxversion
+    wxversion.ensureMinimal('2.8')
+
 import config
 
 # try:
