@@ -20,13 +20,21 @@ class PFGaugePreview(wx.Window):
 
         self.value = float(value)
         self.oldValue = self.value
+
+        self.percS = 0
+        self.percE = 0
+
         self.animate = True
+        self.animDir = 1
+        self._fractionDigits = 2
 
         self.colorS = wx.Colour(0,0,0)
         self.colorE = wx.Colour(0,0,0)
 
         self.bkColor = wx.Colour(0,0,0)
         self.SetMinSize((100,-1))
+
+        self.font = wx.FontFromPixelSize((0,13),wx.SWISS, wx.NORMAL, wx.NORMAL, False)
 
         self.timerID = wx.NewId()
         self.timer = wx.Timer(self, self.timerID)
@@ -43,9 +51,13 @@ class PFGaugePreview(wx.Window):
 
     def OnTimer(self, event):
         if event.GetId() == self.timerID:
-            self.value += 1
+            self.value += self.animDir
             if self.value > 100:
+                self.value = 100
+                self.animDir = -1
+            if self.value <0:
                 self.value = 0
+                self.animDir = 1
             self.Refresh()
 
     def OnWindowEnter(self, event):
@@ -83,6 +95,11 @@ class PFGaugePreview(wx.Window):
         self.value = min(max(value,0),100)
         self.Refresh()
 
+    def SetPercentages(self, start, end):
+        self.percS = start
+        self.percE = end
+        self.Refresh()
+
     def CalculateGColor(self, color, delta):
         bkR ,bkG , bkB = color
         scale = delta
@@ -113,8 +130,8 @@ class PFGaugePreview(wx.Window):
         dc.SetBackground(wx.Brush(self.bkColor))
         dc.Clear()
 
-        value = self.value
-        if value > 100:
+        value = float(self.value)
+        if self.percS >= 100:
             w = rect.width
         else:
             w = rect.width * (float(value) / 100)
@@ -123,10 +140,27 @@ class PFGaugePreview(wx.Window):
         r.height = r.height/2+1
 
         color = self.CalculateTransitionColor(self.colorS, self.colorE, float(value)/100)
-        gcolor = self.CalculateGColor(color, -100)
+        gcolor = self.CalculateGColor(color, -31)
         dc.GradientFillLinear(r, gcolor, color, wx.SOUTH)
         r.top = r.height
         dc.GradientFillLinear(r, gcolor, color, wx.NORTH)
+
+        dc.SetFont(self.font)
+
+        r = copy.copy(rect)
+        r.left +=1
+        r.top +=1
+
+
+        formatStr = "{0:." + str(self._fractionDigits) + "f}%"
+        value = (self.percE - self.percS) * value / (self.percE - self.percS)
+        value = self.percS + (self.percE - self.percS) * value / 100
+        dc.SetTextForeground(wx.Colour(80,80,80))
+        dc.DrawLabel(formatStr.format(value), r, wx.ALIGN_CENTER)
+
+        dc.SetTextForeground(wx.Colour(255,255,255))
+        dc.DrawLabel(formatStr.format(value), rect, wx.ALIGN_CENTER)
+
 
 class PFGaugePref ( wx.Dialog):
 
@@ -312,6 +346,10 @@ class PFGaugePref ( wx.Dialog):
         self.gauge0100M.SetColour(self.c0100S, self.c0100E)
         self.gauge0100E.SetColour(self.c0100S, self.c0100E)
 
+        self.gauge0100S.SetPercentages(0, 100)
+        self.gauge0100M.SetPercentages(0, 100)
+        self.gauge0100E.SetPercentages(0, 100)
+
 
         self.cp100101S.SetColour(self.c100101S)
         self.cp100101E.SetColour(self.c100101E)
@@ -319,6 +357,9 @@ class PFGaugePref ( wx.Dialog):
         self.gauge100101M.SetColour(self.c100101S, self.c100101E)
         self.gauge100101E.SetColour(self.c100101S, self.c100101E)
 
+        self.gauge100101S.SetPercentages(100, 101)
+        self.gauge100101M.SetPercentages(100, 101)
+        self.gauge100101E.SetPercentages(100, 101)
 
 
         self.cp101103S.SetColour(self.c101103S)
@@ -327,6 +368,10 @@ class PFGaugePref ( wx.Dialog):
         self.gauge101103M.SetColour(self.c101103S, self.c101103E)
         self.gauge101103E.SetColour(self.c101103S, self.c101103E)
 
+        self.gauge101103S.SetPercentages(101, 103)
+        self.gauge101103M.SetPercentages(101, 103)
+        self.gauge101103E.SetPercentages(101, 103)
+
 
         self.cp103105S.SetColour(self.c103105S)
         self.cp103105E.SetColour(self.c103105E)
@@ -334,11 +379,21 @@ class PFGaugePref ( wx.Dialog):
         self.gauge103105M.SetColour(self.c103105S, self.c103105E)
         self.gauge103105E.SetColour(self.c103105S, self.c103105E)
 
+        self.gauge103105S.SetPercentages(103, 105)
+        self.gauge103105M.SetPercentages(103, 105)
+        self.gauge103105E.SetPercentages(103, 105)
 
         self.wndPreview0100.SetColour(self.c0100S, self.c0100E)
+        self.wndPreview0100.SetPercentages(0, 100)
+
         self.wndPreview100101.SetColour(self.c100101S, self.c100101E)
+        self.wndPreview100101.SetPercentages(100, 101)
+
         self.wndPreview101103.SetColour(self.c101103S, self.c101103E)
+        self.wndPreview101103.SetPercentages(101, 103)
+
         self.wndPreview103105.SetColour(self.c103105S, self.c103105E)
+        self.wndPreview103105.SetPercentages(103,105)
 
     def OnOk(self, event):
         self.Close()
