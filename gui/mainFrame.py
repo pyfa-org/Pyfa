@@ -139,16 +139,12 @@ class MainFrame(wx.Frame):
 
     def LoadMainFrameAttribs(self):
 
-        mainFrameDefaultAttribs = {"wnd_x" : 10, "wnd_y" : 10, "wnd_width":1000, "wnd_height": 700}
+        mainFrameDefaultAttribs = {"wnd_width":1000, "wnd_height": 700}
         self.mainFrameAttribs = service.SettingsProvider.getInstance().getSettings("pyfaMainWindowAttribs", mainFrameDefaultAttribs)
 
         width = self.mainFrameAttribs["wnd_width"]
         height = self.mainFrameAttribs["wnd_height"]
 
-        x = self.mainFrameAttribs["wnd_x"]
-        y = self.mainFrameAttribs["wnd_y"]
-
-        self.SetPosition((x, y))
         self.SetSize((width, height))
         self.SetMinSize((mainFrameDefaultAttribs["wnd_width"], mainFrameDefaultAttribs["wnd_height"]))
 
@@ -160,8 +156,6 @@ class MainFrame(wx.Frame):
 
         self.mainFrameAttribs["wnd_width"] = width
         self.mainFrameAttribs["wnd_height"] = height
-        self.mainFrameAttribs["wnd_x"] = x
-        self.mainFrameAttribs["wnd_y"] = y
 
     def SetActiveStatsWindow(self, wnd):
         self.activeStatsWnd = wnd
