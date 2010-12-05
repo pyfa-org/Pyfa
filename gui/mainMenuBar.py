@@ -78,7 +78,7 @@ class MainMenuBar(wx.MenuBar):
 
         graphFrameItem = wx.MenuItem(windowMenu, self.graphFrameId, "Graphs\tCTRL+G")
         graphFrameItem.SetBitmap(bitmapLoader.getBitmap("graphs_small", "icons"))
-        graphFrameItem.Enable(gui.graphFrame.enabled)
+#        graphFrameItem.Enable(gui.graphFrame.enabled)
         windowMenu.AppendItem(graphFrameItem)
 
         #windowMenu.Append(wx.ID_PREFERENCES)

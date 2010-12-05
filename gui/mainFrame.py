@@ -394,6 +394,9 @@ class MainFrame(wx.Frame):
         self.waitDialog.Destroy()
 
     def openGraphFrame(self, event):
+        if not gui.graphFrame.enabled:
+            return
+
         if not self.graphFrame:
             self.graphFrame = GraphFrame(self)
             self.graphFrame.Show()

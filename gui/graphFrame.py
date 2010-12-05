@@ -22,22 +22,35 @@ import bitmapLoader
 import gui.display
 import gui.globalEvents as GE
 
-try:
-    import matplotlib as mpl
-    mpl.use('wxagg')
-    from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as Canvas
-    from matplotlib.figure import Figure
-    enabled = True
-except:
-    print "Problems importing matplotlib; continuing without graphs"
-    enabled = False
-
 from gui.graph import Graph
 import service
 import gui.mainFrame
 
+enabled = True
+mplImported = False
+
 class GraphFrame(wx.Frame):
     def __init__(self, parent, style=wx.DEFAULT_FRAME_STYLE | wx.NO_FULL_REPAINT_ON_RESIZE | wx.FRAME_FLOAT_ON_PARENT):
+
+        global enabled
+        global mplImported
+        if not enabled:
+            return
+
+        try:
+            import matplotlib as mpl
+            if not mplImported:
+                mpl.use('wxagg')
+            from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as Canvas
+            from matplotlib.figure import Figure
+            enabled = True
+        except:
+            print "Problems importing matplotlib; continuing without graphs"
+            enabled = False
+            return
+
+        mplImported = True
+
         wx.Frame.__init__(self, parent, title=u"pyfa: Graph Generator", style=style, size=(520, 390))
 
         i = wx.IconFromBitmap(bitmapLoader.getBitmap("graphs_small", "icons"))
