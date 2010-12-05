@@ -153,6 +153,8 @@ class MainFrame(wx.Frame):
         self.SetMinSize((mainFrameDefaultAttribs["wnd_width"], mainFrameDefaultAttribs["wnd_height"]))
 
     def UpdateMainFrameAttribs(self):
+        if self.IsIconized():
+            return
         width,height = self.GetSize()
         x,y = self.GetPosition()
 
