@@ -31,6 +31,7 @@ class PFGaugePreview(wx.Window):
 
         self.colorS = wx.Colour(0,0,0)
         self.colorE = wx.Colour(0,0,0)
+        self.gradientStart = 0
 
         self.bkColor = wx.Colour(0,0,0)
         self.SetMinSize((100,-1))
@@ -84,6 +85,10 @@ class PFGaugePreview(wx.Window):
         if self.timer.IsRunning():
             self.timer.Stop()
         self.value = self.oldValue
+        self.Refresh()
+
+    def SetGradientStart(self, value):
+        self.gradientStart = value
         self.Refresh()
 
     def SetColour(self, colorS, colorE):
@@ -141,7 +146,7 @@ class PFGaugePreview(wx.Window):
         r.height = r.height/2+1
 
         color = self.CalculateTransitionColor(self.colorS, self.colorE, float(value)/100)
-        gcolor = self.CalculateGColor(color, -31)
+        gcolor = self.CalculateGColor(color, - self.gradientStart)
         dc.GradientFillLinear(r, gcolor, color, wx.SOUTH)
         r.top = r.height
         dc.GradientFillLinear(r, gcolor, color, wx.NORTH)
@@ -289,16 +294,19 @@ class PFGaugePref ( wx.Dialog):
         buttonsSizer = wx.BoxSizer( wx.HORIZONTAL )
 
         self.cbLink = wx.CheckBox( self, wx.ID_ANY, u"Link Colors", wx.DefaultPosition, wx.DefaultSize, 0 )
-        buttonsSizer.Add( self.cbLink, 0, wx.ALIGN_CENTER_VERTICAL|wx.RIGHT, 25 )
+        buttonsSizer.Add( self.cbLink, 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT | wx.LEFT, 5 )
+
+        self.sliderGradientStart = wx.Slider( self, wx.ID_ANY, self.gradientStart, 0, 255, wx.DefaultPosition, wx.DefaultSize, wx.SL_HORIZONTAL|wx.SL_LABELS )
+        buttonsSizer.Add( self.sliderGradientStart, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5 )
 
         self.btnRestore = wx.Button( self, wx.ID_ANY, u"Restore Defaults", wx.DefaultPosition, wx.DefaultSize, 0 )
-        buttonsSizer.Add( self.btnRestore, 0, wx.ALL, 5 )
+        buttonsSizer.Add( self.btnRestore, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5 )
 
         self.btnDump = wx.Button( self, wx.ID_ANY, u"Dump Colors", wx.DefaultPosition, wx.DefaultSize, 0 )
-        buttonsSizer.Add( self.btnDump, 0, wx.ALL, 5 )
+        buttonsSizer.Add( self.btnDump, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5 )
 
         self.btnOk = wx.Button( self, wx.ID_ANY, u"OK", wx.DefaultPosition, wx.DefaultSize, 0 )
-        buttonsSizer.Add( self.btnOk, 0, wx.ALL|wx.ALIGN_RIGHT, 5 )
+        buttonsSizer.Add( self.btnOk, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5 )
 
         footerSizer.Add( buttonsSizer, 1, wx.ALIGN_RIGHT, 5 )
         mainSizer.Add( footerSizer, 0, wx.EXPAND, 5 )
@@ -310,6 +318,7 @@ class PFGaugePref ( wx.Dialog):
         self.Fit()
         self.Layout()
 
+        self.sliderGradientStart.Bind(wx.EVT_SCROLL, self.OnGradientStartScroll)
         self.btnRestore.Bind(wx.EVT_BUTTON, self.RestoreDefaults)
         self.btnDump.Bind(wx.EVT_BUTTON, self.DumpColours)
         self.btnOk.Bind(wx.EVT_BUTTON, self.OnOk)
@@ -339,6 +348,7 @@ class PFGaugePref ( wx.Dialog):
 
         self.c103105S = wx.Colour(223,146,53)
         self.c103105E = wx.Colour(243,86,53)
+        self.gradientStart = 31
 
     def SetColours(self):
         self.cp0100S.SetColour(self.c0100S)
@@ -351,6 +361,10 @@ class PFGaugePref ( wx.Dialog):
         self.gauge0100M.SetPercentages(0, 99.99)
         self.gauge0100E.SetPercentages(0, 99.99)
 
+        self.gauge0100S.SetGradientStart(self.sliderGradientStart.GetValue())
+        self.gauge0100M.SetGradientStart(self.sliderGradientStart.GetValue())
+        self.gauge0100E.SetGradientStart(self.sliderGradientStart.GetValue())
+
 
         self.cp100101S.SetColour(self.c100101S)
         self.cp100101E.SetColour(self.c100101E)
@@ -358,9 +372,17 @@ class PFGaugePref ( wx.Dialog):
         self.gauge100101M.SetColour(self.c100101S, self.c100101E)
         self.gauge100101E.SetColour(self.c100101S, self.c100101E)
 
+        self.gauge100101S.SetGradientStart(self.sliderGradientStart.GetValue())
+        self.gauge100101M.SetGradientStart(self.sliderGradientStart.GetValue())
+        self.gauge100101E.SetGradientStart(self.sliderGradientStart.GetValue())
+
         self.gauge100101S.SetPercentages(100, 100.99)
         self.gauge100101M.SetPercentages(100, 100.99)
         self.gauge100101E.SetPercentages(100, 100.99)
+
+        self.gauge100101S.SetGradientStart(self.sliderGradientStart.GetValue())
+        self.gauge100101M.SetGradientStart(self.sliderGradientStart.GetValue())
+        self.gauge100101E.SetGradientStart(self.sliderGradientStart.GetValue())
 
 
         self.cp101103S.SetColour(self.c101103S)
@@ -373,6 +395,10 @@ class PFGaugePref ( wx.Dialog):
         self.gauge101103M.SetPercentages(101, 102.99)
         self.gauge101103E.SetPercentages(101, 102.99)
 
+        self.gauge101103S.SetGradientStart(self.sliderGradientStart.GetValue())
+        self.gauge101103M.SetGradientStart(self.sliderGradientStart.GetValue())
+        self.gauge101103E.SetGradientStart(self.sliderGradientStart.GetValue())
+
 
         self.cp103105S.SetColour(self.c103105S)
         self.cp103105E.SetColour(self.c103105E)
@@ -384,23 +410,37 @@ class PFGaugePref ( wx.Dialog):
         self.gauge103105M.SetPercentages(103, 104.99)
         self.gauge103105E.SetPercentages(103, 104.99)
 
+        self.gauge103105S.SetGradientStart(self.sliderGradientStart.GetValue())
+        self.gauge103105M.SetGradientStart(self.sliderGradientStart.GetValue())
+        self.gauge103105E.SetGradientStart(self.sliderGradientStart.GetValue())
+
         self.wndPreview0100.SetColour(self.c0100S, self.c0100E)
         self.wndPreview0100.SetPercentages(0, 99.99)
+        self.wndPreview0100.SetGradientStart(self.sliderGradientStart.GetValue())
 
         self.wndPreview100101.SetColour(self.c100101S, self.c100101E)
         self.wndPreview100101.SetPercentages(100, 100.99)
+        self.wndPreview100101.SetGradientStart(self.sliderGradientStart.GetValue())
 
         self.wndPreview101103.SetColour(self.c101103S, self.c101103E)
         self.wndPreview101103.SetPercentages(101, 102.99)
+        self.wndPreview101103.SetGradientStart(self.sliderGradientStart.GetValue())
 
         self.wndPreview103105.SetColour(self.c103105S, self.c103105E)
         self.wndPreview103105.SetPercentages(103,104.99)
+        self.wndPreview103105.SetGradientStart(self.sliderGradientStart.GetValue())
+
+    def OnGradientStartScroll(self, event):
+        self.gradientStart = self.sliderGradientStart.GetValue()
+        self.SetColours()
+        event.Skip()
 
     def OnOk(self, event):
         self.Close()
         event.Skip()
 
     def DumpColours(self, event):
+        print "Gradient start: %d" % self.sliderGradientStart.GetValue()
         print "  0 <-> 100 Start: ", self.c0100S, " End: ", self.c0100E
         print "100 <-> 101 Start: ", self.c100101S, " End: ", self.c100101E
         print "101 <-> 103 Start: ", self.c101103S, " End: ", self.c101103E
