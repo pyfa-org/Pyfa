@@ -463,5 +463,6 @@ class PFGaugePref ( wx.Dialog):
 if __name__ == '__main__':
     app = wx.PySimpleApp()
     dlg = PFGaugePref()
-    dlg.Show()
+    dlg.ShowModal()
+    dlg.Destroy()
     app.MainLoop()
