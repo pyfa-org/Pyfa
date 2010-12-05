@@ -346,9 +346,9 @@ class PFGaugePref ( wx.Dialog):
         self.gauge0100M.SetColour(self.c0100S, self.c0100E)
         self.gauge0100E.SetColour(self.c0100S, self.c0100E)
 
-        self.gauge0100S.SetPercentages(0, 100)
-        self.gauge0100M.SetPercentages(0, 100)
-        self.gauge0100E.SetPercentages(0, 100)
+        self.gauge0100S.SetPercentages(0, 99.99)
+        self.gauge0100M.SetPercentages(0, 99.99)
+        self.gauge0100E.SetPercentages(0, 99.99)
 
 
         self.cp100101S.SetColour(self.c100101S)
@@ -357,9 +357,9 @@ class PFGaugePref ( wx.Dialog):
         self.gauge100101M.SetColour(self.c100101S, self.c100101E)
         self.gauge100101E.SetColour(self.c100101S, self.c100101E)
 
-        self.gauge100101S.SetPercentages(100, 101)
-        self.gauge100101M.SetPercentages(100, 101)
-        self.gauge100101E.SetPercentages(100, 101)
+        self.gauge100101S.SetPercentages(100, 100.99)
+        self.gauge100101M.SetPercentages(100, 100.99)
+        self.gauge100101E.SetPercentages(100, 100.99)
 
 
         self.cp101103S.SetColour(self.c101103S)
@@ -368,9 +368,9 @@ class PFGaugePref ( wx.Dialog):
         self.gauge101103M.SetColour(self.c101103S, self.c101103E)
         self.gauge101103E.SetColour(self.c101103S, self.c101103E)
 
-        self.gauge101103S.SetPercentages(101, 103)
-        self.gauge101103M.SetPercentages(101, 103)
-        self.gauge101103E.SetPercentages(101, 103)
+        self.gauge101103S.SetPercentages(101, 102.99)
+        self.gauge101103M.SetPercentages(101, 102.99)
+        self.gauge101103E.SetPercentages(101, 102.99)
 
 
         self.cp103105S.SetColour(self.c103105S)
@@ -379,21 +379,21 @@ class PFGaugePref ( wx.Dialog):
         self.gauge103105M.SetColour(self.c103105S, self.c103105E)
         self.gauge103105E.SetColour(self.c103105S, self.c103105E)
 
-        self.gauge103105S.SetPercentages(103, 105)
-        self.gauge103105M.SetPercentages(103, 105)
-        self.gauge103105E.SetPercentages(103, 105)
+        self.gauge103105S.SetPercentages(103, 104.99)
+        self.gauge103105M.SetPercentages(103, 104.99)
+        self.gauge103105E.SetPercentages(103, 104.99)
 
         self.wndPreview0100.SetColour(self.c0100S, self.c0100E)
-        self.wndPreview0100.SetPercentages(0, 100)
+        self.wndPreview0100.SetPercentages(0, 99.99)
 
         self.wndPreview100101.SetColour(self.c100101S, self.c100101E)
-        self.wndPreview100101.SetPercentages(100, 101)
+        self.wndPreview100101.SetPercentages(100, 100.99)
 
         self.wndPreview101103.SetColour(self.c101103S, self.c101103E)
-        self.wndPreview101103.SetPercentages(101, 103)
+        self.wndPreview101103.SetPercentages(101, 102.99)
 
         self.wndPreview103105.SetColour(self.c103105S, self.c103105E)
-        self.wndPreview103105.SetPercentages(103,105)
+        self.wndPreview103105.SetPercentages(103,104.99)
 
     def OnOk(self, event):
         self.Close()

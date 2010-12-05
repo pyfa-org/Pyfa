@@ -152,7 +152,6 @@ class MainFrame(wx.Frame):
         if self.IsIconized():
             return
         width,height = self.GetSize()
-        x,y = self.GetPosition()
 
         self.mainFrameAttribs["wnd_width"] = width
         self.mainFrameAttribs["wnd_height"] = height
