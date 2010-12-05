@@ -181,6 +181,7 @@ class GraphFrame(wx.Frame):
         view = self.getView()
         self.subplot.clear()
         self.subplot.grid(True)
+        legend = []
 
         for fit in self.fits:
             try:
@@ -193,8 +194,17 @@ class GraphFrame(wx.Frame):
                 x, y = success, status
 
                 self.subplot.plot(x, y)
+                legend.append(fit.name)
             except:
                 self.SetStatusText("Invalid values in '%s'" % fit.name)
+
+        leg = self.subplot.legend(tuple(legend), "upper right" , shadow = False, frameon = False)
+
+        for t in leg.get_texts():
+            t.set_fontsize('small')
+
+        for l in leg.get_lines():
+            l.set_linewidth(1)
 
         self.canvas.draw()
         self.SetStatusText("")
