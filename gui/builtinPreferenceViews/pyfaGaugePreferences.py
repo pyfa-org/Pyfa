@@ -123,7 +123,7 @@ class PFGaugePreview(wx.Window):
         r.height = r.height/2+1
 
         color = self.CalculateTransitionColor(self.colorS, self.colorE, float(value)/100)
-        gcolor = self.CalculateGColor(color, -31)
+        gcolor = self.CalculateGColor(color, -100)
         dc.GradientFillLinear(r, gcolor, color, wx.SOUTH)
         r.top = r.height
         dc.GradientFillLinear(r, gcolor, color, wx.NORTH)
@@ -253,6 +253,9 @@ class PFGaugePref ( wx.Dialog):
 
         buttonsSizer = wx.BoxSizer( wx.HORIZONTAL )
 
+        self.cbLink = wx.CheckBox( self, wx.ID_ANY, u"Link Colors", wx.DefaultPosition, wx.DefaultSize, 0 )
+        buttonsSizer.Add( self.cbLink, 0, wx.ALIGN_CENTER_VERTICAL|wx.RIGHT, 25 )
+
         self.btnRestore = wx.Button( self, wx.ID_ANY, u"Restore Defaults", wx.DefaultPosition, wx.DefaultSize, 0 )
         buttonsSizer.Add( self.btnRestore, 0, wx.ALL, 5 )
 
@@ -365,21 +368,33 @@ class PFGaugePref ( wx.Dialog):
 
         if cpObj == self.cp0100E:
             self.c0100E = color
+            if self.cbLink.IsChecked():
+                self.c100101S = color
 
         if cpObj == self.cp100101S:
             self.c100101S = color
+            if self.cbLink.IsChecked():
+                self.c0100E = color
 
         if cpObj == self.cp100101E:
             self.c100101E = color
+            if self.cbLink.IsChecked():
+                self.c101103S = color
 
         if cpObj == self.cp101103S:
             self.c101103S = color
+            if self.cbLink.IsChecked():
+                self.c100101E = color
 
         if cpObj == self.cp101103E:
             self.c101103E = color
+            if self.cbLink.IsChecked():
+                self.c103105S = color
 
         if cpObj == self.cp103105S:
             self.c103105S = color
+            if self.cbLink.IsChecked():
+                self.c101103E = color
 
         if cpObj == self.cp103105E:
             self.c103105E = color
