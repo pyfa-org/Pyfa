@@ -17,9 +17,9 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 #===============================================================================
 
-from gui.preferenceView import PreferenceView
 import wx
-
+from gui.preferenceView import PreferenceView
+from gui import bitmapLoader
 class DummyView(PreferenceView):
     title = "Dummy"
 

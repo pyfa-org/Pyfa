@@ -30,6 +30,7 @@ class MainMenuBar(wx.MenuBar):
         self.damagePatternEditorId = wx.NewId()
         self.graphFrameId = wx.NewId()
         self.backupFitsId = wx.NewId()
+        self.preferencesId = wx.NewId()
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
@@ -78,10 +79,11 @@ class MainMenuBar(wx.MenuBar):
 
         graphFrameItem = wx.MenuItem(windowMenu, self.graphFrameId, "Graphs\tCTRL+G")
         graphFrameItem.SetBitmap(bitmapLoader.getBitmap("graphs_small", "icons"))
-#        graphFrameItem.Enable(gui.graphFrame.enabled)
         windowMenu.AppendItem(graphFrameItem)
-
-        #windowMenu.Append(wx.ID_PREFERENCES)
+        preferencesItem = wx.MenuItem(windowMenu, self.preferencesId, "Preferences\tCTRL+P")
+        preferencesItem.SetBitmap(bitmapLoader.getBitmap("preferences_small", "icons"))
+        windowMenu.AppendItem(preferencesItem)
+#        graphFrameItem.Enable(gui.graphFrame.enabled)
 
         # Help menu
         helpMenu = wx.Menu()

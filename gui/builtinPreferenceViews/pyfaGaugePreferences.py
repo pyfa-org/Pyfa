@@ -1,15 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-###########################################################################
-## Python code generated with wxFormBuilder (version May    4 2010)
-## http://www.wxformbuilder.org/
-##
-## PLEASE DO "NOT" EDIT THIS FILE!
-###########################################################################
 
 import wx
 import copy
+from gui.preferenceView import PreferenceView
+from gui import bitmapLoader
 
 ###########################################################################
 ## Class PFGaugePref
@@ -168,155 +164,153 @@ class PFGaugePreview(wx.Window):
         dc.DrawLabel(formatStr.format(value), rect, wx.ALIGN_CENTER)
 
 
-class PFGaugePref ( wx.Dialog):
+class PFGaugePref ( PreferenceView):
+    title = "Pyfa Gauge Theme"
+    def populatePanel( self, panel ):
 
-    def __init__( self ):
-        wx.Dialog.__init__ ( self, None, id = wx.ID_ANY, pos = wx.DefaultPosition, size = wx.Size( 500,261 ), style = wx.DEFAULT_DIALOG_STYLE )
-
-        self.SetTitle("Pyfa's Gauges colors editor")
         self.InitDefaultColours()
 
         mainSizer = wx.BoxSizer( wx.VERTICAL )
 
         gSizer1 = wx.BoxSizer( wx.HORIZONTAL )
 
-        self.st0100 = wx.StaticText( self, wx.ID_ANY, u"0 - 100", wx.DefaultPosition, wx.DefaultSize, wx.ALIGN_RIGHT )
+        self.st0100 = wx.StaticText( panel, wx.ID_ANY, u"0 - 100", wx.DefaultPosition, wx.DefaultSize, wx.ALIGN_RIGHT )
         self.st0100.Wrap( -1 )
         gSizer1.Add( self.st0100, 1, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
-        self.cp0100S = wx.ColourPickerCtrl( self, wx.ID_ANY, wx.BLACK, wx.DefaultPosition, wx.DefaultSize, wx.CLRP_DEFAULT_STYLE | wx.CLRP_SHOW_LABEL )
+        self.cp0100S = wx.ColourPickerCtrl( panel, wx.ID_ANY, wx.BLACK, wx.DefaultPosition, wx.DefaultSize, wx.CLRP_DEFAULT_STYLE | wx.CLRP_SHOW_LABEL )
         gSizer1.Add( self.cp0100S, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
-        self.cp0100E = wx.ColourPickerCtrl( self, wx.ID_ANY, wx.BLACK, wx.DefaultPosition, wx.DefaultSize, wx.CLRP_DEFAULT_STYLE | wx.CLRP_SHOW_LABEL )
+        self.cp0100E = wx.ColourPickerCtrl( panel, wx.ID_ANY, wx.BLACK, wx.DefaultPosition, wx.DefaultSize, wx.CLRP_DEFAULT_STYLE | wx.CLRP_SHOW_LABEL )
         gSizer1.Add( self.cp0100E, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
-        self.gauge0100S = PFGaugePreview( self, wx.ID_ANY, 33, wx.DefaultPosition, wx.DefaultSize, wx.SIMPLE_BORDER )
+        self.gauge0100S = PFGaugePreview( panel, wx.ID_ANY, 33, wx.DefaultPosition, wx.DefaultSize, wx.SIMPLE_BORDER )
         gSizer1.Add( self.gauge0100S, 0, wx.ALIGN_CENTER_VERTICAL|wx.LEFT, 5 )
 
-        self.gauge0100M = PFGaugePreview( self, wx.ID_ANY, 66, wx.DefaultPosition, wx.DefaultSize, wx.SIMPLE_BORDER )
+        self.gauge0100M = PFGaugePreview( panel, wx.ID_ANY, 66, wx.DefaultPosition, wx.DefaultSize, wx.SIMPLE_BORDER )
         gSizer1.Add( self.gauge0100M, 0, wx.ALIGN_CENTER_VERTICAL|wx.LEFT, 5 )
 
-        self.gauge0100E = PFGaugePreview( self, wx.ID_ANY, 100, wx.DefaultPosition, wx.DefaultSize, wx.SIMPLE_BORDER )
+        self.gauge0100E = PFGaugePreview( panel, wx.ID_ANY, 100, wx.DefaultPosition, wx.DefaultSize, wx.SIMPLE_BORDER )
         gSizer1.Add( self.gauge0100E, 0, wx.ALIGN_CENTER_VERTICAL|wx.RIGHT|wx.LEFT, 5 )
 
         mainSizer.Add( gSizer1, 0, wx.EXPAND, 5 )
 
         gSizer2 = wx.BoxSizer( wx.HORIZONTAL )
 
-        self.st100101 = wx.StaticText( self, wx.ID_ANY, u"100 - 101", wx.DefaultPosition, wx.DefaultSize, wx.ALIGN_RIGHT )
+        self.st100101 = wx.StaticText( panel, wx.ID_ANY, u"100 - 101", wx.DefaultPosition, wx.DefaultSize, wx.ALIGN_RIGHT )
         self.st100101.Wrap( -1 )
         gSizer2.Add( self.st100101, 1, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
-        self.cp100101S = wx.ColourPickerCtrl( self, wx.ID_ANY, wx.BLACK, wx.DefaultPosition, wx.DefaultSize, wx.CLRP_DEFAULT_STYLE | wx.CLRP_SHOW_LABEL )
+        self.cp100101S = wx.ColourPickerCtrl( panel, wx.ID_ANY, wx.BLACK, wx.DefaultPosition, wx.DefaultSize, wx.CLRP_DEFAULT_STYLE | wx.CLRP_SHOW_LABEL )
         gSizer2.Add( self.cp100101S, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
-        self.cp100101E = wx.ColourPickerCtrl( self, wx.ID_ANY, wx.BLACK, wx.DefaultPosition, wx.DefaultSize, wx.CLRP_DEFAULT_STYLE | wx.CLRP_SHOW_LABEL )
+        self.cp100101E = wx.ColourPickerCtrl( panel, wx.ID_ANY, wx.BLACK, wx.DefaultPosition, wx.DefaultSize, wx.CLRP_DEFAULT_STYLE | wx.CLRP_SHOW_LABEL )
         gSizer2.Add( self.cp100101E, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
-        self.gauge100101S = PFGaugePreview( self, wx.ID_ANY, 33, wx.DefaultPosition, wx.DefaultSize, wx.SIMPLE_BORDER )
+        self.gauge100101S = PFGaugePreview( panel, wx.ID_ANY, 33, wx.DefaultPosition, wx.DefaultSize, wx.SIMPLE_BORDER )
         gSizer2.Add( self.gauge100101S, 0, wx.ALIGN_CENTER_VERTICAL|wx.LEFT, 5 )
 
-        self.gauge100101M = PFGaugePreview( self, wx.ID_ANY, 66, wx.DefaultPosition, wx.DefaultSize, wx.SIMPLE_BORDER )
+        self.gauge100101M = PFGaugePreview( panel, wx.ID_ANY, 66, wx.DefaultPosition, wx.DefaultSize, wx.SIMPLE_BORDER )
         gSizer2.Add( self.gauge100101M, 0, wx.ALIGN_CENTER_VERTICAL|wx.LEFT, 5 )
 
-        self.gauge100101E = PFGaugePreview( self, wx.ID_ANY, 100, wx.DefaultPosition, wx.DefaultSize, wx.SIMPLE_BORDER )
+        self.gauge100101E = PFGaugePreview( panel, wx.ID_ANY, 100, wx.DefaultPosition, wx.DefaultSize, wx.SIMPLE_BORDER )
         gSizer2.Add( self.gauge100101E, 0, wx.ALIGN_CENTER_VERTICAL|wx.RIGHT|wx.LEFT, 5 )
 
         mainSizer.Add( gSizer2, 0, wx.EXPAND, 5 )
 
         gSizer3 = wx.BoxSizer( wx.HORIZONTAL )
 
-        self.st101103 = wx.StaticText( self, wx.ID_ANY, u"101 - 103", wx.DefaultPosition, wx.DefaultSize, wx.ALIGN_RIGHT )
+        self.st101103 = wx.StaticText( panel, wx.ID_ANY, u"101 - 103", wx.DefaultPosition, wx.DefaultSize, wx.ALIGN_RIGHT )
         self.st101103.Wrap( -1 )
         gSizer3.Add( self.st101103, 1, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
-        self.cp101103S = wx.ColourPickerCtrl( self, wx.ID_ANY, wx.BLACK, wx.DefaultPosition, wx.DefaultSize, wx.CLRP_DEFAULT_STYLE | wx.CLRP_SHOW_LABEL )
+        self.cp101103S = wx.ColourPickerCtrl( panel, wx.ID_ANY, wx.BLACK, wx.DefaultPosition, wx.DefaultSize, wx.CLRP_DEFAULT_STYLE | wx.CLRP_SHOW_LABEL )
         gSizer3.Add( self.cp101103S, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
-        self.cp101103E = wx.ColourPickerCtrl( self, wx.ID_ANY, wx.BLACK, wx.DefaultPosition, wx.DefaultSize, wx.CLRP_DEFAULT_STYLE | wx.CLRP_SHOW_LABEL )
+        self.cp101103E = wx.ColourPickerCtrl( panel, wx.ID_ANY, wx.BLACK, wx.DefaultPosition, wx.DefaultSize, wx.CLRP_DEFAULT_STYLE | wx.CLRP_SHOW_LABEL )
         gSizer3.Add( self.cp101103E, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
-        self.gauge101103S = PFGaugePreview( self, wx.ID_ANY, 33, wx.DefaultPosition, wx.DefaultSize, wx.SIMPLE_BORDER )
+        self.gauge101103S = PFGaugePreview( panel, wx.ID_ANY, 33, wx.DefaultPosition, wx.DefaultSize, wx.SIMPLE_BORDER )
         gSizer3.Add( self.gauge101103S, 0, wx.ALIGN_CENTER_VERTICAL|wx.LEFT, 5 )
 
-        self.gauge101103M = PFGaugePreview( self, wx.ID_ANY, 66, wx.DefaultPosition, wx.DefaultSize, wx.SIMPLE_BORDER )
+        self.gauge101103M = PFGaugePreview( panel, wx.ID_ANY, 66, wx.DefaultPosition, wx.DefaultSize, wx.SIMPLE_BORDER )
         gSizer3.Add( self.gauge101103M, 0, wx.ALIGN_CENTER_VERTICAL|wx.LEFT, 5 )
 
-        self.gauge101103E = PFGaugePreview( self, wx.ID_ANY, 100, wx.DefaultPosition, wx.DefaultSize, wx.SIMPLE_BORDER )
+        self.gauge101103E = PFGaugePreview( panel, wx.ID_ANY, 100, wx.DefaultPosition, wx.DefaultSize, wx.SIMPLE_BORDER )
         gSizer3.Add( self.gauge101103E, 0, wx.ALIGN_CENTER_VERTICAL|wx.RIGHT|wx.LEFT, 5 )
 
         mainSizer.Add( gSizer3, 0, wx.EXPAND, 5 )
 
         gSizer4 = wx.BoxSizer( wx.HORIZONTAL )
 
-        self.st103105 = wx.StaticText( self, wx.ID_ANY, u"103 - 105", wx.DefaultPosition, wx.DefaultSize, wx.ALIGN_RIGHT )
+        self.st103105 = wx.StaticText( panel, wx.ID_ANY, u"103 - 105", wx.DefaultPosition, wx.DefaultSize, wx.ALIGN_RIGHT )
         self.st103105.Wrap( -1 )
         gSizer4.Add( self.st103105, 1, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
-        self.cp103105S = wx.ColourPickerCtrl( self, wx.ID_ANY, wx.BLACK, wx.DefaultPosition, wx.DefaultSize, wx.CLRP_DEFAULT_STYLE | wx.CLRP_SHOW_LABEL )
+        self.cp103105S = wx.ColourPickerCtrl( panel, wx.ID_ANY, wx.BLACK, wx.DefaultPosition, wx.DefaultSize, wx.CLRP_DEFAULT_STYLE | wx.CLRP_SHOW_LABEL )
         gSizer4.Add( self.cp103105S, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
-        self.cp103105E = wx.ColourPickerCtrl( self, wx.ID_ANY, wx.BLACK, wx.DefaultPosition, wx.DefaultSize, wx.CLRP_DEFAULT_STYLE | wx.CLRP_SHOW_LABEL )
+        self.cp103105E = wx.ColourPickerCtrl( panel, wx.ID_ANY, wx.BLACK, wx.DefaultPosition, wx.DefaultSize, wx.CLRP_DEFAULT_STYLE | wx.CLRP_SHOW_LABEL )
         gSizer4.Add( self.cp103105E, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
-        self.gauge103105S = PFGaugePreview( self, wx.ID_ANY, 33, wx.DefaultPosition, wx.DefaultSize, wx.SIMPLE_BORDER )
+        self.gauge103105S = PFGaugePreview( panel, wx.ID_ANY, 33, wx.DefaultPosition, wx.DefaultSize, wx.SIMPLE_BORDER )
         gSizer4.Add( self.gauge103105S, 0, wx.ALIGN_CENTER_VERTICAL|wx.LEFT, 5 )
 
-        self.gauge103105M = PFGaugePreview( self, wx.ID_ANY, 66, wx.DefaultPosition, wx.DefaultSize, wx.SIMPLE_BORDER )
+        self.gauge103105M = PFGaugePreview( panel, wx.ID_ANY, 66, wx.DefaultPosition, wx.DefaultSize, wx.SIMPLE_BORDER )
         gSizer4.Add( self.gauge103105M, 0, wx.ALIGN_CENTER_VERTICAL|wx.LEFT, 5 )
 
-        self.gauge103105E = PFGaugePreview( self, wx.ID_ANY, 100, wx.DefaultPosition, wx.DefaultSize, wx.SIMPLE_BORDER )
+        self.gauge103105E = PFGaugePreview( panel, wx.ID_ANY, 100, wx.DefaultPosition, wx.DefaultSize, wx.SIMPLE_BORDER )
         gSizer4.Add( self.gauge103105E, 0, wx.ALIGN_CENTER_VERTICAL|wx.RIGHT|wx.LEFT, 5 )
 
         mainSizer.Add( gSizer4, 0, wx.EXPAND, 5 )
 
         footerSizer = wx.BoxSizer( wx.VERTICAL )
 
-        self.sl1 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
+        self.sl1 = wx.StaticLine( panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
         footerSizer.Add( self.sl1, 0, wx.EXPAND |wx.ALL, 5 )
 
         previewSizer = wx.BoxSizer( wx.HORIZONTAL )
 
-        self.wndPreview0100 = PFGaugePreview( self, wx.ID_ANY, 100, wx.DefaultPosition, wx.DefaultSize, 0)
+        self.wndPreview0100 = PFGaugePreview( panel, wx.ID_ANY, 100, wx.DefaultPosition, wx.DefaultSize, 0)
         previewSizer.Add( self.wndPreview0100, 1, wx.ALIGN_CENTER_VERTICAL, 5 )
 
-        self.wndPreview100101 = PFGaugePreview( self, wx.ID_ANY, 100, wx.DefaultPosition, wx.DefaultSize, 0)
+        self.wndPreview100101 = PFGaugePreview( panel, wx.ID_ANY, 100, wx.DefaultPosition, wx.DefaultSize, 0)
         previewSizer.Add( self.wndPreview100101, 1, wx.ALIGN_CENTER_VERTICAL, 5 )
 
-        self.wndPreview101103 = PFGaugePreview( self, wx.ID_ANY, 100, wx.DefaultPosition, wx.DefaultSize, 0)
+        self.wndPreview101103 = PFGaugePreview( panel, wx.ID_ANY, 100, wx.DefaultPosition, wx.DefaultSize, 0)
         previewSizer.Add( self.wndPreview101103, 1, wx.ALIGN_CENTER_VERTICAL, 5 )
 
-        self.wndPreview103105 = PFGaugePreview( self, wx.ID_ANY, 100, wx.DefaultPosition, wx.DefaultSize, 0)
+        self.wndPreview103105 = PFGaugePreview( panel, wx.ID_ANY, 100, wx.DefaultPosition, wx.DefaultSize, 0)
         previewSizer.Add( self.wndPreview103105, 1, wx.ALIGN_CENTER_VERTICAL, 5 )
 
         footerSizer.Add( previewSizer, 1, wx.EXPAND | wx.ALL, 5 )
 
         buttonsSizer = wx.BoxSizer( wx.HORIZONTAL )
 
-        self.cbLink = wx.CheckBox( self, wx.ID_ANY, u"Link Colors", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.cbLink = wx.CheckBox( panel, wx.ID_ANY, u"Link Colors", wx.DefaultPosition, wx.DefaultSize, 0 )
         buttonsSizer.Add( self.cbLink, 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT | wx.LEFT, 5 )
 
-        self.sliderGradientStart = wx.Slider( self, wx.ID_ANY, self.gradientStart, 0, 255, wx.DefaultPosition, (127,-1), wx.SL_HORIZONTAL|wx.SL_LABELS )
+        self.sliderGradientStart = wx.Slider( panel, wx.ID_ANY, self.gradientStart, 0, 255, wx.DefaultPosition, (127,-1), wx.SL_HORIZONTAL|wx.SL_LABELS )
         buttonsSizer.Add( self.sliderGradientStart, 1, wx.EXPAND | wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5 )
 
-        self.btnRestore = wx.Button( self, wx.ID_ANY, u"Restore Defaults", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.btnRestore = wx.Button( panel, wx.ID_ANY, u"Restore Defaults", wx.DefaultPosition, wx.DefaultSize, 0 )
         buttonsSizer.Add( self.btnRestore, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5 )
 
-        self.btnDump = wx.Button( self, wx.ID_ANY, u"Dump Colors", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.btnDump = wx.Button( panel, wx.ID_ANY, u"Dump Colors", wx.DefaultPosition, wx.DefaultSize, 0 )
         buttonsSizer.Add( self.btnDump, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5 )
 
-        self.btnOk = wx.Button( self, wx.ID_ANY, u"OK", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.btnOk = wx.Button( panel, wx.ID_ANY, u"Apply", wx.DefaultPosition, wx.DefaultSize, 0 )
         buttonsSizer.Add( self.btnOk, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5 )
 
         footerSizer.Add( buttonsSizer, 1, wx.ALIGN_RIGHT, 5 )
         mainSizer.Add( footerSizer, 0, wx.EXPAND, 5 )
 
-        self.SetSizer( mainSizer )
+        panel.SetSizer( mainSizer )
 
         self.SetColours()
 
-        self.Fit()
-        self.Layout()
+#        self.Fit()
+#        self.Layout()
 
         self.sliderGradientStart.Bind(wx.EVT_SCROLL, self.OnGradientStartScroll)
         self.btnRestore.Bind(wx.EVT_BUTTON, self.RestoreDefaults)
@@ -335,6 +329,8 @@ class PFGaugePref ( wx.Dialog):
         self.cp103105S.Bind( wx.EVT_COLOURPICKER_CHANGED, self.OnColourChanged )
         self.cp103105E.Bind( wx.EVT_COLOURPICKER_CHANGED, self.OnColourChanged )
 
+    def getImage(self):
+        return bitmapLoader.getBitmap("pref-gauges_big", "icons")
 
     def InitDefaultColours(self):
         self.c0100S = wx.Colour(191, 191, 191, 255)
@@ -436,7 +432,7 @@ class PFGaugePref ( wx.Dialog):
         event.Skip()
 
     def OnOk(self, event):
-        self.Close()
+        #Apply New Settings
         event.Skip()
 
     def DumpColours(self, event):
@@ -502,9 +498,4 @@ class PFGaugePref ( wx.Dialog):
     def __del__( self ):
         pass
 
-if __name__ == '__main__':
-    app = wx.PySimpleApp()
-    dlg = PFGaugePref()
-    dlg.ShowModal()
-    dlg.Destroy()
-    app.MainLoop()
+PFGaugePref.register()

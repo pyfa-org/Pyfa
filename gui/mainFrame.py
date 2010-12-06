@@ -296,7 +296,7 @@ class MainFrame(wx.Frame):
         # Backup fits
         self.Bind(wx.EVT_MENU, self.backupToXml, id=menuBar.backupFitsId)
         # Preference dialog
-        self.Bind(wx.EVT_MENU, self.showPreferenceDialog, id=wx.ID_PREFERENCES)
+        self.Bind(wx.EVT_MENU, self.showPreferenceDialog, id = menuBar.preferencesId)
 
         #Clipboard exports
         self.Bind(wx.EVT_MENU, self.exportToClipboard, id=wx.ID_COPY)
