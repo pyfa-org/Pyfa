@@ -457,8 +457,6 @@ class FittingView(d.Display):
 
             rows += 1
 
-        tdc.SelectObject(wx.NullBitmap)
-
         render = wx.RendererNative.Get()
 
         #Fix column widths (use biggest between header or items)
@@ -479,20 +477,14 @@ class FittingView(d.Display):
                 opts.m_labelText = name
 
             if imgId != -1:
-                if tbmp:
-                    del tbmp
-
-                tbmp = wx.EmptyBitmap(16,16)
-                tdc.SelectObject(tbmp)
-
                 opts.m_labelBitmap = wx.EmptyBitmap(isize,isize)
-
-                tdc.SelectObject(wx.NullBitmap)
 
             width = render.DrawHeaderButton(self, tdc, (0, 0, 16, 16),
                                 sortArrow = wx.HDR_SORT_ICON_NONE, params = opts)
 
             columnsWidths[i] = max(columnsWidths[i], width)
+
+        tdc.SelectObject(wx.NullBitmap)
 
 
         maxWidth = padding * 2
