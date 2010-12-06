@@ -55,7 +55,6 @@ class AttributeDisplay(ViewColumn):
             self.mask |= wx.LIST_MASK_IMAGE
 
         if params["direct"]:
-            print "direct on", fittingView
             self.direct = True
             self.view = fittingView
             originalRefresh = fittingView.refresh
