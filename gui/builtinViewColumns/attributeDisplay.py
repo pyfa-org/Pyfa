@@ -55,13 +55,14 @@ class AttributeDisplay(ViewColumn):
             self.mask |= wx.LIST_MASK_IMAGE
 
         if params["direct"]:
+            print "direct on", fittingView
             self.direct = True
             self.view = fittingView
             originalRefresh = fittingView.refresh
             sMarket = service.Market.getInstance()
             #Hack into our master view and add a callback for ourselves to know when to query
             def refresh(stuff):
-                self.directInfo = sMarket.directRequest(stuff, info.ID) if stuff is not None else None
+                self.directInfo = sMarket.directRequest(stuff, info.ID) if stuff else None
                 originalRefresh(stuff)
 
             fittingView.refresh = refresh
@@ -89,6 +90,6 @@ class AttributeDisplay(ViewColumn):
         return (("attribute", str, None),
                 ("displayName", bool, False),
                 ("showIcon", bool, True),
-                ("direct", bool, True))
+                ("direct", bool, False))
 
 AttributeDisplay.register()
