@@ -199,7 +199,7 @@ class MarketTree(wx.TreeCtrl):
         self.SelectItem(item)
         self.marketBrowser.itemView.searching = False
 
-class ItemView(d.Display, listmix.ListCtrlAutoWidthMixin):
+class ItemView(d.Display):
     DEFAULT_COLS = ["Base Icon",
                     "Base Name",
                     "attr:power,,,True",
@@ -207,10 +207,8 @@ class ItemView(d.Display, listmix.ListCtrlAutoWidthMixin):
 
     def __init__(self, parent, marketBrowser):
         d.Display.__init__(self, parent)
-        listmix.ListCtrlAutoWidthMixin.__init__(self)
         marketBrowser.Bind(wx.EVT_TREE_SEL_CHANGED, self.selectionMade)
 
-        self.setResizeColumn(2)
         self.searching = False
         self.marketBrowser = marketBrowser
         self.marketView = marketBrowser.marketView
@@ -224,12 +222,6 @@ class ItemView(d.Display, listmix.ListCtrlAutoWidthMixin):
         #Make sure WE do intresting stuff TOO
         self.Bind(wx.EVT_CONTEXT_MENU, self.contextMenu)
         self.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.itemActivated)
-
-    # Deny column resize (we use ListCtrlAutoWidthMixin and it won't play nice with really big number of items in the list)
-    # This is overrides Display.resizeSkip ( EVT_LIST_COL_BEGIN_DRAG )
-
-    def resizeSkip(self, event):
-        event.Veto()
 
     def itemActivated(self, event):
         #Check if something is selected, if so, spawn the menu for it
@@ -344,10 +336,6 @@ class ItemView(d.Display, listmix.ListCtrlAutoWidthMixin):
         self.active = stuff
         d.Display.populate(self, stuff)
 
-        self.SetSize((-1, -1))
-
     def refresh(self, stuff):
         stuff.sort(key=self.itemSort)
         d.Display.refresh(self, stuff)
-
-        self.SetSize((-1, -1))
