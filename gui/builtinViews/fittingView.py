@@ -418,11 +418,16 @@ class FittingView(d.Display):
         for i in xrange(len(self.DEFAULT_COLS)):
             columnsWidths.append(0)
 
-
+        sFit = service.Fit.getInstance()
+        fit = sFit.getFit(self.activeFitID)
+        slotMap = {}
+        for slotType in Slot.getTypes():
+            slot = Slot.getValue(slotType)
+            slotMap[slot] = fit.getSlotsFree(slot) < 0
 
         padding = 2
         isize = 16
-        headerSize = isize + padding * 2
+        headerSize = isize + padding * 3
 
         maxWidth = 0
         maxRowHeight = isize
@@ -499,7 +504,7 @@ class FittingView(d.Display):
 
 
         mdc = wx.MemoryDC()
-        mbmp = wx.EmptyBitmap(maxWidth, (maxRowHeight + padding) * rows + padding + headerSize)
+        mbmp = wx.EmptyBitmap(maxWidth, (maxRowHeight) * rows + padding*2 + headerSize)
 
         mdc.SelectObject(mbmp)
 
@@ -545,9 +550,19 @@ class FittingView(d.Display):
 
             cx += columnsWidths[i]
 
+        brush = wx.Brush(wx.Colour(224, 51, 51))
+        pen = wx.Pen(wx.Colour(224, 51, 51))
+
+        mdc.SetPen(pen)
+        mdc.SetBrush(brush)
+
         cy = padding + headerSize
         for id,st in enumerate(self.mods):
             cx = padding
+
+            if slotMap[st.slot]:
+                mdc.DrawRectangle(cx,cy,maxWidth - cx,maxRowHeight)
+
             for i, col in enumerate(self.activeColumns):
                 if i>maxColumns:
                     break
@@ -576,7 +591,7 @@ class FittingView(d.Display):
 #                    cx += isize + padding
                 cx += columnsWidths[i]
 
-            cy += maxRowHeight + padding
+            cy += maxRowHeight
 
         mdc.SelectObject(wx.NullBitmap)
 
