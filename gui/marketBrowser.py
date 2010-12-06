@@ -17,11 +17,13 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 #===============================================================================
 
+import wx
+import service
+import wx.lib.mixins.listctrl  as  listmix
 import gui.display as d
 from gui.cachingImageList import CachingImageList
 from gui.contextMenu import ContextMenu
-import wx
-import service
+
 
 ItemSelected, ITEM_SELECTED = wx.lib.newevent.NewEvent()
 
@@ -197,7 +199,7 @@ class MarketTree(wx.TreeCtrl):
         self.SelectItem(item)
         self.marketBrowser.itemView.searching = False
 
-class ItemView(d.Display):
+class ItemView(d.Display, listmix.ListCtrlAutoWidthMixin):
     DEFAULT_COLS = ["Base Icon",
                     "Base Name",
                     "attr:power,,,True",
@@ -205,7 +207,10 @@ class ItemView(d.Display):
 
     def __init__(self, parent, marketBrowser):
         d.Display.__init__(self, parent)
+        listmix.ListCtrlAutoWidthMixin.__init__(self)
         marketBrowser.Bind(wx.EVT_TREE_SEL_CHANGED, self.selectionMade)
+
+        self.setResizeColumn(2)
         self.searching = False
         self.marketBrowser = marketBrowser
         self.marketView = marketBrowser.marketView
@@ -219,6 +224,12 @@ class ItemView(d.Display):
         #Make sure WE do intresting stuff TOO
         self.Bind(wx.EVT_CONTEXT_MENU, self.contextMenu)
         self.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.itemActivated)
+
+    # Deny column resize (we use ListCtrlAutoWidthMixin and it won't play nice with really big number of items in the list)
+    # This is overrides Display.resizeSkip ( EVT_LIST_COL_BEGIN_DRAG )
+
+    def resizeSkip(self, event):
+        event.Veto()
 
     def itemActivated(self, event):
         #Check if something is selected, if so, spawn the menu for it
