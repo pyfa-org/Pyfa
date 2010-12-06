@@ -26,7 +26,7 @@ class MarketJump(ContextMenu):
         else:
             item = selection[0]
 
-        self.mainFrame.marketBrowser.jump(item)
         self.mainFrame.notebookBrowsers.SetSelection(0)
+        self.mainFrame.marketBrowser.jump(item)
 
 MarketJump.register()
