@@ -62,7 +62,7 @@ class PyGauge(wx.PyWindow):
         self.transitionsColors = [( (191, 191, 191, 255)  , (128, 255, 0, 255) ),
                                  ( (191, 167, 96, 255)  ,  (255, 191, 0, 255) ),
                                  ( (255, 191, 0, 255)  ,  (255, 128, 0, 255) ),
-                                 ( (255, 128, 0, 255)  ,  (191, 48, 48, 255) )]
+                                 ( (255, 128, 0, 255)  ,  (255, 64, 64, 255) )]
         self.gradientEffect = 95
 
         self._percentage = 0
@@ -350,7 +350,7 @@ class PyGauge(wx.PyWindow):
                 colorS,colorE = self.transitionsColors[transition]
                 color = self.CalculateTransitionColor(colorS, colorE, xv)
             else:
-                color = wx.Colour(240,0,0)
+                color = wx.Colour(191,48,48)
 
             gcolor = self.CalculateGColor(color, -self.gradientEffect)
 
