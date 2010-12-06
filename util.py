@@ -33,7 +33,7 @@ def suffixizeAmount(val, lowest=-6, highest=9):
     Suffixes below lowest and above highest orders won't be used.
     """
     if abs(val) >= 1000 and highest >= 3:
-        suffixmap = {3 : "k", 6 : "M", 9 : "G"}
+        suffixmap = {3 : "k", 6 : "M", 9 : "B"}
         # Start from highest possible suffix
         for key in sorted(suffixmap, reverse = True):
             # Find first suitable suffix and check if it's not above highest order
