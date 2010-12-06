@@ -59,10 +59,16 @@ class PyGauge(wx.PyWindow):
         self._animValue = 0
         self._animDirection = 0
 
+        self.transitionsColors = [( (191, 191, 191, 255)  , (128, 255, 0, 255) ),
+                                 ( (191, 167, 96, 255)  ,  (255, 191, 0, 255) ),
+                                 ( (255, 191, 0, 255)  ,  (255, 128, 0, 255) ),
+                                 ( (255, 128, 0, 255)  ,  (191, 48, 48, 255) )]
+        self.gradientEffect = 95
 
         self._percentage = 0
         self._oldPercentage = 0
 
+        self.font = wx.FontFromPixelSize((0,14),wx.SWISS, wx.NORMAL, wx.NORMAL, False)
 
         self.SetBarGradient((wx.Colour(119,119,119),wx.Colour(153,153,153)))
         self.SetBackgroundColour(wx.Colour(51,51,51))
@@ -249,9 +255,24 @@ class PyGauge(wx.PyWindow):
         """
 
         pass
+
+    def CalculateGColor(self, color, delta):
+        bkR ,bkG , bkB = color
+        scale = delta
+
+        r = bkR + scale
+        g = bkG + scale
+        b = bkB + scale
+
+        r = min(max(r,0),255)
+        b = min(max(b,0),255)
+        g = min(max(g,0),255)
+
+        return wx.Colour(r,g,b,255)
+
     def CalculateTransitionColor(self, startColor, endColor, delta):
-        sR,sG,sB = startColor
-        eR,eG,eB = endColor
+        sR,sG,sB,_ = startColor
+        eR,eG,eB,_ = endColor
 
         tR = sR + (eR - sR) *  delta
         tG = sG + (eG - sG) *  delta
@@ -292,7 +313,6 @@ class PyGauge(wx.PyWindow):
 
         if self.GetBarGradient():
 
-            c1,c2 = self.GetBarGradient()
             if value > 100:
                 w = rect.width
             else:
@@ -302,39 +322,41 @@ class PyGauge(wx.PyWindow):
             r.height = r.height/2+1
 
             pv = value
+            xv=1
+            transition = 0
 
             if pv <= 100:
                 xv = pv/100
-                c1 = self.CalculateTransitionColor(c1, (122,154,25),xv)
-                c2 = self.CalculateTransitionColor(c2, (153,185,56),xv)
+                transition = 0
+
+            elif pv <=101:
+                xv = pv -100
+                transition = 1
+
+            elif pv <= 103:
+                xv = (pv -101)/2
+                transition = 2
+
+            elif pv <= 105:
+                xv = (pv -103)/2
+                transition = 3
+
             else:
-                if pv <=101:
-                    xv = pv -100
-                    c1 = self.CalculateTransitionColor((122,154,25), (132,175,22), xv)
-                    c2 = self.CalculateTransitionColor((153,185,56), (163,206,53), xv)
+                pv = 106
+                xv = pv -100
+                transition = -1
 
-                elif pv <= 103:
-                    xv = (pv -101)/2
-                    c1 = self.CalculateTransitionColor((132,175,22), (192,115,22), xv)
-                    c2 = self.CalculateTransitionColor((163,206,53), (223,146,53), xv)
+            if transition != -1:
+                colorS,colorE = self.transitionsColors[transition]
+                color = self.CalculateTransitionColor(colorS, colorE, xv)
+            else:
+                color = wx.Colour(240,0,0)
 
-                elif pv <= 105:
-                    xv = (pv -103)/2
-                    c1 = self.CalculateTransitionColor((192,115,22), (212,55,22), xv)
-                    c2 = self.CalculateTransitionColor((223,146,53), (243,86,53), xv)
+            gcolor = self.CalculateGColor(color, -self.gradientEffect)
 
-                else:
-                    pv = 106
-                    xv = pv -100
-
-                    c2 = map(lambda t: sum(t), zip(c2, (0,100/3,-100,0)))
-                    c2 = map(lambda t: sum(t), zip(c2, (xv*15,-xv*20,0,0)))
-
-                    c1 = wx.Colour(255,0,0)
-
-            dc.GradientFillLinear(r, c1, c2, wx.SOUTH)
+            dc.GradientFillLinear(r, gcolor, color, wx.SOUTH)
             r.top = r.height
-            dc.GradientFillLinear(r, c1, c2, wx.NORTH)
+            dc.GradientFillLinear(r, gcolor, color, wx.NORTH)
         else:
             colour=self.GetBarColour()
             dc.SetBrush(wx.Brush(colour))
@@ -347,15 +369,7 @@ class PyGauge(wx.PyWindow):
             r.width = w
             dc.DrawRectangleRect(r)
 
-
-
-        standardFont = wx.SystemSettings.GetFont(wx.SYS_DEFAULT_GUI_FONT)
-        if "__WXMAC__" in  wx.PlatformInfo :
-            fsize = 9
-        else:
-            fsize = 8
-        standardFont.SetPointSize(fsize)
-        dc.SetFont(standardFont)
+        dc.SetFont(self.font)
 
         r = copy.copy(rect)
         r.left +=1
