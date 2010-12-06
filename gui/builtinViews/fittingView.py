@@ -427,7 +427,7 @@ class FittingView(d.Display):
 
         padding = 2
         isize = 16
-        headerSize = isize + padding * 3
+        headerSize = max(isize, tdc.GetTextExtent("W")[0]) + padding * 2
 
         maxWidth = 0
         maxRowHeight = isize
@@ -489,7 +489,7 @@ class FittingView(d.Display):
 
                 tdc.SelectObject(wx.NullBitmap)
 
-            width = render.DrawHeaderButton(self, tdc, (0, 0, 1, 1),
+            width = render.DrawHeaderButton(self, tdc, (0, 0, 16, 16),
                                 sortArrow = wx.HDR_SORT_ICON_NONE, params = opts)
 
             columnsWidths[i] = max(columnsWidths[i], width)
@@ -504,7 +504,7 @@ class FittingView(d.Display):
 
 
         mdc = wx.MemoryDC()
-        mbmp = wx.EmptyBitmap(maxWidth, (maxRowHeight) * rows + padding*2 + headerSize)
+        mbmp = wx.EmptyBitmap(maxWidth, (maxRowHeight) * rows + padding*4 + headerSize)
 
         mdc.SelectObject(mbmp)
 
@@ -514,7 +514,7 @@ class FittingView(d.Display):
         mdc.SetFont(font)
         mdc.SetTextForeground(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOWTEXT))
 
-        cx = padding
+        cx = padding *2
         for i, col in enumerate(self.activeColumns):
             if i > maxColumns:
                 break
@@ -526,26 +526,15 @@ class FittingView(d.Display):
                 name = ""
 
             opts = wx.HeaderButtonParams()
-
+            opts.m_labelAlignment = wx.ALIGN_LEFT
             if name != "":
                 opts.m_labelText = name
 
             if imgId != -1:
-                if tbmp:
-                    del tbmp
+                bmp = self.imageList.GetBitmap(imgId)
+                opts.m_labelBitmap = bmp
 
-                tbmp = wx.EmptyBitmap(16,16)
-                tdc.SelectObject(tbmp)
-
-                tdc.SetBackground(wx.Brush(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)))
-                tdc.Clear()
-
-                self.imageList.Draw(imgId,tdc,0,0,wx.IMAGELIST_DRAW_TRANSPARENT,True)
-                opts.m_labelBitmap = tbmp
-
-                tdc.SelectObject(wx.NullBitmap)
-
-            width = render.DrawHeaderButton(self, mdc, (cx, 0, columnsWidths[i], headerSize),
+            width = render.DrawHeaderButton (self, mdc, (cx, padding, columnsWidths[i], headerSize), wx.CONTROL_CURRENT,
                                 sortArrow = wx.HDR_SORT_ICON_NONE, params = opts)
 
             cx += columnsWidths[i]
@@ -556,7 +545,7 @@ class FittingView(d.Display):
         mdc.SetPen(pen)
         mdc.SetBrush(brush)
 
-        cy = padding + headerSize
+        cy = padding*2 + headerSize
         for id,st in enumerate(self.mods):
             cx = padding
 
