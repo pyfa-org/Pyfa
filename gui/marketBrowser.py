@@ -199,7 +199,9 @@ class MarketTree(wx.TreeCtrl):
 
 class ItemView(d.Display):
     DEFAULT_COLS = ["Base Icon",
-                    "Base Name"]
+                    "Base Name",
+                    "attr:power,,,True",
+                    "attr:cpu,,,True"]
 
     def __init__(self, parent, marketBrowser):
         d.Display.__init__(self, parent)

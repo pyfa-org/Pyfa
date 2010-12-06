@@ -46,8 +46,9 @@ class Display(wx.ListCtrl):
                 for x, param in enumerate(paramList):
                     name, type, defaultValue = param
                     value = params[x] if len(params) > x else defaultValue
-                    if type == bool:
-                        value = bool(value) if value != "False" else False
+                    value = value if value != "" else defaultValue
+                    if type == bool and isinstance(value, basestring):
+                        value = bool(value) if value.lower() != "false" and value != "0" else False
                     paramDict[name] = value
                 col = colClass(self, paramDict)
             else:

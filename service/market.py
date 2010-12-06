@@ -25,6 +25,8 @@ import threading
 from sqlalchemy.orm.exc import NoResultFound
 import Queue
 import traceback
+import sqlalchemy.sql
+import sqlalchemy.orm
 
 class ShipBrowserWorkerThread(threading.Thread):
     def run(self):
@@ -334,3 +336,12 @@ class Market():
             eos.db.commit()
 
         self.priceWorkerThread.trigger(requests, cb)
+
+    def directRequest(self, items, attrID):
+        itemIDs = map(lambda i: i.ID, items)
+        info = {}
+        for ID, val in eos.db.directAttributeRequest(itemIDs, attrID):
+            info[ID] = val
+
+        return info
+

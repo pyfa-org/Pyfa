@@ -54,15 +54,32 @@ class AttributeDisplay(ViewColumn):
             self.columnText = info.displayName if info.displayName != "" else info.name
             self.mask |= wx.LIST_MASK_IMAGE
 
+        if params["direct"]:
+            self.direct = True
+            self.view = fittingView
+            originalRefresh = fittingView.refresh
+            sMarket = service.Market.getInstance()
+            #Hack into our master view and add a callback for ourselves to know when to query
+            def refresh(stuff):
+                self.directInfo = sMarket.directRequest(stuff, info.ID) if stuff is not None else None
+                originalRefresh(stuff)
+
+            fittingView.refresh = refresh
+
     def getText(self, mod):
         if hasattr(mod, "item"):
             attr = mod.getModifiedItemAttr(self.info.name)
         else:
-            attr = mod.getAttribute(self.info.name)
-        if attr:
+            if self.direct:
+                info = self.directInfo
+                attr = info.get(mod.ID, "") if info else ""
+            else:
+                attr = mod.getAttribute(self.info.name)
+
+        if isinstance(attr, (float, int)):
             return (formatAmount(attr, 3, 0, 3))
         else:
-            return ""
+            return attr if attr is not None else ""
 
     def getImageId(self, mod):
         return -1
@@ -71,6 +88,7 @@ class AttributeDisplay(ViewColumn):
     def getParameters():
         return (("attribute", str, None),
                 ("displayName", bool, False),
-                ("showIcon", bool, True))
+                ("showIcon", bool, True),
+                ("direct", bool, True))
 
 AttributeDisplay.register()
