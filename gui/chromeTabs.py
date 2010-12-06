@@ -1196,9 +1196,9 @@ class PFNotebookPagePreview(wx.Frame):
                                                                wx.NO_BORDER
                                                              | wx.FRAME_NO_TASKBAR
                                                              | wx.STAY_ON_TOP)
-        img = bitmap.ConvertToImage()
-        img = img.ConvertToGreyscale()
-        bitmap = wx.BitmapFromImage(img)
+#        img = bitmap.ConvertToImage()
+#        img = img.ConvertToGreyscale()
+#        bitmap = wx.BitmapFromImage(img)
         self.title = title
         self.bitmap = bitmap
         self.SetSize((bitmap.GetWidth(), bitmap.GetHeight()))
@@ -1232,8 +1232,8 @@ class PFNotebookPagePreview(wx.Frame):
     def OnTimer(self, event):
         self.transp += 20*self.direction
 
-        if self.transp > 240:
-            self.transp = 240
+        if self.transp > 220:
+            self.transp = 220
             self.timer.Stop()
 
         if self.transp < 0:

@@ -408,29 +408,80 @@ class FittingView(d.Display):
         if self.FVsnapshot:
             del self.FVsnapshot
 
-        wantedWidth = 0
-        for i in xrange(4):
-            wantedWidth += self.GetColumnWidth(i)
+        tbmp = wx.EmptyBitmap(1,1)
+        tdc = wx.MemoryDC()
+        tdc.SelectObject(tbmp)
+        font = wx.SystemSettings_GetFont(wx.SYS_DEFAULT_GUI_FONT)
+        tdc.SetFont(font)
 
-        icount = self.itemCount
-        irect = self.itemRect
-        if irect:
-            ih = irect.height
-            it = irect.top
-        else:
-            ih = 0
-            it = 0
-        rect = self.GetRect()
-        rect.height = min(ih * icount + it, rect.height - 16)
-        rect.width = min(rect.width, wantedWidth)
+
+        padding = 2
+        isize = 16
+
+        maxWidth = 0
+        maxRowHeight = isize
+        rows = 0
+        for id,st in enumerate(self.mods):
+            width = 0
+            for i, col in enumerate(self.activeColumns):
+                if i>3:
+                    break
+                name = col.getText(st)
+                nx,ny = tdc.GetTextExtent(name)
+                imgId = col.getImageId(st)
+
+                if id != -1:
+                    width += isize + padding
+                if name != "":
+                    width += nx + 2*padding
+
+                if id == -1 and name == "":
+                    width += isize +padding
+
+                maxWidth = max(width, maxWidth)
+                maxRowHeight = max(ny, maxRowHeight)
+            rows += 1
+
+        tdc.SelectObject(wx.NullBitmap)
 
         mdc = wx.MemoryDC()
-        mbmp = wx.EmptyBitmap(rect.width, rect.height)
+        mbmp = wx.EmptyBitmap(maxWidth, (maxRowHeight + padding) * rows + padding)
+
         mdc.SelectObject(mbmp)
 
-        pageDC = wx.ClientDC(self)
+        mdc.SetBackground(wx.Brush(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)))
+        mdc.Clear()
 
-        mdc.Blit(0, 0, rect.width, rect.height, pageDC, 0, 0)
+        mdc.SetFont(font)
+        mdc.SetTextForeground(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOWTEXT))
+
+        cy = padding
+        for id,st in enumerate(self.mods):
+            cx = padding
+            for i, col in enumerate(self.activeColumns):
+                if i>3:
+                    break
+
+                name = col.getText(st)
+                imgId = col.getImageId(st)
+                bmp = self.imageList.GetBitmap(imgId)
+                if imgId != -1:
+                    self.imageList.Draw(imgId,mdc,cx,cy,wx.IMAGELIST_DRAW_TRANSPARENT,True)
+                    cx += isize + padding
+                if name != "":
+                    nx,ny = mdc.GetTextExtent(name)
+                    rect = wx.Rect()
+                    rect.top = cy
+                    rect.left = cx + 2*padding
+                    rect.width = nx
+                    rect.height = maxRowHeight + padding
+                    mdc.DrawLabel(name, rect, wx.ALIGN_CENTER_VERTICAL)
+                    cx += nx + padding
+
+                if imgId == -1 and name == "":
+                    cx += isize + padding
+
+            cy += maxRowHeight + padding
 
         mdc.SelectObject(wx.NullBitmap)
 
