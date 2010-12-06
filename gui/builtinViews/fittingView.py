@@ -405,6 +405,7 @@ class FittingView(d.Display):
         return self.FVsnapshot
 
     def MakeSnapshot(self, maxColumns = 1337):
+
         if self.FVsnapshot:
             del self.FVsnapshot
 
@@ -419,7 +420,11 @@ class FittingView(d.Display):
             columnsWidths.append(0)
 
         sFit = service.Fit.getInstance()
-        fit = sFit.getFit(self.activeFitID)
+        try:
+            fit = sFit.getFit(self.activeFitID)
+        except:
+            return
+
         slotMap = {}
         for slotType in Slot.getTypes():
             slot = Slot.getValue(slotType)
