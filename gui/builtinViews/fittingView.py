@@ -404,48 +404,102 @@ class FittingView(d.Display):
     def Snapshot(self):
         return self.FVsnapshot
 
-    def MakeSnapshot(self):
+    def MakeSnapshot(self, maxColumns = 1337):
         if self.FVsnapshot:
             del self.FVsnapshot
 
-        tbmp = wx.EmptyBitmap(1,1)
+        tbmp = wx.EmptyBitmap(16,16)
         tdc = wx.MemoryDC()
         tdc.SelectObject(tbmp)
         font = wx.SystemSettings_GetFont(wx.SYS_DEFAULT_GUI_FONT)
         tdc.SetFont(font)
 
+        columnsWidths = []
+        for i in xrange(len(self.DEFAULT_COLS)):
+            columnsWidths.append(0)
+
+
 
         padding = 2
         isize = 16
+        headerSize = isize + padding * 2
 
         maxWidth = 0
         maxRowHeight = isize
         rows = 0
         for id,st in enumerate(self.mods):
-            width = 0
             for i, col in enumerate(self.activeColumns):
-                if i>3:
+                if i>maxColumns:
                     break
                 name = col.getText(st)
+
+                if not isinstance(name, basestring):
+                    name = ""
+
                 nx,ny = tdc.GetTextExtent(name)
                 imgId = col.getImageId(st)
-
-                if id != -1:
-                    width += isize + padding
+                cw = 0
+                if imgId != -1:
+                    cw += isize + padding
                 if name != "":
-                    width += nx + 2*padding
+                    cw += nx + 4*padding
 
-                if id == -1 and name == "":
-                    width += isize +padding
+                if imgId == -1 and name == "":
+                    cw += isize +padding
 
-                maxWidth = max(width, maxWidth)
                 maxRowHeight = max(ny, maxRowHeight)
+                columnsWidths[i] = max(columnsWidths[i], cw)
+
             rows += 1
 
         tdc.SelectObject(wx.NullBitmap)
 
+        render = wx.RendererNative.Get()
+
+        #Fix column widths (use biggest between header or items)
+
+        for i, col in enumerate(self.activeColumns):
+            if i > maxColumns:
+                break
+
+            name = col.columnText
+            imgId = col.imageId
+
+            if not isinstance(name, basestring):
+                name = ""
+
+            opts = wx.HeaderButtonParams()
+
+            if name != "":
+                opts.m_labelText = name
+
+            if imgId != -1:
+                if tbmp:
+                    del tbmp
+
+                tbmp = wx.EmptyBitmap(16,16)
+                tdc.SelectObject(tbmp)
+
+                opts.m_labelBitmap = wx.EmptyBitmap(isize,isize)
+
+                tdc.SelectObject(wx.NullBitmap)
+
+            width = render.DrawHeaderButton(self, tdc, (0, 0, 1, 1),
+                                sortArrow = wx.HDR_SORT_ICON_NONE, params = opts)
+
+            columnsWidths[i] = max(columnsWidths[i], width)
+
+
+        maxWidth = padding * 2
+
+        for i in xrange(len(self.DEFAULT_COLS)):
+            if i > maxColumns:
+                break
+            maxWidth += columnsWidths[i]
+
+
         mdc = wx.MemoryDC()
-        mbmp = wx.EmptyBitmap(maxWidth, (maxRowHeight + padding) * rows + padding)
+        mbmp = wx.EmptyBitmap(maxWidth, (maxRowHeight + padding) * rows + padding + headerSize)
 
         mdc.SelectObject(mbmp)
 
@@ -455,19 +509,59 @@ class FittingView(d.Display):
         mdc.SetFont(font)
         mdc.SetTextForeground(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOWTEXT))
 
-        cy = padding
+        cx = padding
+        for i, col in enumerate(self.activeColumns):
+            if i > maxColumns:
+                break
+
+            name = col.columnText
+            imgId = col.imageId
+
+            if not isinstance(name, basestring):
+                name = ""
+
+            opts = wx.HeaderButtonParams()
+
+            if name != "":
+                opts.m_labelText = name
+
+            if imgId != -1:
+                if tbmp:
+                    del tbmp
+
+                tbmp = wx.EmptyBitmap(16,16)
+                tdc.SelectObject(tbmp)
+
+                tdc.SetBackground(wx.Brush(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)))
+                tdc.Clear()
+
+                self.imageList.Draw(imgId,tdc,0,0,wx.IMAGELIST_DRAW_TRANSPARENT,True)
+                opts.m_labelBitmap = tbmp
+
+                tdc.SelectObject(wx.NullBitmap)
+
+            width = render.DrawHeaderButton(self, mdc, (cx, 0, columnsWidths[i], headerSize),
+                                sortArrow = wx.HDR_SORT_ICON_NONE, params = opts)
+
+            cx += columnsWidths[i]
+
+        cy = padding + headerSize
         for id,st in enumerate(self.mods):
             cx = padding
             for i, col in enumerate(self.activeColumns):
-                if i>3:
+                if i>maxColumns:
                     break
 
                 name = col.getText(st)
+                if not isinstance(name, basestring):
+                    name = ""
+
                 imgId = col.getImageId(st)
                 bmp = self.imageList.GetBitmap(imgId)
+                tcx = cx
                 if imgId != -1:
                     self.imageList.Draw(imgId,mdc,cx,cy,wx.IMAGELIST_DRAW_TRANSPARENT,True)
-                    cx += isize + padding
+                    tcx += isize + padding
                 if name != "":
                     nx,ny = mdc.GetTextExtent(name)
                     rect = wx.Rect()
@@ -476,10 +570,11 @@ class FittingView(d.Display):
                     rect.width = nx
                     rect.height = maxRowHeight + padding
                     mdc.DrawLabel(name, rect, wx.ALIGN_CENTER_VERTICAL)
-                    cx += nx + padding
+                    tcx += nx + padding
 
-                if imgId == -1 and name == "":
-                    cx += isize + padding
+#                if imgId == -1 and name == "":
+#                    cx += isize + padding
+                cx += columnsWidths[i]
 
             cy += maxRowHeight + padding
 
