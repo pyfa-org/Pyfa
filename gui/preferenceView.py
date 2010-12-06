@@ -17,6 +17,8 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 #===============================================================================
 
+import wx
+
 class PreferenceView(object):
     views = {}
     def __init__(self):
@@ -35,6 +37,9 @@ class PreferenceView(object):
 
     def refreshPanel(self, fit):
         raise NotImplementedError()
+
+    def getImage(self):
+        return wx.NullBitmap
 
 from gui.builtinPreferenceViews import *
 

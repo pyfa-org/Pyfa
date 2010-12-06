@@ -1,1 +1,1 @@
-__all__ = ["dummyView"]
+__all__ = ["pyfaGaugePreferences"]

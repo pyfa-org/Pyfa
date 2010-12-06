@@ -81,7 +81,7 @@ class MainMenuBar(wx.MenuBar):
 #        graphFrameItem.Enable(gui.graphFrame.enabled)
         windowMenu.AppendItem(graphFrameItem)
 
-        #windowMenu.Append(wx.ID_PREFERENCES)
+        windowMenu.Append(wx.ID_PREFERENCES)
 
         # Help menu
         helpMenu = wx.Menu()

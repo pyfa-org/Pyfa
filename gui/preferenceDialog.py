@@ -22,19 +22,32 @@ from gui.preferenceView import PreferenceView
 class PreferenceDialog(wx.Dialog):
 
     def __init__(self, parent):
-        wx.Dialog.__init__(self, parent, id=wx.ID_ANY, size=wx.Size(600, 400), style=wx.DEFAULT_DIALOG_STYLE)
+        wx.Dialog.__init__(self, parent, id=wx.ID_ANY, size=wx.DefaultSize, style=wx.DEFAULT_DIALOG_STYLE)
+        self.SetTitle("pyfa - Preferences")
+
         mainSizer = wx.BoxSizer(wx.VERTICAL)
+
         self.listbook = wx.Listbook(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LB_DEFAULT)
         self.listbook.GetListView().SetMinSize((500, -1))
         self.listbook.GetListView().SetSize((500, -1))
 
+        self.imageList = wx.ImageList(64,64)
+        self.listbook.SetImageList(self.imageList)
+
         mainSizer.Add(self.listbook, 1, wx.EXPAND | wx.ALL, 5)
         self.SetSizer(mainSizer)
-        self.Layout()
 
         self.Centre(wx.BOTH)
 
         for title, prefView in PreferenceView.views.iteritems():
             page = wx.Panel(self.listbook)
+            bmp = prefView.getImage()
+            if bmp:
+                imgID = self.imageList.Add(bmp)
+            else:
+                imgID = -1
             prefView.populatePanel(page)
-            self.listbook.AddPage(page, title)
+            self.listbook.AddPage(page, title, imageId = imgID)
+
+        self.Fit()
+        self.Layout()
