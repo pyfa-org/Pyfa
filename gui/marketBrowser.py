@@ -344,6 +344,10 @@ class ItemView(d.Display, listmix.ListCtrlAutoWidthMixin):
         self.active = stuff
         d.Display.populate(self, stuff)
 
+        self.SetSize((-1, -1))
+
     def refresh(self, stuff):
         stuff.sort(key=self.itemSort)
         d.Display.refresh(self, stuff)
+
+        self.SetSize((-1, -1))
