@@ -118,7 +118,7 @@ class Display(wx.ListCtrl):
         for i in xrange(self.imageList.ImageCount - 1, self.imageListBase, -1):
             self.imageList.Remove(i)
 
-    def populate(self, stuff):
+    def populate(self, stuff, clearImageList = True):
         selection = []
 
 
@@ -128,7 +128,8 @@ class Display(wx.ListCtrl):
             sel = self.GetNextSelected(sel)
 
         self.DeleteAllItems()
-        self.clearItemImages()
+        if clearImageList:
+            self.clearItemImages()
 
         if stuff is not None:
             for id, st in enumerate(stuff):
