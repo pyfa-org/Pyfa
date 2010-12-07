@@ -34,6 +34,8 @@ class GraphFrame(wx.Frame):
 
         global enabled
         global mplImported
+
+        self.legendFix = False
         if not enabled:
             return
 
@@ -44,6 +46,10 @@ class GraphFrame(wx.Frame):
             from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as Canvas
             from matplotlib.figure import Figure
             enabled = True
+            if mpl.__version__[0] != "1":
+                print "pyfa: Found matplotlib version ",mpl.__version__, " - activating OVER9000 workarounds"
+                print "pyfa: Recommended minimum matplotlib version is 1.0.0"
+                self.legendFix = True
         except:
             print "Problems importing matplotlib; continuing without graphs"
             enabled = False
@@ -198,13 +204,21 @@ class GraphFrame(wx.Frame):
             except:
                 self.SetStatusText("Invalid values in '%s'" % fit.name)
 
-        leg = self.subplot.legend(tuple(legend), "upper right" , shadow = False)
+        if self.legendFix and len(legend) > 0:
+            leg = self.subplot.legend(tuple(legend), "upper right" , shadow = False)
+            for t in leg.get_texts():
+                t.set_fontsize('small')
 
-        for t in leg.get_texts():
-            t.set_fontsize('small')
+            for l in leg.get_lines():
+                l.set_linewidth(1)
 
-        for l in leg.get_lines():
-            l.set_linewidth(1)
+        elif not self.legendFix and len(legend) >0:
+            leg = self.subplot.legend(tuple(legend), "upper right" , shadow = False, frameon = False)
+            for t in leg.get_texts():
+                t.set_fontsize('small')
+
+            for l in leg.get_lines():
+                l.set_linewidth(1)
 
         self.canvas.draw()
         self.SetStatusText("")
