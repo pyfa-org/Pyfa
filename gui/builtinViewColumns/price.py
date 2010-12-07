@@ -29,11 +29,7 @@ class Price(ViewColumn):
         ViewColumn.__init__(self, fittingView)
         self.mask = wx.LIST_MASK_IMAGE
         bitmap = bitmapLoader.getBitmap("totalPrice_small", "icons")
-        if bitmap:
-            self.imageId = fittingView.imageList.Add(bitmap)
-        else:
-            self.imageId = -1
-
+        self.imageId = fittingView.imageList.GetImageIndex("totalPrice_small", "icons")
 
     def getText(self, stuff):
         if stuff.item is None:
