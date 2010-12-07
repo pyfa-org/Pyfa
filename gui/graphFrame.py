@@ -198,7 +198,7 @@ class GraphFrame(wx.Frame):
             except:
                 self.SetStatusText("Invalid values in '%s'" % fit.name)
 
-        leg = self.subplot.legend(tuple(legend), "upper right" , shadow = False, frameon = False)
+        leg = self.subplot.legend(tuple(legend), "upper right" , shadow = False)
 
         for t in leg.get_texts():
             t.set_fontsize('small')
