@@ -17,12 +17,13 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 #===============================================================================
 
+import wx
+import service
+
+from util import formatAmount
 from gui.viewColumn import ViewColumn
 from gui import bitmapLoader
-import service
-from util import formatAmount
 
-import wx
 class CapacitorUse(ViewColumn):
     name = "Capacitor Usage"
     def __init__(self, fittingView, params):
@@ -32,11 +33,7 @@ class CapacitorUse(ViewColumn):
 
         cAttribute = service.Attribute.getInstance()
         info = cAttribute.getAttributeInfo("capacitorNeed")
-        bitmap = bitmapLoader.getBitmap(info.icon.iconFile, "pack")
-        if bitmap:
-            self.imageId = fittingView.imageList.Add(bitmap)
-        else:
-            self.imageId = -1
+        self.imageId = fittingView.imageList.GetImageIndex(info.icon.iconFile, "pack")
 
 
     def getText(self, mod):
