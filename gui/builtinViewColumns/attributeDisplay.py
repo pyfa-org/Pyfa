@@ -39,13 +39,10 @@ class AttributeDisplay(ViewColumn):
                 iconFile = info.icon.iconFile if info.icon else None
                 iconType = "pack"
             if iconFile:
-                bitmap = bitmapLoader.getBitmap(iconFile, iconType)
-                if bitmap:
-                    self.imageId = fittingView.imageList.Add(bitmap)
-                else:
-                    self.imageId = -1
+                self.imageId = fittingView.imageList.GetImageIndex(iconFile, iconType)
             else:
                 self.imageId = -1
+
             self.mask = wx.LIST_MASK_IMAGE
         else:
             self.imageId = -1
