@@ -26,14 +26,10 @@ class CachingImageList(wx.ImageList):
         self.map = {}
 
     def Add(self, *loaderArgs):
-        key = "".join(loaderArgs)
-        if key not in self.map:
+        id = self.map.get(loaderArgs)
+        if id is None:
             bitmap = bitmapLoader.getBitmap(*loaderArgs)
             if bitmap is None:
                 return -1
-            id = wx.ImageList.Add(self,bitmap)
-            self.map[key] = id
-        else:
-            id = self.map[key]
-
+            id = self.map[loaderArgs] = wx.ImageList.Add(self,bitmap)
         return id
