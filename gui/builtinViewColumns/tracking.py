@@ -38,7 +38,6 @@ class Tracking(ViewColumn):
         if params["showIcon"]:
             iconFile = info.icon.iconFile if info.icon else None
             if iconFile:
-                bitmap = bitmapLoader.getBitmap(iconFile, "pack")
                 self.imageId = fittingView.imageList.GetImageIndex(iconFile, "pack")
             else:
                 self.imageId = -1
