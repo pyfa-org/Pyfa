@@ -114,10 +114,6 @@ class Display(wx.ListCtrl):
             self.SetColumnWidth(column,self.columnsMinWidth[column])
         colItem.resized = True
 
-    def clearItemImages(self):
-        for i in xrange(self.imageList.ImageCount - 1, self.imageListBase, -1):
-            self.imageList.Remove(i)
-
     def populate(self, stuff):
         selection = []
 
@@ -128,7 +124,6 @@ class Display(wx.ListCtrl):
             sel = self.GetNextSelected(sel)
 
         self.DeleteAllItems()
-        self.clearItemImages()
 
         if stuff is not None:
             for id, st in enumerate(stuff):
