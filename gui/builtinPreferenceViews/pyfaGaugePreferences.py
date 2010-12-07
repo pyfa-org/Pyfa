@@ -334,7 +334,7 @@ class PFGaugePref ( PreferenceView):
 
     def InitDefaultColours(self):
         self.c0100S = wx.Colour(191, 191, 191, 255)
-        self.c0100E = wx.Colour(128, 255, 0, 255)
+        self.c0100E = wx.Colour(96, 191, 0, 255)
 
         self.c100101S = wx.Colour(191, 167, 96, 255)
         self.c100101E = wx.Colour(255, 191, 0, 255)
@@ -343,7 +343,7 @@ class PFGaugePref ( PreferenceView):
         self.c101103E = wx.Colour(255, 128, 0, 255)
 
         self.c103105S = wx.Colour(255, 128, 0, 255)
-        self.c103105E = wx.Colour(191, 48, 48, 255)
+        self.c103105E = wx.Colour(255, 0, 0, 255)
         self.gradientStart = 95
 
     def SetColours(self):
