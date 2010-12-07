@@ -17,16 +17,19 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 #===============================================================================
 
+import sys
 import wx
 import gui.mainFrame
+
 from gui.viewColumn import ViewColumn
-import sys
+from gui.cachingImageList import CachingImageList
+
 
 class Display(wx.ListCtrl):
     def __init__(self, parent, size = wx.DefaultSize, style = 0):
 
         wx.ListCtrl.__init__(self, parent,size = size, style=wx.LC_REPORT |  style )
-        self.imageList = wx.ImageList(16, 16)
+        self.imageList = CachingImageList(16, 16)
         self.SetImageList(self.imageList, wx.IMAGE_LIST_SMALL)
         self.activeColumns = []
         self.columnsMinWidth = []

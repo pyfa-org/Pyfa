@@ -51,8 +51,7 @@ class State(ViewColumn):
             if stuff.isEmpty:
                 return -1
             else:
-                bitmap = bitmapLoader.getBitmap("state_%s_small" % State_.getName(stuff.state).lower(), "icons")
-                return self.fittingView.imageList.Add(bitmap)
+                return self.fittingView.imageList.GetImageIndex("state_%s_small" % State_.getName(stuff.state).lower(), "icons")
         else:
             active = getattr(stuff, "active", None)
             if active is None:
