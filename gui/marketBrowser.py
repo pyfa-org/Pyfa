@@ -334,7 +334,7 @@ class ItemView(d.Display):
     def populate(self, stuff):
         stuff.sort(key=self.itemSort)
         self.active = stuff
-        d.Display.populate(self, stuff, False)
+        d.Display.populate(self, stuff)
 
     def refresh(self, stuff):
         stuff.sort(key=self.itemSort)
