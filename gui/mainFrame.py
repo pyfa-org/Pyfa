@@ -139,11 +139,15 @@ class MainFrame(wx.Frame):
 
     def LoadMainFrameAttribs(self):
 
-        mainFrameDefaultAttribs = {"wnd_width":1000, "wnd_height": 700}
+        mainFrameDefaultAttribs = {"wnd_width":1000, "wnd_height": 700, "wnd_maximized": False}
         self.mainFrameAttribs = service.SettingsProvider.getInstance().getSettings("pyfaMainWindowAttribs", mainFrameDefaultAttribs)
-
-        width = self.mainFrameAttribs["wnd_width"]
-        height = self.mainFrameAttribs["wnd_height"]
+        if self.mainFrameAttribs["wnd_maximized"]:
+            width = mainFrameDefaultAttribs["wnd_width"]
+            height = mainFrameDefaultAttribs["wnd_height"]
+            self.Maximize()
+        else:
+            width = self.mainFrameAttribs["wnd_width"]
+            height = self.mainFrameAttribs["wnd_height"]
 
         self.SetSize((width, height))
         self.SetMinSize((mainFrameDefaultAttribs["wnd_width"], mainFrameDefaultAttribs["wnd_height"]))
@@ -155,6 +159,7 @@ class MainFrame(wx.Frame):
 
         self.mainFrameAttribs["wnd_width"] = width
         self.mainFrameAttribs["wnd_height"] = height
+        self.mainFrameAttribs["wnd_maximized"] = self.IsMaximized()
 
     def SetActiveStatsWindow(self, wnd):
         self.activeStatsWnd = wnd

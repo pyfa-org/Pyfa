@@ -51,6 +51,9 @@ class SettingsProvider():
                 try:
                     f = open(p, "rb")
                     info = cPickle.load(f)
+                    for item in defaults:
+                        if item not in info:
+                            info[item] = defaults[item]
 
                 except:
                     info = {}
