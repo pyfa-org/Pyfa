@@ -12,7 +12,7 @@ class BaseIcon(ViewColumn):
         self.maxsize = self.size
         self.mask = wx.LIST_MASK_IMAGE
         self.columnText = ""
-        self.shipImage = fittingView.imageList.Add(bitmapLoader.getBitmap("ship_small", "icons"))
+        self.shipImage = fittingView.imageList.GetImageIndex("ship_small", "icons")
 
     def getImageId(self, stuff):
         if isinstance(stuff, Drone):
@@ -21,8 +21,7 @@ class BaseIcon(ViewColumn):
             return self.shipImage
         if isinstance(stuff, Module):
             if stuff.isEmpty:
-                bitmap = bitmapLoader.getBitmap("slot_%s_small" % Slot.getName(stuff.slot).lower(), "icons")
-                return self.fittingView.imageList.Add(bitmap)
+                return self.fittingView.imageList.GetImageIndex("slot_%s_small" % Slot.getName(stuff.slot).lower(), "icons")
             else:
                 return self.loadIconFile(stuff.item.icon.iconFile if stuff.item.icon else "")
 
@@ -31,11 +30,7 @@ class BaseIcon(ViewColumn):
 
     def loadIconFile(self, iconFile):
         if iconFile:
-            bitmap = bitmapLoader.getBitmap(iconFile, "pack")
-            if bitmap is None:
-                return -1
-            else:
-                return self.fittingView.imageList.Add(bitmap)
+            return self.fittingView.imageList.GetImageIndex(iconFile, "pack")
         else:
             return -1
 
