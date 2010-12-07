@@ -25,7 +25,7 @@ from util import formatAmount
 from eos.types import Hardpoint
 import wx
 
-class MaxRange(ViewColumn):
+class Tracking(ViewColumn):
     name = "Tracking"
     def __init__(self, fittingView, params = None):
         if params == None:
@@ -39,10 +39,7 @@ class MaxRange(ViewColumn):
             iconFile = info.icon.iconFile if info.icon else None
             if iconFile:
                 bitmap = bitmapLoader.getBitmap(iconFile, "pack")
-                if bitmap:
-                    self.imageId = fittingView.imageList.Add(bitmap)
-                else:
-                    self.imageId = -1
+                self.imageId = fittingView.imageList.GetImageIndex(iconFile, "pack")
             else:
                 self.imageId = -1
 
@@ -83,5 +80,4 @@ class MaxRange(ViewColumn):
     def getParameters(self):
         return (("displayName", bool, False),
                 ("showIcon", bool, True))
-
-MaxRange.register()
+Tracking.register()
