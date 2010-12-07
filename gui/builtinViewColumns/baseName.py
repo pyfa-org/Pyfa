@@ -28,7 +28,7 @@ class BaseName(ViewColumn):
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
         self.columnText = "Name"
-        self.shipImage = fittingView.imageList.Add(bitmapLoader.getBitmap("ship_small", "icons"))
+        self.shipImage = fittingView.imageList.GetImageIndex("ship_small", "icons")
         self.mask = wx.LIST_MASK_TEXT
 
     def getText(self, stuff):
