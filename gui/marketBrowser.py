@@ -139,7 +139,7 @@ class MarketTree(wx.TreeCtrl):
         if iconFile is None:
             return -1
 
-        return self.imageList.Add(iconFile, "pack")
+        return self.imageList.GetImageIndex(iconFile, "pack")
 
     def expandLookup(self, event):
         root = event.Item
