@@ -17,8 +17,12 @@ def BrightenColor(color, factor):
 #Darkens a color (wx.Colour), factor = [0, 1]
 def DarkenColor(color, factor):
     bkR ,bkG , bkB = color
+
     alpha = color.Alpha()
+
+    factor = min(max(factor, 0), 1)
     factor = 1 - factor
+
     r = float(bkR * factor)
     g = float(bkG * factor)
     b = float(bkB * factor)
