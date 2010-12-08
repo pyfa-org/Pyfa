@@ -1,6 +1,7 @@
 import wx
 
 #Brightens a color (wx.Colour), factor = [0,1]
+
 def BrightenColor(color, factor):
 
     r,g,b = color
@@ -15,6 +16,7 @@ def BrightenColor(color, factor):
     return wx.Colour(r,g,b,a)
 
 #Darkens a color (wx.Colour), factor = [0, 1]
+
 def DarkenColor(color, factor):
     bkR ,bkG , bkB = color
 
@@ -32,6 +34,32 @@ def DarkenColor(color, factor):
     g = min(max(g,0),255)
 
     return wx.Colour(r, g, b, alpha)
+
+
+#Calculates the brightness of a color, different options
+
+def GetBrightnessO1(color):
+    r,g,b = color
+    return (0.299*r + 0.587*g + 0.114*b)
+
+def GetBrightnessO2(color):
+    r,g,b = color
+    return math.sqrt( 0.241 * r * r + 0.691 * g * g + 0.068 * b * b )
+
+
+
+#Calculates a suitable color based on original color (wx.Colour), its brightness, a factor=[0,1] (darken/brighten by factor depending on calculated brightness)
+
+def GetSuitableColor(color, factor):
+
+    brightness = GetBrightnessO2(color)
+
+    if brightness >127:
+        return DarkenColor(color, factor)
+    else:
+        return BrightenColor(color, factor)
+
+
 
 #Calculates the color between a given start and end colors, delta = [0,1]
 #Colors are wx.Colour objects
