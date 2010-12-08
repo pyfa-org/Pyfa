@@ -492,6 +492,10 @@ class ImplantsTreeView (wx.Panel):
 
     def addImplant(self, event):
         root = self.availableImplantsTree.GetSelection()
+
+        if not root.IsOk():
+            return
+
         nchilds = self.availableImplantsTree.GetChildrenCount(root)
         cChar = service.Character.getInstance()
         charID = self.Parent.Parent.getActiveCharacter()
