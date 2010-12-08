@@ -616,8 +616,14 @@ class PFTabsContainer(wx.Panel):
         self.containerHeight = height
         self.startDrag = False
         self.dragging = False
-        self.reserved = 48
-        self.inclination = 6
+
+        self.inclination = 7
+        if canAdd:
+            self.reserved = 48
+        else:
+            self.reserved = self.inclination * 4
+
+
         self.dragTrail = 3
         self.dragx = 0
         self.dragy = 0
@@ -962,11 +968,14 @@ class PFTabsContainer(wx.Panel):
         self.Refresh()
 
     def OnPaint(self, event):
-        rect = self.GetRect()
-        canvas = wx.EmptyBitmap(rect.width, rect.height)
+
         if "wxGTK" in wx.PlatformInfo:
             mdc = wx.AutoBufferedPaintDC(self)
+
         else:
+            rect = self.GetRect()
+            canvas = wx.EmptyBitmap(rect.width, rect.height)
+
             mdc = wx.BufferedPaintDC(self)
             mdc.SelectObject(canvas)
 
@@ -975,8 +984,10 @@ class PFTabsContainer(wx.Panel):
         if 'wxMac' in wx.PlatformInfo:
             color = wx.Colour(0, 0, 0)
             brush = wx.Brush(color)
+
             from Carbon.Appearance import kThemeBrushDialogBackgroundActive
             brush.MacSetTheme(kThemeBrushDialogBackgroundActive)
+
         else:
             color = wx.SystemSettings_GetColour(wx.SYS_COLOUR_3DFACE)
             brush = wx.Brush(color)
@@ -986,22 +997,14 @@ class PFTabsContainer(wx.Panel):
             mdc.Clear()
 
         selected = None
-        selpos = 0
-        selWidth = selHeight = 0
-        selColor = self.CalculateColor(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW), 0x66)
-        startColor = self.leftColor = self.CalculateColor(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW), 0x50)
-        tabsWidth = 0
 
-        bkR ,bkG , bkB = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
-        if bkR + bkG + bkB > 127*3:
-            delta = -0.05
-        else:
-            delta = 0.2
+        tabsWidth = 0
 
         for tab in self.tabs:
             tabsWidth += tab.tabWidth - self.inclination*2
 
         pos = tabsWidth
+
         if self.showAddButton:
             ax,ay = self.addButton.GetPosition()
             mdc.DrawBitmap(self.addButton.Render(), ax, ay, True)
@@ -1010,33 +1013,30 @@ class PFTabsContainer(wx.Panel):
             tab = self.tabs[i]
             width = tab.tabWidth - 6
             posx, posy  = tab.GetPosition()
+
             if not tab.IsSelected():
                 mdc.DrawBitmap(self.efxBmp, posx, posy, True )
-                img = tab.Render().ConvertToImage()
-                img = img.AdjustChannels(1 + delta, 1 + delta, 1 + delta, 0.85)
+                bmp = tab.Render()
+                img = bmp.ConvertToImage()
+                img = img.AdjustChannels(1, 1, 1, 0.85)
                 bmp = wx.BitmapFromImage(img)
                 mdc.DrawBitmap(bmp, posx, posy, True)
+
             else:
                 selected = tab
+
         if selected:
             posx, posy  = selected.GetPosition()
             mdc.DrawBitmap(self.efxBmp, posx, posy, True)
+
             bmp = selected.Render()
+
             if self.dragging:
                 img = bmp.ConvertToImage()
                 img = img.AdjustChannels(1.2, 1.2, 1.2, 0.7)
                 bmp = wx.BitmapFromImage(img)
 
             mdc.DrawBitmap(bmp, posx, posy, True)
-            selpos = posx
-            selWidth,selHeight = selected.GetSize()
-
-        if selWidth%2:
-            offset = 1
-        else:
-            offset = 0
-        r1 = wx.Rect(0,self.containerHeight -1,selpos,1)
-        r2 = wx.Rect(0, self.containerHeight -1 , self.width,1)
 
     def OnErase(self, event):
         pass
@@ -1050,9 +1050,8 @@ class PFTabsContainer(wx.Panel):
             simg = fxBmp.ConvertToImage()
             if not simg.HasAlpha():
                 simg.InitAlpha()
-#            if 'wxMac' not in wx.PlatformInfo:
             simg = simg.Blur(2)
-            simg = simg.AdjustChannels(0.3,0.3,0.3,0.3)
+            simg = simg.AdjustChannels(0.3,0.3,0.3,0.35)
 
             self.efxBmp = wx.BitmapFromImage(simg)
 
