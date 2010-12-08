@@ -63,7 +63,7 @@ class PyGauge(wx.PyWindow):
                                  ( (191, 167, 96, 255)  ,  (255, 191, 0, 255) ),
                                  ( (255, 191, 0, 255)  ,  (255, 128, 0, 255) ),
                                  ( (255, 128, 0, 255)  ,  (255, 0, 0, 255) )]
-        self.gradientEffect = 95
+        self.gradientEffect = 35
 
         self._percentage = 0
         self._oldPercentage = 0
@@ -258,11 +258,10 @@ class PyGauge(wx.PyWindow):
 
     def CalculateGColor(self, color, delta):
         bkR ,bkG , bkB = color
-        scale = delta
 
-        r = bkR + scale
-        g = bkG + scale
-        b = bkB + scale
+        r = float(bkR * delta) / 100
+        g = float(bkG * delta) / 100
+        b = float(bkB * delta) / 100
 
         r = min(max(r,0),255)
         b = min(max(b,0),255)
@@ -352,7 +351,7 @@ class PyGauge(wx.PyWindow):
             else:
                 color = wx.Colour(191,48,48)
 
-            gcolor = self.CalculateGColor(color, -self.gradientEffect)
+            gcolor = self.CalculateGColor(color, self.gradientEffect)
 
             dc.GradientFillLinear(r, gcolor, color, wx.SOUTH)
             r.top = r.height

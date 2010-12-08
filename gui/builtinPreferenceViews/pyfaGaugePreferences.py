@@ -4,6 +4,7 @@
 
 import wx
 import copy
+
 from gui.preferenceView import PreferenceView
 from gui import bitmapLoader
 
@@ -104,11 +105,10 @@ class PFGaugePreview(wx.Window):
 
     def CalculateGColor(self, color, delta):
         bkR ,bkG , bkB = color
-        scale = delta
 
-        r = bkR + scale
-        g = bkG + scale
-        b = bkB + scale
+        r = float(bkR * delta) / 100
+        g = float(bkG * delta) / 100
+        b = float(bkB * delta) / 100
 
         r = min(max(r,0),255)
         b = min(max(b,0),255)
@@ -142,7 +142,7 @@ class PFGaugePreview(wx.Window):
         r.height = r.height/2+1
 
         color = self.CalculateTransitionColor(self.colorS, self.colorE, float(value)/100)
-        gcolor = self.CalculateGColor(color, - self.gradientStart)
+        gcolor = self.CalculateGColor(color,  self.gradientStart)
         dc.GradientFillLinear(r, gcolor, color, wx.SOUTH)
         r.top = r.height
         dc.GradientFillLinear(r, gcolor, color, wx.NORTH)
@@ -157,6 +157,7 @@ class PFGaugePreview(wx.Window):
         formatStr = "{0:." + str(self._fractionDigits) + "f}%"
         value = (self.percE - self.percS) * value / (self.percE - self.percS)
         value = self.percS + (self.percE - self.percS) * value / 100
+
         dc.SetTextForeground(wx.Colour(80,80,80))
         dc.DrawLabel(formatStr.format(value), r, wx.ALIGN_CENTER)
 
@@ -290,7 +291,7 @@ class PFGaugePref ( PreferenceView):
         self.cbLink = wx.CheckBox( panel, wx.ID_ANY, u"Link Colors", wx.DefaultPosition, wx.DefaultSize, 0 )
         buttonsSizer.Add( self.cbLink, 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT | wx.LEFT, 5 )
 
-        self.sliderGradientStart = wx.Slider( panel, wx.ID_ANY, self.gradientStart, 0, 255, wx.DefaultPosition, (127,-1), wx.SL_HORIZONTAL|wx.SL_LABELS )
+        self.sliderGradientStart = wx.Slider( panel, wx.ID_ANY, self.gradientStart, 0, 100, wx.DefaultPosition, (127,-1), wx.SL_HORIZONTAL|wx.SL_LABELS )
         buttonsSizer.Add( self.sliderGradientStart, 1, wx.EXPAND | wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5 )
 
         self.btnRestore = wx.Button( panel, wx.ID_ANY, u"Restore Defaults", wx.DefaultPosition, wx.DefaultSize, 0 )
