@@ -1,4 +1,5 @@
 import wx
+import math
 
 #Brightens a color (wx.Colour), factor = [0,1]
 
