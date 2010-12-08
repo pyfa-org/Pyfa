@@ -6,7 +6,7 @@ debug = False
 
 # You can adjust these paths to your needs
 
-# The main pyfa directory which contains run.py 
+# The main pyfa directory which contains run.py
 # python 2.X uses ansi by default, so we need to convert the character encoding :(
 pyfaPath = unicode(os.path.join(os.getcwd(), os.path.dirname(sys.modules['__main__'].__file__)),
     sys.getfilesystemencoding())
@@ -17,7 +17,7 @@ savePath = os.path.expanduser(os.path.join("~", ".pyfa"))
 # Static EVE Data from the staticdata repository, should be in the staticdata directory in our pyfa directory
 staticPath = os.path.join(pyfaPath, "staticdata")
 
-# The database where we store all the fits etc 
+# The database where we store all the fits etc
 saveDB = os.path.join(savePath, "saveddata.db")
 
 # The database where the static EVE data from the datadump is kept.

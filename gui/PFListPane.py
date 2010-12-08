@@ -36,6 +36,13 @@ class PFListPane(wx.ScrolledWindow):
         self.Bind(wx.EVT_SCROLLWIN_LINEUP, self.MScrollUp)
         self.Bind(wx.EVT_SCROLLWIN_LINEDOWN, self.MScrollDown)
         self.Bind(wx.EVT_CHILD_FOCUS, self.OnChildFocus)
+        self.Bind(wx.EVT_LEFT_DOWN, self.ForceFocus)
+        self.Bind(wx.EVT_MOUSE_CAPTURE_CHANGED, self.ForceFocus)
+
+    def ForceFocus(self,event):
+        if self.FindFocus().Parent != self:
+            self.SetFocus()
+        event.Skip()
 
     def OnChildFocus(self, event):
         event.Skip()
