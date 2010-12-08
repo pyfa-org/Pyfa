@@ -11,6 +11,7 @@
 import wx
 import copy
 import time
+import gui.utils.colorUtils as colorUtils
 from gui import bitmapLoader
 
 _PageChanging, EVT_NOTEBOOK_PAGE_CHANGING = wx.lib.newevent.NewEvent()
@@ -367,9 +368,9 @@ class PFTabRenderer:
     def InitBitmaps(self):
 
         if self.selected:
-            tr,tg,tb = self.rightColor
+            tr,tg,tb = self.selectedColor
         else:
-            tr,tg,tb = self.leftColor
+            tr,tg,tb = self.inactiveColor
 
         ctabLeft = self.ctabLeft.Copy()
         ctabRight = self.ctabRight.Copy()
@@ -417,26 +418,8 @@ class PFTabRenderer:
 
     def InitColors(self):
         self.tabColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
-        self.leftColor = self.CalculateColor(self.tabColor, 0x40)
-        self.rightColor = self.CalculateColor(self.tabColor, 0x15)
-
-    def CalculateColor(self, color, delta):
-        bkR ,bkG , bkB = color
-        if bkR + bkG + bkB > 127*3:
-            scale = - delta
-        else:
-            scale = delta
-
-        r = bkR + scale
-        g = bkG + scale
-        b = bkB + scale
-
-        r = min(max(r,0),255)
-        b = min(max(b,0),255)
-        g = min(max(g,0),255)
-
-        return wx.Colour(r,g,b,255)
-
+        self.inactiveColor = colorUtils.GetSuitableColor(self.tabColor, 0.25)
+        self.selectedColor = colorUtils.GetSuitableColor(self.tabColor, 0.15)
 
     def Render(self):
         return self.tabBitmap
@@ -488,8 +471,12 @@ class PFTabRenderer:
             text = "%s" % text[:count]
 
             tx,ty = mdc.GetTextExtent(text)
+            if self.selected:
+                color = self.selectedColor
+            else:
+                color = self.inactiveColor
 
-            mdc.SetTextForeground(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT))
+            mdc.SetTextForeground(colorUtils.GetSuitableColor(color, 1))
 
             mdc.DrawText(text, textStart + self.padding , height / 2 - ty / 2)
 

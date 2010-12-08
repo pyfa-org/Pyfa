@@ -53,9 +53,9 @@ def GetBrightnessO2(color):
 
 def GetSuitableColor(color, factor):
 
-    brightness = GetBrightnessO2(color)
+    brightness = GetBrightnessO1(color)
 
-    if brightness >127:
+    if brightness >129:
         return DarkenColor(color, factor)
     else:
         return BrightenColor(color, factor)
