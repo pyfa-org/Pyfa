@@ -9,6 +9,7 @@ import service
 
 from wx.lib.buttons import GenBitmapButton
 
+import gui.utils.colorUtils as colorUtils
 
 FitRenamed, EVT_FIT_RENAMED = wx.lib.newevent.NewEvent()
 FitSelected, EVT_FIT_SELECTED = wx.lib.newevent.NewEvent()
@@ -749,34 +750,33 @@ class CategoryItem(wx.Window):
         pass
 
     def OnPaint(self,event):
+
         rect = self.GetRect()
 
-        canvas = wx.EmptyBitmap(rect.width, rect.height)
+        windowColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
+        gStart = colorUtils.GetSuitableColor(windowColor, 0.2)
+        gMid = colorUtils.GetSuitableColor(windowColor, 0.55)
+        gEnd = windowColor
+        textColor = colorUtils.GetSuitableColor(windowColor, 1)
+
         mdc = wx.BufferedPaintDC(self)
-        mdc.SelectObject(canvas)
+
         r = copy.copy(rect)
         r.top = 0
         r.left = 0
         r.height = r.height / 2
         if self.highlighted:
-
-            sr = 221
-            sg = 221
-            sb = 221
-
-            startColor = (sr,sg,sb)
-
-            mdc.GradientFillLinear(r,startColor,wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW),wx.SOUTH)
+            mdc.GradientFillLinear(r, gStart, gEnd, wx.SOUTH)
             r.top = r.height
-            mdc.GradientFillLinear(r,startColor,wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW),wx.NORTH)
-            mdc.SetTextForeground(wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOWTEXT ))
+            mdc.GradientFillLinear(r, gMid, gEnd, wx.NORTH)
+            mdc.SetTextForeground(textColor)
 
         else:
-            mdc.SetBackground(wx.Brush(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)))
-            mdc.SetTextForeground(wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOWTEXT ))
+            mdc.SetBackground(wx.Brush(windowColor))
+            mdc.SetTextForeground(textColor)
             mdc.Clear()
 
-        mdc.DrawBitmap(self.shipBmp,5+(rect.height-self.shipBmp.GetHeight())/2,(rect.height-self.shipBmp.GetWidth())/2,0)
+        mdc.DrawBitmap(self.shipBmp,5,(rect.height-self.shipBmp.GetWidth())/2,0)
         mdc.SetFont(self.fontBig)
 
 
@@ -784,7 +784,7 @@ class CategoryItem(wx.Window):
 
 
 
-        xpos = self.shipBmp.GetWidth() + 10
+        xpos = 5 + self.shipBmp.GetWidth() + 5
 
         xtext, ytext = mdc.GetTextExtent(shipName)
         ypos = (rect.height - ytext) / 2
@@ -820,7 +820,7 @@ class CategoryItem(wx.Window):
 class ShipItem(wx.Window):
     def __init__(self, parent, shipID=None, shipFittingInfo=("Test", 2), itemData=None,
                  id=wx.ID_ANY, range=100, pos=wx.DefaultPosition,
-                 size=(0, 38), style=0):
+                 size=(0, 40), style=0):
         wx.Window.__init__(self, parent, id, pos, size, style)
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
@@ -997,29 +997,29 @@ class ShipItem(wx.Window):
     def OnPaint(self, event):
         rect = self.GetRect()
 
-        canvas = wx.EmptyBitmap(rect.width, rect.height)
+        windowColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
+        gStart = colorUtils.GetSuitableColor(windowColor, 0.2)
+        gMid = colorUtils.GetSuitableColor(windowColor, 0.55)
+        gEnd = windowColor
+        textColor = colorUtils.GetSuitableColor(windowColor, 1)
+
         mdc = wx.BufferedPaintDC(self)
-        mdc.SelectObject(canvas)
+
         r = copy.copy(rect)
         r.top = r.left = 0
         r.height = r.height / 2
 
         if self.highlighted:
-            sr = 221
-            sg = 221
-            sb = 221
-
-            startColor = (sr,sg,sb)
-
-            mdc.GradientFillLinear(r,startColor,wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW),wx.SOUTH)
+            mdc.GradientFillLinear(r, gStart, gEnd, wx.SOUTH)
             r.top = r.height
-            mdc.GradientFillLinear(r,startColor,wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW),wx.NORTH)
-            mdc.SetTextForeground(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT))
+            mdc.GradientFillLinear(r, gMid, gEnd, wx.NORTH)
+            mdc.SetTextForeground(textColor)
 
         else:
-            mdc.SetBackground(wx.Brush(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)))
-            mdc.SetTextForeground(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT))
+            mdc.SetBackground(wx.Brush(windowColor))
+            mdc.SetTextForeground(textColor)
             mdc.Clear()
+
 
         mdc.SetFont(self.fontBig)
         mdc.DrawBitmap(self.shipEffBk, 5 + (rect.height - self.shipEffBk.GetWidth())/2, (rect.height - self.shipEffBk.GetHeight())/2, 0)
@@ -1176,7 +1176,7 @@ def GetRoundShape( w, h, r ):
 class FitItem(wx.Window):
     def __init__(self, parent, fitID=None, shipFittingInfo=("Test", "cnc's avatar", 0 ), shipID = None, itemData=None,
                  id=wx.ID_ANY, range=100, pos=wx.DefaultPosition,
-                 size=(0, 38), style=0):
+                 size=(0, 40), style=0):
         wx.Window.__init__(self, parent, id, pos, size, style)
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
@@ -1271,13 +1271,13 @@ class FitItem(wx.Window):
     def OnTimer(self, event):
         if self.selTimerID == event.GetId():
             ctimestamp = time.time()
-            interval = 3
+            interval = 10
             if ctimestamp < self.timestamp + interval:
                 delta = (ctimestamp - self.timestamp) / interval
-                self.selectedDelta = self.CalculateDelta(0x0,0x33,delta)
+                self.selectedDelta = self.CalculateDelta(0x0,0x66,delta)
                 self.Refresh()
             else:
-                self.selectedDelta = 0x33
+                self.selectedDelta = 0x66
                 self.selTimer.Stop()
         if self.cleanupTimerID == event.GetId():
             if self.btnsStatus:
@@ -1508,44 +1508,56 @@ class FitItem(wx.Window):
 
     def OnPaint(self, event):
         rect = self.GetRect()
-        canvas = wx.EmptyBitmap(rect.width, rect.height)
+
+        windowColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
+        gStart = colorUtils.GetSuitableColor(windowColor, 0.2)
+        gMid = colorUtils.GetSuitableColor(windowColor, 0.55)
+        gEnd = windowColor
+        textColor = colorUtils.GetSuitableColor(windowColor, 1)
+
         mdc = wx.BufferedPaintDC(self)
-        mdc.SelectObject(canvas)
+
 
         r = copy.copy(rect)
         r.top = r.left = 0
         r.height = r.height / 2
 
         if self.highlighted:
-            mdc.SetTextForeground(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT))
-
-            sr = 221
-            sg = 221
-            sb = 221
-
-            startColor = (sr,sg,sb)
-
-            mdc.GradientFillLinear(r,startColor,wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW),wx.SOUTH)
+            mdc.GradientFillLinear(r, gStart, gEnd, wx.SOUTH)
             r.top = r.height
-            mdc.GradientFillLinear(r,startColor,wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW),wx.NORTH)
+            mdc.GradientFillLinear(r, gMid, gEnd, wx.NORTH)
 
         else:
             activeFitID = self.mainFrame.getActiveFit()
-            if activeFitID == self.fitID:
-                bkR,bkG,bkB = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
-                if (bkR+bkG+bkB) >(127+127+127):
-                    scale = - self.selectedDelta
-                else:
-                    scale = self.selectedDelta
-                bkR += scale
-                bkG += scale
-                bkB += scale
-                mdc.SetBackground(wx.Brush((bkR,bkG,bkB)))
-            else:
-                mdc.SetBackground(wx.Brush(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)))
 
-            mdc.SetTextForeground(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT))
-            mdc.Clear()
+            if activeFitID == self.fitID:
+                gStart = colorUtils.GetSuitableColor(windowColor, 0.2)
+                gMid = colorUtils.GetSuitableColor(windowColor, (0x33 - self.selectedDelta)/100)
+                mdc.GradientFillLinear(r, gStart, gMid, wx.SOUTH)
+                r.top = r.height
+                mdc.GradientFillLinear(r, gStart, gMid, wx.NORTH)
+            else:
+                mdc.SetBackground(wx.Brush(windowColor))
+                mdc.Clear()
+
+        mdc.SetTextForeground(textColor)
+#        else:
+#            activeFitID = self.mainFrame.getActiveFit()
+#            if activeFitID == self.fitID:
+#                bkR,bkG,bkB = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
+#                if (bkR+bkG+bkB) >(127+127+127):
+#                    scale = - self.selectedDelta
+#                else:
+#                    scale = self.selectedDelta
+#                bkR += scale
+#                bkG += scale
+#                bkB += scale
+#                mdc.SetBackground(wx.Brush((bkR,bkG,bkB)))
+#            else:
+#                mdc.SetBackground(wx.Brush(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)))
+#
+#            mdc.SetTextForeground(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT))
+#            mdc.Clear()
 
         mdc.SetFont(self.fontBig)
         mdc.DrawBitmap(self.shipEffBk,5 + (rect.height - self.shipEffBk.GetWidth()) / 2, (rect.height - self.shipEffBk.GetHeight()) / 2,0)
