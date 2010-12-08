@@ -15,6 +15,8 @@ import wx
 import copy
 import math
 
+from gui.utils import colorUtils
+
 class PyGauge(wx.PyWindow):
     """
     This class provides a visual alternative for `wx.Gauge`. It currently
@@ -59,11 +61,11 @@ class PyGauge(wx.PyWindow):
         self._animValue = 0
         self._animDirection = 0
 
-        self.transitionsColors = [( (191, 191, 191, 255)  , (96, 191, 0, 255) ),
-                                 ( (191, 167, 96, 255)  ,  (255, 191, 0, 255) ),
-                                 ( (255, 191, 0, 255)  ,  (255, 128, 0, 255) ),
-                                 ( (255, 128, 0, 255)  ,  (255, 0, 0, 255) )]
-        self.gradientEffect = 35
+        self.transitionsColors = [( wx.Colour(191, 191, 191, 255)  , wx.Colour(96, 191, 0, 255) ),
+                                 ( wx.Colour(191, 167, 96, 255)  ,  wx.Colour(255, 191, 0, 255) ),
+                                 ( wx.Colour(255, 191, 0, 255)  ,  wx.Colour(255, 128, 0, 255) ),
+                                 ( wx.Colour(255, 128, 0, 255)  ,  wx.Colour(255, 0, 0, 255) )]
+        self.gradientEffect = -35
 
         self._percentage = 0
         self._oldPercentage = 0
@@ -256,29 +258,6 @@ class PyGauge(wx.PyWindow):
 
         pass
 
-    def CalculateGColor(self, color, delta):
-        bkR ,bkG , bkB = color
-
-        r = float(bkR * delta) / 100
-        g = float(bkG * delta) / 100
-        b = float(bkB * delta) / 100
-
-        r = min(max(r,0),255)
-        b = min(max(b,0),255)
-        g = min(max(g,0),255)
-
-        return wx.Colour(r,g,b,255)
-
-    def CalculateTransitionColor(self, startColor, endColor, delta):
-        sR,sG,sB,_ = startColor
-        eR,eG,eB,_ = endColor
-
-        tR = sR + (eR - sR) *  delta
-        tG = sG + (eG - sG) *  delta
-        tB = sB + (eB - sB) *  delta
-
-        return (tR, tG, tB)
-
     def OnPaint(self, event):
         """
         Handles the ``wx.EVT_PAINT`` event for L{PyGauge}.
@@ -347,11 +326,14 @@ class PyGauge(wx.PyWindow):
 
             if transition != -1:
                 colorS,colorE = self.transitionsColors[transition]
-                color = self.CalculateTransitionColor(colorS, colorE, xv)
+                color = colorUtils.CalculateTransitionColor(colorS, colorE, xv)
             else:
                 color = wx.Colour(191,48,48)
 
-            gcolor = self.CalculateGColor(color, self.gradientEffect)
+            if self.gradientEffect > 0:
+                gcolor = colorUtils.BrightenColor(color,  float(self.gradientEffect) / 100)
+            else:
+                gcolor = colorUtils.DarkenColor(color,  float(-self.gradientEffect) / 100)
 
             dc.GradientFillLinear(r, gcolor, color, wx.SOUTH)
             r.top = r.height

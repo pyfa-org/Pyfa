@@ -7,6 +7,7 @@ import copy
 
 from gui.preferenceView import PreferenceView
 from gui import bitmapLoader
+from gui.utils import colorUtils
 
 ###########################################################################
 ## Class PFGaugePref
@@ -26,11 +27,11 @@ class PFGaugePreview(wx.Window):
         self.animDir = 1
         self._fractionDigits = 2
 
-        self.colorS = wx.Colour(0,0,0)
-        self.colorE = wx.Colour(0,0,0)
+        self.colorS = wx.Colour(0,0,0,255)
+        self.colorE = wx.Colour(0,0,0,255)
         self.gradientStart = 0
 
-        self.bkColor = wx.Colour(0,0,0)
+        self.bkColor = wx.Colour(0,0,0,255)
         self.SetMinSize((100,-1))
 
         self.font = wx.FontFromPixelSize((0,13),wx.SWISS, wx.NORMAL, wx.NORMAL, False)
@@ -103,29 +104,6 @@ class PFGaugePreview(wx.Window):
         self.percE = end
         self.Refresh()
 
-    def CalculateGColor(self, color, delta):
-        bkR ,bkG , bkB = color
-
-        r = float(bkR * delta) / 100
-        g = float(bkG * delta) / 100
-        b = float(bkB * delta) / 100
-
-        r = min(max(r,0),255)
-        b = min(max(b,0),255)
-        g = min(max(g,0),255)
-
-        return wx.Colour(r,g,b,255)
-
-    def CalculateTransitionColor(self, startColor, endColor, delta):
-        sR,sG,sB = startColor
-        eR,eG,eB = endColor
-
-        tR = sR + (eR - sR) *  delta
-        tG = sG + (eG - sG) *  delta
-        tB = sB + (eB - sB) *  delta
-
-        return (tR, tG, tB)
-
     def OnPaint(self, event):
         rect = self.GetClientRect()
         dc = wx.BufferedPaintDC(self)
@@ -141,8 +119,11 @@ class PFGaugePreview(wx.Window):
         r.width = w
         r.height = r.height/2+1
 
-        color = self.CalculateTransitionColor(self.colorS, self.colorE, float(value)/100)
-        gcolor = self.CalculateGColor(color,  self.gradientStart)
+        color = colorUtils.CalculateTransitionColor(self.colorS, self.colorE, float(value)/100)
+        if self.gradientStart > 0:
+            gcolor = colorUtils.BrightenColor(color,  float(self.gradientStart) / 100)
+        else:
+            gcolor = colorUtils.DarkenColor(color,  float(-self.gradientStart) / 100)
         dc.GradientFillLinear(r, gcolor, color, wx.SOUTH)
         r.top = r.height
         dc.GradientFillLinear(r, gcolor, color, wx.NORTH)
@@ -291,7 +272,7 @@ class PFGaugePref ( PreferenceView):
         self.cbLink = wx.CheckBox( panel, wx.ID_ANY, u"Link Colors", wx.DefaultPosition, wx.DefaultSize, 0 )
         buttonsSizer.Add( self.cbLink, 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT | wx.LEFT, 5 )
 
-        self.sliderGradientStart = wx.Slider( panel, wx.ID_ANY, self.gradientStart, 0, 100, wx.DefaultPosition, (127,-1), wx.SL_HORIZONTAL|wx.SL_LABELS )
+        self.sliderGradientStart = wx.Slider( panel, wx.ID_ANY, self.gradientStart, -100, 100, wx.DefaultPosition, (127,-1), wx.SL_HORIZONTAL|wx.SL_LABELS )
         buttonsSizer.Add( self.sliderGradientStart, 1, wx.EXPAND | wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5 )
 
         self.btnRestore = wx.Button( panel, wx.ID_ANY, u"Restore Defaults", wx.DefaultPosition, wx.DefaultSize, 0 )
@@ -345,7 +326,7 @@ class PFGaugePref ( PreferenceView):
 
         self.c103105S = wx.Colour(255, 128, 0, 255)
         self.c103105E = wx.Colour(255, 0, 0, 255)
-        self.gradientStart = 95
+        self.gradientStart = -35
 
     def SetColours(self):
         self.cp0100S.SetColour(self.c0100S)
