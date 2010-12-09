@@ -10,6 +10,7 @@ import service
 from wx.lib.buttons import GenBitmapButton
 
 import gui.utils.colorUtils as colorUtils
+import gui.utils.drawUtils as drawUtils
 
 FitRenamed, EVT_FIT_RENAMED = wx.lib.newevent.NewEvent()
 FitSelected, EVT_FIT_SELECTED = wx.lib.newevent.NewEvent()
@@ -761,20 +762,15 @@ class CategoryItem(wx.Window):
 
         mdc = wx.BufferedPaintDC(self)
 
-        r = copy.copy(rect)
-        r.top = 0
-        r.left = 0
-        r.height = r.height / 2
         if self.highlighted:
-            mdc.GradientFillLinear(r, gStart, gEnd, wx.SOUTH)
-            r.top = r.height
-            mdc.GradientFillLinear(r, gMid, gEnd, wx.NORTH)
-            mdc.SetTextForeground(textColor)
+            bkBitmap = drawUtils.DrawGradientBar(rect.width, rect.height, gStart, gEnd, gMid)
+            mdc.DrawBitmap(bkBitmap, 0,0)
 
         else:
             mdc.SetBackground(wx.Brush(windowColor))
-            mdc.SetTextForeground(textColor)
             mdc.Clear()
+
+        mdc.SetTextForeground(textColor)
 
         mdc.DrawBitmap(self.shipBmp,5,(rect.height-self.shipBmp.GetWidth())/2,0)
         mdc.SetFont(self.fontBig)
@@ -1005,14 +1001,9 @@ class ShipItem(wx.Window):
 
         mdc = wx.BufferedPaintDC(self)
 
-        r = copy.copy(rect)
-        r.top = r.left = 0
-        r.height = r.height / 2
-
         if self.highlighted:
-            mdc.GradientFillLinear(r, gStart, gEnd, wx.SOUTH)
-            r.top = r.height
-            mdc.GradientFillLinear(r, gMid, gEnd, wx.NORTH)
+            bkBitmap = drawUtils.DrawGradientBar(rect.width, rect.height, gStart, gEnd, gMid)
+            mdc.DrawBitmap(bkBitmap, 0,0)
             mdc.SetTextForeground(textColor)
 
         else:
@@ -1523,9 +1514,8 @@ class FitItem(wx.Window):
         r.height = r.height / 2
 
         if self.highlighted:
-            mdc.GradientFillLinear(r, gStart, gEnd, wx.SOUTH)
-            r.top = r.height
-            mdc.GradientFillLinear(r, gMid, gEnd, wx.NORTH)
+            bkBitmap = drawUtils.DrawGradientBar(rect.width, rect.height, gStart, gEnd, gMid)
+            mdc.DrawBitmap(bkBitmap, 0,0)
 
         else:
             activeFitID = self.mainFrame.getActiveFit()
@@ -1533,9 +1523,8 @@ class FitItem(wx.Window):
             if activeFitID == self.fitID:
                 gStart = colorUtils.GetSuitableColor(windowColor, 0.2)
                 gMid = colorUtils.GetSuitableColor(windowColor, (0x33 - self.selectedDelta)/100)
-                mdc.GradientFillLinear(r, gStart, gMid, wx.SOUTH)
-                r.top = r.height
-                mdc.GradientFillLinear(r, gStart, gMid, wx.NORTH)
+                bkBitmap = drawUtils.DrawGradientBar(rect.width, rect.height, gStart, gMid)
+                mdc.DrawBitmap(bkBitmap, 0,0)
             else:
                 mdc.SetBackground(wx.Brush(windowColor))
                 mdc.Clear()
