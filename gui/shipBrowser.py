@@ -1508,9 +1508,6 @@ class FitItem(wx.Window):
         rect = self.GetRect()
 
         windowColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
-        gStart = colorUtils.GetSuitableColor(windowColor, 0.2)
-        gMid = colorUtils.GetSuitableColor(windowColor, 0.55)
-        gEnd = windowColor
         textColor = colorUtils.GetSuitableColor(windowColor, 1)
 
         mdc = wx.BufferedPaintDC(self)
