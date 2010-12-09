@@ -1508,11 +1508,6 @@ class FitItem(wx.Window):
 
         mdc = wx.BufferedPaintDC(self)
 
-
-        r = copy.copy(rect)
-        r.top = r.left = 0
-        r.height = r.height / 2
-
         if self.highlighted:
             bkBitmap = drawUtils.DrawGradientBar(rect.width, rect.height, gStart, gEnd, gMid)
             mdc.DrawBitmap(bkBitmap, 0,0)
