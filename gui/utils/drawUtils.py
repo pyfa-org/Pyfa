@@ -25,7 +25,7 @@ def DrawFilledBitmap(width, height, color):
     mdc = wx.MemoryDC()
     mdc.SelectObject(canvas)
 
-    mdc.SetBrush(wx.Brush(color))
+    mdc.SetBackground(wx.Brush(color))
     mdc.Clear()
 
     mdc.SelectObject(wx.NullBitmap)
