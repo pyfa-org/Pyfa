@@ -1508,16 +1508,21 @@ class FitItem(wx.Window):
 
         mdc = wx.BufferedPaintDC(self)
 
-        if self.highlighted:
+        activeFitID = self.mainFrame.getActiveFit()
+
+        if self.highlighted and not activeFitID == self.fitID :
             bkBitmap = drawUtils.DrawGradientBar(rect.width, rect.height, gStart, gEnd, gMid)
             mdc.DrawBitmap(bkBitmap, 0,0)
 
         else:
-            activeFitID = self.mainFrame.getActiveFit()
 
             if activeFitID == self.fitID:
                 gStart = colorUtils.GetSuitableColor(windowColor, 0.2)
-                gMid = colorUtils.GetSuitableColor(windowColor, (0x33 - self.selectedDelta)/100)
+                if self.highlighted:
+                    factor = 0.3
+                else:
+                    factor = (0x33 - self.selectedDelta)/100
+                gMid = colorUtils.GetSuitableColor(windowColor, factor)
                 bkBitmap = drawUtils.DrawGradientBar(rect.width, rect.height, gStart, gMid)
                 mdc.DrawBitmap(bkBitmap, 0,0)
             else:
