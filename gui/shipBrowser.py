@@ -755,20 +755,24 @@ class CategoryItem(wx.Window):
         rect = self.GetRect()
 
         windowColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
-        gStart = colorUtils.GetSuitableColor(windowColor, 0.2)
-        gMid = colorUtils.GetSuitableColor(windowColor, 0.55)
-        gEnd = windowColor
         textColor = colorUtils.GetSuitableColor(windowColor, 1)
 
         mdc = wx.BufferedPaintDC(self)
 
         if self.highlighted:
-            bkBitmap = drawUtils.DrawGradientBar(rect.width, rect.height, gStart, gEnd, gMid)
-            mdc.DrawBitmap(bkBitmap, 0,0)
+
+            sFactor = 0.2
+            eFactor = 0
+            mFactor = 0.55
 
         else:
-            mdc.SetBackground(wx.Brush(windowColor))
-            mdc.Clear()
+            sFactor = 0
+            eFactor = 0
+            mFactor = None
+
+
+        bkBitmap = drawUtils.RenderGradientBar(windowColor, rect.width, rect.height, sFactor, eFactor, mFactor)
+        mdc.DrawBitmap(bkBitmap, 0,0)
 
         mdc.SetTextForeground(textColor)
 
@@ -994,22 +998,25 @@ class ShipItem(wx.Window):
         rect = self.GetRect()
 
         windowColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
-        gStart = colorUtils.GetSuitableColor(windowColor, 0.2)
-        gMid = colorUtils.GetSuitableColor(windowColor, 0.55)
-        gEnd = windowColor
         textColor = colorUtils.GetSuitableColor(windowColor, 1)
 
         mdc = wx.BufferedPaintDC(self)
 
         if self.highlighted:
-            bkBitmap = drawUtils.DrawGradientBar(rect.width, rect.height, gStart, gEnd, gMid)
-            mdc.DrawBitmap(bkBitmap, 0,0)
-            mdc.SetTextForeground(textColor)
+
+            sFactor = 0.2
+            eFactor = 0
+            mFactor = 0.55
 
         else:
-            mdc.SetBackground(wx.Brush(windowColor))
-            mdc.SetTextForeground(textColor)
-            mdc.Clear()
+            sFactor = 0
+            eFactor = 0
+            mFactor = None
+
+        bkBitmap = drawUtils.RenderGradientBar(windowColor, rect.width, rect.height, sFactor, eFactor, mFactor)
+        mdc.DrawBitmap(bkBitmap, 0,0)
+
+        mdc.SetTextForeground(textColor)
 
 
         mdc.SetFont(self.fontBig)
@@ -1510,43 +1517,35 @@ class FitItem(wx.Window):
 
         activeFitID = self.mainFrame.getActiveFit()
 
-        if self.highlighted and not activeFitID == self.fitID :
-            bkBitmap = drawUtils.DrawGradientBar(rect.width, rect.height, gStart, gEnd, gMid)
-            mdc.DrawBitmap(bkBitmap, 0,0)
+
+        if self.highlighted and not activeFitID == self.fitID:
+
+            sFactor = 0.2
+            eFactor = 0
+            mFactor = 0.55
 
         else:
-
             if activeFitID == self.fitID:
-                gStart = colorUtils.GetSuitableColor(windowColor, 0.2)
+
+                sFactor = 0.2
+
                 if self.highlighted:
                     factor = 0.3
                 else:
                     factor = (0x33 - self.selectedDelta)/100
-                gMid = colorUtils.GetSuitableColor(windowColor, factor)
-                bkBitmap = drawUtils.DrawGradientBar(rect.width, rect.height, gStart, gMid)
-                mdc.DrawBitmap(bkBitmap, 0,0)
+
+                eFactor = factor
+                mFactor = None
             else:
-                mdc.SetBackground(wx.Brush(windowColor))
-                mdc.Clear()
+                sFactor = 0
+                eFactor = 0
+                mFactor = None
+
+
+        bkBitmap = drawUtils.RenderGradientBar(windowColor, rect.width, rect.height, sFactor, eFactor, mFactor)
+        mdc.DrawBitmap(bkBitmap, 0,0)
 
         mdc.SetTextForeground(textColor)
-#        else:
-#            activeFitID = self.mainFrame.getActiveFit()
-#            if activeFitID == self.fitID:
-#                bkR,bkG,bkB = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
-#                if (bkR+bkG+bkB) >(127+127+127):
-#                    scale = - self.selectedDelta
-#                else:
-#                    scale = self.selectedDelta
-#                bkR += scale
-#                bkG += scale
-#                bkB += scale
-#                mdc.SetBackground(wx.Brush((bkR,bkG,bkB)))
-#            else:
-#                mdc.SetBackground(wx.Brush(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)))
-#
-#            mdc.SetTextForeground(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT))
-#            mdc.Clear()
 
         mdc.SetFont(self.fontBig)
         mdc.DrawBitmap(self.shipEffBk,5 + (rect.height - self.shipEffBk.GetWidth()) / 2, (rect.height - self.shipEffBk.GetHeight()) / 2,0)
