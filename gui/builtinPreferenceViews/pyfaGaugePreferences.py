@@ -122,9 +122,12 @@ class PFGaugePreview(wx.Window):
         color = colorUtils.CalculateTransitionColor(self.colorS, self.colorE, float(value)/100)
         if self.gradientStart > 0:
             gcolor = colorUtils.BrightenColor(color,  float(self.gradientStart) / 100)
+            gMid = colorUtils.BrightenColor(color,  float(self.gradientStart/2) / 100)
         else:
             gcolor = colorUtils.DarkenColor(color,  float(-self.gradientStart) / 100)
-        dc.GradientFillLinear(r, gcolor, color, wx.SOUTH)
+            gMid = colorUtils.DarkenColor(color,  float(-self.gradientStart/2) / 100)
+
+        dc.GradientFillLinear(r, gMid, color, wx.SOUTH)
         r.top = r.height
         dc.GradientFillLinear(r, gcolor, color, wx.NORTH)
 

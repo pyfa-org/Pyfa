@@ -332,10 +332,12 @@ class PyGauge(wx.PyWindow):
 
             if self.gradientEffect > 0:
                 gcolor = colorUtils.BrightenColor(color,  float(self.gradientEffect) / 100)
+                gMid = colorUtils.BrightenColor(color,  float(self.gradientEffect/2) / 100)
             else:
                 gcolor = colorUtils.DarkenColor(color,  float(-self.gradientEffect) / 100)
+                gMid = colorUtils.DarkenColor(color,  float(-self.gradientEffect/2) / 100)
 
-            dc.GradientFillLinear(r, gcolor, color, wx.SOUTH)
+            dc.GradientFillLinear(r, gMid, color, wx.SOUTH)
             r.top = r.height
             dc.GradientFillLinear(r, gcolor, color, wx.NORTH)
         else:
