@@ -573,6 +573,9 @@ class PFAddRenderer:
         self.highlighted = highlight
         self._Render()
 
+    def IsHighlighted(self):
+        return self.highlighted
+
     def Render(self):
         return self.addBitmap
 
@@ -961,11 +964,13 @@ class PFTabsContainer(wx.Panel):
         ax,ay = self.addButton.GetPosition()
         reg.Offset(ax,ay)
         if reg.Contains(mposx, mposy):
-            self.addButton.Highlight(True)
+            if not self.addButton.IsHighlighted():
+                self.addButton.Highlight(True)
+                self.Refresh()
         else:
-            self.addButton.Highlight(False)
-
-        self.Refresh()
+            if self.addButton.IsHighlighted():
+                self.addButton.Highlight(False)
+                self.Refresh()
 
     def OnPaint(self, event):
 

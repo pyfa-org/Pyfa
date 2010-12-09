@@ -2,7 +2,7 @@ import os
 import sys
 
 # Turns on debug mode
-debug = False
+debug = True
 
 # You can adjust these paths to your needs
 
