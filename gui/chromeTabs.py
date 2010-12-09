@@ -304,7 +304,6 @@ class PFTabRenderer:
     def SetSelected(self, sel = True):
         self.selected = sel
         self.InitTab()
-#        self._Render()
 
     def GetSelected(self):
         return self.selected
@@ -582,22 +581,10 @@ class PFAddRenderer:
     def _Render(self):
         inc = self.inclination
         rect = wx.Rect(0 ,0 ,self.width, self.height)
+
         if self.addBitmap:
             del self.addBitmap
 
-#        canvas = wx.EmptyBitmap(self.width, self.height)
-#
-#        mdc = wx.MemoryDC()
-#        mdc.SelectObject(canvas)
-#
-#        mdc.SetBackground(wx.Brush ((0x12,0x23,0x32)))
-#        mdc.Clear()
-#        mdc.SelectObject(wx.NullBitmap)
-#        canvas.SetMaskColour((255,255,255))
-
-#        img = canvas.ConvertToImage()
-#        if not img.HasAlpha():
-#            img.InitAlpha()
         if self.highlighted:
             alpha = 1
         else:
@@ -606,7 +593,7 @@ class PFAddRenderer:
 
         bbmp = wx.BitmapFromImage(img)
         self.addBitmap = bbmp
-#        self.addBitmap.SetMaskColour((0x12,0x23,0x32))
+
 
 
 class PFTabsContainer(wx.Panel):
@@ -720,16 +707,10 @@ class PFTabsContainer(wx.Panel):
         if self.CheckTabClose(selTab, mposx, mposy):
             return
 
-#        if self.CheckTabSelected(selTab, mposx, mposy):
-#            return
-
         for tab in self.tabs:
 
             if self.CheckTabClose(tab, mposx, mposy):
                 return
-
-#            if self.CheckTabSelected(tab, mposx, mposy):
-#                return
 
     def GetSelectedTab(self):
         for tab in self.tabs:
@@ -1143,23 +1124,6 @@ class PFTabsContainer(wx.Panel):
             selected.SetPosition((selpos, self.containerHeight - self.height))
         self.addButton.SetPosition((round(tabsWidth) + self.inclination*2, self.containerHeight - self.height/2 - self.addButton.GetHeight()/2))
 
-    def CalculateColor(self, color, delta):
-        bkR ,bkG , bkB = color
-        if bkR + bkG + bkB > 127*3:
-            scale = - delta
-        else:
-            scale = delta*2
-
-        r = bkR + scale
-        g = bkG + scale
-        b = bkB + scale
-
-        r = min(max(r,0),255)
-        g = min(max(g,0),255)
-        b = min(max(b,0),255)
-
-        return wx.Colour(r,g,b)
-
     def OnLeaveWindow(self, event):
         if self.previewWnd:
             self.previewWnd.Show(False)
@@ -1185,9 +1149,7 @@ class PFNotebookPagePreview(wx.Frame):
                                                                wx.NO_BORDER
                                                              | wx.FRAME_NO_TASKBAR
                                                              | wx.STAY_ON_TOP)
-#        img = bitmap.ConvertToImage()
-#        img = img.ConvertToGreyscale()
-#        bitmap = wx.BitmapFromImage(img)
+
         self.title = title
         self.bitmap = bitmap
         self.SetSize((bitmap.GetWidth(), bitmap.GetHeight()))
