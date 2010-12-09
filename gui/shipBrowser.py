@@ -21,6 +21,10 @@ Stage2Selected, EVT_SB_STAGE2_SEL = wx.lib.newevent.NewEvent()
 Stage3Selected, EVT_SB_STAGE3_SEL = wx.lib.newevent.NewEvent()
 SearchSelected, EVT_SB_SEARCH_SEL = wx.lib.newevent.NewEvent()
 
+SB_ITEM_NORMAL = 0
+SB_ITEM_SELECTED = 1
+SB_ITEM_SELECTED_HIGHLIGHTED = 2
+SB_ITEM_HIGHLIGHTED = 3
 
 class PFWidgetsContainer(PFListPane):
     def __init__(self,parent):
@@ -1197,9 +1201,8 @@ class FitItem(wx.Window):
 
         self.dragTLFBmp = None
 
+        self.bkBitmap = None
 
-
-        self.Bind(wx.EVT_PAINT, self.OnPaint)
         self.renamePosX = 0
         self.renamePosY = 0
 
@@ -1239,6 +1242,7 @@ class FitItem(wx.Window):
 
         self.selectedDelta = 0
 
+        self.Bind(wx.EVT_PAINT, self.OnPaint)
         self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBackground)
 
         self.Bind(wx.EVT_LEFT_UP, self.checkPosition)
@@ -1504,6 +1508,62 @@ class FitItem(wx.Window):
     def OnEraseBackground(self, event):
         pass
 
+    def GetState(self):
+        activeFitID = self.mainFrame.getActiveFit()
+
+        if self.highlighted and not activeFitID == self.fitID:
+            state = SB_ITEM_HIGHLIGHTED
+
+        else:
+            if activeFitID == self.fitID:
+                if self.highlighted:
+                    state = SB_ITEM_SELECTED_HIGHLIGHTED
+                else:
+                    state = SB_ITEM_SELECTED
+            else:
+                state = SB_ITEM_NORMAL
+        return state
+
+    def RenderBackground(self):
+        rect = self.GetRect()
+
+        windowColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
+
+        activeFitID = self.mainFrame.getActiveFit()
+
+        state = self.GetState()
+
+        sFactor = 0.2
+        mFactor = None
+        eFactor = 0
+
+        if state == SB_ITEM_HIGHLIGHTED:
+            mFactor = 0.55
+
+        elif state == SB_ITEM_SELECTED_HIGHLIGHTED:
+            eFactor = 0.3
+        elif state == SB_ITEM_SELECTED:
+            eFactor = (0x33 - self.selectedDelta)/100
+        else:
+            sFactor = 0
+
+        if self.bkBitmap:
+            if self.bkBitmap.eFactor == eFactor and self.bkBitmap.sFactor == sFactor and self.bkBitmap.mFactor == mFactor \
+             and rect.width == self.bkBitmap.GetWidth() and rect.height == self.bkBitmap.GetHeight() :
+                return
+            else:
+                del self.bkBitmap
+
+        self.bkBitmap = drawUtils.RenderGradientBar(windowColor, rect.width, rect.height, sFactor, eFactor, mFactor)
+        self.bkBitmap.state = state
+        self.bkBitmap.sFactor = sFactor
+        self.bkBitmap.eFactor = eFactor
+        self.bkBitmap.mFactor = mFactor
+
+    def Refresh(self):
+        self.RenderBackground()
+        wx.Window.Refresh(self)
+
     def OnPaint(self, event):
         rect = self.GetRect()
 
@@ -1512,35 +1572,10 @@ class FitItem(wx.Window):
 
         mdc = wx.BufferedPaintDC(self)
 
-        activeFitID = self.mainFrame.getActiveFit()
+        if self.bkBitmap is None:
+            self.RenderBackground()
 
-
-        if self.highlighted and not activeFitID == self.fitID:
-
-            sFactor = 0.2
-            eFactor = 0
-            mFactor = 0.55
-
-        else:
-            if activeFitID == self.fitID:
-
-                sFactor = 0.2
-
-                if self.highlighted:
-                    factor = 0.3
-                else:
-                    factor = (0x33 - self.selectedDelta)/100
-
-                eFactor = factor
-                mFactor = None
-            else:
-                sFactor = 0
-                eFactor = 0
-                mFactor = None
-
-
-        bkBitmap = drawUtils.RenderGradientBar(windowColor, rect.width, rect.height, sFactor, eFactor, mFactor)
-        mdc.DrawBitmap(bkBitmap, 0,0)
+        mdc.DrawBitmap(self.bkBitmap, 0,0)
 
         mdc.SetTextForeground(textColor)
 
