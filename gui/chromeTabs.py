@@ -979,10 +979,8 @@ class PFTabsContainer(wx.Panel):
 
         else:
             rect = self.GetRect()
-            canvas = wx.EmptyBitmap(rect.width, rect.height)
 
             mdc = wx.BufferedPaintDC(self)
-            mdc.SelectObject(canvas)
 
         selected = 0
 
