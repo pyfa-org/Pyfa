@@ -558,11 +558,12 @@ class FittingView(d.Display):
                     name = ""
 
                 imgId = col.getImageId(st)
-                bmp = self.imageList.GetBitmap(imgId)
                 tcx = cx
+
                 if imgId != -1:
                     self.imageList.Draw(imgId,mdc,cx,cy,wx.IMAGELIST_DRAW_TRANSPARENT,True)
                     tcx += isize + padding
+
                 if name != "":
                     nx,ny = mdc.GetTextExtent(name)
                     rect = wx.Rect()
@@ -573,8 +574,6 @@ class FittingView(d.Display):
                     mdc.DrawLabel(name, rect, wx.ALIGN_CENTER_VERTICAL)
                     tcx += nx + padding
 
-#                if imgId == -1 and name == "":
-#                    cx += isize + padding
                 cx += columnsWidths[i]
 
             cy += maxRowHeight
