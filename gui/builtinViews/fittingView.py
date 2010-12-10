@@ -528,7 +528,7 @@ class FittingView(d.Display):
                 opts.m_labelText = name
 
             if imgId != -1:
-                bmp = self.imageList.GetBitmap(imgId)
+                bmp = col.bitmap
                 opts.m_labelBitmap = bmp
 
             width = render.DrawHeaderButton (self, mdc, (cx, padding, columnsWidths[i], headerSize), wx.CONTROL_CURRENT,

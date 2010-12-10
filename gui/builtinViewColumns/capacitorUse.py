@@ -34,6 +34,7 @@ class CapacitorUse(ViewColumn):
         cAttribute = service.Attribute.getInstance()
         info = cAttribute.getAttributeInfo("capacitorNeed")
         self.imageId = fittingView.imageList.GetImageIndex(info.icon.iconFile, "pack")
+        self.bitmap = bitmapLoader.getBitmap(info.icon.iconFile, "pack")
 
 
     def getText(self, mod):

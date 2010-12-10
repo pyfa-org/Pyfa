@@ -33,7 +33,7 @@ class ViewColumn(object):
         self.size = wx.LIST_AUTOSIZE_USEHEADER
         self.mask = 0
         self.maxsize = -1
-
+        self.bitmap = wx.NullBitmap
 
     @classmethod
     def register(cls):

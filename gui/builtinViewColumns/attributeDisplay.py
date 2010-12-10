@@ -40,6 +40,7 @@ class AttributeDisplay(ViewColumn):
                 iconType = "pack"
             if iconFile:
                 self.imageId = fittingView.imageList.GetImageIndex(iconFile, iconType)
+                self.bitmap = bitmapLoader.getBitmap(iconFile, iconType)
             else:
                 self.imageId = -1
 
