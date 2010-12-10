@@ -561,7 +561,7 @@ class FittingView(d.Display):
                 tcx = cx
 
                 if imgId != -1:
-                    self.imageList.Draw(imgId,mdc,cx,cy,wx.IMAGELIST_DRAW_TRANSPARENT,True)
+                    self.imageList.Draw(imgId,mdc,cx,cy,wx.IMAGELIST_DRAW_TRANSPARENT,False)
                     tcx += isize + padding
 
                 if name != "":
