@@ -167,16 +167,13 @@ class Display(wx.ListCtrl):
 
             return lastFound
 
+    def deselectItems(self):
+        sel = self.GetFirstSelected()
+        while sel != -1:
+            self.SetItemState(sel, 0, wx.LIST_STATE_SELECTED | wx.LIST_STATE_FOCUSED)
+            sel = self.GetNextSelected(sel)
+
     def populate(self, stuff):
-        selection = []
-
-
-#        sel = self.GetFirstSelected()
-#        while sel != -1:
-#            selection.append(sel)
-#            sel = self.GetNextSelected(sel)
-
-#        self.DeleteAllItems()
 
         if stuff is not None:
             listItemCount = self.GetItemCount()
@@ -196,10 +193,6 @@ class Display(wx.ListCtrl):
                         self.DeleteItem(self.getLastItem())
                     self.Refresh()
 
-
-
-#        for sel in selection:
-#            self.Select(sel)
 
     def refresh(self, stuff):
         if stuff == None:
