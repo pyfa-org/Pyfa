@@ -332,6 +332,7 @@ class ItemView(d.Display):
             return (item.metaGroup.parent.name, item.metaGroup.ID , item.name)
 
     def populate(self, stuff):
+        self.deselectItems()
         stuff.sort(key=self.itemSort)
         self.active = stuff
         d.Display.populate(self, stuff)

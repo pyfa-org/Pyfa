@@ -50,6 +50,9 @@ class DroneView(d.Display):
 
     def __init__(self, parent):
         d.Display.__init__(self, parent, style=wx.LC_SINGLE_SEL | wx.BORDER_NONE)
+
+        self.lastFitId = None
+
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
         self.mainFrame.Bind(mb.ITEM_SELECTED, self.addItem)
         self.Bind(wx.EVT_LEFT_DCLICK, self.removeItem)
@@ -98,13 +101,33 @@ class DroneView(d.Display):
                 drone.item.name)
 
     def fitChanged(self, event):
+
+        #Clear list and get out if current fitId is None
+        if event.fitID is None and self.lastFitId is not None:
+            self.DeleteAllItems()
+            self.lastFitId = None
+            event.Skip()
+            return
+
         cFit = service.Fit.getInstance()
         fit = cFit.getFit(event.fitID)
 
         self.original = fit.drones if fit is not None else None
         self.drones = stuff = fit.drones[:] if fit is not None else None
+
         if stuff is not None:
             stuff.sort(key=self.droneKey)
+
+
+        if event.fitID != self.lastFitId:
+            self.lastFitId = event.fitID
+
+            item = self.GetNextItem(-1, wx.LIST_NEXT_ALL, wx.LIST_STATE_DONTCARE)
+
+            if item != -1:
+                self.EnsureVisible(item)
+
+            self.deselectItems()
 
         self.update(stuff)
         event.Skip()

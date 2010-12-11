@@ -24,7 +24,6 @@ import gui.mainFrame
 from gui.viewColumn import ViewColumn
 from gui.cachingImageList import CachingImageList
 
-
 class Display(wx.ListCtrl):
     def __init__(self, parent, size = wx.DefaultSize, style = 0):
 
@@ -35,6 +34,9 @@ class Display(wx.ListCtrl):
         self.columnsMinWidth = []
         self.Bind(wx.EVT_LIST_COL_END_DRAG, self.resizeChecker)
         self.Bind(wx.EVT_LIST_COL_BEGIN_DRAG, self.resizeSkip)
+
+        if "wxMSW" in wx.PlatformInfo:
+            self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBk)
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
@@ -67,6 +69,42 @@ class Display(wx.ListCtrl):
         self.SetColumnWidth(i, 0)
 
         self.imageListBase = self.imageList.ImageCount
+
+
+    def OnEraseBk(self,event):
+        if self.GetItemCount() >0:
+            width, height = self.GetClientSize()
+            dc = event.GetDC()
+
+            dc.DestroyClippingRegion()
+            dc.SetClippingRegion(0, 0, width, height)
+            x,y,w,h = dc.GetClippingBox()
+
+            topItem = self.GetTopItem()
+            bottomItem = topItem + self.GetCountPerPage()
+
+            if bottomItem >= self.GetItemCount():
+               bottomItem = self.GetItemCount() - 1
+
+            topRect = self.GetItemRect(topItem, wx.LIST_RECT_LABEL)
+            bottomRect = self.GetItemRect(bottomItem, wx.LIST_RECT_BOUNDS)
+
+
+            items_rect = wx.Rect(topRect.left, 0, bottomRect.right - topRect.left, bottomRect.bottom )
+
+            updateRegion = wx.Region(x,y,w,h)
+            updateRegion.SubtractRect(items_rect)
+
+            dc.DestroyClippingRegion()
+            dc.SetClippingRegionAsRegion(updateRegion)
+
+            dc.SetBackground(wx.Brush(self.GetBackgroundColour(), wx.SOLID))
+            dc.Clear()
+
+            dc.DestroyClippingRegion()
+
+        else:
+            event.Skip()
 
     def addColumn(self, i, col):
         self.activeColumns.append(col)
@@ -114,23 +152,47 @@ class Display(wx.ListCtrl):
             self.SetColumnWidth(column,self.columnsMinWidth[column])
         colItem.resized = True
 
-    def populate(self, stuff):
-        selection = []
+    def getLastItem( self, state =  wx.LIST_STATE_DONTCARE):
+            lastFound = -1
+            while True:
+                    index = self.GetNextItem(
+                            lastFound,
+                            wx.LIST_NEXT_ALL,
+                            state,
+                    )
+                    if index == -1:
+                            break
+                    else:
+                            lastFound = index
 
+            return lastFound
 
+    def deselectItems(self):
         sel = self.GetFirstSelected()
         while sel != -1:
-            selection.append(sel)
+            self.SetItemState(sel, 0, wx.LIST_STATE_SELECTED | wx.LIST_STATE_FOCUSED)
             sel = self.GetNextSelected(sel)
 
-        self.DeleteAllItems()
+    def populate(self, stuff):
 
         if stuff is not None:
-            for id, st in enumerate(stuff):
-                index = self.InsertStringItem(sys.maxint, "")
+            listItemCount = self.GetItemCount()
+            stuffItemCount = len(stuff)
 
-        for sel in selection:
-            self.Select(sel)
+            if listItemCount < stuffItemCount:
+                for i in xrange(stuffItemCount - listItemCount):
+                    index = self.InsertStringItem(sys.maxint, "")
+
+            if listItemCount > stuffItemCount:
+                if listItemCount - stuffItemCount > 20 and stuffItemCount < 20:
+                    self.DeleteAllItems()
+                    for i in xrange(stuffItemCount):
+                        index = self.InsertStringItem(sys.maxint, "")
+                else:
+                    for i in xrange(listItemCount - stuffItemCount):
+                        self.DeleteItem(self.getLastItem())
+                    self.Refresh()
+
 
     def refresh(self, stuff):
         if stuff == None:
@@ -169,7 +231,6 @@ class Display(wx.ListCtrl):
                     self.SetItem(colItem)
 
                 self.SetItemData(item, id)
-
 
 #        self.Freeze()
         if 'wxMSW' in wx.PlatformInfo:
