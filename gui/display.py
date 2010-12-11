@@ -23,6 +23,7 @@ import gui.mainFrame
 
 from gui.viewColumn import ViewColumn
 from gui.cachingImageList import CachingImageList
+from wxPython._controls import wxLIST_STATE_DONTCARE
 
 
 class Display(wx.ListCtrl):
@@ -153,23 +154,54 @@ class Display(wx.ListCtrl):
             self.SetColumnWidth(column,self.columnsMinWidth[column])
         colItem.resized = True
 
+    def getLastItem( self, state =  wx.LIST_STATE_DONTCARE):
+            lastFound = -1
+            while True:
+                    index = self.GetNextItem(
+                            lastFound,
+                            wx.LIST_NEXT_ALL,
+                            state,
+                    )
+                    if index == -1:
+                            break
+                    else:
+                            lastFound = index
+
+            return lastFound
+
     def populate(self, stuff):
         selection = []
 
 
-        sel = self.GetFirstSelected()
-        while sel != -1:
-            selection.append(sel)
-            sel = self.GetNextSelected(sel)
+#        sel = self.GetFirstSelected()
+#        while sel != -1:
+#            selection.append(sel)
+#            sel = self.GetNextSelected(sel)
 
-        self.DeleteAllItems()
+#        self.DeleteAllItems()
 
         if stuff is not None:
-            for id, st in enumerate(stuff):
-                index = self.InsertStringItem(sys.maxint, "")
+            listItemCount = self.GetItemCount()
+            stuffItemCount = len(stuff)
 
-        for sel in selection:
-            self.Select(sel)
+            if listItemCount < stuffItemCount:
+                for i in xrange(stuffItemCount - listItemCount):
+                    index = self.InsertStringItem(sys.maxint, "")
+
+            if listItemCount > stuffItemCount:
+                if listItemCount - stuffItemCount > 20 and stuffItemCount >20:
+                    self.DeleteAllItems()
+                    for i in xrange(stuffItemCount):
+                        index = self.InsertStringItem(sys.maxint, "")
+                else:
+                    for i in xrange(listItemCount - stuffItemCount):
+                        self.DeleteItem(self.getLastItem())
+                    self.Refresh()
+
+
+
+#        for sel in selection:
+#            self.Select(sel)
 
     def refresh(self, stuff):
         if stuff == None:
