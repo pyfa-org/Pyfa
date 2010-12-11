@@ -49,6 +49,9 @@ class ProjectedView(d.Display):
 
     def __init__(self, parent):
         d.Display.__init__(self, parent, style = wx.LC_SINGLE_SEL | wx.BORDER_NONE)
+
+        self.lastFitId = None
+
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
         self.Bind(wx.EVT_LEFT_DOWN, self.click)
         self.Bind(wx.EVT_RIGHT_DOWN, self.click)
@@ -108,6 +111,13 @@ class ProjectedView(d.Display):
         return fit.name
 
     def fitChanged(self, event):
+        #Clear list and get out if current fitId is None
+        if event.fitID is None and self.lastFitId is not None:
+            self.DeleteAllItems()
+            self.lastFitId = None
+            event.Skip()
+            return
+
         cFit = service.Fit.getInstance()
         fit = cFit.getFit(event.fitID)
         stuff = []
@@ -124,6 +134,15 @@ class ProjectedView(d.Display):
             stuff.extend(self.drones)
             stuff.extend(self.fits)
 
+        if event.fitID != self.lastFitId:
+            self.lastFitId = event.fitID
+
+            item = self.GetNextItem(-1, wx.LIST_NEXT_ALL, wx.LIST_STATE_DONTCARE)
+
+            if item != -1:
+                self.EnsureVisible(item)
+
+            self.deselectItems()
         self.update(stuff)
 
     def get(self, row):

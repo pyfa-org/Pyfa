@@ -51,7 +51,7 @@ class DroneView(d.Display):
     def __init__(self, parent):
         d.Display.__init__(self, parent, style=wx.LC_SINGLE_SEL | wx.BORDER_NONE)
 
-        self.lastFitId = -1
+        self.lastFitId = None
 
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
         self.mainFrame.Bind(mb.ITEM_SELECTED, self.addItem)
