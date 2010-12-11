@@ -23,8 +23,6 @@ import gui.mainFrame
 
 from gui.viewColumn import ViewColumn
 from gui.cachingImageList import CachingImageList
-from wxPython._controls import wxLIST_STATE_DONTCARE
-
 
 class Display(wx.ListCtrl):
     def __init__(self, parent, size = wx.DefaultSize, style = 0):
