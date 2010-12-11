@@ -265,8 +265,9 @@ class FittingView(d.Display):
                 if populate is not None:
                     if populate: self.slotsChanged()
                     wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.activeFitID))
-
-        event.Skip()
+            else:
+                if "wxMSW" in wx.PlatformInfo:
+                    self.click(event)
 
     def swapItems(self, x, y, itemID):
         srcRow = self.FindItemData(-1,itemID)
