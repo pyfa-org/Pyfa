@@ -136,15 +136,11 @@ class Display(wx.ListCtrl):
         if stuff == None:
             return
 
-        selection = []
-        sel = self.GetFirstSelected()
-        while sel != -1:
-            selection.append(sel)
-            sel = self.GetNextSelected(sel)
-
         item = -1
         for id, st in enumerate(stuff):
+
             item = self.GetNextItem(item)
+
             for i, col in enumerate(self.activeColumns):
                 colItem = self.GetItem(item, i)
                 oldText = colItem.GetText()
@@ -159,14 +155,23 @@ class Display(wx.ListCtrl):
                 colItem.SetText(newText)
                 colItem.SetImage(newImageId)
 
-                if oldText != newText or oldImageId != newImageId:
-                    self.SetItem(colItem)
+                mask = 0
 
-                self.SetItemState(item, 0 , wx.LIST_STATE_FOCUSED | wx.LIST_STATE_SELECTED)
+                if oldText != newText:
+                    mask |= wx.LIST_MASK_TEXT
+                    colItem.SetText(newText)
+                if oldImageId != newImageId:
+                    mask |= wx.LIST_MASK_IMAGE
+                    colItem.SetImage(newImageId)
+
+                if mask:
+                    colItem.SetMask(mask)
+                    self.SetItem(colItem)
 
                 self.SetItemData(item, id)
 
-        self.Freeze()
+
+#        self.Freeze()
         if 'wxMSW' in wx.PlatformInfo:
             for i,col in enumerate(self.activeColumns):
                 if not col.resized:
@@ -183,10 +188,8 @@ class Display(wx.ListCtrl):
                             self.SetColumnWidth(i, headerWidth)
                     else:
                         self.SetColumnWidth(i, col.size)
-        self.Thaw()
+#        self.Thaw()
 
-        for sel in selection:
-            self.Select(sel)
 
 
     def update(self, stuff):
