@@ -76,11 +76,13 @@ class ImplantView(d.Display):
     def removeItem(self, event):
         row, _ = self.HitTest(event.Position)
         if row != -1:
-            fitID = self.mainFrame.getActiveFit()
-            cFit = service.Fit.getInstance()
-            implant = self.implants[self.GetItemData(row)]
-            cFit.removeImplant(fitID, self.original.index(implant))
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+            col = self.getColumn(event.Position)
+            if col != self.getColIndex(State):
+                fitID = self.mainFrame.getActiveFit()
+                cFit = service.Fit.getInstance()
+                implant = self.implants[self.GetItemData(row)]
+                cFit.removeImplant(fitID, self.original.index(implant))
+                wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
     def click(self, event):
         event.Skip()
