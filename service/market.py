@@ -183,7 +183,7 @@ class Market():
                        "Apocalypse Imperial Issue", "Raven State Issue",
                        "Megathron Federate Issue", "Tempest Tribal Issue",
                        "Apotheosis", "Zephyr", "Primae", "Mimir", "Freki",
-                       "Adrestia", "Utu")
+                       "Adrestia", "Utu", "Echelon")
     def getShipList(self, id):
         ships = []
         if id == -1:
