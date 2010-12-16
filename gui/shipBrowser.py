@@ -1339,6 +1339,7 @@ class FitItem(wx.Window):
         self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBackground)
 
         self.Bind(wx.EVT_LEFT_UP, self.checkPosition)
+        self.Bind(wx.EVT_MIDDLE_DOWN, self.selectFit)
         self.Bind(wx.EVT_LEFT_DOWN, self.prepareDragging)
         self.Bind(wx.EVT_MOTION, self.cursorCheck)
         self.Bind(wx.EVT_MOUSE_CAPTURE_LOST, self.OnCaptureLost)
