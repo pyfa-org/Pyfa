@@ -54,6 +54,11 @@ class FitSpawner(gui.multiSwitch.TabSpawner):
             except:
                 pass
         if count <0:
+            mstate = wx.GetMouseState()
+
+            if mstate.ControlDown():
+                self.multiSwitch.AddPage()
+
             view = FittingView(self.multiSwitch)
             self.multiSwitch.ReplaceActivePage(view)
             view.fitSelected(event)
