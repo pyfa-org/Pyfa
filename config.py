@@ -8,7 +8,7 @@ debug = False
 
 # The main pyfa directory which contains run.py
 # python 2.X uses ansi by default, so we need to convert the character encoding :(
-pyfaPath = unicode(os.path.abspath(sys.modules['__main__'].__file__),
+pyfaPath = unicode(os.path.join(os.getcwd(), os.path.dirname(sys.modules['__main__'].__file__)),
                    sys.getfilesystemencoding())
 
 # Where we store the saved fits etc, default is the current users home directory
