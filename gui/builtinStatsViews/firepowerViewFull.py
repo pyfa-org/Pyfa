@@ -21,7 +21,7 @@ import wx
 from gui.statsView import StatsView
 from gui import builtinStatsViews
 from gui import bitmapLoader
-from util import formatAmount
+from gui.util import formatAmount
 
 class FirepowerViewFull(StatsView):
     name = "firepowerViewFull"

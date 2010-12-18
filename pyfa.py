@@ -24,7 +24,7 @@ if not hasattr(sys, 'frozen'):
     import wxversion
     wxversion.ensureMinimal('2.8')
 
-import config
+from gui import config
 
 # try:
 #    import apsw

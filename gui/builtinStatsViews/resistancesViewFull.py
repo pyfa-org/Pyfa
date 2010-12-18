@@ -22,7 +22,7 @@ from gui.statsView import StatsView
 from gui import builtinStatsViews
 from gui import bitmapLoader
 from gui import pygauge as PG
-from util import formatAmount
+from gui.util import formatAmount
 import service
 import gui.mainFrame
 import gui.builtinViews.fittingView as fv

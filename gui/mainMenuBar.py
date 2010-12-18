@@ -18,7 +18,7 @@
 #===============================================================================
 
 import wx
-import config
+from gui import config
 import bitmapLoader
 import gui.mainFrame
 import gui.graphFrame

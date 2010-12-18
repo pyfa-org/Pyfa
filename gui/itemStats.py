@@ -25,7 +25,7 @@ import sys
 import wx.lib.mixins.listctrl  as  listmix
 import wx.html
 from eos.types import Ship, Module, Skill, Booster, Implant, Drone
-from util import formatAmount
+from gui.util import formatAmount
 import service
 
 class ItemStatsDialog(wx.Dialog):

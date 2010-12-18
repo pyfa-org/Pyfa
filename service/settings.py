@@ -19,7 +19,7 @@
 
 import cPickle
 import os.path
-import config
+from gui import config
 
 class SettingsProvider():
     BASE_PATH = os.path.join(config.savePath, "settings")
