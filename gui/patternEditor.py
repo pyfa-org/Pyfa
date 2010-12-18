@@ -21,7 +21,7 @@ import wx
 import bitmapLoader
 import service
 from wx.lib.intctrl import IntCtrl
-from gui.util import toClipboard, fromClipboard
+from util import toClipboard, fromClipboard
 
 ###########################################################################
 ## Class DmgPatternEditorDlg

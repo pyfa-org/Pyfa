@@ -25,7 +25,7 @@ from gui import pygauge as PG
 
 from eos.types import Hardpoint
 
-from gui.util import formatAmount
+from util import formatAmount
 
 class ResourcesViewFull(StatsView):
     name = "resourcesViewFull"

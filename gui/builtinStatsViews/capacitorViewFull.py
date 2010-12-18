@@ -21,7 +21,7 @@ import wx
 from gui.statsView import StatsView
 from gui import builtinStatsViews
 from gui import bitmapLoader
-from gui.util import formatAmount
+from util import formatAmount
 
 class CapacitorViewFull(StatsView):
     name = "capacitorViewFull"

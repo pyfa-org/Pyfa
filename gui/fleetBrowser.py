@@ -4,7 +4,7 @@ from gui import bitmapLoader
 import gui.mainFrame
 from gui.PFListPane import PFListPane
 import service.fleet
-from gui.util import GetPartialText
+from util import GetPartialText
 
 from wx.lib.buttons import GenBitmapButton
 

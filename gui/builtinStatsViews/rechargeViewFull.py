@@ -20,7 +20,7 @@
 import wx
 from gui.statsView import StatsView
 from gui import bitmapLoader
-from gui.util import formatAmount
+from util import formatAmount
 import gui.mainFrame
 import gui.builtinStatsViews.resistancesViewFull as rvf
 import service

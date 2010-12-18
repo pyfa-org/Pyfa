@@ -20,7 +20,7 @@
 import wx
 from gui.statsView import StatsView
 from gui import builtinStatsViews
-from gui.util import formatAmount
+from util import formatAmount
 
 class TargetingMiscViewFull(StatsView):
     name = "targetingmiscViewFull"
@@ -132,7 +132,7 @@ class TargetingMiscViewFull(StatsView):
                 elif labelName is "labelFullSigRadius":
                     label.SetToolTip(wx.ToolTip("Probe Size: %.3f" % (fit.probeSize or 0) ))
                 elif labelName is "labelFullWarpSpeed":
-                    label.SetToolTip(wx.ToolTip("Max Warp Distance: %.1f AU" %
+                    label.SetToolTip(wx.ToolTip("Max Warp Distance: %.1f AU" % 
                         fit.maxWarpDistance))
                 elif fit is not None:
                     label.SetToolTip(wx.ToolTip("%.1f" % value))

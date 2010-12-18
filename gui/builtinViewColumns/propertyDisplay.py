@@ -20,7 +20,7 @@
 from gui.viewColumn import ViewColumn
 from gui import bitmapLoader
 import service
-from gui.util import formatAmount
+from util import formatAmount
 import wx
 
 class PropertyDisplay(ViewColumn):

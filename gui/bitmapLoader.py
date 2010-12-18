@@ -18,14 +18,14 @@
 #===============================================================================
 
 import os.path
-from gui import config
+import config
 import wx
 import time
 
 try:
     from collections import OrderedDict
 except ImportError:
-    from gui.compat import OrderedDict
+    from compat import OrderedDict
 
 cachedBitmapsCount = 0
 cachedBitmaps = OrderedDict()

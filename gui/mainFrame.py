@@ -19,7 +19,7 @@
 
 import wx
 import service
-from gui import config
+import config
 from gui import bitmapLoader
 from gui.mainMenuBar import MainMenuBar
 from gui.additionsPane import AdditionsPane
@@ -34,11 +34,11 @@ from gui.patternEditor import DmgPatternEditorDlg
 from gui.preferenceDialog import PreferenceDialog
 from gui.graphFrame import GraphFrame
 from gui.copySelectDialog import CopySelectDialog
-from gui import aboutData
+import aboutData
 from wx._core import PyDeadObjectError
 import os.path
 import gui.chromeTabs
-from gui.util import toClipboard, fromClipboard
+from util import toClipboard, fromClipboard
 from builtinViews import *
 from gui.fleetBrowser import FleetBrowser
 
