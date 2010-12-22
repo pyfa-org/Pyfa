@@ -34,7 +34,7 @@ from gui.patternEditor import DmgPatternEditorDlg
 from gui.preferenceDialog import PreferenceDialog
 from gui.graphFrame import GraphFrame
 from gui.copySelectDialog import CopySelectDialog
-import aboutData
+import gui.aboutData
 from wx._core import PyDeadObjectError
 import os.path
 import gui.chromeTabs
@@ -210,8 +210,8 @@ class MainFrame(wx.Frame):
     def ShowAboutBox(self, evt):
         info = wx.AboutDialogInfo()
         info.Name = "pyfa"
-        info.Version = aboutData.versionString
-        info.Description = wordwrap(aboutData.description + "\n\n\nDevelopers: " + "".join(aboutData.developers) + "\n\nAdditional credits:\n  " + "\n  ".join(aboutData.credits) + "\n\nLicense: " + aboutData.license + " - see included " + aboutData.licenseLocation,
+        info.Version = gui.aboutData.versionString
+        info.Description = wordwrap(gui.aboutData.description + "\n\n\nDevelopers: " + "".join(gui.aboutData.developers) + "\n\nAdditional credits:\n  " + "\n  ".join(gui.aboutData.credits) + "\n\nLicense: " + gui.aboutData.license + " - see included " + gui.aboutData.licenseLocation,
             700, wx.ClientDC(self))
         info.WebSite = ("http://www.evefit.org/Pyfa", "pyfa home page")
         wx.AboutBox(info)
