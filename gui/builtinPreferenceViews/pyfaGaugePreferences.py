@@ -8,6 +8,7 @@ import copy
 from gui.preferenceView import PreferenceView
 from gui import bitmapLoader
 from gui.utils import colorUtils
+import gui.utils.drawUtils as drawUtils
 
 ###########################################################################
 ## Class PFGaugePref
@@ -117,7 +118,6 @@ class PFGaugePreview(wx.Window):
             w = rect.width * (float(value) / 100)
         r = copy.copy(rect)
         r.width = w
-        r.height = r.height/2+1
 
         color = colorUtils.CalculateTransitionColor(self.colorS, self.colorE, float(value)/100)
         if self.gradientStart > 0:
@@ -127,10 +127,8 @@ class PFGaugePreview(wx.Window):
             gcolor = colorUtils.DarkenColor(color,  float(-self.gradientStart) / 100)
             gMid = colorUtils.DarkenColor(color,  float(-self.gradientStart/2) / 100)
 
-        dc.GradientFillLinear(r, gMid, color, wx.SOUTH)
-        r.top = r.height
-        dc.GradientFillLinear(r, gcolor, color, wx.NORTH)
-
+        gBmp = drawUtils.DrawGradientBar(r.width, r.height, gMid, color, gcolor)
+        dc.DrawBitmap(gBmp,0,0)
         dc.SetFont(self.font)
 
         r = copy.copy(rect)
