@@ -16,6 +16,7 @@ import copy
 import math
 
 from gui.utils import colorUtils
+import gui.utils.drawUtils as drawUtils
 
 class PyGauge(wx.PyWindow):
     """
@@ -297,7 +298,7 @@ class PyGauge(wx.PyWindow):
                 w = rect.width * (float(value) / 100)
             r = copy.copy(rect)
             r.width = w
-            r.height = r.height/2+1
+
 
             pv = value
             xv=1
@@ -337,9 +338,8 @@ class PyGauge(wx.PyWindow):
                 gcolor = colorUtils.DarkenColor(color,  float(-self.gradientEffect) / 100)
                 gMid = colorUtils.DarkenColor(color,  float(-self.gradientEffect/2) / 100)
 
-            dc.GradientFillLinear(r, gMid, color, wx.SOUTH)
-            r.top = r.height
-            dc.GradientFillLinear(r, gcolor, color, wx.NORTH)
+            gBmp = drawUtils.DrawGradientBar(r.width, r.height, gMid, color, gcolor)
+            dc.DrawBitmap(gBmp,r.left, r.top)
         else:
             colour=self.GetBarColour()
             dc.SetBrush(wx.Brush(colour))
