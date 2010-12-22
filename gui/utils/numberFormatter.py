@@ -1,5 +1,4 @@
 import math
-import wx
 
 def formatAmount(val, prec=3, lowest=0, highest=0):
     """
@@ -73,50 +72,3 @@ def processAmount(val, prec=3):
     # Strip trailing zero for integers and convert to string
     result = str(val)[-2:] == '.0' and str(val)[:-2] or str(val)
     return result
-
-def toClipboard(text):
-    clip = wx.TheClipboard
-    clip.Open()
-    data = wx.TextDataObject(text)
-    clip.SetData(data)
-    clip.Close()
-
-def fromClipboard():
-    clip = wx.TheClipboard
-    clip.Open()
-    data = wx.TextDataObject("")
-    if clip.GetData(data):
-        clip.Close()
-        return data.GetText()
-    else:
-        clip.Close()
-        return None
-
-
-
-
-def GetPartialText(dc, text , maxWidth):
-        ellipsis = "..."
-        base_w, h = dc.GetTextExtent(ellipsis)
-
-        lenText = len(text)
-        drawntext = text
-        w, dummy = dc.GetTextExtent(text)
-
-        while lenText > 1:
-
-            if w + base_w <= maxWidth:
-                break
-
-            w_c, h_c = dc.GetTextExtent(drawntext[-1])
-            drawntext = drawntext[0:-1]
-            lenText -= 1
-            w -= w_c
-
-        while len(ellipsis) > 0 and w + base_w > maxWidth:
-            ellipsis = ellipsis[0:-1]
-            base_w, h = dc.GetTextExtent(ellipsis)
-        if len(text) > lenText:
-            return drawntext + ellipsis
-        else:
-            return text

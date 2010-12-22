@@ -20,7 +20,7 @@
 import wx
 import service
 
-from util import formatAmount
+from gui.utils.numberFormatter import formatAmount
 from gui.viewColumn import ViewColumn
 from gui import bitmapLoader
 

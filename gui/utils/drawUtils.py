@@ -54,3 +54,30 @@ def DrawGradientBar(width, height, gStart, gEnd, gMid = None):
     mdc.SelectObject(wx.NullBitmap)
 
     return canvas
+
+
+def GetPartialText(dc, text , maxWidth):
+        ellipsis = "..."
+        base_w, h = dc.GetTextExtent(ellipsis)
+
+        lenText = len(text)
+        drawntext = text
+        w, dummy = dc.GetTextExtent(text)
+
+        while lenText > 1:
+
+            if w + base_w <= maxWidth:
+                break
+
+            w_c, h_c = dc.GetTextExtent(drawntext[-1])
+            drawntext = drawntext[0:-1]
+            lenText -= 1
+            w -= w_c
+
+        while len(ellipsis) > 0 and w + base_w > maxWidth:
+            ellipsis = ellipsis[0:-1]
+            base_w, h = dc.GetTextExtent(ellipsis)
+        if len(text) > lenText:
+            return drawntext + ellipsis
+        else:
+            return text

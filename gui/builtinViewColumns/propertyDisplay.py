@@ -19,9 +19,9 @@
 
 from gui.viewColumn import ViewColumn
 from gui import bitmapLoader
-import service
-from util import formatAmount
+from gui.utils.numberFormatter import formatAmount
 import wx
+import service
 
 class PropertyDisplay(ViewColumn):
     name = "prop"

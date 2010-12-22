@@ -38,7 +38,7 @@ import gui.aboutData
 from wx._core import PyDeadObjectError
 import os.path
 import gui.chromeTabs
-from util import toClipboard, fromClipboard
+from gui.utils.clipboard import toClipboard, fromClipboard
 from builtinViews import *
 from gui.fleetBrowser import FleetBrowser
 

@@ -20,8 +20,9 @@
 from gui import builtinViewColumns
 from gui.viewColumn import ViewColumn
 from gui import bitmapLoader
+from gui.utils.util import formatAmount
+
 import service
-from util import formatAmount
 import wx
 
 class AttributeDisplay(ViewColumn):
