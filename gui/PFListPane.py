@@ -40,7 +40,7 @@ class PFListPane(wx.ScrolledWindow):
         self.Bind(wx.EVT_MOUSE_CAPTURE_CHANGED, self.ForceFocus)
 
     def ForceFocus(self,event):
-        if self.FindFocus().Parent != self:
+        if self.FindFocus() and self.FindFocus().Parent != self:
             self.SetFocus()
         event.Skip()
 
