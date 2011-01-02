@@ -138,9 +138,9 @@ class Fit(object):
             return None
 
         fit = eos.db.getFit(fitID)
+        fit.calculateModifiedAttributes()
         fit.fill()
         eos.db.commit()
-        fit.calculateModifiedAttributes()
         return fit
 
     def searchFits(self, name):
@@ -216,7 +216,7 @@ class Fit(object):
                 if d is None or d.amountActive == d.amount or d.amount >= 5:
                     drone = d
                     break
-                
+
             if drone is None:
                 drone = eos.types.Drone(thing)
                 fit.projectedDrones.append(drone)
