@@ -29,10 +29,9 @@ class PropertyDisplay(ViewColumn):
         ViewColumn.__init__(self, fittingView)
         cAttribute = service.Attribute.getInstance()
         attributeSlave = params["attributeSlave"] or params["property"]
-        try:
-            info = cAttribute.getAttributeInfo(attributeSlave)
-        except:
-            info = None
+        # This function can throw an exception if the database isn't sane
+        # We need to do a sanity check before this runs
+        info = cAttribute.getAttributeInfo(attributeSlave)
 
         self.mask = 0
         self.propertyName = params["property"]
