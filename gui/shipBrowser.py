@@ -697,80 +697,19 @@ class HeaderPane (wx.Panel):
             wx.PostEvent(self.Parent,Stage1Selected())
 
 
-
-class CategoryItem(wx.Window):
-    def __init__(self, parent, categoryID, shipFittingInfo,
-                 id=wx.ID_ANY, range=100, pos=wx.DefaultPosition,
-                 size=(0,16), style=0):
+class SBItem(wx.Window):
+    def __init__(self, parent, id = wx.ID_ANY, pos = wx.DefaultPosition, size = (0,16), style = 0):
         wx.Window.__init__(self, parent, id, pos, size, style)
 
-        if categoryID:
-            self.shipBmp = bitmapLoader.getBitmap("ship_small","icons")
-        else:
-            self.shipBmp = wx.EmptyBitmap(16,16)
-
-        self.categoryID = categoryID
-        self.shipFittingInfo = shipFittingInfo
-        self.shipName, dummy = shipFittingInfo
-        self.width,self.height = size
-
-        self.highlighted = 0
+        self.highlighted = False
         self.selected = False
         self.bkBitmap = None
-        self.editWasShown = 0
-
-        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-
-        self.fontBig = wx.FontFromPixelSize((0,15),wx.SWISS, wx.NORMAL, wx.NORMAL, False)
 
         self.Bind(wx.EVT_PAINT, self.OnPaint)
         self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBackground)
-        self.Bind(wx.EVT_LEFT_UP, self.checkPosition)
-        self.Bind(wx.EVT_ENTER_WINDOW, self.enterW)
-        self.Bind(wx.EVT_LEAVE_WINDOW, self.leaveW)
-
-        self.shipBrowser = self.Parent.Parent
-
-    def GetType(self):
-        return 1
-
-    def checkPosition(self, event):
-
-        pos = event.GetPosition()
-        x,y = pos
-        categoryID = self.categoryID
-        wx.PostEvent(self.shipBrowser,Stage2Selected(categoryID=categoryID, back=False))
-
-    def enterW(self,event):
-        self.highlighted = 1
-        self.Refresh()
-        event.Skip()
-
-    def leaveW(self,event):
-        self.highlighted = 0
-        self.Refresh()
-        event.Skip()
-
-
-    def OnEraseBackground(self, event):
-        pass
-
-
-    def GetState(self):
-        activeFitID = self.mainFrame.getActiveFit()
-
-        if self.highlighted and not self.selected:
-            state = SB_ITEM_HIGHLIGHTED
-
-        elif self.selected:
-            if self.highlighted:
-                state = SB_ITEM_SELECTED  | SB_ITEM_HIGHLIGHTED
-            else:
-                state = SB_ITEM_SELECTED
-        else:
-            state = SB_ITEM_NORMAL
-
-        return state
+        self.Bind(wx.EVT_LEFT_UP, self.OnLeftUp)
+        self.Bind(wx.EVT_ENTER_WINDOW, self.EnterWindow)
+        self.Bind(wx.EVT_LEAVE_WINDOW, self.LeaveWindow)
 
     def RenderBackground(self):
         rect = self.GetRect()
@@ -810,13 +749,7 @@ class CategoryItem(wx.Window):
         self.RenderBackground()
         wx.Window.Refresh(self)
 
-    def OnPaint(self,event):
-
-        rect = self.GetRect()
-
-        windowColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
-        textColor = colorUtils.GetSuitableColor(windowColor, 1)
-
+    def OnPaint(self, event):
         mdc = wx.BufferedPaintDC(self)
 
         if self.bkBitmap is None:
@@ -824,21 +757,88 @@ class CategoryItem(wx.Window):
 
         mdc.DrawBitmap(self.bkBitmap, 0,0)
 
+        self.DrawItem(mdc)
+
+    def DrawItem(self, mdc):
+        pass
+
+    def OnEraseBackground(self, event):
+        pass
+
+    def OnLeftUp(self, event):
+        pass
+
+    def EnterWindow(self, event):
+        self.highlighted = True
+        self.Refresh()
+        event.Skip()
+
+    def LeaveWindow(self, event):
+        self.highlighted = False
+        self.Refresh()
+        event.Skip()
+
+    def GetType(self):
+        return -1
+
+    def GetState(self):
+
+        if self.highlighted and not self.selected:
+            state = SB_ITEM_HIGHLIGHTED
+
+        elif self.selected:
+            if self.highlighted:
+                state = SB_ITEM_SELECTED  | SB_ITEM_HIGHLIGHTED
+            else:
+                state = SB_ITEM_SELECTED
+        else:
+            state = SB_ITEM_NORMAL
+
+        return state
+
+
+class CategoryItem(SBItem):
+    def __init__(self,parent, categoryID, fittingInfo, size = (0,16)):
+        SBItem.__init__(self,parent,size = size)
+
+        if categoryID:
+            self.shipBmp = bitmapLoader.getBitmap("ship_small","icons")
+        else:
+            self.shipBmp = wx.EmptyBitmap(16,16)
+
+        self.categoryID = categoryID
+        self.fittingInfo = fittingInfo
+        self.shipBrowser = self.Parent.Parent
+        self.fontBig = wx.FontFromPixelSize((0,15),wx.SWISS, wx.NORMAL, wx.NORMAL, False)
+
+    def GetType(self):
+        return 1
+
+    def OnLeftUp(self, event):
+        categoryID = self.categoryID
+        wx.PostEvent(self.shipBrowser,Stage2Selected(categoryID=categoryID, back=False))
+
+    def DrawItem(self, mdc):
+        rect = self.GetRect()
+
+        windowColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
+        textColor = colorUtils.GetSuitableColor(windowColor, 1)
+
         mdc.SetTextForeground(textColor)
 
         mdc.DrawBitmap(self.shipBmp,5,(rect.height-self.shipBmp.GetWidth())/2,0)
         mdc.SetFont(self.fontBig)
 
 
-        shipName, fittings = self.shipFittingInfo
+        categoryName, fittings = self.fittingInfo
 
 
 
         xpos = 5 + self.shipBmp.GetWidth() + 5
 
-        xtext, ytext = mdc.GetTextExtent(shipName)
+        xtext, ytext = mdc.GetTextExtent(categoryName)
         ypos = (rect.height - ytext) / 2
-        mdc.DrawText(shipName, xpos, ypos)
+        mdc.DrawText(categoryName, xpos, ypos)
         xpos+=xtext+5
 
         mdc.SetFont(wx.Font(8, wx.SWISS, wx.NORMAL, wx.NORMAL, False))
@@ -858,7 +858,6 @@ class CategoryItem(wx.Window):
             xtext, ytext = mdc.GetTextExtent(fformat)
             ypos = (rect.height - ytext)/2
 
-        event.Skip()
 
 class ShipItem(wx.Window):
     def __init__(self, parent, shipID=None, shipFittingInfo=("Test", 2), itemData=None,
