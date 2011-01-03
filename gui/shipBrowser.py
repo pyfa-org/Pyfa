@@ -766,7 +766,7 @@ class SBItem(wx.Window):
         pass
 
     def OnLeftUp(self, event):
-        pass
+        event.Skip()
 
     def EnterWindow(self, event):
         self.highlighted = True
