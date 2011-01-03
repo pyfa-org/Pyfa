@@ -858,13 +858,6 @@ class CategoryItem(wx.Window):
             xtext, ytext = mdc.GetTextExtent(fformat)
             ypos = (rect.height - ytext)/2
 
-        #seems that a scrolled window without scrollbars shown always HasScrollbar ><
-
-        addX = 5
-
-        fPosX = rect.width - addX - xtext
-        fPosY = (rect.height -ytext)/2
-
         event.Skip()
 
 class ShipItem(wx.Window):
