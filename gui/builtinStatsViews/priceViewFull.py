@@ -47,7 +47,7 @@ class PriceViewFull(StatsView):
                 self._timer.Stop()
                 self.refreshPanel(self.fit)
             else:
-                self.labelEMStatus.SetLabel("EVE-METRICS prices update retry in: %d seconds" %(self._timerRunsBeforeUpdate - self._timerRuns))
+                self.labelEMStatus.SetLabel("Prices update retry in: %d seconds" %(self._timerRunsBeforeUpdate - self._timerRuns))
                 self._timerRuns += 1
         if self._timerIdUpdate == event.GetId():
             self._timerUpdate.Stop()
@@ -107,7 +107,7 @@ class PriceViewFull(StatsView):
                     self._timer.Stop()
             cMarket = service.Market.getInstance()
             cMarket.getPrices(typeIDs, self.processPrices)
-            self.labelEMStatus.SetLabel("Updating prices from EVE-METRICS...")
+            self.labelEMStatus.SetLabel("Updating prices...")
             if not self._timerUpdate:
                 self._timerUpdate = wx.Timer(self.parent, self._timerIdUpdate)
             if self._timerUpdate:
