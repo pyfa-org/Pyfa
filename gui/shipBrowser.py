@@ -1680,7 +1680,7 @@ class FitItem(wx.Window):
 
         mdc.SetFont(self.fontNormal)
         fitDate = time.localtime(self.timestamp)
-        shipName = "%s/%s %s:%s" % (fitDate[1], fitDate[2], fitDate[3], fitDate[4])
+        shipName = "%02d/%02d %02d:%02d" % (fitDate[1], fitDate[2], fitDate[3], fitDate[4])
         mdc.DrawText("%s" % shipName, textStart, ypos)
 
         mdc.SetFont(self.fontSmall)
