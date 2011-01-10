@@ -172,7 +172,9 @@ class MarketTree(wx.TreeCtrl):
             getattr(self.marketBrowser, metaGroup).SetValue(True)
             cMarket.activateMetaGroup(metaGroup)
             self.marketBrowser.itemView.searching = False
-
+        if mg is None and item.ID in cMarket.FORCED_ITEM_MKTGRPS:
+            mgid = cMarket.FORCED_ITEM_MKTGRPS[item.ID]
+            mg = cMarket.getMarketGroup(mgid)
         if mg is None:
             return
 

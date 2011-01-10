@@ -121,8 +121,17 @@ class SearchWorkerThread(threading.Thread):
 
 class Market():
     instance = None
-    FORCED_SHIPS = ("Ibis", "Impairor", "Velator", "Reaper")
-    FORCED_GROUPS = ("Rookie ship")
+    FORCEPUBLISHED_SHIPS = ("Ibis", "Impairor", "Velator", "Reaper")
+    FORCEPUBLISHED_GROUPS = ("Rookie ship")
+    FORCED_ITEM_MKTGRPS = { 2080: 648, 2083: 712, 2838: 977, 4579: 1050, 4621: 1051, 20358: 1152, 20371: 1189,
+                            20443: 1163, 20700: 1187, 21510: 682, 21606: 1185, 22325: 714, 22327: 714, 22329: 714,
+                            22331: 714, 22333: 714, 22335: 714, 22337: 714, 22339: 714, 22715: 620, 22760: 618,
+                            22921: 1039, 22923: 1039, 24663: 1176, 24669: 1157, 25867: 1186, 25868: 1180, 27204: 1156,
+                            27205: 1156, 27206: 1156, 27213: 1154, 27214: 1154, 27215: 1154, 27216: 1152, 27217: 1152,
+                            27218: 1152, 27219: 1160, 27220: 1160, 27221: 1160, 28513: 644, 30328: 760, 30342: 760,
+                            30420: 760, 30422: 760, 30424: 760, 30839: 760, 32248: 977, 32254: 1185, 32255: 1167,
+                            32413: 679, 32416: 680, 32417: 680, 32459: 760, 32461: 760, 32463: 920, 32465: 837,
+                            32467: 760, 32469: 760 }
     META_MAP = {"normal": (1, 2, 14),
                 "faction": (4, 3),
                 "complex": (6,),
@@ -164,14 +173,13 @@ class Market():
         for child in group.children:
             children.append((child.ID, child.name, self.figureIcon(child), not child.hasTypes))
 
-
         return children
 
     def getShipRoot(self):
         cat = eos.db.getCategory(6)
         root = [(-1, "Limited Issue Ships")]
         for grp in cat.groups:
-            if grp.published or grp.name in self.FORCED_GROUPS:
+            if grp.published or grp.name in self.FORCEPUBLISHED_GROUPS:
                 root.append((grp.ID, grp.name))
         zephyr = eos.db.getGroup("Prototype Exploration Ship")
         root.remove((zephyr.ID, zephyr.name))
@@ -195,7 +203,7 @@ class Market():
 
         grp = eos.db.getGroup(id, eager=("items", "items.marketGroup", "items.attributes"))
         for item in grp.items:
-            if (item.published or item.name in self.FORCED_SHIPS) and item.name not in self.LIMITED_EDITION:
+            if (item.published or item.name in self.FORCEPUBLISHED_SHIPS) and item.name not in self.LIMITED_EDITION:
                 ships.append((item.ID, item.name, item.race))
 
         return ships
@@ -207,7 +215,7 @@ class Market():
         results = eos.db.searchItems(name)
         ships = []
         for item in results:
-            if item.category.name == "Ship" and (item.published or item.name in self.FORCED_SHIPS or item.name in self.LIMITED_EDITION):
+            if item.category.name == "Ship" and (item.published or item.name in self.FORCEPUBLISHED_SHIPS or item.name in self.LIMITED_EDITION):
                 ships.append((item.ID, item.name, item.race))
 
         return ships
@@ -223,6 +231,9 @@ class Market():
 
     def getGroup(self, groupId):
         return eos.db.getGroup(groupId)
+
+    def getMarketGroup(self, marketGroupId):
+        return eos.db.getMarketGroup(marketGroupId)
 
     MARKET_GROUPS = (9, #Modules
                     1111, #Rigs
@@ -289,11 +300,14 @@ class Market():
         if len(self.activeMetas) == 0:
             return tuple()
 
+        forceditemids = filter(lambda typeid: self.FORCED_ITEM_MKTGRPS[typeid] == marketGroupId, self.FORCED_ITEM_MKTGRPS)
+        forceditems = list(eos.db.getItem(typeID) for typeID in forceditemids)
+
         mg = eos.db.getMarketGroup(marketGroupId)
         l = set()
         populatedMetas = set()
 
-        for item in mg.items:
+        for item in mg.items + forceditems:
             populatedMetas.add(1)
             if 1 in self.activeMetas:
                 l.add(item)
