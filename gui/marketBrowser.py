@@ -161,20 +161,26 @@ class MarketTree(wx.TreeCtrl):
     def jump(self, item):
         cMarket = service.Market.getInstance()
         mg = item.marketGroup
-        if mg is None and item.metaGroup is not None:
-            mg = item.metaGroup.parent.marketGroup
+        if mg is None and (item.metaGroup is not None or item.ID in cMarket.FORCED_ITEM_MKTGRPS):
+            if item.metaGroup is not None:
+                mg = item.metaGroup.parent.marketGroup
+                metaGroup = cMarket.getMetaName(item.metaGroup.ID)
+            elif item.ID in cMarket.FORCED_ITEM_MKTGRPS:
+                mgid = cMarket.FORCED_ITEM_MKTGRPS[item.ID][0]
+                mg = cMarket.getMarketGroup(mgid)
+                metaGroupID = cMarket.FORCED_ITEM_MKTGRPS[item.ID][1]
+                metaGroupName = "normal"
+                for metaGroupName, metaGroupIDs in cMarket.META_MAP.iteritems():
+                    if metaGroupID in metaGroupIDs:
+                        metaGroup = metaGroupName
+                        break
             for btn in ("normal", "faction", "complex", "officer"):
                 getattr(self.marketBrowser, btn).SetValue(False)
                 cMarket.disableMetaGroup(btn)
 
-            metaGroup = cMarket.getMetaName(item.metaGroup.ID)
-
             getattr(self.marketBrowser, metaGroup).SetValue(True)
             cMarket.activateMetaGroup(metaGroup)
             self.marketBrowser.itemView.searching = False
-        if mg is None and item.ID in cMarket.FORCED_ITEM_MKTGRPS:
-            mgid = cMarket.FORCED_ITEM_MKTGRPS[item.ID]
-            mg = cMarket.getMarketGroup(mgid)
         if mg is None:
             return
 

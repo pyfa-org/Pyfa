@@ -123,15 +123,16 @@ class Market():
     instance = None
     FORCEPUBLISHED_SHIPS = ("Ibis", "Impairor", "Velator", "Reaper")
     FORCEPUBLISHED_GROUPS = ("Rookie ship")
-    FORCED_ITEM_MKTGRPS = { 2080: 648, 2083: 712, 2838: 977, 4579: 1050, 4621: 1051, 20358: 1152, 20371: 1189,
-                            20443: 1163, 20700: 1187, 21510: 682, 21606: 1185, 22325: 714, 22327: 714, 22329: 714,
-                            22331: 714, 22333: 714, 22335: 714, 22337: 714, 22339: 714, 22715: 620, 22760: 618,
-                            22921: 1039, 22923: 1039, 24663: 1176, 24669: 1157, 25867: 1186, 25868: 1180, 27204: 1156,
-                            27205: 1156, 27206: 1156, 27213: 1154, 27214: 1154, 27215: 1154, 27216: 1152, 27217: 1152,
-                            27218: 1152, 27219: 1160, 27220: 1160, 27221: 1160, 28513: 644, 30328: 760, 30342: 760,
-                            30420: 760, 30422: 760, 30424: 760, 30839: 760, 32248: 977, 32254: 1185, 32255: 1167,
-                            32413: 679, 32416: 680, 32417: 680, 32459: 760, 32461: 760, 32463: 920, 32465: 837,
-                            32467: 760, 32469: 760 }
+    FORCED_ITEM_MKTGRPS = { 2080: (648, 1), 2083: (712, 1), 2838: (977, 1), 4579: (1050, 1), 4621: (1051, 3), 20358: (1152, 3),
+                            20371: (1189, 3), 20443: (1163, 3), 20700: (1187, 3), 21510: (682, 1), 21606: (1185, 3), 22325: (714, 3),
+                            22327: (714, 3), 22329: (714, 3), 22331: (714, 3), 22333: (714, 1), 22335: (714, 1), 22337: (714, 1),
+                            22339: (714, 1), 22715: (620, 4), 22760: (618, 4), 22921: (1039, 3), 22923: (1039, 3), 24663: (1176, 1),
+                            24669: (1157, 3), 25867: (1186, 3), 25868: (1180, 3), 27204: (1156, 1), 27205: (1156, 1), 27206: (1156, 1),
+                            27213: (1154, 1), 27214: (1154, 1), 27215: (1154, 1), 27216: (1152, 1), 27217: (1152, 1), 27218: (1152, 1),
+                            27219: (1160, 1), 27220: (1160, 1), 27221: (1160, 1), 28513: (644, 4), 30328: (760, 1), 30342: (760, 1),
+                            30420: (760, 1), 30422: (760, 1), 30424: (760, 1), 30839: (760, 1), 32248: (977, 4), 32254: (1185, 4),
+                            32255: (1167, 4), 32413: (679, 4), 32416: (680, 4), 32417: (680, 4), 32459: (760, 1), 32461: (760, 1),
+                            32463: (920, 1), 32465: (837, 1), 32467: (760, 1), 32469: (760, 1) }
     META_MAP = {"normal": (1, 2, 14),
                 "faction": (4, 3),
                 "complex": (6,),
@@ -300,14 +301,11 @@ class Market():
         if len(self.activeMetas) == 0:
             return tuple()
 
-        forceditemids = filter(lambda typeid: self.FORCED_ITEM_MKTGRPS[typeid] == marketGroupId, self.FORCED_ITEM_MKTGRPS)
-        forceditems = list(eos.db.getItem(typeID) for typeID in forceditemids)
-
         mg = eos.db.getMarketGroup(marketGroupId)
         l = set()
         populatedMetas = set()
 
-        for item in mg.items + forceditems:
+        for item in mg.items:
             populatedMetas.add(1)
             if 1 in self.activeMetas:
                 l.add(item)
@@ -317,6 +315,14 @@ class Market():
                 populatedMetas.add(var.metaGroup.ID)
                 if var.metaGroup.ID in self.activeMetas:
                     l.add(var)
+
+        forceditemids = filter(lambda typeid: self.FORCED_ITEM_MKTGRPS[typeid][0] == marketGroupId, self.FORCED_ITEM_MKTGRPS)
+        forceditems = list(eos.db.getItem(typeID) for typeID in forceditemids)
+        for item in forceditems:
+            meta = self.FORCED_ITEM_MKTGRPS[item.ID][1]
+            populatedMetas.add(meta)
+            if meta in self.activeMetas:
+                l.add(item)
 
         return list(l), populatedMetas
 
