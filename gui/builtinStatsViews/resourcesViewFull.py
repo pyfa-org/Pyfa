@@ -176,6 +176,22 @@ class ResourcesViewFull(StatsView):
                 totalLauncherHardPoints = value
                 labelTLH = label
 
+            if labelName % panel == "label%sUsedDronesActive" % panel:
+                usedDronesActive = value
+                labelUDA = label
+
+            if labelName % panel == "label%sTotalDronesActive" % panel:
+                totalDronesActive = value
+                labelTDA = label
+
+            if labelName % panel == "label%sUsedCalibrationPoints" % panel:
+                usedCalibrationPoints = value
+                labelUCP = label
+
+            if labelName % panel == "label%sTotalCalibrationPoints" % panel:
+                totalCalibrationPoints = value
+                labelTCP = label
+
             if isinstance(value, basestring):
                 label.SetLabel(value)
                 label.SetToolTip(wx.ToolTip(value))
@@ -194,11 +210,23 @@ class ResourcesViewFull(StatsView):
             colorL = colorWarn
         else:
             colorL = colorNormal
+        if usedDronesActive > totalDronesActive:
+            colorD = colorWarn
+        else:
+            colorD = colorNormal
+        if usedCalibrationPoints > totalCalibrationPoints:
+            colorC = colorWarn
+        else:
+            colorC = colorNormal
 
         labelUTH.SetForegroundColour(colorT)
         labelTTH.SetForegroundColour(colorT)
         labelULH.SetForegroundColour(colorL)
         labelTLH.SetForegroundColour(colorL)
+        labelUDA.SetForegroundColour(colorD)
+        labelTDA.SetForegroundColour(colorD)
+        labelUCP.SetForegroundColour(colorC)
+        labelTCP.SetForegroundColour(colorC)
 
         if fit is not None:
             resMax = (lambda: fit.ship.getModifiedItemAttr("cpuOutput"),
