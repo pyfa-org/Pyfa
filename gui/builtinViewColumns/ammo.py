@@ -31,7 +31,16 @@ class Ammo(ViewColumn):
         self.bitmap = bitmapLoader.getBitmap("damagePattern_small", "icons")
 
     def getText(self, stuff):
-        return "%s (%s)" % (stuff.charge.name, stuff.numCharges) if getattr(stuff, "charge", None) is not None else ""
+        if getattr(stuff, "charge", None) is not None:
+            shots = stuff.numShots
+            if shots > 0:
+                text = "%s (%s)" % (stuff.charge.name, stuff.numShots)
+            else:
+                text = stuff.charge.name
+        else:
+            text = ""
+
+        return text
 
 
     def getImageId(self, mod):
