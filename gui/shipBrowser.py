@@ -1144,7 +1144,7 @@ class ShipItem(SBItem):
         self.shipBrowser = self.Parent.Parent
 
         self.editWidth = 150
-        self.padding = 5
+        self.padding = 4
 
         self.tcFitName = wx.TextCtrl(self, wx.ID_ANY, "%s fit" % self.shipName, wx.DefaultPosition, (120,-1), wx.TE_PROCESS_ENTER)
         self.tcFitName.Show(False)
@@ -1156,6 +1156,9 @@ class ShipItem(SBItem):
         self.tcFitName.Bind(wx.EVT_KILL_FOCUS, self.editLostFocus)
         self.tcFitName.Bind(wx.EVT_KEY_DOWN, self.editCheckEsc)
 
+    def GetType(self):
+        return 2
+
     def MouseLeftUp(self, event):
         if self.tcFitName.IsShown():
             self.tcFitName.Show(False)
@@ -1163,9 +1166,6 @@ class ShipItem(SBItem):
             self.Refresh()
         else:
             wx.PostEvent(self.shipBrowser,Stage3Selected(shipID=self.shipID, back = -1 if self.shipBrowser.GetActiveStage() == 4 else 0))
-
-    def GetType(self):
-        return 2
 
     def newBtnCB(self):
         if self.tcFitName.IsShown():
@@ -1202,34 +1202,54 @@ class ShipItem(SBItem):
         wx.PostEvent(self.shipBrowser,Stage3Selected(shipID=self.shipID, back=False))
         wx.PostEvent(self.mainFrame, FitSelected(fitID=fitID))
 
-    def DrawItem(self, mdc):
+    def UpdateElementsPos(self, mdc):
         rect = self.GetRect()
 
-        tpx = rect.width - self.toolbar.GetWidth() - 5
-        tpy = (rect.height - self.toolbar.GetHeight()) / 2
+        self.toolbarx = rect.width - self.toolbar.GetWidth() - self.padding
+        self.toolbary = (rect.height - self.toolbar.GetHeight()) / 2
 
-        self.toolbar.SetPosition((tpx, tpy))
+        self.shipEffx = self.padding + (rect.height - self.shipEffBk.GetWidth())/2
+        self.shipEffy = (rect.height - self.shipEffBk.GetHeight())/2
 
-        mdc.SetFont(self.fontBig)
-        mdc.DrawBitmap(self.shipEffBk, 5 + (rect.height - self.shipEffBk.GetWidth())/2, (rect.height - self.shipEffBk.GetHeight())/2, 0)
-        mdc.DrawBitmap(self.shipBmp, 5 + (rect.height - 32) / 2, (rect.height - 32) / 2, 0)
+        self.shipBmpx = self.padding + (rect.height - self.shipBmp.GetWidth()) / 2
+        self.shipBmpy = (rect.height - self.shipBmp.GetHeight()) / 2
+
+        self.raceBmpx = self.shipEffx + self.shipEffBk.GetWidth() + self.padding
+        self.raceBmpy = (rect.height - self.raceBmp.GetHeight())/2
+
+        self.textStartx = self.raceBmpx + self.raceBmp.GetWidth() + self.padding
+
+        self.shipNamey = (rect.height - self.shipBmp.GetHeight()) / 2
 
         shipName, fittings = self.shipFittingInfo
 
-
-        ypos = (rect.height - 32) / 2
-
-        textStart = 48
+        mdc.SetFont(self.fontBig)
         wtext, htext = mdc.GetTextExtent(shipName)
 
-        mdc.DrawBitmap(self.raceBmp,textStart, ypos + self.raceBmp.GetHeight()/2)
+        self.fittingsy = self.shipNamey + htext
 
-        textStart += self.raceBmp.GetWidth() + 4
-        sposy = ypos
+        mdc.SetFont(self.fontSmall)
 
-        ypos += htext
+        wlabel,hlabel = mdc.GetTextExtent(self.toolbar.hoverLabel)
 
-        mdc.SetFont(self.fontNormal)
+        self.thoverx = self.toolbarx - self.padding - wlabel
+        self.thovery = (rect.height - hlabel)/2
+        self.thoverw = wlabel
+
+    def DrawItem(self, mdc):
+        rect = self.GetRect()
+
+        self.UpdateElementsPos(mdc)
+
+        self.toolbar.SetPosition((self.toolbarx, self.toolbary))
+
+        mdc.DrawBitmap(self.shipEffBk, self.shipEffx, self.shipEffy, 0)
+
+        mdc.DrawBitmap(self.shipBmp, self.shipBmpx, self.shipBmpy, 0)
+
+        mdc.DrawBitmap(self.raceBmp,self.raceBmpx, self.raceBmpy)
+
+        shipName, fittings = self.shipFittingInfo
 
         if fittings <1:
             fformat = "No fits"
@@ -1239,26 +1259,19 @@ class ShipItem(SBItem):
             else:
                 fformat = "%d fits"
 
-
-        mdc.DrawText(fformat %fittings if fittings >0 else fformat, textStart, ypos)
+        mdc.SetFont(self.fontNormal)
+        mdc.DrawText(fformat %fittings if fittings >0 else fformat, self.textStartx, self.fittingsy)
 
         mdc.SetFont(self.fontSmall)
+        mdc.DrawText(self.toolbar.hoverLabel, self.thoverx, self.thovery)
 
-        wlabel,hlabel = mdc.GetTextExtent(self.toolbar.hoverLabel)
-
-        lx = tpx - self.padding - wlabel
-        ly = (rect.height - hlabel)/2
-
-        mdc.DrawText(self.toolbar.hoverLabel, lx, ly)
+        psname = drawUtils.GetPartialText(mdc, shipName, self.toolbarx - self.textStartx - self.padding * 2 - self.thoverw)
 
         mdc.SetFont(self.fontBig)
-
-        psname = drawUtils.GetPartialText(mdc, shipName,tpx-textStart - self.padding - wlabel)
-
-        mdc.DrawText(psname, textStart, sposy)
+        mdc.DrawText(psname, self.textStartx, self.shipNamey)
 
         if self.tcFitName.IsShown():
-            self.AdjustControlSizePos(self.tcFitName, textStart, tpx - self.editWidth - self.padding)
+            self.AdjustControlSizePos(self.tcFitName, self.textStartx, self.toolbarx - self.editWidth - self.padding)
 
     def AdjustControlSizePos(self, editCtl, start, end):
         fnEditSize = editCtl.GetSize()
