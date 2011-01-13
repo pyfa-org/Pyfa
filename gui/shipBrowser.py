@@ -698,11 +698,12 @@ class HeaderPane (wx.Panel):
 
 
 class PFBaseButton(object):
-    def __init__(self, normalBitmap = wx.NullBitmap, callback = None, hoverBitmap = None, disabledBitmap = None):
+    def __init__(self, normalBitmap = wx.NullBitmap,label = "", callback = None, hoverBitmap = None, disabledBitmap = None):
 
         self.normalBmp = normalBitmap
         self.hoverBmp = hoverBitmap
         self.disabledBmp = disabledBitmap
+        self.label = label
 
         self.callback = callback
 
@@ -715,14 +716,26 @@ class PFBaseButton(object):
     def GetCallback(self):
         return self.callback
 
+    def DoCallback(self):
+        if self.callback:
+            self.callback()
+
     def SetState(self, state = 0):
         self.state = state
 
     def GetState(self):
         return self.state
 
+    def GetSize(self):
+        w = self.normalBmp.GetWidth()
+        h = self.normalBmp.GetHeight()
+        return (w,h)
+
     def GetBitmap(self):
         return self.normalBmp
+
+    def GetLabel(self):
+        return self.label
 
     def GetHoverBitmap(self):
         if self.hoverBmp == None:
@@ -744,19 +757,54 @@ class PFToolbar(object):
     def SetPosition(self, pos):
         self.toolbarX, self.toolbarY = pos
 
-    def AddButton(self, btnBitmap, clickCallback = None):
-        self.buttons.append( PFBaseButton(btnBitmap, clickCallback) )
+    def AddButton(self, btnBitmap, label = "", clickCallback = None):
+        self.buttons.append( PFBaseButton(btnBitmap, label, clickCallback) )
 
     def MouseMove(self, mx,my):
         pass
 
     def MouseClick(self, event):
         mx,my = event.GetPosition()
+        bx = self.toolbarX
+        for button in self.buttons:
+            if button.GetState() == 1:
+                button.SetState(0)
+                if self.HitTest( (bx, self.toolbarY), event.GetPosition(), button.GetSize()):
+                    return button
+                else:
+                    return False
+            bwidth, bheight = button.GetSize()
+            bx += bwidth + self.padding
+
+        bx = self.toolbarX
+        for button in self.buttons:
+            if self.HitTest( (bx, self.toolbarY), event.GetPosition(), button.GetSize()):
+
+                if event.LeftDown():
+                    button.SetState(1)
+                    return button
+
+                elif event.LeftUp():
+                    button.SetState(0)
+                    return button
+
+            bwidth, bheight = button.GetSize()
+            bx += bwidth + self.padding
+        return None
+
+    def HitTest(self, target, position, area):
+        x, y = target
+        px, py = position
+        aX, aY = area
+        if (px > x and px < x + aX) and (py > y and py < y + aY):
+            return True
+        return False
 
     def Render(self, pdc):
         bx = self.toolbarX
         for button in self.buttons:
             by = self.toolbarY
+            tbx = bx
 
             btnState = button.GetState()
 
@@ -765,7 +813,8 @@ class PFToolbar(object):
 
             elif btnState == 1:
                 bmp = button.GetBitmap()
-                by += self.padding
+                by += self.padding / 2
+                tbx += self.padding / 2
 
             elif btnState == 2:
                 bmp = button.GetHoverBitmap()
@@ -774,7 +823,7 @@ class PFToolbar(object):
                 bmp = button.GetDisabledBitmap()
 
             bmpWidth = bmp.GetWidth()
-            pdc.DrawBitmap(bmp, bx, by)
+            pdc.DrawBitmap(bmp, tbx, by)
             bx += bmpWidth + self.padding
 
 class SBItem(wx.Window):
@@ -807,20 +856,49 @@ class SBItem(wx.Window):
         mdc.DrawBitmap(self.bkBitmap, 0,0)
 
         self.DrawItem(mdc)
+        self.toolbar.Render(mdc)
 
     def DrawItem(self, mdc):
-        self.toolbar.Render(mdc)
+        pass
 
     def OnEraseBackground(self, event):
         pass
 
+    def MouseLeftUp(self, event):
+        pass
+
+    def MouseLeftDown(self, event):
+        pass
+
     def OnLeftUp(self, event):
-        self.toolbar.MouseClick(event)
-        event.Skip()
+        if self.HasCapture():
+            self.ReleaseMouse()
+
+        btn = self.toolbar.MouseClick(event)
+
+        if btn is not None:
+            if btn is not False:
+                if btn.GetState() == 0:
+                    btn.DoCallback()
+                    self.Refresh()
+            else:
+                self.Refresh()
+            return
+
+        self.MouseLeftUp(event)
+
 
     def OnLeftDown(self, event):
-        self.toolbar.MouseClick(event)
-        event.Skip()
+        self.CaptureMouse()
+
+        btn = self.toolbar.MouseClick(event)
+
+        if btn is not None:
+            if btn.GetState() == 1:
+                self.Refresh()
+            return
+
+        self.MouseLeftDown(event)
 
     def OnEnterWindow(self, event):
         self.SetHighlighted(True)
@@ -911,13 +989,17 @@ class CategoryItem(SBItem):
 #        self.newBmp = bitmapLoader.getBitmap("fit_add_small", "icons")
 #        self.acceptBmp = bitmapLoader.getBitmap("faccept_small", "icons")
 #
-#        self.toolbar.AddButton(self.newBmp)
-#        self.toolbar.AddButton(self.acceptBmp)
+#        self.toolbar.AddButton(self.newBmp, "New", self.CallbackTest)
+#        self.toolbar.AddButton(self.acceptBmp, "Accept", self.CallbackTest)
 
     def GetType(self):
         return 1
 
-    def OnLeftUp(self, event):
+    def CallbackTest(self):
+        print "Callback Test"
+
+    def MouseLeftUp(self, event):
+
         categoryID = self.categoryID
         wx.PostEvent(self.shipBrowser,Stage2Selected(categoryID=categoryID, back=False))
 
@@ -961,7 +1043,6 @@ class CategoryItem(SBItem):
             xtext, ytext = mdc.GetTextExtent(fformat)
             ypos = (rect.height - ytext)/2
 
-        SBItem.DrawItem(self, mdc)
 
 class ShipItem(wx.Window):
     def __init__(self, parent, shipID=None, shipFittingInfo=("Test", 2), itemData=None,
