@@ -740,6 +740,9 @@ class PFBaseButton(object):
     def GetBitmap(self):
         return self.normalBmp
 
+    def SetBitmap(self, bitmap):
+        self.normalBmp = bitmap
+
     def GetLabel(self):
         return self.label
 
@@ -759,25 +762,32 @@ class PFToolbar(object):
         self.toolbarX = 0
         self.toolbarY = 0
         self.padding = 2
+        self.hoverLabel = ""
 
     def SetPosition(self, pos):
         self.toolbarX, self.toolbarY = pos
 
     def AddButton(self, btnBitmap, label = "", clickCallback = None, hoverBitmap = None, disabledBitmap = None):
-        self.buttons.append( PFBaseButton(btnBitmap, label, clickCallback, hoverBitmap, disabledBitmap) )
+        btn = PFBaseButton(btnBitmap, label, clickCallback, hoverBitmap, disabledBitmap)
+        self.buttons.append(btn)
+        return btn
 
     def ClearState(self):
         for button in self.buttons:
             button.SetState()
+        self.hoverLabel = ""
 
     def MouseMove(self, event):
         doRefresh = False
         bx = self.toolbarX
+        self.hoverLabel = ""
+
         for button in self.buttons:
             state = button.GetState()
             if self.HitTest( (bx, self.toolbarY), event.GetPosition(), button.GetSize()):
                 if not state & BTN_HOVER:
                     button.SetState(state | BTN_HOVER)
+                    self.hoverLabel = button.GetLabel()
                     doRefresh = True
             else:
                 if state & BTN_HOVER:
@@ -807,7 +817,7 @@ class PFToolbar(object):
             state = button.GetState()
             if self.HitTest( (bx, self.toolbarY), event.GetPosition(), button.GetSize()):
 
-                if event.LeftDown():
+                if event.LeftDown() or event.LeftDClick():
                     button.SetState(state | BTN_PRESSED)
                     return button
 
@@ -818,6 +828,20 @@ class PFToolbar(object):
             bwidth, bheight = button.GetSize()
             bx += bwidth + self.padding
         return None
+
+    def GetWidth(self):
+        bx = 0
+        for button in self.buttons:
+            bwidth, bheight = button.GetSize()
+            bx += bwidth + self.padding
+        return bx
+
+    def GetHeight(self):
+        height = 0
+        for button in self.buttons:
+            bwidth, bheight = button.GetSize()
+            height = max(height, bheight)
+        return height
 
     def HitTest(self, target, position, area):
         x, y = target
@@ -865,6 +889,11 @@ class SBItem(wx.Window):
         self.Bind(wx.EVT_PAINT, self.OnPaint)
         self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBackground)
         self.Bind(wx.EVT_LEFT_UP, self.OnLeftUp)
+
+        if "wxMSW" in wx.PlatformInfo:
+            self.Bind(wx.EVT_LEFT_DCLICK, self.OnLeftDown)
+
+
         self.Bind(wx.EVT_LEFT_DOWN,self.OnLeftDown)
         self.Bind(wx.EVT_ENTER_WINDOW, self.OnEnterWindow)
         self.Bind(wx.EVT_LEAVE_WINDOW, self.OnLeaveWindow)
@@ -934,9 +963,14 @@ class SBItem(wx.Window):
         event.Skip()
 
     def OnLeaveWindow(self, event):
-        self.SetHighlighted(False)
-        self.toolbar.ClearState()
-        self.Refresh()
+        mposx, mposy = wx.GetMousePosition()
+        rect = self.GetRect()
+        rect.top = rect.left = 0
+        cx,cy = self.ScreenToClient((mposx,mposy))
+        if not rect.Contains((cx,cy)):
+            self.SetHighlighted(False)
+            self.toolbar.ClearState()
+            self.Refresh()
         event.Skip()
 
     def OnMotion(self, event):
@@ -1017,17 +1051,8 @@ class CategoryItem(SBItem):
         self.fontBig = wx.FontFromPixelSize((0,15),wx.SWISS, wx.NORMAL, wx.NORMAL, False)
 
 
-#        self.newBmp = bitmapLoader.getBitmap("fit_add_small", "icons")
-#        self.acceptBmp = bitmapLoader.getBitmap("faccept_small", "icons")
-#
-#        self.toolbar.AddButton(self.newBmp, "New", self.CallbackTest,self.acceptBmp)
-#        self.toolbar.AddButton(self.acceptBmp, "Accept", self.CallbackTest,self.newBmp)
-
     def GetType(self):
         return 1
-
-    def CallbackTest(self):
-        print "Callback Test"
 
     def MouseLeftUp(self, event):
 
@@ -1075,11 +1100,11 @@ class CategoryItem(SBItem):
             ypos = (rect.height - ytext)/2
 
 
-class ShipItem(wx.Window):
+class ShipItem(SBItem):
     def __init__(self, parent, shipID=None, shipFittingInfo=("Test", 2), itemData=None,
-                 id=wx.ID_ANY, range=100, pos=wx.DefaultPosition,
+                 id=wx.ID_ANY, pos=wx.DefaultPosition,
                  size=(0, 40), style=0):
-        wx.Window.__init__(self, parent, id, pos, size, style)
+        SBItem.__init__(self, parent, size = size)
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
@@ -1098,17 +1123,13 @@ class ShipItem(wx.Window):
             self.shipBmp = bitmapLoader.getBitmap(str(shipID),"ships")
         if not self.shipBmp:
             self.shipBmp = bitmapLoader.getBitmap("ship_no_image_big","icons")
+
         self.shipFittingInfo = shipFittingInfo
         self.shipName, self.shipFits = shipFittingInfo
 
         self.newBmp = bitmapLoader.getBitmap("fit_add_small", "icons")
         self.acceptBmp = bitmapLoader.getBitmap("faccept_small", "icons")
 
-        img = self.acceptBmp.ConvertToImage()
-        img.RotateHue(0.625)
-        self.acceptBmp = wx.BitmapFromImage(img)
-
-        self.newToggleBmp = self.newBmp
         self.shipEffBk = bitmapLoader.getBitmap("fshipbk_big","icons")
         self.raceBmp = bitmapLoader.getBitmap("race_%s_small" % self.shipRace, "icons")
 
@@ -1122,207 +1143,72 @@ class ShipItem(wx.Window):
 
         self.shipBrowser = self.Parent.Parent
 
-        self.editPosX = 0
-        self.editPosY = 0
-        self.highlighted = 0
-        self.selected = False
-        self.editWasShown = 0
-        self.btnsStatus = ""
-        self.bkBitmap = None
+        self.editWidth = 150
+        self.padding = 5
 
         self.tcFitName = wx.TextCtrl(self, wx.ID_ANY, "%s fit" % self.shipName, wx.DefaultPosition, (120,-1), wx.TE_PROCESS_ENTER)
         self.tcFitName.Show(False)
 
-        self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBackground)
-        self.Bind(wx.EVT_PAINT, self.OnPaint)
 
-        self.Bind(wx.EVT_LEFT_UP, self.checkPosition)
-        self.Bind(wx.EVT_MOTION, self.cursorCheck)
-
-        self.Bind(wx.EVT_ENTER_WINDOW, self.enterW)
-        self.Bind(wx.EVT_LEAVE_WINDOW, self.leaveW)
+        self.newBtn = self.toolbar.AddButton(self.newBmp,"New", self.newBtnCB)
 
         self.tcFitName.Bind(wx.EVT_TEXT_ENTER, self.createNewFit)
         self.tcFitName.Bind(wx.EVT_KILL_FOCUS, self.editLostFocus)
         self.tcFitName.Bind(wx.EVT_KEY_DOWN, self.editCheckEsc)
 
+    def MouseLeftUp(self, event):
+        if self.tcFitName.IsShown():
+            self.tcFitName.Show(False)
+            self.newBtn.SetBitmap(self.newBmp)
+            self.Refresh()
+        else:
+            wx.PostEvent(self.shipBrowser,Stage3Selected(shipID=self.shipID, back = -1 if self.shipBrowser.GetActiveStage() == 4 else 0))
+
     def GetType(self):
         return 2
 
-    def SetData(self, data):
-        self._itemData = data
+    def newBtnCB(self):
+        if self.tcFitName.IsShown():
+            self.tcFitName.Show(False)
+            self.createNewFit()
+        else:
+            self.tcFitName.SetValue("%s fit" % self.shipName)
+            self.tcFitName.Show()
 
-    def GetData(self):
-        return self._itemData
+            self.tcFitName.SetFocus()
+            self.tcFitName.SelectAll()
+
+            self.newBtn.SetBitmap(self.acceptBmp)
+
+            self.Refresh()
 
     def editLostFocus(self, event):
         self.tcFitName.Show(False)
-        if self.highlighted == 1:
-            self.editWasShown = 1
-        self.newToggleBmp = self.newBmp
+        self.newBtn.SetBitmap(self.newBmp)
         self.Refresh()
 
     def editCheckEsc(self, event):
         if event.GetKeyCode() == wx.WXK_ESCAPE:
             self.tcFitName.Show(False)
-            self.editWasShown = 0
         else:
             event.Skip()
 
-    def cursorCheck(self, event):
-        pos = event.GetPosition()
-        if self.NHitTest((self.editPosX, self.editPosY), pos, (16, 16)):
-            self.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
-            if self.btnsStatus != "New fit":
-                self.btnsStatus = "New fit"
-                self.Refresh()
-        else:
-            self.SetCursor(wx.StockCursor(wx.CURSOR_ARROW))
-            if self.btnsStatus != "":
-                self.btnsStatus = ""
-                self.Refresh()
-
-    def checkPosition(self, event):
-
-        pos = event.GetPosition()
-        x, y = pos
-        if self.NHitTest((self.editPosX, self.editPosY), pos, (16, 16)):
-            if self.editWasShown == 1:
-                self.createNewFit()
-                return
-            else:
-                fnEditSize = self.tcFitName.GetSize()
-                wSize = self.GetSize()
-                fnEditPosX = self.editPosX - fnEditSize.width - 5
-                fnEditPosY = (wSize.height - fnEditSize.height) / 2
-                self.tcFitName.SetPosition((fnEditPosX, fnEditPosY))
-                self.tcFitName.Show(True)
-                self.tcFitName.SetFocus()
-                self.tcFitName.SelectAll()
-                self.newToggleBmp = self.acceptBmp
-                self.Refresh()
-                return
-
-        if (not self.NHitTest((self.editPosX, self.editPosY), pos, (16, 16))):
-            if self.shipFits > 0:
-                if self.editWasShown == 1:
-                    self.editWasShown = 0
-                else:
-                    wx.PostEvent(self.shipBrowser,Stage3Selected(shipID=self.shipID, back = -1 if self.shipBrowser.GetActiveStage() == 4 else 0))
-            else:
-                if self.editWasShown == 0:
-                    fnEditSize = self.tcFitName.GetSize()
-                    wSize = self.GetSize()
-                    fnEditPosX = self.editPosX - fnEditSize.width - 5
-                    fnEditPosY = (wSize.height - fnEditSize.height) / 2
-                    self.tcFitName.SetPosition((fnEditPosX, fnEditPosY))
-                    self.tcFitName.Show(True)
-                    self.tcFitName.SetFocus()
-                    self.tcFitName.SelectAll()
-                    self.newToggleBmp = self.acceptBmp
-                    self.Refresh()
-                else:
-                    self.editWasShown = 0
-
-        event.Skip()
-
     def createNewFit(self, event=None):
+        self.tcFitName.Show(False)
+
         sFit = service.Fit.getInstance()
         fitID = sFit.newFit(self.shipID, self.tcFitName.GetValue())
-        self.tcFitName.Show(False)
-        self.editWasShown = 0
+
         wx.PostEvent(self.shipBrowser,Stage3Selected(shipID=self.shipID, back=False))
         wx.PostEvent(self.mainFrame, FitSelected(fitID=fitID))
 
-    def NHitTest(self, target, position, area):
-        x, y = target
-        px, py = position
-        aX, aY = area
-        if (px > x and px < x + aX) and (py > y and py < y + aY):
-            return True
-        return False
-    def enterW(self, event):
-        self.highlighted = 1
-        self.Refresh()
-        event.Skip()
-
-    def leaveW(self, event):
-        self.highlighted = 0
-        self.Refresh()
-        event.Skip()
-
-    def OnEraseBackground(self, event):
-        pass
-
-    def GetState(self):
-        activeFitID = self.mainFrame.getActiveFit()
-
-        if self.highlighted and not self.selected:
-            state = SB_ITEM_HIGHLIGHTED
-
-        elif self.selected:
-            if self.highlighted:
-                state = SB_ITEM_SELECTED  | SB_ITEM_HIGHLIGHTED
-            else:
-                state = SB_ITEM_SELECTED
-        else:
-            state = SB_ITEM_NORMAL
-
-        return state
-
-    def RenderBackground(self):
+    def DrawItem(self, mdc):
         rect = self.GetRect()
 
-        windowColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
+        tpx = rect.width - self.toolbar.GetWidth() - 5
+        tpy = (rect.height - self.toolbar.GetHeight()) / 2
 
-        state = self.GetState()
-
-        sFactor = 0.2
-        mFactor = None
-        eFactor = 0
-
-        if state == SB_ITEM_HIGHLIGHTED:
-            mFactor = 0.55
-
-        elif state == SB_ITEM_SELECTED  | SB_ITEM_HIGHLIGHTED:
-            eFactor = 0.3
-        elif state == SB_ITEM_SELECTED:
-            eFactor = 0.15
-        else:
-            sFactor = 0
-
-        if self.bkBitmap:
-            if self.bkBitmap.eFactor == eFactor and self.bkBitmap.sFactor == sFactor and self.bkBitmap.mFactor == mFactor \
-             and rect.width == self.bkBitmap.GetWidth() and rect.height == self.bkBitmap.GetHeight() :
-                return
-            else:
-                del self.bkBitmap
-
-        self.bkBitmap = drawUtils.RenderGradientBar(windowColor, rect.width, rect.height, sFactor, eFactor, mFactor)
-        self.bkBitmap.state = state
-        self.bkBitmap.sFactor = sFactor
-        self.bkBitmap.eFactor = eFactor
-        self.bkBitmap.mFactor = mFactor
-
-    def Refresh(self):
-        self.RenderBackground()
-        wx.Window.Refresh(self)
-
-    def OnPaint(self, event):
-        rect = self.GetRect()
-
-        windowColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
-        textColor = colorUtils.GetSuitableColor(windowColor, 1)
-
-        mdc = wx.BufferedPaintDC(self)
-
-        if self.bkBitmap is None:
-            self.RenderBackground()
-
-        mdc.DrawBitmap(self.bkBitmap, 0,0)
-
-        mdc.SetTextForeground(textColor)
-
+        self.toolbar.SetPosition((tpx, tpy))
 
         mdc.SetFont(self.fontBig)
         mdc.DrawBitmap(self.shipEffBk, 5 + (rect.height - self.shipEffBk.GetWidth())/2, (rect.height - self.shipEffBk.GetHeight())/2, 0)
@@ -1332,13 +1218,16 @@ class ShipItem(wx.Window):
 
 
         ypos = (rect.height - 32) / 2
+
         textStart = 48
-        xtext, ytext = mdc.GetTextExtent(shipName)
+        wtext, htext = mdc.GetTextExtent(shipName)
+
         mdc.DrawBitmap(self.raceBmp,textStart, ypos + self.raceBmp.GetHeight()/2)
+
         textStart += self.raceBmp.GetWidth() + 4
         sposy = ypos
 
-        ypos += ytext
+        ypos += htext
 
         mdc.SetFont(self.fontNormal)
 
@@ -1350,47 +1239,38 @@ class ShipItem(wx.Window):
             else:
                 fformat = "%d fits"
 
-        if fittings>0:
-            xtext, ytext = mdc.GetTextExtent(fformat % fittings)
-        else:
-            xtext, ytext = mdc.GetTextExtent(fformat)
 
         mdc.DrawText(fformat %fittings if fittings >0 else fformat, textStart, ypos)
 
-        self.editPosX = rect.width - self.newToggleBmp.GetWidth() -5
-        self.editPosY = (rect.height - self.newToggleBmp.GetHeight()) / 2
-
-        mdc.DrawBitmap(self.newToggleBmp, self.editPosX, self.editPosY, 0)
         mdc.SetFont(self.fontSmall)
-        if self.btnsStatus != "":
-            status = "%s" % self.btnsStatus
-            xtext, ytext = mdc.GetTextExtent(status)
-            ytext = (rect.height - ytext)/2
-            mdc.DrawText(status, self.editPosX - xtext -5,ytext)
-        else:
-            xtext =0
+
+        wlabel,hlabel = mdc.GetTextExtent(self.toolbar.hoverLabel)
+
+        lx = tpx - self.padding - wlabel
+        ly = (rect.height - hlabel)/2
+
+        mdc.DrawText(self.toolbar.hoverLabel, lx, ly)
 
         mdc.SetFont(self.fontBig)
-        fnwidths = mdc.GetPartialTextExtents(shipName)
-        count = 0
-        maxsize = self.editPosX -xtext - 15 - textStart
-        for i in fnwidths:
-            if i<= maxsize:
-                count +=1
-            else:
-                break
 
-        shipName = "%s%s" % (shipName[:count if count >5 else 5],"..." if len(shipName)>count else "")
-        mdc.DrawText(shipName, textStart, sposy)
+        psname = drawUtils.GetPartialText(mdc, shipName,tpx-textStart - self.padding - wlabel)
+
+        mdc.DrawText(psname, textStart, sposy)
 
         if self.tcFitName.IsShown():
-            fnEditSize = self.tcFitName.GetSize()
-            wSize = self.GetSize()
-            fnEditPosX = self.editPosX - fnEditSize.width -5
-            fnEditPosY = (wSize.height - fnEditSize.height)/2
-            self.tcFitName.SetPosition((fnEditPosX,fnEditPosY))
+            self.AdjustControlSizePos(self.tcFitName, textStart, tpx - self.editWidth - self.padding)
 
-        event.Skip()
+    def AdjustControlSizePos(self, editCtl, start, end):
+        fnEditSize = editCtl.GetSize()
+        wSize = self.GetSize()
+        fnEditPosX = end
+        fnEditPosY = (wSize.height - fnEditSize.height)/2
+        if fnEditPosX < start:
+            editCtl.SetSize((self.editWidth + fnEditPosX - start,-1))
+            editCtl.SetPosition((start,fnEditPosY))
+        else:
+            editCtl.SetSize((self.editWidth,-1))
+            editCtl.SetPosition((fnEditPosX,fnEditPosY))
 
 class PFBitmapFrame(wx.Frame):
     def __init__ (self,parent, pos, bitmap):
