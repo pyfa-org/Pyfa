@@ -1156,6 +1156,34 @@ class ShipItem(SBItem):
         self.tcFitName.Bind(wx.EVT_KILL_FOCUS, self.editLostFocus)
         self.tcFitName.Bind(wx.EVT_KEY_DOWN, self.editCheckEsc)
 
+        self.animTimerId = wx.NewId()
+        self.animCount = 100
+        self.animTimer = wx.Timer(self, self.animTimerId)
+        self.animStep = 0
+        self.animPeriod = 10
+        self.animDuration = 250
+        self.Bind(wx.EVT_TIMER, self.OnTimer)
+        self.animTimer.Start(self.animPeriod)
+
+    def OnTimer(self, event):
+        step = self.OUT_QUAD(self.animStep, 0, 100, self.animDuration)
+        self.animCount = 100 - step
+        self.animStep += self.animPeriod
+        if self.animStep > self.animDuration or self.animCount < 0 :
+            self.animCount = 0
+            self.animTimer.Stop()
+        self.Refresh()
+
+    def OUT_QUAD (self, t, b, c, d):
+        t=float(t)
+        b=float(b)
+        c=float(c)
+        d=float(d)
+
+        t/=d
+
+        return -c *(t)*(t-2) + b
+
     def GetType(self):
         return 2
 
@@ -1211,8 +1239,12 @@ class ShipItem(SBItem):
         self.shipEffx = self.padding + (rect.height - self.shipEffBk.GetWidth())/2
         self.shipEffy = (rect.height - self.shipEffBk.GetHeight())/2
 
+        self.shipEffx = self.shipEffx - self.animCount
+
         self.shipBmpx = self.padding + (rect.height - self.shipBmp.GetWidth()) / 2
         self.shipBmpy = (rect.height - self.shipBmp.GetHeight()) / 2
+
+        self.shipBmpx= self.shipBmpx - self.animCount
 
         self.raceBmpx = self.shipEffx + self.shipEffBk.GetWidth() + self.padding
         self.raceBmpy = (rect.height - self.raceBmp.GetHeight())/2
