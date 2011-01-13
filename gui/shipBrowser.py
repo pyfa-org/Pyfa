@@ -1420,13 +1420,22 @@ class FitItem2(SBItem):
         SBItem.__init__(self,parent,size = size)
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+
         self._itemData = itemData
+
         self.fitID = fitID
+
         self.shipID = shipID
+
         self.shipBrowser = self.Parent.Parent
+
         self.shipBmp = None
+
+        self.deleted = False
+
         if shipID:
             self.shipBmp = bitmapLoader.getBitmap(str(shipID),"ships")
+
         if not self.shipBmp:
             self.shipBmp = bitmapLoader.getBitmap("ship_no_image_big","icons")
 
@@ -1513,8 +1522,15 @@ class FitItem2(SBItem):
         self.deleteFit()
 
     def deleteFit(self, event=None):
+        if self.deleted:
+            return
+        else:
+            self.deleted = True
+
         sFit = service.Fit.getInstance()
+
         sFit.deleteFit(self.fitID)
+
         if self.shipBrowser.GetActiveStage() == 4:
             wx.PostEvent(self.shipBrowser,SearchSelected(text=self.shipBrowser.hpane.lastSearch,back=True))
         else:
