@@ -177,7 +177,7 @@ class PFNotebook(wx.Panel):
         page = self.pages[n]
 
         self.pages.remove(page)
-        page.Hide()
+
         page.Destroy()
 
         if not internal:
