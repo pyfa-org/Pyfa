@@ -1164,8 +1164,11 @@ class ShipItem(SBItem):
         self.animStep = 0
         self.animPeriod = 10
         self.animDuration = 100
-        self.Bind(wx.EVT_TIMER, self.OnTimer)
-        self.animTimer.Start(self.animPeriod)
+        if self.shipBrowser.GetActiveStage() != 4:
+            self.Bind(wx.EVT_TIMER, self.OnTimer)
+            self.animTimer.Start(self.animPeriod)
+        else:
+            self.animCount = 0
 
     def OnTimer(self, event):
         step = self.OUT_QUAD(self.animStep, 0, 10, self.animDuration)
@@ -1466,8 +1469,11 @@ class FitItem(SBItem):
         self.animStep = 0
         self.animPeriod = 10
         self.animDuration = 100
-        self.Bind(wx.EVT_TIMER, self.OnTimer)
-        self.animTimer.Start(self.animPeriod)
+        if self.shipBrowser.GetActiveStage() != 4:
+            self.Bind(wx.EVT_TIMER, self.OnTimer)
+            self.animTimer.Start(self.animPeriod)
+        else:
+            self.animCount = 0
 
     def OnTimer(self, event):
         step = self.OUT_QUAD(self.animStep, 0, 10, self.animDuration)
