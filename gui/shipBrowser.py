@@ -156,6 +156,8 @@ class ShipBrowser(wx.Panel):
         return self.RACE_ORDER.index(shipInfo[2]), shipInfo[1]
 
     def stage2Callback(self,data):
+        if self.GetActiveStage() != 2:
+            return
         categoryID, shipList = data
         sFit = service.Fit.getInstance()
 
