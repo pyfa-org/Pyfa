@@ -1413,7 +1413,7 @@ def GetRoundShape( w, h, r ):
     return wx.RegionFromBitmap( GetRoundBitmap(w,h,r) )
 
 
-class FitItem(SBItem):
+class FitItem2(SBItem):
     def __init__(self, parent, fitID=None, shipFittingInfo=("Test", "cnc's avatar", 0 ), shipID = None, itemData=None,
                  id=wx.ID_ANY, pos=wx.DefaultPosition,
                  size=(0, 40), style=0):
@@ -1615,7 +1615,7 @@ class FitItem(SBItem):
             editCtl.SetSize((self.editWidth,-1))
             editCtl.SetPosition((fnEditPosX,fnEditPosY))
 
-class FitItem2(wx.Window):
+class FitItem(wx.Window):
     def __init__(self, parent, fitID=None, shipFittingInfo=("Test", "cnc's avatar", 0 ), shipID = None, itemData=None,
                  id=wx.ID_ANY, range=100, pos=wx.DefaultPosition,
                  size=(0, 40), style=0):
