@@ -1161,13 +1161,13 @@ class ShipItem(SBItem):
         self.animTimer = wx.Timer(self, self.animTimerId)
         self.animStep = 0
         self.animPeriod = 10
-        self.animDuration = 150
+        self.animDuration = 100
         self.Bind(wx.EVT_TIMER, self.OnTimer)
         self.animTimer.Start(self.animPeriod)
 
     def OnTimer(self, event):
-        step = self.OUT_QUAD(self.animStep, 0, 100, self.animDuration)
-        self.animCount = 100 - step
+        step = self.OUT_QUAD(self.animStep, 0, 10, self.animDuration)
+        self.animCount = 10 - step
         self.animStep += self.animPeriod
         if self.animStep > self.animDuration or self.animCount < 0 :
             self.animCount = 0
@@ -1193,7 +1193,11 @@ class ShipItem(SBItem):
             self.newBtn.SetBitmap(self.newBmp)
             self.Refresh()
         else:
-            wx.PostEvent(self.shipBrowser,Stage3Selected(shipID=self.shipID, back = -1 if self.shipBrowser.GetActiveStage() == 4 else 0))
+            shipName, fittings = self.shipFittingInfo
+            if fittings > 0:
+                wx.PostEvent(self.shipBrowser,Stage3Selected(shipID=self.shipID, back = -1 if self.shipBrowser.GetActiveStage() == 4 else 0))
+            else:
+                self.newBtnCB()
 
     def newBtnCB(self):
         if self.tcFitName.IsShown():
@@ -1299,9 +1303,10 @@ class ShipItem(SBItem):
         mdc.SetFont(self.fontSmall)
         mdc.DrawText(self.toolbar.hoverLabel, self.thoverx, self.thovery)
 
+        mdc.SetFont(self.fontBig)
+
         psname = drawUtils.GetPartialText(mdc, shipName, self.toolbarx - self.textStartx - self.padding * 2 - self.thoverw)
 
-        mdc.SetFont(self.fontBig)
         mdc.DrawText(psname, self.textStartx, self.shipNamey)
 
         if self.tcFitName.IsShown():
@@ -1403,7 +1408,206 @@ def GetRoundShape( w, h, r ):
     return wx.RegionFromBitmap( GetRoundBitmap(w,h,r) )
 
 
-class FitItem(wx.Window):
+class FitItem(SBItem):
+    def __init__(self, parent, fitID=None, shipFittingInfo=("Test", "cnc's avatar", 0 ), shipID = None, itemData=None,
+                 id=wx.ID_ANY, pos=wx.DefaultPosition,
+                 size=(0, 40), style=0):
+        SBItem.__init__(self,parent,size = size)
+
+        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+        self._itemData = itemData
+        self.fitID = fitID
+        self.shipID = shipID
+        self.shipBrowser = self.Parent.Parent
+        self.shipBmp = None
+        if shipID:
+            self.shipBmp = bitmapLoader.getBitmap(str(shipID),"ships")
+        if not self.shipBmp:
+            self.shipBmp = bitmapLoader.getBitmap("ship_no_image_big","icons")
+
+        self.shipFittingInfo = shipFittingInfo
+        self.shipName, self.fitName, self.timestamp = shipFittingInfo
+
+        self.copyBmp = bitmapLoader.getBitmap("fit_add_small", "icons")
+        self.renameBmp = bitmapLoader.getBitmap("fit_rename_small", "icons")
+        self.deleteBmp = bitmapLoader.getBitmap("fit_delete_small","icons")
+
+        self.shipEffBk = bitmapLoader.getBitmap("fshipbk_big","icons")
+
+        self.dragTLFBmp = None
+
+        self.bkBitmap = None
+
+        self.padding = 4
+        self.editWidth = 150
+
+        self.dragging = False
+        self.dragged = False
+        self.dragMotionTrail = 5
+        self.dragMotionTrigger = self.dragMotionTrail
+        self.dragWindow = None
+
+        self.fontBig = wx.FontFromPixelSize((0,15),wx.SWISS, wx.NORMAL, wx.BOLD, False)
+        self.fontNormal = wx.FontFromPixelSize((0,14),wx.SWISS, wx.NORMAL, wx.NORMAL, False)
+        self.fontSmall = wx.FontFromPixelSize((0,12),wx.SWISS, wx.NORMAL, wx.NORMAL, False)
+
+        self.toolbar.AddButton(self.copyBmp,"Copy", self.copyBtnCB)
+        self.toolbar.AddButton(self.renameBmp,"Rename", self.renameBtnCB)
+        self.toolbar.AddButton(self.deleteBmp, "Delete", self.deleteBtnCB)
+
+        self.tcFitName = wx.TextCtrl(self, wx.ID_ANY, "%s" % self.fitName, wx.DefaultPosition, (self.editWidth,-1), wx.TE_PROCESS_ENTER)
+        self.tcFitName.Show(False)
+
+        self.animTimerId = wx.NewId()
+        self.animCount = 100
+        self.animTimer = wx.Timer(self, self.animTimerId)
+        self.animStep = 0
+        self.animPeriod = 10
+        self.animDuration = 100
+        self.Bind(wx.EVT_TIMER, self.OnTimer)
+        self.animTimer.Start(self.animPeriod)
+
+    def OnTimer(self, event):
+        step = self.OUT_QUAD(self.animStep, 0, 10, self.animDuration)
+        self.animCount = 10 - step
+        self.animStep += self.animPeriod
+        if self.animStep > self.animDuration or self.animCount < 0 :
+            self.animCount = 0
+            self.animTimer.Stop()
+        self.Refresh()
+
+    def OUT_QUAD (self, t, b, c, d):
+        t=float(t)
+        b=float(b)
+        c=float(c)
+        d=float(d)
+
+        t/=d
+
+        return -c *(t)*(t-2) + b
+
+
+
+    def copyBtnCB(self):
+        self.copyFit()
+
+    def copyFit(self, event=None):
+        sFit = service.Fit.getInstance()
+        fitID = sFit.copyFit(self.fitID)
+        self.shipBrowser.fitIDMustEditName = fitID
+        wx.PostEvent(self.shipBrowser,Stage3Selected(shipID=self.shipID, back=True))
+        wx.PostEvent(self.mainFrame, FitSelected(fitID=fitID))
+
+    def renameBtnCB(self):
+        pass
+
+    def deleteBtnCB(self):
+        self.deleteFit()
+
+    def deleteFit(self, event=None):
+        sFit = service.Fit.getInstance()
+        sFit.deleteFit(self.fitID)
+        if self.shipBrowser.GetActiveStage() == 4:
+            wx.PostEvent(self.shipBrowser,SearchSelected(text=self.shipBrowser.hpane.lastSearch,back=True))
+        else:
+            wx.PostEvent(self.shipBrowser,Stage3Selected(shipID=self.shipID, back=True))
+
+        wx.PostEvent(self.mainFrame, FitRemoved(fitID=self.fitID))
+
+    def MouseLeftUp(self, event):
+        if self.tcFitName.IsShown():
+            self.tcFitName.Show(False)
+            self.newBtn.SetBitmap(self.newBmp)
+            self.Refresh()
+        else:
+            activeFitID = self.mainFrame.getActiveFit()
+            if activeFitID != self.fitID:
+                self.selectFit()
+
+    def selectFit(self, event=None):
+        wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fitID))
+#        self.Parent.RefreshList(True)
+
+    def UpdateElementsPos(self, mdc):
+        rect = self.GetRect()
+
+        self.toolbarx = rect.width - self.toolbar.GetWidth() - self.padding
+        self.toolbary = (rect.height - self.toolbar.GetHeight()) / 2
+
+        self.toolbarx = self.toolbarx + self.animCount
+
+        self.shipEffx = self.padding + (rect.height - self.shipEffBk.GetWidth())/2
+        self.shipEffy = (rect.height - self.shipEffBk.GetHeight())/2
+
+        self.shipEffx = self.shipEffx - self.animCount
+
+        self.shipBmpx = self.padding + (rect.height - self.shipBmp.GetWidth()) / 2
+        self.shipBmpy = (rect.height - self.shipBmp.GetHeight()) / 2
+
+        self.shipBmpx= self.shipBmpx - self.animCount
+
+        self.textStartx = self.shipEffx + self.shipEffBk.GetWidth() + self.padding
+
+        self.fitNamey = (rect.height - self.shipBmp.GetHeight()) / 2
+
+        mdc.SetFont(self.fontBig)
+        wtext, htext = mdc.GetTextExtent(self.fitName)
+
+        self.timestampy = self.fitNamey + htext
+
+        mdc.SetFont(self.fontSmall)
+
+        wlabel,hlabel = mdc.GetTextExtent(self.toolbar.hoverLabel)
+
+        self.thoverx = self.toolbarx - self.padding - wlabel
+        self.thovery = (rect.height - hlabel)/2
+        self.thoverw = wlabel
+
+    def DrawItem(self, mdc):
+        rect = self.GetRect()
+
+        self.UpdateElementsPos(mdc)
+
+        self.toolbar.SetPosition((self.toolbarx, self.toolbary))
+
+        mdc.DrawBitmap(self.shipEffBk, self.shipEffx, self.shipEffy, 0)
+
+        mdc.DrawBitmap(self.shipBmp, self.shipBmpx, self.shipBmpy, 0)
+
+        shipName, fittings, timestamp = self.shipFittingInfo
+
+        mdc.SetFont(self.fontNormal)
+
+        fitDate = time.localtime(self.timestamp)
+        fitLocalDate = "%02d/%02d %02d:%02d" % (fitDate[1], fitDate[2], fitDate[3], fitDate[4])
+
+        mdc.DrawText(fitLocalDate, self.textStartx, self.timestampy)
+
+        mdc.SetFont(self.fontSmall)
+        mdc.DrawText(self.toolbar.hoverLabel, self.thoverx, self.thovery)
+
+        mdc.SetFont(self.fontBig)
+
+        psname = drawUtils.GetPartialText(mdc, self.fitName, self.toolbarx - self.textStartx - self.padding * 2 - self.thoverw)
+
+        mdc.DrawText(psname, self.textStartx, self.fitNamey)
+
+        if self.tcFitName.IsShown():
+            self.AdjustControlSizePos(self.tcFitName, self.textStartx, self.toolbarx - self.editWidth - self.padding)
+
+    def AdjustControlSizePos(self, editCtl, start, end):
+        fnEditSize = editCtl.GetSize()
+        wSize = self.GetSize()
+        fnEditPosX = end
+        fnEditPosY = (wSize.height - fnEditSize.height)/2
+        if fnEditPosX < start:
+            editCtl.SetSize((self.editWidth + fnEditPosX - start,-1))
+            editCtl.SetPosition((start,fnEditPosY))
+        else:
+            editCtl.SetSize((self.editWidth,-1))
+            editCtl.SetPosition((fnEditPosX,fnEditPosY))
+
+class FitItem2(wx.Window):
     def __init__(self, parent, fitID=None, shipFittingInfo=("Test", "cnc's avatar", 0 ), shipID = None, itemData=None,
                  id=wx.ID_ANY, range=100, pos=wx.DefaultPosition,
                  size=(0, 40), style=0):
