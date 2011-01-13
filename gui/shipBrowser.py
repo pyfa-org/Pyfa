@@ -1161,7 +1161,7 @@ class ShipItem(SBItem):
         self.animTimer = wx.Timer(self, self.animTimerId)
         self.animStep = 0
         self.animPeriod = 10
-        self.animDuration = 250
+        self.animDuration = 150
         self.Bind(wx.EVT_TIMER, self.OnTimer)
         self.animTimer.Start(self.animPeriod)
 
@@ -1235,6 +1235,8 @@ class ShipItem(SBItem):
 
         self.toolbarx = rect.width - self.toolbar.GetWidth() - self.padding
         self.toolbary = (rect.height - self.toolbar.GetHeight()) / 2
+
+        self.toolbarx = self.toolbarx + self.animCount
 
         self.shipEffx = self.padding + (rect.height - self.shipEffBk.GetWidth())/2
         self.shipEffy = (rect.height - self.shipEffBk.GetHeight())/2
