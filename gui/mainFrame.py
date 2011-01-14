@@ -17,7 +17,10 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 #===============================================================================
 
+import sys
+import sqlalchemy
 import wx
+
 import service
 import config
 from gui import bitmapLoader
@@ -211,7 +214,17 @@ class MainFrame(wx.Frame):
         info = wx.AboutDialogInfo()
         info.Name = "pyfa"
         info.Version = gui.aboutData.versionString
-        info.Description = wordwrap(gui.aboutData.description + "\n\n\nDevelopers: " + "".join(gui.aboutData.developers) + "\n\nAdditional credits:\n  " + "\n  ".join(gui.aboutData.credits) + "\n\nLicense: " + gui.aboutData.license + " - see included " + gui.aboutData.licenseLocation,
+        info.Description = wordwrap(gui.aboutData.description + "\n\n\nDevelopers: " +
+                                     "".join(gui.aboutData.developers) +
+                                     "\n\nAdditional credits:\n  " +
+                                     "\n  ".join(gui.aboutData.credits)
+                                     + "\n\nLicense: " +
+                                     gui.aboutData.license +
+                                     " - see included " +
+                                     gui.aboutData.licenseLocation +
+                                     "\n\nPython: \t" + sys.version +
+                                     "\nwxPython: \t" + wx.__version__ +
+                                     "\nSQLAlchemy: \t" + sqlalchemy.__version__,
             700, wx.ClientDC(self))
         info.WebSite = ("http://www.evefit.org/Pyfa", "pyfa home page")
         wx.AboutBox(info)
