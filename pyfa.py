@@ -21,6 +21,11 @@
 import sys
 
 if not hasattr(sys, 'frozen'):
+
+    if sys.version_info < (2,6) or sys.version_info > (3,0):
+        print "Pyfa requires python 2.x branch ( >= 2.6 )\nExiting."
+        sys.exit(1)
+
     try:
         import wxversion
         wxversion.ensureMinimal('2.8')
