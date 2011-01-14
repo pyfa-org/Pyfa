@@ -1470,7 +1470,18 @@ class FitItem2(SBItem):
         self.toolbar.AddButton(self.deleteBmp, "Delete", self.deleteBtnCB)
 
         self.tcFitName = wx.TextCtrl(self, wx.ID_ANY, "%s" % self.fitName, wx.DefaultPosition, (self.editWidth,-1), wx.TE_PROCESS_ENTER)
-        self.tcFitName.Show(False)
+
+        if self.shipBrowser.fitIDMustEditName != self.fitID:
+            self.tcFitName.Show(False)
+        else:
+            self.tcFitName.SetFocus()
+            self.tcFitName.SelectAll()
+
+        self.tcFitName.Bind(wx.EVT_TEXT_ENTER, self.renameFit)
+        self.tcFitName.Bind(wx.EVT_KILL_FOCUS, self.editLostFocus)
+        self.tcFitName.Bind(wx.EVT_KEY_DOWN, self.editCheckEsc)
+
+        self.selectedDelta = 0
 
         self.animTimerId = wx.NewId()
         self.animCount = 100
@@ -1478,20 +1489,43 @@ class FitItem2(SBItem):
         self.animStep = 0
         self.animPeriod = 10
         self.animDuration = 100
+
+        self.Bind(wx.EVT_TIMER, self.OnTimer)
+
         if self.shipBrowser.GetActiveStage() != 4:
-            self.Bind(wx.EVT_TIMER, self.OnTimer)
             self.animTimer.Start(self.animPeriod)
         else:
             self.animCount = 0
 
+        self.selTimerID = wx.NewId()
+
+        self.selTimer = wx.Timer(self,self.selTimerID)
+        self.selTimer.Start(100)
+
     def OnTimer(self, event):
-        step = self.OUT_QUAD(self.animStep, 0, 10, self.animDuration)
-        self.animCount = 10 - step
-        self.animStep += self.animPeriod
-        if self.animStep > self.animDuration or self.animCount < 0 :
-            self.animCount = 0
-            self.animTimer.Stop()
-        self.Refresh()
+
+        if self.selTimerID == event.GetId():
+            ctimestamp = time.time()
+            interval = 10
+            if ctimestamp < self.timestamp + interval:
+                delta = (ctimestamp - self.timestamp) / interval
+                self.selectedDelta = self.CalculateDelta(0x0,0x66,delta)
+                self.Refresh()
+            else:
+                self.selectedDelta = 0x66
+                self.selTimer.Stop()
+
+        if self.animTimerId == event.GetId():
+            step = self.OUT_QUAD(self.animStep, 0, 10, self.animDuration)
+            self.animCount = 10 - step
+            self.animStep += self.animPeriod
+            if self.animStep > self.animDuration or self.animCount < 0 :
+                self.animCount = 0
+                self.animTimer.Stop()
+            self.Refresh()
+
+    def CalculateDelta(self, start, end, delta):
+        return start + (end-start)*delta
 
     def OUT_QUAD (self, t, b, c, d):
         t=float(t)
@@ -1503,7 +1537,15 @@ class FitItem2(SBItem):
 
         return -c *(t)*(t-2) + b
 
+    def editLostFocus(self, event):
+        self.tcFitName.Show(False)
+        self.Refresh()
 
+    def editCheckEsc(self, event):
+        if event.GetKeyCode() == wx.WXK_ESCAPE:
+            self.tcFitName.Show(False)
+        else:
+            event.Skip()
 
     def copyBtnCB(self):
         self.copyFit()
@@ -1516,7 +1558,30 @@ class FitItem2(SBItem):
         wx.PostEvent(self.mainFrame, FitSelected(fitID=fitID))
 
     def renameBtnCB(self):
-        pass
+        if self.tcFitName.IsShown():
+            self.tcFitName.Show(False)
+            self.renameFit()
+        else:
+            self.tcFitName.SetValue(self.fitName)
+            self.tcFitName.Show()
+
+            self.tcFitName.SetFocus()
+            self.tcFitName.SelectAll()
+
+            self.Refresh()
+
+    def renameFit(self, event=None):
+        sFit = service.Fit.getInstance()
+        self.tcFitName.Show(False)
+        self.editWasShown = 0
+        fitName = self.tcFitName.GetValue()
+        if fitName:
+            self.fitName = fitName
+            sFit.renameFit(self.fitID, self.fitName)
+            wx.PostEvent(self.mainFrame, FitRenamed(fitID=self.fitID))
+            self.Refresh()
+        else:
+            self.tcFitName.SetValue(self.fitName)
 
     def deleteBtnCB(self):
         self.deleteFit()
@@ -1541,7 +1606,6 @@ class FitItem2(SBItem):
     def MouseLeftUp(self, event):
         if self.tcFitName.IsShown():
             self.tcFitName.Show(False)
-            self.newBtn.SetBitmap(self.newBmp)
             self.Refresh()
         else:
             activeFitID = self.mainFrame.getActiveFit()
@@ -1550,7 +1614,7 @@ class FitItem2(SBItem):
 
     def selectFit(self, event=None):
         wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fitID))
-#        self.Parent.RefreshList(True)
+        self.Parent.RefreshList(True)
 
     def UpdateElementsPos(self, mdc):
         rect = self.GetRect()
@@ -1630,6 +1694,59 @@ class FitItem2(SBItem):
         else:
             editCtl.SetSize((self.editWidth,-1))
             editCtl.SetPosition((fnEditPosX,fnEditPosY))
+
+    def GetState(self):
+        activeFitID = self.mainFrame.getActiveFit()
+
+        if self.highlighted and not activeFitID == self.fitID:
+            state = SB_ITEM_HIGHLIGHTED
+
+        else:
+            if activeFitID == self.fitID:
+                if self.highlighted:
+                    state = SB_ITEM_SELECTED  | SB_ITEM_HIGHLIGHTED
+                else:
+                    state = SB_ITEM_SELECTED
+            else:
+                state = SB_ITEM_NORMAL
+        return state
+
+    def RenderBackground(self):
+        rect = self.GetRect()
+
+        windowColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
+
+        activeFitID = self.mainFrame.getActiveFit()
+
+        state = self.GetState()
+
+        sFactor = 0.2
+        mFactor = None
+        eFactor = 0
+
+        if state == SB_ITEM_HIGHLIGHTED:
+            mFactor = 0.55
+
+        elif state == SB_ITEM_SELECTED  | SB_ITEM_HIGHLIGHTED:
+            eFactor = 0.3
+        elif state == SB_ITEM_SELECTED:
+            eFactor = (0x33 - self.selectedDelta)/100
+        else:
+            sFactor = 0
+
+        if self.bkBitmap:
+            if self.bkBitmap.eFactor == eFactor and self.bkBitmap.sFactor == sFactor and self.bkBitmap.mFactor == mFactor \
+             and rect.width == self.bkBitmap.GetWidth() and rect.height == self.bkBitmap.GetHeight() :
+                return
+            else:
+                del self.bkBitmap
+
+        self.bkBitmap = drawUtils.RenderGradientBar(windowColor, rect.width, rect.height, sFactor, eFactor, mFactor)
+        self.bkBitmap.state = state
+        self.bkBitmap.sFactor = sFactor
+        self.bkBitmap.eFactor = eFactor
+        self.bkBitmap.mFactor = mFactor
+
 
 class FitItem(wx.Window):
     def __init__(self, parent, fitID=None, shipFittingInfo=("Test", "cnc's avatar", 0 ), shipID = None, itemData=None,
