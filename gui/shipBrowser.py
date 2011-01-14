@@ -1476,6 +1476,10 @@ class FitItem(SBItem):
     def __init__(self, parent, fitID=None, shipFittingInfo=("Test", "cnc's avatar", 0 ), shipID = None, itemData=None,
                  id=wx.ID_ANY, pos=wx.DefaultPosition,
                  size=(0, 40), style=0):
+
+        self.animCount = 100
+        self.selectedDelta = 0
+
         SBItem.__init__(self,parent,size = size)
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
@@ -1540,10 +1544,7 @@ class FitItem(SBItem):
         self.tcFitName.Bind(wx.EVT_KILL_FOCUS, self.editLostFocus)
         self.tcFitName.Bind(wx.EVT_KEY_DOWN, self.editCheckEsc)
 
-        self.selectedDelta = 0
-
         self.animTimerId = wx.NewId()
-        self.animCount = 100
         self.animTimer = wx.Timer(self, self.animTimerId)
         self.animStep = 0
         self.animPeriod = 10
