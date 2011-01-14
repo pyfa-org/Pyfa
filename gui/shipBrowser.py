@@ -1282,6 +1282,11 @@ class ShipItem(SBItem):
     def DrawItem(self, mdc):
         rect = self.GetRect()
 
+        windowColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
+        textColor = colorUtils.GetSuitableColor(windowColor, 1)
+
+        mdc.SetTextForeground(textColor)
+
         self.UpdateElementsPos(mdc)
 
         self.toolbar.SetPosition((self.toolbarx, self.toolbary))
@@ -1653,6 +1658,11 @@ class FitItem2(SBItem):
 
     def DrawItem(self, mdc):
         rect = self.GetRect()
+
+        windowColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
+        textColor = colorUtils.GetSuitableColor(windowColor, 1)
+
+        mdc.SetTextForeground(textColor)
 
         self.UpdateElementsPos(mdc)
 
