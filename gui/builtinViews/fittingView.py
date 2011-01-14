@@ -431,6 +431,9 @@ class FittingView(d.Display):
         except:
             return
 
+        if fit is None:
+            return
+
         slotMap = {}
         for slotType in Slot.getTypes():
             slot = Slot.getValue(slotType)
