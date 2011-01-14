@@ -930,6 +930,9 @@ class SBItem(wx.Window):
     def MouseLeftDown(self, event):
         pass
 
+    def MouseMove(self, event):
+        pass
+
     def OnLeftUp(self, event):
         if self.HasCapture():
             self.ReleaseMouse()
@@ -980,6 +983,9 @@ class SBItem(wx.Window):
     def OnMotion(self, event):
         if self.toolbar.MouseMove(event):
             self.Refresh()
+
+        self.MouseMove(event)
+
         event.Skip()
 
     def GetType(self):
@@ -1657,6 +1663,34 @@ class FitItem(SBItem):
         wx.PostEvent(self.mainFrame, FitRemoved(fitID=self.fitID))
 
     def MouseLeftUp(self, event):
+
+        if self.dragging and self.dragged:
+            self.dragging = False
+            self.dragged = False
+            if self.HasCapture():
+                self.ReleaseMouse()
+            self.dragWindow.Show(False)
+            self.dragWindow = None
+
+            targetWnd = wx.FindWindowAtPointer()
+
+            if not targetWnd:
+                return
+
+            wnd = targetWnd
+            while wnd is not None:
+                handler = getattr(wnd, "handleDrag", None)
+                if handler:
+                    handler("fit", self.fitID)
+                    break
+                else:
+                    wnd = wnd.Parent
+            event.Skip()
+            return
+
+        if self.dragging:
+            self.dragging = False
+
         if self.tcFitName.IsShown():
             self.tcFitName.Show(False)
             self.Refresh()
@@ -1664,6 +1698,27 @@ class FitItem(SBItem):
             activeFitID = self.mainFrame.getActiveFit()
             if activeFitID != self.fitID:
                 self.selectFit()
+
+    def MouseLeftDown(self, event):
+        self.dragging = True
+
+    def MouseMove(self, event):
+        pos = self.ClientToScreen(event.GetPosition())
+        if self.dragging:
+            if not self.dragged:
+                if self.dragMotionTrigger < 0:
+                    self.CaptureMouse()
+                    self.dragWindow = PFBitmapFrame(self, pos, self.dragTLFBmp)
+                    self.dragWindow.Show()
+                    self.dragged = True
+                    self.dragMotionTrigger = self.dragMotionTrail
+                else:
+                    self.dragMotionTrigger -= 1
+            if self.dragWindow:
+                pos.x += 3
+                pos.y += 3
+                self.dragWindow.SetPosition(pos)
+            return
 
     def selectFit(self, event=None):
         wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fitID))
@@ -1740,6 +1795,12 @@ class FitItem(SBItem):
 
         if self.tcFitName.IsShown():
             self.AdjustControlSizePos(self.tcFitName, self.textStartx, self.toolbarx - self.editWidth - self.padding)
+
+        tdc = wx.MemoryDC()
+        self.dragTLFBmp = wx.EmptyBitmap((self.toolbarx if self.toolbarx < 200 else 200), rect.height)
+        tdc.SelectObject(self.dragTLFBmp)
+        tdc.Blit(0, 0, (self.toolbarx if self.toolbarx < 200 else 200), rect.height, mdc, 0, 0, wx.COPY)
+        tdc.SelectObject(wx.NullBitmap)
 
     def AdjustControlSizePos(self, editCtl, start, end):
         fnEditSize = editCtl.GetSize()
