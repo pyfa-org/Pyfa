@@ -49,35 +49,15 @@ if not hasattr(sys, 'frozen'):
         print "Coulnd't find sqlalchemy.\nYou can download sqlalchemy (0.6+) from http://www.sqlalchemy.org/"
         sys.exit(1)
 
-import config
-
-# try:
-#    import apsw
-#    mem = apsw.Connection(":memory:")
-#    disk = apsw.Connection(config.gamedata)
-#    b = mem.backup("main", disk, "main")
-#    try:
-#        while not b.done:
-#            b.step()
-#    finally:
-#        b.finish()
-#
-#    import eos.config
-#    import sqlite3
-#    conn = sqlite3.connect(mem)
-#    eos.config.gamedata_connectionstring = lambda: conn
-#    import eos.db
-#    eos.db.getItemsByCategory("Skill", eager=("effects", "attributes", "attributes.info.icon", "icon"))
-# except:
-#    print "failed to use apsw to copy gamedata to memory, prefetching instead"
-#    import service.prefetch
-
-import service.prefetch
-from gui.mainFrame import MainFrame
 import wx
 import os
 import os.path
+
+import config
 import eos.db
+import service.prefetch
+
+from gui.mainFrame import MainFrame
 
 if __name__ == "__main__":
     #Make sure the saveddata db exists
