@@ -328,6 +328,12 @@ class MainFrame(wx.Frame):
         toggleShipMarketId = wx.NewId()
         ctabnext = wx.NewId()
         ctabprev = wx.NewId()
+
+        self.additionstab1 = wx.NewId()
+        self.additionstab2 = wx.NewId()
+        self.additionstab3 = wx.NewId()
+        self.additionstab4 = wx.NewId()
+
         # Close Page
         self.Bind(wx.EVT_MENU, self.CloseCurrentPage, id=self.closePageId)
         self.Bind(wx.EVT_MENU, self.HAddPage, id = self.addPageId)
@@ -335,19 +341,50 @@ class MainFrame(wx.Frame):
         self.Bind(wx.EVT_MENU, self.CTabNext, id = ctabnext)
         self.Bind(wx.EVT_MENU, self.CTabPrev, id = ctabprev)
 
+        self.Bind(wx.EVT_MENU, self.AdditionsTabSelect, id = self.additionstab1)
+        self.Bind(wx.EVT_MENU, self.AdditionsTabSelect, id = self.additionstab2)
+        self.Bind(wx.EVT_MENU, self.AdditionsTabSelect, id = self.additionstab3)
+        self.Bind(wx.EVT_MENU, self.AdditionsTabSelect, id = self.additionstab4)
+
         actb = [(wx.ACCEL_CTRL, ord('T'), self.addPageId),
                 (wx.ACCEL_CMD, ord('T'), self.addPageId),
+
                 (wx.ACCEL_CTRL, ord("W"), self.closePageId),
                 (wx.ACCEL_CMD, ord("W"), self.closePageId),
+
                 (wx.ACCEL_CTRL, ord(" "), toggleShipMarketId),
                 (wx.ACCEL_CMD, ord(" "), toggleShipMarketId),
+
                 (wx.ACCEL_CTRL, wx.WXK_TAB, ctabnext),
                 (wx.ACCEL_CTRL | wx.ACCEL_SHIFT, wx.WXK_TAB, ctabprev),
                 (wx.ACCEL_CMD, wx.WXK_TAB, ctabnext),
-                (wx.ACCEL_CMD | wx.ACCEL_SHIFT, wx.WXK_TAB, ctabprev)
+                (wx.ACCEL_CMD | wx.ACCEL_SHIFT, wx.WXK_TAB, ctabprev),
+
+                (wx.ACCEL_CTRL, ord('1'), self.additionstab1),
+                (wx.ACCEL_CTRL, ord('2'), self.additionstab2),
+                (wx.ACCEL_CTRL, ord('3'), self.additionstab3),
+                (wx.ACCEL_CTRL, ord('4'), self.additionstab4),
+                (wx.ACCEL_CMD, ord('1'), self.additionstab1),
+                (wx.ACCEL_CMD, ord('2'), self.additionstab2),
+                (wx.ACCEL_CMD, ord('3'), self.additionstab3),
+                (wx.ACCEL_CMD, ord('4'), self.additionstab4)
                 ]
         atable = wx.AcceleratorTable(actb)
         self.SetAcceleratorTable(atable)
+
+    def AdditionsTabSelect(self, event):
+        selTab = None
+        if event.GetId() == self.additionstab1:
+            selTab = 0
+        if event.GetId() == self.additionstab2:
+            selTab = 1
+        if event.GetId() == self.additionstab3:
+            selTab = 2
+        if event.GetId() == self.additionstab4:
+            selTab = 3
+
+        if selTab is not None:
+            self.additionsPane.notebook.SetSelection(selTab)
 
     def CTabNext(self, event):
         self.fitMultiSwitch.NextPage()
