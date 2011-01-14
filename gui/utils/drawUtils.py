@@ -81,3 +81,20 @@ def GetPartialText(dc, text , maxWidth):
             return drawntext + ellipsis
         else:
             return text
+
+def GetRoundBitmap( w, h, r ):
+    maskColor = wx.Color(0,0,0)
+    shownColor = wx.Color(5,5,5)
+    b = wx.EmptyBitmap(w,h)
+    dc = wx.MemoryDC(b)
+    dc.SetBrush(wx.Brush(maskColor))
+    dc.DrawRectangle(0,0,w,h)
+    dc.SetBrush(wx.Brush(shownColor))
+    dc.SetPen(wx.Pen(shownColor))
+    dc.DrawRoundedRectangle(0,0,w,h,r)
+    dc.SelectObject(wx.NullBitmap)
+    b.SetMaskColour(maskColor)
+    return b
+
+def GetRoundShape( w, h, r ):
+    return wx.RegionFromBitmap( GetRoundBitmap(w,h,r) )
