@@ -11,6 +11,7 @@ from wx.lib.buttons import GenBitmapButton
 
 import gui.utils.colorUtils as colorUtils
 import gui.utils.drawUtils as drawUtils
+import gui.sfBrowserItem as SFItem
 
 FitRenamed, EVT_FIT_RENAMED = wx.lib.newevent.NewEvent()
 FitSelected, EVT_FIT_SELECTED = wx.lib.newevent.NewEvent()
@@ -20,16 +21,6 @@ Stage1Selected, EVT_SB_STAGE1_SEL = wx.lib.newevent.NewEvent()
 Stage2Selected, EVT_SB_STAGE2_SEL = wx.lib.newevent.NewEvent()
 Stage3Selected, EVT_SB_STAGE3_SEL = wx.lib.newevent.NewEvent()
 SearchSelected, EVT_SB_SEARCH_SEL = wx.lib.newevent.NewEvent()
-
-SB_ITEM_NORMAL = 0
-SB_ITEM_SELECTED = 1
-SB_ITEM_HIGHLIGHTED = 2
-SB_ITEM_DISABLED = 4
-
-BTN_NORMAL   = 1
-BTN_PRESSED  = 2
-BTN_HOVER    = 4
-BTN_DISABLED = 8
 
 class PFWidgetsContainer(PFListPane):
     def __init__(self,parent):
@@ -707,348 +698,9 @@ class HeaderPane (wx.Panel):
             wx.PostEvent(self.Parent,Stage1Selected())
 
 
-class PFBaseButton(object):
-    def __init__(self, normalBitmap = wx.NullBitmap,label = "", callback = None, hoverBitmap = None, disabledBitmap = None):
-
-        self.normalBmp = normalBitmap
-        self.hoverBmp = hoverBitmap
-        self.disabledBmp = disabledBitmap
-        self.label = label
-
-        self.callback = callback
-
-        self.state = BTN_NORMAL
-        # state : BTN_STUFF
-
-    def SetCallback(self, callback):
-        self.callback = callback
-
-    def GetCallback(self):
-        return self.callback
-
-    def DoCallback(self):
-        if self.callback:
-            self.callback()
-
-    def SetState(self, state = BTN_NORMAL):
-        self.state = state
-
-    def GetState(self):
-        return self.state
-
-    def GetSize(self):
-        w = self.normalBmp.GetWidth()
-        h = self.normalBmp.GetHeight()
-        return (w,h)
-
-    def GetBitmap(self):
-        return self.normalBmp
-
-    def SetBitmap(self, bitmap):
-        self.normalBmp = bitmap
-
-    def GetLabel(self):
-        return self.label
-
-    def GetHoverBitmap(self):
-        if self.hoverBmp == None:
-            return self.normalBmp
-        return self.hoverBmp
-
-    def GetDisabledBitmap(self):
-        if self.disabledBmp == None:
-            return self.normalBmp
-        return self.disabledBmp
-
-class PFToolbar(object):
-    def __init__(self):
-        self.buttons =[]
-        self.toolbarX = 0
-        self.toolbarY = 0
-        self.padding = 2
-        self.hoverLabel = ""
-
-    def SetPosition(self, pos):
-        self.toolbarX, self.toolbarY = pos
-
-    def AddButton(self, btnBitmap, label = "", clickCallback = None, hoverBitmap = None, disabledBitmap = None):
-        btn = PFBaseButton(btnBitmap, label, clickCallback, hoverBitmap, disabledBitmap)
-        self.buttons.append(btn)
-        return btn
-
-    def ClearState(self):
-        for button in self.buttons:
-            button.SetState()
-        self.hoverLabel = ""
-
-    def MouseMove(self, event):
-        doRefresh = False
-        bx = self.toolbarX
-        self.hoverLabel = ""
-
-        for button in self.buttons:
-            state = button.GetState()
-            if self.HitTest( (bx, self.toolbarY), event.GetPosition(), button.GetSize()):
-                if not state & BTN_HOVER:
-                    button.SetState(state | BTN_HOVER)
-                    self.hoverLabel = button.GetLabel()
-                    doRefresh = True
-            else:
-                if state & BTN_HOVER:
-                    button.SetState(state ^ BTN_HOVER)
-                    doRefresh = True
-
-            bwidth, bheight = button.GetSize()
-            bx += bwidth + self.padding
-        return doRefresh
-
-    def MouseClick(self, event):
-        mx,my = event.GetPosition()
-        bx = self.toolbarX
-        for button in self.buttons:
-            state = button.GetState()
-            if state & BTN_PRESSED:
-                button.SetState(state ^ BTN_PRESSED )
-                if self.HitTest( (bx, self.toolbarY), event.GetPosition(), button.GetSize()):
-                    return button
-                else:
-                    return False
-            bwidth, bheight = button.GetSize()
-            bx += bwidth + self.padding
-
-        bx = self.toolbarX
-        for button in self.buttons:
-            state = button.GetState()
-            if self.HitTest( (bx, self.toolbarY), event.GetPosition(), button.GetSize()):
-
-                if event.LeftDown() or event.LeftDClick():
-                    button.SetState(state | BTN_PRESSED)
-                    return button
-
-                elif event.LeftUp():
-                    button.SetState(state | (not BTN_PRESSED))
-                    return button
-
-            bwidth, bheight = button.GetSize()
-            bx += bwidth + self.padding
-        return None
-
-    def GetWidth(self):
-        bx = 0
-        for button in self.buttons:
-            bwidth, bheight = button.GetSize()
-            bx += bwidth + self.padding
-        return bx
-
-    def GetHeight(self):
-        height = 0
-        for button in self.buttons:
-            bwidth, bheight = button.GetSize()
-            height = max(height, bheight)
-        return height
-
-    def HitTest(self, target, position, area):
-        x, y = target
-        px, py = position
-        aX, aY = area
-        if (px > x and px < x + aX) and (py > y and py < y + aY):
-            return True
-        return False
-
-    def Render(self, pdc):
-        bx = self.toolbarX
-        for button in self.buttons:
-            by = self.toolbarY
-            tbx = bx
-
-            btnState = button.GetState()
-
-            bmp = button.GetDisabledBitmap()
-
-            if btnState & BTN_NORMAL:
-                bmp = button.GetBitmap()
-
-            if btnState & BTN_HOVER:
-                bmp = button.GetHoverBitmap()
-
-            if btnState & BTN_PRESSED:
-                bmp = button.GetBitmap()
-                by += self.padding / 2
-                tbx += self.padding / 2
-
-            bmpWidth = bmp.GetWidth()
-            pdc.DrawBitmap(bmp, tbx, by)
-            bx += bmpWidth + self.padding
-
-class SBItem(wx.Window):
-    def __init__(self, parent, id = wx.ID_ANY, pos = wx.DefaultPosition, size = (0,16), style = 0):
-        wx.Window.__init__(self, parent, id, pos, size, style)
-
-        self.highlighted = False
-        self.selected = False
-        self.bkBitmap = None
-        self.toolbar = PFToolbar()
-
-
-        self.Bind(wx.EVT_PAINT, self.OnPaint)
-        self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBackground)
-        self.Bind(wx.EVT_LEFT_UP, self.OnLeftUp)
-
-        if "wxMSW" in wx.PlatformInfo:
-            self.Bind(wx.EVT_LEFT_DCLICK, self.OnLeftDown)
-
-
-        self.Bind(wx.EVT_LEFT_DOWN,self.OnLeftDown)
-        self.Bind(wx.EVT_ENTER_WINDOW, self.OnEnterWindow)
-        self.Bind(wx.EVT_LEAVE_WINDOW, self.OnLeaveWindow)
-        self.Bind(wx.EVT_MOTION, self.OnMotion)
-
-    def Refresh(self):
-        self.RenderBackground()
-        wx.Window.Refresh(self)
-
-    def OnPaint(self, event):
-        mdc = wx.BufferedPaintDC(self)
-
-        if self.bkBitmap is None:
-            self.RenderBackground()
-
-        mdc.DrawBitmap(self.bkBitmap, 0,0)
-
-        self.DrawItem(mdc)
-        self.toolbar.Render(mdc)
-
-    def DrawItem(self, mdc):
-        pass
-
-    def OnEraseBackground(self, event):
-        pass
-
-    def MouseLeftUp(self, event):
-        pass
-
-    def MouseLeftDown(self, event):
-        pass
-
-    def MouseMove(self, event):
-        pass
-
-    def OnLeftUp(self, event):
-        if self.HasCapture():
-            self.ReleaseMouse()
-
-        btn = self.toolbar.MouseClick(event)
-
-        if btn is not None:
-            if btn is not False:
-                if btn.GetState() & BTN_NORMAL:
-                    btn.DoCallback()
-                    self.Refresh()
-            else:
-                self.Refresh()
-            return
-
-        self.MouseLeftUp(event)
-
-
-    def OnLeftDown(self, event):
-        self.CaptureMouse()
-
-        btn = self.toolbar.MouseClick(event)
-
-        if btn is not None:
-            if btn.GetState() & BTN_PRESSED:
-                self.Refresh()
-            return
-
-        self.MouseLeftDown(event)
-
-    def OnEnterWindow(self, event):
-        self.SetHighlighted(True)
-        self.toolbar.ClearState()
-        self.Refresh()
-        event.Skip()
-
-    def OnLeaveWindow(self, event):
-        mposx, mposy = wx.GetMousePosition()
-        rect = self.GetRect()
-        rect.top = rect.left = 0
-        cx,cy = self.ScreenToClient((mposx,mposy))
-        if not rect.Contains((cx,cy)):
-            self.SetHighlighted(False)
-            self.toolbar.ClearState()
-            self.Refresh()
-        event.Skip()
-
-    def OnMotion(self, event):
-        if self.toolbar.MouseMove(event):
-            self.Refresh()
-
-        self.MouseMove(event)
-
-        event.Skip()
-
-    def GetType(self):
-        return -1
-
-    def SetSelected(self, select = True):
-        self.selected = select
-
-    def SetHighlighted(self, highlight = True):
-        self.highlighted = highlight
-
-    def GetState(self):
-
-        if self.highlighted and not self.selected:
-            state = SB_ITEM_HIGHLIGHTED
-
-        elif self.selected:
-            if self.highlighted:
-                state = SB_ITEM_SELECTED  | SB_ITEM_HIGHLIGHTED
-            else:
-                state = SB_ITEM_SELECTED
-        else:
-            state = SB_ITEM_NORMAL
-
-        return state
-
-    def RenderBackground(self):
-        rect = self.GetRect()
-
-        windowColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
-
-        state = self.GetState()
-
-        sFactor = 0.2
-        mFactor = None
-        eFactor = 0
-
-        if state == SB_ITEM_HIGHLIGHTED:
-            mFactor = 0.55
-
-        elif state == SB_ITEM_SELECTED  | SB_ITEM_HIGHLIGHTED:
-            eFactor = 0.3
-        elif state == SB_ITEM_SELECTED:
-            eFactor = 0.15
-        else:
-            sFactor = 0
-
-        if self.bkBitmap:
-            if self.bkBitmap.eFactor == eFactor and self.bkBitmap.sFactor == sFactor and self.bkBitmap.mFactor == mFactor \
-             and rect.width == self.bkBitmap.GetWidth() and rect.height == self.bkBitmap.GetHeight() :
-                return
-            else:
-                del self.bkBitmap
-
-        self.bkBitmap = drawUtils.RenderGradientBar(windowColor, rect.width, rect.height, sFactor, eFactor, mFactor)
-        self.bkBitmap.state = state
-        self.bkBitmap.sFactor = sFactor
-        self.bkBitmap.eFactor = eFactor
-        self.bkBitmap.mFactor = mFactor
-
-class CategoryItem(SBItem):
+class CategoryItem(SFItem.SFBrowserItem):
     def __init__(self,parent, categoryID, fittingInfo, size = (0,16)):
-        SBItem.__init__(self,parent,size = size)
+        SFItem.SFBrowserItem.__init__(self,parent,size = size)
 
         if categoryID:
             self.shipBmp = bitmapLoader.getBitmap("ship_small","icons")
@@ -1156,11 +808,11 @@ class CategoryItem(SBItem):
 #===============================================================================
 
 
-class ShipItem(SBItem):
+class ShipItem(SFItem.SFBrowserItem):
     def __init__(self, parent, shipID=None, shipFittingInfo=("Test", 2), itemData=None,
                  id=wx.ID_ANY, pos=wx.DefaultPosition,
                  size=(0, 40), style=0):
-        SBItem.__init__(self, parent, size = size)
+        SFItem.SFBrowserItem.__init__(self, parent, size = size)
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
@@ -1472,7 +1124,7 @@ def GetRoundShape( w, h, r ):
     return wx.RegionFromBitmap( GetRoundBitmap(w,h,r) )
 
 
-class FitItem(SBItem):
+class FitItem(SFItem.SFBrowserItem):
     def __init__(self, parent, fitID=None, shipFittingInfo=("Test", "cnc's avatar", 0 ), shipID = None, itemData=None,
                  id=wx.ID_ANY, pos=wx.DefaultPosition,
                  size=(0, 40), style=0):
@@ -1480,7 +1132,7 @@ class FitItem(SBItem):
         self.animCount = 10
         self.selectedDelta = 0
 
-        SBItem.__init__(self,parent,size = size)
+        SFItem.SFBrowserItem.__init__(self,parent,size = size)
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
@@ -1820,16 +1472,16 @@ class FitItem(SBItem):
         activeFitID = self.mainFrame.getActiveFit()
 
         if self.highlighted and not activeFitID == self.fitID:
-            state = SB_ITEM_HIGHLIGHTED
+            state = SFItem.SB_ITEM_HIGHLIGHTED
 
         else:
             if activeFitID == self.fitID:
                 if self.highlighted:
-                    state = SB_ITEM_SELECTED  | SB_ITEM_HIGHLIGHTED
+                    state = SFItem.SB_ITEM_SELECTED  | SFItem.SB_ITEM_HIGHLIGHTED
                 else:
-                    state = SB_ITEM_SELECTED
+                    state = SFItem.SB_ITEM_SELECTED
             else:
-                state = SB_ITEM_NORMAL
+                state = SFItem.SB_ITEM_NORMAL
         return state
 
     def RenderBackground(self):
@@ -1845,12 +1497,12 @@ class FitItem(SBItem):
         mFactor = None
         eFactor = 0
 
-        if state == SB_ITEM_HIGHLIGHTED:
+        if state == SFItem.SB_ITEM_HIGHLIGHTED:
             mFactor = 0.55
 
-        elif state == SB_ITEM_SELECTED  | SB_ITEM_HIGHLIGHTED:
+        elif state == SFItem.SB_ITEM_SELECTED  | SFItem.SB_ITEM_HIGHLIGHTED:
             eFactor = 0.3
-        elif state == SB_ITEM_SELECTED:
+        elif state == SFItem.SB_ITEM_SELECTED:
             eFactor = (0x33 - self.selectedDelta)/100
         else:
             sFactor = 0
