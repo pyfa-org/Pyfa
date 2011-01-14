@@ -1539,6 +1539,7 @@ class FitItem(SBItem):
         else:
             self.tcFitName.SetFocus()
             self.tcFitName.SelectAll()
+            self.shipBrowser.fitIDMustEditName = -1
 
         self.tcFitName.Bind(wx.EVT_TEXT_ENTER, self.renameFit)
         self.tcFitName.Bind(wx.EVT_KILL_FOCUS, self.editLostFocus)
