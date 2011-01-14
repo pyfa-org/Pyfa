@@ -24,8 +24,24 @@ if not hasattr(sys, 'frozen'):
     try:
         import wxversion
         wxversion.ensureMinimal('2.8')
-    except:
+    except ImportError:
         print "Coulnd't find wxPython or the installed wxPython version doesn't meet the min. requirements.\nYou can download wxPython (2.8) from http://www.wxpython.org/"
+        sys.exit(1)
+
+    try:
+        import sqlalchemy
+
+        saVersion =  sqlalchemy.__version__.split(".")
+        saMajor = int(saVersion[0])
+        saMinor = int(saVersion[1])
+        saBuild = int(saVersion[2])
+
+        if saMinor < 6:
+            print "Pyfa requires sqlalchemy 0.6+ but current sqlalchemy version is %s\nYou can download sqlalchemy (0.6+) from http://www.sqlalchemy.org/" % sqlalchemy.__version__
+            sys.exit(1)
+
+    except ImportError:
+        print "Coulnd't find sqlalchemy.\nYou can download sqlalchemy (0.6+) from http://www.sqlalchemy.org/"
         sys.exit(1)
 
 import config
