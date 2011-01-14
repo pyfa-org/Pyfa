@@ -1086,12 +1086,6 @@ class PFBitmapFrame(wx.Frame):
             self.direction = -1
             self.timer.Start(5)
 
-    def SetRoundShape(self, event=None):
-        w, h = self.GetSizeTuple()
-        self.SetShape(GetRoundShape( w,h, 5 ) )
-        self.SetTransparent(0)
-
-
     def OnWindowEraseBk(self,event):
         pass
 
