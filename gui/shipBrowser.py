@@ -52,6 +52,7 @@ class ShipBrowser(wx.Panel):
 
         self._lastWidth = 0
         self._activeStage = 1
+        self._lastStage = 0
         self.browseHist = []
         self.lastStage = (0,0)
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
@@ -136,7 +137,7 @@ class ShipBrowser(wx.Panel):
         return info[1]
 
     def stage1(self, event):
-
+        self._lastStage = self._activeStage
         self._activeStage = 1
         self.lastdata = 0
         self.hpane.ToggleNewFitSB(False)
@@ -176,7 +177,7 @@ class ShipBrowser(wx.Panel):
         back = event.back
         if not back:
             self.browseHist.append( (1,0) )
-
+        self._lastStage = self._activeStage
         self._activeStage = 2
         categoryID = event.categoryID
         self.lastdata = categoryID
@@ -199,7 +200,7 @@ class ShipBrowser(wx.Panel):
 
         shipID = event.shipID
         self.lastdata = shipID
-
+        self._lastStage = self._activeStage
         self._activeStage = 3
 
         sFit = service.Fit.getInstance()
@@ -231,6 +232,7 @@ class ShipBrowser(wx.Panel):
                     self.browseHist.append( (self._activeStage, self.lastdata) )
                 else:
                     self.browseHist.append((1,0))
+            self._lastStage = self._activeStage
             self._activeStage = 4
 
         sMarket = service.Market.getInstance()
@@ -1050,8 +1052,40 @@ class CategoryItem(SBItem):
         self.categoryID = categoryID
         self.fittingInfo = fittingInfo
         self.shipBrowser = self.Parent.Parent
+
+        self.padding = 4
+
         self.fontBig = wx.FontFromPixelSize((0,15),wx.SWISS, wx.NORMAL, wx.NORMAL, False)
 
+        self.animTimerId = wx.NewId()
+        self.animCount = 100
+        self.animTimer = wx.Timer(self, self.animTimerId)
+        self.animStep = 0
+        self.animPeriod = 10
+        self.animDuration = 100
+
+        self.Bind(wx.EVT_TIMER, self.OnTimer)
+        self.animTimer.Start(self.animPeriod)
+
+
+    def OnTimer(self, event):
+        step = self.OUT_QUAD(self.animStep, 0, 10, self.animDuration)
+        self.animCount = 10 - step
+        self.animStep += self.animPeriod
+        if self.animStep > self.animDuration or self.animCount < 0 :
+            self.animCount = 0
+            self.animTimer.Stop()
+        self.Refresh()
+
+    def OUT_QUAD (self, t, b, c, d):
+        t=float(t)
+        b=float(b)
+        c=float(c)
+        d=float(d)
+
+        t/=d
+
+        return -c *(t)*(t-2) + b
 
     def GetType(self):
         return 1
@@ -1061,45 +1095,59 @@ class CategoryItem(SBItem):
         categoryID = self.categoryID
         wx.PostEvent(self.shipBrowser,Stage2Selected(categoryID=categoryID, back=False))
 
+    def UpdateElementsPos(self, mdc):
+        rect = self.GetRect()
+        self.shipBmpx = self.padding
+        self.shipBmpy = (rect.height-self.shipBmp.GetWidth())/2
+
+        self.shipBmpx -= self.animCount
+
+        mdc.SetFont(self.fontBig)
+        categoryName, fittings = self.fittingInfo
+        wtext, htext = mdc.GetTextExtent(categoryName)
+
+
+        self.catx = self.shipBmpx + self.shipBmp.GetWidth() + self.padding
+        self.caty = (rect.height - htext) / 2
+
     def DrawItem(self, mdc):
         rect = self.GetRect()
+
+        self.UpdateElementsPos(mdc)
 
         windowColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
         textColor = colorUtils.GetSuitableColor(windowColor, 1)
 
         mdc.SetTextForeground(textColor)
 
-        mdc.DrawBitmap(self.shipBmp,5,(rect.height-self.shipBmp.GetWidth())/2,0)
-        mdc.SetFont(self.fontBig)
+        mdc.DrawBitmap(self.shipBmp,self.shipBmpx,self.shipBmpy,0)
 
+        mdc.SetFont(self.fontBig)
 
         categoryName, fittings = self.fittingInfo
 
+        mdc.DrawText(categoryName, self.catx, self.caty)
 
-
-        xpos = 5 + self.shipBmp.GetWidth() + 5
-
-        xtext, ytext = mdc.GetTextExtent(categoryName)
-        ypos = (rect.height - ytext) / 2
-        mdc.DrawText(categoryName, xpos, ypos)
-        xpos+=xtext+5
-
-        mdc.SetFont(wx.Font(8, wx.SWISS, wx.NORMAL, wx.NORMAL, False))
-
-        if fittings <1:
-            fformat = "No fits"
-        else:
-            if fittings == 1:
-                fformat = "%d fit"
-            else:
-                fformat = "%d fits"
-
-        if fittings>0:
-            xtext, ytext = mdc.GetTextExtent(fformat % fittings)
-            ypos = (rect.height - ytext)/2
-        else:
-            xtext, ytext = mdc.GetTextExtent(fformat)
-            ypos = (rect.height - ytext)/2
+#===============================================================================
+#        Waiting for total #fits impl in eos/service
+#
+#        mdc.SetFont(wx.Font(8, wx.SWISS, wx.NORMAL, wx.NORMAL, False))
+#
+#        if fittings <1:
+#            fformat = "No fits"
+#        else:
+#            if fittings == 1:
+#                fformat = "%d fit"
+#            else:
+#                fformat = "%d fits"
+#
+#        if fittings>0:
+#            xtext, ytext = mdc.GetTextExtent(fformat % fittings)
+#            ypos = (rect.height - ytext)/2
+#        else:
+#            xtext, ytext = mdc.GetTextExtent(fformat)
+#            ypos = (rect.height - ytext)/2
+#===============================================================================
 
 
 class ShipItem(SBItem):
@@ -1164,7 +1212,7 @@ class ShipItem(SBItem):
         self.animStep = 0
         self.animPeriod = 10
         self.animDuration = 100
-        if self.shipBrowser.GetActiveStage() != 4:
+        if self.shipBrowser.GetActiveStage() != 4 and self.shipBrowser.GetLastStage() !=2:
             self.Bind(wx.EVT_TIMER, self.OnTimer)
             self.animTimer.Start(self.animPeriod)
         else:
@@ -1418,7 +1466,7 @@ def GetRoundShape( w, h, r ):
     return wx.RegionFromBitmap( GetRoundBitmap(w,h,r) )
 
 
-class FitItem2(SBItem):
+class FitItem(SBItem):
     def __init__(self, parent, fitID=None, shipFittingInfo=("Test", "cnc's avatar", 0 ), shipID = None, itemData=None,
                  id=wx.ID_ANY, pos=wx.DefaultPosition,
                  size=(0, 40), style=0):
@@ -1497,7 +1545,7 @@ class FitItem2(SBItem):
 
         self.Bind(wx.EVT_TIMER, self.OnTimer)
 
-        if self.shipBrowser.GetActiveStage() != 4:
+        if self.shipBrowser.GetActiveStage() != 4 and self.shipBrowser.GetLastStage() !=3:
             self.animTimer.Start(self.animPeriod)
         else:
             self.animCount = 0
@@ -1758,7 +1806,7 @@ class FitItem2(SBItem):
         self.bkBitmap.mFactor = mFactor
 
 
-class FitItem(wx.Window):
+class FitItem2(wx.Window):
     def __init__(self, parent, fitID=None, shipFittingInfo=("Test", "cnc's avatar", 0 ), shipID = None, itemData=None,
                  id=wx.ID_ANY, range=100, pos=wx.DefaultPosition,
                  size=(0, 40), style=0):
