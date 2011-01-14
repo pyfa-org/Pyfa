@@ -74,7 +74,7 @@ class PageAdding(_PageAdding, VetoAble):
 
 class PFNotebook(wx.Panel):
     def __init__(self, parent, canAdd = True):
-        wx.Panel.__init__(self, parent, wx.ID_ANY,size = (-1,-1), style = wx.NO_BORDER)
+        wx.Panel.__init__(self, parent, wx.ID_ANY,size = (-1,-1))
 
         self.pages = []
         self.activePage = None
@@ -619,7 +619,7 @@ class PFAddRenderer:
 
 class PFTabsContainer(wx.Panel):
     def __init__(self, parent, pos = (0,0), size = (100,22), id = wx.ID_ANY, canAdd = True):
-        wx.Panel.__init__(self, parent, id , pos, size, style = wx.NO_BORDER)
+        wx.Panel.__init__(self, parent, id , pos, size)
         self.tabs = []
         width, height = size
         self.width  = width
