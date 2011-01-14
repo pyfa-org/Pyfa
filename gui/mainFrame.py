@@ -326,20 +326,34 @@ class MainFrame(wx.Frame):
         self.Bind(wx.EVT_MENU, self.openGraphFrame, id=menuBar.graphFrameId)
 
         toggleShipMarketId = wx.NewId()
+        ctabnext = wx.NewId()
+        ctabprev = wx.NewId()
         # Close Page
         self.Bind(wx.EVT_MENU, self.CloseCurrentPage, id=self.closePageId)
         self.Bind(wx.EVT_MENU, self.HAddPage, id = self.addPageId)
         self.Bind(wx.EVT_MENU, self.toggleShipMarket, id = toggleShipMarketId)
+        self.Bind(wx.EVT_MENU, self.CTabNext, id = ctabnext)
+        self.Bind(wx.EVT_MENU, self.CTabPrev, id = ctabprev)
 
         actb = [(wx.ACCEL_CTRL, ord('T'), self.addPageId),
                 (wx.ACCEL_CMD, ord('T'), self.addPageId),
                 (wx.ACCEL_CTRL, ord("W"), self.closePageId),
                 (wx.ACCEL_CMD, ord("W"), self.closePageId),
                 (wx.ACCEL_CTRL, ord(" "), toggleShipMarketId),
-                (wx.ACCEL_CMD, ord(" "), toggleShipMarketId)]
+                (wx.ACCEL_CMD, ord(" "), toggleShipMarketId),
+                (wx.ACCEL_CTRL, wx.WXK_TAB, ctabnext),
+                (wx.ACCEL_CTRL | wx.ACCEL_SHIFT, wx.WXK_TAB, ctabprev),
+                (wx.ACCEL_CMD, wx.WXK_TAB, ctabnext),
+                (wx.ACCEL_CMD | wx.ACCEL_SHIFT, wx.WXK_TAB, ctabprev)
+                ]
         atable = wx.AcceleratorTable(actb)
         self.SetAcceleratorTable(atable)
 
+    def CTabNext(self, event):
+        self.fitMultiSwitch.NextPage()
+
+    def CTabPrev(self, event):
+        self.fitMultiSwitch.PrevPage()
 
     def HAddPage(self,event):
         self.fitMultiSwitch.AddPage(wx.Panel(self, size = (0,0)), "Empty Tab")
