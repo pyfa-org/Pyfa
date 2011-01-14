@@ -41,9 +41,14 @@ if not hasattr(sys, 'frozen'):
         saMinor = int(saVersion[1])
         saBuild = int(saVersion[2])
 
-        if saMinor < 6:
-            print "Pyfa requires sqlalchemy 0.6+ but current sqlalchemy version is %s\nYou can download sqlalchemy (0.6+) from http://www.sqlalchemy.org/" % sqlalchemy.__version__
+        if saMinor < 5:
+            print "Pyfa requires sqlalchemy 0.5.8 at least  but current sqlalchemy version is %s\nYou can download sqlalchemy (0.5.8+) from http://www.sqlalchemy.org/" % sqlalchemy.__version__
             sys.exit(1)
+        else:
+            if saMinor == 5 and saBuild < 8:
+                print "Pyfa requires sqlalchemy 0.5.8 at least  but current sqlalchemy version is %s\nYou can download sqlalchemy (0.5.8+) from http://www.sqlalchemy.org/" % sqlalchemy.__version__
+                sys.exit(1)
+
 
     except ImportError:
         print "Cannot find sqlalchemy.\nYou can download sqlalchemy (0.6+) from http://www.sqlalchemy.org/"
