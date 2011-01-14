@@ -17,7 +17,10 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 #===============================================================================
 
+import sys
+import sqlalchemy
 import wx
+
 import service
 import config
 from gui import bitmapLoader
@@ -211,7 +214,17 @@ class MainFrame(wx.Frame):
         info = wx.AboutDialogInfo()
         info.Name = "pyfa"
         info.Version = gui.aboutData.versionString
-        info.Description = wordwrap(gui.aboutData.description + "\n\n\nDevelopers: " + "".join(gui.aboutData.developers) + "\n\nAdditional credits:\n  " + "\n  ".join(gui.aboutData.credits) + "\n\nLicense: " + gui.aboutData.license + " - see included " + gui.aboutData.licenseLocation,
+        info.Description = wordwrap(gui.aboutData.description + "\n\n\nDevelopers: " +
+                                     "".join(gui.aboutData.developers) +
+                                     "\n\nAdditional credits:\n  " +
+                                     "\n  ".join(gui.aboutData.credits)
+                                     + "\n\nLicense: " +
+                                     gui.aboutData.license +
+                                     " - see included " +
+                                     gui.aboutData.licenseLocation +
+                                     "\n\nPython: \t" + sys.version +
+                                     "\nwxPython: \t" + wx.__version__ +
+                                     "\nSQLAlchemy: \t" + sqlalchemy.__version__,
             700, wx.ClientDC(self))
         info.WebSite = ("http://www.evefit.org/Pyfa", "pyfa home page")
         wx.AboutBox(info)
@@ -313,20 +326,34 @@ class MainFrame(wx.Frame):
         self.Bind(wx.EVT_MENU, self.openGraphFrame, id=menuBar.graphFrameId)
 
         toggleShipMarketId = wx.NewId()
+        ctabnext = wx.NewId()
+        ctabprev = wx.NewId()
         # Close Page
         self.Bind(wx.EVT_MENU, self.CloseCurrentPage, id=self.closePageId)
         self.Bind(wx.EVT_MENU, self.HAddPage, id = self.addPageId)
         self.Bind(wx.EVT_MENU, self.toggleShipMarket, id = toggleShipMarketId)
+        self.Bind(wx.EVT_MENU, self.CTabNext, id = ctabnext)
+        self.Bind(wx.EVT_MENU, self.CTabPrev, id = ctabprev)
 
         actb = [(wx.ACCEL_CTRL, ord('T'), self.addPageId),
                 (wx.ACCEL_CMD, ord('T'), self.addPageId),
                 (wx.ACCEL_CTRL, ord("W"), self.closePageId),
                 (wx.ACCEL_CMD, ord("W"), self.closePageId),
                 (wx.ACCEL_CTRL, ord(" "), toggleShipMarketId),
-                (wx.ACCEL_CMD, ord(" "), toggleShipMarketId)]
+                (wx.ACCEL_CMD, ord(" "), toggleShipMarketId),
+                (wx.ACCEL_CTRL, wx.WXK_TAB, ctabnext),
+                (wx.ACCEL_CTRL | wx.ACCEL_SHIFT, wx.WXK_TAB, ctabprev),
+                (wx.ACCEL_CMD, wx.WXK_TAB, ctabnext),
+                (wx.ACCEL_CMD | wx.ACCEL_SHIFT, wx.WXK_TAB, ctabprev)
+                ]
         atable = wx.AcceleratorTable(actb)
         self.SetAcceleratorTable(atable)
 
+    def CTabNext(self, event):
+        self.fitMultiSwitch.NextPage()
+
+    def CTabPrev(self, event):
+        self.fitMultiSwitch.PrevPage()
 
     def HAddPage(self,event):
         self.fitMultiSwitch.AddPage(wx.Panel(self, size = (0,0)), "Empty Tab")
