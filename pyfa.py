@@ -21,8 +21,12 @@
 import sys
 
 if not hasattr(sys, 'frozen'):
-    import wxversion
-    wxversion.ensureMinimal('2.8')
+    try:
+        import wxversion
+        wxversion.ensureMinimal('2.8')
+    except:
+        print "Coulnd't find wxPython or the installed wxPython version doesn't meet the min. requirements.\nYou can download wxPython (2.8) from http://www.wxpython.org/"
+        sys.exit(1)
 
 import config
 
