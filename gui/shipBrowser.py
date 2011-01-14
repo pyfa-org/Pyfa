@@ -1064,7 +1064,7 @@ class CategoryItem(SBItem):
         self.fontBig = wx.FontFromPixelSize((0,15),wx.SWISS, wx.NORMAL, wx.NORMAL, False)
 
         self.animTimerId = wx.NewId()
-        self.animCount = 100
+        self.animCount = 10
         self.animTimer = wx.Timer(self, self.animTimerId)
         self.animStep = 0
         self.animPeriod = 10
@@ -1213,7 +1213,7 @@ class ShipItem(SBItem):
         self.tcFitName.Bind(wx.EVT_KEY_DOWN, self.editCheckEsc)
 
         self.animTimerId = wx.NewId()
-        self.animCount = 100
+        self.animCount = 10
         self.animTimer = wx.Timer(self, self.animTimerId)
         self.animStep = 0
         self.animPeriod = 10
@@ -1477,7 +1477,7 @@ class FitItem(SBItem):
                  id=wx.ID_ANY, pos=wx.DefaultPosition,
                  size=(0, 40), style=0):
 
-        self.animCount = 100
+        self.animCount = 10
         self.selectedDelta = 0
 
         SBItem.__init__(self,parent,size = size)
