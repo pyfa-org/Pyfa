@@ -23,6 +23,16 @@ class LoadAnimation(wx.Window):
 
         self.animTimer.Start(self.animTimerPeriod)
 
+    def Play(self):
+        if self.animTimer.IsRunning():
+            self.animTimer.Stop()
+        self.animCount = 0
+        self.animTimer.Start(self.animTimerPeriod)
+
+    def Stop(self):
+        if self.animTimer.IsRunning():
+            self.animTimer.Stop()
+
     def OnTimer(self, event):
         self.animCount += self.animDir
 

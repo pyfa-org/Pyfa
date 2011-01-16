@@ -11,6 +11,7 @@ from wx.lib.buttons import GenBitmapButton
 
 import gui.utils.colorUtils as colorUtils
 import gui.utils.drawUtils as drawUtils
+import gui.utils.animUtils as animUtils
 import gui.sfBrowserItem as SFItem
 
 FitRenamed, EVT_FIT_RENAMED = wx.lib.newevent.NewEvent()
@@ -25,6 +26,23 @@ SearchSelected, EVT_SB_SEARCH_SEL = wx.lib.newevent.NewEvent()
 class PFWidgetsContainer(PFListPane):
     def __init__(self,parent):
         PFListPane.__init__(self,parent)
+
+        self.anim = animUtils.LoadAnimation(self,label = "", size=(100,12))
+        self.anim.Stop()
+        self.anim.Show(False)
+
+    def ShowLoading(self, mode = True):
+        if mode:
+            aweight,aheight = self.anim.GetSize()
+            cweight,cheight = self.GetSize()
+            ax = (cweight - aweight)/2
+            ay = (cheight - aheight)/2
+            self.anim.SetPosition((ax,ay))
+            self.anim.Show()
+            self.anim.Play()
+        else:
+            self.anim.Stop()
+            self.anim.Show(False)
 
     def IsWidgetSelectedByContext(self, widget):
         mainFrame = gui.mainFrame.MainFrame.getInstance()
@@ -162,6 +180,7 @@ class ShipBrowser(wx.Panel):
             else:
                 self.lpane.AddWidget(ShipItem(self.lpane, ID, (name, fits), race))
 
+        self.lpane.ShowLoading(False)
         self.lpane.RefreshList()
 
     def stage2(self, event):
@@ -175,6 +194,9 @@ class ShipBrowser(wx.Panel):
 
 
         self.lpane.RemoveAllChildren()
+
+        self.lpane.ShowLoading()
+
         sMarket = service.Market.getInstance()
         sMarket.getShipListDelayed(self.stage2Callback, categoryID)
 
