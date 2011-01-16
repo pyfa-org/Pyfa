@@ -256,7 +256,6 @@ class MainFrame(wx.Frame):
 #            try:
             for importPath in dlg.GetPaths():
                 fits += sFit.importFit(importPath)
-            print fits
             IDs = sFit.saveImportedFits(fits)
             self._openAfterImport(len(fits), IDs)
 #            except:
