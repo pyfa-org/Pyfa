@@ -44,12 +44,13 @@ class FleetView(wx.gizmos.TreeListCtrl):
         data = self.GetPyData(event.Item)
         if data and isinstance(data, tuple) and data[0] == "add":
             layer = data[1]
-            
+
 
     def populate(self, fleetID):
         sFleet = service.Fleet.getInstance()
         f = sFleet.getFleetByID(fleetID)
-        self.tabManager.SetPageTextIcon(self.tabManager.GetSelection(), f.name)
+        fleetBmp = bitmapLoader.getImage("53_16", "pack")
+        self.tabManager.SetPageTextIcon(self.tabManager.GetSelection(), f.name, fleetBmp)
         self.fleet = f
         self.DeleteAllItems()
         root = self.AddRoot("")
