@@ -1266,6 +1266,10 @@ class FitItem(SFItem.SFBrowserItem):
             event.Skip()
 
     def copyBtnCB(self):
+        if self.tcFitName.IsShown():
+            self.tcFitName.Show(False)
+            return
+
         self.copyFit()
 
     def copyFit(self, event=None):
@@ -1302,6 +1306,10 @@ class FitItem(SFItem.SFBrowserItem):
             self.tcFitName.SetValue(self.fitName)
 
     def deleteBtnCB(self):
+        if self.tcFitName.IsShown():
+            self.tcFitName.Show(False)
+            return
+
         self.deleteFit()
 
     def deleteFit(self, event=None):
