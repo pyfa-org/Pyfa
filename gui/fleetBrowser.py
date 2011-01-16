@@ -278,7 +278,7 @@ class FleetItem(SFItem.SFBrowserItem):
         self.fleetEffBmp = wx.BitmapFromImage(fleetImg)
 
         self.toolbar.AddButton(self.copyBmp, "Copy", self.CopyFleetCB)
-        self.toolbar.AddButton(self.renameBmp, "Rename", self.RenameFleetCB)
+        self.renameBtn = self.toolbar.AddButton(self.renameBmp, "Rename", self.RenameFleetCB)
         self.toolbar.AddButton(self.deleteBmp, "Delete", self.DeleteFleetCB)
 
         self.editWidth = 150
@@ -290,6 +290,7 @@ class FleetItem(SFItem.SFBrowserItem):
             self.tcFleetName.SetFocus()
             self.tcFleetName.SelectAll()
             self.fleetBrowser.fleetIDMustEditName = -1
+            self.renameBtn.SetBitmap(self.acceptBmp)
             self.selected = True
 
         self.tcFleetName.Bind(wx.EVT_KILL_FOCUS, self.OnEditLostFocus)
@@ -301,13 +302,13 @@ class FleetItem(SFItem.SFBrowserItem):
 
     def MouseLeftUp(self, event):
         if self.tcFleetName.IsShown():
-            self.tcFleetName.Show(False)
+            self.RestoreEditButton()
         else:
             wx.PostEvent(self.fleetBrowser, FleetItemSelect(fleetID = self.fleetID))
 
     def CopyFleetCB(self):
         if self.tcFleetName.IsShown():
-            self.tcFleetName.Show(False)
+            self.RestoreEditButton()
             return
 
         wx.PostEvent(self.fleetBrowser, FleetItemCopy(fleetID = self.fleetID))
@@ -315,11 +316,16 @@ class FleetItem(SFItem.SFBrowserItem):
     def RenameFleetCB(self):
 
         if self.tcFleetName.IsShown():
-            self.tcFleetName.Show(False)
+
             self.RenameFleet(None)
+            self.RestoreEditButton()
+
         else:
             self.tcFleetName.SetValue(self.fleetName)
             self.tcFleetName.Show()
+
+            self.renameBtn.SetBitmap(self.acceptBmp)
+            self.Refresh()
 
             self.tcFleetName.SetFocus()
             self.tcFleetName.SelectAll()
@@ -338,9 +344,14 @@ class FleetItem(SFItem.SFBrowserItem):
 
     def DeleteFleetCB(self):
         if self.tcFleetName.IsShown():
-            self.tcFleetName.Show(False)
+            self.RestoreEditButton()
             return
         wx.PostEvent(self.fleetBrowser, FleetItemDelete(fleetID = self.fleetID))
+
+    def RestoreEditButton(self):
+            self.tcFleetName.Show(False)
+            self.renameBtn.SetBitmap(self.renameBmp)
+            self.Refresh()
 
     def OnEditLostFocus(self, event):
         self.tcFleetName.Show(False)
