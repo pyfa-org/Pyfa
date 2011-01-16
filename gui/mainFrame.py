@@ -18,11 +18,21 @@
 #===============================================================================
 
 import sys
+import os.path
+
 import sqlalchemy
 import wx
 
+from wx._core import PyDeadObjectError
+from wx.lib.wordwrap import wordwrap
+
 import service
 import config
+
+import gui.aboutData
+import gui.chromeTabs
+import gui.utils.animUtils as animUtils
+
 from gui import bitmapLoader
 from gui.mainMenuBar import MainMenuBar
 from gui.additionsPane import AdditionsPane
@@ -30,20 +40,15 @@ from gui.marketBrowser import MarketBrowser
 from gui.multiSwitch import MultiSwitch
 from gui.statsPane import StatsPane
 from gui.shipBrowser import ShipBrowser, FitSelected
-from wx.lib.wordwrap import wordwrap
 from gui.characterEditor import CharacterEditor
 from gui.characterSelection import CharacterSelection
 from gui.patternEditor import DmgPatternEditorDlg
 from gui.preferenceDialog import PreferenceDialog
 from gui.graphFrame import GraphFrame
 from gui.copySelectDialog import CopySelectDialog
-import gui.aboutData
-from wx._core import PyDeadObjectError
-import os.path
-import gui.chromeTabs
 from gui.utils.clipboard import toClipboard, fromClipboard
-from builtinViews import *
 from gui.fleetBrowser import FleetBrowser
+from builtinViews import *
 
 #dummy panel no paint no erasebk
 class PFPanel(wx.Panel):
@@ -451,8 +456,6 @@ class MainFrame(wx.Frame):
         saveDialog.Destroy()
 
     def closeWaitDialog(self):
-        if self.waitDialog.timer.IsRunning():
-            self.waitDialog.timer.Stop()
         self.waitDialog.Destroy()
 
     def openGraphFrame(self, event):
@@ -478,30 +481,19 @@ class MainFrame(wx.Frame):
             wnd = self
         InspectionTool().Show(wnd, True)
 
+
 class WaitDialog(wx.Dialog):
     def __init__(self, parent):
-        wx.Dialog.__init__ (self, parent, id=wx.ID_ANY, title=u"Please wait ...", size=(200,30),
+        wx.Dialog.__init__ (self, parent, id=wx.ID_ANY, title=u"Please wait ...", size=(300,30),
                            style=wx.NO_BORDER)
         mainSizer = wx.BoxSizer( wx.HORIZONTAL )
 
-        self.progress = wx.Gauge( self, wx.ID_ANY, 100, wx.DefaultPosition, wx.DefaultSize, wx.GA_HORIZONTAL | wx.GA_SMOOTH )
+        self.progress = animUtils.LoadAnimation(self,label = "Processing", size=(300,30))
         mainSizer.Add( self.progress, 1, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 0 )
-        self.progress.SetRange(20)
-        self.progress.SetValue(0)
-        self.cycle = 0
         self.SetSizer( mainSizer )
         self.Layout()
-        self.timer = wx.Timer(self,wx.ID_ANY)
-        self.timer.Start(100)
         self.Bind(wx.EVT_CLOSE,self.OnClose)
-        self.Bind(wx.EVT_TIMER,self.OnTimer)
         self.CenterOnParent()
-
-    def OnTimer(self, event):
-        self.cycle += 1
-        if self.cycle > self.progress.GetRange():
-            self.cycle = 0
-        self.progress.SetValue(self.cycle)
 
     def OnClose(self, event):
         pass

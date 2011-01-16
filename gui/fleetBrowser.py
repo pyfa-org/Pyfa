@@ -8,7 +8,15 @@ from gui.utils.drawUtils import GetPartialText
 
 from wx.lib.buttons import GenBitmapButton
 
+import gui.utils.colorUtils as colorUtils
+import gui.utils.drawUtils as drawUtils
+
+import gui.sfBrowserItem as SFItem
+
 FleetSelected, EVT_FLEET_SELECTED = wx.lib.newevent.NewEvent()
+FleetRenamed, EVT_FLEET_RENAMED = wx.lib.newevent.NewEvent()
+FleetRemoved, EVT_FLEET_REMOVED = wx.lib.newevent.NewEvent()
+
 
 FleetItemSelect, EVT_FLEET_ITEM_SELECT = wx.lib.newevent.NewEvent()
 FleetItemDelete, EVT_FLEET_ITEM_DELETE = wx.lib.newevent.NewEvent()
@@ -86,16 +94,19 @@ class FleetBrowser(wx.Panel):
         newFleetName = event.fleetName
 
         self.sFleet.renameFleet(fleet, newFleetName)
+        wx.PostEvent(self.mainFrame, FleetRenamed(fleetID = fleet.ID))
 
     def DeleteFleetItem(self, event):
         self.sFleet.deleteFleetByID(event.fleetID)
         self.PopulateFleetList()
+        wx.PostEvent(self.mainFrame, FleetRemoved(fleetID = event.fleetID))
 
     def AddItem (self, ID, name, count):
         self.fleetItemContainer.AddWidget(FleetItem(self, ID, name, count))
         widget = self.fleetItemContainer.GetWidgetByFleetID(ID)
         self.fleetItemContainer.RefreshList(True)
         self.fleetItemContainer.ScrollChildIntoView(widget)
+        wx.PostEvent(self, FleetItemSelect(fleetID = ID))
 
     def PopulateFleetList(self):
         self.Freeze()
@@ -234,31 +245,22 @@ class PFFleetItemContainer(PFListPane):
     def OnLeftUp(self, event):
         event.Skip()
 
-class FleetItem(wx.Window):
+class FleetItem(SFItem.SFBrowserItem):
     def __init__(self, parent, fleetID, fleetName, fleetCount,
                  id=wx.ID_ANY, pos=wx.DefaultPosition,
-                 size=(0,32), style=0):
-        wx.Window.__init__(self, parent, id, pos, size, style)
+                 size=(0,40), style=0):
+        SFItem.SFBrowserItem.__init__(self, parent, size = size)
 
-#        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-#        self.fleetBrowser = self.mainFrame.fleetBrowser
-#        print self.fleetBrowser
         self.fleetBrowser = self.Parent
         self.fleetID = fleetID
         self.fleetName = fleetName
         self.fleetCount = fleetCount
-        self.highlighted = 0
 
-        self.buttonsTip = ""
-        self.selected = False
-        self.padding = 5
-        self.editHasFocus = False
-
-        self.cleanupTimer = None
-        self.cleanupTimerId = wx.NewId()
+        self.padding = 4
 
         self.fontBig = wx.FontFromPixelSize((0,15),wx.SWISS, wx.NORMAL, wx.BOLD, False)
-        self.fontSmall = wx.FontFromPixelSize((0,13),wx.SWISS, wx.NORMAL, wx.NORMAL, False)
+        self.fontNormal = wx.FontFromPixelSize((0,14),wx.SWISS, wx.NORMAL, wx.NORMAL, False)
+        self.fontSmall = wx.FontFromPixelSize((0,12),wx.SWISS, wx.NORMAL, wx.NORMAL, False)
 
         self.copyBmp = bitmapLoader.getBitmap("fit_add_small", "icons")
         self.renameBmp = bitmapLoader.getBitmap("fit_rename_small", "icons")
@@ -266,29 +268,18 @@ class FleetItem(wx.Window):
         self.acceptBmp = bitmapLoader.getBitmap("faccept_small", "icons")
         self.fleetBmp = bitmapLoader.getBitmap("fleet_item_big", "icons")
 
-        self.copyBmpGrey = self.GreyBitmap(self.copyBmp)
-        self.renameBmpGrey = self.GreyBitmap(self.renameBmp)
-        self.deleteBmpGrey = self.GreyBitmap(self.deleteBmp)
-        self.acceptBmpGrey = self.GreyBitmap(self.acceptBmp)
+        fleetImg = self.fleetBmp.ConvertToImage()
+        fleetImg = fleetImg.Blur(2)
 
-        self.btnSize = (18,18)
+        if not fleetImg.HasAlpha():
+            fleetImg.InitAlpha()
 
-        if 'wxMac' in wx.PlatformInfo:
-            self.btnbgcolour = wx.Colour(0, 0, 0, 0)
-        else:
-            self.btnbgcolour = wx.SystemSettings.GetColour( wx.SYS_COLOUR_3DFACE)
+        fleetImg = fleetImg.AdjustChannels(1, 1, 1, 0.5)
+        self.fleetEffBmp = wx.BitmapFromImage(fleetImg)
 
-        self.btnCopy = PFGenBitmapButton( self, wx.ID_ANY, self.copyBmp, wx.DefaultPosition, self.btnSize, wx.BORDER_NONE )
-        self.btnCopy.Show(False)
-        self.btnCopy.SetBackgroundColour( self.btnbgcolour )
-
-        self.btnRename = PFGenBitmapButton( self, wx.ID_ANY, self.renameBmp, wx.DefaultPosition, self.btnSize, wx.BORDER_NONE )
-        self.btnRename.Show(False)
-        self.btnRename.SetBackgroundColour( self.btnbgcolour )
-
-        self.btnDelete = PFGenBitmapButton( self, wx.ID_ANY, self.deleteBmp, wx.DefaultPosition, self.btnSize, wx.BORDER_NONE )
-        self.btnDelete.Show(False)
-        self.btnDelete.SetBackgroundColour( self.btnbgcolour )
+        self.toolbar.AddButton(self.copyBmp, "Copy", self.CopyFleetCB)
+        self.toolbar.AddButton(self.renameBmp, "Rename", self.RenameFleetCB)
+        self.toolbar.AddButton(self.deleteBmp, "Delete", self.DeleteFleetCB)
 
         self.editWidth = 150
         self.tcFleetName = wx.TextCtrl(self, wx.ID_ANY, "%s" % self.fleetName, wx.DefaultPosition, (self.editWidth,-1), wx.TE_PROCESS_ENTER)
@@ -298,270 +289,147 @@ class FleetItem(wx.Window):
         else:
             self.tcFleetName.SetFocus()
             self.tcFleetName.SelectAll()
-            self.btnRename.SetBitmapLabel(self.acceptBmp, False)
-            self.editHasFocus = True
             self.fleetBrowser.fleetIDMustEditName = -1
-
-        self.Bind(wx.EVT_PAINT, self.OnPaint)
-        self.Bind(wx.EVT_ERASE_BACKGROUND, lambda event: None)
-
-        self.Bind(wx.EVT_LEAVE_WINDOW, self.LeaveWindow)
-        self.Bind(wx.EVT_ENTER_WINDOW, self.EnterWindow)
-        self.Bind(wx.EVT_LEFT_UP, self.OnSelect)
-
-        self.btnCopy.Bind(wx.EVT_ENTER_WINDOW, self.OnBtnEnterWindow)
-        self.btnRename.Bind(wx.EVT_ENTER_WINDOW, self.OnBtnEnterWindow)
-        self.btnDelete.Bind(wx.EVT_ENTER_WINDOW, self.OnBtnEnterWindow)
-
-        self.btnDelete.Bind(wx.EVT_BUTTON, self.OnDeleteBtn)
-        self.btnCopy.Bind(wx.EVT_BUTTON, self.OnCopyBtn)
-        self.btnRename.Bind(wx.EVT_BUTTON, self.OnRenameBtn)
+            self.selected = True
 
         self.tcFleetName.Bind(wx.EVT_KILL_FOCUS, self.OnEditLostFocus)
-        self.tcFleetName.Bind(wx.EVT_TEXT_ENTER, self.RenameFit)
+        self.tcFleetName.Bind(wx.EVT_TEXT_ENTER, self.RenameFleet)
         self.tcFleetName.Bind(wx.EVT_KEY_DOWN, self.EditCheckEsc)
 
-        self.Bind(wx.EVT_TIMER, self.OnTimer)
 
-    def OnSelect(self, event):
-        if self.editHasFocus:
-            self.HideEdit()
+        self.animCount = 0
+
+    def MouseLeftUp(self, event):
+        if self.tcFleetName.IsShown():
+            self.tcFleetName.Show(False)
         else:
             wx.PostEvent(self.fleetBrowser, FleetItemSelect(fleetID = self.fleetID))
-        event.Skip()
 
-    def OnRenameBtn(self, event):
+    def CopyFleetCB(self):
         if self.tcFleetName.IsShown():
-            self.HideEdit()
-            self.btnRename.SetBitmapLabel(self.renameBmp, False)
-            self.RenameFit(None)
-        else:
-            if not self.editHasFocus:
-                self.btnRename.SetBitmapLabel(self.acceptBmp,False)
-                self.tcFleetName.Show(True)
-                self.tcFleetName.SetFocus()
-                self.tcFleetName.SelectAll()
-                self.editHasFocus = True
-        event.Skip()
+            self.tcFleetName.Show(False)
+            return
 
-    def OnDeleteBtn(self, event):
-        if self.editHasFocus:
-            self.HideEdit()
-        else:
-            wx.PostEvent(self.fleetBrowser, FleetItemDelete(fleetID = self.fleetID))
-            event.Skip()
+        wx.PostEvent(self.fleetBrowser, FleetItemCopy(fleetID = self.fleetID))
 
-    def OnCopyBtn(self, event):
-        if self.editHasFocus:
-            self.HideEdit()
-        else:
-            wx.PostEvent(self.fleetBrowser, FleetItemCopy(fleetID = self.fleetID))
-            event.Skip()
+    def RenameFleetCB(self):
 
-    def RenameFit(self, event):
-        self.HideEdit()
+        if self.tcFleetName.IsShown():
+            self.tcFleetName.Show(False)
+            self.RenameFleet(None)
+        else:
+            self.tcFleetName.SetValue(self.fleetName)
+            self.tcFleetName.Show()
+
+            self.tcFleetName.SetFocus()
+            self.tcFleetName.SelectAll()
+
+            self.Refresh()
+
+    def RenameFleet(self, event):
 
         newFleetName = self.tcFleetName.GetValue()
         self.fleetName = newFleetName
 
+        self.tcFleetName.Show(False)
+
         wx.PostEvent(self.fleetBrowser, FleetItemRename(fleetID = self.fleetID, fleetName = self.fleetName))
         self.Refresh()
+
+    def DeleteFleetCB(self):
+        if self.tcFleetName.IsShown():
+            self.tcFleetName.Show(False)
+            return
+        wx.PostEvent(self.fleetBrowser, FleetItemDelete(fleetID = self.fleetID))
+
+    def OnEditLostFocus(self, event):
+        self.tcFleetName.Show(False)
+        self.Refresh()
+
+    def EditCheckEsc(self, event):
+        if event.GetKeyCode() == wx.WXK_ESCAPE:
+            self.tcFleetName.Show(False)
+        else:
+            event.Skip()
 
     def IsSelected(self):
         return self.selected
 
-    def SetSelected(self, state = True):
-        self.selected = state
-
-    def OnPaint(self, event):
+    def UpdateElementsPos(self, mdc):
         rect = self.GetRect()
 
-        #Bitmap for our buffered DC
-        canvas = wx.EmptyBitmap(rect.width, rect.height)
+        self.toolbarx = rect.width - self.toolbar.GetWidth() - self.padding
+        self.toolbary = (rect.height - self.toolbar.GetHeight()) / 2
 
-        #Buffered DC
-        bdc = wx.BufferedPaintDC(self)
-        bdc.SelectObject(canvas)
+        self.toolbarx = self.toolbarx + self.animCount
 
-        #gradient rect - clear the window
-        grect = copy.copy(rect)
-        grect.top = grect.left = 0
+        self.fleetBmpx = self.padding + (rect.height - self.fleetBmp.GetWidth()) / 2
+        self.fleetBmpy = (rect.height - self.fleetBmp.GetHeight()) / 2
 
-        grect.height = grect.height / 2
+        self.fleetBmpx -= self.animCount
 
-        if self.highlighted:
+        self.textStartx = self.fleetBmpx + self.fleetBmp.GetWidth() + self.padding
 
-            sr = 221
-            sg = 221
-            sb = 221
+        self.fleetNamey = (rect.height - self.fleetBmp.GetHeight()) / 2
 
-            startColor = (sr,sg,sb)
+        mdc.SetFont(self.fontBig)
+        wtext, htext = mdc.GetTextExtent(self.fleetName)
 
-            bdc.GradientFillLinear(grect, startColor, wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW),wx.SOUTH)
-            grect.top = grect.height
-            bdc.GradientFillLinear(grect, startColor, wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW),wx.NORTH)
-            bdc.SetTextForeground(wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOWTEXT ))
+        self.fleetCounty = self.fleetNamey + htext
 
-        else:
-            if self.selected:
-                bkcolor = wx.Colour(221,221,221)
-            else:
-                bkcolor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
+        mdc.SetFont(self.fontSmall)
 
-            bdc.SetBackground(wx.Brush(bkcolor))
-            bdc.SetTextForeground(wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOWTEXT ))
-            bdc.Clear()
+        wlabel,hlabel = mdc.GetTextExtent(self.toolbar.hoverLabel)
 
-        bdc.DrawBitmap(self.fleetBmp, 0, (rect.height - self.fleetBmp.GetHeight())/2)
-        textStart = self.padding + self.fleetBmp.GetWidth()
+        self.thoverx = self.toolbarx - self.padding - wlabel
+        self.thovery = (rect.height - hlabel)/2
+        self.thoverw = wlabel
+
+    def DrawItem(self, mdc):
+        rect = self.GetRect()
+
+        windowColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
+        textColor = colorUtils.GetSuitableColor(windowColor, 1)
+
+        mdc.SetTextForeground(textColor)
+
+        self.UpdateElementsPos(mdc)
+
+        self.toolbar.SetPosition((self.toolbarx, self.toolbary))
+        mdc.DrawBitmap(self.fleetEffBmp, self.fleetBmpx + 3, self.fleetBmpy + 2)
+        mdc.DrawBitmap(self.fleetBmp, self.fleetBmpx,self.fleetBmpy)
+
+        mdc.SetFont(self.fontNormal)
+
         suffix = "%d ships" % self.fleetCount if self.fleetCount >1 else "%d ship" % self.fleetCount if self.fleetCount == 1 else "No ships"
         fleetCount = "Fleet size: %s" % suffix
+        fleetCount = drawUtils.GetPartialText(mdc, fleetCount, self.toolbarx - self.textStartx - self.padding * 2 - self.thoverw)
 
-        btnWidth,btnHeight = self.btnSize
-        self.deletePosX = rect.width - btnWidth - self.padding
-        self.renamePosX = self.deletePosX - btnWidth
-        # - self.padding
-        self.copyPosX = self.renamePosX - btnWidth
-        # - self.padding
-        self.renamePosY = self.deletePosY = self.copyPosY = (rect.height - btnHeight) / 2
+        mdc.DrawText(fleetCount, self.textStartx, self.fleetCounty)
 
-        bdc.SetFont(self.fontSmall)
-        tx,ty = bdc.GetTextExtent(self.buttonsTip)
+        mdc.SetFont(self.fontSmall)
+        mdc.DrawText(self.toolbar.hoverLabel, self.thoverx, self.thovery)
 
-        bdc.SetFont(self.fontBig)
-        fnx,fny = bdc.GetTextExtent(self.fleetName)
-        pfn = GetPartialText(bdc, self.fleetName, self.copyPosX - 16 - self.padding - tx - textStart)
-        bdc.DrawText(pfn, textStart, (rect.height/2 - fny) / 2)
+        mdc.SetFont(self.fontBig)
 
-        bdc.SetFont(self.fontSmall)
-        fcx,fcy = bdc.GetTextExtent(fleetCount)
-        pfc = GetPartialText(bdc, fleetCount,  self.copyPosX - 16 - self.padding - tx - textStart)
-        bdc.DrawText(pfc, textStart, rect.height/2 + (rect.height/2 -fcy) / 2 )
+        pfname = drawUtils.GetPartialText(mdc, self.fleetName, self.toolbarx - self.textStartx - self.padding * 2 - self.thoverw)
+        mdc.DrawText(pfname, self.textStartx, self.fleetNamey)
 
-        bdc.SetFont(self.fontSmall)
+        if self.tcFleetName.IsShown():
+            self.AdjustControlSizePos(self.tcFleetName, self.textStartx, self.toolbarx - self.editWidth - self.padding)
 
-        if self.highlighted:
-            brush = wx.Brush(self.btnbgcolour)
-            pen = wx.Pen(self.btnbgcolour)
-
-            bdc.SetPen(pen)
-            bdc.SetBrush(brush)
-
-            bdc.DrawRoundedRectangle(self.copyPosX - 8 - tx - self.padding, self.copyPosY-1, rect.width,20, 8)
-            bdc.DrawText(self.buttonsTip,self.copyPosX - tx - self.padding, self.copyPosY + 8 - ty/2)
-
-            self.btnCopy.SetPosition((self.copyPosX, self.copyPosY))
-            self.btnRename.SetPosition((self.renamePosX, self.renamePosY))
-            self.btnDelete.SetPosition((self.deletePosX, self.deletePosY))
-
-            self.btnCopy.Show()
-            self.btnRename.Show()
-            self.btnDelete.Show()
-
-        else:
-            self.btnCopy.Show(False)
-            self.btnRename.Show(False)
-            self.btnDelete.Show(False)
-
-            bdc.DrawBitmap(self.copyBmpGrey, self.copyPosX + 1, self.copyPosY + 1 )
-
-            if self.editHasFocus:
-                bdc.DrawBitmap(self.acceptBmpGrey, self.renamePosX + 1, self.renamePosY + 1 )
-            else:
-                bdc.DrawBitmap(self.renameBmpGrey, self.renamePosX + 1, self.renamePosY + 1 )
-
-            bdc.DrawBitmap(self.deleteBmpGrey, self.deletePosX + 1, self.deletePosY + 1 )
-
-
-        self.AdjustFleetNameEditSize(textStart, self.copyPosX - self.editWidth - self.padding)
-
-    def AdjustFleetNameEditSize(self, start,end):
-        fnEditSize = self.tcFleetName.GetSize()
+    def AdjustControlSizePos(self, editCtl, start, end):
+        fnEditSize = editCtl.GetSize()
         wSize = self.GetSize()
         fnEditPosX = end
         fnEditPosY = (wSize.height - fnEditSize.height)/2
         if fnEditPosX < start:
-            self.tcFleetName.SetSize((self.editWidth + fnEditPosX - start,-1))
-            self.tcFleetName.SetPosition((start,fnEditPosY))
+            editCtl.SetSize((self.editWidth + fnEditPosX - start,-1))
+            editCtl.SetPosition((start,fnEditPosY))
         else:
-            self.tcFleetName.SetSize((self.editWidth,-1))
-            self.tcFleetName.SetPosition((fnEditPosX,fnEditPosY))
+            editCtl.SetSize((self.editWidth,-1))
+            editCtl.SetPosition((fnEditPosX,fnEditPosY))
 
-    def OnEditLostFocus(self, event):
-        if self.highlighted == 1:
-            self.editHasFocus = True
-        else:
-            self.HideEdit()
-        event.Skip()
-
-    def EditCheckEsc(self, event):
-        if event.GetKeyCode() == wx.WXK_ESCAPE:
-            self.HideEdit()
-        else:
-            event.Skip()
-
-    def HideEdit(self):
-        self.tcFleetName.Show(False)
-        self.editHasFocus = False
-        self.btnRename.SetBitmapLabel(self.renameBmp, False)
-        self.Refresh()
-
-
-    def OnBtnEnterWindow(self, event):
-        btn = event.GetEventObject()
-        if btn == self.btnCopy:
-            self.buttonsTip = "Copy Fleet"
-        elif btn == self.btnDelete:
-            self.buttonsTip = "Delete Fleet"
-        elif btn == self.btnRename:
-            self.buttonsTip = "Rename Fleet"
-        else:
-            self.buttonsTip = ""
-        self.Refresh()
-        event.Skip()
-
-
-    def EnterWindow(self, event):
-        if not self.cleanupTimer:
-            self.cleanupTimer = wx.Timer(self, self.cleanupTimerId)
-        if not self.cleanupTimer.IsRunning():
-            self.cleanupTimer.Start(50)
-
-        self.highlighted = 1
-        self.buttonsTip = ""
-        self.Refresh()
-        event.Skip()
-
-    def LeaveWindow(self, event):
-        mposx, mposy = wx.GetMousePosition()
-        rect = self.GetRect()
-        rect.top = rect.left = 0
-        cx,cy = self.ScreenToClient((mposx,mposy))
-        if not rect.Contains((cx,cy)):
-            self.highlighted = 0
-            self.Refresh()
-            if self.cleanupTimer:
-                if self.cleanupTimer.IsRunning():
-                    self.cleanupTimer.Stop()
-
-        event.Skip()
-
-    def OnTimer(self, event):
-        if event.GetId() == self.cleanupTimerId:
-            mposx, mposy = wx.GetMousePosition()
-            rect = self.GetRect()
-            rect.top = rect.left = 0
-            cx,cy = self.ScreenToClient((mposx,mposy))
-            if not rect.Contains((cx,cy)):
-                self.highlighted = 0
-                self.Refresh()
-                self.cleanupTimer.Stop()
-        event.Skip()
-
-    def GreyBitmap(self, bitmap):
-        img = bitmap.ConvertToImage()
-        img = img.ConvertToGreyscale()
-        return wx.BitmapFromImage(img)
 
 class PFGenBitmapButton(GenBitmapButton):
     def __init__(self, parent, id, bitmap, pos, size, style):
