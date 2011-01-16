@@ -151,6 +151,8 @@ class PFListPane(wx.ScrolledWindow):
                 if itemY >=-iheight and itemY< clientH:
                     self._wList[i].Refresh()
 
+        self.SetFocus()
+
     def RemoveWidget(self, child):
         child.Destroy()
         self._wList.remove(child)
