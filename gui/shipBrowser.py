@@ -1169,6 +1169,7 @@ class FitItem(SFItem.SFBrowserItem):
         self.copyBmp = bitmapLoader.getBitmap("fit_add_small", "icons")
         self.renameBmp = bitmapLoader.getBitmap("fit_rename_small", "icons")
         self.deleteBmp = bitmapLoader.getBitmap("fit_delete_small","icons")
+        self.acceptBmp = bitmapLoader.getBitmap("faccept_small", "icons")
 
         self.shipEffBk = bitmapLoader.getBitmap("fshipbk_big","icons")
 
@@ -1190,7 +1191,7 @@ class FitItem(SFItem.SFBrowserItem):
         self.fontSmall = wx.FontFromPixelSize((0,12),wx.SWISS, wx.NORMAL, wx.NORMAL, False)
 
         self.toolbar.AddButton(self.copyBmp,"Copy", self.copyBtnCB)
-        self.toolbar.AddButton(self.renameBmp,"Rename", self.renameBtnCB)
+        self.renameBtn = self.toolbar.AddButton(self.renameBmp,"Rename", self.renameBtnCB)
         self.toolbar.AddButton(self.deleteBmp, "Delete", self.deleteBtnCB)
 
         self.tcFitName = wx.TextCtrl(self, wx.ID_ANY, "%s" % self.fitName, wx.DefaultPosition, (self.editWidth,-1), wx.TE_PROCESS_ENTER)
@@ -1201,6 +1202,7 @@ class FitItem(SFItem.SFBrowserItem):
             self.tcFitName.SetFocus()
             self.tcFitName.SelectAll()
             self.shipBrowser.fitIDMustEditName = -1
+            self.renameBtn.SetBitmap(self.acceptBmp)
 
         self.tcFitName.Bind(wx.EVT_TEXT_ENTER, self.renameFit)
         self.tcFitName.Bind(wx.EVT_KILL_FOCUS, self.editLostFocus)
@@ -1260,18 +1262,18 @@ class FitItem(SFItem.SFBrowserItem):
         return -c *(t)*(t-2) + b
 
     def editLostFocus(self, event):
-        self.tcFitName.Show(False)
+        self.RestoreEditButton()
         self.Refresh()
 
     def editCheckEsc(self, event):
         if event.GetKeyCode() == wx.WXK_ESCAPE:
-            self.tcFitName.Show(False)
+            self.RestoreEditButton()
         else:
             event.Skip()
 
     def copyBtnCB(self):
         if self.tcFitName.IsShown():
-            self.tcFitName.Show(False)
+            self.RestoreEditButton()
             return
 
         self.copyFit()
@@ -1285,12 +1287,12 @@ class FitItem(SFItem.SFBrowserItem):
 
     def renameBtnCB(self):
         if self.tcFitName.IsShown():
-            self.tcFitName.Show(False)
+            self.RestoreEditButton()
             self.renameFit()
         else:
             self.tcFitName.SetValue(self.fitName)
             self.tcFitName.Show()
-
+            self.renameBtn.SetBitmap(self.acceptBmp)
             self.tcFitName.SetFocus()
             self.tcFitName.SelectAll()
 
@@ -1311,7 +1313,7 @@ class FitItem(SFItem.SFBrowserItem):
 
     def deleteBtnCB(self):
         if self.tcFitName.IsShown():
-            self.tcFitName.Show(False)
+            self.RestoreEditButton()
             return
 
         self.deleteFit()
@@ -1363,8 +1365,7 @@ class FitItem(SFItem.SFBrowserItem):
             self.dragging = False
 
         if self.tcFitName.IsShown():
-            self.tcFitName.Show(False)
-            self.Refresh()
+            self.RestoreEditButton()
         else:
             activeFitID = self.mainFrame.getActiveFit()
             if activeFitID != self.fitID:
@@ -1394,6 +1395,11 @@ class FitItem(SFItem.SFBrowserItem):
     def selectFit(self, event=None):
         wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fitID))
         self.Parent.RefreshList(True)
+
+    def RestoreEditButton(self):
+            self.tcFitName.Show(False)
+            self.renameBtn.SetBitmap(self.renameBmp)
+            self.Refresh()
 
     def UpdateElementsPos(self, mdc):
         rect = self.GetRect()

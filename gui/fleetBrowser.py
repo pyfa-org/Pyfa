@@ -354,12 +354,12 @@ class FleetItem(SFItem.SFBrowserItem):
             self.Refresh()
 
     def OnEditLostFocus(self, event):
-        self.tcFleetName.Show(False)
+        self.RestoreEditButton()
         self.Refresh()
 
     def EditCheckEsc(self, event):
         if event.GetKeyCode() == wx.WXK_ESCAPE:
-            self.tcFleetName.Show(False)
+            self.RestoreEditButton()
         else:
             event.Skip()
 
