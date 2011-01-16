@@ -84,3 +84,18 @@ class LoadAnimation(wx.Window):
         dc.SetTextForeground(textColor)
         dc.DrawLabel(self.label,rect,wx.ALIGN_CENTER)
 
+class WaitDialog(wx.Dialog):
+    def __init__(self, parent, title = "Processing"):
+        wx.Dialog.__init__ (self, parent, id=wx.ID_ANY, title = title, size=(300,30),
+                           style=wx.NO_BORDER)
+        mainSizer = wx.BoxSizer( wx.HORIZONTAL )
+
+        self.progress = LoadAnimation(self,label = title, size=(300,30))
+        mainSizer.Add( self.progress, 1, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 0 )
+        self.SetSizer( mainSizer )
+        self.Layout()
+        self.Bind(wx.EVT_CLOSE,self.OnClose)
+        self.CenterOnParent()
+
+    def OnClose(self, event):
+        pass

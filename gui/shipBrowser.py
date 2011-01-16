@@ -152,6 +152,10 @@ class ShipBrowser(wx.Panel):
         self.hpane.ToggleNewFitSB(False)
         self.hpane.ToggleFitViewModeSB(False)
         sMarket = service.Market.getInstance()
+
+        self.lpane.ShowLoading(False)
+
+        self.lpane.Freeze()
         self.lpane.RemoveAllChildren()
         if len(self.categoryList) == 0:
             self.categoryList = sMarket.getShipRoot()
@@ -160,6 +164,7 @@ class ShipBrowser(wx.Panel):
             self.lpane.AddWidget(CategoryItem(self.lpane, ID, (name, 0)))
 
         self.lpane.RefreshList()
+        self.lpane.Thaw()
 
     RACE_ORDER = ["amarr", "caldari", "gallente", "minmatar", "ore", "serpentis", "angel", "blood", "sansha", "guristas", None]
     def raceNameKey(self, shipInfo):
@@ -181,6 +186,7 @@ class ShipBrowser(wx.Panel):
                 self.lpane.AddWidget(ShipItem(self.lpane, ID, (name, fits), race))
 
         self.lpane.ShowLoading(False)
+
         self.lpane.RefreshList()
 
     def stage2(self, event):
@@ -192,10 +198,10 @@ class ShipBrowser(wx.Panel):
         categoryID = event.categoryID
         self.lastdata = categoryID
 
+        self.lpane.ShowLoading()
 
         self.lpane.RemoveAllChildren()
 
-        self.lpane.ShowLoading()
 
         sMarket = service.Market.getInstance()
         sMarket.getShipListDelayed(self.stage2Callback, categoryID)
@@ -205,6 +211,9 @@ class ShipBrowser(wx.Panel):
         self.hpane.ToggleFitViewModeSB(True)
 
     def stage3(self, event):
+
+        self.lpane.ShowLoading(False)
+
         if event.back == 0:
             self.browseHist.append( (2,self._stage2Data) )
         elif event.back == -1:
@@ -218,11 +227,14 @@ class ShipBrowser(wx.Panel):
 
         sFit = service.Fit.getInstance()
         sMarket = service.Market.getInstance()
+
+        self.lpane.Freeze()
         self.lpane.RemoveAllChildren()
         fitList = sFit.getFitsWithShip(shipID)
 
         if len(fitList) == 0:
             stage,data = self.browseHist.pop()
+            self.lpane.Thaw()
             self.hpane.gotoStage(stage,data)
             return
         self.hpane.ToggleFitViewModeSB(False)
@@ -237,8 +249,12 @@ class ShipBrowser(wx.Panel):
             self.lpane.AddWidget(FitItem(self.lpane, ID, (shipName, name, timestamp),shipID))
 
         self.lpane.RefreshList()
+        self.lpane.Thaw()
 
     def searchStage(self, event):
+
+        self.lpane.ShowLoading(False)
+
         if not event.back:
             if self._activeStage !=4:
                 if len(self.browseHist) >0:
@@ -251,6 +267,8 @@ class ShipBrowser(wx.Panel):
         sMarket = service.Market.getInstance()
         sFit = service.Fit.getInstance()
         query = event.text
+
+        self.lpane.Freeze()
 
         self.lpane.RemoveAllChildren()
         if query:
@@ -265,6 +283,7 @@ class ShipBrowser(wx.Panel):
             if len(shipList) == 0 and len(fitList) == 0 :
                 self.lpane.AddWidget(PFStaticText(self.lpane, label = "No matching results."))
             self.lpane.RefreshList()
+        self.lpane.Thaw()
 
 class PFStaticText(wx.StaticText):
     def _init__(self,parent, label = wx.EmptyString):
@@ -1158,6 +1177,7 @@ class FitItem(SFItem.SFBrowserItem):
         self.copyBmp = bitmapLoader.getBitmap("fit_add_small", "icons")
         self.renameBmp = bitmapLoader.getBitmap("fit_rename_small", "icons")
         self.deleteBmp = bitmapLoader.getBitmap("fit_delete_small","icons")
+        self.acceptBmp = bitmapLoader.getBitmap("faccept_small", "icons")
 
         self.shipEffBk = bitmapLoader.getBitmap("fshipbk_big","icons")
 
@@ -1179,7 +1199,7 @@ class FitItem(SFItem.SFBrowserItem):
         self.fontSmall = wx.FontFromPixelSize((0,12),wx.SWISS, wx.NORMAL, wx.NORMAL, False)
 
         self.toolbar.AddButton(self.copyBmp,"Copy", self.copyBtnCB)
-        self.toolbar.AddButton(self.renameBmp,"Rename", self.renameBtnCB)
+        self.renameBtn = self.toolbar.AddButton(self.renameBmp,"Rename", self.renameBtnCB)
         self.toolbar.AddButton(self.deleteBmp, "Delete", self.deleteBtnCB)
 
         self.tcFitName = wx.TextCtrl(self, wx.ID_ANY, "%s" % self.fitName, wx.DefaultPosition, (self.editWidth,-1), wx.TE_PROCESS_ENTER)
@@ -1190,6 +1210,7 @@ class FitItem(SFItem.SFBrowserItem):
             self.tcFitName.SetFocus()
             self.tcFitName.SelectAll()
             self.shipBrowser.fitIDMustEditName = -1
+            self.renameBtn.SetBitmap(self.acceptBmp)
 
         self.tcFitName.Bind(wx.EVT_TEXT_ENTER, self.renameFit)
         self.tcFitName.Bind(wx.EVT_KILL_FOCUS, self.editLostFocus)
@@ -1200,6 +1221,8 @@ class FitItem(SFItem.SFBrowserItem):
         self.animStep = 0
         self.animPeriod = 10
         self.animDuration = 100
+
+        self.maxDelta = 60
 
         self.Bind(wx.EVT_TIMER, self.OnTimer)
 
@@ -1217,13 +1240,13 @@ class FitItem(SFItem.SFBrowserItem):
 
         if self.selTimerID == event.GetId():
             ctimestamp = time.time()
-            interval = 10
+            interval = 5
             if ctimestamp < self.timestamp + interval:
                 delta = (ctimestamp - self.timestamp) / interval
-                self.selectedDelta = self.CalculateDelta(0x0,0x66,delta)
+                self.selectedDelta = self.CalculateDelta(0x0,self.maxDelta,delta)
                 self.Refresh()
             else:
-                self.selectedDelta = 0x66
+                self.selectedDelta = self.maxDelta
                 self.selTimer.Stop()
 
         if self.animTimerId == event.GetId():
@@ -1249,16 +1272,20 @@ class FitItem(SFItem.SFBrowserItem):
         return -c *(t)*(t-2) + b
 
     def editLostFocus(self, event):
-        self.tcFitName.Show(False)
+        self.RestoreEditButton()
         self.Refresh()
 
     def editCheckEsc(self, event):
         if event.GetKeyCode() == wx.WXK_ESCAPE:
-            self.tcFitName.Show(False)
+            self.RestoreEditButton()
         else:
             event.Skip()
 
     def copyBtnCB(self):
+        if self.tcFitName.IsShown():
+            self.RestoreEditButton()
+            return
+
         self.copyFit()
 
     def copyFit(self, event=None):
@@ -1270,12 +1297,12 @@ class FitItem(SFItem.SFBrowserItem):
 
     def renameBtnCB(self):
         if self.tcFitName.IsShown():
-            self.tcFitName.Show(False)
+            self.RestoreEditButton()
             self.renameFit()
         else:
             self.tcFitName.SetValue(self.fitName)
             self.tcFitName.Show()
-
+            self.renameBtn.SetBitmap(self.acceptBmp)
             self.tcFitName.SetFocus()
             self.tcFitName.SelectAll()
 
@@ -1295,6 +1322,10 @@ class FitItem(SFItem.SFBrowserItem):
             self.tcFitName.SetValue(self.fitName)
 
     def deleteBtnCB(self):
+        if self.tcFitName.IsShown():
+            self.RestoreEditButton()
+            return
+
         self.deleteFit()
 
     def deleteFit(self, event=None):
@@ -1344,8 +1375,7 @@ class FitItem(SFItem.SFBrowserItem):
             self.dragging = False
 
         if self.tcFitName.IsShown():
-            self.tcFitName.Show(False)
-            self.Refresh()
+            self.RestoreEditButton()
         else:
             activeFitID = self.mainFrame.getActiveFit()
             if activeFitID != self.fitID:
@@ -1375,6 +1405,11 @@ class FitItem(SFItem.SFBrowserItem):
     def selectFit(self, event=None):
         wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fitID))
         self.Parent.RefreshList(True)
+
+    def RestoreEditButton(self):
+            self.tcFitName.Show(False)
+            self.renameBtn.SetBitmap(self.renameBmp)
+            self.Refresh()
 
     def UpdateElementsPos(self, mdc):
         rect = self.GetRect()
@@ -1432,9 +1467,10 @@ class FitItem(SFItem.SFBrowserItem):
         mdc.SetFont(self.fontNormal)
 
         fitDate = time.localtime(self.timestamp)
-        fitLocalDate = "%02d/%02d %02d:%02d" % (fitDate[1], fitDate[2], fitDate[3], fitDate[4])
+        fitLocalDate = "%d/%02d/%02d %02d:%02d" % ( fitDate[0], fitDate[1], fitDate[2], fitDate[3], fitDate[4])
+        pfdate = drawUtils.GetPartialText(mdc, fitLocalDate, self.toolbarx - self.textStartx - self.padding * 2 - self.thoverw)
 
-        mdc.DrawText(fitLocalDate, self.textStartx, self.timestampy)
+        mdc.DrawText(pfdate, self.textStartx, self.timestampy)
 
         mdc.SetFont(self.fontSmall)
         mdc.DrawText(self.toolbar.hoverLabel, self.thoverx, self.thovery)
@@ -1501,7 +1537,7 @@ class FitItem(SFItem.SFBrowserItem):
         elif state == SFItem.SB_ITEM_SELECTED  | SFItem.SB_ITEM_HIGHLIGHTED:
             eFactor = 0.3
         elif state == SFItem.SB_ITEM_SELECTED:
-            eFactor = (0x33 - self.selectedDelta)/100
+            eFactor = (self.maxDelta - self.selectedDelta)/100 + 0.15
         else:
             sFactor = 0
 

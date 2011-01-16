@@ -450,7 +450,7 @@ class MainFrame(wx.Frame):
             filePath = saveDialog.GetPath()
             if '.' not in os.path.basename(filePath):
                 filePath += ".xml"
-            self.waitDialog = WaitDialog(self)
+            self.waitDialog = animUtils.WaitDialog(self)
             sFit.backupFits(filePath, self.closeWaitDialog)
             self.waitDialog.ShowModal()
 
@@ -482,19 +482,3 @@ class MainFrame(wx.Frame):
             wnd = self
         InspectionTool().Show(wnd, True)
 
-
-class WaitDialog(wx.Dialog):
-    def __init__(self, parent):
-        wx.Dialog.__init__ (self, parent, id=wx.ID_ANY, title=u"Please wait ...", size=(300,30),
-                           style=wx.NO_BORDER)
-        mainSizer = wx.BoxSizer( wx.HORIZONTAL )
-
-        self.progress = animUtils.LoadAnimation(self,label = "Processing", size=(300,30))
-        mainSizer.Add( self.progress, 1, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 0 )
-        self.SetSizer( mainSizer )
-        self.Layout()
-        self.Bind(wx.EVT_CLOSE,self.OnClose)
-        self.CenterOnParent()
-
-    def OnClose(self, event):
-        pass
