@@ -272,7 +272,7 @@ class MainFrame(wx.Frame):
         dlg=wx.FileDialog(
             self,
             "Save Fitting As...",
-            wildcard = "EFT text fitting files (*.cfg)|*.cfg|EvE XML fitting files (*.xml)|*.xml",
+            wildcard = "EvE XML fitting files (*.xml)|*.xml",
             style = wx.FD_SAVE)
         if (dlg.ShowModal() == wx.ID_OK):
             sFit = service.Fit.getInstance()
@@ -280,10 +280,6 @@ class MainFrame(wx.Frame):
             output = ""
             path = dlg.GetPath()
             if (format == 0):
-                output = sFit.exportFit(self.getActiveFit())
-                if '.' not in os.path.basename(path):
-                    path += ".cfg"
-            elif (format == 1):
                 output = sFit.exportXml(self.getActiveFit())
                 if '.' not in os.path.basename(path):
                     path += ".xml"
