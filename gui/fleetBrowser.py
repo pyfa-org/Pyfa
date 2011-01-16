@@ -14,6 +14,9 @@ import gui.utils.drawUtils as drawUtils
 import gui.sfBrowserItem as SFItem
 
 FleetSelected, EVT_FLEET_SELECTED = wx.lib.newevent.NewEvent()
+FleetRenamed, EVT_FLEET_RENAMED = wx.lib.newevent.NewEvent()
+FleetRemoved, EVT_FLEET_REMOVED = wx.lib.newevent.NewEvent()
+
 
 FleetItemSelect, EVT_FLEET_ITEM_SELECT = wx.lib.newevent.NewEvent()
 FleetItemDelete, EVT_FLEET_ITEM_DELETE = wx.lib.newevent.NewEvent()
@@ -91,10 +94,12 @@ class FleetBrowser(wx.Panel):
         newFleetName = event.fleetName
 
         self.sFleet.renameFleet(fleet, newFleetName)
+        wx.PostEvent(self.mainFrame, FleetRenamed(fleetID = fleet.ID))
 
     def DeleteFleetItem(self, event):
         self.sFleet.deleteFleetByID(event.fleetID)
         self.PopulateFleetList()
+        wx.PostEvent(self.mainFrame, FleetRemoved(fleetID = event.fleetID))
 
     def AddItem (self, ID, name, count):
         self.fleetItemContainer.AddWidget(FleetItem(self, ID, name, count))
@@ -301,6 +306,10 @@ class FleetItem(SFItem.SFBrowserItem):
             wx.PostEvent(self.fleetBrowser, FleetItemSelect(fleetID = self.fleetID))
 
     def CopyFleetCB(self):
+        if self.tcFleetName.IsShown():
+            self.tcFleetName.Show(False)
+            return
+
         wx.PostEvent(self.fleetBrowser, FleetItemCopy(fleetID = self.fleetID))
 
     def RenameFleetCB(self):
@@ -328,6 +337,9 @@ class FleetItem(SFItem.SFBrowserItem):
         self.Refresh()
 
     def DeleteFleetCB(self):
+        if self.tcFleetName.IsShown():
+            self.tcFleetName.Show(False)
+            return
         wx.PostEvent(self.fleetBrowser, FleetItemDelete(fleetID = self.fleetID))
 
     def OnEditLostFocus(self, event):

@@ -26,6 +26,10 @@ class FleetView(wx.gizmos.TreeListCtrl):
         wx.gizmos.TreeListCtrl.__init__(self, parent, size = size)
 
         self.tabManager = parent
+
+        self.fleetId = None
+        self.fleetImg = bitmapLoader.getImage("53_16", "pack")
+
         self.imageList = wx.ImageList(16, 16)
         self.SetImageList(self.imageList)
 
@@ -39,6 +43,29 @@ class FleetView(wx.gizmos.TreeListCtrl):
             self.icons[icon] = self.imageList.Add(bitmapLoader.getBitmap("fleet_%s_small" % icon, "icons"))
 
         self.Bind(wx.EVT_TREE_ITEM_ACTIVATED, self.checkNew)
+        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+
+        self.mainFrame.Bind(gui.fleetBrowser.EVT_FLEET_RENAMED, self.fleetRenamed)
+        self.mainFrame.Bind(gui.fleetBrowser.EVT_FLEET_REMOVED, self.fleetRemoved)
+
+    def Destroy(self):
+        self.mainFrame.Unbind(gui.fleetBrowser.EVT_FLEET_REMOVED, handler = self.fleetRemoved)
+        self.mainFrame.Unbind(gui.fleetBrowser.EVT_FLEET_RENAMED, handler = self.fleetRenamed)
+        wx.gizmos.TreeListCtrl.Destroy(self)
+
+    def fleetRenamed(self, event):
+        if event.fleetID == self.fleetId:
+            sFleet = service.Fleet.getInstance()
+            f = sFleet.getFleetByID(event.fleetID)
+            self.UpdateTab(f.name, self.fleetImg)
+
+        event.Skip()
+
+    def fleetRemoved(self, event):
+        if event.fleetID == self.fleetId:
+            self.tabManager.DeletePage(self.tabManager.GetPageIndex(self))
+
+        event.Skip()
 
     def checkNew(self, event):
         data = self.GetPyData(event.Item)
@@ -46,11 +73,15 @@ class FleetView(wx.gizmos.TreeListCtrl):
             layer = data[1]
 
 
+    def UpdateTab(self, name, img):
+        self.tabManager.SetPageTextIcon(self.tabManager.GetSelection(), name, img)
+
     def populate(self, fleetID):
         sFleet = service.Fleet.getInstance()
         f = sFleet.getFleetByID(fleetID)
-        fleetBmp = bitmapLoader.getImage("53_16", "pack")
-        self.tabManager.SetPageTextIcon(self.tabManager.GetSelection(), f.name, fleetBmp)
+        self.fleetId = fleetID
+
+        self.UpdateTab( f.name, self.fleetImg)
         self.fleet = f
         self.DeleteAllItems()
         root = self.AddRoot("")
