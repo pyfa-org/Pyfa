@@ -9,6 +9,7 @@
 # --------------------------------------------------------------------------------- #
 
 import wx
+import wx.lib.newevent
 import copy
 import time
 import gui.utils.colorUtils as colorUtils

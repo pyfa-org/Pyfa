@@ -18,11 +18,21 @@
 #===============================================================================
 
 import sys
+import os.path
+
 import sqlalchemy
 import wx
 
+from wx._core import PyDeadObjectError
+from wx.lib.wordwrap import wordwrap
+
 import service
 import config
+
+import gui.aboutData
+import gui.chromeTabs
+import gui.utils.animUtils as animUtils
+
 from gui import bitmapLoader
 from gui.mainMenuBar import MainMenuBar
 from gui.additionsPane import AdditionsPane
@@ -30,20 +40,15 @@ from gui.marketBrowser import MarketBrowser
 from gui.multiSwitch import MultiSwitch
 from gui.statsPane import StatsPane
 from gui.shipBrowser import ShipBrowser, FitSelected
-from wx.lib.wordwrap import wordwrap
 from gui.characterEditor import CharacterEditor
 from gui.characterSelection import CharacterSelection
 from gui.patternEditor import DmgPatternEditorDlg
 from gui.preferenceDialog import PreferenceDialog
 from gui.graphFrame import GraphFrame
 from gui.copySelectDialog import CopySelectDialog
-import gui.aboutData
-from wx._core import PyDeadObjectError
-import os.path
-import gui.chromeTabs
 from gui.utils.clipboard import toClipboard, fromClipboard
-from builtinViews import *
 from gui.fleetBrowser import FleetBrowser
+from builtinViews import *
 
 #dummy panel no paint no erasebk
 class PFPanel(wx.Panel):
@@ -475,7 +480,8 @@ class MainFrame(wx.Frame):
         if not wnd:
             wnd = self
         InspectionTool().Show(wnd, True)
-import utils.animUtils as animUtils
+
+
 class WaitDialog(wx.Dialog):
     def __init__(self, parent):
         wx.Dialog.__init__ (self, parent, id=wx.ID_ANY, title=u"Please wait ...", size=(300,30),
