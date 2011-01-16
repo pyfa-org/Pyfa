@@ -1467,9 +1467,10 @@ class FitItem(SFItem.SFBrowserItem):
         mdc.SetFont(self.fontNormal)
 
         fitDate = time.localtime(self.timestamp)
-        fitLocalDate = "%02d/%02d %02d:%02d" % (fitDate[1], fitDate[2], fitDate[3], fitDate[4])
+        fitLocalDate = "%d/%02d/%02d %02d:%02d" % ( fitDate[0], fitDate[1], fitDate[2], fitDate[3], fitDate[4])
+        pfdate = drawUtils.GetPartialText(mdc, fitLocalDate, self.toolbarx - self.textStartx - self.padding * 2 - self.thoverw)
 
-        mdc.DrawText(fitLocalDate, self.textStartx, self.timestampy)
+        mdc.DrawText(pfdate, self.textStartx, self.timestampy)
 
         mdc.SetFont(self.fontSmall)
         mdc.DrawText(self.toolbar.hoverLabel, self.thoverx, self.thovery)
