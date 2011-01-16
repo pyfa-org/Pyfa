@@ -152,6 +152,8 @@ class ShipBrowser(wx.Panel):
         self.hpane.ToggleNewFitSB(False)
         self.hpane.ToggleFitViewModeSB(False)
         sMarket = service.Market.getInstance()
+
+        self.lpane.Freeze()
         self.lpane.RemoveAllChildren()
         if len(self.categoryList) == 0:
             self.categoryList = sMarket.getShipRoot()
@@ -160,6 +162,7 @@ class ShipBrowser(wx.Panel):
             self.lpane.AddWidget(CategoryItem(self.lpane, ID, (name, 0)))
 
         self.lpane.RefreshList()
+        self.lpane.Thaw()
 
     RACE_ORDER = ["amarr", "caldari", "gallente", "minmatar", "ore", "serpentis", "angel", "blood", "sansha", "guristas", None]
     def raceNameKey(self, shipInfo):
