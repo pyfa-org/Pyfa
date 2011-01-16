@@ -226,6 +226,7 @@ class ShipBrowser(wx.Panel):
 
         if len(fitList) == 0:
             stage,data = self.browseHist.pop()
+            self.lpane.Thaw()
             self.hpane.gotoStage(stage,data)
             return
         self.hpane.ToggleFitViewModeSB(False)
