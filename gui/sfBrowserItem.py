@@ -67,7 +67,8 @@ class PFBaseButton(object):
         return self.disabledBmp
 
 class PFToolbar(object):
-    def __init__(self):
+    def __init__(self, parent):
+        self.Parent = parent
         self.buttons =[]
         self.toolbarX = 0
         self.toolbarY = 0
@@ -89,15 +90,18 @@ class PFToolbar(object):
 
     def MouseMove(self, event):
         doRefresh = False
+        changeCursor = False
         bx = self.toolbarX
         self.hoverLabel = ""
 
         for button in self.buttons:
             state = button.GetState()
             if self.HitTest( (bx, self.toolbarY), event.GetPosition(), button.GetSize()):
+                changeCursor = True
                 if not state & BTN_HOVER:
                     button.SetState(state | BTN_HOVER)
                     self.hoverLabel = button.GetLabel()
+                    self.Parent.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
                     doRefresh = True
             else:
                 if state & BTN_HOVER:
@@ -106,6 +110,9 @@ class PFToolbar(object):
 
             bwidth, bheight = button.GetSize()
             bx += bwidth + self.padding
+
+        if not changeCursor:
+            self.Parent.SetCursor(wx.StockCursor(wx.CURSOR_ARROW))
         return doRefresh
 
     def MouseClick(self, event):
@@ -193,7 +200,7 @@ class SFBrowserItem(wx.Window):
         self.highlighted = False
         self.selected = False
         self.bkBitmap = None
-        self.toolbar = PFToolbar()
+        self.toolbar = PFToolbar(self)
 
 
         self.Bind(wx.EVT_PAINT, self.OnPaint)
