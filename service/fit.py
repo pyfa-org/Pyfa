@@ -25,6 +25,7 @@ from service.damagePattern import DamagePattern
 from service.character import Character
 import threading
 import wx
+import os.path
 
 class FitBackupThread(threading.Thread):
     def __init__(self, path, callback):
@@ -508,8 +509,10 @@ class Fit(object):
         thread.start()
 
     def importFit(self, path):
+        filename = os.path.split(path)[1]
+
         f = file(path)
-        type, fits = eos.types.Fit.importAuto(f.read())
+        type, fits = eos.types.Fit.importAuto(f.read(), filename)
 
         return fits
 
