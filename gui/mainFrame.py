@@ -451,8 +451,6 @@ class MainFrame(wx.Frame):
         saveDialog.Destroy()
 
     def closeWaitDialog(self):
-        if self.waitDialog.timer.IsRunning():
-            self.waitDialog.timer.Stop()
         self.waitDialog.Destroy()
 
     def openGraphFrame(self, event):
@@ -477,31 +475,19 @@ class MainFrame(wx.Frame):
         if not wnd:
             wnd = self
         InspectionTool().Show(wnd, True)
-
+import utils.animUtils as animUtils
 class WaitDialog(wx.Dialog):
     def __init__(self, parent):
-        wx.Dialog.__init__ (self, parent, id=wx.ID_ANY, title=u"Please wait ...", size=(200,30),
+        wx.Dialog.__init__ (self, parent, id=wx.ID_ANY, title=u"Please wait ...", size=(300,30),
                            style=wx.NO_BORDER)
         mainSizer = wx.BoxSizer( wx.HORIZONTAL )
 
-        self.progress = wx.Gauge( self, wx.ID_ANY, 100, wx.DefaultPosition, wx.DefaultSize, wx.GA_HORIZONTAL | wx.GA_SMOOTH )
+        self.progress = animUtils.LoadAnimation(self,label = "Processing", size=(300,30))
         mainSizer.Add( self.progress, 1, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 0 )
-        self.progress.SetRange(20)
-        self.progress.SetValue(0)
-        self.cycle = 0
         self.SetSizer( mainSizer )
         self.Layout()
-        self.timer = wx.Timer(self,wx.ID_ANY)
-        self.timer.Start(100)
         self.Bind(wx.EVT_CLOSE,self.OnClose)
-        self.Bind(wx.EVT_TIMER,self.OnTimer)
         self.CenterOnParent()
-
-    def OnTimer(self, event):
-        self.cycle += 1
-        if self.cycle > self.progress.GetRange():
-            self.cycle = 0
-        self.progress.SetValue(self.cycle)
 
     def OnClose(self, event):
         pass
