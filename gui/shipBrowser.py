@@ -181,6 +181,7 @@ class ShipBrowser(wx.Panel):
                 self.lpane.AddWidget(ShipItem(self.lpane, ID, (name, fits), race))
 
         self.lpane.ShowLoading(False)
+
         self.lpane.RefreshList()
 
     def stage2(self, event):
@@ -192,10 +193,10 @@ class ShipBrowser(wx.Panel):
         categoryID = event.categoryID
         self.lastdata = categoryID
 
+        self.lpane.ShowLoading()
 
         self.lpane.RemoveAllChildren()
 
-        self.lpane.ShowLoading()
 
         sMarket = service.Market.getInstance()
         sMarket.getShipListDelayed(self.stage2Callback, categoryID)
@@ -218,6 +219,8 @@ class ShipBrowser(wx.Panel):
 
         sFit = service.Fit.getInstance()
         sMarket = service.Market.getInstance()
+
+        self.lpane.Freeze()
         self.lpane.RemoveAllChildren()
         fitList = sFit.getFitsWithShip(shipID)
 
@@ -237,6 +240,7 @@ class ShipBrowser(wx.Panel):
             self.lpane.AddWidget(FitItem(self.lpane, ID, (shipName, name, timestamp),shipID))
 
         self.lpane.RefreshList()
+        self.lpane.Thaw()
 
     def searchStage(self, event):
         if not event.back:
@@ -252,6 +256,8 @@ class ShipBrowser(wx.Panel):
         sFit = service.Fit.getInstance()
         query = event.text
 
+        self.lpane.Freeze()
+
         self.lpane.RemoveAllChildren()
         if query:
             shipList = sMarket.searchShips(query)
@@ -265,6 +271,7 @@ class ShipBrowser(wx.Panel):
             if len(shipList) == 0 and len(fitList) == 0 :
                 self.lpane.AddWidget(PFStaticText(self.lpane, label = "No matching results."))
             self.lpane.RefreshList()
+        self.lpane.Thaw()
 
 class PFStaticText(wx.StaticText):
     def _init__(self,parent, label = wx.EmptyString):
