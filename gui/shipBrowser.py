@@ -1214,6 +1214,8 @@ class FitItem(SFItem.SFBrowserItem):
         self.animPeriod = 10
         self.animDuration = 100
 
+        self.maxDelta = 60
+
         self.Bind(wx.EVT_TIMER, self.OnTimer)
 
         if self.shipBrowser.GetActiveStage() != 4 and self.shipBrowser.GetLastStage() !=3:
@@ -1230,13 +1232,13 @@ class FitItem(SFItem.SFBrowserItem):
 
         if self.selTimerID == event.GetId():
             ctimestamp = time.time()
-            interval = 10
+            interval = 5
             if ctimestamp < self.timestamp + interval:
                 delta = (ctimestamp - self.timestamp) / interval
-                self.selectedDelta = self.CalculateDelta(0x0,0x66,delta)
+                self.selectedDelta = self.CalculateDelta(0x0,self.maxDelta,delta)
                 self.Refresh()
             else:
-                self.selectedDelta = 0x66
+                self.selectedDelta = self.maxDelta
                 self.selTimer.Stop()
 
         if self.animTimerId == event.GetId():
@@ -1526,7 +1528,7 @@ class FitItem(SFItem.SFBrowserItem):
         elif state == SFItem.SB_ITEM_SELECTED  | SFItem.SB_ITEM_HIGHLIGHTED:
             eFactor = 0.3
         elif state == SFItem.SB_ITEM_SELECTED:
-            eFactor = (0x33 - self.selectedDelta)/100
+            eFactor = (self.maxDelta - self.selectedDelta)/100 + 0.15
         else:
             sFactor = 0
 
