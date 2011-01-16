@@ -182,10 +182,12 @@ class FleetBrowserHeader (wx.Panel):
 
     def fbNewEnterWindow(self, event):
         self.stStatus.SetLabel("New fleet")
+        self.Parent.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
         event.Skip()
 
     def fbHItemLeaveWindow(self, event):
         self.stStatus.SetLabel("")
+        self.Parent.SetCursor(wx.StockCursor(wx.CURSOR_ARROW))
         event.Skip()
 
     def fbFilterEnterWindow(self, event):
