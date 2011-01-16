@@ -153,6 +153,8 @@ class ShipBrowser(wx.Panel):
         self.hpane.ToggleFitViewModeSB(False)
         sMarket = service.Market.getInstance()
 
+        self.lpane.ShowLoading(False)
+
         self.lpane.Freeze()
         self.lpane.RemoveAllChildren()
         if len(self.categoryList) == 0:
@@ -209,6 +211,9 @@ class ShipBrowser(wx.Panel):
         self.hpane.ToggleFitViewModeSB(True)
 
     def stage3(self, event):
+
+        self.lpane.ShowLoading(False)
+
         if event.back == 0:
             self.browseHist.append( (2,self._stage2Data) )
         elif event.back == -1:
@@ -247,6 +252,9 @@ class ShipBrowser(wx.Panel):
         self.lpane.Thaw()
 
     def searchStage(self, event):
+
+        self.lpane.ShowLoading(False)
+
         if not event.back:
             if self._activeStage !=4:
                 if len(self.browseHist) >0:
