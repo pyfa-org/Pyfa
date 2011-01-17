@@ -518,13 +518,16 @@ class Fit(object):
         defcodepage = locale.getpreferredencoding()
 
         file = open(path, "r")
-        original = file.read()
-        try:
-            encoded = unicode(original, defcodepage)
-        except UnicodeDecodeError:
-            encoded = unicode(original, "cp1252")
+        srcString = file.read()
+        # If file had ANSI encoding, convert it to unicode using system
+        # default codepage, or use fallback cp1252 on any encoding errors
+        if isinstance(srcString, str):
+            try:
+                srcString = unicode(srcString, defcodepage)
+            except UnicodeDecodeError:
+                srcString = unicode(srcString, "cp1252")
 
-        type, fits = eos.types.Fit.importAuto(encoded, filename)
+        type, fits = eos.types.Fit.importAuto(srcString, filename)
 
         return fits
 
