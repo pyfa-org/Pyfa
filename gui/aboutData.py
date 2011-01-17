@@ -17,7 +17,7 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 #===============================================================================
 
-versionString = "1.0 Stable RC1 - INCURSION"
+versionString = "1.0 RC2 - INCURSION"
 license = "pyfa is released under GNU GPL"
 licenseLocation = "gpl.txt"
 developers = ("\n cncfanatics \t(Sakari Orisi)\n" , " DarkPhoenix \t(Kadesh Priestess)\n", " Darriele \t(Darriele)")
