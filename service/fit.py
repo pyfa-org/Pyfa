@@ -22,6 +22,7 @@ import locale
 import copy
 import threading
 import wx
+from codecs import open
 
 import eos.db
 import eos.types
@@ -42,7 +43,7 @@ class FitBackupThread(threading.Thread):
         sFit = Fit.getInstance()
         allFits = map(lambda x: x[0], sFit.getAllFits())
         backedUpFits = sFit.exportXml(*allFits)
-        backupFile = open(path, "w")
+        backupFile = open(path, "w", encoding="utf-8")
         backupFile.write(backedUpFits)
         backupFile.close()
         wx.CallAfter(self.callback)
