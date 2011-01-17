@@ -1198,6 +1198,8 @@ class FitItem(SFItem.SFBrowserItem):
         self.fontNormal = wx.FontFromPixelSize((0,14),wx.SWISS, wx.NORMAL, wx.NORMAL, False)
         self.fontSmall = wx.FontFromPixelSize((0,12),wx.SWISS, wx.NORMAL, wx.NORMAL, False)
 
+        self.SetDraggable()
+
         self.toolbar.AddButton(self.copyBmp,"Copy", self.copyBtnCB)
         self.renameBtn = self.toolbar.AddButton(self.renameBmp,"Rename", self.renameBtnCB)
         self.toolbar.AddButton(self.deleteBmp, "Delete", self.deleteBtnCB)

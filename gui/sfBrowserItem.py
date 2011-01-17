@@ -200,6 +200,9 @@ class SFBrowserItem(wx.Window):
         self.highlighted = False
         self.selected = False
         self.bkBitmap = None
+
+        self.canBeDragged = False
+
         self.toolbar = PFToolbar(self)
 
 
@@ -246,9 +249,24 @@ class SFBrowserItem(wx.Window):
     def MouseMove(self, event):
         pass
 
+    def SetDraggable(self, mode = True):
+        self.canBeDragged = mode
+
     def OnLeftUp(self, event):
+
         if self.HasCapture():
             self.ReleaseMouse()
+        if not self.canBeDragged:
+            mposx, mposy = wx.GetMousePosition()
+            rect = self.GetRect()
+            rect.top = rect.left = 0
+            cx,cy = self.ScreenToClient((mposx,mposy))
+            if not rect.Contains((cx,cy)):
+                self.SetHighlighted(False)
+                self.toolbar.ClearState()
+                self.Refresh()
+                return
+
 
         btn = self.toolbar.MouseClick(event)
 
