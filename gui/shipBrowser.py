@@ -282,7 +282,7 @@ class ShipBrowser(wx.Panel):
                 self.lpane.AddWidget(FitItem(self.lpane, ID, (shipName, name,timestamp), shipID))
             if len(shipList) == 0 and len(fitList) == 0 :
                 self.lpane.AddWidget(PFStaticText(self.lpane, label = "No matching results."))
-            self.lpane.RefreshList()
+            self.lpane.RefreshList(doFocus = False)
         self.lpane.Thaw()
 
 class PFStaticText(wx.StaticText):

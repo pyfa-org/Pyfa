@@ -122,7 +122,7 @@ class PFListPane(wx.ScrolledWindow):
     def IsWidgetSelectedByContext(self, widget):
         return False
 
-    def RefreshList(self, doRefresh = False):
+    def RefreshList(self, doRefresh = False, doFocus = True):
         ypos = 0
         maxy = 0
         scrollTo = 0
@@ -151,7 +151,8 @@ class PFListPane(wx.ScrolledWindow):
                 if itemY >=-iheight and itemY< clientH:
                     self._wList[i].Refresh()
 
-        self.SetFocus()
+        if doFocus:
+            self.SetFocus()
 
     def RemoveWidget(self, child):
         child.Destroy()
