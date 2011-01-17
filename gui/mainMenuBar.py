@@ -81,17 +81,19 @@ class MainMenuBar(wx.MenuBar):
         graphFrameItem.SetBitmap(bitmapLoader.getBitmap("graphs_small", "icons"))
         windowMenu.AppendItem(graphFrameItem)
 
-        preferencesItem = wx.MenuItem(windowMenu, self.preferencesId, "Preferences\tCTRL+P")
-        preferencesItem.SetBitmap(bitmapLoader.getBitmap("preferences_small", "icons"))
-        windowMenu.AppendItem(preferencesItem)
-
-#        graphFrameItem.Enable(gui.graphFrame.enabled)
+        #=======================================================================
+        # DISABLED FOR RC2 Release
+        #
+        # preferencesItem = wx.MenuItem(windowMenu, self.preferencesId, "Preferences\tCTRL+P")
+        # preferencesItem.SetBitmap(bitmapLoader.getBitmap("preferences_small", "icons"))
+        # windowMenu.AppendItem(preferencesItem)
+        #=======================================================================
 
         # Help menu
         helpMenu = wx.Menu()
         self.Append(helpMenu, "&Help")
         helpMenu.Append(wx.ID_ABOUT)
-        #helpMenu.Append(wx.ID_HELP, "User manual", "User manual")
+
         if config.debug:
             helpMenu.Append(911,"Open Widgets Inspect tool", "Open Widgets Inspect tool")
 
