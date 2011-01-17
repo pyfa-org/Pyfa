@@ -4,6 +4,12 @@ import sys
 # Turns on debug mode
 debug = False
 
+# Version data
+version = "1.0"
+tag = "git"
+expansionName = "Incursion"
+expansionVersion = "1.0.1"
+
 # You can adjust these paths to your needs
 
 # The main pyfa directory which contains run.py
