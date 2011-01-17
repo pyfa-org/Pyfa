@@ -17,15 +17,19 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 #===============================================================================
 
-import eos.db
-import eos.types
-from eos.types import State, Slot
+import os.path
+import locale
 import copy
-from service.damagePattern import DamagePattern
-from service.character import Character
 import threading
 import wx
-import os.path
+
+import eos.db
+import eos.types
+
+from eos.types import State, Slot
+
+from service.damagePattern import DamagePattern
+from service.character import Character
 
 class FitBackupThread(threading.Thread):
     def __init__(self, path, callback):
@@ -511,8 +515,16 @@ class Fit(object):
     def importFit(self, path):
         filename = os.path.split(path)[1]
 
-        f = file(path)
-        type, fits = eos.types.Fit.importAuto(f.read(), filename)
+        defcodepage = locale.getpreferredencoding()
+
+        file = open(path, "r")
+        original = file.read()
+        try:
+            encoded = unicode(original, defcodepage)
+        except UnicodeDecodeError:
+            encoded = unicode(original, "cp1252")
+
+        type, fits = eos.types.Fit.importAuto(encoded, filename)
 
         return fits
 
