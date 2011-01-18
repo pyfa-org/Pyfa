@@ -39,23 +39,52 @@ class ModuleAmmoPicker(ContextMenu):
     def activate(self, context, selection, i):
         pass
 
+    DAMAGE_TYPES = ("em", "explosive", "kinetic", "thermal")
     def turretSorter(self, charge):
         damage = 0
         range = self.module.getModifiedItemAttr("maxRange") * charge.getAttribute("weaponRangeMultiplier")
         falloff = self.module.getModifiedItemAttr("falloff") * (charge.getAttribute("fallofMultiplier") or 1)
-        for type in ("em", "explosive", "kinetic", "thermal"):
+        for type in self.DAMAGE_TYPES:
             d = charge.getAttribute("%sDamage" % type)
             if d > 0:
                 damage += d
 
-        return (- range - falloff / 2, charge.name.rsplit()[-2:], damage, charge.name)
+        # Take optimal and half falloff as range factor
+        rangeFactor = range + falloff / 2
 
-    MISSILE_ORDER = ["em", "thermal", "kinetic", "explosive"]
+        return (- rangeFactor, charge.name.rsplit()[-2:], damage, charge.name)
+
+    MISSILE_ORDER = ("em", "thermal", "kinetic", "explosive", "mixed")
     def missileSorter(self, charge):
-        for i, type in enumerate(self.MISSILE_ORDER):
-            damage = charge.getAttribute("%sDamage" % type)
-            if damage > 0:
-                return (i, damage, charge.name)
+        # Get charge damage type and total damage
+        chargeDamageType, totalDamage = self.damageInfo(charge)
+        # Find its position in sort list
+        position = self.MISSILE_ORDER.index(chargeDamageType)
+        return (position, totalDamage, charge.name)
+
+    def damageInfo(self, charge):
+        # Set up data storage for missile damage stuff
+        damageMap = {}
+        totalDamage = 0
+        # Fill them with the data about charge
+        for damageType in self.DAMAGE_TYPES:
+            currentDamage = charge.getAttribute("{0}Damage".format(damageType))
+            damageMap[damageType] = currentDamage
+            totalDamage += currentDamage
+        # Detect type of ammo
+        chargeDamageType = None
+        for damageType in damageMap:
+            # If all damage belongs to certain type purely, set appropriate
+            # ammoType
+            if damageMap[damageType] == totalDamage:
+                chargeDamageType = damageType
+                break
+        # Else consider ammo as mixed damage
+        if chargeDamageType is None:
+            chargeDamageType = "mixed"
+
+        return chargeDamageType, totalDamage
+
 
     def numericConverter(self, string):
         return int(string) if string.isdigit() else string
@@ -130,11 +159,7 @@ class ModuleAmmoPicker(ContextMenu):
             type = None
             sub = None
             for charge in self.charges:
-                currType = None
-                for t in ("em", "explosive", "kinetic", "thermal"):
-                    if charge.getAttribute("%sDamage" % t) > 0:
-                        currType = t
-                        break
+                currType = self.damageInfo(charge)[0]
 
                 if currType != type or type is None:
                     if sub is not None:
