@@ -13,7 +13,7 @@ expansionVersion = "1.0.1"
 # You can adjust these paths to your needs
 
 # The main pyfa directory which contains run.py
-# python 2.X uses ansi by default, so we need to convert the character encoding :(
+# Python 2.X uses ANSI by default, so we need to convert the character encoding
 pyfaPath = unicode(os.path.dirname(os.path.abspath(sys.modules['__main__'].__file__)),
                    sys.getfilesystemencoding())
 
