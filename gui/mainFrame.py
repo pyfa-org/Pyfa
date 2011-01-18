@@ -110,8 +110,8 @@ class MainFrame(wx.Frame):
 
         #=======================================================================
         # DISABLED FOR RC2 RELEASE
-        self.fleetBrowser = FleetBrowser(self.notebookBrowsers)
-        self.notebookBrowsers.AddPage(self.fleetBrowser, "Fleets", showClose = False)
+        #self.fleetBrowser = FleetBrowser(self.notebookBrowsers)
+        #self.notebookBrowsers.AddPage(self.fleetBrowser, "Fleets", showClose = False)
         #=======================================================================
 
         self.notebookBrowsers.SetSelection(1)
