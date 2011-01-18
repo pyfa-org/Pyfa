@@ -94,6 +94,8 @@ class DroneView(d.Display):
                    'Electronic Warfare Drones', 'Logistic Drones', 'Mining Drones')
     def droneKey(self, drone):
         item = drone.item
+        if item.name == "Shadow":
+            return (self.DRONE_ORDER.index('Fighter Bombers'), drone.item.name)
         if item.marketGroup is None:
             item = item.metaGroup.parent
 
