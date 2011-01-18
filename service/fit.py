@@ -48,6 +48,20 @@ class FitBackupThread(threading.Thread):
         backupFile.close()
         wx.CallAfter(self.callback)
 
+class FitImportThread(threading.Thread):
+    def __init__(self, paths, callback):
+        threading.Thread.__init__(self)
+        self.paths = paths
+        self.callback = callback
+
+    def run(self):
+        importedFits = []
+        paths = self.paths
+        sFit = Fit.getInstance()
+        for path in paths:
+            importedFits += sFit.importFit(path)
+        wx.CallAfter(self.callback, importedFits)
+
 class Fit(object):
     instance = None
     @classmethod
@@ -511,6 +525,10 @@ class Fit(object):
 
     def backupFits(self, path, callback):
         thread = FitBackupThread(path, callback)
+        thread.start()
+
+    def importFitsThreaded(self, paths, callback):
+        thread = FitImportThread(paths, callback)
         thread.start()
 
     def importFit(self, path):

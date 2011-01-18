@@ -253,14 +253,17 @@ class MainFrame(wx.Frame):
             wildcard = "EFT text fitting files (*.cfg)|*.cfg|EvE XML fitting files (*.xml)|*.xml|All Files (*)|*",
             style = wx.FD_OPEN | wx.FD_FILE_MUST_EXIST | wx.FD_MULTIPLE)
         if (dlg.ShowModal() == wx.ID_OK):
-#            try:
-            for importPath in dlg.GetPaths():
-                fits += sFit.importFit(importPath)
-            IDs = sFit.saveImportedFits(fits)
-            self._openAfterImport(len(fits), IDs)
-#            except:
-#                wx.MessageBox("Error importing from file.", "Error", wx.OK | wx.ICON_ERROR, self)
-        dlg.Destroy()
+            self.waitDialog = animUtils.WaitDialog(self, title = "Importing")
+            sFit.importFitsThreaded(dlg.GetPaths(), self.importCallback)
+            dlg.Destroy()
+            self.waitDialog.ShowModal()
+
+
+    def importCallback(self, fits):
+        self.waitDialog.Destroy()
+        sFit = service.Fit.getInstance()
+        IDs = sFit.saveImportedFits(fits)
+        self._openAfterImport(len(fits), IDs)
 
     def _openAfterImport(self, importCount, fitIDs):
         if importCount == 1:
