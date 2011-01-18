@@ -48,7 +48,7 @@ class ModuleAmmoPicker(ContextMenu):
             if d > 0:
                 damage += d
 
-        return (-range - falloff, charge.name.rsplit()[-2:], damage, charge.name)
+        return (- range - falloff / 2, charge.name.rsplit()[-2:], damage, charge.name)
 
     MISSILE_ORDER = ["em", "thermal", "kinetic", "explosive"]
     def missileSorter(self, charge):
