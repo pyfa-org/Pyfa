@@ -236,6 +236,22 @@ class Market():
 
     def getMarketGroup(self, marketGroupId):
         return eos.db.getMarketGroup(marketGroupId)
+    
+    def getForcedMarketGroupID(self,itemID):
+        if itemID in self.FORCED_ITEM_MKTGRPS:
+            grpID,meta = self.FORCED_ITEM_MKTGRPS[itemID]
+            return grpID
+        return None
+
+    def getMarketGroupName(self, item):
+        if item.marketGroup == None:
+            marketGroupID = self.getForcedMarketGroupID(item.ID)
+            marketGroup = self.getMarketGroup(marketGroupID)
+            groupName = marketGroup.name
+        else:
+            groupName = item.marketGroup.name
+
+        return groupName    
 
     MARKET_GROUPS = (9, #Modules
                     1111, #Rigs

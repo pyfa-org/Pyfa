@@ -93,13 +93,11 @@ class DroneView(d.Display):
                    'Fighter Bombers', 'Combat Utility Drones',
                    'Electronic Warfare Drones', 'Logistic Drones', 'Mining Drones')
     def droneKey(self, drone):
-        item = drone.item
-        if item.name == "Shadow":
-            return (self.DRONE_ORDER.index('Fighter Bombers'), drone.item.name)
-        if item.marketGroup is None:
-            item = item.metaGroup.parent
+        cMarket = service.Market.getInstance()
 
-        return (self.DRONE_ORDER.index(item.marketGroup.name),
+        groupName = cMarket.getMarketGroupName(drone.item)
+
+        return (self.DRONE_ORDER.index(groupName),
                 drone.item.name)
 
     def fitChanged(self, event):
