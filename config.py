@@ -28,8 +28,15 @@ staticPath = os.path.join(pyfaPath, "staticdata")
 saveDB = os.path.join(savePath, "saveddata.db")
 
 # The database where the static EVE data from the datadump is kept.
-# WARNING: This is not the standard sqlite datadump but a modified version for EOS
+# This is not the standard sqlite datadump but a modified version created by eos
+# maintenance script
 gameDB = os.path.join(staticPath, "eve.db")
+
+# Load variable overrides specific to distribution type
+try:
+    from configforced import *
+except ImportError:
+    pass
 
 ## DON'T MODIFY ANYTHING BELOW ##
 import eos.config
