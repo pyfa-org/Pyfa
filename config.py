@@ -3,8 +3,10 @@ import sys
 
 # Load variable overrides specific to distribution type
 try:
-    import configforced
-    forcedvars = dir(configforced)
+    # Import all variables
+    from configforced import *
+    # Compose list of already defined variables and add them to forced list
+    forcedvars = dir()
 except ImportError:
     forcedvars = []
 
