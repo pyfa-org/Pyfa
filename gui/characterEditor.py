@@ -96,10 +96,18 @@ class CharacterEditor(wx.Frame):
 
         self.sview = SkillTreeView(self.viewsNBContainer)
         self.iview = ImplantsTreeView(self.viewsNBContainer)
+        #=======================================================================
+        # RC2
+        self.iview.Show(False)
+        #=======================================================================
         self.aview = APIView(self.viewsNBContainer)
 
         self.viewsNBContainer.AddPage(self.sview, "Skills")
-        self.viewsNBContainer.AddPage(self.iview, "Implants")
+
+        #=======================================================================
+        # Disabled for RC2
+        # self.viewsNBContainer.AddPage(self.iview, "Implants")
+        #=======================================================================
         self.viewsNBContainer.AddPage(self.aview, "API")
 
         mainSizer.Add(self.viewsNBContainer, 1, wx.EXPAND | wx.ALL, 5)
