@@ -19,7 +19,7 @@
 import config
 
 versionString = "{0} {1} - {2} {3}".format(config.version, config.tag, config.expansionName, config.expansionVersion)
-license = "pyfa is released under GNU GPL"
+license = "pyfa is released under GNU GPLv3"
 licenseLocation = "gpl.txt"
 developers = ("\n cncfanatics \t(Sakari Orisi)\n" , " DarkPhoenix \t(Kadesh Priestess)\n", " Darriele \t(Darriele)")
 credits = (("EVE SERVICE CORP \twww.evsco.net - host of EVEFIT project ( pyfa / EOS/ Aurora)"), ("Entity (Entity) \t\tCapacitor calculations / EVEAPI python lib / Reverence"), ("Aurora \t\tMaths"), ("Corollax (Aamrr) \tVarious EOS/pyfa improvements"))
