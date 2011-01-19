@@ -6,7 +6,7 @@ debug = False
 
 # Version data
 version = "1.0"
-tag = "git"
+tag = "RC2"
 expansionName = "Incursion"
 expansionVersion = "1.1.0"
 
