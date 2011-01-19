@@ -14,8 +14,13 @@ expansionVersion = "1.1.0"
 
 # The main pyfa directory which contains run.py
 # Python 2.X uses ANSI by default, so we need to convert the character encoding
-pyfaPath = unicode(os.path.dirname(os.path.abspath(sys.modules['__main__'].__file__)),
-                   sys.getfilesystemencoding())
+try:
+    pyfaPath = unicode(os.path.dirname(os.path.abspath(sys.modules['__main__'].__file__)),
+                       sys.getfilesystemencoding())
+# We don't have __file__ attribute of module __main__ for some cases (like frozen
+# win32 executable)
+except AttributeError:
+    pyfaPath = None
 
 # Where we store the saved fits etc, default is the current users home directory
 savePath = unicode(os.path.expanduser(os.path.join("~", ".pyfa")),
