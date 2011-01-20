@@ -20,12 +20,14 @@ expansionVersion = "1.1.0"
 
 # The main pyfa directory which contains run.py
 # Python 2.X uses ANSI by default, so we need to convert the character encoding
-pyfaPath = getattr(configforced, "pyfaPath",
-                   unicode(os.path.dirname(os.path.abspath(sys.modules['__main__'].__file__)), sys.getfilesystemencoding()))
+pyfaPath = getattr(configforced, "pyfaPath", None)
+if pyfaPath is None:
+    pyfaPath = unicode(os.path.dirname(os.path.abspath(sys.modules['__main__'].__file__)), sys.getfilesystemencoding())
 
 # Where we store the saved fits etc, default is the current users home directory
-savePath = getattr(configforced, "savePath",
-                   unicode(os.path.expanduser(os.path.join("~", ".pyfa")), sys.getfilesystemencoding()))
+savePath = getattr(configforced, "savePath", None)
+if savePath is None:
+    savePath = unicode(os.path.expanduser(os.path.join("~", ".pyfa")), sys.getfilesystemencoding())
 
 # Static EVE Data from the staticdata repository, should be in the staticdata directory in our pyfa directory
 staticPath = os.path.join(pyfaPath, "staticdata")
