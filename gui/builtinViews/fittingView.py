@@ -232,9 +232,13 @@ class FittingView(d.Display):
     def updateTab(self):
         cFit = service.Fit.getInstance()
         fit = cFit.getFit(self.getActiveFit())
+
         bitmap = bitmapLoader.getImage("race_%s_small" % fit.ship.item.race, "icons")
         text = "%s: %s" % (fit.ship.item.name, fit.name)
-        self.parent.SetPageTextIcon(self.parent.GetSelection(), text, bitmap)
+
+        pageIndex = self.parent.GetPageIndex(self)
+        if pageIndex is not None:
+            self.parent.SetPageTextIcon(pageIndex, text, bitmap)
 
     def appendItem(self, event):
         if self.parent.IsActive(self):
