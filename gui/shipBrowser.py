@@ -757,14 +757,19 @@ class CategoryItem(SFItem.SFBrowserItem):
         self.fontBig = wx.FontFromPixelSize((0,15),wx.SWISS, wx.NORMAL, wx.NORMAL, False)
 
         self.animTimerId = wx.NewId()
-        self.animCount = 10
+
         self.animTimer = wx.Timer(self, self.animTimerId)
         self.animStep = 0
         self.animPeriod = 10
         self.animDuration = 100
 
         self.Bind(wx.EVT_TIMER, self.OnTimer)
-        self.animTimer.Start(self.animPeriod)
+
+        #=======================================================================
+        # Disabled - it will be added as an option to Preferences
+        self.animCount = 0
+        # self.animTimer.Start(self.animPeriod)
+        #=======================================================================
 
 
     def OnTimer(self, event):
@@ -906,16 +911,22 @@ class ShipItem(SFItem.SFBrowserItem):
         self.tcFitName.Bind(wx.EVT_KEY_DOWN, self.editCheckEsc)
 
         self.animTimerId = wx.NewId()
-        self.animCount = 10
+
         self.animTimer = wx.Timer(self, self.animTimerId)
         self.animStep = 0
         self.animPeriod = 10
         self.animDuration = 100
-        if self.shipBrowser.GetActiveStage() != 4 and self.shipBrowser.GetLastStage() !=2:
-            self.Bind(wx.EVT_TIMER, self.OnTimer)
-            self.animTimer.Start(self.animPeriod)
-        else:
-            self.animCount = 0
+        #=======================================================================\
+        # DISABLED - it will be added as an option in PREFERENCES
+
+        self.animCount = 0
+
+        # if self.shipBrowser.GetActiveStage() != 4 and self.shipBrowser.GetLastStage() !=2:
+        #    self.Bind(wx.EVT_TIMER, self.OnTimer)
+        #    self.animTimer.Start(self.animPeriod)
+        # else:
+        #    self.animCount = 0
+        #=======================================================================
 
     def OnTimer(self, event):
         step = self.OUT_QUAD(self.animStep, 0, 10, self.animDuration)
@@ -1146,7 +1157,11 @@ class FitItem(SFItem.SFBrowserItem):
                  id=wx.ID_ANY, pos=wx.DefaultPosition,
                  size=(0, 40), style=0):
 
-        self.animCount = 10
+        #===============================================================================
+        # animCount should be 10 if we enable animation in Preferences
+        #===============================================================================
+
+        self.animCount = 0
         self.selectedDelta = 0
 
         SFItem.SFBrowserItem.__init__(self,parent,size = size)
@@ -1228,10 +1243,14 @@ class FitItem(SFItem.SFBrowserItem):
 
         self.Bind(wx.EVT_TIMER, self.OnTimer)
 
-        if self.shipBrowser.GetActiveStage() != 4 and self.shipBrowser.GetLastStage() !=3:
-            self.animTimer.Start(self.animPeriod)
-        else:
-            self.animCount = 0
+        #=======================================================================
+        # DISABLED - it will be added as an option in PREFERENCES
+
+        # if self.shipBrowser.GetActiveStage() != 4 and self.shipBrowser.GetLastStage() !=3:
+        #    self.animTimer.Start(self.animPeriod)
+        # else:
+        #    self.animCount = 0
+        #=======================================================================
 
         self.selTimerID = wx.NewId()
 
