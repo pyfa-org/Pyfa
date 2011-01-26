@@ -612,11 +612,16 @@ class APIView (wx.Panel):
         for charName in list:
             self.charList.InsertStringItem(sys.maxint, charName)
 
+        self.charList.SetItemState(0,wx.LIST_STATE_SELECTED, wx.LIST_STATE_SELECTED)
         self.charList.SetColumnWidth(0, wx.LIST_AUTOSIZE_USEHEADER)
         self.charList.Show()
+
         self.btnFetchCharList.Hide()
         self.btnFetchSkills.Show()
+
         self.Layout()
+
+        self.charList.SetFocus()
 
     def fetchSkills(self, event):
         item = self.charList.GetNextItem(-1, wx.LIST_NEXT_ALL, wx.LIST_STATE_SELECTED)
