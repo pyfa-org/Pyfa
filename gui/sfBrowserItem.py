@@ -355,14 +355,15 @@ class SFBrowserItem(wx.Window):
         eFactor = 0
 
         if state == SB_ITEM_HIGHLIGHTED:
-            mFactor = 0.55
+            mFactor = 0.45
+            eFactor = 0.30
 
         elif state == SB_ITEM_SELECTED  | SB_ITEM_HIGHLIGHTED:
             eFactor = 0.3
         elif state == SB_ITEM_SELECTED:
             eFactor = 0.15
         else:
-            sFactor = 0
+            sFactor = 0.0
 
         if self.bkBitmap:
             if self.bkBitmap.eFactor == eFactor and self.bkBitmap.sFactor == sFactor and self.bkBitmap.mFactor == mFactor \

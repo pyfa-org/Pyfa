@@ -1239,7 +1239,7 @@ class FitItem(SFItem.SFBrowserItem):
         self.animPeriod = 10
         self.animDuration = 100
 
-        self.maxDelta = 60
+        self.maxDelta = 48
 
         self.Bind(wx.EVT_TIMER, self.OnTimer)
 
@@ -1553,12 +1553,15 @@ class FitItem(SFItem.SFBrowserItem):
         eFactor = 0
 
         if state == SFItem.SB_ITEM_HIGHLIGHTED:
-            mFactor = 0.55
+            mFactor = 0.45
+            eFactor = 0.30
 
         elif state == SFItem.SB_ITEM_SELECTED  | SFItem.SB_ITEM_HIGHLIGHTED:
             eFactor = 0.3
+            mFactor = 0.4
+
         elif state == SFItem.SB_ITEM_SELECTED:
-            eFactor = (self.maxDelta - self.selectedDelta)/100 + 0.15
+            eFactor = (self.maxDelta - self.selectedDelta)/100 + 0.25
         else:
             sFactor = 0
 
