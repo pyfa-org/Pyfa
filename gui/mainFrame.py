@@ -72,8 +72,6 @@ class MainFrame(wx.Frame):
         wx.Frame.__init__(self, None, wx.ID_ANY, title="pyfa - Python Fitting Assistant")
         MainFrame.__instance = self
 
-        wx.IdleEvent.SetMode(wx.IDLE_PROCESS_SPECIFIED)
-
         self.LoadMainFrameAttribs()
 
         if 'wxMSW' in wx.PlatformInfo:
