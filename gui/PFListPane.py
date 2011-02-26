@@ -148,8 +148,7 @@ class PFListPane(wx.ScrolledWindow):
             itemX,itemY = self._wList[i].GetPosition()
             self._wList[i].SetSize((cwidth, iheight))
             if doRefresh == True:
-                if itemY >=-iheight and itemY< clientH:
-                    self._wList[i].Refresh()
+                self._wList[i].Refresh()
 
         if doFocus:
             self.SetFocus()
