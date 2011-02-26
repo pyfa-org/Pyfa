@@ -521,13 +521,12 @@ class PFTabRenderer:
         self.tabBitmap = bmp
 
 class PFAddRenderer:
-    def __init__(self, size = (24,12)):
-        self.width, self.height = size
+    def __init__(self):
+
         self.addImg = bitmapLoader.getImage("ctabadd", "icons")
         self.width = self.addImg.GetWidth()
         self.height = self.addImg.GetHeight()
-        self.spline = []
-        self.inclination = 3
+
         self.region = None
         self.tbmp = wx.BitmapFromImage(self.addImg)
         self.addBitmap = None
@@ -573,23 +572,6 @@ class PFAddRenderer:
     def GetRegion(self):
         return self.CopyRegion(self.region)
 
-    def CalculateColor(self, color, delta):
-        bkR ,bkG , bkB = color
-        if bkR + bkG + bkB > 127*3:
-            scale = - delta
-        else:
-            scale = delta*2
-
-        r = bkR + scale
-        g = bkG + scale
-        b = bkB + scale
-
-        r = min(max(r,0),255)
-        b = min(max(b,0),255)
-        g = min(max(g,0),255)
-
-        return wx.Colour(r,b,g)
-
     def Highlight(self, highlight = False):
         self.highlighted = highlight
         self._Render()
@@ -601,7 +583,7 @@ class PFAddRenderer:
         return self.addBitmap
 
     def _Render(self):
-        inc = self.inclination
+
         rect = wx.Rect(0 ,0 ,self.width, self.height)
 
         if self.addBitmap:
