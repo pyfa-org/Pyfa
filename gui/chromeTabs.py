@@ -13,6 +13,7 @@ import wx.lib.newevent
 import copy
 import time
 import gui.utils.colorUtils as colorUtils
+import gui.utils.drawUtils as drawUtils
 from gui import bitmapLoader
 
 _PageChanging, EVT_NOTEBOOK_PAGE_CHANGING = wx.lib.newevent.NewEvent()
@@ -479,27 +480,21 @@ class PFTabRenderer:
             textStart = self.leftWidth
 
         mdc.SetFont(self.font)
-        text = self.text
-        fnwidths = mdc.GetPartialTextExtents(text)
-        count = 0
-        maxsize = self.tabWidth - textStart - self.rightWidth - self.padding*2
-        for i in fnwidths:
-            if i <= maxsize:
-                count +=1
-            else:
-                break
-        if count > 0:
-            text = "%s" % text[:count]
 
-            tx,ty = mdc.GetTextExtent(text)
-            if self.selected:
-                color = self.selectedColor
-            else:
-                color = self.inactiveColor
+        maxsize = self.tabWidth - textStart - self.rightWidth - self.padding*4
 
-            mdc.SetTextForeground(colorUtils.GetSuitableColor(color, 1))
+        if self.selected:
+            color = self.selectedColor
+        else:
+            color = self.inactiveColor
 
-            mdc.DrawText(text, textStart + self.padding , height / 2 - ty / 2)
+        mdc.SetTextForeground(colorUtils.GetSuitableColor(color, 1))
+
+        text = drawUtils.GetPartialText(mdc, self.text, maxsize, "")
+
+        tx,ty = mdc.GetTextExtent(text)
+
+        mdc.DrawText(text, textStart + self.padding , height / 2 - ty / 2)
 
         if self.closeButton:
             if self.closeBtnHovering:
