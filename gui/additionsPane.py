@@ -24,6 +24,8 @@ from gui.droneView import DroneView
 from gui.implantView import ImplantView
 from gui.projectedView import ProjectedView
 from gui.pyfatogglepanel import TogglePanel
+from gui import bitmapLoader
+
 import gui.chromeTabs
 
 class AdditionsPane(TogglePanel):
@@ -46,12 +48,18 @@ class AdditionsPane(TogglePanel):
         size.SetHeight(160)
         self.notebook.SetMinSize(size)
         baseSizer.Add(self.notebook, 1, wx.EXPAND)
-        self.notebook.AddPage(DroneView(self.notebook), "Drones", showClose = False)
-        self.notebook.AddPage(ImplantView(self.notebook), "Implants", showClose = False)
-        self.notebook.AddPage(BoosterView(self.notebook), "Boosters", showClose = False)
+
+        droneImg = bitmapLoader.getImage("drone_small", "icons")
+        implantImg = bitmapLoader.getImage("implant_small", "icons")
+        boosterImg = bitmapLoader.getImage("booster_small", "icons")
+        projectedImg = bitmapLoader.getImage("projected_small", "icons")
+
+        self.notebook.AddPage(DroneView(self.notebook), "Drones", tabImage = droneImg, showClose = False)
+        self.notebook.AddPage(ImplantView(self.notebook), "Implants", tabImage = implantImg, showClose = False)
+        self.notebook.AddPage(BoosterView(self.notebook), "Boosters", tabImage = boosterImg, showClose = False)
 
         self.projectedPage = ProjectedView(self.notebook)
-        self.notebook.AddPage(self.projectedPage, "Projected", showClose = False)
+        self.notebook.AddPage(self.projectedPage, "Projected", tabImage = projectedImg, showClose = False)
         self.notebook.SetSelection(0)
 
 
