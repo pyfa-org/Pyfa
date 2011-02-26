@@ -301,14 +301,9 @@ class SFBrowserItem(wx.Window):
         event.Skip()
 
     def OnLeaveWindow(self, event):
-        mposx, mposy = wx.GetMousePosition()
-        rect = self.GetRect()
-        rect.top = rect.left = 0
-        cx,cy = self.ScreenToClient((mposx,mposy))
-        if not rect.Contains((cx,cy)):
-            self.SetHighlighted(False)
-            self.toolbar.ClearState()
-            self.Refresh()
+        self.SetHighlighted(False)
+        self.toolbar.ClearState()
+        self.Refresh()
         event.Skip()
 
     def OnMotion(self, event):
