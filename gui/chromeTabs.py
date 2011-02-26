@@ -1126,7 +1126,7 @@ class PFTabsContainer(wx.Panel):
                 selpos = pos
         if selected is not skipTab:
             selected.SetPosition((selpos, self.containerHeight - self.height))
-        self.addButton.SetPosition((round(tabsWidth) + self.inclination*2, self.containerHeight - self.height/2 - self.addButton.GetHeight()/2))
+        self.addButton.SetPosition((round(tabsWidth) + self.inclination*2, self.containerHeight - self.height/2 - self.addButton.GetHeight()/3))
 
     def OnLeaveWindow(self, event):
         if self.previewWnd:
