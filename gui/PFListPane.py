@@ -18,7 +18,6 @@
 #===============================================================================
 
 import wx
-import gui.mainFrame
 
 class PFListPane(wx.ScrolledWindow):
     def __init__(self, parent):
