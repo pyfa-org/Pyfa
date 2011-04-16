@@ -75,16 +75,19 @@ def getImage(name, location):
     if location in locationMap:
         if location == "pack":
             location = locationMap[location]
-            path = os.path.join(location, "icon%s.png" % name)
+            filename = "icon{0}.png".format(name)
+            path = os.path.join(location, filename)
         else:
             location = locationMap[location]
-            path = os.path.join(location, "%s.png" % name)
+            filename = "%s.png".format(name)
+            path = os.path.join(location, filename)
 
     else:
         location = os.path.join(config.pyfaPath, location)
-        path = os.path.join(location, name + ".png")
+        filename = "{0}.png".format(name)
+        path = os.path.join(location, filename)
 
     if os.path.exists(path):
         return wx.Image(path)
     else:
-        print "Missing icon file: {0}.png".format(name)
+        print "Missing icon file: {0}".format(filename)
