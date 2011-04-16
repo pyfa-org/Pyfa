@@ -19,6 +19,7 @@
 #===============================================================================
 
 import sys
+import re
 
 if not hasattr(sys, 'frozen'):
 
@@ -36,19 +37,18 @@ if not hasattr(sys, 'frozen'):
     try:
         import sqlalchemy
 
-        saVersion =  sqlalchemy.__version__.split(".")
-        saMajor = int(saVersion[0])
-        saMinor = int(saVersion[1])
-        saBuild = int(saVersion[2])
-
-        if saMinor < 5:
-            print "Pyfa requires sqlalchemy 0.5.8 at least  but current sqlalchemy version is %s\nYou can download sqlalchemy (0.5.8+) from http://www.sqlalchemy.org/" % sqlalchemy.__version__
-            sys.exit(1)
-        else:
-            if saMinor == 5 and saBuild < 8:
-                print "Pyfa requires sqlalchemy 0.5.8 at least  but current sqlalchemy version is %s\nYou can download sqlalchemy (0.5.8+) from http://www.sqlalchemy.org/" % sqlalchemy.__version__
+        saVersion =  sqlalchemy.__version__
+        saMatch = re.match("([0-9]+).([0-9]+)([b\.])([0-9]+)", saVersion)
+        if saMatch:
+            saMajor = int(saMatch.group(1))
+            saMinor = int(saMatch.group(2))
+            betaFlag = True if saMatch.group(3) == "b" else False
+            saBuild = int(saMatch.group(4)) if not betaFlag else 0
+            if saMajor == 0 and (saMinor < 5 or (saMinor == 5 and saBuild < 8)):
+                print "Pyfa requires sqlalchemy 0.5.8 at least  but current sqlalchemy version is %s\nYou can download sqlalchemy (0.5.8+) from http://www.sqlalchemy.org/".format(sqlalchemy.__version__)
                 sys.exit(1)
-
+        else:
+            print "Unknown sqlalchemy version string format, skipping check"
 
     except ImportError:
         print "Cannot find sqlalchemy.\nYou can download sqlalchemy (0.6+) from http://www.sqlalchemy.org/"
