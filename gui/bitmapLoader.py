@@ -79,7 +79,7 @@ def getImage(name, location):
             path = os.path.join(location, filename)
         else:
             location = locationMap[location]
-            filename = "%s.png".format(name)
+            filename = "{0}.png".format(name)
             path = os.path.join(location, filename)
 
     else:
