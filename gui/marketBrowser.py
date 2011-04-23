@@ -19,7 +19,6 @@
 
 import wx
 import service
-import wx.lib.mixins.listctrl as listmix
 import gui.display as d
 from gui.cachingImageList import CachingImageList
 from gui.contextMenu import ContextMenu
@@ -121,6 +120,7 @@ class MarketTree(wx.TreeCtrl):
         self.SetImageList(self.imageList)
 
         self.sMarket = marketBrowser.sMarket
+        self.marketBrowser = marketBrowser
 
         sMkt = self.sMarket
         for mktGrp in sMkt.getMarketRoot():
@@ -160,54 +160,33 @@ class MarketTree(wx.TreeCtrl):
 
             self.SortChildren(root)
 
-#    def jump(self, item):
-#        sMkt = self.sMarket
-#        mg = item.marketGroup
-#        if mg is None and (item.metaGroup is not None or item.ID in sMkt.FORCED_ITEM_MKTGRPS):
-#            if item.metaGroup is not None:
-#                mg = item.metaGroup.parent.marketGroup
-#                metaGroup = sMkt.getMetaName(item.metaGroup.ID)
-#            elif item.ID in sMkt.FORCED_ITEM_MKTGRPS:
-#                mgid = sMkt.FORCED_ITEM_MKTGRPS[item.ID][0]
-#                mg = sMkt.getMarketGroup(mgid)
-#                metaGroupID = sMkt.FORCED_ITEM_MKTGRPS[item.ID][1]
-#                metaGroupName = "normal"
-#                for metaGroupName, metaGroupIDs in sMkt.META_MAP.iteritems():
-#                    if metaGroupID in metaGroupIDs:
-#                        metaGroup = metaGroupName
-#                        break
-#            for btn in ("normal", "faction", "complex", "officer"):
-#                getattr(self.marketBrowser, btn).SetValue(False)
-#                sMkt.disableMetaGroup(btn)
-#
-#            getattr(self.marketBrowser, metaGroup).SetValue(True)
-#            sMkt.activateMetaGroup(metaGroup)
-#            self.marketBrowser.itemView.searching = False
-#        if mg is None:
-#            return
-#
-#        jumpList = []
-#        while mg is not None:
-#            jumpList.append(mg.ID)
-#            mg = mg.parent
-#
-#        sMkt.MARKET_GROUPS
-#        for id in sMkt.MARKET_GROUPS:
-#            if id in jumpList:
-#                jumpList = jumpList[:jumpList.index(id)+1]
-#
-#        item = self.root
-#        for i in range(len(jumpList) -1, -1, -1):
-#            target = jumpList[i]
-#            child, cookie = self.GetFirstChild(item)
-#            while self.GetItemPyData(child) != target:
-#                child, cookie = self.GetNextChild(item, cookie)
-#
-#            item = child
-#            self.Expand(item)
-#
-#        self.SelectItem(item)
-#        self.marketBrowser.itemView.searching = False
+    def jump(self, item):
+        self.marketBrowser.searchMode = False
+        sMkt = self.sMarket
+        mg = sMkt.getMarketGroupByItem(item)
+        metaId = sMkt.getMetaGroupIdByItem(item)
+
+        jumpList = []
+        while mg is not None:
+            jumpList.append(mg.ID)
+            mg = mg.parent
+
+        for id in sMkt.ROOT_MARKET_GROUPS:
+            if id in jumpList:
+                jumpList = jumpList[:jumpList.index(id)+1]
+
+        item = self.root
+        for i in range(len(jumpList) -1, -1, -1):
+            target = jumpList[i]
+            child, cookie = self.GetFirstChild(item)
+            while self.GetItemPyData(child) != target:
+                child, cookie = self.GetNextChild(item, cookie)
+
+            item = child
+            self.Expand(item)
+
+        self.SelectItem(item)
+        self.marketBrowser.itemView.selectionMade(forcedMetaSelect=metaId)
 
 class ItemView(d.Display):
     DEFAULT_COLS = ["Base Icon",
@@ -237,14 +216,14 @@ class ItemView(d.Display):
         self.Bind(wx.EVT_CONTEXT_MENU, self.contextMenu)
         self.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.itemActivated)
 
-    def itemActivated(self, event):
+    def itemActivated(self, event=None):
         # Check if something is selected, if so, spawn the menu for it
         sel = self.GetFirstSelected()
         if sel == -1:
             return
         wx.PostEvent(self.mainFrame, ItemSelected(itemID=self.active[sel].ID))
 
-    def selectionMade(self, event):
+    def selectionMade(self, event=None, forcedMetaSelect=None):
         self.marketBrowser.searchMode = False
         root = self.marketView.GetSelection()
         if root.IsOk():
@@ -261,7 +240,7 @@ class ItemView(d.Display):
             # Fill store
             self.updateItemStore(items)
             # Set toggle buttons
-            self.setToggles()
+            self.setToggles(forcedMetaSelect=forcedMetaSelect)
             # Update filtered items
             self.filterItemStore()
 
@@ -277,18 +256,22 @@ class ItemView(d.Display):
         self.filteredStore = sMkt.filterItemsByMeta(self.unfilteredStore, selectedMetas)
         self.update(list(self.filteredStore))
 
-    def setToggles(self):
+    def setToggles(self, forcedMetaSelect=None):
         metaIDs = set()
         sMkt = self.sMarket
         for item in self.unfilteredStore:
             metaIDs.add(sMkt.getMetaGroupIdByItem(item))
         anySelection = False
         for btn in self.marketBrowser.metaButtons:
-            if len(metaIDs.intersection(sMkt.META_MAP[btn.metaName])) > 0:
+            btnMetas = sMkt.META_MAP[btn.metaName]
+            if len(metaIDs.intersection(btnMetas)) > 0:
                 btn.Enable(True)
                 # Select all available buttons if we're searching
                 if self.marketBrowser.searchMode:
                     btn.SetValue(True)
+                # Select explicitly requested button
+                if forcedMetaSelect is not None:
+                    btn.SetValue(True if forcedMetaSelect in btnMetas else False)
             else:
                 btn.Enable(False)
                 btn.SetValue(False)
@@ -301,21 +284,21 @@ class ItemView(d.Display):
                     btn.SetValue(True)
                     break
 
-    def scheduleSearch(self, event):
+    def scheduleSearch(self, event=None):
         search = self.marketBrowser.search.GetLineText(0)
         # Re-select market group if search query has zero length
         if len(search) == 0:
-            self.selectionMade(event)
+            self.selectionMade()
             return
         # Show nothing if query is too short
         elif len(search) < 3:
-            self.clearSearch(event, False)
+            self.clearSearch()
             return
 
         self.marketBrowser.searchMode = True
         self.sMarket.searchItems(search, self.populateSearch)
 
-    def clearSearch(self, event=None, clear=True):
+    def clearSearch(self, event=None):
         # Wipe item store and update everything to accomodate with it
         self.marketBrowser.searchMode = False
         self.updateItemStore(set())
@@ -337,18 +320,12 @@ class ItemView(d.Display):
             return (item.metaGroup.parent.name, item.metaGroup.ID , item.name)
 
     def contextMenu(self, event):
-        #Check if something is selected, if so, spawn the menu for it
+        # Check if something is selected, if so, spawn the menu for it
         sel = self.GetFirstSelected()
         if sel == -1:
             return
 
         item = self.active[sel]
-        # We were searching, this means that our results come from the worker thread
-        # Refetch items, else it'll try to reuse the object fetched in the other thread
-        # Which makes it go BOOM CRACK DOOM
-        if self.marketBrowser.searchMode:
-            sMarket = service.Market.getInstance()
-            item = sMarket.getItem(item.ID)
 
         menu = ContextMenu.getMenu((item,), "item" if self.marketBrowser.searchMode is False else "itemSearch")
         self.PopupMenu(menu)
@@ -359,6 +336,6 @@ class ItemView(d.Display):
         self.active = stuff
         d.Display.populate(self, stuff)
 
-#    def refresh(self, stuff):
-#        stuff.sort(key=self.itemSort)
-#        d.Display.refresh(self, stuff)
+    def refresh(self, stuff):
+        stuff.sort(key=self.itemSort)
+        d.Display.refresh(self, stuff)
