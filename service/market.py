@@ -397,7 +397,7 @@ class Market():
         # Check if we force market group for given item
         if item.name in self.ITEMS_FORCEDMARKETGROUP:
             mgid = self.ITEMS_FORCEDMARKETGROUP[item.name]
-            self.getMarketGroup(mgid)
+            return self.getMarketGroup(mgid)
         # Check if item itself has market group
         elif item.marketGroupID:
             return item.marketGroup
