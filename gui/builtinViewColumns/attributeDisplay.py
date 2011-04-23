@@ -60,7 +60,7 @@ class AttributeDisplay(ViewColumn):
             sMarket = service.Market.getInstance()
             #Hack into our master view and add a callback for ourselves to know when to query
             def refresh(stuff):
-                self.directInfo = sMarket.directRequest(stuff, info.ID) if stuff else None
+                self.directInfo = sMarket.directAttrRequest(stuff, info.ID) if stuff else None
                 originalRefresh(stuff)
 
             fittingView.refresh = refresh

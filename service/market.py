@@ -18,12 +18,9 @@
 #===============================================================================
 
 import threading
-import traceback
 import wx
 
 from sqlalchemy.orm.exc import NoResultFound
-import sqlalchemy.sql
-import sqlalchemy.orm
 import Queue
 
 import eos.db
@@ -42,7 +39,7 @@ class ShipBrowserWorkerThread(threading.Thread):
     def run(self):
         self.queue = Queue.Queue()
         self.cache = {}
-        # Wait for full market initialization (otherwise there's high riskjy
+        # Wait for full market initialization (otherwise there's high risky
         # this thread will attempt to init Market which is already being inited)
         mktRdy.wait(5)
         self.processRequests()
@@ -113,18 +110,19 @@ class SearchWorkerThread(threading.Thread):
             request, callback = self.searchRequest
             self.searchRequest = None
             cv.release()
-            filter = (eos.types.Category.name.in_(Market.SEARCH_CATEGORIES), eos.types.Item.published == True)
+            sMarket = Market.getInstance()
+            # Rely on category data provided by eos as we don't hardcode them much in service
+            filter = eos.types.Category.name.in_(sMarket.SEARCH_CATEGORIES)
             results = eos.db.searchItems(request, where=filter,
                                          join=(eos.types.Item.group, eos.types.Group.category),
                                          eager=("icon", "group.category", "metaGroup", "metaGroup.parent"))
 
-            usedMetas = set()
-            items = []
+            items = set()
+            # Return only published items, consult with Market service this time
             for item in results:
-                usedMetas.add(item.metaGroup.ID if item.metaGroup else 1)
-                items.append(item)
-
-            wx.CallAfter(callback, (items, usedMetas))
+                if sMarket.getPublicityByItem(item):
+                    items.add(item)
+            wx.CallAfter(callback, items)
 
     def scheduleSearch(self, text, callback):
         self.cv.acquire()
@@ -135,7 +133,6 @@ class SearchWorkerThread(threading.Thread):
 class Market():
     instance = None
     def __init__(self):
-        #self.activeMetas = set()
         self.priceCache = {}
 
         # Start price fetcher
@@ -280,10 +277,15 @@ class Market():
         self.ITEMS_FORCEDMARKETGROUP_R = self.__makeRevDict(self.ITEMS_FORCEDMARKETGROUP)
 
         # Misc definitions
-        self.META_MAP = OrderedDict([("normal", (1, 2, 14)),
-                                     ("faction", (4, 3)),
-                                     ("complex", (6,)),
-                                     ("officer", (5,))])
+        # 0 is for items w/o meta group
+        self.META_MAP = OrderedDict([("normal",  frozenset((0, 1, 2, 14))),
+                                     ("faction", frozenset((4, 3))),
+                                     ("complex", frozenset((6,))),
+                                     ("officer", frozenset((5,)))])
+#        self.META_MAP_R = {}
+#        for metaname, metaids in self.META_MAP.items():
+#            for metaid in metaids:
+#                self.META_MAP_R[metaid] = metaname
         self.SEARCH_CATEGORIES = ("Drone", "Module", "Subsystem", "Charge", "Implant")
 
         # Tell other threads that Market is at their service
@@ -392,7 +394,12 @@ class Market():
             metaGroup = item.metaGroup
         return metaGroup
 
-    def getMarketGroupByItem(self, item):
+    def getMetaGroupIdByItem(self, item, fallback=0):
+        """Get meta group ID by item"""
+        id = getattr(self.getMetaGroupByItem(item), "ID", fallback)
+        return id
+
+    def getMarketGroupByItem(self, item, parentcheck=True):
         """Get market group by item, its ID or name"""
         # Check if we force market group for given item
         if item.name in self.ITEMS_FORCEDMARKETGROUP:
@@ -400,15 +407,18 @@ class Market():
         # Check if item itself has market group
         elif item.marketGroupID:
             mgid = item.marketGroupID
-        # If item doesn't have marketgroup, check if it has parent
-        # item and use its market group
-        elif self.getMetaGroupByItem(item.ID):
-            parent = self.getItem(self.getMetaGroupByItem(item.ID).parentTypeID)
-            mgid = parent.marketGroupID
+        elif parentcheck:
+            # If item doesn't have marketgroup, check if it has parent
+            # item and use its market group
+            if self.getMetaGroupByItem(item):
+                parent = self.getItem(self.getMetaGroupByItem(item).parentTypeID)
+                mgid = parent.marketGroupID
         else:
             mgid = None
-        mg = self.getMarketGroup(mgid)
-        return mg
+        if mgid is not None:
+            return self.getMarketGroup(mgid)
+        else:
+            return None
 
     def getParentItemByItem(self, item):
         """Get parent item by item"""
@@ -425,13 +435,13 @@ class Market():
         # Get parent item
         parent = self.getParentItemByItem(item)
         # All its variations
-        vars = eos.db.getVariations(parent)
-        # Combine both in the same list
-        vars.insert(0, parent)
+        vars = set(eos.db.getVariations(parent))
+        # Combine both in the same set
+        vars.add(parent)
         # Check for overrides and add them if any
         if parent.name in self.ITEMS_FORCEDMETAGROUP_R:
             for itmn in self.ITEMS_FORCEDMETAGROUP_R[parent.name]:
-                vars.append(self.getItem(itmn))
+                vars.add(self.getItem(itmn))
         return vars
 
     def getGroupsByCategory(self, cat):
@@ -445,13 +455,14 @@ class Market():
         Returns a list, where each element is:
         (id, name, icon, does it has child market groups or not)
         """
-        children = []
+        children = set()
         for child in mg.children:
-            children.append((child.ID, child.name, self.getIconByMarketGroup(child), not child.hasTypes))
+            children.add(child)
         return children
 
     def getItemsByMarketGroup(self, mg):
         """Get items in the given market group"""
+        # TODO: probably it's better to compose list of parents first, then request variations due to performance reasons
         res = set()
         baseitms = mg.items
         if mg.ID in self.ITEMS_FORCEDMARKETGROUP_R:
@@ -460,8 +471,31 @@ class Market():
             res.add(item)
             vars = self.getVariationsByItem(item)
             for var in vars:
-                res.add(var)
+                # There's no poin int additional requests if we already added item to results
+                if var in res:
+                    continue
+                # Exclude items with their own explicitly defined market groups
+                if self.getMarketGroupByItem(var, parentcheck=False) is None:
+                    res.add(var)
         return res
+
+    def marketGroupHasTypesCheck(self, mg):
+        """If market group has any items, return true"""
+        if mg.ID in self.ITEMS_FORCEDMARKETGROUP_R:
+            return True
+        elif not mg.hasTypes:
+            return False
+        elif len(mg.items) > 0:
+            return True
+        else:
+            return False
+
+    def marketGroupValidityCheck(self, mg):
+        """Check market group validity"""
+        if mg.hasTypes and not self.marketGroupHasTypesCheck(mg):
+            return False
+        else:
+            return True
 
     def getIconByMarketGroup(self, mg):
         """Return icon associated to marketgroup"""
@@ -499,12 +533,12 @@ class Market():
             root.append((grp.ID, grp.name))
         return root
 
-    ROOT_MARKET_GROUPS = (9,     #Modules
-                          1111,  #Rigs
-                          157,   #Drones
-                          11,    #Ammo
-                          1112,  #Subsystems
-                          24)    #Implants & Boosters
+    ROOT_MARKET_GROUPS = (9,     # Modules
+                          1111,  # Rigs
+                          157,   # Drones
+                          11,    # Ammo
+                          1112,  # Subsystems
+                          24)    # Implants & Boosters
 
     def getMarketRoot(self):
         """
@@ -512,10 +546,10 @@ class Market():
         Returns a list, where each element is a tuple containing:
         the ID, the name and the icon of the group
         """
-        root = []
+        root = set()
         for id in self.ROOT_MARKET_GROUPS:
             mg = self.getMarketGroup(id, eager="icon")
-            root.append((id, mg.name, self.getIconByMarketGroup(mg)))
+            root.add(mg)
 
         return root
 
@@ -557,32 +591,10 @@ class Market():
         """Return implant market group children"""
         return self.getMarketGroupChildren(27)
 
-#    def activateMetaGroup(self, name):
-#        for meta in self.META_MAP[name]:
-#            self.activeMetas.add(meta)
-#
-#    def disableMetaGroup(self, name):
-#        for meta in self.META_MAP[name]:
-#            if meta in self.activeMetas:
-#                self.activeMetas.remove(meta)
-#
-#    def isMetaIdActive(self, meta):
-#        return meta in self.activeMetas
-#
-#    def filterItems(self, items):
-#        filtered = []
-#        activeMetas = self.activeMetas
-#        for it in items:
-#            if (it.metaGroup.ID if it.metaGroup is not None else 1) in activeMetas:
-#                filtered.append(it)
-#
-#        return filtered
-#
-#    def getMetaName(self, metaId):
-#        for name, ids in self.META_MAP.items():
-#            for id in ids:
-#                if metaId == id:
-#                    return name
+    def filterItemsByMeta(self, items, metas):
+        """Filter items by meta lvl"""
+        filtered = set(filter(lambda item: self.getMetaGroupIdByItem(item) in metas, items))
+        return filtered
 
     #################################
     # Price stuff, didn't modify it #
