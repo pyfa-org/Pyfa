@@ -444,11 +444,7 @@ class Market():
         return groups
 
     def getMarketGroupChildren(self, mg):
-        """
-        Get the children marketGroups of marketGroup with the passed id.
-        Returns a list, where each element is:
-        (id, name, icon, does it has child market groups or not)
-        """
+        """Get the children marketGroups of marketGroup."""
         children = set()
         for child in mg.children:
             children.add(child)
@@ -560,7 +556,7 @@ class Market():
     def getShipList(self, grpid):
         """Get ships for  given group id"""
         ships = []
-        grp = self.getGroup(id, eager=("items", "items.marketGroup", "items.attributes"))
+        grp = self.getGroup(grpid, eager=("items", "items.marketGroup", "items.attributes"))
         for item in grp.items:
             if self.getPublicityByItem(item):
                 ships.append((item.ID, item.name, item.race))

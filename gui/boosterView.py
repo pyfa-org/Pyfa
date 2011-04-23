@@ -53,8 +53,8 @@ class BoosterView(d.Display):
             event.Skip()
             return
 
-        cFit = service.Fit.getInstance()
-        fit = cFit.getFit(event.fitID)
+        sFit = service.Fit.getInstance()
+        fit = sFit.getFit(event.fitID)
 
         stuff = fit.boosters if fit is not None else None
 
