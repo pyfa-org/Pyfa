@@ -73,11 +73,13 @@ class MarketBrowser(wx.Panel):
             btn.Bind(wx.EVT_TOGGLEBUTTON, self.toggleMetaButton)
             btn.metaName = name
             self.metaButtons.append(btn)
+        # Make itemview to set toggles according to list contents
         self.itemView.setToggles()
 
         p.SetMinSize((wx.SIZE_AUTO_WIDTH, btn.GetSize()[1] + 5))
 
     def toggleMetaButton(self, event):
+        """Process clicks on toggle buttons"""
         ctrl = wx.GetMouseState().ControlDown()
         ebtn = event.EventObject
         if not ctrl:
@@ -92,19 +94,18 @@ class MarketBrowser(wx.Panel):
             # But the button is toggled by wx and we should deal with it
             activeBtns = set()
             for btn in self.metaButtons:
-                if (btn.GetValue() and btn != ebtn) or (not btn.GetValue() and btn == ebtn):
+                if (btn.GetValue() is True and btn != ebtn) or (btn.GetValue() is False and btn == ebtn):
                     activeBtns.add(btn)
             # Do 'nothing' if we're trying to turn last active button off
             if len(activeBtns) == 1 and activeBtns.pop() == ebtn:
                 # Keep button in the same state
                 ebtn.SetValue(True)
                 return
-
+        # Leave old unfiltered list contents, just re-filter them and show
         self.itemView.filterItemStore()
 
     def jump(self, item):
         self.marketView.jump(item)
-
 
 class SearchBox(wx.SearchCtrl):
     def __init__(self, parent):
@@ -122,6 +123,7 @@ class MarketTree(wx.TreeCtrl):
         self.sMarket = marketBrowser.sMarket
         self.marketBrowser = marketBrowser
 
+        # Form market tree root
         sMkt = self.sMarket
         for mktGrp in sMkt.getMarketRoot():
             iconId = self.addImage(sMkt.getIconByMarketGroup(mktGrp))
@@ -139,6 +141,7 @@ class MarketTree(wx.TreeCtrl):
         return self.imageList.GetImageIndex(iconFile, "pack")
 
     def expandLookup(self, event):
+        """Process market tree expands"""
         root = event.Item
         child = self.GetFirstChild(root)[0]
         # If child of given market group is a dummy
@@ -148,19 +151,19 @@ class MarketTree(wx.TreeCtrl):
             # And add real market group contents
             sMkt = self.sMarket
             currentMktGrp = sMkt.getMarketGroup(self.GetPyData(root))
-            #for id, name, iconFile, more in sMkt.getMarketGroupChildren(mg):
             for childMktGrp in sMkt.getMarketGroupChildren(currentMktGrp):
                 # If market should have items but it doesn't, do not show it
-                if not sMkt.marketGroupValidityCheck(childMktGrp):
+                if sMkt.marketGroupValidityCheck(childMktGrp) is False:
                     continue
                 iconId = self.addImage(sMkt.getIconByMarketGroup(childMktGrp))
                 childId = self.AppendItem(root, childMktGrp.name, iconId, data=wx.TreeItemData(childMktGrp.ID))
-                if not sMkt.marketGroupHasTypesCheck(childMktGrp):
+                if sMkt.marketGroupHasTypesCheck(childMktGrp) is False:
                     self.AppendItem(childId, "dummy")
 
             self.SortChildren(root)
 
     def jump(self, item):
+        """Open market group and meta tab of given item"""
         self.marketBrowser.searchMode = False
         sMkt = self.sMarket
         mg = sMkt.getMarketGroupByItem(item)
@@ -267,7 +270,7 @@ class ItemView(d.Display):
             if len(metaIDs.intersection(btnMetas)) > 0:
                 btn.Enable(True)
                 # Select all available buttons if we're searching
-                if self.marketBrowser.searchMode:
+                if self.marketBrowser.searchMode is True:
                     btn.SetValue(True)
                 # Select explicitly requested button
                 if forcedMetaSelect is not None:
@@ -278,7 +281,7 @@ class ItemView(d.Display):
             if btn.GetValue():
                 anySelection = True
         # If no buttons are pressed, press first active
-        if not anySelection:
+        if anySelection is False:
             for btn in self.marketBrowser.metaButtons:
                 if btn.Enabled:
                     btn.SetValue(True)
@@ -314,10 +317,10 @@ class ItemView(d.Display):
         self.filterItemStore()
 
     def itemSort(self, item):
-        if item.metaGroup is None:
-            return (item.name, 0, item.name)
-        else:
-            return (item.metaGroup.parent.name, item.metaGroup.ID , item.name)
+        sMkt = self.sMarket
+        parentname = sMkt.getParentItemByItem(item).name
+        mgid = sMkt.getMetaGroupIdByItem(item)
+        return (parentname, mgid, item.name)
 
     def contextMenu(self, event):
         # Check if something is selected, if so, spawn the menu for it

@@ -161,7 +161,6 @@ class Market():
         self.les_grp.category = ships
         self.les_grp.categoryID = ships.ID
         self.les_grp.description = ""
-        # TODO: fetch proper icon for LES group
         self.les_grp.icon = None
         self.ITEMS_FORCEGROUP = {
             "Opux Luxury Yacht": self.les_grp, # One of those is wedding present at CCP fanfest, another was hijacked from ISD guy during an event
@@ -175,8 +174,6 @@ class Market():
             "Tempest Tribal Issue": self.les_grp, # AT4 prize
             "Apotheosis": self.les_grp, # 5th EVE anniversary present
             "Zephyr": self.les_grp, # 2010 new year gift
-            # TODO: check to which group assign iris
-            #"Prototype Iris Probe Launcher", # 2010 new year gift
             "Primae": self.les_grp, # Promotion of planetary interaction
             "Freki": self.les_grp, # AT7 prize
             "Mimir": self.les_grp, # AT7 prize
@@ -420,14 +417,16 @@ class Market():
         else:
             return None
 
-    def getParentItemByItem(self, item):
+    def getParentItemByItem(self, item, selfparent=True):
         """Get parent item by item"""
         mg = self.getMetaGroupByItem(item)
         if mg:
             parent = mg.parent
         # Consider self as parent if item has no parent in database
-        else:
+        elif selfparent is True:
             parent = item
+        else:
+            parent = None
         return parent
 
     def getVariationsByItem(self, item):
@@ -460,24 +459,30 @@ class Market():
             children.add(child)
         return children
 
-    def getItemsByMarketGroup(self, mg):
+    def getItemsByMarketGroup(self, mg, vars=True):
         """Get items in the given market group"""
-        # TODO: probably it's better to compose list of parents first, then request variations due to performance reasons
-        res = set()
+        result = set()
+        # Get items from eos market group
         baseitms = mg.items
+        # Add hardcoded items to set
         if mg.ID in self.ITEMS_FORCEDMARKETGROUP_R:
             baseitms += list(self.getItem(itmn) for itmn in self.ITEMS_FORCEDMARKETGROUP_R[mg.ID])
-        for item in baseitms:
-            res.add(item)
-            vars = self.getVariationsByItem(item)
-            for var in vars:
-                # There's no poin int additional requests if we already added item to results
-                if var in res:
-                    continue
-                # Exclude items with their own explicitly defined market groups
-                if self.getMarketGroupByItem(var, parentcheck=False) is None:
-                    res.add(var)
-        return res
+        if vars:
+            for item in baseitms:
+                # Add one of the base market group items to result
+                result.add(item)
+                parent = self.getParentItemByItem(item, selfparent=False)
+                # If item has no parent, it's base item (or at least should be)
+                if parent is None:
+                    # Fetch variations only for parent items
+                    variations = self.getVariationsByItem(item)
+                    for variation in variations:
+                        # Exclude items with their own explicitly defined market groups
+                        if self.getMarketGroupByItem(variation, parentcheck=False) is None:
+                            result.add(variation)
+        else:
+            result = set(baseitms)
+        return result
 
     def marketGroupHasTypesCheck(self, mg):
         """If market group has any items, return true"""
@@ -492,6 +497,8 @@ class Market():
 
     def marketGroupValidityCheck(self, mg):
         """Check market group validity"""
+        # The only known case when group can be invalid is
+        # when it's declared to have types, but it doesn't contain anything
         if mg.hasTypes and not self.marketGroupHasTypesCheck(mg):
             return False
         else:
@@ -502,11 +509,13 @@ class Market():
         if mg.icon:
             return mg.icon.iconFile
         else:
-            if mg.hasTypes and len(mg.items) > 0:
-                item = mg.items[0]
+            if self.marketGroupHasTypesCheck(mg):
+                # Do not request variations to make process faster
+                # Pick random item and use its icon
+                item = self.getItemsByMarketGroup(mg, vars=False).pop()
                 return item.icon.iconFile if item.icon else ""
-            elif len(mg.children) > 0:
-                return self.getIconByMarketGroup(mg.children[0])
+            elif self.getMarketGroupChildren(mg) > 0:
+                return self.getIconByMarketGroup(self.getMarketGroupChildren(mg).pop())
             else:
                 return ""
 
@@ -596,9 +605,6 @@ class Market():
         filtered = set(filter(lambda item: self.getMetaGroupIdByItem(item) in metas, items))
         return filtered
 
-    #################################
-    # Price stuff, didn't modify it #
-    #################################
     def getPriceNow(self, typeID):
         """Get price for provided typeID"""
         price = self.priceCache.get(typeID)
