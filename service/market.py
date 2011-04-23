@@ -397,20 +397,20 @@ class Market():
         # Check if we force market group for given item
         if item.name in self.ITEMS_FORCEDMARKETGROUP:
             mgid = self.ITEMS_FORCEDMARKETGROUP[item.name]
+            self.getMarketGroup(mgid)
         # Check if item itself has market group
         elif item.marketGroupID:
-            mgid = item.marketGroupID
+            return item.marketGroup
         elif parentcheck:
             # If item doesn't have marketgroup, check if it has parent
             # item and use its market group
-            if self.getMetaGroupByItem(item):
-                parent = self.getItem(self.getMetaGroupByItem(item).parentTypeID)
-                mgid = parent.marketGroupID
+            parent = self.getParentItemByItem(item, selfparent=False)
+            if parent:
+                return parent.marketGroup
             else:
                 return None
         else:
             return None
-        return self.getMarketGroup(mgid)
 
     def getParentItemByItem(self, item, selfparent=True):
         """Get parent item by item"""
