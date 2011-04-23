@@ -191,7 +191,6 @@ class Market():
             "Velator": True, # Noobship
             "Reaper": True, # Noobship
             "TEST Damage Mod": False, # Marked as published by CCP for whatever reason
-            "Shadow" : False, # Sansha fighter bomber
             "Ghost Heavy Missile": False } # Missile used by sansha
 
         # List of groups which are forcibly published
@@ -264,6 +263,7 @@ class Market():
             "Quafe Zero": 977, # Implants & Boosters > Booster
             "Republic Special Ops Field Enhancer - Gamma": 620, # Implants & Boosters > Implants > Attribute Enhancers > Implant Slot 3
             "Sansha Modified 'Gnome' Implant": 1167, # Implants & Boosters > Implants > Skill Hardwiring > Implant Slot 7 > Shield Implants
+            "Shadow": 1310, # Drones > Combat Drones > Fighter Bombers
             "Shaqil's Speed Enhancer": 1157, # Implants & Boosters > Implants > Skill Hardwiring > Implant Slot 6 > Navigation Implants
             "Sleeper Data Analyzer I": 714, # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
             "Talocan Data Analyzer I": 714, # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
@@ -279,10 +279,6 @@ class Market():
                                      ("faction", frozenset((4, 3))),
                                      ("complex", frozenset((6,))),
                                      ("officer", frozenset((5,)))])
-#        self.META_MAP_R = {}
-#        for metaname, metaids in self.META_MAP.items():
-#            for metaid in metaids:
-#                self.META_MAP_R[metaid] = metaname
         self.SEARCH_CATEGORIES = ("Drone", "Module", "Subsystem", "Charge", "Implant")
 
         # Tell other threads that Market is at their service
@@ -410,12 +406,11 @@ class Market():
             if self.getMetaGroupByItem(item):
                 parent = self.getItem(self.getMetaGroupByItem(item).parentTypeID)
                 mgid = parent.marketGroupID
-        else:
-            mgid = None
-        if mgid is not None:
-            return self.getMarketGroup(mgid)
+            else:
+                return None
         else:
             return None
+        return self.getMarketGroup(mgid)
 
     def getParentItemByItem(self, item, selfparent=True):
         """Get parent item by item"""
