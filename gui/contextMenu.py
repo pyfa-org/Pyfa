@@ -18,6 +18,7 @@
 #===============================================================================
 
 import wx
+import gui.builtinContextMenus
 
 class ContextMenu(object):
     menus = []
@@ -32,7 +33,19 @@ class ContextMenu(object):
         menu.selection = selection
         empty = True
         menu.Bind(wx.EVT_MENU, cls.handler)
-        for i, fullContext in enumerate(fullContexts):
+        # Reorder list of contexts
+        fullContexts = set(fullContexts)
+        orderedFullContexts = []
+        for srcContext in gui.builtinContextMenus.srcContextOrder:
+            # Compose list of matches against scrContext in provided list of full contexts
+            filtered = filter(lambda item: item[0] == srcContext, fullContexts)
+            # Append them to reordered list and remove from source
+            for match in filtered:
+                orderedFullContexts.append(match)
+                fullContexts.discard(match)
+        # Combine both lists
+        orderedFullContexts += fullContexts
+        for i, fullContext in enumerate(orderedFullContexts):
             amount = 0
             srcContext = fullContext[0]
             try:
@@ -70,7 +83,7 @@ class ContextMenu(object):
 
                     empty = False
 
-            if amount > 0 and i != len(fullContexts) - 1:
+            if amount > 0 and i != len(orderedFullContexts) - 1:
                 menu.AppendSeparator()
 
         return menu if empty is False else None
