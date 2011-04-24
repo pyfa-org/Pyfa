@@ -51,12 +51,12 @@ class ShipBrowserWorkerThread(threading.Thread):
         while True:
             try:
                 callback, id = queue.get()
-                list = cache.get(id)
-                if list is None:
-                    list = sMarket.getShipList(id)
-                    cache[id] = list
+                set = cache.get(id)
+                if set is None:
+                    set = sMarket.getShipList(id)
+                    cache[id] = set
 
-                wx.CallAfter(callback, (id,list))
+                wx.CallAfter(callback, (id, set))
             except:
                 pass
             finally:
@@ -280,6 +280,12 @@ class Market():
                                      ("complex", frozenset((6,))),
                                      ("officer", frozenset((5,)))])
         self.SEARCH_CATEGORIES = ("Drone", "Module", "Subsystem", "Charge", "Implant")
+        self.ROOT_MARKET_GROUPS = (9,     # Modules
+                                   1111,  # Rigs
+                                   157,   # Drones
+                                   11,    # Ammo
+                                   1112,  # Subsystems
+                                   24)    # Implants & Boosters
 
         # Tell other threads that Market is at their service
         mktRdy.set()
@@ -363,6 +369,12 @@ class Market():
         else:
             group = item.group
         return group
+
+    def getCategoryByItem(self, item):
+        """Get category by item"""
+        grp = self.getGroupByItem(item)
+        cat = grp.category
+        return cat
 
     def getMetaGroupByItem(self, item):
         """Get meta group by item"""
@@ -526,20 +538,6 @@ class Market():
             pub = group.published
         return pub
 
-    def getShipRoot(self):
-        cat = self.getCategory("Ship")
-        root = []
-        for grp in self.getGroupsByCategory(cat):
-            root.append((grp.ID, grp.name))
-        return root
-
-    ROOT_MARKET_GROUPS = (9,     # Modules
-                          1111,  # Rigs
-                          157,   # Drones
-                          11,    # Ammo
-                          1112,  # Subsystems
-                          24)    # Implants & Boosters
-
     def getMarketRoot(self):
         """
         Get the root of the market tree.
@@ -553,13 +551,16 @@ class Market():
 
         return root
 
+    def getShipRoot(self):
+        cat = self.getCategory("Ship")
+        root = set(self.getGroupsByCategory(cat))
+        return root
+
     def getShipList(self, grpid):
-        """Get ships for  given group id"""
-        ships = []
-        grp = self.getGroup(grpid, eager=("items", "items.marketGroup", "items.attributes"))
-        for item in grp.items:
-            if self.getPublicityByItem(item):
-                ships.append((item.ID, item.name, item.race))
+        """Get ships for given group id"""
+        grp = self.getGroup(grpid, eager="items")
+        ships = set(filter(lambda ship: self.getPublicityByItem(ship), grp.items))
+        #ships.append((item.ID, item.name, item.race))
         return ships
 
     def getShipListDelayed(self, id, callback):
@@ -569,10 +570,10 @@ class Market():
     def searchShips(self, name):
         """Find ships according to given text pattern"""
         results = eos.db.searchItems(name)
-        ships = []
+        ships = set()
         for item in results:
-            if self.getGroupByItem(item).category.name == "Ship" and self.getPublicityByItem(item):
-                ships.append((item.ID, item.name, item.race))
+            if self.getCategoryByItem(item).name == "Ship" and self.getPublicityByItem(item):
+                ships.add(item)
         return ships
 
     def searchItems(self, name, callback):

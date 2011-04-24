@@ -142,9 +142,6 @@ class ShipBrowser(wx.Panel):
     def GetStage3ShipName(self):
         return self._stage3ShipName
 
-    def nameKey(self, info):
-        return info[1]
-
     def stage1(self, event):
         self._lastStage = self._activeStage
         self._activeStage = 1
@@ -158,32 +155,32 @@ class ShipBrowser(wx.Panel):
         self.lpane.Freeze()
         self.lpane.RemoveAllChildren()
         if len(self.categoryList) == 0:
-            self.categoryList = sMarket.getShipRoot()
-            self.categoryList.sort(key=self.nameKey)
-        for ID, name in self.categoryList:
-            self.lpane.AddWidget(CategoryItem(self.lpane, ID, (name, 0)))
+            self.categoryList = list(sMarket.getShipRoot())
+            self.categoryList.sort(key=lambda ship: ship.name)
+        for ship in self.categoryList:
+            self.lpane.AddWidget(CategoryItem(self.lpane, ship.ID, (ship.name, 0)))
 
         self.lpane.RefreshList()
         self.lpane.Thaw()
 
     RACE_ORDER = ["amarr", "caldari", "gallente", "minmatar", "ore", "serpentis", "angel", "blood", "sansha", "guristas", None]
-    def raceNameKey(self, shipInfo):
-        return self.RACE_ORDER.index(shipInfo[2]), shipInfo[1]
+    def raceNameKey(self, ship):
+        return self.RACE_ORDER.index(ship.race), ship.name
 
-    def stage2Callback(self,data):
+    def stage2Callback(self, data):
         if self.GetActiveStage() != 2:
             return
-        categoryID, shipList = data
+        ships = list(data[1])
         sFit = service.Fit.getInstance()
 
-        shipList.sort(key=self.raceNameKey)
-        for ID, name, race in shipList:
-            fits = len(sFit.getFitsWithShip(ID))
+        ships.sort(key=self.raceNameKey)
+        for ship in ships:
+            fits = len(sFit.getFitsWithShip(ship.ID))
             if self.filterShipsWithNoFits:
                 if fits>0:
-                    self.lpane.AddWidget(ShipItem(self.lpane, ID, (name, fits), race))
+                    self.lpane.AddWidget(ShipItem(self.lpane, ship.ID, (ship.name, fits), ship.race))
             else:
-                self.lpane.AddWidget(ShipItem(self.lpane, ID, (name, fits), race))
+                self.lpane.AddWidget(ShipItem(self.lpane, ship.ID, (ship.name, fits), ship.race))
 
         self.lpane.ShowLoading(False)
 
@@ -209,6 +206,9 @@ class ShipBrowser(wx.Panel):
         self._stage2Data = categoryID
         self.hpane.ToggleNewFitSB(False)
         self.hpane.ToggleFitViewModeSB(True)
+
+    def nameKey(self, info):
+        return info[1]
 
     def stage3(self, event):
 
@@ -272,15 +272,15 @@ class ShipBrowser(wx.Panel):
 
         self.lpane.RemoveAllChildren()
         if query:
-            shipList = sMarket.searchShips(query)
+            ships = sMarket.searchShips(query)
             fitList = sFit.searchFits(query)
 
-            for ID, name, race in shipList:
-                self.lpane.AddWidget(ShipItem(self.lpane, ID, (name, len(sFit.getFitsWithShip(ID))), race))
+            for ship in ships:
+                self.lpane.AddWidget(ShipItem(self.lpane, ship.ID, (ship.name, len(sFit.getFitsWithShip(ship.ID))), ship.race))
 
             for ID, name, shipID, shipName,timestamp in fitList:
                 self.lpane.AddWidget(FitItem(self.lpane, ID, (shipName, name,timestamp), shipID))
-            if len(shipList) == 0 and len(fitList) == 0 :
+            if len(ships) == 0 and len(fitList) == 0 :
                 self.lpane.AddWidget(PFStaticText(self.lpane, label = "No matching results."))
             self.lpane.RefreshList(doFocus = False)
         self.lpane.Thaw()
