@@ -558,7 +558,7 @@ class Market():
 
     def getShipList(self, grpid):
         """Get ships for given group id"""
-        grp = self.getGroup(grpid, eager="items")
+        grp = self.getGroup(grpid, eager = ("items", "items.marketGroup", "items.attributes"))
         ships = set(filter(lambda ship: self.getPublicityByItem(ship), grp.items))
         #ships.append((item.ID, item.name, item.race))
         return ships
