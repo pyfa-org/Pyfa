@@ -9,10 +9,10 @@ class DamagePattern(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
-    def display(self, context, selection):
-        return context in ("resistancesViewFull",) and self.mainFrame.getActiveFit() is not None
+    def display(self, srcContext, selection):
+        return srcContext in ("resistancesViewFull",) and self.mainFrame.getActiveFit() is not None
 
-    def getText(self, context, selection):
+    def getText(self, itmContext, selection):
         sDP = service.DamagePattern.getInstance()
         self.patterns = sDP.getDamagePatternList()
         self.patterns.sort( key=lambda p: (p.name in ["Selected Ammo",
@@ -20,7 +20,7 @@ class DamagePattern(ContextMenu):
         m = map(lambda p: p.name, self.patterns)
         return m
 
-    def activate(self, context, selection, i):
+    def activate(self, fullContext, selection, i):
         sDP = service.DamagePattern.getInstance()
         sFit = service.Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()

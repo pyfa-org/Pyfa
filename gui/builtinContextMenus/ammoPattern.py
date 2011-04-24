@@ -3,15 +3,14 @@ import gui.mainFrame
 import service
 import wx
 import gui.globalEvents as GE
-from gui import bitmapLoader
 
 class AmmoPattern(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
 
-    def display(self, context, selection):
-        if context not in ("item", "itemSearch") or self.mainFrame.getActiveFit() is None:
+    def display(self, srcContext, selection):
+        if srcContext not in ("marketItemGroup", "marketItemMisc") or self.mainFrame.getActiveFit() is None:
             return False
 
         item = selection[0]
@@ -21,10 +20,10 @@ class AmmoPattern(ContextMenu):
 
         return False
 
-    def getText(self, context, selection):
-        return "Set as Damage Pattern"
+    def getText(self, itmContext, selection):
+        return "Set {0} as Damage Pattern".format(itmContext if itmContext is not None else "Item")
 
-    def activate(self, context, selection, i):
+    def activate(self, fullContext, selection, i):
         item = selection[0]
         fit = self.mainFrame.getActiveFit()
         sFit = service.Fit.getInstance()

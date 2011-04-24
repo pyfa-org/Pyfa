@@ -126,6 +126,11 @@ class ImplantView(d.Display):
         if sel != -1:
             cFit = service.Fit.getInstance()
             fit = cFit.getFit(self.mainFrame.getActiveFit())
+            implant = fit.implants[sel]
 
-            menu = ContextMenu.getMenu((fit.implants[sel],), "implant")
+            sMkt = service.Market.getInstance()
+            sourceContext = "implantItem"
+            itemContext = sMkt.getCategoryByItem(implant.item).name
+
+            menu = ContextMenu.getMenu((implant,), (sourceContext, itemContext))
             self.PopupMenu(menu)

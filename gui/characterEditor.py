@@ -300,8 +300,11 @@ class SkillTreeView (wx.Panel):
         tree.Bind(wx.EVT_TREE_ITEM_EXPANDING, self.expandLookup)
         tree.Bind(wx.EVT_TREE_ITEM_RIGHT_CLICK, self.scheduleMenu)
 
-        self.statsMenu = ContextMenu.getMenu(None, "skill")
-        self.levelChangeMenu = ContextMenu.getMenu(None, "skill") or wx.Menu()
+        srcContext = "skillItem"
+        itemContext = "Skill"
+        context = (srcContext, itemContext)
+        self.statsMenu = ContextMenu.getMenu(None, context)
+        self.levelChangeMenu = ContextMenu.getMenu(None, context) or wx.Menu()
         self.levelChangeMenu.AppendSeparator()
         self.levelIds = {}
 
@@ -428,12 +431,12 @@ class ImplantsTreeView (wx.Panel):
         self.SetSizer(pmainSizer)
 
         # Populate the market tree
-        cMarket = service.Market.getInstance()
-        for id, name, iconFile, more in cMarket.getImplantTree():
-                iconId = self.addMarketViewImage(iconFile)
-                childId = self.availableImplantsTree.AppendItem(root, name, iconId, data=wx.TreeItemData(id))
-                if more:
-                    self.availableImplantsTree.AppendItem(childId, "dummy")
+        sMkt = service.Market.getInstance()
+        for mktGrp in sMkt.getImplantTree():
+            iconId = self.addMarketViewImage(sMkt.getIconByMarketGroup(mktGrp))
+            childId = self.availableImplantsTree.AppendItem(root, mktGrp.name, iconId, data=wx.TreeItemData(mktGrp.ID))
+            if sMkt.marketGroupHasTypesCheck(mktGrp) is False:
+                self.availableImplantsTree.AppendItem(childId, "dummy")
 
         self.availableImplantsTree.SortChildren(self.availableRoot)
 

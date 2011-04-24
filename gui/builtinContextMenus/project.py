@@ -8,17 +8,17 @@ class Project(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
-    def display(self, context, selection):
-        if context not in ("item", "itemSearch") or self.mainFrame.getActiveFit() is None:
+    def display(self, srcContext, selection):
+        if srcContext not in ("marketItemGroup", "marketItemMisc") or self.mainFrame.getActiveFit() is None:
             return False
 
         item = selection[0]
         return item.isType("projected")
 
-    def getText(self, context, selection):
-        return "Project onto Fit"
+    def getText(self, itmContext, selection):
+        return "Project {0} onto Fit".format(itmContext)
 
-    def activate(self, context, selection, i):
+    def activate(self, fullContext, selection, i):
         sFit = service.Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
         sFit.project(fitID, selection[0])

@@ -590,7 +590,8 @@ class Market():
 
     def getImplantTree(self):
         """Return implant market group children"""
-        return self.getMarketGroupChildren(27)
+        img = self.getMarketGroup(27)
+        return self.getMarketGroupChildren(img)
 
     def filterItemsByMeta(self, items, metas):
         """Filter items by meta lvl"""

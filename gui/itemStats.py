@@ -30,7 +30,7 @@ import service
 
 class ItemStatsDialog(wx.Dialog):
     counter = 0
-    def __init__(self, victim, context = None, pos = wx.DefaultPosition, size = wx.DefaultSize, maximized = False):
+    def __init__(self, victim, fullContext=None, pos = wx.DefaultPosition, size = wx.DefaultSize, maximized = False):
         wx.Dialog.__init__(self,
                           gui.mainFrame.MainFrame.getInstance(),
                           wx.ID_ANY, title="Item stats", pos = pos, size = size,
@@ -44,25 +44,30 @@ class ItemStatsDialog(wx.Dialog):
             self.Destroy()
             return
 
-        item = getattr(victim, "item", None) if context.lower() not in ("projectedammo", "ammo") else getattr(victim, "charge", None)
+        srcContext = fullContext[0]
+        try:
+            itmContext = fullContext[1]
+        except IndexError:
+            itmContext = None
+        item = getattr(victim, "item", None) if srcContext.lower() not in ("projectedcharge", "fittingcharge") else getattr(victim, "charge", None)
         if item is None:
             sMarket = service.Market.getInstance()
             item = sMarket.getItem(victim.ID)
             victim = None
-        self.context = context
+        self.context = itmContext
         if item.icon is not None:
             before,sep,after = item.icon.iconFile.rpartition("_")
             iconFile = "%s%s%s" % (before,sep,"0%s" % after if len(after) < 2 else after)
             itemImg = bitmapLoader.getBitmap(iconFile, "pack")
             if itemImg is not None:
                 self.SetIcon(wx.IconFromBitmap(itemImg))
-        self.SetTitle("%s: %s" % ("%s stats" % context.capitalize() if context is not None else "Stats", item.name))
+        self.SetTitle("%s: %s" % ("%s Stats" % itmContext if itmContext is not None else "Stats", item.name))
 
         self.SetMinSize((300, 200))
         self.SetSize((500, 300))
         self.SetMaxSize((500, -1))
         self.mainSizer = wx.BoxSizer(wx.VERTICAL)
-        self.container = ItemStatsContainer(self, victim, item, context)
+        self.container = ItemStatsContainer(self, victim, item, itmContext)
         self.mainSizer.Add(self.container, 1, wx.EXPAND)
         self.SetSizer(self.mainSizer)
 

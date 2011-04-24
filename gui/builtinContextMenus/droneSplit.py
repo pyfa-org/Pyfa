@@ -9,14 +9,15 @@ class DroneSplit(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
-    def display(self, context, selection):
-        return context in ("drone", "projectedDrone") and selection[0].amount > 1
+    def display(self, srcContext, selection):
+        return srcContext in ("droneItem", "projectedDrone") and selection[0].amount > 1
 
-    def getText(self, context, selection):
-        return "Split stack"
+    def getText(self, itmContext, selection):
+        return "Split {0} Stack".format(itmContext)
 
-    def activate(self, context, selection, i):
-        dlg = DroneSpinner(self.mainFrame, selection[0], context)
+    def activate(self, fullContext, selection, i):
+        srcContext = fullContext[0]
+        dlg = DroneSpinner(self.mainFrame, selection[0], srcContext)
         dlg.ShowModal()
         dlg.Destroy()
 
@@ -50,7 +51,7 @@ class DroneSpinner(wx.Dialog):
         sFit = service.Fit.getInstance()
         mainFrame = gui.mainFrame.MainFrame.getInstance()
         fitID = mainFrame.getActiveFit()
-        if self.context == "drone":
+        if self.context == "droneItem":
             sFit.splitDroneStack(fitID, self.drone, self.spinner.GetValue())
         else:
             sFit.splitProjectedDroneStack(fitID, self.drone, self.spinner.GetValue())

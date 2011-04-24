@@ -7,21 +7,19 @@ class MarketJump(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
-    def display(self, context, selection):
-        return context in ("module", "ammo", "itemSearch", "drone", "implant", "booster", "projectedModule", "projectedDrone") \
-               and (not selection[0].isEmpty if context == "module" else True)
+    def display(self, srcContext, selection):
+        return srcContext in ("marketItemMisc", "fittingModule", "fittingCharge", "droneItem",
+                              "implantItem", "boosterItem", "projectedModule", "projectedDrone", "projectedCharge") \
+               and (not selection[0].isEmpty if srcContext == "fittingModule" else True)
 
-    REPLACES = {"itemSearch": "Item",
-                "projectedModule": "Module",
-                "projectedDrone": "Drone"}
+    def getText(self, itmContext, selection):
+        return "{0} Market Group".format(itmContext if itmContext is not None else "Item")
 
-    def getText(self, context, selection):
-        return "Jump to %s Market Group" % (context.capitalize() if context not in self.REPLACES else self.REPLACES[context])
-
-    def activate(self, context, selection, i):
-        if context in ("module", "drone", "implant", "booster", "projectedModule", "projectedDrone"):
+    def activate(self, fullContext, selection, i):
+        srcContext = fullContext[0]
+        if srcContext in ("fittingModule", "droneItem", "implantItem", "boosterItem", "projectedModule", "projectedDrone"):
             item = selection[0].item
-        elif context in ("ammo", "projectedAmmo"):
+        elif srcContext in ("fittingCharge", "projectedCharge"):
             item = selection[0].charge
         else:
             item = selection[0]

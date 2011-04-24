@@ -8,28 +8,23 @@ class ItemStats(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
-    def display(self, context, selection):
-        return context in ("item", "ship", "module", "ammo", "skill",
-                           "itemSearch", "drone", "implant", "booster",
-                           "projectedModule", "projectedDrone", "projectedAmmo")
+    def display(self, srcContext, selection):
+        return srcContext in ("marketItemGroup", "marketItemMisc", "fittingModule", "fittingCharge", "fittingShip",
+                              "droneItem", "implantItem", "boosterItem", "skillItem", "projectedModule", "projectedDrone", "projectedCharge")
 
-    def getText(self, context, selection):
-        return "%s stats" % (context.capitalize() if context not in self.REPLACES else self.REPLACES[context])
+    def getText(self, itmContext, selection):
+        return "{0} Stats".format(itmContext if itmContext is not None else "Item")
 
-    REPLACES = {"itemSearch": "Item",
-                "projectedModule": "Module",
-                "projectedDrone": "Drone",
-                "projectedAmmo": "Ammo"}
-
-    def activate(self, context, selection, i):
-        if context == "ship":
+    def activate(self, fullContext, selection, i):
+        srcContext = fullContext[0]
+        if srcContext == "fittingShip":
             fitID = self.mainFrame.getActiveFit()
             cFit = service.Fit.getInstance()
             stuff = cFit.getFit(fitID).ship
         else:
             stuff = selection[0]
 
-        if context == "module" and stuff.isEmpty:
+        if srcContext == "fittingModule" and stuff.isEmpty:
             return
 
         mstate = wx.GetMouseState()
@@ -39,7 +34,7 @@ class ItemStats(ContextMenu):
             reuse = True
 
         if self.mainFrame.GetActiveStatsWindow() == None and reuse:
-            dlg=ItemStatsDialog(stuff, context.capitalize() if context not in self.REPLACES else self.REPLACES[context])
+            ItemStatsDialog(stuff, fullContext)
 
         elif reuse:
             lastWnd = self.mainFrame.GetActiveStatsWindow()
@@ -50,10 +45,10 @@ class ItemStats(ContextMenu):
             else:
                 size = wx.DefaultSize
                 pos = wx.DefaultPosition
-            dlg=ItemStatsDialog(stuff, context.capitalize() if context not in self.REPLACES else self.REPLACES[context], pos, size, maximized)
+            ItemStatsDialog(stuff, fullContext, pos, size, maximized)
             lastWnd.closeEvent(None)
 
         else:
-            dlg=ItemStatsDialog(stuff, context.capitalize() if context not in self.REPLACES else self.REPLACES[context])
+            ItemStatsDialog(stuff, fullContext)
 
 ItemStats.register()

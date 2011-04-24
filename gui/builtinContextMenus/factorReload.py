@@ -9,13 +9,13 @@ class FactorReload(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
-    def display(self, context, selection):
-        return context in ("firepowerViewFull",) and self.mainFrame.getActiveFit() is not None
+    def display(self, srcContext, selection):
+        return srcContext in ("firepowerViewFull",) and self.mainFrame.getActiveFit() is not None
 
-    def getText(self, context, selection):
+    def getText(self, itmContext, selection):
         return "Factor in Reload Time"
 
-    def activate(self, context, selection, i):
+    def activate(self, fullContext, selection, i):
         sFit = service.Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
         sFit.toggleFactorReload(fitID)

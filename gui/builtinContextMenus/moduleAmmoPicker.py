@@ -10,11 +10,11 @@ class ModuleAmmoPicker(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
-    def display(self, context, selection):
-        if self.mainFrame.getActiveFit() is None or context not in ("module", "projectedModule"):
+    def display(self, srcContext, selection):
+        if self.mainFrame.getActiveFit() is None or srcContext not in ("fittingModule", "projectedModule"):
             return False
 
-        modules = selection if context == "module" else (selection[0],)
+        modules = selection if srcContext == "fittingModule" else (selection[0],)
 
         validCharges = None
         for mod in modules:
@@ -33,10 +33,10 @@ class ModuleAmmoPicker(ContextMenu):
         self.charges = list(validCharges)
         return len(self.charges) > 0
 
-    def getText(self, context, selection):
-        return "Ammo"
+    def getText(self, itmContext, selection):
+        return "Charge"
 
-    def activate(self, context, selection, i):
+    def activate(self, fullContext, selection, i):
         pass
 
     DAMAGE_TYPES = ("em", "explosive", "kinetic", "thermal")

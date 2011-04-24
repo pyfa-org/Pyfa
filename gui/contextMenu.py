@@ -26,30 +26,35 @@ class ContextMenu(object):
         ContextMenu.menus.append(cls)
 
     @classmethod
-    def getMenu(cls, selection, *contexts):
+    def getMenu(cls, selection, *fullContexts):
         menu = wx.Menu()
         menu.info = {}
         menu.selection = selection
         empty = True
         menu.Bind(wx.EVT_MENU, cls.handler)
-        for i, context in enumerate(contexts):
+        for i, fullContext in enumerate(fullContexts):
             amount = 0
+            srcContext = fullContext[0]
+            try:
+                itmContext = fullContext[1]
+            except IndexError:
+                itmContext = None
             for menuHandler in cls.menus:
                 m = menuHandler()
-                if m.display(context, selection):
+                if m.display(srcContext, selection):
                     amount += 1
-                    texts = m.getText(context, selection)
+                    texts = m.getText(itmContext, selection)
                     if isinstance(texts, basestring):
                         texts = (texts,)
 
-                    bitmap = m.getBitmap(context, selection)
+                    bitmap = m.getBitmap(srcContext, selection)
                     multiple = not isinstance(bitmap, wx.Bitmap)
                     for it, text in enumerate(texts):
                         id = wx.NewId()
                         item = wx.MenuItem(menu, id, text)
-                        menu.info[id] = (m, context, it)
+                        menu.info[id] = (m, fullContext, it)
 
-                        sub = m.getSubMenu(context, selection, menu, it)
+                        sub = m.getSubMenu(srcContext, selection, menu, it)
                         if sub is not None:
                             item.SetSubMenu(sub)
 
@@ -65,7 +70,7 @@ class ContextMenu(object):
 
                     empty = False
 
-            if amount > 0 and i != len(contexts) - 1:
+            if amount > 0 and i != len(fullContexts) - 1:
                 menu.AppendSeparator()
 
         return menu if empty is False else None

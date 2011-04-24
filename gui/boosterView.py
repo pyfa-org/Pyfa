@@ -114,6 +114,9 @@ class BoosterView(d.Display):
         if sel != -1:
             cFit = service.Fit.getInstance()
             fit = cFit.getFit(self.mainFrame.getActiveFit())
+            item = fit.boosters[sel]
 
-            menu = ContextMenu.getMenu((fit.boosters[sel],), "booster")
+            srcContext = "boosterItem"
+            itemContext = "Booster"
+            menu = ContextMenu.getMenu((item,), (srcContext, itemContext))
             self.PopupMenu(menu)

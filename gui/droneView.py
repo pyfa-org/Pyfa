@@ -93,9 +93,9 @@ class DroneView(d.Display):
                    'Fighter Bombers', 'Combat Utility Drones',
                    'Electronic Warfare Drones', 'Logistic Drones', 'Mining Drones')
     def droneKey(self, drone):
-        cMarket = service.Market.getInstance()
+        sMarket = service.Market.getInstance()
 
-        groupName = cMarket.getMarketGroupName(drone.item)
+        groupName = sMarket.getMarketGroupByItem(drone.item).name
 
         return (self.DRONE_ORDER.index(groupName),
                 drone.item.name)
@@ -174,8 +174,10 @@ class DroneView(d.Display):
     def spawnMenu(self):
         sel = self.GetFirstSelected()
         if sel != -1:
-            cFit = service.Fit.getInstance()
-            fit = cFit.getFit(self.mainFrame.getActiveFit())
+            drone = self.drones[sel]
 
-            menu = ContextMenu.getMenu((self.drones[sel],), "drone")
+            sMkt = service.Market.getInstance()
+            sourceContext = "droneItem"
+            itemContext = sMkt.getCategoryByItem(drone.item).name
+            menu = ContextMenu.getMenu((drone,), (sourceContext, itemContext))
             self.PopupMenu(menu)

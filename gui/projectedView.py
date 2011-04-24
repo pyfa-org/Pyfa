@@ -165,17 +165,26 @@ class ProjectedView(d.Display):
             col = self.getColumn(event.Position)
             if col == self.getColIndex(State):
                 fitID = self.mainFrame.getActiveFit()
-                cFit = service.Fit.getInstance()
-                cFit.toggleProjected(fitID, item, "right" if event.Button == 3 else "left")
+                sFit = service.Fit.getInstance()
+                sFit.toggleProjected(fitID, item, "right" if event.Button == 3 else "left")
                 wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
             elif event.Button == 3:
+                sMkt = service.Market.getInstance()
                 if isinstance(item, eos.types.Drone):
-                    context = ("projectedDrone",)
+                    srcContext = "projectedDrone"
+                    itemContext = sMkt.getCategoryByItem(item.item).name
+                    context = ((srcContext, itemContext),)
                 elif isinstance(item, eos.types.Module):
+                    modSrcContext = "projectedModule"
+                    modItemContext = sMkt.getCategoryByItem(item.item).name
+                    modFullContext = (modSrcContext, modItemContext)
                     if item.charge is not None:
-                        context = ("projectedModule", "projectedAmmo")
+                        chgSrcContext = "projectedCharge"
+                        chgItemContext = sMkt.getCategoryByItem(item.charge).name
+                        chgFullContext = (chgSrcContext, chgItemContext)
+                        context = (modFullContext, chgFullContext)
                     else:
-                        context = ("projectedModule",)
+                        context = (modFullContext,)
                 else:
                     context = ("projectedFit",)
 
