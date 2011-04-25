@@ -346,23 +346,23 @@ class FittingView(d.Display):
         sMkt = service.Market.getInstance()
         selection = []
         sel = self.GetFirstSelected()
-        contexts = set()
+        contexts = []
         while sel != -1:
             mod = self.mods[self.GetItemData(sel)]
             if not mod.isEmpty:
                 srcContext = "fittingModule"
                 itemContext = sMkt.getCategoryByItem(mod.item).name
-                contexts.add((srcContext, itemContext))
+                contexts.append((srcContext, itemContext))
                 if mod.charge is not None:
                     srcContext = "fittingCharge"
                     itemContext = sMkt.getCategoryByItem(mod.charge).name
-                    contexts.add((srcContext, itemContext))
+                    contexts.append((srcContext, itemContext))
 
                 selection.append(mod)
 
             sel = self.GetNextSelected(sel)
 
-        contexts.add(("fittingShip", "Ship"))
+        contexts.append(("fittingShip", "Ship"))
 
         menu = ContextMenu.getMenu(selection, *contexts)
         self.PopupMenu(menu)
