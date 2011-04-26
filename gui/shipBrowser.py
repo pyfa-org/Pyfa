@@ -175,7 +175,7 @@ class ShipBrowser(wx.Panel):
 
         ships.sort(key=self.raceNameKey)
         for ship in ships:
-            fits = len(sFit.getFitsWithShip(ship.ID))
+            fits = sFit.countFitsWithShip(ship.ID)
             if self.filterShipsWithNoFits:
                 if fits>0:
                     self.lpane.AddWidget(ShipItem(self.lpane, ship.ID, (ship.name, fits), ship.race))

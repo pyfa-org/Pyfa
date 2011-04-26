@@ -91,6 +91,9 @@ class Fit(object):
 
         return names
 
+    def countFitsWithShip(self,id):
+        return eos.db.countFitsWithShip(id)
+
     def getModule(self, fitID, pos):
         fit = eos.db.getFit(fitID)
         return fit.modules[pos]
