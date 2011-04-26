@@ -98,10 +98,10 @@ class Fit(object):
 
     def groupHasFits(self, id):
         sMkt = Market.getInstance()
-        grp = sMkt.getGroup(id)
+        grp = sMkt.getGroup(id, eager=("items", "group"))
         items = sMkt.getItemsByGroup(grp)
         for item in items:
-            if self.countFitsWithShip(item.id) > 0:
+            if self.countFitsWithShip(item.ID) > 0:
                 return True
         return False
 

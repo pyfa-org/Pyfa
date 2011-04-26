@@ -464,7 +464,7 @@ class Market():
 
     def getItemsByGroup(self, group):
         """Get items assigned to group"""
-        items = group.items
+        items = set(filter(lambda item: self.getPublicityByItem(item) and item.group == group, group.items))
         return items
 
     def getItemsByMarketGroup(self, mg, vars=True):
@@ -563,9 +563,8 @@ class Market():
 
     def getShipList(self, grpid):
         """Get ships for given group id"""
-        grp = self.getGroup(grpid, eager = ("items", "items.marketGroup", "items.attributes"))
-        ships = set(filter(lambda ship: self.getPublicityByItem(ship), grp.items))
-        #ships.append((item.ID, item.name, item.race))
+        grp = self.getGroup(grpid, eager = ("items", "items.group", "items.attributes"))
+        ships = self.getItemsByGroup(grp)
         return ships
 
     def getShipListDelayed(self, id, callback):
