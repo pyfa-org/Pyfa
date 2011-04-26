@@ -29,6 +29,7 @@ import eos.types
 
 from eos.types import State, Slot
 
+from service.market import Market
 from service.damagePattern import DamagePattern
 from service.character import Character
 
@@ -90,6 +91,19 @@ class Fit(object):
             names.append((fit.ID, fit.name, fit.timestamp))
 
         return names
+
+    def countFitsWithShip(self, id):
+        count = eos.db.countFitsWithShip(id)
+        return count
+
+    def groupHasFits(self, id):
+        sMkt = Market.getInstance()
+        grp = sMkt.getGroup(id)
+        items = sMkt.getItemsByGroup(grp)
+        for item in items:
+            if self.countFitsWithShip(item.id) > 0:
+                return True
+        return False
 
     def getModule(self, fitID, pos):
         fit = eos.db.getFit(fitID)

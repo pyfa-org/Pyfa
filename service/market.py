@@ -462,6 +462,11 @@ class Market():
             children.add(child)
         return children
 
+    def getItemsByGroup(self, group):
+        """Get items assigned to group"""
+        items = group.items
+        return items
+
     def getItemsByMarketGroup(self, mg, vars=True):
         """Get items in the given market group"""
         result = set()
