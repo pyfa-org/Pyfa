@@ -464,7 +464,9 @@ class Market():
 
     def getItemsByGroup(self, group):
         """Get items assigned to group"""
-        items = set(filter(lambda item: self.getPublicityByItem(item) and item.group == group, group.items))
+        # Return only public items; also, filter out items
+        # which were forcibly set to other groups
+        items = set(filter(lambda item: self.getPublicityByItem(item) and self.getGroupByItem(item) == group, group.items))
         return items
 
     def getItemsByMarketGroup(self, mg, vars=True):
