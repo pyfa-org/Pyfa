@@ -150,7 +150,7 @@ class MarketTree(wx.TreeCtrl):
             self.Delete(child)
             # And add real market group contents
             sMkt = self.sMarket
-            currentMktGrp = sMkt.getMarketGroup(self.GetPyData(root))
+            currentMktGrp = sMkt.getMarketGroup(self.GetPyData(root), eager="children")
             for childMktGrp in sMkt.getMarketGroupChildren(currentMktGrp):
                 # If market should have items but it doesn't, do not show it
                 if sMkt.marketGroupValidityCheck(childMktGrp) is False:
@@ -234,7 +234,7 @@ class ItemView(d.Display):
             root = self.marketView.GetPyData(root)
             if root is not None:
                 # Get current market group
-                mg = sMkt.getMarketGroup(root)
+                mg = sMkt.getMarketGroup(root, eager=("items", "items.metaGroup"))
                 # Get all its items
                 items = sMkt.getItemsByMarketGroup(mg)
             else:
