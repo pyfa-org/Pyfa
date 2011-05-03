@@ -585,6 +585,7 @@ class ItemAffectedBy (wx.Panel):
             child = self.affectedBy.AppendItem(root, "%s" % itemName if counter == 1 else "%s x %d" % (itemName,counter), itemIcon)
 
             if counter > 0:
+                attributes = []
                 for attrName, attrModifier, attrAmount in attrData:
                     attrInfo = self.stuff.item.attributes.get(attrName)
                     displayName = attrInfo.displayName if attrInfo else ""
@@ -604,12 +605,17 @@ class ItemAffectedBy (wx.Panel):
                     else:
                         penalized = ""
 
+                    attributes.append((attrName, (displayName if displayName != "" else attrName), attrModifier, attrAmount, penalized))
+
+                attrSorted = sorted(attributes, key = lambda attribName: attribName[0])
+
+                for attr in attrSorted:
+                    attrName, displayName, attrModifier, attrAmount, penalized = attr
                     if self.toggleView == 1:
                         treeitem = self.affectedBy.AppendItem(child, "%s %s %.2f %s" % ((displayName if displayName != "" else attrName), attrModifier, attrAmount, penalized), attrIcon)
                         self.affectedBy.SetPyData(treeitem,"%s %s %.2f %s" % (attrName, attrModifier, attrAmount, penalized))
                     else:
                         treeitem = self.affectedBy.AppendItem(child, "%s %s %.2f %s" % (attrName, attrModifier, attrAmount, penalized), attrIcon)
                         self.affectedBy.SetPyData(treeitem,"%s %s %.2f %s" % ((displayName if displayName != "" else attrName), attrModifier, attrAmount, penalized))
-
         self.ExpandCollapseTree()
 
