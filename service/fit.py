@@ -340,6 +340,10 @@ class Fit(object):
         fit.modules.remove(m)
         fit.modules.insert(dst, m)
 
+    def cloneModule(self, fitID, src, dst):
+        #need implementation of module clone based on module positions (also make sure the dst is empty else do nothing)
+        pass
+
     def addDrone(self, fitID, itemID):
         if fitID == None:
             return False

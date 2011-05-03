@@ -280,12 +280,15 @@ class FittingView(d.Display):
                     self.click(event)
 
     def swapItems(self, x, y, itemID):
+        mstate = wx.GetMouseState()
+
         srcRow = self.FindItemData(-1,itemID)
         dstRow, _ = self.HitTest((x, y))
-        if srcRow != -1 and dstRow != -1:
-            self._swap(srcRow, dstRow)
 
-    def _swap(self, srcRow, dstRow):
+        if srcRow != -1 and dstRow != -1:
+            self._swap(srcRow, dstRow, mstate.ControlDown())
+
+    def _swap(self, srcRow, dstRow, clone = False):
         mod1 = self.mods[self.GetItemData(srcRow)]
         mod2 = self.mods[self.GetItemData(dstRow)]
 
@@ -300,9 +303,11 @@ class FittingView(d.Display):
                 mod2 = self.mods[self.GetItemData(dstRow)]
 
         cFit = service.Fit.getInstance()
-        cFit.swapModules(self.mainFrame.getActiveFit(),
-                         mod1.position,
-                         mod2.position)
+
+        if clone:
+            cFit.cloneModule(self.mainFrame.getActiveFit(), mod1.position, mod2.position)
+        else:
+            cFit.swapModules(self.mainFrame.getActiveFit(), mod1.position, mod2.position)
 
         self.generateMods()
         self.refresh(self.mods)
