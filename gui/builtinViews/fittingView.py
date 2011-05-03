@@ -282,11 +282,16 @@ class FittingView(d.Display):
     def swapItems(self, x, y, itemID):
         mstate = wx.GetMouseState()
 
+        if mstate.CmdDown() or mstate.ControlDown():
+            clone = True
+        else:
+            clone = False
+
         srcRow = self.FindItemData(-1,itemID)
         dstRow, _ = self.HitTest((x, y))
 
         if srcRow != -1 and dstRow != -1:
-            self._swap(srcRow, dstRow, mstate.ControlDown())
+            self._swap(srcRow, dstRow, clone)
 
     def _swap(self, srcRow, dstRow, clone = False):
         mod1 = self.mods[self.GetItemData(srcRow)]
