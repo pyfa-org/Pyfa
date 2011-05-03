@@ -567,6 +567,8 @@ class Market():
         """Get ships for given group id"""
         grp = self.getGroup(grpid, eager = ("items", "items.group", "items.attributes"))
         ships = self.getItemsByGroup(grp)
+        for ship in ships:
+            ship.race
         return ships
 
     def getShipListDelayed(self, id, callback):
@@ -587,7 +589,7 @@ class Market():
         self.searchWorkerThread.scheduleSearch(name, callback)
 
     def directAttrRequest(self, items, attrID):
-        itemIDs = map(lambda i: i.ID, items)
+        itemIDs = tuple(map(lambda i: i.ID, items))
         info = {}
         for ID, val in eos.db.directAttributeRequest(itemIDs, attrID):
             info[ID] = val
