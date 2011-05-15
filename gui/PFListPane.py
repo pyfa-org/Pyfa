@@ -34,9 +34,9 @@ class PFListPane(wx.ScrolledWindow):
 
         self.Bind(wx.EVT_SCROLLWIN_LINEUP, self.MScrollUp)
         self.Bind(wx.EVT_SCROLLWIN_LINEDOWN, self.MScrollDown)
-        self.Bind(wx.EVT_CHILD_FOCUS, self.OnChildFocus)
+#        self.Bind(wx.EVT_CHILD_FOCUS, self.OnChildFocus)
         self.Bind(wx.EVT_LEFT_DOWN, self.ForceFocus)
-        self.Bind(wx.EVT_MOUSE_CAPTURE_CHANGED, self.ForceFocus)
+#        self.Bind(wx.EVT_MOUSE_CAPTURE_CHANGED, self.ForceFocus)
 
     def ForceFocus(self,event):
         if self.FindFocus() and self.FindFocus().Parent != self:
@@ -121,7 +121,7 @@ class PFListPane(wx.ScrolledWindow):
     def IsWidgetSelectedByContext(self, widget):
         return False
 
-    def RefreshList(self, doRefresh = False, doFocus = True):
+    def RefreshList(self, doRefresh = False, doFocus = False):
         ypos = 0
         maxy = 0
         scrollTo = 0

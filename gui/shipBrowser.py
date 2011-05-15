@@ -1271,6 +1271,10 @@ class FitItem(SFItem.SFBrowserItem):
         self.selTimer = wx.Timer(self,self.selTimerID)
         self.selTimer.Start(100)
 
+    def GetType(self):
+        return 3
+
+
     def OnTimer(self, event):
 
         if self.selTimerID == event.GetId():
