@@ -109,6 +109,10 @@ class TargetingMiscViewFull(StatsView):
                  ("labelFullCargo", lambda: fit.ship.getModifiedItemAttr("capacity"), 3, 0, 9, u"m\u00B3"))
 
         counter = 0
+        RADII = [("Pod",25), ("Interceptor",33), ("Frigate",38),
+                 ("Destroyer", 83), ("Cruiser", 130),
+                 ("Battlecruiser", 265),  ("Battleship",420)]
+
         for labelName, value, prec, lowest, highest, unit in stats:
             label = getattr(self, labelName)
             value = value() if fit is not None else 0
@@ -116,28 +120,27 @@ class TargetingMiscViewFull(StatsView):
             if self._cachedValues[counter] != value:
                 label.SetLabel("%s %s" %(formatAmount(value, prec, lowest, highest), unit))
                 # Tooltip stuff
-                RADII = [("Pod",25), ("Interceptor",33), ("Frigate",38),
-                         ("Destroyer", 83), ("Cruiser", 130),
-                         ("Battlecruiser", 265),  ("Battleship",420)]
-                if labelName is "labelScanRes":
-                    lockTime = "%s\n" % "Lock Times".center(30)
-                    for size, radius in RADII:
-                        left = "%.1fs" % fit.calculateLockTime(radius)
-                        right = "%s [%d]" % (size, radius)
-                        lockTime += "%5s\t%s\n" % (left,right)
-                    # print lockTime # THIS IS ALIGNED!
-                    label.SetToolTip(wx.ToolTip(lockTime))
-                elif labelName is "labelSensorStr":
-                    label.SetToolTip(wx.ToolTip("Type: %s - %.1f" % (fit.scanType, value)))
-                elif labelName is "labelFullSigRadius":
-                    label.SetToolTip(wx.ToolTip("Probe Size: %.3f" % (fit.probeSize or 0) ))
-                elif labelName is "labelFullWarpSpeed":
-                    label.SetToolTip(wx.ToolTip("Max Warp Distance: %.1f AU" %
-                        fit.maxWarpDistance))
-                elif fit is not None:
-                    label.SetToolTip(wx.ToolTip("%.1f" % value))
+                if fit:
+                    if labelName is "labelScanRes":
+                        lockTime = "%s\n" % "Lock Times".center(30)
+                        for size, radius in RADII:
+                            left = "%.1fs" % fit.calculateLockTime(radius)
+                            right = "%s [%d]" % (size, radius)
+                            lockTime += "%5s\t%s\n" % (left,right)
+                        # print lockTime # THIS IS ALIGNED!
+                        label.SetToolTip(wx.ToolTip(lockTime))
+                    elif labelName is "labelSensorStr":
+                        label.SetToolTip(wx.ToolTip("Type: %s - %.1f" % (fit.scanType, value)))
+                    elif labelName is "labelFullSigRadius":
+                        label.SetToolTip(wx.ToolTip("Probe Size: %.3f" % (fit.probeSize or 0) ))
+                    elif labelName is "labelFullWarpSpeed":
+                        label.SetToolTip(wx.ToolTip("Max Warp Distance: %.1f AU" % fit.maxWarpDistance))
+                    else:
+                        label.SetToolTip(wx.ToolTip("%.1f" % value))
+                else:
+                    label.SetToolTip(wx.ToolTip(""))
                 self._cachedValues[counter] = value
-        counter += 1
+            counter += 1
 
         self.panel.Layout()
         self.headerPanel.Layout()
