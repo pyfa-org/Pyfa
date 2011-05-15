@@ -885,6 +885,11 @@ class ShipItem(SFItem.SFBrowserItem):
         self.acceptBmp = bitmapLoader.getBitmap("faccept_small", "icons")
 
         self.shipEffBk = bitmapLoader.getBitmap("fshipbk_big","icons")
+
+        img = wx.ImageFromBitmap(self.shipEffBk)
+        img = img.Mirror(False)
+        self.shipEffBkMirrored = wx.BitmapFromImage(img)
+
         self.raceBmp = bitmapLoader.getBitmap("race_%s_small" % self.shipRace, "icons")
 
         if self.shipName == "Apotheosis":
@@ -1049,7 +1054,12 @@ class ShipItem(SFItem.SFBrowserItem):
 
         self.toolbar.SetPosition((self.toolbarx, self.toolbary))
 
-        mdc.DrawBitmap(self.shipEffBk, self.shipEffx, self.shipEffy, 0)
+        if self.GetState() & SFItem.SB_ITEM_HIGHLIGHTED:
+            shipEffBk = self.shipEffBkMirrored
+        else:
+            shipEffBk = self.shipEffBk
+
+        mdc.DrawBitmap(shipEffBk, self.shipEffx, self.shipEffy, 0)
 
         mdc.DrawBitmap(self.shipBmp, self.shipBmpx, self.shipBmpy, 0)
 
@@ -1195,6 +1205,10 @@ class FitItem(SFItem.SFBrowserItem):
         self.acceptBmp = bitmapLoader.getBitmap("faccept_small", "icons")
 
         self.shipEffBk = bitmapLoader.getBitmap("fshipbk_big","icons")
+
+        img = wx.ImageFromBitmap(self.shipEffBk)
+        img = img.Mirror(False)
+        self.shipEffBkMirrored = wx.BitmapFromImage(img)
 
         self.dragTLFBmp = None
 
@@ -1479,7 +1493,12 @@ class FitItem(SFItem.SFBrowserItem):
 
         self.toolbar.SetPosition((self.toolbarx, self.toolbary))
 
-        mdc.DrawBitmap(self.shipEffBk, self.shipEffx, self.shipEffy, 0)
+        if self.GetState() & SFItem.SB_ITEM_HIGHLIGHTED:
+            shipEffBk = self.shipEffBkMirrored
+        else:
+            shipEffBk = self.shipEffBk
+
+        mdc.DrawBitmap(shipEffBk, self.shipEffx, self.shipEffy, 0)
 
         mdc.DrawBitmap(self.shipBmp, self.shipBmpx, self.shipBmpy, 0)
 
