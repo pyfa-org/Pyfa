@@ -17,6 +17,7 @@ import math
 
 from gui.utils import colorUtils
 import gui.utils.drawUtils as drawUtils
+import gui.utils.animEffects as animEffects
 
 class PyGauge(wx.PyWindow):
     """
@@ -372,87 +373,6 @@ class PyGauge(wx.PyWindow):
             dc.SetTextForeground(wx.Colour(255,255,255))
             dc.DrawLabel(formatStr.format(value), rect, wx.ALIGN_CENTER)
 
-    def OUT_CIRC (self, t, b, c, d):
-        t=float(t)
-        b=float(b)
-        c=float(c)
-        d=float(d)
-        t = t/d -1
-        return c * math.sqrt(1 - t*t) + b;
-
-    def OUT_QUART(self, t, b, c, d):
-        t=float(t)
-        b=float(b)
-        c=float(c)
-        d=float(d)
-        t = t/d -1
-        return -c * ((t)*t*t*t - 1) + b;
-
-    def INOUT_CIRC(self, t, b, c, d):
-        t=float(t)
-        b=float(b)
-        c=float(c)
-        d=float(d)
-        t1 = t / (d / 2)
-
-        if ((t / (d/2)) < 1):
-            return -c/2 * (math.sqrt(1 - (t/(d/2))**2) - 1) + b
-        return c/2 * (math.sqrt(1 - (t1-2)**2) + 1) + b;
-
-    def IN_CUBIC (self, t, b, c, d):
-        t=float(t)
-        b=float(b)
-        c=float(c)
-        d=float(d)
-        t = t/d
-        return c*t*t*t + b
-
-    def OUT_QUAD (self, t, b, c, d):
-        t=float(t)
-        b=float(b)
-        c=float(c)
-        d=float(d)
-
-        t/=d
-
-        return -c *(t)*(t-2) + b
-
-    def OUT_BOUNCE (self, t, b, c, d):
-        t=float(t)
-        b=float(b)
-        c=float(c)
-        d=float(d)
-
-        t/=d
-
-        if ((t) < (1/2.75)):
-            return c*(7.5625*t*t) + b
-        else:
-            if (t < (2/2.75)):
-                t-=(1.5/2.75)
-                return c*(7.5625*t*t + .75) + b
-            else:
-                if (t < (2.5/2.75)):
-                    t-=(2.25/2.75)
-                    return c*(7.5625*(t)*t + .9375) + b
-                else:
-                    t-=(2.625/2.75)
-                    return c*(7.5625*(t)*t + .984375) + b
-
-    def INOUT_EXP(self, t, b, c, d):
-        t=float(t)
-        b=float(b)
-        c=float(c)
-        d=float(d)
-        t1 = t / (d/2)
-        if t==0:
-             return b
-        if t==d:
-             return b+c
-        if (t1) < 1:
-             return c/2 * math.pow(2, 10 * (t1 - 1)) + b - c * 0.0005
-        return c/2 * 1.0005 * (-math.pow(2, -10 * (t1-1)) + 2) + b
-
 
     def OnTimer(self,event):
         """
@@ -472,7 +392,7 @@ class PyGauge(wx.PyWindow):
             start = 0
             end = oldValue - value
         self._animDirection = direction
-        step=self.OUT_QUAD(self._animStep, start, end, self._animDuration)
+        step=animEffects.OUT_QUAD(self._animStep, start, end, self._animDuration)
 
         self._animStep += self._period
 
