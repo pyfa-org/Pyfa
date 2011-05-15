@@ -70,6 +70,7 @@ class FitSpawner(gui.multiSwitch.TabSpawner):
                 if isinstance(page, FittingView) and page.activeFitID == fitID:
                     index = self.multiSwitch.GetPageIndex(page)
                     self.multiSwitch.SetSelection(index)
+                    wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
                     return
                 elif isinstance(page, gui.builtinViews.emptyView.BlankPage):
                     view = FittingView(self.multiSwitch)
