@@ -1124,6 +1124,15 @@ class PFTabsContainer(wx.Panel):
         self.addButton.SetPosition((round(tabsWidth) + self.inclination*2, self.containerHeight - self.height/2 - self.addButton.GetHeight()/3))
 
     def OnLeaveWindow(self, event):
+
+        if self.startDrag and not self.dragging:
+            self.dragging = False
+            self.startDrag = False
+            self.draggedTab = None
+            self.dragTrigger = self.dragTrail
+            if self.HasCapture():
+                self.ReleaseMouse()
+
         if self.previewWnd:
             self.previewWnd.Show(False)
             del self.previewWnd
