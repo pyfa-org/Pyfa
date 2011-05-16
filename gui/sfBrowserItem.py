@@ -66,6 +66,19 @@ class PFBaseButton(object):
             return self.normalBmp
         return self.disabledBmp
 
+class PFToolbarSeparator(object):
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+    def GetHeight(self):
+        return self.height
+
+    def GetWidth(self):
+        return self.width
+
+    def GetSize(self):
+        return (self.width, self.height)
+
 class PFToolbar(object):
     def __init__(self, parent):
         self.Parent = parent
@@ -83,9 +96,13 @@ class PFToolbar(object):
         self.buttons.append(btn)
         return btn
 
+    def AddSeparator(self, width, height):
+        self.buttons.append(PFToolbarSeparator(width, height))
+
     def ClearState(self):
         for button in self.buttons:
-            button.SetState()
+            if isinstance(button, PFBaseButton):
+                button.SetState()
         self.hoverLabel = ""
 
     def MouseMove(self, event):
@@ -95,18 +112,19 @@ class PFToolbar(object):
         self.hoverLabel = ""
 
         for button in self.buttons:
-            state = button.GetState()
-            if self.HitTest( (bx, self.toolbarY), event.GetPosition(), button.GetSize()):
-                changeCursor = True
-                if not state & BTN_HOVER:
-                    button.SetState(state | BTN_HOVER)
-                    self.hoverLabel = button.GetLabel()
-                    self.Parent.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
-                    doRefresh = True
-            else:
-                if state & BTN_HOVER:
-                    button.SetState(state ^ BTN_HOVER)
-                    doRefresh = True
+            if isinstance(button, PFBaseButton):
+                state = button.GetState()
+                if self.HitTest( (bx, self.toolbarY), event.GetPosition(), button.GetSize()):
+                    changeCursor = True
+                    if not state & BTN_HOVER:
+                        button.SetState(state | BTN_HOVER)
+                        self.hoverLabel = button.GetLabel()
+                        self.Parent.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
+                        doRefresh = True
+                else:
+                    if state & BTN_HOVER:
+                        button.SetState(state ^ BTN_HOVER)
+                        doRefresh = True
 
             bwidth, bheight = button.GetSize()
             bx += bwidth + self.padding
@@ -119,28 +137,30 @@ class PFToolbar(object):
         mx,my = event.GetPosition()
         bx = self.toolbarX
         for button in self.buttons:
-            state = button.GetState()
-            if state & BTN_PRESSED:
-                button.SetState(state ^ BTN_PRESSED )
-                if self.HitTest( (bx, self.toolbarY), event.GetPosition(), button.GetSize()):
-                    return button
-                else:
-                    return False
+            if isinstance(button, PFBaseButton):
+                state = button.GetState()
+                if state & BTN_PRESSED:
+                    button.SetState(state ^ BTN_PRESSED )
+                    if self.HitTest( (bx, self.toolbarY), event.GetPosition(), button.GetSize()):
+                        return button
+                    else:
+                        return False
             bwidth, bheight = button.GetSize()
             bx += bwidth + self.padding
 
         bx = self.toolbarX
         for button in self.buttons:
-            state = button.GetState()
-            if self.HitTest( (bx, self.toolbarY), event.GetPosition(), button.GetSize()):
+            if isinstance(button, PFBaseButton):
+                state = button.GetState()
+                if self.HitTest( (bx, self.toolbarY), event.GetPosition(), button.GetSize()):
 
-                if event.LeftDown() or event.LeftDClick():
-                    button.SetState(state | BTN_PRESSED)
-                    return button
+                    if event.LeftDown() or event.LeftDClick():
+                        button.SetState(state | BTN_PRESSED)
+                        return button
 
-                elif event.LeftUp():
-                    button.SetState(state | (not BTN_PRESSED))
-                    return button
+                    elif event.LeftUp():
+                        button.SetState(state | (not BTN_PRESSED))
+                        return button
 
             bwidth, bheight = button.GetSize()
             bx += bwidth + self.padding
@@ -173,25 +193,29 @@ class PFToolbar(object):
         for button in self.buttons:
             by = self.toolbarY
             tbx = bx
+            if isinstance(button, PFBaseButton):
+                btnState = button.GetState()
 
-            btnState = button.GetState()
+                bmp = button.GetDisabledBitmap()
 
-            bmp = button.GetDisabledBitmap()
+                if btnState & BTN_NORMAL:
+                    bmp = button.GetBitmap()
 
-            if btnState & BTN_NORMAL:
-                bmp = button.GetBitmap()
+                if btnState & BTN_HOVER:
+                    bmp = button.GetHoverBitmap()
 
-            if btnState & BTN_HOVER:
-                bmp = button.GetHoverBitmap()
+                if btnState & BTN_PRESSED:
+                    bmp = button.GetBitmap()
+                    by += self.padding / 2
+                    tbx += self.padding / 2
 
-            if btnState & BTN_PRESSED:
-                bmp = button.GetBitmap()
-                by += self.padding / 2
-                tbx += self.padding / 2
-
-            bmpWidth = bmp.GetWidth()
-            pdc.DrawBitmap(bmp, tbx, by)
-            bx += bmpWidth + self.padding
+                bmpWidth = bmp.GetWidth()
+                pdc.DrawBitmap(bmp, tbx, by)
+                bx += bmpWidth + self.padding
+            else:
+                pdc.SetPen(wx.Pen(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT), button.GetWidth()))
+                pdc.DrawLine(tbx,by,tbx, by + button.GetHeight())
+                bx += button.GetWidth() + self.padding
 
 class SFBrowserItem(wx.Window):
     def __init__(self, parent, id = wx.ID_ANY, pos = wx.DefaultPosition, size = (0,16), style = 0):
