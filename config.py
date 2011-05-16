@@ -44,7 +44,7 @@ gameDB = os.path.join(staticPath, "eve.db")
 import eos.config
 
 #Caching modifiers, disable all gamedata caching, its unneeded.
-eos.config.gamedataCache = True
+eos.config.gamedataCache = False
 # saveddata db location modifier, shouldn't ever need to touch this
 eos.config.saveddata_connectionstring = "sqlite:///" + saveDB + "?check_same_thread=False"
 eos.config.gamedata_connectionstring = "sqlite:///" + gameDB + "?check_same_thread=False"
