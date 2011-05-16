@@ -12,6 +12,8 @@ from wx.lib.buttons import GenBitmapButton
 import gui.utils.colorUtils as colorUtils
 import gui.utils.drawUtils as drawUtils
 import gui.utils.animUtils as animUtils
+import gui.utils.animEffects as animEffects
+
 import gui.sfBrowserItem as SFItem
 
 FitRenamed, EVT_FIT_RENAMED = wx.lib.newevent.NewEvent()
@@ -55,6 +57,72 @@ class PFWidgetsContainer(PFListPane):
         return False
 
 
+class RaceSelector(wx.Window):
+    def __init__ (self, parent, id = wx.ID_ANY, label = "", pos = wx.DefaultPosition, size = wx.Size(5,-1), style = 0):
+        wx.Window.__init__(self, parent, id, pos = pos, size = size, style = style)
+        self.SetSize(wx.Size(5,-1))
+        self.SetMinSize(wx.Size(5,-1))
+
+        self.animTimerID = wx.NewId()
+        self.animTimer = wx.Timer(self, self.animTimerID)
+        self.animPeriod = 25
+        self.animDuration = 250
+        self.animStep = 0
+        self.minWidth = 5
+        self.maxWidth = 24
+        self.direction = 0
+
+        self.checkTimerID = wx.NewId()
+        self.checkTimer = wx.Timer(self, self.checkTimerID)
+        self.checkPeriod = 250
+        self.checkMaximize = True
+
+        self.Bind(wx.EVT_ENTER_WINDOW, self.OnWindowEnter)
+        self.Bind(wx.EVT_LEAVE_WINDOW, self.OnWindowLeave)
+        self.Bind(wx.EVT_TIMER, self.OnTimer)
+
+    def OnTimer(self,event):
+        if event.GetId() == self.animTimerID:
+            start = 0
+            end = self.maxWidth - self.minWidth
+
+            step = animEffects.OUT_CIRC(self.animStep, start, end, self.animDuration)
+            self.animStep += self.animPeriod * self.direction
+
+            self.AdjustSize(self.minWidth + step)
+
+            if self.animStep > self.animDuration or self.animStep < 0:
+                self.animTimer.Stop()
+                self.animStep = self.animDuration if self.direction == 1 else 0
+                self.Parent.GetBrowserContainer().RefreshList(True)
+
+        if event.GetId() == self.checkTimerID:
+            if self.checkMaximize:
+                self.direction = 1
+            else:
+                self.direction = -1
+
+            if not self.animTimer.IsRunning():
+                self.animTimer.Start(self.animPeriod)
+
+    def AdjustSize(self, width):
+        self.SetMinSize(wx.Size(width,-1))
+        self.Parent.Layout()
+
+    def OnWindowEnter(self, event):
+        if not self.checkTimer.IsRunning():
+            self.checkTimer.Start(self.checkPeriod, wx.TIMER_ONE_SHOT)
+        self.checkMaximize = True
+
+        event.Skip()
+
+    def OnWindowLeave(self, event):
+        if not self.checkTimer.IsRunning():
+            self.checkTimer.Start(self.checkPeriod, wx.TIMER_ONE_SHOT)
+        self.checkMaximize = False
+
+        event.Skip()
+
 class ShipBrowser(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__ (self, parent,style = 0)
@@ -86,7 +154,12 @@ class ShipBrowser(wx.Panel):
         mainSizer.Add( self.m_sl2, 0, wx.EXPAND, 0 )
 
         self.lpane = PFWidgetsContainer(self)
-        mainSizer.Add(self.lpane, 1, wx.EXPAND)
+#        self.raceselect = RaceSelector(self)
+        container = wx.BoxSizer(wx.HORIZONTAL)
+
+#        container.Add(self.raceselect,0,wx.EXPAND)
+        container.Add(self.lpane,1,wx.EXPAND)
+        mainSizer.Add(container, 1, wx.EXPAND)
         self.SetSizer(mainSizer)
         self.Layout()
         self.Show()
@@ -100,6 +173,9 @@ class ShipBrowser(wx.Panel):
         self.mainFrame.Bind(GE.FIT_CHANGED, self.RefreshList)
 
         self.stage1(None)
+
+    def GetBrowserContainer(self):
+        return self.lpane
 
     def RefreshContent(self):
         stage = self.GetActiveStage()
