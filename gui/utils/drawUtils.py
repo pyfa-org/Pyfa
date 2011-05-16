@@ -12,7 +12,7 @@ def RenderGradientBar(windowColor, width, height, sFactor, eFactor, mFactor = No
     if mFactor:
         gMid = colorUtils.GetSuitableColor(windowColor, mFactor)
     else:
-         gMid = None
+         gMid = colorUtils.GetSuitableColor(windowColor, sFactor + (eFactor - sFactor) / 2)
 
     gEnd = colorUtils.GetSuitableColor(windowColor, eFactor)
 
@@ -45,11 +45,11 @@ def DrawGradientBar(width, height, gStart, gEnd, gMid = None, fillRatio = 4):
     if gMid is None:
         gMid = gStart
 
-    mdc.GradientFillLinear(r, gStart, gEnd, wx.SOUTH)
+    mdc.GradientFillLinear(r, gStart, gMid, wx.SOUTH)
     r.top = r.height
     r.height = height * (fillRatio - 1)/fillRatio + (1 if height % fillRatio != 0 else 0)
 
-    mdc.GradientFillLinear(r, gMid, gEnd, wx.NORTH)
+    mdc.GradientFillLinear(r, gMid, gEnd, wx.SOUTH)
 
     mdc.SelectObject(wx.NullBitmap)
 
