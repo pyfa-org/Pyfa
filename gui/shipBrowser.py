@@ -58,7 +58,7 @@ class PFWidgetsContainer(PFListPane):
 
 
 class RaceSelector(wx.Window):
-    def __init__ (self, parent, id = wx.ID_ANY, label = "", pos = wx.DefaultPosition, size = wx.DefaultSize, style = 0, layout = wx.VERTICAL):
+    def __init__ (self, parent, id = wx.ID_ANY, label = "", pos = wx.DefaultPosition, size = wx.DefaultSize, style = 0, layout = wx.VERTICAL, animate = False):
         wx.Window.__init__(self, parent, id, pos = pos, size = size, style = style)
 
         self.animTimerID = wx.NewId()
@@ -66,12 +66,14 @@ class RaceSelector(wx.Window):
         self.animPeriod = 25
         self.animDuration = 250
         self.animStep = 0
-        self.minWidth = 5
         self.maxWidth = 24
-        self.minHeight = 10
+        self.minWidth = 5 if animate else self.maxWidth
         self.maxHeight = 24
-        self.direction = 0
+        self.minHeight = 10 if animate else self.maxHeight
+
+        self.direction = 0 if animate else 1
         self.layout = layout
+        self.animate = animate
 
         if layout == wx.VERTICAL:
             self.SetSize(wx.Size(self.minWidth, -1))
@@ -129,16 +131,24 @@ class RaceSelector(wx.Window):
 
 
     def OnSizeUpdate(self,event):
-        rect = self.GetRect()
+        self.CalcButtonsBarPos()
+
+        self.Refresh()
+
+        event.Skip()
+
+    def CalcButtonsBarPos(self):
 
         if self.layout == wx.HORIZONTAL:
+            rect = self.GetRect()
             width = 0
+
             for bmp in self.raceBmps:
                 width += bmp.GetWidth() + self.buttonsPadding
+
             posx = (rect.width - width)/2
+
             self.buttonsBarPos = (posx,0)
-        self.Refresh()
-        event.Skip()
 
     def OnLeftUp(self, event):
 
@@ -179,6 +189,7 @@ class RaceSelector(wx.Window):
             if race:
                 self.raceBmps.append(bitmapLoader.getBitmap("race_%s_small" % race, "icons"))
         self.raceNames = races
+        self.CalcButtonsBarPos()
         self.Refresh()
 
     def OnBackgroundErase(self, event):
@@ -260,6 +271,9 @@ class RaceSelector(wx.Window):
         self.Refresh()
 
     def OnWindowEnter(self, event):
+        if not self.animate:
+            return
+
         if not self.checkTimer.IsRunning():
             self.checkTimer.Start(self.checkPeriod, wx.TIMER_ONE_SHOT)
         self.checkMaximize = True
@@ -267,6 +281,9 @@ class RaceSelector(wx.Window):
         event.Skip()
 
     def OnWindowLeave(self, event):
+        if not self.animate:
+            return
+
         if not self.checkTimer.IsRunning():
             self.checkTimer.Start(self.checkPeriod, wx.TIMER_ONE_SHOT)
         self.checkMaximize = False
