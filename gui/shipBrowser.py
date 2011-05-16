@@ -314,6 +314,7 @@ class NavigationPanel(SFItem.SFBrowserItem):
         self.padding = 4
         self.lastSearch = ""
         self.recentSearches = []
+        self.inSearch = False
 
         self.fontSmall = wx.FontFromPixelSize((0,12),wx.SWISS, wx.NORMAL, wx.NORMAL, False)
 
@@ -335,12 +336,17 @@ class NavigationPanel(SFItem.SFBrowserItem):
     def OnScheduleSearch(self, event):
         search = self.BrowserSearchBox.GetValue()
         if len(search) < 3 and len(search) >= 0:
-            if len(self.shipBrowser.browseHist) > 0:
-                stage,data = self.shipBrowser.browseHist.pop()
-                self.gotoStage(stage,data)
-
+            if self.inSearch == True:
+                self.inSearch = False
+                if len(self.shipBrowser.browseHist) > 0:
+                    stage,data = self.shipBrowser.browseHist.pop()
+                    self.gotoStage(stage,data)
         else:
-            wx.PostEvent(self.shipBrowser,SearchSelected(text=search, back = False))
+            if search:
+                wx.PostEvent(self.shipBrowser,SearchSelected(text=search, back = False))
+                self.inSearch = True
+            else:
+                self.inSearch = False
 
     def ToggleSearchBox(self):
         if self.BrowserSearchBox.IsShown():
