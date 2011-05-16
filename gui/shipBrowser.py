@@ -335,7 +335,7 @@ class NavigationPanel(SFItem.SFBrowserItem):
             if len(self.shipBrowser.browseHist) > 0:
                 stage,data = self.shipBrowser.browseHist.pop()
                 self.gotoStage(stage,data)
-                print stage,data
+
         else:
             wx.PostEvent(self.shipBrowser,SearchSelected(text=search, back = False))
 
@@ -521,12 +521,12 @@ class ShipBrowser(wx.Panel):
         self.lpane = PFWidgetsContainer(self)
         layout = wx.HORIZONTAL
 
-#        self.navpanel = NavigationPanel(self)
+        self.navpanel = NavigationPanel(self)
         self.raceselect = RaceSelector(self, layout = layout, animate = False)
         container = wx.BoxSizer(wx.VERTICAL if layout == wx.HORIZONTAL else wx.HORIZONTAL)
 
         if layout == wx.HORIZONTAL:
-#            container.Add(self.navpanel,0,wx.EXPAND)
+            container.Add(self.navpanel,0,wx.EXPAND)
             container.Add(self.lpane,1,wx.EXPAND)
             container.Add(self.raceselect,0,wx.EXPAND)
         else:
@@ -733,8 +733,8 @@ class ShipBrowser(wx.Panel):
             self.lpane.Thaw()
             self.hpane.gotoStage(stage,data)
             return
-        self.hpane.ToggleFitViewModeSB(False)
-        self.hpane.ToggleNewFitSB(True)
+#        self.hpane.ToggleFitViewModeSB(False)
+#        self.hpane.ToggleNewFitSB(True)
 
         self.navpanel.ShowNewFitButton(True)
         self.navpanel.ShowSwitchEmptyGroupsButton(False)
