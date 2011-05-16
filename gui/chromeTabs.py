@@ -186,6 +186,7 @@ class PFNotebook(wx.Panel):
         self.tabsContainer.AddTab(tabTitle, tabImage, showClose)
 
         self.activePage = tabWnd
+        self.ShowActive(True)
 
 
     def SetSelection(self, page):
@@ -217,7 +218,7 @@ class PFNotebook(wx.Panel):
     def SwitchPages(self, src, dest, internal = False):
         self.pages[src], self.pages[dest] = self.pages[dest], self.pages[src]
 
-    def ShowActive(self):
+    def ShowActive(self, resizeOnly = False):
         size = self.pageContainer.GetSize()
         bx, by = self.GetBorders()
         ww,wh = size
@@ -225,7 +226,8 @@ class PFNotebook(wx.Panel):
         wh -= by * 4
         self.activePage.SetSize((ww,wh))
         self.activePage.SetPosition((0,0))
-        self.activePage.Show()
+        if not resizeOnly:
+            self.activePage.Show()
         self.Layout()
 
 
