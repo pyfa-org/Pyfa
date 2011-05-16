@@ -123,7 +123,22 @@ class RaceSelector(wx.Window):
         self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnBackgroundErase)
         self.Bind(wx.EVT_PAINT, self.OnPaint)
         self.Bind(wx.EVT_LEFT_UP, self.OnLeftUp)
+        self.Bind(wx.EVT_SIZE, self.OnSizeUpdate)
+
         self.Layout()
+
+
+    def OnSizeUpdate(self,event):
+        rect = self.GetRect()
+
+        if self.layout == wx.HORIZONTAL:
+            width = 0
+            for bmp in self.raceBmps:
+                width += bmp.GetWidth() + self.buttonsPadding
+            posx = (rect.width - width)/2
+            self.buttonsBarPos = (posx,0)
+        self.Refresh()
+        event.Skip()
 
     def OnLeftUp(self, event):
 

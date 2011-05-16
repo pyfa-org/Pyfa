@@ -117,7 +117,7 @@ class MainFrame(wx.Frame):
         self.notebookBrowsers.SetSelection(1)
 
         self.splitter.SplitVertically(self.notebookBrowsers, self.FitviewAdditionsPanel)
-        self.splitter.SetMinimumPaneSize(200)
+        self.splitter.SetMinimumPaneSize(204)
         self.splitter.SetSashPosition(300)
 
         cstatsSizer = wx.BoxSizer(wx.VERTICAL)
