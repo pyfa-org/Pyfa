@@ -2,7 +2,7 @@ import wx
 import gui.utils.colorUtils as colorUtils
 
 
-def RenderGradientBar(windowColor, width, height, sFactor, eFactor, mFactor = None):
+def RenderGradientBar(windowColor, width, height, sFactor, eFactor, mFactor = None , fillRatio = 4):
 
     if sFactor == 0 and eFactor == 0 and mFactor == None:
         return DrawFilledBitmap(width,height, windowColor)
@@ -16,7 +16,7 @@ def RenderGradientBar(windowColor, width, height, sFactor, eFactor, mFactor = No
 
     gEnd = colorUtils.GetSuitableColor(windowColor, eFactor)
 
-    return DrawGradientBar(width, height, gStart, gEnd, gMid)
+    return DrawGradientBar(width, height, gStart, gEnd, gMid, fillRatio)
 
 
 def DrawFilledBitmap(width, height, color):
@@ -32,10 +32,10 @@ def DrawFilledBitmap(width, height, color):
 
     return canvas
 
-def DrawGradientBar(width, height, gStart, gEnd, gMid = None):
+def DrawGradientBar(width, height, gStart, gEnd, gMid = None, fillRatio = 4):
     canvas = wx.EmptyBitmap(width,height)
 
-    fillRatio = 4
+
     mdc = wx.MemoryDC()
     mdc.SelectObject(canvas)
 

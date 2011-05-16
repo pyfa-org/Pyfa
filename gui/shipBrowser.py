@@ -201,9 +201,10 @@ class RaceSelector(wx.Window):
         sepColor = colorUtils.GetSuitableColor(windowColor, 0.6)
 
         mdc = wx.BufferedPaintDC(self)
-        mdc.SetBackground(wx.Brush(bkColor))
-        mdc.Clear()
-
+#        mdc.SetBackground(wx.Brush(bkColor))
+#        mdc.Clear()
+        bkBitmap = drawUtils.RenderGradientBar(windowColor, rect.width, rect.height, 0.0, 0.1, 0.2, 2)
+        mdc.DrawBitmap(bkBitmap,0,0,True)
 #        mdc.SetPen(wx.Pen(sepColor,1,wx.SOLID))
 #        if self.layout == wx.VERTICAL:
 #            mdc.DrawLine(rect.width-1, 0 , rect.width-1, rect.height)
