@@ -83,6 +83,18 @@ class RaceSelector(wx.Window):
         self.buttonsBarPos = (4,0)
         self.buttonsPadding = 4
 
+        self.bmpArrow = bitmapLoader.getBitmap("down-arrow2","icons")
+        #    Make the bitmaps have the same color as window text
+
+        sysTextColour = wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOWTEXT )
+
+        img = self.bmpArrow.ConvertToImage()
+        img = img.Rotate90(False)
+        img.Replace(0, 0, 0, sysTextColour[0], sysTextColour[1], sysTextColour[2])
+        img = img.Scale(self.minWidth, 8, wx.IMAGE_QUALITY_HIGH)
+
+        self.bmpArrow = wx.BitmapFromImage(img)
+
         self.RebuildRaces(self.shipBrowser.RACE_ORDER)
 
         self.Bind(wx.EVT_ENTER_WINDOW, self.OnWindowEnter)
@@ -137,7 +149,7 @@ class RaceSelector(wx.Window):
         rect = self.GetRect()
 
         windowColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
-        bkColor = colorUtils.GetSuitableColor(windowColor, 0.05)
+        bkColor = colorUtils.GetSuitableColor(windowColor, 0.1)
         sepColor = colorUtils.GetSuitableColor(windowColor, 0.6)
 
         mdc = wx.BufferedPaintDC(self)
@@ -160,7 +172,8 @@ class RaceSelector(wx.Window):
 
             mdc.DrawBitmap(bmp, x, y)
             y+=raceBmp.GetHeight() + 4
-
+        if self.direction < 1:
+            mdc.DrawBitmap(self.bmpArrow, -2, rect.height/2)
 
 
     def OnTimer(self,event):
