@@ -221,10 +221,10 @@ class PFNotebook(wx.Panel):
         size = self.pageContainer.GetSize()
         bx, by = self.GetBorders()
         ww,wh = size
-        ww -= bx * 4 if 'wxGTK' in wx.PlatformInfo else 6
-        wh -= by * 4 if 'wxGTK' in wx.PlatformInfo else 6
+        ww -= bx * 4
+        wh -= by * 4
         self.activePage.SetSize((ww,wh))
-        self.activePage.SetPosition((bx,by))
+        self.activePage.SetPosition((0,0))
         self.activePage.Show()
         self.Layout()
 
