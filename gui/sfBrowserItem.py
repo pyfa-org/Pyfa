@@ -14,17 +14,27 @@ BTN_DISABLED = 8
 
 
 class PFBaseButton(object):
-    def __init__(self, normalBitmap = wx.NullBitmap,label = "", callback = None, hoverBitmap = None, disabledBitmap = None):
+    def __init__(self, normalBitmap = wx.NullBitmap,label = "", callback = None, hoverBitmap = None, disabledBitmap = None, show = True):
 
         self.normalBmp = normalBitmap
         self.hoverBmp = hoverBitmap
         self.disabledBmp = disabledBitmap
         self.label = label
+        self.show = show
 
         self.callback = callback
 
         self.state = BTN_NORMAL
         # state : BTN_STUFF
+
+    def Show(self, show):
+        self.show = show
+
+    def Hide(self):
+        self.show = False
+
+    def IsVisible(self):
+        return self.show
 
     def SetCallback(self, callback):
         self.callback = callback
@@ -78,8 +88,8 @@ class PFToolbar(object):
     def SetPosition(self, pos):
         self.toolbarX, self.toolbarY = pos
 
-    def AddButton(self, btnBitmap, label = "", clickCallback = None, hoverBitmap = None, disabledBitmap = None):
-        btn = PFBaseButton(btnBitmap, label, clickCallback, hoverBitmap, disabledBitmap)
+    def AddButton(self, btnBitmap, label = "", clickCallback = None, hoverBitmap = None, disabledBitmap = None, show = True):
+        btn = PFBaseButton(btnBitmap, label, clickCallback, hoverBitmap, disabledBitmap, show)
         self.buttons.append(btn)
         return btn
 
@@ -95,6 +105,9 @@ class PFToolbar(object):
         self.hoverLabel = ""
 
         for button in self.buttons:
+            if not button.IsVisible():
+                continue
+
             state = button.GetState()
             if self.HitTest( (bx, self.toolbarY), event.GetPosition(), button.GetSize()):
                 changeCursor = True
@@ -119,6 +132,9 @@ class PFToolbar(object):
         mx,my = event.GetPosition()
         bx = self.toolbarX
         for button in self.buttons:
+            if not button.IsVisible():
+                continue
+
             state = button.GetState()
             if state & BTN_PRESSED:
                 button.SetState(state ^ BTN_PRESSED )
@@ -131,7 +147,11 @@ class PFToolbar(object):
 
         bx = self.toolbarX
         for button in self.buttons:
+            if not button.IsVisible():
+                continue
+
             state = button.GetState()
+
             if self.HitTest( (bx, self.toolbarY), event.GetPosition(), button.GetSize()):
 
                 if event.LeftDown() or event.LeftDClick():
@@ -144,20 +164,29 @@ class PFToolbar(object):
 
             bwidth, bheight = button.GetSize()
             bx += bwidth + self.padding
+
         return None
 
     def GetWidth(self):
         bx = 0
         for button in self.buttons:
+            if not button.IsVisible():
+                continue
+
             bwidth, bheight = button.GetSize()
             bx += bwidth + self.padding
+
         return bx
 
     def GetHeight(self):
         height = 0
         for button in self.buttons:
+            if not button.IsVisible():
+                continue
+
             bwidth, bheight = button.GetSize()
             height = max(height, bheight)
+
         return height
 
     def HitTest(self, target, position, area):
@@ -171,6 +200,9 @@ class PFToolbar(object):
     def Render(self, pdc):
         bx = self.toolbarX
         for button in self.buttons:
+            if not button.IsVisible():
+                continue
+
             by = self.toolbarY
             tbx = bx
 
@@ -192,6 +224,7 @@ class PFToolbar(object):
             bmpWidth = bmp.GetWidth()
             pdc.DrawBitmap(bmp, tbx, by)
             bx += bmpWidth + self.padding
+
 
 class SFBrowserItem(wx.Window):
     def __init__(self, parent, id = wx.ID_ANY, pos = wx.DefaultPosition, size = (0,16), style = 0):

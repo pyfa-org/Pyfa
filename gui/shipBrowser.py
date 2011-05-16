@@ -288,6 +288,200 @@ class RaceSelector(wx.Window):
 
         event.Skip()
 
+class NavigationPanel(SFItem.SFBrowserItem):
+    def __init__(self,parent, size = (-1,24)):
+        SFItem.SFBrowserItem.__init__(self,parent,size = size)
+
+        self.rewBmpH = bitmapLoader.getBitmap("frewind_small","icons")
+        self.forwBmp = bitmapLoader.getBitmap("fforward_small","icons")
+        self.searchBmpH = bitmapLoader.getBitmap("fsearch_small","icons")
+        self.newBmpH = bitmapLoader.getBitmap("fit_add_small","icons")
+        self.resetBmpH = bitmapLoader.getBitmap("freset_small","icons")
+        self.switchBmpH = bitmapLoader.getBitmap("fit_switch_view_mode_small","icons")
+
+        self.resetBmp = self.AdjustAlphaChannel(self.resetBmpH)
+        self.rewBmp = self.AdjustAlphaChannel(self.rewBmpH)
+        self.searchBmp = self.AdjustAlphaChannel(self.searchBmpH)
+        self.switchBmp = self.AdjustAlphaChannel(self.switchBmpH)
+        self.newBmp = self.AdjustAlphaChannel(self.newBmpH)
+
+        self.toolbar.AddButton(self.resetBmp, "Ship groups", clickCallback = self.OnHistoryReset, hoverBitmap = self.resetBmpH)
+        self.toolbar.AddButton(self.rewBmp, "Back", clickCallback = self.OnHistoryBack, hoverBitmap = self.rewBmpH)
+        self.toolbar.AddButton(self.searchBmp, "Search fittings", clickCallback = self.ToggleSearchBox, hoverBitmap = self.searchBmpH)
+        self.btnNew = self.toolbar.AddButton(self.newBmp, "New fitting", clickCallback = self.OnNewFitting, hoverBitmap = self.newBmpH, show = False)
+        self.btnSwitch = self.toolbar.AddButton(self.switchBmp, "Hide empty ship groups", clickCallback  = self.ToggleEmptyGroupsView, hoverBitmap = self.switchBmpH, show = False)
+
+        self.padding = 4
+        self.fontSmall = wx.FontFromPixelSize((0,12),wx.SWISS, wx.NORMAL, wx.NORMAL, False)
+
+        self.BrowserSearchBox = wx.TextCtrl(self, wx.ID_ANY, "", wx.DefaultPosition, (-1,-1), wx.TE_PROCESS_ENTER)
+        self.BrowserSearchBox.Show(False)
+
+        self.BrowserSearchBox.Bind(wx.EVT_TEXT_ENTER, self.OnBrowserSearchBoxEnter)
+        self.BrowserSearchBox.Bind(wx.EVT_KILL_FOCUS, self.OnBrowserSearchBoxLostFocus)
+        self.BrowserSearchBox.Bind(wx.EVT_KEY_DOWN, self.OnBrowserSearchBoxEsc)
+        self.BrowserSearchBox.Bind(wx.EVT_TEXT, self.OnScheduleSearch)
+
+        self.SetMinSize(size)
+        self.shipBrowser = self.Parent
+        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+
+        self.Bind(wx.EVT_SIZE, self.OnResize)
+
+
+    def OnScheduleSearch(self, event):
+        search = self.BrowserSearchBox.GetValue()
+        if len(search) < 3 and len(search) >= 0:
+            if len(self.shipBrowser.browseHist) > 0:
+                stage,data = self.shipBrowser.browseHist.pop()
+                self.gotoStage(stage,data)
+                print stage,data
+        else:
+            wx.PostEvent(self.shipBrowser,SearchSelected(text=search, back = False))
+
+    def ToggleSearchBox(self):
+        if self.BrowserSearchBox.IsShown():
+            self.BrowserSearchBox.Show(False)
+        else:
+            self.BrowserSearchBox.Show(True)
+            self.BrowserSearchBox.SetFocus()
+
+    def OnBrowserSearchBoxEnter(self, event):
+        pass
+
+    def OnBrowserSearchBoxLostFocus(self, event):
+        self.BrowserSearchBox.Show(False)
+
+    def OnBrowserSearchBoxEsc(self, event):
+        if event.GetKeyCode() == wx.WXK_ESCAPE:
+            self.BrowserSearchBox.Show(False)
+        else:
+            event.Skip()
+
+
+    def OnResize(self, event):
+        self.Refresh()
+
+    def ToggleEmptyGroupsView(self):
+        if self.shipBrowser.filterShipsWithNoFits:
+            self.shipBrowser.filterShipsWithNoFits = False
+            self.btnSwitch.label = "Hide empty ship groups"
+        else:
+            self.shipBrowser.filterShipsWithNoFits = True
+            self.btnSwitch.label = "Show empty ship groups"
+        stage = self.shipBrowser.GetActiveStage()
+        if stage == 2:
+            categoryID = self.shipBrowser.GetStageData(stage)
+            wx.PostEvent(self.shipBrowser,Stage2Selected(categoryID=categoryID, back = True))
+
+    def ShowNewFitButton(self, show):
+        self.btnNew.Show(show)
+        self.Refresh()
+
+    def ShowSwitchEmptyGroupsButton(self, show):
+        self.btnSwitch.Show(show)
+        self.Refresh()
+
+    def OnNewFitting(self):
+        stage = self.Parent.GetActiveStage()
+        if stage == 3:
+            shipID = self.Parent.GetStageData(stage)
+            shipName = self.Parent.GetStage3ShipName()
+            sFit = service.Fit.getInstance()
+            fitID = sFit.newFit(shipID, "%s fit" %shipName)
+            self.shipBrowser.fitIDMustEditName = fitID
+            wx.PostEvent(self.Parent,Stage3Selected(shipID=shipID, back = True))
+            wx.PostEvent(self.mainFrame, FitSelected(fitID=fitID))
+
+    def OnHistoryReset(self):
+        if self.shipBrowser.browseHist:
+            self.shipBrowser.browseHist = []
+            self.gotoStage(1,0)
+
+    def OnHistoryBack(self):
+        if len(self.shipBrowser.browseHist) > 0:
+            stage,data = self.shipBrowser.browseHist.pop()
+            self.gotoStage(stage,data)
+
+    def AdjustAlphaChannel(self, bitmap):
+        img = wx.ImageFromBitmap(bitmap)
+        img = img.AdjustChannels(1,1,1,0.4)
+        return wx.BitmapFromImage(img)
+    def UpdateElementsPos(self, mdc):
+        rect = self.GetRect()
+
+        self.toolbarx = self.padding
+        self.toolbary = (rect.height - self.toolbar.GetHeight()) / 2
+
+        mdc.SetFont(self.fontSmall)
+
+        wlabel,hlabel = mdc.GetTextExtent(self.toolbar.hoverLabel)
+
+        self.thoverx = self.toolbar.GetWidth() + self.padding
+        self.thovery = (rect.height - hlabel)/2
+        self.thoverw = wlabel
+
+        self.browserBoxX = self.thoverx
+        bEditBoxWidth, bEditBoxHeight = self.BrowserSearchBox.GetSize()
+        self.browserBoxY = (rect.height - bEditBoxHeight) / 2
+
+        self.bEditBoxWidth = rect.width - self.browserBoxX
+
+    def DrawItem(self, mdc):
+        rect = self.GetRect()
+
+        windowColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
+        textColor = colorUtils.GetSuitableColor(windowColor, 1)
+
+        mdc.SetTextForeground(textColor)
+
+        self.UpdateElementsPos(mdc)
+        self.BrowserSearchBox.SetPosition((self.browserBoxX, self.browserBoxY))
+        self.BrowserSearchBox.SetSize(wx.Size(self.bEditBoxWidth, -1))
+
+        self.toolbar.SetPosition((self.toolbarx, self.toolbary))
+        mdc.SetFont(self.fontSmall)
+        mdc.DrawText(self.toolbar.hoverLabel, self.thoverx, self.thovery)
+
+    def RenderBackground(self):
+        rect = self.GetRect()
+
+        windowColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
+
+        sFactor = 0.1
+        mFactor = 0.2
+        eFactor = 0
+
+        if self.bkBitmap:
+            if self.bkBitmap.eFactor == eFactor and self.bkBitmap.sFactor == sFactor and self.bkBitmap.mFactor == mFactor \
+             and rect.width == self.bkBitmap.GetWidth() and rect.height == self.bkBitmap.GetHeight() :
+                return
+            else:
+                del self.bkBitmap
+
+        self.bkBitmap = drawUtils.RenderGradientBar(windowColor, rect.width, rect.height, sFactor, eFactor, mFactor, 2)
+
+        self.bkBitmap.sFactor = sFactor
+        self.bkBitmap.eFactor = eFactor
+        self.bkBitmap.mFactor = mFactor
+
+
+    def gotoStage(self,stage, data = None):
+        if stage == 1:
+            wx.PostEvent(self.Parent,Stage1Selected())
+        elif stage == 2:
+            wx.PostEvent(self.Parent,Stage2Selected(categoryID=data, back = True))
+        elif stage == 3:
+            wx.PostEvent(self.Parent,Stage3Selected(shipID=data, back = 1))
+        elif stage == 4:
+            self.shipBrowser._activeStage = 4
+            self.stStatus.SetLabel("Search: %s" % data.capitalize())
+            self.Layout()
+            wx.PostEvent(self.Parent,SearchSelected(text=data, back = True))
+        else:
+            wx.PostEvent(self.Parent,Stage1Selected())
+
+
 class ShipBrowser(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__ (self, parent,style = 0)
@@ -318,19 +512,21 @@ class ShipBrowser(wx.Panel):
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
-        self.hpane = HeaderPane(self)
-        mainSizer.Add(self.hpane, 0, wx.EXPAND)
-
-        self.m_sl2 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
-        mainSizer.Add( self.m_sl2, 0, wx.EXPAND, 0 )
+#        self.hpane = HeaderPane(self)
+#        mainSizer.Add(self.hpane, 0, wx.EXPAND)
+#
+#        self.m_sl2 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
+#        mainSizer.Add( self.m_sl2, 0, wx.EXPAND, 0 )
 
         self.lpane = PFWidgetsContainer(self)
         layout = wx.HORIZONTAL
 
+#        self.navpanel = NavigationPanel(self)
         self.raceselect = RaceSelector(self, layout = layout, animate = False)
         container = wx.BoxSizer(wx.VERTICAL if layout == wx.HORIZONTAL else wx.HORIZONTAL)
 
         if layout == wx.HORIZONTAL:
+#            container.Add(self.navpanel,0,wx.EXPAND)
             container.Add(self.lpane,1,wx.EXPAND)
             container.Add(self.raceselect,0,wx.EXPAND)
         else:
@@ -409,8 +605,12 @@ class ShipBrowser(wx.Panel):
         self._lastStage = self._activeStage
         self._activeStage = 1
         self.lastdata = 0
-        self.hpane.ToggleNewFitSB(False)
-        self.hpane.ToggleFitViewModeSB(False)
+#        self.hpane.ToggleNewFitSB(False)
+#        self.hpane.ToggleFitViewModeSB(False)
+
+        self.navpanel.ShowNewFitButton(False)
+        self.navpanel.ShowSwitchEmptyGroupsButton(False)
+
         sMarket = service.Market.getInstance()
 
         self.lpane.ShowLoading(False)
@@ -496,8 +696,12 @@ class ShipBrowser(wx.Panel):
         sMarket.getShipListDelayed(self.stage2Callback, categoryID)
 
         self._stage2Data = categoryID
-        self.hpane.ToggleNewFitSB(False)
-        self.hpane.ToggleFitViewModeSB(True)
+#        self.hpane.ToggleNewFitSB(False)
+#        self.hpane.ToggleFitViewModeSB(True)
+
+        self.navpanel.ShowNewFitButton(False)
+        self.navpanel.ShowSwitchEmptyGroupsButton(True)
+
 
     def nameKey(self, info):
         return info[1]
@@ -531,6 +735,10 @@ class ShipBrowser(wx.Panel):
             return
         self.hpane.ToggleFitViewModeSB(False)
         self.hpane.ToggleNewFitSB(True)
+
+        self.navpanel.ShowNewFitButton(True)
+        self.navpanel.ShowSwitchEmptyGroupsButton(False)
+
         fitList.sort(key=self.nameKey)
         shipName = sMarket.getItem(shipID).name
 
