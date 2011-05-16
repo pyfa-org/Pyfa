@@ -521,6 +521,7 @@ class ShipBrowser(wx.Panel):
 
         self.lpane.RefreshList()
         self.lpane.Thaw()
+        self.raceselect.RebuildRaces(self.RACE_ORDER)
 
     def searchStage(self, event):
 
@@ -555,6 +556,7 @@ class ShipBrowser(wx.Panel):
                 self.lpane.AddWidget(PFStaticText(self.lpane, label = "No matching results."))
             self.lpane.RefreshList(doFocus = False)
         self.lpane.Thaw()
+        self.raceselect.RebuildRaces(self.RACE_ORDER)
 
 class PFStaticText(wx.StaticText):
     def _init__(self,parent, label = wx.EmptyString):
