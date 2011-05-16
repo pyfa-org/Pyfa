@@ -76,10 +76,46 @@ class RaceSelector(wx.Window):
         self.checkTimer = wx.Timer(self, self.checkTimerID)
         self.checkPeriod = 250
         self.checkMaximize = True
+        self.shipBrowser = self.Parent
+        self.raceBmps = []
+
+        count = 0
+
+        for race in self.shipBrowser.RACE_ORDER:
+            if race:
+                self.raceBmps.append(bitmapLoader.getBitmap("race_%s_small" % race, "icons"))
 
         self.Bind(wx.EVT_ENTER_WINDOW, self.OnWindowEnter)
         self.Bind(wx.EVT_LEAVE_WINDOW, self.OnWindowLeave)
         self.Bind(wx.EVT_TIMER, self.OnTimer)
+        self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnBackgroundErase)
+        self.Bind(wx.EVT_PAINT, self.OnPaint)
+
+    def OnBackgroundErase(self, event):
+        pass
+
+    def OnPaint(self, event):
+        rect = self.GetRect()
+
+        windowColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
+        bkColor = colorUtils.GetSuitableColor(windowColor, 0.05)
+        sepColor = colorUtils.GetSuitableColor(windowColor, 0.6)
+
+        mdc = wx.BufferedPaintDC(self)
+        mdc.SetBackground(wx.Brush(bkColor))
+        mdc.Clear()
+
+        mdc.SetPen(wx.Pen(sepColor,1,wx.SOLID))
+        mdc.DrawLine(rect.width-1, 0 , rect.width-1, rect.height)
+
+
+        x = 4
+        y = 0
+        for raceBmp in self.raceBmps:
+            mdc.DrawBitmap(raceBmp, x, y)
+            y+=raceBmp.GetHeight() + 4
+
+
 
     def OnTimer(self,event):
         if event.GetId() == self.animTimerID:
@@ -108,6 +144,7 @@ class RaceSelector(wx.Window):
     def AdjustSize(self, width):
         self.SetMinSize(wx.Size(width,-1))
         self.Parent.Layout()
+        self.Refresh()
 
     def OnWindowEnter(self, event):
         if not self.checkTimer.IsRunning():
@@ -154,10 +191,10 @@ class ShipBrowser(wx.Panel):
         mainSizer.Add( self.m_sl2, 0, wx.EXPAND, 0 )
 
         self.lpane = PFWidgetsContainer(self)
-#        self.raceselect = RaceSelector(self)
+        self.raceselect = RaceSelector(self)
         container = wx.BoxSizer(wx.HORIZONTAL)
 
-#        container.Add(self.raceselect,0,wx.EXPAND)
+        container.Add(self.raceselect,0,wx.EXPAND)
         container.Add(self.lpane,1,wx.EXPAND)
         mainSizer.Add(container, 1, wx.EXPAND)
         self.SetSizer(mainSizer)
