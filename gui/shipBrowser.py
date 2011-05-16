@@ -58,10 +58,8 @@ class PFWidgetsContainer(PFListPane):
 
 
 class RaceSelector(wx.Window):
-    def __init__ (self, parent, id = wx.ID_ANY, label = "", pos = wx.DefaultPosition, size = wx.Size(5,-1), style = 0):
+    def __init__ (self, parent, id = wx.ID_ANY, label = "", pos = wx.DefaultPosition, size = wx.DefaultSize, style = 0, layout = wx.VERTICAL):
         wx.Window.__init__(self, parent, id, pos = pos, size = size, style = style)
-        self.SetSize(wx.Size(5,-1))
-        self.SetMinSize(wx.Size(5,-1))
 
         self.animTimerID = wx.NewId()
         self.animTimer = wx.Timer(self, self.animTimerID)
@@ -70,7 +68,18 @@ class RaceSelector(wx.Window):
         self.animStep = 0
         self.minWidth = 5
         self.maxWidth = 24
+        self.minHeight = 10
+        self.maxHeight = 24
         self.direction = 0
+        self.layout = layout
+
+        if layout == wx.VERTICAL:
+            self.SetSize(wx.Size(self.minWidth, -1))
+            self.SetMinSize(wx.Size(self.minWidth, -1))
+        else:
+            self.SetSize(wx.Size(-1, self.minHeight))
+            self.SetMinSize(wx.Size(-1, self.minHeight))
+
 
         self.checkTimerID = wx.NewId()
         self.checkTimer = wx.Timer(self, self.checkTimerID)
@@ -80,18 +89,29 @@ class RaceSelector(wx.Window):
         self.raceBmps = []
         self.raceNames = []
 
-        self.buttonsBarPos = (4,0)
+        if layout == wx.VERTICAL:
+            self.buttonsBarPos = (4,0)
+        else:
+            self.buttonsBarPos = (0,4)
+
         self.buttonsPadding = 4
 
-        self.bmpArrow = bitmapLoader.getBitmap("down-arrow2","icons")
+        if layout == wx.VERTICAL:
+            self.bmpArrow = bitmapLoader.getBitmap("down-arrow2","icons")
+        else:
+            self.bmpArrow = bitmapLoader.getBitmap("up-arrow2","icons")
         #    Make the bitmaps have the same color as window text
 
         sysTextColour = wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOWTEXT )
 
         img = self.bmpArrow.ConvertToImage()
-        img = img.Rotate90(False)
+        if layout == wx.VERTICAL:
+            img = img.Rotate90(False)
         img.Replace(0, 0, 0, sysTextColour[0], sysTextColour[1], sysTextColour[2])
-        img = img.Scale(self.minWidth, 8, wx.IMAGE_QUALITY_HIGH)
+        if layout == wx.VERTICAL:
+            img = img.Scale(self.minWidth, 8, wx.IMAGE_QUALITY_HIGH)
+#        else:
+#            img = img.Scale(10, self.minHeight, wx.IMAGE_QUALITY_HIGH)
 
         self.bmpArrow = wx.BitmapFromImage(img)
 
@@ -103,6 +123,7 @@ class RaceSelector(wx.Window):
         self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnBackgroundErase)
         self.Bind(wx.EVT_PAINT, self.OnPaint)
         self.Bind(wx.EVT_LEFT_UP, self.OnLeftUp)
+        self.Layout()
 
     def OnLeftUp(self, event):
 
@@ -130,7 +151,10 @@ class RaceSelector(wx.Window):
         for bmp in self.raceBmps:
             if (mx > x and mx < x + bmp.GetWidth()) and (my > y and my < y + bmp.GetHeight()):
                 return self.raceBmps.index(bmp)
-            y += bmp.GetHeight() + padding
+            if self.layout == wx.VERTICAL:
+                y += bmp.GetHeight() + padding
+            else:
+                x += bmp.GetWidth() + padding
 
         return None
 
@@ -157,34 +181,49 @@ class RaceSelector(wx.Window):
         mdc.Clear()
 
         mdc.SetPen(wx.Pen(sepColor,1,wx.SOLID))
-        mdc.DrawLine(rect.width-1, 0 , rect.width-1, rect.height)
+        if self.layout == wx.VERTICAL:
+            mdc.DrawLine(rect.width-1, 0 , rect.width-1, rect.height)
+        else:
+            mdc.DrawLine(0,0,rect.width,0)
 
 
         x ,y = self.buttonsBarPos
 
-        for raceBmp in self.raceBmps:
-            if self.shipBrowser.GetRaceFilterState(self.raceNames[self.raceBmps.index(raceBmp)]):
-                bmp = raceBmp
-            else:
-                img = wx.ImageFromBitmap(raceBmp)
-                img = img.AdjustChannels(1,1,1,0.4)
-                bmp = wx.BitmapFromImage(img)
+        if self.direction == 1:
+            for raceBmp in self.raceBmps:
+                if self.shipBrowser.GetRaceFilterState(self.raceNames[self.raceBmps.index(raceBmp)]):
+                    bmp = raceBmp
+                else:
+                    img = wx.ImageFromBitmap(raceBmp)
+                    img = img.AdjustChannels(1,1,1,0.4)
+                    bmp = wx.BitmapFromImage(img)
 
-            mdc.DrawBitmap(bmp, x, y)
-            y+=raceBmp.GetHeight() + 4
+                if self.layout == wx.VERTICAL:
+                    mdc.DrawBitmap(bmp, rect.width - self.buttonsPadding - bmp.GetWidth(), y)
+                    y+=raceBmp.GetHeight() + self.buttonsPadding
+                else:
+                    mdc.DrawBitmap(bmp, x, self.buttonsPadding)
+                    x+=raceBmp.GetWidth() + self.buttonsPadding
+
         if self.direction < 1:
-            mdc.DrawBitmap(self.bmpArrow, -2, rect.height/2)
+            if self.layout == wx.VERTICAL:
+                mdc.DrawBitmap(self.bmpArrow, -2, (rect.height - self.bmpArrow.GetHeight()) / 2)
+            else:
+                mdc.DrawBitmap(self.bmpArrow, (rect.width - self.bmpArrow.GetWidth()) / 2, -2)
 
 
     def OnTimer(self,event):
         if event.GetId() == self.animTimerID:
             start = 0
-            end = self.maxWidth - self.minWidth
+            if self.layout == wx.VERTICAL:
+                end = self.maxWidth - self.minWidth
+            else:
+                end = self.maxHeight - self.minHeight
 
             step = animEffects.OUT_CIRC(self.animStep, start, end, self.animDuration)
             self.animStep += self.animPeriod * self.direction
 
-            self.AdjustSize(self.minWidth + step)
+            self.AdjustSize((self.minWidth if self.layout == wx.VERTICAL else self.minHeight) + step)
 
             if self.animStep > self.animDuration or self.animStep < 0:
                 self.animTimer.Stop()
@@ -200,8 +239,8 @@ class RaceSelector(wx.Window):
             if not self.animTimer.IsRunning():
                 self.animTimer.Start(self.animPeriod)
 
-    def AdjustSize(self, width):
-        self.SetMinSize(wx.Size(width,-1))
+    def AdjustSize(self, delta):
+        self.SetMinSize(wx.Size(delta,-1) if self.layout == wx.VERTICAL else wx.Size(-1, delta))
         self.Parent.Layout()
         self.Refresh()
 
@@ -256,11 +295,18 @@ class ShipBrowser(wx.Panel):
         mainSizer.Add( self.m_sl2, 0, wx.EXPAND, 0 )
 
         self.lpane = PFWidgetsContainer(self)
-        self.raceselect = RaceSelector(self)
-        container = wx.BoxSizer(wx.HORIZONTAL)
+        layout = wx.HORIZONTAL
 
-        container.Add(self.raceselect,0,wx.EXPAND)
-        container.Add(self.lpane,1,wx.EXPAND)
+        self.raceselect = RaceSelector(self, layout = layout)
+        container = wx.BoxSizer(wx.VERTICAL if layout == wx.HORIZONTAL else wx.HORIZONTAL)
+
+        if layout == wx.HORIZONTAL:
+            container.Add(self.lpane,1,wx.EXPAND)
+            container.Add(self.raceselect,0,wx.EXPAND)
+        else:
+            container.Add(self.raceselect,0,wx.EXPAND)
+            container.Add(self.lpane,1,wx.EXPAND)
+
         mainSizer.Add(container, 1, wx.EXPAND)
         self.SetSizer(mainSizer)
         self.Layout()
