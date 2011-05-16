@@ -441,16 +441,26 @@ class ShipBrowser(wx.Panel):
 
         ships.sort(key=self.raceNameKey)
         racesList = []
+        subRacesFilter = {}
+
+        for ship in ships:
+            if ship.race:
+                if ship.race not in racesList:
+                    racesList.append(ship.race)
+
+        for race,state in self.racesFilter.iteritems():
+            if race in racesList:
+                subRacesFilter[race] = self.racesFilter[race]
 
         override = True
-        for race, state in self.racesFilter.iteritems():
+        for race, state in subRacesFilter.iteritems():
             if state:
                 override = False
                 break
 
         for ship in ships:
             fits = sFit.countFitsWithShip(ship.ID)
-            filter = self.racesFilter[ship.race] if ship.race else True
+            filter = subRacesFilter[ship.race] if ship.race else True
 
             if override:
                 filter = True
@@ -459,13 +469,9 @@ class ShipBrowser(wx.Panel):
                 if fits>0:
                     if filter:
                         self.lpane.AddWidget(ShipItem(self.lpane, ship.ID, (ship.name, fits), ship.race))
-                    if ship.race not in racesList:
-                        racesList.append(ship.race)
             else:
                 if filter:
                     self.lpane.AddWidget(ShipItem(self.lpane, ship.ID, (ship.name, fits), ship.race))
-                if ship.race not in racesList:
-                    racesList.append(ship.race)
 
         self.raceselect.RebuildRaces(racesList)
 
