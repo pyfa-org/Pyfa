@@ -78,18 +78,57 @@ class RaceSelector(wx.Window):
         self.checkMaximize = True
         self.shipBrowser = self.Parent
         self.raceBmps = []
+        self.raceNames = []
 
-        count = 0
+        self.buttonsBarPos = (4,0)
+        self.buttonsPadding = 4
 
-        for race in self.shipBrowser.RACE_ORDER:
-            if race:
-                self.raceBmps.append(bitmapLoader.getBitmap("race_%s_small" % race, "icons"))
+        self.RebuildRaces(self.shipBrowser.RACE_ORDER)
 
         self.Bind(wx.EVT_ENTER_WINDOW, self.OnWindowEnter)
         self.Bind(wx.EVT_LEAVE_WINDOW, self.OnWindowLeave)
         self.Bind(wx.EVT_TIMER, self.OnTimer)
         self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnBackgroundErase)
         self.Bind(wx.EVT_PAINT, self.OnPaint)
+        self.Bind(wx.EVT_LEFT_UP, self.OnLeftUp)
+
+    def OnLeftUp(self, event):
+
+        mx,my = event.GetPosition()
+
+        toggle = self.HitTest(mx,my)
+
+        if toggle is not None:
+            self.Refresh()
+
+            self.shipBrowser.ToggleRacesFilter(self.raceNames[toggle])
+
+            stage = self.shipBrowser.GetActiveStage()
+
+            if stage == 2:
+                categoryID = self.shipBrowser.GetStageData(stage)
+                wx.PostEvent(self.shipBrowser,Stage2Selected(categoryID=categoryID, back = True))
+
+        event.Skip()
+
+    def HitTest(self, mx,my):
+        x,y = self.buttonsBarPos
+        padding = self.buttonsPadding
+
+        for bmp in self.raceBmps:
+            if (mx > x and mx < x + bmp.GetWidth()) and (my > y and my < y + bmp.GetHeight()):
+                return self.raceBmps.index(bmp)
+            y += bmp.GetHeight() + padding
+
+        return None
+
+    def RebuildRaces(self, races):
+        self.raceBmps = []
+        for race in races:
+            if race:
+                self.raceBmps.append(bitmapLoader.getBitmap("race_%s_small" % race, "icons"))
+        self.raceNames = races
+        self.Refresh()
 
     def OnBackgroundErase(self, event):
         pass
@@ -109,10 +148,17 @@ class RaceSelector(wx.Window):
         mdc.DrawLine(rect.width-1, 0 , rect.width-1, rect.height)
 
 
-        x = 4
-        y = 0
+        x ,y = self.buttonsBarPos
+
         for raceBmp in self.raceBmps:
-            mdc.DrawBitmap(raceBmp, x, y)
+            if self.shipBrowser.GetRaceFilterState(self.raceNames[self.raceBmps.index(raceBmp)]):
+                bmp = raceBmp
+            else:
+                img = wx.ImageFromBitmap(raceBmp)
+                img = img.AdjustChannels(1,1,1,0.4)
+                bmp = wx.BitmapFromImage(img)
+
+            mdc.DrawBitmap(bmp, x, y)
             y+=raceBmp.GetHeight() + 4
 
 
@@ -179,6 +225,12 @@ class ShipBrowser(wx.Panel):
         self._stage3ShipName = ""
         self.fitIDMustEditName = -1
         self.filterShipsWithNoFits = False
+
+        self.racesFilter = {}
+
+        for race in self.RACE_ORDER:
+            if race:
+                self.racesFilter[race] = False
 
         self.SetSizeHintsSz(wx.DefaultSize, wx.DefaultSize)
 
@@ -255,6 +307,15 @@ class ShipBrowser(wx.Panel):
     def GetStage3ShipName(self):
         return self._stage3ShipName
 
+    def ToggleRacesFilter(self, race):
+        if self.racesFilter[race]:
+            self.racesFilter[race] = False
+        else:
+            self.racesFilter[race] = True
+
+    def GetRaceFilterState(self, race):
+        return self.racesFilter[race]
+
     def stage1(self, event):
         self._lastStage = self._activeStage
         self._activeStage = 1
@@ -275,6 +336,7 @@ class ShipBrowser(wx.Panel):
 
         self.lpane.RefreshList()
         self.lpane.Thaw()
+        self.raceselect.RebuildRaces(self.RACE_ORDER)
 
     RACE_ORDER = ["amarr", "caldari", "gallente", "minmatar", "ore", "serpentis", "angel", "blood", "sansha", "guristas", None]
     def raceNameKey(self, ship):
@@ -287,13 +349,35 @@ class ShipBrowser(wx.Panel):
         sFit = service.Fit.getInstance()
 
         ships.sort(key=self.raceNameKey)
+        racesList = []
+
+        override = True
+        for race, state in self.racesFilter.iteritems():
+            if state:
+                override = False
+                break
+
         for ship in ships:
             fits = sFit.countFitsWithShip(ship.ID)
+            filter = self.racesFilter[ship.race] if ship.race else True
+
+            if override:
+                filter = True
+
             if self.filterShipsWithNoFits:
                 if fits>0:
-                    self.lpane.AddWidget(ShipItem(self.lpane, ship.ID, (ship.name, fits), ship.race))
+                    if filter:
+                        self.lpane.AddWidget(ShipItem(self.lpane, ship.ID, (ship.name, fits), ship.race))
+                    if ship.race not in racesList:
+                        racesList.append(ship.race)
             else:
-                self.lpane.AddWidget(ShipItem(self.lpane, ship.ID, (ship.name, fits), ship.race))
+                if filter:
+                    self.lpane.AddWidget(ShipItem(self.lpane, ship.ID, (ship.name, fits), ship.race))
+                if ship.race not in racesList:
+                    racesList.append(ship.race)
+
+        self.raceselect.RebuildRaces(racesList)
+
 
         self.lpane.ShowLoading(False)
 
