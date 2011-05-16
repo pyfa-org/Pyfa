@@ -129,7 +129,6 @@ class RaceSelector(wx.Window):
 
         self.Layout()
 
-
     def OnSizeUpdate(self,event):
         self.CalcButtonsBarPos()
 
@@ -166,7 +165,6 @@ class RaceSelector(wx.Window):
             if stage == 2:
                 categoryID = self.shipBrowser.GetStageData(stage)
                 wx.PostEvent(self.shipBrowser,Stage2Selected(categoryID=categoryID, back = True))
-
         event.Skip()
 
     def HitTest(self, mx,my):
@@ -206,12 +204,11 @@ class RaceSelector(wx.Window):
         mdc.SetBackground(wx.Brush(bkColor))
         mdc.Clear()
 
-        mdc.SetPen(wx.Pen(sepColor,1,wx.SOLID))
-        if self.layout == wx.VERTICAL:
-            mdc.DrawLine(rect.width-1, 0 , rect.width-1, rect.height)
-        else:
-            mdc.DrawLine(0,0,rect.width,0)
-
+#        mdc.SetPen(wx.Pen(sepColor,1,wx.SOLID))
+#        if self.layout == wx.VERTICAL:
+#            mdc.DrawLine(rect.width-1, 0 , rect.width-1, rect.height)
+#        else:
+#            mdc.DrawLine(0,0,rect.width,0)
 
         x ,y = self.buttonsBarPos
 
@@ -329,7 +326,7 @@ class ShipBrowser(wx.Panel):
         self.lpane = PFWidgetsContainer(self)
         layout = wx.HORIZONTAL
 
-        self.raceselect = RaceSelector(self, layout = layout)
+        self.raceselect = RaceSelector(self, layout = layout, animate = False)
         container = wx.BoxSizer(wx.VERTICAL if layout == wx.HORIZONTAL else wx.HORIZONTAL)
 
         if layout == wx.HORIZONTAL:
