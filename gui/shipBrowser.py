@@ -312,6 +312,8 @@ class NavigationPanel(SFItem.SFBrowserItem):
         self.toolbar.AddButton(self.searchBmp, "Search fittings", clickCallback = self.ToggleSearchBox, hoverBitmap = self.searchBmpH)
 
         self.padding = 4
+        self.lastSearch = ""
+
         self.fontSmall = wx.FontFromPixelSize((0,12),wx.SWISS, wx.NORMAL, wx.NORMAL, False)
 
         self.BrowserSearchBox = wx.TextCtrl(self, wx.ID_ANY, "", wx.DefaultPosition, (-1,-1), wx.TE_PROCESS_ENTER)
@@ -350,6 +352,7 @@ class NavigationPanel(SFItem.SFBrowserItem):
         pass
 
     def OnBrowserSearchBoxLostFocus(self, event):
+        self.lastSearch = self.BrowserSearchBox.GetValue()
         self.BrowserSearchBox.Show(False)
 
     def OnBrowserSearchBoxEsc(self, event):
@@ -1880,7 +1883,7 @@ class FitItem(SFItem.SFBrowserItem):
         sFit.deleteFit(self.fitID)
 
         if self.shipBrowser.GetActiveStage() == 4:
-            wx.PostEvent(self.shipBrowser,SearchSelected(text=self.shipBrowser.hpane.lastSearch,back=True))
+            wx.PostEvent(self.shipBrowser,SearchSelected(text=self.shipBrowser.navpanel.lastSearch,back=True))
         else:
             wx.PostEvent(self.shipBrowser,Stage3Selected(shipID=self.shipID, back=True))
 
