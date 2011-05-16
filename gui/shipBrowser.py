@@ -313,6 +313,7 @@ class NavigationPanel(SFItem.SFBrowserItem):
 
         self.padding = 4
         self.lastSearch = ""
+        self.recentSearches = []
 
         self.fontSmall = wx.FontFromPixelSize((0,12),wx.SWISS, wx.NORMAL, wx.NORMAL, False)
 
@@ -716,7 +717,7 @@ class ShipBrowser(wx.Panel):
         if event.back == 0:
             self.browseHist.append( (2,self._stage2Data) )
         elif event.back == -1:
-            if len(self.hpane.recentSearches)>0:
+            if len(self.navpanel.recentSearches)>0:
                 self.browseHist.append((4, self.hpane.lastSearch))
 
         shipID = event.shipID
