@@ -510,6 +510,8 @@ class ShipBrowser(wx.Panel):
 
         self.racesFilter = {}
 
+        self.showRacesFilterInStage2Only = True
+
         for race in self.RACE_ORDER:
             if race:
                 self.racesFilter[race] = False
@@ -624,6 +626,9 @@ class ShipBrowser(wx.Panel):
         self.lpane.RefreshList()
         self.lpane.Thaw()
         self.raceselect.RebuildRaces(self.RACE_ORDER)
+        if self.showRacesFilterInStage2Only:
+            self.raceselect.Show(False)
+            self.Layout()
 
     RACE_ORDER = ["amarr", "caldari", "gallente", "minmatar", "ore", "serpentis", "angel", "blood", "sansha", "guristas", None]
 
@@ -677,6 +682,10 @@ class ShipBrowser(wx.Panel):
 
         self.lpane.RefreshList()
 
+        if self.showRacesFilterInStage2Only:
+            self.raceselect.Show(True)
+            self.Layout()
+
     def stage2(self, event):
         back = event.back
 
@@ -701,7 +710,6 @@ class ShipBrowser(wx.Panel):
 
         self.navpanel.ShowNewFitButton(False)
         self.navpanel.ShowSwitchEmptyGroupsButton(True)
-
 
     def nameKey(self, info):
         return info[1]
@@ -736,6 +744,10 @@ class ShipBrowser(wx.Panel):
 
         self.navpanel.ShowNewFitButton(True)
         self.navpanel.ShowSwitchEmptyGroupsButton(False)
+
+        if self.showRacesFilterInStage2Only:
+            self.raceselect.Show(False)
+            self.Layout()
 
         fitList.sort(key=self.nameKey)
         shipName = sMarket.getItem(shipID).name
@@ -786,7 +798,13 @@ class ShipBrowser(wx.Panel):
                 self.lpane.AddWidget(PFStaticText(self.lpane, label = "No matching results."))
             self.lpane.RefreshList(doFocus = False)
         self.lpane.Thaw()
+
         self.raceselect.RebuildRaces(self.RACE_ORDER)
+
+        if self.showRacesFilterInStage2Only:
+            self.raceselect.Show(False)
+            self.Layout()
+
 
 class PFStaticText(wx.StaticText):
     def _init__(self,parent, label = wx.EmptyString):
