@@ -556,7 +556,7 @@ class ShipBrowser(wx.Panel):
         if stage == 1:
             return
         stageData = self.GetStageData(stage)
-        self.hpane.gotoStage(stage, stageData)
+        self.navpanel.gotoStage(stage, stageData)
 
     def RefreshList(self, event):
         stage = self.GetActiveStage()
@@ -714,7 +714,7 @@ class ShipBrowser(wx.Panel):
             self.browseHist.append( (2,self._stage2Data) )
         elif event.back == -1:
             if len(self.navpanel.recentSearches)>0:
-                self.browseHist.append((4, self.hpane.lastSearch))
+                self.browseHist.append((4, self.navpanel.lastSearch))
 
         shipID = event.shipID
         self.lastdata = shipID
