@@ -455,7 +455,14 @@ class NavigationPanel(SFItem.SFBrowserItem):
         windowColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
 
         sFactor = 0.1
-        mFactor = 0.2
+
+        shipGroupsFilter = getattr(self.shipBrowser,"filterShipsWithNoFits", None)
+        if shipGroupsFilter:
+            sFactor = 0.15
+            mFactor = 0.25
+        else:
+            mFactor = 0.2
+
         eFactor = 0
 
         if self.bkBitmap:
