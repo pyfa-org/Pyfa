@@ -102,6 +102,7 @@ class RaceSelector(wx.Window):
             self.bmpArrow = bitmapLoader.getBitmap("down-arrow2","icons")
         else:
             self.bmpArrow = bitmapLoader.getBitmap("up-arrow2","icons")
+
         #    Make the bitmaps have the same color as window text
 
         sysTextColour = wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOWTEXT )
@@ -112,8 +113,6 @@ class RaceSelector(wx.Window):
         img.Replace(0, 0, 0, sysTextColour[0], sysTextColour[1], sysTextColour[2])
         if layout == wx.VERTICAL:
             img = img.Scale(self.minWidth, 8, wx.IMAGE_QUALITY_HIGH)
-#        else:
-#            img = img.Scale(10, self.minHeight, wx.IMAGE_QUALITY_HIGH)
 
         self.bmpArrow = wx.BitmapFromImage(img)
 
@@ -201,15 +200,10 @@ class RaceSelector(wx.Window):
         sepColor = colorUtils.GetSuitableColor(windowColor, 0.6)
 
         mdc = wx.BufferedPaintDC(self)
-#        mdc.SetBackground(wx.Brush(bkColor))
-#        mdc.Clear()
+
         bkBitmap = drawUtils.RenderGradientBar(windowColor, rect.width, rect.height, 0.0, 0.1, 0.2, 2)
         mdc.DrawBitmap(bkBitmap,0,0,True)
-#        mdc.SetPen(wx.Pen(sepColor,1,wx.SOLID))
-#        if self.layout == wx.VERTICAL:
-#            mdc.DrawLine(rect.width-1, 0 , rect.width-1, rect.height)
-#        else:
-#            mdc.DrawLine(0,0,rect.width,0)
+
 
         x ,y = self.buttonsBarPos
 
@@ -524,12 +518,6 @@ class ShipBrowser(wx.Panel):
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
-#        self.hpane = HeaderPane(self)
-#        mainSizer.Add(self.hpane, 0, wx.EXPAND)
-#
-#        self.m_sl2 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
-#        mainSizer.Add( self.m_sl2, 0, wx.EXPAND, 0 )
-
         self.lpane = PFWidgetsContainer(self)
         layout = wx.HORIZONTAL
 
@@ -617,8 +605,6 @@ class ShipBrowser(wx.Panel):
         self._lastStage = self._activeStage
         self._activeStage = 1
         self.lastdata = 0
-#        self.hpane.ToggleNewFitSB(False)
-#        self.hpane.ToggleFitViewModeSB(False)
 
         self.navpanel.ShowNewFitButton(False)
         self.navpanel.ShowSwitchEmptyGroupsButton(False)
@@ -640,6 +626,7 @@ class ShipBrowser(wx.Panel):
         self.raceselect.RebuildRaces(self.RACE_ORDER)
 
     RACE_ORDER = ["amarr", "caldari", "gallente", "minmatar", "ore", "serpentis", "angel", "blood", "sansha", "guristas", None]
+
     def raceNameKey(self, ship):
         return self.RACE_ORDER.index(ship.race), ship.name
 
@@ -692,10 +679,13 @@ class ShipBrowser(wx.Panel):
 
     def stage2(self, event):
         back = event.back
+
         if not back:
             self.browseHist.append( (1,0) )
+
         self._lastStage = self._activeStage
         self._activeStage = 2
+
         categoryID = event.categoryID
         self.lastdata = categoryID
 
@@ -708,8 +698,6 @@ class ShipBrowser(wx.Panel):
         sMarket.getShipListDelayed(self.stage2Callback, categoryID)
 
         self._stage2Data = categoryID
-#        self.hpane.ToggleNewFitSB(False)
-#        self.hpane.ToggleFitViewModeSB(True)
 
         self.navpanel.ShowNewFitButton(False)
         self.navpanel.ShowSwitchEmptyGroupsButton(True)
@@ -745,8 +733,6 @@ class ShipBrowser(wx.Panel):
             self.lpane.Thaw()
             self.hpane.gotoStage(stage,data)
             return
-#        self.hpane.ToggleFitViewModeSB(False)
-#        self.hpane.ToggleNewFitSB(True)
 
         self.navpanel.ShowNewFitButton(True)
         self.navpanel.ShowSwitchEmptyGroupsButton(False)
@@ -819,442 +805,6 @@ class PFGenBitmapButton(GenBitmapButton):
 
     def GetBackgroundBrush(self, dc):
         return self.bgcolor
-
-class HeaderPane (wx.Panel):
-    def __init__(self, parent):
-        wx.Panel.__init__ (self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.Size(500, 32), style=wx.TAB_TRAVERSAL)
-
-        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-
-        self.rewBmp = bitmapLoader.getBitmap("frewind_small","icons")
-        self.forwBmp = bitmapLoader.getBitmap("fforward_small","icons")
-        self.searchBmp = bitmapLoader.getBitmap("fsearch_small","icons")
-        self.newBmp = bitmapLoader.getBitmap("fit_add_small","icons")
-        self.resetBmp = bitmapLoader.getBitmap("freset_small","icons")
-        self.switchBmp = bitmapLoader.getBitmap("fit_switch_view_mode_small","icons")
-
-        img = self.newBmp.ConvertToImage()
-        img.RotateHue(0.625)
-        self.newBmp = wx.BitmapFromImage(img)
-
-        img = self.switchBmp.ConvertToImage()
-        img.RotateHue(0.625)
-        self.switchSelBmp = wx.BitmapFromImage(img)
-
-        img = self.switchBmp.ConvertToImage()
-        img.RotateHue(0.500)
-        self.switchHoverBmp = wx.BitmapFromImage(img)
-
-        img = self.rewBmp.ConvertToImage()
-        img.RotateHue(0.625)
-        self.rewHoverBmp = wx.BitmapFromImage(img)
-
-        img = self.resetBmp.ConvertToImage()
-        img.RotateHue(-1)
-        self.resetHoverBmp = wx.BitmapFromImage(img)
-
-        img = self.searchBmp.ConvertToImage()
-        img.RotateHue(0.625)
-        self.searchHoverBmp = wx.BitmapFromImage(img)
-
-        img = self.newBmp.ConvertToImage()
-        img.RotateHue(0.350)
-        self.newHoverBmp = wx.BitmapFromImage(img)
-
-
-        self.shipBrowser = self.Parent
-
-        self.toggleSearch = -1
-        self.recentSearches = []
-        self.lastSearch = ""
-        self.menu = None
-        self.inPopup = False
-        self.inSearch = False
-
-        bmpSize = (16,16)
-        self.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNFACE ) )
-
-        mainSizer = wx.BoxSizer(wx.HORIZONTAL)
-
-        if 'wxMac' in wx.PlatformInfo:
-            bgcolour = wx.Colour(0, 0, 0, 0)
-        else:
-            bgcolour = wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNFACE )
-
-        self.sbReset = PFGenBitmapButton( self, wx.ID_ANY, self.resetBmp, wx.DefaultPosition, bmpSize, wx.BORDER_NONE )
-        mainSizer.Add(self.sbReset, 0, wx.LEFT | wx.TOP | wx.BOTTOM | wx.ALIGN_CENTER_VERTICAL , 5)
-        self.sbReset.SetBackgroundColour( bgcolour )
-        self.sbReset.SetBitmapSelected(self.resetBmp)
-
-        self.sbRewind = PFGenBitmapButton( self, wx.ID_ANY, self.rewBmp, wx.DefaultPosition, bmpSize, wx.BORDER_NONE )
-        mainSizer.Add(self.sbRewind, 0, wx.LEFT | wx.TOP | wx.BOTTOM | wx.ALIGN_CENTER_VERTICAL , 5)
-        self.sbRewind.SetBackgroundColour( bgcolour )
-        self.sbRewind.SetBitmapSelected(self.rewBmp)
-
-        self.sl1 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_VERTICAL )
-        mainSizer.Add( self.sl1, 0, wx.EXPAND |wx.LEFT, 5 )
-
-        self.sbNewFit = PFGenBitmapButton( self, wx.ID_ANY, self.newBmp, wx.DefaultPosition, bmpSize, wx.BORDER_NONE )
-        mainSizer.Add(self.sbNewFit, 0, wx.LEFT | wx.TOP | wx.BOTTOM  | wx.ALIGN_CENTER_VERTICAL , 5)
-        self.sbNewFit.SetBackgroundColour( bgcolour )
-
-        self.sbSwitchFitView = PFGenBitmapButton( self, wx.ID_ANY, self.switchBmp, wx.DefaultPosition, bmpSize, wx.BORDER_NONE )
-        mainSizer.Add(self.sbSwitchFitView, 0, wx.LEFT | wx.TOP | wx.BOTTOM  | wx.ALIGN_CENTER_VERTICAL , 5)
-        self.sbSwitchFitView.SetBackgroundColour( bgcolour )
-
-
-        self.stStatus = wx.StaticText( self, wx.ID_ANY, "", wx.DefaultPosition, wx.DefaultSize, 0 )
-        self.stStatus.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNFACE ) )
-        self.stStatus.Wrap( -1 )
-        mainSizer.Add(self.stStatus, 1, wx.ALL | wx.EXPAND | wx.ALIGN_CENTER_VERTICAL , 5)
-
-        self.spanel = wx.Panel(self)
-        self.spanel.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNFACE ) )
-
-        spsizer = wx.BoxSizer(wx.HORIZONTAL)
-        self.spanel.SetSizer(spsizer)
-
-        self.search = wx.TextCtrl(self.spanel, wx.ID_ANY, "", style=wx.TE_PROCESS_ENTER )
-
-
-        spsizer.Add(self.search,1, wx.ALIGN_CENTER_VERTICAL)
-        mainSizer.Add(self.spanel,1000,wx.EXPAND | wx.LEFT, 5)
-
-        self.sbSearch = PFGenBitmapButton( self, wx.ID_ANY, self.searchBmp, wx.DefaultPosition, bmpSize, wx.BORDER_NONE )
-        mainSizer.Add(self.sbSearch, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL , 5)
-        self.sbSearch.SetBackgroundColour( bgcolour )
-
-        self.SetSizer(mainSizer)
-
-        self.sbReset.Bind(wx.EVT_BUTTON,self.OnReset)
-        self.sbReset.Bind( wx.EVT_ENTER_WINDOW, self.OnEnterWReset )
-        self.sbReset.Bind( wx.EVT_LEAVE_WINDOW, self.OnLeaveWReset )
-
-        self.sbRewind.Bind(wx.EVT_BUTTON,self.OnBack)
-        self.sbRewind.Bind( wx.EVT_ENTER_WINDOW, self.OnEnterWRewind )
-        self.sbRewind.Bind( wx.EVT_LEAVE_WINDOW, self.OnLeaveWRewind )
-
-
-        self.sbSearch.Bind(wx.EVT_BUTTON,self.OnSearch)
-        self.sbSearch.Bind( wx.EVT_ENTER_WINDOW, self.OnEnterWSearch )
-        self.sbSearch.Bind( wx.EVT_LEAVE_WINDOW, self.OnLeaveWSearch )
-
-        self.sbNewFit.Bind(wx.EVT_BUTTON,self.OnNewFitting)
-        self.sbNewFit.Bind( wx.EVT_ENTER_WINDOW, self.OnEnterWNewFit )
-        self.sbNewFit.Bind( wx.EVT_LEAVE_WINDOW, self.OnLeaveWNewFit )
-
-        self.sbSwitchFitView.Bind(wx.EVT_BUTTON,self.OnSwitch)
-        self.sbSwitchFitView.Bind( wx.EVT_ENTER_WINDOW, self.OnEnterWSwitch )
-        self.sbSwitchFitView.Bind( wx.EVT_LEAVE_WINDOW, self.OnLeaveWSwitch )
-
-        self.search.Bind(wx.EVT_TEXT_ENTER, self.doSearch)
-        self.search.Bind(wx.EVT_KILL_FOCUS, self.editLostFocus)
-        self.search.Bind(wx.EVT_KEY_DOWN, self.editCheckEsc)
-        self.search.Bind(wx.EVT_CONTEXT_MENU,self.OnMenu)
-        self.search.Bind(wx.EVT_TEXT, self.scheduleSearch)
-
-        self.sbSearch.Bind(wx.EVT_LEFT_DOWN, self.OnLeftDown)
-        self.sbSearch.Bind(wx.EVT_LEFT_UP, self.OnLeftUp)
-
-        self.Layout()
-        self.spanel.Hide()
-        self.search.Hide()
-
-    def OnLeftDown(self, event):
-        self.inPopup = True
-        event.Skip()
-
-    def OnLeftUp(self, event):
-        self.inPopup = False
-        event.Skip()
-
-    def scheduleSearch(self, event):
-        if self.inPopup:
-            return
-        search = self.search.GetValue()
-        if len(search) < 3 and len(search) > 0:
-            if self.inSearch == True:
-                self.inSearch = False
-                if len(self.shipBrowser.browseHist) > 0:
-                    stage,data = self.shipBrowser.browseHist.pop()
-                    self.gotoStage(stage,data)
-        else:
-            if search:
-                wx.PostEvent(self.shipBrowser,SearchSelected(text=search, back = False))
-                self.inSearch = True
-            else:
-                self.inSearch = False
-
-        event.Skip()
-
-    def OnMenu(self, event):
-        self.inPopup = True
-        self.menu = self.MakeMenu()
-        self.PopupMenu(self.menu)
-        self.inPopup = False
-        pass
-
-    def OnMenuSelected(self, event):
-        item = self.menu.FindItemById(event.GetId())
-        text = item.GetText()
-
-        if len(text)>2 :
-            wx.PostEvent(self.shipBrowser,SearchSelected(text=text, back = False))
-        self.editLostFocus()
-
-    def MakeMenu(self):
-        menu = wx.Menu()
-        normalCMItems = ["Undo","_sep_", "Cut", "Copy","Paste","Delte","_sep_", "Select All"]
-        item = menu.Append(-1, "Recent")
-        item.Enable(False)
-
-        if len(self.recentSearches) > 0:
-            menu.AppendSeparator()
-        for txt in self.recentSearches:
-            if txt:
-                item = menu.Append(-1, txt)
-                menu.Bind(wx.EVT_MENU, self.OnMenuSelected, item)
-
-        return menu
-
-
-    def editLostFocus(self, event = None):
-        if self.inPopup:
-            return
-        if self.toggleSearch == 1:
-            self.search.Show(False)
-            self.spanel.Show(False)
-            self.toggleSearch = -1
-
-        stxt = self.search.GetValue()
-        if stxt not in self.recentSearches:
-            if stxt:
-                self.recentSearches.append(stxt)
-                self.lastSearch = stxt
-        if len(self.recentSearches) >5:
-            self.recentSearches.remove(self.recentSearches[0])
-        self.search.SetValue("")
-
-    def editCheckEsc(self, event):
-        if event.GetKeyCode() == wx.WXK_ESCAPE:
-            self.search.Show(False)
-            self.spanel.Show(False)
-            self.toggleSearch = -1
-        else:
-            event.Skip()
-
-    def doSearch(self, event):
-        stxt = self.search.GetValue()
-        if len(stxt) > 2:
-            self.editLostFocus()
-
-    def ToggleNewFitSB(self, toggle):
-        self.sbNewFit.Show(toggle)
-        self.Layout()
-
-    def ToggleFitViewModeSB(self, toggle):
-        self.sbSwitchFitView.Show(toggle)
-        self.Layout()
-
-    def OnReset(self,event):
-        if self.shipBrowser.browseHist:
-            self.shipBrowser.browseHist = []
-            self.gotoStage(1,0)
-            self.stStatus.SetLabel("")
-            self.Layout()
-        event.Skip()
-
-    def OnEnterWReset(self, event):
-        if self.shipBrowser.browseHist:
-            self.stStatus.Enable()
-        else:
-            self.stStatus.Disable()
-        if self.toggleSearch != 1:
-            self.stStatus.SetLabel("Ship Groups")
-        self.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
-        self.sbReset.SetBitmapLabel(self.resetHoverBmp, False)
-        self.sbReset.Refresh()
-        event.Skip()
-
-    def OnLeaveWReset(self, event):
-        self.stStatus.SetLabel("")
-        self.SetCursor(wx.StockCursor(wx.CURSOR_ARROW))
-        self.sbReset.SetBitmapLabel(self.resetBmp, False)
-        self.sbReset.Refresh()
-        event.Skip()
-
-    def OnEnterWForward(self, event):
-        if self.toggleSearch != 1:
-            self.stStatus.SetLabel("Forward")
-        stage = self.Parent.GetActiveStage()
-
-        if stage < 3:
-            if self.Parent.GetStageData(stage+1) != -1:
-                self.stStatus.Enable()
-            else:
-                self.stStatus.Disable()
-        else:
-            self.stStatus.Disable()
-
-        self.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
-        event.Skip()
-
-    def OnLeaveWForward(self, event):
-        self.stStatus.Enable()
-        self.stStatus.SetLabel("")
-        self.SetCursor(wx.StockCursor(wx.CURSOR_ARROW))
-        event.Skip()
-
-    def OnEnterWRewind(self, event):
-        if self.toggleSearch != 1:
-            self.stStatus.SetLabel("Back")
-
-        stage = self.Parent.GetActiveStage()
-
-        if stage > 1:
-            self.stStatus.Enable()
-        else:
-            self.stStatus.Disable()
-
-        self.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
-        event.Skip()
-
-    def OnLeaveWRewind(self, event):
-        self.stStatus.Enable()
-        self.stStatus.SetLabel("")
-        self.SetCursor(wx.StockCursor(wx.CURSOR_ARROW))
-        event.Skip()
-
-    def OnEnterWSearch(self, event):
-        if self.toggleSearch != 1:
-            self.stStatus.SetLabel("Search fittings")
-        self.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
-        self.sbSearch.SetBitmapLabel(self.searchHoverBmp, False)
-        self.Refresh()
-        event.Skip()
-
-    def OnLeaveWSearch(self, event):
-        self.stStatus.SetLabel("")
-        self.SetCursor(wx.StockCursor(wx.CURSOR_ARROW))
-        self.sbSearch.SetBitmapLabel(self.searchBmp, False)
-        self.Refresh()
-        event.Skip()
-
-    def OnEnterWSwitch(self, event):
-        if self.toggleSearch != 1:
-            self.stStatus.SetLabel("Show empty ship groups" if self.shipBrowser.filterShipsWithNoFits else "Hide empty ship groups")
-        self.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
-        self.sbSwitchFitView.SetBitmapLabel(self.switchHoverBmp, False)
-        self.Refresh()
-        event.Skip()
-
-    def OnLeaveWSwitch(self, event):
-        self.stStatus.SetLabel("")
-        self.SetCursor(wx.StockCursor(wx.CURSOR_ARROW))
-        self.sbSwitchFitView.SetBitmapLabel(self.switchBmp if not self.shipBrowser.filterShipsWithNoFits else self.switchSelBmp, False)
-        self.Refresh()
-        event.Skip()
-
-    def OnEnterWNewFit(self, event):
-        if self.toggleSearch != 1:
-            self.stStatus.SetLabel("New fitting")
-        self.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
-        self.sbNewFit.SetBitmapLabel(self.newHoverBmp, False)
-        self.Refresh()
-        event.Skip()
-
-    def OnLeaveWNewFit(self, event):
-        self.stStatus.SetLabel("")
-        self.SetCursor(wx.StockCursor(wx.CURSOR_ARROW))
-        self.sbNewFit.SetBitmapLabel(self.newBmp, False)
-        self.Refresh()
-        event.Skip()
-
-    def OnSearch(self, event):
-        self.stStatus.SetLabel("")
-        if self.toggleSearch == 2:
-            self.toggleSearch = -1
-            return
-        if not self.search.IsShown():
-            self.spanel.Show(True)
-            self.search.Show(True)
-            self.search.SetFocus()
-            self.toggleSearch = 1
-            self.Layout()
-            self.spanel.Layout()
-
-        else:
-            self.search.Show(False)
-            self.spanel.Show(False)
-            self.toggleSearch = -1
-            self.Layout()
-        event.Skip()
-
-    def OnSwitch(self, event):
-        if self.shipBrowser.filterShipsWithNoFits:
-            self.shipBrowser.filterShipsWithNoFits = False
-            self.sbSwitchFitView.SetBitmapLabel(self.switchBmp,False)
-        else:
-            self.shipBrowser.filterShipsWithNoFits = True
-            self.sbSwitchFitView.SetBitmapLabel(self.switchSelBmp,False)
-        self.stStatus.SetLabel("Show empty ship groups" if self.shipBrowser.filterShipsWithNoFits else "Hide empty ship groups")
-        stage = self.shipBrowser.GetActiveStage()
-        if stage == 2:
-            categoryID = self.shipBrowser.GetStageData(stage)
-            wx.PostEvent(self.shipBrowser,Stage2Selected(categoryID=categoryID, back = True))
-        event.Skip()
-
-    def OnNewFitting(self, event):
-        self.editLostFocus()
-        stage = self.Parent.GetActiveStage()
-        if stage == 3:
-            shipID = self.Parent.GetStageData(stage)
-            shipName = self.Parent.GetStage3ShipName()
-            sFit = service.Fit.getInstance()
-            fitID = sFit.newFit(shipID, "%s fit" %shipName)
-            self.shipBrowser.fitIDMustEditName = fitID
-            wx.PostEvent(self.Parent,Stage3Selected(shipID=shipID, back = True))
-            wx.PostEvent(self.mainFrame, FitSelected(fitID=fitID))
-        event.Skip()
-
-    def OnForward(self,event):
-        self.editLostFocus()
-        stage = self.Parent.GetActiveStage()
-        stage +=1
-        if stage >3:
-            stage = 3
-            return
-        self.gotoStage(stage)
-
-        self.stStatus.Enable()
-        self.stStatus.SetLabel("")
-
-        event.Skip()
-
-    def OnBack(self,event):
-
-        self.stStatus.Enable()
-        self.stStatus.SetLabel("")
-        if len(self.shipBrowser.browseHist) > 0:
-            stage,data = self.shipBrowser.browseHist.pop()
-            self.gotoStage(stage,data)
-        event.Skip()
-
-    def gotoStage(self,stage, data = None):
-        if stage == 1:
-            wx.PostEvent(self.Parent,Stage1Selected())
-        elif stage == 2:
-            wx.PostEvent(self.Parent,Stage2Selected(categoryID=data, back = True))
-        elif stage == 3:
-            wx.PostEvent(self.Parent,Stage3Selected(shipID=data, back = 1))
-        elif stage == 4:
-            self.shipBrowser._activeStage = 4
-            self.stStatus.SetLabel("Search: %s" % data.capitalize())
-            self.Layout()
-            wx.PostEvent(self.Parent,SearchSelected(text=data, back = True))
-        else:
-            wx.PostEvent(self.Parent,Stage1Selected())
-
 
 class CategoryItem(SFItem.SFBrowserItem):
     def __init__(self,parent, categoryID, fittingInfo, size = (0,16)):
