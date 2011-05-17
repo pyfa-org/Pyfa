@@ -353,13 +353,15 @@ class NavigationPanel(SFItem.SFBrowserItem):
             self.BrowserSearchBox.Show(False)
         else:
             self.BrowserSearchBox.Show(True)
+            self.BrowserSearchBox.ChangeValue("")
             self.BrowserSearchBox.SetFocus()
 
     def OnBrowserSearchBoxEnter(self, event):
-        pass
+        self.OnBrowserSearchBoxLostFocus(None)
 
     def OnBrowserSearchBoxLostFocus(self, event):
         self.lastSearch = self.BrowserSearchBox.GetValue()
+        self.BrowserSearchBox.ChangeValue("")
         self.BrowserSearchBox.Show(False)
 
     def OnBrowserSearchBoxEsc(self, event):
@@ -765,6 +767,9 @@ class ShipBrowser(wx.Panel):
     def searchStage(self, event):
 
         self.lpane.ShowLoading(False)
+
+        self.navpanel.ShowNewFitButton(False)
+        self.navpanel.ShowSwitchEmptyGroupsButton(False)
 
         if not event.back:
             if self._activeStage !=4:
