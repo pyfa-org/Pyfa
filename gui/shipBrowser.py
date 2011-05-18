@@ -1013,6 +1013,16 @@ class ShipItem(SFItem.SFBrowserItem):
         self.animStep = 0
         self.animPeriod = 10
         self.animDuration = 100
+
+        self.popupMenu = wx.Menu()
+        self.popupMenuItems = ["Ship stats"]
+
+        for item in self.popupMenuItems:
+            menuItem = self.popupMenu.Append(-1, item)
+            self.Bind(wx.EVT_MENU, self.OnPopupItemSelected, menuItem)
+
+        self.Bind(wx.EVT_CONTEXT_MENU, self.OnShowPopup)
+
         #=======================================================================\
         # DISABLED - it will be added as an option in PREFERENCES
 
@@ -1024,6 +1034,17 @@ class ShipItem(SFItem.SFBrowserItem):
         # else:
         #    self.animCount = 0
         #=======================================================================
+
+    def OnPopupItemSelected(self, event):
+        item = self.popupMenu.FindItemById(event.GetId())
+        itemText = item.GetText()
+        if itemText == self.popupMenuItems [0]:
+            print "Menu:", itemText
+
+    def OnShowPopup(self, event):
+        pos = event.GetPosition()
+        pos = self.ScreenToClient(pos)
+        self.PopupMenu(self.popupMenu, pos)
 
     def OnTimer(self, event):
         step = self.OUT_QUAD(self.animStep, 0, 10, self.animDuration)
