@@ -13,8 +13,11 @@ import gui.utils.colorUtils as colorUtils
 import gui.utils.drawUtils as drawUtils
 import gui.utils.animUtils as animUtils
 import gui.utils.animEffects as animEffects
+import gui.utils.textFormatting as textFormatting
 
 import gui.sfBrowserItem as SFItem
+
+import service
 
 FitRenamed, EVT_FIT_RENAMED = wx.lib.newevent.NewEvent()
 FitSelected, EVT_FIT_SELECTED = wx.lib.newevent.NewEvent()
@@ -1022,6 +1025,11 @@ class ShipItem(SFItem.SFBrowserItem):
             self.Bind(wx.EVT_MENU, self.OnPopupItemSelected, menuItem)
 
         self.Bind(wx.EVT_CONTEXT_MENU, self.OnShowPopup)
+
+        self.marketInstance = service.Market.getInstance()
+        self.baseItem = self.marketInstance.getItem(self.shipID)
+        self.shipDescription = textFormatting.wrap(self.baseItem.description, 80)
+        self.SetToolTip(wx.ToolTip(self.shipDescription))
 
         #=======================================================================\
         # DISABLED - it will be added as an option in PREFERENCES
