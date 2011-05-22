@@ -13,9 +13,9 @@ import gui.utils.colorUtils as colorUtils
 import gui.utils.drawUtils as drawUtils
 import gui.utils.animUtils as animUtils
 import gui.utils.animEffects as animEffects
-import gui.utils.textFormatting as textFormatting
 
 import gui.sfBrowserItem as SFItem
+from gui.contextMenu import ContextMenu
 
 import service
 
@@ -1017,19 +1017,10 @@ class ShipItem(SFItem.SFBrowserItem):
         self.animPeriod = 10
         self.animDuration = 100
 
-        self.popupMenu = wx.Menu()
-        self.popupMenuItems = ["Ship stats"]
-
-        for item in self.popupMenuItems:
-            menuItem = self.popupMenu.Append(-1, item)
-            self.Bind(wx.EVT_MENU, self.OnPopupItemSelected, menuItem)
-
         self.Bind(wx.EVT_CONTEXT_MENU, self.OnShowPopup)
 
         self.marketInstance = service.Market.getInstance()
         self.baseItem = self.marketInstance.getItem(self.shipID)
-        self.shipDescription = textFormatting.wrap(self.baseItem.description, 80)
-        self.SetToolTip(wx.ToolTip(self.shipDescription))
 
         #=======================================================================\
         # DISABLED - it will be added as an option in PREFERENCES
@@ -1043,16 +1034,14 @@ class ShipItem(SFItem.SFBrowserItem):
         #    self.animCount = 0
         #=======================================================================
 
-    def OnPopupItemSelected(self, event):
-        item = self.popupMenu.FindItemById(event.GetId())
-        itemText = item.GetText()
-        if itemText == self.popupMenuItems [0]:
-            print "Menu:", itemText
 
     def OnShowPopup(self, event):
         pos = event.GetPosition()
         pos = self.ScreenToClient(pos)
-        self.PopupMenu(self.popupMenu, pos)
+        contexts = []
+        contexts.append(("baseShip", "Ship Basic"))
+        menu = ContextMenu.getMenu(self.baseItem, *contexts)
+        self.PopupMenu(menu, pos)
 
     def OnTimer(self, event):
         step = self.OUT_QUAD(self.animStep, 0, 10, self.animDuration)
