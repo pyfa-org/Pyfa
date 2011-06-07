@@ -95,7 +95,7 @@ class MainMenuBar(wx.MenuBar):
         helpMenu.Append(wx.ID_ABOUT)
 
         if config.debug:
-            helpMenu.Append(911,"Open Widgets Inspect tool", "Open Widgets Inspect tool")
+            helpMenu.Append( self.mainFrame.widgetInspectMenuID, "Open Widgets Inspect tool", "Open Widgets Inspect tool")
 
 
 

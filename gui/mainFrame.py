@@ -48,9 +48,9 @@ from gui.graphFrame import GraphFrame
 from gui.copySelectDialog import CopySelectDialog
 from gui.utils.clipboard import toClipboard, fromClipboard
 from gui.fleetBrowser import FleetBrowser
-from builtinViews import *
+from gui.builtinViews import *
 
-#dummy panel no paint no erasebk
+#dummy panel(no paint no erasebk)
 class PFPanel(wx.Panel):
     def __init__(self,parent):
         wx.Panel.__init__(self,parent)
@@ -70,17 +70,21 @@ class MainFrame(wx.Frame):
 
     def __init__(self):
         wx.Frame.__init__(self, None, wx.ID_ANY, title="pyfa - Python Fitting Assistant")
+
         MainFrame.__instance = self
 
+        #Load stored settings (width/height/maximized..)
         self.LoadMainFrameAttribs()
 
+        #Fix for msw (have the frame background color match panel color
         if 'wxMSW' in wx.PlatformInfo:
             self.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNFACE ) )
 
+        #Load and set the icon for pyfa main window
         i = wx.IconFromBitmap(bitmapLoader.getBitmap("pyfa", "icons"))
         self.SetIcon(i)
 
-
+        #Create the layout and windows
         mainSizer = wx.BoxSizer(wx.HORIZONTAL)
 
         self.splitter = wx.SplitterWindow(self, style = wx.SP_LIVE_UPDATE)
@@ -132,19 +136,24 @@ class MainFrame(wx.Frame):
 
         self.SetSizer(mainSizer)
 
+        #Add menu
         self.addPageId = wx.NewId()
         self.closePageId = wx.NewId()
 
+        self.widgetInspectMenuID = wx.NewId()
+        self.SetMenuBar(MainMenuBar())
+        self.registerMenu()
+
+
+
+        #Internal vars to keep track of other windows (graphing/stats)
         self.graphFrame = None
         self.statsWnds = []
         self.activeStatsWnd = None
 
-        #Add menu
-        self.SetMenuBar(MainMenuBar())
-        #self.SetToolBar(MainToolBar(self))
 
-        self.registerMenu()
         self.Bind(wx.EVT_CLOSE, self.OnClose)
+
         #Show ourselves
         self.Show()
 
@@ -152,6 +161,7 @@ class MainFrame(wx.Frame):
 
         mainFrameDefaultAttribs = {"wnd_width":1000, "wnd_height": 700, "wnd_maximized": False}
         self.mainFrameAttribs = service.SettingsProvider.getInstance().getSettings("pyfaMainWindowAttribs", mainFrameDefaultAttribs)
+
         if self.mainFrameAttribs["wnd_maximized"]:
             width = mainFrameDefaultAttribs["wnd_width"]
             height = mainFrameDefaultAttribs["wnd_height"]
@@ -269,7 +279,9 @@ class MainFrame(wx.Frame):
         if importCount == 1:
             if self.getActiveFit() != fitIDs[0]:
                 wx.PostEvent(self, FitSelected(fitID=fitIDs[0]))
+
         self.shipBrowser.RefreshContent()
+
     def showExportDialog(self, event):
         dlg=wx.FileDialog(
             self,
@@ -305,7 +317,7 @@ class MainFrame(wx.Frame):
         self.Bind(wx.EVT_MENU, self.ExitApp, id=wx.ID_EXIT)
         # Widgets Inspector
         if config.debug:
-            self.Bind(wx.EVT_MENU, self.openWXInspectTool, id=911)
+            self.Bind(wx.EVT_MENU, self.openWXInspectTool, id = self.widgetInspectMenuID)
         # About
         self.Bind(wx.EVT_MENU, self.ShowAboutBox, id=wx.ID_ABOUT)
         # Char editor
@@ -354,6 +366,7 @@ class MainFrame(wx.Frame):
                 (wx.ACCEL_CMD, ord('T'), self.addPageId),
 
                 (wx.ACCEL_CTRL, ord("W"), self.closePageId),
+                (wx.ACCEL_CTRL, wx.WXK_F4, self.closePageId),
                 (wx.ACCEL_CMD, ord("W"), self.closePageId),
 
                 (wx.ACCEL_CTRL, ord(" "), toggleShipMarketId),
