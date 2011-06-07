@@ -93,6 +93,7 @@ class RaceSelector(wx.Window):
         self.shipBrowser = self.Parent
         self.raceBmps = []
         self.raceNames = []
+        self.hoveredItem = None
 
         if layout == wx.VERTICAL:
             self.buttonsBarPos = (4,0)
@@ -127,9 +128,22 @@ class RaceSelector(wx.Window):
         self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnBackgroundErase)
         self.Bind(wx.EVT_PAINT, self.OnPaint)
         self.Bind(wx.EVT_LEFT_UP, self.OnLeftUp)
+        self.Bind(wx.EVT_MOTION, self.OnMouseMove)
         self.Bind(wx.EVT_SIZE, self.OnSizeUpdate)
 
         self.Layout()
+
+    def OnMouseMove(self, event):
+        mx,my = event.GetPosition()
+
+        location = self.HitTest(mx,my)
+        if location != self.hoveredItem:
+            self.hoveredItem = location
+            self.Refresh()
+            if location is not None:
+                self.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
+            else:
+                self.SetCursor(wx.StockCursor(wx.CURSOR_ARROW))
 
     def OnSizeUpdate(self,event):
         self.CalcButtonsBarPos()
@@ -143,13 +157,15 @@ class RaceSelector(wx.Window):
         if self.layout == wx.HORIZONTAL:
             rect = self.GetRect()
             width = 0
-
+            height = 0
             for bmp in self.raceBmps:
                 width += bmp.GetWidth() + self.buttonsPadding
+                height = max(bmp.GetHeight(), height)
 
-            posx = (rect.width - width)/2
+            posx = (rect.width - width) / 2
+            posy = (rect.height - height) / 2
 
-            self.buttonsBarPos = (posx,0)
+            self.buttonsBarPos = (posx, posy)
 
     def OnLeftUp(self, event):
 
@@ -216,7 +232,10 @@ class RaceSelector(wx.Window):
                     bmp = raceBmp
                 else:
                     img = wx.ImageFromBitmap(raceBmp)
-                    img = img.AdjustChannels(1,1,1,0.4)
+                    if self.hoveredItem == self.raceBmps.index(raceBmp):
+                        img = img.AdjustChannels(1, 1, 1, 0.7)
+                    else:
+                        img = img.AdjustChannels(1, 1, 1, 0.4)
                     bmp = wx.BitmapFromImage(img)
 
                 if self.layout == wx.VERTICAL:
@@ -276,6 +295,11 @@ class RaceSelector(wx.Window):
         event.Skip()
 
     def OnWindowLeave(self, event):
+        if self.hoveredItem is not None:
+            self.hoveredItem = None
+            self.SetCursor(wx.StockCursor(wx.CURSOR_ARROW))
+            self.Refresh()
+
         if not self.animate:
             return
 
