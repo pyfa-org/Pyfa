@@ -53,7 +53,7 @@ class PFListPane(wx.ScrolledWindow):
     def MScrollUp(self, event):
 
         posy = self.GetScrollPos(wx.VERTICAL)
-        posy -= 12
+        posy -= wx.SystemSettings_GetMetric(wx.SYS_VTHUMB_Y)
         self.Scroll(0, posy)
 
         event.Skip()
@@ -61,7 +61,7 @@ class PFListPane(wx.ScrolledWindow):
     def MScrollDown(self, event):
 
         posy = self.GetScrollPos(wx.VERTICAL)
-        posy += 12
+        posy += wx.SystemSettings_GetMetric(wx.SYS_VTHUMB_Y)
         self.Scroll(0, posy)
 
         event.Skip()
@@ -145,7 +145,7 @@ class PFListPane(wx.ScrolledWindow):
             #selected.SetFocus()
         elif doFocus:
             self.SetFocus()
-            
+
         clientW,clientH = self.GetSize()
         for i in xrange( len(self._wList) ):
             iwidth, iheight = self._wList[i].GetSize()
