@@ -204,7 +204,7 @@ class RaceSelector(wx.Window):
 
         mdc = wx.BufferedPaintDC(self)
 
-        bkBitmap = drawUtils.RenderGradientBar(windowColor, rect.width, rect.height, 0.0, 0.1, 0.2, 2)
+        bkBitmap = drawUtils.RenderGradientBar(windowColor, rect.width, rect.height, 0.1, 0.1, 0.2, 2)
         mdc.DrawBitmap(bkBitmap,0,0,True)
 
 
@@ -466,7 +466,7 @@ class NavigationPanel(SFItem.SFBrowserItem):
         else:
             mFactor = 0.2
 
-        eFactor = 0
+        eFactor = 0.1
 
         if self.bkBitmap:
             if self.bkBitmap.eFactor == eFactor and self.bkBitmap.sFactor == sFactor and self.bkBitmap.mFactor == mFactor \
