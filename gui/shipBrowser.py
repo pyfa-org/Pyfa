@@ -228,6 +228,8 @@ class RaceSelector(wx.Window):
 
         if self.direction == 1:
             for raceBmp in self.raceBmps:
+                dropShadow = drawUtils.CreateDropShadowBitmap(raceBmp, 0.2)
+
                 if self.shipBrowser.GetRaceFilterState(self.raceNames[self.raceBmps.index(raceBmp)]):
                     bmp = raceBmp
                 else:
@@ -239,9 +241,11 @@ class RaceSelector(wx.Window):
                     bmp = wx.BitmapFromImage(img)
 
                 if self.layout == wx.VERTICAL:
+                    mdc.DrawBitmap(dropShadow, rect.width - self.buttonsPadding - bmp.GetWidth() + 1, y + 1)
                     mdc.DrawBitmap(bmp, rect.width - self.buttonsPadding - bmp.GetWidth(), y)
                     y+=raceBmp.GetHeight() + self.buttonsPadding
                 else:
+                    mdc.DrawBitmap(dropShadow, x + 1, self.buttonsPadding + 1)
                     mdc.DrawBitmap(bmp, x, self.buttonsPadding)
                     x+=raceBmp.GetWidth() + self.buttonsPadding
 
