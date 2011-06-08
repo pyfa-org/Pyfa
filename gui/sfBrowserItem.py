@@ -17,6 +17,7 @@ class PFBaseButton(object):
     def __init__(self, normalBitmap = wx.NullBitmap,label = "", callback = None, hoverBitmap = None, disabledBitmap = None, show = True):
 
         self.normalBmp = normalBitmap
+        self.dropShadowBmp = self.CreateDropShadowBitmap()
         self.hoverBmp = hoverBitmap
         self.disabledBmp = disabledBitmap
         self.label = label
@@ -62,6 +63,7 @@ class PFBaseButton(object):
 
     def SetBitmap(self, bitmap):
         self.normalBmp = bitmap
+        self.dropShadowBmp = self.CreateDropShadowBitmap()
 
     def GetLabel(self):
         return self.label
@@ -75,6 +77,14 @@ class PFBaseButton(object):
         if self.disabledBmp == None:
             return self.normalBmp
         return self.disabledBmp
+
+    def CreateDropShadowBitmap(self):
+        img = wx.ImageFromBitmap(self.normalBmp)
+        img = img.AdjustChannels(0, 0, 0, 0.2)
+        return wx.BitmapFromImage(img)
+
+    def GetDropShadowBitmap(self):
+        return self.dropShadowBmp
 
 class PFToolbar(object):
     def __init__(self, parent):
@@ -209,6 +219,7 @@ class PFToolbar(object):
             btnState = button.GetState()
 
             bmp = button.GetDisabledBitmap()
+            dropShadowBmp = button.GetDropShadowBitmap()
 
             if btnState & BTN_NORMAL:
                 bmp = button.GetBitmap()
@@ -222,7 +233,10 @@ class PFToolbar(object):
                 tbx += self.padding / 2
 
             bmpWidth = bmp.GetWidth()
+
+            pdc.DrawBitmap(dropShadowBmp,bx + self.padding / 2, self.toolbarY + self.padding / 2)
             pdc.DrawBitmap(bmp, tbx, by)
+
             bx += bmpWidth + self.padding
 
 
