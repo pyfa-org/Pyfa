@@ -867,6 +867,8 @@ class CategoryItem(SFItem.SFBrowserItem):
         else:
             self.shipBmp = wx.EmptyBitmap(16,16)
 
+        self.dropShadowBitmap = drawUtils.CreateDropShadowBitmap(self.shipBmp, 0.2)
+
         self.categoryID = categoryID
         self.fittingInfo = fittingInfo
         self.shipBrowser = self.Parent.Parent
@@ -942,7 +944,7 @@ class CategoryItem(SFItem.SFBrowserItem):
         textColor = colorUtils.GetSuitableColor(windowColor, 1)
 
         mdc.SetTextForeground(textColor)
-
+        mdc.DrawBitmap(self.dropShadowBitmap, self.shipBmpx + 1, self.shipBmpy + 1)
         mdc.DrawBitmap(self.shipBmp,self.shipBmpx,self.shipBmpy,0)
 
         mdc.SetFont(self.fontBig)
@@ -1010,6 +1012,7 @@ class ShipItem(SFItem.SFBrowserItem):
         self.shipEffBkMirrored = wx.BitmapFromImage(img)
 
         self.raceBmp = bitmapLoader.getBitmap("race_%s_small" % self.shipRace, "icons")
+        self.raceDropShadowBmp = drawUtils.CreateDropShadowBitmap(self.raceBmp, 0.2)
 
         if self.shipName == "Apotheosis":
             self.raceMBmp = bitmapLoader.getBitmap("race_jove_small","icons")
@@ -1197,6 +1200,7 @@ class ShipItem(SFItem.SFBrowserItem):
 
         mdc.DrawBitmap(self.shipBmp, self.shipBmpx, self.shipBmpy, 0)
 
+        mdc.DrawBitmap(self.raceDropShadowBmp, self.raceBmpx + 1, self.raceBmpy + 1)
         mdc.DrawBitmap(self.raceBmp,self.raceBmpx, self.raceBmpy)
 
         shipName, fittings = self.shipFittingInfo

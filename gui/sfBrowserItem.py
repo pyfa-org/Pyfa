@@ -17,7 +17,8 @@ class PFBaseButton(object):
     def __init__(self, normalBitmap = wx.NullBitmap,label = "", callback = None, hoverBitmap = None, disabledBitmap = None, show = True):
 
         self.normalBmp = normalBitmap
-        self.dropShadowBmp = self.CreateDropShadowBitmap()
+        self.dropShadowOpacity = 0.2
+        self.dropShadowBmp = drawUtils.CreateDropShadowBitmap(self.normalBmp, self.dropShadowOpacity)
         self.hoverBmp = hoverBitmap
         self.disabledBmp = disabledBitmap
         self.label = label
@@ -63,7 +64,7 @@ class PFBaseButton(object):
 
     def SetBitmap(self, bitmap):
         self.normalBmp = bitmap
-        self.dropShadowBmp = self.CreateDropShadowBitmap()
+        self.dropShadowBmp = drawUtils.CreateDropShadowBitmap(self.normalBmp, self.dropShadowOpacity)
 
     def GetLabel(self):
         return self.label
@@ -77,11 +78,6 @@ class PFBaseButton(object):
         if self.disabledBmp == None:
             return self.normalBmp
         return self.disabledBmp
-
-    def CreateDropShadowBitmap(self):
-        img = wx.ImageFromBitmap(self.normalBmp)
-        img = img.AdjustChannels(0, 0, 0, 0.2)
-        return wx.BitmapFromImage(img)
 
     def GetDropShadowBitmap(self):
         return self.dropShadowBmp

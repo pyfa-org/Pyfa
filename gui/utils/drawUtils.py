@@ -98,3 +98,8 @@ def GetRoundBitmap( w, h, r ):
 
 def GetRoundShape( w, h, r ):
     return wx.RegionFromBitmap( GetRoundBitmap(w,h,r) )
+
+def CreateDropShadowBitmap(bitmap, opacity):
+    img = wx.ImageFromBitmap(bitmap)
+    img = img.AdjustChannels(0, 0, 0, opacity)
+    return wx.BitmapFromImage(img)
