@@ -32,8 +32,8 @@ class PFListPane(wx.ScrolledWindow):
         self.SetVirtualSize((1, 1))
         self.SetScrollRate(0, 1)
 
-        self.Bind(wx.EVT_SCROLLWIN_LINEUP, self.MScrollUp)
-        self.Bind(wx.EVT_SCROLLWIN_LINEDOWN, self.MScrollDown)
+#        self.Bind(wx.EVT_SCROLLWIN_LINEUP, self.MScrollUp)
+#        self.Bind(wx.EVT_SCROLLWIN_LINEDOWN, self.MScrollDown)
 #        self.Bind(wx.EVT_CHILD_FOCUS, self.OnChildFocus)
 #        self.Bind(wx.EVT_LEFT_DOWN, self.ForceFocus)
         self.SetFocus()
@@ -145,7 +145,7 @@ class PFListPane(wx.ScrolledWindow):
             #selected.SetFocus()
         elif doFocus:
             self.SetFocus()
-            
+
         clientW,clientH = self.GetSize()
         for i in xrange( len(self._wList) ):
             iwidth, iheight = self._wList[i].GetSize()
@@ -154,6 +154,7 @@ class PFListPane(wx.ScrolledWindow):
             if doRefresh == True:
                 self._wList[i].Refresh()
 
+        self.SetScrollbars(0,iheight, 0,  maxy/iheight)
 
     def RemoveWidget(self, child):
         child.Destroy()
