@@ -1016,7 +1016,6 @@ class ShipItem(SFItem.SFBrowserItem):
         self.shipEffBkMirrored = wx.BitmapFromImage(img)
 
         self.raceBmp = bitmapLoader.getBitmap("race_%s_small" % self.shipRace, "icons")
-        self.raceDropShadowBmp = drawUtils.CreateDropShadowBitmap(self.raceBmp, 0.2)
 
         if self.shipName == "Apotheosis":
             self.raceMBmp = bitmapLoader.getBitmap("race_jove_small","icons")
@@ -1025,6 +1024,8 @@ class ShipItem(SFItem.SFBrowserItem):
 
         if not self.raceBmp:
             self.raceBmp = self.raceMBmp
+
+        self.raceDropShadowBmp = drawUtils.CreateDropShadowBitmap(self.raceBmp, 0.2)
 
         self.shipBrowser = self.Parent.Parent
 
