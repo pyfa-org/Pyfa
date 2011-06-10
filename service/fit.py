@@ -483,7 +483,7 @@ class Fit(object):
             return
 
         fit = eos.db.getFit(fitID)
-        ammo = eos.db.getItem(ammoID)
+        ammo = eos.db.getItem(ammoID) if ammoID else None
 
         for mod in modules:
             if mod.isValidCharge(ammo):
