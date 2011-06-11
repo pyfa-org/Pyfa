@@ -36,7 +36,7 @@ def suffixizeAmount(val, lowest=-6, highest=9):
         # Start from highest possible suffix
         for key in sorted(suffixmap, reverse = True):
             # Find first suitable suffix and check if it's not above highest order
-            if val >= 10**key and key <= highest:
+            if abs(val) >= 10**key and key <= highest:
                 return val/float(10**key), suffixmap[key]
     # Take numbers between 0 and 1, and matching/below highest possible negative suffix
     elif abs(val) < 1 and val != 0 and lowest <= -3:
@@ -45,7 +45,7 @@ def suffixizeAmount(val, lowest=-6, highest=9):
         for key in sorted(suffixmap, reverse = False):
             # Check if mantissa with next suffix is in range [1, 1000)
             # Here we assume that each next order is greater than previous by 3
-            if val < 10**(key+3) and key >= lowest:
+            if abs(val) < 10**(key+3) and key >= lowest:
                 return val/float(10**key), suffixmap[key]
     # If no suitable suffixes are found within given order borders, or value
     # is already within [1, 1000) boundaries, just return rounded value with no suffix
