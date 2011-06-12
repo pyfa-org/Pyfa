@@ -128,7 +128,8 @@ class MarketTree(wx.TreeCtrl):
         for mktGrp in sMkt.getMarketRoot():
             iconId = self.addImage(sMkt.getIconByMarketGroup(mktGrp))
             childId = self.AppendItem(self.root, mktGrp.name, iconId, data=wx.TreeItemData(mktGrp.ID))
-            # All market groups which were never expanded are dummies
+            # All market groups which were never expanded are dummies, here we assume
+            # that all root market groups are expandable
             self.AppendItem(childId, "dummy")
 
         self.SortChildren(self.root)
@@ -228,15 +229,22 @@ class ItemView(d.Display):
 
     def selectionMade(self, event=None, forcedMetaSelect=None):
         self.marketBrowser.searchMode = False
-        root = self.marketView.GetSelection()
-        if root.IsOk():
-            sMkt = self.sMarket
-            root = self.marketView.GetPyData(root)
-            if root is not None:
-                # Get current market group
-                mg = sMkt.getMarketGroup(root, eager=("items", "items.metaGroup"))
-                # Get all its items
-                items = sMkt.getItemsByMarketGroup(mg)
+        # Grab the threeview selection and check if it's fine
+        sel = self.marketView.GetSelection()
+        if sel.IsOk():
+            # Get data field of the selected item (which is a marketGroup ID if anything was selected)
+            seldata = self.marketView.GetPyData(sel)
+            if seldata is not None:
+                # If market group treeview item doesn't have children (other market groups or dummies),
+                # then it should have items in it and we want to request them
+                if self.marketView.ItemHasChildren(sel) is False:
+                    sMkt = self.sMarket
+                    # Get current market group
+                    mg = sMkt.getMarketGroup(seldata, eager=("items", "items.metaGroup"))
+                    # Get all its items
+                    items = sMkt.getItemsByMarketGroup(mg)
+                else:
+                    items = set()
             else:
                 # If method was called but selection wasn't actually made
                 items = set()
