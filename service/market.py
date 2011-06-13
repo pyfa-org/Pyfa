@@ -503,7 +503,7 @@ class Market():
                         if self.getMarketGroupByItem(variation, parentcheck=False) is None:
                             result.add(variation)
         else:
-            result = set(baseitms)
+            result = baseitms
         return result
 
     def marketGroupHasTypesCheck(self, mg):
