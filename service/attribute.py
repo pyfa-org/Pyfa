@@ -28,6 +28,10 @@ class Attribute():
 
         return cls.instance
 
-    def getAttributeInfo(self, attributeName):
-        info = eos.db.getAttributeInfo(attributeName, eager=("icon", "unit"))
+    def getAttributeInfo(self, identity):
+        if isinstance(identity, (int, basestring)):
+            info = eos.db.getAttributeInfo(identity, eager=("icon", "unit"))
+        elif isinstance(identity, (int, float)):
+            id = int(identity)
+            info = eos.db.getAttributeInfo(id, eager=("icon", "unit"))
         return info

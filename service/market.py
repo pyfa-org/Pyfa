@@ -323,11 +323,8 @@ class Market():
         if isinstance(identity, eos.types.Group):
             return identity
         elif isinstance(identity, (int, float, basestring)):
-            # Attempt to convert float to int
-            try:
-                id = int(identity)
-            except ValueError:
-                id = None
+            if isinstance(identity, float):
+                identity = int(identity)
             # Check custom groups
             for cgrp in self.customGroups:
                 # During first comparison we need exact int, not float for matching
