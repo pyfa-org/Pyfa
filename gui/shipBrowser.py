@@ -1586,7 +1586,6 @@ class FitItem(SFItem.SFBrowserItem):
 
     def selectFit(self, event=None):
         wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fitID))
-        self.Parent.RefreshList(True)
 
     def RestoreEditButton(self):
             self.tcFitName.Show(False)
