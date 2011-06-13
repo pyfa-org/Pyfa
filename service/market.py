@@ -308,11 +308,15 @@ class Market():
     def getItem(self, identity, *args, **kwargs):
         """Get item by its ID or name"""
         if isinstance(identity, eos.types.Item):
-            return identity
-        elif isinstance(identity, (int, float, basestring)):
-            return eos.db.getItem(identity, *args, **kwargs)
+            item = identity
+        elif isinstance(identity, (int, basestring)):
+            item = eos.db.getItem(identity, *args, **kwargs)
+        elif isinstance(identity, float):
+            id = int(identity)
+            item = eos.db.getItem(id, *args, **kwargs)
         else:
             raise TypeError("Need Item object, integer, float or string as argument")
+        return item
 
     def getGroup(self, identity, *args, **kwargs):
         """Get group by its ID or name"""
@@ -338,29 +342,39 @@ class Market():
     def getCategory(self, identity, *args, **kwargs):
         """Get category by its ID or name"""
         if isinstance(identity, eos.types.Category):
-            return identity
-        elif isinstance(identity, (int, float, basestring)):
-            return eos.db.getCategory(identity, *args, **kwargs)
+            category = identity
+        elif isinstance(identity, (int, basestring)):
+            category = eos.db.getCategory(identity, *args, **kwargs)
+        elif isinstance(identity, float):
+            id = int(identity)
+            category = eos.db.getCategory(id, *args, **kwargs)
         else:
             raise TypeError("Need Category object, integer, float or string as argument")
+        return category
 
     def getMetaGroup(self, identity, *args, **kwargs):
         """Get meta group by its ID or name"""
         if isinstance(identity, eos.types.MetaGroup):
-            return identity
-        elif isinstance(identity, (int, float, basestring)):
-            return eos.db.getMetaGroup(identity, *args, **kwargs)
+            metaGroup = identity
+        elif isinstance(identity, (int, basestring)):
+            metaGroup = eos.db.getMetaGroup(identity, *args, **kwargs)
+        elif isinstance(identity, float):
+            id = int(identity)
+            metaGroup = eos.db.getMetaGroup(id, *args, **kwargs)
         else:
             raise TypeError("Need MetaGroup object, integer, float or string as argument")
+        return metaGroup
 
     def getMarketGroup(self, identity, *args, **kwargs):
         """Get market group by its ID"""
         if isinstance(identity, eos.types.MarketGroup):
-            return identity
+            marketGroup = identity
         elif isinstance(identity, (int, float)):
-            return eos.db.getMarketGroup(identity, *args, **kwargs)
+            id = int(identity)
+            marketGroup = eos.db.getMarketGroup(id, *args, **kwargs)
         else:
             raise TypeError("Need MarketGroup object, integer or float as argument")
+        return marketGroup
 
     def getGroupByItem(self, item):
         """Get group by item"""
