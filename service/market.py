@@ -216,7 +216,8 @@ class Market():
             if not parent in self.ITEMS_FORCEDMETAGROUP_R:
                 self.ITEMS_FORCEDMETAGROUP_R[parent] = set()
             self.ITEMS_FORCEDMETAGROUP_R[parent].add(item)
-        # Dictionary of items with forced market group
+        # Dictionary of items with forced market group (service assumes they have no
+        # market group assigned in db, otherwise they'll appear in both original and forced groups)
         self.ITEMS_FORCEDMARKETGROUP = {
             "'Alpha' Codebreaker I": 714, # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
             "'Codex' Codebreaker I": 714, # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
@@ -452,7 +453,7 @@ class Market():
 
     def getGroupsByCategory(self, cat):
         """Get groups from given category"""
-        groups = list(filter(lambda grp: self.getPublicityByGroup(grp), cat.groups))
+        groups = set(filter(lambda grp: self.getPublicityByGroup(grp), cat.groups))
         return groups
 
     def getMarketGroupChildren(self, mg):
@@ -473,10 +474,11 @@ class Market():
         """Get items in the given market group"""
         result = set()
         # Get items from eos market group
-        baseitms = mg.items
+        baseitms = set(mg.items)
         # Add hardcoded items to set
         if mg.ID in self.ITEMS_FORCEDMARKETGROUP_R:
-            baseitms += list(self.getItem(itmn) for itmn in self.ITEMS_FORCEDMARKETGROUP_R[mg.ID])
+            forceditms = set(self.getItem(itmn) for itmn in self.ITEMS_FORCEDMARKETGROUP_R[mg.ID])
+            baseitms.update(forceditms)
         if vars:
             for item in baseitms:
                 # Add one of the base market group items to result
