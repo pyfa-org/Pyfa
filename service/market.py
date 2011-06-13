@@ -25,7 +25,6 @@ import Queue
 
 import eos.db
 import eos.types
-import eos.saveddata
 
 try:
     from collections import OrderedDict
