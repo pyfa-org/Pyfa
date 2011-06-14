@@ -304,7 +304,7 @@ class Fit(object):
             fit.modules.freeSlot(m.getModifiedItemAttr("subSystemSlot"))
 
         if m.fits(fit):
-
+            m.owner = fit
             numSlots = len(fit.modules)
             fit.modules.append(m)
             if m.isValidState(State.ACTIVE):
