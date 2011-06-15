@@ -25,6 +25,7 @@ class PFListPane(wx.ScrolledWindow):
 
         self._wList = []
         self._wCount = 0
+        self.itemsHeight = 1
 
         self.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW))
 
@@ -53,7 +54,7 @@ class PFListPane(wx.ScrolledWindow):
     def MScrollUp(self, event):
 
         posy = self.GetScrollPos(wx.VERTICAL)
-        posy -= 12
+        posy -= self.itemsHeight
         self.Scroll(0, posy)
 
         event.Skip()
@@ -61,7 +62,7 @@ class PFListPane(wx.ScrolledWindow):
     def MScrollDown(self, event):
 
         posy = self.GetScrollPos(wx.VERTICAL)
-        posy += 12
+        posy += self.itemsHeight
         self.Scroll(0, posy)
 
         event.Skip()
@@ -145,7 +146,7 @@ class PFListPane(wx.ScrolledWindow):
             #selected.SetFocus()
         elif doFocus:
             self.SetFocus()
-            
+
         clientW,clientH = self.GetSize()
         for i in xrange( len(self._wList) ):
             iwidth, iheight = self._wList[i].GetSize()
@@ -153,7 +154,7 @@ class PFListPane(wx.ScrolledWindow):
             self._wList[i].SetSize((cwidth, iheight))
             if doRefresh == True:
                 self._wList[i].Refresh()
-
+            self.itemsHeight = max(self.itemsHeight, iheight - 1)
 
     def RemoveWidget(self, child):
         child.Destroy()
