@@ -544,7 +544,7 @@ class FittingView(d.Display):
         mdc.SetFont(font)
         mdc.SetTextForeground(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOWTEXT))
 
-        cx = padding *2
+        cx = padding
         for i, col in enumerate(self.activeColumns):
             if i > maxColumns:
                 break
