@@ -1153,9 +1153,9 @@ class PFTabsContainer(wx.Panel):
 
         event.Skip()
 
-class PFNotebookPagePreview(wx.MiniFrame):
+class PFNotebookPagePreview(wx.Frame):
     def __init__ (self,parent, pos, bitmap, title):
-        wx.MiniFrame.__init__(self, parent, id = wx.ID_ANY, title = wx.EmptyString, pos = pos, size = wx.DefaultSize, style =
+        wx.Frame.__init__(self, parent, id = wx.ID_ANY, title = wx.EmptyString, pos = pos, size = wx.DefaultSize, style =
                                                                wx.NO_BORDER
                                                              | wx.FRAME_NO_TASKBAR
                                                              | wx.STAY_ON_TOP)
@@ -1217,7 +1217,7 @@ class PFNotebookPagePreview(wx.MiniFrame):
     def Show(self, showWnd = True):
         if showWnd:
             wx.Frame.Show(self, showWnd)
-#            self.RaiseParent()
+            self.RaiseParent()
             self.direction = 1
             self.timer.Start(10)
         else:
