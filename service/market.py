@@ -328,7 +328,7 @@ class Market():
             # Check custom groups
             for cgrp in self.customGroups:
                 # During first comparison we need exact int, not float for matching
-                if cgrp.ID == id or cgrp.name == identity:
+                if cgrp.ID == identity or cgrp.name == identity:
                     # Return first match
                     return cgrp
             # Return eos group if everything else returned nothing
