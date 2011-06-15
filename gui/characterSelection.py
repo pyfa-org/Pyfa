@@ -51,8 +51,8 @@ class CharacterSelection(wx.Panel):
         self.mainFrame.Bind(ce.CHAR_LIST_UPDATED, self.refreshCharacterList)
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
 
-        panelSize = wx.Size(-1,30)
-        self.SetMinSize(panelSize)
+#        panelSize = wx.Size(-1,30)
+#        self.SetMinSize(panelSize)
 
         self.charChoice.Enable(False)
 
