@@ -269,8 +269,7 @@ class SFBrowserItem(wx.Window):
     def OnPaint(self, event):
         mdc = wx.BufferedPaintDC(self)
 
-        if self.bkBitmap is None:
-            self.RenderBackground()
+        self.RenderBackground()
 
         mdc.DrawBitmap(self.bkBitmap, 0,0)
 
