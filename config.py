@@ -12,9 +12,9 @@ debug = True
 
 # Version data
 version = "1.0"
-tag = "git"
-expansionName = "Incursion"
-expansionVersion = "1.1.0"
+tag = "release"
+expansionName = "Incarna"
+expansionVersion = "1.0"
 
 # You can adjust these paths to your needs
 
