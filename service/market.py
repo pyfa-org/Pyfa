@@ -196,7 +196,7 @@ class Market():
 
         # List of groups which are forcibly published
         self.GROUPS_FORCEPUBLISHED = {
-            "Prototype Exploration Ship": False, # We moved the only ship inside this group to other group anyway
+            "Prototype Exploration Ship": False, # We moved the only ship from this group to other group anyway
             "Rookie ship": True } # Group-container for published noobships
 
         # Dictionary of items with forced meta groups, uses following format:
@@ -256,6 +256,7 @@ class Market():
             "Imperial Navy Modified 'Noble' Implant": 1185, # Implants & Boosters > Implants > Skill Hardwiring > Implant Slot 10 > Armor Implants
             "Imperial Special Ops Field Enhancer - Standard": 618, # Implants & Boosters > Implants > Attribute Enhancers > Implant Slot 1
             "Michi's Excavation Augmentor": 1187, # Implants & Boosters > Implants > Skill Hardwiring > Implant Slot 10 > Industry Implants
+            "Nano Paint": 1103, # Ammunition & Charges > Nanite Repair Paste
             "Nugoehuvi Synth Blue Pill Booster": 977, # Implants & Boosters > Booster
             "Numon Family Heirloom": 1152, # Implants & Boosters > Implants > Skill Hardwiring > Implant Slot 6 > Armor Implants
             "Ogdin's Eye Coordination Enhancer": 1163, # Implants & Boosters > Implants > Skill Hardwiring > Implant Slot 7 > Gunnery Implants
