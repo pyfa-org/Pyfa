@@ -580,7 +580,7 @@ class Market():
 
     def getShipList(self, grpid):
         """Get ships for given group id"""
-        grp = self.getGroup(grpid, eager = ("items", "items.group", "items.attributes"))
+        grp = self.getGroup(grpid, eager=("items", "items.group", "items.marketGroup"))
         ships = self.getItemsByGroup(grp)
         for ship in ships:
             ship.race
