@@ -12,7 +12,7 @@ debug = False
 
 # Version data
 version = "1.0"
-tag = "release"
+tag = "git"
 expansionName = "Incarna"
 expansionVersion = "1.0"
 
