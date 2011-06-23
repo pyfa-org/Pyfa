@@ -627,7 +627,7 @@ class Market():
             price = eos.db.getPrice(typeID)
             if price is None:
                 price = eos.types.Price(typeID)
-                eos.db.saveddata_session.add(price)
+                eos.db.add(price)
 
             self.priceCache[typeID] = price
 
