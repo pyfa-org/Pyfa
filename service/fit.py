@@ -189,7 +189,7 @@ class Fit(object):
             return False
 
         fit = eos.db.getFit(fitID)
-        item = eos.db.getItem(itemID, eager=("attributes", "group.category"))
+        item = eos.db.getItem(itemID, eager=("attributes"))
         try:
             implant = eos.types.Implant(item)
         except ValueError:
