@@ -217,7 +217,7 @@ class Fit(object):
             return False
 
         fit = eos.db.getFit(fitID)
-        item = eos.db.getItem(itemID, eager=("attributes", "group.category"))
+        item = eos.db.getItem(itemID, eager="attributes")
         try:
             booster = eos.types.Booster(item)
         except ValueError:
