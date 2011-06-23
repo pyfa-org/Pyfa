@@ -20,7 +20,6 @@
 import threading
 import wx
 
-from sqlalchemy.orm.exc import NoResultFound
 import Queue
 
 import eos.db
@@ -625,9 +624,8 @@ class Market():
         """Get price for provided typeID"""
         price = self.priceCache.get(typeID)
         if price is None:
-            try:
-                price = eos.db.getPrice(typeID)
-            except NoResultFound:
+            price = eos.db.getPrice(typeID)
+            if price is None:
                 price = eos.types.Price(typeID)
                 eos.db.saveddata_session.add(price)
 
