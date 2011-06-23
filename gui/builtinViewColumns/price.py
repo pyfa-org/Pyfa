@@ -37,7 +37,7 @@ class Price(ViewColumn):
 
         sMarket = service.Market.getInstance()
         price = sMarket.getPriceNow(stuff.item.ID)
-        return formatAmount(price.price, 3, 3, 9) if price else False
+        return formatAmount(price.price, 3, 3, 9) if price and price.price else False
 
     def delayedText(self, mod, display, colItem):
         def callback(requests):
