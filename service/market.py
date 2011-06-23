@@ -71,22 +71,15 @@ class PriceWorkerThread(threading.Thread):
     def processUpdates(self):
         queue = self.queue
         while True:
-            try:
-                # Grab our data and re-release the lock
-                callback, requests = queue.get()
+            # Grab our data
+            callback, requests = queue.get()
 
-                # Grab prices, this is the time-consuming part
-                if len(requests) > 0:
-                    eos.types.Price.fetchPrices(*requests)
+            # Grab prices, this is the time-consuming part
+            if len(requests) > 0:
+                eos.types.Price.fetchPrices(*requests)
 
-                wx.CallAfter(callback)
-            except:
-                pass
-            finally:
-                try:
-                    queue.task_done()
-                except:
-                    pass
+            wx.CallAfter(callback)
+            queue.task_done()
 
     def trigger(self, prices, callbacks):
         self.queue.put((callbacks, prices))
