@@ -116,7 +116,7 @@ class CharacterSelection(wx.Panel):
         newCharID = fit.character.ID if fit is not None else None
         if event.fitID is None:
             self.skillReqsStaticBitmap.SetBitmap(self.cleanSkills)
-            self.skillReqsStaticBitmap.SetToolTipString("")
+            self.skillReqsStaticBitmap.SetToolTipString("No active fit.")
         else:
             sCharacter = service.Character.getInstance()
             reqs = sCharacter.checkRequirements(fit)
