@@ -37,12 +37,12 @@ class Price(ViewColumn):
 
         sMarket = service.Market.getInstance()
         price = sMarket.getPriceNow(stuff.item.ID)
-        return formatAmount(price.price, 3, 3, 9) if price and price.price else False
+        return formatAmount(price.price, 3, 3, 9, currency=True) if price and price.price else False
 
     def delayedText(self, mod, display, colItem):
         def callback(requests):
             price = requests[0].price
-            colItem.SetText(formatAmount(price, 3, 3, 9) if price else "")
+            colItem.SetText(formatAmount(price, 3, 3, 9, currency=True) if price else "")
             display.SetItem(colItem)
 
         service.Market.getInstance().getPrices([mod.item.ID], callback)
