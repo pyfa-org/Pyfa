@@ -595,11 +595,18 @@ class Market():
         """Find items according to given text pattern"""
         self.searchWorkerThread.scheduleSearch(name, callback)
 
-    def directAttrRequest(self, items, attrID):
-        itemIDs = tuple(map(lambda i: i.ID, items))
+    def directAttrRequest(self, items, attribs):
+        try:
+            itemIDs = tuple(map(lambda i: i.ID, items))
+        except TypeError:
+            itemIDs = (items.ID,)
+        try:
+            attrIDs = tuple(map(lambda i: i.ID, attribs))
+        except TypeError:
+            attrIDs = (attribs.ID,)
         info = {}
-        for ID, val in eos.db.directAttributeRequest(itemIDs, attrID):
-            info[ID] = val
+        for itemID, typeID, val in eos.db.directAttributeRequest(itemIDs, attrIDs):
+            info[itemID] = val
 
         return info
 
