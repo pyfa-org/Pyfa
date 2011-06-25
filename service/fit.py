@@ -259,6 +259,8 @@ class Fit(object):
         else:
             module = eos.types.Module(thing)
             module.state = State.ACTIVE
+            if not module.canHaveState(module.state, fit):
+                module.state = State.OFFLINE
             fit.projectedModules.append(module)
 
         eos.db.commit()
@@ -268,12 +270,14 @@ class Fit(object):
     def toggleProjected(self, fitID, thing, click):
         fit = eos.db.getFit(fitID)
         if isinstance(thing, eos.types.Drone):
-            if thing.amount == thing.amountActive:
-                thing.amountActive = 0
-            else:
+            if thing.amountActive == 0 and thing.canBeApplied(fit):
                 thing.amountActive = thing.amount
+            else:
+                thing.amountActive = 0
         elif isinstance(thing, eos.types.Module):
             thing.state = self.__getProposedState(thing, click)
+            if not thing.canHaveState(thing.state, fit):
+                thing.state = State.OFFLINE
 
         eos.db.commit()
         fit.clear()
@@ -582,11 +586,21 @@ class Fit(object):
         return IDs
 
     def checkStates(self, fit, base):
+        changed = False
         for mod in fit.modules:
             if mod != base:
                 if not mod.canHaveState(mod.state):
                     mod.state = State.ONLINE
-
+                    changed = True
+        for mod in fit.projectedModules:
+            if not mod.canHaveState(mod.state, fit):
+                mod.state = State.OFFLINE
+                changed = True
+        for drone in fit.projectedDrones:
+            if drone.amountActive > 0 and not drone.canBeApplied(fit):
+                drone.amountActive = 0
+                changed = True
+        return changed
 
     def toggleModulesState(self, fitID, base, modules, click):
         proposedState = self.__getProposedState(base, click)
@@ -598,10 +612,16 @@ class Fit(object):
 
         eos.db.commit()
         fit = eos.db.getFit(fitID)
-        self.checkStates(fit, base)
 
+        # As some items may affect state-limiting attributes of the ship, calculate new attributes first
         fit.clear()
         fit.calculateModifiedAttributes()
+        # Then, check states of all modules and change where needed
+        changed = self.checkStates(fit, base)
+        # If any state was changed, recalulate attributes again
+        if changed is True:
+            fit.clear()
+            fit.calculateModifiedAttributes()
 
     # Old state : New State
     localMap = {State.OVERHEATED: State.ACTIVE,
