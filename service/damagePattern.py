@@ -31,9 +31,8 @@ class DamagePattern():
         return cls.instance
 
     def __init__(self):
-        try:
-            uniform = eos.db.getDamagePattern("Uniform")
-        except:
+        uniform = eos.db.getDamagePattern("Uniform")
+        if uniform is None:
             uniform = eos.types.DamagePattern(25, 25, 25, 25)
             uniform.name = "Uniform"
             eos.db.save(uniform)
