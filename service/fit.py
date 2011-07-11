@@ -518,10 +518,9 @@ class Fit(object):
         if fitID is None:
             return
 
-        try:
-            sDP = DamagePattern.getInstance()
-            dp = sDP.getDamagePattern("Selected Ammo")
-        except:
+        sDP = DamagePattern.getInstance()
+        dp = sDP.getDamagePattern("Selected Ammo")
+        if dp is None:
             dp = eos.types.DamagePattern()
             dp.name = "Selected Ammo"
 
