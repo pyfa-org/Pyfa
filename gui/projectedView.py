@@ -56,10 +56,24 @@ class ProjectedView(d.Display):
         self.Bind(wx.EVT_LEFT_DOWN, self.click)
         self.Bind(wx.EVT_RIGHT_DOWN, self.click)
         self.Bind(wx.EVT_LEFT_DCLICK, self.remove)
+        self.Bind(wx.EVT_KEY_UP, self.kbEvent)
+
         self.droneView = gui.droneView.DroneView
 
         self.Bind(wx.EVT_LIST_BEGIN_DRAG, self.startDrag)
         self.SetDropTarget(ProjectedViewDrop(self.mergeDrones))
+
+    def kbEvent(self,event):
+        keycode = event.GetKeyCode()
+        if keycode == wx.WXK_DELETE or keycode == wx.WXK_NUMPAD_DELETE:
+            fitID = self.mainFrame.getActiveFit()
+            cFit = service.Fit.getInstance()
+            row = self.GetFirstSelected()
+            if row != -1:
+                cFit.removeProjected(fitID, self.get(row))
+                wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+
+        event.Skip()
 
     def handleDrag(self, type, fitID):
         #Those are drags coming from pyfa sources, NOT builtin wx drags

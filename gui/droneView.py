@@ -57,6 +57,8 @@ class DroneView(d.Display):
         self.mainFrame.Bind(mb.ITEM_SELECTED, self.addItem)
         self.Bind(wx.EVT_LEFT_DCLICK, self.removeItem)
         self.Bind(wx.EVT_LEFT_DOWN, self.click)
+        self.Bind(wx.EVT_KEY_UP, self.kbEvent)
+
         if "__WXGTK__" in  wx.PlatformInfo:
             self.Bind(wx.EVT_RIGHT_UP, self.scheduleMenu)
         else:
@@ -65,6 +67,20 @@ class DroneView(d.Display):
 
         self.Bind(wx.EVT_LIST_BEGIN_DRAG, self.startDrag)
         self.SetDropTarget(DroneViewDrop(self.mergeDrones))
+
+    def kbEvent(self, event):
+        keycode = event.GetKeyCode()
+        if keycode == wx.WXK_DELETE or keycode == wx.WXK_NUMPAD_DELETE:
+            row = self.GetFirstSelected()
+            firstSel = row
+            if row != -1:
+                fitID = self.mainFrame.getActiveFit()
+                cFit = service.Fit.getInstance()
+                drone = self.drones[self.GetItemData(row)]
+                cFit.removeDrone(fitID, self.original.index(drone))
+                wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+
+        event.Skip()
 
     def startDrag(self, event):
         row = event.GetIndex()
