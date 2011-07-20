@@ -38,6 +38,8 @@ class PFSearchBox(wx.Window):
 
         self.padding = 2
 
+        self._hl = False
+
         self.EditBox = wx.TextCtrl(self, wx.ID_ANY, "", wx.DefaultPosition, (-1,-1), wx.TE_PROCESS_ENTER)
 
         self.Bind(wx.EVT_PAINT, self.OnPaint)
@@ -46,6 +48,10 @@ class PFSearchBox(wx.Window):
 
         self.Bind(wx.EVT_LEFT_DOWN, self.OnLeftDown)
         self.Bind(wx.EVT_LEFT_UP, self.OnLeftUp)
+        self.Bind(wx.EVT_MOTION, self.OnMouseMove)
+
+        self.Bind(wx.EVT_ENTER_WINDOW, self.OnEnterLeaveWindow)
+        self.Bind(wx.EVT_LEAVE_WINDOW, self.OnEnterLeaveWindow)
 
 #        self.EditBox.ChangeValue(self.descriptiveText)
 
@@ -56,6 +62,10 @@ class PFSearchBox(wx.Window):
         self.EditBox.Bind(wx.EVT_TEXT_ENTER, self.OnTextEnter)
 
         self.SetMinSize(size)
+
+    def OnEnterLeaveWindow(self, event):
+        self.SetCursor(wx.StockCursor(wx.CURSOR_ARROW))
+        self._hl = False
 
     def OnText(self, event):
         wx.PostEvent(self, TextTyped())
@@ -123,6 +133,20 @@ class PFSearchBox(wx.Window):
         btnsize.append( (sw,sh))
         btnsize.append( (cw,ch))
         return btnsize
+
+    def OnMouseMove(self, event):
+        btnpos = self.GetButtonsPos()
+        btnsize = self.GetButtonsSize()
+        for btn in xrange(2):
+            if self.HitTest(btnpos[btn], event.GetPosition(), btnsize[btn]):
+                if not self._hl:
+                    self.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
+                    self._hl = True
+                break
+            else:
+                if self._hl:
+                    self.SetCursor(wx.StockCursor(wx.CURSOR_ARROW))
+                    self._hl = False
 
     def OnLeftDown(self, event):
         btnpos = self.GetButtonsPos()
@@ -232,7 +256,9 @@ class PFSearchBox(wx.Window):
                 else:
                     spad = 0
 
+                dc.DrawBitmap(self.searchBitmapShadow, self.searchButtonX + 1, self.searchButtonY + 1)
                 dc.DrawBitmap(self.searchBitmap, self.searchButtonX + spad, self.searchButtonY + spad)
+
 
         if self.isCancelButtonVisible:
             if self.cancelBitmap:
@@ -240,13 +266,16 @@ class PFSearchBox(wx.Window):
                     cpad = 1
                 else:
                     cpad = 0
+                dc.DrawBitmap(self.cancelBitmapShadow, self.cancelButtonX + 1, self.cancelButtonY + 1)
                 dc.DrawBitmap(self.cancelBitmap, self.cancelButtonX + cpad, self.cancelButtonY + cpad)
 
     def SetSearchBitmap(self, bitmap):
         self.searchBitmap = bitmap
+        self.searchBitmapShadow = drawUtils.CreateDropShadowBitmap(bitmap, 0.2)
 
     def SetCancelBitmap(self, bitmap):
         self.cancelBitmap = bitmap
+        self.cancelBitmapShadow = drawUtils.CreateDropShadowBitmap(bitmap, 0.2)
 
     def IsSearchButtonVisible(self):
         return self.isSearchButtonVisible
