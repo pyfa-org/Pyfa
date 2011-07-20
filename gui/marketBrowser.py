@@ -22,7 +22,9 @@ import service
 import gui.display as d
 from gui.cachingImageList import CachingImageList
 from gui.contextMenu import ContextMenu
+import gui.PFSearchBox as SBox
 
+from gui import bitmapLoader
 
 ItemSelected, ITEM_SELECTED = wx.lib.newevent.NewEvent()
 
@@ -32,19 +34,9 @@ class MarketBrowser(wx.Panel):
         vbox = wx.BoxSizer(wx.VERTICAL)
         self.SetSizer(vbox)
 
-        # Add a search button on top
-
-        # Add a WHOLE panel for ONE SINGLE search button
-        # We have to be able to give the search more size, which can't be done in another way.
-        # (That I found)
-        p = wx.Panel(self)
-        sizer = wx.BoxSizer(wx.HORIZONTAL)
-        p.SetSizer(sizer)
-
-        vbox.Add(p, 0, wx.EXPAND)
-        self.search = SearchBox(p)
-        sizer.Add(self.search, 1, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 2)
-        p.SetMinSize((wx.SIZE_AUTO_WIDTH, 33))
+        # Add a search box on top
+        self.search = SearchBox(self)
+        vbox.Add(self.search, 0, wx.EXPAND)
 
         self.splitter = wx.SplitterWindow(self, style = wx.SP_LIVE_UPDATE)
         vbox.Add(self.splitter, 1, wx.EXPAND)
@@ -107,10 +99,15 @@ class MarketBrowser(wx.Panel):
     def jump(self, item):
         self.marketView.jump(item)
 
-class SearchBox(wx.SearchCtrl):
+class SearchBox(SBox.PFSearchBox):
     def __init__(self, parent):
-        wx.SearchCtrl.__init__(self, parent, wx.ID_ANY, style=wx.TE_PROCESS_ENTER)
-        self.ShowCancelButton(True)
+        SBox.PFSearchBox.__init__(self, parent)
+        cancelBitmap = bitmapLoader.getBitmap("fit_delete_small","icons")
+        searchBitmap = bitmapLoader.getBitmap("fsearch_small","icons")
+        self.SetSearchBitmap(searchBitmap)
+        self.SetCancelBitmap(cancelBitmap)
+        self.ShowSearchButton()
+        self.ShowCancelButton()
 
 class MarketTree(wx.TreeCtrl):
     def __init__(self, parent, marketBrowser):
@@ -211,10 +208,10 @@ class ItemView(d.Display):
         self.marketView = marketBrowser.marketView
 
         # Make sure our search actually does interesting stuff
-        self.marketBrowser.search.Bind(wx.EVT_TEXT_ENTER, self.scheduleSearch)
-        self.marketBrowser.search.Bind(wx.EVT_SEARCHCTRL_SEARCH_BTN, self.scheduleSearch)
-        self.marketBrowser.search.Bind(wx.EVT_SEARCHCTRL_CANCEL_BTN, self.clearSearch)
-        self.marketBrowser.search.Bind(wx.EVT_TEXT, self.scheduleSearch)
+        self.marketBrowser.search.Bind(SBox.EVT_TEXT_ENTER, self.scheduleSearch)
+        self.marketBrowser.search.Bind(SBox.EVT_SEARCH_BTN, self.scheduleSearch)
+        self.marketBrowser.search.Bind(SBox.EVT_CANCEL_BTN, self.clearSearch)
+        self.marketBrowser.search.Bind(SBox.EVT_TEXT, self.scheduleSearch)
 
         # Make sure WE do interesting stuff too
         self.Bind(wx.EVT_CONTEXT_MENU, self.contextMenu)
