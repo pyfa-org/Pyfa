@@ -36,7 +36,7 @@ class PFSearchBox(wx.Window):
         self.editY = 0
 
 
-        self.padding = 2
+        self.padding = 4
 
         self._hl = False
 
@@ -239,7 +239,7 @@ class PFSearchBox(wx.Window):
         dc = wx.BufferedPaintDC(self)
 
         bkColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
-
+        sepColor = colorUtils.GetSuitableColor(bkColor, 0.2)
         rect = self.GetRect()
 
         if self.resized:
@@ -268,6 +268,9 @@ class PFSearchBox(wx.Window):
                     cpad = 0
                 dc.DrawBitmap(self.cancelBitmapShadow, self.cancelButtonX + 1, self.cancelButtonY + 1)
                 dc.DrawBitmap(self.cancelBitmap, self.cancelButtonX + cpad, self.cancelButtonY + cpad)
+
+        dc.SetPen(wx.Pen(sepColor,1))
+        dc.DrawLine(0,rect.height - 1, rect.width, rect.height - 1)
 
     def SetSearchBitmap(self, bitmap):
         self.searchBitmap = bitmap
