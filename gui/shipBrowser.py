@@ -324,11 +324,11 @@ class NavigationPanel(SFItem.SFBrowserItem):
         self.resetBmpH = bitmapLoader.getBitmap("freset_small","icons")
         self.switchBmpH = bitmapLoader.getBitmap("fit_switch_view_mode_small","icons")
 
-        self.resetBmp = self.AdjustAlphaChannel(self.resetBmpH)
-        self.rewBmp = self.AdjustAlphaChannel(self.rewBmpH)
-        self.searchBmp = self.AdjustAlphaChannel(self.searchBmpH)
-        self.switchBmp = self.AdjustAlphaChannel(self.switchBmpH)
-        self.newBmp = self.AdjustAlphaChannel(self.newBmpH)
+        self.resetBmp = self.AdjustChannels(self.resetBmpH)
+        self.rewBmp = self.AdjustChannels(self.rewBmpH)
+        self.searchBmp = self.AdjustChannels(self.searchBmpH)
+        self.switchBmp = self.AdjustChannels(self.switchBmpH)
+        self.newBmp = self.AdjustChannels(self.newBmpH)
 
         self.toolbar.AddButton(self.resetBmp, "Ship groups", clickCallback = self.OnHistoryReset, hoverBitmap = self.resetBmpH)
         self.toolbar.AddButton(self.rewBmp, "Back", clickCallback = self.OnHistoryBack, hoverBitmap = self.rewBmpH)
@@ -440,10 +440,11 @@ class NavigationPanel(SFItem.SFBrowserItem):
             stage,data = self.shipBrowser.browseHist.pop()
             self.gotoStage(stage,data)
 
-    def AdjustAlphaChannel(self, bitmap):
+    def AdjustChannels(self, bitmap):
         img = wx.ImageFromBitmap(bitmap)
-        img = img.AdjustChannels(1,1,1,0.4)
+        img = img.AdjustChannels(1.05,1.05,1.05,1)
         return wx.BitmapFromImage(img)
+
     def UpdateElementsPos(self, mdc):
         rect = self.GetRect()
 
