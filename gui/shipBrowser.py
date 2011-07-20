@@ -574,7 +574,7 @@ class ShipBrowser(wx.Panel):
 
         self.navpanel = NavigationPanel(self)
         mainSizer.Add(self.navpanel, 0 , wx.EXPAND)
-        self.raceselect = RaceSelector(self, layout = layout, animate = True)
+        self.raceselect = RaceSelector(self, layout = layout, animate = False)
         container = wx.BoxSizer(wx.VERTICAL if layout == wx.HORIZONTAL else wx.HORIZONTAL)
 
         if layout == wx.HORIZONTAL:
