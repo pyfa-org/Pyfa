@@ -570,7 +570,7 @@ class ShipBrowser(wx.Panel):
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
         self.lpane = PFWidgetsContainer(self)
-        layout = wx.HORIZONTAL
+        layout = wx.VERTICAL
 
         self.navpanel = NavigationPanel(self)
         mainSizer.Add(self.navpanel, 0 , wx.EXPAND)
