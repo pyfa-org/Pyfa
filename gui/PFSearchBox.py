@@ -39,9 +39,8 @@ class PFSearchBox(wx.Window):
         self.padding = 4
 
         self._hl = False
-
-        self.EditBox = wx.TextCtrl(self, wx.ID_ANY, "", wx.DefaultPosition, (-1,-1), wx.TE_PROCESS_ENTER)
-
+        w,h = size
+        self.EditBox = wx.TextCtrl(self, wx.ID_ANY, "", wx.DefaultPosition, (-1, h - 2 if 'wxGTK' in wx.PlatformInfo else -1 ), wx.TE_PROCESS_ENTER | (wx.BORDER_NONE if 'wxGTK' in wx.PlatformInfo else 0))
         self.Bind(wx.EVT_PAINT, self.OnPaint)
         self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBk)
         self.Bind(wx.EVT_SIZE, self.OnSize)
