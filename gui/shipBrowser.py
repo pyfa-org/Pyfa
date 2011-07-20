@@ -216,7 +216,7 @@ class RaceSelector(wx.Window):
 
         windowColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
         bkColor = colorUtils.GetSuitableColor(windowColor, 0.1)
-        sepColor = colorUtils.GetSuitableColor(windowColor, 0.6)
+        sepColor = colorUtils.GetSuitableColor(windowColor, 0.2)
 
         mdc = wx.BufferedPaintDC(self)
 
@@ -248,12 +248,15 @@ class RaceSelector(wx.Window):
                     mdc.DrawBitmap(dropShadow, x + 1, self.buttonsPadding + 1)
                     mdc.DrawBitmap(bmp, x, self.buttonsPadding)
                     x+=raceBmp.GetWidth() + self.buttonsPadding
+                    mdc.SetPen(wx.Pen(sepColor,1))
+                    mdc.DrawLine(0, 0, rect.width, 0)
 
         if self.direction < 1:
             if self.layout == wx.VERTICAL:
                 mdc.DrawBitmap(self.bmpArrow, -2, (rect.height - self.bmpArrow.GetHeight()) / 2)
             else:
                 mdc.DrawBitmap(self.bmpArrow, (rect.width - self.bmpArrow.GetWidth()) / 2, -2)
+
 
 
     def OnTimer(self,event):
@@ -463,13 +466,14 @@ class NavigationPanel(SFItem.SFBrowserItem):
         bEditBoxWidth, bEditBoxHeight = self.BrowserSearchBox.GetSize()
         self.browserBoxY = (rect.height - bEditBoxHeight) / 2
 
-        self.bEditBoxWidth = rect.width - self.browserBoxX
+        self.bEditBoxWidth = rect.width - self.browserBoxX - self.padding
 
     def DrawItem(self, mdc):
         rect = self.GetRect()
 
         windowColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
         textColor = colorUtils.GetSuitableColor(windowColor, 1)
+        sepColor = colorUtils.GetSuitableColor(windowColor, 0.2)
 
         mdc.SetTextForeground(textColor)
 
@@ -480,6 +484,8 @@ class NavigationPanel(SFItem.SFBrowserItem):
         self.toolbar.SetPosition((self.toolbarx, self.toolbary))
         mdc.SetFont(self.fontSmall)
         mdc.DrawText(self.toolbar.hoverLabel, self.thoverx, self.thovery)
+        mdc.SetPen(wx.Pen(sepColor,1))
+        mdc.DrawLine(0,rect.height - 1, rect.width, rect.height - 1)
 
     def RenderBackground(self):
         rect = self.GetRect()
