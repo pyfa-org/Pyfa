@@ -216,7 +216,7 @@ class RaceSelector(wx.Window):
 
         windowColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
         bkColor = colorUtils.GetSuitableColor(windowColor, 0.1)
-        sepColor = colorUtils.GetSuitableColor(windowColor, 0.6)
+        sepColor = colorUtils.GetSuitableColor(windowColor, 0.2)
 
         mdc = wx.BufferedPaintDC(self)
 
@@ -244,16 +244,23 @@ class RaceSelector(wx.Window):
                     mdc.DrawBitmap(dropShadow, rect.width - self.buttonsPadding - bmp.GetWidth() + 1, y + 1)
                     mdc.DrawBitmap(bmp, rect.width - self.buttonsPadding - bmp.GetWidth(), y)
                     y+=raceBmp.GetHeight() + self.buttonsPadding
+                    mdc.SetPen(wx.Pen(sepColor,1))
+                    mdc.DrawLine(rect.width - 1, 0, rect.width -1, rect.height)
                 else:
                     mdc.DrawBitmap(dropShadow, x + 1, self.buttonsPadding + 1)
                     mdc.DrawBitmap(bmp, x, self.buttonsPadding)
                     x+=raceBmp.GetWidth() + self.buttonsPadding
+                    mdc.SetPen(wx.Pen(sepColor,1))
+                    mdc.DrawLine(0, 0, rect.width, 0)
 
         if self.direction < 1:
             if self.layout == wx.VERTICAL:
                 mdc.DrawBitmap(self.bmpArrow, -2, (rect.height - self.bmpArrow.GetHeight()) / 2)
             else:
+                mdc.SetPen(wx.Pen(sepColor,1))
+                mdc.DrawLine(0, 0, rect.width, 0)
                 mdc.DrawBitmap(self.bmpArrow, (rect.width - self.bmpArrow.GetWidth()) / 2, -2)
+
 
 
     def OnTimer(self,event):
@@ -324,11 +331,11 @@ class NavigationPanel(SFItem.SFBrowserItem):
         self.resetBmpH = bitmapLoader.getBitmap("freset_small","icons")
         self.switchBmpH = bitmapLoader.getBitmap("fit_switch_view_mode_small","icons")
 
-        self.resetBmp = self.AdjustAlphaChannel(self.resetBmpH)
-        self.rewBmp = self.AdjustAlphaChannel(self.rewBmpH)
-        self.searchBmp = self.AdjustAlphaChannel(self.searchBmpH)
-        self.switchBmp = self.AdjustAlphaChannel(self.switchBmpH)
-        self.newBmp = self.AdjustAlphaChannel(self.newBmpH)
+        self.resetBmp = self.AdjustChannels(self.resetBmpH)
+        self.rewBmp = self.AdjustChannels(self.rewBmpH)
+        self.searchBmp = self.AdjustChannels(self.searchBmpH)
+        self.switchBmp = self.AdjustChannels(self.switchBmpH)
+        self.newBmp = self.AdjustChannels(self.newBmpH)
 
         self.toolbar.AddButton(self.resetBmp, "Ship groups", clickCallback = self.OnHistoryReset, hoverBitmap = self.resetBmpH)
         self.toolbar.AddButton(self.rewBmp, "Back", clickCallback = self.OnHistoryBack, hoverBitmap = self.rewBmpH)
@@ -342,8 +349,8 @@ class NavigationPanel(SFItem.SFBrowserItem):
         self.inSearch = False
 
         self.fontSmall = wx.FontFromPixelSize((0,12),wx.SWISS, wx.NORMAL, wx.NORMAL, False)
-
-        self.BrowserSearchBox = wx.TextCtrl(self, wx.ID_ANY, "", wx.DefaultPosition, (-1,-1), wx.TE_PROCESS_ENTER)
+        w,h = size
+        self.BrowserSearchBox = wx.TextCtrl(self, wx.ID_ANY, "", wx.DefaultPosition, (-1, h - 2 if 'wxGTK' in wx.PlatformInfo else -1 ), wx.TE_PROCESS_ENTER | (wx.BORDER_NONE if 'wxGTK' in wx.PlatformInfo else 0))
         self.BrowserSearchBox.Show(False)
 
         self.BrowserSearchBox.Bind(wx.EVT_TEXT_ENTER, self.OnBrowserSearchBoxEnter)
@@ -440,10 +447,11 @@ class NavigationPanel(SFItem.SFBrowserItem):
             stage,data = self.shipBrowser.browseHist.pop()
             self.gotoStage(stage,data)
 
-    def AdjustAlphaChannel(self, bitmap):
+    def AdjustChannels(self, bitmap):
         img = wx.ImageFromBitmap(bitmap)
-        img = img.AdjustChannels(1,1,1,0.4)
+        img = img.AdjustChannels(1.05,1.05,1.05,1)
         return wx.BitmapFromImage(img)
+
     def UpdateElementsPos(self, mdc):
         rect = self.GetRect()
 
@@ -462,13 +470,14 @@ class NavigationPanel(SFItem.SFBrowserItem):
         bEditBoxWidth, bEditBoxHeight = self.BrowserSearchBox.GetSize()
         self.browserBoxY = (rect.height - bEditBoxHeight) / 2
 
-        self.bEditBoxWidth = rect.width - self.browserBoxX
+        self.bEditBoxWidth = rect.width - self.browserBoxX - self.padding
 
     def DrawItem(self, mdc):
         rect = self.GetRect()
 
         windowColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
         textColor = colorUtils.GetSuitableColor(windowColor, 1)
+        sepColor = colorUtils.GetSuitableColor(windowColor, 0.2)
 
         mdc.SetTextForeground(textColor)
 
@@ -479,6 +488,8 @@ class NavigationPanel(SFItem.SFBrowserItem):
         self.toolbar.SetPosition((self.toolbarx, self.toolbary))
         mdc.SetFont(self.fontSmall)
         mdc.DrawText(self.toolbar.hoverLabel, self.thoverx, self.thovery)
+        mdc.SetPen(wx.Pen(sepColor,1))
+        mdc.DrawLine(0,rect.height - 1, rect.width, rect.height - 1)
 
     def RenderBackground(self):
         rect = self.GetRect()
