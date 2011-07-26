@@ -71,6 +71,7 @@ class PyGauge(wx.PyWindow):
 
         self._percentage = 0
         self._oldPercentage = 0
+        self._showRemaining = False
 
         self.font = wx.FontFromPixelSize((0,14),wx.SWISS, wx.NORMAL, wx.NORMAL, False)
 
@@ -83,7 +84,16 @@ class PyGauge(wx.PyWindow):
         self.Bind(wx.EVT_PAINT, self.OnPaint)
         self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBackground)
         self.Bind(wx.EVT_TIMER, self.OnTimer)
+        self.Bind(wx.EVT_ENTER_WINDOW, self.OnWindowEnter)
+        self.Bind(wx.EVT_LEAVE_WINDOW, self.OnWindowLeave)
 
+    def OnWindowEnter(self, event):
+        self._showRemaining = True
+        self.Refresh()
+
+    def OnWindowLeave(self, event):
+        self._showRemaining = False
+        self.Refresh()
 
     def DoGetBestSize(self):
         """
@@ -366,7 +376,13 @@ class PyGauge(wx.PyWindow):
             dc.SetTextForeground(wx.Colour(255,255,255))
             dc.DrawLabel(formatStr, rect, wx.ALIGN_CENTER)
         else:
-            formatStr = "{0:." + str(self._fractionDigits) + "f}%"
+            if self.GetBarGradient() and self._showRemaining:
+                formatStr = "{0:." + str(self._fractionDigits) + "f} left"
+                range = self._range if self._range > 0.01 else 0
+                value = max( range - self._value , 0)
+            else:
+                formatStr = "{0:." + str(self._fractionDigits) + "f}%"
+
             dc.SetTextForeground(wx.Colour(80,80,80))
             dc.DrawLabel(formatStr.format(value), r, wx.ALIGN_CENTER)
 
