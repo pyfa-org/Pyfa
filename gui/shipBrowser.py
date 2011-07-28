@@ -367,7 +367,9 @@ class NavigationPanel(SFItem.SFBrowserItem):
 
     def OnScheduleSearch(self, event):
         search = self.BrowserSearchBox.GetValue()
-        if len(search) < 3 and len(search) >= 0:
+        # Make sure we do not count wildcard as search symbol
+        realsearch = search.replace("*", "")
+        if len(realsearch) < 3 and len(realsearch) >= 0:
             if self.inSearch == True:
                 self.inSearch = False
                 if len(self.shipBrowser.browseHist) > 0:

@@ -294,12 +294,14 @@ class ItemView(d.Display):
 
     def scheduleSearch(self, event=None):
         search = self.marketBrowser.search.GetLineText(0)
+        # Make sure we do not count wildcard as search symbol
+        realsearch = search.replace("*", "")
         # Re-select market group if search query has zero length
-        if len(search) == 0:
+        if len(realsearch) == 0:
             self.selectionMade()
             return
         # Show nothing if query is too short
-        elif len(search) < 3:
+        elif len(realsearch) < 3:
             self.clearSearch()
             return
 
