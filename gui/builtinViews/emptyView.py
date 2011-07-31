@@ -3,16 +3,10 @@ import gui.globalEvents as GE
 import gui.chromeTabs
 import gui.mainFrame
 import service
-from gui import bitmapLoader
 
 class BlankPage(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent, size=(0, 0))
-        self.bkimg = bitmapLoader.getImage("pyfa_big", "icons")
-        self.bkimg = self.bkimg.AdjustChannels(1,1,1,0.1)
-        self.bkbmp = wx.BitmapFromImage(self.bkimg)
-
-        self.showLogo = False
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.parent = parent
