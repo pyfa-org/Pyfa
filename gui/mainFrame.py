@@ -478,8 +478,8 @@ class MainFrame(wx.Frame):
         else:
             self.graphFrame.SetFocus()
 
-    def toggleShipBrowser(self, event):
-        self.GetToolBar().toggleShipBrowser(event)
+#    def toggleShipBrowser(self, event):
+#        self.GetToolBar().toggleShipBrowser(event)
 
     def openWXInspectTool(self,event):
         from wx.lib.inspection import InspectionTool
