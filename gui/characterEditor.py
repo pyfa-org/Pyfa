@@ -582,7 +582,7 @@ class APIView (wx.Panel):
         pmainSizer.Add(self.btnFetchSkills, 0, wx.ALL, 5)
         self.btnFetchSkills.Hide()
         self.btnFetchSkills.Bind(wx.EVT_BUTTON, self.fetchSkills)
-        self.stAPITip = wx.StaticText( self, wx.ID_ANY, u"You can create a key here (characters / sheet access only):", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.stAPITip = wx.StaticText( self, wx.ID_ANY, u"You can create a key here (character sheet access only):", wx.DefaultPosition, wx.DefaultSize, 0 )
         self.stAPITip.Wrap( -1 )
 
         pmainSizer.Add( self.stAPITip, 0, wx.ALL, 2 )
