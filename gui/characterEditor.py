@@ -534,6 +534,10 @@ class APIView (wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__ (self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.Size(500, 300), style=wx.TAB_TRAVERSAL)
         self.Parent.Parent.Bind(CHAR_CHANGED, self.charChanged)
+
+        self.apiUrlCreatePredefined = u"https://support.eveonline.com/api/Key/CreatePredefined/8"
+        self.apiUrlKeyList = u"https://support.eveonline.com/api/Key/Index"
+
         pmainSizer = wx.BoxSizer(wx.VERTICAL)
 
         fgSizerInput = wx.FlexGridSizer(3, 2, 0, 0)
@@ -541,14 +545,14 @@ class APIView (wx.Panel):
         fgSizerInput.SetFlexibleDirection(wx.BOTH)
         fgSizerInput.SetNonFlexibleGrowMode(wx.FLEX_GROWMODE_SPECIFIED)
 
-        self.m_staticIDText = wx.StaticText(self, wx.ID_ANY, u"User ID:", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.m_staticIDText = wx.StaticText(self, wx.ID_ANY, u"keyID:", wx.DefaultPosition, wx.DefaultSize, 0)
         self.m_staticIDText.Wrap(-1)
         fgSizerInput.Add(self.m_staticIDText, 0, wx.ALL | wx.ALIGN_RIGHT | wx.ALIGN_CENTER_VERTICAL, 5)
 
         self.inputID = wx.TextCtrl(self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0)
         fgSizerInput.Add(self.inputID, 1, wx.ALL | wx.EXPAND, 5)
 
-        self.m_staticKeyText = wx.StaticText(self, wx.ID_ANY, u"API key:", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.m_staticKeyText = wx.StaticText(self, wx.ID_ANY, u"vCode:", wx.DefaultPosition, wx.DefaultSize, 0)
         self.m_staticKeyText.Wrap(-1)
         fgSizerInput.Add(self.m_staticKeyText, 0, wx.ALL | wx.ALIGN_RIGHT | wx.ALIGN_CENTER_VERTICAL, 5)
 
@@ -578,12 +582,21 @@ class APIView (wx.Panel):
         pmainSizer.Add(self.btnFetchSkills, 0, wx.ALL, 5)
         self.btnFetchSkills.Hide()
         self.btnFetchSkills.Bind(wx.EVT_BUTTON, self.fetchSkills)
-        self.stAPITip = wx.StaticText( self, wx.ID_ANY, u"Your API info is available at:", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.stAPITip = wx.StaticText( self, wx.ID_ANY, u"You can create a key here (characters / sheet access only):", wx.DefaultPosition, wx.DefaultSize, 0 )
         self.stAPITip.Wrap( -1 )
-        pmainSizer.Add( self.stAPITip, 0, wx.ALL, 5 )
 
-        self.hlEveAPI = wx.HyperlinkCtrl( self, wx.ID_ANY, u"http://www.eveonline.com/api/default.asp", u"http://www.eveonline.com/api/default.asp", wx.DefaultPosition, wx.DefaultSize, wx.HL_DEFAULT_STYLE )
-        pmainSizer.Add( self.hlEveAPI, 0, wx.ALL, 5 )
+        pmainSizer.Add( self.stAPITip, 0, wx.ALL, 2 )
+
+        self.hlEveAPI = wx.HyperlinkCtrl( self, wx.ID_ANY, self.apiUrlCreatePredefined, self.apiUrlCreatePredefined, wx.DefaultPosition, wx.DefaultSize, wx.HL_DEFAULT_STYLE )
+        pmainSizer.Add( self.hlEveAPI, 0, wx.ALL, 2 )
+
+        self.stAPITip2 = wx.StaticText( self, wx.ID_ANY, u"You can view the list of your keys here:", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.stAPITip2.Wrap( -1 )
+        pmainSizer.Add( self.stAPITip2, 0, wx.ALL, 2 )
+
+        self.hlEveAPI2 = wx.HyperlinkCtrl( self, wx.ID_ANY, self.apiUrlKeyList, self.apiUrlKeyList, wx.DefaultPosition, wx.DefaultSize, wx.HL_DEFAULT_STYLE )
+        pmainSizer.Add( self.hlEveAPI2, 0, wx.ALL, 2 )
+
         self.stStatus = wx.StaticText(self,  wx.ID_ANY, wx.EmptyString)
         pmainSizer.Add(self.stStatus, 0, wx.ALL, 5)
         self.SetSizer(pmainSizer)
@@ -601,7 +614,7 @@ class APIView (wx.Panel):
     def fetchCharList(self, event):
         self.stStatus.SetLabel("")
         if self.inputID.GetLineText(0) == "" or self.inputKey.GetLineText(0) == "":
-            self.stStatus.SetLabel("Invalid API ID or KEY!")
+            self.stStatus.SetLabel("Invalid keyID or vCode!")
             return
 
         cChar = service.Character.getInstance()
