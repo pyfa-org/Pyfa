@@ -17,7 +17,11 @@ class ModuleAmmoPicker(ContextMenu):
         modules = selection if srcContext == "fittingModule" else (selection[0],)
 
         validCharges = None
+        checkedTypes = set()
         for mod in modules:
+            if mod.item.ID in checkedTypes:
+                continue
+            checkedTypes.add(mod.item.ID)
             currCharges = mod.getValidCharges()
             if len(currCharges) > 0:
                 if validCharges is not None and validCharges != currCharges:
