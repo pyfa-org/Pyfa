@@ -172,6 +172,7 @@ class Fit(object):
             return None
 
         fit = eos.db.getFit(fitID)
+        fit.calculateModifiedAttributes()
         fit.fill()
         eos.db.commit()
         return fit
