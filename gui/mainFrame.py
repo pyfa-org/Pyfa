@@ -410,7 +410,7 @@ class MainFrame(wx.Frame):
         self.fitMultiSwitch.PrevPage()
 
     def HAddPage(self,event):
-        self.fitMultiSwitch.AddPage(wx.Panel(self, size = (0,0)), "Empty Tab")
+        self.fitMultiSwitch.AddPage()
 
     def toggleShipMarket(self, event):
         sel = self.notebookBrowsers.GetSelection()

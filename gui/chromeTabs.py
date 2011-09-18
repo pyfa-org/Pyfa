@@ -161,8 +161,13 @@ class PFNotebook(wx.Panel):
 
         if cpage < self.GetPageCount() - 1:
             self.SetSelection(cpage + 1)
+            npage = cpage +1
         else:
             self.SetSelection(0)
+            npage = 0
+
+        wx.PostEvent(self, PageChanged(cpage, npage))
+
     def PrevPage(self):
         cpage = self.GetSelection()
 
@@ -171,8 +176,12 @@ class PFNotebook(wx.Panel):
 
         if cpage > 0:
             self.SetSelection(cpage - 1)
+            npage = cpage -1
         else:
             self.SetSelection(self.GetPageCount() - 1)
+            npage = self.GetPageCount() - 1
+
+        wx.PostEvent(self, PageChanged(cpage, npage))
 
     def AddPage(self, tabWnd = None, tabTitle ="Empty Tab", tabImage = None, showClose = True):
         if self.activePage:
@@ -211,6 +220,7 @@ class PFNotebook(wx.Panel):
         if sel is not None:
             self.activePage = self.pages[sel]
             self.ShowActive()
+            wx.PostEvent(self, PageChanged(-1, sel))
         else:
             self.activePage = None
 
