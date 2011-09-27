@@ -14,7 +14,7 @@ debug = False
 version = "1.0.3"
 tag = "git"
 expansionName = "Incarna"
-expansionVersion = "1.0.1"
+expansionVersion = "1.1.1 update 4"
 
 # You can adjust these paths to your needs
 
