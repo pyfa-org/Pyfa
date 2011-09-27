@@ -291,7 +291,7 @@ class ItemParams (wx.Panel):
             if self.toggleView != 1:
                 attrName = name
             else:
-                attrName = info.displayName if info else name
+                attrName = info.displayName if info.displayName <> "" else name
 
             if info:
                 if info.icon is not None:
