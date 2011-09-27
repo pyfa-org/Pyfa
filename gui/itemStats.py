@@ -69,6 +69,12 @@ class ItemStatsDialog(wx.Dialog):
         self.mainSizer = wx.BoxSizer(wx.VERTICAL)
         self.container = ItemStatsContainer(self, victim, item, itmContext)
         self.mainSizer.Add(self.container, 1, wx.EXPAND)
+
+        if "wxGTK" in wx.PlatformInfo:
+            self.closeBtn = wx.Button( self, wx.ID_ANY, u"Close", wx.DefaultPosition, wx.DefaultSize, 0 )
+            self.mainSizer.Add( self.closeBtn, 0, wx.ALL|wx.ALIGN_RIGHT, 5 )
+            self.closeBtn.Bind(wx.EVT_BUTTON, self.closeEvent)
+
         self.SetSizer(self.mainSizer)
 
         self.parentWnd = gui.mainFrame.MainFrame.getInstance()
