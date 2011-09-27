@@ -11,7 +11,7 @@ except ImportError:
 debug = False
 
 # Version data
-version = "1.0.3"
+version = "1.0.4"
 tag = "git"
 expansionName = "Incarna"
 expansionVersion = "1.1.1 update 4"
