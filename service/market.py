@@ -499,6 +499,8 @@ class Market():
                             result.add(variation)
         else:
             result = baseitms
+        # Get rid of unpublished items
+        result = set(filter(lambda item: self.getPublicityByItem(item), result))
         return result
 
     def marketGroupHasTypesCheck(self, mg):
