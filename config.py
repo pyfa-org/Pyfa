@@ -11,10 +11,10 @@ except ImportError:
 debug = False
 
 # Version data
-version = "1.0.4"
+version = "1.0.5"
 tag = "git"
 expansionName = "Incarna"
-expansionVersion = "1.1.1 update 4"
+expansionVersion = "1.1.1"
 
 # You can adjust these paths to your needs
 
