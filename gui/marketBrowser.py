@@ -217,6 +217,9 @@ class ItemView(d.Display):
         self.Bind(wx.EVT_CONTEXT_MENU, self.contextMenu)
         self.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.itemActivated)
 
+        # Make reverse map, used by sorter
+        self.metaMap = self.makeReverseMetaMap()
+
     def itemActivated(self, event=None):
         # Check if something is selected, if so, spawn the menu for it
         sel = self.GetFirstSelected()
@@ -330,9 +333,14 @@ class ItemView(d.Display):
 
     def itemSort(self, item):
         sMkt = self.sMarket
+        catname = sMkt.getCategoryByItem(item).name
+        mktgrpid = sMkt.getMarketGroupByItem(item).ID
         parentname = sMkt.getParentItemByItem(item).name
-        mgid = sMkt.getMetaGroupIdByItem(item)
-        return (parentname, mgid, item.name)
+        # Get position of market group
+        metagrpid = sMkt.getMetaGroupIdByItem(item)
+        metatab = self.metaMap.get(metagrpid)
+        metalvl =  self.metalvls.get(item.ID, 0)
+        return (catname, mktgrpid, parentname, metatab, metalvl, item.name)
 
     def contextMenu(self, event):
         # Check if something is selected, if so, spawn the menu for it
@@ -349,12 +357,41 @@ class ItemView(d.Display):
         menu = ContextMenu.getMenu((item,), (sourceContext, itemContext))
         self.PopupMenu(menu)
 
-    def populate(self, stuff):
-        self.deselectItems()
-        stuff.sort(key=self.itemSort)
-        self.active = stuff
-        d.Display.populate(self, stuff)
+    def populate(self, items):
+        if len(items) > 0:
+            # Get dictionary with meta level attribute
+            sAttr = service.Attribute.getInstance()
+            attrs = sAttr.getAttributeInfo("metaLevel")
+            sMkt = self.sMarket
+            self.metalvls = sMkt.directAttrRequest(items, attrs)
+            # Clear selection
+            self.deselectItems()
+            # Perform sorting, using item's meta levels besides other stuff
+            items.sort(key=self.itemSort)
+        # Mark current item list as active
+        self.active = items
+        # Show them
+        d.Display.populate(self, items)
 
-    def refresh(self, stuff):
-        stuff.sort(key=self.itemSort)
-        d.Display.refresh(self, stuff)
+    def refresh(self, items):
+        if len(items) > 1:
+            # Get dictionary with meta level attribute
+            sAttr = service.Attribute.getInstance()
+            attrs = sAttr.getAttributeInfo("metaLevel")
+            sMkt = self.sMarket
+            self.metalvls = sMkt.directAttrRequest(items, attrs)
+            # Re-sort stuff
+            items.sort(key=self.itemSort)
+        d.Display.refresh(self, items)
+
+    def makeReverseMetaMap(self):
+        """
+        Form map which tells in which tab items of given metagroup are located
+        """
+        revmap = {}
+        i = 0
+        for mgids in self.sMarket.META_MAP.itervalues():
+            for mgid in mgids:
+                revmap[mgid] = i
+            i += 1
+        return revmap
