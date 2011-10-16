@@ -442,10 +442,13 @@ class Market():
             parent = None
         return parent
 
-    def getVariationsByItem(self, item):
+    def getVariationsByItem(self, item, alreadyparent=False):
         """Get item variations by item, its ID or name"""
         # Get parent item
-        parent = self.getParentItemByItem(item)
+        if alreadyparent is False:
+            parent = self.getParentItemByItem(item)
+        else:
+            parent = item
         # All its variations
         vars = set(eos.db.getVariations(parent))
         # Combine both in the same set
@@ -492,7 +495,7 @@ class Market():
                 # If item has no parent, it's base item (or at least should be)
                 if parent is None:
                     # Fetch variations only for parent items
-                    variations = self.getVariationsByItem(item)
+                    variations = self.getVariationsByItem(item, alreadyparent=True)
                     for variation in variations:
                         # Exclude items with their own explicitly defined market groups
                         if self.getMarketGroupByItem(variation, parentcheck=False) is None:
