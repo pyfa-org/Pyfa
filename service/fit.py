@@ -60,7 +60,9 @@ class FitImportThread(threading.Thread):
         paths = self.paths
         sFit = Fit.getInstance()
         for path in paths:
-            importedFits += sFit.importFit(path)
+            pathImported = sFit.importFit(path)
+            if pathImported is not None:
+                importedFits += pathImported
         wx.CallAfter(self.callback, importedFits)
 
 class Fit(object):
