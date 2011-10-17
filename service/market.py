@@ -442,22 +442,30 @@ class Market():
             parent = None
         return parent
 
-    def getVariationsByItem(self, item, alreadyparent=False):
+    def getVariationsByItems(self, items, alreadyparent=False):
         """Get item variations by item, its ID or name"""
-        # Get parent item
-        if alreadyparent is False:
-            parent = self.getParentItemByItem(item)
-        else:
-            parent = item
-        # All its variations
-        vars = set(eos.db.getVariations(parent))
-        # Combine both in the same set
-        vars.add(parent)
-        # Check for overrides and add them if any
-        if parent.name in self.ITEMS_FORCEDMETAGROUP_R:
-            for itmn in self.ITEMS_FORCEDMETAGROUP_R[parent.name]:
-                vars.add(self.getItem(itmn))
-        return vars
+        # Set for IDs of parent items
+        parents = set()
+        # Set-container for variables
+        variations = set()
+        for item in items:
+            # Get parent item
+            if alreadyparent is False:
+                parent = self.getParentItemByItem(item)
+            else:
+                parent = item
+            # Combine both in the same set
+            parents.add(parent)
+            # Check for overrides and add them if any
+            if parent.name in self.ITEMS_FORCEDMETAGROUP_R:
+                for itmn in self.ITEMS_FORCEDMETAGROUP_R[parent.name]:
+                    variations.add(self.getItem(itmn))
+        # Add all parents to variations set
+        variations.update(parents)
+        # Add all variations of parents to the set
+        parentids = tuple(item.ID for item in parents)
+        variations.update(eos.db.getVariations(parentids))
+        return variations
 
     def getGroupsByCategory(self, cat):
         """Get groups from given category"""
@@ -488,18 +496,20 @@ class Market():
             forceditms = set(self.getItem(itmn) for itmn in self.ITEMS_FORCEDMARKETGROUP_R[mg.ID])
             baseitms.update(forceditms)
         if vars:
+            parents = set()
             for item in baseitms:
                 # Add one of the base market group items to result
                 result.add(item)
                 parent = self.getParentItemByItem(item, selfparent=False)
                 # If item has no parent, it's base item (or at least should be)
                 if parent is None:
-                    # Fetch variations only for parent items
-                    variations = self.getVariationsByItem(item, alreadyparent=True)
-                    for variation in variations:
-                        # Exclude items with their own explicitly defined market groups
-                        if self.getMarketGroupByItem(variation, parentcheck=False) is None:
-                            result.add(variation)
+                    parents.add(item)
+            # Fetch variations only for parent items
+            variations = self.getVariationsByItems(parents, alreadyparent=True)
+            for variation in variations:
+                # Exclude items with their own explicitly defined market groups
+                if self.getMarketGroupByItem(variation, parentcheck=False) is None:
+                    result.add(variation)
         else:
             result = baseitms
         # Get rid of unpublished items
