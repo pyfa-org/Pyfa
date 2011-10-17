@@ -34,7 +34,7 @@ class ModuleAmmoPicker(ContextMenu):
             return False
 
         self.modules = modules
-        self.charges = list(validCharges)
+        self.charges = list(filter(lambda charge: service.Market.getInstance().getPublicityByItem(charge), validCharges))
         return len(self.charges) > 0
 
     def getText(self, itmContext, selection):
