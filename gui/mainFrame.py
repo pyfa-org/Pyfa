@@ -112,9 +112,6 @@ class MainFrame(wx.Frame):
         self.shipBrowser = ShipBrowser(self.notebookBrowsers)
         self.notebookBrowsers.AddPage(self.shipBrowser, "Ships", showClose = False)
 
-        self.fleetBrowser = FleetBrowser(self.notebookBrowsers)
-        self.notebookBrowsers.AddPage(self.fleetBrowser, "Fleets", showClose = False)
-
         #=======================================================================
         # DISABLED FOR RC2 RELEASE
         #self.fleetBrowser = FleetBrowser(self.notebookBrowsers)
