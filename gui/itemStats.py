@@ -302,7 +302,12 @@ class ItemParams (wx.Panel):
             if info:
                 if info.icon is not None:
                     iconFile = info.icon.iconFile
-                    attrIcon = self.imageList.Add(bitmapLoader.getBitmap(iconFile, "pack"))
+                    icon = bitmapLoader.getBitmap(iconFile, "pack")
+
+                    if icon is None:
+                        icon = bitmapLoader.getBitmap("transparent16x16", "icons")
+
+                    attrIcon = self.imageList.Add( icon )
                 else:
                     attrIcon = self.imageList.Add(bitmapLoader.getBitmap("07_15", "pack"))
             else:
