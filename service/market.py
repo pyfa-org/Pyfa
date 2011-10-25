@@ -186,7 +186,14 @@ class Market():
             "Reaper": True, # Noobship
             "TEST Damage Mod": False, # Marked as published by CCP for whatever reason
             "Ghost Heavy Missile": False, # Missile used by Sansha
-            "Nano Paint": False } # It will be used for ship paint job, no use as of today
+            "Nano Paint": False, # It will be used for ship paint job, no use as of today
+            "Deimos Old": False,
+            "Large Shield Transporter II - 5 players": False,
+            "TEST Damage Mod - 10 Players": False,
+            "TEST Damage Mod - 20 Players": False,
+            "TEST Damage Mod - 40 Players": False,
+            "TEST Damage Mod - 5 Players": False,
+            "Large Remote Armor Repair System II - 5 players": False }
 
         # List of groups which are forcibly published
         self.GROUPS_FORCEPUBLISHED = {
