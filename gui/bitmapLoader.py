@@ -69,9 +69,6 @@ def getBitmap(name,location):
         bmp = cachedBitmaps[path]
 
 #    print "#BMPs:%d - Current took: %.8f" % (cachedBitmapsCount,time.clock() - start)
-    if bmp is None:
-        bmp = wx.EmptyBitmap(16,16)
-
     return bmp
 
 def getImage(name, location):
