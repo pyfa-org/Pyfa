@@ -200,9 +200,11 @@ class ItemDescription ( wx.Panel ):
         fgcolor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOWTEXT)
 
         self.description = wx.html.HtmlWindow(self)
-        desc = item.description.replace("\r","<br>")
-        desc = re.sub("<( *)font( *)color( *)=(.*)>", "<b>", desc)
-        desc = re.sub("<( *)/( *)font( *)>","</b>", desc)
+        desc = item.description.replace("\r", "<br>")
+        # Strip font tags
+        desc = re.sub("<( *)font( *)color( *)=(.*?)>(?P<inside>.*?)<( *)/( *)font( *)>", "\g<inside>", desc)
+        # Strip URLs
+        desc = re.sub("<( *)a(.*?)>(?P<inside>.*?)<( *)/( *)a( *)>", "\g<inside>", desc)
         desc = "<body bgcolor='" + bgcolor.GetAsString(wx.C2S_HTML_SYNTAX) + "' text='" + fgcolor.GetAsString(wx.C2S_HTML_SYNTAX) + "' >" + desc + "</body>"
 
         self.description.SetPage(desc)
