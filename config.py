@@ -13,7 +13,7 @@ debug = False
 # Version data
 version = "1.0.6"
 tag = "git"
-expansionName = "Chaos"
+expansionName = "Singularity"
 expansionVersion = "0.0"
 
 # You can adjust these paths to your needs
