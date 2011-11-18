@@ -184,7 +184,6 @@ class Market():
             "Impairor": True, # Noobship
             "Velator": True, # Noobship
             "Reaper": True, # Noobship
-            "TEST Damage Mod": False, # Marked as published by CCP for whatever reason
             "Ghost Heavy Missile": False, # Missile used by Sansha
             "Nano Paint": False } # It will be used for ship paint job, no use as of today
 
