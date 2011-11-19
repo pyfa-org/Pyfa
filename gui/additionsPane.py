@@ -24,6 +24,7 @@ from gui.droneView import DroneView
 from gui.implantView import ImplantView
 from gui.projectedView import ProjectedView
 from gui.pyfatogglepanel import TogglePanel
+from gui.gangView import GangView
 from gui import bitmapLoader
 
 import gui.chromeTabs
@@ -60,6 +61,9 @@ class AdditionsPane(TogglePanel):
 
         self.projectedPage = ProjectedView(self.notebook)
         self.notebook.AddPage(self.projectedPage, "Projected", tabImage = projectedImg, showClose = False)
+
+        self.gangPage = GangView(self.notebook)
+        self.notebook.AddPage(self.gangPage, "Gang", showClose = False)
         self.notebook.SetSelection(0)
 
 
