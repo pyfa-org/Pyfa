@@ -682,9 +682,9 @@ class Market():
                        "Pulsar Effect Beacon",
                        "Red Giant Beacon",
                        "Wolf Rayet Effect Beacon",
-                       "Incursion Effect")
+                       "Incursion ship attributes effects")
         # Stuff we don't want to see in names
-        garbages = ("Effect", "Beacon")
+        garbages = ("Effect", "Beacon", "ship attributes effects")
         # Get group with all the system-wide beacons
         grp = self.getGroup("Effect Beacon")
         beacons = self.getItemsByGroup(grp)

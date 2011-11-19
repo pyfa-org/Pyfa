@@ -8,9 +8,13 @@ class MarketJump(ContextMenu):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     def display(self, srcContext, selection):
-        return srcContext in ("marketItemMisc", "fittingModule", "fittingCharge", "droneItem",
-                              "implantItem", "boosterItem", "projectedModule", "projectedDrone", "projectedCharge") \
-               and (not selection[0].isEmpty if srcContext == "fittingModule" else True)
+        validContexts = ("marketItemMisc", "fittingModule", "fittingCharge", "droneItem", "implantItem",
+                         "boosterItem", "projectedModule", "projectedDrone", "projectedCharge")
+        sMkt = service.Market.getInstance()
+        item = getattr(selection[0], "item", selection[0])
+        doit =  srcContext in validContexts and (not selection[0].isEmpty if srcContext == "fittingModule" else True) \
+        and sMkt.getMarketGroupByItem(item) is not None
+        return doit
 
     def getText(self, itmContext, selection):
         return "{0} Market Group".format(itmContext if itmContext is not None else "Item")
