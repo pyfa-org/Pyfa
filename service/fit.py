@@ -258,6 +258,10 @@ class Fit(object):
                 fit.projectedDrones.append(drone)
 
             drone.amount += 1
+        elif thing.group.name == "Effect Beacon":
+            module = eos.types.Module(thing)
+            module.state = State.ONLINE
+            fit.projectedModules.append(module)
         else:
             module = eos.types.Module(thing)
             module.state = State.ACTIVE
