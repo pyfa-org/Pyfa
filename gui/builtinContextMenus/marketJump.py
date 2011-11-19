@@ -11,6 +11,8 @@ class MarketJump(ContextMenu):
         validContexts = ("marketItemMisc", "fittingModule", "fittingCharge", "droneItem", "implantItem",
                          "boosterItem", "projectedModule", "projectedDrone", "projectedCharge")
         sMkt = service.Market.getInstance()
+        if selection is None or len(selection) < 1:
+            return False
         item = getattr(selection[0], "item", selection[0])
         doit =  srcContext in validContexts and (not selection[0].isEmpty if srcContext == "fittingModule" else True) \
         and sMkt.getMarketGroupByItem(item) is not None
