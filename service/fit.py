@@ -245,6 +245,8 @@ class Fit(object):
     def project(self, fitID, thing):
         fit = eos.db.getFit(fitID)
         if isinstance(thing, eos.types.Fit):
+            if thing.ID == fitID:
+                return
             fit.projectedFits.append(thing)
         elif thing.category.name == "Drone":
             drone = None
