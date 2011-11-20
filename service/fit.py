@@ -371,8 +371,10 @@ class Fit(object):
 
             if drone is None:
                 drone = eos.types.Drone(item)
-                fit.drones.append(drone)
-
+                if drone.fits(fit) is True:
+                    fit.drones.append(drone)
+                else:
+                    return False
             drone.amount += 1
             eos.db.commit()
             fit.clear()
