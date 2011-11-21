@@ -10,11 +10,13 @@ class MarketJump(ContextMenu):
     def display(self, srcContext, selection):
         validContexts = ("marketItemMisc", "fittingModule", "fittingCharge", "droneItem", "implantItem",
                          "boosterItem", "projectedModule", "projectedDrone", "projectedCharge")
+        if not srcContext in validContexts:
+            return False
         sMkt = service.Market.getInstance()
         if selection is None or len(selection) < 1:
             return False
         item = getattr(selection[0], "item", selection[0])
-        doit =  srcContext in validContexts and (not selection[0].isEmpty if srcContext == "fittingModule" else True) \
+        doit =  not selection[0].isEmpty if srcContext == "fittingModule" else True \
         and sMkt.getMarketGroupByItem(item) is not None
         return doit
 
