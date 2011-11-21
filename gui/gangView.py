@@ -25,6 +25,7 @@ import gui.globalEvents as GE
 
 from gui import characterEditor as CharEditor
 
+
 class GangView ( ScrolledPanel ):
 
     def __init__( self, parent ):
@@ -132,6 +133,28 @@ class GangView ( ScrolledPanel ):
         self.mainFrame.Bind(CharEditor.CHAR_LIST_UPDATED, self.RefreshCharacterList)
         self.RefreshCharacterList()
 
+    def AddCommander(self, fitID, type = None):
+        if type is None:
+            return
+
+        activeFitID = self.mainFrame.getActiveFit()
+        if activeFitID:
+            sFit = service.Fit.getInstance()
+
+            boostee = sFit.getFit(activeFitID)
+            booster = sFit.getFit(fitID)
+
+            fleetSrv = service.Fleet.getInstance()
+
+            if type == 0:
+                fleetSrv.setLinearFleetCom(boostee, booster)
+            elif type == 1:
+                fleetSrv.setLinearWingCom(boostee, booster)
+            elif type == 2:
+                fleetSrv.setLinearSquadCom(boostee, booster)
+
+            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=activeFitID))
+
     def RefreshCharacterList(self, event = None):
         cChar = service.Character.getInstance()
         charList = cChar.getCharacterList()
@@ -182,6 +205,8 @@ class GangView ( ScrolledPanel ):
             sFit = service.Fit.getInstance()
             draggedFit = sFit.getFit(self.draggedFitID)
 
-        self.stBoosters[booster].SetLabel(draggedFit.name)
-        self.Layout()
+            self.stBoosters[booster].SetLabel(draggedFit.name)
+            self.Layout()
+
+            self.AddCommander(draggedFit.ID, booster)
 
