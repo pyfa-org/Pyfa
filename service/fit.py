@@ -32,6 +32,7 @@ from eos.types import State, Slot
 from service.market import Market
 from service.damagePattern import DamagePattern
 from service.character import Character
+from service.fleet import Fleet
 
 class FitBackupThread(threading.Thread):
     def __init__(self, path, callback):
@@ -174,6 +175,9 @@ class Fit(object):
             return None
 
         fit = eos.db.getFit(fitID)
+        sFlt = Fleet.getInstance()
+        if sFlt.isInLinearFleet(fit) is False:
+            sFlt.removeAssociatedFleetData(fit)
         fit.calculateModifiedAttributes()
         fit.fill()
         eos.db.commit()

@@ -18,7 +18,7 @@
 #===============================================================================
 
 import eos.db
-from eos.types import Fleet as Fleet_
+from eos.types import Fleet as Fleet_, Wing, Squad
 import copy
 
 class Fleet(object):
@@ -69,3 +69,71 @@ class Fleet(object):
     def deleteFleetByID(self, ID):
         fleet = self.getFleetByID(ID)
         self.deleteFleet(fleet)
+
+    def makeLinearFleet(self, fit):
+        f = Fleet_()
+        w = Wing()
+        f.wings.append(w)
+        s = Squad()
+        w.squads.append(s)
+        s.members.append(fit)
+        eos.db.save(f)
+
+    def setLinearFleetCom(self, boostee, booster):
+        squadIDs = set(eos.db.getSquadsIDsWithFitID(boostee.ID))
+        squad = eos.db.getSquad(squadIDs.pop())
+        squad.wing.gang.leader = booster
+        squad.wing.gang.calculateModifiedAttributes()
+
+    def setLinearWingCom(self, boostee, booster):
+        squadIDs = set(eos.db.getSquadsIDsWithFitID(boostee.ID))
+        squad = eos.db.getSquad(squadIDs.pop())
+        squad.wing.leader = booster
+        squad.wing.gang.calculateModifiedAttributes()
+
+    def setLinearSquadCom(self, boostee, booster):
+        squadIDs = set(eos.db.getSquadsIDsWithFitID(boostee.ID))
+        squad = eos.db.getSquad(squadIDs.pop())
+        squad.leader = booster
+        squad.wing.gang.calculateModifiedAttributes()
+
+    def isInLinearFleet(self, fit):
+        sqIDs = eos.db.getSquadsIDsWithFitID(fit.ID)
+        if len(sqIDs) != 1:
+            return False
+        s = eos.db.getSquad(sqIDs[0])
+        if len(s.members) != 1:
+            return False
+        w = s.wing
+        if len(w.squads) != 1:
+            return False
+        f = w.gang
+        if len(f.wings) != 1:
+            return False
+        return True
+
+    def removeAssociatedFleetData(self, fit):
+        squadIDs = set(eos.db.getSquadsIDsWithFitID(fit.ID))
+        if len(squadIDs) == 0:
+            return
+        squads = list(eos.db.getSquad(sqID) for sqID in squadIDs)
+        wingIDs = set(squad.wing.ID for squad in squads)
+        fleetIDs = set(squad.wing.gang.ID for squad in squads)
+        for fleetID in fleetIDs:
+            fleet = eos.db.getFleet(fleetID)
+            for wing in fleet.wings:
+                wingIDs.add(wing.ID)
+        for wingID in wingIDs:
+            wing = eos.db.getWing(wingID)
+            for squad in wing.squads:
+                squadIDs.add(squad.ID)
+        for squadID in squadIDs:
+            squad = eos.db.getSquad(squadID)
+            eos.db.remove(squad)
+        for wingID in wingIDs:
+            wing = eos.db.getWing(wingID)
+            eos.db.remove(wing)
+        for fleetID in fleetIDs:
+            fleet = eos.db.getFleet(fleetID)
+            eos.db.remove(fleet)
+        return
