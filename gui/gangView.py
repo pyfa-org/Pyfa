@@ -166,7 +166,7 @@ class GangView ( ScrolledPanel ):
         elif type == 2:
             fleetSrv.setLinearSquadCom(boostee, booster)
 
-        fleetSrv.recalcFleet(boostee)
+        sFit.recalc(boostee)
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=activeFitID))
 
     def fitSelected(self, event):
@@ -226,7 +226,7 @@ class GangView ( ScrolledPanel ):
                 fleetSrv.setLinearWingCom(boostee, booster)
             elif type == 2:
                 fleetSrv.setLinearSquadCom(boostee, booster)
-            fleetSrv.recalcFleet(boostee)
+            sFit.recalc(boostee)
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=activeFitID))
 
     def RefreshCharacterList(self, event = None):
