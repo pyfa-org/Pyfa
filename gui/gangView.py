@@ -133,7 +133,41 @@ class GangView ( ScrolledPanel ):
 
         self.mainFrame.Bind(CharEditor.CHAR_LIST_UPDATED, self.RefreshCharacterList)
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitSelected)
+
+        for stBooster in self.stBoosters:
+            stBooster.Bind(wx.EVT_LEFT_DCLICK, self.RemoveBooster)
+
         self.RefreshCharacterList()
+
+    def RemoveBooster(self, event):
+        activeFitID = self.mainFrame.getActiveFit()
+        if  not activeFitID:
+            return
+
+        location = event.GetEventObject()
+
+        if location == self.stFleetFit:
+            type = 0
+        if location == self.stWingFit:
+            type = 1
+        if location == self.stSquadFit:
+            type = 2
+
+        sFit = service.Fit.getInstance()
+        boostee = sFit.getFit(activeFitID)
+        booster = None
+
+        fleetSrv = service.Fleet.getInstance()
+
+        if type == 0:
+            fleetSrv.setLinearFleetCom(boostee, booster)
+        elif type == 1:
+            fleetSrv.setLinearWingCom(boostee, booster)
+        elif type == 2:
+            fleetSrv.setLinearSquadCom(boostee, booster)
+
+        fleetSrv.recalcFleet(boostee)
+        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=activeFitID))
 
     def fitSelected(self, event):
         cFit = service.Fit.getInstance()
