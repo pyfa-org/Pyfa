@@ -180,5 +180,6 @@ class Fleet(object):
         return (f.leader, w.leader, s.leader)
 
     def recalcFleet(self, fit):
-        squadID = eos.db.getSquadsIDsWithFitID(fit.ID)[0]
-        eos.db.getSquad(squadID).wing.gang.calculateModifiedAttributes()
+        squadIDs = eos.db.getSquadsIDsWithFitID(fit.ID)
+        if len(squadIDs) > 0:
+            eos.db.getSquad(squadIDs[0]).wing.gang.calculateModifiedAttributes()
