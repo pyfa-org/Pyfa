@@ -168,3 +168,12 @@ class Fleet(object):
         if squad.leader is None and wing.leader is None and fleet.leader is None:
             return False
         return True
+
+    def loadLinearFleet(self, fit):
+        if self.isInLinearFleet(fit) is False:
+            return None
+        squadID = eos.db.getSquadsIDsWithFitID(fit.ID)[0]
+        s = eos.db.getSquad(squadID)
+        w = s.wing
+        f = w.gang
+        return (f.leader, w.leader, s.leader)
