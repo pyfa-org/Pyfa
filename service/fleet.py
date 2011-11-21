@@ -104,6 +104,7 @@ class Fleet(object):
         squad.wing.leader = booster
         if self.anyBoosters(squad):
             squad.wing.gang.calculateModifiedAttributes()
+            boostee.calculateModifiedAttributes()
         else:
             self.removeAssociatedFleetData(boostee)
 
@@ -177,3 +178,7 @@ class Fleet(object):
         w = s.wing
         f = w.gang
         return (f.leader, w.leader, s.leader)
+
+    def recalcFleet(self, fit):
+        squadID = eos.db.getSquadsIDsWithFitID(fit.ID)[0]
+        eos.db.getSquad(squadID).wing.gang.calculateModifiedAttributes()
