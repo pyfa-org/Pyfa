@@ -80,6 +80,8 @@ class Fleet(object):
         eos.db.save(f)
 
     def setLinearFleetCom(self, boostee, booster):
+        if boostee == booster:
+            return
         if self.isInLinearFleet(boostee) is False:
             self.removeAssociatedFleetData(boostee)
             self.makeLinearFleet(boostee)
@@ -92,6 +94,8 @@ class Fleet(object):
             self.removeAssociatedFleetData(boostee)
 
     def setLinearWingCom(self, boostee, booster):
+        if boostee == booster:
+            return
         if self.isInLinearFleet(boostee) is False:
             self.removeAssociatedFleetData(boostee)
             self.makeLinearFleet(boostee)
@@ -104,6 +108,8 @@ class Fleet(object):
             self.removeAssociatedFleetData(boostee)
 
     def setLinearSquadCom(self, boostee, booster):
+        if boostee == booster:
+            return
         if self.isInLinearFleet(boostee) is False:
             self.removeAssociatedFleetData(boostee)
             self.makeLinearFleet(boostee)
