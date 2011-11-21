@@ -21,6 +21,7 @@ from wx.lib.scrolledpanel import ScrolledPanel
 
 import service
 import gui.mainFrame
+import gui.shipBrowser
 import gui.globalEvents as GE
 
 from gui import characterEditor as CharEditor
@@ -131,7 +132,46 @@ class GangView ( ScrolledPanel ):
         self.SetupScrolling()
 
         self.mainFrame.Bind(CharEditor.CHAR_LIST_UPDATED, self.RefreshCharacterList)
+        self.mainFrame.Bind(GE.FIT_CHANGED, self.fitSelected)
         self.RefreshCharacterList()
+
+    def fitSelected(self, event):
+        cFit = service.Fit.getInstance()
+        fit = cFit.getFit(event.fitID)
+        fleetSrv = service.Fleet.getInstance()
+
+        activeFitID = self.mainFrame.getActiveFit()
+        if activeFitID:
+            commanders = fleetSrv.loadLinearFleet(fit)
+            if commanders is None:
+                fleetCom, wingCom, squadCom = (None, None, None)
+            else:
+                fleetCom, wingCom, squadCom = commanders
+
+            if fleetCom:
+                fleetComName = fleetCom.name
+            else:
+                fleetComName = "None"
+
+            if wingCom:
+                wingComName = wingCom.name
+            else:
+                wingComName = "None"
+
+            if squadCom:
+                squadComName = squadCom.name
+            else:
+                squadComName = "None"
+
+            self.UpdateFleetFitsUI( fleetComName, wingComName, squadComName )
+
+    def UpdateFleetFitsUI(self, fleet, wing, squad):
+        self.stFleetFit.SetLabel(fleet)
+        self.stWingFit.SetLabel(wing)
+        self.stSquadFit.SetLabel(squad)
+
+        self.Layout()
+
 
     def AddCommander(self, fitID, type = None):
         if type is None:
@@ -152,7 +192,7 @@ class GangView ( ScrolledPanel ):
                 fleetSrv.setLinearWingCom(boostee, booster)
             elif type == 2:
                 fleetSrv.setLinearSquadCom(boostee, booster)
-
+            fleetSrv.recalcFleet(boostee)
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=activeFitID))
 
     def RefreshCharacterList(self, event = None):
@@ -205,8 +245,8 @@ class GangView ( ScrolledPanel ):
             sFit = service.Fit.getInstance()
             draggedFit = sFit.getFit(self.draggedFitID)
 
-            self.stBoosters[booster].SetLabel(draggedFit.name)
-            self.Layout()
+#            self.stBoosters[booster].SetLabel(draggedFit.name)
+#            self.Layout()
 
             self.AddCommander(draggedFit.ID, booster)
 
