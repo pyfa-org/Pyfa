@@ -166,7 +166,7 @@ class Fit(object):
             fit.damagePattern = self.pattern
 
         eos.db.commit()
-        self.recalc(fit)
+        self.recalc(fit, withBoosters=True)
 
     def getFit(self, fitID):
         if fitID is None:
@@ -181,7 +181,7 @@ class Fit(object):
                 fit.fleet = None
             else:
                 fit.fleet = f
-            self.recalc(fit)
+            self.recalc(fit, withBoosters=True)
             fit.fill()
             eos.db.commit()
             fit.inited = True
@@ -649,6 +649,6 @@ class Fit(object):
         else:
             return currState
 
-    def recalc(self, fit):
+    def recalc(self, fit, withBoosters=False):
         fit.clear()
-        fit.calculateModifiedAttributes()
+        fit.calculateModifiedAttributes(withBoosters=withBoosters)
