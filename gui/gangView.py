@@ -183,17 +183,17 @@ class GangView ( ScrolledPanel ):
                 fleetCom, wingCom, squadCom = commanders
 
             if fleetCom:
-                fleetComName = fleetCom.name
+                fleetComName = fleetCom.ship.item.name + ": " + fleetCom.name
             else:
                 fleetComName = "None"
 
             if wingCom:
-                wingComName = wingCom.name
+                wingComName = wingCom.ship.item.name + ": " + wingCom.name
             else:
                 wingComName = "None"
 
             if squadCom:
-                squadComName = squadCom.name
+                squadComName = squadCom.ship.item.name + ": " + squadCom.name
             else:
                 squadComName = "None"
 
