@@ -130,6 +130,8 @@ class Fit(object):
 
     def deleteFit(self, fitID):
         fit = eos.db.getFit(fitID)
+        sFlt = Fleet.getInstance()
+        sFlt.removeAssociatedFleetData(fit)
         eos.db.remove(fit)
 
     def copyFit(self, fitID):
