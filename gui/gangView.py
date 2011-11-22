@@ -137,7 +137,64 @@ class GangView ( ScrolledPanel ):
         for stBooster in self.stBoosters:
             stBooster.Bind(wx.EVT_LEFT_DCLICK, self.RemoveBooster)
 
+        for chCharacter in self.chCharacters:
+            chCharacter.Bind(wx.EVT_CHOICE, self.CharChanged)
         self.RefreshCharacterList()
+
+    def CharChanged(self, event):
+        chBooster = event.GetEventObject()
+        type = -1
+        if chBooster == self.chFleetChar:
+            type = 0
+        if chBooster == self.chWingChar:
+            type = 1
+        if chBooster == self.chSquadChar:
+            type = 2
+
+        if type == -1:
+            event.Skip()
+            return
+
+        cFit = service.Fit.getInstance()
+
+        fleetSrv = service.Fleet.getInstance()
+
+        activeFitID = self.mainFrame.getActiveFit()
+        fit = cFit.getFit(activeFitID)
+
+        cChar = service.Character.getInstance()
+        charList = cChar.getCharacterList()
+
+        if activeFitID:
+            commanders = fleetSrv.loadLinearFleet(fit)
+            if commanders is None:
+                fleetCom, wingCom, squadCom = (None, None, None)
+            else:
+                fleetCom, wingCom, squadCom = commanders
+
+            if fleetCom and type == 0:
+                charID = chBooster.GetClientData(chBooster.GetSelection())
+                cFit.changeChar(fleetCom.ID, charID)
+            else:
+                chBooster.SetSelection(0)
+
+            if wingCom and type == 1:
+                charID = chBooster.GetClientData(chBooster.GetSelection())
+                cFit.changeChar(wingCom.ID, charID)
+            else:
+                chBooster.SetSelection(0)
+
+            if squadCom and type == 1:
+                charID = chBooster.GetClientData(chBooster.GetSelection())
+                cFit.changeChar(squadCom.ID, charID)
+            else:
+                chBooster.SetSelection(0)
+
+            cFit.recalc(fit, withBoosters=True)
+            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=activeFitID))
+
+        else:
+            chBooster.SetSelection(0)
 
     def RemoveBooster(self, event):
         activeFitID = self.mainFrame.getActiveFit()
