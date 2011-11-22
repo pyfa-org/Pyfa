@@ -172,23 +172,26 @@ class GangView ( ScrolledPanel ):
             else:
                 fleetCom, wingCom, squadCom = commanders
 
-            if fleetCom and type == 0:
-                charID = chBooster.GetClientData(chBooster.GetSelection())
-                cFit.changeChar(fleetCom.ID, charID)
-            else:
-                chBooster.SetSelection(0)
+            if type == 0:
+                if fleetCom:
+                    charID = chBooster.GetClientData(chBooster.GetSelection())
+                    cFit.changeChar(fleetCom.ID, charID)
+                else:
+                    chBooster.SetSelection(0)
 
-            if wingCom and type == 1:
-                charID = chBooster.GetClientData(chBooster.GetSelection())
-                cFit.changeChar(wingCom.ID, charID)
-            else:
-                chBooster.SetSelection(0)
+            if type == 1:
+                if wingCom:
+                    charID = chBooster.GetClientData(chBooster.GetSelection())
+                    cFit.changeChar(wingCom.ID, charID)
+                else:
+                    chBooster.SetSelection(0)
 
-            if squadCom and type == 1:
-                charID = chBooster.GetClientData(chBooster.GetSelection())
-                cFit.changeChar(squadCom.ID, charID)
-            else:
-                chBooster.SetSelection(0)
+            if type == 2:
+                if squadCom:
+                    charID = chBooster.GetClientData(chBooster.GetSelection())
+                    cFit.changeChar(squadCom.ID, charID)
+                else:
+                    chBooster.SetSelection(0)
 
             cFit.recalc(fit, withBoosters=True)
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=activeFitID))
