@@ -83,7 +83,7 @@ class Fleet(object):
     def setLinearFleetCom(self, boostee, booster):
         if boostee == booster:
             return
-        if self.isInLinearFleet(boostee) is False:
+        if self.getLinearFleet(boostee) is None:
             self.removeAssociatedFleetData(boostee)
             self.makeLinearFleet(boostee)
         squadIDs = set(eos.db.getSquadsIDsWithFitID(boostee.ID))
@@ -97,7 +97,7 @@ class Fleet(object):
     def setLinearWingCom(self, boostee, booster):
         if boostee == booster:
             return
-        if self.isInLinearFleet(boostee) is False:
+        if self.getLinearFleet(boostee) is None:
             self.removeAssociatedFleetData(boostee)
             self.makeLinearFleet(boostee)
         squadIDs = set(eos.db.getSquadsIDsWithFitID(boostee.ID))
@@ -111,7 +111,7 @@ class Fleet(object):
     def setLinearSquadCom(self, boostee, booster):
         if boostee == booster:
             return
-        if self.isInLinearFleet(boostee) is False:
+        if self.getLinearFleet(boostee) is None:
             self.removeAssociatedFleetData(boostee)
             self.makeLinearFleet(boostee)
         squadIDs = set(eos.db.getSquadsIDsWithFitID(boostee.ID))
@@ -122,20 +122,20 @@ class Fleet(object):
         else:
             self.removeAssociatedFleetData(boostee)
 
-    def isInLinearFleet(self, fit):
+    def getLinearFleet(self, fit):
         sqIDs = eos.db.getSquadsIDsWithFitID(fit.ID)
         if len(sqIDs) != 1:
-            return False
+            return None
         s = eos.db.getSquad(sqIDs[0])
         if len(s.members) != 1:
-            return False
+            return None
         w = s.wing
         if len(w.squads) != 1:
-            return False
+            return None
         f = w.gang
         if len(f.wings) != 1:
-            return False
-        return True
+            return None
+        return f
 
     def removeAssociatedFleetData(self, fit):
         squadIDs = set(eos.db.getSquadsIDsWithFitID(fit.ID))
@@ -172,7 +172,7 @@ class Fleet(object):
         return True
 
     def loadLinearFleet(self, fit):
-        if self.isInLinearFleet(fit) is False:
+        if self.getLinearFleet(fit) is None:
             return None
         squadID = eos.db.getSquadsIDsWithFitID(fit.ID)[0]
         s = eos.db.getSquad(squadID)

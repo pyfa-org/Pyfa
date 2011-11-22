@@ -171,14 +171,20 @@ class Fit(object):
     def getFit(self, fitID):
         if fitID is None:
             return None
-
         fit = eos.db.getFit(fitID)
-        sFlt = Fleet.getInstance()
-        if sFlt.isInLinearFleet(fit) is False:
-            sFlt.removeAssociatedFleetData(fit)
-        self.recalc(fit)
-        fit.fill()
-        eos.db.commit()
+        inited = getattr(fit, "inited", None)
+        if inited is None or inited is False:
+            sFlt = Fleet.getInstance()
+            f = sFlt.getLinearFleet(fit)
+            if f is None:
+                sFlt.removeAssociatedFleetData(fit)
+                fit.fleet = None
+            else:
+                fit.fleet = f
+            self.recalc(fit)
+            fit.fill()
+            eos.db.commit()
+            fit.inited = True
         return fit
 
     def searchFits(self, name):
@@ -645,7 +651,4 @@ class Fit(object):
 
     def recalc(self, fit):
         fit.clear()
-        if fit.fleet is not None:
-            fit.fleet.recalculateLinear()
-        else:
-            fit.calculateModifiedAttributes()
+        fit.calculateModifiedAttributes()
