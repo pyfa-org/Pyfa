@@ -175,6 +175,7 @@ class GangView ( ScrolledPanel ):
         fleetSrv = service.Fleet.getInstance()
 
         activeFitID = self.mainFrame.getActiveFit()
+
         if activeFitID:
             commanders = fleetSrv.loadLinearFleet(fit)
             if commanders is None:
@@ -184,25 +185,45 @@ class GangView ( ScrolledPanel ):
 
             if fleetCom:
                 fleetComName = fleetCom.ship.item.name + ": " + fleetCom.name
+                fleetComCharName = fleetCom.character.name if fleetCom.character is not None else "All 0"
             else:
                 fleetComName = "None"
+                fleetComCharName = "All 0"
 
             if wingCom:
                 wingComName = wingCom.ship.item.name + ": " + wingCom.name
+                wingComCharName = wingCom.character.name if wingCom.character is not None else "All 0"
             else:
                 wingComName = "None"
+                wingComCharName = "All 0"
 
             if squadCom:
                 squadComName = squadCom.ship.item.name + ": " + squadCom.name
+                squadComCharName = squadCom.character.name if squadCom.character is not None else "All 0"
             else:
                 squadComName = "None"
+                squadComCharName = "All 0"
 
-            self.UpdateFleetFitsUI( fleetComName, wingComName, squadComName )
+            self.UpdateFleetFitsUI( fleetComName, wingComName, squadComName, fleetComCharName, wingComCharName, squadComCharName )
 
-    def UpdateFleetFitsUI(self, fleet, wing, squad):
+        else:
+            fleetComName = "None"
+            fleetComCharName = "All 0"
+            wingComName = "None"
+            wingComCharName = "All 0"
+            squadComName = "None"
+            squadComCharName = "All 0"
+
+            self.UpdateFleetFitsUI( fleetComName, wingComName, squadComName, fleetComCharName, wingComCharName, squadComCharName )
+
+    def UpdateFleetFitsUI(self, fleet, wing, squad, fleetChar, wingChar, squadChar):
         self.stFleetFit.SetLabel(fleet)
         self.stWingFit.SetLabel(wing)
         self.stSquadFit.SetLabel(squad)
+
+        self.chFleetChar.SetStringSelection(fleetChar)
+        self.chWingChar.SetStringSelection(wingChar)
+        self.chSquadChar.SetStringSelection(squadChar)
 
         self.Layout()
 
