@@ -571,6 +571,8 @@ class ItemAffectedBy (wx.Panel):
 
             for fit, afflictors in cont.getAfflictions(attrName).iteritems():
                 for afflictor, modifier, amount in afflictors:
+                    if afflictor.item is None:
+                        continue
                     if afflictor.item.name not in things:
                         things[afflictor.item.name] = [type(afflictor), set(), set()]
 
