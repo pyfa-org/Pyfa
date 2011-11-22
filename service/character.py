@@ -55,6 +55,10 @@ class Character():
         sFit = service.Fit.getInstance()
         return map(lambda c: (c.ID, c.name, c == sFit.character), eos.db.getCharacterList())
 
+    def getCharacter(self, charID):
+        char = eos.db.getCharacter(charID)
+        return char
+
     def getSkillGroups(self):
         cat = eos.db.getCategory(16)
         groups = []
