@@ -1427,13 +1427,6 @@ class FitItem(SFItem.SFBrowserItem):
         self.selTimer = wx.Timer(self,self.selTimerID)
         self.selTimer.Start(100)
 
-        self.Bind(wx.EVT_RIGHT_UP, self.OnContextMenu)
-
-    def OnContextMenu(self, event):
-        self.mainFrame.additionsPane.gangPage.handleDrag("fit", self.fitID)
-
-        event.Skip()
-
     def GetType(self):
         return 3
 
