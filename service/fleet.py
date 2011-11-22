@@ -88,11 +88,17 @@ class Fleet(object):
             self.makeLinearFleet(boostee)
         squadIDs = set(eos.db.getSquadsIDsWithFitID(boostee.ID))
         squad = eos.db.getSquad(squadIDs.pop())
+        if squad.wing.gang.leader is not None and booster is None:
+            try:
+                squad.wing.gang.leader.boostsFits.remove(boostee.ID)
+            except KeyError:
+                pass
         squad.wing.gang.leader = booster
-        if self.anyBoosters(squad):
-            squad.wing.gang.recalculateLinear()
-        else:
+        if self.anyBoosters(squad) is False:
             self.removeAssociatedFleetData(boostee)
+        from service.fit import Fit
+        sFit = Fit.getInstance()
+        sFit.recalc(boostee, withBoosters=True)
 
     def setLinearWingCom(self, boostee, booster):
         if boostee == booster:
@@ -102,11 +108,17 @@ class Fleet(object):
             self.makeLinearFleet(boostee)
         squadIDs = set(eos.db.getSquadsIDsWithFitID(boostee.ID))
         squad = eos.db.getSquad(squadIDs.pop())
+        if squad.wing.leader is not None and booster is None:
+            try:
+                squad.wing.leader.boostsFits.remove(boostee.ID)
+            except KeyError:
+                pass
         squad.wing.leader = booster
-        if self.anyBoosters(squad):
-            squad.wing.gang.recalculateLinear()
-        else:
+        if self.anyBoosters(squad) is False:
             self.removeAssociatedFleetData(boostee)
+        from service.fit import Fit
+        sFit = Fit.getInstance()
+        sFit.recalc(boostee, withBoosters=True)
 
     def setLinearSquadCom(self, boostee, booster):
         if boostee == booster:
@@ -116,11 +128,18 @@ class Fleet(object):
             self.makeLinearFleet(boostee)
         squadIDs = set(eos.db.getSquadsIDsWithFitID(boostee.ID))
         squad = eos.db.getSquad(squadIDs.pop())
+        if squad.leader is not None and booster is None:
+            try:
+                squad.leader.boostsFits.remove(boostee.ID)
+            except KeyError:
+                pass
         squad.leader = booster
-        if self.anyBoosters(squad):
-            squad.wing.gang.recalculateLinear()
-        else:
+        if self.anyBoosters(squad) is False:
             self.removeAssociatedFleetData(boostee)
+        from service.fit import Fit
+        sFit = Fit.getInstance()
+        sFit.recalc(boostee, withBoosters=True)
+
 
     def getLinearFleet(self, fit):
         sqIDs = eos.db.getSquadsIDsWithFitID(fit.ID)
@@ -154,12 +173,27 @@ class Fleet(object):
                 squadIDs.add(squad.ID)
         for squadID in squadIDs:
             squad = eos.db.getSquad(squadID)
+            if squad.leader is not None:
+                try:
+                    squad.leader.boostsFits.remove(fit.ID)
+                except KeyError:
+                    pass
             eos.db.remove(squad)
         for wingID in wingIDs:
             wing = eos.db.getWing(wingID)
+            if wing.leader is not None:
+                try:
+                    wing.leader.boostsFits.remove(fit.ID)
+                except KeyError:
+                    pass
             eos.db.remove(wing)
         for fleetID in fleetIDs:
             fleet = eos.db.getFleet(fleetID)
+            if fleet.leader is not None:
+                try:
+                    fleet.leader.boostsFits.remove(fit.ID)
+                except KeyError:
+                    pass
             eos.db.remove(fleet)
         fit.fleet = None
         return

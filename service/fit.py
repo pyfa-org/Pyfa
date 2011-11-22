@@ -78,6 +78,7 @@ class Fit(object):
     def __init__(self):
         self.pattern = DamagePattern.getInstance().getDamagePattern("Uniform")
         self.character = Character.getInstance().all0()
+        self.dirtyFitIDs = set()
 
     def getAllFits(self):
         fits = eos.db.getFitList()
@@ -651,4 +652,4 @@ class Fit(object):
 
     def recalc(self, fit, withBoosters=False):
         fit.clear()
-        fit.calculateModifiedAttributes(withBoosters=withBoosters)
+        fit.calculateModifiedAttributes(withBoosters=withBoosters, dirtyStorage=self.dirtyFitIDs)
