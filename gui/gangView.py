@@ -30,7 +30,7 @@ from gui import characterEditor as CharEditor
 class GangView ( ScrolledPanel ):
 
     def __init__( self, parent ):
-        ScrolledPanel.__init__ ( self, parent, id = wx.ID_ANY, pos = wx.DefaultPosition, size = wx.Size( 691,172 ), style = wx.TAB_TRAVERSAL )
+        ScrolledPanel.__init__ ( self, parent, id = wx.ID_ANY, pos = wx.DefaultPosition, size = wx.Size( 100,20 ), style = wx.TAB_TRAVERSAL | wx.HSCROLL | wx.VSCROLL )
         mainSizer = wx.BoxSizer( wx.VERTICAL )
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
@@ -56,10 +56,12 @@ class GangView ( ScrolledPanel ):
 
         self.stFits = wx.StaticText( self, wx.ID_ANY, u"Fits", wx.DefaultPosition, wx.DefaultSize, 0 )
         self.stFits.Wrap( -1 )
+        self.stFits.SetFont( wx.Font( wx.NORMAL_FONT.GetPointSize(), 70, 90, 92, False, wx.EmptyString ) )
         contentFGSizer.Add( self.stFits, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_CENTER_HORIZONTAL, 5 )
 
         self.stCharacters = wx.StaticText( self, wx.ID_ANY, u"Characters", wx.DefaultPosition, wx.DefaultSize, 0 )
         self.stCharacters.Wrap( -1 )
+        self.stCharacters.SetFont( wx.Font( wx.NORMAL_FONT.GetPointSize(), 70, 90, 92, False, wx.EmptyString ) )
         contentFGSizer.Add( self.stCharacters, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_CENTER_HORIZONTAL, 5 )
 
         self.m_staticline2 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
@@ -71,9 +73,9 @@ class GangView ( ScrolledPanel ):
         self.m_staticline4 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
         contentFGSizer.Add( self.m_staticline4, 0, wx.EXPAND, 5 )
 
-        self.stFleet = wx.StaticText( self, wx.ID_ANY, u"Fleet", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.stFleet = wx.StaticText( self, wx.ID_ANY, u"Fleet:", wx.DefaultPosition, wx.DefaultSize, 0 )
         self.stFleet.Wrap( -1 )
-        self.stFleet.SetFont( wx.Font( wx.NORMAL_FONT.GetPointSize(), 70, 90, 90, False, wx.EmptyString ) )
+        self.stFleet.SetFont( wx.Font( wx.NORMAL_FONT.GetPointSize(), 70, 90, 92, False, wx.EmptyString ) )
 
         contentFGSizer.Add( self.stFleet, 0, wx.ALIGN_RIGHT|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5 )
 
@@ -86,10 +88,12 @@ class GangView ( ScrolledPanel ):
         chFleetCharChoices = []
         self.chFleetChar = wx.Choice( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, chFleetCharChoices, 0 )
         self.chFleetChar.SetSelection( 0 )
-        contentFGSizer.Add( self.chFleetChar, 0, wx.EXPAND|wx.ALL, 5 )
 
-        self.stWing = wx.StaticText( self, wx.ID_ANY, u"Wing", wx.DefaultPosition, wx.DefaultSize, 0 )
+        contentFGSizer.Add( self.chFleetChar, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5 )
+
+        self.stWing = wx.StaticText( self, wx.ID_ANY, u"Wing:", wx.DefaultPosition, wx.DefaultSize, 0 )
         self.stWing.Wrap( -1 )
+        self.stWing.SetFont( wx.Font( wx.NORMAL_FONT.GetPointSize(), 70, 90, 92, False, wx.EmptyString ) )
         contentFGSizer.Add( self.stWing, 0, wx.ALIGN_RIGHT|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5 )
 
         self.stWingFit = wx.StaticText( self, wx.ID_ANY, u"None", wx.DefaultPosition, wx.DefaultSize, 0 )
@@ -99,10 +103,12 @@ class GangView ( ScrolledPanel ):
         chWingCharChoices = []
         self.chWingChar = wx.Choice( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, chWingCharChoices, 0 )
         self.chWingChar.SetSelection( 0 )
-        contentFGSizer.Add( self.chWingChar, 0, wx.ALL|wx.EXPAND, 5 )
 
-        self.stSquad = wx.StaticText( self, wx.ID_ANY, u"Squad", wx.DefaultPosition, wx.DefaultSize, 0 )
+        contentFGSizer.Add( self.chWingChar, 0, wx.ALL| wx.ALIGN_CENTER_VERTICAL, 5 )
+
+        self.stSquad = wx.StaticText( self, wx.ID_ANY, u"Squad:", wx.DefaultPosition, wx.DefaultSize, 0 )
         self.stSquad.Wrap( -1 )
+        self.stSquad.SetFont( wx.Font( wx.NORMAL_FONT.GetPointSize(), 70, 90, 92, False, wx.EmptyString ) )
         contentFGSizer.Add( self.stSquad, 0, wx.ALIGN_RIGHT|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5 )
 
         self.stSquadFit = wx.StaticText( self, wx.ID_ANY, u"None", wx.DefaultPosition, wx.DefaultSize, 0 )
@@ -112,9 +118,10 @@ class GangView ( ScrolledPanel ):
         chSquadCharChoices = []
         self.chSquadChar = wx.Choice( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, chSquadCharChoices, 0 )
         self.chSquadChar.SetSelection( 0 )
-        contentFGSizer.Add( self.chSquadChar, 0, wx.EXPAND|wx.ALL, 5 )
 
-        mainSizer.Add( contentFGSizer, 0, 0, 0 )
+        contentFGSizer.Add( self.chSquadChar, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5 )
+
+        mainSizer.Add( contentFGSizer, 1, wx.EXPAND, 0 )
 
         self.stBoosters = []
         self.stBoosters.append(self.stFleetFit)
@@ -128,11 +135,12 @@ class GangView ( ScrolledPanel ):
         self.chCharacters.append(self.chSquadChar)
 
         self.SetSizer( mainSizer )
-        self.SetAutoLayout(1)
+        self.SetAutoLayout(True)
         self.SetupScrolling()
 
         self.mainFrame.Bind(CharEditor.CHAR_LIST_UPDATED, self.RefreshCharacterList)
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitSelected)
+        self.mainFrame.Bind(gui.shipBrowser.EVT_FIT_RENAMED, self.fitRenamed)
 
         for stBooster in self.stBoosters:
             stBooster.Bind(wx.EVT_LEFT_DCLICK, self.RemoveBooster)
@@ -229,6 +237,15 @@ class GangView ( ScrolledPanel ):
         sFit.recalc(boostee, withBoosters=True)
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=activeFitID))
 
+    def fitRenamed(self, event):
+        fleetSrv = service.Fleet.getInstance()
+        activeFitID = self.mainFrame.getActiveFit()
+
+        if activeFitID:
+            ev = event
+            ev.fitID = activeFitID
+            self.fitSelected(ev)
+
     def fitSelected(self, event):
         cFit = service.Fit.getInstance()
         fit = cFit.getFit(event.fitID)
@@ -285,7 +302,10 @@ class GangView ( ScrolledPanel ):
         self.chWingChar.SetStringSelection(wingChar)
         self.chSquadChar.SetStringSelection(squadChar)
 
+
         self.Layout()
+        self.SendSizeEvent()
+
 
 
     def AddCommander(self, fitID, type = None):
