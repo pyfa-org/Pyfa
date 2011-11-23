@@ -73,7 +73,7 @@ class GangView ( ScrolledPanel ):
         self.m_staticline4 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
         contentFGSizer.Add( self.m_staticline4, 0, wx.EXPAND, 5 )
 
-        self.stFleet = wx.StaticText( self, wx.ID_ANY, u"Fleet:", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.stFleet = wx.StaticText( self, wx.ID_ANY, u"Fleet booster:", wx.DefaultPosition, wx.DefaultSize, 0 )
         self.stFleet.Wrap( -1 )
         self.stFleet.SetFont( wx.Font( wx.NORMAL_FONT.GetPointSize(), 70, 90, 92, False, wx.EmptyString ) )
 
@@ -91,7 +91,7 @@ class GangView ( ScrolledPanel ):
 
         contentFGSizer.Add( self.chFleetChar, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5 )
 
-        self.stWing = wx.StaticText( self, wx.ID_ANY, u"Wing:", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.stWing = wx.StaticText( self, wx.ID_ANY, u"Wing booster:", wx.DefaultPosition, wx.DefaultSize, 0 )
         self.stWing.Wrap( -1 )
         self.stWing.SetFont( wx.Font( wx.NORMAL_FONT.GetPointSize(), 70, 90, 92, False, wx.EmptyString ) )
         contentFGSizer.Add( self.stWing, 0, wx.ALIGN_RIGHT|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5 )
@@ -106,7 +106,7 @@ class GangView ( ScrolledPanel ):
 
         contentFGSizer.Add( self.chWingChar, 0, wx.ALL| wx.ALIGN_CENTER_VERTICAL, 5 )
 
-        self.stSquad = wx.StaticText( self, wx.ID_ANY, u"Squad:", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.stSquad = wx.StaticText( self, wx.ID_ANY, u"Squad booster:", wx.DefaultPosition, wx.DefaultSize, 0 )
         self.stSquad.Wrap( -1 )
         self.stSquad.SetFont( wx.Font( wx.NORMAL_FONT.GetPointSize(), 70, 90, 92, False, wx.EmptyString ) )
         contentFGSizer.Add( self.stSquad, 0, wx.ALIGN_RIGHT|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5 )
@@ -400,5 +400,5 @@ class GangView ( ScrolledPanel ):
 #            self.Layout()
 
             self.AddCommander(draggedFit.ID, booster)
-            self.mainFrame.additionsPane.select("Gang")
+            self.mainFrame.additionsPane.select("Fleet")
 
