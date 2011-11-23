@@ -137,6 +137,7 @@ class GangView ( ScrolledPanel ):
         self.SetSizer( mainSizer )
         self.SetAutoLayout(True)
         self.SetupScrolling()
+        self.Disable()
 
         self.mainFrame.Bind(CharEditor.CHAR_LIST_UPDATED, self.RefreshCharacterList)
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitSelected)
@@ -295,6 +296,7 @@ class GangView ( ScrolledPanel ):
                 squadComCharName = "All 0"
 
             self.UpdateFleetFitsUI( fleetComName, wingComName, squadComName, fleetComCharName, wingComCharName, squadComCharName )
+            self.Enable()
 
         else:
             fleetComName = "None"
@@ -305,6 +307,7 @@ class GangView ( ScrolledPanel ):
             squadComCharName = "All 0"
 
             self.UpdateFleetFitsUI( fleetComName, wingComName, squadComName, fleetComCharName, wingComCharName, squadComCharName )
+            self.Disable()
 
     def UpdateFleetFitsUI(self, fleet, wing, squad, fleetChar, wingChar, squadChar):
         self.stFleetFit.SetLabel(fleet)
