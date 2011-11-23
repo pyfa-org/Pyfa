@@ -144,10 +144,23 @@ class GangView ( ScrolledPanel ):
 
         for stBooster in self.stBoosters:
             stBooster.Bind(wx.EVT_LEFT_DCLICK, self.RemoveBooster)
+            stBooster.Bind(wx.EVT_ENTER_WINDOW, self.OnEnterWindow)
+            stBooster.Bind(wx.EVT_LEAVE_WINDOW, self.OnLeaveWindow)
 
         for chCharacter in self.chCharacters:
             chCharacter.Bind(wx.EVT_CHOICE, self.CharChanged)
         self.RefreshCharacterList()
+
+    def OnEnterWindow(self, event):
+        obj = event.GetEventObject()
+        obj.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
+        event.Skip()
+
+    def OnLeaveWindow(self, event):
+        obj = event.GetEventObject()
+        obj.SetCursor(wx.StockCursor(wx.CURSOR_DEFAULT))
+        event.Skip()
+
 
     def CharChanged(self, event):
         chBooster = event.GetEventObject()
@@ -384,4 +397,5 @@ class GangView ( ScrolledPanel ):
 #            self.Layout()
 
             self.AddCommander(draggedFit.ID, booster)
+            self.mainFrame.additionsPane.select("Gang")
 

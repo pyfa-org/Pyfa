@@ -54,6 +54,7 @@ class AdditionsPane(TogglePanel):
         implantImg = bitmapLoader.getImage("implant_small", "icons")
         boosterImg = bitmapLoader.getImage("booster_small", "icons")
         projectedImg = bitmapLoader.getImage("projected_small", "icons")
+        gangImg = bitmapLoader.getImage("fleet_fc_small", "icons")
 
         self.notebook.AddPage(DroneView(self.notebook), "Drones", tabImage = droneImg, showClose = False)
         self.notebook.AddPage(ImplantView(self.notebook), "Implants", tabImage = implantImg, showClose = False)
@@ -63,10 +64,10 @@ class AdditionsPane(TogglePanel):
         self.notebook.AddPage(self.projectedPage, "Projected", tabImage = projectedImg, showClose = False)
 
         self.gangPage = GangView(self.notebook)
-        self.notebook.AddPage(self.gangPage, "Gang", showClose = False)
+        self.notebook.AddPage(self.gangPage, "Gang", tabImage = gangImg, showClose = False)
         self.notebook.SetSelection(0)
 
 
-    PANES = ["Drones", "Implants", "Boosters"]
+    PANES = ["Drones", "Implants", "Boosters", "Projected", "Gang"]
     def select(self, name):
         self.notebook.SetSelection(self.PANES.index(name))
