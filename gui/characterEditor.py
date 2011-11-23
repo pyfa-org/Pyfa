@@ -223,6 +223,10 @@ class CharacterEditor(wx.Frame):
     def processRename(self, event):
         cChar = service.Character.getInstance()
         newName = self.characterRename.GetLineText(0)
+
+        if newName == "All 0" or newName == "All 5":
+            newName = newName + " bases are belong to us"
+
         charID = self.getActiveCharacter()
         cChar.rename(charID, newName)
 
