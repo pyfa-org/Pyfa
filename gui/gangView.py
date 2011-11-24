@@ -147,6 +147,7 @@ class GangView ( ScrolledPanel ):
             stBooster.Bind(wx.EVT_LEFT_DCLICK, self.RemoveBooster)
             stBooster.Bind(wx.EVT_ENTER_WINDOW, self.OnEnterWindow)
             stBooster.Bind(wx.EVT_LEAVE_WINDOW, self.OnLeaveWindow)
+            stBooster.SetToolTip(wx.ToolTip("Double click to remove booster"))
 
         for chCharacter in self.chCharacters:
             chCharacter.Bind(wx.EVT_CHOICE, self.CharChanged)
