@@ -46,7 +46,7 @@ class AdditionsPane(TogglePanel):
         self.notebook = gui.chromeTabs.PFNotebook(pane, False)
         size = wx.Size()
         # This size lets you see 4 drones at a time
-        size.SetHeight(160)
+        size.SetHeight(180)
         self.notebook.SetMinSize(size)
         baseSizer.Add(self.notebook, 1, wx.EXPAND)
 

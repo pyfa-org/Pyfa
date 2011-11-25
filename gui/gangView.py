@@ -81,8 +81,6 @@ class GangView ( ScrolledPanel ):
 
         self.stFleetFit = wx.StaticText( self, wx.ID_ANY, u"None", wx.DefaultPosition, wx.DefaultSize, 0 )
         self.stFleetFit.Wrap( -1 )
-        self.stFleetFit.SetFont( wx.Font( wx.NORMAL_FONT.GetPointSize(), 70, 90, 90, False, wx.EmptyString ) )
-
         contentFGSizer.Add( self.stFleetFit, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5 )
 
         chFleetCharChoices = []
