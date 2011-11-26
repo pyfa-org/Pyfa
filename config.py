@@ -8,7 +8,7 @@ except ImportError:
     configforced = None
 
 # Turns on debug mode
-debug = True
+debug = False
 
 # Version data
 version = "1.0.6"
