@@ -40,12 +40,24 @@ class Character():
     def all0ID(self):
         return self.all0().ID
 
+    def all5(self):
+        all5 = eos.types.Character.getAll5()
+        eos.db.commit()
+        return all5
+
+    def all5ID(self):
+        return self.all5().ID
+
     def getCharacterList(self):
         baseChars = [eos.types.Character.getAll0(), eos.types.Character.getAll5()]
         # Flush incase all0 & all5 weren't in the db yet
         eos.db.commit()
         sFit = service.Fit.getInstance()
         return map(lambda c: (c.ID, c.name, c == sFit.character), eos.db.getCharacterList())
+
+    def getCharacter(self, charID):
+        char = eos.db.getCharacter(charID)
+        return char
 
     def getSkillGroups(self):
         cat = eos.db.getCategory(16)

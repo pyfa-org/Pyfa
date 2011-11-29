@@ -200,11 +200,18 @@ class ProjectedView(d.Display):
                     else:
                         context = (modFullContext,)
                 else:
-                    context = ("projectedFit",)
-
+                    context = (("projectedFit",),)
                 menu = ContextMenu.getMenu((item,), *context)
                 if menu is not None:
                     self.PopupMenu(menu)
+        elif row == -1 and event.Button == 3:
+            fitID = self.mainFrame.getActiveFit()
+            if fitID is None:
+                return
+            context = (("projectedNone",),)
+            menu = ContextMenu.getMenu([], *context)
+            if menu is not None:
+                self.PopupMenu(menu)
 
     def remove(self, event):
         row, _ = self.HitTest(event.Position)

@@ -184,7 +184,6 @@ class Market():
             "Impairor": True, # Noobship
             "Velator": True, # Noobship
             "Reaper": True, # Noobship
-            "TEST Damage Mod": False, # Marked as published by CCP for whatever reason
             "Ghost Heavy Missile": False, # Missile used by Sansha
             "Nano Paint": False } # It will be used for ship paint job, no use as of today
 
@@ -232,6 +231,8 @@ class Market():
             "Civilian Standard Missile Launcher": 760, # Ship Equipment > Civilian Modules
             "Civilian Stasis Webifier": 760, # Ship Equipment > Civilian Modules
             "Civilian Warp Disruptor": 760, # Ship Equipment > Civilian Modules
+            "Hardwiring - Genolution Core Augmentation CA-1": 618, # Implants & Boosters > Implants > Attribute Enhancers > Implant Slot 1
+            "Hardwiring - Genolution Core Augmentation CA-2": 621, # Implants & Boosters > Implants > Attribute Enhancers > Implant Slot 4
             "Hardwiring - Inherent Implants 'Gentry' ZEX10": 1152, # Implants & Boosters > Implants > Skill Hardwiring > Implant Slot 6 > Armor Implants
             "Hardwiring - Inherent Implants 'Gentry' ZEX100": 1152, # Implants & Boosters > Implants > Skill Hardwiring > Implant Slot 6 > Armor Implants
             "Hardwiring - Inherent Implants 'Gentry' ZEX1000": 1152, # Implants & Boosters > Implants > Skill Hardwiring > Implant Slot 6 > Armor Implants
@@ -681,9 +682,9 @@ class Market():
                        "Pulsar Effect Beacon",
                        "Red Giant Beacon",
                        "Wolf Rayet Effect Beacon",
-                       "Incursion Effect")
+                       "Incursion ship attributes effects")
         # Stuff we don't want to see in names
-        garbages = ("Effect", "Beacon")
+        garbages = ("Effect", "Beacon", "ship attributes effects")
         # Get group with all the system-wide beacons
         grp = self.getGroup("Effect Beacon")
         beacons = self.getItemsByGroup(grp)

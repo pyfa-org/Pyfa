@@ -13,8 +13,8 @@ debug = False
 # Version data
 version = "1.0.6"
 tag = "git"
-expansionName = "Incarna"
-expansionVersion = "1.1.1"
+expansionName = "Singularity"
+expansionVersion = "0.0"
 
 # You can adjust these paths to your needs
 
