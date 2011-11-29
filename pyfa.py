@@ -54,17 +54,30 @@ if not hasattr(sys, 'frozen'):
         print "Cannot find sqlalchemy.\nYou can download sqlalchemy (0.6+) from http://www.sqlalchemy.org/"
         sys.exit(1)
 
-import wx
-import os
-import os.path
-
-import config
-import eos.db
-import service.prefetch
-
-from gui.mainFrame import MainFrame
+from optparse import OptionParser
 
 if __name__ == "__main__":
+    # Parse command line options
+    usage = "usage: %prog [--root]"
+    parser = OptionParser(usage=usage)
+    parser.add_option("-r", "--root", action="store_true", dest="rootsavedata", help="if you want pyfa to store its data in root folder, use this option", default=False)
+    (options, args) = parser.parse_args()
+
+    import config
+    # Configure paths
+    if options.rootsavedata is True:
+        config.saveInRoot = True
+    config.defPaths()
+
+    # Import everything
+    import wx
+    import os
+    import os.path
+
+    import eos.db
+    import service.prefetch
+    from gui.mainFrame import MainFrame
+
     #Make sure the saveddata db exists
     if not os.path.exists(config.savePath):
         os.mkdir(config.savePath)
