@@ -11,10 +11,10 @@ except ImportError:
 debug = False
 
 # Version data
-version = "1.0.6"
+version = "1.1"
 tag = "git"
-expansionName = "Singularity"
-expansionVersion = "0.0"
+expansionName = "Crucible"
+expansionVersion = "1.0"
 
 # You can adjust these paths to your needs
 
