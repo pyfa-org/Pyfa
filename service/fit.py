@@ -165,8 +165,8 @@ class Fit(object):
 
 #        if fit.character != self.character:
 #            fit.character = self.character
-        if fit.damagePattern != self.pattern:
-            fit.damagePattern = self.pattern
+#        if fit.damagePattern != self.pattern:
+#            fit.damagePattern = self.pattern
 
         eos.db.commit()
         self.recalc(fit, withBoosters=True)
