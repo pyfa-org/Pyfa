@@ -19,6 +19,7 @@ class WhProjector(ContextMenu):
 
     def getSubMenu(self, context, selection, menu, i):
         self.idmap = {}
+        menu.Bind(wx.EVT_MENU, self.handleSelection)
         m = wx.Menu()
         sMkt = service.Market.getInstance()
         effdata = sMkt.getSystemWideEffects()
