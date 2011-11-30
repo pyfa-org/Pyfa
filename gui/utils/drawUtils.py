@@ -2,7 +2,7 @@ import wx
 import gui.utils.colorUtils as colorUtils
 
 
-def RenderGradientBar(windowColor, width, height, sFactor, eFactor, mFactor = None , fillRatio = 4):
+def RenderGradientBar(windowColor, width, height, sFactor, eFactor, mFactor = None , fillRatio = 2):
 
     if sFactor == 0 and eFactor == 0 and mFactor == None:
         return DrawFilledBitmap(width,height, windowColor)
