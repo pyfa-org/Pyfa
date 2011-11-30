@@ -33,6 +33,7 @@ from service.market import Market
 from service.damagePattern import DamagePattern
 from service.character import Character
 from service.fleet import Fleet
+from service.settings import SettingsProvider
 
 class FitBackupThread(threading.Thread):
     def __init__(self, path, callback):
@@ -79,6 +80,14 @@ class Fit(object):
         self.pattern = DamagePattern.getInstance().getDamagePattern("Uniform")
         self.character = Character.getInstance().all0()
         self.dirtyFitIDs = set()
+
+        serviceFittingDefaultOptions = {"useGlobalCharacter": False, "useGlobalDamagePattern": False, "defaultCharacter": self.character.ID}
+
+        self.serviceFittingOptions = SettingsProvider.getInstance().getSettings("pyfaServiceFittingOptions", serviceFittingDefaultOptions)
+
+        self.useGlobalCharacter = self.serviceFittingOptions["useGlobalCharacter"]
+        self.useGlobalDamagePattern = self.serviceFittingOptions["useGlobalDamagePattern"]
+
 
     def getAllFits(self):
         fits = eos.db.getFitList()
@@ -163,10 +172,13 @@ class Fit(object):
 
         fit = eos.db.getFit(fitID)
 
-#        if fit.character != self.character:
-#            fit.character = self.character
-#        if fit.damagePattern != self.pattern:
-#            fit.damagePattern = self.pattern
+        if self.useGlobalCharacter:
+            if fit.character != self.character:
+                fit.character = self.character
+
+        if self.useGlobalDamagePattern:
+            if fit.damagePattern != self.pattern:
+                fit.damagePattern = self.pattern
 
         eos.db.commit()
         self.recalc(fit, withBoosters=True)
