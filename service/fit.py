@@ -163,8 +163,8 @@ class Fit(object):
 
         fit = eos.db.getFit(fitID)
 
-        if fit.character != self.character:
-            fit.character = self.character
+#        if fit.character != self.character:
+#            fit.character = self.character
         if fit.damagePattern != self.pattern:
             fit.damagePattern = self.pattern
 
