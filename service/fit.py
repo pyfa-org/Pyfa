@@ -85,9 +85,6 @@ class Fit(object):
 
         self.serviceFittingOptions = SettingsProvider.getInstance().getSettings("pyfaServiceFittingOptions", serviceFittingDefaultOptions)
 
-        self.useGlobalCharacter = self.serviceFittingOptions["useGlobalCharacter"]
-        self.useGlobalDamagePattern = self.serviceFittingOptions["useGlobalDamagePattern"]
-
 
     def getAllFits(self):
         fits = eos.db.getFitList()
@@ -172,11 +169,11 @@ class Fit(object):
 
         fit = eos.db.getFit(fitID)
 
-        if self.useGlobalCharacter:
+        if self.serviceFittingOptions["useGlobalCharacter"]:
             if fit.character != self.character:
                 fit.character = self.character
 
-        if self.useGlobalDamagePattern:
+        if self.serviceFittingOptions["useGlobalDamagePattern"]:
             if fit.damagePattern != self.pattern:
                 fit.damagePattern = self.pattern
 

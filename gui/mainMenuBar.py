@@ -84,9 +84,9 @@ class MainMenuBar(wx.MenuBar):
         #=======================================================================
         # DISABLED FOR RC2 Release
         #
-        # preferencesItem = wx.MenuItem(windowMenu, self.preferencesId, "Preferences\tCTRL+P")
-        # preferencesItem.SetBitmap(bitmapLoader.getBitmap("preferences_small", "icons"))
-        # windowMenu.AppendItem(preferencesItem)
+        preferencesItem = wx.MenuItem(windowMenu, self.preferencesId, "Preferences\tCTRL+P")
+        preferencesItem.SetBitmap(bitmapLoader.getBitmap("preferences_small", "icons"))
+        windowMenu.AppendItem(preferencesItem)
         #=======================================================================
 
         # Help menu

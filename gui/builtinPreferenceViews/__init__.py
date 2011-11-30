@@ -1,1 +1,1 @@
-__all__ = ["pyfaGaugePreferences"]
+__all__ = ["pyfaGlobalPreferences"]
