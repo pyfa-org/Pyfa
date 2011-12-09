@@ -39,7 +39,13 @@ class WhProjector(ContextMenu):
 
 
     def handleSelection(self, event):
-        swObj, swName = self.idmap[event.Id]
+        #Skip events ids that aren't mapped
+
+        swObj, swName = self.idmap.get(event.Id, (False, False))
+        if not swObj and not swName:
+            event.Skip()
+            return
+
         sFit = service.Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
         sFit.project(fitID, swObj)
