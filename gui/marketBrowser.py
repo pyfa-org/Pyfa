@@ -337,7 +337,6 @@ class ItemView(d.Display):
         self.filterItemStore()
 
     def populateSearch(self, items):
-        print items
         # If we're no longer searching, dump the results
         if self.marketBrowser.searchMode is False:
             return
