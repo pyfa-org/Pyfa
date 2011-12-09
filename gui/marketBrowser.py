@@ -29,6 +29,7 @@ from gui import bitmapLoader
 ItemSelected, ITEM_SELECTED = wx.lib.newevent.NewEvent()
 
 RECENTLY_USED_MODULES = -2
+MAX_RECENTLY_USED_MODULES = 20
 
 class MarketBrowser(wx.Panel):
     def __init__(self, parent):
@@ -227,6 +228,10 @@ class ItemView(d.Display):
         # Make reverse map, used by sorter
         self.metaMap = self.makeReverseMetaMap()
 
+        # Fill up recently used modules set
+        for itemID in self.sMarket.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"]:
+            self.recentlyUsedModules.add(self.sMarket.getItem(itemID))
+
     def itemActivated(self, event=None):
         # Check if something is selected, if so, spawn the menu for it
         sel = self.GetFirstSelected()
@@ -234,8 +239,19 @@ class ItemView(d.Display):
             return
 
         if self.mainFrame.getActiveFit():
-            self.recentlyUsedModules.add(self.sMarket.getItem(self.active[sel].ID))
+
+            self.storeRecentlyUsedMarketItem(self.active[sel].ID)
+            self.recentlyUsedModules = set()
+            for itemID in self.sMarket.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"]:
+                self.recentlyUsedModules.add(self.sMarket.getItem(itemID))
+
         wx.PostEvent(self.mainFrame, ItemSelected(itemID=self.active[sel].ID))
+
+    def storeRecentlyUsedMarketItem(self, itemID):
+        if len(self.sMarket.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"]) > MAX_RECENTLY_USED_MODULES:
+            self.sMarket.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"].pop(0)
+
+        self.sMarket.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"].append(itemID)
 
     def selectionMade(self, event=None, forcedMetaSelect=None):
         self.marketBrowser.searchMode = False
