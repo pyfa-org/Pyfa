@@ -277,10 +277,17 @@ class ItemView(d.Display):
                     items = self.recentlyUsedModules
                 else:
                     items = set()
+
             # Fill store
             self.updateItemStore(items)
-            # Set toggle buttons
-            self.setToggles(forcedMetaSelect=forcedMetaSelect)
+
+            # Set toggle buttons / use search mode flag if recently used modules category is selected (in order to have all modules listed and not filtered)
+            if seldata is not RECENTLY_USED_MODULES:
+                self.setToggles(forcedMetaSelect=forcedMetaSelect)
+            else:
+                self.marketBrowser.searchMode = True
+                self.setToggles()
+
             # Update filtered items
             self.filterItemStore()
 
