@@ -28,6 +28,9 @@ from gui import bitmapLoader
 
 ItemSelected, ITEM_SELECTED = wx.lib.newevent.NewEvent()
 
+RECENTLY_USED_MODULES = -2
+MAX_RECENTLY_USED_MODULES = 20
+
 class MarketBrowser(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent)
@@ -128,15 +131,19 @@ class MarketTree(wx.TreeCtrl):
             # All market groups which were never expanded are dummies, here we assume
             # that all root market groups are expandable
             self.AppendItem(childId, "dummy")
-
         self.SortChildren(self.root)
+
+        # Add recently used modules node
+        rumIconId = self.addImage("market_small", "icons")
+        self.AppendItem(self.root, "Recently Used Modules", rumIconId, data = wx.TreeItemData(RECENTLY_USED_MODULES))
+
         # Bind our lookup method to when the tree gets expanded
         self.Bind(wx.EVT_TREE_ITEM_EXPANDING, self.expandLookup)
 
-    def addImage(self, iconFile):
+    def addImage(self, iconFile, location = "pack"):
         if iconFile is None:
             return -1
-        return self.imageList.GetImageIndex(iconFile, "pack")
+        return self.imageList.GetImageIndex(iconFile, location)
 
     def expandLookup(self, event):
         """Process market tree expands"""
@@ -201,6 +208,7 @@ class ItemView(d.Display):
 
         self.unfilteredStore = set()
         self.filteredStore = set()
+        self.recentlyUsedModules = set()
         self.sMarket = marketBrowser.sMarket
         self.searchMode = marketBrowser.searchMode
 
@@ -220,12 +228,30 @@ class ItemView(d.Display):
         # Make reverse map, used by sorter
         self.metaMap = self.makeReverseMetaMap()
 
+        # Fill up recently used modules set
+        for itemID in self.sMarket.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"]:
+            self.recentlyUsedModules.add(self.sMarket.getItem(itemID))
+
     def itemActivated(self, event=None):
         # Check if something is selected, if so, spawn the menu for it
         sel = self.GetFirstSelected()
         if sel == -1:
             return
+
+        if self.mainFrame.getActiveFit():
+
+            self.storeRecentlyUsedMarketItem(self.active[sel].ID)
+            self.recentlyUsedModules = set()
+            for itemID in self.sMarket.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"]:
+                self.recentlyUsedModules.add(self.sMarket.getItem(itemID))
+
         wx.PostEvent(self.mainFrame, ItemSelected(itemID=self.active[sel].ID))
+
+    def storeRecentlyUsedMarketItem(self, itemID):
+        if len(self.sMarket.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"]) > MAX_RECENTLY_USED_MODULES:
+            self.sMarket.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"].pop(0)
+
+        self.sMarket.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"].append(itemID)
 
     def selectionMade(self, event=None, forcedMetaSelect=None):
         self.marketBrowser.searchMode = False
@@ -234,7 +260,7 @@ class ItemView(d.Display):
         if sel.IsOk():
             # Get data field of the selected item (which is a marketGroup ID if anything was selected)
             seldata = self.marketView.GetPyData(sel)
-            if seldata is not None:
+            if seldata is not None and seldata != RECENTLY_USED_MODULES:
                 # If market group treeview item doesn't have children (other market groups or dummies),
                 # then it should have items in it and we want to request them
                 if self.marketView.ItemHasChildren(sel) is False:
@@ -246,12 +272,22 @@ class ItemView(d.Display):
                 else:
                     items = set()
             else:
-                # If method was called but selection wasn't actually made
-                items = set()
+                # If method was called but selection wasn't actually made or we have a hit on recently used modules
+                if seldata == RECENTLY_USED_MODULES:
+                    items = self.recentlyUsedModules
+                else:
+                    items = set()
+
             # Fill store
             self.updateItemStore(items)
-            # Set toggle buttons
-            self.setToggles(forcedMetaSelect=forcedMetaSelect)
+
+            # Set toggle buttons / use search mode flag if recently used modules category is selected (in order to have all modules listed and not filtered)
+            if seldata is not RECENTLY_USED_MODULES:
+                self.setToggles(forcedMetaSelect=forcedMetaSelect)
+            else:
+                self.marketBrowser.searchMode = True
+                self.setToggles()
+
             # Update filtered items
             self.filterItemStore()
 

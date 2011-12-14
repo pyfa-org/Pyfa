@@ -3,7 +3,10 @@ import service
 
 from gui.preferenceView import PreferenceView
 from gui import bitmapLoader
+
+import gui.mainFrame
 import service
+import gui.globalEvents as GE
 
 
 class PFGlobalPref ( PreferenceView):
@@ -11,6 +14,7 @@ class PFGlobalPref ( PreferenceView):
 
     def populatePanel( self, panel ):
 
+        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         mainSizer = wx.BoxSizer( wx.VERTICAL )
 
         self.stTitle = wx.StaticText( panel, wx.ID_ANY, self.title, wx.DefaultPosition, wx.DefaultSize, 0 )
@@ -27,6 +31,9 @@ class PFGlobalPref ( PreferenceView):
 
         self.cbGlobalDmgPattern = wx.CheckBox( panel, wx.ID_ANY, u"Use global damage pattern", wx.DefaultPosition, wx.DefaultSize, 0 )
         mainSizer.Add( self.cbGlobalDmgPattern, 0, wx.ALL|wx.EXPAND, 5 )
+
+        self.cbGlobalForceReload = wx.CheckBox( panel, wx.ID_ANY, u"Use force reload", wx.DefaultPosition, wx.DefaultSize, 0 )
+        mainSizer.Add( self.cbGlobalForceReload, 0, wx.ALL|wx.EXPAND, 5 )
 
         defCharSizer = wx.BoxSizer( wx.HORIZONTAL )
 
@@ -52,17 +59,26 @@ class PFGlobalPref ( PreferenceView):
         self.sFit = service.Fit.getInstance()
         useGlobalChar = self.sFit.serviceFittingOptions["useGlobalCharacter"]
         useGlobalDmgPattern = self.sFit.serviceFittingOptions["useGlobalDamagePattern"]
+        useGlobalForceReload = self.sFit.serviceFittingOptions["useGlobalForceReload"]
 
         self.cbGlobalChar.SetValue(useGlobalChar)
         self.cbGlobalDmgPattern.SetValue(useGlobalDmgPattern)
+        self.cbGlobalForceReload.SetValue(useGlobalForceReload)
 
         self.cbGlobalChar.Bind(wx.EVT_CHECKBOX, self.OnCBGlobalCharStateChange)
         self.cbGlobalDmgPattern.Bind(wx.EVT_CHECKBOX, self.OnCBGlobalDmgPatternStateChange)
+        self.cbGlobalForceReload.Bind(wx.EVT_CHECKBOX, self.OnCBGlobalForceReloadStateChange)
 
         self.chDefaultChar.Disable()
 
         panel.SetSizer( mainSizer )
         panel.Layout()
+
+    def OnCBGlobalForceReloadStateChange(self, event):
+        self.sFit.serviceFittingOptions["useGlobalForceReload"] = self.cbGlobalForceReload.GetValue()
+        fitID = self.mainFrame.getActiveFit()
+        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+        event.Skip()
 
     def OnCBGlobalCharStateChange(self, event):
         self.sFit.serviceFittingOptions["useGlobalCharacter"] = self.cbGlobalChar.GetValue()

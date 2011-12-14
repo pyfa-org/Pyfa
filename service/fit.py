@@ -81,7 +81,7 @@ class Fit(object):
         self.character = Character.getInstance().all0()
         self.dirtyFitIDs = set()
 
-        serviceFittingDefaultOptions = {"useGlobalCharacter": False, "useGlobalDamagePattern": False, "defaultCharacter": self.character.ID}
+        serviceFittingDefaultOptions = {"useGlobalCharacter": False, "useGlobalDamagePattern": False, "defaultCharacter": self.character.ID, "useGlobalForceReload": False}
 
         self.serviceFittingOptions = SettingsProvider.getInstance().getSettings("pyfaServiceFittingOptions", serviceFittingDefaultOptions)
 
@@ -663,4 +663,5 @@ class Fit(object):
 
     def recalc(self, fit, withBoosters=False):
         fit.clear()
+        fit.forceReload = self.serviceFittingOptions["useGlobalForceReload"]
         fit.calculateModifiedAttributes(withBoosters=withBoosters, dirtyStorage=self.dirtyFitIDs)

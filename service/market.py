@@ -26,6 +26,8 @@ import Queue
 import eos.db
 import eos.types
 
+from service.settings import SettingsProvider
+
 try:
     from collections import OrderedDict
 except ImportError:
@@ -126,6 +128,11 @@ class Market():
     instance = None
     def __init__(self):
         self.priceCache = {}
+
+        #Init recently used module storage
+        serviceMarketRecentlyUsedModules = {"pyfaMarketRecentlyUsedModules": []}
+
+        self.serviceMarketRecentlyUsedModules = SettingsProvider.getInstance().getSettings("pyfaMarketRecentlyUsedModules", serviceMarketRecentlyUsedModules)
 
         # Start price fetcher
         self.priceWorkerThread = PriceWorkerThread()

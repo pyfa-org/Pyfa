@@ -57,7 +57,7 @@ class PyGauge(wx.PyWindow):
 
         self._oldValue = 0
 
-        self._animDuration = 700
+        self._animDuration = 250
         self._animStep = 0
         self._period = 20
         self._animValue = 0

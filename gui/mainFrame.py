@@ -106,11 +106,14 @@ class MainFrame(wx.Frame):
 
         self.notebookBrowsers = gui.chromeTabs.PFNotebook(self.splitter, False)
 
+        marketImg = bitmapLoader.getImage("market_small", "icons")
+        shipBrowserImg = bitmapLoader.getImage("ship_small", "icons")
+
         self.marketBrowser = MarketBrowser(self.notebookBrowsers)
-        self.notebookBrowsers.AddPage(self.marketBrowser, "Market", showClose = False)
+        self.notebookBrowsers.AddPage(self.marketBrowser, "Market", tabImage = marketImg, showClose = False)
 
         self.shipBrowser = ShipBrowser(self.notebookBrowsers)
-        self.notebookBrowsers.AddPage(self.shipBrowser, "Ships", showClose = False)
+        self.notebookBrowsers.AddPage(self.shipBrowser, "Ships", tabImage = shipBrowserImg, showClose = False)
 
         #=======================================================================
         # DISABLED FOR RC2 RELEASE
