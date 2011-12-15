@@ -47,6 +47,16 @@ def defPaths():
         if savePath is None:
             savePath = unicode(os.path.expanduser(os.path.join("~", ".pyfa")), sys.getfilesystemencoding())
 
+    # Redirect stderr to file if we're requested to do so
+    stderrToFile = getattr(configforced, "stderrToFile", None)
+    if stderrToFile is True:
+        sys.stderr = open(os.path.join(savePath, "error_log.txt"), "w")
+
+    # Same for stdout
+    stdoutToFile = getattr(configforced, "stdoutToFile", None)
+    if stdoutToFile is True:
+        sys.stdout = open(os.path.join(savePath, "output_log.txt"), "w")
+
     # Static EVE Data from the staticdata repository, should be in the staticdata directory in our pyfa directory
     staticPath = os.path.join(pyfaPath, "staticdata")
 
