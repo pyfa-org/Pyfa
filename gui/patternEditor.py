@@ -296,6 +296,10 @@ class DmgPatternEditorDlg (wx.Dialog):
                 self.stPercentages.SetLabel("Name already used, please pick another")
                 return
 
+        if newName == "":
+            self.stPercentages.SetLabel("Invalid name.")
+            return
+
         cDP = service.DamagePattern.getInstance()
         cDP.renamePattern(p, newName)
 
