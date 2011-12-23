@@ -78,7 +78,7 @@ class Fit(object):
 
     def __init__(self):
         self.pattern = DamagePattern.getInstance().getDamagePattern("Uniform")
-        self.character = Character.getInstance().all0()
+        self.character = Character.getInstance().all5()
         self.dirtyFitIDs = set()
 
         serviceFittingDefaultOptions = {"useGlobalCharacter": False, "useGlobalDamagePattern": False, "defaultCharacter": self.character.ID, "useGlobalForceReload": False}

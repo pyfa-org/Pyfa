@@ -78,7 +78,7 @@ class CharacterSelection(wx.Panel):
                 picked = True
 
         if not picked:
-            charID = cChar.all0ID()
+            charID = cChar.all5ID()
             self.selectChar(charID)
             fitID = self.mainFrame.getActiveFit()
             cFit = service.Fit.getInstance()
@@ -131,7 +131,7 @@ class CharacterSelection(wx.Panel):
 
         if newCharID == None:
             cChar = service.Character.getInstance()
-            self.selectChar(cChar.all0ID())
+            self.selectChar(cChar.all5ID())
         elif currCharID != newCharID:
             self.selectChar(newCharID)
 
