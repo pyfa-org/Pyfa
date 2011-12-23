@@ -104,3 +104,46 @@ class Settings():
 
     def items(self):
         return self.info.items()
+
+class ProxySettings():
+    _instance = None
+    @classmethod
+    def getInstance(cls):
+        if cls._instance == None:
+            cls._instance = ProxySettings()
+
+        return cls._instance
+
+    def __init__(self):
+
+        # mode
+        # 0 - No proxy
+        # 1 - Auto-detected proxy settings
+        # 2 - Manual proxy settings
+        serviceProxyDefaultSettings = {"mode": 0, "type": "https", "address": "", "port": ""}
+
+        self.serviceProxySettings = SettingsProvider.getInstance().getSettings("pyfaServiceProxySettings", serviceProxyDefaultSettings)
+
+    def getMode(self):
+        return self.serviceProxySettings["mode"]
+
+    def getAddress(self):
+        return self.serviceProxySettings["address"]
+
+    def getPort(self):
+        return self.serviceProxySettings["port"]
+
+    def getType(self):
+        return self.serviceProxySettings["type"]
+
+    def setMode(self, mode):
+        self.serviceProxySettings["mode"] = mode
+
+    def setAddress(self, addr):
+        self.serviceProxySettings["address"] = addr
+
+    def setPort(self, port):
+        self.serviceProxySettings["port"] = port
+
+    def setType(self, type):
+        self.serviceProxySettings["type"] = type
