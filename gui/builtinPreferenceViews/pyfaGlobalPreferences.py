@@ -48,6 +48,43 @@ class PFGlobalPref ( PreferenceView):
 
         mainSizer.Add( defCharSizer, 0, wx.EXPAND, 5 )
 
+
+#        self.stPTitle = wx.StaticText( panel, wx.ID_ANY, "Proxy settings", wx.DefaultPosition, wx.DefaultSize, 0 )
+#        self.stPTitle.Wrap( -1 )
+#        self.stPTitle.SetFont( wx.Font( 12, 70, 90, 90, False, wx.EmptyString ) )
+#
+#        mainSizer.Add( self.stPTitle, 0, wx.ALL, 5 )
+
+        self.m_staticline2 = wx.StaticLine( panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
+        mainSizer.Add( self.m_staticline2, 0, wx.EXPAND, 5 )
+
+        self.cbProxySettings = wx.CheckBox( panel, wx.ID_ANY, u"Manual proxy settings", wx.DefaultPosition, wx.DefaultSize, 0 )
+        mainSizer.Add( self.cbProxySettings, 0, wx.ALL, 5 )
+
+        ptypeSizer = wx.BoxSizer( wx.HORIZONTAL )
+
+        self.stPType = wx.StaticText( panel, wx.ID_ANY, u"Type:", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.stPType.Wrap( -1 )
+        ptypeSizer.Add( self.stPType, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+
+        self.chProxyTypeChoices = [ u"https", u"http", u"socks" ]
+        self.chProxyType = wx.Choice( panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, self.chProxyTypeChoices, 0 )
+        self.chProxyType.SetSelection( 0 )
+
+        ptypeSizer.Add( self.chProxyType, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+
+        mainSizer.Add( ptypeSizer, 0, wx.EXPAND, 5 )
+        psetSizer = wx.BoxSizer( wx.HORIZONTAL )
+
+        self.stPSet = wx.StaticText( panel, wx.ID_ANY, u"Addr:", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.stPSet.Wrap( -1 )
+        psetSizer.Add( self.stPSet, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+
+        self.editProxySettings = wx.TextCtrl( panel, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+
+        psetSizer.Add( self.editProxySettings, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+        mainSizer.Add( psetSizer, 0, wx.EXPAND, 5)
+
         cChar = service.Character.getInstance()
         charList = cChar.getCharacterList()
 
@@ -69,10 +106,27 @@ class PFGlobalPref ( PreferenceView):
         self.cbGlobalDmgPattern.Bind(wx.EVT_CHECKBOX, self.OnCBGlobalDmgPatternStateChange)
         self.cbGlobalForceReload.Bind(wx.EVT_CHECKBOX, self.OnCBGlobalForceReloadStateChange)
 
+        self.cbProxySettings.Bind(wx.EVT_CHECKBOX, self.OnCBProxySettingsStateChange)
         self.chDefaultChar.Disable()
+        self.chDefaultChar.Show(False)
+        self.stDefChar.Show(False)
+
+        self.ToggleProxySettings(self.cbProxySettings.GetValue())
 
         panel.SetSizer( mainSizer )
         panel.Layout()
+
+    def ToggleProxySettings(self, mode):
+        if mode:
+            self.chProxyType.Enable()
+            self.editProxySettings.Enable()
+        else:
+            self.chProxyType.Disable()
+            self.editProxySettings.Disable()
+
+    def OnCBProxySettingsStateChange(self, event):
+        self.ToggleProxySettings(self.cbProxySettings.GetValue())
+        event.Skip()
 
     def OnCBGlobalForceReloadStateChange(self, event):
         self.sFit.serviceFittingOptions["useGlobalForceReload"] = self.cbGlobalForceReload.GetValue()
