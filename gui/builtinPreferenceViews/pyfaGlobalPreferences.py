@@ -1,5 +1,6 @@
 import wx
 import service
+import urllib2
 
 from gui.preferenceView import PreferenceView
 from gui import bitmapLoader
@@ -84,6 +85,23 @@ class PFGlobalPref ( PreferenceView):
 
         psetSizer.Add( self.editProxySettings, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
         mainSizer.Add( psetSizer, 0, wx.EXPAND, 5)
+
+        self.stPSAutoDetected = wx.StaticText( panel, wx.ID_ANY, u"Auto-detected: ", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.stPSAutoDetected.Wrap( -1 )
+        mainSizer.Add( self.stPSAutoDetected, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+
+        ps = urllib2.ProxyHandler().proxies
+        txt = "Auto-detected: "
+
+        for type in ps:
+            txt += ps[type]
+            txt += "  "
+
+        if len(ps) == 0:
+            txt += "None"
+
+        self.stPSAutoDetected.SetLabel(txt)
+        self.stPSAutoDetected.Disable()
 
         cChar = service.Character.getInstance()
         charList = cChar.getCharacterList()
