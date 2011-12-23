@@ -118,13 +118,13 @@ class Character():
         try:
             char.apiID = userID
             char.apiKey = apiKey
-            return char.apiCharList()
+            return char.apiCharList(proxy = service.settings.ProxySettings.getInstance().getProxySettings())
         except:
             return None
 
     def apiFetch(self, charID, charName):
         char = eos.db.getCharacter(charID)
-        char.apiFetch(charName)
+        char.apiFetch(charName, proxy = service.settings.ProxySettings.getInstance().getProxySettings())
         eos.db.commit()
 
     def changeLevel(self, charID, skillID, level):

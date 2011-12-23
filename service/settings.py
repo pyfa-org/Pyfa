@@ -20,6 +20,7 @@
 import cPickle
 import os.path
 import config
+import urllib2
 
 class SettingsProvider():
     BASE_PATH = os.path.join(config.savePath, "settings")
@@ -104,3 +105,78 @@ class Settings():
 
     def items(self):
         return self.info.items()
+
+class ProxySettings():
+    _instance = None
+    @classmethod
+    def getInstance(cls):
+        if cls._instance == None:
+            cls._instance = ProxySettings()
+
+        return cls._instance
+
+    def __init__(self):
+
+        # mode
+        # 0 - No proxy
+        # 1 - Auto-detected proxy settings
+        # 2 - Manual proxy settings
+        serviceProxyDefaultSettings = {"mode": 0, "type": "https", "address": "", "port": ""}
+
+        self.serviceProxySettings = SettingsProvider.getInstance().getSettings("pyfaServiceProxySettings", serviceProxyDefaultSettings)
+
+    def getMode(self):
+        return self.serviceProxySettings["mode"]
+
+    def getAddress(self):
+        return self.serviceProxySettings["address"]
+
+    def getPort(self):
+        return self.serviceProxySettings["port"]
+
+    def getType(self):
+        return self.serviceProxySettings["type"]
+
+    def setMode(self, mode):
+        self.serviceProxySettings["mode"] = mode
+
+    def setAddress(self, addr):
+        self.serviceProxySettings["address"] = addr
+
+    def setPort(self, port):
+        self.serviceProxySettings["port"] = port
+
+    def setType(self, type):
+        self.serviceProxySettings["type"] = type
+
+    def autodetect(self):
+
+        proxy = None
+        proxAddr = proxPort = ""
+        proxydict = urllib2.ProxyHandler().proxies
+        txt = "Auto-detected: "
+
+        validPrefixes = ("http", "https")
+
+        for prefix in validPrefixes:
+            if not prefix in proxydict:
+                continue
+            proxyline = proxydict[prefix]
+            proto = "{0}://".format(prefix)
+            if proxyline[:len(proto)] == proto:
+                proxyline = proxyline[len(proto):]
+            proxAddr, proxPort = proxyline.split(":")
+            proxPort = int(proxPort.rstrip("/"))
+            proxy = (proxAddr, proxPort)
+            break
+
+        return proxy
+
+    def getProxySettings(self):
+
+        if self.getMode() == 0:
+            return None
+        if self.getMode() == 1:
+            return self.autodetect()
+        if self.getMode() == 2:
+            return (self.getAddress(), int(self.getPort()))

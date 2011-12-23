@@ -141,6 +141,11 @@ class DmgPatternEditorDlg (wx.Dialog):
 
         mainSizer.Add(contentSizer, 1, wx.EXPAND, 0)
 
+        if "wxGTK" in wx.PlatformInfo:
+            self.closeBtn = wx.Button( self, wx.ID_ANY, u"Close", wx.DefaultPosition, wx.DefaultSize, 0 )
+            mainSizer.Add( self.closeBtn, 0, wx.ALL|wx.ALIGN_RIGHT, 5 )
+            self.closeBtn.Bind(wx.EVT_BUTTON, self.closeEvent)
+
         self.SetSizer(mainSizer)
 
         importExport = (("Import", wx.ART_FILE_OPEN, "from"),
@@ -191,6 +196,9 @@ class DmgPatternEditorDlg (wx.Dialog):
         self.editExplosive.Bind(wx.EVT_TEXT, self.ValuesUpdated)
 
         self.patternChanged()
+
+    def closeEvent(self, event):
+        self.Destroy()
 
     def ValuesUpdated(self, event=None):
         if self.block:
