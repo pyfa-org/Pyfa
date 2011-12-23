@@ -50,41 +50,56 @@ class PFGlobalPref ( PreferenceView):
         mainSizer.Add( defCharSizer, 0, wx.EXPAND, 5 )
 
 
-#        self.stPTitle = wx.StaticText( panel, wx.ID_ANY, "Proxy settings", wx.DefaultPosition, wx.DefaultSize, 0 )
-#        self.stPTitle.Wrap( -1 )
-#        self.stPTitle.SetFont( wx.Font( 12, 70, 90, 90, False, wx.EmptyString ) )
-#
-#        mainSizer.Add( self.stPTitle, 0, wx.ALL, 5 )
-
         self.m_staticline2 = wx.StaticLine( panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
         mainSizer.Add( self.m_staticline2, 0, wx.EXPAND, 5 )
 
-        self.cbProxySettings = wx.CheckBox( panel, wx.ID_ANY, u"Manual proxy settings", wx.DefaultPosition, wx.DefaultSize, 0 )
-        mainSizer.Add( self.cbProxySettings, 0, wx.ALL, 5 )
+        self.stPTitle = wx.StaticText( panel, wx.ID_ANY, "Proxy settings", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.stPTitle.Wrap( -1 )
+        self.stPTitle.SetFont( wx.Font( 12, 70, 90, 90, False, wx.EmptyString ) )
+
+        mainSizer.Add( self.stPTitle, 0, wx.ALL, 5 )
+
+
+#        self.cbProxySettings = wx.CheckBox( panel, wx.ID_ANY, u"Manual proxy settings", wx.DefaultPosition, wx.DefaultSize, 0 )
+#        mainSizer.Add( self.cbProxySettings, 0, wx.ALL, 5 )
 
         ptypeSizer = wx.BoxSizer( wx.HORIZONTAL )
 
-        self.stPType = wx.StaticText( panel, wx.ID_ANY, u"Type:", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.stPType = wx.StaticText( panel, wx.ID_ANY, u"Mode:", wx.DefaultPosition, wx.DefaultSize, 0 )
         self.stPType.Wrap( -1 )
         ptypeSizer.Add( self.stPType, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
-        self.chProxyTypeChoices = [ u"https", u"http", u"socks" ]
+        self.chProxyTypeChoices = [ u"No proxy settings", u"Auto-detected proxy settings", u"Manual proxy settings" ]
         self.chProxyType = wx.Choice( panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, self.chProxyTypeChoices, 0 )
         self.chProxyType.SetSelection( 0 )
 
         ptypeSizer.Add( self.chProxyType, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
         mainSizer.Add( ptypeSizer, 0, wx.EXPAND, 5 )
-        psetSizer = wx.BoxSizer( wx.HORIZONTAL )
 
-        self.stPSet = wx.StaticText( panel, wx.ID_ANY, u"Addr:", wx.DefaultPosition, wx.DefaultSize, 0 )
-        self.stPSet.Wrap( -1 )
-        psetSizer.Add( self.stPSet, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+        fgAddrSizer = wx.FlexGridSizer( 2, 2, 0, 0 )
+        fgAddrSizer.SetFlexibleDirection( wx.BOTH )
+        fgAddrSizer.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_SPECIFIED )
 
-        self.editProxySettings = wx.TextCtrl( panel, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
 
-        psetSizer.Add( self.editProxySettings, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
-        mainSizer.Add( psetSizer, 0, wx.EXPAND, 5)
+        self.stPSetAddr = wx.StaticText( panel, wx.ID_ANY, u"Addr:", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.stPSetAddr.Wrap( -1 )
+        fgAddrSizer.Add( self.stPSetAddr, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+
+        self.editProxySettingsAddr = wx.TextCtrl( panel, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+
+        fgAddrSizer.Add( self.editProxySettingsAddr, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+
+        self.stPSetPort = wx.StaticText( panel, wx.ID_ANY, u"Port:", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.stPSetPort.Wrap( -1 )
+
+        fgAddrSizer.Add( self.stPSetPort, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+
+        self.editProxySettingsPort = wx.TextCtrl( panel, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+
+        fgAddrSizer.Add( self.editProxySettingsPort, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+
+        mainSizer.Add( fgAddrSizer, 0, wx.EXPAND, 5)
 
         self.stPSAutoDetected = wx.StaticText( panel, wx.ID_ANY, u"Auto-detected: ", wx.DefaultPosition, wx.DefaultSize, 0 )
         self.stPSAutoDetected.Wrap( -1 )
@@ -124,12 +139,12 @@ class PFGlobalPref ( PreferenceView):
         self.cbGlobalDmgPattern.Bind(wx.EVT_CHECKBOX, self.OnCBGlobalDmgPatternStateChange)
         self.cbGlobalForceReload.Bind(wx.EVT_CHECKBOX, self.OnCBGlobalForceReloadStateChange)
 
-        self.cbProxySettings.Bind(wx.EVT_CHECKBOX, self.OnCBProxySettingsStateChange)
+#        self.cbProxySettings.Bind(wx.EVT_CHECKBOX, self.OnCBProxySettingsStateChange)
         self.chDefaultChar.Disable()
         self.chDefaultChar.Show(False)
         self.stDefChar.Show(False)
 
-        self.ToggleProxySettings(self.cbProxySettings.GetValue())
+#        self.ToggleProxySettings(self.cbProxySettings.GetValue())
 
         panel.SetSizer( mainSizer )
         panel.Layout()
