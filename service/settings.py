@@ -20,6 +20,7 @@
 import cPickle
 import os.path
 import config
+import urllib2
 
 class SettingsProvider():
     BASE_PATH = os.path.join(config.savePath, "settings")
@@ -147,3 +148,26 @@ class ProxySettings():
 
     def setType(self, type):
         self.serviceProxySettings["type"] = type
+
+    def autodetect(self):
+
+        proxy = None
+        proxAddr = proxPort = ""
+        proxydict = urllib2.ProxyHandler().proxies
+        txt = "Auto-detected: "
+
+        validPrefixes = ("https", "http")
+
+        for prefix in validPrefixes:
+            if not prefix in proxydict:
+                continue
+            proxyline = proxydict[prefix]
+            proto = "{0}://".format(prefix)
+            if proxyline[:len(proto)] == proto:
+                proxyline = proxyline[len(proto):]
+            proxAddr, proxPort = proxyline.split(":")
+            proxPort = proxPort.rstrip("/")
+            proxy = proto + proxAddr + proxPort
+            break
+
+        return proxy

@@ -123,29 +123,13 @@ class PFGlobalPref ( PreferenceView):
 
         mainSizer.Add(btnSizer, 0, wx.EXPAND,5)
 
-        proxy = None
-        proxAddr = proxPort = ""
-        proxydict = urllib2.ProxyHandler().proxies
+        proxy = self.proxySettings.autodetect()
+
         txt = "Auto-detected: "
-
-        validPrefixes = ("https", "http")
-
-        for prefix in validPrefixes:
-            if not prefix in proxydict:
-                continue
-            proxyline = proxydict[prefix]
-            proto = "{0}://".format(prefix)
-            if proxyline[:len(proto)] == proto:
-                proxyline = proxyline[len(proto):]
-            proxAddr, proxPort = proxyline.split(":")
-            proxPort = int(proxPort.rstrip("/"))
-            proxy = (proxAddr, proxPort)
-            break
-
-        if len(proxAddr) == 0:
+        if len(proxy) == 0:
             txt += "None"
         else:
-            txt += proto + proxAddr + ":" + str(proxPort)
+            txt += proxy
 
         self.stPSAutoDetected.SetLabel(txt)
         self.stPSAutoDetected.Disable()
