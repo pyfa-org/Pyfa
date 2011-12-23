@@ -32,7 +32,7 @@ class PFGlobalPref ( PreferenceView):
         self.cbGlobalDmgPattern = wx.CheckBox( panel, wx.ID_ANY, u"Use global damage pattern", wx.DefaultPosition, wx.DefaultSize, 0 )
         mainSizer.Add( self.cbGlobalDmgPattern, 0, wx.ALL|wx.EXPAND, 5 )
 
-        self.cbGlobalForceReload = wx.CheckBox( panel, wx.ID_ANY, u"Use force reload", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.cbGlobalForceReload = wx.CheckBox( panel, wx.ID_ANY, u"Factor in reload time", wx.DefaultPosition, wx.DefaultSize, 0 )
         mainSizer.Add( self.cbGlobalForceReload, 0, wx.ALL|wx.EXPAND, 5 )
 
         defCharSizer = wx.BoxSizer( wx.HORIZONTAL )
@@ -77,6 +77,7 @@ class PFGlobalPref ( PreferenceView):
     def OnCBGlobalForceReloadStateChange(self, event):
         self.sFit.serviceFittingOptions["useGlobalForceReload"] = self.cbGlobalForceReload.GetValue()
         fitID = self.mainFrame.getActiveFit()
+        self.sFit.refreshFit(fitID)
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
         event.Skip()
 

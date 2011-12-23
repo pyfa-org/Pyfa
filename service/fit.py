@@ -665,7 +665,17 @@ class Fit(object):
         else:
             return currState
 
+    def refreshFit(self, fitID):
+        if fitID is None:
+            return None
+
+        fit = eos.db.getFit(fitID)
+        eos.db.commit()
+        self.recalc(fit)
+
     def recalc(self, fit, withBoosters=False):
+        if fit.factorReload is not self.serviceFittingOptions["useGlobalForceReload"]:
+            fit.factorReload = self.serviceFittingOptions["useGlobalForceReload"]
+            eos.db.commit()
         fit.clear()
-        fit.forceReload = self.serviceFittingOptions["useGlobalForceReload"]
         fit.calculateModifiedAttributes(withBoosters=withBoosters, dirtyStorage=self.dirtyFitIDs)
