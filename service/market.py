@@ -82,7 +82,6 @@ class PriceWorkerThread(threading.Thread):
                 proxy = ProxySettings.getInstance().getProxySettings()
                 if proxy is not None:
                     proxy = "{0}:{1}".format(*proxy)
-                print proxy
                 eos.types.Price.fetchPrices(requests, proxy=proxy)
 
             wx.CallAfter(callback)
