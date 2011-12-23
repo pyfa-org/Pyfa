@@ -676,6 +676,5 @@ class Fit(object):
     def recalc(self, fit, withBoosters=False):
         if fit.factorReload is not self.serviceFittingOptions["useGlobalForceReload"]:
             fit.factorReload = self.serviceFittingOptions["useGlobalForceReload"]
-            eos.db.commit()
         fit.clear()
         fit.calculateModifiedAttributes(withBoosters=withBoosters, dirtyStorage=self.dirtyFitIDs)
