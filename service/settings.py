@@ -156,7 +156,7 @@ class ProxySettings():
         proxydict = urllib2.ProxyHandler().proxies
         txt = "Auto-detected: "
 
-        validPrefixes = ("https", "http")
+        validPrefixes = ("http", "https")
 
         for prefix in validPrefixes:
             if not prefix in proxydict:
@@ -166,8 +166,8 @@ class ProxySettings():
             if proxyline[:len(proto)] == proto:
                 proxyline = proxyline[len(proto):]
             proxAddr, proxPort = proxyline.split(":")
-            proxPort = proxPort.rstrip("/")
-            proxy = proto + proxAddr + proxPort
+            proxPort = int(proxPort.rstrip("/"))
+            proxy = (proxAddr, proxPort)
             break
 
         return proxy

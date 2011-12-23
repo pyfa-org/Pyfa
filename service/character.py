@@ -117,10 +117,10 @@ class Character():
         ps = service.settings.ProxySettings.getInstance()
         if ps.getMode() == 0:
             return None
-        elif ps.getMode() == 1:
+        if ps.getMode() == 1:
             return ps.autodetect()
-        elif ps.getMode == 2:
-            return ps.getAddress() + ps.getPort()
+        if ps.getMode() == 2:
+            return (ps.getAddress(), int(ps.getPort()))
 
 
     def charList(self, charID, userID, apiKey):

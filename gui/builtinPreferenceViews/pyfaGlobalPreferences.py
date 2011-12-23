@@ -125,8 +125,9 @@ class PFGlobalPref ( PreferenceView):
 
         proxy = self.proxySettings.autodetect()
 
-        if proxy:
-            txt = proxy
+        if proxy is not None:
+            addr,port  =  proxy
+            txt = addr + ":" + str(port)
         else:
             txt = "None"
 
