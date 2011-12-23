@@ -579,12 +579,14 @@ class Fit(object):
                 srcString = unicode(srcString, "cp1252")
 
         type, fits = eos.types.Fit.importAuto(srcString, filename)
-
+        for fit in fits:
+            fit.damagePattern = self.pattern
         return fits
 
     def importFitFromBuffer(self, buffer):
         type,fits = eos.types.Fit.importAuto(buffer)
-
+        for fit in fits:
+            fit.damagePattern = self.pattern
         return fits
 
     def saveImportedFits(self, fits):
