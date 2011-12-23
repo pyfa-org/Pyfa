@@ -133,9 +133,8 @@ class Character():
             return None
 
     def apiFetch(self, charID, charName):
-
-        char = eos.db.getCharacter(charID, proxy = self.getProxySettings())
-        char.apiFetch(charName)
+        char = eos.db.getCharacter(charID)
+        char.apiFetch(charName, proxy = self.getProxySettings())
         eos.db.commit()
 
     def changeLevel(self, charID, skillID, level):
