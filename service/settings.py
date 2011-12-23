@@ -177,6 +177,6 @@ class ProxySettings():
         if self.getMode() == 0:
             return None
         if self.getMode() == 1:
-            return ps.autodetect()
+            return self.autodetect()
         if self.getMode() == 2:
             return (self.getAddress(), int(self.getPort()))
