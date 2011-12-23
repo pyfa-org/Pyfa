@@ -113,17 +113,28 @@ class Character():
         char = eos.db.getCharacter(charID)
         return (char.apiID or "", char.apiKey or "")
 
+    def getProxySettings(self):
+        ps = service.settings.ProxySettings.getInstance()
+        if ps.getMode() == 0:
+            return None
+        elif ps.getMode() == 1:
+            return ps.autodetect()
+        elif ps.getMode == 2:
+            return ps.getAddress() + ps.getPort()
+
+
     def charList(self, charID, userID, apiKey):
         char = eos.db.getCharacter(charID)
         try:
             char.apiID = userID
             char.apiKey = apiKey
-            return char.apiCharList()
+            return char.apiCharList(proxy = self.getProxySettings())
         except:
             return None
 
     def apiFetch(self, charID, charName):
-        char = eos.db.getCharacter(charID)
+
+        char = eos.db.getCharacter(charID, proxy = self.getProxySettings())
         char.apiFetch(charName)
         eos.db.commit()
 

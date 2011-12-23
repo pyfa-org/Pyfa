@@ -125,13 +125,12 @@ class PFGlobalPref ( PreferenceView):
 
         proxy = self.proxySettings.autodetect()
 
-        txt = "Auto-detected: "
         if len(proxy) == 0:
-            txt += "None"
+            txt = "None"
         else:
-            txt += proxy
+            txt = proxy
 
-        self.stPSAutoDetected.SetLabel(txt)
+        self.stPSAutoDetected.SetLabel("Auto-detected: " + txt)
         self.stPSAutoDetected.Disable()
 
         cChar = service.Character.getInstance()
