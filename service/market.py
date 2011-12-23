@@ -26,7 +26,7 @@ import Queue
 import eos.db
 import eos.types
 
-from service.settings import SettingsProvider
+from service.settings import SettingsProvider, ProxySettings
 
 try:
     from collections import OrderedDict
@@ -79,7 +79,11 @@ class PriceWorkerThread(threading.Thread):
 
             # Grab prices, this is the time-consuming part
             if len(requests) > 0:
-                eos.types.Price.fetchPrices(*requests)
+                proxy = ProxySettings.getInstance().getProxySettings()
+                if proxy is not None:
+                    proxy = "{0}:{1}".format(*proxy)
+                print proxy
+                eos.types.Price.fetchPrices(requests, proxy=proxy)
 
             wx.CallAfter(callback)
             queue.task_done()
