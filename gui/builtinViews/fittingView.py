@@ -271,7 +271,8 @@ class FittingView(d.Display):
             col = self.getColumn(event.Position)
             if col != self.getColIndex(State):
                 cFit = service.Fit.getInstance()
-                populate = cFit.removeModule(self.activeFitID, self.mods[self.GetItemData(row)].position)
+                fit = cFit.getFit(self.activeFitID)
+                populate = cFit.removeModule(self.activeFitID, fit.modules.index(self.mods[self.GetItemData(row)]))
 
                 if populate is not None:
                     if populate: self.slotsChanged()
