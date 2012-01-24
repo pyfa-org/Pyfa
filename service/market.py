@@ -195,14 +195,7 @@ class Market():
             "Velator": True, # Noobship
             "Reaper": True, # Noobship
             "Ghost Heavy Missile": False, # Missile used by Sansha
-            "Nano Paint": False, # It will be used for ship paint job, no use as of today
-            "Large Shield Transporter II - 5 players": False, # Test mods
-            "TEST Damage Mod": False,
-            "TEST Damage Mod - 10 Players": False,
-            "TEST Damage Mod - 20 Players": False,
-            "TEST Damage Mod - 40 Players": False,
-            "TEST Damage Mod - 5 Players": False,
-            "Large Remote Armor Repair System II - 5 players": False }
+            "Nano Paint": False } # It will be used for ship paint job, no use as of today
 
         # List of groups which are forcibly published
         self.GROUPS_FORCEPUBLISHED = {
