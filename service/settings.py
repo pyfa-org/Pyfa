@@ -121,7 +121,7 @@ class ProxySettings():
         # 0 - No proxy
         # 1 - Auto-detected proxy settings
         # 2 - Manual proxy settings
-        serviceProxyDefaultSettings = {"mode": 0, "type": "https", "address": "", "port": ""}
+        serviceProxyDefaultSettings = {"mode": 1, "type": "https", "address": "", "port": ""}
 
         self.serviceProxySettings = SettingsProvider.getInstance().getSettings("pyfaServiceProxySettings", serviceProxyDefaultSettings)
 
