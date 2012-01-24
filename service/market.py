@@ -230,7 +230,7 @@ class Market():
             "Akemon's Modified 'Noble' ZET5000": 1185, # Implants & Boosters > Implants > Skill Hardwiring > Implant Slot 10 > Armor Implants
             "Cerebral Accelerator": 977, # Implants & Boosters > Booster
             "Civilian Ballistic Deflection Field": 760, # Ship Equipment > Civilian Modules
-            "Civilian Bloodclaw Light Missile": 920, # Ammunition & Charges > Missiles > Light Missiles > Standard Light Missiles
+            "Civilian Trauma Light Missile": 920, # Ammunition & Charges > Missiles > Light Missiles > Standard Light Missiles
             "Civilian Damage Control": 760, # Ship Equipment > Civilian Modules
             "Civilian Explosion Dampening Field": 760, # Ship Equipment > Civilian Modules
             "Civilian Heat Dissipation Field": 760, # Ship Equipment > Civilian Modules
