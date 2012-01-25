@@ -400,7 +400,9 @@ class FittingView(d.Display):
 
             sFit = service.Fit.getInstance()
             fitID = self.mainFrame.getActiveFit()
-            sFit.toggleModulesState(fitID, self.mods[self.GetItemData(row)], mods, "right" if event.Button == 3 else "left")
+            ctrl = wx.GetMouseState().ControlDown()
+            click = "ctrl" if ctrl is True else "right" if event.Button == 3 else "left"
+            sFit.toggleModulesState(fitID, self.mods[self.GetItemData(row)], mods, click)
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
         else:
             event.Skip()

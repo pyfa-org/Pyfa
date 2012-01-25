@@ -637,7 +637,7 @@ class Fit(object):
 
     # Old state : New State
     localMap = {State.OVERHEATED: State.ACTIVE,
-                State.ACTIVE: State.OFFLINE,
+                State.ACTIVE: State.ONLINE,
                 State.OFFLINE: State.ONLINE,
                 State.ONLINE: State.ACTIVE}
     projectedMap = {State.OVERHEATED: State.ACTIVE,
@@ -655,6 +655,8 @@ class Fit(object):
             state = proposedState
         elif click == "right":
             state = State.OVERHEATED
+        elif click == "ctrl":
+            state = State.OFFLINE
         else:
             state = transitionMap[currState]
             if not mod.isValidState(state):
