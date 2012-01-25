@@ -75,7 +75,7 @@ class MarketBrowser(wx.Panel):
 
     def toggleMetaButton(self, event):
         """Process clicks on toggle buttons"""
-        ctrl = wx.GetMouseState().ControlDown()
+        ctrl = wx.GetMouseState().CmdDown()
         ebtn = event.EventObject
         if not ctrl:
             for btn in self.metaButtons:

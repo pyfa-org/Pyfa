@@ -57,7 +57,7 @@ class FitSpawner(gui.multiSwitch.TabSpawner):
         if count <0:
             mstate = wx.GetMouseState()
 
-            if mstate.ControlDown() or mstate.MiddleDown():
+            if mstate.CmdDown() or mstate.MiddleDown():
                 self.multiSwitch.AddPage()
 
             view = FittingView(self.multiSwitch)
@@ -284,7 +284,7 @@ class FittingView(d.Display):
     def swapItems(self, x, y, itemID):
         mstate = wx.GetMouseState()
 
-        if mstate.CmdDown() or mstate.ControlDown():
+        if mstate.CmdDown():
             clone = True
         else:
             clone = False
@@ -400,7 +400,7 @@ class FittingView(d.Display):
 
             sFit = service.Fit.getInstance()
             fitID = self.mainFrame.getActiveFit()
-            ctrl = wx.GetMouseState().ControlDown()
+            ctrl = wx.GetMouseState().CmdDown()
             click = "ctrl" if ctrl is True else "right" if event.Button == 3 else "left"
             sFit.toggleModulesState(fitID, self.mods[self.GetItemData(row)], mods, click)
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
