@@ -260,11 +260,11 @@ class GangView ( ScrolledPanel ):
             self.fitSelected(ev)
 
     def fitSelected(self, event):
-        cFit = service.Fit.getInstance()
-        fit = cFit.getFit(event.fitID)
         fleetSrv = service.Fleet.getInstance()
 
         activeFitID = self.mainFrame.getActiveFit()
+        cFit = service.Fit.getInstance()
+        fit = cFit.getFit(event.fitID or activeFitID)
 
         if activeFitID:
             commanders = fleetSrv.loadLinearFleet(fit)
