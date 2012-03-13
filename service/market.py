@@ -239,20 +239,20 @@ class Market():
             "'Libram' Codebreaker I": 714, # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
             "Akemon's Modified 'Noble' ZET5000": 1185, # Implants & Boosters > Implants > Skill Hardwiring > Implant Slot 10 > Armor Implants
             "Cerebral Accelerator": 977, # Implants & Boosters > Booster
-            "Civilian Ballistic Deflection Field": 760, # Ship Equipment > Civilian Modules
             "Civilian Trauma Light Missile": 920, # Ammunition & Charges > Missiles > Light Missiles > Standard Light Missiles
             "Civilian Damage Control": 760, # Ship Equipment > Civilian Modules
-            "Civilian Explosion Dampening Field": 760, # Ship Equipment > Civilian Modules
-            "Civilian Heat Dissipation Field": 760, # Ship Equipment > Civilian Modules
+            "Civilian EM Ward Field": 760, # Ship Equipment > Civilian Modules
+            "Civilian Explosive Deflection Field": 760, # Ship Equipment > Civilian Modules
             "Civilian Hobgoblin": 837, # Drones > Combat Drones > Light Scout Drones
-            "Civilian Photon Scattering Field": 760, # Ship Equipment > Civilian Modules
+            "Civilian Kinetic Deflection Field": 760, # Ship Equipment > Civilian Modules
             "Civilian Remote Armor Repair System": 760, # Ship Equipment > Civilian Modules
             "Civilian Remote Shield Transporter": 760, # Ship Equipment > Civilian Modules
             "Civilian Standard Missile Launcher": 760, # Ship Equipment > Civilian Modules
             "Civilian Stasis Webifier": 760, # Ship Equipment > Civilian Modules
+            "Civilian Thermic Dissipiation Field": 760, # Ship Equipment > Civilian Modules
             "Civilian Warp Disruptor": 760, # Ship Equipment > Civilian Modules
-            "Hardwiring - Genolution Core Augmentation CA-1": 618, # Implants & Boosters > Implants > Attribute Enhancers > Implant Slot 1
-            "Hardwiring - Genolution Core Augmentation CA-2": 621, # Implants & Boosters > Implants > Attribute Enhancers > Implant Slot 4
+            "Genolution Core Augmentation CA-1": 618, # Implants & Boosters > Implants > Attribute Enhancers > Implant Slot 1
+            "Genolution Core Augmentation CA-2": 621, # Implants & Boosters > Implants > Attribute Enhancers > Implant Slot 4
             "Hardwiring - Zainou 'Sharpshooter' ZMX10": 1156, # Implants & Boosters > Implants > Skill Hardwiring > Implant Slot 6 > Missile Implants
             "Hardwiring - Zainou 'Sharpshooter' ZMX100": 1156, # Implants & Boosters > Implants > Skill Hardwiring > Implant Slot 6 > Missile Implants
             "Hardwiring - Zainou 'Sharpshooter' ZMX1000": 1156, # Implants & Boosters > Implants > Skill Hardwiring > Implant Slot 6 > Missile Implants
