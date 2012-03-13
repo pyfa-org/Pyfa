@@ -183,7 +183,8 @@ class Market():
             "Adrestia": self.les_grp, # AT8 prize
             "Echelon": self.les_grp, # 2011 new year gift
             "Malice": self.les_grp, # AT9 prize
-            "Vangel": self.les_grp } # AT9 prize
+            "Vangel": self.les_grp, # AT9 prize
+            "Iteron Mark IV Quafe Ultra Edition": self.les_grp } # Gift to Fanfest 2012 attendees
         self.ITEMS_FORCEGROUP_R = self.__makeRevDict(self.ITEMS_FORCEGROUP)
         self.les_grp.items += list(self.getItem(itmn) for itmn in self.ITEMS_FORCEGROUP_R[self.les_grp])
         self.customGroups.add(self.les_grp)
