@@ -54,26 +54,43 @@ class Tracking(ViewColumn):
             self.mask |= wx.LIST_MASK_TEXT
 
     def getText(self, stuff):
-        trackingSpeed = stuff.getModifiedItemAttr("trackingSpeed")
-        if trackingSpeed is not None:
-            return (formatAmount(trackingSpeed, 3, 0, 3))
-        else:
-            if stuff.charge is None:
+        item = stuff.item
+        if item is None:
+            return ""
+        itemGroup = item.group.name
+        #print(itemGroup)
+        if itemGroup in ("Energy Weapon", "Hybrid Weapon", "Projectile Weapon", "Combat Drone", "Fighter Drone"):
+            trackingSpeed = stuff.getModifiedItemAttr("trackingSpeed")
+            if not trackingSpeed:
                 return ""
-
-            cloudSize = stuff.getModifiedChargeAttr("aoeCloudSize")
-            text = ""
-            if cloudSize:
-                text += "%s%s" % (formatAmount(cloudSize, 3, 0, 3),
-                                  stuff.charge.attributes["aoeCloudSize"].unit.displayName)
-
-            aoeVelocity = stuff.getModifiedChargeAttr("aoeVelocity")
-            if aoeVelocity:
-                text = "%s | %s%s" % (text,
-                                       formatAmount(aoeVelocity, 3, 0, 3),
-                                       "m/s") #Hardcoded unit here, m/sec is too long
-
-            return text
+            return formatAmount(trackingSpeed, 3, 0, 3)
+        elif itemGroup in ("Salvager", "Data Miners"):
+            chance = stuff.getModifiedItemAttr("accessDifficultyBonus")
+            if not chance:
+                return ""
+            return "{0} %".format(formatAmount(chance, 3, 0, 3))
+        elif stuff.charge is not None:
+            chargeGroup = stuff.charge.group.name
+            print(chargeGroup)
+            if chargeGroup in ("Rocket", "Advanced Rocket", "Light Missile", "Advanced Light Missile", "FoF Light Missile",
+                               "Assault Missile", "Advanced Assault Missile", "Heavy Missile", "Advanced Heavy Missile", "FoF Heavy Missile",
+                               "Torpedo", "Advanced Torpedo", "Cruise Missile", "Advanced Cruise Missile", "FoF Cruise Missile",
+                               "Citadel Torpedo", "Citadel Cruise"):
+                cloudSize = stuff.getModifiedChargeAttr("aoeCloudSize")
+                aoeVelocity = stuff.getModifiedChargeAttr("aoeVelocity")
+                if not cloudSize or not aoeVelocity:
+                    return ""
+                return "{0}{1} | {2}{3}".format(formatAmount(cloudSize, 3, 0, 3), "m",
+                                                formatAmount(aoeVelocity, 3, 0, 3), "m/s")
+            elif chargeGroup in ("Bomb",):
+                cloudSize = stuff.getModifiedChargeAttr("aoeCloudSize")
+                if not cloudSize:
+                    return ""
+                return "{0}{1}".format(formatAmount(cloudSize, 3, 0, 3), "m")
+            else:
+                return ""
+        else:
+            return ""
 
     def getImageId(self, mod):
         return -1
