@@ -196,7 +196,16 @@ class Market():
             "Velator": True, # Noobship
             "Reaper": True, # Noobship
             "Data Subverter I": False, # Not used in EVE, probably will appear with Dust link
-            "Ghost Heavy Missile": False } # Missile used by Sansha
+            "Ghost Heavy Missile": False, # Missile used by Sansha
+            "QA Damage Module": False, # QA modules used by CCP internally
+            "QA ECCM": False,
+            "QA Immunity Module": False,
+            "QA Multiship Module - 10 Players": False,
+            "QA Multiship Module - 20 Players": False,
+            "QA Multiship Module - 40 Players": False,
+            "QA Multiship Module - 5 Players": False,
+            "QA Remote Armor Repair System - 5 Players": False,
+            "QA Shield Transporter - 5 Players": False }
 
         # List of groups which are forcibly published
         self.GROUPS_FORCEPUBLISHED = {
