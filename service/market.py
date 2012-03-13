@@ -241,6 +241,7 @@ class Market():
             "Civilian Standard Missile Launcher": 760, # Ship Equipment > Civilian Modules
             "Civilian Stasis Webifier": 760, # Ship Equipment > Civilian Modules
             "Civilian Warp Disruptor": 760, # Ship Equipment > Civilian Modules
+            "Data Subverter I": 714, # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
             "Hardwiring - Genolution Core Augmentation CA-1": 618, # Implants & Boosters > Implants > Attribute Enhancers > Implant Slot 1
             "Hardwiring - Genolution Core Augmentation CA-2": 621, # Implants & Boosters > Implants > Attribute Enhancers > Implant Slot 4
             "Hardwiring - Inherent Implants 'Gentry' ZEX10": 1152, # Implants & Boosters > Implants > Skill Hardwiring > Implant Slot 6 > Armor Implants
