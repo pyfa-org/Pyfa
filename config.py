@@ -13,10 +13,10 @@ debug = False
 saveInRoot = False
 
 # Version data
-version = "1.1.2"
+version = "1.1.3"
 tag = "git"
 expansionName = "Crucible"
-expansionVersion = "1.1"
+expansionVersion = "1.5"
 
 pyfaPath = None
 savePath = None
