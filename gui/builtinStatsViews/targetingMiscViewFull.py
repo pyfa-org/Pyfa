@@ -111,7 +111,8 @@ class TargetingMiscViewFull(StatsView):
         counter = 0
         RADII = [("Pod",25), ("Interceptor",33), ("Frigate",38),
                  ("Destroyer", 83), ("Cruiser", 130),
-                 ("Battlecruiser", 265),  ("Battleship",420)]
+                 ("Battlecruiser", 265),  ("Battleship",420),
+                 ("Carrier", 3000)]
 
         for labelName, value, prec, lowest, highest, unit in stats:
             label = getattr(self, labelName)
