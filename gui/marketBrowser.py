@@ -370,7 +370,11 @@ class ItemView(d.Display):
     def itemSort(self, item):
         sMkt = self.sMarket
         catname = sMkt.getCategoryByItem(item).name
-        mktgrpid = sMkt.getMarketGroupByItem(item).ID
+        try:
+            mktgrpid = sMkt.getMarketGroupByItem(item).ID
+        except AttributeError:
+            mktgrpid = None
+            print "unable to find market group for", item.name
         parentname = sMkt.getParentItemByItem(item).name
         # Get position of market group
         metagrpid = sMkt.getMetaGroupIdByItem(item)
