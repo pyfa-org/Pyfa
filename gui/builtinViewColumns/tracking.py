@@ -203,6 +203,11 @@ class Tracking(ViewColumn):
                 return "{0}".format(formatAmount(display, 3, 0, 3))
             else:
                 return ""
+        elif itemGroup == "Fighter Bomber":
+            optimalSig = stuff.getModifiedItemAttr("optimalSigRadius")
+            if not optimalSig:
+                return ""
+            return "{0}m".format(formatAmount(optimalSig, 3, 0, 3))
         elif stuff.charge is not None:
             chargeGroup = stuff.charge.group.name
             if chargeGroup in ("Rocket", "Advanced Rocket", "Light Missile", "Advanced Light Missile", "FoF Light Missile",
