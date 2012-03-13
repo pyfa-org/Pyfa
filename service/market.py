@@ -195,8 +195,7 @@ class Market():
             "Velator": True, # Noobship
             "Reaper": True, # Noobship
             "Data Subverter I": False, # Not used in EVE, probably will appear with Dust link
-            "Ghost Heavy Missile": False, # Missile used by Sansha
-            "Nano Paint": False } # It will be used for ship paint job, no use as of today
+            "Ghost Heavy Missile": False } # Missile used by Sansha
 
         # List of groups which are forcibly published
         self.GROUPS_FORCEPUBLISHED = {
@@ -244,21 +243,12 @@ class Market():
             "Civilian Warp Disruptor": 760, # Ship Equipment > Civilian Modules
             "Hardwiring - Genolution Core Augmentation CA-1": 618, # Implants & Boosters > Implants > Attribute Enhancers > Implant Slot 1
             "Hardwiring - Genolution Core Augmentation CA-2": 621, # Implants & Boosters > Implants > Attribute Enhancers > Implant Slot 4
-            "Hardwiring - Inherent Implants 'Gentry' ZEX10": 1152, # Implants & Boosters > Implants > Skill Hardwiring > Implant Slot 6 > Armor Implants
-            "Hardwiring - Inherent Implants 'Gentry' ZEX100": 1152, # Implants & Boosters > Implants > Skill Hardwiring > Implant Slot 6 > Armor Implants
-            "Hardwiring - Inherent Implants 'Gentry' ZEX1000": 1152, # Implants & Boosters > Implants > Skill Hardwiring > Implant Slot 6 > Armor Implants
-            "Hardwiring - Inherent Implants 'Gentry' ZEX20": 1160, # Implants & Boosters > Implants > Skill Hardwiring > Implant Slot 7 > Armor Implants
-            "Hardwiring - Inherent Implants 'Gentry' ZEX200": 1160, # Implants & Boosters > Implants > Skill Hardwiring > Implant Slot 7 > Armor Implants
-            "Hardwiring - Inherent Implants 'Gentry' ZEX2000": 1160, # Implants & Boosters > Implants > Skill Hardwiring > Implant Slot 7 > Armor Implants
             "Hardwiring - Zainou 'Sharpshooter' ZMX10": 1156, # Implants & Boosters > Implants > Skill Hardwiring > Implant Slot 6 > Missile Implants
             "Hardwiring - Zainou 'Sharpshooter' ZMX100": 1156, # Implants & Boosters > Implants > Skill Hardwiring > Implant Slot 6 > Missile Implants
             "Hardwiring - Zainou 'Sharpshooter' ZMX1000": 1156, # Implants & Boosters > Implants > Skill Hardwiring > Implant Slot 6 > Missile Implants
             "Hardwiring - Zainou 'Sharpshooter' ZMX11": 1156, # Implants & Boosters > Implants > Skill Hardwiring > Implant Slot 6 > Missile Implants
             "Hardwiring - Zainou 'Sharpshooter' ZMX110": 1156, # Implants & Boosters > Implants > Skill Hardwiring > Implant Slot 6 > Missile Implants
             "Hardwiring - Zainou 'Sharpshooter' ZMX1100": 1156, # Implants & Boosters > Implants > Skill Hardwiring > Implant Slot 6 > Missile Implants
-            "Hardwiring - Zainou 'Sprite' KXX1000": 1154, # Implants & Boosters > Implants > Skill Hardwiring > Implant Slot 6 > Engineering Implants
-            "Hardwiring - Zainou 'Sprite' KXX2000": 1154, # Implants & Boosters > Implants > Skill Hardwiring > Implant Slot 6 > Engineering Implants
-            "Hardwiring - Zainou 'Sprite' KXX500": 1154, # Implants & Boosters > Implants > Skill Hardwiring > Implant Slot 6 > Engineering Implants
             "Imperial Navy Modified 'Noble' Implant": 1185, # Implants & Boosters > Implants > Skill Hardwiring > Implant Slot 10 > Armor Implants
             "Imperial Special Ops Field Enhancer - Standard": 618, # Implants & Boosters > Implants > Attribute Enhancers > Implant Slot 1
             "Michi's Excavation Augmentor": 1187, # Implants & Boosters > Implants > Skill Hardwiring > Implant Slot 10 > Industry Implants
