@@ -57,11 +57,12 @@ class PyGauge(wx.PyWindow):
 
         self._oldValue = 0
 
-        self._animDuration = 250
+        self._animDuration = 500
         self._animStep = 0
         self._period = 20
         self._animValue = 0
         self._animDirection = 0
+        self.animEffect = animEffects.OUT_QUAD
 
         self.transitionsColors = [( wx.Colour(191, 191, 191, 255)  , wx.Colour(96, 191, 0, 255) ),
                                  ( wx.Colour(191, 167, 96, 255)  ,  wx.Colour(255, 191, 0, 255) ),
@@ -398,17 +399,14 @@ class PyGauge(wx.PyWindow):
         """
         oldValue=self._oldPercentage
         value=self._percentage
+        start = 0
 
-        if oldValue < value:
-            direction = 1
-            start = 0
-            end = value-oldValue
-        else:
-            direction = -1
-            start = 0
-            end = oldValue - value
+        direction = 1 if oldValue < value else -1
+
+        end = direction * (value - oldValue)
+
         self._animDirection = direction
-        step=animEffects.OUT_QUAD(self._animStep, start, end, self._animDuration)
+        step = self.animEffect(self._animStep, start, end, self._animDuration)
 
         self._animStep += self._period
 
