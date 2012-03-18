@@ -146,7 +146,7 @@ class FittingView(d.Display):
         row, _, col = self.HitTestSubItem(event.Position)
         if row != -1 and col != -1:
             mod = self.mods[self.GetItemData(row)]
-            if self.DEFAULT_COLS[col] == "Tracking":
+            if self.DEFAULT_COLS[col] == "Miscellanea":
                 tooltip = self.activeColumns[col].getToolTip(mod)
                 self.SetToolTipString(tooltip)
             else:
