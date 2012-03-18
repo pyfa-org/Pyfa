@@ -49,6 +49,9 @@ class ViewColumn(object):
     def getText(self, mod):
         return ""
 
+    def getToolTip(self, mod):
+        return ""
+
     def getImageId(self, mod):
         return -1
 

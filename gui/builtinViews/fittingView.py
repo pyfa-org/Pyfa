@@ -139,7 +139,18 @@ class FittingView(d.Display):
         self.Bind(wx.EVT_LEFT_DOWN, self.click)
         self.Bind(wx.EVT_RIGHT_DOWN, self.click)
         self.Bind(wx.EVT_SHOW, self.OnShow)
+        self.Bind(wx.EVT_MOTION, self.OnMouseMove)
         self.parent.Bind(gui.chromeTabs.EVT_NOTEBOOK_PAGE_CHANGED, self.pageChanged)
+
+    def OnMouseMove(self, event):
+        row, _, col = self.HitTestSubItem(event.Position)
+        if row != -1 and col != -1:
+            mod = self.mods[self.GetItemData(row)]
+            if self.DEFAULT_COLS[col] == "Tracking":
+                tooltip = self.activeColumns[col].getToolTip(mod)
+                self.SetToolTipString(tooltip)
+            else:
+                self.SetToolTipString("")
 
     def handleDrag(self, type, fitID):
         if type == "fit":

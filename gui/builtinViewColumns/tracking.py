@@ -274,6 +274,9 @@ class Tracking(ViewColumn):
         else:
             return ""
 
+    def getToolTip(self, mod):
+        return "Tracking"
+
     def getImageId(self, mod):
         return -1
 
