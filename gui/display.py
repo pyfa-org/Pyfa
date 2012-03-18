@@ -71,6 +71,46 @@ class Display(wx.ListCtrl):
         self.imageListBase = self.imageList.ImageCount
 
 
+# Override native HitTestSubItem (doesn't work as it should on GTK)
+# Source: ObjectListView
+
+    def HitTestSubItem(self, pt):
+        """
+        Return a tuple indicating which (item, subItem) the given pt (client coordinates) is over.
+
+        This uses the buildin version on Windows, and poor mans replacement on other platforms.
+        """
+        # The buildin version works on Windows
+
+        if wx.Platform == "__WXMSW__":
+            return wx.ListCtrl.HitTestSubItem(self, pt)
+
+        (rowIndex, flags) = self.HitTest(pt)
+
+        # Did the point hit any item?
+        if (flags & wx.LIST_HITTEST_ONITEM) == 0:
+            return (-1, 0, -1)
+
+        # If it did hit an item and we are not in report mode, it must be the primary cell
+        if not self.InReportView():
+            return (rowIndex, wx.LIST_HITTEST_ONITEM, 0)
+
+        # Find which subitem is hit
+        right = 0
+        scrolledX = self.GetScrollPos(wx.HORIZONTAL) + pt.x
+        for i in range(self.GetColumnCount()):
+            left = right
+            right += self.GetColumnWidth(i)
+            if scrolledX < right:
+                if (scrolledX - left) < self.smallImageList.GetSize(0)[0]:
+                    flag = wx.LIST_HITTEST_ONITEMICON
+                else:
+                    flag = wx.LIST_HITTEST_ONITEMLABEL
+                return (rowIndex, flag, i)
+
+        return (rowIndex, 0, -1)
+
+
     def OnEraseBk(self,event):
         if self.GetItemCount() >0:
             width, height = self.GetClientSize()
