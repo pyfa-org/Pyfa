@@ -45,7 +45,7 @@ class DroneView(d.Display):
                     "Base Name",
                     "prop:droneDps,droneBandwidth",
                     "Max Range",
-                    "Tracking",
+                    "Miscellanea",
                     "attr:maxVelocity",]
 
     def __init__(self, parent):
