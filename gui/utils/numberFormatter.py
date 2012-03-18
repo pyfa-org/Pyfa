@@ -1,6 +1,6 @@
 import math
 
-def formatAmount(val, prec=3, lowest=0, highest=0, currency=False):
+def formatAmount(val, prec=3, lowest=0, highest=0, currency=False, forceSign=False):
     """
     Add suffix to value, transform value to match new suffix and round it.
 
@@ -10,6 +10,7 @@ def formatAmount(val, prec=3, lowest=0, highest=0, currency=False):
     lowest -- lowest order for suffixizing for numbers 0 < |num| < 1
     highest -- highest order for suffixizing for numbers |num| > 1
     currency -- if currency, billion suffix will be B instead of G
+    forceSign -- if True, positive numbers are signed too
     """
     if val is None:
         return ""
@@ -85,8 +86,9 @@ def formatAmount(val, prec=3, lowest=0, highest=0, currency=False):
                 break
     # Round mantissa according to our prec variable
     mantissa = roundToPrec(mantissa, prec)
+    sign = "+" if forceSign is True and mantissa > 0 else ""
     # Round mantissa and add suffix
-    result = u"{0}{1}".format(mantissa, suffix)
+    result = u"{0}{1}{2}".format(sign, mantissa, suffix)
     return result
 
 def roundToPrec(val, prec):

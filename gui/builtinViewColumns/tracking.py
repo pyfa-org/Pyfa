@@ -63,6 +63,20 @@ class Tracking(ViewColumn):
             if not trackingSpeed:
                 return ""
             return "{0}".format(formatAmount(trackingSpeed, 3, 0, 3))
+        elif itemGroup == "Energy Destabilizer":
+            neutAmount = stuff.getModifiedItemAttr("energyDestabilizationAmount")
+            cycleTime = stuff.cycleTime
+            if not neutAmount or not cycleTime:
+                return ""
+            capPerSec = float(-neutAmount) * 1000 / cycleTime
+            return "{0}/s".format(formatAmount(capPerSec, 3, 0, 3))
+        elif itemGroup == "Energy Vampire":
+            neutAmount = stuff.getModifiedItemAttr("powerTransferAmount")
+            cycleTime = stuff.cycleTime
+            if not neutAmount or not cycleTime:
+                return ""
+            capPerSec = float(-neutAmount) * 1000 / cycleTime
+            return "{0}/s".format(formatAmount(capPerSec, 3, 0, 3))
         elif itemGroup in ("Salvager", "Data Miners"):
             chance = stuff.getModifiedItemAttr("accessDifficultyBonus")
             if not chance:
@@ -72,8 +86,7 @@ class Tracking(ViewColumn):
             scramStr = stuff.getModifiedItemAttr("warpScrambleStrength")
             if not scramStr:
                 return ""
-            prefix = "+" if -scramStr > 0 else ""
-            return "{0}{1}".format(prefix, formatAmount(-scramStr, 3, 0, 3))
+            return "{0}".format(formatAmount(-scramStr, 3, 0, 3, forceSign=True))
         elif itemGroup in ("Stasis Web", "Stasis Webifying Drone"):
             speedFactor = stuff.getModifiedItemAttr("speedFactor")
             if not speedFactor:
@@ -88,8 +101,7 @@ class Tracking(ViewColumn):
             sigRadBonus = stuff.getModifiedItemAttr("signatureRadiusBonus")
             if not sigRadBonus:
                 return ""
-            prefix = "+" if sigRadBonus > 0 else ""
-            return "{0}{1}%".format(prefix, formatAmount(sigRadBonus, 3, 0, 3))
+            return "{0}%".format(formatAmount(sigRadBonus, 3, 0, 3, forceSign=True))
         elif itemGroup == "Remote Sensor Damper":
             lockRangeBonus = stuff.getModifiedItemAttr("maxTargetRangeBonus")
             scanResBonus = stuff.getModifiedItemAttr("scanResolutionBonus")
@@ -101,8 +113,7 @@ class Tracking(ViewColumn):
                     display = bonus
             if not display:
                 return ""
-            prefix = "+" if display > 0 else ""
-            return "{0}{1}%".format(prefix, formatAmount(display, 3, 0, 3))
+            return "{0}%".format(formatAmount(display, 3, 0, 3, forceSign=True))
         elif itemGroup == "Tracking Disruptor":
             optimalRangeBonus = stuff.getModifiedItemAttr("maxRangeBonus")
             falloffRangeBonus = stuff.getModifiedItemAttr("falloffBonus")
@@ -115,8 +126,7 @@ class Tracking(ViewColumn):
                     display = bonus
             if not display:
                 return ""
-            prefix = "+" if display > 0 else ""
-            return "{0}{1}%".format(prefix, formatAmount(display, 3, 0, 3))
+            return "{0}%".format(formatAmount(display, 3, 0, 3, forceSign=True))
         elif itemGroup in ("ECM", "ECM Burst", "Remote ECM Burst"):
             grav = stuff.getModifiedItemAttr("scanGravimetricStrengthBonus")
             ladar = stuff.getModifiedItemAttr("scanLadarStrengthBonus")
@@ -139,8 +149,7 @@ class Tracking(ViewColumn):
                     display = bonus
             if not display:
                 return ""
-            prefix = "+" if display > 0 else ""
-            return "{0}{1}%".format(prefix, formatAmount(display, 3, 0, 3))
+            return "{0}%".format(formatAmount(display, 3, 0, 3, forceSign=True))
         elif itemGroup == "Projected ECCM":
             grav = stuff.getModifiedItemAttr("scanGravimetricStrengthPercent")
             ladar = stuff.getModifiedItemAttr("scanLadarStrengthPercent")
@@ -151,19 +160,38 @@ class Tracking(ViewColumn):
             display = max(grav, ladar, radar, magnet)
             if not display:
                 return ""
-            prefix = "+" if display > 0 else ""
-            return "{0}{1}%".format(prefix, formatAmount(display, 3, 0, 3))
+            return "{0}%".format(formatAmount(display, 3, 0, 3, forceSign=True))
         elif itemGroup == "Cloaking Device":
             recalibration = stuff.getModifiedItemAttr("cloakingTargetingDelay")
             if recalibration is None:
                 return ""
             return "{0}s".format(formatAmount(float(recalibration)/1000, 3, 0, 3))
+        elif itemGroup == "Armor Repair Projector":
+            repAmount = stuff.getModifiedItemAttr("armorDamageAmount")
+            cycleTime = stuff.getModifiedItemAttr("duration")
+            if not repAmount or not cycleTime:
+                return ""
+            repPerSec = float(repAmount) * 1000 / cycleTime
+            return "{0}/s".format(formatAmount(repPerSec, 3, 0, 3, forceSign=True))
+        elif itemGroup == "Shield Transporter":
+            repAmount = stuff.getModifiedItemAttr("shieldBonus")
+            cycleTime = stuff.cycleTime
+            if not repAmount or not cycleTime:
+                return ""
+            repPerSec = float(repAmount) * 1000 / cycleTime
+            return "{0}/s".format(formatAmount(repPerSec, 3, 0, 3, forceSign=True))
+        elif itemGroup == "Energy Transfer Array":
+            repAmount = stuff.getModifiedItemAttr("powerTransferAmount")
+            cycleTime = stuff.cycleTime
+            if not repAmount or not cycleTime:
+                return ""
+            repPerSec = float(repAmount) * 1000 / cycleTime
+            return "{0}/s".format(formatAmount(repPerSec, 3, 0, 3, forceSign=True))
         elif itemGroup == "Gang Coordinator":
             command = stuff.getModifiedItemAttr("commandBonus")
             if not command:
                 return ""
-            prefix = "+" if command > 0 else ""
-            return "{0}{1}%".format(prefix, formatAmount(command, 3, 0, 3))
+            return "{0}%".format(formatAmount(command, 3, 0, 3, forceSign=True))
         elif itemGroup == "Electronic Warfare Drone":
             sigRadBonus = stuff.getModifiedItemAttr("signatureRadiusBonus")
             lockRangeMult = stuff.getModifiedItemAttr("maxTargetRangeMultiplier")
@@ -176,8 +204,7 @@ class Tracking(ViewColumn):
             radar = stuff.getModifiedItemAttr("scanRadarStrengthBonus")
             magnet = stuff.getModifiedItemAttr("scanMagnetometricStrengthBonus")
             if sigRadBonus:
-                prefix = "+" if sigRadBonus > 0 else ""
-                return "{0}{1}%".format(prefix, formatAmount(sigRadBonus, 3, 0, 3))
+                return "{0}%".format(formatAmount(sigRadBonus, 3, 0, 3, forceSign=True))
             if lockRangeMult is not None and scanResMult is not None:
                 display = 0
                 for bonus in ((lockRangeMult-1)*100, (scanResMult-1)*100):
@@ -185,8 +212,7 @@ class Tracking(ViewColumn):
                         display = bonus
                 if not display:
                     return ""
-                prefix = "+" if display > 0 else ""
-                return "{0}{1}%".format(prefix, formatAmount(display, 3, 0, 3))
+                return "{0}%".format(formatAmount(display, 3, 0, 3, forceSign=True))
             if falloffRangeMult is not None and optimalRangeMult is not None and trackingSpeedMult is not None:
                 display = 0
                 for bonus in ((falloffRangeMult-1)*100, (optimalRangeMult-1)*100, (trackingSpeedMult-1)*100):
@@ -194,8 +220,7 @@ class Tracking(ViewColumn):
                         display = bonus
                 if not display:
                     return ""
-                prefix = "+" if display > 0 else ""
-                return "{0}{1}%".format(prefix, formatAmount(display, 3, 0, 3))
+                return "{0}%".format(formatAmount(display, 3, 0, 3), forceSign=True)
             if grav is not None and ladar is not None and radar is not None and magnet is not None:
                 display = max(grav, ladar, radar, magnet)
                 if not display:
@@ -208,6 +233,20 @@ class Tracking(ViewColumn):
             if not optimalSig:
                 return ""
             return "{0}m".format(formatAmount(optimalSig, 3, 0, 3))
+        elif itemGroup == "Logistic Drone":
+            repAmount = stuff.getModifiedItemAttr("armorDamageAmount") or stuff.getModifiedItemAttr("shieldBonus")
+            cycleTime = stuff.getModifiedItemAttr("duration")
+            if not repAmount or not cycleTime:
+                return ""
+            repPerSec = float(repAmount) * 1000 / cycleTime
+            return "{0}/s".format(formatAmount(repPerSec, 3, 0, 3))
+        elif itemGroup == "Cap Drain Drone":
+            neutAmount = stuff.getModifiedItemAttr("energyDestabilizationAmount")
+            cycleTime = stuff.getModifiedItemAttr("duration")
+            if not neutAmount or not cycleTime:
+                return ""
+            capPerSec = float(-neutAmount) * 1000 / cycleTime
+            return "{0}/s".format(formatAmount(capPerSec, 3, 0, 3))
         elif stuff.charge is not None:
             chargeGroup = stuff.charge.group.name
             if chargeGroup in ("Rocket", "Advanced Rocket", "Light Missile", "Advanced Light Missile", "FoF Light Missile",
