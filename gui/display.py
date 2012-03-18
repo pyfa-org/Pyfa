@@ -258,9 +258,5 @@ class Display(wx.ListCtrl):
         self.refresh(stuff)
 
     def getColumn(self, point):
-        x = point[0]
-        total = 0
-        for col in xrange(self.GetColumnCount()):
-            total += self.GetColumnWidth(col)
-            if total >= x:
-                return col
+        row, _, col = self.HitTestSubItem(point)
+        return col
