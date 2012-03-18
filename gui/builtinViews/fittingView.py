@@ -135,12 +135,24 @@ class FittingView(d.Display):
         self.itemCount = 0
         self.itemRect = 0
 
+        self.tooltip = wx.ToolTip(tip = "Miscellanea")
+        self.tooltip.Enable(True)
+        self.tooltip.SetDelay(0)
+        self.SetToolTip(self.tooltip)
+
         self.Bind(wx.EVT_KEY_UP, self.kbEvent)
         self.Bind(wx.EVT_LEFT_DOWN, self.click)
         self.Bind(wx.EVT_RIGHT_DOWN, self.click)
         self.Bind(wx.EVT_SHOW, self.OnShow)
         self.Bind(wx.EVT_MOTION, self.OnMouseMove)
+        self.Bind(wx.EVT_LEAVE_WINDOW, self.OnLeaveWindow)
         self.parent.Bind(gui.chromeTabs.EVT_NOTEBOOK_PAGE_CHANGED, self.pageChanged)
+
+
+    def OnLeaveWindow(self, event):
+        self.tooltip.SetTip("")
+        self.tooltip.Enable(True)
+        event.Skip()
 
     def OnMouseMove(self, event):
         row, _, col = self.HitTestSubItem(event.Position)
@@ -148,9 +160,12 @@ class FittingView(d.Display):
             mod = self.mods[self.GetItemData(row)]
             if self.DEFAULT_COLS[col] == "Miscellanea":
                 tooltip = self.activeColumns[col].getToolTip(mod)
-                self.SetToolTipString(tooltip)
+                self.tooltip.SetTip(tooltip)
+                self.tooltip.Enable(True)
             else:
-                self.SetToolTip(None)
+                self.tooltip.Enable(False)
+        else:
+            self.tooltip.Enable(False)
         event.Skip()
 
     def handleDrag(self, type, fitID):
