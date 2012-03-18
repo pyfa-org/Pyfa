@@ -22,35 +22,24 @@ from gui.viewColumn import ViewColumn
 from gui import bitmapLoader
 from gui.utils.numberFormatter import formatAmount
 
-import service
-from eos.types import Hardpoint
 import wx
 
-class Tracking(ViewColumn):
-    name = "Tracking"
+class Miscellanea(ViewColumn):
+    name = "Miscellanea"
     def __init__(self, fittingView, params = None):
         if params == None:
             params = {"showIcon": True,
                       "displayName": False}
         ViewColumn.__init__(self, fittingView)
-        cAttribute = service.Attribute.getInstance()
-        info = cAttribute.getAttributeInfo("trackingSpeed")
-        self.info = info
         if params["showIcon"]:
-            iconFile = info.icon.iconFile if info.icon else None
-            if iconFile:
-                self.imageId = fittingView.imageList.GetImageIndex(iconFile, "pack")
-                self.bitmap = bitmapLoader.getBitmap(iconFile, "pack")
-            else:
-                self.imageId = -1
-
+            self.imageId = fittingView.imageList.GetImageIndex("column_misc", "icons")
+            self.bitmap = bitmapLoader.getBitmap("column_misc", "icons")
             self.mask = wx.LIST_MASK_IMAGE
-
         else:
             self.imageId = -1
 
         if params["displayName"] or self.imageId == -1:
-            self.columnText = info.displayName if info.displayName != "" else info.name
+            self.columnText = "Misc data"
             self.mask |= wx.LIST_MASK_TEXT
 
     def getText(self, stuff):
@@ -283,4 +272,4 @@ class Tracking(ViewColumn):
     def getParameters(self):
         return (("displayName", bool, False),
                 ("showIcon", bool, True))
-Tracking.register()
+Miscellanea.register()
