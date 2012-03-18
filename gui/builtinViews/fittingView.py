@@ -150,7 +150,7 @@ class FittingView(d.Display):
                 tooltip = self.activeColumns[col].getToolTip(mod)
                 self.SetToolTipString(tooltip)
             else:
-                self.SetToolTipString("")
+                self.SetToolTip(None)
         event.Skip()
 
     def handleDrag(self, type, fitID):
