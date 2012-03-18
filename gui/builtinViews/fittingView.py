@@ -384,8 +384,8 @@ class FittingView(d.Display):
         self.PopupMenu(menu)
 
     def click(self, event):
-        row, _ = self.HitTest(event.Position)
-        col = self.getColumn(event.Position)
+        row, _, col = self.HitTestSubItem(event.Position)
+
         if row != -1 and col == self.getColIndex(State):
             sel = []
             curr = self.GetFirstSelected()
