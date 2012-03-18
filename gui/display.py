@@ -102,7 +102,7 @@ class Display(wx.ListCtrl):
             left = right
             right += self.GetColumnWidth(i)
             if scrolledX < right:
-                if (scrolledX - left) < self.smallImageList.GetSize(0)[0]:
+                if (scrolledX - left) < self.imageList.GetSize(0)[0]:
                     flag = wx.LIST_HITTEST_ONITEMICON
                 else:
                     flag = wx.LIST_HITTEST_ONITEMLABEL

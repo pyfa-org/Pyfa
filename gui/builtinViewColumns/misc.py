@@ -43,144 +43,160 @@ class Miscellanea(ViewColumn):
             self.mask |= wx.LIST_MASK_TEXT
 
     def getText(self, stuff):
+        text = self.__getData(stuff)[0]
+        return text
+
+    def getToolTip(self, mod):
+        import random
+        return "Tracking {}".format(random.random())
+
+    def getImageId(self, mod):
+        return -1
+
+    def getParameters(self):
+        return (("displayName", bool, False),
+                ("showIcon", bool, True))
+
+
+    def __getData(self, stuff):
         item = stuff.item
         if item is None:
-            return ""
+            return "", None
         itemGroup = item.group.name
         if itemGroup in ("Energy Weapon", "Hybrid Weapon", "Projectile Weapon", "Combat Drone", "Fighter Drone"):
             trackingSpeed = stuff.getModifiedItemAttr("trackingSpeed")
             if not trackingSpeed:
-                return ""
-            return "{0}".format(formatAmount(trackingSpeed, 3, 0, 3))
+                return "", None
+            return "{0}".format(formatAmount(trackingSpeed, 3, 0, 3)), None
         elif itemGroup == "Energy Destabilizer":
             neutAmount = stuff.getModifiedItemAttr("energyDestabilizationAmount")
             cycleTime = stuff.cycleTime
             if not neutAmount or not cycleTime:
-                return ""
+                return "", None
             capPerSec = float(-neutAmount) * 1000 / cycleTime
-            return "{0}/s".format(formatAmount(capPerSec, 3, 0, 3))
+            return "{0}/s".format(formatAmount(capPerSec, 3, 0, 3)), None
         elif itemGroup == "Energy Vampire":
             neutAmount = stuff.getModifiedItemAttr("powerTransferAmount")
             cycleTime = stuff.cycleTime
             if not neutAmount or not cycleTime:
-                return ""
+                return "", None
             capPerSec = float(-neutAmount) * 1000 / cycleTime
-            return "{0}/s".format(formatAmount(capPerSec, 3, 0, 3))
+            return "{0}/s".format(formatAmount(capPerSec, 3, 0, 3)), None
         elif itemGroup in ("Salvager", "Data Miners"):
             chance = stuff.getModifiedItemAttr("accessDifficultyBonus")
             if not chance:
-                return ""
-            return "{0}%".format(formatAmount(chance, 3, 0, 3))
+                return "", None
+            return "{0}%".format(formatAmount(chance, 3, 0, 3)), None
         elif itemGroup in ("Warp Scrambler", "Warp Core Stabilizer"):
             scramStr = stuff.getModifiedItemAttr("warpScrambleStrength")
             if not scramStr:
-                return ""
-            return "{0}".format(formatAmount(-scramStr, 3, 0, 3, forceSign=True))
+                return "", None
+            return "{0}".format(formatAmount(-scramStr, 3, 0, 3, forceSign=True)), None
         elif itemGroup in ("Stasis Web", "Stasis Webifying Drone"):
             speedFactor = stuff.getModifiedItemAttr("speedFactor")
             if not speedFactor:
-                return ""
-            return "{0}%".format(formatAmount(speedFactor, 3, 0, 3))
+                return "", None
+            return "{0}%".format(formatAmount(speedFactor, 3, 0, 3)), None
         elif itemGroup in ("Stasis Web", "Stasis Webifying Drone"):
             speedFactor = stuff.getModifiedItemAttr("speedFactor")
             if not speedFactor:
-                return ""
-            return "{0}%".format(formatAmount(speedFactor, 3, 0, 3))
+                return "", None
+            return "{0}%".format(formatAmount(speedFactor, 3, 0, 3)), None
         elif itemGroup == "Target Painter":
             sigRadBonus = stuff.getModifiedItemAttr("signatureRadiusBonus")
             if not sigRadBonus:
-                return ""
-            return "{0}%".format(formatAmount(sigRadBonus, 3, 0, 3, forceSign=True))
+                return "", None
+            return "{0}%".format(formatAmount(sigRadBonus, 3, 0, 3, forceSign=True)), None
         elif itemGroup == "Remote Sensor Damper":
             lockRangeBonus = stuff.getModifiedItemAttr("maxTargetRangeBonus")
             scanResBonus = stuff.getModifiedItemAttr("scanResolutionBonus")
             if lockRangeBonus is None or scanResBonus is None:
-                return ""
+                return "", None
             display = 0
             for bonus in (lockRangeBonus, scanResBonus):
                 if abs(bonus) > abs(display):
                     display = bonus
             if not display:
-                return ""
-            return "{0}%".format(formatAmount(display, 3, 0, 3, forceSign=True))
+                return "", None
+            return "{0}%".format(formatAmount(display, 3, 0, 3, forceSign=True)), None
         elif itemGroup == "Tracking Disruptor":
             optimalRangeBonus = stuff.getModifiedItemAttr("maxRangeBonus")
             falloffRangeBonus = stuff.getModifiedItemAttr("falloffBonus")
             trackingSpeedBonus = stuff.getModifiedItemAttr("trackingSpeedBonus")
             if optimalRangeBonus is None or falloffRangeBonus is None or trackingSpeedBonus is None:
-                return ""
+                return "", None
             display = 0
             for bonus in (optimalRangeBonus, falloffRangeBonus, trackingSpeedBonus):
                 if abs(bonus) > abs(display):
                     display = bonus
             if not display:
-                return ""
-            return "{0}%".format(formatAmount(display, 3, 0, 3, forceSign=True))
+                return "", None
+            return "{0}%".format(formatAmount(display, 3, 0, 3, forceSign=True)), None
         elif itemGroup in ("ECM", "ECM Burst", "Remote ECM Burst"):
             grav = stuff.getModifiedItemAttr("scanGravimetricStrengthBonus")
             ladar = stuff.getModifiedItemAttr("scanLadarStrengthBonus")
             radar = stuff.getModifiedItemAttr("scanRadarStrengthBonus")
             magnet = stuff.getModifiedItemAttr("scanMagnetometricStrengthBonus")
             if grav is None or ladar is None or radar is None or magnet is None:
-                return ""
+                return "", None
             display = max(grav, ladar, radar, magnet)
             if not display:
-                return ""
-            return "{0}".format(formatAmount(display, 3, 0, 3))
+                return "", None
+            return "{0}".format(formatAmount(display, 3, 0, 3)), None
         elif itemGroup == "Remote Sensor Booster":
             scanResBonus = stuff.getModifiedItemAttr("scanResolutionBonus")
             lockRangeBonus = stuff.getModifiedItemAttr("maxTargetRangeBonus")
             if scanResBonus is None or lockRangeBonus is None:
-                return ""
+                return "", None
             display = 0
             for bonus in (scanResBonus, lockRangeBonus):
                 if abs(bonus) > abs(display):
                     display = bonus
             if not display:
-                return ""
-            return "{0}%".format(formatAmount(display, 3, 0, 3, forceSign=True))
+                return "", None
+            return "{0}%".format(formatAmount(display, 3, 0, 3, forceSign=True)), None
         elif itemGroup == "Projected ECCM":
             grav = stuff.getModifiedItemAttr("scanGravimetricStrengthPercent")
             ladar = stuff.getModifiedItemAttr("scanLadarStrengthPercent")
             radar = stuff.getModifiedItemAttr("scanRadarStrengthPercent")
             magnet = stuff.getModifiedItemAttr("scanMagnetometricStrengthPercent")
             if grav is None or ladar is None or radar is None or magnet is None:
-                return ""
+                return "", None
             display = max(grav, ladar, radar, magnet)
             if not display:
-                return ""
-            return "{0}%".format(formatAmount(display, 3, 0, 3, forceSign=True))
+                return "", None
+            return "{0}%".format(formatAmount(display, 3, 0, 3, forceSign=True)), None
         elif itemGroup == "Cloaking Device":
             recalibration = stuff.getModifiedItemAttr("cloakingTargetingDelay")
             if recalibration is None:
-                return ""
-            return "{0}s".format(formatAmount(float(recalibration)/1000, 3, 0, 3))
+                return "", None
+            return "{0}s".format(formatAmount(float(recalibration)/1000, 3, 0, 3)), None
         elif itemGroup == "Armor Repair Projector":
             repAmount = stuff.getModifiedItemAttr("armorDamageAmount")
             cycleTime = stuff.getModifiedItemAttr("duration")
             if not repAmount or not cycleTime:
-                return ""
+                return "", None
             repPerSec = float(repAmount) * 1000 / cycleTime
-            return "{0}/s".format(formatAmount(repPerSec, 3, 0, 3, forceSign=True))
+            return "{0}/s".format(formatAmount(repPerSec, 3, 0, 3, forceSign=True)), None
         elif itemGroup == "Shield Transporter":
             repAmount = stuff.getModifiedItemAttr("shieldBonus")
             cycleTime = stuff.cycleTime
             if not repAmount or not cycleTime:
-                return ""
+                return "", None
             repPerSec = float(repAmount) * 1000 / cycleTime
-            return "{0}/s".format(formatAmount(repPerSec, 3, 0, 3, forceSign=True))
+            return "{0}/s".format(formatAmount(repPerSec, 3, 0, 3, forceSign=True)), None
         elif itemGroup == "Energy Transfer Array":
             repAmount = stuff.getModifiedItemAttr("powerTransferAmount")
             cycleTime = stuff.cycleTime
             if not repAmount or not cycleTime:
-                return ""
+                return "", None
             repPerSec = float(repAmount) * 1000 / cycleTime
-            return "{0}/s".format(formatAmount(repPerSec, 3, 0, 3, forceSign=True))
+            return "{0}/s".format(formatAmount(repPerSec, 3, 0, 3, forceSign=True)), None
         elif itemGroup == "Gang Coordinator":
             command = stuff.getModifiedItemAttr("commandBonus")
             if not command:
-                return ""
-            return "{0}%".format(formatAmount(command, 3, 0, 3, forceSign=True))
+                return "", None
+            return "{0}%".format(formatAmount(command, 3, 0, 3, forceSign=True)), None
         elif itemGroup == "Electronic Warfare Drone":
             sigRadBonus = stuff.getModifiedItemAttr("signatureRadiusBonus")
             lockRangeMult = stuff.getModifiedItemAttr("maxTargetRangeMultiplier")
@@ -193,49 +209,49 @@ class Miscellanea(ViewColumn):
             radar = stuff.getModifiedItemAttr("scanRadarStrengthBonus")
             magnet = stuff.getModifiedItemAttr("scanMagnetometricStrengthBonus")
             if sigRadBonus:
-                return "{0}%".format(formatAmount(sigRadBonus, 3, 0, 3, forceSign=True))
+                return "{0}%".format(formatAmount(sigRadBonus, 3, 0, 3, forceSign=True)), None
             if lockRangeMult is not None and scanResMult is not None:
                 display = 0
                 for bonus in ((lockRangeMult-1)*100, (scanResMult-1)*100):
                     if abs(bonus) > abs(display):
                         display = bonus
                 if not display:
-                    return ""
-                return "{0}%".format(formatAmount(display, 3, 0, 3, forceSign=True))
+                    return "", None
+                return "{0}%".format(formatAmount(display, 3, 0, 3, forceSign=True)), None
             if falloffRangeMult is not None and optimalRangeMult is not None and trackingSpeedMult is not None:
                 display = 0
                 for bonus in ((falloffRangeMult-1)*100, (optimalRangeMult-1)*100, (trackingSpeedMult-1)*100):
                     if abs(bonus) > abs(display):
                         display = bonus
                 if not display:
-                    return ""
-                return "{0}%".format(formatAmount(display, 3, 0, 3), forceSign=True)
+                    return "", None
+                return "{0}%".format(formatAmount(display, 3, 0, 3), forceSign=True), None
             if grav is not None and ladar is not None and radar is not None and magnet is not None:
                 display = max(grav, ladar, radar, magnet)
                 if not display:
-                    return ""
-                return "{0}".format(formatAmount(display, 3, 0, 3))
+                    return "", None
+                return "{0}".format(formatAmount(display, 3, 0, 3)), None
             else:
-                return ""
+                return "", None
         elif itemGroup == "Fighter Bomber":
             optimalSig = stuff.getModifiedItemAttr("optimalSigRadius")
             if not optimalSig:
-                return ""
-            return "{0}m".format(formatAmount(optimalSig, 3, 0, 3))
+                return "", None
+            return "{0}m".format(formatAmount(optimalSig, 3, 0, 3)), None
         elif itemGroup == "Logistic Drone":
             repAmount = stuff.getModifiedItemAttr("armorDamageAmount") or stuff.getModifiedItemAttr("shieldBonus")
             cycleTime = stuff.getModifiedItemAttr("duration")
             if not repAmount or not cycleTime:
-                return ""
+                return "", None
             repPerSec = float(repAmount) * 1000 / cycleTime
-            return "{0}/s".format(formatAmount(repPerSec, 3, 0, 3))
+            return "{0}/s".format(formatAmount(repPerSec, 3, 0, 3)), None
         elif itemGroup == "Cap Drain Drone":
             neutAmount = stuff.getModifiedItemAttr("energyDestabilizationAmount")
             cycleTime = stuff.getModifiedItemAttr("duration")
             if not neutAmount or not cycleTime:
-                return ""
+                return "", None
             capPerSec = float(-neutAmount) * 1000 / cycleTime
-            return "{0}/s".format(formatAmount(capPerSec, 3, 0, 3))
+            return "{0}/s".format(formatAmount(capPerSec, 3, 0, 3)), None
         elif stuff.charge is not None:
             chargeGroup = stuff.charge.group.name
             if chargeGroup in ("Rocket", "Advanced Rocket", "Light Missile", "Advanced Light Missile", "FoF Light Missile",
@@ -245,31 +261,22 @@ class Miscellanea(ViewColumn):
                 cloudSize = stuff.getModifiedChargeAttr("aoeCloudSize")
                 aoeVelocity = stuff.getModifiedChargeAttr("aoeVelocity")
                 if not cloudSize or not aoeVelocity:
-                    return ""
+                    return "", None
                 return "{0}{1} | {2}{3}".format(formatAmount(cloudSize, 3, 0, 3), "m",
-                                                formatAmount(aoeVelocity, 3, 0, 3), "m/s")
+                                                formatAmount(aoeVelocity, 3, 0, 3), "m/s"), None
             elif chargeGroup == "Bomb":
                 cloudSize = stuff.getModifiedChargeAttr("aoeCloudSize")
                 if not cloudSize:
-                    return ""
-                return "{0}{1}".format(formatAmount(cloudSize, 3, 0, 3), "m")
+                    return "", None
+                return "{0}{1}".format(formatAmount(cloudSize, 3, 0, 3), "m"), None
             elif chargeGroup in ("Scanner Probe",):
                 scanStr = stuff.getModifiedChargeAttr("baseSensorStrength")
                 if not scanStr:
-                    return ""
-                return "{0}".format(formatAmount(scanStr, 3, 0, 3))
+                    return "", None
+                return "{0}".format(formatAmount(scanStr, 3, 0, 3)), None
             else:
-                return ""
+                return "", None
         else:
-            return ""
+            return "", None
 
-    def getToolTip(self, mod):
-        return "Tracking"
-
-    def getImageId(self, mod):
-        return -1
-
-    def getParameters(self):
-        return (("displayName", bool, False),
-                ("showIcon", bool, True))
 Miscellanea.register()
