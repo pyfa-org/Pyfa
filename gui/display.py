@@ -97,7 +97,7 @@ class Display(wx.ListCtrl):
 
         # Find which subitem is hit
         right = 0
-        scrolledX = self.GetScrollPos(wx.HORIZONTAL) + pt.x
+        scrolledX = self.GetScrollPos(wx.HORIZONTAL) * wx.SystemSettings.GetMetric(wx.SYS_HSCROLL_Y) + pt.x
         for i in range(self.GetColumnCount()):
             left = right
             right += self.GetColumnWidth(i)
