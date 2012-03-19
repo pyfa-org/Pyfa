@@ -698,10 +698,9 @@ class PFToolTipWindow(wx.Frame):
         ty += self.padding * 2
 
         self.SetSize((tx,ty))
-        self.Disable()
+
         self.SetTransparent(0)
         self.Refresh()
-
 
     def OnTimer(self, event):
         self.transp += 20*self.direction
@@ -730,7 +729,6 @@ class PFToolTipWindow(wx.Frame):
     def Show(self, showWnd = True):
         if showWnd:
             wx.Frame.Show(self, showWnd)
-            self.Enable()
 #            self.RaiseParent()
             self.direction = 1
             self.timer.Start(10)
