@@ -170,15 +170,21 @@ class FittingView(d.Display):
 #                self.tooltip.SetTip(tooltip)
 #                self.tooltip.Enable(True)
                 if self.toolTipWindow is None:
-                    self.toolTipWindow = PFToolTipWindow(self, (mx+3, my+3), tooltip)
-                    self.toolTipWindow.Show()
+                    if tooltip is not None and tooltip != "":
+                        self.toolTipWindow = PFToolTipWindow(self, (mx+3, my+3), tooltip)
+                        self.toolTipWindow.Show()
+                    else:
+                        self.toolTipWindow = None
                 else:
                     if self.lastRow != row:
                         self.lastRow = row
                         self.toolTipWindow.Show(False)
                         del self.toolTipWindow
-                        self.toolTipWindow = PFToolTipWindow(self, (mx+3, my+3), tooltip)
-                        self.toolTipWindow.Show()
+                        if tooltip is not None and tooltip != "":
+                            self.toolTipWindow = PFToolTipWindow(self, (mx+3, my+3), tooltip)
+                            self.toolTipWindow.Show()
+                        else:
+                            self.toolTipWindow = None
 
             else:
                 if self.toolTipWindow:
