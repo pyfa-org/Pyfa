@@ -342,6 +342,15 @@ class Miscellanea(ViewColumn):
             text = "{0}m".format(formatAmount(optimalSig, 3, 0, 3))
             tooltip = "Optimal signature radius"
             return text, tooltip
+        elif itemGroup in ("Frequency Mining Laser", "Strip Miner", "Mining Laser", "Gas Cloud Harvester"):
+            miningAmount = stuff.getModifiedItemAttr("miningAmount")
+            cycleTime = stuff.cycleTime
+            if not miningAmount or not cycleTime:
+                return "", None
+            minePerSec = float(miningAmount) * 1000 / cycleTime
+            text = "{0}/s".format(formatAmount(minePerSec, 3, 0, 3))
+            tooltip = "Yield per second"
+            return text, tooltip
         elif itemGroup == "Logistic Drone":
             armorAmount = stuff.getModifiedItemAttr("armorDamageAmount")
             shieldAmount = stuff.getModifiedItemAttr("shieldBonus")
@@ -366,6 +375,15 @@ class Miscellanea(ViewColumn):
             capPerSec = float(-neutAmount) * 1000 / cycleTime
             text = "{0}/s".format(formatAmount(capPerSec, 3, 0, 3))
             tooltip = "Energy neutralization per second"
+            return text, tooltip
+        elif itemGroup == "Mining Drone":
+            miningAmount = stuff.getModifiedItemAttr("miningAmount")
+            cycleTime = stuff.getModifiedItemAttr("duration")
+            if not miningAmount or not cycleTime:
+                return "", None
+            minePerSec = float(miningAmount) * 1000 / cycleTime
+            text = "{0}/s".format(formatAmount(minePerSec, 3, 0, 3))
+            tooltip = "Yield per second"
             return text, tooltip
         elif stuff.charge is not None:
             chargeGroup = stuff.charge.group.name
