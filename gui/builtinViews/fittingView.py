@@ -135,10 +135,8 @@ class FittingView(d.Display):
         self.itemCount = 0
         self.itemRect = 0
 
-        self.tooltip = wx.ToolTip(tip = "Miscellanea")
-        self.tooltip.Enable(True)
-        self.tooltip.SetDelay(0)
-        self.SetToolTip(self.tooltip)
+        self.hoveredRow = None
+        self.hoveredColumn = None
 
         self.Bind(wx.EVT_KEY_UP, self.kbEvent)
         self.Bind(wx.EVT_LEFT_DOWN, self.click)
@@ -150,22 +148,31 @@ class FittingView(d.Display):
 
 
     def OnLeaveWindow(self, event):
-        self.tooltip.SetTip("")
-        self.tooltip.Enable(True)
+        self.SetToolTip(None)
+        self.hoveredRow = None
+        self.hoveredColumn = None
         event.Skip()
 
     def OnMouseMove(self, event):
         row, _, col = self.HitTestSubItem(event.Position)
-        if row != -1 and col != -1 and col < len(self.DEFAULT_COLS):
-            mod = self.mods[self.GetItemData(row)]
-            if self.DEFAULT_COLS[col] == "Miscellanea":
-                tooltip = self.activeColumns[col].getToolTip(mod)
-                self.tooltip.SetTip(tooltip)
-                self.tooltip.Enable(True)
+        if row != self.hoveredRow or col != self.hoveredColumn:
+            if self.ToolTip is not None:
+                self.SetToolTip(None)
             else:
-                self.tooltip.Enable(False)
-        else:
-            self.tooltip.Enable(False)
+                self.hoveredRow = row
+                self.hoveredColumn = col
+                if row != -1 and col != -1 and col < len(self.DEFAULT_COLS):
+                    mod = self.mods[self.GetItemData(row)]
+                    if self.DEFAULT_COLS[col] == "Miscellanea":
+                        tooltip = self.activeColumns[col].getToolTip(mod)
+                        if tooltip is not None:
+                            self.SetToolTipString(tooltip)
+                        else:
+                            self.SetToolTip(None)
+                    else:
+                        self.SetToolTip(None)
+                else:
+                    self.SetToolTip(None)
         event.Skip()
 
     def handleDrag(self, type, fitID):
