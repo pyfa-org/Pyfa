@@ -13,7 +13,7 @@ debug = True
 saveInRoot = False
 
 # Version data
-version = "1.1.3"
+version = "1.1.4"
 tag = "git"
 expansionName = "Crucible"
 expansionVersion = "1.5"
