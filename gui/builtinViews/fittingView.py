@@ -731,7 +731,7 @@ class PFToolTipWindow(wx.Frame):
         if showWnd:
             wx.Frame.Show(self, showWnd)
             self.Enable()
-            self.RaiseParent()
+#            self.RaiseParent()
             self.direction = 1
             self.timer.Start(10)
         else:
