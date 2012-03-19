@@ -53,11 +53,16 @@ class DroneView(d.Display):
 
         self.lastFitId = None
 
+        self.hoveredRow = None
+        self.hoveredColumn = None
+
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
         self.mainFrame.Bind(mb.ITEM_SELECTED, self.addItem)
         self.Bind(wx.EVT_LEFT_DCLICK, self.removeItem)
         self.Bind(wx.EVT_LEFT_DOWN, self.click)
         self.Bind(wx.EVT_KEY_UP, self.kbEvent)
+        self.Bind(wx.EVT_MOTION, self.OnMouseMove)
+        self.Bind(wx.EVT_LEAVE_WINDOW, self.OnLeaveWindow)
 
         if "__WXGTK__" in  wx.PlatformInfo:
             self.Bind(wx.EVT_RIGHT_UP, self.scheduleMenu)
@@ -67,6 +72,34 @@ class DroneView(d.Display):
 
         self.Bind(wx.EVT_LIST_BEGIN_DRAG, self.startDrag)
         self.SetDropTarget(DroneViewDrop(self.mergeDrones))
+
+    def OnLeaveWindow(self, event):
+        self.SetToolTip(None)
+        self.hoveredRow = None
+        self.hoveredColumn = None
+        event.Skip()
+
+    def OnMouseMove(self, event):
+        row, _, col = self.HitTestSubItem(event.Position)
+        if row != self.hoveredRow or col != self.hoveredColumn:
+            if self.ToolTip is not None:
+                self.SetToolTip(None)
+            else:
+                self.hoveredRow = row
+                self.hoveredColumn = col
+                if row != -1 and col != -1 and col < len(self.DEFAULT_COLS):
+                    mod = self.drones[self.GetItemData(row)]
+                    if self.DEFAULT_COLS[col] == "Miscellanea":
+                        tooltip = self.activeColumns[col].getToolTip(mod)
+                        if tooltip is not None:
+                            self.SetToolTipString(tooltip)
+                        else:
+                            self.SetToolTip(None)
+                    else:
+                        self.SetToolTip(None)
+                else:
+                    self.SetToolTip(None)
+        event.Skip()
 
     def kbEvent(self, event):
         keycode = event.GetKeyCode()
