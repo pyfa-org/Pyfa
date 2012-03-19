@@ -21,6 +21,7 @@ from gui import builtinViewColumns
 from gui.viewColumn import ViewColumn
 from gui import bitmapLoader
 from gui.utils.numberFormatter import formatAmount
+from gui.utils.listFormatter import formatList
 
 import wx
 
@@ -77,7 +78,7 @@ class Miscellanea(ViewColumn):
                 return "", None
             capPerSec = float(-neutAmount) * 1000 / cycleTime
             text = "{0}/s".format(formatAmount(capPerSec, 3, 0, 3))
-            tooltip = "Energy drain per second"
+            tooltip = "Energy neutralization per second"
             return text, tooltip
         elif itemGroup == "Energy Vampire":
             neutAmount = stuff.getModifiedItemAttr("powerTransferAmount")
@@ -85,32 +86,37 @@ class Miscellanea(ViewColumn):
             if not neutAmount or not cycleTime:
                 return "", None
             capPerSec = float(-neutAmount) * 1000 / cycleTime
-            return "{0}/s".format(formatAmount(capPerSec, 3, 0, 3)), None
+            text = "{0}/s".format(formatAmount(capPerSec, 3, 0, 3))
+            tooltip = "Energy neutralization per second"
+            return text, tooltip
         elif itemGroup in ("Salvager", "Data Miners"):
             chance = stuff.getModifiedItemAttr("accessDifficultyBonus")
             if not chance:
                 return "", None
-            return "{0}%".format(formatAmount(chance, 3, 0, 3)), None
+            text = "{0}%".format(formatAmount(chance, 3, 0, 3))
+            tooltip = "Item retrieval chance"
+            return text, tooltip
         elif itemGroup in ("Warp Scrambler", "Warp Core Stabilizer"):
             scramStr = stuff.getModifiedItemAttr("warpScrambleStrength")
             if not scramStr:
                 return "", None
-            return "{0}".format(formatAmount(-scramStr, 3, 0, 3, forceSign=True)), None
+            text = "{0}".format(formatAmount(-scramStr, 3, 0, 3, forceSign=True))
+            tooltip = "Warp core strength"
+            return text, tooltip
         elif itemGroup in ("Stasis Web", "Stasis Webifying Drone"):
             speedFactor = stuff.getModifiedItemAttr("speedFactor")
             if not speedFactor:
                 return "", None
-            return "{0}%".format(formatAmount(speedFactor, 3, 0, 3)), None
-        elif itemGroup in ("Stasis Web", "Stasis Webifying Drone"):
-            speedFactor = stuff.getModifiedItemAttr("speedFactor")
-            if not speedFactor:
-                return "", None
-            return "{0}%".format(formatAmount(speedFactor, 3, 0, 3)), None
+            text = "{0}%".format(formatAmount(speedFactor, 3, 0, 3))
+            tooltip = "Speed reduction"
+            return text, tooltip
         elif itemGroup == "Target Painter":
             sigRadBonus = stuff.getModifiedItemAttr("signatureRadiusBonus")
             if not sigRadBonus:
                 return "", None
-            return "{0}%".format(formatAmount(sigRadBonus, 3, 0, 3, forceSign=True)), None
+            text = "{0}%".format(formatAmount(sigRadBonus, 3, 0, 3, forceSign=True))
+            tooltip = "Signature radius increase"
+            return text, tooltip
         elif itemGroup == "Remote Sensor Damper":
             lockRangeBonus = stuff.getModifiedItemAttr("maxTargetRangeBonus")
             scanResBonus = stuff.getModifiedItemAttr("scanResolutionBonus")
@@ -122,7 +128,14 @@ class Miscellanea(ViewColumn):
                     display = bonus
             if not display:
                 return "", None
-            return "{0}%".format(formatAmount(display, 3, 0, 3, forceSign=True)), None
+            text = "{0}%".format(formatAmount(display, 3, 0, 3, forceSign=True))
+            ttEntries = []
+            if display == lockRangeBonus:
+                ttEntries.append("lock range")
+            if display == scanResBonus:
+                ttEntries.append("scan resolution")
+            tooltip = "{0} dampening".format(formatList(ttEntries)).capitalize()
+            return text, tooltip
         elif itemGroup == "Tracking Disruptor":
             optimalRangeBonus = stuff.getModifiedItemAttr("maxRangeBonus")
             falloffRangeBonus = stuff.getModifiedItemAttr("falloffBonus")
@@ -135,7 +148,16 @@ class Miscellanea(ViewColumn):
                     display = bonus
             if not display:
                 return "", None
-            return "{0}%".format(formatAmount(display, 3, 0, 3, forceSign=True)), None
+            text = "{0}%".format(formatAmount(display, 3, 0, 3, forceSign=True))
+            ttEntries = []
+            if display == optimalRangeBonus:
+                ttEntries.append("optimal range")
+            if display == falloffRangeBonus:
+                ttEntries.append("falloff range")
+            if display == trackingSpeedBonus:
+                ttEntries.append("tracking speed")
+            tooltip = "{0} disruption".format(formatList(ttEntries)).capitalize()
+            return text, tooltip
         elif itemGroup in ("ECM", "ECM Burst", "Remote ECM Burst"):
             grav = stuff.getModifiedItemAttr("scanGravimetricStrengthBonus")
             ladar = stuff.getModifiedItemAttr("scanLadarStrengthBonus")
@@ -146,7 +168,19 @@ class Miscellanea(ViewColumn):
             display = max(grav, ladar, radar, magnet)
             if not display:
                 return "", None
-            return "{0}".format(formatAmount(display, 3, 0, 3)), None
+            text = "{0}".format(formatAmount(display, 3, 0, 3))
+            ttEntries = []
+            if display == grav:
+                ttEntries.append("gravimetric")
+            if display == ladar:
+                ttEntries.append("ladar")
+            if display == magnet:
+                ttEntries.append("magnetometric")
+            if display == radar:
+                ttEntries.append("radar")
+            plu = "" if len(ttEntries) == 1 else "s"
+            tooltip = "{0} strength{1}".format(formatList(ttEntries), plu).capitalize()
+            return text, tooltip
         elif itemGroup == "Remote Sensor Booster":
             scanResBonus = stuff.getModifiedItemAttr("scanResolutionBonus")
             lockRangeBonus = stuff.getModifiedItemAttr("maxTargetRangeBonus")
@@ -158,7 +192,14 @@ class Miscellanea(ViewColumn):
                     display = bonus
             if not display:
                 return "", None
-            return "{0}%".format(formatAmount(display, 3, 0, 3, forceSign=True)), None
+            text = "{0}%".format(formatAmount(display, 3, 0, 3, forceSign=True))
+            ttEntries = []
+            if display == lockRangeBonus:
+                ttEntries.append("lock range")
+            if display == scanResBonus:
+                ttEntries.append("scan resolution")
+            tooltip = "{0} bonus".format(formatList(ttEntries)).capitalize()
+            return text, tooltip
         elif itemGroup == "Projected ECCM":
             grav = stuff.getModifiedItemAttr("scanGravimetricStrengthPercent")
             ladar = stuff.getModifiedItemAttr("scanLadarStrengthPercent")
@@ -169,38 +210,60 @@ class Miscellanea(ViewColumn):
             display = max(grav, ladar, radar, magnet)
             if not display:
                 return "", None
-            return "{0}%".format(formatAmount(display, 3, 0, 3, forceSign=True)), None
+            text = "{0}%".format(formatAmount(display, 3, 0, 3, forceSign=True))
+            ttEntries = []
+            if display == grav:
+                ttEntries.append("gravimetric")
+            if display == ladar:
+                ttEntries.append("ladar")
+            if display == magnet:
+                ttEntries.append("magnetometric")
+            if display == radar:
+                ttEntries.append("radar")
+            plu = "" if len(ttEntries) == 1 else "s"
+            tooltip = "{0} strength{1} bonus".format(formatList(ttEntries), plu).capitalize()
+            return text, tooltip
         elif itemGroup == "Cloaking Device":
             recalibration = stuff.getModifiedItemAttr("cloakingTargetingDelay")
             if recalibration is None:
                 return "", None
-            return "{0}s".format(formatAmount(float(recalibration)/1000, 3, 0, 3)), None
+            text = "{0}s".format(formatAmount(float(recalibration)/1000, 3, 0, 3))
+            tooltip = "Sensor recalibration time"
+            return text, tooltip
         elif itemGroup == "Armor Repair Projector":
             repAmount = stuff.getModifiedItemAttr("armorDamageAmount")
             cycleTime = stuff.getModifiedItemAttr("duration")
             if not repAmount or not cycleTime:
                 return "", None
             repPerSec = float(repAmount) * 1000 / cycleTime
-            return "{0}/s".format(formatAmount(repPerSec, 3, 0, 3, forceSign=True)), None
+            text = "{0}/s".format(formatAmount(repPerSec, 3, 0, 3, forceSign=True))
+            tooltip = "Armor repaired per second"
+            return text, tooltip
         elif itemGroup == "Shield Transporter":
             repAmount = stuff.getModifiedItemAttr("shieldBonus")
             cycleTime = stuff.cycleTime
             if not repAmount or not cycleTime:
                 return "", None
             repPerSec = float(repAmount) * 1000 / cycleTime
-            return "{0}/s".format(formatAmount(repPerSec, 3, 0, 3, forceSign=True)), None
+            text = "{0}/s".format(formatAmount(repPerSec, 3, 0, 3, forceSign=True))
+            tooltip = "Shield transferred per second"
+            return text, tooltip
         elif itemGroup == "Energy Transfer Array":
             repAmount = stuff.getModifiedItemAttr("powerTransferAmount")
             cycleTime = stuff.cycleTime
             if not repAmount or not cycleTime:
                 return "", None
             repPerSec = float(repAmount) * 1000 / cycleTime
-            return "{0}/s".format(formatAmount(repPerSec, 3, 0, 3, forceSign=True)), None
+            text = "{0}/s".format(formatAmount(repPerSec, 3, 0, 3, forceSign=True))
+            tooltip = "Energy transferred per second"
+            return text, tooltip
         elif itemGroup == "Gang Coordinator":
-            command = stuff.getModifiedItemAttr("commandBonus")
+            command = stuff.getModifiedItemAttr("commandBonus") or stuff.getModifiedItemAttr("commandBonusHidden")
             if not command:
                 return "", None
-            return "{0}%".format(formatAmount(command, 3, 0, 3, forceSign=True)), None
+            text = "{0}%".format(formatAmount(command, 3, 0, 3, forceSign=True))
+            tooltip = "Gang bonus strength"
+            return text, tooltip
         elif itemGroup == "Electronic Warfare Drone":
             sigRadBonus = stuff.getModifiedItemAttr("signatureRadiusBonus")
             lockRangeMult = stuff.getModifiedItemAttr("maxTargetRangeMultiplier")
@@ -213,49 +276,97 @@ class Miscellanea(ViewColumn):
             radar = stuff.getModifiedItemAttr("scanRadarStrengthBonus")
             magnet = stuff.getModifiedItemAttr("scanMagnetometricStrengthBonus")
             if sigRadBonus:
-                return "{0}%".format(formatAmount(sigRadBonus, 3, 0, 3, forceSign=True)), None
+                text = "{0}%".format(formatAmount(sigRadBonus, 3, 0, 3, forceSign=True))
+                tooltip = "Signature radius increase"
+                return text, tooltip
             if lockRangeMult is not None and scanResMult is not None:
+                lockRangeBonus = (lockRangeMult - 1) * 100
+                scanResBonus = (scanResMult - 1) * 100
                 display = 0
-                for bonus in ((lockRangeMult-1)*100, (scanResMult-1)*100):
+                for bonus in (lockRangeBonus, scanResBonus):
                     if abs(bonus) > abs(display):
                         display = bonus
                 if not display:
                     return "", None
-                return "{0}%".format(formatAmount(display, 3, 0, 3, forceSign=True)), None
+                text = "{0}%".format(formatAmount(display, 3, 0, 3, forceSign=True))
+                ttEntries = []
+                if display == lockRangeBonus:
+                    ttEntries.append("lock range")
+                if display == scanResBonus:
+                    ttEntries.append("scan resolution")
+                tooltip = "{0} dampening".format(formatList(ttEntries)).capitalize()
+                return text, tooltip
             if falloffRangeMult is not None and optimalRangeMult is not None and trackingSpeedMult is not None:
+                falloffRangeBonus = (falloffRangeMult - 1) * 100
+                optimalRangeBonus = (optimalRangeMult - 1) * 100
+                trackingSpeedBonus = (trackingSpeedMult - 1) * 100
                 display = 0
-                for bonus in ((falloffRangeMult-1)*100, (optimalRangeMult-1)*100, (trackingSpeedMult-1)*100):
+                for bonus in (falloffRangeBonus, optimalRangeBonus, trackingSpeedBonus):
                     if abs(bonus) > abs(display):
                         display = bonus
                 if not display:
                     return "", None
-                return "{0}%".format(formatAmount(display, 3, 0, 3), forceSign=True), None
+                text = "{0}%".format(formatAmount(display, 3, 0, 3), forceSign=True)
+                ttEntries = []
+                if display == optimalRangeBonus:
+                    ttEntries.append("optimal range")
+                if display == falloffRangeBonus:
+                    ttEntries.append("falloff range")
+                if display == trackingSpeedBonus:
+                    ttEntries.append("tracking speed")
+                tooltip = "{0} disruption".format(formatList(ttEntries)).capitalize()
+                return text, tooltip
             if grav is not None and ladar is not None and radar is not None and magnet is not None:
                 display = max(grav, ladar, radar, magnet)
                 if not display:
                     return "", None
-                return "{0}".format(formatAmount(display, 3, 0, 3)), None
+                text = "{0}".format(formatAmount(display, 3, 0, 3))
+                ttEntries = []
+                if display == grav:
+                    ttEntries.append("gravimetric")
+                if display == ladar:
+                    ttEntries.append("ladar")
+                if display == magnet:
+                    ttEntries.append("magnetometric")
+                if display == radar:
+                    ttEntries.append("radar")
+                plu = "" if len(ttEntries) == 1 else "s"
+                tooltip = "{0} strength{1}".format(formatList(ttEntries), plu).capitalize()
+                return text, tooltip
             else:
                 return "", None
         elif itemGroup == "Fighter Bomber":
             optimalSig = stuff.getModifiedItemAttr("optimalSigRadius")
             if not optimalSig:
                 return "", None
-            return "{0}m".format(formatAmount(optimalSig, 3, 0, 3)), None
+            text = "{0}m".format(formatAmount(optimalSig, 3, 0, 3))
+            tooltip = "Optimal signature radius"
+            return text, tooltip
         elif itemGroup == "Logistic Drone":
-            repAmount = stuff.getModifiedItemAttr("armorDamageAmount") or stuff.getModifiedItemAttr("shieldBonus")
+            armorAmount = stuff.getModifiedItemAttr("armorDamageAmount")
+            shieldAmount = stuff.getModifiedItemAttr("shieldBonus")
+            repAmount = armorAmount or shieldAmount
             cycleTime = stuff.getModifiedItemAttr("duration")
             if not repAmount or not cycleTime:
                 return "", None
             repPerSec = float(repAmount) * 1000 / cycleTime
-            return "{0}/s".format(formatAmount(repPerSec, 3, 0, 3)), None
+            text = "{0}/s".format(formatAmount(repPerSec, 3, 0, 3))
+            ttEntries = []
+            if armorAmount is not None and repAmount == armorAmount:
+                ttEntries.append("armor")
+            if shieldAmount is not None and repAmount == shieldAmount:
+                ttEntries.append("shield")
+            tooltip = "{0} repaired per second".format(formatList(ttEntries)).capitalize()
+            return text, tooltip
         elif itemGroup == "Cap Drain Drone":
             neutAmount = stuff.getModifiedItemAttr("energyDestabilizationAmount")
             cycleTime = stuff.getModifiedItemAttr("duration")
             if not neutAmount or not cycleTime:
                 return "", None
             capPerSec = float(-neutAmount) * 1000 / cycleTime
-            return "{0}/s".format(formatAmount(capPerSec, 3, 0, 3)), None
+            text = "{0}/s".format(formatAmount(capPerSec, 3, 0, 3))
+            tooltip = "Energy neutralization per second"
+            return text, tooltip
         elif stuff.charge is not None:
             chargeGroup = stuff.charge.group.name
             if chargeGroup in ("Rocket", "Advanced Rocket", "Light Missile", "Advanced Light Missile", "FoF Light Missile",
@@ -266,18 +377,26 @@ class Miscellanea(ViewColumn):
                 aoeVelocity = stuff.getModifiedChargeAttr("aoeVelocity")
                 if not cloudSize or not aoeVelocity:
                     return "", None
-                return "{0}{1} | {2}{3}".format(formatAmount(cloudSize, 3, 0, 3), "m",
-                                                formatAmount(aoeVelocity, 3, 0, 3), "m/s"), None
+                text = "{0}{1} | {2}{3}".format(formatAmount(cloudSize, 3, 0, 3), "m",
+                                                formatAmount(aoeVelocity, 3, 0, 3), "m/s")
+                tooltip = "Explosion radius and explosion velocity"
+                return text, tooltip
             elif chargeGroup == "Bomb":
                 cloudSize = stuff.getModifiedChargeAttr("aoeCloudSize")
                 if not cloudSize:
                     return "", None
-                return "{0}{1}".format(formatAmount(cloudSize, 3, 0, 3), "m"), None
+                text = "{0}{1}".format(formatAmount(cloudSize, 3, 0, 3), "m")
+                tooltip = "Explosion radius"
+                return text, tooltip
             elif chargeGroup in ("Scanner Probe",):
                 scanStr = stuff.getModifiedChargeAttr("baseSensorStrength")
-                if not scanStr:
+                baseRange = stuff.getModifiedChargeAttr("baseScanRange")
+                if not scanStr or not baseRange:
                     return "", None
-                return "{0}".format(formatAmount(scanStr, 3, 0, 3)), None
+                strTwoAu = scanStr / (2.0 / baseRange)
+                text = "{0}".format(formatAmount(strTwoAu, 3, 0, 3))
+                tooltip = "Scan strength with 2 AU scan range"
+                return text, tooltip
             else:
                 return "", None
         else:
