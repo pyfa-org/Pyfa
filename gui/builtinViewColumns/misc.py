@@ -101,7 +101,7 @@ class Miscellanea(ViewColumn):
             if not scramStr:
                 return "", None
             text = "{0}".format(formatAmount(-scramStr, 3, 0, 3, forceSign=True))
-            tooltip = "Warp core strength"
+            tooltip = "Warp core strength modification"
             return text, tooltip
         elif itemGroup in ("Stasis Web", "Stasis Webifying Drone"):
             speedFactor = stuff.getModifiedItemAttr("speedFactor")
