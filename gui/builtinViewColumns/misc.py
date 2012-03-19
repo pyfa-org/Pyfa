@@ -257,6 +257,15 @@ class Miscellanea(ViewColumn):
             text = "{0}/s".format(formatAmount(repPerSec, 3, 0, 3, forceSign=True))
             tooltip = "Energy transferred per second"
             return text, tooltip
+        elif itemGroup == "Remote Hull Repairer":
+            repAmount = stuff.getModifiedItemAttr("structureDamageAmount")
+            cycleTime = stuff.cycleTime
+            if not repAmount or not cycleTime:
+                return "", None
+            repPerSec = float(repAmount) * 1000 / cycleTime
+            text = "{0}/s".format(formatAmount(repPerSec, 3, 0, 3, forceSign=True))
+            tooltip = "Structure repaired per second"
+            return text, tooltip
         elif itemGroup == "Gang Coordinator":
             command = stuff.getModifiedItemAttr("commandBonus") or stuff.getModifiedItemAttr("commandBonusHidden")
             if not command:
