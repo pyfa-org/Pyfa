@@ -47,8 +47,8 @@ class Miscellanea(ViewColumn):
         return text
 
     def getToolTip(self, mod):
-        import random
-        return "Tracking {}".format(random.random())
+        text = self.__getData(mod)[1]
+        return text
 
     def getImageId(self, mod):
         return -1
@@ -67,14 +67,18 @@ class Miscellanea(ViewColumn):
             trackingSpeed = stuff.getModifiedItemAttr("trackingSpeed")
             if not trackingSpeed:
                 return "", None
-            return "{0}".format(formatAmount(trackingSpeed, 3, 0, 3)), None
+            text = "{0}".format(formatAmount(trackingSpeed, 3, 0, 3))
+            tooltip = "Tracking speed"
+            return text, tooltip
         elif itemGroup == "Energy Destabilizer":
             neutAmount = stuff.getModifiedItemAttr("energyDestabilizationAmount")
             cycleTime = stuff.cycleTime
             if not neutAmount or not cycleTime:
                 return "", None
             capPerSec = float(-neutAmount) * 1000 / cycleTime
-            return "{0}/s".format(formatAmount(capPerSec, 3, 0, 3)), None
+            text = "{0}/s".format(formatAmount(capPerSec, 3, 0, 3))
+            tooltip = "Energy drain per second"
+            return text, tooltip
         elif itemGroup == "Energy Vampire":
             neutAmount = stuff.getModifiedItemAttr("powerTransferAmount")
             cycleTime = stuff.cycleTime
