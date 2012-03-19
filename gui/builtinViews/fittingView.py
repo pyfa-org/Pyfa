@@ -135,13 +135,10 @@ class FittingView(d.Display):
         self.itemCount = 0
         self.itemRect = 0
 
-#        self.tooltip = wx.ToolTip(tip = "Miscellanea")
-#        self.tooltip.Enable(True)
-#        self.tooltip.SetDelay(0)
-#        self.SetToolTip(self.tooltip)
-
-        self.toolTipWindow = None
-        self.lastRow = -1
+        self.tooltip = wx.ToolTip(tip = "Miscellanea")
+        self.tooltip.Enable(True)
+        self.tooltip.SetDelay(0)
+        self.SetToolTip(self.tooltip)
 
         self.Bind(wx.EVT_KEY_UP, self.kbEvent)
         self.Bind(wx.EVT_LEFT_DOWN, self.click)
@@ -149,47 +146,26 @@ class FittingView(d.Display):
         self.Bind(wx.EVT_SHOW, self.OnShow)
         self.Bind(wx.EVT_MOTION, self.OnMouseMove)
         self.Bind(wx.EVT_LEAVE_WINDOW, self.OnLeaveWindow)
-
         self.parent.Bind(gui.chromeTabs.EVT_NOTEBOOK_PAGE_CHANGED, self.pageChanged)
 
 
     def OnLeaveWindow(self, event):
-        if self.toolTipWindow:
-            self.toolTipWindow.Show(False)
-            del self.toolTipWindow
-            self.toolTipWindow = None
+        self.tooltip.SetTip("")
+        self.tooltip.Enable(True)
         event.Skip()
 
     def OnMouseMove(self, event):
         row, _, col = self.HitTestSubItem(event.Position)
-        mx,my = wx.GetMousePosition()
         if row != -1 and col != -1 and col < len(self.DEFAULT_COLS):
             mod = self.mods[self.GetItemData(row)]
             if self.DEFAULT_COLS[col] == "Miscellanea":
                 tooltip = self.activeColumns[col].getToolTip(mod)
-#                self.tooltip.SetTip(tooltip)
-#                self.tooltip.Enable(True)
-                if self.toolTipWindow is None:
-                    self.toolTipWindow = PFToolTipWindow(self, (mx+3, my+3), tooltip)
-                    self.toolTipWindow.Show()
-                else:
-                    if self.lastRow != row:
-                        self.lastRow = row
-                        self.toolTipWindow.Show(False)
-                        del self.toolTipWindow
-                        self.toolTipWindow = PFToolTipWindow(self, (mx+3, my+3), tooltip)
-                        self.toolTipWindow.Show()
-
+                self.tooltip.SetTip(tooltip)
+                self.tooltip.Enable(True)
             else:
-                if self.toolTipWindow:
-                    self.toolTipWindow.Show(False)
-                    del self.toolTipWindow
-                    self.toolTipWindow = None
+                self.tooltip.Enable(False)
         else:
-            if self.toolTipWindow:
-                self.toolTipWindow.Show(False)
-                del self.toolTipWindow
-                self.toolTipWindow = None
+            self.tooltip.Enable(False)
         event.Skip()
 
     def handleDrag(self, type, fitID):
@@ -668,99 +644,3 @@ class FittingView(d.Display):
         mdc.SelectObject(wx.NullBitmap)
 
         self.FVsnapshot = mbmp
-
-
-class PFToolTipWindow(wx.Frame):
-    def __init__ (self,parent, pos, title):
-        wx.Frame.__init__(self, parent, id = wx.ID_ANY, title = wx.EmptyString, pos = pos, size = wx.DefaultSize, style =
-                                                               wx.NO_BORDER
-                                                             | wx.FRAME_NO_TASKBAR
-                                                             | wx.STAY_ON_TOP)
-
-        self.title = title
-
-        self.Bind(wx.EVT_PAINT,self.OnWindowPaint)
-        self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnWindowEraseBk)
-        self.Bind(wx.EVT_TIMER, self.OnTimer)
-
-        self.timer = wx.Timer(self,wx.ID_ANY)
-        self.timerSleep = None
-        self.timerSleepId = wx.NewId()
-        self.direction = 1
-        self.padding = 2
-        self.transp = 0
-
-        hfont = wx.FontFromPixelSize((0,14), wx.SWISS, wx.NORMAL,wx.NORMAL, False)
-        self.SetFont(hfont)
-
-        tx, ty = self.GetTextExtent(self.title)
-        tx +=  self.padding * 2
-        ty += self.padding * 2
-
-        self.SetSize((tx,ty))
-
-        self.SetTransparent(0)
-        self.Refresh()
-
-    def OnTimer(self, event):
-        self.transp += 20*self.direction
-
-        if self.transp > 220:
-            self.transp = 220
-            self.timer.Stop()
-
-        if self.transp < 0:
-            self.transp = 0
-            self.timer.Stop()
-            wx.Frame.Show(self,False)
-            self.Destroy()
-            return
-        self.SetTransparent(self.transp)
-
-    def RaiseParent(self):
-        wnd = self
-        lastwnd = None
-        while wnd is not None:
-            lastwnd = wnd
-            wnd = wnd.Parent
-        if lastwnd:
-            lastwnd.Raise()
-
-    def Show(self, showWnd = True):
-        if showWnd:
-            wx.Frame.Show(self, showWnd)
-#            self.RaiseParent()
-            self.direction = 1
-            self.timer.Start(10)
-        else:
-            self.direction = -1
-            self.timer.Start(10)
-
-
-    def OnWindowEraseBk(self,event):
-        pass
-
-    def OnWindowPaint(self,event):
-        rect = self.GetRect()
-        canvas = wx.EmptyBitmap(rect.width, rect.height)
-        mdc = wx.BufferedPaintDC(self)
-        mdc.SelectObject(canvas)
-        color = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOWTEXT)
-        mdc.SetBackground(wx.Brush(color))
-        mdc.Clear()
-
-        font = wx.FontFromPixelSize((0,14), wx.SWISS, wx.NORMAL,wx.NORMAL, False)
-        mdc.SetFont(font)
-
-        x,y = mdc.GetTextExtent(self.title)
-
-#        mdc.SetBrush(wx.Brush(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOWTEXT)))
-#        mdc.DrawRectangle(0,0,rect.width,16)
-
-        mdc.SetTextForeground(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW))
-
-        mdc.DrawText(self.title, (rect.width - x)/2, (rect.height -y)/2)
-        mdc.SetPen( wx.Pen("#000000", width = 1 ) )
-        mdc.SetBrush( wx.TRANSPARENT_BRUSH )
-
-        mdc.DrawRectangle( 0, 16, rect.width,rect.height - 16)
