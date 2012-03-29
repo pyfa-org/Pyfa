@@ -219,7 +219,7 @@ class Market():
             "'Wild' Miner I": ("Storyline", "Miner I"),
             "Medium Nano Armor Repair Unit I": ("Tech I", "Medium Armor Repairer I"),
             "Large 'Reprieve' Vestment Reconstructer I": ("Storyline", "Large Armor Repairer I"),
-            "Khanid Navy Siege Missile Launcher": ("Faction", "Siege Missile Launcher I"),
+            "Khanid Navy Torpedo Launcher": ("Faction", "Torpedo Launcher I"),
             "Dark Blood Tracking Disruptor": ("Faction", "Tracking Disruptor I"),
             "True Sansha Tracking Disruptor": ("Faction", "Tracking Disruptor I"),
             "Shadow Serpentis Remote Sensor Dampener": ("Faction", "Remote Sensor Dampener I") }
@@ -239,17 +239,17 @@ class Market():
             "'Libram' Codebreaker I": 714, # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
             "Akemon's Modified 'Noble' ZET5000": 1185, # Implants & Boosters > Implants > Skill Hardwiring > Implant Slot 10 > Armor Implants
             "Cerebral Accelerator": 977, # Implants & Boosters > Booster
-            "Civilian Trauma Light Missile": 920, # Ammunition & Charges > Missiles > Light Missiles > Standard Light Missiles
             "Civilian Damage Control": 760, # Ship Equipment > Civilian Modules
             "Civilian EM Ward Field": 760, # Ship Equipment > Civilian Modules
             "Civilian Explosive Deflection Field": 760, # Ship Equipment > Civilian Modules
             "Civilian Hobgoblin": 837, # Drones > Combat Drones > Light Scout Drones
             "Civilian Kinetic Deflection Field": 760, # Ship Equipment > Civilian Modules
+            "Civilian Light Missile Launcher": 760, # Ship Equipment > Civilian Modules
             "Civilian Remote Armor Repair System": 760, # Ship Equipment > Civilian Modules
             "Civilian Remote Shield Transporter": 760, # Ship Equipment > Civilian Modules
-            "Civilian Standard Missile Launcher": 760, # Ship Equipment > Civilian Modules
             "Civilian Stasis Webifier": 760, # Ship Equipment > Civilian Modules
             "Civilian Thermic Dissipiation Field": 760, # Ship Equipment > Civilian Modules
+            "Civilian Scourge Light Missile": 920, # Ammunition & Charges > Missiles > Light Missiles > Standard Light Missiles
             "Civilian Warp Disruptor": 760, # Ship Equipment > Civilian Modules
             "Genolution Core Augmentation CA-1": 618, # Implants & Boosters > Implants > Attribute Enhancers > Implant Slot 1
             "Genolution Core Augmentation CA-2": 621, # Implants & Boosters > Implants > Attribute Enhancers > Implant Slot 4
