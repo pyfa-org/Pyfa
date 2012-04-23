@@ -185,7 +185,7 @@ class Market():
             "Malice": self.les_grp, # AT9 prize
             "Vangel": self.les_grp, # AT9 prize
             "Iteron Mark IV Quafe Ultra Edition": self.les_grp, # Gift to Fanfest 2012 attendees
-            "Iteron Mark IV Quafe Ultramarine Edition": self.les_grp }
+            "Iteron Mark IV Quafe Ultramarine Edition": self.les_grp } # Gift to first Japanese subscribers
         self.ITEMS_FORCEGROUP_R = self.__makeRevDict(self.ITEMS_FORCEGROUP)
         self.les_grp.items += list(self.getItem(itmn) for itmn in self.ITEMS_FORCEGROUP_R[self.les_grp])
         self.customGroups.add(self.les_grp)
