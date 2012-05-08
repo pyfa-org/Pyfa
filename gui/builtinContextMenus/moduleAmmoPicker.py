@@ -182,7 +182,7 @@ class ModuleAmmoPicker(ContextMenu):
                     item.SetSubMenu(sub)
                     m.AppendItem(item)
 
-                if charge.name != "Defender I":
+                if charge.name not in ("Light Defender Missile I", "Heavy Defender Missile I"):
                     sub.AppendItem(self.addCharge(sub, charge))
                 else:
                     defender = charge
