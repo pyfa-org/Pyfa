@@ -163,6 +163,7 @@ class ModuleAmmoPicker(ContextMenu):
             self.charges.sort(key=self.missileSorter)
             type = None
             sub = None
+            defender = None
             for charge in self.charges:
                 currType = self.damageInfo(charge)[0]
 
