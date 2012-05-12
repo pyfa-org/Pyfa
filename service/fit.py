@@ -547,6 +547,10 @@ class Fit(object):
         fit = eos.db.getFit(fitID)
         return fit.exportEft()
 
+    def exportEftImps(self, fitID):
+        fit = eos.db.getFit(fitID)
+        return fit.exportEftImps()
+
     def exportDna(self, fitID):
         fit = eos.db.getFit(fitID)
         return fit.exportDna()

@@ -22,15 +22,17 @@ import wx
 
 class CopySelectDialog(wx.Dialog):
     copyFormatEft = 0
-    copyFormatXml = 1
-    copyFormatDna = 2
+    copyFormatEftImps = 1
+    copyFormatXml = 2
+    copyFormatDna = 3
 
     def __init__(self, parent):
         wx.Dialog.__init__(self, parent, id = wx.ID_ANY, title = u"Select a format", size = (-1,-1), style = wx.DEFAULT_DIALOG_STYLE)
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
-        copyFormats = [u"EFT", u"XML", u"DNA"]
+        copyFormats = [u"EFT", u"EFT (Implants)", u"XML", u"DNA"]
         copyFormatTooltips = {CopySelectDialog.copyFormatEft: u"Eve Fitting Tool text format",
+                              CopySelectDialog.copyFormatEftImps: u"Eve Fitting Tool text format",
                               CopySelectDialog.copyFormatXml: u"EvE native XML format",
                               CopySelectDialog.copyFormatDna: u"A one-line text format"}
         selector = wx.RadioBox(self, wx.ID_ANY, label = u"Copy to the clipboard using:", choices = copyFormats, style = wx.RA_SPECIFY_ROWS)

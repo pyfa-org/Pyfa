@@ -423,6 +423,10 @@ class MainFrame(wx.Frame):
         sFit = service.Fit.getInstance()
         toClipboard(sFit.exportFit(self.getActiveFit()))
 
+    def clipboardEftImps(self):
+        sFit = service.Fit.getInstance()
+        toClipboard(sFit.exportEftImps(self.getActiveFit()))
+
     def clipboardDna(self):
         sFit = service.Fit.getInstance()
         toClipboard(sFit.exportDna(self.getActiveFit()))
@@ -442,6 +446,7 @@ class MainFrame(wx.Frame):
 
     def exportToClipboard(self, event):
         CopySelectDict = {CopySelectDialog.copyFormatEft: self.clipboardEft,
+                          CopySelectDialog.copyFormatEftImps: self.clipboardEftImps,
                           CopySelectDialog.copyFormatXml: self.clipboardXml,
                           CopySelectDialog.copyFormatDna: self.clipboardDna}
         dlg = CopySelectDialog(self)
