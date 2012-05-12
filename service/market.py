@@ -206,7 +206,8 @@ class Market():
             "QA Multiship Module - 40 Players": False,
             "QA Multiship Module - 5 Players": False,
             "QA Remote Armor Repair System - 5 Players": False,
-            "QA Shield Transporter - 5 Players": False }
+            "QA Shield Transporter - 5 Players": False,
+            "Small Targeting Amplifier I": True } # Not yet published but CCP already announced them
 
         # List of groups which are forcibly published
         self.GROUPS_FORCEPUBLISHED = {
@@ -276,6 +277,7 @@ class Market():
             "Shadow": 1310, # Drones > Combat Drones > Fighter Bombers
             "Shaqil's Speed Enhancer": 1157, # Implants & Boosters > Implants > Skill Hardwiring > Implant Slot 6 > Navigation Implants
             "Sleeper Data Analyzer I": 714, # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
+            "Small Targeting Amplifier I": 1219, # Rigs > Electronic Superiority Rigs > Small Electronic Superiority Rigs
             "Talocan Data Analyzer I": 714, # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
             "Terran Data Analyzer I": 714, # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
             "Tetrimon Data Analyzer I": 714, # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
