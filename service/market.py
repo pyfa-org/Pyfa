@@ -557,10 +557,18 @@ class Market():
             if self.marketGroupHasTypesCheck(mg):
                 # Do not request variations to make process faster
                 # Pick random item and use its icon
-                item = self.getItemsByMarketGroup(mg, vars=False).pop()
-                return item.icon.iconFile if item.icon else ""
+                items = self.getItemsByMarketGroup(mg, vars=False)
+                if len(items) > 0:
+                    item = items.pop()
+                    return item.icon.iconFile if item.icon else ""
+                else:
+                    return ""
             elif self.getMarketGroupChildren(mg) > 0:
-                return self.getIconByMarketGroup(self.getMarketGroupChildren(mg).pop())
+                mktGroups = self.getIconByMarketGroup(self.getMarketGroupChildren(mg))
+                if len(mktGroups) > 0:
+                    return mktGroups.pop()
+                else:
+                    return ""
             else:
                 return ""
 
