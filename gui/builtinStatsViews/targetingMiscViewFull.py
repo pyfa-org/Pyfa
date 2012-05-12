@@ -113,7 +113,6 @@ class TargetingMiscViewFull(StatsView):
                  ("Destroyer", 83), ("Cruiser", 130),
                  ("Battlecruiser", 265),  ("Battleship",420),
                  ("Carrier", 3000)]
-
         for labelName, value, prec, lowest, highest, unit in stats:
             label = getattr(self, labelName)
             value = value() if fit is not None else 0
@@ -122,7 +121,7 @@ class TargetingMiscViewFull(StatsView):
                 label.SetLabel("%s %s" %(formatAmount(value, prec, lowest, highest), unit))
                 # Tooltip stuff
                 if fit:
-                    if labelName is "labelScanRes":
+                    if labelName == "labelScanRes":
                         lockTime = "%s\n" % "Lock Times".center(30)
                         for size, radius in RADII:
                             left = "%.1fs" % fit.calculateLockTime(radius)
@@ -130,17 +129,23 @@ class TargetingMiscViewFull(StatsView):
                             lockTime += "%5s\t%s\n" % (left,right)
                         # print lockTime # THIS IS ALIGNED!
                         label.SetToolTip(wx.ToolTip(lockTime))
-                    elif labelName is "labelSensorStr":
+                    elif labelName == "labelSensorStr":
                         label.SetToolTip(wx.ToolTip("Type: %s - %.1f" % (fit.scanType, value)))
-                    elif labelName is "labelFullSigRadius":
+                    elif labelName == "labelFullSigRadius":
                         label.SetToolTip(wx.ToolTip("Probe Size: %.3f" % (fit.probeSize or 0) ))
-                    elif labelName is "labelFullWarpSpeed":
+                    elif labelName == "labelFullWarpSpeed":
                         label.SetToolTip(wx.ToolTip("Max Warp Distance: %.1f AU" % fit.maxWarpDistance))
                     else:
                         label.SetToolTip(wx.ToolTip("%.1f" % value))
                 else:
                     label.SetToolTip(wx.ToolTip(""))
                 self._cachedValues[counter] = value
+            elif labelName == "labelFullWarpSpeed":
+                if fit:
+                    label.SetToolTip(wx.ToolTip("Max Warp Distance: %.1f AU" % fit.maxWarpDistance))
+                else:
+                    label.SetToolTip(wx.ToolTip(""))
+
             counter += 1
 
         self.panel.Layout()
