@@ -30,6 +30,7 @@ from eos.types import Slot
 from gui.builtinViewColumns.state import State
 from gui import bitmapLoader
 import gui.builtinViews.emptyView
+from gui.utils.exportHtml import exportHtml
 
 import gui.globalEvents as GE
 
@@ -374,12 +375,16 @@ class FittingView(d.Display):
             if self.activeFitID is not None and self.activeFitID == event.fitID:
                 self.generateMods()
                 self.refresh(self.mods)
-
+                
+                exportHtml.getInstance().refreshFittingHTMl()
+                
             self.Show(self.activeFitID is not None and self.activeFitID == event.fitID)
         except wx._core.PyDeadObjectError:
             pass
         finally:
             event.Skip()
+
+            
 
     def scheduleMenu(self, event):
         event.Skip()
