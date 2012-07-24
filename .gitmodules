@@ -3,4 +3,4 @@
 	url = git://dev.evefit.org/eos.git
 [submodule "staticdata"]
 	path = staticdata
-	url = git://dev.evefit.org/staticdata.git
+	url = git://dev.evefit.org/pyfa-staticdata.git
