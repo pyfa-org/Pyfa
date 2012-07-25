@@ -531,10 +531,10 @@ class Market():
 
     def marketGroupHasTypesCheck(self, mg):
         """If market group has any items, return true"""
-        if mg.ID in self.ITEMS_FORCEDMARKETGROUP_R:
+        if mg and mg.ID in self.ITEMS_FORCEDMARKETGROUP_R:
             return True
-        elif not mg.hasTypes:
-            return False
+        elif mg.hasTypes:
+            return True
         elif len(mg.items) > 0:
             return True
         else:
@@ -554,21 +554,20 @@ class Market():
         if mg.icon:
             return mg.icon.iconFile
         else:
-            if self.marketGroupHasTypesCheck(mg):
+            while mg and not mg.hasTypes:
+                mg = mg.parent
+            if not mg:
+                return ""
+            elif self.marketGroupHasTypesCheck(mg):
                 # Do not request variations to make process faster
                 # Pick random item and use its icon
                 items = self.getItemsByMarketGroup(mg, vars=False)
-                if len(items) > 0:
-                    item = items.pop()
-                    return item.icon.iconFile if item.icon else ""
-                else:
-                    return ""
+                item = items.pop()
+                return item.icon.iconFile if item.icon else ""
             elif self.getMarketGroupChildren(mg) > 0:
-                mktGroups = self.getIconByMarketGroup(self.getMarketGroupChildren(mg))
-                if len(mktGroups) > 0:
-                    return mktGroups.pop()
-                else:
-                    return ""
+                kids = self.getMarketGroupChildren(mg)
+                size = len(self.getIconByMarketGroup(kids))
+                return mktGroups.pop() if size > 0 else ""
             else:
                 return ""
 

@@ -161,7 +161,10 @@ class MarketTree(wx.TreeCtrl):
                 if sMkt.marketGroupValidityCheck(childMktGrp) is False:
                     continue
                 iconId = self.addImage(sMkt.getIconByMarketGroup(childMktGrp))
-                childId = self.AppendItem(root, childMktGrp.name, iconId, data=wx.TreeItemData(childMktGrp.ID))
+                try:
+                    childId = self.AppendItem(root, childMktGrp.name, iconId, data=wx.TreeItemData(childMktGrp.ID))
+                except:
+                    continue
                 if sMkt.marketGroupHasTypesCheck(childMktGrp) is False:
                     self.AppendItem(childId, "dummy")
 
