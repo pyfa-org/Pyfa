@@ -13,10 +13,10 @@ debug = False
 saveInRoot = False
 
 # Version data
-version = "1.1.8"
+version = "1.1.9"
 tag = "git"
 expansionName = "Inferno"
-expansionVersion = "1.1"
+expansionVersion = "1.2"
 
 pyfaPath = None
 savePath = None

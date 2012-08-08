@@ -249,7 +249,7 @@ class Market():
             "Civilian Remote Armor Repair System": 760, # Ship Equipment > Civilian Modules
             "Civilian Remote Shield Transporter": 760, # Ship Equipment > Civilian Modules
             "Civilian Stasis Webifier": 760, # Ship Equipment > Civilian Modules
-            "Civilian Thermic Dissipiation Field": 760, # Ship Equipment > Civilian Modules
+            "Civilian Thermic Dissipation Field": 760, # Ship Equipment > Civilian Modules
             "Civilian Scourge Light Missile": 920, # Ammunition & Charges > Missiles > Light Missiles > Standard Light Missiles
             "Civilian Warp Disruptor": 760, # Ship Equipment > Civilian Modules
             "Genolution Core Augmentation CA-1": 618, # Implants & Boosters > Implants > Attribute Enhancers > Implant Slot 1
@@ -280,6 +280,7 @@ class Market():
             "Tetrimon Data Analyzer I": 714, # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
             "Whelan Machorin's Ballistic Smartlink": 1189, # Implants & Boosters > Implants > Skill Hardwiring > Implant Slot 10 > Missile Implants
             "Zor's Custom Navigation Hyper-Link": 1176 } # Implants & Boosters > Implants > Skill Hardwiring > Implant Slot 8 > Navigation Implants
+
         self.ITEMS_FORCEDMARKETGROUP_R = self.__makeRevDict(self.ITEMS_FORCEDMARKETGROUP)
 
         # Misc definitions
