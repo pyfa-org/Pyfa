@@ -1,6 +1,6 @@
 [submodule "eos"]
 	path = eos
-	url = git://www.evefit.org/eos.git
+	url = git://www.evefit.org/eos3.git
 [submodule "staticdata"]
 	path = staticdata
 	url = git://www.evefit.org/pyfa-staticdata.git
