@@ -394,6 +394,11 @@ class Miscellanea(ViewColumn):
             text = "{0}/s".format(formatAmount(minePerSec, 3, 0, 3))
             tooltip = "Yield per second"
             return text, tooltip
+        elif itemGroup == "Micro Jump Drive":
+            cycleTime = stuff.getModifiedItemAttr("duration") / 1000
+            text = "{0}s".format(cycleTime)
+            tooltip = "Spoolup time"
+            return text, tooltip
         elif stuff.charge is not None:
             chargeGroup = stuff.charge.group.name
             if chargeGroup in ("Rocket", "Advanced Rocket", "Light Missile", "Advanced Light Missile", "FoF Light Missile",
