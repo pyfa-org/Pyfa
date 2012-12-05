@@ -534,8 +534,6 @@ class Market():
         """If market group has any items, return true"""
         if mg and mg.ID in self.ITEMS_FORCEDMARKETGROUP_R:
             return True
-        elif mg.hasTypes:
-            return True
         elif len(mg.items) > 0:
             return True
         else:
@@ -563,7 +561,11 @@ class Market():
                 # Do not request variations to make process faster
                 # Pick random item and use its icon
                 items = self.getItemsByMarketGroup(mg, vars=False)
-                item = items.pop()
+                try:
+                    item = items.pop()
+                except KeyError:
+                    return ""
+
                 return item.icon.iconFile if item.icon else ""
             elif self.getMarketGroupChildren(mg) > 0:
                 kids = self.getMarketGroupChildren(mg)
