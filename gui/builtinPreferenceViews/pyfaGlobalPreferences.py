@@ -45,6 +45,9 @@ class PFGlobalPref ( PreferenceView):
         self.cbGlobalForceReload = wx.CheckBox( panel, wx.ID_ANY, u"Factor in reload time", wx.DefaultPosition, wx.DefaultSize, 0 )
         mainSizer.Add( self.cbGlobalForceReload, 0, wx.ALL|wx.EXPAND, 5 )
 
+        self.cbFitColorSlots = wx.CheckBox( panel, wx.ID_ANY, u"Color fitting view by slot", wx.DefaultPosition, wx.DefaultSize, 0 )
+        mainSizer.Add( self.cbFitColorSlots, 0, wx.ALL|wx.EXPAND, 5 )
+
         defCharSizer = wx.BoxSizer( wx.HORIZONTAL )
 
         self.stDefChar = wx.StaticText( panel, wx.ID_ANY, u"Default character:", wx.DefaultPosition, wx.DefaultSize, 0 )
@@ -150,10 +153,12 @@ class PFGlobalPref ( PreferenceView):
         self.cbGlobalChar.SetValue(useGlobalChar)
         self.cbGlobalDmgPattern.SetValue(useGlobalDmgPattern)
         self.cbGlobalForceReload.SetValue(useGlobalForceReload)
+        self.cbFitColorSlots.SetValue(self.sFit.serviceFittingOptions["colorFitBySlot"])
 
         self.cbGlobalChar.Bind(wx.EVT_CHECKBOX, self.OnCBGlobalCharStateChange)
         self.cbGlobalDmgPattern.Bind(wx.EVT_CHECKBOX, self.OnCBGlobalDmgPatternStateChange)
         self.cbGlobalForceReload.Bind(wx.EVT_CHECKBOX, self.OnCBGlobalForceReloadStateChange)
+        self.cbFitColorSlots.Bind(wx.EVT_CHECKBOX, self.onCBGlobalColorBySlot)
 
         self.chDefaultChar.Disable()
         self.chDefaultChar.Show(False)
@@ -232,6 +237,13 @@ class PFGlobalPref ( PreferenceView):
         self.ToggleProxySettings(self.cbProxySettings.GetValue())
         event.Skip()
 
+    def onCBGlobalColorBySlot(self, event):
+        self.sFit.serviceFittingOptions["colorFitBySlot"] = self.cbFitColorSlots.GetValue()
+        fitID = self.mainFrame.getActiveFit()
+        self.sFit.refreshFit(fitID)
+        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+        event.Skip()
+        
     def OnCBGlobalForceReloadStateChange(self, event):
         self.sFit.serviceFittingOptions["useGlobalForceReload"] = self.cbGlobalForceReload.GetValue()
         fitID = self.mainFrame.getActiveFit()

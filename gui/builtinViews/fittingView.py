@@ -446,6 +446,14 @@ class FittingView(d.Display):
         else:
             event.Skip()
 
+    slotColourMap = {1: wx.Colour(238, 221, 130),
+                     2: wx.Colour(100, 149, 237),
+                     3: wx.Colour(205, 120, 120),
+                     4: '',
+                     5: ''}
+    def slotColour(self, slot):
+        return self.slotColourMap[slot] or self.GetBackgroundColour()
+    
     def refresh(self, stuff):
         d.Display.refresh(self, stuff)
         sFit = service.Fit.getInstance()
@@ -454,14 +462,14 @@ class FittingView(d.Display):
         for slotType in Slot.getTypes():
             slot = Slot.getValue(slotType)
             slotMap[slot] = fit.getSlotsFree(slot) < 0
-        bkcolor = self.GetBackgroundColour()
+            
         for i, mod in enumerate(self.mods):
             if slotMap[mod.slot]:
                 self.SetItemBackgroundColour(i, wx.Colour(204, 51, 51))
+            elif sFit.serviceFittingOptions["colorFitBySlot"]:
+                self.SetItemBackgroundColour(i, self.slotColour(mod.slot))
             else:
-                icolor = self.GetItemBackgroundColour(i)
-                if icolor != bkcolor:
-                    self.SetItemBackgroundColour(i, bkcolor)
+                self.SetItemBackgroundColour(i, self.GetBackgroundColour())
         self.itemCount = self.GetItemCount()
         self.itemRect = self.GetItemRect(0)
 
