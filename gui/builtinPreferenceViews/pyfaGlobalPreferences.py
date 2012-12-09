@@ -153,7 +153,7 @@ class PFGlobalPref ( PreferenceView):
         self.cbGlobalChar.SetValue(useGlobalChar)
         self.cbGlobalDmgPattern.SetValue(useGlobalDmgPattern)
         self.cbGlobalForceReload.SetValue(useGlobalForceReload)
-        self.cbFitColorSlots.SetValue(self.sFit.serviceFittingOptions["colorFitBySlot"])
+        self.cbFitColorSlots.SetValue(self.sFit.serviceFittingOptions["colorFitBySlot"] or False)
 
         self.cbGlobalChar.Bind(wx.EVT_CHECKBOX, self.OnCBGlobalCharStateChange)
         self.cbGlobalDmgPattern.Bind(wx.EVT_CHECKBOX, self.OnCBGlobalDmgPatternStateChange)
