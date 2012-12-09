@@ -80,7 +80,10 @@ class Settings():
         cPickle.dump(self.info, f, cPickle.HIGHEST_PROTOCOL)
 
     def __getitem__(self, k):
-        return self.info[k]
+        try:
+            return self.info[k]
+        except KeyError:
+            return None
 
     def __setitem__(self, k, v):
         self.info[k] = v
