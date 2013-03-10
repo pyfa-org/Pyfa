@@ -239,7 +239,9 @@ class Market():
             "'Daemon' Codebreaker I": 714, # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
             "'Libram' Codebreaker I": 714, # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
             "Akemon's Modified 'Noble' ZET5000": 1185, # Implants & Boosters > Implants > Skill Hardwiring > Implant Slot 10 > Armor Implants
-            "Cerebral Accelerator": 977, # Implants & Boosters > Booster
+            "Standard Cerebral Accelerator": 977, # Implants & Boosters > Booster
+            "Advanced Cerebral Accelerator": 977, # Implants & Boosters > Booster
+            "Prototype Cerebral Accelerator": 977, # Implants & Boosters > Booster
             "Civilian Damage Control": 760, # Ship Equipment > Civilian Modules
             "Civilian EM Ward Field": 760, # Ship Equipment > Civilian Modules
             "Civilian Explosive Deflection Field": 760, # Ship Equipment > Civilian Modules
