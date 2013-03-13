@@ -184,18 +184,14 @@ class Market():
             "Echelon": self.les_grp, # 2011 new year gift
             "Malice": self.les_grp, # AT9 prize
             "Vangel": self.les_grp, # AT9 prize
-            "Iteron Mark IV Quafe Ultra Edition": self.les_grp, # Gift to Fanfest 2012 attendees
-            "Iteron Mark IV Quafe Ultramarine Edition": self.les_grp } # Gift to first Japanese subscribers
+            "Cambion": self.les_grp, # AT10 prize
+            "Etana": self.les_grp } # AT10 prize
         self.ITEMS_FORCEGROUP_R = self.__makeRevDict(self.ITEMS_FORCEGROUP)
         self.les_grp.items += list(self.getItem(itmn) for itmn in self.ITEMS_FORCEGROUP_R[self.les_grp])
         self.customGroups.add(self.les_grp)
 
         # List of items which are forcibly published or hidden
         self.ITEMS_FORCEPUBLISHED = {
-            "Ibis": True, # Noobship
-            "Impairor": True, # Noobship
-            "Velator": True, # Noobship
-            "Reaper": True, # Noobship
             "Data Subverter I": False, # Not used in EVE, probably will appear with Dust link
             "Ghost Heavy Missile": False, # Missile used by Sansha
             "QA Damage Module": False, # QA modules used by CCP internally
@@ -206,12 +202,26 @@ class Market():
             "QA Multiship Module - 40 Players": False,
             "QA Multiship Module - 5 Players": False,
             "QA Remote Armor Repair System - 5 Players": False,
-            "QA Shield Transporter - 5 Players": False }
+            "QA Shield Transporter - 5 Players": False,
+            "Aliastra Catalyst": False, # Vanity
+            "Inner Zone Shipping Catalyst": False, # Vanity
+            "Intaki Syndicate Catalyst": False, # Vanity
+            "InterBus Catalyst": False, # Vanity
+            "Quafe Catalyst": False, # Vanity
+            "Nefantar Thrasher": False, # Vanity
+            "Sarum Magnate": False, # Vanity
+            "Sukuuvestaa Heron": False, # Vanity
+            "Inner Zone Shipping Imicus": False, # Vanity
+            "Vherokior Probe": False, # Vanity
+            "Iteron Mark IV Quafe Ultra Edition": False, # Vanity
+            "Iteron Mark IV Quafe Ultramarine Edition": False, # Vanity
+            "Iteron Mark IV Amastris Edition": False, # Vanity
+            "Goru's Shuttle": False, # Vanity
+            "Guristas Shuttle": False } # Vanity
 
         # List of groups which are forcibly published
         self.GROUPS_FORCEPUBLISHED = {
-            "Prototype Exploration Ship": False, # We moved the only ship from this group to other group anyway
-            "Rookie ship": True } # Group-container for published noobships
+            "Prototype Exploration Ship": False } # We moved the only ship from this group to other group anyway
 
         # Dictionary of items with forced meta groups, uses following format:
         # Item name: (metagroup name, parent type name)
@@ -238,10 +248,7 @@ class Market():
             "'Codex' Codebreaker I": 714, # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
             "'Daemon' Codebreaker I": 714, # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
             "'Libram' Codebreaker I": 714, # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
-            "Akemon's Modified 'Noble' ZET5000": 1185, # Implants & Boosters > Implants > Skill Hardwiring > Implant Slot 10 > Armor Implants
-            "Standard Cerebral Accelerator": 977, # Implants & Boosters > Booster
             "Advanced Cerebral Accelerator": 977, # Implants & Boosters > Booster
-            "Prototype Cerebral Accelerator": 977, # Implants & Boosters > Booster
             "Civilian Damage Control": 760, # Ship Equipment > Civilian Modules
             "Civilian EM Ward Field": 760, # Ship Equipment > Civilian Modules
             "Civilian Explosive Deflection Field": 760, # Ship Equipment > Civilian Modules
@@ -252,36 +259,22 @@ class Market():
             "Civilian Remote Shield Transporter": 760, # Ship Equipment > Civilian Modules
             "Civilian Stasis Webifier": 760, # Ship Equipment > Civilian Modules
             "Civilian Thermic Dissipation Field": 760, # Ship Equipment > Civilian Modules
-            "Civilian Scourge Light Missile": 920, # Ammunition & Charges > Missiles > Light Missiles > Standard Light Missiles
             "Civilian Warp Disruptor": 760, # Ship Equipment > Civilian Modules
-            "Genolution Core Augmentation CA-1": 618, # Implants & Boosters > Implants > Attribute Enhancers > Implant Slot 1
-            "Genolution Core Augmentation CA-2": 621, # Implants & Boosters > Implants > Attribute Enhancers > Implant Slot 4
-            "Hardwiring - Zainou 'Sharpshooter' ZMX10": 1156, # Implants & Boosters > Implants > Skill Hardwiring > Implant Slot 6 > Missile Implants
-            "Hardwiring - Zainou 'Sharpshooter' ZMX100": 1156, # Implants & Boosters > Implants > Skill Hardwiring > Implant Slot 6 > Missile Implants
-            "Hardwiring - Zainou 'Sharpshooter' ZMX1000": 1156, # Implants & Boosters > Implants > Skill Hardwiring > Implant Slot 6 > Missile Implants
-            "Hardwiring - Zainou 'Sharpshooter' ZMX11": 1156, # Implants & Boosters > Implants > Skill Hardwiring > Implant Slot 6 > Missile Implants
-            "Hardwiring - Zainou 'Sharpshooter' ZMX110": 1156, # Implants & Boosters > Implants > Skill Hardwiring > Implant Slot 6 > Missile Implants
-            "Hardwiring - Zainou 'Sharpshooter' ZMX1100": 1156, # Implants & Boosters > Implants > Skill Hardwiring > Implant Slot 6 > Missile Implants
-            "Imperial Navy Modified 'Noble' Implant": 1185, # Implants & Boosters > Implants > Skill Hardwiring > Implant Slot 10 > Armor Implants
-            "Imperial Special Ops Field Enhancer - Standard": 618, # Implants & Boosters > Implants > Attribute Enhancers > Implant Slot 1
-            "Michi's Excavation Augmentor": 1187, # Implants & Boosters > Implants > Skill Hardwiring > Implant Slot 10 > Industry Implants
+            "Hardwiring - Zainou 'Sharpshooter' ZMX10": 1493, # Implants & Boosters > Implants > Skill Hardwiring > Missile Implants > Implant Slot 06
+            "Hardwiring - Zainou 'Sharpshooter' ZMX100": 1493, # Implants & Boosters > Implants > Skill Hardwiring > Missile Implants > Implant Slot 06
+            "Hardwiring - Zainou 'Sharpshooter' ZMX1000": 1493, # Implants & Boosters > Implants > Skill Hardwiring > Missile Implants > Implant Slot 06
+            "Hardwiring - Zainou 'Sharpshooter' ZMX11": 1493, # Implants & Boosters > Implants > Skill Hardwiring > Missile Implants > Implant Slot 06
+            "Hardwiring - Zainou 'Sharpshooter' ZMX110": 1493, # Implants & Boosters > Implants > Skill Hardwiring > Missile Implants > Implant Slot 06
+            "Hardwiring - Zainou 'Sharpshooter' ZMX1100": 1493, # Implants & Boosters > Implants > Skill Hardwiring > Missile Implants > Implant Slot 06
             "Nugoehuvi Synth Blue Pill Booster": 977, # Implants & Boosters > Booster
-            "Numon Family Heirloom": 1152, # Implants & Boosters > Implants > Skill Hardwiring > Implant Slot 6 > Armor Implants
-            "Ogdin's Eye Coordination Enhancer": 1163, # Implants & Boosters > Implants > Skill Hardwiring > Implant Slot 7 > Gunnery Implants
-            "Pashan's Turret Customization Mindlink": 1180, # Implants & Boosters > Implants > Skill Hardwiring > Implant Slot 9 > Gunnery Implants
-            "Pashan's Turret Handling Mindlink": 1186, # Implants & Boosters > Implants > Skill Hardwiring > Implant Slot 10 > Gunnery Implants
+            "Prototype Cerebral Accelerator": 977, # Implants & Boosters > Booster
             "Prototype Iris Probe Launcher": 712, # Ship Equipment > Turrets & Bays > Scan Probe Launchers
-            "Quafe Zero": 977, # Implants & Boosters > Booster
-            "Republic Special Ops Field Enhancer - Gamma": 620, # Implants & Boosters > Implants > Attribute Enhancers > Implant Slot 3
-            "Sansha Modified 'Gnome' Implant": 1167, # Implants & Boosters > Implants > Skill Hardwiring > Implant Slot 7 > Shield Implants
             "Shadow": 1310, # Drones > Combat Drones > Fighter Bombers
-            "Shaqil's Speed Enhancer": 1157, # Implants & Boosters > Implants > Skill Hardwiring > Implant Slot 6 > Navigation Implants
             "Sleeper Data Analyzer I": 714, # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
+            "Standard Cerebral Accelerator": 977, # Implants & Boosters > Booster
             "Talocan Data Analyzer I": 714, # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
             "Terran Data Analyzer I": 714, # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
-            "Tetrimon Data Analyzer I": 714, # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
-            "Whelan Machorin's Ballistic Smartlink": 1189, # Implants & Boosters > Implants > Skill Hardwiring > Implant Slot 10 > Missile Implants
-            "Zor's Custom Navigation Hyper-Link": 1176 } # Implants & Boosters > Implants > Skill Hardwiring > Implant Slot 8 > Navigation Implants
+            "Tetrimon Data Analyzer I": 714 } # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
 
         self.ITEMS_FORCEDMARKETGROUP_R = self.__makeRevDict(self.ITEMS_FORCEDMARKETGROUP)
 
