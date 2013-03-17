@@ -257,6 +257,7 @@ class Market():
             "Civilian Light Missile Launcher": 760, # Ship Equipment > Civilian Modules
             "Civilian Remote Armor Repair System": 760, # Ship Equipment > Civilian Modules
             "Civilian Remote Shield Transporter": 760, # Ship Equipment > Civilian Modules
+            "Civilian Scourge Light Missile": 920, # Ammunition & Charges > Missiles > Light Missiles > Standard Light Missiles
             "Civilian Stasis Webifier": 760, # Ship Equipment > Civilian Modules
             "Civilian Thermic Dissipation Field": 760, # Ship Equipment > Civilian Modules
             "Civilian Warp Disruptor": 760, # Ship Equipment > Civilian Modules
