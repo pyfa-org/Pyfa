@@ -217,7 +217,8 @@ class Market():
             "Iteron Mark IV Quafe Ultramarine Edition": False, # Vanity
             "Iteron Mark IV Amastris Edition": False, # Vanity
             "Goru's Shuttle": False, # Vanity
-            "Guristas Shuttle": False } # Vanity
+            "Guristas Shuttle": False, # Vanity
+            "Tash-Murkon Magnate": False } # Vanity
 
         # List of groups which are forcibly published
         self.GROUPS_FORCEPUBLISHED = {
@@ -244,10 +245,10 @@ class Market():
         # Dictionary of items with forced market group (service assumes they have no
         # market group assigned in db, otherwise they'll appear in both original and forced groups)
         self.ITEMS_FORCEDMARKETGROUP = {
-            "'Alpha' Codebreaker I": 714, # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
-            "'Codex' Codebreaker I": 714, # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
-            "'Daemon' Codebreaker I": 714, # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
-            "'Libram' Codebreaker I": 714, # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
+            "'Alpha' Data Analyzer I": 714, # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
+            "'Codex' Data Analyzer I": 714, # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
+            "'Daemon' Data Analyzer I": 714, # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
+            "'Libram' Data Analyzer I": 714, # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
             "Advanced Cerebral Accelerator": 977, # Implants & Boosters > Booster
             "Civilian Damage Control": 760, # Ship Equipment > Civilian Modules
             "Civilian EM Ward Field": 760, # Ship Equipment > Civilian Modules
