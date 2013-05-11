@@ -218,7 +218,8 @@ class Market():
             "Iteron Mark IV Amastris Edition": False, # Vanity
             "Goru's Shuttle": False, # Vanity
             "Guristas Shuttle": False, # Vanity
-            "Tash-Murkon Magnate": False } # Vanity
+            "Tash-Murkon Magnate": False, # Vanity
+            "Scorpion Ishukone Watch": False } # Vanity
 
         # List of groups which are forcibly published
         self.GROUPS_FORCEPUBLISHED = {
