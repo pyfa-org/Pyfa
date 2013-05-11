@@ -15,8 +15,8 @@ saveInRoot = False
 # Version data
 version = "1.1.14"
 tag = "git"
-expansionName = "chaos"
-expansionVersion = "529364"
+expansionName = "singularity"
+expansionVersion = "531040"
 
 pyfaPath = None
 savePath = None
