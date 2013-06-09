@@ -13,8 +13,8 @@ debug = False
 saveInRoot = False
 
 # Version data
-version = "1.1.14"
-tag = "stable"
+version = "1.1.15"
+tag = "git"
 expansionName = "Odyssey"
 expansionVersion = "1.0"
 

@@ -539,8 +539,8 @@ class APIView (wx.Panel):
         wx.Panel.__init__ (self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.Size(500, 300), style=wx.TAB_TRAVERSAL)
         self.Parent.Parent.Bind(CHAR_CHANGED, self.charChanged)
 
-        self.apiUrlCreatePredefined = u"https://support.eveonline.com/api/Key/CreatePredefined/8"
-        self.apiUrlKeyList = u"https://support.eveonline.com/api/Key/Index"
+        self.apiUrlCreatePredefined = u"https://community.eveonline.com/support/api-key/update/"
+        self.apiUrlKeyList = u"https://community.eveonline.com/support/api-key/"
 
         pmainSizer = wx.BoxSizer(wx.VERTICAL)
 
@@ -586,7 +586,7 @@ class APIView (wx.Panel):
         pmainSizer.Add(self.btnFetchSkills, 0, wx.ALL, 5)
         self.btnFetchSkills.Hide()
         self.btnFetchSkills.Bind(wx.EVT_BUTTON, self.fetchSkills)
-        self.stAPITip = wx.StaticText( self, wx.ID_ANY, u"You can create a key here (character sheet access only):", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.stAPITip = wx.StaticText( self, wx.ID_ANY, u"You can create a key here (only character sheet access is needed):", wx.DefaultPosition, wx.DefaultSize, 0 )
         self.stAPITip.Wrap( -1 )
 
         pmainSizer.Add( self.stAPITip, 0, wx.ALL, 2 )
