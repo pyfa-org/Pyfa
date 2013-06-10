@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+<icons>
+  <eve>
+    <name>Inferno</name>
+    <version>1.1</version>
+  </eve>
+  <internal>
+    <release>4</release>
+    <comment>Icons for new modules</comment>
+  </internal>
+</icons>
