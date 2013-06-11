@@ -4,7 +4,5 @@ type = "gang", "active"
 gangBoost = "armorRepairDuration"
 def handler(fit, module, context):
     if "gang" not in context: return
-    groups = ("Armor Repair Unit", "Armor Repair Projector")
-    fit.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups,
-                                  "duration", module.getModifiedItemAttr("commandBonus"),
-                                  stackingPenalties = True)
+    fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Repair Systems") or mod.item.requiresSkill("Remote Armor Repair Systems"),
+                                  "duration", module.getModifiedItemAttr("commandBonus"))
