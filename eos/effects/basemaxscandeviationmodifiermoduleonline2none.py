@@ -3,4 +3,5 @@
 type = "passive"
 def handler(fit, module, context):
     fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill("Astrometrics"),
-                                    "baseMaxScanDeviation", module.getModifiedItemAttr("maxScanDeviationModifierModule"))
+                                    "baseMaxScanDeviation", module.getModifiedItemAttr("maxScanDeviationModifierModule"),
+                                    stackingPenalties=True)
