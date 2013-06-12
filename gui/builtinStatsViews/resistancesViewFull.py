@@ -26,6 +26,7 @@ from gui.utils.numberFormatter import formatAmount
 import service
 import gui.mainFrame
 import gui.builtinViews.fittingView as fv
+import gui.globalEvents as GE
 
 EffectiveHpToggled, EFFECTIVE_HP_TOGGLED = wx.lib.newevent.NewEvent()
 
@@ -160,9 +161,7 @@ class ResistancesViewFull(StatsView):
 
     def ehpSwitch(self, event):
         self.showEffective = event.effective
-        sFit = service.Fit.getInstance()
-        self.refreshPanel(sFit.getFit(self.mainFrame.getActiveFit()))
-        event.Skip()
+        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
 
     def refreshPanel(self, fit):
         #If we did anything intresting, we'd update our labels to reflect the new fit's stats here

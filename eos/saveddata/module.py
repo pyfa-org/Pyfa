@@ -165,6 +165,20 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         else:
             return self.__chargeCycles
 
+    @property
+    def hpBeforeReload(self):
+        """
+        If item is some kind of repairer with charges, calculate
+        HP it reps before going into reload.
+        """
+        cycles = self.numShots
+        armorRep = self.getModifiedItemAttr("armorDamageAmount") or 0
+        shieldRep = self.getModifiedItemAttr("shieldBonus") or 0
+        if not cycles or (not armorRep and not shieldRep):
+            return None
+        hp = round((armorRep + shieldRep) * cycles)
+        return hp
+
     def __calculateAmmoShots(self):
         if self.charge is not None:
             # Set number of cycles before reload is needed
@@ -335,7 +349,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         # Check ship type restrictions
         fitsOnType = set()
         fitsOnGroup = set()
-        
+
         shipType = self.getModifiedItemAttr("fitsToShipType")
         if shipType is not None:
             fitsOnType.add(shipType)
@@ -355,7 +369,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         if (len(fitsOnGroup) > 0 or len(fitsOnType) > 0) and fit.ship.item.group.ID not in fitsOnGroup and fit.ship.item.ID not in fitsOnType:
             return False
 
-        
+
         # If the mod is a subsystem, don't let two subs in the same slot fit
         if self.slot == Slot.SUBSYSTEM:
             subSlot = self.getModifiedItemAttr("subSystemSlot")

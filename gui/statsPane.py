@@ -54,6 +54,7 @@ class StatsPane(wx.Panel):
         self.SetSizer(mainSizer)
 
         self.views = []
+        self.nameViewMap = {}
         maxviews = len(self.DEFAULT_VIEWS)
         i=0
         for viewName in self.DEFAULT_VIEWS:
@@ -62,6 +63,7 @@ class StatsPane(wx.Panel):
             contentPanel.viewName = viewName
 
             view = StatsView.getView(viewName)(self)
+            self.nameViewMap[viewName] = view
             self.views.append(view)
 
             headerPanel = tp.GetHeaderPanel()

@@ -17,11 +17,14 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 #===============================================================================
 
+
+import gui.mainFrame
 from gui import builtinViewColumns
 from gui.viewColumn import ViewColumn
 from gui import bitmapLoader
 from gui.utils.numberFormatter import formatAmount
 from gui.utils.listFormatter import formatList
+from service.fit import Fit
 
 import wx
 
@@ -42,6 +45,7 @@ class Miscellanea(ViewColumn):
         if params["displayName"] or self.imageId == -1:
             self.columnText = "Misc data"
             self.mask |= wx.LIST_MASK_TEXT
+        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     def getText(self, stuff):
         text = self.__getData(stuff)[0]
@@ -406,6 +410,28 @@ class Miscellanea(ViewColumn):
             cycleTime = stuff.getModifiedItemAttr("duration") / 1000
             text = "{0}s".format(cycleTime)
             tooltip = "Spoolup time"
+            return text, tooltip
+        elif itemGroup in ("Fueled Armor Repairer", "Fueled Shield Booster"):
+            hp = stuff.hpBeforeReload
+            cycles = stuff.numShots
+            cycleTime = stuff.cycleTime
+            if not hp or not cycleTime or not cycles:
+                return "", None
+            fit = Fit.getInstance().getFit(self.mainFrame.getActiveFit())
+            ehpTotal = fit.ehp
+            hpTotal = fit.hp
+            useEhp = self.mainFrame.statsPane.nameViewMap["resistancesViewFull"].showEffective
+            if useEhp:
+                if itemGroup == "Fueled Armor Repairer":
+                    hpRatio = ehpTotal["armor"] / hpTotal["armor"]
+                else:
+                    hpRatio = ehpTotal["shield"] / hpTotal["shield"]
+            else:
+                hpRatio = 1
+            ehp = hp * hpRatio
+            duration = cycles * cycleTime / 1000
+            text = "{0} / {1}s".format(formatAmount(ehp, 3, 0, 9), formatAmount(duration, 3, 0, 3))
+            tooltip = "Hitpoints restored over duration using charges"
             return text, tooltip
         elif stuff.charge is not None:
             chargeGroup = stuff.charge.group.name
