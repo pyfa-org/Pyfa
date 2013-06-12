@@ -42,6 +42,6 @@ http://github.com/DarkFenX/Pyfa
 IRC:
 #evefit@irc.coldfront.net
 EVE forum thread:
-https://forums.eveonline.com/default.aspx?g=posts&t=247609
+http://forums.eveonline.com/default.aspx?g=posts&t=247609
 EVE Online website:
 http://www.eveonline.com/
