@@ -5,8 +5,7 @@
 ##
 ## Author: Darriele - HomeWorld
 ##
-## Project home: http://www.evefit.org - pyfa project
-##               http://www.evefit.org is the home for pyfa / eos  / aurora
+## Project home: http://github.com/DarkFenX/Pyfa - pyfa project
 ## Some portions of code are based on
 ## AGW:pycollapsiblepane generic implementation of wx.CollapsiblePane
 ## AGW:pycollapsiblepane credits ( from the original source file used ):
