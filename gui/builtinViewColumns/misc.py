@@ -421,17 +421,19 @@ class Miscellanea(ViewColumn):
             ehpTotal = fit.ehp
             hpTotal = fit.hp
             useEhp = self.mainFrame.statsPane.nameViewMap["resistancesViewFull"].showEffective
+            tooltip = "HP restored over duration using charges"
             if useEhp:
                 if itemGroup == "Fueled Armor Repairer":
                     hpRatio = ehpTotal["armor"] / hpTotal["armor"]
                 else:
                     hpRatio = ehpTotal["shield"] / hpTotal["shield"]
+                tooltip = "E{0}".format(tooltip)
             else:
                 hpRatio = 1
             ehp = hp * hpRatio
             duration = cycles * cycleTime / 1000
             text = "{0} / {1}s".format(formatAmount(ehp, 3, 0, 9), formatAmount(duration, 3, 0, 3))
-            tooltip = "Hitpoints restored over duration using charges"
+
             return text, tooltip
         elif stuff.charge is not None:
             chargeGroup = stuff.charge.group.name
