@@ -89,12 +89,20 @@ class Miscellanea(ViewColumn):
             text = "{0}/s".format(formatAmount(capPerSec, 3, 0, 3))
             tooltip = "Energy neutralization per second"
             return text, tooltip
-        elif itemGroup in ("Salvager", "Data Miners"):
+        elif itemGroup == "Salvager":
             chance = stuff.getModifiedItemAttr("accessDifficultyBonus")
             if not chance:
                 return "", None
             text = "{0}%".format(formatAmount(chance, 3, 0, 3))
             tooltip = "Item retrieval chance"
+            return text, tooltip
+        elif itemGroup == "Data Miners":
+            strength = stuff.getModifiedItemAttr("virusStrength")
+            coherence = stuff.getModifiedItemAttr("virusCoherence")
+            if not strength or not coherence:
+                return "", None
+            text = "{0} | {1}".format(formatAmount(strength, 3, 0, 3), formatAmount(coherence, 3, 0, 3))
+            tooltip = "Virus strength and coherence"
             return text, tooltip
         elif itemGroup in ("Warp Scrambler", "Warp Core Stabilizer"):
             scramStr = stuff.getModifiedItemAttr("warpScrambleStrength")
@@ -181,7 +189,7 @@ class Miscellanea(ViewColumn):
             plu = "" if len(ttEntries) == 1 else "s"
             tooltip = "{0} strength{1}".format(formatList(ttEntries), plu).capitalize()
             return text, tooltip
-        elif itemGroup == "Remote Sensor Booster":
+        elif itemGroup in ("Remote Sensor Booster", "Sensor Booster", "Signal Amplifier"):
             scanResBonus = stuff.getModifiedItemAttr("scanResolutionBonus")
             lockRangeBonus = stuff.getModifiedItemAttr("maxTargetRangeBonus")
             if scanResBonus is None or lockRangeBonus is None:
@@ -200,7 +208,7 @@ class Miscellanea(ViewColumn):
                 ttEntries.append("scan resolution")
             tooltip = "{0} bonus".format(formatList(ttEntries)).capitalize()
             return text, tooltip
-        elif itemGroup == "Projected ECCM":
+        elif itemGroup in ("Projected ECCM", "ECCM", "Sensor Backup Array"):
             grav = stuff.getModifiedItemAttr("scanGravimetricStrengthPercent")
             ladar = stuff.getModifiedItemAttr("scanLadarStrengthPercent")
             radar = stuff.getModifiedItemAttr("scanRadarStrengthPercent")
