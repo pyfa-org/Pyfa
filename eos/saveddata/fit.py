@@ -387,14 +387,21 @@ class Fit(object):
             for drone in self.drones:
                 export += "%s x%s\n" % (drone.item.name, drone.amount)
 
+        if export[-1] == "\n":
+            export = export[:-1]
+
         return export
 
     def exportEftImps(self):
         export = self.exportEft()
         if len(self.implants) > 0:
-            export += "\n\n"
+            export += "\n\n\n"
             for implant in self.implants:
                 export += "%s\n" % (implant.item.name)
+
+        if export[-1] == "\n":
+            export = export[:-1]
+
         return export
 
     def exportDna(self):
