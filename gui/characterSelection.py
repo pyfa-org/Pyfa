@@ -109,25 +109,33 @@ class CharacterSelection(wx.Panel):
 
     def fitChanged(self, event):
         self.charChoice.Enable(event.fitID != None)
-
         choice = self.charChoice
         cFit = service.Fit.getInstance()
         currCharID = choice.GetClientData(choice.GetCurrentSelection())
         fit = cFit.getFit(event.fitID)
         newCharID = fit.character.ID if fit is not None else None
+        print newCharID
         if event.fitID is None:
+            print "** No active fit **"
             self.skillReqsStaticBitmap.SetBitmap(self.cleanSkills)
-            self.skillReqsStaticBitmap.SetToolTipString("No active fit.")
+            self.skillReqsStaticBitmap.SetToolTipString("No active fit")
         else:
             sCharacter = service.Character.getInstance()
             reqs = sCharacter.checkRequirements(fit)
+            sCharacter.skillReqsDict = {'charname':fit.character.name, 'skills':[]}
+            print "-- Skills required for character \"%s\":" % (fit.character.name,)
             if len(reqs) == 0:
-                tip = "All prerequisites have been met"
+                print "  -- ** All skill prerequisites have been met **"
+                tip = "All skill prerequisites have been met"
                 self.skillReqsStaticBitmap.SetBitmap(self.greenSkills)
             else:
-                tip = self._buildSkillsTooltip(reqs)
+                tip  = "Skills required:\n"
+                tip += self._buildSkillsTooltip(reqs)
                 self.skillReqsStaticBitmap.SetBitmap(self.redSkills)
             self.skillReqsStaticBitmap.SetToolTipString(tip.strip())
+            print ""
+            print sCharacter.skillReqsDict
+        print ""
 
         if newCharID == None:
             cChar = service.Character.getInstance()
@@ -139,14 +147,19 @@ class CharacterSelection(wx.Panel):
 
     def _buildSkillsTooltip(self, reqs, tabulationLevel = 0):
         tip = ""
+        sCharacter = service.Character.getInstance()
         if tabulationLevel == 0:
             for item, subReqs in reqs.iteritems():
-                tip += "%s:\n" % item.name
+                print "  -- {%5d} %s" % (item.ID, item.name)
+                tip += " %s:\n" % item.name
                 tip += self._buildSkillsTooltip(subReqs, 1)
         else:
             for name, info in reqs.iteritems():
-                level, more = info
-                tip += "%s%s: %d\n" % ("  " * tabulationLevel, name, level)
+                level, ID, more = info
+                print "     %s{%5d} %s: %d" % ("  " * tabulationLevel, ID, name, level)
+                sCharacter.skillReqsDict['skills'].append(
+                    {'skillID' : ID, 'skill' : name, 'level' : int(level)})
+                tip += "  %s%s: %d\n" % ("  " * tabulationLevel, name, level)
                 tip += self._buildSkillsTooltip(more, tabulationLevel + 1)
 
         return tip
