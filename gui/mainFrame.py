@@ -491,10 +491,9 @@ class MainFrame(wx.Frame):
                 saveFmt = "xml"
             else:
                 saveFmt = "txt"
-            print("User selected format %d \'%s\'" % (saveFmtInt, saveFmt))
             filePath = saveDialog.GetPath()
             self.waitDialog = animUtils.WaitDialog(self)
-            sCharacter.backupSkills(filePath, saveFmt, self.closeWaitDialog)
+            sCharacter.backupSkills(filePath, saveFmt, self.getActiveFit(), self.closeWaitDialog)
             self.waitDialog.ShowModal()
 
         saveDialog.Destroy()

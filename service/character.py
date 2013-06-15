@@ -32,23 +32,21 @@ from codecs import open
 from xml.etree import ElementTree
 from xml.dom import minidom
 
-import gui.mainFrame
-
 EVEMON_COMPATIBLE_VERSION = "4081"
 
 class SkillBackupThread(threading.Thread):
-    def __init__(self, path, saveFmt, callback):
+    def __init__(self, path, saveFmt, activeFit, callback):
         threading.Thread.__init__(self)
         self.path = path
         self.saveFmt = saveFmt
+        self.activeFit = activeFit
         self.callback = callback
 
     def run(self):
         path = self.path
-        mainFrame = gui.mainFrame.MainFrame.getInstance()
         sCharacter = Character.getInstance()
         sFit = service.Fit.getInstance()
-        fit = sFit.getFit(mainFrame.getActiveFit())
+        fit = sFit.getFit(self.activeFit)
         backupFile = open(path, "w", encoding="utf-8")
         backupData = "";
         if self.saveFmt == "xml":
@@ -111,8 +109,8 @@ class Character():
 
         return prettydata
 
-    def backupSkills(self, path, saveFmt, callback):
-        thread = SkillBackupThread(path, saveFmt, callback)
+    def backupSkills(self, path, saveFmt, activeFit, callback):
+        thread = SkillBackupThread(path, saveFmt, activeFit, callback)
         thread.start()
 
     def all0(self):
