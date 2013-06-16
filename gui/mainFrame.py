@@ -263,7 +263,9 @@ class MainFrame(wx.Frame):
         dlg=wx.FileDialog(
             self,
             "Open One Or More Fitting Files",
-            wildcard = "EFT text fitting files (*.cfg)|*.cfg|EvE XML fitting files (*.xml)|*.xml|All Files (*)|*",
+            wildcard = "EFT text fitting files (*.cfg)|*.cfg|" \
+                       "EvE XML fitting files (*.xml)|*.xml|" \
+                       "All Files (*)|*",
             style = wx.FD_OPEN | wx.FD_FILE_MUST_EXIST | wx.FD_MULTIPLE)
         if (dlg.ShowModal() == wx.ID_OK):
             self.waitDialog = animUtils.WaitDialog(self, title = "Importing")
@@ -482,12 +484,16 @@ class MainFrame(wx.Frame):
         saveDialog = wx.FileDialog(
             self,
             "Export Skills Needed As...",
-            wildcard = "EVEMon skills training file (*.xml)|*.xml|Text skills training file (*.txt)|*.txt",
+            wildcard = "EVEMon skills training file (*.emp)|*.emp|" \
+                       "EVEMon skills training XML file (*.xml)|*.xml|" \
+                       "Text skills training file (*.txt)|*.txt",
             style = wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT)
         if (saveDialog.ShowModal() == wx.ID_OK):
             saveFmtInt = saveDialog.GetFilterIndex()
             saveFmt = ""
             if saveFmtInt == 0:  # Per ordering of wildcards above
+                saveFmt = "emp"
+            elif saveFmtInt == 1:
                 saveFmt = "xml"
             else:
                 saveFmt = "txt"

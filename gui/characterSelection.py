@@ -138,19 +138,24 @@ class CharacterSelection(wx.Panel):
 
         event.Skip()
 
-    def _buildSkillsTooltip(self, reqs, tabulationLevel = 0):
+    def _buildSkillsTooltip(self, reqs, currItem = "", tabulationLevel = 0):
         tip = ""
         sCharacter = service.Character.getInstance()
         if tabulationLevel == 0:
             for item, subReqs in reqs.iteritems():
                 tip += " %s:\n" % item.name
-                tip += self._buildSkillsTooltip(subReqs, 1)
+                tip += self._buildSkillsTooltip(subReqs, item.name, 1)
         else:
             for name, info in reqs.iteritems():
                 level, ID, more = info
-                sCharacter.skillReqsDict['skills'].append(
-                    {'skillID' : ID, 'skill' : name, 'level' : int(level)})
+                sCharacter.skillReqsDict['skills'].append({
+                    'item' : currItem,
+                    'skillID' : ID,
+                    'skill' : name,
+                    'level' : level,
+                    'indent' : tabulationLevel
+                })
                 tip += "  %s%s: %d\n" % ("  " * tabulationLevel, name, level)
-                tip += self._buildSkillsTooltip(more, tabulationLevel + 1)
+                tip += self._buildSkillsTooltip(more, currItem, tabulationLevel + 1)
 
         return tip

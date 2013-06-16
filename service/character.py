@@ -32,6 +32,8 @@ from codecs import open
 from xml.etree import ElementTree
 from xml.dom import minidom
 
+import gzip
+
 EVEMON_COMPATIBLE_VERSION = "4081"
 
 class SkillBackupThread(threading.Thread):
@@ -47,16 +49,19 @@ class SkillBackupThread(threading.Thread):
         sCharacter = Character.getInstance()
         sFit = service.Fit.getInstance()
         fit = sFit.getFit(self.activeFit)
-        backupFile = open(path, "w", encoding="utf-8")
         backupData = "";
-        if self.saveFmt == "xml":
+        if self.saveFmt == "xml" or self.saveFmt == "emp":
             backupData = sCharacter.exportXml()
-        elif self.saveFmt == "txt":
-            backupData = sCharacter.exportText()
         else:
             backupData = sCharacter.exportText()
-        backupFile.write(backupData)
-        backupFile.close()
+        
+        if self.saveFmt == "emp":
+            with gzip.open(path, "wb") as backupFile:
+                backupFile.write(backupData)
+        else:
+            with open(path, "w", encoding="utf-8") as backupFile:
+                backupFile.write(backupData)
+
         wx.CallAfter(self.callback)
 
 class Character():
@@ -71,15 +76,17 @@ class Character():
         return cls.instance
 
     def exportText(self):
-        data = ""
-
-        mySkills = repr(self.skillReqsDict)
-        data += "-" * 79
-        data += '\n'
-        data += repr(self.skillReqsDict)
-        data += '\n'
-        data += "-" * 79
-        data += '\n'
+        data  = "Pyfa exported plan for \""+self.skillReqsDict['charname']+"\"\n"
+        data += "=" * 79 + "\n"
+        data += "\n"
+        item = ""
+        for s in self.skillReqsDict['skills']:
+            if item == "" or not item == s["item"]:
+                item = s["item"]
+                data += "-" * 79 + "\n"
+                data += "Skills required for {}:\n".format(item)
+            data += "{}{}: {}\n".format("    " * s["indent"], s["skill"], int(s["level"]))
+        data += "-" * 79 + "\n"
 
         return data
 
@@ -97,7 +104,7 @@ class Character():
             entry = ElementTree.SubElement(root, "entry")
             entry.attrib["skillID"] = str(s["skillID"])
             entry.attrib["skill"] = s["skill"]
-            entry.attrib["level"] = str(s["level"])
+            entry.attrib["level"] = str(int(s["level"]))
             entry.attrib["priority"] = "3"
             entry.attrib["type"] = "Prerequisite"
             notes = ElementTree.SubElement(entry, "notes")
