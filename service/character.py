@@ -23,14 +23,109 @@ import copy
 import service
 import itertools
 
+import os.path
+import locale
+import threading
+import wx
+from codecs import open
+
+from xml.etree import ElementTree
+from xml.dom import minidom
+
+import gzip
+
+EVEMON_COMPATIBLE_VERSION = "4081"
+
+class SkillBackupThread(threading.Thread):
+    def __init__(self, path, saveFmt, activeFit, callback):
+        threading.Thread.__init__(self)
+        self.path = path
+        self.saveFmt = saveFmt
+        self.activeFit = activeFit
+        self.callback = callback
+
+    def run(self):
+        path = self.path
+        sCharacter = Character.getInstance()
+        sFit = service.Fit.getInstance()
+        fit = sFit.getFit(self.activeFit)
+        backupData = "";
+        if self.saveFmt == "xml" or self.saveFmt == "emp":
+            backupData = sCharacter.exportXml()
+        else:
+            backupData = sCharacter.exportText()
+        
+        if self.saveFmt == "emp":
+            with gzip.open(path, "wb") as backupFile:
+                backupFile.write(backupData)
+        else:
+            with open(path, "w", encoding="utf-8") as backupFile:
+                backupFile.write(backupData)
+
+        wx.CallAfter(self.callback)
+
 class Character():
     instance = None
+    skillReqsDict = {}
+
     @classmethod
     def getInstance(cls):
         if cls.instance is None:
             cls.instance = Character()
 
         return cls.instance
+
+    def exportText(self):
+        data  = "Pyfa exported plan for \""+self.skillReqsDict['charname']+"\"\n"
+        data += "=" * 79 + "\n"
+        data += "\n"
+        item = ""
+        for s in self.skillReqsDict['skills']:
+            if item == "" or not item == s["item"]:
+                item = s["item"]
+                data += "-" * 79 + "\n"
+                data += "Skills required for {}:\n".format(item)
+            data += "{}{}: {}\n".format("    " * s["indent"], s["skill"], int(s["level"]))
+        data += "-" * 79 + "\n"
+
+        return data
+
+    def exportXml(self):
+        root = ElementTree.Element("plan")
+        root.attrib["name"] = "Pyfa exported plan for "+self.skillReqsDict['charname']
+        root.attrib["revision"] = EVEMON_COMPATIBLE_VERSION
+        
+        sorts = ElementTree.SubElement(root, "sorting")
+        sorts.attrib["criteria"] = "None"
+        sorts.attrib["order"] = "None"
+        sorts.attrib["groupByPriority"] = "false"
+        
+        skillsSeen = set()
+
+        for s in self.skillReqsDict['skills']:
+            skillKey = str(s["skillID"])+"::"+s["skill"]+"::"+str(int(s["level"]))
+            if skillKey in skillsSeen:
+                pass   # Duplicate skills confuse EVEMon
+            else:
+                skillsSeen.add(skillKey)
+                entry = ElementTree.SubElement(root, "entry")
+                entry.attrib["skillID"] = str(s["skillID"])
+                entry.attrib["skill"] = s["skill"]
+                entry.attrib["level"] = str(int(s["level"]))
+                entry.attrib["priority"] = "3"
+                entry.attrib["type"] = "Prerequisite"
+                notes = ElementTree.SubElement(entry, "notes")
+                notes.text = entry.attrib["skill"]
+       
+        tree = ElementTree.ElementTree(root)
+        data = ElementTree.tostring(root, 'utf-8')
+        prettydata = minidom.parseString(data).toprettyxml(indent="  ")
+
+        return prettydata
+
+    def backupSkills(self, path, saveFmt, activeFit, callback):
+        thread = SkillBackupThread(path, saveFmt, activeFit, callback)
+        thread.start()
 
     def all0(self):
         all0 = eos.types.Character.getAll0()
@@ -169,10 +264,11 @@ class Character():
     def _checkRequirements(self, fit, char, subThing, reqs):
         for req, level in subThing.requiredSkills.iteritems():
             name = req.name
+            ID = req.ID
             info = reqs.get(name)
             currLevel, subs = info if info is not None else 0, {}
             if level > currLevel and (char is None or char.getSkill(req).level < level):
-                reqs[name] = (level, subs)
+                reqs[name] = (level, ID, subs)
                 self._checkRequirements(fit, char, req, subs)
 
         return reqs
