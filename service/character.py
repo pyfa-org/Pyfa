@@ -99,17 +99,24 @@ class Character():
         sorts.attrib["criteria"] = "None"
         sorts.attrib["order"] = "None"
         sorts.attrib["groupByPriority"] = "false"
-       
-        for s in self.skillReqsDict['skills']:
-            entry = ElementTree.SubElement(root, "entry")
-            entry.attrib["skillID"] = str(s["skillID"])
-            entry.attrib["skill"] = s["skill"]
-            entry.attrib["level"] = str(int(s["level"]))
-            entry.attrib["priority"] = "3"
-            entry.attrib["type"] = "Prerequisite"
-            notes = ElementTree.SubElement(entry, "notes")
-            notes.text = entry.attrib["skill"]
         
+        skillsSeen = set()
+
+        for s in self.skillReqsDict['skills']:
+            skillKey = str(s["skillID"])+"::"+s["skill"]+"::"+str(int(s["level"]))
+            if skillKey in skillsSeen:
+                pass   # Duplicate skills confuse EVEMon
+            else:
+                skillsSeen.add(skillKey)
+                entry = ElementTree.SubElement(root, "entry")
+                entry.attrib["skillID"] = str(s["skillID"])
+                entry.attrib["skill"] = s["skill"]
+                entry.attrib["level"] = str(int(s["level"]))
+                entry.attrib["priority"] = "3"
+                entry.attrib["type"] = "Prerequisite"
+                notes = ElementTree.SubElement(entry, "notes")
+                notes.text = entry.attrib["skill"]
+       
         tree = ElementTree.ElementTree(root)
         data = ElementTree.tostring(root, 'utf-8')
         prettydata = minidom.parseString(data).toprettyxml(indent="  ")
