@@ -244,7 +244,7 @@ class MainFrame(wx.Frame):
                                      "\nwxPython: \t" + wx.__version__ +
                                      "\nSQLAlchemy: \t" + sqlalchemy.__version__,
             700, wx.ClientDC(self))
-        info.WebSite = ("http://forums.eveonline.com/default.aspx?g=posts&t=247609", "pyfa thread at EVE Online forum")
+        info.WebSite = ("http://forums.eveonline.com/default.aspx?g=posts&amp;t=247609", "pyfa thread at EVE Online forum")
         wx.AboutBox(info)
 
 

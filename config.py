@@ -14,7 +14,7 @@ saveInRoot = False
 
 # Version data
 version = "1.1.15"
-tag = "stable"
+tag = "git"
 expansionName = "Odyssey"
 expansionVersion = "1.0"
 
