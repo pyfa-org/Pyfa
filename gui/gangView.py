@@ -137,7 +137,7 @@ class GangView ( ScrolledPanel ):
         self.SetupScrolling()
         self.Disable()
 
-        self.mainFrame.Bind(CharEditor.CHAR_LIST_UPDATED, self.RefreshCharacterList)
+        self.mainFrame.Bind(GE.CHAR_LIST_UPDATED, self.RefreshCharacterList)
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitSelected)
         self.mainFrame.Bind(gui.shipBrowser.EVT_FIT_RENAMED, self.fitRenamed)
 

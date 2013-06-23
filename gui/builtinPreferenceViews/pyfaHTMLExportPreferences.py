@@ -42,7 +42,7 @@ The file will be updated every time a fit changes or gets added.
         self.PathLinkCtrl = wx.HyperlinkCtrl( panel, wx.ID_ANY, str(self.HTMLExportSettings.getPath()), 'file:///' + str(self.HTMLExportSettings.getPath()), wx.DefaultPosition, wx.DefaultSize, wx.HL_ALIGN_LEFT|wx.NO_BORDER|wx.HL_CONTEXTMENU )
         mainSizer.Add( self.PathLinkCtrl, 0, wx.ALL|wx.EXPAND, 5)  
 
-        self.fileSelectDialog = wx.FileDialog(None, "Save Fitting As...", wildcard = "EvE IGB HTML fitting file (*.html)|*.html", style = wx.FD_SAVE)
+        self.fileSelectDialog = wx.FileDialog(None, "Save Fitting As...", wildcard = "EVE IGB HTML fitting file (*.html)|*.html", style = wx.FD_SAVE)
         self.fileSelectDialog.SetPath(self.HTMLExportSettings.getPath())
         self.fileSelectDialog.SetFilename(os.path.basename(self.HTMLExportSettings.getPath()));
         
