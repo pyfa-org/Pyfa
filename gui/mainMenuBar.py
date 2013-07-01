@@ -30,6 +30,7 @@ class MainMenuBar(wx.MenuBar):
         self.damagePatternEditorId = wx.NewId()
         self.graphFrameId = wx.NewId()
         self.backupFitsId = wx.NewId()
+        self.exportSkillsNeededId = wx.NewId()
         self.preferencesId = wx.NewId()
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
@@ -47,6 +48,7 @@ class MainMenuBar(wx.MenuBar):
         fileMenu.Append(self.backupFitsId, "&Backup fits", "Backup all fittings to a XML file")
         fileMenu.Append(wx.ID_OPEN, "&Import\tCTRL+O", "Import a fit into pyfa.")
         fileMenu.Append(wx.ID_SAVEAS, "&Export\tCTRL+S", "Export the fit to another format.")
+        fileMenu.Append(self.exportSkillsNeededId, "Export &Skills Needed", "Export skills needed for this fitting")
         fileMenu.AppendSeparator()
 
         fileMenu.Append(wx.ID_EXIT)
@@ -105,5 +107,6 @@ class MainMenuBar(wx.MenuBar):
         enable = event.fitID is not None
         self.Enable(wx.ID_SAVEAS, enable)
         self.Enable(wx.ID_COPY, enable)
+        self.Enable(self.exportSkillsNeededId, enable)
         event.Skip()
 

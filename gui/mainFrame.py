@@ -263,7 +263,9 @@ class MainFrame(wx.Frame):
         dlg=wx.FileDialog(
             self,
             "Open One Or More Fitting Files",
-            wildcard = "EFT text fitting files (*.cfg)|*.cfg|EvE XML fitting files (*.xml)|*.xml|All Files (*)|*",
+            wildcard = "EFT text fitting files (*.cfg)|*.cfg|" \
+                       "EvE XML fitting files (*.xml)|*.xml|" \
+                       "All Files (*)|*",
             style = wx.FD_OPEN | wx.FD_FILE_MUST_EXIST | wx.FD_MULTIPLE)
         if (dlg.ShowModal() == wx.ID_OK):
             self.waitDialog = animUtils.WaitDialog(self, title = "Importing")
@@ -335,6 +337,8 @@ class MainFrame(wx.Frame):
         self.Bind(wx.EVT_MENU, self.importFromClipboard, id=wx.ID_PASTE)
         # Backup fits
         self.Bind(wx.EVT_MENU, self.backupToXml, id=menuBar.backupFitsId)
+        # Export skills needed
+        self.Bind(wx.EVT_MENU, self.exportSkillsNeeded, id=menuBar.exportSkillsNeededId)
         # Preference dialog
         self.Bind(wx.EVT_MENU, self.showPreferenceDialog, id = menuBar.preferencesId)
 
@@ -471,6 +475,31 @@ class MainFrame(wx.Frame):
                 filePath += ".xml"
             self.waitDialog = animUtils.WaitDialog(self)
             sFit.backupFits(filePath, self.closeWaitDialog)
+            self.waitDialog.ShowModal()
+
+        saveDialog.Destroy()
+
+    def exportSkillsNeeded(self, event):
+        sCharacter = service.Character.getInstance()
+        saveDialog = wx.FileDialog(
+            self,
+            "Export Skills Needed As...",
+            wildcard = "EVEMon skills training file (*.emp)|*.emp|" \
+                       "EVEMon skills training XML file (*.xml)|*.xml|" \
+                       "Text skills training file (*.txt)|*.txt",
+            style = wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT)
+        if (saveDialog.ShowModal() == wx.ID_OK):
+            saveFmtInt = saveDialog.GetFilterIndex()
+            saveFmt = ""
+            if saveFmtInt == 0:  # Per ordering of wildcards above
+                saveFmt = "emp"
+            elif saveFmtInt == 1:
+                saveFmt = "xml"
+            else:
+                saveFmt = "txt"
+            filePath = saveDialog.GetPath()
+            self.waitDialog = animUtils.WaitDialog(self)
+            sCharacter.backupSkills(filePath, saveFmt, self.getActiveFit(), self.closeWaitDialog)
             self.waitDialog.ShowModal()
 
         saveDialog.Destroy()
