@@ -32,6 +32,7 @@ import config
 import gui.aboutData
 import gui.chromeTabs
 import gui.utils.animUtils as animUtils
+import gui.globalEvents as GE
 
 from gui import bitmapLoader
 from gui.mainMenuBar import MainMenuBar
@@ -264,7 +265,7 @@ class MainFrame(wx.Frame):
             self,
             "Open One Or More Fitting Files",
             wildcard = "EFT text fitting files (*.cfg)|*.cfg|" \
-                       "EvE XML fitting files (*.xml)|*.xml|" \
+                       "EVE XML fitting files (*.xml)|*.xml|" \
                        "All Files (*)|*",
             style = wx.FD_OPEN | wx.FD_FILE_MUST_EXIST | wx.FD_MULTIPLE)
         if (dlg.ShowModal() == wx.ID_OK):
@@ -272,7 +273,6 @@ class MainFrame(wx.Frame):
             sFit.importFitsThreaded(dlg.GetPaths(), self.importCallback)
             dlg.Destroy()
             self.waitDialog.ShowModal()
-
 
     def importCallback(self, fits):
         self.waitDialog.Destroy()
@@ -291,7 +291,7 @@ class MainFrame(wx.Frame):
         dlg=wx.FileDialog(
             self,
             "Save Fitting As...",
-            wildcard = "EvE XML fitting files (*.xml)|*.xml",
+            wildcard = "EVE XML fitting files (*.xml)|*.xml",
             style = wx.FD_SAVE)
         if (dlg.ShowModal() == wx.ID_OK):
             sFit = service.Fit.getInstance()
@@ -339,6 +339,8 @@ class MainFrame(wx.Frame):
         self.Bind(wx.EVT_MENU, self.backupToXml, id=menuBar.backupFitsId)
         # Export skills needed
         self.Bind(wx.EVT_MENU, self.exportSkillsNeeded, id=menuBar.exportSkillsNeededId)
+        # Import character
+        self.Bind(wx.EVT_MENU, self.importCharacter, id=menuBar.importCharacterId)
         # Preference dialog
         self.Bind(wx.EVT_MENU, self.showPreferenceDialog, id = menuBar.preferencesId)
 
@@ -467,7 +469,7 @@ class MainFrame(wx.Frame):
         saveDialog = wx.FileDialog(
             self,
             "Save Backup As...",
-            wildcard = "EvE XML fitting file (*.xml)|*.xml",
+            wildcard = "EVE XML fitting file (*.xml)|*.xml",
             style = wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT)
         if (saveDialog.ShowModal() == wx.ID_OK):
             filePath = saveDialog.GetPath()
@@ -503,6 +505,24 @@ class MainFrame(wx.Frame):
             self.waitDialog.ShowModal()
 
         saveDialog.Destroy()
+
+    def importCharacter(self, event):
+        sCharacter = service.Character.getInstance()
+        dlg=wx.FileDialog(
+            self,
+            "Open One Or More Character Files",
+            wildcard = "EVE CCP API XML character files (*.xml)|*.xml|" \
+                       "All Files (*)|*",
+            style = wx.FD_OPEN | wx.FD_FILE_MUST_EXIST | wx.FD_MULTIPLE)
+        if (dlg.ShowModal() == wx.ID_OK):
+            self.waitDialog = animUtils.WaitDialog(self, title = "Importing Character")
+            sCharacter.importCharacter(dlg.GetPaths(), self.importCharacterCallback)
+            dlg.Destroy()
+            self.waitDialog.ShowModal()
+
+    def importCharacterCallback(self):
+        self.waitDialog.Destroy()
+        wx.PostEvent(self, GE.CharListUpdated())
 
     def closeWaitDialog(self):
         self.waitDialog.Destroy()

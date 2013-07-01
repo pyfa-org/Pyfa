@@ -30,9 +30,6 @@ from wx.lib.buttons import GenBitmapButton
 import sys
 import gui.globalEvents as GE
 
-CharListUpdated, CHAR_LIST_UPDATED = wx.lib.newevent.NewEvent()
-CharChanged, CHAR_CHANGED = wx.lib.newevent.NewEvent()
-
 class CharacterEditor(wx.Frame):
     def __init__(self, parent):
         wx.Frame.__init__ (self, parent, id=wx.ID_ANY, title=u"pyfa: Character Editor", pos=wx.DefaultPosition,
@@ -136,7 +133,7 @@ class CharacterEditor(wx.Frame):
 
     def editingFinished(self, event):
         del self.disableWin
-        wx.PostEvent(self.mainFrame, CharListUpdated())
+        wx.PostEvent(self.mainFrame, GE.CharListUpdated())
         self.Destroy()
 
     def registerEvents(self):
@@ -145,7 +142,7 @@ class CharacterEditor(wx.Frame):
 
     def closeEvent(self, event):
         del self.disableWin
-        wx.PostEvent(self.mainFrame, CharListUpdated())
+        wx.PostEvent(self.mainFrame, GE.CharListUpdated())
         self.Destroy()
 
     def restrict(self):
@@ -182,7 +179,7 @@ class CharacterEditor(wx.Frame):
         else:
             self.unrestrict()
 
-        wx.PostEvent(self, CharChanged())
+        wx.PostEvent(self, GE.CharChanged())
         if event is not None:
             event.Skip()
 
@@ -253,7 +250,7 @@ class CharacterEditor(wx.Frame):
         self.unrestrict()
         self.btnSave.SetLabel("Copy")
         self.rename(None)
-        wx.PostEvent(self, CharChanged())
+        wx.PostEvent(self, GE.CharChanged())
 
     def delete(self, event):
         cChar = service.Character.getInstance()
@@ -265,7 +262,7 @@ class CharacterEditor(wx.Frame):
         if cChar.getCharName(newSelection) in ("All 0", "All 5"):
             self.restrict()
 
-        wx.PostEvent(self, CharChanged())
+        wx.PostEvent(self, GE.CharChanged())
 
     def Destroy(self):
         cFit = service.Fit.getInstance()
@@ -452,7 +449,7 @@ class ImplantsTreeView (wx.Panel):
         self.btnRemove.Bind(wx.EVT_BUTTON, self.removeImplant)
 
         #Bind the change of a character*
-        self.Parent.Parent.Bind(CHAR_CHANGED, self.charChanged)
+        self.Parent.Parent.Bind(GE.CHAR_CHANGED, self.charChanged)
         self.Enable(False)
         self.Layout()
 
@@ -537,7 +534,7 @@ class AvailableImplantsView(d.Display):
 class APIView (wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__ (self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.Size(500, 300), style=wx.TAB_TRAVERSAL)
-        self.Parent.Parent.Bind(CHAR_CHANGED, self.charChanged)
+        self.Parent.Parent.Bind(GE.CHAR_CHANGED, self.charChanged)
 
         self.apiUrlCreatePredefined = u"https://community.eveonline.com/support/api-key/update/"
         self.apiUrlKeyList = u"https://community.eveonline.com/support/api-key/"

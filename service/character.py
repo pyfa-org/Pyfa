@@ -22,6 +22,8 @@ import eos.types
 import copy
 import service
 import itertools
+from eos import eveapi
+import config
 
 import os.path
 import locale
@@ -34,7 +36,23 @@ from xml.dom import minidom
 
 import gzip
 
-EVEMON_COMPATIBLE_VERSION = "4081"
+class CharacterImportThread(threading.Thread):
+    def __init__(self, paths, callback):
+        threading.Thread.__init__(self)
+        self.paths = paths
+        self.callback = callback
+
+    def run(self):
+        paths = self.paths
+        sCharacter = Character.getInstance()
+        for path in paths:
+            with open(path, mode='r') as charFile:
+                sheet = eveapi.ParseXML(charFile)
+                charID = sCharacter.new()
+                sCharacter.rename(charID, sheet.name+" (imported)")
+                sCharacter.apiUpdateCharSheet(charID, sheet)
+
+        wx.CallAfter(self.callback)
 
 class SkillBackupThread(threading.Thread):
     def __init__(self, path, saveFmt, activeFit, callback):
@@ -56,15 +74,15 @@ class SkillBackupThread(threading.Thread):
             backupData = sCharacter.exportText()
         
         if self.saveFmt == "emp":
-            with gzip.open(path, "wb") as backupFile:
+            with gzip.open(path, mode='wb') as backupFile:
                 backupFile.write(backupData)
         else:
-            with open(path, "w", encoding="utf-8") as backupFile:
+            with open(path, mode='w',encoding='utf-8') as backupFile:
                 backupFile.write(backupData)
 
         wx.CallAfter(self.callback)
 
-class Character():
+class Character(object):
     instance = None
     skillReqsDict = {}
 
@@ -93,7 +111,7 @@ class Character():
     def exportXml(self):
         root = ElementTree.Element("plan")
         root.attrib["name"] = "Pyfa exported plan for "+self.skillReqsDict['charname']
-        root.attrib["revision"] = EVEMON_COMPATIBLE_VERSION
+        root.attrib["revision"] = config.evemonMinVersion
         
         sorts = ElementTree.SubElement(root, "sorting")
         sorts.attrib["criteria"] = "None"
@@ -125,6 +143,10 @@ class Character():
 
     def backupSkills(self, path, saveFmt, activeFit, callback):
         thread = SkillBackupThread(path, saveFmt, activeFit, callback)
+        thread.start()
+
+    def importCharacter(self, path, callback):
+        thread = CharacterImportThread(path, callback)
         thread.start()
 
     def all0(self):
@@ -220,6 +242,11 @@ class Character():
     def apiFetch(self, charID, charName):
         char = eos.db.getCharacter(charID)
         char.apiFetch(charName, proxy = service.settings.ProxySettings.getInstance().getProxySettings())
+        eos.db.commit()
+
+    def apiUpdateCharSheet(self, charID, sheet):
+        char = eos.db.getCharacter(charID)
+        char.apiUpdateCharSheet(sheet)
         eos.db.commit()
 
     def changeLevel(self, charID, skillID, level):
