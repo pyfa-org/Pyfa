@@ -48,7 +48,7 @@ class CharacterSelection(wx.Panel):
 
         self.skillReqsStaticBitmap.SetBitmap(self.cleanSkills)
         self.Bind(wx.EVT_CHOICE, self.charChanged)
-        self.mainFrame.Bind(ce.CHAR_LIST_UPDATED, self.refreshCharacterList)
+        self.mainFrame.Bind(GE.CHAR_LIST_UPDATED, self.refreshCharacterList)
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
 
 #        panelSize = wx.Size(-1,30)

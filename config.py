@@ -17,6 +17,7 @@ version = "1.1.15"
 tag = "git"
 expansionName = "Odyssey"
 expansionVersion = "1.0"
+evemonMinVersion = "4081"
 
 pyfaPath = None
 savePath = None

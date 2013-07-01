@@ -31,6 +31,7 @@ class MainMenuBar(wx.MenuBar):
         self.graphFrameId = wx.NewId()
         self.backupFitsId = wx.NewId()
         self.exportSkillsNeededId = wx.NewId()
+        self.importCharacterId = wx.NewId()
         self.preferencesId = wx.NewId()
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
@@ -45,10 +46,11 @@ class MainMenuBar(wx.MenuBar):
         fileMenu.Append(self.mainFrame.closePageId, "&Close Tab\tCTRL+W", "Close the current fit")
         fileMenu.AppendSeparator()
 
-        fileMenu.Append(self.backupFitsId, "&Backup fits", "Backup all fittings to a XML file")
-        fileMenu.Append(wx.ID_OPEN, "&Import\tCTRL+O", "Import a fit into pyfa.")
-        fileMenu.Append(wx.ID_SAVEAS, "&Export\tCTRL+S", "Export the fit to another format.")
+        fileMenu.Append(self.backupFitsId, "&Backup All Fittings", "Backup all fittings to a XML file")
+        fileMenu.Append(wx.ID_OPEN, "&Import Fittings\tCTRL+O", "Import fittings into pyfa")
+        fileMenu.Append(wx.ID_SAVEAS, "&Export Fitting\tCTRL+S", "Export fitting to another format")
         fileMenu.Append(self.exportSkillsNeededId, "Export &Skills Needed", "Export skills needed for this fitting")
+        fileMenu.Append(self.importCharacterId, "Import C&haracters", "Import characters into pyfa")
         fileMenu.AppendSeparator()
 
         fileMenu.Append(wx.ID_EXIT)

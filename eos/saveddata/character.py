@@ -126,6 +126,9 @@ class Character(object):
             return
 
         sheet = auth.character(charID).CharacterSheet()
+        apiUpdateCharSheet(sheet)
+
+    def apiUpdateCharSheet(self, sheet):
         del self.__skills[:]
         self.__skillIdMap.clear()
         for skillRow in sheet.skills:
