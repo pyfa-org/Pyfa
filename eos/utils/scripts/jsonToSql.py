@@ -30,77 +30,77 @@ import json
 import argparse
 
 if __name__ == "__main__":
-	parser = argparse.ArgumentParser(description="This scripts dumps effects from an sqlite cache dump to mongo")
-	parser.add_argument("-d", "--db", required=True, type=str, help="The sqlalchemy connectionstring, example: sqlite:///c:/tq.db")
-	parser.add_argument("-j", "--json", required=True, type=str, help="The path to the json dum")
-	args = parser.parse_args()
+    parser = argparse.ArgumentParser(description="This scripts dumps effects from an sqlite cache dump to mongo")
+    parser.add_argument("-d", "--db", required=True, type=str, help="The sqlalchemy connectionstring, example: sqlite:///c:/tq.db")
+    parser.add_argument("-j", "--json", required=True, type=str, help="The path to the json dum")
+    args = parser.parse_args()
 
-	# Import eos.config first and change it
-	import eos.config
-	eos.config.gamedata_connectionstring = args.db
-	eos.config.debug = False
+    # Import eos.config first and change it
+    import eos.config
+    eos.config.gamedata_connectionstring = args.db
+    eos.config.debug = False
 
-	# Now thats done, we can import the eos modules using the config
-	import eos.db
-	import eos.gamedata
+    # Now thats done, we can import the eos modules using the config
+    import eos.db
+    import eos.gamedata
 
-	# Create the database tables
-	eos.db.gamedata_meta.create_all()
+    # Create the database tables
+    eos.db.gamedata_meta.create_all()
 
-	# Config dict
-	tables = {"dgmattribs": eos.gamedata.AttributeInfo,
-	          "dgmeffects": eos.gamedata.EffectInfo,
-	          "dgmtypeattribs": eos.gamedata.Attribute,
-	          "dgmtypeeffects": eos.gamedata.Effect,
-	          "dgmunits": eos.gamedata.Unit,
-	          "icons": eos.gamedata.Icon,
-	          "invcategories": eos.gamedata.Category,
-	          "invgroups": eos.gamedata.Group,
-	          "invmetagroups": eos.gamedata.MetaGroup,
-	          "invmetatypes": eos.gamedata.MetaType,
-	          "invtypes": eos.gamedata.Item,
-	          "marketProxy_GetMarketGroups": eos.gamedata.MarketGroup}
+    # Config dict
+    tables = {"dgmattribs": eos.gamedata.AttributeInfo,
+              "dgmeffects": eos.gamedata.EffectInfo,
+              "dgmtypeattribs": eos.gamedata.Attribute,
+              "dgmtypeeffects": eos.gamedata.Effect,
+              "dgmunits": eos.gamedata.Unit,
+              "icons": eos.gamedata.Icon,
+              "invcategories": eos.gamedata.Category,
+              "invgroups": eos.gamedata.Group,
+              "invmetagroups": eos.gamedata.MetaGroup,
+              "invmetatypes": eos.gamedata.MetaType,
+              "invtypes": eos.gamedata.Item,
+              "marketProxy_GetMarketGroups": eos.gamedata.MarketGroup}
 
-	fieldMapping = {"icons": {"id": "iconID"}}
-	data = {}
+    fieldMapping = {"icons": {"id": "iconID"}}
+    data = {}
 
-	# Dump all data to memory so we can easely cross check ignored rows
-	for jsonName, cls in tables.iteritems():
-		f = open(os.path.join(args.json, "{}.json".format(jsonName)))
-		data[jsonName] = json.load(f, encoding='cp1252')
+    # Dump all data to memory so we can easely cross check ignored rows
+    for jsonName, cls in tables.iteritems():
+        f = open(os.path.join(args.json, "{}.json".format(jsonName)))
+        data[jsonName] = json.load(f, encoding='cp1252')
 
-	# Do some preprocessing to make our job easier
-	invTypes = set()
-	for row in data["invtypes"]:
-		if row["published"]:
-			invTypes.add(row["typeID"])
+    # Do some preprocessing to make our job easier
+    invTypes = set()
+    for row in data["invtypes"]:
+        if row["published"]:
+            invTypes.add(row["typeID"])
 
-	# ignore checker
-	def isIgnored(file, row):
-		if file == "invtypes" and not row["published"]:
-			return True
-		elif file == "dgmtypeeffects" and not row["typeID"] in invTypes:
-			return True
-		elif file == "dgmtypeattribs" and not row["typeID"] in invTypes:
-			return True
-		elif file == "invmetatypes" and not row["typeID"] in invTypes:
-			return True
+    # ignore checker
+    def isIgnored(file, row):
+        if file == "invtypes" and not row["published"]:
+            return True
+        elif file == "dgmtypeeffects" and not row["typeID"] in invTypes:
+            return True
+        elif file == "dgmtypeattribs" and not row["typeID"] in invTypes:
+            return True
+        elif file == "invmetatypes" and not row["typeID"] in invTypes:
+            return True
 
-		return False
+        return False
 
-	# Loop through each json file and write it away, checking ignored rows
-	for jsonName, table in data.iteritems():
-		fieldMap = fieldMapping.get(jsonName, {})
-		print "processing {}".format(jsonName)
-		for row in table:
-			# We don't care about some kind of rows, filter it out if so
-			if not isIgnored(jsonName, row):
-				instance = tables[jsonName]()
-				for k, v in row.iteritems():
-					setattr(instance, fieldMap.get(k, k), v)
+    # Loop through each json file and write it away, checking ignored rows
+    for jsonName, table in data.iteritems():
+        fieldMap = fieldMapping.get(jsonName, {})
+        print "processing {}".format(jsonName)
+        for row in table:
+            # We don't care about some kind of rows, filter it out if so
+            if not isIgnored(jsonName, row):
+                instance = tables[jsonName]()
+                for k, v in row.iteritems():
+                    setattr(instance, fieldMap.get(k, k), v)
 
-				eos.db.gamedata_session.add(instance)
+                eos.db.gamedata_session.add(instance)
 
-		eos.db.gamedata_session.commit()
+        eos.db.gamedata_session.commit()
 
-	print("done")
+    print("done")
