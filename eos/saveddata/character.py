@@ -126,7 +126,7 @@ class Character(object):
             return
 
         sheet = auth.character(charID).CharacterSheet()
-        apiUpdateCharSheet(sheet)
+        self.apiUpdateCharSheet(sheet)
 
     def apiUpdateCharSheet(self, sheet):
         del self.__skills[:]
