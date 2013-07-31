@@ -7,8 +7,9 @@ from eos.types import Hardpoint
 import gui.globalEvents as GE
 
 class ModuleAmmoPicker(ContextMenu):
-    def __init__(self):
+    def __init__(self, parent):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+        self.parent = parent
 
     def display(self, srcContext, selection):
         if self.mainFrame.getActiveFit() is None or srcContext not in ("fittingModule", "projectedModule"):

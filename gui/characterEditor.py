@@ -304,8 +304,8 @@ class SkillTreeView (wx.Panel):
         srcContext = "skillItem"
         itemContext = "Skill"
         context = (srcContext, itemContext)
-        self.statsMenu = ContextMenu.getMenu(None, context)
-        self.levelChangeMenu = ContextMenu.getMenu(None, context) or wx.Menu()
+        self.statsMenu = ContextMenu.getMenu(self, None, context)
+        self.levelChangeMenu = ContextMenu.getMenu(self, None, context) or wx.Menu()
         self.levelChangeMenu.AppendSeparator()
         self.levelIds = {}
 

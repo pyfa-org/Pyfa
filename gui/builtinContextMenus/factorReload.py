@@ -6,8 +6,9 @@ import wx
 from gui import bitmapLoader
 
 class FactorReload(ContextMenu):
-    def __init__(self):
+    def __init__(self, parent):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+        self.parent = parent
 
     def display(self, srcContext, selection):
         return srcContext in ("firepowerViewFull",) and self.mainFrame.getActiveFit() is not None

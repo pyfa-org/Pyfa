@@ -201,7 +201,7 @@ class ProjectedView(d.Display):
                         context = (modFullContext,)
                 else:
                     context = (("projectedFit",),)
-                menu = ContextMenu.getMenu((item,), *context)
+                menu = ContextMenu.getMenu(self, (item,), *context)
                 if menu is not None:
                     self.PopupMenu(menu)
         elif row == -1 and event.Button == 3:
@@ -209,7 +209,7 @@ class ProjectedView(d.Display):
             if fitID is None:
                 return
             context = (("projectedNone",),)
-            menu = ContextMenu.getMenu([], *context)
+            menu = ContextMenu.getMenu(self, [], *context)
             if menu is not None:
                 self.PopupMenu(menu)
 

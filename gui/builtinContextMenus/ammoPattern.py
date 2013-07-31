@@ -5,8 +5,9 @@ import wx
 import gui.globalEvents as GE
 
 class AmmoPattern(ContextMenu):
-    def __init__(self):
+    def __init__(self, parent):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+        self.parent = parent
 
 
     def display(self, srcContext, selection):

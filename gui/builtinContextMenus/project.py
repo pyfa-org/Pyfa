@@ -5,8 +5,9 @@ import gui.globalEvents as GE
 import wx
 
 class Project(ContextMenu):
-    def __init__(self):
+    def __init__(self, parent):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+        self.parent = parent
 
     def display(self, srcContext, selection):
         if srcContext not in ("marketItemGroup", "marketItemMisc") or self.mainFrame.getActiveFit() is None:

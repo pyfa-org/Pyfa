@@ -397,7 +397,7 @@ class ItemView(d.Display):
         sourceContext = "marketItemGroup" if self.marketBrowser.searchMode is False else "marketItemMisc"
         itemContext = sMkt.getCategoryByItem(item).name
 
-        menu = ContextMenu.getMenu((item,), (sourceContext, itemContext))
+        menu = ContextMenu.getMenu(self, (item,), (sourceContext, itemContext))
         self.PopupMenu(menu)
 
     def populate(self, items):

@@ -5,8 +5,9 @@ import service
 import wx
 
 class ItemStats(ContextMenu):
-    def __init__(self):
+    def __init__(self, parent):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+        self.parent = parent
 
     def display(self, srcContext, selection):
         return srcContext in ("marketItemGroup", "marketItemMisc", "fittingModule", "fittingCharge", "fittingShip", "baseShip",

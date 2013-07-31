@@ -50,12 +50,9 @@ class BoosterView(d.Display):
     def kbEvent(self,event):
         keycode = event.GetKeyCode()
         if keycode == wx.WXK_DELETE or keycode == wx.WXK_NUMPAD_DELETE:
-            fitID = self.mainFrame.getActiveFit()
-            cFit = service.Fit.getInstance()
             row = self.GetFirstSelected()
             if row != -1:
-                cFit.removeBooster(fitID, self.GetItemData(row))
-                wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+                self.removeBooster(self.boosters[self.GetItemData(row)])
 
         event.Skip()
 
@@ -71,7 +68,8 @@ class BoosterView(d.Display):
         sFit = service.Fit.getInstance()
         fit = sFit.getFit(event.fitID)
 
-        stuff = fit.boosters if fit is not None else None
+        self.origional = fit.boosters if fit is not None else None
+        self.boosters = stuff = fit.boosters[:] if fit is not None else None
 
         if event.fitID != self.lastFitId:
             self.lastFitId = event.fitID
@@ -102,10 +100,13 @@ class BoosterView(d.Display):
         if row != -1:
             col = self.getColumn(event.Position)
             if col != self.getColIndex(State):
-                fitID = self.mainFrame.getActiveFit()
-                cFit = service.Fit.getInstance()
-                cFit.removeBooster(fitID, self.GetItemData(row))
-                wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+                self.removeBooster(self.boosters[self.GetItemData(row)])
+    
+    def removeBooster(self, booster):
+        fitID = self.mainFrame.getActiveFit()
+        cFit = service.Fit.getInstance()
+        cFit.removeBooster(fitID, self.origional.index(booster))
+        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
     def click(self, event):
         event.Skip()
@@ -133,5 +134,5 @@ class BoosterView(d.Display):
 
             srcContext = "boosterItem"
             itemContext = "Booster"
-            menu = ContextMenu.getMenu((item,), (srcContext, itemContext))
+            menu = ContextMenu.getMenu(self, (item,), (srcContext, itemContext))
             self.PopupMenu(menu)
