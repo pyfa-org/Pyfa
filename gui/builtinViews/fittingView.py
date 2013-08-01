@@ -227,15 +227,10 @@ class FittingView(d.Display):
             row = self.GetFirstSelected()
             firstSel = row
             while row != -1:
-                cFit = service.Fit.getInstance()
-                populate = cFit.removeModule(self.activeFitID, self.mods[self.GetItemData(row)].position)
+                self.removeModule(self.mods[row])
                 self.Select(row,0)
                 row = self.GetNextSelected(row)
-                if populate is not None:
-                    self.Select(firstSel)
-                    if populate: self.slotsChanged()
-                    wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.activeFitID))
-
+               
         event.Skip()
 
     def fitRemoved(self, event):
@@ -305,16 +300,19 @@ class FittingView(d.Display):
         if row != -1:
             col = self.getColumn(event.Position)
             if col != self.getColIndex(State):
-                cFit = service.Fit.getInstance()
-                fit = cFit.getFit(self.activeFitID)
-                populate = cFit.removeModule(self.activeFitID, fit.modules.index(self.mods[self.GetItemData(row)]))
-
-                if populate is not None:
-                    if populate: self.slotsChanged()
-                    wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.activeFitID))
+                self.removeModule(self.mods[row])
             else:
                 if "wxMSW" in wx.PlatformInfo:
                     self.click(event)
+                    
+    def removeModule(self, module):
+        cFit = service.Fit.getInstance()
+        fit = cFit.getFit(self.activeFitID)
+        populate = cFit.removeModule(self.activeFitID, fit.modules.index(module))
+        
+        if populate is not None:
+            if populate: self.slotsChanged()
+            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.activeFitID))
 
     def swapItems(self, x, y, itemID):
         mstate = wx.GetMouseState()

@@ -78,7 +78,7 @@ class Display(wx.ListCtrl):
         """
         Return a tuple indicating which (item, subItem) the given pt (client coordinates) is over.
 
-        This uses the buildin version on Windows, and poor mans replacement on other platforms.
+        This uses the built-in version on Windows, and poor mans replacement on other platforms.
         """
         # The buildin version works on Windows
 
@@ -124,7 +124,7 @@ class Display(wx.ListCtrl):
             bottomItem = topItem + self.GetCountPerPage()
 
             if bottomItem >= self.GetItemCount():
-               bottomItem = self.GetItemCount() - 1
+                bottomItem = self.GetItemCount() - 1
 
             topRect = self.GetItemRect(topItem, wx.LIST_RECT_LABEL)
             bottomRect = self.GetItemRect(bottomItem, wx.LIST_RECT_BOUNDS)

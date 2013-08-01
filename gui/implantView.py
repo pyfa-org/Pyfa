@@ -48,12 +48,9 @@ class ImplantView(d.Display):
     def kbEvent(self,event):
         keycode = event.GetKeyCode()
         if keycode == wx.WXK_DELETE or keycode == wx.WXK_NUMPAD_DELETE:
-            fitID = self.mainFrame.getActiveFit()
-            cFit = service.Fit.getInstance()
             row = self.GetFirstSelected()
             if row != -1:
-                cFit.removeImplant(fitID, self.GetItemData(row))
-                wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+                self.removeImplant(self.implants[self.GetItemData(row)])
         event.Skip()
 
     def fitChanged(self, event):
@@ -100,11 +97,13 @@ class ImplantView(d.Display):
         if row != -1:
             col = self.getColumn(event.Position)
             if col != self.getColIndex(State):
-                fitID = self.mainFrame.getActiveFit()
-                cFit = service.Fit.getInstance()
-                implant = self.implants[self.GetItemData(row)]
-                cFit.removeImplant(fitID, self.original.index(implant))
-                wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+                self.removeImplant(self.implants[self.GetItemData(row)])
+                
+    def removeImplant(self, implant):
+        fitID = self.mainFrame.getActiveFit()
+        cFit = service.Fit.getInstance()
+        cFit.removeImplant(fitID, self.original.index(implant))
+        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
     def click(self, event):
         event.Skip()
