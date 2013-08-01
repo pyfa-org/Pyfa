@@ -228,5 +228,5 @@ class DroneView(d.Display):
             sMkt = service.Market.getInstance()
             sourceContext = "droneItem"
             itemContext = sMkt.getCategoryByItem(drone.item).name
-            menu = ContextMenu.getMenu(self, (drone,), (sourceContext, itemContext))
+            menu = ContextMenu.getMenu( (drone,), (sourceContext, itemContext))
             self.PopupMenu(menu)

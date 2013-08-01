@@ -59,6 +59,11 @@ class ProjectedView(d.Display):
         self.Bind(wx.EVT_KEY_UP, self.kbEvent)
 
         self.droneView = gui.droneView.DroneView
+        
+        if "__WXGTK__" in  wx.PlatformInfo:
+            self.Bind(wx.EVT_RIGHT_UP, self.scheduleMenu)
+        else:
+            self.Bind(wx.EVT_RIGHT_DOWN, self.scheduleMenu)
 
         self.Bind(wx.EVT_LIST_BEGIN_DRAG, self.startDrag)
         self.SetDropTarget(ProjectedViewDrop(self.mergeDrones))
@@ -182,36 +187,47 @@ class ProjectedView(d.Display):
                 sFit = service.Fit.getInstance()
                 sFit.toggleProjected(fitID, item, "right" if event.Button == 3 else "left")
                 wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
-            elif event.Button == 3:
-                sMkt = service.Market.getInstance()
-                if isinstance(item, eos.types.Drone):
-                    srcContext = "projectedDrone"
-                    itemContext = sMkt.getCategoryByItem(item.item).name
-                    context = ((srcContext, itemContext),)
-                elif isinstance(item, eos.types.Module):
-                    modSrcContext = "projectedModule"
-                    modItemContext = sMkt.getCategoryByItem(item.item).name
-                    modFullContext = (modSrcContext, modItemContext)
-                    if item.charge is not None:
-                        chgSrcContext = "projectedCharge"
-                        chgItemContext = sMkt.getCategoryByItem(item.charge).name
-                        chgFullContext = (chgSrcContext, chgItemContext)
-                        context = (modFullContext, chgFullContext)
-                    else:
-                        context = (modFullContext,)
+                
+    def scheduleMenu(self, event):
+        event.Skip()
+        if self.getColumn(event.Position) != self.getColIndex(State):
+            wx.CallAfter(self.spawnMenu)
+
+    def spawnMenu(self):
+        sel = self.GetFirstSelected()
+        menu = None
+        if sel != -1:
+            item = self.get(sel)
+            sMkt = service.Market.getInstance()
+            if isinstance(item, eos.types.Drone):
+                srcContext = "projectedDrone"
+                itemContext = sMkt.getCategoryByItem(item.item).name
+                context = ((srcContext, itemContext),)
+            elif isinstance(item, eos.types.Module):
+                modSrcContext = "projectedModule"
+                modItemContext = sMkt.getCategoryByItem(item.item).name
+                modFullContext = (modSrcContext, modItemContext)
+                if item.charge is not None:
+                    chgSrcContext = "projectedCharge"
+                    chgItemContext = sMkt.getCategoryByItem(item.charge).name
+                    chgFullContext = (chgSrcContext, chgItemContext)
+                    context = (modFullContext, chgFullContext)
                 else:
-                    context = (("projectedFit",),)
-                menu = ContextMenu.getMenu(self, (item,), *context)
-                if menu is not None:
-                    self.PopupMenu(menu)
-        elif row == -1 and event.Button == 3:
+                    context = (modFullContext,)
+            else:
+                fitSrcContext = "projectedFit"
+                fitItemContext = item.name
+                context = ((fitSrcContext,fitItemContext),)
+            context = context + (("projected",),)
+            menu = ContextMenu.getMenu((item,), *context)
+        elif sel == -1:
             fitID = self.mainFrame.getActiveFit()
             if fitID is None:
                 return
-            context = (("projectedNone",),)
-            menu = ContextMenu.getMenu(self, [], *context)
-            if menu is not None:
-                self.PopupMenu(menu)
+            context = (("projected",),)
+            menu = ContextMenu.getMenu([], *context)
+        if menu is not None:
+            self.PopupMenu(menu)
 
     def remove(self, event):
         row, _ = self.HitTest(event.Position)

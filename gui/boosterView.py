@@ -134,5 +134,5 @@ class BoosterView(d.Display):
 
             srcContext = "boosterItem"
             itemContext = "Booster"
-            menu = ContextMenu.getMenu(self, (item,), (srcContext, itemContext))
+            menu = ContextMenu.getMenu( (item,), (srcContext, itemContext))
             self.PopupMenu(menu)

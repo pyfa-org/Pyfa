@@ -4,9 +4,8 @@ import gui.mainFrame
 import service
 
 class MarketJump(ContextMenu):
-    def __init__(self, parent):
+    def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.parent = parent
 
     def display(self, srcContext, selection):
         validContexts = ("marketItemMisc", "fittingModule", "fittingCharge", "droneItem", "implantItem",

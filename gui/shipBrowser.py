@@ -1085,7 +1085,7 @@ class ShipItem(SFItem.SFBrowserItem):
         pos = self.ScreenToClient(pos)
         contexts = []
         contexts.append(("baseShip", "Ship Basic"))
-        menu = ContextMenu.getMenu(self, self.baseItem, *contexts)
+        menu = ContextMenu.getMenu( self.baseItem, *contexts)
         self.PopupMenu(menu, pos)
 
     def OnTimer(self, event):

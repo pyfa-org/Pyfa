@@ -92,7 +92,7 @@ class StatsPane(wx.Panel):
     def contextHandler(self, contentPanel):
         viewName = contentPanel.viewName
         def handler(event):
-            menu = ContextMenu.getMenu(self, None, (viewName,))
+            menu = ContextMenu.getMenu( None, (viewName,))
             if menu is not None:
                 contentPanel.PopupMenu(menu)
 

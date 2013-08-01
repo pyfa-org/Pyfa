@@ -26,7 +26,7 @@ class ContextMenu(object):
         ContextMenu.menus.append(cls)
 
     @classmethod
-    def getMenu(cls, parent, selection, *fullContexts):
+    def getMenu(cls, selection, *fullContexts):
         menu = wx.Menu()
         menu.info = {}
         menu.selection = selection
@@ -40,7 +40,7 @@ class ContextMenu(object):
             except IndexError:
                 itmContext = None
             for menuHandler in cls.menus:
-                m = menuHandler(parent)
+                m = menuHandler()
                 if m.display(srcContext, selection):
                     amount += 1
                     texts = m.getText(itmContext, selection)

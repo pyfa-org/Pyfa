@@ -1,31 +1,44 @@
 from gui.contextMenu import ContextMenu
 import gui.mainFrame
+import service
+import wx
+import gui.globalEvents as GE
 
 class ItemRemove(ContextMenu):
-    def __init__(self, parent):
+    def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.parent = parent
 
     def display(self, srcContext, selection):
-        return srcContext in ("fittingModule", "droneItem", "implantItem", "boosterItem")
+        return srcContext in ("fittingModule", "fittingCharge", "droneItem", "implantItem", "boosterItem", "projectedModule", "projectedCharge",
+                               "projectedFit", "projectedDrone")
 
     def getText(self, itmContext, selection):
         return "Remove {0}".format(itmContext if itmContext is not None else "Item")
 
     def activate(self, fullContext, selection, i):
         srcContext = fullContext[0]
+        sFit = service.Fit.getInstance()
+        fitID = self.mainFrame.getActiveFit()
+        cFit = sFit.getFit(fitID)
+        
         if srcContext == "fittingModule":
             for module in selection:
-                if module is not None: self.parent.removeModule(module)
+                if module is not None:
+                    sFit.removeModule(fitID,cFit.modules.index(module))
+        elif srcContext in ("fittingCharge" , "projectedCharge"):
+            sFit.setAmmo(fitID, None, selection)
         elif srcContext == "droneItem":
-            for drone in selection:
-                if drone is not None: self.parent.removeDrone(drone)
+            sFit.removeDrone(fitID, cFit.drones.index(selection[0]))
         elif srcContext == "implantItem":
-            for implant in selection:
-                if implant is not None: self.parent.removeImplant(implant)
+            sFit.removeImplant(fitID, cFit.implants.index(selection[0]))
         elif srcContext == "boosterItem":
-            for booster in selection:
-                if booster is not None: self.parent.removeBooster(booster)
+            sFit.removeBooster(fitID, cFit.boosters.index(selection[0]))
+        else:
+            sFit.removeProjected(fitID, selection[0])
+            
+        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+
+
 
 
 ItemRemove.register()

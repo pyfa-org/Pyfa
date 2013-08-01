@@ -5,12 +5,11 @@ import service
 import wx
 
 class WhProjector(ContextMenu):
-    def __init__(self, parent):
+    def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.parent = parent
 
     def display(self, srcContext, selection):
-        return srcContext in ("projectedDrone", "projectedModule", "projectedCharge", "projectedFit", "projectedNone")
+        return srcContext == "projected"
 
     def getText(self, itmContext, selection):
         return "Add System Effects"
