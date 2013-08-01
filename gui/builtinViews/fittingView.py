@@ -417,7 +417,7 @@ class FittingView(d.Display):
 
         contexts.append(("fittingShip", "Ship"))
 
-        menu = ContextMenu.getMenu( selection, *contexts)
+        menu = ContextMenu.getMenu(selection, *contexts)
         self.PopupMenu(menu)
 
     def click(self, event):

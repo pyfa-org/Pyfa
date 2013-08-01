@@ -132,5 +132,5 @@ class ImplantView(d.Display):
             sourceContext = "implantItem"
             itemContext = sMkt.getCategoryByItem(implant.item).name
 
-            menu = ContextMenu.getMenu( (implant,), (sourceContext, itemContext))
+            menu = ContextMenu.getMenu((implant,), (sourceContext, itemContext))
             self.PopupMenu(menu)
