@@ -26,8 +26,8 @@ DroneSplit.register()
 
 class DroneSpinner(wx.Dialog):
 
-    def __init__(self, drone, context):
-        wx.Dialog.__init__(self, title="Select Amount", size=wx.Size(220, 60))
+    def __init__(self, parent, drone, context):
+        wx.Dialog.__init__(self, parent, title="Select Amount", size=wx.Size(220, 60))
         self.drone = drone
         self.context = context
 
