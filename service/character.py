@@ -24,7 +24,7 @@ import service
 import itertools
 from eos import eveapi
 import config
-
+import json
 import os.path
 import locale
 import threading
@@ -228,19 +228,26 @@ class Character(object):
 
     def getApiDetails(self, charID):
         char = eos.db.getCharacter(charID)
-        return (char.apiID or "", char.apiKey or "")
+        if char.chars is not None:
+            chars = json.loads(char.chars)
+        else:
+            chars = None
+        return (char.apiID or "", char.apiKey or "", char.defaultChar or "", chars or [])
 
     def charList(self, charID, userID, apiKey):
         char = eos.db.getCharacter(charID)
         try:
             char.apiID = userID
             char.apiKey = apiKey
-            return char.apiCharList(proxy = service.settings.ProxySettings.getInstance().getProxySettings())
+            charList = char.apiCharList(proxy = service.settings.ProxySettings.getInstance().getProxySettings())
+            char.chars = json.dumps(charList)
+            return charList
         except:
             return None
 
     def apiFetch(self, charID, charName):
         char = eos.db.getCharacter(charID)
+        char.defaultChar = charName
         char.apiFetch(charName, proxy = service.settings.ProxySettings.getInstance().getProxySettings())
         eos.db.commit()
 
