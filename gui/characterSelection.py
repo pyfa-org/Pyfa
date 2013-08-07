@@ -47,6 +47,19 @@ class CharacterSelection(wx.Panel):
         self.greenSkills = bitmapLoader.getBitmap("skillGreen_big", "icons")
 
         self.skillReqsStaticBitmap.SetBitmap(self.cleanSkills)
+
+        bitmap = wx.ArtProvider.GetBitmap(wx.ART_REDO, wx.ART_BUTTON)
+        btn = wx.BitmapButton(self, wx.ID_ANY, bitmap)
+        size = btn.GetSize()
+
+        btn.SetMinSize(size)
+        btn.SetMaxSize(size)
+        btn.SetToolTipString("Refresh API")
+
+        btn.Bind(wx.EVT_BUTTON, self.refreshApi)
+        #btn.Enable(False)
+        mainSizer.Add(btn, 0, wx.ALIGN_CENTER_VERTICAL | wx.TOP | wx.RIGHT | wx.LEFT, 2)
+        
         self.Bind(wx.EVT_CHOICE, self.charChanged)
         self.mainFrame.Bind(GE.CHAR_LIST_UPDATED, self.refreshCharacterList)
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
@@ -87,6 +100,17 @@ class CharacterSelection(wx.Panel):
         if event is not None:
             event.Skip()
 
+    def refreshApi(self, event):
+        cChar = service.Character.getInstance()
+        ID, key, charName, chars = cChar.getApiDetails(self.getActiveCharacter())
+        if charName:
+            try:
+                cChar.apiFetch(self.getActiveCharacter(), charName)
+            except:
+                # can we do a popup, notifying user of API error?
+                pass
+        self.refreshCharacterList()
+        
     def charChanged(self, event):
         fitID = self.mainFrame.getActiveFit()
         charID = self.getActiveCharacter()
