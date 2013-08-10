@@ -234,6 +234,10 @@ class Character(object):
             chars = None
         return (char.apiID or "", char.apiKey or "", char.defaultChar or "", chars or [])
 
+    def apiEnabled(self, charID):
+        id, key, default, _ = self.getApiDetails(charID)
+        return id is not "" and key is not "" and default is not ""
+        
     def charList(self, charID, userID, apiKey):
         char = eos.db.getCharacter(charID)
         try:

@@ -49,16 +49,16 @@ class CharacterSelection(wx.Panel):
 
         self.skillReqsStaticBitmap.SetBitmap(self.cleanSkills)
 
-        btn = wx.BitmapButton(self, wx.ID_ANY, self.refresh)
-        size = btn.GetSize()
+        self.btnRefresh = wx.BitmapButton(self, wx.ID_ANY, self.refresh)
+        size = self.btnRefresh.GetSize()
 
-        btn.SetMinSize(size)
-        btn.SetMaxSize(size)
-        btn.SetToolTipString("Refresh API")
+        self.btnRefresh.SetMinSize(size)
+        self.btnRefresh.SetMaxSize(size)
+        self.btnRefresh.SetToolTipString("Refresh API")
 
-        btn.Bind(wx.EVT_BUTTON, self.refreshApi)
-        #btn.Enable(False)
-        mainSizer.Add(btn, 0, wx.ALIGN_CENTER_VERTICAL | wx.TOP | wx.RIGHT | wx.LEFT, 2)
+        self.btnRefresh.Bind(wx.EVT_BUTTON, self.refreshApi)
+        self.btnRefresh.Enable(False)
+        mainSizer.Add(self.btnRefresh, 0, wx.ALIGN_CENTER_VERTICAL | wx.TOP | wx.RIGHT | wx.LEFT, 2)
         
         self.Bind(wx.EVT_CHOICE, self.charChanged)
         self.mainFrame.Bind(GE.CHAR_LIST_UPDATED, self.refreshCharacterList)
@@ -114,6 +114,12 @@ class CharacterSelection(wx.Panel):
     def charChanged(self, event):
         fitID = self.mainFrame.getActiveFit()
         charID = self.getActiveCharacter()
+        cChar = service.Character.getInstance()
+
+        if cChar.getCharName(charID) not in ("All 0", "All 5") and cChar.apiEnabled(charID):
+            self.btnRefresh.Enable(True)
+        else:
+            self.btnRefresh.Enable(False)
 
         cFit = service.Fit.getInstance()
         cFit.changeChar(fitID, charID)
@@ -157,9 +163,12 @@ class CharacterSelection(wx.Panel):
         if newCharID == None:
             cChar = service.Character.getInstance()
             self.selectChar(cChar.all5ID())
+            
         elif currCharID != newCharID:
             self.selectChar(newCharID)
+            self.charChanged(None)
 
+        
         event.Skip()
 
     def _buildSkillsTooltip(self, reqs, currItem = "", tabulationLevel = 0):
