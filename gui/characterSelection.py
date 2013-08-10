@@ -43,13 +43,13 @@ class CharacterSelection(wx.Panel):
         mainSizer.Add(self.skillReqsStaticBitmap, 0, wx.ALIGN_CENTER_VERTICAL | wx.TOP | wx.RIGHT | wx.LEFT, 3)
 
         self.cleanSkills = bitmapLoader.getBitmap("skill_big", "icons")
-        self.redSkills = bitmapLoader.getBitmap("skillRed_big", "icons")
+        self.redSkills   = bitmapLoader.getBitmap("skillRed_big", "icons")
         self.greenSkills = bitmapLoader.getBitmap("skillGreen_big", "icons")
+        self.refresh     = bitmapLoader.getBitmap("refresh", "icons")
 
         self.skillReqsStaticBitmap.SetBitmap(self.cleanSkills)
 
-        bitmap = wx.ArtProvider.GetBitmap(wx.ART_REDO, wx.ART_BUTTON)
-        btn = wx.BitmapButton(self, wx.ID_ANY, bitmap)
+        btn = wx.BitmapButton(self, wx.ID_ANY, self.refresh)
         size = btn.GetSize()
 
         btn.SetMinSize(size)
