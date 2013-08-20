@@ -213,9 +213,9 @@ class Market():
             "Sukuuvestaa Heron": False, # Vanity
             "Inner Zone Shipping Imicus": False, # Vanity
             "Vherokior Probe": False, # Vanity
-            "Iteron Mark IV Quafe Ultra Edition": False, # Vanity
-            "Iteron Mark IV Quafe Ultramarine Edition": False, # Vanity
-            "Iteron Mark IV Amastris Edition": False, # Vanity
+            "Miasmos Quafe Ultra Edition": False, # Vanity
+            "Miasmos Quafe Ultramarine Edition": False, # Vanity
+            "Miasmos Amastris Edition": False, # Vanity
             "Goru's Shuttle": False, # Vanity
             "Guristas Shuttle": False, # Vanity
             "Tash-Murkon Magnate": False, # Vanity
@@ -257,9 +257,9 @@ class Market():
             "Civilian Hobgoblin": 837, # Drones > Combat Drones > Light Scout Drones
             "Civilian Kinetic Deflection Field": 760, # Ship Equipment > Civilian Modules
             "Civilian Light Missile Launcher": 760, # Ship Equipment > Civilian Modules
-            "Civilian Remote Armor Repair System": 760, # Ship Equipment > Civilian Modules
-            "Civilian Remote Shield Transporter": 760, # Ship Equipment > Civilian Modules
             "Civilian Scourge Light Missile": 920, # Ammunition & Charges > Missiles > Light Missiles > Standard Light Missiles
+            "Civilian Small Remote Armor Repairer": 760, # Ship Equipment > Civilian Modules
+            "Civilian Small Remote Shield Booster": 760, # Ship Equipment > Civilian Modules
             "Civilian Stasis Webifier": 760, # Ship Equipment > Civilian Modules
             "Civilian Thermic Dissipation Field": 760, # Ship Equipment > Civilian Modules
             "Civilian Warp Disruptor": 760, # Ship Equipment > Civilian Modules
