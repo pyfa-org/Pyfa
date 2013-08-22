@@ -1,4 +1,6 @@
 # Used by:
+# Implant: Caldari Navy Warfare Mindlink
+# Implant: Imperial Navy Warfare Mindlink
 # Implant: Information Warfare Mindlink
 # Skill: Information Warfare
 type = "gang"

@@ -1,5 +1,5 @@
 # Used by:
-# Modules from group: Armor Repair Projector (38 of 38)
+# Modules from group: Remote Armor Repairer (38 of 38)
 # Drones named like: Armor Maintenance Bot (6 of 6)
 # Module: QA Remote Armor Repair System - 5 Players
 type = "projected", "active"

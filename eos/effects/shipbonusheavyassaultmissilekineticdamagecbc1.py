@@ -1,5 +1,6 @@
 # Used by:
 # Ship: Drake
+# Ship: Nighthawk
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Caldari Battlecruiser").level

@@ -1,4 +1,6 @@
 # Used by:
+# Implant: Federation Navy Warfare Mindlink
+# Implant: Republic Fleet Warfare Mindlink
 # Implant: Skirmish Warfare Mindlink
 # Skill: Skirmish Warfare
 type = "gang"

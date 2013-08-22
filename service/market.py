@@ -194,7 +194,8 @@ class Market():
         self.ITEMS_FORCEPUBLISHED = {
             "Data Subverter I": False, # Not used in EVE, probably will appear with Dust link
             "Ghost Heavy Missile": False, # Missile used by Sansha
-            "QA Damage Module": False, # QA modules used by CCP internally
+            "QA Cross Protocol Analyzer": False, # QA modules used by CCP internally
+            "QA Damage Module": False,
             "QA ECCM": False,
             "QA Immunity Module": False,
             "QA Multiship Module - 10 Players": False,

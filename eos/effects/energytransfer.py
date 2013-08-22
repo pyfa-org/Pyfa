@@ -1,5 +1,5 @@
 # Used by:
-# Modules from group: Energy Transfer Array (38 of 38)
+# Modules from group: Remote Capacitor Transmitter (38 of 38)
 type = "projected", "active"
 def handler(fit, module, context):
     if "projected" in context:

@@ -1,5 +1,5 @@
 # Used by:
-# Skill: Armor Honeycombing
+# Skill: Armor Layering
 type = "passive"
 def handler(fit, container, context):
     level = container.level

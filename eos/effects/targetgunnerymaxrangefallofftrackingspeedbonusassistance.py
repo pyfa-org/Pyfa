@@ -1,5 +1,5 @@
 # Used by:
-# Modules from group: Tracking Link (10 of 10)
+# Modules from group: Remote Tracking Computer (10 of 10)
 type= "projected", "active"
 def handler(fit, module, context):
     if "projected" in context:

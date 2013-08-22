@@ -1,5 +1,6 @@
 # Used by:
 # Ship: Cynabal
+# Ship: Moracha
 # Ship: Muninn
 # Ship: Rupture
 type = "passive"

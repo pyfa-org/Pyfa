@@ -4,6 +4,8 @@ type = "gang", "active"
 gangBoost = "scanTypeStrength"
 def handler(fit, module, context):
     if "gang" not in context: return
+    fit.ship.boostItemAttr("maxTargetRange", module.getModifiedItemAttr("commandBonus"),
+                           stackingPenalties = True)
     for scanType in ("Gravimetric", "Radar", "Ladar", "Magnetometric"):
         fit.ship.boostItemAttr("scan%sStrength" % scanType,
                                module.getModifiedItemAttr("commandBonus"),
