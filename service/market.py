@@ -185,9 +185,11 @@ class Market():
             "Malice": self.les_grp, # AT9 prize
             "Vangel": self.les_grp, # AT9 prize
             "Cambion": self.les_grp, # AT10 prize
-            "Etana": self.les_grp } # AT10 prize
+            "Etana": self.les_grp, # AT10 prize
+            "Chremoas": self.les_grp, # AT11 prize :(
+            "Moracha": self.les_grp } # AT11 prize
         self.ITEMS_FORCEGROUP_R = self.__makeRevDict(self.ITEMS_FORCEGROUP)
-        self.les_grp.items += list(self.getItem(itmn) for itmn in self.ITEMS_FORCEGROUP_R[self.les_grp])
+        self.les_grp.addItems = list(self.getItem(itmn) for itmn in self.ITEMS_FORCEGROUP_R[self.les_grp])
         self.customGroups.add(self.les_grp)
 
         # List of items which are forcibly published or hidden
@@ -496,7 +498,10 @@ class Market():
         """Get items assigned to group"""
         # Return only public items; also, filter out items
         # which were forcibly set to other groups
-        items = set(filter(lambda item: self.getPublicityByItem(item) and self.getGroupByItem(item) == group, group.items))
+        groupItems = set(group.items)
+        if hasattr(group, 'addItems'):
+            groupItems.update(group.addItems)
+        items = set(filter(lambda item: self.getPublicityByItem(item) and self.getGroupByItem(item) == group, groupItems))
         return items
 
     def getItemsByMarketGroup(self, mg, vars=True):
@@ -568,7 +573,8 @@ class Market():
                 return item.icon.iconFile if item.icon else ""
             elif self.getMarketGroupChildren(mg) > 0:
                 kids = self.getMarketGroupChildren(mg)
-                size = len(self.getIconByMarketGroup(kids))
+                mktGroups = self.getIconByMarketGroup(kids)
+                size = len(mktGroups)
                 return mktGroups.pop() if size > 0 else ""
             else:
                 return ""
