@@ -3,6 +3,5 @@
 runTime = "early"
 type = "passive"
 def handler(fit, implant, context):
-    fit.implants.filteredItemMultiply(lambda implant: "scanStrengthBonus" in implant.itemModifiedAttributes and \
-                                      "implantSetSisters" in implant.itemModifiedAttributes,
+    fit.implants.filteredItemMultiply(lambda mod: mod.item.group.name == "Cyberimplant",
                                       "scanStrengthBonus", implant.getModifiedItemAttr("implantSetSisters"))

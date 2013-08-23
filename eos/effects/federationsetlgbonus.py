@@ -2,6 +2,6 @@
 # Implants named like: Low grade Spur (6 of 6)
 type = "passive"
 runTime = "early"
-def handler(fit, item, context):
-    fit.implants.filteredItemMultiply(lambda implant: "scanMagnetometricStrengthModifier" in implant.itemModifiedAttributes,
-                                      "scanMagnetometricStrengthModifier", item.getModifiedItemAttr("implantSetLGFederationNavy"))
+def handler(fit, implant, context):
+    fit.implants.filteredItemMultiply(lambda target: target.item.requiresSkill("Cybernetics"),
+                                      "scanMagnetometricStrengthModifier", implant.getModifiedItemAttr("implantSetLGFederationNavy"))
