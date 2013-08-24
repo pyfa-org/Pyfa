@@ -16,7 +16,7 @@ saveInRoot = False
 version = "1.1.15"
 tag = "git"
 expansionName = "Odyssey"
-expansionVersion = "1.0"
+expansionVersion = "1.1"
 evemonMinVersion = "4081"
 
 pyfaPath = None
