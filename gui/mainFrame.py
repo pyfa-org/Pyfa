@@ -500,6 +500,8 @@ class MainFrame(wx.Frame):
             else:
                 saveFmt = "txt"
             filePath = saveDialog.GetPath()
+            if '.' not in os.path.basename(filePath):
+                filePath += ".{0}".format(saveFmt)
             self.waitDialog = animUtils.WaitDialog(self)
             sCharacter.backupSkills(filePath, saveFmt, self.getActiveFit(), self.closeWaitDialog)
             self.waitDialog.ShowModal()
