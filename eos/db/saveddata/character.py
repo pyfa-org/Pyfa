@@ -30,6 +30,8 @@ characters_table = Table("characters", saveddata_meta,
                          Column("name", String, nullable = False),
                          Column("apiID", Integer),
                          Column("apiKey", String),
+                         Column("defaultChar", Integer),
+                         Column("chars", String, nullable = True),
                          Column("defaultLevel", Integer, nullable=True),
                          Column("ownerID", ForeignKey("users.ID"), nullable = True))
 
