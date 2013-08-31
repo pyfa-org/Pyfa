@@ -150,10 +150,9 @@ class CharacterEditor(wx.Frame):
         self.btnDelete.Enable(False)
         self.aview.inputID.Enable(False)
         self.aview.inputKey.Enable(False)
+        self.aview.charChoice.Enable(False)
         self.aview.btnFetchCharList.Enable(False)
-        self.aview.btnFetchCharList.Show()
-        self.aview.btnFetchSkills.Hide()
-        self.aview.charList.Hide()
+        self.aview.btnFetchSkills.Enable(False)
         self.aview.stStatus.SetLabel("")
         self.aview.Layout()
 
@@ -163,9 +162,7 @@ class CharacterEditor(wx.Frame):
         self.aview.inputID.Enable(True)
         self.aview.inputKey.Enable(True)
         self.aview.btnFetchCharList.Enable(True)
-        self.aview.btnFetchCharList.Show()
-        self.aview.btnFetchSkills.Hide()
-        self.aview.charList.Hide()
+        self.aview.btnFetchSkills.Enable(True)
         self.aview.stStatus.SetLabel("")
         self.aview.Layout()
 
@@ -560,29 +557,33 @@ class APIView (wx.Panel):
         self.inputKey = wx.TextCtrl(self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0)
         fgSizerInput.Add(self.inputKey, 0, wx.ALL | wx.EXPAND, 5)
 
-        pmainSizer.Add(fgSizerInput, 0, wx.EXPAND, 5)
+        self.m_staticCharText = wx.StaticText(self, wx.ID_ANY, u"Character:", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.m_staticCharText.Wrap(-1)
+        fgSizerInput.Add(self.m_staticCharText, 0, wx.ALL | wx.ALIGN_RIGHT | wx.ALIGN_CENTER_VERTICAL, 5)
 
-        self.btnFetchCharList = wx.Button(self, wx.ID_ANY, u"Fetch Character List")
-        pmainSizer.Add(self.btnFetchCharList, 0, wx.ALL, 5)
+        self.charChoice = wx.Choice(self, wx.ID_ANY, style=0)
+        self.charChoice.Append("No Selection", 0)
+        fgSizerInput.Add(self.charChoice, 1, wx.ALL | wx.EXPAND, 5)
 
+        self.charChoice.Enable(False)
+        
+        pmainSizer.Add(fgSizerInput, 0, wx.EXPAND, 5)  
+        
+        btnSizer = wx.FlexGridSizer(3, 2, 0, 0)
+        btnSizer.AddGrowableCol(1)
+        btnSizer.SetFlexibleDirection(wx.BOTH)
+        btnSizer.SetNonFlexibleGrowMode(wx.FLEX_GROWMODE_SPECIFIED)
+
+        self.btnFetchCharList = wx.Button(self, wx.ID_ANY, u"Get Characters")
+        btnSizer.Add(self.btnFetchCharList, 0, wx.ALL, 2)
         self.btnFetchCharList.Bind(wx.EVT_BUTTON, self.fetchCharList)
-
-        self.charList = wx.ListCtrl(self, wx.ID_ANY, style=wx.LC_REPORT | wx.BORDER_NONE | wx.LC_SINGLE_SEL)
-        pmainSizer.Add(self.charList, 0, wx.EXPAND| wx.ALL, 5)
-
-        info = wx.ListItem()
-        info.m_text = "Character"
-        info.m_mask = wx.LIST_MASK_TEXT
-
-        self.charList.InsertColumnInfo(0, info)
-
-        self.charList.SetMinSize(wx.Size(-1, 100))
-        self.charList.Hide()
-
+        
         self.btnFetchSkills =  wx.Button(self, wx.ID_ANY, u"Fetch Skills")
-        pmainSizer.Add(self.btnFetchSkills, 0, wx.ALL, 5)
-        self.btnFetchSkills.Hide()
+        btnSizer.Add(self.btnFetchSkills,  0, wx.ALL, 2)
         self.btnFetchSkills.Bind(wx.EVT_BUTTON, self.fetchSkills)
+        self.btnFetchSkills.Enable(False)
+        pmainSizer.Add(btnSizer, 0, wx.EXPAND, 5)       
+
         self.stAPITip = wx.StaticText( self, wx.ID_ANY, u"You can create a key here (only character sheet access is needed):", wx.DefaultPosition, wx.DefaultSize, 0 )
         self.stAPITip.Wrap( -1 )
 
@@ -606,9 +607,25 @@ class APIView (wx.Panel):
 
     def charChanged(self, event):
         cChar = service.Character.getInstance()
-        ID, key = cChar.getApiDetails(self.Parent.Parent.getActiveCharacter())
+        ID, key, char, chars = cChar.getApiDetails(self.Parent.Parent.getActiveCharacter())
         self.inputID.SetValue(str(ID))
         self.inputKey.SetValue(key)
+        
+        self.charChoice.Clear()
+        
+        if chars:
+            for charName in chars:
+                i = self.charChoice.Append(charName)
+            self.charChoice.SetStringSelection(char)
+            self.charChoice.Enable(True)
+            self.btnFetchSkills.Enable(True)
+        else:
+            self.charChoice.Append("No characters...", 0)
+            self.charChoice.SetSelection(0)
+            self.charChoice.Enable(False)
+            self.btnFetchSkills.Enable(False)
+
+        
         if event is not None:
             event.Skip()
 
@@ -620,29 +637,24 @@ class APIView (wx.Panel):
 
         cChar = service.Character.getInstance()
         list = cChar.charList(self.Parent.Parent.getActiveCharacter(), self.inputID.GetLineText(0), self.inputKey.GetLineText(0))
-        self.charList.DeleteAllItems()
 
         if not list:
             self.stStatus.SetLabel("Unable to fetch characters list from EVE API!")
             return
 
+        self.charChoice.Clear()
         for charName in list:
-            self.charList.InsertStringItem(sys.maxint, charName)
-
-        self.charList.SetItemState(0,wx.LIST_STATE_SELECTED, wx.LIST_STATE_SELECTED)
-        self.charList.SetColumnWidth(0, wx.LIST_AUTOSIZE_USEHEADER)
-        self.charList.Show()
-
-        self.btnFetchCharList.Hide()
-        self.btnFetchSkills.Show()
+            i = self.charChoice.Append(charName)
+        
+        self.btnFetchSkills.Enable(True)
+        self.charChoice.Enable(True)
 
         self.Layout()
 
-        self.charList.SetFocus()
+        self.charChoice.SetSelection(0)
 
     def fetchSkills(self, event):
-        item = self.charList.GetNextItem(-1, wx.LIST_NEXT_ALL, wx.LIST_STATE_SELECTED)
-        charName = self.charList.GetItemText(item)
+        charName = self.charChoice.GetString(self.charChoice.GetSelection())
         if charName:
             try:
                 cChar = service.Character.getInstance()
