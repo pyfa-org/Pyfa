@@ -107,11 +107,8 @@ class DroneView(d.Display):
             row = self.GetFirstSelected()
             firstSel = row
             if row != -1:
-                fitID = self.mainFrame.getActiveFit()
-                cFit = service.Fit.getInstance()
                 drone = self.drones[self.GetItemData(row)]
-                cFit.removeDrone(fitID, self.original.index(drone))
-                wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+                self.removeDrone(drone)
 
         event.Skip()
 
@@ -197,11 +194,14 @@ class DroneView(d.Display):
         if row != -1:
             col = self.getColumn(event.Position)
             if col != self.getColIndex(State):
-                fitID = self.mainFrame.getActiveFit()
-                cFit = service.Fit.getInstance()
                 drone = self.drones[self.GetItemData(row)]
-                cFit.removeDrone(fitID, self.original.index(drone))
-                wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+                self.removeDrone(drone)
+                
+    def removeDrone(self, drone):
+        fitID = self.mainFrame.getActiveFit()
+        cFit = service.Fit.getInstance()
+        cFit.removeDrone(fitID, self.original.index(drone))
+        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
     def click(self, event):
         event.Skip()

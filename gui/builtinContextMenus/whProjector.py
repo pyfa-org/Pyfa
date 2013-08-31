@@ -9,7 +9,7 @@ class WhProjector(ContextMenu):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     def display(self, srcContext, selection):
-        return srcContext in ("projectedDrone", "projectedModule", "projectedCharge", "projectedFit", "projectedNone")
+        return srcContext == "projected"
 
     def getText(self, itmContext, selection):
         return "Add System Effects"
