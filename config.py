@@ -16,7 +16,7 @@ saveInRoot = False
 version = "1.1.15"
 tag = "git"
 expansionName = "Singularity"
-expansionVersion = "589047"
+expansionVersion = "597398"
 evemonMinVersion = "4081"
 
 pyfaPath = None
