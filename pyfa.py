@@ -35,6 +35,11 @@ if not hasattr(sys, 'frozen'):
         sys.exit(1)
 
     try:
+        wxversion.select('2.8')
+    except wxversion.VersionError:
+        print("Unable to select wxpython 2.8, attempting to continue anyway")
+
+    try:
         import sqlalchemy
 
         saVersion =  sqlalchemy.__version__
