@@ -242,7 +242,7 @@ class Miscellanea(ViewColumn):
             text = "{0}s".format(formatAmount(float(recalibration)/1000, 3, 0, 3))
             tooltip = "Sensor recalibration time"
             return text, tooltip
-        elif itemGroup == "Armor Repair Projector":
+        elif itemGroup == "Remote Armor Repairer":
             repAmount = stuff.getModifiedItemAttr("armorDamageAmount")
             cycleTime = stuff.getModifiedItemAttr("duration")
             if not repAmount or not cycleTime:
@@ -251,7 +251,7 @@ class Miscellanea(ViewColumn):
             text = "{0}/s".format(formatAmount(repPerSec, 3, 0, 3, forceSign=True))
             tooltip = "Armor repaired per second"
             return text, tooltip
-        elif itemGroup == "Shield Transporter":
+        elif itemGroup == "Remote Shield Booster":
             repAmount = stuff.getModifiedItemAttr("shieldBonus")
             cycleTime = stuff.cycleTime
             if not repAmount or not cycleTime:
@@ -260,7 +260,7 @@ class Miscellanea(ViewColumn):
             text = "{0}/s".format(formatAmount(repPerSec, 3, 0, 3, forceSign=True))
             tooltip = "Shield transferred per second"
             return text, tooltip
-        elif itemGroup == "Energy Transfer Array":
+        elif itemGroup == "Remote Capacitor Transmitter":
             repAmount = stuff.getModifiedItemAttr("powerTransferAmount")
             cycleTime = stuff.cycleTime
             if not repAmount or not cycleTime:

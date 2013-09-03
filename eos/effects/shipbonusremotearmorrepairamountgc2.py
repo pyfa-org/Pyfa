@@ -3,5 +3,5 @@
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Gallente Cruiser").level
-    fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == "Armor Repair Projector",
+    fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == "Remote Armor Repairer",
                                   "armorDamageAmount", ship.getModifiedItemAttr("shipBonusGC2") * level)

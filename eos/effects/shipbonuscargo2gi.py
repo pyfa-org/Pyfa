@@ -1,6 +1,7 @@
 # Used by:
-# Ships named like: Iteron Mark (7 of 7)
-# Variations of ship: Iteron (2 of 2)
+# Variations of ship: Miasmos (3 of 4)
+# Variations of ship: Nereus (2 of 2)
+# Ship: Iteron Mark V
 # Ship: Occator
 type = "passive"
 def handler(fit, ship, context):

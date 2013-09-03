@@ -1,5 +1,6 @@
 # Used by:
 # Ship: Huginn
+# Ship: Moracha
 # Ship: Rapier
 type = "passive"
 def handler(fit, ship, context):

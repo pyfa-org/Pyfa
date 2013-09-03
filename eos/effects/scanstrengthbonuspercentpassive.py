@@ -1,5 +1,5 @@
 # Used by:
-# Implants from group: Cyberimplant (20 of 141)
+# Implants from group: Cyberimplant (20 of 143)
 type = "passive"
 def handler(fit, implant, context):
     for type in ("Gravimetric", "Magnetometric", "Radar", "Ladar"):

@@ -1,5 +1,5 @@
 # Used by:
-# Ships from group: Covert Ops (4 of 4)
+# Ships from group: Covert Ops (5 of 5)
 # Subsystems named like: Electronics Emergent Locus Analyzer (4 of 4)
 # Variations of ship: Heron (3 of 3)
 # Variations of ship: Imicus (3 of 3)

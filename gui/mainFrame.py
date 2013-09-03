@@ -245,7 +245,11 @@ class MainFrame(wx.Frame):
                                      "\nwxPython: \t" + wx.__version__ +
                                      "\nSQLAlchemy: \t" + sqlalchemy.__version__,
             700, wx.ClientDC(self))
-        info.WebSite = ("http://forums.eveonline.com/default.aspx?g=posts&amp;t=247609", "pyfa thread at EVE Online forum")
+        if "__WXGTK__" in  wx.PlatformInfo:
+            forumUrl = "http://forums.eveonline.com/default.aspx?g=posts&amp;t=247609"
+        else:
+            forumUrl = "http://forums.eveonline.com/default.aspx?g=posts&t=247609"
+        info.WebSite = (forumUrl, "pyfa thread at EVE Online forum")
         wx.AboutBox(info)
 
 
@@ -500,6 +504,8 @@ class MainFrame(wx.Frame):
             else:
                 saveFmt = "txt"
             filePath = saveDialog.GetPath()
+            if '.' not in os.path.basename(filePath):
+                filePath += ".{0}".format(saveFmt)
             self.waitDialog = animUtils.WaitDialog(self)
             sCharacter.backupSkills(filePath, saveFmt, self.getActiveFit(), self.closeWaitDialog)
             self.waitDialog.ShowModal()

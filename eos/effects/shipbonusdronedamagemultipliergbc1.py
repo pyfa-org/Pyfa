@@ -1,4 +1,5 @@
 # Used by:
+# Ship: Eos
 # Ship: Myrmidon
 type = "passive"
 def handler(fit, ship, context):

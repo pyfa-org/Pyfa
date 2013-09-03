@@ -3,6 +3,5 @@
 type = "passive"
 runTime = "early"
 def handler(fit, implant, context):
-    fit.implants.filteredItemMultiply(lambda implant: "scanRadarStrengthPercent" in implant.itemModifiedAttributes and\
-                                      "implantSetImperialNavy" in implant.itemModifiedAttributes,
+    fit.implants.filteredItemMultiply(lambda target: target.item.requiresSkill("Cybernetics"),
                                       "scanRadarStrengthPercent", implant.getModifiedItemAttr("implantSetImperialNavy"))

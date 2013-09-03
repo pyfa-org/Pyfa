@@ -1,4 +1,6 @@
 # Used by:
+# Implant: Caldari Navy Warfare Mindlink
+# Implant: Republic Fleet Warfare Mindlink
 # Implant: Siege Warfare Mindlink
 # Skill: Siege Warfare
 type = "gang"

@@ -1,4 +1,5 @@
 # Used by:
+# Ship: Chremoas
 # Ship: Dramiel
 type = "passive"
 def handler(fit, ship, context):

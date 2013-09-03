@@ -1,5 +1,7 @@
 # Used by:
 # Implant: Armored Warfare Mindlink
+# Implant: Federation Navy Warfare Mindlink
+# Implant: Imperial Navy Warfare Mindlink
 type = "gang", "active"
 gangBonus = "armorHpBonus2"
 gangBoost = "armorHP"

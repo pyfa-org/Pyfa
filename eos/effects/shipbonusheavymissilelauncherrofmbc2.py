@@ -1,4 +1,5 @@
 # Used by:
+# Ship: Claymore
 # Ship: Cyclone
 type = "passive"
 def handler(fit, ship, context):
