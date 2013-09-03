@@ -14,7 +14,7 @@ saveInRoot = False
 
 # Version data
 version = "1.1.16"
-tag = "Stable"
+tag = "git"
 expansionName = "Odyssey"
 expansionVersion = "1.1"
 evemonMinVersion = "4081"
