@@ -6,4 +6,6 @@
 type = "passive"
 def handler(fit, container, context):
     level = container.level if "skill" in context else 1
-    fit.ship.boostItemAttr("scanResolution", container.getModifiedItemAttr("scanResolutionBonus") * level)
+    penalized = False if "skill" in context or "implant" in context or "booster" in context else True
+    fit.ship.boostItemAttr("scanResolution", container.getModifiedItemAttr("scanResolutionBonus") * level,
+                           stackingPenalties=penalized)
