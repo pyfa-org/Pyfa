@@ -29,10 +29,19 @@ if not hasattr(sys, 'frozen'):
 
     try:
         import wxversion
-        wxversion.select('2.8')
-    except (ImportError, wxversion.VersionError):
-        print "Cannot find wxPython or the installed wxPython version doesn't meet requirements.\nYou can download wxPython (2.8) from http://www.wxpython.org/"
+    except ImportError:
+        print "Cannot find wxPython\nYou can download wxPython (2.8) from http://www.wxpython.org/"
         sys.exit(1)
+    try:
+        wxversion.select('2.8')
+    except wxversion.VersionError:
+        try:
+            wxversion.ensureMinimal('2.8')
+        except wxversion.VersionError:
+            print "Installed wxPython version doesn't meet requirements.\nYou can download wxPython (2.8) from http://www.wxpython.org/"
+            sys.exit(1)
+        else:
+            print "wxPython 2.8 not found; attempting to use newer version, expect errors"
 
     try:
         import sqlalchemy
