@@ -438,12 +438,12 @@ class Fit(object):
         fit = eos.db.getFit(fitID)
         self.splitDrones(fit, d, amount, fit.drones)
 
-    def removeDrone(self, fitID, i):
+    def removeDrone(self, fitID, i, numDronesToRemove=1):
         fit = eos.db.getFit(fitID)
         d = fit.drones[i]
-        d.amount -= 1
+        d.amount -= numDronesToRemove
         if d.amountActive > 0:
-            d.amountActive -= 1
+            d.amountActive -= numDronesToRemove
 
         if d.amount == 0:
             del fit.drones[i]
