@@ -1,5 +1,6 @@
 # Used by:
-# Variations of ship: Cyclone (3 of 3)
+# Variations of ship: Cyclone (2 of 2)
+# Ship: Sleipnir
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Minmatar Battlecruiser").level

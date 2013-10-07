@@ -1,6 +1,5 @@
 # Used by:
-# Ship: Claymore
-# Ship: Cyclone
+# Variations of ship: Cyclone (2 of 2)
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Minmatar Battlecruiser").level

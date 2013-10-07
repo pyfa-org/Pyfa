@@ -1,4 +1,5 @@
 # Used by:
+# Ship: Astero
 # Ship: Malice
 # Ship: Punisher
 type = "passive"

@@ -2,7 +2,7 @@
 # Modules from group: Missile Launcher Citadel (4 of 4)
 # Modules from group: Missile Launcher Heavy (12 of 12)
 # Modules from group: Missile Launcher Rocket (14 of 14)
-# Modules named like: Launcher (117 of 117)
+# Modules named like: Launcher (136 of 136)
 type = 'active'
 def handler(fit, module, context):
     # Set reload time to 10 seconds

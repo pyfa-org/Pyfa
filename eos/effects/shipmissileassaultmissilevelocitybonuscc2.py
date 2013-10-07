@@ -1,6 +1,5 @@
 # Used by:
 # Ship: Caracal
-# Ship: Cerberus
 # Ship: Osprey Navy Issue
 type = "passive"
 def handler(fit, ship, context):

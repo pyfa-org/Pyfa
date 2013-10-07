@@ -1,4 +1,5 @@
 # Used by:
+# Ship: Astero
 # Ship: Tristan
 type = "passive"
 def handler(fit, ship, context):

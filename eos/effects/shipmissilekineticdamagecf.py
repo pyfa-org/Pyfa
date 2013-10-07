@@ -2,7 +2,6 @@
 # Ship: Buzzard
 # Ship: Caldari Navy Hookbill
 # Ship: Condor
-# Ship: Crow
 # Ship: Hawk
 type = "passive"
 def handler(fit, ship, context):

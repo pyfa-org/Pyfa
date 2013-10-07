@@ -1,5 +1,6 @@
 # Used by:
 # Ship: Sacrilege
+# Ship: Stratios
 # Ship: Vangel
 type = "passive"
 def handler(fit, ship, context):
