@@ -681,7 +681,7 @@ class ShipBrowser(wx.Panel):
             self.raceselect.Show(False)
             self.Layout()
 
-    RACE_ORDER = ["amarr", "caldari", "gallente", "minmatar", "ore", "serpentis", "angel", "blood", "sansha", "guristas", "jove", None]
+    RACE_ORDER = ["amarr", "caldari", "gallente", "minmatar", "sisters", "ore", "serpentis", "angel", "blood", "sansha", "guristas", "jove", None]
 
     def raceNameKey(self, ship):
         return self.RACE_ORDER.index(ship.race), ship.name
@@ -1030,13 +1030,8 @@ class ShipItem(SFItem.SFBrowserItem):
 
         self.raceBmp = bitmapLoader.getBitmap("race_%s_small" % self.shipRace, "icons")
 
-        if self.shipName == "Apotheosis":
-            self.raceMBmp = bitmapLoader.getBitmap("race_jove_small","icons")
-        else:
-            self.raceMBmp = bitmapLoader.getBitmap("fit_delete_small","icons")
-
         if not self.raceBmp:
-            self.raceBmp = self.raceMBmp
+            self.raceBmp = bitmapLoader.getBitmap("fit_delete_small","icons")
 
         self.raceDropShadowBmp = drawUtils.CreateDropShadowBitmap(self.raceBmp, 0.2)
 
