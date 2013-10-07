@@ -884,7 +884,7 @@ class Fit(object):
     def warpSpeed(self):
         base = self.ship.getModifiedItemAttr("baseWarpSpeed") or 1
         multiplier = self.ship.getModifiedItemAttr("warpSpeedMultiplier") or 1
-        return 3 * base * multiplier
+        return base * multiplier
 
     @property
     def maxWarpDistance(self):
