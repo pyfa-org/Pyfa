@@ -7,12 +7,14 @@ def handler(fit, module, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Capital Energy Turret") or \
                                   mod.item.requiresSkill("Capital Hybrid Turret") or \
                                   mod.item.requiresSkill("Capital Projectile Turret"),
-                                  "damageMultiplier", module.getModifiedItemAttr("damageMultiplierBonus"))
+                                  "damageMultiplier", module.getModifiedItemAttr("damageMultiplierBonus"),
+                                  stackingPenalties=True)
 
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Capital Energy Turret") or \
                                   mod.item.requiresSkill("Capital Hybrid Turret") or \
                                   mod.item.requiresSkill("Capital Projectile Turret"),
-                                  "trackingSpeed", module.getModifiedItemAttr("trackingSpeedBonus"))
+                                  "trackingSpeed", module.getModifiedItemAttr("trackingSpeedBonus"),
+                                  stackingPenalties=True)
 
     #Missiles
     for type in ("kinetic", "thermal", "explosive", "em"):
@@ -26,15 +28,19 @@ def handler(fit, module, context):
 
     #Shield Boosters
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Capital Shield Operation"),
-                                  "duration", module.getModifiedItemAttr("shieldBonusDurationBonus"))
+                                  "duration", module.getModifiedItemAttr("shieldBonusDurationBonus"),
+                                  stackingPenalties=True)
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Capital Shield Operation"),
-                                  "shieldBonus", module.getModifiedItemAttr("shieldBoostMultiplier"))
+                                  "shieldBonus", module.getModifiedItemAttr("shieldBoostMultiplier"),
+                                  stackingPenalties=True)
 
     #Armor Reppers
     fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == "Armor Repair Unit",
-                                  "armorDamageAmount", module.getModifiedItemAttr("armorDamageAmountBonus"))
+                                  "armorDamageAmount", module.getModifiedItemAttr("armorDamageAmountBonus"),
+                                  stackingPenalties=True)
     fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == "Armor Repair Unit",
-                                  "duration", module.getModifiedItemAttr("armorDamageDurationBonus"))
+                                  "duration", module.getModifiedItemAttr("armorDamageDurationBonus"),
+                                  stackingPenalties=True)
 
     #Speed penalty
     fit.ship.boostItemAttr("maxVelocity", module.getModifiedItemAttr("speedFactor"))
@@ -43,7 +49,8 @@ def handler(fit, module, context):
     fit.ship.multiplyItemAttr("mass", module.getModifiedItemAttr("massMultiplier"))
 
     #Scan resolution
-    fit.ship.multiplyItemAttr("scanResolution", module.getModifiedItemAttr("scanResolutionMultiplier"))
+    fit.ship.multiplyItemAttr("scanResolution", module.getModifiedItemAttr("scanResolutionMultiplier"),
+                              stackingPenalties=True)
 
     #Max locked targets
     fit.ship.forceItemAttr("maxLockedTargets", module.getModifiedItemAttr("maxLockedTargets"))
