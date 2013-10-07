@@ -248,12 +248,10 @@ class Item(EqBase):
                    9: "guristas", # Caldari + Gallente
                    10: "angelserp", # Minmatar + Gallente, final race depends on the order of skills
                    16: "jove",
-                   32: "sansha"} # Incrusion Sansha
+                   32: "sansha", # Incrusion Sansha
+                   128: "ore"}
             # Race is None by default
             race = None
-            # Check if we're dealing with ORE ship first, using market group data
-            if self.marketGroup and self.marketGroup.name == "ORE":
-                race = "ore"
             # Check primary and secondary required skills' races
             if race is None:
                 skills = self.requiredSkills.keys()
