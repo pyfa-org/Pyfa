@@ -146,7 +146,9 @@ class Fit(object):
             return
         droneMap = {}
         for i in range(1, len(lines)):
-            line = lines[i]
+            line = lines[i].strip()
+            if not line:
+                continue
             setOffline = line.endswith(offineSuffix)
             if setOffline == True:
                 line = line[:len(line) - len(offineSuffix)]
@@ -173,7 +175,10 @@ class Fit(object):
             elif item.category.name == "Implant":
                 fit.implants.append(Implant(item))
             else:
-                m = Module(item)
+                try:
+                    m = Module(item)
+                except ValueError:
+                    continue
                 if ammoName:
                     try:
                         m.charge = db.getItem(ammoName)
