@@ -1,5 +1,4 @@
 # Used by:
-# Ship: Nestor
 # Ship: Rattlesnake
 type = "passive"
 def handler(fit, ship, context):

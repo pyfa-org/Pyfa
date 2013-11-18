@@ -1,4 +1,5 @@
 # Used by:
+# Ship: Ares
 # Ship: Federation Navy Comet
 # Ship: Tristan
 type = "passive"

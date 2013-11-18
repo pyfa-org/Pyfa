@@ -1,5 +1,4 @@
 # Used by:
-# Ship: Nestor
 # Ship: Rattlesnake
 # Ship: Rokh
 # Ship: Scorpion Navy Issue

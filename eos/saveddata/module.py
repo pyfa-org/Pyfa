@@ -327,7 +327,12 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     @property
     def reloadTime(self):
-        return self.__reloadTime
+        # Get reload time from attrs first, then use
+        # custom value specified otherwise (e.g. in effects)
+        moduleReloadTime = self.getModifiedItemAttr("reloadTime")
+        if moduleReloadTime is None:
+            moduleReloadTime = self.__reloadTime
+        return moduleReloadTime
 
     @reloadTime.setter
     def reloadTime(self, milliseconds):

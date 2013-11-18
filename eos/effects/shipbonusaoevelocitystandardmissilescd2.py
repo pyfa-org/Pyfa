@@ -1,6 +1,5 @@
 # Used by:
 # Ship: Corax
-# Ship: Flycatcher
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Caldari Destroyer").level

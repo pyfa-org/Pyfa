@@ -187,7 +187,10 @@ class Market():
             "Cambion": self.les_grp, # AT10 prize
             "Etana": self.les_grp, # AT10 prize
             "Chremoas": self.les_grp, # AT11 prize :(
-            "Moracha": self.les_grp } # AT11 prize
+            "Moracha": self.les_grp, # AT11 prize
+            "Interbus Shuttle": self.les_grp,
+            "Leopard": self.les_grp,
+            "Stratios Emergency Responder": self.les_grp }
         self.ITEMS_FORCEGROUP_R = self.__makeRevDict(self.ITEMS_FORCEGROUP)
         self.les_grp.addItems = list(self.getItem(itmn) for itmn in self.ITEMS_FORCEGROUP_R[self.les_grp])
         self.customGroups.add(self.les_grp)
@@ -222,7 +225,16 @@ class Market():
             "Goru's Shuttle": False, # Vanity
             "Guristas Shuttle": False, # Vanity
             "Tash-Murkon Magnate": False, # Vanity
-            "Scorpion Ishukone Watch": False } # Vanity
+            "Scorpion Ishukone Watch": False, # Vanity
+            "Festival Launcher": False, # Celebration-related item
+            "Barium Firework CXIV": False, # Celebration-related item
+            "Copper Firework CXIV": False, # Celebration-related item
+            "Sodium Firework CXIV": False, # Celebration-related item
+            "Snowball CXIV": False, # Celebration-related item
+            "Barium Firework": False, # Celebration-related item
+            "Copper Firework": False, # Celebration-related item
+            "Sodium Firework": False, # Celebration-related item
+            "Snowball": False } # Celebration-related item
 
         # List of groups which are forcibly published
         self.GROUPS_FORCEPUBLISHED = {
