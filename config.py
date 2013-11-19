@@ -14,7 +14,7 @@ saveInRoot = False
 
 # Version data
 version = "1.1.17"
-tag = "Stable"
+tag = "git"
 expansionName = "Rubicon"
 expansionVersion = "1.0"
 evemonMinVersion = "4081"
