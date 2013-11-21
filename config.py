@@ -13,8 +13,8 @@ debug = False
 saveInRoot = False
 
 # Version data
-version = "1.1.17"
-tag = "git"
+version = "1.1.18"
+tag = "Stable"
 expansionName = "Rubicon"
 expansionVersion = "1.0"
 evemonMinVersion = "4081"
