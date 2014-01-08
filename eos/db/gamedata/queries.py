@@ -194,7 +194,7 @@ def searchItems(nameLike, where=None, join=None, eager=None):
         join = (join,)
 
     filter = processWhere(Item.name.like(nameLike, escape="\\"), where)
-    items = gamedata_session.query(Item).options(*processEager(eager)).join(*join).filter(filter).all()
+    items = gamedata_session.query(Item).options(*processEager(eager)).join(*join).filter(filter).limit(100).all()
     return items
 
 @cachedQuery(2, "where", "itemids")
