@@ -337,29 +337,29 @@ class Fit(object):
         fits = []
         from eos import db
         for fitting in fittings:
+            f = Fit()
+            f.name = fitting.getAttribute("name")
+            # <localized hint="Maelstrom">Maelstrom</localized>
+            shipType = fitting.getElementsByTagName("shipType").item(0).getAttribute("value")
+            f.ship = Ship(db.getItem(shipType))
+            hardwares = fitting.getElementsByTagName("hardware")
+            for hardware in hardwares:
+                try:
+                    moduleName = hardware.getAttribute("type")
+                    item = db.getItem(moduleName, eager="group.category")
+                    if item:
+                        if item.category.name == "Drone":
+                            d = Drone(item)
+                            d.amount = int(hardware.getAttribute("qty"))
+                            f.drones.append(d)
+                        else:
+                            m = Module(item)
+                            if m.isValidState(State.ACTIVE):
+                                m.state = State.ACTIVE
 
-                f = Fit()
-                f.name = fitting.getAttribute("name")
-                shipType = fitting.getElementsByTagName("shipType").item(0).getAttribute("value")
-                f.ship = Ship(db.getItem(shipType))
-                hardwares = fitting.getElementsByTagName("hardware")
-                for hardware in hardwares:
-                    try:
-                        moduleName = hardware.getAttribute("type")
-                        item = db.getItem(moduleName, eager="group.category")
-                        if item:
-                            if item.category.name == "Drone":
-                                d = Drone(item)
-                                d.amount = int(hardware.getAttribute("qty"))
-                                f.drones.append(d)
-                            else:
-                                m = Module(item)
-                                if m.isValidState(State.ACTIVE):
-                                    m.state = State.ACTIVE
-
-                                f.modules.append(m)
-                    except Exception:
-                        continue
+                            f.modules.append(m)
+                except KeyboardInterrupt:
+                    continue
 
                 fits.append(f)
 

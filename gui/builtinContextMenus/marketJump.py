@@ -16,8 +16,11 @@ class MarketJump(ContextMenu):
         if selection is None or len(selection) < 1:
             return False
         item = getattr(selection[0], "item", selection[0])
-        doit =  not selection[0].isEmpty if srcContext == "fittingModule" else True \
-        and sMkt.getMarketGroupByItem(item) is not None
+        mktGrp = sMkt.getMarketGroupByItem(item)
+        # 1663 is Special Edition Festival Assets, we don't have root group for it
+        if mktGrp is None or mktGrp.ID == 1663:
+            return False
+        doit =  not selection[0].isEmpty if srcContext == "fittingModule" else True
         return doit
 
     def getText(self, itmContext, selection):

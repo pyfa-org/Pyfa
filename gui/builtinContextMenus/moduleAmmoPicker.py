@@ -72,7 +72,7 @@ class ModuleAmmoPicker(ContextMenu):
         totalDamage = 0
         # Fill them with the data about charge
         for damageType in self.DAMAGE_TYPES:
-            currentDamage = charge.getAttribute("{0}Damage".format(damageType))
+            currentDamage = charge.getAttribute("{0}Damage".format(damageType)) or 0
             damageMap[damageType] = currentDamage
             totalDamage += currentDamage
         # Detect type of ammo
@@ -122,6 +122,7 @@ class ModuleAmmoPicker(ContextMenu):
         m.Bind(wx.EVT_MENU, self.handleAmmoSwitch)
         self.chargeIds = {}
         hardpoint = self.module.hardpoint
+        moduleName = self.module.item.name
         # Make sure we do not consider mining turrets as combat turrets
         if hardpoint == Hardpoint.TURRET and self.module.getModifiedItemAttr("miningAmount") is None:
             self.addSeperator(m, "Long Range")
@@ -159,7 +160,7 @@ class ModuleAmmoPicker(ContextMenu):
                 m.AppendItem(item)
 
             self.addSeperator(m, "Short Range")
-        elif hardpoint == Hardpoint.MISSILE:
+        elif hardpoint == Hardpoint.MISSILE and moduleName != 'Festival Launcher':
             self.charges.sort(key=self.missileSorter)
             type = None
             sub = None

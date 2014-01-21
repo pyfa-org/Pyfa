@@ -225,16 +225,7 @@ class Market():
             "Goru's Shuttle": False, # Vanity
             "Guristas Shuttle": False, # Vanity
             "Tash-Murkon Magnate": False, # Vanity
-            "Scorpion Ishukone Watch": False, # Vanity
-            "Festival Launcher": False, # Celebration-related item
-            "Barium Firework CXIV": False, # Celebration-related item
-            "Copper Firework CXIV": False, # Celebration-related item
-            "Sodium Firework CXIV": False, # Celebration-related item
-            "Snowball CXIV": False, # Celebration-related item
-            "Barium Firework": False, # Celebration-related item
-            "Copper Firework": False, # Celebration-related item
-            "Sodium Firework": False, # Celebration-related item
-            "Snowball": False } # Celebration-related item
+            "Scorpion Ishukone Watch": False } # Vanity
 
         # List of groups which are forcibly published
         self.GROUPS_FORCEPUBLISHED = {
