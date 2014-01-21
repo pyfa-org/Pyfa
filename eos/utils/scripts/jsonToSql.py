@@ -59,7 +59,7 @@ if __name__ == "__main__":
               "invmetagroups": eos.gamedata.MetaGroup,
               "invmetatypes": eos.gamedata.MetaType,
               "invtypes": eos.gamedata.Item,
-              "marketProxy_GetMarketGroups": eos.gamedata.MarketGroup}
+              "marketProxy()_GetMarketGroups()": eos.gamedata.MarketGroup}
 
     fieldMapping = {"icons": {"id": "iconID"}}
     data = {}
