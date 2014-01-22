@@ -1,8 +1,17 @@
 # Used by:
-# Modules from group: Scan Probe Launcher (4 of 7)
-# Implants named like: Low grade Virtue (5 of 6)
-# Implants named like: Poteque 'Prospector' Astrometric Rangefinding AR (3 of 3)
 # Modules named like: Gravity Capacitor Upgrade (8 of 8)
+# Implant: Low-grade Virtue Alpha
+# Implant: Low-grade Virtue Beta
+# Implant: Low-grade Virtue Delta
+# Implant: Low-grade Virtue Epsilon
+# Implant: Low-grade Virtue Gamma
+# Implant: Poteque 'Prospector' Astrometric Rangefinding AR-802
+# Implant: Poteque 'Prospector' Astrometric Rangefinding AR-806
+# Implant: Poteque 'Prospector' Astrometric Rangefinding AR-810
+# Module: Core Probe Launcher II
+# Module: Expanded Probe Launcher II
+# Module: Sisters Core Probe Launcher
+# Module: Sisters Expanded Probe Launcher
 # Skill: Astrometric Rangefinding
 # Skill: Astrometrics
 type = "passive"

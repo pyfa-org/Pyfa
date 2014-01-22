@@ -1,5 +1,7 @@
 # Used by:
-# Ships named like: Megathron (3 of 3)
+# Ship: Megathron
+# Ship: Megathron Federate Issue
+# Ship: Megathron Navy Issue
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Gallente Battleship").level

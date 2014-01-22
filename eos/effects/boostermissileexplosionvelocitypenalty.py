@@ -1,5 +1,7 @@
 # Used by:
-# Implants named like: Blue Pill Booster (3 of 5)
+# Implant: Improved Blue Pill Booster
+# Implant: Standard Blue Pill Booster
+# Implant: Strong Blue Pill Booster
 type = "boosterSideEffect"
 def handler(fit, booster, context):
     fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill("Missile Launcher Operation"),

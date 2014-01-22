@@ -1,5 +1,5 @@
 # Used by:
-# Implants named like: Inherent Implants 'Lancer' Gunnery RF (6 of 6)
+# Implants named like: 'Lancer' Gunnery (6 of 6)
 # Implant: Pashan's Turret Customization Mindlink
 # Skill: Gunnery
 type = "passive"

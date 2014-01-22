@@ -1,7 +1,16 @@
 # Used by:
-# Implants named like: Slave (10 of 12)
-# Modules named like: Trimark Armor Pump (8 of 8)
+# Modules named like: Armor Pump (8 of 8)
+# Implant: Low-grade Slave Alpha
+# Implant: Low-grade Slave Beta
+# Implant: Low-grade Slave Delta
+# Implant: Low-grade Slave Epsilon
+# Implant: Low-grade Slave Gamma
 # Implant: Low-grade Snake Epsilon
+# Implant: Slave Alpha
+# Implant: Slave Beta
+# Implant: Slave Delta
+# Implant: Slave Epsilon
+# Implant: Slave Gamma
 # Skill: Hull Upgrades
 type = "passive"
 def handler(fit, container, context):

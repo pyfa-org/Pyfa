@@ -1,5 +1,7 @@
 # Used by:
-# Drones named like: TD (3 of 3)
+# Drone: Acolyte TD-300
+# Drone: Infiltrator TD-600
+# Drone: Praetor TD-900
 type = "projected", "active"
 def handler(fit, container, context):
     if "projected" in context:

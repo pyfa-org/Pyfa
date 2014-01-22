@@ -1,6 +1,10 @@
 # Used by:
-# Implants named like: Blue Pill Booster (3 of 5)
-# Implants named like: Exile Booster (3 of 4)
+# Implant: Improved Blue Pill Booster
+# Implant: Improved Exile Booster
+# Implant: Standard Blue Pill Booster
+# Implant: Standard Exile Booster
+# Implant: Strong Blue Pill Booster
+# Implant: Strong Exile Booster
 type = "boosterSideEffect"
 def handler(fit, booster, context):
     fit.ship.boostItemAttr("capacitorCapacity", booster.getModifiedItemAttr("boosterCapacitorCapacityPenalty"))

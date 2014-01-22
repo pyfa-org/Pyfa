@@ -1,5 +1,6 @@
 # Used by:
-# Ships named like: Imicus (2 of 2)
+# Ship: Imicus
+# Ship: Inner Zone Shipping Imicus
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Gallente Frigate").level

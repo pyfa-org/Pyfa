@@ -1,6 +1,11 @@
 # Used by:
-# Implants named like: Eifyr and Co. 'Alchemist' Nanite Control NC (2 of 2)
-# Implants named like: Low grade Edge (5 of 6)
+# Implant: Eifyr and Co. 'Alchemist' Nanite Control NC-903
+# Implant: Eifyr and Co. 'Alchemist' Nanite Control NC-905
+# Implant: Low-grade Edge Alpha
+# Implant: Low-grade Edge Beta
+# Implant: Low-grade Edge Delta
+# Implant: Low-grade Edge Epsilon
+# Implant: Low-grade Edge Gamma
 # Skill: Neurotoxin Control
 type = "passive"
 def handler(fit, container, context):

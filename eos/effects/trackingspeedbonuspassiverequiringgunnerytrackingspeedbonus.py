@@ -1,7 +1,10 @@
 # Used by:
-# Implants named like: Drop Booster (4 of 4)
-# Implants named like: Eifyr and Co. 'Gunslinger' Motion Prediction MR (6 of 6)
+# Implants named like: Eifyr and Co. Prediction MR (6 of 6)
+# Implant: Improved Drop Booster
 # Implant: Ogdin's Eye Coordination Enhancer
+# Implant: Standard Drop Booster
+# Implant: Strong Drop Booster
+# Implant: Synth Drop Booster
 # Skill: Motion Prediction
 type = "passive"
 def handler(fit, container, context):

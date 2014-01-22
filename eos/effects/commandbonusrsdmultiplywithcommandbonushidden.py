@@ -5,7 +5,8 @@ gangBoost = "ewarStrRSD"
 type = "active", "gang"
 def handler(fit, module, context):
     if "gang" not in context: return
-    for bonus in ("scanResolutionBonus", "maxTargetRangeBonus"):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == "Remote Sensor Damper",
-                                      bonus, module.getModifiedItemAttr("commandBonusRSD"),
-                                      stackingPenalties = True)
+    fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == "Remote Sensor Damper",
+                                  "maxTargetRangeBonus", module.getModifiedItemAttr("commandBonusRSD"))
+    fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == "Remote Sensor Damper",
+                                  "scanResolutionBonus", module.getModifiedItemAttr("commandBonusRSD"),
+                                  stackingPenalties=True)

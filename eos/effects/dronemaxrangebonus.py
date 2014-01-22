@@ -1,5 +1,5 @@
 # Used by:
-# Modules named like: Drone Scope Chip (8 of 8)
+# Modules named like: Drone Scope (8 of 8)
 # Skill: Drone Sharpshooting
 type = "passive"
 def handler(fit, container, context):

@@ -1,6 +1,9 @@
 # Used by:
-# Skills named like: Drone Specialization (4 of 4)
+# Skill: Amarr Drone Specialization
+# Skill: Caldari Drone Specialization
+# Skill: Gallente Drone Specialization
 # Skill: Heavy Drone Operation
+# Skill: Minmatar Drone Specialization
 # Skill: Sentry Drone Interfacing
 type = "passive"
 def handler(fit, skill, context):

@@ -1,6 +1,6 @@
 # Used by:
-# Implants named like: Inherent Implants 'Squire' Engineering EG (6 of 6)
-# Modules named like: Ancillary Current Router (8 of 8)
+# Implants named like: 'Squire' EG (6 of 6)
+# Modules named like: Ancillary Router (8 of 8)
 # Implant: Genolution Core Augmentation CA-1
 # Skill: Power Grid Management
 type = "passive"

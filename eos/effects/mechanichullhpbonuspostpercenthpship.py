@@ -1,5 +1,5 @@
 # Used by:
-# Implants named like: Inherent Implants 'Noble' Mechanic MC (6 of 6)
+# Items from market group: Implants & Boosters > Implants > Skill Hardwiring > Armor Implants > Implant Slot 08 (6 of 6)
 # Skill: Mechanics
 type = "passive"
 def handler(fit, container, context):

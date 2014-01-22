@@ -1,5 +1,8 @@
 # Used by:
-# Ships from group: Interceptor (4 of 8)
+# Ship: Ares
+# Ship: Crow
+# Ship: Malediction
+# Ship: Stiletto
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Interceptors").level

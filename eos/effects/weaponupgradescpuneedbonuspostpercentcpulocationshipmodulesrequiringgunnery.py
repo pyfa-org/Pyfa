@@ -1,5 +1,5 @@
 # Used by:
-# Implants named like: Zainou 'Gnome' Weapon Upgrades WU (6 of 6)
+# Implants named like: 'Gnome' Weapon WU (6 of 6)
 # Skill: Weapon Upgrades
 type = "passive"
 def handler(fit, container, context):

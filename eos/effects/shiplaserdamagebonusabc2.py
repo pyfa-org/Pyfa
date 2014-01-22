@@ -1,5 +1,6 @@
 # Used by:
-# Ships named like: Harbinger (2 of 2)
+# Ship: Harbinger
+# Ship: Harbinger Navy Issue
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Amarr Battlecruiser").level

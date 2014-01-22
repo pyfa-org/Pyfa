@@ -1,5 +1,5 @@
 # Used by:
-# Modules named like: Signal Focusing Kit (8 of 8)
+# Modules named like: Signal Focusing (8 of 8)
 # Skill: Survey
 type = "passive"
 def handler(fit, container, context):

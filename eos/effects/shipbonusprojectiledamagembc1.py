@@ -1,5 +1,6 @@
 # Used by:
-# Ships named like: Hurricane (2 of 2)
+# Ship: Hurricane
+# Ship: Hurricane Fleet Issue
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Minmatar Battlecruiser").level

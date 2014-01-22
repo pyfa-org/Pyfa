@@ -1,5 +1,8 @@
 # Used by:
-# Ships from group: Force Recon Ship (4 of 5)
+# Ship: Arazu
+# Ship: Falcon
+# Ship: Pilgrim
+# Ship: Rapier
 type = "passive"
 def handler(fit, ship, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == "Cynosural Field",

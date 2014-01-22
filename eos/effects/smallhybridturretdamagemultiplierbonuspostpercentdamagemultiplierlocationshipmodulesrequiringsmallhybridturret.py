@@ -1,5 +1,5 @@
 # Used by:
-# Implants named like: Zainou 'Deadeye' Small Hybrid Turret SH (6 of 6)
+# Implants named like: Zainou Small SH (6 of 6)
 # Skill: Small Hybrid Turret
 type = "passive"
 def handler(fit, container, context):

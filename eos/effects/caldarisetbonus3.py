@@ -1,5 +1,10 @@
 # Used by:
-# Implants named like: Talon (6 of 12)
+# Implant: Talon Alpha
+# Implant: Talon Beta
+# Implant: Talon Delta
+# Implant: Talon Epsilon
+# Implant: Talon Gamma
+# Implant: Talon Omega
 runTime = "early"
 type = "passive"
 def handler(fit, implant, context):
