@@ -34,7 +34,7 @@ def defPaths():
     global saveInRoot
     # The main pyfa directory which contains run.py
     # Python 2.X uses ANSI by default, so we need to convert the character encoding
-    pyfaPath = getattr(configforced, "pyfaPath", None)
+    pyfaPath = getattr(configforced, "pyfaPath", pyfaPath)
     if pyfaPath is None:
         pyfaPath = unicode(os.path.dirname(os.path.realpath(os.path.abspath(
             sys.modules['__main__'].__file__))), sys.getfilesystemencoding())
@@ -45,7 +45,7 @@ def defPaths():
         if savePath is None:
             savePath = os.path.join(pyfaPath, "saveddata")
     else:
-        savePath = getattr(configforced, "savePath", savePath)
+        savePath = getattr(configforced, "savePath", None)
         if savePath is None:
             savePath = unicode(os.path.expanduser(os.path.join("~", ".pyfa")),
                                sys.getfilesystemencoding())
