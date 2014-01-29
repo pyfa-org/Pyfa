@@ -36,7 +36,8 @@ def defPaths():
     # Python 2.X uses ANSI by default, so we need to convert the character encoding
     pyfaPath = getattr(configforced, "pyfaPath", None)
     if pyfaPath is None:
-        pyfaPath = unicode(os.path.dirname(os.path.abspath(sys.modules['__main__'].__file__)), sys.getfilesystemencoding())
+        pyfaPath = unicode(os.path.dirname(os.path.realpath(os.path.abspath(
+            sys.modules['__main__'].__file__))), sys.getfilesystemencoding())
 
     # Where we store the saved fits etc, default is the current users home directory
     if saveInRoot is True:
@@ -46,7 +47,8 @@ def defPaths():
     else:
         savePath = getattr(configforced, "savePath", None)
         if savePath is None:
-            savePath = unicode(os.path.expanduser(os.path.join("~", ".pyfa")), sys.getfilesystemencoding())
+            savePath = unicode(os.path.expanduser(os.path.join("~", ".pyfa")),
+                               sys.getfilesystemencoding())
 
     # Redirect stderr to file if we're requested to do so
     stderrToFile = getattr(configforced, "stderrToFile", None)
@@ -62,7 +64,8 @@ def defPaths():
             os.mkdir(savePath)
         sys.stdout = open(os.path.join(savePath, "output_log.txt"), "w")
 
-    # Static EVE Data from the staticdata repository, should be in the staticdata directory in our pyfa directory
+    # Static EVE Data from the staticdata repository, should be in the staticdata
+    # directory in our pyfa directory
     staticPath = os.path.join(pyfaPath, "staticdata")
 
     # The database where we store all the fits etc
