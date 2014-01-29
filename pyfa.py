@@ -24,13 +24,13 @@ import re
 if not hasattr(sys, 'frozen'):
 
     if sys.version_info < (2,6) or sys.version_info > (3,0):
-        print "Pyfa requires python 2.x branch ( >= 2.6 )\nExiting."
+        print("Pyfa requires python 2.x branch ( >= 2.6 )\nExiting.")
         sys.exit(1)
 
     try:
         import wxversion
     except ImportError:
-        print "Cannot find wxPython\nYou can download wxPython (2.8) from http://www.wxpython.org/"
+        print("Cannot find wxPython\nYou can download wxPython (2.8) from http://www.wxpython.org/")
         sys.exit(1)
     try:
         wxversion.select('2.8')
@@ -38,10 +38,10 @@ if not hasattr(sys, 'frozen'):
         try:
             wxversion.ensureMinimal('2.8')
         except wxversion.VersionError:
-            print "Installed wxPython version doesn't meet requirements.\nYou can download wxPython (2.8) from http://www.wxpython.org/"
+            print("Installed wxPython version doesn't meet requirements.\nYou can download wxPython (2.8) from http://www.wxpython.org/")
             sys.exit(1)
         else:
-            print "wxPython 2.8 not found; attempting to use newer version, expect errors"
+            print("wxPython 2.8 not found; attempting to use newer version, expect errors")
 
     try:
         import sqlalchemy
@@ -54,13 +54,13 @@ if not hasattr(sys, 'frozen'):
             betaFlag = True if saMatch.group(3) == "b" else False
             saBuild = int(saMatch.group(4)) if not betaFlag else 0
             if saMajor == 0 and (saMinor < 5 or (saMinor == 5 and saBuild < 8)):
-                print "Pyfa requires sqlalchemy 0.5.8 at least  but current sqlalchemy version is %s\nYou can download sqlalchemy (0.5.8+) from http://www.sqlalchemy.org/".format(sqlalchemy.__version__)
+                print("Pyfa requires sqlalchemy 0.5.8 at least  but current sqlalchemy version is %s\nYou can download sqlalchemy (0.5.8+) from http://www.sqlalchemy.org/".format(sqlalchemy.__version__))
                 sys.exit(1)
         else:
-            print "Unknown sqlalchemy version string format, skipping check"
+            print("Unknown sqlalchemy version string format, skipping check")
 
     except ImportError:
-        print "Cannot find sqlalchemy.\nYou can download sqlalchemy (0.6+) from http://www.sqlalchemy.org/"
+        print("Cannot find sqlalchemy.\nYou can download sqlalchemy (0.6+) from http://www.sqlalchemy.org/")
         sys.exit(1)
 
 from optparse import OptionParser
