@@ -45,7 +45,7 @@ def defPaths():
         if savePath is None:
             savePath = os.path.join(pyfaPath, "saveddata")
     else:
-        savePath = getattr(configforced, "savePath", None)
+        savePath = getattr(configforced, "savePath", savePath)
         if savePath is None:
             savePath = unicode(os.path.expanduser(os.path.join("~", ".pyfa")),
                                sys.getfilesystemencoding())
