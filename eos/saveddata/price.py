@@ -29,8 +29,8 @@ import eos.db
 class Price(object):
     # Price validity period, 24 hours
     VALIDITY = 24*60*60
-    # Re-request delay for failed fetches, 4 hours
-    REREQUEST = 4*60*60
+    # Re-request delay for failed fetches, 10 seconds
+    REREQUEST = 10
 
     def __init__(self, typeID):
         self.typeID = typeID
