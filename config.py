@@ -13,7 +13,7 @@ debug = False
 saveInRoot = False
 
 # Version data
-version = "1.1.19"
+version = "1.1.20"
 tag = "Stable"
 expansionName = "Rubicon"
 expansionVersion = "1.1"
