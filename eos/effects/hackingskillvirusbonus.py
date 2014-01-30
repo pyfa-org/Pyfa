@@ -1,5 +1,5 @@
 # Used by:
-# Modules named like: Memetic Algorithm Bank (8 of 8)
+# Modules named like: Algorithm (8 of 8)
 # Implant: Poteque 'Prospector' Hacking HC-905
 # Skill: Hacking
 type = "passive"

@@ -1,5 +1,5 @@
 # Used by:
-# Implants named like: Zainou 'Gypsy' Target Painting TG (6 of 6)
+# Implants named like: Zainou 'Gypsy' Target TG (6 of 6)
 # Skill: Target Painting
 type = "passive"
 def handler(fit, container, context):

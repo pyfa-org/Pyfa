@@ -1,6 +1,6 @@
 # Used by:
-# Implants named like: Zainou 'Deadeye' Missile Projection MP (6 of 6)
-# Modules named like: Hydraulic Bay Thrusters (8 of 8)
+# Implants named like: Zainou 'Deadeye' MP (6 of 6)
+# Modules named like: Bay Thrusters (8 of 8)
 # Skill: Missile Projection
 type = "passive"
 def handler(fit, container, context):

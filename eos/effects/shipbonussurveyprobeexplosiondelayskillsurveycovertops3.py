@@ -1,5 +1,8 @@
 # Used by:
-# Ships from group: Covert Ops (4 of 5)
+# Ship: Anathema
+# Ship: Buzzard
+# Ship: Cheetah
+# Ship: Helios
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Covert Ops").level

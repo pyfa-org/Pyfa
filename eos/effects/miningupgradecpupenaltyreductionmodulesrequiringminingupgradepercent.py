@@ -1,5 +1,7 @@
 # Used by:
-# Implants named like: Inherent Implants 'Highwall' Mining Upgrades MU (3 of 3)
+# Implant: Inherent Implants 'Highwall' Mining Upgrades MU-1001
+# Implant: Inherent Implants 'Highwall' Mining Upgrades MU-1003
+# Implant: Inherent Implants 'Highwall' Mining Upgrades MU-1005
 # Skill: Mining Upgrades
 type = "passive"
 def handler(fit, container, context):

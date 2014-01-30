@@ -1,5 +1,6 @@
 # Used by:
-# Ships named like: Caracal (2 of 2)
+# Ship: Caracal
+# Ship: Caracal Navy Issue
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Caldari Cruiser").level

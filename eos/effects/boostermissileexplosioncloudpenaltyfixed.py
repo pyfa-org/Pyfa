@@ -1,6 +1,10 @@
 # Used by:
-# Implants named like: Exile Booster (3 of 4)
-# Implants named like: Mindflood Booster (3 of 4)
+# Implant: Improved Exile Booster
+# Implant: Improved Mindflood Booster
+# Implant: Standard Exile Booster
+# Implant: Standard Mindflood Booster
+# Implant: Strong Exile Booster
+# Implant: Strong Mindflood Booster
 type = "boosterSideEffect"
 def handler(fit, booster, context):
     fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill("Missile Launcher Operation"),

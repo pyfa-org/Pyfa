@@ -1,8 +1,11 @@
 # Used by:
-# Implants named like: Inherent Implants 'Squire' Energy Management EM (6 of 6)
-# Implants named like: Mindflood Booster (4 of 4)
-# Modules named like: Semiconductor Memory Cell (8 of 8)
+# Modules named like: Semiconductor Cell (8 of 8)
+# Items from market group: Implants & Boosters > Implants > Skill Hardwiring > Engineering Implants > Implant Slot 08 (6 of 6)
 # Implant: Genolution Core Augmentation CA-1
+# Implant: Improved Mindflood Booster
+# Implant: Standard Mindflood Booster
+# Implant: Strong Mindflood Booster
+# Implant: Synth Mindflood Booster
 # Skill: Capacitor Management
 type = "passive"
 def handler(fit, container, context):

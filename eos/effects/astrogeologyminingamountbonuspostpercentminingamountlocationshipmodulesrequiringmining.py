@@ -1,5 +1,7 @@
 # Used by:
-# Implants named like: Inherent Implants 'Highwall' Mining MX (3 of 3)
+# Implant: Inherent Implants 'Highwall' Mining MX-1001
+# Implant: Inherent Implants 'Highwall' Mining MX-1003
+# Implant: Inherent Implants 'Highwall' Mining MX-1005
 # Implant: Michi's Excavation Augmentor
 # Skill: Astrogeology
 # Skill: Mining

@@ -1,6 +1,8 @@
 # Used by:
 # Modules from group: ECM (44 of 44)
-# Drones named like: EC (3 of 3)
+# Drone: Hornet EC-300
+# Drone: Vespa EC-600
+# Drone: Wasp EC-900
 type = "projected", "active"
 def handler(fit, container, context):
     pass

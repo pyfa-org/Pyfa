@@ -1,5 +1,6 @@
 # Used by:
-# Skills named like: Target Management (2 of 2)
+# Skill: Advanced Target Management
+# Skill: Target Management
 type = "passive"
 def handler(fit, skill, context):
     amount = skill.getModifiedItemAttr("maxTargetBonus") * skill.level

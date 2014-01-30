@@ -1,5 +1,7 @@
 # Used by:
-# Variations of ship: Armageddon (3 of 5)
+# Ship: Armageddon Imperial Issue
+# Ship: Armageddon Navy Issue
+# Ship: Redeemer
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Amarr Battleship").level

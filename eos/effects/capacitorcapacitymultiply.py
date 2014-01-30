@@ -1,6 +1,6 @@
 # Used by:
 # Modules from group: Capacitor Flux Coil (12 of 12)
-# Modules from group: Capacitor Power Relay (25 of 25)
+# Modules from group: Capacitor Power Relay (26 of 26)
 # Modules from group: Power Diagnostic System (31 of 31)
 # Modules from group: Propulsion Module (107 of 107)
 # Modules from group: Reactor Control Unit (28 of 28)

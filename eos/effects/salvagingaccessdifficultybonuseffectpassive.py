@@ -1,5 +1,5 @@
 # Used by:
-# Modules from group: Rig Resource Processing (8 of 10)
+# Modules named like: Salvage (8 of 8)
 # Implant: Poteque 'Prospector' Salvaging SV-905
 type = "passive"
 def handler(fit, container, context):

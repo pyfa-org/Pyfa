@@ -1,6 +1,6 @@
 # Used by:
-# Implants named like: Zainou 'Gypsy' Signature Analysis SA (6 of 6)
-# Modules named like: Targeting System Subcontroller (8 of 8)
+# Modules named like: Targeting Subcontroller (8 of 8)
+# Items from market group: Implants & Boosters > Implants > Skill Hardwiring > Targeting Implants > Implant Slot 07 (6 of 6)
 # Implant: Quafe Zero
 # Skill: Signature Analysis
 type = "passive"

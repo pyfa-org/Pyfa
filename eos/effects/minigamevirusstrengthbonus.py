@@ -1,8 +1,22 @@
 # Used by:
 # Ships from group: Covert Ops (5 of 5)
-# Ships from group: Frigate (10 of 43)
-# Ships named like: Stratios (2 of 2)
-# Subsystems named like: Electronics Emergent Locus Analyzer (4 of 4)
+# Ship: Astero
+# Ship: Heron
+# Ship: Imicus
+# Ship: Inner Zone Shipping Imicus
+# Ship: Magnate
+# Ship: Nestor
+# Ship: Probe
+# Ship: Sarum Magnate
+# Ship: Stratios
+# Ship: Stratios Emergency Responder
+# Ship: Sukuuvestaa Heron
+# Ship: Tash-Murkon Magnate
+# Ship: Vherokior Probe
+# Subsystem: Legion Electronics - Emergent Locus Analyzer
+# Subsystem: Loki Electronics - Emergent Locus Analyzer
+# Subsystem: Proteus Electronics - Emergent Locus Analyzer
+# Subsystem: Tengu Electronics - Emergent Locus Analyzer
 type = "passive"
 def handler(fit, container, context):
     level = container.level if "skill" in context else 1

@@ -1,5 +1,8 @@
 # Used by:
-# Ships from group: Command Ship (4 of 8)
+# Ship: Absolution
+# Ship: Astarte
+# Ship: Damnation
+# Ship: Eos
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Command Ships").level

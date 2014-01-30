@@ -1,5 +1,5 @@
 # Used by:
-# Modules named like: Drone Speed Augmentor (8 of 8)
+# Modules named like: Speed Augmentor (8 of 8)
 # Skill: Drone Navigation
 type = "passive"
 def handler(fit, container, context):
