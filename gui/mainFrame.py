@@ -161,6 +161,10 @@ class MainFrame(wx.Frame):
         #Show ourselves
         self.Show()
 
+        #Check for updates
+        self.sUpdate = service.Update.getInstance()
+        self.sUpdate.CheckUpdate()
+
     def LoadMainFrameAttribs(self):
 
         mainFrameDefaultAttribs = {"wnd_width":1000, "wnd_height": 700, "wnd_maximized": False}
