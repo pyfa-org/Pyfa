@@ -163,8 +163,11 @@ class MainFrame(wx.Frame):
 
         #Check for updates
         self.sUpdate = service.Update.getInstance()
-        self.sUpdate.CheckUpdate()
+        self.sUpdate.CheckUpdate(self.ShowUpdateBox)
 
+    def ShowUpdateBox(self):
+        wx.MessageBox('ZOMG UPDATE', 'Info', wx.OK | wx.ICON_INFORMATION)
+        
     def LoadMainFrameAttribs(self):
 
         mainFrameDefaultAttribs = {"wnd_width":1000, "wnd_height": 700, "wnd_maximized": False}

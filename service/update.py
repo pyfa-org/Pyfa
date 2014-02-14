@@ -25,17 +25,12 @@ import config
 
 from service.settings import SettingsProvider
 
-class Update():
-    instance = None
-    def __init__(self):
-       pass
-       
-    def CheckUpdate(self):
-        print "Checking for Updates"
-        t=threading.Thread(target=self.__CheckUpdate)
-        t.start()
-        
-    def __CheckUpdate(self):
+class CheckUpdateThread(threading.Thread):
+    def __init__(self, callback):
+        threading.Thread.__init__(self)
+        self.callback = callback
+
+    def run(self):
         print "In the thread"
         try:
             response = urllib2.urlopen('https://api.github.com/repos/DarkFenX/Pyfa/releases')
@@ -43,8 +38,19 @@ class Update():
             responseVersion = jsonResponse[0]['tag_name'].replace('v', '', 1)
             if responseVersion != config.version:
                 print "New version!"
+                wx.CallAfter(self.callback)
         except:
             pass
+
+class Update():
+    instance = None
+    def __init__(self):
+       pass
+       
+    def CheckUpdate(self, callback):
+        print "Checking for Updates"
+        thread = CheckUpdateThread(callback)
+        thread.start()
 
     @classmethod
     def getInstance(cls):
