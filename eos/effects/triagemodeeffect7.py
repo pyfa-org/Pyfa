@@ -21,9 +21,9 @@ def handler(fit, module, context):
                                   "duration", module.getModifiedItemAttr("shieldTransportDurationBonus"))
 
     # Energy Transfer Arrays
-    fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Capital Energy Emission Systems"),
+    fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Capital Capacitor Emission Systems"),
                                   "powerTransferAmount", module.getModifiedItemAttr("powerTransferAmountBonus"))
-    fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Capital Energy Emission Systems"),
+    fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Capital Capacitor Emission Systems"),
                                   "duration", module.getModifiedItemAttr("powerTransferDurationBonus"))
 
     # Shield boosters
