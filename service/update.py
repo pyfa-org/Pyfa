@@ -38,7 +38,7 @@ class CheckUpdateThread(threading.Thread):
             responseVersion = jsonResponse[0]['tag_name'].replace('v', '', 1)
             if responseVersion != config.version:
                 print "New version!"
-                wx.CallAfter(self.callback)
+                wx.CallAfter(self.callback, jsonResponse[0])
         except:
             pass
 

@@ -49,6 +49,7 @@ from gui.graphFrame import GraphFrame
 from gui.copySelectDialog import CopySelectDialog
 from gui.utils.clipboard import toClipboard, fromClipboard
 from gui.fleetBrowser import FleetBrowser
+from gui.updateDialog import UpdateDialog
 from gui.builtinViews import *
 
 #dummy panel(no paint no erasebk)
@@ -165,8 +166,10 @@ class MainFrame(wx.Frame):
         self.sUpdate = service.Update.getInstance()
         self.sUpdate.CheckUpdate(self.ShowUpdateBox)
 
-    def ShowUpdateBox(self):
-        wx.MessageBox('ZOMG UPDATE', 'Info', wx.OK | wx.ICON_INFORMATION)
+    def ShowUpdateBox(self, release):
+        dlg = UpdateDialog(self, release)
+        dlg.ShowModal()
+        dlg.Destroy()
         
     def LoadMainFrameAttribs(self):
 
