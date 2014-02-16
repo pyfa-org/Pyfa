@@ -41,6 +41,7 @@ class UpdateDialog(wx.Dialog):
         
         headSizer.Add( self.headingText, 1, wx.ALL, 5 )
         mainSizer.Add( headSizer, 0, wx.EXPAND, 5 )
+        
         mainSizer.Add( wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL ), 0, wx.EXPAND |wx.ALL, 5 )
         
         versionSizer = wx.BoxSizer( wx.HORIZONTAL )
@@ -69,7 +70,8 @@ class UpdateDialog(wx.Dialog):
 
         notesSizer = wx.BoxSizer( wx.HORIZONTAL )
 
-        self.notesTextCtrl = wx.TextCtrl( self, wx.ID_ANY, self.releaseInfo['body'], wx.DefaultPosition, wx.DefaultSize, wx.TE_AUTO_URL|wx.TE_MULTILINE|wx.TE_NO_VSCROLL|wx.TE_READONLY|wx.DOUBLE_BORDER|wx.TRANSPARENT_WINDOW )
+        self.notesTextCtrl = wx.TextCtrl( self, wx.ID_ANY, self.releaseInfo['body'], wx.DefaultPosition, wx.DefaultSize, wx.TE_AUTO_URL|wx.TE_MULTILINE|wx.TE_READONLY|wx.DOUBLE_BORDER|wx.TRANSPARENT_WINDOW )
+
         notesSizer.Add( self.notesTextCtrl, 1, wx.EXPAND|wx.LEFT|wx.RIGHT, 5 )
         mainSizer.Add( notesSizer, 1, wx.EXPAND, 5 )
         
@@ -82,8 +84,9 @@ class UpdateDialog(wx.Dialog):
         actionSizer = wx.BoxSizer( wx.HORIZONTAL )
 
         goSizer = wx.BoxSizer( wx.VERTICAL )
-        self.goButton = wx.Button( self, wx.ID_ANY, "Download", wx.DefaultPosition, wx.DefaultSize, 0 )
-        goSizer.Add( self.goButton, 0, wx.ALL, 5 )
+        self.downloadButton = wx.Button( self, wx.ID_ANY, "Download", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.downloadButton.Bind(wx.EVT_BUTTON, self.OnDownload)
+        goSizer.Add( self.downloadButton, 0, wx.ALL, 5 )
         actionSizer.Add( goSizer, 1, wx.EXPAND, 5 )
 
         self.closeButton = wx.Button(self, wx.ID_CLOSE)
@@ -94,13 +97,12 @@ class UpdateDialog(wx.Dialog):
         self.SetSizer( mainSizer )
         self.Layout()
 
+        # Handle use-case of suppressing a release, then a new version becoming available. 
+        # If that new version is not suppressed, the old version will remain in the preferences and 
+        # may cause confusion. If this dialog box is popping up for any reason, that mean we can 
+        # safely reset this setting
+        self.UpdateSettings.set('version', None)
         
-        '''
-        TODO: If release suppression is not ticked, make sure it's set correctly in settings.
-        Otherwise, a release will be suppressed, and a new release will come around. However, 
-        if user does not suppress that one, the old release will continue to see the suppressed 
-        release in prefs
-        '''
         self.Centre( wx.BOTH )
 
     def OnClose(self, e):
@@ -111,3 +113,7 @@ class UpdateDialog(wx.Dialog):
             self.UpdateSettings.set('version', self.releaseInfo['tag_name'])
         else:
             self.UpdateSettings.set('version', None)
+        
+    def OnDownload(self, e):
+        wx.LaunchDefaultBrowser('https://github.com/DarkFenX/Pyfa/releases/tag/'+self.releaseInfo['tag_name'])
+        self.OnClose(e)

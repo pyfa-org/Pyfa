@@ -38,6 +38,7 @@ class SettingsProvider():
             os.mkdir(self.BASE_PATH);
 
     def getSettings(self, area, defaults=None):
+
         s = self.settings.get(area)
         if s is None:
             p = os.path.join(self.BASE_PATH, area)
@@ -239,11 +240,7 @@ class UpdateSettings():
         self.serviceUpdateSettings = SettingsProvider.getInstance().getSettings("pyfaServiceUpdateSettings", serviceUpdateDefaultSettings)
     
     def get(self, type):
-        print "Getting "+type+ ": "
-        print self.serviceUpdateSettings["suppress" + type]
-        return self.serviceUpdateSettings["suppress" + type]
+        return self.serviceUpdateSettings[type]
     
     def set(self, type, value):
-        self.serviceUpdateSettings["suppress" + type] = value
-        print "Setting "+type+ " = "
-        print self.serviceUpdateSettings["suppress" + type]
+        self.serviceUpdateSettings[type] = value

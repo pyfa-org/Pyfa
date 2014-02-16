@@ -22,29 +22,49 @@ import wx
 import urllib2
 import json
 import config
-
-from service.settings import SettingsProvider, UpdateSettings
+import service
 
 class CheckUpdateThread(threading.Thread):
     def __init__(self, callback):
         threading.Thread.__init__(self)
         self.callback = callback
-        self.settings = UpdateSettings.getInstance()
+        self.settings =  service.settings.UpdateSettings.getInstance()
 
     def run(self):
-        print "In the thread"
+        # Suppress all
         if (self.settings.get('all')):
             return
 
         try:
             response = urllib2.urlopen('https://api.github.com/repos/DarkFenX/Pyfa/releases')
             jsonResponse = json.loads(response.read());
-            responseVersion = jsonResponse[0]['tag_name'].replace('v', '', 1)
-            if responseVersion != config.version:
-                print "New version!"
-                wx.CallAfter(self.callback, jsonResponse[0])
-        except:
+            i = 0
+            while (True):
+                release = jsonResponse[i]
+
+                # Suppress pre releases
+                if (release['prerelease'] and self.settings.get('prerelease')):
+                    i += 1
+                    continue
+                
+                # Handle use-case of updating to suppressed version
+                if self.settings.get('version') == 'v'+config.version:
+                    self.settings.set('version', None)
+                
+                # Suppress version
+                if (release['tag_name'] == self.settings.get('version')):
+                    return                
+                    
+                version = release['tag_name'].replace('v', '', 1)
+                if version != config.version:
+                    wx.CallAfter(self.callback, jsonResponse[i])
+                    break;
+                
+        except: # for when there is no internet connection
             pass
+    
+    def versiontuple(v):
+        return tuple(map(int, (v.split("."))))
 
 class Update():
     instance = None
@@ -52,7 +72,6 @@ class Update():
        pass
        
     def CheckUpdate(self, callback):
-        print "Checking for Updates"
         thread = CheckUpdateThread(callback)
         thread.start()
 
