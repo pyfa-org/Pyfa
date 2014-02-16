@@ -353,7 +353,11 @@ class Fit(object):
                             d.amount = int(hardware.getAttribute("qty"))
                             f.drones.append(d)
                         else:
-                            m = Module(item)
+                            try:
+                                m = Module(item)
+                            # When item can't be added to any slot (unknown item or just charge), ignore it
+                            except ValueError:
+                                continue
                             if m.isValidState(State.ACTIVE):
                                 m.state = State.ACTIVE
 
