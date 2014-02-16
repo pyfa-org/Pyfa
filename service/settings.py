@@ -216,3 +216,34 @@ class HTMLExportSettings():
     
     def setPath(self, path):
         self.serviceHTMLExportSettings["path"] = path
+        
+"""
+Settings used by update notification
+"""        
+class UpdateSettings():
+    _instance = None
+     
+    @classmethod
+    def getInstance(cls):
+        if cls._instance == None:
+            cls._instance = UpdateSettings()
+
+        return cls._instance    
+
+    def __init__(self):
+        # Settings
+        # all        - If True, suppress all update notifications
+        # prerelease - If True, suppress only prerelease notifications
+        # version    - Set to release tag that user does not want notifications for
+        serviceUpdateDefaultSettings = { "all": False, "prerelease": False, 'version': None }
+        self.serviceUpdateSettings = SettingsProvider.getInstance().getSettings("pyfaServiceUpdateSettings", serviceUpdateDefaultSettings)
+    
+    def get(self, type):
+        print "Getting "+type+ ": "
+        print self.serviceUpdateSettings["suppress" + type]
+        return self.serviceUpdateSettings["suppress" + type]
+    
+    def set(self, type, value):
+        self.serviceUpdateSettings["suppress" + type] = value
+        print "Setting "+type+ " = "
+        print self.serviceUpdateSettings["suppress" + type]

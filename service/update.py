@@ -23,15 +23,19 @@ import urllib2
 import json
 import config
 
-from service.settings import SettingsProvider
+from service.settings import SettingsProvider, UpdateSettings
 
 class CheckUpdateThread(threading.Thread):
     def __init__(self, callback):
         threading.Thread.__init__(self)
         self.callback = callback
+        self.settings = UpdateSettings.getInstance()
 
     def run(self):
         print "In the thread"
+        if (self.settings.get('all')):
+            return
+
         try:
             response = urllib2.urlopen('https://api.github.com/repos/DarkFenX/Pyfa/releases')
             jsonResponse = json.loads(response.read());

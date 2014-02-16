@@ -1,1 +1,1 @@
-__all__ = ["pyfaGlobalPreferences","pyfaHTMLExportPreferences"]
+__all__ = ["pyfaGlobalPreferences","pyfaHTMLExportPreferences","pyfaUpdatePreferences"]
