@@ -32,7 +32,7 @@ to receive notifications for
         mainSizer.Add( self.stDesc, 0, wx.ALL, 5 )
         
         self.suppressAll = wx.CheckBox( panel, wx.ID_ANY, u"Suppress all update notifications", wx.DefaultPosition, wx.DefaultSize, 0 )
-        self.suppressPrerelease = wx.CheckBox( panel, wx.ID_ANY, u"Suppress only pre-release notifications", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.suppressPrerelease = wx.CheckBox( panel, wx.ID_ANY, u"Suppress pre-release notifications", wx.DefaultPosition, wx.DefaultSize, 0 )
 
         mainSizer.Add( self.suppressAll, 0, wx.ALL|wx.EXPAND, 5 )
         mainSizer.Add( self.suppressPrerelease, 0, wx.ALL|wx.EXPAND, 5 )

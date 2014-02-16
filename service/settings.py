@@ -236,7 +236,7 @@ class UpdateSettings():
         # all        - If True, suppress all update notifications
         # prerelease - If True, suppress only prerelease notifications
         # version    - Set to release tag that user does not want notifications for
-        serviceUpdateDefaultSettings = { "all": False, "prerelease": False, 'version': None }
+        serviceUpdateDefaultSettings = { "all": False, "prerelease": True, 'version': None }
         self.serviceUpdateSettings = SettingsProvider.getInstance().getSettings("pyfaServiceUpdateSettings", serviceUpdateDefaultSettings)
     
     def get(self, type):
