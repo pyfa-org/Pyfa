@@ -357,3 +357,6 @@ class MetaType(EqBase):
 
 class Unit(EqBase):
     pass
+
+class Traits(EqBase):
+    pass

@@ -26,6 +26,7 @@ import wx.lib.mixins.listctrl  as  listmix
 import wx.html
 from eos.types import Ship, Module, Skill, Booster, Implant, Drone
 from gui.utils.numberFormatter import formatAmount
+from collections import OrderedDict
 import service
 
 class ItemStatsDialog(wx.Dialog):
@@ -133,6 +134,10 @@ class ItemStatsContainer ( wx.Panel ):
         self.nbContainer = wx.Notebook( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, 0 )
         mainSizer.Add( self.nbContainer, 1, wx.EXPAND |wx.ALL, 2 )
 
+        if len(item.traits) != 0:
+            self.traits = ItemTraits(self.nbContainer, stuff, item)
+            self.nbContainer.AddPage(self.traits, "Traits")
+
         self.desc = ItemDescription(self.nbContainer, stuff, item)
         self.nbContainer.AddPage(self.desc, "Description")
 
@@ -184,6 +189,60 @@ class AutoListCtrlNoHighlight(wx.ListCtrl, listmix.ListCtrlAutoWidthMixin, listm
         wx.ListCtrl.__init__(self, parent, ID, pos, size, style)
         listmix.ListCtrlAutoWidthMixin.__init__(self)
 
+###########################################################################
+## Class ItemTraits
+###########################################################################
+
+class ItemTraits ( wx.Panel ):
+    
+    def __init__(self, parent, stuff, item):
+        wx.Panel.__init__ (self, parent)
+        mainSizer = wx.BoxSizer(wx.VERTICAL)
+        self.SetSizer(mainSizer)
+        
+        bgcolor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
+        fgcolor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOWTEXT)
+        
+        self.traits = wx.html.HtmlWindow(self)
+        
+        traitsMap = OrderedDict()
+        
+        for trait in item.traits:
+            text = ""
+            bonusText = re.sub("<( *)a(.*?)>(?P<inside>.*?)<( *)/( *)a( *)>", "\g<inside>", trait.bonusText)
+            bonusAmountText = str(trait.bonus)
+
+            if trait.skillName is not None:
+                skillText = trait.skillName + " bonuses (per skill level):"                
+            else:    
+                skillText = "Role Bonus:"
+                
+            if bonusAmountText == "":
+                bonusAmountText = ""
+            else:
+                bonusAmountText += trait.unit
+                
+            text += bonusAmountText + " " + bonusText
+            
+            if skillText in traitsMap:
+                traitsMap[skillText].append(text)
+            else:
+                traitsMap[skillText] = [text]
+        fullText = ""
+        
+        firstSkill = True
+        for skill in traitsMap:
+            if firstSkill:
+                firstSkill = False
+            else:
+                fullText += "<br>"
+            fullText += "<b>" + skill + "</b><br>"
+            for t in traitsMap[skill]:
+                fullText += t + "<br>"
+        self.traits.SetPage(fullText)
+        
+        mainSizer.Add(self.traits, 1, wx.ALL|wx.EXPAND, 0)
+        self.Layout()
 
 ###########################################################################
 ## Class ItemDescription
