@@ -194,53 +194,40 @@ class AutoListCtrlNoHighlight(wx.ListCtrl, listmix.ListCtrlAutoWidthMixin, listm
 ###########################################################################
 
 class ItemTraits ( wx.Panel ):
-    
+
     def __init__(self, parent, stuff, item):
         wx.Panel.__init__ (self, parent)
         mainSizer = wx.BoxSizer(wx.VERTICAL)
         self.SetSizer(mainSizer)
-        
-        bgcolor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
-        fgcolor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOWTEXT)
-        
-        self.traits = wx.html.HtmlWindow(self)
-        
-        traitsMap = OrderedDict()
-        
-        for trait in item.traits:
-            text = ""
-            bonusText = re.sub("<( *)a(.*?)>(?P<inside>.*?)<( *)/( *)a( *)>", "\g<inside>", trait.bonusText)
-            bonusAmountText = str(trait.bonus)
 
-            if trait.skillName is not None:
-                skillText = trait.skillName + " bonuses (per skill level):"                
-            else:    
-                skillText = "Role Bonus:"
-                
-            if bonusAmountText == "":
-                bonusAmountText = ""
-            else:
-                bonusAmountText += trait.unit
-                
-            text += bonusAmountText + " " + bonusText
-            
-            if skillText in traitsMap:
-                traitsMap[skillText].append(text)
-            else:
-                traitsMap[skillText] = [text]
-        fullText = ""
-        
-        firstSkill = True
-        for skill in traitsMap:
-            if firstSkill:
-                firstSkill = False
-            else:
-                fullText += "<br>"
-            fullText += "<b>" + skill + "</b><br>"
-            for t in traitsMap[skill]:
-                fullText += t + "<br>"
+        self.traits = wx.html.HtmlWindow(self)
+
+        # Format: {skill name: [bonus text]}
+        traitData = {}
+        for trait in item.traits:
+            skillData = traitData.setdefault(trait.skillName, [])
+            skillData.append(trait.bonusText)
+
+        def getSection(header, rows):
+            sectionRows = [header]
+            for row in sorted(rows):
+                sectionRows.append(row)
+            return u'<br />'.join(sectionRows)
+
+        textRows = []
+        for skillName in sorted(traitData):
+            # Skills always go 1st
+            if skillName is None:
+                continue
+            header = u"<b>{} bonuses (per skill level):</b>".format(skillName)
+            textRows.append(getSection(header, traitData[skillName]))
+
+        if None in traitData:
+            textRows.append(getSection("<b>Role Bonus:</b>", traitData[None]))
+
+        fullText = u"<br /><br />".join(textRows)
         self.traits.SetPage(fullText)
-        
+
         mainSizer.Add(self.traits, 1, wx.ALL|wx.EXPAND, 0)
         self.Layout()
 
