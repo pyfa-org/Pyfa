@@ -341,12 +341,18 @@ class Fit(object):
             f.name = fitting.getAttribute("name")
             # <localized hint="Maelstrom">Maelstrom</localized>
             shipType = fitting.getElementsByTagName("shipType").item(0).getAttribute("value")
-            f.ship = Ship(db.getItem(shipType))
+            try:
+                f.ship = Ship(db.getItem(shipType))
+            except:
+                continue
             hardwares = fitting.getElementsByTagName("hardware")
             for hardware in hardwares:
                 try:
                     moduleName = hardware.getAttribute("type")
-                    item = db.getItem(moduleName, eager="group.category")
+                    try:
+                        item = db.getItem(moduleName, eager="group.category")
+                    except:
+                        continue
                     if item:
                         if item.category.name == "Drone":
                             d = Drone(item)
