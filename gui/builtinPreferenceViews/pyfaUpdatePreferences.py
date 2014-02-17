@@ -14,7 +14,7 @@ class PFUpdatePref (PreferenceView):
     desc  = """
 Pyfa can automatically check and notify you of new releases. 
 These options will allow you to choose what kind of updates, if any, you wish 
-to receive notifications for
+to receive notifications for.
 """
 
     def populatePanel( self, panel ):
@@ -31,7 +31,7 @@ to receive notifications for
         self.stDesc = wx.StaticText( panel, wx.ID_ANY, self.desc, wx.DefaultPosition, wx.DefaultSize, 0 )
         mainSizer.Add( self.stDesc, 0, wx.ALL, 5 )
         
-        self.suppressAll = wx.CheckBox( panel, wx.ID_ANY, u"Suppress all update notifications", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.suppressAll = wx.CheckBox( panel, wx.ID_ANY, u"Don't check for updates", wx.DefaultPosition, wx.DefaultSize, 0 )
         self.suppressPrerelease = wx.CheckBox( panel, wx.ID_ANY, u"Suppress pre-release notifications", wx.DefaultPosition, wx.DefaultSize, 0 )
 
         mainSizer.Add( self.suppressAll, 0, wx.ALL|wx.EXPAND, 5 )
