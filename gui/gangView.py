@@ -45,6 +45,11 @@ class GangView ( ScrolledPanel ):
             item = self.FitDNDPopupMenu.Append(-1, option)
             self.Bind(wx.EVT_MENU, self.OnPopupItemSelected, item)
 
+        help = '''To add fleet booster effects: drag fitting from ship browser to this window, or right click ship and select booster role.'''
+        helpSizer = wx.BoxSizer( wx.HORIZONTAL )
+        self.helpText = wx.StaticText( self, wx.ID_ANY, help, wx.DefaultPosition, wx.DefaultSize, wx.ALIGN_CENTRE )
+        helpSizer.Add( self.helpText, 1, wx.ALL, 5 )
+
         contentFGSizer = wx.FlexGridSizer( 5, 3, 0, 0 )
         contentFGSizer.AddGrowableCol( 1 )
         contentFGSizer.SetFlexibleDirection( wx.BOTH )
@@ -119,6 +124,7 @@ class GangView ( ScrolledPanel ):
 
         contentFGSizer.Add( self.chSquadChar, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5 )
 
+        mainSizer.Add( helpSizer, 0, wx.EXPAND, 0 )
         mainSizer.Add( contentFGSizer, 1, wx.EXPAND, 0 )
 
         self.stBoosters = []
