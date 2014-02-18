@@ -123,9 +123,9 @@ class GangView ( ScrolledPanel ):
         self.chSquadChar.SetSelection( 0 )
 
         contentFGSizer.Add( self.chSquadChar, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5 )
-
-        mainSizer.Add( helpSizer, 0, wx.EXPAND, 0 )
+        
         mainSizer.Add( contentFGSizer, 1, wx.EXPAND, 0 )
+        mainSizer.Add( helpSizer, 0, wx.EXPAND, 0 )
 
         self.stBoosters = []
         self.stBoosters.append(self.stFleetFit)
