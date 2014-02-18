@@ -630,7 +630,7 @@ class Market():
 
     def searchShips(self, name):
         """Find ships according to given text pattern"""
-        results = eos.db.searchItems(name)
+        results = eos.db.searchItems(name, True)
         ships = set()
         for item in results:
             if self.getCategoryByItem(item).name == "Ship" and self.getPublicityByItem(item):

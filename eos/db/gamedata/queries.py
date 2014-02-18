@@ -181,7 +181,8 @@ def getItemsByCategory(filter, where=None, eager=None):
     return gamedata_session.query(Item).options(*processEager(eager)).join(Item.group, Group.category).filter(filter).all()
 
 @cachedQuery(3, "where", "nameLike", "join")
-def searchItems(nameLike, where=None, join=None, eager=None):
+def searchItems(nameLike, shipSearch=False, where=None, join=None, eager=None):
+
     if not isinstance(nameLike, basestring):
         raise TypeError("Need string as argument")
 
@@ -195,7 +196,9 @@ def searchItems(nameLike, where=None, join=None, eager=None):
     for token in nameLike.split(' '):
         token_safe = u"%{0}%".format(sqlizeString(token))
         items = items.filter(processWhere(Item.name.like(token_safe, escape="\\"), where))
-    items = items.limit(100).all()
+    if not shipSearch:
+        items = items.limit(100)
+    items = items.all()
     return items
 
 @cachedQuery(2, "where", "itemids")
