@@ -1341,11 +1341,25 @@ class FitItem(SFItem.SFBrowserItem):
 
         self.deleted = False
 
+        # @todo: replace all getActiveFit() in class with this variable and test
+        self.activeFit = self.mainFrame.getActiveFit()
+
         if shipID:
             self.shipBmp = bitmapLoader.getBitmap(str(shipID),"ships")
 
         if not self.shipBmp:
             self.shipBmp = bitmapLoader.getBitmap("ship_no_image_big","icons")
+
+        self.fitMenu = wx.Menu()  
+        item = self.fitMenu.Append(-1, "Flag As Booster Fit")
+        self.Bind(wx.EVT_MENU, self.OnPopupItemSelected, item)
+
+        if self.activeFit:
+            # If there is an active fit, get menu for setting individual boosters
+            self.fitMenu.AppendSeparator()
+            boosterMenu = self.mainFrame.additionsPane.gangPage.FitDNDPopupMenu
+            self.fitMenu.AppendMenu(wx.ID_ANY, 'Set Booster', boosterMenu)
+            self.mainFrame.additionsPane.gangPage.draggedFitID = self.fitID
 
         self.shipFittingInfo = shipFittingInfo
         self.shipName, self.fitName, self.timestamp = shipFittingInfo
@@ -1424,14 +1438,21 @@ class FitItem(SFItem.SFBrowserItem):
 
         self.Bind(wx.EVT_RIGHT_UP, self.OnContextMenu)
 
+    def OnPopupItemSelected(self, event):
+        ''' Fires when fit menu item is selected '''
+        print "Set booster flag in DB"
+        event.Skip()
+    
     def OnContextMenu(self, event):
-        self.mainFrame.additionsPane.gangPage.handleDrag("fit", self.fitID)
+        ''' Handles context menu for fit. Dragging is handled by MouseLeftUp() '''
+        pos = wx.GetMousePosition()
+        pos = self.ScreenToClient(pos)
+        self.PopupMenu(self.fitMenu, pos)
 
         event.Skip()
 
     def GetType(self):
         return 3
-
 
     def OnTimer(self, event):
 
