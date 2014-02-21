@@ -79,6 +79,7 @@ class Fit(object):
     def __init__(self):
         self.pattern = DamagePattern.getInstance().getDamagePattern("Uniform")
         self.character = Character.getInstance().all5()
+        self.booster = False
         self.dirtyFitIDs = set()
 
         serviceFittingDefaultOptions = {"useGlobalCharacter": False, "useGlobalDamagePattern": False, "defaultCharacter": self.character.ID, "useGlobalForceReload": False}
@@ -126,6 +127,7 @@ class Fit(object):
         fit.name = name if name is not None else "New %s" % fit.ship.item.name
         fit.damagePattern = self.pattern
         fit.character = self.character
+        fit.booster = self.booster
         eos.db.save(fit)
         self.recalc(fit)
         return fit.ID

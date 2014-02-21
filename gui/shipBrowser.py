@@ -807,7 +807,6 @@ class ShipBrowser(wx.Panel):
         self._stage3Data = shipID
 
         for ID, name, booster, timestamp in fitList:
-            print 
             self.lpane.AddWidget(FitItem(self.lpane, ID, (shipName, name, booster, timestamp),shipID))
 
         self.lpane.RefreshList()

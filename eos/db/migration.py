@@ -57,3 +57,4 @@ def checkFitBooster(saveddata_engine):
         # will require us to rebuild skeletons, including mac
         except sqlalchemy.exc.DatabaseError:
             saveddata_engine.execute("ALTER TABLE fits ADD COLUMN booster BOOLEAN;")
+            saveddata_engine.execute("UPDATE fits SET booster = 0;")
