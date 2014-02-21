@@ -17,7 +17,7 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 #===============================================================================
 
-from sqlalchemy import Table, Column, Integer, ForeignKey, String
+from sqlalchemy import Table, Column, Integer, ForeignKey, String, Boolean
 from sqlalchemy.orm import relation, mapper
 from sqlalchemy.sql import and_
 
@@ -36,7 +36,8 @@ fits_table = Table("fits", saveddata_meta,
                          Column("name", String, nullable = False),
                          Column("timestamp", Integer, nullable = False),
                          Column("characterID", ForeignKey("characters.ID"), nullable = True),
-                         Column("damagePatternID", ForeignKey("damagePatterns.ID"), nullable=True))
+                         Column("damagePatternID", ForeignKey("damagePatterns.ID"), nullable=True),
+                         Column("booster", Boolean, nullable = False, index = True))
 
 projectedFits_table = Table("projectedFits", saveddata_meta,
                             Column("sourceID", ForeignKey("fits.ID"), primary_key = True),

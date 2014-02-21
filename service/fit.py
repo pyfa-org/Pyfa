@@ -95,10 +95,11 @@ class Fit(object):
         return names
 
     def getFitsWithShip(self, id):
+        ''' Lists fits of shipID, used with shipBrowser '''
         fits = eos.db.getFitsWithShip(id)
         names = []
         for fit in fits:
-            names.append((fit.ID, fit.name, fit.timestamp))
+            names.append((fit.ID, fit.name, fit.booster, fit.timestamp))
 
         return names
 
@@ -129,6 +130,11 @@ class Fit(object):
         self.recalc(fit)
         return fit.ID
 
+    def toggleBoostFit(self, fitID): 
+        fit = eos.db.getFit(fitID)
+        fit.booster = not fit.booster
+        eos.db.commit()
+        
     def renameFit(self, fitID, newName):
         fit = eos.db.getFit(fitID)
         fit.name = newName

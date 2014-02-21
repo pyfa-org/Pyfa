@@ -806,8 +806,9 @@ class ShipBrowser(wx.Panel):
         self._stage3ShipName = shipName
         self._stage3Data = shipID
 
-        for ID, name, timestamp in fitList:
-            self.lpane.AddWidget(FitItem(self.lpane, ID, (shipName, name, timestamp),shipID))
+        for ID, name, booster, timestamp in fitList:
+            print 
+            self.lpane.AddWidget(FitItem(self.lpane, ID, (shipName, name, booster, timestamp),shipID))
 
         self.lpane.RefreshList()
         self.lpane.Thaw()
@@ -1314,7 +1315,7 @@ class PFBitmapFrame(wx.Frame):
 
 
 class FitItem(SFItem.SFBrowserItem):
-    def __init__(self, parent, fitID=None, shipFittingInfo=("Test", "cnc's avatar", 0 ), shipID = None, itemData=None,
+    def __init__(self, parent, fitID=None, shipFittingInfo=("Test", "cnc's avatar", 0, 0 ), shipID = None, itemData=None,
                  id=wx.ID_ANY, pos=wx.DefaultPosition,
                  size=(0, 40), style=0):
 
@@ -1350,9 +1351,16 @@ class FitItem(SFItem.SFBrowserItem):
         if not self.shipBmp:
             self.shipBmp = bitmapLoader.getBitmap("ship_no_image_big","icons")
 
-        self.fitMenu = wx.Menu()  
-        item = self.fitMenu.Append(-1, "Flag As Booster Fit")
-        self.Bind(wx.EVT_MENU, self.OnPopupItemSelected, item)
+        self.shipFittingInfo = shipFittingInfo
+        self.shipName, self.fitName, self.fitBooster, self.timestamp = shipFittingInfo
+
+        # access these by index based on toggle for booster fit
+        self.toggleItemLabels = ["Set Booster Fit", "Remove Booster Fit"]
+        
+        self.fitMenu = wx.Menu()
+        self.toggleItem = self.fitMenu.Append(-1, self.toggleItemLabels[self.fitBooster])
+
+        self.Bind(wx.EVT_MENU, self.OnPopupItemSelected, self.toggleItem)
 
         if self.activeFit:
             # If there is an active fit, get menu for setting individual boosters
@@ -1360,9 +1368,6 @@ class FitItem(SFItem.SFBrowserItem):
             boosterMenu = self.mainFrame.additionsPane.gangPage.FitDNDPopupMenu
             self.fitMenu.AppendMenu(wx.ID_ANY, 'Set Booster', boosterMenu)
             self.mainFrame.additionsPane.gangPage.draggedFitID = self.fitID
-
-        self.shipFittingInfo = shipFittingInfo
-        self.shipName, self.fitName, self.timestamp = shipFittingInfo
 
         self.copyBmp = bitmapLoader.getBitmap("fit_add_small", "icons")
         self.renameBmp = bitmapLoader.getBitmap("fit_rename_small", "icons")
@@ -1440,7 +1445,13 @@ class FitItem(SFItem.SFBrowserItem):
 
     def OnPopupItemSelected(self, event):
         ''' Fires when fit menu item is selected '''
-        print "Set booster flag in DB"
+        # currently only have one menu option (toggle booster)
+        sFit = service.Fit.getInstance()
+        sFit.toggleBoostFit(self.fitID)
+        self.fitBooster = not self.fitBooster
+
+        self.toggleItem.SetItemLabel(self.toggleItemLabels[self.fitBooster])
+
         event.Skip()
     
     def OnContextMenu(self, event):
@@ -1684,7 +1695,7 @@ class FitItem(SFItem.SFBrowserItem):
 
         mdc.DrawBitmap(self.shipBmp, self.shipBmpx, self.shipBmpy, 0)
 
-        shipName, fittings, timestamp = self.shipFittingInfo
+        shipName, fittings, booster, timestamp = self.shipFittingInfo
 
         mdc.SetFont(self.fontNormal)
 
