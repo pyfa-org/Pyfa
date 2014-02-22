@@ -141,6 +141,7 @@ class GangView ( ScrolledPanel ):
         self.mainFrame.Bind(GE.CHAR_LIST_UPDATED, self.RefreshCharacterList)
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitSelected)
         self.mainFrame.Bind(gui.shipBrowser.EVT_FIT_RENAMED, self.fitRenamed)
+        self.mainFrame.Bind(gui.shipBrowser.BOOSTER_LIST_UPDATED, self.RefreshBoosterFits)
 
         for stBooster in self.stBoosters:
             stBooster.Bind(wx.EVT_LEFT_DCLICK, self.RemoveBooster)
@@ -345,6 +346,10 @@ class GangView ( ScrolledPanel ):
                 fleetSrv.setLinearSquadCom(boostee, booster)
             sFit.recalc(boostee, withBoosters=True)
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=activeFitID))
+
+    def RefreshBoosterFits(self, event):
+        print "refresh booster lists"
+        pass
 
     def RefreshCharacterList(self, event = None):
         cChar = service.Character.getInstance()
