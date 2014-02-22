@@ -248,7 +248,7 @@ def getFitsWithShip(shipID, ownerID=None, where=None, eager=None):
         raise TypeError("ShipID must be integer")
     return fits
 
-def getFitsWithBooster(ownerID=None, where=None, eager=None):
+def getBoosterFits(ownerID=None, where=None, eager=None):
     """
     Get all the fits that are flagged as a boosting ship
     If no user is passed, do this for all users.

@@ -104,6 +104,15 @@ class Fit(object):
 
         return names
 
+    def getBoosterFits(self):
+        ''' Lists fits flagged as booster '''
+        fits = eos.db.getBoosterFits()
+        names = []
+        for fit in fits:
+            names.append((fit.ID, fit.name))
+
+        return names
+
     def countFitsWithShip(self, id):
         count = eos.db.countFitsWithShip(id)
         return count
@@ -211,7 +220,7 @@ class Fit(object):
         results = eos.db.searchFits(name)
         fits = []
         for fit in results:
-            fits.append((fit.ID, fit.name, fit.ship.item.ID, fit.ship.item.name, fit.timestamp))
+            fits.append((fit.ID, fit.name, fit.ship.item.ID, fit.ship.item.name, fit.booster, fit.timestamp))
         return fits
 
     def addImplant(self, fitID, itemID):

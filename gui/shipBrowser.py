@@ -845,8 +845,8 @@ class ShipBrowser(wx.Panel):
             for ship in ships:
                 self.lpane.AddWidget(ShipItem(self.lpane, ship.ID, (ship.name, len(sFit.getFitsWithShip(ship.ID))), ship.race))
 
-            for ID, name, shipID, shipName,timestamp in fitList:
-                self.lpane.AddWidget(FitItem(self.lpane, ID, (shipName, name,timestamp), shipID))
+            for ID, name, shipID, shipName, booster, timestamp in fitList:
+                self.lpane.AddWidget(FitItem(self.lpane, ID, (shipName, name, booster, timestamp), shipID))
             if len(ships) == 0 and len(fitList) == 0 :
                 self.lpane.AddWidget(PFStaticText(self.lpane, label = "No matching results."))
             self.lpane.RefreshList(doFocus = False)
