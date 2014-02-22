@@ -37,7 +37,7 @@ fits_table = Table("fits", saveddata_meta,
                          Column("timestamp", Integer, nullable = False),
                          Column("characterID", ForeignKey("characters.ID"), nullable = True),
                          Column("damagePatternID", ForeignKey("damagePatterns.ID"), nullable=True),
-                         Column("booster", Boolean, nullable = False, index = True))
+                         Column("booster", Boolean, nullable = False, index = True, default = 0))
 
 projectedFits_table = Table("projectedFits", saveddata_meta,
                             Column("sourceID", ForeignKey("fits.ID"), primary_key = True),
