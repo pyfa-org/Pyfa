@@ -109,7 +109,7 @@ class Fit(object):
         fits = eos.db.getBoosterFits()
         names = []
         for fit in fits:
-            names.append((fit.ID, fit.name))
+            names.append((fit.ID, fit.name, fit.shipID))
 
         return names
 

@@ -54,6 +54,10 @@ class GangView ( ScrolledPanel ):
         self.oneonePlaceholder = wx.StaticText( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
         self.oneonePlaceholder.Wrap( -1 )
         contentFGSizer.Add( self.oneonePlaceholder, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL, 5 )
+        
+        fleetFitsSizer = wx.BoxSizer( wx.VERTICAL )
+        wingFitsSizer = wx.BoxSizer( wx.VERTICAL )
+        squadFitsSizer = wx.BoxSizer( wx.VERTICAL )
 
         self.stFits = wx.StaticText( self, wx.ID_ANY, u"Fits", wx.DefaultPosition, wx.DefaultSize, 0 )
         self.stFits.Wrap( -1 )
@@ -82,7 +86,14 @@ class GangView ( ScrolledPanel ):
 
         self.stFleetFit = wx.StaticText( self, wx.ID_ANY, u"None", wx.DefaultPosition, wx.DefaultSize, 0 )
         self.stFleetFit.Wrap( -1 )
-        contentFGSizer.Add( self.stFleetFit, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5 )
+        self.stFleetFit.Hide()
+        
+        cFleetFitChoices = []
+        self.cFleetFit = wx.Choice( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, cFleetFitChoices, 0 )
+
+        fleetFitsSizer.Add( self.stFleetFit, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5 )
+        fleetFitsSizer.Add( self.cFleetFit, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5 )
+        contentFGSizer.Add( fleetFitsSizer, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5 )
 
         chFleetCharChoices = []
         self.chFleetChar = wx.Choice( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, chFleetCharChoices, 0 )
@@ -97,7 +108,14 @@ class GangView ( ScrolledPanel ):
 
         self.stWingFit = wx.StaticText( self, wx.ID_ANY, u"None", wx.DefaultPosition, wx.DefaultSize, 0 )
         self.stWingFit.Wrap( -1 )
-        contentFGSizer.Add( self.stWingFit, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5 )
+        self.stWingFit.Hide()
+        
+        cWingFitChoices = []
+        self.cWingFit = wx.Choice( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, cWingFitChoices, 0 )
+        
+        wingFitsSizer.Add( self.stWingFit, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5 )
+        wingFitsSizer.Add( self.cWingFit, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5 )
+        contentFGSizer.Add( wingFitsSizer, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5 )
 
         chWingCharChoices = []
         self.chWingChar = wx.Choice( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, chWingCharChoices, 0 )
@@ -112,8 +130,16 @@ class GangView ( ScrolledPanel ):
 
         self.stSquadFit = wx.StaticText( self, wx.ID_ANY, u"None", wx.DefaultPosition, wx.DefaultSize, 0 )
         self.stSquadFit.Wrap( -1 )
-        contentFGSizer.Add( self.stSquadFit, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5 )
+        self.stSquadFit.Hide()
+        
+        cSquadFitChoices = []
+        self.cSquadFit = wx.Choice( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, cSquadFitChoices, 0 )
 
+        squadFitsSizer.Add( self.stSquadFit, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5 )
+        squadFitsSizer.Add( self.cSquadFit, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5 )
+        contentFGSizer.Add( squadFitsSizer, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5 )
+
+        
         chSquadCharChoices = []
         self.chSquadChar = wx.Choice( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, chSquadCharChoices, 0 )
         self.chSquadChar.SetSelection( 0 )
@@ -133,6 +159,11 @@ class GangView ( ScrolledPanel ):
         self.chCharacters.append(self.chWingChar)
         self.chCharacters.append(self.chSquadChar)
 
+        self.chFits = []
+        self.chFits.append(self.cFleetFit)
+        self.chFits.append(self.cWingFit)
+        self.chFits.append(self.cSquadFit)
+        
         self.SetSizer( mainSizer )
         self.SetAutoLayout(True)
         self.SetupScrolling()
@@ -151,7 +182,40 @@ class GangView ( ScrolledPanel ):
 
         for chCharacter in self.chCharacters:
             chCharacter.Bind(wx.EVT_CHOICE, self.CharChanged)
+
+        for chFits in self.chFits:
+            chFits.Bind(wx.EVT_CHOICE, self.BoosterChanged)
+
+        self.RefreshBoosterFits()
         self.RefreshCharacterList()
+
+    def BoosterChanged(self, event):
+        ''' Fired when booster choice is selected ''' 
+        chFit = event.GetEventObject()
+        
+        type = -1
+        if chFit == self.cFleetFit:
+            type = 0
+        if chFit == self.cWingFit:
+            type = 1
+        if chFit == self.cSquadFit:
+            type = 2
+
+        if type == -1:
+            event.Skip()
+            return
+        
+        id = chFit.GetClientData(chFit.GetSelection())
+
+        sFit = service.Fit.getInstance()
+        fit = sFit.getFit(id)
+        
+        chFit.Hide()
+        text = self.stBoosters[type]
+        text.Show()
+        self.AddCommander(fit.ID, type)
+        self.mainFrame.additionsPane.select("Fleet")
+
 
     def OnEnterWindow(self, event):
         obj = event.GetEventObject()
@@ -249,6 +313,10 @@ class GangView ( ScrolledPanel ):
         elif type == 2:
             fleetSrv.setLinearSquadCom(boostee, booster)
 
+        location.Hide()
+        choice = self.chFits[type]
+        choice.Show()
+        
         sFit.recalc(boostee, withBoosters=True)
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=activeFitID))
 
@@ -347,9 +415,33 @@ class GangView ( ScrolledPanel ):
             sFit.recalc(boostee, withBoosters=True)
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=activeFitID))
 
-    def RefreshBoosterFits(self, event):
-        print "refresh booster lists"
-        pass
+    def RefreshBoosterFits(self, event = None):
+        sFit = service.Fit.getInstance()
+        sMarket = service.Market.getInstance()
+        fitList = sFit.getBoosterFits()
+        
+        for choice in self.chFits:
+            chCurrSelection = choice.GetSelection()
+            chCurrData = -1
+            if chCurrSelection != -1:
+                chCurrData = choice.GetClientData(chCurrSelection)
+                chCurrSelString = choice.GetString(chCurrSelection)
+            choice.Clear()
+            currSelFound = False
+            for fit in fitList:
+                id,name,type = fit
+                ship = sMarket.getItem(type)
+                choice.Append(str(id)+': '+ship.name+' - '+name, id)
+                if chCurrData == id:
+                    currSelFound = True
+
+            if chCurrSelection == -1:
+                choice.SetSelection(1)
+            else:
+                if currSelFound:
+                    choice.SetStringSelection(chCurrSelString)
+                else:
+                    choice.SetSelection(1)
 
     def RefreshCharacterList(self, event = None):
         cChar = service.Character.getInstance()
