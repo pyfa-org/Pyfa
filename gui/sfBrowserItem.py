@@ -14,7 +14,7 @@ BTN_DISABLED = 8
 
 
 class PFBaseButton(object):
-    def __init__(self, normalBitmap = wx.NullBitmap,label = "", callback = None, hoverBitmap = None, disabledBitmap = None, show = True, iconOnly = False):
+    def __init__(self, normalBitmap = wx.NullBitmap,label = "", callback = None, hoverBitmap = None, disabledBitmap = None, show = True):
 
         self.normalBmp = normalBitmap
         self.dropShadowOpacity = 0.2
@@ -23,7 +23,6 @@ class PFBaseButton(object):
         self.disabledBmp = disabledBitmap
         self.label = label
         self.show = show
-        self.iconOnly = iconOnly
 
         self.callback = callback
 
@@ -95,8 +94,8 @@ class PFToolbar(object):
     def SetPosition(self, pos):
         self.toolbarX, self.toolbarY = pos
 
-    def AddButton(self, btnBitmap, label = "", clickCallback = None, hoverBitmap = None, disabledBitmap = None, show = True, iconOnly = False):
-        btn = PFBaseButton(btnBitmap, label, clickCallback, hoverBitmap, disabledBitmap, show, iconOnly)
+    def AddButton(self, btnBitmap, label = "", clickCallback = None, hoverBitmap = None, disabledBitmap = None, show = True):
+        btn = PFBaseButton(btnBitmap, label, clickCallback, hoverBitmap, disabledBitmap, show)
         self.buttons.append(btn)
         return btn
 
@@ -121,8 +120,7 @@ class PFToolbar(object):
                 if not state & BTN_HOVER:
                     button.SetState(state | BTN_HOVER)
                     self.hoverLabel = button.GetLabel()
-                    if not button.iconOnly:
-                        self.Parent.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
+                    self.Parent.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
                     doRefresh = True
             else:
                 if state & BTN_HOVER:
@@ -140,8 +138,6 @@ class PFToolbar(object):
         mx,my = event.GetPosition()
         bx = self.toolbarX
         for button in self.buttons:
-            if button.iconOnly:
-                return
             if not button.IsVisible():
                 continue
 
