@@ -1356,11 +1356,10 @@ class FitItem(SFItem.SFBrowserItem):
         self.shipName, self.fitName, self.fitBooster, self.timestamp = shipFittingInfo
 
         # access these by index based on toggle for booster fit
-        self.toggleItemLabels = ["Set Booster Fit", "Remove Booster Fit"]
-        
-        self.fitMenu = wx.Menu()
-        self.toggleItem = self.fitMenu.Append(-1, self.toggleItemLabels[self.fitBooster])
 
+        self.fitMenu = wx.Menu()
+        self.toggleItem = self.fitMenu.Append(-1, "Booster Fit", kind=wx.ITEM_CHECK)
+        self.fitMenu.Check(self.toggleItem.GetId(), self.fitBooster)
         self.Bind(wx.EVT_MENU, self.OnPopupItemSelected, self.toggleItem)
 
         if self.activeFit:
@@ -1451,10 +1450,10 @@ class FitItem(SFItem.SFBrowserItem):
         sFit.toggleBoostFit(self.fitID)
         self.fitBooster = not self.fitBooster
 
-        self.toggleItem.SetItemLabel(self.toggleItemLabels[self.fitBooster])
+        self.fitMenu.Check(self.toggleItem.GetId(), self.fitBooster)
         wx.PostEvent(self.mainFrame, BoosterListUpdated())
         event.Skip()
-    
+
     def OnContextMenu(self, event):
         ''' Handles context menu for fit. Dragging is handled by MouseLeftUp() '''
         pos = wx.GetMousePosition()
