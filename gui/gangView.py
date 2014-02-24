@@ -92,7 +92,7 @@ class GangView ( ScrolledPanel ):
         self.cFleetFit = wx.Choice( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, cFleetFitChoices, 0 )
 
         fleetFitsSizer.Add( self.stFleetFit, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5 )
-        fleetFitsSizer.Add( self.cFleetFit, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5 )
+        fleetFitsSizer.Add( self.cFleetFit, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 1 )
         contentFGSizer.Add( fleetFitsSizer, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5 )
 
         chFleetCharChoices = []
@@ -114,7 +114,7 @@ class GangView ( ScrolledPanel ):
         self.cWingFit = wx.Choice( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, cWingFitChoices, 0 )
 
         wingFitsSizer.Add( self.stWingFit, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5 )
-        wingFitsSizer.Add( self.cWingFit, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5 )
+        wingFitsSizer.Add( self.cWingFit, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 1 )
         contentFGSizer.Add( wingFitsSizer, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5 )
 
         chWingCharChoices = []
@@ -136,7 +136,7 @@ class GangView ( ScrolledPanel ):
         self.cSquadFit = wx.Choice( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, cSquadFitChoices, 0 )
 
         squadFitsSizer.Add( self.stSquadFit, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5 )
-        squadFitsSizer.Add( self.cSquadFit, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5 )
+        squadFitsSizer.Add( self.cSquadFit, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 1 )
         contentFGSizer.Add( squadFitsSizer, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5 )
 
 
