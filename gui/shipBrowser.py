@@ -1369,10 +1369,11 @@ class FitItem(SFItem.SFBrowserItem):
             self.fitMenu.AppendMenu(wx.ID_ANY, 'Set Booster', boosterMenu)
             self.mainFrame.additionsPane.gangPage.draggedFitID = self.fitID
 
-        self.copyBmp = bitmapLoader.getBitmap("fit_add_small", "icons")
-        self.renameBmp = bitmapLoader.getBitmap("fit_rename_small", "icons")
-        self.deleteBmp = bitmapLoader.getBitmap("fit_delete_small","icons")
-        self.acceptBmp = bitmapLoader.getBitmap("faccept_small", "icons")
+        self.boosterBmp = bitmapLoader.getBitmap("fleet_fc_small", "icons")
+        self.copyBmp    = bitmapLoader.getBitmap("fit_add_small", "icons")
+        self.renameBmp  = bitmapLoader.getBitmap("fit_rename_small", "icons")
+        self.deleteBmp  = bitmapLoader.getBitmap("fit_delete_small","icons")
+        self.acceptBmp  = bitmapLoader.getBitmap("faccept_small", "icons")
 
         self.shipEffBk = bitmapLoader.getBitmap("fshipbk_big","icons")
 
@@ -1399,6 +1400,7 @@ class FitItem(SFItem.SFBrowserItem):
 
         self.SetDraggable()
 
+        self.boosterBtn = self.toolbar.AddButton(self.boosterBmp,"Booster", show=self.fitBooster)
         self.toolbar.AddButton(self.copyBmp,"Copy", self.copyBtnCB)
         self.renameBtn = self.toolbar.AddButton(self.renameBmp,"Rename", self.renameBtnCB)
         self.toolbar.AddButton(self.deleteBmp, "Delete", self.deleteBtnCB)
@@ -1449,7 +1451,7 @@ class FitItem(SFItem.SFBrowserItem):
         sFit = service.Fit.getInstance()
         sFit.toggleBoostFit(self.fitID)
         self.fitBooster = not self.fitBooster
-
+        self.boosterBtn.Show(self.fitBooster)
         self.fitMenu.Check(self.toggleItem.GetId(), self.fitBooster)
         wx.PostEvent(self.mainFrame, BoosterListUpdated())
         event.Skip()
