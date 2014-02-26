@@ -1367,7 +1367,6 @@ class FitItem(SFItem.SFBrowserItem):
             self.fitMenu.AppendSeparator()
             boosterMenu = self.mainFrame.additionsPane.gangPage.FitDNDPopupMenu
             self.fitMenu.AppendMenu(wx.ID_ANY, 'Set Booster', boosterMenu)
-            self.mainFrame.additionsPane.gangPage.draggedFitID = self.fitID
 
         self.boosterBmp = bitmapLoader.getBitmap("fleet_fc_small", "icons")
         self.copyBmp    = bitmapLoader.getBitmap("fit_add_small", "icons")
@@ -1460,6 +1459,8 @@ class FitItem(SFItem.SFBrowserItem):
         ''' Handles context menu for fit. Dragging is handled by MouseLeftUp() '''
         pos = wx.GetMousePosition()
         pos = self.ScreenToClient(pos)
+        # Even though we may not select a booster, automatically set this so that the fleet pane knows which fit we're applying
+        self.mainFrame.additionsPane.gangPage.draggedFitID = self.fitID
         self.PopupMenu(self.fitMenu, pos)
 
         event.Skip()

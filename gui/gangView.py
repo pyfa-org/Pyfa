@@ -352,7 +352,7 @@ class GangView ( ScrolledPanel ):
                     choice.SetSelection(1)
 
     def handleDrag(self, type, fitID):
-        ''' Handle dragging of fit to fleet interface. This is also fired when right-clicking fit if there's an active one '''
+        ''' Handle dragging of fit to fleet interface '''
         #Those are drags coming from pyfa sources, NOT builtin wx drags
         self.draggedFitID = None
         if type == "fit":
@@ -368,7 +368,6 @@ class GangView ( ScrolledPanel ):
 
     def OnPopupItemSelected(self, event):
         ''' Fired when booster popup item is selected '''
-
         # Get menu selection ID via self.options
         menuItem = self.FitDNDPopupMenu.FindItemById(event.GetId())
         type = self.options.index(menuItem.GetText())
@@ -387,6 +386,7 @@ class GangView ( ScrolledPanel ):
         # set type via choice box used
         chFit = event.GetEventObject()
         fitID = chFit.GetClientData(chFit.GetSelection())
+
         type = -1
         for id in self.fleet:
             if chFit == self.fleet[id]['chFit']: type = id
