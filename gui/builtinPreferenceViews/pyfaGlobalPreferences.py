@@ -11,7 +11,7 @@ import gui.globalEvents as GE
 
 
 class PFGlobalPref ( PreferenceView):
-    title = "Pyfa Global Options"
+    title = "Global Options"
 
     def populatePanel( self, panel ):
 
@@ -243,7 +243,7 @@ class PFGlobalPref ( PreferenceView):
         self.sFit.refreshFit(fitID)
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
         event.Skip()
-        
+
     def OnCBGlobalForceReloadStateChange(self, event):
         self.sFit.serviceFittingOptions["useGlobalForceReload"] = self.cbGlobalForceReload.GetValue()
         fitID = self.mainFrame.getActiveFit()
@@ -260,6 +260,6 @@ class PFGlobalPref ( PreferenceView):
         event.Skip()
 
     def getImage(self):
-        return bitmapLoader.getBitmap("pyfa64", "icons")
+        return bitmapLoader.getBitmap("prefs_settings", "icons")
 
 PFGlobalPref.register()

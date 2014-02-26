@@ -31,10 +31,12 @@ class PreferenceDialog(wx.Dialog):
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
         self.listbook = wx.Listbook(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LB_DEFAULT)
-        self.listbook.GetListView().SetMinSize((500, -1))
-        self.listbook.GetListView().SetSize((500, -1))
 
-        self.imageList = wx.ImageList(64,64)
+        self.listview = self.listbook.GetListView()
+        self.listview.SetMinSize((500, -1))
+        self.listview.SetSize((500, -1))
+
+        self.imageList = wx.ImageList(32,32)
         self.listbook.SetImageList(self.imageList)
 
         mainSizer.Add(self.listbook, 1, wx.EXPAND | wx.TOP|wx.BOTTOM|wx.LEFT, 5)
