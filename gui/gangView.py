@@ -37,6 +37,11 @@ class GangView ( ScrolledPanel ):
 
         self.draggedFitID = None
 
+        help = '''Set fit as booster to display in dropdown, or drag fitting from\nship browser to this window, or right click fit and select booster role.'''
+        helpSizer = wx.BoxSizer( wx.HORIZONTAL )
+        self.helpText = wx.StaticText( self, wx.ID_ANY, help, wx.DefaultPosition, wx.DefaultSize, wx.ALIGN_CENTRE )
+        helpSizer.Add( self.helpText, 1, wx.ALL, 5 )
+
         self.FitDNDPopupMenu = wx.Menu()
 
         self.options = ["Fleet booster", "Wing booster", "Squad booster"]
@@ -109,6 +114,7 @@ class GangView ( ScrolledPanel ):
             contentFGSizer.Add( self.fleet[id]['chChar'], 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5 )
 
         mainSizer.Add( contentFGSizer, 1, wx.EXPAND, 0 )
+        mainSizer.Add( helpSizer, 0, wx.EXPAND, 0 )
 
         self.SetSizer( mainSizer )
         self.SetAutoLayout(True)
