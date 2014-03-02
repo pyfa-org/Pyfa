@@ -630,10 +630,13 @@ class Market():
 
     def searchShips(self, name):
         """Find ships according to given text pattern"""
-        results = eos.db.searchItems(name)
+        filter = eos.types.Category.name.in_(["Ship"])
+        results = eos.db.searchItems(name, where=filter,
+                                     join=(eos.types.Item.group, eos.types.Group.category),
+                                     eager=("icon", "group.category", "metaGroup", "metaGroup.parent"))
         ships = set()
         for item in results:
-            if self.getCategoryByItem(item).name == "Ship" and self.getPublicityByItem(item):
+            if self.getPublicityByItem(item):
                 ships.add(item)
         return ships
 
