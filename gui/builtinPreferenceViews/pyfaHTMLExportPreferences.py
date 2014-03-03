@@ -50,8 +50,6 @@ class PFHTMLExportPref ( PreferenceView):
         self.fileSelectButton.Bind(wx.EVT_BUTTON, self.selectHTMLExportFilePath)
         mainSizer.Add( self.fileSelectButton, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5)
 
-        # Quick and dirty hack to size the dialog in a nice way. This will have to change with more pages/content
-        mainSizer.AddSpacer( ( 0, 30), 1, wx.EXPAND, 5 )
         panel.SetSizer( mainSizer )
         panel.Layout()
 
