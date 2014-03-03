@@ -230,7 +230,7 @@ class FittingView(d.Display):
                 self.removeModule(self.mods[row])
                 self.Select(row,0)
                 row = self.GetNextSelected(row)
-               
+
         event.Skip()
 
     def fitRemoved(self, event):
@@ -288,9 +288,8 @@ class FittingView(d.Display):
                     wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
                 else:
                     populate = cFit.appendModule(fitID, itemID)
-                    if populate:
-                        self.slotsChanged()
                     if populate is not None:
+                        self.slotsChanged()
                         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
         event.Skip()
@@ -304,14 +303,14 @@ class FittingView(d.Display):
             else:
                 if "wxMSW" in wx.PlatformInfo:
                     self.click(event)
-                    
+
     def removeModule(self, module):
         cFit = service.Fit.getInstance()
         fit = cFit.getFit(self.activeFitID)
         populate = cFit.removeModule(self.activeFitID, fit.modules.index(module))
-        
+
         if populate is not None:
-            if populate: self.slotsChanged()
+            self.slotsChanged()
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.activeFitID))
 
     def swapItems(self, x, y, itemID):
@@ -373,16 +372,16 @@ class FittingView(d.Display):
             if self.activeFitID is not None and self.activeFitID == event.fitID:
                 self.generateMods()
                 self.refresh(self.mods)
-                
+
                 exportHtml.getInstance().refreshFittingHTMl()
-                
+
             self.Show(self.activeFitID is not None and self.activeFitID == event.fitID)
         except wx._core.PyDeadObjectError:
             pass
         finally:
             event.Skip()
 
-            
+
 
     def scheduleMenu(self, event):
         event.Skip()
@@ -451,7 +450,7 @@ class FittingView(d.Display):
                      5: ''}
     def slotColour(self, slot):
         return self.slotColourMap[slot] or self.GetBackgroundColour()
-    
+
     def refresh(self, stuff):
         d.Display.refresh(self, stuff)
         sFit = service.Fit.getInstance()
@@ -460,7 +459,7 @@ class FittingView(d.Display):
         for slotType in Slot.getTypes():
             slot = Slot.getValue(slotType)
             slotMap[slot] = fit.getSlotsFree(slot) < 0
-            
+
         for i, mod in enumerate(self.mods):
             if slotMap[mod.slot]:
                 self.SetItemBackgroundColour(i, wx.Colour(204, 51, 51))

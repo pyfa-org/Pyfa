@@ -12,3 +12,4 @@
 #Patch files
 *.patch
 #Personal
+/saveddata
