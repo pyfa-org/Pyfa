@@ -167,6 +167,6 @@ class PFProxyPref ( PreferenceView):
             self.editProxySettingsPort.Disable()
 
     def getImage(self):
-        return bitmapLoader.getBitmap("prefs_settings", "icons")
+        return bitmapLoader.getBitmap("prefs_proxy", "icons")
 
 PFProxyPref.register()

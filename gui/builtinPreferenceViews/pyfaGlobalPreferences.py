@@ -14,11 +14,6 @@ class PFGlobalPref ( PreferenceView):
     title = "General"
 
     def populatePanel( self, panel ):
-        charHelpText = '''Each fit has a character assigned to it, with different fits having different
-character. Choose this option if you do not want to switch characters in between fits.'''
-        dmgHelpText = '''Each fit has a damage profile character assigned to it, with different fits having different
-profiles. Choose this option if you do not want to switch profiles in between fits.'''
-
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.dirtySettings = False
 
