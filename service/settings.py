@@ -38,6 +38,7 @@ class SettingsProvider():
             os.mkdir(self.BASE_PATH);
 
     def getSettings(self, area, defaults=None):
+
         s = self.settings.get(area)
         if s is None:
             p = os.path.join(self.BASE_PATH, area)
@@ -216,3 +217,30 @@ class HTMLExportSettings():
     
     def setPath(self, path):
         self.serviceHTMLExportSettings["path"] = path
+        
+"""
+Settings used by update notification
+"""        
+class UpdateSettings():
+    _instance = None
+     
+    @classmethod
+    def getInstance(cls):
+        if cls._instance == None:
+            cls._instance = UpdateSettings()
+
+        return cls._instance    
+
+    def __init__(self):
+        # Settings
+        # all        - If True, suppress all update notifications
+        # prerelease - If True, suppress only prerelease notifications
+        # version    - Set to release tag that user does not want notifications for
+        serviceUpdateDefaultSettings = { "all": False, "prerelease": True, 'version': None }
+        self.serviceUpdateSettings = SettingsProvider.getInstance().getSettings("pyfaServiceUpdateSettings", serviceUpdateDefaultSettings)
+    
+    def get(self, type):
+        return self.serviceUpdateSettings[type]
+    
+    def set(self, type, value):
+        self.serviceUpdateSettings[type] = value
