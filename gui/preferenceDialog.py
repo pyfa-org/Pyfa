@@ -53,7 +53,7 @@ class PreferenceDialog(wx.Dialog):
 
         self.Centre(wx.BOTH)
 
-        for title, prefView in PreferenceView.views.iteritems():
+        for prefView in PreferenceView.views:
             page = wx.Panel(self.listbook)
             bmp = prefView.getImage()
             if bmp:
@@ -61,7 +61,7 @@ class PreferenceDialog(wx.Dialog):
             else:
                 imgID = -1
             prefView.populatePanel(page)
-            self.listbook.AddPage(page, title, imageId = imgID)
+            self.listbook.AddPage(page, prefView.title, imageId = imgID)
 
         self.Fit()
         self.Layout()

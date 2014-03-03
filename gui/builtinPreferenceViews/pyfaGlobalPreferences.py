@@ -11,7 +11,7 @@ import gui.globalEvents as GE
 
 
 class PFGlobalPref ( PreferenceView):
-    title = "General Options"
+    title = "General"
 
     def populatePanel( self, panel ):
         charHelpText = '''Each fit has a character assigned to it, with different fits having different

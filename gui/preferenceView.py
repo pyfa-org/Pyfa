@@ -20,17 +20,13 @@
 import wx
 
 class PreferenceView(object):
-    views = {}
+    views = []
     def __init__(self):
         pass
 
     @classmethod
     def register(cls):
-        PreferenceView.views[cls.title] = cls()
-
-    @classmethod
-    def getView(cls, name):
-        return cls.views[name]
+        PreferenceView.views.append(cls())
 
     def populatePanel(self, panel):
         raise NotImplementedError()
