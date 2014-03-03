@@ -13,17 +13,16 @@ import gui.globalEvents as GE
 
 class PFHTMLExportPref ( PreferenceView):
     title = "HTML Export"
-    desc  = """Turning this feature on will create a HTML file at the specified location
-with all your fits in it. If you browse to this HTML file from the
-in-game browser you can easily view and import your fits by clicking on them.
-The file will be updated every time a fit changes or gets added.
-"""
+    desc  = "Turning this feature on will create a HTML file at the specified location "+ \
+            "with all your fits in it. If you browse to this HTML file from the "+\
+            "in-game browser you can easily view and import your fits by clicking on them. "+\
+            "The file will be updated every time a fit changes or gets added."
 
     def populatePanel( self, panel ):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.HTMLExportSettings = service.settings.HTMLExportSettings.getInstance()
         self.dirtySettings = False
-
+        dlgWidth = panel.GetParent().GetParent().ClientSize.width
         mainSizer = wx.BoxSizer( wx.VERTICAL )
 
         self.stTitle = wx.StaticText( panel, wx.ID_ANY, self.title, wx.DefaultPosition, wx.DefaultSize, 0 )
@@ -32,6 +31,7 @@ The file will be updated every time a fit changes or gets added.
         mainSizer.Add( self.stTitle, 0, wx.ALL, 5 )
 
         self.stDesc = wx.StaticText( panel, wx.ID_ANY, self.desc, wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.stDesc.Wrap(dlgWidth - 120)
         mainSizer.Add( self.stDesc, 0, wx.ALL, 5 )
 
         self.exportEnabled = wx.CheckBox( panel, wx.ID_ANY, u"Enable HTML export", wx.DefaultPosition, wx.DefaultSize, 0 )
@@ -50,6 +50,8 @@ The file will be updated every time a fit changes or gets added.
         self.fileSelectButton.Bind(wx.EVT_BUTTON, self.selectHTMLExportFilePath)
         mainSizer.Add( self.fileSelectButton, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5)
 
+        # Quick and dirty hack to size the dialog in a nice way. This will have to change with more pages/content
+        mainSizer.AddSpacer( ( 0, 30), 1, wx.EXPAND, 5 )
         panel.SetSizer( mainSizer )
         panel.Layout()
 
