@@ -49,6 +49,7 @@ from gui.graphFrame import GraphFrame
 from gui.copySelectDialog import CopySelectDialog
 from gui.utils.clipboard import toClipboard, fromClipboard
 from gui.fleetBrowser import FleetBrowser
+from gui.updateDialog import UpdateDialog
 from gui.builtinViews import *
 
 #dummy panel(no paint no erasebk)
@@ -161,6 +162,15 @@ class MainFrame(wx.Frame):
         #Show ourselves
         self.Show()
 
+        #Check for updates
+        self.sUpdate = service.Update.getInstance()
+        self.sUpdate.CheckUpdate(self.ShowUpdateBox)
+
+    def ShowUpdateBox(self, release):
+        dlg = UpdateDialog(self, release)
+        dlg.ShowModal()
+        dlg.Destroy()
+        
     def LoadMainFrameAttribs(self):
 
         mainFrameDefaultAttribs = {"wnd_width":1000, "wnd_height": 700, "wnd_maximized": False}
