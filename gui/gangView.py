@@ -37,19 +37,35 @@ class GangView ( ScrolledPanel ):
 
         self.draggedFitID = None
 
+        help = '''Set fit as booster to display in dropdown, or drag fitting from\nship browser to this window, or right click fit and select booster role.'''
+        helpSizer = wx.BoxSizer( wx.HORIZONTAL )
+        self.helpText = wx.StaticText( self, wx.ID_ANY, help, wx.DefaultPosition, wx.DefaultSize, wx.ALIGN_CENTRE )
+        helpSizer.Add( self.helpText, 1, wx.ALL, 5 )
+
         self.FitDNDPopupMenu = wx.Menu()
 
         self.options = ["Fleet booster", "Wing booster", "Squad booster"]
 
-        for option in self.options:
+        self.fleet = {}
+        for id, option in enumerate(self.options):
             item = self.FitDNDPopupMenu.Append(-1, option)
-            self.Bind(wx.EVT_MENU, self.OnPopupItemSelected, item)
+            # We bind it to the mainFrame because it may be called from either this class or from FitItem via shipBrowser
+            self.mainFrame.Bind(wx.EVT_MENU, self.OnPopupItemSelected, item)
+
+            # set content for each commander
+            self.fleet[id] = {}
+            self.fleet[id]['stLabel']  = wx.StaticText( self, wx.ID_ANY, self.options[id]+':', wx.DefaultPosition, wx.DefaultSize, 0 )
+            self.fleet[id]['stText']   = wx.StaticText( self, wx.ID_ANY, 'None', wx.DefaultPosition, wx.DefaultSize, 0 )
+            self.fleet[id]['chFit']    = wx.Choice( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, [] )
+            self.fleet[id]['chChar']   = wx.Choice( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, [] )
+            self.fleet[id]['fitSizer'] = wx.BoxSizer( wx.VERTICAL )
 
         contentFGSizer = wx.FlexGridSizer( 5, 3, 0, 0 )
         contentFGSizer.AddGrowableCol( 1 )
         contentFGSizer.SetFlexibleDirection( wx.BOTH )
         contentFGSizer.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_SPECIFIED )
 
+        ### Header
         self.oneonePlaceholder = wx.StaticText( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
         self.oneonePlaceholder.Wrap( -1 )
         contentFGSizer.Add( self.oneonePlaceholder, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL, 5 )
@@ -73,82 +89,43 @@ class GangView ( ScrolledPanel ):
         self.m_staticline4 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
         contentFGSizer.Add( self.m_staticline4, 0, wx.EXPAND, 5 )
 
-        self.stFleet = wx.StaticText( self, wx.ID_ANY, u"Fleet booster:", wx.DefaultPosition, wx.DefaultSize, 0 )
-        self.stFleet.Wrap( -1 )
-        self.stFleet.SetFont( wx.Font( wx.NORMAL_FONT.GetPointSize(), 70, 90, 92, False, wx.EmptyString ) )
+        ### Content
+        for id in self.fleet:
+            # set various properties
+            self.fleet[id]['stLabel'].Wrap( -1 )
+            self.fleet[id]['stLabel'].SetFont( wx.Font( wx.NORMAL_FONT.GetPointSize(), 70, 90, 92, False, wx.EmptyString ) )
+            self.fleet[id]['stText'].Wrap( -1 )
 
-        contentFGSizer.Add( self.stFleet, 0, wx.ALIGN_RIGHT|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5 )
+            # bind text and choice events
+            self.fleet[id]['stText'].Bind(wx.EVT_LEFT_DCLICK, self.RemoveBooster)
+            self.fleet[id]['stText'].Bind(wx.EVT_ENTER_WINDOW, self.OnEnterWindow)
+            self.fleet[id]['stText'].Bind(wx.EVT_LEAVE_WINDOW, self.OnLeaveWindow)
+            self.fleet[id]['stText'].SetToolTip(wx.ToolTip("Double click to remove booster"))
+            self.fleet[id]['chChar'].Bind(wx.EVT_CHOICE, self.CharChanged)
+            self.fleet[id]['chFit'].Bind(wx.EVT_CHOICE, self.OnFitChoiceSelected)
 
-        self.stFleetFit = wx.StaticText( self, wx.ID_ANY, u"None", wx.DefaultPosition, wx.DefaultSize, 0 )
-        self.stFleetFit.Wrap( -1 )
-        contentFGSizer.Add( self.stFleetFit, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5 )
+            # add fit text and choice to the fit sizer
+            self.fleet[id]['fitSizer'].Add( self.fleet[id]['stText'], 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5 )
+            self.fleet[id]['fitSizer'].Add( self.fleet[id]['chFit'], 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL|wx.EXPAND, 1 )
 
-        chFleetCharChoices = []
-        self.chFleetChar = wx.Choice( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, chFleetCharChoices, 0 )
-        self.chFleetChar.SetSelection( 0 )
-
-        contentFGSizer.Add( self.chFleetChar, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5 )
-
-        self.stWing = wx.StaticText( self, wx.ID_ANY, u"Wing booster:", wx.DefaultPosition, wx.DefaultSize, 0 )
-        self.stWing.Wrap( -1 )
-        self.stWing.SetFont( wx.Font( wx.NORMAL_FONT.GetPointSize(), 70, 90, 92, False, wx.EmptyString ) )
-        contentFGSizer.Add( self.stWing, 0, wx.ALIGN_RIGHT|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5 )
-
-        self.stWingFit = wx.StaticText( self, wx.ID_ANY, u"None", wx.DefaultPosition, wx.DefaultSize, 0 )
-        self.stWingFit.Wrap( -1 )
-        contentFGSizer.Add( self.stWingFit, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5 )
-
-        chWingCharChoices = []
-        self.chWingChar = wx.Choice( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, chWingCharChoices, 0 )
-        self.chWingChar.SetSelection( 0 )
-
-        contentFGSizer.Add( self.chWingChar, 0, wx.ALL| wx.ALIGN_CENTER_VERTICAL, 5 )
-
-        self.stSquad = wx.StaticText( self, wx.ID_ANY, u"Squad booster:", wx.DefaultPosition, wx.DefaultSize, 0 )
-        self.stSquad.Wrap( -1 )
-        self.stSquad.SetFont( wx.Font( wx.NORMAL_FONT.GetPointSize(), 70, 90, 92, False, wx.EmptyString ) )
-        contentFGSizer.Add( self.stSquad, 0, wx.ALIGN_RIGHT|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5 )
-
-        self.stSquadFit = wx.StaticText( self, wx.ID_ANY, u"None", wx.DefaultPosition, wx.DefaultSize, 0 )
-        self.stSquadFit.Wrap( -1 )
-        contentFGSizer.Add( self.stSquadFit, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5 )
-
-        chSquadCharChoices = []
-        self.chSquadChar = wx.Choice( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, chSquadCharChoices, 0 )
-        self.chSquadChar.SetSelection( 0 )
-
-        contentFGSizer.Add( self.chSquadChar, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5 )
+            # add everything to the content sizer
+            contentFGSizer.Add( self.fleet[id]['stLabel'], 0, wx.ALIGN_RIGHT|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5 )
+            contentFGSizer.Add( self.fleet[id]['fitSizer'], 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL|wx.EXPAND, 5 )
+            contentFGSizer.Add( self.fleet[id]['chChar'], 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5 )
 
         mainSizer.Add( contentFGSizer, 1, wx.EXPAND, 0 )
-
-        self.stBoosters = []
-        self.stBoosters.append(self.stFleetFit)
-        self.stBoosters.append(self.stWingFit)
-        self.stBoosters.append(self.stSquadFit)
-
-
-        self.chCharacters = []
-        self.chCharacters.append(self.chFleetChar)
-        self.chCharacters.append(self.chWingChar)
-        self.chCharacters.append(self.chSquadChar)
+        mainSizer.Add( helpSizer, 0, wx.EXPAND, 0 )
 
         self.SetSizer( mainSizer )
         self.SetAutoLayout(True)
         self.SetupScrolling()
-        self.Disable()
 
         self.mainFrame.Bind(GE.CHAR_LIST_UPDATED, self.RefreshCharacterList)
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitSelected)
         self.mainFrame.Bind(gui.shipBrowser.EVT_FIT_RENAMED, self.fitRenamed)
+        self.mainFrame.Bind(gui.shipBrowser.BOOSTER_LIST_UPDATED, self.RefreshBoosterFits)
 
-        for stBooster in self.stBoosters:
-            stBooster.Bind(wx.EVT_LEFT_DCLICK, self.RemoveBooster)
-            stBooster.Bind(wx.EVT_ENTER_WINDOW, self.OnEnterWindow)
-            stBooster.Bind(wx.EVT_LEAVE_WINDOW, self.OnLeaveWindow)
-            stBooster.SetToolTip(wx.ToolTip("Double click to remove booster"))
-
-        for chCharacter in self.chCharacters:
-            chCharacter.Bind(wx.EVT_CHOICE, self.CharChanged)
+        self.RefreshBoosterFits()
         self.RefreshCharacterList()
 
     def OnEnterWindow(self, event):
@@ -161,16 +138,13 @@ class GangView ( ScrolledPanel ):
         obj.SetCursor(wx.StockCursor(wx.CURSOR_DEFAULT))
         event.Skip()
 
-
     def CharChanged(self, event):
+        ''' Change booster character '''
         chBooster = event.GetEventObject()
+
         type = -1
-        if chBooster == self.chFleetChar:
-            type = 0
-        if chBooster == self.chWingChar:
-            type = 1
-        if chBooster == self.chSquadChar:
-            type = 2
+        for id in self.fleet:
+            if chBooster == self.fleet[id]['chChar']: type = id
 
         if type == -1:
             event.Skip()
@@ -227,12 +201,8 @@ class GangView ( ScrolledPanel ):
 
         location = event.GetEventObject()
 
-        if location == self.stFleetFit:
-            type = 0
-        if location == self.stWingFit:
-            type = 1
-        if location == self.stSquadFit:
-            type = 2
+        for id in self.fleet:
+            if location == self.fleet[id]['stText']: type = id
 
         sFit = service.Fit.getInstance()
         boostee = sFit.getFit(activeFitID)
@@ -240,12 +210,15 @@ class GangView ( ScrolledPanel ):
 
         fleetSrv = service.Fleet.getInstance()
 
-        if type == 0:
-            fleetSrv.setLinearFleetCom(boostee, booster)
-        elif type == 1:
-            fleetSrv.setLinearWingCom(boostee, booster)
-        elif type == 2:
-            fleetSrv.setLinearSquadCom(boostee, booster)
+        if type == 0: fleetSrv.setLinearFleetCom(boostee, booster)
+        if type == 1: fleetSrv.setLinearWingCom(boostee, booster)
+        if type == 2: fleetSrv.setLinearSquadCom(boostee, booster)
+
+        # Hide stText and, default fit selection, and enable it
+        location.Hide()
+        choice = self.fleet[type]['chFit']
+        choice.SetSelection(0)
+        choice.Show()
 
         sFit.recalc(boostee, withBoosters=True)
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=activeFitID))
@@ -260,70 +233,49 @@ class GangView ( ScrolledPanel ):
             self.fitSelected(ev)
 
     def fitSelected(self, event):
+        ''' Fires when active fit is selected and when booster is saved to fit. Update the UI to reflect changes '''
         fleetSrv = service.Fleet.getInstance()
 
         activeFitID = self.mainFrame.getActiveFit()
         cFit = service.Fit.getInstance()
         fit = cFit.getFit(event.fitID or activeFitID)
+        commanders = (None, None, None)
 
         if activeFitID:
             commanders = fleetSrv.loadLinearFleet(fit)
-            if commanders is None:
-                fleetCom, wingCom, squadCom = (None, None, None)
-            else:
-                fleetCom, wingCom, squadCom = commanders
 
-            if fleetCom:
-                fleetComName = fleetCom.ship.item.name + ": " + fleetCom.name
-                fleetComCharName = fleetCom.character.name if fleetCom.character is not None else "All 0"
-            else:
-                fleetComName = "None"
-                fleetComCharName = "All 0"
+        for id in self.fleet:
+            # try...except here as we're trying 2 different criteria and want to fall back on the same code
+            try:
+                commander = commanders[id]
 
-            if wingCom:
-                wingComName = wingCom.ship.item.name + ": " + wingCom.name
-                wingComCharName = wingCom.character.name if wingCom.character is not None else "All 0"
-            else:
-                wingComName = "None"
-                wingComCharName = "All 0"
+                if not activeFitID or commander is None:
+                    raise Exception()
 
-            if squadCom:
-                squadComName = squadCom.ship.item.name + ": " + squadCom.name
-                squadComCharName = squadCom.character.name if squadCom.character is not None else "All 0"
-            else:
-                squadComName = "None"
-                squadComCharName = "All 0"
+                self.fleet[id]['stText'].SetLabel(commander.ship.item.name + ": " + commander.name)
+                self.fleet[id]['chChar'].SetStringSelection(commander.character.name if commander.character is not None else "All 0")
+                self.fleet[id]['chChar'].Enable()
+                self.fleet[id]['chFit'].Hide()
+                self.fleet[id]['stText'].Show()
+            except:
+                #set defaults, disable char selection, and enable fit selection
+                self.fleet[id]['stText'].SetLabel("None")
+                self.fleet[id]['chChar'].SetStringSelection("All 0")
+                self.fleet[id]['chChar'].Disable()
+                self.fleet[id]['chFit'].SetSelection(0)
+                self.fleet[id]['chFit'].Show()
+                self.fleet[id]['stText'].Hide()
 
-            self.UpdateFleetFitsUI( fleetComName, wingComName, squadComName, fleetComCharName, wingComCharName, squadComCharName )
+        if activeFitID:
             self.Enable()
-
         else:
-            fleetComName = "None"
-            fleetComCharName = "All 0"
-            wingComName = "None"
-            wingComCharName = "All 0"
-            squadComName = "None"
-            squadComCharName = "All 0"
-
-            self.UpdateFleetFitsUI( fleetComName, wingComName, squadComName, fleetComCharName, wingComCharName, squadComCharName )
             self.Disable()
-
-    def UpdateFleetFitsUI(self, fleet, wing, squad, fleetChar, wingChar, squadChar):
-        self.stFleetFit.SetLabel(fleet)
-        self.stWingFit.SetLabel(wing)
-        self.stSquadFit.SetLabel(squad)
-
-        self.chFleetChar.SetStringSelection(fleetChar)
-        self.chWingChar.SetStringSelection(wingChar)
-        self.chSquadChar.SetStringSelection(squadChar)
-
 
         self.Layout()
         self.SendSizeEvent()
 
-
-
     def AddCommander(self, fitID, type = None):
+        ''' Adds booster to a fit, then recalculates active fit '''
         if type is None:
             return
 
@@ -336,20 +288,48 @@ class GangView ( ScrolledPanel ):
 
             fleetSrv = service.Fleet.getInstance()
 
-            if type == 0:
-                fleetSrv.setLinearFleetCom(boostee, booster)
-            elif type == 1:
-                fleetSrv.setLinearWingCom(boostee, booster)
-            elif type == 2:
-                fleetSrv.setLinearSquadCom(boostee, booster)
+            if type == 0: fleetSrv.setLinearFleetCom(boostee, booster)
+            if type == 1: fleetSrv.setLinearWingCom(boostee, booster)
+            if type == 2: fleetSrv.setLinearSquadCom(boostee, booster)
+
             sFit.recalc(boostee, withBoosters=True)
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=activeFitID))
+
+    def RefreshBoosterFits(self, event = None):
+        sFit    = service.Fit.getInstance()
+        sMarket = service.Market.getInstance()
+        fitList = sFit.getBoosterFits()
+
+        for id in self.fleet:
+            choice = self.fleet[id]['chFit']
+            chCurrSelection = choice.GetSelection()
+            chCurrData = -1
+            if chCurrSelection != -1:
+                chCurrData = choice.GetClientData(chCurrSelection)
+                chCurrSelString = choice.GetString(chCurrSelection)
+            choice.Clear()
+            currSelFound = False
+            choice.Append("None", -1)
+            for fit in fitList:
+                id,name,type = fit
+                ship = sMarket.getItem(type)
+                choice.Append(ship.name+': '+name, id)
+                if chCurrData == id:
+                    currSelFound = True
+
+            if chCurrSelection == -1:
+                choice.SetSelection(0)
+            else:
+                if currSelFound:
+                    choice.SetStringSelection(chCurrSelString)
+                else:
+                    choice.SetSelection(0)
 
     def RefreshCharacterList(self, event = None):
         cChar = service.Character.getInstance()
         charList = cChar.getCharacterList()
-
-        for choice in self.chCharacters:
+        for id in self.fleet:
+            choice = self.fleet[id]['chChar']
             chCurrSelection = choice.GetSelection()
             chCurrData = -1
             if chCurrSelection != -1:
@@ -372,6 +352,7 @@ class GangView ( ScrolledPanel ):
                     choice.SetSelection(1)
 
     def handleDrag(self, type, fitID):
+        ''' Handle dragging of fit to fleet interface '''
         #Those are drags coming from pyfa sources, NOT builtin wx drags
         self.draggedFitID = None
         if type == "fit":
@@ -384,20 +365,37 @@ class GangView ( ScrolledPanel ):
 
                 self.PopupMenu(self.FitDNDPopupMenu, pos)
 
-#                sFit.project(activeFit,draggedFit)
-#                wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=activeFit))
 
     def OnPopupItemSelected(self, event):
-        item = self.FitDNDPopupMenu.FindItemById(event.GetId())
-        text = item.GetText()
-        booster = self.options.index(text)
+        ''' Fired when booster popup item is selected '''
+        # Get menu selection ID via self.options
+        menuItem = self.FitDNDPopupMenu.FindItemById(event.GetId())
+        type = self.options.index(menuItem.GetText())
+
         if self.draggedFitID:
             sFit = service.Fit.getInstance()
             draggedFit = sFit.getFit(self.draggedFitID)
 
-#            self.stBoosters[booster].SetLabel(draggedFit.name)
-#            self.Layout()
-
-            self.AddCommander(draggedFit.ID, booster)
+            self.AddCommander(draggedFit.ID, type)
             self.mainFrame.additionsPane.select("Fleet")
 
+    def OnFitChoiceSelected(self, event):
+        ''' Fired when booster choice is selected '''
+        sFit = service.Fit.getInstance()
+
+        # set type via choice box used
+        chFit = event.GetEventObject()
+        fitID = chFit.GetClientData(chFit.GetSelection())
+
+        type = -1
+        for id in self.fleet:
+            if chFit == self.fleet[id]['chFit']: type = id
+
+        if type == -1 or fitID == -1:
+            event.Skip()
+            return
+
+        fit = sFit.getFit(fitID)
+
+        self.AddCommander(fit.ID, type)
+        self.mainFrame.additionsPane.select("Fleet")

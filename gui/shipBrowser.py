@@ -23,6 +23,8 @@ FitRenamed, EVT_FIT_RENAMED = wx.lib.newevent.NewEvent()
 FitSelected, EVT_FIT_SELECTED = wx.lib.newevent.NewEvent()
 FitRemoved, EVT_FIT_REMOVED = wx.lib.newevent.NewEvent()
 
+BoosterListUpdated, BOOSTER_LIST_UPDATED = wx.lib.newevent.NewEvent()
+
 Stage1Selected, EVT_SB_STAGE1_SEL = wx.lib.newevent.NewEvent()
 Stage2Selected, EVT_SB_STAGE2_SEL = wx.lib.newevent.NewEvent()
 Stage3Selected, EVT_SB_STAGE3_SEL = wx.lib.newevent.NewEvent()
@@ -806,8 +808,8 @@ class ShipBrowser(wx.Panel):
         self._stage3ShipName = shipName
         self._stage3Data = shipID
 
-        for ID, name, timestamp in fitList:
-            self.lpane.AddWidget(FitItem(self.lpane, ID, (shipName, name, timestamp),shipID))
+        for ID, name, booster, timestamp in fitList:
+            self.lpane.AddWidget(FitItem(self.lpane, ID, (shipName, name, booster, timestamp),shipID))
 
         self.lpane.RefreshList()
         self.lpane.Thaw()
@@ -843,8 +845,8 @@ class ShipBrowser(wx.Panel):
             for ship in ships:
                 self.lpane.AddWidget(ShipItem(self.lpane, ship.ID, (ship.name, len(sFit.getFitsWithShip(ship.ID))), ship.race))
 
-            for ID, name, shipID, shipName,timestamp in fitList:
-                self.lpane.AddWidget(FitItem(self.lpane, ID, (shipName, name,timestamp), shipID))
+            for ID, name, shipID, shipName, booster, timestamp in fitList:
+                self.lpane.AddWidget(FitItem(self.lpane, ID, (shipName, name, booster, timestamp), shipID))
             if len(ships) == 0 and len(fitList) == 0 :
                 self.lpane.AddWidget(PFStaticText(self.lpane, label = "No matching results."))
             self.lpane.RefreshList(doFocus = False)
@@ -1314,7 +1316,7 @@ class PFBitmapFrame(wx.Frame):
 
 
 class FitItem(SFItem.SFBrowserItem):
-    def __init__(self, parent, fitID=None, shipFittingInfo=("Test", "cnc's avatar", 0 ), shipID = None, itemData=None,
+    def __init__(self, parent, fitID=None, shipFittingInfo=("Test", "cnc's avatar", 0, 0 ), shipID = None, itemData=None,
                  id=wx.ID_ANY, pos=wx.DefaultPosition,
                  size=(0, 40), style=0):
 
@@ -1341,6 +1343,9 @@ class FitItem(SFItem.SFBrowserItem):
 
         self.deleted = False
 
+        # @todo: replace all getActiveFit() in class with this variable and test
+        self.activeFit = self.mainFrame.getActiveFit()
+
         if shipID:
             self.shipBmp = bitmapLoader.getBitmap(str(shipID),"ships")
 
@@ -1348,12 +1353,26 @@ class FitItem(SFItem.SFBrowserItem):
             self.shipBmp = bitmapLoader.getBitmap("ship_no_image_big","icons")
 
         self.shipFittingInfo = shipFittingInfo
-        self.shipName, self.fitName, self.timestamp = shipFittingInfo
+        self.shipName, self.fitName, self.fitBooster, self.timestamp = shipFittingInfo
 
-        self.copyBmp = bitmapLoader.getBitmap("fit_add_small", "icons")
-        self.renameBmp = bitmapLoader.getBitmap("fit_rename_small", "icons")
-        self.deleteBmp = bitmapLoader.getBitmap("fit_delete_small","icons")
-        self.acceptBmp = bitmapLoader.getBitmap("faccept_small", "icons")
+        # access these by index based on toggle for booster fit
+
+        self.fitMenu = wx.Menu()
+        self.toggleItem = self.fitMenu.Append(-1, "Booster Fit", kind=wx.ITEM_CHECK)
+        self.fitMenu.Check(self.toggleItem.GetId(), self.fitBooster)
+        self.Bind(wx.EVT_MENU, self.OnPopupItemSelected, self.toggleItem)
+
+        if self.activeFit:
+            # If there is an active fit, get menu for setting individual boosters
+            self.fitMenu.AppendSeparator()
+            boosterMenu = self.mainFrame.additionsPane.gangPage.FitDNDPopupMenu
+            self.fitMenu.AppendMenu(wx.ID_ANY, 'Set Booster', boosterMenu)
+
+        self.boosterBmp = bitmapLoader.getBitmap("fleet_fc_small", "icons")
+        self.copyBmp    = bitmapLoader.getBitmap("fit_add_small", "icons")
+        self.renameBmp  = bitmapLoader.getBitmap("fit_rename_small", "icons")
+        self.deleteBmp  = bitmapLoader.getBitmap("fit_delete_small","icons")
+        self.acceptBmp  = bitmapLoader.getBitmap("faccept_small", "icons")
 
         self.shipEffBk = bitmapLoader.getBitmap("fshipbk_big","icons")
 
@@ -1380,6 +1399,7 @@ class FitItem(SFItem.SFBrowserItem):
 
         self.SetDraggable()
 
+        self.boosterBtn = self.toolbar.AddButton(self.boosterBmp,"Booster", show=self.fitBooster)
         self.toolbar.AddButton(self.copyBmp,"Copy", self.copyBtnCB)
         self.renameBtn = self.toolbar.AddButton(self.renameBmp,"Rename", self.renameBtnCB)
         self.toolbar.AddButton(self.deleteBmp, "Delete", self.deleteBtnCB)
@@ -1424,14 +1444,29 @@ class FitItem(SFItem.SFBrowserItem):
 
         self.Bind(wx.EVT_RIGHT_UP, self.OnContextMenu)
 
+    def OnPopupItemSelected(self, event):
+        ''' Fires when fit menu item is selected '''
+        # currently only have one menu option (toggle booster)
+        sFit = service.Fit.getInstance()
+        sFit.toggleBoostFit(self.fitID)
+        self.fitBooster = not self.fitBooster
+        self.boosterBtn.Show(self.fitBooster)
+        self.fitMenu.Check(self.toggleItem.GetId(), self.fitBooster)
+        wx.PostEvent(self.mainFrame, BoosterListUpdated())
+        event.Skip()
+
     def OnContextMenu(self, event):
-        self.mainFrame.additionsPane.gangPage.handleDrag("fit", self.fitID)
+        ''' Handles context menu for fit. Dragging is handled by MouseLeftUp() '''
+        pos = wx.GetMousePosition()
+        pos = self.ScreenToClient(pos)
+        # Even though we may not select a booster, automatically set this so that the fleet pane knows which fit we're applying
+        self.mainFrame.additionsPane.gangPage.draggedFitID = self.fitID
+        self.PopupMenu(self.fitMenu, pos)
 
         event.Skip()
 
     def GetType(self):
         return 3
-
 
     def OnTimer(self, event):
 
@@ -1663,7 +1698,7 @@ class FitItem(SFItem.SFBrowserItem):
 
         mdc.DrawBitmap(self.shipBmp, self.shipBmpx, self.shipBmpy, 0)
 
-        shipName, fittings, timestamp = self.shipFittingInfo
+        shipName, fittings, booster, timestamp = self.shipFittingInfo
 
         mdc.SetFont(self.fontNormal)
 
