@@ -106,11 +106,11 @@ class GangView ( ScrolledPanel ):
 
             # add fit text and choice to the fit sizer
             self.fleet[id]['fitSizer'].Add( self.fleet[id]['stText'], 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5 )
-            self.fleet[id]['fitSizer'].Add( self.fleet[id]['chFit'], 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 1 )
+            self.fleet[id]['fitSizer'].Add( self.fleet[id]['chFit'], 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL|wx.EXPAND, 1 )
 
             # add everything to the content sizer
             contentFGSizer.Add( self.fleet[id]['stLabel'], 0, wx.ALIGN_RIGHT|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5 )
-            contentFGSizer.Add( self.fleet[id]['fitSizer'], 1, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5 )
+            contentFGSizer.Add( self.fleet[id]['fitSizer'], 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL|wx.EXPAND, 5 )
             contentFGSizer.Add( self.fleet[id]['chChar'], 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5 )
 
         mainSizer.Add( contentFGSizer, 1, wx.EXPAND, 0 )
