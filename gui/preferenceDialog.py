@@ -63,7 +63,15 @@ class PreferenceDialog(wx.Dialog):
             prefView.populatePanel(page)
             self.listbook.AddPage(page, prefView.title, imageId = imgID)
 
-        self.Fit()
+        # Set the height based on a condition. Can all the panels fit in the current height?
+        # If not, use the .GetBestVirtualSize() to ensure that all content is available.
+        minHeight = 360
+        bestFit   = self.GetBestVirtualSize()
+        if minHeight > bestFit[1]:
+            self.SetSizeWH(450, minHeight)
+        else:
+            self.SetSizeWH(450, bestFit[1])
+
         self.Layout()
 
         self.btnOK.Bind(wx.EVT_BUTTON, self.OnBtnOK)
