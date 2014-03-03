@@ -12,8 +12,8 @@ import gui.globalEvents as GE
 class PFUpdatePref (PreferenceView):
     title = "Pyfa Update Options"
     desc  = """
-Pyfa can automatically check and notify you of new releases. 
-These options will allow you to choose what kind of updates, if any, you wish 
+Pyfa can automatically check and notify you of new releases.
+These options will allow you to choose what kind of updates, if any, you wish
 to receive notifications for.
 """
 
@@ -27,33 +27,33 @@ to receive notifications for.
         self.stTitle.Wrap( -1 )
         self.stTitle.SetFont( wx.Font( 12, 70, 90, 90, False, wx.EmptyString ) )
         mainSizer.Add( self.stTitle, 0, wx.ALL, 5 )
-        
+
         self.stDesc = wx.StaticText( panel, wx.ID_ANY, self.desc, wx.DefaultPosition, wx.DefaultSize, 0 )
         mainSizer.Add( self.stDesc, 0, wx.ALL, 5 )
-        
+
         self.suppressAll = wx.CheckBox( panel, wx.ID_ANY, u"Don't check for updates", wx.DefaultPosition, wx.DefaultSize, 0 )
         self.suppressPrerelease = wx.CheckBox( panel, wx.ID_ANY, u"Allow pre-release notifications", wx.DefaultPosition, wx.DefaultSize, 0 )
 
         mainSizer.Add( self.suppressAll, 0, wx.ALL|wx.EXPAND, 5 )
         mainSizer.Add( self.suppressPrerelease, 0, wx.ALL|wx.EXPAND, 5 )
-        
+
         self.suppressAll.Bind(wx.EVT_CHECKBOX, self.OnSuppressAllStateChange)
         self.suppressPrerelease.Bind(wx.EVT_CHECKBOX, self.OnPrereleaseStateChange)
 
         self.suppressAll.SetValue(self.UpdateSettings.get('all'))
         self.suppressPrerelease.SetValue(not self.UpdateSettings.get('prerelease'))
-        
+
         if (self.UpdateSettings.get('version')):
             self.versionSizer = wx.BoxSizer( wx.VERTICAL )
 
-            
+
             self.versionTitle = wx.StaticText( panel, wx.ID_ANY, "Suppressing "+self.UpdateSettings.get('version')+" Notifications", wx.DefaultPosition, wx.DefaultSize, 0 )
             self.versionTitle.Wrap( -1 )
             self.versionTitle.SetFont( wx.Font( 12, 70, 90, 90, False, wx.EmptyString ) )
-            
+
             self.versionInfo = '''
-There is a release available which you have chosen to suppress. 
-You can choose to reset notification suppression for this release, 
+There is a release available which you have chosen to suppress.
+You can choose to reset notification suppression for this release,
 or download the new release from GitHub.
 '''
 
@@ -68,7 +68,7 @@ or download the new release from GitHub.
 
             actionSizer = wx.BoxSizer( wx.HORIZONTAL )
             resetSizer = wx.BoxSizer( wx.VERTICAL )
-            
+
             self.downloadButton = wx.Button( panel, wx.ID_ANY, "Download", wx.DefaultPosition, wx.DefaultSize, 0 )
             self.downloadButton.Bind(wx.EVT_BUTTON, self.OnDownload)
             resetSizer.Add( self.downloadButton, 0, wx.ALL, 5 )
@@ -79,9 +79,9 @@ or download the new release from GitHub.
             actionSizer.Add( self.resetButton, 0, wx.ALL, 5 )
             self.versionSizer.Add( actionSizer, 0, wx.EXPAND, 5 )
             mainSizer.Add( self.versionSizer, 0, wx.EXPAND, 5 )
-            
+
         self.ToggleSuppressAll(self.suppressAll.IsChecked())
-        
+
         panel.SetSizer( mainSizer )
         panel.Layout()
 
@@ -97,7 +97,7 @@ or download the new release from GitHub.
         self.ToggleSuppressAll(self.suppressAll.IsChecked())
 
     def OnPrereleaseStateChange(self, event):
-        self.UpdateSettings.set('prerelease', self.suppressPrerelease.IsChecked())
+        self.UpdateSettings.set('prerelease', not self.suppressPrerelease.IsChecked())
 
     def ResetSuppression(self, event):
         self.UpdateSettings.set('version', None)
@@ -109,10 +109,10 @@ or download the new release from GitHub.
         self.downloadButton.Hide()
         self.resetButton.Hide()
         self.resetButton.Hide()
-        
+
     def OnDownload(self, event):
         wx.LaunchDefaultBrowser('https://github.com/DarkFenX/Pyfa/releases/tag/'+self.UpdateSettings.get('version'))
-    
+
     def getImage(self):
         return bitmapLoader.getBitmap("pyfa64", "icons")
 
