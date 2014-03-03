@@ -31,7 +31,7 @@ class PFHTMLExportPref ( PreferenceView):
         mainSizer.Add( self.stTitle, 0, wx.ALL, 5 )
 
         self.stDesc = wx.StaticText( panel, wx.ID_ANY, self.desc, wx.DefaultPosition, wx.DefaultSize, 0 )
-        self.stDesc.Wrap(dlgWidth - 120)
+        self.stDesc.Wrap(dlgWidth - 50)
         mainSizer.Add( self.stDesc, 0, wx.ALL, 5 )
 
         self.exportEnabled = wx.CheckBox( panel, wx.ID_ANY, u"Enable HTML export", wx.DefaultPosition, wx.DefaultSize, 0 )
