@@ -566,9 +566,9 @@ class APIView (wx.Panel):
         fgSizerInput.Add(self.charChoice, 1, wx.ALL | wx.EXPAND, 5)
 
         self.charChoice.Enable(False)
-        
-        pmainSizer.Add(fgSizerInput, 0, wx.EXPAND, 5)  
-        
+
+        pmainSizer.Add(fgSizerInput, 0, wx.EXPAND, 5)
+
         btnSizer = wx.FlexGridSizer(3, 2, 0, 0)
         btnSizer.AddGrowableCol(1)
         btnSizer.SetFlexibleDirection(wx.BOTH)
@@ -577,13 +577,17 @@ class APIView (wx.Panel):
         self.btnFetchCharList = wx.Button(self, wx.ID_ANY, u"Get Characters")
         btnSizer.Add(self.btnFetchCharList, 0, wx.ALL, 2)
         self.btnFetchCharList.Bind(wx.EVT_BUTTON, self.fetchCharList)
-        
+
         self.btnFetchSkills =  wx.Button(self, wx.ID_ANY, u"Fetch Skills")
         btnSizer.Add(self.btnFetchSkills,  0, wx.ALL, 2)
         self.btnFetchSkills.Bind(wx.EVT_BUTTON, self.fetchSkills)
         self.btnFetchSkills.Enable(False)
-        pmainSizer.Add(btnSizer, 0, wx.EXPAND, 5)       
+        pmainSizer.Add(btnSizer, 0, wx.EXPAND, 5)
 
+        self.stStatus = wx.StaticText(self,  wx.ID_ANY, wx.EmptyString)
+        pmainSizer.Add(self.stStatus, 0, wx.ALL, 5)
+
+        pmainSizer.AddStretchSpacer()
         self.stAPITip = wx.StaticText( self, wx.ID_ANY, u"You can create a key here (only character sheet access is needed):", wx.DefaultPosition, wx.DefaultSize, 0 )
         self.stAPITip.Wrap( -1 )
 
@@ -599,8 +603,6 @@ class APIView (wx.Panel):
         self.hlEveAPI2 = wx.HyperlinkCtrl( self, wx.ID_ANY, self.apiUrlKeyList, self.apiUrlKeyList, wx.DefaultPosition, wx.DefaultSize, wx.HL_DEFAULT_STYLE )
         pmainSizer.Add( self.hlEveAPI2, 0, wx.ALL, 2 )
 
-        self.stStatus = wx.StaticText(self,  wx.ID_ANY, wx.EmptyString)
-        pmainSizer.Add(self.stStatus, 0, wx.ALL, 5)
         self.SetSizer(pmainSizer)
         self.Layout()
         self.charChanged(None)
@@ -610,9 +612,9 @@ class APIView (wx.Panel):
         ID, key, char, chars = cChar.getApiDetails(self.Parent.Parent.getActiveCharacter())
         self.inputID.SetValue(str(ID))
         self.inputKey.SetValue(key)
-        
+
         self.charChoice.Clear()
-        
+
         if chars:
             for charName in chars:
                 i = self.charChoice.Append(charName)
@@ -625,7 +627,7 @@ class APIView (wx.Panel):
             self.charChoice.Enable(False)
             self.btnFetchSkills.Enable(False)
 
-        
+
         if event is not None:
             event.Skip()
 
@@ -645,7 +647,7 @@ class APIView (wx.Panel):
         self.charChoice.Clear()
         for charName in list:
             i = self.charChoice.Append(charName)
-        
+
         self.btnFetchSkills.Enable(True)
         self.charChoice.Enable(True)
 
