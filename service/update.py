@@ -39,13 +39,10 @@ class CheckUpdateThread(threading.Thread):
             # @todo: use proxy settings?
             response = urllib2.urlopen('https://api.github.com/repos/DarkFenX/Pyfa/releases')
             jsonResponse = json.loads(response.read());
-            i = 0
-            while (True):
-                release = jsonResponse[i]
 
+            for release in jsonResponse:
                 # Suppress pre releases
                 if (release['prerelease'] and self.settings.get('prerelease')):
-                    i += 1
                     continue
 
                 # Handle use-case of updating to suppressed version
@@ -54,14 +51,14 @@ class CheckUpdateThread(threading.Thread):
 
                 # Suppress version
                 if (release['tag_name'] == self.settings.get('version')):
-                    return
+                    break
 
                 version = release['tag_name'].replace('v', '', 1)
 
                 if self.versiontuple(version) > self.versiontuple(config.version):
-                    wx.CallAfter(self.callback, jsonResponse[i])
-                    break;
+                    wx.CallAfter(self.callback, release)
 
+                break;
         except: # for when there is no internet connection
             pass
 
