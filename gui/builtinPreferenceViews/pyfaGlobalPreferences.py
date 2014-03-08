@@ -25,8 +25,8 @@ class PFGlobalPref ( PreferenceView):
 
         mainSizer.Add( self.stTitle, 0, wx.ALL, 5 )
 
-        #self.m_staticline1 = wx.StaticLine( panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
-        #mainSizer.Add( self.m_staticline1, 0, wx.EXPAND, 5 )
+        self.m_staticline1 = wx.StaticLine( panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
+        mainSizer.Add( self.m_staticline1, 0, wx.EXPAND|wx.TOP|wx.BOTTOM, 5 )
 
         self.cbGlobalChar = wx.CheckBox( panel, wx.ID_ANY, u"Use global character", wx.DefaultPosition, wx.DefaultSize, 0 )
         mainSizer.Add( self.cbGlobalChar, 0, wx.ALL|wx.EXPAND, 5 )

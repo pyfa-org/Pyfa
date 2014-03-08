@@ -30,6 +30,9 @@ class PFHTMLExportPref ( PreferenceView):
         self.stTitle.SetFont( wx.Font( 12, 70, 90, 90, False, wx.EmptyString ) )
         mainSizer.Add( self.stTitle, 0, wx.ALL, 5 )
 
+        self.m_staticline1 = wx.StaticLine( panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
+        mainSizer.Add( self.m_staticline1, 0, wx.EXPAND|wx.TOP|wx.BOTTOM, 5 )
+
         self.stDesc = wx.StaticText( panel, wx.ID_ANY, self.desc, wx.DefaultPosition, wx.DefaultSize, 0 )
         self.stDesc.Wrap(dlgWidth - 50)
         mainSizer.Add( self.stDesc, 0, wx.ALL, 5 )
