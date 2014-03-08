@@ -79,6 +79,7 @@ class Fit(object):
     def __init__(self):
         self.pattern = DamagePattern.getInstance().getDamagePattern("Uniform")
         self.character = Character.getInstance().all5()
+        self.booster = False
         self.dirtyFitIDs = set()
 
         serviceFittingDefaultOptions = {"useGlobalCharacter": False, "useGlobalDamagePattern": False, "defaultCharacter": self.character.ID, "useGlobalForceReload": False}
@@ -95,10 +96,20 @@ class Fit(object):
         return names
 
     def getFitsWithShip(self, id):
+        ''' Lists fits of shipID, used with shipBrowser '''
         fits = eos.db.getFitsWithShip(id)
         names = []
         for fit in fits:
-            names.append((fit.ID, fit.name, fit.timestamp))
+            names.append((fit.ID, fit.name, fit.booster, fit.timestamp))
+
+        return names
+
+    def getBoosterFits(self):
+        ''' Lists fits flagged as booster '''
+        fits = eos.db.getBoosterFits()
+        names = []
+        for fit in fits:
+            names.append((fit.ID, fit.name, fit.shipID))
 
         return names
 
@@ -125,10 +136,16 @@ class Fit(object):
         fit.name = name if name is not None else "New %s" % fit.ship.item.name
         fit.damagePattern = self.pattern
         fit.character = self.character
+        fit.booster = self.booster
         eos.db.save(fit)
         self.recalc(fit)
         return fit.ID
 
+    def toggleBoostFit(self, fitID): 
+        fit = eos.db.getFit(fitID)
+        fit.booster = not fit.booster
+        eos.db.commit()
+        
     def renameFit(self, fitID, newName):
         fit = eos.db.getFit(fitID)
         fit.name = newName
@@ -203,7 +220,7 @@ class Fit(object):
         results = eos.db.searchFits(name)
         fits = []
         for fit in results:
-            fits.append((fit.ID, fit.name, fit.ship.item.ID, fit.ship.item.name, fit.timestamp))
+            fits.append((fit.ID, fit.name, fit.ship.item.ID, fit.ship.item.name, fit.booster, fit.timestamp))
         return fits
 
     def addImplant(self, fitID, itemID):

@@ -248,6 +248,24 @@ def getFitsWithShip(shipID, ownerID=None, where=None, eager=None):
         raise TypeError("ShipID must be integer")
     return fits
 
+def getBoosterFits(ownerID=None, where=None, eager=None):
+    """
+    Get all the fits that are flagged as a boosting ship
+    If no user is passed, do this for all users.
+    """
+
+    if ownerID is not None and not isinstance(ownerID, int):
+        raise TypeError("OwnerID must be integer")
+    filter = Fit.booster == 1
+    if ownerID is not None:
+        filter = and_(filter, Fit.ownerID == ownerID)
+
+    filter = processWhere(filter, where)
+    eager = processEager(eager)
+    with sd_lock:
+        fits = saveddata_session.query(Fit).options(*eager).filter(filter).all()
+    return fits
+
 def countFitsWithShip(shipID, ownerID=None, where=None, eager=None):
     """
     Get all the fits using a certain ship.
