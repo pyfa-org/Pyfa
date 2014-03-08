@@ -13,3 +13,6 @@
 *.patch
 #Personal
 /saveddata
+
+#Pyfa file
+pyfaFits.html
