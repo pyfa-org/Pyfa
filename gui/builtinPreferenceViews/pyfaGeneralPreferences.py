@@ -10,7 +10,7 @@ import service
 import gui.globalEvents as GE
 
 
-class PFGlobalPref ( PreferenceView):
+class PFGeneralPref ( PreferenceView):
     title = "General"
 
     def populatePanel( self, panel ):
@@ -89,4 +89,4 @@ class PFGlobalPref ( PreferenceView):
     def getImage(self):
         return bitmapLoader.getBitmap("prefs_settings", "icons")
 
-PFGlobalPref.register()
+PFGeneralPref.register()
