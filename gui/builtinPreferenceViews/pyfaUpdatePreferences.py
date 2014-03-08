@@ -10,16 +10,16 @@ import gui.globalEvents as GE
 
 
 class PFUpdatePref (PreferenceView):
-    title = "Pyfa Update Options"
-    desc  = """
-Pyfa can automatically check and notify you of new releases.
-These options will allow you to choose what kind of updates, if any, you wish
-to receive notifications for.
-"""
+    title = "Updates"
+    desc  = "Pyfa can automatically check and notify you of new releases. "+\
+            "These options will allow you to choose what kind of updates, "+\
+            "if any, you wish to receive notifications for."
 
     def populatePanel( self, panel ):
         self.UpdateSettings = service.settings.UpdateSettings.getInstance()
         self.dirtySettings = False
+
+        dlgWidth = panel.GetParent().GetParent().ClientSize.width
 
         mainSizer = wx.BoxSizer( wx.VERTICAL )
 
@@ -28,7 +28,11 @@ to receive notifications for.
         self.stTitle.SetFont( wx.Font( 12, 70, 90, 90, False, wx.EmptyString ) )
         mainSizer.Add( self.stTitle, 0, wx.ALL, 5 )
 
+        self.m_staticline1 = wx.StaticLine( panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
+        mainSizer.Add( self.m_staticline1, 0, wx.EXPAND|wx.TOP|wx.BOTTOM, 5 )
+
         self.stDesc = wx.StaticText( panel, wx.ID_ANY, self.desc, wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.stDesc.Wrap(dlgWidth - 50)
         mainSizer.Add( self.stDesc, 0, wx.ALL, 5 )
 
         self.suppressAll = wx.CheckBox( panel, wx.ID_ANY, u"Don't check for updates", wx.DefaultPosition, wx.DefaultSize, 0 )
@@ -51,11 +55,9 @@ to receive notifications for.
             self.versionTitle.Wrap( -1 )
             self.versionTitle.SetFont( wx.Font( 12, 70, 90, 90, False, wx.EmptyString ) )
 
-            self.versionInfo = '''
-There is a release available which you have chosen to suppress.
-You can choose to reset notification suppression for this release,
-or download the new release from GitHub.
-'''
+            self.versionInfo = "There is a release available which you have chosen to suppress. "+\
+                               "You can choose to reset notification suppression for this release, "+\
+                               "or download the new release from GitHub."
 
             self.versionSizer.AddSpacer( ( 5, 5), 0, wx.EXPAND, 5 )
 
@@ -64,6 +66,7 @@ or download the new release from GitHub.
 
             self.versionSizer.Add( self.versionTitle, 0, wx.EXPAND, 5 )
             self.versionDesc = wx.StaticText( panel, wx.ID_ANY, self.versionInfo, wx.DefaultPosition, wx.DefaultSize, 0 )
+            self.versionDesc.Wrap(dlgWidth - 50)
             self.versionSizer.Add( self.versionDesc, 0, wx.ALL, 5 )
 
             actionSizer = wx.BoxSizer( wx.HORIZONTAL )
@@ -114,6 +117,6 @@ or download the new release from GitHub.
         wx.LaunchDefaultBrowser('https://github.com/DarkFenX/Pyfa/releases/tag/'+self.UpdateSettings.get('version'))
 
     def getImage(self):
-        return bitmapLoader.getBitmap("pyfa64", "icons")
+        return bitmapLoader.getBitmap("prefs_update", "icons")
 
 PFUpdatePref.register()

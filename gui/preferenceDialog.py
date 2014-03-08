@@ -31,10 +31,12 @@ class PreferenceDialog(wx.Dialog):
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
         self.listbook = wx.Listbook(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LB_DEFAULT)
-        self.listbook.GetListView().SetMinSize((500, -1))
-        self.listbook.GetListView().SetSize((500, -1))
 
-        self.imageList = wx.ImageList(64,64)
+        self.listview = self.listbook.GetListView()
+        self.listview.SetMinSize((500, -1))
+        self.listview.SetSize((500, -1))
+
+        self.imageList = wx.ImageList(32,32)
         self.listbook.SetImageList(self.imageList)
 
         mainSizer.Add(self.listbook, 1, wx.EXPAND | wx.TOP|wx.BOTTOM|wx.LEFT, 5)
@@ -51,7 +53,7 @@ class PreferenceDialog(wx.Dialog):
 
         self.Centre(wx.BOTH)
 
-        for title, prefView in PreferenceView.views.iteritems():
+        for prefView in PreferenceView.views:
             page = wx.Panel(self.listbook)
             bmp = prefView.getImage()
             if bmp:
@@ -59,9 +61,17 @@ class PreferenceDialog(wx.Dialog):
             else:
                 imgID = -1
             prefView.populatePanel(page)
-            self.listbook.AddPage(page, title, imageId = imgID)
+            self.listbook.AddPage(page, prefView.title, imageId = imgID)
 
-        self.Fit()
+        # Set the height based on a condition. Can all the panels fit in the current height?
+        # If not, use the .GetBestVirtualSize() to ensure that all content is available.
+        minHeight = 360
+        bestFit   = self.GetBestVirtualSize()
+        if minHeight > bestFit[1]:
+            self.SetSizeWH(450, minHeight)
+        else:
+            self.SetSizeWH(450, bestFit[1])
+
         self.Layout()
 
         self.btnOK.Bind(wx.EVT_BUTTON, self.OnBtnOK)

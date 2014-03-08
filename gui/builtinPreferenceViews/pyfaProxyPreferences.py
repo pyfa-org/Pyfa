@@ -10,8 +10,8 @@ import service
 import gui.globalEvents as GE
 
 
-class PFGlobalPref ( PreferenceView):
-    title = "Pyfa Global Options"
+class PFProxyPref ( PreferenceView):
+    title = "Proxy"
 
     def populatePanel( self, panel ):
 
@@ -24,7 +24,6 @@ class PFGlobalPref ( PreferenceView):
         self.nPort = self.proxySettings.getPort()
         self.nType = self.proxySettings.getType()
 
-
         mainSizer = wx.BoxSizer( wx.VERTICAL )
 
         self.stTitle = wx.StaticText( panel, wx.ID_ANY, self.title, wx.DefaultPosition, wx.DefaultSize, 0 )
@@ -33,44 +32,8 @@ class PFGlobalPref ( PreferenceView):
 
         mainSizer.Add( self.stTitle, 0, wx.ALL, 5 )
 
-#        self.m_staticline1 = wx.StaticLine( panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
-#        mainSizer.Add( self.m_staticline1, 0, wx.EXPAND, 5 )
-
-        self.cbGlobalChar = wx.CheckBox( panel, wx.ID_ANY, u"Use global character", wx.DefaultPosition, wx.DefaultSize, 0 )
-        mainSizer.Add( self.cbGlobalChar, 0, wx.ALL|wx.EXPAND, 5 )
-
-        self.cbGlobalDmgPattern = wx.CheckBox( panel, wx.ID_ANY, u"Use global damage pattern", wx.DefaultPosition, wx.DefaultSize, 0 )
-        mainSizer.Add( self.cbGlobalDmgPattern, 0, wx.ALL|wx.EXPAND, 5 )
-
-        self.cbGlobalForceReload = wx.CheckBox( panel, wx.ID_ANY, u"Factor in reload time", wx.DefaultPosition, wx.DefaultSize, 0 )
-        mainSizer.Add( self.cbGlobalForceReload, 0, wx.ALL|wx.EXPAND, 5 )
-
-        self.cbFitColorSlots = wx.CheckBox( panel, wx.ID_ANY, u"Color fitting view by slot", wx.DefaultPosition, wx.DefaultSize, 0 )
-        mainSizer.Add( self.cbFitColorSlots, 0, wx.ALL|wx.EXPAND, 5 )
-
-        defCharSizer = wx.BoxSizer( wx.HORIZONTAL )
-
-        self.stDefChar = wx.StaticText( panel, wx.ID_ANY, u"Default character:", wx.DefaultPosition, wx.DefaultSize, 0 )
-        self.stDefChar.Wrap( -1 )
-        defCharSizer.Add( self.stDefChar, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
-
-        chDefaultCharChoices = []
-        self.chDefaultChar = wx.Choice( panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, chDefaultCharChoices, 0 )
-        self.chDefaultChar.SetSelection( 0 )
-        defCharSizer.Add( self.chDefaultChar, 1, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
-
-        mainSizer.Add( defCharSizer, 0, wx.EXPAND, 5 )
-
-
-        self.m_staticline2 = wx.StaticLine( panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
-        mainSizer.Add( self.m_staticline2, 0, wx.EXPAND, 5 )
-
-        self.stPTitle = wx.StaticText( panel, wx.ID_ANY, "Proxy settings", wx.DefaultPosition, wx.DefaultSize, 0 )
-        self.stPTitle.Wrap( -1 )
-        self.stPTitle.SetFont( wx.Font( 12, 70, 90, 90, False, wx.EmptyString ) )
-
-        mainSizer.Add( self.stPTitle, 0, wx.ALL, 5 )
-
+        self.m_staticline1 = wx.StaticLine( panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
+        mainSizer.Add( self.m_staticline1, 0, wx.EXPAND|wx.TOP|wx.BOTTOM, 5 )
 
         ptypeSizer = wx.BoxSizer( wx.HORIZONTAL )
 
@@ -136,33 +99,6 @@ class PFGlobalPref ( PreferenceView):
 
         self.stPSAutoDetected.SetLabel("Auto-detected: " + txt)
         self.stPSAutoDetected.Disable()
-
-        cChar = service.Character.getInstance()
-        charList = cChar.getCharacterList()
-
-        for id, name, active in charList:
-            self.chDefaultChar.Append(name, id)
-
-        self.chDefaultChar.SetSelection(0)
-
-        self.sFit = service.Fit.getInstance()
-        useGlobalChar = self.sFit.serviceFittingOptions["useGlobalCharacter"]
-        useGlobalDmgPattern = self.sFit.serviceFittingOptions["useGlobalDamagePattern"]
-        useGlobalForceReload = self.sFit.serviceFittingOptions["useGlobalForceReload"]
-
-        self.cbGlobalChar.SetValue(useGlobalChar)
-        self.cbGlobalDmgPattern.SetValue(useGlobalDmgPattern)
-        self.cbGlobalForceReload.SetValue(useGlobalForceReload)
-        self.cbFitColorSlots.SetValue(self.sFit.serviceFittingOptions["colorFitBySlot"] or False)
-
-        self.cbGlobalChar.Bind(wx.EVT_CHECKBOX, self.OnCBGlobalCharStateChange)
-        self.cbGlobalDmgPattern.Bind(wx.EVT_CHECKBOX, self.OnCBGlobalDmgPatternStateChange)
-        self.cbGlobalForceReload.Bind(wx.EVT_CHECKBOX, self.OnCBGlobalForceReloadStateChange)
-        self.cbFitColorSlots.Bind(wx.EVT_CHECKBOX, self.onCBGlobalColorBySlot)
-
-        self.chDefaultChar.Disable()
-        self.chDefaultChar.Show(False)
-        self.stDefChar.Show(False)
 
         self.chProxyType.Bind(wx.EVT_CHOICE, self.OnCHProxyTypeSelect)
         self.editProxySettingsAddr.Bind(wx.EVT_TEXT, self.OnEditPSAddrText)
@@ -233,33 +169,7 @@ class PFGlobalPref ( PreferenceView):
             self.stPSetPort.Disable()
             self.editProxySettingsPort.Disable()
 
-    def OnCBProxySettingsStateChange(self, event):
-        self.ToggleProxySettings(self.cbProxySettings.GetValue())
-        event.Skip()
-
-    def onCBGlobalColorBySlot(self, event):
-        self.sFit.serviceFittingOptions["colorFitBySlot"] = self.cbFitColorSlots.GetValue()
-        fitID = self.mainFrame.getActiveFit()
-        self.sFit.refreshFit(fitID)
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
-        event.Skip()
-        
-    def OnCBGlobalForceReloadStateChange(self, event):
-        self.sFit.serviceFittingOptions["useGlobalForceReload"] = self.cbGlobalForceReload.GetValue()
-        fitID = self.mainFrame.getActiveFit()
-        self.sFit.refreshFit(fitID)
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
-        event.Skip()
-
-    def OnCBGlobalCharStateChange(self, event):
-        self.sFit.serviceFittingOptions["useGlobalCharacter"] = self.cbGlobalChar.GetValue()
-        event.Skip()
-
-    def OnCBGlobalDmgPatternStateChange(self, event):
-        self.sFit.serviceFittingOptions["useGlobalDamagePattern"] = self.cbGlobalDmgPattern.GetValue()
-        event.Skip()
-
     def getImage(self):
-        return bitmapLoader.getBitmap("pyfa64", "icons")
+        return bitmapLoader.getBitmap("prefs_proxy", "icons")
 
-PFGlobalPref.register()
+PFProxyPref.register()
