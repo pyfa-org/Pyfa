@@ -53,11 +53,28 @@ class CheckUpdateThread(threading.Thread):
                 if (release['tag_name'] == self.settings.get('version')):
                     break
 
-                version = release['tag_name'].replace('v', '', 1)
+                # Set the release version that we will be comparing with.
+                if release['prerelease']:
+                    rVersion = release['tag_name'].replace('singularity-', '', 1)
+                else:
+                    rVersion = release['tag_name'].replace('v', '', 1)
 
-                if self.versiontuple(version) > self.versiontuple(config.version):
+                if config.tag is 'git' and not release['prerelease'] and self.versiontuple(rVersion) >= self.versiontuple(config.version):
+                    print "git (dev/Singularity) -> Stable"
                     wx.CallAfter(self.callback, release)
-
+                elif config.expansionName is not "Singularity": # Current version is a stable release
+                    if release['prerelease']:
+                        print "Stable -> Singularity"
+                        wx.CallAfter(self.callback, release)
+                    elif self.versiontuple(rVersion) > self.versiontuple(config.version):
+                            print "Stable -> Stable"
+                            wx.CallAfter(self.callback, release)
+                else: #Current version is pre-release
+                    if release['prerelease'] and rVersion > config.expansionVersion:
+                            print "Singularity -> Singularity"
+                            wx.CallAfter(self.callback, release)
+                    else:
+                        print "no new release"
                 break;
         except: # for when there is no internet connection
             pass
