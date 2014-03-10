@@ -170,7 +170,7 @@ class MainFrame(wx.Frame):
         dlg = UpdateDialog(self, release)
         dlg.ShowModal()
         dlg.Destroy()
-        
+
     def LoadMainFrameAttribs(self):
 
         mainFrameDefaultAttribs = {"wnd_width":1000, "wnd_height": 700, "wnd_maximized": False}
@@ -330,6 +330,12 @@ class MainFrame(wx.Frame):
         dlg.ShowModal()
         dlg.Destroy()
 
+    def goUserGuide(self, event):
+        wx.LaunchDefaultBrowser('https://github.com/DarkFenX/Pyfa/wiki/User-Guide')
+
+    def goForums(self, event):
+        wx.LaunchDefaultBrowser('https://forums.eveonline.com/default.aspx?g=posts&t=247609')
+
     def registerMenu(self):
         menuBar = self.GetMenuBar()
         # Quit
@@ -357,6 +363,10 @@ class MainFrame(wx.Frame):
         self.Bind(wx.EVT_MENU, self.importCharacter, id=menuBar.importCharacterId)
         # Preference dialog
         self.Bind(wx.EVT_MENU, self.showPreferenceDialog, id = menuBar.preferencesId)
+        # User guide
+        self.Bind(wx.EVT_MENU, self.goUserGuide, id = menuBar.userGuideId)
+        # EVE Forums
+        self.Bind(wx.EVT_MENU, self.goForums, id = menuBar.forumId)
 
         #Clipboard exports
         self.Bind(wx.EVT_MENU, self.exportToClipboard, id=wx.ID_COPY)

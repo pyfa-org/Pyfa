@@ -33,6 +33,8 @@ class MainMenuBar(wx.MenuBar):
         self.exportSkillsNeededId = wx.NewId()
         self.importCharacterId = wx.NewId()
         self.preferencesId = wx.NewId()
+        self.userGuideId = wx.NewId()
+        self.forumId = wx.NewId()
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
@@ -96,6 +98,9 @@ class MainMenuBar(wx.MenuBar):
         # Help menu
         helpMenu = wx.Menu()
         self.Append(helpMenu, "&Help")
+        helpMenu.Append(self.userGuideId, "User Guide", "Go to User Guide on GitHub")
+        helpMenu.Append(self.forumId, "Forums", "Go to EVE Online Forum thread")
+        helpMenu.AppendSeparator()
         helpMenu.Append(wx.ID_ABOUT)
 
         if config.debug:
