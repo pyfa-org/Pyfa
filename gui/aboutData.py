@@ -21,6 +21,13 @@ import config
 versionString = "{0} {1} - {2} {3}".format(config.version, config.tag, config.expansionName, config.expansionVersion)
 license = "pyfa is released under GNU GPLv3"
 licenseLocation = "gpl.txt"
-developers = ("\n cncfanatics \t(Sakari Orisi)\n" , " DarkPhoenix \t(Kadesh Priestess)\n", " Darriele \t(Darriele)")
-credits = (("Entity (Entity) \t\tCapacitor calculations / EVEAPI python lib / Reverence"), ("Aurora \t\tMaths"), ("Corollax (Aamrr) \tVarious EOS/pyfa improvements"))
-description = "Pyfa (the Python Fitting Assistant) is a standalone application able to create and simulate fittings for EVE-Online SciFi MMORPG with a very high degree of accuracy.\nPyfa can be virtually ran on all platforms where python and wxwidgets are supported.\n\n\nAll EVE-Online related materials are property of CCP hf.\n\nSilk Icons Set by famfamfam.com released under Creative Commons Attribution 2.5 License\n\nFat Cow Icons by fatcow.com released under Creative Commons Attribution 3.0 License"
+developers = ("cncfanatics \t(Sakari Orisi)" , "DarkPhoenix \t(Kadesh Priestess)", "Darriele \t(Darriele)", "blitzmann \t(Sable Blitzmann)")
+credits = ("Entity (Entity) \t\tCapacitor calculations / EVEAPI python lib / Reverence", "Aurora \t\t\tMaths", "Corollax (Aamrr) \tVarious EOS / pyfa improvements")
+description = (
+    "Pyfa (the Python Fitting Assistant) is an open-source standalone application able to "
+    "create and simulate fittings for EVE-Online SciFi MMORPG with a very high degree of "
+    "accuracy. Pyfa can run on all platforms where Python and wxWidgets are supported.\n\n"
+    "All EVE-Online related materials are property of CCP hf.\n"
+    "Silk Icons Set by famfamfam.com released under Creative Commons Attribution 2.5 License\n"
+    "Fat Cow Icons by fatcow.com released under Creative Commons Attribution 3.0 License"
+)

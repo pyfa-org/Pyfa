@@ -243,11 +243,11 @@ class MainFrame(wx.Frame):
         info = wx.AboutDialogInfo()
         info.Name = "pyfa"
         info.Version = gui.aboutData.versionString
-        info.Description = wordwrap(gui.aboutData.description + "\n\n\nDevelopers: " +
-                                     "".join(gui.aboutData.developers) +
-                                     "\n\nAdditional credits:\n  " +
-                                     "\n  ".join(gui.aboutData.credits)
-                                     + "\n\nLicense: " +
+        info.Description = wordwrap(gui.aboutData.description + "\n\nDevelopers:\n\t" +
+                                     "\n\t".join(gui.aboutData.developers) +
+                                     "\n\nAdditional credits:\n\t" +
+                                     "\n\t".join(gui.aboutData.credits) +
+                                     "\n\nLicense:\n\t" +
                                      gui.aboutData.license +
                                      " - see included " +
                                      gui.aboutData.licenseLocation +
