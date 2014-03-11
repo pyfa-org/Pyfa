@@ -42,7 +42,7 @@ class PFHTMLExportPref ( PreferenceView):
         self.exportEnabled.Bind(wx.EVT_CHECKBOX, self.OnExportEnabledChange)
         mainSizer.Add( self.exportEnabled, 0, wx.ALL|wx.EXPAND, 5 )
 
-        self.PathLinkCtrl = wx.HyperlinkCtrl( panel, wx.ID_ANY, str(self.HTMLExportSettings.getPath()), 'file:///' + str(self.HTMLExportSettings.getPath()), wx.DefaultPosition, wx.DefaultSize, wx.HL_ALIGN_LEFT|wx.NO_BORDER|wx.HL_CONTEXTMENU )
+        self.PathLinkCtrl = wx.HyperlinkCtrl( panel, wx.ID_ANY, self.HTMLExportSettings.getPath(), u'file:///{}'.format(self.HTMLExportSettings.getPath()), wx.DefaultPosition, wx.DefaultSize, wx.HL_ALIGN_LEFT|wx.NO_BORDER|wx.HL_CONTEXTMENU )
         mainSizer.Add( self.PathLinkCtrl, 0, wx.ALL|wx.EXPAND, 5)
 
         self.fileSelectDialog = wx.FileDialog(None, "Save Fitting As...", wildcard = "EVE IGB HTML fitting file (*.html)|*.html", style = wx.FD_SAVE)
