@@ -58,7 +58,7 @@ class PFHTMLExportPref ( PreferenceView):
 
     def setPathLinkCtrlValues(self, path):
         self.PathLinkCtrl.SetLabel(self.HTMLExportSettings.getPath())
-        self.PathLinkCtrl.SetURL('file:///' + self.HTMLExportSettings.getPath())
+        self.PathLinkCtrl.SetURL(u'file:///{}'.format(self.HTMLExportSettings.getPath()))
         self.PathLinkCtrl.SetSize(wx.DefaultSize);
         self.PathLinkCtrl.Refresh()
 
