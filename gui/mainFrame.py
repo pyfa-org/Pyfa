@@ -330,8 +330,8 @@ class MainFrame(wx.Frame):
         dlg.ShowModal()
         dlg.Destroy()
 
-    def goUserGuide(self, event):
-        wx.LaunchDefaultBrowser('https://github.com/DarkFenX/Pyfa/wiki/User-Guide')
+    def goWiki(self, event):
+        wx.LaunchDefaultBrowser('https://github.com/DarkFenX/Pyfa/wiki')
 
     def goForums(self, event):
         wx.LaunchDefaultBrowser('https://forums.eveonline.com/default.aspx?g=posts&t=247609')
@@ -364,7 +364,7 @@ class MainFrame(wx.Frame):
         # Preference dialog
         self.Bind(wx.EVT_MENU, self.showPreferenceDialog, id = menuBar.preferencesId)
         # User guide
-        self.Bind(wx.EVT_MENU, self.goUserGuide, id = menuBar.userGuideId)
+        self.Bind(wx.EVT_MENU, self.goWiki, id = menuBar.wikiId)
         # EVE Forums
         self.Bind(wx.EVT_MENU, self.goForums, id = menuBar.forumId)
 
