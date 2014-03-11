@@ -35,6 +35,8 @@ if __name__ == "__main__":
     parser.add_argument("-j", "--json", required=True, type=str, help="The path to the json dum")
     args = parser.parse_args()
 
+    jsonPath = os.path.expanduser(args.json)
+
     # Import eos.config first and change it
     import eos.config
     eos.config.gamedata_connectionstring = args.db
@@ -67,7 +69,7 @@ if __name__ == "__main__":
 
     # Dump all data to memory so we can easely cross check ignored rows
     for jsonName, cls in tables.iteritems():
-        f = open(os.path.join(args.json, "{}.json".format(jsonName)))
+        f = open(os.path.join(jsonPath, "{}.json".format(jsonName)))
         data[jsonName] = json.load(f, encoding='cp1252')
 
     # Do some preprocessing to make our job easier
