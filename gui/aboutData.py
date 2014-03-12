@@ -19,15 +19,16 @@
 import config
 
 versionString = "{0} {1} - {2} {3}".format(config.version, config.tag, config.expansionName, config.expansionVersion)
-license = "pyfa is released under GNU GPLv3"
-licenseLocation = "gpl.txt"
-developers = ("cncfanatics \t(Sakari Orisi)" , "DarkPhoenix \t(Kadesh Priestess)", "Darriele \t(Darriele)", "blitzmann \t(Sable Blitzmann)")
+licenses = (
+    "pyfa is released under GNU GPLv3 - see included gpl.txt",
+    "All EVE-Online related materials are property of CCP hf.",
+    "Silk Icons Set by famfamfam.com - Creative Commons Attribution 2.5 License",
+    "Fat Cow Icons by fatcow.com - Creative Commons Attribution 3.0 License"
+)
+developers = ("blitzmann \t(Sable Blitzmann)", "cncfanatics \t(Sakari Orisi)" , "DarkPhoenix \t(Kadesh Priestess) (Project Lead)", "Darriele \t(Darriele)")
 credits = ("Entity (Entity) \t\tCapacitor calculations / EVEAPI python lib / Reverence", "Aurora \t\t\tMaths", "Corollax (Aamrr) \tVarious EOS / pyfa improvements")
 description = (
     "Pyfa (the Python Fitting Assistant) is an open-source standalone application able to "
     "create and simulate fittings for EVE-Online SciFi MMORPG with a very high degree of "
-    "accuracy. Pyfa can run on all platforms where Python and wxWidgets are supported.\n\n"
-    "All EVE-Online related materials are property of CCP hf.\n"
-    "Silk Icons Set by famfamfam.com released under Creative Commons Attribution 2.5 License\n"
-    "Fat Cow Icons by fatcow.com released under Creative Commons Attribution 3.0 License"
+    "accuracy. Pyfa can run on all platforms where Python and wxWidgets are supported."
 )

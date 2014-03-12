@@ -247,10 +247,8 @@ class MainFrame(wx.Frame):
                                      "\n\t".join(gui.aboutData.developers) +
                                      "\n\nAdditional credits:\n\t" +
                                      "\n\t".join(gui.aboutData.credits) +
-                                     "\n\nLicense:\n\t" +
-                                     gui.aboutData.license +
-                                     " - see included " +
-                                     gui.aboutData.licenseLocation +
+                                     "\n\nLicenses:\n\t" +
+                                     "\n\t".join(gui.aboutData.licenses) +
                                      "\n\nPython: \t" + sys.version +
                                      "\nwxPython: \t" + wx.__version__ +
                                      "\nSQLAlchemy: \t" + sqlalchemy.__version__,
