@@ -292,7 +292,7 @@ class GangView ( ScrolledPanel ):
             if type == 1: fleetSrv.setLinearWingCom(boostee, booster)
             if type == 2: fleetSrv.setLinearSquadCom(boostee, booster)
 
-            sFit.recalc(boostee, withBoosters=True)
+            sFit.recalc(boostee)
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=activeFitID))
 
     def RefreshBoosterFits(self, event = None):

@@ -81,8 +81,8 @@ class Fleet(object):
         eos.db.save(f)
 
     def setLinearFleetCom(self, boostee, booster):
-        if boostee == booster:
-            return
+        #if boostee == booster:
+        #    return
         if self.getLinearFleet(boostee) is None:
             self.removeAssociatedFleetData(boostee)
             self.makeLinearFleet(boostee)
@@ -101,8 +101,8 @@ class Fleet(object):
         sFit.recalc(boostee, withBoosters=True)
 
     def setLinearWingCom(self, boostee, booster):
-        if boostee == booster:
-            return
+        #if boostee == booster:
+        #    return
         if self.getLinearFleet(boostee) is None:
             self.removeAssociatedFleetData(boostee)
             self.makeLinearFleet(boostee)
@@ -121,8 +121,8 @@ class Fleet(object):
         sFit.recalc(boostee, withBoosters=True)
 
     def setLinearSquadCom(self, boostee, booster):
-        if boostee == booster:
-            return
+        #if boostee == booster:
+        #    return
         if self.getLinearFleet(boostee) is None:
             self.removeAssociatedFleetData(boostee)
             self.makeLinearFleet(boostee)
