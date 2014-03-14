@@ -92,6 +92,18 @@ class exportHtmlThread(threading.Thread):
     .ui-content { max-width: 800px !important; margin: 0 auto !important;  }
     .ui-listview > .ui-li-static.ui-li-has-count { padding-right: 0px }
   </style>
+
+  <script>
+    $(document).ready(function() {
+      $('a[data-dna]').each(function( index ) {
+        var dna = $(this).data('dna');
+        if (typeof CCPEVE !== 'undefined') { // inside IGB
+          $(this).attr('href', 'javascript:CCPEVE.showFitting("'+dna+'");'); }
+        else {                               // outside IGB
+          $(this).attr('href', 'https://null-sec.com/hangar/?dna='+dna); }
+      });
+    });
+  </script>
 </head>
 <body>
 <div  id="canvas" data-role="page">
@@ -128,7 +140,7 @@ class exportHtmlThread(threading.Thread):
                         if self.stopRunning:
                             return;
                         dnaFit = sFit.exportDna(fit[0])
-                        HTMLship += "          <li><a href=\"javascript:CCPEVE.showFitting('" + dnaFit + "');\" >" + fit[1] + "</a></li>\n"
+                        HTMLship += '          <li><a data-dna="' + dnaFit + '" target="_blank">' + fit[1] + '</a></li>\n'
 
                     HTMLgroup += HTMLship + ('          </ul>\n'
                                              '        </li>\n')
