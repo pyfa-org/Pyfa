@@ -1,10 +1,6 @@
 # Used by:
+# Implants named like: Low grade Centurion (5 of 6)
 # Modules named like: Particle Dispersion Projector (8 of 8)
-# Implant: Low-grade Centurion Alpha
-# Implant: Low-grade Centurion Beta
-# Implant: Low-grade Centurion Delta
-# Implant: Low-grade Centurion Epsilon
-# Implant: Low-grade Centurion Gamma
 # Skill: Long Distance Jamming
 type = "passive"
 def handler(fit, container, context):

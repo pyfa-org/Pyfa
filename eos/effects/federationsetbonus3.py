@@ -1,10 +1,5 @@
 # Used by:
-# Implant: Spur Alpha
-# Implant: Spur Beta
-# Implant: Spur Delta
-# Implant: Spur Epsilon
-# Implant: Spur Gamma
-# Implant: Spur Omega
+# Implants named like: Spur (6 of 12)
 type = "passive"
 runTime = "early"
 def handler(fit, implant, context):

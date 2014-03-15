@@ -1,9 +1,5 @@
 # Used by:
-# Implant: Low-grade Talon Alpha
-# Implant: Low-grade Talon Beta
-# Implant: Low-grade Talon Delta
-# Implant: Low-grade Talon Epsilon
-# Implant: Low-grade Talon Gamma
+# Implants named like: Low grade Talon (5 of 6)
 type = "passive"
 def handler(fit, implant, context):
     fit.ship.increaseItemAttr("scanGravimetricStrength", implant.getModifiedItemAttr("scanGravimetricStrengthModifier"))

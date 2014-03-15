@@ -1,5 +1,5 @@
 # Used by:
-# Modules named like: Particle Augmentor (8 of 8)
+# Modules named like: Particle Dispersion Augmentor (8 of 8)
 # Skill: Signal Dispersion
 type = "passive"
 def handler(fit, container, context):

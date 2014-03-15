@@ -1,17 +1,7 @@
 # Used by:
+# Implants named like: Snake (11 of 12)
 # Modules named like: Auxiliary Thrusters (8 of 8)
-# Implant: Low-grade Snake Beta
-# Implant: Low-grade Snake Delta
-# Implant: Low-grade Snake Epsilon
-# Implant: Low-grade Snake Gamma
-# Implant: Low-grade Snake Omega
 # Implant: Quafe Zero
-# Implant: Snake Alpha
-# Implant: Snake Beta
-# Implant: Snake Delta
-# Implant: Snake Epsilon
-# Implant: Snake Gamma
-# Implant: Snake Omega
 # Skill: Navigation
 type = "passive"
 def handler(fit, container, context):

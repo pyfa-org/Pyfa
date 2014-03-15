@@ -1,6 +1,6 @@
 # Used by:
-# Modules named like: Core Charge Economizer (8 of 8)
-# Items from market group: Implants & Boosters > Implants > Skill Hardwiring > Shield Implants > Implant Slot 06 (6 of 6)
+# Implants named like: Zainou 'Gnome' Shield Upgrades SU (6 of 6)
+# Modules named like: Core Defense Charge Economizer (8 of 8)
 # Skill: Shield Upgrades
 type = "passive"
 def handler(fit, container, context):

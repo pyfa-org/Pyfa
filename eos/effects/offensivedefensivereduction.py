@@ -1,7 +1,5 @@
 # Used by:
-# Celestial: Incursion ship attributes effects Assault 
-# Celestial: Incursion ship attributes effects HQ
-# Celestial: Incursion ship attributes effects Vanguard
+# Celestials named like: Incursion ship attributes effects (3 of 3)
 runTime = "early"
 type = ("projected", "offline")
 def handler(fit, beacon, context):

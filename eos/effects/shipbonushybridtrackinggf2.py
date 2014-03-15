@@ -1,6 +1,7 @@
 # Used by:
 # Ship: Ares
 # Ship: Federation Navy Comet
+# Ship: Police Pursuit Comet
 # Ship: Tristan
 type = "passive"
 def handler(fit, ship, context):

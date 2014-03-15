@@ -1,5 +1,5 @@
 # Used by:
-# Items from market group: Implants & Boosters > Implants > Skill Hardwiring > Electronic Systems Implants > Implant Slot 08 (6 of 6)
+# Implants named like: Zainou 'Gypsy' Propulsion Jamming PJ (6 of 6)
 # Skill: Propulsion Jamming
 type = "passive"
 def handler(fit, container, context):

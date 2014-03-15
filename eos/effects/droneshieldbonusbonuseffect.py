@@ -1,8 +1,6 @@
 # Used by:
-# Ship: Basilisk
-# Ship: Etana
+# Ships from group: Logistics (3 of 5)
 # Ship: Exequror
-# Ship: Scimitar
 # Ship: Scythe
 type = "passive"
 def handler(fit, ship, context):

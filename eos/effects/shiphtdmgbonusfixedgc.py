@@ -1,12 +1,10 @@
 # Used by:
+# Variations of ship: Thorax (3 of 4)
 # Ship: Adrestia
 # Ship: Arazu
-# Ship: Deimos
 # Ship: Exequror Navy Issue
 # Ship: Guardian-Vexor
 # Ship: Lachesis
-# Ship: Phobos
-# Ship: Thorax
 # Ship: Vexor
 type = "passive"
 def handler(fit, ship, context):

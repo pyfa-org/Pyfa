@@ -1,7 +1,5 @@
 # Used by:
-# Implant: Poteque 'Prospector' Astrometric Acquisition AQ-702
-# Implant: Poteque 'Prospector' Astrometric Acquisition AQ-706
-# Implant: Poteque 'Prospector' Astrometric Acquisition AQ-710
+# Implants named like: Poteque 'Prospector' Astrometric Acquisition AQ (3 of 3)
 # Skill: Astrometric Acquisition
 # Skill: Astrometrics
 type = "passive"

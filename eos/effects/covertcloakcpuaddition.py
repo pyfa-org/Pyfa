@@ -1,7 +1,6 @@
 # Used by:
-# Module: 'Smokescreen' Covert Ops Cloaking Device II
+# Modules named like: Covert Ops Cloaking Device II (2 of 2)
 # Module: Covert Cynosural Field Generator I
-# Module: Covert Ops Cloaking Device II
 type = "passive"
 def handler(fit, module, context):
     module.increaseItemAttr("cpu", module.getModifiedItemAttr("covertCloakCPUAdd") or 0)

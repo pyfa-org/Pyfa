@@ -1,7 +1,5 @@
 # Used by:
-# Drone: Hammerhead SD-600
-# Drone: Hobgoblin SD-300
-# Drone: Ogre SD-900
+# Drones named like: SD (3 of 3)
 type = "projected", "active"
 def handler(fit, container, context):
     if "projected" in context:

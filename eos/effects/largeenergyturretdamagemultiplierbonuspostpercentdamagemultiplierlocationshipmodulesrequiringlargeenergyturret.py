@@ -1,5 +1,5 @@
 # Used by:
-# Implants named like: Inherent 'Lancer' Large Turret LE (6 of 6)
+# Implants named like: Inherent Implants 'Lancer' Large Energy Turret LE (6 of 6)
 # Implant: Pashan's Turret Handling Mindlink
 # Skill: Large Energy Turret
 type = "passive"

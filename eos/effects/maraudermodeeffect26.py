@@ -26,7 +26,8 @@ def handler(fit, module, context):
 
     # Missiles
     fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill("Torpedoes") or \
-                                    mod.charge.requiresSkill("Cruise Missiles"),
+                                    mod.charge.requiresSkill("Cruise Missiles") or \
+                                    mod.charge.requiresSkill("Heavy Missiles"),
                                     "maxVelocity", module.getModifiedItemAttr("missileVelocityBonus"))
 
     # Tanking

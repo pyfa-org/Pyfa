@@ -1,5 +1,5 @@
 # Used by:
-# Items from market group: Implants & Boosters > Implants > Skill Hardwiring > Navigation Implants > Implant Slot 09 (6 of 6)
+# Implants named like: Eifyr and Co. 'Rogue' High Speed Maneuvering HS (6 of 6)
 # Skill: High Speed Maneuvering
 type = "passive"
 def handler(fit, container, context):

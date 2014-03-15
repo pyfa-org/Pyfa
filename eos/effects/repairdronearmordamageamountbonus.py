@@ -1,5 +1,5 @@
 # Used by:
-# Modules named like: Drone Repair (8 of 8)
+# Modules named like: Drone Repair Augmentor (8 of 8)
 # Skill: Repair Drone Operation
 type = "passive"
 def handler(fit, container, context):

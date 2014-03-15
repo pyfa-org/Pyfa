@@ -1,8 +1,6 @@
 # Used by:
-# Implants named like: Eifyr Strike (6 of 6)
-# Implant: Advanced Cerebral Accelerator
-# Implant: Prototype Cerebral Accelerator
-# Implant: Standard Cerebral Accelerator
+# Implants named like: Cerebral Accelerator (3 of 3)
+# Implants named like: Eifyr and Co. 'Gunslinger' Surgical Strike SS (6 of 6)
 type = "passive"
 def handler(fit, implant, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Gunnery"),

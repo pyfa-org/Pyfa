@@ -3,6 +3,8 @@
 # Ship: Atron
 # Ship: Federation Navy Comet
 # Ship: Helios
+# Ship: Incursus Aliastra Edition
+# Ship: Police Pursuit Comet
 # Ship: Taranis
 type = "passive"
 def handler(fit, ship, context):

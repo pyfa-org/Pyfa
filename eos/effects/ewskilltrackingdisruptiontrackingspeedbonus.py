@@ -1,5 +1,5 @@
 # Used by:
-# Modules named like: Tracking Diagnostic (8 of 8)
+# Modules named like: Tracking Diagnostic Subroutines (8 of 8)
 # Skill: Turret Destabilization
 type = "passive"
 def handler(fit, container, context):

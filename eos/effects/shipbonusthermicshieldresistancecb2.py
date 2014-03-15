@@ -1,6 +1,6 @@
 # Used by:
+# Ships named like: Rokh (2 of 2)
 # Ship: Rattlesnake
-# Ship: Rokh
 # Ship: Scorpion Navy Issue
 type = "passive"
 def handler(fit, ship, context):

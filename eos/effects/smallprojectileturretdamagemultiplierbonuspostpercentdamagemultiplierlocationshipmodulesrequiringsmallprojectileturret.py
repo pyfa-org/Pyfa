@@ -1,5 +1,5 @@
 # Used by:
-# Implants named like: and 'Gunslinger' Turret SP (6 of 6)
+# Implants named like: Eifyr and Co. 'Gunslinger' Small Projectile Turret SP (6 of 6)
 # Skill: Small Projectile Turret
 type = "passive"
 def handler(fit, container, context):

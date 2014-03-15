@@ -1,6 +1,6 @@
 # Used by:
-# Implants named like: 'Squire' Upgrades EU (6 of 6)
-# Modules named like: Powergrid Subroutine (8 of 8)
+# Implants named like: Inherent Implants 'Squire' Energy Grid Upgrades EU (6 of 6)
+# Modules named like: Powergrid Subroutine Maximizer (8 of 8)
 # Skill: Energy Grid Upgrades
 type = "passive"
 def handler(fit, container, context):

@@ -375,13 +375,16 @@ class Miscellanea(ViewColumn):
         elif itemGroup == "Logistic Drone":
             armorAmount = stuff.getModifiedItemAttr("armorDamageAmount")
             shieldAmount = stuff.getModifiedItemAttr("shieldBonus")
-            repAmount = armorAmount or shieldAmount
+            hullAmount = stuff.getModifiedItemAttr("structureDamageAmount")
+            repAmount = armorAmount or shieldAmount or hullAmount
             cycleTime = stuff.getModifiedItemAttr("duration")
             if not repAmount or not cycleTime:
                 return "", None
             repPerSec = float(repAmount) * 1000 / cycleTime
             text = "{0}/s".format(formatAmount(repPerSec, 3, 0, 3))
             ttEntries = []
+            if hullAmount is not None and repAmount == hullAmount:
+                ttEntries.append("structure")
             if armorAmount is not None and repAmount == armorAmount:
                 ttEntries.append("armor")
             if shieldAmount is not None and repAmount == shieldAmount:

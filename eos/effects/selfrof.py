@@ -1,8 +1,5 @@
 # Used by:
-# Skill: Cruise Missile Specialization
-# Skill: Heavy Assault Missile Specialization
-# Skill: Heavy Missile Specialization
-# Skill: Light Missile Specialization
+# Skills named like: Missile Specialization (4 of 4)
 # Skill: Rocket Specialization
 # Skill: Torpedo Specialization
 type = "passive"

@@ -4,6 +4,7 @@
 # Ship: Cheetah
 # Ship: Freki
 # Ship: Republic Fleet Firetail
+# Ship: Rifter Krusual Edition
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Minmatar Frigate").level

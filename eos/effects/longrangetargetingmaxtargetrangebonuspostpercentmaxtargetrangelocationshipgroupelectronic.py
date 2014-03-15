@@ -1,5 +1,5 @@
 # Used by:
-# Items from market group: Implants & Boosters > Implants > Skill Hardwiring > Targeting Implants > Implant Slot 08 (6 of 6)
+# Implants named like: Zainou 'Gypsy' Long Range Targeting LT (6 of 6)
 # Skill: Long Range Targeting
 type = "passive"
 def handler(fit, container, context):

@@ -1,5 +1,5 @@
 # Used by:
-# Modules named like: Core Safeguard (8 of 8)
+# Modules named like: Core Defense Capacitor Safeguard (8 of 8)
 # Skill: Capital Shield Operation
 type = "passive"
 def handler(fit, container, context):

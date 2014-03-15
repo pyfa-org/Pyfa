@@ -1,6 +1,6 @@
 # Used by:
+# Ships named like: Maelstrom (2 of 2)
 # Variations of ship: Tempest (4 of 4)
-# Ship: Maelstrom
 # Ship: Panther
 # Ship: Typhoon Fleet Issue
 type = "passive"

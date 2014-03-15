@@ -1,5 +1,5 @@
 # Used by:
-# Ship: Abaddon
+# Ships named like: Abaddon (2 of 2)
 # Ship: Nestor
 type = "passive"
 def handler(fit, ship, context):

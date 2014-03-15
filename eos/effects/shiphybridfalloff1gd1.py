@@ -1,5 +1,5 @@
 # Used by:
-# Ships named like: Catalyst (6 of 6)
+# Variations of ship: Catalyst (6 of 7)
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Gallente Destroyer").level

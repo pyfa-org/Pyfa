@@ -1,8 +1,5 @@
 # Used by:
-# Subsystem: Legion Offensive - Covert Reconfiguration
-# Subsystem: Loki Offensive - Covert Reconfiguration
-# Subsystem: Proteus Offensive - Covert Reconfiguration
-# Subsystem: Tengu Offensive - Covert Reconfiguration
+# Subsystems named like: Offensive Covert Reconfiguration (4 of 4)
 type = "passive"
 def handler(fit, module, context):
     fit.ship.forceItemAttr("jumpHarmonics", module.getModifiedItemAttr("jumpHarmonicsModifier"))

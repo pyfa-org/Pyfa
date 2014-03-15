@@ -1,5 +1,5 @@
 # Used by:
-# Implants named like: and 'Gunslinger' Projectile Turret LP (6 of 6)
+# Implants named like: Eifyr and Co. 'Gunslinger' Large Projectile Turret LP (6 of 6)
 # Skill: Large Projectile Turret
 type = "passive"
 def handler(fit, container, context):

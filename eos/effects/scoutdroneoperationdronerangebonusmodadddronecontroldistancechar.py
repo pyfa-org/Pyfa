@@ -1,5 +1,5 @@
 # Used by:
-# Modules named like: Drone Range Augmentor (8 of 8)
+# Modules named like: Drone Control Range Augmentor (8 of 8)
 # Skill: Electronic Warfare Drone Interfacing
 # Skill: Scout Drone Operation
 type = "passive"

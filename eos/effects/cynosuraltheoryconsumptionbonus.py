@@ -1,8 +1,5 @@
 # Used by:
-# Ship: Arazu
-# Ship: Falcon
-# Ship: Pilgrim
-# Ship: Rapier
+# Ships from group: Force Recon Ship (4 of 5)
 # Skill: Cynosural Field Theory
 type = "passive"
 def handler(fit, container, context):

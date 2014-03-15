@@ -1,7 +1,5 @@
 # Used by:
-# Implant: Poteque 'Prospector' Astrometric Pinpointing AP-602
-# Implant: Poteque 'Prospector' Astrometric Pinpointing AP-606
-# Implant: Poteque 'Prospector' Astrometric Pinpointing AP-610
+# Implants named like: Poteque 'Prospector' Astrometric Pinpointing AP (3 of 3)
 # Skill: Astrometric Pinpointing
 # Skill: Astrometrics
 type = "passive"

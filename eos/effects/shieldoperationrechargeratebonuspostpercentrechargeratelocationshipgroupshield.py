@@ -1,6 +1,6 @@
 # Used by:
-# Modules named like: Core Defense Purger (8 of 8)
-# Items from market group: Implants & Boosters > Implants > Skill Hardwiring > Shield Implants > Implant Slot 09 (6 of 6)
+# Implants named like: Zainou 'Gnome' Shield Operation SP (6 of 6)
+# Modules named like: Core Defense Field Purger (8 of 8)
 # Implant: Sansha Modified 'Gnome' Implant
 # Skill: Shield Operation
 type = "passive"

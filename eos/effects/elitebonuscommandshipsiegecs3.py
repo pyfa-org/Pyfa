@@ -1,8 +1,5 @@
 # Used by:
-# Ship: Claymore
-# Ship: Nighthawk
-# Ship: Sleipnir
-# Ship: Vulture
+# Ships from group: Command Ship (4 of 8)
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Command Ships").level

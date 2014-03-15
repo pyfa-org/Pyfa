@@ -1,5 +1,5 @@
 # Used by:
-# Items from market group: Implants & Boosters > Implants > Skill Hardwiring > Shield Implants > Implant Slot 08 (6 of 6)
+# Implants named like: Zainou 'Gnome' Shield Emission Systems SE (6 of 6)
 # Skill: Shield Emission Systems
 type = "passive"
 def handler(fit, container, context):

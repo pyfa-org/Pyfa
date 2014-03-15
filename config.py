@@ -14,9 +14,9 @@ saveInRoot = False
 
 # Version data
 version = "1.1.22"
-tag = "git"
+tag = "Stable"
 expansionName = "Rubicon"
-expansionVersion = "1.1"
+expansionVersion = "1.3"
 evemonMinVersion = "4081"
 
 pyfaPath = None

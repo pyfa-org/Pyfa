@@ -1,11 +1,8 @@
 # Used by:
-# Modules named like: Auxiliary Nano (8 of 8)
-# Items from market group: Implants & Boosters > Implants > Skill Hardwiring > Armor Implants > Implant Slot 09 (6 of 6)
+# Implants named like: Inherent Implants 'Noble' Repair Proficiency RP (6 of 6)
+# Modules named like: Auxiliary Nano Pump (8 of 8)
+# Modules named like: QA Multiship Module Players (4 of 4)
 # Implant: Imperial Navy Modified 'Noble' Implant
-# Module: QA Multiship Module - 10 Players
-# Module: QA Multiship Module - 20 Players
-# Module: QA Multiship Module - 40 Players
-# Module: QA Multiship Module - 5 Players
 type = "passive"
 def handler(fit, container, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Repair Systems"),

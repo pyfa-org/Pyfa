@@ -1,9 +1,6 @@
 # Used by:
-# Implants named like: Trajectory TA (6 of 6)
-# Implant: Improved Sooth Sayer Booster
-# Implant: Standard Sooth Sayer Booster
-# Implant: Strong Sooth Sayer Booster
-# Implant: Synth Sooth Sayer Booster
+# Implants named like: Sooth Sayer Booster (4 of 4)
+# Implants named like: Zainou 'Deadeye' Trajectory Analysis TA (6 of 6)
 # Skill: Trajectory Analysis
 type = "passive"
 def handler(fit, container, context):

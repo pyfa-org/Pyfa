@@ -1,8 +1,6 @@
 # Used by:
-# Implants named like: Zainou RL (6 of 6)
-# Implant: Advanced Cerebral Accelerator
-# Implant: Prototype Cerebral Accelerator
-# Implant: Standard Cerebral Accelerator
+# Implants named like: Cerebral Accelerator (3 of 3)
+# Implants named like: Zainou 'Deadeye' Rapid Launch RL (6 of 6)
 # Implant: Whelan Machorin's Ballistic Smartlink
 # Skill: Missile Launcher Operation
 # Skill: Rapid Launch

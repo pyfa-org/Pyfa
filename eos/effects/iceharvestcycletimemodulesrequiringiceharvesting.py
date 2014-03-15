@@ -1,7 +1,5 @@
 # Used by:
-# Implant: Inherent Implants 'Yeti' Ice Harvesting IH-1001
-# Implant: Inherent Implants 'Yeti' Ice Harvesting IH-1003
-# Implant: Inherent Implants 'Yeti' Ice Harvesting IH-1005
+# Implants named like: Inherent Implants 'Yeti' Ice Harvesting IH (3 of 3)
 # Module: Medium Ice Harvester Accelerator I
 # Skill: Ice Harvesting
 type = "passive"

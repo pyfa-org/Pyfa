@@ -1,9 +1,6 @@
 # Used by:
 # Modules from group: Ballistic Control system (21 of 21)
-# Module: QA Multiship Module - 10 Players
-# Module: QA Multiship Module - 20 Players
-# Module: QA Multiship Module - 40 Players
-# Module: QA Multiship Module - 5 Players
+# Modules named like: QA Multiship Module Players (4 of 4)
 type = "passive"
 def handler(fit, container, context):
     for dmgType in ("em", "kinetic", "explosive", "thermal"):

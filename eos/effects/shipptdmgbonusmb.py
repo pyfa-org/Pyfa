@@ -1,9 +1,7 @@
 # Used by:
+# Variations of ship: Tempest (3 of 4)
 # Ship: Machariel
 # Ship: Panther
-# Ship: Tempest
-# Ship: Tempest Fleet Issue
-# Ship: Tempest Tribal Issue
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Minmatar Battleship").level

@@ -1,6 +1,6 @@
 # Used by:
+# Ships named like: Hyperion (2 of 2)
 # Ship: Dominix Navy Issue
-# Ship: Hyperion
 # Ship: Kronos
 # Ship: Megathron Federate Issue
 # Ship: Sin

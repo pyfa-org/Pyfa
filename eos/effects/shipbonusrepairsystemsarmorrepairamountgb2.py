@@ -1,5 +1,5 @@
 # Used by:
-# Ship: Hyperion
+# Ships named like: Hyperion (2 of 2)
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Gallente Battleship").level

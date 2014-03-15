@@ -1,9 +1,6 @@
 # Used by:
-# Implants named like: ST (6 of 6)
-# Implant: Improved Frentix Booster
-# Implant: Standard Frentix Booster
-# Implant: Strong Frentix Booster
-# Implant: Synth Frentix Booster
+# Implants named like: Frentix Booster (4 of 4)
+# Implants named like: Zainou 'Deadeye' Sharpshooter ST (6 of 6)
 # Skill: Sharpshooter
 type = "passive"
 def handler(fit, container, context):

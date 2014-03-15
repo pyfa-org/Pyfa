@@ -1,5 +1,5 @@
 # Used by:
-# Implants named like: 'Gypsy' Disruption WD (6 of 6)
+# Implants named like: Zainou 'Gypsy' Weapon Disruption WD (6 of 6)
 # Skill: Weapon Disruption
 type = "passive"
 def handler(fit, container, context):

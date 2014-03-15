@@ -225,7 +225,17 @@ class Market():
             "Goru's Shuttle": False, # Vanity
             "Guristas Shuttle": False, # Vanity
             "Tash-Murkon Magnate": False, # Vanity
-            "Scorpion Ishukone Watch": False } # Vanity
+            "Scorpion Ishukone Watch": False, # Vanity
+            "Incursus Aliastra Edition": False, # Vanity
+            "Merlin Nugoeihuvi Edition": False, # Vanity
+            "Police Pursuit Comet": False, # Vanity
+            "Punisher Kador Edition": False, # Vanity
+            "Rifter Krusual Edition": False, # Vanity
+            "Abaddon Kador Edition": False, # Vanity
+            "Hyperion Aliastra Edition": False, # Vanity
+            "Maelstrom Krusual Edition": False, # Vanity
+            "Rokh Nugoeihuvi Edition": False, # Vanity
+            "Mammoth Nefantar Edition": False } # Vanity
 
         # List of groups which are forcibly published
         self.GROUPS_FORCEPUBLISHED = {

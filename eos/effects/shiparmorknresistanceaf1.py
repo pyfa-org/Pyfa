@@ -1,7 +1,7 @@
 # Used by:
+# Ships named like: Punisher (2 of 2)
 # Ship: Astero
 # Ship: Malice
-# Ship: Punisher
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Amarr Frigate").level

@@ -1,10 +1,5 @@
 # Used by:
-# Implant: Jackal Alpha
-# Implant: Jackal Beta
-# Implant: Jackal Delta
-# Implant: Jackal Epsilon
-# Implant: Jackal Gamma
-# Implant: Jackal Omega
+# Implants named like: Jackal (6 of 12)
 runTime = "early"
 type = "passive"
 def handler(fit, implant, context):

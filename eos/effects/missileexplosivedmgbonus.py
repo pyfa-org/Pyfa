@@ -1,9 +1,5 @@
 # Used by:
-# Skill: Auto-Targeting Missiles
-# Skill: Cruise Missiles
-# Skill: Heavy Assault Missiles
-# Skill: Heavy Missiles
-# Skill: Light Missiles
+# Skills named like: Missiles (5 of 7)
 # Skill: Rockets
 # Skill: Torpedoes
 type = "passive"

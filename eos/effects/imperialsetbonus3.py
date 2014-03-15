@@ -1,10 +1,5 @@
 # Used by:
-# Implant: Grail Alpha
-# Implant: Grail Beta
-# Implant: Grail Delta
-# Implant: Grail Epsilon
-# Implant: Grail Gamma
-# Implant: Grail Omega
+# Implants named like: Grail (6 of 12)
 type = "passive"
 runTime = "early"
 def handler(fit, implant, context):

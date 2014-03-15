@@ -1,5 +1,5 @@
 # Used by:
-# Implants named like: Weapons EP (6 of 6)
+# Implants named like: Inherent Implants 'Squire' Energy Pulse Weapons EP (6 of 6)
 # Skill: Energy Pulse Weapons
 type = "passive"
 def handler(fit, container, context):

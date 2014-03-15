@@ -1,7 +1,5 @@
 # Used by:
-# Subsystem: Tengu Offensive - Accelerated Ejection Bay
-# Subsystem: Tengu Offensive - Covert Reconfiguration
-# Subsystem: Tengu Offensive - Rifling Launcher Pattern
+# Variations of subsystem: Tengu Offensive - Accelerated Ejection Bay (3 of 4)
 type = "passive"
 def handler(fit, module, context):
     level = fit.character.getSkill("Caldari Offensive Systems").level
