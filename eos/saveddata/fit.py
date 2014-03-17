@@ -74,6 +74,12 @@ class Fit(object):
         # to avoid possible detection errors
         firstLine = re.split("[\n\r]+", string, maxsplit=1)[0]
         firstLine = firstLine.strip()
+
+        # If we have "<url=fitting", fit is coming from eve chat
+        # Gather data and send to DNA
+        chatDna = re.search("<url=fitting:(.*::)>.*</url>", firstLine)
+        if chatDna:
+            return "DNA", (cls.importDna(chatDna.group(1)),)
         # If XML-style start of tag encountered, detect as XML
         if re.match("<", firstLine):
             return "XML", cls.importXml(string)
