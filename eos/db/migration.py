@@ -53,8 +53,7 @@ def checkFitBooster(saveddata_engine):
         try:
             saveddata_engine.execute("SELECT booster FROM fits LIMIT 1")
         # If we don't, create them
-        # This is ugly as hell, but we can't use proper migrate packages as it
-        # will require us to rebuild skeletons, including mac
         except sqlalchemy.exc.DatabaseError:
             saveddata_engine.execute("ALTER TABLE fits ADD COLUMN booster BOOLEAN;")
-            saveddata_engine.execute("UPDATE fits SET booster = 0;")
+        # Set NULL data to 0 (needed in case of downgrade, see GH issue #62
+        saveddata_engine.execute("UPDATE fits SET booster = 0 WHERE booster IS NULL;")
