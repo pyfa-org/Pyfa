@@ -7,14 +7,12 @@ def handler(fit, module, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Capital Energy Turret") or \
                                   mod.item.requiresSkill("Capital Hybrid Turret") or \
                                   mod.item.requiresSkill("Capital Projectile Turret"),
-                                  "damageMultiplier", module.getModifiedItemAttr("damageMultiplierBonus"),
-                                  stackingPenalties=True)
+                                  "damageMultiplier", module.getModifiedItemAttr("damageMultiplierBonus"))
 
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Capital Energy Turret") or \
                                   mod.item.requiresSkill("Capital Hybrid Turret") or \
                                   mod.item.requiresSkill("Capital Projectile Turret"),
-                                  "trackingSpeed", module.getModifiedItemAttr("trackingSpeedBonus"),
-                                  stackingPenalties=True)
+                                  "trackingSpeed", module.getModifiedItemAttr("trackingSpeedBonus"))
 
     #Missiles
     for type in ("kinetic", "thermal", "explosive", "em"):
