@@ -457,6 +457,10 @@ class FittingView(d.Display):
 
         Sends data to d.Display.refresh where the rows and columns are set up, then does a
         bit of post-processing (colors, dividers)
+
+        Module mapping is done here if slot dividers is enabled in preferences. Since we add
+        dividers to the GUI, we can no longer assume that display list index 3 = module index
+        3, so we must create an external-internal mapping
         '''
         #self.Freeze()
 
@@ -471,7 +475,7 @@ class FittingView(d.Display):
 
         # set up blanks
         slotDivider = None # flag to know when
-        blanks = [] # preliminary blanks
+        blanks = [] # preliminary markers where blanks will be inserted
         self.blanks = [] # index of final blanks
 
         for i, mod in enumerate(self.mods):
@@ -485,12 +489,27 @@ class FittingView(d.Display):
             else:
                 self.SetItemBackgroundColour(i, self.GetBackgroundColour())
 
+        # if preference = enabled
+        self.modMapping = {}
+
+        # Get list of internal indexes, which is simply range of number of current items
+        internal = range(self.GetItemCount())
+
+        # Insert row at correct index
         for i, x in enumerate(blanks):
-            self.InsertStringItem( x+i, 'l' )
-            self.blanks.append(x+i)
+            blanks[i] = x+i # modify blanks
+            self.InsertStringItem( x+i, 'l' ) # @todo: make it actually display something
+
+        # Create map
+        for i in range(self.GetItemCount()):
+            if i in blanks:
+                continue
+            self.modMapping[i] = internal.pop(0)
+
+        # else: map is simply internal indices
 
         #self.Thaw()
-
+        print self.modMapping
         self.itemCount = self.GetItemCount()
         self.itemRect = self.GetItemRect(0)
 
