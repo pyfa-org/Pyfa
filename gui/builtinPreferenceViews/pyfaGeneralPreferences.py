@@ -40,6 +40,9 @@ class PFGeneralPref ( PreferenceView):
         self.cbFitColorSlots = wx.CheckBox( panel, wx.ID_ANY, u"Color fitting view by slot", wx.DefaultPosition, wx.DefaultSize, 0 )
         mainSizer.Add( self.cbFitColorSlots, 0, wx.ALL|wx.EXPAND, 5 )
 
+        self.cbDivideSlots = wx.CheckBox( panel, wx.ID_ANY, u"Divide slot groups", wx.DefaultPosition, wx.DefaultSize, 0 )
+        mainSizer.Add( self.cbDivideSlots, 0, wx.ALL|wx.EXPAND, 5 )
+
         # Needs to be implemented - save active fittings and reapply when starting pyfa
         #self.cbReopenFits = wx.CheckBox( panel, wx.ID_ANY, u"Reopen Fits", wx.DefaultPosition, wx.DefaultSize, 0 )
         #mainSizer.Add( self.cbReopenFits, 0, wx.ALL|wx.EXPAND, 5 )
@@ -55,16 +58,25 @@ class PFGeneralPref ( PreferenceView):
         self.cbGlobalDmgPattern.SetValue(useGlobalDmgPattern)
         self.cbGlobalForceReload.SetValue(useGlobalForceReload)
         self.cbFitColorSlots.SetValue(self.sFit.serviceFittingOptions["colorFitBySlot"] or False)
+        self.cbDivideSlots.SetValue(self.sFit.serviceFittingOptions["divideSlots"] or False)
 
         self.cbGlobalChar.Bind(wx.EVT_CHECKBOX, self.OnCBGlobalCharStateChange)
         self.cbGlobalDmgPattern.Bind(wx.EVT_CHECKBOX, self.OnCBGlobalDmgPatternStateChange)
         self.cbGlobalForceReload.Bind(wx.EVT_CHECKBOX, self.OnCBGlobalForceReloadStateChange)
         self.cbFitColorSlots.Bind(wx.EVT_CHECKBOX, self.onCBGlobalColorBySlot)
+        self.cbDivideSlots.Bind(wx.EVT_CHECKBOX, self.onCBGlobalDivideSlots)
 
         panel.SetSizer( mainSizer )
         panel.Layout()
 
     def onCBGlobalColorBySlot(self, event):
+        self.sFit.serviceFittingOptions["divideSlots"] = self.cbDivideSlots.GetValue()
+        fitID = self.mainFrame.getActiveFit()
+        self.sFit.refreshFit(fitID)
+        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+        event.Skip()
+
+    def onCBGlobalDivideSlots(self, event):
         self.sFit.serviceFittingOptions["colorFitBySlot"] = self.cbFitColorSlots.GetValue()
         fitID = self.mainFrame.getActiveFit()
         self.sFit.refreshFit(fitID)
