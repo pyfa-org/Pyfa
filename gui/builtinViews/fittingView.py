@@ -452,21 +452,45 @@ class FittingView(d.Display):
         return self.slotColourMap[slot] or self.GetBackgroundColour()
 
     def refresh(self, stuff):
+        '''
+        Displays fitting
+
+        Sends data to d.Display.refresh where the rows and columns are set up, then does a
+        bit of post-processing (colors, dividers)
+        '''
+        #self.Freeze()
+
         d.Display.refresh(self, stuff)
         sFit = service.Fit.getInstance()
         fit = sFit.getFit(self.activeFitID)
         slotMap = {}
+
         for slotType in Slot.getTypes():
             slot = Slot.getValue(slotType)
             slotMap[slot] = fit.getSlotsFree(slot) < 0
 
+        # set up blanks
+        slotDivider = None # flag to know when
+        blanks = [] # preliminary blanks
+        self.blanks = [] # index of final blanks
+
         for i, mod in enumerate(self.mods):
+            if mod.slot != slotDivider:
+                slotDivider = mod.slot
+                blanks.append(i)
             if slotMap[mod.slot]:
                 self.SetItemBackgroundColour(i, wx.Colour(204, 51, 51))
             elif sFit.serviceFittingOptions["colorFitBySlot"]:
                 self.SetItemBackgroundColour(i, self.slotColour(mod.slot))
             else:
                 self.SetItemBackgroundColour(i, self.GetBackgroundColour())
+
+        for i, x in enumerate(blanks):
+            self.InsertStringItem( x+i, 'l' )
+            self.blanks.append(x+i)
+
+        #self.Thaw()
+
         self.itemCount = self.GetItemCount()
         self.itemRect = self.GetItemRect(0)
 
