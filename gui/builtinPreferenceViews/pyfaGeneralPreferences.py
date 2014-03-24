@@ -40,7 +40,7 @@ class PFGeneralPref ( PreferenceView):
         self.cbFitColorSlots = wx.CheckBox( panel, wx.ID_ANY, u"Color fitting view by slot", wx.DefaultPosition, wx.DefaultSize, 0 )
         mainSizer.Add( self.cbFitColorSlots, 0, wx.ALL|wx.EXPAND, 5 )
 
-        self.cbDivideSlots = wx.CheckBox( panel, wx.ID_ANY, u"Divide slot groups", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.cbDivideSlots = wx.CheckBox( panel, wx.ID_ANY, u"Separate Racks", wx.DefaultPosition, wx.DefaultSize, 0 )
         mainSizer.Add( self.cbDivideSlots, 0, wx.ALL|wx.EXPAND, 5 )
 
         # Needs to be implemented - save active fittings and reapply when starting pyfa
