@@ -26,7 +26,7 @@ import gui.display as d
 from gui.contextMenu import ContextMenu
 import gui.shipBrowser
 import gui.multiSwitch
-from eos.types import Slot
+from eos.types import Slot, DummyModule
 from gui.builtinViewColumns.state import State
 from gui import bitmapLoader
 import gui.builtinViews.emptyView
@@ -146,7 +146,6 @@ class FittingView(d.Display):
         self.Bind(wx.EVT_MOTION, self.OnMouseMove)
         self.Bind(wx.EVT_LEAVE_WINDOW, self.OnLeaveWindow)
         self.parent.Bind(gui.chromeTabs.EVT_NOTEBOOK_PAGE_CHANGED, self.pageChanged)
-
 
     def OnLeaveWindow(self, event):
         self.SetToolTip(None)
@@ -299,7 +298,6 @@ class FittingView(d.Display):
     def removeItem(self, event):
         row, _ = self.HitTest(event.Position)
         if row != -1 and row not in self.blanks:
-            row = self.modMapping[row]
             col = self.getColumn(event.Position)
             if col != self.getColIndex(State):
                 self.removeModule(self.mods[row])
@@ -356,6 +354,13 @@ class FittingView(d.Display):
         self.refresh(self.mods)
 
     def generateMods(self):
+        '''
+        Generate module list.
+
+        This also injects dummy modules to visually separate racks. These modules are only
+        known to the display, and not the backend, so it's safe.
+        '''
+
         cFit = service.Fit.getInstance()
         fit = cFit.getFit(self.activeFitID)
 
@@ -364,6 +369,20 @@ class FittingView(d.Display):
         if fit is not None:
             self.mods = fit.modules[:]
             self.mods.sort(key=lambda mod: (slotOrder.index(mod.slot), mod.position))
+
+            # set up blanks
+            slotDivider = self.mods[0].slot # flag to know when to add blank (default: don't add blank for first "slot group")
+            self.blanks = []   # preliminary markers where blanks will be inserted
+            if cFit.serviceFittingOptions["divideSlots"]:
+                for i, mod in enumerate(self.mods):
+                    if mod.slot != slotDivider:
+                        slotDivider = mod.slot
+                        self.blanks.append(i)
+
+                for i, x in enumerate(self.blanks):
+                    self.blanks[i] = x+i # modify blanks
+                    self.mods.insert(x+i, DummyModule.buildDummy(slotOrder.index(i+1)))
+
         else:
             self.mods = None
 
@@ -375,6 +394,9 @@ class FittingView(d.Display):
         try:
             if self.activeFitID is not None and self.activeFitID == event.fitID:
                 self.generateMods()
+                if self.GetItemCount() != len(self.mods):
+                    # This only happens when turning on/off slot divisions
+                    self.populate(self.mods)
                 self.refresh(self.mods)
 
                 exportHtml.getInstance().refreshFittingHTMl()
@@ -384,8 +406,6 @@ class FittingView(d.Display):
             pass
         finally:
             event.Skip()
-
-
 
     def scheduleMenu(self, event):
         event.Skip()
@@ -473,18 +493,8 @@ class FittingView(d.Display):
         Displays fitting
 
         Sends data to d.Display.refresh where the rows and columns are set up, then does a
-        bit of post-processing (colors, dividers)
-
-        Module mapping is done here if slot dividers is enabled in preferences. Since we add
-        dividers to the GUI, we can no longer assume that display list index 3 = module index
-        3, so we must create an external-internal mapping
+        bit of post-processing (colors)
         '''
-        # helps to prevent not showing blanks before showing them
-        self.Freeze()
-
-        # see github:blitzmann/pyfa#12 @todo: look into this more, and document
-        self.populate(stuff)
-
         d.Display.refresh(self, stuff)
 
         sFit = service.Fit.getInstance()
@@ -495,41 +505,13 @@ class FittingView(d.Display):
             slot = Slot.getValue(slotType)
             slotMap[slot] = fit.getSlotsFree(slot) < 0
 
-        # set up blanks
-        slotDivider = self.mods[0].slot # flag to know when to add blank (default: don't add blank for first "slot group")
-        self.blanks = [] # preliminary markers where blanks will be inserted
-
         for i, mod in enumerate(self.mods):
-            if mod.slot != slotDivider:
-                slotDivider = mod.slot
-                self.blanks.append(i)
             if slotMap[mod.slot]:
                 self.SetItemBackgroundColour(i, wx.Colour(204, 51, 51))
             elif sFit.serviceFittingOptions["colorFitBySlot"]:
                 self.SetItemBackgroundColour(i, self.slotColour(mod.slot))
             else:
                 self.SetItemBackgroundColour(i, self.GetBackgroundColour())
-
-         # Get list of internal indexes, which is simply range of number of current items
-        internal = range(self.GetItemCount())
-        self.modMapping = {}
-
-        if sFit.serviceFittingOptions["divideSlots"]:
-            # Insert blank row at correct index
-            for i, x in enumerate(self.blanks):
-                self.blanks[i] = x+i # modify blanks
-                self.InsertStringItem( x+i, '' ) # @todo: make it actually display something
-
-            # Create map
-            for i in range(self.GetItemCount()):
-                if i in self.blanks:
-                    continue
-                self.modMapping[i] = internal.pop(0)
-        else:
-            # if not dividing by slots, mapping is 1:1 with internal
-            self.modMapping = internal
-
-        self.Thaw()
 
         self.itemCount = self.GetItemCount()
         self.itemRect = self.GetItemRect(0)

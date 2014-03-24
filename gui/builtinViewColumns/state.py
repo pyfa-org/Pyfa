@@ -20,7 +20,7 @@
 from gui.viewColumn import ViewColumn
 from gui import bitmapLoader
 import wx
-from eos.types import Drone, Module
+from eos.types import Drone, Module, DummyModule
 from eos.types import State as State_
 
 class State(ViewColumn):
@@ -47,6 +47,8 @@ class State(ViewColumn):
     def getImageId(self, stuff):
         if isinstance(stuff, Drone):
             return self.checkedId if stuff.amountActive > 0 else self.uncheckedId
+        elif isinstance(stuff, DummyModule):
+            return -1
         elif isinstance(stuff, Module):
             if stuff.isEmpty:
                 return -1

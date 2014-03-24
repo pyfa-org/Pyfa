@@ -122,6 +122,19 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
         return empty
 
+    @classmethod
+    def buildDummy(cls, slot):
+        empty = DummyModule(None)
+        empty.__slot = slot
+        empty.__hardpoint = Hardpoint.NONE
+        empty.__item = 0
+        empty.__charge = 0
+        empty.dummySlot = slot
+        empty.__itemModifiedAttributes = ModifiedAttributeDict()
+        empty.__chargeModifiedAttributes = ModifiedAttributeDict()
+
+        return empty
+
     @property
     def isEmpty(self):
         return self.dummySlot is not None
@@ -622,3 +635,6 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         copy.charge = self.charge
         copy.state = self.state
         return copy
+
+class DummyModule(Module):
+    pass

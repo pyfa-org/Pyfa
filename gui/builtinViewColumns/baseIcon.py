@@ -2,7 +2,7 @@ from gui import builtinViewColumns
 from gui.viewColumn import ViewColumn
 from gui import bitmapLoader
 import wx
-from eos.types import Drone, Fit, Module, Slot
+from eos.types import Drone, Fit, Module, Slot, DummyModule
 
 class BaseIcon(ViewColumn):
     name = "Base Icon"
@@ -19,6 +19,8 @@ class BaseIcon(ViewColumn):
             return -1
         if isinstance(stuff, Fit):
             return self.shipImage
+        if isinstance(stuff, DummyModule):
+            return -1
         if isinstance(stuff, Module):
             if stuff.isEmpty:
                 return self.fittingView.imageList.GetImageIndex("slot_%s_small" % Slot.getName(stuff.slot).lower(), "icons")
