@@ -162,7 +162,7 @@ class FittingView(d.Display):
             else:
                 self.hoveredRow = row
                 self.hoveredColumn = col
-                if row != -1 and col != -1 and col < len(self.DEFAULT_COLS):
+                if row != -1 and row not in self.blanks and col != -1 and col < len(self.DEFAULT_COLS):
                     mod = self.mods[self.GetItemData(row)]
                     if self.DEFAULT_COLS[col] == "Miscellanea":
                         tooltip = self.activeColumns[col].getToolTip(mod)
@@ -201,8 +201,10 @@ class FittingView(d.Display):
     def getActiveFit(self):
         return self.activeFitID
 
+    # @todo: test
     def startDrag(self, event):
         row = event.GetIndex()
+
         if row != -1:
             data = wx.PyTextDataObject()
             data.SetText(str(self.GetItemData(row)))
@@ -211,7 +213,7 @@ class FittingView(d.Display):
             dropSource.SetData(data)
             res = dropSource.DoDragDrop()
 
-
+    # @todo: test
     def getSelectedMods(self):
         sel = []
         row = self.GetFirstSelected()
@@ -280,7 +282,7 @@ class FittingView(d.Display):
                 if cFit.isAmmo(itemID):
                     modules = []
                     sel = self.GetFirstSelected()
-                    while sel != -1:
+                    while sel != -1 and sel not in self.blanks:
                         modules.append(self.mods[self.GetItemData(sel)])
                         sel = self.GetNextSelected(sel)
 
@@ -296,7 +298,8 @@ class FittingView(d.Display):
 
     def removeItem(self, event):
         row, _ = self.HitTest(event.Position)
-        if row != -1:
+        if row != -1 and row not in self.blanks:
+            row = self.modMapping[row]
             col = self.getColumn(event.Position)
             if col != self.getColIndex(State):
                 self.removeModule(self.mods[row])
@@ -313,6 +316,7 @@ class FittingView(d.Display):
             self.slotsChanged()
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.activeFitID))
 
+    # @todo: test
     def swapItems(self, x, y, itemID):
         mstate = wx.GetMouseState()
 
@@ -323,10 +327,10 @@ class FittingView(d.Display):
 
         srcRow = self.FindItemData(-1,itemID)
         dstRow, _ = self.HitTest((x, y))
-
         if srcRow != -1 and dstRow != -1:
             self._swap(srcRow, dstRow, clone)
 
+    # @todo: test
     def _swap(self, srcRow, dstRow, clone = False):
         mod1 = self.mods[self.GetItemData(srcRow)]
         mod2 = self.mods[self.GetItemData(dstRow)]
@@ -391,10 +395,12 @@ class FittingView(d.Display):
     def spawnMenu(self):
         if self.activeFitID is None:
             return
+
         sMkt = service.Market.getInstance()
         selection = []
         sel = self.GetFirstSelected()
         contexts = []
+
         while sel != -1:
             mod = self.mods[self.GetItemData(sel)]
             if not mod.isEmpty:
@@ -419,13 +425,23 @@ class FittingView(d.Display):
         menu = ContextMenu.getMenu(selection, *contexts)
         self.PopupMenu(menu)
 
+    # @todo: test
     def click(self, event):
+        '''
+        Handle click event on modules.
+
+        This is only useful for the State column. If multiple items are selected,
+        and we have clicked the State column, iterate through the selections and
+        change State
+        '''
         row, _, col = self.HitTestSubItem(event.Position)
 
-        if row != -1 and col == self.getColIndex(State):
+        # only do State column and ignore invalid rows
+        if row != -1 and row not in self.blanks and col == self.getColIndex(State):
             sel = []
             curr = self.GetFirstSelected()
-            while curr != -1:
+
+            while curr != -1 and row not in self.blanks :
                 sel.append(curr)
                 curr = self.GetNextSelected(curr)
 
@@ -462,9 +478,14 @@ class FittingView(d.Display):
         dividers to the GUI, we can no longer assume that display list index 3 = module index
         3, so we must create an external-internal mapping
         '''
-        #self.Freeze()
+        # helps to prevent not showing blanks before showing them
+        self.Freeze()
+
+        # see github:blitzmann/pyfa#12 @todo: look into this more, and document
+        self.populate(stuff)
 
         d.Display.refresh(self, stuff)
+
         sFit = service.Fit.getInstance()
         fit = sFit.getFit(self.activeFitID)
         slotMap = {}
@@ -474,14 +495,13 @@ class FittingView(d.Display):
             slotMap[slot] = fit.getSlotsFree(slot) < 0
 
         # set up blanks
-        slotDivider = None # flag to know when
-        blanks = [] # preliminary markers where blanks will be inserted
-        self.blanks = [] # index of final blanks
+        slotDivider = self.mods[0].slot # flag to know when to add blank (default: don't add blank for first "slot group")
+        self.blanks = [] # preliminary markers where blanks will be inserted
 
         for i, mod in enumerate(self.mods):
             if mod.slot != slotDivider:
                 slotDivider = mod.slot
-                blanks.append(i)
+                self.blanks.append(i)
             if slotMap[mod.slot]:
                 self.SetItemBackgroundColour(i, wx.Colour(204, 51, 51))
             elif sFit.serviceFittingOptions["colorFitBySlot"]:
@@ -496,20 +516,20 @@ class FittingView(d.Display):
         internal = range(self.GetItemCount())
 
         # Insert row at correct index
-        for i, x in enumerate(blanks):
-            blanks[i] = x+i # modify blanks
+        for i, x in enumerate(self.blanks):
+            self.blanks[i] = x+i # modify blanks
             self.InsertStringItem( x+i, 'l' ) # @todo: make it actually display something
 
         # Create map
         for i in range(self.GetItemCount()):
-            if i in blanks:
+            if i in self.blanks:
                 continue
             self.modMapping[i] = internal.pop(0)
 
         # else: map is simply internal indices
 
-        #self.Thaw()
-        print self.modMapping
+        self.Thaw()
+
         self.itemCount = self.GetItemCount()
         self.itemRect = self.GetItemRect(0)
 
