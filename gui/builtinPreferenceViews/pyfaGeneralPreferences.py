@@ -70,14 +70,14 @@ class PFGeneralPref ( PreferenceView):
         panel.Layout()
 
     def onCBGlobalColorBySlot(self, event):
-        self.sFit.serviceFittingOptions["divideSlots"] = self.cbDivideSlots.GetValue()
+        self.sFit.serviceFittingOptions["colorFitBySlot"] = self.cbFitColorSlots.GetValue()
         fitID = self.mainFrame.getActiveFit()
         self.sFit.refreshFit(fitID)
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
         event.Skip()
 
     def onCBGlobalDivideSlots(self, event):
-        self.sFit.serviceFittingOptions["colorFitBySlot"] = self.cbFitColorSlots.GetValue()
+        self.sFit.serviceFittingOptions["divideSlots"] = self.cbDivideSlots.GetValue()
         fitID = self.mainFrame.getActiveFit()
         self.sFit.refreshFit(fitID)
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))

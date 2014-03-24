@@ -509,24 +509,24 @@ class FittingView(d.Display):
             else:
                 self.SetItemBackgroundColour(i, self.GetBackgroundColour())
 
-        # if preference = enabled
+         # Get list of internal indexes, which is simply range of number of current items
+        internal = range(self.GetItemCount())
         self.modMapping = {}
 
-        # Get list of internal indexes, which is simply range of number of current items
-        internal = range(self.GetItemCount())
+        if sFit.serviceFittingOptions["divideSlots"]:
+            # Insert blank row at correct index
+            for i, x in enumerate(self.blanks):
+                self.blanks[i] = x+i # modify blanks
+                self.InsertStringItem( x+i, '' ) # @todo: make it actually display something
 
-        # Insert row at correct index
-        for i, x in enumerate(self.blanks):
-            self.blanks[i] = x+i # modify blanks
-            self.InsertStringItem( x+i, 'l' ) # @todo: make it actually display something
-
-        # Create map
-        for i in range(self.GetItemCount()):
-            if i in self.blanks:
-                continue
-            self.modMapping[i] = internal.pop(0)
-
-        # else: map is simply internal indices
+            # Create map
+            for i in range(self.GetItemCount()):
+                if i in self.blanks:
+                    continue
+                self.modMapping[i] = internal.pop(0)
+        else:
+            # if not dividing by slots, mapping is 1:1 with internal
+            self.modMapping = internal
 
         self.Thaw()
 

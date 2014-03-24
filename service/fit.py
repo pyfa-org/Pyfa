@@ -82,7 +82,13 @@ class Fit(object):
         self.booster = False
         self.dirtyFitIDs = set()
 
-        serviceFittingDefaultOptions = {"useGlobalCharacter": False, "useGlobalDamagePattern": False, "defaultCharacter": self.character.ID, "useGlobalForceReload": False}
+        serviceFittingDefaultOptions = {
+            "useGlobalCharacter": False,
+            "useGlobalDamagePattern": False,
+            "defaultCharacter": self.character.ID,
+            "useGlobalForceReload": False,
+            "colorFitBySlot": False,
+            "divideSlots": False}
 
         self.serviceFittingOptions = SettingsProvider.getInstance().getSettings("pyfaServiceFittingOptions", serviceFittingDefaultOptions)
 
@@ -141,11 +147,11 @@ class Fit(object):
         self.recalc(fit)
         return fit.ID
 
-    def toggleBoostFit(self, fitID): 
+    def toggleBoostFit(self, fitID):
         fit = eos.db.getFit(fitID)
         fit.booster = not fit.booster
         eos.db.commit()
-        
+
     def renameFit(self, fitID, newName):
         fit = eos.db.getFit(fitID)
         fit.name = newName
