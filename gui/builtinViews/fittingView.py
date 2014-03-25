@@ -377,17 +377,19 @@ class FittingView(d.Display):
             self.mods = fit.modules[:]
             self.mods.sort(key=lambda mod: (slotOrder.index(mod.slot), mod.position))
 
-            # set up blanks
-            slotDivider = self.mods[0].slot # flag to know when to add blank (default: don't add blank for first "slot group")
             self.blanks = []   # preliminary markers where blanks will be inserted
-            if cFit.serviceFittingOptions["divideSlots"]:
+
+            if cFit.serviceFittingOptions["rackSlots"]:
+                # flag to know when to add blanks, based on previous slot
+                slotDivider = None if cFit.serviceFittingOptions["rackLabels"] else self.mods[0].slot
+
                 for i, mod in enumerate(self.mods):
                     if mod.slot != slotDivider:
                         slotDivider = mod.slot
                         self.blanks.append(i)
 
                 for i, x in enumerate(self.blanks):
-                    self.blanks[i] = x+i # modify blanks
+                    self.blanks[i] = x+i # modify blanks with actual index
                     self.mods.insert(x+i, Rack.buildRack(slotOrder.index(i+1)))
 
         else:
@@ -502,6 +504,7 @@ class FittingView(d.Display):
         Sends data to d.Display.refresh where the rows and columns are set up, then does a
         bit of post-processing (colors)
         '''
+        self.Freeze()
         d.Display.refresh(self, stuff)
 
         sFit = service.Fit.getInstance()
@@ -521,6 +524,14 @@ class FittingView(d.Display):
             else:
                 self.SetItemBackgroundColour(i, self.GetBackgroundColour())
 
+        if sFit.serviceFittingOptions["rackSlots"] and sFit.serviceFittingOptions["rackLabels"]:
+            for i in self.blanks:
+                font = self.GetItemFont(i)
+                font.SetWeight(wx.FONTWEIGHT_BOLD)
+                self.SetItemFont(i, font)
+                self.SetItemTextColour(i, wx.Colour(0, 51, 153))
+
+        self.Thaw()
         self.itemCount = self.GetItemCount()
         self.itemRect = self.GetItemRect(0)
 

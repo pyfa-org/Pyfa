@@ -40,8 +40,14 @@ class PFGeneralPref ( PreferenceView):
         self.cbFitColorSlots = wx.CheckBox( panel, wx.ID_ANY, u"Color fitting view by slot", wx.DefaultPosition, wx.DefaultSize, 0 )
         mainSizer.Add( self.cbFitColorSlots, 0, wx.ALL|wx.EXPAND, 5 )
 
-        self.cbDivideSlots = wx.CheckBox( panel, wx.ID_ANY, u"Separate Racks", wx.DefaultPosition, wx.DefaultSize, 0 )
-        mainSizer.Add( self.cbDivideSlots, 0, wx.ALL|wx.EXPAND, 5 )
+        self.cbRackSlots = wx.CheckBox( panel, wx.ID_ANY, u"Separate Racks", wx.DefaultPosition, wx.DefaultSize, 0 )
+        mainSizer.Add( self.cbRackSlots, 0, wx.ALL|wx.EXPAND, 5 )
+
+        labelSizer = wx.BoxSizer( wx.VERTICAL )
+        self.cbRackLabels = wx.CheckBox( panel, wx.ID_ANY, u"Show Rack Labels", wx.DefaultPosition, wx.DefaultSize, 0 )
+        labelSizer.Add( self.cbRackLabels, 0, wx.ALL|wx.EXPAND, 5 )
+        mainSizer.Add( labelSizer, 0, wx.LEFT|wx.EXPAND, 30 )
+
 
         # Needs to be implemented - save active fittings and reapply when starting pyfa
         #self.cbReopenFits = wx.CheckBox( panel, wx.ID_ANY, u"Reopen Fits", wx.DefaultPosition, wx.DefaultSize, 0 )
@@ -58,13 +64,17 @@ class PFGeneralPref ( PreferenceView):
         self.cbGlobalDmgPattern.SetValue(useGlobalDmgPattern)
         self.cbGlobalForceReload.SetValue(useGlobalForceReload)
         self.cbFitColorSlots.SetValue(self.sFit.serviceFittingOptions["colorFitBySlot"] or False)
-        self.cbDivideSlots.SetValue(self.sFit.serviceFittingOptions["divideSlots"] or False)
+        self.cbRackSlots.SetValue(self.sFit.serviceFittingOptions["rackSlots"] or False)
+        self.cbRackLabels.SetValue(self.sFit.serviceFittingOptions["rackLabels"] or False)
 
         self.cbGlobalChar.Bind(wx.EVT_CHECKBOX, self.OnCBGlobalCharStateChange)
         self.cbGlobalDmgPattern.Bind(wx.EVT_CHECKBOX, self.OnCBGlobalDmgPatternStateChange)
         self.cbGlobalForceReload.Bind(wx.EVT_CHECKBOX, self.OnCBGlobalForceReloadStateChange)
         self.cbFitColorSlots.Bind(wx.EVT_CHECKBOX, self.onCBGlobalColorBySlot)
-        self.cbDivideSlots.Bind(wx.EVT_CHECKBOX, self.onCBGlobalDivideSlots)
+        self.cbRackSlots.Bind(wx.EVT_CHECKBOX, self.onCBGlobalRackSlots)
+        self.cbRackLabels.Bind(wx.EVT_CHECKBOX, self.onCBGlobalRackLabels)
+
+        self.cbRackLabels.Enable(self.sFit.serviceFittingOptions["rackSlots"] or False)
 
         panel.SetSizer( mainSizer )
         panel.Layout()
@@ -76,8 +86,16 @@ class PFGeneralPref ( PreferenceView):
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
         event.Skip()
 
-    def onCBGlobalDivideSlots(self, event):
-        self.sFit.serviceFittingOptions["divideSlots"] = self.cbDivideSlots.GetValue()
+    def onCBGlobalRackSlots(self, event):
+        self.sFit.serviceFittingOptions["rackSlots"] = self.cbRackSlots.GetValue()
+        self.cbRackLabels.Enable(self.cbRackSlots.GetValue())
+        fitID = self.mainFrame.getActiveFit()
+        self.sFit.refreshFit(fitID)
+        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+        event.Skip()
+
+    def onCBGlobalRackLabels(self, event):
+        self.sFit.serviceFittingOptions["rackLabels"] = self.cbRackLabels.GetValue()
         fitID = self.mainFrame.getActiveFit()
         self.sFit.refreshFit(fitID)
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))

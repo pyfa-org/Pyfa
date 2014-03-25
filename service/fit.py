@@ -88,7 +88,8 @@ class Fit(object):
             "defaultCharacter": self.character.ID,
             "useGlobalForceReload": False,
             "colorFitBySlot": False,
-            "divideSlots": False}
+            "rackSlots": False,
+            "rackLabels": False}
 
         self.serviceFittingOptions = SettingsProvider.getInstance().getSettings("pyfaServiceFittingOptions", serviceFittingDefaultOptions)
 

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #===============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
@@ -22,6 +23,7 @@ from gui.viewColumn import ViewColumn
 from gui import bitmapLoader
 import wx
 from eos.types import Drone, Fit, Module, Slot, Rack
+import service
 
 class BaseName(ViewColumn):
     name = "Base Name"
@@ -37,8 +39,10 @@ class BaseName(ViewColumn):
         elif isinstance(stuff, Fit):
             return "%s (%s)" % (stuff.name, stuff.ship.item.name)
         elif isinstance(stuff, Rack):
-            return ""
-            #return "%s Rack" % Slot.getName(stuff.slot).capitalize()
+            if service.Fit.getInstance().serviceFittingOptions["rackLabels"]:
+                return u'─ {} Rack ─'.format(Slot.getName(stuff.slot).capitalize())
+            else:
+                return ""
         elif isinstance(stuff, Module):
             if stuff.isEmpty:
                 return "%s Slot" % Slot.getName(stuff.slot).capitalize()
