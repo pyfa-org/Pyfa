@@ -352,7 +352,7 @@ class FittingView(d.Display):
 
         cFit = service.Fit.getInstance()
 
-        if clone:
+        if clone and mod2.isEmpty:
             cFit.cloneModule(self.mainFrame.getActiveFit(), mod1.position, mod2.position)
         else:
             cFit.swapModules(self.mainFrame.getActiveFit(), mod1.position, mod2.position)

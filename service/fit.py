@@ -395,8 +395,26 @@ class Fit(object):
         eos.db.commit()
 
     def cloneModule(self, fitID, src, dst):
-        #need implementation of module clone based on module positions (also make sure the dst is empty else do nothing)
-        pass
+        '''
+        Clone a module from src to dst
+
+        This will overwrite dst! Checking for empty module must be
+        done at a higher level
+        '''
+        fit = eos.db.getFit(fitID)
+        # Gather modules
+        srcMod = fit.modules[src]
+        dstMod = fit.modules[dst]
+
+        new = copy.deepcopy(srcMod)
+
+        # remove empty mod
+        fit.modules.remove(dstMod)
+
+        # insert copy
+        fit.modules.insert(dst, new)
+
+        eos.db.commit()
 
     def addDrone(self, fitID, itemID):
         if fitID == None:
