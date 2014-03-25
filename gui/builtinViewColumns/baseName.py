@@ -21,7 +21,7 @@ from gui import builtinViewColumns
 from gui.viewColumn import ViewColumn
 from gui import bitmapLoader
 import wx
-from eos.types import Drone, Fit, Module, Slot, DummyModule
+from eos.types import Drone, Fit, Module, Slot, Rack
 
 class BaseName(ViewColumn):
     name = "Base Name"
@@ -36,7 +36,7 @@ class BaseName(ViewColumn):
             return "%dx %s" % (stuff.amount, stuff.item.name)
         elif isinstance(stuff, Fit):
             return "%s (%s)" % (stuff.name, stuff.ship.item.name)
-        elif isinstance(stuff, DummyModule):
+        elif isinstance(stuff, Rack):
             return ""
             #return "%s Rack" % Slot.getName(stuff.slot).capitalize()
         elif isinstance(stuff, Module):

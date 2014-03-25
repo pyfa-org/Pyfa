@@ -26,7 +26,7 @@ import gui.display as d
 from gui.contextMenu import ContextMenu
 import gui.shipBrowser
 import gui.multiSwitch
-from eos.types import Slot, DummyModule
+from eos.types import Slot, Rack
 from gui.builtinViewColumns.state import State
 from gui import bitmapLoader
 import gui.builtinViews.emptyView
@@ -388,7 +388,7 @@ class FittingView(d.Display):
 
                 for i, x in enumerate(self.blanks):
                     self.blanks[i] = x+i # modify blanks
-                    self.mods.insert(x+i, DummyModule.buildDummy(slotOrder.index(i+1)))
+                    self.mods.insert(x+i, Rack.buildRack(slotOrder.index(i+1)))
 
         else:
             self.mods = None
@@ -516,7 +516,7 @@ class FittingView(d.Display):
         for i, mod in enumerate(self.mods):
             if slotMap[mod.slot]:
                 self.SetItemBackgroundColour(i, wx.Colour(204, 51, 51))
-            elif sFit.serviceFittingOptions["colorFitBySlot"] and not isinstance(mod, DummyModule):
+            elif sFit.serviceFittingOptions["colorFitBySlot"] and not isinstance(mod, Rack):
                 self.SetItemBackgroundColour(i, self.slotColour(mod.slot))
             else:
                 self.SetItemBackgroundColour(i, self.GetBackgroundColour())

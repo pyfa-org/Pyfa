@@ -123,8 +123,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         return empty
 
     @classmethod
-    def buildDummy(cls, slot):
-        empty = DummyModule(None)
+    def buildRack(cls, slot):
+        empty = Rack(None)
         empty.__slot = slot
         empty.__hardpoint = Hardpoint.NONE
         empty.__item = 0
@@ -636,5 +636,9 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         copy.state = self.state
         return copy
 
-class DummyModule(Module):
+class Rack(Module):
+    '''
+    This is simply the Module class named something else to differentiate
+    it for app logic. This class does not do anything special
+    '''
     pass
