@@ -145,7 +145,23 @@ class FittingView(d.Display):
         self.Bind(wx.EVT_SHOW, self.OnShow)
         self.Bind(wx.EVT_MOTION, self.OnMouseMove)
         self.Bind(wx.EVT_LEAVE_WINDOW, self.OnLeaveWindow)
+        self.Bind(wx.EVT_LIST_ITEM_SELECTED, self.OnSelection)
         self.parent.Bind(gui.chromeTabs.EVT_NOTEBOOK_PAGE_CHANGED, self.pageChanged)
+
+    def OnSelection(self,event):
+        return
+        '''
+        Set selection background color.
+        This is so that Rack divisors don't look like they are selected
+
+        @todo
+        '''
+        row = self.GetFirstSelected()
+        while row != -1:
+            if row in self.blanks:
+                self.SetItemBackgroundColour(row, self.GetBackgroundColour())
+            row = self.GetNextSelected(row)
+        event.Skip()
 
     def OnLeaveWindow(self, event):
         self.SetToolTip(None)
@@ -203,8 +219,7 @@ class FittingView(d.Display):
     # @todo: test
     def startDrag(self, event):
         row = event.GetIndex()
-
-        if row != -1:
+        if row != -1 and row not in self.blanks:
             data = wx.PyTextDataObject()
             data.SetText(str(self.GetItemData(row)))
 
@@ -314,7 +329,6 @@ class FittingView(d.Display):
             self.slotsChanged()
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.activeFitID))
 
-    # @todo: test
     def swapItems(self, x, y, itemID):
         mstate = wx.GetMouseState()
 
@@ -325,23 +339,16 @@ class FittingView(d.Display):
 
         srcRow = self.FindItemData(-1,itemID)
         dstRow, _ = self.HitTest((x, y))
-        if srcRow != -1 and dstRow != -1:
+        if srcRow != -1 and dstRow != -1 and dstRow not in self.blanks:
             self._swap(srcRow, dstRow, clone)
 
-    # @todo: test
     def _swap(self, srcRow, dstRow, clone = False):
         mod1 = self.mods[self.GetItemData(srcRow)]
         mod2 = self.mods[self.GetItemData(dstRow)]
 
+        # can't swap modules to different racks
         if mod1.slot != mod2.slot:
-            if srcRow > dstRow:
-                mod = 1
-            else:
-                mod = -1
-
-            while mod1.slot != mod2.slot:
-                dstRow += mod
-                mod2 = self.mods[self.GetItemData(dstRow)]
+            return
 
         cFit = service.Fit.getInstance()
 
@@ -501,6 +508,7 @@ class FittingView(d.Display):
         fit = sFit.getFit(self.activeFitID)
         slotMap = {}
 
+        # test for too many modules (happens with t3s / CCP change in slot layout)
         for slotType in Slot.getTypes():
             slot = Slot.getValue(slotType)
             slotMap[slot] = fit.getSlotsFree(slot) < 0
@@ -508,7 +516,7 @@ class FittingView(d.Display):
         for i, mod in enumerate(self.mods):
             if slotMap[mod.slot]:
                 self.SetItemBackgroundColour(i, wx.Colour(204, 51, 51))
-            elif sFit.serviceFittingOptions["colorFitBySlot"]:
+            elif sFit.serviceFittingOptions["colorFitBySlot"] and not isinstance(mod, DummyModule):
                 self.SetItemBackgroundColour(i, self.slotColour(mod.slot))
             else:
                 self.SetItemBackgroundColour(i, self.GetBackgroundColour())

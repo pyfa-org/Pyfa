@@ -382,9 +382,17 @@ class Fit(object):
 
     def swapModules(self, fitID, src, dst):
         fit = eos.db.getFit(fitID)
-        m = fit.modules[src]
-        fit.modules.remove(m)
-        fit.modules.insert(dst, m)
+        # Gather modules
+        srcMod = fit.modules[src]
+        dstMod = fit.modules[dst]
+
+        # To swap, we simply remove mod and insert at destination.
+        fit.modules.remove(srcMod)
+        fit.modules.insert(dst, srcMod)
+        fit.modules.remove(dstMod)
+        fit.modules.insert(src, dstMod)
+
+        eos.db.commit()
 
     def cloneModule(self, fitID, src, dst):
         #need implementation of module clone based on module positions (also make sure the dst is empty else do nothing)
