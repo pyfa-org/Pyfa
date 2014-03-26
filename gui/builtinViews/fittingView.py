@@ -524,12 +524,16 @@ class FittingView(d.Display):
             else:
                 self.SetItemBackgroundColour(i, self.GetBackgroundColour())
 
-        if sFit.serviceFittingOptions["rackSlots"] and sFit.serviceFittingOptions["rackLabels"]:
-            for i in self.blanks:
-                font = self.GetItemFont(i)
-                font.SetWeight(wx.FONTWEIGHT_BOLD)
-                self.SetItemFont(i, font)
+            if i in self.blanks and sFit.serviceFittingOptions["rackSlots"] and sFit.serviceFittingOptions["rackLabels"]:
+                #font = self.GetItemFont(i)
+                #font.SetWeight(wx.FONTWEIGHT_BOLD)
+                #self.SetItemFont(i, font)
                 self.SetItemTextColour(i, wx.Colour(0, 51, 153))
+            else:
+                #font = self.GetItemFont(i)
+                #font.SetWeight(wx.FONTWEIGHT_NORMAL)
+                #self.SetItemFont(i, font)
+                self.SetItemTextColour(i, wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOWTEXT ) )
 
         self.Thaw()
         self.itemCount = self.GetItemCount()
