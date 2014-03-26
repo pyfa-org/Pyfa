@@ -135,6 +135,8 @@ class TargetingMiscViewFull(StatsView):
                         label.SetToolTip(wx.ToolTip("Probe Size: %.3f" % (fit.probeSize or 0) ))
                     elif labelName == "labelFullWarpSpeed":
                         label.SetToolTip(wx.ToolTip("Max Warp Distance: %.1f AU" % fit.maxWarpDistance))
+                    elif labelName == "labelFullAlignTime":
+                        label.SetToolTip(wx.ToolTip("%.10f" % value))
                     else:
                         label.SetToolTip(wx.ToolTip("%.1f" % value))
                 else:
