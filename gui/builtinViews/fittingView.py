@@ -225,7 +225,8 @@ class FittingView(d.Display):
             row = self.GetFirstSelected()
             firstSel = row
             while row != -1:
-                self.removeModule(self.mods[row])
+                if row not in self.blanks:
+                    self.removeModule(self.mods[row])
                 self.Select(row,0)
                 row = self.GetNextSelected(row)
 
