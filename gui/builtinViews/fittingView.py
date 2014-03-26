@@ -383,15 +383,16 @@ class FittingView(d.Display):
                 # flag to know when to add blanks, based on previous slot
                 slotDivider = None if cFit.serviceFittingOptions["rackLabels"] else self.mods[0].slot
 
+                # first loop finds where slot dividers must go before modifying self.mods
                 for i, mod in enumerate(self.mods):
                     if mod.slot != slotDivider:
                         slotDivider = mod.slot
-                        self.blanks.append(i)
+                        self.blanks.append((i, slotDivider)) # where and what
 
-                for i, x in enumerate(self.blanks):
+                # second loop modifies self.mods, rewrites self.blanks to represent actual index of blanks
+                for i, (x, slot) in enumerate(self.blanks):
                     self.blanks[i] = x+i # modify blanks with actual index
-                    self.mods.insert(x+i, Rack.buildRack(slotOrder.index(i+1)))
-
+                    self.mods.insert(x+i, Rack.buildRack(slot))
         else:
             self.mods = None
 
@@ -516,6 +517,7 @@ class FittingView(d.Display):
             slot = Slot.getValue(slotType)
             slotMap[slot] = fit.getSlotsFree(slot) < 0
 
+        font = (self.GetClassDefaultAttributes()).font
         for i, mod in enumerate(self.mods):
             if slotMap[mod.slot]:
                 self.SetItemBackgroundColour(i, wx.Colour(204, 51, 51))
@@ -525,14 +527,12 @@ class FittingView(d.Display):
                 self.SetItemBackgroundColour(i, self.GetBackgroundColour())
 
             if i in self.blanks and sFit.serviceFittingOptions["rackSlots"] and sFit.serviceFittingOptions["rackLabels"]:
-                #font = self.GetItemFont(i)
-                #font.SetWeight(wx.FONTWEIGHT_BOLD)
-                #self.SetItemFont(i, font)
+                font.SetWeight(wx.FONTWEIGHT_BOLD)
+                self.SetItemFont(i, font)
                 self.SetItemTextColour(i, wx.Colour(0, 51, 153))
             else:
-                #font = self.GetItemFont(i)
-                #font.SetWeight(wx.FONTWEIGHT_NORMAL)
-                #self.SetItemFont(i, font)
+                font.SetWeight(wx.FONTWEIGHT_NORMAL)
+                self.SetItemFont(i, font)
                 self.SetItemTextColour(i, wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOWTEXT ) )
 
         self.Thaw()
