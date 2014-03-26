@@ -511,11 +511,9 @@ class FittingView(d.Display):
             if i in self.blanks and sFit.serviceFittingOptions["rackSlots"] and sFit.serviceFittingOptions["rackLabels"]:
                 font.SetWeight(wx.FONTWEIGHT_BOLD)
                 self.SetItemFont(i, font)
-                self.SetItemTextColour(i, wx.Colour(0, 51, 153))
             else:
                 font.SetWeight(wx.FONTWEIGHT_NORMAL)
                 self.SetItemFont(i, font)
-                self.SetItemTextColour(i, wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOWTEXT ) )
 
         self.Thaw()
         self.itemCount = self.GetItemCount()
