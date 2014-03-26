@@ -145,23 +145,7 @@ class FittingView(d.Display):
         self.Bind(wx.EVT_SHOW, self.OnShow)
         self.Bind(wx.EVT_MOTION, self.OnMouseMove)
         self.Bind(wx.EVT_LEAVE_WINDOW, self.OnLeaveWindow)
-        self.Bind(wx.EVT_LIST_ITEM_SELECTED, self.OnSelection)
         self.parent.Bind(gui.chromeTabs.EVT_NOTEBOOK_PAGE_CHANGED, self.pageChanged)
-
-    def OnSelection(self,event):
-        return
-        '''
-        Set selection background color.
-        This is so that Rack divisors don't look like they are selected
-
-        @todo
-        '''
-        row = self.GetFirstSelected()
-        while row != -1:
-            if row in self.blanks:
-                self.SetItemBackgroundColour(row, self.GetBackgroundColour())
-            row = self.GetNextSelected(row)
-        event.Skip()
 
     def OnLeaveWindow(self, event):
         self.SetToolTip(None)
@@ -216,7 +200,6 @@ class FittingView(d.Display):
     def getActiveFit(self):
         return self.activeFitID
 
-    # @todo: test
     def startDrag(self, event):
         row = event.GetIndex()
         if row != -1 and row not in self.blanks:
@@ -227,7 +210,6 @@ class FittingView(d.Display):
             dropSource.SetData(data)
             res = dropSource.DoDragDrop()
 
-    # @todo: test
     def getSelectedMods(self):
         sel = []
         row = self.GetFirstSelected()
@@ -455,7 +437,6 @@ class FittingView(d.Display):
         menu = ContextMenu.getMenu(selection, *contexts)
         self.PopupMenu(menu)
 
-    # @todo: test
     def click(self, event):
         '''
         Handle click event on modules.
