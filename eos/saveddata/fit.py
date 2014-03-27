@@ -80,6 +80,10 @@ class Fit(object):
         chatDna = re.search("<url=fitting:(.*::)>.*</url>", firstLine)
         if chatDna:
             return "DNA", (cls.importDna(chatDna.group(1)),)
+        # If we have "<url=killReport", fit is killmail from eve chat
+        crest = re.search("<url=killReport:(.*)>.*</url>", firstLine)
+        if crest:
+            return "CREST", (cls.importCrest(crest.group(1)),)
         # If XML-style start of tag encountered, detect as XML
         if re.match("<", firstLine):
             return "XML", cls.importXml(string)
@@ -95,6 +99,61 @@ class Fit(object):
         # Use DNA format for all other cases
         else:
             return "DNA", (cls.importDna(string),)
+
+    @classmethod
+    def importCrest(cls, string):
+        from eos import db
+        import urllib2
+        import json
+
+        info = string.split(":")
+
+        try:
+            response = urllib2.urlopen("https://public-crest.eveonline.com/killmails/%s/%s/" % (info[0], info[1]))
+        except:
+            return
+
+        kill = (json.loads(response.read()))['victim']
+
+        fit = Fit()
+        fit.ship = Ship(db.getItem(kill['shipType']['name']))
+        fit.name = "CREST: %s's %s" % (kill['character']['name'], kill['shipType']['name'])
+
+        # sort based on flag to get proper rack position
+        items  = sorted(kill['items'], key=lambda k: k['flag'])
+
+        # We create a relation between module flag and module position on fit at time of append:
+        # this allows us to know which module to apply charges to if need be (see below)
+        flagMap = {}
+
+        # Charges may show up before or after the module. We process modules first,
+        # storing any charges that are fitted in a dict and noting their flag (module).
+        charges = {}
+
+        for mod in items:
+            if mod['flag'] == 5: # throw out cargo
+                continue
+
+            item = db.getItem(mod['itemType']['name'], eager="group.category")
+
+            if item.category.name == "Drone":
+                d = Drone(item)
+                d.amount = mod['quantityDropped'] if 'quantityDropped' in mod else mod['quantityDestroyed']
+                fit.drones.append(d)
+            elif item.category.name == "Charge":
+                charges[mod['flag']] = item
+            else:
+                m = Module(item)
+                if m.isValidState(State.ACTIVE):
+                    m.state = State.ACTIVE
+                fit.modules.append(m)
+                flagMap[mod['flag']] = fit.modules.index(m)
+
+        for flag, item in charges.items():
+            # we do not need to verify valid charge as it comes directly from CCP
+            fit.modules[flagMap[flag]].charge = item
+
+        return fit
 
     @classmethod
     def importDna(cls, string):
