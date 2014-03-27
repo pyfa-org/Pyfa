@@ -80,10 +80,14 @@ class Fit(object):
         chatDna = re.search("<url=fitting:(.*::)>.*</url>", firstLine)
         if chatDna:
             return "DNA", (cls.importDna(chatDna.group(1)),)
+        # If we have a CREST kill link
+        killLink = re.search("http://public-crest.eveonline.com/killmails/(.*)/", firstLine)
+        if killLink:
+            return "CREST", (cls.importCrest(tuple(killLink.group(1).split("/"))),)
         # If we have "<url=killReport", fit is killmail from eve chat
-        crest = re.search("<url=killReport:(.*)>.*</url>", firstLine)
-        if crest:
-            return "CREST", (cls.importCrest(crest.group(1)),)
+        killReport = re.search("<url=killReport:(.*)>.*</url>", firstLine)
+        if killReport:
+            return "CREST", (cls.importCrest(tuple(killReport.group(1).split(":"))),)
         # If XML-style start of tag encountered, detect as XML
         if re.match("<", firstLine):
             return "XML", cls.importXml(string)
@@ -101,15 +105,13 @@ class Fit(object):
             return "DNA", (cls.importDna(string),)
 
     @classmethod
-    def importCrest(cls, string):
+    def importCrest(cls, info):
         from eos import db
         import urllib2
         import json
 
-        info = string.split(":")
-
         try:
-            response = urllib2.urlopen("https://public-crest.eveonline.com/killmails/%s/%s/" % (info[0], info[1]))
+            response = urllib2.urlopen("https://public-crest.eveonline.com/killmails/%s/%s/" % info)
         except:
             return
 
