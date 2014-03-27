@@ -18,14 +18,14 @@
 #===============================================================================
 
 from eos.effectHandlerHelpers import HandledList, HandledModuleList, HandledDroneList, HandledImplantBoosterList, \
-HandledProjectedFitList, HandledProjectedModList, HandledProjectedDroneList
+HandledProjectedFitList, HandledProjectedModList, HandledProjectedDroneList, HandledCargoList
 from eos.modifiedAttributeDict import ModifiedAttributeDict
 from sqlalchemy.orm import validates, reconstructor
 from itertools import chain
 from eos import capSim
 from copy import deepcopy
 from math import sqrt, log, asinh
-from eos.types import Drone, Ship, Character, State, Slot, Module, Implant, Booster, Skill
+from eos.types import Drone, Cargo, Ship, Character, State, Slot, Module, Implant, Booster, Skill
 from eos.saveddata.module import State
 import re
 import xml.dom
@@ -52,6 +52,7 @@ class Fit(object):
     def __init__(self):
         self.__modules = HandledModuleList()
         self.__drones = HandledDroneList()
+        self.__cargo = HandledCargoList()
         self.__implants = HandledImplantBoosterList()
         self.__boosters = HandledImplantBoosterList()
         self.__projectedFits = HandledProjectedFitList()
@@ -425,6 +426,10 @@ class Fit(object):
                             d = Drone(item)
                             d.amount = int(hardware.getAttribute("qty"))
                             f.drones.append(d)
+                        elif item.category.name == "Charge":
+                            c = Cargo(item)
+                            c.amount = int(hardware.getAttribute("qty"))
+                            f.cargo.append(c)
                         else:
                             try:
                                 m = Module(item)
@@ -545,6 +550,13 @@ class Fit(object):
                 hardware.setAttribute("type", drone.item.name)
                 fitting.appendChild(hardware)
 
+            for cargo in fit.cargo:
+                hardware = doc.createElement("hardware")
+                hardware.setAttribute("qty", "%d" % cargo.amount)
+                hardware.setAttribute("slot", "cargo")
+                hardware.setAttribute("type", cargo.item.name)
+                fitting.appendChild(hardware)
+
         return doc.toprettyxml()
 
     @reconstructor
@@ -605,6 +617,10 @@ class Fit(object):
     @property
     def drones(self):
         return self.__drones
+
+    @property
+    def cargo(self):
+        return self.__cargo
 
     @property
     def modules(self):

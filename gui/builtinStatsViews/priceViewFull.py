@@ -102,6 +102,9 @@ class PriceViewFull(StatsView):
             for drone in fit.drones:
                 for _ in xrange(drone.amount):
                     typeIDs.append(drone.itemID)
+            for cargo in fit.cargo:
+                for _ in xrange(cargo.amount):
+                    typeIDs.append(cargo.itemID)
             if self._timer:
                 if self._timer.IsRunning():
                     self._timer.Stop()

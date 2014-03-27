@@ -416,6 +416,47 @@ class Fit(object):
         fit.modules.insert(dst, new)
 
         eos.db.commit()
+    def addChangeCargo(self, fitID, c, amount):
+        if fitID == None:
+            return False
+
+        fit = eos.db.getFit(fitID)
+        cargo = None
+
+        if c not in fit.cargo:
+            # adding from market
+            for x in fit.cargo.find(c.item):
+                if x is not None:
+                    # found item already in cargo, use previous value and remove old
+                    cargo = x
+                    fit.cargo.remove(x)
+                    break
+
+            if cargo is None:
+                # if we don't have the item already in cargo, use default values
+                cargo = c
+        else:
+            # changing existing
+            cargo = eos.types.Cargo(c.item)
+            fit.cargo.remove(c) # remove old
+
+        fit.cargo.append(cargo)
+        cargo.amount += amount
+
+        self.recalc(fit)
+        eos.db.commit()
+
+        return True
+
+    def removeCargo(self, fitID, position):
+        if fitID is None:
+            return False
+
+        fit = eos.db.getFit(fitID)
+        charge = fit.cargo[position]
+        fit.cargo.remove(charge)
+        self.recalc(fit)
+        return True
 
     def addDrone(self, fitID, itemID):
         if fitID == None:
