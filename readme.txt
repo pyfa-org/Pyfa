@@ -29,6 +29,7 @@ Q: I want to run pyfa from source, what should i install?
 A: Python 2 - http://www.python.org/
 wxPython - http://www.wxpython.org/
 SQLAlchemy - http://www.sqlalchemy.org/
+dateutil - https://labix.org/python-dateutil
 Matplotlib - http://matplotlib.sourceforge.net/
 NumPy - http://numpy.scipy.org/
 Last 2 are optional, they are required for graphs only.
