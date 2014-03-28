@@ -392,7 +392,7 @@ class FittingView(d.Display):
                     self.populate(self.mods)
                 self.refresh(self.mods)
 
-                exportHtml.getInstance().refreshFittingHTMl()
+                exportHtml.getInstance().refreshFittingHtml()
 
             self.Show(self.activeFitID is not None and self.activeFitID == event.fitID)
         except wx._core.PyDeadObjectError:

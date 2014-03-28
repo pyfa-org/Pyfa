@@ -361,6 +361,8 @@ class MainFrame(wx.Frame):
         self.Bind(wx.EVT_MENU, self.exportSkillsNeeded, id=menuBar.exportSkillsNeededId)
         # Import character
         self.Bind(wx.EVT_MENU, self.importCharacter, id=menuBar.importCharacterId)
+        # Export HTML
+        self.Bind(wx.EVT_MENU, self.exportHtml, id=menuBar.exportHtmlId)
         # Preference dialog
         self.Bind(wx.EVT_MENU, self.showPreferenceDialog, id = menuBar.preferencesId)
         # User guide
@@ -545,6 +547,12 @@ class MainFrame(wx.Frame):
             sCharacter.importCharacter(dlg.GetPaths(), self.importCharacterCallback)
             dlg.Destroy()
             self.waitDialog.ShowModal()
+
+    def exportHtml(self, event):
+        from gui.utils.exportHtml import exportHtml
+        self.waitDialog = animUtils.WaitDialog(self)
+        exportHtml.getInstance().refreshFittingHtml(True, self.closeWaitDialog)
+        self.waitDialog.ShowModal()
 
     def importCharacterCallback(self):
         self.waitDialog.Destroy()

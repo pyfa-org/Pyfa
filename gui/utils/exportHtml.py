@@ -1,6 +1,7 @@
 import threading
 import time
 import service
+import wx
 
 class exportHtml():
     _instance = None
@@ -14,18 +15,19 @@ class exportHtml():
     def __init__(self):
         self.thread = exportHtmlThread()
 
-    def refreshFittingHTMl(self):
+    def refreshFittingHtml(self, force = False, callback = False):
         settings = service.settings.HTMLExportSettings.getInstance()
 
-        if (settings.getEnabled()):
+        if (force or settings.getEnabled()):
             self.thread.stop()
-            self.thread = exportHtmlThread()
+            self.thread = exportHtmlThread(callback)
             self.thread.start()
 
 class exportHtmlThread(threading.Thread):
 
-    def __init__(self):
+    def __init__(self, callback = False):
         threading.Thread.__init__(self)
+        self.callback = callback
         self.stopRunning = False
 
     def stop(self):
@@ -168,4 +170,7 @@ class exportHtmlThread(threading.Thread):
         except IOError:
             print "Failed to write to " + settings.getPath()
             pass
+
+        if self.callback:
+            wx.CallAfter(self.callback)
 

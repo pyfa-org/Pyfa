@@ -13,10 +13,12 @@ import gui.globalEvents as GE
 
 class PFHTMLExportPref ( PreferenceView):
     title = "HTML Export"
-    desc  = "Turning this feature on will create a HTML file at the specified location "+ \
-            "with all your fits in it. If you browse to this HTML file from the "+\
-            "in-game browser you can easily view and import your fits by clicking on them. "+\
-            "The file will be updated every time a fit changes or gets added."
+    desc  = "HTML Export (File > Export HTML) allows you to export your entire fitting "+\
+            "database into an HTML file at the specified location. This file can be "+\
+            "used in the in-game browser to easily open and import your fits, or used "+\
+            "in a regular web browser to open them at NULL-SEC.com."
+    desc2 = "Enabling automatic exporting will update the HTML file after any change "+\
+            "to a fit is made. Under certain circumstance, this may cause performance issues."
 
     def populatePanel( self, panel ):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
@@ -37,11 +39,6 @@ class PFHTMLExportPref ( PreferenceView):
         self.stDesc.Wrap(dlgWidth - 50)
         mainSizer.Add( self.stDesc, 0, wx.ALL, 5 )
 
-        self.exportEnabled = wx.CheckBox( panel, wx.ID_ANY, u"Enable HTML export", wx.DefaultPosition, wx.DefaultSize, 0 )
-        self.exportEnabled.SetValue(self.HTMLExportSettings.getEnabled())
-        self.exportEnabled.Bind(wx.EVT_CHECKBOX, self.OnExportEnabledChange)
-        mainSizer.Add( self.exportEnabled, 0, wx.ALL|wx.EXPAND, 5 )
-
         self.PathLinkCtrl = wx.HyperlinkCtrl( panel, wx.ID_ANY, self.HTMLExportSettings.getPath(), u'file:///{}'.format(self.HTMLExportSettings.getPath()), wx.DefaultPosition, wx.DefaultSize, wx.HL_ALIGN_LEFT|wx.NO_BORDER|wx.HL_CONTEXTMENU )
         mainSizer.Add( self.PathLinkCtrl, 0, wx.ALL|wx.EXPAND, 5)
 
@@ -52,6 +49,15 @@ class PFHTMLExportPref ( PreferenceView):
         self.fileSelectButton = wx.Button(panel, -1, "Set export destination", pos=(0,0))
         self.fileSelectButton.Bind(wx.EVT_BUTTON, self.selectHTMLExportFilePath)
         mainSizer.Add( self.fileSelectButton, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5)
+
+        self.stDesc2 = wx.StaticText( panel, wx.ID_ANY, self.desc2, wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.stDesc2.Wrap(dlgWidth - 50)
+        mainSizer.Add( self.stDesc2, 0, wx.ALL, 5 )
+
+        self.exportEnabled = wx.CheckBox( panel, wx.ID_ANY, u"Enable automatic HTML export", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.exportEnabled.SetValue(self.HTMLExportSettings.getEnabled())
+        self.exportEnabled.Bind(wx.EVT_CHECKBOX, self.OnExportEnabledChange)
+        mainSizer.Add( self.exportEnabled, 0, wx.ALL|wx.EXPAND, 5 )
 
         panel.SetSizer( mainSizer )
         panel.Layout()
