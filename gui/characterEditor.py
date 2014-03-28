@@ -533,7 +533,7 @@ class APIView (wx.Panel):
         wx.Panel.__init__ (self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.Size(500, 300), style=wx.TAB_TRAVERSAL)
         self.Parent.Parent.Bind(GE.CHAR_CHANGED, self.charChanged)
 
-        self.apiUrlCreatePredefined = u"https://community.eveonline.com/support/api-key/update/"
+        self.apiUrlCreatePredefined = u"https://community.eveonline.com/support/api-key/CreatePredefined?accessMask=8"
         self.apiUrlKeyList = u"https://community.eveonline.com/support/api-key/"
 
         pmainSizer = wx.BoxSizer(wx.VERTICAL)
@@ -569,10 +569,8 @@ class APIView (wx.Panel):
 
         pmainSizer.Add(fgSizerInput, 0, wx.EXPAND, 5)
 
-        btnSizer = wx.FlexGridSizer(3, 2, 0, 0)
-        btnSizer.AddGrowableCol(1)
-        btnSizer.SetFlexibleDirection(wx.BOTH)
-        btnSizer.SetNonFlexibleGrowMode(wx.FLEX_GROWMODE_SPECIFIED)
+        btnSizer = wx.BoxSizer( wx.HORIZONTAL )
+        btnSizer.AddStretchSpacer()
 
         self.btnFetchCharList = wx.Button(self, wx.ID_ANY, u"Get Characters")
         btnSizer.Add(self.btnFetchCharList, 0, wx.ALL, 2)
@@ -582,13 +580,15 @@ class APIView (wx.Panel):
         btnSizer.Add(self.btnFetchSkills,  0, wx.ALL, 2)
         self.btnFetchSkills.Bind(wx.EVT_BUTTON, self.fetchSkills)
         self.btnFetchSkills.Enable(False)
+
+        btnSizer.AddStretchSpacer()
         pmainSizer.Add(btnSizer, 0, wx.EXPAND, 5)
 
         self.stStatus = wx.StaticText(self,  wx.ID_ANY, wx.EmptyString)
         pmainSizer.Add(self.stStatus, 0, wx.ALL, 5)
 
         pmainSizer.AddStretchSpacer()
-        self.stAPITip = wx.StaticText( self, wx.ID_ANY, u"You can create a key here (only character sheet access is needed):", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.stAPITip = wx.StaticText( self, wx.ID_ANY, u"You can create a pre-defined key here (only CharacterSheet is required):", wx.DefaultPosition, wx.DefaultSize, 0 )
         self.stAPITip.Wrap( -1 )
 
         pmainSizer.Add( self.stAPITip, 0, wx.ALL, 2 )
@@ -596,7 +596,7 @@ class APIView (wx.Panel):
         self.hlEveAPI = wx.HyperlinkCtrl( self, wx.ID_ANY, self.apiUrlCreatePredefined, self.apiUrlCreatePredefined, wx.DefaultPosition, wx.DefaultSize, wx.HL_DEFAULT_STYLE )
         pmainSizer.Add( self.hlEveAPI, 0, wx.ALL, 2 )
 
-        self.stAPITip2 = wx.StaticText( self, wx.ID_ANY, u"You can view the list of your keys here:", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.stAPITip2 = wx.StaticText( self, wx.ID_ANY, u"Or, you can choose an existing key from:", wx.DefaultPosition, wx.DefaultSize, 0 )
         self.stAPITip2.Wrap( -1 )
         pmainSizer.Add( self.stAPITip2, 0, wx.ALL, 2 )
 
