@@ -51,7 +51,7 @@ class ShipBrowserWorkerThread(threading.Thread):
         sMarket = Market.getInstance()
         while True:
             try:
-                callback, id = queue.get()
+                id, callback = queue.get()
                 set = cache.get(id)
                 if set is None:
                     set = sMarket.getShipList(id)

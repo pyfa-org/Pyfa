@@ -757,7 +757,7 @@ class ShipBrowser(wx.Panel):
 
 
         sMarket = service.Market.getInstance()
-        sMarket.getShipListDelayed(self.stage2Callback, categoryID)
+        sMarket.getShipListDelayed(categoryID, self.stage2Callback)
 
         self._stage2Data = categoryID
 
