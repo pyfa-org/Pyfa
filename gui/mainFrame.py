@@ -364,7 +364,7 @@ class MainFrame(wx.Frame):
         # Export HTML
         self.Bind(wx.EVT_MENU, self.exportHtml, id=menuBar.exportHtmlId)
         # Preference dialog
-        self.Bind(wx.EVT_MENU, self.showPreferenceDialog, id = menuBar.preferencesId)
+        self.Bind(wx.EVT_MENU, self.showPreferenceDialog, id=wx.ID_PREFERENCES)
         # User guide
         self.Bind(wx.EVT_MENU, self.goWiki, id = menuBar.wikiId)
         # EVE Forums
@@ -384,6 +384,7 @@ class MainFrame(wx.Frame):
         self.additionstab2 = wx.NewId()
         self.additionstab3 = wx.NewId()
         self.additionstab4 = wx.NewId()
+        self.additionstab5 = wx.NewId()
 
         # Close Page
         self.Bind(wx.EVT_MENU, self.CloseCurrentPage, id=self.closePageId)
@@ -396,6 +397,7 @@ class MainFrame(wx.Frame):
         self.Bind(wx.EVT_MENU, self.AdditionsTabSelect, id = self.additionstab2)
         self.Bind(wx.EVT_MENU, self.AdditionsTabSelect, id = self.additionstab3)
         self.Bind(wx.EVT_MENU, self.AdditionsTabSelect, id = self.additionstab4)
+        self.Bind(wx.EVT_MENU, self.AdditionsTabSelect, id = self.additionstab5)
 
         actb = [(wx.ACCEL_CTRL, ord('T'), self.addPageId),
                 (wx.ACCEL_CMD, ord('T'), self.addPageId),
@@ -416,10 +418,12 @@ class MainFrame(wx.Frame):
                 (wx.ACCEL_CTRL, ord('2'), self.additionstab2),
                 (wx.ACCEL_CTRL, ord('3'), self.additionstab3),
                 (wx.ACCEL_CTRL, ord('4'), self.additionstab4),
+                (wx.ACCEL_CTRL, ord('5'), self.additionstab5),
                 (wx.ACCEL_CMD, ord('1'), self.additionstab1),
                 (wx.ACCEL_CMD, ord('2'), self.additionstab2),
                 (wx.ACCEL_CMD, ord('3'), self.additionstab3),
-                (wx.ACCEL_CMD, ord('4'), self.additionstab4)
+                (wx.ACCEL_CMD, ord('4'), self.additionstab4),
+                (wx.ACCEL_CMD, ord('5'), self.additionstab5)
                 ]
         atable = wx.AcceleratorTable(actb)
         self.SetAcceleratorTable(atable)
@@ -434,7 +438,8 @@ class MainFrame(wx.Frame):
             selTab = 2
         if event.GetId() == self.additionstab4:
             selTab = 3
-
+        if event.GetId() == self.additionstab5:
+            selTab = 4
         if selTab is not None:
             self.additionsPane.notebook.SetSelection(selTab)
 
