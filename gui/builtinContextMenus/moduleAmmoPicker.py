@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from gui.contextMenu import ContextMenu
 import gui.mainFrame
 import service
@@ -112,7 +113,7 @@ class ModuleAmmoPicker(ContextMenu):
 
     def addSeperator(self, m, text):
         id = wx.NewId()
-        m.Append(id, "--- %s ---" % text)
+        m.Append(id, u'─ %s ─' % text)
         m.Enable(id, False)
 
     def getSubMenu(self, context, selection, menu, i):
@@ -132,6 +133,11 @@ class ModuleAmmoPicker(ContextMenu):
             sub = None
             self.charges.sort(key=self.turretSorter)
             for charge in self.charges:
+                # fix issue 71 - will probably have to change if CCP adds more Orbital ammo
+                if "Orbital" in charge.name:
+                    item = self.addCharge(m, charge)
+                    items.append(item)
+                    continue
                 currBase = charge.name.rsplit()[-2:]
                 currRange = charge.getAttribute("weaponRangeMultiplier")
                 if nameBase is None or range != currRange or nameBase != currBase:
@@ -156,6 +162,7 @@ class ModuleAmmoPicker(ContextMenu):
 
             if sub is not None:
                 self.addSeperator(sub, "More Damage")
+
             for item in items:
                 m.AppendItem(item)
 
