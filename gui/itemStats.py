@@ -26,8 +26,12 @@ import wx.lib.mixins.listctrl  as  listmix
 import wx.html
 from eos.types import Ship, Module, Skill, Booster, Implant, Drone
 from gui.utils.numberFormatter import formatAmount
-from collections import OrderedDict
 import service
+
+try:
+    from collections import OrderedDict
+except ImportError:
+    from gui.utils.compat import OrderedDict
 
 class ItemStatsDialog(wx.Dialog):
     counter = 0
