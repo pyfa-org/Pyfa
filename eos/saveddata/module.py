@@ -464,7 +464,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             return currActive <= maxGroupActive
         # For projected, we're checking if ship is vulnerable to given item
         else:
-            if (item.offensive and projectedOnto.ship.getModifiedItemAttr("disallowOffensiveModifiers") == 1) or \
+            if (item.offensive and projectedOnto.ship.getModifiedItemAttr("disallowOffensiveModifiers") == 1 and "energyDestabilizationNew" not in item.effects) or \
             (item.assistive and projectedOnto.ship.getModifiedItemAttr("disallowAssistance") == 1):
                 return False
             else:
