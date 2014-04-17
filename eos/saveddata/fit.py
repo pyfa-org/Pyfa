@@ -710,7 +710,7 @@ class Fit(object):
         if map[key](val) == False: raise ValueError(str(val) + " is not a valid value for " + key)
         else: return val
 
-    def clear(self):
+    def clear(self, projected = False):
         self.__effectiveTank = None
         self.__weaponDPS = None
         self.__weaponVolley = None
@@ -730,6 +730,13 @@ class Fit(object):
         c = chain(self.modules, self.drones, self.boosters, self.implants, self.projectedDrones, self.projectedModules, (self.character, self.extraAttributes))
         for stuff in c:
             if stuff is not None and stuff != self: stuff.clear()
+
+        # If this is the active fit that we are clearing, not a projected fit, then this will
+        # run and clear the projected ships and flag the next iteration to skip this part
+        # to prevent recursion. See GutHub issue #72
+        if not projected:
+            for stuff in chain(self.projectedFits):
+                if stuff is not None and stuff != self: stuff.clear(projected = True)
 
     #Methods to register and get the thing currently affecting the fit,
     #so we can correctly map "Affected By"
