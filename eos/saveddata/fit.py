@@ -491,17 +491,27 @@ class Fit(object):
     def exportDna(self):
         dna = str(self.shipID)
         mods = OrderedDict()
+        charges = OrderedDict()
         for mod in self.modules:
             if not mod.isEmpty:
                 if not mod.itemID in mods:
                     mods[mod.itemID] = 0
                 mods[mod.itemID] += 1
 
+                if mod.charge:
+                    if not mod.chargeID in charges:
+                        charges[mod.chargeID] = 0
+                    # `or 1` because some charges (ie scripts) are without qty
+                    charges[mod.chargeID] += mod.numShots or 1
+
         for mod in mods:
             dna += ":{0};{1}".format(mod, mods[mod])
 
         for drone in self.drones:
             dna += ":{0};{1}".format(drone.itemID, drone.amount)
+
+        for charge in charges:
+            dna += ":{0};{1}".format(charge, charges[charge])
 
         return dna + "::"
 
