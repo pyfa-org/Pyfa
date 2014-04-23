@@ -520,7 +520,6 @@ class Fit(object):
         doc = xml.dom.minidom.Document()
         fittings = doc.createElement("fittings")
         doc.appendChild(fittings)
-
         for fit in fits:
             fitting = doc.createElement("fitting")
             fitting.setAttribute("name", fit.name)
@@ -531,7 +530,8 @@ class Fit(object):
             shipType = doc.createElement("shipType")
             shipType.setAttribute("value", fit.ship.item.name)
             fitting.appendChild(shipType)
-
+        
+            charges = {}
             slotNum = {}
             for module in fit.modules:
                 if module.isEmpty:
@@ -548,11 +548,24 @@ class Fit(object):
                 hardware.setAttribute("slot", "%s slot %d" % (slotName, slotId))
                 fitting.appendChild(hardware)
 
+                if module.charge:
+                    if not module.charge.name in charges:
+                        charges[module.charge.name] = 0
+                    # `or 1` because some charges (ie scripts) are without qty
+                    charges[module.charge.name] += module.numShots or 1
+
             for drone in fit.drones:
                 hardware = doc.createElement("hardware")
                 hardware.setAttribute("qty", "%d" % drone.amount)
                 hardware.setAttribute("slot", "drone bay")
                 hardware.setAttribute("type", drone.item.name)
+                fitting.appendChild(hardware)
+
+            for name, qty in charges.items():
+                hardware = doc.createElement("hardware")
+                hardware.setAttribute("qty", "%d" % qty)
+                hardware.setAttribute("slot", "cargo")
+                hardware.setAttribute("type", name)
                 fitting.appendChild(hardware)
 
         return doc.toprettyxml()
