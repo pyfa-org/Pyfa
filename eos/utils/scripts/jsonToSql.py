@@ -101,8 +101,7 @@ if __name__ == "__main__":
                 instance = tables[jsonName]()
                 # fix for issue 80
                 if jsonName is "icons" and "res:/UI/Texture/Icons/" in str(row['iconFile']):
-                    row['iconFile'] = row['iconFile'].replace('res:/UI/Texture/Icons/','')
-                    row['iconFile'] = row['iconFile'].replace('.png','')
+                    row['iconFile'] = row['iconFile'].replace('res:/UI/Texture/Icons/','').replace('.png','')
                 for k, v in row.iteritems():
                     setattr(instance, fieldMap.get(k, k), v)
 
