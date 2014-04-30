@@ -437,9 +437,7 @@ class Fit(object):
                             f.modules.append(m)
                 except KeyboardInterrupt:
                     continue
-
-                fits.append(f)
-
+            fits.append(f)
 
         return fits
 
@@ -530,7 +528,7 @@ class Fit(object):
             shipType = doc.createElement("shipType")
             shipType.setAttribute("value", fit.ship.item.name)
             fitting.appendChild(shipType)
-        
+
             charges = {}
             slotNum = {}
             for module in fit.modules:
