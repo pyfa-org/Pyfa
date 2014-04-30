@@ -243,14 +243,12 @@ class MainFrame(wx.Frame):
         info = wx.AboutDialogInfo()
         info.Name = "pyfa"
         info.Version = gui.aboutData.versionString
-        info.Description = wordwrap(gui.aboutData.description + "\n\n\nDevelopers: " +
-                                     "".join(gui.aboutData.developers) +
-                                     "\n\nAdditional credits:\n  " +
-                                     "\n  ".join(gui.aboutData.credits)
-                                     + "\n\nLicense: " +
-                                     gui.aboutData.license +
-                                     " - see included " +
-                                     gui.aboutData.licenseLocation +
+        info.Description = wordwrap(gui.aboutData.description + "\n\nDevelopers:\n\t" +
+                                     "\n\t".join(gui.aboutData.developers) +
+                                     "\n\nAdditional credits:\n\t" +
+                                     "\n\t".join(gui.aboutData.credits) +
+                                     "\n\nLicenses:\n\t" +
+                                     "\n\t".join(gui.aboutData.licenses) +
                                      "\n\nPython: \t" + sys.version +
                                      "\nwxPython: \t" + wx.__version__ +
                                      "\nSQLAlchemy: \t" + sqlalchemy.__version__,
