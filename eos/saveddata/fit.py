@@ -195,10 +195,12 @@ class Fit(object):
     def importEft(cls, eftString):
         from eos import db
         offineSuffix = " /OFFLINE"
+
         fit = cls()
         eftString = eftString.strip()
         lines = re.split('[\n\r]+', eftString)
         info = lines[0][1:-1].split(",", 1)
+
         if len(info) == 2:
             shipType = info[0].strip()
             fitName = info[1].strip()
@@ -211,28 +213,46 @@ class Fit(object):
             fit.name = fitName
         except:
             return
+
+        # maintain map of drones and their quantities
         droneMap = {}
         for i in range(1, len(lines)):
+            ammoName = None
+            droneAmount = None
+
             line = lines[i].strip()
             if not line:
                 continue
+
             setOffline = line.endswith(offineSuffix)
             if setOffline == True:
+                # remove offline suffix from line
                 line = line[:len(line) - len(offineSuffix)]
+
             modAmmo = line.split(",")
-            modDrone = modAmmo[0].split(" x")
-            if len(modAmmo) == 2: ammoName = modAmmo[1].strip()
-            else: ammoName = None
-            modName = modDrone[0].strip()
-            if len(modDrone) == 2: droneAmount = modDrone[1].strip()
-            else: droneAmount = None
+            # matches drone and cargo with x{qty}
+            modExtra = modAmmo[0].split(" x")
+
+            if len(modAmmo) == 2:
+                # line with a module and ammo
+                ammoName = modAmmo[1].strip()
+                modName = modAmmo[0].strip()
+            elif len(modExtra) == 2:
+                # line with drone/cargo and qty
+                droneAmount = modExtra[1].strip()
+                modName = modExtra[0].strip()
+            else:
+                # line with just module
+                modName = modExtra[0].strip()
+
             try:
+                # get item information. If we are on a Drone/Cargo line, throw out cargo
                 item = db.getItem(modName, eager="group.category")
-            except:
-                try:
-                    item = db.getItem(modAmmo[0], eager="group.category")
-                except:
+                if len(modExtra) == 2 and item.category.name != "Drone":
                     continue
+            except:
+                # if no data can be found (old names)
+                continue
 
             if item.category.name == "Drone":
                 droneAmount = int(droneAmount) if droneAmount is not None else 1
@@ -248,7 +268,9 @@ class Fit(object):
                     continue
                 if ammoName:
                     try:
-                        m.charge = db.getItem(ammoName)
+                        ammo = db.getItem(ammoName)
+                        if m.isValidCharge(ammo) and m.charge is None:
+                            m.charge = ammo
                     except:
                         pass
 
