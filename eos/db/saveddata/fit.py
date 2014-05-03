@@ -65,12 +65,5 @@ mapper(Fit, fits_table,
                                                       primaryjoin = projectedFits_table.c.victimID == fits_table.c.ID,
                                                       secondaryjoin = fits_table.c.ID == projectedFits_table.c.sourceID,
                                                       secondary = projectedFits_table,
-                                                      collection_class = HandledProjectedFitList),
-                     # projectedOnto is not currently used and probably won't be
-                     # It simply makes data clean-up easier. See GH issue #90
-                     "_Fit__projectedOnto" : relation(Fit,
-                                                      primaryjoin = fits_table.c.ID == projectedFits_table.c.sourceID,
-                                                      secondaryjoin = fits_table.c.ID == projectedFits_table.c.victimID == fits_table.c.ID,
-                                                      secondary = projectedFits_table,
                                                       collection_class = HandledProjectedFitList)
                      })
