@@ -338,6 +338,8 @@ class Fit(object):
 
                 for i in range(1, len(fitLines)):
                     line = fitLines[i]
+                    if not line:
+                        continue
                     # Parse line into some data we will need
                     misc = re.match("(Drones|Implant|Booster)_(Active|Inactive)=(.+)",line)
                     cargo = re.match("Cargohold=(.+)",line)
