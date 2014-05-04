@@ -24,11 +24,8 @@ class Cargo(ContextMenu):
         fitID = self.mainFrame.getActiveFit()
 
         cargo = eos.types.Cargo(selection[0])
-
-        dlg = CargoChanger(self.mainFrame, cargo, fullContext)
-        dlg.ShowModal()
-        dlg.Destroy()
-
+        sFit.addChangeCargo(fitID,cargo, 1)
+        self.mainFrame.additionsPane.notebook.SetSelection(1)
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
 Cargo.register()
@@ -60,11 +57,12 @@ class CargoChanger(wx.Dialog):
 
         bSizer1 = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.input = wx.TextCtrl(self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0)
+        self.input = wx.TextCtrl(self, wx.ID_ANY, style=wx.TE_PROCESS_ENTER)
 
-        bSizer1.Add(self.input, 0, wx.ALL, 5)
+        bSizer1.Add(self.input, 1, wx.ALL, 5)
         self.input.Bind(wx.EVT_CHAR, self.onChar)
-        self.button = wx.Button(self, wx.ID_OK, u"Change")
+        self.input.Bind(wx.EVT_TEXT_ENTER, self.change)
+        self.button = wx.Button(self, wx.ID_OK, u"Done")
         bSizer1.Add(self.button, 0, wx.ALL, 5)
 
         self.SetSizer(bSizer1)
@@ -80,15 +78,15 @@ class CargoChanger(wx.Dialog):
         sFit.addChangeCargo(fitID, self.cargo, int(self.input.GetLineText(0)))
 
         wx.PostEvent(mainFrame, GE.FitChanged(fitID=fitID))
-        event.Skip()
 
+        event.Skip()
+        self.Destroy()
     ## checks to make sure it's valid number
     def onChar(self, event):
         key = event.GetKeyCode()
 
         acceptable_characters = "1234567890"
         acceptable_keycode    = [3, 22, 13, 8, 127] # modifiers like delete, copy, paste
-
         if key in acceptable_keycode or key >= 255 or (key < 255 and chr(key) in acceptable_characters):
             event.Skip()
             return

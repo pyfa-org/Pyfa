@@ -27,7 +27,9 @@ import globalEvents as GE
 
 #  @todo: Was copied form another class and modified. Look through entire file, refine
 class CargoView(d.Display):
-    DEFAULT_COLS = ["Base Name"]
+    DEFAULT_COLS = ["Base Icon",
+                    "Base Name",
+                    "attr:volume"]
 
     def __init__(self, parent):
         d.Display.__init__(self, parent, style=wx.LC_SINGLE_SEL | wx.BORDER_NONE)

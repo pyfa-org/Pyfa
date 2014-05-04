@@ -95,7 +95,7 @@ class TargetingMiscViewFull(StatsView):
 
 
     def refreshPanel(self, fit):
-        #If we did anything intresting, we'd update our labels to reflect the new fit's stats here
+        #If we did anything interesting, we'd update our labels to reflect the new fit's stats here
 
         stats = (("labelTargets", lambda: fit.maxTargets, 3, 0, 0, ""),
                  ("labelRange", lambda: fit.maxTargetRange / 1000, 3, 0, 0, "km"),
@@ -142,11 +142,21 @@ class TargetingMiscViewFull(StatsView):
                 else:
                     label.SetToolTip(wx.ToolTip(""))
                 self._cachedValues[counter] = value
-            elif labelName == "labelFullWarpSpeed":
-                if fit:
+            elif labelName == "labelFullWarpSpeed" and fit:
                     label.SetToolTip(wx.ToolTip("Max Warp Distance: %.1f AU" % fit.maxWarpDistance))
-                else:
-                    label.SetToolTip(wx.ToolTip(""))
+            elif labelName == "labelFullCargo" and fit:
+                # if you add stuff to cargo, the capacity doesn't change and thus it is still cached
+                # This assures us that we force refresh of cargo tooltip
+                capacity = fit.ship.getModifiedItemAttr("capacity")
+                cargoSize = 0
+                for mod in fit.cargo:
+                    cargoSize += mod.getModifiedItemAttr("volume") * mod.amount
+                a = capacity-cargoSize
+                tip  = u"Capacity: %sm\u00B3\n"% capacity
+                tip += u"Available: %.1fm\u00B3" %a
+                label.SetToolTip(wx.ToolTip(tip))
+            else:
+                label.SetToolTip(wx.ToolTip(""))
 
             counter += 1
 
