@@ -22,6 +22,10 @@ from eos.effectHandlerHelpers import HandledItem
 
 class Ship(ItemAttrShortcut, HandledItem):
     def __init__(self, item):
+
+        if item.category.name != "Ship":
+            raise ValueError('Passed item "%s" (category: (%s)) is not under Ship category'%(item.name, item.category.name))
+
         self.__item = item
         self.__itemModifiedAttributes = ModifiedAttributeDict()
         if not isinstance(item, int):

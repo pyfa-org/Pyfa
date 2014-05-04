@@ -132,20 +132,28 @@ class exportHtmlThread(threading.Thread):
                 if len(fits) > 0:
                     groupFits += len(fits)
 
-                    # Ship group header
-                    HTMLship = (
-                    '        <li data-role="collapsible" data-iconpos="right" data-shadow="false" data-corners="false">\n'
-                    '        <h2>' + ship.name + ' <span class="ui-li-count">'+str(len(fits))+'</span></h2>\n'
-                    '          <ul data-role="listview" data-shadow="false" data-inset="true" data-corners="false">\n')
-
-                    for fit in fits:
+                    if len(fits) == 1:
                         if self.stopRunning:
-                            return;
+                            return
+                        fit = fits[0]
                         dnaFit = sFit.exportDna(fit[0])
-                        HTMLship += '          <li><a data-dna="' + dnaFit + '" target="_blank">' + fit[1] + '</a></li>\n'
+                        HTMLgroup += (
+                        '        <li><a data-dna="' + dnaFit + '" target="_blank">' + ship.name + ": " + fit[1] + '</a></li>\n')
+                    else:
+                        # Ship group header
+                        HTMLship = (
+                        '        <li data-role="collapsible" data-iconpos="right" data-shadow="false" data-corners="false">\n'
+                        '        <h2>' + ship.name + ' <span class="ui-li-count">'+str(len(fits))+'</span></h2>\n'
+                        '          <ul data-role="listview" data-shadow="false" data-inset="true" data-corners="false">\n')
 
-                    HTMLgroup += HTMLship + ('          </ul>\n'
-                                             '        </li>\n')
+                        for fit in fits:
+                            if self.stopRunning:
+                                return
+                            dnaFit = sFit.exportDna(fit[0])
+                            HTMLship += '          <li><a data-dna="' + dnaFit + '" target="_blank">' + fit[1] + '</a></li>\n'
+
+                        HTMLgroup += HTMLship + ('          </ul>\n'
+                                                 '        </li>\n')
             if groupFits > 0:
                 # Market group header
                 HTML += (

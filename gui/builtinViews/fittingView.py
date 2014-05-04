@@ -233,10 +233,23 @@ class FittingView(d.Display):
         event.Skip()
 
     def fitRemoved(self, event):
+        '''If fit is removed and active, the page is deleted.
+        We also refresh the fit of the new current page in case 
+        delete fit caused change in stats (projected)
+        '''
         fitID = event.fitID
+
         if fitID == self.getActiveFit():
             self.parent.DeletePage(self.parent.GetPageIndex(self))
-
+        
+        try:
+            # Sometimes there is no active page after deletion, hence the try block
+            cFit = service.Fit.getInstance()
+            cFit.refreshFit(self.getActiveFit())
+            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.activeFitID))
+        except wx._core.PyDeadObjectError:
+            pass
+            
         event.Skip()
 
     def fitRenamed(self, event):

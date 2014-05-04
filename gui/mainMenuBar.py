@@ -33,7 +33,6 @@ class MainMenuBar(wx.MenuBar):
         self.exportSkillsNeededId = wx.NewId()
         self.importCharacterId = wx.NewId()
         self.exportHtmlId = wx.NewId()
-        self.preferencesId = wx.NewId()
         self.wikiId = wx.NewId()
         self.forumId = wx.NewId()
 
@@ -59,14 +58,12 @@ class MainMenuBar(wx.MenuBar):
         fileMenu.AppendSeparator()
         fileMenu.Append(wx.ID_EXIT)
 
-
         # Edit menu
         editMenu = wx.Menu()
         self.Append(editMenu, "&Edit")
 
         #editMenu.Append(wx.ID_UNDO)
         #editMenu.Append(wx.ID_REDO)
-
 
         copyText = "&To Clipboard" + ("\tCTRL+C" if 'wxMSW' in wx.PlatformInfo else "")
         pasteText = "&From Clipboard" + ("\tCTRL+V" if 'wxMSW' in wx.PlatformInfo else "")
@@ -89,13 +86,9 @@ class MainMenuBar(wx.MenuBar):
         graphFrameItem.SetBitmap(bitmapLoader.getBitmap("graphs_small", "icons"))
         windowMenu.AppendItem(graphFrameItem)
 
-        #=======================================================================
-        # DISABLED FOR RC2 Release
-        #
-        preferencesItem = wx.MenuItem(windowMenu, self.preferencesId, "Preferences\tCTRL+P")
+        preferencesItem = wx.MenuItem(windowMenu, wx.ID_PREFERENCES, "Preferences\tCTRL+P")
         preferencesItem.SetBitmap(bitmapLoader.getBitmap("preferences_small", "icons"))
         windowMenu.AppendItem(preferencesItem)
-        #=======================================================================
 
         # Help menu
         helpMenu = wx.Menu()
@@ -107,8 +100,6 @@ class MainMenuBar(wx.MenuBar):
 
         if config.debug:
             helpMenu.Append( self.mainFrame.widgetInspectMenuID, "Open Widgets Inspect tool", "Open Widgets Inspect tool")
-
-
 
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
 

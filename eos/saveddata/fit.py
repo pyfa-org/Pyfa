@@ -196,10 +196,12 @@ class Fit(object):
     def importEft(cls, eftString):
         from eos import db
         offineSuffix = " /OFFLINE"
+
         fit = cls()
         eftString = eftString.strip()
         lines = re.split('[\n\r]+', eftString)
         info = lines[0][1:-1].split(",", 1)
+
         if len(info) == 2:
             shipType = info[0].strip()
             fitName = info[1].strip()
@@ -212,28 +214,46 @@ class Fit(object):
             fit.name = fitName
         except:
             return
+
+        # maintain map of drones and their quantities
         droneMap = {}
         for i in range(1, len(lines)):
+            ammoName = None
+            droneAmount = None
+
             line = lines[i].strip()
             if not line:
                 continue
+
             setOffline = line.endswith(offineSuffix)
             if setOffline == True:
+                # remove offline suffix from line
                 line = line[:len(line) - len(offineSuffix)]
+
             modAmmo = line.split(",")
-            modDrone = modAmmo[0].split(" x")
-            if len(modAmmo) == 2: ammoName = modAmmo[1].strip()
-            else: ammoName = None
-            modName = modDrone[0].strip()
-            if len(modDrone) == 2: droneAmount = modDrone[1].strip()
-            else: droneAmount = None
+            # matches drone and cargo with x{qty}
+            modExtra = modAmmo[0].split(" x")
+
+            if len(modAmmo) == 2:
+                # line with a module and ammo
+                ammoName = modAmmo[1].strip()
+                modName = modAmmo[0].strip()
+            elif len(modExtra) == 2:
+                # line with drone/cargo and qty
+                droneAmount = modExtra[1].strip()
+                modName = modExtra[0].strip()
+            else:
+                # line with just module
+                modName = modExtra[0].strip()
+
             try:
+                # get item information. If we are on a Drone/Cargo line, throw out cargo
                 item = db.getItem(modName, eager="group.category")
-            except:
-                try:
-                    item = db.getItem(modAmmo[0], eager="group.category")
-                except:
+                if len(modExtra) == 2 and item.category.name != "Drone":
                     continue
+            except:
+                # if no data can be found (old names)
+                continue
 
             if item.category.name == "Drone":
                 droneAmount = int(droneAmount) if droneAmount is not None else 1
@@ -249,7 +269,9 @@ class Fit(object):
                     continue
                 if ammoName:
                     try:
-                        m.charge = db.getItem(ammoName)
+                        ammo = db.getItem(ammoName)
+                        if m.isValidCharge(ammo) and m.charge is None:
+                            m.charge = ammo
                     except:
                         pass
 
@@ -442,9 +464,7 @@ class Fit(object):
                             f.modules.append(m)
                 except KeyboardInterrupt:
                     continue
-
-                fits.append(f)
-
+            fits.append(f)
 
         return fits
 
@@ -496,17 +516,27 @@ class Fit(object):
     def exportDna(self):
         dna = str(self.shipID)
         mods = OrderedDict()
+        charges = OrderedDict()
         for mod in self.modules:
             if not mod.isEmpty:
                 if not mod.itemID in mods:
                     mods[mod.itemID] = 0
                 mods[mod.itemID] += 1
 
+                if mod.charge:
+                    if not mod.chargeID in charges:
+                        charges[mod.chargeID] = 0
+                    # `or 1` because some charges (ie scripts) are without qty
+                    charges[mod.chargeID] += mod.numShots or 1
+
         for mod in mods:
             dna += ":{0};{1}".format(mod, mods[mod])
 
         for drone in self.drones:
             dna += ":{0};{1}".format(drone.itemID, drone.amount)
+
+        for charge in charges:
+            dna += ":{0};{1}".format(charge, charges[charge])
 
         return dna + "::"
 
@@ -515,7 +545,6 @@ class Fit(object):
         doc = xml.dom.minidom.Document()
         fittings = doc.createElement("fittings")
         doc.appendChild(fittings)
-
         for fit in fits:
             fitting = doc.createElement("fitting")
             fitting.setAttribute("name", fit.name)
@@ -527,6 +556,7 @@ class Fit(object):
             shipType.setAttribute("value", fit.ship.item.name)
             fitting.appendChild(shipType)
 
+            charges = {}
             slotNum = {}
             for module in fit.modules:
                 if module.isEmpty:
@@ -543,11 +573,24 @@ class Fit(object):
                 hardware.setAttribute("slot", "%s slot %d" % (slotName, slotId))
                 fitting.appendChild(hardware)
 
+                if module.charge:
+                    if not module.charge.name in charges:
+                        charges[module.charge.name] = 0
+                    # `or 1` because some charges (ie scripts) are without qty
+                    charges[module.charge.name] += module.numShots or 1
+
             for drone in fit.drones:
                 hardware = doc.createElement("hardware")
                 hardware.setAttribute("qty", "%d" % drone.amount)
                 hardware.setAttribute("slot", "drone bay")
                 hardware.setAttribute("type", drone.item.name)
+                fitting.appendChild(hardware)
+
+            for name, qty in charges.items():
+                hardware = doc.createElement("hardware")
+                hardware.setAttribute("qty", "%d" % qty)
+                hardware.setAttribute("slot", "cargo")
+                hardware.setAttribute("type", name)
                 fitting.appendChild(hardware)
 
             for cargo in fit.cargo:
@@ -556,7 +599,6 @@ class Fit(object):
                 hardware.setAttribute("slot", "cargo")
                 hardware.setAttribute("type", cargo.item.name)
                 fitting.appendChild(hardware)
-
         return doc.toprettyxml()
 
     @reconstructor

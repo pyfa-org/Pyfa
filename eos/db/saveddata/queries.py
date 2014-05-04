@@ -21,6 +21,7 @@ from eos.db.util import processEager, processWhere
 from eos.db import saveddata_session, sd_lock
 from eos.types import User, Character, Fit, Price, DamagePattern, Fleet, MiscData, Wing, Squad
 from eos.db.saveddata.fleet import squadmembers_table
+from eos.db.saveddata.fit import projectedFits_table
 from sqlalchemy.sql import and_
 import eos.config
 
@@ -360,7 +361,15 @@ def getSquadsIDsWithFitID(fitID):
             return squads
     else:
         raise TypeError("Need integer as argument")
-
+        
+def getProjectedFits(fitID):
+    if isinstance(fitID, int):
+        with sd_lock:
+            filter = and_(projectedFits_table.c.sourceID == fitID, Fit.ID == projectedFits_table.c.victimID)
+            fits = saveddata_session.query(Fit).filter(filter).all()
+            return fits
+    else:
+        raise TypeError("Need integer as argument")        
 
 def add(stuff):
     with sd_lock:
