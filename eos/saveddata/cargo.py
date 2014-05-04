@@ -26,9 +26,6 @@ from sqlalchemy.orm import validates, reconstructor
 class Cargo(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     def __init__(self, item):
-        if item.category.name != "Charge":
-            raise ValueError("Passed item is not a charge")
-
         self.__item = item
         self.itemID = item.ID
         self.active = True

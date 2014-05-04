@@ -14,11 +14,7 @@ class Cargo(ContextMenu):
         # Make sure context menu registers in the correct view
         if srcContext not in ("marketItemGroup", "marketItemMisc") or self.mainFrame.getActiveFit() is None:
             return False
-
-        item = selection[0]
-        sFit = service.Fit.getInstance()
-
-        return sFit.isAmmo(item.ID)
+        return True
 
     def getText(self, itmContext, selection):
         return "Add {0} to Cargo".format(itmContext)
