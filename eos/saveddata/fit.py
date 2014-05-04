@@ -329,6 +329,8 @@ class Fit(object):
                 f.ship = Ship(db.getItem(shipname))
                 for i in range(1, len(fitLines)):
                     line = fitLines[i]
+                    if not line:
+                        continue
                     # Parse line into some data we will need
                     misc = re.match("(Drones|Implant|Booster)_(Active|Inactive)=(.+)",line)
                     if misc:
