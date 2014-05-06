@@ -18,14 +18,14 @@
 #===============================================================================
 
 from eos.effectHandlerHelpers import HandledList, HandledModuleList, HandledDroneList, HandledImplantBoosterList, \
-HandledProjectedFitList, HandledProjectedModList, HandledProjectedDroneList
+HandledProjectedFitList, HandledProjectedModList, HandledProjectedDroneList, HandledCargoList
 from eos.modifiedAttributeDict import ModifiedAttributeDict
 from sqlalchemy.orm import validates, reconstructor
 from itertools import chain
 from eos import capSim
 from copy import deepcopy
 from math import sqrt, log, asinh
-from eos.types import Drone, Ship, Character, State, Slot, Module, Implant, Booster, Skill
+from eos.types import Drone, Cargo, Ship, Character, State, Slot, Module, Implant, Booster, Skill
 from eos.saveddata.module import State
 import re
 import xml.dom
@@ -52,6 +52,7 @@ class Fit(object):
     def __init__(self):
         self.__modules = HandledModuleList()
         self.__drones = HandledDroneList()
+        self.__cargo = HandledCargoList()
         self.__implants = HandledImplantBoosterList()
         self.__boosters = HandledImplantBoosterList()
         self.__projectedFits = HandledProjectedFitList()
@@ -174,11 +175,9 @@ class Fit(object):
                     d.amount = int(amount)
                     f.drones.append(d)
                 elif item.category.name == "Charge":
-                    for i in xrange(int(amount)):
-                        for mod in f.modules:
-                            if (mod.isValidCharge(item) and mod.charge == None):
-                                mod.charge = item
-                                break;
+                    c = Cargo(item)
+                    c.amount = int(amount)
+                    f.cargo.append(c)
                 else:
                     for i in xrange(int(amount)):
                         try:
@@ -216,9 +215,10 @@ class Fit(object):
 
         # maintain map of drones and their quantities
         droneMap = {}
+        cargoMap = {}
         for i in range(1, len(lines)):
             ammoName = None
-            droneAmount = None
+            extraAmount = None
 
             line = lines[i].strip()
             if not line:
@@ -239,7 +239,7 @@ class Fit(object):
                 modName = modAmmo[0].strip()
             elif len(modExtra) == 2:
                 # line with drone/cargo and qty
-                droneAmount = modExtra[1].strip()
+                extraAmount = modExtra[1].strip()
                 modName = modExtra[0].strip()
             else:
                 # line with just module
@@ -248,17 +248,20 @@ class Fit(object):
             try:
                 # get item information. If we are on a Drone/Cargo line, throw out cargo
                 item = db.getItem(modName, eager="group.category")
-                if len(modExtra) == 2 and item.category.name != "Drone":
-                    continue
             except:
                 # if no data can be found (old names)
                 continue
 
             if item.category.name == "Drone":
-                droneAmount = int(droneAmount) if droneAmount is not None else 1
+                extraAmount = int(extraAmount) if extraAmount is not None else 1
                 if not modName in droneMap:
                     droneMap[modName] = 0
-                droneMap[modName] += droneAmount
+                droneMap[modName] += extraAmount
+            if len(modExtra) == 2 and item.category.name != "Drone":
+                extraAmount = int(extraAmount) if extraAmount is not None else 1
+                if not modName in cargoMap:
+                    cargoMap[modName] = 0
+                cargoMap[modName] += extraAmount
             elif item.category.name == "Implant":
                 fit.implants.append(Implant(item))
             else:
@@ -285,6 +288,11 @@ class Fit(object):
             d = Drone(db.getItem(droneName))
             d.amount = droneMap[droneName]
             fit.drones.append(d)
+
+        for cargoName in cargoMap:
+            c = Cargo(db.getItem(cargoName))
+            c.amount = cargoMap[cargoName]
+            fit.cargo.append(c)
 
         return fit
 
@@ -327,12 +335,14 @@ class Fit(object):
                 f.name = fitLines[0][1:-1]
                 # Assign ship to fitting
                 f.ship = Ship(db.getItem(shipname))
+
                 for i in range(1, len(fitLines)):
                     line = fitLines[i]
                     if not line:
                         continue
                     # Parse line into some data we will need
                     misc = re.match("(Drones|Implant|Booster)_(Active|Inactive)=(.+)",line)
+                    cargo = re.match("Cargohold=(.+)",line)
                     if misc:
                         entityType = misc.group(1)
                         entityState = misc.group(2)
@@ -389,6 +399,19 @@ class Fit(object):
                                 b.active = False
                             f.boosters.append(b)
                     # If we don't have any prefixes, then it's a module
+                    elif cargo:
+                        cargoData = re.match("(.+),([0-9]+)", cargo.group(1))
+                        cargoName = cargoData.group(1) if cargoData else cargo.group(1)
+                        cargoAmount = int(cargoData.group(2)) if cargoData else 1
+                        # Bail if we can't get item
+                        try:
+                            item = db.getItem(cargoName)
+                        except:
+                            continue
+                        # Add Cargo to the fitting
+                        c = Cargo(item)
+                        c.amount = cargoAmount
+                        f.cargo.append(c)
                     else:
                         withCharge = re.match("(.+),(.+)", line)
                         modName = withCharge.group(1) if withCharge else line
@@ -398,6 +421,7 @@ class Fit(object):
                             modItem = db.getItem(modName)
                         except:
                             continue
+
                         # Create module and activate it if it's activable
                         m = Module(modItem)
                         if m.isValidState(State.ACTIVE):
@@ -449,6 +473,13 @@ class Fit(object):
                             d = Drone(item)
                             d.amount = int(hardware.getAttribute("qty"))
                             f.drones.append(d)
+                        elif hardware.getAttribute("slot").lower() == "cargo":
+                            # although the eve client only support charges in cargo, third-party programs
+                            # may support items or "refits" in cargo. Support these by blindly adding all
+                            # cargo, not just charges
+                            c = Cargo(item)
+                            c.amount = int(hardware.getAttribute("qty"))
+                            f.cargo.append(c)
                         else:
                             try:
                                 m = Module(item)
@@ -492,6 +523,9 @@ class Fit(object):
             export += "\n\n"
             for drone in self.drones:
                 export += "%s x%s\n" % (drone.item.name, drone.amount)
+        if len(self.cargo) > 0:
+            for cargo in self.cargo:
+                export += "%s x%s\n" % (cargo.item.name, cargo.amount)
 
         if export[-1] == "\n":
             export = export[:-1]
@@ -531,6 +565,17 @@ class Fit(object):
 
         for drone in self.drones:
             dna += ":{0};{1}".format(drone.itemID, drone.amount)
+
+        for cargo in self.cargo:
+            # DNA format is a simple/dumb format. As CCP uses the slot information of the item itself
+            # without designating slots in the DNA standard, we need to make sure we only include
+            # charges in the DNA export. If modules were included, the EVE Client will interpret these
+            # as being "Fitted" to whatever slot they are for, and it causes an corruption error in the
+            # client when trying to save the fit
+            if cargo.item.category.name == "Charge":
+                if not cargo.item.ID in charges:
+                    charges[cargo.item.ID] = 0
+                charges[cargo.item.ID] += cargo.amount
 
         for charge in charges:
             dna += ":{0};{1}".format(charge, charges[charge])
@@ -582,6 +627,11 @@ class Fit(object):
                 hardware.setAttribute("slot", "drone bay")
                 hardware.setAttribute("type", drone.item.name)
                 fitting.appendChild(hardware)
+
+            for cargo in fit.cargo:
+                if not cargo.item.name in charges:
+                    charges[cargo.item.name] = 0
+                charges[cargo.item.name] += cargo.amount
 
             for name, qty in charges.items():
                 hardware = doc.createElement("hardware")
@@ -650,6 +700,10 @@ class Fit(object):
     @property
     def drones(self):
         return self.__drones
+
+    @property
+    def cargo(self):
+        return self.__cargo
 
     @property
     def modules(self):

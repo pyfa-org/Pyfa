@@ -75,10 +75,16 @@ class AttributeDisplay(ViewColumn):
             else:
                 attr = mod.getAttribute(self.info.name)
 
+        if self.info.name == "volume":
+            str = (formatAmount(attr, 3, 0, 3))
+            if hasattr(mod, "amount"):
+                str = str + u"m\u00B3 (%s m\u00B3)"%(formatAmount(attr*mod.amount, 3, 0, 3))
+            attr = str
+
         if isinstance(attr, (float, int)):
-            return (formatAmount(attr, 3, 0, 3))
-        else:
-            return attr if attr is not None else ""
+            attr = (formatAmount(attr, 3, 0, 3))
+
+        return attr if attr is not None else ""
 
     def getImageId(self, mod):
         return -1

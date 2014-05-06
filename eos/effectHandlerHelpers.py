@@ -187,6 +187,46 @@ class HandledDroneList(HandledList):
 
         return d
 
+class HandledCargoList(HandledList):
+    # shameless copy of HandledDroneList
+    # I have no idea what this does, but I needed it
+    # @todo: investigate this
+    def find(self, item):
+        for d in self:
+            if d.item == item:
+                yield d
+
+    def findFirst(self, item):
+        for d in self.find(item):
+            return d
+
+    def append(self, cargo):
+        list.append(self, cargo)
+
+    def remove(self, cargo):
+        HandledList.remove(self, cargo)
+
+    def appendItem(self, item, qty = 1):
+        if qty < 1: ValueError("Amount of cargo to add should be >= 1")
+        d = self.findFirst(item)
+
+        if d is None:
+            d = eos.types.Cargo(item)
+            self.append(d)
+
+        d.qty += qty
+        return d
+
+    def removeItem(self, item, qty):
+        if qty < 1: ValueError("Amount of cargo to remove should be >= 1")
+        d = self.findFirst(item)
+        if d is None: return
+        d.qty -= qty
+        if d.qty <= 0:
+            self.remove(d)
+            return None
+
+        return d
 
 class HandledImplantBoosterList(HandledList):
     def __init__(self):

@@ -24,11 +24,12 @@ from sqlalchemy.sql import and_
 from eos.db import saveddata_meta
 from eos.db.saveddata.module import modules_table
 from eos.db.saveddata.drone import drones_table
+from eos.db.saveddata.cargo import cargo_table
 from eos.db.saveddata.implant import fitImplants_table
-from eos.types import Fit, Module, User, Booster, Drone, Implant, Character, DamagePattern
+from eos.types import Fit, Module, User, Booster, Drone, Cargo, Implant, Character, DamagePattern
 from eos.effectHandlerHelpers import HandledModuleList, HandledDroneList, \
 HandledImplantBoosterList, HandledProjectedModList, HandledProjectedDroneList, \
-HandledProjectedFitList
+HandledProjectedFitList, HandledCargoList
 fits_table = Table("fits", saveddata_meta,
                          Column("ID", Integer, primary_key = True),
                          Column("ownerID", ForeignKey("users.ID"), nullable = True, index = True),
@@ -53,6 +54,8 @@ mapper(Fit, fits_table,
                      "_Fit__boosters" : relation(Booster, collection_class = HandledImplantBoosterList, cascade='all, delete, delete-orphan', single_parent=True),
                      "_Fit__drones" : relation(Drone, collection_class = HandledDroneList, cascade='all, delete, delete-orphan', single_parent=True,
                                                primaryjoin = and_(drones_table.c.fitID == fits_table.c.ID, drones_table.c.projected == False)),
+                     "_Fit__cargo" : relation(Cargo, collection_class = HandledCargoList, cascade='all, delete, delete-orphan', single_parent=True,
+                                               primaryjoin = and_(cargo_table.c.fitID == fits_table.c.ID)),
                      "_Fit__projectedDrones" : relation(Drone, collection_class = HandledProjectedDroneList, cascade='all, delete, delete-orphan', single_parent=True,
                                                primaryjoin = and_(drones_table.c.fitID == fits_table.c.ID, drones_table.c.projected == True)),
                      "_Fit__implants" : relation(Implant, collection_class = HandledImplantBoosterList, cascade='all, delete, delete-orphan', single_parent=True,

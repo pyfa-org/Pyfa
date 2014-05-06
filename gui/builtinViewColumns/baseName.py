@@ -22,7 +22,7 @@ from gui import builtinViewColumns
 from gui.viewColumn import ViewColumn
 from gui import bitmapLoader
 import wx
-from eos.types import Drone, Fit, Module, Slot, Rack
+from eos.types import Drone, Cargo, Fit, Module, Slot, Rack
 import service
 
 class BaseName(ViewColumn):
@@ -35,6 +35,8 @@ class BaseName(ViewColumn):
 
     def getText(self, stuff):
         if isinstance(stuff, Drone):
+            return "%dx %s" % (stuff.amount, stuff.item.name)
+        elif isinstance(stuff, Cargo):
             return "%dx %s" % (stuff.amount, stuff.item.name)
         elif isinstance(stuff, Fit):
             return "%s (%s)" % (stuff.name, stuff.ship.item.name)
