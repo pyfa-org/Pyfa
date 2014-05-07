@@ -478,7 +478,11 @@ class Fit(object):
             eos.db.commit()
             self.recalc(fit)
 
-    def addCargo(self, fitID, itemID, amount=1):
+    def addCargo(self, fitID, itemID, amount=1, replace = False):
+        '''Adds cargo via typeID of item. If replace = True, we replace amount with
+        given parameter, otherwise we increment
+        '''
+
         if fitID == None:
             return False
 
@@ -499,7 +503,10 @@ class Fit(object):
             cargo = eos.types.Cargo(item)
 
         fit.cargo.append(cargo)
-        cargo.amount += amount
+        if replace:
+            cargo.amount = amount
+        else:
+            cargo.amount += amount
 
         self.recalc(fit)
         eos.db.commit()

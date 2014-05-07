@@ -75,7 +75,7 @@ class CargoChanger(wx.Dialog):
         mainFrame = gui.mainFrame.MainFrame.getInstance()
         fitID = mainFrame.getActiveFit()
 
-        sFit.addCargo(fitID, self.cargo, int(self.input.GetLineText(0)))
+        sFit.addCargo(fitID, self.cargo.item.ID, int(self.input.GetLineText(0)), replace=True)
 
         wx.PostEvent(mainFrame, GE.FitChanged(fitID=fitID))
 
