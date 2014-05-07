@@ -9,7 +9,7 @@ class MarketJump(ContextMenu):
 
     def display(self, srcContext, selection):
         validContexts = ("marketItemMisc", "fittingModule", "fittingCharge", "droneItem", "implantItem",
-                         "boosterItem", "projectedModule", "projectedDrone", "projectedCharge")
+                         "boosterItem", "projectedModule", "projectedDrone", "projectedCharge", "cargoItem")
         if not srcContext in validContexts:
             return False
         sMkt = service.Market.getInstance()
@@ -28,7 +28,7 @@ class MarketJump(ContextMenu):
 
     def activate(self, fullContext, selection, i):
         srcContext = fullContext[0]
-        if srcContext in ("fittingModule", "droneItem", "implantItem", "boosterItem", "projectedModule", "projectedDrone"):
+        if srcContext in ("fittingModule", "droneItem", "implantItem", "boosterItem", "projectedModule", "projectedDrone", "cargoItem"):
             item = selection[0].item
         elif srcContext in ("fittingCharge", "projectedCharge"):
             item = selection[0].charge

@@ -25,6 +25,20 @@ from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
 import globalEvents as GE
 
+class CargoViewDrop(wx.PyDropTarget):
+        def __init__(self, dropFn):
+            wx.PyDropTarget.__init__(self)
+            self.dropFn = dropFn
+            # this is really transferring an EVE itemID
+            self.dropData = wx.PyTextDataObject()
+            self.SetDataObject(self.dropData)
+
+        def OnData(self, x, y, t):
+            if self.GetData():
+                data = self.dropData.GetText().split(':')
+                self.dropFn(x, y, data)
+            return t
+
 #  @todo: Was copied form another class and modified. Look through entire file, refine
 class CargoView(d.Display):
     DEFAULT_COLS = ["Base Icon",
@@ -37,14 +51,43 @@ class CargoView(d.Display):
         self.lastFitId = None
 
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
-        #self.mainFrame.Bind(mb.ITEM_SELECTED, self.addItem)
         self.Bind(wx.EVT_LEFT_DCLICK, self.removeItem)
         self.Bind(wx.EVT_KEY_UP, self.kbEvent)
+
+        self.SetDropTarget(CargoViewDrop(self.handleListDrag))
+        self.Bind(wx.EVT_LIST_BEGIN_DRAG, self.startDrag)
 
         if "__WXGTK__" in  wx.PlatformInfo:
             self.Bind(wx.EVT_RIGHT_UP, self.scheduleMenu)
         else:
             self.Bind(wx.EVT_RIGHT_DOWN, self.scheduleMenu)
+
+    def handleListDrag(self, x, y, data):
+        '''
+        Handles dragging of items from various pyfa displays which support it
+
+        data is list with two indices:
+            data[0] is hard-coded str of originating source
+            data[1] is typeID or index of data we want to manipulate
+        '''
+
+        if data[0] == "fitting":
+            self.swapModule(x, y, int(data[1]))
+        elif data[0] == "market":
+            sFit = service.Fit.getInstance()
+            sFit.addCargo(self.mainFrame.getActiveFit(), int(data[1]), 1)
+            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
+
+    def startDrag(self, event):
+        row = event.GetIndex()
+
+        if row != -1:
+            data = wx.PyTextDataObject()
+            data.SetText("cargo:"+str(row))
+
+            dropSource = wx.DropSource(self)
+            dropSource.SetData(data)
+            res = dropSource.DoDragDrop()
 
     def kbEvent(self,event):
         keycode = event.GetKeyCode()
@@ -56,6 +99,20 @@ class CargoView(d.Display):
                 cFit.removeCargo(fitID, self.GetItemData(row))
                 wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
         event.Skip()
+
+    def swapModule(self, x, y, modIdx):
+        '''Swap a module from fitting window with cargo'''
+
+        dstRow, _ = self.HitTest((x, y))
+        if dstRow != -1:
+            # Gather module information to get position
+            sFit = service.Fit.getInstance()
+            fit = sFit.getFit(self.mainFrame.getActiveFit())
+            module = fit.modules[modIdx]
+
+            sFit.swapModuleWithCargo(self.mainFrame.getActiveFit(), module.position, dstRow)
+
+            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
 
     def fitChanged(self, event):
         #Clear list and get out if current fitId is None

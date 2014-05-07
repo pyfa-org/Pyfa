@@ -96,9 +96,9 @@ class FittingViewDrop(wx.PyDropTarget):
 
         def OnData(self, x, y, t):
             if self.GetData():
-                self.dropFn(x, y, int(self.dropData.GetText()))
+                data = self.dropData.GetText().split(':')
+                self.dropFn(x, y, data)
             return t
-
 
 class FittingView(d.Display):
     DEFAULT_COLS = ["State",
@@ -130,7 +130,7 @@ class FittingView(d.Display):
         else:
             self.Bind(wx.EVT_RIGHT_DOWN, self.scheduleMenu)
 
-        self.SetDropTarget(FittingViewDrop(self.swapItems))
+        self.SetDropTarget(FittingViewDrop(self.handleListDrag))
         self.activeFitID = None
         self.FVsnapshot = None
         self.itemCount = 0
@@ -175,7 +175,24 @@ class FittingView(d.Display):
                     self.SetToolTip(None)
         event.Skip()
 
+    def handleListDrag(self, x, y, data):
+        '''
+        Handles dragging of items from various pyfa displays which support it
+
+        data is list with two items:
+            data[0] is hard-coded str of originating source
+            data[1] is typeID or index of data we want to manipulate
+        '''
+
+        if data[0] == "fitting":
+            self.swapItems(x, y, int(data[1]))
+        elif data[0] == "cargo":
+            self.swapCargo(x, y, int(data[1]))
+        elif data[0] == "market":
+            wx.PostEvent(self.mainFrame, gui.marketBrowser.ItemSelected(itemID=int(data[1])))
+
     def handleDrag(self, type, fitID):
+        #Those are drags coming from pyfa sources, NOT builtin wx drags
         if type == "fit":
             wx.PostEvent(self.mainFrame, gui.shipBrowser.FitSelected(fitID=fitID))
 
@@ -202,9 +219,10 @@ class FittingView(d.Display):
 
     def startDrag(self, event):
         row = event.GetIndex()
+
         if row != -1 and row not in self.blanks:
             data = wx.PyTextDataObject()
-            data.SetText(str(self.GetItemData(row)))
+            data.SetText("fitting:"+str(self.mods[row].position))
 
             dropSource = wx.DropSource(self)
             dropSource.SetData(data)
@@ -233,15 +251,16 @@ class FittingView(d.Display):
         event.Skip()
 
     def fitRemoved(self, event):
-        '''If fit is removed and active, the page is deleted.
-        We also refresh the fit of the new current page in case 
+        '''
+        If fit is removed and active, the page is deleted.
+        We also refresh the fit of the new current page in case
         delete fit caused change in stats (projected)
         '''
         fitID = event.fitID
 
         if fitID == self.getActiveFit():
             self.parent.DeletePage(self.parent.GetPageIndex(self))
-        
+
         try:
             # Sometimes there is no active page after deletion, hence the try block
             cFit = service.Fit.getInstance()
@@ -249,7 +268,7 @@ class FittingView(d.Display):
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.activeFitID))
         except wx._core.PyDeadObjectError:
             pass
-            
+
         event.Skip()
 
     def fitRenamed(self, event):
@@ -325,36 +344,46 @@ class FittingView(d.Display):
             self.slotsChanged()
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.activeFitID))
 
-    def swapItems(self, x, y, itemID):
+    def swapCargo(self, x, y, srcIdx):
+        '''Swap a module from cargo to fitting window'''
+
+        dstRow, _ = self.HitTest((x, y))
+        if dstRow != -1 and dstRow not in self.blanks:
+            module = self.mods[dstRow]
+
+            cFit = service.Fit.getInstance()
+            cFit.swapModuleWithCargo(self.mainFrame.getActiveFit(), module.position, srcIdx)
+
+            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
+
+    def swapItems(self, x, y, srcIdx):
+        '''Swap two modules in fitting window'''
         mstate = wx.GetMouseState()
+        cFit = service.Fit.getInstance()
+        fit = cFit.getFit(self.activeFitID)
 
         if mstate.CmdDown():
             clone = True
         else:
             clone = False
 
-        srcRow = self.FindItemData(-1,itemID)
         dstRow, _ = self.HitTest((x, y))
-        if srcRow != -1 and dstRow != -1 and dstRow not in self.blanks:
-            self._swap(srcRow, dstRow, clone)
 
-    def _swap(self, srcRow, dstRow, clone = False):
-        mod1 = self.mods[self.GetItemData(srcRow)]
-        mod2 = self.mods[self.GetItemData(dstRow)]
+        if dstRow != -1 and dstRow not in self.blanks:
+            mod1 = fit.modules[srcIdx]
+            mod2 = self.mods[dstRow]
 
-        # can't swap modules to different racks
-        if mod1.slot != mod2.slot:
-            return
+            # can't swap modules to different racks
+            if mod1.slot != mod2.slot:
+                return
 
-        cFit = service.Fit.getInstance()
+            if clone and mod2.isEmpty:
+                cFit.cloneModule(self.mainFrame.getActiveFit(), mod1.position, mod2.position)
+            else:
+                cFit.swapModules(self.mainFrame.getActiveFit(), mod1.position, mod2.position)
 
-        if clone and mod2.isEmpty:
-            cFit.cloneModule(self.mainFrame.getActiveFit(), mod1.position, mod2.position)
-        else:
-            cFit.swapModules(self.mainFrame.getActiveFit(), mod1.position, mod2.position)
-
-        self.generateMods()
-        self.refresh(self.mods)
+            self.generateMods()
+            self.refresh(self.mods)
 
     def generateMods(self):
         '''

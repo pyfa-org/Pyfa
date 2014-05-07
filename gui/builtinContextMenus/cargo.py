@@ -23,9 +23,9 @@ class Cargo(ContextMenu):
         sFit = service.Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
 
-        cargo = eos.types.Cargo(selection[0])
-        sFit.addChangeCargo(fitID,cargo, 1)
-        self.mainFrame.additionsPane.notebook.SetSelection(1)
+        typeID = int(selection[0].ID)
+        sFit.addCargo(fitID, typeID, 1)
+        self.mainFrame.additionsPane.select("Cargo")
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
 Cargo.register()
@@ -75,7 +75,7 @@ class CargoChanger(wx.Dialog):
         mainFrame = gui.mainFrame.MainFrame.getInstance()
         fitID = mainFrame.getActiveFit()
 
-        sFit.addChangeCargo(fitID, self.cargo, int(self.input.GetLineText(0)))
+        sFit.addCargo(fitID, self.cargo, int(self.input.GetLineText(0)))
 
         wx.PostEvent(mainFrame, GE.FitChanged(fitID=fitID))
 

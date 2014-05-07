@@ -27,7 +27,7 @@ from codecs import open
 import eos.db
 import eos.types
 
-from eos.types import State, Slot
+from eos.types import State, Slot, Module, Cargo
 
 from service.market import Market
 from service.damagePattern import DamagePattern
@@ -162,8 +162,8 @@ class Fit(object):
         fit = eos.db.getFit(fitID)
         sFlt = Fleet.getInstance()
         sFlt.removeAssociatedFleetData(fit)
-        self.removeProjectedData(fitID)        
-        
+        self.removeProjectedData(fitID)
+
         eos.db.remove(fit)
 
     def copyFit(self, fitID):
@@ -179,15 +179,15 @@ class Fit(object):
         fit = eos.db.getFit(fitID)
         fit.clear()
         return fit
-        
+
     def removeProjectedData(self, fitID):
         '''Removes projection relation from ships that have fitID as projection. See GitHub issue #90'''
         fit = eos.db.getFit(fitID)
         fits = eos.db.getProjectedFits(fitID)
-        
+
         for projectee in fits:
             projectee.projectedFits.remove(fit)
-        
+
     def toggleFactorReload(self, fitID):
         if fitID is None:
             return None
@@ -294,6 +294,10 @@ class Fit(object):
 
     def project(self, fitID, thing):
         fit = eos.db.getFit(fitID)
+
+        if isinstance(thing, int):
+            thing = eos.db.getItem(thing, eager=("attributes", "group.category"))
+
         if isinstance(thing, eos.types.Fit):
             if thing.ID == fitID:
                 return
@@ -323,6 +327,7 @@ class Fit(object):
 
         eos.db.commit()
         self.recalc(fit)
+        return True
 
     def toggleProjected(self, fitID, thing, click):
         fit = eos.db.getFit(fitID)
@@ -391,6 +396,40 @@ class Fit(object):
         eos.db.commit()
         return numSlots != len(fit.modules)
 
+    def swapModuleWithCargo(self, fitID, moduleIdx, cargoIdx):
+        '''
+        This swaps a module from the cargo with a module from fit.
+
+        To avoid redundancy in converting Cargo item, this function does the
+        sanity checks as opposed to the GUI View. This is different than how the
+        normal .swapModules() does things, which is mostly a blind swap.
+        '''
+        fit = eos.db.getFit(fitID)
+
+        # Gather modules and convert Cargo item to Module, silently return if not a module
+        try:
+            cargoP = Module(fit.cargo[cargoIdx].item)
+            if cargoP.isValidState(State.ACTIVE):
+                cargoP.state = State.ACTIVE
+            module = fit.modules[moduleIdx]
+            moduleP = Cargo(module.item)
+            moduleP.amount = 1
+        except Exception, e:
+            return
+
+        # can't swap modules to different racks
+        if cargoP.slot != module.slot:
+            return
+
+        # To swap, we simply remove mod and insert at destination.
+        fit.modules.remove(module)
+        fit.modules.insert(moduleIdx, cargoP)
+        fit.cargo.remove(fit.cargo[cargoIdx])
+        fit.cargo.insert(cargoIdx, moduleP)
+
+        eos.db.commit()
+        self.recalc(fit)
+
     def swapModules(self, fitID, src, dst):
         fit = eos.db.getFit(fitID)
         # Gather modules
@@ -426,29 +465,26 @@ class Fit(object):
         fit.modules.insert(dst, new)
 
         eos.db.commit()
-    def addChangeCargo(self, fitID, c, amount):
+
+    def addCargo(self, fitID, itemID, amount):
         if fitID == None:
             return False
 
         fit = eos.db.getFit(fitID)
+        item = eos.db.getItem(itemID)
         cargo = None
 
-        if c not in fit.cargo:
-            # adding from market
-            for x in fit.cargo.find(c.item):
-                if x is not None:
-                    # found item already in cargo, use previous value and remove old
-                    cargo = x
-                    fit.cargo.remove(x)
-                    break
+        # adding from market
+        for x in fit.cargo.find(item):
+            if x is not None:
+                # found item already in cargo, use previous value and remove old
+                cargo = x
+                fit.cargo.remove(x)
+                break
 
-            if cargo is None:
-                # if we don't have the item already in cargo, use default values
-                cargo = c
-        else:
-            # changing existing
-            cargo = eos.types.Cargo(c.item)
-            fit.cargo.remove(c) # remove old
+        if cargo is None:
+            # if we don't have the item already in cargo, use default values
+            cargo = eos.types.Cargo(item)
 
         fit.cargo.append(cargo)
         cargo.amount += amount
