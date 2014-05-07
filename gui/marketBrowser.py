@@ -227,6 +227,7 @@ class ItemView(d.Display):
         # Make sure WE do interesting stuff too
         self.Bind(wx.EVT_CONTEXT_MENU, self.contextMenu)
         self.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.itemActivated)
+        self.Bind(wx.EVT_LIST_BEGIN_DRAG, self.startDrag)
 
         # Make reverse map, used by sorter
         self.metaMap = self.makeReverseMetaMap()
@@ -234,6 +235,18 @@ class ItemView(d.Display):
         # Fill up recently used modules set
         for itemID in self.sMarket.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"]:
             self.recentlyUsedModules.add(self.sMarket.getItem(itemID))
+
+    def startDrag(self, event):
+        row = self.GetFirstSelected()
+
+        if row != -1:
+            data = wx.PyTextDataObject()
+            data.SetText("market:"+str(self.active[row].ID))
+
+            dropSource = wx.DropSource(self)
+            dropSource.SetData(data)
+            res = dropSource.DoDragDrop()
+
 
     def itemActivated(self, event=None):
         # Check if something is selected, if so, spawn the menu for it

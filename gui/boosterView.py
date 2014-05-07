@@ -25,6 +25,20 @@ import gui.marketBrowser as mb
 from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
 
+class BoosterViewDrop(wx.PyDropTarget):
+        def __init__(self, dropFn):
+            wx.PyDropTarget.__init__(self)
+            self.dropFn = dropFn
+            # this is really transferring an EVE itemID
+            self.dropData = wx.PyTextDataObject()
+            self.SetDataObject(self.dropData)
+
+        def OnData(self, x, y, t):
+            if self.GetData():
+                data = self.dropData.GetText().split(':')
+                self.dropFn(x, y, data)
+            return t
+
 class BoosterView(d.Display):
     DEFAULT_COLS = ["State",
                     "attr:boosterness",
@@ -42,10 +56,24 @@ class BoosterView(d.Display):
         self.Bind(wx.EVT_LEFT_DOWN, self.click)
         self.Bind(wx.EVT_KEY_UP, self.kbEvent)
 
+        self.SetDropTarget(BoosterViewDrop(self.handleListDrag))
+
         if "__WXGTK__" in  wx.PlatformInfo:
             self.Bind(wx.EVT_RIGHT_UP, self.scheduleMenu)
         else:
             self.Bind(wx.EVT_RIGHT_DOWN, self.scheduleMenu)
+
+    def handleListDrag(self, x, y, data):
+        '''
+        Handles dragging of items from various pyfa displays which support it
+
+        data is list with two indices:
+            data[0] is hard-coded str of originating source
+            data[1] is typeID or index of data we want to manipulate
+        '''
+
+        if data[0] == "market":
+            wx.PostEvent(self.mainFrame, mb.ItemSelected(itemID=int(data[1])))
 
     def kbEvent(self,event):
         keycode = event.GetKeyCode()
@@ -57,7 +85,6 @@ class BoosterView(d.Display):
         event.Skip()
 
     def fitChanged(self, event):
-
         #Clear list and get out if current fitId is None
         if event.fitID is None and self.lastFitId is not None:
             self.DeleteAllItems()
@@ -101,7 +128,7 @@ class BoosterView(d.Display):
             col = self.getColumn(event.Position)
             if col != self.getColIndex(State):
                 self.removeBooster(self.boosters[self.GetItemData(row)])
-    
+
     def removeBooster(self, booster):
         fitID = self.mainFrame.getActiveFit()
         cFit = service.Fit.getInstance()

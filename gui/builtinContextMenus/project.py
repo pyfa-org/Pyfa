@@ -21,7 +21,9 @@ class Project(ContextMenu):
     def activate(self, fullContext, selection, i):
         sFit = service.Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
-        sFit.project(fitID, selection[0])
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+        trigger = sFit.project(fitID, selection[0])
+        if trigger:
+            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+            self.mainFrame.additionsPane.select("Projected")
 
 Project.register()

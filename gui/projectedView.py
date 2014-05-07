@@ -26,7 +26,6 @@ from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
 import eos.types
 
-
 class ProjectedViewDrop(wx.PyDropTarget):
         def __init__(self, dropFn):
             wx.PyDropTarget.__init__(self)
@@ -37,7 +36,8 @@ class ProjectedViewDrop(wx.PyDropTarget):
 
         def OnData(self, x, y, t):
             if self.GetData():
-                self.dropFn(x, y, int(self.dropData.GetText()))
+                data = self.dropData.GetText().split(':')
+                self.dropFn(x, y, data)
             return t
 
 class ProjectedView(d.Display):
@@ -59,14 +59,32 @@ class ProjectedView(d.Display):
         self.Bind(wx.EVT_KEY_UP, self.kbEvent)
 
         self.droneView = gui.droneView.DroneView
-        
+
         if "__WXGTK__" in  wx.PlatformInfo:
             self.Bind(wx.EVT_RIGHT_UP, self.scheduleMenu)
         else:
             self.Bind(wx.EVT_RIGHT_DOWN, self.scheduleMenu)
 
         self.Bind(wx.EVT_LIST_BEGIN_DRAG, self.startDrag)
-        self.SetDropTarget(ProjectedViewDrop(self.mergeDrones))
+        self.SetDropTarget(ProjectedViewDrop(self.handleListDrag))
+
+    def handleListDrag(self, x, y, data):
+        '''
+        Handles dragging of items from various pyfa displays which support it
+
+        data is list with two indices:
+            data[0] is hard-coded str of originating source
+            data[1] is typeID or index of data we want to manipulate
+        '''
+
+        if data[0] == "projected":
+            # if source is coming from projected, we are trying to combine drones.
+            self.mergeDrones(x, y, int(data[1]))
+        elif data[0] == "market":
+            sFit = service.Fit.getInstance()
+            fitID = self.mainFrame.getActiveFit()
+            sFit.project(fitID, int(data[1]))
+            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
 
     def kbEvent(self,event):
         keycode = event.GetKeyCode()
@@ -87,14 +105,14 @@ class ProjectedView(d.Display):
             if activeFit:
                 sFit = service.Fit.getInstance()
                 draggedFit = sFit.getFit(fitID)
-                sFit.project(activeFit,draggedFit)
+                sFit.project(activeFit, draggedFit)
                 wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=activeFit))
 
     def startDrag(self, event):
         row = event.GetIndex()
         if row != -1 and isinstance(self.get(row), eos.types.Drone):
             data = wx.PyTextDataObject()
-            data.SetText(str(self.GetItemData(row)))
+            data.SetText("projected:"+str(self.GetItemData(row)))
 
             dropSource = wx.DropSource(self)
             dropSource.SetData(data)
@@ -187,7 +205,7 @@ class ProjectedView(d.Display):
                 sFit = service.Fit.getInstance()
                 sFit.toggleProjected(fitID, item, "right" if event.Button == 3 else "left")
                 wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
-                
+
     def scheduleMenu(self, event):
         event.Skip()
         if self.getColumn(event.Position) != self.getColIndex(State):
