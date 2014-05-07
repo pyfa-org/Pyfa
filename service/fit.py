@@ -396,9 +396,10 @@ class Fit(object):
         eos.db.commit()
         return numSlots != len(fit.modules)
 
-    def swapModuleWithCargo(self, fitID, moduleIdx, cargoIdx):
+    def moveCargoToModule(self, fitID, moduleIdx, cargoIdx, copy = False):
         '''
-        This swaps a module from the cargo with a module from fit.
+        Moves cargo to fitting window. Can either do a copy, move, or swap with current module
+        If we try to copy/move into a spot with a non-empty module, we swap instead.
 
         To avoid redundancy in converting Cargo item, this function does the
         sanity checks as opposed to the GUI View. This is different than how the
@@ -406,29 +407,40 @@ class Fit(object):
         '''
         fit = eos.db.getFit(fitID)
 
+        module = fit.modules[moduleIdx]
+
         # Gather modules and convert Cargo item to Module, silently return if not a module
         try:
             cargoP = Module(fit.cargo[cargoIdx].item)
+            cargoP.owner = fit
             if cargoP.isValidState(State.ACTIVE):
                 cargoP.state = State.ACTIVE
-            module = fit.modules[moduleIdx]
+        except:
+            return
+
+        if cargoP.slot != module.slot: # can't swap modules to different racks
+            return
+
+        # remove module that we are trying to move cargo to
+        fit.modules.remove(module)
+
+        if not cargoP.fits(fit): #if cargo doesn't fit, rollback and return
+            fit.modules.insert(moduleIdx, module)
+            return
+
+        fit.modules.insert(moduleIdx, cargoP)
+
+        if not copy: # remove existing cargo if not cloning
+             fit.cargo.remove(fit.cargo[cargoIdx])
+
+        if not module.isEmpty: # if module is placeholder, we don't want to convert/add it
             moduleP = Cargo(module.item)
             moduleP.amount = 1
-        except Exception, e:
-            return
-
-        # can't swap modules to different racks
-        if cargoP.slot != module.slot:
-            return
-
-        # To swap, we simply remove mod and insert at destination.
-        fit.modules.remove(module)
-        fit.modules.insert(moduleIdx, cargoP)
-        fit.cargo.remove(fit.cargo[cargoIdx])
-        fit.cargo.insert(cargoIdx, moduleP)
+            fit.cargo.insert(cargoIdx, moduleP)
 
         eos.db.commit()
         self.recalc(fit)
+
 
     def swapModules(self, fitID, src, dst):
         fit = eos.db.getFit(fitID)
@@ -466,7 +478,7 @@ class Fit(object):
             eos.db.commit()
             self.recalc(fit)
 
-    def addCargo(self, fitID, itemID, amount):
+    def addCargo(self, fitID, itemID, amount=1):
         if fitID == None:
             return False
 

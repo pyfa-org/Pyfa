@@ -346,13 +346,14 @@ class FittingView(d.Display):
 
     def swapCargo(self, x, y, srcIdx):
         '''Swap a module from cargo to fitting window'''
+        mstate = wx.GetMouseState()
 
         dstRow, _ = self.HitTest((x, y))
         if dstRow != -1 and dstRow not in self.blanks:
             module = self.mods[dstRow]
 
             cFit = service.Fit.getInstance()
-            cFit.swapModuleWithCargo(self.mainFrame.getActiveFit(), module.position, srcIdx)
+            cFit.moveCargoToModule(self.mainFrame.getActiveFit(), module.position, srcIdx, mstate.CmdDown() and module.isEmpty)
 
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
 

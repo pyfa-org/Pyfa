@@ -24,7 +24,7 @@ class Cargo(ContextMenu):
         fitID = self.mainFrame.getActiveFit()
 
         typeID = int(selection[0].ID)
-        sFit.addCargo(fitID, typeID, 1)
+        sFit.addCargo(fitID, typeID)
         self.mainFrame.additionsPane.select("Cargo")
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 

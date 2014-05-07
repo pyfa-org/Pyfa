@@ -102,17 +102,26 @@ class CargoView(d.Display):
 
     def swapModule(self, x, y, modIdx):
         '''Swap a module from fitting window with cargo'''
-
+        sFit = service.Fit.getInstance()
+        fit = sFit.getFit(self.mainFrame.getActiveFit())
         dstRow, _ = self.HitTest((x, y))
-        if dstRow != -1:
-            # Gather module information to get position
-            sFit = service.Fit.getInstance()
-            fit = sFit.getFit(self.mainFrame.getActiveFit())
-            module = fit.modules[modIdx]
+        mstate = wx.GetMouseState()
 
-            sFit.swapModuleWithCargo(self.mainFrame.getActiveFit(), module.position, dstRow)
+        # Gather module information to get position
+        module = fit.modules[modIdx]
 
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
+        if dstRow != -1: # we're swapping with cargo
+            if mstate.CmdDown(): # if copying, append to cargo
+                sFit.addCargo(self.mainFrame.getActiveFit(), module.item.ID)
+            else: # else, move / swap
+                sFit.moveCargoToModule(self.mainFrame.getActiveFit(), module.position, dstRow)
+        else: # dragging to blank spot, append
+            sFit.addCargo(self.mainFrame.getActiveFit(), module.item.ID)
+
+            if not mstate.CmdDown(): # if not copying, remove module
+               sFit.removeModule(self.mainFrame.getActiveFit(), module.position)
+
+        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
 
     def fitChanged(self, event):
         #Clear list and get out if current fitId is None
