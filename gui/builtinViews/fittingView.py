@@ -382,8 +382,7 @@ class FittingView(d.Display):
             else:
                 cFit.swapModules(self.mainFrame.getActiveFit(), mod1.position, mod2.position)
 
-            self.generateMods()
-            self.refresh(self.mods)
+            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
 
     def generateMods(self):
         '''

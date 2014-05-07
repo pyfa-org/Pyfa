@@ -454,17 +454,17 @@ class Fit(object):
         fit = eos.db.getFit(fitID)
         # Gather modules
         srcMod = fit.modules[src]
-        dstMod = fit.modules[dst]
+        dstMod = fit.modules[dst] # should be a placeholder module
 
         new = copy.deepcopy(srcMod)
+        new.owner = fit
+        if new.fits(fit):
+            # insert copy if module meets hardpoint restrictions
+            fit.modules.remove(dstMod)
+            fit.modules.insert(dst, new)
 
-        # remove empty mod
-        fit.modules.remove(dstMod)
-
-        # insert copy
-        fit.modules.insert(dst, new)
-
-        eos.db.commit()
+            eos.db.commit()
+            self.recalc(fit)
 
     def addCargo(self, fitID, itemID, amount):
         if fitID == None:
