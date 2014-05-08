@@ -22,6 +22,8 @@ from gui.statsView import StatsView
 from gui import builtinStatsViews
 from gui import bitmapLoader
 from gui import pygauge as PG
+import gui.mainFrame
+import gui.chromeTabs
 
 from eos.types import Hardpoint
 
@@ -32,6 +34,31 @@ class ResourcesViewFull(StatsView):
     def __init__(self, parent):
         StatsView.__init__(self)
         self.parent = parent
+        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+        self.mainFrame.additionsPane.notebook.Bind(gui.chromeTabs.EVT_NOTEBOOK_PAGE_CHANGED, self.pageChanged)
+
+    def pageChanged(self, event):
+        page = self.mainFrame.additionsPane.getName(event.GetSelection())
+        if page == "Cargo":
+            self.toggleCargoGauge(True)
+        else:
+            self.toggleCargoGauge(False)
+
+    def toggleCargoGauge(self, showCargo = False):
+        if showCargo:
+            self.bitmapFullCargoBay.Show()
+            self.baseFullCargoBay.Show(True)
+            self.bitmapFullDroneBay.Hide()
+            self.baseFullDroneBay.Hide(True)
+        else:
+            self.bitmapFullDroneBay.Show()
+            self.baseFullDroneBay.Show(True)
+            self.bitmapFullCargoBay.Hide()
+            self.baseFullCargoBay.Hide(True)
+
+        self.panel.Layout()
+        self.headerPanel.Layout()
+
     def getHeaderText(self, fit):
         return "Resources"
 
@@ -85,8 +112,8 @@ class ResourcesViewFull(StatsView):
 
 
         #PG, Cpu & drone stuff
-        tooltipText = {"cpu":"CPU", "pg":"PowerGrid", "droneBay":"Drone bay", "droneBandwidth":"Drone bandwidth"}
-        for i, group in enumerate((("cpu", "pg"), ("droneBay", "droneBandwidth"))):
+        tooltipText = {"cpu":"CPU", "pg":"PowerGrid", "droneBay":"Drone bay", "droneBandwidth":"Drone bandwidth", "cargoBay":"Cargo bay"}
+        for i, group in enumerate((("cpu", "pg"), ("cargoBay", "droneBay", "droneBandwidth"))):
             main = wx.BoxSizer(wx.VERTICAL)
             base.Add(main, 1 , wx.ALIGN_CENTER)
 
@@ -117,7 +144,7 @@ class ResourcesViewFull(StatsView):
                 setattr(self, "label%sTotal%s" % (panel.capitalize(), capitalizedType), lbl)
                 absolute.Add(lbl, 0, wx.ALIGN_LEFT)
 
-                units = {"cpu":" tf", "pg":" MW", "droneBandwidth":" mbit/s", "droneBay":u" m\u00B3"}
+                units = {"cpu":" tf", "pg":" MW", "droneBandwidth":" mbit/s", "droneBay":u" m\u00B3", "cargoBay":u" m\u00B3"}
                 lbl = wx.StaticText(parent, wx.ID_ANY, "%s" % units[type])
                 absolute.Add(lbl, 0, wx.ALIGN_LEFT)
 
@@ -130,6 +157,11 @@ class ResourcesViewFull(StatsView):
 
                 setattr(self, "gauge%s%s" % (panel.capitalize(),capitalizedType), gauge)
                 stats.Add(gauge, 0, wx.ALIGN_CENTER)
+
+                setattr(self, "base%s%s" % (panel.capitalize(), capitalizedType), b)
+                setattr(self, "bitmap%s%s" % (panel.capitalize(), capitalizedType), bitmap)
+
+        self.toggleCargoGauge(False)
 
     def refreshPanel(self, fit):
         #If we did anything intresting, we'd update our labels to reflect the new fit's stats here
@@ -149,7 +181,9 @@ class ResourcesViewFull(StatsView):
                          ("label%sUsedDroneBay", lambda: fit.droneBayUsed, 3, 0, 9),
                          ("label%sUsedDroneBandwidth", lambda: fit.droneBandwidthUsed, 3, 0, 9),
                          ("label%sTotalDroneBay", lambda: fit.ship.getModifiedItemAttr("droneCapacity"), 3, 0, 9),
-                         ("label%sTotalDroneBandwidth", lambda: fit.ship.getModifiedItemAttr("droneBandwidth"), 3, 0, 9))
+                         ("label%sTotalDroneBandwidth", lambda: fit.ship.getModifiedItemAttr("droneBandwidth"), 3, 0, 9),
+                         ("label%sUsedCargoBay", lambda: fit.cargoBayUsed, 3, 0, 9),
+                         ("label%sTotalCargoBay", lambda: fit.ship.getModifiedItemAttr("capacity"), 3, 0, 9))
         panel = "Full"
         usedTurretHardpoints = 0
         totalTurretHardpoints = 0
@@ -232,10 +266,11 @@ class ResourcesViewFull(StatsView):
             resMax = (lambda: fit.ship.getModifiedItemAttr("cpuOutput"),
                     lambda: fit.ship.getModifiedItemAttr("powerOutput"),
                     lambda: fit.ship.getModifiedItemAttr("droneCapacity"),
-                    lambda: fit.ship.getModifiedItemAttr("droneBandwidth"))
+                    lambda: fit.ship.getModifiedItemAttr("droneBandwidth"),
+                    lambda: fit.ship.getModifiedItemAttr("capacity"))
 
         i = 0
-        for resourceType in ("cpu", "pg", "droneBay", "droneBandwidth"):
+        for resourceType in ("cpu", "pg", "droneBay", "droneBandwidth", "cargoBay"):
             if fit is not None:
                 capitalizedType = resourceType[0].capitalize() + resourceType[1:]
 

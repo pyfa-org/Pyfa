@@ -1038,6 +1038,14 @@ class Fit(object):
         return amount
 
     @property
+    def cargoBayUsed(self):
+        amount = 0
+        for c in self.cargo:
+            amount += c.getModifiedItemAttr("volume") * c.amount
+
+        return amount
+           
+    @property
     def activeDrones(self):
         amount = 0
         for d in self.drones:

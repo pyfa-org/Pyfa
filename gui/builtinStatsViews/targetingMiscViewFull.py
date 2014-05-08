@@ -137,6 +137,10 @@ class TargetingMiscViewFull(StatsView):
                         label.SetToolTip(wx.ToolTip("Max Warp Distance: %.1f AU" % fit.maxWarpDistance))
                     elif labelName == "labelFullAlignTime":
                         label.SetToolTip(wx.ToolTip("%.3f" % value))
+                    elif labelName == "labelFullCargo":
+                        tip  = u"Capacity: %sm\u00B3\n"% fit.ship.getModifiedItemAttr("capacity")
+                        tip += u"Available: %.1fm\u00B3" % (fit.ship.getModifiedItemAttr("capacity")-fit.cargoBayUsed)
+                        label.SetToolTip(wx.ToolTip(tip))
                     else:
                         label.SetToolTip(wx.ToolTip("%.1f" % value))
                 else:
@@ -151,13 +155,8 @@ class TargetingMiscViewFull(StatsView):
                 if fit:
                     # if you add stuff to cargo, the capacity doesn't change and thus it is still cached
                     # This assures us that we force refresh of cargo tooltip
-                    capacity = fit.ship.getModifiedItemAttr("capacity")
-                    cargoSize = 0
-                    for mod in fit.cargo:
-                        cargoSize += mod.getModifiedItemAttr("volume") * mod.amount
-                    a = capacity-cargoSize
-                    tip  = u"Capacity: %sm\u00B3\n"% capacity
-                    tip += u"Available: %.1fm\u00B3" %a
+                    tip  = u"Capacity: %sm\u00B3\n"% fit.ship.getModifiedItemAttr("capacity")
+                    tip += u"Available: %.1fm\u00B3" % (fit.ship.getModifiedItemAttr("capacity")-fit.cargoBayUsed)
                     label.SetToolTip(wx.ToolTip(tip))
                 else:
                     label.SetToolTip(wx.ToolTip(""))

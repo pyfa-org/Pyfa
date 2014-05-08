@@ -70,7 +70,9 @@ class AdditionsPane(TogglePanel):
         self.notebook.AddPage(self.gangPage, "Fleet", tabImage = gangImg, showClose = False)
         self.notebook.SetSelection(0)
 
-
     PANES = ["Drones", "Cargo", "Implants", "Boosters", "Projected", "Fleet"]
     def select(self, name):
         self.notebook.SetSelection(self.PANES.index(name))
+
+    def getName(self, idx):
+        return self.PANES[idx]
