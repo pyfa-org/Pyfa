@@ -930,7 +930,7 @@ class Fit(object):
                         item.calculateModifiedAttributes(targetFit, runTime, True)
             
         for fit in self.projectedFits:
-            fit.calculateModifiedAttributes(self, dirtyStorage=dirtyStorage)
+            fit.calculateModifiedAttributes(self, withBoosters=withBoosters, dirtyStorage=dirtyStorage)
 
     def fill(self):
         """
