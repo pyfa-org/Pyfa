@@ -919,13 +919,13 @@ class Fit(object):
                             (effect.isType("active") and thing.state >= State.ACTIVE):
                                 # Run effect, and get proper bonuses applied
                                 try:
-                                    effect.handler(targetFit, thing, context)
+                                    effect.handler(self, thing, context)
                                 except:
                                     pass
                         else:
                             # Run effect, and get proper bonuses applied
                             try:
-                                effect.handler(targetFit, thing, context)
+                                effect.handler(self, thing, context)
                             except:
                                 pass
         for fit in self.projectedFits:
