@@ -473,11 +473,12 @@ class MainFrame(wx.Frame):
     def importFromClipboard(self, event):
         sFit = service.Fit.getInstance()
         try:
-            fits = sFit.importFitFromBuffer(fromClipboard())
+            fits = sFit.importFitFromBuffer(fromClipboard(), self.getActiveFit())
             IDs = sFit.saveImportedFits(fits)
             self._openAfterImport(len(fits), IDs)
         except:
             pass
+
 
     def exportToClipboard(self, event):
         CopySelectDict = {CopySelectDialog.copyFormatEft: self.clipboardEft,

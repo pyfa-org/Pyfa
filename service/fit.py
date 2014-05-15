@@ -744,8 +744,8 @@ class Fit(object):
             fit.damagePattern = self.pattern
         return fits
 
-    def importFitFromBuffer(self, buffer):
-        type,fits = eos.types.Fit.importAuto(buffer)
+    def importFitFromBuffer(self, buffer, activeFit=None):
+        type,fits = eos.types.Fit.importAuto(buffer, activeFit=activeFit)
         for fit in fits:
             fit.character = self.character
             fit.damagePattern = self.pattern

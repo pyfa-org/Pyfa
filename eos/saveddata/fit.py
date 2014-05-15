@@ -70,12 +70,16 @@ class Fit(object):
         self.build()
 
     @classmethod
-    def importAuto(cls, string, sourceFileName=None):
+    def importAuto(cls, string, sourceFileName=None, activeFit=None):
         # Get first line and strip space symbols of it
         # to avoid possible detection errors
-        firstLine = re.split("[\n\r]+", string, maxsplit=1)[0]
+        firstLine = re.split("[\n\r]+", string.strip(), maxsplit=1)[0]
         firstLine = firstLine.strip()
 
+        # If string is from in-game copy of fitting window
+        # We match " power" instead of "High power" in case a fit has no high modules
+        if " power" in firstLine and activeFit is not None:
+            return "FIT", (cls.importFittingWindow(string, activeFit),)
         # If we have "<url=fitting", fit is coming from eve chat
         # Gather data and send to DNA
         chatDna = re.search("<url=fitting:(.*::)>.*</url>", firstLine)
@@ -104,6 +108,85 @@ class Fit(object):
         # Use DNA format for all other cases
         else:
             return "DNA", (cls.importDna(string),)
+
+    @classmethod
+    def importFittingWindow(cls, string, activeFit):
+        from eos import db
+        activeFit = db.getFit(activeFit)
+
+        # if the current fit has mods, do not mess with it. Instead, make new fit
+        if activeFit.modCount > 0:
+            fit = Fit()
+            fit.ship = Ship(db.getItem(activeFit.ship.item.ID))
+            fit.name = "%s (copy)"%activeFit.name
+        else:
+            fit = activeFit
+        lines = re.split('[\n\r]+', string)
+
+        droneMap = {}
+        cargoMap = {}
+        modules = []
+
+        for i in range(1, len(lines)):
+            line = lines[i].strip()
+            if not line:
+                continue
+
+            try:
+                amount, modName = line.split("x ")
+                amount = int(amount)
+                item = db.getItem(modName, eager="group.category")
+            except:
+                # if no data can be found (old names)
+                continue
+
+            if item.category.name == "Drone":
+                if not modName in droneMap:
+                    droneMap[modName] = 0
+                droneMap[modName] += amount
+            elif item.category.name == "Charge":
+                if not modName in cargoMap:
+                    cargoMap[modName] = 0
+                cargoMap[modName] += amount
+            else:
+                for i in xrange(amount):
+                    try:
+                        m = Module(item)
+                    except ValueError:
+                        continue
+                    # If we are importing T3 ship, we must apply subsystems first, then
+                    # calcModAttr() to get the ship slots
+                    if m.slot == Slot.SUBSYSTEM and m.fits(fit):
+                        fit.modules.append(m)
+                    else:
+                        modules.append(m)
+
+        fit.clear()
+        fit.calculateModifiedAttributes()
+
+        for m in modules:
+            # we check to see if module fits as a basic sanity check
+            # if it doesn't then the imported fit is most likely invalid
+            # (ie: user tried to import Legion fit to a Rifter)
+            if m.fits(fit):
+                fit.modules.append(m)
+                if m.isValidState(State.ACTIVE):
+                    m.state = State.ACTIVE
+                m.owner = fit #not sure why this is required when it's not for other import methods, but whatever
+            else:
+                return
+
+        for droneName in droneMap:
+            d = Drone(db.getItem(droneName))
+            d.amount = droneMap[droneName]
+            fit.drones.append(d)
+
+        for cargoName in cargoMap:
+            c = Cargo(db.getItem(cargoName))
+            c.amount = cargoMap[cargoName]
+            fit.cargo.append(c)
+
+        return fit
 
     @classmethod
     def importCrest(cls, info):
@@ -182,6 +265,7 @@ class Fit(object):
                     for i in xrange(int(amount)):
                         try:
                             m = Module(item)
+                            print "module is not subsystem: %s - %s"%(m, m.item.name)
                             f.modules.append(m)
                         except:
                             pass
@@ -964,6 +1048,15 @@ class Fit(object):
             if mod.isEmpty:
                 del self.modules[i]
 
+    @property
+    def modCount(self):
+        x=0
+        for i in xrange(len(self.modules) - 1, -1, -1):
+            mod = self.modules[i]
+            if not mod.isEmpty:
+                x += 1
+        return x
+
     def getItemAttrSum(self, dict, attr):
         amount = 0
         for mod in dict:
@@ -1044,7 +1137,7 @@ class Fit(object):
             amount += c.getModifiedItemAttr("volume") * c.amount
 
         return amount
-           
+
     @property
     def activeDrones(self):
         amount = 0
