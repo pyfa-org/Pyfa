@@ -294,8 +294,7 @@ class MainFrame(wx.Frame):
 
     def _openAfterImport(self, importCount, fitIDs):
         if importCount == 1:
-            if self.getActiveFit() != fitIDs[0]:
-                wx.PostEvent(self, FitSelected(fitID=fitIDs[0]))
+            wx.PostEvent(self, FitSelected(fitID=fitIDs[0]))
 
         self.shipBrowser.RefreshContent()
 
