@@ -265,7 +265,6 @@ class Fit(object):
                     for i in xrange(int(amount)):
                         try:
                             m = Module(item)
-                            print "module is not subsystem: %s - %s"%(m, m.item.name)
                             f.modules.append(m)
                         except:
                             pass
