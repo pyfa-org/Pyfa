@@ -848,7 +848,7 @@ class ShipBrowser(wx.Panel):
             for ID, name, shipID, shipName, booster, timestamp in fitList:
                 self.lpane.AddWidget(FitItem(self.lpane, ID, (shipName, name, booster, timestamp), shipID))
             if len(ships) == 0 and len(fitList) == 0 :
-                self.lpane.AddWidget(PFStaticText(self.lpane, label = "No matching results."))
+                self.lpane.AddWidget(PFStaticText(self.lpane, label = u"No matching results."))
             self.lpane.RefreshList(doFocus = False)
         self.lpane.Thaw()
 
@@ -858,11 +858,16 @@ class ShipBrowser(wx.Panel):
             self.raceselect.Show(False)
             self.Layout()
 
+class PFStaticText(wx.Panel):
+    def __init__(self, parent, label=wx.EmptyString):
+        wx.Panel.__init__ (self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size = parent.GetSize())
 
-class PFStaticText(wx.StaticText):
-    def _init__(self,parent, label = wx.EmptyString):
-        wx.StaticText(self,parent,label)
-
+        mainSizer = wx.BoxSizer(wx.VERTICAL)
+        text = wx.StaticText( self, wx.ID_ANY, label, wx.DefaultPosition, wx.DefaultSize, wx.ALIGN_CENTRE )
+        text.Wrap( -1 )
+        mainSizer.Add( text, 1, wx.EXPAND|wx.TOP, 10  )
+        self.SetSizer(mainSizer)
+        self.Layout()
     def GetType(self):
         return -1
 
