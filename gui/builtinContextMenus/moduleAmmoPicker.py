@@ -135,8 +135,10 @@ class ModuleAmmoPicker(ContextMenu):
             for charge in self.charges:
                 # fix issue 71 - will probably have to change if CCP adds more Orbital ammo
                 if "Orbital" in charge.name:
-                    item = self.addCharge(m, charge)
-                    items.append(item)
+                    # uncomment if we ever want to include Oribital ammo in ammo picker - see issue #71
+                    # This allows us to hide the ammo, but it's still loadable from the market
+                    #item = self.addCharge(m, charge)
+                    #items.append(item)
                     continue
                 currBase = charge.name.rsplit()[-2:]
                 currRange = charge.getAttribute("weaponRangeMultiplier")
