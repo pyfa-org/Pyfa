@@ -54,7 +54,7 @@ class MainMenuBar(wx.MenuBar):
         fileMenu.AppendSeparator()
         fileMenu.Append(self.exportHtmlId, "Export HTML", "Export fits to HTML file (set in Preferences)")
         fileMenu.Append(self.exportSkillsNeededId, "Export &Skills Needed", "Export skills needed for this fitting")
-        fileMenu.Append(self.importCharacterId, "Import C&haracters", "Import characters into pyfa")
+        fileMenu.Append(self.importCharacterId, "Import C&haracter File", "Import characters into pyfa from file")
         fileMenu.AppendSeparator()
         fileMenu.Append(wx.ID_EXIT)
 
