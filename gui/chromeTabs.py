@@ -21,6 +21,7 @@ import wx
 import wx.lib.newevent
 import gui.utils.colorUtils as colorUtils
 import gui.utils.drawUtils as drawUtils
+import gui.utils.fonts as fonts
 from gui import bitmapLoader
 
 _PageChanging, EVT_NOTEBOOK_PAGE_CHANGING = wx.lib.newevent.NewEvent()
@@ -352,14 +353,13 @@ class PFTabRenderer:
         self.text = text
         self.tabSize = (width, height)
         self.closeButton = closeButton
-        self.fontSize = fontSize
         self.selected = False
         self.closeBtnHovering = False
         self.tabBitmap = None
         self.tabBackBitmap = None
         self.cbSize = 5
         self.padding = 4
-        self.font = wx.FontFromPixelSize((0, self.fontSize), wx.SWISS, wx.NORMAL, wx.NORMAL, False)
+        self.font = wx.FontFromPixelSize(fonts.NORMAL, wx.SWISS, wx.NORMAL, wx.NORMAL, False)
 
         self.tabImg = img
         self.position = (0, 0)  # Not used internally for rendering - helper for tab container
@@ -1275,7 +1275,7 @@ class PFNotebookPagePreview(wx.Frame):
         self.padding = 15
         self.transp = 0
 
-        hfont = wx.FontFromPixelSize((0, 14), wx.SWISS, wx.NORMAL, wx.NORMAL, False)
+        hfont = wx.FontFromPixelSize(fonts.NORMAL, wx.SWISS, wx.NORMAL, wx.NORMAL, False)
         self.SetFont(hfont)
 
         tx, ty = self.GetTextExtent(self.title)
@@ -1338,7 +1338,7 @@ class PFNotebookPagePreview(wx.Frame):
         mdc.SetBackground(wx.Brush(color))
         mdc.Clear()
 
-        font = wx.FontFromPixelSize((0, 14), wx.SWISS, wx.NORMAL,wx.NORMAL, False)
+        font = wx.FontFromPixelSize(fonts.NORMAL, wx.SWISS, wx.NORMAL, wx.NORMAL, False)
         mdc.SetFont(font)
 
         x,y = mdc.GetTextExtent(self.title)

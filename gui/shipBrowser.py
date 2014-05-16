@@ -16,6 +16,7 @@ import gui.utils.animEffects as animEffects
 
 import gui.sfBrowserItem as SFItem
 from gui.contextMenu import ContextMenu
+import gui.utils.fonts as fonts
 
 import service
 
@@ -354,7 +355,7 @@ class NavigationPanel(SFItem.SFBrowserItem):
         self.recentSearches = []
         self.inSearch = False
 
-        self.fontSmall = wx.FontFromPixelSize((0,12),wx.SWISS, wx.NORMAL, wx.NORMAL, False)
+        self.fontSmall = wx.FontFromPixelSize(fonts.SMALL,wx.SWISS, wx.NORMAL, wx.NORMAL, False)
         w,h = size
         self.BrowserSearchBox = wx.TextCtrl(self, wx.ID_ANY, "", wx.DefaultPosition, (-1, h - 2 if 'wxGTK' in wx.PlatformInfo else -1 ), wx.TE_PROCESS_ENTER | (wx.BORDER_NONE if 'wxGTK' in wx.PlatformInfo else 0))
         self.BrowserSearchBox.Show(False)
@@ -938,7 +939,7 @@ class CategoryItem(SFItem.SFBrowserItem):
 
         self.padding = 4
 
-        self.fontBig = wx.FontFromPixelSize((0,15),wx.SWISS, wx.NORMAL, wx.NORMAL, False)
+        self.fontBig = wx.FontFromPixelSize(fonts.BIG,wx.SWISS, wx.NORMAL, wx.NORMAL, False)
 
         self.animTimerId = wx.NewId()
 
@@ -1052,9 +1053,9 @@ class ShipItem(SFItem.SFBrowserItem):
 
         self.shipID = shipID
 
-        self.fontBig = wx.FontFromPixelSize((0,15),wx.SWISS, wx.NORMAL, wx.BOLD, False)
-        self.fontNormal = wx.FontFromPixelSize((0,14),wx.SWISS, wx.NORMAL, wx.NORMAL, False)
-        self.fontSmall = wx.FontFromPixelSize((0,12),wx.SWISS, wx.NORMAL, wx.NORMAL, False)
+        self.fontBig = wx.FontFromPixelSize(fonts.BIG,wx.SWISS, wx.NORMAL, wx.BOLD, False)
+        self.fontNormal = wx.FontFromPixelSize(fonts.NORMAL,wx.SWISS, wx.NORMAL, wx.NORMAL, False)
+        self.fontSmall = wx.FontFromPixelSize(fonts.SMALL,wx.SWISS, wx.NORMAL, wx.NORMAL, False)
 
         self.shipBmp = None
         if shipID:
@@ -1440,9 +1441,9 @@ class FitItem(SFItem.SFBrowserItem):
         self.dragMotionTrigger = self.dragMotionTrail
         self.dragWindow = None
 
-        self.fontBig = wx.FontFromPixelSize((0,15),wx.SWISS, wx.NORMAL, wx.BOLD, False)
-        self.fontNormal = wx.FontFromPixelSize((0,14),wx.SWISS, wx.NORMAL, wx.NORMAL, False)
-        self.fontSmall = wx.FontFromPixelSize((0,12),wx.SWISS, wx.NORMAL, wx.NORMAL, False)
+        self.fontBig = wx.FontFromPixelSize(fonts.BIG,wx.SWISS, wx.NORMAL, wx.BOLD, False)
+        self.fontNormal = wx.FontFromPixelSize(fonts.NORMAL,wx.SWISS, wx.NORMAL, wx.NORMAL, False)
+        self.fontSmall = wx.FontFromPixelSize(fonts.SMALL,wx.SWISS, wx.NORMAL, wx.NORMAL, False)
 
         self.SetDraggable()
 
