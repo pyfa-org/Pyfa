@@ -20,6 +20,7 @@
 
 import sys
 import re
+import config
 
 if not hasattr(sys, 'frozen'):
 
@@ -30,18 +31,27 @@ if not hasattr(sys, 'frozen'):
     try:
         import wxversion
     except ImportError:
-        print("Cannot find wxPython\nYou can download wxPython (3.0) from http://www.wxpython.org/")
+        print("Cannot find wxPython\nYou can download wxPython (2.8+) from http://www.wxpython.org/")
         sys.exit(1)
+    
+    # if user wants to force 2.8, try that and go directly to ensureMinimal path if fails
     try:
-        wxversion.select('3.0')
+        if getattr(config.configforced, "force28", False):
+            wxversion.select('2.8')
+        else:
+            # try 3.0, then 2.8. If any exceptions, go to ensureMinimal path
+            try:
+                wxversion.select('3.0')
+            except:
+                wxversion.select('2.9')
     except wxversion.VersionError:
         try:
-            wxversion.ensureMinimal('3.0')
+            wxversion.ensureMinimal('2.8')
         except wxversion.VersionError:
-            print("Installed wxPython version doesn't meet requirements.\nYou can download wxPython (3.08) from http://www.wxpython.org/")
+            print "Installed wxPython version doesn't meet requirements.\nYou can download wxPython (2.8+) from http://www.wxpython.org/"
             sys.exit(1)
         else:
-            print("wxPython 3.0 not found.")
+            print "wxPython 2.8 not found; attempting to use newer version, expect errors"        
 
     try:
         import sqlalchemy
@@ -72,7 +82,6 @@ if __name__ == "__main__":
     parser.add_option("-r", "--root", action="store_true", dest="rootsavedata", help="if you want pyfa to store its data in root folder, use this option", default=False)
     (options, args) = parser.parse_args()
 
-    import config
     # Configure paths
     if options.rootsavedata is True:
         config.saveInRoot = True
