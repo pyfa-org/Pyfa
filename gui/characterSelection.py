@@ -156,7 +156,7 @@ class CharacterSelection(wx.Panel):
                 self.skillReqsStaticBitmap.SetBitmap(self.greenSkills)
             else:
                 tip  = "Skills required:\n"
-                condensed = True # @todo replace with preference option
+                condensed = cFit.serviceFittingOptions["compactSkills"]
                 if condensed:
                     dict = self._buildSkillsTooltipCondensed(reqs)
                     for key in sorted(dict):

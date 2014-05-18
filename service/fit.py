@@ -89,7 +89,8 @@ class Fit(object):
             "useGlobalForceReload": False,
             "colorFitBySlot": False,
             "rackSlots": False,
-            "rackLabels": False}
+            "rackLabels": False,
+            "compactSkills": False}
 
         self.serviceFittingOptions = SettingsProvider.getInstance().getSettings("pyfaServiceFittingOptions", serviceFittingDefaultOptions)
 
