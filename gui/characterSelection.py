@@ -156,7 +156,13 @@ class CharacterSelection(wx.Panel):
                 self.skillReqsStaticBitmap.SetBitmap(self.greenSkills)
             else:
                 tip  = "Skills required:\n"
-                tip += self._buildSkillsTooltip(reqs)
+                condensed = True # @todo replace with preference option
+                if condensed:
+                    dict = self._buildSkillsTooltipCondensed(reqs)
+                    for key in sorted(dict):
+                        tip += "%s: %d\n" % (key, dict[key])
+                else:
+                    tip += self._buildSkillsTooltip(reqs)
                 self.skillReqsStaticBitmap.SetBitmap(self.redSkills)
             self.skillReqsStaticBitmap.SetToolTipString(tip.strip())
 
@@ -174,9 +180,10 @@ class CharacterSelection(wx.Panel):
     def _buildSkillsTooltip(self, reqs, currItem = "", tabulationLevel = 0):
         tip = ""
         sCharacter = service.Character.getInstance()
+
         if tabulationLevel == 0:
             for item, subReqs in reqs.iteritems():
-                tip += " %s:\n" % item.name
+                tip += "%s:\n" % item.name
                 tip += self._buildSkillsTooltip(subReqs, item.name, 1)
         else:
             for name, info in reqs.iteritems():
@@ -188,7 +195,35 @@ class CharacterSelection(wx.Panel):
                     'level' : level,
                     'indent' : tabulationLevel
                 })
-                tip += "  %s%s: %d\n" % ("  " * tabulationLevel, name, level)
+
+                tip += "%s%s: %d\n" % ("    " * tabulationLevel, name, level)
                 tip += self._buildSkillsTooltip(more, currItem, tabulationLevel + 1)
 
         return tip
+
+    def _buildSkillsTooltipCondensed(self, reqs, currItem = "", tabulationLevel = 0, skillsMap = {}):
+        sCharacter = service.Character.getInstance()
+
+        if tabulationLevel == 0:
+            for item, subReqs in reqs.iteritems():
+                skillsMap = self._buildSkillsTooltipCondensed(subReqs, item.name, 1, skillsMap)
+            sorted(skillsMap, key=skillsMap.get)
+        else:
+            for name, info in reqs.iteritems():
+                level, ID, more = info
+                sCharacter.skillReqsDict['skills'].append({
+                    'item' : currItem,
+                    'skillID' : ID,
+                    'skill' : name,
+                    'level' : level,
+                    'indent' : tabulationLevel
+                })
+
+                if name not in skillsMap:
+                    skillsMap[name] = level
+                elif skillsMap[name] < level:
+                    skillsMap[name] = level
+
+                skillMap = self._buildSkillsTooltipCondensed(more, currItem, tabulationLevel + 1, skillsMap)
+
+        return skillsMap
