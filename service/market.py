@@ -25,6 +25,7 @@ import Queue
 
 import eos.db
 import eos.types
+from eos.itemMapping import itemMapping
 
 from service.settings import SettingsProvider, ProxySettings
 
@@ -209,33 +210,12 @@ class Market():
             "QA Multiship Module - 5 Players": False,
             "QA Remote Armor Repair System - 5 Players": False,
             "QA Shield Transporter - 5 Players": False,
-            "Aliastra Catalyst": False, # Vanity
-            "Inner Zone Shipping Catalyst": False, # Vanity
-            "Intaki Syndicate Catalyst": False, # Vanity
-            "InterBus Catalyst": False, # Vanity
-            "Quafe Catalyst": False, # Vanity
-            "Nefantar Thrasher": False, # Vanity
-            "Sarum Magnate": False, # Vanity
-            "Sukuuvestaa Heron": False, # Vanity
-            "Inner Zone Shipping Imicus": False, # Vanity
-            "Vherokior Probe": False, # Vanity
-            "Miasmos Quafe Ultra Edition": False, # Vanity
-            "Miasmos Quafe Ultramarine Edition": False, # Vanity
-            "Miasmos Amastris Edition": False, # Vanity
-            "Goru's Shuttle": False, # Vanity
-            "Guristas Shuttle": False, # Vanity
-            "Tash-Murkon Magnate": False, # Vanity
-            "Scorpion Ishukone Watch": False, # Vanity
-            "Incursus Aliastra Edition": False, # Vanity
-            "Merlin Nugoeihuvi Edition": False, # Vanity
-            "Police Pursuit Comet": False, # Vanity
-            "Punisher Kador Edition": False, # Vanity
-            "Rifter Krusual Edition": False, # Vanity
-            "Abaddon Kador Edition": False, # Vanity
-            "Hyperion Aliastra Edition": False, # Vanity
-            "Maelstrom Krusual Edition": False, # Vanity
-            "Rokh Nugoeihuvi Edition": False, # Vanity
-            "Mammoth Nefantar Edition": False } # Vanity
+            "Goru's Shuttle": False,
+            "Guristas Shuttle": False}
+
+        # do not publish anything that we convert
+        for name, _ in itemMapping.iteritems():
+            self.ITEMS_FORCEPUBLISHED[name] = False
 
         # List of groups which are forcibly published
         self.GROUPS_FORCEPUBLISHED = {
