@@ -464,11 +464,16 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             return currActive <= maxGroupActive
         # For projected, we're checking if ship is vulnerable to given item
         else:
-            if (item.offensive and projectedOnto.ship.getModifiedItemAttr("disallowOffensiveModifiers") == 1 and "energyDestabilizationNew" not in item.effects) or \
-            (item.assistive and projectedOnto.ship.getModifiedItemAttr("disallowAssistance") == 1):
+            # Do not allow to apply offensive modules on ship with offensive module immunite, with few exceptions
+            # (all effects which apply instant modification are exception, generally speaking)
+            if item.offensive and projectedOnto.ship.getModifiedItemAttr("disallowOffensiveModifiers") == 1:
+                offensiveNonModifiers = set(("energyDestabilizationNew", "leech"))
+                if not offensiveNonModifiers.intersection(set(item.effects)):
+                    return False
+            # If assistive modules are not allowed, do not let to apply these altogether
+            if item.assistive and projectedOnto.ship.getModifiedItemAttr("disallowAssistance") == 1:
                 return False
-            else:
-                return True
+            return True
 
     def isValidCharge(self, charge):
         #Check sizes, if 'charge size > module volume' it won't fit
