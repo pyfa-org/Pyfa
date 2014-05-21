@@ -164,7 +164,7 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     def canBeApplied(self, projectedOnto):
         """Check if drone can engage specific fitting"""
         item = self.item
-        if (item.offensive and projectedOnto.ship.getModifiedItemAttr("disallowOffensiveModifiers") == 1) or \
+        if (item.offensive and projectedOnto.ship.getModifiedItemAttr("disallowOffensiveModifiers") == 1 and "energyDestabilizationNew" not in item.effects) or \
         (item.assistive and projectedOnto.ship.getModifiedItemAttr("disallowAssistance") == 1):
             return False
         else:
