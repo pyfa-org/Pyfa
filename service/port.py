@@ -30,6 +30,9 @@ try:
 except ImportError:
     from gui.utils.compat import OrderedDict
 
+FIT_WIN_HEADINGS = ["High power", "Medium power", "Low power", "Rig Slot", "Sub System", "Charges"]
+EFT_SLOT_ORDER = [Slot.LOW, Slot.MED, Slot.HIGH, Slot.RIG, Slot.SUBSYSTEM]
+
 
 class Port(object):
     """Service which houses all import/export format functions"""
@@ -42,7 +45,7 @@ class Port(object):
 
         # If string is from in-game copy of fitting window
         # We match " power" instead of "High power" in case a fit has no high modules
-        if " power" in firstLine and activeFit is not None:
+        if firstLine in FIT_WIN_HEADINGS and activeFit is not None:
             return "FIT", (cls.importFittingWindow(string, activeFit),)
 
         # If we have "<url=fitting", fit is coming from eve chat
@@ -578,7 +581,7 @@ class Port(object):
             curr += "\n"
             stuff[slot].append(curr)
 
-        for slotType in [Slot.LOW, Slot.MED, Slot.HIGH, Slot.RIG, Slot.SUBSYSTEM]:
+        for slotType in EFT_SLOT_ORDER:
             data = stuff.get(slotType)
             if data is not None:
                 export += "\n"

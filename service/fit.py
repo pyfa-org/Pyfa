@@ -100,8 +100,7 @@ class Fit(object):
         self.serviceFittingOptions = SettingsProvider.getInstance().getSettings(
             "pyfaServiceFittingOptions", serviceFittingDefaultOptions)
 
-    @staticmethod
-    def getAllFits():
+    def getAllFits(self):
         fits = eos.db.getFitList()
         names = []
         for fit in fits:
@@ -109,8 +108,7 @@ class Fit(object):
 
         return names
 
-    @staticmethod
-    def getFitsWithShip(shipID):
+    def getFitsWithShip(self, shipID):
         """ Lists fits of shipID, used with shipBrowser """
         fits = eos.db.getFitsWithShip(shipID)
         names = []
@@ -119,8 +117,7 @@ class Fit(object):
 
         return names
 
-    @staticmethod
-    def getBoosterFits():
+    def getBoosterFits(self):
         """ Lists fits flagged as booster """
         fits = eos.db.getBoosterFits()
         names = []
@@ -129,8 +126,7 @@ class Fit(object):
 
         return names
 
-    @staticmethod
-    def countFitsWithShip(shipID):
+    def countFitsWithShip(self, shipID):
         count = eos.db.countFitsWithShip(shipID)
         return count
 
@@ -143,8 +139,7 @@ class Fit(object):
                 return True
         return False
 
-    @staticmethod
-    def getModule(fitID, pos):
+    def getModule(self, fitID, pos):
         fit = eos.db.getFit(fitID)
         return fit.modules[pos]
 
@@ -159,14 +154,12 @@ class Fit(object):
         self.recalc(fit)
         return fit.ID
 
-    @staticmethod
-    def toggleBoostFit(fitID):
+    def toggleBoostFit(self, fitID):
         fit = eos.db.getFit(fitID)
         fit.booster = not fit.booster
         eos.db.commit()
 
-    @staticmethod
-    def renameFit(fitID, newName):
+    def renameFit(self, fitID, newName):
         fit = eos.db.getFit(fitID)
         fit.name = newName
         eos.db.commit()
@@ -179,15 +172,13 @@ class Fit(object):
 
         eos.db.remove(fit)
 
-    @staticmethod
-    def copyFit(fitID):
+    def copyFit(self, fitID):
         fit = eos.db.getFit(fitID)
         newFit = copy.deepcopy(fit)
         eos.db.save(newFit)
         return newFit.ID
 
-    @staticmethod
-    def clearFit(fitID):
+    def clearFit(self, fitID):
         if fitID is None:
             return None
 
@@ -195,8 +186,7 @@ class Fit(object):
         fit.clear()
         return fit
 
-    @staticmethod
-    def removeProjectedData(fitID):
+    def removeProjectedData(self, fitID):
         """Removes projection relation from ships that have fitID as projection. See GitHub issue #90"""
         fit = eos.db.getFit(fitID)
         fits = eos.db.getProjectedFits(fitID)
@@ -249,8 +239,7 @@ class Fit(object):
             fit.inited = True
         return fit
 
-    @staticmethod
-    def searchFits(name):
+    def searchFits(self, name):
         results = eos.db.searchFits(name)
         fits = []
         for fit in results:
@@ -461,8 +450,7 @@ class Fit(object):
         eos.db.commit()
         self.recalc(fit)
 
-    @staticmethod
-    def swapModules(fitID, src, dst):
+    def swapModules(self, fitID, src, dst):
         fit = eos.db.getFit(fitID)
         # Gather modules
         srcMod = fit.modules[src]
@@ -589,8 +577,7 @@ class Fit(object):
         self.recalc(fit)
         return True
 
-    @staticmethod
-    def splitDrones(fit, d, amount, l):
+    def splitDrones(self, fit, d, amount, l):
         total = d.amount
         active = d.amountActive > 0
         d.amount = amount
@@ -671,8 +658,7 @@ class Fit(object):
         fit.character = self.character = eos.db.getCharacter(charID)
         self.recalc(fit)
 
-    @staticmethod
-    def isAmmo(itemID):
+    def isAmmo(self, itemID):
         return eos.db.getItem(itemID).category.name == "Charge"
 
     def setAmmo(self, fitID, ammoID, modules):
@@ -688,8 +674,7 @@ class Fit(object):
 
         self.recalc(fit)
 
-    @staticmethod
-    def getDamagePattern(fitID):
+    def getDamagePattern(self, fitID):
         if fitID is None:
             return
 
@@ -723,30 +708,24 @@ class Fit(object):
         fit.damagePattern = dp
         self.recalc(fit)
 
-    @staticmethod
-    def exportFit(fitID):
+    def exportFit(self, fitID):
         return Port.exportEft(fitID)
 
-    @staticmethod
-    def exportEftImps(fitID):
+    def exportEftImps(self, fitID):
         return Port.exportEftImps(fitID)
 
-    @staticmethod
-    def exportDna(fitID):
+    def exportDna(self, fitID):
         return Port.exportDna(fitID)
 
-    @staticmethod
-    def exportXml(*fitIDs):
+    def exportXml(self, *fitIDs):
         fits = map(lambda fitID: eos.db.getFit(fitID), fitIDs)
         return Port.exportXml(*fits)
 
-    @staticmethod
-    def backupFits(path, callback):
+    def backupFits(self, path, callback):
         thread = FitBackupThread(path, callback)
         thread.start()
 
-    @staticmethod
-    def importFitsThreaded(paths, callback):
+    def importFitsThreaded(self, paths, callback):
         thread = FitImportThread(paths, callback)
         thread.start()
 
@@ -778,8 +757,7 @@ class Fit(object):
             fit.damagePattern = self.pattern
         return fits
 
-    @staticmethod
-    def saveImportedFits(fits):
+    def saveImportedFits(self, fits):
         IDs = []
         for fit in fits:
             eos.db.save(fit)
@@ -787,8 +765,7 @@ class Fit(object):
 
         return IDs
 
-    @staticmethod
-    def checkStates(fit, base):
+    def checkStates(self, fit, base):
         changed = False
         for mod in fit.modules:
             if mod != base:
