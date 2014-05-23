@@ -27,13 +27,15 @@ from codecs import open
 import eos.db
 import eos.types
 
-from eos.types import State, Slot, Module, Cargo
+from eos.types import State, Slot
 
 from service.market import Market
 from service.damagePattern import DamagePattern
 from service.character import Character
 from service.fleet import Fleet
 from service.settings import SettingsProvider
+from service.port import Port
+
 
 class FitBackupThread(threading.Thread):
     def __init__(self, path, callback):
@@ -51,6 +53,7 @@ class FitBackupThread(threading.Thread):
         backupFile.close()
         wx.CallAfter(self.callback)
 
+
 class FitImportThread(threading.Thread):
     def __init__(self, paths, callback):
         threading.Thread.__init__(self)
@@ -67,8 +70,10 @@ class FitImportThread(threading.Thread):
                 importedFits += pathImported
         wx.CallAfter(self.callback, importedFits)
 
+
 class Fit(object):
     instance = None
+
     @classmethod
     def getInstance(cls):
         if cls.instance is None:
@@ -92,10 +97,11 @@ class Fit(object):
             "rackLabels": False,
             "compactSkills": False}
 
-        self.serviceFittingOptions = SettingsProvider.getInstance().getSettings("pyfaServiceFittingOptions", serviceFittingDefaultOptions)
+        self.serviceFittingOptions = SettingsProvider.getInstance().getSettings(
+            "pyfaServiceFittingOptions", serviceFittingDefaultOptions)
 
-
-    def getAllFits(self):
+    @staticmethod
+    def getAllFits():
         fits = eos.db.getFitList()
         names = []
         for fit in fits:
@@ -103,17 +109,19 @@ class Fit(object):
 
         return names
 
-    def getFitsWithShip(self, id):
-        ''' Lists fits of shipID, used with shipBrowser '''
-        fits = eos.db.getFitsWithShip(id)
+    @staticmethod
+    def getFitsWithShip(shipID):
+        """ Lists fits of shipID, used with shipBrowser """
+        fits = eos.db.getFitsWithShip(shipID)
         names = []
         for fit in fits:
             names.append((fit.ID, fit.name, fit.booster, fit.timestamp))
 
         return names
 
-    def getBoosterFits(self):
-        ''' Lists fits flagged as booster '''
+    @staticmethod
+    def getBoosterFits():
+        """ Lists fits flagged as booster """
         fits = eos.db.getBoosterFits()
         names = []
         for fit in fits:
@@ -121,20 +129,22 @@ class Fit(object):
 
         return names
 
-    def countFitsWithShip(self, id):
-        count = eos.db.countFitsWithShip(id)
+    @staticmethod
+    def countFitsWithShip(shipID):
+        count = eos.db.countFitsWithShip(shipID)
         return count
 
-    def groupHasFits(self, id):
+    def groupHasFits(self, groupID):
         sMkt = Market.getInstance()
-        grp = sMkt.getGroup(id, eager=("items", "group"))
+        grp = sMkt.getGroup(groupID, eager=("items", "group"))
         items = sMkt.getItemsByGroup(grp)
         for item in items:
             if self.countFitsWithShip(item.ID) > 0:
                 return True
         return False
 
-    def getModule(self, fitID, pos):
+    @staticmethod
+    def getModule(fitID, pos):
         fit = eos.db.getFit(fitID)
         return fit.modules[pos]
 
@@ -149,12 +159,14 @@ class Fit(object):
         self.recalc(fit)
         return fit.ID
 
-    def toggleBoostFit(self, fitID):
+    @staticmethod
+    def toggleBoostFit(fitID):
         fit = eos.db.getFit(fitID)
         fit.booster = not fit.booster
         eos.db.commit()
 
-    def renameFit(self, fitID, newName):
+    @staticmethod
+    def renameFit(fitID, newName):
         fit = eos.db.getFit(fitID)
         fit.name = newName
         eos.db.commit()
@@ -167,13 +179,15 @@ class Fit(object):
 
         eos.db.remove(fit)
 
-    def copyFit(self, fitID):
+    @staticmethod
+    def copyFit(fitID):
         fit = eos.db.getFit(fitID)
         newFit = copy.deepcopy(fit)
         eos.db.save(newFit)
         return newFit.ID
 
-    def clearFit(self, fitID):
+    @staticmethod
+    def clearFit(fitID):
         if fitID is None:
             return None
 
@@ -181,8 +195,9 @@ class Fit(object):
         fit.clear()
         return fit
 
-    def removeProjectedData(self, fitID):
-        '''Removes projection relation from ships that have fitID as projection. See GitHub issue #90'''
+    @staticmethod
+    def removeProjectedData(fitID):
+        """Removes projection relation from ships that have fitID as projection. See GitHub issue #90"""
         fit = eos.db.getFit(fitID)
         fits = eos.db.getProjectedFits(fitID)
 
@@ -234,11 +249,14 @@ class Fit(object):
             fit.inited = True
         return fit
 
-    def searchFits(self, name):
+    @staticmethod
+    def searchFits(name):
         results = eos.db.searchFits(name)
         fits = []
         for fit in results:
-            fits.append((fit.ID, fit.name, fit.ship.item.ID, fit.ship.item.name, fit.booster, fit.timestamp))
+            fits.append((
+                fit.ID, fit.name, fit.ship.item.ID, fit.ship.item.name, fit.booster,
+                fit.timestamp))
         return fits
 
     def addImplant(self, fitID, itemID):
@@ -297,7 +315,8 @@ class Fit(object):
         fit = eos.db.getFit(fitID)
 
         if isinstance(thing, int):
-            thing = eos.db.getItem(thing, eager=("attributes", "group.category"))
+            thing = eos.db.getItem(thing,
+                                   eager=("attributes", "group.category"))
 
         if isinstance(thing, eos.types.Fit):
             if thing.ID == fitID:
@@ -397,53 +416,53 @@ class Fit(object):
         eos.db.commit()
         return numSlots != len(fit.modules)
 
-    def moveCargoToModule(self, fitID, moduleIdx, cargoIdx, copy = False):
-        '''
+    def moveCargoToModule(self, fitID, moduleIdx, cargoIdx, copyMod=False):
+        """
         Moves cargo to fitting window. Can either do a copy, move, or swap with current module
         If we try to copy/move into a spot with a non-empty module, we swap instead.
 
         To avoid redundancy in converting Cargo item, this function does the
         sanity checks as opposed to the GUI View. This is different than how the
         normal .swapModules() does things, which is mostly a blind swap.
-        '''
+        """
         fit = eos.db.getFit(fitID)
 
         module = fit.modules[moduleIdx]
 
         # Gather modules and convert Cargo item to Module, silently return if not a module
         try:
-            cargoP = Module(fit.cargo[cargoIdx].item)
+            cargoP = eos.types.Module(fit.cargo[cargoIdx].item)
             cargoP.owner = fit
             if cargoP.isValidState(State.ACTIVE):
                 cargoP.state = State.ACTIVE
         except:
             return
 
-        if cargoP.slot != module.slot: # can't swap modules to different racks
+        if cargoP.slot != module.slot:  # can't swap modules to different racks
             return
 
         # remove module that we are trying to move cargo to
         fit.modules.remove(module)
 
-        if not cargoP.fits(fit): #if cargo doesn't fit, rollback and return
+        if not cargoP.fits(fit):  # if cargo doesn't fit, rollback and return
             fit.modules.insert(moduleIdx, module)
             return
 
         fit.modules.insert(moduleIdx, cargoP)
 
-        if not copy: # remove existing cargo if not cloning
-             fit.cargo.remove(fit.cargo[cargoIdx])
+        if not copyMod:  # remove existing cargo if not cloning
+            fit.cargo.remove(fit.cargo[cargoIdx])
 
-        if not module.isEmpty: # if module is placeholder, we don't want to convert/add it
-            moduleP = Cargo(module.item)
+        if not module.isEmpty:  # if module is placeholder, we don't want to convert/add it
+            moduleP = eos.types.Cargo(module.item)
             moduleP.amount = 1
             fit.cargo.insert(cargoIdx, moduleP)
 
         eos.db.commit()
         self.recalc(fit)
 
-
-    def swapModules(self, fitID, src, dst):
+    @staticmethod
+    def swapModules(fitID, src, dst):
         fit = eos.db.getFit(fitID)
         # Gather modules
         srcMod = fit.modules[src]
@@ -458,16 +477,16 @@ class Fit(object):
         eos.db.commit()
 
     def cloneModule(self, fitID, src, dst):
-        '''
+        """
         Clone a module from src to dst
 
         This will overwrite dst! Checking for empty module must be
         done at a higher level
-        '''
+        """
         fit = eos.db.getFit(fitID)
         # Gather modules
         srcMod = fit.modules[src]
-        dstMod = fit.modules[dst] # should be a placeholder module
+        dstMod = fit.modules[dst]  # should be a placeholder module
 
         new = copy.deepcopy(srcMod)
         new.owner = fit
@@ -479,12 +498,13 @@ class Fit(object):
             eos.db.commit()
             self.recalc(fit)
 
-    def addCargo(self, fitID, itemID, amount=1, replace = False):
-        '''Adds cargo via typeID of item. If replace = True, we replace amount with
+    def addCargo(self, fitID, itemID, amount=1, replace=False):
+        """
+        Adds cargo via typeID of item. If replace = True, we replace amount with
         given parameter, otherwise we increment
-        '''
+        """
 
-        if fitID == None:
+        if fitID is None:
             return False
 
         fit = eos.db.getFit(fitID)
@@ -525,7 +545,7 @@ class Fit(object):
         return True
 
     def addDrone(self, fitID, itemID):
-        if fitID == None:
+        if fitID is None:
             return False
 
         fit = eos.db.getFit(fitID)
@@ -551,7 +571,7 @@ class Fit(object):
             return False
 
     def mergeDrones(self, fitID, d1, d2, projected=False):
-        if fitID == None:
+        if fitID is None:
             return False
 
         fit = eos.db.getFit(fitID)
@@ -569,7 +589,8 @@ class Fit(object):
         self.recalc(fit)
         return True
 
-    def splitDrones(self, fit, d, amount, l):
+    @staticmethod
+    def splitDrones(fit, d, amount, l):
         total = d.amount
         active = d.amountActive > 0
         d.amount = amount
@@ -582,14 +603,14 @@ class Fit(object):
         eos.db.commit()
 
     def splitProjectedDroneStack(self, fitID, d, amount):
-        if fitID == None:
+        if fitID is None:
             return False
 
         fit = eos.db.getFit(fitID)
         self.splitDrones(fit, d, amount, fit.projectedDrones)
 
     def splitDroneStack(self, fitID, d, amount):
-        if fitID == None:
+        if fitID is None:
             return False
 
         fit = eos.db.getFit(fitID)
@@ -650,7 +671,8 @@ class Fit(object):
         fit.character = self.character = eos.db.getCharacter(charID)
         self.recalc(fit)
 
-    def isAmmo(self, itemID):
+    @staticmethod
+    def isAmmo(itemID):
         return eos.db.getItem(itemID).category.name == "Charge"
 
     def setAmmo(self, fitID, ammoID, modules):
@@ -666,7 +688,8 @@ class Fit(object):
 
         self.recalc(fit)
 
-    def getDamagePattern(self, fitID):
+    @staticmethod
+    def getDamagePattern(fitID):
         if fitID is None:
             return
 
@@ -700,27 +723,30 @@ class Fit(object):
         fit.damagePattern = dp
         self.recalc(fit)
 
-    def exportFit(self, fitID):
-        fit = eos.db.getFit(fitID)
-        return fit.exportEft()
+    @staticmethod
+    def exportFit(fitID):
+        return Port.exportEft(fitID)
 
-    def exportEftImps(self, fitID):
-        fit = eos.db.getFit(fitID)
-        return fit.exportEftImps()
+    @staticmethod
+    def exportEftImps(fitID):
+        return Port.exportEftImps(fitID)
 
-    def exportDna(self, fitID):
-        fit = eos.db.getFit(fitID)
-        return fit.exportDna()
+    @staticmethod
+    def exportDna(fitID):
+        return Port.exportDna(fitID)
 
-    def exportXml(self, *fitIDs):
-        fits = map(lambda id: eos.db.getFit(id), fitIDs)
-        return eos.types.Fit.exportXml(*fits)
+    @staticmethod
+    def exportXml(*fitIDs):
+        fits = map(lambda fitID: eos.db.getFit(fitID), fitIDs)
+        return Port.exportXml(*fits)
 
-    def backupFits(self, path, callback):
+    @staticmethod
+    def backupFits(path, callback):
         thread = FitBackupThread(path, callback)
         thread.start()
 
-    def importFitsThreaded(self, paths, callback):
+    @staticmethod
+    def importFitsThreaded(paths, callback):
         thread = FitImportThread(paths, callback)
         thread.start()
 
@@ -739,20 +765,21 @@ class Fit(object):
             except UnicodeDecodeError:
                 srcString = unicode(srcString, "cp1252")
 
-        type, fits = eos.types.Fit.importAuto(srcString, filename)
+        _, fits = Port.importAuto(srcString, filename)
         for fit in fits:
             fit.character = self.character
             fit.damagePattern = self.pattern
         return fits
 
-    def importFitFromBuffer(self, buffer, activeFit=None):
-        type,fits = eos.types.Fit.importAuto(buffer, activeFit=activeFit)
+    def importFitFromBuffer(self, bufferStr, activeFit=None):
+        _, fits = Port.importAuto(bufferStr, activeFit=activeFit)
         for fit in fits:
             fit.character = self.character
             fit.damagePattern = self.pattern
         return fits
 
-    def saveImportedFits(self, fits):
+    @staticmethod
+    def saveImportedFits(fits):
         IDs = []
         for fit in fits:
             eos.db.save(fit)
@@ -760,7 +787,8 @@ class Fit(object):
 
         return IDs
 
-    def checkStates(self, fit, base):
+    @staticmethod
+    def checkStates(fit, base):
         changed = False
         for mod in fit.modules:
             if mod != base:
@@ -783,7 +811,8 @@ class Fit(object):
             base.state = proposedState
             for mod in modules:
                 if mod != base:
-                    mod.state = self.__getProposedState(mod, click, proposedState)
+                    mod.state = self.__getProposedState(mod, click,
+                                                        proposedState)
 
         eos.db.commit()
         fit = eos.db.getFit(fitID)
@@ -804,13 +833,13 @@ class Fit(object):
     projectedMap = {State.OVERHEATED: State.ACTIVE,
                     State.ACTIVE: State.OFFLINE,
                     State.OFFLINE: State.ACTIVE,
-                    State.ONLINE: State.ACTIVE} # Just in case
+                    State.ONLINE: State.ACTIVE}  # Just in case
 
     def __getProposedState(self, mod, click, proposedState=None):
         if mod.slot in (Slot.RIG, Slot.SUBSYSTEM) or mod.isEmpty:
             return State.ONLINE
 
-        currState = state = mod.state
+        currState = mod.state
         transitionMap = self.projectedMap if mod.projected else self.localMap
         if proposedState is not None:
             state = proposedState
@@ -821,7 +850,7 @@ class Fit(object):
         else:
             state = transitionMap[currState]
             if not mod.isValidState(state):
-                state =- 1
+                state = -1
 
         if mod.isValidState(state):
             return state

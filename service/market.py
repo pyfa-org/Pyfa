@@ -25,8 +25,6 @@ import Queue
 
 import eos.db
 import eos.types
-from eos.itemMapping import itemMapping
-
 from service.settings import SettingsProvider, ProxySettings
 
 try:
@@ -153,6 +151,35 @@ class Market():
         self.shipBrowserWorkerThread.daemon = True
         self.shipBrowserWorkerThread.start()
 
+        # Item overrides. Key must be str of item name,
+        # value str of name or int of ID to convert it to
+        self.ITEMS_OVERRIDE = {
+            "Aliastra Catalyst": "Catalyst",
+            "Inner Zone Shipping Catalyst": "Catalyst",
+            "Intaki Syndicate Catalyst": "Catalyst",
+            "InterBus Catalyst": "Catalyst",
+            "Quafe Catalyst": "Catalyst",
+            "Nefantar Thrasher": "Thrasher",
+            "Sarum Magnate": "Magnate",
+            "Sukuuvestaa Heron": "Heron:",
+            "Inner Zone Shipping Imicus": "Imicus",
+            "Vherokior Probe": "Probe",
+            "Miasmos Quafe Ultra Edition": "Miasmos",
+            "Miasmos Quafe Ultramarine Edition": "Miasmos",
+            "Miasmos Amastris Edition": "Miasmos",
+            "Tash-Murkon Magnate": "Magnate",
+            "Scorpion Ishukone Watch": "Scorpion",
+            "Incursus Aliastra Edition": "Incursus",
+            "Merlin Nugoeihuvi Edition": "Merlin",
+            "Police Pursuit Comet": "Federation Navy Comet",
+            "Punisher Kador Edition": "Punisher",
+            "Rifter Krusual Edition": "Rifter",
+            "Abaddon Kador Edition": "Abaddon",
+            "Hyperion Aliastra Edition": "Hyperion",
+            "Maelstrom Krusual Edition": "Maelstrom",
+            "Rokh Nugoeihuvi Edition": "Rokh",
+            "Mammoth Nefantar Edition": "Mammoth" }
+
         # Items' group overrides
         self.customGroups = set()
         # Limited edition ships
@@ -214,7 +241,7 @@ class Market():
             "Guristas Shuttle": False}
 
         # do not publish anything that we convert
-        for name, _ in itemMapping.iteritems():
+        for name in self.ITEMS_OVERRIDE:
             self.ITEMS_FORCEPUBLISHED[name] = False
 
         # List of groups which are forcibly published
@@ -319,6 +346,8 @@ class Market():
             item = eos.db.getItem(id, *args, **kwargs)
         else:
             raise TypeError("Need Item object, integer, float or string as argument")
+        if item.name in self.ITEMS_OVERRIDE:
+            item = self.getItem(self.ITEMS_OVERRIDE[item.name], *args, **kwargs)
         return item
 
     def getGroup(self, identity, *args, **kwargs):

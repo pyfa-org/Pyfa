@@ -23,7 +23,6 @@ from sqlalchemy.sql import and_, or_, select, func
 from sqlalchemy.orm import join, exc
 from eos.types import Item, Category, Group, MarketGroup, AttributeInfo, MetaData, MetaGroup
 from eos.db.util import processEager, processWhere
-from eos.itemMapping import itemMapping
 import eos.config
 
 configVal = getattr(eos.config, "gamedataCache", None)
@@ -87,8 +86,6 @@ def getItem(lookfor, eager=None):
             itemNameMap[lookfor] = item.ID
     else:
         raise TypeError("Need integer or string as argument")
-    if item.name in itemMapping:
-        item = getItem(itemMapping[item.name], eager)
     return item
 
 groupNameMap = {}
