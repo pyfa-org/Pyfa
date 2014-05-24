@@ -16,6 +16,7 @@ class PFGeneralPref ( PreferenceView):
     def populatePanel( self, panel ):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.dirtySettings = False
+        self.openFitsSettings = service.SettingsProvider.getInstance().getSettings("pyfaPrevOpenFits", {"enabled": False, "pyfaOpenFits": []})
 
         mainSizer = wx.BoxSizer( wx.VERTICAL )
 
@@ -39,9 +40,12 @@ class PFGeneralPref ( PreferenceView):
 
         self.cbCompactSkills = wx.CheckBox( panel, wx.ID_ANY, u"Compact skills needed tooltip", wx.DefaultPosition, wx.DefaultSize, 0 )
         mainSizer.Add( self.cbCompactSkills, 0, wx.ALL|wx.EXPAND, 5 )
-        
+
         self.cbFitColorSlots = wx.CheckBox( panel, wx.ID_ANY, u"Color fitting view by slot", wx.DefaultPosition, wx.DefaultSize, 0 )
         mainSizer.Add( self.cbFitColorSlots, 0, wx.ALL|wx.EXPAND, 5 )
+
+        self.cbReopenFits = wx.CheckBox( panel, wx.ID_ANY, u"Reopen previous fits on startup", wx.DefaultPosition, wx.DefaultSize, 0 )
+        mainSizer.Add( self.cbReopenFits, 0, wx.ALL|wx.EXPAND, 5 )
 
         self.cbRackSlots = wx.CheckBox( panel, wx.ID_ANY, u"Separate Racks", wx.DefaultPosition, wx.DefaultSize, 0 )
         mainSizer.Add( self.cbRackSlots, 0, wx.ALL|wx.EXPAND, 5 )
@@ -50,10 +54,6 @@ class PFGeneralPref ( PreferenceView):
         self.cbRackLabels = wx.CheckBox( panel, wx.ID_ANY, u"Show Rack Labels", wx.DefaultPosition, wx.DefaultSize, 0 )
         labelSizer.Add( self.cbRackLabels, 0, wx.ALL|wx.EXPAND, 5 )
         mainSizer.Add( labelSizer, 0, wx.LEFT|wx.EXPAND, 30 )
-
-        # Needs to be implemented - save active fittings and reapply when starting pyfa
-        #self.cbReopenFits = wx.CheckBox( panel, wx.ID_ANY, u"Reopen Fits", wx.DefaultPosition, wx.DefaultSize, 0 )
-        #mainSizer.Add( self.cbReopenFits, 0, wx.ALL|wx.EXPAND, 5 )
 
         defCharSizer = wx.BoxSizer( wx.HORIZONTAL )
 
@@ -66,6 +66,7 @@ class PFGeneralPref ( PreferenceView):
         self.cbRackSlots.SetValue(self.sFit.serviceFittingOptions["rackSlots"] or False)
         self.cbRackLabels.SetValue(self.sFit.serviceFittingOptions["rackLabels"] or False)
         self.cbCompactSkills.SetValue(self.sFit.serviceFittingOptions["compactSkills"] or False)
+        self.cbReopenFits.SetValue(self.openFitsSettings["enabled"])
 
         self.cbGlobalChar.Bind(wx.EVT_CHECKBOX, self.OnCBGlobalCharStateChange)
         self.cbGlobalDmgPattern.Bind(wx.EVT_CHECKBOX, self.OnCBGlobalDmgPatternStateChange)
@@ -74,7 +75,8 @@ class PFGeneralPref ( PreferenceView):
         self.cbRackSlots.Bind(wx.EVT_CHECKBOX, self.onCBGlobalRackSlots)
         self.cbRackLabels.Bind(wx.EVT_CHECKBOX, self.onCBGlobalRackLabels)
         self.cbCompactSkills.Bind(wx.EVT_CHECKBOX, self.onCBCompactSkills)
-        
+        self.cbReopenFits.Bind(wx.EVT_CHECKBOX, self.onCBReopenFits)
+
         self.cbRackLabels.Enable(self.sFit.serviceFittingOptions["rackSlots"] or False)
 
         panel.SetSizer( mainSizer )
@@ -116,11 +118,14 @@ class PFGeneralPref ( PreferenceView):
     def OnCBGlobalDmgPatternStateChange(self, event):
         self.sFit.serviceFittingOptions["useGlobalDamagePattern"] = self.cbGlobalDmgPattern.GetValue()
         event.Skip()
-    
+
     def onCBCompactSkills(self, event):
         self.sFit.serviceFittingOptions["compactSkills"] = self.cbCompactSkills.GetValue()
         event.Skip()
-        
+
+    def onCBReopenFits(self, event):
+        self.openFitsSettings["enabled"] = self.cbReopenFits.GetValue()
+
     def getImage(self):
         return bitmapLoader.getBitmap("prefs_settings", "icons")
 

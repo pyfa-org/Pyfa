@@ -56,7 +56,7 @@ class FitSpawner(gui.multiSwitch.TabSpawner):
             except:
                 pass
         if count <0:
-            mstate = wx.GetMouseState()
+            mstate = getattr(event, "mstate", wx.GetMouseState())
 
             if mstate.CmdDown() or mstate.MiddleDown():
                 self.multiSwitch.AddPage()

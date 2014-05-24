@@ -149,8 +149,6 @@ class MainFrame(wx.Frame):
         self.SetMenuBar(MainMenuBar())
         self.registerMenu()
 
-
-
         #Internal vars to keep track of other windows (graphing/stats)
         self.graphFrame = None
         self.statsWnds = []
@@ -158,6 +156,10 @@ class MainFrame(wx.Frame):
 
 
         self.Bind(wx.EVT_CLOSE, self.OnClose)
+
+        self.prevOpenFits = service.SettingsProvider.getInstance().getSettings("pyfaPrevOpenFits", {"enabled": False,"pyfaOpenFits": []})
+        if self.prevOpenFits['enabled']:
+            self.LoadPreviousOpenFits()
 
         #Show ourselves
         self.Show()
@@ -171,8 +173,22 @@ class MainFrame(wx.Frame):
         dlg.ShowModal()
         dlg.Destroy()
 
-    def LoadMainFrameAttribs(self):
+    def LoadPreviousOpenFits(self):
+        fits = self.prevOpenFits['pyfaOpenFits']
 
+        if len(fits) > 0:
+            # open first fit in same tab (which should be empty)
+            wx.PostEvent(self, FitSelected(fitID=fits[0]))
+
+            # set mouse state to pass to FitSpawner via event
+            mstate = wx.GetMouseState()
+            mstate.SetMiddleDown(True)
+
+            # open the rest of the fits with an mstate override (to open in new tabs)
+            for fitID in fits[1:]:
+                wx.PostEvent(self, FitSelected(fitID=fitID, mstate=mstate))
+
+    def LoadMainFrameAttribs(self):
         mainFrameDefaultAttribs = {"wnd_width":1000, "wnd_height": 700, "wnd_maximized": False}
         self.mainFrameAttribs = service.SettingsProvider.getInstance().getSettings("pyfaMainWindowAttribs", mainFrameDefaultAttribs)
 
@@ -200,7 +216,6 @@ class MainFrame(wx.Frame):
         self.activeStatsWnd = wnd
 
     def GetActiveStatsWindow(self):
-
         if self.activeStatsWnd in self.statsWnds:
             return self.activeStatsWnd
 
@@ -232,6 +247,15 @@ class MainFrame(wx.Frame):
 
     def OnClose(self, event):
         self.UpdateMainFrameAttribs()
+
+        # save open fits
+        self.prevOpenFits['pyfaOpenFits'] = [] # clear old list
+        for page in self.fitMultiSwitch.pages:
+            m = getattr(page, "getActiveFit", None)
+            if m is not None:
+                 self.prevOpenFits['pyfaOpenFits'].append(m())
+
+        # save all teh settingz
         service.SettingsProvider.getInstance().saveAll()
         event.Skip()
 

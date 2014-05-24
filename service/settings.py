@@ -186,50 +186,50 @@ class ProxySettings():
             return self.autodetect()
         if self.getMode() == 2:
             return (self.getAddress(), int(self.getPort()))
-        
-        
-        
+
+
+
 """
 Settings used by the HTML export feature.
-"""        
+"""
 class HTMLExportSettings():
     _instance = None
-     
+
     @classmethod
     def getInstance(cls):
         if cls._instance == None:
             cls._instance = HTMLExportSettings()
 
-        return cls._instance    
+        return cls._instance
 
     def __init__(self):
         serviceHTMLExportDefaultSettings = {"enabled": False, "path": config.pyfaPath + os.sep + 'pyfaFits.html' }
         self.serviceHTMLExportSettings = SettingsProvider.getInstance().getSettings("pyfaServiceHTMLExportSettings", serviceHTMLExportDefaultSettings)
-    
+
     def getEnabled(self):
         return self.serviceHTMLExportSettings["enabled"]
-    
+
     def setEnabled(self, enabled):
         self.serviceHTMLExportSettings["enabled"] = enabled
-    
+
     def getPath(self):
         return self.serviceHTMLExportSettings["path"]
-    
+
     def setPath(self, path):
         self.serviceHTMLExportSettings["path"] = path
-        
+
 """
 Settings used by update notification
-"""        
+"""
 class UpdateSettings():
     _instance = None
-     
+
     @classmethod
     def getInstance(cls):
         if cls._instance == None:
             cls._instance = UpdateSettings()
 
-        return cls._instance    
+        return cls._instance
 
     def __init__(self):
         # Settings
@@ -238,9 +238,12 @@ class UpdateSettings():
         # version    - Set to release tag that user does not want notifications for
         serviceUpdateDefaultSettings = { "all": False, "prerelease": True, 'version': None }
         self.serviceUpdateSettings = SettingsProvider.getInstance().getSettings("pyfaServiceUpdateSettings", serviceUpdateDefaultSettings)
-    
+
     def get(self, type):
         return self.serviceUpdateSettings[type]
-    
+
     def set(self, type, value):
         self.serviceUpdateSettings[type] = value
+
+# @todo: "reopen fits" setting class
+# @todo: migrate fit settings (from fit service) here?
