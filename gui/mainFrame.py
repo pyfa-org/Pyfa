@@ -77,17 +77,17 @@ class OpenFitsThread(threading.Thread):
     def run(self):
         time.sleep(0.5)  # Give GUI some time to finish drawing
 
-        # open first fit in same tab (which should be empty)
-        wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fits[0]))
+        # `startup` tells FitSpawner that we are loading fits are startup, and
+        # has 3 values:
+        # False = Set as default in FitSpawner itself, never set here
+        # 1 = Create new fit page, but do not calculate page
+        # 2 = Create new page and calculate
+        # We use 1 for all fits except the last one where we use 2 so that we
+        # have correct calculations displayed at startup
+        for fitID in self.fits[:-1]:
+            wx.PostEvent(self.mainFrame, FitSelected(fitID=fitID, startup=1))
 
-        # set mouse state to pass to FitSpawner via event
-        mstate = wx.GetMouseState()
-        mstate.SetMiddleDown(True)
-
-        # open the rest of the fits with an mstate override (to open in new tabs)
-        for fitID in self.fits[1:]:
-            wx.PostEvent(self.mainFrame, FitSelected(fitID=fitID, mstate=mstate))
-
+        wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fits[-1], startup=2))
         wx.CallAfter(self.callback)
 
 class MainFrame(wx.Frame):
@@ -185,9 +185,7 @@ class MainFrame(wx.Frame):
         #Show ourselves
         self.Show()
 
-        self.prevOpenFits = service.SettingsProvider.getInstance().getSettings("pyfaPrevOpenFits", {"enabled": False,"pyfaOpenFits": []})
-        if self.prevOpenFits['enabled']:
-            self.LoadPreviousOpenFits()
+        self.LoadPreviousOpenFits()
 
         #Check for updates
         self.sUpdate = service.Update.getInstance()
@@ -199,11 +197,18 @@ class MainFrame(wx.Frame):
         dlg.Destroy()
 
     def LoadPreviousOpenFits(self):
+        self.prevOpenFits = service.SettingsProvider.getInstance().getSettings("pyfaPrevOpenFits", {"enabled": False, "pyfaOpenFits": []})
         fits = self.prevOpenFits['pyfaOpenFits']
-        if len(fits) > 0:
-            self.waitDialog = animUtils.WaitDialog(self, title = "Opening previous fits")
-            thread = OpenFitsThread(fits, self.closeWaitDialog)
-            self.waitDialog.ShowModal()
+
+        if not self.prevOpenFits['enabled'] or len(fits) is 0:
+            # add blank page if there are no fits to be loaded
+            self.fitMultiSwitch.AddPage()
+            return
+
+        self.waitDialog = animUtils.WaitDialog(self, title="Opening previous fits")
+        OpenFitsThread(fits, self.closeWaitDialog)
+        self.waitDialog.ShowModal()
+
 
     def LoadMainFrameAttribs(self):
         mainFrameDefaultAttribs = {"wnd_width":1000, "wnd_height": 700, "wnd_maximized": False}
