@@ -49,13 +49,13 @@ class FitSpawner(gui.multiSwitch.TabSpawner):
         for index, page in enumerate(self.multiSwitch.pages):
             try:
                 if page.activeFitID == event.fitID:
-                    count +=1
+                    count += 1
                     self.multiSwitch.SetSelection(index)
                     wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=event.fitID))
                     break
             except:
                 pass
-        if count <0:
+        if count < 0:
             mstate = getattr(event, "mstate", wx.GetMouseState())
 
             if mstate.CmdDown() or mstate.MiddleDown():

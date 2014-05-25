@@ -22,12 +22,14 @@ import os.path
 
 import sqlalchemy
 import wx
+import time
 
 from wx._core import PyDeadObjectError
 from wx.lib.wordwrap import wordwrap
 
 import service
 import config
+import threading
 
 import gui.aboutData
 import gui.chromeTabs
@@ -63,6 +65,30 @@ class PFPanel(wx.Panel):
         event.Skip()
     def OnBkErase(self, event):
         pass
+
+class OpenFitsThread(threading.Thread):
+    def __init__(self, fits, callback):
+        threading.Thread.__init__(self)
+        self.mainFrame = MainFrame.getInstance()
+        self.callback = callback
+        self.fits = fits
+        self.start()
+
+    def run(self):
+        time.sleep(0.5)  # Give GUI some time to finish drawing
+
+        # open first fit in same tab (which should be empty)
+        wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fits[0]))
+
+        # set mouse state to pass to FitSpawner via event
+        mstate = wx.GetMouseState()
+        mstate.SetMiddleDown(True)
+
+        # open the rest of the fits with an mstate override (to open in new tabs)
+        for fitID in self.fits[1:]:
+            wx.PostEvent(self.mainFrame, FitSelected(fitID=fitID, mstate=mstate))
+
+        wx.CallAfter(self.callback)
 
 class MainFrame(wx.Frame):
     __instance = None
@@ -154,15 +180,14 @@ class MainFrame(wx.Frame):
         self.statsWnds = []
         self.activeStatsWnd = None
 
-
         self.Bind(wx.EVT_CLOSE, self.OnClose)
+
+        #Show ourselves
+        self.Show()
 
         self.prevOpenFits = service.SettingsProvider.getInstance().getSettings("pyfaPrevOpenFits", {"enabled": False,"pyfaOpenFits": []})
         if self.prevOpenFits['enabled']:
             self.LoadPreviousOpenFits()
-
-        #Show ourselves
-        self.Show()
 
         #Check for updates
         self.sUpdate = service.Update.getInstance()
@@ -175,18 +200,10 @@ class MainFrame(wx.Frame):
 
     def LoadPreviousOpenFits(self):
         fits = self.prevOpenFits['pyfaOpenFits']
-
         if len(fits) > 0:
-            # open first fit in same tab (which should be empty)
-            wx.PostEvent(self, FitSelected(fitID=fits[0]))
-
-            # set mouse state to pass to FitSpawner via event
-            mstate = wx.GetMouseState()
-            mstate.SetMiddleDown(True)
-
-            # open the rest of the fits with an mstate override (to open in new tabs)
-            for fitID in fits[1:]:
-                wx.PostEvent(self, FitSelected(fitID=fitID, mstate=mstate))
+            self.waitDialog = animUtils.WaitDialog(self, title = "Opening previous fits")
+            thread = OpenFitsThread(fits, self.closeWaitDialog)
+            self.waitDialog.ShowModal()
 
     def LoadMainFrameAttribs(self):
         mainFrameDefaultAttribs = {"wnd_width":1000, "wnd_height": 700, "wnd_maximized": False}
