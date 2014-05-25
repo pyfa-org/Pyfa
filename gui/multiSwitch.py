@@ -17,14 +17,14 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 #===============================================================================
 
-import wx
 import gui.chromeTabs
 import gui.builtinViews.emptyView
+
 
 class MultiSwitch(gui.chromeTabs.PFNotebook):
     def __init__(self, parent):
         gui.chromeTabs.PFNotebook.__init__(self, parent)
-        self.AddPage()
+        #self.AddPage() # now handled by mainFrame
         self.handlers = handlers = []
         for type in TabSpawner.tabTypes:
             handlers.append(type(self))
@@ -35,21 +35,22 @@ class MultiSwitch(gui.chromeTabs.PFNotebook):
             if h:
                 h(type, info)
 
-    def AddPage(self, tabWnd=None, tabTitle="Empty Tab",  tabImage=None):
+    def AddPage(self, tabWnd=None, tabTitle="Empty Tab", tabImage=None):
         if tabWnd is None:
             tabWnd = gui.builtinViews.emptyView.BlankPage(self)
             tabWnd.handleDrag = lambda type, info: self.handleDrag(type, info)
 
         gui.chromeTabs.PFNotebook.AddPage(self, tabWnd, tabTitle, tabImage, True)
 
-
     def DeletePage(self, n, *args, **kwargs):
         gui.chromeTabs.PFNotebook.DeletePage(self, n, *args, **kwargs)
         if self.GetPageCount() == 0:
             self.AddPage()
 
+
 class TabSpawner(object):
     tabTypes = []
+
     @classmethod
     def register(cls):
         TabSpawner.tabTypes.append(cls)

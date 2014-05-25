@@ -44,21 +44,20 @@ class FitSpawner(gui.multiSwitch.TabSpawner):
 
     def fitSelected(self, event):
         count = -1
-        if self.multiSwitch.GetPageCount() == 0:
-            self.multiSwitch.AddPage()
         for index, page in enumerate(self.multiSwitch.pages):
             try:
                 if page.activeFitID == event.fitID:
-                    count +=1
+                    count += 1
                     self.multiSwitch.SetSelection(index)
                     wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=event.fitID))
                     break
             except:
                 pass
-        if count <0:
+        if count < 0:
+            startup = getattr(event, "startup", False)  # see OpenFitsThread in gui.mainFrame
             mstate = wx.GetMouseState()
 
-            if mstate.CmdDown() or mstate.MiddleDown():
+            if mstate.CmdDown() or mstate.MiddleDown() or startup:
                 self.multiSwitch.AddPage()
 
             view = FittingView(self.multiSwitch)
@@ -281,13 +280,15 @@ class FittingView(d.Display):
     def fitSelected(self, event):
         if self.parent.IsActive(self):
             fitID = event.fitID
+            startup = getattr(event, "startup", False)
             self.activeFitID = fitID
-            self.Show(fitID is not None)
-            self.slotsChanged()
             sFit = service.Fit.getInstance()
-            sFit.switchFit(fitID)
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
             self.updateTab()
+            if not startup or startup == 2:  # see OpenFitsThread in gui.mainFrame
+                self.Show(fitID is not None)
+                self.slotsChanged()
+                sFit.switchFit(fitID)
+                wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
         event.Skip()
 
@@ -562,11 +563,17 @@ class FittingView(d.Display):
         self.itemRect = self.GetItemRect(0)
 
         if 'wxMac' in wx.PlatformInfo:
-            self.MakeSnapshot()
+            try:
+                self.MakeSnapshot()
+            except:
+               pass
 
     def OnShow(self, event):
         if not event.GetShow():
-            self.MakeSnapshot()
+            try:
+                self.MakeSnapshot()
+            except:
+                pass
         event.Skip()
 
     def Snapshot(self):

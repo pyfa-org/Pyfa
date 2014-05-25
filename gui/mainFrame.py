@@ -22,12 +22,14 @@ import os.path
 
 import sqlalchemy
 import wx
+import time
 
 from wx._core import PyDeadObjectError
 from wx.lib.wordwrap import wordwrap
 
 import service
 import config
+import threading
 
 import gui.aboutData
 import gui.chromeTabs
@@ -63,6 +65,30 @@ class PFPanel(wx.Panel):
         event.Skip()
     def OnBkErase(self, event):
         pass
+
+class OpenFitsThread(threading.Thread):
+    def __init__(self, fits, callback):
+        threading.Thread.__init__(self)
+        self.mainFrame = MainFrame.getInstance()
+        self.callback = callback
+        self.fits = fits
+        self.start()
+
+    def run(self):
+        time.sleep(0.5)  # Give GUI some time to finish drawing
+
+        # `startup` tells FitSpawner that we are loading fits are startup, and
+        # has 3 values:
+        # False = Set as default in FitSpawner itself, never set here
+        # 1 = Create new fit page, but do not calculate page
+        # 2 = Create new page and calculate
+        # We use 1 for all fits except the last one where we use 2 so that we
+        # have correct calculations displayed at startup
+        for fitID in self.fits[:-1]:
+            wx.PostEvent(self.mainFrame, FitSelected(fitID=fitID, startup=1))
+
+        wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fits[-1], startup=2))
+        wx.CallAfter(self.callback)
 
 class MainFrame(wx.Frame):
     __instance = None
@@ -149,18 +175,17 @@ class MainFrame(wx.Frame):
         self.SetMenuBar(MainMenuBar())
         self.registerMenu()
 
-
-
         #Internal vars to keep track of other windows (graphing/stats)
         self.graphFrame = None
         self.statsWnds = []
         self.activeStatsWnd = None
 
-
         self.Bind(wx.EVT_CLOSE, self.OnClose)
 
         #Show ourselves
         self.Show()
+
+        self.LoadPreviousOpenFits()
 
         #Check for updates
         self.sUpdate = service.Update.getInstance()
@@ -171,8 +196,21 @@ class MainFrame(wx.Frame):
         dlg.ShowModal()
         dlg.Destroy()
 
-    def LoadMainFrameAttribs(self):
+    def LoadPreviousOpenFits(self):
+        self.prevOpenFits = service.SettingsProvider.getInstance().getSettings("pyfaPrevOpenFits", {"enabled": False, "pyfaOpenFits": []})
+        fits = self.prevOpenFits['pyfaOpenFits']
 
+        if not self.prevOpenFits['enabled'] or len(fits) is 0:
+            # add blank page if there are no fits to be loaded
+            self.fitMultiSwitch.AddPage()
+            return
+
+        self.waitDialog = animUtils.WaitDialog(self, title="Opening previous fits")
+        OpenFitsThread(fits, self.closeWaitDialog)
+        self.waitDialog.ShowModal()
+
+
+    def LoadMainFrameAttribs(self):
         mainFrameDefaultAttribs = {"wnd_width":1000, "wnd_height": 700, "wnd_maximized": False}
         self.mainFrameAttribs = service.SettingsProvider.getInstance().getSettings("pyfaMainWindowAttribs", mainFrameDefaultAttribs)
 
@@ -200,7 +238,6 @@ class MainFrame(wx.Frame):
         self.activeStatsWnd = wnd
 
     def GetActiveStatsWindow(self):
-
         if self.activeStatsWnd in self.statsWnds:
             return self.activeStatsWnd
 
@@ -232,6 +269,15 @@ class MainFrame(wx.Frame):
 
     def OnClose(self, event):
         self.UpdateMainFrameAttribs()
+
+        # save open fits
+        self.prevOpenFits['pyfaOpenFits'] = [] # clear old list
+        for page in self.fitMultiSwitch.pages:
+            m = getattr(page, "getActiveFit", None)
+            if m is not None:
+                 self.prevOpenFits['pyfaOpenFits'].append(m())
+
+        # save all teh settingz
         service.SettingsProvider.getInstance().saveAll()
         event.Skip()
 
