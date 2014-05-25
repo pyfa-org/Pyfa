@@ -184,7 +184,7 @@ class ModifiedAttributeDict(collections.MutableMapping):
     def iterAfflictions(self):
         return self.__affectedBy.__iter__()
 
-    def __afflict(self, attributeName, operation, bonus):
+    def __afflict(self, attributeName, operation, bonus, used):
         """Add modifier to list of things affecting current item"""
         # Do nothing if no fit is assigned
         if self.fit is None:
@@ -201,15 +201,13 @@ class ModifiedAttributeDict(collections.MutableMapping):
         # Get modifier which helps to compose 'Affected by' map
         modifier = self.fit.getModifier()
         # Add current affliction to set
-        affs.add((modifier, operation, bonus))
+        affs.add((modifier, operation, bonus, used))
 
     def preAssign(self, attributeName, value):
         """Overwrites original value of the entity with given one, allowing further modification"""
         self.__preAssigns[attributeName] = value
         self.__placehold(attributeName)
-        # Add to afflictions only if preassigned value differs from original
-        if value != self.getOriginal(attributeName):
-            self.__afflict(attributeName, "=", value)
+        self.__afflict(attributeName, "=", value, value != self.getOriginal(attributeName))
 
     def increase(self, attributeName, increase, position="pre"):
         """Increase value of given attribute by given number"""
@@ -225,9 +223,7 @@ class ModifiedAttributeDict(collections.MutableMapping):
             tbl[attributeName] = 0
         tbl[attributeName] += increase
         self.__placehold(attributeName)
-        # Add to list of afflictions only if we actually modify value
-        if increase != 0:
-            self.__afflict(attributeName, "+", increase)
+        self.__afflict(attributeName, "+", increase, increase != 0)
 
     def multiply(self, attributeName, multiplier, stackingPenalties=False, penaltyGroup="default"):
         """Multiply value of given attribute by given factor"""
@@ -246,9 +242,7 @@ class ModifiedAttributeDict(collections.MutableMapping):
                 self.__multipliers[attributeName] = 1
             self.__multipliers[attributeName] *= multiplier
         self.__placehold(attributeName)
-        # Add to list of afflictions only if we actually modify value
-        if multiplier != 1:
-            self.__afflict(attributeName, "%s*" % ("s" if stackingPenalties else ""), multiplier)
+        self.__afflict(attributeName, "%s*" % ("s" if stackingPenalties else ""), multiplier, multiplier != 1)
 
     def boost(self, attributeName, boostFactor, *args, **kwargs):
         """Boost value by some percentage"""

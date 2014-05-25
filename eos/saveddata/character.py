@@ -275,7 +275,9 @@ class Skill(HandledItem):
         return self.item.attributes[key].value
 
     def calculateModifiedAttributes(self, fit, runTime):
-        if self.__suppressed or not self.learned: return
+        if self.__suppressed: # or not self.learned - removed for GH issue 101
+            return
+
         item = self.item
         if item is None:
             return

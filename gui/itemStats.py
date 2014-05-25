@@ -615,13 +615,15 @@ class ItemAffectedBy (wx.Panel):
 
         cont = self.stuff.itemModifiedAttributes if self.item == self.stuff.item else self.stuff.chargeModifiedAttributes
         things = {}
+
         for attrName in cont.iterAfflictions():
+            # if value is 0 or there has been no change from original to modified, return
             if cont[attrName] == (cont.getOriginal(attrName) or 0):
                 continue
 
             for fit, afflictors in cont.getAfflictions(attrName).iteritems():
-                for afflictor, modifier, amount in afflictors:
-                    if afflictor.item is None:
+                for afflictor, modifier, amount, used in afflictors:
+                    if not used or afflictor.item is None:
                         continue
                     if afflictor.item.name not in things:
                         things[afflictor.item.name] = [type(afflictor), set(), set()]
