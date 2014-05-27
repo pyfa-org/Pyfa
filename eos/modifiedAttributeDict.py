@@ -184,7 +184,7 @@ class ModifiedAttributeDict(collections.MutableMapping):
     def iterAfflictions(self):
         return self.__affectedBy.__iter__()
 
-    def __afflict(self, attributeName, operation, bonus, used):
+    def __afflict(self, attributeName, operation, bonus, used=True):
         """Add modifier to list of things affecting current item"""
         # Do nothing if no fit is assigned
         if self.fit is None:
