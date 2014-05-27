@@ -734,8 +734,10 @@ class Fit(object):
         self.__extraDrains = []
         self.__ehp = None
         self.__weaponDPS = None
+        self.__minerYield = None
         self.__weaponVolley = None
         self.__droneDPS = None
+        self.__droneYield = None
         self.__sustainableTank = None
         self.__effectiveSustainableTank = None
         self.__effectiveTank = None
@@ -838,6 +840,24 @@ class Fit(object):
         return self.droneDPS + self.weaponDPS
 
     @property
+    def minerYield(self):
+        if self.__minerYield is None:
+            self.calculateMiningStats()
+
+        return self.__minerYield
+
+    @property
+    def droneYield(self):
+        if self.__droneYield is None:
+            self.calculateMiningStats()
+
+        return self.__droneYield
+
+    @property
+    def totalYield(self):
+        return self.droneYield + self.minerYield
+
+    @property
     def maxTargets(self):
         return min(self.extraAttributes["maxTargetsLockedFromSkills"], self.ship.getModifiedItemAttr("maxLockedTargets"))
 
@@ -895,10 +915,12 @@ class Fit(object):
     def clear(self):
         self.__effectiveTank = None
         self.__weaponDPS = None
+        self.__minerYield = None
         self.__weaponVolley = None
         self.__effectiveSustainableTank = None
         self.__sustainableTank = None
         self.__droneDPS = None
+        self.__droneYield = None
         self.__ehp = None
         self.__calculated = False
         self.__capStable = None
@@ -1417,6 +1439,19 @@ class Fit(object):
             return min(40000 / scanRes / asinh(radius)**2, 30*60)
         else:
             return self.ship.getModifiedItemAttr("scanSpeed") / 1000.0
+
+    def calculateMiningStats(self):
+        minerYield = 0
+        droneYield = 0
+
+        for mod in self.modules:
+            minerYield += mod.miningStats
+
+        for drone in self.drones:
+            droneYield += drone.miningStats
+
+        self.__minerYield = minerYield
+        self.__droneYield = droneYield
 
     def calculateWeaponStats(self):
         weaponDPS = 0
