@@ -23,6 +23,7 @@ from sqlalchemy.orm import validates, reconstructor
 
 class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     DAMAGE_ATTRIBUTES = ("emDamage", "kineticDamage", "explosiveDamage", "thermalDamage")
+    MINING_ATTRIBUTES = ("miningAmount",)
 
     def __init__(self, item):
         if item.category.name != "Drone":
@@ -34,6 +35,7 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         self.amount = 0
         self.amountActive = 0
         self.__dps = None
+        self.__miningyield = None
         self.projected = False
         self.__itemModifiedAttributes = ModifiedAttributeDict()
         self.itemModifiedAttributes.original = self.item.attributes
@@ -41,6 +43,7 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     @reconstructor
     def init(self):
         self.__dps = None
+        self.__miningyield = None
         self.__item = None
         self.__charge = None
 
@@ -98,6 +101,11 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                 return True
 
     @property
+    def mines(self):
+        if "miningAmount" in self.itemModifiedAttributes:
+            return True
+
+    @property
     def hasAmmo(self):
         return self.charge is not None
 
@@ -120,6 +128,21 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                 self.__dps = 0
 
         return self.__dps
+
+    @property
+    def miningStats(self):
+        if self.__miningyield == None:
+            if self.mines is True and self.amountActive > 0:
+                attr = "duration"
+                getter = self.getModifiedItemAttr
+
+                cycleTime = self.getModifiedItemAttr(attr)
+                volley = sum(map(lambda d: getter(d), self.MINING_ATTRIBUTES)) * self.amountActive
+                self.__miningyield = volley / (cycleTime / 1000.0)
+            else:
+                self.__miningyield = 0
+
+        return self.__miningyield
 
     @property
     def maxRange(self):
@@ -158,6 +181,7 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     def clear(self):
         self.__dps = None
+        self.__miningyield = None
         self.itemModifiedAttributes.clear()
         self.chargeModifiedAttributes.clear()
 
