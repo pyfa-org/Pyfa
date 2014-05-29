@@ -77,9 +77,10 @@ class ChangeAffectingSkills(ContextMenu):
             skillItem = wx.MenuItem(m, wx.NewId(), skill.item.name)
             sub = wx.Menu()
             skillItem.SetSubMenu(sub)
-            bitmap = bitmapLoader.getBitmap("level%s" % skill.level, "icons")
-            if bitmap is not None:
-                skillItem.SetBitmap(bitmap)
+            if skill.learned:
+                bitmap = bitmapLoader.getBitmap("lvl%s" % skill.level, "icons")
+                if bitmap is not None:
+                    skillItem.SetBitmap(bitmap)
 
             for i in xrange(-1, 6):
                 levelItem = self.addSkill(menu, skill, i)
