@@ -50,7 +50,7 @@ class ChangeAffectingSkills(ContextMenu):
         return len(self.skills) > 0
 
     def getText(self, itmContext, selection):
-        return "Change Affecting Skills"
+        return "Change %s Skills" % itmContext
 
     def activate(self, fullContext, selection, i):
         pass
@@ -63,7 +63,7 @@ class ChangeAffectingSkills(ContextMenu):
 
         id = wx.NewId()
         self.skillIds[id] = (skill, i)
-        menuItem = wx.MenuItem(rootMenu, id, label)
+        menuItem = wx.MenuItem(rootMenu, id, label, kind=wx.ITEM_CHECK)
         rootMenu.Bind(wx.EVT_MENU, self.handleSkillChange, menuItem)
         return menuItem
 
@@ -85,6 +85,7 @@ class ChangeAffectingSkills(ContextMenu):
             for i in xrange(-1, 6):
                 levelItem = self.addSkill(menu, skill, i)
                 sub.AppendItem(levelItem)
+                #@ todo: add check to current level. Need to fix #109 first
             m.AppendItem(skillItem)
 
         return m

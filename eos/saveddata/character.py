@@ -87,6 +87,7 @@ class Character(object):
             all0 = eos.db.getCharacter("All 0")
             if all0 is None:
                 all0 = Character("All 0")
+                all0.defaultLevel = None
                 eos.db.add(all0)
 
             cls.__all0 = all0
@@ -173,12 +174,6 @@ class Character(object):
         return self.__implants
 
     def iterSkills(self):
-        if self.defaultLevel is not None:
-            return self.iterDefaultLevel()
-        else:
-            return self.__skills.__iter__()
-
-    def iterDefaultLevel(self):
         for item in self.getSkillList():
             yield self.getSkill(item)
 
