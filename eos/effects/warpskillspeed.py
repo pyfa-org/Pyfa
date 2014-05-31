@@ -4,4 +4,6 @@
 # Modules named like: Hyperspatial Velocity Optimizer (8 of 8)
 type = "passive"
 def handler(fit, container, context):
-    fit.ship.boostItemAttr("baseWarpSpeed", container.getModifiedItemAttr("WarpSBonus"))
+    penalized = False if "skill" in context or "implant" in context else True
+    fit.ship.boostItemAttr("baseWarpSpeed", container.getModifiedItemAttr("WarpSBonus"),
+                           stackingPenalties=penalized)
