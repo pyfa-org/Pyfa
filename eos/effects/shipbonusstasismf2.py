@@ -1,4 +1,5 @@
 # Used by:
+# Ship: Cruor
 # Ship: Freki
 type = "passive"
 def handler(fit, ship, context):

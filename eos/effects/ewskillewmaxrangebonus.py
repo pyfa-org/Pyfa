@@ -1,5 +1,5 @@
 # Used by:
-# Implants named like: Low grade Centurion (5 of 6)
+# Implants named like: Low grade Centurion (10 of 12)
 # Modules named like: Particle Dispersion Projector (8 of 8)
 # Skill: Long Distance Jamming
 type = "passive"

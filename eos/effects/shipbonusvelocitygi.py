@@ -1,8 +1,7 @@
 # Used by:
-# Variations of ship: Epithal (2 of 2)
+# Ships from group: Industrial (8 of 21)
 # Variations of ship: Miasmos (4 of 4)
-# Ship: Iteron Mark V
-# Ship: Kryos
+# Ship: Occator
 # Ship: Viator
 type = "passive"
 def handler(fit, ship, context):

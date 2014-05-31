@@ -1,4 +1,5 @@
 # Used by:
+# Variations of ship: Procurer (2 of 2)
 # Ship: Gnosis
 # Ship: Taipan
 # Ship: Velator

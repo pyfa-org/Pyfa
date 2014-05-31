@@ -1,5 +1,5 @@
 # Used by:
-# Ships named like: Rokh (2 of 2)
+# Ships named like: Rokh (3 of 3)
 # Ship: Rattlesnake
 # Ship: Scorpion Navy Issue
 type = "passive"

@@ -1,3 +1,5 @@
+# Used by:
+# Ship: Impel
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Amarr Industrial").level

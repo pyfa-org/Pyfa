@@ -1,5 +1,5 @@
 # Used by:
-# Ship: Venture
+# Variations of ship: Venture (2 of 2)
 type = "passive"
 def handler(fit, module, context):
     level = fit.character.getSkill("Mining Frigate").level

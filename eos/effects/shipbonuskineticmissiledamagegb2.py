@@ -1,3 +1,5 @@
+# Used by:
+# Ship: Rattlesnake
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Gallente Battleship").level

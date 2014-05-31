@@ -1,5 +1,5 @@
 # Used by:
-# Ship: Prophecy
+# Ships named like: Prophecy (2 of 2)
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Amarr Battlecruiser").level

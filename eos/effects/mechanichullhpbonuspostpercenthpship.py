@@ -1,5 +1,6 @@
 # Used by:
 # Implants named like: Inherent Implants 'Noble' Mechanic MC (6 of 6)
+# Modules named like: Transverse Bulkhead (8 of 8)
 # Skill: Mechanics
 type = "passive"
 def handler(fit, container, context):

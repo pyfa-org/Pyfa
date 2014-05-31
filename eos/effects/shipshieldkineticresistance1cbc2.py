@@ -1,6 +1,7 @@
 # Used by:
 # Variations of ship: Ferox (2 of 2)
 # Ship: Drake
+# Ship: Ferox Guristas Edition
 # Ship: Nighthawk
 type = "passive"
 def handler(fit, ship, context):

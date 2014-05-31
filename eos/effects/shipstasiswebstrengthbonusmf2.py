@@ -1,5 +1,4 @@
 # Used by:
-# Ship: Cruor
 # Ship: Daredevil
 type = "passive"
 def handler(fit, ship, context):

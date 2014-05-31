@@ -1,6 +1,5 @@
 # Used by:
 # Ship: Corax
-# Ship: Gila
 # Ship: Talwar
 type = "passive"
 def handler(fit, ship, context):

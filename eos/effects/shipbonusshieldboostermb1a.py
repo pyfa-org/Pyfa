@@ -1,5 +1,5 @@
 # Used by:
-# Ships named like: Maelstrom (2 of 2)
+# Ships named like: Maelstrom (3 of 3)
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Minmatar Battleship").level

@@ -1,5 +1,5 @@
 # Used by:
-# Ships named like: Hyperion (2 of 2)
+# Ships named like: Hyperion (3 of 3)
 # Ship: Dominix Navy Issue
 # Ship: Kronos
 # Ship: Megathron Federate Issue

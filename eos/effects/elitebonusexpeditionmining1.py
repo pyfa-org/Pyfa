@@ -1,3 +1,5 @@
+# Used by:
+# Ship: Prospect
 type = "passive"
 def handler(fit, module, context):
     level = fit.character.getSkill("Expedition Frigates").level

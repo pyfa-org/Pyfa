@@ -1,5 +1,6 @@
 # Used by:
 # Ship: Adrestia
+# Ship: Orthrus
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Gallente Cruiser").level

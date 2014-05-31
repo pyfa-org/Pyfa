@@ -1,3 +1,5 @@
+# Used by:
+# Ship: Phantasm
 type = "passive"
 def handler(fit, module, context):
     level = fit.character.getSkill("Caldari Cruiser").level

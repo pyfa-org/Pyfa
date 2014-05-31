@@ -1,5 +1,6 @@
 # Used by:
-# Modules from group: Drone Tracking Modules (7 of 7)
+# Variations of module: Omnidirectional Tracking Link I (7 of 7)
+# Module: Sentient Omnidirectional Tracking Link
 type = "active"
 def handler(fit, module, context):
     fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill("Drones"),

@@ -1,5 +1,5 @@
 # Used by:
-# Ships named like: Incursus (2 of 2)
+# Ships named like: Incursus (3 of 3)
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Gallente Frigate").level

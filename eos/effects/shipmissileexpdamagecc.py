@@ -1,4 +1,5 @@
 # Used by:
+# Ship: Orthrus
 # Ship: Osprey Navy Issue
 type = "passive"
 def handler(fit, ship, context):

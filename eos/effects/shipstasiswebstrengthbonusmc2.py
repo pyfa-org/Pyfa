@@ -1,5 +1,4 @@
 # Used by:
-# Ship: Ashimmu
 # Ship: Vigilant
 type = "passive"
 def handler(fit, ship, context):

@@ -1,5 +1,5 @@
 # Used by:
-# Implants named like: Low grade Edge (6 of 6)
+# Implants named like: Low grade Edge (12 of 12)
 runTime = "early"
 type = "passive"
 def handler(fit, implant, context):

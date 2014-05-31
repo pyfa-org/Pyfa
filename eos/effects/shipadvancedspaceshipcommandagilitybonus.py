@@ -1,5 +1,5 @@
 # Used by:
-# Items from market group: Ships > Capital Ships (26 of 27)
+# Items from market group: Ships > Capital Ships (27 of 29)
 type = "passive"
 def handler(fit, ship, context):
     skill = fit.character.getSkill("Advanced Spaceship Command")

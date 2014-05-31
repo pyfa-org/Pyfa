@@ -1,4 +1,5 @@
 # Used by:
+# Ship: Garmur
 # Ship: Utu
 type = "passive"
 def handler(fit, ship, context):

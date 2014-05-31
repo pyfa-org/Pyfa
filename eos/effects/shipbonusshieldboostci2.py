@@ -1,3 +1,5 @@
+# Used by:
+# Ship: Bustard
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Caldari Industrial").level

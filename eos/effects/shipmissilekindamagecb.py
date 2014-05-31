@@ -1,3 +1,5 @@
+# Used by:
+# Ship: Barghest
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Caldari Battleship").level

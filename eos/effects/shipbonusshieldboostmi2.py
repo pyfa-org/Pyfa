@@ -1,3 +1,5 @@
+# Used by:
+# Ship: Mastodon
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Minmatar Industrial").level

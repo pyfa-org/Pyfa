@@ -1,6 +1,6 @@
 # Used by:
+# Ships named like: Omen (3 of 4)
 # Ship: Devoter
-# Ship: Omen
 # Ship: Zealot
 type = "passive"
 def handler(fit, ship, context):

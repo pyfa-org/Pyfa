@@ -1,5 +1,6 @@
 # Used by:
 # Variations of ship: Catalyst (6 of 7)
+# Ship: Catalyst Serpentis Edition
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Gallente Destroyer").level

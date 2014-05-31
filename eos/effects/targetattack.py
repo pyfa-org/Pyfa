@@ -1,5 +1,5 @@
 # Used by:
-# Drones from group: Combat Drone (73 of 73)
+# Drones from group: Combat Drone (74 of 74)
 # Drones from group: Fighter Drone (4 of 4)
 # Modules from group: Energy Weapon (183 of 183)
 type = 'active'

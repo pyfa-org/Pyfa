@@ -1,5 +1,5 @@
 # Used by:
-# Ships named like: Punisher (2 of 2)
+# Ships named like: Punisher (3 of 3)
 # Ship: Astero
 # Ship: Malice
 type = "passive"

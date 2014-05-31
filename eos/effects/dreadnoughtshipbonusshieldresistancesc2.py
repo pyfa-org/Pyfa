@@ -1,3 +1,5 @@
+# Used by:
+# Ship: Phoenix
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Caldari Dreadnought").level

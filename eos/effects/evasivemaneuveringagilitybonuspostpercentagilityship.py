@@ -1,6 +1,6 @@
 # Used by:
 # Implants named like: Eifyr and Co. 'Rogue' Evasive Maneuvering EM (6 of 6)
-# Implants named like: Low grade Nomad (5 of 6)
+# Implants named like: Low grade Nomad (10 of 12)
 # Modules named like: Low Friction Nozzle Joints (8 of 8)
 # Implant: Genolution Core Augmentation CA-4
 # Skill: Evasive Maneuvering

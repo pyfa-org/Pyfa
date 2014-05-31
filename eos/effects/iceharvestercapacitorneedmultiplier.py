@@ -1,6 +1,7 @@
 # Used by:
-# Variations of ship: Procurer (2 of 2)
-# Variations of ship: Retriever (2 of 2)
+# Ships from group: Exhumer (3 of 4)
+# Ship: Procurer
+# Ship: Retriever
 type = "passive"
 def handler(fit, ship, context):
     fit.modules.filteredItemMultiply(lambda mod: mod.item.requiresSkill("Ice Harvesting"),

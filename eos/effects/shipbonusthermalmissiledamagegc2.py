@@ -1,3 +1,5 @@
+# Used by:
+# Ship: Gila
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Gallente Cruiser").level

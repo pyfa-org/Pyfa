@@ -1,5 +1,5 @@
 # Used by:
-# Ship: Thorax
+# Ships named like: Thorax (3 of 3)
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Gallente Cruiser").level
