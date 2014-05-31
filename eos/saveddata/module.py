@@ -372,7 +372,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         if shipType is not None:
             fitsOnType.add(shipType)
 
-        for i in xrange(1, 5):
+        for i in xrange(1, 6):
             shipType = self.getModifiedItemAttr("canFitShipType%d" % i)
             if shipType is not None:
                 fitsOnType.add(shipType)

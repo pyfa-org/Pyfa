@@ -4,4 +4,3 @@
 type = "passive"
 def handler(fit, module, context):
     module.boostItemAttr("maxRangeBonus", module.getModifiedChargeAttr("maxRangeBonusBonus"))
-    module.boostItemAttr("falloffBonus", module.getModifiedChargeAttr("falloffBonusBonus"))
