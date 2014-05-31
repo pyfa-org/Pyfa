@@ -1,5 +1,5 @@
 # Used by:
-# Implants named like: Snake (16 of 18)
+# Implants named like: grade Snake (16 of 18)
 # Modules named like: Auxiliary Thrusters (8 of 8)
 # Implant: Quafe Zero
 # Skill: Navigation

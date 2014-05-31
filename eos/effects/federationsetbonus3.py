@@ -1,5 +1,5 @@
 # Used by:
-# Implants named like: Spur (6 of 12)
+# Implants named like: High grade Spur (6 of 6)
 type = "passive"
 runTime = "early"
 def handler(fit, implant, context):

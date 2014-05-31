@@ -1,5 +1,5 @@
 # Used by:
-# Implants named like: Low grade Virtue (12 of 12)
+# Implants named like: grade Virtue (12 of 12)
 runTime = "early"
 type = "passive"
 def handler(fit, implant, context):

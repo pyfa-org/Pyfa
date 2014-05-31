@@ -1,7 +1,7 @@
 # Used by:
 # Modules from group: Scan Probe Launcher (4 of 7)
-# Implants named like: Low grade Virtue (10 of 12)
 # Implants named like: Poteque 'Prospector' Astrometric Rangefinding AR (3 of 3)
+# Implants named like: grade Virtue (10 of 12)
 # Modules named like: Gravity Capacitor Upgrade (8 of 8)
 # Skill: Astrometric Rangefinding
 # Skill: Astrometrics

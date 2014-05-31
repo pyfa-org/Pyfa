@@ -1,6 +1,5 @@
 # Used by:
-# Implants named like: Halo (18 of 18)
-# Implants named like: Low grade Halo (12 of 12)
+# Implants named like: grade Halo (18 of 18)
 runTime = "early"
 type = "passive"
 def handler(fit, implant, context):
