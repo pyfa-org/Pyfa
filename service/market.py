@@ -25,7 +25,6 @@ import Queue
 
 import eos.db
 import eos.types
-
 from service.settings import SettingsProvider, ProxySettings
 
 try:
@@ -152,6 +151,35 @@ class Market():
         self.shipBrowserWorkerThread.daemon = True
         self.shipBrowserWorkerThread.start()
 
+        # Item overrides. Key must be str of item name,
+        # value str of name or int of ID to convert it to
+        self.ITEMS_OVERRIDE = {
+            "Aliastra Catalyst": "Catalyst",
+            "Inner Zone Shipping Catalyst": "Catalyst",
+            "Intaki Syndicate Catalyst": "Catalyst",
+            "InterBus Catalyst": "Catalyst",
+            "Quafe Catalyst": "Catalyst",
+            "Nefantar Thrasher": "Thrasher",
+            "Sarum Magnate": "Magnate",
+            "Sukuuvestaa Heron": "Heron:",
+            "Inner Zone Shipping Imicus": "Imicus",
+            "Vherokior Probe": "Probe",
+            "Miasmos Quafe Ultra Edition": "Miasmos",
+            "Miasmos Quafe Ultramarine Edition": "Miasmos",
+            "Miasmos Amastris Edition": "Miasmos",
+            "Tash-Murkon Magnate": "Magnate",
+            "Scorpion Ishukone Watch": "Scorpion",
+            "Incursus Aliastra Edition": "Incursus",
+            "Merlin Nugoeihuvi Edition": "Merlin",
+            "Police Pursuit Comet": "Federation Navy Comet",
+            "Punisher Kador Edition": "Punisher",
+            "Rifter Krusual Edition": "Rifter",
+            "Abaddon Kador Edition": "Abaddon",
+            "Hyperion Aliastra Edition": "Hyperion",
+            "Maelstrom Krusual Edition": "Maelstrom",
+            "Rokh Nugoeihuvi Edition": "Rokh",
+            "Mammoth Nefantar Edition": "Mammoth" }
+
         # Items' group overrides
         self.customGroups = set()
         # Limited edition ships
@@ -209,33 +237,12 @@ class Market():
             "QA Multiship Module - 5 Players": False,
             "QA Remote Armor Repair System - 5 Players": False,
             "QA Shield Transporter - 5 Players": False,
-            "Aliastra Catalyst": False, # Vanity
-            "Inner Zone Shipping Catalyst": False, # Vanity
-            "Intaki Syndicate Catalyst": False, # Vanity
-            "InterBus Catalyst": False, # Vanity
-            "Quafe Catalyst": False, # Vanity
-            "Nefantar Thrasher": False, # Vanity
-            "Sarum Magnate": False, # Vanity
-            "Sukuuvestaa Heron": False, # Vanity
-            "Inner Zone Shipping Imicus": False, # Vanity
-            "Vherokior Probe": False, # Vanity
-            "Miasmos Quafe Ultra Edition": False, # Vanity
-            "Miasmos Quafe Ultramarine Edition": False, # Vanity
-            "Miasmos Amastris Edition": False, # Vanity
-            "Goru's Shuttle": False, # Vanity
-            "Guristas Shuttle": False, # Vanity
-            "Tash-Murkon Magnate": False, # Vanity
-            "Scorpion Ishukone Watch": False, # Vanity
-            "Incursus Aliastra Edition": False, # Vanity
-            "Merlin Nugoeihuvi Edition": False, # Vanity
-            "Police Pursuit Comet": False, # Vanity
-            "Punisher Kador Edition": False, # Vanity
-            "Rifter Krusual Edition": False, # Vanity
-            "Abaddon Kador Edition": False, # Vanity
-            "Hyperion Aliastra Edition": False, # Vanity
-            "Maelstrom Krusual Edition": False, # Vanity
-            "Rokh Nugoeihuvi Edition": False, # Vanity
-            "Mammoth Nefantar Edition": False } # Vanity
+            "Goru's Shuttle": False,
+            "Guristas Shuttle": False}
+
+        # do not publish anything that we convert
+        for name in self.ITEMS_OVERRIDE:
+            self.ITEMS_FORCEPUBLISHED[name] = False
 
         # List of groups which are forcibly published
         self.GROUPS_FORCEPUBLISHED = {
@@ -339,6 +346,8 @@ class Market():
             item = eos.db.getItem(id, *args, **kwargs)
         else:
             raise TypeError("Need Item object, integer, float or string as argument")
+        if item.name in self.ITEMS_OVERRIDE:
+            item = self.getItem(self.ITEMS_OVERRIDE[item.name], *args, **kwargs)
         return item
 
     def getGroup(self, identity, *args, **kwargs):
