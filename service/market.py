@@ -346,7 +346,7 @@ class Market():
             item = eos.db.getItem(id, *args, **kwargs)
         else:
             raise TypeError("Need Item object, integer, float or string as argument")
-        if item.name in self.ITEMS_OVERRIDE:
+        if item is not None and item.name in self.ITEMS_OVERRIDE:
             item = self.getItem(self.ITEMS_OVERRIDE[item.name], *args, **kwargs)
         return item
 
