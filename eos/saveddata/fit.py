@@ -588,7 +588,6 @@ class Fit(object):
                 for attr in ("shieldRepair", "armorRepair", "hullRepair"):
                     sustainable[attr] = self.extraAttributes[attr]
                     dict = self.extraAttributes.getAfflictions(attr)
-                    print dict
                     if self in dict:
                         for mod, _, amount, used in dict[self]:
                             if not used:
