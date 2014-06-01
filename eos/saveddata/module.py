@@ -564,9 +564,11 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         #1: It makes sense to run the effect
         #    The effect is either offline
         #    or the effect is passive and the module is in the online state (or higher)
+
         #    or the effect is active and the module is in the active state (or higher)
         #    or the effect is overheat and the module is in the overheated state (or higher)
         #2: the runtimes match
+
         if self.projected or forceProjected:
             context = "projected", "module"
             projected = True
@@ -575,9 +577,11 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             projected = False
 
         if self.charge is not None:
-            for effect in self.charge.effects.itervalues():
-                if effect.runTime == runTime:
-                    effect.handler(fit, self, ("moduleCharge",))
+            # fix for #82 and it's regression #106
+            if not projected or (self.projected and not forceProjected):
+                for effect in self.charge.effects.itervalues():
+                    if effect.runTime == runTime:
+                        effect.handler(fit, self, ("moduleCharge",))
 
         if self.item:
             if self.state >= State.OVERHEATED:
