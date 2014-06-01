@@ -589,7 +589,9 @@ class Fit(object):
                     sustainable[attr] = self.extraAttributes[attr]
                     dict = self.extraAttributes.getAfflictions(attr)
                     if self in dict:
-                        for mod, _, amount in dict[self]:
+                        for mod, _, amount, used in dict[self]:
+                            if not used:
+                                continue
                             if mod.projected is False:
                                 usesCap = True
                                 try:

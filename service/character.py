@@ -72,7 +72,7 @@ class SkillBackupThread(threading.Thread):
             backupData = sCharacter.exportXml()
         else:
             backupData = sCharacter.exportText()
-        
+
         if self.saveFmt == "emp":
             with gzip.open(path, mode='wb') as backupFile:
                 backupFile.write(backupData)
@@ -112,12 +112,12 @@ class Character(object):
         root = ElementTree.Element("plan")
         root.attrib["name"] = "Pyfa exported plan for "+self.skillReqsDict['charname']
         root.attrib["revision"] = config.evemonMinVersion
-        
+
         sorts = ElementTree.SubElement(root, "sorting")
         sorts.attrib["criteria"] = "None"
         sorts.attrib["order"] = "None"
         sorts.attrib["groupByPriority"] = "false"
-        
+
         skillsSeen = set()
 
         for s in self.skillReqsDict['skills']:
@@ -134,7 +134,7 @@ class Character(object):
                 entry.attrib["type"] = "Prerequisite"
                 notes = ElementTree.SubElement(entry, "notes")
                 notes.text = entry.attrib["skill"]
-       
+
         tree = ElementTree.ElementTree(root)
         data = ElementTree.tostring(root, 'utf-8')
         prettydata = minidom.parseString(data).toprettyxml(indent="  ")
@@ -237,7 +237,7 @@ class Character(object):
     def apiEnabled(self, charID):
         id, key, default, _ = self.getApiDetails(charID)
         return id is not "" and key is not "" and default is not ""
-        
+
     def charList(self, charID, userID, apiKey):
         char = eos.db.getCharacter(charID)
         try:
@@ -263,7 +263,7 @@ class Character(object):
     def changeLevel(self, charID, skillID, level):
         char = eos.db.getCharacter(charID)
         skill = char.getSkill(skillID)
-        if isinstance(level, basestring):
+        if isinstance(level, basestring) or level > 5 or level < 0:
             skill.learned = False
             skill.level = None
         else:
