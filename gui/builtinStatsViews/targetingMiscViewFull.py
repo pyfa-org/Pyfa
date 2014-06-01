@@ -22,6 +22,11 @@ from gui.statsView import StatsView
 from gui import builtinStatsViews
 from gui.utils.numberFormatter import formatAmount
 
+try:
+    from collections import OrderedDict
+except ImportError:
+    from gui.utils.compat import OrderedDict
+
 class TargetingMiscViewFull(StatsView):
     name = "targetingmiscViewFull"
     def __init__(self, parent):
@@ -67,7 +72,7 @@ class TargetingMiscViewFull(StatsView):
             setattr(self, "label%s" % labelShort, lbl)
             box.Add(lbl, 0, wx.ALIGN_LEFT)
 
-            self._cachedValues.append(0)
+            self._cachedValues.append({"main": 0})
 
         # Misc
         gridTargetingMisc.Add( wx.StaticLine( contentPanel, wx.ID_ANY, style = wx.VERTICAL),0, wx.EXPAND, 3 )
@@ -91,34 +96,90 @@ class TargetingMiscViewFull(StatsView):
             setattr(self, "labelFull%s" % labelShort, lbl)
             box.Add(lbl, 0, wx.ALIGN_LEFT)
 
-            self._cachedValues.append(0)
+            self._cachedValues.append({"main": 0})
 
 
     def refreshPanel(self, fit):
         #If we did anything interesting, we'd update our labels to reflect the new fit's stats here
 
-        stats = (("labelTargets", lambda: fit.maxTargets, 3, 0, 0, ""),
-                 ("labelRange", lambda: fit.maxTargetRange / 1000, 3, 0, 0, "km"),
-                 ("labelScanRes", lambda: fit.ship.getModifiedItemAttr("scanResolution"), 3, 0, 0, "mm"),
-                 ("labelSensorStr", lambda: fit.scanStrength, 3, 0, 0, ""),
-                 ("labelCtrlRange", lambda: fit.extraAttributes["droneControlRange"] / 1000, 3, 0, 0, "km"),
-                 ("labelFullSpeed", lambda: fit.ship.getModifiedItemAttr("maxVelocity"), 3, 0, 0, "m/s"),
-                 ("labelFullAlignTime", lambda: fit.alignTime, 3, 0, 0, "s"),
-                 ("labelFullSigRadius", lambda: fit.ship.getModifiedItemAttr("signatureRadius"), 3, 0, 9, ""),
-                 ("labelFullWarpSpeed", lambda: fit.warpSpeed, 3, 0, 0, "AU/s"),
-                 ("labelFullCargo", lambda: fit.ship.getModifiedItemAttr("capacity"), 3, 0, 9, u"m\u00B3"))
+        cargoNamesOrder = OrderedDict((
+            ("fleetHangarCapacity", "Fleet hangar"),
+            ("shipMaintenanceBayCapacity", "Maintenance bay"),
+            ("specialAmmoHoldCapacity", "Ammo hold"),
+            ("specialFuelBayCapacity", "Fuel bay"),
+            ("specialShipHoldCapacity", "Ship hold"),
+            ("specialSmallShipHoldCapacity", "Small ship hold"),
+            ("specialMediumShipHoldCapacity", "Medium ship hold"),
+            ("specialLargeShipHoldCapacity", "Large ship hold"),
+            ("specialIndustrialShipHoldCapacity", "Industrial ship hold"),
+            ("specialOreHoldCapacity", "Ore hold"),
+            ("specialMineralHoldCapacity", "Mineral hold"),
+            ("specialMaterialBayCapacity", "Material bay"),
+            ("specialGasHoldCapacity", "Gas hold"),
+            ("specialSalvageHoldCapacity", "Salvage hold"),
+            ("specialCommandCenterHoldCapacity", "Command center hold"),
+            ("specialPlanetaryCommoditiesHoldCapacity", "Planetary goods hold"),
+            ("specialQuafeHoldCapacity", "Quafe hold")
+        ))
+
+        cargoValues = {
+            "main": lambda: fit.ship.getModifiedItemAttr("capacity"),
+            "fleetHangarCapacity": lambda: fit.ship.getModifiedItemAttr("fleetHangarCapacity"),
+            "shipMaintenanceBayCapacity": lambda: fit.ship.getModifiedItemAttr("shipMaintenanceBayCapacity"),
+            "specialAmmoHoldCapacity": lambda: fit.ship.getModifiedItemAttr("specialAmmoHoldCapacity"),
+            "specialFuelBayCapacity": lambda: fit.ship.getModifiedItemAttr("specialFuelBayCapacity"),
+            "specialShipHoldCapacity": lambda: fit.ship.getModifiedItemAttr("specialShipHoldCapacity"),
+            "specialSmallShipHoldCapacity": lambda: fit.ship.getModifiedItemAttr("specialSmallShipHoldCapacity"),
+            "specialMediumShipHoldCapacity": lambda: fit.ship.getModifiedItemAttr("specialMediumShipHoldCapacity"),
+            "specialLargeShipHoldCapacity": lambda: fit.ship.getModifiedItemAttr("specialLargeShipHoldCapacity"),
+            "specialIndustrialShipHoldCapacity": lambda: fit.ship.getModifiedItemAttr("specialIndustrialShipHoldCapacity"),
+            "specialOreHoldCapacity": lambda: fit.ship.getModifiedItemAttr("specialOreHoldCapacity"),
+            "specialMineralHoldCapacity": lambda: fit.ship.getModifiedItemAttr("specialMineralHoldCapacity"),
+            "specialMaterialBayCapacity": lambda: fit.ship.getModifiedItemAttr("specialMaterialBayCapacity"),
+            "specialGasHoldCapacity": lambda: fit.ship.getModifiedItemAttr("specialGasHoldCapacity"),
+            "specialSalvageHoldCapacity": lambda: fit.ship.getModifiedItemAttr("specialSalvageHoldCapacity"),
+            "specialCommandCenterHoldCapacity": lambda: fit.ship.getModifiedItemAttr("specialCommandCenterHoldCapacity"),
+            "specialPlanetaryCommoditiesHoldCapacity": lambda: fit.ship.getModifiedItemAttr("specialPlanetaryCommoditiesHoldCapacity"),
+            "specialQuafeHoldCapacity": lambda: fit.ship.getModifiedItemAttr("specialQuafeHoldCapacity")
+        }
+
+        stats = (("labelTargets", {"main": lambda: fit.maxTargets}, 3, 0, 0, ""),
+                 ("labelRange", {"main": lambda: fit.maxTargetRange / 1000}, 3, 0, 0, "km"),
+                 ("labelScanRes", {"main": lambda: fit.ship.getModifiedItemAttr("scanResolution")}, 3, 0, 0, "mm"),
+                 ("labelSensorStr", {"main": lambda: fit.scanStrength}, 3, 0, 0, ""),
+                 ("labelCtrlRange", {"main": lambda: fit.extraAttributes["droneControlRange"] / 1000}, 3, 0, 0, "km"),
+                 ("labelFullSpeed", {"main": lambda: fit.ship.getModifiedItemAttr("maxVelocity")}, 3, 0, 0, "m/s"),
+                 ("labelFullAlignTime", {"main": lambda: fit.alignTime}, 3, 0, 0, "s"),
+                 ("labelFullSigRadius", {"main": lambda: fit.ship.getModifiedItemAttr("signatureRadius")}, 3, 0, 9, ""),
+                 ("labelFullWarpSpeed", {"main": lambda: fit.warpSpeed}, 3, 0, 0, "AU/s"),
+                 ("labelFullCargo", cargoValues, 3, 0, 9, u"m\u00B3"))
 
         counter = 0
         RADII = [("Pod",25), ("Interceptor",33), ("Frigate",38),
                  ("Destroyer", 83), ("Cruiser", 130),
                  ("Battlecruiser", 265),  ("Battleship",420),
                  ("Carrier", 3000)]
-        for labelName, value, prec, lowest, highest, unit in stats:
+        for labelName, valueDict, prec, lowest, highest, unit in stats:
             label = getattr(self, labelName)
-            value = value() if fit is not None else 0
-            value = value if value is not None else 0
-            if self._cachedValues[counter] != value:
-                label.SetLabel("%s %s" %(formatAmount(value, prec, lowest, highest), unit))
+            newValues = {}
+            for valueAlias, value in valueDict.items():
+                value = value() if fit is not None else 0
+                value = value if value is not None else 0
+                newValues[valueAlias] = value
+            if self._cachedValues[counter] != newValues:
+                mainValue = newValues["main"]
+                otherValues = dict((k, newValues[k]) for k in filter(lambda k: k != "main", newValues))
+                if labelName == "labelFullCargo":
+                    # Get sum of all cargoholds except for maintenance bay
+                    additionalCargo = sum(otherValues.values())
+                    if additionalCargo > 0:
+                        label.SetLabel("%s+%s %s" %(formatAmount(mainValue, prec, lowest, highest),
+                                                    formatAmount(additionalCargo, prec, lowest, highest),
+                                                    unit))
+                    else:
+                        label.SetLabel("%s %s" %(formatAmount(mainValue, prec, lowest, highest), unit))
+                else:
+                    label.SetLabel("%s %s" %(formatAmount(mainValue, prec, lowest, highest), unit))
                 # Tooltip stuff
                 if fit:
                     if labelName == "labelScanRes":
@@ -127,25 +188,27 @@ class TargetingMiscViewFull(StatsView):
                             left = "%.1fs" % fit.calculateLockTime(radius)
                             right = "%s [%d]" % (size, radius)
                             lockTime += "%5s\t%s\n" % (left,right)
-                        # print lockTime # THIS IS ALIGNED!
                         label.SetToolTip(wx.ToolTip(lockTime))
                     elif labelName == "labelSensorStr":
-                        label.SetToolTip(wx.ToolTip("Type: %s - %.1f" % (fit.scanType, value)))
+                        label.SetToolTip(wx.ToolTip("Type: %s - %.1f" % (fit.scanType, mainValue)))
                     elif labelName == "labelFullSigRadius":
                         label.SetToolTip(wx.ToolTip("Probe Size: %.3f" % (fit.probeSize or 0) ))
                     elif labelName == "labelFullWarpSpeed":
                         label.SetToolTip(wx.ToolTip("Max Warp Distance: %.1f AU" % fit.maxWarpDistance))
                     elif labelName == "labelFullAlignTime":
-                        label.SetToolTip(wx.ToolTip("%.3f" % value))
+                        label.SetToolTip(wx.ToolTip("%.3f" % mainValue))
                     elif labelName == "labelFullCargo":
-                        tip  = u"Capacity: %sm\u00B3\n"% fit.ship.getModifiedItemAttr("capacity")
-                        tip += u"Available: %.1fm\u00B3" % (fit.ship.getModifiedItemAttr("capacity")-fit.cargoBayUsed)
-                        label.SetToolTip(wx.ToolTip(tip))
+                        tipLines = []
+                        tipLines.append(u"Cargohold: %.1fm\u00B3 / %sm\u00B3"% (fit.cargoBayUsed, newValues["main"]))
+                        for attrName, tipAlias in cargoNamesOrder.items():
+                            if newValues[attrName] > 0:
+                                tipLines.append(u"%s: %sm\u00B3"% (tipAlias, newValues[attrName]))
+                        label.SetToolTip(wx.ToolTip(u"\n".join(tipLines)))
                     else:
-                        label.SetToolTip(wx.ToolTip("%.1f" % value))
+                        label.SetToolTip(wx.ToolTip("%.1f" % mainValue))
                 else:
                     label.SetToolTip(wx.ToolTip(""))
-                self._cachedValues[counter] = value
+                self._cachedValues[counter] = newValues
             elif labelName == "labelFullWarpSpeed":
                 if fit:
                     label.SetToolTip(wx.ToolTip("Max Warp Distance: %.1f AU" % fit.maxWarpDistance))
@@ -153,11 +216,15 @@ class TargetingMiscViewFull(StatsView):
                     label.SetToolTip(wx.ToolTip(""))
             elif labelName == "labelFullCargo":
                 if fit:
+                    cachedCargo = self._cachedValues[counter]
                     # if you add stuff to cargo, the capacity doesn't change and thus it is still cached
                     # This assures us that we force refresh of cargo tooltip
-                    tip  = u"Capacity: %sm\u00B3\n"% fit.ship.getModifiedItemAttr("capacity")
-                    tip += u"Available: %.1fm\u00B3" % (fit.ship.getModifiedItemAttr("capacity")-fit.cargoBayUsed)
-                    label.SetToolTip(wx.ToolTip(tip))
+                    tipLines = []
+                    tipLines.append(u"Cargohold: %.1fm\u00B3 / %sm\u00B3"% (fit.cargoBayUsed, cachedCargo["main"]))
+                    for attrName, tipAlias in cargoNamesOrder.items():
+                        if cachedCargo[attrName] > 0:
+                            tipLines.append(u"%s: %sm\u00B3"% (tipAlias, cachedCargo[attrName]))
+                    label.SetToolTip(wx.ToolTip(u"\n".join(tipLines)))
                 else:
                     label.SetToolTip(wx.ToolTip(""))
 
