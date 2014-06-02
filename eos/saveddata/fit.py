@@ -319,17 +319,8 @@ class Fit(object):
             else:
                 c = chain((self.character, self.ship), self.drones, self.boosters, self.appliedImplants, self.modules,
                           self.projectedDrones, self.projectedModules)
-
-            for item in c:
-                # Registering the item about to affect the fit allows us to track "Affected By" relations correctly
-                if item is not None:
-                    self.register(item)
-                    item.calculateModifiedAttributes(self, runTime, False)
-                    if forceProjected is True:
-                        targetFit.register(item)
-                        item.calculateModifiedAttributes(targetFit, runTime, True)
+            
             if self.gangBoosts is not None:
-                #print self.gangBoosts
                 contextMap = {Skill: "skill",
                               Ship: "ship",
                               Module: "module",
@@ -344,17 +335,27 @@ class Fit(object):
                             (effect.isType("active") and thing.state >= State.ACTIVE):
                                 # Run effect, and get proper bonuses applied
                                 try:
-                                    effect.handler(targetFit, thing, context)
+                                    effect.handler(self, thing, context)
                                 except:
                                     pass
                         else:
                             # Run effect, and get proper bonuses applied
                             try:
-                                effect.handler(targetFit, thing, context)
+                                effect.handler(self, thing, context)
                             except:
                                 pass
+                                
+            for item in c:
+                # Registering the item about to affect the fit allows us to track "Affected By" relations correctly
+                if item is not None:
+                    self.register(item)
+                    item.calculateModifiedAttributes(self, runTime, False)
+                    if forceProjected is True:
+                        targetFit.register(item)
+                        item.calculateModifiedAttributes(targetFit, runTime, True)
+            
         for fit in self.projectedFits:
-            fit.calculateModifiedAttributes(self, dirtyStorage=dirtyStorage)
+            fit.calculateModifiedAttributes(self, withBoosters=withBoosters, dirtyStorage=dirtyStorage)
 
     def fill(self):
         """
