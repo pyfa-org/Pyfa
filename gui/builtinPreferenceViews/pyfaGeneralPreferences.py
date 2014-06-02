@@ -121,6 +121,9 @@ class PFGeneralPref ( PreferenceView):
 
     def onCBCompactSkills(self, event):
         self.sFit.serviceFittingOptions["compactSkills"] = self.cbCompactSkills.GetValue()
+        fitID = self.mainFrame.getActiveFit()
+        self.sFit.refreshFit(fitID)
+        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
         event.Skip()
 
     def onCBReopenFits(self, event):
