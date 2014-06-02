@@ -18,8 +18,9 @@
 #===============================================================================
 
 import wx
+import service
+import gui.mainFrame
 from gui.statsView import StatsView
-from gui import builtinStatsViews
 from gui import bitmapLoader
 from gui.utils.numberFormatter import formatAmount
 
@@ -43,7 +44,7 @@ class FirepowerViewFull(StatsView):
 
         panel = "full"
 
-        sizerFirepower = wx.FlexGridSizer(1, 3)
+        sizerFirepower = wx.FlexGridSizer(1, 4)
         sizerFirepower.AddGrowableCol(1)
 
         contentSizer.Add( sizerFirepower, 0, wx.EXPAND, 0)
@@ -96,6 +97,35 @@ class FirepowerViewFull(StatsView):
         self._cachedValues.append(0)
 
         gridS.Add(lbl, 0, wx.ALIGN_LEFT)
+
+        image = bitmapLoader.getBitmap("mining_big", "icons")
+        miningyield = wx.BitmapButton(contentPanel, -1, image)
+        miningyield.SetToolTip(wx.ToolTip("Click to toggle to Mining Yield "))
+        miningyield.Bind(wx.EVT_BUTTON, self.switchToMiningYieldView)
+        sizerFirepower.Add(miningyield, 0, wx.ALIGN_LEFT)
+
+        self._cachedValues.append(0)
+
+    def switchToMiningYieldView(self, event):
+        # Getting the active fit
+        mainFrame = gui.mainFrame.MainFrame.getInstance()
+        sFit = service.Fit.getInstance()
+        fit = sFit.getFit(mainFrame.getActiveFit())
+        # Remove ourselves from statsPane's view list
+        self.parent.views.remove(self)
+        self._cachedValues = []
+        # And no longer display us
+        self.panel.GetSizer().Clear(True)
+        self.panel.GetSizer().Layout()
+        # Get the new view
+        view = StatsView.getView("miningyieldViewFull")(self.parent)
+        view.populatePanel(self.panel, self.headerPanel)
+        # Populate us in statsPane's view list
+        self.parent.views.append(view)
+        # Get the TogglePanel
+        tp = self.panel.GetParent()
+        tp.SetLabel(view.getHeaderText(fit))
+        view.refreshPanel(fit)
 
     def refreshPanel(self, fit):
         #If we did anything intresting, we'd update our labels to reflect the new fit's stats here
