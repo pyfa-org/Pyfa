@@ -13,10 +13,10 @@ debug = False
 saveInRoot = False
 
 # Version data
-version = "1.1.23"
-tag = "git"
-expansionName = "Rubicon"
-expansionVersion = "1.3"
+version = "1.2.0"
+tag = "stable"
+expansionName = "Kronos"
+expansionVersion = "1.0"
 evemonMinVersion = "4081"
 
 pyfaPath = None
