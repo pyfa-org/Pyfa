@@ -3,5 +3,5 @@
 runTime = "early"
 type = ("projected", "offline")
 def handler(fit, module, context):
-    fit.modules.filteredItemMultiply(lambda mod: "overloadSelfDurationBonus" in mod.itemModifiedAttributes,
-                                     "overloadSelfDurationBonus", module.getModifiedItemAttr("overloadBonusMultiplier"))
+    fit.modules.filteredItemMultiply(lambda mod: "overloadDurationBonus" in mod.itemModifiedAttributes,
+                                     "overloadDurationBonus", module.getModifiedItemAttr("overloadBonusMultiplier"))
