@@ -25,7 +25,7 @@ licenses = (
     "Silk Icons Set by famfamfam.com - Creative Commons Attribution 2.5 License",
     "Fat Cow Icons by fatcow.com - Creative Commons Attribution 3.0 License"
 )
-developers = ("blitzmann \t(Sable Blitzmann)", "cncfanatics \t(Sakari Orisi)" , "DarkPhoenix \t(Kadesh Priestess) (Project Lead)", "Darriele \t(Darriele)")
+developers = ("blitzmann \t(Sable Blitzmann)", "cncfanatics \t(Sakari Orisi) (founder)" , "DarkPhoenix \t(Kadesh Priestess) (project lead)", "Darriele \t(Darriele)")
 credits = ("Entity (Entity) \t\tCapacitor calculations / EVEAPI python lib / Reverence", "Aurora \t\t\tMaths", "Corollax (Aamrr) \tVarious EOS / pyfa improvements")
 description = (
     "Pyfa (the Python Fitting Assistant) is an open-source standalone application able to "
