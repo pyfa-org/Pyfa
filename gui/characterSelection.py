@@ -158,7 +158,7 @@ class CharacterSelection(wx.Panel):
                 tip  = "Skills required:\n"
                 condensed = cFit.serviceFittingOptions["compactSkills"]
                 if condensed:
-                    dict = self._buildSkillsTooltipCondensed(reqs)
+                    dict = self._buildSkillsTooltipCondensed(reqs, skillsMap = {})
                     for key in sorted(dict):
                         tip += "%s: %d\n" % (key, dict[key])
                 else:
