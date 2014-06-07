@@ -19,7 +19,6 @@
 
 import wx
 import service
-from gui import characterEditor as ce
 from gui import bitmapLoader
 import gui.globalEvents as GE
 import gui.mainFrame
@@ -33,6 +32,9 @@ class CharacterSelection(wx.Panel):
         self.SetSizer(mainSizer)
 
         mainSizer.Add(wx.StaticText(self, wx.ID_ANY, "Character: "), 0, wx.CENTER | wx.TOP | wx.RIGHT | wx.LEFT, 3)
+
+        # cache current selection to fall back in case we choose to open char editor
+        self.charCache = None
 
         self.charChoice = wx.Choice(self)
         mainSizer.Add(self.charChoice, 1, wx.ALIGN_CENTER_VERTICAL | wx.TOP | wx.RIGHT | wx.LEFT, 3)
@@ -97,6 +99,9 @@ class CharacterSelection(wx.Panel):
             cFit = service.Fit.getInstance()
             cFit.changeChar(fitID, charID)
 
+        choice.Append(u"\u2015 Open Character Editor \u2015", -1)
+        self.charCache = self.charChoice.GetCurrentSelection()
+
         if event is not None:
             event.Skip()
 
@@ -116,6 +121,11 @@ class CharacterSelection(wx.Panel):
         charID = self.getActiveCharacter()
         cChar = service.Character.getInstance()
 
+        if charID == -1:
+            # revert to previous character
+            self.charChoice.SetSelection(self.charCache)
+            self.mainFrame.showCharacterEditor(event)
+            return
         if cChar.getCharName(charID) not in ("All 0", "All 5") and cChar.apiEnabled(charID):
             self.btnRefresh.Enable(True)
         else:
@@ -123,7 +133,7 @@ class CharacterSelection(wx.Panel):
 
         cFit = service.Fit.getInstance()
         cFit.changeChar(fitID, charID)
-
+        self.charCache = self.charChoice.GetCurrentSelection()
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
     def selectChar(self, charID):
