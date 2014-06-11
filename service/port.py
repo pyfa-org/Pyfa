@@ -562,10 +562,7 @@ class Port(object):
         return fits
 
     @staticmethod
-    def exportEft(fitID):
-        sFit = service.Fit.getInstance()
-        fit = sFit.getFit(fitID)
-
+    def exportEft(fit):
         offineSuffix = " /OFFLINE"
         export = "[%s, %s]\n" % (fit.ship.item.name, fit.name)
         stuff = {}
@@ -602,11 +599,8 @@ class Port(object):
         return export
 
     @classmethod
-    def exportEftImps(cls, fitID):
-        export = cls.exportEft(fitID)
-
-        sFit = service.Fit.getInstance()
-        fit = sFit.getFit(fitID)
+    def exportEftImps(cls, fit):
+        export = cls.exportEft(fit)
 
         if len(fit.implants) > 0:
             export += "\n\n\n"
@@ -619,10 +613,7 @@ class Port(object):
         return export
 
     @staticmethod
-    def exportDna(fitID):
-        sFit = service.Fit.getInstance()
-        fit = sFit.getFit(fitID)
-
+    def exportDna(fit):
         dna = str(fit.shipID)
         mods = OrderedDict()
         charges = OrderedDict()

@@ -222,7 +222,7 @@ class Fit(object):
 
     def getFit(self, fitID, projected = False):
         ''' Gets fit from database, and populates fleet data.
-        
+
         Projected is a recursion flag that is set to reduce recursions into projected fits
         '''
         if fitID is None:
@@ -237,13 +237,13 @@ class Fit(object):
                 fit.fleet = None
             else:
                 fit.fleet = f
-            
-            if not projected:       
+
+            if not projected:
                 for fitP in fit.projectedFits:
                     self.getFit(fitP.ID, projected = True)
                 self.recalc(fit, withBoosters=True)
                 fit.fill()
-            
+
             eos.db.commit()
             fit.inited = True
         return fit
@@ -718,13 +718,16 @@ class Fit(object):
         self.recalc(fit)
 
     def exportFit(self, fitID):
-        return Port.exportEft(fitID)
+        fit = eos.db.getFit(fitID)
+        return Port.exportEft(fit)
 
     def exportEftImps(self, fitID):
-        return Port.exportEftImps(fitID)
+        fit = eos.db.getFit(fitID)
+        return Port.exportEftImps(fit)
 
     def exportDna(self, fitID):
-        return Port.exportDna(fitID)
+        fit = eos.db.getFit(fitID)
+        return Port.exportDna(fit)
 
     def exportXml(self, *fitIDs):
         fits = map(lambda fitID: eos.db.getFit(fitID), fitIDs)
