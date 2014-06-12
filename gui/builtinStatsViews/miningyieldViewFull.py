@@ -1,5 +1,5 @@
 #===============================================================================
-# Copyright (C) 2010 Diego Duclos
+# Copyright (C) 2014 Alexandros Kosiaris
 #
 # This file is part of pyfa.
 #
@@ -24,14 +24,14 @@ from gui.statsView import StatsView
 from gui import bitmapLoader
 from gui.utils.numberFormatter import formatAmount
 
-class FirepowerViewFull(StatsView):
-    name = "firepowerViewFull"
+class MiningYieldViewFull(StatsView):
+    name = "miningyieldViewFull"
     def __init__(self, parent):
         StatsView.__init__(self)
         self.parent = parent
         self._cachedValues = []
     def getHeaderText(self, fit):
-        return "Firepower"
+        return "Mining Yield"
 
     def getTextExtentW(self, text):
         width, height = self.parent.GetTextExtent( text )
@@ -44,69 +44,63 @@ class FirepowerViewFull(StatsView):
 
         panel = "full"
 
-        sizerFirepower = wx.FlexGridSizer(1, 4)
-        sizerFirepower.AddGrowableCol(1)
-        
-        contentSizer.Add( sizerFirepower, 0, wx.EXPAND, 0)
+        sizerMiningYield = wx.FlexGridSizer(1, 4)
+        sizerMiningYield.AddGrowableCol(1)
+
+        contentSizer.Add( sizerMiningYield, 0, wx.EXPAND, 0)
 
         counter = 0
 
-        for damageType, image in (("weapon", "turret") , ("drone", "droneDPS")):
+        for miningType, image in (("miner", "mining") , ("drone", "drones")):
             baseBox = wx.BoxSizer(wx.HORIZONTAL)
-            sizerFirepower.Add(baseBox, 1, wx.ALIGN_LEFT if counter == 0 else wx.ALIGN_CENTER_HORIZONTAL)
+            sizerMiningYield.Add(baseBox, 1, wx.ALIGN_LEFT if counter == 0 else wx.ALIGN_CENTER_HORIZONTAL)
 
             baseBox.Add(bitmapLoader.getStaticBitmap("%s_big" % image, parent, "icons"), 0, wx.ALIGN_CENTER)
 
             box = wx.BoxSizer(wx.VERTICAL)
             baseBox.Add(box, 0, wx.ALIGN_CENTER)
 
-            box.Add(wx.StaticText(parent, wx.ID_ANY, damageType.capitalize()), 0, wx.ALIGN_LEFT)
+            box.Add(wx.StaticText(parent, wx.ID_ANY, miningType.capitalize()), 0, wx.ALIGN_LEFT)
 
             hbox = wx.BoxSizer(wx.HORIZONTAL)
             box.Add(hbox, 1, wx.ALIGN_CENTER)
 
-            lbl = wx.StaticText(parent, wx.ID_ANY, "0.0 DPS")
-            setattr(self, "label%sDps%s" % (panel.capitalize() ,damageType.capitalize()), lbl)
+            lbl = wx.StaticText(parent, wx.ID_ANY, u"0.0 m\u00B3/s")
+            setattr(self, "label%sminingyield%s" % (panel.capitalize() ,miningType.capitalize()), lbl)
 
             hbox.Add(lbl, 0, wx.ALIGN_CENTER)
-#            hbox.Add(wx.StaticText(parent, wx.ID_ANY, " DPS"), 0, wx.ALIGN_CENTER)
             self._cachedValues.append(0)
             counter += 1
-        targetSizer = sizerFirepower
+        targetSizer = sizerMiningYield
 
         baseBox = wx.BoxSizer(wx.HORIZONTAL)
-        targetSizer.Add(baseBox, 0, wx.ALIGN_RIGHT)
+        targetSizer.Add(baseBox, 0, wx.ALIGN_LEFT)
 
-        baseBox.Add(bitmapLoader.getStaticBitmap("volley_big", parent, "icons"), 0, wx.ALIGN_CENTER)
+        baseBox.Add(bitmapLoader.getStaticBitmap("cargoBay_big", parent, "icons"), 0, wx.ALIGN_CENTER)
 
-        gridS = wx.GridSizer(2,2,0,0)
+        box = wx.BoxSizer(wx.VERTICAL)
+        baseBox.Add(box, 0, wx.EXPAND)
 
-        baseBox.Add(gridS, 0)
+        box.Add(wx.StaticText(parent, wx.ID_ANY, "Total"), 0, wx.ALIGN_LEFT)
 
-        lbl = wx.StaticText(parent, wx.ID_ANY, "0.0")
-        setattr(self, "label%sVolleyTotal" % panel.capitalize(), lbl)
-        gridS.Add(wx.StaticText(parent, wx.ID_ANY, " Volley: "), 0, wx.ALL | wx.ALIGN_RIGHT)
-        gridS.Add(lbl, 0, wx.ALIGN_LEFT)
+        hbox = wx.BoxSizer(wx.HORIZONTAL)
+        box.Add(hbox, 1, wx.EXPAND)
 
-        self._cachedValues.append(0)
-
-        lbl = wx.StaticText(parent, wx.ID_ANY, "0.0")
-        setattr(self, "label%sDpsTotal" % panel.capitalize(), lbl)
-        gridS.Add(wx.StaticText(parent, wx.ID_ANY, " DPS: "), 0, wx.ALL | wx.ALIGN_RIGHT)
+        lbl = wx.StaticText(parent, wx.ID_ANY, u"0.0 m\u00B3/s")
+        setattr(self, "label%sminingyieldTotal" % panel.capitalize(), lbl)
+        hbox.Add(lbl, 0, wx.ALIGN_LEFT)
 
         self._cachedValues.append(0)
 
-        gridS.Add(lbl, 0, wx.ALIGN_LEFT)
-
-        image = bitmapLoader.getBitmap("mining_small", "icons")
-        self.miningyield = wx.BitmapButton(contentPanel, -1, image)
-        self.miningyield.SetToolTip(wx.ToolTip("Click to toggle to Mining Yield "))
-        self.miningyield.Bind(wx.EVT_BUTTON, self.switchToMiningYieldView)
-        sizerFirepower.Add(self.miningyield, 0, wx.ALIGN_LEFT)
+        image = bitmapLoader.getBitmap("turret_small", "icons")
+        firepower = wx.BitmapButton(contentPanel, -1, image)
+        firepower.SetToolTip(wx.ToolTip("Click to toggle to Firepower View"))
+        firepower.Bind(wx.EVT_BUTTON, self.switchToFirepowerView)
+        sizerMiningYield.Add(firepower, 0, wx.ALIGN_LEFT)
 
         self._cachedValues.append(0)
 
-    def switchToMiningYieldView(self, event):
+    def switchToFirepowerView(self, event):
         # Getting the active fit
         mainFrame = gui.mainFrame.MainFrame.getInstance()
         sFit = service.Fit.getInstance()
@@ -118,7 +112,7 @@ class FirepowerViewFull(StatsView):
         self.panel.GetSizer().Clear(True)
         self.panel.GetSizer().Layout()
         # Get the new view
-        view = StatsView.getView("miningyieldViewFull")(self.parent)
+        view = StatsView.getView("firepowerViewFull")(self.parent)
         view.populatePanel(self.panel, self.headerPanel)
         # Populate us in statsPane's view list
         self.parent.views.append(view)
@@ -130,15 +124,9 @@ class FirepowerViewFull(StatsView):
     def refreshPanel(self, fit):
         #If we did anything intresting, we'd update our labels to reflect the new fit's stats here
 
-        stats = (("labelFullDpsWeapon", lambda: fit.weaponDPS, 3, 0, 0, "%s DPS",None),
-                 ("labelFullDpsDrone", lambda: fit.droneDPS, 3, 0, 0, "%s DPS", None),
-                 ("labelFullVolleyTotal", lambda: fit.weaponVolley, 3, 0, 0, "%s", "Volley: %.1f"),
-                 ("labelFullDpsTotal", lambda: fit.totalDPS, 3, 0, 0, "%s", None))
-        # See GH issue #
-        #if fit is not None and fit.totalYield > 0:
-        #    self.miningyield.Show()
-        #else:
-        #    self.miningyield.Hide()
+        stats = (("labelFullminingyieldMiner", lambda: fit.minerYield, 3, 0, 0, u"%s m\u00B3/s",None),
+                 ("labelFullminingyieldDrone", lambda: fit.droneYield, 3, 0, 0, u"%s m\u00B3/s", None),
+                 ("labelFullminingyieldTotal", lambda: fit.totalYield, 3, 0, 0, u"%s m\u00B3/s", None))
 
         counter = 0
         for labelName, value, prec, lowest, highest, valueFormat, altFormat in stats:
@@ -152,8 +140,7 @@ class FirepowerViewFull(StatsView):
                 label.SetToolTip(wx.ToolTip(tipStr))
                 self._cachedValues[counter] = value
             counter +=1
-
         self.panel.Layout()
         self.headerPanel.Layout()
 
-FirepowerViewFull.register()
+MiningYieldViewFull.register()

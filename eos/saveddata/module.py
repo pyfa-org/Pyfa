@@ -45,6 +45,7 @@ class Hardpoint(Enum):
 class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     """An instance of this class represents a module together with its charge and modified attributes"""
     DAMAGE_ATTRIBUTES = ("emDamage", "kineticDamage", "explosiveDamage", "thermalDamage")
+    MINING_ATTRIBUTES = ("miningAmount", )
 
     def __init__(self, item):
         self.__item = item if item != None else 0
@@ -53,6 +54,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         self.projected = False
         self.state = State.ONLINE
         self.__dps = None
+        self.__miningyield = None
         self.__volley = None
         self.__reloadTime = None
         self.__reloadForce = None
@@ -74,6 +76,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             self.__charge = None
             self.__volley = None
             self.__dps = None
+            self.__miningyield = None
             self.__reloadTime = None
             self.__reloadForce = None
             self.__chargeCycles = None
@@ -82,6 +85,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             self.__item = 0
             self.__charge = 0
             self.__dps = 0
+            self.__miningyield = 0
             self.__volley = 0
             self.__reloadTime = 0
             self.__reloadForce = None
@@ -331,6 +335,24 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         return self.__dps, self.__volley
 
     @property
+    def miningStats(self):
+        if self.__miningyield == None:
+            if self.isEmpty:
+                self.__miningyield = 0
+            else:
+                if self.state >= State.ACTIVE:
+                    volley = sum(map(lambda attr: self.getModifiedItemAttr(attr) or 0, self.MINING_ATTRIBUTES))
+                    if volley:
+                        cycleTime = self.cycleTime
+                        self.__miningyield = volley / (cycleTime / 1000.0)
+                    else:
+                        self.__miningyield = 0
+                else:
+                    self.__miningyield = 0
+
+        return self.__miningyield
+
+    @property
     def dps(self):
         return self.damageStats[0]
 
@@ -552,6 +574,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     def clear(self):
         self.__dps = None
+        self.__miningyield = None
         self.__volley = None
         self.__reloadTime = None
         self.__reloadForce = None
