@@ -627,7 +627,7 @@ class Port(object):
                     if not mod.chargeID in charges:
                         charges[mod.chargeID] = 0
                     # `or 1` because some charges (ie scripts) are without qty
-                    charges[mod.chargeID] += mod.numShots or 1
+                    charges[mod.chargeID] += mod.numCharges or 1
 
         for mod in mods:
             dna += ":{0};{1}".format(mod, mods[mod])
@@ -689,7 +689,7 @@ class Port(object):
                     if not module.charge.name in charges:
                         charges[module.charge.name] = 0
                     # `or 1` because some charges (ie scripts) are without qty
-                    charges[module.charge.name] += module.numShots or 1
+                    charges[module.charge.name] += module.numCharges or 1
 
             for drone in fit.drones:
                 hardware = doc.createElement("hardware")
