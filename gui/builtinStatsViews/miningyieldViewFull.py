@@ -92,7 +92,7 @@ class MiningYieldViewFull(StatsView):
 
         self._cachedValues.append(0)
 
-        image = bitmapLoader.getBitmap("turret_big", "icons")
+        image = bitmapLoader.getBitmap("turret_small", "icons")
         firepower = wx.BitmapButton(contentPanel, -1, image)
         firepower.SetToolTip(wx.ToolTip("Click to toggle to Firepower View"))
         firepower.Bind(wx.EVT_BUTTON, self.switchToFirepowerView)

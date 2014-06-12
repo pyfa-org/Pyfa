@@ -46,7 +46,7 @@ class FirepowerViewFull(StatsView):
 
         sizerFirepower = wx.FlexGridSizer(1, 4)
         sizerFirepower.AddGrowableCol(1)
-
+        
         contentSizer.Add( sizerFirepower, 0, wx.EXPAND, 0)
 
         counter = 0
@@ -98,11 +98,11 @@ class FirepowerViewFull(StatsView):
 
         gridS.Add(lbl, 0, wx.ALIGN_LEFT)
 
-        image = bitmapLoader.getBitmap("mining_big", "icons")
-        miningyield = wx.BitmapButton(contentPanel, -1, image)
-        miningyield.SetToolTip(wx.ToolTip("Click to toggle to Mining Yield "))
-        miningyield.Bind(wx.EVT_BUTTON, self.switchToMiningYieldView)
-        sizerFirepower.Add(miningyield, 0, wx.ALIGN_LEFT)
+        image = bitmapLoader.getBitmap("mining_small", "icons")
+        self.miningyield = wx.BitmapButton(contentPanel, -1, image)
+        self.miningyield.SetToolTip(wx.ToolTip("Click to toggle to Mining Yield "))
+        self.miningyield.Bind(wx.EVT_BUTTON, self.switchToMiningYieldView)
+        sizerFirepower.Add(self.miningyield, 0, wx.ALIGN_LEFT)
 
         self._cachedValues.append(0)
 
@@ -134,6 +134,11 @@ class FirepowerViewFull(StatsView):
                  ("labelFullDpsDrone", lambda: fit.droneDPS, 3, 0, 0, "%s DPS", None),
                  ("labelFullVolleyTotal", lambda: fit.weaponVolley, 3, 0, 0, "%s", "Volley: %.1f"),
                  ("labelFullDpsTotal", lambda: fit.totalDPS, 3, 0, 0, "%s", None))
+        # See GH issue #
+        #if fit is not None and fit.totalYield > 0:
+        #    self.miningyield.Show()
+        #else:
+        #    self.miningyield.Hide()
 
         counter = 0
         for labelName, value, prec, lowest, highest, valueFormat, altFormat in stats:
@@ -147,6 +152,7 @@ class FirepowerViewFull(StatsView):
                 label.SetToolTip(wx.ToolTip(tipStr))
                 self._cachedValues[counter] = value
             counter +=1
+
         self.panel.Layout()
         self.headerPanel.Layout()
 
