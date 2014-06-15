@@ -79,10 +79,10 @@ class DamagePattern(object):
                 key, val = entry.split(':')
                 fields["%sAmount" % cls.importMap[key.lower()]] = float(val)
 
-            pattern = DamagePattern(**fields)
-            pattern.name = name
-            patterns.append(pattern)
-
+            if len(fields) > 0: # Avoid possible blank lines
+                pattern = DamagePattern(**fields)
+                pattern.name = name
+                patterns.append(pattern)
         return patterns
 
     EXPORT_FORMAT = "%s = EM:%d, Therm:%d, Kin:%d, Exp:%d\n"
