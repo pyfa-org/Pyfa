@@ -19,7 +19,7 @@
 
 from eos.graph import Graph, Data
 from eos.types import Hardpoint, State
-from math import log, sin, radians
+from math import log, sin, radians, exp
 
 class FitDpsGraph(Graph):
     defaults = {"angle": 0,
@@ -32,9 +32,29 @@ class FitDpsGraph(Graph):
         self.fit = fit
 
     def calcDps(self, data):
+        ew = {'signatureRadius':[],'velocity':[]}
         fit = self.fit
         total = 0
         distance = data["distance"] * 1000
+        abssort = lambda val: -abs(val - 1)
+
+        for mod in fit.modules:
+            if not mod.isEmpty and mod.state >= State.ACTIVE:
+                if "ewTargetPaint" in mod.item.effects:
+                    ew['signatureRadius'].append(1+(mod.getModifiedItemAttr("signatureRadiusBonus") / 100))
+                if "decreaseTargetSpeed" in mod.item.effects:
+                    ew['velocity'].append(1+(mod.getModifiedItemAttr("speedFactor") / 100))
+
+        ew['signatureRadius'].sort(key=abssort)
+        ew['velocity'].sort(key=abssort)
+
+        for attr, values in ew.iteritems():
+            val = data[attr]
+            for i in xrange(len(values)):
+                bonus = values[i]
+                val *= 1 + (bonus - 1) * exp(- i ** 2 / 7.1289)
+            data[attr] = val
+
         for mod in fit.modules:
             if mod.hardpoint == Hardpoint.TURRET:
                 if mod.state >= State.ACTIVE:
