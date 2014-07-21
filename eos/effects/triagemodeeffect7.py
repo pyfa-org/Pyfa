@@ -28,9 +28,11 @@ def handler(fit, module, context):
 
     # Shield boosters
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Capital Shield Operation"),
-                                  "shieldBonus", module.getModifiedItemAttr("shieldBoostMultiplier"))
+                                  "shieldBonus", module.getModifiedItemAttr("shieldBoostMultiplier"),
+                                  stackingPenalties=True)
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Capital Shield Operation"),
-                                  "duration", module.getModifiedItemAttr("shieldBonusDurationBonus"))
+                                  "duration", module.getModifiedItemAttr("shieldBonusDurationBonus"),
+                                  stackingPenalties=True)
 
     # Armor reps
     fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == "Armor Repair Unit",
