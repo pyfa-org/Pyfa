@@ -13,9 +13,9 @@ debug = False
 saveInRoot = False
 
 # Version data
-version = "1.2.2"
-tag = "git"
-expansionName = "Kronos"
+version = "1.3.0"
+tag = "Stable"
+expansionName = "Crius"
 expansionVersion = "1.0"
 evemonMinVersion = "4081"
 
