@@ -13,8 +13,8 @@ debug = False
 saveInRoot = False
 
 # Version data
-version = "1.3.0"
-tag = "Stable"
+version = "1.3.1"
+tag = "git"
 expansionName = "Crius"
 expansionVersion = "1.0"
 evemonMinVersion = "4081"
