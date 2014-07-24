@@ -43,6 +43,9 @@ class exportHtmlThread(threading.Thread):
         sFit    = service.Fit.getInstance()
         settings = service.settings.HTMLExportSettings.getInstance()
 
+        timestamp = time.localtime(time.time())
+        localDate = "%d/%02d/%02d %02d:%02d" % (timestamp[0], timestamp[1], timestamp[2], timestamp[3], timestamp[4])
+
         HTML = """
 <!DOCTYPE html>
 <html>
@@ -97,6 +100,19 @@ class exportHtmlThread(threading.Thread):
 
   <script>
     $(document).ready(function() {
+      var start = new Date(%d * 1000);
+
+      setInterval(function() {
+        var diff = (new Date - start) / 1000;
+
+        var days = Math.floor((diff %% 31536000) / 86400);
+        var hours = Math.floor(((diff %% 31536000) %% 86400) / 3600);
+        var minutes = Math.floor((((diff %% 31536000) %% 86400) %% 3600) / 60);
+        var seconds = Math.floor(((diff %% 31536000) %% 86400) %% 3600) %% 60;
+
+        $('.timer').text(days+":"+hours+":"+minutes+":"+seconds+" ago");
+      }, 1000);
+
       $('a[data-dna]').each(function( index ) {
         var dna = $(this).data('dna');
         if (typeof CCPEVE !== 'undefined') { // inside IGB
@@ -113,8 +129,9 @@ class exportHtmlThread(threading.Thread):
     <h1>Pyfa fits</h1>
   </div>
   <div data-role="content">
+  <div style="text-align: center;"><strong>Last updated:</strong> %s <small>(<span class="timer"></span>)</small></div>
 
-"""
+""" % (time.time(), localDate)
         HTML += '  <ul data-role="listview" class="ui-listview-outer" data-inset="true" data-filter="true">\n'
         categoryList = list(sMarket.getShipRoot())
         categoryList.sort(key=lambda ship: ship.name)
