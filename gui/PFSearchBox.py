@@ -88,6 +88,9 @@ class PFSearchBox(wx.Window):
         self.EditBox.Clear()
 #        self.EditBox.ChangeValue(self.descriptiveText)
 
+    def Focus(self):
+        self.EditBox.SetFocus()
+
     def SetValue(self, value):
         self.EditBox.SetValue(value)
 

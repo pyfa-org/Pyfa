@@ -419,6 +419,7 @@ class MainFrame(wx.Frame):
         #Graphs
         self.Bind(wx.EVT_MENU, self.openGraphFrame, id=menuBar.graphFrameId)
 
+        toggleSearchBoxId = wx.NewId()
         toggleShipMarketId = wx.NewId()
         ctabnext = wx.NewId()
         ctabprev = wx.NewId()
@@ -432,6 +433,7 @@ class MainFrame(wx.Frame):
         # Close Page
         self.Bind(wx.EVT_MENU, self.CloseCurrentPage, id=self.closePageId)
         self.Bind(wx.EVT_MENU, self.HAddPage, id = self.addPageId)
+        self.Bind(wx.EVT_MENU, self.toggleSearchBox, id = toggleSearchBoxId)
         self.Bind(wx.EVT_MENU, self.toggleShipMarket, id = toggleShipMarketId)
         self.Bind(wx.EVT_MENU, self.CTabNext, id = ctabnext)
         self.Bind(wx.EVT_MENU, self.CTabPrev, id = ctabprev)
@@ -444,6 +446,9 @@ class MainFrame(wx.Frame):
 
         actb = [(wx.ACCEL_CTRL, ord('T'), self.addPageId),
                 (wx.ACCEL_CMD, ord('T'), self.addPageId),
+
+                (wx.ACCEL_CTRL, ord('F'), toggleSearchBoxId),
+                (wx.ACCEL_CMD, ord('F'), toggleSearchBoxId),
 
                 (wx.ACCEL_CTRL, ord("W"), self.closePageId),
                 (wx.ACCEL_CTRL, wx.WXK_F4, self.closePageId),
@@ -498,6 +503,13 @@ class MainFrame(wx.Frame):
     def toggleShipMarket(self, event):
         sel = self.notebookBrowsers.GetSelection()
         self.notebookBrowsers.SetSelection(0 if sel == 1 else 1)
+
+    def toggleSearchBox(self, event):
+        sel = self.notebookBrowsers.GetSelection()
+        if sel == 1:
+            self.shipBrowser.navpanel.ToggleSearchBox()
+        else:
+            self.marketBrowser.search.Focus()
 
     def clipboardEft(self):
         sFit = service.Fit.getInstance()
