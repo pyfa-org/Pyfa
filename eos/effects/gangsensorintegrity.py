@@ -1,7 +1,8 @@
 # Used by:
 # Variations of module: Information Warfare Link - Sensor Integrity I (2 of 2)
 type = "gang", "active"
-gangBoost = "scanTypeStrength"
+gangBoost = "maxTargetRange"
+gangBonus = "commandBonus"
 def handler(fit, module, context):
     if "gang" not in context: return
     fit.ship.boostItemAttr("maxTargetRange", module.getModifiedItemAttr("commandBonus"),
