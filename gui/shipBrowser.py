@@ -418,7 +418,9 @@ class NavigationPanel(SFItem.SFBrowserItem):
             self.shipBrowser.filterShipsWithNoFits = True
             self.btnSwitch.label = "Show empty ship groups"
         stage = self.shipBrowser.GetActiveStage()
-        if stage == 2:
+        if stage == 1:
+            wx.PostEvent(self.shipBrowser,Stage1Selected())
+        elif stage == 2:
             categoryID = self.shipBrowser.GetStageData(stage)
             wx.PostEvent(self.shipBrowser,Stage2Selected(categoryID=categoryID, back = True))
 
@@ -665,7 +667,7 @@ class ShipBrowser(wx.Panel):
         self.navpanel.ShowSwitchEmptyGroupsButton(False)
 
         sMarket = service.Market.getInstance()
-
+        sFit = service.Fit.getInstance()
         self.lpane.ShowLoading(False)
 
         self.lpane.Freeze()
@@ -673,8 +675,14 @@ class ShipBrowser(wx.Panel):
         if len(self.categoryList) == 0:
             self.categoryList = list(sMarket.getShipRoot())
             self.categoryList.sort(key=lambda ship: ship.name)
+
         for ship in self.categoryList:
-            self.lpane.AddWidget(CategoryItem(self.lpane, ship.ID, (ship.name, 0)))
+            if self.filterShipsWithNoFits and not sFit.groupHasFits(ship.ID):
+                continue
+            else:
+                self.lpane.AddWidget(CategoryItem(self.lpane, ship.ID, (ship.name, 0)))
+
+        self.navpanel.ShowSwitchEmptyGroupsButton(True)
 
         self.lpane.RefreshList()
         self.lpane.Thaw()
