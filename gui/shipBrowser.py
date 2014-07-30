@@ -417,7 +417,9 @@ class NavigationPanel(SFItem.SFBrowserItem):
         else:
             self.shipBrowser.filterShipsWithNoFits = True
             self.btnSwitch.label = "Show empty ship groups"
+
         stage = self.shipBrowser.GetActiveStage()
+
         if stage == 1:
             wx.PostEvent(self.shipBrowser,Stage1Selected())
         elif stage == 2:
@@ -555,6 +557,7 @@ class ShipBrowser(wx.Panel):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
         self.categoryList=[]
+        self.categoryFitCache = {}
 
         self._stage1Data = -1
         self._stage2Data = -1
@@ -672,12 +675,18 @@ class ShipBrowser(wx.Panel):
 
         self.lpane.Freeze()
         self.lpane.RemoveAllChildren()
+
         if len(self.categoryList) == 0:
+            # set cache of category list
             self.categoryList = list(sMarket.getShipRoot())
             self.categoryList.sort(key=lambda ship: ship.name)
 
+            # set map & cache of fittings per category
+            for cat in self.categoryList:
+                self.categoryFitCache[cat.ID] = sFit.groupHasFits(cat.ID)
+
         for ship in self.categoryList:
-            if self.filterShipsWithNoFits and not sFit.groupHasFits(ship.ID):
+            if self.filterShipsWithNoFits and not self.categoryFitCache[ship.ID]:
                 continue
             else:
                 self.lpane.AddWidget(CategoryItem(self.lpane, ship.ID, (ship.name, 0)))
@@ -699,12 +708,15 @@ class ShipBrowser(wx.Panel):
     def stage2Callback(self, data):
         if self.GetActiveStage() != 2:
             return
+
+        categoryID = self._stage2Data
         ships = list(data[1])
         sFit = service.Fit.getInstance()
 
         ships.sort(key=self.raceNameKey)
         racesList = []
         subRacesFilter = {}
+        t_fits = 0  # total number of fits in this category
 
         for ship in ships:
             if ship.race:
@@ -723,6 +735,7 @@ class ShipBrowser(wx.Panel):
 
         for ship in ships:
             fits = sFit.countFitsWithShip(ship.ID)
+            t_fits += fits
             filter = subRacesFilter[ship.race] if ship.race else True
 
             if override:
@@ -738,6 +751,11 @@ class ShipBrowser(wx.Panel):
 
         self.raceselect.RebuildRaces(racesList)
 
+        # refresh category cache
+        if t_fits == 0:
+            self.categoryFitCache[categoryID] = False
+        else:
+            self.categoryFitCache[categoryID] = True
 
         self.lpane.ShowLoading(False)
 
@@ -755,7 +773,6 @@ class ShipBrowser(wx.Panel):
 
         self._lastStage = self._activeStage
         self._activeStage = 2
-
         categoryID = event.categoryID
         self.lastdata = categoryID
 
@@ -793,6 +810,9 @@ class ShipBrowser(wx.Panel):
         sFit = service.Fit.getInstance()
         sMarket = service.Market.getInstance()
 
+        ship = sMarket.getItem(shipID)
+        categoryID = ship.group.ID
+
         self.lpane.Freeze()
         self.lpane.RemoveAllChildren()
         fitList = sFit.getFitsWithShip(shipID)
@@ -803,6 +823,8 @@ class ShipBrowser(wx.Panel):
             self.navpanel.gotoStage(stage,data)
             return
 
+        self.categoryFitCache[categoryID] = True
+
         self.navpanel.ShowNewFitButton(True)
         self.navpanel.ShowSwitchEmptyGroupsButton(False)
 
@@ -811,7 +833,7 @@ class ShipBrowser(wx.Panel):
             self.Layout()
 
         fitList.sort(key=self.nameKey)
-        shipName = sMarket.getItem(shipID).name
+        shipName = ship.name
 
         self._stage3ShipName = shipName
         self._stage3Data = shipID
