@@ -150,15 +150,15 @@ class GangView ( ScrolledPanel ):
             event.Skip()
             return
 
-        cFit = service.Fit.getInstance()
+        sFit = service.Fit.getInstance()
 
         fleetSrv = service.Fleet.getInstance()
 
         activeFitID = self.mainFrame.getActiveFit()
-        fit = cFit.getFit(activeFitID)
+        fit = sFit.getFit(activeFitID)
 
-        cChar = service.Character.getInstance()
-        charList = cChar.getCharacterList()
+        sChar = service.Character.getInstance()
+        charList = sChar.getCharacterList()
 
         if activeFitID:
             commanders = fleetSrv.loadLinearFleet(fit)
@@ -170,25 +170,25 @@ class GangView ( ScrolledPanel ):
             if type == 0:
                 if fleetCom:
                     charID = chBooster.GetClientData(chBooster.GetSelection())
-                    cFit.changeChar(fleetCom.ID, charID)
+                    sFit.changeChar(fleetCom.ID, charID)
                 else:
                     chBooster.SetSelection(0)
 
             if type == 1:
                 if wingCom:
                     charID = chBooster.GetClientData(chBooster.GetSelection())
-                    cFit.changeChar(wingCom.ID, charID)
+                    sFit.changeChar(wingCom.ID, charID)
                 else:
                     chBooster.SetSelection(0)
 
             if type == 2:
                 if squadCom:
                     charID = chBooster.GetClientData(chBooster.GetSelection())
-                    cFit.changeChar(squadCom.ID, charID)
+                    sFit.changeChar(squadCom.ID, charID)
                 else:
                     chBooster.SetSelection(0)
 
-            cFit.recalc(fit, withBoosters=True)
+            sFit.recalc(fit, withBoosters=True)
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=activeFitID))
 
         else:
@@ -237,8 +237,8 @@ class GangView ( ScrolledPanel ):
         fleetSrv = service.Fleet.getInstance()
 
         activeFitID = self.mainFrame.getActiveFit()
-        cFit = service.Fit.getInstance()
-        fit = cFit.getFit(event.fitID or activeFitID)
+        sFit = service.Fit.getInstance()
+        fit = sFit.getFit(event.fitID or activeFitID)
         commanders = (None, None, None)
 
         if activeFitID:
@@ -296,8 +296,8 @@ class GangView ( ScrolledPanel ):
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=activeFitID))
 
     def RefreshBoosterFits(self, event = None):
-        sFit    = service.Fit.getInstance()
-        sMarket = service.Market.getInstance()
+        sFit = service.Fit.getInstance()
+        sMkt = service.Market.getInstance()
         fitList = sFit.getBoosterFits()
 
         for id in self.fleet:
@@ -312,7 +312,7 @@ class GangView ( ScrolledPanel ):
             choice.Append("None", -1)
             for fit in fitList:
                 id,name,type = fit
-                ship = sMarket.getItem(type)
+                ship = sMkt.getItem(type)
                 choice.Append(ship.name+': '+name, id)
                 if chCurrData == id:
                     currSelFound = True
@@ -326,8 +326,8 @@ class GangView ( ScrolledPanel ):
                     choice.SetSelection(0)
 
     def RefreshCharacterList(self, event = None):
-        cChar = service.Character.getInstance()
-        charList = cChar.getCharacterList()
+        sChar = service.Character.getInstance()
+        charList = sChar.getCharacterList()
         for id in self.fleet:
             choice = self.fleet[id]['chChar']
             chCurrSelection = choice.GetSelection()

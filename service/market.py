@@ -47,13 +47,13 @@ class ShipBrowserWorkerThread(threading.Thread):
     def processRequests(self):
         queue = self.queue
         cache = self.cache
-        sMarket = Market.getInstance()
+        sMkt = Market.getInstance()
         while True:
             try:
                 id, callback = queue.get()
                 set = cache.get(id)
                 if set is None:
-                    set = sMarket.getShipList(id)
+                    set = sMkt.getShipList(id)
                     cache[id] = set
 
                 wx.CallAfter(callback, (id, set))
@@ -106,9 +106,9 @@ class SearchWorkerThread(threading.Thread):
             request, callback = self.searchRequest
             self.searchRequest = None
             cv.release()
-            sMarket = Market.getInstance()
+            sMkt = Market.getInstance()
             # Rely on category data provided by eos as we don't hardcode them much in service
-            filter = eos.types.Category.name.in_(sMarket.SEARCH_CATEGORIES)
+            filter = eos.types.Category.name.in_(sMkt.SEARCH_CATEGORIES)
             results = eos.db.searchItems(request, where=filter,
                                          join=(eos.types.Item.group, eos.types.Group.category),
                                          eager=("icon", "group.category", "metaGroup", "metaGroup.parent"))
@@ -116,7 +116,7 @@ class SearchWorkerThread(threading.Thread):
             items = set()
             # Return only published items, consult with Market service this time
             for item in results:
-                if sMarket.getPublicityByItem(item):
+                if sMkt.getPublicityByItem(item):
                     items.add(item)
             wx.CallAfter(callback, items)
 

@@ -90,10 +90,10 @@ class ProjectedView(d.Display):
         keycode = event.GetKeyCode()
         if keycode == wx.WXK_DELETE or keycode == wx.WXK_NUMPAD_DELETE:
             fitID = self.mainFrame.getActiveFit()
-            cFit = service.Fit.getInstance()
+            sFit = service.Fit.getInstance()
             row = self.GetFirstSelected()
             if row != -1:
-                cFit.removeProjected(fitID, self.get(row))
+                sFit.removeProjected(fitID, self.get(row))
                 wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
         event.Skip()
@@ -155,8 +155,8 @@ class ProjectedView(d.Display):
             event.Skip()
             return
 
-        cFit = service.Fit.getInstance()
-        fit = cFit.getFit(event.fitID)
+        sFit = service.Fit.getInstance()
+        fit = sFit.getFit(event.fitID)
         stuff = []
         if fit is not None:
             self.modules = fit.projectedModules[:]
@@ -253,6 +253,6 @@ class ProjectedView(d.Display):
             col = self.getColumn(event.Position)
             if col != self.getColIndex(State):
                 fitID = self.mainFrame.getActiveFit()
-                cFit = service.Fit.getInstance()
-                cFit.removeProjected(fitID, self.get(row))
+                sFit = service.Fit.getInstance()
+                sFit.removeProjected(fitID, self.get(row))
                 wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))

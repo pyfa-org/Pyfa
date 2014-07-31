@@ -108,8 +108,8 @@ class PriceViewFull(StatsView):
             if self._timer:
                 if self._timer.IsRunning():
                     self._timer.Stop()
-            cMarket = service.Market.getInstance()
-            cMarket.getPrices(typeIDs, self.processPrices)
+            sMkt = service.Market.getInstance()
+            sMkt.getPrices(typeIDs, self.processPrices)
             self.labelEMStatus.SetLabel("Updating prices...")
             if not self._timerUpdate:
                 self._timerUpdate = wx.Timer(self.parent, self._timerIdUpdate)

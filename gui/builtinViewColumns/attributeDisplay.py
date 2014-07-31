@@ -29,8 +29,8 @@ class AttributeDisplay(ViewColumn):
     name = "attr"
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
-        cAttribute = service.Attribute.getInstance()
-        info = cAttribute.getAttributeInfo(params["attribute"])
+        sAttr = service.Attribute.getInstance()
+        info = sAttr.getAttributeInfo(params["attribute"])
         self.info = info
         if params["showIcon"]:
             if info.name == "power":
@@ -57,10 +57,10 @@ class AttributeDisplay(ViewColumn):
             self.direct = True
             self.view = fittingView
             originalRefresh = fittingView.refresh
-            sMarket = service.Market.getInstance()
+            sMkt = service.Market.getInstance()
             #Hack into our master view and add a callback for ourselves to know when to query
             def refresh(stuff):
-                self.directInfo = sMarket.directAttrRequest(stuff, info) if stuff else None
+                self.directInfo = sMkt.directAttrRequest(stuff, info) if stuff else None
                 originalRefresh(stuff)
 
             fittingView.refresh = refresh

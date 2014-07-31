@@ -113,9 +113,9 @@ class BoosterView(d.Display):
         event.Skip()
 
     def addItem(self, event):
-        cFit = service.Fit.getInstance()
+        sFit = service.Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
-        trigger = cFit.addBooster(fitID, event.itemID)
+        trigger = sFit.addBooster(fitID, event.itemID)
         if trigger:
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
             self.mainFrame.additionsPane.select("Boosters")
@@ -131,8 +131,8 @@ class BoosterView(d.Display):
 
     def removeBooster(self, booster):
         fitID = self.mainFrame.getActiveFit()
-        cFit = service.Fit.getInstance()
-        cFit.removeBooster(fitID, self.origional.index(booster))
+        sFit = service.Fit.getInstance()
+        sFit.removeBooster(fitID, self.origional.index(booster))
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
     def click(self, event):
@@ -142,8 +142,8 @@ class BoosterView(d.Display):
             col = self.getColumn(event.Position)
             if col == self.getColIndex(State):
                 fitID = self.mainFrame.getActiveFit()
-                cFit = service.Fit.getInstance()
-                cFit.toggleBooster(fitID, row)
+                sFit = service.Fit.getInstance()
+                sFit.toggleBooster(fitID, row)
                 wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
 
@@ -155,8 +155,8 @@ class BoosterView(d.Display):
     def spawnMenu(self):
         sel = self.GetFirstSelected()
         if sel != -1:
-            cFit = service.Fit.getInstance()
-            fit = cFit.getFit(self.mainFrame.getActiveFit())
+            sFit = service.Fit.getInstance()
+            fit = sFit.getFit(self.mainFrame.getActiveFit())
             item = fit.boosters[sel]
 
             srcContext = "boosterItem"

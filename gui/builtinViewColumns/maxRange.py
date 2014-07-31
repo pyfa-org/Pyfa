@@ -32,8 +32,8 @@ class MaxRange(ViewColumn):
                       "displayName": False}
         ViewColumn.__init__(self, fittingView)
 
-        cAttribute = service.Attribute.getInstance()
-        info = cAttribute.getAttributeInfo("maxRange")
+        sAttr = service.Attribute.getInstance()
+        info = sAttr.getAttributeInfo("maxRange")
         self.info = info
         if params["showIcon"]:
             iconFile = info.icon.iconFile if info.icon else None

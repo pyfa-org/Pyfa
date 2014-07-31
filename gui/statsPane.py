@@ -33,8 +33,8 @@ class StatsPane(wx.Panel):
                      "priceViewFull",]
 
     def fitChanged(self, event):
-        cFit = service.Fit.getInstance()
-        fit = cFit.getFit(event.fitID)
+        sFit = service.Fit.getInstance()
+        fit = sFit.getFit(event.fitID)
         for view in self.views:
             view.refreshPanel(fit)
         event.Skip()

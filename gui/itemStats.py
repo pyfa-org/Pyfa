@@ -56,8 +56,8 @@ class ItemStatsDialog(wx.Dialog):
             itmContext = None
         item = getattr(victim, "item", None) if srcContext.lower() not in ("projectedcharge", "fittingcharge") else getattr(victim, "charge", None)
         if item is None:
-            sMarket = service.Market.getInstance()
-            item = sMarket.getItem(victim.ID)
+            sMkt = service.Market.getInstance()
+            item = sMkt.getItem(victim.ID)
             victim = None
         self.context = itmContext
         if item.icon is not None:

@@ -45,8 +45,8 @@ class CharacterEditor(wx.Frame):
         mainSizer = wx.BoxSizer(wx.VERTICAL)
         self.navSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        cChar = service.Character.getInstance()
-        charList = cChar.getCharacterList()
+        sChar = service.Character.getInstance()
+        charList = sChar.getCharacterList()
         charList.sort(key=lambda t: t[1])
 
         self.btnSave = wx.Button(self, wx.ID_SAVE)
@@ -124,7 +124,7 @@ class CharacterEditor(wx.Frame):
         self.Centre(wx.BOTH)
 
         charID = self.getActiveCharacter()
-        if cChar.getCharName(charID) in ("All 0", "All 5"):
+        if sChar.getCharName(charID) in ("All 0", "All 5"):
             self.restrict()
 
         self.registerEvents()
@@ -169,9 +169,9 @@ class CharacterEditor(wx.Frame):
     def charChanged(self, event):
         self.sview.skillTreeListCtrl.DeleteChildren(self.sview.root)
         self.sview.populateSkillTree()
-        cChar = service.Character.getInstance()
+        sChar = service.Character.getInstance()
         charID = self.getActiveCharacter()
-        if cChar.getCharName(charID) in ("All 0", "All 5"):
+        if sChar.getCharName(charID) in ("All 0", "All 5"):
             self.restrict()
         else:
             self.unrestrict()
@@ -185,9 +185,9 @@ class CharacterEditor(wx.Frame):
         return self.skillTreeChoice.GetClientData(selection) if selection is not None else None
 
     def new(self, event):
-        cChar = service.Character.getInstance()
-        charID = cChar.new()
-        id = self.skillTreeChoice.Append(cChar.getCharName(charID), charID)
+        sChar = service.Character.getInstance()
+        charID = sChar.new()
+        id = self.skillTreeChoice.Append(sChar.getCharName(charID), charID)
         self.skillTreeChoice.SetSelection(id)
         self.unrestrict()
         self.btnSave.SetLabel("Create")
@@ -209,20 +209,20 @@ class CharacterEditor(wx.Frame):
         self.navSizer.Add(self.btnSave, 0, wx.ALIGN_CENTER)
         self.navSizer.Layout()
 
-        cChar = service.Character.getInstance()
-        currName = cChar.getCharName(self.getActiveCharacter())
+        sChar = service.Character.getInstance()
+        currName = sChar.getCharName(self.getActiveCharacter())
         self.characterRename.SetValue(currName)
         self.characterRename.SetSelection(0, len(currName))
 
     def processRename(self, event):
-        cChar = service.Character.getInstance()
+        sChar = service.Character.getInstance()
         newName = self.characterRename.GetLineText(0)
 
         if newName == "All 0" or newName == "All 5":
             newName = newName + " bases are belong to us"
 
         charID = self.getActiveCharacter()
-        cChar.rename(charID, newName)
+        sChar.rename(charID, newName)
 
         self.skillTreeChoice.Show()
         self.characterRename.Hide()
@@ -240,9 +240,9 @@ class CharacterEditor(wx.Frame):
         self.skillTreeChoice.SetSelection(selection)
 
     def copy(self, event):
-        cChar = service.Character.getInstance()
-        charID = cChar.copy(self.getActiveCharacter())
-        id = self.skillTreeChoice.Append(cChar.getCharName(charID), charID)
+        sChar = service.Character.getInstance()
+        charID = sChar.copy(self.getActiveCharacter())
+        id = self.skillTreeChoice.Append(sChar.getCharName(charID), charID)
         self.skillTreeChoice.SetSelection(id)
         self.unrestrict()
         self.btnSave.SetLabel("Copy")
@@ -250,22 +250,22 @@ class CharacterEditor(wx.Frame):
         wx.PostEvent(self, GE.CharChanged())
 
     def delete(self, event):
-        cChar = service.Character.getInstance()
-        cChar.delete(self.getActiveCharacter())
+        sChar = service.Character.getInstance()
+        sChar.delete(self.getActiveCharacter())
         sel = self.skillTreeChoice.GetSelection()
         self.skillTreeChoice.Delete(sel)
         self.skillTreeChoice.SetSelection(sel - 1)
         newSelection = self.getActiveCharacter()
-        if cChar.getCharName(newSelection) in ("All 0", "All 5"):
+        if sChar.getCharName(newSelection) in ("All 0", "All 5"):
             self.restrict()
 
         wx.PostEvent(self, GE.CharChanged())
 
     def Destroy(self):
-        cFit = service.Fit.getInstance()
+        sFit = service.Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
         if fitID is not None:
-            cFit.clearFit(fitID)
+            sFit.clearFit(fitID)
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
         wx.Frame.Destroy(self)
@@ -321,8 +321,8 @@ class SkillTreeView (wx.Panel):
         self.Layout()
 
     def populateSkillTree(self):
-        cChar = service.Character.getInstance()
-        groups = cChar.getSkillGroups()
+        sChar = service.Character.getInstance()
+        groups = sChar.getSkillGroups()
         imageId = self.skillBookImageId
         root = self.root
         tree = self.skillTreeListCtrl
@@ -342,12 +342,12 @@ class SkillTreeView (wx.Panel):
             tree.Delete(child)
 
             #Get the real intrestin' stuff
-            cChar = service.Character.getInstance()
+            sChar = service.Character.getInstance()
             char = self.Parent.Parent.getActiveCharacter()
-            for id, name in cChar.getSkills(tree.GetPyData(root)):
+            for id, name in sChar.getSkills(tree.GetPyData(root)):
                 iconId = self.skillBookImageId
                 childId = tree.AppendItem(root, name, iconId, data=wx.TreeItemData(id))
-                level = cChar.getSkillLevel(char, id)
+                level = sChar.getSkillLevel(char, id)
                 tree.SetItemText(childId, "Level %d" % level if isinstance(level, int) else level, 1)
 
             tree.SortChildren(root)
@@ -361,26 +361,26 @@ class SkillTreeView (wx.Panel):
         if self.skillTreeListCtrl.GetChildrenCount(item) > 0:
             return
 
-        cChar = service.Character.getInstance()
+        sChar = service.Character.getInstance()
         charID = self.Parent.Parent.getActiveCharacter()
-        cMarket = service.Market.getInstance()
-        if cChar.getCharName(charID) not in ("All 0", "All 5"):
-            self.levelChangeMenu.selection = cMarket.getItem(self.skillTreeListCtrl.GetPyData(item))
+        sMkt = service.Market.getInstance()
+        if sChar.getCharName(charID) not in ("All 0", "All 5"):
+            self.levelChangeMenu.selection = sMkt.getItem(self.skillTreeListCtrl.GetPyData(item))
             self.PopupMenu(self.levelChangeMenu)
         else:
-            self.statsMenu.selection = cMarket.getItem(self.skillTreeListCtrl.GetPyData(item))
+            self.statsMenu.selection = sMkt.getItem(self.skillTreeListCtrl.GetPyData(item))
             self.PopupMenu(self.statsMenu)
 
     def changeLevel(self, event):
         level = self.levelIds.get(event.Id)
         if level is not None:
-            cChar = service.Character.getInstance()
+            sChar = service.Character.getInstance()
             charID = self.Parent.Parent.getActiveCharacter()
             selection = self.skillTreeListCtrl.GetSelection()
             skillID = self.skillTreeListCtrl.GetPyData(selection)
 
             self.skillTreeListCtrl.SetItemText(selection, "Level %d" % level if isinstance(level, int) else level, 1)
-            cChar.changeLevel(charID, skillID, level)
+            sChar.changeLevel(charID, skillID, level)
 
         event.Skip()
 
@@ -456,15 +456,15 @@ class ImplantsTreeView (wx.Panel):
         self.pluggedImplantsTree.update(self.implants)
 
     def charChanged(self, event):
-        cChar = service.Character.getInstance()
+        sChar = service.Character.getInstance()
         charID = self.Parent.Parent.getActiveCharacter()
-        name = cChar.getCharName(charID)
+        name = sChar.getCharName(charID)
         if name == "All 0" or name == "All 5":
             self.Enable(False)
         else:
             self.Enable(True)
 
-        self.update(cChar.getImplants(charID))
+        self.update(sChar.getImplants(charID))
         event.Skip()
 
     def expandLookup(self, event):
@@ -473,13 +473,13 @@ class ImplantsTreeView (wx.Panel):
         child, cookie = tree.GetFirstChild(root)
         text = tree.GetItemText(child)
         if text == "dummy" or text == "itemdummy":
-            cMarket = service.Market.getInstance()
+            sMkt = service.Market.getInstance()
             #A DUMMY! Keeeel!!! EBUL DUMMY MUST DIAF!
             tree.Delete(child)
 
         if text == "dummy":
             #Add 'real stoof!' instead
-            for id, name, iconFile, more in cMarket.getChildren(tree.GetPyData(root)):
+            for id, name, iconFile, more in sMkt.getChildren(tree.GetPyData(root)):
                 iconId = self.addMarketViewImage(iconFile)
                 childId = tree.AppendItem(root, name, iconId, data=wx.TreeItemData(id))
                 if more:
@@ -488,8 +488,8 @@ class ImplantsTreeView (wx.Panel):
                     tree.AppendItem(childId, "itemdummy")
 
         if text == "itemdummy":
-            cMarket = service.Market.getInstance()
-            data, usedMetas = cMarket.getVariations(tree.GetPyData(root))
+            sMkt = service.Market.getInstance()
+            data, usedMetas = sMkt.getVariations(tree.GetPyData(root))
             for item in data:
                 id = item.ID
                 name = item.name
@@ -506,20 +506,20 @@ class ImplantsTreeView (wx.Panel):
             return
 
         nchilds = self.availableImplantsTree.GetChildrenCount(root)
-        cChar = service.Character.getInstance()
+        sChar = service.Character.getInstance()
         charID = self.Parent.Parent.getActiveCharacter()
         if nchilds == 0:
             itemID = self.availableImplantsTree.GetPyData(root)
-            cChar.addImplant(charID, itemID)
-            self.update(cChar.getImplants(charID))
+            sChar.addImplant(charID, itemID)
+            self.update(sChar.getImplants(charID))
 
     def removeImplant(self, event):
         pos = self.pluggedImplantsTree.GetFirstSelected()
         if pos != -1:
-            cChar = service.Character.getInstance()
+            sChar = service.Character.getInstance()
             charID = self.Parent.Parent.getActiveCharacter()
-            cChar.removeImplant(charID, self.implants[pos].slot)
-            self.update(cChar.getImplants(charID))
+            sChar.removeImplant(charID, self.implants[pos].slot)
+            self.update(sChar.getImplants(charID))
 
 class AvailableImplantsView(d.Display):
     DEFAULT_COLS = ["Base Name",
@@ -608,8 +608,8 @@ class APIView (wx.Panel):
         self.charChanged(None)
 
     def charChanged(self, event):
-        cChar = service.Character.getInstance()
-        ID, key, char, chars = cChar.getApiDetails(self.Parent.Parent.getActiveCharacter())
+        sChar = service.Character.getInstance()
+        ID, key, char, chars = sChar.getApiDetails(self.Parent.Parent.getActiveCharacter())
         self.inputID.SetValue(str(ID))
         self.inputKey.SetValue(key)
 
@@ -637,8 +637,8 @@ class APIView (wx.Panel):
             self.stStatus.SetLabel("Invalid keyID or vCode!")
             return
 
-        cChar = service.Character.getInstance()
-        list = cChar.charList(self.Parent.Parent.getActiveCharacter(), self.inputID.GetLineText(0), self.inputKey.GetLineText(0))
+        sChar = service.Character.getInstance()
+        list = sChar.charList(self.Parent.Parent.getActiveCharacter(), self.inputID.GetLineText(0), self.inputKey.GetLineText(0))
 
         if not list:
             self.stStatus.SetLabel("Unable to fetch characters list from EVE API!")
@@ -659,8 +659,8 @@ class APIView (wx.Panel):
         charName = self.charChoice.GetString(self.charChoice.GetSelection())
         if charName:
             try:
-                cChar = service.Character.getInstance()
-                cChar.apiFetch(self.Parent.Parent.getActiveCharacter(), charName)
+                sChar = service.Character.getInstance()
+                sChar.apiFetch(self.Parent.Parent.getActiveCharacter(), charName)
                 self.stStatus.SetLabel("Successfully fetched %s\'s skills from EVE API." % charName)
             except:
                 self.stStatus.SetLabel("Unable to retrieve %s\'s skills!" % charName)

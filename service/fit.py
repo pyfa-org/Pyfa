@@ -166,8 +166,8 @@ class Fit(object):
 
     def deleteFit(self, fitID):
         fit = eos.db.getFit(fitID)
-        sFlt = Fleet.getInstance()
-        sFlt.removeAssociatedFleetData(fit)
+        sFleet = Fleet.getInstance()
+        sFleet.removeAssociatedFleetData(fit)
         self.removeProjectedData(fitID)
 
         eos.db.remove(fit)
@@ -230,10 +230,10 @@ class Fit(object):
         fit = eos.db.getFit(fitID)
         inited = getattr(fit, "inited", None)
         if inited is None or inited is False:
-            sFlt = Fleet.getInstance()
-            f = sFlt.getLinearFleet(fit)
+            sFleet = Fleet.getInstance()
+            f = sFleet.getLinearFleet(fit)
             if f is None:
-                sFlt.removeAssociatedFleetData(fit)
+                sFleet.removeAssociatedFleetData(fit)
                 fit.fleet = None
             else:
                 fit.fleet = f

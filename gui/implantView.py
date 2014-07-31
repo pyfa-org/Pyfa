@@ -61,8 +61,8 @@ class ImplantView(d.Display):
             event.Skip()
             return
 
-        cFit = service.Fit.getInstance()
-        fit = cFit.getFit(event.fitID)
+        sFit = service.Fit.getInstance()
+        fit = sFit.getFit(event.fitID)
 
         self.original = fit.implants if fit is not None else None
         self.implants = stuff = fit.implants if fit is not None else None
@@ -83,9 +83,9 @@ class ImplantView(d.Display):
         event.Skip()
 
     def addItem(self, event):
-        cFit = service.Fit.getInstance()
+        sFit = service.Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
-        trigger = cFit.addImplant(fitID, event.itemID)
+        trigger = sFit.addImplant(fitID, event.itemID)
         if trigger:
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
             self.mainFrame.additionsPane.select("Implants")
@@ -98,11 +98,11 @@ class ImplantView(d.Display):
             col = self.getColumn(event.Position)
             if col != self.getColIndex(State):
                 self.removeImplant(self.implants[self.GetItemData(row)])
-                
+
     def removeImplant(self, implant):
         fitID = self.mainFrame.getActiveFit()
-        cFit = service.Fit.getInstance()
-        cFit.removeImplant(fitID, self.original.index(implant))
+        sFit = service.Fit.getInstance()
+        sFit.removeImplant(fitID, self.original.index(implant))
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
     def click(self, event):
@@ -112,8 +112,8 @@ class ImplantView(d.Display):
             col = self.getColumn(event.Position)
             if col == self.getColIndex(State):
                 fitID = self.mainFrame.getActiveFit()
-                cFit = service.Fit.getInstance()
-                cFit.toggleImplant(fitID, row)
+                sFit = service.Fit.getInstance()
+                sFit.toggleImplant(fitID, row)
                 wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
     def scheduleMenu(self, event):
@@ -124,8 +124,8 @@ class ImplantView(d.Display):
     def spawnMenu(self):
         sel = self.GetFirstSelected()
         if sel != -1:
-            cFit = service.Fit.getInstance()
-            fit = cFit.getFit(self.mainFrame.getActiveFit())
+            sFit = service.Fit.getInstance()
+            fit = sFit.getFit(self.mainFrame.getActiveFit())
             implant = fit.implants[sel]
 
             sMkt = service.Market.getInstance()

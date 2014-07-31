@@ -31,8 +31,8 @@ class CapacitorUse(ViewColumn):
 
         self.mask = wx.LIST_MASK_IMAGE
 
-        cAttribute = service.Attribute.getInstance()
-        info = cAttribute.getAttributeInfo("capacitorNeed")
+        sAttr = service.Attribute.getInstance()
+        info = sAttr.getAttributeInfo("capacitorNeed")
         self.imageId = fittingView.imageList.GetImageIndex(info.icon.iconFile, "pack")
         self.bitmap = bitmapLoader.getBitmap(info.icon.iconFile, "pack")
 

@@ -93,10 +93,10 @@ class CargoView(d.Display):
         keycode = event.GetKeyCode()
         if keycode == wx.WXK_DELETE or keycode == wx.WXK_NUMPAD_DELETE:
             fitID = self.mainFrame.getActiveFit()
-            cFit = service.Fit.getInstance()
+            sFit = service.Fit.getInstance()
             row = self.GetFirstSelected()
             if row != -1:
-                cFit.removeCargo(fitID, self.GetItemData(row))
+                sFit.removeCargo(fitID, self.GetItemData(row))
                 wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
         event.Skip()
 
@@ -131,8 +131,8 @@ class CargoView(d.Display):
             event.Skip()
             return
 
-        cFit = service.Fit.getInstance()
-        fit = cFit.getFit(event.fitID)
+        sFit = service.Fit.getInstance()
+        fit = sFit.getFit(event.fitID)
 
         self.original = fit.cargo if fit is not None else None
         self.cargo = stuff = fit.cargo if fit is not None else None
@@ -158,9 +158,9 @@ class CargoView(d.Display):
             col = self.getColumn(event.Position)
             if col != self.getColIndex(State):
                 fitID = self.mainFrame.getActiveFit()
-                cFit = service.Fit.getInstance()
+                sFit = service.Fit.getInstance()
                 cargo = self.cargo[self.GetItemData(row)]
-                cFit.removeCargo(fitID, self.original.index(cargo))
+                sFit.removeCargo(fitID, self.original.index(cargo))
                 wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
     def scheduleMenu(self, event):
@@ -171,8 +171,8 @@ class CargoView(d.Display):
     def spawnMenu(self):
         sel = self.GetFirstSelected()
         if sel != -1:
-            cFit = service.Fit.getInstance()
-            fit = cFit.getFit(self.mainFrame.getActiveFit())
+            sFit = service.Fit.getInstance()
+            fit = sFit.getFit(self.mainFrame.getActiveFit())
             cargo = fit.cargo[sel]
 
             sMkt = service.Market.getInstance()

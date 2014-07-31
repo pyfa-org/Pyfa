@@ -669,7 +669,7 @@ class ShipBrowser(wx.Panel):
         self.navpanel.ShowNewFitButton(False)
         self.navpanel.ShowSwitchEmptyGroupsButton(False)
 
-        sMarket = service.Market.getInstance()
+        sMkt = service.Market.getInstance()
         sFit = service.Fit.getInstance()
         self.lpane.ShowLoading(False)
 
@@ -678,7 +678,7 @@ class ShipBrowser(wx.Panel):
 
         if len(self.categoryList) == 0:
             # set cache of category list
-            self.categoryList = list(sMarket.getShipRoot())
+            self.categoryList = list(sMkt.getShipRoot())
             self.categoryList.sort(key=lambda ship: ship.name)
 
             # set map & cache of fittings per category
@@ -781,8 +781,8 @@ class ShipBrowser(wx.Panel):
         self.lpane.RemoveAllChildren()
 
 
-        sMarket = service.Market.getInstance()
-        sMarket.getShipListDelayed(categoryID, self.stage2Callback)
+        sMkt = service.Market.getInstance()
+        sMkt.getShipListDelayed(categoryID, self.stage2Callback)
 
         self._stage2Data = categoryID
 
@@ -808,9 +808,9 @@ class ShipBrowser(wx.Panel):
         self._activeStage = 3
 
         sFit = service.Fit.getInstance()
-        sMarket = service.Market.getInstance()
+        sMkt = service.Market.getInstance()
 
-        ship = sMarket.getItem(shipID)
+        ship = sMkt.getItem(shipID)
         categoryID = ship.group.ID
 
         self.lpane.Freeze()
@@ -861,7 +861,7 @@ class ShipBrowser(wx.Panel):
             self._lastStage = self._activeStage
             self._activeStage = 4
 
-        sMarket = service.Market.getInstance()
+        sMkt = service.Market.getInstance()
         sFit = service.Fit.getInstance()
         query = event.text
 
@@ -869,7 +869,7 @@ class ShipBrowser(wx.Panel):
 
         self.lpane.RemoveAllChildren()
         if query:
-            ships = sMarket.searchShips(query)
+            ships = sMkt.searchShips(query)
             fitList = sFit.searchFits(query)
 
             for ship in ships:

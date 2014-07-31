@@ -19,8 +19,8 @@ class ItemStats(ContextMenu):
         srcContext = fullContext[0]
         if srcContext == "fittingShip":
             fitID = self.mainFrame.getActiveFit()
-            cFit = service.Fit.getInstance()
-            stuff = cFit.getFit(fitID).ship
+            sFit = service.Fit.getInstance()
+            stuff = sFit.getFit(fitID).ship
         else:
             stuff = selection[0]
 

@@ -19,23 +19,23 @@ class ItemRemove(ContextMenu):
         srcContext = fullContext[0]
         sFit = service.Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
-        cFit = sFit.getFit(fitID)
-        
+        sFit = sFit.getFit(fitID)
+
         if srcContext == "fittingModule":
             for module in selection:
                 if module is not None:
-                    sFit.removeModule(fitID,cFit.modules.index(module))
+                    sFit.removeModule(fitID,sFit.modules.index(module))
         elif srcContext in ("fittingCharge" , "projectedCharge"):
             sFit.setAmmo(fitID, None, selection)
         elif srcContext == "droneItem":
-            sFit.removeDrone(fitID, cFit.drones.index(selection[0]))
+            sFit.removeDrone(fitID, sFit.drones.index(selection[0]))
         elif srcContext == "implantItem":
-            sFit.removeImplant(fitID, cFit.implants.index(selection[0]))
+            sFit.removeImplant(fitID, sFit.implants.index(selection[0]))
         elif srcContext == "boosterItem":
-            sFit.removeBooster(fitID, cFit.boosters.index(selection[0]))
+            sFit.removeBooster(fitID, sFit.boosters.index(selection[0]))
         else:
             sFit.removeProjected(fitID, selection[0])
-            
+
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
 

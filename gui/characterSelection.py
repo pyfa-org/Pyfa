@@ -77,12 +77,12 @@ class CharacterSelection(wx.Panel):
 
     def refreshCharacterList(self, event=None):
         choice = self.charChoice
-        cChar = service.Character.getInstance()
+        sChar = service.Character.getInstance()
         activeChar = self.getActiveCharacter()
 
         choice.Clear()
-        charList = cChar.getCharacterList()
-        cChar.getCharacterList()
+        charList = sChar.getCharacterList()
+        sChar.getCharacterList()
         picked = False
 
         for id, name, active in charList:
@@ -93,11 +93,11 @@ class CharacterSelection(wx.Panel):
                 picked = True
 
         if not picked:
-            charID = cChar.all5ID()
+            charID = sChar.all5ID()
             self.selectChar(charID)
             fitID = self.mainFrame.getActiveFit()
-            cFit = service.Fit.getInstance()
-            cFit.changeChar(fitID, charID)
+            sFit = service.Fit.getInstance()
+            sFit.changeChar(fitID, charID)
 
         choice.Append(u"\u2015 Open Character Editor \u2015", -1)
         self.charCache = self.charChoice.GetCurrentSelection()
@@ -106,11 +106,11 @@ class CharacterSelection(wx.Panel):
             event.Skip()
 
     def refreshApi(self, event):
-        cChar = service.Character.getInstance()
-        ID, key, charName, chars = cChar.getApiDetails(self.getActiveCharacter())
+        sChar = service.Character.getInstance()
+        ID, key, charName, chars = sChar.getApiDetails(self.getActiveCharacter())
         if charName:
             try:
-                cChar.apiFetch(self.getActiveCharacter(), charName)
+                sChar.apiFetch(self.getActiveCharacter(), charName)
             except:
                 # can we do a popup, notifying user of API error?
                 pass
@@ -119,20 +119,20 @@ class CharacterSelection(wx.Panel):
     def charChanged(self, event):
         fitID = self.mainFrame.getActiveFit()
         charID = self.getActiveCharacter()
-        cChar = service.Character.getInstance()
+        sChar = service.Character.getInstance()
 
         if charID == -1:
             # revert to previous character
             self.charChoice.SetSelection(self.charCache)
             self.mainFrame.showCharacterEditor(event)
             return
-        if cChar.getCharName(charID) not in ("All 0", "All 5") and cChar.apiEnabled(charID):
+        if sChar.getCharName(charID) not in ("All 0", "All 5") and sChar.apiEnabled(charID):
             self.btnRefresh.Enable(True)
         else:
             self.btnRefresh.Enable(False)
 
-        cFit = service.Fit.getInstance()
-        cFit.changeChar(fitID, charID)
+        sFit = service.Fit.getInstance()
+        sFit.changeChar(fitID, charID)
         self.charCache = self.charChoice.GetCurrentSelection()
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
@@ -150,9 +150,9 @@ class CharacterSelection(wx.Panel):
     def fitChanged(self, event):
         self.charChoice.Enable(event.fitID != None)
         choice = self.charChoice
-        cFit = service.Fit.getInstance()
+        sFit = service.Fit.getInstance()
         currCharID = choice.GetClientData(choice.GetCurrentSelection())
-        fit = cFit.getFit(event.fitID)
+        fit = sFit.getFit(event.fitID)
         newCharID = fit.character.ID if fit is not None else None
         if event.fitID is None:
             self.skillReqsStaticBitmap.SetBitmap(self.cleanSkills)
@@ -166,7 +166,7 @@ class CharacterSelection(wx.Panel):
                 self.skillReqsStaticBitmap.SetBitmap(self.greenSkills)
             else:
                 tip  = "Skills required:\n"
-                condensed = cFit.serviceFittingOptions["compactSkills"]
+                condensed = sFit.serviceFittingOptions["compactSkills"]
                 if condensed:
                     dict = self._buildSkillsTooltipCondensed(reqs, skillsMap = {})
                     for key in sorted(dict):
@@ -177,8 +177,8 @@ class CharacterSelection(wx.Panel):
             self.skillReqsStaticBitmap.SetToolTipString(tip.strip())
 
         if newCharID == None:
-            cChar = service.Character.getInstance()
-            self.selectChar(cChar.all5ID())
+            sChar = service.Character.getInstance()
+            self.selectChar(sChar.all5ID())
 
         elif currCharID != newCharID:
             self.selectChar(newCharID)

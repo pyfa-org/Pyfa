@@ -35,8 +35,8 @@ class Price(ViewColumn):
         if stuff.item is None:
             return ""
 
-        sMarket = service.Market.getInstance()
-        price = sMarket.getPriceNow(stuff.item.ID)
+        sMkt = service.Market.getInstance()
+        price = sMkt.getPriceNow(stuff.item.ID)
         return formatAmount(price.price, 3, 3, 9, currency=True) if price and price.price else False
 
     def delayedText(self, mod, display, colItem):

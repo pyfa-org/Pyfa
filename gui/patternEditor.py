@@ -39,9 +39,9 @@ class DmgPatternEditorDlg (wx.Dialog):
 
         self.headerSizer = headerSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        cDP = service.DamagePattern.getInstance()
+        sDP = service.DamagePattern.getInstance()
 
-        self.choices = cDP.getDamagePatternList()
+        self.choices = sDP.getDamagePatternList()
         # Remove "Selected Ammo" Damage Pattern
         for dp in self.choices:
             if dp.name == "Selected Ammo":
@@ -266,8 +266,8 @@ class DmgPatternEditorDlg (wx.Dialog):
         self.ValuesUpdated()
 
     def newPattern(self,event):
-        cDP = service.DamagePattern.getInstance()
-        p = cDP.newPattern()
+        sDP = service.DamagePattern.getInstance()
+        p = sDP.newPattern()
         self.choices.append(p)
         id = self.ccDmgPattern.Append(p.name)
         self.ccDmgPattern.SetSelection(id)
@@ -308,8 +308,8 @@ class DmgPatternEditorDlg (wx.Dialog):
             self.stPercentages.SetLabel("Invalid name.")
             return
 
-        cDP = service.DamagePattern.getInstance()
-        cDP.renamePattern(p, newName)
+        sDP = service.DamagePattern.getInstance()
+        sDP.renamePattern(p, newName)
 
         self.headerSizer.Replace(self.namePicker, self.ccDmgPattern)
         self.ccDmgPattern.Show()
@@ -328,8 +328,8 @@ class DmgPatternEditorDlg (wx.Dialog):
         self.unrestrict()
 
     def copyPattern(self,event):
-        cDP = service.DamagePattern.getInstance()
-        p = cDP.copyPattern(self.getActivePattern())
+        sDP = service.DamagePattern.getInstance()
+        p = sDP.copyPattern(self.getActivePattern())
         self.choices.append(p)
         id = self.ccDmgPattern.Append(p.name)
         self.ccDmgPattern.SetSelection(id)
@@ -338,9 +338,9 @@ class DmgPatternEditorDlg (wx.Dialog):
         self.patternChanged()
 
     def deletePattern(self,event):
-        cDP = service.DamagePattern.getInstance()
+        sDP = service.DamagePattern.getInstance()
         sel = self.ccDmgPattern.GetSelection()
-        cDP.deletePattern(self.getActivePattern())
+        sDP.deletePattern(self.getActivePattern())
         self.ccDmgPattern.Delete(sel)
         self.ccDmgPattern.SetSelection(max(0, sel - 1))
         del self.choices[sel]

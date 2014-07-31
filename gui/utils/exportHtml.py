@@ -39,7 +39,7 @@ class exportHtmlThread(threading.Thread):
         if self.stopRunning:
             return;
 
-        sMarket = service.Market.getInstance()
+        sMkt = service.Market.getInstance()
         sFit    = service.Fit.getInstance()
         settings = service.settings.HTMLExportSettings.getInstance()
 
@@ -133,13 +133,13 @@ class exportHtmlThread(threading.Thread):
 
 """ % (time.time(), localDate)
         HTML += '  <ul data-role="listview" class="ui-listview-outer" data-inset="true" data-filter="true">\n'
-        categoryList = list(sMarket.getShipRoot())
+        categoryList = list(sMkt.getShipRoot())
         categoryList.sort(key=lambda ship: ship.name)
         for group in categoryList:
             # init market group string to give ships something to attach to
             HTMLgroup = ''
 
-            ships = list(sMarket.getShipList(group.ID))
+            ships = list(sMkt.getShipList(group.ID))
             ships.sort(key=lambda ship: ship.name)
 
             # Keep track of how many ships per group

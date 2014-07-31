@@ -262,8 +262,8 @@ class FittingView(d.Display):
 
         try:
             # Sometimes there is no active page after deletion, hence the try block
-            cFit = service.Fit.getInstance()
-            cFit.refreshFit(self.getActiveFit())
+            sFit = service.Fit.getInstance()
+            sFit.refreshFit(self.getActiveFit())
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.activeFitID))
         except wx._core.PyDeadObjectError:
             pass
@@ -293,8 +293,8 @@ class FittingView(d.Display):
         event.Skip()
 
     def updateTab(self):
-        cFit = service.Fit.getInstance()
-        fit = cFit.getFit(self.getActiveFit())
+        sFit = service.Fit.getInstance()
+        fit = sFit.getFit(self.getActiveFit())
 
         bitmap = bitmapLoader.getImage("race_%s_small" % fit.ship.item.race, "icons")
         text = "%s: %s" % (fit.ship.item.name, fit.name)
@@ -308,18 +308,18 @@ class FittingView(d.Display):
             itemID = event.itemID
             fitID = self.activeFitID
             if fitID != None:
-                cFit = service.Fit.getInstance()
-                if cFit.isAmmo(itemID):
+                sFit = service.Fit.getInstance()
+                if sFit.isAmmo(itemID):
                     modules = []
                     sel = self.GetFirstSelected()
                     while sel != -1 and sel not in self.blanks:
                         modules.append(self.mods[self.GetItemData(sel)])
                         sel = self.GetNextSelected(sel)
 
-                    cFit.setAmmo(fitID, itemID, modules)
+                    sFit.setAmmo(fitID, itemID, modules)
                     wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
                 else:
-                    populate = cFit.appendModule(fitID, itemID)
+                    populate = sFit.appendModule(fitID, itemID)
                     if populate is not None:
                         self.slotsChanged()
                         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
@@ -337,9 +337,9 @@ class FittingView(d.Display):
                     self.click(event)
 
     def removeModule(self, module):
-        cFit = service.Fit.getInstance()
-        fit = cFit.getFit(self.activeFitID)
-        populate = cFit.removeModule(self.activeFitID, fit.modules.index(module))
+        sFit = service.Fit.getInstance()
+        fit = sFit.getFit(self.activeFitID)
+        populate = sFit.removeModule(self.activeFitID, fit.modules.index(module))
 
         if populate is not None:
             self.slotsChanged()
@@ -353,16 +353,16 @@ class FittingView(d.Display):
         if dstRow != -1 and dstRow not in self.blanks:
             module = self.mods[dstRow]
 
-            cFit = service.Fit.getInstance()
-            cFit.moveCargoToModule(self.mainFrame.getActiveFit(), module.position, srcIdx, mstate.CmdDown() and module.isEmpty)
+            sFit = service.Fit.getInstance()
+            sFit.moveCargoToModule(self.mainFrame.getActiveFit(), module.position, srcIdx, mstate.CmdDown() and module.isEmpty)
 
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
 
     def swapItems(self, x, y, srcIdx):
         '''Swap two modules in fitting window'''
         mstate = wx.GetMouseState()
-        cFit = service.Fit.getInstance()
-        fit = cFit.getFit(self.activeFitID)
+        sFit = service.Fit.getInstance()
+        fit = sFit.getFit(self.activeFitID)
 
         if mstate.CmdDown():
             clone = True
@@ -380,9 +380,9 @@ class FittingView(d.Display):
                 return
 
             if clone and mod2.isEmpty:
-                cFit.cloneModule(self.mainFrame.getActiveFit(), mod1.position, mod2.position)
+                sFit.cloneModule(self.mainFrame.getActiveFit(), mod1.position, mod2.position)
             else:
-                cFit.swapModules(self.mainFrame.getActiveFit(), mod1.position, mod2.position)
+                sFit.swapModules(self.mainFrame.getActiveFit(), mod1.position, mod2.position)
 
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
 
@@ -394,8 +394,8 @@ class FittingView(d.Display):
         known to the display, and not the backend, so it's safe.
         '''
 
-        cFit = service.Fit.getInstance()
-        fit = cFit.getFit(self.activeFitID)
+        sFit = service.Fit.getInstance()
+        fit = sFit.getFit(self.activeFitID)
 
         slotOrder = [Slot.SUBSYSTEM, Slot.HIGH, Slot.MED, Slot.LOW, Slot.RIG]
 
@@ -405,9 +405,9 @@ class FittingView(d.Display):
 
             self.blanks = []   # preliminary markers where blanks will be inserted
 
-            if cFit.serviceFittingOptions["rackSlots"]:
+            if sFit.serviceFittingOptions["rackSlots"]:
                 # flag to know when to add blanks, based on previous slot
-                slotDivider = None if cFit.serviceFittingOptions["rackLabels"] else self.mods[0].slot
+                slotDivider = None if sFit.serviceFittingOptions["rackLabels"] else self.mods[0].slot
 
                 # first loop finds where slot dividers must go before modifying self.mods
                 for i, mod in enumerate(self.mods):

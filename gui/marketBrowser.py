@@ -45,7 +45,7 @@ class MarketBrowser(wx.Panel):
         vbox.Add(self.splitter, 1, wx.EXPAND)
 
         # Grab market service instance and create child objects
-        self.sMarket = service.Market.getInstance()
+        self.sMkt = service.Market.getInstance()
         self.searchMode = False
         self.marketView = MarketTree(self.splitter, self)
         self.itemView = ItemView(self.splitter, self)
@@ -61,7 +61,7 @@ class MarketBrowser(wx.Panel):
         p.SetSizer(box)
         vbox.Add(p, 0, wx.EXPAND)
         self.metaButtons = []
-        for name in self.sMarket.META_MAP.keys():
+        for name in self.sMkt.META_MAP.keys():
             btn = wx.ToggleButton(p, wx.ID_ANY, name.capitalize(), style=wx.BU_EXACTFIT)
             setattr(self, name, btn)
             box.Add(btn, 1, wx.ALIGN_CENTER)
@@ -120,11 +120,11 @@ class MarketTree(wx.TreeCtrl):
         self.imageList = CachingImageList(16, 16)
         self.SetImageList(self.imageList)
 
-        self.sMarket = marketBrowser.sMarket
+        self.sMkt = marketBrowser.sMkt
         self.marketBrowser = marketBrowser
 
         # Form market tree root
-        sMkt = self.sMarket
+        sMkt = self.sMkt
         for mktGrp in sMkt.getMarketRoot():
             iconId = self.addImage(sMkt.getIconByMarketGroup(mktGrp))
             childId = self.AppendItem(self.root, mktGrp.name, iconId, data=wx.TreeItemData(mktGrp.ID))
@@ -154,7 +154,7 @@ class MarketTree(wx.TreeCtrl):
             # Delete it
             self.Delete(child)
             # And add real market group contents
-            sMkt = self.sMarket
+            sMkt = self.sMkt
             currentMktGrp = sMkt.getMarketGroup(self.GetPyData(root), eager="children")
             for childMktGrp in sMkt.getMarketGroupChildren(currentMktGrp):
                 # If market should have items but it doesn't, do not show it
@@ -173,7 +173,7 @@ class MarketTree(wx.TreeCtrl):
     def jump(self, item):
         """Open market group and meta tab of given item"""
         self.marketBrowser.searchMode = False
-        sMkt = self.sMarket
+        sMkt = self.sMkt
         mg = sMkt.getMarketGroupByItem(item)
         metaId = sMkt.getMetaGroupIdByItem(item)
 
@@ -212,7 +212,7 @@ class ItemView(d.Display):
         self.unfilteredStore = set()
         self.filteredStore = set()
         self.recentlyUsedModules = set()
-        self.sMarket = marketBrowser.sMarket
+        self.sMkt = marketBrowser.sMkt
         self.searchMode = marketBrowser.searchMode
 
         self.marketBrowser = marketBrowser
@@ -233,8 +233,8 @@ class ItemView(d.Display):
         self.metaMap = self.makeReverseMetaMap()
 
         # Fill up recently used modules set
-        for itemID in self.sMarket.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"]:
-            self.recentlyUsedModules.add(self.sMarket.getItem(itemID))
+        for itemID in self.sMkt.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"]:
+            self.recentlyUsedModules.add(self.sMkt.getItem(itemID))
 
     def startDrag(self, event):
         row = self.GetFirstSelected()
@@ -258,16 +258,16 @@ class ItemView(d.Display):
 
             self.storeRecentlyUsedMarketItem(self.active[sel].ID)
             self.recentlyUsedModules = set()
-            for itemID in self.sMarket.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"]:
-                self.recentlyUsedModules.add(self.sMarket.getItem(itemID))
+            for itemID in self.sMkt.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"]:
+                self.recentlyUsedModules.add(self.sMkt.getItem(itemID))
 
         wx.PostEvent(self.mainFrame, ItemSelected(itemID=self.active[sel].ID))
 
     def storeRecentlyUsedMarketItem(self, itemID):
-        if len(self.sMarket.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"]) > MAX_RECENTLY_USED_MODULES:
-            self.sMarket.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"].pop(0)
+        if len(self.sMkt.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"]) > MAX_RECENTLY_USED_MODULES:
+            self.sMkt.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"].pop(0)
 
-        self.sMarket.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"].append(itemID)
+        self.sMkt.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"].append(itemID)
 
     def selectionMade(self, event=None, forcedMetaSelect=None):
         self.marketBrowser.searchMode = False
@@ -280,7 +280,7 @@ class ItemView(d.Display):
                 # If market group treeview item doesn't have children (other market groups or dummies),
                 # then it should have items in it and we want to request them
                 if self.marketView.ItemHasChildren(sel) is False:
-                    sMkt = self.sMarket
+                    sMkt = self.sMkt
                     # Get current market group
                     mg = sMkt.getMarketGroup(seldata, eager=("items", "items.metaGroup"))
                     # Get all its items
@@ -311,7 +311,7 @@ class ItemView(d.Display):
         self.unfilteredStore = items
 
     def filterItemStore(self):
-        sMkt = self.sMarket
+        sMkt = self.sMkt
         selectedMetas = set()
         for btn in self.marketBrowser.metaButtons:
             if btn.GetValue():
@@ -321,7 +321,7 @@ class ItemView(d.Display):
 
     def setToggles(self, forcedMetaSelect=None):
         metaIDs = set()
-        sMkt = self.sMarket
+        sMkt = self.sMkt
         for item in self.unfilteredStore:
             metaIDs.add(sMkt.getMetaGroupIdByItem(item))
         anySelection = False
@@ -361,7 +361,7 @@ class ItemView(d.Display):
             return
 
         self.marketBrowser.searchMode = True
-        self.sMarket.searchItems(search, self.populateSearch)
+        self.sMkt.searchItems(search, self.populateSearch)
 
     def clearSearch(self, event=None):
         # Wipe item store and update everything to accomodate with it
@@ -384,7 +384,7 @@ class ItemView(d.Display):
         self.filterItemStore()
 
     def itemSort(self, item):
-        sMkt = self.sMarket
+        sMkt = self.sMkt
         catname = sMkt.getCategoryByItem(item).name
         try:
             mktgrpid = sMkt.getMarketGroupByItem(item).ID
@@ -406,7 +406,7 @@ class ItemView(d.Display):
 
         item = self.active[sel]
 
-        sMkt = self.sMarket
+        sMkt = self.sMkt
         sourceContext = "marketItemGroup" if self.marketBrowser.searchMode is False else "marketItemMisc"
         itemContext = sMkt.getCategoryByItem(item).name
 
@@ -418,7 +418,7 @@ class ItemView(d.Display):
             # Get dictionary with meta level attribute
             sAttr = service.Attribute.getInstance()
             attrs = sAttr.getAttributeInfo("metaLevel")
-            sMkt = self.sMarket
+            sMkt = self.sMkt
             self.metalvls = sMkt.directAttrRequest(items, attrs)
             # Clear selection
             self.deselectItems()
@@ -434,7 +434,7 @@ class ItemView(d.Display):
             # Get dictionary with meta level attribute
             sAttr = service.Attribute.getInstance()
             attrs = sAttr.getAttributeInfo("metaLevel")
-            sMkt = self.sMarket
+            sMkt = self.sMkt
             self.metalvls = sMkt.directAttrRequest(items, attrs)
             # Re-sort stuff
             items.sort(key=self.itemSort)
@@ -446,7 +446,7 @@ class ItemView(d.Display):
         """
         revmap = {}
         i = 0
-        for mgids in self.sMarket.META_MAP.itervalues():
+        for mgids in self.sMkt.META_MAP.itervalues():
             for mgid in mgids:
                 revmap[mgid] = i
             i += 1

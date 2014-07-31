@@ -27,11 +27,11 @@ class PropertyDisplay(ViewColumn):
     name = "prop"
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
-        cAttribute = service.Attribute.getInstance()
+        sAttr = service.Attribute.getInstance()
         attributeSlave = params["attributeSlave"] or params["property"]
         # This function can throw an exception if the database isn't sane
         # We need to do a sanity check before this runs
-        info = cAttribute.getAttributeInfo(attributeSlave)
+        info = sAttr.getAttributeInfo(attributeSlave)
 
         self.mask = 0
         self.propertyName = params["property"]
