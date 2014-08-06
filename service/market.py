@@ -268,7 +268,8 @@ class Market():
             "QA Remote Armor Repair System - 5 Players": False,
             "QA Shield Transporter - 5 Players": False,
             "Goru's Shuttle": False,
-            "Guristas Shuttle": False}
+            "Guristas Shuttle": False,
+            "Mobile Decoy Unit": False}  # Seems to be left over test mod for deployables
 
         # do not publish anything that we convert
         for name in self.ITEMS_OVERRIDE:
@@ -340,13 +341,14 @@ class Market():
                                      ("faction", frozenset((4, 3))),
                                      ("complex", frozenset((6,))),
                                      ("officer", frozenset((5,)))])
-        self.SEARCH_CATEGORIES = ("Drone", "Module", "Subsystem", "Charge", "Implant")
+        self.SEARCH_CATEGORIES = ("Drone", "Module", "Subsystem", "Charge", "Implant", "Deployable")
         self.ROOT_MARKET_GROUPS = (9,     # Modules
                                    1111,  # Rigs
                                    157,   # Drones
                                    11,    # Ammo
                                    1112,  # Subsystems
-                                   24)    # Implants & Boosters
+                                   24,    # Implants & Boosters
+                                   404)   # Deployables
         # Tell other threads that Market is at their service
         mktRdy.set()
 
