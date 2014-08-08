@@ -43,7 +43,8 @@ class CargoViewDrop(wx.PyDropTarget):
 class CargoView(d.Display):
     DEFAULT_COLS = ["Base Icon",
                     "Base Name",
-                    "attr:volume"]
+                    "attr:volume",
+                    "Price"]
 
     def __init__(self, parent):
         d.Display.__init__(self, parent, style=wx.LC_SINGLE_SEL | wx.BORDER_NONE)

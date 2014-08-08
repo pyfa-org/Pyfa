@@ -20,6 +20,7 @@
 from gui.viewColumn import ViewColumn
 from gui import bitmapLoader
 from gui.utils.numberFormatter import formatAmount
+from eos.types import Drone, Cargo
 import wx
 import service
 
@@ -37,7 +38,16 @@ class Price(ViewColumn):
 
         sMkt = service.Market.getInstance()
         price = sMkt.getPriceNow(stuff.item.ID)
-        return formatAmount(price.price, 3, 3, 9, currency=True) if price and price.price else False
+
+        if not price or not price.price:
+            return False
+
+        price = price.price  # Set new price variable with what we need
+
+        if isinstance(stuff, Drone) or isinstance(stuff, Cargo):
+           price *= stuff.amount
+
+        return formatAmount(price, 3, 3, 9, currency=True)
 
     def delayedText(self, mod, display, colItem):
         def callback(requests):

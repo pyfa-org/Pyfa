@@ -41,12 +41,13 @@ class DroneViewDrop(wx.PyDropTarget):
 
 class DroneView(d.Display):
     DEFAULT_COLS = ["State",
-                    "Base Icon",
+                    #"Base Icon",
                     "Base Name",
-                    "prop:droneDps,droneBandwidth",
+                    # "prop:droneDps,droneBandwidth",
                     "Max Range",
                     "Miscellanea",
-                    "attr:maxVelocity",]
+                    "attr:maxVelocity",
+                    "Price",]
 
     def __init__(self, parent):
         d.Display.__init__(self, parent, style=wx.LC_SINGLE_SEL | wx.BORDER_NONE)
