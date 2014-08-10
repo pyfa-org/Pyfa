@@ -333,6 +333,10 @@ class NavigationPanel(SFItem.SFBrowserItem):
         self.resetBmpH = bitmapLoader.getBitmap("freset_small","icons")
         self.switchBmpH = bitmapLoader.getBitmap("fit_switch_view_mode_small","icons")
 
+        switchImg = bitmapLoader.getImage("fit_switch_view_mode_small","icons")
+        switchImg = switchImg.AdjustChannels(1,1,1,0.4)
+        self.switchBmpD = wx.BitmapFromImage(switchImg)
+
         self.resetBmp = self.AdjustChannels(self.resetBmpH)
         self.rewBmp = self.AdjustChannels(self.rewBmpH)
         self.searchBmp = self.AdjustChannels(self.searchBmpH)
@@ -342,7 +346,7 @@ class NavigationPanel(SFItem.SFBrowserItem):
         self.toolbar.AddButton(self.resetBmp, "Ship groups", clickCallback = self.OnHistoryReset, hoverBitmap = self.resetBmpH)
         self.toolbar.AddButton(self.rewBmp, "Back", clickCallback = self.OnHistoryBack, hoverBitmap = self.rewBmpH)
         self.btnNew = self.toolbar.AddButton(self.newBmp, "New fitting", clickCallback = self.OnNewFitting, hoverBitmap = self.newBmpH, show = False)
-        self.btnSwitch = self.toolbar.AddButton(self.switchBmp, "Hide empty ship groups", clickCallback  = self.ToggleEmptyGroupsView, hoverBitmap = self.switchBmpH, show = False)
+        self.btnSwitch = self.toolbar.AddButton(self.switchBmpD, "Hide empty ship groups", clickCallback  = self.ToggleEmptyGroupsView, hoverBitmap = self.switchBmpH, show = False)
         self.toolbar.AddButton(self.searchBmp, "Search fittings", clickCallback = self.ToggleSearchBox, hoverBitmap = self.searchBmpH)
 
         self.padding = 4
@@ -414,9 +418,11 @@ class NavigationPanel(SFItem.SFBrowserItem):
         if self.shipBrowser.filterShipsWithNoFits:
             self.shipBrowser.filterShipsWithNoFits = False
             self.btnSwitch.label = "Hide empty ship groups"
+            self.btnSwitch.normalBmp = self.switchBmpD
         else:
             self.shipBrowser.filterShipsWithNoFits = True
             self.btnSwitch.label = "Show empty ship groups"
+            self.btnSwitch.normalBmp = self.switchBmp
 
         stage = self.shipBrowser.GetActiveStage()
 
