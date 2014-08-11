@@ -13,10 +13,10 @@ debug = False
 saveInRoot = False
 
 # Version data
-version = "1.3.1"
+version = "1.4.0"
 tag = "git"
-expansionName = "Crius"
-expansionVersion = "1.0"
+expansionName = "Singularity"
+expansionVersion = "816656"
 evemonMinVersion = "4081"
 
 pyfaPath = None
