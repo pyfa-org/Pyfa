@@ -1,5 +1,5 @@
 # Used by:
-# Ships from group: Interceptor (8 of 8)
+# Ships from group: Interceptor (9 of 9)
 # Ship: Atron
 # Ship: Condor
 # Ship: Executioner

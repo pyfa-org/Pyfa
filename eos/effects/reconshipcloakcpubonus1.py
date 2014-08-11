@@ -1,5 +1,5 @@
 # Used by:
-# Ships from group: Force Recon Ship (5 of 5)
+# Ships from group: Force Recon Ship (6 of 6)
 type = "passive"
 runTime = "early"
 def handler(fit, ship, context):

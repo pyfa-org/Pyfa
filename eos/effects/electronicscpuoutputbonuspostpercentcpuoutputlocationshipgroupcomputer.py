@@ -1,5 +1,5 @@
 # Used by:
-# Implants named like: Zainou 'Gypsy' Electronics EE (6 of 6)
+# Implants named like: Zainou 'Gypsy' CPU Management EE (6 of 6)
 # Modules named like: Processor Overclocking Unit (8 of 8)
 # Implant: Genolution Core Augmentation CA-2
 # Skill: CPU Management

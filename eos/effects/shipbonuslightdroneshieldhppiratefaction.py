@@ -1,4 +1,5 @@
 # Used by:
+# Ship: Whiptail
 # Ship: Worm
 type = "passive"
 def handler(fit, ship, context):

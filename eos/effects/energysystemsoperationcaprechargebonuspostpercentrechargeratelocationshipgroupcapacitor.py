@@ -1,5 +1,5 @@
 # Used by:
-# Implants named like: Inherent Implants 'Squire' Energy Systems Operation EO (6 of 6)
+# Implants named like: Inherent Implants 'Squire' Capacitor Systems Operation EO (6 of 6)
 # Modules named like: Capacitor Control Circuit (8 of 8)
 # Implant: Genolution Core Augmentation CA-2
 # Skill: Capacitor Systems Operation

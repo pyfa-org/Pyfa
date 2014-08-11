@@ -1,4 +1,5 @@
 # Used by:
+# Ship: Chameleon
 # Ship: Gila
 type = "passive"
 def handler(fit, ship, context):

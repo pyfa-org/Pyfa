@@ -1,4 +1,5 @@
 # Used by:
+# Ship: Chameleon
 # Ship: Falcon
 # Ship: Rook
 type = "passive"

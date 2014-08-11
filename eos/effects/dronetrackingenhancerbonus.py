@@ -1,5 +1,5 @@
 # Used by:
-# Variations of module: Omnidirectional Tracking Enhancer I (9 of 9)
+# Modules from group: Drone Tracking Enhancer (9 of 9)
 type = "passive"
 def handler(fit, module, context):
     fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill("Drones"),
