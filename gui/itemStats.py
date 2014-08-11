@@ -67,7 +67,7 @@ class ItemStatsDialog(wx.Dialog):
             if itemImg is not None:
                 self.SetIcon(wx.IconFromBitmap(itemImg))
         self.SetTitle("%s: %s" % ("%s Stats" % itmContext if itmContext is not None else "Stats", item.name))
-
+        
         self.SetMinSize((300, 200))
         self.SetSize((500, 300))
         self.SetMaxSize((500, -1))
@@ -293,7 +293,7 @@ class ItemParams (wx.Panel):
         bSizer.Add( self.toggleViewBtn, 0, wx.ALIGN_CENTER_VERTICAL)
 
         if stuff is not None:
-            self.refreshBtn = wx.Button( self, wx.ID_ANY, u"Refresh", wx.DefaultPosition, wx.DefaultSize, 0 )
+            self.refreshBtn = wx.Button( self, wx.ID_ANY, u"Refresh", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT )
             bSizer.Add( self.refreshBtn, 0, wx.ALIGN_CENTER_VERTICAL)
             self.refreshBtn.Bind( wx.EVT_BUTTON, self.RefreshValues )
 
@@ -487,11 +487,11 @@ class ItemEffects (wx.Panel):
         self.effectList.InsertColumn(0,"Name")
         self.effectList.InsertColumn(1,"Implemented")
 
-        self.effectList.SetColumnWidth(0,385)
+        #self.effectList.SetColumnWidth(0,385)
 
         self.effectList.setResizeColumn(0)
 
-        self.effectList.SetColumnWidth(1,80)
+        self.effectList.SetColumnWidth(1,100)
 
         effects = item.effects
         names = list(effects.iterkeys())
@@ -536,14 +536,14 @@ class ItemAffectedBy (wx.Panel):
         mainSizer.Add( self.m_staticline, 0, wx.EXPAND)
         bSizer = wx.BoxSizer( wx.HORIZONTAL )
 
-        self.toggleExpandBtn = wx.ToggleButton( self, wx.ID_ANY, u"Expand / Collapse", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.toggleExpandBtn = wx.ToggleButton( self, wx.ID_ANY, u"Expand All", wx.DefaultPosition, wx.DefaultSize, 0 )
         bSizer.Add( self.toggleExpandBtn, 0, wx.ALIGN_CENTER_VERTICAL)
 
         self.toggleViewBtn = wx.ToggleButton( self, wx.ID_ANY, u"Toggle view mode", wx.DefaultPosition, wx.DefaultSize, 0 )
         bSizer.Add( self.toggleViewBtn, 0, wx.ALIGN_CENTER_VERTICAL)
 
         if stuff is not None:
-            self.refreshBtn = wx.Button( self, wx.ID_ANY, u"Refresh", wx.DefaultPosition, wx.DefaultSize, 0 )
+            self.refreshBtn = wx.Button( self, wx.ID_ANY, u"Refresh", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT )
             bSizer.Add( self.refreshBtn, 0, wx.ALIGN_CENTER_VERTICAL)
             self.refreshBtn.Bind( wx.EVT_BUTTON, self.RefreshTree )
 
