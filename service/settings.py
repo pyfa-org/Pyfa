@@ -111,13 +111,12 @@ class Settings():
         return self.info.items()
 
 
-
-class ProxySettings():
+class NetworkSettings():
     _instance = None
     @classmethod
     def getInstance(cls):
         if cls._instance == None:
-            cls._instance = ProxySettings()
+            cls._instance = NetworkSettings()
 
         return cls._instance
 
@@ -127,33 +126,39 @@ class ProxySettings():
         # 0 - No proxy
         # 1 - Auto-detected proxy settings
         # 2 - Manual proxy settings
-        serviceProxyDefaultSettings = {"mode": 1, "type": "https", "address": "", "port": ""}
+        serviceNetworkDefaultSettings = {"mode": 1, "type": "https", "address": "", "port": "", "access": 15}
 
-        self.serviceProxySettings = SettingsProvider.getInstance().getSettings("pyfaServiceProxySettings", serviceProxyDefaultSettings)
+        self.serviceNetworkSettings = SettingsProvider.getInstance().getSettings("pyfaServiceNetworkSettings", serviceNetworkDefaultSettings)
 
     def getMode(self):
-        return self.serviceProxySettings["mode"]
+        return self.serviceNetworkSettings["mode"]
 
     def getAddress(self):
-        return self.serviceProxySettings["address"]
+        return self.serviceNetworkSettings["address"]
 
     def getPort(self):
-        return self.serviceProxySettings["port"]
+        return self.serviceNetworkSettings["port"]
 
     def getType(self):
-        return self.serviceProxySettings["type"]
+        return self.serviceNetworkSettings["type"]
+
+    def getAccess(self):
+        return self.serviceNetworkSettings["access"]
 
     def setMode(self, mode):
-        self.serviceProxySettings["mode"] = mode
+        self.serviceNetworkSettings["mode"] = mode
 
     def setAddress(self, addr):
-        self.serviceProxySettings["address"] = addr
+        self.serviceNetworkSettings["address"] = addr
 
     def setPort(self, port):
-        self.serviceProxySettings["port"] = port
+        self.serviceNetworkSettings["port"] = port
 
     def setType(self, type):
-        self.serviceProxySettings["type"] = type
+        self.serviceNetworkSettings["type"] = type
+
+    def setAccess(self, access):
+        self.serviceNetworkSettings["access"] = access
 
     def autodetect(self):
 

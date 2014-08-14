@@ -1,5 +1,5 @@
 #===============================================================================
-# Copyright (C) 2010 Diego Duclos
+# Copyright (C) 2014 Ryan Holmes
 #
 # This file is part of pyfa.
 #
@@ -29,16 +29,19 @@ class CheckUpdateThread(threading.Thread):
         threading.Thread.__init__(self)
         self.callback = callback
         self.settings = service.settings.UpdateSettings.getInstance()
+        self.network = service.Network.getInstance()
 
     def run(self):
         # Suppress all
         if (self.settings.get('all')):
             return
 
+        network = service.Network.getInstance()
+
         try:
             # @todo: use proxy settings?
-            response = urllib2.urlopen('https://api.github.com/repos/DarkFenX/Pyfa/releases')
-            jsonResponse = json.loads(response.read());
+            response = network.request('https://api.github.com/repos/DarkFenX/Pyfa/releases', network.UPDATE)
+            jsonResponse = json.loads(response.read())
 
             for release in jsonResponse:
                 # Suppress pre releases
@@ -69,7 +72,7 @@ class CheckUpdateThread(threading.Thread):
                 else:
                     if release['prerelease'] and rVersion > config.expansionVersion:
                         wx.CallAfter(self.callback, release) # Singularity -> Singularity
-                break;
+                break
         except: # for when there is no internet connection
             pass
 

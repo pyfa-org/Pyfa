@@ -1,28 +1,24 @@
 import wx
-import service
-import urllib2
 
 from gui.preferenceView import PreferenceView
 from gui import bitmapLoader
 
 import gui.mainFrame
 import service
-import gui.globalEvents as GE
 
-
-class PFProxyPref ( PreferenceView):
-    title = "Proxy"
+class PFNetworkPref ( PreferenceView):
+    title = "Network"
 
     def populatePanel( self, panel ):
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.proxySettings = service.settings.ProxySettings.getInstance()
+        self.networkSettings = service.settings.NetworkSettings.getInstance()
         self.dirtySettings = False
 
-        self.nMode = self.proxySettings.getMode()
-        self.nAddr = self.proxySettings.getAddress()
-        self.nPort = self.proxySettings.getPort()
-        self.nType = self.proxySettings.getType()
+        self.nMode = self.networkSettings.getMode()
+        self.nAddr = self.networkSettings.getAddress()
+        self.nPort = self.networkSettings.getPort()
+        self.nType = self.networkSettings.getType()
 
         mainSizer = wx.BoxSizer( wx.VERTICAL )
 
@@ -89,7 +85,7 @@ class PFProxyPref ( PreferenceView):
 
         mainSizer.Add(btnSizer, 0, wx.EXPAND,5)
 
-        proxy = self.proxySettings.autodetect()
+        proxy = self.networkSettings.autodetect()
 
         if proxy is not None:
             addr,port  =  proxy
@@ -133,10 +129,10 @@ class PFProxyPref ( PreferenceView):
         self.SaveSettings()
 
     def SaveSettings(self):
-        self.proxySettings.setMode(self.nMode)
-        self.proxySettings.setAddress(self.nAddr)
-        self.proxySettings.setPort(self.nPort)
-        self.proxySettings.setType(self.nType)
+        self.networkSettings.setMode(self.nMode)
+        self.networkSettings.setAddress(self.nAddr)
+        self.networkSettings.setPort(self.nPort)
+        self.networkSettings.setType(self.nType)
 
     def UpdateApplyButtonState(self):
         if self.dirtySettings:
@@ -172,4 +168,4 @@ class PFProxyPref ( PreferenceView):
     def getImage(self):
         return bitmapLoader.getBitmap("prefs_proxy", "icons")
 
-PFProxyPref.register()
+PFNetworkPref.register()
