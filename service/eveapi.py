@@ -1,7 +1,7 @@
 #-----------------------------------------------------------------------------
 # eveapi - EVE Online API access
 #
-# Copyright (c)2007 Jamie "Entity" van den Berge <entity@vapor.com>
+# Copyright (c)2007-2014 Jamie "Entity" van den Berge <jamie@hlekkir.com>
 #
 # Permission is hereby granted, free of charge, to any person
 # obtaining a copy of this software and associated documentation
@@ -25,8 +25,47 @@
 # OTHER DEALINGS IN THE SOFTWARE
 #
 #-----------------------------------------------------------------------------
-# Version: 1.1.9-2 - 30 September 2011
-# - merge workaround provided by Entity to make it work with http proxies
+#
+# Version: 1.3.0 - 27 May 2014
+# - Added set_user_agent() module-level function to set the User-Agent header
+#   to be used for any requests by the library. If this function is not used,
+#   a warning will be thrown for every API request.
+#
+# Version: 1.2.9 - 14 September 2013
+# - Updated error handling: Raise an AuthenticationError in case
+#    the API returns HTTP Status Code 403 - Forbidden
+#
+# Version: 1.2.8 - 9 August 2013
+# - the XML value cast function (_autocast) can now be changed globally to a
+#   custom one using the set_cast_func(func) module-level function.
+#
+# Version: 1.2.7 - 3 September 2012
+# - Added get() method to Row object.
+#
+# Version: 1.2.6 - 29 August 2012
+# - Added finer error handling + added setup.py to allow distributing eveapi
+#   through pypi.
+#
+# Version: 1.2.5 - 1 August 2012
+# - Row objects now have __hasattr__ and __contains__ methods
+#
+# Version: 1.2.4 - 12 April 2012
+# - API version of XML response now available as _meta.version
+#
+# Version: 1.2.3 - 10 April 2012
+# - fix for tags of the form <tag attr=bla ... />
+#
+# Version: 1.2.2 - 27 February 2012
+# - fix for the workaround in 1.2.1.
+#
+# Version: 1.2.1 - 23 February 2012
+# - added workaround for row tags missing attributes that were defined
+#   in their rowset (this should fix ContractItems)
+#
+# Version: 1.2.0 - 18 February 2012
+# - fix handling of empty XML tags.
+# - improved proxy support a bit.
+#
 # Version: 1.1.9 - 2 September 2011
 # - added workaround for row tags with attributes that were not defined
 #   in their rowset (this should fix AssetList)
@@ -112,22 +151,53 @@ import httplib
 import urlparse
 import urllib
 import copy
+import warnings
 
 from xml.parsers import expat
 from time import strptime
 from calendar import timegm
 
 proxy = None
+proxySSL = False
+
+_default_useragent = "eveapi.py/1.3"
+_useragent = None  # use set_user_agent() to set this.
 
 #-----------------------------------------------------------------------------
+
+def set_cast_func(func):
+    """Sets an alternative value casting function for the XML parser.
+    The function must have 2 arguments; key and value. It should return a
+    value or object of the type appropriate for the given attribute name/key.
+    func may be None and will cause the default _autocast function to be used.
+    """
+    global _castfunc
+    _castfunc = _autocast if func is None else func
+
+def set_user_agent(user_agent_string):
+    """Sets a User-Agent for any requests sent by the library."""
+    global _useragent
+    _useragent = user_agent_string
+
 
 class Error(StandardError):
     def __init__(self, code, message):
         self.code = code
         self.args = (message.rstrip("."),)
+    def __unicode__(self):
+        return u'%s [code=%s]' % (self.args[0], self.code)
+
+class RequestError(Error):
+    pass
+
+class AuthenticationError(Error):
+    pass
+
+class ServerError(Error):
+    pass
 
 
-def EVEAPIConnection(url="api.eveonline.com", cacheHandler=None, proxy=None):
+def EVEAPIConnection(url="api.eveonline.com", cacheHandler=None, proxy=None, proxySSL=False):
     # Creates an API object through which you can call remote functions.
     #
     # The following optional arguments may be provided:
@@ -136,6 +206,8 @@ def EVEAPIConnection(url="api.eveonline.com", cacheHandler=None, proxy=None):
     #
     # proxy - (host,port) specifying a proxy server through which to request
     #         the API pages. Specifying a proxy overrides default proxy.
+    #
+    # proxySSL - True if the proxy requires SSL, False otherwise.
     #
     # cacheHandler - an object which must support the following interface:
     #
@@ -173,6 +245,7 @@ def EVEAPIConnection(url="api.eveonline.com", cacheHandler=None, proxy=None):
     ctx._scheme = p.scheme
     ctx._host = p.netloc
     ctx._proxy = proxy or globals()["proxy"]
+    ctx._proxySSL = proxySSL or globals()["proxySSL"]
     return ctx
 
 
@@ -197,7 +270,14 @@ def _ParseXML(response, fromContext, storeFunc):
 
     error = getattr(obj, "error", False)
     if error:
-        raise Error(error.code, error.data)
+        if error.code >= 500:
+            raise ServerError(error.code, error.data)
+        elif error.code >= 200:
+            raise AuthenticationError(error.code, error.data)
+        elif error.code >= 100:
+            raise RequestError(error.code, error.data)
+        else:
+            raise Error(error.code, error.data)
 
     result = getattr(obj, "result", False)
     if not result:
@@ -304,36 +384,35 @@ class _RootContext(_Context):
             response = None
 
         if response is None:
-            if self._scheme == "https":
-                connectionclass = httplib.HTTPSConnection
-            else:
-                connectionclass = httplib.HTTPConnection
+            if not _useragent:
+                warnings.warn("No User-Agent set! Please use the set_user_agent() module-level function before accessing the EVE API.", stacklevel=3)
 
             if self._proxy is None:
+                req = path
                 if self._scheme == "https":
-                    connectionclass = httplib.HTTPSConnection
+                    conn = httplib.HTTPSConnection(self._host)
                 else:
-                    connectionclass = httplib.HTTPConnection
-
-                http = connectionclass(self._host)
-                if kw:
-                    http.request("POST", path, urllib.urlencode(kw), {"Content-type": "application/x-www-form-urlencoded"})
-                else:
-                    http.request("GET", path)
+                    conn = httplib.HTTPConnection(self._host)
             else:
-                connectionclass = httplib.HTTPConnection
-                http = connectionclass(*self._proxy)
-                if kw:
-                    http.request("POST", self._scheme+'://'+self._host+path, urllib.urlencode(kw), {"Content-type": "application/x-www-form-urlencoded"})
+                req = self._scheme+'://'+self._host+path
+                if self._proxySSL:
+                    conn = httplib.HTTPSConnection(*self._proxy)
                 else:
-                    http.request("GET", self._scheme+'://'+self._host+path)
+                    conn = httplib.HTTPConnection(*self._proxy)
 
-            response = http.getresponse()
+            if kw:
+                conn.request("POST", req, urllib.urlencode(kw), {"Content-type": "application/x-www-form-urlencoded", "User-Agent": _useragent or _default_useragent})
+            else:
+                conn.request("GET", req, "", {"User-Agent": _useragent or _default_useragent})
+
+            response = conn.getresponse()
             if response.status != 200:
                 if response.status == httplib.NOT_FOUND:
                     raise AttributeError("'%s' not available on API server (404 Not Found)" % path)
+                elif response.status == httplib.FORBIDDEN:
+                    raise AuthenticationError(response.status, 'HTTP 403 - Forbidden')
                 else:
-                    raise RuntimeError("'%s' request failed (%d %s)" % (path, response.status, response.reason))
+                    raise ServerError(response.status, "'%s' request failed (%s)" % (path, response.reason))
 
             if cache:
                 store = True
@@ -348,7 +427,7 @@ class _RootContext(_Context):
             # implementor is handling fallbacks...
             try:
                 return _ParseXML(response, True, store and (lambda obj: cache.store(self._host, path, kw, response, obj)))
-            except Error, reason:
+            except Error, e:
                 response = retrieve_fallback(self._host, path, kw, reason=e)
                 if response is not None:
                     return response
@@ -386,6 +465,7 @@ def _autocast(key, value):
     # couldn't cast. return string unchanged.
     return value
 
+_castfunc = _autocast
 
 
 class _Parser(object):
@@ -460,20 +540,42 @@ class _Parser(object):
             # really assume the rest of the xml is going to be what we expect.
             if name != "eveapi":
                 raise RuntimeError("Invalid API response")
+            try:
+                this.version = attributes[attributes.index("version")+1]
+            except KeyError:
+                raise RuntimeError("Invalid API response")
             self.root = this
 
         if isinstance(self.container, Rowset) and (self.container.__catch == this._name):
             # <hack>
-            # - check for missing columns attribute (see above)
+            # - check for missing columns attribute (see above).
+            # - check for missing row attributes.
             # - check for extra attributes that were not defined in the rowset,
             #   such as rawQuantity in the assets lists.
             # In either case the tag is assumed to be correct and the rowset's
-            # columns are overwritten with the tag's version.
-            if not self.container._cols or (len(attributes)/2 > len(self.container._cols)):
-                self.container._cols = attributes[0::2]
+            # columns are overwritten with the tag's version, if required.
+            numAttr = len(attributes)/2
+            numCols = len(self.container._cols)
+            if numAttr < numCols and (attributes[-2] == self.container._cols[-1]):
+                # the row data is missing attributes that were defined in the rowset.
+                # missing attributes' values will be set to None.
+                fixed = []
+                row_idx = 0; hdr_idx = 0; numAttr*=2
+                for col in self.container._cols:
+                    if col == attributes[row_idx]:
+                        fixed.append(_castfunc(col, attributes[row_idx+1]))
+                        row_idx += 2
+                    else:
+                        fixed.append(None)
+                    hdr_idx += 1
+                self.container.append(fixed)
+            else:
+                if not self.container._cols or (numAttr > numCols):
+                    # the row data contains more attributes than were defined.
+                    self.container._cols = attributes[0::2]
+                self.container.append([_castfunc(attributes[i], attributes[i+1]) for i in xrange(0, len(attributes), 2)])
             # </hack>
 
-            self.container.append([_autocast(attributes[i], attributes[i+1]) for i in xrange(0, len(attributes), 2)])
             this._isrow = True
             this._attributes = this._attributes2 = None
         else:
@@ -481,10 +583,11 @@ class _Parser(object):
             this._attributes = attributes
             this._attributes2 = []
 
-        self.container = this
-
+        self.container = self._last = this
+        self.has_cdata = False
 
     def tag_cdata(self, data):
+        self.has_cdata = True
         if self._cdata:
             # unset cdata flag to indicate it's been handled.
             self._cdata = False
@@ -493,7 +596,7 @@ class _Parser(object):
                 return
 
         this = self.container
-        data = _autocast(this._name, data)
+        data = _castfunc(this._name, data)
 
         if this._isrow:
             # sigh. anonymous data inside rows makes Entity cry.
@@ -518,6 +621,7 @@ class _Parser(object):
 
     def tag_end(self, name):
         this = self.container
+
         if this is self.root:
             del this._attributes
             #this.__dict__.pop("_attributes", None)
@@ -553,13 +657,26 @@ class _Parser(object):
             # really happen, but it doesn't hurt to handle this case!
             sibling = getattr(self.container, this._name, None)
             if sibling is None:
-                self.container._attributes2.append(this._name)
-                setattr(self.container, this._name, this)
+                if (not self.has_cdata) and (self._last is this) and (name != "rowset"):
+                    if attributes:
+                        # tag of the form <tag attribute=bla ... />
+                        e = Element()
+                        e._name = this._name
+                        setattr(self.container, this._name, e)
+                        for i in xrange(0, len(attributes), 2):
+                            setattr(e, attributes[i], attributes[i+1])
+                    else:
+                        # tag of the form: <tag />, treat as empty string.
+                        setattr(self.container, this._name, "")
+                else:
+                    self.container._attributes2.append(this._name)
+                    setattr(self.container, this._name, this)
+
             # Note: there aren't supposed to be any NON-rowset tags containing
             # multiples of some tag or attribute. Code below handles this case.
             elif isinstance(sibling, Rowset):
                 # its doppelganger is a rowset, append this as a row to that.
-                row = [_autocast(attributes[i], attributes[i+1]) for i in xrange(0, len(attributes), 2)]
+                row = [_castfunc(attributes[i], attributes[i+1]) for i in xrange(0, len(attributes), 2)]
                 row.extend([getattr(this, col) for col in attributes2])
                 sibling.append(row)
             elif isinstance(sibling, Element):
@@ -568,7 +685,7 @@ class _Parser(object):
                 # into a Rowset, adding the sibling element and this one.
                 rs = Rowset()
                 rs.__catch = rs._name = this._name
-                row = [_autocast(attributes[i], attributes[i+1]) for i in xrange(0, len(attributes), 2)]+[getattr(this, col) for col in attributes2]
+                row = [_castfunc(attributes[i], attributes[i+1]) for i in xrange(0, len(attributes), 2)]+[getattr(this, col) for col in attributes2]
                 rs.append(row)
                 row = [getattr(sibling, attributes[i]) for i in xrange(0, len(attributes), 2)]+[getattr(sibling, col) for col in attributes2]
                 rs.append(row)
@@ -581,7 +698,7 @@ class _Parser(object):
 
         # Now fix up the attributes and be done with it.
         for i in xrange(0, len(attributes), 2):
-            this.__dict__[attributes[i]] = _autocast(attributes[i], attributes[i+1])
+            this.__dict__[attributes[i]] = _castfunc(attributes[i], attributes[i+1])
 
         return
 
@@ -629,6 +746,18 @@ class Row(object):
         if type(other) != type(self):
             raise TypeError("Incompatible comparison type")
         return cmp(self._cols, other._cols) or cmp(self._row, other._row)
+
+    def __hasattr__(self, this):
+        if this in self._cols:
+            return self._cols.index(this) < len(self._row)
+        return False
+
+    __contains__ = __hasattr__
+
+    def get(self, this, default=None):
+        if (this in self._cols) and (self._cols.index(this) < len(self._row)):
+            return self._row[self._cols.index(this)]
+        return default
 
     def __getattr__(self, this):
         try:
