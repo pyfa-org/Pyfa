@@ -147,15 +147,26 @@
 #
 #-----------------------------------------------------------------------------
 
-import httplib
+
+#-----------------------------------------------------------------------------
+# This eveapi has been modified for pyfa.
+#
+# Specifically, the entire network request/response has been substituted for
+# pyfa's own implementation in service.network
+#
+# Additionally, various other parts have been changed to support urllib2
+# responses instead of httplib
+#-----------------------------------------------------------------------------
+
+
 import urlparse
-import urllib
 import copy
-import warnings
 
 from xml.parsers import expat
 from time import strptime
 from calendar import timegm
+
+import service
 
 proxy = None
 proxySSL = False
@@ -384,35 +395,11 @@ class _RootContext(_Context):
             response = None
 
         if response is None:
-            if not _useragent:
-                warnings.warn("No User-Agent set! Please use the set_user_agent() module-level function before accessing the EVE API.", stacklevel=3)
+            network = service.Network.getInstance()
 
-            if self._proxy is None:
-                req = path
-                if self._scheme == "https":
-                    conn = httplib.HTTPSConnection(self._host)
-                else:
-                    conn = httplib.HTTPConnection(self._host)
-            else:
-                req = self._scheme+'://'+self._host+path
-                if self._proxySSL:
-                    conn = httplib.HTTPSConnection(*self._proxy)
-                else:
-                    conn = httplib.HTTPConnection(*self._proxy)
+            req = self._scheme+'://'+self._host+path
 
-            if kw:
-                conn.request("POST", req, urllib.urlencode(kw), {"Content-type": "application/x-www-form-urlencoded", "User-Agent": _useragent or _default_useragent})
-            else:
-                conn.request("GET", req, "", {"User-Agent": _useragent or _default_useragent})
-
-            response = conn.getresponse()
-            if response.status != 200:
-                if response.status == httplib.NOT_FOUND:
-                    raise AttributeError("'%s' not available on API server (404 Not Found)" % path)
-                elif response.status == httplib.FORBIDDEN:
-                    raise AuthenticationError(response.status, 'HTTP 403 - Forbidden')
-                else:
-                    raise ServerError(response.status, "'%s' request failed (%s)" % (path, response.reason))
+            response = network.request(req, network.EVE, kw)
 
             if cache:
                 store = True

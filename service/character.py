@@ -17,24 +17,22 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 #===============================================================================
 
-import eos.db
-import eos.types
 import copy
-import service
 import itertools
-from eos import eveapi
-import config
 import json
-import os.path
-import locale
 import threading
-import wx
 from codecs import open
-
 from xml.etree import ElementTree
 from xml.dom import minidom
-
 import gzip
+
+import wx
+
+import eos.db
+import eos.types
+import service
+import config
+
 
 class CharacterImportThread(threading.Thread):
     def __init__(self, paths, callback):
@@ -240,19 +238,36 @@ class Character(object):
 
     def charList(self, charID, userID, apiKey):
         char = eos.db.getCharacter(charID)
-        try:
-            char.apiID = userID
-            char.apiKey = apiKey
-            charList = char.apiCharList(proxy = service.settings.ProxySettings.getInstance().getProxySettings())
-            char.chars = json.dumps(charList)
-            return charList
-        except:
-            return None
+
+        char.apiID = userID
+        char.apiKey = apiKey
+
+        api = service.EVEAPIConnection()
+        auth = api.auth(keyID=userID, vCode=apiKey)
+        apiResult = auth.account.Characters()
+        charList = map(lambda c: unicode(c.name), apiResult.characters)
+
+        char.chars = json.dumps(charList)
+        return charList
 
     def apiFetch(self, charID, charName):
-        char = eos.db.getCharacter(charID)
-        char.defaultChar = charName
-        char.apiFetch(charName, proxy = service.settings.ProxySettings.getInstance().getProxySettings())
+        dbChar = eos.db.getCharacter(charID)
+        dbChar.defaultChar = charName
+
+        api = service.EVEAPIConnection()
+        auth = api.auth(keyID=dbChar.apiID, vCode=dbChar.apiKey)
+        apiResult = auth.account.Characters()
+        charID = None
+        for char in apiResult.characters:
+            if char.name == charName:
+                charID = char.characterID
+
+        if charID == None:
+            return
+
+        sheet = auth.character(charID).CharacterSheet()
+
+        dbChar.apiUpdateCharSheet(sheet)
         eos.db.commit()
 
     def apiUpdateCharSheet(self, charID, sheet):
