@@ -28,8 +28,8 @@ timeout = 3
 socket.setdefaulttimeout(timeout)
 
 class Error(StandardError):
-    def __init__(self, error):
-        self.error = error
+    def __init__(self, msg=None):
+        self.message = msg
 
 class RequestError(StandardError):
     pass
@@ -59,7 +59,7 @@ class Network():
 
         return cls._instance
 
-    def request(self, url, type=None, postData=None):
+    def request(self, url, type, postData=None):
 
         # URL is required to be https as of right now
         print "Starting request: %s\n\tType: %s\n\tPost Data: %s"%(url,type,postData)
@@ -67,9 +67,9 @@ class Network():
         # Make sure request is enabled
         access = NetworkSettings.getInstance().getAccess()
 
-        if not type or not type & access:  # @todo: check if enabled
+        if not self.ENABLED & access or not type & access:
             print "\tType not enabled"
-            return  # @todo: throw exception
+            raise Error("Access not enabled - please enable in Preferences > Network")
 
         # Set up some things for the request
         versionString = "{0} {1} - {2} {3}".format(config.version, config.tag, config.expansionName, config.expansionVersion)
@@ -89,13 +89,13 @@ class Network():
             return data
         except urllib2.HTTPError, error:
             if error.code == 404:
-                raise RequestError(error)
+                raise RequestError()
             elif error.code == 403:
-                raise AuthenticationError(error)
+                raise AuthenticationError()
             elif error.code >= 500:
-                raise ServerError(error)
+                raise ServerError()
         except urllib2.URLError, error:
             if "timed out" in error.reason:
-                raise TimeoutError(error)
+                raise TimeoutError()
             else:
                 raise Error(error)

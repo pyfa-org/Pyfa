@@ -130,6 +130,19 @@ class NetworkSettings():
 
         self.serviceNetworkSettings = SettingsProvider.getInstance().getSettings("pyfaServiceNetworkSettings", serviceNetworkDefaultSettings)
 
+    def isEnabled(self, type):
+        if type & self.serviceNetworkSettings["access"]:
+            return True
+        return False
+
+    def toggleAccess(self, type, toggle=True):
+        bitfield = self.serviceNetworkSettings["access"]
+
+        if toggle:  # Turn bit on
+            self.serviceNetworkSettings["access"] = type | bitfield
+        else:  # Turn bit off
+            self.serviceNetworkSettings["access"] = ~type & bitfield
+
     def getMode(self):
         return self.serviceNetworkSettings["mode"]
 

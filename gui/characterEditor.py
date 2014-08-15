@@ -640,11 +640,11 @@ class APIView (wx.Panel):
         try:
             list = sChar.charList(self.Parent.Parent.getActiveCharacter(), self.inputID.GetLineText(0), self.inputKey.GetLineText(0))
         except service.network.AuthenticationError, e:
-            self.stStatus.SetLabel("%s\nAuthentication failure. Please check keyID and vCode combination."%e)
+            self.stStatus.SetLabel("Authentication failure. Please check keyID and vCode combination.")
         except service.network.TimeoutError, e:
             self.stStatus.SetLabel("Request timed out. Please check network connectivity and/or proxy settings.")
         except Exception, e:
-            self.stStatus.SetLabel("Error:\n%s"%e)
+            self.stStatus.SetLabel("Error:\n%s"%e.message)
         else:
             self.charChoice.Clear()
             for charName in list:
