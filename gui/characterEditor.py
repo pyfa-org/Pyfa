@@ -18,7 +18,7 @@
 #===============================================================================
 
 import wx
-import bitmapLoader
+
 import gui.mainFrame
 import wx.lib.newevent
 import wx.gizmos
@@ -27,7 +27,6 @@ import service
 import gui.display as d
 from gui.contextMenu import ContextMenu
 from wx.lib.buttons import GenBitmapButton
-import sys
 import gui.globalEvents as GE
 
 class CharacterEditor(wx.Frame):
@@ -638,22 +637,25 @@ class APIView (wx.Panel):
             return
 
         sChar = service.Character.getInstance()
-        list = sChar.charList(self.Parent.Parent.getActiveCharacter(), self.inputID.GetLineText(0), self.inputKey.GetLineText(0))
+        try:
+            list = sChar.charList(self.Parent.Parent.getActiveCharacter(), self.inputID.GetLineText(0), self.inputKey.GetLineText(0))
+        except service.network.AuthenticationError, e:
+            self.stStatus.SetLabel("%s\nAuthentication failure. Please check keyID and vCode combination."%e)
+        except service.network.TimeoutError, e:
+            self.stStatus.SetLabel("Request timed out. Please check network connectivity and/or proxy settings.")
+        except Exception, e:
+            self.stStatus.SetLabel("Error:\n%s"%e)
+        else:
+            self.charChoice.Clear()
+            for charName in list:
+                i = self.charChoice.Append(charName)
 
-        if not list:
-            self.stStatus.SetLabel("Unable to fetch characters list from EVE API!")
-            return
+            self.btnFetchSkills.Enable(True)
+            self.charChoice.Enable(True)
 
-        self.charChoice.Clear()
-        for charName in list:
-            i = self.charChoice.Append(charName)
+            self.Layout()
 
-        self.btnFetchSkills.Enable(True)
-        self.charChoice.Enable(True)
-
-        self.Layout()
-
-        self.charChoice.SetSelection(0)
+            self.charChoice.SetSelection(0)
 
     def fetchSkills(self, event):
         charName = self.charChoice.GetString(self.charChoice.GetSelection())
@@ -662,5 +664,5 @@ class APIView (wx.Panel):
                 sChar = service.Character.getInstance()
                 sChar.apiFetch(self.Parent.Parent.getActiveCharacter(), charName)
                 self.stStatus.SetLabel("Successfully fetched %s\'s skills from EVE API." % charName)
-            except:
-                self.stStatus.SetLabel("Unable to retrieve %s\'s skills!" % charName)
+            except Exception, e:
+                self.stStatus.SetLabel("Unable to retrieve %s\'s skills. Error message:\n%s" % (charName, e))

@@ -21,6 +21,27 @@ from service.settings import NetworkSettings
 import urllib2
 import urllib
 import config
+import socket
+
+# network timeout, otherwise pyfa hangs for a long while if no internet connection
+timeout = 3
+socket.setdefaulttimeout(timeout)
+
+class Error(StandardError):
+    def __init__(self, error):
+        self.error = error
+
+class RequestError(StandardError):
+    pass
+
+class AuthenticationError(StandardError):
+    pass
+
+class ServerError(StandardError):
+    pass
+
+class TimeoutError(StandardError):
+    pass
 
 class Network():
     # Request constants - every request must supply this, as it is checked if
@@ -62,6 +83,19 @@ class Network():
             urllib2.install_opener(opener)
 
         request = urllib2.Request(url, headers=headers, data=urllib.urlencode(postData) if postData else None)
-        data = urllib2.urlopen(request)
-        print "\tReturning data"
-        return data
+        try:
+            data = urllib2.urlopen(request)
+            print "\tReturning data"
+            return data
+        except urllib2.HTTPError, error:
+            if error.code == 404:
+                raise RequestError(error)
+            elif error.code == 403:
+                raise AuthenticationError(error)
+            elif error.code >= 500:
+                raise ServerError(error)
+        except urllib2.URLError, error:
+            if "timed out" in error.reason:
+                raise TimeoutError(error)
+            else:
+                raise Error(error)
