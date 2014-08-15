@@ -45,7 +45,7 @@ class CharacterImportThread(threading.Thread):
         sCharacter = Character.getInstance()
         for path in paths:
             with open(path, mode='r') as charFile:
-                sheet = eveapi.ParseXML(charFile)
+                sheet = service.ParseXML(charFile)
                 charID = sCharacter.new()
                 sCharacter.rename(charID, sheet.name+" (imported)")
                 sCharacter.apiUpdateCharSheet(charID, sheet)
@@ -65,7 +65,7 @@ class SkillBackupThread(threading.Thread):
         sCharacter = Character.getInstance()
         sFit = service.Fit.getInstance()
         fit = sFit.getFit(self.activeFit)
-        backupData = "";
+        backupData = ""
         if self.saveFmt == "xml" or self.saveFmt == "emp":
             backupData = sCharacter.exportXml()
         else:
