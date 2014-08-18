@@ -32,14 +32,9 @@ class CheckUpdateThread(threading.Thread):
         self.network = service.Network.getInstance()
 
     def run(self):
-        # Suppress all
-        if (self.settings.get('all')):
-            return
-
         network = service.Network.getInstance()
 
         try:
-            # @todo: use proxy settings?
             response = network.request('https://api.github.com/repos/DarkFenX/Pyfa/releases', network.UPDATE)
             jsonResponse = json.loads(response.read())
 
@@ -73,7 +68,7 @@ class CheckUpdateThread(threading.Thread):
                     if release['prerelease'] and rVersion > config.expansionVersion:
                         wx.CallAfter(self.callback, release) # Singularity -> Singularity
                 break
-        except: # for when there is no internet connection
+        except:
             pass
 
     def versiontuple(self, v):

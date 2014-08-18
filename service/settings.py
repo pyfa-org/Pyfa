@@ -251,10 +251,10 @@ class UpdateSettings():
 
     def __init__(self):
         # Settings
-        # all        - If True, suppress all update notifications
-        # prerelease - If True, suppress only prerelease notifications
+        # Updates are completely suppressed via network settings
+        # prerelease - If True, suppress prerelease notifications
         # version    - Set to release tag that user does not want notifications for
-        serviceUpdateDefaultSettings = { "all": False, "prerelease": True, 'version': None }
+        serviceUpdateDefaultSettings = {"prerelease": True, 'version': None }
         self.serviceUpdateSettings = SettingsProvider.getInstance().getSettings("pyfaServiceUpdateSettings", serviceUpdateDefaultSettings)
 
     def get(self, type):
@@ -263,5 +263,4 @@ class UpdateSettings():
     def set(self, type, value):
         self.serviceUpdateSettings[type] = value
 
-# @todo: "reopen fits" setting class
 # @todo: migrate fit settings (from fit service) here?

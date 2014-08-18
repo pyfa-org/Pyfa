@@ -42,6 +42,13 @@ class PFNetworkPref ( PreferenceView):
 
         mainSizer.Add( subSizer, 0, wx.LEFT|wx.EXPAND, 30 )
 
+        proxyTitle = wx.StaticText( panel, wx.ID_ANY, "Proxy settings", wx.DefaultPosition, wx.DefaultSize, 0 )
+        proxyTitle.Wrap( -1 )
+        proxyTitle.SetFont( wx.Font( 12, 70, 90, 90, False, wx.EmptyString ) )
+
+        mainSizer.Add( proxyTitle, 0, wx.ALL, 5 )
+        mainSizer.Add( wx.StaticLine( panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL ), 0, wx.EXPAND, 5 )
+
         self.cbEnableNetwork.SetValue(self.settings.isEnabled(self.network.ENABLED))
         self.cbEve.SetValue(self.settings.isEnabled(self.network.EVE))
         self.cbPricing.SetValue(self.settings.isEnabled(self.network.PRICES))
