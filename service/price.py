@@ -32,7 +32,7 @@ class Price():
     @classmethod
     def fetchPrices(cls, prices):
         """Fetch all prices passed to this method"""
-        print "Fetch time: %s"%time.time()
+
         # Dictionary for our price objects
         priceMap = {}
         # Check all provided price objects, and add invalid ones to dictionary
@@ -41,8 +41,8 @@ class Price():
                 priceMap[price.typeID] = price
 
         if len(priceMap) == 0:
-            print "No price updates"
             return
+
         # Set of items which are still to be requested from this service
         toRequest = set()
 

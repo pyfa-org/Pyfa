@@ -60,15 +60,13 @@ class Network():
         return cls._instance
 
     def request(self, url, type, data=None):
-
         # URL is required to be https as of right now
-        print "Starting request: %s\n\tType: %s\n\tPost Data: %s"%(url,type,data)
+        #print "Starting request: %s\n\tType: %s\n\tPost Data: %s"%(url,type,data)
 
         # Make sure request is enabled
         access = NetworkSettings.getInstance().getAccess()
 
         if not self.ENABLED & access or not type & access:
-            print "\tType not enabled"
             raise Error("Access not enabled - please enable in Preferences > Network")
 
         # Set up some things for the request
@@ -77,16 +75,13 @@ class Network():
 
         proxy = NetworkSettings.getInstance().getProxySettings()
         if proxy is not None:
-            print "\tUsing a proxy"
             proxy = urllib2.ProxyHandler({'https': "{0}:{1}".format(*proxy)})
             opener = urllib2.build_opener(proxy)
             urllib2.install_opener(opener)
 
         request = urllib2.Request(url, headers=headers, data=urllib.urlencode(data) if data else None)
         try:
-            data = urllib2.urlopen(request)
-            print "\tReturning data"
-            return data
+            return urllib2.urlopen(request)
         except urllib2.HTTPError, error:
             if error.code == 404:
                 raise RequestError()

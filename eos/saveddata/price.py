@@ -35,5 +35,4 @@ class Price(object):
 
     @property
     def isValid(self):
-        print self.time, time.time(), self.time >= time.time()
         return self.time >= time.time()
