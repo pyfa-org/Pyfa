@@ -6,5 +6,6 @@ from service.damagePattern import DamagePattern
 from service.settings import SettingsProvider
 from service.fleet import Fleet
 from service.update import Update
+from service.price import Price
 from service.network import Network
 from service.eveapi import EVEAPIConnection, ParseXML

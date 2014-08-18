@@ -59,10 +59,10 @@ class Network():
 
         return cls._instance
 
-    def request(self, url, type, postData=None):
+    def request(self, url, type, data=None):
 
         # URL is required to be https as of right now
-        print "Starting request: %s\n\tType: %s\n\tPost Data: %s"%(url,type,postData)
+        print "Starting request: %s\n\tType: %s\n\tPost Data: %s"%(url,type,data)
 
         # Make sure request is enabled
         access = NetworkSettings.getInstance().getAccess()
@@ -82,7 +82,7 @@ class Network():
             opener = urllib2.build_opener(proxy)
             urllib2.install_opener(opener)
 
-        request = urllib2.Request(url, headers=headers, data=urllib.urlencode(postData) if postData else None)
+        request = urllib2.Request(url, headers=headers, data=urllib.urlencode(data) if data else None)
         try:
             data = urllib2.urlopen(request)
             print "\tReturning data"
