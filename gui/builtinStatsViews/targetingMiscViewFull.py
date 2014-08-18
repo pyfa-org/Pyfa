@@ -189,12 +189,15 @@ class TargetingMiscViewFull(StatsView):
                             right = "%s [%d]" % (size, radius)
                             lockTime += "%5s\t%s\n" % (left,right)
                         label.SetToolTip(wx.ToolTip(lockTime))
-                    elif labelName == "labelSensorStr":
-                        label.SetToolTip(wx.ToolTip("Type: %s - %.1f" % (fit.scanType, mainValue)))
                     elif labelName == "labelFullSigRadius":
                         label.SetToolTip(wx.ToolTip("Probe Size: %.3f" % (fit.probeSize or 0) ))
                     elif labelName == "labelFullWarpSpeed":
                         label.SetToolTip(wx.ToolTip("Max Warp Distance: %.1f AU" % fit.maxWarpDistance))
+                    elif labelName == "labelSensorStr":
+                        if fit.jamChance > 0:
+                           label.SetToolTip(wx.ToolTip("Type: %s\n%.1f%% Chance of Jam" % (fit.scanType, fit.jamChance)))
+                        else:
+                           label.SetToolTip(wx.ToolTip("Type: %s" % (fit.scanType)))
                     elif labelName == "labelFullAlignTime":
                         label.SetToolTip(wx.ToolTip("%.3f" % mainValue))
                     elif labelName == "labelFullCargo":
@@ -212,6 +215,14 @@ class TargetingMiscViewFull(StatsView):
             elif labelName == "labelFullWarpSpeed":
                 if fit:
                     label.SetToolTip(wx.ToolTip("Max Warp Distance: %.1f AU" % fit.maxWarpDistance))
+                else:
+                    label.SetToolTip(wx.ToolTip(""))
+            elif labelName == "labelSensorStr":
+                if fit:
+                    if fit.jamChance > 0:
+                        label.SetToolTip(wx.ToolTip("Type: %s\n%.1f%% Chance of Jam" % (fit.scanType, fit.jamChance)))
+                    else:
+                        label.SetToolTip(wx.ToolTip("Type: %s" % (fit.scanType)))
                 else:
                     label.SetToolTip(wx.ToolTip(""))
             elif labelName == "labelFullCargo":
