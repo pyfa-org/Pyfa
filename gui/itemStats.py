@@ -67,7 +67,7 @@ class ItemStatsDialog(wx.Dialog):
             if itemImg is not None:
                 self.SetIcon(wx.IconFromBitmap(itemImg))
         self.SetTitle("%s: %s" % ("%s Stats" % itmContext if itmContext is not None else "Stats", item.name))
-        
+
         self.SetMinSize((300, 200))
         self.SetSize((500, 300))
         self.SetMaxSize((500, -1))
@@ -612,7 +612,6 @@ class ItemAffectedBy (wx.Panel):
         self.imageList = wx.ImageList(16, 16)
         self.affectedBy.SetImageList(self.imageList)
 
-
         cont = self.stuff.itemModifiedAttributes if self.item == self.stuff.item else self.stuff.chargeModifiedAttributes
         things = {}
 
@@ -620,20 +619,26 @@ class ItemAffectedBy (wx.Panel):
             # if value is 0 or there has been no change from original to modified, return
             if cont[attrName] == (cont.getOriginal(attrName) or 0):
                 continue
-
             for fit, afflictors in cont.getAfflictions(attrName).iteritems():
                 for afflictor, modifier, amount, used in afflictors:
                     if not used or afflictor.item is None:
                         continue
+
                     if afflictor.item.name not in things:
-                        things[afflictor.item.name] = [type(afflictor), set(), set()]
+                        things[afflictor.item.name] = [type(afflictor), set(), []]
 
                     info = things[afflictor.item.name]
                     info[1].add(afflictor)
-                    info[2].add((attrName, modifier, amount))
+                    # If info[1] > 1, there are two separate modules working.
+                    # Check to make sure we only include the modifier once
+                    # See GH issue 154
+                    if len(info[1]) > 1 and (attrName, modifier, amount) in info[2]:
+                        continue
+                    info[2].append((attrName, modifier, amount))
 
         order = things.keys()
         order.sort(key=lambda x: (self.ORDER.index(things[x][0]), x))
+
         for itemName in order:
             info = things[itemName]
 

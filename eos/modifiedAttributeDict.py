@@ -195,13 +195,13 @@ class ModifiedAttributeDict(collections.MutableMapping):
         affs = self.__affectedBy[attributeName]
         # If there's no set for current fit in dictionary, create it
         if self.fit not in affs:
-            affs[self.fit] = set()
-        # Reassign alias to set
+            affs[self.fit] = []
+        # Reassign alias to list
         affs = affs[self.fit]
         # Get modifier which helps to compose 'Affected by' map
         modifier = self.fit.getModifier()
-        # Add current affliction to set
-        affs.add((modifier, operation, bonus, used))
+        # Add current affliction to list
+        affs.append((modifier, operation, bonus, used))
 
     def preAssign(self, attributeName, value):
         """Overwrites original value of the entity with given one, allowing further modification"""
