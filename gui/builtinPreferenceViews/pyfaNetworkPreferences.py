@@ -1,28 +1,20 @@
 import wx
-import service
-import urllib2
 
 from gui.preferenceView import PreferenceView
 from gui import bitmapLoader
 
 import gui.mainFrame
 import service
-import gui.globalEvents as GE
 
-
-class PFProxyPref ( PreferenceView):
-    title = "Proxy"
+class PFNetworkPref ( PreferenceView):
+    title = "Network"
 
     def populatePanel( self, panel ):
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.proxySettings = service.settings.ProxySettings.getInstance()
+        self.settings = service.settings.NetworkSettings.getInstance()
+        self.network = service.Network.getInstance()
         self.dirtySettings = False
-
-        self.nMode = self.proxySettings.getMode()
-        self.nAddr = self.proxySettings.getAddress()
-        self.nPort = self.proxySettings.getPort()
-        self.nType = self.proxySettings.getType()
 
         mainSizer = wx.BoxSizer( wx.VERTICAL )
 
@@ -34,6 +26,49 @@ class PFProxyPref ( PreferenceView):
 
         self.m_staticline1 = wx.StaticLine( panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
         mainSizer.Add( self.m_staticline1, 0, wx.EXPAND|wx.TOP|wx.BOTTOM, 5 )
+
+        self.cbEnableNetwork = wx.CheckBox( panel, wx.ID_ANY, u"Enable Network", wx.DefaultPosition, wx.DefaultSize, 0 )
+        mainSizer.Add( self.cbEnableNetwork, 0, wx.ALL|wx.EXPAND, 5 )
+
+        subSizer = wx.BoxSizer( wx.VERTICAL )
+        self.cbEve = wx.CheckBox( panel, wx.ID_ANY, u"EVE Servers (API && CREST import)", wx.DefaultPosition, wx.DefaultSize, 0 )
+        subSizer.Add( self.cbEve, 0, wx.ALL|wx.EXPAND, 5 )
+
+        self.cbPricing = wx.CheckBox( panel, wx.ID_ANY, u"Pricing updates", wx.DefaultPosition, wx.DefaultSize, 0 )
+        subSizer.Add( self.cbPricing, 0, wx.ALL|wx.EXPAND, 5 )
+
+        self.cbPyfaUpdate = wx.CheckBox( panel, wx.ID_ANY, u"Pyfa Update checks", wx.DefaultPosition, wx.DefaultSize, 0 )
+        subSizer.Add( self.cbPyfaUpdate, 0, wx.ALL|wx.EXPAND, 5 )
+
+        mainSizer.Add( subSizer, 0, wx.LEFT|wx.EXPAND, 30 )
+
+        proxyTitle = wx.StaticText( panel, wx.ID_ANY, "Proxy settings", wx.DefaultPosition, wx.DefaultSize, 0 )
+        proxyTitle.Wrap( -1 )
+        proxyTitle.SetFont( wx.Font( 12, 70, 90, 90, False, wx.EmptyString ) )
+
+        mainSizer.Add( proxyTitle, 0, wx.ALL, 5 )
+        mainSizer.Add( wx.StaticLine( panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL ), 0, wx.EXPAND, 5 )
+
+        self.cbEnableNetwork.SetValue(self.settings.isEnabled(self.network.ENABLED))
+        self.cbEve.SetValue(self.settings.isEnabled(self.network.EVE))
+        self.cbPricing.SetValue(self.settings.isEnabled(self.network.PRICES))
+        self.cbPyfaUpdate.SetValue(self.settings.isEnabled(self.network.UPDATE))
+
+        self.cbEnableNetwork.Bind(wx.EVT_CHECKBOX, self.OnCBEnableChange)
+        self.cbEve.Bind(wx.EVT_CHECKBOX, self.OnCBEveChange)
+        self.cbPricing.Bind(wx.EVT_CHECKBOX, self.OnCBPricingChange)
+        self.cbPyfaUpdate.Bind(wx.EVT_CHECKBOX, self.OnCBUpdateChange)
+
+        self.toggleNetworks(self.cbEnableNetwork.GetValue())
+
+        #---------------
+        # Proxy
+        #---------------
+
+        self.nMode = self.settings.getMode()
+        self.nAddr = self.settings.getAddress()
+        self.nPort = self.settings.getPort()
+        self.nType = self.settings.getType()
 
         ptypeSizer = wx.BoxSizer( wx.HORIZONTAL )
 
@@ -83,13 +118,13 @@ class PFProxyPref ( PreferenceView):
         btnSizer = wx.BoxSizer( wx.HORIZONTAL )
         btnSizer.AddSpacer( ( 0, 0), 1, wx.EXPAND, 5 )
 
-        self.btnApply = wx.Button( panel, wx.ID_ANY, u"Apply", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.btnApply = wx.Button( panel, wx.ID_ANY, u"Apply Proxy Settings", wx.DefaultPosition, wx.DefaultSize, 0 )
 
         btnSizer.Add( self.btnApply, 0, wx.ALL, 5 )
 
         mainSizer.Add(btnSizer, 0, wx.EXPAND,5)
 
-        proxy = self.proxySettings.autodetect()
+        proxy = self.settings.autodetect()
 
         if proxy is not None:
             addr,port  =  proxy
@@ -117,6 +152,24 @@ class PFProxyPref ( PreferenceView):
         panel.SetSizer( mainSizer )
         panel.Layout()
 
+    def toggleNetworks(self, toggle):
+        self.cbEve.Enable(toggle)
+        self.cbPricing.Enable(toggle)
+        self.cbPyfaUpdate.Enable(toggle)
+
+    def OnCBEnableChange(self, event):
+        self.settings.toggleAccess(self.network.ENABLED, self.cbEnableNetwork.GetValue())
+        self.toggleNetworks(self.cbEnableNetwork.GetValue())
+
+    def OnCBUpdateChange(self, event):
+        self.settings.toggleAccess(self.network.UPDATE, self.cbPyfaUpdate.GetValue())
+
+    def OnCBPricingChange(self, event):
+        self.settings.toggleAccess(self.network.PRICES, self.cbPricing.GetValue())
+
+    def OnCBEveChange(self, event):
+        self.settings.toggleAccess(self.network.EVE, self.cbEve.GetValue())
+
     def OnEditPSAddrText(self, event):
         self.nAddr = self.editProxySettingsAddr.GetValue()
         self.dirtySettings = True
@@ -133,10 +186,10 @@ class PFProxyPref ( PreferenceView):
         self.SaveSettings()
 
     def SaveSettings(self):
-        self.proxySettings.setMode(self.nMode)
-        self.proxySettings.setAddress(self.nAddr)
-        self.proxySettings.setPort(self.nPort)
-        self.proxySettings.setType(self.nType)
+        self.settings.setMode(self.nMode)
+        self.settings.setAddress(self.nAddr)
+        self.settings.setPort(self.nPort)
+        self.settings.setType(self.nType)
 
     def UpdateApplyButtonState(self):
         if self.dirtySettings:
@@ -172,4 +225,4 @@ class PFProxyPref ( PreferenceView):
     def getImage(self):
         return bitmapLoader.getBitmap("prefs_proxy", "icons")
 
-PFProxyPref.register()
+PFNetworkPref.register()

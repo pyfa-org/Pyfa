@@ -1,6 +1,4 @@
 import wx
-import service
-import urllib2
 import os
 
 from gui.preferenceView import PreferenceView

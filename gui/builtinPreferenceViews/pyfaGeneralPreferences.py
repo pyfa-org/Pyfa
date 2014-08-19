@@ -1,6 +1,4 @@
 import wx
-import service
-import urllib2
 
 from gui.preferenceView import PreferenceView
 from gui import bitmapLoader

@@ -1,5 +1,5 @@
 #===============================================================================
-# Copyright (C) 2010 Diego Duclos
+# Copyright (C) 2014 Ryan Holmes
 #
 # This file is part of pyfa.
 #
@@ -19,7 +19,6 @@
 
 import re
 import xml.dom
-import urllib2
 import json
 
 from eos.types import State, Slot, Module, Cargo, Fit, Ship, Drone, Implant, Booster
@@ -166,9 +165,9 @@ class Port(object):
     @staticmethod
     def importCrest(info):
         sMkt = service.Market.getInstance()
+        network = service.Network.getInstance()
         try:
-            # @todo: proxy
-            response = urllib2.urlopen("https://public-crest.eveonline.com/killmails/%s/%s/" % info)
+            response = network.request("https://public-crest.eveonline.com/killmails/%s/%s/" % info, network.EVE)
         except:
             return
 
@@ -638,7 +637,7 @@ class Port(object):
 
         for subsystem in sorted(subsystems, key=lambda mod: mod.getModifiedItemAttr("subSystemSlot")):
             dna += ":{0};1".format(subsystem.itemID)
-        
+
         for drone in fit.drones:
             dna += ":{0};{1}".format(drone.itemID, drone.amount)
 
@@ -688,10 +687,10 @@ class Port(object):
                 else:
                     if not slot in slotNum:
                         slotNum[slot] = 0
-                
+
                     slotId = slotNum[slot]
                     slotNum[slot] += 1
-                    
+
                 hardware = doc.createElement("hardware")
                 hardware.setAttribute("type", module.item.name)
                 slotName = Slot.getName(slot).lower()

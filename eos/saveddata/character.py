@@ -18,12 +18,9 @@
 #===============================================================================
 
 
-import urllib2
+from sqlalchemy.orm import validates, reconstructor
 
 from eos.effectHandlerHelpers import HandledItem
-from sqlalchemy.orm import validates, reconstructor
-import sqlalchemy.orm.exc as exc
-from eos import eveapi
 import eos
 
 class Character(object):
@@ -107,27 +104,6 @@ class Character(object):
         self.__skillIdMap = {}
         for skill in self.__skills:
             self.__skillIdMap[skill.itemID] = skill
-
-    def apiCharList(self, proxy=None):
-        api = eveapi.EVEAPIConnection(proxy=proxy)
-        auth = api.auth(keyID=self.apiID, vCode=self.apiKey)
-        apiResult = auth.account.Characters()
-        return map(lambda c: unicode(c.name), apiResult.characters)
-
-    def apiFetch(self, charName, proxy=None):
-        api = eveapi.EVEAPIConnection(proxy=proxy)
-        auth = api.auth(keyID=self.apiID, vCode=self.apiKey)
-        apiResult = auth.account.Characters()
-        charID = None
-        for char in apiResult.characters:
-            if char.name == charName:
-                charID = char.characterID
-
-        if charID == None:
-            return
-
-        sheet = auth.character(charID).CharacterSheet()
-        self.apiUpdateCharSheet(sheet)
 
     def apiUpdateCharSheet(self, sheet):
         del self.__skills[:]
