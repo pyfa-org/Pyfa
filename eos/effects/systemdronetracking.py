@@ -4,4 +4,4 @@ runTime = "early"
 type = ("projected", "offline")
 def handler(fit, beacon, context):
     fit.drones.filteredItemMultiply(lambda drone: True,
-                                    "maxVelocity", beacon.getModifiedItemAttr("maxDroneVelocityMultiplier"))
+                                    "trackingSpeed", beacon.getModifiedItemAttr("trackingSpeedMultiplier"))
