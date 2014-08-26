@@ -40,8 +40,8 @@ Q: If you don't want to trust us, don't. The source code is freely available for
 
 Development repository:
 http://github.com/DarkFenX/Pyfa
-IRC:
-#evefit@irc.coldfront.net
+XMPP conference:
+pyfa@conference.jabber.org
 EVE forum thread:
 http://forums.eveonline.com/default.aspx?g=posts&t=247609
 EVE Online website:
