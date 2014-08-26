@@ -35,12 +35,24 @@ except ImportError:
 
 class ItemStatsDialog(wx.Dialog):
     counter = 0
-    def __init__(self, victim, fullContext=None, pos = wx.DefaultPosition, size = wx.DefaultSize, maximized = False):
-        wx.Dialog.__init__(self,
-                          gui.mainFrame.MainFrame.getInstance(),
-                          wx.ID_ANY, title="Item stats", pos = pos, size = size,
-                          style = wx.CAPTION | wx.CLOSE_BOX | wx.MINIMIZE_BOX |
-                                  wx.MAXIMIZE_BOX | wx.RESIZE_BORDER| wx.SYSTEM_MENU)
+    def __init__(
+            self,
+            victim,
+            fullContext=None,
+            pos=wx.DefaultPosition,
+            size=wx.DefaultSize,
+            maximized = False
+        ):
+
+        wx.Dialog.__init__(
+            self,
+            gui.mainFrame.MainFrame.getInstance(),
+            wx.ID_ANY,
+            title="Item stats",
+            pos=pos,
+            size=size,
+            style=wx.CAPTION | wx.CLOSE_BOX | wx.MINIMIZE_BOX | wx.MAXIMIZE_BOX | wx.RESIZE_BORDER| wx.SYSTEM_MENU
+        )
 
         empty = getattr(victim, "isEmpty", False)
 
@@ -284,6 +296,17 @@ class ItemParams (wx.Panel):
         self.toggleView = 1
         self.stuff = stuff
         self.item = item
+        self.attrInfo = {}
+        self.attrValues = {}
+        if self.stuff is None:
+            self.attrInfo.update(self.item.attributes)
+            self.attrValues.update(self.item.attributes)
+        elif self.stuff.item == self.item:
+            self.attrInfo.update(self.stuff.item.attributes)
+            self.attrValues.update(self.stuff.itemModifiedAttributes)
+        else:
+            self.attrInfo.update(self.stuff.charge.attributes)
+            self.attrValues.update(self.stuff.chargeModifiedAttributes)
 
         self.m_staticline = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
         mainSizer.Add( self.m_staticline, 0, wx.EXPAND)
@@ -329,23 +352,17 @@ class ItemParams (wx.Panel):
         self.paramList.setResizeColumn(1)
         self.imageList = wx.ImageList(16, 16)
         self.paramList.SetImageList(self.imageList,wx.IMAGE_LIST_SMALL)
-        if self.stuff is None or self.stuff.item == self.item:
-            attrs = self.stuff.itemModifiedAttributes if self.stuff is not None else self.item.attributes
-            attrsInfo = self.item.attributes if self.stuff is None else self.stuff.item.attributes
-        else:
-            attrs = self.stuff.chargeModifiedAttributes if self.stuff is not None else self.item.attributes
-            attrsInfo = self.item.attributes if self.stuff is None else self.stuff.charge.attributes
 
-        names = list(attrs.iterkeys())
+        names = list(self.attrValues.iterkeys())
         names.sort()
 
         idNameMap = {}
         idCount = 0
         for name in names:
-            info = attrsInfo.get(name)
+            info = self.attrInfo.get(name)
 
 
-            att = attrs[name]
+            att = self.attrValues[name]
             val = getattr(att, "value", None)
             value = val if val is not None else att
 
