@@ -18,10 +18,10 @@ class ItemRemove(ContextMenu):
         srcContext = fullContext[0]
         sFit = service.Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
-        sFit = sFit.getFit(fitID)
+        fit = sFit.getFit(fitID)
 
-        idx = sFit.drones.index(selection[0])
-        sFit.removeDrone(fitID, idx, numDronesToRemove=sFit.drones[idx].amount)
+        idx = fit.drones.index(selection[0])
+        sFit.removeDrone(fitID, idx, numDronesToRemove=fit.drones[idx].amount)
 
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 

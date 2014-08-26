@@ -3,7 +3,8 @@
 # Modules from group: ECM Burst (7 of 7)
 type = "overheat"
 def handler(fit, module, context):
-    for scanType in ("Gravimetric", "Magnetometric", "Radar", "Ladar"):
-        module.boostItemAttr("scan{0}StrengthBonus".format(scanType),
-                             module.getModifiedItemAttr("overloadECMStrengthBonus"),
-                             stackingPenalties = True)
+    if "projected" not in context:
+        for scanType in ("Gravimetric", "Magnetometric", "Radar", "Ladar"):
+            module.boostItemAttr("scan{0}StrengthBonus".format(scanType),
+                                 module.getModifiedItemAttr("overloadECMStrengthBonus"),
+                                 stackingPenalties = True)

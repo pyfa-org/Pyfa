@@ -454,7 +454,7 @@ class NavigationPanel(SFItem.SFBrowserItem):
     def OnHistoryReset(self):
         if self.shipBrowser.browseHist:
             self.shipBrowser.browseHist = []
-            self.gotoStage(1,0)
+        self.gotoStage(1,0)
 
     def OnHistoryBack(self):
         if len(self.shipBrowser.browseHist) > 0:
@@ -671,6 +671,7 @@ class ShipBrowser(wx.Panel):
         self._lastStage = self._activeStage
         self._activeStage = 1
         self.lastdata = 0
+        self.browseHist = [(1,0)]
 
         self.navpanel.ShowNewFitButton(False)
         self.navpanel.ShowSwitchEmptyGroupsButton(False)
@@ -774,8 +775,8 @@ class ShipBrowser(wx.Panel):
     def stage2(self, event):
         back = event.back
 
-        if not back:
-            self.browseHist.append( (1,0) )
+        #if not back:
+        #    self.browseHist.append( (1,0) )
 
         self._lastStage = self._activeStage
         self._activeStage = 2
@@ -807,6 +808,8 @@ class ShipBrowser(wx.Panel):
         elif event.back == -1:
             if len(self.navpanel.recentSearches)>0:
                 self.browseHist.append((4, self.navpanel.lastSearch))
+        elif event.back > 0:
+             self.browseHist.append( (2,event.back) )
 
         shipID = event.shipID
         self.lastdata = shipID

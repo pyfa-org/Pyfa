@@ -65,6 +65,7 @@ class Fit(object):
         self.boostsFits = set()
         self.gangBoosts = None
         self.timestamp = time.time()
+        self.ecmProjectedStr = 1
         self.build()
 
     @reconstructor
@@ -93,6 +94,7 @@ class Fit(object):
         self.fleet = None
         self.boostsFits = set()
         self.gangBoosts = None
+        self.ecmProjectedStr = 1
         self.extraAttributes = ModifiedAttributeDict(self)
         self.extraAttributes.original = self.EXTRA_ATTRIBUTES
         self.ship = Ship(db.getItem(self.shipID)) if self.shipID is not None else None
@@ -227,6 +229,10 @@ class Fit(object):
         return type
 
     @property
+    def jamChance(self):
+        return (1-self.ecmProjectedStr)*100
+
+    @property
     def alignTime(self):
         agility = self.ship.getModifiedItemAttr("agility")
         mass = self.ship.getModifiedItemAttr("mass")
@@ -269,6 +275,7 @@ class Fit(object):
         self.__capState = None
         self.__capUsed = None
         self.__capRecharge = None
+        self.ecmProjectedStr = 1
         del self.__calculatedTargets[:]
         del self.__extraDrains[:]
 
@@ -341,7 +348,7 @@ class Fit(object):
             else:
                 c = chain((self.character, self.ship), self.drones, self.boosters, self.appliedImplants, self.modules,
                           self.projectedDrones, self.projectedModules)
-            
+
             if self.gangBoosts is not None:
                 contextMap = {Skill: "skill",
                               Ship: "ship",
@@ -366,7 +373,7 @@ class Fit(object):
                                 effect.handler(self, thing, context)
                             except:
                                 pass
-                                
+
             for item in c:
                 # Registering the item about to affect the fit allows us to track "Affected By" relations correctly
                 if item is not None:
@@ -375,7 +382,7 @@ class Fit(object):
                     if forceProjected is True:
                         targetFit.register(item)
                         item.calculateModifiedAttributes(targetFit, runTime, True)
-            
+
         for fit in self.projectedFits:
             fit.calculateModifiedAttributes(self, withBoosters=withBoosters, dirtyStorage=dirtyStorage)
 

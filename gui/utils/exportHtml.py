@@ -35,9 +35,9 @@ class exportHtmlThread(threading.Thread):
 
     def run(self):
         # wait 1 second just in case a lot of modifications get made
-        time.sleep(1);
+        time.sleep(1)
         if self.stopRunning:
-            return;
+            return
 
         sMkt = service.Market.getInstance()
         sFit    = service.Fit.getInstance()
@@ -190,8 +190,8 @@ class exportHtmlThread(threading.Thread):
 
         try:
             FILE = open(settings.getPath(), "w")
-            FILE.write(HTML.encode('utf-8'));
-            FILE.close();
+            FILE.write(HTML.encode('utf-8'))
+            FILE.close()
         except IOError:
             print "Failed to write to " + settings.getPath()
             pass
