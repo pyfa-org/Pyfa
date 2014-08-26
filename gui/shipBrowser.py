@@ -394,7 +394,7 @@ class NavigationPanel(SFItem.SFBrowserItem):
         else:
             self.BrowserSearchBox.Show(True)
             self.BrowserSearchBox.ChangeValue("")
-            self.BrowserSearchBox.SetFocus()
+        self.BrowserSearchBox.SetFocus()
 
     def OnBrowserSearchBoxEnter(self, event):
         self.OnBrowserSearchBoxLostFocus(None)
