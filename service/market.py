@@ -179,9 +179,8 @@ class Market():
             "Mammoth Nefantar Edition": "Mammoth",
             "Merlin Nugoeihuvi Edition": "Merlin",
             "Merlin Wiyrkomi Edition": "Merlin",
-            "Miasmos Amastris Edition": "Miasmos",
-            "Miasmos Quafe Ultra Edition": "Miasmos",
-            "Miasmos Quafe Ultramarine Edition": "Miasmos",
+            "Miasmos Amastris Edition": "Miasmos Quafe Ultra Edition",
+            "Miasmos Quafe Ultramarine Edition": "Miasmos Quafe Ultra Edition",
             "Nefantar Thrasher": "Thrasher",
             "Omen Kador Edition": "Omen",
             "Omen Tash-Murkon Edition": "Omen",
@@ -199,7 +198,6 @@ class Market():
             "Stabber Krusual Edition": "Stabber",
             "Stabber Nefantar Edition": "Stabber",
             "Sarum Magnate": "Magnate",
-            "Scorpion Ishukone Watch": "Scorpion",
             "Sukuuvestaa Heron": "Heron",
             "Tash-Murkon Magnate": "Magnate",
             "Tayra Wiyrkomi Edition": "Tayra",
@@ -244,9 +242,12 @@ class Market():
             "Etana": self.les_grp, # AT10 prize
             "Chremoas": self.les_grp, # AT11 prize :(
             "Moracha": self.les_grp, # AT11 prize
+            "Stratios Emergency Responder": self.les_grp, # Issued for Somer Blink lottery
+            "Scorpion Ishukone Watch": self.les_grp, # Prize for offline events - fanfest PVP and poker tourneys
+            "Miasmos Quafe Ultra Edition": self.les_grp, # Gift to people who purchased FF HD stream
             "Interbus Shuttle": self.les_grp,
-            "Leopard": self.les_grp,
-            "Stratios Emergency Responder": self.les_grp }
+            "Leopard": self.les_grp } # 2013 new year gift
+
         self.ITEMS_FORCEGROUP_R = self.__makeRevDict(self.ITEMS_FORCEGROUP)
         self.les_grp.addItems = list(self.getItem(itmn) for itmn in self.ITEMS_FORCEGROUP_R[self.les_grp])
         self.customGroups.add(self.les_grp)
