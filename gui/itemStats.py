@@ -298,15 +298,7 @@ class ItemParams (wx.Panel):
         self.item = item
         self.attrInfo = {}
         self.attrValues = {}
-        if self.stuff is None:
-            self.attrInfo.update(self.item.attributes)
-            self.attrValues.update(self.item.attributes)
-        elif self.stuff.item == self.item:
-            self.attrInfo.update(self.stuff.item.attributes)
-            self.attrValues.update(self.stuff.itemModifiedAttributes)
-        else:
-            self.attrInfo.update(self.stuff.charge.attributes)
-            self.attrValues.update(self.stuff.chargeModifiedAttributes)
+        self._fetchValues()
 
         self.m_staticline = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
         mainSizer.Add( self.m_staticline, 0, wx.EXPAND)
@@ -329,6 +321,26 @@ class ItemParams (wx.Panel):
 
         self.toggleViewBtn.Bind(wx.EVT_TOGGLEBUTTON,self.ToggleViewMode)
 
+    def _fetchValues(self):
+        if self.stuff is None:
+            self.attrInfo.clear()
+            self.attrValues.clear()
+            self.attrInfo.update(self.item.attributes)
+            self.attrValues.update(self.item.attributes)
+        elif self.stuff.item == self.item:
+            self.attrInfo.clear()
+            self.attrValues.clear()
+            self.attrInfo.update(self.stuff.item.attributes)
+            self.attrValues.update(self.stuff.itemModifiedAttributes)
+        elif self.stuff.charge == self.item:
+            self.attrInfo.clear()
+            self.attrValues.clear()
+            self.attrInfo.update(self.stuff.charge.attributes)
+            self.attrValues.update(self.stuff.chargeModifiedAttributes)
+        # When item for stats window no longer exists, don't change anything
+        else:
+            return
+
     def UpdateList(self):
         self.Freeze()
         self.paramList.ClearAll()
@@ -337,6 +349,7 @@ class ItemParams (wx.Panel):
         self.paramList.resizeLastColumn(100)
 
     def RefreshValues(self, event):
+        self._fetchValues()
         self.UpdateList()
         event.Skip()
 
