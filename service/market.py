@@ -268,7 +268,8 @@ class Market():
             "QA Shield Transporter - 5 Players": False,
             "Goru's Shuttle": False,
             "Guristas Shuttle": False,
-            "Mobile Decoy Unit": False}  # Seems to be left over test mod for deployables
+            "Mobile Decoy Unit": False,  # Seems to be left over test mod for deployables
+            "Tournament Micro Jump Unit": False }  # Normally seen only on tournament arenas
 
         # do not publish anything that we convert
         for name in self.ITEMS_OVERRIDE:
