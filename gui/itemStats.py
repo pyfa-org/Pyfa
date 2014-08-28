@@ -27,6 +27,7 @@ import wx.html
 from eos.types import Ship, Module, Skill, Booster, Implant, Drone
 from gui.utils.numberFormatter import formatAmount
 import service
+import config
 
 try:
     from collections import OrderedDict
@@ -517,6 +518,9 @@ class ItemEffects (wx.Panel):
         mainSizer.Add( self.effectList, 1, wx.ALL|wx.EXPAND, 0 )
         self.SetSizer( mainSizer )
 
+        if config.debug:
+            self.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.OnClick, self.effectList)
+
         self.effectList.InsertColumn(0,"Name")
         self.effectList.InsertColumn(1,"Implemented")
 
@@ -542,6 +546,12 @@ class ItemEffects (wx.Panel):
 
         self.effectList.RefreshRows()
         self.Layout()
+
+    def OnClick(self, event):
+        import os
+        file = os.path.join(config.pyfaPath,"eos","effects","%s.py"%event.GetText().lower())
+        if 'wxMSW' in wx.PlatformInfo:
+            os.startfile(file)
 
 
 ###########################################################################
