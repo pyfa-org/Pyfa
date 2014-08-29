@@ -69,7 +69,7 @@ class UpdateDialog(wx.Dialog):
         mainSizer.Add( versionSizer, 0, wx.EXPAND, 5 )
         mainSizer.AddSpacer( ( 0, 5), 0, wx.EXPAND, 5 )
 
-        releaseDate = dateutil.parser.parse(self.releaseInfo['created_at'])
+        releaseDate = dateutil.parser.parse(self.releaseInfo['published_at'])
         notesSizer = wx.BoxSizer( wx.HORIZONTAL )
         self.notesTextCtrl = wx.TextCtrl( self, wx.ID_ANY, str(releaseDate.date())+":\n\n"+self.releaseInfo['body'], wx.DefaultPosition, wx.DefaultSize, wx.TE_AUTO_URL|wx.TE_MULTILINE|wx.TE_READONLY|wx.DOUBLE_BORDER|wx.TRANSPARENT_WINDOW )
 

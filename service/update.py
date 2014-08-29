@@ -23,6 +23,8 @@ import urllib2
 import json
 import config
 import service
+import dateutil.parser
+import calendar
 
 class CheckUpdateThread(threading.Thread):
     def __init__(self, callback):
@@ -37,6 +39,7 @@ class CheckUpdateThread(threading.Thread):
         try:
             response = network.request('https://api.github.com/repos/DarkFenX/Pyfa/releases', network.UPDATE)
             jsonResponse = json.loads(response.read())
+            jsonResponse.sort(key=lambda x: calendar.timegm(dateutil.parser.parse(x['published_at']).utctimetuple()), reverse=True)
 
             for release in jsonResponse:
                 # Suppress pre releases
