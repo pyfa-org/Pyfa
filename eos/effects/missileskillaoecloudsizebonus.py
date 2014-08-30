@@ -5,11 +5,6 @@
 type = "passive"
 def handler(fit, container, context):
     level = container.level if "skill" in context else 1
-    fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill("Light Missiles") or \
-                                                mod.charge.requiresSkill("Rockets") or \
-                                                mod.charge.requiresSkill("Heavy Missiles") or \
-                                                mod.charge.requiresSkill("Heavy Assault Missiles") or \
-                                                mod.charge.requiresSkill("Cruise Missiles") or \
-                                                mod.charge.requiresSkill("Torpedoes"),
+    fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill("Missile Launcher Operation"),
                                     "aoeCloudSize", container.getModifiedItemAttr("aoeCloudSizeBonus") * level,
                                     stackingPenalties = False)
