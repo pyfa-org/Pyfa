@@ -105,7 +105,9 @@ class DamagePattern(object):
     EXPORT_FORMAT = "DamageProfile = %s,%d,%d,%d,%d\n"
     @classmethod
     def exportPatterns(cls, *patterns):
-        out = ""
+        out  = "# Exported from pyfa\n#\n"
+        out += "# Values are in following format:\n"
+        out += "# DamageProfile = [name],[EM amount],[Thermal amount],[Kinetic amount],[Explosive amount]\n\n"
         for dp in patterns:
             out += cls.EXPORT_FORMAT % (dp.name, dp.emAmount, dp.thermalAmount, dp.kineticAmount, dp.explosiveAmount)
 
