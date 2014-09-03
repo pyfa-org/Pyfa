@@ -28,6 +28,7 @@ from gui.utils.clipboard import toClipboard, fromClipboard
 ###########################################################################
 
 class DmgPatternEditorDlg (wx.Dialog):
+    DAMAGE_TYPES = ("em", "thermal", "kinetic", "explosive")
 
     def __init__(self, parent):
         wx.Dialog.__init__ (self, parent, id = wx.ID_ANY, title = u"Damage Pattern Editor", size = wx.Size( 400,240 ))
@@ -102,25 +103,26 @@ class DmgPatternEditorDlg (wx.Dialog):
         width = -1
         defSize = wx.Size(width,-1)
 
-        self.bmpEM = wx.StaticBitmap(self, wx.ID_ANY, self.embitmap)
-        dmgeditSizer.Add(self.bmpEM, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_RIGHT, 5)
-        self.editEm = IntCtrl(self, wx.ID_ANY, 0, wx.DefaultPosition, defSize)
-        dmgeditSizer.Add(self.editEm, 0, wx.BOTTOM | wx.TOP | wx.ALIGN_CENTER_VERTICAL, 5)
+        for i, type in enumerate(self.DAMAGE_TYPES):
+            bmp = wx.StaticBitmap(self, wx.ID_ANY, bitmapLoader.getBitmap("%s_big"%type, "icons"))
+            if i%2:
+                style = wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_RIGHT | wx. LEFT
+                border = 25
+            else:
+                style = wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_RIGHT
+                border = 5
 
-        self.bmpTHERM = wx.StaticBitmap(self, wx.ID_ANY, self.thermbitmap)
-        dmgeditSizer.Add(self.bmpTHERM, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_RIGHT | wx.LEFT, 25)
-        self.editThermal = IntCtrl(self, wx.ID_ANY, 0, wx.DefaultPosition, defSize, 0)
-        dmgeditSizer.Add(self.editThermal, 0, wx.BOTTOM | wx.TOP | wx.ALIGN_CENTER_VERTICAL, 5)
+            # set text edit
+            setattr(self, "%sEdit"%type, IntCtrl(self, wx.ID_ANY, 0, wx.DefaultPosition, defSize))
+            editObj = getattr(self, "%sEdit"%type)
 
-        self.bmpKIN = wx.StaticBitmap(self, wx.ID_ANY, self.kinbitmap)
-        dmgeditSizer.Add(self.bmpKIN, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_RIGHT, 5)
-        self.editKinetic = IntCtrl(self, wx.ID_ANY, 0, wx.DefaultPosition, defSize)
-        dmgeditSizer.Add(self.editKinetic, 0, wx.BOTTOM | wx.TOP | wx.ALIGN_CENTER_VERTICAL, 5)
+            dmgeditSizer.Add(bmp, 0, style, border)
+            dmgeditSizer.Add(editObj, 0, wx.BOTTOM | wx.TOP | wx.ALIGN_CENTER_VERTICAL, 5)
 
-        self.bmpEXP = wx.StaticBitmap(self, wx.ID_ANY, self.expbitmap)
-        dmgeditSizer.Add(self.bmpEXP, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_RIGHT | wx.LEFT, 25)
-        self.editExplosive = IntCtrl(self, wx.ID_ANY, 0, wx.DefaultPosition, defSize, 0)
-        dmgeditSizer.Add(self.editExplosive, 0, wx.BOTTOM | wx.TOP | wx.ALIGN_CENTER_VERTICAL, 5)
+            editObj.Bind(wx.EVT_TEXT, self.ValuesUpdated)
+            editObj.SetLimited(True)
+            editObj.SetMin(0)
+            editObj.SetMax(99999)
 
         contentSizer.Add(dmgeditSizer, 1, wx.EXPAND | wx.ALL, 5)
         self.slfooter = wx.StaticLine(self)
@@ -167,33 +169,12 @@ class DmgPatternEditorDlg (wx.Dialog):
         bsize = self.GetBestSize()
         self.SetSize((-1,bsize.height))
 
-        self.editEm.SetLimited(True)
-        self.editThermal.SetLimited(True)
-        self.editKinetic.SetLimited(True)
-        self.editExplosive.SetLimited(True)
-
-        self.editEm.SetMin(0)
-        self.editThermal.SetMin(0)
-        self.editKinetic.SetMin(0)
-        self.editExplosive.SetMin(0)
-
-        self.editEm.SetMax(99999)
-        self.editThermal.SetMax(99999)
-        self.editKinetic.SetMax(99999)
-        self.editExplosive.SetMax(99999)
-
-
         self.new.Bind(wx.EVT_BUTTON, self.newPattern)
         self.rename.Bind(wx.EVT_BUTTON, self.renamePattern)
         self.copy.Bind(wx.EVT_BUTTON, self.copyPattern)
         self.delete.Bind(wx.EVT_BUTTON, self.deletePattern)
         self.Import.Bind(wx.EVT_BUTTON, self.importPatterns)
         self.Export.Bind(wx.EVT_BUTTON, self.exportPatterns)
-
-        self.editEm.Bind(wx.EVT_TEXT, self.ValuesUpdated)
-        self.editThermal.Bind(wx.EVT_TEXT, self.ValuesUpdated)
-        self.editKinetic.Bind(wx.EVT_TEXT, self.ValuesUpdated)
-        self.editExplosive.Bind(wx.EVT_TEXT, self.ValuesUpdated)
 
         self.patternChanged()
 
@@ -205,16 +186,18 @@ class DmgPatternEditorDlg (wx.Dialog):
             return
 
         p = self.getActivePattern()
-        p.emAmount = self._EM = self.editEm.GetValue()
-        p.thermalAmount = self._THERM = self.editThermal.GetValue()
-        p.kineticAmount = self._KIN = self.editKinetic.GetValue()
-        p.explosiveAmount = self._EXP = self.editExplosive.GetValue()
-        total = self._EM + self._THERM + self._KIN + self._EXP
-        format = "EM: %d%%,    THERM: %d%%,    KIN: %d%%,    EXP: %d%%"
+        total = 0
+        for type in self.DAMAGE_TYPES:
+                editObj = getattr(self, "%sEdit"%type)
+                setattr(p, "%sAmount"%type, editObj.GetValue())
+                total += editObj.GetValue()
+
+        format = "EM: %d%%, THERM: %d%%, KIN: %d%%, EXP: %d%%"
+
         if total > 0:
-            ltext = format %(self._EM*100/total, self._THERM*100/total, self._KIN*100/total, self._EXP*100/total)
+            ltext = format % tuple(map(lambda attr: getattr(self, "%sEdit"%attr).GetValue()*100/total, self.DAMAGE_TYPES))
         else:
-            ltext = format %(0, 0, 0, 0)
+            ltext = format % (0, 0, 0, 0)
 
         self.stPercentages.SetLabel(ltext)
         self.totSizer.Layout()
@@ -225,18 +208,16 @@ class DmgPatternEditorDlg (wx.Dialog):
         service.DamagePattern.getInstance().saveChanges(p)
 
     def restrict(self):
-        self.editEm.Enable(False)
-        self.editExplosive.Enable(False)
-        self.editKinetic.Enable(False)
-        self.editThermal.Enable(False)
+        for type in self.DAMAGE_TYPES:
+            editObj = getattr(self, "%sEdit"%type)
+            editObj.Enable(False)
         self.rename.Enable(False)
         self.delete.Enable(False)
 
     def unrestrict(self):
-        self.editEm.Enable()
-        self.editExplosive.Enable()
-        self.editKinetic.Enable()
-        self.editThermal.Enable()
+        for type in self.DAMAGE_TYPES:
+            editObj = getattr(self, "%sEdit"%type)
+            editObj.Enable()
         self.rename.Enable()
         self.delete.Enable()
 
@@ -257,8 +238,9 @@ class DmgPatternEditorDlg (wx.Dialog):
             self.unrestrict()
 
         self.block = True
-        for field in ("em", "thermal", "kinetic", "explosive"):
-            edit = getattr(self, "edit%s" % field.capitalize())
+
+        for field in self.DAMAGE_TYPES:
+            edit = getattr(self, "%sEdit" % field)
             amount = getattr(p, "%sAmount" % field)
             edit.SetValue(amount)
 
@@ -271,6 +253,13 @@ class DmgPatternEditorDlg (wx.Dialog):
         self.choices.append(p)
         id = self.ccDmgPattern.Append(p.name)
         self.ccDmgPattern.SetSelection(id)
+
+        self.restrict()
+        # reset values
+        for type in self.DAMAGE_TYPES:
+            editObj = getattr(self, "%sEdit"%type)
+            editObj.SetValue(0)
+
         self.btnSave.SetLabel("Create")
         self.renamePattern()
 
@@ -301,7 +290,7 @@ class DmgPatternEditorDlg (wx.Dialog):
         p = self.getActivePattern()
         for pattern in self.choices:
             if pattern.name == newName and p != pattern:
-                self.stPercentages.SetLabel("Name already used, please pick another")
+                self.stPercentages.SetLabel("Name already used, please choose another")
                 return
 
         if newName == "":

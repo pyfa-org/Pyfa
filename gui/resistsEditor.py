@@ -320,7 +320,7 @@ class ResistsEditorDlg (wx.Dialog):
         # test for patterns of the same name
         for pattern in self.choices:
             if pattern.name == newName and p != pattern:
-                self.stNotice.SetLabel("Name already used, please pick another")
+                self.stNotice.SetLabel("Name already used, please choose another")
                 return
 
         # rename regardless of new or rename
