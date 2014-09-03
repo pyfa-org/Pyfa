@@ -22,6 +22,7 @@ import bitmapLoader
 import service
 from wx.lib.intctrl import IntCtrl
 from gui.utils.clipboard import toClipboard, fromClipboard
+from service.damagePattern import ImportError
 
 ###########################################################################
 ## Class DmgPatternEditorDlg
@@ -94,9 +95,9 @@ class DmgPatternEditorDlg (wx.Dialog):
         self.kinbitmap = bitmapLoader.getBitmap("kinetic_big", "icons")
         self.expbitmap = bitmapLoader.getBitmap("explosive_big", "icons")
 
-        dmgeditSizer = wx.FlexGridSizer(2, 4, 0, 2)
+        dmgeditSizer = wx.FlexGridSizer(2, 6, 0, 2)
         dmgeditSizer.AddGrowableCol(0)
-        dmgeditSizer.AddGrowableCol(3)
+        dmgeditSizer.AddGrowableCol(5)
         dmgeditSizer.SetFlexibleDirection(wx.BOTH)
         dmgeditSizer.SetNonFlexibleGrowMode(wx.FLEX_GROWMODE_SPECIFIED)
 
@@ -106,18 +107,20 @@ class DmgPatternEditorDlg (wx.Dialog):
         for i, type in enumerate(self.DAMAGE_TYPES):
             bmp = wx.StaticBitmap(self, wx.ID_ANY, bitmapLoader.getBitmap("%s_big"%type, "icons"))
             if i%2:
-                style = wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_RIGHT | wx. LEFT
-                border = 25
+                style = wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_RIGHT | wx.LEFT
+                border = 10
             else:
                 style = wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_RIGHT
                 border = 5
 
             # set text edit
             setattr(self, "%sEdit"%type, IntCtrl(self, wx.ID_ANY, 0, wx.DefaultPosition, defSize))
+            setattr(self, "%sPerc"%type, wx.StaticText(self, wx.ID_ANY, u"0%"))
             editObj = getattr(self, "%sEdit"%type)
 
             dmgeditSizer.Add(bmp, 0, style, border)
             dmgeditSizer.Add(editObj, 0, wx.BOTTOM | wx.TOP | wx.ALIGN_CENTER_VERTICAL, 5)
+            dmgeditSizer.Add(getattr(self, "%sPerc"%type), 0,  wx.LEFT | wx.ALIGN_CENTER_VERTICAL, 5)
 
             editObj.Bind(wx.EVT_TEXT, self.ValuesUpdated)
             editObj.SetLimited(True)
@@ -131,9 +134,9 @@ class DmgPatternEditorDlg (wx.Dialog):
         footerSizer = wx.BoxSizer(wx.HORIZONTAL)
         perSizer = wx.BoxSizer(wx.VERTICAL)
 
-        self.stPercentages = wx.StaticText(self, wx.ID_ANY, u"")
-        self.stPercentages.Wrap(-1)
-        perSizer.Add(self.stPercentages, 0, wx.BOTTOM | wx.TOP | wx.LEFT, 5)
+        self.stNotice = wx.StaticText(self, wx.ID_ANY, u"")
+        self.stNotice.Wrap(-1)
+        perSizer.Add(self.stNotice, 0, wx.BOTTOM | wx.TOP | wx.LEFT, 5)
 
         footerSizer.Add(perSizer, 1,  wx.ALIGN_CENTER_VERTICAL, 5)
 
@@ -186,20 +189,13 @@ class DmgPatternEditorDlg (wx.Dialog):
             return
 
         p = self.getActivePattern()
-        total = 0
+        total = sum(map(lambda attr: getattr(self, "%sEdit"%attr).GetValue(), self.DAMAGE_TYPES))
         for type in self.DAMAGE_TYPES:
                 editObj = getattr(self, "%sEdit"%type)
+                percObj = getattr(self, "%sPerc"%type)
                 setattr(p, "%sAmount"%type, editObj.GetValue())
-                total += editObj.GetValue()
+                percObj.SetLabel("%.1f%%"%(float(editObj.GetValue())*100/total if total > 0 else 0))
 
-        format = "EM: %d%%, THERM: %d%%, KIN: %d%%, EXP: %d%%"
-
-        if total > 0:
-            ltext = format % tuple(map(lambda attr: getattr(self, "%sEdit"%attr).GetValue()*100/total, self.DAMAGE_TYPES))
-        else:
-            ltext = format % (0, 0, 0, 0)
-
-        self.stPercentages.SetLabel(ltext)
         self.totSizer.Layout()
 
         if event is not None:
@@ -229,6 +225,7 @@ class DmgPatternEditorDlg (wx.Dialog):
 
     def patternChanged(self, event=None):
         p = self.getActivePattern()
+
         if p is None:
             return
 
@@ -285,16 +282,16 @@ class DmgPatternEditorDlg (wx.Dialog):
 
     def processRename(self, event):
         newName = self.namePicker.GetLineText(0)
-        self.stPercentages.SetLabel("")
+        self.stNotice.SetLabel("")
 
         p = self.getActivePattern()
         for pattern in self.choices:
             if pattern.name == newName and p != pattern:
-                self.stPercentages.SetLabel("Name already used, please choose another")
+                self.stNotice.SetLabel("Name already used, please choose another")
                 return
 
         if newName == "":
-            self.stPercentages.SetLabel("Invalid name.")
+            self.stNotice.SetLabel("Invalid name.")
             return
 
         sDP = service.DamagePattern.getInstance()
@@ -338,16 +335,42 @@ class DmgPatternEditorDlg (wx.Dialog):
     def __del__( self ):
         pass
 
+    def updateChoices(self):
+        "Gathers list of patterns and updates choice selections"
+        sDP = service.DamagePattern.getInstance()
+        self.choices = sDP.getDamagePatternList()
+
+        for dp in self.choices:
+            if dp.name == "Selected Ammo":  # don't include this special butterfly
+                self.choices.remove(dp)
+
+        # Sort the remaining list and continue on
+        self.choices.sort(key=lambda p: p.name)
+        self.ccDmgPattern.Clear()
+
+        for choice in map(lambda p: p.name, self.choices):
+            self.ccDmgPattern.Append(choice)
+
+        self.ccDmgPattern.SetSelection(0)
+        self.patternChanged()
+
     def importPatterns(self, event):
         text = fromClipboard()
         if text:
             sDP = service.DamagePattern.getInstance()
-            sDP.importPatterns(text)
-            self.stPercentages.SetLabel("Patterns imported from clipboard")
+            try:
+                sDP.importPatterns(text)
+                self.stNotice.SetLabel("Patterns successfully imported from clipboard")
+            except service.damagePattern.ImportError, e:
+                self.stNotice.SetLabel(str(e))
+            except Exception, e:
+                self.stNotice.SetLabel("Could not import from clipboard: unknown errors")
+            finally:
+                self.updateChoices()
         else:
-            self.stPercentages.SetLabel("Could not import from clipboard")
+            self.stNotice.SetLabel("Could not import from clipboard")
 
     def exportPatterns(self, event):
         sDP = service.DamagePattern.getInstance()
         toClipboard( sDP.exportPatterns() )
-        self.stPercentages.SetLabel("Patterns exported to clipboard")
+        self.stNotice.SetLabel("Patterns exported to clipboard")

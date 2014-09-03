@@ -51,7 +51,6 @@ class TargetResists(object):
 
             numPatterns += 1
             name, data = data[0], data[1:5]
-            #print name, data
             fields = {}
 
             for index, val in enumerate(data):

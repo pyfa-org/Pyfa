@@ -56,7 +56,7 @@ class ResistsEditorDlg (wx.Dialog):
         self.btnSave.Bind(wx.EVT_BUTTON, self.processRename)
 
         size = None
-        headerSizer.Add(self.ccResists, 1, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT|wx.LEFT, 3)
+        headerSizer.Add(self.ccResists, 1, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT | wx.LEFT, 3)
 
         buttons = (("new", wx.ART_NEW),
                    ("rename", bitmapLoader.getBitmap("rename", "icons")),
@@ -95,7 +95,7 @@ class ResistsEditorDlg (wx.Dialog):
 
         for i, type in enumerate(self.DAMAGE_TYPES):
             if i%2:
-                style = wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_RIGHT | wx. LEFT
+                style = wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_RIGHT | wx.LEFT
                 border = 25
             else:
                 style = wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_RIGHT
@@ -197,7 +197,6 @@ class ResistsEditorDlg (wx.Dialog):
                 # if everything checks out, set resist attribute
                 setattr(p, "%sAmount"%type, value/100)
 
-            self.stNotice.SetLabel("")
             self.totSizer.Layout()
 
             if event is not None:

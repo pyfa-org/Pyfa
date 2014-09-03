@@ -69,23 +69,40 @@ class DamagePattern(object):
     def importPatterns(cls, text):
         lines = re.split('[\n\r]+', text)
         patterns = []
+        numPatterns = 0
         for line in lines:
-            line = line.split('#',1)[0] # allows for comments
-            name, data = line.rsplit('=',1)
-            name, data = name.strip(), ''.join(data.split()) # whitespace
+            try:
+                if line.strip()[0] == "#":  # comments
+                    continue
+                line = line.split('#',1)[0]  # allows for comments
+                type, data = line.rsplit('=',1)
+                type, data = type.strip(), data.split(',')
+            except:
+                # Data isn't in correct format, continue to next line
+                continue
 
+            if type != "DamageProfile":
+                continue
+
+            numPatterns += 1
+            name, data = data[0], data[1:5]
             fields = {}
-            for entry in data.split(','):
-                key, val = entry.split(':')
-                fields["%sAmount" % cls.importMap[key.lower()]] = float(val)
 
-            if len(fields) > 0: # Avoid possible blank lines
+            for index, val in enumerate(data):
+                try:
+                    fields["%sAmount" % cls.DAMAGE_TYPES[index]] = int(val)
+                except:
+                    continue
+
+            if len(fields) == 4: # Avoid possible blank lines
+                print name, fields
                 pattern = DamagePattern(**fields)
-                pattern.name = name
+                pattern.name = name.strip()
                 patterns.append(pattern)
-        return patterns
 
-    EXPORT_FORMAT = "%s = EM:%d, Therm:%d, Kin:%d, Exp:%d\n"
+        return patterns, numPatterns
+
+    EXPORT_FORMAT = "DamageProfile = %s,%d,%d,%d,%d\n"
     @classmethod
     def exportPatterns(cls, *patterns):
         out = ""
