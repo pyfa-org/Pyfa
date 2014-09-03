@@ -310,28 +310,21 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     def damageStats(self, targetResists):
         if self.__dps == None:
-            if self.isEmpty:
-                self.__dps = 0
-                self.__volley = 0
-            else:
-                if self.state >= State.ACTIVE:
-                    if self.charge:
-                        func = self.getModifiedChargeAttr
-                    else:
-                        func = self.getModifiedItemAttr
+            self.__dps = 0
+            self.__volley = 0
 
-                    volley = sum(map(lambda attr: (func("%sDamage"%attr) or 0) * (1-getattr(targetResists, "%sAmount"%attr, 0)), self.DAMAGE_TYPES))
-                    volley *= self.getModifiedItemAttr("damageMultiplier") or 1
-                    if volley:
-                        cycleTime = self.cycleTime
-                        self.__volley = volley
-                        self.__dps = volley / (cycleTime / 1000.0)
-                    else:
-                        self.__volley = 0
-                        self.__dps = 0
+            if not self.isEmpty and self.state >= State.ACTIVE:
+                if self.charge:
+                    func = self.getModifiedChargeAttr
                 else:
-                    self.__volley = 0
-                    self.__dps = 0
+                    func = self.getModifiedItemAttr
+
+                volley = sum(map(lambda attr: (func("%sDamage"%attr) or 0) * (1-getattr(targetResists, "%sAmount"%attr, 0)), self.DAMAGE_TYPES))
+                volley *= self.getModifiedItemAttr("damageMultiplier") or 1
+                if volley:
+                    cycleTime = self.cycleTime
+                    self.__volley = volley
+                    self.__dps = volley / (cycleTime / 1000.0)
 
         return self.__dps, self.__volley
 
@@ -355,11 +348,11 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     @property
     def dps(self):
-        return self.damageStats[0]
+        return self.damageStats(None)[0]
 
     @property
     def volley(self):
-        return self.damageStats[1]
+        return self.damageStats(None)[1]
 
     @property
     def reloadTime(self):

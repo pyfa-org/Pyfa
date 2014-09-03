@@ -827,7 +827,7 @@ class Fit(object):
             weaponVolley += volley
 
         for drone in self.drones:
-            droneDPS += drone.dps
+            droneDPS += drone.damageStats(self.targetResists)
 
         self.__weaponDPS = weaponDPS
         self.__weaponVolley = weaponVolley
