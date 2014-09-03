@@ -34,17 +34,22 @@ class TargetResists(object):
     def importPatterns(cls, text):
         lines = re.split('[\n\r]+', text)
         patterns = []
-
+        numPatterns = 0
         for line in lines:
-            if line.strip()[0] == "#":  # comments
+            try:
+                if line.strip()[0] == "#":  # comments
+                    continue
+                line = line.split('#',1)[0]  # allows for comments
+                type, data = line.rsplit('=',1)
+                type, data = type.strip(), data.split(',')
+            except:
+                # Data isn't in correct format, continue to next line
                 continue
-            line = line.split('#',1)[0]  # allows for comments
-            type, data = line.rsplit('=',1)
-            type, data = type.strip(), data.split(',')
 
-            #if type != "TargetResists":
-                #continue
+            if type != "TargetResists":
+                continue
 
+            numPatterns += 1
             name, data = data[0], data[1:5]
             #print name, data
             fields = {}
@@ -63,7 +68,7 @@ class TargetResists(object):
                 pattern.name = name.strip()
                 patterns.append(pattern)
 
-        return patterns
+        return patterns, numPatterns
 
     EXPORT_FORMAT = "TargetResists = %s,%.1f,%.1f,%.1f,%.1f\n"
     @classmethod

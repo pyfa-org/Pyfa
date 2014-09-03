@@ -21,6 +21,7 @@ import wx
 import bitmapLoader
 import service
 from gui.utils.clipboard import toClipboard, fromClipboard
+from service.targetResists import ImportError
 
 class ResistsEditorDlg (wx.Dialog):
 
@@ -168,10 +169,14 @@ class ResistsEditorDlg (wx.Dialog):
         self.Destroy()
 
     def ValuesUpdated(self, event=None):
+        '''
+        Event that is fired when resists values change. Iterates through all
+        resist edit fields. If blank, sets it to 0.0. If it is not a proper
+        decimal value, sets text color to red and refuses to save changes until
+        issue is resolved
+        '''
         if self.block:
             return
-        if event is not None:
-             print event.GetString()
 
         try:
             p = self.getActivePattern()
@@ -181,7 +186,7 @@ class ResistsEditorDlg (wx.Dialog):
 
                 if editObj.GetValue() == "":
                     # if we are blank, overwrite with 0
-                    editObj.ChangeValue("0")
+                    editObj.ChangeValue("0.0")
                     editObj.SetInsertionPointEnd()
 
                 value = float(editObj.GetValue())
@@ -208,8 +213,8 @@ class ResistsEditorDlg (wx.Dialog):
         except AssertionError:
             event.EventObject.SetForegroundColour(wx.RED)
             self.stNotice.SetLabel("Incorrect Range (must be 0-100)")
-        finally:
-            self.Refresh()  # Refresh for color changes to take effect immediately
+        finally:  # Refresh for color changes to take effect immediately
+            self.Refresh()
 
     def restrict(self):
         for type in self.DAMAGE_TYPES:
@@ -232,11 +237,16 @@ class ResistsEditorDlg (wx.Dialog):
         return self.choices[self.ccResists.GetSelection()]
 
     def patternChanged(self, event=None):
+        "Event fired when user selects pattern. Can also be called from script"
         p = self.getActivePattern()
         if p is None:
+            # This happens when there are no patterns in the DB. As such, force
+            # user to create one first or exit dlg.
+            self.newPattern(None)
             return
 
         self.block = True
+        # Set new values
         for field in self.DAMAGE_TYPES:
             edit = getattr(self, "%sEdit" % field)
             amount = getattr(p, "%sAmount" % field)*100
@@ -245,32 +255,35 @@ class ResistsEditorDlg (wx.Dialog):
         self.block = False
         self.ValuesUpdated()
 
-    def newPattern(self,event):
-        sTR = service.TargetResists.getInstance()
-        p = sTR.newPattern()
-        self.choices.append(p)
-        id = self.ccResists.Append(p.name)
-        self.ccResists.SetSelection(id)
+    def newPattern(self, event):
+        '''
+        Simply does new-pattern specifics: replaces label on button, restricts,
+        and resets values to default. Hands off to the rename function for
+        further handling.
+        '''
         self.btnSave.SetLabel("Create")
-
+        self.restrict()
         # reset values
         for type in self.DAMAGE_TYPES:
             editObj = getattr(self, "%sEdit"%type)
-            editObj.ChangeValue("0")
+            editObj.ChangeValue("0.0")
             editObj.SetForegroundColour(wx.NullColor)
 
         self.Refresh()
         self.renamePattern()
 
-    def renamePattern(self,event=None):
-        if event is not None:
-            self.btnSave.SetLabel("Rename")
+    def renamePattern(self, event=None):
+        "Changes layout to facilitate naming a pattern"
 
         self.ccResists.Hide()
         self.namePicker.Show()
         self.headerSizer.Replace(self.ccResists, self.namePicker)
         self.namePicker.SetFocus()
-        self.namePicker.SetValue(self.getActivePattern().name)
+        if event is not None:  # Rename mode
+            self.btnSave.SetLabel("Rename")
+            self.namePicker.SetValue(self.getActivePattern().name)
+        else:  # Create mode
+            self.namePicker.SetValue("")
 
         for btn in (self.new, self.rename, self.delete, self.copy):
             btn.Hide()
@@ -283,22 +296,37 @@ class ResistsEditorDlg (wx.Dialog):
             event.Skip()
 
     def processRename(self, event):
+        '''
+        Processes rename event (which can be new or old patterns). If new
+        pattern, creates it; if old, selects it. if checks are valid, rename
+        saves pattern to DB.
+
+        Also resets to default layout and unrestricts.
+        '''
         newName = self.namePicker.GetLineText(0)
         self.stNotice.SetLabel("")
-
-        p = self.getActivePattern()
-        for pattern in self.choices:
-            if pattern.name == newName and p != pattern:
-                self.stNotice.SetLabel("Name already used, please pick another")
-                return
 
         if newName == "":
             self.stNotice.SetLabel("Invalid name")
             return
 
         sTR = service.TargetResists.getInstance()
+        if event.EventObject.Label == "Create":
+            p = sTR.newPattern()
+        else:
+            # we are renaming, so get the current selection
+            p = self.getActivePattern()
+
+        # test for patterns of the same name
+        for pattern in self.choices:
+            if pattern.name == newName and p != pattern:
+                self.stNotice.SetLabel("Name already used, please pick another")
+                return
+
+        # rename regardless of new or rename
         sTR.renamePattern(p, newName)
 
+        self.updateChoices()
         self.headerSizer.Replace(self.namePicker, self.ccResists)
         self.ccResists.Show()
         self.namePicker.Hide()
@@ -309,9 +337,6 @@ class ResistsEditorDlg (wx.Dialog):
             btn.Show()
 
         sel = self.ccResists.GetSelection()
-        self.ccResists.Delete(sel)
-        self.ccResists.Insert(newName, sel)
-        self.ccResists.SetSelection(sel)
         self.ValuesUpdated()
         self.unrestrict()
 
@@ -337,17 +362,41 @@ class ResistsEditorDlg (wx.Dialog):
     def __del__( self ):
         pass
 
+    def updateChoices(self):
+        "Gathers list of patterns and updates choice selections"
+        sTR = service.TargetResists.getInstance()
+        self.choices = sTR.getTargetResistsList()
+
+        # Sort the remaining list and continue on
+        self.choices.sort(key=lambda p: p.name)
+        self.ccResists.Clear()
+
+        for choice in map(lambda p: p.name, self.choices):
+            self.ccResists.Append(choice)
+        self.ccResists.SetSelection(0)
+        self.patternChanged()
+
     def importPatterns(self, event):
+        "Event fired when import from clipboard button is clicked"
+
         text = fromClipboard()
         if text:
             sTR = service.TargetResists.getInstance()
-            # @todo: fix return value and use that to determine label
-            sTR.importPatterns(text)
-            self.stNotice.SetLabel("Patterns imported from clipboard")
+            try:
+                sTR.importPatterns(text)
+                self.stNotice.SetLabel("Patterns successfully imported from clipboard")
+            except service.targetResists.ImportError, e:
+                self.stNotice.SetLabel(str(e))
+            except Exception, e:
+                self.stNotice.SetLabel("Could not import from clipboard: unknown errors")
+            finally:
+                self.updateChoices()
         else:
             self.stNotice.SetLabel("Could not import from clipboard")
 
     def exportPatterns(self, event):
+        "Event fired when export to clipboard button is clicked"
+
         sTR = service.TargetResists.getInstance()
         toClipboard( sTR.exportPatterns() )
         self.stNotice.SetLabel("Patterns exported to clipboard")

@@ -21,6 +21,9 @@ import eos.db
 import eos.types
 import copy
 
+class ImportError(Exception):
+    pass
+
 class TargetResists():
     instance = None
     @classmethod
@@ -30,13 +33,6 @@ class TargetResists():
 
         return cls.instance
 
-    def __init__(self):
-        uniform = eos.db.getTargetResists("None")
-        if uniform is None:
-            uniform = eos.types.TargetResists(0,0,0,0)
-            uniform.name = "None"
-            eos.db.save(uniform)
-
     def getTargetResistsList(self):
         return eos.db.getTargetResistsList()
 
@@ -45,7 +41,7 @@ class TargetResists():
         return eos.db.getTargetResists(name)
 
     def newPattern(self):
-        p = eos.types.TargetResists(0, 0, 0, 0)
+        p = eos.types.TargetResists(0.0, 0.0, 0.0, 0.0)
         p.name = ""
         return p
 
@@ -69,24 +65,24 @@ class TargetResists():
         current = self.getTargetResistsList()
         for pattern in current:
             lookup[pattern.name] = pattern
-        try:
-            imports = eos.types.TargetResists.importPatterns(text)
-            for pattern in imports:
-                if pattern.name in lookup:
-                    match = lookup[pattern.name]
-                    match.__dict__.update(pattern.__dict__)
-                else:
-                    eos.db.save(pattern)
-            eos.db.commit()
-        except:
-            pass
+
+        imports, num = eos.types.TargetResists.importPatterns(text)
+        for pattern in imports:
+            if pattern.name in lookup:
+                match = lookup[pattern.name]
+                match.__dict__.update(pattern.__dict__)
+            else:
+                eos.db.save(pattern)
+        eos.db.commit()
+
+        lenImports = len(imports)
+        if lenImports == 0:
+            raise ImportError("No patterns found for import")
+        if lenImports != num:
+            raise ImportError("%d patterns imported from clipboard; %d had errors"%(num, num-lenImports))
 
     def exportPatterns(self):
         patterns = self.getTargetResistsList()
-        for i in xrange(len(patterns) - 1, -1, -1):
-            if patterns[i].name in ("None"):
-                del patterns[i]
-
         patterns.sort(key=lambda p: p.name)
         return eos.types.TargetResists.exportPatterns(*patterns)
 
