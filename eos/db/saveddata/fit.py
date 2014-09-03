@@ -26,10 +26,11 @@ from eos.db.saveddata.module import modules_table
 from eos.db.saveddata.drone import drones_table
 from eos.db.saveddata.cargo import cargo_table
 from eos.db.saveddata.implant import fitImplants_table
-from eos.types import Fit, Module, User, Booster, Drone, Cargo, Implant, Character, DamagePattern
+from eos.types import Fit, Module, User, Booster, Drone, Cargo, Implant, Character, DamagePattern, TargetResists
 from eos.effectHandlerHelpers import HandledModuleList, HandledDroneList, \
 HandledImplantBoosterList, HandledProjectedModList, HandledProjectedDroneList, \
 HandledProjectedFitList, HandledCargoList
+
 fits_table = Table("fits", saveddata_meta,
                          Column("ID", Integer, primary_key = True),
                          Column("ownerID", ForeignKey("users.ID"), nullable = True, index = True),
@@ -38,7 +39,8 @@ fits_table = Table("fits", saveddata_meta,
                          Column("timestamp", Integer, nullable = False),
                          Column("characterID", ForeignKey("characters.ID"), nullable = True),
                          Column("damagePatternID", ForeignKey("damagePatterns.ID"), nullable=True),
-                         Column("booster", Boolean, nullable = False, index = True, default = 0))
+                         Column("booster", Boolean, nullable = False, index = True, default = 0),
+                         Column("targetResistsID", ForeignKey("targetResists.ID"), nullable=True))
 
 projectedFits_table = Table("projectedFits", saveddata_meta,
                             Column("sourceID", ForeignKey("fits.ID"), primary_key = True),
@@ -64,6 +66,7 @@ mapper(Fit, fits_table,
                                                  secondary = fitImplants_table),
                      "_Fit__character" : relation(Character, backref = "fits"),
                      "_Fit__damagePattern" : relation(DamagePattern),
+                     "_Fit__targetResists" : relation(TargetResists),
                      "_Fit__projectedFits" : relation(Fit,
                                                       primaryjoin = projectedFits_table.c.victimID == fits_table.c.ID,
                                                       secondaryjoin = fits_table.c.ID == projectedFits_table.c.sourceID,

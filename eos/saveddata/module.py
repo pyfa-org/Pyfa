@@ -44,7 +44,7 @@ class Hardpoint(Enum):
 
 class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     """An instance of this class represents a module together with its charge and modified attributes"""
-    DAMAGE_ATTRIBUTES = ("emDamage", "kineticDamage", "explosiveDamage", "thermalDamage")
+    DAMAGE_TYPES = ("em", "thermal", "kinetic", "explosive")
     MINING_ATTRIBUTES = ("miningAmount", )
 
     def __init__(self, item):
@@ -308,8 +308,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
         self.__itemModifiedAttributes.clear()
 
-    @property
-    def damageStats(self):
+    def damageStats(self, targetResists):
         if self.__dps == None:
             if self.isEmpty:
                 self.__dps = 0
@@ -317,9 +316,11 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             else:
                 if self.state >= State.ACTIVE:
                     if self.charge:
-                        volley = sum(map(lambda attr: self.getModifiedChargeAttr(attr) or 0, self.DAMAGE_ATTRIBUTES))
+                        func = self.getModifiedChargeAttr
                     else:
-                        volley = sum(map(lambda attr: self.getModifiedItemAttr(attr) or 0, self.DAMAGE_ATTRIBUTES))
+                        func = self.getModifiedItemAttr
+
+                    volley = sum(map(lambda attr: (func("%sDamage"%attr) or 0) * (1-getattr(targetResists, "%sAmount"%attr, 0)), self.DAMAGE_TYPES))
                     volley *= self.getModifiedItemAttr("damageMultiplier") or 1
                     if volley:
                         cycleTime = self.cycleTime

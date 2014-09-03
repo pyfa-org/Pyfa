@@ -19,7 +19,7 @@
 
 from eos.db.util import processEager, processWhere
 from eos.db import saveddata_session, sd_lock
-from eos.types import User, Character, Fit, Price, DamagePattern, Fleet, MiscData, Wing, Squad
+from eos.types import User, Character, Fit, Price, DamagePattern, Fleet, MiscData, Wing, Squad, TargetResists
 from eos.db.saveddata.fleet import squadmembers_table
 from eos.db.saveddata.fit import projectedFits_table
 from sqlalchemy.sql import and_
@@ -322,6 +322,12 @@ def getDamagePatternList(eager=None):
         patterns = saveddata_session.query(DamagePattern).options(*eager).all()
     return patterns
 
+def getTargetResistsList(eager=None):
+    eager = processEager(eager)
+    with sd_lock:
+        patterns = saveddata_session.query(TargetResists).options(*eager).all()
+    return patterns
+
 @cachedQuery(DamagePattern, 1, "lookfor")
 def getDamagePattern(lookfor, eager=None):
     if isinstance(lookfor, int):
@@ -336,6 +342,24 @@ def getDamagePattern(lookfor, eager=None):
         eager = processEager(eager)
         with sd_lock:
             pattern = saveddata_session.query(DamagePattern).options(*eager).filter(DamagePattern.name == lookfor).first()
+    else:
+        raise TypeError("Need integer or string as argument")
+    return pattern
+
+@cachedQuery(TargetResists, 1, "lookfor")
+def getTargetResists(lookfor, eager=None):
+    if isinstance(lookfor, int):
+        if eager is None:
+            with sd_lock:
+                pattern = saveddata_session.query(TargetResists).get(lookfor)
+        else:
+            eager = processEager(eager)
+            with sd_lock:
+                pattern = saveddata_session.query(TargetResists).options(*eager).filter(TargetResists.ID == lookfor).first()
+    elif isinstance(lookfor, basestring):
+        eager = processEager(eager)
+        with sd_lock:
+            pattern = saveddata_session.query(TargetResists).options(*eager).filter(TargetResists.name == lookfor).first()
     else:
         raise TypeError("Need integer or string as argument")
     return pattern
@@ -361,7 +385,7 @@ def getSquadsIDsWithFitID(fitID):
             return squads
     else:
         raise TypeError("Need integer as argument")
-        
+
 def getProjectedFits(fitID):
     if isinstance(fitID, int):
         with sd_lock:
@@ -369,7 +393,7 @@ def getProjectedFits(fitID):
             fits = saveddata_session.query(Fit).filter(filter).all()
             return fits
     else:
-        raise TypeError("Need integer as argument")        
+        raise TypeError("Need integer as argument")
 
 def add(stuff):
     with sd_lock:

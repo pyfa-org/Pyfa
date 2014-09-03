@@ -40,13 +40,20 @@ class FirepowerViewFull(StatsView):
     def populatePanel(self, contentPanel, headerPanel):
         contentSizer = contentPanel.GetSizer()
         parent = self.panel = contentPanel
+
         self.headerPanel = headerPanel
+        headerContentSizer = wx.BoxSizer(wx.HORIZONTAL)
+        hsizer = headerPanel.GetSizer()
+        hsizer.Add(headerContentSizer,0,0,0)
+        self.stEff = wx.StaticText(headerPanel, wx.ID_ANY, "( Effective )")
+        headerContentSizer.Add(self.stEff)
+        headerPanel.GetParent().AddToggleItem(self.stEff)
 
         panel = "full"
 
         sizerFirepower = wx.FlexGridSizer(1, 4)
         sizerFirepower.AddGrowableCol(1)
-        
+
         contentSizer.Add( sizerFirepower, 0, wx.EXPAND, 0)
 
         counter = 0
@@ -129,6 +136,10 @@ class FirepowerViewFull(StatsView):
 
     def refreshPanel(self, fit):
         #If we did anything intresting, we'd update our labels to reflect the new fit's stats here
+        if fit is not None and fit.targetResists is not None:
+            self.stEff.Show()
+        else:
+            self.stEff.Hide()
 
         stats = (("labelFullDpsWeapon", lambda: fit.weaponDPS, 3, 0, 0, "%s DPS",None),
                  ("labelFullDpsDrone", lambda: fit.droneDPS, 3, 0, 0, "%s DPS", None),

@@ -100,6 +100,17 @@ class Fit(object):
         self.ship = Ship(db.getItem(self.shipID)) if self.shipID is not None else None
 
     @property
+    def targetResists(self):
+        return self.__targetResists
+
+    @targetResists.setter
+    def targetResists(self, targetResists):
+        self.__targetResists = targetResists
+        self.__weaponDPS = None
+        self.__weaponVolley = None
+        self.__droneDPS = None
+
+    @property
     def damagePattern(self):
         return self.__damagePattern
 
@@ -809,9 +820,9 @@ class Fit(object):
         weaponDPS = 0
         droneDPS = 0
         weaponVolley = 0
-
+        print "calc weapons with: %s"%self.targetResists
         for mod in self.modules:
-            dps, volley = mod.damageStats
+            dps, volley = mod.damageStats(self.targetResists)
             weaponDPS += dps
             weaponVolley += volley
 
@@ -838,6 +849,7 @@ class Fit(object):
         copy.ship = deepcopy(self.ship, memo)
         copy.name = "%s copy" % self.name
         copy.damagePattern = self.damagePattern
+        copy.targetResists = self.targetResists
 
         toCopy = ("modules", "drones", "implants", "boosters", "projectedModules", "projectedDrones")
         for name in toCopy:

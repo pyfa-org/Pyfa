@@ -83,6 +83,7 @@ class Fit(object):
 
     def __init__(self):
         self.pattern = DamagePattern.getInstance().getDamagePattern("Uniform")
+        self.targetResists = None
         self.character = Character.getInstance().all5()
         self.booster = False
         self.dirtyFitIDs = set()
@@ -148,6 +149,7 @@ class Fit(object):
         fit.ship = eos.types.Ship(eos.db.getItem(shipID))
         fit.name = name if name is not None else "New %s" % fit.ship.item.name
         fit.damagePattern = self.pattern
+        fit.targetResists = self.targetResists
         fit.character = self.character
         fit.booster = self.booster
         eos.db.save(fit)
@@ -683,6 +685,23 @@ class Fit(object):
 
         self.recalc(fit)
 
+    def getTargetResists(self, fitID):
+        if fitID is None:
+            return
+
+        fit = eos.db.getFit(fitID)
+        return fit.targetResists
+
+    def setTargetResists(self, fitID, pattern):
+        if fitID is None:
+            return
+        print "Set target resists: %s"%pattern
+        fit = eos.db.getFit(fitID)
+        fit.targetResists = pattern
+        eos.db.commit()
+
+        self.recalc(fit)
+
     def getDamagePattern(self, fitID):
         if fitID is None:
             return
@@ -760,6 +779,7 @@ class Fit(object):
         for fit in fits:
             fit.character = self.character
             fit.damagePattern = self.pattern
+            fit.targetResists = self.targetResists
         return fits
 
     def importFitFromBuffer(self, bufferStr, activeFit=None):
@@ -767,6 +787,7 @@ class Fit(object):
         for fit in fits:
             fit.character = self.character
             fit.damagePattern = self.pattern
+            fit.targetResists = self.targetResists
         return fits
 
     def saveImportedFits(self, fits):

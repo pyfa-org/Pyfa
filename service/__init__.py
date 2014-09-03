@@ -3,6 +3,7 @@ from service.fit import Fit
 from service.attribute import Attribute
 from service.character import Character
 from service.damagePattern import DamagePattern
+from service.targetResists import TargetResists
 from service.settings import SettingsProvider
 from service.fleet import Fleet
 from service.update import Update

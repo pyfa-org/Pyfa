@@ -28,6 +28,7 @@ class MainMenuBar(wx.MenuBar):
     def __init__(self):
         self.characterEditorId = wx.NewId()
         self.damagePatternEditorId = wx.NewId()
+        self.targetResistsEditorId = wx.NewId()
         self.graphFrameId = wx.NewId()
         self.backupFitsId = wx.NewId()
         self.exportSkillsNeededId = wx.NewId()
@@ -81,6 +82,10 @@ class MainMenuBar(wx.MenuBar):
         damagePatternEditItem = wx.MenuItem(windowMenu, self.damagePatternEditorId, "Damage Pattern Editor\tCTRL+D")
         damagePatternEditItem.SetBitmap(bitmapLoader.getBitmap("damagePattern_small", "icons"))
         windowMenu.AppendItem(damagePatternEditItem)
+
+        targetResistsEditItem = wx.MenuItem(windowMenu, self.targetResistsEditorId, "Target Resists Editor\tCTRL+R")
+        targetResistsEditItem.SetBitmap(bitmapLoader.getBitmap("explosive_big", "icons"))
+        windowMenu.AppendItem(targetResistsEditItem)
 
         graphFrameItem = wx.MenuItem(windowMenu, self.graphFrameId, "Graphs\tCTRL+G")
         graphFrameItem.SetBitmap(bitmapLoader.getBitmap("graphs_small", "icons"))
