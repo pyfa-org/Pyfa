@@ -4,5 +4,4 @@ runTime = "early"
 type = ("projected", "offline")
 def handler(fit, beacon, context):
     fit.modules.filteredChargeMultiply(lambda mod: mod.charge.requiresSkill("Light Missiles"),
-                                       "kineticDamage", beacon.getModifiedItemAttr("smallWeaponDamageMultiplier"),
-                                       stackingPenalties = True)
+                                       "kineticDamage", beacon.getModifiedItemAttr("smallWeaponDamageMultiplier"))
