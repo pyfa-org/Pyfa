@@ -5,4 +5,4 @@ type = ("projected", "offline")
 def handler(fit, beacon, context):
     fit.modules.filteredChargeMultiply(lambda mod: mod.charge.requiresSkill("Rockets"),
                                        "thermalDamage", beacon.getModifiedItemAttr("smallWeaponDamageMultiplier"),
-                                       stackingPenalties = True)
+                                       stackingPenalties=True, penaltyGroup="postMul")

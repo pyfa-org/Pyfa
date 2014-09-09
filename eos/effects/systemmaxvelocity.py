@@ -3,4 +3,4 @@
 runTime = "early"
 type = ("projected", "offline")
 def handler(fit, beacon, context):
-    fit.ship.multiplyItemAttr("maxVelocity", beacon.getModifiedItemAttr("maxVelocityMultiplier"), stackingPenalties = True, penaltyGroup="postMul")
+    fit.ship.multiplyItemAttr("maxVelocity", beacon.getModifiedItemAttr("maxVelocityMultiplier"), stackingPenalties=True, penaltyGroup="postMul")

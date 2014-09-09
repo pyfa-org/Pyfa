@@ -5,4 +5,4 @@ type = ("projected", "offline")
 def handler(fit, beacon, context):
     fit.modules.filteredItemMultiply(lambda mod: mod.item.requiresSkill("Target Painting"),
                                      "signatureRadiusBonus", beacon.getModifiedItemAttr("targetPainterStrengthMultiplier"),
-                                     penaltyGroup="postMul")
+                                     stackingPenalties=True, penaltyGroup="postMul")

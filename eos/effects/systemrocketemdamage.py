@@ -3,6 +3,6 @@
 runTime = "early"
 type = ("projected", "offline")
 def handler(fit, beacon, context):
-    fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill("Rockets"),
-                                    "emDamage", beacon.getModifiedItemAttr("smallWeaponDamageMultiplier"),
-                                    stackingPenalties = True)
+    fit.modules.filteredChargeMultiply(lambda mod: mod.charge.requiresSkill("Rockets"),
+                                       "emDamage", beacon.getModifiedItemAttr("smallWeaponDamageMultiplier"),
+                                       stackingPenalties=True, penaltyGroup="postMul")

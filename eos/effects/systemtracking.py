@@ -5,4 +5,4 @@ type = ("projected", "offline")
 def handler(fit, module, context):
     fit.modules.filteredItemMultiply(lambda mod: mod.item.requiresSkill("Gunnery"),
                                      "trackingSpeed", module.getModifiedItemAttr("trackingSpeedMultiplier"),
-                                     stackingPenalties = True, penaltyGroup="postMul")
+                                     stackingPenalties=True, penaltyGroup="postMul")

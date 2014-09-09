@@ -5,4 +5,4 @@ type = ("projected", "offline")
 def handler(fit, beacon, context):
     fit.modules.filteredItemMultiply(lambda mod: mod.item.group.name == "Remote Capacitor Transmitter",
                                      "powerTransferAmount", beacon.getModifiedItemAttr("energyTransferAmountBonus"),
-                                     penaltyGroup="postMul")
+                                     stackingPenalties=True, penaltyGroup="postMul")

@@ -5,4 +5,4 @@ type = ("projected", "offline")
 def handler(fit, module, context):
     fit.modules.filteredItemMultiply(lambda mod: mod.item.requiresSkill("Small Energy Turret"),
                                      "damageMultiplier", module.getModifiedItemAttr("smallWeaponDamageMultiplier"),
-                                     stackingPenalties = True, penaltyGroup="postMul")
+                                     stackingPenalties=True)

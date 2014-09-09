@@ -5,4 +5,4 @@ type = ("projected", "offline")
 def handler(fit, beacon, context):
     fit.modules.filteredItemMultiply(lambda mod: mod.item.group.name == "Energy Vampire",
                                      "powerTransferAmount", beacon.getModifiedItemAttr("energyWarfareStrengthMultiplier"),
-                                     penaltyGroup="postMul")
+                                     stackingPenalties=True, penaltyGroup="postMul")

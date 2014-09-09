@@ -4,5 +4,4 @@ runTime = "early"
 type = ("projected", "offline")
 def handler(fit, beacon, context):
     fit.modules.filteredChargeMultiply(lambda mod: mod.charge.requiresSkill("Missile Launcher Operation"),
-                                     "aoeCloudSize", beacon.getModifiedItemAttr("aoeCloudSizeMultiplier"),
-                                     penaltyGroup="postMul")
+                                     "aoeCloudSize", beacon.getModifiedItemAttr("aoeCloudSizeMultiplier"))

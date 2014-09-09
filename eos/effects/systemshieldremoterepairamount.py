@@ -5,4 +5,4 @@ type = ("projected", "offline")
 def handler(fit, module, context):
     fit.modules.filteredItemMultiply(lambda mod: mod.item.group.name == "Remote Shield Booster",
                                      "shieldBonus", module.getModifiedItemAttr("shieldBonusMultiplierRemote"),
-                                     stackingPenalties = True, penaltyGroup="postMul")
+                                     stackingPenalties=True, penaltyGroup="postMul")

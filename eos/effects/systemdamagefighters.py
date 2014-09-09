@@ -4,5 +4,5 @@ runTime = "early"
 type = ("projected", "offline")
 def handler(fit, beacon, context):
     fit.drones.filteredItemMultiply(lambda drone: drone.item.requiresSkill("Fighters"),
-                                    "damageMultiplier", beacon.getModifiedItemAttr("damageMultiplierMultiplier")
-                                    stackingPenalties = True, penaltyGroup="postMul")
+                                    "damageMultiplier", beacon.getModifiedItemAttr("damageMultiplierMultiplier"),
+                                    stackingPenalties=True, penaltyGroup="postMul")
