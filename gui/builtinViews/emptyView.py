@@ -12,6 +12,7 @@ class BlankPage(wx.Panel):
         self.parent = parent
 
         self.parent.Bind(gui.chromeTabs.EVT_NOTEBOOK_PAGE_CHANGED, self.pageChanged)
+        self.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW))
 
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=None))
 
