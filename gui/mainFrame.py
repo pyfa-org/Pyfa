@@ -457,10 +457,17 @@ class MainFrame(wx.Frame):
                 (wx.ACCEL_CTRL, ord(" "), toggleShipMarketId),
                 (wx.ACCEL_CMD, ord(" "), toggleShipMarketId),
 
+                # Ctrl+(Shift+)Tab
                 (wx.ACCEL_CTRL, wx.WXK_TAB, ctabnext),
                 (wx.ACCEL_CTRL | wx.ACCEL_SHIFT, wx.WXK_TAB, ctabprev),
                 (wx.ACCEL_CMD, wx.WXK_TAB, ctabnext),
                 (wx.ACCEL_CMD | wx.ACCEL_SHIFT, wx.WXK_TAB, ctabprev),
+
+                # Ctrl+age(Up/Down)
+                (wx.ACCEL_CTRL, wx.WXK_PAGEDOWN, ctabnext),
+                (wx.ACCEL_CTRL, wx.WXK_PAGEUP, ctabprev),
+                (wx.ACCEL_CMD, wx.WXK_PAGEDOWN, ctabnext),
+                (wx.ACCEL_CMD, wx.WXK_PAGEUP, ctabprev),
 
                 (wx.ACCEL_CTRL, ord('1'), self.additionstab1),
                 (wx.ACCEL_CTRL, ord('2'), self.additionstab2),
