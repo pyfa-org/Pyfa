@@ -839,7 +839,7 @@ class Fit(object):
         copy.name = "%s copy" % self.name
         copy.damagePattern = self.damagePattern
 
-        toCopy = ("modules", "drones", "implants", "boosters", "projectedModules", "projectedDrones")
+        toCopy = ("modules", "drones", "cargo", "implants", "boosters", "projectedModules", "projectedDrones")
         for name in toCopy:
             orig = getattr(self, name)
             c = getattr(copy, name)

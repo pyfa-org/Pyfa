@@ -28,7 +28,6 @@ class Cargo(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     def __init__(self, item):
         self.__item = item
         self.itemID = item.ID
-        self.active = True
         self.amount = 0
         self.__itemModifiedAttributes = ModifiedAttributeDict()
         self.__itemModifiedAttributes.original = self.item.attributes
@@ -60,16 +59,15 @@ class Cargo(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     def clear(self):
         self.itemModifiedAttributes.clear()
 
-    @validates("fitID", "itemID", "active")
+    @validates("fitID", "itemID")
     def validator(self, key, val):
         map = {"fitID": lambda val: isinstance(val, int),
-               "itemID" : lambda val: isinstance(val, int),
-               "active": lambda val: isinstance(val, bool)}
+               "itemID" : lambda val: isinstance(val, int)}
 
         if map[key](val) == False: raise ValueError(str(val) + " is not a valid value for " + key)
         else: return val
 
     def __deepcopy__(self, memo):
         copy = Cargo(self.item)
-        copy.active = self.active
+        copy.amount = self.amount
         return copy
