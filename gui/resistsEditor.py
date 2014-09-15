@@ -325,7 +325,7 @@ class ResistsEditorDlg (wx.Dialog):
         # rename regardless of new or rename
         sTR.renamePattern(p, newName)
 
-        self.updateChoices()
+        self.updateChoices(newName)
         self.headerSizer.Replace(self.namePicker, self.ccResists)
         self.ccResists.Show()
         self.namePicker.Hide()
@@ -361,7 +361,7 @@ class ResistsEditorDlg (wx.Dialog):
     def __del__( self ):
         pass
 
-    def updateChoices(self):
+    def updateChoices(self, select=None):
         "Gathers list of patterns and updates choice selections"
         sTR = service.TargetResists.getInstance()
         self.choices = sTR.getTargetResistsList()
@@ -370,9 +370,15 @@ class ResistsEditorDlg (wx.Dialog):
         self.choices.sort(key=lambda p: p.name)
         self.ccResists.Clear()
 
-        for choice in map(lambda p: p.name, self.choices):
+        for i, choice in enumerate(map(lambda p: p.name, self.choices)):
             self.ccResists.Append(choice)
-        self.ccResists.SetSelection(0)
+
+            if select is not None and choice == select:
+                self.ccResists.SetSelection(i)
+
+        if select is None:
+            self.ccResists.SetSelection(0)
+
         self.patternChanged()
 
     def importPatterns(self, event):
