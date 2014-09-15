@@ -63,7 +63,7 @@ class TargetResists(ContextMenu):
         m.Append(id, u'─ %s ─' % text)
         m.Enable(id, False)
 
-    def getSubMenu(self, context, selection, menu, i, id):
+    def getSubMenu(self, context, selection, menu, i, pitem):
         self.context = context
         menu.Bind(wx.EVT_MENU, self.handleResistSwitch)
         m = wx.Menu()

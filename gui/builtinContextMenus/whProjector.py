@@ -17,7 +17,7 @@ class WhProjector(ContextMenu):
     def activate(self, fullContext, selection, i):
         pass
 
-    def getSubMenu(self, context, selection, menu, i, id):
+    def getSubMenu(self, context, selection, menu, i, pitem):
         self.idmap = {}
         menu.Bind(wx.EVT_MENU, self.handleSelection)
         m = wx.Menu()

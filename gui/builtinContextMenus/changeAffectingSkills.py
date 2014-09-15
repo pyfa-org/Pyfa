@@ -67,7 +67,7 @@ class ChangeAffectingSkills(ContextMenu):
         rootMenu.Bind(wx.EVT_MENU, self.handleSkillChange, menuItem)
         return menuItem
 
-    def getSubMenu(self, context, selection, menu, i, id):
+    def getSubMenu(self, context, selection, menu, i, pitem):
         self.context = context
         self.skillIds = {}
 

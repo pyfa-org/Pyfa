@@ -14,6 +14,10 @@ class DamagePattern(ContextMenu):
 
     def getText(self, itmContext, selection):
         sDP = service.DamagePattern.getInstance()
+        sFit = service.Fit.getInstance()
+        fitID = self.mainFrame.getActiveFit()
+        self.fit = sFit.getFit(fitID)
+
         self.patterns = sDP.getDamagePatternList()
         self.patterns.sort( key=lambda p: (p.name not in ["Uniform",
                                                 "Selected Ammo"], p.name) )
@@ -73,15 +77,19 @@ class DamagePattern(ContextMenu):
             item.SetBitmap(bitmap)
         return item
 
-    def getSubMenu(self, context, selection, menu, i, id):
+    def getSubMenu(self, context, selection, menu, i, pitem):
         menu.Bind(wx.EVT_MENU, self.handlePatternSwitch)  # this bit is required for some reason
 
         if self.m[i] not in self.subMenus:
             # if we're trying to get submenu to something that shouldn't have one,
             # redirect event of the item to handlePatternSwitch and put pattern in
             # our patternIds mapping, then return None for no submenu
+            id = pitem.GetId()
             self.patternIds[id] = self.singles[i]
-            menu.Bind(wx.EVT_MENU, self.handlePatternSwitch, id=id)
+            menu.Bind(wx.EVT_MENU, self.handlePatternSwitch, pitem)
+            if self.patternIds[id] == self.fit.damagePattern:
+                bitmap = bitmapLoader.getBitmap("state_active_small", "icons")
+                pitem.SetBitmap(bitmap)
             return None
 
         sub = wx.Menu()

@@ -54,7 +54,7 @@ class ContextMenu(object):
                         item = wx.MenuItem(menu, id, text)
                         menu.info[id] = (m, fullContext, it)
 
-                        sub = m.getSubMenu(srcContext, selection, menu, it, id)
+                        sub = m.getSubMenu(srcContext, selection, menu, it, item)
                         if sub is not None:
                             item.SetSubMenu(sub)
 
@@ -95,7 +95,7 @@ class ContextMenu(object):
     def activate(self, context, selection, i):
         return None
 
-    def getSubMenu(self, context, selection, menu, i):
+    def getSubMenu(self, context, selection, menu, i, pitem):
         return None
 
     def getText(self, context, selection):
