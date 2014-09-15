@@ -820,7 +820,7 @@ class Fit(object):
         weaponDPS = 0
         droneDPS = 0
         weaponVolley = 0
-        print "calc weapons with: %s"%self.targetResists
+
         for mod in self.modules:
             dps, volley = mod.damageStats(self.targetResists)
             weaponDPS += dps

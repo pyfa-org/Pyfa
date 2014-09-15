@@ -95,7 +95,6 @@ class DamagePattern(object):
                     continue
 
             if len(fields) == 4: # Avoid possible blank lines
-                print name, fields
                 pattern = DamagePattern(**fields)
                 pattern.name = name.strip()
                 patterns.append(pattern)

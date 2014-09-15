@@ -37,7 +37,6 @@ class TargetResists():
         return eos.db.getTargetResistsList()
 
     def getTargetResists(self, name):
-        print "Getting Target Resists: %s"%name
         return eos.db.getTargetResists(name)
 
     def newPattern(self):

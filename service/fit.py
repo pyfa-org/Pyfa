@@ -695,7 +695,7 @@ class Fit(object):
     def setTargetResists(self, fitID, pattern):
         if fitID is None:
             return
-        print "Set target resists: %s"%pattern
+
         fit = eos.db.getFit(fitID)
         fit.targetResists = pattern
         eos.db.commit()

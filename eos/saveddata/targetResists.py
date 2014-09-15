@@ -24,7 +24,6 @@ class TargetResists(object):
     DAMAGE_TYPES = ("em", "thermal", "kinetic", "explosive")
 
     def __init__(self, emAmount = 0, thermalAmount = 0, kineticAmount = 0, explosiveAmount = 0):
-        print "new"
         self.emAmount = emAmount
         self.thermalAmount = thermalAmount
         self.kineticAmount = kineticAmount
@@ -62,7 +61,6 @@ class TargetResists(object):
                     continue
 
             if len(fields) == 4: # Avoid possible blank lines
-                print name, fields
                 pattern = TargetResists(**fields)
                 pattern.name = name.strip()
                 patterns.append(pattern)
