@@ -1,5 +1,5 @@
 #===============================================================================
-# Copyright (C) 2010 Diego Duclos
+# Copyright (C) 2014 Ryan Holmes
 #
 # This file is part of eos.
 #
@@ -19,52 +19,16 @@
 
 import re
 
-class DamagePattern(object):
+class TargetResists(object):
+    # also determined import/export order - VERY IMPORTANT
     DAMAGE_TYPES = ("em", "thermal", "kinetic", "explosive")
 
-    def __init__(self, emAmount = 25, thermalAmount = 25, kineticAmount = 25, explosiveAmount = 25):
+    def __init__(self, emAmount = 0, thermalAmount = 0, kineticAmount = 0, explosiveAmount = 0):
         self.emAmount = emAmount
         self.thermalAmount = thermalAmount
         self.kineticAmount = kineticAmount
         self.explosiveAmount = explosiveAmount
 
-    def calculateEhp(self, fit):
-        ehp = {}
-        for (type, attr) in (('shield', 'shieldCapacity'), ('armor', 'armorHP'), ('hull', 'hp')):
-            rawCapacity = fit.ship.getModifiedItemAttr(attr)
-            ehp[type] = self.effectivify(fit, rawCapacity, type)
-
-        return ehp
-
-    def calculateEffectiveTank(self, fit, tankInfo):
-        ehps = {}
-        passiveShield = fit.calculateShieldRecharge()
-        ehps["passiveShield"] = self.effectivify(fit, passiveShield, "shield")
-        for type in ("shield", "armor", "hull"):
-            ehps["%sRepair" % type] = self.effectivify(fit, tankInfo["%sRepair" % type], type)
-
-        return ehps
-
-    def effectivify(self, fit, amount, type):
-        type = type if type != "hull" else ""
-        totalDamage = sum((self.emAmount, self.thermalAmount, self.kineticAmount, self.explosiveAmount))
-        specificDivider = 0
-        for damageType in self.DAMAGE_TYPES:
-            #Compose an attribute name, then make sure the first letter is NOT capitalized
-            attrName = "%s%sDamageResonance" % (type, damageType.capitalize())
-            attrName = attrName[0].lower() + attrName[1:]
-
-            resonance = fit.ship.getModifiedItemAttr(attrName)
-            damage = getattr(self, "%sAmount" % damageType)
-
-            specificDivider += damage / float(totalDamage or 1) * resonance
-
-        return amount / (specificDivider or 1)
-
-    importMap = {"em": "em",
-                 "therm": "thermal",
-                 "kin": "kinetic",
-                 "exp": "explosive"}
     @classmethod
     def importPatterns(cls, text):
         lines = re.split('[\n\r]+', text)
@@ -81,7 +45,7 @@ class DamagePattern(object):
                 # Data isn't in correct format, continue to next line
                 continue
 
-            if type != "DamageProfile":
+            if type != "TargetResists":
                 continue
 
             numPatterns += 1
@@ -89,30 +53,32 @@ class DamagePattern(object):
             fields = {}
 
             for index, val in enumerate(data):
+                val = float(val)
                 try:
-                    fields["%sAmount" % cls.DAMAGE_TYPES[index]] = int(val)
+                    assert 0 <= val <= 100
+                    fields["%sAmount" % cls.DAMAGE_TYPES[index]] = val/100
                 except:
                     continue
 
             if len(fields) == 4: # Avoid possible blank lines
-                pattern = DamagePattern(**fields)
+                pattern = TargetResists(**fields)
                 pattern.name = name.strip()
                 patterns.append(pattern)
 
         return patterns, numPatterns
 
-    EXPORT_FORMAT = "DamageProfile = %s,%d,%d,%d,%d\n"
+    EXPORT_FORMAT = "TargetResists = %s,%.1f,%.1f,%.1f,%.1f\n"
     @classmethod
     def exportPatterns(cls, *patterns):
         out  = "# Exported from pyfa\n#\n"
         out += "# Values are in following format:\n"
-        out += "# DamageProfile = [name],[EM amount],[Thermal amount],[Kinetic amount],[Explosive amount]\n\n"
+        out += "# TargetResists = [name],[EM %],[Thermal %],[Kinetic %],[Explosive %]\n\n"
         for dp in patterns:
-            out += cls.EXPORT_FORMAT % (dp.name, dp.emAmount, dp.thermalAmount, dp.kineticAmount, dp.explosiveAmount)
+            out += cls.EXPORT_FORMAT % (dp.name, dp.emAmount*100, dp.thermalAmount*100, dp.kineticAmount*100, dp.explosiveAmount*100)
 
         return out.strip()
 
     def __deepcopy__(self, memo):
-        p = DamagePattern(self.emAmount, self.thermalAmount, self.kineticAmount, self.explosiveAmount)
+        p = TargetResists(self.emAmount, self.thermalAmount, self.kineticAmount, self.explosiveAmount)
         p.name = "%s copy" % self.name
         return p

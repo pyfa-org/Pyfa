@@ -1,5 +1,5 @@
 #===============================================================================
-# Copyright (C) 2010 Diego Duclos
+# Copyright (C) 2014 Ryan Holmes
 #
 # This file is part of pyfa.
 #
@@ -24,30 +24,23 @@ import copy
 class ImportError(Exception):
     pass
 
-class DamagePattern():
+class TargetResists():
     instance = None
     @classmethod
     def getInstance(cls):
         if cls.instance is None:
-            cls.instance = DamagePattern()
+            cls.instance = TargetResists()
 
         return cls.instance
 
-    def __init__(self):
-        uniform = eos.db.getDamagePattern("Uniform")
-        if uniform is None:
-            uniform = eos.types.DamagePattern(25, 25, 25, 25)
-            uniform.name = "Uniform"
-            eos.db.save(uniform)
+    def getTargetResistsList(self):
+        return eos.db.getTargetResistsList()
 
-    def getDamagePatternList(self):
-        return eos.db.getDamagePatternList()
-
-    def getDamagePattern(self, name):
-        return eos.db.getDamagePattern(name)
+    def getTargetResists(self, name):
+        return eos.db.getTargetResists(name)
 
     def newPattern(self):
-        p = eos.types.DamagePattern(0, 0, 0, 0)
+        p = eos.types.TargetResists(0.0, 0.0, 0.0, 0.0)
         p.name = ""
         return p
 
@@ -68,11 +61,11 @@ class DamagePattern():
 
     def importPatterns(self, text):
         lookup = {}
-        current = self.getDamagePatternList()
+        current = self.getTargetResistsList()
         for pattern in current:
             lookup[pattern.name] = pattern
 
-        imports, num = eos.types.DamagePattern.importPatterns(text)
+        imports, num = eos.types.TargetResists.importPatterns(text)
         for pattern in imports:
             if pattern.name in lookup:
                 match = lookup[pattern.name]
@@ -88,11 +81,7 @@ class DamagePattern():
             raise ImportError("%d patterns imported from clipboard; %d had errors"%(num, num-lenImports))
 
     def exportPatterns(self):
-        patterns = self.getDamagePatternList()
-        for i in xrange(len(patterns) - 1, -1, -1):
-            if patterns[i].name in ("Uniform", "Selected Ammo"):
-                del patterns[i]
-
+        patterns = self.getTargetResistsList()
         patterns.sort(key=lambda p: p.name)
-        return eos.types.DamagePattern.exportPatterns(*patterns)
+        return eos.types.TargetResists.exportPatterns(*patterns)
 

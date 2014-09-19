@@ -22,7 +22,7 @@ from eos.effectHandlerHelpers import HandledItem, HandledCharge
 from sqlalchemy.orm import validates, reconstructor
 
 class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
-    DAMAGE_ATTRIBUTES = ("emDamage", "kineticDamage", "explosiveDamage", "thermalDamage")
+    DAMAGE_TYPES = ("em", "kinetic", "explosive", "thermal")
     MINING_ATTRIBUTES = ("miningAmount",)
 
     def __init__(self, item):
@@ -111,6 +111,9 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     @property
     def dps(self):
+        return self.damageStats()
+
+    def damageStats(self, targetResists = None):
         if self.__dps == None:
             if self.dealsDamage is True and self.amountActive > 0:
                 if self.hasAmmo:
@@ -121,7 +124,9 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                     getter = self.getModifiedItemAttr
 
                 cycleTime = self.getModifiedItemAttr(attr)
-                volley = sum(map(lambda d: getter(d), self.DAMAGE_ATTRIBUTES)) * self.amountActive
+
+                volley = sum(map(lambda d: (getter("%sDamage"%d) or 0) * (1-getattr(targetResists, "%sAmount"%d, 0)), self.DAMAGE_TYPES))
+                volley *= self.amountActive
                 volley *= self.getModifiedItemAttr("damageMultiplier") or 1
                 self.__dps = volley / (cycleTime / 1000.0)
             else:

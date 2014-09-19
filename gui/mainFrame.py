@@ -46,6 +46,7 @@ from gui.shipBrowser import ShipBrowser, FitSelected
 from gui.characterEditor import CharacterEditor
 from gui.characterSelection import CharacterSelection
 from gui.patternEditor import DmgPatternEditorDlg
+from gui.resistsEditor import ResistsEditorDlg
 from gui.preferenceDialog import PreferenceDialog
 from gui.graphFrame import GraphFrame
 from gui.copySelectDialog import CopySelectDialog
@@ -311,6 +312,11 @@ class MainFrame(wx.Frame):
         dlg=CharacterEditor(self)
         dlg.Show()
 
+    def showTargetResistsEditor(self, event):
+        dlg=ResistsEditorDlg(self)
+        dlg.ShowModal()
+        dlg.Destroy()
+
     def showDamagePatternEditor(self, event):
         dlg=DmgPatternEditorDlg(self)
         dlg.ShowModal()
@@ -392,6 +398,8 @@ class MainFrame(wx.Frame):
         self.Bind(wx.EVT_MENU, self.showCharacterEditor, id=menuBar.characterEditorId)
         # Damage pattern editor
         self.Bind(wx.EVT_MENU, self.showDamagePatternEditor, id=menuBar.damagePatternEditorId)
+        # Target Resists editor
+        self.Bind(wx.EVT_MENU, self.showTargetResistsEditor, id=menuBar.targetResistsEditorId)
         # Import dialog
         self.Bind(wx.EVT_MENU, self.showImportDialog, id=wx.ID_OPEN)
         # Export dialog

@@ -22,6 +22,7 @@ MetaGroup, AttributeInfo, Unit, EffectInfo, MetaType, MetaData, Traits
 from eos.saveddata.price import Price
 from eos.saveddata.user import User
 from eos.saveddata.damagePattern import DamagePattern
+from eos.saveddata.targetResists import TargetResists
 from eos.saveddata.character import Character, Skill
 from eos.saveddata.module import Module, State, Slot, Hardpoint, Rack
 from eos.saveddata.drone import Drone

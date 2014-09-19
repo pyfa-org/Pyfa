@@ -1,5 +1,5 @@
 #===============================================================================
-# Copyright (C) 2010 Diego Duclos
+# Copyright (C) 2014 Ryan Holmes
 #
 # This file is part of pyfa.
 #
@@ -20,19 +20,15 @@
 import wx
 import bitmapLoader
 import service
-from wx.lib.intctrl import IntCtrl
 from gui.utils.clipboard import toClipboard, fromClipboard
-from service.damagePattern import ImportError
+from service.targetResists import ImportError
 
-###########################################################################
-## Class DmgPatternEditorDlg
-###########################################################################
+class ResistsEditorDlg (wx.Dialog):
 
-class DmgPatternEditorDlg (wx.Dialog):
     DAMAGE_TYPES = ("em", "thermal", "kinetic", "explosive")
 
     def __init__(self, parent):
-        wx.Dialog.__init__ (self, parent, id = wx.ID_ANY, title = u"Damage Pattern Editor", size = wx.Size( 400,240 ))
+        wx.Dialog.__init__ (self, parent, id = wx.ID_ANY, title = u"Target Resists Editor", size = wx.Size( 350,240 ))
 
         self.block = False
         self.SetSizeHintsSz(wx.DefaultSize, wx.DefaultSize)
@@ -41,18 +37,15 @@ class DmgPatternEditorDlg (wx.Dialog):
 
         self.headerSizer = headerSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        sDP = service.DamagePattern.getInstance()
+        sTR = service.TargetResists.getInstance()
 
-        self.choices = sDP.getDamagePatternList()
-        # Remove "Selected Ammo" Damage Pattern
-        for dp in self.choices:
-            if dp.name == "Selected Ammo":
-                self.choices.remove(dp)
+        self.choices = sTR.getTargetResistsList()
+
         # Sort the remaining list and continue on
         self.choices.sort(key=lambda p: p.name)
-        self.ccDmgPattern = wx.Choice(self, choices=map(lambda p: p.name, self.choices))
-        self.ccDmgPattern.Bind(wx.EVT_CHOICE, self.patternChanged)
-        self.ccDmgPattern.SetSelection(0)
+        self.ccResists = wx.Choice(self, choices=map(lambda p: p.name, self.choices))
+        self.ccResists.Bind(wx.EVT_CHOICE, self.patternChanged)
+        self.ccResists.SetSelection(0)
 
         self.namePicker = wx.TextCtrl(self, style=wx.TE_PROCESS_ENTER)
         self.namePicker.Bind(wx.EVT_TEXT_ENTER, self.processRename)
@@ -63,7 +56,8 @@ class DmgPatternEditorDlg (wx.Dialog):
         self.btnSave.Bind(wx.EVT_BUTTON, self.processRename)
 
         size = None
-        headerSizer.Add(self.ccDmgPattern, 1, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT|wx.LEFT, 3)
+        headerSizer.Add(self.ccResists, 1, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT | wx.LEFT, 3)
+
         buttons = (("new", wx.ART_NEW),
                    ("rename", bitmapLoader.getBitmap("rename", "icons")),
                    ("copy", wx.ART_COPY),
@@ -80,9 +74,8 @@ class DmgPatternEditorDlg (wx.Dialog):
                 btn.Layout()
                 setattr(self, name, btn)
                 btn.Enable(True)
-                btn.SetToolTipString("%s pattern" % name.capitalize())
+                btn.SetToolTipString("%s resist profile" % name.capitalize())
                 headerSizer.Add(btn, 0, wx.ALIGN_CENTER_VERTICAL)
-
 
         mainSizer.Add(headerSizer, 0, wx.EXPAND | wx.ALL, 2)
 
@@ -90,44 +83,34 @@ class DmgPatternEditorDlg (wx.Dialog):
         mainSizer.Add(self.sl, 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 5)
 
         contentSizer = wx.BoxSizer(wx.VERTICAL)
-        self.embitmap = bitmapLoader.getBitmap("em_big", "icons")
-        self.thermbitmap = bitmapLoader.getBitmap("thermal_big", "icons")
-        self.kinbitmap = bitmapLoader.getBitmap("kinetic_big", "icons")
-        self.expbitmap = bitmapLoader.getBitmap("explosive_big", "icons")
 
-        dmgeditSizer = wx.FlexGridSizer(2, 6, 0, 2)
-        dmgeditSizer.AddGrowableCol(0)
-        dmgeditSizer.AddGrowableCol(5)
-        dmgeditSizer.SetFlexibleDirection(wx.BOTH)
-        dmgeditSizer.SetNonFlexibleGrowMode(wx.FLEX_GROWMODE_SPECIFIED)
+        resistEditSizer = wx.FlexGridSizer(2, 6, 0, 2)
+        resistEditSizer.AddGrowableCol(0)
+        resistEditSizer.AddGrowableCol(5)
+        resistEditSizer.SetFlexibleDirection(wx.BOTH)
+        resistEditSizer.SetNonFlexibleGrowMode(wx.FLEX_GROWMODE_SPECIFIED)
 
         width = -1
-        defSize = wx.Size(width,-1)
+        defSize = wx.Size(50,-1)
 
         for i, type in enumerate(self.DAMAGE_TYPES):
-            bmp = wx.StaticBitmap(self, wx.ID_ANY, bitmapLoader.getBitmap("%s_big"%type, "icons"))
             if i%2:
                 style = wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_RIGHT | wx.LEFT
-                border = 10
+                border = 25
             else:
                 style = wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_RIGHT
                 border = 5
 
+            bmp = wx.StaticBitmap(self, wx.ID_ANY, bitmapLoader.getBitmap("%s_big"%type, "icons"))
+            resistEditSizer.Add(bmp, 0, style, border)
             # set text edit
-            setattr(self, "%sEdit"%type, IntCtrl(self, wx.ID_ANY, 0, wx.DefaultPosition, defSize))
-            setattr(self, "%sPerc"%type, wx.StaticText(self, wx.ID_ANY, u"0%"))
+            setattr(self, "%sEdit"%type, wx.TextCtrl(self, wx.ID_ANY, "", wx.DefaultPosition, defSize))
             editObj = getattr(self, "%sEdit"%type)
-
-            dmgeditSizer.Add(bmp, 0, style, border)
-            dmgeditSizer.Add(editObj, 0, wx.BOTTOM | wx.TOP | wx.ALIGN_CENTER_VERTICAL, 5)
-            dmgeditSizer.Add(getattr(self, "%sPerc"%type), 0,  wx.LEFT | wx.ALIGN_CENTER_VERTICAL, 5)
-
+            resistEditSizer.Add(editObj, 0, wx.BOTTOM | wx.TOP | wx.ALIGN_CENTER_VERTICAL, 5)
+            resistEditSizer.Add(wx.StaticText( self, wx.ID_ANY, u"%", wx.DefaultPosition, wx.DefaultSize, 0 ), 0, wx.BOTTOM | wx.TOP | wx.ALIGN_CENTER_VERTICAL, 5)
             editObj.Bind(wx.EVT_TEXT, self.ValuesUpdated)
-            editObj.SetLimited(True)
-            editObj.SetMin(0)
-            editObj.SetMax(99999)
 
-        contentSizer.Add(dmgeditSizer, 1, wx.EXPAND | wx.ALL, 5)
+        contentSizer.Add(resistEditSizer, 1, wx.EXPAND | wx.ALL, 5)
         self.slfooter = wx.StaticLine(self)
         contentSizer.Add(self.slfooter, 0, wx.EXPAND | wx.TOP, 5)
 
@@ -155,6 +138,7 @@ class DmgPatternEditorDlg (wx.Dialog):
 
         importExport = (("Import", wx.ART_FILE_OPEN, "from"),
                         ("Export", wx.ART_FILE_SAVE_AS, "to"))
+
         for name, art, direction in importExport:
                 bitmap = wx.ArtProvider.GetBitmap(art, wx.ART_BUTTON)
                 btn = wx.BitmapButton(self, wx.ID_ANY, bitmap)
@@ -185,23 +169,51 @@ class DmgPatternEditorDlg (wx.Dialog):
         self.Destroy()
 
     def ValuesUpdated(self, event=None):
+        '''
+        Event that is fired when resists values change. Iterates through all
+        resist edit fields. If blank, sets it to 0.0. If it is not a proper
+        decimal value, sets text color to red and refuses to save changes until
+        issue is resolved
+        '''
         if self.block:
             return
 
-        p = self.getActivePattern()
-        total = sum(map(lambda attr: getattr(self, "%sEdit"%attr).GetValue(), self.DAMAGE_TYPES))
-        for type in self.DAMAGE_TYPES:
+        try:
+            p = self.getActivePattern()
+
+            for type in self.DAMAGE_TYPES:
                 editObj = getattr(self, "%sEdit"%type)
-                percObj = getattr(self, "%sPerc"%type)
-                setattr(p, "%sAmount"%type, editObj.GetValue())
-                percObj.SetLabel("%.1f%%"%(float(editObj.GetValue())*100/total if total > 0 else 0))
 
-        self.totSizer.Layout()
+                if editObj.GetValue() == "":
+                    # if we are blank, overwrite with 0
+                    editObj.ChangeValue("0.0")
+                    editObj.SetInsertionPointEnd()
 
-        if event is not None:
-            event.Skip()
+                value = float(editObj.GetValue())
 
-        service.DamagePattern.getInstance().saveChanges(p)
+                # assertion, because they're easy
+                assert 0 <= value <= 100
+
+                # if everything checks out, set resist attribute
+                setattr(p, "%sAmount"%type, value/100)
+
+            self.totSizer.Layout()
+
+            if event is not None:
+                # If we get here, everything is normal. Reset color
+                event.EventObject.SetForegroundColour(wx.NullColor)
+                event.Skip()
+
+            service.TargetResists.getInstance().saveChanges(p)
+
+        except ValueError:
+            event.EventObject.SetForegroundColour(wx.RED)
+            self.stNotice.SetLabel("Incorrect Formatting (decimals only)")
+        except AssertionError:
+            event.EventObject.SetForegroundColour(wx.RED)
+            self.stNotice.SetLabel("Incorrect Range (must be 0-100)")
+        finally:  # Refresh for color changes to take effect immediately
+            self.Refresh()
 
     def restrict(self):
         for type in self.DAMAGE_TYPES:
@@ -221,54 +233,56 @@ class DmgPatternEditorDlg (wx.Dialog):
         if len(self.choices) == 0:
             return None
 
-        return self.choices[self.ccDmgPattern.GetSelection()]
+        return self.choices[self.ccResists.GetSelection()]
 
     def patternChanged(self, event=None):
+        "Event fired when user selects pattern. Can also be called from script"
         p = self.getActivePattern()
-
         if p is None:
+            # This happens when there are no patterns in the DB. As such, force
+            # user to create one first or exit dlg.
+            self.newPattern(None)
             return
 
-        if p.name == "Uniform" or p.name == "Selected Ammo":
-            self.restrict()
-        else:
-            self.unrestrict()
-
         self.block = True
-
+        # Set new values
         for field in self.DAMAGE_TYPES:
             edit = getattr(self, "%sEdit" % field)
-            amount = getattr(p, "%sAmount" % field)
-            edit.SetValue(amount)
+            amount = getattr(p, "%sAmount" % field)*100
+            edit.ChangeValue(str(amount))
 
         self.block = False
         self.ValuesUpdated()
 
-    def newPattern(self,event):
-        sDP = service.DamagePattern.getInstance()
-        p = sDP.newPattern()
-        self.choices.append(p)
-        id = self.ccDmgPattern.Append(p.name)
-        self.ccDmgPattern.SetSelection(id)
-
+    def newPattern(self, event):
+        '''
+        Simply does new-pattern specifics: replaces label on button, restricts,
+        and resets values to default. Hands off to the rename function for
+        further handling.
+        '''
+        self.btnSave.SetLabel("Create")
         self.restrict()
         # reset values
         for type in self.DAMAGE_TYPES:
             editObj = getattr(self, "%sEdit"%type)
-            editObj.SetValue(0)
+            editObj.ChangeValue("0.0")
+            editObj.SetForegroundColour(wx.NullColor)
 
-        self.btnSave.SetLabel("Create")
+        self.Refresh()
         self.renamePattern()
 
-    def renamePattern(self,event=None):
-        if event is not None:
-            self.btnSave.SetLabel("Rename")
+    def renamePattern(self, event=None):
+        "Changes layout to facilitate naming a pattern"
 
-        self.ccDmgPattern.Hide()
+        self.ccResists.Hide()
         self.namePicker.Show()
-        self.headerSizer.Replace(self.ccDmgPattern, self.namePicker)
+        self.headerSizer.Replace(self.ccResists, self.namePicker)
         self.namePicker.SetFocus()
-        self.namePicker.SetValue(self.getActivePattern().name)
+        if event is not None:  # Rename mode
+            self.btnSave.SetLabel("Rename")
+            self.namePicker.SetValue(self.getActivePattern().name)
+        else:  # Create mode
+            self.namePicker.SetValue("")
 
         for btn in (self.new, self.rename, self.delete, self.copy):
             btn.Hide()
@@ -281,24 +295,39 @@ class DmgPatternEditorDlg (wx.Dialog):
             event.Skip()
 
     def processRename(self, event):
+        '''
+        Processes rename event (which can be new or old patterns). If new
+        pattern, creates it; if old, selects it. if checks are valid, rename
+        saves pattern to DB.
+
+        Also resets to default layout and unrestricts.
+        '''
         newName = self.namePicker.GetLineText(0)
         self.stNotice.SetLabel("")
 
-        p = self.getActivePattern()
+        if newName == "":
+            self.stNotice.SetLabel("Invalid name")
+            return
+
+        sTR = service.TargetResists.getInstance()
+        if event.EventObject.Label == "Create":
+            p = sTR.newPattern()
+        else:
+            # we are renaming, so get the current selection
+            p = self.getActivePattern()
+
+        # test for patterns of the same name
         for pattern in self.choices:
             if pattern.name == newName and p != pattern:
                 self.stNotice.SetLabel("Name already used, please choose another")
                 return
 
-        if newName == "":
-            self.stNotice.SetLabel("Invalid name.")
-            return
+        # rename regardless of new or rename
+        sTR.renamePattern(p, newName)
 
-        sDP = service.DamagePattern.getInstance()
-        sDP.renamePattern(p, newName)
-
-        self.headerSizer.Replace(self.namePicker, self.ccDmgPattern)
-        self.ccDmgPattern.Show()
+        self.updateChoices(newName)
+        self.headerSizer.Replace(self.namePicker, self.ccResists)
+        self.ccResists.Show()
         self.namePicker.Hide()
         self.btnSave.Hide()
         self.headerSizer.Remove(self.btnSave)
@@ -306,62 +335,62 @@ class DmgPatternEditorDlg (wx.Dialog):
             self.headerSizer.Add(btn, 0, wx.ALIGN_CENTER_VERTICAL)
             btn.Show()
 
-        sel = self.ccDmgPattern.GetSelection()
-        self.ccDmgPattern.Delete(sel)
-        self.ccDmgPattern.Insert(newName, sel)
-        self.ccDmgPattern.SetSelection(sel)
+        sel = self.ccResists.GetSelection()
         self.ValuesUpdated()
         self.unrestrict()
 
     def copyPattern(self,event):
-        sDP = service.DamagePattern.getInstance()
-        p = sDP.copyPattern(self.getActivePattern())
+        sTR = service.TargetResists.getInstance()
+        p = sTR.copyPattern(self.getActivePattern())
         self.choices.append(p)
-        id = self.ccDmgPattern.Append(p.name)
-        self.ccDmgPattern.SetSelection(id)
+        id = self.ccResists.Append(p.name)
+        self.ccResists.SetSelection(id)
         self.btnSave.SetLabel("Copy")
         self.renamePattern()
         self.patternChanged()
 
     def deletePattern(self,event):
-        sDP = service.DamagePattern.getInstance()
-        sel = self.ccDmgPattern.GetSelection()
-        sDP.deletePattern(self.getActivePattern())
-        self.ccDmgPattern.Delete(sel)
-        self.ccDmgPattern.SetSelection(max(0, sel - 1))
+        sTR = service.TargetResists.getInstance()
+        sel = self.ccResists.GetSelection()
+        sTR.deletePattern(self.getActivePattern())
+        self.ccResists.Delete(sel)
+        self.ccResists.SetSelection(max(0, sel - 1))
         del self.choices[sel]
         self.patternChanged()
 
     def __del__( self ):
         pass
 
-    def updateChoices(self):
+    def updateChoices(self, select=None):
         "Gathers list of patterns and updates choice selections"
-        sDP = service.DamagePattern.getInstance()
-        self.choices = sDP.getDamagePatternList()
-
-        for dp in self.choices:
-            if dp.name == "Selected Ammo":  # don't include this special butterfly
-                self.choices.remove(dp)
+        sTR = service.TargetResists.getInstance()
+        self.choices = sTR.getTargetResistsList()
 
         # Sort the remaining list and continue on
         self.choices.sort(key=lambda p: p.name)
-        self.ccDmgPattern.Clear()
+        self.ccResists.Clear()
 
-        for choice in map(lambda p: p.name, self.choices):
-            self.ccDmgPattern.Append(choice)
+        for i, choice in enumerate(map(lambda p: p.name, self.choices)):
+            self.ccResists.Append(choice)
 
-        self.ccDmgPattern.SetSelection(0)
+            if select is not None and choice == select:
+                self.ccResists.SetSelection(i)
+
+        if select is None:
+            self.ccResists.SetSelection(0)
+
         self.patternChanged()
 
     def importPatterns(self, event):
+        "Event fired when import from clipboard button is clicked"
+
         text = fromClipboard()
         if text:
-            sDP = service.DamagePattern.getInstance()
+            sTR = service.TargetResists.getInstance()
             try:
-                sDP.importPatterns(text)
+                sTR.importPatterns(text)
                 self.stNotice.SetLabel("Patterns successfully imported from clipboard")
-            except service.damagePattern.ImportError, e:
+            except service.targetResists.ImportError, e:
                 self.stNotice.SetLabel(str(e))
             except Exception, e:
                 self.stNotice.SetLabel("Could not import from clipboard: unknown errors")
@@ -371,6 +400,8 @@ class DmgPatternEditorDlg (wx.Dialog):
             self.stNotice.SetLabel("Could not import from clipboard")
 
     def exportPatterns(self, event):
-        sDP = service.DamagePattern.getInstance()
-        toClipboard( sDP.exportPatterns() )
+        "Event fired when export to clipboard button is clicked"
+
+        sTR = service.TargetResists.getInstance()
+        toClipboard( sTR.exportPatterns() )
         self.stNotice.SetLabel("Patterns exported to clipboard")
