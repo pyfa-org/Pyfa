@@ -44,7 +44,7 @@ class GangView ( ScrolledPanel ):
 
         self.FitDNDPopupMenu = wx.Menu()
 
-        self.options = ["Fleet booster", "Wing booster", "Squad booster"]
+        self.options = ["Fleet", "Wing", "Squad"]
 
         self.fleet = {}
         for id, option in enumerate(self.options):
@@ -66,9 +66,10 @@ class GangView ( ScrolledPanel ):
         contentFGSizer.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_SPECIFIED )
 
         ### Header
-        self.oneonePlaceholder = wx.StaticText( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
-        self.oneonePlaceholder.Wrap( -1 )
-        contentFGSizer.Add( self.oneonePlaceholder, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL, 5 )
+        self.stBooster = wx.StaticText( self, wx.ID_ANY, u"Booster", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.stBooster.Wrap( -1 )
+        self.stBooster.SetFont( wx.Font( wx.NORMAL_FONT.GetPointSize(), 70, 90, 92, False, wx.EmptyString ) )
+        contentFGSizer.Add( self.stBooster, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
         self.stFits = wx.StaticText( self, wx.ID_ANY, u"Fits", wx.DefaultPosition, wx.DefaultSize, 0 )
         self.stFits.Wrap( -1 )
