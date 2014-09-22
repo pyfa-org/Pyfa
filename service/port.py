@@ -632,11 +632,11 @@ class Port(object):
                     # `or 1` because some charges (ie scripts) are without qty
                     charges[mod.chargeID] += mod.numCharges or 1
 
-        for mod in mods:
-            dna += ":{0};{1}".format(mod, mods[mod])
-
         for subsystem in sorted(subsystems, key=lambda mod: mod.getModifiedItemAttr("subSystemSlot")):
             dna += ":{0};1".format(subsystem.itemID)
+
+        for mod in mods:
+            dna += ":{0};{1}".format(mod, mods[mod])
 
         for drone in fit.drones:
             dna += ":{0};{1}".format(drone.itemID, drone.amount)
