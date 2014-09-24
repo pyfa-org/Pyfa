@@ -32,7 +32,7 @@ import time
 try:
     from collections import OrderedDict
 except ImportError:
-    from gui.utils.compat import OrderedDict
+    from utils.compat import OrderedDict
 
 class Fit(object):
     """Represents a fitting, with modules, ship, implants, etc."""

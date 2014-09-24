@@ -32,7 +32,7 @@ import service.conversions as conversions
 try:
     from collections import OrderedDict
 except ImportError:
-    from gui.utils.compat import OrderedDict
+    from utils.compat import OrderedDict
 
 # Event which tells threads dependent on Market that it's initialized
 mktRdy = threading.Event()

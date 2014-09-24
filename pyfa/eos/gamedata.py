@@ -28,7 +28,7 @@ import traceback
 try:
     from collections import OrderedDict
 except ImportError:
-    from gui.utils.compat import OrderedDict
+    from utils.compat import OrderedDict
 
 class Effect(EqBase):
     '''
