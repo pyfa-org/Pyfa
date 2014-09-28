@@ -206,6 +206,62 @@ class Market():
             "Thrasher Thukker Tribe Edition": "Thrasher",
             "Vherokior Probe": "Probe" }
 
+        ITEMS_OVERRIDE_OCEANUS = {
+            "Basic Capacitor Flux Coil": "'Basic' Capacitor Flux Coil",
+            "Basic LADAR Backup Array": "Basic Ladar Backup Array",
+            "LADAR Backup Array I": "Ladar Backup Array I",
+            "LADAR Backup Array II": "Ladar Backup Array II",
+            "'Regard' Remote Capacitor Transmitter": "Small 'Regard' Remote Capacitor Transmitter",
+            "Prototype Freight Sensors": "Enduring Cargo Scanner",
+            "PL-0 Shipment Probe": "Scoped Cargo Scanner",
+            "Reserve LADAR Scanners": "Reserve Ladar Scanners",
+            "Emergency LADAR Scanners": "Emergency Ladar Scanners",
+            "Protected LADAR Backup Cluster I": "Protected Ladar Backup Cluster I",
+            "Sealed LADAR Backup Cluster": "Sealed Ladar Backup Cluster",
+            "Surrogate LADAR Reserve Array I": "Surrogate Ladar Reserve Array I",
+            "F-43 Repetitive LADAR Backup Sensors": "F-43 Repetitive Ladar Backup Sensors",
+            "Surplus LADAR Reserve Array": "Surplus Ladar Reserve Array",
+            "F-42 Reiterative LADAR Backup Sensors": "F-42 Reiterative Ladar Backup Sensors",
+            "Rudimentary Ship Scanner I": "Compact Ship Scanner",
+            "Residual Survey Scanner I": "Scoped Survey Scanner",
+            "Upgraded 'Malkuth' Light Missile Launcher": "Compact Light Missile Launcher",
+            "Limited 'Limos' Light Missile Launcher": "Ample Light Missile Launcher",
+            "Beta Reactor Control: Capacitor Flux I": "Compact Capacitor Flux Coil",
+            "Type-D Power Core Modification: Capacitor Flux": "Restrained Capacitor Flux Coil",
+            "Type-D Power Core Modification: Reaction Control": "Compact Reactor Control Unit",
+            "LADAR Firewall": "Ladar Firewall",
+            "Interior Type-E Cargo Identifier": "Scoped Cargo Scanner",
+            "Ta3 Perfunctory Vessel Probe": "Compact Ship Scanner",
+            "Speculative Ship Identifier I": "Compact Ship Scanner",
+            "Practical Type-E Ship Probe": "Compact Ship Scanner",
+            "ML-3 Amphilotite Mining Probe": "Scoped Survey Scanner",
+            "Rock-Scanning Sensor Array I": "Scoped Survey Scanner",
+            "'Dactyl' Type-E Asteroid Analyzer": "Scoped Survey Scanner",
+            "Partial Power Plant Manager: Capacitor Flux": "'Basic' Capacitor Flux Coil",
+            "Alpha Reactor Control: Capacitor Flux": "'Basic' Capacitor Flux Coil",
+            "Type-E Power Core Modification: Capacitor Flux": "'Basic' Capacitor Flux Coil",
+            "Marked Generator Refitting: Capacitor Flux": "'Basic' Capacitor Flux Coil",
+            "Local Power Plant Manager: Capacitor Flux I": "Restrained Capacitor Flux Coil",
+            "Mark I Generator Refitting: Capacitor Flux": "Compact Capacitor Flux Coil",
+            "Nanoelectrical Co-Processor": "Basic Co-Processor",
+            "Nanomechanical CPU Enhancer": "Basic Co-Processor",
+            "Quantum Co-Processor": "Basic Co-Processor",
+            "Photonic CPU Enhancer": "Basic Co-Processor",
+            "Nanomechanical CPU Enhancer I": "Upgraded Co-Processor",
+            "Quantum Co-Processor I": "Upgraded Co-Processor",
+            "Photonic CPU Enhancer I": "Upgraded Co-Processor",
+            "Partial Power Plant Manager: Reaction Control": "Basic Reactor Control Unit",
+            "Alpha Reactor Control: Reaction Control": "Basic Reactor Control Unit",
+            "Marked Generator Refitting: Reaction Control": "Basic Reactor Control Unit",
+            "Local Power Plant Manager: Reaction Control I is now": "Compact Reactor Control Unit",
+            "Mark I Generator Refitting: Reaction Control": "Compact Reactor Control Unit",
+            "Beta Reactor Control: Reaction Control I": "Compact Reactor Control Unit",
+            "Micro B88 Core Augmentation": "Compact Micro Auxiliary Power Core",
+            "Micro K-Exhaust Core Augmentation": "Compact Micro Auxiliary Power Core",
+            "Micro 'Vigor' Core Augmentation": "Navy Micro Auxiliary Power Core",
+            "Prototype 'Arbalest' Light Missile Launcher": "Compact Light Missile Launcher",
+            "Experimental TE-2100 Light Missile Launcher": "Ample Light Missile Launcher"}
+
         # Items' group overrides
         self.customGroups = set()
         # Limited edition ships
@@ -273,9 +329,12 @@ class Market():
             "Mobile Decoy Unit": False,  # Seems to be left over test mod for deployables
             "Tournament Micro Jump Unit": False }  # Normally seen only on tournament arenas
 
-        # do not publish anything that we convert
+        # do not publish ships that we convert
         for name in self.ITEMS_OVERRIDE:
             self.ITEMS_FORCEPUBLISHED[name] = False
+
+        # @todo: create better, less cluttered, and more systematic way to do this
+        self.ITEMS_OVERRIDE.update(ITEMS_OVERRIDE_OCEANUS)
 
         # List of groups which are forcibly published
         self.GROUPS_FORCEPUBLISHED = {
@@ -373,15 +432,18 @@ class Market():
         """Get item by its ID or name"""
         if isinstance(identity, eos.types.Item):
             item = identity
-        elif isinstance(identity, (int, basestring)):
+        elif isinstance(identity, int):
+            item = eos.db.getItem(identity, *args, **kwargs)
+        elif isinstance(identity, basestring):
+            # We normally lookup with string when we are using import/export
+            # features. Check against overrides
+            identity = self.ITEMS_OVERRIDE.get(identity, identity)
             item = eos.db.getItem(identity, *args, **kwargs)
         elif isinstance(identity, float):
             id = int(identity)
             item = eos.db.getItem(id, *args, **kwargs)
         else:
             raise TypeError("Need Item object, integer, float or string as argument")
-        if item is not None and item.name in self.ITEMS_OVERRIDE:
-            item = self.getItem(self.ITEMS_OVERRIDE[item.name], *args, **kwargs)
         return item
 
     def getGroup(self, identity, *args, **kwargs):
