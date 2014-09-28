@@ -49,7 +49,6 @@ if saveddata_connectionstring is not None:
 
     saveddata_meta = MetaData()
     saveddata_meta.bind = saveddata_engine
-    migration.update(saveddata_engine)
     saveddata_session = sessionmaker(bind=saveddata_engine, autoflush=False, expire_on_commit=False)()
 
 # Lock controlling any changes introduced to session
