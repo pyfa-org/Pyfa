@@ -603,7 +603,9 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         if self.item:
             if self.state >= State.OVERHEATED:
                 for effect in self.item.effects.itervalues():
-                    if effect.runTime == runTime and effect.isType("overheat"):
+                    if effect.runTime == runTime and \
+                       effect.isType("overheat") and \
+                       not forceProjected:
                         effect.handler(fit, self, context)
 
             for effect in self.item.effects.itervalues():
