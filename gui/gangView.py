@@ -33,6 +33,7 @@ class GangView ( ScrolledPanel ):
         ScrolledPanel.__init__ ( self, parent, id = wx.ID_ANY, pos = wx.DefaultPosition, size = wx.Size( 100,20 ), style = wx.TAB_TRAVERSAL | wx.HSCROLL | wx.VSCROLL )
         mainSizer = wx.BoxSizer( wx.VERTICAL )
 
+        self.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW))
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
         self.draggedFitID = None
