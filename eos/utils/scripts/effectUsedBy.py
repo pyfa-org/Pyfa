@@ -64,6 +64,8 @@ sqlite format, default pyfa database path is used if none specified",
 type="string", default=os.path.join("~", ".pyfa","eve.db"))
 parser.add_option("-e", "--effects", help="explicit comma-separated list of \
 effects to process", type="string", default="")
+parser.add_option("-r", "--remove", help="remove effect files that are not \
+used", action="store_true", dest="remove", default=False)
 parser.add_option("-u", "--debug", help="debug level, 0 by default",
                   type="int", default=0)
 (options, args) = parser.parse_args()
@@ -1039,7 +1041,12 @@ inner score: {5:.3})"
     # If effect isn't used, write it to file and to terminal
     else:
         commentlines = ["# Not used by any item"]
-        print("Warning: effect file " + effect_name +
+        if options.remove:
+            print("Warning: effect file " + effect_name +
+              " is not used by any item, removing")
+            os.remove(os.path.join(effects_path, effect_file))
+        else:
+            print("Warning: effect file " + effect_name +
               " is not used by any item")
     # Combine "used by" comment lines and actual effect lines
     outputlines = commentlines + effectLines
