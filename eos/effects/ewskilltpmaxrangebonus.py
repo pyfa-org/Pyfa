@@ -1,3 +1,5 @@
+# ewSkillTpMaxRangeBonus
+#
 # Used by:
 # Modules named like: Particle Dispersion Projector (8 of 8)
 # Skill: Long Distance Jamming

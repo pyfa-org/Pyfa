@@ -1,3 +1,5 @@
+# subsystemBonusMinmatarOffensiveProjectileWeaponFalloff
+#
 # Used by:
 # Subsystem: Loki Offensive - Projectile Scoping Array
 type = "passive"

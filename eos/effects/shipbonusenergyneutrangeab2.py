@@ -1,3 +1,5 @@
+# shipBonusEnergyNeutRangeAB2
+#
 # Used by:
 # Ship: Armageddon
 type = "passive"

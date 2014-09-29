@@ -1,3 +1,5 @@
+# tacticalshieldManipulationSkillBoostUniformityBonus
+#
 # Used by:
 # Skill: Tactical Shield Manipulation
 type = "passive"

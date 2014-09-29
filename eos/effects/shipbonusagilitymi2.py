@@ -1,3 +1,5 @@
+# shipBonusAgilityMI2
+#
 # Used by:
 # Ship: Wreathe
 type = "passive"

@@ -1,3 +1,5 @@
+# modifyShieldResonancePostPercent
+#
 # Used by:
 # Modules from group: Shield Amplifier (88 of 88)
 type = "passive"

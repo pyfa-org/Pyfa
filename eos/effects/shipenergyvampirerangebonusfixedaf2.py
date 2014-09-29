@@ -1,3 +1,5 @@
+# shipEnergyVampireRangeBonusFixedAF2
+#
 # Used by:
 # Ship: Malice
 type = "passive"

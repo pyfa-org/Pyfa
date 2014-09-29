@@ -1,3 +1,5 @@
+# shipBonusLightDroneShieldHPPirateFaction
+#
 # Used by:
 # Ship: Whiptail
 # Ship: Worm

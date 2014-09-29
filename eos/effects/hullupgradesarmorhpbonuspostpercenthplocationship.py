@@ -1,3 +1,5 @@
+# hullUpgradesArmorHpBonusPostPercentHpLocationShip
+#
 # Used by:
 # Implants named like: grade Slave (15 of 18)
 # Modules named like: Trimark Armor Pump (8 of 8)

@@ -1,3 +1,5 @@
+# shipBonusAgilityAI2
+#
 # Used by:
 # Ship: Sigil
 type = "passive"

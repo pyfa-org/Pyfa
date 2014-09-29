@@ -1,3 +1,5 @@
+# shieldOperationRechargeratebonusPostPercentRechargeRateLocationShipGroupShield
+#
 # Used by:
 # Implants named like: Zainou 'Gnome' Shield Operation SP (6 of 6)
 # Modules named like: Core Defense Field Purger (8 of 8)

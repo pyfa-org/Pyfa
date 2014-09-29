@@ -1,3 +1,5 @@
+# weaponUpgradesCpuNeedBonusPostPercentCpuLocationShipModulesRequiringMissileLauncherOperation
+#
 # Used by:
 # Implants named like: Zainou 'Gnome' Launcher CPU Efficiency LE (6 of 6)
 # Skill: Weapon Upgrades

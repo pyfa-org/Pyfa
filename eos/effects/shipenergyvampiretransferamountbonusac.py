@@ -1,3 +1,5 @@
+# shipEnergyVampireTransferAmountBonusAc
+#
 # Used by:
 # Ship: Ashimmu
 # Ship: Vangel

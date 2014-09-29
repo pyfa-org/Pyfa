@@ -1,3 +1,5 @@
+# droneMaxRangeBonus
+#
 # Used by:
 # Modules named like: Drone Scope Chip (8 of 8)
 # Skill: Drone Sharpshooting

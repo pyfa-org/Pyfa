@@ -1,3 +1,5 @@
+# shipBonusAF1TorpedoExplosionVelocity
+#
 # Used by:
 # Ship: Purifier
 type = "passive"

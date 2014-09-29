@@ -1,3 +1,5 @@
+# shipEnergyTCapNeedBonusAF
+#
 # Used by:
 # Ship: Crusader
 # Ship: Executioner

@@ -1,3 +1,5 @@
+# shipVelocityBonusMI
+#
 # Used by:
 # Variations of ship: Mammoth (2 of 2)
 # Ship: Hoarder

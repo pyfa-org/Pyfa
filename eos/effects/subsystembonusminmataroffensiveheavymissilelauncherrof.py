@@ -1,3 +1,5 @@
+# subsystemBonusMinmatarOffensiveHeavyMissileLauncherROF
+#
 # Used by:
 # Subsystem: Loki Offensive - Hardpoint Efficiency Configuration
 type = "passive"

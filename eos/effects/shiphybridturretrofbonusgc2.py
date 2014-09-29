@@ -1,3 +1,5 @@
+# shipHybridTurretROFBonusGC2
+#
 # Used by:
 # Ship: Exequror Navy Issue
 type = "passive"

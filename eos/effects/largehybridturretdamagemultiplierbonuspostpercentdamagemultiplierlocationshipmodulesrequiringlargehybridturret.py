@@ -1,3 +1,5 @@
+# largeHybridTurretDamageMultiplierBonusPostPercentDamageMultiplierLocationShipModulesRequiringLargeHybridTurret
+#
 # Used by:
 # Implants named like: Zainou 'Deadeye' Large Hybrid Turret LH (6 of 6)
 # Skill: Large Hybrid Turret

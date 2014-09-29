@@ -1,3 +1,5 @@
+# shipBonusDroneTrackingGB
+#
 # Used by:
 # Ship: Dominix
 type = "passive"

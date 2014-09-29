@@ -1,3 +1,5 @@
+# subsystemBonusAmarrOffensiveDroneDamageMultiplier
+#
 # Used by:
 # Subsystem: Legion Offensive - Drone Synthesis Projector
 type = "passive"

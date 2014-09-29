@@ -1,3 +1,5 @@
+# eliteBonusCommandShipMediumHybridDamageCS2
+#
 # Used by:
 # Ship: Vulture
 type = "passive"

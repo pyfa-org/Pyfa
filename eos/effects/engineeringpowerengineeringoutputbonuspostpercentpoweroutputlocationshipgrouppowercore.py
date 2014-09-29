@@ -1,3 +1,5 @@
+# engineeringPowerEngineeringOutputBonusPostPercentPowerOutputLocationShipGroupPowerCore
+#
 # Used by:
 # Implants named like: Inherent Implants 'Squire' Power Grid Management EG (6 of 6)
 # Modules named like: Ancillary Current Router (8 of 8)

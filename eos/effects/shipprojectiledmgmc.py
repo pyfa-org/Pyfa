@@ -1,3 +1,5 @@
+# shipProjectileDmgMC
+#
 # Used by:
 # Ship: Mimir
 type = "passive"

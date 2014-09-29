@@ -1,3 +1,5 @@
+# baseMaxScanDeviationModifierRequiringAstrometrics
+#
 # Used by:
 # Implants named like: Poteque 'Prospector' Astrometric Pinpointing AP (3 of 3)
 # Skill: Astrometric Pinpointing

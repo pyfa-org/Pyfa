@@ -1,3 +1,5 @@
+# shipArmorThermalResistanceAC2
+#
 # Used by:
 # Ship: Devoter
 # Ship: Maller

@@ -1,3 +1,5 @@
+# armorAllRepairSystemsAmountBonusPassive
+#
 # Used by:
 # Implants named like: Exile Booster (4 of 4)
 type = "passive"

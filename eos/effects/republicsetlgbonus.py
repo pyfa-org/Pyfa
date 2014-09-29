@@ -1,3 +1,5 @@
+# republicsetLGbonus
+#
 # Used by:
 # Implants named like: Low grade Jackal (6 of 6)
 runTime = "early"

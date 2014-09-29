@@ -1,3 +1,5 @@
+# shipBonusEnergyVampireRangeAD2
+#
 # Used by:
 # Ship: Dragoon
 type = "passive"

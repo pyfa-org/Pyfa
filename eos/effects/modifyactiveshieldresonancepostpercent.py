@@ -1,3 +1,5 @@
+# modifyActiveShieldResonancePostPercent
+#
 # Used by:
 # Modules from group: Shield Hardener (97 of 97)
 type = "active"

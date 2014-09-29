@@ -1,3 +1,5 @@
+# selfT2LargeLaserBeamDamageBonus
+#
 # Used by:
 # Skill: Large Beam Laser Specialization
 type = "passive"

@@ -1,3 +1,5 @@
+# eliteIndustrialShieldResists2
+#
 # Used by:
 # Ship: Bustard
 # Ship: Mastodon

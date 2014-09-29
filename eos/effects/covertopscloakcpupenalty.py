@@ -1,3 +1,5 @@
+# covertOpsCloakCpuPenalty
+#
 # Used by:
 # Subsystems from group: Offensive Systems (12 of 16)
 type = "passive"

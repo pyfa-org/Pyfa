@@ -1,3 +1,5 @@
+# bcLargeEnergyTurretCapacitorNeedBonus
+#
 # Used by:
 # Ship: Oracle
 type = "passive"

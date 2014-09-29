@@ -1,3 +1,5 @@
+# shipFalloffBonusGF
+#
 # Used by:
 # Ship: Atron
 # Ship: Daredevil

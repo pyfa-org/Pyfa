@@ -1,3 +1,5 @@
+# titanAmarrLeadershipModuleAmount4
+#
 # Used by:
 # Ship: Avatar
 type = "passive"

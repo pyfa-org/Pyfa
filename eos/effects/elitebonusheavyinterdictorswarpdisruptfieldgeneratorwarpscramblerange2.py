@@ -1,3 +1,5 @@
+# eliteBonusHeavyInterdictorsWarpDisruptFieldGeneratorWarpScrambleRange2
+#
 # Used by:
 # Ships from group: Heavy Interdiction Cruiser (4 of 4)
 type = "passive"

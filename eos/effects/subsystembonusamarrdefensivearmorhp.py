@@ -1,3 +1,5 @@
+# subsystemBonusAmarrDefensiveArmorHP
+#
 # Used by:
 # Subsystem: Legion Defensive - Augmented Plating
 type = "passive"

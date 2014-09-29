@@ -1,3 +1,5 @@
+# drawbackPowerNeedHybrids
+#
 # Used by:
 # Modules from group: Rig Hybrid Weapon (56 of 56)
 type = "passive"

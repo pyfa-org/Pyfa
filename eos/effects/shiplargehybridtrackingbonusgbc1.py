@@ -1,3 +1,5 @@
+# shipLargeHybridTrackingBonusGBC1
+#
 # Used by:
 # Ship: Talos
 type = "passive"

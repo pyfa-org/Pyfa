@@ -1,3 +1,5 @@
+# capitalRemoteArmorRepairerCapNeedBonusSkill
+#
 # Used by:
 # Variations of module: Capital Remote Repair Augmentor I (2 of 2)
 # Skill: Capital Remote Armor Repair Systems

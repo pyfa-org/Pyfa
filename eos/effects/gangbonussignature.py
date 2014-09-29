@@ -1,3 +1,5 @@
+# gangBonusSignature
+#
 # Used by:
 # Variations of module: Skirmish Warfare Link - Evasive Maneuvers I (2 of 2)
 type = "gang", "active"

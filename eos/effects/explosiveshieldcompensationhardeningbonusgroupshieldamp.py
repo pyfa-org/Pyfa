@@ -1,3 +1,5 @@
+# explosiveShieldCompensationHardeningBonusGroupShieldAmp
+#
 # Used by:
 # Skill: Explosive Shield Compensation
 type = "passive"

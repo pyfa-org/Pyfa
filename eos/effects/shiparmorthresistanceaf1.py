@@ -1,3 +1,5 @@
+# shipArmorTHResistanceAF1
+#
 # Used by:
 # Ships named like: Punisher (3 of 3)
 # Ship: Astero

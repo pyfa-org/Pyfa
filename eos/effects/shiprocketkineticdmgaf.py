@@ -1,3 +1,5 @@
+# shipRocketKineticDmgAF
+#
 # Used by:
 # Ship: Anathema
 # Ship: Vengeance

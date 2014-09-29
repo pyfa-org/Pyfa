@@ -1,3 +1,5 @@
+# overloadSelfDamageBonus
+#
 # Used by:
 # Modules from group: Energy Weapon (83 of 183)
 # Modules from group: Hybrid Weapon (89 of 199)

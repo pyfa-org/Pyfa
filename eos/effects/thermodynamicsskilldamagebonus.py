@@ -1,3 +1,5 @@
+# thermodynamicsSkillDamageBonus
+#
 # Used by:
 # Skill: Thermodynamics
 type = "passive"

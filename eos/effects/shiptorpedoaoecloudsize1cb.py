@@ -1,3 +1,5 @@
+# shipTorpedoAOECloudSize1CB
+#
 # Used by:
 # Ship: Raven Navy Issue
 type = "passive"

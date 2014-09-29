@@ -1,3 +1,5 @@
+# setBonusSerpentis
+#
 # Used by:
 # Implants named like: grade Snake (18 of 18)
 runTime = "early"

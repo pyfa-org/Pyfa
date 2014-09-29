@@ -1,3 +1,5 @@
+# overloadSelfEmHardeningBonus
+#
 # Used by:
 # Variations of module: Armor EM Hardener I (39 of 39)
 # Variations of module: EM Ward Field I (19 of 19)

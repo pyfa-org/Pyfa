@@ -1,3 +1,5 @@
+# shipHybridDamageBonusCF2
+#
 # Used by:
 # Ships named like: Merlin (3 of 3)
 type = "passive"

@@ -1,3 +1,5 @@
+# caldarisetLGbonus
+#
 # Used by:
 # Implants named like: Low grade Talon (6 of 6)
 runTime = "early"

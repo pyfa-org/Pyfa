@@ -1,3 +1,5 @@
+# eliteBonusAssaultShipLightMissileROF
+#
 # Used by:
 # Ship: Cambion
 type = "passive"

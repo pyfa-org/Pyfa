@@ -1,3 +1,5 @@
+# eliteBonusCommandShipProjectileDamageCS1
+#
 # Used by:
 # Ship: Sleipnir
 type = "passive"

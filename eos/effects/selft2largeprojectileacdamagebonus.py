@@ -1,3 +1,5 @@
+# selfT2LargeProjectileACDamageBonus
+#
 # Used by:
 # Skill: Large Autocannon Specialization
 type = "passive"

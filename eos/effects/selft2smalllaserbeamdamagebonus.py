@@ -1,3 +1,5 @@
+# selfT2SmallLaserBeamDamageBonus
+#
 # Used by:
 # Skill: Small Beam Laser Specialization
 type = "passive"

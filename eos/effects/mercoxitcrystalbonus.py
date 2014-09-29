@@ -1,3 +1,5 @@
+# mercoxitCrystalBonus
+#
 # Used by:
 # Module: Medium Mercoxit Mining Crystal Optimization I
 type = "passive"

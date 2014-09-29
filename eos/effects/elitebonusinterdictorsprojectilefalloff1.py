@@ -1,3 +1,5 @@
+# eliteBonusInterdictorsProjectileFalloff1
+#
 # Used by:
 # Ship: Sabre
 type = "passive"

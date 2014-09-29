@@ -1,3 +1,5 @@
+# eliteBonusMaraudersHeavyMissileDamageExpRole1
+#
 # Used by:
 # Ship: Golem
 type = "passive"

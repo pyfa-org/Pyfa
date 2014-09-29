@@ -1,3 +1,5 @@
+# sensorCompensationSensorStrengthBonusMagnetometric
+#
 # Used by:
 # Skill: Magnetometric Sensor Compensation
 type = "passive"

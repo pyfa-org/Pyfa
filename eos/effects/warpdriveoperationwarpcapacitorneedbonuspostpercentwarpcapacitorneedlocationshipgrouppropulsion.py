@@ -1,3 +1,5 @@
+# warpDriveOperationWarpCapacitorNeedBonusPostPercentWarpCapacitorNeedLocationShipGroupPropulsion
+#
 # Used by:
 # Modules named like: Warp Core Optimizer (8 of 8)
 # Skill: Warp Drive Operation

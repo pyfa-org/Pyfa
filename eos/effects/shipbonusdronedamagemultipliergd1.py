@@ -1,3 +1,5 @@
+# shipBonusDroneDamageMultiplierGD1
+#
 # Used by:
 # Ship: Algos
 type = "passive"

@@ -1,3 +1,5 @@
+# shipStasisWebRangeBonusMB
+#
 # Used by:
 # Ship: Bhaalgorn
 type = "passive"

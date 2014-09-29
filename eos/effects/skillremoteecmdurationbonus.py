@@ -1,3 +1,5 @@
+# skillRemoteECMDurationBonus
+#
 # Used by:
 # Skill: Projected Electronic Counter Measures
 type = "passive"

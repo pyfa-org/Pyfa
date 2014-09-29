@@ -1,3 +1,5 @@
+# shipHTDamageBonusCC
+#
 # Used by:
 # Ship: Moa
 type = "passive"

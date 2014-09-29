@@ -1,3 +1,5 @@
+# shipBonusSPTFalloffMF2
+#
 # Used by:
 # Ships named like: Rifter (3 of 3)
 type = "passive"

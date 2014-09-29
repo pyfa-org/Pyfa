@@ -1,3 +1,5 @@
+# smallProjectileTurretDamageMultiplierBonusPostPercentDamageMultiplierLocationShipModulesRequiringSmallProjectileTurret
+#
 # Used by:
 # Implants named like: Eifyr and Co. 'Gunslinger' Small Projectile Turret SP (6 of 6)
 # Skill: Small Projectile Turret

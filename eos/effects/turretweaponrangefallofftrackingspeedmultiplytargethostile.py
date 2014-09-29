@@ -1,3 +1,5 @@
+# turretWeaponRangeFalloffTrackingSpeedMultiplyTargetHostile
+#
 # Used by:
 # Drones named like: TD (3 of 3)
 type = "projected", "active"

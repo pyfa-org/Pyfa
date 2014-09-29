@@ -1,3 +1,5 @@
+# warpSkillSpeed
+#
 # Used by:
 # Implants named like: Eifyr and Co. 'Rogue' Warp Drive Speed WS (6 of 6)
 # Implants named like: grade Ascendancy (10 of 12)

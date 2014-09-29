@@ -1,3 +1,5 @@
+# sensorCompensationSensorStrengthBonusGravimetric
+#
 # Used by:
 # Skill: Gravimetric Sensor Compensation
 type = "passive"

@@ -1,3 +1,5 @@
+# shipShieldThermalResistanceRookie
+#
 # Used by:
 # Ship: Ibis
 # Ship: Taipan

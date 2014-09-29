@@ -1,3 +1,5 @@
+# remoteEcmBurst
+#
 # Used by:
 # Module: Remote ECM Burst I
 type = 'active'

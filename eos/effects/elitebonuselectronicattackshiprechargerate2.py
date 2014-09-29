@@ -1,3 +1,5 @@
+# eliteBonusElectronicAttackShipRechargeRate2
+#
 # Used by:
 # Ship: Sentinel
 type = "passive"

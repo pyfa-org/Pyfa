@@ -1,3 +1,5 @@
+# shipStasisWebStrengthBonusMF2
+#
 # Used by:
 # Ship: Daredevil
 type = "passive"

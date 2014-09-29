@@ -1,3 +1,5 @@
+# shipBonusPirateFrigateProjDamage
+#
 # Used by:
 # Ship: Chremoas
 # Ship: Dramiel

@@ -1,3 +1,5 @@
+# explosiveArmorCompensationHardeningBonusGroupArmorCoating
+#
 # Used by:
 # Skill: Explosive Armor Compensation
 type = "passive"

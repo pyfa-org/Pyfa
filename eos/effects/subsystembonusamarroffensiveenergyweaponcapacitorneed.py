@@ -1,3 +1,5 @@
+# subsystemBonusAmarrOffensiveEnergyWeaponCapacitorNeed
+#
 # Used by:
 # Subsystem: Legion Offensive - Covert Reconfiguration
 type = "passive"

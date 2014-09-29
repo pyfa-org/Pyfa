@@ -1,3 +1,5 @@
+# shipBonusMissileExplosionDelayPirateFaction2
+#
 # Used by:
 # Ship: Barghest
 # Ship: Garmur

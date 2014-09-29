@@ -1,3 +1,5 @@
+# shipBonusShieldBoosterMB1a
+#
 # Used by:
 # Ships named like: Maelstrom (3 of 3)
 type = "passive"

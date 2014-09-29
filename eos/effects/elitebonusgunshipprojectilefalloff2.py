@@ -1,3 +1,5 @@
+# eliteBonusGunshipProjectileFalloff2
+#
 # Used by:
 # Ship: Wolf
 type = "passive"

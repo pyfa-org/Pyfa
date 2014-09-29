@@ -1,3 +1,5 @@
+# shipEnergyNeutralizerTransferAmountBonusAF
+#
 # Used by:
 # Ship: Cruor
 # Ship: Sentinel

@@ -1,3 +1,5 @@
+# droneRangeBonusAdd
+#
 # Used by:
 # Modules from group: Drone Control Range Module (7 of 7)
 type = "passive"

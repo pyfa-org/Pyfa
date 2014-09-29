@@ -1,3 +1,5 @@
+# eliteIndustrialShieldHardenerHeatBonus
+#
 # Used by:
 # Ships from group: Deep Space Transport (4 of 4)
 type = "passive"

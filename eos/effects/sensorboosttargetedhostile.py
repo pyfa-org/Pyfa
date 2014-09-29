@@ -1,3 +1,5 @@
+# sensorBoostTargetedHostile
+#
 # Used by:
 # Drones named like: SD (3 of 3)
 type = "projected", "active"

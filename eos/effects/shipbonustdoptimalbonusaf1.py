@@ -1,3 +1,5 @@
+# shipBonusTDOptimalBonusAF1
+#
 # Used by:
 # Ship: Crucifier
 type = "passive"

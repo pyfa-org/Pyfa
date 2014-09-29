@@ -1,3 +1,5 @@
+# eliteBonusElectronicAttackShipSignatureRadius2
+#
 # Used by:
 # Ship: Hyena
 type = "passive"

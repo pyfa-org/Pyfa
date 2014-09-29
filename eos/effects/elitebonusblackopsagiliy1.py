@@ -1,3 +1,5 @@
+# eliteBonusBlackOpsAgiliy1
+#
 # Used by:
 # Ship: Sin
 type = "passive"

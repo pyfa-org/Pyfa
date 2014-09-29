@@ -1,3 +1,5 @@
+# energyTransfer
+#
 # Used by:
 # Modules from group: Remote Capacitor Transmitter (38 of 38)
 type = "projected", "active"

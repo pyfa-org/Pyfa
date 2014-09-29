@@ -1,3 +1,7 @@
+# shipMissileLauncherRoFAD1
+#
+# Used by:
+# Ship: Heretic
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Amarr Destroyer").level

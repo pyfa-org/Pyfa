@@ -1,3 +1,5 @@
+# shipBonusOreHoldORE2
+#
 # Used by:
 # Variations of ship: Retriever (2 of 2)
 # Ship: Mackinaw ORE Development Edition

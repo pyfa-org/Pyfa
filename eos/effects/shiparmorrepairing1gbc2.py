@@ -1,3 +1,5 @@
+# shipArmorRepairing1GBC2
+#
 # Used by:
 # Variations of ship: Myrmidon (2 of 2)
 # Ship: Astarte

@@ -1,3 +1,5 @@
+# selfT2LargeHybridBlasterDamageBonus
+#
 # Used by:
 # Skill: Large Blaster Specialization
 type = "passive"

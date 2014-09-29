@@ -1,3 +1,5 @@
+# subsystemBonusAmarrElectronic2MaxTargetingRange
+#
 # Used by:
 # Subsystem: Legion Electronics - Dissolution Sequencer
 type = "passive"

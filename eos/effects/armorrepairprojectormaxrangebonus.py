@@ -1,3 +1,5 @@
+# armorRepairProjectorMaxRangeBonus
+#
 # Used by:
 # Ship: Augoror
 # Ship: Exequror

@@ -1,3 +1,5 @@
+# shipBonusDroneOptimalRangeGB
+#
 # Used by:
 # Ship: Dominix
 type = "passive"

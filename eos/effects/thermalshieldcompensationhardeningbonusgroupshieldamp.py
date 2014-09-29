@@ -1,3 +1,5 @@
+# thermalShieldCompensationHardeningBonusGroupShieldAmp
+#
 # Used by:
 # Skill: Thermic Shield Compensation
 type = "passive"

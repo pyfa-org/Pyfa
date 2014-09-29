@@ -1,3 +1,5 @@
+# capitalRepairSystemsSkillDurationBonus
+#
 # Used by:
 # Modules named like: Nanobot Accelerator (8 of 8)
 # Skill: Capital Repair Systems

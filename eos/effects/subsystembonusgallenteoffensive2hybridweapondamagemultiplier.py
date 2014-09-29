@@ -1,3 +1,5 @@
+# subsystemBonusGallenteOffensive2HybridWeaponDamageMultiplier
+#
 # Used by:
 # Variations of subsystem: Proteus Offensive - Dissonic Encoding Platform (3 of 4)
 type = "passive"

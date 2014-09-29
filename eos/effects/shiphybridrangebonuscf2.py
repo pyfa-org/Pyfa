@@ -1,3 +1,5 @@
+# shipHybridRangeBonusCF2
+#
 # Used by:
 # Ship: Harpy
 # Ship: Raptor

@@ -1,3 +1,5 @@
+# capitalTurretSkillLaserDamage
+#
 # Used by:
 # Skill: Capital Energy Turret
 type = "passive"

@@ -1,3 +1,5 @@
+# shipBonusRemoteArmorRepairCapNeedGF
+#
 # Used by:
 # Ship: Navitas
 type = "passive"

@@ -1,3 +1,5 @@
+# shipBonusMineralBayGI2
+#
 # Used by:
 # Ship: Kryos
 type = "passive"

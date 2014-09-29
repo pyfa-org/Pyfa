@@ -1,3 +1,5 @@
+# biologyTimeBonusFixed
+#
 # Used by:
 # Implants named like: Eifyr and Co. 'Alchemist' Biology BY (2 of 2)
 # Skill: Biology

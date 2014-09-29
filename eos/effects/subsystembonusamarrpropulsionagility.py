@@ -1,3 +1,5 @@
+# subsystemBonusAmarrPropulsionAgility
+#
 # Used by:
 # Subsystem: Legion Propulsion - Interdiction Nullifier
 type = "passive"

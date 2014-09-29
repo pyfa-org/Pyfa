@@ -1,3 +1,5 @@
+# shipHybridTrackingGBC2
+#
 # Used by:
 # Ship: Brutix Navy Issue
 type = "passive"

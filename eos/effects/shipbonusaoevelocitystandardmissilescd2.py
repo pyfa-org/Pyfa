@@ -1,3 +1,5 @@
+# shipBonusAoeVelocityStandardMissilesCD2
+#
 # Used by:
 # Ship: Corax
 type = "passive"

@@ -1,3 +1,5 @@
+# shipEnergyDrainAmountAF1
+#
 # Used by:
 # Ship: Cruor
 # Ship: Sentinel

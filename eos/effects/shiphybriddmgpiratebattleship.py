@@ -1,3 +1,5 @@
+# shipHybridDmgPirateBattleship
+#
 # Used by:
 # Ship: Vindicator
 type = "passive"

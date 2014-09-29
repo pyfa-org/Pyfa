@@ -1,3 +1,5 @@
+# subsystemBonusMinmatarEngineeringCapacitorCapacity
+#
 # Used by:
 # Subsystem: Loki Engineering - Augmented Capacitor Reservoir
 type = "passive"

@@ -1,3 +1,5 @@
+# drawbackShieldCapacity
+#
 # Used by:
 # Modules from group: Rig Electronic Systems (40 of 48)
 # Modules from group: Rig Targeting (16 of 16)

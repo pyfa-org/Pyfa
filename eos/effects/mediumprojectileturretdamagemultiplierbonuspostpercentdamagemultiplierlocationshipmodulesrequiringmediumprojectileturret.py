@@ -1,3 +1,5 @@
+# mediumProjectileTurretDamageMultiplierBonusPostPercentDamageMultiplierLocationShipModulesRequiringMediumProjectileTurret
+#
 # Used by:
 # Implants named like: Eifyr and Co. 'Gunslinger' Medium Projectile Turret MP (6 of 6)
 # Skill: Medium Projectile Turret

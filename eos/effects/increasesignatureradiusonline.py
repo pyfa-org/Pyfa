@@ -1,3 +1,5 @@
+# increaseSignatureRadiusOnline
+#
 # Used by:
 # Modules from group: Inertia Stabilizer (12 of 12)
 type = "passive"

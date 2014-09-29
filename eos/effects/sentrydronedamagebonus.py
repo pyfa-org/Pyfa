@@ -1,3 +1,5 @@
+# sentryDroneDamageBonus
+#
 # Used by:
 # Modules named like: Sentry Damage Augmentor (8 of 8)
 type = "passive"

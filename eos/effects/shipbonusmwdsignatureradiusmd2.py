@@ -1,3 +1,5 @@
+# shipBonusMWDSignatureRadiusMD2
+#
 # Used by:
 # Ship: Talwar
 type = "passive"

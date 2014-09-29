@@ -1,3 +1,5 @@
+# thermicArmorCompensationHardeningBonusGroupArmorCoating
+#
 # Used by:
 # Skill: Thermic Armor Compensation
 type = "passive"

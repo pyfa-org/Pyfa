@@ -1,3 +1,5 @@
+# shipBonusMissileKineticlATF2
+#
 # Used by:
 # Ship: Cambion
 type = "passive"

@@ -1,3 +1,5 @@
+# gangShieldBoosteAndTransporterCapacitorNeed
+#
 # Used by:
 # Variations of module: Siege Warfare Link - Shield Efficiency I (2 of 2)
 type = "gang", "active"

@@ -1,3 +1,5 @@
+# shipEnergyTCapNeedBonusRookie
+#
 # Used by:
 # Ship: Hematos
 # Ship: Impairor

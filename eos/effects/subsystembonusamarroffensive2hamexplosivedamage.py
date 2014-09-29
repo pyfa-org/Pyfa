@@ -1,3 +1,5 @@
+# subsystemBonusAmarrOffensive2HAMExplosiveDamage
+#
 # Used by:
 # Subsystem: Legion Offensive - Assault Optimization
 type = "passive"

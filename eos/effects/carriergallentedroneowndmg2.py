@@ -1,3 +1,5 @@
+# carrierGallenteDroneOwnDmg2
+#
 # Used by:
 # Ship: Nyx
 # Ship: Thanatos

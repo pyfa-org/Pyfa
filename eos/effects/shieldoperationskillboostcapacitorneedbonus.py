@@ -1,3 +1,5 @@
+# shieldOperationSkillBoostCapacitorNeedBonus
+#
 # Used by:
 # Modules named like: Core Defense Capacitor Safeguard (8 of 8)
 # Skill: Shield Compensation

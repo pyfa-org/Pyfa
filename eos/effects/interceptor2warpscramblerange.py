@@ -1,3 +1,5 @@
+# Interceptor2WarpScrambleRange
+#
 # Used by:
 # Ships from group: Interceptor (5 of 9)
 type = "passive"

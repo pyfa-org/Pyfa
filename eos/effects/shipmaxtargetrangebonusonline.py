@@ -1,3 +1,5 @@
+# shipMaxTargetRangeBonusOnline
+#
 # Used by:
 # Modules from group: Signal Amplifier (11 of 11)
 type = "passive"

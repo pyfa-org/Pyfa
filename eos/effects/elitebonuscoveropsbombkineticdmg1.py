@@ -1,3 +1,5 @@
+# eliteBonusCoverOpsBombKineticDmg1
+#
 # Used by:
 # Ship: Manticore
 type = "passive"

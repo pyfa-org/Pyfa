@@ -1,3 +1,5 @@
+# damageControl
+#
 # Used by:
 # Modules from group: Damage Control (14 of 14)
 type = "active"

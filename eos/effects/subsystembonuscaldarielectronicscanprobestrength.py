@@ -1,3 +1,5 @@
+# subSystemBonusCaldariElectronicScanProbeStrength
+#
 # Used by:
 # Subsystem: Tengu Electronics - Emergent Locus Analyzer
 type = "passive"

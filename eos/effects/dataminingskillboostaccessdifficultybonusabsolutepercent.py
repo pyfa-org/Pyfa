@@ -1,3 +1,5 @@
+# dataMiningSkillBoostAccessDifficultyBonusAbsolutePercent
+#
 # Used by:
 # Skill: Archaeology
 # Skill: Hacking

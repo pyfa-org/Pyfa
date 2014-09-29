@@ -1,3 +1,5 @@
+# jumpDriveSkillsCapacitorNeedBonus
+#
 # Used by:
 # Skill: Jump Drive Operation
 type = "passive"

@@ -1,3 +1,5 @@
+# droneDurabilityShieldCapBonus2
+#
 # Used by:
 # Skill: Drone Durability
 type = "passive"

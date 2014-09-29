@@ -1,3 +1,5 @@
+# selfT2MediumHybridBlasterDamageBonus
+#
 # Used by:
 # Skill: Medium Blaster Specialization
 type = "passive"

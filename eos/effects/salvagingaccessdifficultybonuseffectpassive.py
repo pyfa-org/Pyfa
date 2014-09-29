@@ -1,3 +1,5 @@
+# salvagingAccessDifficultyBonusEffectPassive
+#
 # Used by:
 # Modules from group: Rig Resource Processing (8 of 10)
 # Implant: Poteque 'Prospector' Salvaging SV-905

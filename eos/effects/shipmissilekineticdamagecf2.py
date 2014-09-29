@@ -1,3 +1,5 @@
+# shipMissileKineticDamageCF2
+#
 # Used by:
 # Ship: Garmur
 type = "passive"

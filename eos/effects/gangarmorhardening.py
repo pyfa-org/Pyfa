@@ -1,3 +1,5 @@
+# gangArmorHardening
+#
 # Used by:
 # Variations of module: Armored Warfare Link - Passive Defense I (2 of 2)
 type = "gang", "active"

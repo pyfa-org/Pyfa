@@ -1,3 +1,5 @@
+# shipBonusShieldTransferCapneed1
+#
 # Used by:
 # Ship: Osprey
 type = "passive"

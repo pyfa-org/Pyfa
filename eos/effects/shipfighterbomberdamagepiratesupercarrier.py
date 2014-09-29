@@ -1,3 +1,5 @@
+# shipFighterBomberDamagePirateSupercarrier
+#
 # Used by:
 # Ships from group: Supercarrier (5 of 5)
 type = "passive"

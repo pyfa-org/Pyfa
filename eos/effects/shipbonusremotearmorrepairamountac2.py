@@ -1,3 +1,5 @@
+# shipBonusRemoteArmorRepairAmountAC2
+#
 # Used by:
 # Ship: Augoror
 type = "passive"

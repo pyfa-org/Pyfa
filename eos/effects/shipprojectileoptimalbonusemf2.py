@@ -1,3 +1,5 @@
+# shipProjectileOptimalBonuseMF2
+#
 # Used by:
 # Ship: Cheetah
 type = "passive"

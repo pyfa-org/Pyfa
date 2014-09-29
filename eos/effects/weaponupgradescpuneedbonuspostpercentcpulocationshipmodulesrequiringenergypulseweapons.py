@@ -1,3 +1,5 @@
+# weaponUpgradesCpuNeedBonusPostPercentCpuLocationShipModulesRequiringEnergyPulseWeapons
+#
 # Used by:
 # Skill: Weapon Upgrades
 type = "passive"

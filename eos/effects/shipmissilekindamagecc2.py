@@ -1,3 +1,5 @@
+# shipMissileKinDamageCC2
+#
 # Used by:
 # Ship: Osprey Navy Issue
 type = "passive"

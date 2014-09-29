@@ -1,3 +1,5 @@
+# shipBonusAfterburnerSpeedFactorCF2
+#
 # Used by:
 # Ship: Succubus
 type = "passive"

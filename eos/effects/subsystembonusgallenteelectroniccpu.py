@@ -1,3 +1,5 @@
+# subsystemBonusGallenteElectronicCPU
+#
 # Used by:
 # Subsystem: Proteus Electronics - CPU Efficiency Gate
 type = "passive"

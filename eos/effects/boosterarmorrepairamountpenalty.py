@@ -1,3 +1,5 @@
+# boosterArmorRepairAmountPenalty
+#
 # Used by:
 # Implants from group: Booster (9 of 37)
 type = "boosterSideEffect"

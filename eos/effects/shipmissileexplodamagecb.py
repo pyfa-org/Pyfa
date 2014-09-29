@@ -1,3 +1,5 @@
+# shipMissileExploDamageCB
+#
 # Used by:
 # Ship: Barghest
 type = "passive"

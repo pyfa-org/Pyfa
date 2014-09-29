@@ -1,3 +1,5 @@
+# minerCpuUsageMultiplyPercent2
+#
 # Used by:
 # Variations of module: Mining Laser Upgrade I (6 of 6)
 type = "passive"

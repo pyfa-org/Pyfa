@@ -1,3 +1,5 @@
+# implantSetWarpSpeed
+#
 # Used by:
 # Implants named like: grade Ascendancy (12 of 12)
 runTime = "early"

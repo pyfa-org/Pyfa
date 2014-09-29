@@ -1,3 +1,5 @@
+# eliteReconBonusHeavyAssaultLauncherROF1
+#
 # Used by:
 # Ship: Huginn
 type = "passive"

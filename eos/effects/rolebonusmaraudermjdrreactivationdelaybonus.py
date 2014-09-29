@@ -1,3 +1,5 @@
+# roleBonusMarauderMJDRReactivationDelayBonus
+#
 # Used by:
 # Ships from group: Marauder (4 of 4)
 type = "passive"

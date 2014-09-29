@@ -1,3 +1,5 @@
+# accerationControlSpeedFBonusPostPercentSpeedFactorLocationShipGroupAfterburner
+#
 # Used by:
 # Implants named like: Eifyr and Co. 'Rogue' Acceleration Control AC (6 of 6)
 type = "passive"

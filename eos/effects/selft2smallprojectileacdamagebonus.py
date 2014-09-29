@@ -1,3 +1,5 @@
+# selfT2SmallProjectileACDamageBonus
+#
 # Used by:
 # Skill: Small Autocannon Specialization
 type = "passive"

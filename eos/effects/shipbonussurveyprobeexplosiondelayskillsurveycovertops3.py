@@ -1,3 +1,5 @@
+# shipBonusSurveyProbeExplosionDelaySkillSurveyCovertOps3
+#
 # Used by:
 # Ships from group: Covert Ops (4 of 5)
 type = "passive"

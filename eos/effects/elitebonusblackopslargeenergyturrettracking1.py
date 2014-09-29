@@ -1,3 +1,5 @@
+# eliteBonusBlackOpsLargeEnergyTurretTracking1
+#
 # Used by:
 # Ship: Redeemer
 type = "passive"

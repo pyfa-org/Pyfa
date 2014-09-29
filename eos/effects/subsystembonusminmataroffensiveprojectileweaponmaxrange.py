@@ -1,3 +1,5 @@
+# subsystemBonusMinmatarOffensiveProjectileWeaponMaxRange
+#
 # Used by:
 # Subsystem: Loki Offensive - Turret Concurrence Registry
 type = "passive"

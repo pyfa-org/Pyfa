@@ -1,3 +1,5 @@
+# missileThermalDmgBonusCruise3
+#
 # Used by:
 # Implants named like: Zainou 'Snapshot' Cruise Missiles CM (6 of 6)
 type = "passive"

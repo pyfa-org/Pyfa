@@ -1,3 +1,5 @@
+# shieldOperationRechargeratebonusPostPercentOnline
+#
 # Used by:
 # Modules from group: Shield Power Relay (11 of 11)
 type = "passive"

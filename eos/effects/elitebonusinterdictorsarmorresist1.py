@@ -1,3 +1,5 @@
+# eliteBonusInterdictorsArmorResist1
+#
 # Used by:
 # Ship: Heretic
 type = "passive"

@@ -1,3 +1,5 @@
+# eliteBonusHeavyGunshipHybridOptimal1
+#
 # Used by:
 # Ship: Eagle
 type = "passive"

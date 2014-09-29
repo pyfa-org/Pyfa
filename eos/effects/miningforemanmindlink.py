@@ -1,3 +1,5 @@
+# miningForemanMindlink
+#
 # Used by:
 # Implant: Mining Foreman Mindlink
 type = "passive"

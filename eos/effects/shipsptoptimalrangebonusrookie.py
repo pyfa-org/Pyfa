@@ -1,3 +1,5 @@
+# shipSPTOptimalRangeBonusRookie
+#
 # Used by:
 # Ship: Echo
 type = "passive"

@@ -1,3 +1,5 @@
+# sensorCompensationSensorStrengthBonusLadar
+#
 # Used by:
 # Skill: Ladar Sensor Compensation
 type = "passive"

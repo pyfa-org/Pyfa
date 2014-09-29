@@ -1,3 +1,5 @@
+# emShieldCompensationHardeningBonusGroupShieldAmp
+#
 # Used by:
 # Skill: EM Shield Compensation
 type = "passive"

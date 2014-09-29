@@ -1,3 +1,5 @@
+# kineticShieldCompensationHardeningBonusGroupShieldAmp
+#
 # Used by:
 # Skill: Kinetic Shield Compensation
 type = "passive"

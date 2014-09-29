@@ -1,3 +1,5 @@
+# titanMinmatarLeadershipModuleAmount4
+#
 # Used by:
 # Ship: Ragnarok
 type = "passive"

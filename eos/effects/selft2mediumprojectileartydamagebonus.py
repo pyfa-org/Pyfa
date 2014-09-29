@@ -1,3 +1,5 @@
+# selfT2MediumProjectileArtyDamageBonus
+#
 # Used by:
 # Skill: Medium Artillery Specialization
 type = "passive"

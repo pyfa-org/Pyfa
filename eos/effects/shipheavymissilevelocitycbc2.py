@@ -1,3 +1,5 @@
+# shipHeavyMissileVelocityCBC2
+#
 # Used by:
 # Ship: Drake Navy Issue
 type = "passive"

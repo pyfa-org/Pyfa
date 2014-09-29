@@ -1,3 +1,5 @@
+# capitalRemoteEnergyTransferCapNeedBonusSkill
+#
 # Used by:
 # Skill: Capital Capacitor Emission Systems
 type = "passive"

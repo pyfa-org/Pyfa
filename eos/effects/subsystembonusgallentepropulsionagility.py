@@ -1,3 +1,5 @@
+# subsystemBonusGallentePropulsionAgility
+#
 # Used by:
 # Subsystem: Proteus Propulsion - Interdiction Nullifier
 type = "passive"

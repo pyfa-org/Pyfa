@@ -1,3 +1,5 @@
+# eliteBonusCommandShipHybridOptimalCS1
+#
 # Used by:
 # Ship: Vulture
 type = "passive"

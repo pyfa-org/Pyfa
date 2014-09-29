@@ -1,3 +1,5 @@
+# eliteBonusViolatorsRepairSystemsArmorDamageAmount2
+#
 # Used by:
 # Ship: Kronos
 # Ship: Paladin

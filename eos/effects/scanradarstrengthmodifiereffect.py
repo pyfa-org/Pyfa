@@ -1,3 +1,5 @@
+# ScanRadarStrengthModifierEffect
+#
 # Used by:
 # Implants named like: Low grade Grail (5 of 6)
 type = "passive"

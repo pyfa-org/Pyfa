@@ -1,3 +1,5 @@
+# shipBonusVelocityCI
+#
 # Used by:
 # Variations of ship: Tayra (2 of 2)
 # Ship: Crane

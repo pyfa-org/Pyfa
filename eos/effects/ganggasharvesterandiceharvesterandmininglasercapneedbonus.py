@@ -1,3 +1,5 @@
+# gangGasHarvesterAndIceHarvesterAndMiningLaserCapNeedBonus
+#
 # Used by:
 # Variations of module: Mining Foreman Link - Harvester Capacitor Efficiency I (2 of 2)
 type = "gang", "active"

@@ -1,3 +1,5 @@
+# frequencyMiningLaserMaxRangeBonus
+#
 # Used by:
 # Implants named like: grade Harvest (10 of 12)
 type = "passive"

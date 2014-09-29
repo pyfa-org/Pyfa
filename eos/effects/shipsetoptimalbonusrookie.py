@@ -1,3 +1,5 @@
+# shipSETOptimalBonusRookie
+#
 # Used by:
 # Ship: Immolator
 type = "passive"

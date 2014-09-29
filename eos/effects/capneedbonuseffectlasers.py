@@ -1,3 +1,5 @@
+# capNeedBonusEffectLasers
+#
 # Used by:
 # Modules named like: Energy Discharge Elutriation (8 of 8)
 type = "passive"

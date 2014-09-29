@@ -1,3 +1,5 @@
+# dreadnoughtShipBonusLaserRofA2
+#
 # Used by:
 # Ship: Revelation
 type = "passive"

@@ -1,3 +1,5 @@
+# drawbackCPUNeedLaunchers
+#
 # Used by:
 # Modules from group: Rig Launcher (48 of 48)
 type = "passive"

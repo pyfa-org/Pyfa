@@ -1,3 +1,5 @@
+# subsystemBonusGallenteDefensive2RemoteArmorRepairAmount
+#
 # Used by:
 # Subsystem: Proteus Defensive - Adaptive Augmenter
 type = "passive"

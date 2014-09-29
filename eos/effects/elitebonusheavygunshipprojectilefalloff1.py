@@ -1,3 +1,5 @@
+# eliteBonusHeavyGunshipProjectileFallOff1
+#
 # Used by:
 # Ship: Vagabond
 type = "passive"

@@ -1,3 +1,5 @@
+# energyTransferPowerNeedBonusEffect
+#
 # Used by:
 # Ships from group: Logistics (3 of 5)
 type = "passive"

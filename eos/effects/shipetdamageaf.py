@@ -1,3 +1,5 @@
+# shipETDamageAF
+#
 # Used by:
 # Ship: Crusader
 # Ship: Imperial Navy Slicer

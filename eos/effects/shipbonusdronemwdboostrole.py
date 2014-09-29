@@ -1,3 +1,5 @@
+# shipBonusDroneMWDboostrole
+#
 # Used by:
 # Ship: Algos
 # Ship: Dragoon

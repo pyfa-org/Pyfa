@@ -1,3 +1,5 @@
+# subsystemBonusMinmatarPropulsionMaxVelocity
+#
 # Used by:
 # Subsystem: Loki Propulsion - Chassis Optimization
 type = "passive"

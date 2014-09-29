@@ -1,3 +1,5 @@
+# subsystemBonusMinmatarOffensive3TurretTracking
+#
 # Used by:
 # Subsystem: Loki Offensive - Turret Concurrence Registry
 type = "passive"

@@ -1,3 +1,5 @@
+# eliteBonusViolatorsLargeHybridTurretDamageRole1
+#
 # Used by:
 # Ship: Kronos
 type = "passive"

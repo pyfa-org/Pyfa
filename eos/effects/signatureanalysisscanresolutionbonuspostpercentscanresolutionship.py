@@ -1,3 +1,5 @@
+# signatureAnalysisScanResolutionBonusPostPercentScanResolutionShip
+#
 # Used by:
 # Implants named like: Zainou 'Gypsy' Signature Analysis SA (6 of 6)
 # Modules named like: Targeting System Subcontroller (8 of 8)

@@ -1,3 +1,5 @@
+# subsystemBonusCaldariOffensive3EwStrengthGrav
+#
 # Used by:
 # Subsystem: Tengu Offensive - Rifling Launcher Pattern
 type = "passive"

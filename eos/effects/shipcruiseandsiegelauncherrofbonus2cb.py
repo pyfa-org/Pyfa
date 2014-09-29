@@ -1,3 +1,5 @@
+# shipCruiseAndSiegeLauncherROFBonus2CB
+#
 # Used by:
 # Ship: Widow
 type = "passive"

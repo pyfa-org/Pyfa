@@ -1,5 +1,6 @@
+# shipSmallMissileKinDmgCF2
+#
 # Used by:
-# Ship: Crow
 # Ship: Kestrel
 type = "passive"
 def handler(fit, ship, context):

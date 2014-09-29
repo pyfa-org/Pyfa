@@ -1,3 +1,5 @@
+# blockadeRunnerCloakCpuPercentBonus
+#
 # Used by:
 # Ships from group: Blockade Runner (4 of 4)
 type = "passive"

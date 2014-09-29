@@ -1,3 +1,5 @@
+# shipBonusDroneMiningAmountAC2
+#
 # Used by:
 # Ship: Arbitrator
 type = "passive"

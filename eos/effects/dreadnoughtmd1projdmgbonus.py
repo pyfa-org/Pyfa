@@ -1,3 +1,5 @@
+# dreadnoughtMD1ProjDmgBonus
+#
 # Used by:
 # Ship: Naglfar
 type = "passive"

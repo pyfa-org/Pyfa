@@ -1,3 +1,5 @@
+# shipArmorResistanceAF1
+#
 # Used by:
 # Ship: Malediction
 type = "passive"

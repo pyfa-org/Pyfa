@@ -1,3 +1,5 @@
+# subsystemBonusGallenteEngineeringPowerOutput
+#
 # Used by:
 # Subsystem: Proteus Engineering - Power Core Multiplier
 type = "passive"

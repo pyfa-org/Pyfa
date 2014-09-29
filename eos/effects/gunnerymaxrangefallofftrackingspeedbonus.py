@@ -1,3 +1,5 @@
+# gunneryMaxRangeFalloffTrackingSpeedBonus
+#
 # Used by:
 # Modules from group: Tracking Computer (14 of 14)
 type = "active"

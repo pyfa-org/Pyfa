@@ -1,3 +1,5 @@
+# eliteBonusCoverOpsBombThermalDmg1
+#
 # Used by:
 # Ship: Nemesis
 type = "passive"

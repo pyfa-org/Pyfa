@@ -1,3 +1,5 @@
+# shipBonusEwRemoteSensorDampenerMaxTargetRangeBonusGF2
+#
 # Used by:
 # Variations of ship: Maulus (2 of 2)
 type = "passive"

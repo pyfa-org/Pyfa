@@ -1,3 +1,5 @@
+# cynosuralTheoryConsumptionBonus
+#
 # Used by:
 # Ships from group: Force Recon Ship (5 of 6)
 # Skill: Cynosural Field Theory

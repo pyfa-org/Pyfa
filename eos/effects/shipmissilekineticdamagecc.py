@@ -1,3 +1,5 @@
+# shipMissileKineticDamageCC
+#
 # Used by:
 # Ship: Cerberus
 # Ship: Onyx

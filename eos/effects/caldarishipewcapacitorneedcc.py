@@ -1,3 +1,5 @@
+# caldariShipEwCapacitorNeedCC
+#
 # Used by:
 # Ship: Chameleon
 # Ship: Falcon

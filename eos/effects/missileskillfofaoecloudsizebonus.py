@@ -1,3 +1,5 @@
+# missileSkillFoFAoeCloudSizeBonus
+#
 # Used by:
 # Implants named like: Zainou 'Snapshot' FOF Explosion Radius FR (6 of 6)
 type = "passive"

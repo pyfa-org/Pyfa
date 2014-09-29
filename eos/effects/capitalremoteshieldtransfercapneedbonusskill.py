@@ -1,3 +1,5 @@
+# capitalRemoteShieldTransferCapNeedBonusSkill
+#
 # Used by:
 # Skill: Capital Shield Emission Systems
 type = "passive"

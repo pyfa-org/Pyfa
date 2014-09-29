@@ -1,3 +1,7 @@
+# eliteBonusInterdictorsSHTRoF1
+#
+# Used by:
+# Ship: Eris
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Interdictors").level

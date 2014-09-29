@@ -1,3 +1,5 @@
+# droneDurabilityArmorHPBonus
+#
 # Used by:
 # Modules named like: Drone Durability Enhancer (8 of 8)
 type = "passive"

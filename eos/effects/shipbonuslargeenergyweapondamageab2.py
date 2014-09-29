@@ -1,3 +1,5 @@
+# shipBonusLargeEnergyWeaponDamageAB2
+#
 # Used by:
 # Ships named like: Abaddon (3 of 3)
 type = "passive"

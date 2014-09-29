@@ -1,3 +1,5 @@
+# largeProjectileTurretDamageMultiplierBonusPostPercentDamageMultiplierLocationShipModulesRequiringLargeProjectileTurret
+#
 # Used by:
 # Implants named like: Eifyr and Co. 'Gunslinger' Large Projectile Turret LP (6 of 6)
 # Skill: Large Projectile Turret

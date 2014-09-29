@@ -1,3 +1,5 @@
+# shipBonusEwRemoteSensorDampenerMaxTargetRangeBonusGC2
+#
 # Used by:
 # Variations of ship: Celestis (3 of 3)
 type = "passive"

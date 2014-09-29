@@ -1,3 +1,5 @@
+# shipBonusSentryDroneOptimalRangeEliteBonusHeavyGunship2
+#
 # Used by:
 # Ship: Ishtar
 type = "passive"

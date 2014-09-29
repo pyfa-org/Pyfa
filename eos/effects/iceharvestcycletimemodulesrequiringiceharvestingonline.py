@@ -1,3 +1,5 @@
+# iceHarvestCycleTimeModulesRequiringIceHarvestingOnline
+#
 # Used by:
 # Variations of module: Ice Harvester Upgrade I (6 of 6)
 type = "passive"

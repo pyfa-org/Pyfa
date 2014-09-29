@@ -1,3 +1,5 @@
+# eliteBonusExpeditionSigRadius2
+#
 # Used by:
 # Ship: Prospect
 type = "passive"

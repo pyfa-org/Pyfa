@@ -1,3 +1,5 @@
+# shipBonusOreCapacityGI2
+#
 # Used by:
 # Ship: Miasmos
 type = "passive"

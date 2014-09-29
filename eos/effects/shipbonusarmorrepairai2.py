@@ -1,3 +1,5 @@
+# shipBonusArmorRepairAI2
+#
 # Used by:
 # Ship: Impel
 type = "passive"

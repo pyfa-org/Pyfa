@@ -1,3 +1,5 @@
+# shipBonusHMLExploDamageAC
+#
 # Used by:
 # Ship: Sacrilege
 type = "passive"

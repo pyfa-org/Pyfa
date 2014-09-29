@@ -1,3 +1,5 @@
+# shipBonusCargoMI
+#
 # Used by:
 # Ships named like: Mammoth (2 of 2)
 # Variations of ship: Wreathe (2 of 2)

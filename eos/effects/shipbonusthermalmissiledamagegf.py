@@ -1,3 +1,5 @@
+# shipBonusThermalMissileDamageGF
+#
 # Used by:
 # Ship: Whiptail
 # Ship: Worm

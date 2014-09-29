@@ -1,3 +1,5 @@
+# shipBonusCargo2GI
+#
 # Used by:
 # Variations of ship: Miasmos (3 of 4)
 # Variations of ship: Nereus (2 of 2)

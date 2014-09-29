@@ -1,3 +1,5 @@
+# shipBonusHTFalloffGB2
+#
 # Used by:
 # Ship: Kronos
 type = "passive"

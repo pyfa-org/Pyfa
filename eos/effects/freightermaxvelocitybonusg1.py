@@ -1,3 +1,5 @@
+# freighterMaxVelocityBonusG1
+#
 # Used by:
 # Ship: Obelisk
 type = "passive"

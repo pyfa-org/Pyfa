@@ -1,3 +1,5 @@
+# shipNOSTransferAmountBonusRookie
+#
 # Used by:
 # Ship: Hematos
 type = "passive"

@@ -1,3 +1,5 @@
+# shipMETCDamageBonusAC
+#
 # Used by:
 # Ship: Augoror Navy Issue
 # Ship: Maller

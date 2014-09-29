@@ -1,3 +1,5 @@
+# surveyScanspeedBonusPostPercentDurationLocationShipModulesRequiringElectronics
+#
 # Used by:
 # Modules named like: Signal Focusing Kit (8 of 8)
 # Skill: Survey

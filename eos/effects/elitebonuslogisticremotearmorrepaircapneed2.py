@@ -1,3 +1,5 @@
+# eliteBonusLogisticRemoteArmorRepairCapNeed2
+#
 # Used by:
 # Ship: Guardian
 type = "passive"

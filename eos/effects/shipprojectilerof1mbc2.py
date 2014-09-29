@@ -1,3 +1,5 @@
+# shipProjectileRof1MBC2
+#
 # Used by:
 # Ships named like: Hurricane (2 of 2)
 type = "passive"

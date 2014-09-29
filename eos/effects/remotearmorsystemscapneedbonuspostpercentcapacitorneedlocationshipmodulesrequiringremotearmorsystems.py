@@ -1,3 +1,5 @@
+# remoteArmorSystemsCapNeedBonusPostPercentCapacitorNeedLocationShipModulesRequiringRemoteArmorSystems
+#
 # Used by:
 # Implants named like: Inherent Implants 'Noble' Remote Armor Repair Systems RA (6 of 6)
 # Modules named like: Remote Repair Augmentor (6 of 8)

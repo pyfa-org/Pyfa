@@ -1,3 +1,5 @@
+# droneDurabilityHPBonus
+#
 # Used by:
 # Modules named like: Drone Durability Enhancer (8 of 8)
 # Skill: Drone Durability

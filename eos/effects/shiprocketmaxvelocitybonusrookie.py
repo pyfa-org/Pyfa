@@ -1,3 +1,5 @@
+# shipRocketMaxVelocityBonusRookie
+#
 # Used by:
 # Ship: Taipan
 type = "passive"

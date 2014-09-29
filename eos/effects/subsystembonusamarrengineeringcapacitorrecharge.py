@@ -1,3 +1,5 @@
+# subsystemBonusAmarrEngineeringCapacitorRecharge
+#
 # Used by:
 # Subsystem: Legion Engineering - Capacitor Regeneration Matrix
 type = "passive"

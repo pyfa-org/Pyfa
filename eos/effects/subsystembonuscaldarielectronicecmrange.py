@@ -1,3 +1,5 @@
+# subsystemBonusCaldariElectronicECMRange
+#
 # Used by:
 # Subsystem: Tengu Electronics - Obfuscation Manifold
 type = "passive"

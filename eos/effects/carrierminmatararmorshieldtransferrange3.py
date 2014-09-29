@@ -1,3 +1,5 @@
+# carrierMinmatarArmor&ShieldTransferRange3
+#
 # Used by:
 # Ship: Hel
 # Ship: Nidhoggur

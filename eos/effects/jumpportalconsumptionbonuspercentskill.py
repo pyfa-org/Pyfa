@@ -1,3 +1,5 @@
+# jumpPortalConsumptionBonusPercentSkill
+#
 # Used by:
 # Skill: Jump Portal Generation
 type = "passive"

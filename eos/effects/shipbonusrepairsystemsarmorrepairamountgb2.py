@@ -1,3 +1,5 @@
+# shipBonusRepairSystemsArmorRepairAmountGB2
+#
 # Used by:
 # Ships named like: Hyperion (3 of 3)
 type = "passive"

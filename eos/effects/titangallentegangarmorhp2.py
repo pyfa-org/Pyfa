@@ -1,3 +1,5 @@
+# titanGallenteGangArmorHp2
+#
 # Used by:
 # Ship: Erebus
 type = "gang"

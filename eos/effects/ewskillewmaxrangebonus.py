@@ -1,3 +1,5 @@
+# ewSkillEwMaxRangeBonus
+#
 # Used by:
 # Implants named like: grade Centurion (10 of 12)
 # Modules named like: Particle Dispersion Projector (8 of 8)

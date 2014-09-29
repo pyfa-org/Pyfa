@@ -1,3 +1,5 @@
+# selfT2SmallHybridBlasterDamageBonus
+#
 # Used by:
 # Skill: Small Blaster Specialization
 type = "passive"

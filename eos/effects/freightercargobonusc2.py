@@ -1,3 +1,5 @@
+# freighterCargoBonusC2
+#
 # Used by:
 # Variations of ship: Charon (2 of 2)
 type = "passive"

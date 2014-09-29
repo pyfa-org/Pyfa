@@ -1,3 +1,5 @@
+# shipMissileLightVelocityBonusCF2
+#
 # Used by:
 # Ship: Caldari Navy Hookbill
 type = "passive"

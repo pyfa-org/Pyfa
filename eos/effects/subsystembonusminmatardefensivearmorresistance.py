@@ -1,3 +1,5 @@
+# subsystemBonusMinmatarDefensiveArmorResistance
+#
 # Used by:
 # Subsystem: Loki Defensive - Adaptive Augmenter
 type = "passive"

@@ -1,3 +1,5 @@
+# projectileWeaponSpeedMultiplyPassive
+#
 # Used by:
 # Modules named like: Projectile Burst Aerator (8 of 8)
 type = "passive"

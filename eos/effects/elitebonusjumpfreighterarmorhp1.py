@@ -1,3 +1,5 @@
+# eliteBonusJumpFreighterArmorHP1
+#
 # Used by:
 # Ship: Anshar
 # Ship: Ark

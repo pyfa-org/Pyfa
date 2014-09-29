@@ -1,3 +1,5 @@
+# subsystemBonusMinmatarDefensiveShieldResistance
+#
 # Used by:
 # Subsystem: Loki Defensive - Adaptive Shielding
 type = "passive"

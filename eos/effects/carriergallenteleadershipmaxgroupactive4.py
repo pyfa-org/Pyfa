@@ -1,3 +1,5 @@
+# carrierGallenteLeadershipMaxGroupActive4
+#
 # Used by:
 # Ship: Nyx
 type = "passive"

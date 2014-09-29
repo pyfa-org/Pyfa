@@ -1,3 +1,5 @@
+# shipCargoBonusAI
+#
 # Used by:
 # Ships named like: Bestower (2 of 2)
 # Variations of ship: Sigil (2 of 2)

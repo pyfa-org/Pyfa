@@ -1,3 +1,5 @@
+# shipBonusDroneStructureHitPointsAB
+#
 # Used by:
 # Ship: Armageddon
 type = "passive"

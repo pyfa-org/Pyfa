@@ -1,3 +1,5 @@
+# eliteBonusElectronicAttackShipStasisWebMaxRange1
+#
 # Used by:
 # Ship: Hyena
 type = "passive"

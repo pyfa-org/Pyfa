@@ -1,3 +1,5 @@
+# shipBonusECMStrengthBonusCC
+#
 # Used by:
 # Ship: Blackbird
 type = "passive"

@@ -1,3 +1,5 @@
+# shieldManagementShieldCapacityBonusPostPercentCapacityLocationShipGroupShield
+#
 # Used by:
 # Implants named like: Zainou 'Gnome' Shield Management SM (6 of 6)
 # Modules named like: Core Defense Field Extender (8 of 8)

@@ -1,3 +1,5 @@
+# freighterAgilityBonusG1
+#
 # Used by:
 # Ship: Anshar
 type = "passive"

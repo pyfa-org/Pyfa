@@ -1,3 +1,5 @@
+# carrierAmarrFighterMaxVelocity2
+#
 # Used by:
 # Ship: Revenant
 type = "passive"

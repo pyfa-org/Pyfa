@@ -1,3 +1,5 @@
+# eliteBonusCommandShipHeavyAssaultMissileDamageCS2
+#
 # Used by:
 # Ship: Damnation
 type = "passive"

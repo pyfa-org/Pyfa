@@ -1,3 +1,5 @@
+# shipNeutDestabilizationAmountBonusRookie
+#
 # Used by:
 # Ship: Hematos
 type = "passive"

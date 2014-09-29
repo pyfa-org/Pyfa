@@ -1,3 +1,5 @@
+# eliteBonusExpeditionMining1
+#
 # Used by:
 # Ship: Prospect
 type = "passive"

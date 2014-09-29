@@ -1,3 +1,5 @@
+# sensorBoosterActivePercentage
+#
 # Used by:
 # Modules from group: Sensor Booster (12 of 12)
 type = "active"

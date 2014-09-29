@@ -1,3 +1,5 @@
+# shipHybridDamageBonusCF
+#
 # Used by:
 # Ship: Raptor
 type = "passive"

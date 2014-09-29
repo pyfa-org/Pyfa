@@ -1,3 +1,5 @@
+# shipShieldExplosiveResistanceRookie
+#
 # Used by:
 # Ship: Ibis
 # Ship: Taipan

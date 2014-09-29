@@ -1,3 +1,5 @@
+# shipBonusHeavyLauncherRateOfFireCC2
+#
 # Used by:
 # Ship: Rook
 type = "passive"

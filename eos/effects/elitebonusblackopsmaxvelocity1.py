@@ -1,3 +1,5 @@
+# eliteBonusBlackOpsMaxVelocity1
+#
 # Used by:
 # Ship: Panther
 type = "passive"

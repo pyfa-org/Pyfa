@@ -1,3 +1,5 @@
+# shieldTransporterMaxRangeBonus
+#
 # Used by:
 # Ship: Bantam
 # Ship: Burst

@@ -1,3 +1,5 @@
+# speedBoostMassAddition
+#
 # Used by:
 # Variations of module: 100MN Afterburner I (24 of 24)
 # Variations of module: 10MN Afterburner I (14 of 14)

@@ -1,3 +1,5 @@
+# carrierCaldariShieldResist2
+#
 # Used by:
 # Ship: Chimera
 # Ship: Wyvern

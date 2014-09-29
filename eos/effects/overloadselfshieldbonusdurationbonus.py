@@ -1,3 +1,5 @@
+# overloadSelfShieldBonusDurationBonus
+#
 # Used by:
 # Modules from group: Fueled Shield Booster (4 of 4)
 # Modules from group: Shield Booster (87 of 87)

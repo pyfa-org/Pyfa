@@ -1,3 +1,5 @@
+# eliteBonusBlackOpsECMGravAndLadarAndMagnetometricAndRadarStrength1
+#
 # Used by:
 # Ship: Widow
 type = "passive"

@@ -1,3 +1,5 @@
+# cpuNeedBonusEffectLasers
+#
 # Used by:
 # Modules named like: Algid Energy Administrations Unit (8 of 8)
 type = "passive"

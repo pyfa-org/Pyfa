@@ -1,3 +1,5 @@
+# armorDamageAmountBonusCapitalArmorRepairers
+#
 # Used by:
 # Modules named like: Auxiliary Nano Pump (8 of 8)
 type = "passive"

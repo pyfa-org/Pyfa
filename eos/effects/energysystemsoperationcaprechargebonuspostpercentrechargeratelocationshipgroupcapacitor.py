@@ -1,3 +1,5 @@
+# energysystemsoperationCapRechargeBonusPostPercentRechargeRateLocationShipGroupCapacitor
+#
 # Used by:
 # Implants named like: Inherent Implants 'Squire' Capacitor Systems Operation EO (6 of 6)
 # Modules named like: Capacitor Control Circuit (8 of 8)

@@ -1,3 +1,5 @@
+# commandshipMultiRelayEffect
+#
 # Used by:
 # Ships from group: Capital Industrial Ship (2 of 2)
 # Ships from group: Command Ship (8 of 8)

@@ -1,3 +1,5 @@
+# subsystemBonusMinmatarPropulsionAfterburnerSpeedFactor
+#
 # Used by:
 # Subsystem: Loki Propulsion - Fuel Catalyst
 type = "passive"

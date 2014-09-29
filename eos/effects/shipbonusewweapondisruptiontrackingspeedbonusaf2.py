@@ -1,3 +1,5 @@
+# shipBonusEwWeaponDisruptionTrackingSpeedBonusAF2
+#
 # Used by:
 # Variations of ship: Crucifier (2 of 2)
 type = "passive"

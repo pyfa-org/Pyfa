@@ -1,3 +1,5 @@
+# shipLaserDamageBonusABC2
+#
 # Used by:
 # Ships named like: Harbinger (2 of 2)
 type = "passive"

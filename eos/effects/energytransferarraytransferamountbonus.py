@@ -1,3 +1,5 @@
+# energyTransferArrayTransferAmountBonus
+#
 # Used by:
 # Ship: Augoror
 # Ship: Osprey

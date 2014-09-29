@@ -1,3 +1,5 @@
+# shipEnergyNeutralizerTransferAmountBonusAB
+#
 # Used by:
 # Ship: Bhaalgorn
 type = "passive"

@@ -1,3 +1,5 @@
+# shipMissileKineticDamageCF
+#
 # Used by:
 # Ship: Buzzard
 # Ship: Caldari Navy Hookbill

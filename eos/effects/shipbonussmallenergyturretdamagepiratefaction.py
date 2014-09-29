@@ -1,3 +1,5 @@
+# shipBonusSmallEnergyTurretDamagePirateFaction
+#
 # Used by:
 # Ship: Cruor
 # Ship: Succubus

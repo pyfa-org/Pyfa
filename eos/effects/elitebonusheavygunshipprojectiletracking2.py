@@ -1,3 +1,5 @@
+# eliteBonusHeavyGunshipProjectileTracking2
+#
 # Used by:
 # Ship: Muninn
 type = "passive"

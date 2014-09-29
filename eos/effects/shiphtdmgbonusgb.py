@@ -1,3 +1,5 @@
+# shipHTDmgBonusGB
+#
 # Used by:
 # Ships named like: Hyperion (3 of 3)
 # Ship: Dominix Navy Issue

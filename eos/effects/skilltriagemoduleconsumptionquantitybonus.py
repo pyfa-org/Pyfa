@@ -1,3 +1,5 @@
+# skillTriageModuleConsumptionQuantityBonus
+#
 # Used by:
 # Skill: Tactical Logistics Reconfiguration
 type = "passive"

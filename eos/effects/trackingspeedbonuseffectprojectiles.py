@@ -1,3 +1,5 @@
+# trackingSpeedBonusEffectProjectiles
+#
 # Used by:
 # Modules named like: Projectile Metastasis Adjuster (8 of 8)
 type = "passive"

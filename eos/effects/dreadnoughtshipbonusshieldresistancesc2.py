@@ -1,3 +1,5 @@
+# dreadnoughtShipBonusShieldResistancesC2
+#
 # Used by:
 # Ship: Phoenix
 type = "passive"

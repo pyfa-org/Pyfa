@@ -1,3 +1,5 @@
+# shipProjectileRofPirateCruiser
+#
 # Used by:
 # Ship: Cynabal
 # Ship: Moracha

@@ -1,3 +1,5 @@
+# scriptSpeedBoostFactorBonusBonus
+#
 # Used by:
 # Charge: Focused Warp Disruption Script
 type = "passive"

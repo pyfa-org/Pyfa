@@ -1,3 +1,5 @@
+# shipBonusMiningIceHarvestingRangeORE2
+#
 # Used by:
 # Variations of ship: Covetor (2 of 2)
 type = "passive"

@@ -1,3 +1,5 @@
+# droneTrackingEnhancerBonus
+#
 # Used by:
 # Modules from group: Drone Tracking Enhancer (9 of 9)
 type = "passive"

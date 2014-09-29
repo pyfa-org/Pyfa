@@ -1,3 +1,5 @@
+# caldariShipEwCapacitorNeedCF2
+#
 # Used by:
 # Variations of ship: Griffin (2 of 2)
 type = "passive"

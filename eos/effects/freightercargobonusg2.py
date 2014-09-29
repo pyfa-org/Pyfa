@@ -1,3 +1,5 @@
+# freighterCargoBonusG2
+#
 # Used by:
 # Variations of ship: Obelisk (2 of 2)
 type = "passive"

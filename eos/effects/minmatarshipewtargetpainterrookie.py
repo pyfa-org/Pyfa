@@ -1,3 +1,5 @@
+# minmatarShipEwTargetPainterRookie
+#
 # Used by:
 # Ship: Reaper
 type = "passive"

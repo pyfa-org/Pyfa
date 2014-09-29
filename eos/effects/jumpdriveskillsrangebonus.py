@@ -1,3 +1,5 @@
+# jumpDriveSkillsRangeBonus
+#
 # Used by:
 # Skill: Jump Drive Calibration
 type = "passive"

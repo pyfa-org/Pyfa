@@ -1,3 +1,5 @@
+# shipTorpedosVelocityBonusCB3
+#
 # Used by:
 # Variations of ship: Raven (3 of 4)
 type = "passive"

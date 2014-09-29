@@ -1,3 +1,5 @@
+# shipMTMaxRangeBonusATF
+#
 # Used by:
 # Ship: Freki
 type = "passive"

@@ -1,3 +1,5 @@
+# OffensiveDefensiveReduction
+#
 # Used by:
 # Celestials named like: Incursion ship attributes effects (3 of 3)
 runTime = "early"

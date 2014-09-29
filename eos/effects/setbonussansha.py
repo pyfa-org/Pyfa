@@ -1,3 +1,5 @@
+# setBonusSansha
+#
 # Used by:
 # Implants named like: grade Slave (18 of 18)
 # Implant: High-grade Halo Omega

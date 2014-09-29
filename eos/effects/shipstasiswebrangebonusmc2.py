@@ -1,3 +1,5 @@
+# shipStasisWebRangeBonusMC2
+#
 # Used by:
 # Ship: Ashimmu
 type = "passive"

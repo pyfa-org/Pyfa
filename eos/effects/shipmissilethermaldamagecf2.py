@@ -1,3 +1,5 @@
+# shipMissileThermalDamageCF2
+#
 # Used by:
 # Ship: Caldari Navy Hookbill
 # Ship: Garmur

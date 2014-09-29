@@ -1,3 +1,5 @@
+# adaptiveArmorHardener
+#
 # Used by:
 # Module: Reactive Armor Hardener
 type = "active"

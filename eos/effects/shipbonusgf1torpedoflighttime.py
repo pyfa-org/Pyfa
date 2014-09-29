@@ -1,3 +1,5 @@
+# shipBonusGF1TorpedoFlightTime
+#
 # Used by:
 # Ship: Nemesis
 type = "passive"

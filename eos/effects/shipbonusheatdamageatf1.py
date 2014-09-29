@@ -1,3 +1,5 @@
+# shipBonusHeatDamageATF1
+#
 # Used by:
 # Ship: Cambion
 # Ship: Etana

@@ -1,3 +1,5 @@
+# remoteArmorPowerNeedBonusEffect
+#
 # Used by:
 # Ship: Guardian
 # Ship: Oneiros

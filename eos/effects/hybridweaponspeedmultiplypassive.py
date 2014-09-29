@@ -1,3 +1,5 @@
+# hybridWeaponSpeedMultiplyPassive
+#
 # Used by:
 # Modules named like: Hybrid Burst Aerator (8 of 8)
 type = "passive"

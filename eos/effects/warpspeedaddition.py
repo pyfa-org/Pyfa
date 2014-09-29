@@ -1,3 +1,5 @@
+# warpSpeedAddition
+#
 # Used by:
 # Modules from group: Warp Accelerator (3 of 3)
 type = "passive"

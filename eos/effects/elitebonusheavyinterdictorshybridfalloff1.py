@@ -1,3 +1,5 @@
+# eliteBonusHeavyInterdictorsHybridFalloff1
+#
 # Used by:
 # Ship: Phobos
 type = "passive"

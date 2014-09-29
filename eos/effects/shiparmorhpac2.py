@@ -1,3 +1,5 @@
+# shipArmorHpAC2
+#
 # Used by:
 # Ship: Augoror Navy Issue
 type = "passive"

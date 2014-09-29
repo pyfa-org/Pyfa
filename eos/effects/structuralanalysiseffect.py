@@ -1,3 +1,5 @@
+# structuralAnalysisEffect
+#
 # Used by:
 # Implants named like: Inherent Implants 'Noble' Repair Proficiency RP (6 of 6)
 # Modules named like: Auxiliary Nano Pump (8 of 8)

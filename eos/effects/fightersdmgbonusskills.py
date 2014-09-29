@@ -1,3 +1,5 @@
+# fightersDmgBonusSkills
+#
 # Used by:
 # Skill: Fighters
 type = "passive"

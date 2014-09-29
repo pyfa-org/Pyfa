@@ -1,3 +1,5 @@
+# subsystemBonusCaldariElectronic2MaxTargetingRange
+#
 # Used by:
 # Subsystem: Tengu Electronics - Dissolution Sequencer
 type = "passive"

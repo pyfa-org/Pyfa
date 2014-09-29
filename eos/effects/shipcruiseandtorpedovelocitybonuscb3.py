@@ -1,3 +1,5 @@
+# shipCruiseAndTorpedoVelocityBonusCB3
+#
 # Used by:
 # Ship: Golem
 # Ship: Widow

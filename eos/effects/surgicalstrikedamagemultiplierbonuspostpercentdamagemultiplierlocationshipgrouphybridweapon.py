@@ -1,3 +1,5 @@
+# surgicalStrikeDamageMultiplierBonusPostPercentDamageMultiplierLocationShipGroupHybridWeapon
+#
 # Used by:
 # Skill: Surgical Strike
 type = "passive"

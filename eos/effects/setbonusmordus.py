@@ -1,3 +1,5 @@
+# setBonusMordus
+#
 # Used by:
 # Implants named like: grade Centurion (12 of 12)
 runTime = "early"

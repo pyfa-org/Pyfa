@@ -1,3 +1,5 @@
+# eliteBonusGunshipLaserOptimal1
+#
 # Used by:
 # Ship: Retribution
 type = "passive"

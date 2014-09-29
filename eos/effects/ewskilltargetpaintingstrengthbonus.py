@@ -1,3 +1,5 @@
+# ewSkillTargetPaintingStrengthBonus
+#
 # Used by:
 # Skill: Signature Focusing
 type = "passive"

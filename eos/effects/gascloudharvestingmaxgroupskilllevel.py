@@ -1,3 +1,5 @@
+# gasCloudHarvestingMaxGroupSkillLevel
+#
 # Used by:
 # Skill: Gas Cloud Harvesting
 type = "passive"

@@ -1,3 +1,5 @@
+# carrierCaldariShield&EnergyTransferRange3
+#
 # Used by:
 # Ship: Chimera
 # Ship: Revenant

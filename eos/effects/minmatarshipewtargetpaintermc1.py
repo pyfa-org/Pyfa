@@ -1,3 +1,5 @@
+# minmatarShipEwTargetPainterMC1
+#
 # Used by:
 # Ship: Bellicose
 type = "passive"

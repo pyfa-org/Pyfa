@@ -1,3 +1,5 @@
+# evasiveManeuveringAgilityBonusPostPercentAgilityShip
+#
 # Used by:
 # Implants named like: Eifyr and Co. 'Rogue' Evasive Maneuvering EM (6 of 6)
 # Implants named like: grade Nomad (10 of 12)

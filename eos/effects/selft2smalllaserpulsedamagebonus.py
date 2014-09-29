@@ -1,3 +1,5 @@
+# selfT2SmallLaserPulseDamageBonus
+#
 # Used by:
 # Skill: Small Pulse Laser Specialization
 type = "passive"

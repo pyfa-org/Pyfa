@@ -1,3 +1,5 @@
+# shipHRangeBonusCC
+#
 # Used by:
 # Ship: Eagle
 type = "passive"

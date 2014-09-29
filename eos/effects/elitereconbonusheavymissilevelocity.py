@@ -1,3 +1,5 @@
+# eliteReconBonusHeavyMissileVelocity
+#
 # Used by:
 # Ship: Rook
 type = "passive"

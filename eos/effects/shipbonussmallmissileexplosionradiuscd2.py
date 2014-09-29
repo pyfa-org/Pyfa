@@ -1,3 +1,5 @@
+# shipBonusSmallMissileExplosionRadiusCD2
+#
 # Used by:
 # Ship: Flycatcher
 type = "passive"

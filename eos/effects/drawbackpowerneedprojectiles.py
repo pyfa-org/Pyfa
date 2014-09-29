@@ -1,3 +1,5 @@
+# drawbackPowerNeedProjectiles
+#
 # Used by:
 # Modules from group: Rig Projectile Weapon (40 of 40)
 type = "passive"

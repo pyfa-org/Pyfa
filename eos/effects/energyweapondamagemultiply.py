@@ -1,3 +1,5 @@
+# energyWeaponDamageMultiply
+#
 # Used by:
 # Modules from group: Heat Sink (25 of 25)
 # Modules named like: QA Multiship Module Players (4 of 4)

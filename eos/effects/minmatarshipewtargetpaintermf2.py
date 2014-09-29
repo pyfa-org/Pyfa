@@ -1,3 +1,5 @@
+# minmatarShipEwTargetPainterMF2
+#
 # Used by:
 # Variations of ship: Vigil (2 of 2)
 type = "passive"

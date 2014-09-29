@@ -1,3 +1,5 @@
+# shipBonusCruiseROFMB
+#
 # Used by:
 # Ship: Typhoon
 type = "passive"

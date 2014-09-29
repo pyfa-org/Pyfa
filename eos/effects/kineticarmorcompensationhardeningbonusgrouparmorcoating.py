@@ -1,3 +1,5 @@
+# kineticArmorCompensationHardeningBonusGroupArmorCoating
+#
 # Used by:
 # Skill: Kinetic Armor Compensation
 type = "passive"

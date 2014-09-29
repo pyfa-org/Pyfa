@@ -1,3 +1,5 @@
+# eliteReconBonusEnergyNeutAmount2
+#
 # Used by:
 # Ship: Curse
 # Ship: Pilgrim

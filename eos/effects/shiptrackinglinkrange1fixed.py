@@ -1,3 +1,5 @@
+# shipTrackingLinkRange1Fixed
+#
 # Used by:
 # Ship: Scimitar
 type = "passive"

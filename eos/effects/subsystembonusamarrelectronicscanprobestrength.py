@@ -1,3 +1,5 @@
+# subSystemBonusAmarrElectronicScanProbeStrength
+#
 # Used by:
 # Subsystem: Legion Electronics - Emergent Locus Analyzer
 type = "passive"

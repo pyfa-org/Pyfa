@@ -1,3 +1,5 @@
+# sensorCompensationSensorStrengthBonusRadar
+#
 # Used by:
 # Skill: Radar Sensor Compensation
 type = "passive"

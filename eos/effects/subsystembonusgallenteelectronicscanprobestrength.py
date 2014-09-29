@@ -1,3 +1,5 @@
+# subSystemBonusGallenteElectronicScanProbeStrength
+#
 # Used by:
 # Subsystem: Proteus Electronics - Emergent Locus Analyzer
 type = "passive"

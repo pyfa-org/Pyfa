@@ -1,3 +1,5 @@
+# mediumHybridTurretDamageMultiplierBonusPostPercentDamageMultiplierLocationShipModulesRequiringMediumHybridTurret
+#
 # Used by:
 # Implants named like: Zainou 'Deadeye' Medium Hybrid Turret MH (6 of 6)
 # Skill: Medium Hybrid Turret

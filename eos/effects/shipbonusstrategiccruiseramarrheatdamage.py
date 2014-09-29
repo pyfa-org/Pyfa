@@ -1,3 +1,5 @@
+# shipBonusStrategicCruiserAmarrHeatDamage
+#
 # Used by:
 # Ship: Legion
 type = "passive"

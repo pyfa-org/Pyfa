@@ -1,3 +1,5 @@
+# eliteBonusLogisticsTrackingLinkMaxRangeBonus2
+#
 # Used by:
 # Ship: Oneiros
 type = "passive"

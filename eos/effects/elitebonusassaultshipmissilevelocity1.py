@@ -1,3 +1,5 @@
+# eliteBonusAssaultShipMissileVelocity1
+#
 # Used by:
 # Ship: Hawk
 type = "passive"

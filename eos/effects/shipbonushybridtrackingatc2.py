@@ -1,3 +1,5 @@
+# shipBonusHybridTrackingATC2
+#
 # Used by:
 # Ship: Adrestia
 type = "passive"

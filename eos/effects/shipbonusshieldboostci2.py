@@ -1,3 +1,5 @@
+# shipBonusShieldBoostCI2
+#
 # Used by:
 # Ship: Bustard
 type = "passive"

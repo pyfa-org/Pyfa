@@ -1,3 +1,5 @@
+# skillSuperWeaponDmgBonus
+#
 # Used by:
 # Skill: Doomsday Operation
 type = "passive"

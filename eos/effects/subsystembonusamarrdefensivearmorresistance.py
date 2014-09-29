@@ -1,3 +1,5 @@
+# subsystemBonusAmarrDefensiveArmorResistance
+#
 # Used by:
 # Subsystem: Legion Defensive - Adaptive Augmenter
 type = "passive"

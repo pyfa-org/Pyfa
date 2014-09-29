@@ -1,3 +1,5 @@
+# shipSPTDmgBonusRookie
+#
 # Used by:
 # Ship: Echo
 # Ship: Reaper

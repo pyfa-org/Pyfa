@@ -1,3 +1,5 @@
+# eliteBonusGunshipHybridOptimal1
+#
 # Used by:
 # Ship: Enyo
 # Ship: Harpy

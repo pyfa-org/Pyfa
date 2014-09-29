@@ -1,3 +1,5 @@
+# systemAoeCloudSize
+#
 # Used by:
 # Celestials named like: Magnetar Effect Beacon Class (6 of 6)
 runTime = "early"

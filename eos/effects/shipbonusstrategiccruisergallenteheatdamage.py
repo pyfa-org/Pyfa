@@ -1,3 +1,5 @@
+# shipBonusStrategicCruiserGallenteHeatDamage
+#
 # Used by:
 # Ship: Proteus
 type = "passive"

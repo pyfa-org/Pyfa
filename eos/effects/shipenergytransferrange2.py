@@ -1,3 +1,5 @@
+# shipEnergyTransferRange2
+#
 # Used by:
 # Ship: Basilisk
 # Ship: Etana

@@ -1,3 +1,5 @@
+# eliteBonusCommandShipLaserDamageCS1
+#
 # Used by:
 # Ship: Absolution
 type = "passive"

@@ -1,3 +1,5 @@
+# marauderModeEffect26
+#
 # Used by:
 # Module: Bastion Module I
 type = "active"

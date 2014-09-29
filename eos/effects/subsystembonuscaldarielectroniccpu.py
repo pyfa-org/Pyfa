@@ -1,3 +1,5 @@
+# subsystemBonusCaldariElectronicCPU
+#
 # Used by:
 # Subsystem: Tengu Electronics - CPU Efficiency Gate
 type = "passive"

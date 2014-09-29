@@ -1,3 +1,5 @@
+# subsystemBonusAmarrOffensive3EnergyWeaponMaxRange
+#
 # Used by:
 # Subsystem: Legion Offensive - Liquid Crystal Magnifiers
 type = "passive"

@@ -1,3 +1,5 @@
+# dronesSkillBoostMaxActiveDroneBonus
+#
 # Used by:
 # Skill: Drones
 type = "passive"

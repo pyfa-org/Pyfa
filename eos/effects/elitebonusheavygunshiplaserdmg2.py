@@ -1,3 +1,5 @@
+# eliteBonusHeavyGunshipLaserDmg2
+#
 # Used by:
 # Ship: Zealot
 type = "passive"

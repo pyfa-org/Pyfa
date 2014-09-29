@@ -1,3 +1,5 @@
+# selfT2LargeProjectileArtyDamageBonus
+#
 # Used by:
 # Skill: Large Artillery Specialization
 type = "passive"

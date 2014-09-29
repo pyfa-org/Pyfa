@@ -1,3 +1,5 @@
+# shipECMScanStrengthBonusRookie
+#
 # Used by:
 # Ship: Ibis
 type = "passive"

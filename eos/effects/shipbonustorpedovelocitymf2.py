@@ -1,3 +1,5 @@
+# shipBonusTorpedoVelocityMF2
+#
 # Used by:
 # Ship: Hound
 type = "passive"

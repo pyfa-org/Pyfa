@@ -1,3 +1,5 @@
+# shipBonusWarpScramblerMaxRangeGF2
+#
 # Used by:
 # Ship: Garmur
 # Ship: Utu

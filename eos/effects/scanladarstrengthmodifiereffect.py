@@ -1,3 +1,5 @@
+# ScanLadarStrengthModifierEffect
+#
 # Used by:
 # Implants named like: Low grade Jackal (5 of 6)
 type = "passive"

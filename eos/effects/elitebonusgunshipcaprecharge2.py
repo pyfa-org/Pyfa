@@ -1,3 +1,5 @@
+# eliteBonusGunshipCapRecharge2
+#
 # Used by:
 # Ship: Vengeance
 type = "passive"

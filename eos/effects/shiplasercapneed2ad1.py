@@ -1,3 +1,5 @@
+# shipLaserCapNeed2AD1
+#
 # Used by:
 # Ships named like: Coercer (2 of 2)
 type = "passive"

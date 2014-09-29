@@ -1,3 +1,5 @@
+# bcLargeHybridTurretCapacitorNeedBonus
+#
 # Used by:
 # Ship: Naga
 # Ship: Talos

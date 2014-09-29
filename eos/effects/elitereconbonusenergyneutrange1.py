@@ -1,3 +1,5 @@
+# eliteReconBonusEnergyNeutRange1
+#
 # Used by:
 # Ship: Curse
 type = "passive"

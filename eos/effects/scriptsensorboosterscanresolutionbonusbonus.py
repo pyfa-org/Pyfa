@@ -1,3 +1,5 @@
+# scriptSensorBoosterScanResolutionBonusBonus
+#
 # Used by:
 # Charges from group: Sensor Booster Script (2 of 2)
 # Charges from group: Sensor Dampener Script (2 of 2)

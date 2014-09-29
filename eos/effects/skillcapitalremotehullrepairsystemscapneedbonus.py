@@ -1,3 +1,5 @@
+# skillCapitalRemoteHullRepairSystemsCapNeedBonus
+#
 # Used by:
 # Skill: Capital Remote Hull Repair Systems
 type = "passive"

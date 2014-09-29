@@ -1,3 +1,5 @@
+# shipBonusDroneHitpointsGF
+#
 # Used by:
 # Ship: Astero
 # Ship: Tristan

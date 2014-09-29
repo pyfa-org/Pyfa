@@ -1,3 +1,5 @@
+# shipBonusStasisWebSpeedFactorMB
+#
 # Used by:
 # Ship: Vindicator
 type = "passive"

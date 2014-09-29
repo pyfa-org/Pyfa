@@ -1,3 +1,5 @@
+# shipPTspeedBonusMB2
+#
 # Used by:
 # Ships named like: Maelstrom (3 of 3)
 # Variations of ship: Tempest (4 of 4)

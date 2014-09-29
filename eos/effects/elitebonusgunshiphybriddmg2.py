@@ -1,3 +1,5 @@
+# eliteBonusGunshipHybridDmg2
+#
 # Used by:
 # Ship: Harpy
 type = "passive"

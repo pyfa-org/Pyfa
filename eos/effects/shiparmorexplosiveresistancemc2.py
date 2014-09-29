@@ -1,3 +1,5 @@
+# shipArmorExplosiveResistanceMC2
+#
 # Used by:
 # Ship: Mimir
 type = "passive"

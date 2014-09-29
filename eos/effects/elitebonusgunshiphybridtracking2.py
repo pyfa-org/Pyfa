@@ -1,3 +1,5 @@
+# eliteBonusGunshipHybridTracking2
+#
 # Used by:
 # Ship: Enyo
 type = "passive"

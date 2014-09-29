@@ -1,3 +1,5 @@
+# ScanMagnetometricStrengthModifierEffect
+#
 # Used by:
 # Implants named like: Low grade Spur (5 of 6)
 type = "passive"

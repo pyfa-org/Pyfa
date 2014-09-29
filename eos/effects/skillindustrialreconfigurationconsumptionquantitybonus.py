@@ -1,3 +1,5 @@
+# skillIndustrialReconfigurationConsumptionQuantityBonus
+#
 # Used by:
 # Skill: Industrial Reconfiguration
 type = "passive"

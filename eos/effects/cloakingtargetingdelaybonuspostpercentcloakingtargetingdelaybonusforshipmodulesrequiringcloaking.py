@@ -1,3 +1,5 @@
+# cloakingTargetingDelayBonusPostPercentCloakingTargetingDelayBonusForShipModulesRequiringCloaking
+#
 # Used by:
 # Skill: Cloaking
 type = "passive"

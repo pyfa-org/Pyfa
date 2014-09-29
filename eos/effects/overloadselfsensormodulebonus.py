@@ -1,3 +1,5 @@
+# overloadSelfSensorModuleBonus
+#
 # Used by:
 # Modules from group: Remote Sensor Booster (8 of 8)
 # Modules from group: Remote Sensor Damper (9 of 9)

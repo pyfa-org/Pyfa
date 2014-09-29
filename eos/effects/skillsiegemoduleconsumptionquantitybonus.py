@@ -1,3 +1,5 @@
+# skillSiegeModuleConsumptionQuantityBonus
+#
 # Used by:
 # Skill: Tactical Weapon Reconfiguration
 type = "passive"

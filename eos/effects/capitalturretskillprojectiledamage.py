@@ -1,3 +1,5 @@
+# capitalTurretSkillProjectileDamage
+#
 # Used by:
 # Skill: Capital Projectile Turret
 type = "passive"

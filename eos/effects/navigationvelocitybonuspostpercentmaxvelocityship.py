@@ -1,3 +1,5 @@
+# navigationVelocityBonusPostPercentMaxVelocityShip
+#
 # Used by:
 # Implants named like: grade Snake (16 of 18)
 # Modules named like: Auxiliary Thrusters (8 of 8)

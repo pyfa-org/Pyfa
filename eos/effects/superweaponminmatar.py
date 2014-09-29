@@ -1,3 +1,5 @@
+# superWeaponMinmatar
+#
 # Used by:
 # Module: Gjallarhorn
 type = 'active'

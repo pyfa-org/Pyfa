@@ -1,3 +1,5 @@
+# missileSkillRapidLauncherRoF
+#
 # Used by:
 # Implants named like: Cerebral Accelerator (3 of 3)
 # Implants named like: Zainou 'Deadeye' Rapid Launch RL (6 of 6)

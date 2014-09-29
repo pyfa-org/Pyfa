@@ -1,3 +1,5 @@
+# warpdriveoperationWarpCapacitorNeedBonusPostPercentWarpCapacitorNeedLocationShip
+#
 # Used by:
 # Implants named like: Eifyr and Co. 'Rogue' Warp Drive Operation WD (6 of 6)
 type = "passive"

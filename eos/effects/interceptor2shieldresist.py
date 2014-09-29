@@ -1,3 +1,5 @@
+# Interceptor2ShieldResist
+#
 # Used by:
 # Ship: Raptor
 type = "passive"

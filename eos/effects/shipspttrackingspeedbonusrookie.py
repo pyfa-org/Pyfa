@@ -1,3 +1,5 @@
+# shipSPTTrackingSpeedBonusRookie
+#
 # Used by:
 # Ship: Echo
 type = "passive"

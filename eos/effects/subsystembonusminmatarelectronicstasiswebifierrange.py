@@ -1,3 +1,5 @@
+# subsystemBonusMinmatarElectronicStasisWebifierRange
+#
 # Used by:
 # Subsystem: Loki Electronics - Immobility Drivers
 type = "passive"

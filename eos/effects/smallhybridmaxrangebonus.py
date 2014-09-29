@@ -1,3 +1,5 @@
+# smallHybridMaxRangeBonus
+#
 # Used by:
 # Ships from group: Destroyer (9 of 18)
 # Variations of ship: Catalyst (6 of 7)

@@ -1,3 +1,5 @@
+# miningYieldGangBonusFixed
+#
 # Used by:
 # Implant: Mining Foreman Mindlink
 # Skill: Mining Foreman

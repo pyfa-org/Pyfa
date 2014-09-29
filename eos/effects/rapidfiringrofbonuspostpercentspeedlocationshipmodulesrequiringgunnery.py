@@ -1,3 +1,5 @@
+# rapidFiringRofBonusPostPercentSpeedLocationShipModulesRequiringGunnery
+#
 # Used by:
 # Skill: Rapid Firing
 type = "passive"

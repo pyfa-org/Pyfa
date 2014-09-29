@@ -1,3 +1,5 @@
+# shipShieldKineticResistanceRookie
+#
 # Used by:
 # Ship: Ibis
 # Ship: Taipan

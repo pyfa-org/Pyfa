@@ -1,3 +1,5 @@
+# shipHybridRangeBonusCBC1
+#
 # Used by:
 # Ship: Naga
 type = "passive"

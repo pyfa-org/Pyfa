@@ -1,3 +1,5 @@
+# shipRocketThermalDmgAF
+#
 # Used by:
 # Ship: Anathema
 # Ship: Vengeance
