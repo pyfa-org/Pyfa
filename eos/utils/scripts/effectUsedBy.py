@@ -154,6 +154,7 @@ invmarketgroups WHERE marketGroupID = ? LIMIT 1'
 # consideration, we'll use it to find proper effect IDs from file
 # names
 globalmap_effectnameeos_effectid = {}
+globalmap_effectnameeos_effectnamedb = {}
 STRIPSPEC = "[^A-Za-z0-9]"
 cursor.execute(QUERY_ALLEFFECTS)
 for row in cursor:
@@ -165,7 +166,7 @@ for row in cursor:
     if not effectnameeos in globalmap_effectnameeos_effectid:
         globalmap_effectnameeos_effectid[effectnameeos] = set()
     globalmap_effectnameeos_effectid[effectnameeos].add(effectid)
-
+    globalmap_effectnameeos_effectnamedb[effectnameeos] = effectnamedb
 # Stage 1
 
 # Published types set
@@ -1033,7 +1034,8 @@ inner score: {5:.3})"
     printing_basetypelines + printing_typelines
     # Prepend list with "used by"
     if commentlines:
-        commentlines = ["# Used by:"] + commentlines
+        commentlines = ["# %s\n#\n# Used by:" % \
+            globalmap_effectnameeos_effectnamedb[effect_name]]+commentlines
     # If effect isn't used, write it to file and to terminal
     else:
         commentlines = ["# Not used by any item"]
