@@ -1,4 +1,6 @@
 import config
+import shutil
+import time
 
 def getVersion(db):
     cursor = db.execute('PRAGMA user_version')
@@ -11,6 +13,15 @@ def update(saveddata_engine):
         return
 
     if currversion < config.dbversion:
+        # Automatically backup database
+        toFile = "%s/saveddata_migration_%d-%d_%s.db"%(
+            config.savePath,
+            currversion,
+            config.dbversion,
+            time.strftime("%Y%m%d_%H%M%S"))
+
+        shutil.copyfile(config.saveDB, toFile)
+
         for version in xrange(currversion, config.dbversion):
             module = __import__('eos.db.migrations.upgrade%d'%(version+1), fromlist=True)
             upgrade = getattr(module, "upgrade", False)
