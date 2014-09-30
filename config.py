@@ -13,9 +13,9 @@ debug = False
 saveInRoot = False
 
 # Version data
-version = "1.4.1"
-tag = "git"
-expansionName = "Hyperion"
+version = "1.5.0"
+tag = "Stable"
+expansionName = "Oceanus"
 expansionVersion = "1.0"
 evemonMinVersion = "4081"
 
