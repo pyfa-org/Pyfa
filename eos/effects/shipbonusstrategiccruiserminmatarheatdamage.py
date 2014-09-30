@@ -1,3 +1,5 @@
+# shipBonusStrategicCruiserMinmatarHeatDamage
+#
 # Used by:
 # Ship: Loki
 type = "passive"

@@ -1,3 +1,5 @@
+# shipBonusShieldBoostMI2
+#
 # Used by:
 # Ship: Mastodon
 type = "passive"

@@ -1,3 +1,5 @@
+# subSystemBonusMinmatarElectronicScanProbeStrength
+#
 # Used by:
 # Subsystem: Loki Electronics - Emergent Locus Analyzer
 type = "passive"

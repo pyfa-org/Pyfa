@@ -1,3 +1,5 @@
+# shipSPTFalloffBonusRookie
+#
 # Used by:
 # Ship: Echo
 type = "passive"

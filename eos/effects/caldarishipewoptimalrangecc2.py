@@ -1,3 +1,5 @@
+# caldariShipEwOptimalRangeCC2
+#
 # Used by:
 # Ship: Blackbird
 type = "passive"

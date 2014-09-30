@@ -1,3 +1,5 @@
+# eliteBonusJumpFreighterShieldHP1
+#
 # Used by:
 # Ship: Nomad
 # Ship: Rhea

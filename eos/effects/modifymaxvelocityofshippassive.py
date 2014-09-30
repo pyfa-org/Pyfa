@@ -1,3 +1,5 @@
+# modifyMaxVelocityOfShipPassive
+#
 # Used by:
 # Modules from group: Expanded Cargohold (13 of 13)
 type = "passive"

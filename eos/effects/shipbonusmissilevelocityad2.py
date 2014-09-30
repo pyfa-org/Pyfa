@@ -1,3 +1,5 @@
+# shipBonusMissileVelocityAD2
+#
 # Used by:
 # Ship: Heretic
 type = "passive"

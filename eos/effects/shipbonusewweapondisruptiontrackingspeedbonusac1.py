@@ -1,3 +1,5 @@
+# shipBonusEwWeaponDisruptionTrackingSpeedBonusAC1
+#
 # Used by:
 # Variations of ship: Arbitrator (3 of 3)
 type = "passive"

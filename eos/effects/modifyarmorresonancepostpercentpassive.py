@@ -1,3 +1,5 @@
+# modifyArmorResonancePostPercentPassive
+#
 # Used by:
 # Modules named like: Anti Pump (32 of 32)
 type = "passive"

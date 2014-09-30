@@ -1,3 +1,5 @@
+# emArmorCompensationHardeningBonusGroupArmorCoating
+#
 # Used by:
 # Skill: EM Armor Compensation
 type = "passive"

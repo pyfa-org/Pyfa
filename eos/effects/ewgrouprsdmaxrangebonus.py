@@ -1,3 +1,5 @@
+# ewGroupRsdMaxRangeBonus
+#
 # Used by:
 # Implants named like: grade Centurion (10 of 12)
 type = "passive"

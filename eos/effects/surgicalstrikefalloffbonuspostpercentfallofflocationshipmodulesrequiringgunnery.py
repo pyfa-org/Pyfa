@@ -1,3 +1,5 @@
+# surgicalStrikeFalloffBonusPostPercentFalloffLocationShipModulesRequiringGunnery
+#
 # Used by:
 # Implants named like: Sooth Sayer Booster (4 of 4)
 # Implants named like: Zainou 'Deadeye' Trajectory Analysis TA (6 of 6)

@@ -1,3 +1,5 @@
+# targetMaxTargetRangeAndScanResolutionBonusHostile
+#
 # Used by:
 # Modules from group: Remote Sensor Damper (9 of 9)
 type= "projected", "active"

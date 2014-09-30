@@ -1,3 +1,5 @@
+# shipBonusDroneMiningAmountGC2
+#
 # Used by:
 # Ship: Vexor
 # Ship: Vexor Navy Issue

@@ -1,3 +1,5 @@
+# ewSkillTdCapNeedBonusSkillLevel
+#
 # Used by:
 # Implants named like: Zainou 'Gypsy' Weapon Disruption WD (6 of 6)
 # Skill: Weapon Disruption

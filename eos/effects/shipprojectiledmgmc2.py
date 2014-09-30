@@ -1,3 +1,5 @@
+# shipProjectileDmgMC2
+#
 # Used by:
 # Ship: Cynabal
 # Ship: Moracha

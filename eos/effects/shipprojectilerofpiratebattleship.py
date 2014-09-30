@@ -1,3 +1,5 @@
+# shipProjectileRofPirateBattleship
+#
 # Used by:
 # Ship: Machariel
 type = "passive"

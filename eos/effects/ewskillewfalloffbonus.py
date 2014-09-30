@@ -1,3 +1,5 @@
+# ewSkillEwFallOffBonus
+#
 # Used by:
 # Skill: Frequency Modulation
 type = "passive"

@@ -1,3 +1,5 @@
+# boosterTurretFalloffPenalty
+#
 # Used by:
 # Implants named like: Drop Booster (3 of 4)
 # Implants named like: X Instinct Booster (3 of 4)

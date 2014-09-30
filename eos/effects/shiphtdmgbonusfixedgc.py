@@ -1,3 +1,5 @@
+# shipHTDmgBonusfixedGC
+#
 # Used by:
 # Ships named like: Thorax (3 of 3)
 # Variations of ship: Thorax (3 of 4)

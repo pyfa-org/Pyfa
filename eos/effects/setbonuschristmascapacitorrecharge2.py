@@ -1,3 +1,5 @@
+# setBonusChristmasCapacitorRecharge2
+#
 # Used by:
 # Implants named like: Genolution Core Augmentation CA (4 of 4)
 runTime = "early"

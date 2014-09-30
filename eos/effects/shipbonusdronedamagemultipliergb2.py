@@ -1,3 +1,5 @@
+# shipBonusDroneDamageMultiplierGB2
+#
 # Used by:
 # Variations of ship: Dominix (3 of 3)
 # Ship: Nestor

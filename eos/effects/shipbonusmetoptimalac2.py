@@ -1,3 +1,5 @@
+# shipBonusMETOptimalAC2
+#
 # Used by:
 # Ship: Omen Navy Issue
 type = "passive"

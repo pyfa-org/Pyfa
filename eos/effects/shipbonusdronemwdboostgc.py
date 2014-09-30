@@ -1,3 +1,5 @@
+# shipBonusDroneMWDboostGC
+#
 # Used by:
 # Ship: Vexor Navy Issue
 type = "passive"

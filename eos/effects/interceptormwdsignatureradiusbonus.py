@@ -1,3 +1,5 @@
+# interceptorMWDSignatureRadiusBonus
+#
 # Used by:
 # Ships from group: Interceptor (9 of 9)
 type = "passive"

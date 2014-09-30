@@ -1,3 +1,5 @@
+# eliteBonusElectronicAttackShipEnergyVampireRange1
+#
 # Used by:
 # Ship: Sentinel
 type = "passive"

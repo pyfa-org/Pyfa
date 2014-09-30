@@ -1,3 +1,5 @@
+# eliteBonusLogisticShieldTransferCapNeed2
+#
 # Used by:
 # Ship: Scimitar
 type = "passive"

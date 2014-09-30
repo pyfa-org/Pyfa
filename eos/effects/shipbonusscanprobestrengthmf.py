@@ -1,3 +1,5 @@
+# shipBonusScanProbeStrengthMF
+#
 # Used by:
 # Ships named like: Probe (2 of 2)
 type = "passive"

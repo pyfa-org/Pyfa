@@ -1,3 +1,5 @@
+# rigDrawbackBonusEffect
+#
 # Used by:
 # Skills from group: Rigging (9 of 10)
 type = "passive"

@@ -1,3 +1,5 @@
+# shipHeavyMissileKinDmgPirateCruiser
+#
 # Used by:
 # Ship: Gnosis
 type = "passive"

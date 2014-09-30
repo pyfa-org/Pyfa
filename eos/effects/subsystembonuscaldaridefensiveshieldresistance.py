@@ -1,3 +1,5 @@
+# subsystemBonusCaldariDefensiveShieldResistance
+#
 # Used by:
 # Subsystem: Tengu Defensive - Adaptive Shielding
 type = "passive"

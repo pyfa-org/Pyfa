@@ -1,3 +1,5 @@
+# skillBombDeploymentModuleReactivationDelayBonus
+#
 # Used by:
 # Skill: Bomb Deployment
 type = "passive"

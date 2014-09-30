@@ -1,3 +1,5 @@
+# smallHybridTurretDamageMultiplierBonusPostPercentDamageMultiplierLocationShipModulesRequiringSmallHybridTurret
+#
 # Used by:
 # Implants named like: Zainou 'Deadeye' Small Hybrid Turret SH (6 of 6)
 # Skill: Small Hybrid Turret

@@ -1,3 +1,5 @@
+# shipBonusKineticMissileDamageGC2
+#
 # Used by:
 # Ship: Chameleon
 # Ship: Gila

@@ -1,3 +1,5 @@
+# eliteBonusCommandShipHybridFalloffCS2
+#
 # Used by:
 # Ship: Astarte
 type = "passive"

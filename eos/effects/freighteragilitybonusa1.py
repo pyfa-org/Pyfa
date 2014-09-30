@@ -1,3 +1,5 @@
+# freighterAgilityBonusA1
+#
 # Used by:
 # Ship: Ark
 type = "passive"

@@ -1,3 +1,5 @@
+# shipBonusShieldBoostAmountMC2
+#
 # Used by:
 # Ship: Vagabond
 type = "passive"

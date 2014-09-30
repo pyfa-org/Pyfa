@@ -1,3 +1,5 @@
+# subsystemBonusMinmatarElectronicScanStrengthLADAR
+#
 # Used by:
 # Subsystem: Loki Electronics - Dissolution Sequencer
 type = "passive"

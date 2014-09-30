@@ -1,3 +1,5 @@
+# eliteReconBonusAssaultLauncherROF1
+#
 # Used by:
 # Ship: Huginn
 # Ship: Lachesis

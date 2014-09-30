@@ -1,3 +1,5 @@
+# shipShieldBoostMF
+#
 # Used by:
 # Ship: Breacher
 type = "passive"

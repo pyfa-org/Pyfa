@@ -1,3 +1,5 @@
+# shipBonusHybridTrackingGF2
+#
 # Used by:
 # Ship: Ares
 # Ship: Federation Navy Comet

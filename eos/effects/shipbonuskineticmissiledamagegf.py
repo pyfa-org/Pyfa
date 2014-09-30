@@ -1,3 +1,5 @@
+# shipBonusKineticMissileDamageGF
+#
 # Used by:
 # Ship: Whiptail
 # Ship: Worm

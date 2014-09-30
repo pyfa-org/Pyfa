@@ -1,3 +1,5 @@
+# squadronCommand
+#
 # Used by:
 # Skill: Warfare Link Specialist
 type = "passive"

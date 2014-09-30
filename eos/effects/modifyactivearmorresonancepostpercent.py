@@ -1,3 +1,5 @@
+# modifyActiveArmorResonancePostPercent
+#
 # Used by:
 # Modules from group: Armor Hardener (156 of 156)
 type = "active"

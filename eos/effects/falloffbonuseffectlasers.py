@@ -1,3 +1,5 @@
+# falloffBonusEffectLasers
+#
 # Used by:
 # Modules named like: Energy Ambit Extension (8 of 8)
 type = "passive"

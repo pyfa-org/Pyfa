@@ -1,3 +1,5 @@
+# shipBonusAgilityCI2
+#
 # Used by:
 # Ship: Badger
 type = "passive"

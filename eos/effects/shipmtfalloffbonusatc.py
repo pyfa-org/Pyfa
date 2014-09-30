@@ -1,3 +1,5 @@
+# shipMTFalloffBonusATC
+#
 # Used by:
 # Ship: Mimir
 type = "passive"

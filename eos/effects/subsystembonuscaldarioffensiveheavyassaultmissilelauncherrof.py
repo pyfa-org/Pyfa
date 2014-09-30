@@ -1,3 +1,5 @@
+# subsystemBonusCaldariOffensiveHeavyAssaultMissileLauncherROF
+#
 # Used by:
 # Variations of subsystem: Tengu Offensive - Accelerated Ejection Bay (3 of 4)
 type = "passive"

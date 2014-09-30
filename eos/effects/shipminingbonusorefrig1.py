@@ -1,3 +1,5 @@
+# shipMiningBonusOREfrig1
+#
 # Used by:
 # Variations of ship: Venture (2 of 2)
 type = "passive"

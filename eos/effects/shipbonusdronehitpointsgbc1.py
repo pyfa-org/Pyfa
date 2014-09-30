@@ -1,3 +1,5 @@
+# shipBonusDroneHitpointsGBC1
+#
 # Used by:
 # Variations of ship: Myrmidon (2 of 2)
 type = "passive"

@@ -1,3 +1,5 @@
+# minigameVirusStrengthBonus
+#
 # Used by:
 # Ships from group: Covert Ops (5 of 5)
 # Ships named like: Stratios (2 of 2)

@@ -1,3 +1,5 @@
+# armorTankingGang
+#
 # Used by:
 # Skill: Armored Warfare
 type = "gang"

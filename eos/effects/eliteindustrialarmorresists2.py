@@ -1,3 +1,5 @@
+# eliteIndustrialArmorResists2
+#
 # Used by:
 # Ship: Impel
 # Ship: Occator

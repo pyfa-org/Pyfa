@@ -1,3 +1,5 @@
+# subsystemBonusCaldariDefensiveShieldBoostAmount
+#
 # Used by:
 # Subsystem: Tengu Defensive - Amplification Node
 type = "passive"

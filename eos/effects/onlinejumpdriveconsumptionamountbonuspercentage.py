@@ -1,3 +1,5 @@
+# onlineJumpDriveConsumptionAmountBonusPercentage
+#
 # Used by:
 # Modules from group: Jump Drive Economizer (3 of 3)
 runTime = "early"

@@ -1,3 +1,5 @@
+# shipWebVelocityBonusRookie
+#
 # Used by:
 # Ship: Hematos
 # Ship: Violator

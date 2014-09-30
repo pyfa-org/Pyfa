@@ -1,3 +1,5 @@
+# targetGunneryMaxRangeAndTrackingSpeedAndFalloffBonusHostile
+#
 # Used by:
 # Modules from group: Tracking Disruptor (10 of 10)
 type= "projected", "active"

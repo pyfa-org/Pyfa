@@ -1,3 +1,5 @@
+# shipMissileVelocityCF
+#
 # Used by:
 # Ship: Crow
 # Ship: Kestrel

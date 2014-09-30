@@ -1,3 +1,5 @@
+# shipHybridDmgPirateCruiser
+#
 # Used by:
 # Ship: Gnosis
 # Ship: Vigilant

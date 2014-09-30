@@ -1,3 +1,5 @@
+# shipEnergyNeutralizerTransferAmountBonusAC
+#
 # Used by:
 # Ship: Ashimmu
 # Ship: Vangel

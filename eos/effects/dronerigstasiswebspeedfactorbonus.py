@@ -1,3 +1,5 @@
+# droneRigStasisWebSpeedFactorBonus
+#
 # Used by:
 # Modules named like: Stasis Drone Augmentor (8 of 8)
 type = "passive"

@@ -1,3 +1,5 @@
+# subSystemBonusMinmatarDefensiveArmoredWarfare
+#
 # Used by:
 # Subsystem: Loki Defensive - Warfare Processor
 type = "passive"

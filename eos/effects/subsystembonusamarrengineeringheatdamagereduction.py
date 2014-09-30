@@ -1,3 +1,5 @@
+# subsystemBonusAmarrEngineeringHeatDamageReduction
+#
 # Used by:
 # Subsystem: Legion Engineering - Supplemental Coolant Injector
 type = "passive"

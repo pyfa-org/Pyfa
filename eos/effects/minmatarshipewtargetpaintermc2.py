@@ -1,3 +1,5 @@
+# minmatarShipEwTargetPainterMC2
+#
 # Used by:
 # Ship: Huginn
 # Ship: Rapier

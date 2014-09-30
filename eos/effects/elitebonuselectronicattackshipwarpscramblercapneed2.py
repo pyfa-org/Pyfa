@@ -1,3 +1,5 @@
+# eliteBonusElectronicAttackShipWarpScramblerCapNeed2
+#
 # Used by:
 # Ship: Keres
 type = "passive"

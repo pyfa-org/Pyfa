@@ -1,3 +1,5 @@
+# miningYieldMultiplyPassive
+#
 # Used by:
 # Ships from group: Exhumer (3 of 4)
 # Variations of ship: Venture (2 of 2)

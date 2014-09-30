@@ -1,3 +1,5 @@
+# eliteBonusHeavyGunshipLaserOptimal1
+#
 # Used by:
 # Ship: Zealot
 type = "passive"

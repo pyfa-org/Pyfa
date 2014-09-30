@@ -1,3 +1,5 @@
+# shipMissileSpeedBonusCF
+#
 # Used by:
 # Ship: Buzzard
 # Ship: Hawk

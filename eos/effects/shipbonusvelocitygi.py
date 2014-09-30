@@ -1,3 +1,5 @@
+# shipBonusVelocityGI
+#
 # Used by:
 # Ships from group: Industrial (8 of 21)
 # Variations of ship: Miasmos (4 of 4)

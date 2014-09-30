@@ -1,3 +1,5 @@
+# shipVelocityBonusATC1
+#
 # Used by:
 # Ship: Adrestia
 # Ship: Mimir

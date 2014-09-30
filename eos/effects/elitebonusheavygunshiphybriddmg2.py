@@ -1,3 +1,5 @@
+# eliteBonusHeavyGunshipHybridDmg2
+#
 # Used by:
 # Ship: Deimos
 # Ship: Eagle

@@ -1,3 +1,5 @@
+# ewSkillEcmBurstCapNeedBonus
+#
 # Used by:
 # Implants named like: Zainou 'Gypsy' Electronic Warfare EW (6 of 6)
 # Modules named like: Signal Disruption Amplifier (8 of 8)

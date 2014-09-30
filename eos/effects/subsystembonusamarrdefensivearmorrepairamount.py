@@ -1,3 +1,5 @@
+# subsystemBonusAmarrDefensiveArmorRepairAmount
+#
 # Used by:
 # Subsystem: Legion Defensive - Nanobot Injector
 type = "passive"

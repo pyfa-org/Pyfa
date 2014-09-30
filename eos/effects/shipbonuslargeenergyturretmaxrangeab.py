@@ -1,3 +1,5 @@
+# shipBonusLargeEnergyTurretMaxRangeAB
+#
 # Used by:
 # Ship: Paladin
 type = "passive"

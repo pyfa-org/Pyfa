@@ -1,3 +1,5 @@
+# subSystemBonusCaldariDefensiveInformationWarfare
+#
 # Used by:
 # Subsystem: Tengu Defensive - Warfare Processor
 type = "passive"

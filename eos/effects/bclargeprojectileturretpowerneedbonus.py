@@ -1,3 +1,5 @@
+# bcLargeProjectileTurretPowerNeedBonus
+#
 # Used by:
 # Ship: Tornado
 type = "passive"

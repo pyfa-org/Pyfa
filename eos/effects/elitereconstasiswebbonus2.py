@@ -1,3 +1,5 @@
+# eliteReconStasisWebBonus2
+#
 # Used by:
 # Ship: Huginn
 # Ship: Moracha

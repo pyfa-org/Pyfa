@@ -1,3 +1,5 @@
+# freighterAgilityBonusC1
+#
 # Used by:
 # Ship: Rhea
 type = "passive"

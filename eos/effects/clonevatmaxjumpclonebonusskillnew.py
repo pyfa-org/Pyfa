@@ -1,3 +1,5 @@
+# cloneVatMaxJumpCloneBonusSkillNew
+#
 # Used by:
 # Skill: Cloning Facility Operation
 type = "passive"

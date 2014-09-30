@@ -1,3 +1,5 @@
+# titanAmarrGangCapRecharge2
+#
 # Used by:
 # Ship: Avatar
 type = "gang"

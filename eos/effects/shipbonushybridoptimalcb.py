@@ -1,3 +1,5 @@
+# shipBonusHybridOptimalCB
+#
 # Used by:
 # Ships named like: Rokh (3 of 3)
 type = "passive"

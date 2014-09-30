@@ -1,3 +1,5 @@
+# eliteBonusMarauderShieldBonus2a
+#
 # Used by:
 # Ship: Golem
 # Ship: Vargur

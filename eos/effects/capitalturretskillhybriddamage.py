@@ -1,3 +1,5 @@
+# capitalTurretSkillHybridDamage
+#
 # Used by:
 # Skill: Capital Hybrid Turret
 type = "passive"

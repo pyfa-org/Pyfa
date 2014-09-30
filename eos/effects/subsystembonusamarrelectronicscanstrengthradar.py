@@ -1,3 +1,5 @@
+# subsystemBonusAmarrElectronicScanStrengthRADAR
+#
 # Used by:
 # Subsystem: Legion Electronics - Dissolution Sequencer
 type = "passive"

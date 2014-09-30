@@ -1,3 +1,5 @@
+# shipETOptimalRange2AF
+#
 # Used by:
 # Ship: Imperial Navy Slicer
 type = "passive"

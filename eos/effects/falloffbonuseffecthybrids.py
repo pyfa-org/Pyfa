@@ -1,3 +1,5 @@
+# falloffBonusEffectHybrids
+#
 # Used by:
 # Modules named like: Hybrid Ambit Extension (8 of 8)
 type = "passive"

@@ -1,3 +1,5 @@
+# shipHybridRange1CD1
+#
 # Used by:
 # Ships named like: Cormorant (2 of 2)
 type = "passive"

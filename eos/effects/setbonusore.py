@@ -1,3 +1,5 @@
+# setBonusOre
+#
 # Used by:
 # Implants named like: grade Harvest (12 of 12)
 runTime = "early"

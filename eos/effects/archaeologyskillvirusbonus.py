@@ -1,3 +1,5 @@
+# archaeologySkillVirusBonus
+#
 # Used by:
 # Modules named like: Emission Scope Sharpener (8 of 8)
 # Implant: Poteque 'Prospector' Archaeology AC-905

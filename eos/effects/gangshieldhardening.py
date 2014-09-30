@@ -1,3 +1,5 @@
+# gangShieldHardening
+#
 # Used by:
 # Variations of module: Siege Warfare Link - Shield Harmonizing I (2 of 2)
 type = "gang", "active"

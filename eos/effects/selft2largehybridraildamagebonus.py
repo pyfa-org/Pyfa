@@ -1,3 +1,5 @@
+# selfT2LargeHybridRailDamageBonus
+#
 # Used by:
 # Skill: Large Railgun Specialization
 type = "passive"

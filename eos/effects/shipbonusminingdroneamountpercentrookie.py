@@ -1,3 +1,5 @@
+# shipBonusMiningDroneAmountPercentRookie
+#
 # Used by:
 # Ship: Gnosis
 # Ship: Taipan

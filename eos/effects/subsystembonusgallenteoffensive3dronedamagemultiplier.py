@@ -1,3 +1,5 @@
+# subsystemBonusGallenteOffensive3DroneDamageMultiplier
+#
 # Used by:
 # Subsystem: Proteus Offensive - Drone Synthesis Projector
 type = "passive"

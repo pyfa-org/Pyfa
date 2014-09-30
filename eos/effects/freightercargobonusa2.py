@@ -1,3 +1,5 @@
+# freighterCargoBonusA2
+#
 # Used by:
 # Variations of ship: Providence (2 of 2)
 type = "passive"

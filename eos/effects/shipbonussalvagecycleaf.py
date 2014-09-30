@@ -1,3 +1,5 @@
+# shipBonusSalvageCycleAF
+#
 # Used by:
 # Variations of ship: Magnate (3 of 6)
 type = "passive"

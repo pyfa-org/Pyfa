@@ -1,3 +1,5 @@
+# shipBonusCF1TorpedoExplosionVelocity
+#
 # Used by:
 # Ship: Manticore
 type = "passive"

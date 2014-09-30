@@ -1,3 +1,5 @@
+# shipHybridTrackingGC2
+#
 # Used by:
 # Ships named like: Thorax (3 of 3)
 type = "passive"

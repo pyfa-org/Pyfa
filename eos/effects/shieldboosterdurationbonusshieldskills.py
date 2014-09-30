@@ -1,3 +1,5 @@
+# shieldBoosterDurationBonusShieldSkills
+#
 # Used by:
 # Modules named like: Core Defense Operational Solidifier (8 of 8)
 type = "passive"

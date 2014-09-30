@@ -1,3 +1,5 @@
+# skillFighterBombersDmgBonus
+#
 # Used by:
 # Skill: Fighter Bombers
 type = "passive"

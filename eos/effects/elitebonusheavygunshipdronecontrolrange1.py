@@ -1,3 +1,5 @@
+# eliteBonusHeavyGunshipDroneControlRange1
+#
 # Used by:
 # Ship: Ishtar
 type = "passive"

@@ -1,3 +1,5 @@
+# freighterMaxVelocityBonusA1
+#
 # Used by:
 # Ship: Providence
 type = "passive"

@@ -1,3 +1,5 @@
+# ecmGravimetricStrengthBonusPercent
+#
 # Used by:
 # Modules from group: ECM Stabilizer (6 of 6)
 type = "passive"

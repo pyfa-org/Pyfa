@@ -1,3 +1,5 @@
+# superWeaponCaldari
+#
 # Used by:
 # Module: Oblivion
 type = 'active'

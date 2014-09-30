@@ -1,3 +1,5 @@
+# ammoInfluenceCapNeed
+#
 # Used by:
 # Items from category: Charge (458 of 828)
 type = "passive"

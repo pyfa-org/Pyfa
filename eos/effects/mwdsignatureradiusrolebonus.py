@@ -1,3 +1,5 @@
+# MWDSignatureRadiusRoleBonus
+#
 # Used by:
 # Ships from group: Assault Frigate (8 of 12)
 # Ships from group: Heavy Assault Cruiser (8 of 11)

@@ -1,3 +1,5 @@
+# eliteBonusCommandShipInformationCS3
+#
 # Used by:
 # Ships from group: Command Ship (4 of 8)
 type = "passive"

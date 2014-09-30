@@ -1,3 +1,5 @@
+# shipDroneScoutThermalDamageGF2
+#
 # Used by:
 # Ship: Helios
 type = "passive"

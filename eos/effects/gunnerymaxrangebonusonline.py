@@ -1,3 +1,5 @@
+# gunneryMaxRangeBonusOnline
+#
 # Used by:
 # Modules from group: Tracking Enhancer (17 of 17)
 type = "passive"

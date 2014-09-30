@@ -1,3 +1,5 @@
+# setBonusThukker
+#
 # Used by:
 # Implants named like: grade Nomad (12 of 12)
 runTime = "early"

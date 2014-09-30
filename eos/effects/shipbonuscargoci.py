@@ -1,3 +1,5 @@
+# shipBonusCargoCI
+#
 # Used by:
 # Ships named like: Tayra (2 of 2)
 # Variations of ship: Badger (2 of 2)

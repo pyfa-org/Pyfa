@@ -1,3 +1,5 @@
+# shipBonusTorpedoMissileThermDmgMB
+#
 # Used by:
 # Ship: Typhoon Fleet Issue
 type = "passive"

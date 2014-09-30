@@ -1,3 +1,5 @@
+# shipRocketExplosiveDmgAF
+#
 # Used by:
 # Ship: Anathema
 # Ship: Vengeance

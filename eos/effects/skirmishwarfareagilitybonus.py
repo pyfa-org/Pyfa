@@ -1,3 +1,5 @@
+# skirmishWarfareAgilityBonus
+#
 # Used by:
 # Implant: Federation Navy Warfare Mindlink
 # Implant: Republic Fleet Warfare Mindlink

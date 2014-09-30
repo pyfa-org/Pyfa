@@ -1,3 +1,5 @@
+# missileSkillAoeVelocityBonus
+#
 # Used by:
 # Implants named like: Zainou 'Deadeye' Target Navigation Prediction TN (6 of 6)
 # Modules named like: Warhead Flare Catalyst (8 of 8)

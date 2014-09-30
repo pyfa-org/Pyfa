@@ -1,3 +1,5 @@
+# shipShieldBoostRookie
+#
 # Used by:
 # Ship: Immolator
 # Ship: Reaper

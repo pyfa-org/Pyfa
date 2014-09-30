@@ -1,3 +1,5 @@
+# subsystemBonusAmarrOffensiveEnergyWeaponDamageMultiplier
+#
 # Used by:
 # Subsystem: Legion Offensive - Liquid Crystal Magnifiers
 type = "passive"

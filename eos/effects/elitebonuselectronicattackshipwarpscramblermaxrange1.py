@@ -1,3 +1,5 @@
+# eliteBonusElectronicAttackShipWarpScramblerMaxRange1
+#
 # Used by:
 # Ship: Keres
 type = "passive"

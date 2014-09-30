@@ -1,3 +1,5 @@
+# subsystemBonusCaldariEngineeringCapacitorRecharge
+#
 # Used by:
 # Subsystem: Tengu Engineering - Capacitor Regeneration Matrix
 type = "passive"

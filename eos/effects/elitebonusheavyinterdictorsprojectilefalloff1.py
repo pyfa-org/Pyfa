@@ -1,3 +1,5 @@
+# eliteBonusHeavyInterdictorsProjectileFalloff1
+#
 # Used by:
 # Ship: Broadsword
 type = "passive"

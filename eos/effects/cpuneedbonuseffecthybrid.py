@@ -1,3 +1,5 @@
+# cpuNeedBonusEffectHybrid
+#
 # Used by:
 # Modules named like: Algid Hybrid Administrations Unit (8 of 8)
 type = "passive"

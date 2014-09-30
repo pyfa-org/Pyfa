@@ -1,3 +1,5 @@
+# shipLaserCap1ABC2
+#
 # Used by:
 # Ship: Absolution
 type = "passive"

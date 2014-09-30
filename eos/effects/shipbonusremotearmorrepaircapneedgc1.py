@@ -1,3 +1,5 @@
+# shipBonusRemoteArmorRepairCapNeedGC1
+#
 # Used by:
 # Ship: Exequror
 type = "passive"

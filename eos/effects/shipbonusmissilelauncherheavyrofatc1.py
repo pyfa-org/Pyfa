@@ -1,3 +1,5 @@
+# shipBonusMissileLauncherHeavyROFATC1
+#
 # Used by:
 # Ship: Vangel
 type = "passive"

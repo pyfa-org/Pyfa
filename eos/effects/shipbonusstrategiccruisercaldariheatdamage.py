@@ -1,3 +1,5 @@
+# shipBonusStrategicCruiserCaldariHeatDamage
+#
 # Used by:
 # Ship: Tengu
 type = "passive"

@@ -1,3 +1,5 @@
+# titanGallenteSkillLevel2
+#
 # Used by:
 # Skill: Gallente Titan
 type = "passive"

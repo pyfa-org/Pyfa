@@ -1,3 +1,5 @@
+# boosterMissileVelocityPenalty
+#
 # Used by:
 # Implants named like: Crash Booster (3 of 4)
 # Implants named like: X Instinct Booster (3 of 4)

@@ -1,3 +1,5 @@
+# hybridWeaponDamageMultiplyPassive
+#
 # Used by:
 # Modules named like: Hybrid Collision Accelerator (8 of 8)
 type = "passive"

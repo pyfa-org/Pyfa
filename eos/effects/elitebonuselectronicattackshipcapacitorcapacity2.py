@@ -1,3 +1,5 @@
+# eliteBonusElectronicAttackShipCapacitorCapacity2
+#
 # Used by:
 # Ship: Kitsune
 type = "passive"

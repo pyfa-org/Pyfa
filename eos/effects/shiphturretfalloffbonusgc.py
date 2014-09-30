@@ -1,3 +1,5 @@
+# shipHTurretFalloffBonusGC
+#
 # Used by:
 # Ship: Vigilant
 type = "passive"

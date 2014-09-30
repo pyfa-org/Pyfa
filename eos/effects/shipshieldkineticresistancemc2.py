@@ -1,3 +1,5 @@
+# shipShieldKineticResistanceMC2
+#
 # Used by:
 # Ship: Broadsword
 type = "passive"

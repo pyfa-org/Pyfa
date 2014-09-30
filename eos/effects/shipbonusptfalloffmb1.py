@@ -1,3 +1,5 @@
+# shipBonusPTFalloffMB1
+#
 # Used by:
 # Ship: Vargur
 type = "passive"

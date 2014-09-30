@@ -1,3 +1,5 @@
+# shipRemoteArmorRange1
+#
 # Used by:
 # Ship: Oneiros
 type = "passive"

@@ -1,3 +1,5 @@
+# eliteBonusCommandShipMediumHybridTrackingCS1
+#
 # Used by:
 # Ship: Eos
 type = "passive"

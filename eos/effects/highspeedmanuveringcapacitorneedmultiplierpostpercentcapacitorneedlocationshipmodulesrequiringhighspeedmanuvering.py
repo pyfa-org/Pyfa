@@ -1,3 +1,5 @@
+# highSpeedManuveringCapacitorNeedMultiplierPostPercentCapacitorNeedLocationShipModulesRequiringHighSpeedManuvering
+#
 # Used by:
 # Implants named like: Eifyr and Co. 'Rogue' High Speed Maneuvering HS (6 of 6)
 # Skill: High Speed Maneuvering

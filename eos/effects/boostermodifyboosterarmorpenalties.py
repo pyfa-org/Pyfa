@@ -1,3 +1,5 @@
+# boosterModifyBoosterArmorPenalties
+#
 # Used by:
 # Implants named like: Eifyr and Co. 'Alchemist' Neurotoxin Control NC (2 of 2)
 # Implants named like: grade Edge (10 of 12)

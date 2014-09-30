@@ -1,3 +1,5 @@
+# eliteBonusGunshipShieldBoost2
+#
 # Used by:
 # Ship: Hawk
 type = "passive"

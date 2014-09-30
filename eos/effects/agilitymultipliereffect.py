@@ -1,3 +1,5 @@
+# agilityMultiplierEffect
+#
 # Used by:
 # Modules from group: Inertia Stabilizer (12 of 12)
 # Modules from group: Nanofiber Internal Structure (14 of 14)

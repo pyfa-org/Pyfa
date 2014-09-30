@@ -1,3 +1,5 @@
+# shipArmorRepairingGF2
+#
 # Used by:
 # Ships named like: Incursus (3 of 3)
 type = "passive"

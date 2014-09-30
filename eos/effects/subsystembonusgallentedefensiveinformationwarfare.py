@@ -1,3 +1,5 @@
+# subSystemBonusGallenteDefensiveInformationWarfare
+#
 # Used by:
 # Subsystem: Proteus Defensive - Warfare Processor
 type = "passive"

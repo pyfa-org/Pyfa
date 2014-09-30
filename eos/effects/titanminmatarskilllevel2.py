@@ -1,3 +1,5 @@
+# titanMinmatarSkillLevel2
+#
 # Used by:
 # Skill: Minmatar Titan
 type = "passive"

@@ -1,3 +1,5 @@
+# shipSPTOptimalBonusMF
+#
 # Used by:
 # Ship: Chremoas
 type = "passive"

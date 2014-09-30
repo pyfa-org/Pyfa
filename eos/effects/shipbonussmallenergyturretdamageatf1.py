@@ -1,3 +1,5 @@
+# shipBonusSmallEnergyTurretDamageATF1
+#
 # Used by:
 # Ship: Malice
 type = "passive"

@@ -1,3 +1,5 @@
+# shipBonusFrigateSizedLightMissileExplosiveDamageMD1
+#
 # Used by:
 # Ship: Talwar
 type = "passive"

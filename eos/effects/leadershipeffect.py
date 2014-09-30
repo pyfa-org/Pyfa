@@ -1,3 +1,5 @@
+# leadershipEffect
+#
 # Used by:
 # Skill: Leadership
 type = "gang"

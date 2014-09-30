@@ -1,3 +1,5 @@
+# titanAmarrSkillLevel2
+#
 # Used by:
 # Skill: Amarr Titan
 type = "passive"

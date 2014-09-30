@@ -1,3 +1,5 @@
+# subsystemBonusCaldariOffensive2HybridWeaponDamageMultiplier
+#
 # Used by:
 # Subsystem: Tengu Offensive - Magnetic Infusion Basin
 type = "passive"

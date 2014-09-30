@@ -1,3 +1,5 @@
+# subsystemBonusGallenteOffensiveHybridWeaponDamageMultiplier
+#
 # Used by:
 # Subsystem: Proteus Offensive - Covert Reconfiguration
 type = "passive"

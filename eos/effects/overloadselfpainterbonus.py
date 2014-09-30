@@ -1,3 +1,5 @@
+# overloadSelfPainterBonus
+#
 # Used by:
 # Modules from group: Target Painter (9 of 9)
 type = "overheat"

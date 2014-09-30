@@ -1,3 +1,5 @@
+# warpDisruptSphere
+#
 # Used by:
 # Modules from group: Warp Disrupt Field Generator (2 of 2)
 type = "active"

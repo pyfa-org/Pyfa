@@ -1,3 +1,5 @@
+# targetGunneryMaxRangeFalloffTrackingSpeedBonusAssistance
+#
 # Used by:
 # Modules from group: Remote Tracking Computer (10 of 10)
 type= "projected", "active"

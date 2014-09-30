@@ -1,3 +1,5 @@
+# eliteBonusCommandShipArmorHP1
+#
 # Used by:
 # Ship: Damnation
 type = "passive"

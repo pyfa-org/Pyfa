@@ -1,3 +1,5 @@
+# shipSETDmgBonusAF
+#
 # Used by:
 # Ship: Executioner
 # Ship: Gold Magnate

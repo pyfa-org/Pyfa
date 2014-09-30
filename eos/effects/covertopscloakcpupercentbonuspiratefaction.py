@@ -1,3 +1,5 @@
+# covertOpsCloakCPUPercentBonusPirateFaction
+#
 # Used by:
 # Ship: Astero
 # Ship: Prospect

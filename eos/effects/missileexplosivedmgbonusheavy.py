@@ -1,3 +1,5 @@
+# missileExplosiveDmgBonusHeavy
+#
 # Used by:
 # Implants named like: Zainou 'Snapshot' Heavy Missiles HM (6 of 6)
 type = "passive"

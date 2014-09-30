@@ -1,3 +1,5 @@
+# subsystemBonusGallenteDefensiveArmorHP
+#
 # Used by:
 # Subsystem: Proteus Defensive - Augmented Plating
 type = "passive"

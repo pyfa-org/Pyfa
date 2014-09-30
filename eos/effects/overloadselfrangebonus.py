@@ -1,3 +1,5 @@
+# overloadSelfRangeBonus
+#
 # Used by:
 # Modules from group: Stasis Web (19 of 19)
 # Modules from group: Warp Scrambler (38 of 39)

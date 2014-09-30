@@ -1,3 +1,5 @@
+# superWeaponAmarr
+#
 # Used by:
 # Module: Judgement
 type = 'active'

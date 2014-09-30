@@ -1,3 +1,5 @@
+# shipBonusRHMLROF2CB
+#
 # Used by:
 # Ship: Raven
 # Ship: Widow

@@ -1,3 +1,5 @@
+# eliteBonusCommandShipLaserROFCS2
+#
 # Used by:
 # Ship: Absolution
 type = "passive"

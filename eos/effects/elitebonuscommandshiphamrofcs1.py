@@ -1,3 +1,5 @@
+# eliteBonusCommandShipHAMRoFCS1
+#
 # Used by:
 # Ship: Claymore
 # Ship: Nighthawk

@@ -1,3 +1,5 @@
+# shipSHTOptimalBonusGF
+#
 # Used by:
 # Ship: Ares
 type = "passive"

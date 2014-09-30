@@ -1,3 +1,5 @@
+# smallProjectileMaxRangeBonus
+#
 # Used by:
 # Ships named like: Thrasher (3 of 3)
 type = "passive"

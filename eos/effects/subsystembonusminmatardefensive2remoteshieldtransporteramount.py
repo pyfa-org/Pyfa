@@ -1,3 +1,5 @@
+# subsystemBonusMinmatarDefensive2RemoteShieldTransporterAmount
+#
 # Used by:
 # Subsystem: Loki Defensive - Adaptive Shielding
 type = "passive"

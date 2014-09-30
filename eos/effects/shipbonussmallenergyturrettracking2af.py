@@ -1,3 +1,5 @@
+# shipBonusSmallEnergyTurretTracking2AF
+#
 # Used by:
 # Ship: Succubus
 type = "passive"

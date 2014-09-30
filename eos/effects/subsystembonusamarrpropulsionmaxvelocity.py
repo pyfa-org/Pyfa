@@ -1,3 +1,5 @@
+# subsystemBonusAmarrPropulsionMaxVelocity
+#
 # Used by:
 # Subsystem: Legion Propulsion - Chassis Optimization
 type = "passive"

@@ -1,3 +1,5 @@
+# shipBonusShieldTransferCapneedMC1
+#
 # Used by:
 # Ship: Scythe
 type = "passive"

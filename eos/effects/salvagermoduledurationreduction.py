@@ -1,3 +1,5 @@
+# salvagerModuleDurationReduction
+#
 # Used by:
 # Implant: Poteque 'Prospector' Environmental Analysis EY-1005
 type = "passive"

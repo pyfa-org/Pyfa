@@ -1,3 +1,5 @@
+# scanStrengthBonusPercentOnline
+#
 # Used by:
 # Modules from group: Sensor Backup Array (72 of 72)
 type = "passive"

@@ -1,3 +1,5 @@
+# shipBonusHeavyDRoneTrackingGC
+#
 # Used by:
 # Ship: Ishtar
 type = "passive"

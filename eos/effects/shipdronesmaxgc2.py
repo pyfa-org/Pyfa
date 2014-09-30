@@ -1,3 +1,5 @@
+# shipDronesMaxGC2
+#
 # Used by:
 # Ship: Guardian-Vexor
 type = "passive"

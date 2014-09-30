@@ -1,3 +1,5 @@
+# shipBonusShieldTransferBoostAmountMF2
+#
 # Used by:
 # Ship: Burst
 type = "passive"

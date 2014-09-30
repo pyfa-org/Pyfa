@@ -1,3 +1,5 @@
+# shipBonusCapCapAB
+#
 # Used by:
 # Ship: Apocalypse Imperial Issue
 # Ship: Paladin

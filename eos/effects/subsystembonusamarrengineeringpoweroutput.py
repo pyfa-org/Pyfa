@@ -1,3 +1,5 @@
+# subsystemBonusAmarrEngineeringPowerOutput
+#
 # Used by:
 # Subsystem: Legion Engineering - Power Core Multiplier
 type = "passive"

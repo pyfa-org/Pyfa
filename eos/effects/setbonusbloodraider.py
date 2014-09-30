@@ -1,3 +1,5 @@
+# setBonusBloodraider
+#
 # Used by:
 # Implants named like: grade Talisman (18 of 18)
 runTime = "early"

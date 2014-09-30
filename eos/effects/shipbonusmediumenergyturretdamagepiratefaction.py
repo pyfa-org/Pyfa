@@ -1,3 +1,5 @@
+# shipBonusMediumEnergyTurretDamagePirateFaction
+#
 # Used by:
 # Ship: Ashimmu
 # Ship: Gnosis

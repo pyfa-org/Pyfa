@@ -1,3 +1,5 @@
+# eliteBonusHeavyInterdictorLaserRof
+#
 # Used by:
 # Ship: Devoter
 type = "passive"

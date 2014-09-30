@@ -1,3 +1,5 @@
+# shipBonusEwRemoteSensorDampenerMaxTargetRangeBonusRookie
+#
 # Used by:
 # Ship: Velator
 type = "passive"

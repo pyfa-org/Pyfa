@@ -1,3 +1,5 @@
+# selfT2MediumLaserBeamDamageBonus
+#
 # Used by:
 # Skill: Medium Beam Laser Specialization
 type = "passive"

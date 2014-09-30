@@ -1,3 +1,5 @@
+# shipBonusShieldTransferBoostAmountCC2
+#
 # Used by:
 # Ship: Osprey
 type = "passive"

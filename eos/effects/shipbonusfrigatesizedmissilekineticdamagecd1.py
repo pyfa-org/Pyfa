@@ -1,3 +1,5 @@
+# shipBonusFrigateSizedMissileKineticDamageCD1
+#
 # Used by:
 # Ship: Corax
 type = "passive"

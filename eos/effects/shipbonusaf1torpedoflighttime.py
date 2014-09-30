@@ -1,3 +1,5 @@
+# shipBonusAF1TorpedoFlightTime
+#
 # Used by:
 # Ship: Purifier
 type = "passive"

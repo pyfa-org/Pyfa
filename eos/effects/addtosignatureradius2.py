@@ -1,3 +1,5 @@
+# addToSignatureRadius2
+#
 # Used by:
 # Modules from group: Shield Extender (37 of 37)
 type = "passive"

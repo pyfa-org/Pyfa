@@ -1,3 +1,5 @@
+# eliteBonusGunshipProjectileOptimal1
+#
 # Used by:
 # Ship: Jaguar
 type = "passive"

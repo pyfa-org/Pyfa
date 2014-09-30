@@ -1,3 +1,5 @@
+# shipBonusAfterburnerSpeedFactorCC2
+#
 # Used by:
 # Ship: Phantasm
 type = "passive"

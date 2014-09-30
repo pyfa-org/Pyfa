@@ -1,3 +1,5 @@
+# shipBonusPirateSmallHybridDmg
+#
 # Used by:
 # Ship: Daredevil
 type = "passive"

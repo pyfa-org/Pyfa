@@ -1,3 +1,5 @@
+# setBonusSyndicate
+#
 # Used by:
 # Implants named like: grade Edge (12 of 12)
 runTime = "early"

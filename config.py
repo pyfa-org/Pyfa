@@ -19,6 +19,10 @@ expansionName = "Hyperion"
 expansionVersion = "1.0"
 evemonMinVersion = "4081"
 
+# Database version (int ONLY)
+# Increment every time we need to flag for user database upgrade/modification
+dbversion = 1
+
 pyfaPath = None
 savePath = None
 staticPath = None

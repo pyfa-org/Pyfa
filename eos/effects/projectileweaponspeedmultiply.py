@@ -1,3 +1,5 @@
+# projectileWeaponSpeedMultiply
+#
 # Used by:
 # Modules from group: Gyrostabilizer (20 of 20)
 type = "passive"

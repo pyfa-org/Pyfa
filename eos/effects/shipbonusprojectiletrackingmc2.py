@@ -1,3 +1,5 @@
+# shipBonusProjectileTrackingMC2
+#
 # Used by:
 # Ship: Stabber Fleet Issue
 type = "passive"

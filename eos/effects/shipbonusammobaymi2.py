@@ -1,3 +1,5 @@
+# shipBonusAmmoBayMI2
+#
 # Used by:
 # Ship: Hoarder
 type = "passive"

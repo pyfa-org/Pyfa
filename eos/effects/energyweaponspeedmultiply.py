@@ -1,3 +1,5 @@
+# energyWeaponSpeedMultiply
+#
 # Used by:
 # Modules from group: Heat Sink (25 of 25)
 type = "passive"

@@ -1,3 +1,5 @@
+# freighterMaxVelocityBonusM1
+#
 # Used by:
 # Ship: Fenrir
 type = "passive"

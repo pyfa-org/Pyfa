@@ -1,3 +1,5 @@
+# energyTransferArrayMaxRangeBonus
+#
 # Used by:
 # Ship: Augoror
 # Ship: Osprey

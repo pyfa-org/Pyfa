@@ -1,3 +1,5 @@
+# shipBonusAoeVelocityCruiseMissilesMB2
+#
 # Used by:
 # Ship: Typhoon
 type = "passive"

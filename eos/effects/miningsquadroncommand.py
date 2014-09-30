@@ -1,3 +1,5 @@
+# miningSquadronCommand
+#
 # Used by:
 # Skill: Mining Director
 runTime = "early"

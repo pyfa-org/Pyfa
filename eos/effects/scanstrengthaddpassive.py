@@ -1,3 +1,5 @@
+# scanStrengthAddPassive
+#
 # Used by:
 # Subsystems from group: Electronic Systems (16 of 16)
 type = "passive"

@@ -1,3 +1,5 @@
+# shipBonusEliteCover2TorpedoEMDamage
+#
 # Used by:
 # Ship: Purifier
 type = "passive"

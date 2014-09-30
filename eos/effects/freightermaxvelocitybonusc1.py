@@ -1,3 +1,5 @@
+# freighterMaxVelocityBonusC1
+#
 # Used by:
 # Ship: Charon
 type = "passive"

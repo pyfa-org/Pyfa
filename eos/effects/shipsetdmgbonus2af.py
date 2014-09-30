@@ -1,3 +1,5 @@
+# shipSETDmgBonus2AF
+#
 # Used by:
 # Ships named like: Punisher (3 of 3)
 type = "passive"

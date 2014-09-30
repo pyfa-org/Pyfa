@@ -1,3 +1,5 @@
+# subsystemBonusMinmatarOffensiveProjectileWeaponROF
+#
 # Used by:
 # Subsystem: Loki Offensive - Covert Reconfiguration
 type = "passive"

@@ -1,3 +1,5 @@
+# gangShieldBoosterAndTransporterSpeed
+#
 # Used by:
 # Variations of module: Siege Warfare Link - Active Shielding I (2 of 2)
 type = "gang", "active"

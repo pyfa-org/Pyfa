@@ -1,3 +1,5 @@
+# selfT2MediumProjectileACDamageBonus
+#
 # Used by:
 # Skill: Medium Autocannon Specialization
 type = "passive"

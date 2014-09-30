@@ -1,3 +1,5 @@
+# overloadSelfECMStrenghtBonus
+#
 # Used by:
 # Modules from group: ECM (44 of 44)
 # Modules from group: ECM Burst (7 of 7)

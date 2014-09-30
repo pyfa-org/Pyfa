@@ -1,3 +1,5 @@
+# shipBonusArmorRepairGI2
+#
 # Used by:
 # Ship: Occator
 type = "passive"

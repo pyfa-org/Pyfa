@@ -1,3 +1,5 @@
+# shipBonusShieldTransferBoostAmountCF2
+#
 # Used by:
 # Ship: Bantam
 type = "passive"

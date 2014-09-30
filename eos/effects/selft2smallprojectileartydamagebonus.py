@@ -1,3 +1,5 @@
+# selfT2SmallProjectileArtyDamageBonus
+#
 # Used by:
 # Skill: Small Artillery Specialization
 type = "passive"

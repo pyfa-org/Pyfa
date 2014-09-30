@@ -1,3 +1,5 @@
+# shipSETTrackingBonusRookie
+#
 # Used by:
 # Ship: Immolator
 type = "passive"

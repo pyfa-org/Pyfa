@@ -1,3 +1,5 @@
+# scanStrengthBonusPercentActivate
+#
 # Used by:
 # Modules from group: ECCM (44 of 44)
 # Module: QA ECCM

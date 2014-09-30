@@ -1,3 +1,5 @@
+# shipBonusArmorRepAmountGC2
+#
 # Used by:
 # Ship: Deimos
 type = "passive"

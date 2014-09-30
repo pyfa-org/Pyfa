@@ -1,3 +1,5 @@
+# titanAmarrLaserDmg3
+#
 # Used by:
 # Ship: Avatar
 type = "passive"

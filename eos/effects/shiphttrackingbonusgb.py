@@ -1,3 +1,5 @@
+# shipHTTrackingBonusGB
+#
 # Used by:
 # Ship: Vindicator
 type = "passive"

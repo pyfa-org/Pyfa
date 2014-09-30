@@ -1,3 +1,5 @@
+# gangArmorRepairCapReducerSelfAndProjected
+#
 # Used by:
 # Variations of module: Armored Warfare Link - Damage Control I (2 of 2)
 type = "gang", "active"

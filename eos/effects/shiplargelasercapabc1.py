@@ -1,3 +1,5 @@
+# shipLargeLaserCapABC1
+#
 # Used by:
 # Ship: Oracle
 type = "passive"

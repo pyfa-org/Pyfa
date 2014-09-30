@@ -1,3 +1,5 @@
+# interceptor2LaserTracking
+#
 # Used by:
 # Ship: Crusader
 type = "passive"

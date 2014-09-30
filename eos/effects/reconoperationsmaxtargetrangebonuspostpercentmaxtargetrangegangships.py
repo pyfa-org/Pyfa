@@ -1,3 +1,5 @@
+# reconOperationsMaxTargetRangeBonusPostPercentMaxTargetRangeGangShips
+#
 # Used by:
 # Implant: Caldari Navy Warfare Mindlink
 # Implant: Imperial Navy Warfare Mindlink

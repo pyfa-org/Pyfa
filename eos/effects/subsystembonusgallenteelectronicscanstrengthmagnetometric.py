@@ -1,3 +1,5 @@
+# subsystemBonusGallenteElectronicScanStrengthMagnetometric
+#
 # Used by:
 # Subsystem: Proteus Electronics - Dissolution Sequencer
 type = "passive"

@@ -1,3 +1,5 @@
+# shipCapRecharge2AF
+#
 # Used by:
 # Ship: Anathema
 type = "passive"

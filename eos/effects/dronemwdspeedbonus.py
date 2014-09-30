@@ -1,3 +1,5 @@
+# droneMWDSpeedBonus
+#
 # Used by:
 # Modules from group: Drone Navigation Computer (8 of 8)
 type = "passive"

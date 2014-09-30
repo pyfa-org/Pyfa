@@ -1,3 +1,5 @@
+# shipBonusDroneDamageGF2
+#
 # Used by:
 # Ship: Utu
 type = "passive"

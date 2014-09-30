@@ -1,3 +1,5 @@
+# shipXLProjectileDamageRole
+#
 # Used by:
 # Ship: Naglfar
 type = "passive"

@@ -1,3 +1,5 @@
+# shipBonusEliteCover2TorpedoKineticDamage
+#
 # Used by:
 # Ship: Manticore
 type = "passive"

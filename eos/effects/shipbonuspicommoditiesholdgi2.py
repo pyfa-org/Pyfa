@@ -1,3 +1,5 @@
+# shipBonusPICommoditiesHoldGI2
+#
 # Used by:
 # Ship: Epithal
 type = "passive"

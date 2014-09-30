@@ -1,3 +1,5 @@
+# shipTorpedoROFCB
+#
 # Used by:
 # Ship: Scorpion Navy Issue
 type = "passive"

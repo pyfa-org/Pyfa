@@ -1,3 +1,5 @@
+# shipBonusDroneTrackingGF
+#
 # Used by:
 # Ship: Tristan
 type = "passive"

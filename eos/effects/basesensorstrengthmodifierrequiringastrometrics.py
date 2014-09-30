@@ -1,3 +1,5 @@
+# baseSensorStrengthModifierRequiringAstrometrics
+#
 # Used by:
 # Modules from group: Scan Probe Launcher (4 of 7)
 # Implants named like: Poteque 'Prospector' Astrometric Rangefinding AR (3 of 3)

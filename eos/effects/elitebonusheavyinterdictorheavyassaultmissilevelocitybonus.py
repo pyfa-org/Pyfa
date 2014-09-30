@@ -1,3 +1,5 @@
+# eliteBonusHeavyInterdictorHeavyAssaultMissileVelocityBonus
+#
 # Used by:
 # Ship: Onyx
 type = "passive"

@@ -1,3 +1,5 @@
+# shipArmorKineticResistance1ABC1
+#
 # Used by:
 # Variations of ship: Prophecy (2 of 2)
 # Ship: Absolution

@@ -1,3 +1,5 @@
+# missileDMGBonusPassive
+#
 # Used by:
 # Modules named like: Warhead Calefaction Catalyst (8 of 8)
 type = "passive"

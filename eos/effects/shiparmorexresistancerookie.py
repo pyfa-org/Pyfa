@@ -1,3 +1,5 @@
+# shipArmorEXResistanceRookie
+#
 # Used by:
 # Ship: Impairor
 type = "passive"

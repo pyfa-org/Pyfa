@@ -1,3 +1,5 @@
+# shipProjectileDamageMD1
+#
 # Used by:
 # Variations of ship: Thrasher (3 of 3)
 # Ship: Thrasher Thukker Tribe Edition

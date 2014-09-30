@@ -1,3 +1,5 @@
+# shipBonusHeavyAssaultMissileKineticDamageCBC1
+#
 # Used by:
 # Ship: Drake
 # Ship: Nighthawk

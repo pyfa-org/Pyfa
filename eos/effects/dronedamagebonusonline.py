@@ -1,3 +1,5 @@
+# droneDamageBonusOnline
+#
 # Used by:
 # Modules from group: Drone Damage Modules (10 of 10)
 type = "passive"

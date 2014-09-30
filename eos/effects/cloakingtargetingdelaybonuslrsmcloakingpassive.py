@@ -1,3 +1,5 @@
+# cloakingTargetingDelayBonusLRSMCloakingPassive
+#
 # Used by:
 # Modules named like: Targeting Systems Stabilizer (8 of 8)
 type = "offline"

@@ -1,3 +1,5 @@
+# eliteBonusCommandShipsHeavyMissileExplosionRadiusCS2
+#
 # Used by:
 # Ship: Nighthawk
 type = "passive"

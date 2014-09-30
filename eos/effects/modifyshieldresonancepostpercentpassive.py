@@ -1,3 +1,5 @@
+# modifyShieldResonancePostPercentPassive
+#
 # Used by:
 # Modules named like: Anti Screen Reinforcer (32 of 32)
 type = "passive"

@@ -1,3 +1,5 @@
+# titanGallenteLeadershipModuleAmount4
+#
 # Used by:
 # Ship: Erebus
 type = "passive"

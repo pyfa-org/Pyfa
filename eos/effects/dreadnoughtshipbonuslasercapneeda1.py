@@ -1,3 +1,5 @@
+# dreadnoughtShipBonusLaserCapNeedA1
+#
 # Used by:
 # Ship: Revelation
 type = "passive"

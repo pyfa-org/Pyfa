@@ -1,3 +1,5 @@
+# shipBonusAfterburnerSpeedFactor2CB
+#
 # Used by:
 # Ship: Nightmare
 type = "passive"

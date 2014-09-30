@@ -1,3 +1,5 @@
+# shipLaserDamagePirateBattleship
+#
 # Used by:
 # Ship: Bhaalgorn
 # Ship: Nightmare

@@ -1,3 +1,5 @@
+# overloadSelfDurationBonus
+#
 # Used by:
 # Modules from group: Capacitor Booster (54 of 54)
 # Modules from group: Energy Destabilizer (41 of 41)

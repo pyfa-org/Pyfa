@@ -1,3 +1,5 @@
+# gangInformationWarfareRangeBonusWithEcmBurst
+#
 # Used by:
 # Variations of module: Information Warfare Link - Recon Operation I (2 of 2)
 type = "gang", "active"

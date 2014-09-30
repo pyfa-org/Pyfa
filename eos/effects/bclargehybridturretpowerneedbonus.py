@@ -1,3 +1,5 @@
+# bcLargeHybridTurretPowerNeedBonus
+#
 # Used by:
 # Ship: Naga
 # Ship: Talos

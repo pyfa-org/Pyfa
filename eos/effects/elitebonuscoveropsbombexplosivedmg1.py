@@ -1,3 +1,5 @@
+# eliteBonusCoverOpsBombExplosiveDmg1
+#
 # Used by:
 # Ship: Hound
 type = "passive"

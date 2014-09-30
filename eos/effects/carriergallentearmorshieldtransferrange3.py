@@ -1,3 +1,5 @@
+# carrierGallenteArmor&ShieldTransferRange3
+#
 # Used by:
 # Ship: Nyx
 # Ship: Thanatos

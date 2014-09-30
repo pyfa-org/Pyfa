@@ -1,3 +1,5 @@
+# shipSmallMissileThermDmgCF2
+#
 # Used by:
 # Ship: Kestrel
 type = "passive"

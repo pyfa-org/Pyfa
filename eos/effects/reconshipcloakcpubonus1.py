@@ -1,3 +1,5 @@
+# reconShipCloakCpuBonus1
+#
 # Used by:
 # Ships from group: Force Recon Ship (6 of 6)
 type = "passive"

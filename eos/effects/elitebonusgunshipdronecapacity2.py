@@ -1,3 +1,5 @@
+# eliteBonusGunshipDroneCapacity2
+#
 # Used by:
 # Ship: Ishkur
 type = "passive"

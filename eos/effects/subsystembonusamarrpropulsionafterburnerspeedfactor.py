@@ -1,3 +1,5 @@
+# subsystemBonusAmarrPropulsionAfterburnerSpeedFactor
+#
 # Used by:
 # Subsystem: Legion Propulsion - Fuel Catalyst
 type = "passive"

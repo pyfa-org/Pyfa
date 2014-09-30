@@ -1,3 +1,5 @@
+# skillReactiveArmorHardenerDurationBonus
+#
 # Used by:
 # Skill: Armor Resistance Phasing
 type = "passive"

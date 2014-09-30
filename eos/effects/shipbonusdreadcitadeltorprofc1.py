@@ -1,3 +1,5 @@
+# shipBonusDreadCitadelTorpRofC1
+#
 # Used by:
 # Ship: Phoenix
 type = "passive"

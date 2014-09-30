@@ -1,3 +1,5 @@
+# shipBonusEliteCover2TorpedoThermalDamage
+#
 # Used by:
 # Ship: Nemesis
 type = "passive"

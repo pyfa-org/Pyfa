@@ -1,3 +1,5 @@
+# shipSHTTrackingSpeedBonusRookie
+#
 # Used by:
 # Ship: Violator
 type = "passive"

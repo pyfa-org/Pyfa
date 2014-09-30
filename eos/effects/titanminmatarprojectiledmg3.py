@@ -1,3 +1,5 @@
+# titanMinmatarProjectileDmg3
+#
 # Used by:
 # Ship: Ragnarok
 type = "passive"

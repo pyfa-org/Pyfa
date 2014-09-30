@@ -1,3 +1,5 @@
+# shipBonusRemoteArmorRepairAmount2AF
+#
 # Used by:
 # Ship: Inquisitor
 type = "passive"

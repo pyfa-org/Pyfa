@@ -1,3 +1,5 @@
+# eliteBonusHeavyGunshipLightMissileFlightTime1
+#
 # Used by:
 # Ship: Cerberus
 type = "passive"

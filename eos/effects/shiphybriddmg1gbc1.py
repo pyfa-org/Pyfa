@@ -1,3 +1,5 @@
+# shipHybridDmg1GBC1
+#
 # Used by:
 # Variations of ship: Brutix (3 of 3)
 # Ship: Brutix Serpentis Edition

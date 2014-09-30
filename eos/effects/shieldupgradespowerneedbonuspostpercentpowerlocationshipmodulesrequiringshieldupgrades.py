@@ -1,3 +1,5 @@
+# shieldUpgradesPowerNeedBonusPostPercentPowerLocationShipModulesRequiringShieldUpgrades
+#
 # Used by:
 # Implants named like: Zainou 'Gnome' Shield Upgrades SU (6 of 6)
 # Modules named like: Core Defense Charge Economizer (8 of 8)

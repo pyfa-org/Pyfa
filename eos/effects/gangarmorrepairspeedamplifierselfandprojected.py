@@ -1,3 +1,5 @@
+# gangArmorRepairSpeedAmplifierSelfAndProjected
+#
 # Used by:
 # Variations of module: Armored Warfare Link - Rapid Repair I (2 of 2)
 type = "gang", "active"

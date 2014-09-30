@@ -1,3 +1,5 @@
+# shipHybridDamageBonusGBC2
+#
 # Used by:
 # Ship: Talos
 type = "passive"

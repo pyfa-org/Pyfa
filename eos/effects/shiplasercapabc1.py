@@ -1,3 +1,5 @@
+# shipLaserCapABC1
+#
 # Used by:
 # Ship: Harbinger
 type = "passive"

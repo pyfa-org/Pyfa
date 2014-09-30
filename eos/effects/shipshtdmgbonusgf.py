@@ -1,3 +1,5 @@
+# shipSHTDmgBonusGF
+#
 # Used by:
 # Ships named like: Incursus (3 of 3)
 # Variations of ship: Incursus (3 of 3)

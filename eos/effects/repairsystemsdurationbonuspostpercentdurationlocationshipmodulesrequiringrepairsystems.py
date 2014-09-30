@@ -1,3 +1,5 @@
+# repairSystemsDurationBonusPostPercentDurationLocationShipModulesRequiringRepairSystems
+#
 # Used by:
 # Implants named like: Inherent Implants 'Noble' Repair Systems RS (6 of 6)
 # Modules named like: Nanobot Accelerator (8 of 8)

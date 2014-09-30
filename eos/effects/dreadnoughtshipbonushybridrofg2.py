@@ -1,3 +1,5 @@
+# dreadnoughtShipBonusHybridRoFG2
+#
 # Used by:
 # Ship: Moros
 type = "passive"

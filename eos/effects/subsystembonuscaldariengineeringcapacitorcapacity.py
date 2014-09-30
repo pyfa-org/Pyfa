@@ -1,3 +1,5 @@
+# subsystemBonusCaldariEngineeringCapacitorCapacity
+#
 # Used by:
 # Subsystem: Tengu Engineering - Augmented Capacitor Reservoir
 type = "passive"

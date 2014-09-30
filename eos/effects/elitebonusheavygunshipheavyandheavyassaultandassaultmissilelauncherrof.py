@@ -1,3 +1,5 @@
+# eliteBonusHeavyGunshipHeavyAndHeavyAssaultAndAssaultMissileLauncherROF
+#
 # Used by:
 # Ship: Sacrilege
 type = "passive"

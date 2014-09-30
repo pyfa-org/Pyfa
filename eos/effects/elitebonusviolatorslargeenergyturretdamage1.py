@@ -1,3 +1,5 @@
+# eliteBonusViolatorsLargeEnergyTurretDamage1
+#
 # Used by:
 # Ship: Paladin
 type = "passive"

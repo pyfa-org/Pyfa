@@ -1,3 +1,5 @@
+# energyManagementCapacitorBonusPostPercentCapacityLocationShipGroupCapacitorCapacityBonus
+#
 # Used by:
 # Implants named like: Inherent Implants 'Squire' Capacitor Management EM (6 of 6)
 # Implants named like: Mindflood Booster (4 of 4)

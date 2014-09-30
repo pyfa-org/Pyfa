@@ -1,3 +1,5 @@
+# eliteBonusCommandShipsHeavyMissileExplosionVelocityCS2
+#
 # Used by:
 # Ship: Claymore
 type = "passive"

@@ -1,3 +1,5 @@
+# ewSkillRsdCapNeedBonusSkillLevel
+#
 # Used by:
 # Implants named like: Zainou 'Gypsy' Sensor Linking SL (6 of 6)
 # Skill: Sensor Linking

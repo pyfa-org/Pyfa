@@ -1,3 +1,5 @@
+# shipTCapNeedBonusAC
+#
 # Used by:
 # Ships named like: Omen (3 of 4)
 # Ship: Devoter

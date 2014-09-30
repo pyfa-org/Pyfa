@@ -1,3 +1,5 @@
+# eliteBonusLogisticEnergyTransferCapNeed1
+#
 # Used by:
 # Ship: Guardian
 type = "passive"

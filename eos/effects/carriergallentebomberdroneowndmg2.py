@@ -1,3 +1,5 @@
+# carrierGallenteBomberDroneOwnDmg2
+#
 # Used by:
 # Ship: Nyx
 type = "passive"

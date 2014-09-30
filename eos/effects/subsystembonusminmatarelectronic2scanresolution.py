@@ -1,3 +1,5 @@
+# subsystemBonusMinmatarElectronic2ScanResolution
+#
 # Used by:
 # Subsystem: Loki Electronics - Tactical Targeting Network
 type = "passive"

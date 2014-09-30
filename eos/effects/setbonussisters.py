@@ -1,3 +1,5 @@
+# setBonusSisters
+#
 # Used by:
 # Implants named like: grade Virtue (12 of 12)
 runTime = "early"

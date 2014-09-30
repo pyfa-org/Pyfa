@@ -1,3 +1,5 @@
+# shipMissileRofCC
+#
 # Used by:
 # Ships named like: Caracal (4 of 4)
 type = "passive"

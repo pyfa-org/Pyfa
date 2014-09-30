@@ -1,3 +1,5 @@
+# capitalLauncherSkillCitadelEmDamage
+#
 # Used by:
 # Implants named like: Hardwiring Zainou 'Sharpshooter' ZMX (6 of 6)
 # Skill: Citadel Torpedoes

@@ -1,3 +1,5 @@
+# powerBooster
+#
 # Used by:
 # Modules from group: Capacitor Booster (54 of 54)
 type = "active"

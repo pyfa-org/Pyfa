@@ -1,3 +1,5 @@
+# eliteBonusCoverOpsBombEmDmg1
+#
 # Used by:
 # Ship: Purifier
 type = "passive"

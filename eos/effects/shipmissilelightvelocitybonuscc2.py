@@ -1,3 +1,5 @@
+# shipMissileLightVelocityBonusCC2
+#
 # Used by:
 # Ships named like: Caracal (3 of 4)
 # Ship: Osprey Navy Issue

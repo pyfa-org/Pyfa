@@ -1,3 +1,5 @@
+# shipBonusHMLVelocityEliteBonusHeavyGunship1
+#
 # Used by:
 # Ship: Sacrilege
 type = "passive"

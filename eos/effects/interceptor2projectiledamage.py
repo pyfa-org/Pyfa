@@ -1,3 +1,5 @@
+# interceptor2ProjectileDamage
+#
 # Used by:
 # Ship: Claw
 type = "passive"

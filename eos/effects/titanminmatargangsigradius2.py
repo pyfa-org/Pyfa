@@ -1,3 +1,5 @@
+# titanMinmatarGangSigRadius2
+#
 # Used by:
 # Ship: Ragnarok
 type = "gang"

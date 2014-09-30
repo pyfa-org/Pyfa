@@ -1,3 +1,5 @@
+# capNeedBonusEffectHybrids
+#
 # Used by:
 # Modules named like: Hybrid Discharge Elutriation (8 of 8)
 type = "passive"

@@ -1,3 +1,5 @@
+# shipVelocityBonusRookie
+#
 # Used by:
 # Ship: Reaper
 type = "passive"

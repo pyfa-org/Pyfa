@@ -1,3 +1,5 @@
+# shipSHTFalloffBonusRookie
+#
 # Used by:
 # Ship: Violator
 type = "passive"

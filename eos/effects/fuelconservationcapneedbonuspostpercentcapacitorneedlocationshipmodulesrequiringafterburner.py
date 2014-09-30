@@ -1,3 +1,5 @@
+# fuelConservationCapNeedBonusPostPercentCapacitorNeedLocationShipModulesRequiringAfterburner
+#
 # Used by:
 # Skill: Afterburner
 # Skill: Fuel Conservation

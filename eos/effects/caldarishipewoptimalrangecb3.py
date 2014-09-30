@@ -1,3 +1,5 @@
+# caldariShipEwOptimalRangeCB3
+#
 # Used by:
 # Ship: Scorpion
 # Ship: Scorpion Ishukone Watch

@@ -1,3 +1,5 @@
+# eliteBonusCommandShipHeavyDroneTrackingCS2
+#
 # Used by:
 # Ship: Eos
 type = "passive"

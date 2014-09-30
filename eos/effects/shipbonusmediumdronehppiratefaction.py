@@ -1,3 +1,5 @@
+# shipBonusMediumDroneHPPirateFaction
+#
 # Used by:
 # Ship: Chameleon
 # Ship: Gila

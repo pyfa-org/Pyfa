@@ -1,3 +1,5 @@
+# shipBonusWarpScramblerMaxRangeGC2
+#
 # Used by:
 # Ship: Adrestia
 # Ship: Orthrus

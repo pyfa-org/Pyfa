@@ -1,3 +1,5 @@
+# eliteReconJumpScramblerRangeBonus2
+#
 # Used by:
 # Ship: Arazu
 # Ship: Lachesis

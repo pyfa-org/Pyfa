@@ -1,3 +1,5 @@
+# shipSHTDmgBonusRookie
+#
 # Used by:
 # Ship: Velator
 # Ship: Violator

@@ -1,3 +1,5 @@
+# shipSETDmgBonusRookie
+#
 # Used by:
 # Ship: Hematos
 # Ship: Immolator

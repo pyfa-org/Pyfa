@@ -1,3 +1,5 @@
+# triageModeEffect7
+#
 # Used by:
 # Module: Triage Module II
 type = "active"

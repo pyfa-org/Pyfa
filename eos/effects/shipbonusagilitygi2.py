@@ -1,3 +1,5 @@
+# shipBonusAgilityGI2
+#
 # Used by:
 # Ship: Nereus
 type = "passive"

@@ -1,3 +1,5 @@
+# scanStrengthBonusPercentPassive
+#
 # Used by:
 # Implants named like: High grade (20 of 60)
 type = "passive"

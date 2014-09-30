@@ -1,3 +1,5 @@
+# drawbackSigRad
+#
 # Used by:
 # Modules from group: Rig Shield (72 of 72)
 type = "passive"

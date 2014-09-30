@@ -1,3 +1,5 @@
+# shipHeavyAssaultMissileAOECloudSizeCC2
+#
 # Used by:
 # Ship: Caracal Navy Issue
 type = "passive"

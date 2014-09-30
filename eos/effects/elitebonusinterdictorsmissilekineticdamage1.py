@@ -1,3 +1,5 @@
+# eliteBonusInterdictorsMissileKineticDamage1
+#
 # Used by:
 # Ship: Flycatcher
 type = "passive"

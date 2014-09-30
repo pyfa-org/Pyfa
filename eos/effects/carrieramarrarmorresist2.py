@@ -1,3 +1,5 @@
+# carrierAmarrArmorResist2
+#
 # Used by:
 # Ship: Aeon
 # Ship: Archon

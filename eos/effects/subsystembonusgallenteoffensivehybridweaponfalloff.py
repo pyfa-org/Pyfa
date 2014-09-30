@@ -1,3 +1,5 @@
+# subsystemBonusGallenteOffensiveHybridWeaponFalloff
+#
 # Used by:
 # Subsystem: Proteus Offensive - Dissonic Encoding Platform
 # Subsystem: Proteus Offensive - Hybrid Propulsion Armature

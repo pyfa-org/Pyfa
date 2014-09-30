@@ -1,3 +1,5 @@
+# eliteBonusGunshipArmorThermalResistance1
+#
 # Used by:
 # Ship: Vengeance
 type = "passive"

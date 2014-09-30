@@ -1,3 +1,5 @@
+# subsystemBonusAmarrElectronic2ScanResolution
+#
 # Used by:
 # Subsystem: Legion Electronics - Tactical Targeting Network
 type = "passive"

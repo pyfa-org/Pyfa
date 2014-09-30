@@ -1,3 +1,5 @@
+# shipBonusNoctisTractorCycle
+#
 # Used by:
 # Ship: Noctis
 type = "passive"

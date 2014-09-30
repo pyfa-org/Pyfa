@@ -1,3 +1,5 @@
+# energyWeaponDamageMultiplyPassive
+#
 # Used by:
 # Modules named like: Energy Collision Accelerator (8 of 8)
 type = "passive"

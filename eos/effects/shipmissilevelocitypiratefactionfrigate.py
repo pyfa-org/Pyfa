@@ -1,3 +1,5 @@
+# shipMissileVelocityPirateFactionFrigate
+#
 # Used by:
 # Ship: Barghest
 # Ship: Garmur

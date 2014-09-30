@@ -1,3 +1,5 @@
+# carrierMinmatarArmor&ShieldAmount
+#
 # Used by:
 # Ship: Hel
 # Ship: Nidhoggur

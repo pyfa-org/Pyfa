@@ -1,3 +1,5 @@
+# shipPTurretSpeedBonusMC
+#
 # Used by:
 # Ships named like: Stabber (4 of 4)
 # Variations of ship: Rupture (3 of 3)

@@ -1,3 +1,5 @@
+# longRangeTargetingMaxTargetRangeBonusPostPercentMaxTargetRangeLocationShipGroupElectronic
+#
 # Used by:
 # Implants named like: Zainou 'Gypsy' Long Range Targeting LT (6 of 6)
 # Skill: Long Range Targeting

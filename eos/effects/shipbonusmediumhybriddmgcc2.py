@@ -1,3 +1,5 @@
+# shipBonusMediumHybridDmgCC2
+#
 # Used by:
 # Ship: Falcon
 type = "passive"

@@ -1,3 +1,5 @@
+# titanCaldariGangShieldHp2
+#
 # Used by:
 # Ship: Leviathan
 type = "gang"

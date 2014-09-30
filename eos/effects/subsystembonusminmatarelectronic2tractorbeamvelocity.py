@@ -1,3 +1,5 @@
+# subSystemBonusMinmatarElectronic2TractorBeamVelocity
+#
 # Used by:
 # Subsystem: Loki Electronics - Emergent Locus Analyzer
 type = "passive"

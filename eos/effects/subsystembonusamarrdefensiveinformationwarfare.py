@@ -1,3 +1,5 @@
+# subSystemBonusAmarrDefensiveInformationWarfare
+#
 # Used by:
 # Subsystem: Legion Defensive - Warfare Processor
 type = "passive"

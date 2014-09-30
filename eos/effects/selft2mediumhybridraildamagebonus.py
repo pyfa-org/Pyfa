@@ -1,3 +1,5 @@
+# selfT2MediumHybridRailDamageBonus
+#
 # Used by:
 # Skill: Medium Railgun Specialization
 type = "passive"

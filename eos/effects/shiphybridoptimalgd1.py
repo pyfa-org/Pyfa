@@ -1,3 +1,5 @@
+# shipHybridOptimalGD1
+#
 # Used by:
 # Ship: Eris
 type = "passive"

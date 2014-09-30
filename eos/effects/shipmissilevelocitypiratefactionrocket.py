@@ -1,3 +1,5 @@
+# shipMissileVelocityPirateFactionRocket
+#
 # Used by:
 # Ship: Corax
 # Ship: Talwar

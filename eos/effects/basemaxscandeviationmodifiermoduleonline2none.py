@@ -1,3 +1,5 @@
+# baseMaxScanDeviationModifierModuleOnline2None
+#
 # Used by:
 # Variations of module: Scan Pinpointing Array I (2 of 2)
 type = "passive"

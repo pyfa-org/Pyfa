@@ -1,3 +1,5 @@
+# droneArmorDamageBonusEffect
+#
 # Used by:
 # Ship: Exequror
 # Ship: Guardian

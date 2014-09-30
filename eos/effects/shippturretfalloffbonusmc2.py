@@ -1,3 +1,5 @@
+# shipPTurretFalloffBonusMC2
+#
 # Used by:
 # Ships named like: Stabber (3 of 4)
 type = "passive"

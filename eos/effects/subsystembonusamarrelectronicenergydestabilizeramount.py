@@ -1,3 +1,5 @@
+# subsystemBonusAmarrElectronicEnergyDestabilizerAmount
+#
 # Used by:
 # Subsystem: Legion Electronics - Energy Parasitic Complex
 type = "passive"

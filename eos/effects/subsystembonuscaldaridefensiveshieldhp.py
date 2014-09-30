@@ -1,3 +1,5 @@
+# subsystemBonusCaldariDefensiveShieldHP
+#
 # Used by:
 # Subsystem: Tengu Defensive - Supplemental Screening
 type = "passive"

@@ -1,3 +1,5 @@
+# shipBonusEwRemoteSensorDampenerOptimalBonusGC1
+#
 # Used by:
 # Ship: Celestis
 type = "passive"

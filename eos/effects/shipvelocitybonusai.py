@@ -1,3 +1,5 @@
+# shipVelocityBonusAI
+#
 # Used by:
 # Variations of ship: Bestower (2 of 2)
 # Ship: Bestower Tash-Murkon Edition

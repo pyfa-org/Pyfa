@@ -1,3 +1,5 @@
+# subsystemBonusCaldariPropulsionWarpSpeed
+#
 # Used by:
 # Subsystem: Tengu Propulsion - Gravitational Capacitor
 type = "passive"

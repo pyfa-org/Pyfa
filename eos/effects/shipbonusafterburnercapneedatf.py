@@ -1,3 +1,5 @@
+# shipBonusAfterburnerCapNeedATF
+#
 # Used by:
 # Ship: Freki
 type = "passive"

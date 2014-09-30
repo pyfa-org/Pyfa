@@ -1,3 +1,5 @@
+# subsystemBonusAmarrPropulsionMWDPenalty
+#
 # Used by:
 # Subsystem: Legion Propulsion - Wake Limiter
 type = "passive"

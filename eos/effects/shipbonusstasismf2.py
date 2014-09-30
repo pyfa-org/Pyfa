@@ -1,3 +1,5 @@
+# shipBonusStasisMF2
+#
 # Used by:
 # Ship: Cruor
 # Ship: Freki

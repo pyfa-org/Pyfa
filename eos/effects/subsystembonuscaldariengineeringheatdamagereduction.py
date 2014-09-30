@@ -1,3 +1,5 @@
+# subsystemBonusCaldariEngineeringHeatDamageReduction
+#
 # Used by:
 # Subsystem: Tengu Engineering - Supplemental Coolant Injector
 type = "passive"

@@ -1,3 +1,5 @@
+# shipProjectileRofBonusMBC1
+#
 # Used by:
 # Ship: Tornado
 type = "passive"

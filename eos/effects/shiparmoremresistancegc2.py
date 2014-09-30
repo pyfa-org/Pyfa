@@ -1,3 +1,5 @@
+# shipArmorEmResistanceGC2
+#
 # Used by:
 # Ship: Phobos
 type = "passive"

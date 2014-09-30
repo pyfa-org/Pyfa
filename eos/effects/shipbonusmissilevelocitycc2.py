@@ -1,3 +1,5 @@
+# shipBonusMissileVelocityCC2
+#
 # Used by:
 # Ship: Cerberus
 type = "passive"

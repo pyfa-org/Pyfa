@@ -1,3 +1,5 @@
+# shipMissileLauncherSpeedBonusMC2
+#
 # Used by:
 # Ship: Bellicose
 type = "passive"

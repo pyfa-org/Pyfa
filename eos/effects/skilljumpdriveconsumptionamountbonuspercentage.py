@@ -1,3 +1,5 @@
+# skillJumpDriveConsumptionAmountBonusPercentage
+#
 # Used by:
 # Skill: Jump Fuel Conservation
 type = "passive"

@@ -1,3 +1,5 @@
+# shipMTMaxRangeBonusATC
+#
 # Used by:
 # Ship: Mimir
 type = "passive"

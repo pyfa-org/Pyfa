@@ -1,3 +1,5 @@
+# skillAdvancedWeaponUpgradesPowerNeedBonus
+#
 # Used by:
 # Skill: Advanced Weapon Upgrades
 type = "passive"

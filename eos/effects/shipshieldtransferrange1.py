@@ -1,3 +1,5 @@
+# shipShieldTransferRange1
+#
 # Used by:
 # Ship: Basilisk
 # Ship: Etana

@@ -1,3 +1,5 @@
+# industrialCoreEffect2
+#
 # Used by:
 # Module: Industrial Core I
 type = "active"

@@ -1,3 +1,5 @@
+# 	capitalLauncherSkillCruiseCitadelEmDamage1
+#
 # Used by:
 # Skill: Citadel Cruise Missiles
 type = "passive"

@@ -1,3 +1,5 @@
+# eliteBonusElectronicAttackShipECMOptimalRange1
+#
 # Used by:
 # Ship: Kitsune
 type = "passive"

@@ -1,3 +1,5 @@
+# eliteReconBonusRadarStrength2
+#
 # Used by:
 # Ship: Chameleon
 # Ship: Falcon

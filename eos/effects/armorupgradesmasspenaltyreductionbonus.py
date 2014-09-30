@@ -1,3 +1,5 @@
+# armorUpgradesMassPenaltyReductionBonus
+#
 # Used by:
 # Skill: Armor Layering
 type = "passive"

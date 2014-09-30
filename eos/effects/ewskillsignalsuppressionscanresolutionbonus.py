@@ -1,3 +1,5 @@
+# ewSkillSignalSuppressionScanResolutionBonus
+#
 # Used by:
 # Modules named like: Inverted Signal Field Projector (8 of 8)
 # Skill: Signal Suppression

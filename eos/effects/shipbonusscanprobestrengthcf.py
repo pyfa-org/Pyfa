@@ -1,3 +1,5 @@
+# shipBonusScanProbeStrengthCF
+#
 # Used by:
 # Ships named like: Heron (2 of 2)
 type = "passive"

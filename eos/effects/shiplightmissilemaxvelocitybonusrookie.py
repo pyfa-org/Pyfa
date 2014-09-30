@@ -1,3 +1,5 @@
+# shipLightMissileMaxVelocityBonusRookie
+#
 # Used by:
 # Ship: Taipan
 type = "passive"

@@ -1,6 +1,7 @@
+# shipLargeHybridTurretRofGB
+#
 # Used by:
-# Ship: Megathron
-# Ship: Megathron Navy Issue
+# Ships named like: Megathron (3 of 4)
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Gallente Battleship").level

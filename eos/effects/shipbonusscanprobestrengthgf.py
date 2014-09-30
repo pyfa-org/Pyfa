@@ -1,3 +1,5 @@
+# shipBonusScanProbeStrengthGF
+#
 # Used by:
 # Ships named like: Imicus (2 of 2)
 type = "passive"

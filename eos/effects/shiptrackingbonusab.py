@@ -1,3 +1,5 @@
+# shipTrackingBonusAB
+#
 # Used by:
 # Ship: Nightmare
 type = "passive"

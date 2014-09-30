@@ -1,3 +1,5 @@
+# skillCapitalShipsAdvancedAgility
+#
 # Used by:
 # Skill: Capital Ships
 type = "passive"

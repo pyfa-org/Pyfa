@@ -1,3 +1,5 @@
+# systemScanDurationSkillAstrometrics
+#
 # Used by:
 # Implants named like: Poteque 'Prospector' Astrometric Acquisition AQ (3 of 3)
 # Skill: Astrometric Acquisition

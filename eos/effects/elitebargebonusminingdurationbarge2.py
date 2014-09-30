@@ -1,3 +1,5 @@
+# eliteBargeBonusMiningDurationBarge2
+#
 # Used by:
 # Ships from group: Exhumer (4 of 4)
 type = "passive"

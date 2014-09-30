@@ -1,3 +1,5 @@
+# implantVelocityBonus2
+#
 # Used by:
 # Implant: Republic Special Ops Field Enhancer - Gamma
 type = "passive"

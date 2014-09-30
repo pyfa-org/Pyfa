@@ -1,3 +1,5 @@
+# shipBonusDroneDamageMultiplierAD1
+#
 # Used by:
 # Ship: Dragoon
 type = "passive"

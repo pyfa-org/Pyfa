@@ -1,3 +1,5 @@
+# freighterAgilityBonusM1
+#
 # Used by:
 # Ship: Nomad
 type = "passive"

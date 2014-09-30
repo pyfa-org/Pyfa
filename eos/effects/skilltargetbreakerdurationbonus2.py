@@ -1,3 +1,5 @@
+# skillTargetBreakerDurationBonus2
+#
 # Used by:
 # Skill: Target Breaker Amplification
 type = "passive"

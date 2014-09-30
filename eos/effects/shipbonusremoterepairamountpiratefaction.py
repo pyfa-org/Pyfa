@@ -1,3 +1,5 @@
+# shipBonusRemoteRepairAmountPirateFaction
+#
 # Used by:
 # Ship: Nestor
 type = "passive"

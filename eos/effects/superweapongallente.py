@@ -1,3 +1,5 @@
+# superWeaponGallente
+#
 # Used by:
 # Module: Aurora Ominae
 type = 'active'

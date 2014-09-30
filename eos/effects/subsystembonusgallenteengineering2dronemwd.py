@@ -1,3 +1,5 @@
+# subsystemBonusGallenteEngineering2DroneMWD
+#
 # Used by:
 # Subsystem: Proteus Engineering - Augmented Capacitor Reservoir
 type = "passive"
