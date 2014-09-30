@@ -11,6 +11,8 @@ Migration 1
     and output of itemDiff.py
 """
 
+import sqlalchemy
+
 CONVERSIONS = {
     6135: [  # Scoped Cargo Scanner
         6133,  # Interior Type-E Cargo Identifier
@@ -82,7 +84,10 @@ CONVERSIONS = {
 
 def upgrade(saveddata_engine):
     # Update fits schema
-    saveddata_engine.execute("ALTER TABLE fits ADD COLUMN targetResistsID INTEGER;")
+    try:
+        saveddata_engine.execute("SELECT targetResistsID FROM fits LIMIT 1")
+    except sqlalchemy.exc.DatabaseError:
+        saveddata_engine.execute("ALTER TABLE fits ADD COLUMN targetResistsID INTEGER;")
 
     # Convert modules
     for replacement_item, list in CONVERSIONS.iteritems():
