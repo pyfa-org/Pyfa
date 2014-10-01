@@ -18,7 +18,11 @@
 #===============================================================================
 
 import threading
+import config
+import os
 import eos.types
+import eos.db.migration as migration
+
 class PrefetchThread(threading.Thread):
     def run(self):
         # We're a daemon thread, as such, interpreter might get shut down while we do stuff
@@ -31,3 +35,24 @@ class PrefetchThread(threading.Thread):
 prefetch = PrefetchThread()
 prefetch.daemon = True
 prefetch.start()
+
+########
+# The following code does not belong here, however until we rebuild skeletons
+# to include modified pyfa.py, this is the best place to put it. See GH issue
+# #176
+# @ todo: move this to pyfa.py
+########
+
+#Make sure the saveddata db exists
+if not os.path.exists(config.savePath):
+    os.mkdir(config.savePath)
+
+if os.path.isfile(config.saveDB):
+    # If database exists, run migration after init'd database
+    eos.db.saveddata_meta.create_all()
+    migration.update(eos.db.saveddata_engine)
+else:
+    # If database does not exist, do not worry about migration. Simply
+    # create and set version
+    eos.db.saveddata_meta.create_all()
+    eos.db.saveddata_engine.execute('PRAGMA user_version = %d'%config.dbversion)

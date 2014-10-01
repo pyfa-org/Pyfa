@@ -84,7 +84,6 @@ if __name__ == "__main__":
     import os.path
 
     import eos.db
-    import eos.db.migration as migration
     import service.prefetch
     from gui.mainFrame import MainFrame
 
@@ -92,15 +91,7 @@ if __name__ == "__main__":
     if not os.path.exists(config.savePath):
         os.mkdir(config.savePath)
 
-    if os.path.isfile(config.saveDB):
-        # If database exists, run migration after init'd database
-        eos.db.saveddata_meta.create_all()
-        migration.update(eos.db.saveddata_engine)
-    else:
-        # If database does not exist, do not worry about migration. Simply
-        # create and set version
-        eos.db.saveddata_meta.create_all()
-        eos.db.saveddata_engine.execute('PRAGMA user_version = %d'%config.dbversion)
+    eos.db.saveddata_meta.create_all()
 
     pyfa = wx.App(False)
     MainFrame()
