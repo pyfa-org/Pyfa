@@ -27,6 +27,7 @@ import eos.db
 import eos.types
 from service.settings import SettingsProvider, NetworkSettings
 import service
+import service.conversions as conversions
 
 try:
     from collections import OrderedDict
@@ -149,119 +150,6 @@ class Market():
         self.shipBrowserWorkerThread.daemon = True
         self.shipBrowserWorkerThread.start()
 
-        # Item overrides. Key must be str of item name,
-        # value str of name or int of ID to convert it to
-        self.ITEMS_OVERRIDE = {
-            "Abaddon Kador Edition": "Abaddon",
-            "Abaddon Tash-Murkon Edition": "Abaddon",
-            "Aliastra Catalyst": "Catalyst",
-            "Bestower Tash-Murkon Edition": "Bestower",
-            "Brutix Serpentis Edition": "Brutix",
-            "Caracal Nugoeihuvi Edition": "Caracal",
-            "Caracal Wiyrkomi Edition": "Caracal",
-            "Catalyst Serpentis Edition": "Catalyst",
-            "Coercer Blood Raiders Edition": "Coercer",
-            "Cormorant Guristas Edition": "Cormorant",
-            "Cyclone Thukker Tribe Edition": "Cyclone",
-            "Ferox Guristas Edition": "Ferox",
-            "Hyperion Aliastra Edition": "Hyperion",
-            "Hyperion Innerzone Shipping Edition": "Hyperion",
-            "Incursus Aliastra Edition": "Incursus",
-            "Incursus Innerzone Shipping Edition": "Incursus",
-            "Inner Zone Shipping Catalyst": "Catalyst",
-            "Inner Zone Shipping Imicus": "Imicus",
-            "Intaki Syndicate Catalyst": "Catalyst",
-            "InterBus Catalyst": "Catalyst",
-            "Iteron Inner Zone Shipping Edition": "Iteron Mark V",
-            "Mackinaw ORE Development Edition": "Mackinaw",
-            "Maelstrom Krusual Edition": "Maelstrom",
-            "Maelstrom Nefantar Edition": "Maelstrom",
-            "Mammoth Nefantar Edition": "Mammoth",
-            "Merlin Nugoeihuvi Edition": "Merlin",
-            "Merlin Wiyrkomi Edition": "Merlin",
-            "Miasmos Amastris Edition": "Miasmos Quafe Ultra Edition",
-            "Miasmos Quafe Ultramarine Edition": "Miasmos Quafe Ultra Edition",
-            "Nefantar Thrasher": "Thrasher",
-            "Omen Kador Edition": "Omen",
-            "Omen Tash-Murkon Edition": "Omen",
-            "Orca ORE Development Edition": "Orca",
-            "Police Pursuit Comet": "Federation Navy Comet",
-            "Prophecy Blood Raiders Edition": "Prophecy",
-            "Punisher Kador Edition": "Punisher",
-            "Punisher Tash-Murkon Edition": "Punisher",
-            "Quafe Catalyst": "Catalyst",
-            "Rifter Krusual Edition": "Rifter",
-            "Rifter Nefantar Edition": "Rifter",
-            "Rokh Nugoeihuvi Edition": "Rokh",
-            "Rokh Wiyrkomi Edition": "Rokh",
-            "Rorqual ORE Development Edition": "Rorqual",
-            "Stabber Krusual Edition": "Stabber",
-            "Stabber Nefantar Edition": "Stabber",
-            "Sarum Magnate": "Magnate",
-            "Sukuuvestaa Heron": "Heron",
-            "Tash-Murkon Magnate": "Magnate",
-            "Tayra Wiyrkomi Edition": "Tayra",
-            "Thorax Aliastra Edition": "Thorax",
-            "Thorax Innerzone Shipping Edition": "Thorax",
-            "Thrasher Thukker Tribe Edition": "Thrasher",
-            "Vherokior Probe": "Probe" }
-
-        ITEMS_OVERRIDE_OCEANUS = {
-            "Basic Capacitor Flux Coil": "'Basic' Capacitor Flux Coil",
-            "Basic LADAR Backup Array": "Basic Ladar Backup Array",
-            "LADAR Backup Array I": "Ladar Backup Array I",
-            "LADAR Backup Array II": "Ladar Backup Array II",
-            "'Regard' Remote Capacitor Transmitter": "Small 'Regard' Remote Capacitor Transmitter",
-            "Prototype Freight Sensors": "Enduring Cargo Scanner",
-            "PL-0 Shipment Probe": "Scoped Cargo Scanner",
-            "Reserve LADAR Scanners": "Reserve Ladar Scanners",
-            "Emergency LADAR Scanners": "Emergency Ladar Scanners",
-            "Protected LADAR Backup Cluster I": "Protected Ladar Backup Cluster I",
-            "Sealed LADAR Backup Cluster": "Sealed Ladar Backup Cluster",
-            "Surrogate LADAR Reserve Array I": "Surrogate Ladar Reserve Array I",
-            "F-43 Repetitive LADAR Backup Sensors": "F-43 Repetitive Ladar Backup Sensors",
-            "Surplus LADAR Reserve Array": "Surplus Ladar Reserve Array",
-            "F-42 Reiterative LADAR Backup Sensors": "F-42 Reiterative Ladar Backup Sensors",
-            "Rudimentary Ship Scanner I": "Compact Ship Scanner",
-            "Residual Survey Scanner I": "Scoped Survey Scanner",
-            "Upgraded 'Malkuth' Light Missile Launcher": "Compact Light Missile Launcher",
-            "Limited 'Limos' Light Missile Launcher": "Ample Light Missile Launcher",
-            "Beta Reactor Control: Capacitor Flux I": "Compact Capacitor Flux Coil",
-            "Type-D Power Core Modification: Capacitor Flux": "Restrained Capacitor Flux Coil",
-            "Type-D Power Core Modification: Reaction Control": "Compact Reactor Control Unit",
-            "LADAR Firewall": "Ladar Firewall",
-            "Interior Type-E Cargo Identifier": "Scoped Cargo Scanner",
-            "Ta3 Perfunctory Vessel Probe": "Compact Ship Scanner",
-            "Speculative Ship Identifier I": "Compact Ship Scanner",
-            "Practical Type-E Ship Probe": "Compact Ship Scanner",
-            "ML-3 Amphilotite Mining Probe": "Scoped Survey Scanner",
-            "Rock-Scanning Sensor Array I": "Scoped Survey Scanner",
-            "'Dactyl' Type-E Asteroid Analyzer": "Scoped Survey Scanner",
-            "Partial Power Plant Manager: Capacitor Flux": "'Basic' Capacitor Flux Coil",
-            "Alpha Reactor Control: Capacitor Flux": "'Basic' Capacitor Flux Coil",
-            "Type-E Power Core Modification: Capacitor Flux": "'Basic' Capacitor Flux Coil",
-            "Marked Generator Refitting: Capacitor Flux": "'Basic' Capacitor Flux Coil",
-            "Local Power Plant Manager: Capacitor Flux I": "Restrained Capacitor Flux Coil",
-            "Mark I Generator Refitting: Capacitor Flux": "Compact Capacitor Flux Coil",
-            "Nanoelectrical Co-Processor": "Basic Co-Processor",
-            "Nanomechanical CPU Enhancer": "Basic Co-Processor",
-            "Quantum Co-Processor": "Basic Co-Processor",
-            "Photonic CPU Enhancer": "Basic Co-Processor",
-            "Nanomechanical CPU Enhancer I": "Upgraded Co-Processor",
-            "Quantum Co-Processor I": "Upgraded Co-Processor",
-            "Photonic CPU Enhancer I": "Upgraded Co-Processor",
-            "Partial Power Plant Manager: Reaction Control": "Basic Reactor Control Unit",
-            "Alpha Reactor Control: Reaction Control": "Basic Reactor Control Unit",
-            "Marked Generator Refitting: Reaction Control": "Basic Reactor Control Unit",
-            "Local Power Plant Manager: Reaction Control I is now": "Compact Reactor Control Unit",
-            "Mark I Generator Refitting: Reaction Control": "Compact Reactor Control Unit",
-            "Beta Reactor Control: Reaction Control I": "Compact Reactor Control Unit",
-            "Micro B88 Core Augmentation": "Compact Micro Auxiliary Power Core",
-            "Micro K-Exhaust Core Augmentation": "Compact Micro Auxiliary Power Core",
-            "Micro 'Vigor' Core Augmentation": "Navy Micro Auxiliary Power Core",
-            "Prototype 'Arbalest' Light Missile Launcher": "Compact Light Missile Launcher",
-            "Experimental TE-2100 Light Missile Launcher": "Ample Light Missile Launcher"}
-
         # Items' group overrides
         self.customGroups = set()
         # Limited edition ships
@@ -330,11 +218,8 @@ class Market():
             "Tournament Micro Jump Unit": False }  # Normally seen only on tournament arenas
 
         # do not publish ships that we convert
-        for name in self.ITEMS_OVERRIDE:
+        for name in conversions.packs['skinnedShips']:
             self.ITEMS_FORCEPUBLISHED[name] = False
-
-        # @todo: create better, less cluttered, and more systematic way to do this
-        self.ITEMS_OVERRIDE.update(ITEMS_OVERRIDE_OCEANUS)
 
         # List of groups which are forcibly published
         self.GROUPS_FORCEPUBLISHED = {
@@ -437,7 +322,7 @@ class Market():
         elif isinstance(identity, basestring):
             # We normally lookup with string when we are using import/export
             # features. Check against overrides
-            identity = self.ITEMS_OVERRIDE.get(identity, identity)
+            identity = conversions.all.get(identity, identity)
             item = eos.db.getItem(identity, *args, **kwargs)
         elif isinstance(identity, float):
             id = int(identity)
