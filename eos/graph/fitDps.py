@@ -56,18 +56,20 @@ class FitDpsGraph(Graph):
             data[attr] = val
 
         for mod in fit.modules:
+            dps, _ =  mod.damageStats(fit.targetResists)
             if mod.hardpoint == Hardpoint.TURRET:
                 if mod.state >= State.ACTIVE:
-                    total += mod.dps * self.calculateTurretMultiplier(mod, data)
+                    total += dps * self.calculateTurretMultiplier(mod, data)
 
             elif mod.hardpoint == Hardpoint.MISSILE:
                 if mod.state >= State.ACTIVE and mod.maxRange >= distance:
-                    total += mod.dps * self.calculateMissileMultiplier(mod, data)
+                    total += dps * self.calculateMissileMultiplier(mod, data)
 
         if distance <= fit.extraAttributes["droneControlRange"]:
             for drone in fit.drones:
                 multiplier = 1 if drone.getModifiedItemAttr("maxVelocity") > 0 else self.calculateTurretMultiplier(drone, data)
-                total += drone.dps * multiplier
+                dps, _ =  drone.damageStats(fit.targetResists)
+                total += dps * multiplier
 
         return total
 
