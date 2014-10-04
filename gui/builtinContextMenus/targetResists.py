@@ -7,6 +7,11 @@ import gui.globalEvents as GE
 import wx
 from gui import bitmapLoader
 
+try:
+    from collections import OrderedDict
+except ImportError:
+    from gui.utils.compat import OrderedDict
+
 class TargetResists(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
@@ -70,7 +75,7 @@ class TargetResists(ContextMenu):
         m.Bind(wx.EVT_MENU, self.handleResistSwitch)
         self.patternIds = {}
 
-        self.subMenus = {}
+        self.subMenus = OrderedDict()
         self.singles  = []
 
         for pattern in self.patterns:

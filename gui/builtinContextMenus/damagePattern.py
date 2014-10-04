@@ -5,6 +5,11 @@ import gui.globalEvents as GE
 import wx
 from gui import bitmapLoader
 
+try:
+    from collections import OrderedDict
+except ImportError:
+    from gui.utils.compat import OrderedDict
+
 class DamagePattern(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
@@ -23,7 +28,7 @@ class DamagePattern(ContextMenu):
                                                 "Selected Ammo"], p.name) )
 
         self.patternIds = {}
-        self.subMenus = {}
+        self.subMenus = OrderedDict()
         self.singles =  []
 
         # iterate and separate damage patterns based on "[Parent] Child"
