@@ -274,23 +274,14 @@ class ResistsEditorDlg (wx.Dialog):
     def renamePattern(self, event=None):
         "Changes layout to facilitate naming a pattern"
 
-        self.ccResists.Hide()
-        self.namePicker.Show()
-        self.headerSizer.Replace(self.ccResists, self.namePicker)
-        self.namePicker.SetFocus()
+        self.showInput(True)
+
         if event is not None:  # Rename mode
             self.btnSave.SetLabel("Rename")
             self.namePicker.SetValue(self.getActivePattern().name)
         else:  # Create mode
             self.namePicker.SetValue("")
 
-        for btn in (self.new, self.rename, self.delete, self.copy):
-            btn.Hide()
-            self.headerSizer.Remove(btn)
-
-        self.headerSizer.Add(self.btnSave, 0, wx.ALIGN_CENTER)
-        self.btnSave.Show()
-        self.headerSizer.Layout()
         if event is not None:
             event.Skip()
 
@@ -326,15 +317,7 @@ class ResistsEditorDlg (wx.Dialog):
         sTR.renamePattern(p, newName)
 
         self.updateChoices(newName)
-        self.headerSizer.Replace(self.namePicker, self.ccResists)
-        self.ccResists.Show()
-        self.namePicker.Hide()
-        self.btnSave.Hide()
-        self.headerSizer.Remove(self.btnSave)
-        for btn in (self.new, self.rename, self.delete, self.copy):
-            self.headerSizer.Add(btn, 0, wx.ALIGN_CENTER_VERTICAL)
-            btn.Show()
-
+        self.showInput(False)
         sel = self.ccResists.GetSelection()
         self.ValuesUpdated()
         self.unrestrict()
@@ -358,6 +341,33 @@ class ResistsEditorDlg (wx.Dialog):
         del self.choices[sel]
         self.patternChanged()
 
+    def showInput(self, bool):
+        print self.namePicker.IsShown(), bool
+        if bool and not self.namePicker.IsShown():
+            self.ccResists.Hide()
+            self.namePicker.Show()
+            self.headerSizer.Replace(self.ccResists, self.namePicker)
+            self.namePicker.SetFocus()
+            for btn in (self.new, self.rename, self.delete, self.copy):
+                btn.Hide()
+                self.headerSizer.Remove(btn)
+            self.headerSizer.Add(self.btnSave, 0, wx.ALIGN_CENTER)
+            self.btnSave.Show()
+            self.restrict()
+            self.headerSizer.Layout()
+        elif not bool and self.namePicker.IsShown():
+            self.headerSizer.Replace(self.namePicker, self.ccResists)
+            self.ccResists.Show()
+            self.namePicker.Hide()
+            self.btnSave.Hide()
+            self.headerSizer.Remove(self.btnSave)
+            for btn in (self.new, self.rename, self.delete, self.copy):
+                self.headerSizer.Add(btn, 0, wx.ALIGN_CENTER_VERTICAL)
+                btn.Show()
+            self.unrestrict()
+            #self.headerSizer.Layout()
+
+
     def __del__( self ):
         pass
 
@@ -365,6 +375,10 @@ class ResistsEditorDlg (wx.Dialog):
         "Gathers list of patterns and updates choice selections"
         sTR = service.TargetResists.getInstance()
         self.choices = sTR.getTargetResistsList()
+
+        if len(self.choices) == 0:
+            #self.newPattern(None)
+            return
 
         # Sort the remaining list and continue on
         self.choices.sort(key=lambda p: p.name)
@@ -390,6 +404,7 @@ class ResistsEditorDlg (wx.Dialog):
             try:
                 sTR.importPatterns(text)
                 self.stNotice.SetLabel("Patterns successfully imported from clipboard")
+                self.showInput(False)
             except service.targetResists.ImportError, e:
                 self.stNotice.SetLabel(str(e))
             except Exception, e:
