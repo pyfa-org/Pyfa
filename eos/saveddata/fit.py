@@ -700,6 +700,7 @@ class Fit(object):
         capAdded = 0
         for mod in self.modules:
             if mod.state >= State.ACTIVE:
+                if mod.getModifiedItemAttr("capacitorNeed") != 0:
                     cycleTime = mod.rawCycleTime or 0
                     reactivationTime = mod.getModifiedItemAttr("moduleReactivationDelay") or 0
                     fullCycleTime = cycleTime + reactivationTime
