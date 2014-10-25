@@ -154,7 +154,7 @@ class ItemStatsContainer ( wx.Panel ):
         self.nbContainer = wx.Notebook( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, 0 )
         mainSizer.Add( self.nbContainer, 1, wx.EXPAND |wx.ALL, 2 )
 
-        if len(item.traits) != 0:
+        if len(item.traits.traitText) != 0:
             self.traits = ItemTraits(self.nbContainer, stuff, item)
             self.nbContainer.AddPage(self.traits, "Traits")
 
@@ -221,32 +221,8 @@ class ItemTraits ( wx.Panel ):
         self.SetSizer(mainSizer)
 
         self.traits = wx.html.HtmlWindow(self)
-
-        # Format: {skill name: [bonus text]}
-        traitData = {}
-        for trait in item.traits:
-            skillData = traitData.setdefault(trait.skillName, [])
-            skillData.append(trait.bonusText)
-
-        def getSection(header, rows):
-            sectionRows = [header]
-            for row in sorted(rows):
-                sectionRows.append(row)
-            return u'<br />'.join(sectionRows)
-
-        textRows = []
-        for skillName in sorted(traitData):
-            # Skills always go 1st
-            if skillName is None:
-                continue
-            header = u"<b>{} bonuses (per skill level):</b>".format(skillName)
-            textRows.append(getSection(header, traitData[skillName]))
-
-        if None in traitData:
-            textRows.append(getSection("<b>Role Bonus:</b>", traitData[None]))
-
-        fullText = u"<br /><br />".join(textRows)
-        self.traits.SetPage(fullText)
+        print(item.traits)
+        self.traits.SetPage(item.traits.traitText)
 
         mainSizer.Add(self.traits, 1, wx.ALL|wx.EXPAND, 0)
         self.Layout()

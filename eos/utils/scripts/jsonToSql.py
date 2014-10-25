@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 #======================================================================
 # Copyright (C) 2012 Diego Duclos
 #
@@ -25,7 +25,6 @@ import sys
 path = os.path.dirname(unicode(__file__, sys.getfilesystemencoding()))
 sys.path.append(os.path.realpath(os.path.join(path, "..", "..", "..")))
 
-import sqlite3
 import json
 import argparse
 
@@ -50,27 +49,102 @@ if __name__ == "__main__":
     eos.db.gamedata_meta.create_all()
 
     # Config dict
-    tables = {"dgmattribs": eos.gamedata.AttributeInfo,
-              "dgmeffects": eos.gamedata.EffectInfo,
-              "dgmtypeattribs": eos.gamedata.Attribute,
-              "dgmtypeeffects": eos.gamedata.Effect,
-              "dgmunits": eos.gamedata.Unit,
-              "icons": eos.gamedata.Icon,
-              "invcategories": eos.gamedata.Category,
-              "invgroups": eos.gamedata.Group,
-              "invmetagroups": eos.gamedata.MetaGroup,
-              "invmetatypes": eos.gamedata.MetaType,
-              "invtypes": eos.gamedata.Item,
-              "phobostraits": eos.gamedata.Traits,
-              "marketProxy()_GetMarketGroups()": eos.gamedata.MarketGroup}
+    tables = {
+        "dgmattribs": eos.gamedata.AttributeInfo,
+        "dgmeffects": eos.gamedata.EffectInfo,
+        "dgmtypeattribs": eos.gamedata.Attribute,
+        "dgmtypeeffects": eos.gamedata.Effect,
+        "dgmunits": eos.gamedata.Unit,
+        "icons": eos.gamedata.Icon,
+        "invcategories": eos.gamedata.Category,
+        "invgroups": eos.gamedata.Group,
+        "invmetagroups": eos.gamedata.MetaGroup,
+        "invmetatypes": eos.gamedata.MetaType,
+        "invtypes": eos.gamedata.Item,
+        "phbtraits": eos.gamedata.Traits,
+        "mapbulk_marketGroups": eos.gamedata.MarketGroup
+    }
 
-    fieldMapping = {"icons": {"id": "iconID"}}
+    fieldMapping = {
+        "dgmattribs": {
+            "displayName_en-us": "displayName"
+        },
+        "dgmeffects": {
+            "displayName_en-us": "displayName",
+            "description_en-us": "description"
+        },
+        "dgmunits": {
+            "displayName_en-us": "displayName"
+        },
+        #icons???
+        "invcategories": {
+            "categoryName_en-us": "categoryName"
+        },
+        "invgroups": {
+            "groupName_en-us": "groupName"
+        },
+        "invmetagroups": {
+            "metaGroupName_en-us": "metaGroupName"
+        },
+        "invtypes": {
+            "typeName_en-us": "typeName",
+            "description_en-us": "description"
+        },
+        #phbtraits???
+        "mapbulk_marketGroups": {
+            "marketGroupName_en-us": "marketGroupName",
+            "description_en-us": "description"
+        }
+
+    }
+
+    def convertIcons(data):
+        new = []
+        for k, v in data.items():
+            v["iconID"] = k
+            new.append(v)
+        return new
+
+    def convertTraits(data):
+
+        def convertSection(sectionData):
+            sectionLines = []
+            headerText = u"<b>{}</b>".format(sectionData["header"])
+            sectionLines.append(headerText)
+            for bonusData in sectionData["bonuses"]:
+                prefix = u"{} ".format(bonusData["number"]) if "number" in bonusData else ""
+                bonusText = u"{}{}".format(prefix, bonusData["text"])
+                sectionLines.append(bonusText)
+            sectionLine = u"<br />\n".join(sectionLines)
+            return sectionLine
+
+        newData = []
+        for row in data:
+            typeLines = []
+            typeId = row["typeID"]
+            traitData = row["traits_en-us"]
+            for skillData in sorted(traitData.get("skills", ()), key=lambda i: i["header"]):
+                typeLines.append(convertSection(skillData))
+            if "role" in traitData:
+                typeLines.append(convertSection(traitData["role"]))
+            if "misc" in traitData:
+                typeLines.append(convertSection(traitData["misc"]))
+            traitLine = u"<br />\n<br />\n".join(typeLines)
+            newRow = {"typeID": typeId, "traitText": traitLine}
+            newData.append(newRow)
+        return newData
+
     data = {}
 
     # Dump all data to memory so we can easely cross check ignored rows
     for jsonName, cls in tables.iteritems():
-        f = open(os.path.join(jsonPath, "{}.json".format(jsonName)))
-        data[jsonName] = json.load(f, encoding='cp1252')
+        with open(os.path.join(jsonPath, "{}.json".format(jsonName))) as f:
+            tableData = json.load(f)
+        if jsonName == "icons":
+            tableData = convertIcons(tableData)
+        if jsonName == "phbtraits":
+            tableData = convertTraits(tableData)
+        data[jsonName] = tableData
 
     # Do some preprocessing to make our job easier
     invTypes = set()
@@ -100,8 +174,8 @@ if __name__ == "__main__":
             if not isIgnored(jsonName, row):
                 instance = tables[jsonName]()
                 # fix for issue 80
-                if jsonName is "icons" and "res:/UI/Texture/Icons/" in str(row['iconFile']):
-                    row['iconFile'] = row['iconFile'].replace('res:/UI/Texture/Icons/','').replace('.png','')
+                if jsonName is "icons" and "res:/UI/Texture/Icons/" in str(row["iconFile"]):
+                    row["iconFile"] = row["iconFile"].replace("res:/UI/Texture/Icons/","").replace(".png", "")
                 for k, v in row.iteritems():
                     setattr(instance, fieldMap.get(k, k), v)
 

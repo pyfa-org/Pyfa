@@ -53,9 +53,8 @@ mapper(Item, items_table,
                      "name" : synonym("typeName"),
                      "description" : deferred(items_table.c.description),
                      "traits" : relation(Traits,
-                                            primaryjoin = traits_table.c.typeID == items_table.c.typeID,
-                                            order_by = traits_table.c.typeID,
-                                            uselist = True)
+                                         primaryjoin = traits_table.c.typeID == items_table.c.typeID,
+                                         uselist = False)
                     })
 
 Item.category = association_proxy("group", "category")
