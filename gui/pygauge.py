@@ -80,7 +80,7 @@ class PyGauge(wx.PyWindow):
         self.SetBackgroundColour(wx.Colour(51,51,51))
         self._tooltip = wx.ToolTip("")
         self.SetToolTip(self._tooltip)
-        self._tooltip.SetTip("0/0")
+        self._tooltip.SetTip("0.00/100.00")
 
         self.Bind(wx.EVT_PAINT, self.OnPaint)
         self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBackground)
