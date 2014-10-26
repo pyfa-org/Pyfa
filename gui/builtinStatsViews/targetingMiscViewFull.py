@@ -21,6 +21,7 @@ import wx
 from gui.statsView import StatsView
 from gui import builtinStatsViews
 from gui.utils.numberFormatter import formatAmount
+import locale
 
 try:
     from collections import OrderedDict
@@ -199,7 +200,10 @@ class TargetingMiscViewFull(StatsView):
                         else:
                            label.SetToolTip(wx.ToolTip("Type: %s" % (fit.scanType)))
                     elif labelName == "labelFullAlignTime":
-                        label.SetToolTip(wx.ToolTip("%.3f" % mainValue))
+                        alignTime = "Align:\t%.3fs"%mainValue
+                        mass = "Mass:\t%skg"%locale.format('%d', fit.ship.getModifiedItemAttr("mass"), 1)
+                        agility = "Agility:\t%.3fx"%fit.ship.getModifiedItemAttr("agility")
+                        label.SetToolTip(wx.ToolTip("%s\n%s\n%s" % (alignTime, mass, agility)))
                     elif labelName == "labelFullCargo":
                         tipLines = []
                         tipLines.append(u"Cargohold: %.1fm\u00B3 / %sm\u00B3"% (fit.cargoBayUsed, newValues["main"]))

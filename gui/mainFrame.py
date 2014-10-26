@@ -54,6 +54,8 @@ from gui.utils.clipboard import toClipboard, fromClipboard
 from gui.fleetBrowser import FleetBrowser
 from gui.updateDialog import UpdateDialog
 from gui.builtinViews import *
+import locale
+locale.setlocale(locale.LC_ALL, '')
 
 #dummy panel(no paint no erasebk)
 class PFPanel(wx.Panel):
