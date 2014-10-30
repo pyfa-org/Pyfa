@@ -154,7 +154,7 @@ class ItemStatsContainer ( wx.Panel ):
         self.nbContainer = wx.Notebook( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, 0 )
         mainSizer.Add( self.nbContainer, 1, wx.EXPAND |wx.ALL, 2 )
 
-        if len(item.traits.traitText) != 0:
+        if item.traits is not None:
             self.traits = ItemTraits(self.nbContainer, stuff, item)
             self.nbContainer.AddPage(self.traits, "Traits")
 
