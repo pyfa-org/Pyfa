@@ -221,7 +221,6 @@ class ItemTraits ( wx.Panel ):
         self.SetSizer(mainSizer)
 
         self.traits = wx.html.HtmlWindow(self)
-        print(item.traits)
         self.traits.SetPage(item.traits.traitText)
 
         mainSizer.Add(self.traits, 1, wx.ALL|wx.EXPAND, 0)

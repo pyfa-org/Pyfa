@@ -1,10 +1,9 @@
 # shipProjectileDmgMC2
 #
 # Used by:
+# Variations of ship: Rupture (3 of 3)
 # Ship: Cynabal
 # Ship: Moracha
-# Ship: Muninn
-# Ship: Rupture
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Minmatar Cruiser").level

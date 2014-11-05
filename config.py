@@ -15,7 +15,7 @@ saveInRoot = False
 # Version data
 version = "1.5.2"
 tag = "git"
-expansionName = "Oceanus"
+expansionName = "Phoebe"
 expansionVersion = "1.0"
 evemonMinVersion = "4081"
 

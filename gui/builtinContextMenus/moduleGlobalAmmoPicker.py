@@ -42,8 +42,13 @@ class ModuleGlobalAmmoPicker(ModuleAmmoPicker):
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
     def display(self, srcContext, selection):
-        if selection is None or len(selection) != 1:
-            return False
+        try:
+            selectionLen = len(selection)
+        except:
+            pass
+        else:
+            if selectionLen != 1:
+                return False
 
         return super(ModuleGlobalAmmoPicker, self).display(srcContext, selection)
 

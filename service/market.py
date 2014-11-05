@@ -201,7 +201,6 @@ class Market():
         # List of items which are forcibly published or hidden
         self.ITEMS_FORCEPUBLISHED = {
             "Data Subverter I": False, # Not used in EVE, probably will appear with Dust link
-            "Ghost Heavy Missile": False, # Missile used by Sansha
             "QA Cross Protocol Analyzer": False, # QA modules used by CCP internally
             "QA Damage Module": False,
             "QA ECCM": False,
@@ -233,8 +232,6 @@ class Market():
             "Medium Nano Armor Repair Unit I": ("Tech I", "Medium Armor Repairer I"),
             "Large 'Reprieve' Vestment Reconstructer I": ("Storyline", "Large Armor Repairer I"),
             "Khanid Navy Torpedo Launcher": ("Faction", "Torpedo Launcher I"),
-            "Dark Blood Tracking Disruptor": ("Faction", "Tracking Disruptor I"),
-            "True Sansha Tracking Disruptor": ("Faction", "Tracking Disruptor I"),
             "Shadow Serpentis Remote Sensor Dampener": ("Faction", "Remote Sensor Dampener I") }
         # Parent type name: set(item names)
         self.ITEMS_FORCEDMETAGROUP_R = {}

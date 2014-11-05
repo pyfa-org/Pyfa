@@ -1,7 +1,7 @@
 # shipCruiseMissileVelocityBonusCB3
 #
 # Used by:
-# Variations of ship: Raven (3 of 4)
+# Ships named like: Raven (6 of 6)
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Caldari Battleship").level

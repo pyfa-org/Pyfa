@@ -1,8 +1,7 @@
 # shipCruiseLauncherROFBonus2CB
 #
 # Used by:
-# Ship: Raven
-# Ship: Raven State Issue
+# Ships named like: Raven (5 of 6)
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Caldari Battleship").level

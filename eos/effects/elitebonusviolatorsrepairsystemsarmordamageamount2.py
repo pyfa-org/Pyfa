@@ -1,8 +1,7 @@
 # eliteBonusViolatorsRepairSystemsArmorDamageAmount2
 #
 # Used by:
-# Ship: Kronos
-# Ship: Paladin
+# Ships from group: Marauder (8 of 16)
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Marauders").level

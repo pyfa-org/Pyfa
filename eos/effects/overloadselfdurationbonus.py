@@ -9,6 +9,7 @@
 # Modules from group: Remote Capacitor Transmitter (38 of 38)
 # Modules from group: Remote Shield Booster (39 of 39)
 # Modules from group: Smart Bomb (118 of 118)
+# Modules from group: Warp Disrupt Field Generator (2 of 2)
 # Module: QA Remote Armor Repair System - 5 Players
 # Module: QA Shield Transporter - 5 Players
 # Module: Reactive Armor Hardener

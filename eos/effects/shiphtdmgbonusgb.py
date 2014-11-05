@@ -2,8 +2,8 @@
 #
 # Used by:
 # Ships named like: Hyperion (3 of 3)
+# Ships named like: Kronos (4 of 4)
 # Ship: Dominix Navy Issue
-# Ship: Kronos
 # Ship: Megathron Federate Issue
 # Ship: Sin
 type = "passive"

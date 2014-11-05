@@ -1,6 +1,7 @@
 # shipBonusRHMLROF2CB
 #
 # Used by:
+# Ships named like: Raven Edition (3 of 3)
 # Ship: Raven
 # Ship: Widow
 type = "passive"

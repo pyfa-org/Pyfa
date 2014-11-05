@@ -2,6 +2,8 @@
 #
 # Used by:
 # Ships named like: Maelstrom (3 of 3)
+# Ships named like: Tempest Edition (3 of 3)
+# Ships named like: Vargur Edition (3 of 3)
 # Variations of ship: Tempest (4 of 4)
 # Ship: Panther
 # Ship: Typhoon Fleet Issue

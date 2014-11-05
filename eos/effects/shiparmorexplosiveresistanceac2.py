@@ -1,7 +1,6 @@
 # shipArmorExplosiveResistanceAC2
 #
 # Used by:
-# Ship: Devoter
 # Ship: Maller
 type = "passive"
 def handler(fit, ship, context):

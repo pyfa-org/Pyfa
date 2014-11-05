@@ -1,8 +1,7 @@
 # eliteBonusMarauderShieldBonus2a
 #
 # Used by:
-# Ship: Golem
-# Ship: Vargur
+# Ships from group: Marauder (8 of 16)
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Marauders").level
