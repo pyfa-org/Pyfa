@@ -9,4 +9,4 @@ def handler(fit, module, context):
     #As Comman Processors use one themselves too
     fit.modules.filteredItemIncrease(lambda mod: mod.item.group.name == "Gang Coordinator" and \
                                      "maxGroupActive" in mod.itemModifiedAttributes,
-                                     "maxGroupActive", 2)
+                                     "maxGroupActive", 1)
