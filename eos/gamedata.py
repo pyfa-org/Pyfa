@@ -255,10 +255,11 @@ class Item(EqBase):
             race = None
             # Check primary and secondary required skills' races
             if race is None:
-                skills = self.requiredSkills.keys()
-                skillPrimaryRace = (skills[0].raceID if len(skills) >= 1 else 0) or 0
-                skillSecondaryRace = (skills[1].raceID if len(skills) >= 2 else 0) or 0
-                skillRaces = (skillPrimaryRace, skillSecondaryRace)
+                # Currently Assault Frigates skill has raceID set, which is actually
+                # EVE's bug
+                ignoredSkills = ('Assault Frigates',)
+                skills = tuple(filter(lambda i: i.name not in ignoredSkills, self.requiredSkills.keys()))
+                skillRaces = tuple(filter(lambda rid: rid, (s.raceID for s in skills)))
                 if sum(skillRaces) in map:
                     race = map[sum(skillRaces)]
                     if race == "angelserp":
