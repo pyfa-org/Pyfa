@@ -417,7 +417,7 @@ class Miscellanea(ViewColumn):
         elif itemGroup in ("Fueled Armor Repairer", "Fueled Shield Booster"):
             hp = stuff.hpBeforeReload
             cycles = stuff.numShots
-            cycleTime = stuff.cycleTime
+            cycleTime = stuff.rawCycleTime
             if not hp or not cycleTime or not cycles:
                 return "", None
             fit = Fit.getInstance().getFit(self.mainFrame.getActiveFit())
