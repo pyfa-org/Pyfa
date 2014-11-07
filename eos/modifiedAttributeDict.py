@@ -21,6 +21,7 @@ from math import exp
 import collections
 
 defaultValuesCache = {}
+cappingAttrKeyCache = {}
 
 class ItemAttrShortcut(object):
     def getModifiedItemAttr(self, key):
@@ -126,10 +127,29 @@ class ModifiedAttributeDict(collections.MutableMapping):
         return len(keys)
 
     def __calculateValue(self, key):
+        # It's possible that various attributes are capped by other attributes,
+        # it's defined by reference maxAttributeID
+        try:
+            cappingKey = cappingAttrKeyCache[key]
+        except KeyError:
+            from eos.db.gamedata.queries import getAttributeInfo
+            attrInfo = getAttributeInfo(key)
+            if attrInfo is None:
+                cappingId = cappingAttrKeyCache[key] = None
+            else:
+                cappingId = cappingAttrKeyCache[key] = attrInfo.maxAttributeID
+            if cappingId is None:
+                cappingKey = None
+            else:
+                cappingAttrInfo = getAttributeInfo(cappingId)
+                cappingKey = None if cappingAttrInfo is None else cappingAttrInfo.name
+        cappingValue = self.__calculateValue(cappingKey) if cappingKey is not None else None
         # If value is forced, we don't have to calculate anything,
         # just return forced value instead
         force = self.__forced[key] if key in self.__forced else None
         if force is not None:
+            if cappingValue is not None:
+                force = min(force, cappingValue)
             return force
         # Grab our values if they're there, otherwise we'll take default values
         preIncrease = self.__preIncreases[key] if key in self.__preIncreases else 0
@@ -175,6 +195,10 @@ class ModifiedAttributeDict(collections.MutableMapping):
                     bonus = l[i]
                     val *= 1 + (bonus - 1) * exp(- i ** 2 / 7.1289)
         val += postIncrease
+
+        # Cap value if we have cap defined
+        if cappingValue is not None:
+            val = min(val, cappingValue)
 
         return val
 

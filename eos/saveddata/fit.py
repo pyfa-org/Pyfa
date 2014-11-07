@@ -218,7 +218,7 @@ class Fit(object):
 
     @property
     def maxTargetRange(self):
-        return min(self.ship.getModifiedItemAttr("maxTargetRange"), 250000)
+        return self.ship.getModifiedItemAttr("maxTargetRange")
 
     @property
     def scanStrength(self):
