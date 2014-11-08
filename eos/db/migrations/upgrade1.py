@@ -1,6 +1,7 @@
 """
 Migration 1
 
+- Includes old upgrade paths pre-1.5.0
 - Alters fits table to introduce target resist attribute
 - Converts modules based on Oceanus Module Tiericide
     Some modules have been deleted, which causes pyfa to crash when fits are
