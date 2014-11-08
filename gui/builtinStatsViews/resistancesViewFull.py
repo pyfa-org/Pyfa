@@ -74,11 +74,8 @@ class ResistancesViewFull(StatsView):
         # Display table
         col = 0
         row = 0
-        sizerResistances = wx.GridBagSizer(0, 0)
+        sizerResistances = wx.GridBagSizer()
         contentSizer.Add( sizerResistances, 0, wx.EXPAND , 0)
-
-        for i in xrange(6):
-            sizerResistances.AddGrowableCol(i + 1)
 
         # Add an empty label, then the rest.
         sizerResistances.Add(wx.StaticText(contentPanel, wx.ID_ANY), wx.GBPosition( row, col ), wx.GBSpan( 1, 1 ))
@@ -95,6 +92,8 @@ class ResistancesViewFull(StatsView):
 
         self.stEHPs.Bind(wx.EVT_BUTTON, self.toggleEHP)
 
+        for i in xrange(4):
+            sizerResistances.AddGrowableCol(i+1)
 
         sizerResistances.Add(self.stEHPs, wx.GBPosition( row, col ), wx.GBSpan( 1, 1 ), wx.ALIGN_CENTER)
         col=0
