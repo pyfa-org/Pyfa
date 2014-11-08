@@ -1399,6 +1399,9 @@ class FitItem(SFItem.SFBrowserItem):
         self.shipFittingInfo = shipFittingInfo
         self.shipName, self.fitName, self.fitBooster, self.timestamp = shipFittingInfo
 
+        # see GH issue #62
+        if self.fitBooster is None: self.fitBooster = False
+
         # access these by index based on toggle for booster fit
 
         self.fitMenu = wx.Menu()
