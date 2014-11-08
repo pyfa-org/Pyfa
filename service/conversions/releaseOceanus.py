@@ -1,5 +1,5 @@
 """
-Convertion pack for Oceanus Module Tiericide
+Conversion pack for Oceanus Module Tiericide
 """
 
 CONVERSIONS = {
