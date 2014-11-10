@@ -107,6 +107,7 @@ class MarketBrowser(wx.Panel):
                 return
         # Leave old unfiltered list contents, just re-filter them and show
         self.itemView.filterItemStore()
+        self.itemViewFavs.filterItemStore()
 
     def jump(self, item):
         self.marketView.jump(item)
