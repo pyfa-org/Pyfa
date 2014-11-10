@@ -68,7 +68,7 @@ class FitDpsGraph(Graph):
         if distance <= fit.extraAttributes["droneControlRange"]:
             for drone in fit.drones:
                 multiplier = 1 if drone.getModifiedItemAttr("maxVelocity") > 0 else self.calculateTurretMultiplier(drone, data)
-                dps, _ =  drone.damageStats(fit.targetResists)
+                dps =  drone.damageStats(fit.targetResists)
                 total += dps * multiplier
 
         return total
