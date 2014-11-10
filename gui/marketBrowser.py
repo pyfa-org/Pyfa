@@ -49,7 +49,6 @@ class MarketBrowser(wx.Panel):
         self.searchMode = False
         self.marketView = MarketTree(self.splitter, self)
         self.splitterItems = wx.SplitterWindow(self.splitter, style = wx.SP_LIVE_UPDATE)
-        # vbox.Add(self.splitterItems, 1, wx.EXPAND)
 
         self.itemViewFavs = ItemView(self.splitterItems, self)
         self.itemView = ItemView(self.splitterItems, self, self.itemViewFavs)
