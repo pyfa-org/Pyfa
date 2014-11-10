@@ -220,6 +220,9 @@ class ItemView(d.Display):
         marketBrowser.Bind(wx.EVT_TREE_SEL_CHANGED, self.selectionMade)
 
         self.favView = favView
+
+        # The favView link is passed in only to the main ItemsView
+        self.isFavView = favView is None
         self.unfilteredStore = set()
         self.filteredStore = set()
         self.recentlyUsedModules = set()
@@ -279,7 +282,8 @@ class ItemView(d.Display):
             self.sMkt.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"].pop(0)
 
         self.sMkt.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"].append(itemID)
-        self.favView.updateRecentlyUsedModulesView()
+        if self.favView:
+            self.favView.updateRecentlyUsedModulesView()
 
     def updateRecentlyUsedModulesView(self):
         for itemID in self.sMkt.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"]:
@@ -429,7 +433,12 @@ class ItemView(d.Display):
         item = self.active[sel]
 
         sMkt = self.sMkt
-        sourceContext = "marketItemGroup" if self.marketBrowser.searchMode is False else "marketItemMisc"
+
+        if self.marketBrowser.searchMode is False and not self.isFavView:
+            sourceContext = "marketItemGroup"
+        else:
+            sourceContext = "marketItemMisc"
+
         itemContext = sMkt.getCategoryByItem(item).name
 
         menu = ContextMenu.getMenu((item,), (sourceContext, itemContext))
