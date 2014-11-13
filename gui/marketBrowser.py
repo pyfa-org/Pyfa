@@ -48,10 +48,16 @@ class MarketBrowser(wx.Panel):
         self.sMkt = service.Market.getInstance()
         self.searchMode = False
         self.marketView = MarketTree(self.splitter, self)
-        self.itemView = ItemView(self.splitter, self)
+        self.splitterItems = wx.SplitterWindow(self.splitter, style = wx.SP_LIVE_UPDATE)
 
-        self.splitter.SplitHorizontally(self.marketView, self.itemView)
-        self.splitter.SetMinimumPaneSize(250)
+        self.itemViewFavs = ItemView(self.splitterItems, self)
+        self.itemView = ItemView(self.splitterItems, self, self.itemViewFavs)
+
+        self.splitterItems.SplitHorizontally(self.itemView, self.itemViewFavs)
+        self.splitterItems.SetMinimumPaneSize(100)
+
+        self.splitter.SplitHorizontally(self.marketView, self.splitterItems)
+        self.splitter.SetMinimumPaneSize(100)
 
         # Setup our buttons for metaGroup selection
         # Same fix as for search box on macs,
@@ -72,6 +78,8 @@ class MarketBrowser(wx.Panel):
         self.itemView.setToggles()
 
         p.SetMinSize((wx.SIZE_AUTO_WIDTH, btn.GetSize()[1] + 5))
+
+        self.itemViewFavs.updateRecentlyUsedModulesView()
 
     def toggleMetaButton(self, event):
         """Process clicks on toggle buttons"""
@@ -98,6 +106,7 @@ class MarketBrowser(wx.Panel):
                 return
         # Leave old unfiltered list contents, just re-filter them and show
         self.itemView.filterItemStore()
+        self.itemViewFavs.filterItemStore()
 
     def jump(self, item):
         self.marketView.jump(item)
@@ -205,10 +214,14 @@ class ItemView(d.Display):
                     "attr:power,,,True",
                     "attr:cpu,,,True"]
 
-    def __init__(self, parent, marketBrowser):
+    def __init__(self, parent, marketBrowser, favView=None):
         d.Display.__init__(self, parent)
         marketBrowser.Bind(wx.EVT_TREE_SEL_CHANGED, self.selectionMade)
 
+        self.favView = favView
+
+        # The favView link is passed in only to the main ItemsView
+        self.isFavView = favView is None
         self.unfilteredStore = set()
         self.filteredStore = set()
         self.recentlyUsedModules = set()
@@ -268,6 +281,18 @@ class ItemView(d.Display):
             self.sMkt.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"].pop(0)
 
         self.sMkt.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"].append(itemID)
+        if self.favView:
+            self.favView.updateRecentlyUsedModulesView()
+
+    def updateRecentlyUsedModulesView(self):
+        for itemID in self.sMkt.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"]:
+            self.recentlyUsedModules.add(self.sMkt.getItem(itemID))
+
+        self.updateItemStore(self.recentlyUsedModules)
+        self.marketBrowser.searchMode = True
+        self.setToggles()
+        # Update filtered items
+        self.filterItemStore()
 
     def selectionMade(self, event=None, forcedMetaSelect=None):
         self.marketBrowser.searchMode = False
@@ -407,7 +432,12 @@ class ItemView(d.Display):
         item = self.active[sel]
 
         sMkt = self.sMkt
-        sourceContext = "marketItemGroup" if self.marketBrowser.searchMode is False else "marketItemMisc"
+
+        if self.marketBrowser.searchMode is False and not self.isFavView:
+            sourceContext = "marketItemGroup"
+        else:
+            sourceContext = "marketItemMisc"
+
         itemContext = sMkt.getCategoryByItem(item).name
 
         menu = ContextMenu.getMenu((item,), (sourceContext, itemContext))
