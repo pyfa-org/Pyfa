@@ -1,7 +1,6 @@
 """
 Migration 1
 
-- Includes old upgrade paths pre-1.5.0
 - Alters fits table to introduce target resist attribute
 - Converts modules based on Oceanus Module Tiericide
     Some modules have been deleted, which causes pyfa to crash when fits are
@@ -84,20 +83,6 @@ CONVERSIONS = {
 }
 
 def upgrade(saveddata_engine):
-
-    # Update characters schema to include default chars (pre-1.5.0 migration)
-    try:
-        saveddata_engine.execute("SELECT defaultChar, chars FROM characters LIMIT 1")
-    except sqlalchemy.exc.DatabaseError:
-        saveddata_engine.execute("ALTER TABLE characters ADD COLUMN defaultChar INTEGER;")
-        saveddata_engine.execute("ALTER TABLE characters ADD COLUMN chars VARCHAR;")
-
-    # Update fits schema to include booster attribute (pre-1.5.0 migration)
-    try:
-        saveddata_engine.execute("SELECT booster FROM fits LIMIT 1")
-    except sqlalchemy.exc.DatabaseError:
-        saveddata_engine.execute("ALTER TABLE fits ADD COLUMN booster BOOLEAN;")
-
     # Update fits schema to include target resists attribute
     try:
         saveddata_engine.execute("SELECT targetResistsID FROM fits LIMIT 1")

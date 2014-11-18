@@ -21,7 +21,7 @@ evemonMinVersion = "4081"
 
 # Database version (int ONLY)
 # Increment every time we need to flag for user database upgrade/modification
-dbversion = 1
+dbversion = 2
 
 pyfaPath = None
 savePath = None
