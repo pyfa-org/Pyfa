@@ -13,8 +13,8 @@ debug = False
 saveInRoot = False
 
 # Version data
-version = "1.6.1"
-tag = "Stable"
+version = "1.6.2"
+tag = "git"
 expansionName = "Phoebe"
 expansionVersion = "1.0"
 evemonMinVersion = "4081"
