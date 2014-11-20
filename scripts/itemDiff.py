@@ -30,7 +30,7 @@ import os.path
 import re
 import sqlite3
 
-script_dir = os.path.dirname(unicode(__file__, sys.getfilesystemencoding()))
+script_dir = os.path.dirname(__file__)
 
 parser = argparse.ArgumentParser(description="Compare two databases generated from eve dump to find eos-related differences")
 parser.add_argument("-o", "--old", type=str, help="path to old cache data dump, defaults to current pyfa eve.db", default=os.path.join(script_dir, "..", "pyfa", "staticdata", "eve.db"))
