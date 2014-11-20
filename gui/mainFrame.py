@@ -166,7 +166,7 @@ class MainFrame(wx.Frame):
         self.statsPane = StatsPane(self)
         cstatsSizer.Add(self.statsPane, 0, wx.EXPAND)
 
-        mainSizer.Add(cstatsSizer, 0 , wx.EXPAND)
+        mainSizer.Add(cstatsSizer, 0, wx.EXPAND)
 
         self.SetSizer(mainSizer)
 
@@ -214,7 +214,7 @@ class MainFrame(wx.Frame):
 
 
     def LoadMainFrameAttribs(self):
-        mainFrameDefaultAttribs = {"wnd_width":1000, "wnd_height": 700, "wnd_maximized": False}
+        mainFrameDefaultAttribs = {"wnd_width": 1000, "wnd_height": 680, "wnd_maximized": False}
         self.mainFrameAttribs = service.SettingsProvider.getInstance().getSettings("pyfaMainWindowAttribs", mainFrameDefaultAttribs)
 
         if self.mainFrameAttribs["wnd_maximized"]:
