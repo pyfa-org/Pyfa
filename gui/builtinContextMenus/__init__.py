@@ -14,5 +14,6 @@ __all__ = [
     "whProjector",
     "cargo",
     "shipJump",
-    "targetResists"
+    "targetResists",
+    "priceClear"
 ]

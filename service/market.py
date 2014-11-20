@@ -699,6 +699,10 @@ class Market():
 
         self.priceWorkerThread.trigger(requests, cb)
 
+    def clearPriceCache(self):
+        self.priceCache.clear()
+        deleted_rows = eos.db.clearPrices()
+
     def getSystemWideEffects(self):
         """
         Get dictionary with system-wide effects

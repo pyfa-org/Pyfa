@@ -308,6 +308,12 @@ def getPrice(typeID):
         raise TypeError("Need integer as argument")
     return price
 
+def clearPrices():
+    with sd_lock:
+        deleted_rows = saveddata_session.query(Price).delete()
+    commit()
+    return deleted_rows
+
 def getMiscData(field):
     if isinstance(field, basestring):
         with sd_lock:
