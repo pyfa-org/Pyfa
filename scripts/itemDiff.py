@@ -30,8 +30,10 @@ import os.path
 import re
 import sqlite3
 
+script_dir = os.path.dirname(unicode(__file__, sys.getfilesystemencoding()))
+
 parser = argparse.ArgumentParser(description="Compare two databases generated from eve dump to find eos-related differences")
-parser.add_argument("-o", "--old", type=str, required=True, help="path to old cache data dump")
+parser.add_argument("-o", "--old", type=str, help="path to old cache data dump, defaults to current pyfa eve.db", default=os.path.join(script_dir, "..", "pyfa", "staticdata", "eve.db"))
 parser.add_argument("-n", "--new", type=str, required=True, help="path to new cache data dump")
 parser.add_argument("-g", "--nogroups", action="store_false", default=True, dest="groups", help="don't show changed groups")
 parser.add_argument("-e", "--noeffects", action="store_false", default=True, dest="effects", help="don't show list of changed effects")
@@ -53,7 +55,8 @@ for typename in FORCEPUB_TYPES:
     new_cursor.execute(OVERRIDES_TYPEPUB, (typename,))
 
 # Initialization of few things used by both changed/renamed effects list
-effectspath = os.path.join("..", "..", "effects")
+script_dir = os.path.dirname(__file__)
+effectspath = os.path.join(script_dir, "..", "pyfa", "eos", "effects")
 implemented = set()
 
 for filename in os.listdir(effectspath):

@@ -23,7 +23,7 @@ import sys
 
 # Add eos root path to sys.path so we can import ourselves
 path = os.path.dirname(unicode(__file__, sys.getfilesystemencoding()))
-sys.path.append(os.path.realpath(os.path.join(path, "..", "..", "..")))
+sys.path.append(os.path.realpath(os.path.join(path, "..", "pyfa")))
 
 import json
 import argparse
@@ -31,7 +31,7 @@ import argparse
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="This scripts dumps effects from an sqlite cache dump to mongo")
     parser.add_argument("-d", "--db", required=True, type=str, help="The sqlalchemy connectionstring, example: sqlite:///c:/tq.db")
-    parser.add_argument("-j", "--json", required=True, type=str, help="The path to the json dum")
+    parser.add_argument("-j", "--json", required=True, type=str, help="The path to the json dump")
     args = parser.parse_args()
 
     jsonPath = os.path.expanduser(args.json)
