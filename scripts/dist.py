@@ -1,13 +1,24 @@
 #!/usr/bin/env python
-
-'''
+"""
 Script for generating distributables based on platform skeletons.
-'''
+
+User supplies path for pyfa code base, root skeleton directory, and where the
+builds go. The builds are automatically named depending on the pyfa config
+values of `version` and `tag`. If it's a Stable release, the naming convention is:
+    pyfa-pyfaversion-expansion-expversion-platform
+If it is not Stable (tag=git), we determine if the pyfa code base includes the
+git repo to use as an ID. If not, uses randomly generated 6-character ID. The
+unstable naming convention:
+    pyfa-YYYMMDD-id-platform
+
+dist.py can also build the Windows installer provided that it has a path to Inno
+Setup (and, for generating on non-Windows platforms, that WINE is installed).
+To build the EXE file, `win` must be included in the platforms to be built.
+"""
 
 from optparse import OptionParser
 import os.path
 import shutil
-import tempfile
 import sys
 import tarfile
 import datetime
@@ -43,7 +54,7 @@ if __name__ == "__main__":
     parser.add_option("-p", "--platforms", dest="platforms", help="Comma-separated list of platforms to build", default="win,src,mac")
     parser.add_option("-t", "--static", dest="static", help="Directory containing static files")
     parser.add_option("-q", "--quiet", dest="silent", action="store_true")
-    parser.add_option("-w", "--winexe", dest="winexe", action="store_true", help="Build the Windows installer file (needs Inno Setup)")
+    parser.add_option("-w", "--winexe", dest="winexe", action="store_true", help="Build the Windows installer file (needs Inno Setup). Must include 'win' in platform options")
     parser.add_option("-z", "--zip", dest="zip", action="store_true", help="zip archive instead of tar")
 
     options, args = parser.parse_args()
@@ -168,7 +179,7 @@ if __name__ == "__main__":
                     "/dMyOutputFile=%s"%fileName]) #stdout=devnull, stderr=devnull
 
                 print "EXE completed"
-                
+
         except Exception as e:
             print "Encountered an error: \n\t", e
             raise
