@@ -28,17 +28,13 @@ sys.path.append(os.path.realpath(os.path.join(path, "..", "pyfa")))
 import json
 import argparse
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="This scripts dumps effects from an sqlite cache dump to mongo")
-    parser.add_argument("-d", "--db", required=True, type=str, help="The sqlalchemy connectionstring, example: sqlite:///c:/tq.db")
-    parser.add_argument("-j", "--json", required=True, type=str, help="The path to the json dump")
-    args = parser.parse_args()
+def main(db, json_path):
 
-    jsonPath = os.path.expanduser(args.json)
+    jsonPath = os.path.expanduser(json_path)
 
     # Import eos.config first and change it
     import eos.config
-    eos.config.gamedata_connectionstring = args.db
+    eos.config.gamedata_connectionstring = db
     eos.config.debug = False
 
     # Now thats done, we can import the eos modules using the config
@@ -62,6 +58,7 @@ if __name__ == "__main__":
         "invmetatypes": eos.gamedata.MetaType,
         "invtypes": eos.gamedata.Item,
         "phbtraits": eos.gamedata.Traits,
+        "phbmetadata": eos.gamedata.MetaData,
         "mapbulk_marketGroups": eos.gamedata.MarketGroup
     }
 
@@ -181,6 +178,14 @@ if __name__ == "__main__":
 
                 eos.db.gamedata_session.add(instance)
 
-        eos.db.gamedata_session.commit()
+    eos.db.gamedata_session.commit()
 
     print("done")
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="This scripts dumps effects from an sqlite cache dump to mongo")
+    parser.add_argument("-d", "--db", required=True, type=str, help="The sqlalchemy connectionstring, example: sqlite:///c:/tq.db")
+    parser.add_argument("-j", "--json", required=True, type=str, help="The path to the json dump")
+    args = parser.parse_args()
+
+    main(args.db, args.json)

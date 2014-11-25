@@ -23,7 +23,7 @@ from eos.types import MetaData
 from eos.db import gamedata_meta
 
 metadata_table = Table("metadata", gamedata_meta,
-                           Column("fieldName", String, primary_key=True),
-                           Column("fieldValue", String))
+                           Column("field_name", String, primary_key=True),
+                           Column("field_value", String))
 
 mapper(MetaData, metadata_table)
