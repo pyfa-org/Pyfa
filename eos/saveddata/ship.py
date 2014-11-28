@@ -19,6 +19,7 @@
 
 from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut
 from eos.effectHandlerHelpers import HandledItem
+from eos.saveddata.mode import Mode
 
 class Ship(ItemAttrShortcut, HandledItem):
     def __init__(self, item):
@@ -64,6 +65,41 @@ class Ship(ItemAttrShortcut, HandledItem):
         for effect in self.item.effects.itervalues():
             if effect.runTime == runTime and effect.isType("passive"):
                 effect.handler(fit, self, ("ship",))
+
+    def checkMode(self, mode):
+        """
+        Checks if provided mode is valid.
+
+        If ship has modes, and current mode is not valid, return forced mode
+        else if mode is valid, return Mode
+        else if ship does not have modes, return None
+        """
+        modes = self.getValidModes()
+        if modes != None:
+            if mode == None or mode not in modes:
+                # We have a tact dessy, but mode is None or not valid. Force new mode
+                return modes[0]
+            elif mode in modes:
+                # We have a valid mode
+                return mode
+        return None
+
+    def getValidModes(self):
+        """Gets valid modes for ship, returns None if not a t3 dessy"""
+        # @todo: is there a better way to determine this that isn't hardcoded groupIDs?
+        if self.item.groupID != 1305:
+            return None
+
+        modeGroupID = 1306
+        import eos.db
+
+        modes = []
+        g = eos.db.getGroup(modeGroupID, eager=("items.icon", "items.attributes"))
+        for item in g.items:
+            if item.raceID == self.item.raceID:
+                modes.append(Mode(item))
+
+        return modes
 
     def __deepcopy__(self, memo):
         copy = Ship(self.item)

@@ -24,8 +24,6 @@ class Mode(ItemAttrShortcut, HandledItem):
 
     def __init__(self, item):
         self.__item = item
-        self.itemID = item.ID if item is not None else None
-
         self.__itemModifiedAttributes = ModifiedAttributeDict()
 
         if not isinstance(item, int):
@@ -55,10 +53,6 @@ class Mode(ItemAttrShortcut, HandledItem):
 
     # @todo: rework to fit only on t3 dessy
     def fits(self, fit):
-        raise NotImplementedError()
-
-    # @ todo: rework to get valid modes (probably put in fit object, not mode)
-    def getValidModes(self):
         raise NotImplementedError()
 
     def clear(self):

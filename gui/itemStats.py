@@ -22,9 +22,9 @@ import re
 import gui.mainFrame
 import bitmapLoader
 import sys
-import wx.lib.mixins.listctrl  as  listmix
+import wx.lib.mixins.listctrl as listmix
 import wx.html
-from eos.types import Ship, Module, Skill, Booster, Implant, Drone
+from eos.types import Ship, Module, Skill, Booster, Implant, Drone, Mode
 from gui.utils.numberFormatter import formatAmount
 import service
 import config
@@ -535,7 +535,7 @@ class ItemEffects (wx.Panel):
 
 
 class ItemAffectedBy (wx.Panel):
-    ORDER = [Ship, Module, Drone, Implant, Booster, Skill]
+    ORDER = [Ship, Mode, Module, Drone, Implant, Booster, Skill]
     def __init__(self, parent, stuff, item):
         wx.Panel.__init__ (self, parent)
         self.stuff = stuff

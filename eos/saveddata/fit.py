@@ -100,7 +100,10 @@ class Fit(object):
         self.extraAttributes = ModifiedAttributeDict(self)
         self.extraAttributes.original = self.EXTRA_ATTRIBUTES
         self.ship = Ship(db.getItem(self.shipID)) if self.shipID is not None else None
-        self.mode = Mode(db.getItem(self.mode)) if self.mode is not None else None
+        if self.ship is not None and self.mode is not None:
+            self.mode = self.ship.checkMode(Mode(self.mode))
+        else:
+            self.mode = None
 
     @property
     def targetResists(self):
