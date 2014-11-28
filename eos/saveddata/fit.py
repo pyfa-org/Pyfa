@@ -27,6 +27,7 @@ from copy import deepcopy
 from math import sqrt, log, asinh
 from eos.types import Drone, Cargo, Ship, Character, State, Slot, Module, Implant, Booster, Skill
 from eos.saveddata.module import State
+from eos.saveddata.mode import Mode
 import time
 
 try:
@@ -66,6 +67,7 @@ class Fit(object):
         self.gangBoosts = None
         self.timestamp = time.time()
         self.ecmProjectedStr = 1
+        self.mode = None
         self.build()
 
     @reconstructor
@@ -98,6 +100,7 @@ class Fit(object):
         self.extraAttributes = ModifiedAttributeDict(self)
         self.extraAttributes.original = self.EXTRA_ATTRIBUTES
         self.ship = Ship(db.getItem(self.shipID)) if self.shipID is not None else None
+        self.mode = Mode(db.getItem(self.mode)) if self.mode is not None else None
 
     @property
     def targetResists(self):
@@ -355,9 +358,9 @@ class Fit(object):
             # Avoid adding projected drones and modules when fit is projected onto self
             # TODO: remove this workaround when proper self-projection using virtual duplicate fits is implemented
             if forceProjected is True:
-                c = chain((self.character, self.ship), self.drones, self.boosters, self.appliedImplants, self.modules)
+                c = chain((self.character, self.ship, self.mode), self.drones, self.boosters, self.appliedImplants, self.modules)
             else:
-                c = chain((self.character, self.ship), self.drones, self.boosters, self.appliedImplants, self.modules,
+                c = chain((self.character, self.ship, self.mode), self.drones, self.boosters, self.appliedImplants, self.modules,
                           self.projectedDrones, self.projectedModules)
 
             if self.gangBoosts is not None:
