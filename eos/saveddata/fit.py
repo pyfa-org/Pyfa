@@ -67,7 +67,7 @@ class Fit(object):
         self.gangBoosts = None
         self.timestamp = time.time()
         self.ecmProjectedStr = 1
-        self.mode = None
+        self.modeID = None
         self.build()
 
     @reconstructor
@@ -100,10 +100,10 @@ class Fit(object):
         self.extraAttributes = ModifiedAttributeDict(self)
         self.extraAttributes.original = self.EXTRA_ATTRIBUTES
         self.ship = Ship(db.getItem(self.shipID)) if self.shipID is not None else None
-        if self.ship is not None and self.mode is not None:
-            self.mode = self.ship.checkMode(Mode(self.mode))
+        if self.ship is not None and self.modeID is not None:
+            self._mode = self.ship.checkMode(db.getItem(self.modeID))
         else:
-            self.mode = None
+            self._mode = None
 
     @property
     def targetResists(self):
@@ -125,6 +125,15 @@ class Fit(object):
         self.__damagePattern = damagePattern
         self.__ehp = None
         self.__effectiveTank = None
+
+    @property
+    def mode(self):
+        return self._mode
+
+    @mode.setter
+    def mode(self, mode):
+        self._mode = mode
+        self.modeID = mode.item.ID if mode is not None else None
 
     @property
     def character(self):

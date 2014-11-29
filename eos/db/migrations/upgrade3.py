@@ -10,4 +10,4 @@ def upgrade(saveddata_engine):
     try:
         saveddata_engine.execute("SELECT mode FROM fits LIMIT 1")
     except sqlalchemy.exc.DatabaseError:
-        saveddata_engine.execute("ALTER TABLE fits ADD COLUMN mode INTEGER")
+        saveddata_engine.execute("ALTER TABLE fits ADD COLUMN modeID INTEGER")

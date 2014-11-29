@@ -66,25 +66,28 @@ class Ship(ItemAttrShortcut, HandledItem):
             if effect.runTime == runTime and effect.isType("passive"):
                 effect.handler(fit, self, ("ship",))
 
-    def checkMode(self, mode):
+    def checkMode(self, item):
         """
-        Checks if provided mode is valid.
+        Checks if provided item is a valid mode.
 
         If ship has modes, and current mode is not valid, return forced mode
         else if mode is valid, return Mode
         else if ship does not have modes, return None
+
+        @todo: rename this
         """
-        modes = self.getValidModes()
-        if modes != None:
-            if mode == None or mode not in modes:
+        items = self.getModeItems()
+
+        if items != None:
+            if item == None or item not in items:
                 # We have a tact dessy, but mode is None or not valid. Force new mode
-                return modes[0]
-            elif mode in modes:
+                return Mode(items[0])
+            elif item in items:
                 # We have a valid mode
-                return mode
+                return Mode(item)
         return None
 
-    def getValidModes(self):
+    def getModeItems(self):
         """Gets valid modes for ship, returns None if not a t3 dessy"""
         # @todo: is there a better way to determine this that isn't hardcoded groupIDs?
         if self.item.groupID != 1305:
@@ -93,13 +96,13 @@ class Ship(ItemAttrShortcut, HandledItem):
         modeGroupID = 1306
         import eos.db
 
-        modes = []
+        items = []
         g = eos.db.getGroup(modeGroupID, eager=("items.icon", "items.attributes"))
         for item in g.items:
             if item.raceID == self.item.raceID:
-                modes.append(Mode(item))
+                items.append(item)
 
-        return modes
+        return items
 
     def __deepcopy__(self, memo):
         copy = Ship(self.item)
