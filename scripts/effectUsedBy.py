@@ -60,13 +60,13 @@ from optparse import OptionParser
 script_dir = os.path.dirname(unicode(__file__, sys.getfilesystemencoding()))
 
 # Form list of effects for processing
-effects_path = os.path.join(script_dir, "..", "pyfa", "eos", "effects")
+effects_path = os.path.join(script_dir, "..", "eos", "effects")
 
 usage = "usage: %prog --database=DB [--debug=DEBUG]"
 parser = OptionParser(usage=usage)
 parser.add_option("-d", "--database", help="path to eve cache data dump in \
-    sqlite format, default to eve database file included in pyfa (../pyfa/staticdata/eve.db)",
-    type="string", default=os.path.join(script_dir, "..", "pyfa", "staticdata", "eve.db"))
+    sqlite format, default to eve database file included in pyfa (../staticdata/eve.db)",
+    type="string", default=os.path.join(script_dir, "..", "staticdata", "eve.db"))
 parser.add_option("-e", "--effects", help="explicit comma-separated list of \
 effects to process", type="string", default="")
 parser.add_option("-r", "--remove", help="remove effect files that are not \

@@ -32,7 +32,7 @@ import sqlite3
 import sys
 
 script_dir = os.path.dirname(__file__)
-default_old = os.path.join(script_dir, "..", "pyfa", "staticdata", "eve.db")
+default_old = os.path.join(script_dir, "..", "staticdata", "eve.db")
 
 def main(old, new, groups=True, effects=True, attributes=True, renames=True):
     # Open both databases and get their cursors
@@ -50,7 +50,7 @@ def main(old, new, groups=True, effects=True, attributes=True, renames=True):
 
     # Initialization of few things used by both changed/renamed effects list
     script_dir = os.path.dirname(__file__)
-    effectspath = os.path.join(script_dir, "..", "pyfa", "eos", "effects")
+    effectspath = os.path.join(script_dir, "..", "eos", "effects")
     implemented = set()
 
     for filename in os.listdir(effectspath):

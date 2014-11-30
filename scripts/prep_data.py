@@ -6,15 +6,13 @@ import os
 # Phobos location
 phb_path = os.path.expanduser("path/to/phobos")
 
-### Append Phobos to path
-sys.path.append(os.path.realpath(phb_path))
-
 import argparse
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-e", "--eve", dest="eve_path", help="Location of EVE directory", required=True)
 parser.add_argument("-c", "--cache", dest="cache_path", help="Location of EVE cache directory. If not specified, an attempt will be make to automatically determine path.")
 parser.add_argument("-d", "--dump", dest="dump_path", help="Location of Phobos JSON dump directory", required=True)
+parser.add_argument("-p", "--phobos", dest="phb_path", help="Location of Phobos, defaults to path noted in script", default=phb_path)
 parser.add_argument("-s", "--singularity", action="store_true", help="Singularity build")
 parser.add_argument("-j", "--nojson", dest="nojson", action="store_true", help="Skip Phobos JSON data dump.")
 
@@ -23,6 +21,9 @@ eve_path = os.path.expanduser(unicode(args.eve_path, sys.getfilesystemencoding()
 cache_path = os.path.expanduser(unicode(args.cache_path, sys.getfilesystemencoding())) if args.cache_path else None
 dump_path = os.path.expanduser(unicode(args.dump_path, sys.getfilesystemencoding()))
 script_path = os.path.dirname(unicode(__file__, sys.getfilesystemencoding()))
+
+### Append Phobos to path
+sys.path.append(os.path.expanduser(unicode(args.phb_path, sys.getfilesystemencoding())))
 
 def header(text, subtext=None):
     print
@@ -82,7 +83,7 @@ jsonToSql.main("sqlite:///"+db_file, dump_path)
 ### Diff generation
 import itemDiff
 diff_file = os.path.join(dump_path, "diff.txt")
-old_db = os.path.join(script_path, "..", "pyfa", "staticdata", "eve.db")
+old_db = os.path.join(script_path, "..", "staticdata", "eve.db")
 
 header("Generating DIFF", diff_file)
 old_stdout = sys.stdout

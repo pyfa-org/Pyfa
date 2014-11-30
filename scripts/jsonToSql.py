@@ -23,7 +23,7 @@ import sys
 
 # Add eos root path to sys.path so we can import ourselves
 path = os.path.dirname(unicode(__file__, sys.getfilesystemencoding()))
-sys.path.append(os.path.realpath(os.path.join(path, "..", "pyfa")))
+sys.path.append(os.path.realpath(os.path.join(path, "..")))
 
 import json
 import argparse
