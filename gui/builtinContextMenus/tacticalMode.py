@@ -2,7 +2,7 @@ import wx
 from gui.contextMenu import ContextMenu
 import gui.mainFrame
 import service
-from gui.shipBrowser import Stage3Selected
+import gui.globalEvents as GE
 
 class TacticalMode(ContextMenu):
     def __init__(self):
@@ -11,37 +11,43 @@ class TacticalMode(ContextMenu):
     def display(self, srcContext, selection):
         sFit = service.Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
-        self.ship = sFit.getFit(fitID).ship
-        self.modeItems = self.ship.getModeItems()
+        ship = sFit.getFit(fitID).ship
+        self.modes = ship.getModes()
 
-        return srcContext == "fittingShip" and self.modeItems is not None
+        return srcContext == "fittingShip" and self.modes is not None
 
     def getText(self, itmContext, selection):
         return "Tactical Modes"
 
-    def addMode(self, rootMenu, item):
-        label = item.name.rsplit()[-2]
+    def addMode(self, rootMenu, mode):
+        label = mode.item.name.rsplit()[-2]
         id = wx.NewId()
-        self.itemIds[id] = item
+        self.modeIds[id] = mode
         menuItem = wx.MenuItem(rootMenu, id, label, kind=wx.ITEM_RADIO)
         rootMenu.Bind(wx.EVT_MENU, self.handleMode, menuItem)
         return menuItem
 
     def getSubMenu(self, context, selection, rootMenu, i, pitem):
         self.context = context
-        self.itemIds = {}
+        self.modeIds = {}
 
-        m = wx.Menu()
+        sub = wx.Menu()
 
-        for item in self.modeItems:
+        for item in self.modes:
             menuItem = self.addMode(rootMenu, item)
-            m.AppendItem(menuItem)
+            sub.AppendItem(menuItem)
 
-        return m
+        return sub
 
     def handleMode(self, event):
-        item = self.itemIds[event.Id]
-        print item
-        # @todo fit service change mode
+        item = self.modeIds[event.Id]
+        if item is False or item not in self.modes:
+            event.Skip()
+            return
+
+        sFit = service.Fit.getInstance()
+        fitID = self.mainFrame.getActiveFit()
+        sFit.setMode(fitID, self.modeIds[event.Id])
+        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
 TacticalMode.register()

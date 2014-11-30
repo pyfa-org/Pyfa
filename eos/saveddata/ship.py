@@ -66,7 +66,7 @@ class Ship(ItemAttrShortcut, HandledItem):
             if effect.runTime == runTime and effect.isType("passive"):
                 effect.handler(fit, self, ("ship",))
 
-    def checkMode(self, item):
+    def checkModeItem(self, item):
         """
         Checks if provided item is a valid mode.
 
@@ -87,8 +87,16 @@ class Ship(ItemAttrShortcut, HandledItem):
                 return Mode(item)
         return None
 
+    def getModes(self):
+        items = self.getModeItems()
+        return [Mode(item) for item in items]
+
     def getModeItems(self):
-        """Gets valid modes for ship, returns None if not a t3 dessy"""
+        """
+        Returns a list of valid mode items for ship. Note that this returns the
+        valid Item objects, not the Mode objects. Returns None if not a
+        t3 dessy
+        """
         # @todo: is there a better way to determine this that isn't hardcoded groupIDs?
         if self.item.groupID != 1305:
             return None

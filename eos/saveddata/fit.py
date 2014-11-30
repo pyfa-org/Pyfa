@@ -101,7 +101,7 @@ class Fit(object):
         self.extraAttributes.original = self.EXTRA_ATTRIBUTES
         self.ship = Ship(db.getItem(self.shipID)) if self.shipID is not None else None
         if self.ship is not None and self.modeID is not None:
-            self._mode = self.ship.checkMode(db.getItem(self.modeID))
+            self._mode = self.ship.checkModeItem(db.getItem(self.modeID))
         else:
             self._mode = None
 

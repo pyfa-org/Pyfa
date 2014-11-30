@@ -719,6 +719,16 @@ class Fit(object):
 
         self.recalc(fit)
 
+    def setMode(self, fitID, mode):
+        if fitID is None:
+            return
+
+        fit = eos.db.getFit(fitID)
+        fit.mode = mode
+        eos.db.commit()
+
+        self.recalc(fit)
+
     def setAsPattern(self, fitID, ammo):
         if fitID is None:
             return
