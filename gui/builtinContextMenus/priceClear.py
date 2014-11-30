@@ -9,7 +9,7 @@ class PriceClear(ContextMenu):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     def display(self, srcContext, selection):
-        return "priceViewFull" in srcContext
+        return srcContext == "priceViewFull"
 
     def getText(self, itmContext, selection):
         return "Reset Price Cache"

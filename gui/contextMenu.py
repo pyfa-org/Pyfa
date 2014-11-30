@@ -21,29 +21,47 @@ import wx
 
 class ContextMenu(object):
     menus = []
+
     @classmethod
     def register(cls):
         ContextMenu.menus.append(cls)
 
     @classmethod
     def getMenu(cls, selection, *fullContexts):
-        menu = wx.Menu()
-        menu.info = {}
-        menu.selection = selection
+        """
+        getMenu returns a menu that is used with wx.PopupMenu.
+
+        selection: provides a list of what was selected. If only 1 item was
+            selected, it's is a 1-item list or tuple. Can also be None for
+            contexts without selection, such as statsPane or projected view
+        fullContexts: a number of tuples of the following tuple:
+            srcContext - context were menu was spawned, eg: projectedFit,
+                         cargoItem, etc
+            itemContext - usually the name of the item's category
+
+            eg:
+                (('fittingModule', 'Module'), ('fittingShip', 'Ship'))
+                (('marketItemGroup', 'Implant'),)
+                (('fittingShip', 'Ship'),)
+        """
+
+        rootMenu = wx.Menu()
+        rootMenu.info = {}
+        rootMenu.selection = (selection,) if not hasattr(selection, "__iter__") else selection
         empty = True
-        menu.Bind(wx.EVT_MENU, cls.handler)
         for i, fullContext in enumerate(fullContexts):
             amount = 0
             srcContext = fullContext[0]
             try:
-                itmContext = fullContext[1]
+                itemContext = fullContext[1]
             except IndexError:
-                itmContext = None
+                itemContext = None
             for menuHandler in cls.menus:
+                # loop through registered menus
                 m = menuHandler()
                 if m.display(srcContext, selection):
                     amount += 1
-                    texts = m.getText(itmContext, selection)
+                    texts = m.getText(itemContext, selection)
                     if isinstance(texts, basestring):
                         texts = (texts,)
 
@@ -51,54 +69,72 @@ class ContextMenu(object):
                     multiple = not isinstance(bitmap, wx.Bitmap)
                     for it, text in enumerate(texts):
                         id = wx.NewId()
-                        item = wx.MenuItem(menu, id, text)
-                        menu.info[id] = (m, fullContext, it)
+                        rootItem = wx.MenuItem(rootMenu, id, text)
+                        rootMenu.info[id] = (m, fullContext, it)
 
-                        sub = m.getSubMenu(srcContext, selection, menu, it, item)
-                        if sub is not None:
-                            item.SetSubMenu(sub)
+                        sub = m.getSubMenu(srcContext, selection, rootMenu, it, rootItem)
+                        if sub is None:
+                            # if there is no sub menu, bind the handler to the rootItem
+                            rootMenu.Bind(wx.EVT_MENU, cls.handler, rootItem)
+                        else:
+                            # If there is a submenu, it is expected that the sub
+                            # logic take care of it's own binding. No binding is
+                            # done here
+                            #
+                            # It is important to remember that when binding sub
+                            # menu items, bind them to the rootMenu for proper
+                            # event handling, eg:
+                            #    rootMenu.Bind(wx.EVE_MENU, self.handle, menuItem)
+                            rootItem.SetSubMenu(sub)
 
                         if bitmap is not None:
                             if multiple:
                                 bp = bitmap[it]
                                 if bp:
-                                    item.SetBitmap(bp)
+                                    rootItem.SetBitmap(bp)
                             else:
-                                item.SetBitmap(bitmap)
+                                rootItem.SetBitmap(bitmap)
 
-                        menu.AppendItem(item)
+                        rootMenu.AppendItem(rootItem)
 
                     empty = False
 
             if amount > 0 and i != len(fullContexts) - 1:
-                menu.AppendSeparator()
+                rootMenu.AppendSeparator()
 
-        return menu if empty is False else None
+        return rootMenu if empty is False else None
 
     @classmethod
     def handler(cls, event):
         menu = event.EventObject
         stuff = menu.info.get(event.Id)
         if stuff is not None:
-            m, context, i = stuff
+            menuHandler, context, i = stuff
             selection = menu.selection
             if not hasattr(selection, "__iter__"):
                 selection = (selection,)
 
-            m.activate(context, selection, i)
+            menuHandler.activate(context, selection, i)
         else:
             event.Skip()
 
     def display(self, context, selection):
         raise NotImplementedError()
 
-    def activate(self, context, selection, i):
+    def activate(self, fullContext, selection, i):
         return None
 
-    def getSubMenu(self, context, selection, menu, i, pitem):
+    def getSubMenu(self, context, selection, rootMenu, i, pitem):
         return None
 
     def getText(self, context, selection):
+        """
+        getText should be implemented in child classes, and should return either
+        a string that will make up a menu item label or a list of strings which
+        will make numerous menu items.
+
+        These menu items will be added to the root menu
+        """
         raise NotImplementedError()
 
     def getBitmap(self, context, selection):

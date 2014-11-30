@@ -33,7 +33,7 @@ class ModuleGlobalAmmoPicker(ModuleAmmoPicker):
         selectedModule = self.modules[0]
         allModules = []
         for mod in fit.modules:
-            if mod.itemID == None:
+            if mod.itemID is None:
                 continue
             if mod.itemID == selectedModule.itemID:
                 allModules.append(mod)

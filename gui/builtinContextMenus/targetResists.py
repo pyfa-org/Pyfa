@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from gui.contextMenu import ContextMenu
 import gui.mainFrame
 import service
@@ -17,20 +15,17 @@ class TargetResists(ContextMenu):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     def display(self, srcContext, selection):
-        if self.mainFrame.getActiveFit() is None or srcContext not in ("firepowerViewFull",):
+        if self.mainFrame.getActiveFit() is None or srcContext != "firepowerViewFull":
             return False
 
         sTR = service.TargetResists.getInstance()
         self.patterns = sTR.getTargetResistsList()
-        self.patterns.sort( key=lambda p: (p.name in ["None"], p.name) )
+        self.patterns.sort(key=lambda p: (p.name in ["None"], p.name))
 
         return len(self.patterns) > 0
 
     def getText(self, itmContext, selection):
         return "Target Resists"
-
-    def activate(self, fullContext, selection, i):
-        pass
 
     def handleResistSwitch(self, event):
         pattern = self.patternIds.get(event.Id, False)
@@ -43,12 +38,14 @@ class TargetResists(ContextMenu):
         sFit.setTargetResists(fitID, pattern)
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
-    def addPattern(self, menu, pattern, currBase = None):
+    def addPattern(self, rootMenu, pattern):
         id = wx.NewId()
         name = getattr(pattern, "_name", pattern.name) if pattern is not None else "No Profile"
 
         self.patternIds[id] = pattern
-        item = wx.MenuItem(menu, id, name)
+        item = wx.MenuItem(rootMenu, id, name)
+        rootMenu.Bind(wx.EVT_MENU, self.handleResistSwitch, item)
+
         # set pattern attr to menu item
         item.pattern = pattern
 
@@ -63,21 +60,12 @@ class TargetResists(ContextMenu):
             item.SetBitmap(bitmap)
         return item
 
-    def addSeperator(self, m, text):
-        id = wx.NewId()
-        m.Append(id, u'─ %s ─' % text)
-        m.Enable(id, False)
-
-    def getSubMenu(self, context, selection, menu, i, pitem):
-        self.context = context
-        menu.Bind(wx.EVT_MENU, self.handleResistSwitch)
-        m = wx.Menu()
-        m.Bind(wx.EVT_MENU, self.handleResistSwitch)
+    def getSubMenu(self, context, selection, rootMenu, i, pitem):
         self.patternIds = {}
-
         self.subMenus = OrderedDict()
         self.singles  = []
 
+        sub = wx.Menu()
         for pattern in self.patterns:
             start, end = pattern.name.find('['), pattern.name.find(']')
             if start is not -1 and end is not -1:
@@ -90,30 +78,30 @@ class TargetResists(ContextMenu):
             else:
                 self.singles.append(pattern)
 
-        m.AppendItem(self.addPattern(m, None))  # Add reset
-        m.AppendSeparator()
+        sub.AppendItem(self.addPattern(rootMenu, None))  # Add reset
+        sub.AppendSeparator()
 
         # Single items, no parent
         for pattern in self.singles:
-            m.AppendItem(self.addPattern(m, pattern))
+            sub.AppendItem(self.addPattern(rootMenu, pattern))
 
         # Items that have a parent
         for menuName, patterns in self.subMenus.items():
             # Create parent item for root menu that is simply name of parent
-            item = wx.MenuItem(menu, wx.NewId(), menuName)
+            item = wx.MenuItem(rootMenu, wx.NewId(), menuName)
 
             # Create menu for child items
-            sub = wx.Menu()
-            sub.Bind(wx.EVT_MENU, self.handleResistSwitch)
+            grandSub = wx.Menu()
+            #sub.Bind(wx.EVT_MENU, self.handleResistSwitch)
 
             # Apply child menu to parent item
-            item.SetSubMenu(sub)
+            item.SetSubMenu(grandSub)
 
             # Append child items to child menu
             for pattern in patterns:
-                sub.AppendItem(self.addPattern(sub, pattern))
-            m.AppendItem(item)  #finally, append parent item to root menu
+                grandSub.AppendItem(self.addPattern(rootMenu, pattern))
+            sub.AppendItem(item)  #finally, append parent item to root menu
 
-        return m
+        return sub
 
 TargetResists.register()
