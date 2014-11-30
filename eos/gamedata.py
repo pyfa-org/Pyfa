@@ -28,7 +28,7 @@ import traceback
 try:
     from collections import OrderedDict
 except ImportError:
-    from gui.utils.compat import OrderedDict
+    from utils.compat import OrderedDict
 
 class Effect(EqBase):
     '''
@@ -325,9 +325,7 @@ class Item(EqBase):
         return False
 
 class MetaData(EqBase):
-    def __init__(self, name, val=None):
-        self.fieldName = name
-        self.fieldValue = val
+    pass
 
 class EffectInfo(EqBase):
     pass
