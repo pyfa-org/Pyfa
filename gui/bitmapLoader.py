@@ -25,7 +25,7 @@ import time
 try:
     from collections import OrderedDict
 except ImportError:
-    from gui.utils.compat import OrderedDict
+    from utils.compat import OrderedDict
 
 cachedBitmapsCount = 0
 cachedBitmaps = OrderedDict()

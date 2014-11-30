@@ -27,7 +27,7 @@ import service
 try:
     from collections import OrderedDict
 except ImportError:
-    from gui.utils.compat import OrderedDict
+    from utils.compat import OrderedDict
 
 FIT_WIN_HEADINGS = ["High power", "Medium power", "Low power", "Rig Slot", "Sub System", "Charges"]
 EFT_SLOT_ORDER = [Slot.LOW, Slot.MED, Slot.HIGH, Slot.RIG, Slot.SUBSYSTEM]
