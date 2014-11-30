@@ -5,8 +5,10 @@ import os.path
 import re
 import sqlite3
 
+script_dir = os.path.dirname(unicode(__file__, sys.getfilesystemencoding()))
+
 # Connect to database and set up cursor
-db = sqlite3.connect(os.path.join("..", "..", "..", "staticdata", "eve.db"))
+db = sqlite3.connect(os.path.join(script_dir, "..", "pyfa", "staticdata", "eve.db"))
 cursor = db.cursor()
 
 # Queries to get raw data

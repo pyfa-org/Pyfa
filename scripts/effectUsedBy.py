@@ -57,11 +57,16 @@ import re
 import sqlite3
 from optparse import OptionParser
 
+script_dir = os.path.dirname(unicode(__file__, sys.getfilesystemencoding()))
+
+# Form list of effects for processing
+effects_path = os.path.join(script_dir, "..", "pyfa", "eos", "effects")
+
 usage = "usage: %prog --database=DB [--debug=DEBUG]"
 parser = OptionParser(usage=usage)
 parser.add_option("-d", "--database", help="path to eve cache data dump in \
-sqlite format, default pyfa database path is used if none specified",
-type="string", default=os.path.join("~", ".pyfa","eve.db"))
+    sqlite format, default to eve database file included in pyfa (../pyfa/staticdata/eve.db)",
+    type="string", default=os.path.join(script_dir, "..", "pyfa", "staticdata", "eve.db"))
 parser.add_option("-e", "--effects", help="explicit comma-separated list of \
 effects to process", type="string", default="")
 parser.add_option("-r", "--remove", help="remove effect files that are not \
@@ -379,8 +384,6 @@ for typeid in publishedtypes:
                 (set(), len(typenamesplitted))
             globalmap_typeid_typenamecombtuple[typeid][0].add(typenamecomb)
 
-# Form list of effects for processing
-effects_path = os.path.join("..", "..", "effects")
 if options.effects:
     effect_list = options.effects.split(",")
 else:
