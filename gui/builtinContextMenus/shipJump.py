@@ -9,10 +9,7 @@ class ShipJump(ContextMenu):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     def display(self, srcContext, selection):
-        validContexts = ("fittingShip")
-        if not srcContext in validContexts:
-            return False
-        return True
+        return srcContext == "fittingShip"
 
     def getText(self, itmContext, selection):
         return "Open in Ship Browser"

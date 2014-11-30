@@ -14,29 +14,27 @@ class WhProjector(ContextMenu):
     def getText(self, itmContext, selection):
         return "Add System Effects"
 
-    def activate(self, fullContext, selection, i):
-        pass
-
-    def getSubMenu(self, context, selection, menu, i, pitem):
-        self.idmap = {}
-        menu.Bind(wx.EVT_MENU, self.handleSelection)
-        m = wx.Menu()
+    def getSubMenu(self, context, selection, rootMenu, i, pitem):
         sMkt = service.Market.getInstance()
         effdata = sMkt.getSystemWideEffects()
+
+        self.idmap = {}
+        sub = wx.Menu()
+
         for swType in sorted(effdata):
-            item = wx.MenuItem(m, wx.ID_ANY, swType)
-            sub = wx.Menu()
-            sub.Bind(wx.EVT_MENU, self.handleSelection)
-            item.SetSubMenu(sub)
-            m.AppendItem(item)
+            subItem = wx.MenuItem(sub, wx.ID_ANY, swType)
+            grandSub = wx.Menu()
+            subItem.SetSubMenu(grandSub)
+            sub.AppendItem(subItem)
+
             for swData in sorted(effdata[swType], key=lambda tpl: tpl[2]):
                 wxid = wx.NewId()
                 swObj, swName, swClass = swData
                 self.idmap[wxid] = (swObj, swName)
-                subitem = wx.MenuItem(sub, wxid, swClass)
-                sub.AppendItem(subitem)
-        return m
-
+                grandSubItem = wx.MenuItem(grandSub, wxid, swClass)
+                rootMenu.Bind(wx.EVT_MENU, self.handleSelection, grandSubItem)
+                grandSub.AppendItem(grandSubItem)
+        return sub
 
     def handleSelection(self, event):
         #Skip events ids that aren't mapped

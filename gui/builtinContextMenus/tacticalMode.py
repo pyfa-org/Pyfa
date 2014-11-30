@@ -12,36 +12,36 @@ class TacticalMode(ContextMenu):
         sFit = service.Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
         self.ship = sFit.getFit(fitID).ship
-        self.modes = self.ship.getValidModes()
+        self.modeItems = self.ship.getModeItems()
 
-        if not srcContext in ("fittingShip") or self.modes is None:
-            return False
-
-        return True
+        return srcContext == "fittingShip" and self.modeItems is not None
 
     def getText(self, itmContext, selection):
-        return "Modes"
+        return "Tactical Modes"
 
-    def handleModeChange(self, event):
-        mode = self.modeIds[event.Id]
-        print mode
-        # @todo fit service change mode
-
-    def addMode(self, menu, mode):
-        label = mode.item.name.rsplit()[-2]
+    def addMode(self, rootMenu, item):
+        label = item.name.rsplit()[-2]
         id = wx.NewId()
-        self.modeIds[id] = mode
-        menuItem = wx.MenuItem(menu, id, label, kind=wx.ITEM_CHECK)
-        menu.Bind(wx.EVT_MENU, self.handleModeChange, menuItem)
+        self.itemIds[id] = item
+        menuItem = wx.MenuItem(rootMenu, id, label, kind=wx.ITEM_RADIO)
+        rootMenu.Bind(wx.EVT_MENU, self.handleMode, menuItem)
         return menuItem
 
-    def getSubMenu(self, context, selection, menu, i, pitem):
-        sub = wx.Menu()
-        self.modeIds = {}
-        # Items that have a parent
-        for mode in self.modes:
-            sub.AppendItem(self.addMode(sub, mode))
+    def getSubMenu(self, context, selection, rootMenu, i, pitem):
+        self.context = context
+        self.itemIds = {}
 
-        return sub
+        m = wx.Menu()
+
+        for item in self.modeItems:
+            menuItem = self.addMode(rootMenu, item)
+            m.AppendItem(menuItem)
+
+        return m
+
+    def handleMode(self, event):
+        item = self.itemIds[event.Id]
+        print item
+        # @todo fit service change mode
 
 TacticalMode.register()

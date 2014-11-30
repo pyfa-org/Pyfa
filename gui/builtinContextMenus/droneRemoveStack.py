@@ -15,7 +15,6 @@ class ItemRemove(ContextMenu):
         return "Remove {0} Stack".format(itmContext)
 
     def activate(self, fullContext, selection, i):
-        srcContext = fullContext[0]
         sFit = service.Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
         fit = sFit.getFit(fitID)

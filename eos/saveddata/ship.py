@@ -70,7 +70,7 @@ class Ship(ItemAttrShortcut, HandledItem):
         """
         Checks if provided item is a valid mode.
 
-        If ship has modes, and current mode is not valid, return forced mode
+        If ship has modes, and current item is not valid, return forced mode
         else if mode is valid, return Mode
         else if ship does not have modes, return None
 
