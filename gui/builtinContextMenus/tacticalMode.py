@@ -11,13 +11,14 @@ class TacticalMode(ContextMenu):
     def display(self, srcContext, selection):
         sFit = service.Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
-        ship = sFit.getFit(fitID).ship
-        self.modes = ship.getModes()
+        fit = sFit.getFit(fitID)
+        self.modes = fit.ship.getModes()
+        self.currMode = fit.mode
 
         return srcContext == "fittingShip" and self.modes is not None
 
     def getText(self, itmContext, selection):
-        return "Tactical Modes"
+        return "Tactical Mode"
 
     def addMode(self, rootMenu, mode):
         label = mode.item.name.rsplit()[-2]
@@ -33,9 +34,10 @@ class TacticalMode(ContextMenu):
 
         sub = wx.Menu()
 
-        for item in self.modes:
-            menuItem = self.addMode(rootMenu, item)
+        for mode in self.modes:
+            menuItem = self.addMode(rootMenu, mode)
             sub.AppendItem(menuItem)
+            menuItem.Check(self.currMode.item == mode.item)
 
         return sub
 
