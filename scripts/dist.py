@@ -14,6 +14,7 @@ import datetime
 import random
 import string
 import zipfile
+from subprocess import call
 
 class FileStub():
     def write(self, *args):
@@ -31,7 +32,7 @@ def zipdir(path, zip):
             zip.write(os.path.join(root, file))
 
 skels = ['win', 'mac', 'src']
-# todo: iscc =  "C:\Program Files\Inno Setup 5\ISCC.exe" # inno script location via wine
+iscc =  "C:\Program Files (x86)\Inno Setup 5\ISCC.exe" # inno script location via wine
 
 if __name__ == "__main__":
     oldstd = sys.stdout
@@ -42,7 +43,7 @@ if __name__ == "__main__":
     parser.add_option("-p", "--platforms", dest="platforms", help="Comma-separated list of platforms to build", default="win,src,mac")
     parser.add_option("-t", "--static", dest="static", help="Directory containing static files")
     parser.add_option("-q", "--quiet", dest="silent", action="store_true")
-    #parser.add_option("-w", "--win-exe", dest="win-exe", action="store_true", help="Build the Windows installer file (needs Inno Setup)")
+    parser.add_option("-w", "--winexe", dest="winexe", action="store_true", help="Build the Windows installer file (needs Inno Setup)")
     parser.add_option("-z", "--zip", dest="zip", action="store_true", help="zip archive instead of tar")
 
     options, args = parser.parse_args()
@@ -69,14 +70,17 @@ if __name__ == "__main__":
         skeleton = os.path.expanduser(os.path.join(options.skeleton, skel))
         info = execfile(os.path.join(skeleton, "info.py"), infoDict)
         dirName = infoDict["arcname"]
-
+        nowdt = datetime.datetime.now()
+        now = "%04d%02d%02d" % (nowdt.year, nowdt.month, nowdt.day)
+        git = False
         if pyfaconfig.tag.lower() == "git":
             try: # if there is a git repo associated with base, use master commit
                 with open(os.path.join(options.base,"..",".git","refs","heads","master"), 'r') as f:
                     id = f.readline()[0:6]
+                    git = True
             except: # else, use custom ID
                 id = id_generator()
-            fileName = "pyfa-%s-%s" % (id, infoDict["os"])
+            fileName = "pyfa-%s-%s-%s" % (now, id, infoDict["os"])
         else:
             fileName = "pyfa-%s-%s-%s-%s" % (pyfaconfig.version, pyfaconfig.expansionName.lower(), pyfaconfig.expansionVersion, infoDict["os"])
 
@@ -141,6 +145,30 @@ if __name__ == "__main__":
             print "Moving archive to ", destination
             shutil.move(tmpFile, destination)
 
+            if "win" in skel and options.winexe:
+                print "Compiling EXE"
+
+                if pyfaconfig.tag.lower() == "git":
+                    if git:   # if git repo info available, use git commit
+                        expansion = "git-%s"%(id)
+                    else: # if there is no git repo, use timestamp
+                        expansion = now
+                else: # if code is Stable, use expansion name
+                   expansion = "%s %s"%(pyfaconfig.expansionName, pyfaconfig.expansionVersion),
+
+                calllist = ["wine"] if 'win' not in sys.platform else []
+
+                call(calllist + [
+                    iscc,
+                    os.path.join(os.path.dirname(__file__), "pyfa-setup.iss"),
+                    "/dMyAppVersion=%s"%(pyfaconfig.version),
+                    "/dMyAppExpansion=%s"%(expansion),
+                    "/dMyAppDir=%s"%dst,
+                    "/dMyOutputDir=%s"%destination,
+                    "/dMyOutputFile=%s"%fileName]) #stdout=devnull, stderr=devnull
+
+                print "EXE completed"
+                
         except Exception as e:
             print "Encountered an error: \n\t", e
             raise
