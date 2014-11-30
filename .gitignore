@@ -11,8 +11,12 @@
 
 #Patch files
 *.patch
+
 #Personal
-/saveddata
+saveddata/
+
+#PyCharm
+.idea/
 
 #Pyfa file
 pyfaFits.html
