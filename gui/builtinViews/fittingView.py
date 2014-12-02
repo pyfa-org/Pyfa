@@ -419,6 +419,13 @@ class FittingView(d.Display):
                 for i, (x, slot) in enumerate(self.blanks):
                     self.blanks[i] = x+i # modify blanks with actual index
                     self.mods.insert(x+i, Rack.buildRack(slot))
+
+                if fit.mode:
+                    # Modes are special snowflakes and need a little more love
+                    # Manually add mode separator and modes at the end of the modules
+                    self.blanks.append(len(self.mods))
+                    self.mods.insert(len(self.mods), Rack.buildRack(Slot.MODE))
+                    self.mods.insert(len(self.mods), fit.mode)
         else:
             self.mods = None
 
@@ -544,7 +551,7 @@ class FittingView(d.Display):
 
         font = (self.GetClassDefaultAttributes()).font
         for i, mod in enumerate(self.mods):
-            if slotMap[mod.slot]:
+            if hasattr(mod,"slot") and slotMap[mod.slot]:
                 self.SetItemBackgroundColour(i, wx.Colour(204, 51, 51))
             elif sFit.serviceFittingOptions["colorFitBySlot"] and not isinstance(mod, Rack):
                 self.SetItemBackgroundColour(i, self.slotColour(mod.slot))
