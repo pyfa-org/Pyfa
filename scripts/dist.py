@@ -86,7 +86,7 @@ if __name__ == "__main__":
         git = False
         if pyfaconfig.tag.lower() == "git":
             try: # if there is a git repo associated with base, use master commit
-                with open(os.path.join(options.base,"..",".git","refs","heads","master"), 'r') as f:
+                with open(os.path.join(options.base,".git","refs","heads","master"), 'r') as f:
                     id = f.readline()[0:6]
                     git = True
             except: # else, use custom ID
