@@ -62,12 +62,13 @@ class Miscellanea(ViewColumn):
         return (("displayName", bool, False),
                 ("showIcon", bool, True))
 
-
     def __getData(self, stuff):
         item = stuff.item
         if item is None:
             return "", None
         itemGroup = item.group.name
+        itemCategory = item.category.name
+
         if itemGroup in ("Energy Weapon", "Hybrid Weapon", "Projectile Weapon", "Combat Drone", "Fighter Drone"):
             trackingSpeed = stuff.getModifiedItemAttr("trackingSpeed")
             if not trackingSpeed:
@@ -75,6 +76,14 @@ class Miscellanea(ViewColumn):
             text = "{0}".format(formatAmount(trackingSpeed, 3, 0, 3))
             tooltip = "Tracking speed"
             return text, tooltip
+        elif itemCategory == "Subsystem":
+            slots = ("hi", "med", "low")
+            info = []
+            for slot in slots:
+                n = int(stuff.getModifiedItemAttr("%sSlotModifier"%slot))
+                if n > 0:
+                    info.append("{0}{1}".format(n, slot[0].upper()))
+            return "+ "+", ".join(info), "Slot Modifiers"
         elif itemGroup == "Energy Destabilizer":
             neutAmount = stuff.getModifiedItemAttr("energyDestabilizationAmount")
             cycleTime = stuff.cycleTime
