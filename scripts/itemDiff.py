@@ -42,7 +42,10 @@ def main(old, new, groups=True, effects=True, attributes=True, renames=True):
     new_cursor = new_db.cursor()
 
     # Force some of the items to make them published
-    FORCEPUB_TYPES = ("Ibis", "Impairor", "Velator", "Reaper")
+    FORCEPUB_TYPES = ("Ibis", "Impairor", "Velator", "Reaper",
+    "Amarr Tactical Destroyer Propulsion Mode",
+    "Amarr Tactical Destroyer Sharpshooter Mode",
+    "Amarr Tactical Destroyer Defense Mode")
     OVERRIDES_TYPEPUB = 'UPDATE invtypes SET published = 1 WHERE typeName = ?'
     for typename in FORCEPUB_TYPES:
         old_cursor.execute(OVERRIDES_TYPEPUB, (typename,))
@@ -211,7 +214,7 @@ def main(old, new, groups=True, effects=True, attributes=True, renames=True):
                 # Initialize container for the data for each item with empty stuff besides groupID
                 dictionary[itemid] = [groupID, set(), {}]
             # Add items filtered by group
-            query = 'SELECT it.typeID, it.groupID FROM invtypes AS it INNER JOIN invgroups AS ig ON it.groupID = ig.groupID WHERE it.published = 1 AND ig.groupName IN ("Effect Beacon")'
+            query = 'SELECT it.typeID, it.groupID FROM invtypes AS it INNER JOIN invgroups AS ig ON it.groupID = ig.groupID WHERE it.published = 1 AND ig.groupName IN ("Effect Beacon", "Ship Modifiers")'
             cursor.execute(query)
             for row in cursor:
                 itemid = row[0]

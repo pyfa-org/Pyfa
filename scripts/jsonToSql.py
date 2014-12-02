@@ -143,15 +143,17 @@ def main(db, json_path):
             tableData = convertTraits(tableData)
         data[jsonName] = tableData
 
+    # 1306 - group Ship Modifiers, for items like tactical t3 ship modes
+
     # Do some preprocessing to make our job easier
     invTypes = set()
     for row in data["invtypes"]:
-        if row["published"]:
+        if (row["published"] or row['groupID'] == 1306):
             invTypes.add(row["typeID"])
 
     # ignore checker
     def isIgnored(file, row):
-        if file == "invtypes" and not row["published"]:
+        if file == "invtypes" and not (row["published"] or row['groupID'] == 1306):
             return True
         elif file == "dgmtypeeffects" and not row["typeID"] in invTypes:
             return True
