@@ -147,6 +147,7 @@ class Fit(object):
     def newFit(self, shipID, name=None):
         fit = eos.types.Fit()
         fit.ship = eos.types.Ship(eos.db.getItem(shipID))
+        fit.mode = fit.ship.checkModeItem(None)
         fit.name = name if name is not None else "New %s" % fit.ship.item.name
         fit.damagePattern = self.pattern
         fit.targetResists = self.targetResists
