@@ -40,6 +40,10 @@ gamedata_meta = MetaData()
 gamedata_meta.bind = gamedata_engine
 gamedata_session = sessionmaker(bind=gamedata_engine, autoflush=False, expire_on_commit=False)()
 
+config.gamedata_version = gamedata_session.execute(
+        "SELECT `field_value` FROM `metadata` WHERE `field_name` LIKE 'client_build'"
+    ).fetchone()[0]
+
 saveddata_connectionstring = config.saveddata_connectionstring
 if saveddata_connectionstring is not None:
     if callable(saveddata_connectionstring):
@@ -75,3 +79,4 @@ if config.saveddata_connectionstring == "sqlite:///:memory:":
 def rollback():
     with sd_lock:
         saveddata_session.rollback()
+

@@ -290,6 +290,7 @@ class MainFrame(wx.Frame):
         event.Skip()
 
     def ShowAboutBox(self, evt):
+        import eos.config
         info = wx.AboutDialogInfo()
         info.Name = "pyfa"
         info.Version = gui.aboutData.versionString
@@ -299,7 +300,8 @@ class MainFrame(wx.Frame):
                                      "\n\t".join(gui.aboutData.credits) +
                                      "\n\nLicenses:\n\t" +
                                      "\n\t".join(gui.aboutData.licenses) +
-                                     "\n\nPython: \t" + sys.version +
+                                     "\n\nEVE Data: \t" + eos.config.gamedata_version +
+                                     "\nPython: \t" + sys.version +
                                      "\nwxPython: \t" + wx.__version__ +
                                      "\nSQLAlchemy: \t" + sqlalchemy.__version__,
             700, wx.ClientDC(self))
