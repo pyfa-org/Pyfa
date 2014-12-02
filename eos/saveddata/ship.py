@@ -89,7 +89,7 @@ class Ship(ItemAttrShortcut, HandledItem):
 
     def getModes(self):
         items = self.getModeItems()
-        return [Mode(item) for item in items]
+        return [Mode(item) for item in items] if items else None
 
     def getModeItems(self):
         """
