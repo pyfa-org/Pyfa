@@ -403,6 +403,10 @@ class FittingView(d.Display):
             self.mods = fit.modules[:]
             self.mods.sort(key=lambda mod: (slotOrder.index(mod.slot), mod.position))
 
+            # Blanks is a list of indexes that mark non-module positions (such
+            # as Racks and tactical Modes. This allows us to skip over common
+            # module operations such as swapping, removing, copying, etc. that
+            # would otherwise cause complications
             self.blanks = []   # preliminary markers where blanks will be inserted
 
             if sFit.serviceFittingOptions["rackSlots"]:
@@ -421,11 +425,13 @@ class FittingView(d.Display):
                     self.mods.insert(x+i, Rack.buildRack(slot))
 
                 if fit.mode:
-                    # Modes are special snowflakes and need a little more love
-                    # Manually add mode separator and modes at the end of the modules
+                    # Modes are special snowflakes and need a little manual loving
+                    # We basically append the Mode rack and Mode to the modules
+                    # while also marking their positions in the Blanks list
                     self.blanks.append(len(self.mods))
-                    self.mods.insert(len(self.mods), Rack.buildRack(Slot.MODE))
-                    self.mods.insert(len(self.mods), fit.mode)
+                    self.mods.append(Rack.buildRack(Slot.MODE))
+                    self.blanks.append(len(self.mods))
+                    self.mods.append(fit.mode)
         else:
             self.mods = None
 
@@ -464,7 +470,7 @@ class FittingView(d.Display):
         sel = self.GetFirstSelected()
         contexts = []
 
-        while sel != -1:
+        while sel != -1 and sel not in self.blanks:
             mod = self.mods[self.GetItemData(sel)]
             if not mod.isEmpty:
                 srcContext = "fittingModule"
@@ -558,7 +564,10 @@ class FittingView(d.Display):
             else:
                 self.SetItemBackgroundColour(i, self.GetBackgroundColour())
 
-            if i in self.blanks and sFit.serviceFittingOptions["rackSlots"] and sFit.serviceFittingOptions["rackLabels"]:
+            # Set rack face to bold
+            if isinstance(mod, Rack) and \
+                    sFit.serviceFittingOptions["rackSlots"] and \
+                    sFit.serviceFittingOptions["rackLabels"]:
                 font.SetWeight(wx.FONTWEIGHT_BOLD)
                 self.SetItemFont(i, font)
             else:
