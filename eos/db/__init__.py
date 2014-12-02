@@ -40,9 +40,14 @@ gamedata_meta = MetaData()
 gamedata_meta.bind = gamedata_engine
 gamedata_session = sessionmaker(bind=gamedata_engine, autoflush=False, expire_on_commit=False)()
 
-config.gamedata_version = gamedata_session.execute(
-        "SELECT `field_value` FROM `metadata` WHERE `field_name` LIKE 'client_build'"
-    ).fetchone()[0]
+# This should be moved elsewhere, maybe as an actual query. Current, without try-except, it breaks when making a new
+# game db because we haven't reached gamedata_meta.create_all()
+try:
+    config.gamedata_version = gamedata_session.execute(
+            "SELECT `field_value` FROM `metadata` WHERE `field_name` LIKE 'client_build'"
+        ).fetchone()[0]
+except:
+    config.gamedata_version = None
 
 saveddata_connectionstring = config.saveddata_connectionstring
 if saveddata_connectionstring is not None:
