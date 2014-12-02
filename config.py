@@ -8,7 +8,7 @@ except ImportError:
     configforced = None
 
 # Turns on debug mode
-debug = True
+debug = False
 # Defines if our saveddata will be in pyfa root or not
 saveInRoot = False
 
