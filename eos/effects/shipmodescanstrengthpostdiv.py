@@ -1,4 +1,4 @@
 type = "passive"
 def handler(fit, module, context):
-    fit.ship.multiplyItemAttr("agility", 1/module.getModifiedItemAttr("modeAgilityPostDiv"),
+    fit.ship.multiplyItemAttr("scanRadarStrength", 1/module.getModifiedItemAttr("modeRadarStrengthPostDiv"),
                            stackingPenalties = True, penaltyGroup="postDiv")
