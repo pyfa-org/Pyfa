@@ -80,6 +80,7 @@ class Fit(object):
         self.__minerYield = None
         self.__weaponVolley = None
         self.__droneDPS = None
+        self.__droneVolley = None
         self.__droneYield = None
         self.__sustainableTank = None
         self.__effectiveSustainableTank = None
@@ -109,6 +110,7 @@ class Fit(object):
         self.__weaponDPS = None
         self.__weaponVolley = None
         self.__droneDPS = None
+        self.__droneVolley = None
 
     @property
     def damagePattern(self):
@@ -191,8 +193,19 @@ class Fit(object):
         return self.__droneDPS
 
     @property
+    def droneVolley(self):
+        if self.__droneVolley is None:
+            self.calculateWeaponStats()
+
+        return self.__droneVolley
+
+    @property
     def totalDPS(self):
         return self.droneDPS + self.weaponDPS
+
+    @property
+    def totalVolley(self):
+        return self.droneVolley + self.weaponVolley
 
     @property
     def minerYield(self):
@@ -279,6 +292,7 @@ class Fit(object):
         self.__effectiveSustainableTank = None
         self.__sustainableTank = None
         self.__droneDPS = None
+        self.__droneVolley = None
         self.__droneYield = None
         self.__ehp = None
         self.__calculated = False
@@ -821,6 +835,7 @@ class Fit(object):
         weaponDPS = 0
         droneDPS = 0
         weaponVolley = 0
+        droneVolley = 0
 
         for mod in self.modules:
             dps, volley = mod.damageStats(self.targetResists)
@@ -828,11 +843,14 @@ class Fit(object):
             weaponVolley += volley
 
         for drone in self.drones:
-            droneDPS += drone.damageStats(self.targetResists)
+            dps, volley = drone.damageStats(self.targetResists)
+            droneDPS += dps
+            droneVolley += volley
 
         self.__weaponDPS = weaponDPS
         self.__weaponVolley = weaponVolley
         self.__droneDPS = droneDPS
+        self.__droneVolley = droneVolley
 
     @property
     def fits(self):
