@@ -36,6 +36,7 @@ class Slot(Enum):
     HIGH = 3
     RIG = 4
     SUBSYSTEM = 5
+    MODE = 6  # not a real slot, need for pyfa display rack separation
 
 class Hardpoint(Enum):
     NONE = 0

@@ -19,7 +19,6 @@
 
 
 import gui.mainFrame
-from gui import builtinViewColumns
 from gui.viewColumn import ViewColumn
 from gui import bitmapLoader
 from gui.utils.numberFormatter import formatAmount
@@ -69,7 +68,9 @@ class Miscellanea(ViewColumn):
         itemGroup = item.group.name
         itemCategory = item.category.name
 
-        if itemGroup in ("Energy Weapon", "Hybrid Weapon", "Projectile Weapon", "Combat Drone", "Fighter Drone"):
+        if itemGroup == "Ship Modifiers":
+            return "", None
+        elif itemGroup in ("Energy Weapon", "Hybrid Weapon", "Projectile Weapon", "Combat Drone", "Fighter Drone"):
             trackingSpeed = stuff.getModifiedItemAttr("trackingSpeed")
             if not trackingSpeed:
                 return "", None
