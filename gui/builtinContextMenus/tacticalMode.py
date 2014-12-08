@@ -9,9 +9,13 @@ class TacticalMode(ContextMenu):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     def display(self, srcContext, selection):
+        if self.mainFrame.getActiveFit() is None or srcContext != "fittingShip":
+            return False
+
         sFit = service.Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
         fit = sFit.getFit(fitID)
+
         self.modes = fit.ship.getModes()
         self.currMode = fit.mode
 
