@@ -70,6 +70,7 @@ class DamagePattern(ContextMenu):
         return menuItem
 
     def getSubMenu(self, context, selection, rootMenu, i, pitem):
+        msw = True if "wxMSW" in wx.PlatformInfo else False
         rootMenu.Bind(wx.EVT_MENU, self.handlePatternSwitch)  # this bit is required for some reason
 
         if self.m[i] not in self.subMenus:
@@ -87,7 +88,7 @@ class DamagePattern(ContextMenu):
 
         # Items that have a parent
         for pattern in self.subMenus[self.m[i]]:
-            sub.AppendItem(self.addPattern(rootMenu, pattern))
+            sub.AppendItem(self.addPattern(rootMenu if msw else sub, pattern))
 
         return sub
 

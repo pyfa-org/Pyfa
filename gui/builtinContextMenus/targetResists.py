@@ -61,6 +61,7 @@ class TargetResists(ContextMenu):
         return item
 
     def getSubMenu(self, context, selection, rootMenu, i, pitem):
+        msw = True if "wxMSW" in wx.PlatformInfo else False
         self.patternIds = {}
         self.subMenus = OrderedDict()
         self.singles  = []
@@ -78,12 +79,12 @@ class TargetResists(ContextMenu):
             else:
                 self.singles.append(pattern)
 
-        sub.AppendItem(self.addPattern(rootMenu, None))  # Add reset
+        sub.AppendItem(self.addPattern(rootMenu if msw else sub, None))  # Add reset
         sub.AppendSeparator()
 
         # Single items, no parent
         for pattern in self.singles:
-            sub.AppendItem(self.addPattern(rootMenu, pattern))
+            sub.AppendItem(self.addPattern(rootMenu if msw else sub, pattern))
 
         # Items that have a parent
         for menuName, patterns in self.subMenus.items():
@@ -99,7 +100,7 @@ class TargetResists(ContextMenu):
 
             # Append child items to child menu
             for pattern in patterns:
-                grandSub.AppendItem(self.addPattern(rootMenu, pattern))
+                grandSub.AppendItem(self.addPattern(rootMenu if msw else grandSub, pattern))
             sub.AppendItem(item)  #finally, append parent item to root menu
 
         return sub

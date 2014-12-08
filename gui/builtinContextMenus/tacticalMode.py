@@ -20,22 +20,23 @@ class TacticalMode(ContextMenu):
     def getText(self, itmContext, selection):
         return "Tactical Mode"
 
-    def addMode(self, rootMenu, mode):
+    def addMode(self, menu, mode):
         label = mode.item.name.rsplit()[-2]
         id = wx.NewId()
         self.modeIds[id] = mode
-        menuItem = wx.MenuItem(rootMenu, id, label, kind=wx.ITEM_RADIO)
-        rootMenu.Bind(wx.EVT_MENU, self.handleMode, menuItem)
+        menuItem = wx.MenuItem(menu, id, label, kind=wx.ITEM_RADIO)
+        menu.Bind(wx.EVT_MENU, self.handleMode, menuItem)
         return menuItem
 
     def getSubMenu(self, context, selection, rootMenu, i, pitem):
+        msw = True if "wxMSW" in wx.PlatformInfo else False
         self.context = context
         self.modeIds = {}
 
         sub = wx.Menu()
 
         for mode in self.modes:
-            menuItem = self.addMode(rootMenu, mode)
+            menuItem = self.addMode(rootMenu if msw else sub, mode)
             sub.AppendItem(menuItem)
             menuItem.Check(self.currMode.item == mode.item)
 

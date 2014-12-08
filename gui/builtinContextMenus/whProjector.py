@@ -15,6 +15,7 @@ class WhProjector(ContextMenu):
         return "Add System Effects"
 
     def getSubMenu(self, context, selection, rootMenu, i, pitem):
+        msw = True if "wxMSW" in wx.PlatformInfo else False
         sMkt = service.Market.getInstance()
         effdata = sMkt.getSystemWideEffects()
 
@@ -32,7 +33,10 @@ class WhProjector(ContextMenu):
                 swObj, swName, swClass = swData
                 self.idmap[wxid] = (swObj, swName)
                 grandSubItem = wx.MenuItem(grandSub, wxid, swClass)
-                rootMenu.Bind(wx.EVT_MENU, self.handleSelection, grandSubItem)
+                if msw:
+                    rootMenu.Bind(wx.EVT_MENU, self.handleSelection, grandSubItem)
+                else:
+                    grandSub.Bind(wx.EVT_MENU, self.handleSelection, grandSubItem)
                 grandSub.AppendItem(grandSubItem)
         return sub
 
