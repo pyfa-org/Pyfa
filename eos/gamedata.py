@@ -253,7 +253,44 @@ class Item(EqBase):
 
     @property
     def race(self):
-        return self.factionMap.get(self.factionID)
+        if self.__race is None:
+            try:
+                self.__race = self.factionMap[self.factionID]
+            # Some ships (like few limited issue ships) do not have factionID set,
+            # thus keep old mechanism for now
+            except KeyError:
+                # Define race map
+                map = {1: "caldari",
+                       2: "minmatar",
+                       4: "amarr",
+                       5: "sansha", # Caldari + Amarr
+                       6: "blood", # Minmatar + Amarr
+                       8: "gallente",
+                       9: "guristas", # Caldari + Gallente
+                       10: "angelserp", # Minmatar + Gallente, final race depends on the order of skills
+                       12: "sisters", # Amarr + Gallente
+                       16: "jove",
+                       32: "sansha", # Incrusion Sansha
+                       128: "ore"}
+                # Race is None by default
+                race = None
+                # Check primary and secondary required skills' races
+                if race is None:
+                    skillRaces = tuple(filter(lambda rid: rid, (s.raceID for s in tuple(self.requiredSkills.keys()))))
+                    if sum(skillRaces) in map:
+                        race = map[sum(skillRaces)]
+                        if race == "angelserp":
+                            if skillRaces == (2, 8):
+                                race = "angel"
+                            else:
+                                race = "serpentis"
+                # Rely on item's own raceID as last resort
+                if race is None:
+                    race = map.get(self.raceID, None)
+                # Store our final value
+                self.__race = race
+        return self.__race
+
 
     @property
     def assistive(self):
