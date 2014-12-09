@@ -110,7 +110,7 @@ def main(db, json_path):
             sectionLines.append(headerText)
             for bonusData in sectionData["bonuses"]:
                 prefix = u"{} ".format(bonusData["number"]) if "number" in bonusData else ""
-                bonusText = u"{}{}".format(prefix, bonusData["text"])
+                bonusText = u"{}{}".format(prefix, bonusData["text"].replace(u"\u00B7", u"\u2022 "))
                 sectionLines.append(bonusText)
             sectionLine = u"<br />\n".join(sectionLines)
             return sectionLine
