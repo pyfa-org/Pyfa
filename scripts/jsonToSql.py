@@ -131,6 +131,21 @@ def main(db, json_path):
             newData.append(newRow)
         return newData
 
+    def convertTypes(typesData):
+        """
+        Add factionID column to invtypes table.
+        """
+        factionMap = {}
+        with open(os.path.join(jsonPath, "fsdTypeOverrides.json")) as f:
+            overridesData = json.load(f)
+        for typeID, typeData in overridesData.items():
+            factionID = typeData.get("factionID")
+            if factionID is not None:
+                factionMap[int(typeID)] = factionID
+        for row in typesData:
+            row['factionID'] = factionMap.get(int(row['typeID']))
+        return typesData
+
     data = {}
 
     # Dump all data to memory so we can easely cross check ignored rows
@@ -141,27 +156,21 @@ def main(db, json_path):
             tableData = convertIcons(tableData)
         if jsonName == "phbtraits":
             tableData = convertTraits(tableData)
+        if jsonName == "invtypes":
+            tableData = convertTypes(tableData)
         data[jsonName] = tableData
 
-    # 1306 - group Ship Modifiers, for items like tactical t3 ship modes
-
-    # Do some preprocessing to make our job easier
+    # Set with typeIDs which we will have in our database
     invTypes = set()
     for row in data["invtypes"]:
+        # 1306 - group Ship Modifiers, for items like tactical t3 ship modes
         if (row["published"] or row['groupID'] == 1306):
             invTypes.add(row["typeID"])
 
     # ignore checker
     def isIgnored(file, row):
-        if file == "invtypes" and not (row["published"] or row['groupID'] == 1306):
+        if file in ("invtypes", "dgmtypeeffects", "dgmtypeattribs", "invmetatypes") and row['typeID'] not in invTypes:
             return True
-        elif file == "dgmtypeeffects" and not row["typeID"] in invTypes:
-            return True
-        elif file == "dgmtypeattribs" and not row["typeID"] in invTypes:
-            return True
-        elif file == "invmetatypes" and not row["typeID"] in invTypes:
-            return True
-
         return False
 
     # Loop through each json file and write it away, checking ignored rows
