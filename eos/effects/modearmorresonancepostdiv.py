@@ -1,3 +1,7 @@
+# modeArmorResonancePostDiv
+#
+# Used by:
+# Module: Amarr Tactical Destroyer Defense Mode
 type = "passive"
 def handler(fit, module, context):
     for resType in ("Em", "Explosive", "Kinetic"):

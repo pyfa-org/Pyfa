@@ -57,7 +57,7 @@ import re
 import sqlite3
 from optparse import OptionParser
 
-script_dir = os.path.dirname(unicode(__file__, sys.getfilesystemencoding()))
+script_dir = os.path.dirname(__file__)
 
 # Form list of effects for processing
 effects_path = os.path.join(script_dir, "..", "eos", "effects")
@@ -123,7 +123,10 @@ db = sqlite3.connect(os.path.expanduser(options.database))
 cursor = db.cursor()
 
 # Force some of the items to make them published
-FORCEPUB_TYPES = ("Ibis", "Impairor", "Velator", "Reaper")
+FORCEPUB_TYPES = ("Ibis", "Impairor", "Velator", "Reaper",
+                  "Amarr Tactical Destroyer Propulsion Mode",
+                  "Amarr Tactical Destroyer Sharpshooter Mode",
+                  "Amarr Tactical Destroyer Defense Mode")
 OVERRIDES_TYPEPUB = 'UPDATE invtypes SET published = 1 WHERE typeName = ?'
 for typename in FORCEPUB_TYPES:
     cursor.execute(OVERRIDES_TYPEPUB, (typename,))
