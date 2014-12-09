@@ -13,9 +13,9 @@ debug = False
 saveInRoot = False
 
 # Version data
-version = "1.7"
-tag = "Stable"
-expansionName = "Rhea"
+version = "1.6.2"
+tag = "git"
+expansionName = "Phoebe"
 expansionVersion = "1.0"
 evemonMinVersion = "4081"
 
