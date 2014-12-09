@@ -23,6 +23,7 @@ from gui import bitmapLoader
 import service
 from gui.utils.numberFormatter import formatAmount
 import wx
+from eos.types import Mode
 
 class MaxRange(ViewColumn):
     name = "Max Range"
@@ -51,6 +52,9 @@ class MaxRange(ViewColumn):
             self.mask |= wx.LIST_MASK_TEXT
 
     def getText(self, stuff):
+        if isinstance(stuff, Mode):
+            return ""
+
         maxRange = stuff.maxRange if hasattr(stuff, "maxRange") else stuff.getModifiedItemAttr("maxRange")
         falloff = stuff.falloff
         if falloff:

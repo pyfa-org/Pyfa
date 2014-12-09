@@ -97,12 +97,12 @@ class ModuleAmmoPicker(ContextMenu):
         parts = charge.name.split(" ")
         return map(self.numericConverter, parts)
 
-    def addCharge(self, rootMenu, charge):
+    def addCharge(self, menu, charge):
         id = wx.NewId()
         name = charge.name if charge is not None else "Empty"
         self.chargeIds[id] = charge
-        item = wx.MenuItem(rootMenu, id, name)
-        rootMenu.Bind(wx.EVT_MENU, self.handleAmmoSwitch, item)
+        item = wx.MenuItem(menu, id, name)
+        menu.Bind(wx.EVT_MENU, self.handleAmmoSwitch, item)
         item.charge = charge
         if charge is not None and charge.icon is not None:
             bitmap = bitmapLoader.getBitmap(charge.icon.iconFile, "pack")
@@ -117,6 +117,7 @@ class ModuleAmmoPicker(ContextMenu):
         m.Enable(id, False)
 
     def getSubMenu(self, context, selection, rootMenu, i, pitem):
+        msw = True if "wxMSW" in wx.PlatformInfo else False
         m = wx.Menu()
         self.chargeIds = {}
         hardpoint = self.module.hardpoint
@@ -147,7 +148,7 @@ class ModuleAmmoPicker(ContextMenu):
                     base = charge
                     nameBase = currBase
                     range = currRange
-                    item = self.addCharge(rootMenu, charge)
+                    item = self.addCharge(rootMenu if msw else m, charge)
                     items.append(item)
                 else:
                     if sub is None:
@@ -155,9 +156,9 @@ class ModuleAmmoPicker(ContextMenu):
                         sub.Bind(wx.EVT_MENU, self.handleAmmoSwitch)
                         self.addSeperator(sub, "Less Damage")
                         item.SetSubMenu(sub)
-                        sub.AppendItem(self.addCharge(rootMenu, base))
+                        sub.AppendItem(self.addCharge(rootMenu if msw else sub, base))
 
-                    sub.AppendItem(self.addCharge(rootMenu, charge))
+                    sub.AppendItem(self.addCharge(rootMenu if msw else sub, charge))
 
             if sub is not None:
                 self.addSeperator(sub, "More Damage")
@@ -191,20 +192,20 @@ class ModuleAmmoPicker(ContextMenu):
                     m.AppendItem(item)
 
                 if charge.name not in ("Light Defender Missile I", "Heavy Defender Missile I"):
-                    sub.AppendItem(self.addCharge(rootMenu, charge))
+                    sub.AppendItem(self.addCharge(rootMenu if msw else sub, charge))
                 else:
                     defender = charge
 
             if defender is not None:
-                m.AppendItem(self.addCharge(rootMenu, defender))
+                m.AppendItem(self.addCharge(rootMenu if msw else m, defender))
             if sub is not None:
                 self.addSeperator(sub, "More Damage")
         else:
             self.charges.sort(key=self.nameSorter)
             for charge in self.charges:
-                m.AppendItem(self.addCharge(rootMenu, charge))
+                m.AppendItem(self.addCharge(rootMenu if msw else m, charge))
 
-        m.AppendItem(self.addCharge(rootMenu, None))
+        m.AppendItem(self.addCharge(rootMenu if msw else m, None))
         return m
 
     def handleAmmoSwitch(self, event):

@@ -65,6 +65,7 @@ class ChangeAffectingSkills(ContextMenu):
         return menuItem
 
     def getSubMenu(self, context, selection, rootMenu, i, pitem):
+        msw = True if "wxMSW" in wx.PlatformInfo else False
         self.skillIds = {}
         sub = wx.Menu()
 
@@ -78,7 +79,7 @@ class ChangeAffectingSkills(ContextMenu):
                     skillItem.SetBitmap(bitmap)
 
             for i in xrange(-1, 6):
-                levelItem = self.addSkill(rootMenu, skill, i)
+                levelItem = self.addSkill(rootMenu if msw else grandSub, skill, i)
                 grandSub.AppendItem(levelItem)
                 #@ todo: add check to current level. Need to fix #109 first
             sub.AppendItem(skillItem)

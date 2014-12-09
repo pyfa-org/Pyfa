@@ -27,6 +27,7 @@ from copy import deepcopy
 from math import sqrt, log, asinh
 from eos.types import Drone, Cargo, Ship, Character, State, Slot, Module, Implant, Booster, Skill
 from eos.saveddata.module import State
+from eos.saveddata.mode import Mode
 import time
 
 try:
@@ -66,6 +67,7 @@ class Fit(object):
         self.gangBoosts = None
         self.timestamp = time.time()
         self.ecmProjectedStr = 1
+        self.modeID = None
         self.build()
 
     @reconstructor
@@ -99,6 +101,10 @@ class Fit(object):
         self.extraAttributes = ModifiedAttributeDict(self)
         self.extraAttributes.original = self.EXTRA_ATTRIBUTES
         self.ship = Ship(db.getItem(self.shipID)) if self.shipID is not None else None
+        if self.ship is not None:
+            self.mode = self.ship.checkModeItem(db.getItem(self.modeID) if self.modeID else None)
+        else:
+            self.mode = None
 
     @property
     def targetResists(self):
@@ -121,6 +127,15 @@ class Fit(object):
         self.__damagePattern = damagePattern
         self.__ehp = None
         self.__effectiveTank = None
+
+    @property
+    def mode(self):
+        return self._mode
+
+    @mode.setter
+    def mode(self, mode):
+        self._mode = mode
+        self.modeID = mode.item.ID if mode is not None else None
 
     @property
     def character(self):
@@ -369,9 +384,9 @@ class Fit(object):
             # Avoid adding projected drones and modules when fit is projected onto self
             # TODO: remove this workaround when proper self-projection using virtual duplicate fits is implemented
             if forceProjected is True:
-                c = chain((self.character, self.ship), self.drones, self.boosters, self.appliedImplants, self.modules)
+                c = chain((self.character, self.ship, self.mode), self.drones, self.boosters, self.appliedImplants, self.modules)
             else:
-                c = chain((self.character, self.ship), self.drones, self.boosters, self.appliedImplants, self.modules,
+                c = chain((self.character, self.ship, self.mode), self.drones, self.boosters, self.appliedImplants, self.modules,
                           self.projectedDrones, self.projectedModules)
 
             if self.gangBoosts is not None:
@@ -493,6 +508,10 @@ class Fit(object):
                  Slot.HIGH: "hiSlots",
                  Slot.RIG: "rigSlots",
                  Slot.SUBSYSTEM: "maxSubSystems"}
+
+        if type == Slot.MODE:
+            # Mode slot doesn't really exist, return default 0
+            return 0
 
         slotsUsed = self.getSlotsUsed(type, countDummies)
         totalSlots = self.ship.getModifiedItemAttr(slots[type]) or 0

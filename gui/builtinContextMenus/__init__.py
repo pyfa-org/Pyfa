@@ -15,6 +15,7 @@ __all__ = [
     "cargo",
     "shipJump",
     #"changeAffectingSkills",
+    "tacticalMode",
     "targetResists",
     "priceClear"
 ]
