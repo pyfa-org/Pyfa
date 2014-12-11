@@ -29,6 +29,7 @@ class Ship(ItemAttrShortcut, HandledItem):
 
         self.__item = item
         self.__itemModifiedAttributes = ModifiedAttributeDict()
+        self.__modeItems = self._getModeItems()
         if not isinstance(item, int):
             self.__buildOriginal()
 
@@ -76,7 +77,7 @@ class Ship(ItemAttrShortcut, HandledItem):
 
         @todo: rename this
         """
-        items = self.getModeItems()
+        items = self.__modeItems
 
         if items != None:
             if item == None or item not in items:
@@ -87,11 +88,15 @@ class Ship(ItemAttrShortcut, HandledItem):
                 return Mode(item)
         return None
 
-    def getModes(self):
-        items = self.getModeItems()
-        return [Mode(item) for item in items] if items else None
+    @property
+    def modeItems(self):
+        return self.__modeItems
 
-    def getModeItems(self):
+    @property
+    def modes(self):
+        return [Mode(item) for item in self.__modeItems] if self.__modeItems else None
+
+    def _getModeItems(self):
         """
         Returns a list of valid mode items for ship. Note that this returns the
         valid Item objects, not the Mode objects. Returns None if not a

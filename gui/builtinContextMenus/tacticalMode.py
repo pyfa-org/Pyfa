@@ -16,7 +16,7 @@ class TacticalMode(ContextMenu):
         fitID = self.mainFrame.getActiveFit()
         fit = sFit.getFit(fitID)
 
-        self.modes = fit.ship.getModes()
+        self.modes = fit.ship.modes
         self.currMode = fit.mode
 
         return srcContext == "fittingShip" and self.modes is not None
