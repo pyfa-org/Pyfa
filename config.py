@@ -14,7 +14,7 @@ saveInRoot = False
 
 # Version data
 version = "1.7.1"
-tag = "git"
+tag = "Stable"
 expansionName = "Rhea"
 expansionVersion = "1.0"
 evemonMinVersion = "4081"
