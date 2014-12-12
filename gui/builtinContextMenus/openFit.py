@@ -8,7 +8,7 @@ class OpenFit(ContextMenu):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     def display(self, srcContext, selection):
-        return "projectedFit" in srcContext
+        return srcContext == "projectedFit"
 
     def getText(self, itmContext, selection):
         return "Open Fit in New Tab"

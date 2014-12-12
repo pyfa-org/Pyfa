@@ -708,7 +708,12 @@ class ShipBrowser(wx.Panel):
             self.raceselect.Show(False)
             self.Layout()
 
-    RACE_ORDER = ["amarr", "caldari", "gallente", "minmatar", "sisters", "ore", "serpentis", "angel", "blood", "sansha", "guristas", "jove", None]
+    RACE_ORDER = [
+        "amarr", "caldari", "gallente", "minmatar",
+        "sisters", "ore",
+        "serpentis", "angel", "blood", "sansha", "guristas", "mordu",
+        "jove", None
+    ]
 
     def raceNameKey(self, ship):
         return self.RACE_ORDER.index(ship.race), ship.name

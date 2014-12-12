@@ -10,7 +10,7 @@ class FactorReload(ContextMenu):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     def display(self, srcContext, selection):
-        return srcContext in ("firepowerViewFull",) and self.mainFrame.getActiveFit() is not None
+        return srcContext == "firepowerViewFull" and self.mainFrame.getActiveFit() is not None
 
     def getText(self, itmContext, selection):
         return "Factor in Reload Time"

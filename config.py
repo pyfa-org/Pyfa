@@ -13,15 +13,15 @@ debug = False
 saveInRoot = False
 
 # Version data
-version = "1.6.1"
-tag = "git"
-expansionName = "Phoebe"
+version = "1.7.0"
+tag = "Stable"
+expansionName = "Rhea"
 expansionVersion = "1.0"
 evemonMinVersion = "4081"
 
 # Database version (int ONLY)
 # Increment every time we need to flag for user database upgrade/modification
-dbversion = 1
+dbversion = 3
 
 pyfaPath = None
 savePath = None

@@ -10,16 +10,16 @@ import gui.globalEvents as GE
 class ChangeAffectingSkills(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.sChar = service.Character.getInstance()
-
-        self.sFit = service.Fit.getInstance()
-        fit = self.sFit.getFit(self.mainFrame.getActiveFit())
-
-        self.charID = fit.character.ID
 
     def display(self, srcContext, selection):
         if self.mainFrame.getActiveFit() is None or srcContext not in ("fittingModule", "fittingShip"):
             return False
+
+        self.sChar = service.Character.getInstance()
+        self.sFit = service.Fit.getInstance()
+        fit = self.sFit.getFit(self.mainFrame.getActiveFit())
+
+        self.charID = fit.character.ID
 
         if self.sChar.getCharName(self.charID) in ("All 0", "All 5"):
             return False
@@ -52,9 +52,6 @@ class ChangeAffectingSkills(ContextMenu):
     def getText(self, itmContext, selection):
         return "Change %s Skills" % itmContext
 
-    def activate(self, fullContext, selection, i):
-        pass
-
     def addSkill(self, rootMenu, skill, i):
         if i < 0:
             label = "Not Learned"
@@ -63,32 +60,31 @@ class ChangeAffectingSkills(ContextMenu):
 
         id = wx.NewId()
         self.skillIds[id] = (skill, i)
-        menuItem = wx.MenuItem(rootMenu, id, label, kind=wx.ITEM_CHECK)
+        menuItem = wx.MenuItem(rootMenu, id, label, kind=wx.ITEM_RADIO)
         rootMenu.Bind(wx.EVT_MENU, self.handleSkillChange, menuItem)
         return menuItem
 
-    def getSubMenu(self, context, selection, menu, i, pitem):
-        self.context = context
+    def getSubMenu(self, context, selection, rootMenu, i, pitem):
+        msw = True if "wxMSW" in wx.PlatformInfo else False
         self.skillIds = {}
-
-        m = wx.Menu()
+        sub = wx.Menu()
 
         for skill in self.skills:
-            skillItem = wx.MenuItem(m, wx.NewId(), skill.item.name)
-            sub = wx.Menu()
-            skillItem.SetSubMenu(sub)
+            skillItem = wx.MenuItem(sub, wx.NewId(), skill.item.name)
+            grandSub = wx.Menu()
+            skillItem.SetSubMenu(grandSub)
             if skill.learned:
                 bitmap = bitmapLoader.getBitmap("lvl%s" % skill.level, "icons")
                 if bitmap is not None:
                     skillItem.SetBitmap(bitmap)
 
             for i in xrange(-1, 6):
-                levelItem = self.addSkill(menu, skill, i)
-                sub.AppendItem(levelItem)
+                levelItem = self.addSkill(rootMenu if msw else grandSub, skill, i)
+                grandSub.AppendItem(levelItem)
                 #@ todo: add check to current level. Need to fix #109 first
-            m.AppendItem(skillItem)
+            sub.AppendItem(skillItem)
 
-        return m
+        return sub
 
     def handleSkillChange(self, event):
         skill, level = self.skillIds[event.Id]

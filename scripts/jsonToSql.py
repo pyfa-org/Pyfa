@@ -23,22 +23,18 @@ import sys
 
 # Add eos root path to sys.path so we can import ourselves
 path = os.path.dirname(unicode(__file__, sys.getfilesystemencoding()))
-sys.path.append(os.path.realpath(os.path.join(path, "..", "..", "..")))
+sys.path.append(os.path.realpath(os.path.join(path, "..")))
 
 import json
 import argparse
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="This scripts dumps effects from an sqlite cache dump to mongo")
-    parser.add_argument("-d", "--db", required=True, type=str, help="The sqlalchemy connectionstring, example: sqlite:///c:/tq.db")
-    parser.add_argument("-j", "--json", required=True, type=str, help="The path to the json dum")
-    args = parser.parse_args()
+def main(db, json_path):
 
-    jsonPath = os.path.expanduser(args.json)
+    jsonPath = os.path.expanduser(json_path)
 
     # Import eos.config first and change it
     import eos.config
-    eos.config.gamedata_connectionstring = args.db
+    eos.config.gamedata_connectionstring = db
     eos.config.debug = False
 
     # Now thats done, we can import the eos modules using the config
@@ -62,6 +58,7 @@ if __name__ == "__main__":
         "invmetatypes": eos.gamedata.MetaType,
         "invtypes": eos.gamedata.Item,
         "phbtraits": eos.gamedata.Traits,
+        "phbmetadata": eos.gamedata.MetaData,
         "mapbulk_marketGroups": eos.gamedata.MarketGroup
     }
 
@@ -113,7 +110,7 @@ if __name__ == "__main__":
             sectionLines.append(headerText)
             for bonusData in sectionData["bonuses"]:
                 prefix = u"{} ".format(bonusData["number"]) if "number" in bonusData else ""
-                bonusText = u"{}{}".format(prefix, bonusData["text"])
+                bonusText = u"{}{}".format(prefix, bonusData["text"].replace(u"\u00B7", u"\u2022 "))
                 sectionLines.append(bonusText)
             sectionLine = u"<br />\n".join(sectionLines)
             return sectionLine
@@ -134,6 +131,21 @@ if __name__ == "__main__":
             newData.append(newRow)
         return newData
 
+    def convertTypes(typesData):
+        """
+        Add factionID column to invtypes table.
+        """
+        factionMap = {}
+        with open(os.path.join(jsonPath, "fsdTypeOverrides.json")) as f:
+            overridesData = json.load(f)
+        for typeID, typeData in overridesData.items():
+            factionID = typeData.get("factionID")
+            if factionID is not None:
+                factionMap[int(typeID)] = factionID
+        for row in typesData:
+            row['factionID'] = factionMap.get(int(row['typeID']))
+        return typesData
+
     data = {}
 
     # Dump all data to memory so we can easely cross check ignored rows
@@ -144,25 +156,21 @@ if __name__ == "__main__":
             tableData = convertIcons(tableData)
         if jsonName == "phbtraits":
             tableData = convertTraits(tableData)
+        if jsonName == "invtypes":
+            tableData = convertTypes(tableData)
         data[jsonName] = tableData
 
-    # Do some preprocessing to make our job easier
+    # Set with typeIDs which we will have in our database
     invTypes = set()
     for row in data["invtypes"]:
-        if row["published"]:
+        # 1306 - group Ship Modifiers, for items like tactical t3 ship modes
+        if (row["published"] or row['groupID'] == 1306):
             invTypes.add(row["typeID"])
 
     # ignore checker
     def isIgnored(file, row):
-        if file == "invtypes" and not row["published"]:
+        if file in ("invtypes", "dgmtypeeffects", "dgmtypeattribs", "invmetatypes") and row['typeID'] not in invTypes:
             return True
-        elif file == "dgmtypeeffects" and not row["typeID"] in invTypes:
-            return True
-        elif file == "dgmtypeattribs" and not row["typeID"] in invTypes:
-            return True
-        elif file == "invmetatypes" and not row["typeID"] in invTypes:
-            return True
-
         return False
 
     # Loop through each json file and write it away, checking ignored rows
@@ -181,6 +189,14 @@ if __name__ == "__main__":
 
                 eos.db.gamedata_session.add(instance)
 
-        eos.db.gamedata_session.commit()
+    eos.db.gamedata_session.commit()
 
     print("done")
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="This scripts dumps effects from an sqlite cache dump to mongo")
+    parser.add_argument("-d", "--db", required=True, type=str, help="The sqlalchemy connectionstring, example: sqlite:///c:/tq.db")
+    parser.add_argument("-j", "--json", required=True, type=str, help="The path to the json dump")
+    args = parser.parse_args()
+
+    main(args.db, args.json)

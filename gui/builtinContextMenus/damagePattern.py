@@ -15,7 +15,7 @@ class DamagePattern(ContextMenu):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     def display(self, srcContext, selection):
-        return srcContext in ("resistancesViewFull",) and self.mainFrame.getActiveFit() is not None
+        return srcContext == "resistancesViewFull" and self.mainFrame.getActiveFit() is not None
 
     def getText(self, itmContext, selection):
         sDP = service.DamagePattern.getInstance()
@@ -24,12 +24,11 @@ class DamagePattern(ContextMenu):
         self.fit = sFit.getFit(fitID)
 
         self.patterns = sDP.getDamagePatternList()
-        self.patterns.sort( key=lambda p: (p.name not in ["Uniform",
-                                                "Selected Ammo"], p.name) )
+        self.patterns.sort(key=lambda p: (p.name not in ["Uniform","Selected Ammo"], p.name))
 
         self.patternIds = {}
         self.subMenus = OrderedDict()
-        self.singles =  []
+        self.singles = []
 
         # iterate and separate damage patterns based on "[Parent] Child"
         for pattern in self.patterns:
@@ -48,6 +47,51 @@ class DamagePattern(ContextMenu):
         self.m = map(lambda p: p.name, self.singles) + self.subMenus.keys()
         return self.m
 
+    def addPattern(self, rootMenu, pattern):
+        id = wx.NewId()
+        name = getattr(pattern, "_name", pattern.name) if pattern is not None else "No Profile"
+
+        self.patternIds[id] = pattern
+        menuItem = wx.MenuItem(rootMenu, id, name)
+        rootMenu.Bind(wx.EVT_MENU, self.handlePatternSwitch, menuItem)
+
+        # set pattern attr to menu item
+        menuItem.pattern = pattern
+
+        # determine active pattern
+        sFit = service.Fit.getInstance()
+        fitID = self.mainFrame.getActiveFit()
+        f = sFit.getFit(fitID)
+        dp = f.damagePattern
+
+        if dp == pattern:
+            bitmap = bitmapLoader.getBitmap("state_active_small", "icons")
+            menuItem.SetBitmap(bitmap)
+        return menuItem
+
+    def getSubMenu(self, context, selection, rootMenu, i, pitem):
+        msw = True if "wxMSW" in wx.PlatformInfo else False
+        rootMenu.Bind(wx.EVT_MENU, self.handlePatternSwitch)  # this bit is required for some reason
+
+        if self.m[i] not in self.subMenus:
+            # if we're trying to get submenu to something that shouldn't have one,
+            # redirect event of the item to handlePatternSwitch and put pattern in
+            # our patternIds mapping, then return None for no submenu
+            id = pitem.GetId()
+            self.patternIds[id] = self.singles[i]
+            if self.patternIds[id] == self.fit.damagePattern:
+                bitmap = bitmapLoader.getBitmap("state_active_small", "icons")
+                pitem.SetBitmap(bitmap)
+            return None
+
+        sub = wx.Menu()
+
+        # Items that have a parent
+        for pattern in self.subMenus[self.m[i]]:
+            sub.AppendItem(self.addPattern(rootMenu if msw else sub, pattern))
+
+        return sub
+
     def handlePatternSwitch(self, event):
         pattern = self.patternIds.get(event.Id, False)
         if pattern is False:
@@ -59,51 +103,5 @@ class DamagePattern(ContextMenu):
         sFit.setDamagePattern(fitID, pattern)
         setattr(self.mainFrame,"_activeDmgPattern", pattern)
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
-
-    def addPattern(self, menu, pattern):
-        id = wx.NewId()
-        name = getattr(pattern, "_name", pattern.name) if pattern is not None else "No Profile"
-
-        self.patternIds[id] = pattern
-        item = wx.MenuItem(menu, id, name)
-        menu.Bind(wx.EVT_MENU, self.handlePatternSwitch, item)
-
-        # set pattern attr to menu item
-        item.pattern = pattern
-
-        # determine active pattern
-        sFit = service.Fit.getInstance()
-        fitID = self.mainFrame.getActiveFit()
-        f = sFit.getFit(fitID)
-        dp = f.damagePattern
-
-        if dp == pattern:
-            bitmap = bitmapLoader.getBitmap("state_active_small", "icons")
-            item.SetBitmap(bitmap)
-        return item
-
-    def getSubMenu(self, context, selection, menu, i, pitem):
-        menu.Bind(wx.EVT_MENU, self.handlePatternSwitch)  # this bit is required for some reason
-
-        if self.m[i] not in self.subMenus:
-            # if we're trying to get submenu to something that shouldn't have one,
-            # redirect event of the item to handlePatternSwitch and put pattern in
-            # our patternIds mapping, then return None for no submenu
-            id = pitem.GetId()
-            self.patternIds[id] = self.singles[i]
-            menu.Bind(wx.EVT_MENU, self.handlePatternSwitch, pitem)
-            if self.patternIds[id] == self.fit.damagePattern:
-                bitmap = bitmapLoader.getBitmap("state_active_small", "icons")
-                pitem.SetBitmap(bitmap)
-            return None
-
-        sub = wx.Menu()
-        sub.Bind(wx.EVT_MENU, self.handlePatternSwitch)
-
-        # Items that have a parent
-        for pattern in self.subMenus[self.m[i]]:
-            sub.AppendItem(self.addPattern(sub, pattern))
-
-        return sub
 
 DamagePattern.register()

@@ -9,8 +9,13 @@ class ItemStats(ContextMenu):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     def display(self, srcContext, selection):
-        return srcContext in ("marketItemGroup", "marketItemMisc", "fittingModule", "fittingCharge", "fittingShip", "baseShip", "cargoItem",
-                              "droneItem", "implantItem", "boosterItem", "skillItem", "projectedModule", "projectedDrone", "projectedCharge")
+        return srcContext in ("marketItemGroup", "marketItemMisc",
+                              "fittingModule", "fittingCharge",
+                              "fittingShip", "baseShip",
+                              "cargoItem", "droneItem",
+                              "implantItem", "boosterItem",
+                              "skillItem", "projectedModule",
+                              "projectedDrone", "projectedCharge")
 
     def getText(self, itmContext, selection):
         return "{0} Stats".format(itmContext if itmContext is not None else "Item")
@@ -33,7 +38,7 @@ class ItemStats(ContextMenu):
         if mstate.CmdDown():
             reuse = True
 
-        if self.mainFrame.GetActiveStatsWindow() == None and reuse:
+        if self.mainFrame.GetActiveStatsWindow() is None and reuse:
             ItemStatsDialog(stuff, fullContext)
 
         elif reuse:

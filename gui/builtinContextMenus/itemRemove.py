@@ -9,7 +9,10 @@ class ItemRemove(ContextMenu):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     def display(self, srcContext, selection):
-        return srcContext in ("fittingModule", "fittingCharge", "droneItem", "implantItem", "boosterItem", "projectedModule", "projectedCharge",
+        return srcContext in ("fittingModule", "fittingCharge",
+                              "droneItem", "implantItem",
+                              "boosterItem", "projectedModule",
+                              "projectedCharge", "cargoItem",
                                "projectedFit", "projectedDrone")
 
     def getText(self, itmContext, selection):
@@ -33,6 +36,8 @@ class ItemRemove(ContextMenu):
             sFit.removeImplant(fitID, fit.implants.index(selection[0]))
         elif srcContext == "boosterItem":
             sFit.removeBooster(fitID, fit.boosters.index(selection[0]))
+        elif srcContext == "cargoItem":
+            sFit.removeCargo(fitID, fit.cargo.index(selection[0]))
         else:
             sFit.removeProjected(fitID, selection[0])
 

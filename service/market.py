@@ -32,7 +32,7 @@ import service.conversions as conversions
 try:
     from collections import OrderedDict
 except ImportError:
-    from gui.utils.compat import OrderedDict
+    from utils.compat import OrderedDict
 
 # Event which tells threads dependent on Market that it's initialized
 mktRdy = threading.Event()
@@ -214,7 +214,8 @@ class Market():
             "Goru's Shuttle": False,
             "Guristas Shuttle": False,
             "Mobile Decoy Unit": False,  # Seems to be left over test mod for deployables
-            "Tournament Micro Jump Unit": False }  # Normally seen only on tournament arenas
+            "Tournament Micro Jump Unit": False}   # Normally seen only on tournament arenas
+
 
         # do not publish ships that we convert
         for name in conversions.packs['skinnedShips']:
@@ -677,6 +678,10 @@ class Market():
 
             self.priceCache[typeID] = price
 
+        if not price.isValid:
+            # if the price has expired
+            price.price = None
+
         return price
 
     def getPricesNow(self, typeIDs):
@@ -698,6 +703,10 @@ class Market():
             eos.db.commit()
 
         self.priceWorkerThread.trigger(requests, cb)
+
+    def clearPriceCache(self):
+        self.priceCache.clear()
+        deleted_rows = eos.db.clearPrices()
 
     def getSystemWideEffects(self):
         """

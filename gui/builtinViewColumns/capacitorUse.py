@@ -23,6 +23,7 @@ import service
 from gui.utils.numberFormatter import formatAmount
 from gui.viewColumn import ViewColumn
 from gui import bitmapLoader
+from eos.types import Mode
 
 class CapacitorUse(ViewColumn):
     name = "Capacitor Usage"
@@ -38,6 +39,9 @@ class CapacitorUse(ViewColumn):
 
 
     def getText(self, mod):
+        if isinstance(mod, Mode):
+            return ""
+
         capUse = mod.capUse
         if capUse:
             return "%s%s" % ("+" if capUse < 0 else "", (formatAmount(-capUse, 3, 0, 3)))

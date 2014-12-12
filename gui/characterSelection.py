@@ -31,13 +31,13 @@ class CharacterSelection(wx.Panel):
         mainSizer = wx.BoxSizer(wx.HORIZONTAL)
         self.SetSizer(mainSizer)
 
-        mainSizer.Add(wx.StaticText(self, wx.ID_ANY, "Character: "), 0, wx.CENTER | wx.TOP | wx.RIGHT | wx.LEFT, 3)
+        mainSizer.Add(wx.StaticText(self, wx.ID_ANY, "Character: "), 0, wx.CENTER | wx.RIGHT | wx.LEFT, 3)
 
         # cache current selection to fall back in case we choose to open char editor
         self.charCache = None
 
         self.charChoice = wx.Choice(self)
-        mainSizer.Add(self.charChoice, 1, wx.ALIGN_CENTER_VERTICAL | wx.TOP | wx.RIGHT | wx.LEFT, 3)
+        mainSizer.Add(self.charChoice, 1, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT | wx.LEFT, 3)
 
         self.refreshCharacterList()
 
@@ -56,11 +56,11 @@ class CharacterSelection(wx.Panel):
         self.btnRefresh.Bind(wx.EVT_BUTTON, self.refreshApi)
         self.btnRefresh.Enable(False)
 
-        mainSizer.Add(self.btnRefresh, 0, wx.ALIGN_CENTER_VERTICAL | wx.TOP | wx.RIGHT | wx.LEFT, 2)
+        mainSizer.Add(self.btnRefresh, 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT | wx.LEFT, 2)
 
         self.skillReqsStaticBitmap = wx.StaticBitmap(self)
         self.skillReqsStaticBitmap.SetBitmap(self.cleanSkills)
-        mainSizer.Add(self.skillReqsStaticBitmap, 0, wx.ALIGN_CENTER_VERTICAL | wx.TOP | wx.RIGHT | wx.LEFT, 3)
+        mainSizer.Add(self.skillReqsStaticBitmap, 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT | wx.LEFT, 3)
 
         self.Bind(wx.EVT_CHOICE, self.charChanged)
         self.mainFrame.Bind(GE.CHAR_LIST_UPDATED, self.refreshCharacterList)

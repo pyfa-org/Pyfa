@@ -1,9 +1,9 @@
 # navigationVelocityBonusPostPercentMaxVelocityShip
 #
 # Used by:
+# Modules from group: Rig Anchor (4 of 4)
 # Implants named like: grade Snake (16 of 18)
 # Modules named like: Auxiliary Thrusters (8 of 8)
-# Modules named like: Higgs Anchor I (4 of 4)
 # Implant: Quafe Zero
 # Skill: Navigation
 type = "passive"

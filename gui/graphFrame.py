@@ -203,6 +203,8 @@ class GraphFrame(wx.Frame):
                 legend.append(fit.name)
             except:
                 self.SetStatusText("Invalid values in '%s'" % fit.name)
+                self.canvas.draw()
+                return
 
         if self.legendFix and len(legend) > 0:
             leg = self.subplot.legend(tuple(legend), "upper right" , shadow = False)

@@ -8,19 +8,24 @@ class MarketJump(ContextMenu):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     def display(self, srcContext, selection):
-        validContexts = ("marketItemMisc", "fittingModule", "fittingCharge", "droneItem", "implantItem",
-                         "boosterItem", "projectedModule", "projectedDrone", "projectedCharge", "cargoItem")
-        if not srcContext in validContexts:
+        validContexts = ("marketItemMisc", "fittingModule",
+                         "fittingCharge", "droneItem",
+                         "implantItem", "boosterItem",
+                         "projectedModule", "projectedDrone",
+                         "projectedCharge", "cargoItem")
+
+        if not srcContext in validContexts or selection is None or len(selection) < 1:
             return False
+
         sMkt = service.Market.getInstance()
-        if selection is None or len(selection) < 1:
-            return False
         item = getattr(selection[0], "item", selection[0])
         mktGrp = sMkt.getMarketGroupByItem(item)
+
         # 1663 is Special Edition Festival Assets, we don't have root group for it
         if mktGrp is None or mktGrp.ID == 1663:
             return False
-        doit =  not selection[0].isEmpty if srcContext == "fittingModule" else True
+
+        doit = not selection[0].isEmpty if srcContext == "fittingModule" else True
         return doit
 
     def getText(self, itmContext, selection):
@@ -28,7 +33,9 @@ class MarketJump(ContextMenu):
 
     def activate(self, fullContext, selection, i):
         srcContext = fullContext[0]
-        if srcContext in ("fittingModule", "droneItem", "implantItem", "boosterItem", "projectedModule", "projectedDrone", "cargoItem"):
+        if srcContext in ("fittingModule", "droneItem", "implantItem",
+                          "boosterItem", "projectedModule", "projectedDrone",
+                          "cargoItem"):
             item = selection[0].item
         elif srcContext in ("fittingCharge", "projectedCharge"):
             item = selection[0].charge

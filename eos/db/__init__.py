@@ -40,6 +40,15 @@ gamedata_meta = MetaData()
 gamedata_meta.bind = gamedata_engine
 gamedata_session = sessionmaker(bind=gamedata_engine, autoflush=False, expire_on_commit=False)()
 
+# This should be moved elsewhere, maybe as an actual query. Current, without try-except, it breaks when making a new
+# game db because we haven't reached gamedata_meta.create_all()
+try:
+    config.gamedata_version = gamedata_session.execute(
+            "SELECT `field_value` FROM `metadata` WHERE `field_name` LIKE 'client_build'"
+        ).fetchone()[0]
+except:
+    config.gamedata_version = None
+
 saveddata_connectionstring = config.saveddata_connectionstring
 if saveddata_connectionstring is not None:
     if callable(saveddata_connectionstring):
@@ -65,7 +74,8 @@ from eos.db.saveddata.queries import getUser, getCharacter, getFit, getFitsWithS
                                      getCharacterList, getPrice, getDamagePatternList, getDamagePattern, \
                                      getFitList, getFleetList, getFleet, save, remove, commit, add, \
                                      getCharactersForUser, getMiscData, getSquadsIDsWithFitID, getWing, \
-                                     getSquad, getBoosterFits, getProjectedFits, getTargetResistsList, getTargetResists
+                                     getSquad, getBoosterFits, getProjectedFits, getTargetResistsList, getTargetResists,\
+                                     clearPrices
 
 #If using in memory saveddata, you'll want to reflect it so the data structure is good.
 if config.saveddata_connectionstring == "sqlite:///:memory:":
@@ -74,3 +84,4 @@ if config.saveddata_connectionstring == "sqlite:///:memory:":
 def rollback():
     with sd_lock:
         saveddata_session.rollback()
+

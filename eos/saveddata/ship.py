@@ -19,6 +19,7 @@
 
 from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut
 from eos.effectHandlerHelpers import HandledItem
+from eos.saveddata.mode import Mode
 
 class Ship(ItemAttrShortcut, HandledItem):
     def __init__(self, item):
@@ -64,6 +65,52 @@ class Ship(ItemAttrShortcut, HandledItem):
         for effect in self.item.effects.itervalues():
             if effect.runTime == runTime and effect.isType("passive"):
                 effect.handler(fit, self, ("ship",))
+
+    def checkModeItem(self, item):
+        """
+        Checks if provided item is a valid mode.
+
+        If ship has modes, and current item is not valid, return forced mode
+        else if mode is valid, return Mode
+        else if ship does not have modes, return None
+
+        @todo: rename this
+        """
+        items = self.getModeItems()
+
+        if items != None:
+            if item == None or item not in items:
+                # We have a tact dessy, but mode is None or not valid. Force new mode
+                return Mode(items[0])
+            elif item in items:
+                # We have a valid mode
+                return Mode(item)
+        return None
+
+    def getModes(self):
+        items = self.getModeItems()
+        return [Mode(item) for item in items] if items else None
+
+    def getModeItems(self):
+        """
+        Returns a list of valid mode items for ship. Note that this returns the
+        valid Item objects, not the Mode objects. Returns None if not a
+        t3 dessy
+        """
+        # @todo: is there a better way to determine this that isn't hardcoded groupIDs?
+        if self.item.groupID != 1305:
+            return None
+
+        modeGroupID = 1306
+        import eos.db
+
+        items = []
+        g = eos.db.getGroup(modeGroupID, eager=("items.icon", "items.attributes"))
+        for item in g.items:
+            if item.raceID == self.item.raceID:
+                items.append(item)
+
+        return items
 
     def __deepcopy__(self, memo):
         copy = Ship(self.item)

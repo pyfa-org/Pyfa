@@ -50,10 +50,13 @@ class FitDpsGraph(Graph):
 
         for attr, values in ew.iteritems():
             val = data[attr]
-            for i in xrange(len(values)):
-                bonus = values[i]
-                val *= 1 + (bonus - 1) * exp(- i ** 2 / 7.1289)
-            data[attr] = val
+            try:
+                for i in xrange(len(values)):
+                    bonus = values[i]
+                    val *= 1 + (bonus - 1) * exp(- i ** 2 / 7.1289)
+                data[attr] = val
+            except:
+                pass
 
         for mod in fit.modules:
             dps, _ =  mod.damageStats(fit.targetResists)
@@ -68,9 +71,8 @@ class FitDpsGraph(Graph):
         if distance <= fit.extraAttributes["droneControlRange"]:
             for drone in fit.drones:
                 multiplier = 1 if drone.getModifiedItemAttr("maxVelocity") > 0 else self.calculateTurretMultiplier(drone, data)
-                dps, _ =  drone.damageStats(fit.targetResists)
+                dps =  drone.damageStats(fit.targetResists)
                 total += dps * multiplier
-
         return total
 
     def calculateMissileMultiplier(self, mod, data):
@@ -87,6 +89,7 @@ class FitDpsGraph(Graph):
             velocityFactor = (explosionVelocity / explosionRadius * targetSigRad / targetVelocity) ** (log(damageReductionFactor) / log(damageReductionSensitivity))
         else:
             velocityFactor = 1
+
         return min(sigRadiusFactor, velocityFactor, 1)
 
     def calculateTurretMultiplier(self, mod, data):

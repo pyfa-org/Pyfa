@@ -1,9 +1,9 @@
 # evasiveManeuveringAgilityBonusPostPercentAgilityShip
 #
 # Used by:
+# Modules from group: Rig Anchor (4 of 4)
 # Implants named like: Eifyr and Co. 'Rogue' Evasive Maneuvering EM (6 of 6)
 # Implants named like: grade Nomad (10 of 12)
-# Modules named like: Higgs Anchor I (4 of 4)
 # Modules named like: Low Friction Nozzle Joints (8 of 8)
 # Implant: Genolution Core Augmentation CA-4
 # Skill: Evasive Maneuvering

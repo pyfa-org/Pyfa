@@ -100,7 +100,8 @@ class MainFrame(wx.Frame):
         return cls.__instance if cls.__instance is not None else MainFrame()
 
     def __init__(self):
-        wx.Frame.__init__(self, None, wx.ID_ANY, title="pyfa - Python Fitting Assistant")
+        title="pyfa %s%s - Python Fitting Assistant"%(config.version, "" if config.tag.lower() != 'git' else " (git)")
+        wx.Frame.__init__(self, None, wx.ID_ANY, title)
 
         MainFrame.__instance = self
 
@@ -166,7 +167,7 @@ class MainFrame(wx.Frame):
         self.statsPane = StatsPane(self)
         cstatsSizer.Add(self.statsPane, 0, wx.EXPAND)
 
-        mainSizer.Add(cstatsSizer, 0 , wx.EXPAND)
+        mainSizer.Add(cstatsSizer, 0, wx.EXPAND)
 
         self.SetSizer(mainSizer)
 
@@ -214,7 +215,7 @@ class MainFrame(wx.Frame):
 
 
     def LoadMainFrameAttribs(self):
-        mainFrameDefaultAttribs = {"wnd_width":1000, "wnd_height": 700, "wnd_maximized": False}
+        mainFrameDefaultAttribs = {"wnd_width": 1000, "wnd_height": 680, "wnd_maximized": False}
         self.mainFrameAttribs = service.SettingsProvider.getInstance().getSettings("pyfaMainWindowAttribs", mainFrameDefaultAttribs)
 
         if self.mainFrameAttribs["wnd_maximized"]:
@@ -289,6 +290,7 @@ class MainFrame(wx.Frame):
         event.Skip()
 
     def ShowAboutBox(self, evt):
+        import eos.config
         info = wx.AboutDialogInfo()
         info.Name = "pyfa"
         info.Version = gui.aboutData.versionString
@@ -298,7 +300,8 @@ class MainFrame(wx.Frame):
                                      "\n\t".join(gui.aboutData.credits) +
                                      "\n\nLicenses:\n\t" +
                                      "\n\t".join(gui.aboutData.licenses) +
-                                     "\n\nPython: \t" + sys.version +
+                                     "\n\nEVE Data: \t" + eos.config.gamedata_version +
+                                     "\nPython: \t" + sys.version +
                                      "\nwxPython: \t" + wx.__version__ +
                                      "\nSQLAlchemy: \t" + sqlalchemy.__version__,
             700, wx.ClientDC(self))

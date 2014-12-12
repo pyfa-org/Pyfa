@@ -28,7 +28,7 @@ import traceback
 try:
     from collections import OrderedDict
 except ImportError:
-    from gui.utils.compat import OrderedDict
+    from utils.compat import OrderedDict
 
 class Effect(EqBase):
     '''
@@ -235,46 +235,62 @@ class Item(EqBase):
                     requiredSkills[item] = skillLvl
         return self.__requiredSkills
 
+    factionMap = {
+        500001: "caldari",
+        500002: "minmatar",
+        500003: "amarr",
+        500004: "gallente",
+        500005: "jove",
+        500010: "guristas",
+        500011: "angel",
+        500012: "blood",
+        500014: "ore",
+        500016: "sisters",
+        500018: "mordu",
+        500019: "sansha",
+        500020: "serpentis"
+    }
+
     @property
     def race(self):
         if self.__race is None:
-            # Define race map
-            map = {1: "caldari",
-                   2: "minmatar",
-                   4: "amarr",
-                   5: "sansha", # Caldari + Amarr
-                   6: "blood", # Minmatar + Amarr
-                   8: "gallente",
-                   9: "guristas", # Caldari + Gallente
-                   10: "angelserp", # Minmatar + Gallente, final race depends on the order of skills
-                   12: "sisters", # Amarr + Gallente
-                   16: "jove",
-                   32: "sansha", # Incrusion Sansha
-                   128: "ore"}
-            # Race is None by default
-            race = None
-            # Check primary and secondary required skills' races
-            if race is None:
-                # Currently Assault Frigates skill has raceID set, which is actually
-                # EVE's bug
-                ignoredSkills = ('Assault Frigates',)
-                skills = tuple(filter(lambda i: i.name not in ignoredSkills, self.requiredSkills.keys()))
-                skillRaces = tuple(filter(lambda rid: rid, (s.raceID for s in skills)))
-                if sum(skillRaces) in map:
-                    race = map[sum(skillRaces)]
-                    if race == "angelserp":
-                        if skillRaces == (2, 8):
-                            race = "angel"
-                        else:
-                            race = "serpentis"
-
-            # Rely on item's own raceID as last resort
-            if race is None:
-                race = map.get(self.raceID, None)
-
-            # Store our final value
-            self.__race = race
+            try:
+                self.__race = self.factionMap[self.factionID]
+            # Some ships (like few limited issue ships) do not have factionID set,
+            # thus keep old mechanism for now
+            except KeyError:
+                # Define race map
+                map = {1: "caldari",
+                       2: "minmatar",
+                       4: "amarr",
+                       5: "sansha", # Caldari + Amarr
+                       6: "blood", # Minmatar + Amarr
+                       8: "gallente",
+                       9: "guristas", # Caldari + Gallente
+                       10: "angelserp", # Minmatar + Gallente, final race depends on the order of skills
+                       12: "sisters", # Amarr + Gallente
+                       16: "jove",
+                       32: "sansha", # Incrusion Sansha
+                       128: "ore"}
+                # Race is None by default
+                race = None
+                # Check primary and secondary required skills' races
+                if race is None:
+                    skillRaces = tuple(filter(lambda rid: rid, (s.raceID for s in tuple(self.requiredSkills.keys()))))
+                    if sum(skillRaces) in map:
+                        race = map[sum(skillRaces)]
+                        if race == "angelserp":
+                            if skillRaces == (2, 8):
+                                race = "angel"
+                            else:
+                                race = "serpentis"
+                # Rely on item's own raceID as last resort
+                if race is None:
+                    race = map.get(self.raceID, None)
+                # Store our final value
+                self.__race = race
         return self.__race
+
 
     @property
     def assistive(self):
@@ -325,9 +341,7 @@ class Item(EqBase):
         return False
 
 class MetaData(EqBase):
-    def __init__(self, name, val=None):
-        self.fieldName = name
-        self.fieldValue = val
+    pass
 
 class EffectInfo(EqBase):
     pass

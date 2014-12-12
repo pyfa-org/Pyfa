@@ -8,6 +8,9 @@ from eos.types import Hardpoint
 import gui.globalEvents as GE
 
 class ModuleAmmoPicker(ContextMenu):
+    DAMAGE_TYPES = ("em", "explosive", "kinetic", "thermal")
+    MISSILE_ORDER = ("em", "thermal", "kinetic", "explosive", "mixed")
+
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
@@ -19,7 +22,9 @@ class ModuleAmmoPicker(ContextMenu):
 
         validCharges = None
         checkedTypes = set()
+
         for mod in modules:
+            # loop through modules and gather list of valid charges
             if mod.item.ID in checkedTypes:
                 continue
             checkedTypes.add(mod.item.ID)
@@ -41,10 +46,6 @@ class ModuleAmmoPicker(ContextMenu):
     def getText(self, itmContext, selection):
         return "Charge"
 
-    def activate(self, fullContext, selection, i):
-        pass
-
-    DAMAGE_TYPES = ("em", "explosive", "kinetic", "thermal")
     def turretSorter(self, charge):
         damage = 0
         range = (self.module.getModifiedItemAttr("maxRange") or 0) * (charge.getAttribute("weaponRangeMultiplier") or 1)
@@ -57,15 +58,14 @@ class ModuleAmmoPicker(ContextMenu):
         # Take optimal and half falloff as range factor
         rangeFactor = range + falloff / 2
 
-        return (- rangeFactor, charge.name.rsplit()[-2:], damage, charge.name)
+        return - rangeFactor, charge.name.rsplit()[-2:], damage, charge.name
 
-    MISSILE_ORDER = ("em", "thermal", "kinetic", "explosive", "mixed")
     def missileSorter(self, charge):
         # Get charge damage type and total damage
         chargeDamageType, totalDamage = self.damageInfo(charge)
         # Find its position in sort list
         position = self.MISSILE_ORDER.index(chargeDamageType)
-        return (position, totalDamage, charge.name)
+        return position, totalDamage, charge.name
 
     def damageInfo(self, charge):
         # Set up data storage for missile damage stuff
@@ -90,7 +90,6 @@ class ModuleAmmoPicker(ContextMenu):
 
         return chargeDamageType, totalDamage
 
-
     def numericConverter(self, string):
         return int(string) if string.isdigit() else string
 
@@ -103,6 +102,7 @@ class ModuleAmmoPicker(ContextMenu):
         name = charge.name if charge is not None else "Empty"
         self.chargeIds[id] = charge
         item = wx.MenuItem(menu, id, name)
+        menu.Bind(wx.EVT_MENU, self.handleAmmoSwitch, item)
         item.charge = charge
         if charge is not None and charge.icon is not None:
             bitmap = bitmapLoader.getBitmap(charge.icon.iconFile, "pack")
@@ -116,11 +116,9 @@ class ModuleAmmoPicker(ContextMenu):
         m.Append(id, u'─ %s ─' % text)
         m.Enable(id, False)
 
-    def getSubMenu(self, context, selection, menu, i, pitem):
-        self.context = context
-        menu.Bind(wx.EVT_MENU, self.handleAmmoSwitch)
+    def getSubMenu(self, context, selection, rootMenu, i, pitem):
+        msw = True if "wxMSW" in wx.PlatformInfo else False
         m = wx.Menu()
-        m.Bind(wx.EVT_MENU, self.handleAmmoSwitch)
         self.chargeIds = {}
         hardpoint = self.module.hardpoint
         moduleName = self.module.item.name
@@ -150,7 +148,7 @@ class ModuleAmmoPicker(ContextMenu):
                     base = charge
                     nameBase = currBase
                     range = currRange
-                    item = self.addCharge(m, charge)
+                    item = self.addCharge(rootMenu if msw else m, charge)
                     items.append(item)
                 else:
                     if sub is None:
@@ -158,9 +156,9 @@ class ModuleAmmoPicker(ContextMenu):
                         sub.Bind(wx.EVT_MENU, self.handleAmmoSwitch)
                         self.addSeperator(sub, "Less Damage")
                         item.SetSubMenu(sub)
-                        sub.AppendItem(self.addCharge(sub, base))
+                        sub.AppendItem(self.addCharge(rootMenu if msw else sub, base))
 
-                    sub.AppendItem(self.addCharge(sub, charge))
+                    sub.AppendItem(self.addCharge(rootMenu if msw else sub, charge))
 
             if sub is not None:
                 self.addSeperator(sub, "More Damage")
@@ -194,20 +192,20 @@ class ModuleAmmoPicker(ContextMenu):
                     m.AppendItem(item)
 
                 if charge.name not in ("Light Defender Missile I", "Heavy Defender Missile I"):
-                    sub.AppendItem(self.addCharge(sub, charge))
+                    sub.AppendItem(self.addCharge(rootMenu if msw else sub, charge))
                 else:
                     defender = charge
 
             if defender is not None:
-                m.AppendItem(self.addCharge(sub, defender))
+                m.AppendItem(self.addCharge(rootMenu if msw else m, defender))
             if sub is not None:
                 self.addSeperator(sub, "More Damage")
         else:
             self.charges.sort(key=self.nameSorter)
             for charge in self.charges:
-                m.AppendItem(self.addCharge(m, charge))
+                m.AppendItem(self.addCharge(rootMenu if msw else m, charge))
 
-        m.AppendItem(self.addCharge(m, None))
+        m.AppendItem(self.addCharge(rootMenu if msw else m, None))
         return m
 
     def handleAmmoSwitch(self, event):

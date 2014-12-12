@@ -30,6 +30,7 @@ class FirepowerViewFull(StatsView):
         StatsView.__init__(self)
         self.parent = parent
         self._cachedValues = []
+
     def getHeaderText(self, fit):
         return "Firepower"
 
@@ -44,7 +45,7 @@ class FirepowerViewFull(StatsView):
         self.headerPanel = headerPanel
         headerContentSizer = wx.BoxSizer(wx.HORIZONTAL)
         hsizer = headerPanel.GetSizer()
-        hsizer.Add(headerContentSizer,0,0,0)
+        hsizer.Add(headerContentSizer, 0, 0, 0)
         self.stEff = wx.StaticText(headerPanel, wx.ID_ANY, "( Effective )")
         headerContentSizer.Add(self.stEff)
         headerPanel.GetParent().AddToggleItem(self.stEff)
@@ -54,7 +55,7 @@ class FirepowerViewFull(StatsView):
         sizerFirepower = wx.FlexGridSizer(1, 4)
         sizerFirepower.AddGrowableCol(1)
 
-        contentSizer.Add( sizerFirepower, 0, wx.EXPAND, 0)
+        contentSizer.Add(sizerFirepower, 0, wx.EXPAND, 0)
 
         counter = 0
 
@@ -73,10 +74,9 @@ class FirepowerViewFull(StatsView):
             box.Add(hbox, 1, wx.ALIGN_CENTER)
 
             lbl = wx.StaticText(parent, wx.ID_ANY, "0.0 DPS")
-            setattr(self, "label%sDps%s" % (panel.capitalize() ,damageType.capitalize()), lbl)
+            setattr(self, "label%sDps%s" % (panel.capitalize(), damageType.capitalize()), lbl)
 
             hbox.Add(lbl, 0, wx.ALIGN_CENTER)
-#            hbox.Add(wx.StaticText(parent, wx.ID_ANY, " DPS"), 0, wx.ALIGN_CENTER)
             self._cachedValues.append(0)
             counter += 1
         targetSizer = sizerFirepower
@@ -143,7 +143,7 @@ class FirepowerViewFull(StatsView):
 
         stats = (("labelFullDpsWeapon", lambda: fit.weaponDPS, 3, 0, 0, "%s DPS",None),
                  ("labelFullDpsDrone", lambda: fit.droneDPS, 3, 0, 0, "%s DPS", None),
-                 ("labelFullVolleyTotal", lambda: fit.weaponVolley, 3, 0, 0, "%s", "Volley: %.1f"),
+                 ("labelFullVolleyTotal", lambda: fit.totalVolley, 3, 0, 0, "%s", "Volley: %.1f"),
                  ("labelFullDpsTotal", lambda: fit.totalDPS, 3, 0, 0, "%s", None))
         # See GH issue #
         #if fit is not None and fit.totalYield > 0:

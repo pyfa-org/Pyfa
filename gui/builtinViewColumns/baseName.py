@@ -42,7 +42,10 @@ class BaseName(ViewColumn):
             return "%s (%s)" % (stuff.name, stuff.ship.item.name)
         elif isinstance(stuff, Rack):
             if service.Fit.getInstance().serviceFittingOptions["rackLabels"]:
-                return u'─ {} Slots ─'.format(Slot.getName(stuff.slot).capitalize())
+                if stuff.slot == Slot.MODE:
+                    return u'─ Tactical Mode ─'
+                else:
+                    return u'─ {} Slots ─'.format(Slot.getName(stuff.slot).capitalize())
             else:
                 return ""
         elif isinstance(stuff, Module):

@@ -8,7 +8,6 @@ class AmmoPattern(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
-
     def display(self, srcContext, selection):
         if srcContext not in ("marketItemGroup", "marketItemMisc") or self.mainFrame.getActiveFit() is None:
             return False
@@ -32,6 +31,5 @@ class AmmoPattern(ContextMenu):
 
     def getBitmap(self, context, selection):
         return None
-
 
 AmmoPattern.register()

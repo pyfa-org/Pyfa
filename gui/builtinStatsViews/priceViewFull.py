@@ -41,7 +41,7 @@ class PriceViewFull(StatsView):
         self._cachedFittings = 0
         self._cachedTotal = 0
 
-    def OnTimer( self, event):
+    def OnTimer(self, event):
         if self._timerId == event.GetId():
             if self._timerRuns >= self._timerRunsBeforeUpdate:
                 self._timerRuns = 0
@@ -53,11 +53,12 @@ class PriceViewFull(StatsView):
         if self._timerIdUpdate == event.GetId():
             self._timerUpdate.Stop()
             self.labelEMStatus.SetLabel("")
+
     def getHeaderText(self, fit):
         return "Price"
 
     def getTextExtentW(self, text):
-        width, height = self.parent.GetTextExtent( text )
+        width, height = self.parent.GetTextExtent(text)
         return width
 
     def populatePanel(self, contentPanel, headerPanel):
@@ -65,8 +66,15 @@ class PriceViewFull(StatsView):
         self.panel = contentPanel
         self.headerPanel = headerPanel
 
+        headerContentSizer = wx.BoxSizer(wx.HORIZONTAL)
+        hsizer = headerPanel.GetSizer()
+        hsizer.Add(headerContentSizer, 0, 0, 0)
+        self.labelEMStatus = wx.StaticText(headerPanel, wx.ID_ANY, "")
+        headerContentSizer.Add(self.labelEMStatus)
+        headerPanel.GetParent().AddToggleItem(self.labelEMStatus)
+
         gridPrice = wx.GridSizer(1, 3)
-        contentSizer.Add( gridPrice, 0, wx.EXPAND | wx.ALL, 0)
+        contentSizer.Add(gridPrice, 0, wx.EXPAND | wx.ALL, 0)
         for type in ("ship", "fittings", "total"):
             image = "%sPrice_big" % type if type != "ship" else "ship_big"
             box = wx.BoxSizer(wx.HORIZONTAL)
@@ -86,9 +94,6 @@ class PriceViewFull(StatsView):
             setattr(self, "labelPrice%s" % type.capitalize(), lbl)
             hbox.Add(lbl, 0, wx.ALIGN_LEFT)
 
-#            hbox.Add(wx.StaticText(contentPanel, wx.ID_ANY, " ISK"), 0, wx.ALIGN_LEFT)
-        self.labelEMStatus = wx.StaticText(contentPanel, wx.ID_ANY, "")
-        contentSizer.Add(self.labelEMStatus,0)
     def refreshPanel(self, fit):
         if fit is not None:
             self.fit = fit

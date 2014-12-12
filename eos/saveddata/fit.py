@@ -27,12 +27,13 @@ from copy import deepcopy
 from math import sqrt, log, asinh
 from eos.types import Drone, Cargo, Ship, Character, State, Slot, Module, Implant, Booster, Skill
 from eos.saveddata.module import State
+from eos.saveddata.mode import Mode
 import time
 
 try:
     from collections import OrderedDict
 except ImportError:
-    from gui.utils.compat import OrderedDict
+    from utils.compat import OrderedDict
 
 class Fit(object):
     """Represents a fitting, with modules, ship, implants, etc."""
@@ -66,6 +67,7 @@ class Fit(object):
         self.gangBoosts = None
         self.timestamp = time.time()
         self.ecmProjectedStr = 1
+        self.modeID = None
         self.build()
 
     @reconstructor
@@ -80,6 +82,7 @@ class Fit(object):
         self.__minerYield = None
         self.__weaponVolley = None
         self.__droneDPS = None
+        self.__droneVolley = None
         self.__droneYield = None
         self.__sustainableTank = None
         self.__effectiveSustainableTank = None
@@ -98,6 +101,10 @@ class Fit(object):
         self.extraAttributes = ModifiedAttributeDict(self)
         self.extraAttributes.original = self.EXTRA_ATTRIBUTES
         self.ship = Ship(db.getItem(self.shipID)) if self.shipID is not None else None
+        if self.ship is not None:
+            self.mode = self.ship.checkModeItem(db.getItem(self.modeID) if self.modeID else None)
+        else:
+            self.mode = None
 
     @property
     def targetResists(self):
@@ -109,6 +116,7 @@ class Fit(object):
         self.__weaponDPS = None
         self.__weaponVolley = None
         self.__droneDPS = None
+        self.__droneVolley = None
 
     @property
     def damagePattern(self):
@@ -119,6 +127,15 @@ class Fit(object):
         self.__damagePattern = damagePattern
         self.__ehp = None
         self.__effectiveTank = None
+
+    @property
+    def mode(self):
+        return self._mode
+
+    @mode.setter
+    def mode(self, mode):
+        self._mode = mode
+        self.modeID = mode.item.ID if mode is not None else None
 
     @property
     def character(self):
@@ -191,8 +208,19 @@ class Fit(object):
         return self.__droneDPS
 
     @property
+    def droneVolley(self):
+        if self.__droneVolley is None:
+            self.calculateWeaponStats()
+
+        return self.__droneVolley
+
+    @property
     def totalDPS(self):
         return self.droneDPS + self.weaponDPS
+
+    @property
+    def totalVolley(self):
+        return self.droneVolley + self.weaponVolley
 
     @property
     def minerYield(self):
@@ -279,6 +307,7 @@ class Fit(object):
         self.__effectiveSustainableTank = None
         self.__sustainableTank = None
         self.__droneDPS = None
+        self.__droneVolley = None
         self.__droneYield = None
         self.__ehp = None
         self.__calculated = False
@@ -355,9 +384,9 @@ class Fit(object):
             # Avoid adding projected drones and modules when fit is projected onto self
             # TODO: remove this workaround when proper self-projection using virtual duplicate fits is implemented
             if forceProjected is True:
-                c = chain((self.character, self.ship), self.drones, self.boosters, self.appliedImplants, self.modules)
+                c = chain((self.character, self.ship, self.mode), self.drones, self.boosters, self.appliedImplants, self.modules)
             else:
-                c = chain((self.character, self.ship), self.drones, self.boosters, self.appliedImplants, self.modules,
+                c = chain((self.character, self.ship, self.mode), self.drones, self.boosters, self.appliedImplants, self.modules,
                           self.projectedDrones, self.projectedModules)
 
             if self.gangBoosts is not None:
@@ -479,6 +508,10 @@ class Fit(object):
                  Slot.HIGH: "hiSlots",
                  Slot.RIG: "rigSlots",
                  Slot.SUBSYSTEM: "maxSubSystems"}
+
+        if type == Slot.MODE:
+            # Mode slot doesn't really exist, return default 0
+            return 0
 
         slotsUsed = self.getSlotsUsed(type, countDummies)
         totalSlots = self.ship.getModifiedItemAttr(slots[type]) or 0
@@ -821,6 +854,7 @@ class Fit(object):
         weaponDPS = 0
         droneDPS = 0
         weaponVolley = 0
+        droneVolley = 0
 
         for mod in self.modules:
             dps, volley = mod.damageStats(self.targetResists)
@@ -828,11 +862,14 @@ class Fit(object):
             weaponVolley += volley
 
         for drone in self.drones:
-            droneDPS += drone.damageStats(self.targetResists)
+            dps, volley = drone.damageStats(self.targetResists)
+            droneDPS += dps
+            droneVolley += volley
 
         self.__weaponDPS = weaponDPS
         self.__weaponVolley = weaponVolley
         self.__droneDPS = droneDPS
+        self.__droneVolley = droneVolley
 
     @property
     def fits(self):

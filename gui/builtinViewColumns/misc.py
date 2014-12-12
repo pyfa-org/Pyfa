@@ -19,7 +19,6 @@
 
 
 import gui.mainFrame
-from gui import builtinViewColumns
 from gui.viewColumn import ViewColumn
 from gui import bitmapLoader
 from gui.utils.numberFormatter import formatAmount
@@ -62,19 +61,30 @@ class Miscellanea(ViewColumn):
         return (("displayName", bool, False),
                 ("showIcon", bool, True))
 
-
     def __getData(self, stuff):
         item = stuff.item
         if item is None:
             return "", None
         itemGroup = item.group.name
-        if itemGroup in ("Energy Weapon", "Hybrid Weapon", "Projectile Weapon", "Combat Drone", "Fighter Drone"):
+        itemCategory = item.category.name
+
+        if itemGroup == "Ship Modifiers":
+            return "", None
+        elif itemGroup in ("Energy Weapon", "Hybrid Weapon", "Projectile Weapon", "Combat Drone", "Fighter Drone"):
             trackingSpeed = stuff.getModifiedItemAttr("trackingSpeed")
             if not trackingSpeed:
                 return "", None
             text = "{0}".format(formatAmount(trackingSpeed, 3, 0, 3))
             tooltip = "Tracking speed"
             return text, tooltip
+        elif itemCategory == "Subsystem":
+            slots = ("hi", "med", "low")
+            info = []
+            for slot in slots:
+                n = int(stuff.getModifiedItemAttr("%sSlotModifier"%slot))
+                if n > 0:
+                    info.append("{0}{1}".format(n, slot[0].upper()))
+            return "+ "+", ".join(info), "Slot Modifiers"
         elif itemGroup == "Energy Destabilizer":
             neutAmount = stuff.getModifiedItemAttr("energyDestabilizationAmount")
             cycleTime = stuff.cycleTime
