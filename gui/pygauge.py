@@ -379,9 +379,15 @@ class PyGauge(wx.PyWindow):
             dc.DrawLabel(formatStr, rect, wx.ALIGN_CENTER)
         else:
             if self.GetBarGradient() and self._showRemaining:
-                formatStr = "{0:." + str(self._fractionDigits) + "f} left"
                 range = self._range if self._range > 0.01 else 0
-                value = max( range - self._value , 0)
+                value = range - self._value
+                if value < 0:
+                    label = "over"
+                    value = -value
+                else:
+                    label = "left"
+                formatStr = "{0:." + str(self._fractionDigits) + "f} " + label
+
             else:
                 formatStr = "{0:." + str(self._fractionDigits) + "f}%"
 
