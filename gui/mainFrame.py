@@ -99,7 +99,7 @@ class MainFrame(wx.Frame):
     def getInstance(cls):
         return cls.__instance if cls.__instance is not None else MainFrame()
 
-    def __init__(self):
+    def __init__(self, pyfaApp):
         title="pyfa %s%s - Python Fitting Assistant"%(config.version, "" if config.tag.lower() != 'git' else " (git)")
         wx.Frame.__init__(self, None, wx.ID_ANY, title)
 
@@ -163,7 +163,6 @@ class MainFrame(wx.Frame):
 
         self.charSelection = CharacterSelection(self)
         cstatsSizer.Add(self.charSelection, 0, wx.EXPAND)
-
         self.statsPane = StatsPane(self)
         cstatsSizer.Add(self.statsPane, 0, wx.EXPAND)
 
@@ -661,4 +660,3 @@ class MainFrame(wx.Frame):
         if not wnd:
             wnd = self
         InspectionTool().Show(wnd, True)
-
