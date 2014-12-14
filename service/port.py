@@ -508,64 +508,68 @@ class Port(object):
         fittings = doc.createElement("fittings")
         doc.appendChild(fittings)
         for fit in fits:
-            fitting = doc.createElement("fitting")
-            fitting.setAttribute("name", fit.name)
-            fittings.appendChild(fitting)
-            description = doc.createElement("description")
-            description.setAttribute("value", "")
-            fitting.appendChild(description)
-            shipType = doc.createElement("shipType")
-            shipType.setAttribute("value", fit.ship.item.name)
-            fitting.appendChild(shipType)
+            try:
+                fitting = doc.createElement("fitting")
+                fitting.setAttribute("name", fit.name)
+                fittings.appendChild(fitting)
+                description = doc.createElement("description")
+                description.setAttribute("value", "")
+                fitting.appendChild(description)
+                shipType = doc.createElement("shipType")
+                shipType.setAttribute("value", fit.ship.item.name)
+                fitting.appendChild(shipType)
 
-            charges = {}
-            slotNum = {}
-            for module in fit.modules:
-                if module.isEmpty:
-                    continue
+                charges = {}
+                slotNum = {}
+                for module in fit.modules:
+                    if module.isEmpty:
+                        continue
 
-                slot = module.slot
+                    slot = module.slot
 
-                if slot == Slot.SUBSYSTEM:
-                    # Order of subsystem matters based on this attr. See GH issue #130
-                    slotId = module.getModifiedItemAttr("subSystemSlot") - 124
-                else:
-                    if not slot in slotNum:
-                        slotNum[slot] = 0
+                    if slot == Slot.SUBSYSTEM:
+                        # Order of subsystem matters based on this attr. See GH issue #130
+                        slotId = module.getModifiedItemAttr("subSystemSlot") - 124
+                    else:
+                        if not slot in slotNum:
+                            slotNum[slot] = 0
 
-                    slotId = slotNum[slot]
-                    slotNum[slot] += 1
+                        slotId = slotNum[slot]
+                        slotNum[slot] += 1
 
-                hardware = doc.createElement("hardware")
-                hardware.setAttribute("type", module.item.name)
-                slotName = Slot.getName(slot).lower()
-                slotName = slotName if slotName != "high" else "hi"
-                hardware.setAttribute("slot", "%s slot %d" % (slotName, slotId))
-                fitting.appendChild(hardware)
+                    hardware = doc.createElement("hardware")
+                    hardware.setAttribute("type", module.item.name)
+                    slotName = Slot.getName(slot).lower()
+                    slotName = slotName if slotName != "high" else "hi"
+                    hardware.setAttribute("slot", "%s slot %d" % (slotName, slotId))
+                    fitting.appendChild(hardware)
 
-                if module.charge:
-                    if not module.charge.name in charges:
-                        charges[module.charge.name] = 0
-                    # `or 1` because some charges (ie scripts) are without qty
-                    charges[module.charge.name] += module.numCharges or 1
+                    if module.charge:
+                        if not module.charge.name in charges:
+                            charges[module.charge.name] = 0
+                        # `or 1` because some charges (ie scripts) are without qty
+                        charges[module.charge.name] += module.numCharges or 1
 
-            for drone in fit.drones:
-                hardware = doc.createElement("hardware")
-                hardware.setAttribute("qty", "%d" % drone.amount)
-                hardware.setAttribute("slot", "drone bay")
-                hardware.setAttribute("type", drone.item.name)
-                fitting.appendChild(hardware)
+                for drone in fit.drones:
+                    hardware = doc.createElement("hardware")
+                    hardware.setAttribute("qty", "%d" % drone.amount)
+                    hardware.setAttribute("slot", "drone bay")
+                    hardware.setAttribute("type", drone.item.name)
+                    fitting.appendChild(hardware)
 
-            for cargo in fit.cargo:
-                if not cargo.item.name in charges:
-                    charges[cargo.item.name] = 0
-                charges[cargo.item.name] += cargo.amount
+                for cargo in fit.cargo:
+                    if not cargo.item.name in charges:
+                        charges[cargo.item.name] = 0
+                    charges[cargo.item.name] += cargo.amount
 
-            for name, qty in charges.items():
-                hardware = doc.createElement("hardware")
-                hardware.setAttribute("qty", "%d" % qty)
-                hardware.setAttribute("slot", "cargo")
-                hardware.setAttribute("type", name)
-                fitting.appendChild(hardware)
+                for name, qty in charges.items():
+                    hardware = doc.createElement("hardware")
+                    hardware.setAttribute("qty", "%d" % qty)
+                    hardware.setAttribute("slot", "cargo")
+                    hardware.setAttribute("type", name)
+                    fitting.appendChild(hardware)
+            except:
+                print "Failed on fitID: %d"%fit.ID
+                continue
 
         return doc.toprettyxml()
