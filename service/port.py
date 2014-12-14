@@ -29,9 +29,7 @@ try:
 except ImportError:
     from utils.compat import OrderedDict
 
-FIT_WIN_HEADINGS = ["High power", "Medium power", "Low power", "Rig Slot", "Sub System", "Charges"]
 EFT_SLOT_ORDER = [Slot.LOW, Slot.MED, Slot.HIGH, Slot.RIG, Slot.SUBSYSTEM]
-
 
 class Port(object):
     """Service which houses all import/export format functions"""
@@ -41,27 +39,6 @@ class Port(object):
         # Get first line and strip space symbols of it to avoid possible detection errors
         firstLine = re.split("[\n\r]+", string.strip(), maxsplit=1)[0]
         firstLine = firstLine.strip()
-
-        # If string is from in-game copy of fitting window
-        # We match " power" instead of "High power" in case a fit has no high modules
-        if firstLine in FIT_WIN_HEADINGS and activeFit is not None:
-            return "FIT", (cls.importFittingWindow(string, activeFit),)
-
-        # If we have "<url=fitting", fit is coming from eve chat
-        # Gather data and send to DNA
-        chatDna = re.search("<url=fitting:(.*::)>.*</url>", firstLine)
-        if chatDna:
-            return "DNA", (cls.importDna(chatDna.group(1)),)
-
-        # If we have a CREST kill link
-        killLink = re.search("http://public-crest.eveonline.com/killmails/(.*)/", firstLine)
-        if killLink:
-            return "CREST", (cls.importCrest(tuple(killLink.group(1).split("/"))),)
-
-        # If we have "<url=killReport", fit is killmail from eve chat
-        killReport = re.search("<url=killReport:(.*)>.*</url>", firstLine)
-        if killReport:
-            return "CREST", (cls.importCrest(tuple(killReport.group(1).split(":"))),)
 
         # If XML-style start of tag encountered, detect as XML
         if re.match("<", firstLine):
@@ -80,138 +57,6 @@ class Port(object):
 
         # Use DNA format for all other cases
         return "DNA", (cls.importDna(string),)
-
-    @staticmethod
-    def importFittingWindow(string, activeFit):
-        sMkt = service.Market.getInstance()
-        sFit = service.Fit.getInstance()
-
-        activeFit = sFit.getFit(activeFit)
-
-        # if the current fit has mods, do not mess with it. Instead, make new fit
-        if activeFit.modCount > 0:
-            fit = Fit()
-            fit.ship = Ship(sMkt.getItem(activeFit.ship.item.ID))
-            fit.name = "%s (copy)" % activeFit.name
-        else:
-            fit = activeFit
-        lines = re.split('[\n\r]+', string)
-
-        droneMap = {}
-        cargoMap = {}
-        modules = []
-
-        for i in range(1, len(lines)):
-            line = lines[i].strip()
-            if not line:
-                continue
-
-            try:
-                amount, modName = line.split("x ")
-                amount = int(amount)
-                item = sMkt.getItem(modName, eager="group.category")
-            except:
-                # if no data can be found (old names)
-                continue
-
-            if item.category.name == "Drone":
-                if not modName in droneMap:
-                    droneMap[modName] = 0
-                droneMap[modName] += amount
-            elif item.category.name == "Charge":
-                if not modName in cargoMap:
-                    cargoMap[modName] = 0
-                cargoMap[modName] += amount
-            else:
-                for _ in xrange(amount):
-                    try:
-                        m = Module(item)
-                    except ValueError:
-                        continue
-                    # If we are importing T3 ship, we must apply subsystems first, then
-                    # calcModAttr() to get the ship slots
-                    if m.slot == Slot.SUBSYSTEM and m.fits(fit):
-                        fit.modules.append(m)
-                    else:
-                        modules.append(m)
-
-        fit.clear()
-        fit.calculateModifiedAttributes()
-
-        for m in modules:
-            # we check to see if module fits as a basic sanity check
-            # if it doesn't then the imported fit is most likely invalid
-            # (ie: user tried to import Legion fit to a Rifter)
-            if m.fits(fit):
-                fit.modules.append(m)
-                if m.isValidState(State.ACTIVE):
-                    m.state = State.ACTIVE
-                m.owner = fit  # not sure why this is required when it's not for other import methods, but whatever
-            else:
-                return
-
-        for droneName in droneMap:
-            d = Drone(sMkt.getItem(droneName))
-            d.amount = droneMap[droneName]
-            fit.drones.append(d)
-
-        for cargoName in cargoMap:
-            c = Cargo(sMkt.getItem(cargoName))
-            c.amount = cargoMap[cargoName]
-            fit.cargo.append(c)
-
-        return fit
-
-    @staticmethod
-    def importCrest(info):
-        sMkt = service.Market.getInstance()
-        network = service.Network.getInstance()
-        try:
-            response = network.request("https://public-crest.eveonline.com/killmails/%s/%s/" % info, network.EVE)
-        except:
-            return
-
-        kill = (json.loads(response.read()))['victim']
-
-        fit = Fit()
-        fit.ship = Ship(sMkt.getItem(kill['shipType']['name']))
-        fit.name = "CREST: %s's %s" % (kill['character']['name'], kill['shipType']['name'])
-
-        # sort based on flag to get proper rack position
-        items = sorted(kill['items'], key=lambda k: k['flag'])
-
-        # We create a relation between module flag and module position on fit at time of append:
-        # this allows us to know which module to apply charges to if need be (see below)
-        flagMap = {}
-
-        # Charges may show up before or after the module. We process modules first,
-        # storing any charges that are fitted in a dict and noting their flag (module).
-        charges = {}
-
-        for mod in items:
-            if mod['flag'] == 5:  # throw out cargo
-                continue
-
-            item = sMkt.getItem(mod['itemType']['name'], eager="group.category")
-
-            if item.category.name == "Drone":
-                d = Drone(item)
-                d.amount = mod['quantityDropped'] if 'quantityDropped' in mod else mod['quantityDestroyed']
-                fit.drones.append(d)
-            elif item.category.name == "Charge":
-                charges[mod['flag']] = item
-            else:
-                m = Module(item)
-                if m.isValidState(State.ACTIVE):
-                    m.state = State.ACTIVE
-                fit.modules.append(m)
-                flagMap[mod['flag']] = fit.modules.index(m)
-
-        for flag, item in charges.items():
-            # we do not need to verify valid charge as it comes directly from CCP
-            fit.modules[flagMap[flag]].charge = item
-
-        return fit
 
     @staticmethod
     def importDna(string):
