@@ -47,12 +47,11 @@ class FitBackupThread(threading.Thread):
         path = self.path
         sFit = Fit.getInstance()
         allFits = map(lambda x: x[0], sFit.getAllFits())
-        backedUpFits = sFit.exportXml(*allFits)
+        backedUpFits = sFit.exportXml(self.callback, *allFits)
         backupFile = open(path, "w", encoding="utf-8")
         backupFile.write(backedUpFits)
         backupFile.close()
-        wx.CallAfter(self.callback)
-
+        wx.CallAfter(self.callback, -1)
 
 class FitImportThread(threading.Thread):
     def __init__(self, paths, callback):
@@ -126,6 +125,9 @@ class Fit(object):
             names.append((fit.ID, fit.name, fit.shipID))
 
         return names
+
+    def countAllFits(self):
+        return eos.db.countAllFits()
 
     def countFitsWithShip(self, shipID):
         count = eos.db.countFitsWithShip(shipID)
@@ -758,9 +760,9 @@ class Fit(object):
         fit = eos.db.getFit(fitID)
         return Port.exportDna(fit)
 
-    def exportXml(self, *fitIDs):
+    def exportXml(self, callback = None, *fitIDs):
         fits = map(lambda fitID: eos.db.getFit(fitID), fitIDs)
-        return Port.exportXml(*fits)
+        return Port.exportXml(callback, *fits)
 
     def backupFits(self, path, callback):
         thread = FitBackupThread(path, callback)

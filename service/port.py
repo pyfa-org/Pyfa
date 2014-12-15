@@ -23,6 +23,7 @@ import json
 
 from eos.types import State, Slot, Module, Cargo, Fit, Ship, Drone, Implant, Booster
 import service
+import wx
 
 try:
     from collections import OrderedDict
@@ -503,11 +504,11 @@ class Port(object):
         return dna + "::"
 
     @classmethod
-    def exportXml(cls, *fits):
+    def exportXml(cls, callback=None, *fits):
         doc = xml.dom.minidom.Document()
         fittings = doc.createElement("fittings")
         doc.appendChild(fittings)
-        for fit in fits:
+        for i, fit in enumerate(fits):
             try:
                 fitting = doc.createElement("fitting")
                 fitting.setAttribute("name", fit.name)
@@ -571,5 +572,8 @@ class Port(object):
             except:
                 print "Failed on fitID: %d"%fit.ID
                 continue
+            finally:
+                if callback:
+                    wx.CallAfter(callback, i)
 
         return doc.toprettyxml()

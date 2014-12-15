@@ -54,6 +54,9 @@ from gui.utils.clipboard import toClipboard, fromClipboard
 from gui.fleetBrowser import FleetBrowser
 from gui.updateDialog import UpdateDialog
 from gui.builtinViews import *
+
+from time import gmtime, strftime
+
 import locale
 locale.setlocale(locale.LC_ALL, '')
 
@@ -571,22 +574,37 @@ class MainFrame(wx.Frame):
             pass
         dlg.Destroy()
 
+    def updateProgressDialog(self,count):
+        if count == -1:
+            self.progressDialog.Destroy()
+        else:
+            self.progressDialog.Update(count)
+
     def backupToXml(self, event):
         sFit = service.Fit.getInstance()
+
+        defaultFile = "pyfa-fits-%s.xml"%strftime("%Y%m%d_%H%M%S", gmtime())
+
         saveDialog = wx.FileDialog(
             self,
             "Save Backup As...",
             wildcard = "EVE XML fitting file (*.xml)|*.xml",
-            style = wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT)
+            style = wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT,
+            defaultFile=defaultFile)
+
         if (saveDialog.ShowModal() == wx.ID_OK):
             filePath = saveDialog.GetPath()
             if '.' not in os.path.basename(filePath):
                 filePath += ".xml"
-            self.waitDialog = animUtils.WaitDialog(self)
-            sFit.backupFits(filePath, self.closeWaitDialog)
-            self.waitDialog.ShowModal()
 
-        saveDialog.Destroy()
+            max = sFit.countAllFits()
+            self.progressDialog = wx.ProgressDialog("Backup fits",
+                              "Backing up %d fits to: %s"%(max, filePath),
+                              maximum = max, parent=self,
+                              style = wx.PD_APP_MODAL | wx.PD_ELAPSED_TIME)
+
+            sFit.backupFits(filePath, self.updateProgressDialog)
+            self.progressDialog.ShowModal()
 
     def exportSkillsNeeded(self, event):
         sCharacter = service.Character.getInstance()
