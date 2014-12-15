@@ -26,7 +26,7 @@ import gui.display as d
 from gui.contextMenu import ContextMenu
 import gui.shipBrowser
 import gui.multiSwitch
-from eos.types import Slot, Rack
+from eos.types import Slot, Rack, Module
 from gui.builtinViewColumns.state import State
 from gui import bitmapLoader
 import gui.builtinViews.emptyView
@@ -424,14 +424,16 @@ class FittingView(d.Display):
                     self.blanks[i] = x+i # modify blanks with actual index
                     self.mods.insert(x+i, Rack.buildRack(slot))
 
-                if fit.mode:
-                    # Modes are special snowflakes and need a little manual loving
-                    # We basically append the Mode rack and Mode to the modules
-                    # while also marking their positions in the Blanks list
+            if fit.mode:
+                # Modes are special snowflakes and need a little manual loving
+                # We basically append the Mode rack and Mode to the modules
+                # while also marking their positions in the Blanks list
+                if sFit.serviceFittingOptions["rackSlots"]:
                     self.blanks.append(len(self.mods))
                     self.mods.append(Rack.buildRack(Slot.MODE))
-                    self.blanks.append(len(self.mods))
-                    self.mods.append(fit.mode)
+
+                self.blanks.append(len(self.mods))
+                self.mods.append(fit.mode)
         else:
             self.mods = None
 
@@ -557,12 +559,14 @@ class FittingView(d.Display):
 
         font = (self.GetClassDefaultAttributes()).font
         for i, mod in enumerate(self.mods):
-            if hasattr(mod,"slot") and slotMap[mod.slot]:
-                self.SetItemBackgroundColour(i, wx.Colour(204, 51, 51))
-            elif sFit.serviceFittingOptions["colorFitBySlot"] and not isinstance(mod, Rack):
-                self.SetItemBackgroundColour(i, self.slotColour(mod.slot))
-            else:
-                self.SetItemBackgroundColour(i, self.GetBackgroundColour())
+            self.SetItemBackgroundColour(i, self.GetBackgroundColour())
+
+            #  only consider changing color if we're dealing with a Module
+            if type(mod) is Module:
+                if slotMap[mod.slot]:  # Color too many modules as red
+                    self.SetItemBackgroundColour(i, wx.Colour(204, 51, 51))
+                elif sFit.serviceFittingOptions["colorFitBySlot"]:  # Color by slot it enabled
+                    self.SetItemBackgroundColour(i, self.slotColour(mod.slot))
 
             # Set rack face to bold
             if isinstance(mod, Rack) and \

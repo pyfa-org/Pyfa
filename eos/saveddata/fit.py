@@ -153,6 +153,8 @@ class Fit(object):
     def ship(self, ship):
         self.__ship = ship
         self.shipID = ship.item.ID if ship is not None else None
+        #  set mode of new ship
+        self.mode = self.ship.checkModeItem(None) if ship is not None else None
 
     @property
     def drones(self):

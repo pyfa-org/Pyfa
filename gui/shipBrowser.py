@@ -5,7 +5,6 @@ import gui.mainFrame
 import gui.globalEvents as GE
 import time
 from gui.PFListPane import PFListPane
-import service
 
 from wx.lib.buttons import GenBitmapButton
 
@@ -19,6 +18,7 @@ from gui.contextMenu import ContextMenu
 import gui.utils.fonts as fonts
 
 import service
+import gui.utils.fonts as fonts
 
 FitRenamed, EVT_FIT_RENAMED = wx.lib.newevent.NewEvent()
 FitSelected, EVT_FIT_SELECTED = wx.lib.newevent.NewEvent()
@@ -355,7 +355,7 @@ class NavigationPanel(SFItem.SFBrowserItem):
         self.recentSearches = []
         self.inSearch = False
 
-        self.fontSmall = wx.FontFromPixelSize(fonts.SMALL,wx.SWISS, wx.NORMAL, wx.NORMAL, False)
+        self.fontSmall = wx.Font(fonts.SMALL, wx.SWISS, wx.NORMAL, wx.NORMAL)
         w,h = size
         self.BrowserSearchBox = wx.TextCtrl(self, wx.ID_ANY, "", wx.DefaultPosition, (-1, h - 2 if 'wxGTK' in wx.PlatformInfo else -1 ), wx.TE_PROCESS_ENTER | (wx.BORDER_NONE if 'wxGTK' in wx.PlatformInfo else 0))
         self.BrowserSearchBox.Show(False)
@@ -944,7 +944,7 @@ class CategoryItem(SFItem.SFBrowserItem):
 
         self.padding = 4
 
-        self.fontBig = wx.FontFromPixelSize(fonts.BIG,wx.SWISS, wx.NORMAL, wx.NORMAL, False)
+        self.fontBig = wx.Font(fonts.BIG, wx.SWISS, wx.NORMAL, wx.NORMAL)
 
         self.animTimerId = wx.NewId()
 
@@ -1058,9 +1058,9 @@ class ShipItem(SFItem.SFBrowserItem):
 
         self.shipID = shipID
 
-        self.fontBig = wx.FontFromPixelSize(fonts.BIG,wx.SWISS, wx.NORMAL, wx.BOLD, False)
-        self.fontNormal = wx.FontFromPixelSize(fonts.NORMAL,wx.SWISS, wx.NORMAL, wx.NORMAL, False)
-        self.fontSmall = wx.FontFromPixelSize(fonts.SMALL,wx.SWISS, wx.NORMAL, wx.NORMAL, False)
+        self.fontBig = wx.Font(fonts.BIG, wx.SWISS, wx.NORMAL, wx.BOLD)
+        self.fontNormal = wx.Font(fonts.NORMAL, wx.SWISS, wx.NORMAL, wx.NORMAL)
+        self.fontSmall = wx.Font(fonts.SMALL, wx.SWISS, wx.NORMAL, wx.NORMAL)
 
         self.shipBmp = None
         if shipID:
@@ -1446,9 +1446,9 @@ class FitItem(SFItem.SFBrowserItem):
         self.dragMotionTrigger = self.dragMotionTrail
         self.dragWindow = None
 
-        self.fontBig = wx.FontFromPixelSize(fonts.BIG,wx.SWISS, wx.NORMAL, wx.BOLD, False)
-        self.fontNormal = wx.FontFromPixelSize(fonts.NORMAL,wx.SWISS, wx.NORMAL, wx.NORMAL, False)
-        self.fontSmall = wx.FontFromPixelSize(fonts.SMALL,wx.SWISS, wx.NORMAL, wx.NORMAL, False)
+        self.fontBig = wx.Font(fonts.BIG, wx.SWISS, wx.NORMAL, wx.BOLD)
+        self.fontNormal = wx.Font(fonts.NORMAL, wx.SWISS, wx.NORMAL, wx.NORMAL)
+        self.fontSmall = wx.Font(fonts.SMALL, wx.SWISS, wx.NORMAL, wx.NORMAL)
 
         self.SetDraggable()
 

@@ -5,11 +5,9 @@ different wxPython versions
 
 import wx
 
-if 'wxMSW' in wx.PlatformInfo and wx.VERSION < (2,9):
-    SMALL  = (0,12)
-    NORMAL = (0,14)
-    BIG    = (0,15)
+if 'wxMac' in wx.PlatformInfo:
+    sizes = (10, 11, 12)
 else:
-    SMALL  = (0,10)
-    NORMAL = (0,11)
-    BIG    = (0,12)
+    sizes = (7, 8, 9)
+
+SMALL, NORMAL, BIG = sizes
