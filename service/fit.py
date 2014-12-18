@@ -17,7 +17,6 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 #===============================================================================
 
-import os.path
 import locale
 import copy
 import threading
@@ -53,6 +52,7 @@ class FitBackupThread(threading.Thread):
         backupFile.close()
         wx.CallAfter(self.callback, -1)
 
+
 class FitImportThread(threading.Thread):
     def __init__(self, paths, callback):
         threading.Thread.__init__(self)
@@ -60,14 +60,10 @@ class FitImportThread(threading.Thread):
         self.callback = callback
 
     def run(self):
-        importedFits = []
-        paths = self.paths
         sFit = Fit.getInstance()
-        for path in paths:
-            pathImported = sFit.importFit(path)
-            if pathImported is not None:
-                importedFits += pathImported
-        wx.CallAfter(self.callback, importedFits)
+        sFit.importFitFromFiles(self.paths, self.callback)
+
+        wx.CallAfter(self.callback, -1)
 
 
 class Fit(object):
@@ -772,26 +768,37 @@ class Fit(object):
         thread = FitImportThread(paths, callback)
         thread.start()
 
-    def importFit(self, path):
-        filename = os.path.split(path)[1]
-
+    def importFitFromFiles(self, paths, callback=None):
         defcodepage = locale.getpreferredencoding()
 
-        file = open(path, "r")
-        srcString = file.read()
-        # If file had ANSI encoding, convert it to unicode using system
-        # default codepage, or use fallback cp1252 on any encoding errors
-        if isinstance(srcString, str):
-            try:
-                srcString = unicode(srcString, defcodepage)
-            except UnicodeDecodeError:
-                srcString = unicode(srcString, "cp1252")
+        fitImport = []
+        for path in paths:
+            if callback:  # Pulse
+                wx.CallAfter(callback, "Processing file:\n%s"%path)
 
-        _, fits = Port.importAuto(srcString, filename)
-        for fit in fits:
+            file = open(path, "r")
+            srcString = file.read()
+            # If file had ANSI encoding, convert it to unicode using system
+            # default codepage, or use fallback cp1252 on any encoding errors
+            if isinstance(srcString, str):
+                try:
+                    srcString = unicode(srcString, defcodepage)
+                except UnicodeDecodeError:
+                    srcString = unicode(srcString, "cp1252")
+
+            _, fits = Port.importAuto(srcString, path, callback=callback)
+            fitImport += fits
+
+        IDs = []
+        for i, fit in enumerate(fitImport):
             fit.character = self.character
             fit.damagePattern = self.pattern
             fit.targetResists = self.targetResists
+            eos.db.save(fit)
+            IDs.append(fit.ID)
+            if callback:  # Pulse
+                wx.CallAfter(callback, "Saving fit\n%d/%d"%(i+1, len(fitImport)))
+
         return fits
 
     def importFitFromBuffer(self, bufferStr, activeFit=None):

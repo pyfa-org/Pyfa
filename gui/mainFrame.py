@@ -336,21 +336,32 @@ class MainFrame(wx.Frame):
         dlg=wx.FileDialog(
             self,
             "Open One Or More Fitting Files",
-            wildcard = "EFT text fitting files (*.cfg)|*.cfg|" \
-                       "EVE XML fitting files (*.xml)|*.xml|" \
+            wildcard = "EVE XML fitting files (*.xml)|*.xml|" \
+                       "EFT text fitting files (*.cfg)|*.cfg|" \
                        "All Files (*)|*",
             style = wx.FD_OPEN | wx.FD_FILE_MUST_EXIST | wx.FD_MULTIPLE)
         if (dlg.ShowModal() == wx.ID_OK):
-            self.waitDialog = animUtils.WaitDialog(self, title = "Importing")
-            sFit.importFitsThreaded(dlg.GetPaths(), self.importCallback)
-            dlg.Destroy()
-            self.waitDialog.ShowModal()
 
-    def importCallback(self, fits):
-        self.waitDialog.Destroy()
-        sFit = service.Fit.getInstance()
-        IDs = sFit.saveImportedFits(fits)
-        self._openAfterImport(len(fits), IDs)
+            self.progressDialog = wx.ProgressDialog("Importing fits", " "*100, parent=self,
+                              style = wx.PD_APP_MODAL | wx.PD_ELAPSED_TIME)
+            self.progressDialog.message = None
+            sFit.importFitsThreaded(dlg.GetPaths(), self.importCallback)
+            self.progressDialog.ShowModal()
+            dlg.Destroy()
+
+    def importCallback(self, info):
+        if info == -1:
+            self.progressDialog.Destroy()
+        elif info != self.progressDialog.message and info is not None:
+            self.progressDialog.message = info
+            self.progressDialog.Pulse(info)
+        else:
+            self.progressDialog.Pulse()
+
+        # @todo: implement saveImportedFits where needed, modify _openAfterImport
+        #sFit = service.Fit.getInstance()
+        #IDs = sFit.saveImportedFits(fits)
+        #self._openAfterImport(len(fits), IDs)
 
     def _openAfterImport(self, importCount, fitIDs):
         if importCount == 1:
