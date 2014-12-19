@@ -50,6 +50,8 @@ class FitBackupThread(threading.Thread):
         backupFile = open(path, "w", encoding="utf-8")
         backupFile.write(backedUpFits)
         backupFile.close()
+
+        # Send done signal to GUI
         wx.CallAfter(self.callback, -1)
 
 
@@ -63,6 +65,7 @@ class FitImportThread(threading.Thread):
         sFit = Fit.getInstance()
         sFit.importFitFromFiles(self.paths, self.callback)
 
+        # Send done signal to GUI
         wx.CallAfter(self.callback, -1)
 
 
@@ -769,9 +772,16 @@ class Fit(object):
         thread.start()
 
     def importFitFromFiles(self, paths, callback=None):
+        """
+        Imports fits from file(s). First processes all provided paths and stores
+        assembled fits into a list. This allows us to call back to the GUI as
+        fits are processed as well as when fits are being saved.
+
+        returns
+        """
         defcodepage = locale.getpreferredencoding()
 
-        fitImport = []
+        fits = []
         for path in paths:
             if callback:  # Pulse
                 wx.CallAfter(callback, "Processing file:\n%s"%path)
@@ -786,18 +796,20 @@ class Fit(object):
                 except UnicodeDecodeError:
                     srcString = unicode(srcString, "cp1252")
 
-            _, fits = Port.importAuto(srcString, path, callback=callback)
-            fitImport += fits
+            _, fitsImport = Port.importAuto(srcString, path, callback=callback)
+            fits += fitsImport
 
         IDs = []
-        for i, fit in enumerate(fitImport):
+        numFits = len(fits)
+        for i, fit in enumerate(fits):
+            # Set some more fit attributes and save
             fit.character = self.character
             fit.damagePattern = self.pattern
             fit.targetResists = self.targetResists
             eos.db.save(fit)
             IDs.append(fit.ID)
             if callback:  # Pulse
-                wx.CallAfter(callback, "Saving fit\n%d/%d"%(i+1, len(fitImport)))
+                wx.CallAfter(callback, "Saving fit\n%d/%d"%(i+1, numFits))
 
         return fits
 
@@ -807,15 +819,8 @@ class Fit(object):
             fit.character = self.character
             fit.damagePattern = self.pattern
             fit.targetResists = self.targetResists
-        return fits
-
-    def saveImportedFits(self, fits):
-        IDs = []
-        for fit in fits:
             eos.db.save(fit)
-            IDs.append(fit.ID)
-
-        return IDs
+        return fits
 
     def checkStates(self, fit, base):
         changed = False

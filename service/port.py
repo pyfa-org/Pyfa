@@ -365,7 +365,6 @@ class Port(object):
         fits = []
 
         for i, fitting in enumerate(fittings):
-            print "fitting"
             f = Fit()
             f.name = fitting.getAttribute("name")
             # <localized hint="Maelstrom">Maelstrom</localized>
