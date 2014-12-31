@@ -301,9 +301,12 @@ class Character(object):
         return char.implants
 
     def checkRequirements(self, fit):
-        toCheck = []
         reqs = {}
         for thing in itertools.chain(fit.modules, fit.drones, (fit.ship,)):
+            slot = getattr(thing, "slot", None)
+            if slot == eos.types.Slot.RIG:
+                # Do not include rigs in requirement checks
+                continue
             for attr in ("item", "charge"):
                 subThing = getattr(thing, attr, None)
                 subReqs = {}
