@@ -157,7 +157,6 @@ class exportHtmlThread(threading.Thread):
                             return
                         fit = fits[0]
                         try:
-                            print fit[0]
                             dnaFit = sFit.exportDna(fit[0])
                             HTMLgroup += (
                             '        <li><a data-dna="' + dnaFit + '" target="_blank">' + ship.name + ": " + fit[1] + '</a></li>\n')

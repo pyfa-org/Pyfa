@@ -568,7 +568,7 @@ class MainFrame(wx.Frame):
         overwrites cached message and updates dialog
         """
         if info == -1:
-            self.progressDialog.Destroy()
+            self.progressDialog.Hide()
         elif info != self.progressDialog.message and info is not None:
             self.progressDialog.message = info
             self.progressDialog.Pulse(info)
@@ -610,9 +610,8 @@ class MainFrame(wx.Frame):
             self.progressDialog.ShowModal()
 
     def backupCallback(self, info):
-        #print info
         if info == -1:
-            self.progressDialog.Destroy()
+            self.progressDialog.Hide()
         else:
             self.progressDialog.Update(info)
 
@@ -670,9 +669,8 @@ class MainFrame(wx.Frame):
 
         max = sFit.countAllFits()
         path = settings.getPath()
-        print max
         self.progressDialog = wx.ProgressDialog("Backup fits",
-                            "Generating HTML file at:\n%s"%path,
+                            "Generating HTML file at: %s"%path,
                             maximum=max, parent=self,
                             style=wx.PD_APP_MODAL | wx.PD_ELAPSED_TIME)
 
