@@ -44,12 +44,14 @@ class CharacterImportThread(threading.Thread):
         paths = self.paths
         sCharacter = Character.getInstance()
         for path in paths:
-            with open(path, mode='r') as charFile:
-                sheet = service.ParseXML(charFile)
-                charID = sCharacter.new()
-                sCharacter.rename(charID, sheet.name+" (imported)")
-                sCharacter.apiUpdateCharSheet(charID, sheet)
-
+            try:
+                with open(path, mode='r') as charFile:
+                    sheet = service.ParseXML(charFile)
+                    charID = sCharacter.new()
+                    sCharacter.rename(charID, sheet.name+" (imported)")
+                    sCharacter.apiUpdateCharSheet(charID, sheet)
+            except:
+                continue
         wx.CallAfter(self.callback)
 
 class SkillBackupThread(threading.Thread):
@@ -301,12 +303,9 @@ class Character(object):
         return char.implants
 
     def checkRequirements(self, fit):
+        toCheck = []
         reqs = {}
         for thing in itertools.chain(fit.modules, fit.drones, (fit.ship,)):
-            slot = getattr(thing, "slot", None)
-            if slot == eos.types.Slot.RIG:
-                # Do not include rigs in requirement checks
-                continue
             for attr in ("item", "charge"):
                 subThing = getattr(thing, attr, None)
                 subReqs = {}
