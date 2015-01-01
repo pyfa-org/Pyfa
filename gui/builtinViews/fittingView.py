@@ -141,6 +141,7 @@ class FittingView(d.Display):
         self.Bind(wx.EVT_KEY_UP, self.kbEvent)
         self.Bind(wx.EVT_LEFT_DOWN, self.click)
         self.Bind(wx.EVT_RIGHT_DOWN, self.click)
+        self.Bind(wx.EVT_MIDDLE_DOWN, self.click)
         self.Bind(wx.EVT_SHOW, self.OnShow)
         self.Bind(wx.EVT_MOTION, self.OnMouseMove)
         self.Bind(wx.EVT_LEAVE_WINDOW, self.OnLeaveWindow)
@@ -522,7 +523,7 @@ class FittingView(d.Display):
 
             sFit = service.Fit.getInstance()
             fitID = self.mainFrame.getActiveFit()
-            ctrl = wx.GetMouseState().CmdDown()
+            ctrl = wx.GetMouseState().CmdDown() or wx.GetMouseState().MiddleDown()
             click = "ctrl" if ctrl is True else "right" if event.Button == 3 else "left"
             sFit.toggleModulesState(fitID, self.mods[self.GetItemData(row)], mods, click)
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
