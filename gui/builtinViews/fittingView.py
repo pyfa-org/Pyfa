@@ -166,8 +166,7 @@ class FittingView(d.Display):
                     if self.DEFAULT_COLS[col] == "Miscellanea":
                         tooltip = self.activeColumns[col].getToolTip(mod)
                         if tooltip is not None:
-                            #self.SetToolTipString(tooltip)
-                            self.SetToolTip(None)
+                            self.SetToolTipString(tooltip)
                         else:
                             self.SetToolTip(None)
                     else:
