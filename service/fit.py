@@ -97,7 +97,7 @@ class Fit(object):
             "rackSlots": True,
             "rackLabels": True,
             "compactSkills": True,
-	    "showTooltip": True}
+            "showTooltip": True}
 
         self.serviceFittingOptions = SettingsProvider.getInstance().getSettings(
             "pyfaServiceFittingOptions", serviceFittingDefaultOptions)

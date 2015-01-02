@@ -56,7 +56,6 @@ class PFGeneralPref ( PreferenceView):
         self.cbShowTooltip = wx.CheckBox( panel, wx.ID_ANY, u"Show tab tooltips", wx.DefaultPosition, wx.DefaultSize, 0 )
         mainSizer.Add( self.cbShowTooltip, 0, wx.ALL|wx.EXPAND, 5 )
 
-
         defCharSizer = wx.BoxSizer( wx.HORIZONTAL )
 
         self.sFit = service.Fit.getInstance()
@@ -69,7 +68,7 @@ class PFGeneralPref ( PreferenceView):
         self.cbRackLabels.SetValue(self.sFit.serviceFittingOptions["rackLabels"] or False)
         self.cbCompactSkills.SetValue(self.sFit.serviceFittingOptions["compactSkills"] or False)
         self.cbReopenFits.SetValue(self.openFitsSettings["enabled"])
-	self.cbShowTooltip.SetValue(self.sFit.serviceFittingOptions["showTooltip"] or False)
+        self.cbShowTooltip.SetValue(self.sFit.serviceFittingOptions["showTooltip"] or False)
 
         self.cbGlobalChar.Bind(wx.EVT_CHECKBOX, self.OnCBGlobalCharStateChange)
         self.cbGlobalDmgPattern.Bind(wx.EVT_CHECKBOX, self.OnCBGlobalDmgPatternStateChange)
@@ -79,7 +78,7 @@ class PFGeneralPref ( PreferenceView):
         self.cbRackLabels.Bind(wx.EVT_CHECKBOX, self.onCBGlobalRackLabels)
         self.cbCompactSkills.Bind(wx.EVT_CHECKBOX, self.onCBCompactSkills)
         self.cbReopenFits.Bind(wx.EVT_CHECKBOX, self.onCBReopenFits)
-	self.cbShowTooltip.Bind(wx.EVT_CHECKBOX, self.onCBShowTooltip)
+        self.cbShowTooltip.Bind(wx.EVT_CHECKBOX, self.onCBShowTooltip)
 
         self.cbRackLabels.Enable(self.sFit.serviceFittingOptions["rackSlots"] or False)
 
