@@ -42,7 +42,6 @@ class Ammo(ViewColumn):
 
         return text
 
-
     def getImageId(self, mod):
         return -1
 

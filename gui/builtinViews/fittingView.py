@@ -163,12 +163,9 @@ class FittingView(d.Display):
                 self.hoveredColumn = col
                 if row != -1 and row not in self.blanks and col != -1 and col < len(self.DEFAULT_COLS):
                     mod = self.mods[self.GetItemData(row)]
-                    if self.DEFAULT_COLS[col] == "Miscellanea":
-                        tooltip = self.activeColumns[col].getToolTip(mod)
-                        if tooltip is not None:
-                            self.SetToolTipString(tooltip)
-                        else:
-                            self.SetToolTip(None)
+                    tooltip = self.activeColumns[col].getToolTip(mod)
+                    if tooltip is not None:
+                        self.SetToolTipString(tooltip)
                     else:
                         self.SetToolTip(None)
                 else:
