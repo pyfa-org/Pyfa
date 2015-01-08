@@ -19,10 +19,10 @@
 
 import re
 import xml.dom
-import json
 
 from eos.types import State, Slot, Module, Cargo, Fit, Ship, Drone, Implant, Booster
 import service
+import wx
 
 try:
     from collections import OrderedDict
@@ -35,20 +35,20 @@ class Port(object):
     """Service which houses all import/export format functions"""
 
     @classmethod
-    def importAuto(cls, string, sourceFileName=None, activeFit=None):
+    def importAuto(cls, string, sourceFileName=None, activeFit=None, callback=None):
         # Get first line and strip space symbols of it to avoid possible detection errors
         firstLine = re.split("[\n\r]+", string.strip(), maxsplit=1)[0]
         firstLine = firstLine.strip()
 
         # If XML-style start of tag encountered, detect as XML
         if re.match("<", firstLine):
-            return "XML", cls.importXml(string)
+            return "XML", cls.importXml(string, callback)
 
         # If we've got source file name which is used to describe ship name
         # and first line contains something like [setup name], detect as eft config file
         if re.match("\[.*\]", firstLine) and sourceFileName is not None:
             shipName = sourceFileName.rsplit('.')[0]
-            return "EFT Config", cls.importEftCfg(shipName, string)
+            return "EFT Config", cls.importEftCfg(shipName, string, callback)
 
         # If no file is specified and there's comma between brackets,
         # consider that we have [ship, setup name] and detect like eft export format
@@ -200,7 +200,7 @@ class Port(object):
         return fit
 
     @staticmethod
-    def importEftCfg(shipname, contents):
+    def importEftCfg(shipname, contents, callback=None):
         """Handle import from EFT config store file"""
 
         # Check if we have such ship in database, bail if we don't
@@ -346,6 +346,9 @@ class Port(object):
                         f.modules.append(m)
                 # Append fit to list of fits
                 fits.append(f)
+
+                if callback:
+                    wx.CallAfter(callback, None)
             # Skip fit silently if we get an exception
             except Exception:
                 pass
@@ -353,14 +356,15 @@ class Port(object):
         return fits
 
     @staticmethod
-    def importXml(text):
+    def importXml(text, callback=None):
         sMkt = service.Market.getInstance()
 
         doc = xml.dom.minidom.parseString(text.encode("utf-8"))
         fittings = doc.getElementsByTagName("fittings").item(0)
         fittings = fittings.getElementsByTagName("fitting")
         fits = []
-        for fitting in fittings:
+
+        for i, fitting in enumerate(fittings):
             f = Fit()
             f.name = fitting.getAttribute("name")
             # <localized hint="Maelstrom">Maelstrom</localized>
@@ -402,6 +406,8 @@ class Port(object):
                 except KeyboardInterrupt:
                     continue
             fits.append(f)
+            if callback:
+                wx.CallAfter(callback, None)
 
         return fits
 
@@ -503,11 +509,11 @@ class Port(object):
         return dna + "::"
 
     @classmethod
-    def exportXml(cls, *fits):
+    def exportXml(cls, callback=None, *fits):
         doc = xml.dom.minidom.Document()
         fittings = doc.createElement("fittings")
         doc.appendChild(fittings)
-        for fit in fits:
+        for i, fit in enumerate(fits):
             try:
                 fitting = doc.createElement("fitting")
                 fitting.setAttribute("name", fit.name)
@@ -571,5 +577,8 @@ class Port(object):
             except:
                 print "Failed on fitID: %d"%fit.ID
                 continue
+            finally:
+                if callback:
+                    wx.CallAfter(callback, i)
 
         return doc.toprettyxml()
