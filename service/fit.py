@@ -742,7 +742,7 @@ class Fit(object):
 
         fit = eos.db.getFit(fitID)
         for attr in ("em", "thermal", "kinetic", "explosive"):
-            setattr(dp, "%sAmount" % attr, ammo.getAttribute("%sDamage" % attr))
+            setattr(dp, "%sAmount" % attr, ammo.getAttribute("%sDamage" % attr) or 0)
 
         fit.damagePattern = dp
         self.recalc(fit)

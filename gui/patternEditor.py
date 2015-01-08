@@ -125,7 +125,7 @@ class DmgPatternEditorDlg (wx.Dialog):
             editObj.Bind(wx.EVT_TEXT, self.ValuesUpdated)
             editObj.SetLimited(True)
             editObj.SetMin(0)
-            editObj.SetMax(99999)
+            editObj.SetMax(2000000)
 
         contentSizer.Add(dmgeditSizer, 1, wx.EXPAND | wx.ALL, 5)
         self.slfooter = wx.StaticLine(self)
