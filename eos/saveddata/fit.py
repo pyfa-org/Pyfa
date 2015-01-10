@@ -406,12 +406,14 @@ class Fit(object):
                             (effect.isType("active") and thing.state >= State.ACTIVE):
                                 # Run effect, and get proper bonuses applied
                                 try:
+                                    self.register(thing)
                                     effect.handler(self, thing, context)
                                 except:
                                     pass
                         else:
                             # Run effect, and get proper bonuses applied
                             try:
+                                self.register(thing)
                                 effect.handler(self, thing, context)
                             except:
                                 pass
