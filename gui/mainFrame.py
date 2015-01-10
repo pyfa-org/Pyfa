@@ -524,9 +524,11 @@ class MainFrame(wx.Frame):
         sFit = service.Fit.getInstance()
         try:
             fits = sFit.importFitFromBuffer(fromClipboard(), self.getActiveFit())
-            #self._openAfterImport(len(fits), IDs)
         except:
             pass
+        else:
+            ids = tuple(fit.ID for fit in fits)
+            self._openAfterImport(len(fits), ids)
 
     def exportToClipboard(self, event):
         CopySelectDict = {CopySelectDialog.copyFormatEft: self.clipboardEft,
