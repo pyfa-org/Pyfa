@@ -523,13 +523,18 @@ class FittingView(d.Display):
             ctrl = wx.GetMouseState().CmdDown() or wx.GetMouseState().MiddleDown()
             click = "ctrl" if ctrl is True else "right" if event.Button == 3 else "left"
             sFit.toggleModulesState(fitID, self.mods[self.GetItemData(row)], mods, click)
+
+            # update state tooltip
+            tooltip = self.activeColumns[col].getToolTip(self.mods[self.GetItemData(row)])
+            self.SetToolTipString(tooltip)
+
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
         else:
             event.Skip()
 
-    slotColourMap = {1: wx.Colour(250, 235, 204), # yellow = low slots
-                     2: wx.Colour(188,215,241),   # blue   = mid slots
-                     3: wx.Colour(235,204,209),   # red    = high slots
+    slotColourMap = {1: wx.Colour(250, 235, 204),  # yellow = low slots
+                     2: wx.Colour(188, 215, 241),  # blue   = mid slots
+                     3: wx.Colour(235, 204, 209),  # red    = high slots
                      4: '',
                      5: ''}
 
