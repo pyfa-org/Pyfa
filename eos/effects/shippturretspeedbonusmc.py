@@ -5,7 +5,6 @@
 # Variations of ship: Rupture (3 of 3)
 # Variations of ship: Stabber (3 of 3)
 # Ship: Huginn
-# Ship: Rapier
 # Ship: Scythe Fleet Issue
 type = "passive"
 def handler(fit, ship, context):

@@ -1,7 +1,7 @@
 # shieldBoostAmplifier
 #
 # Used by:
-# Modules from group: Capacitor Power Relay (26 of 26)
+# Modules from group: Capacitor Power Relay (20 of 20)
 # Modules from group: Shield Boost Amplifier (25 of 25)
 type = "passive"
 def handler(fit, module, context):

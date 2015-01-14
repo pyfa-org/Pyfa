@@ -4,6 +4,7 @@
 # Ships named like: Raven Edition (3 of 3)
 # Ship: Raven
 # Ship: Widow
+# Ship: 乌鸦级YC117年特别版
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Caldari Battleship").level
