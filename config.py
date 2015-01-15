@@ -13,8 +13,8 @@ debug = False
 saveInRoot = False
 
 # Version data
-version = "1.8.0"
-tag = "Stable"
+version = "1.8.1"
+tag = "git"
 expansionName = "Proteus"
 expansionVersion = "1.0"
 evemonMinVersion = "4081"
