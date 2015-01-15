@@ -5,7 +5,6 @@
 # Ship: Drake
 # Ship: Ferox Guristas Edition
 # Ship: Nighthawk
-# Ship: 幼龙级YC117年特别版
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Caldari Battlecruiser").level

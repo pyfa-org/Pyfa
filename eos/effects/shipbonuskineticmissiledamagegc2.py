@@ -3,7 +3,6 @@
 # Used by:
 # Ship: Chameleon
 # Ship: Gila
-# Ship: 毒蜥级YC117年特别版
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Gallente Cruiser").level
