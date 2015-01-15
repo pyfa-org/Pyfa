@@ -14,14 +14,14 @@ saveInRoot = False
 
 # Version data
 version = "1.8.1"
-tag = "git"
+tag = "Stable"
 expansionName = "Proteus"
 expansionVersion = "1.0"
 evemonMinVersion = "4081"
 
 # Database version (int ONLY)
 # Increment every time we need to flag for user database upgrade/modification
-dbversion = 3
+dbversion = 4
 
 pyfaPath = None
 savePath = None
