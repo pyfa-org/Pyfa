@@ -332,15 +332,19 @@ class MainFrame(wx.Frame):
 
     def showExportDialog(self, event):
         """ Export active fit """
+        sFit = service.Fit.getInstance()
+        fit = sFit.getFit(self.getActiveFit())
+        defaultFile = "%s - %s.xml"%(fit.ship.item.name, fit.name) if fit else None
+
         dlg = wx.FileDialog(self, "Save Fitting As...",
                             wildcard = "EVE XML fitting files (*.xml)|*.xml",
-                            style = wx.FD_SAVE)
+                            style = wx.FD_SAVE,
+                            defaultFile=defaultFile)
         if dlg.ShowModal() == wx.ID_OK:
-            sFit = service.Fit.getInstance()
             format = dlg.GetFilterIndex()
             path = dlg.GetPath()
             if format == 0:
-                output = sFit.exportXml(self.getActiveFit())
+                output = sFit.exportXml(None, self.getActiveFit())
                 if '.' not in os.path.basename(path):
                     path += ".xml"
             else:
@@ -518,7 +522,7 @@ class MainFrame(wx.Frame):
 
     def clipboardXml(self):
         sFit = service.Fit.getInstance()
-        toClipboard(sFit.exportXml(self.getActiveFit()))
+        toClipboard(sFit.exportXml(None, self.getActiveFit()))
 
     def importFromClipboard(self, event):
         sFit = service.Fit.getInstance()
