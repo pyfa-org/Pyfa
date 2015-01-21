@@ -535,20 +535,18 @@ class NavigationPanel(SFItem.SFBrowserItem):
         self.bkBitmap.mFactor = mFactor
 
 
-    def gotoStage(self,stage, data = None):
+    def gotoStage(self, stage, data=None):
         if stage == 1:
-            wx.PostEvent(self.Parent,Stage1Selected())
+            wx.PostEvent(self.Parent, Stage1Selected())
         elif stage == 2:
-            wx.PostEvent(self.Parent,Stage2Selected(categoryID=data, back = True))
+            wx.PostEvent(self.Parent, Stage2Selected(categoryID=data, back=True))
         elif stage == 3:
-            wx.PostEvent(self.Parent,Stage3Selected(shipID=data, back = 1))
+            wx.PostEvent(self.Parent, Stage3Selected(shipID=data, back=1))
         elif stage == 4:
             self.shipBrowser._activeStage = 4
-            self.stStatus.SetLabel("Search: %s" % data.capitalize())
-            self.Layout()
-            wx.PostEvent(self.Parent,SearchSelected(text=data, back = True))
+            wx.PostEvent(self.Parent, SearchSelected(text=data, back=True))
         else:
-            wx.PostEvent(self.Parent,Stage1Selected())
+            wx.PostEvent(self.Parent, Stage1Selected())
 
 
 class ShipBrowser(wx.Panel):
@@ -653,6 +651,8 @@ class ShipBrowser(wx.Panel):
             return self._stage2Data
         if stage == 3:
             return self._stage3Data
+        if stage == 4:
+            return self.navpanel.lastSearch
         return -1
 
     def GetStage3ShipName(self):
