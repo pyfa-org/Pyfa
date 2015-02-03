@@ -135,13 +135,12 @@ db = sqlite3.connect(os.path.expanduser(options.database))
 cursor = db.cursor()
 
 # Force some of the items to make them published
-FORCEPUB_TYPES = ("Ibis", "Impairor", "Velator", "Reaper",
-                  "Amarr Tactical Destroyer Propulsion Mode",
-                  "Amarr Tactical Destroyer Sharpshooter Mode",
-                  "Amarr Tactical Destroyer Defense Mode")
+FORCEPUB_TYPES = ("Ibis", "Impairor", "Velator", "Reaper")
 OVERRIDES_TYPEPUB = 'UPDATE invtypes SET published = 1 WHERE typeName = ?'
 for typename in FORCEPUB_TYPES:
     cursor.execute(OVERRIDES_TYPEPUB, (typename,))
+# Publish t3 Dessy Modes
+cursor.execute("UPDATE invtypes SET published = 1 WHERE groupID = ?", (1306,))
 
 # Queries to get raw data
 QUERY_ALLEFFECTS = 'SELECT effectID, effectName FROM dgmeffects'

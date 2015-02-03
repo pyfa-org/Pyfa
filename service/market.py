@@ -23,6 +23,7 @@ import wx
 
 import Queue
 
+import config
 import eos.db
 import eos.types
 from service.settings import SettingsProvider, NetworkSettings
@@ -232,6 +233,15 @@ class Market():
         # do not publish ships that we convert
         for name in conversions.packs['skinnedShips']:
             self.ITEMS_FORCEPUBLISHED[name] = False
+
+        if config.debug:
+            # Publish Tactical Dessy Modes if in debug
+            # Cannot use GROUPS_FORCEPUBLISHED as this does not force items
+            # within group to be published, but rather for the group itself
+            # to show up on ship list
+            group = self.getGroup("Ship Modifiers", eager="items")
+            for item in group.items:
+                self.ITEMS_FORCEPUBLISHED[item.name] = True
 
         # List of groups which are forcibly published
         self.GROUPS_FORCEPUBLISHED = {
