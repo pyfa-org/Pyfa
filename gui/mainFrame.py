@@ -204,8 +204,17 @@ class MainFrame(wx.Frame):
         dlg.Destroy()
 
     def LoadPreviousOpenFits(self):
+        sFit = service.Fit.getInstance()
+
         self.prevOpenFits = service.SettingsProvider.getInstance().getSettings("pyfaPrevOpenFits", {"enabled": False, "pyfaOpenFits": []})
         fits = self.prevOpenFits['pyfaOpenFits']
+
+        # Remove any fits that cause exception when fetching (non-existent fits)
+        for id in fits[:]:
+            try:
+                sFit.getFit(id)
+            except:
+                fits.remove(id)
 
         if not self.prevOpenFits['enabled'] or len(fits) is 0:
             # add blank page if there are no fits to be loaded
