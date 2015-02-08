@@ -18,6 +18,7 @@
 #===============================================================================
 
 import re
+import os
 import xml.dom
 
 from eos.types import State, Slot, Module, Cargo, Fit, Ship, Drone, Implant, Booster
@@ -35,7 +36,7 @@ class Port(object):
     """Service which houses all import/export format functions"""
 
     @classmethod
-    def importAuto(cls, string, sourceFileName=None, activeFit=None, callback=None):
+    def importAuto(cls, string, path=None, activeFit=None, callback=None):
         # Get first line and strip space symbols of it to avoid possible detection errors
         firstLine = re.split("[\n\r]+", string.strip(), maxsplit=1)[0]
         firstLine = firstLine.strip()
@@ -46,8 +47,9 @@ class Port(object):
 
         # If we've got source file name which is used to describe ship name
         # and first line contains something like [setup name], detect as eft config file
-        if re.match("\[.*\]", firstLine) and sourceFileName is not None:
-            shipName = sourceFileName.rsplit('.')[0]
+        if re.match("\[.*\]", firstLine) and path is not None:
+            filename = os.path.split(path)[1]
+            shipName = filename.rsplit('.')[0]
             return "EFT Config", cls.importEftCfg(shipName, string, callback)
 
         # If no file is specified and there's comma between brackets,
@@ -208,7 +210,7 @@ class Port(object):
         try:
             sMkt.getItem(shipname)
         except:
-            return
+            return []  # empty list is expected
 
         # If client didn't take care of encoding file contents into Unicode,
         # do it using fallback encoding ourselves
