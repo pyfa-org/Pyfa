@@ -42,7 +42,7 @@ from gui.additionsPane import AdditionsPane
 from gui.marketBrowser import MarketBrowser
 from gui.multiSwitch import MultiSwitch
 from gui.statsPane import StatsPane
-from gui.shipBrowser import ShipBrowser, FitSelected
+from gui.shipBrowser import ShipBrowser, FitSelected, ImportSelected, Stage3Selected
 from gui.characterEditor import CharacterEditor
 from gui.characterSelection import CharacterSelection
 from gui.patternEditor import DmgPatternEditorDlg
@@ -540,8 +540,7 @@ class MainFrame(wx.Frame):
         except:
             pass
         else:
-            ids = tuple(fit.ID for fit in fits)
-            self._openAfterImport(len(fits), ids)
+            self._openAfterImport(fits)
 
     def exportToClipboard(self, event):
         CopySelectDict = {CopySelectDialog.copyFormatEft: self.clipboardEft,
@@ -571,33 +570,39 @@ class MainFrame(wx.Frame):
                             " "*100, # set some arbitrary spacing to create wifth in window
                             parent=self, style = wx.PD_APP_MODAL | wx.PD_ELAPSED_TIME)
             self.progressDialog.message = None
-            sFit.importFitsThreaded(dlg.GetPaths(), self.importCallback)
+            sFit.importFitsThreaded(dlg.GetPaths(), self.fileImportCallback)
             self.progressDialog.ShowModal()
             dlg.Destroy()
 
-    def importCallback(self, info):
+    def fileImportCallback(self, info, fits=None):
         """
         While importing fits from file, the logic calls back to this function to
-        update progress bar to show activity. If -1, closes dialog. If None,
-        simply Pulse()s progress. If there is a message to show new activity,
-        overwrites cached message and updates dialog
+        update progress bar to show activity. XML files can contain multiple
+        ships with multiple fits, whereas EFT cfg files contain many fits of
+        a single ship. When iterating through the files, we update the message
+        when we start a new file, and then Pulse the progress bar with every fit
+        that is processed.
         """
+
         if info == -1:
+            # Done processing
             self.progressDialog.Hide()
+            self._openAfterImport(fits)
         elif info != self.progressDialog.message and info is not None:
+            # New message, overwrite cached message and update
             self.progressDialog.message = info
             self.progressDialog.Pulse(info)
         else:
+            # Simply Pulse() if we don't have anything else to do
             self.progressDialog.Pulse()
 
-        # @todo: modify _openAfterImport
-        #self._openAfterImport(len(fits), IDs)
-
-    def _openAfterImport(self, importCount, fitIDs):
-        if importCount == 1:
-            wx.PostEvent(self, FitSelected(fitID=fitIDs[0]))
-
-        self.shipBrowser.RefreshContent()
+    def _openAfterImport(self, fits):
+        if len(fits) > 0:
+            if len(fits) == 1:
+                wx.PostEvent(self, FitSelected(fitID=fits[0].ID))
+                wx.PostEvent(self.shipBrowser, Stage3Selected(shipID=fits[0].shipID, back=False))
+            else:
+                wx.PostEvent(self.shipBrowser, ImportSelected(fits=fits, back=False))
 
     def backupToXml(self, event):
         """ Back up all fits to EVE XML file """

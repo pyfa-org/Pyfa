@@ -63,10 +63,10 @@ class FitImportThread(threading.Thread):
 
     def run(self):
         sFit = Fit.getInstance()
-        sFit.importFitFromFiles(self.paths, self.callback)
+        fits = sFit.importFitFromFiles(self.paths, self.callback)
 
         # Send done signal to GUI
-        wx.CallAfter(self.callback, -1)
+        wx.CallAfter(self.callback, -1, fits)
 
 
 class Fit(object):
@@ -810,7 +810,11 @@ class Fit(object):
             eos.db.save(fit)
             IDs.append(fit.ID)
             if callback:  # Pulse
-                wx.CallAfter(callback, "Saving fit\n%d/%d"%(i+1, numFits))
+                wx.CallAfter(
+                    callback,
+                    "Processing complete, saving fits to database\n(%d/%d)" %
+                    (i+1, numFits)
+                )
 
         return fits
 

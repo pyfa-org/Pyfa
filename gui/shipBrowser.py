@@ -29,6 +29,7 @@ Stage1Selected, EVT_SB_STAGE1_SEL = wx.lib.newevent.NewEvent()
 Stage2Selected, EVT_SB_STAGE2_SEL = wx.lib.newevent.NewEvent()
 Stage3Selected, EVT_SB_STAGE3_SEL = wx.lib.newevent.NewEvent()
 SearchSelected, EVT_SB_SEARCH_SEL = wx.lib.newevent.NewEvent()
+ImportSelected, EVT_SB_IMPORT_SEL = wx.lib.newevent.NewEvent()
 
 class PFWidgetsContainer(PFListPane):
     def __init__(self,parent):
@@ -607,6 +608,7 @@ class ShipBrowser(wx.Panel):
         self.Bind(EVT_SB_STAGE1_SEL, self.stage1)
         self.Bind(EVT_SB_STAGE3_SEL, self.stage3)
         self.Bind(EVT_SB_SEARCH_SEL, self.searchStage)
+        self.Bind(EVT_SB_IMPORT_SEL, self.importStage)
 
         self.mainFrame.Bind(GE.FIT_CHANGED, self.RefreshList)
 
@@ -867,11 +869,11 @@ class ShipBrowser(wx.Panel):
         self.navpanel.ShowSwitchEmptyGroupsButton(False)
 
         if not event.back:
-            if self._activeStage !=4:
-                if len(self.browseHist) >0:
-                    self.browseHist.append( (self._activeStage, self.lastdata) )
+            if self._activeStage != 4:
+                if len(self.browseHist) > 0:
+                    self.browseHist.append((self._activeStage, self.lastdata))
                 else:
-                    self.browseHist.append((1,0))
+                    self.browseHist.append((1, 0))
             self._lastStage = self._activeStage
             self._activeStage = 4
 
@@ -894,6 +896,44 @@ class ShipBrowser(wx.Panel):
             if len(ships) == 0 and len(fitList) == 0 :
                 self.lpane.AddWidget(PFStaticText(self.lpane, label = u"No matching results."))
             self.lpane.RefreshList(doFocus = False)
+        self.lpane.Thaw()
+
+        self.raceselect.RebuildRaces(self.RACE_ORDER)
+
+        if self.showRacesFilterInStage2Only:
+            self.raceselect.Show(False)
+            self.Layout()
+
+    def importStage(self, event):
+        self.lpane.ShowLoading(False)
+
+        self.navpanel.ShowNewFitButton(False)
+        self.navpanel.ShowSwitchEmptyGroupsButton(False)
+
+        if not event.back:
+            if self._activeStage != 5:
+                if len(self.browseHist) > 0:
+                    self.browseHist.append((self._activeStage, self.lastdata))
+                else:
+                    self.browseHist.append((1, 0))
+            self._lastStage = self._activeStage
+            self._activeStage = 5
+
+        fits = event.fits
+        self.lpane.Freeze()
+        self.lpane.RemoveAllChildren()
+
+        if fits:
+            for fit in fits:
+                self.lpane.AddWidget(FitItem(
+                    self.lpane,
+                    fit.ID, (
+                        fit.ship.item.name,
+                        fit.name,
+                        fit.booster,
+                        fit.timestamp),
+                    fit.ship.item.ID))
+            self.lpane.RefreshList(doFocus=False)
         self.lpane.Thaw()
 
         self.raceselect.RebuildRaces(self.RACE_ORDER)
