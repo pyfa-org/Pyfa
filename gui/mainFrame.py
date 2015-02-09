@@ -599,8 +599,9 @@ class MainFrame(wx.Frame):
     def _openAfterImport(self, fits):
         if len(fits) > 0:
             if len(fits) == 1:
-                wx.PostEvent(self, FitSelected(fitID=fits[0].ID))
-                wx.PostEvent(self.shipBrowser, Stage3Selected(shipID=fits[0].shipID, back=False))
+                fit = fits[0]
+                wx.PostEvent(self, FitSelected(fitID=fit.ID))
+                wx.PostEvent(self.shipBrowser, Stage3Selected(shipID=fit.shipID, back=0))
             else:
                 wx.PostEvent(self.shipBrowser, ImportSelected(fits=fits, back=False))
 
