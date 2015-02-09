@@ -601,9 +601,9 @@ class MainFrame(wx.Frame):
             if len(fits) == 1:
                 fit = fits[0]
                 wx.PostEvent(self, FitSelected(fitID=fit.ID))
-                wx.PostEvent(self.shipBrowser, Stage3Selected(shipID=fit.shipID, back=0))
+                wx.PostEvent(self.shipBrowser, Stage3Selected(shipID=fit.shipID, back=True))
             else:
-                wx.PostEvent(self.shipBrowser, ImportSelected(fits=fits, back=False))
+                wx.PostEvent(self.shipBrowser, ImportSelected(fits=fits, back=True))
 
     def backupToXml(self, event):
         """ Back up all fits to EVE XML file """

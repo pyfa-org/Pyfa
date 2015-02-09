@@ -375,19 +375,10 @@ class NavigationPanel(SFItem.SFBrowserItem):
         search = self.BrowserSearchBox.GetValue()
         # Make sure we do not count wildcard as search symbol
         realsearch = search.replace("*", "")
-        if len(realsearch) < 3 and len(realsearch) >= 0:
-            if self.inSearch == True:
-                self.inSearch = False
-                if len(self.shipBrowser.browseHist) > 0:
-                    stage,data = self.shipBrowser.browseHist.pop()
-                    self.gotoStage(stage,data)
-        else:
-            if search:
-                self.lastSearch = search
-                wx.PostEvent(self.shipBrowser,SearchSelected(text=search, back = False))
-                self.inSearch = True
-            else:
-                self.inSearch = False
+        if len(realsearch) >= 3:
+            self.lastSearch = search
+            wx.PostEvent(self.shipBrowser,SearchSelected(text=search, back = False))
+
 
     def ToggleSearchBox(self):
         if self.BrowserSearchBox.IsShown():
@@ -543,6 +534,8 @@ class NavigationPanel(SFItem.SFBrowserItem):
         elif stage == 4:
             self.shipBrowser._activeStage = 4
             wx.PostEvent(self.Parent, SearchSelected(text=data, back=True))
+        elif stage == 5:
+            wx.PostEvent(self.Parent, ImportSelected(fits=data))
         else:
             wx.PostEvent(self.Parent, Stage1Selected())
 
@@ -909,17 +902,14 @@ class ShipBrowser(wx.Panel):
         self.navpanel.ShowNewFitButton(False)
         self.navpanel.ShowSwitchEmptyGroupsButton(False)
 
-
-        if self._activeStage == 4 and self.navpanel.lastSearch != "":
-            self.browseHist.append((4, self.navpanel.lastSearch))
-        else:
+        if getattr(event, "back", False):
             self.browseHist.append((self._activeStage, self.lastdata))
-
 
         self._lastStage = self._activeStage
         self._activeStage = 5
 
         fits = event.fits
+        self.lastdata = fits
         self.lpane.Freeze()
         self.lpane.RemoveAllChildren()
 
@@ -1659,10 +1649,15 @@ class FitItem(SFItem.SFBrowserItem):
             self.deleted = True
 
         sFit = service.Fit.getInstance()
+        fit = sFit.getFit(self.fitID)
 
         sFit.deleteFit(self.fitID)
 
-        if self.shipBrowser.GetActiveStage() == 4:
+        if self.shipBrowser.GetActiveStage() == 5:
+            if fit in self.shipBrowser.lastdata: # remove fit from import cache
+                 self.shipBrowser.lastdata.remove(fit)
+            wx.PostEvent(self.shipBrowser, ImportSelected(fits=self.shipBrowser.lastdata))
+        elif self.shipBrowser.GetActiveStage() == 4:
             wx.PostEvent(self.shipBrowser, SearchSelected(text=self.shipBrowser.navpanel.lastSearch, back=True))
         else:
             wx.PostEvent(self.shipBrowser, Stage3Selected(shipID=self.shipID))
