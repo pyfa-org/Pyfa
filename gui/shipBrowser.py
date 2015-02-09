@@ -446,7 +446,7 @@ class NavigationPanel(SFItem.SFBrowserItem):
             sFit = service.Fit.getInstance()
             fitID = sFit.newFit(shipID, "%s fit" %shipName)
             self.shipBrowser.fitIDMustEditName = fitID
-            wx.PostEvent(self.Parent,Stage3Selected(shipID=shipID, back = True))
+            wx.PostEvent(self.Parent,Stage3Selected(shipID=shipID))
             wx.PostEvent(self.mainFrame, FitSelected(fitID=fitID))
 
     def OnHistoryReset(self):
@@ -539,7 +539,7 @@ class NavigationPanel(SFItem.SFBrowserItem):
         elif stage == 2:
             wx.PostEvent(self.Parent, Stage2Selected(categoryID=data, back=True))
         elif stage == 3:
-            wx.PostEvent(self.Parent, Stage3Selected(shipID=data, back=1))
+            wx.PostEvent(self.Parent, Stage3Selected(shipID=data))
         elif stage == 4:
             self.shipBrowser._activeStage = 4
             wx.PostEvent(self.Parent, SearchSelected(text=data, back=True))
@@ -807,13 +807,15 @@ class ShipBrowser(wx.Panel):
 
         self.lpane.ShowLoading(False)
 
-        if event.back == 0:
-            self.browseHist.append((self._activeStage, self.lastdata))
-        elif event.back == -1:
-            if self.navpanel.lastSearch != "":
+        # If back is False, do not append to history. This could be us calling
+        # the stage from previous history, creating / copying fit, etc.
+        # We also have to use conditional for search stage since it's last data
+        # is kept elsewhere
+        if getattr(event, "back", False):
+            if self._activeStage == 4 and self.navpanel.lastSearch != "":
                 self.browseHist.append((4, self.navpanel.lastSearch))
-        elif event.back > 0:
-             self.browseHist.append((2, event.back))
+            else:
+                self.browseHist.append((self._activeStage, self.lastdata))
 
         shipID = event.shipID
         self.lastdata = shipID
@@ -907,14 +909,15 @@ class ShipBrowser(wx.Panel):
         self.navpanel.ShowNewFitButton(False)
         self.navpanel.ShowSwitchEmptyGroupsButton(False)
 
-        if not event.back:
-            if self._activeStage != 5:
-                if len(self.browseHist) > 0:
-                    self.browseHist.append((self._activeStage, self.lastdata))
-                else:
-                    self.browseHist.append((1, 0))
-            self._lastStage = self._activeStage
-            self._activeStage = 5
+
+        if self._activeStage == 4 and self.navpanel.lastSearch != "":
+            self.browseHist.append((4, self.navpanel.lastSearch))
+        else:
+            self.browseHist.append((self._activeStage, self.lastdata))
+
+
+        self._lastStage = self._activeStage
+        self._activeStage = 5
 
         fits = event.fits
         self.lpane.Freeze()
@@ -1201,7 +1204,7 @@ class ShipItem(SFItem.SFBrowserItem):
         else:
             shipName, fittings = self.shipFittingInfo
             if fittings > 0:
-                wx.PostEvent(self.shipBrowser,Stage3Selected(shipID=self.shipID, back = -1 if self.shipBrowser.GetActiveStage() == 4 else 0))
+                wx.PostEvent(self.shipBrowser, Stage3Selected(shipID=self.shipID, back=True))
             else:
                 self.newBtnCB()
 
@@ -1613,7 +1616,7 @@ class FitItem(SFItem.SFBrowserItem):
         sFit = service.Fit.getInstance()
         fitID = sFit.copyFit(self.fitID)
         self.shipBrowser.fitIDMustEditName = fitID
-        wx.PostEvent(self.shipBrowser,Stage3Selected(shipID=self.shipID, back=True))
+        wx.PostEvent(self.shipBrowser,Stage3Selected(shipID=self.shipID))
         wx.PostEvent(self.mainFrame, FitSelected(fitID=fitID))
 
     def renameBtnCB(self):
@@ -1662,7 +1665,7 @@ class FitItem(SFItem.SFBrowserItem):
         if self.shipBrowser.GetActiveStage() == 4:
             wx.PostEvent(self.shipBrowser, SearchSelected(text=self.shipBrowser.navpanel.lastSearch, back=True))
         else:
-            wx.PostEvent(self.shipBrowser, Stage3Selected(shipID=self.shipID, back=True))
+            wx.PostEvent(self.shipBrowser, Stage3Selected(shipID=self.shipID))
 
         wx.PostEvent(self.mainFrame, FitRemoved(fitID=self.fitID))
 
