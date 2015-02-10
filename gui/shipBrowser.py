@@ -29,6 +29,7 @@ Stage1Selected, EVT_SB_STAGE1_SEL = wx.lib.newevent.NewEvent()
 Stage2Selected, EVT_SB_STAGE2_SEL = wx.lib.newevent.NewEvent()
 Stage3Selected, EVT_SB_STAGE3_SEL = wx.lib.newevent.NewEvent()
 SearchSelected, EVT_SB_SEARCH_SEL = wx.lib.newevent.NewEvent()
+ImportSelected, EVT_SB_IMPORT_SEL = wx.lib.newevent.NewEvent()
 
 class PFWidgetsContainer(PFListPane):
     def __init__(self,parent):
@@ -323,7 +324,7 @@ class RaceSelector(wx.Window):
         event.Skip()
 
 class NavigationPanel(SFItem.SFBrowserItem):
-    def __init__(self,parent, size = (-1,24)):
+    def __init__(self,parent, size = (-1, 24)):
         SFItem.SFBrowserItem.__init__(self,parent,size = size)
 
         self.rewBmpH = bitmapLoader.getBitmap("frewind_small","icons")
@@ -351,7 +352,7 @@ class NavigationPanel(SFItem.SFBrowserItem):
 
         self.padding = 4
         self.lastSearch = ""
-        self.recentSearches = []
+        self.recentSearches = []  # not used?
         self.inSearch = False
 
         self.fontSmall = wx.Font(fonts.SMALL, wx.SWISS, wx.NORMAL, wx.NORMAL)
@@ -370,23 +371,14 @@ class NavigationPanel(SFItem.SFBrowserItem):
 
         self.Bind(wx.EVT_SIZE, self.OnResize)
 
-
     def OnScheduleSearch(self, event):
         search = self.BrowserSearchBox.GetValue()
         # Make sure we do not count wildcard as search symbol
         realsearch = search.replace("*", "")
-        if len(realsearch) < 3 and len(realsearch) >= 0:
-            if self.inSearch == True:
-                self.inSearch = False
-                if len(self.shipBrowser.browseHist) > 0:
-                    stage,data = self.shipBrowser.browseHist.pop()
-                    self.gotoStage(stage,data)
-        else:
-            if search:
-                wx.PostEvent(self.shipBrowser,SearchSelected(text=search, back = False))
-                self.inSearch = True
-            else:
-                self.inSearch = False
+        if len(realsearch) >= 3:
+            self.lastSearch = search
+            wx.PostEvent(self.shipBrowser,SearchSelected(text=search, back = False))
+
 
     def ToggleSearchBox(self):
         if self.BrowserSearchBox.IsShown():
@@ -400,8 +392,6 @@ class NavigationPanel(SFItem.SFBrowserItem):
         self.OnBrowserSearchBoxLostFocus(None)
 
     def OnBrowserSearchBoxLostFocus(self, event):
-        self.lastSearch = self.BrowserSearchBox.GetValue()
-        self.BrowserSearchBox.ChangeValue("")
         self.BrowserSearchBox.Show(False)
 
     def OnBrowserSearchBoxEsc(self, event):
@@ -409,7 +399,6 @@ class NavigationPanel(SFItem.SFBrowserItem):
             self.BrowserSearchBox.Show(False)
         else:
             event.Skip()
-
 
     def OnResize(self, event):
         self.Refresh()
@@ -448,7 +437,7 @@ class NavigationPanel(SFItem.SFBrowserItem):
             sFit = service.Fit.getInstance()
             fitID = sFit.newFit(shipID, "%s fit" %shipName)
             self.shipBrowser.fitIDMustEditName = fitID
-            wx.PostEvent(self.Parent,Stage3Selected(shipID=shipID, back = True))
+            wx.PostEvent(self.Parent,Stage3Selected(shipID=shipID))
             wx.PostEvent(self.mainFrame, FitSelected(fitID=fitID))
 
     def OnHistoryReset(self):
@@ -459,11 +448,11 @@ class NavigationPanel(SFItem.SFBrowserItem):
     def OnHistoryBack(self):
         if len(self.shipBrowser.browseHist) > 0:
             stage,data = self.shipBrowser.browseHist.pop()
-            self.gotoStage(stage,data)
+            self.gotoStage(stage, data)
 
     def AdjustChannels(self, bitmap):
         img = wx.ImageFromBitmap(bitmap)
-        img = img.AdjustChannels(1.05,1.05,1.05,1)
+        img = img.AdjustChannels(1.05, 1.05, 1.05, 1)
         return wx.BitmapFromImage(img)
 
     def UpdateElementsPos(self, mdc):
@@ -541,10 +530,12 @@ class NavigationPanel(SFItem.SFBrowserItem):
         elif stage == 2:
             wx.PostEvent(self.Parent, Stage2Selected(categoryID=data, back=True))
         elif stage == 3:
-            wx.PostEvent(self.Parent, Stage3Selected(shipID=data, back=1))
+            wx.PostEvent(self.Parent, Stage3Selected(shipID=data))
         elif stage == 4:
             self.shipBrowser._activeStage = 4
             wx.PostEvent(self.Parent, SearchSelected(text=data, back=True))
+        elif stage == 5:
+            wx.PostEvent(self.Parent, ImportSelected(fits=data))
         else:
             wx.PostEvent(self.Parent, Stage1Selected())
 
@@ -607,6 +598,7 @@ class ShipBrowser(wx.Panel):
         self.Bind(EVT_SB_STAGE1_SEL, self.stage1)
         self.Bind(EVT_SB_STAGE3_SEL, self.stage3)
         self.Bind(EVT_SB_SEARCH_SEL, self.searchStage)
+        self.Bind(EVT_SB_IMPORT_SEL, self.importStage)
 
         self.mainFrame.Bind(GE.FIT_CHANGED, self.RefreshList)
 
@@ -808,13 +800,15 @@ class ShipBrowser(wx.Panel):
 
         self.lpane.ShowLoading(False)
 
-        if event.back == 0:
-            self.browseHist.append( (2,self._stage2Data) )
-        elif event.back == -1:
-            if len(self.navpanel.recentSearches)>0:
+        # If back is False, do not append to history. This could be us calling
+        # the stage from previous history, creating / copying fit, etc.
+        # We also have to use conditional for search stage since it's last data
+        # is kept elsewhere
+        if getattr(event, "back", False):
+            if self._activeStage == 4 and self.navpanel.lastSearch != "":
                 self.browseHist.append((4, self.navpanel.lastSearch))
-        elif event.back > 0:
-             self.browseHist.append( (2,event.back) )
+            else:
+                self.browseHist.append((self._activeStage, self.lastdata))
 
         shipID = event.shipID
         self.lastdata = shipID
@@ -867,11 +861,11 @@ class ShipBrowser(wx.Panel):
         self.navpanel.ShowSwitchEmptyGroupsButton(False)
 
         if not event.back:
-            if self._activeStage !=4:
-                if len(self.browseHist) >0:
-                    self.browseHist.append( (self._activeStage, self.lastdata) )
+            if self._activeStage != 4:
+                if len(self.browseHist) > 0:
+                    self.browseHist.append((self._activeStage, self.lastdata))
                 else:
-                    self.browseHist.append((1,0))
+                    self.browseHist.append((1, 0))
             self._lastStage = self._activeStage
             self._activeStage = 4
 
@@ -894,6 +888,42 @@ class ShipBrowser(wx.Panel):
             if len(ships) == 0 and len(fitList) == 0 :
                 self.lpane.AddWidget(PFStaticText(self.lpane, label = u"No matching results."))
             self.lpane.RefreshList(doFocus = False)
+        self.lpane.Thaw()
+
+        self.raceselect.RebuildRaces(self.RACE_ORDER)
+
+        if self.showRacesFilterInStage2Only:
+            self.raceselect.Show(False)
+            self.Layout()
+
+    def importStage(self, event):
+        self.lpane.ShowLoading(False)
+
+        self.navpanel.ShowNewFitButton(False)
+        self.navpanel.ShowSwitchEmptyGroupsButton(False)
+
+        if getattr(event, "back", False):
+            self.browseHist.append((self._activeStage, self.lastdata))
+
+        self._lastStage = self._activeStage
+        self._activeStage = 5
+
+        fits = event.fits
+        self.lastdata = fits
+        self.lpane.Freeze()
+        self.lpane.RemoveAllChildren()
+
+        if fits:
+            for fit in fits:
+                self.lpane.AddWidget(FitItem(
+                    self.lpane,
+                    fit.ID, (
+                        fit.ship.item.name,
+                        fit.name,
+                        fit.booster,
+                        fit.timestamp),
+                    fit.ship.item.ID))
+            self.lpane.RefreshList(doFocus=False)
         self.lpane.Thaw()
 
         self.raceselect.RebuildRaces(self.RACE_ORDER)
@@ -1164,7 +1194,7 @@ class ShipItem(SFItem.SFBrowserItem):
         else:
             shipName, fittings = self.shipFittingInfo
             if fittings > 0:
-                wx.PostEvent(self.shipBrowser,Stage3Selected(shipID=self.shipID, back = -1 if self.shipBrowser.GetActiveStage() == 4 else 0))
+                wx.PostEvent(self.shipBrowser, Stage3Selected(shipID=self.shipID, back=True))
             else:
                 self.newBtnCB()
 
@@ -1576,7 +1606,7 @@ class FitItem(SFItem.SFBrowserItem):
         sFit = service.Fit.getInstance()
         fitID = sFit.copyFit(self.fitID)
         self.shipBrowser.fitIDMustEditName = fitID
-        wx.PostEvent(self.shipBrowser,Stage3Selected(shipID=self.shipID, back=True))
+        wx.PostEvent(self.shipBrowser,Stage3Selected(shipID=self.shipID))
         wx.PostEvent(self.mainFrame, FitSelected(fitID=fitID))
 
     def renameBtnCB(self):
@@ -1619,18 +1649,22 @@ class FitItem(SFItem.SFBrowserItem):
             self.deleted = True
 
         sFit = service.Fit.getInstance()
+        fit = sFit.getFit(self.fitID)
 
         sFit.deleteFit(self.fitID)
 
-        if self.shipBrowser.GetActiveStage() == 4:
-            wx.PostEvent(self.shipBrowser,SearchSelected(text=self.shipBrowser.navpanel.lastSearch,back=True))
+        if self.shipBrowser.GetActiveStage() == 5:
+            if fit in self.shipBrowser.lastdata: # remove fit from import cache
+                 self.shipBrowser.lastdata.remove(fit)
+            wx.PostEvent(self.shipBrowser, ImportSelected(fits=self.shipBrowser.lastdata))
+        elif self.shipBrowser.GetActiveStage() == 4:
+            wx.PostEvent(self.shipBrowser, SearchSelected(text=self.shipBrowser.navpanel.lastSearch, back=True))
         else:
-            wx.PostEvent(self.shipBrowser,Stage3Selected(shipID=self.shipID, back=True))
+            wx.PostEvent(self.shipBrowser, Stage3Selected(shipID=self.shipID))
 
         wx.PostEvent(self.mainFrame, FitRemoved(fitID=self.fitID))
 
     def MouseLeftUp(self, event):
-
         if self.dragging and self.dragged:
             self.dragging = False
             self.dragged = False
