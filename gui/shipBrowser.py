@@ -909,6 +909,10 @@ class ShipBrowser(wx.Panel):
         self._activeStage = 5
 
         fits = event.fits
+
+        # sort by ship name, then fit name
+        fits.sort(key=lambda fit: (fit.ship.item.name, fit.name))
+
         self.lastdata = fits
         self.lpane.Freeze()
         self.lpane.RemoveAllChildren()
