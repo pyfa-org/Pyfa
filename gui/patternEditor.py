@@ -28,11 +28,11 @@ from service.damagePattern import ImportError
 ## Class DmgPatternEditorDlg
 ###########################################################################
 
-class DmgPatternEditorDlg (wx.Dialog):
+class DmgPatternEditorDlg(wx.Dialog):
     DAMAGE_TYPES = ("em", "thermal", "kinetic", "explosive")
 
     def __init__(self, parent):
-        wx.Dialog.__init__ (self, parent, id = wx.ID_ANY, title = u"Damage Pattern Editor", size = wx.Size( 400,240 ))
+        wx.Dialog.__init__(self, parent, id = wx.ID_ANY, title = u"Damage Pattern Editor", size = wx.Size( 400,240 ))
 
         self.block = False
         self.SetSizeHintsSz(wx.DefaultSize, wx.DefaultSize)
@@ -125,7 +125,7 @@ class DmgPatternEditorDlg (wx.Dialog):
             editObj.Bind(wx.EVT_TEXT, self.ValuesUpdated)
             editObj.SetLimited(True)
             editObj.SetMin(0)
-            editObj.SetMax(99999)
+            editObj.SetMax(2000000)
 
         contentSizer.Add(dmgeditSizer, 1, wx.EXPAND | wx.ALL, 5)
         self.slfooter = wx.StaticLine(self)
@@ -244,13 +244,7 @@ class DmgPatternEditorDlg (wx.Dialog):
         self.block = False
         self.ValuesUpdated()
 
-    def newPattern(self,event):
-        sDP = service.DamagePattern.getInstance()
-        p = sDP.newPattern()
-        self.choices.append(p)
-        id = self.ccDmgPattern.Append(p.name)
-        self.ccDmgPattern.SetSelection(id)
-
+    def newPattern(self, event):
         self.restrict()
         # reset values
         for type in self.DAMAGE_TYPES:
@@ -258,9 +252,10 @@ class DmgPatternEditorDlg (wx.Dialog):
             editObj.SetValue(0)
 
         self.btnSave.SetLabel("Create")
+        self.Refresh()
         self.renamePattern()
 
-    def renamePattern(self,event=None):
+    def renamePattern(self, event=None):
         if event is not None:
             self.btnSave.SetLabel("Rename")
 
@@ -268,7 +263,12 @@ class DmgPatternEditorDlg (wx.Dialog):
         self.namePicker.Show()
         self.headerSizer.Replace(self.ccDmgPattern, self.namePicker)
         self.namePicker.SetFocus()
-        self.namePicker.SetValue(self.getActivePattern().name)
+
+        if event is not None:  # Rename mode
+            self.btnSave.SetLabel("Rename")
+            self.namePicker.SetValue(self.getActivePattern().name)
+        else:  # Create mode
+            self.namePicker.SetValue("")
 
         for btn in (self.new, self.rename, self.delete, self.copy):
             btn.Hide()
@@ -284,19 +284,25 @@ class DmgPatternEditorDlg (wx.Dialog):
         newName = self.namePicker.GetLineText(0)
         self.stNotice.SetLabel("")
 
-        p = self.getActivePattern()
-        for pattern in self.choices:
-            if pattern.name == newName and p != pattern:
-                self.stNotice.SetLabel("Name already used, please choose another")
-                return
-
         if newName == "":
             self.stNotice.SetLabel("Invalid name.")
             return
 
         sDP = service.DamagePattern.getInstance()
+        if event.EventObject.Label == "Create":
+            p = sDP.newPattern()
+        else:
+            # we are renaming, so get the current selection
+            p = self.getActivePattern()
+
+        for pattern in self.choices:
+            if pattern.name == newName and p != pattern:
+                self.stNotice.SetLabel("Name already used, please choose another")
+                return
+
         sDP.renamePattern(p, newName)
 
+        self.updateChoices(newName)
         self.headerSizer.Replace(self.namePicker, self.ccDmgPattern)
         self.ccDmgPattern.Show()
         self.namePicker.Hide()
@@ -335,7 +341,7 @@ class DmgPatternEditorDlg (wx.Dialog):
     def __del__( self ):
         pass
 
-    def updateChoices(self):
+    def updateChoices(self, select=None):
         "Gathers list of patterns and updates choice selections"
         sDP = service.DamagePattern.getInstance()
         self.choices = sDP.getDamagePatternList()
@@ -348,10 +354,14 @@ class DmgPatternEditorDlg (wx.Dialog):
         self.choices.sort(key=lambda p: p.name)
         self.ccDmgPattern.Clear()
 
-        for choice in map(lambda p: p.name, self.choices):
+        for i, choice in enumerate(map(lambda p: p.name, self.choices)):
             self.ccDmgPattern.Append(choice)
 
-        self.ccDmgPattern.SetSelection(0)
+            if select is not None and choice == select:
+                self.ccDmgPattern.SetSelection(i)
+
+        if select is None:
+            self.ccDmgPattern.SetSelection(0)
         self.patternChanged()
 
     def importPatterns(self, event):

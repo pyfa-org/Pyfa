@@ -1,3 +1,7 @@
+# freighterSMACapacityBonusO1
+#
+# Used by:
+# Ship: Bowhead
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("ORE Freighter").level

@@ -1,8 +1,7 @@
 # shipBonusDroneMiningAmountGC2
 #
 # Used by:
-# Ship: Vexor
-# Ship: Vexor Navy Issue
+# Ships named like: Vexor (3 of 4)
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Gallente Cruiser").level

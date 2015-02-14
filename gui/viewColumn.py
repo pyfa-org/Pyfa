@@ -50,7 +50,7 @@ class ViewColumn(object):
         return ""
 
     def getToolTip(self, mod):
-        return ""
+        return None
 
     def getImageId(self, mod):
         return -1

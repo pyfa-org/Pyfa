@@ -35,6 +35,7 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         self.amount = 0
         self.amountActive = 0
         self.__dps = None
+        self.__volley = None
         self.__miningyield = None
         self.projected = False
         self.__itemModifiedAttributes = ModifiedAttributeDict()
@@ -43,6 +44,7 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     @reconstructor
     def init(self):
         self.__dps = None
+        self.__volley = None
         self.__miningyield = None
         self.__item = None
         self.__charge = None
@@ -115,6 +117,8 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     def damageStats(self, targetResists = None):
         if self.__dps == None:
+            self.__volley = 0
+            self.__dps = 0
             if self.dealsDamage is True and self.amountActive > 0:
                 if self.hasAmmo:
                     attr = "missileLaunchDuration"
@@ -128,11 +132,10 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                 volley = sum(map(lambda d: (getter("%sDamage"%d) or 0) * (1-getattr(targetResists, "%sAmount"%d, 0)), self.DAMAGE_TYPES))
                 volley *= self.amountActive
                 volley *= self.getModifiedItemAttr("damageMultiplier") or 1
+                self.__volley = volley
                 self.__dps = volley / (cycleTime / 1000.0)
-            else:
-                self.__dps = 0
 
-        return self.__dps
+        return self.__dps, self.__volley
 
     @property
     def miningStats(self):
@@ -186,6 +189,7 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     def clear(self):
         self.__dps = None
+        self.__volley = None
         self.__miningyield = None
         self.itemModifiedAttributes.clear()
         self.chargeModifiedAttributes.clear()

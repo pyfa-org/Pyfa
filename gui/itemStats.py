@@ -523,10 +523,24 @@ class ItemEffects (wx.Panel):
         self.Layout()
 
     def OnClick(self, event):
+        """
+        Debug use: open effect file with default application.
+        If effect file does not exist, create it
+        """
+
         import os
-        file = os.path.join(config.pyfaPath,"eos","effects","%s.py"%event.GetText().lower())
+        file = os.path.join(config.pyfaPath, "eos", "effects", "%s.py"%event.GetText().lower())
+
+        if not os.path.isfile(file):
+            open(file, 'a').close()
+
         if 'wxMSW' in wx.PlatformInfo:
             os.startfile(file)
+        elif 'wxMac' in wx.PlatformInfo:
+            os.system("open "+file)
+        else:
+            import subprocess
+            subprocess.call(["xdg-open", file])
 
 
 ###########################################################################

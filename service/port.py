@@ -18,60 +18,39 @@
 #===============================================================================
 
 import re
+import os
 import xml.dom
-import json
 
 from eos.types import State, Slot, Module, Cargo, Fit, Ship, Drone, Implant, Booster
 import service
+import wx
 
 try:
     from collections import OrderedDict
 except ImportError:
     from utils.compat import OrderedDict
 
-FIT_WIN_HEADINGS = ["High power", "Medium power", "Low power", "Rig Slot", "Sub System", "Charges"]
 EFT_SLOT_ORDER = [Slot.LOW, Slot.MED, Slot.HIGH, Slot.RIG, Slot.SUBSYSTEM]
-
 
 class Port(object):
     """Service which houses all import/export format functions"""
 
     @classmethod
-    def importAuto(cls, string, sourceFileName=None, activeFit=None):
+    def importAuto(cls, string, path=None, activeFit=None, callback=None):
         # Get first line and strip space symbols of it to avoid possible detection errors
         firstLine = re.split("[\n\r]+", string.strip(), maxsplit=1)[0]
         firstLine = firstLine.strip()
 
-        # If string is from in-game copy of fitting window
-        # We match " power" instead of "High power" in case a fit has no high modules
-        if firstLine in FIT_WIN_HEADINGS and activeFit is not None:
-            return "FIT", (cls.importFittingWindow(string, activeFit),)
-
-        # If we have "<url=fitting", fit is coming from eve chat
-        # Gather data and send to DNA
-        chatDna = re.search("<url=fitting:(.*::)>.*</url>", firstLine)
-        if chatDna:
-            return "DNA", (cls.importDna(chatDna.group(1)),)
-
-        # If we have a CREST kill link
-        killLink = re.search("http://public-crest.eveonline.com/killmails/(.*)/", firstLine)
-        if killLink:
-            return "CREST", (cls.importCrest(tuple(killLink.group(1).split("/"))),)
-
-        # If we have "<url=killReport", fit is killmail from eve chat
-        killReport = re.search("<url=killReport:(.*)>.*</url>", firstLine)
-        if killReport:
-            return "CREST", (cls.importCrest(tuple(killReport.group(1).split(":"))),)
-
         # If XML-style start of tag encountered, detect as XML
         if re.match("<", firstLine):
-            return "XML", cls.importXml(string)
+            return "XML", cls.importXml(string, callback)
 
         # If we've got source file name which is used to describe ship name
         # and first line contains something like [setup name], detect as eft config file
-        if re.match("\[.*\]", firstLine) and sourceFileName is not None:
-            shipName = sourceFileName.rsplit('.')[0]
-            return "EFT Config", cls.importEftCfg(shipName, string)
+        if re.match("\[.*\]", firstLine) and path is not None:
+            filename = os.path.split(path)[1]
+            shipName = filename.rsplit('.')[0]
+            return "EFT Config", cls.importEftCfg(shipName, string, callback)
 
         # If no file is specified and there's comma between brackets,
         # consider that we have [ship, setup name] and detect like eft export format
@@ -80,138 +59,6 @@ class Port(object):
 
         # Use DNA format for all other cases
         return "DNA", (cls.importDna(string),)
-
-    @staticmethod
-    def importFittingWindow(string, activeFit):
-        sMkt = service.Market.getInstance()
-        sFit = service.Fit.getInstance()
-
-        activeFit = sFit.getFit(activeFit)
-
-        # if the current fit has mods, do not mess with it. Instead, make new fit
-        if activeFit.modCount > 0:
-            fit = Fit()
-            fit.ship = Ship(sMkt.getItem(activeFit.ship.item.ID))
-            fit.name = "%s (copy)" % activeFit.name
-        else:
-            fit = activeFit
-        lines = re.split('[\n\r]+', string)
-
-        droneMap = {}
-        cargoMap = {}
-        modules = []
-
-        for i in range(1, len(lines)):
-            line = lines[i].strip()
-            if not line:
-                continue
-
-            try:
-                amount, modName = line.split("x ")
-                amount = int(amount)
-                item = sMkt.getItem(modName, eager="group.category")
-            except:
-                # if no data can be found (old names)
-                continue
-
-            if item.category.name == "Drone":
-                if not modName in droneMap:
-                    droneMap[modName] = 0
-                droneMap[modName] += amount
-            elif item.category.name == "Charge":
-                if not modName in cargoMap:
-                    cargoMap[modName] = 0
-                cargoMap[modName] += amount
-            else:
-                for _ in xrange(amount):
-                    try:
-                        m = Module(item)
-                    except ValueError:
-                        continue
-                    # If we are importing T3 ship, we must apply subsystems first, then
-                    # calcModAttr() to get the ship slots
-                    if m.slot == Slot.SUBSYSTEM and m.fits(fit):
-                        fit.modules.append(m)
-                    else:
-                        modules.append(m)
-
-        fit.clear()
-        fit.calculateModifiedAttributes()
-
-        for m in modules:
-            # we check to see if module fits as a basic sanity check
-            # if it doesn't then the imported fit is most likely invalid
-            # (ie: user tried to import Legion fit to a Rifter)
-            if m.fits(fit):
-                fit.modules.append(m)
-                if m.isValidState(State.ACTIVE):
-                    m.state = State.ACTIVE
-                m.owner = fit  # not sure why this is required when it's not for other import methods, but whatever
-            else:
-                return
-
-        for droneName in droneMap:
-            d = Drone(sMkt.getItem(droneName))
-            d.amount = droneMap[droneName]
-            fit.drones.append(d)
-
-        for cargoName in cargoMap:
-            c = Cargo(sMkt.getItem(cargoName))
-            c.amount = cargoMap[cargoName]
-            fit.cargo.append(c)
-
-        return fit
-
-    @staticmethod
-    def importCrest(info):
-        sMkt = service.Market.getInstance()
-        network = service.Network.getInstance()
-        try:
-            response = network.request("https://public-crest.eveonline.com/killmails/%s/%s/" % info, network.EVE)
-        except:
-            return
-
-        kill = (json.loads(response.read()))['victim']
-
-        fit = Fit()
-        fit.ship = Ship(sMkt.getItem(kill['shipType']['name']))
-        fit.name = "CREST: %s's %s" % (kill['character']['name'], kill['shipType']['name'])
-
-        # sort based on flag to get proper rack position
-        items = sorted(kill['items'], key=lambda k: k['flag'])
-
-        # We create a relation between module flag and module position on fit at time of append:
-        # this allows us to know which module to apply charges to if need be (see below)
-        flagMap = {}
-
-        # Charges may show up before or after the module. We process modules first,
-        # storing any charges that are fitted in a dict and noting their flag (module).
-        charges = {}
-
-        for mod in items:
-            if mod['flag'] == 5:  # throw out cargo
-                continue
-
-            item = sMkt.getItem(mod['itemType']['name'], eager="group.category")
-
-            if item.category.name == "Drone":
-                d = Drone(item)
-                d.amount = mod['quantityDropped'] if 'quantityDropped' in mod else mod['quantityDestroyed']
-                fit.drones.append(d)
-            elif item.category.name == "Charge":
-                charges[mod['flag']] = item
-            else:
-                m = Module(item)
-                if m.isValidState(State.ACTIVE):
-                    m.state = State.ACTIVE
-                fit.modules.append(m)
-                flagMap[mod['flag']] = fit.modules.index(m)
-
-        for flag, item in charges.items():
-            # we do not need to verify valid charge as it comes directly from CCP
-            fit.modules[flagMap[flag]].charge = item
-
-        return fit
 
     @staticmethod
     def importDna(string):
@@ -355,7 +202,7 @@ class Port(object):
         return fit
 
     @staticmethod
-    def importEftCfg(shipname, contents):
+    def importEftCfg(shipname, contents, callback=None):
         """Handle import from EFT config store file"""
 
         # Check if we have such ship in database, bail if we don't
@@ -363,7 +210,7 @@ class Port(object):
         try:
             sMkt.getItem(shipname)
         except:
-            return
+            return []  # empty list is expected
 
         # If client didn't take care of encoding file contents into Unicode,
         # do it using fallback encoding ourselves
@@ -501,6 +348,9 @@ class Port(object):
                         f.modules.append(m)
                 # Append fit to list of fits
                 fits.append(f)
+
+                if callback:
+                    wx.CallAfter(callback, None)
             # Skip fit silently if we get an exception
             except Exception:
                 pass
@@ -508,14 +358,15 @@ class Port(object):
         return fits
 
     @staticmethod
-    def importXml(text):
+    def importXml(text, callback=None):
         sMkt = service.Market.getInstance()
 
         doc = xml.dom.minidom.parseString(text.encode("utf-8"))
         fittings = doc.getElementsByTagName("fittings").item(0)
         fittings = fittings.getElementsByTagName("fitting")
         fits = []
-        for fitting in fittings:
+
+        for i, fitting in enumerate(fittings):
             f = Fit()
             f.name = fitting.getAttribute("name")
             # <localized hint="Maelstrom">Maelstrom</localized>
@@ -557,6 +408,8 @@ class Port(object):
                 except KeyboardInterrupt:
                     continue
             fits.append(f)
+            if callback:
+                wx.CallAfter(callback, None)
 
         return fits
 
@@ -658,69 +511,76 @@ class Port(object):
         return dna + "::"
 
     @classmethod
-    def exportXml(cls, *fits):
+    def exportXml(cls, callback=None, *fits):
         doc = xml.dom.minidom.Document()
         fittings = doc.createElement("fittings")
         doc.appendChild(fittings)
-        for fit in fits:
-            fitting = doc.createElement("fitting")
-            fitting.setAttribute("name", fit.name)
-            fittings.appendChild(fitting)
-            description = doc.createElement("description")
-            description.setAttribute("value", "")
-            fitting.appendChild(description)
-            shipType = doc.createElement("shipType")
-            shipType.setAttribute("value", fit.ship.item.name)
-            fitting.appendChild(shipType)
+        for i, fit in enumerate(fits):
+            try:
+                fitting = doc.createElement("fitting")
+                fitting.setAttribute("name", fit.name)
+                fittings.appendChild(fitting)
+                description = doc.createElement("description")
+                description.setAttribute("value", "")
+                fitting.appendChild(description)
+                shipType = doc.createElement("shipType")
+                shipType.setAttribute("value", fit.ship.item.name)
+                fitting.appendChild(shipType)
 
-            charges = {}
-            slotNum = {}
-            for module in fit.modules:
-                if module.isEmpty:
-                    continue
+                charges = {}
+                slotNum = {}
+                for module in fit.modules:
+                    if module.isEmpty:
+                        continue
 
-                slot = module.slot
+                    slot = module.slot
 
-                if slot == Slot.SUBSYSTEM:
-                    # Order of subsystem matters based on this attr. See GH issue #130
-                    slotId = module.getModifiedItemAttr("subSystemSlot") - 124
-                else:
-                    if not slot in slotNum:
-                        slotNum[slot] = 0
+                    if slot == Slot.SUBSYSTEM:
+                        # Order of subsystem matters based on this attr. See GH issue #130
+                        slotId = module.getModifiedItemAttr("subSystemSlot") - 124
+                    else:
+                        if not slot in slotNum:
+                            slotNum[slot] = 0
 
-                    slotId = slotNum[slot]
-                    slotNum[slot] += 1
+                        slotId = slotNum[slot]
+                        slotNum[slot] += 1
 
-                hardware = doc.createElement("hardware")
-                hardware.setAttribute("type", module.item.name)
-                slotName = Slot.getName(slot).lower()
-                slotName = slotName if slotName != "high" else "hi"
-                hardware.setAttribute("slot", "%s slot %d" % (slotName, slotId))
-                fitting.appendChild(hardware)
+                    hardware = doc.createElement("hardware")
+                    hardware.setAttribute("type", module.item.name)
+                    slotName = Slot.getName(slot).lower()
+                    slotName = slotName if slotName != "high" else "hi"
+                    hardware.setAttribute("slot", "%s slot %d" % (slotName, slotId))
+                    fitting.appendChild(hardware)
 
-                if module.charge:
-                    if not module.charge.name in charges:
-                        charges[module.charge.name] = 0
-                    # `or 1` because some charges (ie scripts) are without qty
-                    charges[module.charge.name] += module.numCharges or 1
+                    if module.charge:
+                        if not module.charge.name in charges:
+                            charges[module.charge.name] = 0
+                        # `or 1` because some charges (ie scripts) are without qty
+                        charges[module.charge.name] += module.numCharges or 1
 
-            for drone in fit.drones:
-                hardware = doc.createElement("hardware")
-                hardware.setAttribute("qty", "%d" % drone.amount)
-                hardware.setAttribute("slot", "drone bay")
-                hardware.setAttribute("type", drone.item.name)
-                fitting.appendChild(hardware)
+                for drone in fit.drones:
+                    hardware = doc.createElement("hardware")
+                    hardware.setAttribute("qty", "%d" % drone.amount)
+                    hardware.setAttribute("slot", "drone bay")
+                    hardware.setAttribute("type", drone.item.name)
+                    fitting.appendChild(hardware)
 
-            for cargo in fit.cargo:
-                if not cargo.item.name in charges:
-                    charges[cargo.item.name] = 0
-                charges[cargo.item.name] += cargo.amount
+                for cargo in fit.cargo:
+                    if not cargo.item.name in charges:
+                        charges[cargo.item.name] = 0
+                    charges[cargo.item.name] += cargo.amount
 
-            for name, qty in charges.items():
-                hardware = doc.createElement("hardware")
-                hardware.setAttribute("qty", "%d" % qty)
-                hardware.setAttribute("slot", "cargo")
-                hardware.setAttribute("type", name)
-                fitting.appendChild(hardware)
+                for name, qty in charges.items():
+                    hardware = doc.createElement("hardware")
+                    hardware.setAttribute("qty", "%d" % qty)
+                    hardware.setAttribute("slot", "cargo")
+                    hardware.setAttribute("type", name)
+                    fitting.appendChild(hardware)
+            except:
+                print "Failed on fitID: %d"%fit.ID
+                continue
+            finally:
+                if callback:
+                    wx.CallAfter(callback, i)
 
         return doc.toprettyxml()

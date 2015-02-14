@@ -18,6 +18,7 @@ import math
 from gui.utils import colorUtils
 import gui.utils.drawUtils as drawUtils
 import gui.utils.animEffects as animEffects
+import gui.utils.fonts as fonts
 
 class PyGauge(wx.PyWindow):
     """
@@ -74,7 +75,7 @@ class PyGauge(wx.PyWindow):
         self._oldPercentage = 0
         self._showRemaining = False
 
-        self.font = wx.FontFromPixelSize((0,14),wx.SWISS, wx.NORMAL, wx.NORMAL, False)
+        self.font = wx.Font(fonts.NORMAL, wx.SWISS, wx.NORMAL, wx.NORMAL, False)
 
         self.SetBarGradient((wx.Colour(119,119,119),wx.Colour(153,153,153)))
         self.SetBackgroundColour(wx.Colour(51,51,51))
@@ -378,9 +379,15 @@ class PyGauge(wx.PyWindow):
             dc.DrawLabel(formatStr, rect, wx.ALIGN_CENTER)
         else:
             if self.GetBarGradient() and self._showRemaining:
-                formatStr = "{0:." + str(self._fractionDigits) + "f} left"
                 range = self._range if self._range > 0.01 else 0
-                value = max( range - self._value , 0)
+                value = range - self._value
+                if value < 0:
+                    label = "over"
+                    value = -value
+                else:
+                    label = "left"
+                formatStr = "{0:." + str(self._fractionDigits) + "f} " + label
+
             else:
                 formatStr = "{0:." + str(self._fractionDigits) + "f}%"
 

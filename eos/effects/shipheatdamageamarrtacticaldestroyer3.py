@@ -1,3 +1,7 @@
+# shipHeatDamageAmarrTacticalDestroyer3
+#
+# Used by:
+# Ship: Confessor
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Amarr Tactical Destroyer").level

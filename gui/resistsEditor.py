@@ -23,12 +23,12 @@ import service
 from gui.utils.clipboard import toClipboard, fromClipboard
 from service.targetResists import ImportError
 
-class ResistsEditorDlg (wx.Dialog):
+class ResistsEditorDlg(wx.Dialog):
 
     DAMAGE_TYPES = ("em", "thermal", "kinetic", "explosive")
 
     def __init__(self, parent):
-        wx.Dialog.__init__ (self, parent, id = wx.ID_ANY, title = u"Target Resists Editor", size = wx.Size( 350,240 ))
+        wx.Dialog.__init__(self, parent, id = wx.ID_ANY, title = u"Target Resists Editor", size = wx.Size( 350,240 ))
 
         self.block = False
         self.SetSizeHintsSz(wx.DefaultSize, wx.DefaultSize)

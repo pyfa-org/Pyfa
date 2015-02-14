@@ -73,18 +73,25 @@ class ContextMenu(object):
                         rootMenu.info[id] = (m, fullContext, it)
 
                         sub = m.getSubMenu(srcContext, selection, rootMenu, it, rootItem)
+
                         if sub is None:
                             # if there is no sub menu, bind the handler to the rootItem
                             rootMenu.Bind(wx.EVT_MENU, cls.handler, rootItem)
-                        else:
+                        elif sub:
+                            # If sub exists and is not False, set submenu.
+                            # Sub might return False when we have a mix of
+                            # single menu items and submenus (see: damage profile
+                            # context menu)
+                            #
                             # If there is a submenu, it is expected that the sub
-                            # logic take care of it's own binding. No binding is
-                            # done here
+                            # logic take care of it's own bindings, including for
+                            # any single root items. No binding is done here
                             #
                             # It is important to remember that when binding sub
-                            # menu items, bind them to the rootMenu for proper
-                            # event handling, eg:
-                            #    rootMenu.Bind(wx.EVE_MENU, self.handle, menuItem)
+                            # menu items, the menu to bind to depends on platform.
+                            # Windows should bind to rootMenu, and all other
+                            # platforms should bind to sub menu. See existing
+                            # implementations for examples.
                             rootItem.SetSubMenu(sub)
 
                         if bitmap is not None:

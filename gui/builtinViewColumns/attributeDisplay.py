@@ -89,6 +89,12 @@ class AttributeDisplay(ViewColumn):
     def getImageId(self, mod):
         return -1
 
+    def getToolTip(self, stuff):
+        if self.info.name == "cpu":
+            return "CPU"
+        else:
+            return self.info.name.title()
+
     @staticmethod
     def getParameters():
         return (("attribute", str, None),

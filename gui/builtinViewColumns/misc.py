@@ -23,7 +23,7 @@ from gui.viewColumn import ViewColumn
 from gui import bitmapLoader
 from gui.utils.numberFormatter import formatAmount
 from gui.utils.listFormatter import formatList
-from service.fit import Fit
+from service.fit import Fit, Market
 
 import wx
 
@@ -424,6 +424,15 @@ class Miscellanea(ViewColumn):
             text = "{0}s".format(cycleTime)
             tooltip = "Spoolup time"
             return text, tooltip
+        elif itemGroup in ("Siege Module", "Cynosural Field"):
+            amt = stuff.getModifiedItemAttr("consumptionQuantity")
+            if amt:
+                typeID = stuff.getModifiedItemAttr("consumptionType")
+                item = Market.getInstance().getItem(typeID)
+                text = "{0} units".format(formatAmount(amt, 3, 0, 3))
+                return text, item.name
+            else:
+                return "", None
         elif itemGroup in ("Fueled Armor Repairer", "Fueled Shield Booster"):
             hp = stuff.hpBeforeReload
             cycles = stuff.numShots

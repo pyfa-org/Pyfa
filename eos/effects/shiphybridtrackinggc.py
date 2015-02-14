@@ -1,6 +1,7 @@
 # shipHybridTrackingGC
 #
 # Used by:
+# Ship: Lachesis
 # Ship: Phobos
 type = "passive"
 def handler(fit, ship, context):
