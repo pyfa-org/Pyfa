@@ -1,7 +1,7 @@
 # modeSigRadiusPostDiv
 #
 # Used by:
-# Module: Amarr Tactical Destroyer Defense Mode
+# Module: Confessor Defense Mode
 type = "passive"
 def handler(fit, module, context):
     level = fit.character.getSkill("Minmatar Destroyer").level

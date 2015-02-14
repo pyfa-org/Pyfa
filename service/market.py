@@ -227,6 +227,7 @@ class Market():
             u"\u6bd2\u8725\u7ea7YC117\u5e74\u7279\u522b\u7248": False,
             u"\u4f0a\u4ec0\u5854\u7ea7YC117\u5e74\u7279\u522b\u7248": False,
             u"\u94f6\u9e70\u7ea7YC117\u5e74\u7279\u522b\u7248": False,
+            "Council Diplomatic Shuttle": False,  # Not sure yet
         }
 
         # do not publish ships that we convert
