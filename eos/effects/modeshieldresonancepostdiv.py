@@ -4,12 +4,15 @@
 # Module: Svipul Defense Mode
 type = "passive"
 def handler(fit, module, context):
-    for resType in ("Em", "Explosive", "Kinetic"):
-        fit.ship.multiplyItemAttr("shield{0}DamageResonance".format(resType),
-                            1/module.getModifiedItemAttr("mode{0}ResistancePostDiv".format(resType)),
-                            stackingPenalties = True, penaltyGroup="postDiv")
-
-    # Thermal != Thermic
-    fit.ship.multiplyItemAttr("shieldThermalDamageResonance",
-                            1/module.getModifiedItemAttr("modeThermicResistancePostDiv"),
-                            stackingPenalties = True, penaltyGroup="postDiv")
+    for srcResType, tgtResType in (
+        ("Em", "Em"),
+        ("Explosive", "Explosive"),
+        ("Kinetic", "Kinetic"),
+        ("Thermic", "Thermal")
+    ):
+        fit.ship.multiplyItemAttr(
+            "shield{0}DamageResonance".format(tgtResType),
+            1 / module.getModifiedItemAttr("mode{0}ResistancePostDiv".format(srcResType)),
+            stackingPenalties=True,
+            penaltyGroup="postDiv"
+        )
