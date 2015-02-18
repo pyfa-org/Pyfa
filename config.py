@@ -13,9 +13,9 @@ debug = False
 saveInRoot = False
 
 # Version data
-version = "1.8.2"
-tag = "git"
-expansionName = "Proteus"
+version = "1.9.0"
+tag = "Stable"
+expansionName = "Tiamat"
 expansionVersion = "1.0"
 evemonMinVersion = "4081"
 
