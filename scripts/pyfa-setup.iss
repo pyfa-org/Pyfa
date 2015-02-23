@@ -73,6 +73,10 @@ Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\{#MyAppName}"; Fil
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
 
+[InstallDelete]
+Type: files; Name: "{app}\sqlalchemy.cprocessors.pyd"
+Type: files; Name: "{app}\sqlalchemy.cresultproxy.pyd"
+
 [Code]
 
 function IsAppRunning(const FileName : string): Boolean;
