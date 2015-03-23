@@ -190,7 +190,7 @@ class Market():
             "Stratios Emergency Responder": self.les_grp, # Issued for Somer Blink lottery
             "Scorpion Ishukone Watch": self.les_grp, # Prize for offline events - fanfest PVP and poker tourneys
             "Miasmos Quafe Ultra Edition": self.les_grp, # Gift to people who purchased FF HD stream
-            "Interbus Shuttle": self.les_grp,
+            "InterBus Shuttle": self.les_grp,
             "Leopard": self.les_grp, # 2013 new year gift
             "Whiptail": self.les_grp, # AT12 prize
             "Chameleon": self.les_grp } # AT12 prize
