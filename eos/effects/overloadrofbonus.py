@@ -1,7 +1,7 @@
 # overloadRofBonus
 #
 # Used by:
-# Modules from group: Energy Weapon (100 of 186)
+# Modules from group: Energy Weapon (100 of 187)
 # Modules from group: Hybrid Weapon (110 of 202)
 # Modules from group: Missile Launcher Citadel (4 of 4)
 # Modules from group: Missile Launcher Heavy (12 of 12)

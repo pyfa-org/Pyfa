@@ -13,9 +13,9 @@ debug = False
 saveInRoot = False
 
 # Version data
-version = "1.9.1"
-tag = "git"
-expansionName = "Tiamat"
+version = "1.10.0"
+tag = "Stable"
+expansionName = "Scylla"
 expansionVersion = "1.0"
 evemonMinVersion = "4081"
 
