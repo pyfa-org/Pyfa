@@ -301,7 +301,7 @@ class ResistsEditorDlg(wx.Dialog):
             return
 
         sTR = service.TargetResists.getInstance()
-        if event.EventObject.Label == "Create":
+        if self.btnSave.Label == "Create":
             p = sTR.newPattern()
         else:
             # we are renaming, so get the current selection

@@ -289,7 +289,7 @@ class DmgPatternEditorDlg(wx.Dialog):
             return
 
         sDP = service.DamagePattern.getInstance()
-        if event.EventObject.Label == "Create":
+        if self.btnSave.Label == "Create":
             p = sDP.newPattern()
         else:
             # we are renaming, so get the current selection
