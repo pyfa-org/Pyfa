@@ -82,17 +82,22 @@ class CapSimulator(object):
             if self.scale:
                 duration, capNeed = self.scale_activation(duration, capNeed)
 
-            if self.stagger:
-                duration = int(duration/amount)
-            else:
-                capNeed *= amount
-
-            period = lcm(period, duration)
-
             # set clipSize to infinite if reloads are disabled unless it's
             # a cap booster module.
             if not self.reload and capNeed > 0:
                 clipSize = 0
+
+            if self.stagger:
+                if clipSize == 0:
+                    duration = int(duration/amount)
+                else:
+                    stagger_amount = (duration*clipsize+10000)/amount
+                    for i in range(1, amount):
+                        heapq.heappush(self.state, [i*stagger_amount, duration, capNeed, 0, clipSize])
+            else:
+                capNeed *= amount
+
+            period = lcm(period, duration)
 
             # period optimization doesn't work when reloads are active.
             if clipSize:
