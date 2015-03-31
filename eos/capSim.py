@@ -91,9 +91,11 @@ class CapSimulator(object):
                 if clipSize == 0:
                     duration = int(duration/amount)
                 else:
-                    stagger_amount = (duration*clipsize+10000)/amount
+                    stagger_amount = (duration*clipSize+10000)/(amount*clipSize)
                     for i in range(1, amount):
-                        heapq.heappush(self.state, [i*stagger_amount, duration, capNeed, 0, clipSize])
+                        heapq.heappush(self.state,
+                                       [i*stagger_amount, duration,
+                                        capNeed, 0, clipSize])
             else:
                 capNeed *= amount
 
