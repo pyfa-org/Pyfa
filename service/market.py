@@ -193,7 +193,9 @@ class Market():
             "InterBus Shuttle": self.les_grp,
             "Leopard": self.les_grp, # 2013 new year gift
             "Whiptail": self.les_grp, # AT12 prize
-            "Chameleon": self.les_grp } # AT12 prize
+            "Chameleon": self.les_grp, # AT12 prize
+            "Victorieux Luxury Yacht":  self.les_grp  # Worlds Collide prize \o/ chinese getting owned
+        }
 
         self.ITEMS_FORCEGROUP_R = self.__makeRevDict(self.ITEMS_FORCEGROUP)
         self.les_grp.addItems = list(self.getItem(itmn) for itmn in self.ITEMS_FORCEGROUP_R[self.les_grp])
