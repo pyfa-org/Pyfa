@@ -16,7 +16,7 @@ saveInRoot = False
 version = "1.10.1"
 tag = "preview"
 expansionName = "t3d_changes"
-expansionVersion = "1.0"
+expansionVersion = "1.1"
 evemonMinVersion = "4081"
 
 # Database version (int ONLY)
