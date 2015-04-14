@@ -14,8 +14,8 @@ saveInRoot = False
 
 # Version data
 version = "1.10.1"
-tag = "git"
-expansionName = "Scylla"
+tag = "preview"
+expansionName = "t3d_changes"
 expansionVersion = "1.0"
 evemonMinVersion = "4081"
 
