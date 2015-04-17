@@ -406,12 +406,14 @@ class Fit(object):
                             (effect.isType("active") and thing.state >= State.ACTIVE):
                                 # Run effect, and get proper bonuses applied
                                 try:
+                                    self.register(thing)
                                     effect.handler(self, thing, context)
                                 except:
                                     pass
                         else:
                             # Run effect, and get proper bonuses applied
                             try:
+                                self.register(thing)
                                 effect.handler(self, thing, context)
                             except:
                                 pass
@@ -735,7 +737,7 @@ class Fit(object):
         capAdded = 0
         for mod in self.modules:
             if mod.state >= State.ACTIVE:
-                if mod.getModifiedItemAttr("capacitorNeed") != 0:
+                if (mod.getModifiedItemAttr("capacitorNeed") or 0) != 0:
                     cycleTime = mod.rawCycleTime or 0
                     reactivationTime = mod.getModifiedItemAttr("moduleReactivationDelay") or 0
                     fullCycleTime = cycleTime + reactivationTime

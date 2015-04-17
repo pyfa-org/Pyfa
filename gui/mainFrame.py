@@ -42,7 +42,7 @@ from gui.additionsPane import AdditionsPane
 from gui.marketBrowser import MarketBrowser
 from gui.multiSwitch import MultiSwitch
 from gui.statsPane import StatsPane
-from gui.shipBrowser import ShipBrowser, FitSelected
+from gui.shipBrowser import ShipBrowser, FitSelected, ImportSelected, Stage3Selected
 from gui.characterEditor import CharacterEditor
 from gui.characterSelection import CharacterSelection
 from gui.patternEditor import DmgPatternEditorDlg
@@ -54,6 +54,9 @@ from gui.utils.clipboard import toClipboard, fromClipboard
 from gui.fleetBrowser import FleetBrowser
 from gui.updateDialog import UpdateDialog
 from gui.builtinViews import *
+
+from time import gmtime, strftime
+
 import locale
 locale.setlocale(locale.LC_ALL, '')
 
@@ -201,8 +204,17 @@ class MainFrame(wx.Frame):
         dlg.Destroy()
 
     def LoadPreviousOpenFits(self):
+        sFit = service.Fit.getInstance()
+
         self.prevOpenFits = service.SettingsProvider.getInstance().getSettings("pyfaPrevOpenFits", {"enabled": False, "pyfaOpenFits": []})
         fits = self.prevOpenFits['pyfaOpenFits']
+
+        # Remove any fits that cause exception when fetching (non-existent fits)
+        for id in fits[:]:
+            try:
+                sFit.getFit(id)
+            except:
+                fits.remove(id)
 
         if not self.prevOpenFits['enabled'] or len(fits) is 0:
             # add blank page if there are no fits to be loaded
@@ -327,47 +339,21 @@ class MainFrame(wx.Frame):
         dlg.ShowModal()
         dlg.Destroy()
 
-    def showImportDialog(self, event):
-        fits = []
-        sFit = service.Fit.getInstance()
-        dlg=wx.FileDialog(
-            self,
-            "Open One Or More Fitting Files",
-            wildcard = "EFT text fitting files (*.cfg)|*.cfg|" \
-                       "EVE XML fitting files (*.xml)|*.xml|" \
-                       "All Files (*)|*",
-            style = wx.FD_OPEN | wx.FD_FILE_MUST_EXIST | wx.FD_MULTIPLE)
-        if (dlg.ShowModal() == wx.ID_OK):
-            self.waitDialog = animUtils.WaitDialog(self, title = "Importing")
-            sFit.importFitsThreaded(dlg.GetPaths(), self.importCallback)
-            dlg.Destroy()
-            self.waitDialog.ShowModal()
-
-    def importCallback(self, fits):
-        self.waitDialog.Destroy()
-        sFit = service.Fit.getInstance()
-        IDs = sFit.saveImportedFits(fits)
-        self._openAfterImport(len(fits), IDs)
-
-    def _openAfterImport(self, importCount, fitIDs):
-        if importCount == 1:
-            wx.PostEvent(self, FitSelected(fitID=fitIDs[0]))
-
-        self.shipBrowser.RefreshContent()
-
     def showExportDialog(self, event):
-        dlg=wx.FileDialog(
-            self,
-            "Save Fitting As...",
-            wildcard = "EVE XML fitting files (*.xml)|*.xml",
-            style = wx.FD_SAVE)
-        if (dlg.ShowModal() == wx.ID_OK):
-            sFit = service.Fit.getInstance()
+        """ Export active fit """
+        sFit = service.Fit.getInstance()
+        fit = sFit.getFit(self.getActiveFit())
+        defaultFile = "%s - %s.xml"%(fit.ship.item.name, fit.name) if fit else None
+
+        dlg = wx.FileDialog(self, "Save Fitting As...",
+                            wildcard = "EVE XML fitting files (*.xml)|*.xml",
+                            style = wx.FD_SAVE,
+                            defaultFile=defaultFile)
+        if dlg.ShowModal() == wx.ID_OK:
             format = dlg.GetFilterIndex()
-            output = ""
             path = dlg.GetPath()
-            if (format == 0):
-                output = sFit.exportXml(self.getActiveFit())
+            if format == 0:
+                output = sFit.exportXml(None, self.getActiveFit())
                 if '.' not in os.path.basename(path):
                     path += ".xml"
             else:
@@ -406,7 +392,7 @@ class MainFrame(wx.Frame):
         # Target Resists editor
         self.Bind(wx.EVT_MENU, self.showTargetResistsEditor, id=menuBar.targetResistsEditorId)
         # Import dialog
-        self.Bind(wx.EVT_MENU, self.showImportDialog, id=wx.ID_OPEN)
+        self.Bind(wx.EVT_MENU, self.fileImportDialog, id=wx.ID_OPEN)
         # Export dialog
         self.Bind(wx.EVT_MENU, self.showExportDialog, id=wx.ID_SAVEAS)
         # Import from Clipboard
@@ -545,17 +531,16 @@ class MainFrame(wx.Frame):
 
     def clipboardXml(self):
         sFit = service.Fit.getInstance()
-        toClipboard(sFit.exportXml(self.getActiveFit()))
+        toClipboard(sFit.exportXml(None, self.getActiveFit()))
 
     def importFromClipboard(self, event):
         sFit = service.Fit.getInstance()
         try:
             fits = sFit.importFitFromBuffer(fromClipboard(), self.getActiveFit())
-            IDs = sFit.saveImportedFits(fits)
-            self._openAfterImport(len(fits), IDs)
         except:
             pass
-
+        else:
+            self._openAfterImport(fits)
 
     def exportToClipboard(self, event):
         CopySelectDict = {CopySelectDialog.copyFormatEft: self.clipboardEft,
@@ -571,44 +556,109 @@ class MainFrame(wx.Frame):
             pass
         dlg.Destroy()
 
-    def backupToXml(self, event):
+    def fileImportDialog(self, event):
+        """Handles importing single/multiple EVE XML / EFT cfg fit files"""
         sFit = service.Fit.getInstance()
-        saveDialog = wx.FileDialog(
-            self,
-            "Save Backup As...",
-            wildcard = "EVE XML fitting file (*.xml)|*.xml",
-            style = wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT)
-        if (saveDialog.ShowModal() == wx.ID_OK):
+        dlg = wx.FileDialog(self, "Open One Or More Fitting Files",
+                    wildcard = "EVE XML fitting files (*.xml)|*.xml|" \
+                                "EFT text fitting files (*.cfg)|*.cfg|" \
+                                "All Files (*)|*",
+                    style = wx.FD_OPEN | wx.FD_FILE_MUST_EXIST | wx.FD_MULTIPLE)
+        if (dlg.ShowModal() == wx.ID_OK):
+            self.progressDialog = wx.ProgressDialog(
+                            "Importing fits",
+                            " "*100, # set some arbitrary spacing to create wifth in window
+                            parent=self, style = wx.PD_APP_MODAL | wx.PD_ELAPSED_TIME)
+            self.progressDialog.message = None
+            sFit.importFitsThreaded(dlg.GetPaths(), self.fileImportCallback)
+            self.progressDialog.ShowModal()
+            dlg.Destroy()
+
+    def fileImportCallback(self, info, fits=None):
+        """
+        While importing fits from file, the logic calls back to this function to
+        update progress bar to show activity. XML files can contain multiple
+        ships with multiple fits, whereas EFT cfg files contain many fits of
+        a single ship. When iterating through the files, we update the message
+        when we start a new file, and then Pulse the progress bar with every fit
+        that is processed.
+        """
+
+        if info == -1:
+            # Done processing
+            self.progressDialog.Hide()
+            self._openAfterImport(fits)
+        elif info != self.progressDialog.message and info is not None:
+            # New message, overwrite cached message and update
+            self.progressDialog.message = info
+            self.progressDialog.Pulse(info)
+        else:
+            # Simply Pulse() if we don't have anything else to do
+            self.progressDialog.Pulse()
+
+    def _openAfterImport(self, fits):
+        if len(fits) > 0:
+            if len(fits) == 1:
+                fit = fits[0]
+                wx.PostEvent(self, FitSelected(fitID=fit.ID))
+                wx.PostEvent(self.shipBrowser, Stage3Selected(shipID=fit.shipID, back=True))
+            else:
+                wx.PostEvent(self.shipBrowser, ImportSelected(fits=fits, back=True))
+
+    def backupToXml(self, event):
+        """ Back up all fits to EVE XML file """
+        defaultFile = "pyfa-fits-%s.xml"%strftime("%Y%m%d_%H%M%S", gmtime())
+
+        saveDialog = wx.FileDialog(self, "Save Backup As...",
+                            wildcard = "EVE XML fitting file (*.xml)|*.xml",
+                            style = wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT,
+                            defaultFile=defaultFile)
+
+        if saveDialog.ShowModal() == wx.ID_OK:
             filePath = saveDialog.GetPath()
             if '.' not in os.path.basename(filePath):
                 filePath += ".xml"
-            self.waitDialog = animUtils.WaitDialog(self)
-            sFit.backupFits(filePath, self.closeWaitDialog)
-            self.waitDialog.ShowModal()
 
-        saveDialog.Destroy()
+            sFit = service.Fit.getInstance()
+            max = sFit.countAllFits()
+
+            self.progressDialog = wx.ProgressDialog("Backup fits",
+                              "Backing up %d fits to: %s"%(max, filePath),
+                              maximum=max, parent=self,
+                              style=wx.PD_APP_MODAL | wx.PD_ELAPSED_TIME)
+
+            sFit.backupFits(filePath, self.backupCallback)
+            self.progressDialog.ShowModal()
+
+    def backupCallback(self, info):
+        if info == -1:
+            self.progressDialog.Hide()
+        else:
+            self.progressDialog.Update(info)
 
     def exportSkillsNeeded(self, event):
+        """ Exports skills needed for active fit and active character """
         sCharacter = service.Character.getInstance()
-        saveDialog = wx.FileDialog(
-            self,
-            "Export Skills Needed As...",
-            wildcard = "EVEMon skills training file (*.emp)|*.emp|" \
-                       "EVEMon skills training XML file (*.xml)|*.xml|" \
-                       "Text skills training file (*.txt)|*.txt",
-            style = wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT)
-        if (saveDialog.ShowModal() == wx.ID_OK):
+        saveDialog = wx.FileDialog(self, "Export Skills Needed As...",
+                    wildcard = "EVEMon skills training file (*.emp)|*.emp|" \
+                               "EVEMon skills training XML file (*.xml)|*.xml|" \
+                               "Text skills training file (*.txt)|*.txt",
+                    style=wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT)
+
+        if saveDialog.ShowModal() == wx.ID_OK:
             saveFmtInt = saveDialog.GetFilterIndex()
-            saveFmt = ""
+
             if saveFmtInt == 0:  # Per ordering of wildcards above
                 saveFmt = "emp"
             elif saveFmtInt == 1:
                 saveFmt = "xml"
             else:
                 saveFmt = "txt"
+
             filePath = saveDialog.GetPath()
             if '.' not in os.path.basename(filePath):
                 filePath += ".{0}".format(saveFmt)
+
             self.waitDialog = animUtils.WaitDialog(self)
             sCharacter.backupSkills(filePath, saveFmt, self.getActiveFit(), self.closeWaitDialog)
             self.waitDialog.ShowModal()
@@ -616,28 +666,37 @@ class MainFrame(wx.Frame):
         saveDialog.Destroy()
 
     def importCharacter(self, event):
-        sCharacter = service.Character.getInstance()
-        dlg=wx.FileDialog(
-            self,
-            "Open One Or More Character Files",
-            wildcard = "EVE CCP API XML character files (*.xml)|*.xml|" \
-                       "All Files (*)|*",
-            style = wx.FD_OPEN | wx.FD_FILE_MUST_EXIST | wx.FD_MULTIPLE)
-        if (dlg.ShowModal() == wx.ID_OK):
-            self.waitDialog = animUtils.WaitDialog(self, title = "Importing Character")
+        """ Imports character XML file from EVE API """
+        dlg = wx.FileDialog(self, "Open One Or More Character Files",
+                        wildcard="EVE API XML character files (*.xml)|*.xml|" \
+                                   "All Files (*)|*",
+                        style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST | wx.FD_MULTIPLE)
+
+        if dlg.ShowModal() == wx.ID_OK:
+            self.waitDialog = animUtils.WaitDialog(self, title="Importing Character")
+            sCharacter = service.Character.getInstance()
             sCharacter.importCharacter(dlg.GetPaths(), self.importCharacterCallback)
             dlg.Destroy()
             self.waitDialog.ShowModal()
 
-    def exportHtml(self, event):
-        from gui.utils.exportHtml import exportHtml
-        self.waitDialog = animUtils.WaitDialog(self)
-        exportHtml.getInstance().refreshFittingHtml(True, self.closeWaitDialog)
-        self.waitDialog.ShowModal()
-
     def importCharacterCallback(self):
         self.waitDialog.Destroy()
         wx.PostEvent(self, GE.CharListUpdated())
+
+    def exportHtml(self, event):
+        from gui.utils.exportHtml import exportHtml
+        sFit = service.Fit.getInstance()
+        settings = service.settings.HTMLExportSettings.getInstance()
+
+        max = sFit.countAllFits()
+        path = settings.getPath()
+        self.progressDialog = wx.ProgressDialog("Backup fits",
+                            "Generating HTML file at: %s"%path,
+                            maximum=max, parent=self,
+                            style=wx.PD_APP_MODAL | wx.PD_ELAPSED_TIME)
+
+        exportHtml.getInstance().refreshFittingHtml(True, self.backupCallback)
+        self.progressDialog.ShowModal()
 
     def closeWaitDialog(self):
         self.waitDialog.Destroy()
@@ -650,7 +709,7 @@ class MainFrame(wx.Frame):
         else:
             self.graphFrame.SetFocus()
 
-    def openWXInspectTool(self,event):
+    def openWXInspectTool(self, event):
         from wx.lib.inspection import InspectionTool
         if not InspectionTool().initialized:
             InspectionTool().Init()

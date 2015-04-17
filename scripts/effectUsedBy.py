@@ -92,6 +92,7 @@ TYPENAMECOMBS_WEIGHT = 1.0
 # If score drops below this value, remaining items will be listed
 # without any grouping
 LOWEST_SCORE = 0.7
+
 # Adjust scoring formulae
 def calc_innerscore(affected_decribed, affected_undescribed, total,
                     pereffect_totalaffected, weight=1.0):
@@ -109,6 +110,7 @@ def calc_innerscore(affected_decribed, affected_undescribed, total,
     innerscore = (coverage_total ** 0.23) * coverage_additionalfactor * \
     affected_total_factor * weight
     return innerscore
+
 def calc_outerscore(innerscore_dict, pereffect_totalaffected, weight):
     """Outer score calculation formula"""
     # Return just max of the inner scores, including weight factor
@@ -118,18 +120,27 @@ def calc_outerscore(innerscore_dict, pereffect_totalaffected, weight):
         return outerscore
     else: return 0.0
 
+def validate_string(s):
+    try:
+        s.encode('ascii')
+    except KeyboardInterrupt:
+        raise
+    except Exception:
+        return False
+    else:
+        return True
+
 # Connect to database and set up cursor
 db = sqlite3.connect(os.path.expanduser(options.database))
 cursor = db.cursor()
 
 # Force some of the items to make them published
-FORCEPUB_TYPES = ("Ibis", "Impairor", "Velator", "Reaper",
-                  "Amarr Tactical Destroyer Propulsion Mode",
-                  "Amarr Tactical Destroyer Sharpshooter Mode",
-                  "Amarr Tactical Destroyer Defense Mode")
+FORCEPUB_TYPES = ("Ibis", "Impairor", "Velator", "Reaper")
 OVERRIDES_TYPEPUB = 'UPDATE invtypes SET published = 1 WHERE typeName = ?'
 for typename in FORCEPUB_TYPES:
     cursor.execute(OVERRIDES_TYPEPUB, (typename,))
+# Publish t3 Dessy Modes
+cursor.execute("UPDATE invtypes SET published = 1 WHERE groupID = ?", (1306,))
 
 # Queries to get raw data
 QUERY_ALLEFFECTS = 'SELECT effectID, effectName FROM dgmeffects'
@@ -968,8 +979,9 @@ inner score: {5:.3})"
         # Append line for printing to list
         catname = type[2]
         typename = type[1]
-        printstr = "# {0}: {1}"
-        printing_typelines.append(printstr.format(catname, typename))
+        printstr = "# {0}: {1}".format(catname, typename)
+        if validate_string(printstr):
+            printing_typelines.append(printstr)
     # Do the same for groups
     printing_grouplines = []
     printing_groups = sorted(printing_groups, key=lambda tuple: tuple[1])
@@ -979,9 +991,9 @@ inner score: {5:.3})"
         groupname = group[1]
         described = len(effectmap_groupid_typeid[group[0]][0])
         total = len(globalmap_groupid_typeid[group[0]])
-        printstr = "# {0}s from group: {1} ({2} of {3})"
-        printing_grouplines.append(printstr.format(catname, groupname,
-        described, total))
+        printstr = "# {0}s from group: {1} ({2} of {3})".format(catname, groupname, described, total)
+        if validate_string(printstr):
+            printing_grouplines.append(printstr)
     # Process categories
     printing_categorylines = []
     printing_categories = sorted(printing_categories,
@@ -990,9 +1002,9 @@ inner score: {5:.3})"
         catname = category[1]
         described = len(effectmap_categoryid_typeid[category[0]][0])
         total = len(globalmap_categoryid_typeid[category[0]])
-        printstr = "# Items from category: {0} ({1} of {2})"
-        printing_categorylines.append(printstr.format(catname, described,
-        total))
+        printstr = "# Items from category: {0} ({1} of {2})".format(catname, described, total)
+        if validate_string(printstr):
+            printing_categorylines.append(printstr)
     # Process variations
     printing_basetypelines = []
     printing_basetypes = sorted(printing_basetypes,
@@ -1004,9 +1016,9 @@ inner score: {5:.3})"
         basename = basetype[1]
         described = len(effectmap_basetypeid_typeid[basetype[0]][0])
         total = len(globalmap_basetypeid_typeid[basetype[0]])
-        printstr = "# Variations of {0}: {1} ({2} of {3})"
-        printing_basetypelines.append(printstr.format(catname, basename,
-        described, total))
+        printstr = "# Variations of {0}: {1} ({2} of {3})".format(catname, basename, described, total)
+        if validate_string(printstr):
+            printing_basetypelines.append(printstr)
     # Process market groups with variations
     printing_marketgroupwithvarslines = []
     printing_marketgroupswithvars = sorted(printing_marketgroupswithvars,
@@ -1017,9 +1029,9 @@ inner score: {5:.3})"
                         [marketgroup[0]][0])
         total = len(globalmap_marketgroupid_typeidwithvariations
                     [marketgroup[0]])
-        printstr = "# Items from market group: {0} ({1} of {2})"
-        printing_marketgroupwithvarslines.append(printstr.
-        format(marketgroupname, described, total))
+        printstr = "# Items from market group: {0} ({1} of {2})".format(marketgroupname, described, total)
+        if validate_string(printstr):
+            printing_marketgroupwithvarslines.append(printstr)
     # Process type name combinations
     printing_typenamecombtuplelines = []
     printing_typenamecombtuples = sorted(printing_typenamecombtuples,
@@ -1032,9 +1044,9 @@ inner score: {5:.3})"
         described = len(effectmap_typenamecombtuple_typeid
                         [typenamecomb[0]][0])
         total = len(globalmap_typenamecombtuple_typeid[typenamecomb[0]])
-        printstr = "# {0}s named like: {1} ({2} of {3})"
-        printing_typenamecombtuplelines.append(printstr.format(catname,
-        namedlike, described, total))
+        printstr = "# {0}s named like: {1} ({2} of {3})".format(catname, namedlike, described, total)
+        if validate_string(printstr):
+            printing_typenamecombtuplelines.append(printstr)
 
     # Compose single list of lines using custom sorting
     commentlines = printing_categorylines + printing_grouplines + \

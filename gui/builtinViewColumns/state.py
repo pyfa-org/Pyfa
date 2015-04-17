@@ -44,6 +44,10 @@ class State(ViewColumn):
     def getText(self, mod):
         return ""
 
+    def getToolTip(self, mod):
+        if isinstance(mod, Module) and not mod.isEmpty:
+            return State_.getName(mod.state).title()
+
     def getImageId(self, stuff):
         if isinstance(stuff, Drone):
             return self.checkedId if stuff.amountActive > 0 else self.uncheckedId

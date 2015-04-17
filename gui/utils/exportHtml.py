@@ -7,7 +7,7 @@ class exportHtml():
     _instance = None
     @classmethod
     def getInstance(cls):
-        if cls._instance == None:
+        if cls._instance is None:
             cls._instance = exportHtml()
 
         return cls._instance
@@ -15,17 +15,17 @@ class exportHtml():
     def __init__(self):
         self.thread = exportHtmlThread()
 
-    def refreshFittingHtml(self, force = False, callback = False):
+    def refreshFittingHtml(self, force=False, callback=False):
         settings = service.settings.HTMLExportSettings.getInstance()
 
-        if (force or settings.getEnabled()):
+        if force or settings.getEnabled():
             self.thread.stop()
             self.thread = exportHtmlThread(callback)
             self.thread.start()
 
 class exportHtmlThread(threading.Thread):
 
-    def __init__(self, callback = False):
+    def __init__(self, callback=False):
         threading.Thread.__init__(self)
         self.callback = callback
         self.stopRunning = False
@@ -40,7 +40,7 @@ class exportHtmlThread(threading.Thread):
             return
 
         sMkt = service.Market.getInstance()
-        sFit    = service.Fit.getInstance()
+        sFit = service.Fit.getInstance()
         settings = service.settings.HTMLExportSettings.getInstance()
 
         timestamp = time.localtime(time.time())
@@ -135,6 +135,9 @@ class exportHtmlThread(threading.Thread):
         HTML += '  <ul data-role="listview" class="ui-listview-outer" data-inset="true" data-filter="true">\n'
         categoryList = list(sMkt.getShipRoot())
         categoryList.sort(key=lambda ship: ship.name)
+
+        count = 1
+
         for group in categoryList:
             # init market group string to give ships something to attach to
             HTMLgroup = ''
@@ -153,9 +156,16 @@ class exportHtmlThread(threading.Thread):
                         if self.stopRunning:
                             return
                         fit = fits[0]
-                        dnaFit = sFit.exportDna(fit[0])
-                        HTMLgroup += (
-                        '        <li><a data-dna="' + dnaFit + '" target="_blank">' + ship.name + ": " + fit[1] + '</a></li>\n')
+                        try:
+                            dnaFit = sFit.exportDna(fit[0])
+                            HTMLgroup += (
+                            '        <li><a data-dna="' + dnaFit + '" target="_blank">' + ship.name + ": " + fit[1] + '</a></li>\n')
+                        except:
+                            pass
+                        finally:
+                            count += 1
+                            if self.callback:
+                                wx.CallAfter(self.callback, count)
                     else:
                         # Ship group header
                         HTMLship = (
@@ -166,11 +176,18 @@ class exportHtmlThread(threading.Thread):
                         for fit in fits:
                             if self.stopRunning:
                                 return
-                            dnaFit = sFit.exportDna(fit[0])
-                            HTMLship += '          <li><a data-dna="' + dnaFit + '" target="_blank">' + fit[1] + '</a></li>\n'
-
+                            try:
+                                dnaFit = sFit.exportDna(fit[0])
+                                HTMLship += '          <li><a data-dna="' + dnaFit + '" target="_blank">' + fit[1] + '</a></li>\n'
+                            except:
+                                continue
+                            finally:
+                                count += 1
+                                if self.callback:
+                                    wx.CallAfter(self.callback, count)
                         HTMLgroup += HTMLship + ('          </ul>\n'
                                                  '        </li>\n')
+
             if groupFits > 0:
                 # Market group header
                 HTML += (
@@ -197,5 +214,5 @@ class exportHtmlThread(threading.Thread):
             pass
 
         if self.callback:
-            wx.CallAfter(self.callback)
+            wx.CallAfter(self.callback, -1)
 

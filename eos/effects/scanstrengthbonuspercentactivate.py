@@ -5,7 +5,9 @@
 # Module: QA ECCM
 type = "active"
 def handler(fit, module, context):
-    for type in ("Gravimetric", "Magnetometric", "Radar", "Ladar"):
-        fit.ship.boostItemAttr("scan%sStrength" % type,
-                               module.getModifiedItemAttr("scan%sStrengthPercent" % type),
-                               stackingPenalties = True)
+    for scanType in ("Gravimetric", "Magnetometric", "Radar", "Ladar"):
+        fit.ship.boostItemAttr(
+            "scan{}Strength".format(scanType),
+            module.getModifiedItemAttr("scan{}StrengthPercent".format(scanType)),
+            stackingPenalties=True
+        )

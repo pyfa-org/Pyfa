@@ -48,4 +48,8 @@ class AmmoIcon(ViewColumn):
             else:
                 return -1
 
+    def getToolTip(self, mod):
+        if isinstance(mod, Module) and mod.charge is not None:
+            return mod.charge.name
+
 AmmoIcon.register()

@@ -1,8 +1,13 @@
 # shipModeScanStrengthPostDiv
 #
 # Used by:
-# Module: Amarr Tactical Destroyer Sharpshooter Mode
+# Modules named like: Sharpshooter Mode (2 of 2)
 type = "passive"
 def handler(fit, module, context):
-    fit.ship.multiplyItemAttr("scanRadarStrength", 1/module.getModifiedItemAttr("modeRadarStrengthPostDiv"),
-                           stackingPenalties = True, penaltyGroup="postDiv")
+    for scanType in ("Gravimetric", "Magnetometric", "Radar", "Ladar"):
+        fit.ship.multiplyItemAttr(
+            "scan{}Strength".format(scanType),
+            1 / (module.getModifiedItemAttr("mode{}StrengthPostDiv".format(scanType)) or 1),
+            stackingPenalties=True,
+            penaltyGroup="postDiv"
+        )

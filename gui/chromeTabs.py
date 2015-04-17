@@ -25,6 +25,8 @@ import gui.utils.fonts as fonts
 from gui import bitmapLoader
 import gui.utils.fonts as fonts
 
+import service
+
 _PageChanging, EVT_NOTEBOOK_PAGE_CHANGING = wx.lib.newevent.NewEvent()
 _PageChanged, EVT_NOTEBOOK_PAGE_CHANGED = wx.lib.newevent.NewEvent()
 _PageAdding, EVT_NOTEBOOK_PAGE_ADDING = wx.lib.newevent.NewEvent()
@@ -680,6 +682,7 @@ class PFTabsContainer(wx.Panel):
         self.containerHeight = height
         self.startDrag = False
         self.dragging = False
+        self.sFit = service.Fit.getInstance()
 
         self.inclination = 7
         if canAdd:
@@ -1013,6 +1016,9 @@ class PFTabsContainer(wx.Panel):
         Checks to see if we have a tab preview and sets up the timer for it
         to display
         """
+        if not self.sFit.serviceFittingOptions["showTooltip"] or False:
+            return
+
         if self.previewTimer:
             if self.previewTimer.IsRunning():
                 if self.previewWnd:

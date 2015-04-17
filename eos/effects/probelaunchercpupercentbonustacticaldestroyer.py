@@ -1,7 +1,7 @@
 # probeLauncherCPUPercentBonusTacticalDestroyer
 #
 # Used by:
-# Ship: Confessor
+# Ships from group: Tactical Destroyer (2 of 2)
 type = "passive"
 def handler(fit, ship, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Astrometrics"),

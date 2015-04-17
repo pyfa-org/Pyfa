@@ -267,6 +267,11 @@ def getBoosterFits(ownerID=None, where=None, eager=None):
         fits = saveddata_session.query(Fit).options(*eager).filter(filter).all()
     return fits
 
+def countAllFits():
+    with sd_lock:
+        count = saveddata_session.query(Fit).count()
+    return count
+
 def countFitsWithShip(shipID, ownerID=None, where=None, eager=None):
     """
     Get all the fits using a certain ship.

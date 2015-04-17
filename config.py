@@ -13,15 +13,15 @@ debug = False
 saveInRoot = False
 
 # Version data
-version = "1.7.2"
+version = "1.10.1"
 tag = "git"
-expansionName = "Rhea"
+expansionName = "Scylla"
 expansionVersion = "1.0"
 evemonMinVersion = "4081"
 
 # Database version (int ONLY)
 # Increment every time we need to flag for user database upgrade/modification
-dbversion = 3
+dbversion = 6
 
 pyfaPath = None
 savePath = None

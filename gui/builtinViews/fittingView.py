@@ -141,6 +141,7 @@ class FittingView(d.Display):
         self.Bind(wx.EVT_KEY_UP, self.kbEvent)
         self.Bind(wx.EVT_LEFT_DOWN, self.click)
         self.Bind(wx.EVT_RIGHT_DOWN, self.click)
+        self.Bind(wx.EVT_MIDDLE_DOWN, self.click)
         self.Bind(wx.EVT_SHOW, self.OnShow)
         self.Bind(wx.EVT_MOTION, self.OnMouseMove)
         self.Bind(wx.EVT_LEAVE_WINDOW, self.OnLeaveWindow)
@@ -162,12 +163,9 @@ class FittingView(d.Display):
                 self.hoveredColumn = col
                 if row != -1 and row not in self.blanks and col != -1 and col < len(self.DEFAULT_COLS):
                     mod = self.mods[self.GetItemData(row)]
-                    if self.DEFAULT_COLS[col] == "Miscellanea":
-                        tooltip = self.activeColumns[col].getToolTip(mod)
-                        if tooltip is not None:
-                            self.SetToolTipString(tooltip)
-                        else:
-                            self.SetToolTip(None)
+                    tooltip = self.activeColumns[col].getToolTip(mod)
+                    if tooltip is not None:
+                        self.SetToolTipString(tooltip)
                     else:
                         self.SetToolTip(None)
                 else:
@@ -522,16 +520,21 @@ class FittingView(d.Display):
 
             sFit = service.Fit.getInstance()
             fitID = self.mainFrame.getActiveFit()
-            ctrl = wx.GetMouseState().CmdDown()
+            ctrl = wx.GetMouseState().CmdDown() or wx.GetMouseState().MiddleDown()
             click = "ctrl" if ctrl is True else "right" if event.Button == 3 else "left"
             sFit.toggleModulesState(fitID, self.mods[self.GetItemData(row)], mods, click)
+
+            # update state tooltip
+            tooltip = self.activeColumns[col].getToolTip(self.mods[self.GetItemData(row)])
+            self.SetToolTipString(tooltip)
+
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
         else:
             event.Skip()
 
-    slotColourMap = {1: wx.Colour(250, 235, 204), # yellow = low slots
-                     2: wx.Colour(188,215,241),   # blue   = mid slots
-                     3: wx.Colour(235,204,209),   # red    = high slots
+    slotColourMap = {1: wx.Colour(250, 235, 204),  # yellow = low slots
+                     2: wx.Colour(188, 215, 241),  # blue   = mid slots
+                     3: wx.Colour(235, 204, 209),  # red    = high slots
                      4: '',
                      5: ''}
 

@@ -3,6 +3,7 @@
 # Used by:
 # Ship: Astero
 # Ship: Prospect
+# Ship: Victorieux Luxury Yacht
 type = "passive"
 runTime = "early"
 def handler(fit, ship, context):

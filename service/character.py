@@ -44,12 +44,14 @@ class CharacterImportThread(threading.Thread):
         paths = self.paths
         sCharacter = Character.getInstance()
         for path in paths:
-            with open(path, mode='r') as charFile:
-                sheet = service.ParseXML(charFile)
-                charID = sCharacter.new()
-                sCharacter.rename(charID, sheet.name+" (imported)")
-                sCharacter.apiUpdateCharSheet(charID, sheet)
-
+            try:
+                with open(path, mode='r') as charFile:
+                    sheet = service.ParseXML(charFile)
+                    charID = sCharacter.new()
+                    sCharacter.rename(charID, sheet.name+" (imported)")
+                    sCharacter.apiUpdateCharSheet(charID, sheet)
+            except:
+                continue
         wx.CallAfter(self.callback)
 
 class SkillBackupThread(threading.Thread):

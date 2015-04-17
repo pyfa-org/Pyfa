@@ -120,7 +120,12 @@ class Effect(EqBase):
         '''
         try:
             self.__effectModule = effectModule = __import__('eos.effects.' + self.handlerName, fromlist=True)
-            self.__handler = getattr(effectModule, "handler")
+            try:
+                self.__handler = getattr(effectModule, "handler")
+            except AttributeError:
+                print "effect {} exists, but no handler".format(self.handlerName)
+                raise
+
             try:
                 self.__runTime = getattr(effectModule, "runTime") or "normal"
             except AttributeError:
@@ -133,7 +138,7 @@ class Effect(EqBase):
 
             t = t if isinstance(t, tuple) or t is None else (t,)
             self.__type = t
-        except ImportError as e:
+        except (ImportError, AttributeError) as e:
             self.__handler = effectDummy
             self.__runTime = "normal"
             self.__type = None

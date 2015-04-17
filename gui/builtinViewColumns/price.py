@@ -60,4 +60,7 @@ class Price(ViewColumn):
     def getImageId(self, mod):
         return -1
 
+    def getToolTip(self, mod):
+        return self.name
+
 Price.register()

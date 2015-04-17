@@ -43,12 +43,10 @@ class FirepowerViewFull(StatsView):
         parent = self.panel = contentPanel
 
         self.headerPanel = headerPanel
-        headerContentSizer = wx.BoxSizer(wx.HORIZONTAL)
-        hsizer = headerPanel.GetSizer()
-        hsizer.Add(headerContentSizer, 0, 0, 0)
-        self.stEff = wx.StaticText(headerPanel, wx.ID_ANY, "( Effective )")
-        headerContentSizer.Add(self.stEff)
-        headerPanel.GetParent().AddToggleItem(self.stEff)
+        hsizer = self.headerPanel.GetSizer()
+        self.stEff = wx.StaticText(self.headerPanel, wx.ID_ANY, "( Effective )")
+        hsizer.Add(self.stEff)
+        self.headerPanel.GetParent().AddToggleItem(self.stEff)
 
         panel = "full"
 
@@ -59,7 +57,7 @@ class FirepowerViewFull(StatsView):
 
         counter = 0
 
-        for damageType, image in (("weapon", "turret") , ("drone", "droneDPS")):
+        for damageType, image in (("weapon", "turret"), ("drone", "droneDPS")):
             baseBox = wx.BoxSizer(wx.HORIZONTAL)
             sizerFirepower.Add(baseBox, 1, wx.ALIGN_LEFT if counter == 0 else wx.ALIGN_CENTER_HORIZONTAL)
 
@@ -124,6 +122,12 @@ class FirepowerViewFull(StatsView):
         # And no longer display us
         self.panel.GetSizer().Clear(True)
         self.panel.GetSizer().Layout()
+
+        # Remove effective label
+        hsizer = self.headerPanel.GetSizer()
+        hsizer.Remove(self.stEff)
+        self.stEff.Destroy()
+
         # Get the new view
         view = StatsView.getView("miningyieldViewFull")(self.parent)
         view.populatePanel(self.panel, self.headerPanel)

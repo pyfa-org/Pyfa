@@ -24,7 +24,7 @@ class DamagePattern(ContextMenu):
         self.fit = sFit.getFit(fitID)
 
         self.patterns = sDP.getDamagePatternList()
-        self.patterns.sort(key=lambda p: (p.name not in ["Uniform","Selected Ammo"], p.name))
+        self.patterns.sort(key=lambda p: (p.name not in ["Uniform", "Selected Ammo"], p.name))
 
         self.patternIds = {}
         self.subMenus = OrderedDict()
@@ -71,7 +71,6 @@ class DamagePattern(ContextMenu):
 
     def getSubMenu(self, context, selection, rootMenu, i, pitem):
         msw = True if "wxMSW" in wx.PlatformInfo else False
-        rootMenu.Bind(wx.EVT_MENU, self.handlePatternSwitch)  # this bit is required for some reason
 
         if self.m[i] not in self.subMenus:
             # if we're trying to get submenu to something that shouldn't have one,
@@ -79,10 +78,11 @@ class DamagePattern(ContextMenu):
             # our patternIds mapping, then return None for no submenu
             id = pitem.GetId()
             self.patternIds[id] = self.singles[i]
+            rootMenu.Bind(wx.EVT_MENU, self.handlePatternSwitch, pitem)
             if self.patternIds[id] == self.fit.damagePattern:
                 bitmap = bitmapLoader.getBitmap("state_active_small", "icons")
                 pitem.SetBitmap(bitmap)
-            return None
+            return False
 
         sub = wx.Menu()
 
