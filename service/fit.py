@@ -20,6 +20,7 @@
 import locale
 import copy
 import threading
+import logging
 import wx
 from codecs import open
 
@@ -35,6 +36,7 @@ from service.fleet import Fleet
 from service.settings import SettingsProvider
 from service.port import Port
 
+logger = logging.getLogger("pyfa.service.fit")
 
 class FitBackupThread(threading.Thread):
     def __init__(self, path, callback):
@@ -789,15 +791,28 @@ class Fit(object):
 
             file = open(path, "r")
             srcString = file.read()
+            codec_found = None
             # If file had ANSI encoding, convert it to unicode using system
-            # default codepage, or use fallback cp1252 on any encoding errors
+            # default codepage, or use fallbacks UTF-16, then cp1252 on any
+            # encoding errors
             if isinstance(srcString, str):
-                try:
-                    srcString = unicode(srcString, defcodepage)
-                except UnicodeDecodeError:
-                    srcString = unicode(srcString, "cp1252")
+                attempt_codecs = (defcodepage, "utf-16", "cp1252")
+                for page in attempt_codecs:
+                    try:
+                        srcString = unicode(srcString, page)
+                        codec_found = page
+                    except UnicodeDecodeError:
+                        logger.warn("Error unicode decoding %s from page %s, trying next codec", path, page)
+                    else:
+                        break
+            else:
+                # nasty hack to detect other transparent utf-16 loading
+                if srcString[0] == '<' and 'utf-16' in srcString[:128].lower():
+                    codec_found = "utf-16"
+                else:
+                    codec_found = "utf-8"
 
-            _, fitsImport = Port.importAuto(srcString, path, callback=callback)
+            _, fitsImport = Port.importAuto(srcString, path, callback=callback, encoding=codec_found)
             fits += fitsImport
 
         IDs = []

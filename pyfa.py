@@ -78,6 +78,10 @@ if __name__ == "__main__":
         config.saveInRoot = True
     config.defPaths()
 
+    # Basic logging
+    import logging
+    logging.basicConfig()
+
     # Import everything
     import wx
     import os
