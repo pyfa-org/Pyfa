@@ -1,7 +1,7 @@
 # shipBonusArmorResistAB
 #
 # Used by:
-# Ships named like: Abaddon (3 of 3)
+# Ship: Abaddon
 # Ship: Nestor
 type = "passive"
 def handler(fit, ship, context):

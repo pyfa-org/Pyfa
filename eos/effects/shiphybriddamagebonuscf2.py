@@ -1,7 +1,7 @@
 # shipHybridDamageBonusCF2
 #
 # Used by:
-# Ships named like: Merlin (3 of 3)
+# Ship: Merlin
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Caldari Frigate").level

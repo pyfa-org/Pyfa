@@ -1,8 +1,8 @@
 # shipBonusCargoCI
 #
 # Used by:
-# Ships named like: Tayra (2 of 2)
 # Variations of ship: Badger (2 of 2)
+# Ship: Tayra
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Caldari Industrial").level

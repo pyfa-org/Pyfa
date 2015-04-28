@@ -1,7 +1,7 @@
 # shipBonusDreadCitadelCruiseRofC1
 #
 # Used by:
-# Ships named like: Phoenix (2 of 2)
+# Ship: Phoenix
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Caldari Dreadnought").level

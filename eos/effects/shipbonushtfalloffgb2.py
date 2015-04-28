@@ -1,7 +1,7 @@
 # shipBonusHTFalloffGB2
 #
 # Used by:
-# Ships named like: Kronos (4 of 4)
+# Ship: Kronos
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Gallente Battleship").level

@@ -1,7 +1,7 @@
 # dreadnoughtShipBonusHybridDmgG1
 #
 # Used by:
-# Ships named like: Moros (2 of 2)
+# Ship: Moros
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Gallente Dreadnought").level

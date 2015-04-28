@@ -1,7 +1,7 @@
 # shipArmorRepairingGF2
 #
 # Used by:
-# Ships named like: Incursus (3 of 3)
+# Ship: Incursus
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Gallente Frigate").level

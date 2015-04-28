@@ -1,7 +1,7 @@
 # shipBonusRepairSystemsArmorRepairAmountGB2
 #
 # Used by:
-# Ships named like: Hyperion (3 of 3)
+# Ship: Hyperion
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Gallente Battleship").level

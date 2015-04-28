@@ -1,7 +1,7 @@
 # shipHybridTrackingGC2
 #
 # Used by:
-# Ships named like: Thorax (3 of 3)
+# Ship: Thorax
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Gallente Cruiser").level

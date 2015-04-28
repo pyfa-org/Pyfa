@@ -1,7 +1,7 @@
 # shipMissileRofCC
 #
 # Used by:
-# Ships named like: Caracal (4 of 4)
+# Ships named like: Caracal (2 of 2)
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Caldari Cruiser").level

@@ -2,7 +2,6 @@
 #
 # Used by:
 # Variations of ship: Dominix (3 of 3)
-# Ship: Dominix Quafe Edition
 # Ship: Nestor
 type = "passive"
 def handler(fit, ship, context):

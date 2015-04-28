@@ -1,7 +1,7 @@
 # shipPTDmgBonusMB
 #
 # Used by:
-# Ships named like: Tempest (6 of 6)
+# Variations of ship: Tempest (3 of 4)
 # Ship: Machariel
 # Ship: Panther
 type = "passive"

@@ -1,10 +1,9 @@
 # shipBonusHybridTrackingGF2
 #
 # Used by:
-# Ships named like: Tristan (2 of 2)
 # Ship: Ares
 # Ship: Federation Navy Comet
-# Ship: Police Pursuit Comet
+# Ship: Tristan
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Gallente Frigate").level

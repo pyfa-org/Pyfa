@@ -1,6 +1,7 @@
 # shipBonusSmallEnergyTurretDamagePirateFaction
 #
 # Used by:
+# Ship: Confessor
 # Ship: Cruor
 # Ship: Succubus
 type = "passive"
