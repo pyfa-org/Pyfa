@@ -1,7 +1,7 @@
 # smallProjectileMaxRangeBonus
 #
 # Used by:
-# Ships named like: Thrasher (3 of 3)
+# Ship: Thrasher
 type = "passive"
 def handler(fit, ship, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Small Projectile Turret"),

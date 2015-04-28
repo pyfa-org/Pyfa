@@ -1,7 +1,7 @@
 # shipBonusORECapShipDroneArmorHPAndShieldHPAndHpBonus
 #
 # Used by:
-# Ships from group: Capital Industrial Ship (2 of 2)
+# Ship: Rorqual
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Capital Industrial Ships").level

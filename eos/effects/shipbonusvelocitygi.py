@@ -1,9 +1,10 @@
 # shipBonusVelocityGI
 #
 # Used by:
-# Ships from group: Industrial (8 of 21)
+# Variations of ship: Epithal (2 of 2)
 # Variations of ship: Miasmos (4 of 4)
-# Ship: Occator
+# Ship: Iteron Mark V
+# Ship: Kryos
 # Ship: Viator
 type = "passive"
 def handler(fit, ship, context):

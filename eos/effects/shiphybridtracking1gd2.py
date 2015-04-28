@@ -1,9 +1,8 @@
 # shipHybridTracking1GD2
 #
 # Used by:
-# Variations of ship: Catalyst (7 of 7)
+# Variations of ship: Catalyst (2 of 2)
 # Ship: Algos
-# Ship: Catalyst Serpentis Edition
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Gallente Destroyer").level

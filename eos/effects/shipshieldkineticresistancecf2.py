@@ -1,7 +1,6 @@
 # shipShieldKineticResistanceCF2
 #
 # Used by:
-# Ships named like: Merlin (3 of 3)
 # Variations of ship: Merlin (3 of 4)
 # Ship: Cambion
 # Ship: Whiptail

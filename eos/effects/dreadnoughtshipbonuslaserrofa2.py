@@ -1,7 +1,7 @@
 # dreadnoughtShipBonusLaserRofA2
 #
 # Used by:
-# Ships named like: Revelation (2 of 2)
+# Ship: Revelation
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Amarr Dreadnought").level

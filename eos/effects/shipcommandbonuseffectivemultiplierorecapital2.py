@@ -1,7 +1,7 @@
 # shipCommandBonusEffectiveMultiplierOreCapital2
 #
 # Used by:
-# Ships from group: Capital Industrial Ship (2 of 2)
+# Ship: Rorqual
 type = "passive"
 def handler(fit, ship, context):
     if fit.extraAttributes["siege"]:

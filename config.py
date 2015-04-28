@@ -13,21 +13,26 @@ debug = False
 saveInRoot = False
 
 # Version data
-version = "1.10.1"
+version = "1.11.1"
 tag = "git"
-expansionName = "Scylla"
+expansionName = "Mosaic"
 expansionVersion = "1.0"
 evemonMinVersion = "4081"
 
 # Database version (int ONLY)
 # Increment every time we need to flag for user database upgrade/modification
-dbversion = 6
+dbversion = 7
 
 pyfaPath = None
 savePath = None
 staticPath = None
 saveDB = None
 gameDB = None
+
+# TODO: move back to pyfa.py main loop
+# We moved it here just to avoid rebuilding windows skeleton for now (any change to pyfa.py needs it)
+import logging
+logging.basicConfig()
 
 def defPaths():
     global pyfaPath

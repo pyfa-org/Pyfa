@@ -1,7 +1,7 @@
 # zColinOrcaForemanModBonus
 #
 # Used by:
-# Ships from group: Industrial Command Ship (2 of 2)
+# Ship: Orca
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Industrial Command Ships").level

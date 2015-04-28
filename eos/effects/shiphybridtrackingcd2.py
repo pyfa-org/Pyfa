@@ -1,7 +1,7 @@
 # shipHybridTrackingCD2
 #
 # Used by:
-# Ships named like: Cormorant (2 of 2)
+# Ship: Cormorant
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Caldari Destroyer").level

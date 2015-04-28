@@ -1,7 +1,7 @@
 # shipBonusDroneTrackingGF
 #
 # Used by:
-# Ships named like: Tristan (2 of 2)
+# Ship: Tristan
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Gallente Frigate").level

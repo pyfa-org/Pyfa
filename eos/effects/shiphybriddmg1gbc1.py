@@ -2,7 +2,6 @@
 #
 # Used by:
 # Variations of ship: Brutix (3 of 3)
-# Ship: Brutix Serpentis Edition
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Gallente Battlecruiser").level

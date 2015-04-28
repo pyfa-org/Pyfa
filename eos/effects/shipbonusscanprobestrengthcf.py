@@ -1,7 +1,7 @@
 # shipBonusScanProbeStrengthCF
 #
 # Used by:
-# Ships named like: Heron (2 of 2)
+# Ship: Heron
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Caldari Frigate").level

@@ -188,7 +188,6 @@ class Market():
             "Chremoas": self.les_grp, # AT11 prize :(
             "Moracha": self.les_grp, # AT11 prize
             "Stratios Emergency Responder": self.les_grp, # Issued for Somer Blink lottery
-            "Scorpion Ishukone Watch": self.les_grp, # Prize for offline events - fanfest PVP and poker tourneys
             "Miasmos Quafe Ultra Edition": self.les_grp, # Gift to people who purchased FF HD stream
             "InterBus Shuttle": self.les_grp,
             "Leopard": self.les_grp, # 2013 new year gift
@@ -218,19 +217,7 @@ class Market():
             "Guristas Shuttle": False,
             "Mobile Decoy Unit": False,  # Seems to be left over test mod for deployables
             "Tournament Micro Jump Unit": False,  # Normally seen only on tournament arenas
-            u"\u4e07\u738b\u5b9d\u5ea7\u7ea7YC117\u5e74\u7279\u522b\u7248": False,  # Proteus added shitton of chinese-specific ships
-            u"\u4e4c\u9e26\u7ea7YC117\u5e74\u7279\u522b\u7248": False,
-            u"\u54cd\u5c3e\u86c7\u7ea7YC117\u5e74\u7279\u522b\u7248": False,
-            u"\u5730\u72f1\u5929\u4f7f\u7ea7YC117\u5e74\u7279\u522b\u7248": False,
-            u"\u591a\u7c73\u5c3c\u514b\u65af\u7ea7YC117\u5e74\u7279\u522b\u7248": False,
-            u"\u672b\u65e5\u6c99\u573a\u7ea7YC117\u5e74\u7279\u522b\u7248": False,
-            u"\u707e\u96be\u7ea7YC117\u5e74\u7279\u522b\u7248": False,
-            u"\u9a6c\u514b\u745e\u7ea7YC117\u5e74\u7279\u522b\u7248": False,
-            u"\u5e7c\u9f99\u7ea7YC117\u5e74\u7279\u522b\u7248": False,
-            u"\u6bd2\u8725\u7ea7YC117\u5e74\u7279\u522b\u7248": False,
-            u"\u4f0a\u4ec0\u5854\u7ea7YC117\u5e74\u7279\u522b\u7248": False,
-            u"\u94f6\u9e70\u7ea7YC117\u5e74\u7279\u522b\u7248": False,
-            "Council Diplomatic Shuttle": False,  # Not sure yet
+            "Council Diplomatic Shuttle": False,  # CSM X celebration
         }
 
         # do not publish ships that we convert
@@ -274,18 +261,18 @@ class Market():
             "'Daemon' Data Analyzer I": 714, # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
             "'Libram' Data Analyzer I": 714, # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
             "Advanced Cerebral Accelerator": 977, # Implants & Boosters > Booster
-            "Civilian Damage Control": 760, # Ship Equipment > Civilian Modules
-            "Civilian EM Ward Field": 760, # Ship Equipment > Civilian Modules
-            "Civilian Explosive Deflection Field": 760, # Ship Equipment > Civilian Modules
+            "Civilian Damage Control": 615, # Ship Equipment > Hull & Armor > Damage Controls
+            "Civilian EM Ward Field": 1695, # Ship Equipment > Shield > Shield Hardeners > EM Shield Hardeners
+            "Civilian Explosive Deflection Field": 1694, # Ship Equipment > Shield > Shield Hardeners > Explosive Shield Hardeners
             "Civilian Hobgoblin": 837, # Drones > Combat Drones > Light Scout Drones
-            "Civilian Kinetic Deflection Field": 760, # Ship Equipment > Civilian Modules
-            "Civilian Light Missile Launcher": 760, # Ship Equipment > Civilian Modules
+            "Civilian Kinetic Deflection Field": 1693, # Ship Equipment > Shield > Shield Hardeners > Kinetic Shield Hardeners
+            "Civilian Light Missile Launcher": 640, # Ship Equipment > Turrets & Bays > Missile Launchers > Light Missile Launchers
             "Civilian Scourge Light Missile": 920, # Ammunition & Charges > Missiles > Light Missiles > Standard Light Missiles
-            "Civilian Small Remote Armor Repairer": 760, # Ship Equipment > Civilian Modules
-            "Civilian Small Remote Shield Booster": 760, # Ship Equipment > Civilian Modules
-            "Civilian Stasis Webifier": 760, # Ship Equipment > Civilian Modules
-            "Civilian Thermic Dissipation Field": 760, # Ship Equipment > Civilian Modules
-            "Civilian Warp Disruptor": 760, # Ship Equipment > Civilian Modules
+            "Civilian Small Remote Armor Repairer": 1059, # Ship Equipment > Hull & Armor > Remote Armor Repairers > Small
+            "Civilian Small Remote Shield Booster": 603, # Ship Equipment > Shield > Remote Shield Boosters > Small
+            "Civilian Stasis Webifier": 683, # Ship Equipment > Electronic Warfare > Stasis Webifiers
+            "Civilian Thermic Dissipation Field": 1692, # Ship Equipment > Shield > Shield Hardeners > Thermal Shield Hardeners
+            "Civilian Warp Disruptor": 1935, # Ship Equipment > Electronic Warfare > Warp Disruptors
             "Hardwiring - Zainou 'Sharpshooter' ZMX10": 1493, # Implants & Boosters > Implants > Skill Hardwiring > Missile Implants > Implant Slot 06
             "Hardwiring - Zainou 'Sharpshooter' ZMX100": 1493, # Implants & Boosters > Implants > Skill Hardwiring > Missile Implants > Implant Slot 06
             "Hardwiring - Zainou 'Sharpshooter' ZMX1000": 1493, # Implants & Boosters > Implants > Skill Hardwiring > Missile Implants > Implant Slot 06

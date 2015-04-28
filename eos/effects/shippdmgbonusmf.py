@@ -1,7 +1,6 @@
 # shipPDmgBonusMF
 #
 # Used by:
-# Ships named like: Rifter (3 of 3)
 # Variations of ship: Rifter (3 of 3)
 # Variations of ship: Slasher (3 of 3)
 # Ship: Cheetah

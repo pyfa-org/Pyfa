@@ -1,7 +1,7 @@
 # shipBonusHybridOptimalCB
 #
 # Used by:
-# Ships named like: Rokh (3 of 3)
+# Ship: Rokh
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Caldari Battleship").level
