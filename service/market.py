@@ -218,19 +218,7 @@ class Market():
             "Guristas Shuttle": False,
             "Mobile Decoy Unit": False,  # Seems to be left over test mod for deployables
             "Tournament Micro Jump Unit": False,  # Normally seen only on tournament arenas
-            u"\u4e07\u738b\u5b9d\u5ea7\u7ea7YC117\u5e74\u7279\u522b\u7248": False,  # Proteus added shitton of chinese-specific ships
-            u"\u4e4c\u9e26\u7ea7YC117\u5e74\u7279\u522b\u7248": False,
-            u"\u54cd\u5c3e\u86c7\u7ea7YC117\u5e74\u7279\u522b\u7248": False,
-            u"\u5730\u72f1\u5929\u4f7f\u7ea7YC117\u5e74\u7279\u522b\u7248": False,
-            u"\u591a\u7c73\u5c3c\u514b\u65af\u7ea7YC117\u5e74\u7279\u522b\u7248": False,
-            u"\u672b\u65e5\u6c99\u573a\u7ea7YC117\u5e74\u7279\u522b\u7248": False,
-            u"\u707e\u96be\u7ea7YC117\u5e74\u7279\u522b\u7248": False,
-            u"\u9a6c\u514b\u745e\u7ea7YC117\u5e74\u7279\u522b\u7248": False,
-            u"\u5e7c\u9f99\u7ea7YC117\u5e74\u7279\u522b\u7248": False,
-            u"\u6bd2\u8725\u7ea7YC117\u5e74\u7279\u522b\u7248": False,
-            u"\u4f0a\u4ec0\u5854\u7ea7YC117\u5e74\u7279\u522b\u7248": False,
-            u"\u94f6\u9e70\u7ea7YC117\u5e74\u7279\u522b\u7248": False,
-            "Council Diplomatic Shuttle": False,  # Not sure yet
+            "Council Diplomatic Shuttle": False,  # CSM X celebration
         }
 
         # do not publish ships that we convert
