@@ -13,8 +13,8 @@ debug = False
 saveInRoot = False
 
 # Version data
-version = "1.11.0"
-tag = "Stable"
+version = "1.11.1"
+tag = "git"
 expansionName = "Mosaic"
 expansionVersion = "1.0"
 evemonMinVersion = "4081"
