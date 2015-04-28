@@ -29,11 +29,6 @@ staticPath = None
 saveDB = None
 gameDB = None
 
-# TODO: move back to pyfa.py main loop
-# We moved it here just to avoid rebuilding windows skeleton for now (any change to pyfa.py needs it)
-import logging
-logging.basicConfig()
-
 def defPaths():
     global pyfaPath
     global savePath
