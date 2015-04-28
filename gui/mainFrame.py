@@ -57,8 +57,6 @@ from gui.builtinViews import *
 
 from time import gmtime, strftime
 
-import locale
-locale.setlocale(locale.LC_ALL, '')
 
 #dummy panel(no paint no erasebk)
 class PFPanel(wx.Panel):
