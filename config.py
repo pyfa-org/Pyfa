@@ -13,9 +13,9 @@ debug = False
 saveInRoot = False
 
 # Version data
-version = "1.10.1"
-tag = "git"
-expansionName = "Scylla"
+version = "1.11.0"
+tag = "Stable"
+expansionName = "Mosaic"
 expansionVersion = "1.0"
 evemonMinVersion = "4081"
 
