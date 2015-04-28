@@ -24,6 +24,9 @@ import xml.dom
 from eos.types import State, Slot, Module, Cargo, Fit, Ship, Drone, Implant, Booster
 import service
 import wx
+import logging
+
+logger = logging.getLogger("pyfa.service.port")
 
 try:
     from collections import OrderedDict
@@ -36,14 +39,14 @@ class Port(object):
     """Service which houses all import/export format functions"""
 
     @classmethod
-    def importAuto(cls, string, path=None, activeFit=None, callback=None):
+    def importAuto(cls, string, path=None, activeFit=None, callback=None, encoding=None):
         # Get first line and strip space symbols of it to avoid possible detection errors
         firstLine = re.split("[\n\r]+", string.strip(), maxsplit=1)[0]
         firstLine = firstLine.strip()
 
         # If XML-style start of tag encountered, detect as XML
         if re.match("<", firstLine):
-            return "XML", cls.importXml(string, callback)
+            return "XML", cls.importXml(string, callback, encoding)
 
         # If we've got source file name which is used to describe ship name
         # and first line contains something like [setup name], detect as eft config file
@@ -66,8 +69,16 @@ class Port(object):
         info = string.split(":")
 
         f = Fit()
-        f.ship = Ship(sMkt.getItem(int(info[0])))
-        f.name = "{0} - DNA Imported".format(f.ship.item.name)
+        try:
+            f.ship = Ship(sMkt.getItem(int(info[0])))
+            f.name = "{0} - DNA Imported".format(f.ship.item.name)
+        except UnicodeEncodeError as e:
+            def logtransform(s):
+                if len(s) > 10:
+                    return s[:10] + "..."
+                return s
+            logger.exception("Couldn't import ship data %r", [ logtransform(s) for s in info ])
+            return None
 
         for itemInfo in info[1:]:
             if itemInfo:
@@ -358,10 +369,10 @@ class Port(object):
         return fits
 
     @staticmethod
-    def importXml(text, callback=None):
+    def importXml(text, callback=None, encoding="utf-8"):
         sMkt = service.Market.getInstance()
 
-        doc = xml.dom.minidom.parseString(text.encode("utf-8"))
+        doc = xml.dom.minidom.parseString(text.encode(encoding))
         fittings = doc.getElementsByTagName("fittings").item(0)
         fittings = fittings.getElementsByTagName("fitting")
         fits = []
