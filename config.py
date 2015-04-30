@@ -34,6 +34,18 @@ gameDB = None
 import logging
 logging.basicConfig()
 
+
+def getPyfaRoot():
+    if hasattr(sys, 'frozen'):
+        base = sys.executable
+    else:
+        base = sys.argv[0]
+    root = os.path.dirname(os.path.realpath(os.path.abspath(base)))
+    root = unicode(root, sys.getfilesystemencoding())
+    print(root)
+    return root
+
+
 def defPaths():
     global pyfaPath
     global savePath
@@ -45,8 +57,7 @@ def defPaths():
     # Python 2.X uses ANSI by default, so we need to convert the character encoding
     pyfaPath = getattr(configforced, "pyfaPath", pyfaPath)
     if pyfaPath is None:
-        pyfaPath = unicode(os.path.dirname(os.path.realpath(os.path.abspath(
-            sys.modules['__main__'].__file__))), sys.getfilesystemencoding())
+        pyfaPath = getPyfaRoot()
 
     # Where we store the saved fits etc, default is the current users home directory
     if saveInRoot is True:
