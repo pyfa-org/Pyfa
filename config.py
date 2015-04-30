@@ -29,13 +29,6 @@ staticPath = None
 saveDB = None
 gameDB = None
 
-
-def get_main_dir():
-    if hasattr(sys, "frozen"):
-        # print 'Running from path', os.path.dirname(sys.executable)
-        return unicode(os.path.dirname(os.path.realpath(os.path.abspath(sys.executable))), sys.getfilesystemencoding())
-    return unicode(os.path.dirname(os.path.realpath(os.path.abspath(sys.modules['__main__'].__file__))), sys.getfilesystemencoding())
-
 def defPaths():
     global pyfaPath
     global savePath
@@ -47,7 +40,8 @@ def defPaths():
     # Python 2.X uses ANSI by default, so we need to convert the character encoding
     pyfaPath = getattr(configforced, "pyfaPath", pyfaPath)
     if pyfaPath is None:
-        pyfaPath = get_main_dir()
+        pyfaPath = unicode(os.path.dirname(os.path.realpath(os.path.abspath(
+            sys.modules['__main__'].__file__))), sys.getfilesystemencoding())
 
     # Where we store the saved fits etc, default is the current users home directory
     if saveInRoot is True:
