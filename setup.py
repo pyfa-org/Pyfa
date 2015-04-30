@@ -9,7 +9,9 @@ from cx_Freeze import setup, Executable
 packages = ['eos', 'gui', 'service', 'utils']
 include_files = ['icons', 'staticdata']
 includes = []
-excludes = []
+excludes = [
+    'Tkinter'
+]
 
 
 def dict_union(a, b):
@@ -51,3 +53,9 @@ setup(
     },
     executables=[Executable(**executable_options)]
 )
+
+#"packages": ["sqlalchemy.dialects.sqlite", "eos", "gui", "service", "matplotlib"],
+#"excludes": ["_backend_gdk", "_gtkagg", "_tkagg", "_agg2", "_cairo", "_cocoaagg","_fltkagg", "_gtk", "_gtkcairo",
+#             'bsddb', 'curses', 'email', 'pywin.debugger', 'pywin.debugger.dbgcon', 'pywin.dialogs'],
+#"dll_excludes": ["libgdk-win32-2.0-0.dll", "libgobject-2.0-0.dll",
+#                 "libgdk_pixbuf-2.0-0.dll"],
