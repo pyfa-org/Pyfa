@@ -21,7 +21,6 @@ import wx
 import wx.lib.newevent
 import gui.utils.colorUtils as colorUtils
 import gui.utils.drawUtils as drawUtils
-import gui.utils.fonts as fonts
 from gui import bitmapLoader
 import gui.utils.fonts as fonts
 
@@ -672,8 +671,6 @@ class PFTabsContainer(wx.Panel):
         """
 
         wx.Panel.__init__(self, parent, id, pos, size)
-        if wx.VERSION >= (3,0):
-            self.SetBackgroundStyle(wx.BG_STYLE_PAINT)
 
         self.tabs = []
         width, height = size
