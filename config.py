@@ -42,7 +42,6 @@ def getPyfaRoot():
         base = sys.argv[0]
     root = os.path.dirname(os.path.realpath(os.path.abspath(base)))
     root = unicode(root, sys.getfilesystemencoding())
-    print(root)
     return root
 
 
