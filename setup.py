@@ -1,4 +1,9 @@
+"""
+Distribution builder for pyfa.
 
+Windows executable: python setup.py build
+Windows executable + installer: python setup.py bdist_msi
+"""
 
 import sys
 from itertools import chain
