@@ -521,7 +521,7 @@ class FittingView(d.Display):
             sFit = service.Fit.getInstance()
             fitID = self.mainFrame.getActiveFit()
             ctrl = wx.GetMouseState().CmdDown() or wx.GetMouseState().MiddleDown()
-            click = "ctrl" if ctrl is True else "right" if event.Button == 3 else "left"
+            click = "ctrl" if ctrl is True else "right" if event.GetButton() == 3 else "left"
             sFit.toggleModulesState(fitID, self.mods[self.GetItemData(row)], mods, click)
 
             # update state tooltip
