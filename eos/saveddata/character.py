@@ -192,7 +192,7 @@ class Character(object):
         map = {"ID": lambda val: isinstance(val, int),
                "name" : lambda val: True,
                "apiKey" : lambda val: val is None or (isinstance(val, basestring) and len(val) > 0),
-               "ownerID" : lambda val: isinstance(val, int)}
+               "ownerID" : lambda val: isinstance(val, int) or val is None}
 
         if map[key](val) == False: raise ValueError(str(val) + " is not a valid value for " + key)
         else: return val
