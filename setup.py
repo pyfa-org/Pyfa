@@ -31,7 +31,8 @@ build_options_winexe = {
     'includes': includes,
     'excludes': excludes,
     'compressed': True,
-    'optimize': 2
+    'optimize': 2,
+    'include_msvcr': True,
 }
 
 build_options_winmsi = {
