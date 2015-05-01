@@ -27,13 +27,11 @@ build_options_generic = {
     'include_files': include_files,
     'includes': includes,
     'excludes': excludes,
-    'build_exe': 'dist',
     'compressed': True,
     'optimize': 2
 }
 
 build_options_winexe = dict_union(build_options_generic, {
-    'build_exe': 'dist_winexe',
 })
 
 build_options_winmsi = {
