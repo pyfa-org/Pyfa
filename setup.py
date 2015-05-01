@@ -10,10 +10,12 @@ from itertools import chain
 
 from cx_Freeze import setup, Executable
 
+import config
+
 
 app_name = 'pyfa'
-app_version = '0.0.0'
-app_description = 'TODO'
+app_version = '{}'.format(config.version)
+app_description = 'Python fitting assistant'
 
 
 packages = ['eos', 'gui', 'service', 'utils']
