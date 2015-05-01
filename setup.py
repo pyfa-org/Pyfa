@@ -6,7 +6,6 @@ Windows executable + installer: python setup.py bdist_msi
 """
 
 import sys
-from itertools import chain
 
 from cx_Freeze import setup, Executable
 
