@@ -29,17 +29,16 @@ staticPath = None
 saveDB = None
 gameDB = None
 
-# TODO: move back to pyfa.py main loop
-# We moved it here just to avoid rebuilding windows skeleton for now (any change to pyfa.py needs it)
-import logging
-logging.basicConfig()
+
+def isFrozen():
+    if hasattr(sys, 'frozen'):
+        return True
+    else:
+        return False
 
 
 def getPyfaRoot():
-    if hasattr(sys, 'frozen'):
-        base = sys.executable
-    else:
-        base = sys.argv[0]
+    base = sys.executable if isFrozen() else sys.argv[0]
     root = os.path.dirname(os.path.realpath(os.path.abspath(base)))
     root = unicode(root, sys.getfilesystemencoding())
     return root
@@ -71,6 +70,8 @@ def defPaths():
 
     # Redirect stderr to file if we're requested to do so
     stderrToFile = getattr(configforced, "stderrToFile", None)
+    if stderrToFile is None:
+        stderrToFile = True if isFrozen() else False
     if stderrToFile is True:
         if not os.path.exists(savePath):
             os.mkdir(savePath)
@@ -78,6 +79,8 @@ def defPaths():
 
     # Same for stdout
     stdoutToFile = getattr(configforced, "stdoutToFile", None)
+    if stdoutToFile is None:
+        stdoutToFile = True if isFrozen() else False
     if stdoutToFile is True:
         if not os.path.exists(savePath):
             os.mkdir(savePath)
