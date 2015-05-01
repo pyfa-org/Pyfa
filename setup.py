@@ -6,10 +6,15 @@ from itertools import chain
 from cx_Freeze import setup, Executable
 
 
+app_name = 'pyfa'
+app_version = '0.0.0'
+app_description = 'TODO'
+
+
 packages = ['eos', 'gui', 'service', 'utils']
-include_files = ['icons', 'staticdata']
+include_files = ['icons', 'staticdata', 'gpl.txt']
 includes = []
-excludes = ['Tkinter']
+excludes = ['Tkinter', 'setup']
 
 
 def dict_union(a, b):
@@ -31,20 +36,24 @@ build_options_winexe = dict_union(build_options_generic, {
     'build_exe': 'dist_winexe',
 })
 
-build_options_winmsi = dict_union(build_options_generic, {
-    'build_exe': 'dist_winmsi',
-})
+build_options_winmsi = {
+    'upgrade_code': '{E80885AC-31BA-4D9A-A04F-9E5915608A6C}',
+    'add_to_path': False,
+    'initial_target_dir': r'[ProgramFilesFolder]\{}'.format(app_name),
+}
 
 executable_options = {
     'script': 'pyfa.py',
     'base': 'Win32GUI' if sys.platform=='win32' else None,
     'icon': 'pyfa.ico',
+    'shortcutDir': 'DesktopFolder',
+    'shortcutName': app_name,
 }
 
 setup(
-    name='pyfa',
-    version='0.0.0',
-    description='TODO',
+    name=app_name,
+    version=app_version,
+    description=app_description,
     options = {
         'build_exe': build_options_winexe,
         'bdist_msi': build_options_winmsi
