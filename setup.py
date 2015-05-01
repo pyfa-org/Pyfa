@@ -50,7 +50,7 @@ build_options_winmsi = {
 executable_options = {
     'script': 'pyfa.py',
     'base': 'Win32GUI' if sys.platform=='win32' else None,
-    'icon': 'pyfa.ico',
+    'icon': 'dist_assets/win/pyfa.ico',
     'shortcutDir': 'DesktopFolder',
     'shortcutName': app_name,
 }
