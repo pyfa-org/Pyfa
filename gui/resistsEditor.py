@@ -51,10 +51,6 @@ class ResistsEditorDlg(wx.Dialog):
         self.namePicker.Bind(wx.EVT_TEXT_ENTER, self.processRename)
         self.namePicker.Hide()
 
-        self.btnSave = wx.Button(self, wx.ID_SAVE)
-        self.btnSave.Hide()
-        self.btnSave.Bind(wx.EVT_BUTTON, self.processRename)
-
         size = None
         headerSizer.Add(self.ccResists, 1, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT | wx.LEFT, 3)
 
@@ -76,6 +72,12 @@ class ResistsEditorDlg(wx.Dialog):
                 btn.Enable(True)
                 btn.SetToolTipString("%s resist profile" % name.capitalize())
                 headerSizer.Add(btn, 0, wx.ALIGN_CENTER_VERTICAL)
+
+
+        self.btnSave = wx.Button(self, wx.ID_SAVE)
+        self.btnSave.Hide()
+        self.btnSave.Bind(wx.EVT_BUTTON, self.processRename)
+        headerSizer.Add(self.btnSave, 0, wx.ALIGN_CENTER)
 
         mainSizer.Add(headerSizer, 0, wx.EXPAND | wx.ALL, 2)
 
@@ -345,7 +347,6 @@ class ResistsEditorDlg(wx.Dialog):
         self.patternChanged()
 
     def showInput(self, bool):
-        print self.namePicker.IsShown(), bool
         if bool and not self.namePicker.IsShown():
             self.ccResists.Hide()
             self.namePicker.Show()
@@ -353,8 +354,6 @@ class ResistsEditorDlg(wx.Dialog):
             self.namePicker.SetFocus()
             for btn in (self.new, self.rename, self.delete, self.copy):
                 btn.Hide()
-                self.headerSizer.Remove(btn)
-            self.headerSizer.Add(self.btnSave, 0, wx.ALIGN_CENTER)
             self.btnSave.Show()
             self.restrict()
             self.headerSizer.Layout()
@@ -363,12 +362,10 @@ class ResistsEditorDlg(wx.Dialog):
             self.ccResists.Show()
             self.namePicker.Hide()
             self.btnSave.Hide()
-            self.headerSizer.Remove(self.btnSave)
             for btn in (self.new, self.rename, self.delete, self.copy):
-                self.headerSizer.Add(btn, 0, wx.ALIGN_CENTER_VERTICAL)
                 btn.Show()
             self.unrestrict()
-            #self.headerSizer.Layout()
+            self.headerSizer.Layout()
 
 
     def __del__( self ):

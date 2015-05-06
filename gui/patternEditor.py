@@ -58,10 +58,6 @@ class DmgPatternEditorDlg(wx.Dialog):
         self.namePicker.Bind(wx.EVT_TEXT_ENTER, self.processRename)
         self.namePicker.Hide()
 
-        self.btnSave = wx.Button(self, wx.ID_SAVE)
-        self.btnSave.Hide()
-        self.btnSave.Bind(wx.EVT_BUTTON, self.processRename)
-
         size = None
         headerSizer.Add(self.ccDmgPattern, 1, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT|wx.LEFT, 3)
         buttons = (("new", wx.ART_NEW),
@@ -83,6 +79,10 @@ class DmgPatternEditorDlg(wx.Dialog):
                 btn.SetToolTipString("%s pattern" % name.capitalize())
                 headerSizer.Add(btn, 0, wx.ALIGN_CENTER_VERTICAL)
 
+        self.btnSave = wx.Button(self, wx.ID_SAVE)
+        self.btnSave.Hide()
+        self.btnSave.Bind(wx.EVT_BUTTON, self.processRename)
+        self.headerSizer.Add(self.btnSave, 0, wx.ALIGN_CENTER)
 
         mainSizer.Add(headerSizer, 0, wx.EXPAND | wx.ALL, 2)
 
@@ -276,9 +276,7 @@ class DmgPatternEditorDlg(wx.Dialog):
 
         for btn in (self.new, self.rename, self.delete, self.copy):
             btn.Hide()
-            self.headerSizer.Remove(btn)
 
-        self.headerSizer.Add(self.btnSave, 0, wx.ALIGN_CENTER)
         self.btnSave.Show()
         self.headerSizer.Layout()
         if event is not None:
@@ -311,9 +309,7 @@ class DmgPatternEditorDlg(wx.Dialog):
         self.ccDmgPattern.Show()
         self.namePicker.Hide()
         self.btnSave.Hide()
-        self.headerSizer.Remove(self.btnSave)
         for btn in (self.new, self.rename, self.delete, self.copy):
-            self.headerSizer.Add(btn, 0, wx.ALIGN_CENTER_VERTICAL)
             btn.Show()
 
         sel = self.ccDmgPattern.GetSelection()
