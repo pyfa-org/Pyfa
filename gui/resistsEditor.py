@@ -110,6 +110,9 @@ class ResistsEditorDlg(wx.Dialog):
             resistEditSizer.Add(wx.StaticText( self, wx.ID_ANY, u"%", wx.DefaultPosition, wx.DefaultSize, 0 ), 0, wx.BOTTOM | wx.TOP | wx.ALIGN_CENTER_VERTICAL, 5)
             editObj.Bind(wx.EVT_TEXT, self.ValuesUpdated)
 
+        # Color we use to reset invalid value color
+        self.colorReset = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT)
+
         contentSizer.Add(resistEditSizer, 1, wx.EXPAND | wx.ALL, 5)
         self.slfooter = wx.StaticLine(self)
         contentSizer.Add(self.slfooter, 0, wx.EXPAND | wx.TOP, 5)
@@ -196,21 +199,21 @@ class ResistsEditorDlg(wx.Dialog):
 
                 # if everything checks out, set resist attribute
                 setattr(p, "%sAmount"%type, value/100)
+                editObj.SetForegroundColour(self.colorReset)
 
+            self.stNotice.SetLabel("")
             self.totSizer.Layout()
 
             if event is not None:
-                # If we get here, everything is normal. Reset color
-                event.EventObject.SetForegroundColour(wx.NullColor)
                 event.Skip()
 
             service.TargetResists.getInstance().saveChanges(p)
 
         except ValueError:
-            event.EventObject.SetForegroundColour(wx.RED)
+            editObj.SetForegroundColour(wx.RED)
             self.stNotice.SetLabel("Incorrect Formatting (decimals only)")
         except AssertionError:
-            event.EventObject.SetForegroundColour(wx.RED)
+            editObj.SetForegroundColour(wx.RED)
             self.stNotice.SetLabel("Incorrect Range (must be 0-100)")
         finally:  # Refresh for color changes to take effect immediately
             self.Refresh()
@@ -266,7 +269,7 @@ class ResistsEditorDlg(wx.Dialog):
         for type in self.DAMAGE_TYPES:
             editObj = getattr(self, "%sEdit"%type)
             editObj.ChangeValue("0.0")
-            editObj.SetForegroundColour(wx.NullColor)
+            editObj.SetForegroundColour(self.colorReset)
 
         self.Refresh()
         self.renamePattern()
