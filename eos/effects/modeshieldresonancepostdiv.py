@@ -1,6 +1,7 @@
 # modeShieldResonancePostDiv
 #
 # Used by:
+# Module: Jackdaw Defense Mode
 # Module: Svipul Defense Mode
 type = "passive"
 def handler(fit, module, context):

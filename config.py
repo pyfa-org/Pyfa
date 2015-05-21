@@ -15,8 +15,8 @@ saveInRoot = False
 # Version data
 version = "1.11.1"
 tag = "git"
-expansionName = "Mosaic"
-expansionVersion = "1.0"
+expansionName = "Singularity"
+expansionVersion = "883859"
 evemonMinVersion = "4081"
 
 # Database version (int ONLY)

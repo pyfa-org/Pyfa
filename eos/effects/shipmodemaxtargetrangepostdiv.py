@@ -1,7 +1,7 @@
 # shipModeMaxTargetRangePostDiv
 #
 # Used by:
-# Modules named like: Sharpshooter Mode (2 of 2)
+# Modules named like: Sharpshooter Mode (3 of 3)
 type = "passive"
 def handler(fit, module, context):
     fit.ship.multiplyItemAttr(
