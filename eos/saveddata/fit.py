@@ -295,7 +295,7 @@ class Fit(object):
     @validates("ID", "ownerID", "shipID")
     def validator(self, key, val):
         map = {"ID": lambda val: isinstance(val, int),
-               "ownerID" : lambda val: isinstance(val, int),
+               "ownerID" : lambda val: isinstance(val, int) or val is None,
                "shipID" : lambda val: isinstance(val, int) or val is None}
 
         if map[key](val) == False: raise ValueError(str(val) + " is not a valid value for " + key)
