@@ -15,8 +15,8 @@ saveInRoot = False
 # Version data
 version = "1.11.1"
 tag = "git"
-expansionName = "Singularity"
-expansionVersion = "883859"
+expansionName = "Carnyx"
+expansionVersion = "1.0"
 evemonMinVersion = "4081"
 
 # Database version (int ONLY)
