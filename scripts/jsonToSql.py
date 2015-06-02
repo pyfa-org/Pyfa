@@ -161,7 +161,13 @@ def main(db, json_path):
         data[jsonName] = tableData
 
     # Set with typeIDs which we will have in our database
-    invTypes = set()
+    invTypes = {
+    # Sometimes CCP unpublishes some items we want to have published, we
+    # can do it here
+        31906,  # Federation Navy 200mm Steel Plates
+        31904,  # Imperial Navy 200mm Steel Plates
+        28782,  # Syndicate 200mm Steel Plates
+    }
     for row in data["invtypes"]:
         # 1306 - group Ship Modifiers, for items like tactical t3 ship modes
         if (row["published"] or row['groupID'] == 1306):

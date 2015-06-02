@@ -218,6 +218,9 @@ class Market():
             "Mobile Decoy Unit": False,  # Seems to be left over test mod for deployables
             "Tournament Micro Jump Unit": False,  # Normally seen only on tournament arenas
             "Council Diplomatic Shuttle": False,  # CSM X celebration
+            "Federation Navy 200mm Steel Plates": True,  # Accidentally unpublished by CCP
+            "Imperial Navy 200mm Steel Plates": True,  # Accidentally unpublished by CCP
+            "Syndicate 200mm Steel Plates": True,  # Accidentally unpublished by CCP
         }
 
         # do not publish ships that we convert
