@@ -13,8 +13,8 @@ debug = False
 saveInRoot = False
 
 # Version data
-version = "1.11.1"
-tag = "git"
+version = "1.12.0"
+tag = "Stable"
 expansionName = "Carnyx"
 expansionVersion = "1.0"
 evemonMinVersion = "4081"
