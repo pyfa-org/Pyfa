@@ -50,12 +50,15 @@ class Price(ViewColumn):
         return formatAmount(price, 3, 3, 9, currency=True)
 
     def delayedText(self, mod, display, colItem):
-        def callback(requests):
-            price = requests[0].price
+        sMkt = service.Market.getInstance()
+        def callback(item):
+            price = sMkt.getPriceNow(item.ID).price
             colItem.SetText(formatAmount(price, 3, 3, 9, currency=True) if price else "")
+            colItem.SetImage(-1)
             display.SetItem(colItem)
 
-        service.Market.getInstance().getPrices([mod.item.ID], callback)
+        sMkt.waitForPrice(mod.item, callback)
+        return self.fittingView.imageList.GetImageIndex("refresh_small", "icons")
 
     def getImageId(self, mod):
         return -1

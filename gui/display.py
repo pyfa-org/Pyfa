@@ -249,10 +249,10 @@ class Display(wx.ListCtrl):
                 oldImageId = colItem.GetImage()
                 newText = col.getText(st)
                 if newText is False:
-                    col.delayedText(st, self, colItem)
+                    newImageId = col.delayedText(st, self, colItem)
                     newText = ""
-
-                newImageId = col.getImageId(st)
+                else:
+                    newImageId = col.getImageId(st)
 
                 colItem.SetText(newText)
                 colItem.SetImage(newImageId)
