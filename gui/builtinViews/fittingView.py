@@ -57,7 +57,7 @@ class FitSpawner(gui.multiSwitch.TabSpawner):
             startup = getattr(event, "startup", False)  # see OpenFitsThread in gui.mainFrame
             mstate = wx.GetMouseState()
 
-            if mstate.CmdDown() or mstate.MiddleDown() or startup:
+            if mstate.CmdDown() or startup:
                 self.multiSwitch.AddPage()
 
             view = FittingView(self.multiSwitch)
