@@ -54,11 +54,9 @@ class Price(ViewColumn):
         def callback(item):
             price = sMkt.getPriceNow(item.ID).price
             colItem.SetText(formatAmount(price, 3, 3, 9, currency=True) if price else "")
-            colItem.SetImage(-1)
-            display.SetItem(colItem)
+            display.SetItem(colItem)    
 
         sMkt.waitForPrice(mod.item, callback)
-        return self.fittingView.imageList.GetImageIndex("refresh_small", "icons")
 
     def getImageId(self, mod):
         return -1
