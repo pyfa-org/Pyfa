@@ -386,7 +386,8 @@ class Fit(object):
             # Avoid adding projected drones and modules when fit is projected onto self
             # TODO: remove this workaround when proper self-projection using virtual duplicate fits is implemented
             if forceProjected is True:
-                c = chain((self.character, self.ship, self.mode), self.drones, self.boosters, self.appliedImplants, self.modules)
+                # if fit is being projected onto another fit
+                c = chain((self.character, self.ship), self.drones, self.boosters, self.appliedImplants, self.modules)
             else:
                 c = chain((self.character, self.ship, self.mode), self.drones, self.boosters, self.appliedImplants, self.modules,
                           self.projectedDrones, self.projectedModules)
