@@ -1712,7 +1712,8 @@ class FitItem(SFItem.SFBrowserItem):
         if self.dragging:
             if not self.dragged:
                 if self.dragMotionTrigger < 0:
-                    self.CaptureMouse()
+                    if not self.HasCapture():
+                        self.CaptureMouse()
                     self.dragWindow = PFBitmapFrame(self, pos, self.dragTLFBmp)
                     self.dragWindow.Show()
                     self.dragged = True
