@@ -1340,7 +1340,7 @@ class ShipItem(SFItem.SFBrowserItem):
             editCtl.SetPosition((fnEditPosX,fnEditPosY))
 
 class PFBitmapFrame(wx.Frame):
-    def __init__ (self,parent, pos, bitmap):
+    def __init__ (self, parent, pos, bitmap):
         wx.Frame.__init__(self, parent, id = wx.ID_ANY, title = wx.EmptyString, pos = pos, size = wx.DefaultSize, style =
                                                                wx.NO_BORDER
                                                              | wx.FRAME_NO_TASKBAR
@@ -1813,7 +1813,7 @@ class FitItem(SFItem.SFBrowserItem):
             self.AdjustControlSizePos(self.tcFitName, self.textStartx, self.toolbarx - self.editWidth - self.padding)
 
         tdc = wx.MemoryDC()
-        self.dragTLFBmp = wx.EmptyBitmap((self.toolbarx if self.toolbarx < 200 else 200), rect.height)
+        self.dragTLFBmp = wx.EmptyBitmap((self.toolbarx if self.toolbarx < 200 else 200), rect.height, 24)
         tdc.SelectObject(self.dragTLFBmp)
         tdc.Blit(0, 0, (self.toolbarx if self.toolbarx < 200 else 200), rect.height, mdc, 0, 0, wx.COPY)
         tdc.SelectObject(wx.NullBitmap)
