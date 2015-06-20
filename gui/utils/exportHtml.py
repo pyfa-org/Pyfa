@@ -136,7 +136,7 @@ class exportHtmlThread(threading.Thread):
         categoryList = list(sMkt.getShipRoot())
         categoryList.sort(key=lambda ship: ship.name)
 
-        count = 1
+        count = 0
 
         for group in categoryList:
             # init market group string to give ships something to attach to

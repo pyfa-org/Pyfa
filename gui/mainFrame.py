@@ -565,7 +565,7 @@ class MainFrame(wx.Frame):
         if (dlg.ShowModal() == wx.ID_OK):
             self.progressDialog = wx.ProgressDialog(
                             "Importing fits",
-                            " "*100, # set some arbitrary spacing to create wifth in window
+                            " "*100, # set some arbitrary spacing to create width in window
                             parent=self, style = wx.PD_APP_MODAL | wx.PD_ELAPSED_TIME)
             self.progressDialog.message = None
             sFit.importFitsThreaded(dlg.GetPaths(), self.fileImportCallback)
@@ -584,7 +584,7 @@ class MainFrame(wx.Frame):
 
         if info == -1:
             # Done processing
-            self.progressDialog.Hide()
+            self.progressDialog.Destroy()
             self._openAfterImport(fits)
         elif info != self.progressDialog.message and info is not None:
             # New message, overwrite cached message and update
@@ -624,13 +624,12 @@ class MainFrame(wx.Frame):
                               "Backing up %d fits to: %s"%(max, filePath),
                               maximum=max, parent=self,
                               style=wx.PD_APP_MODAL | wx.PD_ELAPSED_TIME)
-
             sFit.backupFits(filePath, self.backupCallback)
             self.progressDialog.ShowModal()
 
     def backupCallback(self, info):
         if info == -1:
-            self.progressDialog.Hide()
+            self.progressDialog.Destroy()
         else:
             self.progressDialog.Update(info)
 
