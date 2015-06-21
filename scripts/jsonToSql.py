@@ -52,11 +52,11 @@ def main(db, json_path):
         "dgmtypeeffects": eos.gamedata.Effect,
         "dgmunits": eos.gamedata.Unit,
         "icons": eos.gamedata.Icon,
-        "invcategories": eos.gamedata.Category,
-        "invgroups": eos.gamedata.Group,
+        "evecategories": eos.gamedata.Category,
+        "evegroups": eos.gamedata.Group,
         "invmetagroups": eos.gamedata.MetaGroup,
         "invmetatypes": eos.gamedata.MetaType,
-        "invtypes": eos.gamedata.Item,
+        "evetypes": eos.gamedata.Item,
         "phbtraits": eos.gamedata.Traits,
         "phbmetadata": eos.gamedata.MetaData,
         "mapbulk_marketGroups": eos.gamedata.MarketGroup
@@ -74,16 +74,16 @@ def main(db, json_path):
             "displayName_en-us": "displayName"
         },
         #icons???
-        "invcategories": {
+        "evecategories": {
             "categoryName_en-us": "categoryName"
         },
-        "invgroups": {
+        "evegroups": {
             "groupName_en-us": "groupName"
         },
         "invmetagroups": {
             "metaGroupName_en-us": "metaGroupName"
         },
-        "invtypes": {
+        "evetypes": {
             "typeName_en-us": "typeName",
             "description_en-us": "description"
         },
@@ -94,6 +94,12 @@ def main(db, json_path):
         }
 
     }
+
+    rowsInValues = (
+        "evetypes",
+        "evegroups",
+        "evecategories"
+    )
 
     def convertIcons(data):
         new = []
@@ -133,7 +139,7 @@ def main(db, json_path):
 
     def convertTypes(typesData):
         """
-        Add factionID column to invtypes table.
+        Add factionID column to evetypes table.
         """
         factionMap = {}
         with open(os.path.join(jsonPath, "fsdTypeOverrides.json")) as f:
@@ -152,30 +158,32 @@ def main(db, json_path):
     for jsonName, cls in tables.iteritems():
         with open(os.path.join(jsonPath, "{}.json".format(jsonName))) as f:
             tableData = json.load(f)
+        if jsonName in rowsInValues:
+            tableData = list(tableData.values())
         if jsonName == "icons":
             tableData = convertIcons(tableData)
         if jsonName == "phbtraits":
             tableData = convertTraits(tableData)
-        if jsonName == "invtypes":
+        if jsonName == "evetypes":
             tableData = convertTypes(tableData)
         data[jsonName] = tableData
 
     # Set with typeIDs which we will have in our database
-    invTypes = {
+    eveTypes = {
     # Sometimes CCP unpublishes some items we want to have published, we
     # can do it here
         31906,  # Federation Navy 200mm Steel Plates
         31904,  # Imperial Navy 200mm Steel Plates
         28782,  # Syndicate 200mm Steel Plates
     }
-    for row in data["invtypes"]:
+    for row in data["evetypes"]:
         # 1306 - group Ship Modifiers, for items like tactical t3 ship modes
         if (row["published"] or row['groupID'] == 1306):
-            invTypes.add(row["typeID"])
+            eveTypes.add(row["typeID"])
 
     # ignore checker
     def isIgnored(file, row):
-        if file in ("invtypes", "dgmtypeeffects", "dgmtypeattribs", "invmetatypes") and row['typeID'] not in invTypes:
+        if file in ("evetypes", "dgmtypeeffects", "dgmtypeattribs", "invmetatypes") and row['typeID'] not in eveTypes:
             return True
         return False
 
