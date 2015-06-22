@@ -1,3 +1,7 @@
+# shipBonusRHMLROFCB
+#
+# Used by:
+# Ship: Scorpion Navy Issue
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Caldari Battleship").level

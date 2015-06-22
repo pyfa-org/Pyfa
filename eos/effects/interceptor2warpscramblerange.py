@@ -1,7 +1,7 @@
 # Interceptor2WarpScrambleRange
 #
 # Used by:
-# Ships from group: Interceptor (5 of 9)
+# Ships from group: Interceptor (5 of 10)
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Interceptors").level

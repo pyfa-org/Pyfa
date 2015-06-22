@@ -1,7 +1,7 @@
 # eliteBonusHeavyInterdictorsWarpDisruptFieldGeneratorWarpScrambleRange2
 #
 # Used by:
-# Ships from group: Heavy Interdiction Cruiser (4 of 4)
+# Ships from group: Heavy Interdiction Cruiser (4 of 5)
 type = "passive"
 def handler(fit, ship, context):
     level = fit.character.getSkill("Heavy Interdiction Cruisers").level

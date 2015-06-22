@@ -1,7 +1,7 @@
 # shipModeScanStrengthPostDiv
 #
 # Used by:
-# Modules named like: Sharpshooter Mode (3 of 3)
+# Modules named like: Sharpshooter Mode (4 of 4)
 type = "passive"
 def handler(fit, module, context):
     for scanType in ("Gravimetric", "Magnetometric", "Radar", "Ladar"):

@@ -1,7 +1,7 @@
 # ammoInfluenceCapNeed
 #
 # Used by:
-# Items from category: Charge (458 of 829)
+# Items from category: Charge (458 of 831)
 type = "passive"
 def handler(fit, module, context):
     # Dirty hack to work around cap charges setting cap booster
