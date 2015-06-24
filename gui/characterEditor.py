@@ -539,10 +539,14 @@ class APIView (wx.Panel):
 
         pmainSizer = wx.BoxSizer(wx.VERTICAL)
 
+        hintSizer = wx.BoxSizer( wx.HORIZONTAL )
+        hintSizer.AddStretchSpacer()
         self.stDisabledTip = wx.StaticText( self, wx.ID_ANY, u"You cannot add API Details for All 0 and All 5 characters. Please select another character or make a new one.", style=wx.ALIGN_CENTER )
         self.stDisabledTip.Wrap( -1 )
+        hintSizer.Add( self.stDisabledTip, 0, wx.TOP | wx.BOTTOM, 15 )
+        hintSizer.AddStretchSpacer()
+        pmainSizer.Add(hintSizer, 0, wx.EXPAND, 5)
 
-        pmainSizer.Add( self.stDisabledTip, 0, wx.ALL, 2 )
 
         fgSizerInput = wx.FlexGridSizer(3, 2, 0, 0)
         fgSizerInput.AddGrowableCol(1)
