@@ -147,6 +147,7 @@ class CharacterEditor(wx.Frame):
     def restrict(self):
         self.btnRename.Enable(False)
         self.btnDelete.Enable(False)
+        self.aview.stDisabledTip.Show(True)
         self.aview.inputID.Enable(False)
         self.aview.inputKey.Enable(False)
         self.aview.charChoice.Enable(False)
@@ -158,6 +159,7 @@ class CharacterEditor(wx.Frame):
     def unrestrict(self):
         self.btnRename.Enable(True)
         self.btnDelete.Enable(True)
+        self.aview.stDisabledTip.Show(False)
         self.aview.inputID.Enable(True)
         self.aview.inputKey.Enable(True)
         self.aview.btnFetchCharList.Enable(True)
@@ -536,6 +538,11 @@ class APIView (wx.Panel):
         self.apiUrlKeyList = u"https://community.eveonline.com/support/api-key/"
 
         pmainSizer = wx.BoxSizer(wx.VERTICAL)
+
+        self.stDisabledTip = wx.StaticText( self, wx.ID_ANY, u"You cannot add API Details for All 0 and All 5 characters. Please select another character or make a new one.", style=wx.ALIGN_CENTER )
+        self.stDisabledTip.Wrap( -1 )
+
+        pmainSizer.Add( self.stDisabledTip, 0, wx.ALL, 2 )
 
         fgSizerInput = wx.FlexGridSizer(3, 2, 0, 0)
         fgSizerInput.AddGrowableCol(1)
