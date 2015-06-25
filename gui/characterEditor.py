@@ -274,6 +274,7 @@ class CharacterEditor(wx.Frame):
 class SkillTreeView (wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__ (self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.Size(500, 300), style=wx.TAB_TRAVERSAL)
+        self.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW))
 
         pmainSizer = wx.BoxSizer(wx.VERTICAL)
 
@@ -533,6 +534,7 @@ class APIView (wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__ (self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.Size(500, 300), style=wx.TAB_TRAVERSAL)
         self.Parent.Parent.Bind(GE.CHAR_CHANGED, self.charChanged)
+        self.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW))
 
         self.apiUrlCreatePredefined = u"https://community.eveonline.com/support/api-key/CreatePredefined?accessMask=8"
         self.apiUrlKeyList = u"https://community.eveonline.com/support/api-key/"
@@ -541,9 +543,10 @@ class APIView (wx.Panel):
 
         hintSizer = wx.BoxSizer( wx.HORIZONTAL )
         hintSizer.AddStretchSpacer()
-        self.stDisabledTip = wx.StaticText( self, wx.ID_ANY, u"You cannot add API Details for All 0 and All 5 characters. Please select another character or make a new one.", style=wx.ALIGN_CENTER )
+        self.stDisabledTip = wx.StaticText( self, wx.ID_ANY, u"You cannot add API Details for All 0 and All 5 characters.\n"
+                                                             u"Please select another character or make a new one.", style=wx.ALIGN_CENTER )
         self.stDisabledTip.Wrap( -1 )
-        hintSizer.Add( self.stDisabledTip, 0, wx.TOP | wx.BOTTOM, 15 )
+        hintSizer.Add( self.stDisabledTip, 0, wx.TOP | wx.BOTTOM, 10 )
         hintSizer.AddStretchSpacer()
         pmainSizer.Add(hintSizer, 0, wx.EXPAND, 5)
 
