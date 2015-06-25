@@ -584,7 +584,12 @@ class MainFrame(wx.Frame):
 
         if info == -1:
             # Done processing
-            self.progressDialog.Destroy()
+            # see GH issue #281 on why conditional is needed
+
+            if 'wxMSW' in wx.PlatformInfo:
+                self.progressDialog.Destroy()
+            else:
+                self.progressDialog.Hide()
             self._openAfterImport(fits)
         elif info != self.progressDialog.message and info is not None:
             # New message, overwrite cached message and update
@@ -629,7 +634,11 @@ class MainFrame(wx.Frame):
 
     def backupCallback(self, info):
         if info == -1:
-            self.progressDialog.Destroy()
+            # see GH issue #281 on why conditional is needed
+            if 'wxMSW' in wx.PlatformInfo:
+                self.progressDialog.Destroy()
+            else:
+                self.progressDialog.Hide()
         else:
             self.progressDialog.Update(info)
 
