@@ -21,7 +21,6 @@ import wx
 import wx.lib.newevent
 import gui.utils.colorUtils as colorUtils
 import gui.utils.drawUtils as drawUtils
-import gui.utils.fonts as fonts
 from gui import bitmapLoader
 import gui.utils.fonts as fonts
 
@@ -278,7 +277,7 @@ class PFNotebook(wx.Panel):
         bx, by = self.GetBorders()
         ww -= bx * 4
         wh -= by * 4
-        self.activePage.SetSize((ww, wh))
+        self.activePage.SetSize((max(ww, -1), max(wh, -1)))
         self.activePage.SetPosition((0, 0))
 
         if not resizeOnly:
