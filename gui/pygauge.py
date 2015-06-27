@@ -312,47 +312,53 @@ class PyGauge(wx.PyWindow):
             r = copy.copy(rect)
             r.width = w
 
+            if r.width > 0:
+                # If we draw it with zero width, GTK throws errors. This way,
+                # only draw it if the gauge will actually show something.
+                # We stick other calculations in this block to avoid wasting
+                # time on them if not needed. See GH issue #282
 
-            pv = value
-            xv=1
-            transition = 0
-
-            if pv <= 100:
-                xv = pv/100
+                pv = value
+                xv=1
                 transition = 0
 
-            elif pv <=101:
-                xv = pv -100
-                transition = 1
+                if pv <= 100:
+                    xv = pv/100
+                    transition = 0
 
-            elif pv <= 103:
-                xv = (pv -101)/2
-                transition = 2
+                elif pv <=101:
+                    xv = pv -100
+                    transition = 1
 
-            elif pv <= 105:
-                xv = (pv -103)/2
-                transition = 3
+                elif pv <= 103:
+                    xv = (pv -101)/2
+                    transition = 2
 
-            else:
-                pv = 106
-                xv = pv -100
-                transition = -1
+                elif pv <= 105:
+                    xv = (pv -103)/2
+                    transition = 3
 
-            if transition != -1:
-                colorS,colorE = self.transitionsColors[transition]
-                color = colorUtils.CalculateTransitionColor(colorS, colorE, xv)
-            else:
-                color = wx.Colour(191,48,48)
+                else:
+                    pv = 106
+                    xv = pv -100
+                    transition = -1
 
-            if self.gradientEffect > 0:
-                gcolor = colorUtils.BrightenColor(color,  float(self.gradientEffect) / 100)
-                gMid = colorUtils.BrightenColor(color,  float(self.gradientEffect/2) / 100)
-            else:
-                gcolor = colorUtils.DarkenColor(color,  float(-self.gradientEffect) / 100)
-                gMid = colorUtils.DarkenColor(color,  float(-self.gradientEffect/2) / 100)
+                if transition != -1:
+                    colorS,colorE = self.transitionsColors[transition]
+                    color = colorUtils.CalculateTransitionColor(colorS, colorE, xv)
+                else:
+                    color = wx.Colour(191,48,48)
 
-            gBmp = drawUtils.DrawGradientBar(r.width, r.height, gMid, color, gcolor)
-            dc.DrawBitmap(gBmp,r.left, r.top)
+                if self.gradientEffect > 0:
+                    gcolor = colorUtils.BrightenColor(color,  float(self.gradientEffect) / 100)
+                    gMid = colorUtils.BrightenColor(color,  float(self.gradientEffect/2) / 100)
+                else:
+                    gcolor = colorUtils.DarkenColor(color,  float(-self.gradientEffect) / 100)
+                    gMid = colorUtils.DarkenColor(color,  float(-self.gradientEffect/2) / 100)
+
+                gBmp = drawUtils.DrawGradientBar(r.width, r.height, gMid, color, gcolor)
+                dc.DrawBitmap(gBmp, r.left, r.top)
+
         else:
             colour=self.GetBarColour()
             dc.SetBrush(wx.Brush(colour))
@@ -396,7 +402,6 @@ class PyGauge(wx.PyWindow):
 
             dc.SetTextForeground(wx.Colour(255,255,255))
             dc.DrawLabel(formatStr.format(value), rect, wx.ALIGN_CENTER)
-
 
     def OnTimer(self,event):
         """
