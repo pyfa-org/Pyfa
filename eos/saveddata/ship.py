@@ -112,7 +112,8 @@ class Ship(ItemAttrShortcut, HandledItem):
         items = []
         g = eos.db.getGroup(modeGroupID, eager=("items.icon", "items.attributes"))
         for item in g.items:
-            if item.raceID == self.item.raceID:
+            # Rely on name detection because race is not reliable
+            if item.name.lower().startswith(self.item.name.lower()):
                 items.append(item)
 
         return items

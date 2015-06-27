@@ -92,10 +92,10 @@ class CharacterEditor(wx.Frame):
         self.viewsNBContainer = wx.Notebook(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, 0)
 
         self.sview = SkillTreeView(self.viewsNBContainer)
-        self.iview = ImplantsTreeView(self.viewsNBContainer)
+        #self.iview = ImplantsTreeView(self.viewsNBContainer)
         #=======================================================================
         # RC2
-        self.iview.Show(False)
+        #self.iview.Show(False)
         #=======================================================================
         self.aview = APIView(self.viewsNBContainer)
 
@@ -148,6 +148,7 @@ class CharacterEditor(wx.Frame):
     def restrict(self):
         self.btnRename.Enable(False)
         self.btnDelete.Enable(False)
+        self.aview.stDisabledTip.Show(True)
         self.aview.inputID.Enable(False)
         self.aview.inputKey.Enable(False)
         self.aview.charChoice.Enable(False)
@@ -159,6 +160,7 @@ class CharacterEditor(wx.Frame):
     def unrestrict(self):
         self.btnRename.Enable(True)
         self.btnDelete.Enable(True)
+        self.aview.stDisabledTip.Show(False)
         self.aview.inputID.Enable(True)
         self.aview.inputKey.Enable(True)
         self.aview.btnFetchCharList.Enable(True)
@@ -269,6 +271,7 @@ class CharacterEditor(wx.Frame):
 class SkillTreeView (wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__ (self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.Size(500, 300), style=wx.TAB_TRAVERSAL)
+        self.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW))
 
         pmainSizer = wx.BoxSizer(wx.VERTICAL)
 
@@ -528,11 +531,22 @@ class APIView (wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__ (self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.Size(500, 300), style=wx.TAB_TRAVERSAL)
         self.Parent.Parent.Bind(GE.CHAR_CHANGED, self.charChanged)
+        self.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW))
 
         self.apiUrlCreatePredefined = u"https://community.eveonline.com/support/api-key/CreatePredefined?accessMask=8"
         self.apiUrlKeyList = u"https://community.eveonline.com/support/api-key/"
 
         pmainSizer = wx.BoxSizer(wx.VERTICAL)
+
+        hintSizer = wx.BoxSizer( wx.HORIZONTAL )
+        hintSizer.AddStretchSpacer()
+        self.stDisabledTip = wx.StaticText( self, wx.ID_ANY, u"You cannot add API Details for All 0 and All 5 characters.\n"
+                                                             u"Please select another character or make a new one.", style=wx.ALIGN_CENTER )
+        self.stDisabledTip.Wrap( -1 )
+        hintSizer.Add( self.stDisabledTip, 0, wx.TOP | wx.BOTTOM, 10 )
+        hintSizer.AddStretchSpacer()
+        pmainSizer.Add(hintSizer, 0, wx.EXPAND, 5)
+
 
         fgSizerInput = wx.FlexGridSizer(3, 2, 0, 0)
         fgSizerInput.AddGrowableCol(1)

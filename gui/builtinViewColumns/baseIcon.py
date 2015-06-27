@@ -8,7 +8,7 @@ class BaseIcon(ViewColumn):
     name = "Base Icon"
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
-        self.size = 24
+        self.size = 16
         self.maxsize = self.size
         self.mask = wx.LIST_MASK_IMAGE
         self.columnText = ""

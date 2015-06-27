@@ -3,6 +3,7 @@
 # Used by:
 # Module: Triage Module II
 type = "active"
+runTime = "early"
 def handler(fit, module, context):
     # Remote armor reps
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Capital Remote Armor Repair Systems"),

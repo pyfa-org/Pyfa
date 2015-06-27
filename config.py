@@ -13,9 +13,9 @@ debug = False
 saveInRoot = False
 
 # Version data
-version = "1.11.1"
+version = "1.12.1"
 tag = "git"
-expansionName = "Mosaic"
+expansionName = "Carnyx"
 expansionVersion = "1.0"
 evemonMinVersion = "4081"
 

@@ -295,7 +295,7 @@ class Fit(object):
     @validates("ID", "ownerID", "shipID")
     def validator(self, key, val):
         map = {"ID": lambda val: isinstance(val, int),
-               "ownerID" : lambda val: isinstance(val, int),
+               "ownerID" : lambda val: isinstance(val, int) or val is None,
                "shipID" : lambda val: isinstance(val, int) or val is None}
 
         if map[key](val) == False: raise ValueError(str(val) + " is not a valid value for " + key)
@@ -386,7 +386,8 @@ class Fit(object):
             # Avoid adding projected drones and modules when fit is projected onto self
             # TODO: remove this workaround when proper self-projection using virtual duplicate fits is implemented
             if forceProjected is True:
-                c = chain((self.character, self.ship, self.mode), self.drones, self.boosters, self.appliedImplants, self.modules)
+                # if fit is being projected onto another fit
+                c = chain((self.character, self.ship), self.drones, self.boosters, self.appliedImplants, self.modules)
             else:
                 c = chain((self.character, self.ship, self.mode), self.drones, self.boosters, self.appliedImplants, self.modules,
                           self.projectedDrones, self.projectedModules)

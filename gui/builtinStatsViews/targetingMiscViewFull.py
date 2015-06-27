@@ -52,7 +52,7 @@ class TargetingMiscViewFull(StatsView):
         gridTargetingMisc.AddGrowableCol(2)
         # Targeting
 
-        gridTargeting = wx.FlexGridSizer(5, 2)
+        gridTargeting = wx.FlexGridSizer(4, 2)
         gridTargeting.AddGrowableCol(1)
 
         gridTargetingMisc.Add(gridTargeting, 0, wx.ALIGN_LEFT | wx.ALL, 5)
@@ -77,7 +77,7 @@ class TargetingMiscViewFull(StatsView):
 
         # Misc
         gridTargetingMisc.Add( wx.StaticLine( contentPanel, wx.ID_ANY, style = wx.VERTICAL),0, wx.EXPAND, 3 )
-        gridMisc = wx.FlexGridSizer(5, 2)
+        gridMisc = wx.FlexGridSizer(4, 2)
         gridMisc.AddGrowableCol(1)
         gridTargetingMisc.Add(gridMisc,0 , wx.ALIGN_LEFT | wx.ALL, 5)
 
