@@ -1533,7 +1533,7 @@ class FitItem(SFItem.SFBrowserItem):
         self.mainFrame.additionsPane.gangPage.draggedFitID = self.fitID
 
         menu = wx.Menu()
-        toggleItem = menu.Append(self.toggleBoosterID, "Booster Fit", kind=wx.ITEM_CHECK)
+        toggleItem = menu.Append(wx.ID_ANY, "Booster Fit", kind=wx.ITEM_CHECK)
         menu.Check(toggleItem.GetId(), self.fitBooster)
 
         self.Bind(wx.EVT_MENU, self.OnToggleBooster, toggleItem)
@@ -1544,7 +1544,7 @@ class FitItem(SFItem.SFBrowserItem):
             boosterMenu = self.mainFrame.additionsPane.gangPage.FitDNDPopupMenu
             menu.AppendSubMenu(boosterMenu, 'Set Booster')
 
-        self.PopupMenu(boosterMenu, pos)
+        self.PopupMenu(menu, pos)
 
         event.Skip()
 
