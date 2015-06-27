@@ -15,6 +15,7 @@ import gui.utils.animEffects as animEffects
 
 import gui.sfBrowserItem as SFItem
 from gui.contextMenu import ContextMenu
+import gui.utils.fonts as fonts
 
 import service
 import gui.utils.fonts as fonts

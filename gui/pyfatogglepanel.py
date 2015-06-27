@@ -146,14 +146,12 @@ class TogglePanel ( wx.Panel ):
         else:
             return True
 
-
     def IsExpanded(self):
         """ Returns ``True`` if the pane window is currently shown. """
         if self._toggle == 1:
             return False
         else:
             return True
-
 
     def OnStateChange(self, sz):
         """
@@ -168,9 +166,8 @@ class TogglePanel ( wx.Panel ):
 
         self.parent.GetSizer().SetSizeHints(self.parent)
 
-
         if self.IsCollapsed():
-                # expanded . collapsed transition
+            # expanded . collapsed transition
             if self.parent.GetSizer():
                 # we have just set the size hints...
                 sz = self.parent.GetSizer().CalcMin()
@@ -178,39 +175,36 @@ class TogglePanel ( wx.Panel ):
                 # use SetClientSize() and not SetSize() otherwise the size for
                 # e.g. a wxFrame with a menubar wouldn't be correctly set
                 self.parent.SetClientSize(sz)
-
             else:
                 self.parent.Layout()
-
         else:
-
-                    # collapsed . expanded transition
-
-                    # force our parent to "fit", i.e. expand so that it can honour
-                    # our minimal size
+            # collapsed . expanded transition
+            # force our parent to "fit", i.e. expand so that it can honour
+            # our minimal size
             self.parent.Fit()
 
-
     # Toggle the content panel (hide/show)
-
-    def toggleContent( self, event ):
+    def toggleContent(self, event):
         self.Freeze()
+        print self.contentPanel.GetSize()
         if self._toggle == 1:
             self.contentMinSize = self.contentPanel.GetSize()
-            self.contentPanel.SetMinSize(wx.Size(self.contentMinSize[0],0))
-            self.headerBmp.SetBitmap( self.bmpCollapsed)
-
-
+            self.contentPanel.Hide()
+            self.headerBmp.SetBitmap(self.bmpCollapsed)
         else:
-            self.contentPanel.SetMinSize(self.contentMinSize)
+            self.contentPanel.Show()
+            self.headerBmp.SetBitmap(self.bmpExpanded)
 
-            self.headerBmp.SetBitmap( self.bmpExpanded)
-
-
-        self._toggle *=-1
-
+        self._toggle *= -1
+        self.Layout()
         self.Thaw()
+
         if self.forceLayout == -1:
-            self.OnStateChange(self.GetBestSize())
+            if wx.VERSION >= (3, 0):
+                x, y = self.GetBestSize()
+                y -= self.contentPanel.GetSize()[1]
+            else:
+                x, y = self.GetBestSize()
+            self.OnStateChange((x, y))
         else:
             self.parent.Layout()
