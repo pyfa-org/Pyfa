@@ -64,6 +64,7 @@ class CharacterEditor(wx.Frame):
                 self.skillTreeChoice.SetSelection(i)
 
         self.navSizer.Add(self.skillTreeChoice, 1, wx.ALL | wx.EXPAND, 5)
+        self.navSizer.Add(self.btnSave, 0, wx.ALIGN_CENTER)
 
         buttons = (("new", wx.ART_NEW),
                    ("rename", bitmapLoader.getBitmap("rename", "icons")),
@@ -202,10 +203,8 @@ class CharacterEditor(wx.Frame):
         self.characterRename.SetFocus()
         for btn in (self.btnNew, self.btnCopy, self.btnRename, self.btnDelete):
             btn.Hide()
-            self.navSizer.Remove(btn)
 
         self.btnSave.Show()
-        self.navSizer.Add(self.btnSave, 0, wx.ALIGN_CENTER)
         self.navSizer.Layout()
 
         sChar = service.Character.getInstance()
@@ -228,9 +227,7 @@ class CharacterEditor(wx.Frame):
         self.navSizer.Replace(self.characterRename, self.skillTreeChoice)
         for btn in (self.btnNew, self.btnCopy, self.btnRename, self.btnDelete):
             btn.Show()
-            self.navSizer.Add(btn, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 2)
 
-        self.navSizer.Remove(self.btnSave)
         self.btnSave.Hide()
         self.navSizer.Layout()
         selection = self.skillTreeChoice.GetCurrentSelection()
