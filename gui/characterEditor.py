@@ -91,10 +91,10 @@ class CharacterEditor(wx.Frame):
         self.viewsNBContainer = wx.Notebook(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, 0)
 
         self.sview = SkillTreeView(self.viewsNBContainer)
-        self.iview = ImplantsTreeView(self.viewsNBContainer)
+        #self.iview = ImplantsTreeView(self.viewsNBContainer)
         #=======================================================================
         # RC2
-        self.iview.Show(False)
+        #self.iview.Show(False)
         #=======================================================================
         self.aview = APIView(self.viewsNBContainer)
 

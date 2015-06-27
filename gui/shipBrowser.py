@@ -1427,9 +1427,6 @@ class FitItem(SFItem.SFBrowserItem):
 
         self.deleted = False
 
-        # @todo: replace all getActiveFit() in class with this variable and test
-        self.activeFit = self.mainFrame.getActiveFit()
-
         if shipID:
             self.shipBmp = bitmapLoader.getBitmap(str(shipID),"ships")
 
@@ -1441,19 +1438,6 @@ class FitItem(SFItem.SFBrowserItem):
 
         # see GH issue #62
         if self.fitBooster is None: self.fitBooster = False
-
-        # access these by index based on toggle for booster fit
-
-        self.fitMenu = wx.Menu()
-        self.toggleItem = self.fitMenu.Append(-1, "Booster Fit", kind=wx.ITEM_CHECK)
-        self.fitMenu.Check(self.toggleItem.GetId(), self.fitBooster)
-        self.Bind(wx.EVT_MENU, self.OnPopupItemSelected, self.toggleItem)
-
-        if self.activeFit:
-            # If there is an active fit, get menu for setting individual boosters
-            self.fitMenu.AppendSeparator()
-            boosterMenu = self.mainFrame.additionsPane.gangPage.FitDNDPopupMenu
-            self.fitMenu.AppendMenu(wx.ID_ANY, 'Set Booster', boosterMenu)
 
         self.boosterBmp = bitmapLoader.getBitmap("fleet_fc_small", "icons")
         self.copyBmp    = bitmapLoader.getBitmap("fit_add_small", "icons")
@@ -1531,14 +1515,12 @@ class FitItem(SFItem.SFBrowserItem):
 
         self.Bind(wx.EVT_RIGHT_UP, self.OnContextMenu)
 
-    def OnPopupItemSelected(self, event):
-        ''' Fires when fit menu item is selected '''
-        # currently only have one menu option (toggle booster)
+    def OnToggleBooster(self, event):
         sFit = service.Fit.getInstance()
         sFit.toggleBoostFit(self.fitID)
         self.fitBooster = not self.fitBooster
         self.boosterBtn.Show(self.fitBooster)
-        self.fitMenu.Check(self.toggleItem.GetId(), self.fitBooster)
+        self.Refresh()
         wx.PostEvent(self.mainFrame, BoosterListUpdated())
         event.Skip()
 
@@ -1546,9 +1528,23 @@ class FitItem(SFItem.SFBrowserItem):
         ''' Handles context menu for fit. Dragging is handled by MouseLeftUp() '''
         pos = wx.GetMousePosition()
         pos = self.ScreenToClient(pos)
+
         # Even though we may not select a booster, automatically set this so that the fleet pane knows which fit we're applying
         self.mainFrame.additionsPane.gangPage.draggedFitID = self.fitID
-        self.PopupMenu(self.fitMenu, pos)
+
+        menu = wx.Menu()
+        toggleItem = menu.Append(self.toggleBoosterID, "Booster Fit", kind=wx.ITEM_CHECK)
+        menu.Check(toggleItem.GetId(), self.fitBooster)
+
+        self.Bind(wx.EVT_MENU, self.OnToggleBooster, toggleItem)
+
+        if self.mainFrame.getActiveFit():
+            # If there is an active fit, get menu for setting individual boosters
+            menu.AppendSeparator()
+            boosterMenu = self.mainFrame.additionsPane.gangPage.FitDNDPopupMenu
+            menu.AppendSubMenu(boosterMenu, 'Set Booster')
+
+        self.PopupMenu(boosterMenu, pos)
 
         event.Skip()
 
