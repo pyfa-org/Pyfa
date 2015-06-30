@@ -233,10 +233,14 @@ class HandledImplantBoosterList(HandledList):
         self.__slotCache = {}
 
     def append(self, implant):
-        if self.__slotCache.has_key(implant.slot):
-            raise ValueError("Implant/Booster slot already in use, remove the old one first or set replace = True")
-        self.__slotCache[implant.slot] = implant
-        HandledList.append(self, implant)
+        try:
+            if self.__slotCache.has_key(implant.slot):
+                raise ValueError("Implant/Booster slot already in use, remove the old one first or set replace = True")
+            self.__slotCache[implant.slot] = implant
+            HandledList.append(self, implant)
+        except:
+            # if anything goes wrong, simply remove the item
+            eos.db.remove(implant)
 
     def remove(self, implant):
         HandledList.remove(self, implant)

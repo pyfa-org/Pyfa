@@ -46,9 +46,13 @@ class Booster(HandledItem, ItemAttrShortcut):
 
     def __fetchItemInfo(self):
         import eos.db
-        self.__item = eos.db.getItem(self.itemID)
-        self.__slot = self.__calculateSlot(self.__item)
-        self.build()
+        item = eos.db.getItem(self.itemID)
+        if item:
+            self.__item = item
+            self.__slot = self.__calculateSlot(self.__item)
+            self.build()
+        else:
+            raise ValueError("Invalid item as Booster:", self.itemID)
 
     def iterSideEffects(self):
         return self.__sideEffects.__iter__()
