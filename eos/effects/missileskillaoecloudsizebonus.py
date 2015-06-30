@@ -7,6 +7,7 @@
 type = "passive"
 def handler(fit, container, context):
     level = container.level if "skill" in context else 1
+    penalize = False if "skill" in context or "implant" in context else True
     fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill("Missile Launcher Operation"),
                                     "aoeCloudSize", container.getModifiedItemAttr("aoeCloudSizeBonus") * level,
-                                    stackingPenalties = False)
+                                    stackingPenalties=penalize)

@@ -16,7 +16,7 @@ saveInRoot = False
 version = "1.12.1"
 tag = "git"
 expansionName = "Singularity"
-expansionVersion = "908326"
+expansionVersion = "910808"
 evemonMinVersion = "4081"
 
 # Database version (int ONLY)
