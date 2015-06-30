@@ -398,8 +398,11 @@ class Fit(object):
             if m.isValidState(State.ACTIVE):
                 m.state = State.ACTIVE
 
+            # As some items may affect state-limiting attributes of the ship, calculate new attributes first
             self.recalc(fit)
+            # Then, check states of all modules and change where needed. This will recalc if needed
             self.checkStates(fit, m)
+
             fit.fill()
             eos.db.commit()
 
@@ -857,7 +860,10 @@ class Fit(object):
             if drone.amountActive > 0 and not drone.canBeApplied(fit):
                 drone.amountActive = 0
                 changed = True
-        return changed
+
+        # If any state was changed, recalculate attributes again
+        if changed:
+            self.recalc(fit)
 
     def toggleModulesState(self, fitID, base, modules, click):
         proposedState = self.__getProposedState(base, click)
@@ -873,11 +879,8 @@ class Fit(object):
 
         # As some items may affect state-limiting attributes of the ship, calculate new attributes first
         self.recalc(fit)
-        # Then, check states of all modules and change where needed
-        changed = self.checkStates(fit, base)
-        # If any state was changed, recalulate attributes again
-        if changed is True:
-            self.recalc(fit)
+        # Then, check states of all modules and change where needed. This will recalc if needed
+        self.checkStates(fit, base)
 
     # Old state : New State
     localMap = {State.OVERHEATED: State.ACTIVE,
@@ -922,5 +925,5 @@ class Fit(object):
     def recalc(self, fit, withBoosters=False):
         if fit.factorReload is not self.serviceFittingOptions["useGlobalForceReload"]:
             fit.factorReload = self.serviceFittingOptions["useGlobalForceReload"]
-        fit.clear()
+        fit.clear() 
         fit.calculateModifiedAttributes(withBoosters=withBoosters, dirtyStorage=self.dirtyFitIDs)
