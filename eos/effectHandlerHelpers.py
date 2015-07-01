@@ -115,10 +115,14 @@ class HandledModuleList(HandledList):
             del self[emptyPosition]
             mod.position = emptyPosition
             HandledList.insert(self, emptyPosition, mod)
+            if mod.isInvalid:
+                self.remove(mod)
             return
 
         mod.position = len(self)
         HandledList.append(self, mod)
+        if mod.isInvalid:
+            self.remove(mod)
 
     def insert(self, index, mod):
         mod.position = index
