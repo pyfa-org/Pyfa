@@ -272,8 +272,27 @@ class HandledImplantBoosterList(HandledList):
 
 class HandledProjectedModList(HandledList):
     def append(self, proj):
+        if proj.isInvalid:
+            # we must include it before we remove it. doing it this way ensures
+            # rows and relationships in databse are removed as well
+            HandledList.append(self, proj)
+            self.remove(proj)
+
         proj.projected = True
+        isSystemEffect = proj.item.group.name == "Effect Beacon"
+
+        if isSystemEffect:
+            # remove other system effects - only 1 per fit plz
+            oldEffect = next((m for m in self if m.item.group.name == "Effect Beacon"), None)
+
+            if oldEffect:
+                self.remove(oldEffect)
+
         HandledList.append(self, proj)
+
+        # Remove non-projectable modules
+        if not proj.item.isType("projected") and not isSystemEffect:
+            self.remove(proj)
 
 class HandledProjectedDroneList(HandledDroneList):
     def append(self, proj):
