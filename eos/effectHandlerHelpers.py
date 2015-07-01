@@ -167,13 +167,11 @@ class HandledDroneList(HandledList):
         HandledList.append(self, drone)
 
         if drone.isInvalid:
+            # @todo figure out why this DOES NOT remove drone from database
             self.remove(drone)
 
 
 class HandledCargoList(HandledList):
-    # shameless copy of HandledDroneList
-    # I have no idea what this does, but I needed it
-    # @todo: investigate this
     def find(self, item):
         for d in self:
             if d.item == item:
@@ -184,32 +182,12 @@ class HandledCargoList(HandledList):
             return d
 
     def append(self, cargo):
-        list.append(self, cargo)
+        HandledList.append(self, cargo)
 
-    def remove(self, cargo):
-        HandledList.remove(self, cargo)
+        if cargo.isInvalid:
+            # @todo figure out why this DOES NOT remove the cargo from database
+            self.remove(cargo)
 
-    def appendItem(self, item, qty = 1):
-        if qty < 1: ValueError("Amount of cargo to add should be >= 1")
-        d = self.findFirst(item)
-
-        if d is None:
-            d = eos.types.Cargo(item)
-            self.append(d)
-
-        d.qty += qty
-        return d
-
-    def removeItem(self, item, qty):
-        if qty < 1: ValueError("Amount of cargo to remove should be >= 1")
-        d = self.findFirst(item)
-        if d is None: return
-        d.qty -= qty
-        if d.qty <= 0:
-            self.remove(d)
-            return None
-
-        return d
 
 class HandledImplantBoosterList(HandledList):
     def __init__(self):

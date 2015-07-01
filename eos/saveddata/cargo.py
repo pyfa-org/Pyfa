@@ -20,40 +20,47 @@
 from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut, ChargeAttrShortcut
 from eos.effectHandlerHelpers import HandledItem, HandledCharge
 from sqlalchemy.orm import validates, reconstructor
+import eos.db
 
-# Cargo class copied from Implant class and hacked to make work. \o/
-# @todo: clean me up, Scotty
+
 class Cargo(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     def __init__(self, item):
+        """Initialize cargo from the program"""
         self.__item = item
-        self.itemID = item.ID
+        self.__invalid = False
+        self.itemID = item.ID if item is not None else None
         self.amount = 0
         self.__itemModifiedAttributes = ModifiedAttributeDict()
-        self.__itemModifiedAttributes.original = self.item.attributes
+        self.__itemModifiedAttributes.original = item.attributes
 
     @reconstructor
     def init(self):
+        """Initialize cargo from the database and validate"""
         self.__item = None
-
-    def __fetchItemInfo(self):
-        import eos.db
-        self.__item = eos.db.getItem(self.itemID)
+        self.__invalid = False
         self.__itemModifiedAttributes = ModifiedAttributeDict()
-        self.__itemModifiedAttributes.original = self.__item.attributes
+
+        if self.itemID:
+            # if item does not exist, set invalid
+            item = eos.db.getItem(self.itemID)
+            if item is None:
+                self.__invalid = True
+            self.__item = item
+
+        if self.__item:
+            self.__itemModifiedAttributes.original = self.__item.attributes
 
     @property
     def itemModifiedAttributes(self):
-        if self.__item is None:
-            self.__fetchItemInfo()
-
         return self.__itemModifiedAttributes
 
     @property
-    def item(self):
-        if self.__item is None:
-            self.__fetchItemInfo()
+    def isInvalid(self):
+        return self.__invalid
 
+    @property
+    def item(self):
         return self.__item
 
     def clear(self):
