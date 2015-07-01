@@ -61,7 +61,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     @reconstructor
     def init(self):
-        """Initialize a module form the database and validate"""
+        """Initialize a module from the database and validate"""
         self.__item = None
         self.__charge = None
         self.__invalid = False
@@ -128,9 +128,11 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     @property
     def hardpoint(self):
         return self.__hardpoint
+
     @property
     def isInvalid(self):
         return self.__invalid
+
     @property
     def numCharges(self):
         if self.charge is None:
@@ -481,7 +483,6 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     def getValidCharges(self):
         validCharges = set()
-        import eos.db
         for i in range(5):
             itemChargeGroup = self.getModifiedItemAttr('chargeGroup' + str(i))
             if itemChargeGroup is not None:

@@ -20,81 +20,76 @@
 from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut, ChargeAttrShortcut
 from eos.effectHandlerHelpers import HandledItem, HandledCharge
 from sqlalchemy.orm import validates, reconstructor
+import eos.db
 
 class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     DAMAGE_TYPES = ("em", "kinetic", "explosive", "thermal")
     MINING_ATTRIBUTES = ("miningAmount",)
 
     def __init__(self, item):
-        if item.category.name != "Drone":
-            raise ValueError("Passed item is not a drone")
-
+        """Initialize a drone from the program"""
         self.__item = item
-        self.__charge = None
-        self.itemID = item.ID
+        self.__invalid = False
+        self.itemID = item.ID if item is not None else None
         self.amount = 0
         self.amountActive = 0
-        self.__dps = None
-        self.__volley = None
-        self.__miningyield = None
         self.projected = False
-        self.__itemModifiedAttributes = ModifiedAttributeDict()
-        self.itemModifiedAttributes.original = self.item.attributes
+        self.build()
+
 
     @reconstructor
     def init(self):
+        """Initialize a drone from the database and validate"""
+        self.__item = None
+        self.__invalid = False
+
+        if self.itemID:
+            # if item does not exist, set invalid
+            item = eos.db.getItem(self.itemID)
+            if item is None:
+                self.__invalid = True
+            self.__item = item
+
+        self.build()
+
+    def build(self):
+        if self.__item and self.__item.category.name != "Drone":
+            self.__invalid = True
+
+        self.__charge = None
         self.__dps = None
         self.__volley = None
         self.__miningyield = None
-        self.__item = None
-        self.__charge = None
-
-    def __fetchItemInfo(self):
-        import eos.db
-        self.__item = eos.db.getItem(self.itemID)
-        self.__charge = None
         self.__itemModifiedAttributes = ModifiedAttributeDict()
-        self.__itemModifiedAttributes.original = self.item.attributes
-
-    def __fetchChargeInfo(self):
-        chargeID = self.getModifiedItemAttr("entityMissileTypeID")
         self.__chargeModifiedAttributes = ModifiedAttributeDict()
-        if chargeID is not None:
-            import eos.db
-            charge = eos.db.getItem(int(chargeID))
-            self.__charge = charge
 
-            self.chargeModifiedAttributes.original = charge.attributes
-        else:
-            self.__charge = 0
+        if self.__item:
+            self.__itemModifiedAttributes.original = self.__item.attributes
+            chargeID = self.getModifiedItemAttr("entityMissileTypeID")
+            if chargeID is not None:
+                charge = eos.db.getItem(int(chargeID))
+                self.__charge = charge
+                self.__chargeModifiedAttributes.original = charge.attributes
 
     @property
     def itemModifiedAttributes(self):
-        if self.__item is None:
-            self.__fetchItemInfo()
-
         return self.__itemModifiedAttributes
 
     @property
     def chargeModifiedAttributes(self):
-        if self.__charge is None:
-            self.__fetchChargeInfo()
-
         return self.__chargeModifiedAttributes
 
     @property
-    def item(self):
-        if self.__item is None:
-            self.__fetchItemInfo()
+    def isInvalid(self):
+        return self.__invalid
 
+    @property
+    def item(self):
         return self.__item
 
     @property
     def charge(self):
-        if self.__charge is None:
-            self.__fetchChargeInfo()
-
-        return self.__charge if self.__charge != 0 else None
+        return self.__charge
 
     @property
     def dealsDamage(self):
