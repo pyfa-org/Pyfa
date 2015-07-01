@@ -164,32 +164,11 @@ class HandledDroneList(HandledList):
             return d
 
     def append(self, drone):
-        list.append(self, drone)
+        HandledList.append(self, drone)
 
-    def remove(self, drone):
-        HandledList.remove(self, drone)
+        if drone.isInvalid:
+            self.remove(drone)
 
-    def appendItem(self, item, amount = 1):
-        if amount < 1: ValueError("Amount of drones to add should be >= 1")
-        d = self.findFirst(item)
-
-        if d is None:
-            d = eos.types.Drone(item)
-            self.append(d)
-
-        d.amount += amount
-        return d
-
-    def removeItem(self, item, amount):
-        if amount < 1: ValueError("Amount of drones to remove should be >= 1")
-        d = self.findFirst(item)
-        if d is None: return
-        d.amount -= amount
-        if d.amount <= 0:
-            self.remove(d)
-            return None
-
-        return d
 
 class HandledCargoList(HandledList):
     # shameless copy of HandledDroneList
