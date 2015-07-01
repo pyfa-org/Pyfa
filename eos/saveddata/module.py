@@ -84,7 +84,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     def build(self):
         """Builds internal module variables from both init's"""
-        if self.__item and self.__item.category.name != "Module":
+        if self.__item and self.__item.category.name != "Module" and self.__item.group.name != "Effect Beacon":
             self.__invalid = True
         if self.__charge and self.__charge.category.name != "Charge":
             self.__charge = None
