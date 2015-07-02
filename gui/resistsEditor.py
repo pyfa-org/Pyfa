@@ -342,7 +342,6 @@ class ResistsEditorDlg(wx.Dialog):
         self.patternChanged()
 
     def showInput(self, bool):
-        print self.namePicker.IsShown(), bool
         if bool and not self.namePicker.IsShown():
             self.ccResists.Hide()
             self.namePicker.Show()
