@@ -27,9 +27,7 @@ from eos.db.saveddata.drone import drones_table
 from eos.db.saveddata.cargo import cargo_table
 from eos.db.saveddata.implant import fitImplants_table
 from eos.types import Fit, Module, User, Booster, Drone, Cargo, Implant, Character, DamagePattern, TargetResists
-from eos.effectHandlerHelpers import HandledModuleList, HandledDroneList, \
-HandledImplantBoosterList, HandledProjectedModList, HandledProjectedDroneList, \
-HandledProjectedFitList, HandledCargoList
+from eos.effectHandlerHelpers import *
 
 fits_table = Table("fits", saveddata_meta,
                          Column("ID", Integer, primary_key = True),
@@ -56,9 +54,9 @@ mapper(Fit, fits_table,
                                                 primaryjoin = and_(modules_table.c.fitID == fits_table.c.ID, modules_table.c.projected == True)),
                      "owner" : relation(User, backref = "fits"),
                      "_Fit__boosters" : relation(Booster, collection_class = HandledImplantBoosterList, cascade='all, delete, delete-orphan', single_parent=True),
-                     "_Fit__drones" : relation(Drone, collection_class = HandledDroneList, cascade='all, delete, delete-orphan', single_parent=True,
+                     "_Fit__drones" : relation(Drone, collection_class = HandledDroneCargoList, cascade='all, delete, delete-orphan', single_parent=True,
                                                primaryjoin = and_(drones_table.c.fitID == fits_table.c.ID, drones_table.c.projected == False)),
-                     "_Fit__cargo" : relation(Cargo, collection_class = HandledCargoList, cascade='all, delete, delete-orphan', single_parent=True,
+                     "_Fit__cargo" : relation(Cargo, collection_class = HandledDroneCargoList, cascade='all, delete, delete-orphan', single_parent=True,
                                                primaryjoin = and_(cargo_table.c.fitID == fits_table.c.ID)),
                      "_Fit__projectedDrones" : relation(Drone, collection_class = HandledProjectedDroneList, cascade='all, delete, delete-orphan', single_parent=True,
                                                primaryjoin = and_(drones_table.c.fitID == fits_table.c.ID, drones_table.c.projected == True)),

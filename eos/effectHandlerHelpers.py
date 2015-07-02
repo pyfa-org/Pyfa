@@ -17,6 +17,7 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 #===============================================================================
 
+from sqlalchemy.orm.attributes import flag_modified
 import eos.db
 import eos.types
 
@@ -153,41 +154,23 @@ class HandledModuleList(HandledList):
             if mod.getModifiedItemAttr("subSystemSlot") == slot:
                 del self[i]
 
-class HandledDroneList(HandledList):
+class HandledDroneCargoList(HandledList):
     def find(self, item):
-        for d in self:
-            if d.item == item:
-                yield d
+        for o in self:
+            if o.item == item:
+                yield o
 
     def findFirst(self, item):
-        for d in self.find(item):
-            return d
+        for o in self.find(item):
+            return o
 
-    def append(self, drone):
-        HandledList.append(self, drone)
+    def append(self, obj):
+        HandledList.append(self, obj)
 
-        if drone.isInvalid:
-            # @todo figure out why this DOES NOT remove drone from database
-            self.remove(drone)
-
-
-class HandledCargoList(HandledList):
-    def find(self, item):
-        for d in self:
-            if d.item == item:
-                yield d
-
-    def findFirst(self, item):
-        for d in self.find(item):
-            return d
-
-    def append(self, cargo):
-        HandledList.append(self, cargo)
-
-        if cargo.isInvalid:
-            # @todo figure out why this DOES NOT remove the cargo from database
-            self.remove(cargo)
-
+        if obj.isInvalid:
+            # we must flag it as modified, otherwise it will not be removed from the database
+            flag_modified(obj, "itemID")
+            self.remove(obj)
 
 class HandledImplantBoosterList(HandledList):
     def __init__(self):
@@ -251,7 +234,7 @@ class HandledProjectedModList(HandledList):
         if not proj.item.isType("projected") and not isSystemEffect:
             self.remove(proj)
 
-class HandledProjectedDroneList(HandledDroneList):
+class HandledProjectedDroneList(HandledDroneCargoList):
     def append(self, proj):
         proj.projected = True
         HandledList.append(self, proj)
