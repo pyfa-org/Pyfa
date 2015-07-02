@@ -20,6 +20,7 @@
 from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut
 from eos.effectHandlerHelpers import HandledItem
 from eos.saveddata.mode import Mode
+import eos.db
 
 class Ship(ItemAttrShortcut, HandledItem):
     def __init__(self, item):
@@ -28,33 +29,18 @@ class Ship(ItemAttrShortcut, HandledItem):
             raise ValueError('Passed item "%s" (category: (%s)) is not under Ship category'%(item.name, item.category.name))
 
         self.__item = item
+        self.__modeItems = self.__getModeItems()
         self.__itemModifiedAttributes = ModifiedAttributeDict()
-        self.__modeItems = self._getModeItems()
-        if not isinstance(item, int):
-            self.__buildOriginal()
+        self.__itemModifiedAttributes.original = self.item.attributes
 
         self.commandBonus = 0
 
-    def __fetchItemInfo(self):
-        import eos.db
-        self.__item = eos.db.getItem(self.__item)
-        self.__buildOriginal()
-
-    def __buildOriginal(self):
-        self.__itemModifiedAttributes.original = self.item.attributes
-
     @property
     def item(self):
-        if isinstance(self.__item, int):
-            self.__fetchItemInfo()
-
         return self.__item
 
     @property
     def itemModifiedAttributes(self):
-        if isinstance(self.__item, int):
-            self.__fetchItemInfo()
-
         return self.__itemModifiedAttributes
 
     def clear(self):
@@ -96,21 +82,17 @@ class Ship(ItemAttrShortcut, HandledItem):
     def modes(self):
         return [Mode(item) for item in self.__modeItems] if self.__modeItems else None
 
-    def _getModeItems(self):
+    def __getModeItems(self):
         """
         Returns a list of valid mode items for ship. Note that this returns the
         valid Item objects, not the Mode objects. Returns None if not a
         t3 dessy
         """
-        # @todo: is there a better way to determine this that isn't hardcoded groupIDs?
-        if self.item.groupID != 1305:
+        if self.item.group.name != "Tactical Destroyer":
             return None
 
-        modeGroupID = 1306
-        import eos.db
-
         items = []
-        g = eos.db.getGroup(modeGroupID, eager=("items.icon", "items.attributes"))
+        g = eos.db.getGroup("Ship Modifiers", eager=("items.icon", "items.attributes"))
         for item in g.items:
             # Rely on name detection because race is not reliable
             if item.name.lower().startswith(self.item.name.lower()):
