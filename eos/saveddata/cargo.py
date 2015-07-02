@@ -23,7 +23,7 @@ from sqlalchemy.orm import validates, reconstructor
 import eos.db
 
 
-class Cargo(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
+class Cargo(HandledItem, ItemAttrShortcut):
 
     def __init__(self, item):
         """Initialize cargo from the program"""

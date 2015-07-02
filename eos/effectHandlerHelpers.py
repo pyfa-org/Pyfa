@@ -102,6 +102,11 @@ class HandledList(list):
             except AttributeError:
                 pass
 
+    def remove(self, thing):
+        # We must flag it as modified, otherwise it not be removed from the database
+        flag_modified(thing, "itemID")
+        list.remove(self, thing)
+
 class HandledModuleList(HandledList):
     def append(self, mod):
         emptyPosition = float("Inf")
@@ -168,8 +173,6 @@ class HandledDroneCargoList(HandledList):
         HandledList.append(self, thing)
 
         if thing.isInvalid:
-            # we must flag it as modified, otherwise it will not be removed from the database
-            flag_modified(thing, "itemID")
             self.remove(thing)
 
 class HandledImplantBoosterList(HandledList):
@@ -184,11 +187,6 @@ class HandledImplantBoosterList(HandledList):
             self.remove(oldObj)
 
         HandledList.append(self, thing)
-
-    def remove(self, thing):
-        # We must flag it as modified, otherwise it not be removed from the database
-        flag_modified(thing, "itemID")
-        HandledList.remove(self, thing)
 
 class HandledProjectedModList(HandledList):
     def append(self, proj):
