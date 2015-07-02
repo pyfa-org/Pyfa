@@ -20,46 +20,54 @@
 from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut
 from eos.effectHandlerHelpers import HandledItem
 from sqlalchemy.orm import validates, reconstructor
+import eos.db
 
 class Implant(HandledItem, ItemAttrShortcut):
     def __init__(self, item):
-        self.__slot = self.__calculateSlot(item)
         self.__item = item
-        self.itemID = item.ID
+        self.__invalid = False
+        self.itemID = item.ID if item is not None else None
         self.active = True
-        self.__itemModifiedAttributes = ModifiedAttributeDict()
-        self.__itemModifiedAttributes.original = self.item.attributes
+        self.build()
 
     @reconstructor
     def init(self):
         self.__item = None
+        self.__invalid = False
 
-    def __fetchItemInfo(self):
-        import eos.db
-        self.__item = eos.db.getItem(self.itemID)
+        if self.itemID:
+            # if item does not exist, set invalid
+            item = eos.db.getItem(self.itemID)
+            if item is None:
+                self.__invalid = True
+            self.__item = item
+
+        self.build()
+
+    def build(self):
+        if self.__item and self.__item.category.name != "Implant":
+            self.__invalid = True
+
         self.__itemModifiedAttributes = ModifiedAttributeDict()
-        self.__itemModifiedAttributes.original = self.__item.attributes
-        self.__slot = self.__calculateSlot(self.__item)
+
+        if self.__item:
+            self.__itemModifiedAttributes.original = self.__item.attributes
+            self.__slot = self.__calculateSlot(self.__item)
 
     @property
     def itemModifiedAttributes(self):
-        if self.__item is None:
-            self.__fetchItemInfo()
-
         return self.__itemModifiedAttributes
 
     @property
-    def slot(self):
-        if self.__item is None:
-            self.__fetchItemInfo()
+    def isInvalid(self):
+        return self.__invalid
 
+    @property
+    def slot(self):
         return self.__slot
 
     @property
     def item(self):
-        if self.__item is None:
-            self.__fetchItemInfo()
-
         return self.__item
 
     def __calculateSlot(self, item):

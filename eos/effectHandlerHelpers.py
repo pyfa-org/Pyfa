@@ -164,57 +164,37 @@ class HandledDroneCargoList(HandledList):
         for o in self.find(item):
             return o
 
-    def append(self, obj):
-        HandledList.append(self, obj)
+    def append(self, thing):
+        HandledList.append(self, thing)
 
-        if obj.isInvalid:
+        if thing.isInvalid:
             # we must flag it as modified, otherwise it will not be removed from the database
-            flag_modified(obj, "itemID")
-            self.remove(obj)
+            flag_modified(thing, "itemID")
+            self.remove(thing)
 
 class HandledImplantBoosterList(HandledList):
-    def __init__(self):
-        self.__slotCache = {}
+    def append(self, thing):
+        if thing.isInvalid:
+            HandledList.append(self, thing)
+            self.remove(thing)
 
-    def append(self, implant):
-        try:
-            if self.__slotCache.has_key(implant.slot):
-                raise ValueError("Implant/Booster slot already in use, remove the old one first or set replace = True")
-            self.__slotCache[implant.slot] = implant
-            HandledList.append(self, implant)
-        except:
-            # if anything goes wrong, simply remove the item
-            eos.db.remove(implant)
+        # if needed, remove booster that was occupying slot
+        oldObj = next((m for m in self if m.slot == thing.slot), None)
+        if oldObj:
+            self.remove(oldObj)
 
-    def remove(self, implant):
-        HandledList.remove(self, implant)
-        del self.__slotCache[implant.slot]
-        # While we deleted this implant, in edge case seems like not all references
-        # to it are removed and object still lives in session; forcibly remove it,
-        # or otherwise when adding the same booster twice booster's table (typeID, fitID)
-        # constraint will report database integrity error
-        # TODO: make a proper fix, probably by adjusting fit-boosters sqlalchemy relationships
-        eos.db.remove(implant)
+        HandledList.append(self, thing)
 
-    def freeSlot(self, slot):
-        if hasattr(slot, "slot"):
-            slot = slot.slot
-
-        try:
-            implant = self.__slotCache[slot]
-        except KeyError:
-            return False
-        try:
-            self.remove(implant)
-        except ValueError:
-            return False
-        return True
+    def remove(self, thing):
+        # We must flag it as modified, otherwise it not be removed from the database
+        flag_modified(thing, "itemID")
+        HandledList.remove(self, thing)
 
 class HandledProjectedModList(HandledList):
     def append(self, proj):
         if proj.isInvalid:
             # we must include it before we remove it. doing it this way ensures
-            # rows and relationships in databse are removed as well
+            # rows and relationships in database are removed as well
             HandledList.append(self, proj)
             self.remove(proj)
 

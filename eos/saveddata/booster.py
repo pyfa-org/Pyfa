@@ -20,39 +20,48 @@
 from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut
 from eos.effectHandlerHelpers import HandledItem
 from sqlalchemy.orm import reconstructor, validates
+import eos.db
 
 class Booster(HandledItem, ItemAttrShortcut):
     def __init__(self, item):
-        self.__slot = self.__calculateSlot(item)
-        self.itemID = item.ID
         self.__item = item
+        self.__invalid = False
+        self.itemID = item.ID if item is not None else None
         self.active = True
         self.build()
 
     @reconstructor
     def init(self):
+        """Initialize a booster from the database and validate"""
         self.__item = None
+        self.__invalid = False
+
+        if self.itemID:
+            # if item does not exist, set invalid
+            item = eos.db.getItem(self.itemID)
+            if item is None:
+                self.__invalid = True
+            self.__item = item
+
+        self.build()
 
     def build(self):
-        self.__itemModifiedAttributes = ModifiedAttributeDict()
-        self.__itemModifiedAttributes.original = self.__item.attributes
-        self.__sideEffects = []
-        for effect in self.item.effects.itervalues():
-            if effect.isType("boosterSideEffect"):
-                s = SideEffect(self)
-                s.effect = effect
-                s.active = effect.ID in self.__activeSideEffectIDs
-                self.__sideEffects.append(s)
+        if self.__item and self.__item.group.name != "Booster":
+            self.__invalid = True
 
-    def __fetchItemInfo(self):
-        import eos.db
-        item = eos.db.getItem(self.itemID)
-        if item:
-            self.__item = item
+        self.__itemModifiedAttributes = ModifiedAttributeDict()
+        self.__sideEffects = []
+
+        if self.__item:
+            self.__itemModifiedAttributes.original = self.__item.attributes
             self.__slot = self.__calculateSlot(self.__item)
-            self.build()
-        else:
-            raise ValueError("Invalid item as Booster:", self.itemID)
+
+            for effect in self.__item.effects.itervalues():
+                if effect.isType("boosterSideEffect"):
+                    s = SideEffect(self)
+                    s.effect = effect
+                    s.active = effect.ID in self.__activeSideEffectIDs
+                    self.__sideEffects.append(s)
 
     def iterSideEffects(self):
         return self.__sideEffects.__iter__()
@@ -66,23 +75,18 @@ class Booster(HandledItem, ItemAttrShortcut):
 
     @property
     def itemModifiedAttributes(self):
-        if self.__item is None:
-            self.__fetchItemInfo()
-
         return self.__itemModifiedAttributes
 
     @property
-    def slot(self):
-        if self.__item is None:
-            self.__fetchItemInfo()
+    def isInvalid(self):
+        return self.__invalid
 
+    @property
+    def slot(self):
         return self.__slot
 
     @property
     def item(self):
-        if self.__item is None:
-            self.__fetchItemInfo()
-
         return self.__item
 
     def __calculateSlot(self, item):

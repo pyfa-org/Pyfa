@@ -274,7 +274,6 @@ class Fit(object):
         except ValueError:
             return False
 
-        fit.implants.freeSlot(implant)
         fit.implants.append(implant)
         self.recalc(fit)
         return True
@@ -300,7 +299,6 @@ class Fit(object):
         except ValueError:
             return False
 
-        fit.boosters.freeSlot(booster)
         fit.boosters.append(booster)
         self.recalc(fit)
         return True
