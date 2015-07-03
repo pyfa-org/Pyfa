@@ -19,10 +19,6 @@ expansionName = "Singularity"
 expansionVersion = "910808"
 evemonMinVersion = "4081"
 
-# Database version (int ONLY)
-# Increment every time we need to flag for user database upgrade/modification
-dbversion = 7
-
 pyfaPath = None
 savePath = None
 staticPath = None

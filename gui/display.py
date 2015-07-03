@@ -250,7 +250,7 @@ class Display(wx.ListCtrl):
                 newText = col.getText(st)
                 if newText is False:
                     col.delayedText(st, self, colItem)
-                    newText = ""
+                    newText = u"\u21bb"
 
                 newImageId = col.getImageId(st)
 
