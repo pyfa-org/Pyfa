@@ -103,10 +103,7 @@ class PriceViewFull(StatsView):
         shipPrice = prices[0].price
         modPrice = sum(map(lambda p: p.price or 0, prices[1:]))
 
-        if shipPrice is not None:
-            self.labelEMStatus.SetLabel("")
-        else:
-            shipPrice = 0
+        self.labelEMStatus.SetLabel("")
 
         if self._cachedShip != shipPrice:
             self.labelPriceShip.SetLabel("%s ISK" % formatAmount(shipPrice, 3, 3, 9, currency=True))

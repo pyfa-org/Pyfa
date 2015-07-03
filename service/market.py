@@ -706,10 +706,6 @@ class Market():
 
             self.priceCache[typeID] = price
 
-        if not price.isValid:
-            # if the price has expired
-            price.price = None
-
         return price
 
     def getPricesNow(self, typeIDs):

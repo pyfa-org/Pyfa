@@ -39,7 +39,7 @@ class Price(ViewColumn):
         sMkt = service.Market.getInstance()
         price = sMkt.getPriceNow(stuff.item.ID)
 
-        if not price or not price.price:
+        if not price or not price.price or not price.isValid:
             return False
 
         price = price.price  # Set new price variable with what we need
@@ -52,9 +52,13 @@ class Price(ViewColumn):
     def delayedText(self, mod, display, colItem):
         sMkt = service.Market.getInstance()
         def callback(item):
-            price = sMkt.getPriceNow(item.ID).price
-            colItem.SetText(formatAmount(price, 3, 3, 9, currency=True) if price else "")
-            display.SetItem(colItem)    
+            price = sMkt.getPriceNow(item.ID)
+            text = formatAmount(price.price, 3, 3, 9, currency=True) if price.price else ""
+            if price.failed: text += " (!)"
+            colItem.SetText(text)
+
+            display.SetItem(colItem)
+
 
         sMkt.waitForPrice(mod.item, callback)
 
