@@ -1,6 +1,7 @@
 import config
 import shutil
 import time
+import re
 import os
 
 def getVersion(db):
@@ -10,8 +11,13 @@ def getVersion(db):
 def update(saveddata_engine):
     dbVersion = getVersion(saveddata_engine)
 
-    files = os.listdir(os.path.join(os.path.dirname(__file__), "migrations"))
-    appVersion = len([f for f in files if f.startswith("upgrade")])
+    appVersion = 0
+    for fname in os.listdir(os.path.join(os.path.dirname(__file__), "migrations")):
+        m = re.match("^upgrade(?P<index>\d+)\.py$", fname)
+        if not m:
+            continue
+        index = int(m.group("index"))
+        appVersion = max(appVersion, index)
 
     if dbVersion == appVersion:
         return
@@ -27,10 +33,10 @@ def update(saveddata_engine):
         shutil.copyfile(config.saveDB, toFile)
 
         for version in xrange(dbVersion, appVersion):
-            module = __import__('eos.db.migrations.upgrade%d'%(version+1), fromlist=True)
+            module = __import__("eos.db.migrations.upgrade{}".format(version + 1), fromlist=True)
             upgrade = getattr(module, "upgrade", False)
             if upgrade:
                 upgrade(saveddata_engine)
 
         # when all is said and done, set version to current
-        saveddata_engine.execute('PRAGMA user_version = %d'%appVersion)
+        saveddata_engine.execute("PRAGMA user_version = {}".format(appVersion))
