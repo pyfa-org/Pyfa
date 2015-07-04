@@ -438,6 +438,11 @@ class ItemView(d.Display):
             self.metalvls = sMkt.directAttrRequest(items, attrs)
             # Re-sort stuff
             items.sort(key=self.itemSort)
+
+        for i, item in enumerate(items[:9]):
+            # set shortcut info for first 9 modules
+            item.marketShortcut = i+1
+
         d.Display.refresh(self, items)
 
     def makeReverseMetaMap(self):
