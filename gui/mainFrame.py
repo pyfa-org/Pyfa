@@ -39,7 +39,7 @@ import gui.globalEvents as GE
 from gui import bitmapLoader
 from gui.mainMenuBar import MainMenuBar
 from gui.additionsPane import AdditionsPane
-from gui.marketBrowser import MarketBrowser
+from gui.marketBrowser import MarketBrowser, ItemSelected
 from gui.multiSwitch import MultiSwitch
 from gui.statsPane import StatsPane
 from gui.shipBrowser import ShipBrowser, FitSelected, ImportSelected, Stage3Selected
@@ -423,12 +423,6 @@ class MainFrame(wx.Frame):
         ctabnext = wx.NewId()
         ctabprev = wx.NewId()
 
-        self.additionstab1 = wx.NewId()
-        self.additionstab2 = wx.NewId()
-        self.additionstab3 = wx.NewId()
-        self.additionstab4 = wx.NewId()
-        self.additionstab5 = wx.NewId()
-
         # Close Page
         self.Bind(wx.EVT_MENU, self.CloseCurrentPage, id=self.closePageId)
         self.Bind(wx.EVT_MENU, self.HAddPage, id = self.addPageId)
@@ -436,12 +430,6 @@ class MainFrame(wx.Frame):
         self.Bind(wx.EVT_MENU, self.toggleShipMarket, id = toggleShipMarketId)
         self.Bind(wx.EVT_MENU, self.CTabNext, id = ctabnext)
         self.Bind(wx.EVT_MENU, self.CTabPrev, id = ctabprev)
-
-        self.Bind(wx.EVT_MENU, self.AdditionsTabSelect, id = self.additionstab1)
-        self.Bind(wx.EVT_MENU, self.AdditionsTabSelect, id = self.additionstab2)
-        self.Bind(wx.EVT_MENU, self.AdditionsTabSelect, id = self.additionstab3)
-        self.Bind(wx.EVT_MENU, self.AdditionsTabSelect, id = self.additionstab4)
-        self.Bind(wx.EVT_MENU, self.AdditionsTabSelect, id = self.additionstab5)
 
         actb = [(wx.ACCEL_CTRL, ord('T'), self.addPageId),
                 (wx.ACCEL_CMD, ord('T'), self.addPageId),
@@ -462,40 +450,42 @@ class MainFrame(wx.Frame):
                 (wx.ACCEL_CMD, wx.WXK_TAB, ctabnext),
                 (wx.ACCEL_CMD | wx.ACCEL_SHIFT, wx.WXK_TAB, ctabprev),
 
-                # Ctrl+age(Up/Down)
+                # Ctrl+Page(Up/Down)
                 (wx.ACCEL_CTRL, wx.WXK_PAGEDOWN, ctabnext),
                 (wx.ACCEL_CTRL, wx.WXK_PAGEUP, ctabprev),
                 (wx.ACCEL_CMD, wx.WXK_PAGEDOWN, ctabnext),
-                (wx.ACCEL_CMD, wx.WXK_PAGEUP, ctabprev),
-
-                (wx.ACCEL_CTRL, ord('1'), self.additionstab1),
-                (wx.ACCEL_CTRL, ord('2'), self.additionstab2),
-                (wx.ACCEL_CTRL, ord('3'), self.additionstab3),
-                (wx.ACCEL_CTRL, ord('4'), self.additionstab4),
-                (wx.ACCEL_CTRL, ord('5'), self.additionstab5),
-                (wx.ACCEL_CMD, ord('1'), self.additionstab1),
-                (wx.ACCEL_CMD, ord('2'), self.additionstab2),
-                (wx.ACCEL_CMD, ord('3'), self.additionstab3),
-                (wx.ACCEL_CMD, ord('4'), self.additionstab4),
-                (wx.ACCEL_CMD, ord('5'), self.additionstab5)
+                (wx.ACCEL_CMD, wx.WXK_PAGEUP, ctabprev)
                 ]
+
+        # Ctrl/Cmd+# for addition pane selection
+        self.additionsSelect = []
+        for i in range(0, self.additionsPane.notebook.GetPageCount()):
+            self.additionsSelect.append(wx.NewId())
+            self.Bind(wx.EVT_MENU, self.AdditionsTabSelect, id=self.additionsSelect[i])
+            actb.append((wx.ACCEL_CMD, i+49, self.additionsSelect[i]))
+            actb.append((wx.ACCEL_CTRL, i+49, self.additionsSelect[i]))
+
+        # Alt+1-9 for market item selection
+        self.itemSelect = []
+        for i in range(0, 9):
+            self.itemSelect.append(wx.NewId())
+            self.Bind(wx.EVT_MENU, self.ItemSelect, id = self.itemSelect[i])
+            actb.append((wx.ACCEL_ALT, i + 49, self.itemSelect[i]))
+
         atable = wx.AcceleratorTable(actb)
         self.SetAcceleratorTable(atable)
 
     def AdditionsTabSelect(self, event):
-        selTab = None
-        if event.GetId() == self.additionstab1:
-            selTab = 0
-        if event.GetId() == self.additionstab2:
-            selTab = 1
-        if event.GetId() == self.additionstab3:
-            selTab = 2
-        if event.GetId() == self.additionstab4:
-            selTab = 3
-        if event.GetId() == self.additionstab5:
-            selTab = 4
-        if selTab is not None:
+        selTab = self.additionsSelect.index(event.GetId())
+
+        if selTab <= self.additionsPane.notebook.GetPageCount():
             self.additionsPane.notebook.SetSelection(selTab)
+
+    def ItemSelect(self, event):
+        selItem = self.itemSelect.index(event.GetId())
+
+        if selItem < len(self.marketBrowser.itemView.active):
+            wx.PostEvent(self, ItemSelected(itemID=self.marketBrowser.itemView.active[selItem].ID))
 
     def CTabNext(self, event):
         self.fitMultiSwitch.NextPage()

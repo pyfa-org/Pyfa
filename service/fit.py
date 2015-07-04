@@ -97,7 +97,8 @@ class Fit(object):
             "rackSlots": True,
             "rackLabels": True,
             "compactSkills": True,
-            "showTooltip": True}
+            "showTooltip": True,
+            "showMarketShortcuts": False}
 
         self.serviceFittingOptions = SettingsProvider.getInstance().getSettings(
             "pyfaServiceFittingOptions", serviceFittingDefaultOptions)
@@ -893,7 +894,7 @@ class Fit(object):
                     State.ONLINE: State.ACTIVE}  # Just in case
 
     def __getProposedState(self, mod, click, proposedState=None):
-        if mod.slot in (Slot.RIG, Slot.SUBSYSTEM) or mod.isEmpty:
+        if mod.slot is Slot.SUBSYSTEM or mod.isEmpty:
             return State.ONLINE
 
         currState = mod.state

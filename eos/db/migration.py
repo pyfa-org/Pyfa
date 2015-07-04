@@ -4,13 +4,8 @@ import time
 import re
 import os
 
-def getVersion(db):
-    cursor = db.execute('PRAGMA user_version')
-    return cursor.fetchone()[0]
-
-def update(saveddata_engine):
-    dbVersion = getVersion(saveddata_engine)
-
+def getAppVersion():
+    # calculate app version based on upgrade files we have
     appVersion = 0
     for fname in os.listdir(os.path.join(os.path.dirname(__file__), "migrations")):
         m = re.match("^upgrade(?P<index>\d+)\.py$", fname)
@@ -18,6 +13,15 @@ def update(saveddata_engine):
             continue
         index = int(m.group("index"))
         appVersion = max(appVersion, index)
+    return appVersion
+
+def getVersion(db):
+    cursor = db.execute('PRAGMA user_version')
+    return cursor.fetchone()[0]
+
+def update(saveddata_engine):
+    dbVersion = getVersion(saveddata_engine)
+    appVersion = getAppVersion()
 
     if dbVersion == appVersion:
         return
