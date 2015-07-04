@@ -39,7 +39,7 @@ import gui.globalEvents as GE
 from gui import bitmapLoader
 from gui.mainMenuBar import MainMenuBar
 from gui.additionsPane import AdditionsPane
-from gui.marketBrowser import MarketBrowser
+from gui.marketBrowser import MarketBrowser, ItemSelected
 from gui.multiSwitch import MultiSwitch
 from gui.statsPane import StatsPane
 from gui.shipBrowser import ShipBrowser, FitSelected, ImportSelected, Stage3Selected
@@ -479,6 +479,13 @@ class MainFrame(wx.Frame):
                 (wx.ACCEL_CMD, ord('4'), self.additionstab4),
                 (wx.ACCEL_CMD, ord('5'), self.additionstab5)
                 ]
+
+        self.itemSelect = []
+        for i in range(0, 9):
+            self.itemSelect.append(wx.NewId())
+            self.Bind(wx.EVT_MENU, self.ItemSelect, id = self.itemSelect[i])
+            actb.append((wx.ACCEL_ALT, i + 49, self.itemSelect[i]))
+
         atable = wx.AcceleratorTable(actb)
         self.SetAcceleratorTable(atable)
 
@@ -496,6 +503,15 @@ class MainFrame(wx.Frame):
             selTab = 4
         if selTab is not None:
             self.additionsPane.notebook.SetSelection(selTab)
+
+    def ItemSelect(self, event):
+        selItem = None
+        for i in range(0, 9):
+            if event.GetId() == self.itemSelect[i]:
+                selItem = i;
+       
+        if selItem is not None:
+            wx.PostEvent(self, ItemSelected(itemID=self.marketBrowser.itemView.active[selItem].ID))
 
     def CTabNext(self, event):
         self.fitMultiSwitch.NextPage()
