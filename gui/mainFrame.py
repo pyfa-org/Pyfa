@@ -505,12 +505,9 @@ class MainFrame(wx.Frame):
             self.additionsPane.notebook.SetSelection(selTab)
 
     def ItemSelect(self, event):
-        selItem = None
-        for i in range(0, 9):
-            if event.GetId() == self.itemSelect[i]:
-                selItem = i;
-       
-        if selItem is not None:
+        selItem = self.itemSelect.index(event.GetId())
+        
+        if selItem < len(self.marketBrowser.itemView.active):
             wx.PostEvent(self, ItemSelected(itemID=self.marketBrowser.itemView.active[selItem].ID))
 
     def CTabNext(self, event):
