@@ -55,13 +55,14 @@ class BaseName(ViewColumn):
                 return stuff.item.name
         else:
             item = getattr(stuff, "item", stuff)
-            marketShortcut = getattr(item, "marketShortcut", None)
 
-            if marketShortcut:
-                # use unicode subscript to display shortcut value
-                shortcut = unichr(marketShortcut+8320)+u" "
+            if service.Fit.getInstance().serviceFittingOptions["showMarketShortcuts"]:
+                marketShortcut = getattr(item, "marketShortcut", None)
 
-                return shortcut+item.name
+                if marketShortcut:
+                    # use unicode subscript to display shortcut value
+                    shortcut = unichr(marketShortcut+8320)+u" "
+                    return shortcut+item.name
 
             return item.name
 

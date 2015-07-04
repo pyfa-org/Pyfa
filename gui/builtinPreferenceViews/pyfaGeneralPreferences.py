@@ -56,6 +56,9 @@ class PFGeneralPref ( PreferenceView):
         self.cbShowTooltip = wx.CheckBox( panel, wx.ID_ANY, u"Show tab tooltips", wx.DefaultPosition, wx.DefaultSize, 0 )
         mainSizer.Add( self.cbShowTooltip, 0, wx.ALL|wx.EXPAND, 5 )
 
+        self.cbMarketShortcuts = wx.CheckBox( panel, wx.ID_ANY, u"Show market shortcuts", wx.DefaultPosition, wx.DefaultSize, 0 )
+        mainSizer.Add( self.cbMarketShortcuts, 0, wx.ALL|wx.EXPAND, 5 )
+
         defCharSizer = wx.BoxSizer( wx.HORIZONTAL )
 
         self.sFit = service.Fit.getInstance()
@@ -69,6 +72,7 @@ class PFGeneralPref ( PreferenceView):
         self.cbCompactSkills.SetValue(self.sFit.serviceFittingOptions["compactSkills"] or False)
         self.cbReopenFits.SetValue(self.openFitsSettings["enabled"])
         self.cbShowTooltip.SetValue(self.sFit.serviceFittingOptions["showTooltip"] or False)
+        self.cbMarketShortcuts.SetValue(self.sFit.serviceFittingOptions["showMarketShortcuts"] or False)
 
         self.cbGlobalChar.Bind(wx.EVT_CHECKBOX, self.OnCBGlobalCharStateChange)
         self.cbGlobalDmgPattern.Bind(wx.EVT_CHECKBOX, self.OnCBGlobalDmgPatternStateChange)
@@ -79,6 +83,7 @@ class PFGeneralPref ( PreferenceView):
         self.cbCompactSkills.Bind(wx.EVT_CHECKBOX, self.onCBCompactSkills)
         self.cbReopenFits.Bind(wx.EVT_CHECKBOX, self.onCBReopenFits)
         self.cbShowTooltip.Bind(wx.EVT_CHECKBOX, self.onCBShowTooltip)
+        self.cbMarketShortcuts.Bind(wx.EVT_CHECKBOX, self.onCBShowShortcuts)
 
         self.cbRackLabels.Enable(self.sFit.serviceFittingOptions["rackSlots"] or False)
 
@@ -134,6 +139,9 @@ class PFGeneralPref ( PreferenceView):
 
     def onCBShowTooltip(self, event):
         self.sFit.serviceFittingOptions["showTooltip"] = self.cbShowTooltip.GetValue()
+
+    def onCBShowShortcuts(self, event):
+        self.sFit.serviceFittingOptions["showMarketShortcuts"] = self.cbMarketShortcuts.GetValue()
 
     def getImage(self):
         return bitmapLoader.getBitmap("prefs_settings", "icons")
