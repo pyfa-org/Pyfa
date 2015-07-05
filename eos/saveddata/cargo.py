@@ -20,40 +20,45 @@
 from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut, ChargeAttrShortcut
 from eos.effectHandlerHelpers import HandledItem, HandledCharge
 from sqlalchemy.orm import validates, reconstructor
+import eos.db
+import logging
 
-# Cargo class copied from Implant class and hacked to make work. \o/
-# @todo: clean me up, Scotty
-class Cargo(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
+logger = logging.getLogger(__name__)
+
+class Cargo(HandledItem, ItemAttrShortcut):
 
     def __init__(self, item):
+        """Initialize cargo from the program"""
         self.__item = item
-        self.itemID = item.ID
+        self.itemID = item.ID if item is not None else None
         self.amount = 0
         self.__itemModifiedAttributes = ModifiedAttributeDict()
-        self.__itemModifiedAttributes.original = self.item.attributes
+        self.__itemModifiedAttributes.original = item.attributes
 
     @reconstructor
     def init(self):
+        """Initialize cargo from the database and validate"""
         self.__item = None
 
-    def __fetchItemInfo(self):
-        import eos.db
-        self.__item = eos.db.getItem(self.itemID)
+        if self.itemID:
+            self.__item = eos.db.getItem(self.itemID)
+            if self.__item is None:
+                logger.error("Item (id: %d) does not exist", self.itemID)
+                return
+
         self.__itemModifiedAttributes = ModifiedAttributeDict()
         self.__itemModifiedAttributes.original = self.__item.attributes
 
     @property
     def itemModifiedAttributes(self):
-        if self.__item is None:
-            self.__fetchItemInfo()
-
         return self.__itemModifiedAttributes
 
     @property
-    def item(self):
-        if self.__item is None:
-            self.__fetchItemInfo()
+    def isInvalid(self):
+        return self.__item is None
 
+    @property
+    def item(self):
         return self.__item
 
     def clear(self):

@@ -29,7 +29,7 @@ boosters_table = Table("boosters", saveddata_meta,
                        Column("itemID", Integer),
                        Column("fitID", Integer, ForeignKey("fits.ID"), nullable = False),
                        Column("active", Boolean),
-                       UniqueConstraint("itemID", "fitID"))
+                       )
 
 activeSideEffects_table = Table("boostersActiveSideEffects", saveddata_meta,
                                 Column("boosterID", ForeignKey("boosters.ID"), primary_key = True),
