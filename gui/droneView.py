@@ -36,7 +36,8 @@ class DroneViewDrop(wx.PyDropTarget):
 
         def OnData(self, x, y, t):
             if self.GetData():
-                self.dropFn(x, y, int(self.dropData.GetText()))
+                data = self.dropData.GetText().split(':')
+                self.dropFn(x, y, data)
             return t
 
 class DroneView(d.Display):
@@ -72,7 +73,7 @@ class DroneView(d.Display):
 
 
         self.Bind(wx.EVT_LIST_BEGIN_DRAG, self.startDrag)
-        self.SetDropTarget(DroneViewDrop(self.mergeDrones))
+        self.SetDropTarget(DroneViewDrop(self.handleDragDrop))
 
     def OnLeaveWindow(self, event):
         self.SetToolTip(None)
@@ -117,17 +118,27 @@ class DroneView(d.Display):
         row = event.GetIndex()
         if row != -1:
             data = wx.PyTextDataObject()
-            data.SetText(str(self.GetItemData(row)))
+            data.SetText("drone:"+str(row))
 
             dropSource = wx.DropSource(self)
             dropSource.SetData(data)
             res = dropSource.DoDragDrop()
 
-    def mergeDrones(self, x, y, itemID):
-        srcRow = self.FindItemData(-1,itemID)
-        dstRow, _ = self.HitTest((x, y))
-        if srcRow != -1 and dstRow != -1:
-            self._merge(srcRow, dstRow)
+    def handleDragDrop(self, x, y, data):
+        '''
+        Handles dragging of items from various pyfa displays which support it
+
+        data is list with two indices:
+            data[0] is hard-coded str of originating source
+            data[1] is typeID or index of data we want to manipulate
+        '''
+        if data[0] == "drone":  # we want to merge drones
+            srcRow = int(data[1])
+            dstRow, _ = self.HitTest((x, y))
+            if srcRow != -1 and dstRow != -1:
+                self._merge(srcRow, dstRow)
+        elif data[0] == "market":
+            wx.PostEvent(self.mainFrame, mb.ItemSelected(itemID=int(data[1])))
 
     def _merge(self, src, dst):
         sFit = service.Fit.getInstance()
