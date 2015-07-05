@@ -146,6 +146,7 @@ class MainFrame(wx.Frame):
 
         self.marketBrowser = MarketBrowser(self.notebookBrowsers)
         self.notebookBrowsers.AddPage(self.marketBrowser, "Market", tabImage = marketImg, showClose = False)
+        self.marketBrowser.splitter.SetSashPosition(self.marketHeight)
 
         self.shipBrowser = ShipBrowser(self.notebookBrowsers)
         self.notebookBrowsers.AddPage(self.shipBrowser, "Ships", tabImage = shipBrowserImg, showClose = False)
@@ -159,8 +160,8 @@ class MainFrame(wx.Frame):
         self.notebookBrowsers.SetSelection(1)
 
         self.splitter.SplitVertically(self.notebookBrowsers, self.FitviewAdditionsPanel)
-        self.splitter.SetMinimumPaneSize(204)
-        self.splitter.SetSashPosition(300)
+        self.splitter.SetMinimumPaneSize(220)
+        self.splitter.SetSashPosition(self.browserWidth)
 
         cstatsSizer = wx.BoxSizer(wx.VERTICAL)
 
@@ -227,7 +228,7 @@ class MainFrame(wx.Frame):
 
 
     def LoadMainFrameAttribs(self):
-        mainFrameDefaultAttribs = {"wnd_width": 1000, "wnd_height": 680, "wnd_maximized": False}
+        mainFrameDefaultAttribs = {"wnd_width": 1000, "wnd_height": 680, "wnd_maximized": False, "browser_width": 300, "market_height": 0}
         self.mainFrameAttribs = service.SettingsProvider.getInstance().getSettings("pyfaMainWindowAttribs", mainFrameDefaultAttribs)
 
         if self.mainFrameAttribs["wnd_maximized"]:
@@ -241,6 +242,9 @@ class MainFrame(wx.Frame):
         self.SetSize((width, height))
         self.SetMinSize((mainFrameDefaultAttribs["wnd_width"], mainFrameDefaultAttribs["wnd_height"]))
 
+        self.browserWidth = self.mainFrameAttribs["browser_width"]
+        self.marketHeight = self.mainFrameAttribs["market_height"]
+
     def UpdateMainFrameAttribs(self):
         if self.IsIconized():
             return
@@ -249,6 +253,9 @@ class MainFrame(wx.Frame):
         self.mainFrameAttribs["wnd_width"] = width
         self.mainFrameAttribs["wnd_height"] = height
         self.mainFrameAttribs["wnd_maximized"] = self.IsMaximized()
+
+        self.mainFrameAttribs["browser_width"] = self.notebookBrowsers.GetSize()[0]
+        self.mainFrameAttribs["market_height"] = self.marketBrowser.marketView.GetSize()[1]
 
     def SetActiveStatsWindow(self, wnd):
         self.activeStatsWnd = wnd
