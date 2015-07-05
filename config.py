@@ -32,7 +32,16 @@ gameDB = None
 # TODO: move back to pyfa.py main loop
 # We moved it here just to avoid rebuilding windows skeleton for now (any change to pyfa.py needs it)
 import logging
-logging.basicConfig()
+import logging.handlers
+
+format = '%(asctime)s %(name)-24s %(levelname)-8s %(message)s'
+logging.basicConfig(format=format, level=logging.DEBUG)
+handler = logging.handlers.RotatingFileHandler("log.txt", maxBytes=10000, backupCount=3)
+formatter = logging.Formatter(format)
+handler.setFormatter(formatter)
+logging.getLogger('').addHandler(handler)
+
+logging.info("Starting pyfa")
 
 def defPaths():
     global pyfaPath

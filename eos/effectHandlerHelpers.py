@@ -20,6 +20,9 @@
 from sqlalchemy.orm.attributes import flag_modified
 import eos.db
 import eos.types
+import logging
+
+logger = logging.getLogger(__name__)
 
 class HandledList(list):
     def filteredItemPreAssign(self, filter, *args, **kwargs):
@@ -180,10 +183,12 @@ class HandledImplantBoosterList(HandledList):
         if thing.isInvalid:
             HandledList.append(self, thing)
             self.remove(thing)
+            return
 
         # if needed, remove booster that was occupying slot
         oldObj = next((m for m in self if m.slot == thing.slot), None)
         if oldObj:
+            logging.info("Slot %d occupied with %s, replacing with %s", thing.slot, oldObj.item.name, thing.item.name)
             self.remove(oldObj)
 
         HandledList.append(self, thing)
@@ -195,6 +200,7 @@ class HandledProjectedModList(HandledList):
             # rows and relationships in database are removed as well
             HandledList.append(self, proj)
             self.remove(proj)
+            return
 
         proj.projected = True
         isSystemEffect = proj.item.group.name == "Effect Beacon"
@@ -204,6 +210,7 @@ class HandledProjectedModList(HandledList):
             oldEffect = next((m for m in self if m.item.group.name == "Effect Beacon"), None)
 
             if oldEffect:
+                logging.info("System effect occupied with %s, replacing with %s", oldEffect.item.name, proj.item.name)
                 self.remove(oldEffect)
 
         HandledList.append(self, proj)
