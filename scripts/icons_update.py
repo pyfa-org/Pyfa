@@ -77,7 +77,9 @@ for root in MARKET_ROOTS:
 
 query_items = 'select distinct i.iconFile from icons as i inner join invtypes as it on it.iconID = i.iconID inner join invgroups as ig on it.groupID = ig.groupID where ig.categoryID in ({})'.format(', '.join(str(i) for i in ITEM_CATEGORIES))
 query_groups = 'select distinct i.iconFile from icons as i inner join invgroups as ig on ig.iconID = i.iconID where ig.categoryID in ({})'.format(', '.join(str(i) for i in ITEM_CATEGORIES))
+query_cats = 'select distinct i.iconFile from icons as i inner join invcategories as ic on ic.iconID = i.iconID where ic.categoryID in ({})'.format(', '.join(str(i) for i in ITEM_CATEGORIES))
 query_market = 'select distinct i.iconFile from icons as i inner join invmarketgroups as img on img.iconID = i.iconID where img.marketGroupID in ({})'.format(', '.join(str(i) for i in market_groups))
+query_attrib = 'select distinct i.iconFile from icons as i inner join dgmattribs as da on da.iconID = i.iconID'
 
 
 needed = set()
@@ -86,15 +88,22 @@ export = {}
 
 
 def strip_path(fname):
+    """
+    Here we extract 'core' of icon name. Path and
+    extension are sometimes specified in database
+    but we don't need them.
+    """
     # Path before the icon file name
     fname = fname.split('/')[-1]
     # Extension
     fname = fname.rsplit('.', 1)[0]
     return fname
 
+
 def unzero(fname):
     """
-    Get rid of leading zeros in triplet
+    Get rid of leading zeros in triplet. They are often specified in DB
+    but almost never in actual files.
     """
     m = re.match(r'^(?P<prefix>[^_\.]+)_((?P<size>\d+)_)?(?P<suffix>[^_\.]+)(?P<tail>\..*)?$', fname)
     if m:
@@ -122,7 +131,7 @@ def unzero(fname):
     else:
         return fname
 
-for query in (query_items, query_groups, query_market):
+for query in (query_items, query_groups, query_cats, query_market, query_attrib):
     for row in cursor.execute(query):
         fname = row[0]
         if not fname:
@@ -157,6 +166,11 @@ for fname in os.listdir(export_dir):
 
 
 def get_icon_file(request):
+    """
+    Get the iconFile field value and find proper
+    icon for it. Return as PIL image object down-
+    scaled for use in pyfa.
+    """
     rq = strip_path(request)
     rq = unzero(rq)
     try:
