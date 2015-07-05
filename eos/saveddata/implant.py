@@ -21,11 +21,17 @@ from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut
 from eos.effectHandlerHelpers import HandledItem
 from sqlalchemy.orm import validates, reconstructor
 import eos.db
+import logging
+
+logger = logging.getLogger(__name__)
 
 class Implant(HandledItem, ItemAttrShortcut):
     def __init__(self, item):
         self.__item = item
-        self.__invalid = False
+
+        if self.isInvalid:
+            raise ValueError("Passed item is not an Implant")
+
         self.itemID = item.ID if item is not None else None
         self.active = True
         self.build()
@@ -33,26 +39,24 @@ class Implant(HandledItem, ItemAttrShortcut):
     @reconstructor
     def init(self):
         self.__item = None
-        self.__invalid = False
 
         if self.itemID:
-            # if item does not exist, set invalid
-            item = eos.db.getItem(self.itemID)
-            if item is None:
-                self.__invalid = True
-            self.__item = item
+            self.__item = eos.db.getItem(self.itemID)
+            if self.__item is None:
+                logger.error("Item (id: %d) does not exist", self.itemID)
+                return
+
+        if self.isInvalid:
+            logger.error("Item (id: %d) is not an Implant", self.itemID)
+            return
 
         self.build()
 
     def build(self):
-        if self.__item and self.__item.category.name != "Implant":
-            self.__invalid = True
-
+        """ Build object. Assumes proper and valid item already set """
         self.__itemModifiedAttributes = ModifiedAttributeDict()
-
-        if self.__item:
-            self.__itemModifiedAttributes.original = self.__item.attributes
-            self.__slot = self.__calculateSlot(self.__item)
+        self.__itemModifiedAttributes.original = self.__item.attributes
+        self.__slot = self.__calculateSlot(self.__item)
 
     @property
     def itemModifiedAttributes(self):
@@ -60,7 +64,7 @@ class Implant(HandledItem, ItemAttrShortcut):
 
     @property
     def isInvalid(self):
-        return self.__invalid
+        return self.__item is None or self.__item.category.name != "Implant"
 
     @property
     def slot(self):

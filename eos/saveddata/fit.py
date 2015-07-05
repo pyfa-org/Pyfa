@@ -74,7 +74,7 @@ class Fit(object):
 
     @reconstructor
     def init(self):
-        """Initialize a drone from the database and validate"""
+        """Initialize a fit from the database and validate"""
         self.__ship = None
         self.__mode = None
         self.__invalid = False

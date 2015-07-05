@@ -24,6 +24,9 @@ from eos.effectHandlerHelpers import HandledItem, HandledCharge
 from eos.enum import Enum
 from eos.mathUtils import floorFloat
 import eos.db
+import logging
+
+logger = logging.getLogger(__name__)
 
 class State(Enum):
     OFFLINE = -1
@@ -52,8 +55,11 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     def __init__(self, item):
         """Initialize a module from the program"""
         self.__item = item
+
+        if item is not None and self.isInvalid:
+            raise ValueError("Passed item is not a Module")
+
         self.__charge = None
-        self.__invalid = False
         self.itemID = item.ID if item is not None else None
         self.projected = False
         self.state = State.ONLINE
@@ -64,28 +70,28 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         """Initialize a module from the database and validate"""
         self.__item = None
         self.__charge = None
-        self.__invalid = False
+
+        # we need this early if module is invalid and returns early
+        self.__slot = self.dummySlot
 
         if self.itemID:
-            # if item does not exist, set invalid
-            item = eos.db.getItem(self.itemID)
-            if item is None:
-                self.__invalid = True
-            self.__item = item
+            self.__item = eos.db.getItem(self.itemID)
+            if self.__item is None:
+                logger.error("Item (id: %d) does not exist", self.itemID)
+                return
+
+        if self.isInvalid:
+            logger.error("Item (id: %d) is not a Module", self.itemID)
+            return
+
         if self.chargeID:
-            # if charge does not exist, just ignore it. This doesn't remove it
-            # from the database, but it will allow the fit to load and the user
-            # to add another charge
-            charge = eos.db.getItem(self.chargeID)
-            if charge:
-                self.__charge = charge
+            self.__charge = eos.db.getItem(self.chargeID)
 
         self.build()
 
     def build(self):
-        """Builds internal module variables from both init's"""
-        if self.__item and self.__item.category.name not in ("Module", "Subsystem") and self.__item.group.name != "Effect Beacon":
-            self.__invalid = True
+        """ Builds internal module variables from both init's """
+
         if self.__charge and self.__charge.category.name != "Charge":
             self.__charge = None
 
@@ -131,7 +137,9 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     @property
     def isInvalid(self):
-        return self.__invalid
+        if self.isEmpty:
+            return False
+        return self.__item is None or (self.__item.category.name not in ("Module", "Subsystem") and self.__item.group.name != "Effect Beacon")
 
     @property
     def numCharges(self):

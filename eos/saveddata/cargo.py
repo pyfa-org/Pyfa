@@ -21,14 +21,15 @@ from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut, C
 from eos.effectHandlerHelpers import HandledItem, HandledCharge
 from sqlalchemy.orm import validates, reconstructor
 import eos.db
+import logging
 
+logger = logging.getLogger(__name__)
 
 class Cargo(HandledItem, ItemAttrShortcut):
 
     def __init__(self, item):
         """Initialize cargo from the program"""
         self.__item = item
-        self.__invalid = False
         self.itemID = item.ID if item is not None else None
         self.amount = 0
         self.__itemModifiedAttributes = ModifiedAttributeDict()
@@ -38,18 +39,15 @@ class Cargo(HandledItem, ItemAttrShortcut):
     def init(self):
         """Initialize cargo from the database and validate"""
         self.__item = None
-        self.__invalid = False
-        self.__itemModifiedAttributes = ModifiedAttributeDict()
 
         if self.itemID:
-            # if item does not exist, set invalid
-            item = eos.db.getItem(self.itemID)
-            if item is None:
-                self.__invalid = True
-            self.__item = item
+            self.__item = eos.db.getItem(self.itemID)
+            if self.__item is None:
+                logger.error("Item (id: %d) does not exist", self.itemID)
+                return
 
-        if self.__item:
-            self.__itemModifiedAttributes.original = self.__item.attributes
+        self.__itemModifiedAttributes = ModifiedAttributeDict()
+        self.__itemModifiedAttributes.original = self.__item.attributes
 
     @property
     def itemModifiedAttributes(self):
@@ -57,7 +55,7 @@ class Cargo(HandledItem, ItemAttrShortcut):
 
     @property
     def isInvalid(self):
-        return self.__invalid
+        return self.__item is None
 
     @property
     def item(self):
