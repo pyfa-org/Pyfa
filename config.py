@@ -1,6 +1,11 @@
 import os
 import sys
 
+# TODO: move all logging back to pyfa.py main loop
+# We moved it here just to avoid rebuilding windows skeleton for now (any change to pyfa.py needs it)
+import logging
+import logging.handlers
+
 # Load variable overrides specific to distribution type
 try:
     import configforced
@@ -11,6 +16,8 @@ except ImportError:
 debug = False
 # Defines if our saveddata will be in pyfa root or not
 saveInRoot = False
+
+logLevel = logging.WARN
 
 # Version data
 version = "1.12.1"
@@ -24,20 +31,6 @@ savePath = None
 staticPath = None
 saveDB = None
 gameDB = None
-
-# TODO: move back to pyfa.py main loop
-# We moved it here just to avoid rebuilding windows skeleton for now (any change to pyfa.py needs it)
-import logging
-import logging.handlers
-
-format = '%(asctime)s %(name)-24s %(levelname)-8s %(message)s'
-logging.basicConfig(format=format, level=logging.DEBUG)
-handler = logging.handlers.RotatingFileHandler("log.txt", maxBytes=10000, backupCount=3)
-formatter = logging.Formatter(format)
-handler.setFormatter(formatter)
-logging.getLogger('').addHandler(handler)
-
-logging.info("Starting pyfa")
 
 def defPaths():
     global pyfaPath
@@ -63,6 +56,15 @@ def defPaths():
         if savePath is None:
             savePath = unicode(os.path.expanduser(os.path.join("~", ".pyfa")),
                                sys.getfilesystemencoding())
+
+    format = '%(asctime)s %(name)-24s %(levelname)-8s %(message)s'
+    logging.basicConfig(format=format, level=logLevel)
+    handler = logging.handlers.RotatingFileHandler(os.path.join(savePath, "log.txt"), maxBytes=1000000, backupCount=3)
+    formatter = logging.Formatter(format)
+    handler.setFormatter(formatter)
+    logging.getLogger('').addHandler(handler)
+
+    logging.info("Starting pyfa")
 
     # Redirect stderr to file if we're requested to do so
     stderrToFile = getattr(configforced, "stderrToFile", None)
