@@ -21,6 +21,9 @@ from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut
 from eos.effectHandlerHelpers import HandledItem
 from eos.saveddata.mode import Mode
 import eos.db
+import logging
+
+logger = logging.getLogger(__name__)
 
 class Ship(ItemAttrShortcut, HandledItem):
     def __init__(self, item):
@@ -53,25 +56,16 @@ class Ship(ItemAttrShortcut, HandledItem):
             if effect.runTime == runTime and effect.isType("passive"):
                 effect.handler(fit, self, ("ship",))
 
-    def checkModeItem(self, item):
-        """
-        Checks if provided item is a valid mode.
-
-        If ship has modes, and current item is not valid, return forced mode
-        else if mode is valid, return Mode
-        else if ship does not have modes, return None
-
-        @todo: rename this
-        """
+    def validateModeItem(self, item):
+        """ Checks if provided item is a valid mode """
         items = self.__modeItems
 
-        if items != None:
-            if item == None or item not in items:
-                # We have a tact dessy, but mode is None or not valid. Force new mode
+        if items is not None:
+            # if we have items, then we are in a tactical destroyer and must have a mode
+            if item is None or item not in items:
+                # If provided item is invalid mode, force new one
                 return Mode(items[0])
-            elif item in items:
-                # We have a valid mode
-                return Mode(item)
+            return Mode(item)
         return None
 
     @property

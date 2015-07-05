@@ -29,6 +29,9 @@ from eos.saveddata.module import State
 from eos.saveddata.mode import Mode
 import eos.db
 import time
+import logging
+
+logger = logging.getLogger(__name__)
 
 try:
     from collections import OrderedDict
@@ -53,7 +56,6 @@ class Fit(object):
         # use @mode.setter's to set __attr and IDs. This will set mode as well
         self.ship = ship
 
-        self.__invalid = False
         self.__modules = HandledModuleList()
         self.__drones = HandledDroneCargoList()
         self.__cargo = HandledDroneCargoList()
@@ -77,20 +79,23 @@ class Fit(object):
         """Initialize a fit from the database and validate"""
         self.__ship = None
         self.__mode = None
-        self.__invalid = False
 
         if self.shipID:
-            # if item does not exist, set invalid
             item = eos.db.getItem(self.shipID)
-            if item is None or item.category.name != "Ship":
-                self.__invalid = True
-            else:
+            if item is None:
+                logger.error("Item (id: %d) does not exist", self.shipID)
+                return
+
+            try:
                 self.__ship = Ship(item)
+            except ValueError:
+                logger.error("Item (id: %d) is not a Ship", self.shipID)
+                return
 
         if self.modeID and self.__ship:
             item = eos.db.getItem(self.modeID)
-            # Don't need to verify if it's a proper item, as checkModeItem assures this
-            self.__mode = self.ship.checkModeItem(item)
+            # Don't need to verify if it's a proper item, as validateModeItem assures this
+            self.__mode = self.ship.validateModeItem(item)
 
         self.build()
 
@@ -144,7 +149,7 @@ class Fit(object):
 
     @property
     def isInvalid(self):
-        return self.__invalid
+        return self.__ship is None
 
     @property
     def mode(self):
@@ -172,7 +177,7 @@ class Fit(object):
         self.__ship = ship
         self.shipID = ship.item.ID if ship is not None else None
         #  set mode of new ship
-        self.mode = self.ship.checkModeItem(None) if ship is not None else None
+        self.mode = self.ship.validateModeItem(None) if ship is not None else None
 
     @property
     def drones(self):
