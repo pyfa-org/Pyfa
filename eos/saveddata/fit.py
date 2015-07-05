@@ -17,8 +17,7 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 #===============================================================================
 
-from eos.effectHandlerHelpers import HandledList, HandledModuleList, HandledDroneList, HandledImplantBoosterList, \
-HandledProjectedFitList, HandledProjectedModList, HandledProjectedDroneList, HandledCargoList
+from eos.effectHandlerHelpers import *
 from eos.modifiedAttributeDict import ModifiedAttributeDict
 from sqlalchemy.orm import validates, reconstructor
 from itertools import chain
@@ -28,7 +27,11 @@ from math import sqrt, log, asinh
 from eos.types import Drone, Cargo, Ship, Character, State, Slot, Module, Implant, Booster, Skill
 from eos.saveddata.module import State
 from eos.saveddata.mode import Mode
+import eos.db
 import time
+import logging
+
+logger = logging.getLogger(__name__)
 
 try:
     from collections import OrderedDict
@@ -48,10 +51,14 @@ class Fit(object):
 
     PEAK_RECHARGE = 0.25
 
-    def __init__(self):
+    def __init__(self, ship=None, name=""):
+        """Initialize a fit from the program"""
+        # use @mode.setter's to set __attr and IDs. This will set mode as well
+        self.ship = ship
+
         self.__modules = HandledModuleList()
-        self.__drones = HandledDroneList()
-        self.__cargo = HandledCargoList()
+        self.__drones = HandledDroneCargoList()
+        self.__cargo = HandledDroneCargoList()
         self.__implants = HandledImplantBoosterList()
         self.__boosters = HandledImplantBoosterList()
         self.__projectedFits = HandledProjectedFitList()
@@ -59,23 +66,40 @@ class Fit(object):
         self.__projectedDrones = HandledProjectedDroneList()
         self.__character = None
         self.__owner = None
-        self.shipID = None
+
         self.projected = False
-        self.name = ""
-        self.fleet = None
-        self.boostsFits = set()
-        self.gangBoosts = None
+        self.name = name
         self.timestamp = time.time()
-        self.ecmProjectedStr = 1
         self.modeID = None
+
         self.build()
 
     @reconstructor
     def init(self):
+        """Initialize a fit from the database and validate"""
+        self.__ship = None
+        self.__mode = None
+
+        if self.shipID:
+            item = eos.db.getItem(self.shipID)
+            if item is None:
+                logger.error("Item (id: %d) does not exist", self.shipID)
+                return
+
+            try:
+                self.__ship = Ship(item)
+            except ValueError:
+                logger.error("Item (id: %d) is not a Ship", self.shipID)
+                return
+
+        if self.modeID and self.__ship:
+            item = eos.db.getItem(self.modeID)
+            # Don't need to verify if it's a proper item, as validateModeItem assures this
+            self.__mode = self.ship.validateModeItem(item)
+
         self.build()
 
     def build(self):
-        from eos import db
         self.__extraDrains = []
         self.__ehp = None
         self.__weaponDPS = None
@@ -100,11 +124,6 @@ class Fit(object):
         self.ecmProjectedStr = 1
         self.extraAttributes = ModifiedAttributeDict(self)
         self.extraAttributes.original = self.EXTRA_ATTRIBUTES
-        self.ship = Ship(db.getItem(self.shipID)) if self.shipID is not None else None
-        if self.ship is not None:
-            self.mode = self.ship.checkModeItem(db.getItem(self.modeID) if self.modeID else None)
-        else:
-            self.mode = None
 
     @property
     def targetResists(self):
@@ -129,12 +148,16 @@ class Fit(object):
         self.__effectiveTank = None
 
     @property
+    def isInvalid(self):
+        return self.__ship is None
+
+    @property
     def mode(self):
-        return self._mode
+        return self.__mode
 
     @mode.setter
     def mode(self, mode):
-        self._mode = mode
+        self.__mode = mode
         self.modeID = mode.item.ID if mode is not None else None
 
     @property
@@ -154,7 +177,7 @@ class Fit(object):
         self.__ship = ship
         self.shipID = ship.item.ID if ship is not None else None
         #  set mode of new ship
-        self.mode = self.ship.checkModeItem(None) if ship is not None else None
+        self.mode = self.ship.validateModeItem(None) if ship is not None else None
 
     @property
     def drones(self):

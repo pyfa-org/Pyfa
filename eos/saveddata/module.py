@@ -23,6 +23,10 @@ from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut, C
 from eos.effectHandlerHelpers import HandledItem, HandledCharge
 from eos.enum import Enum
 from eos.mathUtils import floorFloat
+import eos.db
+import logging
+
+logger = logging.getLogger(__name__)
 
 class State(Enum):
     OFFLINE = -1
@@ -49,95 +53,78 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     MINING_ATTRIBUTES = ("miningAmount", )
 
     def __init__(self, item):
-        self.__item = item if item != None else 0
+        """Initialize a module from the program"""
+        self.__item = item
+
+        if item is not None and self.isInvalid:
+            raise ValueError("Passed item is not a Module")
+
+        self.__charge = None
         self.itemID = item.ID if item is not None else None
-        self.__charge = 0
         self.projected = False
         self.state = State.ONLINE
+        self.build()
+
+    @reconstructor
+    def init(self):
+        """Initialize a module from the database and validate"""
+        self.__item = None
+        self.__charge = None
+
+        # we need this early if module is invalid and returns early
+        self.__slot = self.dummySlot
+
+        if self.itemID:
+            self.__item = eos.db.getItem(self.itemID)
+            if self.__item is None:
+                logger.error("Item (id: %d) does not exist", self.itemID)
+                return
+
+        if self.isInvalid:
+            logger.error("Item (id: %d) is not a Module", self.itemID)
+            return
+
+        if self.chargeID:
+            self.__charge = eos.db.getItem(self.chargeID)
+
+        self.build()
+
+    def build(self):
+        """ Builds internal module variables from both init's """
+
+        if self.__charge and self.__charge.category.name != "Charge":
+            self.__charge = None
+
         self.__dps = None
         self.__miningyield = None
         self.__volley = None
         self.__reloadTime = None
         self.__reloadForce = None
         self.__chargeCycles = None
+        self.__hardpoint = Hardpoint.NONE
         self.__itemModifiedAttributes = ModifiedAttributeDict()
-        self.__slot = None
-
-        if item != None:
-            self.__itemModifiedAttributes.original = item.attributes
-            self.__hardpoint = self.__calculateHardpoint(item)
-            self.__slot = self.__calculateSlot(item)
-
         self.__chargeModifiedAttributes = ModifiedAttributeDict()
+        self.__slot = self.dummySlot  # defaults to None
 
-    @reconstructor
-    def init(self):
-        if self.dummySlot is None:
-            self.__item = None
-            self.__charge = None
-            self.__volley = None
-            self.__dps = None
-            self.__miningyield = None
-            self.__reloadTime = None
-            self.__reloadForce = None
-            self.__chargeCycles = None
-        else:
-            self.__slot = self.dummySlot
-            self.__item = 0
-            self.__charge = 0
-            self.__dps = 0
-            self.__miningyield = 0
-            self.__volley = 0
-            self.__reloadTime = 0
-            self.__reloadForce = None
-            self.__chargeCycles = 0
-            self.__hardpoint = Hardpoint.NONE
-            self.__itemModifiedAttributes = ModifiedAttributeDict()
-            self.__chargeModifiedAttributes = ModifiedAttributeDict()
-
-    def __fetchItemInfo(self):
-        import eos.db
-        item = eos.db.getItem(self.itemID)
-        self.__item = item
-        self.__itemModifiedAttributes = ModifiedAttributeDict()
-        self.__itemModifiedAttributes.original = item.attributes
-        self.__hardpoint = self.__calculateHardpoint(item)
-        self.__slot = self.__calculateSlot(item)
-
-    def __fetchChargeInfo(self):
-        self.__chargeModifiedAttributes = ModifiedAttributeDict()
-        if self.chargeID is not None:
-            import eos.db
-            charge = eos.db.getItem(self.chargeID)
-            self.__charge = charge
-            self.__chargeModifiedAttributes.original = charge.attributes
-        else:
-            self.__charge = 0
+        if self.__item:
+            self.__itemModifiedAttributes.original = self.__item.attributes
+            self.__hardpoint = self.__calculateHardpoint(self.__item)
+            self.__slot = self.__calculateSlot(self.__item)
+        if self.__charge:
+            self.__chargeModifiedAttributes.original = self.__charge.attributes
 
     @classmethod
     def buildEmpty(cls, slot):
         empty = Module(None)
         empty.__slot = slot
-        empty.__hardpoint = Hardpoint.NONE
-        empty.__item = 0
-        empty.__charge = 0
         empty.dummySlot = slot
-        empty.__itemModifiedAttributes = ModifiedAttributeDict()
-        empty.__chargeModifiedAttributes = ModifiedAttributeDict()
-
         return empty
 
     @classmethod
     def buildRack(cls, slot):
         empty = Rack(None)
         empty.__slot = slot
-        empty.__hardpoint = Hardpoint.NONE
-        empty.__item = 0
-        empty.__charge = 0
         empty.dummySlot = slot
-        empty.__itemModifiedAttributes = ModifiedAttributeDict()
-        empty.__chargeModifiedAttributes = ModifiedAttributeDict()
-
         return empty
 
     @property
@@ -146,10 +133,13 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     @property
     def hardpoint(self):
-        if self.__item is None:
-            self.__fetchItemInfo()
-
         return self.__hardpoint
+
+    @property
+    def isInvalid(self):
+        if self.isEmpty:
+            return False
+        return self.__item is None or (self.__item.category.name not in ("Module", "Subsystem") and self.__item.group.name != "Effect Beacon")
 
     @property
     def numCharges(self):
@@ -263,38 +253,23 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     @property
     def slot(self):
-        if self.__item is None:
-            self.__fetchItemInfo()
-
         return self.__slot
 
 
     @property
     def itemModifiedAttributes(self):
-        if self.__item is None:
-            self.__fetchItemInfo()
-
         return self.__itemModifiedAttributes
 
     @property
     def chargeModifiedAttributes(self):
-        if self.__charge is None:
-            self.__fetchChargeInfo()
-
         return self.__chargeModifiedAttributes
 
     @property
     def item(self):
-        if self.__item is None:
-            self.__fetchItemInfo()
-
         return self.__item if self.__item != 0 else None
 
     @property
     def charge(self):
-        if self.__charge is None:
-            self.__fetchChargeInfo()
-
         return self.__charge if self.__charge != 0 else None
 
     @charge.setter
@@ -516,7 +491,6 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     def getValidCharges(self):
         validCharges = set()
-        import eos.db
         for i in range(5):
             itemChargeGroup = self.getModifiedItemAttr('chargeGroup' + str(i))
             if itemChargeGroup is not None:
