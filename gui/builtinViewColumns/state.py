@@ -31,15 +31,6 @@ class State(ViewColumn):
         self.size = 16
         self.maxsize = self.size
         self.mask = wx.LIST_MASK_IMAGE
-        for name, state in (("checked", wx.CONTROL_CHECKED), ("unchecked", 0)):
-            bitmap = wx.EmptyBitmap(16, 16)
-            dc = wx.MemoryDC()
-            dc.SelectObject(bitmap)
-            dc.SetBackground(wx.TheBrushList.FindOrCreateBrush(fittingView.GetBackgroundColour(), wx.SOLID))
-            dc.Clear()
-            wx.RendererNative.Get().DrawCheckBox(fittingView, dc, wx.Rect(0, 0, 16, 16), state)
-            dc.Destroy()
-            setattr(self, "%sId" % name, fittingView.imageList.Add(bitmap))
 
     def getText(self, mod):
         return ""
