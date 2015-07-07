@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 """
-This script updates only market/item icons, it doesn't update ship icons.
+This script updates only market/item icons.
 """
 
 
