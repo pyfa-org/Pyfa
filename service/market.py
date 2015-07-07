@@ -231,6 +231,8 @@ class Market():
             "Mobile Decoy Unit": False,  # Seems to be left over test mod for deployables
             "Tournament Micro Jump Unit": False,  # Normally seen only on tournament arenas
             "Council Diplomatic Shuttle": False,  # CSM X celebration
+            "Imp": False,  # AT13 prize, not a real ship yet
+            "Fiend": False,  # AT13 prize, not a real ship yet
         }
 
         # do not publish ships that we convert
