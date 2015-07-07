@@ -1,3 +1,7 @@
+# overloadSelfMissileGuidanceBonus5
+#
+# Used by:
+# Modules from group: Missile Guidance Computer (3 of 3)
 type = "overheat"
 def handler(fit, module, context):
     for tgtAttr in (

@@ -1,3 +1,7 @@
+# modeArmorRepDurationPostDiv
+#
+# Used by:
+# Module: Hecate Defense Mode
 type = "passive"
 def handler(fit, module, context):
     fit.modules.filteredItemMultiply(

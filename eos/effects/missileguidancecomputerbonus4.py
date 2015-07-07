@@ -1,3 +1,7 @@
+# missileGuidanceComputerBonus4
+#
+# Used by:
+# Modules from group: Missile Guidance Computer (3 of 3)
 type = "active"
 def handler(fit, container, context):
     for srcAttr, tgtAttr in (
