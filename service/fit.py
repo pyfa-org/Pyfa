@@ -363,9 +363,20 @@ class Fit(object):
             thing.state = self.__getProposedState(thing, click)
             if not thing.canHaveState(thing.state, fit):
                 thing.state = State.OFFLINE
-        elif isinstance(thing, eos.types.Fit):
+        elif isinstance(thing, eos.types.Fit) and thing.projectionInfo is not None:
             print "toggle fit"
             thing.projectionInfo.active = not thing.projectionInfo.active
+
+        eos.db.commit()
+        self.recalc(fit)
+
+    def changeAmount(self, fitID, projected_fit, amount):
+        """Change amount of projected fits"""
+        fit = eos.db.getFit(fitID)
+        amount = min(5, max(1, amount))  # 1 <= a <= 5
+
+        if projected_fit.projectionInfo is not None:
+            projected_fit.projectionInfo.amount = amount
 
         eos.db.commit()
         self.recalc(fit)

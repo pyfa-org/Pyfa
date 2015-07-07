@@ -17,5 +17,6 @@ __all__ = [
     #"changeAffectingSkills",
     "tacticalMode",
     "targetResists",
-    "priceClear"
+    "priceClear",
+    "amount",
 ]
