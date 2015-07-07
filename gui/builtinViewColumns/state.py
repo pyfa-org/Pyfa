@@ -20,7 +20,7 @@
 from gui.viewColumn import ViewColumn
 from gui import bitmapLoader
 import wx
-from eos.types import Drone, Module, Rack
+from eos.types import Drone, Module, Rack, Fit
 from eos.types import State as State_
 
 class State(ViewColumn):
@@ -49,8 +49,14 @@ class State(ViewColumn):
             return State_.getName(mod.state).title()
 
     def getImageId(self, stuff):
+        generic_active = self.fittingView.imageList.GetImageIndex("state_%s_small" % State_.getName(1).lower(), "icons")
+        generic_inactive = self.fittingView.imageList.GetImageIndex("state_%s_small" % State_.getName(-1).lower(), "icons")
+
         if isinstance(stuff, Drone):
-            return self.checkedId if stuff.amountActive > 0 else self.uncheckedId
+            if stuff.amountActive > 0:
+                return generic_active
+            else:
+                return generic_inactive
         elif isinstance(stuff, Rack):
             return -1
         elif isinstance(stuff, Module):
@@ -58,11 +64,18 @@ class State(ViewColumn):
                 return -1
             else:
                 return self.fittingView.imageList.GetImageIndex("state_%s_small" % State_.getName(stuff.state).lower(), "icons")
+        elif isinstance(stuff, Fit):
+            if stuff.projectionInfo is None:
+                return -1
+            if stuff.projectionInfo.amount > 0:
+                return generic_active
+            return generic_inactive
         else:
             active = getattr(stuff, "active", None)
             if active is None:
                 return -1
-            else:
-                return self.checkedId if active else self.uncheckedId
+            if active:
+                return generic_active
+            return generic_inactive
 
 State.register()

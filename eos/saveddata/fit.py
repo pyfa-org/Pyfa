@@ -117,6 +117,7 @@ class Fit(object):
         self.__capUsed = None
         self.__capRecharge = None
         self.__calculatedTargets = []
+        self.__projectionInfo = None
         self.factorReload = False
         self.fleet = None
         self.boostsFits = set()
@@ -206,6 +207,14 @@ class Fit(object):
     @property
     def projectedFits(self):
         return self.__projectedFits
+
+    @property
+    def projectionInfo(self):
+        return self.__projectionInfo
+
+    @projectionInfo.setter
+    def projectionInfo(self, projectionInfo):
+        self.__projectionInfo = projectionInfo
 
     @property
     def projectedDrones(self):
@@ -452,7 +461,7 @@ class Fit(object):
                         item.calculateModifiedAttributes(targetFit, runTime, True)
 
         for fit in self.projectedFits:
-            if fit.projectionInfo.amount:
+            if fit.projectionInfo.amount > 0:
                 fit.calculateModifiedAttributes(self, withBoosters=withBoosters, dirtyStorage=dirtyStorage)
 
     def fill(self):
