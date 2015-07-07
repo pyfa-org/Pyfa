@@ -461,8 +461,9 @@ class Fit(object):
                         item.calculateModifiedAttributes(targetFit, runTime, True)
 
         for fit in self.projectedFits:
-            if fit.projectionInfo.amount > 0:
-                fit.calculateModifiedAttributes(self, withBoosters=withBoosters, dirtyStorage=dirtyStorage)
+            if fit.projectionInfo.active:
+                #for _ in xrange(fit.projectionInfo.amount):
+                    fit.calculateModifiedAttributes(self, withBoosters=withBoosters, dirtyStorage=dirtyStorage)
 
     def fill(self):
         """

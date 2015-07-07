@@ -365,7 +365,7 @@ class Fit(object):
                 thing.state = State.OFFLINE
         elif isinstance(thing, eos.types.Fit):
             print "toggle fit"
-            thing.projectionInfo.amount = not thing.projectionInfo.amount
+            thing.projectionInfo.active = not thing.projectionInfo.active
 
         eos.db.commit()
         self.recalc(fit)

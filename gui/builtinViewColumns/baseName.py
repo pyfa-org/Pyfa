@@ -39,7 +39,7 @@ class BaseName(ViewColumn):
         elif isinstance(stuff, Cargo):
             return "%dx %s" % (stuff.amount, stuff.item.name)
         elif isinstance(stuff, Fit):
-            return "%s (%s)" % (stuff.name, stuff.ship.item.name)
+            return "%dx %s (%s)" % (stuff.projectionInfo.amount, stuff.name, stuff.ship.item.name)
         elif isinstance(stuff, Rack):
             if service.Fit.getInstance().serviceFittingOptions["rackLabels"]:
                 if stuff.slot == Slot.MODE:

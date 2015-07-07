@@ -46,14 +46,18 @@ fits_table = Table("fits", saveddata_meta,
 projectedFits_table = Table("projectedFits", saveddata_meta,
                             Column("sourceID", ForeignKey("fits.ID"), primary_key = True),
                             Column("victimID", ForeignKey("fits.ID"), primary_key = True),
-                            Column("amount", Integer))
+                            Column("amount", Integer),
+                            Column("active", Boolean),
+)
 
 class ProjectedFit(object):
-    def __init__(self, source_item, dest_item, enabled):
-        print "init projected item", source_item, dest_item, enabled
+    def __init__(self, source_item, dest_item, amount=1, active=True):
+        print "init projected item", source_item, dest_item, active, amount
         self.source_item = source_item
         self.dest_item = dest_item
-        self.amount = enabled
+        self.amount = amount
+        self.active = active
+        self.dest_item.projectionInfo = self
 
     @reconstructor
     def init(self):
@@ -65,7 +69,7 @@ class ProjectedFit(object):
 Fit._Fit__projectedFits = association_proxy(
     "projected_items",
     "dest_item",
-    creator=lambda dest_item: ProjectedFit(None, dest_item, True)
+    creator=lambda dest_item: ProjectedFit(None, dest_item)
 )
 
 mapper(Fit, fits_table,

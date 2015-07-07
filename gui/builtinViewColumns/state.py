@@ -67,7 +67,7 @@ class State(ViewColumn):
         elif isinstance(stuff, Fit):
             if stuff.projectionInfo is None:
                 return -1
-            if stuff.projectionInfo.amount > 0:
+            if stuff.projectionInfo.active:
                 return generic_active
             return generic_inactive
         else:
