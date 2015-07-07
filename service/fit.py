@@ -363,6 +363,9 @@ class Fit(object):
             thing.state = self.__getProposedState(thing, click)
             if not thing.canHaveState(thing.state, fit):
                 thing.state = State.OFFLINE
+        elif isinstance(thing, eos.types.Fit):
+            print "toggle fit"
+            thing.projectionInfo.amount = not thing.projectionInfo.amount
 
         eos.db.commit()
         self.recalc(fit)
