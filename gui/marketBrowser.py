@@ -51,7 +51,7 @@ class MarketBrowser(wx.Panel):
         self.itemView = ItemView(self.splitter, self)
 
         self.splitter.SplitHorizontally(self.marketView, self.itemView)
-        self.splitter.SetMinimumPaneSize(150)
+        self.splitter.SetMinimumPaneSize(250)
 
         # Setup our buttons for metaGroup selection
         # Same fix as for search box on macs,
