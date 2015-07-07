@@ -91,9 +91,9 @@ if toupdate:
 
 if toadd:
     print('Adding {} renders...'.format(len(toadd)))
-    missing = toupdate.difference(export)
+    missing = toadd.difference(export)
     toadd.intersection_update(export)
-    for type_id in sorted(toupdate):
+    for type_id in sorted(toadd):
         render = get_render(type_id)
         fname = '{}.png'.format(type_id)
         fullpath = os.path.join(icons_dir, fname)
