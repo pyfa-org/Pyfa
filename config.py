@@ -20,10 +20,10 @@ saveInRoot = False
 logLevel = logging.WARN
 
 # Version data
-version = "1.12.1"
-tag = "git"
-expansionName = "Singularity"
-expansionVersion = "910808"
+version = "1.13.0"
+tag = "Stable"
+expansionName = "Aegis"
+expansionVersion = "1.0"
 evemonMinVersion = "4081"
 
 pyfaPath = None
