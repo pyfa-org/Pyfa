@@ -36,7 +36,7 @@ from service.fleet import Fleet
 from service.settings import SettingsProvider
 from service.port import Port
 
-logger = logging.getLogger("pyfa.service.fit")
+logger = logging.getLogger(__name__)
 
 class FitBackupThread(threading.Thread):
     def __init__(self, path, callback):
@@ -236,6 +236,7 @@ class Fit(object):
             return None
         fit = eos.db.getFit(fitID)
         inited = getattr(fit, "inited", None)
+
         if inited is None or inited is False:
             sFleet = Fleet.getInstance()
             f = sFleet.getLinearFleet(fit)
@@ -373,7 +374,7 @@ class Fit(object):
     def changeAmount(self, fitID, projected_fit, amount):
         """Change amount of projected fits"""
         fit = eos.db.getFit(fitID)
-        amount = min(5, max(1, amount))  # 1 <= a <= 5
+        amount = min(20, max(1, amount))  # 1 <= a <= 5
 
         if projected_fit.projectionInfo is not None:
             projected_fit.projectionInfo.amount = amount
@@ -936,7 +937,8 @@ class Fit(object):
         self.recalc(fit)
 
     def recalc(self, fit, withBoosters=False):
+        logger.debug("="*10+"recalc"+"="*10)
         if fit.factorReload is not self.serviceFittingOptions["useGlobalForceReload"]:
             fit.factorReload = self.serviceFittingOptions["useGlobalForceReload"]
-        fit.clear() 
+        fit.clear()
         fit.calculateModifiedAttributes(withBoosters=withBoosters, dirtyStorage=self.dirtyFitIDs)

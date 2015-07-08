@@ -1,30 +1,36 @@
 import time
 
-class Timer(object):
-    """
-    Generic timing class for simple profiling.
+class Timer():
+    def __init__(self, name='', logger=None):
+        self.name = name
+        self.start = time.time()
+        self.__last = self.start
+        self.logger = logger
 
-    Usage:
+    @property
+    def elapsed(self):
+        return (time.time() - self.start)*1000
 
-    with Timer(verbose=True) as t:
-        # code to be timed
-        time.sleep(5)
+    @property
+    def last(self):
+        return (time.time() - self.__last)*1000
 
-    Output:
-    elapsed time: 5000.000 ms
-
-    Can also access time with t.secs
-    """
-    def __init__(self, verbose=False):
-        self.verbose = verbose
+    def checkpoint(self, name=''):
+        text = 'Timer - {timer} - {checkpoint} - {last:.2f}ms ({elapsed:.2f}ms elapsed)'.format(
+            timer=self.name,
+            checkpoint=name,
+            last=self.last,
+            elapsed=self.elapsed
+        ).strip()
+        self.__last = time.time()
+        if self.logger:
+            self.logger.debug(text)
+        else:
+            print text
 
     def __enter__(self):
-        self.start = time.time()
         return self
 
-    def __exit__(self, *args):
-        self.end = time.time()
-        self.secs = self.end - self.start
-        self.msecs = self.secs * 1000  # millisecs
-        if self.verbose:
-            print 'elapsed time: %f ms' % self.msecs
+    def __exit__(self, type, value, traceback):
+        self.checkpoint('finished')
+        pass

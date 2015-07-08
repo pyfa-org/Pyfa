@@ -17,7 +17,7 @@ debug = False
 # Defines if our saveddata will be in pyfa root or not
 saveInRoot = False
 
-logLevel = logging.WARN
+logLevel = logging.DEBUG
 
 # Version data
 version = "1.12.1"
