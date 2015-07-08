@@ -32,6 +32,10 @@ staticPath = None
 saveDB = None
 gameDB = None
 
+def __createSavePath():
+    if not os.path.exists(savePath):
+        os.mkdir(savePath)
+
 def defPaths():
     global pyfaPath
     global savePath
@@ -69,15 +73,13 @@ def defPaths():
     # Redirect stderr to file if we're requested to do so
     stderrToFile = getattr(configforced, "stderrToFile", None)
     if stderrToFile is True:
-        if not os.path.exists(savePath):
-            os.mkdir(savePath)
+        __createSavePath()
         sys.stderr = open(os.path.join(savePath, "error_log.txt"), "w")
 
     # Same for stdout
     stdoutToFile = getattr(configforced, "stdoutToFile", None)
     if stdoutToFile is True:
-        if not os.path.exists(savePath):
-            os.mkdir(savePath)
+        __createSavePath()
         sys.stdout = open(os.path.join(savePath, "output_log.txt"), "w")
 
     # Static EVE Data from the staticdata repository, should be in the staticdata
