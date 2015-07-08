@@ -32,9 +32,9 @@ staticPath = None
 saveDB = None
 gameDB = None
 
-def __createSavePath():
-    if not os.path.exists(savePath):
-        os.mkdir(savePath)
+def __createDirs(path):
+    if not os.path.exists(path):
+        os.makedirs(path)
 
 def defPaths():
     global pyfaPath
@@ -61,9 +61,10 @@ def defPaths():
             savePath = unicode(os.path.expanduser(os.path.join("~", ".pyfa")),
                                sys.getfilesystemencoding())
 
+    __createDirs(savePath)
+
     format = '%(asctime)s %(name)-24s %(levelname)-8s %(message)s'
     logging.basicConfig(format=format, level=logLevel)
-    __createSavePath()
     handler = logging.handlers.RotatingFileHandler(os.path.join(savePath, "log.txt"), maxBytes=1000000, backupCount=3)
     formatter = logging.Formatter(format)
     handler.setFormatter(formatter)
@@ -74,13 +75,11 @@ def defPaths():
     # Redirect stderr to file if we're requested to do so
     stderrToFile = getattr(configforced, "stderrToFile", None)
     if stderrToFile is True:
-        __createSavePath()
         sys.stderr = open(os.path.join(savePath, "error_log.txt"), "w")
 
     # Same for stdout
     stdoutToFile = getattr(configforced, "stdoutToFile", None)
     if stdoutToFile is True:
-        __createSavePath()
         sys.stdout = open(os.path.join(savePath, "output_log.txt"), "w")
 
     # Static EVE Data from the staticdata repository, should be in the staticdata
