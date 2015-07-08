@@ -63,6 +63,7 @@ def defPaths():
 
     format = '%(asctime)s %(name)-24s %(levelname)-8s %(message)s'
     logging.basicConfig(format=format, level=logLevel)
+    __createSavePath()
     handler = logging.handlers.RotatingFileHandler(os.path.join(savePath, "log.txt"), maxBytes=1000000, backupCount=3)
     formatter = logging.Formatter(format)
     handler.setFormatter(formatter)
