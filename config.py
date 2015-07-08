@@ -21,7 +21,7 @@ logLevel = logging.WARN
 
 # Version data
 version = "1.13.1"
-tag = "git"
+tag = "Stable"
 expansionName = "Aegis"
 expansionVersion = "1.0"
 evemonMinVersion = "4081"
