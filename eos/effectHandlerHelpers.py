@@ -17,7 +17,7 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 #===============================================================================
 
-from sqlalchemy.orm.attributes import flag_modified
+#from sqlalchemy.orm.attributes import flag_modified
 import eos.db
 import eos.types
 import logging
@@ -107,7 +107,9 @@ class HandledList(list):
 
     def remove(self, thing):
         # We must flag it as modified, otherwise it not be removed from the database
-        flag_modified(thing, "itemID")
+        # @todo: flag_modified isn't in os x skel. need to rebuild to include
+        #flag_modified(thing, "itemID")
+        thing.itemID = 0
         list.remove(self, thing)
 
 class HandledModuleList(HandledList):
