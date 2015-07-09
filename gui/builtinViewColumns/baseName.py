@@ -21,6 +21,8 @@
 from gui import builtinViewColumns
 from gui.viewColumn import ViewColumn
 from gui import bitmapLoader
+import gui.mainFrame
+
 import wx
 from eos.types import Drone, Cargo, Fit, Module, Slot, Rack
 import service
@@ -29,6 +31,7 @@ class BaseName(ViewColumn):
     name = "Base Name"
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
+        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.columnText = "Name"
         self.shipImage = fittingView.imageList.GetImageIndex("ship_small", "icons")
         self.mask = wx.LIST_MASK_TEXT
@@ -39,7 +42,8 @@ class BaseName(ViewColumn):
         elif isinstance(stuff, Cargo):
             return "%dx %s" % (stuff.amount, stuff.item.name)
         elif isinstance(stuff, Fit):
-            return "%dx %s (%s)" % (stuff.projectionInfo.amount, stuff.name, stuff.ship.item.name)
+            fitID = self.mainFrame.getActiveFit()
+            return "%dx %s (%s)" % (stuff.getProjectionInfo(fitID).amount, stuff.name, stuff.ship.item.name)
         elif isinstance(stuff, Rack):
             if service.Fit.getInstance().serviceFittingOptions["rackLabels"]:
                 if stuff.slot == Slot.MODE:

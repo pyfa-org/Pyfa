@@ -19,6 +19,8 @@
 
 from gui.viewColumn import ViewColumn
 from gui import bitmapLoader
+import gui.mainFrame
+
 import wx
 from eos.types import Drone, Module, Rack, Fit
 from eos.types import State as State_
@@ -27,6 +29,7 @@ class State(ViewColumn):
     name = "State"
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
+        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.resizable = False
         self.size = 16
         self.maxsize = self.size
@@ -56,9 +59,12 @@ class State(ViewColumn):
             else:
                 return self.fittingView.imageList.GetImageIndex("state_%s_small" % State_.getName(stuff.state).lower(), "icons")
         elif isinstance(stuff, Fit):
-            if stuff.projectionInfo is None:
+            fitID = self.mainFrame.getActiveFit()
+            projectionInfo = stuff.getProjectionInfo(fitID)
+
+            if projectionInfo is None:
                 return -1
-            if stuff.projectionInfo.active:
+            if projectionInfo.active:
                 return generic_active
             return generic_inactive
         else:

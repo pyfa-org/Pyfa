@@ -325,7 +325,8 @@ class Fit(object):
         if isinstance(thing, eos.types.Fit):
             if thing.ID == fitID:
                 return
-            fit.projectedFits.append(thing)
+
+            fit.__projectedFits[thing.ID] = thing
         elif thing.category.name == "Drone":
             drone = None
             for d in fit.projectedDrones.find(thing):
@@ -374,10 +375,10 @@ class Fit(object):
     def changeAmount(self, fitID, projected_fit, amount):
         """Change amount of projected fits"""
         fit = eos.db.getFit(fitID)
-        amount = min(20, max(1, amount))  # 1 <= a <= 5
-
-        if projected_fit.projectionInfo is not None:
-            projected_fit.projectionInfo.amount = amount
+        amount = min(20, max(1, amount))  # 1 <= a <= 20
+        projectionInfo = projected_fit.getProjectionInfo(fitID)
+        if projectionInfo:
+            projectionInfo.amount = amount
 
         eos.db.commit()
         self.recalc(fit)
@@ -389,7 +390,8 @@ class Fit(object):
         elif isinstance(thing, eos.types.Module):
             fit.projectedModules.remove(thing)
         else:
-            fit.projectedFits.remove(thing)
+            del fit.__projectedFits[thing.ID]
+            #fit.projectedFits.remove(thing)
 
         eos.db.commit()
         self.recalc(fit)
@@ -937,7 +939,7 @@ class Fit(object):
         self.recalc(fit)
 
     def recalc(self, fit, withBoosters=False):
-        logger.debug("="*10+"recalc"+"="*10)
+            logger.debug("="*10+"recalc"+"="*10)
         if fit.factorReload is not self.serviceFittingOptions["useGlobalForceReload"]:
             fit.factorReload = self.serviceFittingOptions["useGlobalForceReload"]
         fit.clear()

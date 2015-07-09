@@ -21,6 +21,7 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from sqlalchemy.sql import and_
 from sqlalchemy.ext.associationproxy import association_proxy
+from sqlalchemy.orm.collections import attribute_mapped_collection
 
 from eos.db import saveddata_meta
 from eos.db.saveddata.module import modules_table
@@ -51,25 +52,27 @@ projectedFits_table = Table("projectedFits", saveddata_meta,
 )
 
 class ProjectedFit(object):
-    def __init__(self, source_item, dest_item, amount=1, active=True):
-        print "init projected item", source_item, dest_item, active, amount
-        self.source_item = source_item
-        self.dest_item = dest_item
+    def __init__(self, source_fit, k, amount=1, active=True):
+        print "init projected: ", k, source_fit.name, active, amount
+        self.sourceID = k
+        self.source_item = source_fit
+        self.victim_item = None
         self.amount = amount
         self.active = active
-        self.dest_item.projectionInfo = self
+        #self.dest_item.setProjectionInfo(self.source_item.ID, self)
 
     @reconstructor
     def init(self):
         print "db init"
-        print "\t source:",self.source_item
-        print "\t dest:", self.dest_item
-        self.dest_item.projectionInfo = self
+        print "\t source:", self.source_fit
+        print "\t dest:", self.victim_fit
+        #self.dest_item.setProjectionInfo(self.source_item.ID, self)
+        #print self.dest_item.ship.item.name, ">", self.source_item.ship.item.name,self
 
 Fit._Fit__projectedFits = association_proxy(
-    "projected_items",
-    "dest_item",
-    creator=lambda dest_item: ProjectedFit(None, dest_item)
+    "victimOf",  # look at the victimOf association...
+    "source_fit",  # .. and return the source fits
+    creator=lambda k, victim_fit: ProjectedFit(victim_fit, k)
 )
 
 mapper(Fit, fits_table,
@@ -128,15 +131,17 @@ mapper(Fit, fits_table,
                 backref="fits"),
             "_Fit__damagePattern": relation(DamagePattern),
             "_Fit__targetResists": relation(TargetResists),
-            "dest_items": relationship(
+            "projectedOnto": relationship(
                 ProjectedFit,
-                primaryjoin=projectedFits_table.c.victimID == fits_table.c.ID,
-                backref='dest_item',
+                primaryjoin=projectedFits_table.c.sourceID == fits_table.c.ID,
+                backref='source_fit',
+                collection_class=attribute_mapped_collection('victimID'),
                 cascade='all, delete, delete-orphan'),
-            "projected_items": relationship(
+            "victimOf": relationship(
                 ProjectedFit,
-                primaryjoin=fits_table.c.ID == projectedFits_table.c.sourceID,
-                backref='source_item',
+                primaryjoin=fits_table.c.ID == projectedFits_table.c.victimID,
+                backref='victim_fit',
+                collection_class=attribute_mapped_collection('sourceID'),
                 cascade='all, delete, delete-orphan'),
        }
 )

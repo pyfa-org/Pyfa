@@ -119,7 +119,7 @@ class Fit(object):
         self.__capUsed = None
         self.__capRecharge = None
         self.__calculatedTargets = []
-        self.__projectionInfo = None
+        self.__projectionMap = {}
         self.factorReload = False
         self.fleet = None
         self.boostsFits = set()
@@ -208,15 +208,10 @@ class Fit(object):
 
     @property
     def projectedFits(self):
-        return self.__projectedFits
+        return self.__projectedFits.values()
 
-    @property
-    def projectionInfo(self):
-        return self.__projectionInfo
-
-    @projectionInfo.setter
-    def projectionInfo(self, projectionInfo):
-        self.__projectionInfo = projectionInfo
+    def getProjectionInfo(self, fitID):
+        return self.projectedOnto.get(fitID, None)
 
     @property
     def projectedDrones(self):
@@ -371,7 +366,11 @@ class Fit(object):
         # If we are in a root ship, add projected fits to clear list
         # Do not add projected fits if self is already projected - this can
         # cause infinite recursion in projection loop, eg A > B > C > A
-        if self.projectionInfo is None:
+        # @todo: since fits persist, we need to be sure that even if a fit has
+        # projection info (loaded as a projected fit), this still happens when
+        # we clear the fit if the fit is the root
+        #if self.projectionInfo is None:
+        if True:
             c = chain(c, self.projectedFits)
 
         for stuff in c:
@@ -417,10 +416,13 @@ class Fit(object):
         timer = Timer('Fit: %d, %s'%(self.ID, self.name), logger)
         logger.debug("Starting fit calculation on: %d %s (%s)" %
                      (self.ID, self.name, self.ship.item.name))
-
+        #print self.projectedFits
         if targetFit:
-            logger.debug("Applying projections to target: %d %s (%s)" %
-                         (targetFit.ID, targetFit.name, targetFit.ship.item.name))
+            logger.debug("Applying projections to target: %d %s (%s)",
+                         targetFit.ID, targetFit.name, targetFit.ship.item.name)
+            projectionInfo = self.getProjectionInfo(targetFit.ID)
+            logger.debug("ProjectionInfo: amount=%s, active=%s, instance=%s",
+                         projectionInfo.amount, projectionInfo.active, projectionInfo)
 
         refreshBoosts = False
         if withBoosters is True:
@@ -489,7 +491,7 @@ class Fit(object):
                     self.register(item)
                     item.calculateModifiedAttributes(self, runTime, False)
                     if projected is True:
-                        for _ in xrange(self.projectionInfo.amount):
+                        #for _ in xrange(projectionInfo.amount):
                             targetFit.register(item)
                             item.calculateModifiedAttributes(targetFit, runTime, True)
 
@@ -498,7 +500,7 @@ class Fit(object):
         # Only apply projected fits if fit it not projected itself.
         if not projected:
             for fit in self.projectedFits:
-                if fit.projectionInfo.active:
+                #if fit.getProjectionInfo(self.ID).active:
                     fit.calculateModifiedAttributes(self, withBoosters=withBoosters, dirtyStorage=dirtyStorage)
 
         timer.checkpoint('Done with fit calculation')
