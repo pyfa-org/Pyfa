@@ -52,7 +52,7 @@ class Price():
             item = eos.db.getItem(typeID)
             # We're not going to request items only with market group, as eve-central
             # doesn't provide any data for items not on the market
-            if item.marketGroupID:
+            if item is not None and item.marketGroupID:
                 toRequest.add(typeID)
 
         # Do not waste our time if all items are not on the market
