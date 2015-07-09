@@ -465,19 +465,19 @@ class Fit(object):
         # Mark fit as calculated
         self.__calculated = True
 
-        c = chain(
-            (self.character, self.ship),
-            self.drones,
-            self.boosters,
-            self.appliedImplants,
-            self.modules
-        )
-
-        if not projected:
-            # if not a projected fit, add a couple of more things
-            c = chain(c, self.projectedDrones, self.projectedModules)
-
         for runTime in ("early", "normal", "late"):
+            c = chain(
+                (self.character, self.ship),
+                self.drones,
+                self.boosters,
+                self.appliedImplants,
+                self.modules
+            )
+
+            if not projected:
+                # if not a projected fit, add a couple of more things
+                c = chain(c, self.projectedDrones, self.projectedModules)
+
             # We calculate gang bonuses first so that projected fits get them
             if self.gangBoosts is not None:
                 self.__calculateGangBoosts(runTime)
