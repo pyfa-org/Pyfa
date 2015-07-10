@@ -47,8 +47,8 @@ fits_table = Table("fits", saveddata_meta,
 projectedFits_table = Table("projectedFits", saveddata_meta,
                             Column("sourceID", ForeignKey("fits.ID"), primary_key = True),
                             Column("victimID", ForeignKey("fits.ID"), primary_key = True),
-                            Column("amount", Integer),
-                            Column("active", Boolean),
+                            Column("amount", Integer, nullable = False, default = 1),
+                            Column("active", Boolean, nullable = False, default = 1),
 )
 
 class ProjectedFit(object):
