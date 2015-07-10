@@ -53,26 +53,23 @@ projectedFits_table = Table("projectedFits", saveddata_meta,
 
 class ProjectedFit(object):
     def __init__(self, source_fit, k, amount=1, active=True):
-        print "init projected: ", k, source_fit.name, active, amount
+        #print "init projected: source fit: ", source_fit.name, source_fit, "key (fit ID)", key, "active:", active, "amount:",amount
         self.sourceID = k
-        self.source_item = source_fit
-        self.victim_item = None
+        self.source_fit = source_fit
+        #self.victim_item = None
         self.amount = amount
         self.active = active
-        #self.dest_item.setProjectionInfo(self.source_item.ID, self)
 
     @reconstructor
     def init(self):
         print "db init"
         print "\t source:", self.source_fit
         print "\t dest:", self.victim_fit
-        #self.dest_item.setProjectionInfo(self.source_item.ID, self)
-        #print self.dest_item.ship.item.name, ">", self.source_item.ship.item.name,self
 
 Fit._Fit__projectedFits = association_proxy(
     "victimOf",  # look at the victimOf association...
     "source_fit",  # .. and return the source fits
-    creator=lambda k, victim_fit: ProjectedFit(victim_fit, k)
+    creator=lambda k, source_fit: ProjectedFit(source_fit, k)
 )
 
 mapper(Fit, fits_table,

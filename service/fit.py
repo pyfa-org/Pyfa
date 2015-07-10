@@ -327,6 +327,10 @@ class Fit(object):
                 return
 
             fit.__projectedFits[thing.ID] = thing
+
+            # this bit is required -- see GH issue
+            eos.db.saveddata_session.flush()
+            eos.db.saveddata_session.refresh(thing)
         elif thing.category.name == "Drone":
             drone = None
             for d in fit.projectedDrones.find(thing):
@@ -939,7 +943,7 @@ class Fit(object):
         self.recalc(fit)
 
     def recalc(self, fit, withBoosters=False):
-            logger.debug("="*10+"recalc"+"="*10)
+        logger.debug("="*10+"recalc"+"="*10)
         if fit.factorReload is not self.serviceFittingOptions["useGlobalForceReload"]:
             fit.factorReload = self.serviceFittingOptions["useGlobalForceReload"]
         fit.clear()

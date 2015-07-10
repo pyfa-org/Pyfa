@@ -63,7 +63,7 @@ class Fit(object):
         self.__cargo = HandledDroneCargoList()
         self.__implants = HandledImplantBoosterList()
         self.__boosters = HandledImplantBoosterList()
-        self.__projectedFits = HandledProjectedFitList()
+        #self.__projectedFits = {}
         self.__projectedModules = HandledProjectedModList()
         self.__projectedDrones = HandledProjectedDroneList()
         self.__character = None
@@ -119,7 +119,6 @@ class Fit(object):
         self.__capUsed = None
         self.__capRecharge = None
         self.__calculatedTargets = []
-        self.__projectionMap = {}
         self.factorReload = False
         self.fleet = None
         self.boostsFits = set()
@@ -208,9 +207,11 @@ class Fit(object):
 
     @property
     def projectedFits(self):
+        #print "get projected fits for :", self.name
         return self.__projectedFits.values()
 
     def getProjectionInfo(self, fitID):
+        print "get projection info for fitID: ", fitID
         return self.projectedOnto.get(fitID, None)
 
     @property
@@ -416,13 +417,15 @@ class Fit(object):
         timer = Timer('Fit: %d, %s'%(self.ID, self.name), logger)
         logger.debug("Starting fit calculation on: %d %s (%s)" %
                      (self.ID, self.name, self.ship.item.name))
+        print self
+        #print self.__projectedFits
         #print self.projectedFits
         if targetFit:
             logger.debug("Applying projections to target: %d %s (%s)",
                          targetFit.ID, targetFit.name, targetFit.ship.item.name)
-            projectionInfo = self.getProjectionInfo(targetFit.ID)
-            logger.debug("ProjectionInfo: amount=%s, active=%s, instance=%s",
-                         projectionInfo.amount, projectionInfo.active, projectionInfo)
+            #projectionInfo = self.getProjectionInfo(targetFit.ID)
+            #logger.debug("ProjectionInfo: amount=%s, active=%s, instance=%s",
+            #             projectionInfo.amount, projectionInfo.active, projectionInfo)
 
         refreshBoosts = False
         if withBoosters is True:
@@ -447,23 +450,21 @@ class Fit(object):
         if targetFit is None:
             targetFit = self
             projected = False
-        # Else, we're checking all target projectee fits
-        elif targetFit not in self.__calculatedTargets:
-            logger.debug("Target fit has not been calculated, calculating first")
-            # target fit is required to be calculated before we do projections
-            # @todo: is there any situation where a projected ship would get here and the targte fit not be calculated already? See if we can get rid of this block of code
-            self.__calculatedTargets.append(targetFit)
-            targetFit.calculateModifiedAttributes(dirtyStorage=dirtyStorage)
-            projected = True
-        # Or do nothing if target fit is calculated
         else:
-            return
+            projected = True
 
         # If fit is calculated and we have nothing to do here, get out
         if self.__calculated and not projected:
             logger.debug("Fit has already been calculated and is not projected, returning")
             return
-
+        print
+        print "******** projected fits ********"
+        print self.__projectedFits
+        print "******** projectedOnto ********"
+        print self.projectedOnto
+        print "******** victimOf ********"
+        print self.victimOf
+        print
         # Mark fit as calculated
         self.__calculated = True
 
