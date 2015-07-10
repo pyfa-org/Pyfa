@@ -20,10 +20,10 @@ saveInRoot = False
 logLevel = logging.DEBUG
 
 # Version data
-version = "1.12.1"
+version = "1.13.3"
 tag = "git"
-expansionName = "Singularity"
-expansionVersion = "910808"
+expansionName = "Aegis"
+expansionVersion = "1.0"
 evemonMinVersion = "4081"
 
 pyfaPath = None
@@ -31,6 +31,7 @@ savePath = None
 staticPath = None
 saveDB = None
 gameDB = None
+
 
 class StreamToLogger(object):
    """
@@ -46,6 +47,9 @@ class StreamToLogger(object):
       for line in buf.rstrip().splitlines():
          self.logger.log(self.log_level, line.rstrip())
 
+def __createDirs(path):
+    if not os.path.exists(path):
+        os.makedirs(path)
 
 def defPaths():
     global pyfaPath
@@ -71,6 +75,8 @@ def defPaths():
         if savePath is None:
             savePath = unicode(os.path.expanduser(os.path.join("~", ".pyfa")),
                                sys.getfilesystemencoding())
+
+    __createDirs(savePath)
 
     format = '%(asctime)s %(name)-24s %(levelname)-8s %(message)s'
     logging.basicConfig(format=format, level=logLevel)

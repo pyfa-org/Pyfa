@@ -58,11 +58,27 @@ toupdate = existing.intersection(needed)
 toadd = needed.difference(existing)
 
 
+def crop_image(img):
+    w, h = img.size
+    if h == w:
+        return img
+    normal = min(h, w)
+    diff_w = w - normal
+    diff_h = h - normal
+    crop_top = diff_h // 2
+    crop_bot = diff_h // 2 + diff_h % 2
+    crop_left = diff_w // 2
+    crop_right = diff_w // 2 + diff_w % 2
+    box = (crop_left, crop_top, w - crop_right, h - crop_bot)
+    return img.crop(box)
+
+
 def get_render(type_id):
     fname = '{}.png'.format(type_id)
     fullpath = os.path.join(export_dir, fname)
     img = Image.open(fullpath)
     if img.size != RENDER_SIZE:
+        img = crop_image(img)
         img.thumbnail(RENDER_SIZE, Image.ANTIALIAS)
     return img
 

@@ -33,7 +33,7 @@ class Price(ViewColumn):
         self.imageId = fittingView.imageList.GetImageIndex("totalPrice_small", "icons")
 
     def getText(self, stuff):
-        if stuff.item is None:
+        if stuff.item is None or stuff.item.group.name == "Ship Modifiers":
             return ""
 
         sMkt = service.Market.getInstance()

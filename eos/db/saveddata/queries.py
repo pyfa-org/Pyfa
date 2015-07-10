@@ -186,7 +186,7 @@ def getFit(lookfor, eager=None):
     else:
         raise TypeError("Need integer as argument")
 
-    if fit.isInvalid:
+    if fit and fit.isInvalid:
         with sd_lock:
             removeInvalid([fit])
         return None

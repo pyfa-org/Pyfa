@@ -98,6 +98,8 @@ class Fit(object):
             item = eos.db.getItem(self.modeID)
             # Don't need to verify if it's a proper item, as validateModeItem assures this
             self.__mode = self.ship.validateModeItem(item)
+        else:
+            self.__mode = self.ship.validateModeItem(None)
 
         self.build()
 

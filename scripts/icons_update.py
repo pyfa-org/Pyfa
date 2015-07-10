@@ -165,6 +165,21 @@ for fname in os.listdir(export_dir):
     fnames.add(fname)
 
 
+def crop_image(img):
+    w, h = img.size
+    if h == w:
+        return img
+    normal = min(h, w)
+    diff_w = w - normal
+    diff_h = h - normal
+    crop_top = diff_h // 2
+    crop_bot = diff_h // 2 + diff_h % 2
+    crop_left = diff_w // 2
+    crop_right = diff_w // 2 + diff_w % 2
+    box = (crop_left, crop_top, w - crop_right, h - crop_bot)
+    return img.crop(box)
+
+
 def get_icon_file(request):
     """
     Get the iconFile field value and find proper
@@ -190,6 +205,7 @@ def get_icon_file(request):
     except KeyError:
         fullpath = sizes[max(sizes)]
         img = Image.open(fullpath)
+        img = crop_image(img)
         img.thumbnail(ICON_SIZE, Image.ANTIALIAS)
     else:
         img = Image.open(fullpath)

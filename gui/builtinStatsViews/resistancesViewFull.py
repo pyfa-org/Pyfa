@@ -197,8 +197,9 @@ class ResistancesViewFull(StatsView):
             lbl = getattr(self, "labelResistance%sEhp" % tankType.capitalize())
             if ehp is not None:
                 total += ehp[tankType]
+                rrFactor = fit.ehp[tankType] / fit.hp[tankType]
                 lbl.SetLabel(formatAmount(ehp[tankType], 3, 0, 9))
-                lbl.SetToolTip(wx.ToolTip("%s: %d" % (tankType.capitalize(), ehp[tankType])))
+                lbl.SetToolTip(wx.ToolTip("%s: %d\nResist Multiplier: x%.2f" % (tankType.capitalize(), ehp[tankType], rrFactor)))
             else:
                 lbl.SetLabel("0")
 
