@@ -32,6 +32,21 @@ staticPath = None
 saveDB = None
 gameDB = None
 
+class StreamToLogger(object):
+   """
+   Fake file-like stream object that redirects writes to a logger instance.
+   From: http://www.electricmonk.nl/log/2011/08/14/redirect-stdout-and-stderr-to-a-logger-in-python/
+   """
+   def __init__(self, logger, log_level=logging.INFO):
+      self.logger = logger
+      self.log_level = log_level
+      self.linebuf = ''
+
+   def write(self, buf):
+      for line in buf.rstrip().splitlines():
+         self.logger.log(self.log_level, line.rstrip())
+
+
 def defPaths():
     global pyfaPath
     global savePath
@@ -66,19 +81,14 @@ def defPaths():
 
     logging.info("Starting pyfa")
 
-    # Redirect stderr to file if we're requested to do so
-    stderrToFile = getattr(configforced, "stderrToFile", None)
-    if stderrToFile is True:
-        if not os.path.exists(savePath):
-            os.mkdir(savePath)
-        sys.stderr = open(os.path.join(savePath, "error_log.txt"), "w")
+    if hasattr(sys, 'frozen'):
+        stdout_logger = logging.getLogger('STDOUT')
+        sl = StreamToLogger(stdout_logger, logging.INFO)
+        sys.stdout = sl
 
-    # Same for stdout
-    stdoutToFile = getattr(configforced, "stdoutToFile", None)
-    if stdoutToFile is True:
-        if not os.path.exists(savePath):
-            os.mkdir(savePath)
-        sys.stdout = open(os.path.join(savePath, "output_log.txt"), "w")
+        stderr_logger = logging.getLogger('STDERR')
+        sl = StreamToLogger(stderr_logger, logging.ERROR)
+        sys.stderr = sl
 
     # Static EVE Data from the staticdata repository, should be in the staticdata
     # directory in our pyfa directory
