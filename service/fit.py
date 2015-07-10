@@ -175,7 +175,6 @@ class Fit(object):
         fit = eos.db.getFit(fitID)
         sFleet = Fleet.getInstance()
         sFleet.removeAssociatedFleetData(fit)
-        #self.removeProjectedData(fitID)
 
         eos.db.remove(fit)
 
@@ -192,14 +191,6 @@ class Fit(object):
         fit = eos.db.getFit(fitID)
         fit.clear()
         return fit
-
-    def removeProjectedData(self, fitID):
-        """Removes projection relation from ships that have fitID as projection. See GitHub issue #90"""
-        fit = eos.db.getFit(fitID)
-        fits = eos.db.getProjectedFits(fitID)
-
-        for projectee in fits:
-            projectee.projectedFits.remove(fit)
 
     def toggleFactorReload(self, fitID):
         if fitID is None:
