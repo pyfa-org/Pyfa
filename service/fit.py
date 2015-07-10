@@ -175,7 +175,7 @@ class Fit(object):
         fit = eos.db.getFit(fitID)
         sFleet = Fleet.getInstance()
         sFleet.removeAssociatedFleetData(fit)
-        self.removeProjectedData(fitID)
+        #self.removeProjectedData(fitID)
 
         eos.db.remove(fit)
 
@@ -247,6 +247,7 @@ class Fit(object):
                 fit.fleet = f
 
             if not projected:
+                print "Not projected, getting projected fits"
                 for fitP in fit.projectedFits:
                     self.getFit(fitP.ID, projected = True)
                 self.recalc(fit, withBoosters=True)
@@ -326,9 +327,12 @@ class Fit(object):
             if thing.ID == fitID:
                 return
 
+            if thing in fit.projectedFits:
+                return
+
             fit.__projectedFits[thing.ID] = thing
 
-            # this bit is required -- see GH issue
+            # this bit is required -- see GH issue # 83
             eos.db.saveddata_session.flush()
             eos.db.saveddata_session.refresh(thing)
         elif thing.category.name == "Drone":
@@ -369,9 +373,11 @@ class Fit(object):
             thing.state = self.__getProposedState(thing, click)
             if not thing.canHaveState(thing.state, fit):
                 thing.state = State.OFFLINE
-        elif isinstance(thing, eos.types.Fit) and thing.projectionInfo is not None:
+        elif isinstance(thing, eos.types.Fit):
             print "toggle fit"
-            thing.projectionInfo.active = not thing.projectionInfo.active
+            projectionInfo = thing.getProjectionInfo(fitID)
+            if projectionInfo:
+                projectionInfo.active = not projectionInfo.active
 
         eos.db.commit()
         self.recalc(fit)

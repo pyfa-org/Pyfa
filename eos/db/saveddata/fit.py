@@ -52,24 +52,24 @@ projectedFits_table = Table("projectedFits", saveddata_meta,
 )
 
 class ProjectedFit(object):
-    def __init__(self, source_fit, k, amount=1, active=True):
-        #print "init projected: source fit: ", source_fit.name, source_fit, "key (fit ID)", key, "active:", active, "amount:",amount
-        self.sourceID = k
+    def __init__(self, sourceID, source_fit, amount=1, active=True):
+        self.sourceID = sourceID
         self.source_fit = source_fit
-        #self.victim_item = None
         self.amount = amount
         self.active = active
 
     @reconstructor
     def init(self):
-        print "db init"
-        print "\t source:", self.source_fit
-        print "\t dest:", self.victim_fit
+        if self.source_fit.isInvalid:
+            # Very rare for this to happen, but be prepared for it
+            eos.db.saveddata_session.delete(self.source_fit)
+            eos.db.saveddata_session.flush()
+            eos.db.saveddata_session.refresh(self.victim_fit)
 
 Fit._Fit__projectedFits = association_proxy(
     "victimOf",  # look at the victimOf association...
     "source_fit",  # .. and return the source fits
-    creator=lambda k, source_fit: ProjectedFit(source_fit, k)
+    creator=lambda sourceID, source_fit: ProjectedFit(sourceID, source_fit)
 )
 
 mapper(Fit, fits_table,
