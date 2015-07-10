@@ -20,8 +20,8 @@ saveInRoot = False
 logLevel = logging.WARN
 
 # Version data
-version = "1.13.2"
-tag = "Stable"
+version = "1.13.3"
+tag = "git"
 expansionName = "Aegis"
 expansionVersion = "1.0"
 evemonMinVersion = "4081"
