@@ -320,9 +320,6 @@ class Fit(object):
                                    eager=("attributes", "group.category"))
 
         if isinstance(thing, eos.types.Fit):
-            if thing.ID == fitID:
-                return
-
             if thing in fit.projectedFits:
                 return
 

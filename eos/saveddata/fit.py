@@ -29,6 +29,7 @@ from eos.saveddata.module import State
 from eos.saveddata.mode import Mode
 import eos.db
 import time
+import copy
 from utils.timer import Timer
 
 import logging
@@ -414,14 +415,23 @@ class Fit(object):
                         pass
 
     def calculateModifiedAttributes(self, targetFit=None, withBoosters=False, dirtyStorage=None):
-        timer = Timer('Fit: %d, %s'%(self.ID, self.name), logger)
+        timer = Timer('Fit: {}, {}'.format(self.ID, self.name), logger)
         logger.debug("Starting fit calculation on: %d %s (%s)" %
                      (self.ID, self.name, self.ship.item.name))
+        shadow = False
         if targetFit:
             logger.debug("Applying projections to target: %d %s (%s)",
                          targetFit.ID, targetFit.name, targetFit.ship.item.name)
             projectionInfo = self.getProjectionInfo(targetFit.ID)
             logger.debug("ProjectionInfo: %s", ', '.join("%s: %s" % item for item in vars(projectionInfo).items()))
+            if self == targetFit:
+                shadow = True
+                self = copy.deepcopy(self)
+                logger.debug("Handling self projection - making shadow copy of fit. %s => %s", projectionInfo.source_fit, self)
+                # we rollback because when we copy a fit, flush() is called to
+                # properly handle projection updates. However, we do not want to
+                # save this fit to the database, so we can immediately rollback
+                eos.db.saveddata_session.rollback()
 
         refreshBoosts = False
         if withBoosters is True:
@@ -494,6 +504,10 @@ class Fit(object):
                     fit.calculateModifiedAttributes(self, withBoosters=withBoosters, dirtyStorage=dirtyStorage)
 
         timer.checkpoint('Done with fit calculation')
+
+        if shadow:
+            logger.debug("Delete shadow fit object")
+            del self
 
     def fill(self):
         """
