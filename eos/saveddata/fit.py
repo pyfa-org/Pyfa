@@ -210,11 +210,10 @@ class Fit(object):
     @property
     def projectedFits(self):
         # only in extreme edge cases will the fit be invalid, but to be sure do
-        # not return them. By this time
+        # not return them.
         return [fit for fit in self.__projectedFits.values() if not fit.isInvalid]
 
     def getProjectionInfo(self, fitID):
-        print "get projection info for fitID: ", fitID
         return self.projectedOnto.get(fitID, None)
 
     @property
@@ -967,6 +966,9 @@ class Fit(object):
                 c.append(deepcopy(i, memo))
 
         for fit in self.projectedFits:
-            copy.projectedFits.append(fit)
+            copy.__projectedFits[fit.ID] = fit
+            # this bit is required -- see GH issue # 83
+            eos.db.saveddata_session.flush()
+            eos.db.saveddata_session.refresh(fit)
 
         return copy
