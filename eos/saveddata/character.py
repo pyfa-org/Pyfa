@@ -105,10 +105,11 @@ class Character(object):
         for skill in self.__skills:
             self.__skillIdMap[skill.itemID] = skill
 
-    def apiUpdateCharSheet(self, sheet):
+    def apiUpdateCharSheet(self, skills):
         del self.__skills[:]
         self.__skillIdMap.clear()
-        for skillRow in sheet.skills:
+        for skillRow in skills:
+
             self.addSkill(Skill(skillRow["typeID"], skillRow["level"]))
 
     @property

@@ -45,13 +45,34 @@ class CharacterImportThread(threading.Thread):
         sCharacter = Character.getInstance()
         for path in paths:
             try:
+                # we try to parse api XML data first
                 with open(path, mode='r') as charFile:
                     sheet = service.ParseXML(charFile)
                     charID = sCharacter.new()
                     sCharacter.rename(charID, sheet.name+" (imported)")
-                    sCharacter.apiUpdateCharSheet(charID, sheet)
+                    sCharacter.apiUpdateCharSheet(charID, sheet.skills)
             except:
-                continue
+                # if it's not api XML data, try this
+                # this is a horrible logic flow, but whatever
+                try:
+                    charFile = open(path, mode='r').read()
+                    doc = minidom.parseString(charFile)
+                    if doc.documentElement.tagName != "SerializableCCPCharacter":
+                        raise RuntimeError("Incorrect EVEMon XML sheet")
+                    name = doc.getElementsByTagName("name")[0].firstChild.nodeValue
+                    skill_els = doc.getElementsByTagName("skill")
+                    skills = []
+                    for skill in skill_els:
+                        skills.append({
+                            "typeID": int(skill.getAttribute("typeID")),
+                            "level": int(skill.getAttribute("level")),
+                        })
+                    charID = sCharacter.new()
+                    sCharacter.rename(charID, name+" (EVEMon)")
+                    sCharacter.apiUpdateCharSheet(charID, skills)
+                except:
+                    continue
+
         wx.CallAfter(self.callback)
 
 class SkillBackupThread(threading.Thread):
@@ -269,12 +290,12 @@ class Character(object):
 
         sheet = auth.character(charID).CharacterSheet()
 
-        dbChar.apiUpdateCharSheet(sheet)
+        dbChar.apiUpdateCharSheet(sheet.skills)
         eos.db.commit()
 
-    def apiUpdateCharSheet(self, charID, sheet):
+    def apiUpdateCharSheet(self, charID, skills):
         char = eos.db.getCharacter(charID)
-        char.apiUpdateCharSheet(sheet)
+        char.apiUpdateCharSheet(skills)
         eos.db.commit()
 
     def changeLevel(self, charID, skillID, level):
