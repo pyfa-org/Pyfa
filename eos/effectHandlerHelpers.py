@@ -232,13 +232,6 @@ class HandledProjectedDroneList(HandledDroneCargoList):
         if proj.isInvalid or not proj.item.isType("projected"):
             self.remove(proj)
 
-# @todo: remove this once we are sure we no longer need it
-class HandledProjectedFitList(HandledList):
-    def append(self, proj):
-        print "apppending projected fit", proj
-        proj.projected = True
-        list.append(self, proj)
-
 class HandledItem(object):
     def preAssignItemAttr(self, *args, **kwargs):
         self.itemModifiedAttributes.preAssign(*args, **kwargs)
