@@ -428,10 +428,10 @@ class Fit(object):
                 shadow = True
                 self = copy.deepcopy(self)
                 logger.debug("Handling self projection - making shadow copy of fit. %s => %s", projectionInfo.source_fit, self)
-                # we rollback because when we copy a fit, flush() is called to
-                # properly handle projection updates. However, we do not want to
-                # save this fit to the database, so we can immediately rollback
-                eos.db.saveddata_session.rollback()
+                # we delete the fit because when we copy a fit, flush() is
+                # called to properly handle projection updates. However, we do
+                # not want to save this fit to the database, so simply remove it
+                eos.db.saveddata_session.delete(self)
 
         refreshBoosts = False
         if withBoosters is True:
