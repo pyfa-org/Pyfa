@@ -55,8 +55,8 @@ class ProjectedFit(object):
     def __init__(self, sourceID, source_fit, amount=1, active=True):
         self.sourceID = sourceID
         self.source_fit = source_fit
-        self.amount = amount
         self.active = active
+        self.__amount = amount
 
     @reconstructor
     def init(self):
@@ -65,6 +65,16 @@ class ProjectedFit(object):
             eos.db.saveddata_session.delete(self.source_fit)
             eos.db.saveddata_session.flush()
             eos.db.saveddata_session.refresh(self.victim_fit)
+
+    # We have a series of setters and getters here just in case someone
+    # downgrades and screws up the table with NULL values
+    @property
+    def amount(self):
+        return self.__amount or 1
+
+    @amount.setter
+    def amount(self, amount):
+        self.__amount = amount
 
 Fit._Fit__projectedFits = association_proxy(
     "victimOf",  # look at the victimOf association...
@@ -143,4 +153,8 @@ mapper(Fit, fits_table,
        }
 )
 
-mapper(ProjectedFit, projectedFits_table)
+mapper(ProjectedFit, projectedFits_table,
+       properties = {
+            "_ProjectedFit__amount": projectedFits_table.c.amount,
+       }
+)
