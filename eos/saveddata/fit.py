@@ -460,6 +460,18 @@ class Fit(object):
             projected = True
 
         # If fit is calculated and we have nothing to do here, get out
+
+        # A note on why projected fits don't get to return here. If we return
+        # here, the projection afflictions will not be run as they are
+        # intertwined into the regular fit calculations. So, even if the fit has
+        # been calculated, we need to recalculate it again just to apply the
+        # projections. This is in contract to gang boosts, which are only
+        # calculated once, and their items are then looped and accessed with
+        #     self.gangBoosts.iteritems()
+        # We might be able to exit early in the fit calculations if we separate
+        # projections from the normal fit calculations. But we must ensure that
+        # projection have modifying stuff applied, such as gang boosts and other
+        # local modules that may help
         if self.__calculated and not projected:
             logger.debug("Fit has already been calculated and is not projected, returning")
             return
