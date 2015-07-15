@@ -392,6 +392,7 @@ class Fit(object):
         return self.__modifier
 
     def __calculateGangBoosts(self, runTime):
+        logger.debug("Applying gang boosts in `%s` runtime for %s", runTime, self)
         for name, info in self.gangBoosts.iteritems():
             # Unpack all data required to run effect properly
             effect, thing = info[1]
@@ -416,18 +417,19 @@ class Fit(object):
 
     def calculateModifiedAttributes(self, targetFit=None, withBoosters=False, dirtyStorage=None):
         timer = Timer('Fit: {}, {}'.format(self.ID, self.name), logger)
-        logger.debug("Starting fit calculation on: %d %s (%s)" %
-                     (self.ID, self.name, self.ship.item.name))
+        logger.debug("Starting fit calculation on: %s", repr(self))
+
         shadow = False
         if targetFit:
-            logger.debug("Applying projections to target: %d %s (%s)",
-                         targetFit.ID, targetFit.name, targetFit.ship.item.name)
+            logger.debug("Applying projections to target: %s", repr(targetFit))
             projectionInfo = self.getProjectionInfo(targetFit.ID)
-            logger.debug("ProjectionInfo: %s", ', '.join("%s: %s" % item for item in vars(projectionInfo).items()))
+            logger.debug("ProjectionInfo: %s", projectionInfo)
             if self == targetFit:
+                copied = self  # original fit
                 shadow = True
                 self = copy.deepcopy(self)
-                logger.debug("Handling self projection - making shadow copy of fit. %s => %s", projectionInfo.source_fit, self)
+                self.fleet = copied.fleet
+                logger.debug("Handling self projection - making shadow copy of fit. %s => %s", repr(copied), repr(self))
                 # we delete the fit because when we copy a fit, flush() is
                 # called to properly handle projection updates. However, we do
                 # not want to save this fit to the database, so simply remove it
@@ -998,3 +1000,13 @@ class Fit(object):
             eos.db.saveddata_session.refresh(fit)
 
         return copy
+
+    def __repr__(self):
+        return "Fit(ID={}, ship={}, name={}) at {}".format(
+            self.ID, self.ship.item.name, self.name, hex(id(self))
+        )
+
+    def __str__(self):
+        return "{} ({})".format(
+            self.name, self.ship.item.name
+        )

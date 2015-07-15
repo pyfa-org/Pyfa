@@ -76,6 +76,11 @@ class ProjectedFit(object):
     def amount(self, amount):
         self.__amount = amount
 
+    def __repr__(self):
+        return "ProjectedFit(sourceID={}, victimID={}, amount={}, active={}) at {}".format(
+            self.sourceID, self.victimID, self.amount, self.active, hex(id(self))
+        )
+
 Fit._Fit__projectedFits = association_proxy(
     "victimOf",  # look at the victimOf association...
     "source_fit",  # .. and return the source fits
