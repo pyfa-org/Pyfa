@@ -560,6 +560,8 @@ class ItemAffectedBy (wx.Panel):
         self.toggleView = 1
         self.expand = -1
 
+        self.treeItems = []
+
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
         self.affectedBy = wx.TreeCtrl(self, style = wx.TR_DEFAULT_STYLE | wx.TR_HIDE_ROOT | wx.NO_BORDER)
@@ -609,18 +611,11 @@ class ItemAffectedBy (wx.Panel):
     def ToggleViewTree(self):
         self.Freeze()
 
-        root = self.affectedBy.GetRootItem()
-        child,cookie = self.affectedBy.GetFirstChild(root)
-        while child.IsOk():
-            item,childcookie = self.affectedBy.GetFirstChild(child)
-            while item.IsOk():
-                change = self.affectedBy.GetPyData(item)
-                display = self.affectedBy.GetItemText(item)
-                self.affectedBy.SetItemText(item,change)
-                self.affectedBy.SetPyData(item,display)
-                item,childcookie = self.affectedBy.GetNextChild(child,childcookie)
-
-            child,cookie = self.affectedBy.GetNextChild(root,cookie)
+        for item in self.treeItems:
+            change = self.affectedBy.GetPyData(item)
+            display = self.affectedBy.GetItemText(item)
+            self.affectedBy.SetItemText(item,change)
+            self.affectedBy.SetPyData(item,display)
 
         self.Thaw()
 
@@ -746,3 +741,4 @@ class ItemAffectedBy (wx.Panel):
                     else:
                         treeitem = self.affectedBy.AppendItem(child, "%s %s %.2f %s" % (attrName, attrModifier, attrAmount, penalized), attrIcon)
                         self.affectedBy.SetPyData(treeitem,"%s %s %.2f %s" % ((displayName if displayName != "" else attrName), attrModifier, attrAmount, penalized))
+                    self.treeItems.append(treeitem)
