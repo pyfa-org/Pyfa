@@ -381,8 +381,9 @@ class Fit(object):
 
     #Methods to register and get the thing currently affecting the fit,
     #so we can correctly map "Affected By"
-    def register(self, currModifier):
+    def register(self, currModifier, origin=None):
         self.__modifier = currModifier
+        self.__origin = origin
         if hasattr(currModifier, "itemModifiedAttributes"):
             currModifier.itemModifiedAttributes.fit = self
         if hasattr(currModifier, "chargeModifiedAttributes"):
@@ -390,6 +391,9 @@ class Fit(object):
 
     def getModifier(self):
         return self.__modifier
+
+    def getOrigin(self):
+        return self.__origin
 
     def __calculateGangBoosts(self, runTime):
         logger.debug("Applying gang boosts in `%s` runtime for %s", runTime, self)
@@ -506,7 +510,7 @@ class Fit(object):
                     item.calculateModifiedAttributes(self, runTime, False)
                     if projected is True:
                         for _ in xrange(projectionInfo.amount):
-                            targetFit.register(item)
+                            targetFit.register(item, origin=self)
                             item.calculateModifiedAttributes(targetFit, runTime, True)
 
             timer.checkpoint('Done with runtime: %s'%runTime)

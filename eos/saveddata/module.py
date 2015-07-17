@@ -639,6 +639,14 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         copy.state = self.state
         return copy
 
+    def __repr__(self):
+        if self.item:
+            return "Module(ID={}, name={}) at {}".format(
+                self.item.ID, self.item.name, hex(id(self))
+            )
+        else:
+            return "EmptyModule() at {}".format(hex(id(self)))
+
 class Rack(Module):
     '''
     This is simply the Module class named something else to differentiate

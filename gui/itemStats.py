@@ -24,7 +24,7 @@ import bitmapLoader
 import sys
 import wx.lib.mixins.listctrl as listmix
 import wx.html
-from eos.types import Ship, Module, Skill, Booster, Implant, Drone, Mode
+from eos.types import Fit, Ship, Module, Skill, Booster, Implant, Drone, Mode
 from gui.utils.numberFormatter import formatAmount
 import service
 import config
@@ -549,9 +549,9 @@ class ItemEffects (wx.Panel):
 
 
 class ItemAffectedBy (wx.Panel):
-    ORDER = [Ship, Mode, Module, Drone, Implant, Booster, Skill]
+    ORDER = [Fit, Ship, Mode, Module, Drone, Implant, Booster, Skill]
     def __init__(self, parent, stuff, item):
-        wx.Panel.__init__ (self, parent)
+        wx.Panel.__init__(self, parent)
         self.stuff = stuff
         self.item = item
 
@@ -640,26 +640,37 @@ class ItemAffectedBy (wx.Panel):
     def PopulateTree(self):
         root = self.affectedBy.AddRoot("WINPWNZ0R")
         self.affectedBy.SetPyData(root, None)
-
+        activeFit = gui.mainFrame.MainFrame.getInstance().getActiveFit()
+        print activeFit
         self.imageList = wx.ImageList(16, 16)
         self.affectedBy.SetImageList(self.imageList)
 
         cont = self.stuff.itemModifiedAttributes if self.item == self.stuff.item else self.stuff.chargeModifiedAttributes
         things = {}
+        holding = {}
 
         for attrName in cont.iterAfflictions():
             # if value is 0 or there has been no change from original to modified, return
             if cont[attrName] == (cont.getOriginal(attrName) or 0):
                 continue
+
             for fit, afflictors in cont.getAfflictions(attrName).iteritems():
                 for afflictor, modifier, amount, used in afflictors:
+                    container = things
+                    #print "\t", afflictor, modifier, amount, used,
+
                     if not used or afflictor.item is None:
                         continue
 
-                    if afflictor.item.name not in things:
-                        things[afflictor.item.name] = [type(afflictor), set(), []]
+                    if fit.ID != activeFit:
+                        if fit not in holding:
+                            holding[fit] = {}
+                        container = holding[fit]
 
-                    info = things[afflictor.item.name]
+                    if afflictor.item.name not in container:
+                        container[afflictor.item.name] = [type(afflictor), set(), [], getattr(afflictor, "projected", False)]
+
+                    info = container[afflictor.item.name]
                     info[1].add(afflictor)
                     # If info[1] > 1, there are two separate modules working.
                     # Check to make sure we only include the modifier once
@@ -668,15 +679,20 @@ class ItemAffectedBy (wx.Panel):
                         continue
                     info[2].append((attrName, modifier, amount))
 
+        for fit, items in holding.iteritems():
+            child = self.affectedBy.AppendItem(root, fit.name, self.imageList.Add(bitmapLoader.getBitmap("ship_small", "icons")))
+            self.test(child, holding[fit])
+        self.test(root, things)
+        self.ExpandCollapseTree()
+
+    def test(self, parent, things):
         order = things.keys()
         order.sort(key=lambda x: (self.ORDER.index(things[x][0]), x))
-
         for itemName in order:
             info = things[itemName]
 
-            afflictorType, afflictors, attrData = info
+            afflictorType, afflictors, attrData, projected = info
             counter = len(afflictors)
-
             baseAfflictor = afflictors.pop()
             if afflictorType == Ship:
                 itemIcon = self.imageList.Add(bitmapLoader.getBitmap("ship_small", "icons"))
@@ -686,7 +702,12 @@ class ItemAffectedBy (wx.Panel):
             else:
                 itemIcon = -1
 
-            child = self.affectedBy.AppendItem(root, "%s" % itemName if counter == 1 else "%s x %d" % (itemName,counter), itemIcon)
+            displayStr = "%s" % itemName if counter == 1 else "%s x %d" % (itemName,counter)
+
+            if projected:
+                displayStr += " (projected)"
+
+            child = self.affectedBy.AppendItem(parent, displayStr, itemIcon)
 
             if counter > 0:
                 attributes = []
@@ -716,7 +737,6 @@ class ItemAffectedBy (wx.Panel):
                     attributes.append((attrName, (displayName if displayName != "" else attrName), attrModifier, attrAmount, penalized, attrIcon))
 
                 attrSorted = sorted(attributes, key = lambda attribName: attribName[0])
-
                 for attr in attrSorted:
                     attrName, displayName, attrModifier, attrAmount, penalized, attrIcon = attr
                     if self.toggleView == 1:
@@ -725,6 +745,3 @@ class ItemAffectedBy (wx.Panel):
                     else:
                         treeitem = self.affectedBy.AppendItem(child, "%s %s %.2f %s" % (attrName, attrModifier, attrAmount, penalized), attrIcon)
                         self.affectedBy.SetPyData(treeitem,"%s %s %.2f %s" % ((displayName if displayName != "" else attrName), attrModifier, attrAmount, penalized))
-
-        self.ExpandCollapseTree()
-
