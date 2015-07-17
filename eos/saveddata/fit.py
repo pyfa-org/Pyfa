@@ -43,14 +43,6 @@ except ImportError:
 
 class Fit(object):
     """Represents a fitting, with modules, ship, implants, etc."""
-    EXTRA_ATTRIBUTES = {"armorRepair": 0,
-                        "hullRepair": 0,
-                        "shieldRepair": 0,
-                        "maxActiveDrones": 0,
-                        "maxTargetsLockedFromSkills": 2,
-                        "droneControlRange": 20000,
-                        "cloaked": False,
-                        "siege": False}
 
     PEAK_RECHARGE = 0.25
 
@@ -127,8 +119,7 @@ class Fit(object):
         self.boostsFits = set()
         self.gangBoosts = None
         self.ecmProjectedStr = 1
-        self.extraAttributes = ModifiedAttributeDict(self)
-        self.extraAttributes.original = self.EXTRA_ATTRIBUTES
+        self.extraAttributes = self.ship.itemModifiedAttributes
 
     @property
     def targetResists(self):
