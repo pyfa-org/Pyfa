@@ -555,6 +555,8 @@ class ItemAffectedBy (wx.Panel):
         self.stuff = stuff
         self.item = item
 
+        self.activeFit = gui.mainFrame.MainFrame.getInstance().getActiveFit()
+
         self.toggleView = 1
         self.expand = -1
 
@@ -640,8 +642,7 @@ class ItemAffectedBy (wx.Panel):
     def PopulateTree(self):
         root = self.affectedBy.AddRoot("WINPWNZ0R")
         self.affectedBy.SetPyData(root, None)
-        activeFit = gui.mainFrame.MainFrame.getInstance().getActiveFit()
-        print activeFit
+
         self.imageList = wx.ImageList(16, 16)
         self.affectedBy.SetImageList(self.imageList)
 
@@ -662,7 +663,7 @@ class ItemAffectedBy (wx.Panel):
                     if not used or afflictor.item is None:
                         continue
 
-                    if fit.ID != activeFit:
+                    if fit.ID != self.activeFit:
                         if fit not in holding:
                             holding[fit] = {}
                         container = holding[fit]
