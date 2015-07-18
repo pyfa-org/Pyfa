@@ -660,23 +660,24 @@ class ItemAffectedBy (wx.Panel):
             self.buildModuleView(root)
 
         self.ExpandCollapseTree()
-    def sortAttrDisplayName(self, attr):
-                info = self.stuff.item.attributes.get(attr)
-                if info and info.displayName != "":
-                    return info.displayName
 
-                return attr
+    def sortAttrDisplayName(self, attr):
+        info = self.stuff.item.attributes.get(attr)
+        if info and info.displayName != "":
+            return info.displayName
+
+        return attr
+
     def buildAttributeView(self, root):
         # We first build a usable dictionary of items. The key is either a fit
         # if the afflictions stem from a projected fit, or self.stuff if they
         # are local afflictions (everything else, even gang boosts at this time)
         # The value of this is yet another dictionary in the following format:
         #
-        # "atribute name": {
+        # "attribute name": {
         #       "Module Name": [
         #            class of affliction,
-        #            set of afflictors (such as 2 of the same module),
-        #            info on affliction (attribute name, modifier, and modification amount),
+        #            afflictor info (afflictor, modifier, and modification amount),
         #            whether this affliction is actually used (unlearned skills are not used)
         #       ]
         # }
@@ -707,19 +708,9 @@ class ItemAffectedBy (wx.Panel):
 
                     # items hold our module: info mappings
                     if attrName not in items:
-                        items[attrName] = {}
+                        items[attrName] = []
 
-                    if afflictor.item.name not in items[attrName]:
-                        items[attrName][afflictor.item.name] = [type(afflictor), set(), [], getattr(afflictor, "projected", False)]
-
-                    info = items[attrName][afflictor.item.name]
-                    info[1].add(afflictor)
-                    # If info[1] > 1, there are two separate modules working.
-                    # Check to make sure we only include the modifier once
-                    # See GH issue 154
-                    if len(info[1]) > 1 and (attrName, modifier, amount) in info[2]:
-                        continue
-                    info[2].append((attrName, modifier, amount))
+                    items[attrName].append((type(afflictor), afflictor, modifier, amount, getattr(afflictor, "projected", False)))
 
         # Make sure projected fits are on top
         rootOrder = container.keys()
@@ -754,7 +745,6 @@ class ItemAffectedBy (wx.Panel):
                 else:
                     attrIcon = self.imageList.Add(bitmapLoader.getBitmap("07_15", "pack"))
 
-
                 if self.showRealNames:
                     display = attrName
                     saved = displayName
@@ -768,24 +758,19 @@ class ItemAffectedBy (wx.Panel):
                 self.treeItems.append(child)
 
                 items = attributes[attrName]
-                for itemName, info in items.iteritems():
-                    afflictorType, afflictors, attrData, projected = info
-                    attrName, attrModifier, attrAmount = attrData[0]
-                    counter = len(afflictors)
-                    baseAfflictor = afflictors.pop()
+                items.sort(key=lambda x: self.ORDER.index(x[0]))
+                for itemInfo in items:
+                    afflictorType, afflictor, attrModifier, attrAmount, projected = itemInfo
 
                     if afflictorType == Ship:
                         itemIcon = self.imageList.Add(bitmapLoader.getBitmap("ship_small", "icons"))
-                    elif baseAfflictor.item.icon:
-                        bitmap = bitmapLoader.getBitmap(baseAfflictor.item.icon.iconFile, "pack")
+                    elif afflictor.item.icon:
+                        bitmap = bitmapLoader.getBitmap(afflictor.item.icon.iconFile, "pack")
                         itemIcon = self.imageList.Add(bitmap) if bitmap else -1
                     else:
                         itemIcon = -1
 
-                    displayStr = itemName
-
-                    if counter > 1:
-                        displayStr += " x {}".format(counter)
+                    displayStr = afflictor.item.name
 
                     if projected:
                         displayStr += " (projected)"
