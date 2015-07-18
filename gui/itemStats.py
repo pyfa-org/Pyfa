@@ -558,7 +558,7 @@ class ItemAffectedBy (wx.Panel):
         self.activeFit = gui.mainFrame.MainFrame.getInstance().getActiveFit()
 
         self.showRealNames = False
-        self.showAttrView = True
+        self.showAttrView = False
         self.expand = -1
 
         self.treeItems = []
@@ -576,7 +576,7 @@ class ItemAffectedBy (wx.Panel):
         self.toggleExpandBtn = wx.ToggleButton( self, wx.ID_ANY, u"Expand All", wx.DefaultPosition, wx.DefaultSize, 0 )
         bSizer.Add( self.toggleExpandBtn, 0, wx.ALIGN_CENTER_VERTICAL)
 
-        self.toggleNameBtn = wx.ToggleButton( self, wx.ID_ANY, u"Real Attribute Names", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.toggleNameBtn = wx.ToggleButton( self, wx.ID_ANY, u"Toggle Names", wx.DefaultPosition, wx.DefaultSize, 0 )
         bSizer.Add( self.toggleNameBtn, 0, wx.ALIGN_CENTER_VERTICAL)
 
         self.toggleViewBtn = wx.ToggleButton( self, wx.ID_ANY, u"Toggle View", wx.DefaultPosition, wx.DefaultSize, 0 )
