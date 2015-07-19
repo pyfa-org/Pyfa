@@ -4,6 +4,5 @@
 # Subsystem: Tengu Defensive - Warfare Processor
 type = "passive"
 def handler(fit, module, context):
-    level = fit.character.getSkill("Caldari Defensive Systems").level
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Information Warfare Specialist"),
-                                  "commandBonusHidden", module.getModifiedItemAttr("subsystemBonusCaldariDefensive") * level)
+                                  "commandBonusHidden", module.getModifiedItemAttr("subsystemBonusCaldariDefensive"), skill="Caldari Defensive Systems")

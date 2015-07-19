@@ -202,6 +202,18 @@ class ModifiedAttributeDict(collections.MutableMapping):
 
         return val
 
+    def __handleSkill(self, skillName):
+        """
+        Since ship skill bonuses do not directly modify the attributes, it does
+        not register as an affector (instead, the ship itself is the affector).
+        To fix this, we pass the skill which ends up here, where we register it
+        with the fit and thus get the correct affector. Returns skill level to
+        be used to modify modifier. See GH issue #101
+        """
+        skill = self.fit.character.getSkill(skillName)
+        self.fit.register(skill)
+        return skill.level
+
     def getAfflictions(self, key):
         return self.__affectedBy[key] if key in self.__affectedBy else {}
 
@@ -233,10 +245,13 @@ class ModifiedAttributeDict(collections.MutableMapping):
         self.__placehold(attributeName)
         self.__afflict(attributeName, "=", value, value != self.getOriginal(attributeName))
 
-    def increase(self, attributeName, increase, position="pre"):
+    def increase(self, attributeName, increase, position="pre", skill=None):
         """Increase value of given attribute by given number"""
         # Increases applied before multiplications and after them are
         # written in separate maps
+        if skill:
+            increase *= self.__handleSkill(skill)
+
         if position == "pre":
             tbl = self.__preIncreases
         elif position == "post":
@@ -249,10 +264,13 @@ class ModifiedAttributeDict(collections.MutableMapping):
         self.__placehold(attributeName)
         self.__afflict(attributeName, "+", increase, increase != 0)
 
-    def multiply(self, attributeName, multiplier, stackingPenalties=False, penaltyGroup="default"):
+    def multiply(self, attributeName, multiplier, stackingPenalties=False, penaltyGroup="default", skill=None):
         """Multiply value of given attribute by given factor"""
         # If we're asked to do stacking penalized multiplication, append values
         # to per penalty group lists
+        if skill:
+            multiplier *= self.__handleSkill(skill)
+
         if stackingPenalties:
             if not attributeName in self.__penalizedMultipliers:
                 self.__penalizedMultipliers[attributeName] = {}
@@ -268,9 +286,11 @@ class ModifiedAttributeDict(collections.MutableMapping):
         self.__placehold(attributeName)
         self.__afflict(attributeName, "%s*" % ("s" if stackingPenalties else ""), multiplier, multiplier != 1)
 
-    def boost(self, attributeName, boostFactor, *args, **kwargs):
+    def boost(self, attributeName, boostFactor, skill=None, *args, **kwargs):
         """Boost value by some percentage"""
         # We just transform percentage boost into multiplication factor
+        if skill:
+            boostFactor *= self.__handleSkill(skill)
         self.multiply(attributeName, 1 + boostFactor / 100.0, *args, **kwargs)
 
     def force(self, attributeName, value):

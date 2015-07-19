@@ -6,5 +6,4 @@
 # Ship: Whiptail
 type = "passive"
 def handler(fit, ship, context):
-    level = fit.character.getSkill("Caldari Frigate").level
-    fit.ship.boostItemAttr("shieldExplosiveDamageResonance", ship.getModifiedItemAttr("shipBonusCF") * level)
+    fit.ship.boostItemAttr("shieldExplosiveDamageResonance", ship.getModifiedItemAttr("shipBonusCF"), skill="Caldari Frigate")
