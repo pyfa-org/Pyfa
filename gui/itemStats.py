@@ -677,8 +677,10 @@ class ItemAffectedBy (wx.Panel):
         # "attribute name": {
         #       "Module Name": [
         #            class of affliction,
-        #            afflictor info (afflictor, modifier, and modification amount),
-        #            whether this affliction is actually used (unlearned skills are not used)
+        #            affliction item (required due to GH issue #335)
+        #            modifier type
+        #            amount of modification
+        #            whether this affliction was projected
         #       ]
         # }
 
@@ -710,7 +712,13 @@ class ItemAffectedBy (wx.Panel):
                     if attrName not in items:
                         items[attrName] = []
 
-                    items[attrName].append((type(afflictor), afflictor, modifier, amount, getattr(afflictor, "projected", False)))
+                    if afflictor == self.stuff and getattr(afflictor, 'charge', None):
+                        # we are showing a charges modifications, see #335
+                        item = afflictor.charge
+                    else:
+                        item = afflictor.item
+
+                    items[attrName].append((type(afflictor), item, modifier, amount, getattr(afflictor, "projected", False)))
 
         # Make sure projected fits are on top
         rootOrder = container.keys()
@@ -760,17 +768,17 @@ class ItemAffectedBy (wx.Panel):
                 items = attributes[attrName]
                 items.sort(key=lambda x: self.ORDER.index(x[0]))
                 for itemInfo in items:
-                    afflictorType, afflictor, attrModifier, attrAmount, projected = itemInfo
+                    afflictorType, item, attrModifier, attrAmount, projected = itemInfo
 
                     if afflictorType == Ship:
                         itemIcon = self.imageList.Add(bitmapLoader.getBitmap("ship_small", "icons"))
-                    elif afflictor.item.icon:
-                        bitmap = bitmapLoader.getBitmap(afflictor.item.icon.iconFile, "pack")
+                    elif item.icon:
+                        bitmap = bitmapLoader.getBitmap(item.icon.iconFile, "pack")
                         itemIcon = self.imageList.Add(bitmap) if bitmap else -1
                     else:
                         itemIcon = -1
 
-                    displayStr = afflictor.item.name
+                    displayStr = item.name
 
                     if projected:
                         displayStr += " (projected)"
@@ -795,6 +803,7 @@ class ItemAffectedBy (wx.Panel):
         #     class of affliction,
         #     set of afflictors (such as 2 of the same module),
         #     info on affliction (attribute name, modifier, and modification amount),
+        #     item that will be used to determine icon (required due to GH issue #335)
         #     whether this affliction is actually used (unlearned skills are not used)
         # ]
 
@@ -822,11 +831,17 @@ class ItemAffectedBy (wx.Panel):
                             container[self.stuff] = {}
                         items = container[self.stuff]
 
-                    # items hold our module: info mappings
-                    if afflictor.item.name not in items:
-                        items[afflictor.item.name] = [type(afflictor), set(), [], getattr(afflictor, "projected", False)]
+                    if afflictor == self.stuff and getattr(afflictor, 'charge', None):
+                        # we are showing a charges modifications, see #335
+                        item = afflictor.charge
+                    else:
+                        item = afflictor.item
 
-                    info = items[afflictor.item.name]
+                    # items hold our module: info mappings
+                    if item.name not in items:
+                        items[item.name] = [type(afflictor), set(), [], item, getattr(afflictor, "projected", False)]
+
+                    info = items[item.name]
                     info[1].add(afflictor)
                     # If info[1] > 1, there are two separate modules working.
                     # Check to make sure we only include the modifier once
@@ -856,13 +871,12 @@ class ItemAffectedBy (wx.Panel):
             for itemName in order:
                 info = items[itemName]
 
-                afflictorType, afflictors, attrData, projected = info
+                afflictorType, afflictors, attrData, item, projected = info
                 counter = len(afflictors)
-                baseAfflictor = afflictors.pop()
                 if afflictorType == Ship:
                     itemIcon = self.imageList.Add(bitmapLoader.getBitmap("ship_small", "icons"))
-                elif baseAfflictor.item.icon:
-                    bitmap = bitmapLoader.getBitmap(baseAfflictor.item.icon.iconFile, "pack")
+                elif item.icon:
+                    bitmap = bitmapLoader.getBitmap(item.icon.iconFile, "pack")
                     itemIcon = self.imageList.Add(bitmap) if bitmap else -1
                 else:
                     itemIcon = -1
