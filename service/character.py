@@ -302,7 +302,6 @@ class Character(object):
         char = eos.db.getCharacter(charID)
         skill = char.getSkill(skillID)
         if isinstance(level, basestring) or level > 5 or level < 0:
-            skill.learned = False
             skill.level = None
         else:
             skill.level = level

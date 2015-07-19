@@ -81,7 +81,7 @@ class ChangeAffectingSkills(ContextMenu):
             for i in xrange(-1, 6):
                 levelItem = self.addSkill(rootMenu if msw else grandSub, skill, i)
                 grandSub.AppendItem(levelItem)
-                if skill.level == i:
+                if (not skill.learned and i == -1) or (skill.learned and skill.level == i):
                     levelItem.Check(True)
             sub.AppendItem(skillItem)
 
