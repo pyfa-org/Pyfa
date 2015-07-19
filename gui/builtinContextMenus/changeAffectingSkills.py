@@ -32,7 +32,7 @@ class ChangeAffectingSkills(ContextMenu):
             self.stuff = selection[0]
 
         cont = self.stuff.itemModifiedAttributes
-        self.skills = []
+        skills = set()
 
         for attrName in cont.iterAfflictions():
             if cont[attrName] == 0:
@@ -44,9 +44,9 @@ class ChangeAffectingSkills(ContextMenu):
                     if not isinstance(afflictor, Skill):
                         continue
 
-                    self.skills.append(afflictor)
-        self.skills.sort(key=lambda x: x.item.name)
+                    skills.add(afflictor)
 
+        self.skills = sorted(skills, key=lambda x: x.item.name)
         return len(self.skills) > 0
 
     def getText(self, itmContext, selection):
