@@ -81,7 +81,8 @@ class ChangeAffectingSkills(ContextMenu):
             for i in xrange(-1, 6):
                 levelItem = self.addSkill(rootMenu if msw else grandSub, skill, i)
                 grandSub.AppendItem(levelItem)
-                #@ todo: add check to current level. Need to fix #109 first
+                if skill.level == i:
+                    levelItem.Check(True)
             sub.AppendItem(skillItem)
 
         return sub
