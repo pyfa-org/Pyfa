@@ -12,7 +12,7 @@ class ChangeAffectingSkills(ContextMenu):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     def display(self, srcContext, selection):
-        if self.mainFrame.getActiveFit() is None or srcContext not in ("fittingModule", "fittingShip"):
+        if self.mainFrame.getActiveFit() is None or srcContext not in ("fittingModule", "fittingCharge", "fittingShip"):
             return False
 
         self.sChar = service.Character.getInstance()
