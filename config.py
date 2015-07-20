@@ -1,6 +1,11 @@
 import os
 import sys
 
+# TODO: move all logging back to pyfa.py main loop
+# We moved it here just to avoid rebuilding windows skeleton for now (any change to pyfa.py needs it)
+import logging
+import logging.handlers
+
 # Load variable overrides specific to distribution type
 try:
     import configforced
@@ -12,23 +17,20 @@ debug = False
 # Defines if our saveddata will be in pyfa root or not
 saveInRoot = False
 
+logLevel = logging.WARN
+
 # Version data
-version = "1.12.1"
-tag = "git"
-expansionName = "Carnyx"
+version = "1.13.2"
+tag = "Stable"
+expansionName = "Aegis"
 expansionVersion = "1.0"
 evemonMinVersion = "4081"
-
-# Database version (int ONLY)
-# Increment every time we need to flag for user database upgrade/modification
-dbversion = 7
 
 pyfaPath = None
 savePath = None
 staticPath = None
 saveDB = None
 gameDB = None
-
 
 def isFrozen():
     if hasattr(sys, 'frozen'):
@@ -43,6 +45,9 @@ def getPyfaRoot():
     root = unicode(root, sys.getfilesystemencoding())
     return root
 
+def __createDirs(path):
+    if not os.path.exists(path):
+        os.makedirs(path)
 
 def defPaths():
     global pyfaPath
@@ -68,13 +73,22 @@ def defPaths():
             savePath = unicode(os.path.expanduser(os.path.join("~", ".pyfa")),
                                sys.getfilesystemencoding())
 
+    __createDirs(savePath)
+
+    format = '%(asctime)s %(name)-24s %(levelname)-8s %(message)s'
+    logging.basicConfig(format=format, level=logLevel)
+    handler = logging.handlers.RotatingFileHandler(os.path.join(savePath, "log.txt"), maxBytes=1000000, backupCount=3)
+    formatter = logging.Formatter(format)
+    handler.setFormatter(formatter)
+    logging.getLogger('').addHandler(handler)
+
+    logging.info("Starting pyfa")
+
     # Redirect stderr to file if we're requested to do so
     stderrToFile = getattr(configforced, "stderrToFile", None)
     if stderrToFile is None:
         stderrToFile = True if isFrozen() else False
     if stderrToFile is True:
-        if not os.path.exists(savePath):
-            os.mkdir(savePath)
         sys.stderr = open(os.path.join(savePath, "error_log.txt"), "w")
 
     # Same for stdout
@@ -82,8 +96,6 @@ def defPaths():
     if stdoutToFile is None:
         stdoutToFile = True if isFrozen() else False
     if stdoutToFile is True:
-        if not os.path.exists(savePath):
-            os.mkdir(savePath)
         sys.stdout = open(os.path.join(savePath, "output_log.txt"), "w")
 
     # Static EVE Data from the staticdata repository, should be in the staticdata

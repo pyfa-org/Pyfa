@@ -20,35 +20,52 @@
 from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut
 from eos.effectHandlerHelpers import HandledItem
 from sqlalchemy.orm import reconstructor, validates
+import eos.db
+import logging
+
+logger = logging.getLogger(__name__)
 
 class Booster(HandledItem, ItemAttrShortcut):
     def __init__(self, item):
-        self.__slot = self.__calculateSlot(item)
-        self.itemID = item.ID
         self.__item = item
+
+        if self.isInvalid:
+            raise ValueError("Passed item is not a Booster")
+
+        self.itemID = item.ID if item is not None else None
         self.active = True
         self.build()
 
     @reconstructor
     def init(self):
+        """Initialize a booster from the database and validate"""
         self.__item = None
 
+        if self.itemID:
+            self.__item = eos.db.getItem(self.itemID)
+            if self.__item is None:
+                logger.error("Item (id: %d) does not exist", self.itemID)
+                return
+
+        if self.isInvalid:
+            logger.error("Item (id: %d) is not a Booser", self.itemID)
+            return
+
+        self.build()
+
     def build(self):
+        """ Build object. Assumes proper and valid item already set """
+        self.__sideEffects = []
         self.__itemModifiedAttributes = ModifiedAttributeDict()
         self.__itemModifiedAttributes.original = self.__item.attributes
-        self.__sideEffects = []
-        for effect in self.item.effects.itervalues():
+        self.__slot = self.__calculateSlot(self.__item)
+
+        for effect in self.__item.effects.itervalues():
             if effect.isType("boosterSideEffect"):
                 s = SideEffect(self)
                 s.effect = effect
                 s.active = effect.ID in self.__activeSideEffectIDs
                 self.__sideEffects.append(s)
-
-    def __fetchItemInfo(self):
-        import eos.db
-        self.__item = eos.db.getItem(self.itemID)
-        self.__slot = self.__calculateSlot(self.__item)
-        self.build()
 
     def iterSideEffects(self):
         return self.__sideEffects.__iter__()
@@ -62,23 +79,18 @@ class Booster(HandledItem, ItemAttrShortcut):
 
     @property
     def itemModifiedAttributes(self):
-        if self.__item is None:
-            self.__fetchItemInfo()
-
         return self.__itemModifiedAttributes
 
     @property
-    def slot(self):
-        if self.__item is None:
-            self.__fetchItemInfo()
+    def isInvalid(self):
+        return self.__item is None or self.__item.group.name != "Booster"
 
+    @property
+    def slot(self):
         return self.__slot
 
     @property
     def item(self):
-        if self.__item is None:
-            self.__fetchItemInfo()
-
         return self.__item
 
     def __calculateSlot(self, item):

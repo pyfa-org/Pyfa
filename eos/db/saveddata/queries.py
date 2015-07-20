@@ -185,6 +185,12 @@ def getFit(lookfor, eager=None):
                 fit = saveddata_session.query(Fit).options(*eager).filter(Fit.ID == fitID).first()
     else:
         raise TypeError("Need integer as argument")
+
+    if fit and fit.isInvalid:
+        with sd_lock:
+            removeInvalid([fit])
+        return None
+
     return fit
 
 @cachedQuery(Fleet, 1, "fleetID")
@@ -244,9 +250,10 @@ def getFitsWithShip(shipID, ownerID=None, where=None, eager=None):
         filter = processWhere(filter, where)
         eager = processEager(eager)
         with sd_lock:
-            fits = saveddata_session.query(Fit).options(*eager).filter(filter).all()
+            fits = removeInvalid(saveddata_session.query(Fit).options(*eager).filter(filter).all())
     else:
         raise TypeError("ShipID must be integer")
+
     return fits
 
 def getBoosterFits(ownerID=None, where=None, eager=None):
@@ -264,7 +271,8 @@ def getBoosterFits(ownerID=None, where=None, eager=None):
     filter = processWhere(filter, where)
     eager = processEager(eager)
     with sd_lock:
-        fits = saveddata_session.query(Fit).options(*eager).filter(filter).all()
+        fits = removeInvalid(saveddata_session.query(Fit).options(*eager).filter(filter).all())
+
     return fits
 
 def countAllFits():
@@ -295,7 +303,8 @@ def countFitsWithShip(shipID, ownerID=None, where=None, eager=None):
 def getFitList(eager=None):
     eager = processEager(eager)
     with sd_lock:
-        fits = saveddata_session.query(Fit).options(*eager).all()
+        fits = removeInvalid(saveddata_session.query(Fit).options(*eager).all())
+
     return fits
 
 def getFleetList(eager=None):
@@ -385,7 +394,8 @@ def searchFits(nameLike, where=None, eager=None):
     filter = processWhere(Fit.name.like(nameLike, escape="\\"), where)
     eager = processEager(eager)
     with sd_lock:
-        fits = saveddata_session.query(Fit).options(*eager).filter(filter).all()
+        fits = removeInvalid(saveddata_session.query(Fit).options(*eager).filter(filter).all())
+
     return fits
 
 def getSquadsIDsWithFitID(fitID):
@@ -405,6 +415,16 @@ def getProjectedFits(fitID):
             return fits
     else:
         raise TypeError("Need integer as argument")
+
+def removeInvalid(fits):
+    invalids = [f for f in fits if f.isInvalid]
+
+    if invalids:
+        map(fits.remove, invalids)
+        map(saveddata_session.delete, invalids)
+        saveddata_session.commit()
+
+    return fits
 
 def add(stuff):
     with sd_lock:

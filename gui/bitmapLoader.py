@@ -71,10 +71,23 @@ def getBitmap(name,location):
 #    print "#BMPs:%d - Current took: %.8f" % (cachedBitmapsCount,time.clock() - start)
     return bmp
 
+def stripPath(fname):
+    """
+    Here we extract 'core' of icon name. Path and
+    extension are sometimes specified in database
+    but we don't need them.
+    """
+    # Path before the icon file name
+    fname = fname.split('/')[-1]
+    # Extension
+    fname = fname.rsplit('.', 1)[0]
+    return fname
+
 def getImage(name, location):
     if location in locationMap:
         if location == "pack":
             location = locationMap[location]
+            name = stripPath(name)
             filename = "icon{0}.png".format(name)
             path = os.path.join(location, filename)
         else:

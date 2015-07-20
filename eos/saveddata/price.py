@@ -26,6 +26,7 @@ class Price(object):
     def __init__(self, typeID):
         self.typeID = typeID
         self.time = 0
+        self.price = 0
         self.failed = None
         self.__item = None
 

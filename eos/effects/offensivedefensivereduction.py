@@ -1,6 +1,7 @@
 # OffensiveDefensiveReduction
 #
 # Used by:
+# Celestials named like: Drifter Incursion (6 of 6)
 # Celestials named like: Incursion ship attributes effects (3 of 3)
 runTime = "early"
 type = ("projected", "offline")

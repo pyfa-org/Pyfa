@@ -52,7 +52,7 @@ class Price():
             item = eos.db.getItem(typeID)
             # We're not going to request items only with market group, as eve-central
             # doesn't provide any data for items not on the market
-            if item.marketGroupID:
+            if item is not None and item.marketGroupID:
                 toRequest.add(typeID)
 
         # Do not waste our time if all items are not on the market
@@ -71,7 +71,6 @@ class Price():
 
         # Attempt to send request and process it
         try:
-            len(priceMap)
             network = service.Network.getInstance()
             data = network.request(baseurl, network.PRICES, data)
             xml = minidom.parse(data)
@@ -102,7 +101,7 @@ class Price():
             for typeID in priceMap.keys():
                 priceobj = priceMap[typeID]
                 priceobj.time = time.time() + TIMEOUT
-                priceobj.failed = None
+                priceobj.failed = True
                 del priceMap[typeID]
         except:
             # all other errors will pass and continue onward to the REREQUEST delay
@@ -111,6 +110,5 @@ class Price():
         # if we get to this point, then we've got an error. Set to REREQUEST delay
         for typeID in priceMap.keys():
             priceobj = priceMap[typeID]
-            priceobj.price = 0
             priceobj.time = time.time() + REREQUEST
-            priceobj.failed = None
+            priceobj.failed = True

@@ -20,46 +20,58 @@
 from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut
 from eos.effectHandlerHelpers import HandledItem
 from sqlalchemy.orm import validates, reconstructor
+import eos.db
+import logging
+
+logger = logging.getLogger(__name__)
 
 class Implant(HandledItem, ItemAttrShortcut):
     def __init__(self, item):
-        self.__slot = self.__calculateSlot(item)
         self.__item = item
-        self.itemID = item.ID
+
+        if self.isInvalid:
+            raise ValueError("Passed item is not an Implant")
+
+        self.itemID = item.ID if item is not None else None
         self.active = True
-        self.__itemModifiedAttributes = ModifiedAttributeDict()
-        self.__itemModifiedAttributes.original = self.item.attributes
+        self.build()
 
     @reconstructor
     def init(self):
         self.__item = None
 
-    def __fetchItemInfo(self):
-        import eos.db
-        self.__item = eos.db.getItem(self.itemID)
+        if self.itemID:
+            self.__item = eos.db.getItem(self.itemID)
+            if self.__item is None:
+                logger.error("Item (id: %d) does not exist", self.itemID)
+                return
+
+        if self.isInvalid:
+            logger.error("Item (id: %d) is not an Implant", self.itemID)
+            return
+
+        self.build()
+
+    def build(self):
+        """ Build object. Assumes proper and valid item already set """
         self.__itemModifiedAttributes = ModifiedAttributeDict()
         self.__itemModifiedAttributes.original = self.__item.attributes
         self.__slot = self.__calculateSlot(self.__item)
 
     @property
     def itemModifiedAttributes(self):
-        if self.__item is None:
-            self.__fetchItemInfo()
-
         return self.__itemModifiedAttributes
 
     @property
-    def slot(self):
-        if self.__item is None:
-            self.__fetchItemInfo()
+    def isInvalid(self):
+        return self.__item is None or self.__item.category.name != "Implant"
 
+    @property
+    def slot(self):
         return self.__slot
 
     @property
     def item(self):
-        if self.__item is None:
-            self.__fetchItemInfo()
-
         return self.__item
 
     def __calculateSlot(self, item):

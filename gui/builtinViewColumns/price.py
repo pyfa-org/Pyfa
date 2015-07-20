@@ -33,13 +33,13 @@ class Price(ViewColumn):
         self.imageId = fittingView.imageList.GetImageIndex("totalPrice_small", "icons")
 
     def getText(self, stuff):
-        if stuff.item is None:
+        if stuff.item is None or stuff.item.group.name == "Ship Modifiers":
             return ""
 
         sMkt = service.Market.getInstance()
         price = sMkt.getPriceNow(stuff.item.ID)
 
-        if not price or not price.price:
+        if not price or not price.price or not price.isValid:
             return False
 
         price = price.price  # Set new price variable with what we need
@@ -50,12 +50,17 @@ class Price(ViewColumn):
         return formatAmount(price, 3, 3, 9, currency=True)
 
     def delayedText(self, mod, display, colItem):
-        def callback(requests):
-            price = requests[0].price
-            colItem.SetText(formatAmount(price, 3, 3, 9, currency=True) if price else "")
+        sMkt = service.Market.getInstance()
+        def callback(item):
+            price = sMkt.getPriceNow(item.ID)
+            text = formatAmount(price.price, 3, 3, 9, currency=True) if price.price else ""
+            if price.failed: text += " (!)"
+            colItem.SetText(text)
+
             display.SetItem(colItem)
 
-        service.Market.getInstance().getPrices([mod.item.ID], callback)
+
+        sMkt.waitForPrice(mod.item, callback)
 
     def getImageId(self, mod):
         return -1

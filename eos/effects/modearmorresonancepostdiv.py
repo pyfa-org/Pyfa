@@ -1,8 +1,7 @@
 # modeArmorResonancePostDiv
 #
 # Used by:
-# Module: Confessor Defense Mode
-# Module: Svipul Defense Mode
+# Modules named like: Defense Mode (3 of 4)
 type = "passive"
 def handler(fit, module, context):
     for srcResType, tgtResType in (

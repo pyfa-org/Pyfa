@@ -97,7 +97,8 @@ class Fit(object):
             "rackSlots": True,
             "rackLabels": True,
             "compactSkills": True,
-            "showTooltip": True}
+            "showTooltip": True,
+            "showMarketShortcuts": False}
 
         self.serviceFittingOptions = SettingsProvider.getInstance().getSettings(
             "pyfaServiceFittingOptions", serviceFittingDefaultOptions)
@@ -149,8 +150,8 @@ class Fit(object):
         return fit.modules[pos]
 
     def newFit(self, shipID, name=None):
-        fit = eos.types.Fit()
-        fit.ship = eos.types.Ship(eos.db.getItem(shipID))
+        ship = eos.types.Ship(eos.db.getItem(shipID))
+        fit = eos.types.Fit(ship)
         fit.name = name if name is not None else "New %s" % fit.ship.item.name
         fit.damagePattern = self.pattern
         fit.targetResists = self.targetResists
@@ -274,7 +275,6 @@ class Fit(object):
         except ValueError:
             return False
 
-        fit.implants.freeSlot(implant)
         fit.implants.append(implant)
         self.recalc(fit)
         return True
@@ -300,7 +300,6 @@ class Fit(object):
         except ValueError:
             return False
 
-        fit.boosters.freeSlot(booster)
         fit.boosters.append(booster)
         self.recalc(fit)
         return True
@@ -893,7 +892,7 @@ class Fit(object):
                     State.ONLINE: State.ACTIVE}  # Just in case
 
     def __getProposedState(self, mod, click, proposedState=None):
-        if mod.slot in (Slot.RIG, Slot.SUBSYSTEM) or mod.isEmpty:
+        if mod.slot is Slot.SUBSYSTEM or mod.isEmpty:
             return State.ONLINE
 
         currState = mod.state

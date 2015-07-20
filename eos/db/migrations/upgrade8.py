@@ -1,13 +1,10 @@
 """
-Migration 4
+Migration 8
 
-- Converts modules based on Proteus Module Tiericide
+- Converts modules based on Carnyx Module Tiericide
     Some modules have been unpublished (and unpublished module attributes are removed
     from database), which causes pyfa to crash. We therefore replace these
     modules with their new replacements
-
-    Based on http://community.eveonline.com/news/patch-notes/patch-notes-for-proteus/
-    and output of itemDiff.py
 """
 
 

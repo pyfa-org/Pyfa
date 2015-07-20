@@ -19,36 +19,24 @@
 
 from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut
 from eos.effectHandlerHelpers import HandledItem
+import eos.db
 
 class Mode(ItemAttrShortcut, HandledItem):
-
     def __init__(self, item):
+
+        if item.group.name != "Ship Modifiers":
+            raise ValueError('Passed item "%s" (category: (%s)) is not a Ship Modifier'%(item.name, item.category.name))
+
         self.__item = item
         self.__itemModifiedAttributes = ModifiedAttributeDict()
-
-        if not isinstance(item, int):
-            self.__buildOriginal()
-
-    def __fetchItemInfo(self):
-        import eos.db
-        self.__item = eos.db.getItem(self.__item)
-        self.__buildOriginal()
-
-    def __buildOriginal(self):
         self.__itemModifiedAttributes.original = self.item.attributes
 
     @property
     def item(self):
-        if isinstance(self.__item, int):
-            self.__fetchItemInfo()
-
         return self.__item
 
     @property
     def itemModifiedAttributes(self):
-        if isinstance(self.__item, int):
-            self.__fetchItemInfo()
-
         return self.__itemModifiedAttributes
 
     # @todo: rework to fit only on t3 dessy

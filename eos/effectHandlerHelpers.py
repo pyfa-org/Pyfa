@@ -17,8 +17,12 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 #===============================================================================
 
+#from sqlalchemy.orm.attributes import flag_modified
 import eos.db
 import eos.types
+import logging
+
+logger = logging.getLogger(__name__)
 
 class HandledList(list):
     def filteredItemPreAssign(self, filter, *args, **kwargs):
@@ -101,6 +105,14 @@ class HandledList(list):
             except AttributeError:
                 pass
 
+    def remove(self, thing):
+        # We must flag it as modified, otherwise it not be removed from the database
+        # @todo: flag_modified isn't in os x skel. need to rebuild to include
+        #flag_modified(thing, "itemID")
+        if thing.isInvalid:  # see GH issue #324
+            thing.itemID = 0
+        list.remove(self, thing)
+
 class HandledModuleList(HandledList):
     def append(self, mod):
         emptyPosition = float("Inf")
@@ -115,10 +127,14 @@ class HandledModuleList(HandledList):
             del self[emptyPosition]
             mod.position = emptyPosition
             HandledList.insert(self, emptyPosition, mod)
+            if mod.isInvalid:
+                self.remove(mod)
             return
 
         mod.position = len(self)
         HandledList.append(self, mod)
+        if mod.isInvalid:
+            self.remove(mod)
 
     def insert(self, index, mod):
         mod.position = index
@@ -149,128 +165,72 @@ class HandledModuleList(HandledList):
             if mod.getModifiedItemAttr("subSystemSlot") == slot:
                 del self[i]
 
-class HandledDroneList(HandledList):
+class HandledDroneCargoList(HandledList):
     def find(self, item):
-        for d in self:
-            if d.item == item:
-                yield d
+        for o in self:
+            if o.item == item:
+                yield o
 
     def findFirst(self, item):
-        for d in self.find(item):
-            return d
+        for o in self.find(item):
+            return o
 
-    def append(self, drone):
-        list.append(self, drone)
+    def append(self, thing):
+        HandledList.append(self, thing)
 
-    def remove(self, drone):
-        HandledList.remove(self, drone)
-
-    def appendItem(self, item, amount = 1):
-        if amount < 1: ValueError("Amount of drones to add should be >= 1")
-        d = self.findFirst(item)
-
-        if d is None:
-            d = eos.types.Drone(item)
-            self.append(d)
-
-        d.amount += amount
-        return d
-
-    def removeItem(self, item, amount):
-        if amount < 1: ValueError("Amount of drones to remove should be >= 1")
-        d = self.findFirst(item)
-        if d is None: return
-        d.amount -= amount
-        if d.amount <= 0:
-            self.remove(d)
-            return None
-
-        return d
-
-class HandledCargoList(HandledList):
-    # shameless copy of HandledDroneList
-    # I have no idea what this does, but I needed it
-    # @todo: investigate this
-    def find(self, item):
-        for d in self:
-            if d.item == item:
-                yield d
-
-    def findFirst(self, item):
-        for d in self.find(item):
-            return d
-
-    def append(self, cargo):
-        list.append(self, cargo)
-
-    def remove(self, cargo):
-        HandledList.remove(self, cargo)
-
-    def appendItem(self, item, qty = 1):
-        if qty < 1: ValueError("Amount of cargo to add should be >= 1")
-        d = self.findFirst(item)
-
-        if d is None:
-            d = eos.types.Cargo(item)
-            self.append(d)
-
-        d.qty += qty
-        return d
-
-    def removeItem(self, item, qty):
-        if qty < 1: ValueError("Amount of cargo to remove should be >= 1")
-        d = self.findFirst(item)
-        if d is None: return
-        d.qty -= qty
-        if d.qty <= 0:
-            self.remove(d)
-            return None
-
-        return d
+        if thing.isInvalid:
+            self.remove(thing)
 
 class HandledImplantBoosterList(HandledList):
-    def __init__(self):
-        self.__slotCache = {}
+    def append(self, thing):
+        if thing.isInvalid:
+            HandledList.append(self, thing)
+            self.remove(thing)
+            return
 
-    def append(self, implant):
-        if self.__slotCache.has_key(implant.slot):
-            raise ValueError("Implant/Booster slot already in use, remove the old one first or set replace = True")
-        self.__slotCache[implant.slot] = implant
-        HandledList.append(self, implant)
+        # if needed, remove booster that was occupying slot
+        oldObj = next((m for m in self if m.slot == thing.slot), None)
+        if oldObj:
+            logging.info("Slot %d occupied with %s, replacing with %s", thing.slot, oldObj.item.name, thing.item.name)
+            oldObj.itemID = 0  # hack to remove from DB. See GH issue #324
+            self.remove(oldObj)
 
-    def remove(self, implant):
-        HandledList.remove(self, implant)
-        del self.__slotCache[implant.slot]
-        # While we deleted this implant, in edge case seems like not all references
-        # to it are removed and object still lives in session; forcibly remove it,
-        # or otherwise when adding the same booster twice booster's table (typeID, fitID)
-        # constraint will report database integrity error
-        # TODO: make a proper fix, probably by adjusting fit-boosters sqlalchemy relationships
-        eos.db.remove(implant)
-
-    def freeSlot(self, slot):
-        if hasattr(slot, "slot"):
-            slot = slot.slot
-
-        try:
-            implant = self.__slotCache[slot]
-        except KeyError:
-            return False
-        try:
-            self.remove(implant)
-        except ValueError:
-            return False
-        return True
+        HandledList.append(self, thing)
 
 class HandledProjectedModList(HandledList):
+    def append(self, proj):
+        if proj.isInvalid:
+            # we must include it before we remove it. doing it this way ensures
+            # rows and relationships in database are removed as well
+            HandledList.append(self, proj)
+            self.remove(proj)
+            return
+
+        proj.projected = True
+        isSystemEffect = proj.item.group.name == "Effect Beacon"
+
+        if isSystemEffect:
+            # remove other system effects - only 1 per fit plz
+            oldEffect = next((m for m in self if m.item.group.name == "Effect Beacon"), None)
+
+            if oldEffect:
+                logging.info("System effect occupied with %s, replacing with %s", oldEffect.item.name, proj.item.name)
+                self.remove(oldEffect)
+
+        HandledList.append(self, proj)
+
+        # Remove non-projectable modules
+        if not proj.item.isType("projected") and not isSystemEffect:
+            self.remove(proj)
+
+class HandledProjectedDroneList(HandledDroneCargoList):
     def append(self, proj):
         proj.projected = True
         HandledList.append(self, proj)
 
-class HandledProjectedDroneList(HandledDroneList):
-    def append(self, proj):
-        proj.projected = True
-        list.append(self, proj)
+        # Remove invalid or non-projectable drones
+        if proj.isInvalid or not proj.item.isType("projected"):
+            self.remove(proj)
 
 class HandledProjectedFitList(HandledList):
     def append(self, proj):

@@ -30,36 +30,12 @@ class PriceViewFull(StatsView):
     def __init__(self, parent):
         StatsView.__init__(self)
         self.parent = parent
-        self._timerId = wx.NewId()
-        self._timer = None
-        self.parent.Bind(wx.EVT_TIMER, self.OnTimer)
-        self._timerRunsBeforeUpdate = 60
-        self._timerRuns = 0
-        self._timerIdUpdate = wx.NewId()
-        self._timerUpdate = None
         self._cachedShip = 0
         self._cachedFittings = 0
         self._cachedTotal = 0
 
-    def OnTimer(self, event):
-        if self._timerId == event.GetId():
-            if self._timerRuns >= self._timerRunsBeforeUpdate:
-                self._timerRuns = 0
-                self._timer.Stop()
-                self.refreshPanel(self.fit)
-            else:
-                self.labelEMStatus.SetLabel("Prices update retry in: %d seconds" %(self._timerRunsBeforeUpdate - self._timerRuns))
-                self._timerRuns += 1
-        if self._timerIdUpdate == event.GetId():
-            self._timerUpdate.Stop()
-            self.labelEMStatus.SetLabel("")
-
     def getHeaderText(self, fit):
         return "Price"
-
-    def getTextExtentW(self, text):
-        width, height = self.parent.GetTextExtent(text)
-        return width
 
     def populatePanel(self, contentPanel, headerPanel):
         contentSizer = contentPanel.GetSizer()
@@ -111,22 +87,11 @@ class PriceViewFull(StatsView):
             for cargo in fit.cargo:
                 for _ in xrange(cargo.amount):
                     typeIDs.append(cargo.itemID)
-            if self._timer:
-                if self._timer.IsRunning():
-                    self._timer.Stop()
+
             sMkt = service.Market.getInstance()
             sMkt.getPrices(typeIDs, self.processPrices)
             self.labelEMStatus.SetLabel("Updating prices...")
-            if not self._timerUpdate:
-                self._timerUpdate = wx.Timer(self.parent, self._timerIdUpdate)
-            if self._timerUpdate:
-                if not self._timerUpdate.IsRunning():
-                    self._timerUpdate.Start(1000)
-
         else:
-            if self._timer:
-                if self._timer.IsRunning():
-                    self._timer.Stop()
             self.labelEMStatus.SetLabel("")
             self.labelPriceShip.SetLabel("0.0 ISK")
             self.labelPriceFittings.SetLabel("0.0 ISK")
@@ -136,20 +101,10 @@ class PriceViewFull(StatsView):
 
     def processPrices(self, prices):
         shipPrice = prices[0].price
-        if shipPrice == None:
-            if not self._timer:
-                self._timer = wx.Timer(self.parent, self._timerId)
-            self._timer.Start(1000)
-            self._timerRuns = 0
-        else:
-            if self._timer:
-                self._timer.Stop()
-
-            self.labelEMStatus.SetLabel("")
-
-        if shipPrice == None:
-            shipPrice = 0
         modPrice = sum(map(lambda p: p.price or 0, prices[1:]))
+
+        self.labelEMStatus.SetLabel("")
+
         if self._cachedShip != shipPrice:
             self.labelPriceShip.SetLabel("%s ISK" % formatAmount(shipPrice, 3, 3, 9, currency=True))
             self.labelPriceShip.SetToolTip(wx.ToolTip(locale.format('%.2f', shipPrice, 1)))

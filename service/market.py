@@ -71,6 +71,7 @@ class ShipBrowserWorkerThread(threading.Thread):
 class PriceWorkerThread(threading.Thread):
     def run(self):
         self.queue = Queue.Queue()
+        self.wait = {}
         self.processUpdates()
 
     def processUpdates(self):
@@ -86,8 +87,20 @@ class PriceWorkerThread(threading.Thread):
             wx.CallAfter(callback)
             queue.task_done()
 
+            # After we fetch prices, go through the list of waiting items and call their callbacks
+            for price in requests:
+                callbacks = self.wait.pop(price.typeID, None)
+                if callbacks:
+                    for callback in callbacks:
+                        wx.CallAfter(callback)
+
     def trigger(self, prices, callbacks):
         self.queue.put((callbacks, prices))
+
+    def setToWait(self, itemID, callback):
+        if itemID not in self.wait:
+            self.wait[itemID] = []
+        self.wait[itemID].append(callback)
 
 class SearchWorkerThread(threading.Thread):
     def run(self):
@@ -218,9 +231,8 @@ class Market():
             "Mobile Decoy Unit": False,  # Seems to be left over test mod for deployables
             "Tournament Micro Jump Unit": False,  # Normally seen only on tournament arenas
             "Council Diplomatic Shuttle": False,  # CSM X celebration
-            "Federation Navy 200mm Steel Plates": True,  # Accidentally unpublished by CCP
-            "Imperial Navy 200mm Steel Plates": True,  # Accidentally unpublished by CCP
-            "Syndicate 200mm Steel Plates": True,  # Accidentally unpublished by CCP
+            "Imp": False,  # AT13 prize, not a real ship yet
+            "Fiend": False,  # AT13 prize, not a real ship yet
         }
 
         # do not publish ships that we convert
@@ -693,10 +705,6 @@ class Market():
 
             self.priceCache[typeID] = price
 
-        if not price.isValid:
-            # if the price has expired
-            price.price = None
-
         return price
 
     def getPricesNow(self, typeIDs):
@@ -718,6 +726,21 @@ class Market():
             eos.db.commit()
 
         self.priceWorkerThread.trigger(requests, cb)
+
+    def waitForPrice(self, item, callback):
+        """
+        Wait for prices to be fetched and callback when finished. This is used with the column prices for modules.
+        Instead of calling them individually, we set them to wait until the entire fit price is called and calculated
+        (see GH #290)
+        """
+
+        def cb():
+            try:
+                callback(item)
+            except:
+                pass
+
+        self.priceWorkerThread.setToWait(item.ID, cb)
 
     def clearPriceCache(self):
         self.priceCache.clear()

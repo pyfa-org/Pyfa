@@ -55,4 +55,4 @@ else:
     # If database does not exist, do not worry about migration. Simply
     # create and set version
     eos.db.saveddata_meta.create_all()
-    eos.db.saveddata_engine.execute('PRAGMA user_version = %d'%config.dbversion)
+    eos.db.saveddata_engine.execute('PRAGMA user_version = {}'.format(migration.getAppVersion()))
