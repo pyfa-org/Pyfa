@@ -105,10 +105,11 @@ class Character(object):
         for skill in self.__skills:
             self.__skillIdMap[skill.itemID] = skill
 
-    def apiUpdateCharSheet(self, sheet):
+    def apiUpdateCharSheet(self, skills):
         del self.__skills[:]
         self.__skillIdMap.clear()
-        for skillRow in sheet.skills:
+        for skillRow in skills:
+
             self.addSkill(Skill(skillRow["typeID"], skillRow["level"]))
 
     @property
@@ -203,13 +204,11 @@ class Skill(HandledItem):
         self.itemID = item.ID if not isinstance(item, int) else item
         self.__level = level if learned else None
         self.commandBonus = 0
-        self.learned = learned
         self.build(ro)
 
     @reconstructor
     def init(self):
         self.build(False)
-        self.learned = self.__level is not None
         self.__item = None
 
     def build(self, ro):
@@ -217,9 +216,12 @@ class Skill(HandledItem):
         self.__suppressed = False
 
     @property
+    def learned(self):
+        return self.__level is not None
+
+    @property
     def level(self):
-        if not self.learned: return 0
-        else: return self.__level or 0
+        return self.__level or 0
 
     @level.setter
     def level(self, level):
@@ -230,7 +232,6 @@ class Skill(HandledItem):
             raise ReadOnlyException()
 
         self.__level = level
-        self.learned = True
 
     @property
     def item(self):
@@ -254,11 +255,11 @@ class Skill(HandledItem):
             return
 
         for effect in item.effects.itervalues():
-                if effect.runTime == runTime and effect.isType("passive"):
-                    try:
-                        effect.handler(fit, self, ("skill",))
-                    except AttributeError:
-                        continue
+            if effect.runTime == runTime and effect.isType("passive"):
+                try:
+                    effect.handler(fit, self, ("skill",))
+                except AttributeError:
+                    continue
 
     def clear(self):
         self.__suppressed = False

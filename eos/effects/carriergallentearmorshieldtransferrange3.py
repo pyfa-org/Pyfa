@@ -5,8 +5,7 @@
 # Ship: Thanatos
 type = "passive"
 def handler(fit, ship, context):
-    level = fit.character.getSkill("Gallente Carrier").level
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Capital Shield Emission Systems"),
-                                  "shieldTransferRange", ship.getModifiedItemAttr("carrierGallenteBonus3") * level)
+                                  "shieldTransferRange", ship.getModifiedItemAttr("carrierGallenteBonus3"), skill="Gallente Carrier")
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Capital Remote Armor Repair Systems"),
-                                  "maxRange", ship.getModifiedItemAttr("carrierGallenteBonus3") * level)
+                                  "maxRange", ship.getModifiedItemAttr("carrierGallenteBonus3"), skill="Gallente Carrier")

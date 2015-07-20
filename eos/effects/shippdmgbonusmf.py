@@ -8,6 +8,5 @@
 # Ship: Republic Fleet Firetail
 type = "passive"
 def handler(fit, ship, context):
-    level = fit.character.getSkill("Minmatar Frigate").level
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Small Projectile Turret"),
-                                  "damageMultiplier", ship.getModifiedItemAttr("shipBonusMF") * level)
+                                  "damageMultiplier", ship.getModifiedItemAttr("shipBonusMF"), skill="Minmatar Frigate")

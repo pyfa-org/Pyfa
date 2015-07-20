@@ -611,7 +611,7 @@ class Fit(object):
 
     @property
     def calibrationUsed(self):
-        return self.getItemAttrSum(self.modules, 'upgradeCost')
+        return self.getItemAttrOnlineSum(self.modules, 'upgradeCost')
 
     @property
     def pgUsed(self):

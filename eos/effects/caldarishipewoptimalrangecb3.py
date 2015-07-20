@@ -4,6 +4,5 @@
 # Ship: Scorpion
 type = "passive"
 def handler(fit, ship, context):
-    level = fit.character.getSkill("Caldari Battleship").level
     fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == "ECM",
-                                  "maxRange", ship.getModifiedItemAttr("shipBonusCB3") * level)
+                                  "maxRange", ship.getModifiedItemAttr("shipBonusCB3"), skill="Caldari Battleship")

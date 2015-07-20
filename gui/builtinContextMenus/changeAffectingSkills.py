@@ -12,7 +12,7 @@ class ChangeAffectingSkills(ContextMenu):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     def display(self, srcContext, selection):
-        if self.mainFrame.getActiveFit() is None or srcContext not in ("fittingModule", "fittingShip"):
+        if self.mainFrame.getActiveFit() is None or srcContext not in ("fittingModule", "fittingCharge", "fittingShip"):
             return False
 
         self.sChar = service.Character.getInstance()
@@ -32,7 +32,7 @@ class ChangeAffectingSkills(ContextMenu):
             self.stuff = selection[0]
 
         cont = self.stuff.itemModifiedAttributes
-        self.skills = []
+        skills = set()
 
         for attrName in cont.iterAfflictions():
             if cont[attrName] == 0:
@@ -44,9 +44,9 @@ class ChangeAffectingSkills(ContextMenu):
                     if not isinstance(afflictor, Skill):
                         continue
 
-                    self.skills.append(afflictor)
-        self.skills.sort(key=lambda x: x.item.name)
+                    skills.add(afflictor)
 
+        self.skills = sorted(skills, key=lambda x: x.item.name)
         return len(self.skills) > 0
 
     def getText(self, itmContext, selection):
@@ -81,7 +81,8 @@ class ChangeAffectingSkills(ContextMenu):
             for i in xrange(-1, 6):
                 levelItem = self.addSkill(rootMenu if msw else grandSub, skill, i)
                 grandSub.AppendItem(levelItem)
-                #@ todo: add check to current level. Need to fix #109 first
+                if (not skill.learned and i == -1) or (skill.learned and skill.level == i):
+                    levelItem.Check(True)
             sub.AppendItem(skillItem)
 
         return sub
