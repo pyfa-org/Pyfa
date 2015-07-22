@@ -487,7 +487,7 @@ class Fit(object):
 
             if not projected:
                 # if not a projected fit, add a couple of more things
-                c = chain(c, self.projectedDrones, self.projectedModules)
+                c = chain(c, (self.mode,), self.projectedDrones, self.projectedModules)
 
             # We calculate gang bonuses first so that projected fits get them
             if self.gangBoosts is not None:
