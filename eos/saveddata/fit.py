@@ -83,6 +83,10 @@ class Fit(object):
 
             try:
                 self.__ship = Ship(item)
+                # @todo extra attributes is now useless, however it set to be
+                # the same as ship attributes for ease (so we don't have to
+                # change all instances in source). Remove this at some point
+                self.extraAttributes = self.__ship.itemModifiedAttributes
             except ValueError:
                 logger.error("Item (id: %d) is not a Ship", self.shipID)
                 return
@@ -119,7 +123,6 @@ class Fit(object):
         self.boostsFits = set()
         self.gangBoosts = None
         self.ecmProjectedStr = 1
-        self.extraAttributes = self.ship.itemModifiedAttributes
 
     @property
     def targetResists(self):
@@ -172,8 +175,11 @@ class Fit(object):
     def ship(self, ship):
         self.__ship = ship
         self.shipID = ship.item.ID if ship is not None else None
-        #  set mode of new ship
-        self.mode = self.ship.validateModeItem(None) if ship is not None else None
+        if ship is not None:
+            #  set mode of new ship
+            self.mode = self.ship.validateModeItem(None) if ship is not None else None
+            # set fit attributes the same as ship
+            self.extraAttributes = self.ship.itemModifiedAttributes
 
     @property
     def drones(self):
