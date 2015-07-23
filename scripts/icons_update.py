@@ -211,7 +211,7 @@ def get_icon_file(request):
         img = Image.open(fullpath)
     # Strip all additional image info (mostly for ICC color
     # profiles, see issue #337)
-    img.info = {}
+    img.info.clear()
     return img
 
 

@@ -82,7 +82,7 @@ def get_render(type_id):
         img.thumbnail(RENDER_SIZE, Image.ANTIALIAS)
     # Strip all additional image info (mostly for ICC color
     # profiles, see issue #337)
-    img.info = {}
+    img.info.clear()
     return img
 
 
