@@ -28,6 +28,7 @@ from eos.types import Fit, Ship, Module, Skill, Booster, Implant, Drone, Mode
 from gui.utils.numberFormatter import formatAmount
 import service
 import config
+from gui.contextMenu import ContextMenu
 
 try:
     from collections import OrderedDict
@@ -595,6 +596,28 @@ class ItemAffectedBy (wx.Panel):
         self.SetSizer(mainSizer)
         self.PopulateTree()
         self.Layout()
+        self.affectedBy.Bind(wx.EVT_TREE_ITEM_RIGHT_CLICK, self.scheduleMenu)
+
+    def scheduleMenu(self, event):
+        event.Skip()
+        wx.CallAfter(self.spawnMenu, event.Item)
+
+    def spawnMenu(self, item):
+        self.affectedBy.SelectItem(item)
+
+        stuff = self.affectedBy.GetPyData(item)
+        # String is set as data when we are dealing with attributes, not stuff containers
+        if stuff is None or isinstance(stuff, basestring):
+            return
+        contexts = []
+
+        # Skills are different in that they don't have itemModifiedAttributes,
+        # which is needed if we send the container to itemStats dialog. So
+        # instead, we send the item.
+        type = stuff.__class__.__name__
+        contexts.append(("itemStats", type))
+        menu = ContextMenu.getMenu(stuff if type != "Skill" else stuff.item, *contexts)
+        self.PopupMenu(menu)
 
     def ExpandCollapseTree(self):
 
@@ -718,7 +741,7 @@ class ItemAffectedBy (wx.Panel):
                     else:
                         item = afflictor.item
 
-                    items[attrName].append((type(afflictor), item, modifier, amount, getattr(afflictor, "projected", False)))
+                    items[attrName].append((type(afflictor), afflictor, item, modifier, amount, getattr(afflictor, "projected", False)))
 
         # Make sure projected fits are on top
         rootOrder = container.keys()
@@ -768,7 +791,7 @@ class ItemAffectedBy (wx.Panel):
                 items = attributes[attrName]
                 items.sort(key=lambda x: self.ORDER.index(x[0]))
                 for itemInfo in items:
-                    afflictorType, item, attrModifier, attrAmount, projected = itemInfo
+                    afflictorType, afflictor, item, attrModifier, attrAmount, projected = itemInfo
 
                     if afflictorType == Ship:
                         itemIcon = self.imageList.Add(bitmapLoader.getBitmap("ship_small", "icons"))
@@ -791,7 +814,9 @@ class ItemAffectedBy (wx.Panel):
 
                     # this is the Module node, the attribute will be attached to this
                     display = "%s %s %.2f %s" % (displayStr, attrModifier, attrAmount, penalized)
-                    self.affectedBy.AppendItem(child, display, itemIcon)
+                    treeItem = self.affectedBy.AppendItem(child, display, itemIcon)
+                    self.affectedBy.SetPyData(treeItem, afflictor)
+
 
     def buildModuleView(self, root):
         # We first build a usable dictionary of items. The key is either a fit
@@ -816,8 +841,7 @@ class ItemAffectedBy (wx.Panel):
 
             for fit, afflictors in attributes.getAfflictions(attrName).iteritems():
                 for afflictor, modifier, amount, used in afflictors:
-
-                    if not used or afflictor.item is None:
+                    if not used or getattr(afflictor, 'item', None) is None:
                         continue
 
                     if fit.ID != self.activeFit:
@@ -870,7 +894,6 @@ class ItemAffectedBy (wx.Panel):
 
             for itemName in order:
                 info = items[itemName]
-
                 afflictorType, afflictors, attrData, item, projected = info
                 counter = len(afflictors)
                 if afflictorType == Ship:
@@ -891,6 +914,7 @@ class ItemAffectedBy (wx.Panel):
 
                 # this is the Module node, the attribute will be attached to this
                 child = self.affectedBy.AppendItem(parent, displayStr, itemIcon)
+                self.affectedBy.SetPyData(child, afflictors.pop())
 
                 if counter > 0:
                     attributes = []
