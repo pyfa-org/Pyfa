@@ -36,7 +36,7 @@ from service.fleet import Fleet
 from service.settings import SettingsProvider
 from service.port import Port
 
-logger = logging.getLogger("pyfa.service.fit")
+logger = logging.getLogger(__name__)
 
 class FitBackupThread(threading.Thread):
     def __init__(self, path, callback):
@@ -175,9 +175,13 @@ class Fit(object):
         fit = eos.db.getFit(fitID)
         sFleet = Fleet.getInstance()
         sFleet.removeAssociatedFleetData(fit)
-        self.removeProjectedData(fitID)
 
         eos.db.remove(fit)
+
+        # refresh any fits this fit is projected onto. Otherwise, if we have
+        # already loaded those fits, they will not reflect the changes
+        for projection in fit.projectedOnto.values():
+            eos.db.saveddata_session.refresh(projection.victim_fit)
 
     def copyFit(self, fitID):
         fit = eos.db.getFit(fitID)
@@ -192,14 +196,6 @@ class Fit(object):
         fit = eos.db.getFit(fitID)
         fit.clear()
         return fit
-
-    def removeProjectedData(self, fitID):
-        """Removes projection relation from ships that have fitID as projection. See GitHub issue #90"""
-        fit = eos.db.getFit(fitID)
-        fits = eos.db.getProjectedFits(fitID)
-
-        for projectee in fits:
-            projectee.projectedFits.remove(fit)
 
     def toggleFactorReload(self, fitID):
         if fitID is None:
@@ -236,6 +232,7 @@ class Fit(object):
             return None
         fit = eos.db.getFit(fitID)
         inited = getattr(fit, "inited", None)
+
         if inited is None or inited is False:
             sFleet = Fleet.getInstance()
             f = sFleet.getLinearFleet(fit)
@@ -246,6 +243,7 @@ class Fit(object):
                 fit.fleet = f
 
             if not projected:
+                print "Not projected, getting projected fits"
                 for fitP in fit.projectedFits:
                     self.getFit(fitP.ID, projected = True)
                 self.recalc(fit, withBoosters=True)
@@ -322,9 +320,14 @@ class Fit(object):
                                    eager=("attributes", "group.category"))
 
         if isinstance(thing, eos.types.Fit):
-            if thing.ID == fitID:
+            if thing in fit.projectedFits:
                 return
-            fit.projectedFits.append(thing)
+
+            fit.__projectedFits[thing.ID] = thing
+
+            # this bit is required -- see GH issue # 83
+            eos.db.saveddata_session.flush()
+            eos.db.saveddata_session.refresh(thing)
         elif thing.category.name == "Drone":
             drone = None
             for d in fit.projectedDrones.find(thing):
@@ -363,6 +366,22 @@ class Fit(object):
             thing.state = self.__getProposedState(thing, click)
             if not thing.canHaveState(thing.state, fit):
                 thing.state = State.OFFLINE
+        elif isinstance(thing, eos.types.Fit):
+            print "toggle fit"
+            projectionInfo = thing.getProjectionInfo(fitID)
+            if projectionInfo:
+                projectionInfo.active = not projectionInfo.active
+
+        eos.db.commit()
+        self.recalc(fit)
+
+    def changeAmount(self, fitID, projected_fit, amount):
+        """Change amount of projected fits"""
+        fit = eos.db.getFit(fitID)
+        amount = min(20, max(1, amount))  # 1 <= a <= 20
+        projectionInfo = projected_fit.getProjectionInfo(fitID)
+        if projectionInfo:
+            projectionInfo.amount = amount
 
         eos.db.commit()
         self.recalc(fit)
@@ -374,7 +393,8 @@ class Fit(object):
         elif isinstance(thing, eos.types.Module):
             fit.projectedModules.remove(thing)
         else:
-            fit.projectedFits.remove(thing)
+            del fit.__projectedFits[thing.ID]
+            #fit.projectedFits.remove(thing)
 
         eos.db.commit()
         self.recalc(fit)
@@ -921,8 +941,9 @@ class Fit(object):
         eos.db.commit()
         self.recalc(fit)
 
-    def recalc(self, fit, withBoosters=False):
+    def recalc(self, fit, withBoosters=True):
+        logger.debug("="*10+"recalc"+"="*10)
         if fit.factorReload is not self.serviceFittingOptions["useGlobalForceReload"]:
             fit.factorReload = self.serviceFittingOptions["useGlobalForceReload"]
-        fit.clear() 
-        fit.calculateModifiedAttributes(withBoosters=withBoosters, dirtyStorage=self.dirtyFitIDs)
+        fit.clear()
+        fit.calculateModifiedAttributes(withBoosters=withBoosters)

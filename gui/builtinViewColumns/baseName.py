@@ -18,9 +18,9 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 #===============================================================================
 
-from gui import builtinViewColumns
 from gui.viewColumn import ViewColumn
-from gui import bitmapLoader
+import gui.mainFrame
+
 import wx
 from eos.types import Drone, Cargo, Fit, Module, Slot, Rack
 import service
@@ -29,9 +29,12 @@ class BaseName(ViewColumn):
     name = "Base Name"
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
+
+        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.columnText = "Name"
         self.shipImage = fittingView.imageList.GetImageIndex("ship_small", "icons")
         self.mask = wx.LIST_MASK_TEXT
+        self.projectedView = isinstance(fittingView, gui.projectedView.ProjectedView)
 
     def getText(self, stuff):
         if isinstance(stuff, Drone):
@@ -39,7 +42,12 @@ class BaseName(ViewColumn):
         elif isinstance(stuff, Cargo):
             return "%dx %s" % (stuff.amount, stuff.item.name)
         elif isinstance(stuff, Fit):
-            return "%s (%s)" % (stuff.name, stuff.ship.item.name)
+            if self.projectedView:
+                # we need a little more information for the projected view
+                fitID = self.mainFrame.getActiveFit()
+                return "%dx %s (%s)" % (stuff.getProjectionInfo(fitID).amount, stuff.name, stuff.ship.item.name)
+            else:
+                return "%s (%s)" % (stuff.name, stuff.ship.item.name)
         elif isinstance(stuff, Rack):
             if service.Fit.getInstance().serviceFittingOptions["rackLabels"]:
                 if stuff.slot == Slot.MODE:

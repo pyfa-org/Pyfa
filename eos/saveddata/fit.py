@@ -29,6 +29,9 @@ from eos.saveddata.module import State
 from eos.saveddata.mode import Mode
 import eos.db
 import time
+import copy
+from utils.timer import Timer
+
 import logging
 
 logger = logging.getLogger(__name__)
@@ -40,14 +43,6 @@ except ImportError:
 
 class Fit(object):
     """Represents a fitting, with modules, ship, implants, etc."""
-    EXTRA_ATTRIBUTES = {"armorRepair": 0,
-                        "hullRepair": 0,
-                        "shieldRepair": 0,
-                        "maxActiveDrones": 0,
-                        "maxTargetsLockedFromSkills": 2,
-                        "droneControlRange": 20000,
-                        "cloaked": False,
-                        "siege": False}
 
     PEAK_RECHARGE = 0.25
 
@@ -61,7 +56,7 @@ class Fit(object):
         self.__cargo = HandledDroneCargoList()
         self.__implants = HandledImplantBoosterList()
         self.__boosters = HandledImplantBoosterList()
-        self.__projectedFits = HandledProjectedFitList()
+        #self.__projectedFits = {}
         self.__projectedModules = HandledProjectedModList()
         self.__projectedDrones = HandledProjectedDroneList()
         self.__character = None
@@ -88,6 +83,10 @@ class Fit(object):
 
             try:
                 self.__ship = Ship(item)
+                # @todo extra attributes is now useless, however it set to be
+                # the same as ship attributes for ease (so we don't have to
+                # change all instances in source). Remove this at some point
+                self.extraAttributes = self.__ship.itemModifiedAttributes
             except ValueError:
                 logger.error("Item (id: %d) is not a Ship", self.shipID)
                 return
@@ -124,8 +123,6 @@ class Fit(object):
         self.boostsFits = set()
         self.gangBoosts = None
         self.ecmProjectedStr = 1
-        self.extraAttributes = ModifiedAttributeDict(self)
-        self.extraAttributes.original = self.EXTRA_ATTRIBUTES
 
     @property
     def targetResists(self):
@@ -178,8 +175,11 @@ class Fit(object):
     def ship(self, ship):
         self.__ship = ship
         self.shipID = ship.item.ID if ship is not None else None
-        #  set mode of new ship
-        self.mode = self.ship.validateModeItem(None) if ship is not None else None
+        if ship is not None:
+            #  set mode of new ship
+            self.mode = self.ship.validateModeItem(None) if ship is not None else None
+            # set fit attributes the same as ship
+            self.extraAttributes = self.ship.itemModifiedAttributes
 
     @property
     def drones(self):
@@ -207,7 +207,12 @@ class Fit(object):
 
     @property
     def projectedFits(self):
-        return self.__projectedFits
+        # only in extreme edge cases will the fit be invalid, but to be sure do
+        # not return them.
+        return [fit for fit in self.__projectedFits.values() if not fit.isInvalid]
+
+    def getProjectionInfo(self, fitID):
+        return self.projectedOnto.get(fitID, None)
 
     @property
     def projectedDrones(self):
@@ -326,7 +331,7 @@ class Fit(object):
         if map[key](val) == False: raise ValueError(str(val) + " is not a valid value for " + key)
         else: return val
 
-    def clear(self):
+    def clear(self, projected=False):
         self.__effectiveTank = None
         self.__weaponDPS = None
         self.__minerYield = None
@@ -346,15 +351,36 @@ class Fit(object):
         del self.__calculatedTargets[:]
         del self.__extraDrains[:]
 
-        if self.ship is not None: self.ship.clear()
-        c = chain(self.modules, self.drones, self.boosters, self.implants, self.projectedDrones, self.projectedModules, self.projectedFits, (self.character, self.extraAttributes))
+        if self.ship:
+            self.ship.clear()
+
+        c = chain(
+            self.modules,
+            self.drones,
+            self.boosters,
+            self.implants,
+            self.projectedDrones,
+            self.projectedModules,
+            (self.character, self.extraAttributes),
+        )
+
         for stuff in c:
-            if stuff is not None and stuff != self: stuff.clear()
+            if stuff is not None and stuff != self:
+                stuff.clear()
+
+        # If this is the active fit that we are clearing, not a projected fit,
+        # then this will run and clear the projected ships and flag the next
+        # iteration to skip this part to prevent recursion.
+        if not projected:
+            for stuff in self.projectedFits:
+                if stuff is not None and stuff != self:
+                    stuff.clear(projected=True)
 
     #Methods to register and get the thing currently affecting the fit,
     #so we can correctly map "Affected By"
-    def register(self, currModifier):
+    def register(self, currModifier, origin=None):
         self.__modifier = currModifier
+        self.__origin = origin
         if hasattr(currModifier, "itemModifiedAttributes"):
             currModifier.itemModifiedAttributes.fit = self
         if hasattr(currModifier, "chargeModifiedAttributes"):
@@ -363,98 +389,129 @@ class Fit(object):
     def getModifier(self):
         return self.__modifier
 
+    def getOrigin(self):
+        return self.__origin
+
+    def __calculateGangBoosts(self, runTime):
+        logger.debug("Applying gang boosts in `%s` runtime for %s", runTime, repr(self))
+        for name, info in self.gangBoosts.iteritems():
+            # Unpack all data required to run effect properly
+            effect, thing = info[1]
+            if effect.runTime == runTime:
+                context = ("gang", thing.__class__.__name__.lower())
+                if isinstance(thing, Module):
+                    if effect.isType("offline") or (effect.isType("passive") and thing.state >= State.ONLINE) or \
+                    (effect.isType("active") and thing.state >= State.ACTIVE):
+                        # Run effect, and get proper bonuses applied
+                        try:
+                            self.register(thing)
+                            effect.handler(self, thing, context)
+                        except:
+                            pass
+                else:
+                    # Run effect, and get proper bonuses applied
+                    try:
+                        self.register(thing)
+                        effect.handler(self, thing, context)
+                    except:
+                        pass
+
     def calculateModifiedAttributes(self, targetFit=None, withBoosters=False, dirtyStorage=None):
-        refreshBoosts = False
-        if withBoosters is True:
-            refreshBoosts = True
-        if dirtyStorage is not None and self.ID in dirtyStorage:
-            refreshBoosts = True
-        if dirtyStorage is not None:
-            dirtyStorage.update(self.boostsFits)
-        if self.fleet is not None and refreshBoosts is True:
-            self.gangBoosts = self.fleet.recalculateLinear(withBoosters=withBoosters, dirtyStorage=dirtyStorage)
+        timer = Timer('Fit: {}, {}'.format(self.ID, self.name), logger)
+        logger.debug("Starting fit calculation on: %s, withBoosters: %s", repr(self), withBoosters)
+
+        shadow = False
+        if targetFit:
+            logger.debug("Applying projections to target: %s", repr(targetFit))
+            projectionInfo = self.getProjectionInfo(targetFit.ID)
+            logger.debug("ProjectionInfo: %s", projectionInfo)
+            if self == targetFit:
+                copied = self  # original fit
+                shadow = True
+                self = copy.deepcopy(self)
+                self.fleet = copied.fleet
+                logger.debug("Handling self projection - making shadow copy of fit. %s => %s", repr(copied), repr(self))
+                # we delete the fit because when we copy a fit, flush() is
+                # called to properly handle projection updates. However, we do
+                # not want to save this fit to the database, so simply remove it
+                eos.db.saveddata_session.delete(self)
+
+        if self.fleet is not None and withBoosters is True:
+            logger.debug("Fleet is set, gathering gang boosts")
+            self.gangBoosts = self.fleet.recalculateLinear(withBoosters=withBoosters)
+            timer.checkpoint("Done calculating gang boosts for %s"%repr(self))
         elif self.fleet is None:
             self.gangBoosts = None
-        if dirtyStorage is not None:
-            try:
-                dirtyStorage.remove(self.ID)
-            except KeyError:
-                pass
+
         # If we're not explicitly asked to project fit onto something,
         # set self as target fit
         if targetFit is None:
             targetFit = self
-            forceProjected = False
-        # Else, we're checking all target projectee fits
-        elif targetFit not in self.__calculatedTargets:
-            self.__calculatedTargets.append(targetFit)
-            targetFit.calculateModifiedAttributes(dirtyStorage=dirtyStorage)
-            forceProjected = True
-        # Or do nothing if target fit is calculated
+            projected = False
         else:
-            return
+            projected = True
 
         # If fit is calculated and we have nothing to do here, get out
-        if self.__calculated == True and forceProjected == False:
+
+        # A note on why projected fits don't get to return here. If we return
+        # here, the projection afflictions will not be run as they are
+        # intertwined into the regular fit calculations. So, even if the fit has
+        # been calculated, we need to recalculate it again just to apply the
+        # projections. This is in contract to gang boosts, which are only
+        # calculated once, and their items are then looped and accessed with
+        #     self.gangBoosts.iteritems()
+        # We might be able to exit early in the fit calculations if we separate
+        # projections from the normal fit calculations. But we must ensure that
+        # projection have modifying stuff applied, such as gang boosts and other
+        # local modules that may help
+        if self.__calculated and not projected:
+            logger.debug("Fit has already been calculated and is not projected, returning: %s", repr(self))
             return
 
         # Mark fit as calculated
         self.__calculated = True
 
-        # There's a few things to keep in mind here
-        # 1: Early effects first, then regular ones, then late ones, regardless of anything else
-        # 2: Some effects aren't implemented
-        # 3: Some effects are implemented poorly and will just explode on us
-        # 4: Errors should be handled gracefully and preferably without crashing unless serious
         for runTime in ("early", "normal", "late"):
-            # Build a little chain of stuff
-            # Avoid adding projected drones and modules when fit is projected onto self
-            # TODO: remove this workaround when proper self-projection using virtual duplicate fits is implemented
-            if forceProjected is True:
-                # if fit is being projected onto another fit
-                c = chain((self.character, self.ship), self.drones, self.boosters, self.appliedImplants, self.modules)
-            else:
-                c = chain((self.character, self.ship, self.mode), self.drones, self.boosters, self.appliedImplants, self.modules,
-                          self.projectedDrones, self.projectedModules)
+            c = chain(
+                (self.character, self.ship),
+                self.drones,
+                self.boosters,
+                self.appliedImplants,
+                self.modules
+            )
 
+            if not projected:
+                # if not a projected fit, add a couple of more things
+                c = chain(c, (self.mode,), self.projectedDrones, self.projectedModules)
+
+            # We calculate gang bonuses first so that projected fits get them
             if self.gangBoosts is not None:
-                contextMap = {Skill: "skill",
-                              Ship: "ship",
-                              Module: "module",
-                              Implant: "implant"}
-                for name, info in self.gangBoosts.iteritems():
-                    # Unpack all data required to run effect properly
-                    effect, thing = info[1]
-                    if effect.runTime == runTime:
-                        context = ("gang", contextMap[type(thing)])
-                        if isinstance(thing, Module):
-                            if effect.isType("offline") or (effect.isType("passive") and thing.state >= State.ONLINE) or \
-                            (effect.isType("active") and thing.state >= State.ACTIVE):
-                                # Run effect, and get proper bonuses applied
-                                try:
-                                    self.register(thing)
-                                    effect.handler(self, thing, context)
-                                except:
-                                    pass
-                        else:
-                            # Run effect, and get proper bonuses applied
-                            try:
-                                self.register(thing)
-                                effect.handler(self, thing, context)
-                            except:
-                                pass
+                self.__calculateGangBoosts(runTime)
 
             for item in c:
-                # Registering the item about to affect the fit allows us to track "Affected By" relations correctly
+                # Registering the item about to affect the fit allows us to
+                # track "Affected By" relations correctly
                 if item is not None:
                     self.register(item)
                     item.calculateModifiedAttributes(self, runTime, False)
-                    if forceProjected is True:
-                        targetFit.register(item)
-                        item.calculateModifiedAttributes(targetFit, runTime, True)
+                    if projected is True:
+                        for _ in xrange(projectionInfo.amount):
+                            targetFit.register(item, origin=self)
+                            item.calculateModifiedAttributes(targetFit, runTime, True)
 
-        for fit in self.projectedFits:
-            fit.calculateModifiedAttributes(self, withBoosters=withBoosters, dirtyStorage=dirtyStorage)
+            timer.checkpoint('Done with runtime: %s'%runTime)
+
+        # Only apply projected fits if fit it not projected itself.
+        if not projected:
+            for fit in self.projectedFits:
+                if fit.getProjectionInfo(self.ID).active:
+                    fit.calculateModifiedAttributes(self, withBoosters=withBoosters, dirtyStorage=dirtyStorage)
+
+        timer.checkpoint('Done with fit calculation')
+
+        if shadow:
+            logger.debug("Delete shadow fit object")
+            del self
 
     def fill(self):
         """
@@ -927,6 +984,19 @@ class Fit(object):
                 c.append(deepcopy(i, memo))
 
         for fit in self.projectedFits:
-            copy.projectedFits.append(fit)
+            copy.__projectedFits[fit.ID] = fit
+            # this bit is required -- see GH issue # 83
+            eos.db.saveddata_session.flush()
+            eos.db.saveddata_session.refresh(fit)
 
         return copy
+
+    def __repr__(self):
+        return "Fit(ID={}, ship={}, name={}) at {}".format(
+            self.ID, self.ship.item.name, self.name, hex(id(self))
+        )
+
+    def __str__(self):
+        return "{} ({})".format(
+            self.name, self.ship.item.name
+        )

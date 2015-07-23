@@ -19,27 +19,21 @@
 
 from gui.viewColumn import ViewColumn
 from gui import bitmapLoader
+import gui.mainFrame
+
 import wx
-from eos.types import Drone, Module, Rack
+from eos.types import Drone, Module, Rack, Fit
 from eos.types import State as State_
 
 class State(ViewColumn):
     name = "State"
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
+        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.resizable = False
         self.size = 16
         self.maxsize = self.size
         self.mask = wx.LIST_MASK_IMAGE
-        for name, state in (("checked", wx.CONTROL_CHECKED), ("unchecked", 0)):
-            bitmap = wx.EmptyBitmap(16, 16)
-            dc = wx.MemoryDC()
-            dc.SelectObject(bitmap)
-            dc.SetBackground(wx.TheBrushList.FindOrCreateBrush(fittingView.GetBackgroundColour(), wx.SOLID))
-            dc.Clear()
-            wx.RendererNative.Get().DrawCheckBox(fittingView, dc, wx.Rect(0, 0, 16, 16), state)
-            dc.Destroy()
-            setattr(self, "%sId" % name, fittingView.imageList.Add(bitmap))
 
     def getText(self, mod):
         return ""
@@ -49,8 +43,14 @@ class State(ViewColumn):
             return State_.getName(mod.state).title()
 
     def getImageId(self, stuff):
+        generic_active = self.fittingView.imageList.GetImageIndex("state_%s_small" % State_.getName(1).lower(), "icons")
+        generic_inactive = self.fittingView.imageList.GetImageIndex("state_%s_small" % State_.getName(-1).lower(), "icons")
+
         if isinstance(stuff, Drone):
-            return self.checkedId if stuff.amountActive > 0 else self.uncheckedId
+            if stuff.amountActive > 0:
+                return generic_active
+            else:
+                return generic_inactive
         elif isinstance(stuff, Rack):
             return -1
         elif isinstance(stuff, Module):
@@ -58,11 +58,21 @@ class State(ViewColumn):
                 return -1
             else:
                 return self.fittingView.imageList.GetImageIndex("state_%s_small" % State_.getName(stuff.state).lower(), "icons")
+        elif isinstance(stuff, Fit):
+            fitID = self.mainFrame.getActiveFit()
+            projectionInfo = stuff.getProjectionInfo(fitID)
+
+            if projectionInfo is None:
+                return -1
+            if projectionInfo.active:
+                return generic_active
+            return generic_inactive
         else:
             active = getattr(stuff, "active", None)
             if active is None:
                 return -1
-            else:
-                return self.checkedId if active else self.uncheckedId
+            if active:
+                return generic_active
+            return generic_inactive
 
 State.register()

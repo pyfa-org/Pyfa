@@ -217,13 +217,16 @@ class ModifiedAttributeDict(collections.MutableMapping):
         if attributeName not in self.__affectedBy:
             self.__affectedBy[attributeName] = {}
         affs = self.__affectedBy[attributeName]
+        origin = self.fit.getOrigin()
+        fit = origin if origin and origin != self.fit else self.fit
         # If there's no set for current fit in dictionary, create it
-        if self.fit not in affs:
-            affs[self.fit] = []
+        if fit not in affs:
+            affs[fit] = []
         # Reassign alias to list
-        affs = affs[self.fit]
+        affs = affs[fit]
         # Get modifier which helps to compose 'Affected by' map
         modifier = self.fit.getModifier()
+
         # Add current affliction to list
         affs.append((modifier, operation, bonus, used))
 

@@ -286,5 +286,10 @@ class Skill(HandledItem):
         copy = Skill(self.item, self.level, self.__ro)
         return copy
 
+    def __repr__(self):
+        return "Skill(ID={}, name={}) at {}".format(
+            self.item.ID, self.item.name, hex(id(self))
+        )
+
 class ReadOnlyException(Exception):
     pass
