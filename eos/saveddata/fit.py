@@ -393,7 +393,7 @@ class Fit(object):
         return self.__origin
 
     def __calculateGangBoosts(self, runTime):
-        logger.debug("Applying gang boosts in `%s` runtime for %s", runTime, self)
+        logger.debug("Applying gang boosts in `%s` runtime for %s", runTime, repr(self))
         for name, info in self.gangBoosts.iteritems():
             # Unpack all data required to run effect properly
             effect, thing = info[1]
@@ -418,7 +418,7 @@ class Fit(object):
 
     def calculateModifiedAttributes(self, targetFit=None, withBoosters=False, dirtyStorage=None):
         timer = Timer('Fit: {}, {}'.format(self.ID, self.name), logger)
-        logger.debug("Starting fit calculation on: %s", repr(self))
+        logger.debug("Starting fit calculation on: %s, withBoosters: %s", repr(self), withBoosters)
 
         shadow = False
         if targetFit:
@@ -436,23 +436,12 @@ class Fit(object):
                 # not want to save this fit to the database, so simply remove it
                 eos.db.saveddata_session.delete(self)
 
-        refreshBoosts = False
-        if withBoosters is True:
-            refreshBoosts = True
-        if dirtyStorage is not None and self.ID in dirtyStorage:
-            refreshBoosts = True
-        if dirtyStorage is not None:
-            dirtyStorage.update(self.boostsFits)
-        if self.fleet is not None and refreshBoosts is True:
+        if self.fleet is not None and withBoosters is True:
             logger.debug("Fleet is set, gathering gang boosts")
-            self.gangBoosts = self.fleet.recalculateLinear(withBoosters=withBoosters, dirtyStorage=dirtyStorage)
+            self.gangBoosts = self.fleet.recalculateLinear(withBoosters=withBoosters)
+            timer.checkpoint("Done calculating gang boosts for %s"%repr(self))
         elif self.fleet is None:
             self.gangBoosts = None
-        if dirtyStorage is not None:
-            try:
-                dirtyStorage.remove(self.ID)
-            except KeyError:
-                pass
 
         # If we're not explicitly asked to project fit onto something,
         # set self as target fit
@@ -476,7 +465,7 @@ class Fit(object):
         # projection have modifying stuff applied, such as gang boosts and other
         # local modules that may help
         if self.__calculated and not projected:
-            logger.debug("Fit has already been calculated and is not projected, returning")
+            logger.debug("Fit has already been calculated and is not projected, returning: %s", repr(self))
             return
 
         # Mark fit as calculated

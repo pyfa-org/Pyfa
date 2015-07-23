@@ -946,4 +946,4 @@ class Fit(object):
         if fit.factorReload is not self.serviceFittingOptions["useGlobalForceReload"]:
             fit.factorReload = self.serviceFittingOptions["useGlobalForceReload"]
         fit.clear()
-        fit.calculateModifiedAttributes(withBoosters=withBoosters, dirtyStorage=self.dirtyFitIDs)
+        fit.calculateModifiedAttributes(withBoosters=withBoosters)
