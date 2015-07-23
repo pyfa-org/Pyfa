@@ -6,5 +6,4 @@
 # Ship: Scorpion Navy Issue
 type = "passive"
 def handler(fit, ship, context):
-    level = fit.character.getSkill("Caldari Battleship").level
-    fit.ship.boostItemAttr("shieldEmDamageResonance", ship.getModifiedItemAttr("shipBonus2CB") * level)
+    fit.ship.boostItemAttr("shieldEmDamageResonance", ship.getModifiedItemAttr("shipBonus2CB"), skill="Caldari Battleship")

@@ -6,5 +6,4 @@
 # Ship: Prowler
 type = "passive"
 def handler(fit, ship, context):
-    level = fit.character.getSkill("Minmatar Industrial").level
-    fit.ship.boostItemAttr("maxVelocity", ship.getModifiedItemAttr("shipBonusMI") * level)
+    fit.ship.boostItemAttr("maxVelocity", ship.getModifiedItemAttr("shipBonusMI"), skill="Minmatar Industrial")

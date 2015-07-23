@@ -4,6 +4,5 @@
 # Ship: Catalyst
 type = "passive"
 def handler(fit, ship, context):
-    level = fit.character.getSkill("Gallente Destroyer").level
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Small Hybrid Turret"),
-                                  "falloff", ship.getModifiedItemAttr("shipBonusGD1") * level)
+                                  "falloff", ship.getModifiedItemAttr("shipBonusGD1"), skill="Gallente Destroyer")

@@ -6,5 +6,4 @@
 # Ship: Nighthawk
 type = "passive"
 def handler(fit, ship, context):
-    level = fit.character.getSkill("Caldari Battlecruiser").level
-    fit.ship.boostItemAttr("shieldThermalDamageResonance", ship.getModifiedItemAttr("shipBonusCBC2") * level)
+    fit.ship.boostItemAttr("shieldThermalDamageResonance", ship.getModifiedItemAttr("shipBonusCBC2"), skill="Caldari Battlecruiser")
