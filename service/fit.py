@@ -243,7 +243,6 @@ class Fit(object):
                 fit.fleet = f
 
             if not projected:
-                print "Not projected, getting projected fits"
                 for fitP in fit.projectedFits:
                     self.getFit(fitP.ID, projected = True)
                 self.recalc(fit, withBoosters=True)
