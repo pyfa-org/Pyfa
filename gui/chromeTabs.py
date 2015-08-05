@@ -1076,13 +1076,12 @@ class PFTabsContainer(wx.Panel):
 
         selected = 0
 
-        if 'wxMac' in wx.PlatformInfo:
+        if 'wxMac' in wx.PlatformInfo and wx.VERSION < (3,0):
             color = wx.Colour(0, 0, 0)
             brush = wx.Brush(color)
 
             from Carbon.Appearance import kThemeBrushDialogBackgroundActive
             brush.MacSetTheme(kThemeBrushDialogBackgroundActive)
-
         else:
             color = wx.SystemSettings_GetColour(wx.SYS_COLOUR_3DFACE)
             brush = wx.Brush(color)
