@@ -425,7 +425,7 @@ class Port(object):
         return fits
 
     @staticmethod
-    def exportEft(fit):
+    def _exportEftBase(fit):
         offineSuffix = " /OFFLINE"
         export = "[%s, %s]\n" % (fit.ship.item.name, fit.name)
         stuff = {}
@@ -452,9 +452,6 @@ class Port(object):
             export += "\n\n"
             for drone in fit.drones:
                 export += "%s x%s\n" % (drone.item.name, drone.amount)
-        if len(fit.cargo) > 0:
-            for cargo in fit.cargo:
-                export += "%s x%s\n" % (cargo.item.name, cargo.amount)
 
         if export[-1] == "\n":
             export = export[:-1]
@@ -462,14 +459,33 @@ class Port(object):
         return export
 
     @classmethod
+    def exportEft(cls, fit):
+        export = cls._exportEftBase(fit)
+
+        if len(fit.cargo) > 0:
+            export += "\n\n\n"
+            for cargo in fit.cargo:
+                export += "%s x%s\n" % (cargo.item.name, cargo.amount)
+        if export[-1] == "\n":
+            export = export[:-1]
+
+        return export
+
+    @classmethod
     def exportEftImps(cls, fit):
-        export = cls.exportEft(fit)
+        export = cls._exportEftBase(fit)
 
         if len(fit.implants) > 0:
             export += "\n\n\n"
             for implant in fit.implants:
                 export += "%s\n" % implant.item.name
+        if export[-1] == "\n":
+            export = export[:-1]
 
+        if len(fit.cargo) > 0:
+            export += "\n\n\n"
+            for cargo in fit.cargo:
+                export += "%s x%s\n" % (cargo.item.name, cargo.amount)
         if export[-1] == "\n":
             export = export[:-1]
 
