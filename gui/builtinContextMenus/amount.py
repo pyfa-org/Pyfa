@@ -14,7 +14,6 @@ class ChangeAmount(ContextMenu):
         return srcContext in ("cargoItem","projectedFit")
 
     def getText(self, itmContext, selection):
-        print selection
         return "Change {0} Quantity".format(itmContext)
 
     def activate(self, fullContext, selection, i):
@@ -61,7 +60,7 @@ class AmountChanger(wx.Dialog):
 
         event.Skip()
         self.Destroy()
-        
+
     ## checks to make sure it's valid number
     def onChar(self, event):
         key = event.GetKeyCode()

@@ -366,7 +366,6 @@ class Fit(object):
             if not thing.canHaveState(thing.state, fit):
                 thing.state = State.OFFLINE
         elif isinstance(thing, eos.types.Fit):
-            print "toggle fit"
             projectionInfo = thing.getProjectionInfo(fitID)
             if projectionInfo:
                 projectionInfo.active = not projectionInfo.active
