@@ -7,6 +7,7 @@
 # Implant: Imperial Navy Modified 'Noble' Implant
 type = "passive"
 def handler(fit, container, context):
+    penalized = "implant" not in context
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Repair Systems"),
                                   "armorDamageAmount", container.getModifiedItemAttr("repairBonus"),
-                                  stackingPenalties = "implant" not in context)
+                                  stackingPenalties=penalized)

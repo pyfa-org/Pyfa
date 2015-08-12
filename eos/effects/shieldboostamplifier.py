@@ -7,4 +7,4 @@ type = "passive"
 def handler(fit, module, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Shield Operation") or mod.item.requiresSkill("Capital Shield Operation"),
                                   "shieldBonus", module.getModifiedItemAttr("shieldBoostMultiplier"),
-                                  stackingPenalties = True)
+                                  stackingPenalties=True)
