@@ -17,11 +17,14 @@ debug = False
 # Defines if our saveddata will be in pyfa root or not
 saveInRoot = False
 
-logLevel = logging.WARN
+if debug:
+    logLevel = logging.DEBUG
+else:
+    logLevel = logging.WARN
 
 # Version data
-version = "1.13.2"
-tag = "Stable"
+version = "1.13.3"
+tag = "git"
 expansionName = "Aegis"
 expansionVersion = "1.0"
 evemonMinVersion = "4081"
@@ -32,12 +35,26 @@ staticPath = None
 saveDB = None
 gameDB = None
 
+
+class StreamToLogger(object):
+   """
+   Fake file-like stream object that redirects writes to a logger instance.
+   From: http://www.electricmonk.nl/log/2011/08/14/redirect-stdout-and-stderr-to-a-logger-in-python/
+   """
+   def __init__(self, logger, log_level=logging.INFO):
+      self.logger = logger
+      self.log_level = log_level
+      self.linebuf = ''
+
+   def write(self, buf):
+      for line in buf.rstrip().splitlines():
+         self.logger.log(self.log_level, line.rstrip())
+
 def isFrozen():
     if hasattr(sys, 'frozen'):
         return True
     else:
         return False
-
 
 def getPyfaRoot():
     base = sys.executable if isFrozen() else sys.argv[0]
@@ -84,19 +101,14 @@ def defPaths():
 
     logging.info("Starting pyfa")
 
-    # Redirect stderr to file if we're requested to do so
-    stderrToFile = getattr(configforced, "stderrToFile", None)
-    if stderrToFile is None:
-        stderrToFile = True if isFrozen() else False
-    if stderrToFile is True:
-        sys.stderr = open(os.path.join(savePath, "error_log.txt"), "w")
+    if hasattr(sys, 'frozen'):
+        stdout_logger = logging.getLogger('STDOUT')
+        sl = StreamToLogger(stdout_logger, logging.INFO)
+        sys.stdout = sl
 
-    # Same for stdout
-    stdoutToFile = getattr(configforced, "stdoutToFile", None)
-    if stdoutToFile is None:
-        stdoutToFile = True if isFrozen() else False
-    if stdoutToFile is True:
-        sys.stdout = open(os.path.join(savePath, "output_log.txt"), "w")
+        stderr_logger = logging.getLogger('STDERR')
+        sl = StreamToLogger(stderr_logger, logging.ERROR)
+        sys.stderr = sl
 
     # Static EVE Data from the staticdata repository, should be in the staticdata
     # directory in our pyfa directory

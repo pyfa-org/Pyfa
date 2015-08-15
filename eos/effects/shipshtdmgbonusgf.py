@@ -8,6 +8,5 @@
 # Ship: Taranis
 type = "passive"
 def handler(fit, ship, context):
-    level = fit.character.getSkill("Gallente Frigate").level
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Small Hybrid Turret"),
-                                  "damageMultiplier", ship.getModifiedItemAttr("shipBonusGF") * level)
+                                  "damageMultiplier", ship.getModifiedItemAttr("shipBonusGF"), skill="Gallente Frigate")

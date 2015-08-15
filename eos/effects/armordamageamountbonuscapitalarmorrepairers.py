@@ -6,4 +6,4 @@ type = "passive"
 def handler(fit, implant, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Capital Repair Systems"),
                                   "armorDamageAmount", implant.getModifiedItemAttr("repairBonus"),
-                                  stackingPenalties = True)
+                                  stackingPenalties=True)

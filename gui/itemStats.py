@@ -24,10 +24,11 @@ import bitmapLoader
 import sys
 import wx.lib.mixins.listctrl as listmix
 import wx.html
-from eos.types import Ship, Module, Skill, Booster, Implant, Drone, Mode
+from eos.types import Fit, Ship, Module, Skill, Booster, Implant, Drone, Mode
 from gui.utils.numberFormatter import formatAmount
 import service
 import config
+from gui.contextMenu import ContextMenu
 
 try:
     from collections import OrderedDict
@@ -549,14 +550,19 @@ class ItemEffects (wx.Panel):
 
 
 class ItemAffectedBy (wx.Panel):
-    ORDER = [Ship, Mode, Module, Drone, Implant, Booster, Skill]
+    ORDER = [Fit, Ship, Mode, Module, Drone, Implant, Booster, Skill]
     def __init__(self, parent, stuff, item):
-        wx.Panel.__init__ (self, parent)
+        wx.Panel.__init__(self, parent)
         self.stuff = stuff
         self.item = item
 
-        self.toggleView = 1
+        self.activeFit = gui.mainFrame.MainFrame.getInstance().getActiveFit()
+
+        self.showRealNames = False
+        self.showAttrView = False
         self.expand = -1
+
+        self.treeItems = []
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
@@ -571,7 +577,10 @@ class ItemAffectedBy (wx.Panel):
         self.toggleExpandBtn = wx.ToggleButton( self, wx.ID_ANY, u"Expand All", wx.DefaultPosition, wx.DefaultSize, 0 )
         bSizer.Add( self.toggleExpandBtn, 0, wx.ALIGN_CENTER_VERTICAL)
 
-        self.toggleViewBtn = wx.ToggleButton( self, wx.ID_ANY, u"Toggle view mode", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.toggleNameBtn = wx.ToggleButton( self, wx.ID_ANY, u"Toggle Names", wx.DefaultPosition, wx.DefaultSize, 0 )
+        bSizer.Add( self.toggleNameBtn, 0, wx.ALIGN_CENTER_VERTICAL)
+
+        self.toggleViewBtn = wx.ToggleButton( self, wx.ID_ANY, u"Toggle View", wx.DefaultPosition, wx.DefaultSize, 0 )
         bSizer.Add( self.toggleViewBtn, 0, wx.ALIGN_CENTER_VERTICAL)
 
         if stuff is not None:
@@ -579,13 +588,36 @@ class ItemAffectedBy (wx.Panel):
             bSizer.Add( self.refreshBtn, 0, wx.ALIGN_CENTER_VERTICAL)
             self.refreshBtn.Bind( wx.EVT_BUTTON, self.RefreshTree )
 
-        self.toggleViewBtn.Bind(wx.EVT_TOGGLEBUTTON,self.ToggleViewMode)
+        self.toggleNameBtn.Bind(wx.EVT_TOGGLEBUTTON,self.ToggleNameMode)
         self.toggleExpandBtn.Bind(wx.EVT_TOGGLEBUTTON,self.ToggleExpand)
+        self.toggleViewBtn.Bind(wx.EVT_TOGGLEBUTTON,self.ToggleViewMode)
 
         mainSizer.Add( bSizer, 0, wx.ALIGN_RIGHT)
         self.SetSizer(mainSizer)
         self.PopulateTree()
         self.Layout()
+        self.affectedBy.Bind(wx.EVT_TREE_ITEM_RIGHT_CLICK, self.scheduleMenu)
+
+    def scheduleMenu(self, event):
+        event.Skip()
+        wx.CallAfter(self.spawnMenu, event.Item)
+
+    def spawnMenu(self, item):
+        self.affectedBy.SelectItem(item)
+
+        stuff = self.affectedBy.GetPyData(item)
+        # String is set as data when we are dealing with attributes, not stuff containers
+        if stuff is None or isinstance(stuff, basestring):
+            return
+        contexts = []
+
+        # Skills are different in that they don't have itemModifiedAttributes,
+        # which is needed if we send the container to itemStats dialog. So
+        # instead, we send the item.
+        type = stuff.__class__.__name__
+        contexts.append(("itemStats", type))
+        menu = ContextMenu.getMenu(stuff if type != "Skill" else stuff.item, *contexts)
+        self.PopupMenu(menu)
 
     def ExpandCollapseTree(self):
 
@@ -607,18 +639,11 @@ class ItemAffectedBy (wx.Panel):
     def ToggleViewTree(self):
         self.Freeze()
 
-        root = self.affectedBy.GetRootItem()
-        child,cookie = self.affectedBy.GetFirstChild(root)
-        while child.IsOk():
-            item,childcookie = self.affectedBy.GetFirstChild(child)
-            while item.IsOk():
-                change = self.affectedBy.GetPyData(item)
-                display = self.affectedBy.GetItemText(item)
-                self.affectedBy.SetItemText(item,change)
-                self.affectedBy.SetPyData(item,display)
-                item,childcookie = self.affectedBy.GetNextChild(child,childcookie)
-
-            child,cookie = self.affectedBy.GetNextChild(root,cookie)
+        for item in self.treeItems:
+            change = self.affectedBy.GetPyData(item)
+            display = self.affectedBy.GetItemText(item)
+            self.affectedBy.SetItemText(item, change)
+            self.affectedBy.SetPyData(item, display)
 
         self.Thaw()
 
@@ -633,33 +658,214 @@ class ItemAffectedBy (wx.Panel):
         event.Skip()
 
     def ToggleViewMode(self, event):
-        self.toggleView *=-1
+        self.showAttrView = not self.showAttrView
+        self.affectedBy.DeleteAllItems()
+        self.PopulateTree()
+        event.Skip()
+
+    def ToggleNameMode(self, event):
+        self.showRealNames = not self.showRealNames
         self.ToggleViewTree()
         event.Skip()
 
     def PopulateTree(self):
+        # sheri was here
+        del self.treeItems[:]
         root = self.affectedBy.AddRoot("WINPWNZ0R")
         self.affectedBy.SetPyData(root, None)
 
         self.imageList = wx.ImageList(16, 16)
         self.affectedBy.SetImageList(self.imageList)
 
-        cont = self.stuff.itemModifiedAttributes if self.item == self.stuff.item else self.stuff.chargeModifiedAttributes
-        things = {}
+        if self.showAttrView:
+            self.buildAttributeView(root)
+        else:
+            self.buildModuleView(root)
 
-        for attrName in cont.iterAfflictions():
+        self.ExpandCollapseTree()
+
+    def sortAttrDisplayName(self, attr):
+        info = self.stuff.item.attributes.get(attr)
+        if info and info.displayName != "":
+            return info.displayName
+
+        return attr
+
+    def buildAttributeView(self, root):
+        # We first build a usable dictionary of items. The key is either a fit
+        # if the afflictions stem from a projected fit, or self.stuff if they
+        # are local afflictions (everything else, even gang boosts at this time)
+        # The value of this is yet another dictionary in the following format:
+        #
+        # "attribute name": {
+        #       "Module Name": [
+        #            class of affliction,
+        #            affliction item (required due to GH issue #335)
+        #            modifier type
+        #            amount of modification
+        #            whether this affliction was projected
+        #       ]
+        # }
+
+        attributes = self.stuff.itemModifiedAttributes if self.item == self.stuff.item else self.stuff.chargeModifiedAttributes
+        container = {}
+        for attrName in attributes.iterAfflictions():
             # if value is 0 or there has been no change from original to modified, return
-            if cont[attrName] == (cont.getOriginal(attrName) or 0):
+            if attributes[attrName] == (attributes.getOriginal(attrName) or 0):
                 continue
-            for fit, afflictors in cont.getAfflictions(attrName).iteritems():
+
+            for fit, afflictors in attributes.getAfflictions(attrName).iteritems():
                 for afflictor, modifier, amount, used in afflictors:
+
                     if not used or afflictor.item is None:
                         continue
 
-                    if afflictor.item.name not in things:
-                        things[afflictor.item.name] = [type(afflictor), set(), []]
+                    if fit.ID != self.activeFit:
+                        # affliction fit does not match our fit
+                        if fit not in container:
+                            container[fit] = {}
+                        items = container[fit]
+                    else:
+                        # local afflictions
+                        if self.stuff not in container:
+                            container[self.stuff] = {}
+                        items = container[self.stuff]
 
-                    info = things[afflictor.item.name]
+                    # items hold our module: info mappings
+                    if attrName not in items:
+                        items[attrName] = []
+
+                    if afflictor == self.stuff and getattr(afflictor, 'charge', None):
+                        # we are showing a charges modifications, see #335
+                        item = afflictor.charge
+                    else:
+                        item = afflictor.item
+
+                    items[attrName].append((type(afflictor), afflictor, item, modifier, amount, getattr(afflictor, "projected", False)))
+
+        # Make sure projected fits are on top
+        rootOrder = container.keys()
+        rootOrder.sort(key=lambda x: self.ORDER.index(type(x)))
+
+        # Now, we take our created dictionary and start adding stuff to our tree
+        for thing in rootOrder:
+            # This block simply directs which parent we are adding to (root or projected fit)
+            if thing == self.stuff:
+                parent = root
+            else:  # projected fit
+                icon = self.imageList.Add(bitmapLoader.getBitmap("ship_small", "icons"))
+                child = self.affectedBy.AppendItem(root, "{} ({})".format(thing.name, thing.ship.item.name), icon)
+                parent = child
+
+            attributes = container[thing]
+            attrOrder = sorted(attributes.keys(), key=self.sortAttrDisplayName)
+
+            for attrName in attrOrder:
+                attrInfo = self.stuff.item.attributes.get(attrName)
+                displayName = attrInfo.displayName if attrInfo and attrInfo.displayName != "" else attrName
+
+                if attrInfo:
+                    if attrInfo.icon is not None:
+                        iconFile = attrInfo.icon.iconFile
+                        icon = bitmapLoader.getBitmap(iconFile, "pack")
+                        if icon is None:
+                            icon = bitmapLoader.getBitmap("transparent16x16", "icons")
+                        attrIcon = self.imageList.Add(icon)
+                    else:
+                        attrIcon = self.imageList.Add(bitmapLoader.getBitmap("07_15", "pack"))
+                else:
+                    attrIcon = self.imageList.Add(bitmapLoader.getBitmap("07_15", "pack"))
+
+                if self.showRealNames:
+                    display = attrName
+                    saved = displayName
+                else:
+                    display = displayName
+                    saved = attrName
+
+                # this is the attribute node
+                child = self.affectedBy.AppendItem(parent, display, attrIcon)
+                self.affectedBy.SetPyData(child, saved)
+                self.treeItems.append(child)
+
+                items = attributes[attrName]
+                items.sort(key=lambda x: self.ORDER.index(x[0]))
+                for itemInfo in items:
+                    afflictorType, afflictor, item, attrModifier, attrAmount, projected = itemInfo
+
+                    if afflictorType == Ship:
+                        itemIcon = self.imageList.Add(bitmapLoader.getBitmap("ship_small", "icons"))
+                    elif item.icon:
+                        bitmap = bitmapLoader.getBitmap(item.icon.iconFile, "pack")
+                        itemIcon = self.imageList.Add(bitmap) if bitmap else -1
+                    else:
+                        itemIcon = -1
+
+                    displayStr = item.name
+
+                    if projected:
+                        displayStr += " (projected)"
+
+                    if attrModifier == "s*":
+                        attrModifier = "*"
+                        penalized = "(penalized)"
+                    else:
+                        penalized = ""
+
+                    # this is the Module node, the attribute will be attached to this
+                    display = "%s %s %.2f %s" % (displayStr, attrModifier, attrAmount, penalized)
+                    treeItem = self.affectedBy.AppendItem(child, display, itemIcon)
+                    self.affectedBy.SetPyData(treeItem, afflictor)
+
+
+    def buildModuleView(self, root):
+        # We first build a usable dictionary of items. The key is either a fit
+        # if the afflictions stem from a projected fit, or self.stuff if they
+        # are local afflictions (everything else, even gang boosts at this time)
+        # The value of this is yet another dictionary in the following format:
+        #
+        # "Module Name": [
+        #     class of affliction,
+        #     set of afflictors (such as 2 of the same module),
+        #     info on affliction (attribute name, modifier, and modification amount),
+        #     item that will be used to determine icon (required due to GH issue #335)
+        #     whether this affliction is actually used (unlearned skills are not used)
+        # ]
+
+        attributes = self.stuff.itemModifiedAttributes if self.item == self.stuff.item else self.stuff.chargeModifiedAttributes
+        container = {}
+        for attrName in attributes.iterAfflictions():
+            # if value is 0 or there has been no change from original to modified, return
+            if attributes[attrName] == (attributes.getOriginal(attrName) or 0):
+                continue
+
+            for fit, afflictors in attributes.getAfflictions(attrName).iteritems():
+                for afflictor, modifier, amount, used in afflictors:
+                    if not used or getattr(afflictor, 'item', None) is None:
+                        continue
+
+                    if fit.ID != self.activeFit:
+                        # affliction fit does not match our fit
+                        if fit not in container:
+                            container[fit] = {}
+                        items = container[fit]
+                    else:
+                        # local afflictions
+                        if self.stuff not in container:
+                            container[self.stuff] = {}
+                        items = container[self.stuff]
+
+                    if afflictor == self.stuff and getattr(afflictor, 'charge', None):
+                        # we are showing a charges modifications, see #335
+                        item = afflictor.charge
+                    else:
+                        item = afflictor.item
+
+                    # items hold our module: info mappings
+                    if item.name not in items:
+                        items[item.name] = [type(afflictor), set(), [], item, getattr(afflictor, "projected", False)]
+
+                    info = items[item.name]
                     info[1].add(afflictor)
                     # If info[1] > 1, there are two separate modules working.
                     # Check to make sure we only include the modifier once
@@ -668,63 +874,86 @@ class ItemAffectedBy (wx.Panel):
                         continue
                     info[2].append((attrName, modifier, amount))
 
-        order = things.keys()
-        order.sort(key=lambda x: (self.ORDER.index(things[x][0]), x))
+        # Make sure projected fits are on top
+        rootOrder = container.keys()
+        rootOrder.sort(key=lambda x: self.ORDER.index(type(x)))
 
-        for itemName in order:
-            info = things[itemName]
+        # Now, we take our created dictionary and start adding stuff to our tree
+        for thing in rootOrder:
+            # This block simply directs which parent we are adding to (root or projected fit)
+            if thing == self.stuff:
+                parent = root
+            else:  # projected fit
+                icon = self.imageList.Add(bitmapLoader.getBitmap("ship_small", "icons"))
+                child = self.affectedBy.AppendItem(root, "{} ({})".format(thing.name, thing.ship.item.name), icon)
+                parent = child
 
-            afflictorType, afflictors, attrData = info
-            counter = len(afflictors)
+            items = container[thing]
+            order = items.keys()
+            order.sort(key=lambda x: (self.ORDER.index(items[x][0]), x))
 
-            baseAfflictor = afflictors.pop()
-            if afflictorType == Ship:
-                itemIcon = self.imageList.Add(bitmapLoader.getBitmap("ship_small", "icons"))
-            elif baseAfflictor.item.icon:
-                bitmap = bitmapLoader.getBitmap(baseAfflictor.item.icon.iconFile, "pack")
-                itemIcon = self.imageList.Add(bitmap) if bitmap else -1
-            else:
-                itemIcon = -1
+            for itemName in order:
+                info = items[itemName]
+                afflictorType, afflictors, attrData, item, projected = info
+                counter = len(afflictors)
+                if afflictorType == Ship:
+                    itemIcon = self.imageList.Add(bitmapLoader.getBitmap("ship_small", "icons"))
+                elif item.icon:
+                    bitmap = bitmapLoader.getBitmap(item.icon.iconFile, "pack")
+                    itemIcon = self.imageList.Add(bitmap) if bitmap else -1
+                else:
+                    itemIcon = -1
 
-            child = self.affectedBy.AppendItem(root, "%s" % itemName if counter == 1 else "%s x %d" % (itemName,counter), itemIcon)
+                displayStr = itemName
 
-            if counter > 0:
-                attributes = []
-                for attrName, attrModifier, attrAmount in attrData:
-                    attrInfo = self.stuff.item.attributes.get(attrName)
-                    displayName = attrInfo.displayName if attrInfo else ""
+                if counter > 1:
+                    displayStr += " x {}".format(counter)
 
-                    if attrInfo:
-                        if attrInfo.icon is not None:
-                            iconFile = attrInfo.icon.iconFile
-                            icon = bitmapLoader.getBitmap(iconFile, "pack")
-                            if icon is None:
-                                icon = bitmapLoader.getBitmap("transparent16x16", "icons")
+                if projected:
+                    displayStr += " (projected)"
 
-                            attrIcon = self.imageList.Add(icon)
+                # this is the Module node, the attribute will be attached to this
+                child = self.affectedBy.AppendItem(parent, displayStr, itemIcon)
+                self.affectedBy.SetPyData(child, afflictors.pop())
+
+                if counter > 0:
+                    attributes = []
+                    for attrName, attrModifier, attrAmount in attrData:
+                        attrInfo = self.stuff.item.attributes.get(attrName)
+                        displayName = attrInfo.displayName if attrInfo else ""
+
+                        if attrInfo:
+                            if attrInfo.icon is not None:
+                                iconFile = attrInfo.icon.iconFile
+                                icon = bitmapLoader.getBitmap(iconFile, "pack")
+                                if icon is None:
+                                    icon = bitmapLoader.getBitmap("transparent16x16", "icons")
+
+                                attrIcon = self.imageList.Add(icon)
+                            else:
+                                attrIcon = self.imageList.Add(bitmapLoader.getBitmap("07_15", "pack"))
                         else:
                             attrIcon = self.imageList.Add(bitmapLoader.getBitmap("07_15", "pack"))
-                    else:
-                        attrIcon = self.imageList.Add(bitmapLoader.getBitmap("07_15", "pack"))
 
-                    if attrModifier == "s*":
-                        attrModifier = "*"
-                        penalized = "(penalized)"
-                    else:
-                        penalized = ""
+                        if attrModifier == "s*":
+                            attrModifier = "*"
+                            penalized = "(penalized)"
+                        else:
+                            penalized = ""
 
-                    attributes.append((attrName, (displayName if displayName != "" else attrName), attrModifier, attrAmount, penalized, attrIcon))
+                        attributes.append((attrName, (displayName if displayName != "" else attrName), attrModifier, attrAmount, penalized, attrIcon))
 
-                attrSorted = sorted(attributes, key = lambda attribName: attribName[0])
+                    attrSorted = sorted(attributes, key = lambda attribName: attribName[0])
+                    for attr in attrSorted:
+                        attrName, displayName, attrModifier, attrAmount, penalized, attrIcon = attr
 
-                for attr in attrSorted:
-                    attrName, displayName, attrModifier, attrAmount, penalized, attrIcon = attr
-                    if self.toggleView == 1:
-                        treeitem = self.affectedBy.AppendItem(child, "%s %s %.2f %s" % ((displayName if displayName != "" else attrName), attrModifier, attrAmount, penalized), attrIcon)
-                        self.affectedBy.SetPyData(treeitem,"%s %s %.2f %s" % (attrName, attrModifier, attrAmount, penalized))
-                    else:
-                        treeitem = self.affectedBy.AppendItem(child, "%s %s %.2f %s" % (attrName, attrModifier, attrAmount, penalized), attrIcon)
-                        self.affectedBy.SetPyData(treeitem,"%s %s %.2f %s" % ((displayName if displayName != "" else attrName), attrModifier, attrAmount, penalized))
+                        if self.showRealNames:
+                            display = "%s %s %.2f %s" % (attrName, attrModifier, attrAmount, penalized)
+                            saved = "%s %s %.2f %s" % ((displayName if displayName != "" else attrName), attrModifier, attrAmount, penalized)
+                        else:
+                            display = "%s %s %.2f %s" % ((displayName if displayName != "" else attrName), attrModifier, attrAmount, penalized)
+                            saved = "%s %s %.2f %s" % (attrName, attrModifier, attrAmount, penalized)
 
-        self.ExpandCollapseTree()
-
+                        treeitem = self.affectedBy.AppendItem(child, display, attrIcon)
+                        self.affectedBy.SetPyData(treeitem, saved)
+                        self.treeItems.append(treeitem)

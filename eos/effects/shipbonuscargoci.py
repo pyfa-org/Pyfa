@@ -5,5 +5,4 @@
 # Ship: Tayra
 type = "passive"
 def handler(fit, ship, context):
-    level = fit.character.getSkill("Caldari Industrial").level
-    fit.ship.boostItemAttr("capacity", ship.getModifiedItemAttr("shipBonusCI") * level)
+    fit.ship.boostItemAttr("capacity", ship.getModifiedItemAttr("shipBonusCI"), skill="Caldari Industrial")

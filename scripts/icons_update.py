@@ -209,6 +209,9 @@ def get_icon_file(request):
         img.thumbnail(ICON_SIZE, Image.ANTIALIAS)
     else:
         img = Image.open(fullpath)
+    # Strip all additional image info (mostly for ICC color
+    # profiles, see issue #337)
+    img.info.clear()
     return img
 
 
@@ -235,7 +238,7 @@ if toupdate:
             continue
         fullname = 'icon{}.png'.format(fname)
         fullpath = os.path.join(icons_dir, fullname)
-        icon.save(fullpath, 'PNG')
+        icon.save(fullpath, 'png')
     if missing:
         print('  {} icons are missing in export:'.format(len(missing)))
         for fname in sorted(missing):
@@ -251,7 +254,7 @@ if toadd:
             continue
         fullname = 'icon{}.png'.format(fname)
         fullpath = os.path.join(icons_dir, fullname)
-        icon.save(fullpath, 'PNG')
+        icon.save(fullpath, 'png')
     if missing:
         print('  {} icons are missing in export:'.format(len(missing)))
         for fname in sorted(missing):

@@ -18,6 +18,7 @@
 #===============================================================================
 
 import wx
+import os
 import bitmapLoader
 import gui.display
 import gui.globalEvents as GE
@@ -41,6 +42,11 @@ class GraphFrame(wx.Frame):
 
         try:
             import matplotlib as mpl
+            cache_dir = mpl._get_cachedir()
+            cache_file = os.path.join(cache_dir, 'fontList.cache')
+            if os.access(cache_dir, os.W_OK | os.X_OK) and os.path.isfile(cache_file):
+                # remove matplotlib font cache, see #234
+                os.remove(cache_file)
             if not mplImported:
                 mpl.use('wxagg')
             from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as Canvas

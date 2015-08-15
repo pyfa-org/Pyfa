@@ -5,5 +5,4 @@
 # Ship: Crane
 type = "passive"
 def handler(fit, ship, context):
-    level = fit.character.getSkill("Caldari Industrial").level
-    fit.ship.boostItemAttr("maxVelocity", ship.getModifiedItemAttr("shipBonusCI") * level)
+    fit.ship.boostItemAttr("maxVelocity", ship.getModifiedItemAttr("shipBonusCI"), skill="Caldari Industrial")

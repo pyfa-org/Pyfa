@@ -26,6 +26,17 @@ import logging
 logger = logging.getLogger(__name__)
 
 class Ship(ItemAttrShortcut, HandledItem):
+    EXTRA_ATTRIBUTES = {
+        "armorRepair": 0,
+        "hullRepair": 0,
+        "shieldRepair": 0,
+        "maxActiveDrones": 0,
+        "maxTargetsLockedFromSkills": 2,
+        "droneControlRange": 20000,
+        "cloaked": False,
+        "siege": False
+    }
+
     def __init__(self, item):
 
         if item.category.name != "Ship":
@@ -34,7 +45,8 @@ class Ship(ItemAttrShortcut, HandledItem):
         self.__item = item
         self.__modeItems = self.__getModeItems()
         self.__itemModifiedAttributes = ModifiedAttributeDict()
-        self.__itemModifiedAttributes.original = self.item.attributes
+        self.__itemModifiedAttributes.original = dict(self.item.attributes)
+        self.__itemModifiedAttributes.original.update(self.EXTRA_ATTRIBUTES)
 
         self.commandBonus = 0
 

@@ -5,5 +5,4 @@
 # Ship: Paladin
 type = "passive"
 def handler(fit, ship, context):
-    level = fit.character.getSkill("Amarr Battleship").level
-    fit.ship.boostItemAttr("capacitorCapacity", ship.getModifiedItemAttr("shipBonusAB2") * level)
+    fit.ship.boostItemAttr("capacitorCapacity", ship.getModifiedItemAttr("shipBonusAB2"), skill="Amarr Battleship")

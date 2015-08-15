@@ -10,6 +10,5 @@
 # Ship: Vexor
 type = "passive"
 def handler(fit, ship, context):
-    level = fit.character.getSkill("Gallente Cruiser").level
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Medium Hybrid Turret"),
-                                  "damageMultiplier", ship.getModifiedItemAttr("shipBonusGC") * level)
+                                  "damageMultiplier", ship.getModifiedItemAttr("shipBonusGC"), skill="Gallente Cruiser")

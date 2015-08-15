@@ -80,6 +80,9 @@ def get_render(type_id):
     if img.size != RENDER_SIZE:
         img = crop_image(img)
         img.thumbnail(RENDER_SIZE, Image.ANTIALIAS)
+    # Strip all additional image info (mostly for ICC color
+    # profiles, see issue #337)
+    img.info.clear()
     return img
 
 
@@ -99,7 +102,7 @@ if toupdate:
         render = get_render(type_id)
         fname = '{}.png'.format(type_id)
         fullpath = os.path.join(icons_dir, fname)
-        render.save(fullpath, 'PNG')
+        render.save(fullpath, 'png')
     if missing:
         print('  {} renders are missing in export:'.format(len(missing)))
         for type_id in sorted(missing):
@@ -113,7 +116,7 @@ if toadd:
         render = get_render(type_id)
         fname = '{}.png'.format(type_id)
         fullpath = os.path.join(icons_dir, fname)
-        render.save(fullpath, 'PNG')
+        render.save(fullpath, 'png')
     if missing:
         print('  {} renders are missing in export:'.format(len(missing)))
         for type_id in sorted(missing):

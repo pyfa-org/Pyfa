@@ -5,6 +5,4 @@
 # Ship: Thanatos
 type = "passive"
 def handler(fit, ship, context):
-    level = fit.character.getSkill("Gallente Carrier").level
-    amount = ship.getModifiedItemAttr("carrierGallenteBonus1")
-    fit.extraAttributes.increase("maxActiveDrones", amount * level)
+    fit.extraAttributes.increase("maxActiveDrones", ship.getModifiedItemAttr("carrierGallenteBonus1"), skill="Gallente Carrier")
