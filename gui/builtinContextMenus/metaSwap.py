@@ -10,6 +10,7 @@ import gui.globalEvents as GE
 # Handle multiple selection better
 # Icons?
 # Submenu for officer?
+# Officer/Deadspace sorting
 
 class MetaSwap(ContextMenu):
     def __init__(self):
@@ -17,10 +18,22 @@ class MetaSwap(ContextMenu):
 
     def display(self, srcContext, selection):
 
-        if self.mainFrame.getActiveFit() is None or srcContext not in ("fittingModule", "projectedModule"):
+        if self.mainFrame.getActiveFit() is None or srcContext not in ("fittingModule",):
             return False
 
-        self.module = selection[0]
+        # Check if list of variations is same for all of selection
+        # If not - don't show the menu
+        mkt = service.Market.getInstance()
+        self.variations = None
+        for i in selection:
+            variations = mkt.getVariationsByItems([i.item])
+            if self.variations is None:
+                self.variations = variations
+            else:
+                if variations != self.variations:
+                    return False
+
+        self.selection = selection
 
         return True
 
@@ -34,9 +47,10 @@ class MetaSwap(ContextMenu):
             return x.attributes["metaLevel"].value
 
         m = wx.Menu()
-        mkt = service.Market.getInstance()
-        items = list(mkt.getVariationsByItems([selection[0].item]))
+
+        items = list(self.variations)
         items.sort(key=get_metalevel)
+
         group = None
         for item in items:
             # Apparently no metaGroup for the Tech I variant:
@@ -68,8 +82,9 @@ class MetaSwap(ContextMenu):
         fitID = self.mainFrame.getActiveFit()
         fit = sFit.getFit(fitID)
         
-        pos = fit.modules.index(self.module)
-        sFit.changeModule(fitID, pos, item.ID)
+        for mod in self.selection:
+            pos = fit.modules.index(mod)
+            sFit.changeModule(fitID, pos, item.ID)
 
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
