@@ -6,12 +6,6 @@ import service
 import wx
 import gui.globalEvents as GE
 
-# TODO:
-# Handle multiple selection better
-# Icons?
-# Submenu for officer?
-# Officer/Deadspace sorting
-
 class MetaSwap(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
@@ -46,10 +40,15 @@ class MetaSwap(ContextMenu):
         def get_metalevel(x):
             return x.attributes["metaLevel"].value
 
+        def get_metagroup(x):
+            return x.metaGroup.ID if x.metaGroup is not None else 0
+
         m = wx.Menu()
 
+        # Sort items by metalevel, and group within that metalevel
         items = list(self.variations)
         items.sort(key=get_metalevel)
+        items.sort(key=get_metagroup)
 
         group = None
         for item in items:
@@ -57,6 +56,7 @@ class MetaSwap(ContextMenu):
             if item.metaGroup is None:
                 thisgroup = "Tech I"
             else:
+                print item.metaGroup.ID
                 thisgroup = item.metaGroup.name
 
             if thisgroup != group:
