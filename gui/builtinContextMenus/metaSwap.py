@@ -4,6 +4,12 @@ from gui.itemStats import ItemStatsDialog
 import gui.mainFrame
 import service
 import wx
+import gui.globalEvents as GE
+
+# TODO:
+# Handle multiple selection better
+# Icons?
+# Submenu for officer?
 
 class MetaSwap(ContextMenu):
     def __init__(self):
@@ -22,6 +28,8 @@ class MetaSwap(ContextMenu):
         return "Variations"
 
     def getSubMenu(self, context, selection, rootMenu, i, pitem):
+        self.moduleLookup = {}
+
         def get_metalevel(x):
             return x.attributes["metaLevel"].value
 
@@ -44,8 +52,25 @@ class MetaSwap(ContextMenu):
                 m.Enable(id, False)
 
             id = wx.NewId()
-            name = item.name
-            m.AppendItem(wx.MenuItem(rootMenu, id, name))
+            mitem = wx.MenuItem(rootMenu, id, item.name)
+            rootMenu.Bind(wx.EVT_MENU, self.handleModule, mitem)
+            self.moduleLookup[id] = item
+            m.AppendItem(mitem)
         return m
+
+    def handleModule(self, event):
+        item = self.moduleLookup.get(event.Id, None)
+        if item is None:
+            event.Skip()
+            return
+
+        sFit = service.Fit.getInstance()
+        fitID = self.mainFrame.getActiveFit()
+        fit = sFit.getFit(fitID)
+        
+        pos = fit.modules.index(self.module)
+        sFit.changeModule(fitID, pos, item.ID)
+
+        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
 MetaSwap.register()

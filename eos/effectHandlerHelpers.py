@@ -159,6 +159,10 @@ class HandledModuleList(HandledList):
             dummy.position = index
             self[index] = dummy
 
+    def toModule(self, index, mod):
+        mod.position = index
+        self[index] = mod
+
     def freeSlot(self, slot):
         for i in range(len(self) -1, -1, -1):
             mod = self[i]

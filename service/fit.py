@@ -440,6 +440,38 @@ class Fit(object):
         eos.db.commit()
         return numSlots != len(fit.modules)
 
+    def changeModule(self, fitID, position, newItemID):
+        fit = eos.db.getFit(fitID)
+        if fit.modules[position].isEmpty:
+            return None
+
+        # Dummy it out in case the next bit fails
+        fit.modules.toDummy(position)
+
+        item = eos.db.getItem(newItemID, eager=("attributes", "group.category"))
+        try:
+            m = eos.types.Module(item)
+        except ValueError:
+            return False
+
+        if m.fits(fit):
+            m.owner = fit
+            fit.modules.toModule(position, m)
+            if m.isValidState(State.ACTIVE):
+                m.state = State.ACTIVE
+
+            # As some items may affect state-limiting attributes of the ship, calculate new attributes first
+            self.recalc(fit)
+            # Then, check states of all modules and change where needed. This will recalc if needed
+            self.checkStates(fit, m)
+
+            fit.fill()
+            eos.db.commit()
+
+            return True
+        else:
+            return None
+
     def moveCargoToModule(self, fitID, moduleIdx, cargoIdx, copyMod=False):
         """
         Moves cargo to fitting window. Can either do a copy, move, or swap with current module
