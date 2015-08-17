@@ -56,7 +56,6 @@ class MetaSwap(ContextMenu):
             if item.metaGroup is None:
                 thisgroup = "Tech I"
             else:
-                print item.metaGroup.ID
                 thisgroup = item.metaGroup.name
 
             if thisgroup != group:
