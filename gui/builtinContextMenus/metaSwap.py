@@ -45,6 +45,13 @@ class MetaSwap(ContextMenu):
 
         m = wx.Menu()
 
+        # If on Windows we need to bind out events into the root menu, on other
+        # platforms they need to go to our sub menu
+        if "wxMSW" in wx.PlatformInfo:
+            bindmenu = rootMenu
+        else:
+            bindmenu = m
+
         # Sort items by metalevel, and group within that metalevel
         items = list(self.variations)
         items.sort(key=get_metalevel)
@@ -66,7 +73,7 @@ class MetaSwap(ContextMenu):
 
             id = wx.NewId()
             mitem = wx.MenuItem(rootMenu, id, item.name)
-            rootMenu.Bind(wx.EVT_MENU, self.handleModule, mitem)
+            bindmenu.Bind(wx.EVT_MENU, self.handleModule, mitem)
             self.moduleLookup[id] = item
             m.AppendItem(mitem)
         return m
