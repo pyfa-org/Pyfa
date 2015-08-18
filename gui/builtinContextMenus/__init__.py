@@ -19,4 +19,5 @@ __all__ = [
     "targetResists",
     "priceClear",
     "amount",
+    "metaSwap",
 ]
