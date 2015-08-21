@@ -134,7 +134,7 @@ if __name__ == "__main__":
         tmpFile = os.path.join(os.getcwd(), archiveName)
 
         i = 0
-        ignoreData = (".git", ".gitignore", ".gitmodules", "dist_assets", "saveddata", "build", "dist", "scripts", ".idea")
+        ignoreData = (".git", ".gitignore", ".gitmodules", "dist_assets", "build", "dist", "scripts", ".idea")
         def loginfo(path, names):
             # Print out a "progress" and return directories / files to ignore
             global i
