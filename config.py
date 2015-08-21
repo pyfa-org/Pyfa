@@ -17,11 +17,6 @@ debug = False
 # Defines if our saveddata will be in pyfa root or not
 saveInRoot = False
 
-if debug:
-    logLevel = logging.DEBUG
-else:
-    logLevel = logging.WARN
-
 # Version data
 version = "1.13.3"
 tag = "git"
@@ -67,12 +62,19 @@ def __createDirs(path):
         os.makedirs(path)
 
 def defPaths():
+    global debug
     global pyfaPath
     global savePath
     global staticPath
     global saveDB
     global gameDB
     global saveInRoot
+
+    if debug:
+        logLevel = logging.DEBUG
+    else:
+        logLevel = logging.WARN
+
     # The main pyfa directory which contains run.py
     # Python 2.X uses ANSI by default, so we need to convert the character encoding
     pyfaPath = getattr(configforced, "pyfaPath", pyfaPath)

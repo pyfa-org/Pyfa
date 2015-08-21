@@ -13,8 +13,6 @@ def update(saveddata_engine):
     dbVersion = getVersion(saveddata_engine)
     appVersion = migrations.appVersion
 
-    print dbVersion, appVersion
-
     if dbVersion == appVersion:
         return
 
