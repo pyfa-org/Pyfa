@@ -106,9 +106,11 @@ def defPaths():
         sl = StreamToLogger(stdout_logger, logging.INFO)
         sys.stdout = sl
 
-        stderr_logger = logging.getLogger('STDERR')
-        sl = StreamToLogger(stderr_logger, logging.ERROR)
-        sys.stderr = sl
+        # This interferes with cx_Freeze's own handling of exceptions. Find a way to fix this.
+        #stderr_logger = logging.getLogger('STDERR')
+        #sl = StreamToLogger(stderr_logger, logging.ERROR)
+        #sys.stderr = sl
+
 
     # Static EVE Data from the staticdata repository, should be in the staticdata
     # directory in our pyfa directory

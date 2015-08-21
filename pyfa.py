@@ -22,6 +22,17 @@ import sys
 import re
 import config
 
+
+from optparse import OptionParser
+
+# Parse command line options
+usage = "usage: %prog [--root]"
+parser = OptionParser(usage=usage)
+parser.add_option("-r", "--root", action="store_true", dest="rootsavedata", help="if you want pyfa to store its data in root folder, use this option", default=False)
+parser.add_option("-w", "--wx28", action="store_true", dest="force28", help="Force usage of wxPython 2.8", default=False)
+
+(options, args) = parser.parse_args()
+
 if not hasattr(sys, 'frozen'):
 
     if sys.version_info < (2,6) or sys.version_info > (3,0):
@@ -33,25 +44,15 @@ if not hasattr(sys, 'frozen'):
     except ImportError:
         print("Cannot find wxPython\nYou can download wxPython (2.8+) from http://www.wxpython.org/")
         sys.exit(1)
-    
-    # if user wants to force 2.8, try that and go directly to ensureMinimal path if fails
+
     try:
-        if getattr(config.configforced, "force28", False):
+        if options.force28 is True:
             wxversion.select('2.8')
         else:
-            # try 3.0, then 2.8. If any exceptions, go to ensureMinimal path
-            try:
-                wxversion.select('3.0')
-            except:
-                wxversion.select('2.9')
+            wxversion.select('3.0')
     except wxversion.VersionError:
-        try:
-            wxversion.ensureMinimal('2.8')
-        except wxversion.VersionError:
-            print "Installed wxPython version doesn't meet requirements.\nYou can download wxPython (2.8+) from http://www.wxpython.org/"
-            sys.exit(1)
-        else:
-            print "wxPython 2.8 not found; attempting to use newer version, expect errors"        
+        print "Installed wxPython version doesn't meet requirements.\nYou can download wxPython 2.8 or 3.0 from http://www.wxpython.org/"
+        sys.exit(1)
 
     try:
         import sqlalchemy
@@ -73,15 +74,8 @@ if not hasattr(sys, 'frozen'):
         print("Cannot find sqlalchemy.\nYou can download sqlalchemy (0.6+) from http://www.sqlalchemy.org/")
         sys.exit(1)
 
-from optparse import OptionParser
 
 if __name__ == "__main__":
-    # Parse command line options
-    usage = "usage: %prog [--root]"
-    parser = OptionParser(usage=usage)
-    parser.add_option("-r", "--root", action="store_true", dest="rootsavedata", help="if you want pyfa to store its data in root folder, use this option", default=False)
-    (options, args) = parser.parse_args()
-
     # Configure paths
     if options.rootsavedata is True:
         config.saveInRoot = True
