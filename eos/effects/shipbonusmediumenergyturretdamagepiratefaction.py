@@ -2,6 +2,7 @@
 #
 # Used by:
 # Ship: Ashimmu
+# Ship: Fiend
 # Ship: Gnosis
 # Ship: Phantasm
 type = "passive"

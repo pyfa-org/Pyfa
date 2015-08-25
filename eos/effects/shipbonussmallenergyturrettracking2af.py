@@ -1,6 +1,7 @@
 # shipBonusSmallEnergyTurretTracking2AF
 #
 # Used by:
+# Ship: Imp
 # Ship: Succubus
 type = "passive"
 def handler(fit, ship, context):

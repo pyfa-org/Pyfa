@@ -1,6 +1,7 @@
 # shipBonusMediumEnergyTurretTrackingAC2
 #
 # Used by:
+# Ship: Fiend
 # Ship: Phantasm
 type = "passive"
 def handler(fit, ship, context):
