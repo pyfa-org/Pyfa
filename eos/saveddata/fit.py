@@ -304,6 +304,14 @@ class Fit(object):
         return (1-self.ecmProjectedStr)*100
 
     @property
+    def maxSpeed(self):
+        speedLimit = self.ship.getModifiedItemAttr("speedLimit")
+        if speedLimit and self.ship.getModifiedItemAttr("maxVelocity") > speedLimit:
+            return speedLimit
+
+        return self.ship.getModifiedItemAttr("maxVelocity")
+
+    @property
     def alignTime(self):
         agility = self.ship.getModifiedItemAttr("agility")
         mass = self.ship.getModifiedItemAttr("mass")

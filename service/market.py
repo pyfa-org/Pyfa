@@ -206,7 +206,9 @@ class Market():
             "Leopard": self.les_grp, # 2013 new year gift
             "Whiptail": self.les_grp, # AT12 prize
             "Chameleon": self.les_grp, # AT12 prize
-            "Victorieux Luxury Yacht":  self.les_grp  # Worlds Collide prize \o/ chinese getting owned
+            "Victorieux Luxury Yacht":  self.les_grp,  # Worlds Collide prize \o/ chinese getting owned
+            "Imp": self.les_grp,  # AT13 prize
+            "Fiend": self.les_grp,  # AT13 prize
         }
 
         self.ITEMS_FORCEGROUP_R = self.__makeRevDict(self.ITEMS_FORCEGROUP)
@@ -230,9 +232,9 @@ class Market():
             "Guristas Shuttle": False,
             "Mobile Decoy Unit": False,  # Seems to be left over test mod for deployables
             "Tournament Micro Jump Unit": False,  # Normally seen only on tournament arenas
-            "Council Diplomatic Shuttle": False,  # CSM X celebration
-            "Imp": False,  # AT13 prize, not a real ship yet
-            "Fiend": False,  # AT13 prize, not a real ship yet
+            "Council Diplomatic Shuttle": False,  # CSM X celebration]
+            "Imp": False,  # AT13 prize
+            "Fiend": False,  # AT13 prize
         }
 
         # do not publish ships that we convert

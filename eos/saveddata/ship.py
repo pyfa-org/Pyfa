@@ -35,6 +35,10 @@ class Ship(ItemAttrShortcut, HandledItem):
         "droneControlRange": 20000,
         "cloaked": False,
         "siege": False
+        # We also have speedLimit for Entosis Link, but there seems to be an
+        # issue with naming it exactly "speedLimit" due to unknown reasons.
+        # Regardless, we don't have to put it here anyways - it will come up
+        # as None unless the Entosis effect sets it.
     }
 
     def __init__(self, item):

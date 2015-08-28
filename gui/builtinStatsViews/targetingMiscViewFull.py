@@ -149,7 +149,7 @@ class TargetingMiscViewFull(StatsView):
                  ("labelScanRes", {"main": lambda: fit.ship.getModifiedItemAttr("scanResolution")}, 3, 0, 0, "mm"),
                  ("labelSensorStr", {"main": lambda: fit.scanStrength}, 3, 0, 0, ""),
                  ("labelCtrlRange", {"main": lambda: fit.extraAttributes["droneControlRange"] / 1000}, 3, 0, 0, "km"),
-                 ("labelFullSpeed", {"main": lambda: fit.ship.getModifiedItemAttr("maxVelocity")}, 3, 0, 0, "m/s"),
+                 ("labelFullSpeed", {"main": lambda: fit.maxSpeed}, 3, 0, 0, "m/s"),
                  ("labelFullAlignTime", {"main": lambda: fit.alignTime}, 3, 0, 0, "s"),
                  ("labelFullSigRadius", {"main": lambda: fit.ship.getModifiedItemAttr("signatureRadius")}, 3, 0, 9, ""),
                  ("labelFullWarpSpeed", {"main": lambda: fit.warpSpeed}, 3, 0, 0, "AU/s"),
