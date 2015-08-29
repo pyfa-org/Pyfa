@@ -9,9 +9,12 @@ def getVersion(db):
     cursor = db.execute('PRAGMA user_version')
     return cursor.fetchone()[0]
 
+def getAppVersion():
+    return migrations.appVersion
+
 def update(saveddata_engine):
     dbVersion = getVersion(saveddata_engine)
-    appVersion = migrations.appVersion
+    appVersion = getAppVersion()
 
     if dbVersion == appVersion:
         return
