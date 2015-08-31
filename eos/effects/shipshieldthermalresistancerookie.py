@@ -1,9 +1,8 @@
 # shipShieldThermalResistanceRookie
 #
 # Used by:
-# Ship: Broadsword
+# Ships from group: Heavy Interdiction Cruiser (3 of 5)
 # Ship: Ibis
-# Ship: Onyx
 # Ship: Taipan
 type = "passive"
 def handler(fit, ship, context):
