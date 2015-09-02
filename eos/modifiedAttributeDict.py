@@ -250,11 +250,11 @@ class ModifiedAttributeDict(collections.MutableMapping):
 
     def increase(self, attributeName, increase, position="pre", skill=None):
         """Increase value of given attribute by given number"""
-        # Increases applied before multiplications and after them are
-        # written in separate maps
         if skill:
             increase *= self.__handleSkill(skill)
 
+        # Increases applied before multiplications and after them are
+        # written in separate maps
         if position == "pre":
             tbl = self.__preIncreases
         elif position == "post":
@@ -269,11 +269,11 @@ class ModifiedAttributeDict(collections.MutableMapping):
 
     def multiply(self, attributeName, multiplier, stackingPenalties=False, penaltyGroup="default", skill=None):
         """Multiply value of given attribute by given factor"""
-        # If we're asked to do stacking penalized multiplication, append values
-        # to per penalty group lists
         if skill:
             multiplier *= self.__handleSkill(skill)
 
+        # If we're asked to do stacking penalized multiplication, append values
+        # to per penalty group lists
         if stackingPenalties:
             if not attributeName in self.__penalizedMultipliers:
                 self.__penalizedMultipliers[attributeName] = {}
@@ -291,9 +291,10 @@ class ModifiedAttributeDict(collections.MutableMapping):
 
     def boost(self, attributeName, boostFactor, skill=None, *args, **kwargs):
         """Boost value by some percentage"""
-        # We just transform percentage boost into multiplication factor
         if skill:
             boostFactor *= self.__handleSkill(skill)
+
+        # We just transform percentage boost into multiplication factor
         self.multiply(attributeName, 1 + boostFactor / 100.0, *args, **kwargs)
 
     def force(self, attributeName, value):
