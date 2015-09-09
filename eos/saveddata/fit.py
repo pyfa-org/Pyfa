@@ -97,7 +97,7 @@ class Fit(object):
             self.__mode = self.ship.validateModeItem(item)
         else:
             self.__mode = self.ship.validateModeItem(None)
-
+        self.__character = eos.db.saveddata.queries.getCharacter(self.characterID)
         self.build()
 
     def build(self):
@@ -166,6 +166,8 @@ class Fit(object):
     @character.setter
     def character(self, char):
         self.__character = char
+        if char is not None:
+            self.characterID = char.ID
 
     @property
     def ship(self):

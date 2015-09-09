@@ -138,9 +138,6 @@ mapper(Fit, fits_table,
                 primaryjoin=fitImplants_table.c.fitID == fits_table.c.ID,
                 secondaryjoin=fitImplants_table.c.implantID == Implant.ID,
                 secondary=fitImplants_table),
-            "_Fit__character": relation(
-                Character,
-                backref="fits"),
             "_Fit__damagePattern": relation(DamagePattern),
             "_Fit__targetResists": relation(TargetResists),
             "projectedOnto": relationship(
