@@ -219,8 +219,6 @@ class Character(object):
         """
 
         char = eos.db.getCharacter(charID)
-        if not char.isDirty:
-            return
         charList = eos.db.getCharacterList()
 
         eos.db.character_session.expunge_all()
@@ -260,11 +258,15 @@ class Character(object):
     def rename(self, charID, newName):
         char = eos.db.getCharacter(charID)
         char.name = newName
-        eos.db.commit()
+        self.saveCharacter(charID)
 
     def new(self):
+        #@todo: seems setting skills on a new character doesn't trigger the dirty setting. Probably goes for character copy too
         char = eos.types.Character("New Character")
-        eos.db.save(char)
+        eos.db.character_session.add(char)
+        # We can flush this single character to the DB to get an ID. It will be
+        # committed with the rename function
+        eos.db.character_session.flush([char])
         return char.ID
 
     def getCharName(self, charID):
@@ -273,12 +275,15 @@ class Character(object):
     def copy(self, charID):
         char = eos.db.getCharacter(charID)
         newChar = copy.deepcopy(char)
-        eos.db.save(newChar)
+        eos.db.character_session.add(newChar)
+        eos.db.character_session.flush([newChar])
         return newChar.ID
 
     def delete(self, charID):
+        # It is easier to remove the character from the main session, so banish
+        # it from the character session and include it over there.
         char = eos.db.getCharacter(charID)
-        eos.db.commit()
+        eos.db.character_session.expunge(char)
         eos.db.remove(char)
 
     def getApiDetails(self, charID):
