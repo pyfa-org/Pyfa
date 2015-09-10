@@ -36,6 +36,7 @@ class MainMenuBar(wx.MenuBar):
         self.exportHtmlId = wx.NewId()
         self.wikiId = wx.NewId()
         self.forumId = wx.NewId()
+        self.saveCharId = wx.NewId()
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
@@ -70,6 +71,8 @@ class MainMenuBar(wx.MenuBar):
         pasteText = "&From Clipboard" + ("\tCTRL+V" if 'wxMSW' in wx.PlatformInfo else "")
         editMenu.Append(wx.ID_COPY, copyText, "Export a fit to the clipboard")
         editMenu.Append(wx.ID_PASTE, pasteText, "Import a fit from the clipboard")
+        editMenu.AppendSeparator()
+        editMenu.Append(self.saveCharId, "Save Character")
 
         # Character menu
         windowMenu = wx.Menu()

@@ -191,11 +191,45 @@ class Character(object):
         # Flush incase all0 & all5 weren't in the db yet
         eos.db.commit()
         sFit = service.Fit.getInstance()
-        return map(lambda c: (c.ID, c.name, c == sFit.character), eos.db.getCharacterList())
+
+        for thing in eos.db.character_session.dirty:
+            if isinstance(thing, eos.types.Skill):
+                if not thing.character.isDirty:
+                    thing.character.dirty = True
+
+        return map(lambda c: (c.ID, c.name if not c.isDirty else "{} *".format(c.name), c == sFit.character), eos.db.getCharacterList())
 
     def getCharacter(self, charID):
         char = eos.db.getCharacter(charID)
         return char
+
+    def saveCharacter(self, charID):
+        """
+        Saves the edited character.
+
+        I feel like there should be a better way to specifically tell
+        SQLAlchemy to only flush and commit a specific object. But this magic
+        function doesn't seem to exist, so instead we basically gather a list
+        of our characters, expunge the entire session, and then add the
+        edited character all by themself. After committing, we simply add our
+        characters back to the session.
+
+        Without doing this, this would save all edited characters, which is
+        not something that should happen.
+        """
+
+        char = eos.db.getCharacter(charID)
+        if not char.isDirty:
+            return
+        charList = eos.db.getCharacterList()
+
+        eos.db.character_session.expunge_all()
+        eos.db.character_session.add(char)
+        eos.db.character_session.commit()
+        char.dirty = False
+
+        for char in charList:
+            eos.db.character_session.add(char)
 
     def getSkillGroups(self):
         cat = eos.db.getCategory(16)

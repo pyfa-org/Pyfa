@@ -21,6 +21,7 @@
 from sqlalchemy.orm import validates, reconstructor
 
 from eos.effectHandlerHelpers import HandledItem
+import eos.db
 import eos
 
 class Character(object):
@@ -33,7 +34,6 @@ class Character(object):
     @classmethod
     def getSkillList(cls):
         if cls.__itemList is None:
-            import eos.db
             cls.__itemList = eos.db.getItemsByCategory("Skill")
 
         return cls.__itemList
@@ -149,6 +149,10 @@ class Character(object):
     @property
     def implants(self):
         return self.__implants
+
+    @property
+    def isDirty(self):
+        return getattr(self, "dirty", False)
 
     def iterSkills(self):
         for item in self.getSkillList():

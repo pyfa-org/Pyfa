@@ -5,7 +5,7 @@ debug = False
 gamedataCache = True
 saveddataCache = True
 gamedata_connectionstring = 'sqlite:///' + unicode(realpath(join(dirname(abspath(__file__)), "..", "staticdata", "eve.db")), sys.getfilesystemencoding())
-saveddata_connectionstring = 'sqlite:///:memory:'
+saveddata_connectionstring = 'sqlite:///' + unicode(realpath(join(dirname(abspath(__file__)), "..", "saveddata", "saveddata.db")), sys.getfilesystemencoding())
 
 #Autodetect path, only change if the autodetection bugs out.
 path = dirname(unicode(__file__, sys.getfilesystemencoding()))

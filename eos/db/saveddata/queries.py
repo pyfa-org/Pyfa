@@ -148,7 +148,6 @@ def getCharacter(lookfor, eager=None):
         else:
             eager = processEager(eager)
             character = character_session.query(Character).options(*eager).filter(Character.ID == lookfor).first()
-        print character
     elif isinstance(lookfor, basestring):
         eager = processEager(eager)
         character = character_session.query(Character).options(*eager).filter(Character.name == lookfor).first()

@@ -418,6 +418,8 @@ class MainFrame(wx.Frame):
         self.Bind(wx.EVT_MENU, self.goWiki, id = menuBar.wikiId)
         # EVE Forums
         self.Bind(wx.EVT_MENU, self.goForums, id = menuBar.forumId)
+        # Save current character
+        self.Bind(wx.EVT_MENU, self.saveChar, id = menuBar.saveCharId)
 
         #Clipboard exports
         self.Bind(wx.EVT_MENU, self.exportToClipboard, id=wx.ID_COPY)
@@ -481,6 +483,12 @@ class MainFrame(wx.Frame):
 
         atable = wx.AcceleratorTable(actb)
         self.SetAcceleratorTable(atable)
+
+    def saveChar(self, event):
+        sChr = service.Character.getInstance()
+        charID = self.charSelection.getActiveCharacter()
+        sChr.saveCharacter(charID)
+        wx.PostEvent(self, GE.CharListUpdated())
 
     def AdditionsTabSelect(self, event):
         selTab = self.additionsSelect.index(event.GetId())
