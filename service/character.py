@@ -190,6 +190,8 @@ class Character(object):
             if isinstance(thing, eos.types.Skill):
                 if not thing.character.isDirty:
                     thing.character.dirty = True
+            elif thing in eos.db.character_session.dirty:
+                thing.dirty = True
 
         return map(lambda c: (c.ID, c.name if not c.isDirty else "{} *".format(c.name), c == sFit.character), eos.db.getCharacterList())
 
@@ -249,10 +251,8 @@ class Character(object):
         skill = eos.db.getCharacter(charID).getSkill(skillID)
         return skill.level if skill.learned else "Not learned"
 
-    def rename(self, charID, newName):
-        char = eos.db.getCharacter(charID)
-        char.name = newName
-        self.saveCharacter(charID)
+    def getCharName(self, charID):
+        return eos.db.getCharacter(charID).name
 
     def new(self):
         #@todo: seems setting skills on a new character doesn't trigger the dirty setting. Probably goes for character copy too
@@ -263,8 +263,10 @@ class Character(object):
         eos.db.character_session.flush([char])
         return char.ID
 
-    def getCharName(self, charID):
-        return eos.db.getCharacter(charID).name
+    def rename(self, charID, newName):
+        char = eos.db.getCharacter(charID)
+        char.name = newName
+        self.saveCharacter(charID)
 
     def copy(self, charID):
         char = eos.db.getCharacter(charID)

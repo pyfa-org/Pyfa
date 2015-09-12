@@ -70,8 +70,7 @@ class Character(object):
             # We do not have to be afraid of committing here and saving
             # edited character data. If this ever runs, it will be during the
             # get character list phase when pyfa first starts
-            all5 = Character("All 5")
-            all5.defaultLevel = 5
+            all5 = Character("All 5", 5)
             eos.db.character_session.add(all5)
             eos.db.character_session.commit()
 
@@ -83,18 +82,21 @@ class Character(object):
 
         if all0 is None:
             all0 = Character("All 0")
-            all0.defaultLevel = None
             eos.db.character_session.add(all0)
             eos.db.character_session.commit()
 
         return all0
 
-    def __init__(self, name):
+    def __init__(self, name, defaultLevel=None):
         self.name = name
         self.__owner = None
-        self.defaultLevel = None
+        self.defaultLevel = defaultLevel
         self.__skills = []
         self.__skillIdMap = {}
+
+        for item in self.getSkillList():
+            self.addSkill(Skill(item.ID, self.defaultLevel))
+
         self.__implants = eos.saveddata.fit.HandledImplantBoosterList()
         self.apiKey = None
 
@@ -135,11 +137,7 @@ class Character(object):
         skill = self.__skillIdMap.get(item.ID)
 
         if skill is None:
-            if self.defaultLevel is None:
-                skill = Skill(item, 0, False, False)
-            else:
-                skill = Skill(item, self.defaultLevel, False, True)
-
+            skill = Skill(item, self.defaultLevel, False, True)
             self.addSkill(skill)
 
         return skill
@@ -201,7 +199,7 @@ class Character(object):
         else: return val
 
 class Skill(HandledItem):
-    def __init__(self, item, level = 0, ro = False, learned = True):
+    def __init__(self, item, level=0, ro=False, learned=True):
         self.__item = item if not isinstance(item, int) else None
         self.itemID = item.ID if not isinstance(item, int) else item
         self.__level = level if learned else None
