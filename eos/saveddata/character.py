@@ -120,6 +120,10 @@ class Character(object):
     def owner(self, owner):
         self.__owner = owner
 
+    @property
+    def skills(self):
+        return self.__skills
+
     def addSkill(self, skill):
         self.__skills.append(skill)
         self.__skillIdMap[skill.itemID] = skill
@@ -150,40 +154,37 @@ class Character(object):
     def isDirty(self):
         return getattr(self, "dirty", False)
 
-    def iterSkills(self):
-        for item in self.getSkillList():
-            yield self.getSkill(item)
-
     def filteredSkillIncrease(self, filter, *args, **kwargs):
-        for element in self.iterSkills():
+        for element in self.skills:
             if filter(element):
                 element.increaseItemAttr(*args, **kwargs)
 
     def filteredSkillMultiply(self, filter, *args, **kwargs):
-        for element in self.iterSkills():
+        for element in self.skills:
             if filter(element):
                 element.multiplyItemAttr(*args, **kwargs)
 
     def filteredSkillBoost(self, filter, *args, **kwargs):
-        for element in self.iterSkills():
+        for element in self.skills:
             if filter(element):
                 element.boostItemAttr(*args, **kwargs)
 
     def calculateModifiedAttributes(self, fit, runTime, forceProjected = False):
         if forceProjected: return
-        for skill in self.iterSkills():
+        for skill in self.skills:
             fit.register(skill)
             skill.calculateModifiedAttributes(fit, runTime)
 
     def clear(self):
-        for skill in self.iterSkills():
+        for skill in self.skills:
             skill.clear()
 
     def __deepcopy__(self, memo):
         copy = Character("%s copy" % self.name)
         copy.apiKey = self.apiKey
         copy.apiID = self.apiID
-        for skill in self.iterSkills():
+
+        for skill in self.skills:
             copy.addSkill(Skill(skill.itemID, skill.level, False, skill.learned))
 
         return copy
