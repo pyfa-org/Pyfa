@@ -171,25 +171,19 @@ class Character(object):
         thread.start()
 
     def all0(self):
-        all0 = eos.types.Character.getAll0()
-        eos.db.commit()
-        return all0
+        return eos.types.Character.getAll0()
 
     def all0ID(self):
         return self.all0().ID
 
     def all5(self):
-        all5 = eos.types.Character.getAll5()
-        eos.db.commit()
-        return all5
+        return eos.types.Character.getAll5()
 
     def all5ID(self):
         return self.all5().ID
 
     def getCharacterList(self):
         baseChars = [eos.types.Character.getAll0(), eos.types.Character.getAll5()]
-        # Flush incase all0 & all5 weren't in the db yet
-        eos.db.commit()
         sFit = service.Fit.getInstance()
 
         for thing in eos.db.character_session.dirty:
@@ -298,7 +292,7 @@ class Character(object):
         id, key, default, _ = self.getApiDetails(charID)
         return id is not "" and key is not "" and default is not ""
 
-    def charList(self, charID, userID, apiKey):
+    def apiCharList(self, charID, userID, apiKey):
         char = eos.db.getCharacter(charID)
 
         char.apiID = userID
@@ -344,8 +338,6 @@ class Character(object):
             skill.level = None
         else:
             skill.level = level
-
-        eos.db.commit()
 
     def addImplant(self, charID, itemID):
         char = eos.db.getCharacter(charID)

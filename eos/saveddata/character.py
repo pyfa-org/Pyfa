@@ -25,8 +25,6 @@ import eos.db
 import eos
 
 class Character(object):
-    __all5 = None
-    __all0 = None
     __itemList = None
     __itemIDMap = None
     __itemNameMap = None
@@ -66,29 +64,30 @@ class Character(object):
 
     @classmethod
     def getAll5(cls):
-        if cls.__all5 is None:
-            import eos.db
-            all5 = eos.db.getCharacter("All 5")
-            if all5 is None:
-                all5 = Character("All 5")
-                all5.defaultLevel = 5
-                eos.db.add(all5)
+        all5 = eos.db.getCharacter("All 5")
 
-            cls.__all5 = all5
-        return cls.__all5
+        if all5 is None:
+            # We do not have to be afraid of committing here and saving
+            # edited character data. If this ever runs, it will be during the
+            # get character list phase when pyfa first starts
+            all5 = Character("All 5")
+            all5.defaultLevel = 5
+            eos.db.character_session.add(all5)
+            eos.db.character_session.commit()
+
+        return all5
 
     @classmethod
     def getAll0(cls):
-        if cls.__all0 is None:
-            import eos.db
-            all0 = eos.db.getCharacter("All 0")
-            if all0 is None:
-                all0 = Character("All 0")
-                all0.defaultLevel = None
-                eos.db.add(all0)
+        all0 = eos.db.getCharacter("All 0")
 
-            cls.__all0 = all0
-        return cls.__all0
+        if all0 is None:
+            all0 = Character("All 0")
+            all0.defaultLevel = None
+            eos.db.character_session.add(all0)
+            eos.db.character_session.commit()
+
+        return all0
 
     def __init__(self, name):
         self.name = name
@@ -109,7 +108,6 @@ class Character(object):
         del self.__skills[:]
         self.__skillIdMap.clear()
         for skillRow in skills:
-
             self.addSkill(Skill(skillRow["typeID"], skillRow["level"]))
 
     @property

@@ -652,7 +652,7 @@ class APIView (wx.Panel):
 
         sChar = service.Character.getInstance()
         try:
-            list = sChar.charList(self.Parent.Parent.getActiveCharacter(), self.inputID.GetLineText(0), self.inputKey.GetLineText(0))
+            list = sChar.apiCharList(self.Parent.Parent.getActiveCharacter(), self.inputID.GetLineText(0), self.inputKey.GetLineText(0))
         except service.network.AuthenticationError, e:
             self.stStatus.SetLabel("Authentication failure. Please check keyID and vCode combination.")
         except service.network.TimeoutError, e:
