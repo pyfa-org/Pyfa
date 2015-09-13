@@ -71,8 +71,7 @@ class Character(object):
             # edited character data. If this ever runs, it will be during the
             # get character list phase when pyfa first starts
             all5 = Character("All 5", 5)
-            eos.db.character_session.add(all5)
-            eos.db.character_session.commit()
+            eos.db.save(all5)
 
         return all5
 
@@ -82,8 +81,7 @@ class Character(object):
 
         if all0 is None:
             all0 = Character("All 0")
-            eos.db.character_session.add(all0)
-            eos.db.character_session.commit()
+            eos.db.save(all0)
 
         return all0
 
@@ -210,7 +208,6 @@ class Skill(HandledItem):
         self.__item = item if not isinstance(item, int) else None
         self.itemID = item.ID if not isinstance(item, int) else item
         self.__level = level if learned else None
-        self.activeLevel = self.__level
         self.commandBonus = 0
         self.build(ro)
 
@@ -222,6 +219,7 @@ class Skill(HandledItem):
     def build(self, ro):
         self.__ro = ro
         self.__suppressed = False
+        self.activeLevel = self.__level
 
     @property
     def learned(self):
