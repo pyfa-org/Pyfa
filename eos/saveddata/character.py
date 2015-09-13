@@ -91,6 +91,7 @@ class Character(object):
         self.defaultLevel = defaultLevel
         self.__skills = []
         self.__skillIdMap = {}
+        self.dirtySkills = set()
 
         for item in self.getSkillList():
             self.addSkill(Skill(item.ID, self.defaultLevel))
@@ -103,6 +104,7 @@ class Character(object):
         self.__skillIdMap = {}
         for skill in self.__skills:
             self.__skillIdMap[skill.itemID] = skill
+        self.dirtySkills = set()
 
     def apiUpdateCharSheet(self, skills):
         del self.__skills[:]
@@ -150,12 +152,12 @@ class Character(object):
 
     @property
     def isDirty(self):
-        return getattr(self, "dirty", False)
+        return len(self.dirtySkills) > 0
 
     def saveLevels(self):
-        for skill in self.skills:
-            skill.__level = skill.level
-        self.dirty = False
+        for skill in self.dirtySkills:
+            skill.saveLevel()
+        self.dirtySkills = set()
         eos.db.commit()
 
     def filteredSkillIncrease(self, filter, *args, **kwargs):
@@ -221,9 +223,12 @@ class Skill(HandledItem):
         self.__suppressed = False
         self.activeLevel = self.__level
 
+    def saveLevel(self):
+        self.__level = self.activeLevel
+
     @property
     def learned(self):
-        return self.__level is not None
+        return self.activeLevel is not None
 
     @property
     def level(self):
@@ -238,7 +243,10 @@ class Skill(HandledItem):
             raise ReadOnlyException()
 
         self.activeLevel = level
-        self.character.dirty = True
+        if self.activeLevel == self.__level:
+            self.character.dirtySkills.remove(self)
+        else:
+            self.character.dirtySkills.add(self)
 
     @property
     def item(self):

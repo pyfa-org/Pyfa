@@ -34,6 +34,8 @@ class CharacterEditor(wx.Frame):
         wx.Frame.__init__ (self, parent, id=wx.ID_ANY, title=u"pyfa: Character Editor", pos=wx.DefaultPosition,
                             size=wx.Size(641, 600), style=wx.DEFAULT_FRAME_STYLE|wx.FRAME_FLOAT_ON_PARENT|wx.TAB_TRAVERSAL)
 
+        self.mainFrame = parent
+
         i = wx.IconFromBitmap(bitmapLoader.getBitmap("character_small", "icons"))
         self.SetIcon(i)
 
@@ -45,8 +47,6 @@ class CharacterEditor(wx.Frame):
         self.navSizer = wx.BoxSizer(wx.HORIZONTAL)
 
         sChar = service.Character.getInstance()
-        charList = sChar.getCharacterList()
-        charList.sort(key=lambda t: t[1])
 
         self.btnSave = wx.Button(self, wx.ID_SAVE)
         self.btnSave.Hide()
@@ -56,14 +56,17 @@ class CharacterEditor(wx.Frame):
         self.characterRename.Hide()
         self.characterRename.Bind(wx.EVT_TEXT_ENTER, self.processRename)
 
-        self.skillTreeChoice = wx.Choice(self, wx.ID_ANY, style=0)
+        self.charChoice = wx.Choice(self, wx.ID_ANY, style=0)
+        self.navSizer.Add(self.charChoice, 1, wx.ALL | wx.EXPAND, 5)
 
+        self.refreshCharacterList()
+
+        '''
         for id, name, active in charList:
-            i = self.skillTreeChoice.Append(name, id)
+            i = self.charChoice.Append(name, id)
             if active:
-                self.skillTreeChoice.SetSelection(i)
-
-        self.navSizer.Add(self.skillTreeChoice, 1, wx.ALL | wx.EXPAND, 5)
+                self.charChoice.SetSelection(i)
+        '''
 
         buttons = (("new", wx.ART_NEW),
                    ("rename", bitmapLoader.getBitmap("rename", "icons")),
@@ -128,7 +131,16 @@ class CharacterEditor(wx.Frame):
 
         self.registerEvents()
 
-        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+
+    def refreshCharacterList(self, event=None):
+        sChar = service.Character.getInstance()
+        charList = sChar.getCharacterList()
+        self.charChoice.Clear()
+
+        for id, name, active in charList:
+            i = self.charChoice.Append(name, id)
+            if active:
+                self.charChoice.SetSelection(i)
 
     def editingFinished(self, event):
         del self.disableWin
@@ -137,7 +149,8 @@ class CharacterEditor(wx.Frame):
 
     def registerEvents(self):
         self.Bind(wx.EVT_CLOSE, self.closeEvent)
-        self.skillTreeChoice.Bind(wx.EVT_CHOICE, self.charChanged)
+        self.Bind(GE.CHAR_LIST_UPDATED, self.refreshCharacterList)
+        self.charChoice.Bind(wx.EVT_CHOICE, self.charChanged)
 
     def closeEvent(self, event):
         del self.disableWin
@@ -182,14 +195,14 @@ class CharacterEditor(wx.Frame):
             event.Skip()
 
     def getActiveCharacter(self):
-        selection = self.skillTreeChoice.GetCurrentSelection()
-        return self.skillTreeChoice.GetClientData(selection) if selection is not None else None
+        selection = self.charChoice.GetCurrentSelection()
+        return self.charChoice.GetClientData(selection) if selection is not None else None
 
     def new(self, event):
         sChar = service.Character.getInstance()
         charID = sChar.new()
-        id = self.skillTreeChoice.Append(sChar.getCharName(charID), charID)
-        self.skillTreeChoice.SetSelection(id)
+        id = self.charChoice.Append(sChar.getCharName(charID), charID)
+        self.charChoice.SetSelection(id)
         self.unrestrict()
         self.btnSave.SetLabel("Create")
         self.rename(None)
@@ -198,9 +211,9 @@ class CharacterEditor(wx.Frame):
     def rename(self, event):
         if event is not None:
             self.btnSave.SetLabel("Rename")
-        self.skillTreeChoice.Hide()
+        self.charChoice.Hide()
         self.characterRename.Show()
-        self.navSizer.Replace(self.skillTreeChoice, self.characterRename)
+        self.navSizer.Replace(self.charChoice, self.characterRename)
         self.characterRename.SetFocus()
         for btn in (self.btnNew, self.btnCopy, self.btnRename, self.btnDelete):
             btn.Hide()
@@ -225,9 +238,9 @@ class CharacterEditor(wx.Frame):
         charID = self.getActiveCharacter()
         sChar.rename(charID, newName)
 
-        self.skillTreeChoice.Show()
+        self.charChoice.Show()
         self.characterRename.Hide()
-        self.navSizer.Replace(self.characterRename, self.skillTreeChoice)
+        self.navSizer.Replace(self.characterRename, self.charChoice)
         for btn in (self.btnNew, self.btnCopy, self.btnRename, self.btnDelete):
             btn.Show()
             self.navSizer.Add(btn, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 2)
@@ -235,16 +248,13 @@ class CharacterEditor(wx.Frame):
         self.navSizer.Remove(self.btnSave)
         self.btnSave.Hide()
         self.navSizer.Layout()
-        selection = self.skillTreeChoice.GetCurrentSelection()
-        self.skillTreeChoice.Delete(selection)
-        self.skillTreeChoice.Insert(newName, selection, charID)
-        self.skillTreeChoice.SetSelection(selection)
+        self.refreshCharacterList()
 
     def copy(self, event):
         sChar = service.Character.getInstance()
         charID = sChar.copy(self.getActiveCharacter())
-        id = self.skillTreeChoice.Append(sChar.getCharName(charID), charID)
-        self.skillTreeChoice.SetSelection(id)
+        id = self.charChoice.Append(sChar.getCharName(charID), charID)
+        self.charChoice.SetSelection(id)
         self.unrestrict()
         self.btnSave.SetLabel("Copy")
         self.rename(None)
@@ -253,9 +263,9 @@ class CharacterEditor(wx.Frame):
     def delete(self, event):
         sChar = service.Character.getInstance()
         sChar.delete(self.getActiveCharacter())
-        sel = self.skillTreeChoice.GetSelection()
-        self.skillTreeChoice.Delete(sel)
-        self.skillTreeChoice.SetSelection(sel - 1)
+        sel = self.charChoice.GetSelection()
+        self.charChoice.Delete(sel)
+        self.charChoice.SetSelection(sel - 1)
         newSelection = self.getActiveCharacter()
         if sChar.getCharName(newSelection) in ("All 0", "All 5"):
             self.restrict()
@@ -383,6 +393,8 @@ class SkillTreeView (wx.Panel):
 
             self.skillTreeListCtrl.SetItemText(selection, "Level %d" % level if isinstance(level, int) else level, 1)
             sChar.changeLevel(charID, skillID, level)
+            sChar.saveCharacter(charID)
+            wx.PostEvent(self.Parent.Parent, GE.CharListUpdated())
 
         event.Skip()
 
