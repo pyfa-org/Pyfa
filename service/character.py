@@ -186,13 +186,6 @@ class Character(object):
         baseChars = [eos.types.Character.getAll0(), eos.types.Character.getAll5()]
         sFit = service.Fit.getInstance()
 
-        for thing in eos.db.character_session.dirty:
-            if isinstance(thing, eos.types.Skill):
-                if not thing.character.isDirty:
-                    thing.character.dirty = True
-            elif thing in eos.db.character_session.dirty:
-                thing.dirty = True
-
         return map(lambda c: (c.ID, c.name if not c.isDirty else "{} *".format(c.name), c == sFit.character), eos.db.getCharacterList())
 
     def getCharacter(self, charID):
@@ -200,30 +193,8 @@ class Character(object):
         return char
 
     def saveCharacter(self, charID):
-        """
-        Saves the edited character.
-
-        I feel like there should be a better way to specifically tell
-        SQLAlchemy to only flush and commit a specific object. But this magic
-        function doesn't seem to exist, so instead we basically gather a list
-        of our characters, expunge the entire session, and then add the
-        edited character all by themself. After committing, we simply add our
-        characters back to the session.
-
-        Without doing this, this would save all edited characters, which is
-        not something that should happen.
-        """
-
         char = eos.db.getCharacter(charID)
-        charList = eos.db.getCharacterList()
-
-        eos.db.character_session.expunge_all()
-        eos.db.character_session.add(char)
-        eos.db.character_session.commit()
-        char.dirty = False
-
-        for char in charList:
-            eos.db.character_session.add(char)
+        char.saveLevels()
 
     def getSkillGroups(self):
         cat = eos.db.getCategory(16)
@@ -256,10 +227,7 @@ class Character(object):
 
     def new(self):
         char = eos.types.Character("New Character")
-        eos.db.character_session.add(char)
-        # We can flush this single character to the DB to get an ID. It will be
-        # committed with the rename function
-        eos.db.character_session.flush([char])
+        eos.db.save(char)
         return char.ID
 
     def rename(self, charID, newName):

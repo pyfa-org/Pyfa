@@ -144,13 +144,13 @@ def getUser(lookfor, eager=None):
 def getCharacter(lookfor, eager=None):
     if isinstance(lookfor, int):
         if eager is None:
-            character = character_session.query(Character).get(lookfor)
+            character = saveddata_session.query(Character).get(lookfor)
         else:
             eager = processEager(eager)
-            character = character_session.query(Character).options(*eager).filter(Character.ID == lookfor).first()
+            character = saveddata_session.query(Character).options(*eager).filter(Character.ID == lookfor).first()
     elif isinstance(lookfor, basestring):
         eager = processEager(eager)
-        character = character_session.query(Character).options(*eager).filter(Character.name == lookfor).first()
+        character = saveddata_session.query(Character).options(*eager).filter(Character.name == lookfor).first()
     else:
         raise TypeError("Need integer or string as argument")
     return character
@@ -158,14 +158,14 @@ def getCharacter(lookfor, eager=None):
 def getCharacterList(eager=None):
     eager = processEager(eager)
     with sd_lock:
-        characters = character_session.query(Character).options(*eager).all()
+        characters = saveddata_session.query(Character).options(*eager).all()
     return characters
 
 def getCharactersForUser(lookfor, eager=None):
     if isinstance(lookfor, int):
         eager = processEager(eager)
         with sd_lock:
-            characters = character_session.query(Character).options(*eager).filter(Character.ownerID == lookfor).all()
+            characters = saveddata_session.query(Character).options(*eager).filter(Character.ownerID == lookfor).all()
     else:
         raise TypeError("Need integer as argument")
     return characters

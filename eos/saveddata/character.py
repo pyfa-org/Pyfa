@@ -154,6 +154,12 @@ class Character(object):
     def isDirty(self):
         return getattr(self, "dirty", False)
 
+    def saveLevels(self):
+        for skill in self.skills:
+            skill.__level = skill.level
+        self.dirty = False
+        eos.db.commit()
+
     def filteredSkillIncrease(self, filter, *args, **kwargs):
         for element in self.skills:
             if filter(element):
@@ -204,6 +210,7 @@ class Skill(HandledItem):
         self.__item = item if not isinstance(item, int) else None
         self.itemID = item.ID if not isinstance(item, int) else item
         self.__level = level if learned else None
+        self.activeLevel = self.__level
         self.commandBonus = 0
         self.build(ro)
 
@@ -222,7 +229,7 @@ class Skill(HandledItem):
 
     @property
     def level(self):
-        return self.__level or 0
+        return self.activeLevel or 0
 
     @level.setter
     def level(self, level):
@@ -232,7 +239,8 @@ class Skill(HandledItem):
         if hasattr(self, "_Skill__ro") and self.__ro == True:
             raise ReadOnlyException()
 
-        self.__level = level
+        self.activeLevel = level
+        self.character.dirty = True
 
     @property
     def item(self):
