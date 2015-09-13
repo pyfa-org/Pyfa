@@ -233,20 +233,17 @@ class Character(object):
     def rename(self, charID, newName):
         char = eos.db.getCharacter(charID)
         char.name = newName
-        self.saveCharacter(charID)
+        eos.db.commit()
 
     def copy(self, charID):
         char = eos.db.getCharacter(charID)
         newChar = copy.deepcopy(char)
-        eos.db.character_session.add(newChar)
-        eos.db.character_session.flush([newChar])
+        eos.db.save(newChar)
         return newChar.ID
 
     def delete(self, charID):
-        # It is easier to remove the character from the main session, so banish
-        # it from the character session and include it over there.
         char = eos.db.getCharacter(charID)
-        eos.db.character_session.expunge(char)
+        eos.db.commit()
         eos.db.remove(char)
 
     def getApiDetails(self, charID):
