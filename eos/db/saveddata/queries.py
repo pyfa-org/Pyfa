@@ -18,7 +18,7 @@
 #===============================================================================
 
 from eos.db.util import processEager, processWhere
-from eos.db import saveddata_session, character_session, sd_lock
+from eos.db import saveddata_session, sd_lock
 from eos.types import User, Character, Fit, Price, DamagePattern, Fleet, MiscData, Wing, Squad, TargetResists
 from eos.db.saveddata.fleet import squadmembers_table
 from eos.db.saveddata.fit import projectedFits_table
@@ -144,13 +144,16 @@ def getUser(lookfor, eager=None):
 def getCharacter(lookfor, eager=None):
     if isinstance(lookfor, int):
         if eager is None:
-            character = saveddata_session.query(Character).get(lookfor)
+            with sd_lock:
+                character = saveddata_session.query(Character).get(lookfor)
         else:
             eager = processEager(eager)
-            character = saveddata_session.query(Character).options(*eager).filter(Character.ID == lookfor).first()
+            with sd_lock:
+                character = saveddata_session.query(Character).options(*eager).filter(Character.ID == lookfor).first()
     elif isinstance(lookfor, basestring):
         eager = processEager(eager)
-        character = saveddata_session.query(Character).options(*eager).filter(Character.name == lookfor).first()
+        with sd_lock:
+            character = saveddata_session.query(Character).options(*eager).filter(Character.name == lookfor).first()
     else:
         raise TypeError("Need integer or string as argument")
     return character

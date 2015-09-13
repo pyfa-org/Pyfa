@@ -58,9 +58,7 @@ if saveddata_connectionstring is not None:
 
     saveddata_meta = MetaData()
     saveddata_meta.bind = saveddata_engine
-    base = sessionmaker(bind=saveddata_engine, autoflush=False, expire_on_commit=False)
-    saveddata_session = base()
-    character_session = base()
+    saveddata_session = sessionmaker(bind=saveddata_engine, autoflush=False, expire_on_commit=False)()
 
 # Lock controlling any changes introduced to session
 sd_lock = threading.Lock()
@@ -77,7 +75,7 @@ from eos.db.saveddata.queries import getUser, getCharacter, getFit, getFitsWithS
                                      getFitList, getFleetList, getFleet, save, remove, commit, add, \
                                      getCharactersForUser, getMiscData, getSquadsIDsWithFitID, getWing, \
                                      getSquad, getBoosterFits, getProjectedFits, getTargetResistsList, getTargetResists,\
-                                     clearPrices, countAllFits, getCharacter
+                                     clearPrices, countAllFits
 
 #If using in memory saveddata, you'll want to reflect it so the data structure is good.
 if config.saveddata_connectionstring == "sqlite:///:memory:":
