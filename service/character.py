@@ -226,6 +226,7 @@ class Character(object):
         return eos.db.getCharacter(charID).name
 
     def new(self):
+        #@todo: seems setting skills on a new character doesn't trigger the dirty setting. Probably goes for character copy too
         char = eos.types.Character("New Character")
         eos.db.save(char)
         return char.ID
@@ -290,12 +291,12 @@ class Character(object):
         sheet = auth.character(charID).CharacterSheet()
 
         dbChar.apiUpdateCharSheet(sheet.skills)
-        self.saveCharacter(dbChar.ID)
+        eos.db.commit()
 
     def apiUpdateCharSheet(self, charID, skills):
         char = eos.db.getCharacter(charID)
         char.apiUpdateCharSheet(skills)
-        self.saveCharacter(char.ID)
+        eos.db.commit()
 
     def changeLevel(self, charID, skillID, level):
         char = eos.db.getCharacter(charID)
