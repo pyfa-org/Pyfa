@@ -155,8 +155,12 @@ class Character(object):
         return len(self.dirtySkills) > 0
 
     def saveLevels(self):
+        if self == self.getAll5() or self == self.getAll0():
+            raise ReadOnlyException("This character is read-only")
+
         for skill in self.dirtySkills:
             skill.saveLevel()
+
         self.dirtySkills = set()
         eos.db.commit()
 

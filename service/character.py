@@ -193,6 +193,9 @@ class Character(object):
         return char
 
     def saveCharacter(self, charID):
+        """Save edited skills"""
+        if charID == self.all5ID() or charID == self.all0ID():
+            return
         char = eos.db.getCharacter(charID)
         char.saveLevels()
 

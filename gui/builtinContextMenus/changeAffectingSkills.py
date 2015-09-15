@@ -21,8 +21,8 @@ class ChangeAffectingSkills(ContextMenu):
 
         self.charID = fit.character.ID
 
-        if self.sChar.getCharName(self.charID) in ("All 0", "All 5"):
-            return False
+        #if self.sChar.getCharName(self.charID) in ("All 0", "All 5"):
+        #    return False
 
         if srcContext == "fittingShip":
             fitID = self.mainFrame.getActiveFit()
