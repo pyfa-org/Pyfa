@@ -160,7 +160,7 @@ class CharacterEditor(wx.Frame):
     def restrict(self):
         self.btnRename.Enable(False)
         self.btnDelete.Enable(False)
-        self.aview.stDisabledTip.Show(True)
+        self.aview.stDisabledTip.Show()
         self.aview.inputID.Enable(False)
         self.aview.inputKey.Enable(False)
         self.aview.charChoice.Enable(False)
@@ -172,7 +172,7 @@ class CharacterEditor(wx.Frame):
     def unrestrict(self):
         self.btnRename.Enable(True)
         self.btnDelete.Enable(True)
-        self.aview.stDisabledTip.Show(False)
+        self.aview.stDisabledTip.Hide()
         self.aview.inputID.Enable(True)
         self.aview.inputKey.Enable(True)
         self.aview.btnFetchCharList.Enable(True)
@@ -376,12 +376,8 @@ class SkillTreeView (wx.Panel):
         sChar = service.Character.getInstance()
         charID = self.Parent.Parent.getActiveCharacter()
         sMkt = service.Market.getInstance()
-        if sChar.getCharName(charID) not in ("All 0", "All 5"):
-            self.levelChangeMenu.selection = sMkt.getItem(self.skillTreeListCtrl.GetPyData(item))
-            self.PopupMenu(self.levelChangeMenu)
-        else:
-            self.statsMenu.selection = sMkt.getItem(self.skillTreeListCtrl.GetPyData(item))
-            self.PopupMenu(self.statsMenu)
+        self.levelChangeMenu.selection = sMkt.getItem(self.skillTreeListCtrl.GetPyData(item))
+        self.PopupMenu(self.levelChangeMenu)
 
     def changeLevel(self, event):
         level = self.levelIds.get(event.Id)
@@ -559,6 +555,7 @@ class APIView (wx.Panel):
                                                              u"Please select another character or make a new one.", style=wx.ALIGN_CENTER )
         self.stDisabledTip.Wrap( -1 )
         hintSizer.Add( self.stDisabledTip, 0, wx.TOP | wx.BOTTOM, 10 )
+        self.stDisabledTip.Hide()
         hintSizer.AddStretchSpacer()
         pmainSizer.Add(hintSizer, 0, wx.EXPAND, 5)
 

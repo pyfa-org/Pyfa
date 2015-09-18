@@ -247,7 +247,7 @@ class Skill(HandledItem):
             raise ReadOnlyException()
 
         self.activeLevel = level
-        if self.activeLevel == self.__level:
+        if self.activeLevel == self.__level and self in self.character.dirtySkills:
             self.character.dirtySkills.remove(self)
         else:
             self.character.dirtySkills.add(self)
