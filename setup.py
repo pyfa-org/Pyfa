@@ -10,9 +10,8 @@ include_files = ['icons', 'staticdata', 'gpl.txt']
 includes = []
 #  collection.abc due to bug:
 #  https://bitbucket.org/anthony_tuininga/cx_freeze/issues/127/collectionssys-error
-excludes = ['Tkinter', 'collections.abc']
-
-
+# All the other stuff is crap that I have. VENV isn't working right for me for a few dependancies, so bleh
+excludes = ['Tkinter', 'collections.abc', 'IPython', 'PyQt4', 'PIL', 'nose', 'tornado', 'zmq', 'mysql', 'scipy']
 
 
 if __name__ == "__main__":
