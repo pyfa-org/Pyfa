@@ -25,8 +25,8 @@ else:
 # Version data
 version = "1.14.1"
 tag = "git"
-expansionName = "Galatea"
-expansionVersion = "1.2"
+expansionName = "Singularity"
+expansionVersion = "965413"
 evemonMinVersion = "4081"
 
 pyfaPath = None
