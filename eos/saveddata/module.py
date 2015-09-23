@@ -35,12 +35,17 @@ class State(Enum):
     OVERHEATED = 2
 
 class Slot(Enum):
+    # These are self-explanatory
     LOW = 1
     MED = 2
     HIGH = 3
     RIG = 4
     SUBSYSTEM = 5
-    MODE = 6  # not a real slot, need for pyfa display rack separation
+    # not a real slot, need for pyfa display rack separation
+    MODE = 6
+    # system effects. They are projected "modules" and pyfa assumes all modules
+    # have a slot. In this case, make one up.
+    SYSTEM = 7
 
 class Hardpoint(Enum):
     NONE = 0
@@ -528,7 +533,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             if effectName in item.effects:
                 return slot
         if item.group.name == "Effect Beacon":
-            return Slot.RIG
+            return Slot.SYSTEM
 
         raise ValueError("Passed item does not fit in any known slot")
 

@@ -932,21 +932,32 @@ class Fit(object):
         self.checkStates(fit, base)
 
     # Old state : New State
-    localMap = {State.OVERHEATED: State.ACTIVE,
-                State.ACTIVE: State.ONLINE,
-                State.OFFLINE: State.ONLINE,
-                State.ONLINE: State.ACTIVE}
-    projectedMap = {State.OVERHEATED: State.ACTIVE,
-                    State.ACTIVE: State.OFFLINE,
-                    State.OFFLINE: State.ACTIVE,
-                    State.ONLINE: State.ACTIVE}  # Just in case
+    localMap = {
+        State.OVERHEATED: State.ACTIVE,
+        State.ACTIVE: State.ONLINE,
+        State.OFFLINE: State.ONLINE,
+        State.ONLINE: State.ACTIVE}
+    projectedMap = {
+        State.OVERHEATED: State.ACTIVE,
+        State.ACTIVE: State.OFFLINE,
+        State.OFFLINE: State.ACTIVE,
+        State.ONLINE: State.ACTIVE}  # Just in case
+    # For system effects. They should only ever be online or offline
+    projectedSystem = {
+        State.OFFLINE: State.ONLINE,
+        State.ONLINE: State.OFFLINE}
 
     def __getProposedState(self, mod, click, proposedState=None):
-        if mod.slot is Slot.SUBSYSTEM or mod.isEmpty:
+        if mod.slot == Slot.SUBSYSTEM or mod.isEmpty:
             return State.ONLINE
 
+        if mod.slot == Slot.SYSTEM:
+            transitionMap = self.projectedSystem
+        else:
+            transitionMap = self.projectedMap if mod.projected else self.localMap
+
         currState = mod.state
-        transitionMap = self.projectedMap if mod.projected else self.localMap
+
         if proposedState is not None:
             state = proposedState
         elif click == "right":

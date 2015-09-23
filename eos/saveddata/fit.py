@@ -604,8 +604,8 @@ class Fit(object):
                  Slot.RIG: "rigSlots",
                  Slot.SUBSYSTEM: "maxSubSystems"}
 
-        if type == Slot.MODE:
-            # Mode slot doesn't really exist, return default 0
+        if type in (Slot.MODE, Slot.SYSTEM):
+            # These slots don't really exist, return default 0
             return 0
 
         slotsUsed = self.getSlotsUsed(type, countDummies)
