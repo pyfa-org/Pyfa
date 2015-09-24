@@ -184,11 +184,20 @@ if __name__ == "__main__":
                         zipdir(dir, library)
                     library.write('pyfa.py', 'pyfa__main__.py')
                     library.write('config.py')
+                    os.chdir(oldcwd)
 
                 for dir in setup.include_files:
                     copyanything(dir, os.path.join(base, dir))
 
-                os.chdir(oldcwd)
+                # @todo: this is in win-wx3 for now, but it will have to be migrated to  OS X release when wx3 is merged into master. This must be tested
+                imagesFile = os.path.join(base, "imgs.zip")
+
+                with zipfile.ZipFile(imagesFile, 'w') as images:
+                    oldcwd = os.getcwd()
+                    os.chdir(source)
+                    for dir in setup.icon_dirs:
+                        zipdir(dir, images)
+                    os.chdir(oldcwd)
 
             if options.zip:
                 archive = zipfile.ZipFile(tmpFile, 'w', compression=zipfile.ZIP_DEFLATED)

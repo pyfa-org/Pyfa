@@ -6,7 +6,10 @@ Windows executable + installer: python setup.py bdist_msi
 """
 
 packages = ['eos', 'gui', 'service', 'utils']
-include_files = ['icons', 'staticdata', 'gpl.txt']
+include_files = ['staticdata', 'gpl.txt']
+# this is read by dist.py to package the icons
+icon_dirs = ['gui', 'icons', 'renders']
+
 includes = []
 #  collection.abc due to bug:
 #  https://bitbucket.org/anthony_tuininga/cx_freeze/issues/127/collectionssys-error
