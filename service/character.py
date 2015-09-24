@@ -171,31 +171,33 @@ class Character(object):
         thread.start()
 
     def all0(self):
-        all0 = eos.types.Character.getAll0()
-        eos.db.commit()
-        return all0
+        return eos.types.Character.getAll0()
 
     def all0ID(self):
         return self.all0().ID
 
     def all5(self):
-        all5 = eos.types.Character.getAll5()
-        eos.db.commit()
-        return all5
+        return eos.types.Character.getAll5()
 
     def all5ID(self):
         return self.all5().ID
 
     def getCharacterList(self):
         baseChars = [eos.types.Character.getAll0(), eos.types.Character.getAll5()]
-        # Flush incase all0 & all5 weren't in the db yet
-        eos.db.commit()
         sFit = service.Fit.getInstance()
-        return map(lambda c: (c.ID, c.name, c == sFit.character), eos.db.getCharacterList())
+
+        return map(lambda c: (c.ID, c.name if not c.isDirty else "{} *".format(c.name), c == sFit.character), eos.db.getCharacterList())
 
     def getCharacter(self, charID):
         char = eos.db.getCharacter(charID)
         return char
+
+    def saveCharacter(self, charID):
+        """Save edited skills"""
+        if charID == self.all5ID() or charID == self.all0ID():
+            return
+        char = eos.db.getCharacter(charID)
+        char.saveLevels()
 
     def getSkillGroups(self):
         cat = eos.db.getCategory(16)
@@ -223,18 +225,18 @@ class Character(object):
         skill = eos.db.getCharacter(charID).getSkill(skillID)
         return skill.level if skill.learned else "Not learned"
 
-    def rename(self, charID, newName):
-        char = eos.db.getCharacter(charID)
-        char.name = newName
-        eos.db.commit()
+    def getCharName(self, charID):
+        return eos.db.getCharacter(charID).name
 
     def new(self):
         char = eos.types.Character("New Character")
         eos.db.save(char)
         return char.ID
 
-    def getCharName(self, charID):
-        return eos.db.getCharacter(charID).name
+    def rename(self, charID, newName):
+        char = eos.db.getCharacter(charID)
+        char.name = newName
+        eos.db.commit()
 
     def copy(self, charID):
         char = eos.db.getCharacter(charID)
@@ -259,7 +261,7 @@ class Character(object):
         id, key, default, _ = self.getApiDetails(charID)
         return id is not "" and key is not "" and default is not ""
 
-    def charList(self, charID, userID, apiKey):
+    def apiCharList(self, charID, userID, apiKey):
         char = eos.db.getCharacter(charID)
 
         char.apiID = userID
@@ -305,8 +307,6 @@ class Character(object):
             skill.level = None
         else:
             skill.level = level
-
-        eos.db.commit()
 
     def addImplant(self, charID, itemID):
         char = eos.db.getCharacter(charID)
