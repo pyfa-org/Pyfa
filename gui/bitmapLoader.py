@@ -20,72 +20,74 @@
 import os.path
 import config
 import wx
-import time
+import zipfile
+import cStringIO
 
 try:
     from collections import OrderedDict
 except ImportError:
     from utils.compat import OrderedDict
 
-cachedBitmapsCount = 0
-cachedBitmaps = OrderedDict()
-dontUseCachedBitmaps = False
+class BitmapLoader():
 
-def getStaticBitmap(name, parent, location):
-    static = wx.StaticBitmap(parent)
-    static.SetBitmap(getBitmap(name,location))
-    return static
+    try:
+        archive = zipfile.ZipFile(os.path.join(config.pyfaPath, 'imgs.zip'), 'r')
+    except IOError:
+        archive = None
 
+    cachedBitmaps = OrderedDict()
+    dontUseCachedBitmaps = False
+    max_bmps = 500
 
-def getBitmap(name,location):
+    @classmethod
+    def getStaticBitmap(cls, name, parent, location):
+        static = wx.StaticBitmap(parent)
+        static.SetBitmap(cls.getBitmap(name,location))
+        return static
 
-    global cachedBitmaps
-    global cachedBitmapsCount
-    global dontUseCachedBitmaps
+    @classmethod
+    def getBitmap(cls, name, location):
+        if cls.dontUseCachedBitmaps:
+            img = cls.getImage(name, location)
+            if img is not None:
+                return img.ConvertToBitmap()
 
-    if dontUseCachedBitmaps:
-        img = getImage(name, location)
-        if img is not None:
-            return img.ConvertToBitmap()
+        path = "%s%s" % (name, location)
 
-    path = "%s%s" % (name,location)
-    MAX_BMPS = 500
-#    start = time.clock()
-    if cachedBitmapsCount == MAX_BMPS:
-        cachedBitmaps.popitem(False)
-        cachedBitmapsCount -=1
+        if len(cls.cachedBitmaps) == cls.max_bmps:
+            cls.cachedBitmaps.popitem(False)
 
-    if path not in cachedBitmaps:
-        img = getImage(name, location)
-        if img is not None:
-            bmp = img.ConvertToBitmap()
+        if path not in cls.cachedBitmaps:
+            img = cls.getImage(name, location)
+            if img is not None:
+                bmp = img.ConvertToBitmap()
+            else:
+                bmp = None
+            cls.cachedBitmaps[path] = bmp
         else:
-            bmp = None
-        cachedBitmaps[path] = bmp
-        cachedBitmapsCount += 1
-    else:
-        bmp = cachedBitmaps[path]
+            bmp = cls.cachedBitmaps[path]
 
-#    print "#BMPs:%d - Current took: %.8f" % (cachedBitmapsCount,time.clock() - start)
-    return bmp
+        return bmp
 
-def stripPath(fname):
-    """
-    Here we extract 'core' of icon name. Path and
-    extension are sometimes specified in database
-    but we don't need them.
-    """
-    # Path before the icon file name
-    fname = fname.split('/')[-1]
-    # Extension
-    fname = fname.rsplit('.', 1)[0]
-    return fname
+    @classmethod
+    def getImage(cls, name, location):
+        filename = "{0}.png".format(name)
 
-def getImage(name, location):
-    filename = "{0}.png".format(name)
-    location = os.path.join(config.pyfaPath, 'imgs', location, filename)
+        if cls.archive:
+            path = os.path.join(location, filename)
+            if os.sep != "/" and os.sep in path:
+                path = path.replace(os.sep, "/")
 
-    if os.path.exists(location):
-        return wx.Image(location)
-    else:
-        print "Missing icon file: {0}, {1}".format(filename, location)
+            try:
+                img_data = cls.archive.read(path)
+                sbuf = cStringIO.StringIO(img_data)
+                return wx.ImageFromStream(sbuf)
+            except KeyError:
+                print "Missing icon file from zip: {0}".format(path)
+        else:
+            path = os.path.join(config.pyfaPath, 'imgs', location, filename)
+
+            if os.path.exists(path):
+                return wx.Image(path)
+            else:
+                print "Missing icon file: {0}".format(path)
