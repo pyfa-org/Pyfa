@@ -56,7 +56,7 @@ class FitDpsGraph(Graph):
         sAttr = service.Attribute.getInstance()
         for key, attrName in self.propertyAttributeMap.iteritems():
             iconFile = sAttr.getAttributeInfo(attrName).icon.iconFile
-            bitmap = bitmapLoader.getBitmap(iconFile, "pack")
+            bitmap = bitmapLoader.getBitmap(iconFile, "icons")
             if bitmap:
                 icons[key] = bitmap
 

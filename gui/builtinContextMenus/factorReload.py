@@ -27,7 +27,7 @@ class FactorReload(ContextMenu):
         fitID = self.mainFrame.getActiveFit()
         fit = sFit.getFit(fitID)
         if fit.factorReload:
-            return bitmapLoader.getBitmap("state_active_small", "icons")
+            return bitmapLoader.getBitmap("state_active_small", "gui")
         else:
             return None
 

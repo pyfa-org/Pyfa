@@ -56,7 +56,7 @@ class TargetResists(ContextMenu):
         tr = f.targetResists
 
         if tr == pattern:
-            bitmap = bitmapLoader.getBitmap("state_active_small", "icons")
+            bitmap = bitmapLoader.getBitmap("state_active_small", "gui")
             item.SetBitmap(bitmap)
         return item
 

@@ -34,8 +34,8 @@ class CapacitorUse(ViewColumn):
 
         sAttr = service.Attribute.getInstance()
         info = sAttr.getAttributeInfo("capacitorNeed")
-        self.imageId = fittingView.imageList.GetImageIndex("capacitorRecharge_small", "icons")
-        self.bitmap = bitmapLoader.getBitmap("capacitorRecharge_small", "icons")
+        self.imageId = fittingView.imageList.GetImageIndex("capacitorRecharge_small", "gui")
+        self.bitmap = bitmapLoader.getBitmap("capacitorRecharge_small", "gui")
 
     def getText(self, mod):
         if isinstance(mod, Mode):

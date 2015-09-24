@@ -39,8 +39,8 @@ class MaxRange(ViewColumn):
         if params["showIcon"]:
             iconFile = info.icon.iconFile if info.icon else None
             if iconFile:
-                self.imageId = fittingView.imageList.GetImageIndex(iconFile, "pack")
-                self.bitmap = bitmapLoader.getBitmap(iconFile, "pack")
+                self.imageId = fittingView.imageList.GetImageIndex(iconFile, "icons")
+                self.bitmap = bitmapLoader.getBitmap(iconFile, "icons")
             else:
                 self.imageId = -1
             self.mask = wx.LIST_MASK_IMAGE

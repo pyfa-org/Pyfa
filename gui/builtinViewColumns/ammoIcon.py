@@ -44,7 +44,7 @@ class AmmoIcon(ViewColumn):
         else:
             iconFile = stuff.charge.icon.iconFile if stuff.item.icon else ""
             if iconFile:
-                return self.fittingView.imageList.GetImageIndex(iconFile, "pack")
+                return self.fittingView.imageList.GetImageIndex(iconFile, "icons")
             else:
                 return -1
 

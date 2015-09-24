@@ -105,7 +105,7 @@ class ModuleAmmoPicker(ContextMenu):
         menu.Bind(wx.EVT_MENU, self.handleAmmoSwitch, item)
         item.charge = charge
         if charge is not None and charge.icon is not None:
-            bitmap = bitmapLoader.getBitmap(charge.icon.iconFile, "pack")
+            bitmap = bitmapLoader.getBitmap(charge.icon.iconFile, "icons")
             if bitmap is not None:
                 item.SetBitmap(bitmap)
 
@@ -181,7 +181,7 @@ class ModuleAmmoPicker(ContextMenu):
 
                     type = currType
                     item = wx.MenuItem(m, wx.ID_ANY, type.capitalize())
-                    bitmap = bitmapLoader.getBitmap("%s_small" % type, "icons")
+                    bitmap = bitmapLoader.getBitmap("%s_small" % type, "gui")
                     if bitmap is not None:
                         item.SetBitmap(bitmap)
 

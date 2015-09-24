@@ -82,7 +82,7 @@ class ResistancesViewFull(StatsView):
         col+=1
         toolTipText = {"em" : "Electromagnetic resistance", "thermal" : "Thermal resistance", "kinetic" : "Kinetic resistance", "explosive" : "Explosive resistance"}
         for damageType in ("em", "thermal", "kinetic", "explosive"):
-            bitmap = bitmapLoader.getStaticBitmap("%s_big" % damageType, contentPanel, "icons")
+            bitmap = bitmapLoader.getStaticBitmap("%s_big" % damageType, contentPanel, "gui")
             tooltip = wx.ToolTip(toolTipText[damageType])
             bitmap.SetToolTip(tooltip)
             sizerResistances.Add(bitmap, wx.GBPosition( row, col ), wx.GBSpan( 1, 1 ), wx.ALIGN_CENTER)
@@ -104,7 +104,7 @@ class ResistancesViewFull(StatsView):
         toolTipText = {"shield" : "Shield resistance", "armor" : "Armor resistance", "hull" : "Hull resistance", "damagePattern" : "Incoming damage pattern"}
         for tankType in ("shield", "armor", "hull", "separator", "damagePattern"):
             if tankType != "separator":
-                bitmap = bitmapLoader.getStaticBitmap("%s_big" % tankType, contentPanel, "icons")
+                bitmap = bitmapLoader.getStaticBitmap("%s_big" % tankType, contentPanel, "gui")
                 tooltip = wx.ToolTip(toolTipText[tankType])
                 bitmap.SetToolTip(tooltip)
                 sizerResistances.Add(bitmap, wx.GBPosition( row, col ), wx.GBSpan( 1, 1 ), wx.ALIGN_CENTER)

@@ -56,7 +56,7 @@ class PriceViewFull(StatsView):
             box = wx.BoxSizer(wx.HORIZONTAL)
             gridPrice.Add(box, 0, wx.ALIGN_TOP)
 
-            box.Add(bitmapLoader.getStaticBitmap(image, contentPanel, "icons"), 0, wx.ALIGN_CENTER)
+            box.Add(bitmapLoader.getStaticBitmap(image, contentPanel, "gui"), 0, wx.ALIGN_CENTER)
 
             vbox = wx.BoxSizer(wx.VERTICAL)
             box.Add(vbox, 1, wx.EXPAND)

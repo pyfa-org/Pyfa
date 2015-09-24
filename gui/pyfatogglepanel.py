@@ -54,8 +54,8 @@ class TogglePanel ( wx.Panel ):
 
         #    Load expanded/collapsed bitmaps from the icons folder
 
-        self.bmpExpanded = bitmapLoader.getBitmap("down-arrow2","icons")
-        self.bmpCollapsed = bitmapLoader.getBitmap("up-arrow2","icons")
+        self.bmpExpanded = bitmapLoader.getBitmap("down-arrow2","gui")
+        self.bmpCollapsed = bitmapLoader.getBitmap("up-arrow2","gui")
 
         #    Make the bitmaps have the same color as window text
 

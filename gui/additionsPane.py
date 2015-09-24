@@ -51,12 +51,12 @@ class AdditionsPane(TogglePanel):
         self.notebook.SetMinSize(size)
         baseSizer.Add(self.notebook, 1, wx.EXPAND)
 
-        droneImg = bitmapLoader.getImage("drone_small", "icons")
-        implantImg = bitmapLoader.getImage("implant_small", "icons")
-        boosterImg = bitmapLoader.getImage("booster_small", "icons")
-        projectedImg = bitmapLoader.getImage("projected_small", "icons")
-        gangImg = bitmapLoader.getImage("fleet_fc_small", "icons")
-        cargoImg = bitmapLoader.getImage("cargo_small", "icons")
+        droneImg = bitmapLoader.getImage("drone_small", "gui")
+        implantImg = bitmapLoader.getImage("implant_small", "gui")
+        boosterImg = bitmapLoader.getImage("booster_small", "gui")
+        projectedImg = bitmapLoader.getImage("projected_small", "gui")
+        gangImg = bitmapLoader.getImage("fleet_fc_small", "gui")
+        cargoImg = bitmapLoader.getImage("cargo_small", "gui")
 
         self.notebook.AddPage(DroneView(self.notebook), "Drones", tabImage = droneImg, showClose = False)
         self.notebook.AddPage(CargoView(self.notebook), "Cargo", tabImage = cargoImg, showClose = False)

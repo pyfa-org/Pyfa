@@ -35,8 +35,8 @@ class Miscellanea(ViewColumn):
                       "displayName": False}
         ViewColumn.__init__(self, fittingView)
         if params["showIcon"]:
-            self.imageId = fittingView.imageList.GetImageIndex("column_misc", "icons")
-            self.bitmap = bitmapLoader.getBitmap("column_misc", "icons")
+            self.imageId = fittingView.imageList.GetImageIndex("column_misc", "gui")
+            self.bitmap = bitmapLoader.getBitmap("column_misc", "gui")
             self.mask = wx.LIST_MASK_IMAGE
         else:
             self.imageId = -1

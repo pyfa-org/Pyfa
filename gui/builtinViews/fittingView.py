@@ -294,7 +294,7 @@ class FittingView(d.Display):
         sFit = service.Fit.getInstance()
         fit = sFit.getFit(self.getActiveFit())
 
-        bitmap = bitmapLoader.getImage("race_%s_small" % fit.ship.item.race, "icons")
+        bitmap = bitmapLoader.getImage("race_%s_small" % fit.ship.item.race, "gui")
         text = "%s: %s" % (fit.ship.item.name, fit.name)
 
         pageIndex = self.parent.GetPageIndex(self)

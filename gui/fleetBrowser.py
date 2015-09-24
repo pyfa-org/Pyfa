@@ -135,7 +135,7 @@ class FleetBrowserHeader (wx.Panel):
         wx.Panel.__init__ (self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.Size(500, 24), style=wx.TAB_TRAVERSAL)
         self.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNFACE ) )
 
-        self.newBmp = bitmapLoader.getBitmap("fit_add_small","icons")
+        self.newBmp = bitmapLoader.getBitmap("fit_add_small","gui")
         bmpSize = (16,16)
 
         mainSizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -264,11 +264,11 @@ class FleetItem(SFItem.SFBrowserItem):
         self.fontNormal = wx.FontFromPixelSize((0,14),wx.SWISS, wx.NORMAL, wx.NORMAL, False)
         self.fontSmall = wx.FontFromPixelSize((0,12),wx.SWISS, wx.NORMAL, wx.NORMAL, False)
 
-        self.copyBmp = bitmapLoader.getBitmap("fit_add_small", "icons")
-        self.renameBmp = bitmapLoader.getBitmap("fit_rename_small", "icons")
-        self.deleteBmp = bitmapLoader.getBitmap("fit_delete_small","icons")
-        self.acceptBmp = bitmapLoader.getBitmap("faccept_small", "icons")
-        self.fleetBmp = bitmapLoader.getBitmap("fleet_item_big", "icons")
+        self.copyBmp = bitmapLoader.getBitmap("fit_add_small", "gui")
+        self.renameBmp = bitmapLoader.getBitmap("fit_rename_small", "gui")
+        self.deleteBmp = bitmapLoader.getBitmap("fit_delete_small","gui")
+        self.acceptBmp = bitmapLoader.getBitmap("faccept_small", "gui")
+        self.fleetBmp = bitmapLoader.getBitmap("fleet_item_big", "gui")
 
         fleetImg = self.fleetBmp.ConvertToImage()
         fleetImg = fleetImg.Blur(2)

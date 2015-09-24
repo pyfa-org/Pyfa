@@ -223,6 +223,6 @@ class PFNetworkPref ( PreferenceView):
             self.editProxySettingsPort.Disable()
 
     def getImage(self):
-        return bitmapLoader.getBitmap("prefs_proxy", "icons")
+        return bitmapLoader.getBitmap("prefs_proxy", "gui")
 
 PFNetworkPref.register()

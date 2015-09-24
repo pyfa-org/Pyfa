@@ -313,7 +313,7 @@ class PFGaugePref ( PreferenceView):
         self.cp103105E.Bind( wx.EVT_COLOURPICKER_CHANGED, self.OnColourChanged )
 
     def getImage(self):
-        return bitmapLoader.getBitmap("pref-gauges_big", "icons")
+        return bitmapLoader.getBitmap("pref-gauges_big", "gui")
 
     def InitDefaultColours(self):
         self.c0100S = wx.Colour(191, 191, 191, 255)

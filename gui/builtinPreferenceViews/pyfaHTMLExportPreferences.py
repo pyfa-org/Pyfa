@@ -76,6 +76,6 @@ class PFHTMLExportPref ( PreferenceView):
         self.HTMLExportSettings.setEnabled(self.exportEnabled.GetValue())
 
     def getImage(self):
-        return bitmapLoader.getBitmap("prefs_html", "icons")
+        return bitmapLoader.getBitmap("prefs_html", "gui")
 
 PFHTMLExportPref.register()

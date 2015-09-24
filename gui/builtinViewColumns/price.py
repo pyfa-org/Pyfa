@@ -29,8 +29,8 @@ class Price(ViewColumn):
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
         self.mask = wx.LIST_MASK_IMAGE
-        self.bitmap = bitmapLoader.getBitmap("totalPrice_small", "icons")
-        self.imageId = fittingView.imageList.GetImageIndex("totalPrice_small", "icons")
+        self.bitmap = bitmapLoader.getBitmap("totalPrice_small", "gui")
+        self.imageId = fittingView.imageList.GetImageIndex("totalPrice_small", "gui")
 
     def getText(self, stuff):
         if stuff.item is None or stuff.item.group.name == "Ship Modifiers":

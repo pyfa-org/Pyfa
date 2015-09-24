@@ -35,10 +35,10 @@ class AttributeDisplay(ViewColumn):
         if params["showIcon"]:
             if info.name == "power":
                 iconFile = "pg_small"
-                iconType = "icons"
+                iconType = "gui"
             else:
                 iconFile = info.icon.iconFile if info.icon else None
-                iconType = "pack"
+                iconType = "icons"
             if iconFile:
                 self.imageId = fittingView.imageList.GetImageIndex(iconFile, iconType)
                 self.bitmap = bitmapLoader.getBitmap(iconFile, iconType)

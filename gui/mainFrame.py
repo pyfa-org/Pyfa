@@ -114,7 +114,7 @@ class MainFrame(wx.Frame):
             self.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNFACE ) )
 
         #Load and set the icon for pyfa main window
-        i = wx.IconFromBitmap(bitmapLoader.getBitmap("pyfa", "icons"))
+        i = wx.IconFromBitmap(bitmapLoader.getBitmap("pyfa", "gui"))
         self.SetIcon(i)
 
         #Create the layout and windows
@@ -139,8 +139,8 @@ class MainFrame(wx.Frame):
 
         self.notebookBrowsers = gui.chromeTabs.PFNotebook(self.splitter, False)
 
-        marketImg = bitmapLoader.getImage("market_small", "icons")
-        shipBrowserImg = bitmapLoader.getImage("ship_small", "icons")
+        marketImg = bitmapLoader.getImage("market_small", "gui")
+        shipBrowserImg = bitmapLoader.getImage("ship_small", "gui")
 
         self.marketBrowser = MarketBrowser(self.notebookBrowsers)
         self.notebookBrowsers.AddPage(self.marketBrowser, "Market", tabImage = marketImg, showClose = False)

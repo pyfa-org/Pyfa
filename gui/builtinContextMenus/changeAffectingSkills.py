@@ -74,7 +74,7 @@ class ChangeAffectingSkills(ContextMenu):
             grandSub = wx.Menu()
             skillItem.SetSubMenu(grandSub)
             if skill.learned:
-                bitmap = bitmapLoader.getBitmap("lvl%s" % skill.level, "icons")
+                bitmap = bitmapLoader.getBitmap("lvl%s" % skill.level, "gui")
                 if bitmap is not None:
                     skillItem.SetBitmap(bitmap)
 

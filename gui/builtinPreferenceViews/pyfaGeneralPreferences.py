@@ -144,6 +144,6 @@ class PFGeneralPref ( PreferenceView):
         self.sFit.serviceFittingOptions["showMarketShortcuts"] = self.cbMarketShortcuts.GetValue()
 
     def getImage(self):
-        return bitmapLoader.getBitmap("prefs_settings", "icons")
+        return bitmapLoader.getBitmap("prefs_settings", "gui")
 
 PFGeneralPref.register()

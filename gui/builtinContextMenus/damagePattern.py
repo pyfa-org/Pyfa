@@ -65,7 +65,7 @@ class DamagePattern(ContextMenu):
         dp = f.damagePattern
 
         if dp == pattern:
-            bitmap = bitmapLoader.getBitmap("state_active_small", "icons")
+            bitmap = bitmapLoader.getBitmap("state_active_small", "gui")
             menuItem.SetBitmap(bitmap)
         return menuItem
 
@@ -80,7 +80,7 @@ class DamagePattern(ContextMenu):
             self.patternIds[id] = self.singles[i]
             rootMenu.Bind(wx.EVT_MENU, self.handlePatternSwitch, pitem)
             if self.patternIds[id] == self.fit.damagePattern:
-                bitmap = bitmapLoader.getBitmap("state_active_small", "icons")
+                bitmap = bitmapLoader.getBitmap("state_active_small", "gui")
                 pitem.SetBitmap(bitmap)
             return False
 

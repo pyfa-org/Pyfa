@@ -336,10 +336,10 @@ class PFTabRenderer:
         closeButton -- True if tab can be closed
         """
         # tab left/right zones inclination
-        self.ctabLeft = bitmapLoader.getImage("ctableft", "icons")
-        self.ctabMiddle = bitmapLoader.getImage("ctabmiddle", "icons")
-        self.ctabRight = bitmapLoader.getImage("ctabright", "icons")
-        self.ctabClose = bitmapLoader.getImage("ctabclose", "icons")
+        self.ctabLeft = bitmapLoader.getImage("ctableft", "gui")
+        self.ctabMiddle = bitmapLoader.getImage("ctabmiddle", "gui")
+        self.ctabRight = bitmapLoader.getImage("ctabright", "gui")
+        self.ctabClose = bitmapLoader.getImage("ctabclose", "gui")
 
         self.leftWidth = self.ctabLeft.GetWidth()
         self.rightWidth = self.ctabRight.GetWidth()
@@ -595,7 +595,7 @@ class PFTabRenderer:
 class PFAddRenderer:
     def __init__(self):
         """Renders the add tab button"""
-        self.addImg = bitmapLoader.getImage("ctabadd", "icons")
+        self.addImg = bitmapLoader.getImage("ctabadd", "gui")
         self.width = self.addImg.GetWidth()
         self.height = self.addImg.GetHeight()
 

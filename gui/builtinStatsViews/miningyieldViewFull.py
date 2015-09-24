@@ -55,7 +55,7 @@ class MiningYieldViewFull(StatsView):
             baseBox = wx.BoxSizer(wx.HORIZONTAL)
             sizerMiningYield.Add(baseBox, 1, wx.ALIGN_LEFT if counter == 0 else wx.ALIGN_CENTER_HORIZONTAL)
 
-            baseBox.Add(bitmapLoader.getStaticBitmap("%s_big" % image, parent, "icons"), 0, wx.ALIGN_CENTER)
+            baseBox.Add(bitmapLoader.getStaticBitmap("%s_big" % image, parent, "gui"), 0, wx.ALIGN_CENTER)
 
             box = wx.BoxSizer(wx.VERTICAL)
             baseBox.Add(box, 0, wx.ALIGN_CENTER)
@@ -76,7 +76,7 @@ class MiningYieldViewFull(StatsView):
         baseBox = wx.BoxSizer(wx.HORIZONTAL)
         targetSizer.Add(baseBox, 0, wx.ALIGN_LEFT)
 
-        baseBox.Add(bitmapLoader.getStaticBitmap("cargoBay_big", parent, "icons"), 0, wx.ALIGN_CENTER)
+        baseBox.Add(bitmapLoader.getStaticBitmap("cargoBay_big", parent, "gui"), 0, wx.ALIGN_CENTER)
 
         box = wx.BoxSizer(wx.VERTICAL)
         baseBox.Add(box, 0, wx.EXPAND)
@@ -92,7 +92,7 @@ class MiningYieldViewFull(StatsView):
 
         self._cachedValues.append(0)
 
-        image = bitmapLoader.getBitmap("turret_small", "icons")
+        image = bitmapLoader.getBitmap("turret_small", "gui")
         firepower = wx.BitmapButton(contentPanel, -1, image)
         firepower.SetToolTip(wx.ToolTip("Click to toggle to Firepower View"))
         firepower.Bind(wx.EVT_BUTTON, self.switchToFirepowerView)

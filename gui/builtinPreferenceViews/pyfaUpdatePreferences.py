@@ -99,6 +99,6 @@ class PFUpdatePref (PreferenceView):
         wx.LaunchDefaultBrowser('https://github.com/DarkFenX/Pyfa/releases/tag/'+self.UpdateSettings.get('version'))
 
     def getImage(self):
-        return bitmapLoader.getBitmap("prefs_update", "icons")
+        return bitmapLoader.getBitmap("prefs_update", "gui")
 
 PFUpdatePref.register()
