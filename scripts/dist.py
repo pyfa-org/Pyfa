@@ -174,17 +174,18 @@ if __name__ == "__main__":
                 sys.path.append(source)
                 import setup
 
+                # the following operations require us to be in the source directory
+                # for the zipping to work correctly
+                oldcwd = os.getcwd()
+                os.chdir(source)
+
                 libraryFile = os.path.join(base, "library.zip")
 
                 with zipfile.ZipFile(libraryFile, 'a') as library:
-                    # change cwd to source so that the zip append will work correctly
-                    oldcwd = os.getcwd()
-                    os.chdir(source)
                     for dir in setup.packages:
                         zipdir(dir, library)
                     library.write('pyfa.py', 'pyfa__main__.py')
                     library.write('config.py')
-                    os.chdir(oldcwd)
 
                 for dir in setup.include_files:
                     copyanything(dir, os.path.join(base, dir))
@@ -193,11 +194,11 @@ if __name__ == "__main__":
                 imagesFile = os.path.join(base, "imgs.zip")
 
                 with zipfile.ZipFile(imagesFile, 'w') as images:
-                    oldcwd = os.getcwd()
-                    os.chdir(source)
+                    os.chdir('imgs')  # need to be in images directory
                     for dir in setup.icon_dirs:
                         zipdir(dir, images)
-                    os.chdir(oldcwd)
+
+                os.chdir(oldcwd)
 
             if options.zip:
                 archive = zipfile.ZipFile(tmpFile, 'w', compression=zipfile.ZIP_DEFLATED)
