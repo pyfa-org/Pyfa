@@ -4,7 +4,7 @@
 # Celestials named like: Drifter Incursion (6 of 6)
 # Celestials named like: Incursion ship attributes effects (3 of 3)
 runTime = "early"
-type = ("projected", "offline")
+type = ("projected", "passive")
 def handler(fit, beacon, context):
     damages = ("em", "thermal", "kinetic", "explosive")
     for damage in damages:
