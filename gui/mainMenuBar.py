@@ -19,7 +19,7 @@
 
 import wx
 import config
-import bitmapLoader
+from gui.bitmapLoader import BitmapLoader
 import gui.mainFrame
 import gui.graphFrame
 import gui.globalEvents as GE
@@ -76,23 +76,23 @@ class MainMenuBar(wx.MenuBar):
         self.Append(windowMenu, "&Window")
 
         charEditItem = wx.MenuItem(windowMenu, self.characterEditorId, "&Character Editor\tCTRL+E")
-        charEditItem.SetBitmap(bitmapLoader.getBitmap("character_small", "gui"))
+        charEditItem.SetBitmap(BitmapLoader.getBitmap("character_small", "gui"))
         windowMenu.AppendItem(charEditItem)
 
         damagePatternEditItem = wx.MenuItem(windowMenu, self.damagePatternEditorId, "Damage Pattern Editor\tCTRL+D")
-        damagePatternEditItem.SetBitmap(bitmapLoader.getBitmap("damagePattern_small", "gui"))
+        damagePatternEditItem.SetBitmap(BitmapLoader.getBitmap("damagePattern_small", "gui"))
         windowMenu.AppendItem(damagePatternEditItem)
 
         targetResistsEditItem = wx.MenuItem(windowMenu, self.targetResistsEditorId, "Target Resists Editor\tCTRL+R")
-        targetResistsEditItem.SetBitmap(bitmapLoader.getBitmap("explosive_big", "gui"))
+        targetResistsEditItem.SetBitmap(BitmapLoader.getBitmap("explosive_big", "gui"))
         windowMenu.AppendItem(targetResistsEditItem)
 
         graphFrameItem = wx.MenuItem(windowMenu, self.graphFrameId, "Graphs\tCTRL+G")
-        graphFrameItem.SetBitmap(bitmapLoader.getBitmap("graphs_small", "gui"))
+        graphFrameItem.SetBitmap(BitmapLoader.getBitmap("graphs_small", "gui"))
         windowMenu.AppendItem(graphFrameItem)
 
         preferencesItem = wx.MenuItem(windowMenu, wx.ID_PREFERENCES, "Preferences\tCTRL+P")
-        preferencesItem.SetBitmap(bitmapLoader.getBitmap("preferences_small", "gui"))
+        preferencesItem.SetBitmap(BitmapLoader.getBitmap("preferences_small", "gui"))
         windowMenu.AppendItem(preferencesItem)
 
         # Help menu

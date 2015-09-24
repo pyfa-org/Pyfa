@@ -26,7 +26,7 @@ from gui.implantView import ImplantView
 from gui.projectedView import ProjectedView
 from gui.pyfatogglepanel import TogglePanel
 from gui.gangView import GangView
-from gui import bitmapLoader
+from gui.bitmapLoader import BitmapLoader
 
 import gui.chromeTabs
 
@@ -51,12 +51,12 @@ class AdditionsPane(TogglePanel):
         self.notebook.SetMinSize(size)
         baseSizer.Add(self.notebook, 1, wx.EXPAND)
 
-        droneImg = bitmapLoader.getImage("drone_small", "gui")
-        implantImg = bitmapLoader.getImage("implant_small", "gui")
-        boosterImg = bitmapLoader.getImage("booster_small", "gui")
-        projectedImg = bitmapLoader.getImage("projected_small", "gui")
-        gangImg = bitmapLoader.getImage("fleet_fc_small", "gui")
-        cargoImg = bitmapLoader.getImage("cargo_small", "gui")
+        droneImg = BitmapLoader.getImage("drone_small", "gui")
+        implantImg = BitmapLoader.getImage("implant_small", "gui")
+        boosterImg = BitmapLoader.getImage("booster_small", "gui")
+        projectedImg = BitmapLoader.getImage("projected_small", "gui")
+        gangImg = BitmapLoader.getImage("fleet_fc_small", "gui")
+        cargoImg = BitmapLoader.getImage("cargo_small", "gui")
 
         self.notebook.AddPage(DroneView(self.notebook), "Drones", tabImage = droneImg, showClose = False)
         self.notebook.AddPage(CargoView(self.notebook), "Cargo", tabImage = cargoImg, showClose = False)

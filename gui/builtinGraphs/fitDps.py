@@ -19,7 +19,7 @@
 
 from gui.graph import Graph
 import service
-from gui import bitmapLoader
+from gui.bitmapLoader import BitmapLoader
 from eos.graph.fitDps import FitDpsGraph as FitDps
 from eos.graph import Data
 import gui.mainFrame
@@ -56,7 +56,7 @@ class FitDpsGraph(Graph):
         sAttr = service.Attribute.getInstance()
         for key, attrName in self.propertyAttributeMap.iteritems():
             iconFile = sAttr.getAttributeInfo(attrName).icon.iconFile
-            bitmap = bitmapLoader.getBitmap(iconFile, "icons")
+            bitmap = BitmapLoader.getBitmap(iconFile, "icons")
             if bitmap:
                 icons[key] = bitmap
 

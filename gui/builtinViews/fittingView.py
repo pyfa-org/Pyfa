@@ -28,7 +28,7 @@ import gui.shipBrowser
 import gui.multiSwitch
 from eos.types import Slot, Rack, Module
 from gui.builtinViewColumns.state import State
-from gui import bitmapLoader
+from gui.bitmapLoader import BitmapLoader
 import gui.builtinViews.emptyView
 from gui.utils.exportHtml import exportHtml
 
@@ -294,7 +294,7 @@ class FittingView(d.Display):
         sFit = service.Fit.getInstance()
         fit = sFit.getFit(self.getActiveFit())
 
-        bitmap = bitmapLoader.getImage("race_%s_small" % fit.ship.item.race, "gui")
+        bitmap = BitmapLoader.getImage("race_%s_small" % fit.ship.item.race, "gui")
         text = "%s: %s" % (fit.ship.item.name, fit.name)
 
         pageIndex = self.parent.GetPageIndex(self)

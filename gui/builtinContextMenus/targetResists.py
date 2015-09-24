@@ -3,7 +3,7 @@ import gui.mainFrame
 import service
 import gui.globalEvents as GE
 import wx
-from gui import bitmapLoader
+from gui.bitmapLoader import BitmapLoader
 
 try:
     from collections import OrderedDict
@@ -56,7 +56,7 @@ class TargetResists(ContextMenu):
         tr = f.targetResists
 
         if tr == pattern:
-            bitmap = bitmapLoader.getBitmap("state_active_small", "gui")
+            bitmap = BitmapLoader.getBitmap("state_active_small", "gui")
             item.SetBitmap(bitmap)
         return item
 

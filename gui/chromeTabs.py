@@ -22,7 +22,7 @@ import wx.lib.newevent
 import gui.utils.colorUtils as colorUtils
 import gui.utils.drawUtils as drawUtils
 import gui.utils.fonts as fonts
-from gui import bitmapLoader
+from gui.bitmapLoader import BitmapLoader
 import gui.utils.fonts as fonts
 
 import service
@@ -336,10 +336,10 @@ class PFTabRenderer:
         closeButton -- True if tab can be closed
         """
         # tab left/right zones inclination
-        self.ctabLeft = bitmapLoader.getImage("ctableft", "gui")
-        self.ctabMiddle = bitmapLoader.getImage("ctabmiddle", "gui")
-        self.ctabRight = bitmapLoader.getImage("ctabright", "gui")
-        self.ctabClose = bitmapLoader.getImage("ctabclose", "gui")
+        self.ctabLeft = BitmapLoader.getImage("ctableft", "gui")
+        self.ctabMiddle = BitmapLoader.getImage("ctabmiddle", "gui")
+        self.ctabRight = BitmapLoader.getImage("ctabright", "gui")
+        self.ctabClose = BitmapLoader.getImage("ctabclose", "gui")
 
         self.leftWidth = self.ctabLeft.GetWidth()
         self.rightWidth = self.ctabRight.GetWidth()
@@ -595,7 +595,7 @@ class PFTabRenderer:
 class PFAddRenderer:
     def __init__(self):
         """Renders the add tab button"""
-        self.addImg = bitmapLoader.getImage("ctabadd", "gui")
+        self.addImg = BitmapLoader.getImage("ctabadd", "gui")
         self.width = self.addImg.GetWidth()
         self.height = self.addImg.GetHeight()
 

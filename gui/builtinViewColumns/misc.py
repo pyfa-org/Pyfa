@@ -20,7 +20,7 @@
 
 import gui.mainFrame
 from gui.viewColumn import ViewColumn
-from gui import bitmapLoader
+from gui.bitmapLoader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 from gui.utils.listFormatter import formatList
 from service.fit import Fit, Market
@@ -36,7 +36,7 @@ class Miscellanea(ViewColumn):
         ViewColumn.__init__(self, fittingView)
         if params["showIcon"]:
             self.imageId = fittingView.imageList.GetImageIndex("column_misc", "gui")
-            self.bitmap = bitmapLoader.getBitmap("column_misc", "gui")
+            self.bitmap = BitmapLoader.getBitmap("column_misc", "gui")
             self.mask = wx.LIST_MASK_IMAGE
         else:
             self.imageId = -1

@@ -1,7 +1,7 @@
 import wx.gizmos
 import gui.fleetBrowser
 import service
-from gui import bitmapLoader
+from gui.bitmapLoader import BitmapLoader
 
 #Tab spawning handler
 class FleetSpawner(gui.multiSwitch.TabSpawner):
@@ -28,7 +28,7 @@ class FleetView(wx.gizmos.TreeListCtrl):
         self.tabManager = parent
 
         self.fleetId = None
-        self.fleetImg = bitmapLoader.getImage("53_16", "icons")
+        self.fleetImg = BitmapLoader.getImage("53_16", "icons")
 
         self.imageList = wx.ImageList(16, 16)
         self.SetImageList(self.imageList)
@@ -38,9 +38,9 @@ class FleetView(wx.gizmos.TreeListCtrl):
 
         self.SetMainColumn(1)
         self.icons = {}
-        self.addImage = self.imageList.Add(bitmapLoader.getBitmap("add_small", "gui"))
+        self.addImage = self.imageList.Add(BitmapLoader.getBitmap("add_small", "gui"))
         for icon in ("fb", "fc", "sb", "sc", "wb", "wc"):
-            self.icons[icon] = self.imageList.Add(bitmapLoader.getBitmap("fleet_%s_small" % icon, "gui"))
+            self.icons[icon] = self.imageList.Add(BitmapLoader.getBitmap("fleet_%s_small" % icon, "gui"))
 
         self.Bind(wx.EVT_TREE_ITEM_ACTIVATED, self.checkNew)
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()

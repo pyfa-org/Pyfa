@@ -1,6 +1,6 @@
 import wx
 import copy
-from gui import bitmapLoader
+from gui.bitmapLoader import BitmapLoader
 import gui.mainFrame
 import gui.globalEvents as GE
 import time
@@ -107,9 +107,9 @@ class RaceSelector(wx.Window):
         self.buttonsPadding = 4
 
         if layout == wx.VERTICAL:
-            self.bmpArrow = bitmapLoader.getBitmap("down-arrow2","gui")
+            self.bmpArrow = BitmapLoader.getBitmap("down-arrow2","gui")
         else:
-            self.bmpArrow = bitmapLoader.getBitmap("up-arrow2","gui")
+            self.bmpArrow = BitmapLoader.getBitmap("up-arrow2","gui")
 
         #    Make the bitmaps have the same color as window text
 
@@ -207,7 +207,7 @@ class RaceSelector(wx.Window):
         self.raceBmps = []
         for race in races:
             if race:
-                self.raceBmps.append(bitmapLoader.getBitmap("race_%s_small" % race, "gui"))
+                self.raceBmps.append(BitmapLoader.getBitmap("race_%s_small" % race, "gui"))
         self.raceNames = races
         self.CalcButtonsBarPos()
         self.Refresh()
@@ -328,14 +328,14 @@ class NavigationPanel(SFItem.SFBrowserItem):
     def __init__(self,parent, size = (-1, 24)):
         SFItem.SFBrowserItem.__init__(self,parent,size = size)
 
-        self.rewBmpH = bitmapLoader.getBitmap("frewind_small","gui")
-        self.forwBmp = bitmapLoader.getBitmap("fforward_small","gui")
-        self.searchBmpH = bitmapLoader.getBitmap("fsearch_small","gui")
-        self.newBmpH = bitmapLoader.getBitmap("fit_add_small","gui")
-        self.resetBmpH = bitmapLoader.getBitmap("freset_small","gui")
-        self.switchBmpH = bitmapLoader.getBitmap("fit_switch_view_mode_small","gui")
+        self.rewBmpH = BitmapLoader.getBitmap("frewind_small","gui")
+        self.forwBmp = BitmapLoader.getBitmap("fforward_small","gui")
+        self.searchBmpH = BitmapLoader.getBitmap("fsearch_small","gui")
+        self.newBmpH = BitmapLoader.getBitmap("fit_add_small","gui")
+        self.resetBmpH = BitmapLoader.getBitmap("freset_small","gui")
+        self.switchBmpH = BitmapLoader.getBitmap("fit_switch_view_mode_small","gui")
 
-        switchImg = bitmapLoader.getImage("fit_switch_view_mode_small","gui")
+        switchImg = BitmapLoader.getImage("fit_switch_view_mode_small","gui")
         switchImg = switchImg.AdjustChannels(1,1,1,0.4)
         self.switchBmpD = wx.BitmapFromImage(switchImg)
 
@@ -967,7 +967,7 @@ class CategoryItem(SFItem.SFBrowserItem):
         SFItem.SFBrowserItem.__init__(self,parent,size = size)
 
         if categoryID:
-            self.shipBmp = bitmapLoader.getBitmap("ship_small","gui")
+            self.shipBmp = BitmapLoader.getBitmap("ship_small","gui")
         else:
             self.shipBmp = wx.EmptyBitmap(16,16)
 
@@ -1099,26 +1099,26 @@ class ShipItem(SFItem.SFBrowserItem):
 
         self.shipBmp = None
         if shipID:
-            self.shipBmp = bitmapLoader.getBitmap(str(shipID), "renders")
+            self.shipBmp = BitmapLoader.getBitmap(str(shipID), "renders")
         if not self.shipBmp:
-            self.shipBmp = bitmapLoader.getBitmap("ship_no_image_big", "gui")
+            self.shipBmp = BitmapLoader.getBitmap("ship_no_image_big", "gui")
 
         self.shipFittingInfo = shipFittingInfo
         self.shipName, self.shipFits = shipFittingInfo
 
-        self.newBmp = bitmapLoader.getBitmap("fit_add_small", "gui")
-        self.acceptBmp = bitmapLoader.getBitmap("faccept_small", "gui")
+        self.newBmp = BitmapLoader.getBitmap("fit_add_small", "gui")
+        self.acceptBmp = BitmapLoader.getBitmap("faccept_small", "gui")
 
-        self.shipEffBk = bitmapLoader.getBitmap("fshipbk_big","gui")
+        self.shipEffBk = BitmapLoader.getBitmap("fshipbk_big","gui")
 
         img = wx.ImageFromBitmap(self.shipEffBk)
         img = img.Mirror(False)
         self.shipEffBkMirrored = wx.BitmapFromImage(img)
 
-        self.raceBmp = bitmapLoader.getBitmap("race_%s_small" % self.shipRace, "gui")
+        self.raceBmp = BitmapLoader.getBitmap("race_%s_small" % self.shipRace, "gui")
 
         if not self.raceBmp:
-            self.raceBmp = bitmapLoader.getBitmap("fit_delete_small","gui")
+            self.raceBmp = BitmapLoader.getBitmap("fit_delete_small","gui")
 
         self.raceDropShadowBmp = drawUtils.CreateDropShadowBitmap(self.raceBmp, 0.2)
 
@@ -1429,10 +1429,10 @@ class FitItem(SFItem.SFBrowserItem):
         self.deleted = False
 
         if shipID:
-            self.shipBmp = bitmapLoader.getBitmap(str(shipID),"renders")
+            self.shipBmp = BitmapLoader.getBitmap(str(shipID),"renders")
 
         if not self.shipBmp:
-            self.shipBmp = bitmapLoader.getBitmap("ship_no_image_big","gui")
+            self.shipBmp = BitmapLoader.getBitmap("ship_no_image_big","gui")
 
         self.shipFittingInfo = shipFittingInfo
         self.shipName, self.fitName, self.fitBooster, self.timestamp = shipFittingInfo
@@ -1440,13 +1440,13 @@ class FitItem(SFItem.SFBrowserItem):
         # see GH issue #62
         if self.fitBooster is None: self.fitBooster = False
 
-        self.boosterBmp = bitmapLoader.getBitmap("fleet_fc_small", "gui")
-        self.copyBmp    = bitmapLoader.getBitmap("fit_add_small", "gui")
-        self.renameBmp  = bitmapLoader.getBitmap("fit_rename_small", "gui")
-        self.deleteBmp  = bitmapLoader.getBitmap("fit_delete_small","gui")
-        self.acceptBmp  = bitmapLoader.getBitmap("faccept_small", "gui")
+        self.boosterBmp = BitmapLoader.getBitmap("fleet_fc_small", "gui")
+        self.copyBmp    = BitmapLoader.getBitmap("fit_add_small", "gui")
+        self.renameBmp  = BitmapLoader.getBitmap("fit_rename_small", "gui")
+        self.deleteBmp  = BitmapLoader.getBitmap("fit_delete_small","gui")
+        self.acceptBmp  = BitmapLoader.getBitmap("faccept_small", "gui")
 
-        self.shipEffBk = bitmapLoader.getBitmap("fshipbk_big","gui")
+        self.shipEffBk = BitmapLoader.getBitmap("fshipbk_big","gui")
 
         img = wx.ImageFromBitmap(self.shipEffBk)
         img = img.Mirror(False)

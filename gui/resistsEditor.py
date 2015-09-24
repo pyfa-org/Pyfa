@@ -18,7 +18,7 @@
 #===============================================================================
 
 import wx
-import bitmapLoader
+from gui.bitmapLoader import BitmapLoader
 import service
 from gui.utils.clipboard import toClipboard, fromClipboard
 from service.targetResists import ImportError
@@ -55,7 +55,7 @@ class ResistsEditorDlg(wx.Dialog):
         headerSizer.Add(self.ccResists, 1, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT | wx.LEFT, 3)
 
         buttons = (("new", wx.ART_NEW),
-                   ("rename", bitmapLoader.getBitmap("rename", "gui")),
+                   ("rename", BitmapLoader.getBitmap("rename", "gui")),
                    ("copy", wx.ART_COPY),
                    ("delete", wx.ART_DELETE))
         for name, art in buttons:
@@ -103,7 +103,7 @@ class ResistsEditorDlg(wx.Dialog):
                 style = wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_RIGHT
                 border = 5
 
-            bmp = wx.StaticBitmap(self, wx.ID_ANY, bitmapLoader.getBitmap("%s_big"%type, "gui"))
+            bmp = wx.StaticBitmap(self, wx.ID_ANY, BitmapLoader.getBitmap("%s_big"%type, "gui"))
             resistEditSizer.Add(bmp, 0, style, border)
             # set text edit
             setattr(self, "%sEdit"%type, wx.TextCtrl(self, wx.ID_ANY, "", wx.DefaultPosition, defSize))

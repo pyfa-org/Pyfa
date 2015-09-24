@@ -21,7 +21,7 @@ import wx
 import service
 import gui.mainFrame
 from gui.statsView import StatsView
-from gui import bitmapLoader
+from gui.bitmapLoader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 
 class FirepowerViewFull(StatsView):
@@ -61,7 +61,7 @@ class FirepowerViewFull(StatsView):
             baseBox = wx.BoxSizer(wx.HORIZONTAL)
             sizerFirepower.Add(baseBox, 1, wx.ALIGN_LEFT if counter == 0 else wx.ALIGN_CENTER_HORIZONTAL)
 
-            baseBox.Add(bitmapLoader.getStaticBitmap("%s_big" % image, parent, "gui"), 0, wx.ALIGN_CENTER)
+            baseBox.Add(BitmapLoader.getStaticBitmap("%s_big" % image, parent, "gui"), 0, wx.ALIGN_CENTER)
 
             box = wx.BoxSizer(wx.VERTICAL)
             baseBox.Add(box, 0, wx.ALIGN_CENTER)
@@ -82,7 +82,7 @@ class FirepowerViewFull(StatsView):
         baseBox = wx.BoxSizer(wx.HORIZONTAL)
         targetSizer.Add(baseBox, 0, wx.ALIGN_RIGHT)
 
-        baseBox.Add(bitmapLoader.getStaticBitmap("volley_big", parent, "gui"), 0, wx.ALIGN_CENTER)
+        baseBox.Add(BitmapLoader.getStaticBitmap("volley_big", parent, "gui"), 0, wx.ALIGN_CENTER)
 
         gridS = wx.GridSizer(2,2,0,0)
 
@@ -103,7 +103,7 @@ class FirepowerViewFull(StatsView):
 
         gridS.Add(lbl, 0, wx.ALIGN_LEFT)
 
-        image = bitmapLoader.getBitmap("mining_small", "gui")
+        image = BitmapLoader.getBitmap("mining_small", "gui")
         self.miningyield = wx.BitmapButton(contentPanel, -1, image)
         self.miningyield.SetToolTip(wx.ToolTip("Click to toggle to Mining Yield "))
         self.miningyield.Bind(wx.EVT_BUTTON, self.switchToMiningYieldView)

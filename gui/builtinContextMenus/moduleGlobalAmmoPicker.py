@@ -3,7 +3,7 @@ from gui.contextMenu import ContextMenu
 import gui.mainFrame
 import service
 import wx
-from gui import bitmapLoader
+from gui.bitmapLoader import BitmapLoader
 from eos.types import Hardpoint
 import gui.globalEvents as GE
 from gui.builtinContextMenus.moduleAmmoPicker import ModuleAmmoPicker

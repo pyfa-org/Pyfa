@@ -19,7 +19,7 @@
 
 from gui import builtinViewColumns
 from gui.viewColumn import ViewColumn
-from gui import bitmapLoader
+from gui.bitmapLoader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 
 import service
@@ -41,7 +41,7 @@ class AttributeDisplay(ViewColumn):
                 iconType = "icons"
             if iconFile:
                 self.imageId = fittingView.imageList.GetImageIndex(iconFile, iconType)
-                self.bitmap = bitmapLoader.getBitmap(iconFile, iconType)
+                self.bitmap = BitmapLoader.getBitmap(iconFile, iconType)
             else:
                 self.imageId = -1
 

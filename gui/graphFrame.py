@@ -19,7 +19,7 @@
 
 import wx
 import os
-import bitmapLoader
+from gui.bitmapLoader import BitmapLoader
 import gui.display
 import gui.globalEvents as GE
 
@@ -70,7 +70,7 @@ class GraphFrame(wx.Frame):
 
         wx.Frame.__init__(self, parent, title=u"pyfa: Graph Generator", style=style, size=(520, 390))
 
-        i = wx.IconFromBitmap(bitmapLoader.getBitmap("graphs_small", "gui"))
+        i = wx.IconFromBitmap(BitmapLoader.getBitmap("graphs_small", "gui"))
         self.SetIcon(i)
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.CreateStatusBar()

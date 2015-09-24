@@ -3,7 +3,7 @@ import gui.mainFrame
 import service
 import gui.globalEvents as GE
 import wx
-from gui import bitmapLoader
+from gui.bitmapLoader import BitmapLoader
 
 class FactorReload(ContextMenu):
     def __init__(self):
@@ -27,7 +27,7 @@ class FactorReload(ContextMenu):
         fitID = self.mainFrame.getActiveFit()
         fit = sFit.getFit(fitID)
         if fit.factorReload:
-            return bitmapLoader.getBitmap("state_active_small", "gui")
+            return BitmapLoader.getBitmap("state_active_small", "gui")
         else:
             return None
 

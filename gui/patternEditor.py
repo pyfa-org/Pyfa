@@ -18,7 +18,7 @@
 #===============================================================================
 
 import wx
-import bitmapLoader
+from gui.bitmapLoader import BitmapLoader
 import service
 from wx.lib.intctrl import IntCtrl
 from gui.utils.clipboard import toClipboard, fromClipboard
@@ -61,7 +61,7 @@ class DmgPatternEditorDlg(wx.Dialog):
         size = None
         headerSizer.Add(self.ccDmgPattern, 1, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT|wx.LEFT, 3)
         buttons = (("new", wx.ART_NEW),
-                   ("rename", bitmapLoader.getBitmap("rename", "gui")),
+                   ("rename", BitmapLoader.getBitmap("rename", "gui")),
                    ("copy", wx.ART_COPY),
                    ("delete", wx.ART_DELETE))
         for name, art in buttons:
@@ -90,10 +90,10 @@ class DmgPatternEditorDlg(wx.Dialog):
         mainSizer.Add(self.sl, 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 5)
 
         contentSizer = wx.BoxSizer(wx.VERTICAL)
-        self.embitmap = bitmapLoader.getBitmap("em_big", "gui")
-        self.thermbitmap = bitmapLoader.getBitmap("thermal_big", "gui")
-        self.kinbitmap = bitmapLoader.getBitmap("kinetic_big", "gui")
-        self.expbitmap = bitmapLoader.getBitmap("explosive_big", "gui")
+        self.embitmap = BitmapLoader.getBitmap("em_big", "gui")
+        self.thermbitmap = BitmapLoader.getBitmap("thermal_big", "gui")
+        self.kinbitmap = BitmapLoader.getBitmap("kinetic_big", "gui")
+        self.expbitmap = BitmapLoader.getBitmap("explosive_big", "gui")
 
         dmgeditSizer = wx.FlexGridSizer(2, 6, 0, 2)
         dmgeditSizer.AddGrowableCol(0)
@@ -105,7 +105,7 @@ class DmgPatternEditorDlg(wx.Dialog):
         defSize = wx.Size(width,-1)
 
         for i, type in enumerate(self.DAMAGE_TYPES):
-            bmp = wx.StaticBitmap(self, wx.ID_ANY, bitmapLoader.getBitmap("%s_big"%type, "gui"))
+            bmp = wx.StaticBitmap(self, wx.ID_ANY, BitmapLoader.getBitmap("%s_big"%type, "gui"))
             if i%2:
                 style = wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_RIGHT | wx.LEFT
                 border = 10

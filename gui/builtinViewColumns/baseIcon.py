@@ -1,6 +1,6 @@
 from gui import builtinViewColumns
 from gui.viewColumn import ViewColumn
-from gui import bitmapLoader
+from gui.bitmapLoader import BitmapLoader
 import wx
 from eos.types import Drone, Fit, Module, Slot, Rack
 

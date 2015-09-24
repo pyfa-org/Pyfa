@@ -3,7 +3,7 @@ from gui.contextMenu import ContextMenu
 import gui.mainFrame
 import service
 import wx
-from gui import bitmapLoader
+from gui.bitmapLoader import BitmapLoader
 from eos.types import Skill
 import gui.globalEvents as GE
 
@@ -74,7 +74,7 @@ class ChangeAffectingSkills(ContextMenu):
             grandSub = wx.Menu()
             skillItem.SetSubMenu(grandSub)
             if skill.learned:
-                bitmap = bitmapLoader.getBitmap("lvl%s" % skill.level, "gui")
+                bitmap = BitmapLoader.getBitmap("lvl%s" % skill.level, "gui")
                 if bitmap is not None:
                     skillItem.SetBitmap(bitmap)
 

@@ -24,7 +24,7 @@
 ###########################################################################
 
 import wx
-from gui import bitmapLoader
+from gui.bitmapLoader import BitmapLoader
 
 ###########################################################################
 ## Class TogglePanel
@@ -54,8 +54,8 @@ class TogglePanel ( wx.Panel ):
 
         #    Load expanded/collapsed bitmaps from the icons folder
 
-        self.bmpExpanded = bitmapLoader.getBitmap("down-arrow2","gui")
-        self.bmpCollapsed = bitmapLoader.getBitmap("up-arrow2","gui")
+        self.bmpExpanded = BitmapLoader.getBitmap("down-arrow2","gui")
+        self.bmpCollapsed = BitmapLoader.getBitmap("up-arrow2","gui")
 
         #    Make the bitmaps have the same color as window text
 

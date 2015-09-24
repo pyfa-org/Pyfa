@@ -1,7 +1,7 @@
 import wx
 import gui.utils.colorUtils as colorUtils
 import gui.utils.drawUtils as drawUtils
-from gui import bitmapLoader
+from gui.bitmapLoader import BitmapLoader
 
 
 SearchButton, EVT_SEARCH_BTN = wx.lib.newevent.NewEvent()

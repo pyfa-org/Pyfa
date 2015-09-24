@@ -20,7 +20,7 @@
 import wx
 from gui.statsView import StatsView
 from gui import builtinStatsViews
-from gui import bitmapLoader
+from gui.bitmapLoader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 
 class CapacitorViewFull(StatsView):
@@ -48,7 +48,7 @@ class CapacitorViewFull(StatsView):
         baseBox = wx.BoxSizer(wx.HORIZONTAL)
 
         sizerCapacitor.Add(baseBox, 0, wx.ALIGN_LEFT)
-        bitmap = bitmapLoader.getStaticBitmap("capacitorInfo_big", parent, "gui")
+        bitmap = BitmapLoader.getStaticBitmap("capacitorInfo_big", parent, "gui")
         tooltip = wx.ToolTip("Capacitor stability")
         bitmap.SetToolTip(tooltip)
         baseBox.Add(bitmap, 0, wx.ALIGN_CENTER)
@@ -83,7 +83,7 @@ class CapacitorViewFull(StatsView):
         sizerCapacitor.Add(baseBox, 0, wx.ALIGN_CENTER_HORIZONTAL)
 
         tooltip = wx.ToolTip("Capacitor throughput")
-        bitmap = bitmapLoader.getStaticBitmap("capacitorRecharge_big", parent, "gui")
+        bitmap = BitmapLoader.getStaticBitmap("capacitorRecharge_big", parent, "gui")
         bitmap.SetToolTip(tooltip)
         baseBox.Add(bitmap, 0, wx.ALIGN_CENTER)
 

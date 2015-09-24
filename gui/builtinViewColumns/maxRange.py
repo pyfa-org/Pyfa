@@ -19,7 +19,7 @@
 
 from gui import builtinViewColumns
 from gui.viewColumn import ViewColumn
-from gui import bitmapLoader
+from gui.bitmapLoader import BitmapLoader
 import service
 from gui.utils.numberFormatter import formatAmount
 import wx
@@ -40,7 +40,7 @@ class MaxRange(ViewColumn):
             iconFile = info.icon.iconFile if info.icon else None
             if iconFile:
                 self.imageId = fittingView.imageList.GetImageIndex(iconFile, "icons")
-                self.bitmap = bitmapLoader.getBitmap(iconFile, "icons")
+                self.bitmap = BitmapLoader.getBitmap(iconFile, "icons")
             else:
                 self.imageId = -1
             self.mask = wx.LIST_MASK_IMAGE

@@ -19,7 +19,7 @@
 
 import wx
 from gui.statsView import StatsView
-from gui import bitmapLoader
+from gui.bitmapLoader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 import gui.mainFrame
 import gui.builtinStatsViews.resistancesViewFull as rvf
@@ -62,14 +62,14 @@ class RechargeViewFull(StatsView):
         sizerTankStats.Add(wx.StaticText(contentPanel, wx.ID_ANY, ""), 0)
         toolTipText = {"shieldPassive" : "Passive shield recharge", "shieldActive" : "Active shield boost", "armorActive" : "Armor repair amount", "hullActive" : "Hull repair amount"}
         for tankType in ("shieldPassive", "shieldActive", "armorActive", "hullActive"):
-            bitmap = bitmapLoader.getStaticBitmap("%s_big" % tankType, contentPanel, "gui")
+            bitmap = BitmapLoader.getStaticBitmap("%s_big" % tankType, contentPanel, "gui")
             tooltip = wx.ToolTip(toolTipText[tankType])
             bitmap.SetToolTip(tooltip)
             sizerTankStats.Add(bitmap, 0, wx.ALIGN_CENTER)
 
         toolTipText = {"reinforced" : "Reinforced", "sustained" : "Sustained"}
         for stability in ("reinforced", "sustained"):
-            bitmap = bitmapLoader.getStaticBitmap("regen%s_big" % stability.capitalize(), contentPanel, "gui")
+            bitmap = BitmapLoader.getStaticBitmap("regen%s_big" % stability.capitalize(), contentPanel, "gui")
             tooltip = wx.ToolTip(toolTipText[stability])
             bitmap.SetToolTip(tooltip)
             sizerTankStats.Add(bitmap, 0, wx.ALIGN_CENTER)

@@ -18,7 +18,7 @@
 #===============================================================================
 
 from gui.viewColumn import ViewColumn
-from gui import bitmapLoader
+from gui.bitmapLoader import BitmapLoader
 import gui.mainFrame
 
 import wx

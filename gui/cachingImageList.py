@@ -18,7 +18,7 @@
 #===============================================================================
 
 import wx
-import bitmapLoader
+from gui.bitmapLoader import BitmapLoader
 
 class CachingImageList(wx.ImageList):
     def __init__(self, width, height):
@@ -28,7 +28,7 @@ class CachingImageList(wx.ImageList):
     def GetImageIndex(self, *loaderArgs):
         id = self.map.get(loaderArgs)
         if id is None:
-            bitmap = bitmapLoader.getBitmap(*loaderArgs)
+            bitmap = BitmapLoader.getBitmap(*loaderArgs)
             if bitmap is None:
                 return -1
             id = self.map[loaderArgs] = wx.ImageList.Add(self,bitmap)

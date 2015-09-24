@@ -18,7 +18,7 @@
 #===============================================================================
 
 from gui.viewColumn import ViewColumn
-from gui import bitmapLoader
+from gui.bitmapLoader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 import wx
 import service
