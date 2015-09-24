@@ -199,6 +199,21 @@ class Character(object):
         char = eos.db.getCharacter(charID)
         char.saveLevels()
 
+    def saveCharacterAs(self, charID):
+        """Save edited skills as a new character"""
+        char = eos.db.getCharacter(charID)
+        newChar = copy.deepcopy(char)
+        newChar.name = newChar.name + " (saved as)"
+        eos.db.save(newChar)
+
+        # revert old char
+        char.revertLevels()
+
+    def revertCharacter(self, charID):
+        """Rollback edited skills"""
+        char = eos.db.getCharacter(charID)
+        char.revertLevels()
+
     def getSkillGroups(self):
         cat = eos.db.getCategory(16)
         groups = []
@@ -251,7 +266,7 @@ class Character(object):
 
     def getApiDetails(self, charID):
         char = eos.db.getCharacter(charID)
-        if char.chars is not None:
+        if char.chars is not None:  
             chars = json.loads(char.chars)
         else:
             chars = None

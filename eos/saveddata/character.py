@@ -24,6 +24,7 @@ from eos.effectHandlerHelpers import HandledItem
 import eos.db
 import eos
 
+
 class Character(object):
     __itemList = None
     __itemIDMap = None
@@ -85,7 +86,7 @@ class Character(object):
 
         return all0
 
-    def __init__(self, name, defaultLevel=None):
+    def __init__(self, name, defaultLevel=None, initSkills=True):
         self.name = name
         self.__owner = None
         self.defaultLevel = defaultLevel
@@ -93,8 +94,9 @@ class Character(object):
         self.__skillIdMap = {}
         self.dirtySkills = set()
 
-        for item in self.getSkillList():
-            self.addSkill(Skill(item.ID, self.defaultLevel))
+        if initSkills:
+            for item in self.getSkillList():
+                self.addSkill(Skill(item.ID, self.defaultLevel))
 
         self.__implants = eos.saveddata.fit.HandledImplantBoosterList()
         self.apiKey = None
@@ -164,6 +166,12 @@ class Character(object):
         self.dirtySkills = set()
         eos.db.commit()
 
+    def revertLevels(self):
+        for skill in self.dirtySkills:
+            skill.revert()
+
+        self.dirtySkills = set()
+
     def filteredSkillIncrease(self, filter, *args, **kwargs):
         for element in self.skills:
             if filter(element):
@@ -190,7 +198,7 @@ class Character(object):
             skill.clear()
 
     def __deepcopy__(self, memo):
-        copy = Character("%s copy" % self.name)
+        copy = Character("%s copy" % self.name, initSkills=False)
         copy.apiKey = self.apiKey
         copy.apiID = self.apiID
 
@@ -229,6 +237,9 @@ class Skill(HandledItem):
 
     def saveLevel(self):
         self.__level = self.activeLevel
+
+    def revert(self):
+        self.activeLevel = self.__level
 
     @property
     def learned(self):

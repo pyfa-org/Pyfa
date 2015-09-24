@@ -420,6 +420,10 @@ class MainFrame(wx.Frame):
         self.Bind(wx.EVT_MENU, self.goForums, id = menuBar.forumId)
         # Save current character
         self.Bind(wx.EVT_MENU, self.saveChar, id = menuBar.saveCharId)
+        # Save current character as another character
+        self.Bind(wx.EVT_MENU, self.saveCharAs, id = menuBar.saveCharAsId)
+        # Save current character
+        self.Bind(wx.EVT_MENU, self.revertChar, id = menuBar.revertCharId)
 
         #Clipboard exports
         self.Bind(wx.EVT_MENU, self.exportToClipboard, id=wx.ID_COPY)
@@ -488,6 +492,18 @@ class MainFrame(wx.Frame):
         sChr = service.Character.getInstance()
         charID = self.charSelection.getActiveCharacter()
         sChr.saveCharacter(charID)
+        wx.PostEvent(self, GE.CharListUpdated())
+
+    def saveCharAs(self, event):
+        sChr = service.Character.getInstance()
+        charID = self.charSelection.getActiveCharacter()
+        sChr.saveCharacterAs(charID)
+        wx.PostEvent(self, GE.CharListUpdated())
+
+    def revertChar(self, event):
+        sChr = service.Character.getInstance()
+        charID = self.charSelection.getActiveCharacter()
+        sChr.revertCharacter(charID)
         wx.PostEvent(self, GE.CharListUpdated())
 
     def AdditionsTabSelect(self, event):

@@ -37,6 +37,8 @@ class MainMenuBar(wx.MenuBar):
         self.wikiId = wx.NewId()
         self.forumId = wx.NewId()
         self.saveCharId = wx.NewId()
+        self.saveCharAsId = wx.NewId()
+        self.revertCharId = wx.NewId()
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
@@ -73,7 +75,8 @@ class MainMenuBar(wx.MenuBar):
         editMenu.Append(wx.ID_PASTE, pasteText, "Import a fit from the clipboard")
         editMenu.AppendSeparator()
         editMenu.Append(self.saveCharId, "Save Character")
-
+        editMenu.Append(self.saveCharAsId, "Save Character As...")
+        editMenu.Append(self.revertCharId, "Revert Character")
         # Character menu
         windowMenu = wx.Menu()
         self.Append(windowMenu, "&Window")
