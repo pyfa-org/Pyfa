@@ -36,8 +36,6 @@ def getStaticBitmap(name, parent, location):
     static.SetBitmap(getBitmap(name,location))
     return static
 
-locationMap = {"pack": os.path.join(config.staticPath, "icons"),
-               "ships": os.path.join(config.staticPath, "icons/ships")}
 
 def getBitmap(name,location):
 
@@ -84,23 +82,10 @@ def stripPath(fname):
     return fname
 
 def getImage(name, location):
-    if location in locationMap:
-        if location == "pack":
-            location = locationMap[location]
-            name = stripPath(name)
-            filename = "icon{0}.png".format(name)
-            path = os.path.join(location, filename)
-        else:
-            location = locationMap[location]
-            filename = "{0}.png".format(name)
-            path = os.path.join(location, filename)
+    filename = "{0}.png".format(name)
+    location = os.path.join(config.pyfaPath, 'imgs', location, filename)
 
+    if os.path.exists(location):
+        return wx.Image(location)
     else:
-        location = os.path.join(config.pyfaPath, location)
-        filename = "{0}.png".format(name)
-        path = os.path.join(location, filename)
-
-    if os.path.exists(path):
-        return wx.Image(path)
-    else:
-        print "Missing icon file: {0}".format(filename)
+        print "Missing icon file: {0}, {1}".format(filename, location)
