@@ -16,7 +16,7 @@ class Timer():
         return (time.time() - self.__last)*1000
 
     def checkpoint(self, name=''):
-        text = 'Timer - {timer} - {checkpoint} - {last:.2f}ms ({elapsed:.2f}ms elapsed)'.format(
+        text = u'Timer - {timer} - {checkpoint} - {last:.2f}ms ({elapsed:.2f}ms elapsed)'.format(
             timer=self.name,
             checkpoint=name,
             last=self.last,

@@ -401,7 +401,7 @@ class Fit(object):
         return self.__origin
 
     def __calculateGangBoosts(self, runTime):
-        logger.debug("Applying gang boosts in `%s` runtime for %s", runTime, repr(self))
+        logger.debug("Applying gang boosts in `%s` runtime for %r", runTime, self)
         for name, info in self.gangBoosts.iteritems():
             # Unpack all data required to run effect properly
             effect, thing = info[1]
@@ -425,12 +425,12 @@ class Fit(object):
                         pass
 
     def calculateModifiedAttributes(self, targetFit=None, withBoosters=False, dirtyStorage=None):
-        timer = Timer('Fit: {}, {}'.format(self.ID, self.name), logger)
-        logger.debug("Starting fit calculation on: %s, withBoosters: %s", repr(self), withBoosters)
+        timer = Timer(u'Fit: {}, {}'.format(self.ID, self.name), logger)
+        logger.debug("Starting fit calculation on: %r, withBoosters: %s", self, withBoosters)
 
         shadow = False
         if targetFit:
-            logger.debug("Applying projections to target: %s", repr(targetFit))
+            logger.debug("Applying projections to target: %r", targetFit)
             projectionInfo = self.getProjectionInfo(targetFit.ID)
             logger.debug("ProjectionInfo: %s", projectionInfo)
             if self == targetFit:
@@ -438,7 +438,7 @@ class Fit(object):
                 shadow = True
                 self = copy.deepcopy(self)
                 self.fleet = copied.fleet
-                logger.debug("Handling self projection - making shadow copy of fit. %s => %s", repr(copied), repr(self))
+                logger.debug("Handling self projection - making shadow copy of fit. %r => %r", copied, self)
                 # we delete the fit because when we copy a fit, flush() is
                 # called to properly handle projection updates. However, we do
                 # not want to save this fit to the database, so simply remove it
@@ -447,7 +447,7 @@ class Fit(object):
         if self.fleet is not None and withBoosters is True:
             logger.debug("Fleet is set, gathering gang boosts")
             self.gangBoosts = self.fleet.recalculateLinear(withBoosters=withBoosters)
-            timer.checkpoint("Done calculating gang boosts for %s"%repr(self))
+            timer.checkpoint("Done calculating gang boosts for %r"%self)
         elif self.fleet is None:
             self.gangBoosts = None
 
@@ -473,7 +473,7 @@ class Fit(object):
         # projection have modifying stuff applied, such as gang boosts and other
         # local modules that may help
         if self.__calculated and not projected:
-            logger.debug("Fit has already been calculated and is not projected, returning: %s", repr(self))
+            logger.debug("Fit has already been calculated and is not projected, returning: %r", self)
             return
 
         # Mark fit as calculated
@@ -1000,11 +1000,11 @@ class Fit(object):
         return copy
 
     def __repr__(self):
-        return "Fit(ID={}, ship={}, name={}) at {}".format(
+        return u"Fit(ID={}, ship={}, name={}) at {}".format(
             self.ID, self.ship.item.name, self.name, hex(id(self))
-        )
+        ).encode('utf8')
 
     def __str__(self):
-        return "{} ({})".format(
+        return u"{} ({})".format(
             self.name, self.ship.item.name
-        )
+        ).encode('utf8')
