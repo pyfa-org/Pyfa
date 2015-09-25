@@ -20,7 +20,7 @@
 
 from sqlalchemy.orm import validates, reconstructor
 
-from eos.effectHandlerHelpers import HandledItem
+from eos.effectHandlerHelpers import HandledItem, HandledImplantBoosterList
 import eos.db
 import eos
 
@@ -98,7 +98,7 @@ class Character(object):
             for item in self.getSkillList():
                 self.addSkill(Skill(item.ID, self.defaultLevel))
 
-        self.__implants = eos.saveddata.fit.HandledImplantBoosterList()
+        self.__implants = HandledImplantBoosterList()
         self.apiKey = None
 
     @reconstructor
