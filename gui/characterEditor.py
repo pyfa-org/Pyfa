@@ -437,8 +437,12 @@ class SkillTreeView (wx.Panel):
         sChar = service.Character.getInstance()
         charID = self.Parent.Parent.getActiveCharacter()
         sMkt = service.Market.getInstance()
-        self.levelChangeMenu.selection = sMkt.getItem(self.skillTreeListCtrl.GetPyData(item))
-        self.PopupMenu(self.levelChangeMenu)
+        if sChar.getCharName(charID) not in ("All 0", "All 5"):
+            self.levelChangeMenu.selection = sMkt.getItem(self.skillTreeListCtrl.GetPyData(item))
+            self.PopupMenu(self.levelChangeMenu)
+        else:
+            self.statsMenu.selection = sMkt.getItem(self.skillTreeListCtrl.GetPyData(item))
+            self.PopupMenu(self.statsMenu)
 
     def changeLevel(self, event):
         level = self.levelIds.get(event.Id)
