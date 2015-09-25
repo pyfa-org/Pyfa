@@ -181,7 +181,6 @@ class CharacterEditor(wx.Frame):
         self.aview.Layout()
 
     def charChanged(self, event):
-        self.sview.skillTreeListCtrl.DeleteChildren(self.sview.root)
         self.sview.populateSkillTree()
         sChar = service.Character.getInstance()
         charID = self.getActiveCharacter()
@@ -327,6 +326,10 @@ class SkillTreeView (wx.Panel):
             self.levelIds[id] = level
             self.levelChangeMenu.Append(id, "Level %d" % level)
 
+        self.levelChangeMenu.AppendSeparator()
+        self.revertID = wx.NewId()
+        self.levelChangeMenu.Append(self.revertID, "Revert")
+
         self.levelChangeMenu.Bind(wx.EVT_MENU, self.changeLevel)
         self.SetSizer(pmainSizer)
 
@@ -334,15 +337,22 @@ class SkillTreeView (wx.Panel):
 
     def populateSkillTree(self):
         sChar = service.Character.getInstance()
+        charID = self.Parent.Parent.getActiveCharacter()
+        char = sChar.getCharacter(charID)
+        dirtyGroups = set([skill.item.group.ID for skill in char.dirtySkills])
+
         groups = sChar.getSkillGroups()
         imageId = self.skillBookImageId
         root = self.root
         tree = self.skillTreeListCtrl
+        tree.DeleteChildren(root)
 
         for id, name in groups:
             childId = tree.AppendItem(root, name, imageId)
             tree.SetPyData(childId, id)
             tree.AppendItem(childId, "dummy")
+            if id in dirtyGroups:
+                tree.SetItemTextColour(childId, wx.BLUE)
 
         tree.SortChildren(root)
 
@@ -359,8 +369,10 @@ class SkillTreeView (wx.Panel):
             for id, name in sChar.getSkills(tree.GetPyData(root)):
                 iconId = self.skillBookImageId
                 childId = tree.AppendItem(root, name, iconId, data=wx.TreeItemData(id))
-                level = sChar.getSkillLevel(char, id)
+                level, dirty = sChar.getSkillLevel(char, id)
                 tree.SetItemText(childId, "Level %d" % level if isinstance(level, int) else level, 1)
+                if dirty:
+                    tree.SetItemTextColour(childId, wx.BLUE)
 
             tree.SortChildren(root)
 
@@ -381,17 +393,20 @@ class SkillTreeView (wx.Panel):
 
     def changeLevel(self, event):
         level = self.levelIds.get(event.Id)
-        if level is not None:
-            sChar = service.Character.getInstance()
-            charID = self.Parent.Parent.getActiveCharacter()
-            selection = self.skillTreeListCtrl.GetSelection()
-            skillID = self.skillTreeListCtrl.GetPyData(selection)
 
+        sChar = service.Character.getInstance()
+        charID = self.Parent.Parent.getActiveCharacter()
+        selection = self.skillTreeListCtrl.GetSelection()
+        skillID = self.skillTreeListCtrl.GetPyData(selection)
+        if level is not None:
             self.skillTreeListCtrl.SetItemText(selection, "Level %d" % level if isinstance(level, int) else level, 1)
             sChar.changeLevel(charID, skillID, level)
             sChar.saveCharacter(charID)
             wx.PostEvent(self.Parent.Parent, GE.CharListUpdated())
-
+        elif event.Id == self.revertID:
+            sChar.revertLevel(charID, skillID)
+            self.populateSkillTree()
+            wx.PostEvent(self.Parent.Parent, GE.CharListUpdated())
         event.Skip()
 
 

@@ -238,7 +238,7 @@ class Character(object):
 
     def getSkillLevel(self, charID, skillID):
         skill = eos.db.getCharacter(charID).getSkill(skillID)
-        return skill.level if skill.learned else "Not learned"
+        return (skill.level if skill.learned else "Not learned", skill.isDirty)
 
     def getCharName(self, charID):
         return eos.db.getCharacter(charID).name
@@ -322,6 +322,11 @@ class Character(object):
             skill.level = None
         else:
             skill.level = level
+
+    def revertLevel(self, charID, skillID):
+        char = eos.db.getCharacter(charID)
+        skill = char.getSkill(skillID)
+        skill.revert()
 
     def addImplant(self, charID, itemID):
         char = eos.db.getCharacter(charID)

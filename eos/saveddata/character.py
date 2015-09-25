@@ -115,6 +115,10 @@ class Character(object):
             self.addSkill(Skill(skillRow["typeID"], skillRow["level"]))
 
     @property
+    def ro(self):
+        return self == self.getAll0() or self == self.getAll5()
+
+    @property
     def owner(self):
         return self.__owner
 
@@ -239,7 +243,11 @@ class Skill(HandledItem):
         self.__level = self.activeLevel
 
     def revert(self):
-        self.activeLevel = self.__level
+        self.level = self.__level
+
+    @property
+    def isDirty(self):
+        return self.__level != self.activeLevel
 
     @property
     def learned(self):
