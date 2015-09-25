@@ -689,3 +689,34 @@ class APIView (wx.Panel):
                 self.stStatus.SetLabel("Successfully fetched %s\'s skills from EVE API." % charName)
             except Exception, e:
                 self.stStatus.SetLabel("Unable to retrieve %s\'s skills. Error message:\n%s" % (charName, e))
+
+class SaveCharacterAs(wx.Dialog):
+
+    def __init__(self, parent, charID):
+        wx.Dialog.__init__(self, parent, title="Save Character As...", size=wx.Size(300, 60))
+        self.charID = charID
+        sChar = service.Character.getInstance()
+        name = sChar.getCharName(charID)
+        bSizer1 = wx.BoxSizer(wx.HORIZONTAL)
+
+        self.input = wx.TextCtrl(self, wx.ID_ANY, name, style=wx.TE_PROCESS_ENTER)
+
+        bSizer1.Add(self.input, 1, wx.ALL, 5)
+        self.input.Bind(wx.EVT_TEXT_ENTER, self.change)
+        self.button = wx.Button(self, wx.ID_OK, u"Save")
+        bSizer1.Add(self.button, 0, wx.ALL, 5)
+
+        self.SetSizer(bSizer1)
+        self.Layout()
+        self.Centre(wx.BOTH)
+        self.button.Bind(wx.EVT_BUTTON, self.change)
+
+    def change(self, event):
+        sChar = service.Character.getInstance()
+        mainFrame = gui.mainFrame.MainFrame.getInstance()
+        sChar.saveCharacterAs(self.charID, self.input.GetLineText(0))
+        wx.PostEvent(mainFrame, GE.CharListUpdated())
+
+        event.Skip()
+        self.Destroy()
+

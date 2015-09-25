@@ -43,7 +43,7 @@ from gui.marketBrowser import MarketBrowser, ItemSelected
 from gui.multiSwitch import MultiSwitch
 from gui.statsPane import StatsPane
 from gui.shipBrowser import ShipBrowser, FitSelected, ImportSelected, Stage3Selected
-from gui.characterEditor import CharacterEditor
+from gui.characterEditor import CharacterEditor, SaveCharacterAs
 from gui.characterSelection import CharacterSelection
 from gui.patternEditor import DmgPatternEditorDlg
 from gui.resistsEditor import ResistsEditorDlg
@@ -495,10 +495,10 @@ class MainFrame(wx.Frame):
         wx.PostEvent(self, GE.CharListUpdated())
 
     def saveCharAs(self, event):
-        sChr = service.Character.getInstance()
         charID = self.charSelection.getActiveCharacter()
-        sChr.saveCharacterAs(charID)
-        wx.PostEvent(self, GE.CharListUpdated())
+        dlg = SaveCharacterAs(self, charID)
+        dlg.ShowModal()
+        dlg.Destroy()
 
     def revertChar(self, event):
         sChr = service.Character.getInstance()
