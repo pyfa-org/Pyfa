@@ -504,14 +504,20 @@ class ImplantsTreeView (wx.Panel):
         availableSizer.Add(self.availableImplantsTree, 1, wx.EXPAND)
 
         buttonSizer = wx.BoxSizer(wx.VERTICAL)
-        pmainSizer.Add(buttonSizer, 0, wx.TOP, 5)
-
+        buttonSizer.AddStretchSpacer()
         self.btnAdd = GenBitmapButton(self, wx.ID_ADD, bitmapLoader.getBitmap("fit_add_small", "icons"), style = wx.BORDER_NONE)
         buttonSizer.Add(self.btnAdd, 0)
         self.btnRemove = GenBitmapButton(self, wx.ID_REMOVE, bitmapLoader.getBitmap("fit_delete_small", "icons"), style = wx.BORDER_NONE)
         buttonSizer.Add(self.btnRemove, 0)
+        buttonSizer.AddStretchSpacer()
 
-        self.pluggedImplantsTree = AvailableImplantsView(self, style=wx.LC_SINGLE_SEL)
+        pmainSizer.Add(buttonSizer, 0, wx.EXPAND, 5)
+        
+        self.pluggedImplantsTree = AvailableImplantsView(self)
+
+        sChar = service.Character.getInstance()
+        charID = self.Parent.Parent.getActiveCharacter()
+        self.update(sChar.getImplants(charID))
 
         pmainSizer.Add(self.pluggedImplantsTree, 1, wx.ALL | wx.EXPAND, 5)
 
@@ -529,6 +535,7 @@ class ImplantsTreeView (wx.Panel):
 
         #Bind the event to replace dummies by real data
         self.availableImplantsTree.Bind(wx.EVT_TREE_ITEM_EXPANDING, self.expandLookup)
+        self.availableImplantsTree.Bind(wx.EVT_TREE_ITEM_ACTIVATED, self.addImplant)
 
         #Bind add & remove buttons
         self.btnAdd.Bind(wx.EVT_BUTTON, self.addImplant)
@@ -562,6 +569,7 @@ class ImplantsTreeView (wx.Panel):
         parent = event.Item
         child, _ = tree.GetFirstChild(parent)
         text = tree.GetItemText(child)
+
         if text == "dummy" or text == "itemdummy":
             tree.Delete(child)
 
@@ -600,21 +608,31 @@ class ImplantsTreeView (wx.Panel):
             itemID = self.availableImplantsTree.GetPyData(root)
             sChar.addImplant(charID, itemID)
             self.update(sChar.getImplants(charID))
+        else:
+            event.Skip()
 
     def removeImplant(self, event):
         pos = self.pluggedImplantsTree.GetFirstSelected()
         if pos != -1:
             sChar = service.Character.getInstance()
             charID = self.Parent.Parent.getActiveCharacter()
-            sChar.removeImplant(charID, self.implants[pos].slot)
+            sChar.removeImplant(charID, self.implants[pos])
             self.update(sChar.getImplants(charID))
 
 class AvailableImplantsView(d.Display):
-    DEFAULT_COLS = ["Base Name",
-                    "attr:implantness"]
+    DEFAULT_COLS = ["attr:implantness",
+                    "Base Icon",
+                    "Base Name"]
 
-    def __init__(self, parent, style):
-        d.Display.__init__(self, parent, style=style)
+    def __init__(self, parent):
+        d.Display.__init__(self, parent, style=wx.LC_SINGLE_SEL)
+
+        self.Bind(wx.EVT_LEFT_DCLICK, parent.removeImplant)
+
+        #if "__WXGTK__" in  wx.PlatformInfo:
+        #    self.Bind(wx.EVT_RIGHT_UP, self.scheduleMenu)
+        #else:
+        #    self.Bind(wx.EVT_RIGHT_DOWN, self.scheduleMenu)
 
 class APIView (wx.Panel):
     def __init__(self, parent):
