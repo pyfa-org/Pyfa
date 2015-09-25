@@ -338,8 +338,8 @@ class SkillTreeView (wx.Panel):
     def populateSkillTree(self):
         sChar = service.Character.getInstance()
         charID = self.Parent.Parent.getActiveCharacter()
-        char = sChar.getCharacter(charID)
-        dirtyGroups = set([skill.item.group.ID for skill in char.dirtySkills])
+        dirtySkills = sChar.getDirtySkills(charID)
+        dirtyGroups = set([skill.item.group.ID for skill in dirtySkills])
 
         groups = sChar.getSkillGroups()
         imageId = self.skillBookImageId
@@ -398,17 +398,26 @@ class SkillTreeView (wx.Panel):
         charID = self.Parent.Parent.getActiveCharacter()
         selection = self.skillTreeListCtrl.GetSelection()
         skillID = self.skillTreeListCtrl.GetPyData(selection)
+
         if level is not None:
             self.skillTreeListCtrl.SetItemText(selection, "Level %d" % level if isinstance(level, int) else level, 1)
-            sChar.changeLevel(charID, skillID, level)
-            sChar.saveCharacter(charID)
-            wx.PostEvent(self.Parent.Parent, GE.CharListUpdated())
+            sChar.changeLevel(charID, skillID, level, persist=True)
         elif event.Id == self.revertID:
             sChar.revertLevel(charID, skillID)
-            self.populateSkillTree()
-            wx.PostEvent(self.Parent.Parent, GE.CharListUpdated())
-        event.Skip()
 
+        self.skillTreeListCtrl.SetItemTextColour(selection, None)
+
+        dirtySkills = sChar.getDirtySkills(charID)
+        dirtyGroups = set([skill.item.group.ID for skill in dirtySkills])
+
+        parentID = self.skillTreeListCtrl.GetItemParent(selection)
+        groupID = self.skillTreeListCtrl.GetPyData(parentID)
+
+        if groupID not in dirtyGroups:
+            self.skillTreeListCtrl.SetItemTextColour(parentID, None)
+
+        wx.PostEvent(self.Parent.Parent, GE.CharListUpdated())
+        event.Skip()
 
 class ImplantsTreeView (wx.Panel):
     def addMarketViewImage(self, iconFile):

@@ -242,6 +242,9 @@ class Skill(HandledItem):
     def saveLevel(self):
         self.__level = self.activeLevel
 
+        if self in self.character.dirtySkills:
+            self.character.dirtySkills.remove(self)
+
     def revert(self):
         self.level = self.__level
 
