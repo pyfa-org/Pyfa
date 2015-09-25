@@ -164,14 +164,14 @@ class Character(object):
         if self == self.getAll5() or self == self.getAll0():
             raise ReadOnlyException("This character is read-only")
 
-        for skill in self.dirtySkills:
+        for skill in self.dirtySkills.copy():
             skill.saveLevel()
 
         self.dirtySkills = set()
         eos.db.commit()
 
     def revertLevels(self):
-        for skill in self.dirtySkills:
+        for skill in self.dirtySkills.copy():
             skill.revert()
 
         self.dirtySkills = set()
@@ -269,10 +269,11 @@ class Skill(HandledItem):
             raise ReadOnlyException()
 
         self.activeLevel = level
+        self.character.dirtySkills.add(self)
+
         if self.activeLevel == self.__level and self in self.character.dirtySkills:
             self.character.dirtySkills.remove(self)
-        else:
-            self.character.dirtySkills.add(self)
+
 
     @property
     def item(self):
