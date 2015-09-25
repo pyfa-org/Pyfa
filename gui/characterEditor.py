@@ -375,6 +375,10 @@ class SkillTreeView (wx.Panel):
         self.revertID = wx.NewId()
         self.levelChangeMenu.Append(self.revertID, "Revert")
 
+
+        self.saveID = wx.NewId()
+        self.levelChangeMenu.Append(self.saveID, "Save")
+
         self.levelChangeMenu.Bind(wx.EVT_MENU, self.changeLevel)
         self.SetSizer(pmainSizer)
 
@@ -384,7 +388,6 @@ class SkillTreeView (wx.Panel):
         sChar = service.Character.getInstance()
         charID = self.Parent.Parent.getActiveCharacter()
         dirtySkills = sChar.getDirtySkills(charID)
-        print dirtySkills
         dirtyGroups = set([skill.item.group.ID for skill in dirtySkills])
 
         groups = sChar.getSkillGroups()
@@ -450,6 +453,8 @@ class SkillTreeView (wx.Panel):
             sChar.changeLevel(charID, skillID, level, persist=True)
         elif event.Id == self.revertID:
             sChar.revertLevel(charID, skillID)
+        elif event.Id == self.saveID:
+            sChar.saveSkill(charID, skillID)
 
         self.skillTreeListCtrl.SetItemTextColour(selection, None)
 

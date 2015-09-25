@@ -336,6 +336,11 @@ class Character(object):
         skill = char.getSkill(skillID)
         skill.revert()
 
+    def saveSkill(self, charID, skillID):
+        char = eos.db.getCharacter(charID)
+        skill = char.getSkill(skillID)
+        skill.saveLevel()
+
     def addImplant(self, charID, itemID):
         char = eos.db.getCharacter(charID)
         implant = eos.types.Implant(eos.db.getItem(itemID))
