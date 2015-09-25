@@ -92,7 +92,7 @@ class CharacterEditor(wx.Frame):
         self.viewsNBContainer = wx.Notebook(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, 0)
 
         self.sview = SkillTreeView(self.viewsNBContainer)
-        #self.iview = ImplantsTreeView(self.viewsNBContainer)
+        self.iview = ImplantsTreeView(self.viewsNBContainer)
         #=======================================================================
         # RC2
         #self.iview.Show(False)
@@ -103,7 +103,7 @@ class CharacterEditor(wx.Frame):
 
         #=======================================================================
         # Disabled for RC2
-        # self.viewsNBContainer.AddPage(self.iview, "Implants")
+        self.viewsNBContainer.AddPage(self.iview, "Implants")
         #=======================================================================
         self.viewsNBContainer.AddPage(self.aview, "API")
 
@@ -536,7 +536,7 @@ class ImplantsTreeView (wx.Panel):
 
         #Bind the change of a character*
         self.Parent.Parent.Bind(GE.CHAR_CHANGED, self.charChanged)
-        self.Enable(False)
+        #self.Enable(False)
         self.Layout()
 
     def update(self, implants):
@@ -558,35 +558,34 @@ class ImplantsTreeView (wx.Panel):
 
     def expandLookup(self, event):
         tree = self.availableImplantsTree
-        root = event.Item
-        child, cookie = tree.GetFirstChild(root)
+        sMkt = service.Market.getInstance()
+        parent = event.Item
+        child, _ = tree.GetFirstChild(parent)
         text = tree.GetItemText(child)
         if text == "dummy" or text == "itemdummy":
-            sMkt = service.Market.getInstance()
-            #A DUMMY! Keeeel!!! EBUL DUMMY MUST DIAF!
             tree.Delete(child)
 
+        # if the dummy item is a market group, replace with actual market groups
         if text == "dummy":
             #Add 'real stoof!' instead
-            for id, name, iconFile, more in sMkt.getChildren(tree.GetPyData(root)):
-                iconId = self.addMarketViewImage(iconFile)
-                childId = tree.AppendItem(root, name, iconId, data=wx.TreeItemData(id))
-                if more:
+            currentMktGrp = sMkt.getMarketGroup(tree.GetPyData(parent), eager="children")
+            for childMktGrp in sMkt.getMarketGroupChildren(currentMktGrp):
+                iconId = self.addMarketViewImage(sMkt.getIconByMarketGroup(childMktGrp))
+                childId = tree.AppendItem(parent, childMktGrp.name, iconId, data=wx.TreeItemData(childMktGrp.ID))
+                if sMkt.marketGroupHasTypesCheck(childMktGrp) is False:
                     tree.AppendItem(childId, "dummy")
                 else:
                     tree.AppendItem(childId, "itemdummy")
 
+        # replace dummy with actual items
         if text == "itemdummy":
-            sMkt = service.Market.getInstance()
-            data, usedMetas = sMkt.getVariations(tree.GetPyData(root))
-            for item in data:
-                id = item.ID
-                name = item.name
-                iconFile = item.icon.iconFile
-                iconId = self.addMarketViewImage(iconFile)
-                tree.AppendItem(root, name, iconId, data=wx.TreeItemData(id))
+            currentMktGrp = sMkt.getMarketGroup(tree.GetPyData(parent))
+            items = sMkt.getItemsByMarketGroup(currentMktGrp)
+            for item in items:
+                iconId = self.addMarketViewImage(item.icon.iconFile)
+                tree.AppendItem(parent, item.name, iconId, data=wx.TreeItemData(item.ID))
 
-        tree.SortChildren(root)
+        tree.SortChildren(parent)
 
     def addImplant(self, event):
         root = self.availableImplantsTree.GetSelection()
