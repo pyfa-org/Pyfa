@@ -70,6 +70,14 @@ class Ship(ItemAttrShortcut, HandledItem):
         if forceProjected: return
         for effect in self.item.effects.itervalues():
             if effect.runTime == runTime and effect.isType("passive"):
+                # Ships have effects that utilize the level of a skill as an
+                # additional operator to the modifier. These are defined in
+                # the effect itself, and these skillbooks are registered when
+                # they are provided. However, we must re-register the ship
+                # before each effect, otherwise effects that do not have
+                # skillbook modifiers will use the stale modifier value
+                # GH issue #351
+                fit.register(self)
                 effect.handler(fit, self, ("ship",))
 
     def validateModeItem(self, item):

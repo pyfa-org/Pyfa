@@ -247,7 +247,7 @@ class Store(object):
             dict.clear()
 
         # Go through everything which can be used as gang booster
-        for thing in chain(fitBooster.modules, fitBooster.implants, fitBooster.character.iterSkills(), (fitBooster.ship,)):
+        for thing in chain(fitBooster.modules, fitBooster.implants, fitBooster.character.skills, (fitBooster.ship,)):
             if thing.item is None:
                 continue
             for effect in thing.item.effects.itervalues():

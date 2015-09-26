@@ -1,7 +1,7 @@
 # shipCapPropulsionJamming
 #
 # Used by:
-# Ships from group: Interceptor (9 of 10)
+# Ships from group: Interceptor (10 of 10)
 # Ship: Atron
 # Ship: Condor
 # Ship: Executioner

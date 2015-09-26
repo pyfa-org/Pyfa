@@ -3,7 +3,7 @@
 # Used by:
 # Celestials named like: Cataclysmic Variable Effect Beacon Class (6 of 6)
 runTime = "early"
-type = ("projected", "offline")
+type = ("projected", "passive")
 def handler(fit, module, context):
     fit.modules.filteredItemMultiply(lambda mod: mod.item.group.name == "Remote Shield Booster",
                                      "shieldBonus", module.getModifiedItemAttr("shieldBonusMultiplierRemote"),

@@ -21,8 +21,8 @@ class ChangeAffectingSkills(ContextMenu):
 
         self.charID = fit.character.ID
 
-        if self.sChar.getCharName(self.charID) in ("All 0", "All 5"):
-            return False
+        #if self.sChar.getCharName(self.charID) in ("All 0", "All 5"):
+        #    return False
 
         if srcContext == "fittingShip":
             fitID = self.mainFrame.getActiveFit()
@@ -94,6 +94,7 @@ class ChangeAffectingSkills(ContextMenu):
         fitID = self.mainFrame.getActiveFit()
         self.sFit.changeChar(fitID, self.charID)
 
+        wx.PostEvent(self.mainFrame, GE.CharListUpdated())
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
 ChangeAffectingSkills.register()

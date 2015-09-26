@@ -18,8 +18,8 @@ debug = False
 saveInRoot = False
 
 # Version data
-version = "1.14.0"
-tag = "Stable"
+version = "1.14.1"
+tag = "git"
 expansionName = "Galatea"
 expansionVersion = "1.2"
 evemonMinVersion = "4081"

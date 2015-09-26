@@ -81,7 +81,6 @@ class CharacterSelection(wx.Panel):
 
         choice.Clear()
         charList = sChar.getCharacterList()
-        sChar.getCharacterList()
         picked = False
 
         for id, name, active in charList:

@@ -21,11 +21,11 @@
 from sqlalchemy.orm import validates, reconstructor
 
 from eos.effectHandlerHelpers import HandledItem
+import eos.db
 import eos
 
+
 class Character(object):
-    __all5 = None
-    __all0 = None
     __itemList = None
     __itemIDMap = None
     __itemNameMap = None
@@ -33,7 +33,6 @@ class Character(object):
     @classmethod
     def getSkillList(cls):
         if cls.__itemList is None:
-            import eos.db
             cls.__itemList = eos.db.getItemsByCategory("Skill")
 
         return cls.__itemList
@@ -66,36 +65,39 @@ class Character(object):
 
     @classmethod
     def getAll5(cls):
-        if cls.__all5 is None:
-            import eos.db
-            all5 = eos.db.getCharacter("All 5")
-            if all5 is None:
-                all5 = Character("All 5")
-                all5.defaultLevel = 5
-                eos.db.add(all5)
+        all5 = eos.db.getCharacter("All 5")
 
-            cls.__all5 = all5
-        return cls.__all5
+        if all5 is None:
+            # We do not have to be afraid of committing here and saving
+            # edited character data. If this ever runs, it will be during the
+            # get character list phase when pyfa first starts
+            all5 = Character("All 5", 5)
+            eos.db.save(all5)
+
+        return all5
 
     @classmethod
     def getAll0(cls):
-        if cls.__all0 is None:
-            import eos.db
-            all0 = eos.db.getCharacter("All 0")
-            if all0 is None:
-                all0 = Character("All 0")
-                all0.defaultLevel = None
-                eos.db.add(all0)
+        all0 = eos.db.getCharacter("All 0")
 
-            cls.__all0 = all0
-        return cls.__all0
+        if all0 is None:
+            all0 = Character("All 0")
+            eos.db.save(all0)
 
-    def __init__(self, name):
+        return all0
+
+    def __init__(self, name, defaultLevel=None, initSkills=True):
         self.name = name
         self.__owner = None
-        self.defaultLevel = None
+        self.defaultLevel = defaultLevel
         self.__skills = []
         self.__skillIdMap = {}
+        self.dirtySkills = set()
+
+        if initSkills:
+            for item in self.getSkillList():
+                self.addSkill(Skill(item.ID, self.defaultLevel))
+
         self.__implants = eos.saveddata.fit.HandledImplantBoosterList()
         self.apiKey = None
 
@@ -104,13 +106,17 @@ class Character(object):
         self.__skillIdMap = {}
         for skill in self.__skills:
             self.__skillIdMap[skill.itemID] = skill
+        self.dirtySkills = set()
 
     def apiUpdateCharSheet(self, skills):
         del self.__skills[:]
         self.__skillIdMap.clear()
         for skillRow in skills:
-
             self.addSkill(Skill(skillRow["typeID"], skillRow["level"]))
+
+    @property
+    def ro(self):
+        return self == self.getAll0() or self == self.getAll5()
 
     @property
     def owner(self):
@@ -119,6 +125,10 @@ class Character(object):
     @owner.setter
     def owner(self, owner):
         self.__owner = owner
+
+    @property
+    def skills(self):
+        return self.__skills
 
     def addSkill(self, skill):
         self.__skills.append(skill)
@@ -137,11 +147,7 @@ class Character(object):
         skill = self.__skillIdMap.get(item.ID)
 
         if skill is None:
-            if self.defaultLevel is None:
-                skill = Skill(item, 0, False, False)
-            else:
-                skill = Skill(item, self.defaultLevel, False, True)
-
+            skill = Skill(item, self.defaultLevel, False, True)
             self.addSkill(skill)
 
         return skill
@@ -150,40 +156,57 @@ class Character(object):
     def implants(self):
         return self.__implants
 
-    def iterSkills(self):
-        for item in self.getSkillList():
-            yield self.getSkill(item)
+    @property
+    def isDirty(self):
+        return len(self.dirtySkills) > 0
+
+    def saveLevels(self):
+        if self == self.getAll5() or self == self.getAll0():
+            raise ReadOnlyException("This character is read-only")
+
+        for skill in self.dirtySkills.copy():
+            skill.saveLevel()
+
+        self.dirtySkills = set()
+        eos.db.commit()
+
+    def revertLevels(self):
+        for skill in self.dirtySkills.copy():
+            skill.revert()
+
+        self.dirtySkills = set()
 
     def filteredSkillIncrease(self, filter, *args, **kwargs):
-        for element in self.iterSkills():
+        for element in self.skills:
             if filter(element):
                 element.increaseItemAttr(*args, **kwargs)
 
     def filteredSkillMultiply(self, filter, *args, **kwargs):
-        for element in self.iterSkills():
+        for element in self.skills:
             if filter(element):
                 element.multiplyItemAttr(*args, **kwargs)
 
     def filteredSkillBoost(self, filter, *args, **kwargs):
-        for element in self.iterSkills():
+        for element in self.skills:
             if filter(element):
                 element.boostItemAttr(*args, **kwargs)
 
     def calculateModifiedAttributes(self, fit, runTime, forceProjected = False):
         if forceProjected: return
-        for skill in self.iterSkills():
+        for skill in self.skills:
             fit.register(skill)
             skill.calculateModifiedAttributes(fit, runTime)
 
     def clear(self):
-        for skill in self.iterSkills():
+        for skill in self.skills:
             skill.clear()
 
     def __deepcopy__(self, memo):
-        copy = Character("%s copy" % self.name)
+        copy = Character("%s copy" % self.name, initSkills=False)
         copy.apiKey = self.apiKey
         copy.apiID = self.apiID
-        for skill in self.iterSkills():
+
+        for skill in self.skills:
             copy.addSkill(Skill(skill.itemID, skill.level, False, skill.learned))
 
         return copy
@@ -199,7 +222,7 @@ class Character(object):
         else: return val
 
 class Skill(HandledItem):
-    def __init__(self, item, level = 0, ro = False, learned = True):
+    def __init__(self, item, level=0, ro=False, learned=True):
         self.__item = item if not isinstance(item, int) else None
         self.itemID = item.ID if not isinstance(item, int) else item
         self.__level = level if learned else None
@@ -214,14 +237,28 @@ class Skill(HandledItem):
     def build(self, ro):
         self.__ro = ro
         self.__suppressed = False
+        self.activeLevel = self.__level
+
+    def saveLevel(self):
+        self.__level = self.activeLevel
+
+        if self in self.character.dirtySkills:
+            self.character.dirtySkills.remove(self)
+
+    def revert(self):
+        self.level = self.__level
+
+    @property
+    def isDirty(self):
+        return self.__level != self.activeLevel
 
     @property
     def learned(self):
-        return self.__level is not None
+        return self.activeLevel is not None
 
     @property
     def level(self):
-        return self.__level or 0
+        return self.activeLevel or 0
 
     @level.setter
     def level(self, level):
@@ -231,7 +268,12 @@ class Skill(HandledItem):
         if hasattr(self, "_Skill__ro") and self.__ro == True:
             raise ReadOnlyException()
 
-        self.__level = level
+        self.activeLevel = level
+        self.character.dirtySkills.add(self)
+
+        if self.activeLevel == self.__level and self in self.character.dirtySkills:
+            self.character.dirtySkills.remove(self)
+
 
     @property
     def item(self):

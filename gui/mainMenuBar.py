@@ -23,6 +23,7 @@ from gui.bitmapLoader import BitmapLoader
 import gui.mainFrame
 import gui.graphFrame
 import gui.globalEvents as GE
+import service
 
 class MainMenuBar(wx.MenuBar):
     def __init__(self):
@@ -36,6 +37,9 @@ class MainMenuBar(wx.MenuBar):
         self.exportHtmlId = wx.NewId()
         self.wikiId = wx.NewId()
         self.forumId = wx.NewId()
+        self.saveCharId = wx.NewId()
+        self.saveCharAsId = wx.NewId()
+        self.revertCharId = wx.NewId()
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
@@ -70,7 +74,10 @@ class MainMenuBar(wx.MenuBar):
         pasteText = "&From Clipboard" + ("\tCTRL+V" if 'wxMSW' in wx.PlatformInfo else "")
         editMenu.Append(wx.ID_COPY, copyText, "Export a fit to the clipboard")
         editMenu.Append(wx.ID_PASTE, pasteText, "Import a fit from the clipboard")
-
+        editMenu.AppendSeparator()
+        editMenu.Append(self.saveCharId, "Save Character")
+        editMenu.Append(self.saveCharAsId, "Save Character As...")
+        editMenu.Append(self.revertCharId, "Revert Character")
         # Character menu
         windowMenu = wx.Menu()
         self.Append(windowMenu, "&Window")
@@ -113,5 +120,14 @@ class MainMenuBar(wx.MenuBar):
         self.Enable(wx.ID_SAVEAS, enable)
         self.Enable(wx.ID_COPY, enable)
         self.Enable(self.exportSkillsNeededId, enable)
-        event.Skip()
 
+        sChar = service.Character.getInstance()
+        charID = self.mainFrame.charSelection.getActiveCharacter()
+        char = sChar.getCharacter(charID)
+
+        # enable/disable character saving stuff
+        self.Enable(self.saveCharId, not char.ro and char.isDirty)
+        self.Enable(self.saveCharAsId, char.isDirty)
+        self.Enable(self.revertCharId, char.isDirty)
+
+        event.Skip()

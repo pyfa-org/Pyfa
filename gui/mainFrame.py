@@ -43,7 +43,7 @@ from gui.marketBrowser import MarketBrowser, ItemSelected
 from gui.multiSwitch import MultiSwitch
 from gui.statsPane import StatsPane
 from gui.shipBrowser import ShipBrowser, FitSelected, ImportSelected, Stage3Selected
-from gui.characterEditor import CharacterEditor
+from gui.characterEditor import CharacterEditor, SaveCharacterAs
 from gui.characterSelection import CharacterSelection
 from gui.patternEditor import DmgPatternEditorDlg
 from gui.resistsEditor import ResistsEditorDlg
@@ -416,6 +416,12 @@ class MainFrame(wx.Frame):
         self.Bind(wx.EVT_MENU, self.goWiki, id = menuBar.wikiId)
         # EVE Forums
         self.Bind(wx.EVT_MENU, self.goForums, id = menuBar.forumId)
+        # Save current character
+        self.Bind(wx.EVT_MENU, self.saveChar, id = menuBar.saveCharId)
+        # Save current character as another character
+        self.Bind(wx.EVT_MENU, self.saveCharAs, id = menuBar.saveCharAsId)
+        # Save current character
+        self.Bind(wx.EVT_MENU, self.revertChar, id = menuBar.revertCharId)
 
         #Clipboard exports
         self.Bind(wx.EVT_MENU, self.exportToClipboard, id=wx.ID_COPY)
@@ -479,6 +485,24 @@ class MainFrame(wx.Frame):
 
         atable = wx.AcceleratorTable(actb)
         self.SetAcceleratorTable(atable)
+
+    def saveChar(self, event):
+        sChr = service.Character.getInstance()
+        charID = self.charSelection.getActiveCharacter()
+        sChr.saveCharacter(charID)
+        wx.PostEvent(self, GE.CharListUpdated())
+
+    def saveCharAs(self, event):
+        charID = self.charSelection.getActiveCharacter()
+        dlg = SaveCharacterAs(self, charID)
+        dlg.ShowModal()
+        dlg.Destroy()
+
+    def revertChar(self, event):
+        sChr = service.Character.getInstance()
+        charID = self.charSelection.getActiveCharacter()
+        sChr.revertCharacter(charID)
+        wx.PostEvent(self, GE.CharListUpdated())
 
     def AdditionsTabSelect(self, event):
         selTab = self.additionsSelect.index(event.GetId())
