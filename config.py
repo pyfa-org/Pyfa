@@ -26,7 +26,6 @@ evemonMinVersion = "4081"
 
 pyfaPath = None
 savePath = None
-staticPath = None
 saveDB = None
 gameDB = None
 
@@ -65,7 +64,6 @@ def defPaths():
     global debug
     global pyfaPath
     global savePath
-    global staticPath
     global saveDB
     global gameDB
     global saveInRoot
@@ -113,18 +111,13 @@ def defPaths():
         #sl = StreamToLogger(stderr_logger, logging.ERROR)
         #sys.stderr = sl
 
-
-    # Static EVE Data from the staticdata repository, should be in the staticdata
-    # directory in our pyfa directory
-    staticPath = os.path.join(pyfaPath, "staticdata")
-
     # The database where we store all the fits etc
     saveDB = os.path.join(savePath, "saveddata.db")
 
     # The database where the static EVE data from the datadump is kept.
     # This is not the standard sqlite datadump but a modified version created by eos
     # maintenance script
-    gameDB = os.path.join(staticPath, "eve.db")
+    gameDB = os.path.join(pyfaPath, "eve.db")
 
     ## DON'T MODIFY ANYTHING BELOW ##
     import eos.config

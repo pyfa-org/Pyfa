@@ -6,7 +6,7 @@ Windows executable + installer: python setup.py bdist_msi
 """
 
 packages = ['eos', 'gui', 'service', 'utils']
-include_files = ['staticdata', 'gpl.txt']
+include_files = ['eve.db', 'gpl.txt']
 # this is read by dist.py to package the icons
 icon_dirs = ['gui', 'icons', 'renders']
 
