@@ -23,10 +23,10 @@ else:
     logLevel = logging.WARN
 
 # Version data
-version = "1.14.1"
-tag = "git"
-expansionName = "Singularity"
-expansionVersion = "965413"
+version = "1.15.0"
+tag = "Stable"
+expansionName = "Vanguard"
+expansionVersion = "1.0"
 evemonMinVersion = "4081"
 
 pyfaPath = None
