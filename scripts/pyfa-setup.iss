@@ -8,7 +8,7 @@
     #define MyAppVersion "1.15.0"
 #endif
 #ifndef MyAppExpansion
-    #define MyAppExpansion "Test Expansion 1.0"
+    #define MyAppExpansion "Vanguard 1.0"
 #endif
 
 ; Other config
@@ -19,10 +19,10 @@
 #define MyAppExeName "pyfa.exe"
 
 ; What version starts with the new structure (1.x.0). This is used to determine if we run directory structure cleanup
-#define VersionFlag 15
+#define VersionFlag 16
 
 #ifndef MyOutputFile
-    #define MyOutputFile LowerCase(StringChange(MyAppName+'-'+MyAppVersion+'-'+MyAppExpansion+'-win', " ", "-"))
+    #define MyOutputFile LowerCase(StringChange(MyAppName+'-'+MyAppVersion+'-'+MyAppExpansion+'-win-wx3', " ", "-"))
 #endif
 #ifndef MyAppDir
     #define MyAppDir "pyfa"
@@ -49,7 +49,7 @@ AllowNoIcons=yes
 LicenseFile={#MyAppDir}\gpl.txt
 OutputDir={#MyOutputDir}
 OutputBaseFilename={#MyOutputFile}
-;SetupIconFile={#MyAppDir}\pyfa.ico
+SetupIconFile={#MyAppDir}\pyfa.ico
 Compression=lzma
 SolidCompression=yes
 CloseApplications=yes
@@ -81,7 +81,7 @@ Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChang
 Type: filesandordirs; Name: "{app}\eos"
 Type: filesandordirs; Name: "{app}\gui"
 Type: filesandordirs; Name: "{app}\service"
-Type: filesandordirs; Name: "{app}\util"
+Type: filesandordirs; Name: "{app}\utils"
 Type: files; Name: "{app}\*.pyo"
 Type: files; Name: "{app}\*.pyc"
 
