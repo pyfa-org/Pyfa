@@ -18,10 +18,10 @@ debug = False
 saveInRoot = False
 
 # Version data
-version = "1.14.1"
-tag = "git"
-expansionName = "Galatea"
-expansionVersion = "1.2"
+version = "1.15.0"
+tag = "Stable"
+expansionName = "Vanguard"
+expansionVersion = "1.0"
 evemonMinVersion = "4081"
 
 pyfaPath = None

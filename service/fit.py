@@ -181,7 +181,8 @@ class Fit(object):
         # refresh any fits this fit is projected onto. Otherwise, if we have
         # already loaded those fits, they will not reflect the changes
         for projection in fit.projectedOnto.values():
-            eos.db.saveddata_session.refresh(projection.victim_fit)
+            if projection.victim_fit in eos.db.saveddata_session:  # GH issue #359
+                eos.db.saveddata_session.refresh(projection.victim_fit)
 
     def copyFit(self, fitID):
         fit = eos.db.getFit(fitID)

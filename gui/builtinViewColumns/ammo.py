@@ -32,15 +32,16 @@ class Ammo(ViewColumn):
 
     def getText(self, stuff):
         if getattr(stuff, "charge", None) is not None:
-            shots = stuff.numShots
-            if shots > 0:
-                text = "%s (%s)" % (stuff.charge.name, stuff.numShots)
+            charges = stuff.numCharges
+            if charges > 0:
+                cycles = stuff.numShots
+                if charges != cycles:
+                    return "%s (%d, %d cycles)" % (stuff.charge.name, charges, cycles)
+                else:
+                    return "%s (%d)" % (stuff.charge.name, charges)
             else:
-                text = stuff.charge.name
-        else:
-            text = ""
-
-        return text
+                return stuff.charge.name
+        return ""
 
     def getImageId(self, mod):
         return -1

@@ -1642,7 +1642,17 @@ class FitItem(SFItem.SFBrowserItem):
             self.RestoreEditButton()
             return
 
-        self.deleteFit()
+        # to prevent accidental deletion, give dialog confirmation unless shift is depressed
+        if wx.GetMouseState().ShiftDown() or wx.GetMouseState().MiddleDown():
+            self.deleteFit()
+        else:
+            dlg = wx.MessageDialog(self,
+                 "Do you really want to delete this fit?",
+                 "Confirm Delete", wx.OK | wx.CANCEL | wx.ICON_QUESTION)
+            result = dlg.ShowModal()
+            dlg.Destroy()
+            if result == wx.ID_OK:
+                self.deleteFit()
 
     def deleteFit(self, event=None):
         if self.deleted:
