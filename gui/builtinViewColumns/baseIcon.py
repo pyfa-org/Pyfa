@@ -1,6 +1,6 @@
 from gui import builtinViewColumns
 from gui.viewColumn import ViewColumn
-from gui import bitmapLoader
+from gui.bitmapLoader import BitmapLoader
 import wx
 from eos.types import Drone, Fit, Module, Slot, Rack
 
@@ -8,11 +8,11 @@ class BaseIcon(ViewColumn):
     name = "Base Icon"
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
-        self.size = 16
+        self.size = 24
         self.maxsize = self.size
         self.mask = wx.LIST_MASK_IMAGE
         self.columnText = ""
-        self.shipImage = fittingView.imageList.GetImageIndex("ship_small", "icons")
+        self.shipImage = fittingView.imageList.GetImageIndex("ship_small", "gui")
 
     def getImageId(self, stuff):
         if isinstance(stuff, Drone):
@@ -23,7 +23,7 @@ class BaseIcon(ViewColumn):
             return -1
         if isinstance(stuff, Module):
             if stuff.isEmpty:
-                return self.fittingView.imageList.GetImageIndex("slot_%s_small" % Slot.getName(stuff.slot).lower(), "icons")
+                return self.fittingView.imageList.GetImageIndex("slot_%s_small" % Slot.getName(stuff.slot).lower(), "gui")
             else:
                 return self.loadIconFile(stuff.item.icon.iconFile if stuff.item.icon else "")
 
@@ -32,7 +32,7 @@ class BaseIcon(ViewColumn):
 
     def loadIconFile(self, iconFile):
         if iconFile:
-            return self.fittingView.imageList.GetImageIndex(iconFile, "pack")
+            return self.fittingView.imageList.GetImageIndex(iconFile, "icons")
         else:
             return -1
 

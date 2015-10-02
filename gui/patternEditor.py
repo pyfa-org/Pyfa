@@ -18,7 +18,7 @@
 #===============================================================================
 
 import wx
-import bitmapLoader
+from gui.bitmapLoader import BitmapLoader
 import service
 from wx.lib.intctrl import IntCtrl
 from gui.utils.clipboard import toClipboard, fromClipboard
@@ -58,14 +58,10 @@ class DmgPatternEditorDlg(wx.Dialog):
         self.namePicker.Bind(wx.EVT_TEXT_ENTER, self.processRename)
         self.namePicker.Hide()
 
-        self.btnSave = wx.Button(self, wx.ID_SAVE)
-        self.btnSave.Hide()
-        self.btnSave.Bind(wx.EVT_BUTTON, self.processRename)
-
         size = None
         headerSizer.Add(self.ccDmgPattern, 1, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT|wx.LEFT, 3)
         buttons = (("new", wx.ART_NEW),
-                   ("rename", bitmapLoader.getBitmap("rename", "icons")),
+                   ("rename", BitmapLoader.getBitmap("rename", "gui")),
                    ("copy", wx.ART_COPY),
                    ("delete", wx.ART_DELETE))
         for name, art in buttons:
@@ -83,6 +79,10 @@ class DmgPatternEditorDlg(wx.Dialog):
                 btn.SetToolTipString("%s pattern" % name.capitalize())
                 headerSizer.Add(btn, 0, wx.ALIGN_CENTER_VERTICAL)
 
+        self.btnSave = wx.Button(self, wx.ID_SAVE)
+        self.btnSave.Hide()
+        self.btnSave.Bind(wx.EVT_BUTTON, self.processRename)
+        self.headerSizer.Add(self.btnSave, 0, wx.ALIGN_CENTER)
 
         mainSizer.Add(headerSizer, 0, wx.EXPAND | wx.ALL, 2)
 
@@ -90,10 +90,10 @@ class DmgPatternEditorDlg(wx.Dialog):
         mainSizer.Add(self.sl, 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 5)
 
         contentSizer = wx.BoxSizer(wx.VERTICAL)
-        self.embitmap = bitmapLoader.getBitmap("em_big", "icons")
-        self.thermbitmap = bitmapLoader.getBitmap("thermal_big", "icons")
-        self.kinbitmap = bitmapLoader.getBitmap("kinetic_big", "icons")
-        self.expbitmap = bitmapLoader.getBitmap("explosive_big", "icons")
+        self.embitmap = BitmapLoader.getBitmap("em_big", "gui")
+        self.thermbitmap = BitmapLoader.getBitmap("thermal_big", "gui")
+        self.kinbitmap = BitmapLoader.getBitmap("kinetic_big", "gui")
+        self.expbitmap = BitmapLoader.getBitmap("explosive_big", "gui")
 
         dmgeditSizer = wx.FlexGridSizer(2, 6, 0, 2)
         dmgeditSizer.AddGrowableCol(0)
@@ -105,7 +105,7 @@ class DmgPatternEditorDlg(wx.Dialog):
         defSize = wx.Size(width,-1)
 
         for i, type in enumerate(self.DAMAGE_TYPES):
-            bmp = wx.StaticBitmap(self, wx.ID_ANY, bitmapLoader.getBitmap("%s_big"%type, "icons"))
+            bmp = wx.StaticBitmap(self, wx.ID_ANY, BitmapLoader.getBitmap("%s_big"%type, "gui"))
             if i%2:
                 style = wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_RIGHT | wx.LEFT
                 border = 10
@@ -276,9 +276,7 @@ class DmgPatternEditorDlg(wx.Dialog):
 
         for btn in (self.new, self.rename, self.delete, self.copy):
             btn.Hide()
-            self.headerSizer.Remove(btn)
 
-        self.headerSizer.Add(self.btnSave, 0, wx.ALIGN_CENTER)
         self.btnSave.Show()
         self.headerSizer.Layout()
         if event is not None:
@@ -311,9 +309,7 @@ class DmgPatternEditorDlg(wx.Dialog):
         self.ccDmgPattern.Show()
         self.namePicker.Hide()
         self.btnSave.Hide()
-        self.headerSizer.Remove(self.btnSave)
         for btn in (self.new, self.rename, self.delete, self.copy):
-            self.headerSizer.Add(btn, 0, wx.ALIGN_CENTER_VERTICAL)
             btn.Show()
 
         sel = self.ccDmgPattern.GetSelection()

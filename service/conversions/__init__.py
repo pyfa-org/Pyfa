@@ -7,7 +7,7 @@ item's name. The name of the file is usually arbitrary unless it's used in logic
 elsewhere (in which case can be accessed with packs[name])
 """
 
-import os
+import pkgutil
 
 # init parent dict
 all = {}
@@ -15,10 +15,10 @@ all = {}
 # init container to store the separate conversion packs in case we need them
 packs = {}
 
-for filename in os.listdir(os.path.dirname(__file__)):
-    basename, extension = filename.rsplit('.', 1)
 
-    if extension == "py" and basename not in ("__init__",):
-        conversionPack = __import__("%s.%s"%(__name__, basename), fromlist=True)
-        all.update(conversionPack.CONVERSIONS)
-        packs[basename] = conversionPack.CONVERSIONS
+prefix = __name__ + "."
+for importer, modname, ispkg in pkgutil.iter_modules(__path__, prefix):
+    conversionPack = __import__(modname, fromlist="dummy")
+    all.update(conversionPack.CONVERSIONS)
+    modname_tail = modname.rsplit('.', 1)[-1]
+    packs[modname_tail] = conversionPack.CONVERSIONS

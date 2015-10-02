@@ -19,7 +19,7 @@
 
 from gui import builtinViewColumns
 from gui.viewColumn import ViewColumn
-from gui import bitmapLoader
+from gui.bitmapLoader import BitmapLoader
 import wx
 
 class Ammo(ViewColumn):
@@ -27,8 +27,8 @@ class Ammo(ViewColumn):
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
         self.mask = wx.LIST_MASK_IMAGE
-        self.imageId = fittingView.imageList.GetImageIndex("damagePattern_small", "icons")
-        self.bitmap = bitmapLoader.getBitmap("damagePattern_small", "icons")
+        self.imageId = fittingView.imageList.GetImageIndex("damagePattern_small", "gui")
+        self.bitmap = BitmapLoader.getBitmap("damagePattern_small", "gui")
 
     def getText(self, stuff):
         if getattr(stuff, "charge", None) is not None:

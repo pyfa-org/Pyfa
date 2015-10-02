@@ -18,7 +18,7 @@
 #===============================================================================
 
 import wx
-import bitmapLoader
+from gui.bitmapLoader import BitmapLoader
 import config
 import service
 import dateutil.parser

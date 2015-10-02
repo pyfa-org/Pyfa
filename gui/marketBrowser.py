@@ -24,7 +24,7 @@ from gui.cachingImageList import CachingImageList
 from gui.contextMenu import ContextMenu
 import gui.PFSearchBox as SBox
 
-from gui import bitmapLoader
+from gui.bitmapLoader import BitmapLoader
 
 ItemSelected, ITEM_SELECTED = wx.lib.newevent.NewEvent()
 
@@ -105,8 +105,8 @@ class MarketBrowser(wx.Panel):
 class SearchBox(SBox.PFSearchBox):
     def __init__(self, parent):
         SBox.PFSearchBox.__init__(self, parent)
-        cancelBitmap = bitmapLoader.getBitmap("fit_delete_small","icons")
-        searchBitmap = bitmapLoader.getBitmap("fsearch_small","icons")
+        cancelBitmap = BitmapLoader.getBitmap("fit_delete_small","gui")
+        searchBitmap = BitmapLoader.getBitmap("fsearch_small","gui")
         self.SetSearchBitmap(searchBitmap)
         self.SetCancelBitmap(cancelBitmap)
         self.ShowSearchButton()
@@ -134,13 +134,13 @@ class MarketTree(wx.TreeCtrl):
         self.SortChildren(self.root)
 
         # Add recently used modules node
-        rumIconId = self.addImage("market_small", "icons")
+        rumIconId = self.addImage("market_small", "gui")
         self.AppendItem(self.root, "Recently Used Modules", rumIconId, data = wx.TreeItemData(RECENTLY_USED_MODULES))
 
         # Bind our lookup method to when the tree gets expanded
         self.Bind(wx.EVT_TREE_ITEM_EXPANDING, self.expandLookup)
 
-    def addImage(self, iconFile, location = "pack"):
+    def addImage(self, iconFile, location="icons"):
         if iconFile is None:
             return -1
         return self.imageList.GetImageIndex(iconFile, location)

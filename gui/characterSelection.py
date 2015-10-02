@@ -19,7 +19,7 @@
 
 import wx
 import service
-from gui import bitmapLoader
+from gui.bitmapLoader import BitmapLoader
 import gui.globalEvents as GE
 import gui.mainFrame
 
@@ -41,10 +41,10 @@ class CharacterSelection(wx.Panel):
 
         self.refreshCharacterList()
 
-        self.cleanSkills = bitmapLoader.getBitmap("skill_big", "icons")
-        self.redSkills   = bitmapLoader.getBitmap("skillRed_big", "icons")
-        self.greenSkills = bitmapLoader.getBitmap("skillGreen_big", "icons")
-        self.refresh     = bitmapLoader.getBitmap("refresh", "icons")
+        self.cleanSkills = BitmapLoader.getBitmap("skill_big", "gui")
+        self.redSkills   = BitmapLoader.getBitmap("skillRed_big", "gui")
+        self.greenSkills = BitmapLoader.getBitmap("skillGreen_big", "gui")
+        self.refresh     = BitmapLoader.getBitmap("refresh", "gui")
 
         self.btnRefresh = wx.BitmapButton(self, wx.ID_ANY, self.refresh)
         size = self.btnRefresh.GetSize()

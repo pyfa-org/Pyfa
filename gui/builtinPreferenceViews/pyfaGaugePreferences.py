@@ -6,7 +6,7 @@ import wx
 import copy
 
 from gui.preferenceView import PreferenceView
-from gui import bitmapLoader
+from gui.bitmapLoader import BitmapLoader
 from gui.utils import colorUtils
 import gui.utils.drawUtils as drawUtils
 
@@ -313,7 +313,7 @@ class PFGaugePref ( PreferenceView):
         self.cp103105E.Bind( wx.EVT_COLOURPICKER_CHANGED, self.OnColourChanged )
 
     def getImage(self):
-        return bitmapLoader.getBitmap("pref-gauges_big", "icons")
+        return BitmapLoader.getBitmap("pref-gauges_big", "gui")
 
     def InitDefaultColours(self):
         self.c0100S = wx.Colour(191, 191, 191, 255)

@@ -22,7 +22,7 @@ import wx
 import gui.mainFrame
 import wx.lib.newevent
 import wx.gizmos
-from gui import bitmapLoader
+from gui.bitmapLoader import BitmapLoader
 import service
 import gui.display as d
 from gui.contextMenu import ContextMenu
@@ -34,9 +34,10 @@ class CharacterEditor(wx.Frame):
         wx.Frame.__init__ (self, parent, id=wx.ID_ANY, title=u"pyfa: Character Editor", pos=wx.DefaultPosition,
                             size=wx.Size(641, 600), style=wx.DEFAULT_FRAME_STYLE|wx.FRAME_FLOAT_ON_PARENT|wx.TAB_TRAVERSAL)
 
+        i = wx.IconFromBitmap(BitmapLoader.getBitmap("character_small", "gui"))
+
         self.mainFrame = parent
 
-        i = wx.IconFromBitmap(bitmapLoader.getBitmap("character_small", "icons"))
         self.SetIcon(i)
 
         self.disableWin=  wx.WindowDisabler(self)
@@ -67,7 +68,7 @@ class CharacterEditor(wx.Frame):
                 self.charChoice.SetSelection(i)
 
         buttons = (("new", wx.ART_NEW),
-                   ("rename", bitmapLoader.getBitmap("rename", "icons")),
+                   ("rename", BitmapLoader.getBitmap("rename", "gui")),
                    ("copy", wx.ART_COPY),
                    ("delete", wx.ART_DELETE))
 
@@ -261,10 +262,8 @@ class CharacterEditor(wx.Frame):
         self.characterRename.SetFocus()
         for btn in (self.btnNew, self.btnCopy, self.btnRename, self.btnDelete):
             btn.Hide()
-            self.navSizer.Remove(btn)
 
         self.btnSave.Show()
-        self.navSizer.Add(self.btnSave, 0, wx.ALIGN_CENTER)
         self.navSizer.Layout()
 
         sChar = service.Character.getInstance()
@@ -287,9 +286,7 @@ class CharacterEditor(wx.Frame):
         self.navSizer.Replace(self.characterRename, self.charChoice)
         for btn in (self.btnNew, self.btnCopy, self.btnRename, self.btnDelete):
             btn.Show()
-            self.navSizer.Add(btn, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 2)
 
-        self.navSizer.Remove(self.btnSave)
         self.btnSave.Hide()
         self.navSizer.Layout()
         self.refreshCharacterList()
@@ -338,7 +335,7 @@ class SkillTreeView (wx.Panel):
 
         self.imageList = wx.ImageList(16, 16)
         tree.SetImageList(self.imageList)
-        self.skillBookImageId = self.imageList.Add(bitmapLoader.getBitmap("skill_small", "icons"))
+        self.skillBookImageId = self.imageList.Add(BitmapLoader.getBitmap("skill_small", "gui"))
 
         tree.AddColumn("Skill")
         tree.AddColumn("Level")
@@ -478,7 +475,7 @@ class ImplantsTreeView (wx.Panel):
     def addMarketViewImage(self, iconFile):
         if iconFile is None:
             return -1
-        bitmap = bitmapLoader.getBitmap(iconFile, "pack")
+        bitmap = BitmapLoader.getBitmap(iconFile, "icons")
         if bitmap is None:
             return -1
         else:
@@ -506,9 +503,9 @@ class ImplantsTreeView (wx.Panel):
         buttonSizer = wx.BoxSizer(wx.VERTICAL)
         pmainSizer.Add(buttonSizer, 0, wx.TOP, 5)
 
-        self.btnAdd = GenBitmapButton(self, wx.ID_ADD, bitmapLoader.getBitmap("fit_add_small", "icons"), style = wx.BORDER_NONE)
+        self.btnAdd = GenBitmapButton(self, wx.ID_ADD, BitmapLoader.getBitmap("fit_add_small", "gui"), style = wx.BORDER_NONE)
         buttonSizer.Add(self.btnAdd, 0)
-        self.btnRemove = GenBitmapButton(self, wx.ID_REMOVE, bitmapLoader.getBitmap("fit_delete_small", "icons"), style = wx.BORDER_NONE)
+        self.btnRemove = GenBitmapButton(self, wx.ID_REMOVE, BitmapLoader.getBitmap("fit_delete_small", "gui"), style = wx.BORDER_NONE)
         buttonSizer.Add(self.btnRemove, 0)
 
         self.pluggedImplantsTree = AvailableImplantsView(self, style=wx.LC_SINGLE_SEL)

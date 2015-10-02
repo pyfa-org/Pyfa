@@ -18,7 +18,7 @@
 #===============================================================================
 
 from gui.viewColumn import ViewColumn
-from gui import bitmapLoader
+from gui.bitmapLoader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 import wx
 import service
@@ -39,10 +39,10 @@ class PropertyDisplay(ViewColumn):
         if params["showIcon"]:
             if info.name == "power":
                 iconFile = "pg_small"
-                iconType = "icons"
+                iconType = "gui"
             else:
                 iconFile = info.icon.iconFile if info.icon else None
-                iconType = "pack"
+                iconType = "icons"
             if iconFile:
                 self.imageId = fittingView.imageList.GetImageIndex(iconFile, iconType)
             else:

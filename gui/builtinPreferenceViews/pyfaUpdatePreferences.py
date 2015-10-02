@@ -3,7 +3,7 @@ import service
 import os
 
 from gui.preferenceView import PreferenceView
-from gui import bitmapLoader
+from gui.bitmapLoader import BitmapLoader
 
 import service
 import gui.globalEvents as GE
@@ -99,6 +99,6 @@ class PFUpdatePref (PreferenceView):
         wx.LaunchDefaultBrowser('https://github.com/DarkFenX/Pyfa/releases/tag/'+self.UpdateSettings.get('version'))
 
     def getImage(self):
-        return bitmapLoader.getBitmap("prefs_update", "icons")
+        return BitmapLoader.getBitmap("prefs_update", "gui")
 
 PFUpdatePref.register()

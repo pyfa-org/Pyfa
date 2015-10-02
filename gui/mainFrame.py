@@ -36,7 +36,7 @@ import gui.chromeTabs
 import gui.utils.animUtils as animUtils
 import gui.globalEvents as GE
 
-from gui import bitmapLoader
+from gui.bitmapLoader import BitmapLoader
 from gui.mainMenuBar import MainMenuBar
 from gui.additionsPane import AdditionsPane
 from gui.marketBrowser import MarketBrowser, ItemSelected
@@ -57,8 +57,6 @@ from gui.builtinViews import *
 
 from time import gmtime, strftime
 
-import locale
-locale.setlocale(locale.LC_ALL, '')
 
 #dummy panel(no paint no erasebk)
 class PFPanel(wx.Panel):
@@ -116,7 +114,7 @@ class MainFrame(wx.Frame):
             self.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNFACE ) )
 
         #Load and set the icon for pyfa main window
-        i = wx.IconFromBitmap(bitmapLoader.getBitmap("pyfa", "icons"))
+        i = wx.IconFromBitmap(BitmapLoader.getBitmap("pyfa", "gui"))
         self.SetIcon(i)
 
         #Create the layout and windows
@@ -141,8 +139,8 @@ class MainFrame(wx.Frame):
 
         self.notebookBrowsers = gui.chromeTabs.PFNotebook(self.splitter, False)
 
-        marketImg = bitmapLoader.getImage("market_small", "icons")
-        shipBrowserImg = bitmapLoader.getImage("ship_small", "icons")
+        marketImg = BitmapLoader.getImage("market_small", "gui")
+        shipBrowserImg = BitmapLoader.getImage("ship_small", "gui")
 
         self.marketBrowser = MarketBrowser(self.notebookBrowsers)
         self.notebookBrowsers.AddPage(self.marketBrowser, "Market", tabImage = marketImg, showClose = False)
@@ -588,7 +586,7 @@ class MainFrame(wx.Frame):
         if (dlg.ShowModal() == wx.ID_OK):
             self.progressDialog = wx.ProgressDialog(
                             "Importing fits",
-                            " "*100, # set some arbitrary spacing to create wifth in window
+                            " "*100, # set some arbitrary spacing to create width in window
                             parent=self, style = wx.PD_APP_MODAL | wx.PD_ELAPSED_TIME)
             self.progressDialog.message = None
             sFit.importFitsThreaded(dlg.GetPaths(), self.fileImportCallback)
@@ -607,7 +605,12 @@ class MainFrame(wx.Frame):
 
         if info == -1:
             # Done processing
-            self.progressDialog.Hide()
+            # see GH issue #281 on why conditional is needed
+
+            if 'wxMSW' in wx.PlatformInfo:
+                self.progressDialog.Destroy()
+            else:
+                self.progressDialog.Hide()
             self._openAfterImport(fits)
         elif info != self.progressDialog.message and info is not None:
             # New message, overwrite cached message and update
@@ -647,13 +650,16 @@ class MainFrame(wx.Frame):
                               "Backing up %d fits to: %s"%(max, filePath),
                               maximum=max, parent=self,
                               style=wx.PD_APP_MODAL | wx.PD_ELAPSED_TIME)
-
             sFit.backupFits(filePath, self.backupCallback)
             self.progressDialog.ShowModal()
 
     def backupCallback(self, info):
         if info == -1:
-            self.progressDialog.Hide()
+            # see GH issue #281 on why conditional is needed
+            if 'wxMSW' in wx.PlatformInfo:
+                self.progressDialog.Destroy()
+            else:
+                self.progressDialog.Hide()
         else:
             self.progressDialog.Update(info)
 

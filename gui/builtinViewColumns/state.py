@@ -18,7 +18,7 @@
 #===============================================================================
 
 from gui.viewColumn import ViewColumn
-from gui import bitmapLoader
+from gui.bitmapLoader import BitmapLoader
 import gui.mainFrame
 
 import wx
@@ -43,8 +43,8 @@ class State(ViewColumn):
             return State_.getName(mod.state).title()
 
     def getImageId(self, stuff):
-        generic_active = self.fittingView.imageList.GetImageIndex("state_%s_small" % State_.getName(1).lower(), "icons")
-        generic_inactive = self.fittingView.imageList.GetImageIndex("state_%s_small" % State_.getName(-1).lower(), "icons")
+        generic_active = self.fittingView.imageList.GetImageIndex("state_%s_small" % State_.getName(1).lower(), "gui")
+        generic_inactive = self.fittingView.imageList.GetImageIndex("state_%s_small" % State_.getName(-1).lower(), "gui")
 
         if isinstance(stuff, Drone):
             if stuff.amountActive > 0:
@@ -57,7 +57,7 @@ class State(ViewColumn):
             if stuff.isEmpty:
                 return -1
             else:
-                return self.fittingView.imageList.GetImageIndex("state_%s_small" % State_.getName(stuff.state).lower(), "icons")
+                return self.fittingView.imageList.GetImageIndex("state_%s_small" % State_.getName(stuff.state).lower(), "gui")
         elif isinstance(stuff, Fit):
             fitID = self.mainFrame.getActiveFit()
             projectionInfo = stuff.getProjectionInfo(fitID)

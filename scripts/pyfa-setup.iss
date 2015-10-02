@@ -5,10 +5,10 @@
 ; we do some #ifdef conditionals because automated compilation passes these as arguments
 
 #ifndef MyAppVersion
-    #define MyAppVersion "1.3.0"
+    #define MyAppVersion "1.15.0"
 #endif
 #ifndef MyAppExpansion
-    #define MyAppExpansion "Crius 1.0"
+    #define MyAppExpansion "Vanguard 1.0"
 #endif
 
 ; Other config
@@ -18,8 +18,11 @@
 #define MyAppURL "https://forums.eveonline.com/default.aspx?g=posts&t=247609&p=1"
 #define MyAppExeName "pyfa.exe"
 
+; What version starts with the new structure (1.x.0). This is used to determine if we run directory structure cleanup
+#define VersionFlag 16
+
 #ifndef MyOutputFile
-    #define MyOutputFile LowerCase(StringChange(MyAppName+'-'+MyAppVersion+'-'+MyAppExpansion+'-win', " ", "-"))
+    #define MyOutputFile LowerCase(StringChange(MyAppName+'-'+MyAppVersion+'-'+MyAppExpansion+'-win-wx3', " ", "-"))
 #endif
 #ifndef MyAppDir
     #define MyAppDir "pyfa"
@@ -74,8 +77,13 @@ Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\{#MyAppName}"; Fil
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
 
 [InstallDelete]
-Type: files; Name: "{app}\sqlalchemy.cprocessors.pyd"
-Type: files; Name: "{app}\sqlalchemy.cresultproxy.pyd"
+; These will delete left over generated files from 1.14 and below
+Type: filesandordirs; Name: "{app}\eos"
+Type: filesandordirs; Name: "{app}\gui"
+Type: filesandordirs; Name: "{app}\service"
+Type: filesandordirs; Name: "{app}\utils"
+Type: files; Name: "{app}\*.pyo"
+Type: files; Name: "{app}\*.pyc"
 
 [Code]
 
@@ -105,4 +113,52 @@ begin
     begin
       Result := '';
     end
+end;
+
+function GetUninstallString: string;
+var
+  sUnInstPath: string;
+  sUnInstallString: String;
+begin
+  Result := '';
+  sUnInstPath := ExpandConstant('Software\Microsoft\Windows\CurrentVersion\Uninstall\{{3DA39096-C08D-49CD-90E0-1D177F32C8AA}_is1'); //Your App GUID/ID
+  sUnInstallString := '';
+  if not RegQueryStringValue(HKLM, sUnInstPath, 'UninstallString', sUnInstallString) then
+    RegQueryStringValue(HKCU, sUnInstPath, 'UninstallString', sUnInstallString);
+  Result := sUnInstallString;
+end;
+
+function IsUpgrade: Boolean;
+begin
+  Result := (GetUninstallString() <> '');
+end;
+
+function InitializeSetup: Boolean;
+var
+  V: Integer;
+  iResultCode: Integer;
+  sUnInstallString: string;
+  iOldVersion: Cardinal;
+begin
+  Result := True; // in case when no previous version is found
+  if RegValueExists(HKEY_LOCAL_MACHINE,'Software\Microsoft\Windows\CurrentVersion\Uninstall\{3DA39096-C08D-49CD-90E0-1D177F32C8AA}_is1', 'UninstallString') then  //Your App GUID/ID
+  begin
+    RegQueryDWordValue(HKEY_LOCAL_MACHINE,
+      'Software\Microsoft\Windows\CurrentVersion\Uninstall\{3DA39096-C08D-49CD-90E0-1D177F32C8AA}_is1',
+      'MinorVersion', iOldVersion);
+    if iOldVersion < {#VersionFlag} then // If old version with old structure is installed.
+    begin
+      V := MsgBox(ExpandConstant('An old version of pyfa was detected. Due to recent changes in the application structure, you must uninstall the previous version first. This will not affect your user data (saved fittings, characters, etc.). Do you want to uninstall now?'), mbInformation, MB_YESNO); //Custom Message if App installed
+      if V = IDYES then
+      begin
+        sUnInstallString := GetUninstallString();
+        sUnInstallString :=  RemoveQuotes(sUnInstallString);
+        Exec(ExpandConstant(sUnInstallString), '', '', SW_SHOW, ewWaitUntilTerminated, iResultCode);
+        Result := True; //if you want to proceed after uninstall
+                  //Exit; //if you want to quit after uninstall
+      end
+      else
+        Result := False; //when older version present and not uninstalled
+    end;
+  end;
 end;

@@ -1,7 +1,7 @@
 import wx
 
 from gui.preferenceView import PreferenceView
-from gui import bitmapLoader
+from gui.bitmapLoader import BitmapLoader
 
 import gui.mainFrame
 import service
@@ -144,6 +144,6 @@ class PFGeneralPref ( PreferenceView):
         self.sFit.serviceFittingOptions["showMarketShortcuts"] = self.cbMarketShortcuts.GetValue()
 
     def getImage(self):
-        return bitmapLoader.getBitmap("prefs_settings", "icons")
+        return BitmapLoader.getBitmap("prefs_settings", "gui")
 
 PFGeneralPref.register()

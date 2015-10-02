@@ -32,7 +32,7 @@ class BaseName(ViewColumn):
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.columnText = "Name"
-        self.shipImage = fittingView.imageList.GetImageIndex("ship_small", "icons")
+        self.shipImage = fittingView.imageList.GetImageIndex("ship_small", "gui")
         self.mask = wx.LIST_MASK_TEXT
         self.projectedView = isinstance(fittingView, gui.projectedView.ProjectedView)
 

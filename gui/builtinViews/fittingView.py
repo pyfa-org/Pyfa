@@ -28,7 +28,7 @@ import gui.shipBrowser
 import gui.multiSwitch
 from eos.types import Slot, Rack, Module
 from gui.builtinViewColumns.state import State
-from gui import bitmapLoader
+from gui.bitmapLoader import BitmapLoader
 import gui.builtinViews.emptyView
 from gui.utils.exportHtml import exportHtml
 
@@ -57,7 +57,7 @@ class FitSpawner(gui.multiSwitch.TabSpawner):
             startup = getattr(event, "startup", False)  # see OpenFitsThread in gui.mainFrame
             mstate = wx.GetMouseState()
 
-            if mstate.CmdDown() or mstate.MiddleDown() or startup:
+            if mstate.CmdDown() or startup:
                 self.multiSwitch.AddPage()
 
             view = FittingView(self.multiSwitch)
@@ -294,7 +294,7 @@ class FittingView(d.Display):
         sFit = service.Fit.getInstance()
         fit = sFit.getFit(self.getActiveFit())
 
-        bitmap = bitmapLoader.getImage("race_%s_small" % fit.ship.item.race, "icons")
+        bitmap = BitmapLoader.getImage("race_%s_small" % fit.ship.item.race, "gui")
         text = "%s: %s" % (fit.ship.item.name, fit.name)
 
         pageIndex = self.parent.GetPageIndex(self)
@@ -521,7 +521,7 @@ class FittingView(d.Display):
             sFit = service.Fit.getInstance()
             fitID = self.mainFrame.getActiveFit()
             ctrl = wx.GetMouseState().CmdDown() or wx.GetMouseState().MiddleDown()
-            click = "ctrl" if ctrl is True else "right" if event.Button == 3 else "left"
+            click = "ctrl" if ctrl is True else "right" if event.GetButton() == 3 else "left"
             sFit.toggleModulesState(fitID, self.mods[self.GetItemData(row)], mods, click)
 
             # update state tooltip

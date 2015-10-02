@@ -19,7 +19,7 @@
 
 import wx
 from gui.preferenceView import PreferenceView
-from gui import bitmapLoader
+from gui.bitmapLoader import BitmapLoader
 class DummyView(PreferenceView):
     title = "Dummy"
 

@@ -20,7 +20,7 @@
 import wx
 from gui.statsView import StatsView
 from gui import builtinStatsViews
-from gui import bitmapLoader
+from gui.bitmapLoader import BitmapLoader
 from gui import pygauge as PG
 import gui.mainFrame
 import gui.chromeTabs
@@ -91,7 +91,7 @@ class ResourcesViewFull(StatsView):
         for type in ("turret", "launcher", "drones", "calibration"):
             box = wx.BoxSizer(wx.HORIZONTAL)
 
-            bitmap = bitmapLoader.getStaticBitmap("%s_big" % type, parent, "icons")
+            bitmap = BitmapLoader.getStaticBitmap("%s_big" % type, parent, "gui")
             tooltip = wx.ToolTip(tooltipText[type])
             bitmap.SetToolTip(tooltip)
 
@@ -119,7 +119,7 @@ class ResourcesViewFull(StatsView):
 
             for type in group:
                 capitalizedType = type[0].capitalize() + type[1:]
-                bitmap = bitmapLoader.getStaticBitmap(type + "_big", parent, "icons")
+                bitmap = BitmapLoader.getStaticBitmap(type + "_big", parent, "gui")
                 tooltip = wx.ToolTip(tooltipText[type])
                 bitmap.SetToolTip(tooltip)
 

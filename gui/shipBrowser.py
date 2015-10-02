@@ -1,6 +1,6 @@
 import wx
 import copy
-from gui import bitmapLoader
+from gui.bitmapLoader import BitmapLoader
 import gui.mainFrame
 import gui.globalEvents as GE
 import time
@@ -15,6 +15,7 @@ import gui.utils.animEffects as animEffects
 
 import gui.sfBrowserItem as SFItem
 from gui.contextMenu import ContextMenu
+import gui.utils.fonts as fonts
 
 import service
 import gui.utils.fonts as fonts
@@ -106,9 +107,9 @@ class RaceSelector(wx.Window):
         self.buttonsPadding = 4
 
         if layout == wx.VERTICAL:
-            self.bmpArrow = bitmapLoader.getBitmap("down-arrow2","icons")
+            self.bmpArrow = BitmapLoader.getBitmap("down-arrow2","gui")
         else:
-            self.bmpArrow = bitmapLoader.getBitmap("up-arrow2","icons")
+            self.bmpArrow = BitmapLoader.getBitmap("up-arrow2","gui")
 
         #    Make the bitmaps have the same color as window text
 
@@ -206,7 +207,7 @@ class RaceSelector(wx.Window):
         self.raceBmps = []
         for race in races:
             if race:
-                self.raceBmps.append(bitmapLoader.getBitmap("race_%s_small" % race, "icons"))
+                self.raceBmps.append(BitmapLoader.getBitmap("race_%s_small" % race, "gui"))
         self.raceNames = races
         self.CalcButtonsBarPos()
         self.Refresh()
@@ -327,14 +328,14 @@ class NavigationPanel(SFItem.SFBrowserItem):
     def __init__(self,parent, size = (-1, 24)):
         SFItem.SFBrowserItem.__init__(self,parent,size = size)
 
-        self.rewBmpH = bitmapLoader.getBitmap("frewind_small","icons")
-        self.forwBmp = bitmapLoader.getBitmap("fforward_small","icons")
-        self.searchBmpH = bitmapLoader.getBitmap("fsearch_small","icons")
-        self.newBmpH = bitmapLoader.getBitmap("fit_add_small","icons")
-        self.resetBmpH = bitmapLoader.getBitmap("freset_small","icons")
-        self.switchBmpH = bitmapLoader.getBitmap("fit_switch_view_mode_small","icons")
+        self.rewBmpH = BitmapLoader.getBitmap("frewind_small","gui")
+        self.forwBmp = BitmapLoader.getBitmap("fforward_small","gui")
+        self.searchBmpH = BitmapLoader.getBitmap("fsearch_small","gui")
+        self.newBmpH = BitmapLoader.getBitmap("fit_add_small","gui")
+        self.resetBmpH = BitmapLoader.getBitmap("freset_small","gui")
+        self.switchBmpH = BitmapLoader.getBitmap("fit_switch_view_mode_small","gui")
 
-        switchImg = bitmapLoader.getImage("fit_switch_view_mode_small","icons")
+        switchImg = BitmapLoader.getImage("fit_switch_view_mode_small","gui")
         switchImg = switchImg.AdjustChannels(1,1,1,0.4)
         self.switchBmpD = wx.BitmapFromImage(switchImg)
 
@@ -966,7 +967,7 @@ class CategoryItem(SFItem.SFBrowserItem):
         SFItem.SFBrowserItem.__init__(self,parent,size = size)
 
         if categoryID:
-            self.shipBmp = bitmapLoader.getBitmap("ship_small","icons")
+            self.shipBmp = BitmapLoader.getBitmap("ship_small","gui")
         else:
             self.shipBmp = wx.EmptyBitmap(16,16)
 
@@ -1098,26 +1099,26 @@ class ShipItem(SFItem.SFBrowserItem):
 
         self.shipBmp = None
         if shipID:
-            self.shipBmp = bitmapLoader.getBitmap(str(shipID),"ships")
+            self.shipBmp = BitmapLoader.getBitmap(str(shipID), "renders")
         if not self.shipBmp:
-            self.shipBmp = bitmapLoader.getBitmap("ship_no_image_big","icons")
+            self.shipBmp = BitmapLoader.getBitmap("ship_no_image_big", "gui")
 
         self.shipFittingInfo = shipFittingInfo
         self.shipName, self.shipFits = shipFittingInfo
 
-        self.newBmp = bitmapLoader.getBitmap("fit_add_small", "icons")
-        self.acceptBmp = bitmapLoader.getBitmap("faccept_small", "icons")
+        self.newBmp = BitmapLoader.getBitmap("fit_add_small", "gui")
+        self.acceptBmp = BitmapLoader.getBitmap("faccept_small", "gui")
 
-        self.shipEffBk = bitmapLoader.getBitmap("fshipbk_big","icons")
+        self.shipEffBk = BitmapLoader.getBitmap("fshipbk_big","gui")
 
         img = wx.ImageFromBitmap(self.shipEffBk)
         img = img.Mirror(False)
         self.shipEffBkMirrored = wx.BitmapFromImage(img)
 
-        self.raceBmp = bitmapLoader.getBitmap("race_%s_small" % self.shipRace, "icons")
+        self.raceBmp = BitmapLoader.getBitmap("race_%s_small" % self.shipRace, "gui")
 
         if not self.raceBmp:
-            self.raceBmp = bitmapLoader.getBitmap("fit_delete_small","icons")
+            self.raceBmp = BitmapLoader.getBitmap("fit_delete_small","gui")
 
         self.raceDropShadowBmp = drawUtils.CreateDropShadowBitmap(self.raceBmp, 0.2)
 
@@ -1340,7 +1341,7 @@ class ShipItem(SFItem.SFBrowserItem):
             editCtl.SetPosition((fnEditPosX,fnEditPosY))
 
 class PFBitmapFrame(wx.Frame):
-    def __init__ (self,parent, pos, bitmap):
+    def __init__ (self, parent, pos, bitmap):
         wx.Frame.__init__(self, parent, id = wx.ID_ANY, title = wx.EmptyString, pos = pos, size = wx.DefaultSize, style =
                                                                wx.NO_BORDER
                                                              | wx.FRAME_NO_TASKBAR
@@ -1428,10 +1429,10 @@ class FitItem(SFItem.SFBrowserItem):
         self.deleted = False
 
         if shipID:
-            self.shipBmp = bitmapLoader.getBitmap(str(shipID),"ships")
+            self.shipBmp = BitmapLoader.getBitmap(str(shipID),"renders")
 
         if not self.shipBmp:
-            self.shipBmp = bitmapLoader.getBitmap("ship_no_image_big","icons")
+            self.shipBmp = BitmapLoader.getBitmap("ship_no_image_big","gui")
 
         self.shipFittingInfo = shipFittingInfo
         self.shipName, self.fitName, self.fitBooster, self.timestamp = shipFittingInfo
@@ -1439,13 +1440,13 @@ class FitItem(SFItem.SFBrowserItem):
         # see GH issue #62
         if self.fitBooster is None: self.fitBooster = False
 
-        self.boosterBmp = bitmapLoader.getBitmap("fleet_fc_small", "icons")
-        self.copyBmp    = bitmapLoader.getBitmap("fit_add_small", "icons")
-        self.renameBmp  = bitmapLoader.getBitmap("fit_rename_small", "icons")
-        self.deleteBmp  = bitmapLoader.getBitmap("fit_delete_small","icons")
-        self.acceptBmp  = bitmapLoader.getBitmap("faccept_small", "icons")
+        self.boosterBmp = BitmapLoader.getBitmap("fleet_fc_small", "gui")
+        self.copyBmp    = BitmapLoader.getBitmap("fit_add_small", "gui")
+        self.renameBmp  = BitmapLoader.getBitmap("fit_rename_small", "gui")
+        self.deleteBmp  = BitmapLoader.getBitmap("fit_delete_small","gui")
+        self.acceptBmp  = BitmapLoader.getBitmap("faccept_small", "gui")
 
-        self.shipEffBk = bitmapLoader.getBitmap("fshipbk_big","icons")
+        self.shipEffBk = BitmapLoader.getBitmap("fshipbk_big","gui")
 
         img = wx.ImageFromBitmap(self.shipEffBk)
         img = img.Mirror(False)
@@ -1718,7 +1719,8 @@ class FitItem(SFItem.SFBrowserItem):
         if self.dragging:
             if not self.dragged:
                 if self.dragMotionTrigger < 0:
-                    self.CaptureMouse()
+                    if not self.HasCapture():
+                        self.CaptureMouse()
                     self.dragWindow = PFBitmapFrame(self, pos, self.dragTLFBmp)
                     self.dragWindow.Show()
                     self.dragged = True
@@ -1818,7 +1820,7 @@ class FitItem(SFItem.SFBrowserItem):
             self.AdjustControlSizePos(self.tcFitName, self.textStartx, self.toolbarx - self.editWidth - self.padding)
 
         tdc = wx.MemoryDC()
-        self.dragTLFBmp = wx.EmptyBitmap((self.toolbarx if self.toolbarx < 200 else 200), rect.height)
+        self.dragTLFBmp = wx.EmptyBitmap((self.toolbarx if self.toolbarx < 200 else 200), rect.height, 24)
         tdc.SelectObject(self.dragTLFBmp)
         tdc.Blit(0, 0, (self.toolbarx if self.toolbarx < 200 else 200), rect.height, mdc, 0, 0, wx.COPY)
         tdc.SelectObject(wx.NullBitmap)

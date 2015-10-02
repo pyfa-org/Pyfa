@@ -325,7 +325,8 @@ class SFBrowserItem(wx.Window):
 
 
     def OnLeftDown(self, event):
-        self.CaptureMouse()
+        if not self.HasCapture():
+            self.CaptureMouse()
 
         btn = self.toolbar.MouseClick(event)
 

@@ -19,22 +19,22 @@
 
 import wx
 from gui.preferenceView import PreferenceView
-import bitmapLoader
+from gui.bitmapLoader import BitmapLoader
 
 class PreferenceDialog(wx.Dialog):
 
     def __init__(self, parent):
         wx.Dialog.__init__(self, parent, id=wx.ID_ANY, size=wx.DefaultSize, style=wx.DEFAULT_DIALOG_STYLE)
         self.SetTitle("pyfa - Preferences")
-        i = wx.IconFromBitmap(bitmapLoader.getBitmap("preferences_small", "icons"))
+        i = wx.IconFromBitmap(BitmapLoader.getBitmap("preferences_small", "gui"))
         self.SetIcon(i)
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
         self.listbook = wx.Listbook(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LB_DEFAULT)
 
         self.listview = self.listbook.GetListView()
-        self.listview.SetMinSize((500, -1))
-        self.listview.SetSize((500, -1))
+        #self.listview.SetMinSize((500, -1))
+        #self.listview.SetSize((500, -1))
 
         self.imageList = wx.ImageList(32,32)
         self.listbook.SetImageList(self.imageList)
