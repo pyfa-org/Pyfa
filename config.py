@@ -23,8 +23,8 @@ else:
     logLevel = logging.WARN
 
 # Version data
-version = "1.15.0"
-tag = "Stable"
+version = "1.15.1"
+tag = "git"
 expansionName = "Vanguard"
 expansionVersion = "1.0"
 evemonMinVersion = "4081"
