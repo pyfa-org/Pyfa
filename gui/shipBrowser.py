@@ -1648,10 +1648,9 @@ class FitItem(SFItem.SFBrowserItem):
         else:
             dlg = wx.MessageDialog(self,
                  "Do you really want to delete this fit?",
-                 "Confirm Delete", wx.OK | wx.CANCEL | wx.ICON_QUESTION)
-            result = dlg.ShowModal()
-            dlg.Destroy()
-            if result == wx.ID_OK:
+                 "Confirm Delete", wx.YES | wx.NO | wx.ICON_QUESTION)
+
+            if dlg.ShowModal() == wx.ID_YES:
                 self.deleteFit()
 
     def deleteFit(self, event=None):
