@@ -120,24 +120,15 @@ class MainFrame(wx.Frame):
         #Create the layout and windows
         mainSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.splitter = wx.SplitterWindow(self, style = wx.SP_LIVE_UPDATE)
+        self.browser_fitting_split = wx.SplitterWindow(self, style = wx.SP_LIVE_UPDATE)
+        self.fitting_additions_split = wx.SplitterWindow(self.browser_fitting_split, style = wx.SP_LIVE_UPDATE)
 
-        mainSizer.Add(self.splitter,1,wx.EXPAND | wx.LEFT, 2)
+        mainSizer.Add(self.browser_fitting_split, 1, wx.EXPAND | wx.LEFT, 2)
 
-        self.FitviewAdditionsPanel = PFPanel(self.splitter)
-        faSizer = wx.BoxSizer(wx.VERTICAL)
+        self.fitMultiSwitch = MultiSwitch(self.fitting_additions_split)
+        self.additionsPane = AdditionsPane(self.fitting_additions_split)
 
-        self.fitMultiSwitch = MultiSwitch(self.FitviewAdditionsPanel)
-
-        faSizer.Add(self.fitMultiSwitch,1,wx.EXPAND)
-
-        self.additionsPane = AdditionsPane(self.FitviewAdditionsPanel)
-        faSizer.Add(self.additionsPane, 0, wx.EXPAND)
-
-        self.FitviewAdditionsPanel.SetSizer(faSizer)
-
-
-        self.notebookBrowsers = gui.chromeTabs.PFNotebook(self.splitter, False)
+        self.notebookBrowsers = gui.chromeTabs.PFNotebook(self.browser_fitting_split, False)
 
         marketImg = BitmapLoader.getImage("market_small", "gui")
         shipBrowserImg = BitmapLoader.getImage("ship_small", "gui")
@@ -157,9 +148,14 @@ class MainFrame(wx.Frame):
 
         self.notebookBrowsers.SetSelection(1)
 
-        self.splitter.SplitVertically(self.notebookBrowsers, self.FitviewAdditionsPanel)
-        self.splitter.SetMinimumPaneSize(204)
-        self.splitter.SetSashPosition(self.browserWidth)
+        self.browser_fitting_split.SplitVertically(self.notebookBrowsers, self.fitting_additions_split)
+        self.browser_fitting_split.SetMinimumPaneSize(204)
+        self.browser_fitting_split.SetSashPosition(self.browserWidth)
+
+        self.fitting_additions_split.SplitHorizontally(self.fitMultiSwitch, self.additionsPane, -200)
+        self.fitting_additions_split.SetMinimumPaneSize(200)
+        self.fitting_additions_split.SetSashPosition(self.fittingHeight)
+        self.fitting_additions_split.SetSashGravity(1.0)
 
         cstatsSizer = wx.BoxSizer(wx.VERTICAL)
 
@@ -226,7 +222,7 @@ class MainFrame(wx.Frame):
 
 
     def LoadMainFrameAttribs(self):
-        mainFrameDefaultAttribs = {"wnd_width": 1000, "wnd_height": 680, "wnd_maximized": False, "browser_width": 300, "market_height": 0}
+        mainFrameDefaultAttribs = {"wnd_width": 1000, "wnd_height": 680, "wnd_maximized": False, "browser_width": 300, "market_height": 0, "fitting_height": 0}
         self.mainFrameAttribs = service.SettingsProvider.getInstance().getSettings("pyfaMainWindowAttribs", mainFrameDefaultAttribs)
 
         if self.mainFrameAttribs["wnd_maximized"]:
@@ -242,6 +238,7 @@ class MainFrame(wx.Frame):
 
         self.browserWidth = self.mainFrameAttribs["browser_width"]
         self.marketHeight = self.mainFrameAttribs["market_height"]
+        self.fittingHeight = self.mainFrameAttribs["fitting_height"]
 
     def UpdateMainFrameAttribs(self):
         if self.IsIconized():
@@ -254,6 +251,7 @@ class MainFrame(wx.Frame):
 
         self.mainFrameAttribs["browser_width"] = self.notebookBrowsers.GetSize()[0]
         self.mainFrameAttribs["market_height"] = self.marketBrowser.marketView.GetSize()[1]
+        self.mainFrameAttribs["fitting_height"] = self.fitting_additions_split.GetSashPosition()
 
     def SetActiveStatsWindow(self, wnd):
         self.activeStatsWnd = wnd
