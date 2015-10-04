@@ -653,6 +653,15 @@ class MainFrame(wx.Frame):
 
         max = sFit.countAllFits()
         path = settings.getPath()
+
+        if not os.path.isdir(os.path.dirname(path)):
+            dlg = wx.MessageDialog(self,
+                 "Invalid Path\n\nThe following path is invalid or does not exist: \n%s\n\nPlease verify path location pyfa's preferences."%path,
+                 "Error", wx.OK | wx.ICON_ERROR)
+
+            if dlg.ShowModal() == wx.ID_OK:
+                return
+
         self.progressDialog = wx.ProgressDialog("Backup fits",
                             "Generating HTML file at: %s"%path,
                             maximum=max, parent=self,
