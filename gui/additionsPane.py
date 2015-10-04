@@ -46,6 +46,7 @@ class AdditionsPane(TogglePanel):
 
         self.notebook = gui.chromeTabs.PFNotebook(pane, False)
         self.notebook.SetMinSize((-1, 1000))
+
         baseSizer.Add(self.notebook, 1, wx.EXPAND)
 
         droneImg = BitmapLoader.getImage("drone_small", "gui")
@@ -73,3 +74,21 @@ class AdditionsPane(TogglePanel):
 
     def getName(self, idx):
         return self.PANES[idx]
+
+    def toggleContent(self, event):
+        TogglePanel.toggleContent(self, event)
+        h = self.headerPanel.GetSize()[1]+4
+
+        if self.IsCollapsed():
+            self.old_pos = self.parent.GetSashPosition()
+            self.parent.SetMinimumPaneSize(h)
+            self.parent.SetSashPosition(h*-1, True)
+            # only available in >= wx2.9
+            if getattr(self.parent, "SetSashInvisible", None):
+                self.parent.SetSashInvisible(True)
+        else:
+            if getattr(self.parent, "SetSashInvisible", None):
+                self.parent.SetSashInvisible(False)
+            self.parent.SetMinimumPaneSize(200)
+            self.parent.SetSashPosition(self.old_pos, True)
+

@@ -186,7 +186,7 @@ class TogglePanel ( wx.Panel ):
     # Toggle the content panel (hide/show)
     def toggleContent(self, event):
         self.Freeze()
-        print self.contentPanel.GetSize()
+
         if self._toggle == 1:
             self.contentMinSize = self.contentPanel.GetSize()
             self.contentPanel.Hide()
