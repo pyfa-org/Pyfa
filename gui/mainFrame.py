@@ -575,94 +575,6 @@ class MainFrame(wx.Frame):
             pass
         dlg.Destroy()
 
-    def fileImportDialog(self, event):
-        """Handles importing single/multiple EVE XML / EFT cfg fit files"""
-        sFit = service.Fit.getInstance()
-        dlg = wx.FileDialog(self, "Open One Or More Fitting Files",
-                    wildcard = "EVE XML fitting files (*.xml)|*.xml|" \
-                                "EFT text fitting files (*.cfg)|*.cfg|" \
-                                "All Files (*)|*",
-                    style = wx.FD_OPEN | wx.FD_FILE_MUST_EXIST | wx.FD_MULTIPLE)
-        if (dlg.ShowModal() == wx.ID_OK):
-            self.progressDialog = wx.ProgressDialog(
-                            "Importing fits",
-                            " "*100, # set some arbitrary spacing to create width in window
-                            parent=self, style = wx.PD_APP_MODAL | wx.PD_ELAPSED_TIME)
-            self.progressDialog.message = None
-            sFit.importFitsThreaded(dlg.GetPaths(), self.fileImportCallback)
-            self.progressDialog.ShowModal()
-            dlg.Destroy()
-
-    def fileImportCallback(self, info, fits=None):
-        """
-        While importing fits from file, the logic calls back to this function to
-        update progress bar to show activity. XML files can contain multiple
-        ships with multiple fits, whereas EFT cfg files contain many fits of
-        a single ship. When iterating through the files, we update the message
-        when we start a new file, and then Pulse the progress bar with every fit
-        that is processed.
-        """
-
-        if info == -1:
-            # Done processing
-            # see GH issue #281 on why conditional is needed
-
-            if 'wxMSW' in wx.PlatformInfo:
-                self.progressDialog.Destroy()
-            else:
-                self.progressDialog.Hide()
-            self._openAfterImport(fits)
-        elif info != self.progressDialog.message and info is not None:
-            # New message, overwrite cached message and update
-            self.progressDialog.message = info
-            self.progressDialog.Pulse(info)
-        else:
-            # Simply Pulse() if we don't have anything else to do
-            self.progressDialog.Pulse()
-
-    def _openAfterImport(self, fits):
-        if len(fits) > 0:
-            if len(fits) == 1:
-                fit = fits[0]
-                wx.PostEvent(self, FitSelected(fitID=fit.ID))
-                wx.PostEvent(self.shipBrowser, Stage3Selected(shipID=fit.shipID, back=True))
-            else:
-                wx.PostEvent(self.shipBrowser, ImportSelected(fits=fits, back=True))
-
-    def backupToXml(self, event):
-        """ Back up all fits to EVE XML file """
-        defaultFile = "pyfa-fits-%s.xml"%strftime("%Y%m%d_%H%M%S", gmtime())
-
-        saveDialog = wx.FileDialog(self, "Save Backup As...",
-                            wildcard = "EVE XML fitting file (*.xml)|*.xml",
-                            style = wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT,
-                            defaultFile=defaultFile)
-
-        if saveDialog.ShowModal() == wx.ID_OK:
-            filePath = saveDialog.GetPath()
-            if '.' not in os.path.basename(filePath):
-                filePath += ".xml"
-
-            sFit = service.Fit.getInstance()
-            max = sFit.countAllFits()
-
-            self.progressDialog = wx.ProgressDialog("Backup fits",
-                              "Backing up %d fits to: %s"%(max, filePath),
-                              maximum=max, parent=self,
-                              style=wx.PD_APP_MODAL | wx.PD_ELAPSED_TIME)
-            sFit.backupFits(filePath, self.backupCallback)
-            self.progressDialog.ShowModal()
-
-    def backupCallback(self, info):
-        if info == -1:
-            # see GH issue #281 on why conditional is needed
-            if 'wxMSW' in wx.PlatformInfo:
-                self.progressDialog.Destroy()
-            else:
-                self.progressDialog.Hide()
-        else:
-            self.progressDialog.Update(info)
-
     def exportSkillsNeeded(self, event):
         """ Exports skills needed for active fit and active character """
         sCharacter = service.Character.getInstance()
@@ -692,6 +604,108 @@ class MainFrame(wx.Frame):
 
         saveDialog.Destroy()
 
+    def fileImportDialog(self, event):
+        """Handles importing single/multiple EVE XML / EFT cfg fit files"""
+        sFit = service.Fit.getInstance()
+        dlg = wx.FileDialog(self, "Open One Or More Fitting Files",
+                    wildcard = "EVE XML fitting files (*.xml)|*.xml|" \
+                                "EFT text fitting files (*.cfg)|*.cfg|" \
+                                "All Files (*)|*",
+                    style = wx.FD_OPEN | wx.FD_FILE_MUST_EXIST | wx.FD_MULTIPLE)
+        if (dlg.ShowModal() == wx.ID_OK):
+            self.progressDialog = wx.ProgressDialog(
+                            "Importing fits",
+                            " "*100, # set some arbitrary spacing to create width in window
+                            parent=self, style = wx.PD_APP_MODAL | wx.PD_ELAPSED_TIME)
+            self.progressDialog.message = None
+            sFit.importFitsThreaded(dlg.GetPaths(), self.fileImportCallback)
+            self.progressDialog.ShowModal()
+            dlg.Destroy()
+
+    def backupToXml(self, event):
+        """ Back up all fits to EVE XML file """
+        defaultFile = "pyfa-fits-%s.xml"%strftime("%Y%m%d_%H%M%S", gmtime())
+
+        saveDialog = wx.FileDialog(self, "Save Backup As...",
+                            wildcard = "EVE XML fitting file (*.xml)|*.xml",
+                            style = wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT,
+                            defaultFile=defaultFile)
+
+        if saveDialog.ShowModal() == wx.ID_OK:
+            filePath = saveDialog.GetPath()
+            if '.' not in os.path.basename(filePath):
+                filePath += ".xml"
+
+            sFit = service.Fit.getInstance()
+            max = sFit.countAllFits()
+
+            self.progressDialog = wx.ProgressDialog("Backup fits",
+                              "Backing up %d fits to: %s"%(max, filePath),
+                              maximum=max, parent=self,
+                              style=wx.PD_APP_MODAL | wx.PD_ELAPSED_TIME)
+            sFit.backupFits(filePath, self.backupCallback)
+            self.progressDialog.ShowModal()
+
+    def exportHtml(self, event):
+        from gui.utils.exportHtml import exportHtml
+        sFit = service.Fit.getInstance()
+        settings = service.settings.HTMLExportSettings.getInstance()
+
+        max = sFit.countAllFits()
+        path = settings.getPath()
+        self.progressDialog = wx.ProgressDialog("Backup fits",
+                            "Generating HTML file at: %s"%path,
+                            maximum=max, parent=self,
+                            style=wx.PD_APP_MODAL | wx.PD_ELAPSED_TIME)
+
+        exportHtml.getInstance().refreshFittingHtml(True, self.backupCallback)
+        self.progressDialog.ShowModal()
+
+    def backupCallback(self, info):
+        if info == -1:
+            self.closeProgressDialog()
+        else:
+            self.progressDialog.Update(info)
+
+    def fileImportCallback(self, info, fits=None):
+        """
+        While importing fits from file, the logic calls back to this function to
+        update progress bar to show activity. XML files can contain multiple
+        ships with multiple fits, whereas EFT cfg files contain many fits of
+        a single ship. When iterating through the files, we update the message
+        when we start a new file, and then Pulse the progress bar with every fit
+        that is processed.
+        """
+
+        if info == -1:
+            self.closeProgressDialog()
+            self._openAfterImport(fits)
+        elif info != self.progressDialog.message and info is not None:
+            # New message, overwrite cached message and update
+            self.progressDialog.message = info
+            self.progressDialog.Pulse(info)
+        else:
+            # Simply Pulse() if we don't have anything else to do
+            self.progressDialog.Pulse()
+
+    def _openAfterImport(self, fits):
+        if len(fits) > 0:
+            if len(fits) == 1:
+                fit = fits[0]
+                wx.PostEvent(self, FitSelected(fitID=fit.ID))
+                wx.PostEvent(self.shipBrowser, Stage3Selected(shipID=fit.shipID, back=True))
+            else:
+                wx.PostEvent(self.shipBrowser, ImportSelected(fits=fits, back=True))
+
+    def closeProgressDialog(self):
+        # Windows apparently handles ProgressDialogs differently. We can
+        # simply Destroy it here, but for other platforms we must Close it
+        if 'wxMSW' in wx.PlatformInfo:
+            self.progressDialog.Destroy()
+        else:
+            self.progressDialog.EndModal(wx.ID_OK)
+            self.progressDialog.Close()
+
     def importCharacter(self, event):
         """ Imports character XML file from EVE API """
         dlg = wx.FileDialog(self, "Open One Or More Character Files",
@@ -709,21 +723,6 @@ class MainFrame(wx.Frame):
     def importCharacterCallback(self):
         self.waitDialog.Destroy()
         wx.PostEvent(self, GE.CharListUpdated())
-
-    def exportHtml(self, event):
-        from gui.utils.exportHtml import exportHtml
-        sFit = service.Fit.getInstance()
-        settings = service.settings.HTMLExportSettings.getInstance()
-
-        max = sFit.countAllFits()
-        path = settings.getPath()
-        self.progressDialog = wx.ProgressDialog("Backup fits",
-                            "Generating HTML file at: %s"%path,
-                            maximum=max, parent=self,
-                            style=wx.PD_APP_MODAL | wx.PD_ELAPSED_TIME)
-
-        exportHtml.getInstance().refreshFittingHtml(True, self.backupCallback)
-        self.progressDialog.ShowModal()
 
     def closeWaitDialog(self):
         self.waitDialog.Destroy()

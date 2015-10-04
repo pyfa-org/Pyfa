@@ -163,9 +163,9 @@ class exportHtmlThread(threading.Thread):
                         except:
                             pass
                         finally:
-                            count += 1
                             if self.callback:
                                 wx.CallAfter(self.callback, count)
+                            count += 1
                     else:
                         # Ship group header
                         HTMLship = (
@@ -182,9 +182,9 @@ class exportHtmlThread(threading.Thread):
                             except:
                                 continue
                             finally:
-                                count += 1
                                 if self.callback:
                                     wx.CallAfter(self.callback, count)
+                                count += 1
                         HTMLgroup += HTMLship + ('          </ul>\n'
                                                  '        </li>\n')
 
