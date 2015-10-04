@@ -35,7 +35,7 @@ class Ammo(ViewColumn):
             charges = stuff.numCharges
             if charges > 0:
                 cycles = stuff.numShots
-                if charges != cycles:
+                if cycles !=0 and charges != cycles:
                     return "%s (%d, %d cycles)" % (stuff.charge.name, charges, cycles)
                 else:
                     return "%s (%d)" % (stuff.charge.name, charges)

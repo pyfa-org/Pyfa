@@ -70,6 +70,7 @@ class BaseName(ViewColumn):
                 if marketShortcut:
                     # use unicode subscript to display shortcut value
                     shortcut = unichr(marketShortcut+8320)+u" "
+                    del item.marketShortcut
                     return shortcut+item.name
 
             return item.name
