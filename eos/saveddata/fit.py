@@ -480,17 +480,22 @@ class Fit(object):
         self.__calculated = True
 
         for runTime in ("early", "normal", "late"):
-            c = chain(
+            # Items that are unrestricted. These items are run on the local fit
+            # first and then projected onto the target fit it one is designated
+            u = [
                 (self.character, self.ship),
                 self.drones,
                 self.boosters,
                 self.appliedImplants,
                 self.modules
-            )
+            ]
 
-            if not projected:
-                # if not a projected fit, add a couple of more things
-                c = chain(c, (self.mode,), self.projectedDrones, self.projectedModules)
+            # Items that are restricted. These items are only run on the local
+            # fit. They are NOT projected onto the target fit. # See issue 354
+            r = [(self.mode,), self.projectedDrones, self.projectedModules]
+
+            # chain unrestricted and restricted into one iterable
+            c = chain.from_iterable(u+r)
 
             # We calculate gang bonuses first so that projected fits get them
             if self.gangBoosts is not None:
@@ -500,9 +505,12 @@ class Fit(object):
                 # Registering the item about to affect the fit allows us to
                 # track "Affected By" relations correctly
                 if item is not None:
+                    # apply effects locally
                     self.register(item)
                     item.calculateModifiedAttributes(self, runTime, False)
-                    if projected is True:
+
+                    if projected is True and item not in chain.from_iterable(r):
+                        # apply effects onto target fit
                         for _ in xrange(projectionInfo.amount):
                             targetFit.register(item, origin=self)
                             item.calculateModifiedAttributes(targetFit, runTime, True)
