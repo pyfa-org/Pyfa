@@ -134,7 +134,7 @@ if __name__ == "__main__":
         tmpFile = os.path.join(os.getcwd(), archiveName)
 
         i = 0
-        ignoreData = (".git", ".gitignore", ".gitmodules", "dist_assets", "build", "dist", "scripts", ".idea")
+        ignoreData = (".git", ".gitignore", ".gitmodules", "dist_assets", "build", "dist", "scripts", ".idea", "imgs")
         def loginfo(path, names):
             # Print out a "progress" and return directories / files to ignore
             global i
@@ -149,7 +149,7 @@ if __name__ == "__main__":
             i = 0
             shutil.copytree(skeleton, dst, ignore=loginfo)
             print
-            if "win-wx3" not in skel:
+            if skel != "win":
                 # simply copying base into working build
                 base = os.path.join(dst, info["base"])
                 print "Copying base to ", base
@@ -174,6 +174,7 @@ if __name__ == "__main__":
                 sys.path.append(source)
                 import setup
 
+                print "Injecting files into library.zip"
                 # the following operations require us to be in the source directory
                 # for the zipping to work correctly
                 oldcwd = os.getcwd()
@@ -187,18 +188,23 @@ if __name__ == "__main__":
                     library.write('pyfa.py', 'pyfa__main__.py')
                     library.write('config.py')
 
+                print "Copying included files"
                 for dir in setup.include_files:
                     copyanything(dir, os.path.join(base, dir))
 
-                # @todo: this is in win-wx3 for now, but it will have to be migrated to  OS X release when wx3 is merged into master. This must be tested
-                imagesFile = os.path.join(base, "imgs.zip")
-
-                with zipfile.ZipFile(imagesFile, 'w') as images:
-                    os.chdir('imgs')  # need to be in images directory
-                    for dir in setup.icon_dirs:
-                        zipdir(dir, images)
-
                 os.chdir(oldcwd)
+
+            print "Creating images zipfile"
+            # Move imgs to zipfile
+            oldcwd = os.getcwd()
+            os.chdir(source)
+            imagesFile = os.path.join(base, "imgs.zip")
+
+            with zipfile.ZipFile(imagesFile, 'w') as images:
+                os.chdir('imgs')  # need to be in images directory
+                for dir in setup.icon_dirs:
+                    zipdir(dir, images)
+            os.chdir(oldcwd)
 
             if options.zip:
                 archive = zipfile.ZipFile(tmpFile, 'w', compression=zipfile.ZIP_DEFLATED)
