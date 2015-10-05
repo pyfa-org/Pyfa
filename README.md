@@ -4,7 +4,7 @@
 
 ## What is it?
 
-pyfa, short for **py**thon **f**itting **a**ssistant, allows you to create, experiment with, and save ship fittings without being in game. Open source and written in Python, it is available on any platform where Python 2.x ad wxWidgets are available, including Windows, Mac OS X, and Linux.
+pyfa, short for **py**thon **f**itting **a**ssistant, allows you to create, experiment with, and save ship fittings without being in game. Open source and written in Python, it is available on any platform where Python 2.x and wxWidgets are available, including Windows, Mac OS X, and Linux.
 
 ## Latest Version and Changelogs
 The latest version along with release notes can always be found on the projects [Releases](https://github.com/DarkFenX/Pyfa/releases) page. pyfa will notify you if you are running an outdated version.
