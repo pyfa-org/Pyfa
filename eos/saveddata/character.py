@@ -23,7 +23,9 @@ from sqlalchemy.orm import validates, reconstructor
 from eos.effectHandlerHelpers import HandledItem
 import eos.db
 import eos
+import logging
 
+logger = logging.getLogger(__name__)
 
 class Character(object):
     __itemList = None
@@ -220,6 +222,11 @@ class Character(object):
 
         if map[key](val) == False: raise ValueError(str(val) + " is not a valid value for " + key)
         else: return val
+
+    def __repr__(self):
+        return "Character(ID={}, name={}) at {}".format(
+            self.ID, self.name, hex(id(self))
+        )
 
 class Skill(HandledItem):
     def __init__(self, item, level=0, ro=False, learned=True):

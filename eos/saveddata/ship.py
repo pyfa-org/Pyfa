@@ -121,3 +121,8 @@ class Ship(ItemAttrShortcut, HandledItem):
     def __deepcopy__(self, memo):
         copy = Ship(self.item)
         return copy
+
+    def __repr__(self):
+        return "Ship(ID={}, name={}) at {}".format(
+            self.item.ID, self.item.name, hex(id(self))
+        )
