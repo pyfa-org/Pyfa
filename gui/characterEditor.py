@@ -67,6 +67,9 @@ class CharacterEditor(wx.Frame):
             if active:
                 self.charChoice.SetSelection(i)
 
+        self.navSizer.Add(self.btnSave, 0, wx.ALL , 5)
+
+
         buttons = (("new", wx.ART_NEW),
                    ("rename", BitmapLoader.getBitmap("rename", "gui")),
                    ("copy", wx.ART_COPY),
@@ -112,19 +115,19 @@ class CharacterEditor(wx.Frame):
 
         bSizerButtons = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.btnSave = wx.Button(self, wx.ID_ANY, "Save")
+        self.btnSaveChar = wx.Button(self, wx.ID_ANY, "Save")
         self.btnSaveAs = wx.Button(self, wx.ID_ANY, "Save As...")
         self.btnRevert = wx.Button(self, wx.ID_ANY, "Revert")
         self.btnOK = wx.Button(self, wx.ID_OK)
 
-        bSizerButtons.Add(self.btnSave, 0, wx.ALL, 5)
+        bSizerButtons.Add(self.btnSaveChar, 0, wx.ALL, 5)
         bSizerButtons.Add(self.btnSaveAs, 0, wx.ALL, 5)
         bSizerButtons.Add(self.btnRevert, 0, wx.ALL, 5)
         bSizerButtons.AddStretchSpacer()
         bSizerButtons.Add(self.btnOK, 0, wx.ALL, 5)
 
 
-        self.btnSave.Bind(wx.EVT_BUTTON, self.saveChar)
+        self.btnSaveChar.Bind(wx.EVT_BUTTON, self.saveChar)
         self.btnSaveAs.Bind(wx.EVT_BUTTON, self.saveCharAs)
         self.btnRevert.Bind(wx.EVT_BUTTON, self.revertChar)
         self.btnOK.Bind(wx.EVT_BUTTON, self.editingFinished)
@@ -150,7 +153,7 @@ class CharacterEditor(wx.Frame):
         char = sChar.getCharacter(charID)
 
         # enable/disable character saving stuff
-        self.btnSave.Enable(not char.ro and char.isDirty)
+        self.btnSaveChar.Enable(not char.ro and char.isDirty)
         self.btnSaveAs.Enable(char.isDirty)
         self.btnRevert.Enable(char.isDirty)
 
