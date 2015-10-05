@@ -1,22 +1,47 @@
-# Pyfa
+# pyfa
 
-Pyfa is a cross-platform desktop fitting application for EVE online that can be used natively on any platform where python and wxwidgets are available.
+![pyfa](https://cloud.githubusercontent.com/assets/3904767/10271512/af385ef2-6ade-11e5-8f67-52b8b1e4c797.PNG)
 
-It provides many advanced features such as graphs and full calculations of any possible combination of modules, fits, etc.
+## What is it?
 
-Please see the [FAQ](https://github.com/DarkFenX/Pyfa/wiki/FAQ) for answers to common questions / concerns
+pyfa, short for **py**thon **f**itting **a**ssistant, allows you to create, experiment with, and save ship fittings without being in game. Open source and written in Python, it is available on any platform where Python 2.x ad wxWidgets are available, including Windows, Mac OS X, and Linux.
 
-#### A note for Linux users
-pyfa currently only supports wxPython 2.8. However, there are some distros that have started to support 3.0 and subsequently dropped support for 2.8 altogether (such as Debian Jessie). If this is the case and wxPython 3.0 is the only version installed, the official pyfa releases will not run. You must either find a package for 2.8 or compile it yourself.
+## Latest Version and Changelogs
+The latest version along with release notes can always be found on the projects [Releases](https://github.com/DarkFenX/Pyfa/releases) page. pyfa will notify you if you are running an outdated version.
 
-For Debian Jessie, wxPython 2.8 is available in Sid (the unstable repo). you can use apt-pinning to install select packages from unstable and still keep your stable system. See http://jaqque.sbih.org/kplug/apt-pinning.html for me details.
+## Installing
+Windows and OS X users are supplied self-contained builds of pyfa that can be run without additional software. An `.exe` installer is also available for the Windows builds. There is no self-contained package for Linux users, which are expected to run pyfa through their distributions Python interpreter. However, there are a number of third-party packages available that handle the dependencies and updates for pyfa (for example, [pyfa for Arch Linux](https://aur.archlinux.org/packages/pyfa/)). Please check your distributions repositories.
 
-3.0 support is being worked on and can be found on the wx3 branch. It may be stable enough for you, but there are a few bugs related to it. Please see the wx3 label on the GitHub issues area for me information on known issues (biggest one currently is GTK warning spam): https://github.com/DarkFenX/Pyfa/labels/wx3
+## Requirements
+If you wish to help with development or simply need to run pyfa through a Python interpreter, the following software is required:
 
-#### Links
-* [Development repository: http://github.com/DarkFenX/Pyfa](http://github.com/DarkFenX/Pyfa)
-* [XMPP conference:
-pyfa@conference.jabber.org](pyfa@conference.jabber.org)
+* Python >= 2.6
+* `wxPython` 2.8/3.0
+* `sqlalchemy` >= 0.6
+* `dateutil`
+* `matplotlib` (for some Linux distributions, you may need to install separate wxPython bindings, such as `python-matplotlib-wx`)
+
+## Bug Reporting
+The preferred method of reporting bugs is through the projects GitHub Issues interface. Alternatively, posting a report in the pyfa thread on the official EVE Online forums is acceptable. Guidelines for bug reporting can be found on [this wiki page](https://github.com/DarkFenX/Pyfa/wiki/Bug-Reporting). 
+
+## Liscense
+pyfa is licensed under the GNU GPL v3.0, see LICENSE
+
+## Resources
+* Development repository: [http://github.com/DarkFenX/Pyfa](http://github.com/DarkFenX/Pyfa)
+* XMPP conference: [pyfa@conference.jabber.org](pyfa@conference.jabber.org)
 * [EVE forum thread](http://forums.eveonline.com/default.aspx?g=posts&t=247609)
+* [EVE University guide using pyfa](http://wiki.eveuniversity.org/Guide_to_using_PYFA)
 * [EVE Online website](http://www.eveonline.com/)
 
+## Contacts:
+* Kadesh Priestess
+    * GitHub: @DarkFenX
+    * [TweetFleet Slack](https://www.fuzzwork.co.uk/tweetfleet-slack-invites/): @kadesh
+* Sable Blitzmann
+    * GitHub: @blitzmann
+    * [TweetFleet Slack](https://www.fuzzwork.co.uk/tweetfleet-slack-invites/): @blitzmann
+    * Email: sable.blitzmann@gmail.com
+
+## CCP Copyright Notice
+EVE Online, the EVE logo, EVE and all associated logos and designs are the intellectual property of CCP hf. All artwork, screenshots, characters, vehicles, storylines, world facts or other recognizable features of the intellectual property relating to these trademarks are likewise the intellectual property of CCP hf. EVE Online and the EVE logo are the registered trademarks of CCP hf. All rights are reserved worldwide. All other trademarks are the property of their respective owners. CCP hf. has granted permission to Osmium to use EVE Online and all associated logos and designs for promotional and information purposes on its website but does not endorse, and is not in any way affiliated with, Osmium. CCP is in no way responsible for the content on or functioning of this website, nor can it be liable for any damage arising from the use of this website.
