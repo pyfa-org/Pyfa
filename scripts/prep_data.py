@@ -100,7 +100,7 @@ jsonToSql.main("sqlite:///"+db_file, dump_path)
 ### Diff generation
 import itemDiff
 diff_file = os.path.join(dump_path, "diff.txt")
-old_db = os.path.join(script_path, "..", "staticdata", "eve.db")
+old_db = os.path.join(script_path, "..", "eve.db")
 
 header("Generating DIFF", diff_file)
 old_stdout = sys.stdout

@@ -32,7 +32,7 @@ import sqlite3
 import sys
 
 script_dir = os.path.dirname(__file__)
-default_old = os.path.join(script_dir, "..", "staticdata", "eve.db")
+default_old = os.path.join(script_dir, "..", "eve.db")
 
 def main(old, new, groups=True, effects=True, attributes=True, renames=True):
     # Open both databases and get their cursors
