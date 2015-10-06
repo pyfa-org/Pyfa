@@ -374,7 +374,7 @@ class Miscellanea(ViewColumn):
             tooltip = "Optimal signature radius"
             return text, tooltip
         elif itemGroup in ("Frequency Mining Laser", "Strip Miner", "Mining Laser", "Gas Cloud Harvester"):
-            miningAmount = stuff.getModifiedItemAttr("miningAmount")
+            miningAmount = stuff.getModifiedItemAttr("specialtyMiningAmount") or stuff.getModifiedItemAttr("miningAmount")
             cycleTime = stuff.cycleTime
             if not miningAmount or not cycleTime:
                 return "", None

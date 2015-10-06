@@ -316,7 +316,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                 self.__miningyield = 0
             else:
                 if self.state >= State.ACTIVE:
-                    volley = sum(map(lambda attr: self.getModifiedItemAttr(attr) or 0, self.MINING_ATTRIBUTES))
+                    volley = self.getModifiedItemAttr("specialtyMiningAmount") or self.getModifiedItemAttr("miningAmount") or 0
                     if volley:
                         cycleTime = self.cycleTime
                         self.__miningyield = volley / (cycleTime / 1000.0)
