@@ -51,7 +51,7 @@ def isFrozen():
         return False
 
 def getPyfaRoot():
-    base = sys.executable if isFrozen() else sys.argv[0]
+    base = getattr(sys.modules['__main__'], "__file__", sys.executable) if isFrozen() else sys.argv[0]
     root = os.path.dirname(os.path.realpath(os.path.abspath(base)))
     root = unicode(root, sys.getfilesystemencoding())
     return root
