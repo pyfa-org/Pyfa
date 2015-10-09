@@ -224,14 +224,19 @@ class Fit(object):
         eos.db.commit()
         self.recalc(fit, withBoosters=True)
 
-    def getFit(self, fitID, projected = False):
+    def getFit(self, fitID, projected=False, basic=False):
         ''' Gets fit from database, and populates fleet data.
 
         Projected is a recursion flag that is set to reduce recursions into projected fits
+        Basic is a flag to simply return the fit without any other processing
         '''
         if fitID is None:
             return None
         fit = eos.db.getFit(fitID)
+
+        if basic:
+            return fit
+
         inited = getattr(fit, "inited", None)
 
         if inited is None or inited is False:
