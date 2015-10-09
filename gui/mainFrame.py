@@ -89,8 +89,9 @@ class OpenFitsThread(threading.Thread):
         # We use 1 for all fits except the last one where we use 2 so that we
         # have correct calculations displayed at startup
         for fitID in self.fits[:-1]:
+            print "startup 1 for fit: %s"%(fitID)
             wx.PostEvent(self.mainFrame, FitSelected(fitID=fitID, startup=1))
-
+        print "startup 2 for ",self.fits[-1]
         wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fits[-1], startup=2))
         wx.CallAfter(self.callback)
 
@@ -207,7 +208,7 @@ class MainFrame(wx.Frame):
         # Remove any fits that cause exception when fetching (non-existent fits)
         for id in fits[:]:
             try:
-                sFit.getFit(id)
+                sFit.getFit(id, basic=True)
             except:
                 fits.remove(id)
 

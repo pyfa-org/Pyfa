@@ -292,7 +292,7 @@ class FittingView(d.Display):
 
     def updateTab(self):
         sFit = service.Fit.getInstance()
-        fit = sFit.getFit(self.getActiveFit())
+        fit = sFit.getFit(self.getActiveFit(), basic=True)
 
         bitmap = BitmapLoader.getImage("race_%s_small" % fit.ship.item.race, "gui")
         text = "%s: %s" % (fit.ship.item.name, fit.name)
@@ -592,7 +592,7 @@ class FittingView(d.Display):
                pass
 
     def OnShow(self, event):
-        if not event.GetShow():
+        if event.GetShow():
             try:
                 self.MakeSnapshot()
             except:
