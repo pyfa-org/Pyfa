@@ -89,9 +89,8 @@ class OpenFitsThread(threading.Thread):
         # We use 1 for all fits except the last one where we use 2 so that we
         # have correct calculations displayed at startup
         for fitID in self.fits[:-1]:
-            print "startup 1 for fit: %s"%(fitID)
             wx.PostEvent(self.mainFrame, FitSelected(fitID=fitID, startup=1))
-        print "startup 2 for ",self.fits[-1]
+
         wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fits[-1], startup=2))
         wx.CallAfter(self.callback)
 
@@ -217,10 +216,8 @@ class MainFrame(wx.Frame):
             self.fitMultiSwitch.AddPage()
             return
 
-        self.waitDialog = animUtils.WaitDialog(self, title="Opening previous fits")
+        self.waitDialog = wx.BusyInfo("Loading previous fits...")
         OpenFitsThread(fits, self.closeWaitDialog)
-        self.waitDialog.ShowModal()
-
 
     def LoadMainFrameAttribs(self):
         mainFrameDefaultAttribs = {"wnd_width": 1000, "wnd_height": 700, "wnd_maximized": False, "browser_width": 300, "market_height": 0, "fitting_height": -200}
@@ -596,9 +593,8 @@ class MainFrame(wx.Frame):
             if '.' not in os.path.basename(filePath):
                 filePath += ".{0}".format(saveFmt)
 
-            self.waitDialog = animUtils.WaitDialog(self)
+            self.waitDialog = wx.BusyInfo("Exporting skills needed...")
             sCharacter.backupSkills(filePath, saveFmt, self.getActiveFit(), self.closeWaitDialog)
-            self.waitDialog.ShowModal()
 
         saveDialog.Destroy()
 
@@ -721,18 +717,16 @@ class MainFrame(wx.Frame):
                         style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST | wx.FD_MULTIPLE)
 
         if dlg.ShowModal() == wx.ID_OK:
-            self.waitDialog = animUtils.WaitDialog(self, title="Importing Character")
+            self.waitDialog = wx.BusyInfo("Importing Character...")
             sCharacter = service.Character.getInstance()
             sCharacter.importCharacter(dlg.GetPaths(), self.importCharacterCallback)
-            dlg.Destroy()
-            self.waitDialog.ShowModal()
 
     def importCharacterCallback(self):
-        self.waitDialog.Destroy()
+        self.closeWaitDialog()
         wx.PostEvent(self, GE.CharListUpdated())
 
     def closeWaitDialog(self):
-        self.waitDialog.Destroy()
+        del self.waitDialog
 
     def openGraphFrame(self, event):
         if not self.graphFrame:

@@ -94,8 +94,5 @@ class WaitDialog(wx.Dialog):
         mainSizer.Add( self.progress, 1, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 0 )
         self.SetSizer( mainSizer )
         self.Layout()
-        self.Bind(wx.EVT_CLOSE,self.OnClose)
         self.CenterOnParent()
 
-    def OnClose(self, event):
-        pass
