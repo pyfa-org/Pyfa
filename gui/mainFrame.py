@@ -196,7 +196,6 @@ class MainFrame(wx.Frame):
     def ShowUpdateBox(self, release):
         dlg = UpdateDialog(self, release)
         dlg.ShowModal()
-        dlg.Destroy()
 
     def LoadPreviousOpenFits(self):
         sFit = service.Fit.getInstance()

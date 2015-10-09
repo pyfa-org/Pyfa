@@ -107,7 +107,7 @@ class UpdateDialog(wx.Dialog):
         self.Centre( wx.BOTH )
 
     def OnClose(self, e):
-        self.Destroy()
+        self.Close()
 
     def SuppressChange(self, e):
         if (self.supressCheckbox.IsChecked()):
