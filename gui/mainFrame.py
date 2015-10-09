@@ -371,7 +371,6 @@ class MainFrame(wx.Frame):
     def showPreferenceDialog(self, event):
         dlg = PreferenceDialog(self)
         dlg.ShowModal()
-        dlg.Destroy()
 
     def goWiki(self, event):
         wx.LaunchDefaultBrowser('https://github.com/DarkFenX/Pyfa/wiki')

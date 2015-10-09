@@ -77,4 +77,4 @@ class PreferenceDialog(wx.Dialog):
         self.btnOK.Bind(wx.EVT_BUTTON, self.OnBtnOK)
 
     def OnBtnOK(self, event):
-        self.Destroy()
+        self.Close()
