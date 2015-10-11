@@ -5,7 +5,9 @@ Windows executable: python setup.py build
 Windows executable + installer: python setup.py bdist_msi
 """
 
+# The modules that contain the bulk of teh source
 packages = ['eos', 'gui', 'service', 'utils']
+# Extra files that will be copied into the root directory
 include_files = ['eve.db', 'LICENSE', 'README.md']
 # this is read by dist.py to package the icons
 icon_dirs = ['gui', 'icons', 'renders']

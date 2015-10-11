@@ -43,6 +43,16 @@ class FileStub():
     def flush(self, *args):
         pass
 
+i = 0
+def loginfo(path, names):
+    # Print out a "progress" and return directories / files to ignore
+    global i
+    i += 1
+    if i % 10 == 0:
+        sys.stdout.write(".")
+        sys.stdout.flush()
+    return ()
+
 def copyanything(src, dst):
     try:
         shutil.copytree(src, dst, ignore=loginfo)
@@ -60,7 +70,7 @@ def zipdir(path, zip):
         for file in files:
             zip.write(os.path.join(root, file))
 
-skels = ['win', 'mac', 'src', 'win-wx3']
+skels = ['win', 'mac', 'src', 'mac-wx3']
 iscc =  "C:\Program Files (x86)\Inno Setup 5\ISCC.exe" # inno script location via wine
 
 if __name__ == "__main__":
@@ -86,9 +96,6 @@ if __name__ == "__main__":
 
     options.platforms = options.platforms.split(",")
 
-    #sys.path.append(options.base)
-    #import config as pyfaconfig
-
     for skel in skels:
         if skel not in options.platforms:
             continue
@@ -97,10 +104,12 @@ if __name__ == "__main__":
 
         info = {}
         config = {}
+        setup = {}
         skeleton = os.path.expanduser(os.path.join(options.skeleton, skel))
 
         execfile(os.path.join(options.base, "config.py"), config)
         execfile(os.path.join(skeleton, "info.py"), info)
+        execfile(os.path.join(options.base, "setup.py"), setup)
 
         destination = os.path.expanduser(options.destination)
         if not os.path.isdir(destination) or not os.access(destination, os.W_OK | os.X_OK):
@@ -130,89 +139,66 @@ if __name__ == "__main__":
             )
 
         archiveName = "{}.{}".format(fileName, "zip" if options.zip else "tar.bz2")
-        dst = os.path.join(os.getcwd(), dirName) # tmp directory where files are copied
+        tmpDir = os.path.join(os.getcwd(), dirName) # tmp directory where files are copied
         tmpFile = os.path.join(os.getcwd(), archiveName)
 
-        i = 0
-        ignoreData = (".git", ".gitignore", ".gitmodules", "dist_assets", "build", "dist", "scripts", ".idea", "imgs")
-        def loginfo(path, names):
-            # Print out a "progress" and return directories / files to ignore
-            global i
-            i += 1
-            if i % 10 == 0:
-                sys.stdout.write(".")
-                sys.stdout.flush()
-            return ignoreData
-
         try:
-            print "Copying skeleton to ", dst
-            i = 0
-            shutil.copytree(skeleton, dst, ignore=loginfo)
+            print "Copying skeleton to ", tmpDir
+            shutil.copytree(skeleton, tmpDir, ignore=loginfo)
             print
-            if skel != "win":
-                # simply copying base into working build
-                base = os.path.join(dst, info["base"])
-                print "Copying base to ", base
+            source = os.path.expanduser(options.base)
+            root = os.path.join(tmpDir, info["base"])
 
-                i = 0
-                for stuff in os.listdir(os.path.expanduser(options.base)):
-                    currSource = os.path.join(os.path.expanduser(options.base), stuff)
-                    currDest = os.path.join(base, stuff)
-                    if stuff in ignoreData:
-                        continue
-                    elif os.path.isdir(currSource):
-                        shutil.copytree(currSource, currDest, ignore=loginfo)
-                    else:
-                        shutil.copy2(currSource, currDest)
+            # it is easier to work from the source directory
+            oldcwd = os.getcwd()
+            os.chdir(source)
 
-                print
-                print "Copying done, making archive: ", tmpFile
-            else:
-                # this should work, but it's barely been tested
-                base = os.path.join(dst, info["base"])
-                source = os.path.expanduser(options.base)
-                sys.path.append(source)
-                import setup
-
-                print "Injecting files into library.zip"
-                # the following operations require us to be in the source directory
-                # for the zipping to work correctly
-                oldcwd = os.getcwd()
-                os.chdir(source)
-
-                libraryFile = os.path.join(base, "library.zip")
+            if info["library"]:
+                print "Injecting files into", info["library"]
+                libraryFile = os.path.join(root, info["library"])
 
                 with zipfile.ZipFile(libraryFile, 'a') as library:
-                    for dir in setup.packages:
+                    for dir in setup['packages']:
                         zipdir(dir, library)
                     library.write('pyfa.py', 'pyfa__main__.py')
                     library.write('config.py')
+            else: # platforms where we don't have a packaged library
+                print "Copying modules into", root
+                for dir in setup['packages']:
+                    copyanything(dir, os.path.join(root, dir))
 
-                print "Copying included files"
-                for dir in setup.include_files:
-                    copyanything(dir, os.path.join(base, dir))
+            # add some additional files to root dir for these platforms
+            # (hopefully can figure out a way later for OS X to use the one in
+            # it's library)
+            if skel == 'mac-wx3':
+                setup['include_files'] += ['pyfa.py']
+            if skel == 'mac' or skel == 'src':
+                setup['include_files'] += ['pyfa.py', 'config.py']
 
-                os.chdir(oldcwd)
+            print "Copying included files:",
 
-            print "Creating images zipfile"
-            # Move imgs to zipfile
-            oldcwd = os.getcwd()
-            os.chdir(source)
-            imagesFile = os.path.join(base, "imgs.zip")
+            for file in setup['include_files']:
+                print file,
+                copyanything(file, os.path.join(root, file))
+
+            print "Creating images zipfile:",
+            os.chdir(os.path.join(source, 'imgs'))
+            imagesFile = os.path.join(root, "imgs.zip")
 
             with zipfile.ZipFile(imagesFile, 'w') as images:
-                os.chdir('imgs')  # need to be in images directory
-                for dir in setup.icon_dirs:
+                for dir in setup['icon_dirs']:
+                    print dir,
                     zipdir(dir, images)
             os.chdir(oldcwd)
 
+            print "Creating archive"
             if options.zip:
                 archive = zipfile.ZipFile(tmpFile, 'w', compression=zipfile.ZIP_DEFLATED)
                 zipdir(dirName, archive)
                 archive.close()
             else:
                 archive = tarfile.open(tmpFile, "w:bz2")
-                archive.add(dst, arcname=info["arcname"])
+                archive.add(tmpDir, arcname=info["arcname"])
                 archive.close()
 
             print "Moving archive to ", destination
@@ -236,7 +222,7 @@ if __name__ == "__main__":
                     os.path.join(os.path.dirname(__file__), "pyfa-setup.iss"),
                     "/dMyAppVersion=%s"%(config['version']),
                     "/dMyAppExpansion=%s"%(expansion),
-                    "/dMyAppDir=%s"%dst,
+                    "/dMyAppDir=%s"%tmpDir,
                     "/dMyOutputDir=%s"%destination,
                     "/dMyOutputFile=%s"%fileName]) #stdout=devnull, stderr=devnull
 
@@ -252,7 +238,7 @@ if __name__ == "__main__":
                     shutil.rmtree("dist") # Inno dir
                 except:
                     pass
-                shutil.rmtree(dst)
+                shutil.rmtree(tmpDir)
                 os.unlink(tmpFile)
             except:
                 pass
