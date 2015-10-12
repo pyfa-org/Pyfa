@@ -222,10 +222,10 @@ if __name__ == "__main__":
 
                 call(calllist + [
                     iscc,
-                    os.path.join(os.path.dirname(__file__), "pyfa-setup.iss"),
+                    "pyfa-setup.iss",
                     "/dMyAppVersion=%s"%(config['version']),
                     "/dMyAppExpansion=%s"%(expansion),
-                    "/dMyAppDir=%s"%tmpDir,
+                    "/dMyAppDir=pyfa",
                     "/dMyOutputDir=%s"%destination,
                     "/dMyOutputFile=%s"%fileName]) #stdout=devnull, stderr=devnull
 
