@@ -79,7 +79,7 @@ if __name__ == "__main__":
     parser.add_option("-s", "--skeleton", dest="skeleton", help="Location of Pyfa-skel directory")
     parser.add_option("-b", "--base", dest="base", help="Location of cleaned read-only base directory")
     parser.add_option("-d", "--destination", dest="destination", help="Where to copy our distributable")
-    parser.add_option("-p", "--platforms", dest="platforms", help="Comma-separated list of platforms to build", default="win,src,mac")
+    parser.add_option("-p", "--platforms", dest="platforms", help="Comma-separated list of platforms to build", default="win,src,mac,mac-wx3")
     parser.add_option("-q", "--quiet", dest="silent", action="store_true")
     parser.add_option("-w", "--winexe", dest="winexe", action="store_true", help="Build the Windows installer file (needs Inno Setup). Must include 'win' in platform options")
     parser.add_option("-z", "--zip", dest="zip", action="store_true", help="zip archive instead of tar")
@@ -175,14 +175,16 @@ if __name__ == "__main__":
             if skel == 'mac' or skel == 'src':
                 setup['include_files'] += ['pyfa.py', 'config.py']
 
+            print
             print "Copying included files:",
 
             for file in setup['include_files']:
                 print file,
                 copyanything(file, os.path.join(root, file))
 
+            print
             print "Creating images zipfile:",
-            os.chdir(os.path.join(source, 'imgs'))
+            os.chdir('imgs')
             imagesFile = os.path.join(root, "imgs.zip")
 
             with zipfile.ZipFile(imagesFile, 'w') as images:
@@ -191,6 +193,7 @@ if __name__ == "__main__":
                     zipdir(dir, images)
             os.chdir(oldcwd)
 
+            print
             print "Creating archive"
             if options.zip:
                 archive = zipfile.ZipFile(tmpFile, 'w', compression=zipfile.ZIP_DEFLATED)
@@ -234,11 +237,14 @@ if __name__ == "__main__":
         finally:
             print "Deleting tmp files\n"
             try:
-                try:
-                    shutil.rmtree("dist") # Inno dir
-                except:
-                    pass
+                shutil.rmtree("dist") # Inno dir
+            except:
+                pass
+            try:
                 shutil.rmtree(tmpDir)
+            except:
+                pass
+            try:
                 os.unlink(tmpFile)
             except:
                 pass
