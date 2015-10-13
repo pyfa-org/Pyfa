@@ -43,7 +43,8 @@ class FitDpsGraph(Graph):
                 if "ewTargetPaint" in mod.item.effects:
                     ew['signatureRadius'].append(1+(mod.getModifiedItemAttr("signatureRadiusBonus") / 100))
                 if "decreaseTargetSpeed" in mod.item.effects:
-                    ew['velocity'].append(1+(mod.getModifiedItemAttr("speedFactor") / 100))
+                    if distance <= mod.getModifiedItemAttr("maxRange"):
+                        ew['velocity'].append(1+(mod.getModifiedItemAttr("speedFactor") / 100))
 
         ew['signatureRadius'].sort(key=abssort)
         ew['velocity'].sort(key=abssort)
