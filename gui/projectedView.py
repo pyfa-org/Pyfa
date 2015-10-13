@@ -26,6 +26,16 @@ from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
 import eos.types
 
+
+class DummyItem:
+    def __init__(self, txt):
+        self.name = txt
+        self.icon = None
+
+class DummyEntry:
+    def __init__(self, txt):
+        self.item = DummyItem(txt)
+
 class ProjectedViewDrop(wx.PyDropTarget):
    def __init__(self, dropFn):
        wx.PyDropTarget.__init__(self)
@@ -178,6 +188,10 @@ class ProjectedView(d.Display):
                 self.EnsureVisible(item)
 
             self.deselectItems()
+
+        if stuff == []:
+            stuff = [DummyEntry("Drag an item or fit, or use right-click menu for system effects")]
+
         self.update(stuff)
 
     def get(self, row):
