@@ -197,6 +197,11 @@ class ProjectedView(d.Display):
     def get(self, row):
         numMods = len(self.modules)
         numDrones = len(self.drones)
+        numFits = len(self.fits)
+
+        if (numMods + numDrones + numFits) == 0:
+            return None
+
         if row < numMods:
             stuff = self.modules[row]
         elif row - numMods < numDrones:
