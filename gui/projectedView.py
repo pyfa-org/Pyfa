@@ -27,18 +27,18 @@ from gui.contextMenu import ContextMenu
 import eos.types
 
 class ProjectedViewDrop(wx.PyDropTarget):
-        def __init__(self, dropFn):
-            wx.PyDropTarget.__init__(self)
-            self.dropFn = dropFn
-            # this is really transferring an EVE itemID
-            self.dropData = wx.PyTextDataObject()
-            self.SetDataObject(self.dropData)
+   def __init__(self, dropFn):
+       wx.PyDropTarget.__init__(self)
+       self.dropFn = dropFn
+       # this is really transferring an EVE itemID
+       self.dropData = wx.PyTextDataObject()
+       self.SetDataObject(self.dropData)
 
-        def OnData(self, x, y, t):
-            if self.GetData():
-                data = self.dropData.GetText().split(':')
-                self.dropFn(x, y, data)
-            return t
+   def OnData(self, x, y, t):
+       if self.GetData():
+           data = self.dropData.GetText().split(':')
+           self.dropFn(x, y, data)
+       return t
 
 class ProjectedView(d.Display):
     DEFAULT_COLS = ["State",
