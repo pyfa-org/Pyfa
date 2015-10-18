@@ -48,16 +48,20 @@ class Port(object):
     """Service which houses all import/export format functions"""
     @classmethod
     def exportCrest(cls, ofit, callback=None):
-        print "export"
+        # A few notes:
+        # max fit name length is 50 characters
+        # Most keys are created simply because they are required, but bogus data is okay
+
         nested_dict = lambda: collections.defaultdict(nested_dict)
         fit = nested_dict()
 
         eve = config.pycrest_eve
-
-        fit['name'] = ofit.name
+        # max length is 50 characters
+        name = ofit.name[:47] + '...' if len(ofit.name) > 50 else ofit.name
+        fit['name'] = name
         fit['ship']['href'] = "%stypes/%d/"%(eve._endpoint, ofit.ship.item.ID)
-        fit['ship']['id'] = ofit.ship.item.ID
-        fit['ship']['name'] = ofit.ship.item.name
+        fit['ship']['id'] = 0
+        fit['ship']['name'] = ''
 
         fit['description'] = "<pyfa:%d />"%ofit.ID
         fit['items'] = []
@@ -76,8 +80,8 @@ class Port(object):
                 item['flag'] = slot
                 item['quantity'] = 1
                 item['type']['href'] = "%stypes/%d/"%(eve._endpoint, module.item.ID)
-                item['type']['id'] = module.item.ID
-                item['type']['name'] = module.item.name
+                item['type']['id'] = 0
+                item['type']['name'] = ''
             else:
                 if not slot in slotNum:
                     slotNum[slot] = INV_FLAGS[slot]
@@ -85,14 +89,13 @@ class Port(object):
                 item['flag'] = slotNum[slot]
                 item['quantity'] = 1
                 item['type']['href'] = "%stypes/%d/"%(eve._endpoint, module.item.ID)
-                item['type']['id'] = module.item.ID
-                item['type']['name'] = module.item.name
+                item['type']['id'] = 0
+                item['type']['name'] = ''
 
                 slotNum[slot] += 1
             fit['items'].append(item)
 
-        print json.dumps(fit)
-        pass
+        return json.dumps(fit)
 
     @classmethod
     def importAuto(cls, string, path=None, activeFit=None, callback=None, encoding=None):
