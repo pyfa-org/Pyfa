@@ -24,6 +24,11 @@ expansionName = "Vanguard"
 expansionVersion = "1.0"
 evemonMinVersion = "4081"
 
+# CREST client information
+clientID = '554727742a354f62ad9dfb34a188abc2'
+clientSecret = 'fyCksblVC4AHafeYI9XOcV44xi0AOnMLV8tEU45M'
+clientCallback = 'http://localhost:6461'
+
 pyfaPath = None
 savePath = None
 saveDB = None
