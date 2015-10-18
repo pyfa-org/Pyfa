@@ -3,6 +3,7 @@ import service
 import gui.display as d
 from eos.types import Cargo
 from eos.db import getItem
+import json
 
 class CrestFittings(wx.Frame):
 
@@ -63,6 +64,61 @@ class CrestFittings(wx.Frame):
         fittings = sCrest.getFittings(self.getActiveCharacter())
         self.fitTree.populateSkillTree(fittings)
 
+
+class ExportToEve(wx.Frame):
+
+    def __init__(self, parent):
+        wx.Frame.__init__(self, parent, id=wx.ID_ANY, title=wx.EmptyString, pos=wx.DefaultPosition, size=(wx.Size(500,100)), style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL)
+
+        self.mainFrame = parent
+        self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
+
+        sCrest = service.Crest.getInstance()
+
+        self.charChoice = wx.Choice(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, [])
+        chars = sCrest.getCrestCharacters()
+        for char in chars:
+            self.charChoice.Append(char.name, char.ID)
+
+        mainSizer = wx.BoxSizer( wx.HORIZONTAL )
+        self.charChoice.SetSelection(0)
+
+        mainSizer.Add( self.charChoice, 1, wx.ALL, 5 )
+        self.exportBtn = wx.Button( self, wx.ID_ANY, u"Export Fit", wx.DefaultPosition, wx.DefaultSize, 5 )
+        mainSizer.Add( self.exportBtn, 0, wx.ALL, 5 )
+
+        self.exportBtn.Bind(wx.EVT_BUTTON, self.exportFitting)
+
+        self.statusbar = wx.StatusBar(self)
+        self.statusbar.SetFieldsCount(2)
+        self.statusbar.SetStatusWidths([100, -1])
+
+
+        self.SetSizer(mainSizer)
+        self.SetStatusBar(self.statusbar)
+        self.Layout()
+
+        self.Centre(wx.BOTH)
+
+    def getActiveCharacter(self):
+        selection = self.charChoice.GetCurrentSelection()
+        return self.charChoice.GetClientData(selection) if selection is not None else None
+
+    def exportFitting(self, event):
+        self.statusbar.SetStatusText("", 0)
+        self.statusbar.SetStatusText("Sending request and awaiting response", 1)
+        sCrest = service.Crest.getInstance()
+
+        sFit = service.Fit.getInstance()
+        data = sFit.exportCrest(self.mainFrame.getActiveFit())
+        res = sCrest.postFitting(self.getActiveCharacter(), data)
+
+        self.statusbar.SetStatusText("%d: %s"%(res.status_code, res.reason), 0)
+        try:
+            text = json.loads(res.text)
+            self.statusbar.SetStatusText(text['message'], 1)
+        except ValueError:
+            self.statusbar.SetStatusText("", 1)
 
 class FittingsTreeView(wx.Panel):
     def __init__(self, parent):

@@ -59,8 +59,8 @@ class Port(object):
         # max length is 50 characters
         name = ofit.name[:47] + '...' if len(ofit.name) > 50 else ofit.name
         fit['name'] = name
-        fit['ship']['href'] = "%stypes/%d/"%(eve._endpoint, ofit.ship.item.ID)
-        fit['ship']['id'] = 0
+        fit['ship']['href'] = "%stypes/%d/"%(eve._authed_endpoint, ofit.ship.item.ID)
+        fit['ship']['id'] = ofit.ship.item.ID
         fit['ship']['name'] = ''
 
         fit['description'] = "<pyfa:%d />"%ofit.ID
@@ -78,21 +78,18 @@ class Port(object):
                 # Order of subsystem matters based on this attr. See GH issue #130
                 slot = int(module.getModifiedItemAttr("subSystemSlot"))
                 item['flag'] = slot
-                item['quantity'] = 1
-                item['type']['href'] = "%stypes/%d/"%(eve._endpoint, module.item.ID)
-                item['type']['id'] = 0
-                item['type']['name'] = ''
             else:
                 if not slot in slotNum:
                     slotNum[slot] = INV_FLAGS[slot]
 
                 item['flag'] = slotNum[slot]
-                item['quantity'] = 1
-                item['type']['href'] = "%stypes/%d/"%(eve._endpoint, module.item.ID)
-                item['type']['id'] = 0
-                item['type']['name'] = ''
-
                 slotNum[slot] += 1
+
+            item['quantity'] = 1
+            item['type']['href'] = "%stypes/%d/"%(eve._authed_endpoint, module.item.ID)
+            item['type']['id'] = module.item.ID
+            item['type']['name'] = ''
+
             fit['items'].append(item)
 
         return json.dumps(fit)

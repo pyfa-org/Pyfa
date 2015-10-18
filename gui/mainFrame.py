@@ -44,7 +44,7 @@ from gui.multiSwitch import MultiSwitch
 from gui.statsPane import StatsPane
 from gui.shipBrowser import ShipBrowser, FitSelected, ImportSelected, Stage3Selected
 from gui.characterEditor import CharacterEditor, SaveCharacterAs
-from gui.crestFittings import CrestFittings
+from gui.crestFittings import CrestFittings, ExportToEve
 from gui.characterSelection import CharacterSelection
 from gui.patternEditor import DmgPatternEditorDlg
 from gui.resistsEditor import ResistsEditorDlg
@@ -418,6 +418,8 @@ class MainFrame(wx.Frame):
         self.Bind(wx.EVT_MENU, self.revertChar, id = menuBar.revertCharId)
         # Browse fittings
         self.Bind(wx.EVT_MENU, self.eveFittings, id = menuBar.eveFittingsId)
+        # Export to EVE
+        self.Bind(wx.EVT_MENU, self.exportToEve, id = menuBar.exportToEveId)
 
         #Clipboard exports
         self.Bind(wx.EVT_MENU, self.exportToClipboard, id=wx.ID_COPY)
@@ -484,6 +486,10 @@ class MainFrame(wx.Frame):
 
     def eveFittings(self, event):
         dlg=CrestFittings(self)
+        dlg.Show()
+
+    def exportToEve(self, event):
+        dlg=ExportToEve(self)
         dlg.Show()
 
     def saveChar(self, event):
