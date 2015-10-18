@@ -10,3 +10,4 @@ from service.update import Update
 from service.price import Price
 from service.network import Network
 from service.eveapi import EVEAPIConnection, ParseXML
+from service.crest import Crest

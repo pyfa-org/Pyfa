@@ -422,6 +422,24 @@ def getCrestCharacters(eager=None):
         characters = saveddata_session.query(Crest).options(*eager).all()
     return characters
 
+@cachedQuery(Crest, 1, "lookfor")
+def getCrestCharacter(lookfor, eager=None):
+    if isinstance(lookfor, int):
+        if eager is None:
+            with sd_lock:
+                character = saveddata_session.query(Crest).get(lookfor)
+        else:
+            eager = processEager(eager)
+            with sd_lock:
+                character = saveddata_session.query(Crest).options(*eager).filter(Crest.ID == lookfor).first()
+    elif isinstance(lookfor, basestring):
+        eager = processEager(eager)
+        with sd_lock:
+            character = saveddata_session.query(Crest).options(*eager).filter(Crest.name == lookfor).first()
+    else:
+        raise TypeError("Need integer or string as argument")
+    return character
+
 def removeInvalid(fits):
     invalids = [f for f in fits if f.isInvalid]
 

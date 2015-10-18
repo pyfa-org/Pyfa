@@ -40,6 +40,7 @@ class MainMenuBar(wx.MenuBar):
         self.saveCharId = wx.NewId()
         self.saveCharAsId = wx.NewId()
         self.revertCharId = wx.NewId()
+        self.eveFittingsId = wx.NewId()
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
@@ -101,6 +102,12 @@ class MainMenuBar(wx.MenuBar):
         preferencesItem = wx.MenuItem(windowMenu, wx.ID_PREFERENCES, "Preferences\tCTRL+P")
         preferencesItem.SetBitmap(BitmapLoader.getBitmap("preferences_small", "gui"))
         windowMenu.AppendItem(preferencesItem)
+
+        # CREST Menu
+        crestMenu = wx.Menu()
+        self.Append(crestMenu, "&CREST")
+        eveFittings = wx.MenuItem(crestMenu, self.eveFittingsId, "Browse EVE Fittings")
+        crestMenu.AppendItem(eveFittings)
 
         # Help menu
         helpMenu = wx.Menu()
