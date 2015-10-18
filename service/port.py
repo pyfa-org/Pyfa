@@ -25,6 +25,9 @@ from eos.types import State, Slot, Module, Cargo, Fit, Ship, Drone, Implant, Boo
 import service
 import wx
 import logging
+import config
+import collections
+import json
 
 logger = logging.getLogger("pyfa.service.port")
 
@@ -34,9 +37,62 @@ except ImportError:
     from utils.compat import OrderedDict
 
 EFT_SLOT_ORDER = [Slot.LOW, Slot.MED, Slot.HIGH, Slot.RIG, Slot.SUBSYSTEM]
+INV_FLAGS = {
+            Slot.LOW: 11,
+            Slot.MED: 19,
+            Slot.HIGH: 27,
+            Slot.RIG: 92,
+            Slot.SUBSYSTEM: 125}
 
 class Port(object):
     """Service which houses all import/export format functions"""
+    @classmethod
+    def exportCrest(cls, ofit, callback=None):
+        print "export"
+        nested_dict = lambda: collections.defaultdict(nested_dict)
+        fit = nested_dict()
+
+        eve = config.pycrest_eve
+
+        fit['name'] = ofit.name
+        fit['ship']['href'] = "%stypes/%d/"%(eve._endpoint, ofit.ship.item.ID)
+        fit['ship']['id'] = ofit.ship.item.ID
+        fit['ship']['name'] = ofit.ship.item.name
+
+        fit['description'] = "<pyfa:%d />"%ofit.ID
+        fit['items'] = []
+
+        slotNum = {}
+        for module in ofit.modules:
+            if module.isEmpty:
+                continue
+
+            item = nested_dict()
+            slot = module.slot
+
+            if slot == Slot.SUBSYSTEM:
+                # Order of subsystem matters based on this attr. See GH issue #130
+                slot = int(module.getModifiedItemAttr("subSystemSlot"))
+                item['flag'] = slot
+                item['quantity'] = 1
+                item['type']['href'] = "%stypes/%d/"%(eve._endpoint, module.item.ID)
+                item['type']['id'] = module.item.ID
+                item['type']['name'] = module.item.name
+            else:
+                if not slot in slotNum:
+                    slotNum[slot] = INV_FLAGS[slot]
+
+                item['flag'] = slotNum[slot]
+                item['quantity'] = 1
+                item['type']['href'] = "%stypes/%d/"%(eve._endpoint, module.item.ID)
+                item['type']['id'] = module.item.ID
+                item['type']['name'] = module.item.name
+
+                slotNum[slot] += 1
+            fit['items'].append(item)
+
+        print json.dumps(fit)
+        pass
 
     @classmethod
     def importAuto(cls, string, path=None, activeFit=None, callback=None, encoding=None):
@@ -62,6 +118,11 @@ class Port(object):
 
         # Use DNA format for all other cases
         return "DNA", (cls.importDna(string),)
+
+    @staticmethod
+    def importCrest(json):
+        pass
+
 
     @staticmethod
     def importDna(string):

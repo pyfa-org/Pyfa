@@ -1,5 +1,6 @@
 import os
 import sys
+import pycrest
 
 # TODO: move all logging back to pyfa.py main loop
 # We moved it here just to avoid rebuilding windows skeleton for now (any change to pyfa.py needs it)
@@ -28,6 +29,16 @@ evemonMinVersion = "4081"
 clientID = '554727742a354f62ad9dfb34a188abc2'
 clientSecret = 'fyCksblVC4AHafeYI9XOcV44xi0AOnMLV8tEU45M'
 clientCallback = 'http://localhost:6461'
+clientTest = True
+
+# There are times we will need to access the base object outside of CREST calls
+# (for example when exporting we need the correct href of the server)
+# This will probably move elsewhere eventually
+pycrest_eve = pycrest.EVE(
+                        client_id=clientID,
+                        api_key=clientSecret,
+                        redirect_uri=clientCallback,
+                        testing=clientTest)
 
 pyfaPath = None
 savePath = None
