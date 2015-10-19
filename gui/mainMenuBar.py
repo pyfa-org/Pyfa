@@ -25,6 +25,7 @@ import gui.graphFrame
 import gui.globalEvents as GE
 import service
 
+
 class MainMenuBar(wx.MenuBar):
     def __init__(self):
         self.characterEditorId = wx.NewId()

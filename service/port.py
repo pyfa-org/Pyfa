@@ -104,6 +104,10 @@ class Port(object):
         if re.match("<", firstLine):
             return "XML", cls.importXml(string, callback, encoding)
 
+        # If JSON-style start, parse os CREST/JSON
+        if firstLine[0] == '{':
+            return "JSON", (cls.importCrest(string),)
+
         # If we've got source file name which is used to describe ship name
         # and first line contains something like [setup name], detect as eft config file
         if re.match("\[.*\]", firstLine) and path is not None:
@@ -120,9 +124,45 @@ class Port(object):
         return "DNA", (cls.importDna(string),)
 
     @staticmethod
-    def importCrest(json):
-        pass
+    def importCrest(str):
+        fit = json.loads(str)
+        sMkt = service.Market.getInstance()
 
+        f = Fit()
+        f.name = fit['name']
+
+        try:
+            f.ship = Ship(sMkt.getItem(fit['ship']['id']))
+        except:
+            return None
+
+        items = fit['items']
+        items.sort(key=lambda k: k['flag'])
+        for module in items:
+            try:
+                item = sMkt.getItem(module['type']['id'], eager="group.category")
+                if item.category.name == "Drone":
+                    d = Drone(item)
+                    d.amount = module['quantity']
+                    f.drones.append(d)
+                elif item.category.name == "Charge":
+                    c = Cargo(item)
+                    c.amount = module['quantity']
+                    f.cargo.append(c)
+                else:
+                    try:
+                        m = Module(item)
+                    # When item can't be added to any slot (unknown item or just charge), ignore it
+                    except ValueError:
+                        continue
+                    if m.isValidState(State.ACTIVE):
+                        m.state = State.ACTIVE
+
+                    f.modules.append(m)
+            except:
+                continue
+
+        return f
 
     @staticmethod
     def importDna(string):

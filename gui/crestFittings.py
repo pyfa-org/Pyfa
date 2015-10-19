@@ -12,6 +12,7 @@ class CrestFittings(wx.Frame):
 
         self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
 
+        self.mainFrame = parent
         mainSizer = wx.BoxSizer(wx.VERTICAL)
         sCrest = service.Crest.getInstance()
 
@@ -49,6 +50,7 @@ class CrestFittings(wx.Frame):
         mainSizer.Add(contentSizer, 1, wx.EXPAND, 5)
 
         self.fetchBtn.Bind(wx.EVT_BUTTON, self.fetchFittings)
+        self.importBtn.Bind(wx.EVT_BUTTON, self.importFitting)
 
         self.SetSizer(mainSizer)
         self.Layout()
@@ -63,6 +65,13 @@ class CrestFittings(wx.Frame):
         sCrest = service.Crest.getInstance()
         fittings = sCrest.getFittings(self.getActiveCharacter())
         self.fitTree.populateSkillTree(fittings)
+
+    def importFitting(self, event):
+        selection = self.fitView.fitSelection
+        data = self.fitTree.fittingsTreeCtrl.GetPyData(selection)
+        sFit = service.Fit.getInstance()
+        fits = sFit.importFitFromBuffer(data)
+        self.mainFrame._openAfterImport(fits)
 
 
 class ExportToEve(wx.Frame):
@@ -138,15 +147,15 @@ class FittingsTreeView(wx.Panel):
 
         self.Layout()
 
-    def populateSkillTree(self, json):
-        if json is None:
+    def populateSkillTree(self, data):
+        if data is None:
             return
         root = self.root
         tree = self.fittingsTreeCtrl
         tree.DeleteChildren(root)
 
         dict = {}
-        fits = json['items']
+        fits = data['items']
         for fit in fits:
             if fit['ship']['name'] not in dict:
                 dict[fit['ship']['name']] = []
@@ -156,21 +165,25 @@ class FittingsTreeView(wx.Panel):
             shipID = tree.AppendItem(root, name)
             for fit in fits:
                 fitId = tree.AppendItem(shipID, fit['name'])
-                tree.SetPyData(fitId, fit['items'])
+                print type(fit)
+                tree.SetPyData(fitId, json.dumps(fit))
 
         tree.SortChildren(root)
 
     def displayFit(self, event):
         selection = self.fittingsTreeCtrl.GetSelection()
-        items = self.fittingsTreeCtrl.GetPyData(selection)
+        fit = json.loads(self.fittingsTreeCtrl.GetPyData(selection))
         list = []
 
-        for item in items:
-            cargo = Cargo(getItem(item['type']['id']))
-            cargo.amount = item['quantity']
-            list.append(cargo)
-        self.parent.fitView.populate(list)
-        self.parent.fitView.refresh(list)
+        for item in fit['items']:
+            try:
+                cargo = Cargo(getItem(item['type']['id']))
+                cargo.amount = item['quantity']
+                list.append(cargo)
+            except:
+                pass
+        self.parent.fitView.fitSelection = selection
+        self.parent.fitView.update(list)
 
 class FitView(d.Display):
     DEFAULT_COLS = ["Base Icon",
@@ -178,6 +191,6 @@ class FitView(d.Display):
 
     def __init__(self, parent):
         d.Display.__init__(self, parent, style=wx.LC_SINGLE_SEL)
-
+        self.fitSelection = None
         #self.Bind(wx.EVT_LEFT_DCLICK, self.removeItem)
         #self.Bind(wx.EVT_KEY_UP, self.kbEvent)
