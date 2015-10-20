@@ -1,9 +1,16 @@
+import json
+import thread
+
 import wx
+from wx.lib.pubsub import pub
+
 import service
 import gui.display as d
 from eos.types import Cargo
 from eos.db import getItem
-import json
+from service.server import *
+import config
+
 
 class CrestFittings(wx.Frame):
 
@@ -128,6 +135,42 @@ class ExportToEve(wx.Frame):
             self.statusbar.SetStatusText(text['message'], 1)
         except ValueError:
             self.statusbar.SetStatusText("", 1)
+
+class CrestLogin(wx.Frame):
+
+    def __init__(self, parent):
+        wx.Frame.__init__(self, parent, id=wx.ID_ANY, title="Login", pos=wx.DefaultPosition, size=wx.Size( -1,-1 ), style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL)
+
+        self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
+
+        self.mainFrame = parent
+        sCrest = service.Crest.getInstance()
+
+        mainSizer = wx.BoxSizer( wx.HORIZONTAL )
+        self.loginBtn = wx.Button( self, wx.ID_ANY, u"Login via SSO", wx.DefaultPosition, wx.DefaultSize, 5 )
+        mainSizer.Add( self.loginBtn, 0, wx.ALL, 5 )
+
+        self.loginBtn.Bind(wx.EVT_BUTTON, self.startServer)
+
+        self.SetSizer(mainSizer)
+        self.Layout()
+
+        pub.subscribe(self.sso_login, 'sso_login')
+        self.Centre(wx.BOTH)
+
+    def sso_login(self, message):
+        self.httpd.stop()
+        con = config.pycrest_eve.authorize(message)
+        sCrest = service.Crest.getInstance()
+        sCrest.newChar(con)
+        self.Close()
+
+    def startServer(self, event):
+        self.httpd = StoppableHTTPServer(('', 6461), AuthHandler)
+        thread.start_new_thread(self.httpd.serve, ())
+        uri = config.pycrest_eve.auth_uri(scopes=['characterFittingsRead', 'characterFittingsWrite'])
+        wx.LaunchDefaultBrowser(uri)
+
 
 class FittingsTreeView(wx.Panel):
     def __init__(self, parent):

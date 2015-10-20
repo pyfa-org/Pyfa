@@ -43,6 +43,7 @@ class MainMenuBar(wx.MenuBar):
         self.revertCharId = wx.NewId()
         self.eveFittingsId = wx.NewId()
         self.exportToEveId = wx.NewId()
+        self.ssoLoginId = wx.NewId()
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
@@ -108,6 +109,7 @@ class MainMenuBar(wx.MenuBar):
         # CREST Menu
         crestMenu = wx.Menu()
         self.Append(crestMenu, "&CREST")
+        crestMenu.Append(self.ssoLoginId, "Login To EVE")
         crestMenu.Append(self.eveFittingsId, "Browse EVE Fittings")
         crestMenu.Append(self.exportToEveId, "Export To EVE")
 

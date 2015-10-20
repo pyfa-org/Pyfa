@@ -1,4 +1,5 @@
 import eos.db
+from eos.types import Crest as CrestUser
 import config
 
 class Crest():
@@ -12,7 +13,6 @@ class Crest():
         return cls._instance
 
     def __init__(self):
-
         pass
 
     def getCrestCharacters(self):
@@ -29,6 +29,12 @@ class Crest():
     def postFitting(self, charID, json):
         char = self.getCrestCharacter(charID)
         char.auth()
-        print char.eve.token
         res = char.eve._session.post('https://api-sisi.testeveonline.com/characters/%d/fittings/'%char.ID, data=json)
         return res
+
+    def newChar(self, connection):
+        connection()
+        info = connection.whoami()
+        char = CrestUser(info['CharacterName'], info['CharacterID'], connection.refresh_token)
+        eos.db.save(char)
+
