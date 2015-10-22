@@ -25,21 +25,6 @@ expansionName = "Vanguard"
 expansionVersion = "1.0"
 evemonMinVersion = "4081"
 
-# CREST client information
-clientID = '554727742a354f62ad9dfb34a188abc2'
-clientSecret = 'fyCksblVC4AHafeYI9XOcV44xi0AOnMLV8tEU45M'
-clientCallback = 'http://localhost:6461'
-clientTest = True
-
-# There are times we will need to access the base object outside of CREST calls
-# (for example when exporting we need the correct href of the server)
-# This will probably move elsewhere eventually
-pycrest_eve = pycrest.EVE(
-                        client_id=clientID,
-                        api_key=clientSecret,
-                        redirect_uri=clientCallback,
-                        testing=clientTest)
-
 pyfaPath = None
 savePath = None
 saveDB = None

@@ -145,7 +145,6 @@ class CrestLogin(wx.Frame):
 
         self.mainFrame = parent
         sCrest = service.Crest.getInstance()
-
         mainSizer = wx.BoxSizer( wx.HORIZONTAL )
         self.loginBtn = wx.Button( self, wx.ID_ANY, u"Login via SSO", wx.DefaultPosition, wx.DefaultSize, 5 )
         mainSizer.Add( self.loginBtn, 0, wx.ALL, 5 )

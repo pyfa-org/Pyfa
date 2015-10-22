@@ -122,7 +122,6 @@ class APIConnection(object):
             self.cache = DictCache()
 
     def get(self, resource, params=None):
-        print resource, params
         logger.debug('Getting resource %s', resource)
         if params is None:
             params = {}
@@ -195,6 +194,9 @@ class EVE(APIConnection):
         self._endpoint = self._public_endpoint
         self._cache = {}
         self._data = None
+        self.token = None
+        self.refresh_token = None
+        self.expires = None
         APIConnection.__init__(self, **kwargs)
 
     def __call__(self):
@@ -207,8 +209,11 @@ class EVE(APIConnection):
 
     def auth_uri(self, scopes=None, state=None):
         s = [] if not scopes else scopes
-        return "%s/authorize?response_type=code&redirect_uri=%s&client_id=%s%s%s" % (
+        grant_type = "token" if self.api_key is None else "code"
+
+        return "%s/authorize?response_type=%s&redirect_uri=%s&client_id=%s%s%s" % (
             self._oauth_endpoint,
+            grant_type,
             quote(self.redirect_uri, safe=''),
             self.client_id,
             "&scope=%s" % ' '.join(s) if scopes else '',
@@ -223,48 +228,29 @@ class EVE(APIConnection):
             raise APIException("Got unexpected status code from API: %i" % res.status_code)
         return res.json()
 
-    def authorize(self, code):
-        res = self._authorize(params={"grant_type": "authorization_code", "code": code})
-        return AuthedConnection(res,
-                                self._authed_endpoint,
-                                self._oauth_endpoint,
-                                self.client_id,
-                                self.api_key,
-                                cache=self.cache)
-
-    def refr_authorize(self, refresh_token):
-        res = self._authorize(params={"grant_type": "refresh_token", "refresh_token": refresh_token})
-        return AuthedConnection({'access_token': res['access_token'],
-                                 'refresh_token': refresh_token,
-                                 'expires_in': res['expires_in']},
-                                self._authed_endpoint,
-                                self._oauth_endpoint,
-                                self.client_id,
-                                self.api_key,
-                                cache=self.cache)
-
-    def temptoken_authorize(self, access_token, expires_in, refresh_token):
-        return AuthedConnection({'access_token': access_token,
-                                 'refresh_token': refresh_token,
-                                 'expires_in': expires_in},
-                                self._authed_endpoint,
-                                self._oauth_endpoint,
-                                self.client_id,
-                                self.api_key,
-                                cache=self.cache)
-
-
-class AuthedConnection(EVE):
-    def __init__(self, res, endpoint, oauth_endpoint, client_id=None, api_key=None, **kwargs):
-        EVE.__init__(self, **kwargs)
-        self.client_id = client_id
-        self.api_key = api_key
+    def set_auth_values(self, res):
+        self.__class__ = AuthedConnection
         self.token = res['access_token']
         self.refresh_token = res['refresh_token']
         self.expires = int(time.time()) + res['expires_in']
-        self._oauth_endpoint = oauth_endpoint
-        self._endpoint = endpoint
+        self._endpoint = self._authed_endpoint
         self._session.headers.update({"Authorization": "Bearer %s" % self.token})
+
+    def authorize(self, code):
+        res = self._authorize(params={"grant_type": "authorization_code", "code": code})
+        self.set_auth_values(res)
+
+    def refr_authorize(self, refresh_token):
+        res = self._authorize(params={"grant_type": "refresh_token", "refresh_token": refresh_token})
+        self.set_auth_values(res)
+
+    def temptoken_authorize(self, access_token=None, expires_in=0, refresh_token=None):
+        self.set_auth_values({'access_token': access_token,
+                                 'refresh_token': refresh_token,
+                                 'expires_in': expires_in})
+
+
+class AuthedConnection(EVE):
 
     def __call__(self):
         if not self._data:

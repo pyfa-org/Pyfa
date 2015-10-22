@@ -55,7 +55,6 @@ from gui.utils.clipboard import toClipboard, fromClipboard
 from gui.fleetBrowser import FleetBrowser
 from gui.updateDialog import UpdateDialog
 from gui.builtinViews import *
-
 from time import gmtime, strftime
 
 #dummy panel(no paint no erasebk)
@@ -491,8 +490,13 @@ class MainFrame(wx.Frame):
         dlg.Show()
 
     def ssoLogin(self, event):
-        dlg=CrestLogin(self)
-        dlg.Show()
+        sCrest = service.Crest.getInstance()
+        if sCrest.settings.get('mode') == 0:  # Implicit, go directly to login
+            uri = sCrest.startServer()
+            wx.LaunchDefaultBrowser(uri)
+        else:
+            dlg=CrestLogin(self)
+            dlg.Show()
 
     def exportToEve(self, event):
         dlg=ExportToEve(self)

@@ -7,18 +7,20 @@ import wx
 from wx.lib.pubsub import setupkwargs
 from wx.lib.pubsub import pub
 
+from html import HTML
+
 # https://github.com/fuzzysteve/CREST-Market-Downloader/
 class AuthHandler(BaseHTTPServer.BaseHTTPRequestHandler):
     def do_GET(self):
-        print "GET"
         if self.path == "/favicon.ico":
             return
         parsed_path = urlparse.urlparse(self.path)
-        parts=urlparse.parse_qs(parsed_path.query)
+        parts = urlparse.parse_qs(parsed_path.query)
         self.send_response(200)
         self.end_headers()
-        self.wfile.write('Login successful. you can close this window now')
-        wx.CallAfter(pub.sendMessage, 'sso_login', message=str(parts['code'][0]))
+        self.wfile.write(HTML)
+
+        wx.CallAfter(pub.sendMessage, 'sso_login', message=parts)
 
     def log_message(self, format, *args):
         return
@@ -51,7 +53,7 @@ class StoppableHTTPServer(BaseHTTPServer.HTTPServer):
                 # this can happen if stopping server in middle of request?
                 pass
 
-if __name__=="__main__":
+if __name__ == "__main__":
     httpd = StoppableHTTPServer(('', 6461), AuthHandler)
     thread.start_new_thread(httpd.serve, ())
     raw_input("Press <RETURN> to stop server\n")

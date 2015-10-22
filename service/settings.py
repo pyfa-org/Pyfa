@@ -263,4 +263,30 @@ class UpdateSettings():
     def set(self, type, value):
         self.serviceUpdateSettings[type] = value
 
+class CRESTSettings():
+    _instance = None
+
+    @classmethod
+    def getInstance(cls):
+        if cls._instance is None:
+            cls._instance = CRESTSettings()
+
+        return cls._instance
+
+    def __init__(self):
+
+        # mode
+        # 0 - Implicit authentication
+        # 1 - User-supplied client details
+        serviceCRESTDefaultSettings = {"mode": 0, "clientID": "", "clientSecret": ""}
+
+        self.serviceCRESTSettings = SettingsProvider.getInstance().getSettings("pyfaServiceCRESTSettings", serviceCRESTDefaultSettings)
+
+    def get(self, type):
+        return self.serviceCRESTSettings[type]
+
+    def set(self, type, value):
+        self.serviceCRESTSettings[type] = value
+
+
 # @todo: migrate fit settings (from fit service) here?
