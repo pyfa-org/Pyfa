@@ -1,21 +1,16 @@
-import json
-import thread
-
 import wx
-from wx.lib.pubsub import pub
 
 import service
 import gui.display as d
 from eos.types import Cargo
 from eos.db import getItem
-from service.server import *
-import config
 import time
+import json
 
 class CrestFittings(wx.Frame):
 
     def __init__(self, parent):
-        wx.Frame.__init__(self, parent, id=wx.ID_ANY, title=wx.EmptyString, pos=wx.DefaultPosition, size=wx.Size( 550,450 ), style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL)
+        wx.Frame.__init__(self, parent, id=wx.ID_ANY, title="Browse EVE Fittings", pos=wx.DefaultPosition, size=wx.Size( 550,450 ), style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL)
 
         self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
 
@@ -23,16 +18,21 @@ class CrestFittings(wx.Frame):
         mainSizer = wx.BoxSizer(wx.VERTICAL)
         sCrest = service.Crest.getInstance()
 
-        self.charChoice = wx.Choice(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, [])
-        chars = sCrest.getCrestCharacters()
-        for char in chars:
-            self.charChoice.Append(char.name, char.ID)
-
         characterSelectSizer = wx.BoxSizer( wx.HORIZONTAL )
-        self.charChoice.SetSelection(0)
 
+        if sCrest.settings.get('mode') == 0:
+            self.stLogged = wx.StaticText(self, wx.ID_ANY, "Currently logged in as %s"%sCrest.implicitCharacter.name, wx.DefaultPosition, wx.DefaultSize)
+            self.stLogged.Wrap( -1 )
 
-        characterSelectSizer.Add( self.charChoice, 1, wx.ALL, 5 )
+            characterSelectSizer.Add( self.stLogged, 0, wx.ALL, 5 )
+        else:
+            self.charChoice = wx.Choice(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, [])
+            chars = sCrest.getCrestCharacters()
+            for char in chars:
+                self.charChoice.Append(char.name, char.ID)
+            self.charChoice.SetSelection(0)
+            characterSelectSizer.Add( self.charChoice, 1, wx.ALL, 5 )
+
         self.fetchBtn = wx.Button( self, wx.ID_ANY, u"Fetch Fits", wx.DefaultPosition, wx.DefaultSize, 5 )
         characterSelectSizer.Add( self.fetchBtn, 0, wx.ALL, 5 )
         mainSizer.Add( characterSelectSizer, 0, wx.EXPAND, 5 )
@@ -59,19 +59,31 @@ class CrestFittings(wx.Frame):
         self.fetchBtn.Bind(wx.EVT_BUTTON, self.fetchFittings)
         self.importBtn.Bind(wx.EVT_BUTTON, self.importFitting)
 
+        pub.subscribe(self.ssoLogout, 'logout_success')
+
         self.SetSizer(mainSizer)
         self.Layout()
 
         self.Centre(wx.BOTH)
 
+    def ssoLogout(self, message):
+        self.Close()
+
     def getActiveCharacter(self):
+        sCrest = service.Crest.getInstance()
+
+        if sCrest.settings.get('mode') == 0:
+            return sCrest.implicitCharacter.ID
+
         selection = self.charChoice.GetCurrentSelection()
         return self.charChoice.GetClientData(selection) if selection is not None else None
 
     def fetchFittings(self, event):
         sCrest = service.Crest.getInstance()
+        waitDialog = wx.BusyInfo("Fetching fits, please wait...", parent=self)
         fittings = sCrest.getFittings(self.getActiveCharacter())
         self.fitTree.populateSkillTree(fittings)
+        del waitDialog
 
     def importFitting(self, event):
         selection = self.fitView.fitSelection
@@ -84,22 +96,29 @@ class CrestFittings(wx.Frame):
 class ExportToEve(wx.Frame):
 
     def __init__(self, parent):
-        wx.Frame.__init__(self, parent, id=wx.ID_ANY, title=wx.EmptyString, pos=wx.DefaultPosition, size=(wx.Size(500,100)), style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL)
+        wx.Frame.__init__(self, parent, id=wx.ID_ANY, title="Export fit to EVE", pos=wx.DefaultPosition, size=(wx.Size(350,100)), style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL)
 
         self.mainFrame = parent
         self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
 
         sCrest = service.Crest.getInstance()
+        mainSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.charChoice = wx.Choice(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, [])
-        chars = sCrest.getCrestCharacters()
-        for char in chars:
-            self.charChoice.Append(char.name, char.ID)
+        if sCrest.settings.get('mode') == 0:
+            self.stLogged = wx.StaticText(self, wx.ID_ANY, "Currently logged in as %s"%sCrest.implicitCharacter.name, wx.DefaultPosition, wx.DefaultSize)
+            self.stLogged.Wrap( -1 )
 
-        mainSizer = wx.BoxSizer( wx.HORIZONTAL )
-        self.charChoice.SetSelection(0)
+            mainSizer.Add( self.stLogged, 0, wx.ALL, 5 )
+        else:
+            self.charChoice = wx.Choice(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, [])
+            chars = sCrest.getCrestCharacters()
+            for char in chars:
+                self.charChoice.Append(char.name, char.ID)
+            self.charChoice.SetSelection(0)
+            mainSizer.Add( self.charChoice, 1, wx.ALL, 5 )
 
-        mainSizer.Add( self.charChoice, 1, wx.ALL, 5 )
+            self.charChoice.SetSelection(0)
+
         self.exportBtn = wx.Button( self, wx.ID_ANY, u"Export Fit", wx.DefaultPosition, wx.DefaultSize, 5 )
         mainSizer.Add( self.exportBtn, 0, wx.ALL, 5 )
 
@@ -109,6 +128,7 @@ class ExportToEve(wx.Frame):
         self.statusbar.SetFieldsCount(2)
         self.statusbar.SetStatusWidths([100, -1])
 
+        pub.subscribe(self.ssoLogout, 'logout_success')
 
         self.SetSizer(mainSizer)
         self.SetStatusBar(self.statusbar)
@@ -116,7 +136,15 @@ class ExportToEve(wx.Frame):
 
         self.Centre(wx.BOTH)
 
+    def ssoLogout(self, message):
+        self.Close()
+
     def getActiveCharacter(self):
+        sCrest = service.Crest.getInstance()
+
+        if sCrest.settings.get('mode') == 0:
+            return sCrest.implicitCharacter.ID
+
         selection = self.charChoice.GetCurrentSelection()
         return self.charChoice.GetClientData(selection) if selection is not None else None
 
@@ -177,7 +205,9 @@ class CrestCharacterInfo(wx.Dialog):
             self.pic.SetBitmap(wx.ImageFromStream(self.char.img).ConvertToBitmap())
             self.Layout()
             self.bitmapSet = True
-        self.coutdownText.SetLabel(time.strftime("%H:%M:%S", t))
+        newLabel = time.strftime("%H:%M:%S", t if t >= 0 else 0)
+        if self.coutdownText.Label != newLabel:
+            self.coutdownText.SetLabel(time.strftime("%H:%M:%S", t))
 
     def logout(self, event):
         sCrest = service.Crest.getInstance()
@@ -220,7 +250,6 @@ class FittingsTreeView(wx.Panel):
             shipID = tree.AppendItem(root, name)
             for fit in fits:
                 fitId = tree.AppendItem(shipID, fit['name'])
-                print type(fit)
                 tree.SetPyData(fitId, json.dumps(fit))
 
         tree.SortChildren(root)
@@ -237,6 +266,7 @@ class FittingsTreeView(wx.Panel):
                 list.append(cargo)
             except:
                 pass
+
         self.parent.fitView.fitSelection = selection
         self.parent.fitView.update(list)
 
@@ -246,6 +276,3 @@ class FitView(d.Display):
 
     def __init__(self, parent):
         d.Display.__init__(self, parent, style=wx.LC_SINGLE_SEL)
-        self.fitSelection = None
-        #self.Bind(wx.EVT_LEFT_DCLICK, self.removeItem)
-        #self.Bind(wx.EVT_KEY_UP, self.kbEvent)

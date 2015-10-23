@@ -54,8 +54,9 @@ class Port(object):
 
         nested_dict = lambda: collections.defaultdict(nested_dict)
         fit = nested_dict()
+        sCrest = service.Crest.getInstance()
+        eve = sCrest.eve
 
-        eve = config.pycrest_eve
         # max length is 50 characters
         name = ofit.name[:47] + '...' if len(ofit.name) > 50 else ofit.name
         fit['name'] = name

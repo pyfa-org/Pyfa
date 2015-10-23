@@ -496,15 +496,17 @@ class MainFrame(wx.Frame):
 
     def showCharacterMgmt(self, type):
         if type == 0:
-            print "login type is implicit"
             dlg=CrestCharacterInfo(self)
             dlg.Show()
 
     def ssoLogin(self, event):
         sCrest = service.Crest.getInstance()
         if sCrest.settings.get('mode') == 0:  # Implicit, go directly to login
-            uri = sCrest.startServer()
-            wx.LaunchDefaultBrowser(uri)
+            if sCrest.implicitCharacter is not None:
+                self.showCharacterMgmt(type=0)
+            else:
+                uri = sCrest.startServer()
+                wx.LaunchDefaultBrowser(uri)
         else:
             dlg=CrestCharacterInfo(self)
             dlg.Show()

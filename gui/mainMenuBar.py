@@ -25,6 +25,8 @@ import gui.graphFrame
 import gui.globalEvents as GE
 import service
 
+from wx.lib.pubsub import setupkwargs
+from wx.lib.pubsub import pub
 
 class MainMenuBar(wx.MenuBar):
     def __init__(self):
@@ -46,6 +48,8 @@ class MainMenuBar(wx.MenuBar):
         self.ssoLoginId = wx.NewId()
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+
+        self.sCrest = service.Crest.getInstance()
 
         wx.MenuBar.__init__(self)
 
@@ -109,7 +113,10 @@ class MainMenuBar(wx.MenuBar):
         # CREST Menu
         crestMenu = wx.Menu()
         self.Append(crestMenu, "&CREST")
-        crestMenu.Append(self.ssoLoginId, "Login To EVE")
+        if self.sCrest.settings.get('mode') != 0:
+            crestMenu.Append(self.ssoLoginId, "Manage Characters")
+        else:
+            crestMenu.Append(self.ssoLoginId, "Login to EVE")
         crestMenu.Append(self.eveFittingsId, "Browse EVE Fittings")
         crestMenu.Append(self.exportToEveId, "Export To EVE")
 
@@ -125,6 +132,8 @@ class MainMenuBar(wx.MenuBar):
             helpMenu.Append( self.mainFrame.widgetInspectMenuID, "Open Widgets Inspect tool", "Open Widgets Inspect tool")
 
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
+        pub.subscribe(self.ssoLogin, 'login_success')
+        pub.subscribe(self.ssoLogout, 'logout_success')
 
     def fitChanged(self, event):
         enable = event.fitID is not None
@@ -142,3 +151,11 @@ class MainMenuBar(wx.MenuBar):
         self.Enable(self.revertCharId, char.isDirty)
 
         event.Skip()
+
+    def ssoLogin(self, type):
+        if self.sCrest.settings.get('mode') == 0:
+            self.SetLabel(self.ssoLoginId, "Character Info")
+
+    def ssoLogout(self, message):
+        if self.sCrest.settings.get('mode') == 0:
+            self.SetLabel(self.ssoLoginId, "Login to EVE")

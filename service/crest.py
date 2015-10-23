@@ -5,6 +5,7 @@ import copy
 import service
 from service.server import *
 import uuid
+from gui.utils.repeatedTimer import RepeatedTimer
 
 from wx.lib.pubsub import setupkwargs
 from wx.lib.pubsub import pub
@@ -31,6 +32,8 @@ class Crest():
         self.scopes = ['characterFittingsRead', 'characterFittingsWrite']
         self.state = None
 
+        self.ssoTimer = RepeatedTimer(1, self.logout)
+
         # Base EVE connection that is copied to all characters
         self.eve = pycrest.EVE(
                         client_id=self.settings.get('clientID'),
@@ -55,6 +58,11 @@ class Crest():
         '''
         Get character, and modify to include the eve connection
         '''
+        if self.settings.get('mode') == 0:
+            if self.implicitCharacter.ID != charID:
+                raise ValueError("CharacterID does not match currently logged in character.")
+            return self.implicitCharacter
+
         char = eos.db.getCrestCharacter(charID)
         if not hasattr(char, "eve"):
             char.eve = copy.copy(self.eve)
@@ -78,6 +86,8 @@ class Crest():
 
     def logout(self):
         self.implicitCharacter = None
+        self.ssoTimer.stop()
+        wx.CallAfter(pub.sendMessage, 'logout_success', message=None)
 
     def startServer(self):
         thread.start_new_thread(self.httpd.serve, ())
@@ -89,6 +99,7 @@ class Crest():
             return
 
         if message['state'][0] != self.state:
+            print "state mismatch"
             return
 
         print "handling login by making characters and stuff"
@@ -100,13 +111,17 @@ class Crest():
                 access_token=message['access_token'][0],
                 expires_in=int(message['expires_in'][0])
             )
+            self.ssoTimer.interval = int(message['expires_in'][0])
+            self.ssoTimer.start()
+
             eve()
             info = eve.whoami()
             self.implicitCharacter = CrestUser(info['CharacterID'], info['CharacterName'])
             self.implicitCharacter.eve = eve
             self.implicitCharacter.fetchImage()
-            wx.CallAfter(pub.sendMessage, 'login_success', type=0)
+            print self.implicitCharacter.eve, self.implicitCharacter.eve.refresh_token
 
+            wx.CallAfter(pub.sendMessage, 'login_success', type=0)
         elif 'code' in message:
             print "handle authentication code"
 

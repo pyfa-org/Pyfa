@@ -271,7 +271,7 @@ class AuthedConnection(EVE):
         return self  # for backwards compatibility
 
     def get(self, resource, params=None):
-        if int(time.time()) >= self.expires:
+        if self.refresh_token and int(time.time()) >= self.expires:
             self.refresh()
         return super(self.__class__, self).get(resource, params)
 
