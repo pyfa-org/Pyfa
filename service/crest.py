@@ -9,7 +9,6 @@ import uuid
 from wx.lib.pubsub import setupkwargs
 from wx.lib.pubsub import pub
 
-
 # TODO:
 #     With implicit grant, make sure we know when it expires and delete/inactive char
 class Crest():
@@ -102,6 +101,7 @@ class Crest():
             info = eve.whoami()
             self.implicitCharacter = CrestUser(info['CharacterID'], info['CharacterName'])
             self.implicitCharacter.eve = eve
+            self.implicitCharacter.fetchImage()
             wx.CallAfter(pub.sendMessage, 'login_success', type=0)
 
         elif 'code' in message:

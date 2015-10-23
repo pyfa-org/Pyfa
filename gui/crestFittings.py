@@ -10,7 +10,7 @@ from eos.types import Cargo
 from eos.db import getItem
 from service.server import *
 import config
-
+import time
 
 class CrestFittings(wx.Frame):
 
@@ -136,39 +136,48 @@ class ExportToEve(wx.Frame):
         except ValueError:
             self.statusbar.SetStatusText("", 1)
 
-class CrestLogin(wx.Frame):
+class CrestCharacterInfo(wx.Dialog):
 
     def __init__(self, parent):
-        wx.Frame.__init__(self, parent, id=wx.ID_ANY, title="Login", pos=wx.DefaultPosition, size=wx.Size( -1,-1 ), style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL)
-
-        self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
-
+        wx.Dialog.__init__(self, parent, id=wx.ID_ANY, title="Character Info", pos=wx.DefaultPosition, size = wx.Size( 200,240 ))
         self.mainFrame = parent
         sCrest = service.Crest.getInstance()
-        mainSizer = wx.BoxSizer( wx.HORIZONTAL )
-        self.loginBtn = wx.Button( self, wx.ID_ANY, u"Login via SSO", wx.DefaultPosition, wx.DefaultSize, 5 )
-        mainSizer.Add( self.loginBtn, 0, wx.ALL, 5 )
+        self.char = sCrest.implicitCharacter
+        self.bitmapSet = False
 
-        self.loginBtn.Bind(wx.EVT_BUTTON, self.startServer)
+        mainSizer = wx.BoxSizer( wx.VERTICAL )
 
-        self.SetSizer(mainSizer)
-        self.Layout()
+        self.headingText = wx.StaticText(self, wx.ID_ANY, "Currently logged in", wx.DefaultPosition, wx.DefaultSize, wx.ALIGN_CENTRE )
+        self.headingText.Wrap( -1 )
+        self.headingText.SetFont( wx.Font( 12, 74, 90, 92, False) )
+        mainSizer.Add( self.headingText, 0, wx.EXPAND|wx.ALL, 5 )
 
-        pub.subscribe(self.sso_login, 'sso_login')
-        self.Centre(wx.BOTH)
+        self.pic = wx.StaticBitmap(self, -1, wx.EmptyBitmap(128, 128))
+        mainSizer.Add(self.pic, 0, wx.EXPAND, 5 )
 
-    def sso_login(self, message):
-        self.httpd.stop()
-        con = config.pycrest_eve.authorize(message)
-        sCrest = service.Crest.getInstance()
-        sCrest.newChar(con)
-        self.Close()
+        self.characterText = wx.StaticText(self, wx.ID_ANY, self.char.name, wx.DefaultPosition, wx.DefaultSize, wx.ALIGN_CENTRE )
+        self.characterText.Wrap( -1 )
+        self.characterText.SetFont( wx.Font( 11, 74, 90, 92, False) )
+        mainSizer.Add( self.characterText, 0, wx.EXPAND|wx.ALL, 5 )
 
-    def startServer(self, event):
-        self.httpd = StoppableHTTPServer(('', 6461), AuthHandler)
-        thread.start_new_thread(self.httpd.serve, ())
-        uri = config.pycrest_eve.auth_uri(scopes=['characterFittingsRead', 'characterFittingsWrite'])
-        wx.LaunchDefaultBrowser(uri)
+        self.coutdownText = wx.StaticText( self, wx.ID_ANY, "", wx.DefaultPosition, wx.DefaultSize, wx.ALIGN_CENTRE)
+        self.coutdownText.Wrap( -1 )
+        mainSizer.Add( self.coutdownText, 0, wx.EXPAND, 5 )
+
+        self.SetSizer( mainSizer )
+        self.Centre( wx.BOTH )
+
+        self.timer = wx.Timer(self)
+        self.Bind(wx.EVT_TIMER, self.update, self.timer)
+        self.timer.Start(1)
+
+    def update(self, event):
+        t = time.gmtime(self.char.eve.expires-time.time())
+        if not self.bitmapSet and hasattr(self.char, 'img'):
+            self.pic.SetBitmap(wx.ImageFromStream(self.char.img).ConvertToBitmap())
+            self.Layout()
+            self.bitmapSet = True
+        self.coutdownText.SetLabel(time.strftime("%H:%M:%S", t))
 
 
 class FittingsTreeView(wx.Panel):

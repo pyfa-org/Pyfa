@@ -44,7 +44,7 @@ from gui.multiSwitch import MultiSwitch
 from gui.statsPane import StatsPane
 from gui.shipBrowser import ShipBrowser, FitSelected, ImportSelected, Stage3Selected
 from gui.characterEditor import CharacterEditor, SaveCharacterAs
-from gui.crestFittings import CrestFittings, ExportToEve, CrestLogin
+from gui.crestFittings import CrestFittings, ExportToEve, CrestCharacterInfo
 from gui.characterSelection import CharacterSelection
 from gui.patternEditor import DmgPatternEditorDlg
 from gui.resistsEditor import ResistsEditorDlg
@@ -56,6 +56,9 @@ from gui.fleetBrowser import FleetBrowser
 from gui.updateDialog import UpdateDialog
 from gui.builtinViews import *
 from time import gmtime, strftime
+
+from wx.lib.pubsub import setupkwargs
+from wx.lib.pubsub import pub
 
 #dummy panel(no paint no erasebk)
 class PFPanel(wx.Panel):
@@ -191,6 +194,8 @@ class MainFrame(wx.Frame):
         #Check for updates
         self.sUpdate = service.Update.getInstance()
         self.sUpdate.CheckUpdate(self.ShowUpdateBox)
+
+        pub.subscribe(self.showCharacterMgmt, 'login_success')
 
     def ShowUpdateBox(self, release):
         dlg = UpdateDialog(self, release)
@@ -489,13 +494,19 @@ class MainFrame(wx.Frame):
         dlg=CrestFittings(self)
         dlg.Show()
 
+    def showCharacterMgmt(self, type):
+        if type == 0:
+            print "login type is implicit"
+            dlg=CrestCharacterInfo(self)
+            dlg.Show()
+
     def ssoLogin(self, event):
         sCrest = service.Crest.getInstance()
         if sCrest.settings.get('mode') == 0:  # Implicit, go directly to login
             uri = sCrest.startServer()
             wx.LaunchDefaultBrowser(uri)
         else:
-            dlg=CrestLogin(self)
+            dlg=CrestCharacterInfo(self)
             dlg.Show()
 
     def exportToEve(self, event):
