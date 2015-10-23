@@ -258,9 +258,10 @@ class AuthedConnection(EVE):
         return self._data
 
     def whoami(self):
-        if 'whoami' not in self._cache:
-            self._cache['whoami'] = self.get("%s/verify" % self._oauth_endpoint)
-        return self._cache['whoami']
+        #if 'whoami' not in self._cache:
+        #    print "Setting this whoami cache"
+        #    self._cache['whoami'] = self.get("%s/verify" % self._oauth_endpoint)
+        return self.get("%s/verify" % self._oauth_endpoint)
 
     def refresh(self):
         res = self._authorize(params={"grant_type": "refresh_token", "refresh_token": self.refresh_token})

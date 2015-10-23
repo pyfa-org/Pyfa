@@ -147,22 +147,22 @@ class CrestCharacterInfo(wx.Dialog):
 
         mainSizer = wx.BoxSizer( wx.VERTICAL )
 
-        self.headingText = wx.StaticText(self, wx.ID_ANY, "Currently logged in", wx.DefaultPosition, wx.DefaultSize, wx.ALIGN_CENTRE )
-        self.headingText.Wrap( -1 )
-        self.headingText.SetFont( wx.Font( 12, 74, 90, 92, False) )
-        mainSizer.Add( self.headingText, 0, wx.EXPAND|wx.ALL, 5 )
-
-        self.pic = wx.StaticBitmap(self, -1, wx.EmptyBitmap(128, 128))
-        mainSizer.Add(self.pic, 0, wx.EXPAND, 5 )
-
-        self.characterText = wx.StaticText(self, wx.ID_ANY, self.char.name, wx.DefaultPosition, wx.DefaultSize, wx.ALIGN_CENTRE )
+        self.characterText = wx.StaticText(self, wx.ID_ANY, self.char.name, wx.DefaultPosition, wx.DefaultSize)
         self.characterText.Wrap( -1 )
         self.characterText.SetFont( wx.Font( 11, 74, 90, 92, False) )
-        mainSizer.Add( self.characterText, 0, wx.EXPAND|wx.ALL, 5 )
+        mainSizer.Add( self.characterText, 0, wx.ALIGN_CENTRE | wx.ALL, 5 )
 
-        self.coutdownText = wx.StaticText( self, wx.ID_ANY, "", wx.DefaultPosition, wx.DefaultSize, wx.ALIGN_CENTRE)
+        self.pic = wx.StaticBitmap(self, -1, wx.EmptyBitmap(128, 128))
+        mainSizer.Add(self.pic, 0, wx.EXPAND|wx.ALIGN_CENTER, 5 )
+
+        self.coutdownText = wx.StaticText( self, wx.ID_ANY, "", wx.DefaultPosition, wx.DefaultSize)
         self.coutdownText.Wrap( -1 )
-        mainSizer.Add( self.coutdownText, 0, wx.EXPAND, 5 )
+        mainSizer.Add( self.coutdownText, 0, wx.ALIGN_CENTER, 5 )
+
+        self.logoutBtn = wx.Button( self, wx.ID_ANY, u"Logout", wx.DefaultPosition, wx.DefaultSize, 5 )
+        mainSizer.Add( self.logoutBtn, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
+
+        self.logoutBtn.Bind(wx.EVT_BUTTON, self.logout)
 
         self.SetSizer( mainSizer )
         self.Centre( wx.BOTH )
@@ -179,6 +179,10 @@ class CrestCharacterInfo(wx.Dialog):
             self.bitmapSet = True
         self.coutdownText.SetLabel(time.strftime("%H:%M:%S", t))
 
+    def logout(self, event):
+        sCrest = service.Crest.getInstance()
+        sCrest.logout()
+        self.Close()
 
 class FittingsTreeView(wx.Panel):
     def __init__(self, parent):

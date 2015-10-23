@@ -76,6 +76,9 @@ class Crest():
         char = CrestUser(info['CharacterName'], info['CharacterID'], connection.refresh_token)
         eos.db.save(char)
 
+    def logout(self):
+        self.implicitCharacter = None
+
     def startServer(self):
         thread.start_new_thread(self.httpd.serve, ())
         self.state = str(uuid.uuid4())
