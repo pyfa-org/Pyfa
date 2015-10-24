@@ -1,6 +1,5 @@
 import os
 import sys
-import pycrest
 
 # TODO: move all logging back to pyfa.py main loop
 # We moved it here just to avoid rebuilding windows skeleton for now (any change to pyfa.py needs it)
