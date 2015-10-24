@@ -25,6 +25,8 @@ expansionName = "Vanguard"
 expansionVersion = "1.0"
 evemonMinVersion = "4081"
 
+clientID = 'af87365240d644f7950af563b8418bad'
+
 pyfaPath = None
 savePath = None
 saveDB = None

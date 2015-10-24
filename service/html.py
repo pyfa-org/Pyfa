@@ -6,8 +6,6 @@ HTML = '''
 <html>
 <body>
 Done. Please close this window.
-
-(will put more interesting messages here later)
 <script type="text/javascript">
 function extractFromHash(name, hash) {
     var match = hash.match(new RegExp(name + "=([^&]+)"));

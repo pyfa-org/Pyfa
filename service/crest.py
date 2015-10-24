@@ -5,13 +5,12 @@ import copy
 import service
 from service.server import *
 import uuid
+import config
 from gui.utils.repeatedTimer import RepeatedTimer
 
 from wx.lib.pubsub import setupkwargs
 from wx.lib.pubsub import pub
 
-# TODO:
-#     With implicit grant, make sure we know when it expires and delete/inactive char
 class Crest():
 
     # @todo: move this to settings
@@ -36,13 +35,17 @@ class Crest():
 
         # Base EVE connection that is copied to all characters
         self.eve = pycrest.EVE(
-                        client_id=self.settings.get('clientID'),
+                        client_id=self.settings.get('clientID') if self.settings.get('mode') == 1 else config.clientID,
                         api_key=self.settings.get('clientSecret') if self.settings.get('mode') == 1 else None,
                         redirect_uri=self.clientCallback,
                         testing=self.clientTest)
 
         self.implicitCharacter = None
         pub.subscribe(self.handleLogin, 'sso_login')
+
+    def delCrestCharacter(self, charID):
+        char = eos.db.getCrestCharacter(charID)
+        eos.db.remove(char)
 
     def getCrestCharacters(self):
         chars = eos.db.getCrestCharacters()
@@ -52,6 +55,9 @@ class Crest():
                 # Give EVE instance refresh info. This allows us to set it
                 # without actually making the request to authorize at this time.
                 char.eve.temptoken_authorize(refresh_token=char.refresh_token)
+
+        wx.CallAfter(pub.sendMessage, 'crest_delete', message=None)
+
         return chars
 
     def getCrestCharacter(self, charID):
@@ -64,7 +70,7 @@ class Crest():
             return self.implicitCharacter
 
         char = eos.db.getCrestCharacter(charID)
-        if not hasattr(char, "eve"):
+        if char and not hasattr(char, "eve"):
             char.eve = copy.copy(self.eve)
             char.eve.temptoken_authorize(refresh_token=char.refresh_token)
         return char
@@ -77,12 +83,6 @@ class Crest():
         char = self.getCrestCharacter(charID)
         res = char.eve._session.post('https://api-sisi.testeveonline.com/characters/%d/fittings/'%char.ID, data=json)
         return res
-
-    def newChar(self, connection):
-        connection()
-        info = connection.whoami()
-        char = CrestUser(info['CharacterName'], info['CharacterID'], connection.refresh_token)
-        eos.db.save(char)
 
     def logout(self):
         self.implicitCharacter = None
@@ -119,13 +119,24 @@ class Crest():
             self.implicitCharacter = CrestUser(info['CharacterID'], info['CharacterName'])
             self.implicitCharacter.eve = eve
             self.implicitCharacter.fetchImage()
-            print self.implicitCharacter.eve, self.implicitCharacter.eve.refresh_token
 
             wx.CallAfter(pub.sendMessage, 'login_success', type=0)
         elif 'code' in message:
-            print "handle authentication code"
+            eve = copy.copy(self.eve)
+            eve.authorize(message['code'][0])
+            eve()
+            info = eve.whoami()
 
-            #wx.CallAfter(pub.sendMessage, 'login_success', type=1)
+            # check if we have character already. If so, simply replace refresh_token
+            char = self.getCrestCharacter(int(info['CharacterID']))
+            if char:
+                char.refresh_token = eve.refresh_token
+            else:
+                char = CrestUser(info['CharacterID'], info['CharacterName'], eve.refresh_token)
+                char.eve = eve
+            eos.db.save(char)
+
+            wx.CallAfter(pub.sendMessage, 'login_success', type=1)
 
 
 

@@ -44,7 +44,7 @@ from gui.multiSwitch import MultiSwitch
 from gui.statsPane import StatsPane
 from gui.shipBrowser import ShipBrowser, FitSelected, ImportSelected, Stage3Selected
 from gui.characterEditor import CharacterEditor, SaveCharacterAs
-from gui.crestFittings import CrestFittings, ExportToEve, CrestCharacterInfo
+from gui.crestFittings import CrestFittings, ExportToEve, CrestCharacterInfo, CrestMgmt
 from gui.characterSelection import CharacterSelection
 from gui.patternEditor import DmgPatternEditorDlg
 from gui.resistsEditor import ResistsEditorDlg
@@ -508,7 +508,7 @@ class MainFrame(wx.Frame):
                 uri = sCrest.startServer()
                 wx.LaunchDefaultBrowser(uri)
         else:
-            dlg=CrestCharacterInfo(self)
+            dlg=CrestMgmt(self)
             dlg.Show()
 
     def exportToEve(self, event):

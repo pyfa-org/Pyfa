@@ -1,11 +1,14 @@
 import wx
+import json
+
+from wx.lib.pubsub import setupkwargs
+from wx.lib.pubsub import pub
 
 import service
 import gui.display as d
 from eos.types import Cargo
 from eos.db import getItem
 import time
-import json
 
 class CrestFittings(wx.Frame):
 
@@ -27,11 +30,8 @@ class CrestFittings(wx.Frame):
             characterSelectSizer.Add( self.stLogged, 0, wx.ALL, 5 )
         else:
             self.charChoice = wx.Choice(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, [])
-            chars = sCrest.getCrestCharacters()
-            for char in chars:
-                self.charChoice.Append(char.name, char.ID)
-            self.charChoice.SetSelection(0)
             characterSelectSizer.Add( self.charChoice, 1, wx.ALL, 5 )
+            self.updateCharList()
 
         self.fetchBtn = wx.Button( self, wx.ID_ANY, u"Fetch Fits", wx.DefaultPosition, wx.DefaultSize, 5 )
         characterSelectSizer.Add( self.fetchBtn, 0, wx.ALL, 5 )
@@ -66,6 +66,18 @@ class CrestFittings(wx.Frame):
 
         self.Centre(wx.BOTH)
 
+    def updateCharList(self):
+        sCrest = service.Crest.getInstance()
+        chars = sCrest.getCrestCharacters()
+
+        if len(chars) == 0:
+            self.Close()
+
+        for char in chars:
+            self.charChoice.Append(char.name, char.ID)
+
+        self.charChoice.SetSelection(0)
+
     def ssoLogout(self, message):
         self.Close()
 
@@ -92,7 +104,6 @@ class CrestFittings(wx.Frame):
         fits = sFit.importFitFromBuffer(data)
         self.mainFrame._openAfterImport(fits)
 
-
 class ExportToEve(wx.Frame):
 
     def __init__(self, parent):
@@ -111,12 +122,8 @@ class ExportToEve(wx.Frame):
             mainSizer.Add( self.stLogged, 0, wx.ALL, 5 )
         else:
             self.charChoice = wx.Choice(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, [])
-            chars = sCrest.getCrestCharacters()
-            for char in chars:
-                self.charChoice.Append(char.name, char.ID)
-            self.charChoice.SetSelection(0)
             mainSizer.Add( self.charChoice, 1, wx.ALL, 5 )
-
+            self.updateCharList()
             self.charChoice.SetSelection(0)
 
         self.exportBtn = wx.Button( self, wx.ID_ANY, u"Export Fit", wx.DefaultPosition, wx.DefaultSize, 5 )
@@ -135,6 +142,18 @@ class ExportToEve(wx.Frame):
         self.Layout()
 
         self.Centre(wx.BOTH)
+
+    def updateCharList(self):
+        sCrest = service.Crest.getInstance()
+        chars = sCrest.getCrestCharacters()
+
+        if len(chars) == 0:
+            self.Close()
+
+        for char in chars:
+            self.charChoice.Append(char.name, char.ID)
+
+        self.charChoice.SetSelection(0)
 
     def ssoLogout(self, message):
         self.Close()
@@ -213,6 +232,71 @@ class CrestCharacterInfo(wx.Dialog):
         sCrest = service.Crest.getInstance()
         sCrest.logout()
         self.Close()
+
+class CrestMgmt(wx.Dialog):
+
+    def __init__( self, parent ):
+        wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = "CREST Character Management", pos = wx.DefaultPosition, size = wx.Size( 550,250 ), style = wx.DEFAULT_DIALOG_STYLE )
+
+        mainSizer = wx.BoxSizer( wx.HORIZONTAL )
+
+        self.lcCharacters = wx.ListCtrl( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LC_REPORT)
+
+        self.lcCharacters.InsertColumn(0, heading='Character')
+        self.lcCharacters.InsertColumn(1, heading='Refresh Token')
+
+        self.popCharList()
+
+        mainSizer.Add( self.lcCharacters, 1, wx.ALL|wx.EXPAND, 5 )
+
+        btnSizer = wx.BoxSizer( wx.VERTICAL )
+
+        self.addBtn = wx.Button( self, wx.ID_ANY, u"Add Character", wx.DefaultPosition, wx.DefaultSize, 0 )
+        btnSizer.Add( self.addBtn, 0, wx.ALL | wx.EXPAND, 5 )
+
+        self.deleteBtn = wx.Button( self, wx.ID_ANY, u"Revoke Character", wx.DefaultPosition, wx.DefaultSize, 0 )
+        btnSizer.Add( self.deleteBtn, 0, wx.ALL | wx.EXPAND, 5 )
+
+        mainSizer.Add( btnSizer, 0, wx.EXPAND, 5 )
+
+        self.addBtn.Bind(wx.EVT_BUTTON, self.addChar)
+        self.deleteBtn.Bind(wx.EVT_BUTTON, self.delChar)
+
+        pub.subscribe(self.ssoLogin, 'login_success')
+
+        self.SetSizer( mainSizer )
+        self.Layout()
+
+        self.Centre( wx.BOTH )
+
+    def ssoLogin(self, type):
+        self.popCharList()
+
+    def popCharList(self):
+        sCrest = service.Crest.getInstance()
+        chars = sCrest.getCrestCharacters()
+
+        self.lcCharacters.DeleteAllItems()
+
+        for index, char in enumerate(chars):
+            self.lcCharacters.InsertStringItem(index, char.name)
+            self.lcCharacters.SetStringItem(index, 1, char.refresh_token)
+            self.lcCharacters.SetItemData(index, char.ID)
+
+        self.lcCharacters.SetColumnWidth(0, wx.LIST_AUTOSIZE)
+        self.lcCharacters.SetColumnWidth(1, wx.LIST_AUTOSIZE)
+
+    def addChar(self, event):
+        sCrest = service.Crest.getInstance()
+        uri = sCrest.startServer()
+        wx.LaunchDefaultBrowser(uri)
+
+    def delChar(self, event):
+        item = self.lcCharacters.GetFirstSelected()
+        charID = self.lcCharacters.GetItemData(item)
+        sCrest = service.Crest.getInstance()
+        sCrest.delCrestCharacter(charID)
+        self.popCharList()
 
 class FittingsTreeView(wx.Panel):
     def __init__(self, parent):
