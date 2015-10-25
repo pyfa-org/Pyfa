@@ -1,12 +1,14 @@
 import os
 import base64
-import requests
 import time
 import zlib
-from pycrest import version
-from pycrest.compat import bytes_, text_
-from pycrest.errors import APIException
-from pycrest.weak_ciphers import WeakCiphersAdapter
+
+import requests
+
+from . import version
+from compat import bytes_, text_
+from errors import APIException
+from weak_ciphers import WeakCiphersAdapter
 
 try:
     from urllib.parse import urlparse, urlunparse, parse_qsl

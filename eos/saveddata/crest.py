@@ -17,14 +17,12 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 #===============================================================================
 
-from sqlalchemy.orm import reconstructor
-import pycrest
-import config
-from pycrest import EVE
-from tomorrow import threads
-
 import urllib
 from cStringIO import StringIO
+
+from sqlalchemy.orm import reconstructor
+from tomorrow import threads
+
 
 class Crest(object):
 

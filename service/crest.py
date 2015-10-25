@@ -1,15 +1,16 @@
+import copy
+import uuid
+
+from wx.lib.pubsub import pub
+
 import eos.db
 from eos.types import Crest as CrestUser
-import pycrest
-import copy
+from service import pycrest
 import service
 from service.server import *
-import uuid
 import config
 from gui.utils.repeatedTimer import RepeatedTimer
 
-from wx.lib.pubsub import setupkwargs
-from wx.lib.pubsub import pub
 
 class Crest():
 
