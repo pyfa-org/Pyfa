@@ -1,4 +1,4 @@
-import SimpleHTTPServer, BaseHTTPServer
+import BaseHTTPServer
 import urlparse
 import socket
 import thread
@@ -7,11 +7,35 @@ import wx
 from wx.lib.pubsub import setupkwargs
 from wx.lib.pubsub import pub
 
-from html import HTML
-
 import logging
 
 logger = logging.getLogger(__name__)
+
+HTML = '''
+<!DOCTYPE html>
+<html>
+<body>
+Done. Please close this window.
+<script type="text/javascript">
+function extractFromHash(name, hash) {
+    var match = hash.match(new RegExp(name + "=([^&]+)"));
+    return !!match && match[1];
+}
+
+var hash = window.location.hash;
+var token = extractFromHash("access_token", hash);
+
+if (token){
+    var redirect = window.location.origin.concat('/?', window.location.hash.substr(1));
+    window.location = redirect;
+}
+else {
+    console.log("do nothing");
+}
+</script>
+</body>
+</html>
+'''
 
 # https://github.com/fuzzysteve/CREST-Market-Downloader/
 class AuthHandler(BaseHTTPServer.BaseHTTPRequestHandler):
