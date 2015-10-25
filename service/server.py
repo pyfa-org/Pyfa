@@ -9,6 +9,10 @@ from wx.lib.pubsub import pub
 
 from html import HTML
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 # https://github.com/fuzzysteve/CREST-Market-Downloader/
 class AuthHandler(BaseHTTPServer.BaseHTTPRequestHandler):
     def do_GET(self):

@@ -94,6 +94,9 @@ def defPaths():
 
     __createDirs(savePath)
 
+    if isFrozen():
+        os.environ["REQUESTS_CA_BUNDLE"] = os.path.join(pyfaPath, "cacert.pem")
+
     format = '%(asctime)s %(name)-24s %(levelname)-8s %(message)s'
     logging.basicConfig(format=format, level=logLevel)
     handler = logging.handlers.RotatingFileHandler(os.path.join(savePath, "log.txt"), maxBytes=1000000, backupCount=3)

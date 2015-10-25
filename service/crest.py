@@ -10,7 +10,9 @@ import service
 from service.server import *
 import config
 from gui.utils.repeatedTimer import RepeatedTimer
+import logging
 
+logger = logging.getLogger(__name__)
 
 class Crest():
 
@@ -29,6 +31,7 @@ class Crest():
     def __init__(self):
         self.settings = service.settings.CRESTSettings.getInstance()
         self.httpd = StoppableHTTPServer(('', 6461), AuthHandler)
+        logger.debug(self.httpd)
         self.scopes = ['characterFittingsRead', 'characterFittingsWrite']
         self.state = None
 
@@ -96,15 +99,15 @@ class Crest():
         return self.eve.auth_uri(scopes=self.scopes, state=self.state)
 
     def handleLogin(self, message):
+        self.httpd.stop()
         if not message:
             return
 
         if message['state'][0] != self.state:
-            print "state mismatch"
+            logger.warn("OAUTH state mismatch")
             return
 
-        print "handling login by making characters and stuff"
-        print message
+        logger.debug("Handling CREST login with: %s"%message)
 
         if 'access_token' in message:  # implicit
             eve = copy.copy(self.eve)
@@ -117,6 +120,9 @@ class Crest():
 
             eve()
             info = eve.whoami()
+
+            logger.debug("Got character info: %s" % info)
+
             self.implicitCharacter = CrestUser(info['CharacterID'], info['CharacterName'])
             self.implicitCharacter.eve = eve
             self.implicitCharacter.fetchImage()
@@ -127,6 +133,8 @@ class Crest():
             eve.authorize(message['code'][0])
             eve()
             info = eve.whoami()
+
+            logger.debug("Got character info: %s" % info)
 
             # check if we have character already. If so, simply replace refresh_token
             char = self.getCrestCharacter(int(info['CharacterID']))
