@@ -21,7 +21,7 @@ import urllib
 from cStringIO import StringIO
 
 from sqlalchemy.orm import reconstructor
-from eos.tomorrow import threads
+from tomorrow import threads
 
 
 class Crest(object):
