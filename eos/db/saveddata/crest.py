@@ -21,11 +21,11 @@ from sqlalchemy import Table, Column, Integer, String, Boolean
 from sqlalchemy.orm import mapper
 
 from eos.db import saveddata_meta
-from eos.types import Crest
+from eos.types import CrestChar
 
 crest_table = Table("crest", saveddata_meta,
                          Column("ID", Integer, primary_key = True),
                          Column("name", String, nullable = False, unique = True),
                          Column("refresh_token", String, nullable = False))
 
-mapper(Crest, crest_table)
+mapper(CrestChar, crest_table)

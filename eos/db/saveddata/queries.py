@@ -19,7 +19,7 @@
 
 from eos.db.util import processEager, processWhere
 from eos.db import saveddata_session, sd_lock
-from eos.types import User, Character, Fit, Price, DamagePattern, Fleet, MiscData, Wing, Squad, TargetResists, Crest
+from eos.types import User, Character, Fit, Price, DamagePattern, Fleet, MiscData, Wing, Squad, TargetResists, CrestChar
 from eos.db.saveddata.fleet import squadmembers_table
 from eos.db.saveddata.fit import projectedFits_table
 from sqlalchemy.sql import and_
@@ -419,23 +419,23 @@ def getProjectedFits(fitID):
 def getCrestCharacters(eager=None):
     eager = processEager(eager)
     with sd_lock:
-        characters = saveddata_session.query(Crest).options(*eager).all()
+        characters = saveddata_session.query(CrestChar).options(*eager).all()
     return characters
 
-@cachedQuery(Crest, 1, "lookfor")
+@cachedQuery(CrestChar, 1, "lookfor")
 def getCrestCharacter(lookfor, eager=None):
     if isinstance(lookfor, int):
         if eager is None:
             with sd_lock:
-                character = saveddata_session.query(Crest).get(lookfor)
+                character = saveddata_session.query(CrestChar).get(lookfor)
         else:
             eager = processEager(eager)
             with sd_lock:
-                character = saveddata_session.query(Crest).options(*eager).filter(Crest.ID == lookfor).first()
+                character = saveddata_session.query(CrestChar).options(*eager).filter(CrestChar.ID == lookfor).first()
     elif isinstance(lookfor, basestring):
         eager = processEager(eager)
         with sd_lock:
-            character = saveddata_session.query(Crest).options(*eager).filter(Crest.name == lookfor).first()
+            character = saveddata_session.query(CrestChar).options(*eager).filter(CrestChar.name == lookfor).first()
     else:
         raise TypeError("Need integer or string as argument")
     return character

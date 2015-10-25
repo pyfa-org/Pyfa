@@ -24,7 +24,7 @@ from sqlalchemy.orm import reconstructor
 #from tomorrow import threads
 
 
-class Crest(object):
+class CrestChar(object):
 
     def __init__(self, id, name, refresh_token=None):
         self.ID = id

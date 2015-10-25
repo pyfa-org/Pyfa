@@ -4,7 +4,7 @@ import uuid
 from wx.lib.pubsub import pub
 
 import eos.db
-from eos.types import Crest as CrestUser
+from eos.types import CrestChar
 from service import pycrest
 import service
 from service.server import *
@@ -46,23 +46,19 @@ class Crest():
                         testing=self.clientTest)
 
         self.implicitCharacter = None
+
+        # The database cache does not seem to be working for some reason. Use
+        # this as a temporary measure
+        self.charCache = {}
         pub.subscribe(self.handleLogin, 'sso_login')
 
     def delCrestCharacter(self, charID):
         char = eos.db.getCrestCharacter(charID)
         eos.db.remove(char)
+        wx.CallAfter(pub.sendMessage, 'crest_delete', message=None)
 
     def getCrestCharacters(self):
         chars = eos.db.getCrestCharacters()
-        for char in chars:
-            if not hasattr(char, "eve"):
-                char.eve = copy.copy(self.eve)
-                # Give EVE instance refresh info. This allows us to set it
-                # without actually making the request to authorize at this time.
-                char.eve.temptoken_authorize(refresh_token=char.refresh_token)
-
-        wx.CallAfter(pub.sendMessage, 'crest_delete', message=None)
-
         return chars
 
     def getCrestCharacter(self, charID):
@@ -74,10 +70,14 @@ class Crest():
                 raise ValueError("CharacterID does not match currently logged in character.")
             return self.implicitCharacter
 
+        if charID in self.charCache:
+            return self.charCache.get(charID)
+
         char = eos.db.getCrestCharacter(charID)
         if char and not hasattr(char, "eve"):
             char.eve = copy.copy(self.eve)
             char.eve.temptoken_authorize(refresh_token=char.refresh_token)
+        self.charCache[charID] = char
         return char
 
     def getFittings(self, charID):
@@ -134,7 +134,7 @@ class Crest():
 
             logger.debug("Got character info: %s" % info)
 
-            self.implicitCharacter = CrestUser(info['CharacterID'], info['CharacterName'])
+            self.implicitCharacter = CrestChar(info['CharacterID'], info['CharacterName'])
             self.implicitCharacter.eve = eve
             #self.implicitCharacter.fetchImage()
 
@@ -152,8 +152,9 @@ class Crest():
             if char:
                 char.refresh_token = eve.refresh_token
             else:
-                char = CrestUser(info['CharacterID'], info['CharacterName'], eve.refresh_token)
+                char = CrestChar(info['CharacterID'], info['CharacterName'], eve.refresh_token)
                 char.eve = eve
+            self.charCache[int(info['CharacterID'])] = char
             eos.db.save(char)
 
             wx.CallAfter(pub.sendMessage, 'login_success', type=1)

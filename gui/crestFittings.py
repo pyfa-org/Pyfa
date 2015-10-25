@@ -9,6 +9,7 @@ import gui.display as d
 from eos.types import Cargo
 from eos.db import getItem
 import time
+import webbrowser
 
 class CrestFittings(wx.Frame):
 
@@ -292,7 +293,7 @@ class CrestMgmt(wx.Dialog):
     def addChar(self, event):
         sCrest = service.Crest.getInstance()
         uri = sCrest.startServer()
-        wx.LaunchDefaultBrowser(uri)
+        webbrowser.open(uri)
 
     def delChar(self, event):
         item = self.lcCharacters.GetFirstSelected()
