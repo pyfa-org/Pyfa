@@ -216,7 +216,7 @@ class EVE(APIConnection):
         return "%s/authorize?response_type=%s&redirect_uri=%s&client_id=%s%s%s" % (
             self._oauth_endpoint,
             grant_type,
-            quote(self.redirect_uri, safe=''),
+            self.redirect_uri,
             self.client_id,
             "&scope=%s" % ' '.join(s) if scopes else '',
             "&state=%s" % state if state else ''

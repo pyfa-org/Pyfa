@@ -30,6 +30,7 @@ from wx.lib.wordwrap import wordwrap
 import service
 import config
 import threading
+import webbrowser
 
 import gui.aboutData
 import gui.chromeTabs
@@ -378,10 +379,10 @@ class MainFrame(wx.Frame):
         dlg.ShowModal()
 
     def goWiki(self, event):
-        wx.LaunchDefaultBrowser('https://github.com/DarkFenX/Pyfa/wiki')
+        webbrowser.open('https://github.com/DarkFenX/Pyfa/wiki')
 
     def goForums(self, event):
-        wx.LaunchDefaultBrowser('https://forums.eveonline.com/default.aspx?g=posts&t=247609')
+        webbrowser.open('https://forums.eveonline.com/default.aspx?g=posts&t=247609')
 
     def registerMenu(self):
         menuBar = self.GetMenuBar()
@@ -522,7 +523,7 @@ class MainFrame(wx.Frame):
                 sCrest.logout()
             else:
                 uri = sCrest.startServer()
-                wx.LaunchDefaultBrowser(uri)
+                webbrowser.open(uri)
         else:
             dlg=CrestMgmt(self)
             dlg.Show()
