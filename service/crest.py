@@ -93,13 +93,18 @@ class Crest():
         self.ssoTimer.stop()
         wx.CallAfter(pub.sendMessage, 'logout_success', message=None)
 
+    def stopServer(self):
+        self.httpd.stop()
+        self.httpdTimer.stop()
+
     def startServer(self):
         thread.start_new_thread(self.httpd.serve, ())
+        self.httpdTimer = RepeatedTimer(60, self.stopServer)
+        self.httpdTimer.start()
         self.state = str(uuid.uuid4())
         return self.eve.auth_uri(scopes=self.scopes, state=self.state)
 
     def handleLogin(self, message):
-        self.httpd.stop()
         if not message:
             return
 
@@ -146,6 +151,4 @@ class Crest():
             eos.db.save(char)
 
             wx.CallAfter(pub.sendMessage, 'login_success', type=1)
-
-
 
