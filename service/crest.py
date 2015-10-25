@@ -9,8 +9,8 @@ from service import pycrest
 import service
 from service.server import *
 import config
-from gui.utils.repeatedTimer import RepeatedTimer
 import logging
+import threading
 
 logger = logging.getLogger(__name__)
 
@@ -30,12 +30,13 @@ class Crest():
 
     def __init__(self):
         self.settings = service.settings.CRESTSettings.getInstance()
-        self.httpd = StoppableHTTPServer(('', 6461), AuthHandler)
-        logger.debug(self.httpd)
         self.scopes = ['characterFittingsRead', 'characterFittingsWrite']
-        self.state = None
 
-        self.ssoTimer = RepeatedTimer(1, self.logout)
+        # these will be set when needed
+        self.httpd = None
+        self.state = None
+        self.ssoTimer = None
+        self.httpdTimer = None
 
         # Base EVE connection that is copied to all characters
         self.eve = pycrest.EVE(
@@ -89,18 +90,23 @@ class Crest():
         return res
 
     def logout(self):
+        logging.debug("Character logout")
         self.implicitCharacter = None
-        self.ssoTimer.stop()
         wx.CallAfter(pub.sendMessage, 'logout_success', message=None)
 
     def stopServer(self):
+        logging.debug("Stopping Server")
         self.httpd.stop()
-        self.httpdTimer.stop()
 
     def startServer(self):
+        logging.debug("Starting server")
+        self.httpd = StoppableHTTPServer(('', 6461), AuthHandler)
         thread.start_new_thread(self.httpd.serve, ())
-        self.httpdTimer = RepeatedTimer(60, self.stopServer)
+
+        # keep server going for only 60 seconds
+        self.httpdTimer = threading.Timer(60, self.stopServer)
         self.httpdTimer.start()
+
         self.state = str(uuid.uuid4())
         return self.eve.auth_uri(scopes=self.scopes, state=self.state)
 
@@ -120,7 +126,7 @@ class Crest():
                 access_token=message['access_token'][0],
                 expires_in=int(message['expires_in'][0])
             )
-            self.ssoTimer.interval = int(message['expires_in'][0])
+            self.ssoTimer = threading.Timer(int(message['expires_in'][0]), self.logout)
             self.ssoTimer.start()
 
             eve()

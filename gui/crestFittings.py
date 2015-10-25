@@ -27,10 +27,10 @@ class CrestFittings(wx.Frame):
             self.stLogged = wx.StaticText(self, wx.ID_ANY, "Currently logged in as %s"%sCrest.implicitCharacter.name, wx.DefaultPosition, wx.DefaultSize)
             self.stLogged.Wrap( -1 )
 
-            characterSelectSizer.Add( self.stLogged, 0, wx.ALL, 5 )
+            characterSelectSizer.Add( self.stLogged, 1,  wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5 )
         else:
             self.charChoice = wx.Choice(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, [])
-            characterSelectSizer.Add( self.charChoice, 1, wx.ALL, 5 )
+            characterSelectSizer.Add( self.charChoice, 1,  wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5 )
             self.updateCharList()
 
         self.fetchBtn = wx.Button( self, wx.ID_ANY, u"Fetch Fits", wx.DefaultPosition, wx.DefaultSize, 5 )
@@ -113,21 +113,24 @@ class ExportToEve(wx.Frame):
         self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
 
         sCrest = service.Crest.getInstance()
-        mainSizer = wx.BoxSizer(wx.HORIZONTAL)
+        mainSizer = wx.BoxSizer(wx.VERTICAL)
+        hSizer = wx.BoxSizer(wx.HORIZONTAL)
 
         if sCrest.settings.get('mode') == 0:
             self.stLogged = wx.StaticText(self, wx.ID_ANY, "Currently logged in as %s"%sCrest.implicitCharacter.name, wx.DefaultPosition, wx.DefaultSize)
             self.stLogged.Wrap( -1 )
 
-            mainSizer.Add( self.stLogged, 0, wx.ALL, 5 )
+            hSizer.Add( self.stLogged, 1, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5 )
         else:
             self.charChoice = wx.Choice(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, [])
-            mainSizer.Add( self.charChoice, 1, wx.ALL, 5 )
+            hSizer.Add( self.charChoice, 1, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5 )
             self.updateCharList()
             self.charChoice.SetSelection(0)
 
         self.exportBtn = wx.Button( self, wx.ID_ANY, u"Export Fit", wx.DefaultPosition, wx.DefaultSize, 5 )
-        mainSizer.Add( self.exportBtn, 0, wx.ALL, 5 )
+        hSizer.Add( self.exportBtn, 0, wx.ALL, 5 )
+
+        mainSizer.Add( hSizer, 0, wx.EXPAND, 5 )
 
         self.exportBtn.Bind(wx.EVT_BUTTON, self.exportFitting)
 
@@ -137,7 +140,7 @@ class ExportToEve(wx.Frame):
 
         pub.subscribe(self.ssoLogout, 'logout_success')
 
-        self.SetSizer(mainSizer)
+        self.SetSizer(hSizer)
         self.SetStatusBar(self.statusbar)
         self.Layout()
 
@@ -200,7 +203,7 @@ class CrestCharacterInfo(wx.Dialog):
         mainSizer.Add( self.characterText, 0, wx.ALIGN_CENTRE | wx.ALL, 5 )
 
         self.pic = wx.StaticBitmap(self, -1, wx.EmptyBitmap(128, 128))
-        mainSizer.Add(self.pic, 0, wx.EXPAND|wx.ALIGN_CENTER, 5 )
+        mainSizer.Add(self.pic, 0, wx.ALIGN_CENTRE | wx.ALL, 5 )
 
         self.coutdownText = wx.StaticText( self, wx.ID_ANY, "", wx.DefaultPosition, wx.DefaultSize)
         self.coutdownText.Wrap( -1 )
@@ -300,7 +303,7 @@ class CrestMgmt(wx.Dialog):
 
 class FittingsTreeView(wx.Panel):
     def __init__(self, parent):
-        wx.Panel.__init__ (self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, style=wx.TAB_TRAVERSAL)
+        wx.Panel.__init__(self, parent, id=wx.ID_ANY)
         self.parent = parent
         pmainSizer = wx.BoxSizer(wx.VERTICAL)
 
