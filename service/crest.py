@@ -86,7 +86,7 @@ class Crest():
 
     def postFitting(self, charID, json):
         char = self.getCrestCharacter(charID)
-        res = char.eve._session.post('https://api-sisi.testeveonline.com/characters/%d/fittings/'%char.ID, data=json)
+        res = char.eve.post('https://api-sisi.testeveonline.com/characters/%d/fittings/'%char.ID, data=json)
         return res
 
     def logout(self):

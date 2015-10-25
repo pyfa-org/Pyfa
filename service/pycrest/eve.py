@@ -265,18 +265,15 @@ class AuthedConnection(EVE):
         #    self._cache['whoami'] = self.get("%s/verify" % self._oauth_endpoint)
         return self.get("%s/verify" % self._oauth_endpoint)
 
-    def refresh(self):
-        res = self._authorize(params={"grant_type": "refresh_token", "refresh_token": self.refresh_token})
-        self.token = res['access_token']
-        self.expires = int(time.time()) + res['expires_in']
-        self._session.headers.update({"Authorization": "Bearer %s" % self.token})
-        return self  # for backwards compatibility
-
     def get(self, resource, params=None):
         if self.refresh_token and int(time.time()) >= self.expires:
-            self.refresh()
+            self.refr_authorize(self.refresh_token)
         return super(self.__class__, self).get(resource, params)
 
+    def post(self, resource, data, params=None):
+        if self.refresh_token and int(time.time()) >= self.expires:
+            self.refr_authorize(self.refresh_token)
+        return self._session.post(resource, data=data, params=params)
 
 class APIObject(object):
     def __init__(self, parent, connection):
