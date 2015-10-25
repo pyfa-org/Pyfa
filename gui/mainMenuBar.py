@@ -154,7 +154,7 @@ class MainMenuBar(wx.MenuBar):
 
     def ssoLogin(self, type):
         if self.sCrest.settings.get('mode') == 0:
-            self.SetLabel(self.ssoLoginId, "Character Info")
+            self.SetLabel(self.ssoLoginId, "Logout Character")
 
     def ssoLogout(self, message):
         if self.sCrest.settings.get('mode') == 0:

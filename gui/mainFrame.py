@@ -103,8 +103,8 @@ class MainFrame(wx.Frame):
         return cls.__instance if cls.__instance is not None else MainFrame()
 
     def __init__(self):
-        title="pyfa %s%s - Python Fitting Assistant"%(config.version, "" if config.tag.lower() != 'git' else " (git)")
-        wx.Frame.__init__(self, None, wx.ID_ANY, title)
+        self.title="pyfa %s%s - Python Fitting Assistant"%(config.version, "" if config.tag.lower() != 'git' else " (git)")
+        wx.Frame.__init__(self, None, wx.ID_ANY, self.title)
 
         MainFrame.__instance = self
 
@@ -195,7 +195,11 @@ class MainFrame(wx.Frame):
         self.sUpdate = service.Update.getInstance()
         self.sUpdate.CheckUpdate(self.ShowUpdateBox)
 
-        pub.subscribe(self.showCharacterMgmt, 'login_success')
+        pub.subscribe(self.onSSOLogin, 'login_success')
+        pub.subscribe(self.onSSOLogout, 'logout_success')
+
+        self.titleTimer = wx.Timer(self)
+        self.Bind(wx.EVT_TIMER, self.updateTitle, self.titleTimer)
 
     def ShowUpdateBox(self, release):
         dlg = UpdateDialog(self, release)
@@ -494,16 +498,28 @@ class MainFrame(wx.Frame):
         dlg=CrestFittings(self)
         dlg.Show()
 
-    def showCharacterMgmt(self, type):
+    def updateTitle(self, event):
+        sCrest = service.Crest.getInstance()
+        char = sCrest.implicitCharacter
+        if char:
+            t = time.gmtime(char.eve.expires-time.time())
+            sTime = time.strftime("%H:%M:%S", t if t >= 0 else 0)
+            newTitle = "%s | %s - %s"%(self.title, char.name, sTime)
+            self.SetTitle(newTitle)
+
+    def onSSOLogin(self, type):
         if type == 0:
-            dlg=CrestCharacterInfo(self)
-            dlg.Show()
+            self.titleTimer.Start(1000)
+
+    def onSSOLogout(self, message):
+        self.titleTimer.Stop()
+        self.SetTitle(self.title)
 
     def ssoLogin(self, event):
         sCrest = service.Crest.getInstance()
         if sCrest.settings.get('mode') == 0:  # Implicit, go directly to login
             if sCrest.implicitCharacter is not None:
-                self.showCharacterMgmt(type=0)
+                sCrest.logout()
             else:
                 uri = sCrest.startServer()
                 wx.LaunchDefaultBrowser(uri)

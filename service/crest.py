@@ -136,7 +136,7 @@ class Crest():
 
             self.implicitCharacter = CrestUser(info['CharacterID'], info['CharacterName'])
             self.implicitCharacter.eve = eve
-            self.implicitCharacter.fetchImage()
+            #self.implicitCharacter.fetchImage()
 
             wx.CallAfter(pub.sendMessage, 'login_success', type=0)
         elif 'code' in message:

@@ -21,7 +21,7 @@ import urllib
 from cStringIO import StringIO
 
 from sqlalchemy.orm import reconstructor
-from tomorrow import threads
+#from tomorrow import threads
 
 
 class Crest(object):
@@ -35,6 +35,7 @@ class Crest(object):
     def init(self):
         pass
 
+    '''
     @threads(1)
     def fetchImage(self):
         url = 'https://image.eveonline.com/character/%d_128.jpg'%self.ID
@@ -42,4 +43,4 @@ class Crest(object):
         data = fp.read()
         fp.close()
         self.img = StringIO(data)
-
+    '''
