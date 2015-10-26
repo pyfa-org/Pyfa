@@ -62,6 +62,13 @@ class CrestFittings(wx.Frame):
 
         pub.subscribe(self.ssoLogout, 'logout_success')
 
+        self.statusbar = wx.StatusBar(self)
+        self.statusbar.SetFieldsCount()
+        self.SetStatusBar(self.statusbar)
+
+        self.cacheTimer = wx.Timer(self)
+        self.Bind(wx.EVT_TIMER, self.updateCacheStatus, self.cacheTimer)
+
         self.SetSizer(mainSizer)
         self.Layout()
 
@@ -79,6 +86,15 @@ class CrestFittings(wx.Frame):
 
         self.charChoice.SetSelection(0)
 
+    def updateCacheStatus(self, event):
+        t = time.gmtime(self.cacheTime-time.time())
+        if t < 0:
+            self.cacheTimer.Stop()
+            self.statusbar.Hide()
+        else:
+            sTime = time.strftime("%H:%M:%S", t)
+            self.statusbar.SetStatusText("Cached for %s"%sTime, 0)
+
     def ssoLogout(self, message):
         self.Close()
 
@@ -95,6 +111,9 @@ class CrestFittings(wx.Frame):
         sCrest = service.Crest.getInstance()
         waitDialog = wx.BusyInfo("Fetching fits, please wait...", parent=self)
         fittings = sCrest.getFittings(self.getActiveCharacter())
+        self.cacheTime = fittings.get('cached_until')
+        self.updateCacheStatus(None)
+        self.cacheTimer.Start(1000)
         self.fitTree.populateSkillTree(fittings)
         del waitDialog
 
