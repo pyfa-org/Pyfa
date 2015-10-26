@@ -1,5 +1,7 @@
-import wx
+import time
+import webbrowser
 import json
+import wx
 
 from wx.lib.pubsub import setupkwargs
 from wx.lib.pubsub import pub
@@ -8,8 +10,6 @@ import service
 import gui.display as d
 from eos.types import Cargo
 from eos.db import getItem
-import time
-import webbrowser
 
 class CrestFittings(wx.Frame):
 
@@ -124,6 +124,7 @@ class CrestFittings(wx.Frame):
         fits = sFit.importFitFromBuffer(data)
         self.mainFrame._openAfterImport(fits)
 
+
 class ExportToEve(wx.Frame):
 
     def __init__(self, parent):
@@ -206,55 +207,6 @@ class ExportToEve(wx.Frame):
         except ValueError:
             self.statusbar.SetStatusText("", 1)
 
-class CrestCharacterInfo(wx.Dialog):
-
-    def __init__(self, parent):
-        wx.Dialog.__init__(self, parent, id=wx.ID_ANY, title="Character Info", pos=wx.DefaultPosition, size = wx.Size( 200,240 ))
-        self.mainFrame = parent
-        sCrest = service.Crest.getInstance()
-        self.char = sCrest.implicitCharacter
-        self.bitmapSet = False
-
-        mainSizer = wx.BoxSizer( wx.VERTICAL )
-
-        self.characterText = wx.StaticText(self, wx.ID_ANY, self.char.name, wx.DefaultPosition, wx.DefaultSize)
-        self.characterText.Wrap( -1 )
-        self.characterText.SetFont( wx.Font( 11, 74, 90, 92, False) )
-        mainSizer.Add( self.characterText, 0, wx.ALIGN_CENTRE | wx.ALL, 5 )
-
-        self.pic = wx.StaticBitmap(self, -1, wx.EmptyBitmap(128, 128))
-        mainSizer.Add(self.pic, 0, wx.ALIGN_CENTRE | wx.ALL, 5 )
-
-        self.coutdownText = wx.StaticText( self, wx.ID_ANY, "", wx.DefaultPosition, wx.DefaultSize)
-        self.coutdownText.Wrap( -1 )
-        mainSizer.Add( self.coutdownText, 0, wx.ALIGN_CENTER, 5 )
-
-        self.logoutBtn = wx.Button( self, wx.ID_ANY, u"Logout", wx.DefaultPosition, wx.DefaultSize, 5 )
-        mainSizer.Add( self.logoutBtn, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
-
-        self.logoutBtn.Bind(wx.EVT_BUTTON, self.logout)
-
-        self.SetSizer( mainSizer )
-        self.Centre( wx.BOTH )
-
-        self.timer = wx.Timer(self)
-        self.Bind(wx.EVT_TIMER, self.update, self.timer)
-        self.timer.Start(1)
-
-    def update(self, event):
-        t = time.gmtime(self.char.eve.expires-time.time())
-        if not self.bitmapSet and hasattr(self.char, 'img'):
-            self.pic.SetBitmap(wx.ImageFromStream(self.char.img).ConvertToBitmap())
-            self.Layout()
-            self.bitmapSet = True
-        newLabel = time.strftime("%H:%M:%S", t if t >= 0 else 0)
-        if self.coutdownText.Label != newLabel:
-            self.coutdownText.SetLabel(time.strftime("%H:%M:%S", t))
-
-    def logout(self, event):
-        sCrest = service.Crest.getInstance()
-        sCrest.logout()
-        self.Close()
 
 class CrestMgmt(wx.Dialog):
 
@@ -321,6 +273,7 @@ class CrestMgmt(wx.Dialog):
         sCrest.delCrestCharacter(charID)
         self.popCharList()
 
+
 class FittingsTreeView(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent, id=wx.ID_ANY)
@@ -376,6 +329,7 @@ class FittingsTreeView(wx.Panel):
 
         self.parent.fitView.fitSelection = selection
         self.parent.fitView.update(list)
+
 
 class FitView(d.Display):
     DEFAULT_COLS = ["Base Icon",

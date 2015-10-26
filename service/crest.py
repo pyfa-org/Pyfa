@@ -1,3 +1,7 @@
+import thread
+import config
+import logging
+import threading
 import copy
 import uuid
 
@@ -5,12 +9,7 @@ from wx.lib.pubsub import pub
 
 import eos.db
 from eos.types import CrestChar
-from service import pycrest
 import service
-from service.server import *
-import config
-import logging
-import threading
 
 logger = logging.getLogger(__name__)
 
@@ -39,7 +38,7 @@ class Crest():
         self.httpdTimer = None
 
         # Base EVE connection that is copied to all characters
-        self.eve = pycrest.EVE(
+        self.eve = service.pycrest.EVE(
                         client_id=self.settings.get('clientID') if self.settings.get('mode') == 1 else config.clientID,
                         api_key=self.settings.get('clientSecret') if self.settings.get('mode') == 1 else None,
                         redirect_uri=self.clientCallback,
@@ -99,7 +98,7 @@ class Crest():
 
     def startServer(self):
         logging.debug("Starting server")
-        self.httpd = StoppableHTTPServer(('', 6461), AuthHandler)
+        self.httpd = service.StoppableHTTPServer(('', 6461), service.AuthHandler)
         thread.start_new_thread(self.httpd.serve, ())
 
         # keep server going for only 60 seconds
