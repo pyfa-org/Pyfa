@@ -120,6 +120,10 @@ class MainMenuBar(wx.MenuBar):
         crestMenu.Append(self.eveFittingsId, "Browse EVE Fittings")
         crestMenu.Append(self.exportToEveId, "Export To EVE")
 
+        if self.sCrest.settings.get('mode') == 0 or len(self.sCrest.getCrestCharacters()) == 0:
+            self.Enable(self.eveFittingsId, False)
+            self.Enable(self.exportToEveId, False)
+
         # Help menu
         helpMenu = wx.Menu()
         self.Append(helpMenu, "&Help")
@@ -155,7 +159,11 @@ class MainMenuBar(wx.MenuBar):
     def ssoLogin(self, type):
         if self.sCrest.settings.get('mode') == 0:
             self.SetLabel(self.ssoLoginId, "Logout Character")
+            self.Enable(self.eveFittingsId, True)
+            self.Enable(self.exportToEveId, True)
 
     def ssoLogout(self, message):
         if self.sCrest.settings.get('mode') == 0:
             self.SetLabel(self.ssoLoginId, "Login to EVE")
+            self.Enable(self.eveFittingsId, False)
+            self.Enable(self.exportToEveId, False)

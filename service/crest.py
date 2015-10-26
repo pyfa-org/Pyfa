@@ -4,6 +4,7 @@ import logging
 import threading
 import copy
 import uuid
+import wx
 
 from wx.lib.pubsub import pub
 

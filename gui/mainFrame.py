@@ -45,7 +45,7 @@ from gui.multiSwitch import MultiSwitch
 from gui.statsPane import StatsPane
 from gui.shipBrowser import ShipBrowser, FitSelected, ImportSelected, Stage3Selected
 from gui.characterEditor import CharacterEditor, SaveCharacterAs
-from gui.crestFittings import CrestFittings, ExportToEve, CrestCharacterInfo, CrestMgmt
+from gui.crestFittings import CrestFittings, ExportToEve, CrestMgmt
 from gui.characterSelection import CharacterSelection
 from gui.patternEditor import DmgPatternEditorDlg
 from gui.resistsEditor import ResistsEditorDlg
