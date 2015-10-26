@@ -74,6 +74,13 @@ if not hasattr(sys, 'frozen'):
     except ImportError:
         print("Cannot find sqlalchemy.\nYou can download sqlalchemy (0.6+) from http://www.sqlalchemy.org/")
         sys.exit(1)
+    
+    # check also for dateutil module installed.
+    try:
+        import dateutil.parser  # Copied import statement from service/update.py
+    except ImportError:
+        print("Cannot find python-dateutil.\nYou can download python-dateutil from https://pypi.python.org/pypi/python-dateutil")
+        sys.exit(1)
 
 
 if __name__ == "__main__":
