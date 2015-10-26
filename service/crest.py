@@ -75,7 +75,7 @@ class Crest():
 
         char = eos.db.getCrestCharacter(charID)
         if char and not hasattr(char, "eve"):
-            char.eve = copy.copy(self.eve)
+            char.eve = copy.deepcopy(self.eve)
             char.eve.temptoken_authorize(refresh_token=char.refresh_token)
         self.charCache[charID] = char
         return char
@@ -86,8 +86,7 @@ class Crest():
 
     def postFitting(self, charID, json):
         char = self.getCrestCharacter(charID)
-        res = char.eve.post('https://api-sisi.testeveonline.com/characters/%d/fittings/'%char.ID, data=json)
-        return res
+        return char.eve.post('https://api-sisi.testeveonline.com/characters/%d/fittings/'%char.ID, data=json)
 
     def logout(self):
         logging.debug("Character logout")
@@ -121,7 +120,7 @@ class Crest():
         logger.debug("Handling CREST login with: %s"%message)
 
         if 'access_token' in message:  # implicit
-            eve = copy.copy(self.eve)
+            eve = copy.deepcopy(self.eve)
             eve.temptoken_authorize(
                 access_token=message['access_token'][0],
                 expires_in=int(message['expires_in'][0])
@@ -140,7 +139,7 @@ class Crest():
 
             wx.CallAfter(pub.sendMessage, 'login_success', type=0)
         elif 'code' in message:
-            eve = copy.copy(self.eve)
+            eve = copy.deepcopy(self.eve)
             eve.authorize(message['code'][0])
             eve()
             info = eve.whoami()
