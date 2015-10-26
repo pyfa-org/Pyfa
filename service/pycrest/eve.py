@@ -143,9 +143,9 @@ class APIConnection(object):
         # check cache
         key = (resource, frozenset(self._session.headers.items()), frozenset(prms.items()))
         cached = self.cache.get(key)
-        if cached and cached['expires'] > time.time():
+        if cached and cached['cached_until'] > time.time():
             logger.debug('Cache hit for resource %s (params=%s)', resource, prms)
-            return cached['payload']
+            return cached
         elif cached:
             logger.debug('Cache stale for resource %s (params=%s)', resource, prms)
             self.cache.invalidate(key)
@@ -160,10 +160,10 @@ class APIConnection(object):
         ret = res.json()
 
         # cache result
-        key = (resource, frozenset(self._session.headers.items()), frozenset(prms.items()))
         expires = self._get_expires(res)
         if expires > 0:
-            self.cache.put(key, {'expires': time.time() + expires, 'payload': ret})
+            ret.update({'cached_until': time.time() + expires})
+            self.cache.put(key, ret)
 
         return ret
 
