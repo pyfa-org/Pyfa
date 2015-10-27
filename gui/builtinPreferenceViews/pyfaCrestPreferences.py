@@ -71,10 +71,11 @@ class PFCrestPref ( PreferenceView):
 
         fgAddrSizer.Add( self.inputClientSecret, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL | wx.EXPAND, 5 )
 
-        mainSizer.Add( fgAddrSizer, 0, wx.EXPAND, 5)
+        self.btnApply = wx.Button( panel, wx.ID_ANY, u"Save Client Settings", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.btnApply.Bind(wx.EVT_BUTTON, self.OnBtnApply)
 
-        self.inputClientID.Bind(wx.EVT_TEXT, self.OnEditClientID)
-        self.inputClientSecret.Bind(wx.EVT_TEXT, self.OnEditClientSecret)
+        mainSizer.Add( fgAddrSizer, 0, wx.EXPAND, 5)
+        mainSizer.Add( self.btnApply, 0, wx.ALIGN_RIGHT, 5)
 
         self.ToggleProxySettings(self.settings.get('mode'))
 
@@ -85,11 +86,11 @@ class PFCrestPref ( PreferenceView):
         self.settings.set('mode', 0 if self.grantRadioBtn1.Value else 1)
         self.ToggleProxySettings(self.settings.get('mode'))
 
-    def OnEditClientID(self, event):
+    def OnBtnApply(self, event):
         self.settings.set('clientID', self.inputClientID.GetValue())
-
-    def OnEditClientSecret(self, event):
         self.settings.set('clientSecret', self.inputClientSecret.GetValue())
+        sCrest = service.Crest.getInstance()
+        sCrest.delAllCharacters()
 
     def ToggleProxySettings(self, mode):
         if mode:

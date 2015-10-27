@@ -57,6 +57,13 @@ class Crest():
         eos.db.remove(char)
         wx.CallAfter(pub.sendMessage, 'crest_delete', message=None)
 
+    def delAllCharacters(self):
+        chars = eos.db.getCrestCharacters()
+        for char in chars:
+            eos.db.remove(char)
+        self.charCache = {}
+        wx.CallAfter(pub.sendMessage, 'crest_delete', message=None)
+
     def getCrestCharacters(self):
         chars = eos.db.getCrestCharacters()
         return chars
