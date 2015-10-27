@@ -95,6 +95,10 @@ class Crest():
         char = self.getCrestCharacter(charID)
         return char.eve.post('https://api-sisi.testeveonline.com/characters/%d/fittings/'%char.ID, data=json)
 
+    def delFitting(self, charID, fittingID):
+        char = self.getCrestCharacter(charID)
+        return char.eve.delete('https://api-sisi.testeveonline.com/characters/%d/fittings/%d/'%(char.ID, fittingID))
+
     def logout(self):
         logging.debug("Character logout")
         self.implicitCharacter = None

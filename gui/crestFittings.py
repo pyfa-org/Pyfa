@@ -50,15 +50,21 @@ class CrestFittings(wx.Frame):
         fitSizer = wx.BoxSizer( wx.VERTICAL )
 
         self.fitView = FitView(self)
-        self.importBtn = wx.Button( self, wx.ID_ANY, u"Import", wx.DefaultPosition, wx.DefaultSize, 5 )
         fitSizer.Add( self.fitView, 1, wx.ALL|wx.EXPAND, 5 )
-        fitSizer.Add( self.importBtn, 0, wx.ALL|wx.EXPAND, 5 )
+
+        btnSizer = wx.BoxSizer( wx.HORIZONTAL )
+        self.importBtn = wx.Button( self, wx.ID_ANY, u"Import to pyfa", wx.DefaultPosition, wx.DefaultSize, 5 )
+        self.deleteBtn = wx.Button( self, wx.ID_ANY, u"Delete from EVE", wx.DefaultPosition, wx.DefaultSize, 5 )
+        btnSizer.Add( self.importBtn, 1, wx.ALL, 5 )
+        btnSizer.Add( self.deleteBtn, 1, wx.ALL, 5 )
+        fitSizer.Add( btnSizer, 0, wx.EXPAND )
 
         contentSizer.Add(fitSizer, 1, wx.EXPAND, 0)
         mainSizer.Add(contentSizer, 1, wx.EXPAND, 5)
 
         self.fetchBtn.Bind(wx.EVT_BUTTON, self.fetchFittings)
         self.importBtn.Bind(wx.EVT_BUTTON, self.importFitting)
+        self.deleteBtn.Bind(wx.EVT_BUTTON, self.deleteFitting)
 
         pub.subscribe(self.ssoLogout, 'logout_success')
 
@@ -119,10 +125,26 @@ class CrestFittings(wx.Frame):
 
     def importFitting(self, event):
         selection = self.fitView.fitSelection
+        if not selection:
+            return
         data = self.fitTree.fittingsTreeCtrl.GetPyData(selection)
         sFit = service.Fit.getInstance()
         fits = sFit.importFitFromBuffer(data)
         self.mainFrame._openAfterImport(fits)
+
+    def deleteFitting(self, event):
+        sCrest = service.Crest.getInstance()
+        selection = self.fitView.fitSelection
+        if not selection:
+            return
+        data = json.loads(self.fitTree.fittingsTreeCtrl.GetPyData(selection))
+
+        dlg = wx.MessageDialog(self,
+                 "Do you really want to delete %s (%s) from EVE?"%(data['name'], data['ship']['name']),
+                 "Confirm Delete", wx.YES | wx.NO | wx.ICON_QUESTION)
+
+        if dlg.ShowModal() == wx.ID_YES:
+            sCrest.delFitting(self.getActiveCharacter(), data['fittingID'])
 
 
 class ExportToEve(wx.Frame):
@@ -337,3 +359,4 @@ class FitView(d.Display):
 
     def __init__(self, parent):
         d.Display.__init__(self, parent, style=wx.LC_SINGLE_SEL)
+        self.fitSelection = None

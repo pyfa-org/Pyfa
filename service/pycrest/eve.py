@@ -275,6 +275,11 @@ class AuthedConnection(EVE):
             self.refr_authorize(self.refresh_token)
         return self._session.post(resource, data=data, params=params)
 
+    def delete(self, resource, params=None):
+        if self.refresh_token and int(time.time()) >= self.expires:
+            self.refr_authorize(self.refresh_token)
+        return self._session.delete(resource, params=params)
+
 class APIObject(object):
     def __init__(self, parent, connection):
         self._dict = {}
