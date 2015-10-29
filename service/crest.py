@@ -36,7 +36,6 @@ class Crest():
         self.httpd = None
         self.state = None
         self.ssoTimer = None
-        self.httpdTimer = None
 
         # Base EVE connection that is copied to all characters
         self.eve = service.pycrest.EVE(
@@ -107,15 +106,14 @@ class Crest():
     def stopServer(self):
         logging.debug("Stopping Server")
         self.httpd.stop()
+        self.httpd = None
 
     def startServer(self):
         logging.debug("Starting server")
+        if self.httpd:
+            self.stopServer()
         self.httpd = service.StoppableHTTPServer(('', 6461), service.AuthHandler)
         thread.start_new_thread(self.httpd.serve, ())
-
-        # keep server going for only 60 seconds
-        self.httpdTimer = threading.Timer(60, self.stopServer)
-        self.httpdTimer.start()
 
         self.state = str(uuid.uuid4())
         return self.eve.auth_uri(scopes=self.scopes, state=self.state)
@@ -169,3 +167,4 @@ class Crest():
 
             wx.CallAfter(pub.sendMessage, 'login_success', type=1)
 
+        self.stopServer()

@@ -58,7 +58,8 @@ class StoppableHTTPServer(BaseHTTPServer.HTTPServer):
 
     def server_bind(self):
         BaseHTTPServer.HTTPServer.server_bind(self)
-        self.socket.settimeout(1)
+        # Allow listeing for 60 seconds
+        self.socket.settimeout(60)
         self.run = True
 
     def get_request(self):
@@ -71,7 +72,12 @@ class StoppableHTTPServer(BaseHTTPServer.HTTPServer):
                 pass
 
     def stop(self):
+        self.socket.close()
         self.run = False
+
+    def handle_timeout(self):
+        logger.debug("Server timed out waiting for connection")
+        self.stop()
 
     def serve(self):
         while self.run:
@@ -86,3 +92,4 @@ if __name__ == "__main__":
     thread.start_new_thread(httpd.serve, ())
     raw_input("Press <RETURN> to stop server\n")
     httpd.stop()
+
