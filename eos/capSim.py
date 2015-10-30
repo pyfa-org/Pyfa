@@ -62,23 +62,17 @@ class CapSimulator(object):
         """prepare modules. a list of (duration, capNeed, clipSize) tuples is
          expected, with clipSize 0 if the module has infinite ammo.
             """
-        mods = {}
-        for module in modules:
-                if module in mods:
-                        mods[module] += 1
-                else:
-                        mods[module] = 1
-
-        self.modules = mods
-
+        self.modules = modules
 
     def reset(self):
         """Reset the simulator state"""
         self.state = []
+        mods = {}
         period = 1
         disable_period = False
 
-        for (duration, capNeed, clipSize), amount in self.modules.iteritems():
+        # Loop over modules, clearing clipSize if applicable, and group modules based on attributes
+        for (duration, capNeed, clipSize) in self.modules:
             if self.scale:
                 duration, capNeed = self.scale_activation(duration, capNeed)
 
@@ -87,6 +81,14 @@ class CapSimulator(object):
             if not self.reload and capNeed > 0:
                 clipSize = 0
 
+            # Group modules based on their properties
+            if (duration, capNeed, clipSize) in mods:
+                mods[(duration, capNeed, clipSize)] += 1
+            else:
+                mods[(duration, capNeed, clipSize)] = 1
+
+        # Loop over grouped modules, configure staggering and push to the simulation state
+        for (duration, capNeed, clipSize), amount in mods.iteritems():
             if self.stagger:
                 if clipSize == 0:
                     duration = int(duration/amount)
