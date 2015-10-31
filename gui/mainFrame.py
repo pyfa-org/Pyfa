@@ -58,6 +58,8 @@ from gui.updateDialog import UpdateDialog
 from gui.builtinViews import *
 from time import gmtime, strftime
 
+from service.crest import CrestModes
+
 from wx.lib.pubsub import setupkwargs
 from wx.lib.pubsub import pub
 
@@ -518,7 +520,7 @@ class MainFrame(wx.Frame):
 
     def ssoLogin(self, event):
         sCrest = service.Crest.getInstance()
-        if sCrest.settings.get('mode') == 0:  # Implicit, go directly to login
+        if sCrest.settings.get('mode') == CrestModes.IMPLICIT:
             if sCrest.implicitCharacter is not None:
                 sCrest.logout()
             else:

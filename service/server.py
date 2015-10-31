@@ -88,7 +88,10 @@ class StoppableHTTPServer(BaseHTTPServer.HTTPServer):
 
     def serve(self):
         while self.run:
-            self.handle_request()
+            try:
+                self.handle_request()
+            except TypeError:
+                pass
 
 if __name__ == "__main__":
     httpd = StoppableHTTPServer(('', 6461), AuthHandler)

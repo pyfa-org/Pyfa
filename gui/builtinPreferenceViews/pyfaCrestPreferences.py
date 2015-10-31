@@ -5,6 +5,7 @@ from gui.bitmapLoader import BitmapLoader
 
 import gui.mainFrame
 import service
+from service.crest import CrestModes
 
 class PFCrestPref ( PreferenceView):
     title = "CREST"
@@ -30,24 +31,28 @@ class PFCrestPref ( PreferenceView):
         self.stInfo.Wrap(dlgWidth - 50)
         mainSizer.Add( self.stInfo, 0, wx.EXPAND|wx.TOP|wx.BOTTOM, 5 )
 
-        self.grantRadioBtn1 = wx.RadioButton( panel, wx.ID_ANY, u"Implicit Grant", wx.DefaultPosition, wx.DefaultSize, 0 )
-        mainSizer.Add( self.grantRadioBtn1, 0, wx.ALL, 5 )
+        rbSizer = wx.BoxSizer(wx.HORIZONTAL)
+        self.rbMode = wx.RadioBox(panel, -1, "Mode", wx.DefaultPosition, wx.DefaultSize, ['Implicit', 'User-supplied details'], 1, wx.RA_SPECIFY_COLS)
+        self.rbServer = wx.RadioBox(panel, -1, "Server", wx.DefaultPosition, wx.DefaultSize, ['Tranquility', 'Singularity'], 1, wx.RA_SPECIFY_COLS)
 
-        self.grantRadioBtn2 = wx.RadioButton( panel, wx.ID_ANY, u"User-supplied details", wx.DefaultPosition, wx.DefaultSize, 0 )
-        mainSizer.Add( self.grantRadioBtn2, 0, wx.ALL, 5 )
+        self.rbMode.SetSelection(self.settings.get('mode'))
+        self.rbServer.SetSelection(self.settings.get('server'))
 
-        proxyTitle = wx.StaticText( panel, wx.ID_ANY, "CREST client details", wx.DefaultPosition, wx.DefaultSize, 0 )
-        proxyTitle.Wrap( -1 )
-        proxyTitle.SetFont( wx.Font( 12, 70, 90, 90, False, wx.EmptyString ) )
+        rbSizer.Add(self.rbMode, 1, wx.TOP | wx.RIGHT, 5 )
+        rbSizer.Add(self.rbServer, 1, wx.ALL, 5 )
 
-        mainSizer.Add( proxyTitle, 0, wx.ALL, 5 )
+        self.rbMode.Bind(wx.EVT_RADIOBOX, self.OnModeChange)
+        self.rbServer.Bind(wx.EVT_RADIOBOX, self.OnServerChange)
+
+        mainSizer.Add(rbSizer, 1, wx.ALL|wx.EXPAND, 0)
+
+        detailsTitle = wx.StaticText( panel, wx.ID_ANY, "CREST client details", wx.DefaultPosition, wx.DefaultSize, 0 )
+        detailsTitle.Wrap( -1 )
+        detailsTitle.SetFont( wx.Font( 12, 70, 90, 90, False, wx.EmptyString ) )
+
+        mainSizer.Add( detailsTitle, 0, wx.ALL, 5 )
         mainSizer.Add( wx.StaticLine( panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL ), 0, wx.EXPAND, 5 )
 
-        self.grantRadioBtn1.SetValue(self.settings.get('mode') == 0)
-        self.grantRadioBtn2.SetValue(self.settings.get('mode') == 1)
-
-        self.grantRadioBtn1.Bind(wx.EVT_RADIOBUTTON, self.OnRadioChange)
-        self.grantRadioBtn2.Bind(wx.EVT_RADIOBUTTON, self.OnRadioChange)
 
         fgAddrSizer = wx.FlexGridSizer( 2, 2, 0, 0 )
         fgAddrSizer.AddGrowableCol( 1 )
@@ -82,9 +87,14 @@ class PFCrestPref ( PreferenceView):
         panel.SetSizer( mainSizer )
         panel.Layout()
 
-    def OnRadioChange(self, event):
-        self.settings.set('mode', 0 if self.grantRadioBtn1.Value else 1)
+    def OnModeChange(self, event):
+        self.settings.set('mode', event.GetInt())
         self.ToggleProxySettings(self.settings.get('mode'))
+        service.Crest.restartService()
+
+    def OnServerChange(self, event):
+        self.settings.set('server', event.GetInt())
+        service.Crest.restartService()
 
     def OnBtnApply(self, event):
         self.settings.set('clientID', self.inputClientID.GetValue())

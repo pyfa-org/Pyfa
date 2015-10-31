@@ -7,6 +7,7 @@ from wx.lib.pubsub import setupkwargs
 from wx.lib.pubsub import pub
 
 import service
+from service.crest import CrestModes
 import gui.display as d
 from eos.types import Cargo
 from eos.db import getItem
@@ -24,7 +25,7 @@ class CrestFittings(wx.Frame):
 
         characterSelectSizer = wx.BoxSizer( wx.HORIZONTAL )
 
-        if sCrest.settings.get('mode') == 0:
+        if sCrest.settings.get('mode') == CrestModes.IMPLICIT:
             self.stLogged = wx.StaticText(self, wx.ID_ANY, "Currently logged in as %s"%sCrest.implicitCharacter.name, wx.DefaultPosition, wx.DefaultSize)
             self.stLogged.Wrap( -1 )
 
@@ -107,7 +108,7 @@ class CrestFittings(wx.Frame):
     def getActiveCharacter(self):
         sCrest = service.Crest.getInstance()
 
-        if sCrest.settings.get('mode') == 0:
+        if sCrest.settings.get('mode') == CrestModes.IMPLICIT:
             return sCrest.implicitCharacter.ID
 
         selection = self.charChoice.GetCurrentSelection()
@@ -159,7 +160,7 @@ class ExportToEve(wx.Frame):
         mainSizer = wx.BoxSizer(wx.VERTICAL)
         hSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        if sCrest.settings.get('mode') == 0:
+        if sCrest.settings.get('mode') == CrestModes.IMPLICIT:
             self.stLogged = wx.StaticText(self, wx.ID_ANY, "Currently logged in as %s"%sCrest.implicitCharacter.name, wx.DefaultPosition, wx.DefaultSize)
             self.stLogged.Wrap( -1 )
 
@@ -207,7 +208,7 @@ class ExportToEve(wx.Frame):
     def getActiveCharacter(self):
         sCrest = service.Crest.getInstance()
 
-        if sCrest.settings.get('mode') == 0:
+        if sCrest.settings.get('mode') == CrestModes.IMPLICIT:
             return sCrest.implicitCharacter.ID
 
         selection = self.charChoice.GetCurrentSelection()

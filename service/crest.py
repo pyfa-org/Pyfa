@@ -10,12 +10,26 @@ import time
 from wx.lib.pubsub import pub
 
 import eos.db
+from eos.enum import Enum
 from eos.types import CrestChar
 import service
 
 logger = logging.getLogger(__name__)
 
+class Servers(Enum):
+    TQ = 0
+    SISI = 1
+
+class CrestModes(Enum):
+    IMPLICIT = 0
+    USER = 1
+
 class Crest():
+
+    clientIDs = {
+        Servers.TQ: 'f9be379951c046339dc13a00e6be7704',
+        Servers.SISI: 'af87365240d644f7950af563b8418bad'
+    }
 
     # @todo: move this to settings
     clientCallback = 'http://localhost:6461'
@@ -29,7 +43,17 @@ class Crest():
 
         return cls._instance
 
+    @classmethod
+    def restartService(cls):
+        # This is hear to reseed pycrest values when changing preferences
+        # We first stop the server n case one is running, as creating a new
+        # instance doesn't do this.
+        cls._instance.stopServer()
+        cls._instance = Crest()
+        return cls._instance
+
     def __init__(self):
+        print "init crest"
         self.settings = service.settings.CRESTSettings.getInstance()
         self.scopes = ['characterFittingsRead', 'characterFittingsWrite']
 
@@ -40,10 +64,11 @@ class Crest():
 
         # Base EVE connection that is copied to all characters
         self.eve = service.pycrest.EVE(
-                        client_id=self.settings.get('clientID') if self.settings.get('mode') == 1 else config.clientID,
-                        api_key=self.settings.get('clientSecret') if self.settings.get('mode') == 1 else None,
-                        redirect_uri=self.clientCallback,
-                        testing=self.clientTest)
+            client_id=self.settings.get('clientID') if self.settings.get('mode') == CrestModes.USER else self.clientIDs.get(self.settings.get('server')),
+            api_key=self.settings.get('clientSecret') if self.settings.get('mode') == CrestModes.USER else None,
+            redirect_uri=self.clientCallback,
+            testing=self.isTestServer
+        )
 
         self.implicitCharacter = None
 
@@ -51,6 +76,10 @@ class Crest():
         # this as a temporary measure
         self.charCache = {}
         pub.subscribe(self.handleLogin, 'sso_login')
+
+    @property
+    def isTestServer(self):
+        return self.settings.get('server') == Servers.SISI
 
     def delCrestCharacter(self, charID):
         char = eos.db.getCrestCharacter(charID)
@@ -72,7 +101,7 @@ class Crest():
         '''
         Get character, and modify to include the eve connection
         '''
-        if self.settings.get('mode') == 0:
+        if self.settings.get('mode') == CrestModes.IMPLICIT:
             if self.implicitCharacter.ID != charID:
                 raise ValueError("CharacterID does not match currently logged in character.")
             return self.implicitCharacter
@@ -148,7 +177,7 @@ class Crest():
             self.implicitCharacter.eve = eve
             #self.implicitCharacter.fetchImage()
 
-            wx.CallAfter(pub.sendMessage, 'login_success', type=0)
+            wx.CallAfter(pub.sendMessage, 'login_success', type=CrestModes.IMPLICIT)
         elif 'code' in message:
             eve = copy.deepcopy(self.eve)
             eve.authorize(message['code'][0])
@@ -167,6 +196,6 @@ class Crest():
             self.charCache[int(info['CharacterID'])] = char
             eos.db.save(char)
 
-            wx.CallAfter(pub.sendMessage, 'login_success', type=1)
+            wx.CallAfter(pub.sendMessage, 'login_success', type=CrestModes.USER)
 
         self.stopServer()
