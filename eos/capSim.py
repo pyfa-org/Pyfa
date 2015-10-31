@@ -169,12 +169,12 @@ class CapSimulator(object):
 
             iterations += 1
 
+            t_last = t_now
+
             if cap < cap_lowest:
                 if cap < 0.0:
                     break
                 cap_lowest = cap
-
-            t_last = t_now
 
             # queue the next activation of this module
             t_now += duration
