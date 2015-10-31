@@ -115,6 +115,6 @@ class PFCrestPref ( PreferenceView):
             self.inputClientSecret.Disable()
 
     def getImage(self):
-        return BitmapLoader.getBitmap("prefs_proxy", "gui")
+        return BitmapLoader.getBitmap("eve", "gui")
 
 PFCrestPref.register()

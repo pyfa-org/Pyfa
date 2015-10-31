@@ -45,11 +45,13 @@ class Crest():
 
     @classmethod
     def restartService(cls):
-        # This is hear to reseed pycrest values when changing preferences
+        # This is here to reseed pycrest values when changing preferences
         # We first stop the server n case one is running, as creating a new
         # instance doesn't do this.
-        cls._instance.stopServer()
+        if cls._instance.httpd:
+            cls._instance.stopServer()
         cls._instance = Crest()
+        wx.CallAfter(pub.sendMessage, 'crest_changed', message=None)
         return cls._instance
 
     def __init__(self):
@@ -121,6 +123,7 @@ class Crest():
         return char.eve.get('https://api-sisi.testeveonline.com/characters/%d/fittings/'%char.ID)
 
     def postFitting(self, charID, json):
+        #@todo: new fitting ID can be recovered from Location header, ie: Location -> https://api-sisi.testeveonline.com/characters/1611853631/fittings/37486494/
         char = self.getCrestCharacter(charID)
         return char.eve.post('https://api-sisi.testeveonline.com/characters/%d/fittings/'%char.ID, data=json)
 

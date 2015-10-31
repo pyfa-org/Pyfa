@@ -139,6 +139,7 @@ class MainMenuBar(wx.MenuBar):
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
         pub.subscribe(self.ssoLogin, 'login_success')
         pub.subscribe(self.ssoLogout, 'logout_success')
+        pub.subscribe(self.updateCrest, 'crest_changed')
 
     def fitChanged(self, event):
         enable = event.fitID is not None
@@ -168,3 +169,13 @@ class MainMenuBar(wx.MenuBar):
             self.SetLabel(self.ssoLoginId, "Login to EVE")
             self.Enable(self.eveFittingsId, False)
             self.Enable(self.exportToEveId, False)
+
+    def updateCrest(self, message):
+        bool = self.sCrest.settings.get('mode') == CrestModes.IMPLICIT or len(self.sCrest.getCrestCharacters()) == 0
+        self.Enable(self.eveFittingsId, not bool)
+        self.Enable(self.exportToEveId, not bool)
+        if self.sCrest.settings.get('mode') == CrestModes.IMPLICIT:
+            self.SetLabel(self.ssoLoginId, "Login to EVE")
+        else:
+            self.SetLabel(self.ssoLoginId, "Manage Characters")
+
