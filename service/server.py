@@ -58,8 +58,12 @@ class StoppableHTTPServer(BaseHTTPServer.HTTPServer):
 
     def server_bind(self):
         BaseHTTPServer.HTTPServer.server_bind(self)
-        # Allow listeing for 60 seconds
-        self.socket.settimeout(60)
+        # Allow listening for 60 seconds
+        sec = 60
+
+        self.socket.settimeout(0.5)
+        self.max_tries = sec / self.socket.gettimeout()
+        self.tries = 0
         self.run = True
 
     def get_request(self):
@@ -72,20 +76,19 @@ class StoppableHTTPServer(BaseHTTPServer.HTTPServer):
                 pass
 
     def stop(self):
-        self.socket.close()
         self.run = False
+        self.server_close()
 
     def handle_timeout(self):
-        logger.debug("Server timed out waiting for connection")
-        self.stop()
+        logger.debug("Number of tries: %d"%self.tries)
+        self.tries += 1
+        if self.tries == self.max_tries:
+            logger.debug("Server timed out waiting for connection")
+            self.stop()
 
     def serve(self):
         while self.run:
-            try:
-                self.handle_request()
-            except TypeError:
-                # this can happen if stopping server in middle of request?
-                pass
+            self.handle_request()
 
 if __name__ == "__main__":
     httpd = StoppableHTTPServer(('', 6461), AuthHandler)

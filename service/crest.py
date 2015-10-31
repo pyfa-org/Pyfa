@@ -5,6 +5,7 @@ import threading
 import copy
 import uuid
 import wx
+import time
 
 from wx.lib.pubsub import pub
 
@@ -112,6 +113,7 @@ class Crest():
         logging.debug("Starting server")
         if self.httpd:
             self.stopServer()
+            time.sleep(1)  # we need this to ensure that the previous get_request finishes, and then the socket will close
         self.httpd = service.StoppableHTTPServer(('', 6461), service.AuthHandler)
         thread.start_new_thread(self.httpd.serve, ())
 
