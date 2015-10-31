@@ -24,6 +24,10 @@ import gui.mainFrame
 import gui.graphFrame
 import gui.globalEvents as GE
 import service
+from service.crest import CrestModes
+
+from wx.lib.pubsub import setupkwargs
+from wx.lib.pubsub import pub
 
 class MainMenuBar(wx.MenuBar):
     def __init__(self):
@@ -40,8 +44,13 @@ class MainMenuBar(wx.MenuBar):
         self.saveCharId = wx.NewId()
         self.saveCharAsId = wx.NewId()
         self.revertCharId = wx.NewId()
+        self.eveFittingsId = wx.NewId()
+        self.exportToEveId = wx.NewId()
+        self.ssoLoginId = wx.NewId()
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+
+        self.sCrest = service.Crest.getInstance()
 
         wx.MenuBar.__init__(self)
 
@@ -102,6 +111,20 @@ class MainMenuBar(wx.MenuBar):
         preferencesItem.SetBitmap(BitmapLoader.getBitmap("preferences_small", "gui"))
         windowMenu.AppendItem(preferencesItem)
 
+        # CREST Menu
+        crestMenu = wx.Menu()
+        self.Append(crestMenu, "&CREST")
+        if self.sCrest.settings.get('mode') != CrestModes.IMPLICIT:
+            crestMenu.Append(self.ssoLoginId, "Manage Characters")
+        else:
+            crestMenu.Append(self.ssoLoginId, "Login to EVE")
+        crestMenu.Append(self.eveFittingsId, "Browse EVE Fittings")
+        crestMenu.Append(self.exportToEveId, "Export To EVE")
+
+        if self.sCrest.settings.get('mode') == CrestModes.IMPLICIT or len(self.sCrest.getCrestCharacters()) == 0:
+            self.Enable(self.eveFittingsId, False)
+            self.Enable(self.exportToEveId, False)
+
         # Help menu
         helpMenu = wx.Menu()
         self.Append(helpMenu, "&Help")
@@ -114,6 +137,9 @@ class MainMenuBar(wx.MenuBar):
             helpMenu.Append( self.mainFrame.widgetInspectMenuID, "Open Widgets Inspect tool", "Open Widgets Inspect tool")
 
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
+        pub.subscribe(self.ssoLogin, 'login_success')
+        pub.subscribe(self.ssoLogout, 'logout_success')
+        pub.subscribe(self.updateCrest, 'crest_changed')
 
     def fitChanged(self, event):
         enable = event.fitID is not None
@@ -131,3 +157,25 @@ class MainMenuBar(wx.MenuBar):
         self.Enable(self.revertCharId, char.isDirty)
 
         event.Skip()
+
+    def ssoLogin(self, type):
+        if self.sCrest.settings.get('mode') == CrestModes.IMPLICIT:
+            self.SetLabel(self.ssoLoginId, "Logout Character")
+            self.Enable(self.eveFittingsId, True)
+            self.Enable(self.exportToEveId, True)
+
+    def ssoLogout(self, message):
+        if self.sCrest.settings.get('mode') == CrestModes.IMPLICIT:
+            self.SetLabel(self.ssoLoginId, "Login to EVE")
+            self.Enable(self.eveFittingsId, False)
+            self.Enable(self.exportToEveId, False)
+
+    def updateCrest(self, message):
+        bool = self.sCrest.settings.get('mode') == CrestModes.IMPLICIT or len(self.sCrest.getCrestCharacters()) == 0
+        self.Enable(self.eveFittingsId, not bool)
+        self.Enable(self.exportToEveId, not bool)
+        if self.sCrest.settings.get('mode') == CrestModes.IMPLICIT:
+            self.SetLabel(self.ssoLoginId, "Login to EVE")
+        else:
+            self.SetLabel(self.ssoLoginId, "Manage Characters")
+

@@ -30,6 +30,7 @@ from wx.lib.wordwrap import wordwrap
 import service
 import config
 import threading
+import webbrowser
 
 import gui.aboutData
 import gui.chromeTabs
@@ -44,6 +45,7 @@ from gui.multiSwitch import MultiSwitch
 from gui.statsPane import StatsPane
 from gui.shipBrowser import ShipBrowser, FitSelected, ImportSelected, Stage3Selected
 from gui.characterEditor import CharacterEditor, SaveCharacterAs
+from gui.crestFittings import CrestFittings, ExportToEve, CrestMgmt
 from gui.characterSelection import CharacterSelection
 from gui.patternEditor import DmgPatternEditorDlg
 from gui.resistsEditor import ResistsEditorDlg
@@ -54,9 +56,12 @@ from gui.utils.clipboard import toClipboard, fromClipboard
 from gui.fleetBrowser import FleetBrowser
 from gui.updateDialog import UpdateDialog
 from gui.builtinViews import *
-
 from time import gmtime, strftime
 
+from service.crest import CrestModes
+
+from wx.lib.pubsub import setupkwargs
+from wx.lib.pubsub import pub
 
 #dummy panel(no paint no erasebk)
 class PFPanel(wx.Panel):
@@ -101,8 +106,8 @@ class MainFrame(wx.Frame):
         return cls.__instance if cls.__instance is not None else MainFrame()
 
     def __init__(self):
-        title="pyfa %s%s - Python Fitting Assistant"%(config.version, "" if config.tag.lower() != 'git' else " (git)")
-        wx.Frame.__init__(self, None, wx.ID_ANY, title)
+        self.title="pyfa %s%s - Python Fitting Assistant"%(config.version, "" if config.tag.lower() != 'git' else " (git)")
+        wx.Frame.__init__(self, None, wx.ID_ANY, self.title)
 
         MainFrame.__instance = self
 
@@ -192,6 +197,12 @@ class MainFrame(wx.Frame):
         #Check for updates
         self.sUpdate = service.Update.getInstance()
         self.sUpdate.CheckUpdate(self.ShowUpdateBox)
+
+        pub.subscribe(self.onSSOLogin, 'login_success')
+        pub.subscribe(self.onSSOLogout, 'logout_success')
+
+        self.titleTimer = wx.Timer(self)
+        self.Bind(wx.EVT_TIMER, self.updateTitle, self.titleTimer)
 
     def ShowUpdateBox(self, release):
         dlg = UpdateDialog(self, release)
@@ -370,10 +381,10 @@ class MainFrame(wx.Frame):
         dlg.ShowModal()
 
     def goWiki(self, event):
-        wx.LaunchDefaultBrowser('https://github.com/DarkFenX/Pyfa/wiki')
+        webbrowser.open('https://github.com/DarkFenX/Pyfa/wiki')
 
     def goForums(self, event):
-        wx.LaunchDefaultBrowser('https://forums.eveonline.com/default.aspx?g=posts&t=247609')
+        webbrowser.open('https://forums.eveonline.com/default.aspx?g=posts&t=247609')
 
     def registerMenu(self):
         menuBar = self.GetMenuBar()
@@ -416,6 +427,12 @@ class MainFrame(wx.Frame):
         self.Bind(wx.EVT_MENU, self.saveCharAs, id = menuBar.saveCharAsId)
         # Save current character
         self.Bind(wx.EVT_MENU, self.revertChar, id = menuBar.revertCharId)
+        # Browse fittings
+        self.Bind(wx.EVT_MENU, self.eveFittings, id = menuBar.eveFittingsId)
+        # Export to EVE
+        self.Bind(wx.EVT_MENU, self.exportToEve, id = menuBar.exportToEveId)
+        # Login to EVE
+        self.Bind(wx.EVT_MENU, self.ssoLogin, id = menuBar.ssoLoginId)
 
         #Clipboard exports
         self.Bind(wx.EVT_MENU, self.exportToClipboard, id=wx.ID_COPY)
@@ -480,6 +497,43 @@ class MainFrame(wx.Frame):
         atable = wx.AcceleratorTable(actb)
         self.SetAcceleratorTable(atable)
 
+    def eveFittings(self, event):
+        dlg=CrestFittings(self)
+        dlg.Show()
+
+    def updateTitle(self, event):
+        sCrest = service.Crest.getInstance()
+        char = sCrest.implicitCharacter
+        if char:
+            t = time.gmtime(char.eve.expires-time.time())
+            sTime = time.strftime("%H:%M:%S", t if t >= 0 else 0)
+            newTitle = "%s | %s - %s"%(self.title, char.name, sTime)
+            self.SetTitle(newTitle)
+
+    def onSSOLogin(self, type):
+        if type == 0:
+            self.titleTimer.Start(1000)
+
+    def onSSOLogout(self, message):
+        self.titleTimer.Stop()
+        self.SetTitle(self.title)
+
+    def ssoLogin(self, event):
+        sCrest = service.Crest.getInstance()
+        if sCrest.settings.get('mode') == CrestModes.IMPLICIT:
+            if sCrest.implicitCharacter is not None:
+                sCrest.logout()
+            else:
+                uri = sCrest.startServer()
+                webbrowser.open(uri)
+        else:
+            dlg=CrestMgmt(self)
+            dlg.Show()
+
+    def exportToEve(self, event):
+        dlg=ExportToEve(self)
+        dlg.Show()
+
     def saveChar(self, event):
         sChr = service.Character.getInstance()
         charID = self.charSelection.getActiveCharacter()
@@ -542,6 +596,10 @@ class MainFrame(wx.Frame):
         sFit = service.Fit.getInstance()
         toClipboard(sFit.exportDna(self.getActiveFit()))
 
+    def clipboardCrest(self):
+        sFit = service.Fit.getInstance()
+        toClipboard(sFit.exportCrest(self.getActiveFit()))
+
     def clipboardXml(self):
         sFit = service.Fit.getInstance()
         toClipboard(sFit.exportXml(None, self.getActiveFit()))
@@ -559,14 +617,15 @@ class MainFrame(wx.Frame):
         CopySelectDict = {CopySelectDialog.copyFormatEft: self.clipboardEft,
                           CopySelectDialog.copyFormatEftImps: self.clipboardEftImps,
                           CopySelectDialog.copyFormatXml: self.clipboardXml,
-                          CopySelectDialog.copyFormatDna: self.clipboardDna}
+                          CopySelectDialog.copyFormatDna: self.clipboardDna,
+                          CopySelectDialog.copyFormatCrest: self.clipboardCrest}
         dlg = CopySelectDialog(self)
         dlg.ShowModal()
         selected = dlg.GetSelected()
-        try:
-            CopySelectDict[selected]()
-        except:
-            pass
+
+        CopySelectDict[selected]()
+
+
         dlg.Destroy()
 
     def exportSkillsNeeded(self, event):

@@ -19,7 +19,7 @@
 
 from eos.db.util import processEager, processWhere
 from eos.db import saveddata_session, sd_lock
-from eos.types import User, Character, Fit, Price, DamagePattern, Fleet, MiscData, Wing, Squad, TargetResists
+from eos.types import User, Character, Fit, Price, DamagePattern, Fleet, MiscData, Wing, Squad, TargetResists, CrestChar
 from eos.db.saveddata.fleet import squadmembers_table
 from eos.db.saveddata.fit import projectedFits_table
 from sqlalchemy.sql import and_
@@ -415,6 +415,30 @@ def getProjectedFits(fitID):
             return fits
     else:
         raise TypeError("Need integer as argument")
+
+def getCrestCharacters(eager=None):
+    eager = processEager(eager)
+    with sd_lock:
+        characters = saveddata_session.query(CrestChar).options(*eager).all()
+    return characters
+
+@cachedQuery(CrestChar, 1, "lookfor")
+def getCrestCharacter(lookfor, eager=None):
+    if isinstance(lookfor, int):
+        if eager is None:
+            with sd_lock:
+                character = saveddata_session.query(CrestChar).get(lookfor)
+        else:
+            eager = processEager(eager)
+            with sd_lock:
+                character = saveddata_session.query(CrestChar).options(*eager).filter(CrestChar.ID == lookfor).first()
+    elif isinstance(lookfor, basestring):
+        eager = processEager(eager)
+        with sd_lock:
+            character = saveddata_session.query(CrestChar).options(*eager).filter(CrestChar.name == lookfor).first()
+    else:
+        raise TypeError("Need integer or string as argument")
+    return character
 
 def removeInvalid(fits):
     invalids = [f for f in fits if f.isInvalid]

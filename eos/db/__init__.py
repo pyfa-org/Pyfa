@@ -75,7 +75,7 @@ from eos.db.saveddata.queries import getUser, getCharacter, getFit, getFitsWithS
                                      getFitList, getFleetList, getFleet, save, remove, commit, add, \
                                      getCharactersForUser, getMiscData, getSquadsIDsWithFitID, getWing, \
                                      getSquad, getBoosterFits, getProjectedFits, getTargetResistsList, getTargetResists,\
-                                     clearPrices, countAllFits
+                                     clearPrices, countAllFits, getCrestCharacters, getCrestCharacter
 
 #If using in memory saveddata, you'll want to reflect it so the data structure is good.
 if config.saveddata_connectionstring == "sqlite:///:memory:":
