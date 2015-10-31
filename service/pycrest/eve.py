@@ -218,7 +218,7 @@ class EVE(APIConnection):
             grant_type,
             self.redirect_uri,
             self.client_id,
-            "&scope=%s" % ' '.join(s) if scopes else '',
+            "&scope=%s" % '+'.join(s) if scopes else '',
             "&state=%s" % state if state else ''
         )
 
