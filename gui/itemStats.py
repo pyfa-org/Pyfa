@@ -80,7 +80,7 @@ class ItemStatsDialog(wx.Dialog):
             itemImg = BitmapLoader.getBitmap(iconFile, "icons")
             if itemImg is not None:
                 self.SetIcon(wx.IconFromBitmap(itemImg))
-        self.SetTitle("%s: %s" % ("%s Stats" % itmContext if itmContext is not None else "Stats", item.name))
+        self.SetTitle("%s: %s%s" % ("%s Stats" % itmContext if itmContext is not None else "Stats", item.name, " (%d)"%item.ID if config.debug else ""))
 
         self.SetMinSize((300, 200))
         if "wxGTK" in wx.PlatformInfo:  # GTK has huge tab widgets, give it a bit more room
