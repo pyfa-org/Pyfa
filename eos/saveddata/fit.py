@@ -25,7 +25,7 @@ from eos import capSim
 from copy import deepcopy
 from math import sqrt, log, asinh
 from eos.types import Drone, Cargo, Ship, Character, State, Slot, Module, Implant, Booster, Skill
-from eos.saveddata.module import State
+from eos.saveddata.module import State, Hardpoint
 from eos.saveddata.mode import Mode
 import eos.db
 import time
@@ -847,10 +847,14 @@ class Fit(object):
                         else:
                             capAdded -= capNeed
 
-                        drains.append((int(fullCycleTime), mod.getModifiedItemAttr("capacitorNeed") or 0, mod.numShots or 0))
+                        # If this is a turret, don't stagger activations
+                        disableStagger = mod.hardpoint == Hardpoint.TURRET
+
+                        drains.append((int(fullCycleTime), mod.getModifiedItemAttr("capacitorNeed") or 0, mod.numShots or 0, disableStagger))
 
         for fullCycleTime, capNeed, clipSize in self.iterDrains():
-            drains.append((int(fullCycleTime), capNeed, clipSize))
+            # Stagger incoming effects for cap simulation
+            drains.append((int(fullCycleTime), capNeed, clipSize, False))
             if capNeed > 0:
                 capUsed += capNeed / (fullCycleTime / 1000.0)
             else:
