@@ -59,7 +59,7 @@ class CapSimulator(object):
         return duration, capNeed
 
     def init(self, modules):
-        """prepare modules. a list of (duration, capNeed, clipSize) tuples is
+        """prepare modules. a list of (duration, capNeed, clipSize, disableStagger) tuples is
          expected, with clipSize 0 if the module has infinite ammo.
             """
         self.modules = modules
@@ -72,7 +72,7 @@ class CapSimulator(object):
         disable_period = False
 
         # Loop over modules, clearing clipSize if applicable, and group modules based on attributes
-        for (duration, capNeed, clipSize) in self.modules:
+        for (duration, capNeed, clipSize, disableStagger) in self.modules:
             if self.scale:
                 duration, capNeed = self.scale_activation(duration, capNeed)
 
@@ -82,14 +82,14 @@ class CapSimulator(object):
                 clipSize = 0
 
             # Group modules based on their properties
-            if (duration, capNeed, clipSize) in mods:
-                mods[(duration, capNeed, clipSize)] += 1
+            if (duration, capNeed, clipSize, disableStagger) in mods:
+                mods[(duration, capNeed, clipSize, disableStagger)] += 1
             else:
-                mods[(duration, capNeed, clipSize)] = 1
+                mods[(duration, capNeed, clipSize, disableStagger)] = 1
 
         # Loop over grouped modules, configure staggering and push to the simulation state
-        for (duration, capNeed, clipSize), amount in mods.iteritems():
-            if self.stagger:
+        for (duration, capNeed, clipSize, disableStagger), amount in mods.iteritems():
+            if self.stagger and not disableStagger:
                 if clipSize == 0:
                     duration = int(duration/amount)
                 else:
