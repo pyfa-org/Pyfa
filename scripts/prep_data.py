@@ -62,18 +62,16 @@ if not args.nojson:
     pickle_miner = ResourcePickleMiner(rvr)
     trans = Translator(pickle_miner)
     bulkdata_miner = BulkdataMiner(rvr, trans)
-    staticcache_miner = StaticdataCacheMiner(eve_path, trans)
-
+    staticcache_miner = ResourceStaticCacheMiner(rvr, trans)
     miners = (
         MetadataMiner(eve_path),
         bulkdata_miner,
-        TraitMiner(staticcache_miner, bulkdata_miner, trans),
-        SqliteMiner(eve_path, trans),
         staticcache_miner,
-        #CachedCallsMiner(rvr, trans),
+        TraitMiner(staticcache_miner, bulkdata_miner, trans),
+        SqliteMiner(rvr.paths.root, trans),
+        CachedCallsMiner(rvr, trans),
         pickle_miner
     )
-
 
     writers = (
         JsonWriter(dump_path, indent=2),
@@ -81,8 +79,8 @@ if not args.nojson:
 
     list = "dgmexpressions,dgmattribs,dgmeffects,dgmtypeattribs,dgmtypeeffects,"\
            "dgmunits,icons,invcategories,invgroups,invmetagroups,invmetatypes,"\
-           "invtypes,mapbulk_marketGroups,phbmetadata,phbtraits,fsdTypeOverrides"\
-           "evegroups,evetypes"
+           "invtypes,mapbulk_marketGroups,phbmetadata,phbtraits,fsdTypeOverrides,"\
+           "evegroups,evetypes,evecategories"
 
     FlowManager(miners, writers).run(list, "multi")
 
