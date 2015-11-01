@@ -184,14 +184,15 @@ class Item(EqBase):
                 attr.value = val
                 self.__attributes[info.name] = attr
         try:
-            self.__overrides = __import__('overrides.' + str(self.ID), fromlist=True)
+            mod = __import__('overrides.' + str(self.ID), fromlist=True)
+            self.overrides = {}
+            for key in dir(mod):
+                if key[:2] != "__":
+                    self.overrides[key] = getattr(mod, key)
         except ImportError:
-            self.__overrides = None
+            self.overrides = {}
 
-        if self.__overrides:
-            for key in dir(self.__overrides):
-                if key in self.__attributes:
-                    self.__attributes[key].value = getattr(self.__overrides, key)
+
 
     @reconstructor
     def init(self):

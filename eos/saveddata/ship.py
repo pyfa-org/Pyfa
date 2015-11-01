@@ -51,6 +51,7 @@ class Ship(ItemAttrShortcut, HandledItem):
         self.__itemModifiedAttributes = ModifiedAttributeDict()
         self.__itemModifiedAttributes.original = dict(self.item.attributes)
         self.__itemModifiedAttributes.original.update(self.EXTRA_ATTRIBUTES)
+        self.__itemModifiedAttributes.overrides = self.item.overrides
 
         self.commandBonus = 0
 

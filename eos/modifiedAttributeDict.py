@@ -51,6 +51,8 @@ class ModifiedAttributeDict(collections.MutableMapping):
         self.__modified = {}
         # Affected by entities
         self.__affectedBy = {}
+        # Overrides
+        self.__overrides = {}
         # Dictionaries for various value modification types
         self.__forced = {}
         self.__preAssigns = {}
@@ -78,6 +80,14 @@ class ModifiedAttributeDict(collections.MutableMapping):
     def original(self, val):
         self.__original = val
         self.__modified.clear()
+
+    @property
+    def overrides(self):
+        return self.__overrides
+
+    @overrides.setter
+    def overrides(self, val):
+        self.__overrides = val
 
     def __getitem__(self, key):
         # Check if we have final calculated value
