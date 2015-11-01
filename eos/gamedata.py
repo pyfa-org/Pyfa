@@ -191,7 +191,7 @@ class Item(EqBase):
         if self.__overrides:
             for key in dir(self.__overrides):
                 if key in self.__attributes:
-                    self.__attributes[key] = getattr(self.__overrides, key)
+                    self.__attributes[key].value = getattr(self.__overrides, key)
 
     @reconstructor
     def init(self):
