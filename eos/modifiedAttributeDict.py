@@ -38,6 +38,9 @@ class ChargeAttrShortcut(object):
             return None
 
 class ModifiedAttributeDict(collections.MutableMapping):
+
+    OVERRIDES = True
+
     class CalculationPlaceholder():
         pass
 
@@ -109,6 +112,8 @@ class ModifiedAttributeDict(collections.MutableMapping):
             del self.__intermediary[key]
 
     def getOriginal(self, key):
+        if self.OVERRIDES and key in self.__overrides:
+            return self.__overrides.get(key)
         val = self.__original.get(key)
         if val is None:
             return None

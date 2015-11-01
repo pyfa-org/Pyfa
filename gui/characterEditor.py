@@ -29,12 +29,18 @@ from gui.contextMenu import ContextMenu
 from wx.lib.buttons import GenBitmapButton
 import gui.globalEvents as GE
 
+from eos.modifiedAttributeDict import ModifiedAttributeDict
+
 class CharacterEditor(wx.Frame):
     def __init__(self, parent):
         wx.Frame.__init__ (self, parent, id=wx.ID_ANY, title=u"pyfa: Character Editor", pos=wx.DefaultPosition,
                             size=wx.Size(641, 600), style=wx.DEFAULT_FRAME_STYLE|wx.FRAME_FLOAT_ON_PARENT|wx.TAB_TRAVERSAL)
 
         i = wx.IconFromBitmap(BitmapLoader.getBitmap("character_small", "gui"))
+
+        print ModifiedAttributeDict.OVERRIDES
+        ModifiedAttributeDict.OVERRIDES = not ModifiedAttributeDict.OVERRIDES
+        print ModifiedAttributeDict.OVERRIDES
 
         self.mainFrame = parent
 
