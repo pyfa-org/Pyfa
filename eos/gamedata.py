@@ -24,7 +24,7 @@ from sqlalchemy.orm import reconstructor
 from eqBase import EqBase
 
 import traceback
-
+import eos.db
 try:
     from collections import OrderedDict
 except ImportError:
@@ -168,7 +168,6 @@ class Item(EqBase):
         info = getattr(cls, "MOVE_ATTR_INFO", None)
         if info is None:
             cls.MOVE_ATTR_INFO = info = []
-            import eos.db
             for id in cls.MOVE_ATTRS:
                 info.append(eos.db.getAttributeInfo(id))
 
@@ -183,16 +182,6 @@ class Item(EqBase):
                 attr.info = info
                 attr.value = val
                 self.__attributes[info.name] = attr
-        try:
-            mod = __import__('overrides.' + str(self.ID), fromlist=True)
-            self.overrides = {}
-            for key in dir(mod):
-                if key[:2] != "__":
-                    self.overrides[key] = getattr(mod, key)
-        except ImportError:
-            self.overrides = {}
-
-
 
     @reconstructor
     def init(self):
@@ -201,6 +190,7 @@ class Item(EqBase):
         self.__moved = False
         self.__offensive = None
         self.__assistive = None
+        self.__overrides = None
 
     @property
     def attributes(self):
@@ -219,6 +209,17 @@ class Item(EqBase):
                 return True
 
         return False
+
+    @property
+    def overrides(self):
+        if self.__overrides is None:
+            self.__overrides = {}
+            overrides = eos.db.getOverrides(self.ID)
+            for x in overrides:
+                if x.attr.name in self.__attributes:
+                    self.__overrides[x.attr.name] = x.value
+
+        return self.__overrides
 
     @property
     def requiredSkills(self):

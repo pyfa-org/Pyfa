@@ -19,7 +19,7 @@
 
 from eos.db.util import processEager, processWhere
 from eos.db import saveddata_session, sd_lock
-from eos.types import User, Character, Fit, Price, DamagePattern, Fleet, MiscData, Wing, Squad, TargetResists
+from eos.types import User, Character, Fit, Price, DamagePattern, Fleet, MiscData, Wing, Squad, TargetResists, Override
 from eos.db.saveddata.fleet import squadmembers_table
 from eos.db.saveddata.fit import projectedFits_table
 from sqlalchemy.sql import and_
@@ -413,6 +413,12 @@ def getProjectedFits(fitID):
             filter = and_(projectedFits_table.c.sourceID == fitID, Fit.ID == projectedFits_table.c.victimID)
             fits = saveddata_session.query(Fit).filter(filter).all()
             return fits
+    else:
+        raise TypeError("Need integer as argument")
+
+def getOverrides(itemID, eager=None):
+    if isinstance(itemID, int):
+        return saveddata_session.query(Override).filter(Override.itemID == itemID).all()
     else:
         raise TypeError("Need integer as argument")
 
