@@ -422,6 +422,12 @@ def getOverrides(itemID, eager=None):
     else:
         raise TypeError("Need integer as argument")
 
+def clearOverrides():
+    with sd_lock:
+        deleted_rows = saveddata_session.query(Override).delete()
+    commit()
+    return deleted_rows
+
 def getAllOverrides(eager=None):
     return saveddata_session.query(Override).all()
 

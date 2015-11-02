@@ -7,6 +7,8 @@ import gui.display as d
 import gui.globalEvents as GE
 from gui.bitmapLoader import BitmapLoader
 import service
+import csv
+import eos.db
 
 import logging
 
@@ -22,26 +24,53 @@ class AttributeEditor( wx.Frame ):
         self.SetIcon(i)
 
         self.mainFrame = parent
-        self.panel = panel = wx.Panel(self, wx.ID_ANY)
-        topsizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        leftsizer = wx.BoxSizer(wx.VERTICAL)
+        menubar = wx.MenuBar()
+        fileMenu = wx.Menu()
+        fileImport = fileMenu.Append(wx.ID_ANY, 'Import', 'Import overrides')
+        fileExport = fileMenu.Append(wx.ID_ANY, 'Export', 'Import overrides')
+        fileClear = fileMenu.Append(wx.ID_ANY, 'Clear All', 'Clear all overrides')
+
+        menubar.Append(fileMenu, '&File')
+        self.SetMenuBar(menubar)
+
+        self.Bind(wx.EVT_MENU, self.OnImport, fileImport)
+        self.Bind(wx.EVT_MENU, self.OnExport, fileExport)
+        self.Bind(wx.EVT_MENU, self.OnClear, fileClear)
+
+
+        i = wx.IconFromBitmap(BitmapLoader.getBitmap("fit_rename_small", "gui"))
+        self.SetIcon(i)
+
+        self.mainFrame = parent
+        self.panel = panel = wx.Panel(self, wx.ID_ANY)
+
+        mainSizer = wx.BoxSizer(wx.HORIZONTAL)
+
+        leftSizer = wx.BoxSizer(wx.VERTICAL)
         leftPanel = wx.Panel(panel, wx.ID_ANY, style=wx.DOUBLE_BORDER if 'wxMSW' in wx.PlatformInfo else wx.SIMPLE_BORDER)
 
         self.searchBox = SearchBox(leftPanel)
         self.itemView = ItemView(leftPanel)
 
-        leftsizer.Add(self.searchBox, 0, wx.EXPAND)
-        leftsizer.Add(self.itemView, 1, wx.EXPAND)
+        leftSizer.Add(self.searchBox, 0, wx.EXPAND)
+        leftSizer.Add(self.itemView, 1, wx.EXPAND)
 
-        leftPanel.SetSizer(leftsizer)
-        topsizer.Add(leftPanel, 1, wx.ALL | wx.EXPAND, 5)
+        leftPanel.SetSizer(leftSizer)
+        mainSizer.Add(leftPanel, 1, wx.ALL | wx.EXPAND, 5)
 
+        rightSizer = wx.BoxSizer(wx.VERTICAL)
+        self.btnRemoveOverrides = wx.Button( panel, wx.ID_ANY, u"Remove Overides for Item", wx.DefaultPosition, wx.DefaultSize, 0 )
         self.pg = AttributeGrid(panel)
-        topsizer.Add(self.pg, 1, wx.ALL|wx.EXPAND, 5)
+        rightSizer.Add(self.pg, 1, wx.ALL|wx.EXPAND, 5)
+        rightSizer.Add(self.btnRemoveOverrides, 0, wx.ALL | wx.EXPAND, 5 )
+        self.btnRemoveOverrides.Bind(wx.EVT_BUTTON, self.pg.removeOverrides)
+        self.btnRemoveOverrides.Enable(False)
 
-        panel.SetSizer(topsizer)
-        topsizer.SetSizeHints(panel)
+        mainSizer.Add(rightSizer, 1, wx.EXPAND)
+
+        panel.SetSizer(mainSizer)
+        mainSizer.SetSizeHints(panel)
 
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(panel, 1, wx.EXPAND)
@@ -56,6 +85,48 @@ class AttributeEditor( wx.Frame ):
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
         self.Destroy()
 
+    def OnImport(self, event):
+        dlg = wx.FileDialog(self, "Import pyfa override file",
+                    wildcard = "pyfa override file (*.csv)|*.csv",
+                    style = wx.FD_OPEN | wx.FD_FILE_MUST_EXIST)
+        if (dlg.ShowModal() == wx.ID_OK):
+            path = dlg.GetPath()
+            with open(path, 'rb') as csvfile:
+                spamreader = csv.reader(csvfile)
+                for row in spamreader:
+                    itemID, attrID, value = row
+                    item = eos.db.getItem(int(itemID))
+                    attr = eos.db.getAttributeInfo(int(attrID))
+                    item.setOverride(attr, float(value))
+            self.itemView.updateItems(True)
+
+    def OnExport(self, event):
+        sMkt = service.Market.getInstance()
+        items = sMkt.getItemsWithOverrides()
+        defaultFile = "pyfa_overrides.csv"
+
+        dlg = wx.FileDialog(self, "Save Overrides As...",
+                            wildcard = "pyfa overrides (*.csv)|*.csv",
+                            style = wx.FD_SAVE,
+                            defaultFile=defaultFile)
+
+        if dlg.ShowModal() == wx.ID_OK:
+            path = dlg.GetPath()
+            with open(path, 'wb') as csvfile:
+                writer = csv.writer(csvfile)
+                for item in items:
+                    for key, override in item.overrides.iteritems():
+                        writer.writerow([item.ID, override.attrID, override.value])
+
+    def OnClear(self, event):
+        dlg = wx.MessageDialog(self,
+                 "Are you sure you want to delete all overrides?",
+                 "Confirm Delete", wx.YES | wx.NO | wx.ICON_EXCLAMATION)
+
+        if dlg.ShowModal() == wx.ID_YES:
+            eos.db.clearOverrides()
+            self.itemView.updateItems(True)
+            self.pg.Clear()
 
 # This is literally a stripped down version of the market.
 class ItemView(d.Display):
@@ -86,9 +157,12 @@ class ItemView(d.Display):
         self.items = self.things
         self.update(self.items)
 
-    def updateItems(self):
+    def updateItems(self, updateDisplay=False):
         sMkt = service.Market.getInstance()
         self.things = sMkt.getItemsWithOverrides()
+        self.items = self.things
+        if updateDisplay:
+            self.update(self.things)
 
     def scheduleSearch(self, event=None):
         sMkt = service.Market.getInstance()
@@ -118,6 +192,8 @@ class AttributeGrid(wxpg.PropertyGrid):
 
         self.itemView = parent.Parent.itemView
 
+        self.btn = parent.Parent.btnRemoveOverrides
+
         self.Bind( wxpg.EVT_PG_CHANGED, self.OnPropGridChange )
         self.Bind( wxpg.EVT_PG_SELECTED, self.OnPropGridSelect )
         self.Bind( wxpg.EVT_PG_RIGHT_CLICK, self.OnPropGridRightClick )
@@ -127,6 +203,7 @@ class AttributeGrid(wxpg.PropertyGrid):
 
     def itemActivated(self, event):
         self.Clear()
+        self.btn.Enable(True)
         sel = event.EventObject.GetFirstSelected()
         self.item = item = self.itemView.items[sel]
 
@@ -140,8 +217,24 @@ class AttributeGrid(wxpg.PropertyGrid):
                 prop = wxpg.FloatProperty(key, value=default)
 
             prop.SetClientData(item.attributes[key])  # set this so that we may access it later
-            prop.SetHelpString("%s\n%s"%(item.attributes[key].displayName or key, "Default Value: %0.2f"%default))
+            prop.SetHelpString("%s\n%s"%(item.attributes[key].displayName or key, "Default Value: %0.3f"%default))
             self.Append(prop)
+
+    def removeOverrides(self, event):
+        if self.item is None:
+            return
+
+        for _, x in self.item.overrides.items():
+            self.item.deleteOverride(x.attr)
+            self.itemView.updateItems(True)
+        self.ClearModifiedStatus()
+        self.itemView.Select(self.itemView.GetFirstSelected(), on=False)
+        self.Clear()
+
+    def Clear(self):
+        self.item = None
+        self.btn.Enable(False)
+        wxpg.PropertyGrid.Clear(self)
 
     def OnPropGridChange(self, event):
         p = event.GetProperty()
