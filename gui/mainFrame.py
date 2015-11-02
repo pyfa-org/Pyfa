@@ -53,6 +53,7 @@ from gui.copySelectDialog import CopySelectDialog
 from gui.utils.clipboard import toClipboard, fromClipboard
 from gui.fleetBrowser import FleetBrowser
 from gui.updateDialog import UpdateDialog
+from gui.propertyEditor import AttributeEditor
 from gui.builtinViews import *
 
 from time import gmtime, strftime
@@ -329,6 +330,10 @@ class MainFrame(wx.Frame):
         dlg=CharacterEditor(self)
         dlg.Show()
 
+    def showAttrEditor(self, event):
+        dlg=AttributeEditor(self)
+        dlg.Show()
+
     def showTargetResistsEditor(self, event):
         dlg=ResistsEditorDlg(self)
         dlg.ShowModal()
@@ -416,6 +421,8 @@ class MainFrame(wx.Frame):
         self.Bind(wx.EVT_MENU, self.saveCharAs, id = menuBar.saveCharAsId)
         # Save current character
         self.Bind(wx.EVT_MENU, self.revertChar, id = menuBar.revertCharId)
+        # Open attribute editor
+        self.Bind(wx.EVT_MENU, self.showAttrEditor, id = menuBar.attrEditor)
 
         #Clipboard exports
         self.Bind(wx.EVT_MENU, self.exportToClipboard, id=wx.ID_COPY)

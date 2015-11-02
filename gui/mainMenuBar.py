@@ -40,6 +40,7 @@ class MainMenuBar(wx.MenuBar):
         self.saveCharId = wx.NewId()
         self.saveCharAsId = wx.NewId()
         self.revertCharId = wx.NewId()
+        self.attrEditor = wx.NewId()
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
@@ -101,6 +102,10 @@ class MainMenuBar(wx.MenuBar):
         preferencesItem = wx.MenuItem(windowMenu, wx.ID_PREFERENCES, "Preferences\tCTRL+P")
         preferencesItem.SetBitmap(BitmapLoader.getBitmap("preferences_small", "gui"))
         windowMenu.AppendItem(preferencesItem)
+
+        attrItem = wx.MenuItem(windowMenu, self.attrEditor, "Attribute Editor\tCTRL+A")
+        attrItem.SetBitmap(BitmapLoader.getBitmap("preferences_small", "gui"))
+        windowMenu.AppendItem(attrItem)
 
         # Help menu
         helpMenu = wx.Menu()

@@ -103,8 +103,8 @@ class MarketBrowser(wx.Panel):
         self.marketView.jump(item)
 
 class SearchBox(SBox.PFSearchBox):
-    def __init__(self, parent):
-        SBox.PFSearchBox.__init__(self, parent)
+    def __init__(self, parent, **kwargs):
+        SBox.PFSearchBox.__init__(self, parent, **kwargs)
         cancelBitmap = BitmapLoader.getBitmap("fit_delete_small","gui")
         searchBitmap = BitmapLoader.getBitmap("fsearch_small","gui")
         self.SetSearchBitmap(searchBitmap)

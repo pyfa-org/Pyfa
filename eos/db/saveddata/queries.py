@@ -422,6 +422,9 @@ def getOverrides(itemID, eager=None):
     else:
         raise TypeError("Need integer as argument")
 
+def getAllOverrides(eager=None):
+    return saveddata_session.query(Override).all()
+
 def removeInvalid(fits):
     invalids = [f for f in fits if f.isInvalid]
 
