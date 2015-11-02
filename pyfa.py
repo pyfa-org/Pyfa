@@ -100,9 +100,19 @@ if __name__ == "__main__":
     import os
     import os.path
 
+    class PyfaApp(wx.App):
+        def __init__(self):
+            wx.App.__init__(self, redirect=False)
+
+        def RedirectStdio(self):
+            self.stdioWin = self.outputWindowClass()
+            sys.stderr = self.stdioWin
+
     import eos.db
     import service.prefetch
+
     from gui.mainFrame import MainFrame
+    from gui.errorDialog import ErrorWin
 
     #Make sure the saveddata db exists
     if not os.path.exists(config.savePath):
@@ -110,6 +120,16 @@ if __name__ == "__main__":
 
     eos.db.saveddata_meta.create_all()
 
-    pyfa = wx.App(False)
-    MainFrame()
+    pyfa = PyfaApp()
+    pyfa.outputWindowClass = ErrorWin
+
+    # Comment out (or implement flag) to disable GUI error popup
+    pyfa.RedirectStdio()
+
+    # Remove comments to debug error window / frame
+    # (if it has an error, obviously it won't pop up or log to sys.stderr)
+    #dbgErr = ErrorWin()
+    #dbgErr.write("Test Error")
+
+    MainFrame(pyfa)
     pyfa.MainLoop()
