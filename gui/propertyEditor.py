@@ -24,17 +24,21 @@ class AttributeEditor( wx.Frame ):
         self.mainFrame = parent
         self.panel = panel = wx.Panel(self, wx.ID_ANY)
         topsizer = wx.BoxSizer(wx.HORIZONTAL)
+
         leftsizer = wx.BoxSizer(wx.VERTICAL)
+        leftPanel = wx.Panel(panel, wx.ID_ANY, style=wx.DOUBLE_BORDER if 'wxMSW' in wx.PlatformInfo else wx.SIMPLE_BORDER)
 
-        self.searchBox = SearchBox(panel, style=wx.DOUBLE_BORDER if 'wxMSW' in wx.PlatformInfo else wx.SIMPLE_BORDER)
-        self.itemView = ItemView(panel)
-        self.pg = AttributeGrid(panel)
-
-        topsizer.Add(leftsizer, 1, wx.ALL|wx.EXPAND, 5)
-        topsizer.Add(self.pg, 1, wx.ALL|wx.EXPAND, 5)
+        self.searchBox = SearchBox(leftPanel)
+        self.itemView = ItemView(leftPanel)
 
         leftsizer.Add(self.searchBox, 0, wx.EXPAND)
         leftsizer.Add(self.itemView, 1, wx.EXPAND)
+
+        leftPanel.SetSizer(leftsizer)
+        topsizer.Add(leftPanel, 1, wx.ALL | wx.EXPAND, 5)
+
+        self.pg = AttributeGrid(panel)
+        topsizer.Add(self.pg, 1, wx.ALL|wx.EXPAND, 5)
 
         panel.SetSizer(topsizer)
         topsizer.SetSizeHints(panel)
@@ -62,29 +66,34 @@ class ItemView(d.Display):
 
     def __init__(self, parent):
         d.Display.__init__(self, parent)
-        self.parent = parent
         sMkt = service.Market.getInstance()
+
         self.things = sMkt.getItemsWithOverrides()
         self.items = self.things
 
+        self.searchBox = parent.Parent.Parent.searchBox
         # Bind search actions
-        parent.Parent.searchBox.Bind(SBox.EVT_TEXT_ENTER, self.scheduleSearch)
-        parent.Parent.searchBox.Bind(SBox.EVT_SEARCH_BTN, self.scheduleSearch)
-        parent.Parent.searchBox.Bind(SBox.EVT_CANCEL_BTN, self.clearSearch)
-        parent.Parent.searchBox.Bind(SBox.EVT_TEXT, self.scheduleSearch)
+        self.searchBox.Bind(SBox.EVT_TEXT_ENTER, self.scheduleSearch)
+        self.searchBox.Bind(SBox.EVT_SEARCH_BTN, self.scheduleSearch)
+        self.searchBox.Bind(SBox.EVT_CANCEL_BTN, self.clearSearch)
+        self.searchBox.Bind(SBox.EVT_TEXT, self.scheduleSearch)
 
         self.update(self.items)
 
     def clearSearch(self, event=None):
         if event:
-            self.parent.Parent.searchBox.Clear()
+            self.searchBox.Clear()
         self.items = self.things
         self.update(self.items)
+
+    def updateItems(self):
+        sMkt = service.Market.getInstance()
+        self.things = sMkt.getItemsWithOverrides()
 
     def scheduleSearch(self, event=None):
         sMkt = service.Market.getInstance()
 
-        search = self.parent.Parent.searchBox.GetLineText(0)
+        search = self.searchBox.GetLineText(0)
         # Make sure we do not count wildcard as search symbol
         realsearch = search.replace("*", "")
         # Show nothing if query is too short
@@ -92,7 +101,6 @@ class ItemView(d.Display):
             self.clearSearch()
             return
 
-        self.parent.searchMode = True
         sMkt.searchItems(search, self.populateSearch, False)
 
     def populateSearch(self, items):
@@ -106,20 +114,21 @@ class AttributeGrid(wxpg.PropertyGrid):
         wxpg.PropertyGrid.__init__(self, parent, style=wxpg.PG_HIDE_MARGIN|wxpg.PG_HIDE_CATEGORIES|wxpg.PG_BOLD_MODIFIED|wxpg.PG_TOOLTIPS)
         self.SetExtraStyle(wxpg.PG_EX_HELP_AS_TOOLTIPS)
 
-        self.parent = parent
         self.item = None
+
+        self.itemView = parent.Parent.itemView
 
         self.Bind( wxpg.EVT_PG_CHANGED, self.OnPropGridChange )
         self.Bind( wxpg.EVT_PG_SELECTED, self.OnPropGridSelect )
         self.Bind( wxpg.EVT_PG_RIGHT_CLICK, self.OnPropGridRightClick )
 
-        parent.Parent.itemView.Bind(wx.EVT_LIST_ITEM_SELECTED, self.itemActivated)
-        parent.Parent.itemView.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.itemActivated)
+        self.itemView.Bind(wx.EVT_LIST_ITEM_SELECTED, self.itemActivated)
+        self.itemView.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.itemActivated)
 
     def itemActivated(self, event):
         self.Clear()
         sel = event.EventObject.GetFirstSelected()
-        self.item = item = self.parent.Parent.itemView.items[sel]
+        self.item = item = self.itemView.items[sel]
 
         for key in sorted(item.attributes.keys()):
             override = item.overrides.get(key, None)
@@ -142,6 +151,8 @@ class AttributeGrid(wxpg.PropertyGrid):
             p.SetModifiedStatus(False)
         else:
             self.item.setOverride(attr, p.GetValue())
+
+        self.itemView.updateItems()
 
         logger.debug('%s changed to "%s"' % (p.GetName(), p.GetValueAsString()))
 
