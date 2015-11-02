@@ -113,7 +113,7 @@ class ModifiedAttributeDict(collections.MutableMapping):
 
     def getOriginal(self, key):
         if self.OVERRIDES and key in self.__overrides:
-            return self.__overrides.get(key)
+            return self.__overrides.get(key).value
         val = self.__original.get(key)
         if val is None:
             return None

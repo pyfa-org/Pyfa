@@ -1,11 +1,11 @@
 import wx
 import wx.propgrid as wxpg
-import eos.db
 
 import gui.PFSearchBox as SBox
 from gui.marketBrowser import SearchBox
 import gui.display as d
 import service
+import gui.globalEvents as GE
 
 import logging
 
@@ -15,7 +15,7 @@ class AttributeEditor( wx.Frame ):
 
     def __init__( self, parent ):
         wx.Frame.__init__(self, parent, wx.ID_ANY, title="Attribute Editor", size=wx.Size(700,500))
-
+        self.mainFrame = parent
         self.panel = panel = wx.Panel(self, wx.ID_ANY)
         topsizer = wx.BoxSizer(wx.HORIZONTAL)
         leftsizer = wx.BoxSizer(wx.VERTICAL)
@@ -37,6 +37,14 @@ class AttributeEditor( wx.Frame ):
         sizer.Add(panel, 1, wx.EXPAND)
         self.SetSizer(sizer)
         self.SetAutoLayout(True)
+
+        self.Bind(wx.EVT_CLOSE, self.OnClose)
+
+    def OnClose(self, event):
+        fitID = self.mainFrame.getActiveFit()
+        if fitID is not None:
+            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+        self.Destroy()
 
 
 # This is literally a stripped down version of the market.
@@ -90,7 +98,10 @@ class AttributeGrid(wxpg.PropertyGrid):
 
     def __init__(self, parent):
         wxpg.PropertyGrid.__init__(self, parent, style=wxpg.PG_HIDE_MARGIN|wxpg.PG_HIDE_CATEGORIES|wxpg.PG_BOLD_MODIFIED|wxpg.PG_TOOLTIPS)
+        self.SetExtraStyle(wxpg.PG_EX_HELP_AS_TOOLTIPS)
+
         self.parent = parent
+        self.item = None
 
         self.Bind( wxpg.EVT_PG_CHANGED, self.OnPropGridChange )
         self.Bind( wxpg.EVT_PG_SELECTED, self.OnPropGridSelect )
@@ -102,35 +113,34 @@ class AttributeGrid(wxpg.PropertyGrid):
     def itemActivated(self, event):
         self.Clear()
         sel = event.EventObject.GetFirstSelected()
-        item = self.parent.Parent.itemView.items[sel]
+        self.item = item = self.parent.Parent.itemView.items[sel]
 
         for key in sorted(item.attributes.keys()):
             override = item.overrides.get(key, None)
             default = item.attributes[key].value
-            if override and override != item.attributes[key].value:
-                prop = wxpg.FloatProperty(key, value=override)
-                prop.defaultValue = default
+            if override and override.value != default:
+                prop = wxpg.FloatProperty(key, value=override.value)
                 prop.SetModifiedStatus(True)
             else:
                 prop = wxpg.FloatProperty(key, value=default)
 
+            prop.SetClientData(item.attributes[key])  # set this so that we may access it later
+            prop.SetHelpString("%s\n%s"%(item.attributes[key].displayName or key, "Default Value: %0.2f"%default))
             self.Append(prop)
 
     def OnPropGridChange(self, event):
         p = event.GetProperty()
-        if p:
-            logger.debug('%s changed to "%s"' % (p.GetName(), p.GetValueAsString()))
+        attr = p.GetClientData()
+        if p.GetValue() == attr.value:
+            self.item.deleteOverride(attr)
+            p.SetModifiedStatus(False)
+        else:
+            self.item.setOverride(attr, p.GetValue())
+
+        logger.debug('%s changed to "%s"' % (p.GetName(), p.GetValueAsString()))
 
     def OnPropGridSelect(self, event):
-        p = event.GetProperty()
-        if p:
-            logger.debug('%s selected' % (event.GetProperty().GetName()))
-        else:
-            logger.debug('Nothing selected')
+        pass
 
     def OnPropGridRightClick(self, event):
-        p = event.GetProperty()
-        if p:
-            logger.debug('%s right clicked' % (event.GetProperty().GetName()))
-        else:
-            logger.debug('Nothing right clicked')
+        pass
