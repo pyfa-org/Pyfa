@@ -124,7 +124,15 @@ class AttributeEditor( wx.Frame ):
                  "Confirm Delete", wx.YES | wx.NO | wx.ICON_EXCLAMATION)
 
         if dlg.ShowModal() == wx.ID_YES:
-            eos.db.clearOverrides()
+            sMkt = service.Market.getInstance()
+            items = sMkt.getItemsWithOverrides()
+            # We can't just delete overrides, as loaded items will still have
+            # them assigned. Deleting them from the database won't propagate
+            # them due to the eve/user database disconnect. We must loop through
+            # all items that have overrides and remove them
+            for item in items:
+                for _, x in item.overrides.items():
+                    item.deleteOverride(x.attr)
             self.itemView.updateItems(True)
             self.pg.Clear()
 
