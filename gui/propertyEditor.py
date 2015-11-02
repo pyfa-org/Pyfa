@@ -4,8 +4,9 @@ import wx.propgrid as wxpg
 import gui.PFSearchBox as SBox
 from gui.marketBrowser import SearchBox
 import gui.display as d
-import service
 import gui.globalEvents as GE
+from gui.bitmapLoader import BitmapLoader
+import service
 
 import logging
 
@@ -14,7 +15,12 @@ logger = logging.getLogger(__name__)
 class AttributeEditor( wx.Frame ):
 
     def __init__( self, parent ):
-        wx.Frame.__init__(self, parent, wx.ID_ANY, title="Attribute Editor", size=wx.Size(700,500))
+        wx.Frame.__init__(self, parent, wx.ID_ANY, title="Attribute Editor", pos=wx.DefaultPosition,
+                            size=wx.Size(650, 600), style=wx.DEFAULT_FRAME_STYLE|wx.FRAME_FLOAT_ON_PARENT|wx.TAB_TRAVERSAL)
+
+        i = wx.IconFromBitmap(BitmapLoader.getBitmap("fit_rename_small", "gui"))
+        self.SetIcon(i)
+
         self.mainFrame = parent
         self.panel = panel = wx.Panel(self, wx.ID_ANY)
         topsizer = wx.BoxSizer(wx.HORIZONTAL)

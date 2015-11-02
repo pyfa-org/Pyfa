@@ -40,7 +40,8 @@ class MainMenuBar(wx.MenuBar):
         self.saveCharId = wx.NewId()
         self.saveCharAsId = wx.NewId()
         self.revertCharId = wx.NewId()
-        self.attrEditor = wx.NewId()
+        self.attrEditorId = wx.NewId()
+        self.toggleOverridesId = wx.NewId()
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
@@ -79,6 +80,9 @@ class MainMenuBar(wx.MenuBar):
         editMenu.Append(self.saveCharId, "Save Character")
         editMenu.Append(self.saveCharAsId, "Save Character As...")
         editMenu.Append(self.revertCharId, "Revert Character")
+        editMenu.AppendSeparator()
+        editMenu.Append(self.toggleOverridesId, "Turn Overrides On")
+
         # Character menu
         windowMenu = wx.Menu()
         self.Append(windowMenu, "&Window")
@@ -103,8 +107,8 @@ class MainMenuBar(wx.MenuBar):
         preferencesItem.SetBitmap(BitmapLoader.getBitmap("preferences_small", "gui"))
         windowMenu.AppendItem(preferencesItem)
 
-        attrItem = wx.MenuItem(windowMenu, self.attrEditor, "Attribute Editor\tCTRL+A")
-        attrItem.SetBitmap(BitmapLoader.getBitmap("preferences_small", "gui"))
+        attrItem = wx.MenuItem(windowMenu, self.attrEditorId, "Attribute Overrides\tCTRL+A")
+        attrItem.SetBitmap(BitmapLoader.getBitmap("fit_rename_small", "gui"))
         windowMenu.AppendItem(attrItem)
 
         # Help menu

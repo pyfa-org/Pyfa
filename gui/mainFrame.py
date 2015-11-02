@@ -56,6 +56,9 @@ from gui.updateDialog import UpdateDialog
 from gui.propertyEditor import AttributeEditor
 from gui.builtinViews import *
 
+# import this to access override setting
+from eos.modifiedAttributeDict import ModifiedAttributeDict
+
 from time import gmtime, strftime
 
 
@@ -422,7 +425,9 @@ class MainFrame(wx.Frame):
         # Save current character
         self.Bind(wx.EVT_MENU, self.revertChar, id = menuBar.revertCharId)
         # Open attribute editor
-        self.Bind(wx.EVT_MENU, self.showAttrEditor, id = menuBar.attrEditor)
+        self.Bind(wx.EVT_MENU, self.showAttrEditor, id = menuBar.attrEditorId)
+        # Open attribute editor
+        self.Bind(wx.EVT_MENU, self.toggleOverrides, id = menuBar.toggleOverridesId)
 
         #Clipboard exports
         self.Bind(wx.EVT_MENU, self.exportToClipboard, id=wx.ID_COPY)
@@ -486,6 +491,12 @@ class MainFrame(wx.Frame):
 
         atable = wx.AcceleratorTable(actb)
         self.SetAcceleratorTable(atable)
+
+    def toggleOverrides(self, event):
+        ModifiedAttributeDict.OVERRIDES = not ModifiedAttributeDict.OVERRIDES
+        wx.PostEvent(self, GE.FitChanged(fitID=self.getActiveFit()))
+        menu = self.GetMenuBar()
+        menu.SetLabel(menu.toggleOverridesId, "Turn Overrides Off" if ModifiedAttributeDict.OVERRIDES else "Turn Overrides On")
 
     def saveChar(self, event):
         sChr = service.Character.getInstance()

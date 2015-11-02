@@ -39,7 +39,7 @@ class ChargeAttrShortcut(object):
 
 class ModifiedAttributeDict(collections.MutableMapping):
 
-    OVERRIDES = True
+    OVERRIDES = False
 
     class CalculationPlaceholder():
         pass
