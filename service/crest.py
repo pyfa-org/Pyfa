@@ -119,16 +119,16 @@ class Crest():
 
     def getFittings(self, charID):
         char = self.getCrestCharacter(charID)
-        return char.eve.get('https://api-sisi.testeveonline.com/characters/%d/fittings/'%char.ID)
+        return char.eve.get('%scharacters/%d/fittings/'%(char.eve._authed_endpoint,char.ID))
 
     def postFitting(self, charID, json):
         #@todo: new fitting ID can be recovered from Location header, ie: Location -> https://api-sisi.testeveonline.com/characters/1611853631/fittings/37486494/
         char = self.getCrestCharacter(charID)
-        return char.eve.post('https://api-sisi.testeveonline.com/characters/%d/fittings/'%char.ID, data=json)
+        return char.eve.post('%scharacters/%d/fittings/'%(char.eve._authed_endpoint,char.ID), data=json)
 
     def delFitting(self, charID, fittingID):
         char = self.getCrestCharacter(charID)
-        return char.eve.delete('https://api-sisi.testeveonline.com/characters/%d/fittings/%d/'%(char.ID, fittingID))
+        return char.eve.delete('%scharacters/%d/fittings/%d/'%(char.eve._authed_endpoint, char.ID, fittingID))
 
     def logout(self):
         logging.debug("Character logout")
