@@ -18,9 +18,9 @@ debug = False
 saveInRoot = False
 
 # Version data
-version = "1.15.1"
-tag = "git"
-expansionName = "Vanguard"
+version = "1.16.0"
+tag = "Stable"
+expansionName = "Parallax"
 expansionVersion = "1.0"
 evemonMinVersion = "4081"
 
