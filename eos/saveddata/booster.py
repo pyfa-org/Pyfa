@@ -58,6 +58,7 @@ class Booster(HandledItem, ItemAttrShortcut):
         self.__sideEffects = []
         self.__itemModifiedAttributes = ModifiedAttributeDict()
         self.__itemModifiedAttributes.original = self.__item.attributes
+        self.__itemModifiedAttributes.overrides = self.__item.overrides
         self.__slot = self.__calculateSlot(self.__item)
 
         for effect in self.__item.effects.itervalues():

@@ -11,7 +11,7 @@ TextTyped, EVT_TEXT = wx.lib.newevent.NewEvent()
 
 class PFSearchBox(wx.Window):
     def __init__(self, parent, id = wx.ID_ANY, value = "", pos = wx.DefaultPosition, size = wx.Size(-1,24), style = 0):
-        wx.Window.__init__(self, parent, id, pos, size, style = 0)
+        wx.Window.__init__(self, parent, id, pos, size, style = style)
 
         self.isSearchButtonVisible = False
         self.isCancelButtonVisible = False

@@ -47,6 +47,8 @@ class MainMenuBar(wx.MenuBar):
         self.eveFittingsId = wx.NewId()
         self.exportToEveId = wx.NewId()
         self.ssoLoginId = wx.NewId()
+        self.attrEditorId = wx.NewId()
+        self.toggleOverridesId = wx.NewId()
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
@@ -87,6 +89,9 @@ class MainMenuBar(wx.MenuBar):
         editMenu.Append(self.saveCharId, "Save Character")
         editMenu.Append(self.saveCharAsId, "Save Character As...")
         editMenu.Append(self.revertCharId, "Revert Character")
+        editMenu.AppendSeparator()
+        editMenu.Append(self.toggleOverridesId, "Turn Overrides On")
+
         # Character menu
         windowMenu = wx.Menu()
         self.Append(windowMenu, "&Window")
@@ -124,6 +129,10 @@ class MainMenuBar(wx.MenuBar):
         if self.sCrest.settings.get('mode') == CrestModes.IMPLICIT or len(self.sCrest.getCrestCharacters()) == 0:
             self.Enable(self.eveFittingsId, False)
             self.Enable(self.exportToEveId, False)
+
+        attrItem = wx.MenuItem(windowMenu, self.attrEditorId, "Attribute Overrides\tCTRL+A")
+        attrItem.SetBitmap(BitmapLoader.getBitmap("fit_rename_small", "gui"))
+        windowMenu.AppendItem(attrItem)
 
         # Help menu
         helpMenu = wx.Menu()

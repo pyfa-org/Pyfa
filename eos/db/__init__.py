@@ -68,14 +68,8 @@ from eos.db.gamedata import *
 from eos.db.saveddata import *
 
 #Import queries
-from eos.db.gamedata.queries import getItem, searchItems, getVariations, getItemsByCategory, directAttributeRequest, \
-                                    getMarketGroup, getGroup, getCategory, getAttributeInfo, getMetaData, getMetaGroup
-from eos.db.saveddata.queries import getUser, getCharacter, getFit, getFitsWithShip, countFitsWithShip, searchFits, \
-                                     getCharacterList, getPrice, getDamagePatternList, getDamagePattern, \
-                                     getFitList, getFleetList, getFleet, save, remove, commit, add, \
-                                     getCharactersForUser, getMiscData, getSquadsIDsWithFitID, getWing, \
-                                     getSquad, getBoosterFits, getProjectedFits, getTargetResistsList, getTargetResists,\
-                                     clearPrices, countAllFits, getCrestCharacters, getCrestCharacter
+from eos.db.gamedata.queries import *
+from eos.db.saveddata.queries import *
 
 #If using in memory saveddata, you'll want to reflect it so the data structure is good.
 if config.saveddata_connectionstring == "sqlite:///:memory:":

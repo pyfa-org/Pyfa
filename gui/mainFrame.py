@@ -55,7 +55,12 @@ from gui.copySelectDialog import CopySelectDialog
 from gui.utils.clipboard import toClipboard, fromClipboard
 from gui.fleetBrowser import FleetBrowser
 from gui.updateDialog import UpdateDialog
+from gui.propertyEditor import AttributeEditor
 from gui.builtinViews import *
+
+# import this to access override setting
+from eos.modifiedAttributeDict import ModifiedAttributeDict
+
 from time import gmtime, strftime
 
 from service.crest import CrestModes
@@ -340,6 +345,10 @@ class MainFrame(wx.Frame):
         dlg=CharacterEditor(self)
         dlg.Show()
 
+    def showAttrEditor(self, event):
+        dlg=AttributeEditor(self)
+        dlg.Show()
+
     def showTargetResistsEditor(self, event):
         dlg=ResistsEditorDlg(self)
         dlg.ShowModal()
@@ -427,12 +436,18 @@ class MainFrame(wx.Frame):
         self.Bind(wx.EVT_MENU, self.saveCharAs, id = menuBar.saveCharAsId)
         # Save current character
         self.Bind(wx.EVT_MENU, self.revertChar, id = menuBar.revertCharId)
+
         # Browse fittings
         self.Bind(wx.EVT_MENU, self.eveFittings, id = menuBar.eveFittingsId)
         # Export to EVE
         self.Bind(wx.EVT_MENU, self.exportToEve, id = menuBar.exportToEveId)
         # Login to EVE
         self.Bind(wx.EVT_MENU, self.ssoLogin, id = menuBar.ssoLoginId)
+
+        # Open attribute editor
+        self.Bind(wx.EVT_MENU, self.showAttrEditor, id = menuBar.attrEditorId)
+        # Toggle Overrides
+        self.Bind(wx.EVT_MENU, self.toggleOverrides, id = menuBar.toggleOverridesId)
 
         #Clipboard exports
         self.Bind(wx.EVT_MENU, self.exportToClipboard, id=wx.ID_COPY)
@@ -533,6 +548,12 @@ class MainFrame(wx.Frame):
     def exportToEve(self, event):
         dlg=ExportToEve(self)
         dlg.Show()
+
+    def toggleOverrides(self, event):
+        ModifiedAttributeDict.OVERRIDES = not ModifiedAttributeDict.OVERRIDES
+        wx.PostEvent(self, GE.FitChanged(fitID=self.getActiveFit()))
+        menu = self.GetMenuBar()
+        menu.SetLabel(menu.toggleOverridesId, "Turn Overrides Off" if ModifiedAttributeDict.OVERRIDES else "Turn Overrides On")
 
     def saveChar(self, event):
         sChr = service.Character.getInstance()

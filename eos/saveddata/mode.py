@@ -30,6 +30,7 @@ class Mode(ItemAttrShortcut, HandledItem):
         self.__item = item
         self.__itemModifiedAttributes = ModifiedAttributeDict()
         self.__itemModifiedAttributes.original = self.item.attributes
+        self.__itemModifiedAttributes.overrides = self.item.overrides
 
     @property
     def item(self):
