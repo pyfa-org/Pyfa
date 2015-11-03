@@ -55,7 +55,6 @@ class Crest():
         return cls._instance
 
     def __init__(self):
-        print "init crest"
         self.settings = service.settings.CRESTSettings.getInstance()
         self.scopes = ['characterFittingsRead', 'characterFittingsWrite']
 
