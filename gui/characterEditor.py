@@ -35,9 +35,6 @@ class CharacterEditor(wx.Frame):
                             size=wx.Size(641, 600), style=wx.DEFAULT_FRAME_STYLE|wx.FRAME_FLOAT_ON_PARENT|wx.TAB_TRAVERSAL)
 
         i = wx.IconFromBitmap(BitmapLoader.getBitmap("character_small", "gui"))
-
-        self.mainFrame = parent
-
         self.SetIcon(i)
 
         self.disableWin=  wx.WindowDisabler(self)

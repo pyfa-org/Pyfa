@@ -24,6 +24,7 @@ from sqlalchemy.orm import reconstructor
 from eqBase import EqBase
 
 import traceback
+import eos.db
 
 try:
     from collections import OrderedDict
@@ -168,7 +169,6 @@ class Item(EqBase):
         info = getattr(cls, "MOVE_ATTR_INFO", None)
         if info is None:
             cls.MOVE_ATTR_INFO = info = []
-            import eos.db
             for id in cls.MOVE_ATTRS:
                 info.append(eos.db.getAttributeInfo(id))
 
@@ -191,6 +191,7 @@ class Item(EqBase):
         self.__moved = False
         self.__offensive = None
         self.__assistive = None
+        self.__overrides = None
 
     @property
     def attributes(self):
@@ -209,6 +210,32 @@ class Item(EqBase):
                 return True
 
         return False
+
+    @property
+    def overrides(self):
+        if self.__overrides is None:
+            self.__overrides = {}
+            overrides = eos.db.getOverrides(self.ID)
+            for x in overrides:
+                if x.attr.name in self.__attributes:
+                    self.__overrides[x.attr.name] = x
+
+        return self.__overrides
+
+    def setOverride(self, attr, value):
+        from eos.saveddata.override import Override
+        if attr.name in self.__overrides:
+            override = self.__overrides.get(attr.name)
+            override.value = value
+        else:
+            override = Override(self, attr, value)
+            self.__overrides[attr.name] = override
+        eos.db.save(override)
+
+    def deleteOverride(self, attr):
+        override = self.__overrides.pop(attr.name, None)
+        eos.db.saveddata_session.delete(override)
+        eos.db.commit()
 
     @property
     def requiredSkills(self):
@@ -344,6 +371,12 @@ class Item(EqBase):
                 return True
 
         return False
+
+    def __repr__(self):
+        return "Item(ID={}, name={}) at {}".format(
+            self.ID, self.name, hex(id(self))
+        )
+
 
 class MetaData(EqBase):
     pass

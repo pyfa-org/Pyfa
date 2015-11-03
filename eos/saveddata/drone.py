@@ -67,6 +67,7 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         self.__miningyield = None
         self.__itemModifiedAttributes = ModifiedAttributeDict()
         self.__itemModifiedAttributes.original = self.__item.attributes
+        self.__itemModifiedAttributes.overrides = self.__item.overrides
 
         self.__chargeModifiedAttributes = ModifiedAttributeDict()
         chargeID = self.getModifiedItemAttr("entityMissileTypeID")
@@ -74,6 +75,7 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             charge = eos.db.getItem(int(chargeID))
             self.__charge = charge
             self.__chargeModifiedAttributes.original = charge.attributes
+            self.__chargeModifiedAttributes.overrides = charge.overrides
 
     @property
     def itemModifiedAttributes(self):

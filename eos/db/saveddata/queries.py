@@ -19,7 +19,8 @@
 
 from eos.db.util import processEager, processWhere
 from eos.db import saveddata_session, sd_lock
-from eos.types import User, Character, Fit, Price, DamagePattern, Fleet, MiscData, Wing, Squad, TargetResists
+
+from eos.types import User, Character, Fit, Price, DamagePattern, Fleet, MiscData, Wing, Squad, TargetResists, Override, CrestChar
 from eos.db.saveddata.fleet import squadmembers_table
 from eos.db.saveddata.fit import projectedFits_table
 from sqlalchemy.sql import and_
@@ -182,7 +183,7 @@ def getFit(lookfor, eager=None):
         else:
             eager = processEager(eager)
             with sd_lock:
-                fit = saveddata_session.query(Fit).options(*eager).filter(Fit.ID == fitID).first()
+                fit = saveddata_session.query(Fit).options(*eager).filter(Fit.ID == lookfor).first()
     else:
         raise TypeError("Need integer as argument")
 
@@ -415,6 +416,45 @@ def getProjectedFits(fitID):
             return fits
     else:
         raise TypeError("Need integer as argument")
+
+def getCrestCharacters(eager=None):
+    eager = processEager(eager)
+    with sd_lock:
+        characters = saveddata_session.query(CrestChar).options(*eager).all()
+    return characters
+
+@cachedQuery(CrestChar, 1, "lookfor")
+def getCrestCharacter(lookfor, eager=None):
+    if isinstance(lookfor, int):
+        if eager is None:
+            with sd_lock:
+                character = saveddata_session.query(CrestChar).get(lookfor)
+        else:
+            eager = processEager(eager)
+            with sd_lock:
+                character = saveddata_session.query(CrestChar).options(*eager).filter(CrestChar.ID == lookfor).first()
+    elif isinstance(lookfor, basestring):
+        eager = processEager(eager)
+        with sd_lock:
+            character = saveddata_session.query(CrestChar).options(*eager).filter(CrestChar.name == lookfor).first()
+    else:
+        raise TypeError("Need integer or string as argument")
+    return character
+
+def getOverrides(itemID, eager=None):
+    if isinstance(itemID, int):
+        return saveddata_session.query(Override).filter(Override.itemID == itemID).all()
+    else:
+        raise TypeError("Need integer as argument")
+
+def clearOverrides():
+    with sd_lock:
+        deleted_rows = saveddata_session.query(Override).delete()
+    commit()
+    return deleted_rows
+
+def getAllOverrides(eager=None):
+    return saveddata_session.query(Override).all()
 
 def removeInvalid(fits):
     invalids = [f for f in fits if f.isInvalid]

@@ -56,6 +56,7 @@ class Implant(HandledItem, ItemAttrShortcut):
         """ Build object. Assumes proper and valid item already set """
         self.__itemModifiedAttributes = ModifiedAttributeDict()
         self.__itemModifiedAttributes.original = self.__item.attributes
+        self.__itemModifiedAttributes.overrides = self.__item.overrides
         self.__slot = self.__calculateSlot(self.__item)
 
     @property

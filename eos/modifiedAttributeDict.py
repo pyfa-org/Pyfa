@@ -38,6 +38,9 @@ class ChargeAttrShortcut(object):
             return None
 
 class ModifiedAttributeDict(collections.MutableMapping):
+
+    OVERRIDES = False
+
     class CalculationPlaceholder():
         pass
 
@@ -51,6 +54,8 @@ class ModifiedAttributeDict(collections.MutableMapping):
         self.__modified = {}
         # Affected by entities
         self.__affectedBy = {}
+        # Overrides
+        self.__overrides = {}
         # Dictionaries for various value modification types
         self.__forced = {}
         self.__preAssigns = {}
@@ -79,6 +84,14 @@ class ModifiedAttributeDict(collections.MutableMapping):
         self.__original = val
         self.__modified.clear()
 
+    @property
+    def overrides(self):
+        return self.__overrides
+
+    @overrides.setter
+    def overrides(self, val):
+        self.__overrides = val
+
     def __getitem__(self, key):
         # Check if we have final calculated value
         if key in self.__modified:
@@ -99,6 +112,8 @@ class ModifiedAttributeDict(collections.MutableMapping):
             del self.__intermediary[key]
 
     def getOriginal(self, key):
+        if self.OVERRIDES and key in self.__overrides:
+            return self.__overrides.get(key).value
         val = self.__original.get(key)
         if val is None:
             return None

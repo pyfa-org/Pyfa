@@ -820,6 +820,10 @@ class Fit(object):
         fit = eos.db.getFit(fitID)
         return Port.exportDna(fit)
 
+    def exportCrest(self, fitID, callback=None):
+        fit = eos.db.getFit(fitID)
+        return Port.exportCrest(fit, callback)
+
     def exportXml(self, callback=None, *fitIDs):
         fits = map(lambda fitID: eos.db.getFit(fitID), fitIDs)
         return Port.exportXml(callback, *fits)

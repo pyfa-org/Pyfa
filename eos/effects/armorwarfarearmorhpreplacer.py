@@ -1,4 +1,4 @@
-# armorTankingGang2
+# armorWarfareArmorHpReplacer
 #
 # Used by:
 # Implant: Armored Warfare Mindlink
