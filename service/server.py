@@ -8,6 +8,7 @@ from wx.lib.pubsub import setupkwargs
 from wx.lib.pubsub import pub
 
 import logging
+import time
 
 logger = logging.getLogger(__name__)
 
@@ -77,10 +78,9 @@ class StoppableHTTPServer(BaseHTTPServer.HTTPServer):
 
     def stop(self):
         self.run = False
-        self.server_close()
 
     def handle_timeout(self):
-        logger.debug("Number of tries: %d"%self.tries)
+        #logger.debug("Number of tries: %d"%self.tries)
         self.tries += 1
         if self.tries == self.max_tries:
             logger.debug("Server timed out waiting for connection")
@@ -92,6 +92,7 @@ class StoppableHTTPServer(BaseHTTPServer.HTTPServer):
                 self.handle_request()
             except TypeError:
                 pass
+        self.server_close()
 
 if __name__ == "__main__":
     httpd = StoppableHTTPServer(('', 6461), AuthHandler)

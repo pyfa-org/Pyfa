@@ -1,4 +1,3 @@
-print "import crest"
 import thread
 import config
 import logging
