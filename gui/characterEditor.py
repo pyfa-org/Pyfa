@@ -37,6 +37,8 @@ class CharacterEditor(wx.Frame):
         i = wx.IconFromBitmap(BitmapLoader.getBitmap("character_small", "gui"))
         self.SetIcon(i)
 
+        self.mainFrame = parent
+        
         self.disableWin=  wx.WindowDisabler(self)
         self.SetSizeHintsSz(wx.Size(640, 600), wx.DefaultSize)
         self.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNFACE ) )
