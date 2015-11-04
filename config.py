@@ -18,7 +18,7 @@ debug = False
 saveInRoot = False
 
 # Version data
-version = "1.16.0"
+version = "1.16.1"
 tag = "Stable"
 expansionName = "Parallax"
 expansionVersion = "1.0"
