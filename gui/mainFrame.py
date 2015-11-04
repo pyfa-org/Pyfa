@@ -45,7 +45,6 @@ from gui.multiSwitch import MultiSwitch
 from gui.statsPane import StatsPane
 from gui.shipBrowser import ShipBrowser, FitSelected, ImportSelected, Stage3Selected
 from gui.characterEditor import CharacterEditor, SaveCharacterAs
-from gui.crestFittings import CrestFittings, ExportToEve, CrestMgmt
 from gui.characterSelection import CharacterSelection
 from gui.patternEditor import DmgPatternEditorDlg
 from gui.resistsEditor import ResistsEditorDlg
@@ -55,7 +54,6 @@ from gui.copySelectDialog import CopySelectDialog
 from gui.utils.clipboard import toClipboard, fromClipboard
 from gui.fleetBrowser import FleetBrowser
 from gui.updateDialog import UpdateDialog
-from gui.propertyEditor import AttributeEditor
 from gui.builtinViews import *
 
 # import this to access override setting
@@ -63,10 +61,13 @@ from eos.modifiedAttributeDict import ModifiedAttributeDict
 
 from time import gmtime, strftime
 
-from service.crest import CrestModes
+if not 'wxMac' in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3,0)):
+    from service.crest import CrestModes
+    from gui.crestFittings import CrestFittings, ExportToEve, CrestMgmt
+    from gui.propertyEditor import AttributeEditor
 
-from wx.lib.pubsub import setupkwargs
-from wx.lib.pubsub import pub
+    from wx.lib.pubsub import setupkwargs
+    from wx.lib.pubsub import pub
 
 #dummy panel(no paint no erasebk)
 class PFPanel(wx.Panel):
@@ -203,8 +204,9 @@ class MainFrame(wx.Frame):
         self.sUpdate = service.Update.getInstance()
         self.sUpdate.CheckUpdate(self.ShowUpdateBox)
 
-        pub.subscribe(self.onSSOLogin, 'login_success')
-        pub.subscribe(self.onSSOLogout, 'logout_success')
+        if not 'wxMac' in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3,0)):
+            pub.subscribe(self.onSSOLogin, 'login_success')
+            pub.subscribe(self.onSSOLogout, 'logout_success')
 
         self.titleTimer = wx.Timer(self)
         self.Bind(wx.EVT_TIMER, self.updateTitle, self.titleTimer)

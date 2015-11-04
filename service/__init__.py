@@ -10,6 +10,9 @@ from service.update import Update
 from service.price import Price
 from service.network import Network
 from service.eveapi import EVEAPIConnection, ParseXML
-from service.crest import Crest
 from service.server import StoppableHTTPServer, AuthHandler
 from service.pycrest import EVE
+
+import wx
+if not 'wxMac' in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3,0)):
+    from service.crest import Crest

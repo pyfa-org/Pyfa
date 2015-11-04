@@ -24,7 +24,9 @@ import gui.mainFrame
 import gui.graphFrame
 import gui.globalEvents as GE
 import service
-from service.crest import CrestModes
+
+if not 'wxMac' in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3,0)):
+    from service.crest import CrestModes
 
 from wx.lib.pubsub import setupkwargs
 from wx.lib.pubsub import pub
@@ -51,8 +53,6 @@ class MainMenuBar(wx.MenuBar):
         self.toggleOverridesId = wx.NewId()
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-
-        self.sCrest = service.Crest.getInstance()
 
         wx.MenuBar.__init__(self)
 
@@ -89,8 +89,6 @@ class MainMenuBar(wx.MenuBar):
         editMenu.Append(self.saveCharId, "Save Character")
         editMenu.Append(self.saveCharAsId, "Save Character As...")
         editMenu.Append(self.revertCharId, "Revert Character")
-        editMenu.AppendSeparator()
-        editMenu.Append(self.toggleOverridesId, "Turn Overrides On")
 
         # Character menu
         windowMenu = wx.Menu()
@@ -116,23 +114,33 @@ class MainMenuBar(wx.MenuBar):
         preferencesItem.SetBitmap(BitmapLoader.getBitmap("preferences_small", "gui"))
         windowMenu.AppendItem(preferencesItem)
 
-        # CREST Menu
-        crestMenu = wx.Menu()
-        self.Append(crestMenu, "&CREST")
-        if self.sCrest.settings.get('mode') != CrestModes.IMPLICIT:
-            crestMenu.Append(self.ssoLoginId, "Manage Characters")
-        else:
-            crestMenu.Append(self.ssoLoginId, "Login to EVE")
-        crestMenu.Append(self.eveFittingsId, "Browse EVE Fittings")
-        crestMenu.Append(self.exportToEveId, "Export To EVE")
+        if not 'wxMac' in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3,0)):
+            self.sCrest = service.Crest.getInstance()
 
-        if self.sCrest.settings.get('mode') == CrestModes.IMPLICIT or len(self.sCrest.getCrestCharacters()) == 0:
-            self.Enable(self.eveFittingsId, False)
-            self.Enable(self.exportToEveId, False)
+            # CREST Menu
+            crestMenu = wx.Menu()
+            self.Append(crestMenu, "&CREST")
+            if self.sCrest.settings.get('mode') != CrestModes.IMPLICIT:
+                crestMenu.Append(self.ssoLoginId, "Manage Characters")
+            else:
+                crestMenu.Append(self.ssoLoginId, "Login to EVE")
+            crestMenu.Append(self.eveFittingsId, "Browse EVE Fittings")
+            crestMenu.Append(self.exportToEveId, "Export To EVE")
 
-        attrItem = wx.MenuItem(windowMenu, self.attrEditorId, "Attribute Overrides\tCTRL+B")
-        attrItem.SetBitmap(BitmapLoader.getBitmap("fit_rename_small", "gui"))
-        windowMenu.AppendItem(attrItem)
+            if self.sCrest.settings.get('mode') == CrestModes.IMPLICIT or len(self.sCrest.getCrestCharacters()) == 0:
+                self.Enable(self.eveFittingsId, False)
+                self.Enable(self.exportToEveId, False)
+
+            attrItem = wx.MenuItem(windowMenu, self.attrEditorId, "Attribute Overrides\tCTRL+B")
+            attrItem.SetBitmap(BitmapLoader.getBitmap("fit_rename_small", "gui"))
+            windowMenu.AppendItem(attrItem)
+
+            editMenu.AppendSeparator()
+            editMenu.Append(self.toggleOverridesId, "Turn Overrides On")
+
+            pub.subscribe(self.ssoLogin, 'login_success')
+            pub.subscribe(self.ssoLogout, 'logout_success')
+            pub.subscribe(self.updateCrest, 'crest_changed')
 
         # Help menu
         helpMenu = wx.Menu()
@@ -146,9 +154,6 @@ class MainMenuBar(wx.MenuBar):
             helpMenu.Append( self.mainFrame.widgetInspectMenuID, "Open Widgets Inspect tool", "Open Widgets Inspect tool")
 
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
-        pub.subscribe(self.ssoLogin, 'login_success')
-        pub.subscribe(self.ssoLogout, 'logout_success')
-        pub.subscribe(self.updateCrest, 'crest_changed')
 
     def fitChanged(self, event):
         enable = event.fitID is not None
