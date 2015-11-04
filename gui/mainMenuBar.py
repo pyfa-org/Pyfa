@@ -130,7 +130,7 @@ class MainMenuBar(wx.MenuBar):
             self.Enable(self.eveFittingsId, False)
             self.Enable(self.exportToEveId, False)
 
-        attrItem = wx.MenuItem(windowMenu, self.attrEditorId, "Attribute Overrides\tCTRL+A")
+        attrItem = wx.MenuItem(windowMenu, self.attrEditorId, "Attribute Overrides\tCTRL+B")
         attrItem.SetBitmap(BitmapLoader.getBitmap("fit_rename_small", "gui"))
         windowMenu.AppendItem(attrItem)
 
