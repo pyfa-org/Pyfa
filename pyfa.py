@@ -50,7 +50,7 @@ if not hasattr(sys, 'frozen'):
         if options.force28 is True:
             wxversion.select('2.8')
         else:
-            wxversion.select('3.0')
+            wxversion.select(['3.0', '2.8'])
     except wxversion.VersionError:
         print "Installed wxPython version doesn't meet requirements.\nYou can download wxPython 2.8 or 3.0 from http://www.wxpython.org/"
         sys.exit(1)
