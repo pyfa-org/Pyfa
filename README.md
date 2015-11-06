@@ -24,7 +24,7 @@ If you wish to help with development or simply need to run pyfa through a Python
 ## Bug Reporting
 The preferred method of reporting bugs is through the projects GitHub Issues interface. Alternatively, posting a report in the pyfa thread on the official EVE Online forums is acceptable. Guidelines for bug reporting can be found on [this wiki page](https://github.com/DarkFenX/Pyfa/wiki/Bug-Reporting). 
 
-## Liscense
+## License
 pyfa is licensed under the GNU GPL v3.0, see LICENSE
 
 ## Resources
