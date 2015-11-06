@@ -300,7 +300,7 @@ class ModifiedAttributeDict(collections.MutableMapping):
         else:
             if not attributeName in self.__multipliers:
                 self.__multipliers[attributeName] = 1
-            self.__multipliers[attributeName] *= multiplier or 1
+            self.__multipliers[attributeName] *= multiplier if multiplier is not None else 1
         self.__placehold(attributeName)
         self.__afflict(attributeName, "%s*" % ("s" if stackingPenalties else ""), multiplier, multiplier != 1)
 
