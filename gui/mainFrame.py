@@ -64,10 +64,15 @@ from time import gmtime, strftime
 if not 'wxMac' in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3,0)):
     from service.crest import CrestModes
     from gui.crestFittings import CrestFittings, ExportToEve, CrestMgmt
-    from gui.propertyEditor import AttributeEditor
-
     from wx.lib.pubsub import setupkwargs
     from wx.lib.pubsub import pub
+
+    try:
+        from gui.propertyEditor import AttributeEditor
+        disableOverrideEditor = False
+    except ImportError, e:
+        print "Error loading Attribute Editor: %s.\nAccess to Attribute Editor is disabled."%e.message
+        disableOverrideEditor = True
 
 #dummy panel(no paint no erasebk)
 class PFPanel(wx.Panel):

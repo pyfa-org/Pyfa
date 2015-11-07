@@ -1,5 +1,12 @@
 import wx
-import wx.propgrid as wxpg
+
+try:
+    import wx.propgrid as wxpg
+except:
+    if wx.VERSION < (2, 9):
+        raise ImportError("wx.propgrid is only available in wxPython >= 2.9")
+    else:
+        raise
 
 import gui.PFSearchBox as SBox
 from gui.marketBrowser import SearchBox

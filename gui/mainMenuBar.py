@@ -53,7 +53,6 @@ class MainMenuBar(wx.MenuBar):
         self.toggleOverridesId = wx.NewId()
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-
         wx.MenuBar.__init__(self)
 
         # File menu
@@ -131,12 +130,13 @@ class MainMenuBar(wx.MenuBar):
                 self.Enable(self.eveFittingsId, False)
                 self.Enable(self.exportToEveId, False)
 
-            attrItem = wx.MenuItem(windowMenu, self.attrEditorId, "Attribute Overrides\tCTRL+B")
-            attrItem.SetBitmap(BitmapLoader.getBitmap("fit_rename_small", "gui"))
-            windowMenu.AppendItem(attrItem)
+            if not gui.mainFrame.disableOverrideEditor:
+                attrItem = wx.MenuItem(windowMenu, self.attrEditorId, "Attribute Overrides\tCTRL+B")
+                attrItem.SetBitmap(BitmapLoader.getBitmap("fit_rename_small", "gui"))
+                windowMenu.AppendItem(attrItem)
 
-            editMenu.AppendSeparator()
-            editMenu.Append(self.toggleOverridesId, "Turn Overrides On")
+                editMenu.AppendSeparator()
+                editMenu.Append(self.toggleOverridesId, "Turn Overrides On")
 
             pub.subscribe(self.ssoLogin, 'login_success')
             pub.subscribe(self.ssoLogout, 'logout_success')
