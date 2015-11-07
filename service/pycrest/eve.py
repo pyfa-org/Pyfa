@@ -8,7 +8,7 @@ import requests
 from . import version
 from compat import bytes_, text_
 from errors import APIException
-from weak_ciphers import WeakCiphersAdapter
+from requests.adapters import HTTPAdapter
 
 try:
     from urllib.parse import urlparse, urlunparse, parse_qsl
@@ -110,7 +110,7 @@ class APIConnection(object):
         })
         session.headers.update(additional_headers)
         session.mount('https://public-crest.eveonline.com',
-                WeakCiphersAdapter())
+                HTTPAdapter())
         self._session = session
         if cache:
             if isinstance(cache, APICache):
