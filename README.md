@@ -20,6 +20,7 @@ If you wish to help with development or simply need to run pyfa through a Python
 * `sqlalchemy` >= 0.6
 * `dateutil`
 * `matplotlib` (for some Linux distributions, you may need to install separate wxPython bindings, such as `python-matplotlib-wx`)
+* `requests`
 
 ## Bug Reporting
 The preferred method of reporting bugs is through the projects GitHub Issues interface. Alternatively, posting a report in the pyfa thread on the official EVE Online forums is acceptable. Guidelines for bug reporting can be found on [this wiki page](https://github.com/DarkFenX/Pyfa/wiki/Bug-Reporting). 
