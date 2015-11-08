@@ -84,7 +84,6 @@ class StoppableHTTPServer(BaseHTTPServer.HTTPServer):
 
     def serve(self, callback):
         self.callback = callback
-        print callback
         while self.run:
             try:
                 self.handle_request()

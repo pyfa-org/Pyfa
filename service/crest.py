@@ -96,7 +96,6 @@ class Crest():
 
     def delCrestCharacter(self, charID):
         char = eos.db.getCrestCharacter(charID)
-        print self.charCache
         del self.charCache[char.ID]
         eos.db.remove(char)
         wx.PostEvent(self.mainFrame, GE.SsoLogout(type=CrestModes.USER, numChars=len(self.charCache)))

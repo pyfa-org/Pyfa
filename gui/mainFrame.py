@@ -560,12 +560,10 @@ class MainFrame(wx.Frame):
         sCrest = service.Crest.getInstance()
 
         if type == CrestModes.IMPLICIT:
-            print 'impl'
             menu.SetLabel(menu.ssoLoginId, "Login to EVE")
             menu.Enable(menu.eveFittingsId, False)
             menu.Enable(menu.exportToEveId, False)
         else:
-            print 'user'
             menu.SetLabel(menu.ssoLoginId, "Manage Characters")
             enable = len(sCrest.getCrestCharacters()) == 0
             menu.Enable(menu.eveFittingsId, not enable)
