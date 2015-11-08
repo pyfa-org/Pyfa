@@ -28,9 +28,6 @@ import service
 if not 'wxMac' in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3,0)):
     from service.crest import CrestModes
 
-from wx.lib.pubsub import setupkwargs
-from wx.lib.pubsub import pub
-
 class MainMenuBar(wx.MenuBar):
     def __init__(self):
         self.characterEditorId = wx.NewId()
@@ -138,10 +135,6 @@ class MainMenuBar(wx.MenuBar):
                 editMenu.AppendSeparator()
                 editMenu.Append(self.toggleOverridesId, "Turn Overrides On")
 
-            pub.subscribe(self.ssoLogin, 'login_success')
-            pub.subscribe(self.ssoLogout, 'logout_success')
-            pub.subscribe(self.updateCrest, 'crest_changed')
-
         # Help menu
         helpMenu = wx.Menu()
         self.Append(helpMenu, "&Help")
@@ -172,24 +165,4 @@ class MainMenuBar(wx.MenuBar):
 
         event.Skip()
 
-    def ssoLogin(self, type):
-        if self.sCrest.settings.get('mode') == CrestModes.IMPLICIT:
-            self.SetLabel(self.ssoLoginId, "Logout Character")
-            self.Enable(self.eveFittingsId, True)
-            self.Enable(self.exportToEveId, True)
-
-    def ssoLogout(self, message):
-        if self.sCrest.settings.get('mode') == CrestModes.IMPLICIT:
-            self.SetLabel(self.ssoLoginId, "Login to EVE")
-            self.Enable(self.eveFittingsId, False)
-            self.Enable(self.exportToEveId, False)
-
-    def updateCrest(self, message):
-        bool = self.sCrest.settings.get('mode') == CrestModes.IMPLICIT or len(self.sCrest.getCrestCharacters()) == 0
-        self.Enable(self.eveFittingsId, not bool)
-        self.Enable(self.exportToEveId, not bool)
-        if self.sCrest.settings.get('mode') == CrestModes.IMPLICIT:
-            self.SetLabel(self.ssoLoginId, "Login to EVE")
-        else:
-            self.SetLabel(self.ssoLoginId, "Manage Characters")
 

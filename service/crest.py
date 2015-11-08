@@ -1,18 +1,18 @@
+import wx
 import thread
-import config
 import logging
 import threading
 import copy
 import uuid
-import wx
 import time
-
-from wx.lib.pubsub import pub
 
 import eos.db
 from eos.enum import Enum
 from eos.types import CrestChar
+
 import service
+
+import gui.globalEvents as GE
 
 logger = logging.getLogger(__name__)
 
@@ -51,10 +51,19 @@ class Crest():
         if cls._instance.httpd:
             cls._instance.stopServer()
         cls._instance = Crest()
-        wx.CallAfter(pub.sendMessage, 'crest_changed', message=None)
+        cls._instance.mainFrame.updateCrestMenus(type=cls._instance.settings.get('mode'))
         return cls._instance
 
     def __init__(self):
+        """
+        A note on login/logout events: the character login events happen
+        whenever a characters is logged into via the SSO, regardless of mod.
+        However, the mode should be send as an argument. Similarily,
+        the Logout even happens whenever the character is deleted for either
+        mode. The mode is sent as an argument, as well as the umber of
+        characters still in the cache (if USER mode)
+        """
+
         self.settings = service.settings.CRESTSettings.getInstance()
         self.scopes = ['characterFittingsRead', 'characterFittingsWrite']
 
@@ -76,7 +85,10 @@ class Crest():
         # The database cache does not seem to be working for some reason. Use
         # this as a temporary measure
         self.charCache = {}
-        pub.subscribe(self.handleLogin, 'sso_login')
+
+        # need these here to post events
+        import gui.mainFrame  # put this here to avoid loop
+        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     @property
     def isTestServer(self):
@@ -84,19 +96,23 @@ class Crest():
 
     def delCrestCharacter(self, charID):
         char = eos.db.getCrestCharacter(charID)
+        print self.charCache
+        del self.charCache[char.ID]
         eos.db.remove(char)
-        wx.CallAfter(pub.sendMessage, 'crest_delete', message=None)
+        wx.PostEvent(self.mainFrame, GE.SsoLogout(type=CrestModes.USER, numChars=len(self.charCache)))
 
     def delAllCharacters(self):
         chars = eos.db.getCrestCharacters()
         for char in chars:
             eos.db.remove(char)
         self.charCache = {}
-        wx.CallAfter(pub.sendMessage, 'crest_delete', message=None)
+        wx.PostEvent(self.mainFrame, GE.SsoLogout(type=CrestModes.USER, numChars=0))
 
     def getCrestCharacters(self):
         chars = eos.db.getCrestCharacters()
-        return chars
+        # I really need to figure out that DB cache problem, this is ridiculous
+        chars2 = [self.getCrestCharacter(char.ID) for char in chars]
+        return chars2
 
     def getCrestCharacter(self, charID):
         '''
@@ -131,9 +147,10 @@ class Crest():
         return char.eve.delete('%scharacters/%d/fittings/%d/'%(char.eve._authed_endpoint, char.ID, fittingID))
 
     def logout(self):
+        """Logout of implicit character"""
         logging.debug("Character logout")
         self.implicitCharacter = None
-        wx.CallAfter(pub.sendMessage, 'logout_success', message=None)
+        wx.PostEvent(self.mainFrame, GE.SsoLogout(type=self.settings.get('mode')))
 
     def stopServer(self):
         logging.debug("Stopping Server")
@@ -146,7 +163,7 @@ class Crest():
             self.stopServer()
             time.sleep(1)  # we need this to ensure that the previous get_request finishes, and then the socket will close
         self.httpd = service.StoppableHTTPServer(('', 6461), service.AuthHandler)
-        thread.start_new_thread(self.httpd.serve, ())
+        thread.start_new_thread(self.httpd.serve, (self.handleLogin,))
 
         self.state = str(uuid.uuid4())
         return self.eve.auth_uri(scopes=self.scopes, state=self.state)
@@ -179,7 +196,7 @@ class Crest():
             self.implicitCharacter.eve = eve
             #self.implicitCharacter.fetchImage()
 
-            wx.CallAfter(pub.sendMessage, 'login_success', type=CrestModes.IMPLICIT)
+            wx.PostEvent(self.mainFrame, GE.SsoLogin(type=CrestModes.IMPLICIT))
         elif 'code' in message:
             eve = copy.deepcopy(self.eve)
             eve.authorize(message['code'][0])
@@ -198,6 +215,6 @@ class Crest():
             self.charCache[int(info['CharacterID'])] = char
             eos.db.save(char)
 
-            wx.CallAfter(pub.sendMessage, 'login_success', type=CrestModes.USER)
+            wx.PostEvent(self.mainFrame, GE.SsoLogin(type=CrestModes.USER))
 
         self.stopServer()

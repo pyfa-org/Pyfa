@@ -3,14 +3,15 @@ import webbrowser
 import json
 import wx
 
-from wx.lib.pubsub import setupkwargs
-from wx.lib.pubsub import pub
-
 import service
 from service.crest import CrestModes
-import gui.display as d
+
 from eos.types import Cargo
 from eos.db import getItem
+
+import gui.display as d
+import gui.globalEvents as GE
+
 
 class CrestFittings(wx.Frame):
 
@@ -67,7 +68,9 @@ class CrestFittings(wx.Frame):
         self.importBtn.Bind(wx.EVT_BUTTON, self.importFitting)
         self.deleteBtn.Bind(wx.EVT_BUTTON, self.deleteFitting)
 
-        pub.subscribe(self.ssoLogout, 'logout_success')
+        self.mainFrame.Bind(GE.EVT_SSO_LOGOUT, self.ssoLogout)
+        self.mainFrame.Bind(GE.EVT_SSO_LOGIN, self.ssoLogin)
+        self.Bind(wx.EVT_CLOSE, self.OnClose)
 
         self.statusbar = wx.StatusBar(self)
         self.statusbar.SetFieldsCount()
@@ -81,6 +84,10 @@ class CrestFittings(wx.Frame):
 
         self.Centre(wx.BOTH)
 
+    def ssoLogin(self, event):
+        self.updateCharList()
+        event.Skip()
+
     def updateCharList(self):
         sCrest = service.Crest.getInstance()
         chars = sCrest.getCrestCharacters()
@@ -88,6 +95,7 @@ class CrestFittings(wx.Frame):
         if len(chars) == 0:
             self.Close()
 
+        self.charChoice.Clear()
         for char in chars:
             self.charChoice.Append(char.name, char.ID)
 
@@ -102,8 +110,17 @@ class CrestFittings(wx.Frame):
             sTime = time.strftime("%H:%M:%S", t)
             self.statusbar.SetStatusText("Cached for %s"%sTime, 0)
 
-    def ssoLogout(self, message):
-        self.Close()
+    def ssoLogout(self, event):
+        if event.type == CrestModes.IMPLICIT:
+            self.Close()
+        else:
+            self.updateCharList()
+        event.Skip()  # continue event
+
+    def OnClose(self, event):
+        self.mainFrame.Unbind(GE.EVT_SSO_LOGOUT, handler=self.ssoLogout)
+        self.mainFrame.Unbind(GE.EVT_SSO_LOGIN, handler=self.ssoLogin)
+        event.Skip()
 
     def getActiveCharacter(self):
         sCrest = service.Crest.getInstance()
@@ -182,7 +199,9 @@ class ExportToEve(wx.Frame):
         self.statusbar.SetFieldsCount(2)
         self.statusbar.SetStatusWidths([100, -1])
 
-        pub.subscribe(self.ssoLogout, 'logout_success')
+        self.mainFrame.Bind(GE.EVT_SSO_LOGOUT, self.ssoLogout)
+        self.mainFrame.Bind(GE.EVT_SSO_LOGIN, self.ssoLogin)
+        self.Bind(wx.EVT_CLOSE, self.OnClose)
 
         self.SetSizer(hSizer)
         self.SetStatusBar(self.statusbar)
@@ -197,13 +216,26 @@ class ExportToEve(wx.Frame):
         if len(chars) == 0:
             self.Close()
 
+        self.charChoice.Clear()
         for char in chars:
             self.charChoice.Append(char.name, char.ID)
 
         self.charChoice.SetSelection(0)
 
-    def ssoLogout(self, message):
-        self.Close()
+    def ssoLogin(self, event):
+        self.updateCharList()
+        event.Skip()
+
+    def ssoLogout(self, event):
+        if event.type == CrestModes.IMPLICIT:
+            self.Close()
+        else:
+            self.updateCharList()
+        event.Skip()  # continue event
+
+    def OnClose(self, event):
+        self.mainFrame.Unbind(GE.EVT_SSO_LOGOUT, handler=self.ssoLogout)
+        event.Skip()
 
     def getActiveCharacter(self):
         sCrest = service.Crest.getInstance()
@@ -235,7 +267,7 @@ class CrestMgmt(wx.Dialog):
 
     def __init__( self, parent ):
         wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = "CREST Character Management", pos = wx.DefaultPosition, size = wx.Size( 550,250 ), style = wx.DEFAULT_DIALOG_STYLE )
-
+        self.mainFrame = parent
         mainSizer = wx.BoxSizer( wx.HORIZONTAL )
 
         self.lcCharacters = wx.ListCtrl( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LC_REPORT)
@@ -260,15 +292,16 @@ class CrestMgmt(wx.Dialog):
         self.addBtn.Bind(wx.EVT_BUTTON, self.addChar)
         self.deleteBtn.Bind(wx.EVT_BUTTON, self.delChar)
 
-        pub.subscribe(self.ssoLogin, 'login_success')
+        self.mainFrame.Bind(GE.EVT_SSO_LOGIN, self.ssoLogin)
 
         self.SetSizer( mainSizer )
         self.Layout()
 
         self.Centre( wx.BOTH )
 
-    def ssoLogin(self, type):
+    def ssoLogin(self, event):
         self.popCharList()
+        event.Skip()
 
     def popCharList(self):
         sCrest = service.Crest.getInstance()
@@ -291,10 +324,11 @@ class CrestMgmt(wx.Dialog):
 
     def delChar(self, event):
         item = self.lcCharacters.GetFirstSelected()
-        charID = self.lcCharacters.GetItemData(item)
-        sCrest = service.Crest.getInstance()
-        sCrest.delCrestCharacter(charID)
-        self.popCharList()
+        if item > -1:
+            charID = self.lcCharacters.GetItemData(item)
+            sCrest = service.Crest.getInstance()
+            sCrest.delCrestCharacter(charID)
+            self.popCharList()
 
 
 class FittingsTreeView(wx.Panel):

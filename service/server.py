@@ -4,11 +4,7 @@ import socket
 import thread
 import wx
 
-from wx.lib.pubsub import setupkwargs
-from wx.lib.pubsub import pub
-
 import logging
-import time
 
 logger = logging.getLogger(__name__)
 
@@ -49,7 +45,7 @@ class AuthHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(HTML)
 
-        wx.CallAfter(pub.sendMessage, 'sso_login', message=parts)
+        wx.CallAfter(self.server.callback, parts)
 
     def log_message(self, format, *args):
         return
@@ -86,7 +82,9 @@ class StoppableHTTPServer(BaseHTTPServer.HTTPServer):
             logger.debug("Server timed out waiting for connection")
             self.stop()
 
-    def serve(self):
+    def serve(self, callback):
+        self.callback = callback
+        print callback
         while self.run:
             try:
                 self.handle_request()

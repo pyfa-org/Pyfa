@@ -64,8 +64,6 @@ from time import gmtime, strftime
 if not 'wxMac' in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3,0)):
     from service.crest import CrestModes
     from gui.crestFittings import CrestFittings, ExportToEve, CrestMgmt
-    from wx.lib.pubsub import setupkwargs
-    from wx.lib.pubsub import pub
 
     try:
         from gui.propertyEditor import AttributeEditor
@@ -210,8 +208,8 @@ class MainFrame(wx.Frame):
         self.sUpdate.CheckUpdate(self.ShowUpdateBox)
 
         if not 'wxMac' in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3,0)):
-            pub.subscribe(self.onSSOLogin, 'login_success')
-            pub.subscribe(self.onSSOLogout, 'logout_success')
+            self.Bind(GE.EVT_SSO_LOGIN, self.onSSOLogin)
+            self.Bind(GE.EVT_SSO_LOGOUT, self.onSSOLogout)
 
         self.titleTimer = wx.Timer(self)
         self.Bind(wx.EVT_TIMER, self.updateTitle, self.titleTimer)
@@ -448,8 +446,8 @@ class MainFrame(wx.Frame):
         self.Bind(wx.EVT_MENU, self.eveFittings, id = menuBar.eveFittingsId)
         # Export to EVE
         self.Bind(wx.EVT_MENU, self.exportToEve, id = menuBar.exportToEveId)
-        # Login to EVE
-        self.Bind(wx.EVT_MENU, self.ssoLogin, id = menuBar.ssoLoginId)
+        # Handle SSO event (login/logout/manage characters, depending on mode and current state)
+        self.Bind(wx.EVT_MENU, self.ssoHandler, id = menuBar.ssoLoginId)
 
         # Open attribute editor
         self.Bind(wx.EVT_MENU, self.showAttrEditor, id = menuBar.attrEditorId)
@@ -532,15 +530,48 @@ class MainFrame(wx.Frame):
             newTitle = "%s | %s - %s"%(self.title, char.name, sTime)
             self.SetTitle(newTitle)
 
-    def onSSOLogin(self, type):
-        if type == 0:
+    def onSSOLogin(self, event):
+        menu = self.GetMenuBar()
+        menu.Enable(menu.eveFittingsId, True)
+        menu.Enable(menu.exportToEveId, True)
+
+        if event.type == CrestModes.IMPLICIT:
+            menu.SetLabel(menu.ssoLoginId, "Logout Character")
             self.titleTimer.Start(1000)
 
-    def onSSOLogout(self, message):
+    def onSSOLogout(self, event):
         self.titleTimer.Stop()
         self.SetTitle(self.title)
 
-    def ssoLogin(self, event):
+        menu = self.GetMenuBar()
+        if event.type == CrestModes.IMPLICIT or event.numChars == 0:
+            menu.Enable(menu.eveFittingsId, False)
+            menu.Enable(menu.exportToEveId, False)
+
+        if event.type == CrestModes.IMPLICIT:
+            menu.SetLabel(menu.ssoLoginId, "Login to EVE")
+
+    def updateCrestMenus(self, type):
+        # in case we are logged in when switching, change title back
+        self.titleTimer.Stop()
+        self.SetTitle(self.title)
+
+        menu = self.GetMenuBar()
+        sCrest = service.Crest.getInstance()
+
+        if type == CrestModes.IMPLICIT:
+            print 'impl'
+            menu.SetLabel(menu.ssoLoginId, "Login to EVE")
+            menu.Enable(menu.eveFittingsId, False)
+            menu.Enable(menu.exportToEveId, False)
+        else:
+            print 'user'
+            menu.SetLabel(menu.ssoLoginId, "Manage Characters")
+            enable = len(sCrest.getCrestCharacters()) == 0
+            menu.Enable(menu.eveFittingsId, not enable)
+            menu.Enable(menu.exportToEveId, not enable)
+
+    def ssoHandler(self, event):
         sCrest = service.Crest.getInstance()
         if sCrest.settings.get('mode') == CrestModes.IMPLICIT:
             if sCrest.implicitCharacter is not None:
