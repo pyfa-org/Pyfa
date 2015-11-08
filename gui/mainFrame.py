@@ -601,7 +601,6 @@ class MainFrame(wx.Frame):
         charID = self.charSelection.getActiveCharacter()
         dlg = SaveCharacterAs(self, charID)
         dlg.ShowModal()
-        dlg.Destroy()
 
     def revertChar(self, event):
         sChr = service.Character.getInstance()

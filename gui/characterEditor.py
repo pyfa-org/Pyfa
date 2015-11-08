@@ -190,7 +190,6 @@ class CharacterEditor(wx.Frame):
         charID = self.getActiveCharacter()
         dlg = SaveCharacterAs(self, charID)
         dlg.ShowModal()
-        dlg.Destroy()
         self.sview.populateSkillTree()
 
     def revertChar(self, event):
@@ -801,5 +800,5 @@ class SaveCharacterAs(wx.Dialog):
         wx.PostEvent(self.parent, GE.CharListUpdated())
 
         event.Skip()
-        self.Destroy()
+        self.Close()
 
