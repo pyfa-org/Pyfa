@@ -304,16 +304,21 @@ class CharacterEditor(wx.Frame):
         wx.PostEvent(self, GE.CharChanged())
 
     def delete(self, event):
-        sChar = service.Character.getInstance()
-        sChar.delete(self.getActiveCharacter())
-        sel = self.charChoice.GetSelection()
-        self.charChoice.Delete(sel)
-        self.charChoice.SetSelection(sel - 1)
-        newSelection = self.getActiveCharacter()
-        if sChar.getCharName(newSelection) in ("All 0", "All 5"):
-            self.restrict()
+        dlg = wx.MessageDialog(self,
+                 "Do you really want to delete this character?",
+                 "Confirm Delete", wx.YES | wx.NO | wx.ICON_QUESTION)
 
-        wx.PostEvent(self, GE.CharChanged())
+        if dlg.ShowModal() == wx.ID_YES:
+            sChar = service.Character.getInstance()
+            sChar.delete(self.getActiveCharacter())
+            sel = self.charChoice.GetSelection()
+            self.charChoice.Delete(sel)
+            self.charChoice.SetSelection(sel - 1)
+            newSelection = self.getActiveCharacter()
+            if sChar.getCharName(newSelection) in ("All 0", "All 5"):
+                self.restrict()
+
+            wx.PostEvent(self, GE.CharChanged())
 
     def Destroy(self):
         sFit = service.Fit.getInstance()
