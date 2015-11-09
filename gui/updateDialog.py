@@ -18,7 +18,7 @@
 #===============================================================================
 
 import wx
-import bitmapLoader
+from gui.bitmapLoader import BitmapLoader
 import config
 import service
 import dateutil.parser
@@ -107,7 +107,7 @@ class UpdateDialog(wx.Dialog):
         self.Centre( wx.BOTH )
 
     def OnClose(self, e):
-        self.Destroy()
+        self.Close()
 
     def SuppressChange(self, e):
         if (self.supressCheckbox.IsChecked()):

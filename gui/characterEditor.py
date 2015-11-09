@@ -22,7 +22,7 @@ import wx
 import gui.mainFrame
 import wx.lib.newevent
 import wx.gizmos
-from gui import bitmapLoader
+from gui.bitmapLoader import BitmapLoader
 import service
 import gui.display as d
 from gui.contextMenu import ContextMenu
@@ -34,10 +34,10 @@ class CharacterEditor(wx.Frame):
         wx.Frame.__init__ (self, parent, id=wx.ID_ANY, title=u"pyfa: Character Editor", pos=wx.DefaultPosition,
                             size=wx.Size(641, 600), style=wx.DEFAULT_FRAME_STYLE|wx.FRAME_FLOAT_ON_PARENT|wx.TAB_TRAVERSAL)
 
-        self.mainFrame = parent
-
-        i = wx.IconFromBitmap(bitmapLoader.getBitmap("character_small", "icons"))
+        i = wx.IconFromBitmap(BitmapLoader.getBitmap("character_small", "gui"))
         self.SetIcon(i)
+
+        self.mainFrame = parent
 
         self.disableWin=  wx.WindowDisabler(self)
         self.SetSizeHintsSz(wx.Size(640, 600), wx.DefaultSize)
@@ -66,8 +66,11 @@ class CharacterEditor(wx.Frame):
             if active:
                 self.charChoice.SetSelection(i)
 
+        self.navSizer.Add(self.btnSave, 0, wx.ALL , 5)
+
+
         buttons = (("new", wx.ART_NEW),
-                   ("rename", bitmapLoader.getBitmap("rename", "icons")),
+                   ("rename", BitmapLoader.getBitmap("rename", "gui")),
                    ("copy", wx.ART_COPY),
                    ("delete", wx.ART_DELETE))
 
@@ -111,19 +114,19 @@ class CharacterEditor(wx.Frame):
 
         bSizerButtons = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.btnSave = wx.Button(self, wx.ID_ANY, "Save")
+        self.btnSaveChar = wx.Button(self, wx.ID_ANY, "Save")
         self.btnSaveAs = wx.Button(self, wx.ID_ANY, "Save As...")
         self.btnRevert = wx.Button(self, wx.ID_ANY, "Revert")
         self.btnOK = wx.Button(self, wx.ID_OK)
 
-        bSizerButtons.Add(self.btnSave, 0, wx.ALL, 5)
+        bSizerButtons.Add(self.btnSaveChar, 0, wx.ALL, 5)
         bSizerButtons.Add(self.btnSaveAs, 0, wx.ALL, 5)
         bSizerButtons.Add(self.btnRevert, 0, wx.ALL, 5)
         bSizerButtons.AddStretchSpacer()
         bSizerButtons.Add(self.btnOK, 0, wx.ALL, 5)
 
 
-        self.btnSave.Bind(wx.EVT_BUTTON, self.saveChar)
+        self.btnSaveChar.Bind(wx.EVT_BUTTON, self.saveChar)
         self.btnSaveAs.Bind(wx.EVT_BUTTON, self.saveCharAs)
         self.btnRevert.Bind(wx.EVT_BUTTON, self.revertChar)
         self.btnOK.Bind(wx.EVT_BUTTON, self.editingFinished)
@@ -149,7 +152,7 @@ class CharacterEditor(wx.Frame):
         char = sChar.getCharacter(charID)
 
         # enable/disable character saving stuff
-        self.btnSave.Enable(not char.ro and char.isDirty)
+        self.btnSaveChar.Enable(not char.ro and char.isDirty)
         self.btnSaveAs.Enable(char.isDirty)
         self.btnRevert.Enable(char.isDirty)
 
@@ -187,7 +190,6 @@ class CharacterEditor(wx.Frame):
         charID = self.getActiveCharacter()
         dlg = SaveCharacterAs(self, charID)
         dlg.ShowModal()
-        dlg.Destroy()
         self.sview.populateSkillTree()
 
     def revertChar(self, event):
@@ -261,10 +263,8 @@ class CharacterEditor(wx.Frame):
         self.characterRename.SetFocus()
         for btn in (self.btnNew, self.btnCopy, self.btnRename, self.btnDelete):
             btn.Hide()
-            self.navSizer.Remove(btn)
 
         self.btnSave.Show()
-        self.navSizer.Add(self.btnSave, 0, wx.ALIGN_CENTER)
         self.navSizer.Layout()
 
         sChar = service.Character.getInstance()
@@ -287,9 +287,7 @@ class CharacterEditor(wx.Frame):
         self.navSizer.Replace(self.characterRename, self.charChoice)
         for btn in (self.btnNew, self.btnCopy, self.btnRename, self.btnDelete):
             btn.Show()
-            self.navSizer.Add(btn, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 2)
 
-        self.navSizer.Remove(self.btnSave)
         self.btnSave.Hide()
         self.navSizer.Layout()
         self.refreshCharacterList()
@@ -305,16 +303,21 @@ class CharacterEditor(wx.Frame):
         wx.PostEvent(self, GE.CharChanged())
 
     def delete(self, event):
-        sChar = service.Character.getInstance()
-        sChar.delete(self.getActiveCharacter())
-        sel = self.charChoice.GetSelection()
-        self.charChoice.Delete(sel)
-        self.charChoice.SetSelection(sel - 1)
-        newSelection = self.getActiveCharacter()
-        if sChar.getCharName(newSelection) in ("All 0", "All 5"):
-            self.restrict()
+        dlg = wx.MessageDialog(self,
+                 "Do you really want to delete this character?",
+                 "Confirm Delete", wx.YES | wx.NO | wx.ICON_QUESTION)
 
-        wx.PostEvent(self, GE.CharChanged())
+        if dlg.ShowModal() == wx.ID_YES:
+            sChar = service.Character.getInstance()
+            sChar.delete(self.getActiveCharacter())
+            sel = self.charChoice.GetSelection()
+            self.charChoice.Delete(sel)
+            self.charChoice.SetSelection(sel - 1)
+            newSelection = self.getActiveCharacter()
+            if sChar.getCharName(newSelection) in ("All 0", "All 5"):
+                self.restrict()
+
+            wx.PostEvent(self, GE.CharChanged())
 
     def Destroy(self):
         sFit = service.Fit.getInstance()
@@ -338,7 +341,7 @@ class SkillTreeView (wx.Panel):
 
         self.imageList = wx.ImageList(16, 16)
         tree.SetImageList(self.imageList)
-        self.skillBookImageId = self.imageList.Add(bitmapLoader.getBitmap("skill_small", "icons"))
+        self.skillBookImageId = self.imageList.Add(BitmapLoader.getBitmap("skill_small", "gui"))
 
         tree.AddColumn("Skill")
         tree.AddColumn("Level")
@@ -478,7 +481,7 @@ class ImplantsTreeView (wx.Panel):
     def addMarketViewImage(self, iconFile):
         if iconFile is None:
             return -1
-        bitmap = bitmapLoader.getBitmap(iconFile, "pack")
+        bitmap = BitmapLoader.getBitmap(iconFile, "icons")
         if bitmap is None:
             return -1
         else:
@@ -504,15 +507,18 @@ class ImplantsTreeView (wx.Panel):
         availableSizer.Add(self.availableImplantsTree, 1, wx.EXPAND)
 
         buttonSizer = wx.BoxSizer(wx.VERTICAL)
-        buttonSizer.AddStretchSpacer()
-        self.btnAdd = GenBitmapButton(self, wx.ID_ADD, bitmapLoader.getBitmap("fit_add_small", "icons"), style = wx.BORDER_NONE)
+
+        pmainSizer.Add(buttonSizer, 0, wx.TOP, 5)
+
+        self.btnAdd = GenBitmapButton(self, wx.ID_ADD, BitmapLoader.getBitmap("fit_add_small", "gui"), style = wx.BORDER_NONE)
+
         buttonSizer.Add(self.btnAdd, 0)
-        self.btnRemove = GenBitmapButton(self, wx.ID_REMOVE, bitmapLoader.getBitmap("fit_delete_small", "icons"), style = wx.BORDER_NONE)
+        self.btnRemove = GenBitmapButton(self, wx.ID_REMOVE, BitmapLoader.getBitmap("fit_delete_small", "gui"), style = wx.BORDER_NONE)
         buttonSizer.Add(self.btnRemove, 0)
         buttonSizer.AddStretchSpacer()
 
         pmainSizer.Add(buttonSizer, 0, wx.EXPAND, 5)
-        
+
         self.pluggedImplantsTree = AvailableImplantsView(self)
 
         sChar = service.Character.getInstance()
@@ -814,5 +820,5 @@ class SaveCharacterAs(wx.Dialog):
         wx.PostEvent(self.parent, GE.CharListUpdated())
 
         event.Skip()
-        self.Destroy()
+        self.Close()
 

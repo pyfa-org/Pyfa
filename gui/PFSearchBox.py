@@ -1,7 +1,7 @@
 import wx
 import gui.utils.colorUtils as colorUtils
 import gui.utils.drawUtils as drawUtils
-from gui import bitmapLoader
+from gui.bitmapLoader import BitmapLoader
 
 
 SearchButton, EVT_SEARCH_BTN = wx.lib.newevent.NewEvent()
@@ -11,7 +11,7 @@ TextTyped, EVT_TEXT = wx.lib.newevent.NewEvent()
 
 class PFSearchBox(wx.Window):
     def __init__(self, parent, id = wx.ID_ANY, value = "", pos = wx.DefaultPosition, size = wx.Size(-1,24), style = 0):
-        wx.Window.__init__(self, parent, id, pos, size, style = 0)
+        wx.Window.__init__(self, parent, id, pos, size, style = style)
 
         self.isSearchButtonVisible = False
         self.isCancelButtonVisible = False
@@ -49,10 +49,6 @@ class PFSearchBox(wx.Window):
 
         self.Bind(wx.EVT_LEFT_DOWN, self.OnLeftDown)
         self.Bind(wx.EVT_LEFT_UP, self.OnLeftUp)
-        self.Bind(wx.EVT_MOTION, self.OnMouseMove)
-
-        self.Bind(wx.EVT_ENTER_WINDOW, self.OnEnterLeaveWindow)
-        self.Bind(wx.EVT_LEAVE_WINDOW, self.OnEnterLeaveWindow)
 
 #        self.EditBox.ChangeValue(self.descriptiveText)
 
@@ -64,25 +60,26 @@ class PFSearchBox(wx.Window):
 
         self.SetMinSize(size)
 
-    def OnEnterLeaveWindow(self, event):
-        self.SetCursor(wx.StockCursor(wx.CURSOR_ARROW))
-        self._hl = False
-
     def OnText(self, event):
         wx.PostEvent(self, TextTyped())
+        event.Skip()
 
     def OnTextEnter(self, event):
         wx.PostEvent(self, TextEnter())
+        event.Skip()
+
 
     def OnEditSetFocus(self, event):
 #        value = self.EditBox.GetValue()
 #        if value == self.descriptiveText:
 #            self.EditBox.ChangeValue("")
-        pass
+        event.Skip()
 
     def OnEditKillFocus(self, event):
         if self.EditBox.GetValue() == "":
             self.Clear()
+        event.Skip()
+
 
     def Clear(self):
         self.EditBox.Clear()
@@ -137,20 +134,6 @@ class PFSearchBox(wx.Window):
         btnsize.append( (sw,sh))
         btnsize.append( (cw,ch))
         return btnsize
-
-    def OnMouseMove(self, event):
-        btnpos = self.GetButtonsPos()
-        btnsize = self.GetButtonsSize()
-        for btn in xrange(2):
-            if self.HitTest(btnpos[btn], event.GetPosition(), btnsize[btn]):
-                if not self._hl:
-                    self.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
-                    self._hl = True
-                break
-            else:
-                if self._hl:
-                    self.SetCursor(wx.StockCursor(wx.CURSOR_ARROW))
-                    self._hl = False
 
     def OnLeftDown(self, event):
         btnpos = self.GetButtonsPos()

@@ -20,7 +20,6 @@ class ChangeAmount(ContextMenu):
         srcContext = fullContext[0]
         dlg = AmountChanger(self.mainFrame, selection[0], srcContext)
         dlg.ShowModal()
-        dlg.Destroy()
 
 ChangeAmount.register()
 
@@ -59,7 +58,7 @@ class AmountChanger(wx.Dialog):
         wx.PostEvent(mainFrame, GE.FitChanged(fitID=fitID))
 
         event.Skip()
-        self.Destroy()
+        self.Close()
 
     ## checks to make sure it's valid number
     def onChar(self, event):

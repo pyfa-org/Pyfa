@@ -26,19 +26,29 @@ from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
 import eos.types
 
-class ProjectedViewDrop(wx.PyDropTarget):
-        def __init__(self, dropFn):
-            wx.PyDropTarget.__init__(self)
-            self.dropFn = dropFn
-            # this is really transferring an EVE itemID
-            self.dropData = wx.PyTextDataObject()
-            self.SetDataObject(self.dropData)
 
-        def OnData(self, x, y, t):
-            if self.GetData():
-                data = self.dropData.GetText().split(':')
-                self.dropFn(x, y, data)
-            return t
+class DummyItem:
+    def __init__(self, txt):
+        self.name = txt
+        self.icon = None
+
+class DummyEntry:
+    def __init__(self, txt):
+        self.item = DummyItem(txt)
+
+class ProjectedViewDrop(wx.PyDropTarget):
+   def __init__(self, dropFn):
+       wx.PyDropTarget.__init__(self)
+       self.dropFn = dropFn
+       # this is really transferring an EVE itemID
+       self.dropData = wx.PyTextDataObject()
+       self.SetDataObject(self.dropData)
+
+   def OnData(self, x, y, t):
+       if self.GetData():
+           data = self.dropData.GetText().split(':')
+           self.dropFn(x, y, data)
+       return t
 
 class ProjectedView(d.Display):
     DEFAULT_COLS = ["State",
@@ -95,8 +105,6 @@ class ProjectedView(d.Display):
             if row != -1:
                 sFit.removeProjected(fitID, self.get(row))
                 wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
-
-        event.Skip()
 
     def handleDrag(self, type, fitID):
         #Those are drags coming from pyfa sources, NOT builtin wx drags
@@ -180,11 +188,20 @@ class ProjectedView(d.Display):
                 self.EnsureVisible(item)
 
             self.deselectItems()
+
+        if stuff == []:
+            stuff = [DummyEntry("Drag an item or fit, or use right-click menu for system effects")]
+
         self.update(stuff)
 
     def get(self, row):
         numMods = len(self.modules)
         numDrones = len(self.drones)
+        numFits = len(self.fits)
+
+        if (numMods + numDrones + numFits) == 0:
+            return None
+
         if row < numMods:
             stuff = self.modules[row]
         elif row - numMods < numDrones:

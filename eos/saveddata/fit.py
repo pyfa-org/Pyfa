@@ -25,7 +25,7 @@ from eos import capSim
 from copy import deepcopy
 from math import sqrt, log, asinh
 from eos.types import Drone, Cargo, Ship, Character, State, Slot, Module, Implant, Booster, Skill
-from eos.saveddata.module import State
+from eos.saveddata.module import State, Hardpoint
 from eos.saveddata.mode import Mode
 import eos.db
 import time
@@ -390,9 +390,9 @@ class Fit(object):
         self.__modifier = currModifier
         self.__origin = origin
         if hasattr(currModifier, "itemModifiedAttributes"):
-            currModifier.itemModifiedAttributes.fit = self
+            currModifier.itemModifiedAttributes.fit = origin or self
         if hasattr(currModifier, "chargeModifiedAttributes"):
-            currModifier.chargeModifiedAttributes.fit = self
+            currModifier.chargeModifiedAttributes.fit = origin or self
 
     def getModifier(self):
         return self.__modifier
@@ -480,17 +480,22 @@ class Fit(object):
         self.__calculated = True
 
         for runTime in ("early", "normal", "late"):
-            c = chain(
+            # Items that are unrestricted. These items are run on the local fit
+            # first and then projected onto the target fit it one is designated
+            u = [
                 (self.character, self.ship),
                 self.drones,
                 self.boosters,
                 self.appliedImplants,
                 self.modules
-            )
+            ]
 
-            if not projected:
-                # if not a projected fit, add a couple of more things
-                c = chain(c, (self.mode,), self.projectedDrones, self.projectedModules)
+            # Items that are restricted. These items are only run on the local
+            # fit. They are NOT projected onto the target fit. # See issue 354
+            r = [(self.mode,), self.projectedDrones, self.projectedModules]
+
+            # chain unrestricted and restricted into one iterable
+            c = chain.from_iterable(u+r)
 
             # We calculate gang bonuses first so that projected fits get them
             if self.gangBoosts is not None:
@@ -500,9 +505,12 @@ class Fit(object):
                 # Registering the item about to affect the fit allows us to
                 # track "Affected By" relations correctly
                 if item is not None:
+                    # apply effects locally
                     self.register(item)
                     item.calculateModifiedAttributes(self, runTime, False)
-                    if projected is True:
+
+                    if projected is True and item not in chain.from_iterable(r):
+                        # apply effects onto target fit
                         for _ in xrange(projectionInfo.amount):
                             targetFit.register(item, origin=self)
                             item.calculateModifiedAttributes(targetFit, runTime, True)
@@ -839,10 +847,14 @@ class Fit(object):
                         else:
                             capAdded -= capNeed
 
-                        drains.append((int(fullCycleTime), mod.getModifiedItemAttr("capacitorNeed") or 0, mod.numShots or 0))
+                        # If this is a turret, don't stagger activations
+                        disableStagger = mod.hardpoint == Hardpoint.TURRET
+
+                        drains.append((int(fullCycleTime), mod.getModifiedItemAttr("capacitorNeed") or 0, mod.numShots or 0, disableStagger))
 
         for fullCycleTime, capNeed, clipSize in self.iterDrains():
-            drains.append((int(fullCycleTime), capNeed, clipSize))
+            # Stagger incoming effects for cap simulation
+            drains.append((int(fullCycleTime), capNeed, clipSize, False))
             if capNeed > 0:
                 capUsed += capNeed / (fullCycleTime / 1000.0)
             else:

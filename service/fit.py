@@ -181,7 +181,8 @@ class Fit(object):
         # refresh any fits this fit is projected onto. Otherwise, if we have
         # already loaded those fits, they will not reflect the changes
         for projection in fit.projectedOnto.values():
-            eos.db.saveddata_session.refresh(projection.victim_fit)
+            if projection.victim_fit in eos.db.saveddata_session:  # GH issue #359
+                eos.db.saveddata_session.refresh(projection.victim_fit)
 
     def copyFit(self, fitID):
         fit = eos.db.getFit(fitID)
@@ -223,14 +224,19 @@ class Fit(object):
         eos.db.commit()
         self.recalc(fit, withBoosters=True)
 
-    def getFit(self, fitID, projected = False):
+    def getFit(self, fitID, projected=False, basic=False):
         ''' Gets fit from database, and populates fleet data.
 
         Projected is a recursion flag that is set to reduce recursions into projected fits
+        Basic is a flag to simply return the fit without any other processing
         '''
         if fitID is None:
             return None
         fit = eos.db.getFit(fitID)
+
+        if basic:
+            return fit
+
         inited = getattr(fit, "inited", None)
 
         if inited is None or inited is False:
@@ -813,6 +819,10 @@ class Fit(object):
     def exportDna(self, fitID):
         fit = eos.db.getFit(fitID)
         return Port.exportDna(fit)
+
+    def exportCrest(self, fitID, callback=None):
+        fit = eos.db.getFit(fitID)
+        return Port.exportCrest(fit, callback)
 
     def exportXml(self, callback=None, *fitIDs):
         fits = map(lambda fitID: eos.db.getFit(fitID), fitIDs)

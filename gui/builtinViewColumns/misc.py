@@ -20,7 +20,7 @@
 
 import gui.mainFrame
 from gui.viewColumn import ViewColumn
-from gui import bitmapLoader
+from gui.bitmapLoader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 from gui.utils.listFormatter import formatList
 from service.fit import Fit, Market
@@ -35,8 +35,8 @@ class Miscellanea(ViewColumn):
                       "displayName": False}
         ViewColumn.__init__(self, fittingView)
         if params["showIcon"]:
-            self.imageId = fittingView.imageList.GetImageIndex("column_misc", "icons")
-            self.bitmap = bitmapLoader.getBitmap("column_misc", "icons")
+            self.imageId = fittingView.imageList.GetImageIndex("column_misc", "gui")
+            self.bitmap = BitmapLoader.getBitmap("column_misc", "gui")
             self.mask = wx.LIST_MASK_IMAGE
         else:
             self.imageId = -1
@@ -374,7 +374,7 @@ class Miscellanea(ViewColumn):
             tooltip = "Optimal signature radius"
             return text, tooltip
         elif itemGroup in ("Frequency Mining Laser", "Strip Miner", "Mining Laser", "Gas Cloud Harvester"):
-            miningAmount = stuff.getModifiedItemAttr("miningAmount")
+            miningAmount = stuff.getModifiedItemAttr("specialtyMiningAmount") or stuff.getModifiedItemAttr("miningAmount")
             cycleTime = stuff.cycleTime
             if not miningAmount or not cycleTime:
                 return "", None

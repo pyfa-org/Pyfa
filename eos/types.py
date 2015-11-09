@@ -21,6 +21,7 @@ from eos.gamedata import Attribute, Category, Effect, Group, Icon, Item, MarketG
 MetaGroup, AttributeInfo, Unit, EffectInfo, MetaType, MetaData, Traits
 from eos.saveddata.price import Price
 from eos.saveddata.user import User
+from eos.saveddata.crestchar import CrestChar
 from eos.saveddata.damagePattern import DamagePattern
 from eos.saveddata.targetResists import TargetResists
 from eos.saveddata.character import Character, Skill
@@ -35,4 +36,5 @@ from eos.saveddata.fit import Fit
 from eos.saveddata.mode import Mode
 from eos.saveddata.fleet import Fleet, Wing, Squad
 from eos.saveddata.miscData import MiscData
+from eos.saveddata.override import Override
 import eos.db

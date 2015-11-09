@@ -21,7 +21,8 @@ import wx
 import wx.lib.newevent
 import gui.utils.colorUtils as colorUtils
 import gui.utils.drawUtils as drawUtils
-from gui import bitmapLoader
+import gui.utils.fonts as fonts
+from gui.bitmapLoader import BitmapLoader
 import gui.utils.fonts as fonts
 
 import service
@@ -277,7 +278,7 @@ class PFNotebook(wx.Panel):
         bx, by = self.GetBorders()
         ww -= bx * 4
         wh -= by * 4
-        self.activePage.SetSize((ww, wh))
+        self.activePage.SetSize((max(ww, -1), max(wh, -1)))
         self.activePage.SetPosition((0, 0))
 
         if not resizeOnly:
@@ -335,10 +336,10 @@ class PFTabRenderer:
         closeButton -- True if tab can be closed
         """
         # tab left/right zones inclination
-        self.ctabLeft = bitmapLoader.getImage("ctableft", "icons")
-        self.ctabMiddle = bitmapLoader.getImage("ctabmiddle", "icons")
-        self.ctabRight = bitmapLoader.getImage("ctabright", "icons")
-        self.ctabClose = bitmapLoader.getImage("ctabclose", "icons")
+        self.ctabLeft = BitmapLoader.getImage("ctableft", "gui")
+        self.ctabMiddle = BitmapLoader.getImage("ctabmiddle", "gui")
+        self.ctabRight = BitmapLoader.getImage("ctabright", "gui")
+        self.ctabClose = BitmapLoader.getImage("ctabclose", "gui")
 
         self.leftWidth = self.ctabLeft.GetWidth()
         self.rightWidth = self.ctabRight.GetWidth()
@@ -594,7 +595,7 @@ class PFTabRenderer:
 class PFAddRenderer:
     def __init__(self):
         """Renders the add tab button"""
-        self.addImg = bitmapLoader.getImage("ctabadd", "icons")
+        self.addImg = BitmapLoader.getImage("ctabadd", "gui")
         self.width = self.addImg.GetWidth()
         self.height = self.addImg.GetHeight()
 
@@ -671,6 +672,8 @@ class PFTabsContainer(wx.Panel):
         """
 
         wx.Panel.__init__(self, parent, id, pos, size)
+        if wx.VERSION >= (3,0):
+            self.SetBackgroundStyle(wx.BG_STYLE_PAINT)
 
         self.tabs = []
         width, height = size
@@ -1073,13 +1076,12 @@ class PFTabsContainer(wx.Panel):
 
         selected = 0
 
-        if 'wxMac' in wx.PlatformInfo:
+        if 'wxMac' in wx.PlatformInfo and wx.VERSION < (3,0):
             color = wx.Colour(0, 0, 0)
             brush = wx.Brush(color)
 
             from Carbon.Appearance import kThemeBrushDialogBackgroundActive
             brush.MacSetTheme(kThemeBrushDialogBackgroundActive)
-
         else:
             color = wx.SystemSettings_GetColour(wx.SYS_COLOUR_3DFACE)
             brush = wx.Brush(color)

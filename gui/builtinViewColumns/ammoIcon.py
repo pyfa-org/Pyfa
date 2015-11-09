@@ -19,7 +19,7 @@
 
 from gui import builtinViewColumns
 from gui.viewColumn import ViewColumn
-from gui import bitmapLoader
+from gui.bitmapLoader import BitmapLoader
 import wx
 from eos.types import Module
 
@@ -27,7 +27,7 @@ class AmmoIcon(ViewColumn):
     name = "Ammo Icon"
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
-        self.size = 16
+        self.size = 24
         self.maxsize = self.size
         self.mask = wx.LIST_MASK_IMAGE
         self.columnText = ""
@@ -44,7 +44,7 @@ class AmmoIcon(ViewColumn):
         else:
             iconFile = stuff.charge.icon.iconFile if stuff.item.icon else ""
             if iconFile:
-                return self.fittingView.imageList.GetImageIndex(iconFile, "pack")
+                return self.fittingView.imageList.GetImageIndex(iconFile, "icons")
             else:
                 return -1
 

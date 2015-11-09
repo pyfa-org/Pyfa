@@ -116,12 +116,15 @@ class SearchWorkerThread(threading.Thread):
             while self.searchRequest is None:
                 cv.wait()
 
-            request, callback = self.searchRequest
+            request, callback, filterOn = self.searchRequest
             self.searchRequest = None
             cv.release()
             sMkt = Market.getInstance()
-            # Rely on category data provided by eos as we don't hardcode them much in service
-            filter = eos.types.Category.name.in_(sMkt.SEARCH_CATEGORIES)
+            if filterOn:
+                # Rely on category data provided by eos as we don't hardcode them much in service
+                filter = eos.types.Category.name.in_(sMkt.SEARCH_CATEGORIES)
+            else:
+                filter=None
             results = eos.db.searchItems(request, where=filter,
                                          join=(eos.types.Item.group, eos.types.Group.category),
                                          eager=("icon", "group.category", "metaGroup", "metaGroup.parent"))
@@ -133,9 +136,9 @@ class SearchWorkerThread(threading.Thread):
                     items.add(item)
             wx.CallAfter(callback, items)
 
-    def scheduleSearch(self, text, callback):
+    def scheduleSearch(self, text, callback, filterOn=True):
         self.cv.acquire()
-        self.searchRequest = (text, callback)
+        self.searchRequest = (text, callback, filterOn)
         self.cv.notify()
         self.cv.release()
 
@@ -665,9 +668,16 @@ class Market():
                 ships.add(item)
         return ships
 
-    def searchItems(self, name, callback):
+    def searchItems(self, name, callback, filterOn=True):
         """Find items according to given text pattern"""
-        self.searchWorkerThread.scheduleSearch(name, callback)
+        self.searchWorkerThread.scheduleSearch(name, callback, filterOn)
+
+    def getItemsWithOverrides(self):
+        overrides = eos.db.getAllOverrides()
+        items = set()
+        for x in overrides:
+            items.add(x.item)
+        return list(items)
 
     def directAttrRequest(self, items, attribs):
         try:

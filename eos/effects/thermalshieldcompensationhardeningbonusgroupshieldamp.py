@@ -1,7 +1,7 @@
 # thermalShieldCompensationHardeningBonusGroupShieldAmp
 #
 # Used by:
-# Skill: Thermic Shield Compensation
+# Skill: Thermal Shield Compensation
 type = "passive"
 def handler(fit, skill, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == "Shield Amplifier",

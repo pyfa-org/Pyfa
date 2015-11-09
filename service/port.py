@@ -25,6 +25,9 @@ from eos.types import State, Slot, Module, Cargo, Fit, Ship, Drone, Implant, Boo
 import service
 import wx
 import logging
+import config
+import collections
+import json
 
 logger = logging.getLogger("pyfa.service.port")
 
@@ -34,9 +37,63 @@ except ImportError:
     from utils.compat import OrderedDict
 
 EFT_SLOT_ORDER = [Slot.LOW, Slot.MED, Slot.HIGH, Slot.RIG, Slot.SUBSYSTEM]
+INV_FLAGS = {
+            Slot.LOW: 11,
+            Slot.MED: 19,
+            Slot.HIGH: 27,
+            Slot.RIG: 92,
+            Slot.SUBSYSTEM: 125}
 
 class Port(object):
     """Service which houses all import/export format functions"""
+    @classmethod
+    def exportCrest(cls, ofit, callback=None):
+        # A few notes:
+        # max fit name length is 50 characters
+        # Most keys are created simply because they are required, but bogus data is okay
+
+        nested_dict = lambda: collections.defaultdict(nested_dict)
+        fit = nested_dict()
+        sCrest = service.Crest.getInstance()
+        eve = sCrest.eve
+
+        # max length is 50 characters
+        name = ofit.name[:47] + '...' if len(ofit.name) > 50 else ofit.name
+        fit['name'] = name
+        fit['ship']['href'] = "%stypes/%d/"%(eve._authed_endpoint, ofit.ship.item.ID)
+        fit['ship']['id'] = ofit.ship.item.ID
+        fit['ship']['name'] = ''
+
+        fit['description'] = "<pyfa:%d />"%ofit.ID
+        fit['items'] = []
+
+        slotNum = {}
+        for module in ofit.modules:
+            if module.isEmpty:
+                continue
+
+            item = nested_dict()
+            slot = module.slot
+
+            if slot == Slot.SUBSYSTEM:
+                # Order of subsystem matters based on this attr. See GH issue #130
+                slot = int(module.getModifiedItemAttr("subSystemSlot"))
+                item['flag'] = slot
+            else:
+                if not slot in slotNum:
+                    slotNum[slot] = INV_FLAGS[slot]
+
+                item['flag'] = slotNum[slot]
+                slotNum[slot] += 1
+
+            item['quantity'] = 1
+            item['type']['href'] = "%stypes/%d/"%(eve._authed_endpoint, module.item.ID)
+            item['type']['id'] = module.item.ID
+            item['type']['name'] = ''
+
+            fit['items'].append(item)
+
+        return json.dumps(fit)
 
     @classmethod
     def importAuto(cls, string, path=None, activeFit=None, callback=None, encoding=None):
@@ -47,6 +104,10 @@ class Port(object):
         # If XML-style start of tag encountered, detect as XML
         if re.match("<", firstLine):
             return "XML", cls.importXml(string, callback, encoding)
+
+        # If JSON-style start, parse os CREST/JSON
+        if firstLine[0] == '{':
+            return "JSON", (cls.importCrest(string),)
 
         # If we've got source file name which is used to describe ship name
         # and first line contains something like [setup name], detect as eft config file
@@ -62,6 +123,47 @@ class Port(object):
 
         # Use DNA format for all other cases
         return "DNA", (cls.importDna(string),)
+
+    @staticmethod
+    def importCrest(str):
+        fit = json.loads(str)
+        sMkt = service.Market.getInstance()
+
+        f = Fit()
+        f.name = fit['name']
+
+        try:
+            f.ship = Ship(sMkt.getItem(fit['ship']['id']))
+        except:
+            return None
+
+        items = fit['items']
+        items.sort(key=lambda k: k['flag'])
+        for module in items:
+            try:
+                item = sMkt.getItem(module['type']['id'], eager="group.category")
+                if item.category.name == "Drone":
+                    d = Drone(item)
+                    d.amount = module['quantity']
+                    f.drones.append(d)
+                elif item.category.name == "Charge":
+                    c = Cargo(item)
+                    c.amount = module['quantity']
+                    f.cargo.append(c)
+                else:
+                    try:
+                        m = Module(item)
+                    # When item can't be added to any slot (unknown item or just charge), ignore it
+                    except ValueError:
+                        continue
+                    if m.isValidState(State.ACTIVE):
+                        m.state = State.ACTIVE
+
+                    f.modules.append(m)
+            except:
+                continue
+
+        return f
 
     @staticmethod
     def importDna(string):

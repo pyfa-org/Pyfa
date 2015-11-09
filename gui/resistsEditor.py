@@ -18,7 +18,7 @@
 #===============================================================================
 
 import wx
-import bitmapLoader
+from gui.bitmapLoader import BitmapLoader
 import service
 from gui.utils.clipboard import toClipboard, fromClipboard
 from service.targetResists import ImportError
@@ -51,15 +51,11 @@ class ResistsEditorDlg(wx.Dialog):
         self.namePicker.Bind(wx.EVT_TEXT_ENTER, self.processRename)
         self.namePicker.Hide()
 
-        self.btnSave = wx.Button(self, wx.ID_SAVE)
-        self.btnSave.Hide()
-        self.btnSave.Bind(wx.EVT_BUTTON, self.processRename)
-
         size = None
         headerSizer.Add(self.ccResists, 1, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT | wx.LEFT, 3)
 
         buttons = (("new", wx.ART_NEW),
-                   ("rename", bitmapLoader.getBitmap("rename", "icons")),
+                   ("rename", BitmapLoader.getBitmap("rename", "gui")),
                    ("copy", wx.ART_COPY),
                    ("delete", wx.ART_DELETE))
         for name, art in buttons:
@@ -76,6 +72,12 @@ class ResistsEditorDlg(wx.Dialog):
                 btn.Enable(True)
                 btn.SetToolTipString("%s resist profile" % name.capitalize())
                 headerSizer.Add(btn, 0, wx.ALIGN_CENTER_VERTICAL)
+
+
+        self.btnSave = wx.Button(self, wx.ID_SAVE)
+        self.btnSave.Hide()
+        self.btnSave.Bind(wx.EVT_BUTTON, self.processRename)
+        headerSizer.Add(self.btnSave, 0, wx.ALIGN_CENTER)
 
         mainSizer.Add(headerSizer, 0, wx.EXPAND | wx.ALL, 2)
 
@@ -101,7 +103,7 @@ class ResistsEditorDlg(wx.Dialog):
                 style = wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_RIGHT
                 border = 5
 
-            bmp = wx.StaticBitmap(self, wx.ID_ANY, bitmapLoader.getBitmap("%s_big"%type, "icons"))
+            bmp = wx.StaticBitmap(self, wx.ID_ANY, BitmapLoader.getBitmap("%s_big"%type, "gui"))
             resistEditSizer.Add(bmp, 0, style, border)
             # set text edit
             setattr(self, "%sEdit"%type, wx.TextCtrl(self, wx.ID_ANY, "", wx.DefaultPosition, defSize))
@@ -109,6 +111,9 @@ class ResistsEditorDlg(wx.Dialog):
             resistEditSizer.Add(editObj, 0, wx.BOTTOM | wx.TOP | wx.ALIGN_CENTER_VERTICAL, 5)
             resistEditSizer.Add(wx.StaticText( self, wx.ID_ANY, u"%", wx.DefaultPosition, wx.DefaultSize, 0 ), 0, wx.BOTTOM | wx.TOP | wx.ALIGN_CENTER_VERTICAL, 5)
             editObj.Bind(wx.EVT_TEXT, self.ValuesUpdated)
+
+        # Color we use to reset invalid value color
+        self.colorReset = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT)
 
         contentSizer.Add(resistEditSizer, 1, wx.EXPAND | wx.ALL, 5)
         self.slfooter = wx.StaticLine(self)
@@ -196,21 +201,21 @@ class ResistsEditorDlg(wx.Dialog):
 
                 # if everything checks out, set resist attribute
                 setattr(p, "%sAmount"%type, value/100)
+                editObj.SetForegroundColour(self.colorReset)
 
+            self.stNotice.SetLabel("")
             self.totSizer.Layout()
 
             if event is not None:
-                # If we get here, everything is normal. Reset color
-                event.EventObject.SetForegroundColour(wx.NullColor)
                 event.Skip()
 
             service.TargetResists.getInstance().saveChanges(p)
 
         except ValueError:
-            event.EventObject.SetForegroundColour(wx.RED)
+            editObj.SetForegroundColour(wx.RED)
             self.stNotice.SetLabel("Incorrect Formatting (decimals only)")
         except AssertionError:
-            event.EventObject.SetForegroundColour(wx.RED)
+            editObj.SetForegroundColour(wx.RED)
             self.stNotice.SetLabel("Incorrect Range (must be 0-100)")
         finally:  # Refresh for color changes to take effect immediately
             self.Refresh()
@@ -266,7 +271,7 @@ class ResistsEditorDlg(wx.Dialog):
         for type in self.DAMAGE_TYPES:
             editObj = getattr(self, "%sEdit"%type)
             editObj.ChangeValue("0.0")
-            editObj.SetForegroundColour(wx.NullColor)
+            editObj.SetForegroundColour(self.colorReset)
 
         self.Refresh()
         self.renamePattern()
@@ -349,8 +354,6 @@ class ResistsEditorDlg(wx.Dialog):
             self.namePicker.SetFocus()
             for btn in (self.new, self.rename, self.delete, self.copy):
                 btn.Hide()
-                self.headerSizer.Remove(btn)
-            self.headerSizer.Add(self.btnSave, 0, wx.ALIGN_CENTER)
             self.btnSave.Show()
             self.restrict()
             self.headerSizer.Layout()
@@ -359,12 +362,10 @@ class ResistsEditorDlg(wx.Dialog):
             self.ccResists.Show()
             self.namePicker.Hide()
             self.btnSave.Hide()
-            self.headerSizer.Remove(self.btnSave)
             for btn in (self.new, self.rename, self.delete, self.copy):
-                self.headerSizer.Add(btn, 0, wx.ALIGN_CENTER_VERTICAL)
                 btn.Show()
             self.unrestrict()
-            #self.headerSizer.Layout()
+            self.headerSizer.Layout()
 
 
     def __del__( self ):

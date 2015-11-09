@@ -1,7 +1,7 @@
 import wx
 
 from gui.preferenceView import PreferenceView
-from gui import bitmapLoader
+from gui.bitmapLoader import BitmapLoader
 
 import gui.mainFrame
 import service
@@ -223,6 +223,6 @@ class PFNetworkPref ( PreferenceView):
             self.editProxySettingsPort.Disable()
 
     def getImage(self):
-        return bitmapLoader.getBitmap("prefs_proxy", "icons")
+        return BitmapLoader.getBitmap("prefs_proxy", "gui")
 
 PFNetworkPref.register()

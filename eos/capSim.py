@@ -59,26 +59,20 @@ class CapSimulator(object):
         return duration, capNeed
 
     def init(self, modules):
-        """prepare modules. a list of (duration, capNeed, clipSize) tuples is
+        """prepare modules. a list of (duration, capNeed, clipSize, disableStagger) tuples is
          expected, with clipSize 0 if the module has infinite ammo.
             """
-        mods = {}
-        for module in modules:
-                if module in mods:
-                        mods[module] += 1
-                else:
-                        mods[module] = 1
-
-        self.modules = mods
-
+        self.modules = modules
 
     def reset(self):
         """Reset the simulator state"""
         self.state = []
+        mods = {}
         period = 1
         disable_period = False
 
-        for (duration, capNeed, clipSize), amount in self.modules.iteritems():
+        # Loop over modules, clearing clipSize if applicable, and group modules based on attributes
+        for (duration, capNeed, clipSize, disableStagger) in self.modules:
             if self.scale:
                 duration, capNeed = self.scale_activation(duration, capNeed)
 
@@ -87,7 +81,15 @@ class CapSimulator(object):
             if not self.reload and capNeed > 0:
                 clipSize = 0
 
-            if self.stagger:
+            # Group modules based on their properties
+            if (duration, capNeed, clipSize, disableStagger) in mods:
+                mods[(duration, capNeed, clipSize, disableStagger)] += 1
+            else:
+                mods[(duration, capNeed, clipSize, disableStagger)] = 1
+
+        # Loop over grouped modules, configure staggering and push to the simulation state
+        for (duration, capNeed, clipSize, disableStagger), amount in mods.iteritems():
+            if self.stagger and not disableStagger:
                 if clipSize == 0:
                     duration = int(duration/amount)
                 else:
@@ -167,12 +169,12 @@ class CapSimulator(object):
 
             iterations += 1
 
+            t_last = t_now
+
             if cap < cap_lowest:
                 if cap < 0.0:
                     break
                 cap_lowest = cap
-
-            t_last = t_now
 
             # queue the next activation of this module
             t_now += duration

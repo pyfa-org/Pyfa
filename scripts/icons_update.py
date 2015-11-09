@@ -19,8 +19,8 @@ args = parser.parse_args()
 
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
-db_path = os.path.abspath(os.path.join(script_dir, '..', 'staticdata', 'eve.db'))
-icons_dir = os.path.abspath(os.path.join(script_dir, '..', 'staticdata', 'icons'))
+db_path = os.path.abspath(os.path.join(script_dir, '..', 'eve.db'))
+icons_dir = os.path.abspath(os.path.join(script_dir, '..', 'imgs', 'icons'))
 export_dir = os.path.abspath(os.path.expanduser(os.path.join(args.icons, 'items')))
 
 

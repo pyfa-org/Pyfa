@@ -3,7 +3,7 @@ from gui.contextMenu import ContextMenu
 import gui.mainFrame
 import service
 import wx
-from gui import bitmapLoader
+from gui.bitmapLoader import BitmapLoader
 from eos.types import Hardpoint
 import gui.globalEvents as GE
 
@@ -105,7 +105,7 @@ class ModuleAmmoPicker(ContextMenu):
         menu.Bind(wx.EVT_MENU, self.handleAmmoSwitch, item)
         item.charge = charge
         if charge is not None and charge.icon is not None:
-            bitmap = bitmapLoader.getBitmap(charge.icon.iconFile, "pack")
+            bitmap = BitmapLoader.getBitmap(charge.icon.iconFile, "icons")
             if bitmap is not None:
                 item.SetBitmap(bitmap)
 
@@ -181,7 +181,7 @@ class ModuleAmmoPicker(ContextMenu):
 
                     type = currType
                     item = wx.MenuItem(m, wx.ID_ANY, type.capitalize())
-                    bitmap = bitmapLoader.getBitmap("%s_small" % type, "icons")
+                    bitmap = BitmapLoader.getBitmap("%s_small" % type, "gui")
                     if bitmap is not None:
                         item.SetBitmap(bitmap)
 

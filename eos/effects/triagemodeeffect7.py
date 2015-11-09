@@ -9,7 +9,8 @@ def handler(fit, module, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Capital Remote Armor Repair Systems"),
                                   "duration", module.getModifiedItemAttr("remoteArmorDamageDurationBonus"))
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Capital Remote Armor Repair Systems"),
-                                  "armorDamageAmount", module.getModifiedItemAttr("remoteArmorDamageAmountBonus"))
+                                  "armorDamageAmount", module.getModifiedItemAttr("remoteArmorDamageAmountBonus"),
+                                  stackingPenalties=True)
 
     # Remote hull reppers
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Capital Remote Hull Repair Systems"),
@@ -19,7 +20,8 @@ def handler(fit, module, context):
 
     # Shield Transporters
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Capital Shield Emission Systems"),
-                                  "shieldBonus", module.getModifiedItemAttr("shieldTransportAmountBonus"))
+                                  "shieldBonus", module.getModifiedItemAttr("shieldTransportAmountBonus"),
+                                  stackingPenalties=True)
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Capital Shield Emission Systems"),
                                   "duration", module.getModifiedItemAttr("shieldTransportDurationBonus"))
 
@@ -34,26 +36,29 @@ def handler(fit, module, context):
                                   "shieldBonus", module.getModifiedItemAttr("shieldBoostMultiplier"),
                                   stackingPenalties=True)
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Capital Shield Operation"),
-                                  "duration", module.getModifiedItemAttr("shieldBonusDurationBonus"),
-                                  stackingPenalties=True)
+                                  "duration", module.getModifiedItemAttr("shieldBonusDurationBonus"))
 
     # Armor reps
-    fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == "Armor Repair Unit",
+    fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Capital Repair Systems"),
                                   "armorDamageAmount", module.getModifiedItemAttr("armorDamageAmountBonus"))
-    fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == "Armor Repair Unit",
+    fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Capital Repair Systems"),
                                   "duration", module.getModifiedItemAttr("armorDamageDurationBonus"))
 
     # Speed bonus
-    fit.ship.boostItemAttr("maxVelocity", module.getModifiedItemAttr("speedFactor"))
+    fit.ship.boostItemAttr("maxVelocity", module.getModifiedItemAttr("speedFactor"),
+                           stackingPenalties=True)
 
     # Scan resolution multiplier
-    fit.ship.multiplyItemAttr("scanResolution", module.getModifiedItemAttr("scanResolutionMultiplier"))
+    fit.ship.multiplyItemAttr("scanResolution", module.getModifiedItemAttr("scanResolutionMultiplier"),
+                              stackingPenalties=True)
 
     # Mass multiplier
-    fit.ship.multiplyItemAttr("mass", module.getModifiedItemAttr("massMultiplier"))
+    fit.ship.multiplyItemAttr("mass", module.getModifiedItemAttr("massMultiplier"),
+                              stackingPenalties=True)
 
     # Lock range
-    fit.ship.multiplyItemAttr("maxTargetRange", module.getModifiedItemAttr("maxTargetRangeMultiplier"))
+    fit.ship.multiplyItemAttr("maxTargetRange", module.getModifiedItemAttr("maxTargetRangeMultiplier"),
+                              stackingPenalties=True)
 
     # Max locked targets
     fit.ship.increaseItemAttr("maxLockedTargets", module.getModifiedItemAttr("maxLockedTargetsBonus"))
@@ -69,3 +74,18 @@ def handler(fit, module, context):
                                   "capacitorNeed", module.getModifiedItemAttr("triageRemoteModuleCapNeed"))
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Capital Shield Emission Systems"),
                                   "capacitorNeed", module.getModifiedItemAttr("triageRemoteModuleCapNeed"))
+    fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Capital Capacitor Emission Systems"),
+                                  "capacitorNeed", module.getModifiedItemAttr("triageRemoteModuleCapNeed"))
+
+    # EW cap need increase
+    groups = [
+        'ECM Burst',
+        'Remote ECM Burst',
+        'Tracking Disruptor',
+        'ECM',
+        'Remote Sensor Damper',
+        'Target Painter']
+
+    fit.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups or
+                                              mod.item.requiresSkill("Propulsion Jamming"),
+                                  "capacitorNeed", module.getModifiedItemAttr("ewCapacitorNeedBonus"))

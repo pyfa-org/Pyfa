@@ -30,13 +30,14 @@ from wx.lib.wordwrap import wordwrap
 import service
 import config
 import threading
+import webbrowser
 
 import gui.aboutData
 import gui.chromeTabs
 import gui.utils.animUtils as animUtils
 import gui.globalEvents as GE
 
-from gui import bitmapLoader
+from gui.bitmapLoader import BitmapLoader
 from gui.mainMenuBar import MainMenuBar
 from gui.additionsPane import AdditionsPane
 from gui.marketBrowser import MarketBrowser, ItemSelected
@@ -55,10 +56,21 @@ from gui.fleetBrowser import FleetBrowser
 from gui.updateDialog import UpdateDialog
 from gui.builtinViews import *
 
+# import this to access override setting
+from eos.modifiedAttributeDict import ModifiedAttributeDict
+
 from time import gmtime, strftime
 
-import locale
-locale.setlocale(locale.LC_ALL, '')
+if not 'wxMac' in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3,0)):
+    from service.crest import CrestModes
+    from gui.crestFittings import CrestFittings, ExportToEve, CrestMgmt
+
+    try:
+        from gui.propertyEditor import AttributeEditor
+        disableOverrideEditor = False
+    except ImportError, e:
+        print "Error loading Attribute Editor: %s.\nAccess to Attribute Editor is disabled."%e.message
+        disableOverrideEditor = True
 
 #dummy panel(no paint no erasebk)
 class PFPanel(wx.Panel):
@@ -103,8 +115,8 @@ class MainFrame(wx.Frame):
         return cls.__instance if cls.__instance is not None else MainFrame()
 
     def __init__(self):
-        title="pyfa %s%s - Python Fitting Assistant"%(config.version, "" if config.tag.lower() != 'git' else " (git)")
-        wx.Frame.__init__(self, None, wx.ID_ANY, title)
+        self.title="pyfa %s%s - Python Fitting Assistant"%(config.version, "" if config.tag.lower() != 'git' else " (git)")
+        wx.Frame.__init__(self, None, wx.ID_ANY, self.title)
 
         MainFrame.__instance = self
 
@@ -116,33 +128,24 @@ class MainFrame(wx.Frame):
             self.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNFACE ) )
 
         #Load and set the icon for pyfa main window
-        i = wx.IconFromBitmap(bitmapLoader.getBitmap("pyfa", "icons"))
+        i = wx.IconFromBitmap(BitmapLoader.getBitmap("pyfa", "gui"))
         self.SetIcon(i)
 
         #Create the layout and windows
         mainSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.splitter = wx.SplitterWindow(self, style = wx.SP_LIVE_UPDATE)
+        self.browser_fitting_split = wx.SplitterWindow(self, style = wx.SP_LIVE_UPDATE)
+        self.fitting_additions_split = wx.SplitterWindow(self.browser_fitting_split, style = wx.SP_LIVE_UPDATE)
 
-        mainSizer.Add(self.splitter,1,wx.EXPAND | wx.LEFT, 2)
+        mainSizer.Add(self.browser_fitting_split, 1, wx.EXPAND | wx.LEFT, 2)
 
-        self.FitviewAdditionsPanel = PFPanel(self.splitter)
-        faSizer = wx.BoxSizer(wx.VERTICAL)
+        self.fitMultiSwitch = MultiSwitch(self.fitting_additions_split)
+        self.additionsPane = AdditionsPane(self.fitting_additions_split)
 
-        self.fitMultiSwitch = MultiSwitch(self.FitviewAdditionsPanel)
+        self.notebookBrowsers = gui.chromeTabs.PFNotebook(self.browser_fitting_split, False)
 
-        faSizer.Add(self.fitMultiSwitch,1,wx.EXPAND)
-
-        self.additionsPane = AdditionsPane(self.FitviewAdditionsPanel)
-        faSizer.Add(self.additionsPane, 0, wx.EXPAND)
-
-        self.FitviewAdditionsPanel.SetSizer(faSizer)
-
-
-        self.notebookBrowsers = gui.chromeTabs.PFNotebook(self.splitter, False)
-
-        marketImg = bitmapLoader.getImage("market_small", "icons")
-        shipBrowserImg = bitmapLoader.getImage("ship_small", "icons")
+        marketImg = BitmapLoader.getImage("market_small", "gui")
+        shipBrowserImg = BitmapLoader.getImage("ship_small", "gui")
 
         self.marketBrowser = MarketBrowser(self.notebookBrowsers)
         self.notebookBrowsers.AddPage(self.marketBrowser, "Market", tabImage = marketImg, showClose = False)
@@ -159,9 +162,14 @@ class MainFrame(wx.Frame):
 
         self.notebookBrowsers.SetSelection(1)
 
-        self.splitter.SplitVertically(self.notebookBrowsers, self.FitviewAdditionsPanel)
-        self.splitter.SetMinimumPaneSize(204)
-        self.splitter.SetSashPosition(self.browserWidth)
+        self.browser_fitting_split.SplitVertically(self.notebookBrowsers, self.fitting_additions_split)
+        self.browser_fitting_split.SetMinimumPaneSize(204)
+        self.browser_fitting_split.SetSashPosition(self.browserWidth)
+
+        self.fitting_additions_split.SplitHorizontally(self.fitMultiSwitch, self.additionsPane, -200)
+        self.fitting_additions_split.SetMinimumPaneSize(200)
+        self.fitting_additions_split.SetSashPosition(self.fittingHeight)
+        self.fitting_additions_split.SetSashGravity(1.0)
 
         cstatsSizer = wx.BoxSizer(wx.VERTICAL)
 
@@ -199,10 +207,16 @@ class MainFrame(wx.Frame):
         self.sUpdate = service.Update.getInstance()
         self.sUpdate.CheckUpdate(self.ShowUpdateBox)
 
+        if not 'wxMac' in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3,0)):
+            self.Bind(GE.EVT_SSO_LOGIN, self.onSSOLogin)
+            self.Bind(GE.EVT_SSO_LOGOUT, self.onSSOLogout)
+
+        self.titleTimer = wx.Timer(self)
+        self.Bind(wx.EVT_TIMER, self.updateTitle, self.titleTimer)
+
     def ShowUpdateBox(self, release):
         dlg = UpdateDialog(self, release)
         dlg.ShowModal()
-        dlg.Destroy()
 
     def LoadPreviousOpenFits(self):
         sFit = service.Fit.getInstance()
@@ -213,7 +227,7 @@ class MainFrame(wx.Frame):
         # Remove any fits that cause exception when fetching (non-existent fits)
         for id in fits[:]:
             try:
-                sFit.getFit(id)
+                sFit.getFit(id, basic=True)
             except:
                 fits.remove(id)
 
@@ -222,13 +236,11 @@ class MainFrame(wx.Frame):
             self.fitMultiSwitch.AddPage()
             return
 
-        self.waitDialog = animUtils.WaitDialog(self, title="Opening previous fits")
+        self.waitDialog = wx.BusyInfo("Loading previous fits...")
         OpenFitsThread(fits, self.closeWaitDialog)
-        self.waitDialog.ShowModal()
-
 
     def LoadMainFrameAttribs(self):
-        mainFrameDefaultAttribs = {"wnd_width": 1000, "wnd_height": 680, "wnd_maximized": False, "browser_width": 300, "market_height": 0}
+        mainFrameDefaultAttribs = {"wnd_width": 1000, "wnd_height": 700, "wnd_maximized": False, "browser_width": 300, "market_height": 0, "fitting_height": -200}
         self.mainFrameAttribs = service.SettingsProvider.getInstance().getSettings("pyfaMainWindowAttribs", mainFrameDefaultAttribs)
 
         if self.mainFrameAttribs["wnd_maximized"]:
@@ -244,6 +256,7 @@ class MainFrame(wx.Frame):
 
         self.browserWidth = self.mainFrameAttribs["browser_width"]
         self.marketHeight = self.mainFrameAttribs["market_height"]
+        self.fittingHeight = self.mainFrameAttribs["fitting_height"]
 
     def UpdateMainFrameAttribs(self):
         if self.IsIconized():
@@ -256,6 +269,7 @@ class MainFrame(wx.Frame):
 
         self.mainFrameAttribs["browser_width"] = self.notebookBrowsers.GetSize()[0]
         self.mainFrameAttribs["market_height"] = self.marketBrowser.marketView.GetSize()[1]
+        self.mainFrameAttribs["fitting_height"] = self.fitting_additions_split.GetSashPosition()
 
     def SetActiveStatsWindow(self, wnd):
         self.activeStatsWnd = wnd
@@ -336,6 +350,10 @@ class MainFrame(wx.Frame):
         dlg=CharacterEditor(self)
         dlg.Show()
 
+    def showAttrEditor(self, event):
+        dlg=AttributeEditor(self)
+        dlg.Show()
+
     def showTargetResistsEditor(self, event):
         dlg=ResistsEditorDlg(self)
         dlg.ShowModal()
@@ -375,13 +393,12 @@ class MainFrame(wx.Frame):
     def showPreferenceDialog(self, event):
         dlg = PreferenceDialog(self)
         dlg.ShowModal()
-        dlg.Destroy()
 
     def goWiki(self, event):
-        wx.LaunchDefaultBrowser('https://github.com/DarkFenX/Pyfa/wiki')
+        webbrowser.open('https://github.com/DarkFenX/Pyfa/wiki')
 
     def goForums(self, event):
-        wx.LaunchDefaultBrowser('https://forums.eveonline.com/default.aspx?g=posts&t=247609')
+        webbrowser.open('https://forums.eveonline.com/default.aspx?g=posts&t=247609')
 
     def registerMenu(self):
         menuBar = self.GetMenuBar()
@@ -424,6 +441,18 @@ class MainFrame(wx.Frame):
         self.Bind(wx.EVT_MENU, self.saveCharAs, id = menuBar.saveCharAsId)
         # Save current character
         self.Bind(wx.EVT_MENU, self.revertChar, id = menuBar.revertCharId)
+
+        # Browse fittings
+        self.Bind(wx.EVT_MENU, self.eveFittings, id = menuBar.eveFittingsId)
+        # Export to EVE
+        self.Bind(wx.EVT_MENU, self.exportToEve, id = menuBar.exportToEveId)
+        # Handle SSO event (login/logout/manage characters, depending on mode and current state)
+        self.Bind(wx.EVT_MENU, self.ssoHandler, id = menuBar.ssoLoginId)
+
+        # Open attribute editor
+        self.Bind(wx.EVT_MENU, self.showAttrEditor, id = menuBar.attrEditorId)
+        # Toggle Overrides
+        self.Bind(wx.EVT_MENU, self.toggleOverrides, id = menuBar.toggleOverridesId)
 
         #Clipboard exports
         self.Bind(wx.EVT_MENU, self.exportToClipboard, id=wx.ID_COPY)
@@ -488,6 +517,80 @@ class MainFrame(wx.Frame):
         atable = wx.AcceleratorTable(actb)
         self.SetAcceleratorTable(atable)
 
+    def eveFittings(self, event):
+        dlg=CrestFittings(self)
+        dlg.Show()
+
+    def updateTitle(self, event):
+        sCrest = service.Crest.getInstance()
+        char = sCrest.implicitCharacter
+        if char:
+            t = time.gmtime(char.eve.expires-time.time())
+            sTime = time.strftime("%H:%M:%S", t if t >= 0 else 0)
+            newTitle = "%s | %s - %s"%(self.title, char.name, sTime)
+            self.SetTitle(newTitle)
+
+    def onSSOLogin(self, event):
+        menu = self.GetMenuBar()
+        menu.Enable(menu.eveFittingsId, True)
+        menu.Enable(menu.exportToEveId, True)
+
+        if event.type == CrestModes.IMPLICIT:
+            menu.SetLabel(menu.ssoLoginId, "Logout Character")
+            self.titleTimer.Start(1000)
+
+    def onSSOLogout(self, event):
+        self.titleTimer.Stop()
+        self.SetTitle(self.title)
+
+        menu = self.GetMenuBar()
+        if event.type == CrestModes.IMPLICIT or event.numChars == 0:
+            menu.Enable(menu.eveFittingsId, False)
+            menu.Enable(menu.exportToEveId, False)
+
+        if event.type == CrestModes.IMPLICIT:
+            menu.SetLabel(menu.ssoLoginId, "Login to EVE")
+
+    def updateCrestMenus(self, type):
+        # in case we are logged in when switching, change title back
+        self.titleTimer.Stop()
+        self.SetTitle(self.title)
+
+        menu = self.GetMenuBar()
+        sCrest = service.Crest.getInstance()
+
+        if type == CrestModes.IMPLICIT:
+            menu.SetLabel(menu.ssoLoginId, "Login to EVE")
+            menu.Enable(menu.eveFittingsId, False)
+            menu.Enable(menu.exportToEveId, False)
+        else:
+            menu.SetLabel(menu.ssoLoginId, "Manage Characters")
+            enable = len(sCrest.getCrestCharacters()) == 0
+            menu.Enable(menu.eveFittingsId, not enable)
+            menu.Enable(menu.exportToEveId, not enable)
+
+    def ssoHandler(self, event):
+        sCrest = service.Crest.getInstance()
+        if sCrest.settings.get('mode') == CrestModes.IMPLICIT:
+            if sCrest.implicitCharacter is not None:
+                sCrest.logout()
+            else:
+                uri = sCrest.startServer()
+                webbrowser.open(uri)
+        else:
+            dlg=CrestMgmt(self)
+            dlg.Show()
+
+    def exportToEve(self, event):
+        dlg=ExportToEve(self)
+        dlg.Show()
+
+    def toggleOverrides(self, event):
+        ModifiedAttributeDict.OVERRIDES = not ModifiedAttributeDict.OVERRIDES
+        wx.PostEvent(self, GE.FitChanged(fitID=self.getActiveFit()))
+        menu = self.GetMenuBar()
+        menu.SetLabel(menu.toggleOverridesId, "Turn Overrides Off" if ModifiedAttributeDict.OVERRIDES else "Turn Overrides On")
+
     def saveChar(self, event):
         sChr = service.Character.getInstance()
         charID = self.charSelection.getActiveCharacter()
@@ -498,7 +601,6 @@ class MainFrame(wx.Frame):
         charID = self.charSelection.getActiveCharacter()
         dlg = SaveCharacterAs(self, charID)
         dlg.ShowModal()
-        dlg.Destroy()
 
     def revertChar(self, event):
         sChr = service.Character.getInstance()
@@ -550,6 +652,10 @@ class MainFrame(wx.Frame):
         sFit = service.Fit.getInstance()
         toClipboard(sFit.exportDna(self.getActiveFit()))
 
+    def clipboardCrest(self):
+        sFit = service.Fit.getInstance()
+        toClipboard(sFit.exportCrest(self.getActiveFit()))
+
     def clipboardXml(self):
         sFit = service.Fit.getInstance()
         toClipboard(sFit.exportXml(None, self.getActiveFit()))
@@ -567,95 +673,16 @@ class MainFrame(wx.Frame):
         CopySelectDict = {CopySelectDialog.copyFormatEft: self.clipboardEft,
                           CopySelectDialog.copyFormatEftImps: self.clipboardEftImps,
                           CopySelectDialog.copyFormatXml: self.clipboardXml,
-                          CopySelectDialog.copyFormatDna: self.clipboardDna}
+                          CopySelectDialog.copyFormatDna: self.clipboardDna,
+                          CopySelectDialog.copyFormatCrest: self.clipboardCrest}
         dlg = CopySelectDialog(self)
         dlg.ShowModal()
         selected = dlg.GetSelected()
-        try:
-            CopySelectDict[selected]()
-        except:
-            pass
+
+        CopySelectDict[selected]()
+
+
         dlg.Destroy()
-
-    def fileImportDialog(self, event):
-        """Handles importing single/multiple EVE XML / EFT cfg fit files"""
-        sFit = service.Fit.getInstance()
-        dlg = wx.FileDialog(self, "Open One Or More Fitting Files",
-                    wildcard = "EVE XML fitting files (*.xml)|*.xml|" \
-                                "EFT text fitting files (*.cfg)|*.cfg|" \
-                                "All Files (*)|*",
-                    style = wx.FD_OPEN | wx.FD_FILE_MUST_EXIST | wx.FD_MULTIPLE)
-        if (dlg.ShowModal() == wx.ID_OK):
-            self.progressDialog = wx.ProgressDialog(
-                            "Importing fits",
-                            " "*100, # set some arbitrary spacing to create wifth in window
-                            parent=self, style = wx.PD_APP_MODAL | wx.PD_ELAPSED_TIME)
-            self.progressDialog.message = None
-            sFit.importFitsThreaded(dlg.GetPaths(), self.fileImportCallback)
-            self.progressDialog.ShowModal()
-            dlg.Destroy()
-
-    def fileImportCallback(self, info, fits=None):
-        """
-        While importing fits from file, the logic calls back to this function to
-        update progress bar to show activity. XML files can contain multiple
-        ships with multiple fits, whereas EFT cfg files contain many fits of
-        a single ship. When iterating through the files, we update the message
-        when we start a new file, and then Pulse the progress bar with every fit
-        that is processed.
-        """
-
-        if info == -1:
-            # Done processing
-            self.progressDialog.Hide()
-            self._openAfterImport(fits)
-        elif info != self.progressDialog.message and info is not None:
-            # New message, overwrite cached message and update
-            self.progressDialog.message = info
-            self.progressDialog.Pulse(info)
-        else:
-            # Simply Pulse() if we don't have anything else to do
-            self.progressDialog.Pulse()
-
-    def _openAfterImport(self, fits):
-        if len(fits) > 0:
-            if len(fits) == 1:
-                fit = fits[0]
-                wx.PostEvent(self, FitSelected(fitID=fit.ID))
-                wx.PostEvent(self.shipBrowser, Stage3Selected(shipID=fit.shipID, back=True))
-            else:
-                wx.PostEvent(self.shipBrowser, ImportSelected(fits=fits, back=True))
-
-    def backupToXml(self, event):
-        """ Back up all fits to EVE XML file """
-        defaultFile = "pyfa-fits-%s.xml"%strftime("%Y%m%d_%H%M%S", gmtime())
-
-        saveDialog = wx.FileDialog(self, "Save Backup As...",
-                            wildcard = "EVE XML fitting file (*.xml)|*.xml",
-                            style = wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT,
-                            defaultFile=defaultFile)
-
-        if saveDialog.ShowModal() == wx.ID_OK:
-            filePath = saveDialog.GetPath()
-            if '.' not in os.path.basename(filePath):
-                filePath += ".xml"
-
-            sFit = service.Fit.getInstance()
-            max = sFit.countAllFits()
-
-            self.progressDialog = wx.ProgressDialog("Backup fits",
-                              "Backing up %d fits to: %s"%(max, filePath),
-                              maximum=max, parent=self,
-                              style=wx.PD_APP_MODAL | wx.PD_ELAPSED_TIME)
-
-            sFit.backupFits(filePath, self.backupCallback)
-            self.progressDialog.ShowModal()
-
-    def backupCallback(self, info):
-        if info == -1:
-            self.progressDialog.Hide()
-        else:
-            self.progressDialog.Update(info)
 
     def exportSkillsNeeded(self, event):
         """ Exports skills needed for active fit and active character """
@@ -680,11 +707,121 @@ class MainFrame(wx.Frame):
             if '.' not in os.path.basename(filePath):
                 filePath += ".{0}".format(saveFmt)
 
-            self.waitDialog = animUtils.WaitDialog(self)
+            self.waitDialog = wx.BusyInfo("Exporting skills needed...")
             sCharacter.backupSkills(filePath, saveFmt, self.getActiveFit(), self.closeWaitDialog)
-            self.waitDialog.ShowModal()
 
         saveDialog.Destroy()
+
+    def fileImportDialog(self, event):
+        """Handles importing single/multiple EVE XML / EFT cfg fit files"""
+        sFit = service.Fit.getInstance()
+        dlg = wx.FileDialog(self, "Open One Or More Fitting Files",
+                    wildcard = "EVE XML fitting files (*.xml)|*.xml|" \
+                                "EFT text fitting files (*.cfg)|*.cfg|" \
+                                "All Files (*)|*",
+                    style = wx.FD_OPEN | wx.FD_FILE_MUST_EXIST | wx.FD_MULTIPLE)
+        if (dlg.ShowModal() == wx.ID_OK):
+            self.progressDialog = wx.ProgressDialog(
+                            "Importing fits",
+                            " "*100, # set some arbitrary spacing to create width in window
+                            parent=self, style = wx.PD_APP_MODAL | wx.PD_ELAPSED_TIME)
+            self.progressDialog.message = None
+            sFit.importFitsThreaded(dlg.GetPaths(), self.fileImportCallback)
+            self.progressDialog.ShowModal()
+            dlg.Destroy()
+
+    def backupToXml(self, event):
+        """ Back up all fits to EVE XML file """
+        defaultFile = "pyfa-fits-%s.xml"%strftime("%Y%m%d_%H%M%S", gmtime())
+
+        saveDialog = wx.FileDialog(self, "Save Backup As...",
+                            wildcard = "EVE XML fitting file (*.xml)|*.xml",
+                            style = wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT,
+                            defaultFile=defaultFile)
+
+        if saveDialog.ShowModal() == wx.ID_OK:
+            filePath = saveDialog.GetPath()
+            if '.' not in os.path.basename(filePath):
+                filePath += ".xml"
+
+            sFit = service.Fit.getInstance()
+            max = sFit.countAllFits()
+
+            self.progressDialog = wx.ProgressDialog("Backup fits",
+                              "Backing up %d fits to: %s"%(max, filePath),
+                              maximum=max, parent=self,
+                              style=wx.PD_APP_MODAL | wx.PD_ELAPSED_TIME)
+            sFit.backupFits(filePath, self.backupCallback)
+            self.progressDialog.ShowModal()
+
+    def exportHtml(self, event):
+        from gui.utils.exportHtml import exportHtml
+        sFit = service.Fit.getInstance()
+        settings = service.settings.HTMLExportSettings.getInstance()
+
+        max = sFit.countAllFits()
+        path = settings.getPath()
+
+        if not os.path.isdir(os.path.dirname(path)):
+            dlg = wx.MessageDialog(self,
+                 "Invalid Path\n\nThe following path is invalid or does not exist: \n%s\n\nPlease verify path location pyfa's preferences."%path,
+                 "Error", wx.OK | wx.ICON_ERROR)
+
+            if dlg.ShowModal() == wx.ID_OK:
+                return
+
+        self.progressDialog = wx.ProgressDialog("Backup fits",
+                            "Generating HTML file at: %s"%path,
+                            maximum=max, parent=self,
+                            style=wx.PD_APP_MODAL | wx.PD_ELAPSED_TIME)
+
+        exportHtml.getInstance().refreshFittingHtml(True, self.backupCallback)
+        self.progressDialog.ShowModal()
+
+    def backupCallback(self, info):
+        if info == -1:
+            self.closeProgressDialog()
+        else:
+            self.progressDialog.Update(info)
+
+    def fileImportCallback(self, info, fits=None):
+        """
+        While importing fits from file, the logic calls back to this function to
+        update progress bar to show activity. XML files can contain multiple
+        ships with multiple fits, whereas EFT cfg files contain many fits of
+        a single ship. When iterating through the files, we update the message
+        when we start a new file, and then Pulse the progress bar with every fit
+        that is processed.
+        """
+
+        if info == -1:
+            self.closeProgressDialog()
+            self._openAfterImport(fits)
+        elif info != self.progressDialog.message and info is not None:
+            # New message, overwrite cached message and update
+            self.progressDialog.message = info
+            self.progressDialog.Pulse(info)
+        else:
+            # Simply Pulse() if we don't have anything else to do
+            self.progressDialog.Pulse()
+
+    def _openAfterImport(self, fits):
+        if len(fits) > 0:
+            if len(fits) == 1:
+                fit = fits[0]
+                wx.PostEvent(self, FitSelected(fitID=fit.ID))
+                wx.PostEvent(self.shipBrowser, Stage3Selected(shipID=fit.shipID, back=True))
+            else:
+                wx.PostEvent(self.shipBrowser, ImportSelected(fits=fits, back=True))
+
+    def closeProgressDialog(self):
+        # Windows apparently handles ProgressDialogs differently. We can
+        # simply Destroy it here, but for other platforms we must Close it
+        if 'wxMSW' in wx.PlatformInfo:
+            self.progressDialog.Destroy()
+        else:
+            self.progressDialog.EndModal(wx.ID_OK)
+            self.progressDialog.Close()
 
     def importCharacter(self, event):
         """ Imports character XML file from EVE API """
@@ -694,33 +831,16 @@ class MainFrame(wx.Frame):
                         style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST | wx.FD_MULTIPLE)
 
         if dlg.ShowModal() == wx.ID_OK:
-            self.waitDialog = animUtils.WaitDialog(self, title="Importing Character")
+            self.waitDialog = wx.BusyInfo("Importing Character...")
             sCharacter = service.Character.getInstance()
             sCharacter.importCharacter(dlg.GetPaths(), self.importCharacterCallback)
-            dlg.Destroy()
-            self.waitDialog.ShowModal()
 
     def importCharacterCallback(self):
-        self.waitDialog.Destroy()
+        self.closeWaitDialog()
         wx.PostEvent(self, GE.CharListUpdated())
 
-    def exportHtml(self, event):
-        from gui.utils.exportHtml import exportHtml
-        sFit = service.Fit.getInstance()
-        settings = service.settings.HTMLExportSettings.getInstance()
-
-        max = sFit.countAllFits()
-        path = settings.getPath()
-        self.progressDialog = wx.ProgressDialog("Backup fits",
-                            "Generating HTML file at: %s"%path,
-                            maximum=max, parent=self,
-                            style=wx.PD_APP_MODAL | wx.PD_ELAPSED_TIME)
-
-        exportHtml.getInstance().refreshFittingHtml(True, self.backupCallback)
-        self.progressDialog.ShowModal()
-
     def closeWaitDialog(self):
-        self.waitDialog.Destroy()
+        del self.waitDialog
 
     def openGraphFrame(self, event):
         if not self.graphFrame:

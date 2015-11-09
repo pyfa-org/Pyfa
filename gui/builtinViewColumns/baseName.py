@@ -32,7 +32,7 @@ class BaseName(ViewColumn):
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.columnText = "Name"
-        self.shipImage = fittingView.imageList.GetImageIndex("ship_small", "icons")
+        self.shipImage = fittingView.imageList.GetImageIndex("ship_small", "gui")
         self.mask = wx.LIST_MASK_TEXT
         self.projectedView = isinstance(fittingView, gui.projectedView.ProjectedView)
 
@@ -70,6 +70,7 @@ class BaseName(ViewColumn):
                 if marketShortcut:
                     # use unicode subscript to display shortcut value
                     shortcut = unichr(marketShortcut+8320)+u" "
+                    del item.marketShortcut
                     return shortcut+item.name
 
             return item.name

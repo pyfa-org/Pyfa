@@ -113,10 +113,13 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
         if self.__item:
             self.__itemModifiedAttributes.original = self.__item.attributes
+            self.__itemModifiedAttributes.overrides = self.__item.overrides
             self.__hardpoint = self.__calculateHardpoint(self.__item)
             self.__slot = self.__calculateSlot(self.__item)
         if self.__charge:
             self.__chargeModifiedAttributes.original = self.__charge.attributes
+            self.__chargeModifiedAttributes.overrides = self.__charge.overrides
+
 
     @classmethod
     def buildEmpty(cls, slot):
@@ -283,9 +286,11 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         if charge is not None:
             self.chargeID = charge.ID
             self.__chargeModifiedAttributes.original = charge.attributes
+            self.__chargeModifiedAttributes.overrides = charge.overrides
         else:
             self.chargeID = None
             self.__chargeModifiedAttributes.original = None
+            self.__chargeModifiedAttributes.overrides = {}
 
         self.__itemModifiedAttributes.clear()
 
@@ -316,7 +321,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                 self.__miningyield = 0
             else:
                 if self.state >= State.ACTIVE:
-                    volley = sum(map(lambda attr: self.getModifiedItemAttr(attr) or 0, self.MINING_ATTRIBUTES))
+                    volley = self.getModifiedItemAttr("specialtyMiningAmount") or self.getModifiedItemAttr("miningAmount") or 0
                     if volley:
                         cycleTime = self.cycleTime
                         self.__miningyield = volley / (cycleTime / 1000.0)

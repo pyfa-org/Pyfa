@@ -51,6 +51,7 @@ class Ship(ItemAttrShortcut, HandledItem):
         self.__itemModifiedAttributes = ModifiedAttributeDict()
         self.__itemModifiedAttributes.original = dict(self.item.attributes)
         self.__itemModifiedAttributes.original.update(self.EXTRA_ATTRIBUTES)
+        self.__itemModifiedAttributes.overrides = self.item.overrides
 
         self.commandBonus = 0
 
@@ -121,3 +122,8 @@ class Ship(ItemAttrShortcut, HandledItem):
     def __deepcopy__(self, memo):
         copy = Ship(self.item)
         return copy
+
+    def __repr__(self):
+        return "Ship(ID={}, name={}) at {}".format(
+            self.item.ID, self.item.name, hex(id(self))
+        )

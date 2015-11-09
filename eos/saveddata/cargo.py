@@ -34,6 +34,7 @@ class Cargo(HandledItem, ItemAttrShortcut):
         self.amount = 0
         self.__itemModifiedAttributes = ModifiedAttributeDict()
         self.__itemModifiedAttributes.original = item.attributes
+        self.__itemModifiedAttributes.overrides = item.overrides
 
     @reconstructor
     def init(self):
@@ -48,6 +49,7 @@ class Cargo(HandledItem, ItemAttrShortcut):
 
         self.__itemModifiedAttributes = ModifiedAttributeDict()
         self.__itemModifiedAttributes.original = self.__item.attributes
+        self.__itemModifiedAttributes.overrides = self.__item.overrides
 
     @property
     def itemModifiedAttributes(self):

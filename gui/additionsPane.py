@@ -26,7 +26,7 @@ from gui.implantView import ImplantView
 from gui.projectedView import ProjectedView
 from gui.pyfatogglepanel import TogglePanel
 from gui.gangView import GangView
-from gui import bitmapLoader
+from gui.bitmapLoader import BitmapLoader
 
 import gui.chromeTabs
 
@@ -45,18 +45,16 @@ class AdditionsPane(TogglePanel):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
         self.notebook = gui.chromeTabs.PFNotebook(pane, False)
-        size = wx.Size()
-        # This size lets you see 4 drones at a time
-        size.SetHeight(180)
-        self.notebook.SetMinSize(size)
+        self.notebook.SetMinSize((-1, 1000))
+
         baseSizer.Add(self.notebook, 1, wx.EXPAND)
 
-        droneImg = bitmapLoader.getImage("drone_small", "icons")
-        implantImg = bitmapLoader.getImage("implant_small", "icons")
-        boosterImg = bitmapLoader.getImage("booster_small", "icons")
-        projectedImg = bitmapLoader.getImage("projected_small", "icons")
-        gangImg = bitmapLoader.getImage("fleet_fc_small", "icons")
-        cargoImg = bitmapLoader.getImage("cargo_small", "icons")
+        droneImg = BitmapLoader.getImage("drone_small", "gui")
+        implantImg = BitmapLoader.getImage("implant_small", "gui")
+        boosterImg = BitmapLoader.getImage("booster_small", "gui")
+        projectedImg = BitmapLoader.getImage("projected_small", "gui")
+        gangImg = BitmapLoader.getImage("fleet_fc_small", "gui")
+        cargoImg = BitmapLoader.getImage("cargo_small", "gui")
 
         self.notebook.AddPage(DroneView(self.notebook), "Drones", tabImage = droneImg, showClose = False)
         self.notebook.AddPage(CargoView(self.notebook), "Cargo", tabImage = cargoImg, showClose = False)
@@ -76,3 +74,21 @@ class AdditionsPane(TogglePanel):
 
     def getName(self, idx):
         return self.PANES[idx]
+
+    def toggleContent(self, event):
+        TogglePanel.toggleContent(self, event)
+        h = self.headerPanel.GetSize()[1]+4
+
+        if self.IsCollapsed():
+            self.old_pos = self.parent.GetSashPosition()
+            self.parent.SetMinimumPaneSize(h)
+            self.parent.SetSashPosition(h*-1, True)
+            # only available in >= wx2.9
+            if getattr(self.parent, "SetSashInvisible", None):
+                self.parent.SetSashInvisible(True)
+        else:
+            if getattr(self.parent, "SetSashInvisible", None):
+                self.parent.SetSashInvisible(False)
+            self.parent.SetMinimumPaneSize(200)
+            self.parent.SetSashPosition(self.old_pos, True)
+

@@ -17,21 +17,15 @@ debug = False
 # Defines if our saveddata will be in pyfa root or not
 saveInRoot = False
 
-if debug:
-    logLevel = logging.DEBUG
-else:
-    logLevel = logging.WARN
-
 # Version data
-version = "1.14.1"
-tag = "git"
-expansionName = "Galatea"
-expansionVersion = "1.2"
+version = "1.16.2"
+tag = "Stable"
+expansionName = "Parallax"
+expansionVersion = "1.1"
 evemonMinVersion = "4081"
 
 pyfaPath = None
 savePath = None
-staticPath = None
 saveDB = None
 gameDB = None
 
@@ -50,23 +44,40 @@ class StreamToLogger(object):
       for line in buf.rstrip().splitlines():
          self.logger.log(self.log_level, line.rstrip())
 
+def isFrozen():
+    if hasattr(sys, 'frozen'):
+        return True
+    else:
+        return False
+
+def getPyfaRoot():
+    base = getattr(sys.modules['__main__'], "__file__", sys.executable) if isFrozen() else sys.argv[0]
+    root = os.path.dirname(os.path.realpath(os.path.abspath(base)))
+    root = unicode(root, sys.getfilesystemencoding())
+    return root
+
 def __createDirs(path):
     if not os.path.exists(path):
         os.makedirs(path)
 
 def defPaths():
+    global debug
     global pyfaPath
     global savePath
-    global staticPath
     global saveDB
     global gameDB
     global saveInRoot
+
+    if debug:
+        logLevel = logging.DEBUG
+    else:
+        logLevel = logging.WARN
+
     # The main pyfa directory which contains run.py
     # Python 2.X uses ANSI by default, so we need to convert the character encoding
     pyfaPath = getattr(configforced, "pyfaPath", pyfaPath)
     if pyfaPath is None:
-        pyfaPath = unicode(os.path.dirname(os.path.realpath(os.path.abspath(
-            sys.modules['__main__'].__file__))), sys.getfilesystemencoding())
+        pyfaPath = getPyfaRoot()
 
     # Where we store the saved fits etc, default is the current users home directory
     if saveInRoot is True:
@@ -80,6 +91,9 @@ def defPaths():
                                sys.getfilesystemencoding())
 
     __createDirs(savePath)
+
+    if isFrozen():
+        os.environ["REQUESTS_CA_BUNDLE"] = os.path.join(pyfaPath, "cacert.pem")
 
     format = '%(asctime)s %(name)-24s %(levelname)-8s %(message)s'
     logging.basicConfig(format=format, level=logLevel)
@@ -95,13 +109,10 @@ def defPaths():
         sl = StreamToLogger(stdout_logger, logging.INFO)
         sys.stdout = sl
 
-        stderr_logger = logging.getLogger('STDERR')
-        sl = StreamToLogger(stderr_logger, logging.ERROR)
-        sys.stderr = sl
-
-    # Static EVE Data from the staticdata repository, should be in the staticdata
-    # directory in our pyfa directory
-    staticPath = os.path.join(pyfaPath, "staticdata")
+        # This interferes with cx_Freeze's own handling of exceptions. Find a way to fix this.
+        #stderr_logger = logging.getLogger('STDERR')
+        #sl = StreamToLogger(stderr_logger, logging.ERROR)
+        #sys.stderr = sl
 
     # The database where we store all the fits etc
     saveDB = os.path.join(savePath, "saveddata.db")
@@ -109,7 +120,7 @@ def defPaths():
     # The database where the static EVE data from the datadump is kept.
     # This is not the standard sqlite datadump but a modified version created by eos
     # maintenance script
-    gameDB = os.path.join(staticPath, "eve.db")
+    gameDB = os.path.join(pyfaPath, "eve.db")
 
     ## DON'T MODIFY ANYTHING BELOW ##
     import eos.config

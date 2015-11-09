@@ -2,7 +2,7 @@ import wx
 import os
 
 from gui.preferenceView import PreferenceView
-from gui import bitmapLoader
+from gui.bitmapLoader import BitmapLoader
 
 import gui.mainFrame
 import service
@@ -76,6 +76,6 @@ class PFHTMLExportPref ( PreferenceView):
         self.HTMLExportSettings.setEnabled(self.exportEnabled.GetValue())
 
     def getImage(self):
-        return bitmapLoader.getBitmap("prefs_html", "icons")
+        return BitmapLoader.getBitmap("prefs_html", "gui")
 
 PFHTMLExportPref.register()
