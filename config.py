@@ -18,10 +18,10 @@ debug = False
 saveInRoot = False
 
 # Version data
-version = "1.16.1"
+version = "1.16.2"
 tag = "Stable"
 expansionName = "Parallax"
-expansionVersion = "1.0"
+expansionVersion = "1.1"
 evemonMinVersion = "4081"
 
 pyfaPath = None
