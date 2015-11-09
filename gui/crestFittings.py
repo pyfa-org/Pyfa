@@ -2,6 +2,7 @@ import time
 import webbrowser
 import json
 import wx
+import requests
 
 import service
 from service.crest import CrestModes
@@ -105,7 +106,6 @@ class CrestFittings(wx.Frame):
         t = time.gmtime(self.cacheTime-time.time())
         if t < 0:
             self.cacheTimer.Stop()
-            self.statusbar.Hide()
         else:
             sTime = time.strftime("%H:%M:%S", t)
             self.statusbar.SetStatusText("Cached for %s"%sTime, 0)
@@ -133,13 +133,17 @@ class CrestFittings(wx.Frame):
 
     def fetchFittings(self, event):
         sCrest = service.Crest.getInstance()
-        waitDialog = wx.BusyInfo("Fetching fits, please wait...", parent=self)
-        fittings = sCrest.getFittings(self.getActiveCharacter())
-        self.cacheTime = fittings.get('cached_until')
-        self.updateCacheStatus(None)
-        self.cacheTimer.Start(1000)
-        self.fitTree.populateSkillTree(fittings)
-        del waitDialog
+        try:
+            waitDialog = wx.BusyInfo("Fetching fits, please wait...", parent=self)
+            fittings = sCrest.getFittings(self.getActiveCharacter())
+            self.cacheTime = fittings.get('cached_until')
+            self.updateCacheStatus(None)
+            self.cacheTimer.Start(1000)
+            self.fitTree.populateSkillTree(fittings)
+        except requests.exceptions.ConnectionError:
+            self.statusbar.SetStatusText("Connection error, please check your internet connection")
+        finally:
+            del waitDialog
 
     def importFitting(self, event):
         selection = self.fitView.fitSelection
@@ -162,7 +166,10 @@ class CrestFittings(wx.Frame):
                  "Confirm Delete", wx.YES | wx.NO | wx.ICON_QUESTION)
 
         if dlg.ShowModal() == wx.ID_YES:
-            sCrest.delFitting(self.getActiveCharacter(), data['fittingID'])
+            try:
+                sCrest.delFitting(self.getActiveCharacter(), data['fittingID'])
+            except requests.exceptions.ConnectionError:
+                self.statusbar.SetStatusText("Connection error, please check your internet connection")
 
 
 class ExportToEve(wx.Frame):
@@ -251,16 +258,19 @@ class ExportToEve(wx.Frame):
         self.statusbar.SetStatusText("Sending request and awaiting response", 1)
         sCrest = service.Crest.getInstance()
 
-        sFit = service.Fit.getInstance()
-        data = sFit.exportCrest(self.mainFrame.getActiveFit())
-        res = sCrest.postFitting(self.getActiveCharacter(), data)
-
-        self.statusbar.SetStatusText("%d: %s"%(res.status_code, res.reason), 0)
         try:
-            text = json.loads(res.text)
-            self.statusbar.SetStatusText(text['message'], 1)
-        except ValueError:
-            self.statusbar.SetStatusText("", 1)
+            sFit = service.Fit.getInstance()
+            data = sFit.exportCrest(self.mainFrame.getActiveFit())
+            res = sCrest.postFitting(self.getActiveCharacter(), data)
+
+            self.statusbar.SetStatusText("%d: %s"%(res.status_code, res.reason), 0)
+            try:
+                text = json.loads(res.text)
+                self.statusbar.SetStatusText(text['message'], 1)
+            except ValueError:
+                self.statusbar.SetStatusText("", 1)
+        except requests.exceptions.ConnectionError:
+            self.statusbar.SetStatusText("Connection error, please check your internet connection", 1)
 
 
 class CrestMgmt(wx.Dialog):
