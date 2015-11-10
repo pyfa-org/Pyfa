@@ -27,6 +27,7 @@ import globalEvents as GE
 class ImplantView(d.Display):
     DEFAULT_COLS = ["State",
                     "attr:implantness",
+                    "Base Icon",
                     "Base Name"]
 
     def __init__(self, parent):
@@ -65,7 +66,7 @@ class ImplantView(d.Display):
         fit = sFit.getFit(event.fitID)
 
         self.original = fit.implants if fit is not None else None
-        self.implants = stuff = fit.implants if fit is not None else None
+        self.implants = stuff = fit.appliedImplants if fit is not None else None
         if stuff is not None: stuff.sort(key=lambda implant: implant.slot)
 
         if event.fitID != self.lastFitId:

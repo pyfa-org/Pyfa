@@ -2,7 +2,7 @@ from gui import builtinViewColumns
 from gui.viewColumn import ViewColumn
 from gui.bitmapLoader import BitmapLoader
 import wx
-from eos.types import Drone, Fit, Module, Slot, Rack
+from eos.types import Drone, Fit, Module, Slot, Rack, Implant
 
 class BaseIcon(ViewColumn):
     name = "Base Icon"
@@ -21,6 +21,11 @@ class BaseIcon(ViewColumn):
             return self.shipImage
         if isinstance(stuff, Rack):
             return -1
+        if isinstance(stuff, Implant):
+            if stuff.character:  # if it has a character as it's parent
+                return self.fittingView.imageList.GetImageIndex("character_small", "gui")
+            else:
+                return self.shipImage
         if isinstance(stuff, Module):
             if stuff.isEmpty:
                 return self.fittingView.imageList.GetImageIndex("slot_%s_small" % Slot.getName(stuff.slot).lower(), "gui")
