@@ -854,19 +854,34 @@ class Fit(object):
             file = open(path, "r")
             srcString = file.read()
             codec_found = None
-            # If file had ANSI encoding, convert it to unicode using system
-            # default codepage, or use fallbacks UTF-16, then cp1252 on any
-            # encoding errors
+            # If file had ANSI encoding, decode it to unicode using detection
+            # of BOM header or if there is no header try default
+            # codepage then fallback to utf-16, cp1252
+        
             if isinstance(srcString, str):
-                attempt_codecs = (defcodepage, "utf-16", "cp1252")
-                for page in attempt_codecs:
-                    try:
-                        srcString = unicode(srcString, page)
-                        codec_found = page
-                    except UnicodeDecodeError:
-                        logger.warn("Error unicode decoding %s from page %s, trying next codec", path, page)
-                    else:
-                        break
+                encoding_map = (('\xef\xbb\xbf', 'utf-8'),('\xff\xfe\0\0', 'utf-32'),('\0\0\xfe\xff', 'UTF-32BE'),('\xff\xfe', 'utf-16'),('\xfe\xff', 'UTF-16BE'))
+                for bom, encoding in encoding_map:
+                    if srcString.startswith(bom):
+                        codec_found = encoding
+                        savebom = bom
+            
+                if codec_found is None:
+                    logger.warn("Unicode BOM not found in file %s.", path)
+                    attempt_codecs = (defcodepage, "utf-16", "cp1252")
+                    for page in attempt_codecs:
+                         try:
+                             logger.warn("Attempting to decode file %s using %s page.", path, page)
+                             srcString = unicode(srcString, page)
+                             codec_found = page
+                             logger.warn("File %s decoded using %s page.", path, page)
+                         except UnicodeDecodeError:
+                             logger.warn("Error unicode decoding %s from page %s, trying next codec", path, page)
+                         else:
+                             break
+                else:
+                    logger.debug("Unicode BOM detected in %s, using %s page.", path, codec_found)
+                    srcString = unicode(srcString[len(savebom):], codec_found)
+            
             else:
                 # nasty hack to detect other transparent utf-16 loading
                 if srcString[0] == '<' and 'utf-16' in srcString[:128].lower():
