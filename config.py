@@ -18,8 +18,8 @@ debug = False
 saveInRoot = False
 
 # Version data
-version = "1.16.2"
-tag = "Stable"
+version = "1.16.3"
+tag = "git"
 expansionName = "Parallax"
 expansionVersion = "1.1"
 evemonMinVersion = "4081"
