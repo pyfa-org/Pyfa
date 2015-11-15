@@ -18,7 +18,7 @@ class Timer():
     def checkpoint(self, name=''):
         text = u'Timer - {timer} - {checkpoint} - {last:.2f}ms ({elapsed:.2f}ms elapsed)'.format(
             timer=self.name,
-            checkpoint=name,
+            checkpoint=unicode(name, "utf-8"),
             last=self.last,
             elapsed=self.elapsed
         ).strip()
