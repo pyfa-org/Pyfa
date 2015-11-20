@@ -94,6 +94,7 @@ def defPaths():
 
     if isFrozen():
         os.environ["REQUESTS_CA_BUNDLE"] = os.path.join(pyfaPath, "cacert.pem")
+        os.environ["SSL_CERT_FILE"] = os.path.join(pyfaPath, "cacert.pem")
 
     format = '%(asctime)s %(name)-24s %(levelname)-8s %(message)s'
     logging.basicConfig(format=format, level=logLevel)
