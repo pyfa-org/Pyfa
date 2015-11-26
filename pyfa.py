@@ -22,12 +22,24 @@ import sys
 import re
 import config
 
+from optparse import OptionParser, BadOptionError, AmbiguousOptionError
 
-from optparse import OptionParser
+class PassThroughOptionParser(OptionParser):
+    """
+    An unknown option pass-through implementation of OptionParser.
+
+    OSX passes -psn_0_* argument, which is something that pyfa does not handle. See GH issue #423
+    """
+    def _process_args(self, largs, rargs, values):
+        while rargs:
+            try:
+                OptionParser._process_args(self,largs,rargs,values)
+            except (BadOptionError,AmbiguousOptionError), e:
+                largs.append(e.opt_str)
 
 # Parse command line options
 usage = "usage: %prog [--root]"
-parser = OptionParser(usage=usage)
+parser = PassThroughOptionParser(usage=usage)
 parser.add_option("-r", "--root", action="store_true", dest="rootsavedata", help="if you want pyfa to store its data in root folder, use this option", default=False)
 parser.add_option("-w", "--wx28", action="store_true", dest="force28", help="Force usage of wxPython 2.8", default=False)
 parser.add_option("-d", "--debug", action="store_true", dest="debug", help="Set logger to debug level.", default=False)
