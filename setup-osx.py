@@ -9,7 +9,7 @@ import requests.certs
 APP = ['pyfa.py']
 DATA_FILES = ['eve.db', 'README.md', 'LICENSE', 'imgs', requests.certs.where()]
 OPTIONS = {
-    'argv_emulation': True,
+    'argv_emulation': False,
     'iconfile': 'dist_assets/mac/pyfa.icns',
     'packages': ['eos', 'gui', 'service', 'utils']
 }
