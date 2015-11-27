@@ -172,7 +172,7 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     # Put them in the attrs tuple.
     @property
     def falloff(self):
-        attrs = ("falloff", "falloffEffectiveness")
+        attrs = ("falloff",)
         for attr in attrs:
             falloff = self.getModifiedItemAttr(attr)
             if falloff is not None: return falloff
@@ -201,7 +201,7 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         # Do not allow to apply offensive modules on ship with offensive module immunite, with few exceptions
         # (all effects which apply instant modification are exception, generally speaking)
         if item.offensive and projectedOnto.ship.getModifiedItemAttr("disallowOffensiveModifiers") == 1:
-            offensiveNonModifiers = set(("energyDestabilizationNew", "leech", "energyNosferatuFalloff", "energyNeutralizerFalloff"))
+            offensiveNonModifiers = set(("energyDestabilizationNew", "leech"))
             if not offensiveNonModifiers.intersection(set(item.effects)):
                 return False
         # If assistive modules are not allowed, do not let to apply these altogether
