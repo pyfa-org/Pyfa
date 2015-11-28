@@ -43,15 +43,10 @@ class GangView ( ScrolledPanel ):
         self.helpText = wx.StaticText( self, wx.ID_ANY, help, wx.DefaultPosition, wx.DefaultSize, wx.ALIGN_CENTRE )
         helpSizer.Add( self.helpText, 1, wx.ALL, 5 )
 
-        self.FitDNDPopupMenu = wx.Menu()
-
         self.options = ["Fleet", "Wing", "Squad"]
 
         self.fleet = {}
         for id, option in enumerate(self.options):
-            item = self.FitDNDPopupMenu.Append(-1, option)
-            # We bind it to the mainFrame because it may be called from either this class or from FitItem via shipBrowser
-            self.mainFrame.Bind(wx.EVT_MENU, self.OnPopupItemSelected, item)
 
             # set content for each commander
             self.fleet[id] = {}
@@ -60,6 +55,8 @@ class GangView ( ScrolledPanel ):
             self.fleet[id]['chFit']    = wx.Choice( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, [] )
             self.fleet[id]['chChar']   = wx.Choice( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, [] )
             self.fleet[id]['fitSizer'] = wx.BoxSizer( wx.VERTICAL )
+
+        self.FitDNDPopupMenu = self.buildBoostermenu()
 
         contentFGSizer = wx.FlexGridSizer( 5, 3, 0, 0 )
         contentFGSizer.AddGrowableCol( 1 )
@@ -129,6 +126,15 @@ class GangView ( ScrolledPanel ):
 
         self.RefreshBoosterFits()
         self.RefreshCharacterList()
+
+    def buildBoostermenu(self):
+        menu = wx.Menu()
+
+        for id, option in enumerate(self.options):
+            item = menu.Append(-1, option)
+            # We bind it to the mainFrame because it may be called from either this class or from FitItem via shipBrowser
+            self.mainFrame.Bind(wx.EVT_MENU, self.OnPopupItemSelected, item)
+        return menu
 
     def OnEnterWindow(self, event):
         obj = event.GetEventObject()
@@ -371,7 +377,7 @@ class GangView ( ScrolledPanel ):
     def OnPopupItemSelected(self, event):
         ''' Fired when booster popup item is selected '''
         # Get menu selection ID via self.options
-        menuItem = self.FitDNDPopupMenu.FindItemById(event.GetId())
+        menuItem = event.EventObject.FindItemById(event.GetId())
         type = self.options.index(menuItem.GetText())
 
         if self.draggedFitID:

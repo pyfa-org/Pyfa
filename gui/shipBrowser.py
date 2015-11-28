@@ -1536,13 +1536,13 @@ class FitItem(SFItem.SFBrowserItem):
         menu = wx.Menu()
         toggleItem = menu.Append(wx.ID_ANY, "Booster Fit", kind=wx.ITEM_CHECK)
         menu.Check(toggleItem.GetId(), self.fitBooster)
-
+        menu.Break()
         self.Bind(wx.EVT_MENU, self.OnToggleBooster, toggleItem)
 
         if self.mainFrame.getActiveFit():
             # If there is an active fit, get menu for setting individual boosters
             menu.AppendSeparator()
-            boosterMenu = self.mainFrame.additionsPane.gangPage.FitDNDPopupMenu
+            boosterMenu = self.mainFrame.additionsPane.gangPage.buildBoostermenu()
             menu.AppendSubMenu(boosterMenu, 'Set Booster')
 
         self.PopupMenu(menu, pos)
