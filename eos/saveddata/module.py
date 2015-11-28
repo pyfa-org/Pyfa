@@ -107,8 +107,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         self.__reloadForce = None
         self.__chargeCycles = None
         self.__hardpoint = Hardpoint.NONE
-        self.__itemModifiedAttributes = ModifiedAttributeDict()
-        self.__chargeModifiedAttributes = ModifiedAttributeDict()
+        self.__itemModifiedAttributes = ModifiedAttributeDict(parent=self)
+        self.__chargeModifiedAttributes = ModifiedAttributeDict(parent=self)
         self.__slot = self.dummySlot  # defaults to None
 
         if self.__item:
