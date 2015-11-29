@@ -526,7 +526,8 @@ class FittingView(d.Display):
 
             # update state tooltip
             tooltip = self.activeColumns[col].getToolTip(self.mods[self.GetItemData(row)])
-            self.SetToolTipString(tooltip)
+            if tooltip:
+                self.SetToolTipString(tooltip)
 
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
         else:
