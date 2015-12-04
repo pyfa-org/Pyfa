@@ -292,6 +292,9 @@ class ModifiedAttributeDict(collections.MutableMapping):
 
     def multiply(self, attributeName, multiplier, stackingPenalties=False, penaltyGroup="default", skill=None):
         """Multiply value of given attribute by given factor"""
+        if multiplier is None:  # See GH issue 397
+            return
+
         if skill:
             multiplier *= self.__handleSkill(skill)
 
@@ -308,7 +311,7 @@ class ModifiedAttributeDict(collections.MutableMapping):
         else:
             if not attributeName in self.__multipliers:
                 self.__multipliers[attributeName] = 1
-            self.__multipliers[attributeName] *= multiplier if multiplier is not None else 1
+            self.__multipliers[attributeName] *= multiplier
         self.__placehold(attributeName)
         self.__afflict(attributeName, "%s*" % ("s" if stackingPenalties else ""), multiplier, multiplier != 1)
 
