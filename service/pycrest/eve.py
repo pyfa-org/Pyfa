@@ -26,6 +26,7 @@ except ImportError:  # pragma: no cover
     from urllib import quote
 import logging
 import re
+import config
 
 logger = logging.getLogger("pycrest.eve")
 cache_re = re.compile(r'max-age=([0-9]+)')
@@ -103,7 +104,7 @@ class APIConnection(object):
         if additional_headers is None:
             additional_headers = {}
         if user_agent is None:
-            user_agent = "PyCrest/{0}".format(version)
+            user_agent = "pyfa/{0} ({1})".format(config.version, config.tag)
         session.headers.update({
             "User-Agent": user_agent,
             "Accept": "application/json",
