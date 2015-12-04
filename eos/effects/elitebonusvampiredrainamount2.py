@@ -5,5 +5,5 @@
 # Ship: Pilgrim
 type = "passive"
 def handler(fit, ship, context):
-    fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == "Energy Vampire",
+    fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == "Energy Nosferatu",
                                   "powerTransferAmount", ship.getModifiedItemAttr("eliteBonusReconShip2"), skill="Recon Ships")

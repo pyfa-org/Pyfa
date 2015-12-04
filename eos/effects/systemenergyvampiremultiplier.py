@@ -5,6 +5,6 @@
 runTime = "early"
 type = ("projected", "passive")
 def handler(fit, beacon, context):
-    fit.modules.filteredItemMultiply(lambda mod: mod.item.group.name == "Energy Vampire",
+    fit.modules.filteredItemMultiply(lambda mod: mod.item.group.name == "Energy Nosferatu",
                                      "powerTransferAmount", beacon.getModifiedItemAttr("energyWarfareStrengthMultiplier"),
                                      stackingPenalties=True, penaltyGroup="postMul")
