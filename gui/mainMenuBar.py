@@ -49,6 +49,10 @@ class MainMenuBar(wx.MenuBar):
         self.attrEditorId = wx.NewId()
         self.toggleOverridesId = wx.NewId()
 
+        if 'wxMac' in wx.PlatformInfo and wx.VERSION >= (3,0):
+            wx.ID_COPY = wx.NewId()
+            wx.ID_PASTE = wx.NewId()
+
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         wx.MenuBar.__init__(self)
 
@@ -77,10 +81,8 @@ class MainMenuBar(wx.MenuBar):
         #editMenu.Append(wx.ID_UNDO)
         #editMenu.Append(wx.ID_REDO)
 
-        copyText = "&To Clipboard" + ("\tCTRL+C" if 'wxMSW' in wx.PlatformInfo else "")
-        pasteText = "&From Clipboard" + ("\tCTRL+V" if 'wxMSW' in wx.PlatformInfo else "")
-        editMenu.Append(wx.ID_COPY, copyText, "Export a fit to the clipboard")
-        editMenu.Append(wx.ID_PASTE, pasteText, "Import a fit from the clipboard")
+        editMenu.Append(wx.ID_COPY, "To Clipboard\tCTRL+C", "Export a fit to the clipboard")
+        editMenu.Append(wx.ID_PASTE, "From Clipboard\tCTRL+V", "Import a fit from the clipboard")
         editMenu.AppendSeparator()
         editMenu.Append(self.saveCharId, "Save Character")
         editMenu.Append(self.saveCharAsId, "Save Character As...")
