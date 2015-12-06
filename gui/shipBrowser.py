@@ -1536,7 +1536,6 @@ class FitItem(SFItem.SFBrowserItem):
         menu = wx.Menu()
         toggleItem = menu.Append(wx.ID_ANY, "Booster Fit", kind=wx.ITEM_CHECK)
         menu.Check(toggleItem.GetId(), self.fitBooster)
-        menu.Break()
         self.Bind(wx.EVT_MENU, self.OnToggleBooster, toggleItem)
 
         if self.mainFrame.getActiveFit():
