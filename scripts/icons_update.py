@@ -142,11 +142,10 @@ for query in (query_items, query_groups, query_cats, query_market, query_attrib)
 for fname in os.listdir(icons_dir):
     if not os.path.isfile(os.path.join(icons_dir, fname)):
         continue
-    if not fname.startswith('icon') or not fname.endswith('.png'):
-        continue
     fname = strip_path(fname)
     # Get rid of "icon" prefix as well
-    fname = re.sub('^icon', '', fname)
+    #fname = re.sub('^icon', '', fname)
+    print fname,"exists"
     existing.add(fname)
 
 
@@ -223,7 +222,7 @@ toadd = needed.difference(existing)
 if toremove:
     print('Some icons are not used and will be removed:')
     for fname in sorted(toremove):
-        fullname = 'icon{}.png'.format(fname)
+        fullname = '{}.png'.format(fname)
         print('  {}'.format(fullname))
         fullpath = os.path.join(icons_dir, fullname)
         os.remove(fullpath)
@@ -236,7 +235,7 @@ if toupdate:
         if icon is None:
             missing.add(fname)
             continue
-        fullname = 'icon{}.png'.format(fname)
+        fullname = '{}.png'.format(fname)
         fullpath = os.path.join(icons_dir, fullname)
         icon.save(fullpath, 'png')
     if missing:
@@ -252,7 +251,7 @@ if toadd:
         if icon is None:
             missing.add(fname)
             continue
-        fullname = 'icon{}.png'.format(fname)
+        fullname = '{}.png'.format(fname)
         fullpath = os.path.join(icons_dir, fullname)
         icon.save(fullpath, 'png')
     if missing:
