@@ -192,8 +192,8 @@ def main(db, json_path):
             if not isIgnored(jsonName, row):
                 instance = tables[jsonName]()
                 # fix for issue 80
-                if jsonName is "icons" and "res:/UI/Texture/Icons/" in str(row["iconFile"]):
-                    row["iconFile"] = row["iconFile"].replace("res:/UI/Texture/Icons/","").replace(".png", "")
+                if jsonName is "icons" and "res:/ui/texture/icons/" in str(row["iconFile"]).lower():
+                    row["iconFile"] = row["iconFile"].lower().replace("res:/ui/texture/icons/", "").replace(".png", "")
                 for k, v in row.iteritems():
                     setattr(instance, fieldMap.get(k, k), v)
 
