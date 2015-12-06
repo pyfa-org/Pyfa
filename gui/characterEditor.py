@@ -39,7 +39,7 @@ class CharacterEditor(wx.Frame):
 
         self.mainFrame = parent
         
-        self.disableWin=  wx.WindowDisabler(self)
+        #self.disableWin = wx.WindowDisabler(self)
         self.SetSizeHintsSz(wx.Size(640, 600), wx.DefaultSize)
         self.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNFACE ) )
 
@@ -170,7 +170,7 @@ class CharacterEditor(wx.Frame):
         self.btnRestrict()
 
     def editingFinished(self, event):
-        del self.disableWin
+        #del self.disableWin
         wx.PostEvent(self.mainFrame, GE.CharListUpdated())
         self.Destroy()
 
@@ -200,7 +200,7 @@ class CharacterEditor(wx.Frame):
         wx.PostEvent(self, GE.CharListUpdated())
 
     def closeEvent(self, event):
-        del self.disableWin
+        #del self.disableWin
         wx.PostEvent(self.mainFrame, GE.CharListUpdated())
         self.Destroy()
 
