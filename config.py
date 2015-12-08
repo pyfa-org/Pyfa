@@ -18,10 +18,10 @@ debug = False
 saveInRoot = False
 
 # Version data
-version = "1.16.3"
-tag = "git"
-expansionName = "Parallax"
-expansionVersion = "1.1"
+version = "1.17.0"
+tag = "Stable"
+expansionName = "Frostline"
+expansionVersion = "1.0"
 evemonMinVersion = "4081"
 
 pyfaPath = None
