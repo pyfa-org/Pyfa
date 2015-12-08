@@ -1,7 +1,7 @@
 # velocityBonusOnline
 #
 # Used by:
-# Modules from group: Entosis Link (2 of 2)
+# Modules from group: Entosis Link (6 of 6)
 # Modules from group: Nanofiber Internal Structure (7 of 7)
 # Modules from group: Overdrive Injector System (7 of 7)
 type = "passive"

@@ -1,7 +1,6 @@
 # shipMissileKinDamageCC2
 #
 # Used by:
-# Ship: Osprey Navy Issue
 # Ship: Rook
 type = "passive"
 def handler(fit, ship, context):

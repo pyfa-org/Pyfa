@@ -1,3 +1,8 @@
+# ewSkillGuidanceDisruptionBonus
+#
+# Used by:
+# Modules named like: Tracking Diagnostic Subroutines (8 of 8)
+# Skill: Weapon Destabilization
 type = "passive"
 def handler(fit, src, context):
     level = src.level if "skill" in context else 1

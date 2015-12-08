@@ -4,6 +4,7 @@
 # Ship: Crusader
 # Ship: Executioner
 # Ship: Gold Magnate
+# Ship: Punisher
 # Ship: Retribution
 # Ship: Silver Magnate
 # Ship: Tormentor

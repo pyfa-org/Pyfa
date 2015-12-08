@@ -1,7 +1,6 @@
 # shipMissileEMDamageCF2
 #
 # Used by:
-# Ship: Caldari Navy Hookbill
 # Ship: Garmur
 type = "passive"
 def handler(fit, ship, context):

@@ -1,6 +1,7 @@
 # shipHybridDamageBonusCF2
 #
 # Used by:
+# Ship: Griffin Navy Issue
 # Ship: Merlin
 type = "passive"
 def handler(fit, ship, context):

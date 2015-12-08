@@ -1,7 +1,7 @@
 # warpDisruptSphere
 #
 # Used by:
-# Modules from group: Warp Disrupt Field Generator (2 of 2)
+# Modules from group: Warp Disrupt Field Generator (7 of 7)
 type = "active"
 runTime = "early"
 def handler(fit, module, context):

@@ -1,7 +1,7 @@
 # targetMaxTargetRangeAndScanResolutionBonusHostile
 #
 # Used by:
-# Modules from group: Remote Sensor Damper (9 of 9)
+# Modules from group: Remote Sensor Damper (8 of 8)
 type= "projected", "active"
 def handler(fit, module, context):
     if "projected" not in context:

@@ -1,6 +1,7 @@
 # shipBonusRemoteArmorRepairAmount2AF
 #
 # Used by:
+# Ship: Deacon
 # Ship: Inquisitor
 type = "passive"
 def handler(fit, ship, context):

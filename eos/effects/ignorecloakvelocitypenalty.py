@@ -1,3 +1,7 @@
+# ignoreCloakVelocityPenalty
+#
+# Used by:
+# Ship: Endurance
 type = "passive"
 runTime = "early"
 def handler(fit, src, context):

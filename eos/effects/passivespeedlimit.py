@@ -1,7 +1,7 @@
 # passiveSpeedLimit
 #
 # Used by:
-# Modules from group: Entosis Link (2 of 2)
+# Modules from group: Entosis Link (6 of 6)
 runtime = "late"
 type = "passive"
 def handler(fit, src, context):

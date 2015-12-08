@@ -2,7 +2,7 @@
 #
 # Used by:
 # Modules named like: Tracking Diagnostic Subroutines (8 of 8)
-# Skill: Turret Destabilization
+# Skill: Weapon Destabilization
 type = "passive"
 def handler(fit, container, context):
     level = container.level if "skill" in context else 1

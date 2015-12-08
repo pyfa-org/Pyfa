@@ -1,3 +1,7 @@
+# shipBonusEwWeaponDisruptionStrengthAC1
+#
+# Used by:
+# Variations of ship: Arbitrator (3 of 3)
 type = "passive"
 def handler(fit, src, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Weapon Disruption"), "missileVelocityBonus", src.getModifiedItemAttr("shipBonusAC"), skill="Amarr Cruiser")

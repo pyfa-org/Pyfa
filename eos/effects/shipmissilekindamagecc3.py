@@ -1,13 +1,7 @@
 # shipMissileKinDamageCC3
-#  Modifier 1:
-#  #  state: offline
-#  #  scope: local
-#  #  srcattr: shipBonusCC3 1535
-#  #  operator: post_percent 8
-#  #  tgtattr: kineticDamage (not penalized) 117
-#  #  location: space
-#  #  filter type: skill
-#  #  filter value: Missile Launcher Operation
+#
+# Used by:
+# Ship: Osprey Navy Issue
 
 type = "passive"
 def handler(fit, src, context):

@@ -1,7 +1,7 @@
 # targetGunneryMaxRangeAndTrackingSpeedAndFalloffBonusHostile
 #
 # Used by:
-# Modules from group: Tracking Disruptor (8 of 8)
+# Variations of module: Tracking Disruptor I (6 of 6)
 type= "projected", "active"
 def handler(fit, module, context):
     if "projected" in context:

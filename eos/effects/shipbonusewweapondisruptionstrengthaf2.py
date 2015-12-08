@@ -1,3 +1,7 @@
+# shipBonusEwWeaponDisruptionStrengthAF2
+#
+# Used by:
+# Variations of ship: Crucifier (3 of 3)
 type = "passive"
 def handler(fit, src, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Weapon Disruption"), "trackingSpeedBonus", src.getModifiedItemAttr("shipBonus2AF"), skill="Amarr Frigate")

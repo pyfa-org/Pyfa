@@ -1,7 +1,7 @@
 # shipECMScanStrengthBonusCF
 #
 # Used by:
-# Variations of ship: Griffin (2 of 2)
+# Variations of ship: Griffin (3 of 3)
 type = "passive"
 def handler(fit, ship, context):
     for type in ("Gravimetric", "Ladar", "Radar", "Magnetometric"):

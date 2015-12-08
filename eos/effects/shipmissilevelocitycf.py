@@ -1,6 +1,7 @@
 # shipMissileVelocityCF
 #
 # Used by:
+# Ship: Caldari Navy Hookbill
 # Ship: Crow
 # Ship: Kestrel
 type = "passive"

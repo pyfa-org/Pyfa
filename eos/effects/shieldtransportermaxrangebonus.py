@@ -1,8 +1,6 @@
 # shieldTransporterMaxRangeBonus
 #
 # Used by:
-# Ship: Bantam
-# Ship: Burst
 # Ship: Osprey
 # Ship: Scythe
 type = "passive"
