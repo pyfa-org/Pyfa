@@ -262,8 +262,7 @@ class Market():
             "'Wild' Miner I": ("Storyline", "Miner I"),
             "Medium Nano Armor Repair Unit I": ("Tech I", "Medium Armor Repairer I"),
             "Large 'Reprieve' Vestment Reconstructer I": ("Storyline", "Large Armor Repairer I"),
-            "Khanid Navy Torpedo Launcher": ("Faction", "Torpedo Launcher I"),
-            "Shadow Serpentis Remote Sensor Dampener": ("Faction", "Remote Sensor Dampener I") }
+            "Khanid Navy Torpedo Launcher": ("Faction", "Torpedo Launcher I"),}
         # Parent type name: set(item names)
         self.ITEMS_FORCEDMETAGROUP_R = {}
         for item, value in self.ITEMS_FORCEDMETAGROUP.items():
