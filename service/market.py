@@ -504,8 +504,10 @@ class Market():
             parents.add(parent)
             # Check for overrides and add them if any
             if parent.name in self.ITEMS_FORCEDMETAGROUP_R:
-                for itmn in self.ITEMS_FORCEDMETAGROUP_R[parent.name]:
-                    variations.add(self.getItem(itmn))
+                for item in self.ITEMS_FORCEDMETAGROUP_R[parent.name]:
+                    i = self.getItem(item)
+                    if i:
+                        variations.add(i)
         # Add all parents to variations set
         variations.update(parents)
         # Add all variations of parents to the set
