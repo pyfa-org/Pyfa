@@ -20,6 +20,7 @@
 
 import os
 import sys
+import re
 
 # Add eos root path to sys.path so we can import ourselves
 path = os.path.dirname(unicode(__file__, sys.getfilesystemencoding()))
@@ -194,6 +195,12 @@ def main(db, json_path):
                 # fix for issue 80
                 if jsonName is "icons" and "res:/ui/texture/icons/" in str(row["iconFile"]).lower():
                     row["iconFile"] = row["iconFile"].lower().replace("res:/ui/texture/icons/", "").replace(".png", "")
+                    # with res:/ui... references, it points to the actual icon file (including it's size variation of #_size_#)
+                    # strip this info out and get the identifying info
+                    split = row['iconFile'].split('_')
+                    if len(split) == 3:
+                        row['iconFile'] = "{}_{}".format(split[0], split[2])
+
                 for k, v in row.iteritems():
                     setattr(instance, fieldMap.get(k, k), v)
 

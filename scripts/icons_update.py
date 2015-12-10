@@ -30,14 +30,16 @@ cursor = db.cursor()
 ICON_SIZE = (16, 16)
 
 ITEM_CATEGORIES = (
+    2,  # Celestial
     6,  # Ship
     7,  # Module
     8,  # Charge
     16,  # Skill
     18,  # Drone
     20,  # Implant
-    32  # Subsystem
+    32   # Subsystem
 )
+
 MARKET_ROOTS = {
     9,  # Modules
     1111,  # Rigs
