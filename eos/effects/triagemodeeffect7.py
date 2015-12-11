@@ -81,7 +81,7 @@ def handler(fit, module, context):
     groups = [
         'ECM Burst',
         'Remote ECM Burst',
-        'Tracking Disruptor',
+        'Weapon Disruptor',
         'ECM',
         'Remote Sensor Damper',
         'Target Painter']
