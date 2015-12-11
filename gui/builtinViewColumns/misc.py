@@ -85,7 +85,7 @@ class Miscellanea(ViewColumn):
                 if n > 0:
                     info.append("{0}{1}".format(n, slot[0].upper()))
             return "+ "+", ".join(info), "Slot Modifiers"
-        elif itemGroup == "Energy Destabilizer":
+        elif itemGroup == "Energy Neutralizer":
             neutAmount = stuff.getModifiedItemAttr("energyDestabilizationAmount")
             cycleTime = stuff.cycleTime
             if not neutAmount or not cycleTime:
@@ -94,7 +94,7 @@ class Miscellanea(ViewColumn):
             text = "{0}/s".format(formatAmount(capPerSec, 3, 0, 3))
             tooltip = "Energy neutralization per second"
             return text, tooltip
-        elif itemGroup == "Energy Vampire":
+        elif itemGroup == "Energy Nosferatu":
             neutAmount = stuff.getModifiedItemAttr("powerTransferAmount")
             cycleTime = stuff.cycleTime
             if not neutAmount or not cycleTime:
@@ -158,26 +158,51 @@ class Miscellanea(ViewColumn):
                 ttEntries.append("scan resolution")
             tooltip = "{0} dampening".format(formatList(ttEntries)).capitalize()
             return text, tooltip
-        elif itemGroup == "Tracking Disruptor":
+        elif itemGroup == "Weapon Disruptor":
+            # Weapon disruption now covers both tracking and guidance (missile) disruptors
+            # First get the attributes for tracking disruptors
             optimalRangeBonus = stuff.getModifiedItemAttr("maxRangeBonus")
             falloffRangeBonus = stuff.getModifiedItemAttr("falloffBonus")
             trackingSpeedBonus = stuff.getModifiedItemAttr("trackingSpeedBonus")
-            if optimalRangeBonus is None or falloffRangeBonus is None or trackingSpeedBonus is None:
+
+            trackingDisruptorAttributes = {
+                "optimal range": optimalRangeBonus,
+                "falloff range": falloffRangeBonus,
+                "tracking speed": trackingSpeedBonus}
+
+            isTrackingDisruptor = any(map(lambda x: x is not None and x != 0, trackingDisruptorAttributes.values()))
+
+            # Then get the attributes for guidance disruptors
+            explosionVelocityBonus = stuff.getModifiedItemAttr("aoeVelocityBonus")
+            explosionRadiusBonus = stuff.getModifiedItemAttr("aoeCloudSizeBonus")
+
+            flightTimeBonus = stuff.getModifiedItemAttr("explosionDelayBonus")
+            missileVelocityBonus = stuff.getModifiedItemAttr("missileVelocityBonus")
+
+            guidanceDisruptorAttributes = {
+                "explosion velocity": explosionVelocityBonus,
+                "explosion radius": explosionRadiusBonus,
+                "flight time": flightTimeBonus,
+                "missile velocity": missileVelocityBonus}
+
+            isGuidanceDisruptor = any(map(lambda x: x is not None and x != 0, guidanceDisruptorAttributes.values()))
+
+            if isTrackingDisruptor:
+                attributes = trackingDisruptorAttributes
+            elif isGuidanceDisruptor:
+                attributes = guidanceDisruptorAttributes
+            else:
                 return "", None
-            display = 0
-            for bonus in (optimalRangeBonus, falloffRangeBonus, trackingSpeedBonus):
-                if abs(bonus) > abs(display):
-                    display = bonus
-            if not display:
-                return "", None
+
+            display = max(attributes.values(), key=lambda x: abs(x))
+
             text = "{0}%".format(formatAmount(display, 3, 0, 3, forceSign=True))
+
             ttEntries = []
-            if display == optimalRangeBonus:
-                ttEntries.append("optimal range")
-            if display == falloffRangeBonus:
-                ttEntries.append("falloff range")
-            if display == trackingSpeedBonus:
-                ttEntries.append("tracking speed")
+            for attributeName, attributeValue in attributes.items():
+                if attributeValue == display:
+                    ttEntries.append(attributeName)
+
             tooltip = "{0} disruption".format(formatList(ttEntries)).capitalize()
             return text, tooltip
         elif itemGroup in ("ECM", "ECM Burst", "Remote ECM Burst"):
