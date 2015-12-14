@@ -83,8 +83,7 @@ def getItem(lookfor, eager=None):
         else:
             # Item names are unique, so we can use first() instead of one()
             item = gamedata_session.query(Item).options(*processEager(eager)).filter(Item.name == lookfor).first()
-            if item:
-                itemNameMap[lookfor] = item.ID
+            itemNameMap[lookfor] = item.ID
     else:
         raise TypeError("Need integer or string as argument")
     return item
