@@ -235,7 +235,11 @@ class Market():
             "Guristas Shuttle": False,
             "Mobile Decoy Unit": False,  # Seems to be left over test mod for deployables
             "Tournament Micro Jump Unit": False,  # Normally seen only on tournament arenas
-            "Council Diplomatic Shuttle": False,  # CSM X celebration]
+            "Council Diplomatic Shuttle": False,  # CSM X celebration
+            "Civilian Gatling Railgun": True,
+            "Civilian Gatling Pulse Laser": True,
+            "Civilian Gatling Autocannon": True,
+            "Civilian Light Electron Blaster": True,
         }
 
         # do not publish ships that we convert

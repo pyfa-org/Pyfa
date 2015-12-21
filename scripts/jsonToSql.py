@@ -175,7 +175,8 @@ def main(db, json_path):
     eveTypes = set()
     for row in data["evetypes"]:
         # 1306 - group Ship Modifiers, for items like tactical t3 ship modes
-        if (row["published"] or row['groupID'] == 1306):
+        # (3638, 3634, 3636, 3640) - Civilian weapons
+        if (row["published"] or row['groupID'] == 1306 or row['typeID'] in (3638, 3634, 3636, 3640)):
             eveTypes.add(row["typeID"])
 
     # ignore checker
