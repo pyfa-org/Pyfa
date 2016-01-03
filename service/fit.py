@@ -867,7 +867,7 @@ class Fit(object):
             
                 if codec_found is None:
                     logger.warn("Unicode BOM not found in file %s.", path)
-                    attempt_codecs = (defcodepage, "utf-16", "cp1252")
+                    attempt_codecs = (defcodepage, "utf-8", "utf-16", "cp1252")
                     for page in attempt_codecs:
                          try:
                              logger.warn("Attempting to decode file %s using %s page.", path, page)
