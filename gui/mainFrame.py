@@ -24,6 +24,8 @@ import sqlalchemy
 import wx
 import time
 
+from codecs import open
+
 from wx._core import PyDeadObjectError
 from wx.lib.wordwrap import wordwrap
 
@@ -385,7 +387,7 @@ class MainFrame(wx.Frame):
                 print "oops, invalid fit format %d" % format
                 dlg.Destroy()
                 return
-            file = open(path, "w")
+            file = open(path, "w", encoding="utf-8")
             file.write(output)
             file.close()
         dlg.Destroy()
