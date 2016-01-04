@@ -786,7 +786,7 @@ class MainFrame(wx.Frame):
         else:
             self.progressDialog.Update(info)
 
-    def fileImportCallback(self, info, fits=None):
+    def fileImportCallback(self, action, data=None):
         """
         While importing fits from file, the logic calls back to this function to
         update progress bar to show activity. XML files can contain multiple
@@ -794,18 +794,28 @@ class MainFrame(wx.Frame):
         a single ship. When iterating through the files, we update the message
         when we start a new file, and then Pulse the progress bar with every fit
         that is processed.
+
+        action : a flag that lets us know how to deal with :data
+                None: Pulse the progress bar
+                1: Replace message with data
+                other: Close dialog and handle based on :action (-1 open fits, -2 display error)
         """
 
-        if info == -1:
-            self.closeProgressDialog()
-            self._openAfterImport(fits)
-        elif info != self.progressDialog.message and info is not None:
-            # New message, overwrite cached message and update
-            self.progressDialog.message = info
-            self.progressDialog.Pulse(info)
-        else:
-            # Simply Pulse() if we don't have anything else to do
+        if action is None:
             self.progressDialog.Pulse()
+        elif action == 1 and data != self.progressDialog.message:
+            self.progressDialog.message = data
+            self.progressDialog.Pulse(data)
+        else:
+            self.closeProgressDialog()
+            if action == -1:
+                self._openAfterImport(data)
+            elif action == -2:
+                dlg = wx.MessageDialog(self,
+                                       "The following error was generated\n\n%s\n\nBe aware that already processed fits were not saved"%data,
+                                       "Import Error", wx.OK | wx.ICON_ERROR)
+                if dlg.ShowModal() == wx.ID_OK:
+                    return
 
     def _openAfterImport(self, fits):
         if len(fits) > 0:
