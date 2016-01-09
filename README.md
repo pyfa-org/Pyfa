@@ -15,7 +15,7 @@ Windows and OS X users are supplied self-contained builds of pyfa that can be ru
 ## Requirements
 If you wish to help with development or simply need to run pyfa through a Python interpreter, the following software is required:
 
-* Python >= 2.6
+* Python 2.7
 * `wxPython` 2.8/3.0
 * `sqlalchemy` >= 0.6
 * `dateutil`
