@@ -151,7 +151,6 @@ class PFGeneralPref ( PreferenceView):
 
     def onCBGaugeAnimation(self, event):
         self.sFit.serviceFittingOptions["enableGaugeAnimation"] = self.cbGaugeAnimation.GetValue()
-        print self.sFit.serviceFittingOptions["enableGaugeAnimation"]
 
     def getImage(self):
         return BitmapLoader.getBitmap("prefs_settings", "gui")

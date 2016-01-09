@@ -177,7 +177,6 @@ class PyGauge(wx.PyWindow):
 
     def Animate(self):
         sFit = fit.Fit.getInstance()
-        print sFit.serviceFittingOptions["enableGaugeAnimation"]
         if sFit.serviceFittingOptions["enableGaugeAnimation"]:
             if not self._timer:
                 self._timer = wx.Timer(self, self._timerId)
