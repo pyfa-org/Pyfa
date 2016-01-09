@@ -103,7 +103,8 @@ class Fit(object):
             "rackLabels": True,
             "compactSkills": True,
             "showTooltip": True,
-            "showMarketShortcuts": False}
+            "showMarketShortcuts": False,
+            "enableGaugeAnimation": True}
 
         self.serviceFittingOptions = SettingsProvider.getInstance().getSettings(
             "pyfaServiceFittingOptions", serviceFittingDefaultOptions)

@@ -59,6 +59,10 @@ class PFGeneralPref ( PreferenceView):
         self.cbMarketShortcuts = wx.CheckBox( panel, wx.ID_ANY, u"Show market shortcuts", wx.DefaultPosition, wx.DefaultSize, 0 )
         mainSizer.Add( self.cbMarketShortcuts, 0, wx.ALL|wx.EXPAND, 5 )
 
+        self.cbGaugeAnimation = wx.CheckBox( panel, wx.ID_ANY, u"Animate gauges", wx.DefaultPosition, wx.DefaultSize, 0 )
+        mainSizer.Add( self.cbGaugeAnimation, 0, wx.ALL|wx.EXPAND, 5 )
+
+
         defCharSizer = wx.BoxSizer( wx.HORIZONTAL )
 
         self.sFit = service.Fit.getInstance()
@@ -73,6 +77,7 @@ class PFGeneralPref ( PreferenceView):
         self.cbReopenFits.SetValue(self.openFitsSettings["enabled"])
         self.cbShowTooltip.SetValue(self.sFit.serviceFittingOptions["showTooltip"] or False)
         self.cbMarketShortcuts.SetValue(self.sFit.serviceFittingOptions["showMarketShortcuts"] or False)
+        self.cbGaugeAnimation.SetValue(self.sFit.serviceFittingOptions["enableGaugeAnimation"])
 
         self.cbGlobalChar.Bind(wx.EVT_CHECKBOX, self.OnCBGlobalCharStateChange)
         self.cbGlobalDmgPattern.Bind(wx.EVT_CHECKBOX, self.OnCBGlobalDmgPatternStateChange)
@@ -84,6 +89,7 @@ class PFGeneralPref ( PreferenceView):
         self.cbReopenFits.Bind(wx.EVT_CHECKBOX, self.onCBReopenFits)
         self.cbShowTooltip.Bind(wx.EVT_CHECKBOX, self.onCBShowTooltip)
         self.cbMarketShortcuts.Bind(wx.EVT_CHECKBOX, self.onCBShowShortcuts)
+        self.cbGaugeAnimation.Bind(wx.EVT_CHECKBOX, self.onCBGaugeAnimation)
 
         self.cbRackLabels.Enable(self.sFit.serviceFittingOptions["rackSlots"] or False)
 
@@ -142,6 +148,10 @@ class PFGeneralPref ( PreferenceView):
 
     def onCBShowShortcuts(self, event):
         self.sFit.serviceFittingOptions["showMarketShortcuts"] = self.cbMarketShortcuts.GetValue()
+
+    def onCBGaugeAnimation(self, event):
+        self.sFit.serviceFittingOptions["enableGaugeAnimation"] = self.cbGaugeAnimation.GetValue()
+        print self.sFit.serviceFittingOptions["enableGaugeAnimation"]
 
     def getImage(self):
         return BitmapLoader.getBitmap("prefs_settings", "gui")

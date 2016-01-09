@@ -20,6 +20,8 @@ import gui.utils.drawUtils as drawUtils
 import gui.utils.animEffects as animEffects
 import gui.utils.fonts as fonts
 
+from service import fit
+
 class PyGauge(wx.PyWindow):
     """
     This class provides a visual alternative for `wx.Gauge`. It currently
@@ -174,10 +176,16 @@ class PyGauge(wx.PyWindow):
         return self._range
 
     def Animate(self):
-        if not self._timer:
-            self._timer = wx.Timer(self, self._timerId)
-        self._animStep = 0
-        self._timer.Start(self._period)
+        sFit = fit.Fit.getInstance()
+        print sFit.serviceFittingOptions["enableGaugeAnimation"]
+        if sFit.serviceFittingOptions["enableGaugeAnimation"]:
+            if not self._timer:
+                self._timer = wx.Timer(self, self._timerId)
+            self._animStep = 0
+            self._timer.Start(self._period)
+        else:
+            self._animValue = self._percentage
+            self.Refresh()
 
     def SetRange(self, range, reinit = False):
         """
