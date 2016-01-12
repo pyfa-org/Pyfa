@@ -44,6 +44,7 @@ parser.add_option("-r", "--root", action="store_true", dest="rootsavedata", help
 parser.add_option("-w", "--wx28", action="store_true", dest="force28", help="Force usage of wxPython 2.8", default=False)
 parser.add_option("-d", "--debug", action="store_true", dest="debug", help="Set logger to debug level.", default=False)
 parser.add_option("-t", "--title", action="store", dest="title", help="Set Window Title", default=None)
+parser.add_option("-s", "--savepath", action="store", dest="savepath", help="Set the folder for savedata", default=None)
 
 (options, args) = parser.parse_args()
 
@@ -106,7 +107,10 @@ if __name__ == "__main__":
         options.title = "pyfa %s%s - Python Fitting Assistant"%(config.version, "" if config.tag.lower() != 'git' else " (git)")
 
     config.debug = options.debug
-    config.defPaths()
+    # convert to unicode if it is set
+    if options.savepath is not None:
+        options.savepath = unicode(options.savepath)
+    config.defPaths(options.savepath)
 
     # Basic logging initialization
     import logging
