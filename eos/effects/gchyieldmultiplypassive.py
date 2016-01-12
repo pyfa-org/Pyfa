@@ -1,7 +1,8 @@
 # GCHYieldMultiplyPassive
 #
 # Used by:
-# Variations of ship: Venture (2 of 2)
+# Ship: Prospect
+# Ship: Venture
 type = "passive"
 def handler(fit, module, context):
     fit.modules.filteredItemMultiply(lambda mod: mod.item.group.name == "Gas Cloud Harvester",

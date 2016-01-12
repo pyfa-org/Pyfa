@@ -18,9 +18,9 @@ debug = False
 saveInRoot = False
 
 # Version data
-version = "1.17.2"
-tag = "git"
-expansionName = "Frostline"
+version = "1.18.0"
+tag = "Stable"
+expansionName = "YC 118.1"
 expansionVersion = "1.0"
 evemonMinVersion = "4081"
 
