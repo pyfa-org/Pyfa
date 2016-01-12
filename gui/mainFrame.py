@@ -116,8 +116,8 @@ class MainFrame(wx.Frame):
     def getInstance(cls):
         return cls.__instance if cls.__instance is not None else MainFrame()
 
-    def __init__(self):
-        self.title="pyfa %s%s - Python Fitting Assistant"%(config.version, "" if config.tag.lower() != 'git' else " (git)")
+    def __init__(self, title):
+        self.title=title
         wx.Frame.__init__(self, None, wx.ID_ANY, self.title)
 
         MainFrame.__instance = self

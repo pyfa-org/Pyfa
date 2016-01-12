@@ -43,6 +43,7 @@ parser = PassThroughOptionParser(usage=usage)
 parser.add_option("-r", "--root", action="store_true", dest="rootsavedata", help="if you want pyfa to store its data in root folder, use this option", default=False)
 parser.add_option("-w", "--wx28", action="store_true", dest="force28", help="Force usage of wxPython 2.8", default=False)
 parser.add_option("-d", "--debug", action="store_true", dest="debug", help="Set logger to debug level.", default=False)
+parser.add_option("-t", "--title", action="store", dest="title", help="Set Window Title", default=None)
 
 (options, args) = parser.parse_args()
 
@@ -99,6 +100,10 @@ if __name__ == "__main__":
     # Configure paths
     if options.rootsavedata is True:
         config.saveInRoot = True
+        
+    # set title if it wasn't supplied by argument
+    if options.title == None:
+        options.title = "pyfa %s%s - Python Fitting Assistant"%(config.version, "" if config.tag.lower() != 'git' else " (git)")
 
     config.debug = options.debug
     config.defPaths()
@@ -123,5 +128,5 @@ if __name__ == "__main__":
     eos.db.saveddata_meta.create_all()
 
     pyfa = wx.App(False)
-    MainFrame()
+    MainFrame(options.title)
     pyfa.MainLoop()
