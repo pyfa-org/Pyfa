@@ -18,8 +18,8 @@ debug = False
 saveInRoot = False
 
 # Version data
-version = "1.18.0"
-tag = "Stable"
+version = "1.18.1"
+tag = "git"
 expansionName = "YC 118.1"
 expansionVersion = "1.0"
 evemonMinVersion = "4081"
