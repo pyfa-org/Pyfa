@@ -97,8 +97,8 @@ class PFCrestPref ( PreferenceView):
         service.Crest.restartService()
 
     def OnBtnApply(self, event):
-        self.settings.set('clientID', self.inputClientID.GetValue())
-        self.settings.set('clientSecret', self.inputClientSecret.GetValue())
+        self.settings.set('clientID', self.inputClientID.GetValue().strip())
+        self.settings.set('clientSecret', self.inputClientSecret.GetValue().strip())
         sCrest = service.Crest.getInstance()
         sCrest.delAllCharacters()
 
