@@ -104,7 +104,8 @@ class Fit(object):
             "compactSkills": True,
             "showTooltip": True,
             "showMarketShortcuts": False,
-            "enableGaugeAnimation": True}
+            "enableGaugeAnimation": True,
+            "exportCharges": True}
 
         self.serviceFittingOptions = SettingsProvider.getInstance().getSettings(
             "pyfaServiceFittingOptions", serviceFittingDefaultOptions)
