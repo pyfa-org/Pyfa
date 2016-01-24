@@ -1,0 +1,33 @@
+Index: Pyfa/config.py
+===================================================================
+--- Pyfa.orig/config.py	2016-01-24 12:43:08.079888270 -0600
++++ Pyfa/config.py	2016-01-24 12:43:08.075888313 -0600
+@@ -24,7 +24,7 @@
+ expansionVersion = "1.0"
+ evemonMinVersion = "4081"
+ 
+-pyfaPath = None
++pyfaPath = "/usr/share/pyfa"
+ savePath = None
+ saveDB = None
+ gameDB = None
+Index: Pyfa/pyfa.py
+===================================================================
+--- Pyfa.orig/pyfa.py	2016-01-24 12:43:08.079888270 -0600
++++ Pyfa/pyfa.py	2016-01-24 12:43:35.375602079 -0600
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#! /usr/bin/python
+ #===============================================================================
+ # Copyright (C) 2010 Diego Duclos
+ #
+@@ -20,6 +20,9 @@
+ 
+ import sys
+ import re
++
++sys.path.append('/usr/share/pyfa')
++
+ import config
+ 
+ from optparse import OptionParser, BadOptionError, AmbiguousOptionError

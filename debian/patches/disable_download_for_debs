@@ -1,0 +1,12 @@
+Index: Pyfa/gui/updateDialog.py
+===================================================================
+--- Pyfa.orig/gui/updateDialog.py	2016-01-23 14:19:43.266503848 -0600
++++ Pyfa/gui/updateDialog.py	2016-01-23 14:19:43.262503904 -0600
+@@ -87,6 +87,7 @@
+         goSizer = wx.BoxSizer( wx.VERTICAL )
+         self.downloadButton = wx.Button( self, wx.ID_ANY, "Download", wx.DefaultPosition, wx.DefaultSize, 0 )
+         self.downloadButton.Bind(wx.EVT_BUTTON, self.OnDownload)
++        self.downloadButton.Disable()
+         goSizer.Add( self.downloadButton, 0, wx.ALL, 5 )
+         actionSizer.Add( goSizer, 1, wx.EXPAND, 5 )
+ 
