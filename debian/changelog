@@ -4,6 +4,7 @@ pyfa (1.18.0-1) private; urgency=medium
   * Bump wxpython version to python-wxgtk3.0 since 2.8 is now removed.
   * Refresh patches
   * Remove setup.py as it's only used for windows/osx packaging
+  * Add build dependency on quilt
 
  -- Adam Majer <adamm@zombino.com>  Sat, 23 Jan 2016 13:26:13 -0600
 
