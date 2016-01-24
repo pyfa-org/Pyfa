@@ -1,0 +1,18 @@
+Source: pyfa
+Section: misc
+Priority: optional
+Maintainer: Adam Majer <adamm@zombino.com>
+Build-Depends: debhelper (>= 9.0.0), dh-python, python | python-all | python-dev | python-all-dev, quilt
+Standards-Version: 3.9.6
+Homepage: https://github.com/DarkFenX/Pyfa
+#Vcs-Git: git://git.debian.org/collab-maint/pyfa.git
+#Vcs-Browser: http://git.debian.org/?p=collab-maint/pyfa.git;a=summary
+X-Python-Version: >= 2.6
+
+Package: pyfa
+Architecture: all
+Depends: ${misc:Depends}, ${python:Depends}, python-wxgtk3.0, python-sqlalchemy,
+         python-matplotlib, python-numpy, python-sqlite
+Description: Spaceship fitting tool for EVE Online videogame
+ Spaceship fitting tool for EVE Online videogame. A free trial of 
+ EVE Online is available at eveonline.com

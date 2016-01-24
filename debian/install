@@ -1,0 +1,8 @@
+eos		usr/share/pyfa
+gui		usr/share/pyfa
+imgs		usr/share/pyfa
+service		usr/share/pyfa
+pyfa.py		usr/bin
+config.py	usr/share/pyfa
+utils		usr/share/pyfa
+eve.db		usr/share/pyfa
