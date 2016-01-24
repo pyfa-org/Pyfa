@@ -14,7 +14,3 @@ override_dh_install:
 	rm debian/pyfa/usr/share/pyfa/eos/lgpl.txt
 	find debian/pyfa -name \.gitignore -delete
 	find debian/pyfa/usr/share -type f -executable -exec chmod 0644 {} \+
-
-override_dh_auto_clean:
-	rm -f test
-	quilt pop -a || true
