@@ -29,18 +29,16 @@ from gui.contextMenu import ContextMenu
 from wx.lib.buttons import GenBitmapButton
 import gui.globalEvents as GE
 
-class CharacterEditor(wx.Frame):
+class CharacterEditor(wx.Dialog):
     def __init__(self, parent):
-        wx.Frame.__init__ (self, parent, id=wx.ID_ANY, title=u"pyfa: Character Editor", pos=wx.DefaultPosition,
-                            size=wx.Size(641, 600), style=wx.DEFAULT_FRAME_STYLE|wx.FRAME_FLOAT_ON_PARENT|wx.TAB_TRAVERSAL)
+        wx.Dialog.__init__ (self, parent, id=wx.ID_ANY, title=u"pyfa: Character Editor", pos=wx.DefaultPosition,
+                            size=wx.Size(640, 600), style=wx.DEFAULT_DIALOG_STYLE)
 
         i = wx.IconFromBitmap(BitmapLoader.getBitmap("character_small", "gui"))
         self.SetIcon(i)
 
         self.mainFrame = parent
-        
-        #self.disableWin = wx.WindowDisabler(self)
-        self.SetSizeHintsSz(wx.Size(640, 600), wx.DefaultSize)
+
         self.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNFACE ) )
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
@@ -170,12 +168,11 @@ class CharacterEditor(wx.Frame):
         self.btnRestrict()
 
     def editingFinished(self, event):
-        #del self.disableWin
         wx.PostEvent(self.mainFrame, GE.CharListUpdated())
-        self.Destroy()
+        self.Close()
 
     def registerEvents(self):
-        self.Bind(wx.EVT_CLOSE, self.closeEvent)
+        self.Bind(wx.EVT_CLOSE, self.OnClose)
         self.Bind(GE.CHAR_LIST_UPDATED, self.refreshCharacterList)
         self.charChoice.Bind(wx.EVT_CHOICE, self.charChanged)
 
@@ -198,11 +195,6 @@ class CharacterEditor(wx.Frame):
         sChr.revertCharacter(charID)
         self.sview.populateSkillTree()
         wx.PostEvent(self, GE.CharListUpdated())
-
-    def closeEvent(self, event):
-        #del self.disableWin
-        wx.PostEvent(self.mainFrame, GE.CharListUpdated())
-        self.Destroy()
 
     def restrict(self):
         self.btnRename.Enable(False)
@@ -319,14 +311,15 @@ class CharacterEditor(wx.Frame):
 
             wx.PostEvent(self, GE.CharChanged())
 
-    def Destroy(self):
+    def OnClose(self, event):
+        wx.PostEvent(self.mainFrame, GE.CharListUpdated())
         sFit = service.Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
         if fitID is not None:
             sFit.clearFit(fitID)
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
-        wx.Frame.Destroy(self)
+        self.Destroy()
 
 class SkillTreeView (wx.Panel):
     def __init__(self, parent):
