@@ -25,9 +25,9 @@ If you wish to help with development or simply need to run pyfa through a Python
 ### Linux Distro-specific Packages
 The following is a list of pyfa packages available for certain distros. Please note that these packages are maintained by third-parties and are not evaluated by the pyfa developers.
 
-Debian (and derivitives): @AdamMajer maintains .deb packages for pyfa (https://github.com/AdamMajer/Pyfa/releases)
-Arch: Can be found in the AUR (https://aur.archlinux.org/packages/pyfa/)
-openSUSE: Can be found on the Build Service (https://build.opensuse.org/package/show/home:rmk2/pyfa)
+* Debian (and derivitives): @AdamMajer maintains .deb packages for pyfa (https://github.com/AdamMajer/Pyfa/releases)
+* Arch: Can be found in the AUR (https://aur.archlinux.org/packages/pyfa/)
+* openSUSE: Can be found on the Build Service (https://build.opensuse.org/package/show/home:rmk2/pyfa)
 
 ## Bug Reporting
 The preferred method of reporting bugs is through the projects GitHub Issues interface. Alternatively, posting a report in the pyfa thread on the official EVE Online forums is acceptable. Guidelines for bug reporting can be found on [this wiki page](https://github.com/DarkFenX/Pyfa/wiki/Bug-Reporting). 
