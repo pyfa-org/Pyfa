@@ -551,12 +551,13 @@ class Port(object):
         offineSuffix = " /OFFLINE"
         export = "[%s, %s]\n" % (fit.ship.item.name, fit.name)
         stuff = {}
+        sFit = service.Fit.getInstance()
         for module in fit.modules:
             slot = module.slot
             if not slot in stuff:
                 stuff[slot] = []
             curr = module.item.name if module.item else ("[Empty %s slot]" % Slot.getName(slot).capitalize() if slot is not None else "")
-            if module.charge:
+            if module.charge and sFit.serviceFittingOptions["exportCharges"]:
                 curr += ", %s" % module.charge.name
             if module.state == State.OFFLINE:
                 curr += offineSuffix
@@ -664,6 +665,8 @@ class Port(object):
         doc = xml.dom.minidom.Document()
         fittings = doc.createElement("fittings")
         doc.appendChild(fittings)
+        sFit = service.Fit.getInstance()
+
         for i, fit in enumerate(fits):
             try:
                 fitting = doc.createElement("fitting")
@@ -701,7 +704,7 @@ class Port(object):
                     hardware.setAttribute("slot", "%s slot %d" % (slotName, slotId))
                     fitting.appendChild(hardware)
 
-                    if module.charge:
+                    if module.charge and sFit.serviceFittingOptions["exportCharges"]:
                         if not module.charge.name in charges:
                             charges[module.charge.name] = 0
                         # `or 1` because some charges (ie scripts) are without qty
