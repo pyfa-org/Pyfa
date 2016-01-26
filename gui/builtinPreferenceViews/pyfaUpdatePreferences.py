@@ -96,7 +96,7 @@ class PFUpdatePref (PreferenceView):
         self.resetButton.Hide()
 
     def OnDownload(self, event):
-        wx.LaunchDefaultBrowser('https://github.com/DarkFenX/Pyfa/releases/tag/'+self.UpdateSettings.get('version'))
+        wx.LaunchDefaultBrowser('https://github.com/pyfa-org/Pyfa/releases/tag/'+self.UpdateSettings.get('version'))
 
     def getImage(self):
         return BitmapLoader.getBitmap("prefs_update", "gui")

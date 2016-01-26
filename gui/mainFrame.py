@@ -341,9 +341,9 @@ class MainFrame(wx.Frame):
                                      "\nSQLAlchemy: \t" + sqlalchemy.__version__,
             700, wx.ClientDC(self))
         if "__WXGTK__" in  wx.PlatformInfo:
-            forumUrl = "http://forums.eveonline.com/default.aspx?g=posts&amp;t=247609"
+            forumUrl = "http://forums.eveonline.com/default.aspx?g=posts&amp;t=466425"
         else:
-            forumUrl = "http://forums.eveonline.com/default.aspx?g=posts&t=247609"
+            forumUrl = "http://forums.eveonline.com/default.aspx?g=posts&t=466425"
         info.WebSite = (forumUrl, "pyfa thread at EVE Online forum")
         wx.AboutBox(info)
 
@@ -397,10 +397,10 @@ class MainFrame(wx.Frame):
         dlg.ShowModal()
 
     def goWiki(self, event):
-        webbrowser.open('https://github.com/DarkFenX/Pyfa/wiki')
+        webbrowser.open('https://github.com/pyfa-org/Pyfa/wiki')
 
     def goForums(self, event):
-        webbrowser.open('https://forums.eveonline.com/default.aspx?g=posts&t=247609')
+        webbrowser.open('https://forums.eveonline.com/default.aspx?g=posts&t=466425')
 
     def registerMenu(self):
         menuBar = self.GetMenuBar()
