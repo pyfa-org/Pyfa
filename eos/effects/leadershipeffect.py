@@ -6,4 +6,4 @@ type = "gang"
 gangBoost = "scanResolution"
 gangBonus = "scanResolutionBonus"
 def handler(fit, skill, context):
-    fit.ship.boostItemAttr(gangBoost, skill.getModifiedItemAttr(gangBonus) * skill.level)
+    fit.ship.boostItemAttr(gangBoost, skill.getModifiedItemAttr(gangBonus) * skill.level, stackingPenalties = True)
