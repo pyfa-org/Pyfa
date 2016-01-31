@@ -127,7 +127,7 @@ class CharacterEditor(wx.Dialog):
         self.btnSaveChar.Bind(wx.EVT_BUTTON, self.saveChar)
         self.btnSaveAs.Bind(wx.EVT_BUTTON, self.saveCharAs)
         self.btnRevert.Bind(wx.EVT_BUTTON, self.revertChar)
-        self.btnOK.Bind(wx.EVT_BUTTON, self.OnClose)
+        self.btnOK.Bind(wx.EVT_BUTTON, self.editingFinished)
 
         mainSizer.Add(bSizerButtons, 0, wx.EXPAND, 5)
 
@@ -166,6 +166,10 @@ class CharacterEditor(wx.Dialog):
                 self.charChoice.SetSelection(i)
 
         self.btnRestrict()
+
+    def editingFinished(self, event):
+        wx.PostEvent(self.mainFrame, GE.CharListUpdated())
+        self.Close()
 
     def registerEvents(self):
         self.Bind(wx.EVT_CLOSE, self.OnClose)
@@ -315,7 +319,7 @@ class CharacterEditor(wx.Dialog):
             sFit.clearFit(fitID)
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
-        event.Skip()
+        self.Destroy()
 
 class SkillTreeView (wx.Panel):
     def __init__(self, parent):
