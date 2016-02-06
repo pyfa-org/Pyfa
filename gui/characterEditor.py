@@ -29,16 +29,17 @@ from gui.contextMenu import ContextMenu
 from wx.lib.buttons import GenBitmapButton
 import gui.globalEvents as GE
 
-class CharacterEditor(wx.Dialog):
+class CharacterEditor(wx.Frame):
     def __init__(self, parent):
-        wx.Dialog.__init__ (self, parent, id=wx.ID_ANY, title=u"pyfa: Character Editor", pos=wx.DefaultPosition,
-                            size=wx.Size(640, 600), style=wx.DEFAULT_DIALOG_STYLE)
+        wx.Frame.__init__ (self, parent, id=wx.ID_ANY, title=u"pyfa: Character Editor", pos=wx.DefaultPosition,
+                            size=wx.Size(640, 600), style=wx.DEFAULT_FRAME_STYLE ^ wx.RESIZE_BORDER)
 
         i = wx.IconFromBitmap(BitmapLoader.getBitmap("character_small", "gui"))
         self.SetIcon(i)
 
         self.mainFrame = parent
-
+        
+        #self.disableWin = wx.WindowDisabler(self)
         self.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNFACE ) )
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
@@ -127,7 +128,7 @@ class CharacterEditor(wx.Dialog):
         self.btnSaveChar.Bind(wx.EVT_BUTTON, self.saveChar)
         self.btnSaveAs.Bind(wx.EVT_BUTTON, self.saveCharAs)
         self.btnRevert.Bind(wx.EVT_BUTTON, self.revertChar)
-        self.btnOK.Bind(wx.EVT_BUTTON, self.OnClose)
+        self.btnOK.Bind(wx.EVT_BUTTON, self.editingFinished)
 
         mainSizer.Add(bSizerButtons, 0, wx.EXPAND, 5)
 
@@ -167,8 +168,13 @@ class CharacterEditor(wx.Dialog):
 
         self.btnRestrict()
 
+    def editingFinished(self, event):
+        #del self.disableWin
+        wx.PostEvent(self.mainFrame, GE.CharListUpdated())
+        self.Destroy()
+
     def registerEvents(self):
-        self.Bind(wx.EVT_CLOSE, self.OnClose)
+        self.Bind(wx.EVT_CLOSE, self.closeEvent)
         self.Bind(GE.CHAR_LIST_UPDATED, self.refreshCharacterList)
         self.charChoice.Bind(wx.EVT_CHOICE, self.charChanged)
 
@@ -191,6 +197,11 @@ class CharacterEditor(wx.Dialog):
         sChr.revertCharacter(charID)
         self.sview.populateSkillTree()
         wx.PostEvent(self, GE.CharListUpdated())
+
+    def closeEvent(self, event):
+        #del self.disableWin
+        wx.PostEvent(self.mainFrame, GE.CharListUpdated())
+        self.Destroy()
 
     def restrict(self):
         self.btnRename.Enable(False)
@@ -307,15 +318,14 @@ class CharacterEditor(wx.Dialog):
 
             wx.PostEvent(self, GE.CharChanged())
 
-    def OnClose(self, event):
-        wx.PostEvent(self.mainFrame, GE.CharListUpdated())
+    def Destroy(self):
         sFit = service.Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
         if fitID is not None:
             sFit.clearFit(fitID)
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
-        event.Skip()
+        wx.Frame.Destroy(self)
 
 class SkillTreeView (wx.Panel):
     def __init__(self, parent):
@@ -790,4 +800,4 @@ class SaveCharacterAs(wx.Dialog):
 
         event.Skip()
         self.Close()
-
+        

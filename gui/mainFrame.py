@@ -350,8 +350,7 @@ class MainFrame(wx.Frame):
 
     def showCharacterEditor(self, event):
         dlg=CharacterEditor(self)
-        dlg.ShowModal()
-        dlg.Destroy()
+        dlg.Show()
 
     def showAttrEditor(self, event):
         dlg=AttributeEditor(self)
