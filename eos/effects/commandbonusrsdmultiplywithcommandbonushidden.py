@@ -5,6 +5,8 @@
 gangBonus = "commandBonusRSD"
 gangBoost = "ewarStrRSD"
 type = "active", "gang"
+runTime = "late"
+
 def handler(fit, module, context):
     if "gang" not in context: return
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Sensor Linking"),
