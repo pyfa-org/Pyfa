@@ -476,9 +476,6 @@ class Fit(object):
             logger.debug("Fit has already been calculated and is not projected, returning: %r", self)
             return
 
-        # Mark fit as calculated
-        self.__calculated = True
-
         for runTime in ("early", "normal", "late"):
             # Items that are unrestricted. These items are run on the local fit
             # first and then projected onto the target fit it one is designated
@@ -505,9 +502,10 @@ class Fit(object):
                 # Registering the item about to affect the fit allows us to
                 # track "Affected By" relations correctly
                 if item is not None:
-                    # apply effects locally
-                    self.register(item)
-                    item.calculateModifiedAttributes(self, runTime, False)
+                    if not self.__calculated:
+                        # apply effects locally if this is first time running them on fit
+                        self.register(item)
+                        item.calculateModifiedAttributes(self, runTime, False)
 
                     if projected is True and item not in chain.from_iterable(r):
                         # apply effects onto target fit
@@ -516,6 +514,9 @@ class Fit(object):
                             item.calculateModifiedAttributes(targetFit, runTime, True)
 
             timer.checkpoint('Done with runtime: %s'%runTime)
+
+        # Mark fit as calculated
+        self.__calculated = True
 
         # Only apply projected fits if fit it not projected itself.
         if not projected:
