@@ -25,8 +25,16 @@ licenses = (
     "Silk Icons Set by famfamfam.com - Creative Commons Attribution 2.5 License",
     "Fat Cow Icons by fatcow.com - Creative Commons Attribution 3.0 License"
 )
-developers = ("blitzmann \t(Sable Blitzmann)", "cncfanatics \t(Sakari Orisi) (founder)" , "DarkPhoenix \t(Kadesh Priestess) (project lead)", "Darriele \t(Darriele)")
-credits = ("Entity (Entity) \t\tCapacitor calculations / EVEAPI python lib / Reverence", "Aurora \t\t\tMaths", "Corollax (Aamrr) \tVarious EOS / pyfa improvements")
+developers = (
+    "blitzmann \t(Sable Blitzmann) (maintainer)",
+    "cncfanatics \t(Sakari Orisi)" ,
+    "DarkPhoenix \t(Kadesh Priestess)",
+    "Darriele \t(Darriele)")
+credits = (
+    "Entity (Entity) \tCapacitor calculations / EVEAPI python lib / Reverence",
+    "Aurora \t\tMaths",
+    "Corollax (Aamrr) \tVarious EOS / pyfa improvements",
+    "Dreae (Dreae)\tPyCrest")
 description = (
     "Pyfa (the Python Fitting Assistant) is an open-source standalone application able to "
     "create and simulate fittings for EVE-Online SciFi MMORPG with a very high degree of "
