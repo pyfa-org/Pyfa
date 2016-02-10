@@ -426,7 +426,7 @@ class Miscellanea(ViewColumn):
                 ttEntries.append("shield")
             tooltip = "{0} repaired per second".format(formatList(ttEntries)).capitalize()
             return text, tooltip
-        elif itemGroup == "Cap Drain Drone":
+        elif itemGroup == "Energy Neutralizer Drone":
             neutAmount = stuff.getModifiedItemAttr("energyDestabilizationAmount")
             cycleTime = stuff.getModifiedItemAttr("duration")
             if not neutAmount or not cycleTime:
