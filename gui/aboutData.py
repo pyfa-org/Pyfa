@@ -29,7 +29,7 @@ developers = (
     "blitzmann \t(Sable Blitzmann) (maintainer)",
     "cncfanatics \t(Sakari Orisi)" ,
     "DarkPhoenix \t(Kadesh Priestess)",
-    "Darriele \t(Darriele)")
+    "Darriele \t\t(Darriele)")
 credits = (
     "Entity (Entity) \tCapacitor calculations / EVEAPI python lib / Reverence",
     "Aurora \t\tMaths",
