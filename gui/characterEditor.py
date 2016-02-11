@@ -32,7 +32,7 @@ import gui.globalEvents as GE
 class CharacterEditor(wx.Frame):
     def __init__(self, parent):
         wx.Frame.__init__ (self, parent, id=wx.ID_ANY, title=u"pyfa: Character Editor", pos=wx.DefaultPosition,
-                            size=wx.Size(641, 600), style=wx.DEFAULT_FRAME_STYLE|wx.FRAME_FLOAT_ON_PARENT|wx.TAB_TRAVERSAL)
+                            size=wx.Size(640, 600), style=wx.DEFAULT_FRAME_STYLE ^ wx.RESIZE_BORDER)
 
         i = wx.IconFromBitmap(BitmapLoader.getBitmap("character_small", "gui"))
         self.SetIcon(i)
@@ -40,7 +40,6 @@ class CharacterEditor(wx.Frame):
         self.mainFrame = parent
         
         #self.disableWin = wx.WindowDisabler(self)
-        self.SetSizeHintsSz(wx.Size(640, 600), wx.DefaultSize)
         self.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNFACE ) )
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
@@ -801,4 +800,4 @@ class SaveCharacterAs(wx.Dialog):
 
         event.Skip()
         self.Close()
-
+        

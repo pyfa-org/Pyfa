@@ -5,7 +5,7 @@
 ##
 ## Author: Darriele - HomeWorld
 ##
-## Project home: http://github.com/DarkFenX/Pyfa - pyfa project
+## Project home: https://github.com/pyfa-org/Pyfa - pyfa project
 ## Some portions of code are based on
 ## AGW:pycollapsiblepane generic implementation of wx.CollapsiblePane
 ## AGW:pycollapsiblepane credits ( from the original source file used ):

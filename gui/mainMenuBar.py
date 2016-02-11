@@ -108,7 +108,8 @@ class MainMenuBar(wx.MenuBar):
         graphFrameItem.SetBitmap(BitmapLoader.getBitmap("graphs_small", "gui"))
         windowMenu.AppendItem(graphFrameItem)
 
-        preferencesItem = wx.MenuItem(windowMenu, wx.ID_PREFERENCES, "Preferences\tCTRL+P")
+        preferencesShortCut = "CTRL+," if 'wxMac' in wx.PlatformInfo else "CTRL+P"
+        preferencesItem = wx.MenuItem(windowMenu, wx.ID_PREFERENCES, "Preferences\t"+preferencesShortCut)
         preferencesItem.SetBitmap(BitmapLoader.getBitmap("preferences_small", "gui"))
         windowMenu.AppendItem(preferencesItem)
 

@@ -326,6 +326,7 @@ class MainFrame(wx.Frame):
 
     def ShowAboutBox(self, evt):
         import eos.config
+        v = sys.version_info
         info = wx.AboutDialogInfo()
         info.Name = "pyfa"
         info.Version = gui.aboutData.versionString
@@ -336,14 +337,14 @@ class MainFrame(wx.Frame):
                                      "\n\nLicenses:\n\t" +
                                      "\n\t".join(gui.aboutData.licenses) +
                                      "\n\nEVE Data: \t" + eos.config.gamedata_version +
-                                     "\nPython: \t" + sys.version +
+                                     "\nPython: \t\t" + '{}.{}.{}'.format(v.major, v.minor, v.micro) +
                                      "\nwxPython: \t" + wx.__version__ +
                                      "\nSQLAlchemy: \t" + sqlalchemy.__version__,
-            700, wx.ClientDC(self))
+            500, wx.ClientDC(self))
         if "__WXGTK__" in  wx.PlatformInfo:
-            forumUrl = "http://forums.eveonline.com/default.aspx?g=posts&amp;t=247609"
+            forumUrl = "http://forums.eveonline.com/default.aspx?g=posts&amp;t=466425"
         else:
-            forumUrl = "http://forums.eveonline.com/default.aspx?g=posts&t=247609"
+            forumUrl = "http://forums.eveonline.com/default.aspx?g=posts&t=466425"
         info.WebSite = (forumUrl, "pyfa thread at EVE Online forum")
         wx.AboutBox(info)
 
@@ -397,10 +398,10 @@ class MainFrame(wx.Frame):
         dlg.ShowModal()
 
     def goWiki(self, event):
-        webbrowser.open('https://github.com/DarkFenX/Pyfa/wiki')
+        webbrowser.open('https://github.com/pyfa-org/Pyfa/wiki')
 
     def goForums(self, event):
-        webbrowser.open('https://forums.eveonline.com/default.aspx?g=posts&t=247609')
+        webbrowser.open('https://forums.eveonline.com/default.aspx?g=posts&t=466425')
 
     def registerMenu(self):
         menuBar = self.GetMenuBar()
