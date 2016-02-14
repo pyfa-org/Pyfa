@@ -3,6 +3,7 @@ import urlparse
 import socket
 import thread
 import wx
+from service.settings import CRESTSettings
 
 import logging
 
@@ -55,8 +56,11 @@ class StoppableHTTPServer(BaseHTTPServer.HTTPServer):
 
     def server_bind(self):
         BaseHTTPServer.HTTPServer.server_bind(self)
-        # Allow listening for 60 seconds
-        sec = 60
+        self.settings = CRESTSettings.getInstance()
+
+        # Allow listening for x seconds
+        sec = self.settings.get('timeout')
+        logger.debug("Running server for %d seconds", sec)
 
         self.socket.settimeout(0.5)
         self.max_tries = sec / self.socket.gettimeout()
