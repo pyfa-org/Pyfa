@@ -120,6 +120,8 @@ class MainFrame(wx.Frame):
         self.title="pyfa %s%s - Python Fitting Assistant"%(config.version, "" if config.tag.lower() != 'git' else " (git)")
         wx.Frame.__init__(self, None, wx.ID_ANY, self.title)
 
+        self.locale = wx.Locale(wx.LANGUAGE_ENGLISH)
+
         MainFrame.__instance = self
 
         #Load stored settings (width/height/maximized..)

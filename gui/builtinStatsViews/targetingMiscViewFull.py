@@ -153,7 +153,7 @@ class TargetingMiscViewFull(StatsView):
                  ("labelFullAlignTime", {"main": lambda: fit.alignTime}, 3, 0, 0, "s"),
                  ("labelFullSigRadius", {"main": lambda: fit.ship.getModifiedItemAttr("signatureRadius")}, 3, 0, 9, ""),
                  ("labelFullWarpSpeed", {"main": lambda: fit.warpSpeed}, 3, 0, 0, "AU/s"),
-                 ("labelFullCargo", cargoValues, 3, 0, 9, u"m\u00B3"))
+                 ("labelFullCargo", cargoValues, 4, 0, 9, u"m\u00B3"))
 
         counter = 0
         RADII = [("Pod",25), ("Interceptor",33), ("Frigate",38),
@@ -206,10 +206,12 @@ class TargetingMiscViewFull(StatsView):
                         label.SetToolTip(wx.ToolTip("%s\n%s\n%s" % (alignTime, mass, agility)))
                     elif labelName == "labelFullCargo":
                         tipLines = []
-                        tipLines.append(u"Cargohold: %.1fm\u00B3 / %sm\u00B3"% (fit.cargoBayUsed, newValues["main"]))
+                        tipLines.append(u"Cargohold: %sm\u00B3 / %sm\u00B3"% (
+                            locale.format('%.2f', fit.cargoBayUsed, 1),
+                            locale.format('%.2f', newValues["main"], 1)))
                         for attrName, tipAlias in cargoNamesOrder.items():
                             if newValues[attrName] > 0:
-                                tipLines.append(u"%s: %sm\u00B3"% (tipAlias, newValues[attrName]))
+                                tipLines.append(u"%s: %sm\u00B3"% (tipAlias, locale.format('%.2f', newValues[attrName], 1)))
                         label.SetToolTip(wx.ToolTip(u"\n".join(tipLines)))
                     else:
                         label.SetToolTip(wx.ToolTip("%.1f" % mainValue))
@@ -235,10 +237,12 @@ class TargetingMiscViewFull(StatsView):
                     # if you add stuff to cargo, the capacity doesn't change and thus it is still cached
                     # This assures us that we force refresh of cargo tooltip
                     tipLines = []
-                    tipLines.append(u"Cargohold: %.1fm\u00B3 / %sm\u00B3"% (fit.cargoBayUsed, cachedCargo["main"]))
+                    tipLines.append(u"Cargohold: %.2fm\u00B3 / %.2fm\u00B3"% (
+                        locale.format('%.2f', fit.cargoBayUsed, 1),
+                        locale.format('%.2f', cachedCargo["main"], 1)))
                     for attrName, tipAlias in cargoNamesOrder.items():
                         if cachedCargo[attrName] > 0:
-                            tipLines.append(u"%s: %sm\u00B3"% (tipAlias, cachedCargo[attrName]))
+                            tipLines.append(u"%s: %sm\u00B3"% (tipAlias, locale.format('%.2f', cachedCargo[attrName], 1)))
                     label.SetToolTip(wx.ToolTip(u"\n".join(tipLines)))
                 else:
                     label.SetToolTip(wx.ToolTip(""))
