@@ -237,7 +237,7 @@ class TargetingMiscViewFull(StatsView):
                     # if you add stuff to cargo, the capacity doesn't change and thus it is still cached
                     # This assures us that we force refresh of cargo tooltip
                     tipLines = []
-                    tipLines.append(u"Cargohold: %.2fm\u00B3 / %.2fm\u00B3"% (
+                    tipLines.append(u"Cargohold: %sm\u00B3 / %sm\u00B3"% (
                         locale.format('%.2f', fit.cargoBayUsed, 1),
                         locale.format('%.2f', cachedCargo["main"], 1)))
                     for attrName, tipAlias in cargoNamesOrder.items():
