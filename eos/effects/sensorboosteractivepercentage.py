@@ -8,3 +8,10 @@ def handler(fit, module, context):
                            stackingPenalties = True)
     fit.ship.boostItemAttr("scanResolution", module.getModifiedItemAttr("scanResolutionBonus"),
                            stackingPenalties = True)
+
+    for scanType in ("Gravimetric", "Magnetometric", "Radar", "Ladar"):
+        fit.ship.boostItemAttr(
+            "scan{}Strength".format(scanType),
+            module.getModifiedItemAttr("scan{}StrengthPercent".format(scanType)),
+            stackingPenalties=True
+        )
