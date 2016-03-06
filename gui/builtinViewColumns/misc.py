@@ -139,7 +139,7 @@ class Miscellanea(ViewColumn):
             text = "{0}%".format(formatAmount(sigRadBonus, 3, 0, 3, forceSign=True))
             tooltip = "Signature radius increase"
             return text, tooltip
-        elif itemGroup == "Remote Sensor Damper":
+        elif itemGroup == "Sensor Dampener":
             lockRangeBonus = stuff.getModifiedItemAttr("maxTargetRangeBonus")
             scanResBonus = stuff.getModifiedItemAttr("scanResolutionBonus")
             if lockRangeBonus is None or scanResBonus is None:
