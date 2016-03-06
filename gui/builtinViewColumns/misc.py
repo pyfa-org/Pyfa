@@ -205,7 +205,7 @@ class Miscellanea(ViewColumn):
 
             tooltip = "{0} disruption".format(formatList(ttEntries)).capitalize()
             return text, tooltip
-        elif itemGroup in ("ECM", "ECM Burst", "Remote ECM Burst"):
+        elif itemGroup in ("ECM", "Burst Jammer", "Remote ECM Burst"):
             grav = stuff.getModifiedItemAttr("scanGravimetricStrengthBonus")
             ladar = stuff.getModifiedItemAttr("scanLadarStrengthBonus")
             radar = stuff.getModifiedItemAttr("scanRadarStrengthBonus")
