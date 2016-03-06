@@ -37,4 +37,4 @@ def update(saveddata_engine):
                 func(saveddata_engine)
 
         # when all is said and done, set version to current
-        saveddata_engine.execute("PRAGMA user_version = {}".format(appVersion))
+        # saveddata_engine.execute("PRAGMA user_version = {}".format(appVersion))
