@@ -361,6 +361,9 @@ class ItemParams (wx.Panel):
             else:
                 attrName = name
 
+            if info and config.debug:
+                attrName += " ({})".format(info.ID)
+
             if info:
                 if info.icon is not None:
                     iconFile = info.icon.iconFile
@@ -376,7 +379,7 @@ class ItemParams (wx.Panel):
                 attrIcon = self.imageList.Add(BitmapLoader.getBitmap("07_15", "icons"))
 
 
-            index = self.paramList.InsertImageStringItem(sys.maxint, attrName,attrIcon)
+            index = self.paramList.InsertImageStringItem(sys.maxint, attrName, attrIcon)
             idNameMap[idCount] = attrName
             self.paramList.SetItemData(index, idCount)
             idCount += 1
@@ -499,6 +502,8 @@ class ItemEffects (wx.Panel):
 
         self.effectList.InsertColumn(0,"Name")
         self.effectList.InsertColumn(1,"Implemented")
+        if config.debug:
+            self.effectList.InsertColumn(2,"ID")
 
         #self.effectList.SetColumnWidth(0,385)
 
@@ -519,6 +524,8 @@ class ItemEffects (wx.Panel):
                 implemented = "Erroneous"
 
             self.effectList.SetStringItem(index, 1, implemented)
+            if config.debug:
+                self.effectList.SetStringItem(index, 2, str(effects[name].ID))
 
         self.effectList.RefreshRows()
         self.Layout()

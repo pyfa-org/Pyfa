@@ -139,7 +139,7 @@ class Miscellanea(ViewColumn):
             text = "{0}%".format(formatAmount(sigRadBonus, 3, 0, 3, forceSign=True))
             tooltip = "Signature radius increase"
             return text, tooltip
-        elif itemGroup == "Remote Sensor Damper":
+        elif itemGroup == "Sensor Dampener":
             lockRangeBonus = stuff.getModifiedItemAttr("maxTargetRangeBonus")
             scanResBonus = stuff.getModifiedItemAttr("scanResolutionBonus")
             if lockRangeBonus is None or scanResBonus is None:
@@ -205,7 +205,7 @@ class Miscellanea(ViewColumn):
 
             tooltip = "{0} disruption".format(formatList(ttEntries)).capitalize()
             return text, tooltip
-        elif itemGroup in ("ECM", "ECM Burst", "Remote ECM Burst"):
+        elif itemGroup in ("ECM", "Burst Jammer", "Remote ECM Burst"):
             grav = stuff.getModifiedItemAttr("scanGravimetricStrengthBonus")
             ladar = stuff.getModifiedItemAttr("scanLadarStrengthBonus")
             radar = stuff.getModifiedItemAttr("scanRadarStrengthBonus")
@@ -487,7 +487,7 @@ class Miscellanea(ViewColumn):
             if chargeGroup in ("Rocket", "Advanced Rocket", "Light Missile", "Advanced Light Missile", "FoF Light Missile",
                                "Heavy Assault Missile", "Advanced Heavy Assault Missile", "Heavy Missile", "Advanced Heavy Missile", "FoF Heavy Missile",
                                "Torpedo", "Advanced Torpedo", "Cruise Missile", "Advanced Cruise Missile", "FoF Cruise Missile",
-                               "Citadel Torpedo", "Citadel Cruise"):
+                               "Capital Torpedo", "Capital Cruise"):
                 cloudSize = stuff.getModifiedChargeAttr("aoeCloudSize")
                 aoeVelocity = stuff.getModifiedChargeAttr("aoeVelocity")
                 if not cloudSize or not aoeVelocity:

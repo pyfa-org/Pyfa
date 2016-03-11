@@ -823,7 +823,8 @@ class Fit(object):
         return 10 / rechargeRate * sqrt(percent) * (1 - sqrt(percent)) * capacity
 
     def addDrain(self, cycleTime, capNeed, clipSize=0):
-        self.__extraDrains.append((cycleTime, capNeed, clipSize))
+        resistance = self.ship.getModifiedItemAttr("energyWarfareResistance") or 1
+        self.__extraDrains.append((cycleTime, capNeed * resistance, clipSize))
 
     def removeDrain(self, i):
         del self.__extraDrains[i]

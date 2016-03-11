@@ -69,7 +69,7 @@ def handler(fit, module, context):
 
     # EW cap need increase
     groups = [
-        'ECM Burst',
+        'Burst Jammer',
         'Remote ECM Burst',
         'Weapon Disruptor',
         'ECM',

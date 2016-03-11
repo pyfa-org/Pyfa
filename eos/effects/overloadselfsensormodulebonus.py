@@ -9,3 +9,10 @@ def handler(fit, module, context):
     module.boostItemAttr("maxTargetRangeBonus", module.getModifiedItemAttr("overloadSensorModuleStrengthBonus"))
     module.boostItemAttr("scanResolutionBonus", module.getModifiedItemAttr("overloadSensorModuleStrengthBonus"),
                          stackingPenalties=True)
+
+    for scanType in ("Gravimetric", "Magnetometric", "Radar", "Ladar"):
+        module.boostItemAttr(
+            "scan{}StrengthPercent".format(scanType),
+            module.getModifiedItemAttr("overloadSensorModuleStrengthBonus"),
+            stackingPenalties=True
+        )
