@@ -60,7 +60,7 @@ def __createDirs(path):
     if not os.path.exists(path):
         os.makedirs(path)
 
-def defPaths():
+def defPaths(customSavePath):
     global debug
     global pyfaPath
     global savePath
@@ -87,8 +87,11 @@ def defPaths():
     else:
         savePath = getattr(configforced, "savePath", None)
         if savePath is None:
-            savePath = unicode(os.path.expanduser(os.path.join("~", ".pyfa")),
+            if customSavePath is None: # customSavePath is not overriden
+                savePath = unicode(os.path.expanduser(os.path.join("~", ".pyfa")),
                                sys.getfilesystemencoding())
+            else:
+                savePath = customSavePath
 
     __createDirs(savePath)
 
