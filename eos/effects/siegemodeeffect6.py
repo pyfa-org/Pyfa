@@ -18,12 +18,12 @@ def handler(fit, module, context):
 
     #Missiles
     for type in ("kinetic", "thermal", "explosive", "em"):
-        fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill("Citadel Torpedoes") or \
-                                        mod.charge.requiresSkill("Citadel Cruise Missiles"),
+        fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill("XL Torpedoes") or \
+                                        mod.charge.requiresSkill("XL Cruise Missiles"),
                                         "%sDamage" % type, module.getModifiedItemAttr("damageMultiplierBonus"))
 
-    fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill("Citadel Torpedoes") or \
-                                    mod.charge.requiresSkill("Citadel Cruise Missiles"),
+    fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill("XL Torpedoes") or \
+                                    mod.charge.requiresSkill("XL Cruise Missiles"),
                                     "aoeVelocity", module.getModifiedItemAttr("aoeVelocityBonus"))
 
     #Shield Boosters
