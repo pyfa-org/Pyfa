@@ -1,4 +1,4 @@
-# targetGunneryMaxRangeAndTrackingSpeedAndFalloffBonusHostile
+# remoteTrackingDisruptFalloff
 #
 # Used by:
 # Variations of module: Tracking Disruptor I (6 of 6)

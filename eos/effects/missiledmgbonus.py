@@ -1,7 +1,7 @@
 # missileDMGBonus
 #
 # Used by:
-# Modules from group: Ballistic Control system (21 of 21)
+# Modules from group: Ballistic Control system (17 of 17)
 # Modules named like: QA Multiship Module Players (4 of 4)
 type = "passive"
 def handler(fit, container, context):

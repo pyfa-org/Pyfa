@@ -1,3 +1,7 @@
+# remoteECMFalloff
+#
+# Used by:
+# Modules from group: ECM (39 of 39)
 type = "projected", "active"
 def handler(fit, module, context):
     if "projected" in context:
