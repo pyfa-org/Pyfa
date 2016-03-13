@@ -28,7 +28,7 @@ from eos.db.saveddata.module import modules_table
 from eos.db.saveddata.drone import drones_table
 from eos.db.saveddata.cargo import cargo_table
 from eos.db.saveddata.implant import fitImplants_table
-from eos.types import Fit, Module, User, Booster, Drone, Cargo, Implant, Character, DamagePattern, TargetResists
+from eos.types import Fit, Module, User, Booster, Drone, Cargo, Implant, Character, DamagePattern, TargetResists, ImplantLocation
 from eos.effectHandlerHelpers import *
 
 fits_table = Table("fits", saveddata_meta,
@@ -42,6 +42,7 @@ fits_table = Table("fits", saveddata_meta,
                          Column("booster", Boolean, nullable = False, index = True, default = 0),
                          Column("targetResistsID", ForeignKey("targetResists.ID"), nullable=True),
                          Column("modeID", Integer, nullable=True),
+                         Column("implantLocation", Integer, nullable=False, default=ImplantLocation.FIT),
 )
 
 projectedFits_table = Table("projectedFits", saveddata_meta,

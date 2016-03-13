@@ -21,10 +21,60 @@ import wx
 import service
 import gui.display as d
 import gui.marketBrowser as mb
+import gui.mainFrame
 from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
 import globalEvents as GE
-class ImplantView(d.Display):
+from eos.types import ImplantLocation
+
+
+class ImplantView(wx.Panel):
+    def __init__(self, parent):
+        wx.Panel.__init__(self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, style=wx.TAB_TRAVERSAL )
+        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+
+        mainSizer = wx.BoxSizer(wx.VERTICAL)
+
+        radioSizer = wx.BoxSizer(wx.HORIZONTAL)
+
+        self.rbFit = wx.RadioButton(self, id=wx.ID_ANY, label="Use Fit-specific Implants", style=wx.RB_GROUP)
+        self.rbChar = wx.RadioButton(self, id=wx.ID_ANY, label="Use Character Implants")
+        radioSizer.Add(self.rbFit, 0, wx.EXPAND, 5)
+        radioSizer.Add(self.rbChar, 0, wx.EXPAND, 5)
+
+        mainSizer.Add(radioSizer)
+        self.implantDisplay = ImplantDisplay(self)
+        mainSizer.Add(self.implantDisplay, 1, wx.EXPAND, 0 )
+        self.SetSizer( mainSizer )
+        self.SetAutoLayout(True)
+
+        self.Bind(wx.EVT_RADIOBUTTON, self.OnRadioSelect, self.rbFit)
+        self.Bind(wx.EVT_RADIOBUTTON, self.OnRadioSelect, self.rbChar)
+        self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
+
+    def fitChanged(self, event):
+        sFit = service.Fit.getInstance()
+        activeFitID = self.mainFrame.getActiveFit()
+        fit = sFit.getFit(activeFitID)
+        if fit:
+            if fit.implantSource == ImplantLocation.FIT:
+                self.rbFit.SetValue(True)
+            else:
+                self.rbChar.SetValue(True)
+
+    def OnRadioSelect(self, event):
+        sFit = service.Fit.getInstance()
+        activeFitID = self.mainFrame.getActiveFit()
+        fit = sFit.getFit(activeFitID)
+        if self.rbFit.GetValue():
+            fit.implantSource = ImplantLocation.FIT
+        else:
+            fit.implantSource = ImplantLocation.CHARACTER
+
+        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=activeFitID))
+
+
+class ImplantDisplay(d.Display):
     DEFAULT_COLS = ["State",
                     "attr:implantness",
                     "Base Icon",
@@ -79,8 +129,7 @@ class ImplantView(d.Display):
 
             self.deselectItems()
 
-        self.populate(stuff)
-        self.refresh(stuff)
+        self.update(stuff)
         event.Skip()
 
     def addItem(self, event):
