@@ -44,7 +44,8 @@ class ModifiedAttributeDict(collections.MutableMapping):
     class CalculationPlaceholder():
         pass
 
-    def __init__(self, fit = None):
+    def __init__(self, fit=None, parent=None):
+        self.parent = parent
         self.fit = fit
         # Stores original values of the entity
         self.__original = None
@@ -225,8 +226,15 @@ class ModifiedAttributeDict(collections.MutableMapping):
         with the fit and thus get the correct affector. Returns skill level to
         be used to modify modifier. See GH issue #101
         """
-        skill = self.fit.character.getSkill(skillName)
-        self.fit.register(skill)
+        fit = self.fit
+        if not fit:
+            # self.fit is usually set during fit calculations when the item is registered with the fit. However,
+            # under certain circumstances, an effect will not work as it will try to modify an item which has NOT
+            # yet been registered and thus has not had self.fit set. In this case, use the modules owner attribute
+            # to point to the correct fit. See GH Issue #434
+            fit = self.parent.owner
+        skill = fit.character.getSkill(skillName)
+        fit.register(skill)
         return skill.level
 
     def getAfflictions(self, key):
@@ -284,6 +292,9 @@ class ModifiedAttributeDict(collections.MutableMapping):
 
     def multiply(self, attributeName, multiplier, stackingPenalties=False, penaltyGroup="default", skill=None):
         """Multiply value of given attribute by given factor"""
+        if multiplier is None:  # See GH issue 397
+            return
+
         if skill:
             multiplier *= self.__handleSkill(skill)
 
@@ -300,7 +311,7 @@ class ModifiedAttributeDict(collections.MutableMapping):
         else:
             if not attributeName in self.__multipliers:
                 self.__multipliers[attributeName] = 1
-            self.__multipliers[attributeName] *= multiplier if multiplier is not None else 1
+            self.__multipliers[attributeName] *= multiplier
         self.__placehold(attributeName)
         self.__afflict(attributeName, "%s*" % ("s" if stackingPenalties else ""), multiplier, multiplier != 1)
 

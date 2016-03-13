@@ -1,7 +1,7 @@
 # scanStrengthBonusPercentOnline
 #
 # Used by:
-# Modules from group: Sensor Backup Array (72 of 72)
+# Modules from group: Signal Amplifier (7 of 7)
 type = "passive"
 def handler(fit, module, context):
     for type in ("Gravimetric", "Magnetometric", "Radar", "Ladar"):

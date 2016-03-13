@@ -44,6 +44,9 @@ INV_FLAGS = {
             Slot.RIG: 92,
             Slot.SUBSYSTEM: 125}
 
+INV_FLAG_CARGOBAY = 5
+INV_FLAG_DRONEBAY = 87
+
 class Port(object):
     """Service which houses all import/export format functions"""
     @classmethod
@@ -90,7 +93,24 @@ class Port(object):
             item['type']['href'] = "%stypes/%d/"%(eve._authed_endpoint, module.item.ID)
             item['type']['id'] = module.item.ID
             item['type']['name'] = ''
+            fit['items'].append(item)
 
+        for cargo in ofit.cargo:
+            item = nested_dict()
+            item['flag'] = INV_FLAG_CARGOBAY
+            item['quantity'] = cargo.amount
+            item['type']['href'] = "%stypes/%d/"%(eve._authed_endpoint, cargo.item.ID)
+            item['type']['id'] = cargo.item.ID
+            item['type']['name'] = ''
+            fit['items'].append(item)
+        
+        for drone in ofit.drones:
+            item = nested_dict()
+            item['flag'] = INV_FLAG_DRONEBAY
+            item['quantity'] = drone.amount
+            item['type']['href'] = "%stypes/%d/"%(eve._authed_endpoint, drone.item.ID)
+            item['type']['id'] = drone.item.ID
+            item['type']['name'] = ''
             fit['items'].append(item)
 
         return json.dumps(fit)
@@ -142,11 +162,11 @@ class Port(object):
         for module in items:
             try:
                 item = sMkt.getItem(module['type']['id'], eager="group.category")
-                if item.category.name == "Drone":
+                if module['flag'] == INV_FLAG_DRONEBAY:
                     d = Drone(item)
                     d.amount = module['quantity']
                     f.drones.append(d)
-                elif item.category.name == "Charge":
+                elif module['flag'] == INV_FLAG_CARGOBAY:
                     c = Cargo(item)
                     c.amount = module['quantity']
                     f.cargo.append(c)
@@ -531,12 +551,13 @@ class Port(object):
         offineSuffix = " /OFFLINE"
         export = "[%s, %s]\n" % (fit.ship.item.name, fit.name)
         stuff = {}
+        sFit = service.Fit.getInstance()
         for module in fit.modules:
             slot = module.slot
             if not slot in stuff:
                 stuff[slot] = []
             curr = module.item.name if module.item else ("[Empty %s slot]" % Slot.getName(slot).capitalize() if slot is not None else "")
-            if module.charge:
+            if module.charge and sFit.serviceFittingOptions["exportCharges"]:
                 curr += ", %s" % module.charge.name
             if module.state == State.OFFLINE:
                 curr += offineSuffix
@@ -644,6 +665,8 @@ class Port(object):
         doc = xml.dom.minidom.Document()
         fittings = doc.createElement("fittings")
         doc.appendChild(fittings)
+        sFit = service.Fit.getInstance()
+
         for i, fit in enumerate(fits):
             try:
                 fitting = doc.createElement("fitting")
@@ -681,7 +704,7 @@ class Port(object):
                     hardware.setAttribute("slot", "%s slot %d" % (slotName, slotId))
                     fitting.appendChild(hardware)
 
-                    if module.charge:
+                    if module.charge and sFit.serviceFittingOptions["exportCharges"]:
                         if not module.charge.name in charges:
                             charges[module.charge.name] = 0
                         # `or 1` because some charges (ie scripts) are without qty

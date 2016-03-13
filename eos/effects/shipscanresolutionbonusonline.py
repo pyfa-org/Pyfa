@@ -1,7 +1,7 @@
 # shipScanResolutionBonusOnline
 #
 # Used by:
-# Modules from group: Signal Amplifier (11 of 11)
+# Modules from group: Signal Amplifier (7 of 7)
 # Module: QA Damage Module
 type = "passive"
 def handler(fit, module, context):

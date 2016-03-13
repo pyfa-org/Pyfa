@@ -7,6 +7,8 @@ import gui.mainFrame
 import service
 from service.crest import CrestModes
 
+from wx.lib.intctrl import IntCtrl
+
 class PFCrestPref ( PreferenceView):
     title = "CREST"
 
@@ -46,13 +48,25 @@ class PFCrestPref ( PreferenceView):
 
         mainSizer.Add(rbSizer, 1, wx.ALL|wx.EXPAND, 0)
 
+        timeoutSizer = wx.BoxSizer(wx.HORIZONTAL)
+
+        self.stTimout = wx.StaticText( panel, wx.ID_ANY, u"Timeout (seconds):", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.stTimout.Wrap( -1 )
+
+        timeoutSizer.Add( self.stTimout, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5 )
+
+        self.intTimeout = IntCtrl(panel, max=300000, limited=True, value=self.settings.get('timeout'))
+        timeoutSizer.Add(self.intTimeout, 0, wx.ALL, 5 )
+        self.intTimeout.Bind(wx.lib.intctrl.EVT_INT, self.OnTimeoutChange)
+
+        mainSizer.Add(timeoutSizer, 0, wx.ALL|wx.EXPAND, 0)
+
         detailsTitle = wx.StaticText( panel, wx.ID_ANY, "CREST client details", wx.DefaultPosition, wx.DefaultSize, 0 )
         detailsTitle.Wrap( -1 )
         detailsTitle.SetFont( wx.Font( 12, 70, 90, 90, False, wx.EmptyString ) )
 
         mainSizer.Add( detailsTitle, 0, wx.ALL, 5 )
         mainSizer.Add( wx.StaticLine( panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL ), 0, wx.EXPAND, 5 )
-
 
         fgAddrSizer = wx.FlexGridSizer( 2, 2, 0, 0 )
         fgAddrSizer.AddGrowableCol( 1 )
@@ -87,6 +101,9 @@ class PFCrestPref ( PreferenceView):
         panel.SetSizer( mainSizer )
         panel.Layout()
 
+    def OnTimeoutChange(self, event):
+        self.settings.set('timeout', event.GetEventObject().GetValue())
+
     def OnModeChange(self, event):
         self.settings.set('mode', event.GetInt())
         self.ToggleProxySettings(self.settings.get('mode'))
@@ -97,8 +114,8 @@ class PFCrestPref ( PreferenceView):
         service.Crest.restartService()
 
     def OnBtnApply(self, event):
-        self.settings.set('clientID', self.inputClientID.GetValue())
-        self.settings.set('clientSecret', self.inputClientSecret.GetValue())
+        self.settings.set('clientID', self.inputClientID.GetValue().strip())
+        self.settings.set('clientSecret', self.inputClientSecret.GetValue().strip())
         sCrest = service.Crest.getInstance()
         sCrest.delAllCharacters()
 

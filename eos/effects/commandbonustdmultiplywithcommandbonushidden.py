@@ -5,8 +5,18 @@
 gangBonus = "commandBonusTD"
 gangBoost = "ewarStrTD"
 type = "active", "gang"
+runTime = "late"
+
 def handler(fit, module, context):
     if "gang" not in context: return
-    for bonus in ("maxRangeBonus", "falloffBonus", "trackingSpeedBonus"):
+    for bonus in (
+        "missileVelocityBonus",
+        "explosionDelayBonus",
+        "aoeVelocityBonus",
+        "falloffBonus",
+        "maxRangeBonus",
+        "aoeCloudSizeBonus",
+        "trackingSpeedBonus"
+    ):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Weapon Disruption"),
                                       bonus, module.getModifiedItemAttr("commandBonusTD"))

@@ -1,8 +1,8 @@
 # covertOpsCloakCPUPercentBonusPirateFaction
 #
 # Used by:
+# Ships from group: Expedition Frigate (2 of 2)
 # Ship: Astero
-# Ship: Prospect
 # Ship: Victorieux Luxury Yacht
 type = "passive"
 runTime = "early"

@@ -8,4 +8,4 @@ type = "gang"
 gangBoost = "shieldCapacity"
 gangBonus = "shieldCapacityBonus"
 def handler(fit, container, context):
-    fit.ship.boostItemAttr(gangBoost, container.getModifiedItemAttr(gangBonus) * level)
+    fit.ship.boostItemAttr(gangBoost, container.getModifiedItemAttr(gangBonus))

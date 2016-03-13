@@ -1,7 +1,7 @@
 # gunneryMaxRangeFalloffTrackingSpeedBonus
 #
 # Used by:
-# Modules from group: Tracking Computer (14 of 14)
+# Modules from group: Tracking Computer (11 of 11)
 type = "active"
 def handler(fit, module, context):
     for attr in ("maxRange", "falloff", "trackingSpeed"):

@@ -1,7 +1,8 @@
 # minmatarShipEwTargetPainterMF2
 #
 # Used by:
-# Variations of ship: Vigil (2 of 2)
+# Ship: Hyena
+# Ship: Vigil
 type = "passive"
 def handler(fit, ship, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == "Target Painter",

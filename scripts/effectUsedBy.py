@@ -1063,6 +1063,7 @@ inner score: {5:.3})"
             print("Warning: effect file " + effect_name +
               " is not used by any item, removing")
             os.remove(os.path.join(effects_path, effect_file))
+            continue
         else:
             print("Warning: effect file " + effect_name +
               " is not used by any item")

@@ -1,8 +1,8 @@
 # overloadSelfECMStrenghtBonus
 #
 # Used by:
-# Modules from group: ECM (44 of 44)
-# Modules from group: ECM Burst (7 of 7)
+# Modules from group: Burst Jammer (11 of 11)
+# Modules from group: ECM (39 of 39)
 type = "overheat"
 def handler(fit, module, context):
     if "projected" not in context:

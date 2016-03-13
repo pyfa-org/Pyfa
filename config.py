@@ -18,10 +18,10 @@ debug = False
 saveInRoot = False
 
 # Version data
-version = "1.16.2"
+version = "1.20.0"
 tag = "Stable"
-expansionName = "Parallax"
-expansionVersion = "1.1"
+expansionName = "March 2016"
+expansionVersion = "1.0"
 evemonMinVersion = "4081"
 
 pyfaPath = None
@@ -60,7 +60,7 @@ def __createDirs(path):
     if not os.path.exists(path):
         os.makedirs(path)
 
-def defPaths():
+def defPaths(customSavePath):
     global debug
     global pyfaPath
     global savePath
@@ -87,13 +87,17 @@ def defPaths():
     else:
         savePath = getattr(configforced, "savePath", None)
         if savePath is None:
-            savePath = unicode(os.path.expanduser(os.path.join("~", ".pyfa")),
+            if customSavePath is None: # customSavePath is not overriden
+                savePath = unicode(os.path.expanduser(os.path.join("~", ".pyfa")),
                                sys.getfilesystemencoding())
+            else:
+                savePath = customSavePath
 
     __createDirs(savePath)
 
     if isFrozen():
         os.environ["REQUESTS_CA_BUNDLE"] = os.path.join(pyfaPath, "cacert.pem")
+        os.environ["SSL_CERT_FILE"] = os.path.join(pyfaPath, "cacert.pem")
 
     format = '%(asctime)s %(name)-24s %(levelname)-8s %(message)s'
     logging.basicConfig(format=format, level=logLevel)

@@ -235,7 +235,11 @@ class Market():
             "Guristas Shuttle": False,
             "Mobile Decoy Unit": False,  # Seems to be left over test mod for deployables
             "Tournament Micro Jump Unit": False,  # Normally seen only on tournament arenas
-            "Council Diplomatic Shuttle": False,  # CSM X celebration]
+            "Council Diplomatic Shuttle": False,  # CSM X celebration
+            "Civilian Gatling Railgun": True,
+            "Civilian Gatling Pulse Laser": True,
+            "Civilian Gatling Autocannon": True,
+            "Civilian Light Electron Blaster": True,
         }
 
         # do not publish ships that we convert
@@ -262,8 +266,7 @@ class Market():
             "'Wild' Miner I": ("Storyline", "Miner I"),
             "Medium Nano Armor Repair Unit I": ("Tech I", "Medium Armor Repairer I"),
             "Large 'Reprieve' Vestment Reconstructer I": ("Storyline", "Large Armor Repairer I"),
-            "Khanid Navy Torpedo Launcher": ("Faction", "Torpedo Launcher I"),
-            "Shadow Serpentis Remote Sensor Dampener": ("Faction", "Remote Sensor Dampener I") }
+            "Khanid Navy Torpedo Launcher": ("Faction", "Torpedo Launcher I"),}
         # Parent type name: set(item names)
         self.ITEMS_FORCEDMETAGROUP_R = {}
         for item, value in self.ITEMS_FORCEDMETAGROUP.items():
@@ -504,8 +507,10 @@ class Market():
             parents.add(parent)
             # Check for overrides and add them if any
             if parent.name in self.ITEMS_FORCEDMETAGROUP_R:
-                for itmn in self.ITEMS_FORCEDMETAGROUP_R[parent.name]:
-                    variations.add(self.getItem(itmn))
+                for item in self.ITEMS_FORCEDMETAGROUP_R[parent.name]:
+                    i = self.getItem(item)
+                    if i:
+                        variations.add(i)
         # Add all parents to variations set
         variations.update(parents)
         # Add all variations of parents to the set

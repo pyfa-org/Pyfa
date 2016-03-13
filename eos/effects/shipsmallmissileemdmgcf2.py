@@ -1,6 +1,7 @@
 # shipSmallMissileEMDmgCF2
 #
 # Used by:
+# Ship: Caldari Navy Hookbill
 # Ship: Kestrel
 type = "passive"
 def handler(fit, ship, context):

@@ -1,8 +1,9 @@
 # shipBonusEwRemoteSensorDampenerScanResolutionBonusGF2
 #
 # Used by:
-# Variations of ship: Maulus (2 of 2)
+# Ship: Keres
+# Ship: Maulus
 type = "passive"
 def handler(fit, ship, context):
-    fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == "Remote Sensor Damper",
+    fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == "Sensor Dampener",
                                   "scanResolutionBonus", ship.getModifiedItemAttr("shipBonusGF2"), skill="Gallente Frigate")

@@ -20,6 +20,7 @@
 
 import os
 import sys
+import re
 
 # Add eos root path to sys.path so we can import ourselves
 path = os.path.dirname(unicode(__file__, sys.getfilesystemencoding()))
@@ -174,7 +175,8 @@ def main(db, json_path):
     eveTypes = set()
     for row in data["evetypes"]:
         # 1306 - group Ship Modifiers, for items like tactical t3 ship modes
-        if (row["published"] or row['groupID'] == 1306):
+        # (3638, 3634, 3636, 3640) - Civilian weapons
+        if (row["published"] or row['groupID'] == 1306 or row['typeID'] in (3638, 3634, 3636, 3640)):
             eveTypes.add(row["typeID"])
 
     # ignore checker
@@ -192,8 +194,14 @@ def main(db, json_path):
             if not isIgnored(jsonName, row):
                 instance = tables[jsonName]()
                 # fix for issue 80
-                if jsonName is "icons" and "res:/UI/Texture/Icons/" in str(row["iconFile"]):
-                    row["iconFile"] = row["iconFile"].replace("res:/UI/Texture/Icons/","").replace(".png", "")
+                if jsonName is "icons" and "res:/ui/texture/icons/" in str(row["iconFile"]).lower():
+                    row["iconFile"] = row["iconFile"].lower().replace("res:/ui/texture/icons/", "").replace(".png", "")
+                    # with res:/ui... references, it points to the actual icon file (including it's size variation of #_size_#)
+                    # strip this info out and get the identifying info
+                    split = row['iconFile'].split('_')
+                    if len(split) == 3:
+                        row['iconFile'] = "{}_{}".format(split[0], split[2])
+
                 for k, v in row.iteritems():
                     setattr(instance, fieldMap.get(k, k), v)
 

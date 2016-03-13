@@ -1,9 +1,8 @@
 # droneArmorDamageBonusEffect
 #
 # Used by:
+# Ships from group: Logistics (5 of 5)
 # Ship: Exequror
-# Ship: Guardian
-# Ship: Oneiros
 # Ship: Scythe
 type = "passive"
 def handler(fit, ship, context):

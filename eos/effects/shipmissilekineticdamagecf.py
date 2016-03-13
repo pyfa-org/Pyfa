@@ -2,7 +2,6 @@
 #
 # Used by:
 # Ship: Buzzard
-# Ship: Caldari Navy Hookbill
 # Ship: Condor
 # Ship: Hawk
 type = "passive"

@@ -116,5 +116,5 @@ class UpdateDialog(wx.Dialog):
             self.UpdateSettings.set('version', None)
 
     def OnDownload(self, e):
-        wx.LaunchDefaultBrowser('https://github.com/DarkFenX/Pyfa/releases/tag/'+self.releaseInfo['tag_name'])
+        wx.LaunchDefaultBrowser('https://github.com/pyfa-org/Pyfa/releases/tag/'+self.releaseInfo['tag_name'])
         self.OnClose(e)

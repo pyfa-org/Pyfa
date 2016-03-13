@@ -5,4 +5,4 @@
 type = "passive"
 def handler(fit, ship, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == "Remote Tracking Computer",
-                                  "trackingSpeedBonus", ship.getModifiedItemAttr("eliteBonusLogistics2"), skill="Logistics")
+                                  "trackingSpeedBonus", ship.getModifiedItemAttr("eliteBonusLogistics2"), skill="Logistics Cruisers")

@@ -107,8 +107,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         self.__reloadForce = None
         self.__chargeCycles = None
         self.__hardpoint = Hardpoint.NONE
-        self.__itemModifiedAttributes = ModifiedAttributeDict()
-        self.__chargeModifiedAttributes = ModifiedAttributeDict()
+        self.__itemModifiedAttributes = ModifiedAttributeDict(parent=self)
+        self.__chargeModifiedAttributes = ModifiedAttributeDict(parent=self)
         self.__slot = self.dummySlot  # defaults to None
 
         if self.__item:
@@ -254,7 +254,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     @property
     def falloff(self):
-        attrs = ("falloff", "shipScanFalloff")
+        attrs = ("falloffEffectiveness", "falloff", "shipScanFalloff")
         for attr in attrs:
             falloff = self.getModifiedItemAttr(attr)
             if falloff is not None: return falloff
@@ -374,7 +374,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         if shipType is not None:
             fitsOnType.add(shipType)
 
-        for i in xrange(1, 6):
+        for i in xrange(1, 10):
             shipType = self.getModifiedItemAttr("canFitShipType%d" % i)
             if shipType is not None:
                 fitsOnType.add(shipType)
@@ -469,7 +469,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             # Do not allow to apply offensive modules on ship with offensive module immunite, with few exceptions
             # (all effects which apply instant modification are exception, generally speaking)
             if item.offensive and projectedOnto.ship.getModifiedItemAttr("disallowOffensiveModifiers") == 1:
-                offensiveNonModifiers = set(("energyDestabilizationNew", "leech"))
+                offensiveNonModifiers = set(("energyDestabilizationNew", "leech", "energyNosferatuFalloff", "energyNeutralizerFalloff"))
                 if not offensiveNonModifiers.intersection(set(item.effects)):
                     return False
             # If assistive modules are not allowed, do not let to apply these altogether

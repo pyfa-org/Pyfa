@@ -278,7 +278,7 @@ class CRESTSettings():
         # mode
         # 0 - Implicit authentication
         # 1 - User-supplied client details
-        serviceCRESTDefaultSettings = {"mode": 0, "server": 0, "clientID": "", "clientSecret": ""}
+        serviceCRESTDefaultSettings = {"mode": 0, "server": 0, "clientID": "", "clientSecret": "", "timeout": 60}
 
         self.serviceCRESTSettings = SettingsProvider.getInstance().getSettings("pyfaServiceCRESTSettings", serviceCRESTDefaultSettings)
 

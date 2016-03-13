@@ -24,6 +24,8 @@ import logging
 import wx
 from codecs import open
 
+import xml.parsers.expat
+
 import eos.db
 import eos.types
 
@@ -65,10 +67,13 @@ class FitImportThread(threading.Thread):
 
     def run(self):
         sFit = Fit.getInstance()
-        fits = sFit.importFitFromFiles(self.paths, self.callback)
+        success, result = sFit.importFitFromFiles(self.paths, self.callback)
 
-        # Send done signal to GUI
-        wx.CallAfter(self.callback, -1, fits)
+        if not success:  # there was an error during processing
+            logger.error("Error while processing file import: %s", result)
+            wx.CallAfter(self.callback, -2, result)
+        else:  # Send done signal to GUI
+            wx.CallAfter(self.callback, -1, result)
 
 
 class Fit(object):
@@ -98,7 +103,9 @@ class Fit(object):
             "rackLabels": True,
             "compactSkills": True,
             "showTooltip": True,
-            "showMarketShortcuts": False}
+            "showMarketShortcuts": False,
+            "enableGaugeAnimation": True,
+            "exportCharges": True}
 
         self.serviceFittingOptions = SettingsProvider.getInstance().getSettings(
             "pyfaServiceFittingOptions", serviceFittingDefaultOptions)
@@ -849,24 +856,50 @@ class Fit(object):
         fits = []
         for path in paths:
             if callback:  # Pulse
-                wx.CallAfter(callback, "Processing file:\n%s"%path)
+                wx.CallAfter(callback, 1, "Processing file:\n%s"%path)
 
             file = open(path, "r")
             srcString = file.read()
+
+            if len(srcString) == 0:  # ignore blank files
+                continue
+
             codec_found = None
-            # If file had ANSI encoding, convert it to unicode using system
-            # default codepage, or use fallbacks UTF-16, then cp1252 on any
-            # encoding errors
+            # If file had ANSI encoding, decode it to unicode using detection
+            # of BOM header or if there is no header try default
+            # codepage then fallback to utf-16, cp1252
+        
             if isinstance(srcString, str):
-                attempt_codecs = (defcodepage, "utf-16", "cp1252")
-                for page in attempt_codecs:
-                    try:
-                        srcString = unicode(srcString, page)
-                        codec_found = page
-                    except UnicodeDecodeError:
-                        logger.warn("Error unicode decoding %s from page %s, trying next codec", path, page)
-                    else:
-                        break
+                encoding_map = (
+                ('\xef\xbb\xbf', 'utf-8'),
+                ('\xff\xfe\0\0', 'utf-32'),
+                ('\0\0\xfe\xff', 'UTF-32BE'),
+                ('\xff\xfe', 'utf-16'),
+                ('\xfe\xff', 'UTF-16BE'))
+
+                for bom, encoding in encoding_map:
+                    if srcString.startswith(bom):
+                        codec_found = encoding
+                        savebom = bom
+            
+                if codec_found is None:
+                    logger.info("Unicode BOM not found in file %s.", path)
+                    attempt_codecs = (defcodepage, "utf-8", "utf-16", "cp1252")
+
+                    for page in attempt_codecs:
+                         try:
+                             logger.info("Attempting to decode file %s using %s page.", path, page)
+                             srcString = unicode(srcString, page)
+                             codec_found = page
+                             logger.info("File %s decoded using %s page.", path, page)
+                         except UnicodeDecodeError:
+                             logger.info("Error unicode decoding %s from page %s, trying next codec", path, page)
+                         else:
+                             break
+                else:
+                    logger.info("Unicode BOM detected in %s, using %s page.", path, codec_found)
+                    srcString = unicode(srcString[len(savebom):], codec_found)
+            
             else:
                 # nasty hack to detect other transparent utf-16 loading
                 if srcString[0] == '<' and 'utf-16' in srcString[:128].lower():
@@ -874,8 +907,17 @@ class Fit(object):
                 else:
                     codec_found = "utf-8"
 
-            _, fitsImport = Port.importAuto(srcString, path, callback=callback, encoding=codec_found)
-            fits += fitsImport
+            if codec_found is None:
+                return False, "Proper codec could not be established for %s" % path
+
+            try:
+                _, fitsImport = Port.importAuto(srcString, path, callback=callback, encoding=codec_found)
+                fits += fitsImport
+            except xml.parsers.expat.ExpatError, e:
+                return False, "Malformed XML in %s"%path
+            except Exception, e:
+                logger.exception("Unknown exception processing: %s", path)
+                return False, "Unknown Error while processing %s"%path
 
         IDs = []
         numFits = len(fits)
@@ -888,12 +930,12 @@ class Fit(object):
             IDs.append(fit.ID)
             if callback:  # Pulse
                 wx.CallAfter(
-                    callback,
+                    callback, 1,
                     "Processing complete, saving fits to database\n(%d/%d)" %
                     (i+1, numFits)
                 )
 
-        return fits
+        return True, fits
 
     def importFitFromBuffer(self, bufferStr, activeFit=None):
         _, fits = Port.importAuto(bufferStr, activeFit=activeFit)
