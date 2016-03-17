@@ -189,11 +189,6 @@ class Port(object):
             except:
                 continue
 
-        # Check that the states of all modules are valid
-        sFit = service.Fit.getInstance()
-        sFit.recalc(f)
-        sFit.checkStates(f, None)
-
         return f
 
     @staticmethod
@@ -237,11 +232,6 @@ class Port(object):
                         m.owner = f
                         if m.isValidState(State.ACTIVE):
                             m.state = State.ACTIVE
-
-        # Check that the states of all modules are valid
-        sFit = service.Fit.getInstance()
-        sFit.recalc(f)
-        sFit.checkStates(f, None)
 
         return f
 
@@ -352,11 +342,6 @@ class Port(object):
             c = Cargo(sMkt.getItem(cargoName))
             c.amount = cargoMap[cargoName]
             fit.cargo.append(c)
-
-        # Check that there are no conflicts between active modules
-        sFit = service.Fit.getInstance()
-        sFit.recalc(fit)
-        sFit.checkStates(fit, None)
 
         return fit
 
@@ -508,11 +493,6 @@ class Port(object):
                         if m.fits(f):
                             f.modules.append(m)
 
-                # Check that there are no conflicts between active modules
-                sFit = service.Fit.getInstance()
-                sFit.recalc(f)
-                sFit.checkStates(f, None)
-
                 # Append fit to list of fits
                 fits.append(f)
 
@@ -577,11 +557,6 @@ class Port(object):
 
                 except KeyboardInterrupt:
                     continue
-
-            # Check that the states of all modules are valid
-            sFit = service.Fit.getInstance()
-            sFit.recalc(f)
-            sFit.checkStates(f, None)
 
             fits.append(f)
             if callback:
