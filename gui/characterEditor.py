@@ -488,14 +488,15 @@ class ImplantsTreeView (wx.Panel):
 
     def __init__(self, parent):
         wx.Panel.__init__ (self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.Size(500, 300), style=wx.TAB_TRAVERSAL)
+        self.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW))
 
         pmainSizer = wx.BoxSizer(wx.HORIZONTAL)
 
         availableSizer = wx.BoxSizer(wx.VERTICAL)
-        pmainSizer.Add(availableSizer, 1, wx.ALL | wx.EXPAND, 5)
 
         self.availableImplantsSearch = wx.SearchCtrl(self, wx.ID_ANY, style=wx.TE_PROCESS_ENTER)
         self.availableImplantsSearch.ShowCancelButton(True)
+
         availableSizer.Add(self.availableImplantsSearch, 0, wx.BOTTOM | wx.EXPAND, 2)
 
         self.availableImplantsTree = wx.TreeCtrl(self, wx.ID_ANY, style=wx.TR_DEFAULT_STYLE | wx.TR_HIDE_ROOT)
@@ -505,26 +506,26 @@ class ImplantsTreeView (wx.Panel):
 
         availableSizer.Add(self.availableImplantsTree, 1, wx.EXPAND)
 
-        buttonSizer = wx.BoxSizer(wx.VERTICAL)
+        pmainSizer.Add(availableSizer, 1, wx.ALL | wx.EXPAND, 5)
 
-        pmainSizer.Add(buttonSizer, 0, wx.TOP, 5)
+
+        buttonSizer = wx.BoxSizer(wx.VERTICAL)
+        buttonSizer.AddSpacer(( 0, 0), 1)
+        #pmainSizer.Add(buttonSizer, 0, wx.TOP, 5)
 
         self.btnAdd = GenBitmapButton(self, wx.ID_ADD, BitmapLoader.getBitmap("fit_add_small", "gui"), style = wx.BORDER_NONE)
-
         buttonSizer.Add(self.btnAdd, 0)
+
         self.btnRemove = GenBitmapButton(self, wx.ID_REMOVE, BitmapLoader.getBitmap("fit_delete_small", "gui"), style = wx.BORDER_NONE)
         buttonSizer.Add(self.btnRemove, 0)
-        buttonSizer.AddStretchSpacer()
 
-        pmainSizer.Add(buttonSizer, 0, wx.EXPAND, 5)
+        buttonSizer.AddSpacer(( 0, 0), 1)
+        pmainSizer.Add(buttonSizer, 0, wx.EXPAND, 0)
 
+        characterImplantSizer = wx.BoxSizer(wx.VERTICAL)
         self.pluggedImplantsTree = AvailableImplantsView(self)
-
-        sChar = service.Character.getInstance()
-        charID = self.Parent.Parent.getActiveCharacter()
-        self.update(sChar.getImplants(charID))
-
-        pmainSizer.Add(self.pluggedImplantsTree, 1, wx.ALL | wx.EXPAND, 5)
+        characterImplantSizer.Add(self.pluggedImplantsTree, 1, wx.ALL|wx.EXPAND, 5)
+        pmainSizer.Add(characterImplantSizer, 1, wx.EXPAND, 5)
 
         self.SetSizer(pmainSizer)
 
@@ -549,7 +550,16 @@ class ImplantsTreeView (wx.Panel):
         #Bind the change of a character*
         self.Parent.Parent.Bind(GE.CHAR_CHANGED, self.charChanged)
         #self.Enable(False)
+
+        # We update with an empty list first to set the initial size for Layout(), then update later with actual
+        # implants for character. This helps with sizing issues.
+        self.update([])
+
         self.Layout()
+
+        sChar = service.Character.getInstance()
+        charID = self.Parent.Parent.getActiveCharacter()
+        self.update(sChar.getImplants(charID))
 
     def update(self, implants):
         self.implants = implants[:]
