@@ -262,9 +262,7 @@ class Fit(object):
                 fit.fill()
 
             # Check that the states of all modules are valid
-            sFit = Fit.getInstance()
-            sFit.recalc(fit)
-            sFit.checkStates(fit, None)
+            self.checkStates(fit, None)
 
             eos.db.commit()
             fit.inited = True
