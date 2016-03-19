@@ -261,6 +261,9 @@ class Fit(object):
                 self.recalc(fit, withBoosters=True)
                 fit.fill()
 
+            # Check that the states of all modules are valid
+            self.checkStates(fit, None)
+
             eos.db.commit()
             fit.inited = True
         return fit
