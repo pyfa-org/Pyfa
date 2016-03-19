@@ -123,7 +123,10 @@ class Port(object):
 
         # If XML-style start of tag encountered, detect as XML
         if re.match("<", firstLine):
-            return "XML", cls.importXml(string, callback, encoding)
+            if encoding:
+                return "XML", cls.importXml(string, callback, encoding)
+            else:
+                return "XML", cls.importXml(string, callback)
 
         # If JSON-style start, parse os CREST/JSON
         if firstLine[0] == '{':
@@ -176,10 +179,13 @@ class Port(object):
                     # When item can't be added to any slot (unknown item or just charge), ignore it
                     except ValueError:
                         continue
-                    if m.isValidState(State.ACTIVE):
-                        m.state = State.ACTIVE
+                    if m.fits(f):
+                        m.owner = f
+                        if m.isValidState(State.ACTIVE):
+                            m.state = State.ACTIVE
 
-                    f.modules.append(m)
+                        f.modules.append(m)
+
             except:
                 continue
 
@@ -219,9 +225,11 @@ class Port(object):
                     for i in xrange(int(amount)):
                         try:
                             m = Module(item)
-                            f.modules.append(m)
+                            if m.fits(f):
+                                f.modules.append(m)
                         except:
                             pass
+                        m.owner = f
                         if m.isValidState(State.ACTIVE):
                             m.state = State.ACTIVE
 
@@ -315,12 +323,15 @@ class Port(object):
                     except:
                         pass
 
-                if setOffline is True and m.isValidState(State.OFFLINE):
-                    m.state = State.OFFLINE
-                elif m.isValidState(State.ACTIVE):
-                    m.state = State.ACTIVE
+                if m.fits(fit):
+                    m.owner = fit
+                    if setOffline is True and m.isValidState(State.OFFLINE):
+                        m.state = State.OFFLINE
+                    elif m.isValidState(State.ACTIVE):
+                        m.state = State.ACTIVE
 
-                fit.modules.append(m)
+                    fit.modules.append(m)
+
 
         for droneName in droneMap:
             d = Drone(sMkt.getItem(droneName))
@@ -467,6 +478,7 @@ class Port(object):
 
                         # Create module and activate it if it's activable
                         m = Module(modItem)
+                        m.owner = f
                         if m.isValidState(State.ACTIVE):
                             m.state = State.ACTIVE
                         # Add charge to mod if applicable, on any errors just don't add anything
@@ -478,7 +490,9 @@ class Port(object):
                             except:
                                 pass
                         # Append module to fit
-                        f.modules.append(m)
+                        if m.fits(f):
+                            f.modules.append(m)
+
                 # Append fit to list of fits
                 fits.append(f)
 
@@ -534,12 +548,16 @@ class Port(object):
                             # When item can't be added to any slot (unknown item or just charge), ignore it
                             except ValueError:
                                 continue
-                            if m.isValidState(State.ACTIVE):
-                                m.state = State.ACTIVE
+                            if m.fits(f):
+                                m.owner = f
+                                if m.isValidState(State.ACTIVE):
+                                    m.state = State.ACTIVE
 
-                            f.modules.append(m)
+                                f.modules.append(m)
+
                 except KeyboardInterrupt:
                     continue
+
             fits.append(f)
             if callback:
                 wx.CallAfter(callback, None)

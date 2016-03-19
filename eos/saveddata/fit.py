@@ -832,7 +832,8 @@ class Fit(object):
         return 10 / rechargeRate * sqrt(percent) * (1 - sqrt(percent)) * capacity
 
     def addDrain(self, cycleTime, capNeed, clipSize=0):
-        resistance = self.ship.getModifiedItemAttr("energyWarfareResistance") or 1
+        """ Used for both cap drains and cap fills (fills have negative capNeed) """
+        resistance = self.ship.getModifiedItemAttr("energyWarfareResistance") or 1 if capNeed > 0 else 1
         self.__extraDrains.append((cycleTime, capNeed * resistance, clipSize))
 
     def removeDrain(self, i):
