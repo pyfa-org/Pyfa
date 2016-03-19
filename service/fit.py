@@ -721,6 +721,14 @@ class Fit(object):
         self.recalc(fit)
         return True
 
+    def toggleImplantSource(self, fitID, source):
+        fit = eos.db.getFit(fitID)
+        fit.implantSource = source
+        
+        eos.db.commit()
+        self.recalc(fit)
+        return True
+
     def toggleBooster(self, fitID, i):
         fit = eos.db.getFit(fitID)
         booster = fit.boosters[i]
