@@ -724,7 +724,7 @@ class Fit(object):
     def toggleImplantSource(self, fitID, source):
         fit = eos.db.getFit(fitID)
         fit.implantSource = source
-        
+
         eos.db.commit()
         self.recalc(fit)
         return True

@@ -172,10 +172,10 @@ class ImplantDisplay(d.Display):
         if sel != -1:
             sFit = service.Fit.getInstance()
             fit = sFit.getFit(self.mainFrame.getActiveFit())
-            implant = fit.implants[sel]
+            implant = fit.appliedImplants[sel]
 
             sMkt = service.Market.getInstance()
-            sourceContext = "implantItem"
+            sourceContext = "implantItem" if fit.implantSource == ImplantLocation.FIT else "implantItemChar"
             itemContext = sMkt.getCategoryByItem(implant.item).name
 
             menu = ContextMenu.getMenu((implant,), (sourceContext, itemContext))
