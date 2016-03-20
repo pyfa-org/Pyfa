@@ -19,14 +19,24 @@
 
 import wx
 from gui.bitmapLoader import BitmapLoader
+from gui.builtinViews.implantEditor import BaseImplantEditorView
 import service
 from gui.utils.clipboard import toClipboard, fromClipboard
 from service.targetResists import ImportError
 
+class EditorView(BaseImplantEditorView):
+    def __init__(self, parent):
+        BaseImplantEditorView.__init__(self, parent)
+        self.parent = parent
+
+    def getImplants(self):
+        return []
+
+
 class ImplantSetEditorDlg(wx.Dialog):
 
     def __init__(self, parent):
-        wx.Dialog.__init__(self, parent, id = wx.ID_ANY, title = u"Implant Set Editor", size = wx.Size( 350,240 ))
+        wx.Dialog.__init__(self, parent, id = wx.ID_ANY, title = u"Implant Set Editor", size = wx.Size(640, 600))
 
         self.block = False
         self.SetSizeHintsSz(wx.DefaultSize, wx.DefaultSize)
@@ -81,6 +91,9 @@ class ImplantSetEditorDlg(wx.Dialog):
 
         self.sl = wx.StaticLine(self)
         mainSizer.Add(self.sl, 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 5)
+
+        self.iview = EditorView(self)
+        mainSizer.Add(self.iview, 0, wx.EXPAND)
 
         contentSizer = wx.BoxSizer(wx.VERTICAL)
 
