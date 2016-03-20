@@ -24,13 +24,30 @@ import service
 from gui.utils.clipboard import toClipboard, fromClipboard
 from service.targetResists import ImportError
 
-class EditorView(BaseImplantEditorView):
+class ImplantSetEditor(BaseImplantEditorView):
     def __init__(self, parent):
         BaseImplantEditorView.__init__(self, parent)
-        self.parent = parent
 
-    def getImplants(self):
-        return []
+    def bindContext(self):
+        self.Parent.ccSets.Bind(wx.EVT_CHOICE, self.contextChanged)
+
+    def getImplantsFromContext(self):
+        sIS = service.ImplantSets.getInstance()
+        setID = self.Parent.getActiveSet()
+
+        return sIS.getImplants(setID)
+
+    def addImplantToContext(self, item):
+        sIS = service.ImplantSets.getInstance()
+        setID = self.Parent.getActiveSet()
+
+        sIS.addImplant(setID, item.ID)
+
+    def removeImplantFromContext(self, pos):
+        sIS = service.ImplantSets.getInstance()
+        setID = self.Parent.getActiveSet()
+
+        sIS.removeImplant(setID, self.implants[pos])
 
 
 class ImplantSetEditorDlg(wx.Dialog):
@@ -51,7 +68,11 @@ class ImplantSetEditorDlg(wx.Dialog):
 
         # Sort the remaining list and continue on
         self.choices.sort(key=lambda s: s.name)
-        self.ccSets = wx.Choice(self, choices=map(lambda s: s.name, self.choices))
+        self.ccSets = wx.Choice(self, wx.ID_ANY, style=0)
+
+        for set in self.choices:
+            i = self.ccSets.Append(set.name, set.ID)
+
         self.ccSets.Bind(wx.EVT_CHOICE, self.setChanged)
         self.ccSets.SetSelection(0)
 
@@ -92,7 +113,7 @@ class ImplantSetEditorDlg(wx.Dialog):
         self.sl = wx.StaticLine(self)
         mainSizer.Add(self.sl, 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 5)
 
-        self.iview = EditorView(self)
+        self.iview = ImplantSetEditor(self)
         mainSizer.Add(self.iview, 0, wx.EXPAND)
 
         contentSizer = wx.BoxSizer(wx.VERTICAL)
@@ -151,6 +172,10 @@ class ImplantSetEditorDlg(wx.Dialog):
 
     def closeEvent(self, event):
         self.Destroy()
+
+    def getActiveSet(self):
+        selection = self.ccSets.GetCurrentSelection()
+        return self.ccSets.GetClientData(selection) if selection is not None else None
 
     def ValuesUpdated(self, event=None):
         '''

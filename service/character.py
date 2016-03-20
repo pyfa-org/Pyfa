@@ -351,10 +351,12 @@ class Character(object):
 
         implant = eos.types.Implant(eos.db.getItem(itemID))
         char.implants.append(implant)
+        eos.db.commit()
 
     def removeImplant(self, charID, implant):
         char = eos.db.getCharacter(charID)
         char.implants.remove(implant)
+        eos.db.commit()
 
     def getImplants(self, charID):
         char = eos.db.getCharacter(charID)
