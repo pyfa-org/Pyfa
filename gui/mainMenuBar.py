@@ -102,11 +102,11 @@ class MainMenuBar(wx.MenuBar):
         windowMenu.AppendItem(damagePatternEditItem)
 
         targetResistsEditItem = wx.MenuItem(windowMenu, self.targetResistsEditorId, "Target Resists Editor\tCTRL+R")
-        targetResistsEditItem.SetBitmap(BitmapLoader.getBitmap("explosive_big", "gui"))
+        targetResistsEditItem.SetBitmap(BitmapLoader.getBitmap("explosive_small", "gui"))
         windowMenu.AppendItem(targetResistsEditItem)
 
         implantSetEditItem = wx.MenuItem(windowMenu, self.implantSetEditorId, "Implant Set Editor\tCTRL+I")
-        implantSetEditItem.SetBitmap(BitmapLoader.getBitmap("damagePattern_small", "gui"))
+        implantSetEditItem.SetBitmap(BitmapLoader.getBitmap("hardwire_small", "gui"))
         windowMenu.AppendItem(implantSetEditItem)
 
         graphFrameItem = wx.MenuItem(windowMenu, self.graphFrameId, "Graphs\tCTRL+G")
