@@ -50,6 +50,7 @@ from gui.characterEditor import CharacterEditor, SaveCharacterAs
 from gui.characterSelection import CharacterSelection
 from gui.patternEditor import DmgPatternEditorDlg
 from gui.resistsEditor import ResistsEditorDlg
+from gui.setEditor import ImplantSetEditorDlg
 from gui.preferenceDialog import PreferenceDialog
 from gui.graphFrame import GraphFrame
 from gui.copySelectDialog import CopySelectDialog
@@ -367,6 +368,11 @@ class MainFrame(wx.Frame):
         dlg.ShowModal()
         dlg.Destroy()
 
+    def showImplantSetEditor(self, event):
+        dlg=ImplantSetEditorDlg(self)
+        dlg.ShowModal()
+        dlg.Destroy()
+
     def showExportDialog(self, event):
         """ Export active fit """
         sFit = service.Fit.getInstance()
@@ -418,6 +424,8 @@ class MainFrame(wx.Frame):
         self.Bind(wx.EVT_MENU, self.showDamagePatternEditor, id=menuBar.damagePatternEditorId)
         # Target Resists editor
         self.Bind(wx.EVT_MENU, self.showTargetResistsEditor, id=menuBar.targetResistsEditorId)
+        # Implant Set editor
+        self.Bind(wx.EVT_MENU, self.showImplantSetEditor, id=menuBar.implantSetEditorId)
         # Import dialog
         self.Bind(wx.EVT_MENU, self.fileImportDialog, id=wx.ID_OPEN)
         # Export dialog

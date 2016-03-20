@@ -29,6 +29,7 @@ from eos.saveddata.module import Module, State, Slot, Hardpoint, Rack
 from eos.saveddata.drone import Drone
 from eos.saveddata.cargo import Cargo
 from eos.saveddata.implant import Implant
+from eos.saveddata.implantSet import ImplantSet
 from eos.saveddata.booster import SideEffect
 from eos.saveddata.booster import Booster
 from eos.saveddata.ship import Ship

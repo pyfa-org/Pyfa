@@ -10,6 +10,7 @@ from service.update import Update
 from service.price import Price
 from service.network import Network
 from service.eveapi import EVEAPIConnection, ParseXML
+from service.implantSet import ImplantSets
 
 import wx
 if not 'wxMac' in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3,0)):
