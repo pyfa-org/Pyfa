@@ -120,11 +120,14 @@ class SearchWorkerThread(threading.Thread):
             self.searchRequest = None
             cv.release()
             sMkt = Market.getInstance()
-            if filterOn:
+            if filterOn is True:
                 # Rely on category data provided by eos as we don't hardcode them much in service
                 filter = eos.types.Category.name.in_(sMkt.SEARCH_CATEGORIES)
+            elif filterOn:  # filter by selected categories
+                filter = eos.types.Category.name.in_(filterOn)
             else:
                 filter=None
+
             results = eos.db.searchItems(request, where=filter,
                                          join=(eos.types.Item.group, eos.types.Group.category),
                                          eager=("icon", "group.category", "metaGroup", "metaGroup.parent"))

@@ -29,6 +29,9 @@ from gui.contextMenu import ContextMenu
 from wx.lib.buttons import GenBitmapButton
 import gui.globalEvents as GE
 
+import gui.PFSearchBox as SBox
+from gui.marketBrowser import SearchBox
+
 class CharacterEditor(wx.Frame):
     def __init__(self, parent):
         wx.Frame.__init__ (self, parent, id=wx.ID_ANY, title=u"pyfa: Character Editor", pos=wx.DefaultPosition,
@@ -494,10 +497,20 @@ class ImplantsTreeView (wx.Panel):
 
         availableSizer = wx.BoxSizer(wx.VERTICAL)
 
+        self.searchBox = SearchBox(self)
+        self.itemView = ItemView(self)
+
+        self.itemView.Hide()
+
+        availableSizer.Add(self.searchBox, 0, wx.EXPAND)
+        availableSizer.Add(self.itemView, 1, wx.EXPAND)
+
+        '''
         self.availableImplantsSearch = wx.SearchCtrl(self, wx.ID_ANY, style=wx.TE_PROCESS_ENTER)
         self.availableImplantsSearch.ShowCancelButton(True)
 
         availableSizer.Add(self.availableImplantsSearch, 0, wx.BOTTOM | wx.EXPAND, 2)
+        '''
 
         self.availableImplantsTree = wx.TreeCtrl(self, wx.ID_ANY, style=wx.TR_DEFAULT_STYLE | wx.TR_HIDE_ROOT)
         root = self.availableRoot = self.availableImplantsTree.AddRoot("Available")
@@ -505,6 +518,7 @@ class ImplantsTreeView (wx.Panel):
         self.availableImplantsTree.SetImageList(self.availableImplantsImageList)
 
         availableSizer.Add(self.availableImplantsTree, 1, wx.EXPAND)
+
 
         pmainSizer.Add(availableSizer, 1, wx.ALL | wx.EXPAND, 5)
 
@@ -530,6 +544,7 @@ class ImplantsTreeView (wx.Panel):
         self.SetSizer(pmainSizer)
 
         # Populate the market tree
+
         sMkt = service.Market.getInstance()
         for mktGrp in sMkt.getImplantTree():
             iconId = self.addMarketViewImage(sMkt.getIconByMarketGroup(mktGrp))
@@ -542,6 +557,8 @@ class ImplantsTreeView (wx.Panel):
         #Bind the event to replace dummies by real data
         self.availableImplantsTree.Bind(wx.EVT_TREE_ITEM_EXPANDING, self.expandLookup)
         self.availableImplantsTree.Bind(wx.EVT_TREE_ITEM_ACTIVATED, self.addImplant)
+
+        self.itemView.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.itemActivated)
 
         #Bind add & remove buttons
         self.btnAdd.Bind(wx.EVT_BUTTON, self.addImplant)
@@ -560,6 +577,17 @@ class ImplantsTreeView (wx.Panel):
         sChar = service.Character.getInstance()
         charID = self.Parent.Parent.getActiveCharacter()
         self.update(sChar.getImplants(charID))
+
+    def itemActivated(self, event):
+        sel = event.EventObject.GetFirstSelected()
+        item = self.itemView.items[sel]
+
+        if item:
+            sChar = service.Character.getInstance()
+            charID = self.Parent.Parent.getActiveCharacter()
+
+            sChar.addImplant(charID, item.ID)
+            self.update(sChar.getImplants(charID))
 
     def update(self, implants):
         self.implants = implants[:]
@@ -648,6 +676,61 @@ class AvailableImplantsView(d.Display):
         #    self.Bind(wx.EVT_RIGHT_UP, self.scheduleMenu)
         #else:
         #    self.Bind(wx.EVT_RIGHT_DOWN, self.scheduleMenu)
+
+class ItemView(d.Display):
+    DEFAULT_COLS = ["Base Icon",
+                    "Base Name",
+                    "attr:power,,,True",
+                    "attr:cpu,,,True"]
+
+    def __init__(self, parent):
+        d.Display.__init__(self, parent)
+        self.parent = parent
+        self.searchBox = parent.searchBox
+
+        self.items = []
+
+        # Bind search actions
+        self.searchBox.Bind(SBox.EVT_TEXT_ENTER, self.scheduleSearch)
+        self.searchBox.Bind(SBox.EVT_SEARCH_BTN, self.scheduleSearch)
+        self.searchBox.Bind(SBox.EVT_CANCEL_BTN, self.clearSearch)
+        self.searchBox.Bind(SBox.EVT_TEXT, self.scheduleSearch)
+
+    def clearSearch(self, event=None):
+        if self.IsShown():
+            self.parent.availableImplantsTree.Show()
+            self.Hide()
+            self.parent.Layout()
+
+        if event:
+            self.searchBox.Clear()
+
+        self.items = []
+        self.update(self.items)
+
+    def scheduleSearch(self, event=None):
+        sMkt = service.Market.getInstance()
+
+        search = self.searchBox.GetLineText(0)
+        # Make sure we do not count wildcard as search symbol
+        realsearch = search.replace("*", "")
+        # Show nothing if query is too short
+        if len(realsearch) < 3:
+            self.clearSearch()
+            return
+
+        sMkt.searchItems(search, self.populateSearch, ["Implant"])
+
+    def populateSearch(self, items):
+        if not self.IsShown():
+            self.parent.availableImplantsTree.Hide()
+            self.Show()
+            self.parent.Layout()
+
+        self.items = sorted(list(items), key=lambda i: i.name)
+
+        self.update(self.items)
+
 
 class APIView (wx.Panel):
     def __init__(self, parent):
