@@ -32,7 +32,9 @@ import eos.db
 import eos.types
 import service
 import config
+import logging
 
+logger = logging.getLogger(__name__)
 
 class CharacterImportThread(threading.Thread):
     def __init__(self, paths, callback):
@@ -343,6 +345,10 @@ class Character(object):
 
     def addImplant(self, charID, itemID):
         char = eos.db.getCharacter(charID)
+        if char.ro:
+            logger.error("Trying to add implant to read-only character")
+            return
+
         implant = eos.types.Implant(eos.db.getItem(itemID))
         char.implants.append(implant)
 

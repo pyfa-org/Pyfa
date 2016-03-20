@@ -98,18 +98,10 @@ class CharacterEditor(wx.Frame):
 
         self.sview = SkillTreeView(self.viewsNBContainer)
         self.iview = ImplantsTreeView(self.viewsNBContainer)
-        #=======================================================================
-        # RC2
-        #self.iview.Show(False)
-        #=======================================================================
         self.aview = APIView(self.viewsNBContainer)
 
         self.viewsNBContainer.AddPage(self.sview, "Skills")
-
-        #=======================================================================
-        # Disabled for RC2
         self.viewsNBContainer.AddPage(self.iview, "Implants")
-        #=======================================================================
         self.viewsNBContainer.AddPage(self.aview, "API")
 
         mainSizer.Add(self.viewsNBContainer, 1, wx.EXPAND | wx.ALL, 5)
@@ -209,25 +201,14 @@ class CharacterEditor(wx.Frame):
     def restrict(self):
         self.btnRename.Enable(False)
         self.btnDelete.Enable(False)
-        self.aview.stDisabledTip.Show()
-        self.aview.inputID.Enable(False)
-        self.aview.inputKey.Enable(False)
-        self.aview.charChoice.Enable(False)
-        self.aview.btnFetchCharList.Enable(False)
-        self.aview.btnFetchSkills.Enable(False)
-        self.aview.stStatus.SetLabel("")
-        self.aview.Layout()
+        self.iview.Enable(False)
+        self.aview.Enable(False)
 
     def unrestrict(self):
         self.btnRename.Enable(True)
         self.btnDelete.Enable(True)
-        self.aview.stDisabledTip.Hide()
-        self.aview.inputID.Enable(True)
-        self.aview.inputKey.Enable(True)
-        self.aview.btnFetchCharList.Enable(True)
-        self.aview.btnFetchSkills.Enable(True)
-        self.aview.stStatus.SetLabel("")
-        self.aview.Layout()
+        self.iview.Enable(True)
+        self.aview.Enable(True)
 
     def charChanged(self, event):
         self.sview.populateSkillTree()
@@ -566,7 +547,6 @@ class ImplantsTreeView (wx.Panel):
 
         #Bind the change of a character*
         self.Parent.Parent.Bind(GE.CHAR_CHANGED, self.charChanged)
-        #self.Enable(False)
 
         # We update with an empty list first to set the initial size for Layout(), then update later with actual
         # implants for character. This helps with sizing issues.
