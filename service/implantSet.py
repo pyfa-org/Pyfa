@@ -34,7 +34,7 @@ class ImplantSets():
         return cls.instance
 
     def getImplantSetList(self):
-        return eos.db.getImplantSet(None)
+        return eos.db.getImplantSetList(None)
 
     def getImplantSet(self, name):
         return eos.db.getImplantSet(name)

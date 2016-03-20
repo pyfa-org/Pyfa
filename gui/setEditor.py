@@ -27,27 +27,29 @@ from service.targetResists import ImportError
 class ImplantSetEditor(BaseImplantEditorView):
     def __init__(self, parent):
         BaseImplantEditorView.__init__(self, parent)
+        if 'wxMSW' in wx.PlatformInfo:
+            self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
 
     def bindContext(self):
         self.Parent.ccSets.Bind(wx.EVT_CHOICE, self.contextChanged)
 
     def getImplantsFromContext(self):
         sIS = service.ImplantSets.getInstance()
-        setID = self.Parent.getActiveSet()
+        set = self.Parent.getActiveSet()
 
-        return sIS.getImplants(setID)
+        return sIS.getImplants(set.ID)
 
     def addImplantToContext(self, item):
         sIS = service.ImplantSets.getInstance()
-        setID = self.Parent.getActiveSet()
+        set = self.Parent.getActiveSet()
 
-        sIS.addImplant(setID, item.ID)
+        sIS.addImplant(set.ID, item.ID)
 
     def removeImplantFromContext(self, pos):
         sIS = service.ImplantSets.getInstance()
-        setID = self.Parent.getActiveSet()
+        set = self.Parent.getActiveSet()
 
-        sIS.removeImplant(setID, self.implants[pos])
+        sIS.removeImplant(set.ID, self.implants[pos])
 
 
 class ImplantSetEditorDlg(wx.Dialog):
@@ -87,6 +89,7 @@ class ImplantSetEditorDlg(wx.Dialog):
                    ("rename", BitmapLoader.getBitmap("rename", "gui")),
                    ("copy", wx.ART_COPY),
                    ("delete", wx.ART_DELETE))
+
         for name, art in buttons:
                 bitmap = wx.ArtProvider.GetBitmap(art, wx.ART_BUTTON) if name != "rename" else art
                 btn = wx.BitmapButton(self, wx.ID_ANY, bitmap)
@@ -99,9 +102,8 @@ class ImplantSetEditorDlg(wx.Dialog):
                 btn.Layout()
                 setattr(self, name, btn)
                 btn.Enable(True)
-                #btn.SetToolTipString("%s resist profile" % name.capitalize())
+                btn.SetToolTipString("%s implant set" % name.capitalize())
                 headerSizer.Add(btn, 0, wx.ALIGN_CENTER_VERTICAL)
-
 
         self.btnSave = wx.Button(self, wx.ID_SAVE)
         self.btnSave.Hide()
@@ -114,34 +116,21 @@ class ImplantSetEditorDlg(wx.Dialog):
         mainSizer.Add(self.sl, 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 5)
 
         self.iview = ImplantSetEditor(self)
-        mainSizer.Add(self.iview, 0, wx.EXPAND)
-
-        contentSizer = wx.BoxSizer(wx.VERTICAL)
+        mainSizer.Add(self.iview, 1, wx.ALL | wx.EXPAND, 5)
 
         self.slfooter = wx.StaticLine(self)
-        contentSizer.Add(self.slfooter, 0, wx.EXPAND | wx.TOP, 5)
+        mainSizer.Add(self.slfooter, 0, wx.EXPAND | wx.TOP, 5)
 
         footerSizer = wx.BoxSizer(wx.HORIZONTAL)
-        perSizer = wx.BoxSizer(wx.VERTICAL)
 
         self.stNotice = wx.StaticText(self, wx.ID_ANY, u"")
         self.stNotice.Wrap(-1)
-        perSizer.Add(self.stNotice, 0, wx.BOTTOM | wx.TOP | wx.LEFT, 5)
-
-        footerSizer.Add(perSizer, 1,  wx.ALIGN_CENTER_VERTICAL, 5)
-
-        self.totSizer = wx.BoxSizer(wx.VERTICAL)
-
-        contentSizer.Add(footerSizer, 0, wx.EXPAND, 5)
-
-        mainSizer.Add(contentSizer, 1, wx.EXPAND, 0)
+        footerSizer.Add(self.stNotice, 1, wx.BOTTOM | wx.TOP | wx.LEFT, 5)
 
         if "wxGTK" in wx.PlatformInfo:
             self.closeBtn = wx.Button( self, wx.ID_ANY, u"Close", wx.DefaultPosition, wx.DefaultSize, 0 )
             mainSizer.Add( self.closeBtn, 0, wx.ALL|wx.ALIGN_RIGHT, 5 )
             self.closeBtn.Bind(wx.EVT_BUTTON, self.closeEvent)
-
-        self.SetSizer(mainSizer)
 
         importExport = (("Import", wx.ART_FILE_OPEN, "from"),
                         ("Export", wx.ART_FILE_SAVE_AS, "to"))
@@ -156,17 +145,18 @@ class ImplantSetEditorDlg(wx.Dialog):
                 btn.Layout()
                 setattr(self, name, btn)
                 btn.Enable(True)
-                btn.SetToolTipString("%s patterns %s clipboard" % (name, direction) )
+                btn.SetToolTipString("%s implant sets %s clipboard" % (name, direction) )
                 footerSizer.Add(btn, 0, wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_RIGHT)
 
-        self.Layout()
-        bsize = self.GetBestSize()
-        self.SetSize((-1,bsize.height))
+        mainSizer.Add(footerSizer, 0, wx.ALL | wx.EXPAND, 5)
 
-        self.new.Bind(wx.EVT_BUTTON, self.newPattern)
-        self.rename.Bind(wx.EVT_BUTTON, self.renamePattern)
-        self.copy.Bind(wx.EVT_BUTTON, self.copyPattern)
-        self.delete.Bind(wx.EVT_BUTTON, self.deletePattern)
+        self.SetSizer(mainSizer)
+        self.Layout()
+
+        self.new.Bind(wx.EVT_BUTTON, self.newSet)
+        self.rename.Bind(wx.EVT_BUTTON, self.renameSet)
+        self.copy.Bind(wx.EVT_BUTTON, self.copySet)
+        self.delete.Bind(wx.EVT_BUTTON, self.deleteSet)
         self.Import.Bind(wx.EVT_BUTTON, self.importPatterns)
         self.Export.Bind(wx.EVT_BUTTON, self.exportPatterns)
 
@@ -177,68 +167,15 @@ class ImplantSetEditorDlg(wx.Dialog):
         selection = self.ccSets.GetCurrentSelection()
         return self.ccSets.GetClientData(selection) if selection is not None else None
 
-    def ValuesUpdated(self, event=None):
-        '''
-        Event that is fired when resists values change. Iterates through all
-        resist edit fields. If blank, sets it to 0.0. If it is not a proper
-        decimal value, sets text color to red and refuses to save changes until
-        issue is resolved
-        '''
-        if self.block:
-            return
-
-        try:
-            p = self.getActivePattern()
-
-            for type in self.DAMAGE_TYPES:
-                editObj = getattr(self, "%sEdit"%type)
-
-                if editObj.GetValue() == "":
-                    # if we are blank, overwrite with 0
-                    editObj.ChangeValue("0.0")
-                    editObj.SetInsertionPointEnd()
-
-                value = float(editObj.GetValue())
-
-                # assertion, because they're easy
-                assert 0 <= value <= 100
-
-                # if everything checks out, set resist attribute
-                setattr(p, "%sAmount"%type, value/100)
-                editObj.SetForegroundColour(self.colorReset)
-
-            self.stNotice.SetLabel("")
-            self.totSizer.Layout()
-
-            if event is not None:
-                event.Skip()
-
-            service.TargetResists.getInstance().saveChanges(p)
-
-        except ValueError:
-            editObj.SetForegroundColour(wx.RED)
-            self.stNotice.SetLabel("Incorrect Formatting (decimals only)")
-        except AssertionError:
-            editObj.SetForegroundColour(wx.RED)
-            self.stNotice.SetLabel("Incorrect Range (must be 0-100)")
-        finally:  # Refresh for color changes to take effect immediately
-            self.Refresh()
-
     def restrict(self):
-        for type in self.DAMAGE_TYPES:
-            editObj = getattr(self, "%sEdit"%type)
-            editObj.Enable(False)
         self.rename.Enable(False)
         self.delete.Enable(False)
 
     def unrestrict(self):
-        for type in self.DAMAGE_TYPES:
-            editObj = getattr(self, "%sEdit"%type)
-            editObj.Enable()
         self.rename.Enable()
         self.delete.Enable()
 
-    def getActivePattern(self):
+    def getActiveSet(self):
         if len(self.choices) == 0:
             return None
 
@@ -246,40 +183,34 @@ class ImplantSetEditorDlg(wx.Dialog):
 
     def setChanged(self, event=None):
         "Event fired when user selects pattern. Can also be called from script"
-        p = self.getActivePattern()
+        p = self.getActiveSet()
+        self.iview.update()
         if p is None:
             # This happens when there are no patterns in the DB. As such, force
             # user to create one first or exit dlg.
-            self.newPattern(None)
+            self.newSet(None)
             return
 
-        #ValuesUpdated()
-
-    def newPattern(self, event):
+    def newSet(self, event):
         '''
-        Simply does new-pattern specifics: replaces label on button, restricts,
+        Simply does new-set specifics: replaces label on button, restricts,
         and resets values to default. Hands off to the rename function for
         further handling.
         '''
         self.btnSave.SetLabel("Create")
         self.restrict()
-        # reset values
-        for type in self.DAMAGE_TYPES:
-            editObj = getattr(self, "%sEdit"%type)
-            editObj.ChangeValue("0.0")
-            editObj.SetForegroundColour(self.colorReset)
 
         self.Refresh()
-        self.renamePattern()
+        self.renameSet()
 
-    def renamePattern(self, event=None):
+    def renameSet(self, event=None):
         "Changes layout to facilitate naming a pattern"
 
         self.showInput(True)
 
         if event is not None:  # Rename mode
             self.btnSave.SetLabel("Rename")
-            self.namePicker.SetValue(self.getActivePattern().name)
+            self.namePicker.SetValue(self.getActiveSet().name)
         else:  # Create mode
             self.namePicker.SetValue("")
 
@@ -301,42 +232,41 @@ class ImplantSetEditorDlg(wx.Dialog):
             self.stNotice.SetLabel("Invalid name")
             return
 
-        sTR = service.TargetResists.getInstance()
+        sIS = service.ImplantSets.getInstance()
         if self.btnSave.Label == "Create":
-            p = sTR.newPattern()
+            s = sIS.newSet()
         else:
             # we are renaming, so get the current selection
-            p = self.getActivePattern()
+            s = self.getActiveSet()
 
         # test for patterns of the same name
-        for pattern in self.choices:
-            if pattern.name == newName and p != pattern:
+        for set in self.choices:
+            if set.name == newName and s != set:
                 self.stNotice.SetLabel("Name already used, please choose another")
                 return
 
         # rename regardless of new or rename
-        sTR.renamePattern(p, newName)
+        sIS.renameSet(s, newName)
 
         self.updateChoices(newName)
         self.showInput(False)
         sel = self.ccSets.GetSelection()
-        self.ValuesUpdated()
         self.unrestrict()
 
-    def copyPattern(self,event):
-        sTR = service.TargetResists.getInstance()
-        p = sTR.copyPattern(self.getActivePattern())
+    def copySet(self,event):
+        sIS = service.ImplantSets.getInstance()
+        p = sIS.copySet(self.getActiveSet())
         self.choices.append(p)
         id = self.ccSets.Append(p.name)
         self.ccSets.SetSelection(id)
         self.btnSave.SetLabel("Copy")
-        self.renamePattern()
+        self.renameSet()
         self.setChanged()
 
-    def deletePattern(self,event):
-        sTR = service.TargetResists.getInstance()
+    def deleteSet(self,event):
+        sIS = service.ImplantSets.getInstance()
         sel = self.ccSets.GetSelection()
-        sTR.deletePattern(self.getActivePattern())
+        sIS.deleteSet(self.getActiveSet())
         self.ccSets.Delete(sel)
         self.ccSets.SetSelection(max(0, sel - 1))
         del self.choices[sel]
@@ -369,8 +299,8 @@ class ImplantSetEditorDlg(wx.Dialog):
 
     def updateChoices(self, select=None):
         "Gathers list of patterns and updates choice selections"
-        sTR = service.TargetResists.getInstance()
-        self.choices = sTR.getTargetResistsList()
+        sIS = service.ImplantSets.getInstance()
+        self.choices = sIS.getImplantSetList()
 
         if len(self.choices) == 0:
             #self.newPattern(None)

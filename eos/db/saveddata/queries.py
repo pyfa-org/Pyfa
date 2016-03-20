@@ -349,6 +349,12 @@ def getTargetResistsList(eager=None):
         patterns = saveddata_session.query(TargetResists).options(*eager).all()
     return patterns
 
+def getImplantSetList(eager=None):
+    eager = processEager(eager)
+    with sd_lock:
+        sets = saveddata_session.query(ImplantSet).options(*eager).all()
+    return sets
+
 @cachedQuery(DamagePattern, 1, "lookfor")
 def getDamagePattern(lookfor, eager=None):
     if isinstance(lookfor, int):
@@ -399,11 +405,6 @@ def getImplantSet(lookfor, eager=None):
         eager = processEager(eager)
         with sd_lock:
             pattern = saveddata_session.query(ImplantSet).options(*eager).filter(TargetResists.name == lookfor).first()
-    elif lookfor is None:
-        eager = processEager(eager)
-        with sd_lock:
-            patterns = saveddata_session.query(ImplantSet).options(*eager).all()
-        return patterns
     else:
         raise TypeError("Improper argument")
     return pattern

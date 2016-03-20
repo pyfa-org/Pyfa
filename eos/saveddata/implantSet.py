@@ -18,10 +18,9 @@
 #===============================================================================
 
 from eos.effectHandlerHelpers import HandledImplantBoosterList
+from copy import deepcopy
 
 class ImplantSet(object):
-    DAMAGE_TYPES = ("em", "thermal", "kinetic", "explosive")
-
     def __init__(self, name=None):
         self.name = name
         self.__implants = HandledImplantBoosterList()
@@ -43,6 +42,12 @@ class ImplantSet(object):
         return out.strip()
 
     def __deepcopy__(self, memo):
-        p = ImplantSet(self.name)
-        p.name = "%s copy" % self.name
-        return p
+        copy = ImplantSet(self.name)
+        copy.name = "%s copy" % self.name
+
+        orig = getattr(self, 'implants')
+        c = getattr(copy, 'implants')
+        for i in orig:
+            c.append(deepcopy(i, memo))
+
+        return copy
