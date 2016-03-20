@@ -28,10 +28,12 @@ class ChangeAffectingSkills(ContextMenu):
             fitID = self.mainFrame.getActiveFit()
             sFit = service.Fit.getInstance()
             self.stuff = sFit.getFit(fitID).ship
+            cont = sFit.getFit(fitID).ship.itemModifiedAttributes
+        elif srcContext == "fittingCharge":
+            cont = selection[0].chargeModifiedAttributes
         else:
-            self.stuff = selection[0]
+            cont = selection[0].itemModifiedAttributes
 
-        cont = self.stuff.itemModifiedAttributes
         skills = set()
 
         for attrName in cont.iterAfflictions():
