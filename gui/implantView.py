@@ -172,9 +172,15 @@ class ImplantDisplay(d.Display):
 
     def spawnMenu(self):
         sel = self.GetFirstSelected()
+        menu = None
+
+        sFit = service.Fit.getInstance()
+        fit = sFit.getFit(self.mainFrame.getActiveFit())
+
+        if not fit:
+            return
+
         if sel != -1:
-            sFit = service.Fit.getInstance()
-            fit = sFit.getFit(self.mainFrame.getActiveFit())
             implant = fit.appliedImplants[sel]
 
             sMkt = service.Market.getInstance()
@@ -182,4 +188,11 @@ class ImplantDisplay(d.Display):
             itemContext = sMkt.getCategoryByItem(implant.item).name
 
             menu = ContextMenu.getMenu((implant,), (sourceContext, itemContext))
+        elif sel == -1 and fit.implantSource == ImplantLocation.FIT:
+            fitID = self.mainFrame.getActiveFit()
+            if fitID is None:
+                return
+            context = (("implantView",),)
+            menu = ContextMenu.getMenu([], *context)
+        if menu is not None:
             self.PopupMenu(menu)
