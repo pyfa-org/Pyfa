@@ -277,7 +277,7 @@ class Fit(object):
                 fit.timestamp))
         return fits
 
-    def addImplant(self, fitID, itemID):
+    def addImplant(self, fitID, itemID, recalc=True):
         if fitID is None:
             return False
 
@@ -289,7 +289,8 @@ class Fit(object):
             return False
 
         fit.implants.append(implant)
-        self.recalc(fit)
+        if recalc:
+            self.recalc(fit)
         return True
 
     def removeImplant(self, fitID, position):

@@ -1,6 +1,4 @@
 from gui.contextMenu import ContextMenu
-from gui.itemStats import ItemStatsDialog
-import eos.types
 import gui.mainFrame
 import service
 import gui.globalEvents as GE
@@ -11,17 +9,35 @@ class ImplantSets(ContextMenu):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     def display(self, srcContext, selection):
-        return srcContext == "implantView"
+        return srcContext in ("implantView", "implantEditor")
 
     def getText(self, itmContext, selection):
         return "Add Implant Set"
 
     def getSubMenu(self, context, selection, rootMenu, i, pitem):
+        """
+        A note on the selection here: Most context menus act on a fit, so it's easy enough to get the active fit from
+        the MainFrame instance. There's never been a reason to get info from another window, so there's not common
+        way of doing this. However, we use this context menu within the Character Editor to apply implant sets to a
+        character, so we need to access the character editor.
+
+        It is for these reasons that I hijack the selection parameter when calling the menu and pass a pointer to the
+        Character Editor. This way we can use it to get current editing character ID and apply the implants.
+
+        It would probably be better to have a function on the MainFrame to get the currently open Character Editor (as
+        we do with the item stats window). Eventually... Until then, this long ass note will remain to remind me why
+        stupid shit like this is even happening.
+        """
+
         m = wx.Menu()
         bindmenu = rootMenu if "wxMSW" in wx.PlatformInfo else m
 
         sIS = service.ImplantSets.getInstance()
         implantSets = sIS.getImplantSetList()
+
+        self.context = context
+        if len(selection) == 1:
+            self.selection = selection[0]  # dirty hack here
 
         self.idmap = {}
 
@@ -41,13 +57,22 @@ class ImplantSets(ContextMenu):
             event.Skip()
             return
 
-        sFit = service.Fit.getInstance()
-        fitID = self.mainFrame.getActiveFit()
-        for implant in set.implants:
-            print implant.item.ID, implant.item.name
-            sFit.addImplant(fitID, implant.item.ID)
+        if self.context == "implantEditor":
+            # we are calling from character editor, the implant source is different
+            sChar = service.Character.getInstance()
+            charID = self.selection.getActiveCharacter()
 
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+            for implant in set.implants:
+                sChar.addImplant(charID, implant.item.ID)
+
+            wx.PostEvent(self.selection, GE.CharChanged())
+        else:
+            sFit = service.Fit.getInstance()
+            fitID = self.mainFrame.getActiveFit()
+            for implant in set.implants:
+                sFit.addImplant(fitID, implant.item.ID, recalc=implant == set.implants[-1])
+
+            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
 
 ImplantSets.register()
