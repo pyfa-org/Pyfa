@@ -165,8 +165,13 @@ class BaseImplantEditorView (wx.Panel):
                 event.EventObject = self.availableImplantsTree
 
         if event.EventObject is self.itemView:
-            sel = event.EventObject.GetFirstSelected()
-            item = self.itemView.items[sel]
+            curr = event.EventObject.GetFirstSelected()
+
+            while curr != -1:
+                item = self.itemView.items[curr]
+                self.addImplantToContext(item)
+
+                curr = event.EventObject.GetNextSelected(curr)
         else:
             root = self.availableImplantsTree.GetSelection()
 
@@ -176,13 +181,12 @@ class BaseImplantEditorView (wx.Panel):
             nchilds = self.availableImplantsTree.GetChildrenCount(root)
             if nchilds == 0:
                 item = self.availableImplantsTree.GetPyData(root)
+                self.addImplantToContext(item)
             else:
                 event.Skip()
                 return
 
-        if item:
-            self.addImplantToContext(item)
-            self.update()
+        self.update()
 
     def removeItem(self, event):
         pos = self.pluggedImplantsTree.GetFirstSelected()
