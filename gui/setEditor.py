@@ -39,8 +39,9 @@ class ImplantSetEditor(BaseImplantEditorView):
     def getImplantsFromContext(self):
         sIS = service.ImplantSets.getInstance()
         set = self.Parent.getActiveSet()
-
-        return sIS.getImplants(set.ID)
+        if set:
+            return sIS.getImplants(set.ID)
+        return []
 
     def addImplantToContext(self, item):
         sIS = service.ImplantSets.getInstance()
