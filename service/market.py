@@ -29,11 +29,14 @@ import eos.types
 from service.settings import SettingsProvider, NetworkSettings
 import service
 import service.conversions as conversions
+import logging
 
 try:
     from collections import OrderedDict
 except ImportError:
     from utils.compat import OrderedDict
+
+logger = logging.getLogger(__name__)
 
 # Event which tells threads dependent on Market that it's initialized
 mktRdy = threading.Event()
@@ -349,20 +352,25 @@ class Market():
 
     def getItem(self, identity, *args, **kwargs):
         """Get item by its ID or name"""
-        if isinstance(identity, eos.types.Item):
-            item = identity
-        elif isinstance(identity, int):
-            item = eos.db.getItem(identity, *args, **kwargs)
-        elif isinstance(identity, basestring):
-            # We normally lookup with string when we are using import/export
-            # features. Check against overrides
-            identity = conversions.all.get(identity, identity)
-            item = eos.db.getItem(identity, *args, **kwargs)
-        elif isinstance(identity, float):
-            id = int(identity)
-            item = eos.db.getItem(id, *args, **kwargs)
-        else:
-            raise TypeError("Need Item object, integer, float or string as argument")
+        try:
+            if isinstance(identity, eos.types.Item):
+                item = identity
+            elif isinstance(identity, int):
+                item = eos.db.getItem(identity, *args, **kwargs)
+            elif isinstance(identity, basestring):
+                # We normally lookup with string when we are using import/export
+                # features. Check against overrides
+                identity = conversions.all.get(identity, identity)
+                item = eos.db.getItem(identity, *args, **kwargs)
+            elif isinstance(identity, float):
+                id = int(identity)
+                item = eos.db.getItem(id, *args, **kwargs)
+            else:
+                raise TypeError("Need Item object, integer, float or string as argument")
+        except:
+            logger.error("Could not get item: %s", identity)
+            raise
+
         return item
 
     def getGroup(self, identity, *args, **kwargs):

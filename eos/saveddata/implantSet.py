@@ -29,15 +29,20 @@ class ImplantSet(object):
     def implants(self):
         return self.__implants
 
-
-    EXPORT_FORMAT = "ImplantSet = %s,%d,%d,%d,%d\n"
     @classmethod
-    def exportPatterns(cls, *patterns):
-        out  = "# Exported from pyfa\n#\n"
-        out += "# Values are in following format:\n"
-        out += "# DamageProfile = [name],[EM amount],[Thermal amount],[Kinetic amount],[Explosive amount]\n\n"
-        for dp in patterns:
-            out += cls.EXPORT_FORMAT % (dp.name, dp.emAmount, dp.thermalAmount, dp.kineticAmount, dp.explosiveAmount)
+    def exportSets(cls, *sets):
+        out  = "# Exported from pyfa\n#\n" \
+               "# Values are in following format:\n" \
+               "# [Implant Set name]\n" \
+               "# [Implant name]\n" \
+               "# [Implant name]\n" \
+               "# ...\n\n"
+
+        for set in sets:
+            out += "[{}]\n".format(set.name)
+            for implant in set.implants:
+                out += "{}\n".format(implant.item.name)
+            out += "\n"
 
         return out.strip()
 

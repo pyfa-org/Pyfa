@@ -22,7 +22,10 @@ from gui.bitmapLoader import BitmapLoader
 from gui.builtinViews.implantEditor import BaseImplantEditorView
 import service
 from gui.utils.clipboard import toClipboard, fromClipboard
-from service.targetResists import ImportError
+from service.implantSet import ImportError
+import logging
+
+logger = logging.getLogger(__name__)
 
 class ImplantSetEditor(BaseImplantEditorView):
     def __init__(self, parent):
@@ -326,14 +329,15 @@ class ImplantSetEditorDlg(wx.Dialog):
 
         text = fromClipboard()
         if text:
-            sTR = service.TargetResists.getInstance()
+            sIS = service.ImplantSets.getInstance()
             try:
-                sTR.importPatterns(text)
+                sIS.importSets(text)
                 self.stNotice.SetLabel("Patterns successfully imported from clipboard")
                 self.showInput(False)
-            except service.targetResists.ImportError, e:
+            except ImportError, e:
                 self.stNotice.SetLabel(str(e))
             except Exception, e:
+                logging.exception("Unhandled Exception")
                 self.stNotice.SetLabel("Could not import from clipboard: unknown errors")
             finally:
                 self.updateChoices()
@@ -343,6 +347,6 @@ class ImplantSetEditorDlg(wx.Dialog):
     def exportPatterns(self, event):
         "Event fired when export to clipboard button is clicked"
 
-        sTR = service.TargetResists.getInstance()
-        toClipboard( sTR.exportPatterns() )
-        self.stNotice.SetLabel("Patterns exported to clipboard")
+        sIS = service.ImplantSets.getInstance()
+        toClipboard(sIS.exportSets())
+        self.stNotice.SetLabel("Sets exported to clipboard")

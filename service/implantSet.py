@@ -20,6 +20,7 @@
 import eos.db
 import eos.types
 import copy
+import service.market
 
 class ImportError(Exception):
     pass
@@ -73,3 +74,51 @@ class ImplantSets():
 
     def saveChanges(self, s):
         eos.db.save(s)
+        
+    def importSets(self, text):
+        sMkt = service.Market.getInstance()
+        lines = text.splitlines()
+        newSets = []
+        errors = 0
+        current = None
+        lookup = {}
+
+        for i, line in enumerate(lines):
+            line = line.strip()
+            try:
+                if line == '' or line[0] == "#":  # comments / empty string
+                    continue
+                if line[:1] == "[" and line[-1:] == "]":
+                    current = eos.types.ImplantSet(line[1:-1])
+                    newSets.append(current)
+                else:
+                    item = sMkt.getItem(line)
+                    current.implants.append(eos.types.Implant(item))
+            except:
+                errors += 1
+                continue
+
+        for set in self.getImplantSetList():
+            lookup[set.name] = set
+
+        for set in newSets:
+            if set.name in lookup:
+                match = lookup[set.name]
+                for implant in set.implants:
+                    match.implants.append(eos.types.Implant(implant.item))
+            else:
+                eos.db.save(set)
+
+        eos.db.commit()
+
+        lenImports = len(newSets)
+        if lenImports == 0:
+            raise ImportError("No patterns found for import")
+        if errors > 0:
+            raise ImportError("%d sets imported from clipboard; %d errors"%(lenImports, errors))
+        
+    def exportSets(self):
+        patterns = self.getImplantSetList()
+        patterns.sort(key=lambda p: p.name)
+        return eos.types.ImplantSet.exportSets(*patterns)
+
