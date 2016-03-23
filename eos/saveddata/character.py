@@ -19,6 +19,7 @@
 
 
 from sqlalchemy.orm import validates, reconstructor
+from itertools import chain
 
 from eos.effectHandlerHelpers import HandledItem, HandledImplantBoosterList
 import eos.db
@@ -200,8 +201,13 @@ class Character(object):
             skill.calculateModifiedAttributes(fit, runTime)
 
     def clear(self):
-        for skill in self.skills:
-            skill.clear()
+        c = chain(
+            self.skills,
+            self.implants
+        )
+        for stuff in c:
+            if stuff is not None and stuff != self:
+                stuff.clear()
 
     def __deepcopy__(self, memo):
         copy = Character("%s copy" % self.name, initSkills=False)
