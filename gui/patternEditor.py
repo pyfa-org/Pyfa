@@ -43,7 +43,7 @@ class DmgPatternTextValidor(BaseValidator):
         try:
             if len(text) == 0:
                 raise ValueError("You must supply a name for your Damage Profile!")
-            elif text in [x.name for x in profileEditor.choices]:
+            elif text in [x.name for x in profileEditor.entityEditor.choices]:
                 raise ValueError("Damage Profile name already in use, please choose another.")
 
             return True
@@ -59,7 +59,6 @@ class DmgPatternEntityEditor(EntityEditor):
         self.SetEditorValidator(DmgPatternTextValidor)
 
     def getEntitiesFromContext(self):
-        """ Gets list of entities from current context """
         sDP = service.DamagePattern.getInstance()
         choices = sorted(sDP.getDamagePatternList(), key=lambda p: p.name)
         return [c for c in choices if c.name != "Selected Ammo"]
@@ -92,10 +91,6 @@ class DmgPatternEditorDlg(wx.Dialog):
         self.SetSizeHintsSz(wx.DefaultSize, wx.DefaultSize)
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
-
-        sDP = service.DamagePattern.getInstance()
-
-        self.choices = sDP.getDamagePatternList()
 
         self.entityEditor = DmgPatternEntityEditor(self)
         mainSizer.Add(self.entityEditor, 0, wx.ALL | wx.EXPAND, 2)
@@ -186,6 +181,7 @@ class DmgPatternEditorDlg(wx.Dialog):
         self.Layout()
         bsize = self.GetBestSize()
         self.SetSize((-1, bsize.height))
+        self.CenterOnParent()
 
         self.Bind(wx.EVT_CHOICE, self.patternChanged)
 

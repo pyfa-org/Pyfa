@@ -92,6 +92,7 @@ class EntityEditor (wx.Panel):
         dlg = TextEntryValidatedDialog(self, self.validator,
                                        "Enter a name for your new {}:".format(self.entityName),
                                        "New {}".format(self.entityName))
+        dlg.CenterOnParent()
 
         if dlg.ShowModal() == wx.ID_OK:
             new = self.DoNew(dlg.GetValue().strip())
@@ -105,6 +106,7 @@ class EntityEditor (wx.Panel):
         active = self.getActiveEntity()
         dlg.SetValue("{} Copy".format(active.name))
         dlg.txtctrl.SetInsertionPointEnd()
+        dlg.CenterOnParent()
 
         if dlg.ShowModal() == wx.ID_OK:
             copy = self.DoCopy(active, dlg.GetValue().strip())
@@ -118,6 +120,7 @@ class EntityEditor (wx.Panel):
         active = self.getActiveEntity()
         dlg.SetValue(active.name)
         dlg.txtctrl.SetInsertionPointEnd()
+        dlg.CenterOnParent()
 
         if dlg.ShowModal() == wx.ID_OK:
             self.DoRename(active, dlg.GetValue().strip())
@@ -128,6 +131,7 @@ class EntityEditor (wx.Panel):
         dlg = wx.MessageDialog(self,
                  "Do you really want to delete the {} {}?".format(self.getActiveEntity().name, self.entityName),
                  "Confirm Delete", wx.YES | wx.NO | wx.ICON_QUESTION)
+        dlg.CenterOnParent()
 
         if dlg.ShowModal() == wx.ID_YES:
             self.DoDelete(self.getActiveEntity())
