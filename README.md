@@ -14,7 +14,7 @@ The latest version along with release notes can always be found on the projects 
 ## Installing
 Windows and OS X users are supplied self-contained builds of pyfa that can be run without additional software. An `.exe` installer is also available for the Windows builds. There is no self-contained package for Linux users, which are expected to run pyfa through their distributions Python interpreter. However, there are a number of third-party packages available that handle the dependencies and updates for pyfa (for example, [pyfa for Arch Linux](https://aur.archlinux.org/packages/pyfa/)). Please check your distributions repositories.
 
-### Requirements
+### Dependencies
 If you wish to help with development or simply need to run pyfa through a Python interpreter, the following software is required:
 
 * Python 2.7
