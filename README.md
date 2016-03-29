@@ -14,6 +14,14 @@ The latest version along with release notes can always be found on the projects 
 ## Installing
 Windows and OS X users are supplied self-contained builds of pyfa that can be run without additional software. An `.exe` installer is also available for the Windows builds. There is no self-contained package for Linux users, which are expected to run pyfa through their distributions Python interpreter. However, there are a number of third-party packages available that handle the dependencies and updates for pyfa (for example, [pyfa for Arch Linux](https://aur.archlinux.org/packages/pyfa/)). Please check your distributions repositories.
 
+### Linux Distro-specific Packages
+The following is a list of pyfa packages available for certain distros. Please note that these packages are maintained by third-parties and are not evaluated by the pyfa developers.
+
+* Debian/Ubuntu/derivitives: https://github.com/AdamMajer/Pyfa/releases
+* Arch: https://aur.archlinux.org/packages/pyfa/
+* openSUSE: https://build.opensuse.org/package/show/home:rmk2/pyfa
+* FreeBSD: http://www.freshports.org/games/pyfa/ (see [#484](https://github.com/pyfa-org/Pyfa/issues/484) for instructions)
+
 ### Dependencies
 If you wish to help with development or simply need to run pyfa through a Python interpreter, the following software is required:
 
@@ -23,14 +31,6 @@ If you wish to help with development or simply need to run pyfa through a Python
 * `dateutil`
 * `matplotlib` (for some Linux distributions, you may need to install separate wxPython bindings, such as `python-matplotlib-wx`)
 * `requests`
-
-### Linux Distro-specific Packages
-The following is a list of pyfa packages available for certain distros. Please note that these packages are maintained by third-parties and are not evaluated by the pyfa developers.
-
-* Debian/Ubuntu/derivitives: https://github.com/AdamMajer/Pyfa/releases
-* Arch: https://aur.archlinux.org/packages/pyfa/
-* openSUSE: https://build.opensuse.org/package/show/home:rmk2/pyfa
-* FreeBSD: http://www.freshports.org/games/pyfa/ (see #484 for instructions)
 
 ## Bug Reporting
 The preferred method of reporting bugs is through the projects GitHub Issues interface. Alternatively, posting a report in the pyfa thread on the official EVE Online forums is acceptable. Guidelines for bug reporting can be found on [this wiki page](https://github.com/DarkFenX/Pyfa/wiki/Bug-Reporting). 
