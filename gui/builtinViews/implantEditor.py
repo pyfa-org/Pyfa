@@ -110,7 +110,7 @@ class BaseImplantEditorView (wx.Panel):
         """ Adds implant to the current context"""
         raise NotImplementedError()
 
-    def removeImplantFromContext(self, pos):
+    def removeImplantFromContext(self, implant):
         """ Removes implant from the current context"""
         raise NotImplementedError()
 
@@ -191,7 +191,7 @@ class BaseImplantEditorView (wx.Panel):
     def removeItem(self, event):
         pos = self.pluggedImplantsTree.GetFirstSelected()
         if pos != -1:
-            self.removeImplantFromContext(pos)
+            self.removeImplantFromContext(self.implants[pos])
             self.update()
 
 class AvailableImplantsView(d.Display):

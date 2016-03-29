@@ -153,3 +153,6 @@ class EntityEditor (wx.Panel):
             return None
 
         return self.choices[self.entityChoices.GetSelection()]
+
+    def setActiveEntity(self, entity):
+        self.entityChoices.SetSelection(self.choices.index(entity))

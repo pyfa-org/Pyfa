@@ -90,7 +90,7 @@ class Character(object):
         return all0
 
     def __init__(self, name, defaultLevel=None, initSkills=True):
-        self.name = name
+        self.savedName = name
         self.__owner = None
         self.defaultLevel = defaultLevel
         self.__skills = []
@@ -128,6 +128,14 @@ class Character(object):
     @owner.setter
     def owner(self, owner):
         self.__owner = owner
+
+    @property
+    def name(self):
+        return self.savedName if not self.isDirty else "{} *".format(self.savedName)
+
+    @name.setter
+    def name(self, name):
+        self.savedName = name
 
     @property
     def skills(self):

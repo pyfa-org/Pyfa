@@ -50,9 +50,8 @@ class CharacterImportThread(threading.Thread):
                 # we try to parse api XML data first
                 with open(path, mode='r') as charFile:
                     sheet = service.ParseXML(charFile)
-                    charID = sCharacter.new()
-                    sCharacter.rename(charID, sheet.name+" (imported)")
-                    sCharacter.apiUpdateCharSheet(charID, sheet.skills)
+                    char = sCharacter.new(sheet.name+" (imported)")
+                    sCharacter.apiUpdateCharSheet(char.ID, sheet.skills)
             except:
                 # if it's not api XML data, try this
                 # this is a horrible logic flow, but whatever
@@ -69,9 +68,8 @@ class CharacterImportThread(threading.Thread):
                             "typeID": int(skill.getAttribute("typeID")),
                             "level": int(skill.getAttribute("level")),
                         })
-                    charID = sCharacter.new()
-                    sCharacter.rename(charID, name+" (EVEMon)")
-                    sCharacter.apiUpdateCharSheet(charID, skills)
+                    char = sCharacter.new(name+" (EVEMon)")
+                    sCharacter.apiUpdateCharSheet(char.ID, skills)
                 except:
                     continue
 
@@ -115,6 +113,11 @@ class Character(object):
             cls.instance = Character()
 
         return cls.instance
+
+    def __init__(self):
+        # Simply initializes default characters in case they aren't in the database yet
+        self.all0()
+        self.all5()
 
     def exportText(self):
         data  = "Pyfa exported plan for \""+self.skillReqsDict['charname']+"\"\n"
@@ -185,10 +188,7 @@ class Character(object):
         return self.all5().ID
 
     def getCharacterList(self):
-        baseChars = [eos.types.Character.getAll0(), eos.types.Character.getAll5()]
-        sFit = service.Fit.getInstance()
-
-        return map(lambda c: (c.ID, c.name if not c.isDirty else "{} *".format(c.name), c == sFit.character), eos.db.getCharacterList())
+        return eos.db.getCharacterList()
 
     def getCharacter(self, charID):
         char = eos.db.getCharacter(charID)
@@ -248,25 +248,21 @@ class Character(object):
     def getCharName(self, charID):
         return eos.db.getCharacter(charID).name
 
-    def new(self):
-        char = eos.types.Character("New Character")
+    def new(self, name="New Character"):
+        char = eos.types.Character(name)
         eos.db.save(char)
-        return char.ID
+        return char
 
-    def rename(self, charID, newName):
-        char = eos.db.getCharacter(charID)
+    def rename(self, char, newName):
         char.name = newName
         eos.db.commit()
 
-    def copy(self, charID):
-        char = eos.db.getCharacter(charID)
+    def copy(self, char):
         newChar = copy.deepcopy(char)
         eos.db.save(newChar)
-        return newChar.ID
+        return newChar
 
-    def delete(self, charID):
-        char = eos.db.getCharacter(charID)
-        eos.db.commit()
+    def delete(self, char):
         eos.db.remove(char)
 
     def getApiDetails(self, charID):
