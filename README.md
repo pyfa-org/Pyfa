@@ -46,9 +46,6 @@ pyfa is licensed under the GNU GPL v3.0, see LICENSE
 * [EVE Online website](http://www.eveonline.com/)
 
 ## Contacts:
-* Kadesh Priestess
-    * GitHub: @DarkFenX
-    * [TweetFleet Slack](https://www.fuzzwork.co.uk/tweetfleet-slack-invites/): @kadesh
 * Sable Blitzmann
     * GitHub: @blitzmann
     * [TweetFleet Slack](https://www.fuzzwork.co.uk/tweetfleet-slack-invites/): @blitzmann
