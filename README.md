@@ -9,13 +9,13 @@
 pyfa, short for **py**thon **f**itting **a**ssistant, allows you to create, experiment with, and save ship fittings without being in game. Open source and written in Python, it is available on any platform where Python 2.x and wxWidgets are available, including Windows, Mac OS X, and Linux.
 
 ## Latest Version and Changelogs
-The latest version along with release notes can always be found on the projects [Releases](https://github.com/DarkFenX/Pyfa/releases) page. pyfa will notify you if you are running an outdated version.
+The latest version along with release notes can always be found on the project's [Releases](https://github.com/DarkFenX/Pyfa/releases) page. pyfa will notify you if you are running an outdated version.
 
-## Installing
+## Installation
 Windows and OS X users are supplied self-contained builds of pyfa on the [latest releases](https://github.com/pyfa-org/Pyfa/releases/latest) page. An `.exe` installer is also available for Windows builds. Linux users can run pyfa using their distribution's Python interpreter. There is no official self-contained package for Linux, however, there are a number of third-party packages available through distribution-specific repositories.
 
 ### Linux Distro-specific Packages
-The following is a list of pyfa packages available for certain distros. Please note that these packages are maintained by third-parties and are not evaluated by the pyfa developers.
+The following is a list of pyfa packages available for certain distributions. Please note that these packages are maintained by third-parties and are not evaluated by the pyfa developers.
 
 * Debian/Ubuntu/derivitives: https://github.com/AdamMajer/Pyfa/releases
 * Arch: https://aur.archlinux.org/packages/pyfa/
@@ -29,11 +29,11 @@ If you wish to help with development or simply need to run pyfa through a Python
 * `wxPython` 2.8/3.0
 * `sqlalchemy` >= 0.6
 * `dateutil`
-* `matplotlib` (for some Linux distributions, you may need to install separate wxPython bindings, such as `python-matplotlib-wx`)
+* `matplotlib` (for some Linux distributions you may need to install separate wxPython bindings such as `python-matplotlib-wx`)
 * `requests`
 
 ## Bug Reporting
-The preferred method of reporting bugs is through the projects GitHub Issues interface. Alternatively, posting a report in the pyfa thread on the official EVE Online forums is acceptable. Guidelines for bug reporting can be found on [this wiki page](https://github.com/DarkFenX/Pyfa/wiki/Bug-Reporting). 
+The preferred method of reporting bugs is through the project's [GitHub Issues interface](https://github.com/pyfa-org/Pyfa/issues). Alternatively, posting a report in the [pyfa thread](http://forums.eveonline.com/default.aspx?g=posts&t=247609) on the official EVE Online forums is acceptable. Guidelines for bug reporting can be found on [this wiki page](https://github.com/DarkFenX/Pyfa/wiki/Bug-Reporting). 
 
 ## License
 pyfa is licensed under the GNU GPL v3.0, see LICENSE
