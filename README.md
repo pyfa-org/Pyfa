@@ -49,6 +49,7 @@ pyfa is licensed under the GNU GPL v3.0, see LICENSE
 * Sable Blitzmann
     * GitHub: @blitzmann
     * [TweetFleet Slack](https://www.fuzzwork.co.uk/tweetfleet-slack-invites/): @blitzmann
+    * [Gitter chat](https://gitter.im/pyfa-org/Pyfa): @ blitzmann
     * Email: sable.blitzmann@gmail.com
 
 ## CCP Copyright Notice
