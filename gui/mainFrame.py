@@ -359,9 +359,7 @@ class MainFrame(wx.Frame):
         dlg.Show()
 
     def showTargetResistsEditor(self, event):
-        dlg=ResistsEditorDlg(self)
-        dlg.ShowModal()
-        dlg.Destroy()
+        ResistsEditorDlg(self)
 
     def showDamagePatternEditor(self, event):
         dlg=DmgPatternEditorDlg(self)
@@ -369,9 +367,7 @@ class MainFrame(wx.Frame):
         dlg.Destroy()
 
     def showImplantSetEditor(self, event):
-        dlg=ImplantSetEditorDlg(self)
-        dlg.ShowModal()
-        dlg.Destroy()
+        ImplantSetEditorDlg(self)
 
     def showExportDialog(self, event):
         """ Export active fit """

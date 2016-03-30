@@ -24,8 +24,62 @@ import service
 from gui.utils.clipboard import toClipboard, fromClipboard
 from service.implantSet import ImportError
 import logging
+from gui.builtinViews.entityEditor import EntityEditor, BaseValidator
 
 logger = logging.getLogger(__name__)
+
+class ImplantTextValidor(BaseValidator):
+    def __init__(self):
+        BaseValidator.__init__(self)
+
+    def Clone(self):
+        return ImplantTextValidor()
+
+    def Validate(self, win):
+        profileEditor = win.parent.Parent
+        textCtrl = self.GetWindow()
+        text = textCtrl.GetValue().strip()
+
+        try:
+            if len(text) == 0:
+                raise ValueError("You must supply a name for the Implant Set!")
+            elif text in [x.name for x in profileEditor.entityEditor.choices]:
+                raise ValueError("Imlplant Set name already in use, please choose another.")
+
+            return True
+        except ValueError, e:
+            wx.MessageBox(u"{}".format(e), "Error")
+            textCtrl.SetFocus()
+            return False
+
+
+class ImplantSetEntityEditor(EntityEditor):
+    def __init__(self, parent):
+        EntityEditor.__init__(self, parent, "Implant Set")
+        self.SetEditorValidator(ImplantTextValidor)
+
+    def getEntitiesFromContext(self):
+        sIS = service.ImplantSets.getInstance()
+        return sorted(sIS.getImplantSetList(), key=lambda c: c.name)
+
+    def DoNew(self, name):
+        sIS = service.ImplantSets.getInstance()
+        return sIS.newSet(name)
+
+    def DoRename(self, entity, name):
+        sIS = service.ImplantSets.getInstance()
+        sIS.renameSet(entity, name)
+
+    def DoCopy(self, entity, name):
+        sIS = service.ImplantSets.getInstance()
+        copy = sIS.copySet(entity)
+        sIS.renameSet(copy, name)
+        return copy
+
+    def DoDelete(self, entity):
+        sIS = service.ImplantSets.getInstance()
+        sIS.deleteSet(entity)
+
 
 class ImplantSetEditor(BaseImplantEditorView):
     def __init__(self, parent):
@@ -34,27 +88,26 @@ class ImplantSetEditor(BaseImplantEditorView):
             self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
 
     def bindContext(self):
-        self.Parent.ccSets.Bind(wx.EVT_CHOICE, self.contextChanged)
+        self.Parent.entityEditor.Bind(wx.EVT_CHOICE, self.contextChanged)
 
     def getImplantsFromContext(self):
         sIS = service.ImplantSets.getInstance()
-        set = self.Parent.getActiveSet()
+        set = self.Parent.entityEditor.getActiveEntity()
         if set:
             return sIS.getImplants(set.ID)
         return []
 
     def addImplantToContext(self, item):
         sIS = service.ImplantSets.getInstance()
-        set = self.Parent.getActiveSet()
+        set = self.Parent.entityEditor.getActiveEntity()
 
         sIS.addImplant(set.ID, item.ID)
 
-    def removeImplantFromContext(self, pos):
+    def removeImplantFromContext(self, implant):
         sIS = service.ImplantSets.getInstance()
-        set = self.Parent.getActiveSet()
+        set = self.Parent.entityEditor.getActiveEntity()
 
-        sIS.removeImplant(set.ID, self.implants[pos])
-
+        sIS.removeImplant(set.ID, implant)
 
 class ImplantSetEditorDlg(wx.Dialog):
 
@@ -66,55 +119,8 @@ class ImplantSetEditorDlg(wx.Dialog):
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
-        self.headerSizer = headerSizer = wx.BoxSizer(wx.HORIZONTAL)
-
-        sIS = service.ImplantSets.getInstance()
-
-        self.choices = sIS.getImplantSetList()
-
-        # Sort the remaining list and continue on
-        self.choices.sort(key=lambda s: s.name)
-        self.ccSets = wx.Choice(self, wx.ID_ANY, style=0)
-
-        for set in self.choices:
-            i = self.ccSets.Append(set.name, set.ID)
-
-        self.ccSets.Bind(wx.EVT_CHOICE, self.setChanged)
-        self.ccSets.SetSelection(0)
-
-        self.namePicker = wx.TextCtrl(self, style=wx.TE_PROCESS_ENTER)
-        self.namePicker.Bind(wx.EVT_TEXT_ENTER, self.processRename)
-        self.namePicker.Hide()
-
-        size = None
-        headerSizer.Add(self.ccSets, 1, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT | wx.LEFT, 3)
-
-        buttons = (("new", wx.ART_NEW),
-                   ("rename", BitmapLoader.getBitmap("rename", "gui")),
-                   ("copy", wx.ART_COPY),
-                   ("delete", wx.ART_DELETE))
-
-        for name, art in buttons:
-                bitmap = wx.ArtProvider.GetBitmap(art, wx.ART_BUTTON) if name != "rename" else art
-                btn = wx.BitmapButton(self, wx.ID_ANY, bitmap)
-                if size is None:
-                    size = btn.GetSize()
-
-                btn.SetMinSize(size)
-                btn.SetMaxSize(size)
-
-                btn.Layout()
-                setattr(self, name, btn)
-                btn.Enable(True)
-                btn.SetToolTipString("%s implant set" % name.capitalize())
-                headerSizer.Add(btn, 0, wx.ALIGN_CENTER_VERTICAL)
-
-        self.btnSave = wx.Button(self, wx.ID_SAVE)
-        self.btnSave.Hide()
-        self.btnSave.Bind(wx.EVT_BUTTON, self.processRename)
-        headerSizer.Add(self.btnSave, 0, wx.ALIGN_CENTER)
-
-        mainSizer.Add(headerSizer, 0, wx.EXPAND | wx.ALL, 2)
+        self.entityEditor = ImplantSetEntityEditor(self)
+        mainSizer.Add(self.entityEditor, 0, wx.ALL | wx.EXPAND, 2)
 
         self.sl = wx.StaticLine(self)
         mainSizer.Add(self.sl, 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 5)
@@ -157,173 +163,28 @@ class ImplantSetEditorDlg(wx.Dialog):
         self.SetSizer(mainSizer)
         self.Layout()
 
-        self.new.Bind(wx.EVT_BUTTON, self.newSet)
-        self.rename.Bind(wx.EVT_BUTTON, self.renameSet)
-        self.copy.Bind(wx.EVT_BUTTON, self.copySet)
-        self.delete.Bind(wx.EVT_BUTTON, self.deleteSet)
+        if not self.entityEditor.checkEntitiesExist():
+            self.Destroy()
+            return
+
+        self.Bind(wx.EVT_CHOICE, self.entityChanged)
+
         self.Import.Bind(wx.EVT_BUTTON, self.importPatterns)
         self.Export.Bind(wx.EVT_BUTTON, self.exportPatterns)
+
+        self.CenterOnParent()
+        self.ShowModal()
+
+    def entityChanged(self, event):
+        if not self.entityEditor.checkEntitiesExist():
+            self.Destroy()
+            return
 
     def closeEvent(self, event):
         self.Destroy()
 
-    def getActiveSet(self):
-        selection = self.ccSets.GetCurrentSelection()
-        return self.ccSets.GetClientData(selection) if selection is not None else None
-
-    def restrict(self):
-        self.rename.Enable(False)
-        self.delete.Enable(False)
-
-    def unrestrict(self):
-        self.rename.Enable()
-        self.delete.Enable()
-
-    def getActiveSet(self):
-        if len(self.choices) == 0:
-            return None
-
-        return self.choices[self.ccSets.GetSelection()]
-
-    def setChanged(self, event=None):
-        "Event fired when user selects pattern. Can also be called from script"
-        p = self.getActiveSet()
-        self.iview.update()
-        if p is None:
-            # This happens when there are no patterns in the DB. As such, force
-            # user to create one first or exit dlg.
-            self.newSet(None)
-            return
-
-    def newSet(self, event):
-        '''
-        Simply does new-set specifics: replaces label on button, restricts,
-        and resets values to default. Hands off to the rename function for
-        further handling.
-        '''
-        self.btnSave.SetLabel("Create")
-        self.restrict()
-
-        self.Refresh()
-        self.renameSet()
-
-    def renameSet(self, event=None):
-        "Changes layout to facilitate naming a pattern"
-
-        self.showInput(True)
-
-        if event is not None:  # Rename mode
-            self.btnSave.SetLabel("Rename")
-            self.namePicker.SetValue(self.getActiveSet().name)
-        else:  # Create mode
-            self.namePicker.SetValue("")
-
-        if event is not None:
-            event.Skip()
-
-    def processRename(self, event):
-        '''
-        Processes rename event (which can be new or old patterns). If new
-        pattern, creates it; if old, selects it. if checks are valid, rename
-        saves pattern to DB.
-
-        Also resets to default layout and unrestricts.
-        '''
-        newName = self.namePicker.GetLineText(0)
-        self.stNotice.SetLabel("")
-
-        if newName == "":
-            self.stNotice.SetLabel("Invalid name")
-            return
-
-        sIS = service.ImplantSets.getInstance()
-        if self.btnSave.Label == "Create":
-            s = sIS.newSet()
-        else:
-            # we are renaming, so get the current selection
-            s = self.getActiveSet()
-
-        # test for patterns of the same name
-        for set in self.choices:
-            if set.name == newName and s != set:
-                self.stNotice.SetLabel("Name already used, please choose another")
-                return
-
-        # rename regardless of new or rename
-        sIS.renameSet(s, newName)
-
-        self.updateChoices(newName)
-        self.showInput(False)
-        sel = self.ccSets.GetSelection()
-        self.unrestrict()
-
-    def copySet(self,event):
-        sIS = service.ImplantSets.getInstance()
-        p = sIS.copySet(self.getActiveSet())
-        self.choices.append(p)
-        id = self.ccSets.Append(p.name)
-        self.ccSets.SetSelection(id)
-        self.btnSave.SetLabel("Copy")
-        self.renameSet()
-        self.setChanged()
-
-    def deleteSet(self,event):
-        sIS = service.ImplantSets.getInstance()
-        sel = self.ccSets.GetSelection()
-        sIS.deleteSet(self.getActiveSet())
-        self.ccSets.Delete(sel)
-        self.ccSets.SetSelection(max(0, sel - 1))
-        del self.choices[sel]
-        self.setChanged()
-
-    def showInput(self, bool):
-        if bool and not self.namePicker.IsShown():
-            self.ccSets.Hide()
-            self.namePicker.Show()
-            self.headerSizer.Replace(self.ccSets, self.namePicker)
-            self.namePicker.SetFocus()
-            for btn in (self.new, self.rename, self.delete, self.copy):
-                btn.Hide()
-            self.btnSave.Show()
-            self.restrict()
-            self.headerSizer.Layout()
-        elif not bool and self.namePicker.IsShown():
-            self.headerSizer.Replace(self.namePicker, self.ccSets)
-            self.ccSets.Show()
-            self.namePicker.Hide()
-            self.btnSave.Hide()
-            for btn in (self.new, self.rename, self.delete, self.copy):
-                btn.Show()
-            self.unrestrict()
-            self.headerSizer.Layout()
-
-
     def __del__( self ):
         pass
-
-    def updateChoices(self, select=None):
-        "Gathers list of patterns and updates choice selections"
-        sIS = service.ImplantSets.getInstance()
-        self.choices = sIS.getImplantSetList()
-
-        if len(self.choices) == 0:
-            #self.newPattern(None)
-            return
-
-        # Sort the remaining list and continue on
-        self.choices.sort(key=lambda p: p.name)
-        self.ccSets.Clear()
-
-        for i, choice in enumerate(map(lambda p: p.name, self.choices)):
-            self.ccSets.Append(choice)
-
-            if select is not None and choice == select:
-                self.ccSets.SetSelection(i)
-
-        if select is None:
-            self.ccSets.SetSelection(0)
-
-        self.setChanged()
 
     def importPatterns(self, event):
         "Event fired when import from clipboard button is clicked"

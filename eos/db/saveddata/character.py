@@ -37,6 +37,7 @@ characters_table = Table("characters", saveddata_meta,
 
 mapper(Character, characters_table,
         properties = {
+            "savedName": characters_table.c.name,
             "_Character__owner": relation(
                 User,
                 backref = "characters"),

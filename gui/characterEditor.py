@@ -26,6 +26,73 @@ import service
 from gui.contextMenu import ContextMenu
 import gui.globalEvents as GE
 from gui.builtinViews.implantEditor import BaseImplantEditorView
+from gui.builtinViews.entityEditor import EntityEditor, BaseValidator
+
+
+class CharacterTextValidor(BaseValidator):
+    def __init__(self):
+        BaseValidator.__init__(self)
+
+    def Clone(self):
+        return CharacterTextValidor()
+
+    def Validate(self, win):
+        profileEditor = win.Parent
+        textCtrl = self.GetWindow()
+        text = textCtrl.GetValue().strip()
+
+        try:
+            if len(text) == 0:
+                raise ValueError("You must supply a name for the Character!")
+            elif text in [x.name for x in profileEditor.entityEditor.choices]:
+                raise ValueError("Character name already in use, please choose another.")
+
+            return True
+        except ValueError, e:
+            wx.MessageBox(u"{}".format(e), "Error")
+            textCtrl.SetFocus()
+            return False
+
+
+class CharacterEntityEditor(EntityEditor):
+    def __init__(self, parent):
+        EntityEditor.__init__(self, parent, "Character")
+        self.SetEditorValidator(CharacterTextValidor)
+
+    def getEntitiesFromContext(self):
+        sChar = service.Character.getInstance()
+        charList = sorted(sChar.getCharacterList(), key=lambda c: c.name)
+
+        # Do some processing to ensure that we have All 0 and All 5 at the top
+        all5 = sChar.all5()
+        all0 = sChar.all0()
+
+        charList.remove(all5)
+        charList.remove(all0)
+
+        charList.insert(0, all5)
+        charList.insert(0, all0)
+
+        return charList
+
+    def DoNew(self, name):
+        sChar = service.Character.getInstance()
+        return sChar.new(name)
+
+    def DoRename(self, entity, name):
+        sChar = service.Character.getInstance()
+        sChar.rename(entity, name)
+
+    def DoCopy(self, entity, name):
+        sChar = service.Character.getInstance()
+        copy = sChar.copy(entity)
+        sChar.rename(copy, name)
+        return copy
+
+    def DoDelete(self, entity):
+        sChar = service.Character.getInstance()
+        sChar.delete(entity)
+
 
 class CharacterEditor(wx.Frame):
     def __init__(self, parent):
@@ -37,57 +104,16 @@ class CharacterEditor(wx.Frame):
 
         self.mainFrame = parent
         #self.disableWin = wx.WindowDisabler(self)
+        sFit = service.Fit.getInstance()
 
-        self.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNFACE ) )
+        self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
-        self.navSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        sChar = service.Character.getInstance()
-
-        self.btnSave = wx.Button(self, wx.ID_SAVE)
-        self.btnSave.Hide()
-        self.btnSave.Bind(wx.EVT_BUTTON, self.processRename)
-
-        self.characterRename = wx.TextCtrl(self, wx.ID_ANY, style=wx.TE_PROCESS_ENTER)
-        self.characterRename.Hide()
-        self.characterRename.Bind(wx.EVT_TEXT_ENTER, self.processRename)
-
-        self.charChoice = wx.Choice(self, wx.ID_ANY, style=0)
-        self.navSizer.Add(self.charChoice, 1, wx.ALL | wx.EXPAND, 5)
-
-        charList = sChar.getCharacterList()
-
-        for id, name, active in charList:
-            i = self.charChoice.Append(name, id)
-            if active:
-                self.charChoice.SetSelection(i)
-
-        self.navSizer.Add(self.btnSave, 0, wx.ALL , 5)
-
-
-        buttons = (("new", wx.ART_NEW),
-                   ("rename", BitmapLoader.getBitmap("rename", "gui")),
-                   ("copy", wx.ART_COPY),
-                   ("delete", wx.ART_DELETE))
-
-        size = None
-        for name, art in buttons:
-            bitmap = wx.ArtProvider.GetBitmap(art, wx.ART_BUTTON) if name != "rename" else art
-            btn = wx.BitmapButton(self, wx.ID_ANY, bitmap)
-            if size is None:
-                size = btn.GetSize()
-
-            btn.SetMinSize(size)
-            btn.SetMaxSize(size)
-
-            btn.SetToolTipString("%s character" % name.capitalize())
-            btn.Bind(wx.EVT_BUTTON, getattr(self, name))
-            setattr(self, "btn%s" % name.capitalize(), btn)
-            self.navSizer.Add(btn, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 2)
-
-
-        mainSizer.Add(self.navSizer, 0, wx.ALL | wx.EXPAND, 5)
+        self.entityEditor = CharacterEntityEditor(self)
+        mainSizer.Add(self.entityEditor, 0, wx.ALL | wx.EXPAND, 2)
+        # Default drop down to current fit's character
+        self.entityEditor.setActiveEntity(sFit.character)
 
         self.viewsNBContainer = wx.Notebook(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, 0)
 
@@ -114,7 +140,6 @@ class CharacterEditor(wx.Frame):
         bSizerButtons.AddStretchSpacer()
         bSizerButtons.Add(self.btnOK, 0, wx.ALL, 5)
 
-
         self.btnSaveChar.Bind(wx.EVT_BUTTON, self.saveChar)
         self.btnSaveAs.Bind(wx.EVT_BUTTON, self.saveCharAs)
         self.btnRevert.Bind(wx.EVT_BUTTON, self.revertChar)
@@ -129,16 +154,12 @@ class CharacterEditor(wx.Frame):
 
         self.Centre(wx.BOTH)
 
-        charID = self.getActiveCharacter()
-        if sChar.getCharName(charID) in ("All 0", "All 5"):
-            self.restrict()
-
-        self.registerEvents()
+        self.Bind(wx.EVT_CLOSE, self.closeEvent)
+        self.Bind(GE.CHAR_LIST_UPDATED, self.refreshCharacterList)
+        self.entityEditor.Bind(wx.EVT_CHOICE, self.charChanged)
 
     def btnRestrict(self):
-        sChar = service.Character.getInstance()
-        charID = self.getActiveCharacter()
-        char = sChar.getCharacter(charID)
+        char = self.entityEditor.getActiveEntity()
 
         # enable/disable character saving stuff
         self.btnSaveChar.Enable(not char.ro and char.isDirty)
@@ -146,46 +167,34 @@ class CharacterEditor(wx.Frame):
         self.btnRevert.Enable(char.isDirty)
 
     def refreshCharacterList(self, event=None):
-        sChar = service.Character.getInstance()
-        charList = sChar.getCharacterList()
-        active = self.getActiveCharacter()
-        self.charChoice.Clear()
-
-        for id, name, _ in charList:
-            i = self.charChoice.Append(name, id)
-            if active == id:
-                self.charChoice.SetSelection(i)
-
+        """This is only called when we save a modified character"""
+        active = self.entityEditor.getActiveEntity()
+        self.entityEditor.refreshEntityList(active)
         self.btnRestrict()
+
+        if event:
+            event.Skip()
 
     def editingFinished(self, event):
         #del self.disableWin
         wx.PostEvent(self.mainFrame, GE.CharListUpdated())
         self.Destroy()
 
-    def registerEvents(self):
-        self.Bind(wx.EVT_CLOSE, self.closeEvent)
-        self.Bind(GE.CHAR_LIST_UPDATED, self.refreshCharacterList)
-        self.charChoice.Bind(wx.EVT_CHOICE, self.charChanged)
-
     def saveChar(self, event):
         sChr = service.Character.getInstance()
-        charID = self.getActiveCharacter()
-        sChr.saveCharacter(charID)
-        self.sview.populateSkillTree()
+        char = self.entityEditor.getActiveEntity()
+        sChr.saveCharacter(char.ID)
         wx.PostEvent(self, GE.CharListUpdated())
 
     def saveCharAs(self, event):
-        charID = self.getActiveCharacter()
-        dlg = SaveCharacterAs(self, charID)
+        char = self.entityEditor.getActiveEntity()
+        dlg = SaveCharacterAs(self, char.ID)
         dlg.ShowModal()
-        self.sview.populateSkillTree()
 
     def revertChar(self, event):
         sChr = service.Character.getInstance()
-        charID = self.getActiveCharacter()
-        sChr.revertCharacter(charID)
-        self.sview.populateSkillTree()
+        char = self.entityEditor.getActiveEntity()
+        sChr.revertCharacter(char.ID)
         wx.PostEvent(self, GE.CharListUpdated())
 
     def closeEvent(self, event):
@@ -194,108 +203,24 @@ class CharacterEditor(wx.Frame):
         self.Destroy()
 
     def restrict(self):
-        self.btnRename.Enable(False)
-        self.btnDelete.Enable(False)
-        self.iview.Enable(False)
-        self.aview.Enable(False)
+        self.entityEditor.btnRename.Enable(False)
+        self.entityEditor.btnDelete.Enable(False)
 
     def unrestrict(self):
-        self.btnRename.Enable(True)
-        self.btnDelete.Enable(True)
-        self.iview.Enable(True)
-        self.aview.Enable(True)
+        self.entityEditor.btnRename.Enable()
+        self.entityEditor.btnDelete.Enable()
 
     def charChanged(self, event):
-        self.sview.populateSkillTree()
-        sChar = service.Character.getInstance()
-        charID = self.getActiveCharacter()
-        if sChar.getCharName(charID) in ("All 0", "All 5"):
+        char = self.entityEditor.getActiveEntity()
+        if char.name in ("All 0", "All 5"):
             self.restrict()
         else:
             self.unrestrict()
 
-        wx.PostEvent(self, GE.CharChanged())
+        self.btnRestrict()
+
         if event is not None:
             event.Skip()
-
-    def getActiveCharacter(self):
-        selection = self.charChoice.GetCurrentSelection()
-        return self.charChoice.GetClientData(selection) if selection is not None else None
-
-    def new(self, event):
-        sChar = service.Character.getInstance()
-        charID = sChar.new()
-        id = self.charChoice.Append(sChar.getCharName(charID), charID)
-        self.charChoice.SetSelection(id)
-        self.unrestrict()
-        self.btnSave.SetLabel("Create")
-        self.rename(None)
-        self.charChanged(None)
-
-    def rename(self, event):
-        if event is not None:
-            self.btnSave.SetLabel("Rename")
-        self.charChoice.Hide()
-        self.characterRename.Show()
-        self.navSizer.Replace(self.charChoice, self.characterRename)
-        self.characterRename.SetFocus()
-        for btn in (self.btnNew, self.btnCopy, self.btnRename, self.btnDelete):
-            btn.Hide()
-
-        self.btnSave.Show()
-        self.navSizer.Layout()
-
-        sChar = service.Character.getInstance()
-        currName = sChar.getCharName(self.getActiveCharacter())
-        self.characterRename.SetValue(currName)
-        self.characterRename.SetSelection(0, len(currName))
-
-    def processRename(self, event):
-        sChar = service.Character.getInstance()
-        newName = self.characterRename.GetLineText(0)
-
-        if newName == "All 0" or newName == "All 5":
-            newName = newName + " bases are belong to us"
-
-        charID = self.getActiveCharacter()
-        sChar.rename(charID, newName)
-
-        self.charChoice.Show()
-        self.characterRename.Hide()
-        self.navSizer.Replace(self.characterRename, self.charChoice)
-        for btn in (self.btnNew, self.btnCopy, self.btnRename, self.btnDelete):
-            btn.Show()
-
-        self.btnSave.Hide()
-        self.navSizer.Layout()
-        self.refreshCharacterList()
-
-    def copy(self, event):
-        sChar = service.Character.getInstance()
-        charID = sChar.copy(self.getActiveCharacter())
-        id = self.charChoice.Append(sChar.getCharName(charID), charID)
-        self.charChoice.SetSelection(id)
-        self.unrestrict()
-        self.btnSave.SetLabel("Copy")
-        self.rename(None)
-        wx.PostEvent(self, GE.CharChanged())
-
-    def delete(self, event):
-        dlg = wx.MessageDialog(self,
-                 "Do you really want to delete this character?",
-                 "Confirm Delete", wx.YES | wx.NO | wx.ICON_QUESTION)
-
-        if dlg.ShowModal() == wx.ID_YES:
-            sChar = service.Character.getInstance()
-            sChar.delete(self.getActiveCharacter())
-            sel = self.charChoice.GetSelection()
-            self.charChoice.Delete(sel)
-            self.charChoice.SetSelection(sel - 1)
-            newSelection = self.getActiveCharacter()
-            if sChar.getCharName(newSelection) in ("All 0", "All 5"):
-                self.restrict()
-
-            wx.PostEvent(self, GE.CharChanged())
 
     def Destroy(self):
         sFit = service.Fit.getInstance()
@@ -308,7 +233,8 @@ class CharacterEditor(wx.Frame):
 
 class SkillTreeView (wx.Panel):
     def __init__(self, parent):
-        wx.Panel.__init__ (self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.Size(500, 300), style=wx.TAB_TRAVERSAL)
+        wx.Panel.__init__ (self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize, style=wx.TAB_TRAVERSAL)
+        self.charEditor = self.Parent.Parent  # first parent is Notebook, second is Character Editor
         self.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW))
 
         pmainSizer = wx.BoxSizer(wx.VERTICAL)
@@ -334,6 +260,10 @@ class SkillTreeView (wx.Panel):
 
         tree.Bind(wx.EVT_TREE_ITEM_EXPANDING, self.expandLookup)
         tree.Bind(wx.EVT_TREE_ITEM_RIGHT_CLICK, self.scheduleMenu)
+
+        # bind the Character selection event
+        self.charEditor.entityEditor.Bind(wx.EVT_CHOICE, self.populateSkillTree)
+        self.charEditor.Bind(GE.CHAR_LIST_UPDATED, self.populateSkillTree)
 
         srcContext = "skillItem"
         itemContext = "Skill"
@@ -365,11 +295,10 @@ class SkillTreeView (wx.Panel):
 
         self.Layout()
 
-    def populateSkillTree(self):
+    def populateSkillTree(self, event=None):
         sChar = service.Character.getInstance()
-        charID = self.Parent.Parent.getActiveCharacter()
-        dirtySkills = sChar.getDirtySkills(charID)
-        dirtyGroups = set([skill.item.group.ID for skill in dirtySkills])
+        char = self.charEditor.entityEditor.getActiveEntity()
+        dirtyGroups = set([skill.item.group.ID for skill in char.dirtySkills])
 
         groups = sChar.getSkillGroups()
         imageId = self.skillBookImageId
@@ -386,6 +315,9 @@ class SkillTreeView (wx.Panel):
 
         tree.SortChildren(root)
 
+        if event:
+            event.Skip()
+
     def expandLookup(self, event):
         root = event.Item
         tree = self.skillTreeListCtrl
@@ -395,11 +327,11 @@ class SkillTreeView (wx.Panel):
 
             #Get the real intrestin' stuff
             sChar = service.Character.getInstance()
-            char = self.Parent.Parent.getActiveCharacter()
+            char = self.charEditor.entityEditor.getActiveEntity()
             for id, name in sChar.getSkills(tree.GetPyData(root)):
                 iconId = self.skillBookImageId
                 childId = tree.AppendItem(root, name, iconId, data=wx.TreeItemData(id))
-                level, dirty = sChar.getSkillLevel(char, id)
+                level, dirty = sChar.getSkillLevel(char.ID, id)
                 tree.SetItemText(childId, "Level %d" % level if isinstance(level, int) else level, 1)
                 if dirty:
                     tree.SetItemTextColour(childId, wx.BLUE)
@@ -415,10 +347,9 @@ class SkillTreeView (wx.Panel):
         if self.skillTreeListCtrl.GetChildrenCount(item) > 0:
             return
 
-        sChar = service.Character.getInstance()
-        charID = self.Parent.Parent.getActiveCharacter()
+        char = self.charEditor.entityEditor.getActiveEntity()
         sMkt = service.Market.getInstance()
-        if sChar.getCharName(charID) not in ("All 0", "All 5"):
+        if char.name not in ("All 0", "All 5"):
             self.levelChangeMenu.selection = sMkt.getItem(self.skillTreeListCtrl.GetPyData(item))
             self.PopupMenu(self.levelChangeMenu)
         else:
@@ -429,21 +360,21 @@ class SkillTreeView (wx.Panel):
         level = self.levelIds.get(event.Id)
 
         sChar = service.Character.getInstance()
-        charID = self.Parent.Parent.getActiveCharacter()
+        char = self.charEditor.entityEditor.getActiveEntity()
         selection = self.skillTreeListCtrl.GetSelection()
         skillID = self.skillTreeListCtrl.GetPyData(selection)
 
         if level is not None:
             self.skillTreeListCtrl.SetItemText(selection, "Level %d" % level if isinstance(level, int) else level, 1)
-            sChar.changeLevel(charID, skillID, level, persist=True)
+            sChar.changeLevel(char.ID, skillID, level, persist=True)
         elif event.Id == self.revertID:
-            sChar.revertLevel(charID, skillID)
+            sChar.revertLevel(char.ID, skillID)
         elif event.Id == self.saveID:
-            sChar.saveSkill(charID, skillID)
+            sChar.saveSkill(char.ID, skillID)
 
         self.skillTreeListCtrl.SetItemTextColour(selection, None)
 
-        dirtySkills = sChar.getDirtySkills(charID)
+        dirtySkills = sChar.getDirtySkills(char.ID)
         dirtyGroups = set([skill.item.group.ID for skill in dirtySkills])
 
         parentID = self.skillTreeListCtrl.GetItemParent(selection)
@@ -452,7 +383,6 @@ class SkillTreeView (wx.Panel):
         if groupID not in dirtyGroups:
             self.skillTreeListCtrl.SetItemTextColour(parentID, None)
 
-        wx.PostEvent(self.Parent.Parent, GE.CharListUpdated())
         event.Skip()
 
 
@@ -460,31 +390,37 @@ class ImplantEditorView(BaseImplantEditorView):
     def __init__(self, parent):
         BaseImplantEditorView.__init__ (self, parent)
 
-        if "__WXGTK__" in  wx.PlatformInfo:
+        self.determineEnabled()
+
+        if "__WXGTK__" in wx.PlatformInfo:
             self.pluggedImplantsTree.Bind(wx.EVT_RIGHT_UP, self.scheduleMenu)
         else:
             self.pluggedImplantsTree.Bind(wx.EVT_RIGHT_DOWN, self.scheduleMenu)
 
     def bindContext(self):
-        self.Parent.Parent.Bind(GE.CHAR_CHANGED, self.contextChanged)
+        self.Parent.Parent.entityEditor.Bind(wx.EVT_CHOICE, self.contextChanged)
+
+    def contextChanged(self, event):
+        BaseImplantEditorView.contextChanged(self, event)
+        self.determineEnabled()
 
     def getImplantsFromContext(self):
         sChar = service.Character.getInstance()
-        charID = self.Parent.Parent.getActiveCharacter()
+        char = self.Parent.Parent.entityEditor.getActiveEntity()
 
-        return sChar.getImplants(charID)
+        return sChar.getImplants(char.ID)
 
     def addImplantToContext(self, item):
         sChar = service.Character.getInstance()
-        charID = self.Parent.Parent.getActiveCharacter()
+        char = self.Parent.Parent.entityEditor.getActiveEntity()
 
-        sChar.addImplant(charID, item.ID)
+        sChar.addImplant(char.ID, item.ID)
 
-    def removeImplantFromContext(self, pos):
+    def removeImplantFromContext(self, implant):
         sChar = service.Character.getInstance()
-        charID = self.Parent.Parent.getActiveCharacter()
+        char = self.Parent.Parent.entityEditor.getActiveEntity()
 
-        sChar.removeImplant(charID, self.implants[pos])
+        sChar.removeImplant(char.ID, implant)
 
     def scheduleMenu(self, event):
         event.Skip()
@@ -497,11 +433,19 @@ class ImplantEditorView(BaseImplantEditorView):
         menu = ContextMenu.getMenu((self.Parent.Parent,), *context)
         self.PopupMenu(menu)
 
+    def determineEnabled(self):
+        char = self.Parent.Parent.entityEditor.getActiveEntity()
+
+        if char.name in ("All 0", "All 5"):
+            self.Enable(False)
+        else:
+            self.Enable()
+
 
 class APIView (wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__ (self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.Size(500, 300), style=wx.TAB_TRAVERSAL)
-        self.Parent.Parent.Bind(GE.CHAR_CHANGED, self.charChanged)
+        self.charEditor = self.Parent.Parent  # first parent is Notebook, second is Character Editor
         self.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW))
 
         self.apiUrlCreatePredefined = u"https://community.eveonline.com/support/api-key/CreatePredefined?accessMask=8"
@@ -585,13 +529,17 @@ class APIView (wx.Panel):
         self.hlEveAPI2 = wx.HyperlinkCtrl( self, wx.ID_ANY, self.apiUrlKeyList, self.apiUrlKeyList, wx.DefaultPosition, wx.DefaultSize, wx.HL_DEFAULT_STYLE )
         pmainSizer.Add( self.hlEveAPI2, 0, wx.ALL, 2 )
 
+        self.charEditor.entityEditor.Bind(wx.EVT_CHOICE, self.charChanged)
+
         self.SetSizer(pmainSizer)
         self.Layout()
         self.charChanged(None)
 
     def charChanged(self, event):
         sChar = service.Character.getInstance()
-        ID, key, char, chars = sChar.getApiDetails(self.Parent.Parent.getActiveCharacter())
+        activeChar = self.charEditor.entityEditor.getActiveEntity()
+
+        ID, key, char, chars = sChar.getApiDetails(activeChar.ID)
         self.inputID.SetValue(str(ID))
         self.inputKey.SetValue(key)
 
@@ -609,6 +557,14 @@ class APIView (wx.Panel):
             self.charChoice.Enable(False)
             self.btnFetchSkills.Enable(False)
 
+        if activeChar.name in ("All 0", "All 5"):
+            self.Enable(False)
+            self.stDisabledTip.Show()
+            self.Layout()
+        else:
+            self.Enable()
+            self.stDisabledTip.Hide()
+            self.Layout()
 
         if event is not None:
             event.Skip()

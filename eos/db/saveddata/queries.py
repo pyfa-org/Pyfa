@@ -154,7 +154,7 @@ def getCharacter(lookfor, eager=None):
     elif isinstance(lookfor, basestring):
         eager = processEager(eager)
         with sd_lock:
-            character = saveddata_session.query(Character).options(*eager).filter(Character.name == lookfor).first()
+            character = saveddata_session.query(Character).options(*eager).filter(Character.savedName == lookfor).first()
     else:
         raise TypeError("Need integer or string as argument")
     return character

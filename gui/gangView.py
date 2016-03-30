@@ -346,9 +346,8 @@ class GangView ( ScrolledPanel ):
             choice.Clear()
             currSelFound = False
             for char in charList:
-                id,name,_ = char
-                choice.Append(name, id)
-                if chCurrData == id:
+                choice.Append(char.name, char.ID)
+                if chCurrData == char.ID:
                     currSelFound = True
 
             if chCurrSelection == -1:
