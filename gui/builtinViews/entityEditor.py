@@ -76,15 +76,15 @@ class EntityEditor (wx.Panel):
         """Override method to do new entity logic. Must return the new entity"""
         raise NotImplementedError()
 
-    def DoCopy(self, name):
+    def DoCopy(self, entity, name):
         """Override method to copy entity. Must return the copy"""
         raise NotImplementedError()
 
-    def DoRename(self, name):
+    def DoRename(self, entity, name):
         """Override method to rename an entity"""
         raise NotImplementedError()
 
-    def DoDelete(self, name):
+    def DoDelete(self, entity):
         """Override method to delete entity"""
         raise NotImplementedError()
 

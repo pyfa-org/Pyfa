@@ -55,10 +55,11 @@ class ImplantSets():
         set.implants.remove(implant)
         eos.db.commit()
 
-    def newSet(self):
-        p = eos.types.ImplantSet()
-        p.name = ""
-        return p
+    def newSet(self, name):
+        s = eos.types.ImplantSet()
+        s.name = name
+        eos.db.save(s)
+        return s
 
     def renameSet(self, s, newName):
         s.name = newName
