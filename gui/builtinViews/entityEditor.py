@@ -18,6 +18,8 @@ class BaseValidator(wx.PyValidator):
 class TextEntryValidatedDialog(wx.TextEntryDialog):
     def __init__(self, parent, validator=None, *args, **kargs):
         wx.TextEntryDialog.__init__(self, parent, *args, **kargs)
+        self.parent = parent
+
         self.txtctrl = self.FindWindowById(3000)
         if validator:
             self.txtctrl.SetValidator(validator())
@@ -35,7 +37,7 @@ class EntityEditor (wx.Panel):
         self.validator = None
         self.navSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.choices = self.getEntitiesFromContext()
+        self.choices = []
         self.choices.sort(key=lambda p: p.name)
         self.entityChoices = wx.Choice(self, choices=map(lambda p: p.name, self.choices))
         self.navSizer.Add(self.entityChoices, 1, wx.ALL, 5)
@@ -60,9 +62,10 @@ class EntityEditor (wx.Panel):
             setattr(self, "btn%s" % name.capitalize(), btn)
             self.navSizer.Add(btn, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 2)
 
-        self.entityChoices.SetSelection(0)
         self.SetSizer(self.navSizer)
         self.Layout()
+
+        self.refreshEntityList()
 
     def SetEditorValidator(self, validator=None):
         """ Sets validator class (not an instance of the class) """
@@ -98,6 +101,8 @@ class EntityEditor (wx.Panel):
             new = self.DoNew(dlg.GetValue().strip())
             self.refreshEntityList(new)
             wx.PostEvent(self.entityChoices, wx.CommandEvent(wx.wxEVT_COMMAND_CHOICE_SELECTED))
+        else:
+            return False
 
     def OnCopy(self, event):
         dlg = TextEntryValidatedDialog(self, self.validator,
@@ -141,6 +146,7 @@ class EntityEditor (wx.Panel):
     def refreshEntityList(self, selected=None):
         self.choices = self.getEntitiesFromContext()
         self.entityChoices.Clear()
+
         self.entityChoices.AppendItems(map(lambda p: p.name, self.choices))
         if selected:
             idx = self.choices.index(selected)
@@ -156,3 +162,12 @@ class EntityEditor (wx.Panel):
 
     def setActiveEntity(self, entity):
         self.entityChoices.SetSelection(self.choices.index(entity))
+
+    def checkEntitiesExist(self):
+        if len(self.choices) == 0:
+            self.Parent.Hide()
+            if self.OnNew(None) is False:
+                return False
+            self.Parent.Show()
+
+        return True

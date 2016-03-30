@@ -36,7 +36,7 @@ class ImplantTextValidor(BaseValidator):
         return ImplantTextValidor()
 
     def Validate(self, win):
-        profileEditor = win.Parent
+        profileEditor = win.parent.Parent
         textCtrl = self.GetWindow()
         text = textCtrl.GetValue().strip()
 
@@ -163,8 +163,22 @@ class ImplantSetEditorDlg(wx.Dialog):
         self.SetSizer(mainSizer)
         self.Layout()
 
+        if not self.entityEditor.checkEntitiesExist():
+            self.Destroy()
+            return
+
+        self.Bind(wx.EVT_CHOICE, self.entityChanged)
+
         self.Import.Bind(wx.EVT_BUTTON, self.importPatterns)
         self.Export.Bind(wx.EVT_BUTTON, self.exportPatterns)
+
+        self.CenterOnParent()
+        self.ShowModal()
+
+    def entityChanged(self, event):
+        if not self.entityEditor.checkEntitiesExist():
+            self.Destroy()
+            return
 
     def closeEvent(self, event):
         self.Destroy()

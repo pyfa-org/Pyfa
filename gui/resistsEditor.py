@@ -33,7 +33,7 @@ class TargetResistsTextValidor(BaseValidator):
         return TargetResistsTextValidor()
 
     def Validate(self, win):
-        profileEditor = win.Parent
+        profileEditor = win.parent.Parent
         textCtrl = self.GetWindow()
         text = textCtrl.GetValue().strip()
 
@@ -169,6 +169,10 @@ class ResistsEditorDlg(wx.Dialog):
                 btn.SetToolTipString("%s patterns %s clipboard" % (name, direction) )
                 footerSizer.Add(btn, 0, wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_RIGHT)
 
+        if not self.entityEditor.checkEntitiesExist():
+            self.Destroy()
+            return
+
         self.Layout()
         bsize = self.GetBestSize()
         self.SetSize((-1, bsize.height))
@@ -177,6 +181,8 @@ class ResistsEditorDlg(wx.Dialog):
         self.Bind(wx.EVT_CHOICE, self.patternChanged)
 
         self.patternChanged()
+
+        self.ShowModal()
 
     def closeEvent(self, event):
         self.Destroy()
@@ -230,6 +236,11 @@ class ResistsEditorDlg(wx.Dialog):
 
     def patternChanged(self, event=None):
         "Event fired when user selects pattern. Can also be called from script"
+
+        if not self.entityEditor.checkEntitiesExist():
+            self.Destroy()
+            return
+
         p = self.entityEditor.getActiveEntity()
         if p is None:
             return
