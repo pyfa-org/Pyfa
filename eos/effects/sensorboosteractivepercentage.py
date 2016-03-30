@@ -1,7 +1,7 @@
 # sensorBoosterActivePercentage
 #
 # Used by:
-# Modules from group: Sensor Booster (12 of 12)
+# Modules from group: Sensor Booster (16 of 16)
 type = "active"
 def handler(fit, module, context):
     fit.ship.boostItemAttr("maxTargetRange", module.getModifiedItemAttr("maxTargetRangeBonus"),

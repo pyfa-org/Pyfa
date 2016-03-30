@@ -3,6 +3,7 @@
 # Used by:
 # Implants named like: Zainou 'Deadeye' Missile Bombardment MB (6 of 6)
 # Modules named like: Rocket Fuel Cache Partition (8 of 8)
+# Implant: Antipharmakon Toxot
 # Skill: Missile Bombardment
 type = "passive"
 def handler(fit, container, context):

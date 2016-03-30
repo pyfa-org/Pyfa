@@ -18,10 +18,10 @@ debug = False
 saveInRoot = False
 
 # Version data
-version = "1.19.2"
+version = "1.20.2"
 tag = "git"
-expansionName = "February 2016"
-expansionVersion = "1.1"
+expansionName = "March 2016"
+expansionVersion = "1.3"
 evemonMinVersion = "4081"
 
 pyfaPath = None
@@ -60,7 +60,7 @@ def __createDirs(path):
     if not os.path.exists(path):
         os.makedirs(path)
 
-def defPaths():
+def defPaths(customSavePath):
     global debug
     global pyfaPath
     global savePath
@@ -87,8 +87,11 @@ def defPaths():
     else:
         savePath = getattr(configforced, "savePath", None)
         if savePath is None:
-            savePath = unicode(os.path.expanduser(os.path.join("~", ".pyfa")),
+            if customSavePath is None: # customSavePath is not overriden
+                savePath = unicode(os.path.expanduser(os.path.join("~", ".pyfa")),
                                sys.getfilesystemencoding())
+            else:
+                savePath = customSavePath
 
     __createDirs(savePath)
 

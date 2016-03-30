@@ -23,7 +23,6 @@ from gui import builtinStatsViews
 from gui.bitmapLoader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 import service
-import locale
 
 class PriceViewFull(StatsView):
     name = "priceViewFull"
@@ -107,15 +106,15 @@ class PriceViewFull(StatsView):
 
         if self._cachedShip != shipPrice:
             self.labelPriceShip.SetLabel("%s ISK" % formatAmount(shipPrice, 3, 3, 9, currency=True))
-            self.labelPriceShip.SetToolTip(wx.ToolTip(locale.format('%.2f', shipPrice, 1)))
+            self.labelPriceShip.SetToolTip(wx.ToolTip('{:,.2f}'.format(shipPrice)))
             self._cachedShip = shipPrice
         if self._cachedFittings != modPrice:
             self.labelPriceFittings.SetLabel("%s ISK" % formatAmount(modPrice, 3, 3, 9, currency=True))
-            self.labelPriceFittings.SetToolTip(wx.ToolTip(locale.format('%.2f', modPrice, 1)))
+            self.labelPriceFittings.SetToolTip(wx.ToolTip('{:,.2f}'.format(modPrice)))
             self._cachedFittings = modPrice
         if self._cachedTotal != (shipPrice+modPrice):
             self.labelPriceTotal.SetLabel("%s ISK" % formatAmount(shipPrice + modPrice, 3, 3, 9, currency=True))
-            self.labelPriceTotal.SetToolTip(wx.ToolTip(locale.format('%.2f', (shipPrice + modPrice), 1)))
+            self.labelPriceTotal.SetToolTip(wx.ToolTip('{:,.2f}'.format(shipPrice + modPrice)))
             self._cachedTotal = shipPrice + modPrice
         self.panel.Layout()
 

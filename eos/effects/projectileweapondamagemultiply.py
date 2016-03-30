@@ -1,7 +1,7 @@
 # projectileWeaponDamageMultiply
 #
 # Used by:
-# Modules from group: Gyrostabilizer (20 of 20)
+# Modules from group: Gyrostabilizer (12 of 12)
 # Modules named like: QA Multiship Module Players (4 of 4)
 # Module: QA Damage Module
 type = "passive"
