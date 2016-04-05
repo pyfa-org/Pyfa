@@ -21,6 +21,7 @@ import wx
 import gui.mainFrame
 from gui.boosterView import BoosterView
 from gui.droneView import DroneView
+from gui.fighterView import FighterView
 from gui.cargoView import CargoView
 from gui.implantView import ImplantView
 from gui.projectedView import ProjectedView
@@ -57,6 +58,7 @@ class AdditionsPane(TogglePanel):
         cargoImg = BitmapLoader.getImage("cargo_small", "gui")
 
         self.notebook.AddPage(DroneView(self.notebook), "Drones", tabImage = droneImg, showClose = False)
+        self.notebook.AddPage(FighterView(self.notebook), "Fighters", tabImage = droneImg, showClose = False)
         self.notebook.AddPage(CargoView(self.notebook), "Cargo", tabImage = cargoImg, showClose = False)
         self.notebook.AddPage(ImplantView(self.notebook), "Implants", tabImage = implantImg, showClose = False)
         self.notebook.AddPage(BoosterView(self.notebook), "Boosters", tabImage = boosterImg, showClose = False)
@@ -68,7 +70,7 @@ class AdditionsPane(TogglePanel):
         self.notebook.AddPage(self.gangPage, "Fleet", tabImage = gangImg, showClose = False)
         self.notebook.SetSelection(0)
 
-    PANES = ["Drones", "Cargo", "Implants", "Boosters", "Projected", "Fleet"]
+    PANES = ["Drones", "Fighters", "Cargo", "Implants", "Boosters", "Projected", "Fleet"]
     def select(self, name):
         self.notebook.SetSelection(self.PANES.index(name))
 

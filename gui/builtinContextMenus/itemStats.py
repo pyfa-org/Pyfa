@@ -16,7 +16,7 @@ class ItemStats(ContextMenu):
                               "implantItem", "boosterItem",
                               "skillItem", "projectedModule",
                               "projectedDrone", "projectedCharge",
-                              "itemStats")
+                              "itemStats", "fighterItem")
 
     def getText(self, itmContext, selection):
         return "{0} Stats".format(itmContext if itmContext is not None else "Item")

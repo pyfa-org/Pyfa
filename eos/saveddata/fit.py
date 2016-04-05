@@ -53,6 +53,7 @@ class Fit(object):
 
         self.__modules = HandledModuleList()
         self.__drones = HandledDroneCargoList()
+        self.__fighters = HandledDroneCargoList()
         self.__cargo = HandledDroneCargoList()
         self.__implants = HandledImplantBoosterList()
         self.__boosters = HandledImplantBoosterList()
@@ -184,6 +185,10 @@ class Fit(object):
     @property
     def drones(self):
         return self.__drones
+
+    @property
+    def fighters(self):
+        return self.__fighters
 
     @property
     def cargo(self):
@@ -365,6 +370,7 @@ class Fit(object):
         c = chain(
             self.modules,
             self.drones,
+            self.fighters,
             self.boosters,
             self.implants,
             self.projectedDrones,
@@ -482,6 +488,7 @@ class Fit(object):
             u = [
                 (self.character, self.ship),
                 self.drones,
+                self.fighters,
                 self.boosters,
                 self.appliedImplants,
                 self.modules
@@ -999,7 +1006,7 @@ class Fit(object):
         copy.damagePattern = self.damagePattern
         copy.targetResists = self.targetResists
 
-        toCopy = ("modules", "drones", "cargo", "implants", "boosters", "projectedModules", "projectedDrones")
+        toCopy = ("modules", "drones", "fighters", "cargo", "implants", "boosters", "projectedModules", "projectedDrones")
         for name in toCopy:
             orig = getattr(self, name)
             c = getattr(copy, name)

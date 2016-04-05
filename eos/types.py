@@ -27,6 +27,7 @@ from eos.saveddata.targetResists import TargetResists
 from eos.saveddata.character import Character, Skill
 from eos.saveddata.module import Module, State, Slot, Hardpoint, Rack
 from eos.saveddata.drone import Drone
+from eos.saveddata.fighter import Fighter
 from eos.saveddata.cargo import Cargo
 from eos.saveddata.implant import Implant
 from eos.saveddata.booster import SideEffect

@@ -615,6 +615,45 @@ class Fit(object):
         self.recalc(fit)
         return True
 
+    def addFighter(self, fitID, itemID):
+        if fitID is None:
+            return False
+
+        fit = eos.db.getFit(fitID)
+        item = eos.db.getItem(itemID, eager=("attributes", "group.category"))
+        if item.category.name == "Fighter":
+            fighter = None
+            '''
+            for d in fit.fighters.find(item):
+                if d is not None and d.amountActive == 0 and d.amount < max(5, fit.extraAttributes["maxActiveDrones"]):
+                    drone = d
+                    break
+            '''
+            if fighter is None:
+                fighter = eos.types.Fighter(item)
+                if fighter.fits(fit) is True:
+                    fit.fighters.append(fighter)
+                else:
+                    return False
+            fighter.amount += 1
+            eos.db.commit()
+            self.recalc(fit)
+            return True
+        else:
+            return False
+
+    def removeFighter(self, fitID, i):
+        fit = eos.db.getFit(fitID)
+        f = fit.fighters[i]
+        f.amount -= 1
+
+        if f.amount == 0:
+            del fit.fighters[i]
+
+        eos.db.commit()
+        self.recalc(fit)
+        return True
+
     def addDrone(self, fitID, itemID):
         if fitID is None:
             return False

@@ -1,0 +1,251 @@
+#===============================================================================
+# Copyright (C) 2010 Diego Duclos
+#
+# This file is part of pyfa.
+#
+# pyfa is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# pyfa is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
+#===============================================================================
+
+import wx
+
+import service
+import gui.globalEvents as GE
+import gui.marketBrowser as mb
+import gui.display as d
+from gui.builtinViewColumns.state import State
+from gui.contextMenu import ContextMenu
+
+class FighterViewDrop(wx.PyDropTarget):
+        def __init__(self, dropFn):
+            wx.PyDropTarget.__init__(self)
+            self.dropFn = dropFn
+            # this is really transferring an EVE itemID
+            self.dropData = wx.PyTextDataObject()
+            self.SetDataObject(self.dropData)
+
+        def OnData(self, x, y, t):
+            if self.GetData():
+                data = self.dropData.GetText().split(':')
+                self.dropFn(x, y, data)
+            return t
+
+class FighterView(d.Display):
+    DEFAULT_COLS = [#"State",
+                    #"Base Icon",
+                    "Base Name",
+                    # "prop:droneDps,droneBandwidth",
+                    #"Max Range",
+                    #"Miscellanea",
+                    #"attr:maxVelocity",
+                    "Price",]
+
+    def __init__(self, parent):
+        d.Display.__init__(self, parent, style=wx.LC_SINGLE_SEL | wx.BORDER_NONE)
+
+        self.lastFitId = None
+
+        self.hoveredRow = None
+        self.hoveredColumn = None
+
+        self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
+        self.mainFrame.Bind(mb.ITEM_SELECTED, self.addItem)
+        self.Bind(wx.EVT_LEFT_DCLICK, self.removeItem)
+        self.Bind(wx.EVT_LEFT_DOWN, self.click)
+        self.Bind(wx.EVT_KEY_UP, self.kbEvent)
+        self.Bind(wx.EVT_MOTION, self.OnMouseMove)
+        self.Bind(wx.EVT_LEAVE_WINDOW, self.OnLeaveWindow)
+
+        if "__WXGTK__" in  wx.PlatformInfo:
+            self.Bind(wx.EVT_RIGHT_UP, self.scheduleMenu)
+        else:
+            self.Bind(wx.EVT_RIGHT_DOWN, self.scheduleMenu)
+
+
+        self.Bind(wx.EVT_LIST_BEGIN_DRAG, self.startDrag)
+        self.SetDropTarget(FighterViewDrop(self.handleDragDrop))
+
+    def OnLeaveWindow(self, event):
+        self.SetToolTip(None)
+        self.hoveredRow = None
+        self.hoveredColumn = None
+        event.Skip()
+
+    def OnMouseMove(self, event):
+        row, _, col = self.HitTestSubItem(event.Position)
+        if row != self.hoveredRow or col != self.hoveredColumn:
+            if self.ToolTip is not None:
+                self.SetToolTip(None)
+            else:
+                self.hoveredRow = row
+                self.hoveredColumn = col
+                if row != -1 and col != -1 and col < len(self.DEFAULT_COLS):
+                    mod = self.fighters[self.GetItemData(row)]
+                    if self.DEFAULT_COLS[col] == "Miscellanea":
+                        tooltip = self.activeColumns[col].getToolTip(mod)
+                        if tooltip is not None:
+                            self.SetToolTipString(tooltip)
+                        else:
+                            self.SetToolTip(None)
+                    else:
+                        self.SetToolTip(None)
+                else:
+                    self.SetToolTip(None)
+        event.Skip()
+
+    def kbEvent(self, event):
+        keycode = event.GetKeyCode()
+        if keycode == wx.WXK_DELETE or keycode == wx.WXK_NUMPAD_DELETE:
+            row = self.GetFirstSelected()
+            firstSel = row
+            if row != -1:
+                fighter = self.fighters[self.GetItemData(row)]
+                self.removeFighter(fighter)
+
+        event.Skip()
+
+    def startDrag(self, event):
+        row = event.GetIndex()
+        if row != -1:
+            data = wx.PyTextDataObject()
+            data.SetText("fighter:"+str(row))
+
+            dropSource = wx.DropSource(self)
+            dropSource.SetData(data)
+            res = dropSource.DoDragDrop()
+
+    def handleDragDrop(self, x, y, data):
+        '''
+        Handles dragging of items from various pyfa displays which support it
+
+        data is list with two indices:
+            data[0] is hard-coded str of originating source
+            data[1] is typeID or index of data we want to manipulate
+        '''
+        if data[0] == "fighter":  # we want to merge fighters
+            srcRow = int(data[1])
+            dstRow, _ = self.HitTest((x, y))
+            if srcRow != -1 and dstRow != -1:
+                self._merge(srcRow, dstRow)
+        elif data[0] == "market":
+            wx.PostEvent(self.mainFrame, mb.ItemSelected(itemID=int(data[1])))
+
+    def _merge(self, src, dst):
+        print "merge fighters {} -> {}".format(src, dst)
+        raise NotImplementedError()
+
+        sFit = service.Fit.getInstance()
+        fitID = self.mainFrame.getActiveFit()
+        if sFit.mergeDrones(fitID, self.drones[src], self.drones[dst]):
+            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+
+    '''
+    DRONE_ORDER = ('Light Scout Drones', 'Medium Scout Drones',
+                   'Heavy Attack Drones', 'Sentry Drones', 'Fighters',
+                   'Fighter Bombers', 'Combat Utility Drones',
+                   'Electronic Warfare Drones', 'Logistic Drones', 'Mining Drones', 'Salvage Drones',
+                   'Light Fighters', 'Heavy Fighters', 'Support Fighters')
+    def droneKey(self, drone):
+        sMkt = service.Market.getInstance()
+
+        groupName = sMkt.getMarketGroupByItem(drone.item).name
+        print groupName
+        return (self.DRONE_ORDER.index(groupName),
+                drone.item.name)
+    '''
+
+    def fitChanged(self, event):
+
+        #Clear list and get out if current fitId is None
+        if event.fitID is None and self.lastFitId is not None:
+            self.DeleteAllItems()
+            self.lastFitId = None
+            event.Skip()
+            return
+
+        sFit = service.Fit.getInstance()
+        fit = sFit.getFit(event.fitID)
+
+        self.original = fit.fighters if fit is not None else None
+        self.fighters = stuff = fit.fighters[:] if fit is not None else None
+
+        '''
+        if stuff is not None:
+            stuff.sort(key=self.droneKey)
+        '''
+
+        if event.fitID != self.lastFitId:
+            self.lastFitId = event.fitID
+
+            item = self.GetNextItem(-1, wx.LIST_NEXT_ALL, wx.LIST_STATE_DONTCARE)
+
+            if item != -1:
+                self.EnsureVisible(item)
+
+            self.deselectItems()
+
+        self.update(stuff)
+        event.Skip()
+
+
+    def addItem(self, event):
+        sFit = service.Fit.getInstance()
+        fitID = self.mainFrame.getActiveFit()
+        trigger = sFit.addFighter(fitID, event.itemID)
+        if trigger:
+            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+            self.mainFrame.additionsPane.select("Fighters")
+
+        event.Skip()
+
+    def removeItem(self, event):
+        row, _ = self.HitTest(event.Position)
+        if row != -1:
+            col = self.getColumn(event.Position)
+            if col != self.getColIndex(State):
+                fighter = self.fighters[self.GetItemData(row)]
+                self.removeFighter(fighter)
+
+    def removeFighter(self, fighter):
+        fitID = self.mainFrame.getActiveFit()
+        sFit = service.Fit.getInstance()
+        sFit.removeFighter(fitID, self.original.index(fighter))
+        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+
+    def click(self, event):
+        event.Skip()
+        row, _ = self.HitTest(event.Position)
+        if row != -1:
+            col = self.getColumn(event.Position)
+            if col == self.getColIndex(State):
+                fitID = self.mainFrame.getActiveFit()
+                sFit = service.Fit.getInstance()
+                fighter = self.fighters[row]
+                sFit.toggleFighter(fitID, self.original.index(fighter))
+                wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+
+    def scheduleMenu(self, event):
+        event.Skip()
+        if self.getColumn(event.Position) != self.getColIndex(State):
+            wx.CallAfter(self.spawnMenu)
+
+    def spawnMenu(self):
+        sel = self.GetFirstSelected()
+        if sel != -1:
+            fighter = self.fighters[sel]
+
+            sMkt = service.Market.getInstance()
+            sourceContext = "fighterItem"
+            itemContext = sMkt.getCategoryByItem(fighter.item).name
+            menu = ContextMenu.getMenu((fighter,), (sourceContext, itemContext))
+            self.PopupMenu(menu)
