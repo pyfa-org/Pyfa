@@ -24,7 +24,7 @@ from gui.bitmapLoader import BitmapLoader
 import sys
 import wx.lib.mixins.listctrl as listmix
 import wx.html
-from eos.types import Fit, Ship, Module, Skill, Booster, Implant, Drone, Mode
+from eos.types import Fit, Ship, Module, Skill, Booster, Implant, Drone, Mode, Fighter
 from gui.utils.numberFormatter import formatAmount
 import service
 import config
@@ -242,6 +242,10 @@ class ItemDescription ( wx.Panel ):
         fgcolor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOWTEXT)
 
         self.description = wx.html.HtmlWindow(self)
+
+        if not item.description:
+            return
+
         desc = item.description.replace("\r", "<br>")
         # Strip font tags
         desc = re.sub("<( *)font( *)color( *)=(.*?)>(?P<inside>.*?)<( *)/( *)font( *)>", "\g<inside>", desc)
@@ -557,7 +561,7 @@ class ItemEffects (wx.Panel):
 
 
 class ItemAffectedBy (wx.Panel):
-    ORDER = [Fit, Ship, Mode, Module, Drone, Implant, Booster, Skill]
+    ORDER = [Fit, Ship, Mode, Module, Drone, Fighter, Implant, Booster, Skill]
     def __init__(self, parent, stuff, item):
         wx.Panel.__init__(self, parent)
         self.stuff = stuff
