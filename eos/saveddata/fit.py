@@ -754,20 +754,20 @@ class Fit(object):
                 repairers = []
                 #Map a repairer type to the attribute it uses
                 groupAttrMap = {"Armor Repair Unit": "armorDamageAmount",
-                     "Fueled Armor Repairer": "armorDamageAmount",
+                     "Ancillary Armor Repairer": "armorDamageAmount",
                      "Hull Repair Unit": "structureDamageAmount",
                      "Shield Booster": "shieldBonus",
-                     "Fueled Shield Booster": "shieldBonus",
+                     "Ancillary Shield Booster": "shieldBonus",
                      "Remote Armor Repairer": "armorDamageAmount",
                      "Remote Shield Booster": "shieldBonus"}
                 #Map repairer type to attribute
                 groupStoreMap = {"Armor Repair Unit": "armorRepair",
                                  "Hull Repair Unit": "hullRepair",
                                  "Shield Booster": "shieldRepair",
-                                 "Fueled Shield Booster": "shieldRepair",
+                                 "Ancillary Shield Booster": "shieldRepair",
                                  "Remote Armor Repairer": "armorRepair",
                                  "Remote Shield Booster": "shieldRepair",
-                                 "Fueled Armor Repairer": "armorRepair",}
+                                 "Ancillary Armor Repairer": "armorRepair",}
 
                 capUsed = self.capUsed
                 for attr in ("shieldRepair", "armorRepair", "hullRepair"):

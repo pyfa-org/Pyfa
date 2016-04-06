@@ -205,7 +205,7 @@ class Miscellanea(ViewColumn):
 
             tooltip = "{0} disruption".format(formatList(ttEntries)).capitalize()
             return text, tooltip
-        elif itemGroup in ("ECM", "Burst Jammer", "Remote ECM Burst"):
+        elif itemGroup in ("ECM", "Burst Jammer", "Burst Projectors"):
             grav = stuff.getModifiedItemAttr("scanGravimetricStrengthBonus")
             ladar = stuff.getModifiedItemAttr("scanLadarStrengthBonus")
             radar = stuff.getModifiedItemAttr("scanRadarStrengthBonus")
@@ -458,7 +458,7 @@ class Miscellanea(ViewColumn):
                 return text, item.name
             else:
                 return "", None
-        elif itemGroup in ("Fueled Armor Repairer", "Fueled Shield Booster"):
+        elif itemGroup in ("Ancillary Armor Repairer", "Ancillary Shield Booster"):
             hp = stuff.hpBeforeReload
             cycles = stuff.numShots
             cycleTime = stuff.rawCycleTime
@@ -470,7 +470,7 @@ class Miscellanea(ViewColumn):
             useEhp = self.mainFrame.statsPane.nameViewMap["resistancesViewFull"].showEffective
             tooltip = "HP restored over duration using charges"
             if useEhp:
-                if itemGroup == "Fueled Armor Repairer":
+                if itemGroup == "Ancillary Armor Repairer":
                     hpRatio = ehpTotal["armor"] / hpTotal["armor"]
                 else:
                     hpRatio = ehpTotal["shield"] / hpTotal["shield"]
@@ -487,7 +487,7 @@ class Miscellanea(ViewColumn):
             if chargeGroup in ("Rocket", "Advanced Rocket", "Light Missile", "Advanced Light Missile", "FoF Light Missile",
                                "Heavy Assault Missile", "Advanced Heavy Assault Missile", "Heavy Missile", "Advanced Heavy Missile", "FoF Heavy Missile",
                                "Torpedo", "Advanced Torpedo", "Cruise Missile", "Advanced Cruise Missile", "FoF Cruise Missile",
-                               "Capital Torpedo", "Capital Cruise"):
+                               "XL Torpedo", "XL Cruise Missile"):
                 cloudSize = stuff.getModifiedChargeAttr("aoeCloudSize")
                 aoeVelocity = stuff.getModifiedChargeAttr("aoeVelocity")
                 if not cloudSize or not aoeVelocity:
