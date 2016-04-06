@@ -1,3 +1,7 @@
+# shipBonusSupercarrierM1FighterDamage
+#
+# Used by:
+# Ship: Hel
 type = "passive"
 def handler(fit, src, context):
     fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill("Fighters"), "fighterAbilityAttackMissileDamageMultiplier", src.getModifiedItemAttr("shipBonusSupercarrierM1"), skill="Minmatar Carrier")

@@ -1,3 +1,7 @@
+# shipBonusDreadnoughtA2ArmorResists
+#
+# Used by:
+# Ship: Revelation
 type = "passive"
 def handler(fit, src, context):
     fit.ship.boostItemAttr("armorExplosiveDamageResonance", src.getModifiedItemAttr("shipBonusDreadnoughtA2"), skill="Amarr Dreadnought")

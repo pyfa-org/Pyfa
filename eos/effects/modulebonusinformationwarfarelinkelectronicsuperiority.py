@@ -1,4 +1,4 @@
-# gangInformationWarfareSuperiorityAll2
+# moduleBonusInformationWarfareLinkElectronicSuperiority
 #
 # Used by:
 # Variations of module: Information Warfare Link - Electronic Superiority I (2 of 2)

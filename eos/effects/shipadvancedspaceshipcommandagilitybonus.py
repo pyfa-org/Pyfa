@@ -1,7 +1,7 @@
 # shipAdvancedSpaceshipCommandAgilityBonus
 #
 # Used by:
-# Items from market group: Ships > Capital Ships (27 of 28)
+# Items from market group: Ships > Capital Ships (31 of 32)
 type = "passive"
 def handler(fit, ship, context):
     skillName = "Advanced Spaceship Command"

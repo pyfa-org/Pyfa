@@ -1,3 +1,7 @@
+# shipBonusForceAuxiliaryM4WarfareLinksBonus
+#
+# Used by:
+# Ship: Lif
 type = "passive"
 def handler(fit, src, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Skirmish Warfare Specialist"), "commandBonus", src.getModifiedItemAttr("shipBonusForceAuxiliaryM4"), skill="Minmatar Carrier")

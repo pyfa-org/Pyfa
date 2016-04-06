@@ -1,9 +1,7 @@
 # speedBoostMassAddition
 #
 # Used by:
-# Variations of module: 100MN Afterburner I (25 of 25)
-# Variations of module: 10MN Afterburner I (15 of 15)
-# Variations of module: 1MN Afterburner I (16 of 16)
+# Modules from group: Propulsion Module (62 of 127)
 type = "active"
 runTime = "late"
 def handler(fit, module, context):

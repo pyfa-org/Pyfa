@@ -1,4 +1,4 @@
-# gangGasHarvesterAndIceHarvesterAndMiningLaserDurationBonus
+# moduleBonusMiningForemanLinkLaserOptimization
 #
 # Used by:
 # Variations of module: Mining Foreman Link - Laser Optimization I (2 of 2)

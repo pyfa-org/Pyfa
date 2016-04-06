@@ -1,4 +1,4 @@
-# gangArmorRepairCapReducerSelfAndProjected
+# moduleBonusArmoredWarfareLinkDamageControl
 #
 # Used by:
 # Variations of module: Armored Warfare Link - Damage Control I (2 of 2)

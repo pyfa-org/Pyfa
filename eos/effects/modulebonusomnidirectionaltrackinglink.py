@@ -1,3 +1,7 @@
+# moduleBonusOmnidirectionalTrackingLink
+#
+# Used by:
+# Modules from group: Drone Tracking Modules (10 of 10)
 type = "passive"
 def handler(fit, src, context):
     fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill("Fighters"), "fighterAbilityAttackTurretRangeFalloff", src.getModifiedItemAttr("falloffBonus"))

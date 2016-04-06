@@ -1,3 +1,7 @@
+# skillBonusDoomsdayRapidFiring
+#
+# Used by:
+# Skill: Doomsday Rapid Firing
 type = "passive"
 def handler(fit, src, context):
     lvl = src.level

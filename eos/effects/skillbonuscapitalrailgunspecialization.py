@@ -1,3 +1,7 @@
+# skillBonusCapitalRailgunSpecialization
+#
+# Used by:
+# Skill: Capital Railgun Specialization
 type = "passive"
 def handler(fit, src, context):
     lvl = src.level

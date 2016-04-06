@@ -1,4 +1,4 @@
-# gangPropulsionJammingBoost
+# moduleBonusSkirmishWarfareLinkInterdictionManeuvers
 #
 # Used by:
 # Variations of module: Skirmish Warfare Link - Interdiction Maneuvers I (2 of 2)

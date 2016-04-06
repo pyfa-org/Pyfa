@@ -1,3 +1,7 @@
+# shipBonusDreadnoughtC2ShieldResists
+#
+# Used by:
+# Ship: Phoenix
 type = "passive"
 def handler(fit, src, context):
     fit.ship.boostItemAttr("shieldThermalDamageResonance", src.getModifiedItemAttr("shipBonusDreadnoughtC2"), skill="Caldari Dreadnought")

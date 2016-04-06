@@ -1,7 +1,7 @@
 # remoteShieldTransferFalloff
 #
 # Used by:
-# Modules from group: Remote Shield Booster (31 of 31)
+# Modules from group: Remote Shield Booster (38 of 38)
 type = "projected", "active"
 def handler(fit, container, context):
     if "projected" in context:

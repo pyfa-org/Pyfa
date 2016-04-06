@@ -1,3 +1,7 @@
+# shipBonusCarrierA1ArmorResists
+#
+# Used by:
+# Ship: Archon
 type = "passive"
 def handler(fit, src, context):
     fit.ship.boostItemAttr("armorKineticDamageResonance", src.getModifiedItemAttr("shipBonusCarrierA1"), skill="Amarr Carrier")

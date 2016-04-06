@@ -1,3 +1,7 @@
+# shipBonusCarrierG1FighterDamageAndHitpoints
+#
+# Used by:
+# Ship: Thanatos
 type = "passive"
 def handler(fit, src, context):
     fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill("Fighters"), "fighterAbilityMissilesDamageMultiplier", src.getModifiedItemAttr("shipBonusCarrierG1"), skill="Gallente Carrier")

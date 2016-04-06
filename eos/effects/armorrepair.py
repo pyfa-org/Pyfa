@@ -1,7 +1,7 @@
 # armorRepair
 #
 # Used by:
-# Modules from group: Armor Repair Unit (100 of 100)
+# Modules from group: Armor Repair Unit (105 of 105)
 runTime = "late"
 type = "active"
 def handler(fit, module, context):

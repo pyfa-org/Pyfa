@@ -1,7 +1,7 @@
-# gangShieldHardening
+# moduleBonusSiegeWarfareLinkShieldEfficiency
 #
 # Used by:
-# Variations of module: Siege Warfare Link - Shield Harmonizing I (2 of 2)
+# Variations of module: Siege Warfare Link - Shield Efficiency I (2 of 2)
 type = "gang", "active"
 gangBoost = "shieldResistance"
 runTime = "late"

@@ -1,3 +1,7 @@
+# shipBonusForceAuxiliaryA2ArmorResists
+#
+# Used by:
+# Ship: Apostle
 type = "passive"
 def handler(fit, src, context):
     fit.ship.boostItemAttr("armorKineticDamageResonance", src.getModifiedItemAttr("shipBonusForceAuxiliaryA2"), skill="Amarr Carrier")

@@ -1,7 +1,7 @@
 # selfRof
 #
 # Used by:
-# Skills named like: Missile Specialization (4 of 4)
+# Skills named like: Missile Specialization (4 of 5)
 # Skill: Rocket Specialization
 # Skill: Torpedo Specialization
 type = "passive"

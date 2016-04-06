@@ -1,4 +1,4 @@
-# gangArmorHardening
+# moduleBonusArmoredWarfareLinkPassiveDefense
 #
 # Used by:
 # Variations of module: Armored Warfare Link - Passive Defense I (2 of 2)

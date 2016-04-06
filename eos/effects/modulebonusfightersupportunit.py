@@ -1,3 +1,7 @@
+# moduleBonusFighterSupportUnit
+#
+# Used by:
+# Modules from group: Fighter Support Unit (8 of 8)
 type = "passive"
 def handler(fit, src, context):
     fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill("Fighters"), "fighterAbilityAttackMissileDuration", src.getModifiedItemAttr("fighterBonusROFPercent"))

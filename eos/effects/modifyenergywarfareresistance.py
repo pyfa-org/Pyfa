@@ -1,7 +1,7 @@
 # modifyEnergyWarfareResistance
 #
 # Used by:
-# Modules from group: Capacitor Battery (22 of 22)
+# Modules from group: Capacitor Battery (27 of 27)
 type = "passive"
 def handler(fit, module, context):
     fit.ship.boostItemAttr("energyWarfareResistance",

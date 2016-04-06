@@ -1,3 +1,7 @@
+# moduleBonusOmnidirectionalTrackingEnhancer
+#
+# Used by:
+# Modules from group: Drone Tracking Enhancer (10 of 10)
 type = "passive"
 def handler(fit, src, context):
     fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill("Fighters"), "fighterAbilityAttackMissileExplosionRadius", src.getModifiedItemAttr("aoeCloudSizeBonus"))

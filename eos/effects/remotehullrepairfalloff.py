@@ -1,7 +1,7 @@
 # remoteHullRepairFalloff
 #
 # Used by:
-# Modules from group: Remote Hull Repairer (7 of 7)
+# Modules from group: Remote Hull Repairer (8 of 8)
 type = "projected", "active"
 runTime = "late"
 def handler(fit, module, context):

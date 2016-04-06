@@ -1,3 +1,7 @@
+# shipBonusSupercarrierC2ShieldResists
+#
+# Used by:
+# Ship: Wyvern
 type = "passive"
 def handler(fit, src, context):
     fit.ship.boostItemAttr("shieldThermalDamageResonance", src.getModifiedItemAttr("shipBonusSupercarrierC2"), skill="Caldari Carrier")

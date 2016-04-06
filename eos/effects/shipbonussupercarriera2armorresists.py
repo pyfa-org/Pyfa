@@ -1,3 +1,7 @@
+# shipBonusSupercarrierA2ArmorResists
+#
+# Used by:
+# Ship: Aeon
 type = "passive"
 def handler(fit, src, context):
     fit.ship.boostItemAttr("armorExplosiveDamageResonance", src.getModifiedItemAttr("shipBonusSupercarrierA2"), skill="Amarr Carrier")

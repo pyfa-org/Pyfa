@@ -1,3 +1,7 @@
+# shipBonusTitanC5AllDamageBonus
+#
+# Used by:
+# Ship: Leviathan
 type = "passive"
 def handler(fit, src, context):
     fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill("XL Torpedoes"), "thermalDamage", src.getModifiedItemAttr("shipBonusDreadnoughtC1"), skill="Caldari Dreadnought")

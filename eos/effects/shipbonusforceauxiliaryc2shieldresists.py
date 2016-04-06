@@ -1,3 +1,7 @@
+# shipBonusForceAuxiliaryC2ShieldResists
+#
+# Used by:
+# Ship: Minokawa
 type = "passive"
 def handler(fit, src, context):
     fit.ship.boostItemAttr("shieldEmDamageResonance", src.getModifiedItemAttr("shipBonusForceAuxiliaryC2"), skill="Caldari Carrier")

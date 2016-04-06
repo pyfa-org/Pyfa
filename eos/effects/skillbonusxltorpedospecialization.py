@@ -1,3 +1,7 @@
+# skillBonusXLTorpedoSpecialization
+#
+# Used by:
+# Skill: XL Torpedo Specialization
 type = "passive"
 def handler(fit, src, context):
     lvl = src.level

@@ -1,3 +1,7 @@
+# skillBonusCapitalArtillerySpecialization
+#
+# Used by:
+# Skill: Capital Artillery Specialization
 type = "passive"
 def handler(fit, src, context):
     lvl = src.level

@@ -1,3 +1,7 @@
+# skillBonusCapitalBeamLaserSpecialization
+#
+# Used by:
+# Skill: Capital Beam Laser Specialization
 type = "passive"
 def handler(fit, src, context):
     lvl = src.level

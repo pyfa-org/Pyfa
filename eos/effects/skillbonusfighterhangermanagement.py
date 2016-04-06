@@ -1,3 +1,7 @@
+# skillBonusFighterHangerManagement
+#
+# Used by:
+# Skill: Fighter Hangar Management
 type = "passive"
 def handler(fit, src, context):
     lvl = src.level

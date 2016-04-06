@@ -1,7 +1,7 @@
 # superWeaponAmarr
 #
 # Used by:
-# Module: Judgement
+# Module: 'Judgment' Electromagnetic Doomsday
 type = 'active'
 def handler(fit, module, context):
     pass

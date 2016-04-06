@@ -1,3 +1,7 @@
+# shipBonusForceAuxiliaryM1RemoteCycleTime
+#
+# Used by:
+# Ship: Lif
 type = "passive"
 def handler(fit, src, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Shield Emission Systems"), "duration", src.getModifiedItemAttr("shipBonusForceAuxiliaryM1"), skill="Minmatar Carrier")
