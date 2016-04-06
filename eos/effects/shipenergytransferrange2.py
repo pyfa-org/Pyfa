@@ -6,4 +6,4 @@
 type = "passive"
 def handler(fit, ship, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == "Remote Capacitor Transmitter",
-                                  "powerTransferRange", ship.getModifiedItemAttr("shipBonusCC2"), skill="Caldari Cruiser")
+                                  "maxRange", ship.getModifiedItemAttr("shipBonusCC2"), skill="Caldari Cruiser")
