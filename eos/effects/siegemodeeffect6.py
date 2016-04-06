@@ -46,7 +46,7 @@ def handler(fit, module, context):
     fit.ship.boostItemAttr("maxVelocity", module.getModifiedItemAttr("speedFactor"))
 
     #Mass
-    fit.ship.multiplyItemAttr("mass", module.getModifiedItemAttr("massMultiplier"))
+    fit.ship.multiplyItemAttr("mass", module.getModifiedItemAttr("siegeMassMultiplier"))
 
     #Scan resolution
     fit.ship.multiplyItemAttr("scanResolution", module.getModifiedItemAttr("scanResolutionMultiplier"),

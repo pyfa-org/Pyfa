@@ -1,7 +1,10 @@
 # eliteBonusCommandShipArmoredCS3
 #
 # Used by:
-# Ships from group: Command Ship (4 of 8)
+# Ship: Absolution
+# Ship: Astarte
+# Ship: Damnation
+# Ship: Eos
 type = "passive"
 def handler(fit, ship, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Armored Warfare Specialist"),

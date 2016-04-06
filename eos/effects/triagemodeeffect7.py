@@ -53,7 +53,7 @@ def handler(fit, module, context):
                               stackingPenalties=True)
 
     # Mass multiplier
-    fit.ship.multiplyItemAttr("mass", module.getModifiedItemAttr("massMultiplier"),
+    fit.ship.multiplyItemAttr("mass", module.getModifiedItemAttr("siegeMassMultiplier"),
                               stackingPenalties=True)
 
     # Lock range
