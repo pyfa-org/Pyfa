@@ -47,8 +47,10 @@ class FighterView(d.Display):
                     # "prop:droneDps,droneBandwidth",
                     #"Max Range",
                     #"Miscellanea",
-                    #"attr:maxVelocity",
-                    "Price",]
+                    "attr:maxVelocity",
+                    "attr:fighterAbilityAttackMissileDamageMultiplier"
+                    #"Price",
+    ]
 
     def __init__(self, parent):
         d.Display.__init__(self, parent, style=wx.LC_SINGLE_SEL | wx.BORDER_NONE)
