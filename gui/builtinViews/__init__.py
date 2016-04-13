@@ -1,1 +1,1 @@
-__all__ = ["fittingView", "fleetView"]
+__all__ = ["fittingView", "fleetView", "implantEditor"]

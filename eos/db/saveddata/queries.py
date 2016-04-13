@@ -20,7 +20,7 @@
 from eos.db.util import processEager, processWhere
 from eos.db import saveddata_session, sd_lock
 
-from eos.types import User, Character, Fit, Price, DamagePattern, Fleet, MiscData, Wing, Squad, TargetResists, Override, CrestChar
+from eos.types import *
 from eos.db.saveddata.fleet import squadmembers_table
 from eos.db.saveddata.fit import projectedFits_table
 from sqlalchemy.sql import and_
@@ -154,7 +154,7 @@ def getCharacter(lookfor, eager=None):
     elif isinstance(lookfor, basestring):
         eager = processEager(eager)
         with sd_lock:
-            character = saveddata_session.query(Character).options(*eager).filter(Character.name == lookfor).first()
+            character = saveddata_session.query(Character).options(*eager).filter(Character.savedName == lookfor).first()
     else:
         raise TypeError("Need integer or string as argument")
     return character
@@ -349,6 +349,12 @@ def getTargetResistsList(eager=None):
         patterns = saveddata_session.query(TargetResists).options(*eager).all()
     return patterns
 
+def getImplantSetList(eager=None):
+    eager = processEager(eager)
+    with sd_lock:
+        sets = saveddata_session.query(ImplantSet).options(*eager).all()
+    return sets
+
 @cachedQuery(DamagePattern, 1, "lookfor")
 def getDamagePattern(lookfor, eager=None):
     if isinstance(lookfor, int):
@@ -383,6 +389,24 @@ def getTargetResists(lookfor, eager=None):
             pattern = saveddata_session.query(TargetResists).options(*eager).filter(TargetResists.name == lookfor).first()
     else:
         raise TypeError("Need integer or string as argument")
+    return pattern
+
+@cachedQuery(ImplantSet, 1, "lookfor")
+def getImplantSet(lookfor, eager=None):
+    if isinstance(lookfor, int):
+        if eager is None:
+            with sd_lock:
+                pattern = saveddata_session.query(ImplantSet).get(lookfor)
+        else:
+            eager = processEager(eager)
+            with sd_lock:
+                pattern = saveddata_session.query(ImplantSet).options(*eager).filter(TargetResists.ID == lookfor).first()
+    elif isinstance(lookfor, basestring):
+        eager = processEager(eager)
+        with sd_lock:
+            pattern = saveddata_session.query(ImplantSet).options(*eager).filter(TargetResists.name == lookfor).first()
+    else:
+        raise TypeError("Improper argument")
     return pattern
 
 def searchFits(nameLike, where=None, eager=None):

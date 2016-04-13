@@ -21,12 +21,62 @@ import wx
 import service
 import gui.display as d
 import gui.marketBrowser as mb
+import gui.mainFrame
 from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
 import globalEvents as GE
-class ImplantView(d.Display):
+from eos.types import ImplantLocation
+
+
+class ImplantView(wx.Panel):
+    def __init__(self, parent):
+        wx.Panel.__init__(self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, style=wx.TAB_TRAVERSAL )
+        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+
+        mainSizer = wx.BoxSizer(wx.VERTICAL)
+
+        self.implantDisplay = ImplantDisplay(self)
+        mainSizer.Add(self.implantDisplay, 1, wx.EXPAND, 0 )
+
+        radioSizer = wx.BoxSizer(wx.HORIZONTAL)
+        radioSizer.AddSpacer(( 0, 0), 1, wx.EXPAND, 5)
+        self.rbFit = wx.RadioButton(self, id=wx.ID_ANY, label="Use Fit-specific Implants", style=wx.RB_GROUP)
+        self.rbChar = wx.RadioButton(self, id=wx.ID_ANY, label="Use Character Implants")
+        radioSizer.Add(self.rbFit, 0, wx.ALL, 5)
+        radioSizer.Add(self.rbChar, 0, wx.ALL, 5)
+        radioSizer.AddSpacer((0, 0), 1, wx.EXPAND, 5)
+
+        mainSizer.Add(radioSizer, 0, wx.EXPAND, 5)
+
+        self.SetSizer( mainSizer )
+        self.SetAutoLayout(True)
+
+        self.Bind(wx.EVT_RADIOBUTTON, self.OnRadioSelect, self.rbFit)
+        self.Bind(wx.EVT_RADIOBUTTON, self.OnRadioSelect, self.rbChar)
+        self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
+
+    def fitChanged(self, event):
+        sFit = service.Fit.getInstance()
+        activeFitID = self.mainFrame.getActiveFit()
+        fit = sFit.getFit(activeFitID)
+        if fit:
+            if fit.implantSource == ImplantLocation.FIT:
+                self.rbFit.SetValue(True)
+            else:
+                self.rbChar.SetValue(True)
+
+    def OnRadioSelect(self, event):
+        fitID = self.mainFrame.getActiveFit()
+        sFit = service.Fit.getInstance()
+        sFit.toggleImplantSource(fitID, ImplantLocation.FIT if self.rbFit.GetValue() else ImplantLocation.CHARACTER)
+
+        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+
+
+class ImplantDisplay(d.Display):
     DEFAULT_COLS = ["State",
                     "attr:implantness",
+                    "Base Icon",
                     "Base Name"]
 
     def __init__(self, parent):
@@ -65,7 +115,7 @@ class ImplantView(d.Display):
         fit = sFit.getFit(event.fitID)
 
         self.original = fit.implants if fit is not None else None
-        self.implants = stuff = fit.implants if fit is not None else None
+        self.implants = stuff = fit.appliedImplants if fit is not None else None
         if stuff is not None: stuff.sort(key=lambda implant: implant.slot)
 
         if event.fitID != self.lastFitId:
@@ -78,8 +128,7 @@ class ImplantView(d.Display):
 
             self.deselectItems()
 
-        self.populate(stuff)
-        self.refresh(stuff)
+        self.update(stuff)
         event.Skip()
 
     def addItem(self, event):
@@ -123,14 +172,27 @@ class ImplantView(d.Display):
 
     def spawnMenu(self):
         sel = self.GetFirstSelected()
+        menu = None
+
+        sFit = service.Fit.getInstance()
+        fit = sFit.getFit(self.mainFrame.getActiveFit())
+
+        if not fit:
+            return
+
         if sel != -1:
-            sFit = service.Fit.getInstance()
-            fit = sFit.getFit(self.mainFrame.getActiveFit())
-            implant = fit.implants[sel]
+            implant = fit.appliedImplants[sel]
 
             sMkt = service.Market.getInstance()
-            sourceContext = "implantItem"
+            sourceContext = "implantItem" if fit.implantSource == ImplantLocation.FIT else "implantItemChar"
             itemContext = sMkt.getCategoryByItem(implant.item).name
 
             menu = ContextMenu.getMenu((implant,), (sourceContext, itemContext))
+        elif sel == -1 and fit.implantSource == ImplantLocation.FIT:
+            fitID = self.mainFrame.getActiveFit()
+            if fitID is None:
+                return
+            context = (("implantView",),)
+            menu = ContextMenu.getMenu([], *context)
+        if menu is not None:
             self.PopupMenu(menu)

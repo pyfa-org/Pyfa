@@ -22,7 +22,7 @@ from gui.viewColumn import ViewColumn
 import gui.mainFrame
 
 import wx
-from eos.types import Drone, Cargo, Fit, Module, Slot, Rack
+from eos.types import Drone, Cargo, Fit, Module, Slot, Rack, Implant
 import service
 
 class BaseName(ViewColumn):
@@ -61,6 +61,8 @@ class BaseName(ViewColumn):
                 return "%s Slot" % Slot.getName(stuff.slot).capitalize()
             else:
                 return stuff.item.name
+        elif isinstance(stuff, Implant):
+            return stuff.item.name
         else:
             item = getattr(stuff, "item", stuff)
 

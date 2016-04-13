@@ -36,4 +36,8 @@ charImplants_table = Table("charImplants", saveddata_meta,
                            Column("charID", ForeignKey("characters.ID"), index = True),
                            Column("implantID", ForeignKey("implants.ID"), primary_key = True))
 
+implantsSetMap_table = Table("implantSetMap", saveddata_meta,
+                             Column("setID", ForeignKey("implantSets.ID"), index = True),
+                             Column("implantID", ForeignKey("implants.ID"), primary_key = True))
+
 mapper(Implant, implants_table)

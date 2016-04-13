@@ -277,7 +277,7 @@ class Fit(object):
                 fit.timestamp))
         return fits
 
-    def addImplant(self, fitID, itemID):
+    def addImplant(self, fitID, itemID, recalc=True):
         if fitID is None:
             return False
 
@@ -289,7 +289,8 @@ class Fit(object):
             return False
 
         fit.implants.append(implant)
-        self.recalc(fit)
+        if recalc:
+            self.recalc(fit)
         return True
 
     def removeImplant(self, fitID, position):
@@ -755,6 +756,14 @@ class Fit(object):
         fit = eos.db.getFit(fitID)
         implant = fit.implants[i]
         implant.active = not implant.active
+
+        eos.db.commit()
+        self.recalc(fit)
+        return True
+
+    def toggleImplantSource(self, fitID, source):
+        fit = eos.db.getFit(fitID)
+        fit.implantSource = source
 
         eos.db.commit()
         self.recalc(fit)

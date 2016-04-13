@@ -1,5 +1,5 @@
 #===============================================================================
-# Copyright (C) 2010 Diego Duclos
+# Copyright (C) 2016 Ryan Holmes
 #
 # This file is part of eos.
 #
@@ -21,38 +21,25 @@ from sqlalchemy import Table, Column, Integer, ForeignKey, String
 from sqlalchemy.orm import relation, mapper
 
 from eos.db import saveddata_meta
-from eos.db.saveddata.implant import charImplants_table
-from eos.types import Character, User, Skill, Implant
+from eos.db.saveddata.implant import implantsSetMap_table
+from eos.types import Implant, ImplantSet
 from eos.effectHandlerHelpers import HandledImplantBoosterList
 
-characters_table = Table("characters", saveddata_meta,
+implant_set_table = Table("implantSets", saveddata_meta,
                          Column("ID", Integer, primary_key = True),
                          Column("name", String, nullable = False),
-                         Column("apiID", Integer),
-                         Column("apiKey", String),
-                         Column("defaultChar", Integer),
-                         Column("chars", String, nullable = True),
-                         Column("defaultLevel", Integer, nullable=True),
-                         Column("ownerID", ForeignKey("users.ID"), nullable = True))
+)
 
-mapper(Character, characters_table,
+mapper(ImplantSet, implant_set_table,
         properties = {
-            "savedName": characters_table.c.name,
-            "_Character__owner": relation(
-                User,
-                backref = "characters"),
-            "_Character__skills": relation(
-                Skill,
-                backref="character",
-                cascade = "all,delete-orphan"),
-            "_Character__implants": relation(
+            "_ImplantSet__implants": relation(
                 Implant,
                 collection_class = HandledImplantBoosterList,
-                cascade='all,delete-orphan',
-                backref='character',
+                cascade='all, delete, delete-orphan',
+                backref='set',
                 single_parent=True,
-                primaryjoin = charImplants_table.c.charID == characters_table.c.ID,
-                secondaryjoin = charImplants_table.c.implantID == Implant.ID,
-                secondary = charImplants_table),
+                primaryjoin = implantsSetMap_table.c.setID == implant_set_table.c.ID,
+                secondaryjoin = implantsSetMap_table.c.implantID == Implant.ID,
+                secondary = implantsSetMap_table),
         }
 )

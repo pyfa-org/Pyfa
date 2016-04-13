@@ -22,7 +22,7 @@ from gui.bitmapLoader import BitmapLoader
 import gui.mainFrame
 
 import wx
-from eos.types import Drone, Module, Rack, Fit
+from eos.types import Drone, Module, Rack, Fit, Implant
 from eos.types import State as State_
 
 class State(ViewColumn):
@@ -67,6 +67,9 @@ class State(ViewColumn):
             if projectionInfo.active:
                 return generic_active
             return generic_inactive
+        elif isinstance(stuff, Implant) and stuff.character:
+            # if we're showing character implants, show an "online" state, which should not be changed
+            return self.fittingView.imageList.GetImageIndex("state_%s_small" % State_.getName(0).lower(), "gui")
         else:
             active = getattr(stuff, "active", None)
             if active is None:

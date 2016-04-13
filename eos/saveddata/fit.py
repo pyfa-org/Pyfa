@@ -31,6 +31,8 @@ import eos.db
 import time
 import copy
 from utils.timer import Timer
+from eos.enum import Enum
+
 
 import logging
 
@@ -40,6 +42,10 @@ try:
     from collections import OrderedDict
 except ImportError:
     from utils.compat import OrderedDict
+
+class ImplantLocation(Enum):
+    FIT = 0
+    CHARACTER = 1
 
 class Fit(object):
     """Represents a fitting, with modules, ship, implants, etc."""
@@ -324,16 +330,19 @@ class Fit(object):
         return -log(0.25) * agility * mass / 1000000
 
     @property
+    def implantSource(self):
+        return self.implantLocation
+
+    @implantSource.setter
+    def implantSource(self, source):
+        self.implantLocation = source
+
+    @property
     def appliedImplants(self):
-        implantsBySlot = {}
-        if self.character:
-            for implant in self.character.implants:
-                implantsBySlot[implant.slot] = implant
-
-        for implant in self.implants:
-            implantsBySlot[implant.slot] = implant
-
-        return implantsBySlot.values()
+        if self.implantLocation == ImplantLocation.CHARACTER:
+            return self.character.implants
+        else:
+            return self.implants
 
     @validates("ID", "ownerID", "shipID")
     def validator(self, key, val):
