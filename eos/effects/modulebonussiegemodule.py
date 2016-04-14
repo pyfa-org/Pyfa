@@ -7,14 +7,14 @@ def handler(fit, src, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Capital Energy Turret") or \
                                   mod.item.requiresSkill("Capital Hybrid Turret") or \
                                   mod.item.requiresSkill("Capital Projectile Turret"),
-                                  "damageMultiplier", src.getModifiedItemAttr("damageMultiplierBonus"))
+                                  "damageMultiplier", src.getModifiedItemAttr("siegeTurretDamageBonus"))
 
     #Missiles
     for type in ("kinetic", "thermal", "explosive", "em"):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill("XL Torpedoes") or \
                                         mod.charge.requiresSkill("XL Cruise Missiles") or \
                                         mod.charge.requiresSkill("Torpedoes"),
-                                        "%sDamage" % type, src.getModifiedItemAttr("damageMultiplierBonus"))
+                                        "%sDamage" % type, src.getModifiedItemAttr("siegeMissileDamageBonus"))
 
     # Reppers
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Capital Shield Operation") or \
@@ -44,7 +44,7 @@ def handler(fit, src, context):
     # new in April 2016 release
     for scanType in ('Magnetometric', 'Ladar', 'Gravimetric', 'Radar'):
         fit.ship.boostItemAttr("scan{}Strength".format(scanType),
-                               src.getModifiedItemAttr("scan{}StrengthPercent").format(scanType),
+                               src.getModifiedItemAttr("scan{}StrengthPercent".format(scanType)),
                                stackingPenalties=True)
 
     # missile ROF bonus
@@ -55,8 +55,9 @@ def handler(fit, src, context):
 
     fit.ship.increaseItemAttr("warpScrambleStatus", src.getModifiedItemAttr("siegeModeWarpStatus"))
     fit.ship.boostItemAttr("remoteRepairImpedance", src.getModifiedItemAttr("remoteRepairImpedanceBonus"))
-    fit.ship.increaseItemAttr("disallowTethering", src.getModifiedItemAttr("disallowTethering"))
     fit.ship.boostItemAttr("sensorDampenerResistance", src.getModifiedItemAttr("sensorDampenerResistanceBonus"))
     fit.ship.boostItemAttr("remoteAssistanceImpedance", src.getModifiedItemAttr("remoteAssistanceImpedanceBonus"))
     fit.ship.boostItemAttr("weaponDisruptionResistance", src.getModifiedItemAttr("weaponDisruptionResistanceBonus"))
-    fit.ship.increaseItemAttr("disallowDocking", src.getModifiedItemAttr("disallowDocking"))
+
+    fit.ship.forceItemAttr("disallowDocking", src.getModifiedItemAttr("disallowDocking"))
+    fit.ship.forceItemAttr("disallowTethering", src.getModifiedItemAttr("disallowTethering"))

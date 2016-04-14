@@ -54,15 +54,16 @@ def handler(fit, src, context):
     # new with April 2016 release
     for scanType in ('Magnetometric', 'Ladar', 'Gravimetric', 'Radar'):
         fit.ship.boostItemAttr("scan{}Strength".format(scanType),
-                               src.getModifiedItemAttr("scan{}StrengthPercent").format(scanType),
+                               src.getModifiedItemAttr("scan{}StrengthPercent".format(scanType)),
                                stackingPenalties=True)
 
     fit.ship.boostItemAttr("remoteRepairImpedance", src.getModifiedItemAttr("remoteRepairImpedanceBonus"))
     fit.ship.boostItemAttr("remoteAssistanceImpedance", src.getModifiedItemAttr("remoteAssistanceImpedanceBonus"))
     fit.ship.boostItemAttr("sensorDampenerResistance", src.getModifiedItemAttr("sensorDampenerResistanceBonus"))
     fit.modules.filteredItemIncrease(lambda mod: mod.item.requiresSkill("Micro Jump Drive Operation"), "activationBlocked", src.getModifiedItemAttr("activationBlockedStrenght"))
-    fit.ship.increaseItemAttr("disallowDocking", src.getModifiedItemAttr("disallowDocking"))
     fit.ship.boostItemAttr("targetPainterResistance", src.getModifiedItemAttr("targetPainterResistanceBonus"))
     fit.ship.boostItemAttr("weaponDisruptionResistance", src.getModifiedItemAttr("weaponDisruptionResistanceBonus"))
-    fit.ship.increaseItemAttr("disallowTethering", src.getModifiedItemAttr("disallowTethering"))
     fit.ship.increaseItemAttr("warpScrambleStatus", src.getModifiedItemAttr("siegeModeWarpStatus"))
+
+    fit.ship.forceItemAttr("disallowDocking", src.getModifiedItemAttr("disallowDocking"))
+    fit.ship.forceItemAttr("disallowTethering", src.getModifiedItemAttr("disallowTethering"))

@@ -8,7 +8,7 @@ def handler(fit, src, context):
                 ("Capital Remote Armor Repair Systems", "armorDamageAmount", True),
                 ("Capital Shield Emission Systems", "shieldBonus", True),
                 ("Capital Capacitor Emission Systems", "powerTransferAmount", False),
-                ("Capital Remote Hull Repair Systems", "structureDamageAmount"), False):
+                ("Capital Remote Hull Repair Systems", "structureDamageAmount", False)):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill(skill), "duration", src.getModifiedItemAttr("siegeRemoteLogisticsDurationBonus"))
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill(skill), amtAttr, src.getModifiedItemAttr("siegeRemoteLogisticsAmountBonus"), stackingPenalties=stack)
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill(skill), "maxRange", src.getModifiedItemAttr("siegeRemoteLogisticsRangeBonus"), stackingPenalties=True)
@@ -58,7 +58,7 @@ def handler(fit, src, context):
 
     for scanType in ('Magnetometric', 'Ladar', 'Gravimetric', 'Radar'):
         fit.ship.boostItemAttr("scan{}Strength".format(scanType),
-                               src.getModifiedItemAttr("scan{}StrengthPercent").format(scanType),
+                               src.getModifiedItemAttr("scan{}StrengthPercent".format(scanType)),
                                stackingPenalties=True)
 
     fit.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill("Drones"), "damageMultiplier", src.getModifiedItemAttr("droneDamageBonus"), stackingPenalties=True)
@@ -66,6 +66,7 @@ def handler(fit, src, context):
     fit.ship.increaseItemAttr("warpScrambleStatus", src.getModifiedItemAttr("siegeModeWarpStatus"))
     fit.ship.boostItemAttr("sensorDampenerResistance", src.getModifiedItemAttr("sensorDampenerResistanceBonus"))
     fit.ship.boostItemAttr("remoteAssistanceImpedance", src.getModifiedItemAttr("remoteAssistanceImpedanceBonus"))
-    fit.ship.increaseItemAttr("disallowDocking", src.getModifiedItemAttr("disallowDocking"))
     fit.ship.boostItemAttr("remoteRepairImpedance", src.getModifiedItemAttr("remoteRepairImpedanceBonus"))
-    fit.ship.increaseItemAttr("disallowTethering", src.getModifiedItemAttr("disallowTethering"))
+
+    fit.ship.forceItemAttr("disallowTethering", src.getModifiedItemAttr("disallowTethering"))
+    fit.ship.forceItemAttr("disallowDocking", src.getModifiedItemAttr("disallowDocking"))
