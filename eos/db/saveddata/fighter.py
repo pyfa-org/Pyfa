@@ -32,7 +32,6 @@ fighters_table = Table("fighters", saveddata_meta,
                      Column("fitID", Integer, ForeignKey("fits.ID"), nullable = False, index = True),
                      Column("itemID", Integer, nullable = False),
                      Column("amount", Integer, nullable = False),
-                     Column("amountActive", Integer, nullable = False),
                      Column("projected", Boolean, default = False))
 
 fighter_abilities_table = Table("fightersAbilities", saveddata_meta,

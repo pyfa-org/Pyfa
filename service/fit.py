@@ -636,7 +636,7 @@ class Fit(object):
                     fit.fighters.append(fighter)
                 else:
                     return False
-            fighter.amount += 1
+
             eos.db.commit()
             self.recalc(fit)
             return True
@@ -646,10 +646,7 @@ class Fit(object):
     def removeFighter(self, fitID, i):
         fit = eos.db.getFit(fitID)
         f = fit.fighters[i]
-        f.amount -= 1
-
-        if f.amount == 0:
-            del fit.fighters[i]
+        fit.fighters.remove(f)
 
         eos.db.commit()
         self.recalc(fit)

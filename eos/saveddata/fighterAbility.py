@@ -53,4 +53,18 @@ class FighterAbility(object):
 
     @property
     def name(self):
-        return self.__effect.handlerName
+        return self.__effect.getattr('displayName') or self.__effect.handlerName
+
+    @property
+    def attrPrefix(self):
+        return self.__effect.getattr('prefix')
+
+    @property
+    def dealsDamage(self):
+        attr = "{}DamageMultiplier".format(self.attrPrefix)
+        return attr in self.fighter.itemModifiedAttributes
+
+    @property
+    def grouped(self):
+        # is the ability applied per fighter (webs, returns False), or as a group (MWD, returned True)
+        return self.__effect.getattr('grouped')

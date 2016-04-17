@@ -28,7 +28,7 @@ logger = logging.getLogger(__name__)
 
 class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     DAMAGE_TYPES = ("em", "kinetic", "explosive", "thermal")
-    MINING_ATTRIBUTES = ("miningAmount",)
+    DAMAGE_TYPES2 = ("EM", "Kin", "Exp", "Therm")
 
     def __init__(self, item):
         """Initialize a fighter from the program"""
@@ -38,9 +38,11 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             raise ValueError("Passed item is not a Fighter")
 
         self.itemID = item.ID if item is not None else None
-        self.amount = 0
-        self.amountActive = 0
         self.projected = False
+
+        # -1 is a placeholder that represents max squadron size, which we may not know yet as ships may modify this with
+        # their effects. If user changes this, it is then overridden with user value.
+        self.amount = -1
 
         self.__abilities = self.__getAbilities()
 
@@ -93,9 +95,16 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         return [FighterAbility(effect) for effect in self.item.effects.values()]
 
     @property
+    def amountActive(self):
+        return self.getModifiedItemAttr("fighterSquadronMaxSize") if self.amount == -1 else self.amount
+
+    @amountActive.setter
+    def amountActive(self, i):
+        self.amount = max(i, self.getModifiedItemAttr("fighterSquadronMaxSize"))
+
+    @property
     def abilities(self):
         return self.__abilities or []
-
 
     @property
     def itemModifiedAttributes(self):
@@ -118,17 +127,6 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         return self.__charge
 
     @property
-    def dealsDamage(self):
-        for attr in ("emDamage", "kineticDamage", "explosiveDamage", "thermalDamage"):
-            if attr in self.itemModifiedAttributes or attr in self.chargeModifiedAttributes:
-                return True
-
-    @property
-    def mines(self):
-        if "miningAmount" in self.itemModifiedAttributes:
-            return True
-
-    @property
     def hasAmmo(self):
         return self.charge is not None
 
@@ -137,41 +135,25 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         return self.damageStats()
 
     def damageStats(self, targetResists = None):
-        if self.__dps == None:
+        if self.__dps is None:
             self.__volley = 0
             self.__dps = 0
-            if self.dealsDamage is True and self.amountActive > 0:
-                if self.hasAmmo:
-                    attr = "missileLaunchDuration"
-                    getter = self.getModifiedChargeAttr
-                else:
-                    attr =  "speed"
-                    getter = self.getModifiedItemAttr
+            for ability in self.abilities:
+                if ability.dealsDamage and ability.active and self.amountActive > 0:
+                    cycleTime = self.getModifiedItemAttr("{}Duration".format(ability.attrPrefix))
 
-                cycleTime = self.getModifiedItemAttr(attr)
+                    volley = sum(map(lambda d2, d:
+                                     (self.getModifiedItemAttr("{}Damage{}".format(ability.attrPrefix, d2)) or 0) *
+                                     (1-getattr(targetResists, "{}Amount".format(d), 0)),
+                                     self.DAMAGE_TYPES2, self.DAMAGE_TYPES))
 
-                volley = sum(map(lambda d: (getter("%sDamage"%d) or 0) * (1-getattr(targetResists, "%sAmount"%d, 0)), self.DAMAGE_TYPES))
-                volley *= self.amountActive
-                volley *= self.getModifiedItemAttr("damageMultiplier") or 1
-                self.__volley = volley
-                self.__dps = volley / (cycleTime / 1000.0)
+                    volley *= self.amountActive
+                    print self.getModifiedItemAttr("{}DamageMultiplier".format(ability.attrPrefix))
+                    volley *= self.getModifiedItemAttr("{}DamageMultiplier".format(ability.attrPrefix)) or 1
+                    self.__volley += volley
+                    self.__dps += volley / (cycleTime / 1000.0)
 
         return self.__dps, self.__volley
-
-    @property
-    def miningStats(self):
-        if self.__miningyield == None:
-            if self.mines is True and self.amountActive > 0:
-                attr = "duration"
-                getter = self.getModifiedItemAttr
-
-                cycleTime = self.getModifiedItemAttr(attr)
-                volley = sum(map(lambda d: getter(d), self.MINING_ATTRIBUTES)) * self.amountActive
-                self.__miningyield = volley / (cycleTime / 1000.0)
-            else:
-                self.__miningyield = 0
-
-        return self.__miningyield
 
     @property
     def maxRange(self):
@@ -202,8 +184,8 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         map = {"ID": lambda val: isinstance(val, int),
                "itemID" : lambda val: isinstance(val, int),
                "chargeID" : lambda val: isinstance(val, int),
-               "amount" : lambda val: isinstance(val, int) and val >= 0,
-               "amountActive" : lambda val: isinstance(val, int) and val <= self.amount and val >= 0}
+               "amount" : lambda val: isinstance(val, int) and val >= -1,
+               }
 
         if map[key](val) == False: raise ValueError(str(val) + " is not a valid value for " + key)
         else: return val
@@ -238,24 +220,22 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             context = ("fighter",)
             projected = False
 
-        for effect in self.item.effects.itervalues():
-            if effect.runTime == runTime and \
-            ((projected == True and effect.isType("projected")) or \
-             projected == False and effect.isType("passive")):
-                i = 0
-                while i != self.amountActive:
-                    effect.handler(fit, self, context)
-                    i += 1
-
-        if self.charge:
-            for effect in self.charge.effects.itervalues():
-                if effect.runTime == runTime:
-                    effect.handler(fit, self, ("fighterCharge",))
+        for ability in self.abilities:
+            if ability.active:
+                effect = ability.effect
+                if effect.runTime == runTime and \
+                ((projected and effect.isType("projected")) or not projected):
+                    if ability.grouped:
+                        effect.handler(fit, self, context)
+                    else:
+                        i = 0
+                        while i != self.amountActive:
+                            effect.handler(fit, self, context)
+                            i += 1
 
     def __deepcopy__(self, memo):
         copy = Fighter(self.item)
         copy.amount = self.amount
-        copy.amountActive = self.amountActive
         return copy
 
     def fits(self, fit):
