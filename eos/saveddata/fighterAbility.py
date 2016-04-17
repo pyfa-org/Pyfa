@@ -17,10 +17,7 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 #===============================================================================
 
-from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut, ChargeAttrShortcut
-from eos.effectHandlerHelpers import HandledItem, HandledCharge
 from sqlalchemy.orm import validates, reconstructor
-import eos.db
 import logging
 
 logger = logging.getLogger(__name__)
@@ -28,34 +25,32 @@ logger = logging.getLogger(__name__)
 class FighterAbility(object):
 
     def __init__(self, effect):
-        print "creating fighter ability"
         """Initialize from the program"""
         self.__effect = effect
         self.effectID = effect.ID if effect is not None else None
         self.active = False
-        #self.build()
+        self.build()
 
     @reconstructor
     def init(self):
         '''Initialize from the database'''
-        print "Initialize fighter ability from the database, effectID:"
         self.__effect = None
-        print self.effectID
 
-        '''
         if self.effectID:
-            self.__item = eos.db.getItem(self.itemID)
-            if self.__item is None:
-                logger.error("Item (id: %d) does not exist", self.itemID)
+            self.__effect = next((x for x in self.fighter.item.effects.itervalues() if x.ID == self.effectID), None)
+            if self.__effect is None:
+                logger.error("Effect (id: %d) does not exist", self.effectID)
                 return
-        '''
 
         self.build()
 
     def build(self):
-        # pull needed values from effect to here
         pass
 
     @property
     def effect(self):
         return self.__effect
+
+    @property
+    def name(self):
+        return self.__effect.handlerName

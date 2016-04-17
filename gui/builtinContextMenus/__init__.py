@@ -21,4 +21,5 @@ __all__ = [
     "amount",
     "metaSwap",
     "implantSets",
+    "fighterAbilities",
 ]
