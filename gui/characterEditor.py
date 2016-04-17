@@ -577,7 +577,8 @@ class APIView (wx.Panel):
 
         sChar = service.Character.getInstance()
         try:
-            list = sChar.apiCharList(self.Parent.Parent.getActiveCharacter(), self.inputID.GetLineText(0), self.inputKey.GetLineText(0))
+            activeChar = self.charEditor.entityEditor.getActiveEntity()
+            list = sChar.apiCharList(activeChar.ID, self.inputID.GetLineText(0), self.inputKey.GetLineText(0))
         except service.network.AuthenticationError, e:
             self.stStatus.SetLabel("Authentication failure. Please check keyID and vCode combination.")
         except service.network.TimeoutError, e:
@@ -601,7 +602,8 @@ class APIView (wx.Panel):
         if charName:
             try:
                 sChar = service.Character.getInstance()
-                sChar.apiFetch(self.Parent.Parent.getActiveCharacter(), charName)
+                activeChar = self.charEditor.entityEditor.getActiveEntity()
+                sChar.apiFetch(activeChar.ID, charName)
                 self.stStatus.SetLabel("Successfully fetched %s\'s skills from EVE API." % charName)
             except Exception, e:
                 self.stStatus.SetLabel("Unable to retrieve %s\'s skills. Error message:\n%s" % (charName, e))
