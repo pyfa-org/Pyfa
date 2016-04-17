@@ -21,6 +21,11 @@ from sqlalchemy import Table, Column, Integer, ForeignKey, Boolean
 from sqlalchemy.orm import mapper
 from eos.db import saveddata_meta
 from eos.types import Fighter
+from sqlalchemy.orm import *
+from sqlalchemy.sql import and_
+from eos.effectHandlerHelpers import *
+from eos.types import FighterAbility
+
 
 fighters_table = Table("fighters", saveddata_meta,
                      Column("groupID", Integer, primary_key=True),
@@ -30,4 +35,17 @@ fighters_table = Table("fighters", saveddata_meta,
                      Column("amountActive", Integer, nullable = False),
                      Column("projected", Boolean, default = False))
 
-mapper(Fighter, fighters_table)
+fighter_abilities_table = Table("fightersAbilities", saveddata_meta,
+                     Column("groupID", Integer, ForeignKey("fighters.groupID"), primary_key=True, index = True),
+                     Column("effectID", Integer, nullable = False, primary_key=True),
+                     Column("active", Boolean, default = False))
+
+mapper(Fighter, fighters_table,
+       properties = {
+            "_Fighter__abilities": relation(
+                FighterAbility,
+                backref="fighter",
+                cascade='all, delete, delete-orphan'),
+       })
+
+mapper(FighterAbility, fighter_abilities_table)
