@@ -45,6 +45,12 @@ class exportHtmlThread(threading.Thread):
 
         timestamp = time.localtime(time.time())
         localDate = "%d/%02d/%02d %02d:%02d" % (timestamp[0], timestamp[1], timestamp[2], timestamp[3], timestamp[4])
+        
+        website = settings.getWebsite()
+        if website == "o.smium.org":
+            dnaUrl = "https://o.smium.org/loadout/dna/"
+        elif website == "null-sec.com":
+            dnaUrl = "https://null-sec.com/hangar/?dna="
 
         HTML = """
 <!DOCTYPE html>
@@ -126,7 +132,7 @@ class exportHtmlThread(threading.Thread):
         if (typeof CCPEVE !== 'undefined') { // inside IGB
           $(this).attr('href', 'javascript:CCPEVE.showFitting("'+dna+'");'); }
         else {                               // outside IGB
-          $(this).attr('href', 'https://null-sec.com/hangar/?dna='+dna); }
+          $(this).attr('href', '%s'+dna); }
       });
     });
   </script>
@@ -139,7 +145,7 @@ class exportHtmlThread(threading.Thread):
   <div data-role="content">
   <div style="text-align: center;"><strong>Last updated:</strong> %s <small>(<span class="timer"></span>)</small></div>
 
-""" % (time.time(), localDate)
+""" % (time.time(), dnaUrl, localDate)
         HTML += '  <ul data-role="listview" class="ui-listview-outer" data-inset="true" data-filter="true">\n'
         categoryList = list(sMkt.getShipRoot())
         categoryList.sort(key=lambda ship: ship.name)
