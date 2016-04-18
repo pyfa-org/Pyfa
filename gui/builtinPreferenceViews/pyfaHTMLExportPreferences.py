@@ -14,9 +14,10 @@ class PFHTMLExportPref ( PreferenceView):
     desc  = "HTML Export (File > Export HTML) allows you to export your entire fitting "+\
             "database into an HTML file at the specified location. This file can be "+\
             "used in the in-game browser to easily open and import your fits, or used "+\
-            "in a regular web browser to open them at NULL-SEC.com."
+            "in a regular web browser to open them at NULL-SEC.com or Osmium."
     desc2 = "Enabling automatic exporting will update the HTML file after any change "+\
             "to a fit is made. Under certain circumstance, this may cause performance issues."
+    desc3 = "Preferred website to view fits while not using in-game browser can be selected below."
 
     def populatePanel( self, panel ):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
@@ -57,6 +58,24 @@ class PFHTMLExportPref ( PreferenceView):
         self.exportEnabled.Bind(wx.EVT_CHECKBOX, self.OnExportEnabledChange)
         mainSizer.Add( self.exportEnabled, 0, wx.ALL|wx.EXPAND, 5 )
 
+        self.stDesc3 = wx.StaticText( panel, wx.ID_ANY, self.desc3, wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.stDesc3.Wrap(dlgWidth - 50)
+        mainSizer.Add( self.stDesc3, 0, wx.ALL, 5 )
+
+        websiteSizer = wx.BoxSizer( wx.HORIZONTAL )
+
+        self.stWebsite = wx.StaticText( panel, wx.ID_ANY, u"Website:", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.stWebsite.Wrap( -1 )
+        websiteSizer.Add( self.stWebsite, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+
+        self.chWebsiteChoices = [ "o.smium.org", "null-sec.com" ]
+        self.chWebsiteType = wx.Choice( panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, self.chWebsiteChoices, 0 )
+        self.chWebsiteType.SetStringSelection( self.HTMLExportSettings.getWebsite() )
+        websiteSizer.Add( self.chWebsiteType, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+        self.chWebsiteType.Bind(wx.EVT_CHOICE, self.OnCHWebsiteTypeSelect)
+
+        mainSizer.Add( websiteSizer, 0, wx.EXPAND, 5 )
+
         panel.SetSizer( mainSizer )
         panel.Layout()
 
@@ -74,6 +93,10 @@ class PFHTMLExportPref ( PreferenceView):
 
     def OnExportEnabledChange(self, event):
         self.HTMLExportSettings.setEnabled(self.exportEnabled.GetValue())
+
+    def OnCHWebsiteTypeSelect(self, event):
+        choice = self.chWebsiteType.GetStringSelection()
+        self.HTMLExportSettings.setWebsite(choice)
 
     def getImage(self):
         return BitmapLoader.getBitmap("prefs_html", "gui")
