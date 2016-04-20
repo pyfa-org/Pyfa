@@ -51,7 +51,7 @@ def handler(fit, src, context):
     for group in ("Missile Launcher XL Torpedo", "Missile Launcher Rapid Torpedo", "Missile Launcher XL Cruise"):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == group, "speed", src.getModifiedItemAttr("siegeLauncherROFBonus"), stackingPenalties=True)
 
-    fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Torpedoes"), "maxVelocity", src.getModifiedItemAttr("siegeTorpedoVelocityBonus"), stackingPenalties=True)
+    fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill("Torpedoes"), "maxVelocity", src.getModifiedItemAttr("siegeTorpedoVelocityBonus"), stackingPenalties=True)
 
     fit.ship.increaseItemAttr("warpScrambleStatus", src.getModifiedItemAttr("siegeModeWarpStatus"))
     fit.ship.boostItemAttr("remoteRepairImpedance", src.getModifiedItemAttr("remoteRepairImpedanceBonus"))
