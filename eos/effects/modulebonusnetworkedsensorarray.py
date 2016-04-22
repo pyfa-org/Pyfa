@@ -6,7 +6,7 @@ def handler(fit, src, context):
 
     for scanType in ('Magnetometric', 'Ladar', 'Gravimetric', 'Radar'):
         fit.ship.boostItemAttr("scan{}Strength".format(scanType),
-                               src.getModifiedItemAttr("scan{}StrengthPercent").format(scanType),
+                               src.getModifiedItemAttr("scan{}StrengthPercent".format(scanType)),
                                stackingPenalties=True)
 
     # EW cap need increase
