@@ -34,6 +34,8 @@ class FighterAbility(ContextMenu):
         sub = wx.Menu()
 
         for ability in self.fighter.abilities:
+            if not ability.effect.isImplemented:
+                continue
             menuItem = self.addAbility(rootMenu if msw else sub, ability)
             sub.AppendItem(menuItem)
             menuItem.Check(ability.active)
