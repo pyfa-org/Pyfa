@@ -783,7 +783,7 @@ class Port(object):
 
                     if slot == Slot.SUBSYSTEM:
                         # Order of subsystem matters based on this attr. See GH issue #130
-                        slotId = module.getModifiedItemAttr("subSystemSlot") - 124
+                        slotId = module.getModifiedItemAttr("subSystemSlot") - 125
                     else:
                         if not slot in slotNum:
                             slotNum[slot] = 0
