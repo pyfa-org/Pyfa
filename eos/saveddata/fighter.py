@@ -21,10 +21,12 @@ from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut, C
 from eos.effectHandlerHelpers import HandledItem, HandledCharge, HandledDroneCargoList
 from sqlalchemy.orm import validates, reconstructor
 import eos.db
+from eos.enum import Enum
 import logging
-from eos.types import FighterAbility
+from eos.types import FighterAbility, Slot
 
 logger = logging.getLogger(__name__)
+
 
 class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     DAMAGE_TYPES = ("em", "kinetic", "explosive", "thermal")
@@ -71,28 +73,44 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         self.__dps = None
         self.__volley = None
         self.__miningyield = None
+        self.__itemModifiedAttributes = ModifiedAttributeDict()
+        self.__chargeModifiedAttributes = ModifiedAttributeDict()
 
         if len(self.abilities) != len(self.item.effects):
             self.__abilities = []
             for ability in self.__getAbilities():
                 self.__abilities.append(ability)
 
-        self.__itemModifiedAttributes = ModifiedAttributeDict()
-        self.__itemModifiedAttributes.original = self.__item.attributes
-        self.__itemModifiedAttributes.overrides = self.__item.overrides
+        if self.__item:
+            self.__itemModifiedAttributes.original = self.__item.attributes
+            self.__itemModifiedAttributes.overrides = self.__item.overrides
+            self.__slot = self.__calculateSlot(self.__item)
 
-        self.__chargeModifiedAttributes = ModifiedAttributeDict()
-        chargeID = self.getModifiedItemAttr("entityMissileTypeID")
-        if chargeID is not None:
-            charge = eos.db.getItem(int(chargeID))
-            self.__charge = charge
-            self.__chargeModifiedAttributes.original = charge.attributes
-            self.__chargeModifiedAttributes.overrides = charge.overrides
+            # chargeID = self.getModifiedItemAttr("fighterAbilityLaunchBombType")
+            chargeID = None
+            if chargeID is not None:
+                charge = eos.db.getItem(int(chargeID))
+                self.__charge = charge
+                self.__chargeModifiedAttributes.original = charge.attributes
+                self.__chargeModifiedAttributes.overrides = charge.overrides
 
     def __getAbilities(self):
         """Returns list of FighterAbilities that are loaded with data"""
         print "getting list of abilities"
         return [FighterAbility(effect) for effect in self.item.effects.values()]
+
+    def __calculateSlot(self, item):
+        types = {"Light": Slot.F_LIGHT,
+                 "Support": Slot.F_SUPPORT,
+                 "Heavy": Slot.F_HEAVY}
+
+        for t, slot in types.iteritems():
+            if self.getModifiedItemAttr("fighterSquadronIs{}".format(t)):
+                return slot
+
+    @property
+    def slot(self):
+        return self.__slot
 
     @property
     def amountActive(self):
@@ -239,15 +257,8 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         return copy
 
     def fits(self, fit):
+        if fit.getSlotsFree(self.slot) <= 0:
+            return False
+
         return True
 
-        fitDroneGroupLimits = set()
-        for i in xrange(1, 3):
-            groneGrp = fit.ship.getModifiedItemAttr("allowedDroneGroup%d" % i)
-            if groneGrp is not None:
-                fitDroneGroupLimits.add(int(groneGrp))
-        if len(fitDroneGroupLimits) == 0:
-            return True
-        if self.item.groupID in fitDroneGroupLimits:
-            return True
-        return False

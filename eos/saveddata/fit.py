@@ -616,8 +616,8 @@ class Fit(object):
 
     def getSlotsUsed(self, type, countDummies=False):
         amount = 0
-        for mod in self.modules:
-            if mod.slot is type and (not mod.isEmpty or countDummies):
+        for mod in chain(self.modules, self.fighters):
+            if mod.slot is type and (not getattr(mod, "isEmpty", False) or countDummies):
                 amount += 1
 
         return amount
@@ -627,7 +627,10 @@ class Fit(object):
                  Slot.MED: "medSlots",
                  Slot.HIGH: "hiSlots",
                  Slot.RIG: "rigSlots",
-                 Slot.SUBSYSTEM: "maxSubSystems"}
+                 Slot.SUBSYSTEM: "maxSubSystems",
+                 Slot.F_LIGHT: "fighterLightSlots",
+                 Slot.F_SUPPORT: "fighterSupportSlots",
+                 Slot.F_HEAVY: "fighterHeavySlots"}
 
         if type in (Slot.MODE, Slot.SYSTEM):
             # These slots don't really exist, return default 0

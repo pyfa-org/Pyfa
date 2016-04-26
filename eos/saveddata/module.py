@@ -46,6 +46,10 @@ class Slot(Enum):
     # system effects. They are projected "modules" and pyfa assumes all modules
     # have a slot. In this case, make one up.
     SYSTEM = 7
+    # fighter 'slots'. Just easier to put them here...
+    F_LIGHT = 10
+    F_SUPPORT = 11
+    F_HEAVY = 12
 
 class Hardpoint(Enum):
     NONE = 0
