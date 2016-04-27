@@ -995,6 +995,11 @@ class Fit(object):
             droneDPS += dps
             droneVolley += volley
 
+        for fighter in self.fighters:
+            dps, volley = fighter.damageStats(self.targetResists)
+            droneDPS += dps
+            droneVolley += volley
+
         self.__weaponDPS = weaponDPS
         self.__weaponVolley = weaponVolley
         self.__droneDPS = droneDPS
