@@ -206,6 +206,7 @@ class Port(object):
     @staticmethod
     def importDna(string):
         sMkt = service.Market.getInstance()
+        string = string.replace("javascript:CCPEVE.showFitting('", "").replace("');", "")
         info = string.split(":")
 
         f = Fit()
