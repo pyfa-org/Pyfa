@@ -213,10 +213,9 @@ class Port(object):
                 Ship(sMkt.getItem(id))
                 string = string[string.index(str(id)):]
                 break
-            except Exception, e:
-                continue
-            pass
-        string = string[0: (string.index("::") + 2)]
+            except:
+                pass
+        string = string[:string.index("::") + 2]
         info = string.split(":")
 
         f = Fit()
