@@ -401,6 +401,13 @@ class Fit(object):
         eos.db.commit()
         self.recalc(fit)
 
+    def changeActiveFighters(self, fitID, fighter, amount):
+        fit = eos.db.getFit(fitID)
+        fighter.amountActive = amount
+        
+        eos.db.commit()
+        self.recalc(fit)
+
     def removeProjected(self, fitID, thing):
         fit = eos.db.getFit(fitID)
         if isinstance(thing, eos.types.Drone):

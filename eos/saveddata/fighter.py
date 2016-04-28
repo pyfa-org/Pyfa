@@ -115,11 +115,11 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     @property
     def amountActive(self):
-        return self.getModifiedItemAttr("fighterSquadronMaxSize") if self.amount == -1 else self.amount
+        return int(self.getModifiedItemAttr("fighterSquadronMaxSize")) if self.amount == -1 else self.amount
 
     @amountActive.setter
     def amountActive(self, i):
-        self.amount = max(i, self.getModifiedItemAttr("fighterSquadronMaxSize"))
+        self.amount = int(max(min(i, self.getModifiedItemAttr("fighterSquadronMaxSize")), 0))
 
     @property
     def abilities(self):
@@ -157,20 +157,21 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         if self.__dps is None:
             self.__volley = 0
             self.__dps = 0
-            for ability in self.abilities:
-                if ability.dealsDamage and ability.active and self.amountActive > 0:
-                    cycleTime = self.getModifiedItemAttr("{}Duration".format(ability.attrPrefix))
+            if self.active:
+                for ability in self.abilities:
+                    if ability.dealsDamage and ability.active and self.amountActive > 0:
+                        cycleTime = self.getModifiedItemAttr("{}Duration".format(ability.attrPrefix))
 
-                    volley = sum(map(lambda d2, d:
-                                     (self.getModifiedItemAttr("{}Damage{}".format(ability.attrPrefix, d2)) or 0) *
-                                     (1-getattr(targetResists, "{}Amount".format(d), 0)),
-                                     self.DAMAGE_TYPES2, self.DAMAGE_TYPES))
+                        volley = sum(map(lambda d2, d:
+                                         (self.getModifiedItemAttr("{}Damage{}".format(ability.attrPrefix, d2)) or 0) *
+                                         (1-getattr(targetResists, "{}Amount".format(d), 0)),
+                                         self.DAMAGE_TYPES2, self.DAMAGE_TYPES))
 
-                    volley *= self.amountActive
-                    print self.getModifiedItemAttr("{}DamageMultiplier".format(ability.attrPrefix))
-                    volley *= self.getModifiedItemAttr("{}DamageMultiplier".format(ability.attrPrefix)) or 1
-                    self.__volley += volley
-                    self.__dps += volley / (cycleTime / 1000.0)
+                        volley *= self.amountActive
+                        print self.getModifiedItemAttr("{}DamageMultiplier".format(ability.attrPrefix))
+                        volley *= self.getModifiedItemAttr("{}DamageMultiplier".format(ability.attrPrefix)) or 1
+                        self.__volley += volley
+                        self.__dps += volley / (cycleTime / 1000.0)
 
         return self.__dps, self.__volley
 

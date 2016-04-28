@@ -110,7 +110,7 @@ class FighterDisplay(d.Display):
                     #"Max Range",
                     #"Miscellanea",
                     "attr:maxVelocity",
-                    "attr:fighterAbilityAttackMissileDamageMultiplier"
+                    "Fighter Abilities"
                     #"Price",
     ]
 
