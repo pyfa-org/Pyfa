@@ -206,7 +206,17 @@ class Port(object):
     @staticmethod
     def importDna(string):
         sMkt = service.Market.getInstance()
-        string = string.replace("javascript:CCPEVE.showFitting('", "").replace("');", "")
+
+        ids = map(int, re.findall(r'\d+', string))
+        for id in ids:
+            try:
+                Ship(sMkt.getItem(id))
+                string = string[string.index(str(id)):]
+                break
+            except Exception, e:
+                continue
+            pass
+        string = string[0: (string.index("::") + 2)]
         info = string.split(":")
 
         f = Fit()
