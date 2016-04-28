@@ -22,8 +22,10 @@ import wx
 import service
 import gui.globalEvents as GE
 import gui.marketBrowser as mb
+import gui.mainFrame
 import gui.display as d
 from gui.builtinViewColumns.state import State
+from eos.types import Slot
 from gui.contextMenu import ContextMenu
 
 class FighterViewDrop(wx.PyDropTarget):
@@ -40,8 +42,68 @@ class FighterViewDrop(wx.PyDropTarget):
                 self.dropFn(x, y, data)
             return t
 
-class FighterView(d.Display):
-    DEFAULT_COLS = [#"State",
+
+class FighterView(wx.Panel):
+    def __init__(self, parent):
+        wx.Panel.__init__(self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, style=wx.TAB_TRAVERSAL )
+        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+        self.labels = ["Light", "Heavy", "Support"]
+
+        mainSizer = wx.BoxSizer(wx.VERTICAL)
+
+        self.fighterDisplay = FighterDisplay(self)
+        mainSizer.Add(self.fighterDisplay, 1, wx.EXPAND, 0)
+
+        textSizer = wx.BoxSizer(wx.HORIZONTAL)
+        textSizer.AddSpacer(( 0, 0), 1, wx.EXPAND, 5)
+
+        for x in self.labels:
+            lbl = wx.StaticText(self, wx.ID_ANY, x.capitalize())
+            textSizer.Add(lbl, 0, wx.ALIGN_CENTER | wx.LEFT, 5)
+
+            lbl = wx.StaticText(self, wx.ID_ANY, "0")
+            setattr(self, "label%sUsed" % (x.capitalize()), lbl)
+            textSizer.Add(lbl, 0, wx.ALIGN_CENTER | wx.LEFT, 5)
+
+            textSizer.Add(wx.StaticText(self, wx.ID_ANY, "/"), 0, wx.ALIGN_CENTER)
+
+            lbl = wx.StaticText(self, wx.ID_ANY, "0")
+            setattr(self, "label%sTotal" % (x.capitalize()), lbl)
+            textSizer.Add(lbl, 0, wx.ALIGN_CENTER)
+            textSizer.AddSpacer((0, 0), 1, wx.EXPAND, 5)
+
+        mainSizer.Add(textSizer, 0, wx.EXPAND, 5)
+
+        self.SetSizer( mainSizer )
+        self.SetAutoLayout(True)
+
+
+        self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
+
+    def fitChanged(self, event):
+        sFit = service.Fit.getInstance()
+        activeFitID = self.mainFrame.getActiveFit()
+        fit = sFit.getFit(activeFitID)
+
+        for x in self.labels:
+            slot = getattr(Slot, "F_{}".format(x.upper()))
+            used = fit.getSlotsUsed(slot)
+            total = fit.getNumSlots(slot)
+            color = wx.Colour(204, 51, 51) if used > total else wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOWTEXT)
+
+            lbl = getattr(self, "label%sUsed" % x.capitalize())
+            lbl.SetLabel(str(int(used)))
+            lbl.SetForegroundColour(color)
+
+            lbl = getattr(self, "label%sTotal" % x.capitalize())
+            lbl.SetLabel(str(int(total)))
+            lbl.SetForegroundColour(color)
+
+        self.Refresh()
+
+
+class FighterDisplay(d.Display):
+    DEFAULT_COLS = ["State",
                     #"Base Icon",
                     "Base Name",
                     # "prop:droneDps,droneBandwidth",

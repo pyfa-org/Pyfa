@@ -41,6 +41,7 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
         self.itemID = item.ID if item is not None else None
         self.projected = False
+        self.active = True
 
         # -1 is a placeholder that represents max squadron size, which we may not know yet as ships may modify this with
         # their effects. If user changes this, it is then overridden with user value.
@@ -257,7 +258,8 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         return copy
 
     def fits(self, fit):
-        if fit.getSlotsFree(self.slot) <= 0:
+        # If ships doesn't support this type of fighter, don't add it
+        if fit.getNumSlots(self.slot) == 0:
             return False
 
         return True

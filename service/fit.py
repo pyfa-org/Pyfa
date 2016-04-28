@@ -749,6 +749,15 @@ class Fit(object):
         self.recalc(fit)
         return True
 
+    def toggleFighter(self, fitID, i):
+        fit = eos.db.getFit(fitID)
+        f = fit.fighters[i]
+        f.active = not f.active
+
+        eos.db.commit()
+        self.recalc(fit)
+        return True
+
     def toggleImplant(self, fitID, i):
         fit = eos.db.getFit(fitID)
         implant = fit.implants[i]

@@ -51,6 +51,7 @@ class AdditionsPane(TogglePanel):
         baseSizer.Add(self.notebook, 1, wx.EXPAND)
 
         droneImg = BitmapLoader.getImage("drone_small", "gui")
+        fighterImg = BitmapLoader.getImage("fighter_small", "gui")
         implantImg = BitmapLoader.getImage("implant_small", "gui")
         boosterImg = BitmapLoader.getImage("booster_small", "gui")
         projectedImg = BitmapLoader.getImage("projected_small", "gui")
@@ -58,7 +59,7 @@ class AdditionsPane(TogglePanel):
         cargoImg = BitmapLoader.getImage("cargo_small", "gui")
 
         self.notebook.AddPage(DroneView(self.notebook), "Drones", tabImage = droneImg, showClose = False)
-        self.notebook.AddPage(FighterView(self.notebook), "Fighters", tabImage = droneImg, showClose = False)
+        self.notebook.AddPage(FighterView(self.notebook), "Fighters", tabImage = fighterImg, showClose = False)
         self.notebook.AddPage(CargoView(self.notebook), "Cargo", tabImage = cargoImg, showClose = False)
         self.notebook.AddPage(ImplantView(self.notebook), "Implants", tabImage = implantImg, showClose = False)
         self.notebook.AddPage(BoosterView(self.notebook), "Boosters", tabImage = boosterImg, showClose = False)

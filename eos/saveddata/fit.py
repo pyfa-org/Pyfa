@@ -616,29 +616,35 @@ class Fit(object):
 
     def getSlotsUsed(self, type, countDummies=False):
         amount = 0
+
         for mod in chain(self.modules, self.fighters):
             if mod.slot is type and (not getattr(mod, "isEmpty", False) or countDummies):
+                if type in (Slot.F_HEAVY, Slot.F_SUPPORT, Slot.F_LIGHT) and not mod.active:
+                    continue
                 amount += 1
 
         return amount
 
-    def getSlotsFree(self, type, countDummies=False):
-        slots = {Slot.LOW: "lowSlots",
-                 Slot.MED: "medSlots",
-                 Slot.HIGH: "hiSlots",
-                 Slot.RIG: "rigSlots",
-                 Slot.SUBSYSTEM: "maxSubSystems",
-                 Slot.F_LIGHT: "fighterLightSlots",
-                 Slot.F_SUPPORT: "fighterSupportSlots",
-                 Slot.F_HEAVY: "fighterHeavySlots"}
+    slots = {Slot.LOW: "lowSlots",
+             Slot.MED: "medSlots",
+             Slot.HIGH: "hiSlots",
+             Slot.RIG: "rigSlots",
+             Slot.SUBSYSTEM: "maxSubSystems",
+             Slot.F_LIGHT: "fighterLightSlots",
+             Slot.F_SUPPORT: "fighterSupportSlots",
+             Slot.F_HEAVY: "fighterHeavySlots"}
 
+    def getSlotsFree(self, type, countDummies=False):
         if type in (Slot.MODE, Slot.SYSTEM):
             # These slots don't really exist, return default 0
             return 0
 
         slotsUsed = self.getSlotsUsed(type, countDummies)
-        totalSlots = self.ship.getModifiedItemAttr(slots[type]) or 0
+        totalSlots = self.ship.getModifiedItemAttr(self.slots[type]) or 0
         return int(totalSlots - slotsUsed)
+
+    def getNumSlots(self, type):
+        return self.ship.getModifiedItemAttr(self.slots[type]) or 0
 
     @property
     def calibrationUsed(self):
@@ -665,6 +671,23 @@ class Fit(object):
         amount = 0
         for d in self.drones:
             amount += d.item.volume * d.amount
+
+        return amount
+
+    @property
+    def fighterBayUsed(self):
+        amount = 0
+        for f in self.fighters:
+            amount += f.item.volume * f.amountActive
+
+        return amount
+
+    @property
+    def fighterTubesUsed(self):
+        amount = 0
+        for f in self.fighters:
+            if f.active:
+                amount += 1
 
         return amount
 
