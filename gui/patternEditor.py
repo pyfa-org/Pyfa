@@ -267,6 +267,3 @@ class DmgPatternEditorDlg(wx.Dialog):
         sDP = service.DamagePattern.getInstance()
         toClipboard( sDP.exportPatterns() )
         self.stNotice.SetLabel("Patterns exported to clipboard")
-
-    def contextChanged(self, event):
-        print "lol"

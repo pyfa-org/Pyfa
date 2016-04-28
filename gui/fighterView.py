@@ -205,13 +205,7 @@ class FighterDisplay(d.Display):
             wx.PostEvent(self.mainFrame, mb.ItemSelected(itemID=int(data[1])))
 
     def _merge(self, src, dst):
-        print "merge fighters {} -> {}".format(src, dst)
-        raise NotImplementedError()
-
-        sFit = service.Fit.getInstance()
-        fitID = self.mainFrame.getActiveFit()
-        if sFit.mergeDrones(fitID, self.drones[src], self.drones[dst]):
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+        return
 
     '''
     DRONE_ORDER = ('Light Scout Drones', 'Medium Scout Drones',

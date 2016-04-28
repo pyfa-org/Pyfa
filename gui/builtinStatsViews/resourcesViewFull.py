@@ -65,14 +65,12 @@ class ResourcesViewFull(StatsView):
         fighter_sizer = getattr(self, "boxSizerFighter")
         drone_sizer = getattr(self, "boxSizerDrones")
 
-        print drone_sizer
         if context != "fighter":
             fighter_sizer.ShowItems(False)
             drone_sizer.ShowItems(True)
         else:
             fighter_sizer.ShowItems(True)
             drone_sizer.ShowItems(False)
-
 
         self.panel.Layout()
         self.headerPanel.Layout()

@@ -97,7 +97,6 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     def __getAbilities(self):
         """Returns list of FighterAbilities that are loaded with data"""
-        print "getting list of abilities"
         return [FighterAbility(effect) for effect in self.item.effects.values()]
 
     def __calculateSlot(self, item):
@@ -168,7 +167,6 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                                          self.DAMAGE_TYPES2, self.DAMAGE_TYPES))
 
                         volley *= self.amountActive
-                        print self.getModifiedItemAttr("{}DamageMultiplier".format(ability.attrPrefix))
                         volley *= self.getModifiedItemAttr("{}DamageMultiplier".format(ability.attrPrefix)) or 1
                         self.__volley += volley
                         self.__dps += volley / (cycleTime / 1000.0)
