@@ -62,7 +62,7 @@ class FighterAbility(object):
     @property
     def dealsDamage(self):
         attr = "{}DamageMultiplier".format(self.attrPrefix)
-        return attr in self.fighter.itemModifiedAttributes
+        return attr in self.fighter.itemModifiedAttributes or self.fighter.charge is not None
 
     @property
     def grouped(self):

@@ -87,8 +87,7 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             self.__itemModifiedAttributes.overrides = self.__item.overrides
             self.__slot = self.__calculateSlot(self.__item)
 
-            # chargeID = self.getModifiedItemAttr("fighterAbilityLaunchBombType")
-            chargeID = None
+            chargeID = self.getModifiedItemAttr("fighterAbilityLaunchBombType")
             if chargeID is not None:
                 charge = eos.db.getItem(int(chargeID))
                 self.__charge = charge
@@ -125,6 +124,10 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         return self.__abilities or []
 
     @property
+    def charge(self):
+        return self.__charge
+
+    @property
     def itemModifiedAttributes(self):
         return self.__itemModifiedAttributes
 
@@ -159,9 +162,14 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             if self.active:
                 for ability in self.abilities:
                     if ability.dealsDamage and ability.active and self.amountActive > 0:
-                        cycleTime = self.getModifiedItemAttr("{}Duration".format(ability.attrPrefix))
 
-                        volley = sum(map(lambda d2, d:
+                        cycleTime = self.getModifiedItemAttr("{}Duration".format(ability.attrPrefix))
+                        if ability.attrPrefix == "fighterAbilityLaunchBomb":
+                            # bomb calcs
+                            volley = sum(map(lambda attr: (self.getModifiedChargeAttr("%sDamage" % attr) or 0) * (1 - getattr(targetResists, "%sAmount" % attr, 0)), self.DAMAGE_TYPES))
+                            print volley
+                        else:
+                            volley = sum(map(lambda d2, d:
                                          (self.getModifiedItemAttr("{}Damage{}".format(ability.attrPrefix, d2)) or 0) *
                                          (1-getattr(targetResists, "{}Amount".format(d), 0)),
                                          self.DAMAGE_TYPES2, self.DAMAGE_TYPES))
