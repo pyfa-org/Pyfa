@@ -85,21 +85,22 @@ class FighterView(wx.Panel):
         activeFitID = self.mainFrame.getActiveFit()
         fit = sFit.getFit(activeFitID)
 
-        for x in self.labels:
-            slot = getattr(Slot, "F_{}".format(x.upper()))
-            used = fit.getSlotsUsed(slot)
-            total = fit.getNumSlots(slot)
-            color = wx.Colour(204, 51, 51) if used > total else wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOWTEXT)
+        if fit:
+            for x in self.labels:
+                slot = getattr(Slot, "F_{}".format(x.upper()))
+                used = fit.getSlotsUsed(slot)
+                total = fit.getNumSlots(slot)
+                color = wx.Colour(204, 51, 51) if used > total else wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOWTEXT)
 
-            lbl = getattr(self, "label%sUsed" % x.capitalize())
-            lbl.SetLabel(str(int(used)))
-            lbl.SetForegroundColour(color)
+                lbl = getattr(self, "label%sUsed" % x.capitalize())
+                lbl.SetLabel(str(int(used)))
+                lbl.SetForegroundColour(color)
 
-            lbl = getattr(self, "label%sTotal" % x.capitalize())
-            lbl.SetLabel(str(int(total)))
-            lbl.SetForegroundColour(color)
+                lbl = getattr(self, "label%sTotal" % x.capitalize())
+                lbl.SetLabel(str(int(total)))
+                lbl.SetForegroundColour(color)
 
-        self.Refresh()
+            self.Refresh()
 
 
 class FighterDisplay(d.Display):

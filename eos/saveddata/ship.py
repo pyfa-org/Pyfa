@@ -41,7 +41,7 @@ class Ship(ItemAttrShortcut, HandledItem):
         # as None unless the Entosis effect sets it.
     }
 
-    def __init__(self, item):
+    def __init__(self, item, parent=None):
 
         if item.category.name != "Ship":
             raise ValueError('Passed item "%s" (category: (%s)) is not under Ship category'%(item.name, item.category.name))
@@ -53,6 +53,9 @@ class Ship(ItemAttrShortcut, HandledItem):
         self.__itemModifiedAttributes.original.update(self.EXTRA_ATTRIBUTES)
         self.__itemModifiedAttributes.overrides = self.item.overrides
 
+        # there are occasions when we need to get to the parent fit of the ship, such as when we need the character
+        # skills for ship-role gang boosts (Titans)
+        self.parent = parent
         self.commandBonus = 0
 
     @property

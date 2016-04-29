@@ -1,4 +1,4 @@
-type = "passive"
+type = "active"
 def handler(fit, src, context):
     fit.ship.increaseItemAttr("maxLockedTargets", src.getModifiedItemAttr("maxLockedTargetsBonus"))
     fit.ship.multiplyItemAttr("maxTargetRange", src.getModifiedItemAttr("maxTargetRangeMultiplier"), stackingPenalties=True, penaltyGroup="postMul")

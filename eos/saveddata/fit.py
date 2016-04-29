@@ -56,6 +56,7 @@ class Fit(object):
         """Initialize a fit from the program"""
         # use @mode.setter's to set __attr and IDs. This will set mode as well
         self.ship = ship
+        self.ship.parent = self
 
         self.__modules = HandledModuleList()
         self.__drones = HandledDroneCargoList()
@@ -89,7 +90,7 @@ class Fit(object):
                 return
 
             try:
-                self.__ship = Ship(item)
+                self.__ship = Ship(item, self)
                 # @todo extra attributes is now useless, however it set to be
                 # the same as ship attributes for ease (so we don't have to
                 # change all instances in source). Remove this at some point
@@ -462,6 +463,7 @@ class Fit(object):
         if self.fleet is not None and withBoosters is True:
             logger.debug("Fleet is set, gathering gang boosts")
             self.gangBoosts = self.fleet.recalculateLinear(withBoosters=withBoosters)
+
             timer.checkpoint("Done calculating gang boosts for %r"%self)
         elif self.fleet is None:
             self.gangBoosts = None
