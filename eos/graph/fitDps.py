@@ -77,6 +77,11 @@ class FitDpsGraph(Graph):
                 multiplier = 1 if drone.getModifiedItemAttr("maxVelocity") > 1 else self.calculateTurretMultiplier(drone, data)
                 dps, _ =  drone.damageStats(fit.targetResists)
                 total += dps * multiplier
+
+        for fighter in fit.fighters:
+            dps, _ = fighter.damageStats(fit.targetResists)
+            total += dps
+
         return total
 
     def calculateMissileMultiplier(self, mod, data):
