@@ -58,7 +58,7 @@ class CharacterImportThread(threading.Thread):
                 try:
                     charFile = open(path, mode='r').read()
                     doc = minidom.parseString(charFile)
-                    if doc.documentElement.tagName != "SerializableCCPCharacter":
+                    if doc.documentElement.tagName not in ("SerializableCCPCharacter", "SerializableUriCharacter"):
                         raise RuntimeError("Incorrect EVEMon XML sheet")
                     name = doc.getElementsByTagName("name")[0].firstChild.nodeValue
                     skill_els = doc.getElementsByTagName("skill")
@@ -70,7 +70,8 @@ class CharacterImportThread(threading.Thread):
                         })
                     char = sCharacter.new(name+" (EVEMon)")
                     sCharacter.apiUpdateCharSheet(char.ID, skills)
-                except:
+                except Exception, e:
+                    print e.message
                     continue
 
         wx.CallAfter(self.callback)
