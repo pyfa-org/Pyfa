@@ -13,7 +13,8 @@ class ItemRemove(ContextMenu):
                               "droneItem", "implantItem",
                               "boosterItem", "projectedModule",
                               "projectedCharge", "cargoItem",
-                               "projectedFit", "projectedDrone")
+                              "projectedFit", "projectedDrone",
+                              "fighterItem", "projectedFighter")
 
     def getText(self, itmContext, selection):
         return "Remove {0}".format(itmContext if itmContext is not None else "Item")
@@ -32,6 +33,8 @@ class ItemRemove(ContextMenu):
             sFit.setAmmo(fitID, None, selection)
         elif srcContext == "droneItem":
             sFit.removeDrone(fitID, fit.drones.index(selection[0]))
+        elif srcContext == "fighterItem":
+            sFit.removeFighter(fitID, fit.fighters.index(selection[0]))
         elif srcContext == "implantItem":
             sFit.removeImplant(fitID, fit.implants.index(selection[0]))
         elif srcContext == "boosterItem":

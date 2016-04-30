@@ -13,5 +13,4 @@ type = "active", "projected"
 
 def handler(fit, src, context):
     if "projected" not in context: return
-    multiplier = src.amountActive if hasattr(src, "amountActive") else 1
-    fit.ship.boostItemAttr("maxVelocity", src.getModifiedItemAttr("{}SpeedPenalty") * multiplier)
+    fit.ship.boostItemAttr("maxVelocity", src.getModifiedItemAttr("{}SpeedPenalty".format(prefix)))

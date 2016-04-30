@@ -12,8 +12,7 @@ prefix = "fighterAbilityEnergyNeutralizer"
 type = "active", "projected"
 
 def handler(fit, container, context):
-    if "projected" in context and ((hasattr(container, "state") and container.state >= State.ACTIVE) or hasattr(container, "amountActive")):
-        multiplier = container.amountActive if hasattr(container, "amountActive") else 1
+    if "projected" in context:
         amount = container.getModifiedItemAttr("{}Amount".format(prefix))
         time = container.getModifiedItemAttr("{}Duration".format(prefix))
-        fit.addDrain(time, amount * multiplier, 0)
+        fit.addDrain(time, amount, 0)

@@ -144,6 +144,9 @@ class ProjectedView(d.Display):
     def moduleSort(self, module):
         return module.item.name
 
+    def fighterSort(self, fighter):
+        return fighter.item.name
+
     def droneSort(self, drone):
         item = drone.item
         if item.marketGroup is None:
@@ -169,14 +172,17 @@ class ProjectedView(d.Display):
         if fit is not None:
             self.modules = fit.projectedModules[:]
             self.drones = fit.projectedDrones[:]
+            self.fighters = fit.projectedFighters[:]
             self.fits = fit.projectedFits[:]
 
             self.modules.sort(key=self.moduleSort)
             self.drones.sort(key=self.droneSort)
+            self.fighters.sort(key=self.fighterSort)
             self.fits.sort(key=self.fitSort)
 
             stuff.extend(self.modules)
             stuff.extend(self.drones)
+            stuff.extend(self.fighters)
             stuff.extend(self.fits)
 
         if event.fitID != self.lastFitId:
@@ -197,17 +203,20 @@ class ProjectedView(d.Display):
     def get(self, row):
         numMods = len(self.modules)
         numDrones = len(self.drones)
+        numFighters = len(self.fighters)
         numFits = len(self.fits)
 
-        if (numMods + numDrones + numFits) == 0:
+        if (numMods + numDrones + numFighters + numFits) == 0:
             return None
 
         if row < numMods:
             stuff = self.modules[row]
         elif row - numMods < numDrones:
             stuff = self.drones[row - numMods]
+        elif row - numMods - numDrones < numFighters:
+            stuff = self.fighters[row - numMods - numDrones]
         else:
-            stuff = self.fits[row - numMods - numDrones]
+            stuff = self.fits[row - numMods - numDrones - numFighters]
 
         return stuff
 
@@ -236,6 +245,10 @@ class ProjectedView(d.Display):
             sMkt = service.Market.getInstance()
             if isinstance(item, eos.types.Drone):
                 srcContext = "projectedDrone"
+                itemContext = sMkt.getCategoryByItem(item.item).name
+                context = ((srcContext, itemContext),)
+            elif isinstance(item, eos.types.Fighter):
+                srcContext = "projectedFighter"
                 itemContext = sMkt.getCategoryByItem(item.item).name
                 context = ((srcContext, itemContext),)
             elif isinstance(item, eos.types.Module):

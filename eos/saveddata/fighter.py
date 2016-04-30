@@ -239,6 +239,9 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             return True
 
     def calculateModifiedAttributes(self, fit, runTime, forceProjected = False):
+        if not self.active:
+            return
+
         if self.projected or forceProjected:
             context = "projected", "fighter"
             projected = True

@@ -22,8 +22,8 @@ from gui.viewColumn import ViewColumn
 import gui.mainFrame
 
 import wx
-from eos.types import Drone, Cargo, Fit, Module, Slot, Rack, Implant, Fighter
-import service
+from eos.types import Fighter
+
 
 class Abilities(ViewColumn):
     name = "Fighter Abilities"
@@ -36,6 +36,9 @@ class Abilities(ViewColumn):
 
     def getText(self, stuff):
         if isinstance(stuff, Fighter):
-            return ", ".join([x.name for x in stuff.abilities if x.active])
+            active = [x.name for x in stuff.abilities if x.active]
+            if len(active) == 0:
+                return "None"
+            return ", ".join(active)
 
 Abilities.register()

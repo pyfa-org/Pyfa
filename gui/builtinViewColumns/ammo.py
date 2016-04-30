@@ -21,6 +21,8 @@ from gui import builtinViewColumns
 from gui.viewColumn import ViewColumn
 from gui.bitmapLoader import BitmapLoader
 import wx
+from eos.types import Fighter
+
 
 class Ammo(ViewColumn):
     name = "Ammo"
@@ -31,6 +33,12 @@ class Ammo(ViewColumn):
         self.bitmap = BitmapLoader.getBitmap("damagePattern_small", "gui")
 
     def getText(self, stuff):
+        if isinstance(stuff, Fighter):
+            # this is an experiment, not sure I like it. But it saves us from duplicating code.
+            col = self.columns['Fighter Abilities'](self.fittingView, {})
+            text = col.getText(stuff)
+            del col
+            return text
         if getattr(stuff, "charge", None) is not None:
             charges = stuff.numCharges
             if charges > 0:
@@ -47,3 +55,4 @@ class Ammo(ViewColumn):
         return -1
 
 Ammo.register()
+

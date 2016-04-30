@@ -329,6 +329,9 @@ class Fit(object):
         return True
 
     def project(self, fitID, thing):
+        if fitID is None:
+            return
+
         fit = eos.db.getFit(fitID)
 
         if isinstance(thing, int):
@@ -356,6 +359,10 @@ class Fit(object):
                 fit.projectedDrones.append(drone)
 
             drone.amount += 1
+        elif thing.category.name == "Fighter":
+            print "dskfnds"
+            fighter = eos.types.Fighter(thing)
+            fit.projectedFighters.append(fighter)
         elif thing.group.name == "Effect Beacon":
             module = eos.types.Module(thing)
             module.state = State.ONLINE
@@ -378,6 +385,8 @@ class Fit(object):
                 thing.amountActive = thing.amount
             else:
                 thing.amountActive = 0
+        elif isinstance(thing, eos.types.Fighter):
+            thing.active = not thing.active
         elif isinstance(thing, eos.types.Module):
             thing.state = self.__getProposedState(thing, click)
             if not thing.canHaveState(thing.state, fit):
@@ -414,6 +423,8 @@ class Fit(object):
             fit.projectedDrones.remove(thing)
         elif isinstance(thing, eos.types.Module):
             fit.projectedModules.remove(thing)
+        elif isinstance(thing, eos.types.Fighter):
+            fit.projectedFighters.remove(thing)
         else:
             del fit.__projectedFits[thing.ID]
             #fit.projectedFits.remove(thing)

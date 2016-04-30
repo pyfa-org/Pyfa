@@ -137,6 +137,12 @@ mapper(Fit, fits_table,
                 cascade='all, delete, delete-orphan',
                 single_parent=True,
                 primaryjoin=and_(drones_table.c.fitID == fits_table.c.ID, drones_table.c.projected == True)),
+            "_Fit__projectedFighters": relation(
+                Fighter,
+                collection_class=HandledProjectedDroneList,
+                cascade='all, delete, delete-orphan',
+                single_parent=True,
+                primaryjoin=and_(fighters_table.c.fitID == fits_table.c.ID, fighters_table.c.projected == True)),
             "_Fit__implants": relation(
                 Implant,
                 collection_class=HandledImplantBoosterList,

@@ -68,6 +68,7 @@ class Fit(object):
         #self.__projectedFits = {}
         self.__projectedModules = HandledProjectedModList()
         self.__projectedDrones = HandledProjectedDroneList()
+        self.__projectedFighters = HandledProjectedDroneList()
         self.__character = None
         self.__owner = None
 
@@ -232,6 +233,10 @@ class Fit(object):
         return self.__projectedDrones
 
     @property
+    def projectedFighters(self):
+        return self.__projectedFighters
+
+    @property
     def weaponDPS(self):
         if self.__weaponDPS is None:
             self.calculateWeaponStats()
@@ -386,6 +391,7 @@ class Fit(object):
             self.implants,
             self.projectedDrones,
             self.projectedModules,
+            self.projectedFighters,
             (self.character, self.extraAttributes),
         )
 
@@ -508,7 +514,7 @@ class Fit(object):
 
             # Items that are restricted. These items are only run on the local
             # fit. They are NOT projected onto the target fit. # See issue 354
-            r = [(self.mode,), self.projectedDrones, self.projectedModules]
+            r = [(self.mode,), self.projectedDrones, self.projectedFighters, self.projectedModules]
 
             # chain unrestricted and restricted into one iterable
             c = chain.from_iterable(u+r)
@@ -1049,7 +1055,7 @@ class Fit(object):
         copy.damagePattern = self.damagePattern
         copy.targetResists = self.targetResists
 
-        toCopy = ("modules", "drones", "fighters", "cargo", "implants", "boosters", "projectedModules", "projectedDrones")
+        toCopy = ("modules", "drones", "fighters", "cargo", "implants", "boosters", "projectedModules", "projectedDrones", "projectedFighters")
         for name in toCopy:
             orig = getattr(self, name)
             c = getattr(copy, name)

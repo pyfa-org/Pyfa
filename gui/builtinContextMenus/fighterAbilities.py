@@ -9,7 +9,7 @@ class FighterAbility(ContextMenu):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     def display(self, srcContext, selection):
-        if self.mainFrame.getActiveFit() is None or srcContext != "fighterItem":
+        if self.mainFrame.getActiveFit() is None or srcContext not in ("fighterItem", "projectedFighter"):
             return False
 
         self.fighter = selection[0]

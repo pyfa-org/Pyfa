@@ -65,6 +65,9 @@ class ImplantView(wx.Panel):
             else:
                 self.rbChar.SetValue(True)
 
+        self.rbFit.Enable(fit is not None)
+        self.rbChar.Enable(fit is not None)
+
     def OnRadioSelect(self, event):
         fitID = self.mainFrame.getActiveFit()
         sFit = service.Fit.getInstance()

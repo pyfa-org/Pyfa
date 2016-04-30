@@ -11,7 +11,7 @@ class ChangeAmount(ContextMenu):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     def display(self, srcContext, selection):
-        return srcContext in ("cargoItem","projectedFit","fighterItem")
+        return srcContext in ("cargoItem","projectedFit","fighterItem","projectedFighter")
 
     def getText(self, itmContext, selection):
         return "Change {0} Quantity".format(itmContext)
