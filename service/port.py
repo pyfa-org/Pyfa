@@ -58,6 +58,8 @@ class Port(object):
         nested_dict = lambda: collections.defaultdict(nested_dict)
         fit = nested_dict()
         sCrest = service.Crest.getInstance()
+        sFit = service.Fit.getInstance()
+
         eve = sCrest.eve
 
         # max length is 50 characters
@@ -71,6 +73,7 @@ class Port(object):
         fit['items'] = []
 
         slotNum = {}
+        charges = {}
         for module in ofit.modules:
             if module.isEmpty:
                 continue
@@ -95,12 +98,27 @@ class Port(object):
             item['type']['name'] = ''
             fit['items'].append(item)
 
+            if module.charge and sFit.serviceFittingOptions["exportCharges"]:
+                if not module.chargeID in charges:
+                    charges[module.chargeID] = 0
+                # `or 1` because some charges (ie scripts) are without qty
+                charges[module.chargeID] += module.numCharges or 1
+
         for cargo in ofit.cargo:
             item = nested_dict()
             item['flag'] = INV_FLAG_CARGOBAY
             item['quantity'] = cargo.amount
             item['type']['href'] = "%stypes/%d/"%(eve._authed_endpoint, cargo.item.ID)
             item['type']['id'] = cargo.item.ID
+            item['type']['name'] = ''
+            fit['items'].append(item)
+
+        for chargeID, amount in charges.items():
+            item = nested_dict()
+            item['flag'] = INV_FLAG_CARGOBAY
+            item['quantity'] = amount
+            item['type']['href'] = "%stypes/%d/"%(eve._authed_endpoint, chargeID)
+            item['type']['id'] = chargeID
             item['type']['name'] = ''
             fit['items'].append(item)
 
