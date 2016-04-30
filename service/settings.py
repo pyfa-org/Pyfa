@@ -221,7 +221,7 @@ class HTMLExportSettings():
         return cls._instance
 
     def __init__(self):
-        serviceHTMLExportDefaultSettings = {"enabled": False, "path": config.pyfaPath + os.sep + 'pyfaFits.html' }
+        serviceHTMLExportDefaultSettings = {"enabled": False, "path": config.pyfaPath + os.sep + 'pyfaFits.html', "website": "null-sec.com" }
         self.serviceHTMLExportSettings = SettingsProvider.getInstance().getSettings("pyfaServiceHTMLExportSettings", serviceHTMLExportDefaultSettings)
 
     def getEnabled(self):
@@ -235,6 +235,12 @@ class HTMLExportSettings():
 
     def setPath(self, path):
         self.serviceHTMLExportSettings["path"] = path
+
+    def getWebsite(self):
+        return self.serviceHTMLExportSettings["website"]
+
+    def setWebsite(self, website):
+        self.serviceHTMLExportSettings["website"] = website
 
 """
 Settings used by update notification

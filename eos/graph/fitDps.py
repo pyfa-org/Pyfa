@@ -40,11 +40,14 @@ class FitDpsGraph(Graph):
 
         for mod in fit.modules:
             if not mod.isEmpty and mod.state >= State.ACTIVE:
-                if "ewTargetPaint" in mod.item.effects:
-                    ew['signatureRadius'].append(1+(mod.getModifiedItemAttr("signatureRadiusBonus") / 100))
-                if "decreaseTargetSpeed" in mod.item.effects:
+                if "remoteTargetPaintFalloff" in mod.item.effects:
+                    ew['signatureRadius'].append(1+(mod.getModifiedItemAttr("signatureRadiusBonus") / 100) * self.calculateModuleMultiplier(mod, data))
+                if "remoteWebifierFalloff" in mod.item.effects:
                     if distance <= mod.getModifiedItemAttr("maxRange"):
                         ew['velocity'].append(1+(mod.getModifiedItemAttr("speedFactor") / 100))
+                    elif mod.getModifiedItemAttr("falloffEffectiveness") > 0:
+                        #I am affected by falloff
+                        ew['velocity'].append(1+(mod.getModifiedItemAttr("speedFactor") / 100) * self.calculateModuleMultiplier(mod, data))
 
         ew['signatureRadius'].sort(key=abssort)
         ew['velocity'].sort(key=abssort)
@@ -71,7 +74,7 @@ class FitDpsGraph(Graph):
 
         if distance <= fit.extraAttributes["droneControlRange"]:
             for drone in fit.drones:
-                multiplier = 1 if drone.getModifiedItemAttr("maxVelocity") > 0 else self.calculateTurretMultiplier(drone, data)
+                multiplier = 1 if drone.getModifiedItemAttr("maxVelocity") > 1 else self.calculateTurretMultiplier(drone, data)
                 dps, _ =  drone.damageStats(fit.targetResists)
                 total += dps * multiplier
         return total
@@ -122,3 +125,13 @@ class FitDpsGraph(Graph):
         rangeEq = ((max(0, distance - turretOptimal)) / turretFalloff) ** 2
 
         return 0.5 ** (trackingEq + rangeEq)
+
+    def calculateModuleMultiplier(self, mod, data):
+        #Simplified formula, we make some assumptions about the module
+        #This is basically the calculateTurretChanceToHit without tracking values
+        distance = data["distance"] * 1000
+        turretOptimal = mod.maxRange
+        turretFalloff = mod.falloff
+        rangeEq = ((max(0, distance - turretOptimal)) / turretFalloff) ** 2
+
+        return 0.5 ** (rangeEq)
