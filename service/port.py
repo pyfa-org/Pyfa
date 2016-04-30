@@ -206,6 +206,16 @@ class Port(object):
     @staticmethod
     def importDna(string):
         sMkt = service.Market.getInstance()
+
+        ids = map(int, re.findall(r'\d+', string))
+        for id in ids:
+            try:
+                Ship(sMkt.getItem(id))
+                string = string[string.index(str(id)):]
+                break
+            except:
+                pass
+        string = string[:string.index("::") + 2]
         info = string.split(":")
 
         f = Fit()
