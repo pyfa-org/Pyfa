@@ -1,3 +1,7 @@
+# skillBonusDroneInterfacing
+#
+# Used by:
+# Skill: Drone Interfacing
 type = "passive"
 def handler(fit, src, context):
     lvl = src.level

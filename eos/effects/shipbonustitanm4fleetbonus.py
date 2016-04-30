@@ -1,3 +1,7 @@
+# shipBonusTitanM4FleetBonus
+#
+# Used by:
+# Ship: Ragnarok
 type = "gang"
 gangBoost = "signatureRadius"
 gangBonus = "shipBonusTitanM4"

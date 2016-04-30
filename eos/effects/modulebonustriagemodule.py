@@ -1,5 +1,7 @@
+# moduleBonusTriageModule
+#
 # Used by:
-# Module: Triage Module I
+# Variations of module: Triage Module I (2 of 2)
 type = "active"
 runTime = "early"
 def handler(fit, src, context):

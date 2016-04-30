@@ -1,3 +1,7 @@
+# scriptResistanceBonusBonus
+#
+# Used by:
+# Charges named like: Resistance Script (8 of 8)
 type = "passive"
 def handler(fit, src, context):
     src.boostItemAttr("emDamageResistanceBonus", src.getModifiedChargeAttr("emDamageResistanceBonusBonus"))

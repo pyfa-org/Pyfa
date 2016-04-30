@@ -1,3 +1,7 @@
+# shipBonusTitanG4FleetBonus
+#
+# Used by:
+# Ship: Erebus
 type = "gang"
 gangBoost = "armorHP"
 gangBonus = "shipBonusTitanG4"

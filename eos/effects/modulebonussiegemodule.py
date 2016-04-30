@@ -1,3 +1,5 @@
+# moduleBonusSiegeModule
+#
 # Used by:
 # Variations of module: Siege Module I (2 of 2)
 type = "active"

@@ -1,4 +1,4 @@
-# marauderModeEffect26
+# moduleBonusBastionModule
 #
 # Used by:
 # Module: Bastion Module I

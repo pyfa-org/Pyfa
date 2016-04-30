@@ -2,6 +2,7 @@
 #
 # Used by:
 # Modules from group: Remote Shield Booster (38 of 38)
+# Drones named like: Shield Maintenance Bot (6 of 6)
 type = "projected", "active"
 def handler(fit, container, context):
     if "projected" in context:

@@ -1,3 +1,7 @@
+# moduleBonusNetworkedSensorArray
+#
+# Used by:
+# Module: Networked Sensor Array
 type = "active"
 def handler(fit, src, context):
     fit.ship.increaseItemAttr("maxLockedTargets", src.getModifiedItemAttr("maxLockedTargetsBonus"))

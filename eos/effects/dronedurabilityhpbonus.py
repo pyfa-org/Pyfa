@@ -1,8 +1,7 @@
 # droneDurabilityHPBonus
 #
 # Used by:
-# Modules named like: Drone Durability Enhancer (8 of 8)
-# Skill: Drone Durability
+# Modules named like: Drone Durability Enhancer (6 of 8)
 type = "passive"
 def handler(fit, container, context):
     level = container.level if "skill" in context else 1

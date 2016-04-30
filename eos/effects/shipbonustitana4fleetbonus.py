@@ -1,3 +1,7 @@
+# shipBonusTitanA4FleetBonus
+#
+# Used by:
+# Ship: Avatar
 type = "gang"
 gangBoost = "rechargeRate"
 gangBonus = "shipBonusTitanA4"

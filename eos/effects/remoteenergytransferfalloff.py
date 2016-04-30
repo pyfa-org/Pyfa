@@ -1,7 +1,7 @@
 # remoteEnergyTransferFalloff
 #
 # Used by:
-# Modules from group: Remote Capacitor Transmitter (38 of 38)
+# Modules from group: Remote Capacitor Transmitter (41 of 41)
 type = "projected", "active"
 def handler(fit, module, context):
     if "projected" in context:

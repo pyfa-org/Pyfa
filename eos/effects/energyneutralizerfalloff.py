@@ -1,6 +1,7 @@
 # energyNeutralizerFalloff
 #
 # Used by:
+# Drones from group: Energy Neutralizer Drone (3 of 3)
 # Modules from group: Energy Neutralizer (51 of 51)
 from eos.types import State
 type = "active", "projected"

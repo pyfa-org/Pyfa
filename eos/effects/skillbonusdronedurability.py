@@ -1,3 +1,7 @@
+# skillBonusDroneDurability
+#
+# Used by:
+# Skill: Drone Durability
 type = "passive"
 def handler(fit, src, context):
     lvl = src.level

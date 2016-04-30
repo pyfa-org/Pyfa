@@ -1,3 +1,7 @@
+# skillBonusDroneSharpshooting
+#
+# Used by:
+# Skill: Drone Sharpshooting
 type = "passive"
 def handler(fit, src, context):
     lvl = src.level

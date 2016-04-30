@@ -1,3 +1,7 @@
+# skillBonusLightFighters
+#
+# Used by:
+# Skill: Light Fighters
 type = "passive"
 def handler(fit, src, context):
     lvl = src.level

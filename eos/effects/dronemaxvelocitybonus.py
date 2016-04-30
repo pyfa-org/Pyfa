@@ -1,8 +1,7 @@
 # droneMaxVelocityBonus
 #
 # Used by:
-# Modules named like: Drone Speed Augmentor (8 of 8)
-# Skill: Drone Navigation
+# Modules named like: Drone Speed Augmentor (6 of 8)
 type = "passive"
 def handler(fit, container, context):
     level = container.level if "skill" in context else 1

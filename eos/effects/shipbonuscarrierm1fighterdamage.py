@@ -1,3 +1,7 @@
+# shipBonusCarrierM1FighterDamage
+#
+# Used by:
+# Ship: Nidhoggur
 type = "passive"
 def handler(fit, src, context):
     fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill("Fighters"), "fighterAbilityAttackMissileDamageMultiplier", src.getModifiedItemAttr("shipBonusCarrierM1"), skill="Minmatar Carrier")

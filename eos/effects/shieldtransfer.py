@@ -1,7 +1,6 @@
 # shieldTransfer
 #
 # Used by:
-# Drones named like: Shield Maintenance Bot (6 of 6)
 # Module: QA Shield Transporter - 5 Players
 type = "projected", "active"
 def handler(fit, container, context):

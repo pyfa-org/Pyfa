@@ -1,3 +1,7 @@
+# shipBonusTitanC4FleetBonus
+#
+# Used by:
+# Ship: Leviathan
 type = "gang"
 gangBoost = "shieldCapacity"
 gangBonus = "shipBonusTitanC4"

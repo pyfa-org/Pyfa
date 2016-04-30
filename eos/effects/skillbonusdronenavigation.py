@@ -1,3 +1,7 @@
+# skillBonusDroneNavigation
+#
+# Used by:
+# Skill: Drone Navigation
 type = "passive"
 def handler(fit, src, context):
     lvl = src.level

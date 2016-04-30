@@ -1,3 +1,7 @@
+# moduleBonusCapitalDroneScopeChip
+#
+# Used by:
+# Variations of module: Capital Drone Scope Chip I (2 of 2)
 type = "passive"
 def handler(fit, src, context):
     fit.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill("Drones"), "maxRange", src.getModifiedItemAttr("rangeSkillBonus"), stackingPenalties=True)
