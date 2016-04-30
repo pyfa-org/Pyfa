@@ -56,7 +56,8 @@ class Fit(object):
         """Initialize a fit from the program"""
         # use @mode.setter's to set __attr and IDs. This will set mode as well
         self.ship = ship
-        self.ship.parent = self
+        if self.ship:
+            self.ship.parent = self
 
         self.__modules = HandledModuleList()
         self.__drones = HandledDroneCargoList()
