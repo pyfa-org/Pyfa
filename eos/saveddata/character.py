@@ -142,6 +142,14 @@ class Character(object):
         return self.__skills
 
     def addSkill(self, skill):
+        if skill.itemID in self.__skillIdMap:
+            oldSkill = self.__skillIdMap[skill.itemID]
+            if skill.level > oldSkill.level:
+                # if new skill is higher, remove old skill (new skill will still append)
+                self.__skills.remove(oldSkill)
+            else:
+                return
+
         self.__skills.append(skill)
         self.__skillIdMap[skill.itemID] = skill
 
