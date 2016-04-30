@@ -103,7 +103,7 @@ def main(old, new, groups=True, effects=True, attributes=True, renames=True):
                 if implementedtag:
                     print("\n[{0}] \"{1}\"\n[{2}] \"{3}\"".format(geteffst(couple[0]), couple[0], geteffst(couple[1]), couple[1]))
                 else:
-                    print("    \"{0}\": \"{1}\",".format(couple[0], couple[1]))
+                    print("    \"{0}\": \"{1}\",".format(couple[0].encode('utf-8'), couple[1].encode('utf-8')))
 
     groupcats = {}
     def getgroupcat(grp):
