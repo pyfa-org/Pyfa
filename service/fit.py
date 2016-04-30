@@ -277,7 +277,7 @@ class Fit(object):
                 fit.timestamp))
         return fits
 
-    def addImplant(self, fitID, itemID):
+    def addImplant(self, fitID, itemID, recalc=True):
         if fitID is None:
             return False
 
@@ -289,7 +289,8 @@ class Fit(object):
             return False
 
         fit.implants.append(implant)
-        self.recalc(fit)
+        if recalc:
+            self.recalc(fit)
         return True
 
     def removeImplant(self, fitID, position):
@@ -397,6 +398,13 @@ class Fit(object):
         if projectionInfo:
             projectionInfo.amount = amount
 
+        eos.db.commit()
+        self.recalc(fit)
+
+    def changeActiveFighters(self, fitID, fighter, amount):
+        fit = eos.db.getFit(fitID)
+        fighter.amountActive = amount
+        
         eos.db.commit()
         self.recalc(fit)
 
@@ -615,6 +623,42 @@ class Fit(object):
         self.recalc(fit)
         return True
 
+    def addFighter(self, fitID, itemID):
+        if fitID is None:
+            return False
+
+        fit = eos.db.getFit(fitID)
+        item = eos.db.getItem(itemID, eager=("attributes", "group.category"))
+        if item.category.name == "Fighter":
+            fighter = None
+            '''
+            for d in fit.fighters.find(item):
+                if d is not None and d.amountActive == 0 and d.amount < max(5, fit.extraAttributes["maxActiveDrones"]):
+                    drone = d
+                    break
+            '''
+            if fighter is None:
+                fighter = eos.types.Fighter(item)
+                if fighter.fits(fit) is True:
+                    fit.fighters.append(fighter)
+                else:
+                    return False
+
+            eos.db.commit()
+            self.recalc(fit)
+            return True
+        else:
+            return False
+
+    def removeFighter(self, fitID, i):
+        fit = eos.db.getFit(fitID)
+        f = fit.fighters[i]
+        fit.fighters.remove(f)
+
+        eos.db.commit()
+        self.recalc(fit)
+        return True
+
     def addDrone(self, fitID, itemID):
         if fitID is None:
             return False
@@ -712,10 +756,27 @@ class Fit(object):
         self.recalc(fit)
         return True
 
+    def toggleFighter(self, fitID, i):
+        fit = eos.db.getFit(fitID)
+        f = fit.fighters[i]
+        f.active = not f.active
+
+        eos.db.commit()
+        self.recalc(fit)
+        return True
+
     def toggleImplant(self, fitID, i):
         fit = eos.db.getFit(fitID)
         implant = fit.implants[i]
         implant.active = not implant.active
+
+        eos.db.commit()
+        self.recalc(fit)
+        return True
+
+    def toggleImplantSource(self, fitID, source):
+        fit = eos.db.getFit(fitID)
+        fit.implantSource = source
 
         eos.db.commit()
         self.recalc(fit)
@@ -729,6 +790,12 @@ class Fit(object):
         eos.db.commit()
         self.recalc(fit)
         return True
+
+    def toggleFighterAbility(self, fitID, ability):
+        fit = eos.db.getFit(fitID)
+        ability.active = not ability.active
+        eos.db.commit()
+        self.recalc(fit)
 
     def changeChar(self, fitID, charID):
         if fitID is None or charID is None:

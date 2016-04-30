@@ -19,8 +19,9 @@
 
 
 from sqlalchemy.orm import validates, reconstructor
+from itertools import chain
 
-from eos.effectHandlerHelpers import HandledItem
+from eos.effectHandlerHelpers import HandledItem, HandledImplantBoosterList
 import eos.db
 import eos
 import logging
@@ -89,7 +90,7 @@ class Character(object):
         return all0
 
     def __init__(self, name, defaultLevel=None, initSkills=True):
-        self.name = name
+        self.savedName = name
         self.__owner = None
         self.defaultLevel = defaultLevel
         self.__skills = []
@@ -100,7 +101,7 @@ class Character(object):
             for item in self.getSkillList():
                 self.addSkill(Skill(item.ID, self.defaultLevel))
 
-        self.__implants = eos.saveddata.fit.HandledImplantBoosterList()
+        self.__implants = HandledImplantBoosterList()
         self.apiKey = None
 
     @reconstructor
@@ -129,10 +130,26 @@ class Character(object):
         self.__owner = owner
 
     @property
+    def name(self):
+        return self.savedName if not self.isDirty else "{} *".format(self.savedName)
+
+    @name.setter
+    def name(self, name):
+        self.savedName = name
+
+    @property
     def skills(self):
         return self.__skills
 
     def addSkill(self, skill):
+        if skill.itemID in self.__skillIdMap:
+            oldSkill = self.__skillIdMap[skill.itemID]
+            if skill.level > oldSkill.level:
+                # if new skill is higher, remove old skill (new skill will still append)
+                self.__skills.remove(oldSkill)
+            else:
+                return
+
         self.__skills.append(skill)
         self.__skillIdMap[skill.itemID] = skill
 
@@ -200,8 +217,13 @@ class Character(object):
             skill.calculateModifiedAttributes(fit, runTime)
 
     def clear(self):
-        for skill in self.skills:
-            skill.clear()
+        c = chain(
+            self.skills,
+            self.implants
+        )
+        for stuff in c:
+            if stuff is not None and stuff != self:
+                stuff.clear()
 
     def __deepcopy__(self, memo):
         copy = Character("%s copy" % self.name, initSkills=False)

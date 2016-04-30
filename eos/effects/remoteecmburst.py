@@ -1,7 +1,7 @@
 # remoteEcmBurst
 #
 # Used by:
-# Module: Remote ECM Burst I
+# Module: ECM Jammer Burst Projector
 type = 'active'
 def handler(fit, module, context):
     pass

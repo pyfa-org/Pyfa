@@ -1,7 +1,8 @@
 # damageControl
 #
 # Used by:
-# Modules from group: Damage Control (17 of 17)
+# Variations of module: Damage Control I (16 of 16)
+# Module: Civilian Damage Control
 type = "passive"
 def handler(fit, module, context):
     for layer, attrPrefix in (('shield', 'shield'), ('armor', 'armor'), ('hull', '')):

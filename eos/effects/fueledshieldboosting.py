@@ -1,7 +1,7 @@
 # fueledShieldBoosting
 #
 # Used by:
-# Modules from group: Fueled Shield Booster (4 of 4)
+# Modules from group: Ancillary Shield Booster (5 of 5)
 runTime = "late"
 type = "active"
 def handler(fit, module, context):

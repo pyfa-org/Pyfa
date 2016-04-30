@@ -1,7 +1,8 @@
 # energyNeutralizerFalloff
 #
 # Used by:
-# Modules from group: Energy Neutralizer (45 of 45)
+# Drones from group: Energy Neutralizer Drone (3 of 3)
+# Modules from group: Energy Neutralizer (51 of 51)
 from eos.types import State
 type = "active", "projected"
 def handler(fit, container, context):

@@ -26,9 +26,10 @@ from sqlalchemy.orm.collections import attribute_mapped_collection
 from eos.db import saveddata_meta
 from eos.db.saveddata.module import modules_table
 from eos.db.saveddata.drone import drones_table
+from eos.db.saveddata.fighter import fighters_table
 from eos.db.saveddata.cargo import cargo_table
 from eos.db.saveddata.implant import fitImplants_table
-from eos.types import Fit, Module, User, Booster, Drone, Cargo, Implant, Character, DamagePattern, TargetResists
+from eos.types import Fit, Module, User, Booster, Drone, Fighter, Cargo, Implant, Character, DamagePattern, TargetResists, ImplantLocation
 from eos.effectHandlerHelpers import *
 
 fits_table = Table("fits", saveddata_meta,
@@ -42,6 +43,7 @@ fits_table = Table("fits", saveddata_meta,
                          Column("booster", Boolean, nullable = False, index = True, default = 0),
                          Column("targetResistsID", ForeignKey("targetResists.ID"), nullable=True),
                          Column("modeID", Integer, nullable=True),
+                         Column("implantLocation", Integer, nullable=False, default=ImplantLocation.FIT),
 )
 
 projectedFits_table = Table("projectedFits", saveddata_meta,
@@ -117,6 +119,12 @@ mapper(Fit, fits_table,
                 cascade='all, delete, delete-orphan',
                 single_parent=True,
                 primaryjoin=and_(drones_table.c.fitID == fits_table.c.ID, drones_table.c.projected == False)),
+            "_Fit__fighters": relation(
+                Fighter,
+                collection_class=HandledDroneCargoList,
+                cascade='all, delete, delete-orphan',
+                single_parent=True,
+                primaryjoin=and_(fighters_table.c.fitID == fits_table.c.ID, fighters_table.c.projected == False)),
             "_Fit__cargo": relation(
                 Cargo,
                 collection_class=HandledDroneCargoList,

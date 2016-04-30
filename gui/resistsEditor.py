@@ -22,6 +22,61 @@ from gui.bitmapLoader import BitmapLoader
 import service
 from gui.utils.clipboard import toClipboard, fromClipboard
 from service.targetResists import ImportError
+from gui.builtinViews.entityEditor import EntityEditor, BaseValidator
+
+
+class TargetResistsTextValidor(BaseValidator):
+    def __init__(self):
+        BaseValidator.__init__(self)
+
+    def Clone(self):
+        return TargetResistsTextValidor()
+
+    def Validate(self, win):
+        profileEditor = win.parent.Parent
+        textCtrl = self.GetWindow()
+        text = textCtrl.GetValue().strip()
+
+        try:
+            if len(text) == 0:
+                raise ValueError("You must supply a name for your Target Resist Profile!")
+            elif text in [x.name for x in profileEditor.entityEditor.choices]:
+                raise ValueError("Target Resist Profile name already in use, please choose another.")
+
+            return True
+        except ValueError, e:
+            wx.MessageBox(u"{}".format(e), "Error")
+            textCtrl.SetFocus()
+            return False
+
+
+class TargetResistsEntityEditor(EntityEditor):
+    def __init__(self, parent):
+        EntityEditor.__init__(self, parent, "Target Resist Profile")
+        self.SetEditorValidator(TargetResistsTextValidor)
+
+    def getEntitiesFromContext(self):
+        sTR = service.TargetResists.getInstance()
+        choices = sorted(sTR.getTargetResistsList(), key=lambda p: p.name)
+        return choices
+
+    def DoNew(self, name):
+        sTR = service.TargetResists.getInstance()
+        return sTR.newPattern(name)
+
+    def DoRename(self, entity, name):
+        sTR = service.TargetResists.getInstance()
+        sTR.renamePattern(entity, name)
+
+    def DoCopy(self, entity, name):
+        sTR = service.TargetResists.getInstance()
+        copy = sTR.copyPattern(entity)
+        sTR.renamePattern(copy, name)
+        return copy
+
+    def DoDelete(self, entity):
+        sTR = service.TargetResists.getInstance()
+        sTR.deletePattern(entity)
 
 class ResistsEditorDlg(wx.Dialog):
 
@@ -35,51 +90,8 @@ class ResistsEditorDlg(wx.Dialog):
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
-        self.headerSizer = headerSizer = wx.BoxSizer(wx.HORIZONTAL)
-
-        sTR = service.TargetResists.getInstance()
-
-        self.choices = sTR.getTargetResistsList()
-
-        # Sort the remaining list and continue on
-        self.choices.sort(key=lambda p: p.name)
-        self.ccResists = wx.Choice(self, choices=map(lambda p: p.name, self.choices))
-        self.ccResists.Bind(wx.EVT_CHOICE, self.patternChanged)
-        self.ccResists.SetSelection(0)
-
-        self.namePicker = wx.TextCtrl(self, style=wx.TE_PROCESS_ENTER)
-        self.namePicker.Bind(wx.EVT_TEXT_ENTER, self.processRename)
-        self.namePicker.Hide()
-
-        size = None
-        headerSizer.Add(self.ccResists, 1, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT | wx.LEFT, 3)
-
-        buttons = (("new", wx.ART_NEW),
-                   ("rename", BitmapLoader.getBitmap("rename", "gui")),
-                   ("copy", wx.ART_COPY),
-                   ("delete", wx.ART_DELETE))
-        for name, art in buttons:
-                bitmap = wx.ArtProvider.GetBitmap(art, wx.ART_BUTTON) if name != "rename" else art
-                btn = wx.BitmapButton(self, wx.ID_ANY, bitmap)
-                if size is None:
-                    size = btn.GetSize()
-
-                btn.SetMinSize(size)
-                btn.SetMaxSize(size)
-
-                btn.Layout()
-                setattr(self, name, btn)
-                btn.Enable(True)
-                btn.SetToolTipString("%s resist profile" % name.capitalize())
-                headerSizer.Add(btn, 0, wx.ALIGN_CENTER_VERTICAL)
-
-
-        self.btnSave = wx.Button(self, wx.ID_SAVE)
-        self.btnSave.Hide()
-        self.btnSave.Bind(wx.EVT_BUTTON, self.processRename)
-        headerSizer.Add(self.btnSave, 0, wx.ALIGN_CENTER)
-
-        mainSizer.Add(headerSizer, 0, wx.EXPAND | wx.ALL, 2)
+        self.entityEditor = TargetResistsEntityEditor(self)
+        mainSizer.Add(self.entityEditor, 0, wx.ALL | wx.EXPAND, 2)
 
         self.sl = wx.StaticLine(self)
         mainSizer.Add(self.sl, 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 5)
@@ -157,18 +169,20 @@ class ResistsEditorDlg(wx.Dialog):
                 btn.SetToolTipString("%s patterns %s clipboard" % (name, direction) )
                 footerSizer.Add(btn, 0, wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_RIGHT)
 
+        if not self.entityEditor.checkEntitiesExist():
+            self.Destroy()
+            return
+
         self.Layout()
         bsize = self.GetBestSize()
-        self.SetSize((-1,bsize.height))
+        self.SetSize((-1, bsize.height))
+        self.CenterOnParent()
 
-        self.new.Bind(wx.EVT_BUTTON, self.newPattern)
-        self.rename.Bind(wx.EVT_BUTTON, self.renamePattern)
-        self.copy.Bind(wx.EVT_BUTTON, self.copyPattern)
-        self.delete.Bind(wx.EVT_BUTTON, self.deletePattern)
-        self.Import.Bind(wx.EVT_BUTTON, self.importPatterns)
-        self.Export.Bind(wx.EVT_BUTTON, self.exportPatterns)
+        self.Bind(wx.EVT_CHOICE, self.patternChanged)
 
         self.patternChanged()
+
+        self.ShowModal()
 
     def closeEvent(self, event):
         self.Destroy()
@@ -184,7 +198,7 @@ class ResistsEditorDlg(wx.Dialog):
             return
 
         try:
-            p = self.getActivePattern()
+            p = self.entityEditor.getActiveEntity()
 
             for type in self.DAMAGE_TYPES:
                 editObj = getattr(self, "%sEdit"%type)
@@ -220,33 +234,15 @@ class ResistsEditorDlg(wx.Dialog):
         finally:  # Refresh for color changes to take effect immediately
             self.Refresh()
 
-    def restrict(self):
-        for type in self.DAMAGE_TYPES:
-            editObj = getattr(self, "%sEdit"%type)
-            editObj.Enable(False)
-        self.rename.Enable(False)
-        self.delete.Enable(False)
-
-    def unrestrict(self):
-        for type in self.DAMAGE_TYPES:
-            editObj = getattr(self, "%sEdit"%type)
-            editObj.Enable()
-        self.rename.Enable()
-        self.delete.Enable()
-
-    def getActivePattern(self):
-        if len(self.choices) == 0:
-            return None
-
-        return self.choices[self.ccResists.GetSelection()]
-
     def patternChanged(self, event=None):
         "Event fired when user selects pattern. Can also be called from script"
-        p = self.getActivePattern()
+
+        if not self.entityEditor.checkEntitiesExist():
+            self.Destroy()
+            return
+
+        p = self.entityEditor.getActiveEntity()
         if p is None:
-            # This happens when there are no patterns in the DB. As such, force
-            # user to create one first or exit dlg.
-            self.newPattern(None)
             return
 
         self.block = True
@@ -259,141 +255,8 @@ class ResistsEditorDlg(wx.Dialog):
         self.block = False
         self.ValuesUpdated()
 
-    def newPattern(self, event):
-        '''
-        Simply does new-pattern specifics: replaces label on button, restricts,
-        and resets values to default. Hands off to the rename function for
-        further handling.
-        '''
-        self.btnSave.SetLabel("Create")
-        self.restrict()
-        # reset values
-        for type in self.DAMAGE_TYPES:
-            editObj = getattr(self, "%sEdit"%type)
-            editObj.ChangeValue("0.0")
-            editObj.SetForegroundColour(self.colorReset)
-
-        self.Refresh()
-        self.renamePattern()
-
-    def renamePattern(self, event=None):
-        "Changes layout to facilitate naming a pattern"
-
-        self.showInput(True)
-
-        if event is not None:  # Rename mode
-            self.btnSave.SetLabel("Rename")
-            self.namePicker.SetValue(self.getActivePattern().name)
-        else:  # Create mode
-            self.namePicker.SetValue("")
-
-        if event is not None:
-            event.Skip()
-
-    def processRename(self, event):
-        '''
-        Processes rename event (which can be new or old patterns). If new
-        pattern, creates it; if old, selects it. if checks are valid, rename
-        saves pattern to DB.
-
-        Also resets to default layout and unrestricts.
-        '''
-        newName = self.namePicker.GetLineText(0)
-        self.stNotice.SetLabel("")
-
-        if newName == "":
-            self.stNotice.SetLabel("Invalid name")
-            return
-
-        sTR = service.TargetResists.getInstance()
-        if self.btnSave.Label == "Create":
-            p = sTR.newPattern()
-        else:
-            # we are renaming, so get the current selection
-            p = self.getActivePattern()
-
-        # test for patterns of the same name
-        for pattern in self.choices:
-            if pattern.name == newName and p != pattern:
-                self.stNotice.SetLabel("Name already used, please choose another")
-                return
-
-        # rename regardless of new or rename
-        sTR.renamePattern(p, newName)
-
-        self.updateChoices(newName)
-        self.showInput(False)
-        sel = self.ccResists.GetSelection()
-        self.ValuesUpdated()
-        self.unrestrict()
-
-    def copyPattern(self,event):
-        sTR = service.TargetResists.getInstance()
-        p = sTR.copyPattern(self.getActivePattern())
-        self.choices.append(p)
-        id = self.ccResists.Append(p.name)
-        self.ccResists.SetSelection(id)
-        self.btnSave.SetLabel("Copy")
-        self.renamePattern()
-        self.patternChanged()
-
-    def deletePattern(self,event):
-        sTR = service.TargetResists.getInstance()
-        sel = self.ccResists.GetSelection()
-        sTR.deletePattern(self.getActivePattern())
-        self.ccResists.Delete(sel)
-        self.ccResists.SetSelection(max(0, sel - 1))
-        del self.choices[sel]
-        self.patternChanged()
-
-    def showInput(self, bool):
-        if bool and not self.namePicker.IsShown():
-            self.ccResists.Hide()
-            self.namePicker.Show()
-            self.headerSizer.Replace(self.ccResists, self.namePicker)
-            self.namePicker.SetFocus()
-            for btn in (self.new, self.rename, self.delete, self.copy):
-                btn.Hide()
-            self.btnSave.Show()
-            self.restrict()
-            self.headerSizer.Layout()
-        elif not bool and self.namePicker.IsShown():
-            self.headerSizer.Replace(self.namePicker, self.ccResists)
-            self.ccResists.Show()
-            self.namePicker.Hide()
-            self.btnSave.Hide()
-            for btn in (self.new, self.rename, self.delete, self.copy):
-                btn.Show()
-            self.unrestrict()
-            self.headerSizer.Layout()
-
-
     def __del__( self ):
         pass
-
-    def updateChoices(self, select=None):
-        "Gathers list of patterns and updates choice selections"
-        sTR = service.TargetResists.getInstance()
-        self.choices = sTR.getTargetResistsList()
-
-        if len(self.choices) == 0:
-            #self.newPattern(None)
-            return
-
-        # Sort the remaining list and continue on
-        self.choices.sort(key=lambda p: p.name)
-        self.ccResists.Clear()
-
-        for i, choice in enumerate(map(lambda p: p.name, self.choices)):
-            self.ccResists.Append(choice)
-
-            if select is not None and choice == select:
-                self.ccResists.SetSelection(i)
-
-        if select is None:
-            self.ccResists.SetSelection(0)
-
-        self.patternChanged()
 
     def importPatterns(self, event):
         "Event fired when import from clipboard button is clicked"

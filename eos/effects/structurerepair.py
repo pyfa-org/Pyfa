@@ -1,7 +1,7 @@
 # structureRepair
 #
 # Used by:
-# Modules from group: Hull Repair Unit (21 of 21)
+# Modules from group: Hull Repair Unit (25 of 25)
 type = "active"
 runTime = "late"
 def handler(fit, module, context):

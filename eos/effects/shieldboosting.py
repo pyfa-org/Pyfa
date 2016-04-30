@@ -1,7 +1,7 @@
 # shieldBoosting
 #
 # Used by:
-# Modules from group: Shield Booster (87 of 87)
+# Modules from group: Shield Booster (93 of 93)
 runTime = "late"
 type = "active"
 def handler(fit, module, context):

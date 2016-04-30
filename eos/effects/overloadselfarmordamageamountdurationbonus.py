@@ -1,8 +1,8 @@
 # overloadSelfArmorDamageAmountDurationBonus
 #
 # Used by:
-# Modules from group: Armor Repair Unit (100 of 100)
-# Modules from group: Fueled Armor Repairer (3 of 3)
+# Modules from group: Ancillary Armor Repairer (4 of 4)
+# Modules from group: Armor Repair Unit (105 of 105)
 type = "overheat"
 def handler(fit, module, context):
     module.boostItemAttr("duration", module.getModifiedItemAttr("overloadSelfDurationBonus"))

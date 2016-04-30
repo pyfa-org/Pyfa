@@ -1,8 +1,8 @@
 # projectileFired
 #
 # Used by:
-# Modules from group: Hybrid Weapon (202 of 202)
-# Modules from group: Projectile Weapon (146 of 146)
+# Modules from group: Hybrid Weapon (221 of 221)
+# Modules from group: Projectile Weapon (165 of 165)
 type = 'active'
 def handler(fit, module, context):
     rt = module.getModifiedItemAttr("reloadTime")

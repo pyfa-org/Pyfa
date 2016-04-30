@@ -1,8 +1,8 @@
 # missileSkillRapidLauncherRoF
 #
 # Used by:
-# Implants named like: Cerebral Accelerator (3 of 3)
 # Implants named like: Zainou 'Deadeye' Rapid Launch RL (6 of 6)
+# Implant: Standard Cerebral Accelerator
 # Implant: Whelan Machorin's Ballistic Smartlink
 # Skill: Missile Launcher Operation
 # Skill: Rapid Launch

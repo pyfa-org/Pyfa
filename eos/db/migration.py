@@ -4,6 +4,9 @@ import time
 import re
 import os
 import migrations
+import logging
+
+logger = logging.getLogger(__name__)
 
 def getVersion(db):
     cursor = db.execute('PRAGMA user_version')
@@ -30,10 +33,9 @@ def update(saveddata_engine):
         shutil.copyfile(config.saveDB, toFile)
 
         for version in xrange(dbVersion, appVersion):
-
             func = migrations.updates[version+1]
             if func:
-                print "applying update",version+1
+                logger.info("Applying database update: %d", version+1)
                 func(saveddata_engine)
 
         # when all is said and done, set version to current

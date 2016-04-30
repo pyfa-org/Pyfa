@@ -53,7 +53,7 @@ def handler(fit, module, context):
                               stackingPenalties=True)
 
     # Mass multiplier
-    fit.ship.multiplyItemAttr("mass", module.getModifiedItemAttr("massMultiplier"),
+    fit.ship.multiplyItemAttr("mass", module.getModifiedItemAttr("siegeMassMultiplier"),
                               stackingPenalties=True)
 
     # Lock range
@@ -80,7 +80,7 @@ def handler(fit, module, context):
     # EW cap need increase
     groups = [
         'ECM Burst',
-        'Remote ECM Burst',
+        'Burst Projectors',
         'Weapon Disruptor',
         'ECM',
         'Remote Sensor Damper',

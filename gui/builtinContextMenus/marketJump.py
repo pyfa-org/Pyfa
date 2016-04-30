@@ -12,7 +12,8 @@ class MarketJump(ContextMenu):
                          "fittingCharge", "droneItem",
                          "implantItem", "boosterItem",
                          "projectedModule", "projectedDrone",
-                         "projectedCharge", "cargoItem")
+                         "projectedCharge", "cargoItem",
+                         "implantItemChar", "fighterItem")
 
         if not srcContext in validContexts or selection is None or len(selection) < 1:
             return False
@@ -33,12 +34,10 @@ class MarketJump(ContextMenu):
 
     def activate(self, fullContext, selection, i):
         srcContext = fullContext[0]
-        if srcContext in ("fittingModule", "droneItem", "implantItem",
-                          "boosterItem", "projectedModule", "projectedDrone",
-                          "cargoItem"):
-            item = selection[0].item
-        elif srcContext in ("fittingCharge", "projectedCharge"):
+        if srcContext in ("fittingCharge", "projectedCharge"):
             item = selection[0].charge
+        elif hasattr(selection[0], "item"):
+            item = selection[0].item
         else:
             item = selection[0]
 

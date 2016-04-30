@@ -103,7 +103,7 @@ def main(old, new, groups=True, effects=True, attributes=True, renames=True):
                 if implementedtag:
                     print("\n[{0}] \"{1}\"\n[{2}] \"{3}\"".format(geteffst(couple[0]), couple[0], geteffst(couple[1]), couple[1]))
                 else:
-                    print("    \"{0}\": \"{1}\",".format(couple[0], couple[1]))
+                    print("    \"{0}\": \"{1}\",".format(couple[0].encode('utf-8'), couple[1].encode('utf-8')))
 
     groupcats = {}
     def getgroupcat(grp):
@@ -256,10 +256,7 @@ def main(old, new, groups=True, effects=True, attributes=True, renames=True):
                         attrid = row[1]
                         attrval = row[2]
                         attrdict = dictionary[itemid][2]
-                        if attrid in attrdict:
-                            print("Warning: base attribute is described in non-base attribute table")
-                        else:
-                            attrdict[attrid] = attrval
+                        attrdict[attrid] = attrval
 
         # Get set of IDs from both dictionaries
         items_old = set(old_itmdata.keys())
@@ -414,6 +411,26 @@ def main(old, new, groups=True, effects=True, attributes=True, renames=True):
         pass
     # Print jobs
     print("Comparing databases:\n{0} -> {1}\n".format(old_meta.get("client_build"), new_meta.get("client_build")))
+
+    if renames:
+        title = 'effects'
+        printrenames(ren_effects, title, implementedtag=True)
+
+        title = 'attributes'
+        printrenames(ren_attributes, title)
+
+        title = 'categories'
+        printrenames(ren_categories, title)
+
+        title = 'groups'
+        printrenames(ren_groups, title)
+
+        title = 'market groups'
+        printrenames(ren_marketgroups, title)
+
+        title = 'items'
+        printrenames(ren_items, title)
+
     if effects or attributes or groups:
         # Print legend only when there're any interesting changes
         if len(global_itmdata[S["removed"]]) > 0 or len(global_itmdata[S["changed"]]) > 0 or len(global_itmdata[S["added"]]) > 0:
@@ -446,7 +463,7 @@ def main(old, new, groups=True, effects=True, attributes=True, renames=True):
                 for item in itemorder:
                     groupdata = items[item][0]
                     groupstr = " ({0} => {1})".format(getgroupname(groupdata[1]), getgroupname(groupdata[2])) if groupdata[0] == S["changed"] else ""
-                    print("\n[{0}] {1}{2}".format(TG[itmstate], getitemname(item), groupstr))
+                    print("\n[{0}] {1}{2}".format(TG[itmstate], getitemname(item).encode('utf-8'), groupstr))
 
                     effdata = items[item][1]
                     for effstate in stateorder:
@@ -477,25 +494,6 @@ def main(old, new, groups=True, effects=True, attributes=True, renames=True):
                             else:
                                 valline = "{0} => {1}".format(attrs[attr][0] or 0, attrs[attr][1] or 0)
                             print("  [{0}] {1}: {2}".format(TG[attrstate], getattrname(attr), valline))
-
-    if renames:
-        title = 'effects'
-        printrenames(ren_effects, title, implementedtag=True)
-
-        title = 'attributes'
-        printrenames(ren_attributes, title)
-
-        title = 'categories'
-        printrenames(ren_categories, title)
-
-        title = 'groups'
-        printrenames(ren_groups, title)
-
-        title = 'market groups'
-        printrenames(ren_marketgroups, title)
-
-        title = 'items'
-        printrenames(ren_items, title)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Compare two databases generated from eve dump to find eos-related differences")

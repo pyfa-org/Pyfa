@@ -11,7 +11,7 @@ class ChangeAmount(ContextMenu):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     def display(self, srcContext, selection):
-        return srcContext in ("cargoItem","projectedFit")
+        return srcContext in ("cargoItem","projectedFit","fighterItem")
 
     def getText(self, itmContext, selection):
         return "Change {0} Quantity".format(itmContext)
@@ -54,6 +54,8 @@ class AmountChanger(wx.Dialog):
             sFit.addCargo(fitID, self.thing.item.ID, int(self.input.GetLineText(0)), replace=True)
         elif isinstance(self.thing, eos.types.Fit):
             sFit.changeAmount(fitID, self.thing, int(self.input.GetLineText(0)))
+        elif isinstance(self.thing, eos.types.Fighter):
+            sFit.changeActiveFighters(fitID, self.thing, int(self.input.GetLineText(0)))
 
         wx.PostEvent(mainFrame, GE.FitChanged(fitID=fitID))
 

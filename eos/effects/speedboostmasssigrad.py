@@ -1,9 +1,7 @@
 # speedBoostMassSigRad
 #
 # Used by:
-# Variations of module: 500MN Microwarpdrive I (26 of 26)
-# Variations of module: 50MN Microwarpdrive I (16 of 16)
-# Variations of module: 5MN Microwarpdrive I (16 of 16)
+# Modules from group: Propulsion Module (65 of 127)
 type = "active"
 runTime = "late"
 def handler(fit, module, context):

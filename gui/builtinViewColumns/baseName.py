@@ -22,7 +22,7 @@ from gui.viewColumn import ViewColumn
 import gui.mainFrame
 
 import wx
-from eos.types import Drone, Cargo, Fit, Module, Slot, Rack
+from eos.types import Drone, Cargo, Fit, Module, Slot, Rack, Implant, Fighter
 import service
 
 class BaseName(ViewColumn):
@@ -39,6 +39,8 @@ class BaseName(ViewColumn):
     def getText(self, stuff):
         if isinstance(stuff, Drone):
             return "%dx %s" % (stuff.amount, stuff.item.name)
+        if isinstance(stuff, Fighter):
+            return "%d/%d %s" % (stuff.amountActive, stuff.getModifiedItemAttr("fighterSquadronMaxSize"), stuff.item.name)
         elif isinstance(stuff, Cargo):
             return "%dx %s" % (stuff.amount, stuff.item.name)
         elif isinstance(stuff, Fit):
@@ -61,6 +63,8 @@ class BaseName(ViewColumn):
                 return "%s Slot" % Slot.getName(stuff.slot).capitalize()
             else:
                 return stuff.item.name
+        elif isinstance(stuff, Implant):
+            return stuff.item.name
         else:
             item = getattr(stuff, "item", stuff)
 

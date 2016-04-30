@@ -1,6 +1,7 @@
 # remoteTrackingDisruptFalloff
 #
 # Used by:
+# Drones named like: TD (3 of 3)
 # Variations of module: Tracking Disruptor I (6 of 6)
 type= "projected", "active"
 def handler(fit, module, context):

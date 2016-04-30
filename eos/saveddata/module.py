@@ -46,6 +46,10 @@ class Slot(Enum):
     # system effects. They are projected "modules" and pyfa assumes all modules
     # have a slot. In this case, make one up.
     SYSTEM = 7
+    # fighter 'slots'. Just easier to put them here...
+    F_LIGHT = 10
+    F_SUPPORT = 11
+    F_HEAVY = 12
 
 class Hardpoint(Enum):
     NONE = 0
@@ -374,21 +378,20 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         if shipType is not None:
             fitsOnType.add(shipType)
 
-        for i in xrange(1, 10):
-            shipType = self.getModifiedItemAttr("canFitShipType%d" % i)
-            if shipType is not None:
-                fitsOnType.add(shipType)
+        for attr in self.itemModifiedAttributes.keys():
+            if attr.startswith("canFitShipType"):
+                shipType = self.getModifiedItemAttr(attr)
+                if shipType is not None:
+                    fitsOnType.add(shipType)
 
-
-        # Check ship group restrictions
-        for i in xrange(1, 10):
-            shipGroup = self.getModifiedItemAttr("canFitShipGroup%d" % i)
-            if shipGroup is not None:
-                fitsOnGroup.add(shipGroup)
+        for attr in self.itemModifiedAttributes.keys():
+            if attr.startswith("canFitShipGroup"):
+                shipGroup = self.getModifiedItemAttr(attr)
+                if shipGroup is not None:
+                    fitsOnGroup.add(shipGroup)
 
         if (len(fitsOnGroup) > 0 or len(fitsOnType) > 0) and fit.ship.item.group.ID not in fitsOnGroup and fit.ship.item.ID not in fitsOnType:
             return False
-
 
         # If the mod is a subsystem, don't let two subs in the same slot fit
         if self.slot == Slot.SUBSYSTEM:

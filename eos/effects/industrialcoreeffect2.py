@@ -7,4 +7,4 @@ runTime = "early"
 def handler(fit, module, context):
     fit.extraAttributes["siege"] = True
     fit.ship.boostItemAttr("maxVelocity", module.getModifiedItemAttr("speedFactor"))
-    fit.ship.multiplyItemAttr("mass", module.getModifiedItemAttr("massMultiplier"))
+    fit.ship.multiplyItemAttr("mass", module.getModifiedItemAttr("siegeMassMultiplier"))

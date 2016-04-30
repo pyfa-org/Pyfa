@@ -20,4 +20,6 @@ __all__ = [
     "priceClear",
     "amount",
     "metaSwap",
+    "implantSets",
+    "fighterAbilities",
 ]

@@ -1,7 +1,7 @@
 # superWeaponCaldari
 #
 # Used by:
-# Module: Oblivion
+# Module: 'Oblivion' Kinetic Doomsday
 type = 'active'
 def handler(fit, module, context):
     pass

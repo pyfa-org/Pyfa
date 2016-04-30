@@ -1,7 +1,7 @@
 # energyWeaponDamageMultiply
 #
 # Used by:
-# Modules from group: Heat Sink (18 of 18)
+# Modules from group: Heat Sink (17 of 17)
 # Modules named like: QA Multiship Module Players (4 of 4)
 # Module: QA Damage Module
 type = "passive"

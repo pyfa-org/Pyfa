@@ -9,6 +9,7 @@ class ItemStats(ContextMenu):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     def display(self, srcContext, selection):
+
         return srcContext in ("marketItemGroup", "marketItemMisc",
                               "fittingModule", "fittingCharge",
                               "fittingShip", "baseShip",
@@ -16,7 +17,7 @@ class ItemStats(ContextMenu):
                               "implantItem", "boosterItem",
                               "skillItem", "projectedModule",
                               "projectedDrone", "projectedCharge",
-                              "itemStats")
+                              "itemStats", "fighterItem", "implantItemChar")
 
     def getText(self, itmContext, selection):
         return "{0} Stats".format(itmContext if itmContext is not None else "Item")

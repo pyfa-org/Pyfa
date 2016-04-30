@@ -1,7 +1,7 @@
 # energyNosferatuFalloff
 #
 # Used by:
-# Modules from group: Energy Nosferatu (45 of 45)
+# Modules from group: Energy Nosferatu (51 of 51)
 type = "active", "projected"
 runTime = "late"
 def handler(fit, module, context):
