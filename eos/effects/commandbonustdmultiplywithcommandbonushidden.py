@@ -5,8 +5,6 @@
 gangBonus = "commandBonusTD"
 gangBoost = "ewarStrTD"
 type = "active", "gang"
-runTime = "late"
-
 def handler(fit, module, context):
     if "gang" not in context: return
     for bonus in (

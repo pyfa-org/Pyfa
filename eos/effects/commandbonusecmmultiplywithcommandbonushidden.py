@@ -5,8 +5,6 @@
 gangBonus = "commandBonusECM"
 gangBoost = "ewarStrECM"
 type = "active", "gang"
-runTime = "late"
-
 def handler(fit, module, context):
     if "gang" not in context: return
     for scanType in ("Magnetometric", "Radar", "Ladar", "Gravimetric"):

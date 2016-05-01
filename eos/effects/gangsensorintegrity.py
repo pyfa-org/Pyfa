@@ -5,8 +5,6 @@
 type = "gang", "active"
 gangBoost = "maxTargetRange"
 gangBonus = "commandBonus"
-runTime = "late"
-
 def handler(fit, module, context):
     if "gang" not in context: return
     fit.ship.boostItemAttr("maxTargetRange", module.getModifiedItemAttr("commandBonus"),
