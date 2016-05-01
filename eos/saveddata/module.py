@@ -489,7 +489,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             return False
 
         itemChargeSize = self.getModifiedItemAttr("chargeSize")
-        if itemChargeSize is not None:
+        if itemChargeSize > 0:
             chargeSize = charge.getAttribute('chargeSize')
             if itemChargeSize != chargeSize:
                 return False
