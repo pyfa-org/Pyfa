@@ -207,9 +207,14 @@ class Squad(object):
                 newBoostAttr = effect.getattr("gangBonus") or "commandBonus"
                 # Get boost amount for current boost
                 newBoostAmount = thing.getModifiedItemAttr(newBoostAttr) or 0
+                # Skill used to modify the gang bonus (for purposes of comparing old vs new)
+                newBoostSkill = effect.getattr("gangBonusSkill")
                 # If skill takes part in gang boosting, multiply by skill level
                 if type(thing) == Skill:
                     newBoostAmount *= thing.level
+                # boost the gang bonus based on skill noted in effect file
+                if newBoostSkill:
+                    newBoostAmount *= thing.parent.character.getSkill(newBoostSkill).level
                 # If new boost is more powerful, replace older one with it
                 if abs(newBoostAmount) > abs(currBoostAmount):
                     self.wing.gang.linearBoosts[boostedAttr] = (newBoostAmount, boostInfo)
@@ -287,9 +292,14 @@ class Store(object):
                     newBoostAttr = effect.getattr("gangBonus") or "commandBonus"
                     # Get boost amount for current boost
                     newBoostAmount = thing.getModifiedItemAttr(newBoostAttr) or 0
+                    # Skill used to modify the gang bonus (for purposes of comparing old vs new)
+                    newBoostSkill = effect.getattr("gangBonusSkill")
                     # If skill takes part in gang boosting, multiply by skill level
                     if type(thing) == Skill:
                         newBoostAmount *= thing.level
+                    # boost the gang bonus based on skill noted in effect file
+                    if newBoostSkill:
+                        newBoostAmount *= thing.parent.character.getSkill(newBoostSkill).level
                     # If new boost is more powerful, replace older one with it
                     if abs(newBoostAmount) > abs(currBoostAmount):
                         boosts[boostedAttr] = (newBoostAmount, boostInfo)
