@@ -318,6 +318,11 @@ class Market():
 
         self.ITEMS_FORCEDMARKETGROUP_R = self.__makeRevDict(self.ITEMS_FORCEDMARKETGROUP)
 
+        self.FORCEDMARKETGROUP = {
+            685: False, # Ship Equipment > Electronic Warfare > ECCM
+            681: False, # Ship Equipment > Electronic Warfare > Sensor Backup Arrays
+        }
+
         # Misc definitions
         # 0 is for items w/o meta group
         self.META_MAP = OrderedDict([("normal",  frozenset((0, 1, 2, 14))),
@@ -594,6 +599,8 @@ class Market():
         """Check market group validity"""
         # The only known case when group can be invalid is
         # when it's declared to have types, but it doesn't contain anything
+        if mg.ID in self.FORCEDMARKETGROUP:
+            return self.FORCEDMARKETGROUP[mg.ID]
         if mg.hasTypes and not self.marketGroupHasTypesCheck(mg):
             return False
         else:
