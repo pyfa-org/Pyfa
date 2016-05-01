@@ -5,6 +5,6 @@
 type = "projected", "active"
 def handler(fit, module, context):
     if "projected" in context:
-        amount = module.getModifiedItemAttr("maxRange")
+        amount = module.getModifiedItemAttr("powerTransferAmount")
         duration = module.getModifiedItemAttr("duration")
         fit.addDrain(duration, -amount, 0)
