@@ -204,6 +204,8 @@ def main(db, json_path):
                     split = row['iconFile'].split('_')
                     if len(split) == 3:
                         row['iconFile'] = "{}_{}".format(split[0], split[2])
+                if jsonName is "icons" and "modules/" in str(row["iconFile"]).lower():
+                    row["iconFile"] = row["iconFile"].lower().replace("modules/", "").replace(".png", "")
 
                 for k, v in row.iteritems():
                     setattr(instance, fieldMap.get(k, k), v)
