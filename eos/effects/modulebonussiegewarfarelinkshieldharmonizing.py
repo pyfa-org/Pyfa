@@ -3,10 +3,12 @@
 # Used by:
 # Variations of module: Siege Warfare Link - Shield Harmonizing I (2 of 2)
 type = "gang", "active"
-gangBoost = "shieldRepairCapacitorNeed"
 runTime = "late"
 
+gangBoost = "shieldResistance"
 def handler(fit, module, context):
     if "gang" not in context: return
-    fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Shield Operation") or mod.item.requiresSkill("Shield Emission Systems"),
-                                  "capacitorNeed", module.getModifiedItemAttr("commandBonus"))
+    for damageType in ("Em", "Explosive", "Thermal", "Kinetic"):
+        fit.ship.boostItemAttr("shield%sDamageResonance" % damageType,
+                               module.getModifiedItemAttr("commandBonus"),
+                               stackingPenalties = True)
