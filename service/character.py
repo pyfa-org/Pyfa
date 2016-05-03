@@ -362,7 +362,7 @@ class Character(object):
     def checkRequirements(self, fit):
         toCheck = []
         reqs = {}
-        for thing in itertools.chain(fit.modules, fit.drones, (fit.ship,)):
+        for thing in itertools.chain(fit.modules, fit.drones, fit.fighters, (fit.ship,)):
             for attr in ("item", "charge"):
                 subThing = getattr(thing, attr, None)
                 subReqs = {}
