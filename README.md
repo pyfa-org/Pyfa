@@ -14,6 +14,12 @@ The latest version along with release notes can always be found on the project's
 ## Installation
 Windows and OS X users are supplied self-contained builds of pyfa on the [latest releases](https://github.com/pyfa-org/Pyfa/releases/latest) page. An `.exe` installer is also available for Windows builds. Linux users can run pyfa using their distribution's Python interpreter. There is no official self-contained package for Linux, however, there are a number of third-party packages available through distribution-specific repositories.
 
+### OS X
+If you got [Homebrew](http://brew.sh), simply fire up in terminal:
+```
+$ brew cask install pyfa
+```
+
 ### Linux Distro-specific Packages
 The following is a list of pyfa packages available for certain distributions. Please note that these packages are maintained by third-parties and are not evaluated by the pyfa developers.
 
