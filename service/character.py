@@ -363,6 +363,8 @@ class Character(object):
         toCheck = []
         reqs = {}
         for thing in itertools.chain(fit.modules, fit.drones, fit.fighters, (fit.ship,)):
+            if isinstance(thing, eos.types.Module) and thing.slot == eos.types.Slot.RIG:
+                continue
             for attr in ("item", "charge"):
                 subThing = getattr(thing, attr, None)
                 subReqs = {}
