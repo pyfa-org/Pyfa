@@ -157,17 +157,18 @@ class ResistsEditorDlg(wx.Dialog):
                         ("Export", wx.ART_FILE_SAVE_AS, "to"))
 
         for name, art, direction in importExport:
-                bitmap = wx.ArtProvider.GetBitmap(art, wx.ART_BUTTON)
-                btn = wx.BitmapButton(self, wx.ID_ANY, bitmap)
+            bitmap = wx.ArtProvider.GetBitmap(art, wx.ART_BUTTON)
+            btn = wx.BitmapButton(self, wx.ID_ANY, bitmap)
 
-                btn.SetMinSize( btn.GetSize() )
-                btn.SetMaxSize( btn.GetSize() )
+            btn.SetMinSize( btn.GetSize() )
+            btn.SetMaxSize( btn.GetSize() )
 
-                btn.Layout()
-                setattr(self, name, btn)
-                btn.Enable(True)
-                btn.SetToolTipString("%s patterns %s clipboard" % (name, direction) )
-                footerSizer.Add(btn, 0, wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_RIGHT)
+            btn.Layout()
+            setattr(self, name, btn)
+            btn.Enable(True)
+            btn.SetToolTipString("%s patterns %s clipboard" % (name, direction) )
+            footerSizer.Add(btn, 0, wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_RIGHT)
+            btn.Bind(wx.EVT_BUTTON, getattr(self, "{}Patterns".format(name.lower())))
 
         if not self.entityEditor.checkEntitiesExist():
             self.Destroy()
@@ -267,19 +268,17 @@ class ResistsEditorDlg(wx.Dialog):
             try:
                 sTR.importPatterns(text)
                 self.stNotice.SetLabel("Patterns successfully imported from clipboard")
-                self.showInput(False)
             except service.targetResists.ImportError, e:
                 self.stNotice.SetLabel(str(e))
             except Exception, e:
                 self.stNotice.SetLabel("Could not import from clipboard: unknown errors")
             finally:
-                self.updateChoices()
+                self.entityEditor.refreshEntityList()
         else:
             self.stNotice.SetLabel("Could not import from clipboard")
 
     def exportPatterns(self, event):
         "Event fired when export to clipboard button is clicked"
-
         sTR = service.TargetResists.getInstance()
         toClipboard( sTR.exportPatterns() )
         self.stNotice.SetLabel("Patterns exported to clipboard")

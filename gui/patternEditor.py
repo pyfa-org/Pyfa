@@ -177,6 +177,7 @@ class DmgPatternEditorDlg(wx.Dialog):
                 btn.Enable(True)
                 btn.SetToolTipString("%s patterns %s clipboard" % (name, direction) )
                 footerSizer.Add(btn, 0, wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_RIGHT)
+                btn.Bind(wx.EVT_BUTTON, getattr(self, "{}Patterns".format(name.lower())))
 
         self.Layout()
         bsize = self.GetBestSize()
@@ -259,7 +260,7 @@ class DmgPatternEditorDlg(wx.Dialog):
             except Exception, e:
                 self.stNotice.SetLabel("Could not import from clipboard: unknown errors")
             finally:
-                self.updateChoices()
+                self.entityEditor.refreshEntityList()
         else:
             self.stNotice.SetLabel("Could not import from clipboard")
 
