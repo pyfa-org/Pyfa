@@ -246,7 +246,7 @@ class ItemDescription ( wx.Panel ):
         if not item.description:
             return
 
-        desc = item.description.replace("\r", "<br>")
+        desc = item.description.replace("\n", "<br>")
         # Strip font tags
         desc = re.sub("<( *)font( *)color( *)=(.*?)>(?P<inside>.*?)<( *)/( *)font( *)>", "\g<inside>", desc)
         # Strip URLs
