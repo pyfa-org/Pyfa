@@ -18,7 +18,7 @@ debug = False
 saveInRoot = False
 
 # Version data
-version = "1.21.1"
+version = "1.21.2"
 tag = "Stable"
 expansionName = "Citadel"
 expansionVersion = "1.3"
