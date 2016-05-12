@@ -4,7 +4,7 @@
 # Variations of module: Skirmish Warfare Link - Rapid Deployment I (2 of 2)
 type = "gang", "active"
 gangBoost = "speedFactor"
-runTime = "late"
+#runTime = "late"
 
 def handler(fit, module, context):
     if "gang" not in context: return

@@ -4,7 +4,7 @@
 # Variations of module: Skirmish Warfare Link - Interdiction Maneuvers I (2 of 2)
 type = "gang", "active"
 gangBoost = "interdictionMaxRange"
-runTime = "late"
+#runTime = "late"
 
 def handler(fit, module, context):
     if "gang" not in context: return

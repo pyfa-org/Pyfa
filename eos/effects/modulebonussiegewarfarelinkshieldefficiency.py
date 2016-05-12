@@ -4,7 +4,7 @@
 # Variations of module: Siege Warfare Link - Shield Efficiency I (2 of 2)
 type = "gang", "active"
 gangBoost = "shieldRepairCapacitorNeed"
-runTime = "late"
+#runTime = "late"
 
 def handler(fit, module, context):
     if "gang" not in context: return

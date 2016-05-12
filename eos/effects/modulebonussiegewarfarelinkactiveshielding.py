@@ -4,7 +4,7 @@
 # Variations of module: Siege Warfare Link - Active Shielding I (2 of 2)
 type = "gang", "active"
 gangBoost = "shieldRepairDuration"
-runTime = "late"
+#runTime = "late"
 
 def handler(fit, module, context):
     if "gang" not in context: return
