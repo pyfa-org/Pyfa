@@ -519,10 +519,11 @@ class Fit(object):
         fit = eos.db.getFit(fitID)
 
         module = fit.modules[moduleIdx]
+        cargo = fit.cargo[cargoIdx]
 
         # Gather modules and convert Cargo item to Module, silently return if not a module
         try:
-            cargoP = eos.types.Module(fit.cargo[cargoIdx].item)
+            cargoP = eos.types.Module(cargo.item)
             cargoP.owner = fit
             if cargoP.isValidState(State.ACTIVE):
                 cargoP.state = State.ACTIVE
@@ -542,12 +543,19 @@ class Fit(object):
         fit.modules.insert(moduleIdx, cargoP)
 
         if not copyMod:  # remove existing cargo if not cloning
-            fit.cargo.remove(fit.cargo[cargoIdx])
+            if cargo.amount == 1:
+                fit.cargo.remove(cargo)
+            else:
+                cargo.amount -= 1
 
         if not module.isEmpty:  # if module is placeholder, we don't want to convert/add it
-            moduleP = eos.types.Cargo(module.item)
-            moduleP.amount = 1
-            fit.cargo.insert(cargoIdx, moduleP)
+            for x in fit.cargo.find(module.item):
+                x.amount += 1
+                break
+            else:
+                moduleP = eos.types.Cargo(module.item)
+                moduleP.amount = 1
+                fit.cargo.insert(cargoIdx, moduleP)
 
         eos.db.commit()
         self.recalc(fit)
