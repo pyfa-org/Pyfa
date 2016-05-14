@@ -23,6 +23,8 @@ import logging
 logger = logging.getLogger(__name__)
 
 class FighterAbility(object):
+    DAMAGE_TYPES = ("em", "kinetic", "explosive", "thermal")
+    DAMAGE_TYPES2 = ("EM", "Kin", "Exp", "Therm")
 
     def __init__(self, effect):
         """Initialize from the program"""
@@ -68,3 +70,32 @@ class FighterAbility(object):
     def grouped(self):
         # is the ability applied per fighter (webs, returns False), or as a group (MWD, returned True)
         return self.__effect.getattr('grouped')
+
+    def damageStats(self, targetResists=None):
+        if self.__dps is None:
+            self.__volley = 0
+            self.__dps = 0
+            if self.dealsDamage and self.active:
+                cycleTime = self.fighter.getModifiedItemAttr("{}Duration".format(self.attrPrefix))
+
+                if self.attrPrefix == "fighterAbilityLaunchBomb":
+                    # bomb calcs
+                    volley = sum(map(lambda attr: (self.fighter.getModifiedChargeAttr("%sDamage" % attr) or 0) * (
+                    1 - getattr(targetResists, "%sAmount" % attr, 0)), self.DAMAGE_TYPES))
+                else:
+                    volley = sum(map(lambda d2, d:
+                                     (self.fighter.getModifiedItemAttr(
+                                         "{}Damage{}".format(self.attrPrefix, d2)) or 0) *
+                                     (1 - getattr(targetResists, "{}Amount".format(d), 0)),
+                                     self.DAMAGE_TYPES2, self.DAMAGE_TYPES))
+
+                volley *= self.fighter.amountActive
+                volley *= self.fighter.getModifiedItemAttr("{}DamageMultiplier".format(self.attrPrefix)) or 1
+                self.__volley += volley
+                self.__dps += volley / (cycleTime / 1000.0)
+
+        return self.__dps, self.__volley
+
+    def clear(self):
+        self.__dps = None
+        self.__volley = None
