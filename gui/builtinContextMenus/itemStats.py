@@ -59,4 +59,4 @@ class ItemStats(ContextMenu):
         else:
             ItemStatsDialog(stuff, fullContext)
 
-ItemStats.register()
+ItemStats.register(5)

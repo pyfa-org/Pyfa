@@ -23,7 +23,9 @@ class ContextMenu(object):
     menus = []
 
     @classmethod
-    def register(cls):
+    def register(cls, numIds=200):
+        cls.ids = [wx.NewId() for x in xrange(numIds)]
+        cls._ididx = -1
         ContextMenu.menus.append(cls)
 
     @classmethod
@@ -44,7 +46,7 @@ class ContextMenu(object):
                 (('marketItemGroup', 'Implant'),)
                 (('fittingShip', 'Ship'),)
         """
-
+        start = wx.NewId()
         rootMenu = wx.Menu()
         rootMenu.info = {}
         rootMenu.selection = (selection,) if not hasattr(selection, "__iter__") else selection
@@ -68,7 +70,7 @@ class ContextMenu(object):
                     bitmap = m.getBitmap(srcContext, selection)
                     multiple = not isinstance(bitmap, wx.Bitmap)
                     for it, text in enumerate(texts):
-                        id = wx.NewId()
+                        id = m.nextID(m.__class__)
                         rootItem = wx.MenuItem(rootMenu, id, text)
                         rootMenu.info[id] = (m, fullContext, it)
 
@@ -108,7 +110,8 @@ class ContextMenu(object):
 
             if amount > 0 and i != len(fullContexts) - 1:
                 rootMenu.AppendSeparator()
-
+        end = wx.NewId()
+        print end, end - start
         return rootMenu if empty is False else None
 
     @classmethod
@@ -133,6 +136,13 @@ class ContextMenu(object):
 
     def getSubMenu(self, context, selection, rootMenu, i, pitem):
         return None
+
+    def nextID(self, m):
+        print m._ididx
+        m._ididx += 1
+        id = m.ids[m._ididx % len(m.ids)]
+        print id
+        return id
 
     def getText(self, context, selection):
         """
