@@ -21,11 +21,13 @@ import wx
 
 class ContextMenu(object):
     menus = []
+    ids = []#[wx.NewId() for x in xrange(200)]  # init with decent amount
+    idxid = -1
 
     @classmethod
     def register(cls, numIds=200):
-        cls.ids = [wx.NewId() for x in xrange(numIds)]
-        cls._ididx = -1
+        #cls.ids = [wx.NewId() for x in xrange(numIds)]
+        #cls._ididx = -1
         ContextMenu.menus.append(cls)
 
     @classmethod
@@ -46,6 +48,8 @@ class ContextMenu(object):
                 (('marketItemGroup', 'Implant'),)
                 (('fittingShip', 'Ship'),)
         """
+        cls.idxid = -1
+
         start = wx.NewId()
         rootMenu = wx.Menu()
         rootMenu.info = {}
@@ -70,7 +74,7 @@ class ContextMenu(object):
                     bitmap = m.getBitmap(srcContext, selection)
                     multiple = not isinstance(bitmap, wx.Bitmap)
                     for it, text in enumerate(texts):
-                        id = m.nextID(m.__class__)
+                        id = cls.nextID()
                         rootItem = wx.MenuItem(rootMenu, id, text)
                         rootMenu.info[id] = (m, fullContext, it)
 
@@ -111,7 +115,7 @@ class ContextMenu(object):
             if amount > 0 and i != len(fullContexts) - 1:
                 rootMenu.AppendSeparator()
         end = wx.NewId()
-        print end, end - start
+        print end - start - 1, " IDs created for this menu"
         return rootMenu if empty is False else None
 
     @classmethod
@@ -137,12 +141,16 @@ class ContextMenu(object):
     def getSubMenu(self, context, selection, rootMenu, i, pitem):
         return None
 
-    def nextID(self, m):
-        print m._ididx
-        m._ididx += 1
-        id = m.ids[m._ididx % len(m.ids)]
-        print id
-        return id
+    @classmethod
+    def nextID(cls):
+        cls.idxid += 1
+        print "current id: ",cls.idxid
+
+        if cls.idxid >= len(cls.ids):  # We don't ahve an ID for this index, create one
+            print "Creating new id, idx: ", cls.idxid, "; current length: ", len(cls.ids)
+            cls.ids.append(wx.NewId())
+
+        return cls.ids[cls.idxid]
 
     def getText(self, context, selection):
         """

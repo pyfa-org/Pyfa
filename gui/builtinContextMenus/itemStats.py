@@ -6,7 +6,11 @@ import wx
 
 class ItemStats(ContextMenu):
     def __init__(self):
+        print 'init'
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+
+    def __del__(self):
+        print 'delete item stats'
 
     def display(self, srcContext, selection):
 
@@ -59,4 +63,4 @@ class ItemStats(ContextMenu):
         else:
             ItemStatsDialog(stuff, fullContext)
 
-ItemStats.register(5)
+ItemStats.register()

@@ -26,7 +26,7 @@ class TacticalMode(ContextMenu):
 
     def addMode(self, menu, mode):
         label = mode.item.name.rsplit()[-2]
-        id = wx.NewId()
+        id = ContextMenu.nextID()
         self.modeIds[id] = mode
         menuItem = wx.MenuItem(menu, id, label, kind=wx.ITEM_RADIO)
         menu.Bind(wx.EVT_MENU, self.handleMode, menuItem)
