@@ -663,8 +663,10 @@ class Market():
         return root
 
     def getShipRoot(self):
-        cat = self.getCategory("Ship")
-        root = set(self.getGroupsByCategory(cat))
+        cat1 = self.getCategory("Ship")
+        cat2 = self.getCategory("Structure")
+        root = set(self.getGroupsByCategory(cat1) | self.getGroupsByCategory(cat2))
+
         return root
 
     def getShipList(self, grpid):
