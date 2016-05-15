@@ -29,6 +29,9 @@ class MetaSwap(ContextMenu):
 
         self.selection = selection
 
+        if len(self.variations) == 1:
+            return False  # no variations from current module
+
         return True
 
     def getText(self, itmContext, selection):
