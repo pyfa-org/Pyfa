@@ -743,6 +743,10 @@ class Fit(object):
         capacity = self.ship.getModifiedItemAttr("capacitorCapacity")
         mass = self.ship.getModifiedItemAttr("mass")
         warpCapNeed = self.ship.getModifiedItemAttr("warpCapacitorNeed")
+
+        if not warpCapNeed:
+            return 0
+
         return capacity / (mass * warpCapNeed)
 
     @property

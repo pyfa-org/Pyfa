@@ -151,7 +151,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     def isInvalid(self):
         if self.isEmpty:
             return False
-        return self.__item is None or (self.__item.category.name not in ("Module", "Subsystem") and self.__item.group.name != "Effect Beacon")
+        return self.__item is None or (self.__item.category.name not in ("Module", "Subsystem", "Structure Module") and self.__item.group.name != "Effect Beacon")
 
     @property
     def numCharges(self):
