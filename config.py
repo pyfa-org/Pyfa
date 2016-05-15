@@ -21,7 +21,7 @@ saveInRoot = False
 version = "1.21.2"
 tag = "Stable"
 expansionName = "Citadel"
-expansionVersion = "1.3"
+expansionVersion = "1.11"
 evemonMinVersion = "4081"
 
 pyfaPath = None
