@@ -18,16 +18,17 @@
 #===============================================================================
 
 import wx
+import logging
+
+logger = logging.getLogger(__name__)
 
 class ContextMenu(object):
     menus = []
-    ids = []#[wx.NewId() for x in xrange(200)]  # init with decent amount
-    idxid = -1
+    _ids = [] #[wx.NewId() for x in xrange(200)]  # init with decent amount
+    _idxid = -1
 
     @classmethod
-    def register(cls, numIds=200):
-        #cls.ids = [wx.NewId() for x in xrange(numIds)]
-        #cls._ididx = -1
+    def register(cls):
         ContextMenu.menus.append(cls)
 
     @classmethod
@@ -48,9 +49,9 @@ class ContextMenu(object):
                 (('marketItemGroup', 'Implant'),)
                 (('fittingShip', 'Ship'),)
         """
-        cls.idxid = -1
+        cls._idxid = -1
+        debug_start = len(cls._ids)
 
-        start = wx.NewId()
         rootMenu = wx.Menu()
         rootMenu.info = {}
         rootMenu.selection = (selection,) if not hasattr(selection, "__iter__") else selection
@@ -114,8 +115,11 @@ class ContextMenu(object):
 
             if amount > 0 and i != len(fullContexts) - 1:
                 rootMenu.AppendSeparator()
-        end = wx.NewId()
-        print end - start - 1, " IDs created for this menu"
+
+        debug_end = len(cls._ids)
+        if (debug_end - debug_start):
+            logger.debug("%d new IDs created for this menu" % (debug_end - debug_start))
+
         return rootMenu if empty is False else None
 
     @classmethod
@@ -143,14 +147,19 @@ class ContextMenu(object):
 
     @classmethod
     def nextID(cls):
-        cls.idxid += 1
-        print "current id: ",cls.idxid
+        """
+        Fetches an ID from the pool of IDs allocated to Context Menu.
+        If we don't have enough ID's to fulfill request, create new
+        ID and add it to the pool.
 
-        if cls.idxid >= len(cls.ids):  # We don't ahve an ID for this index, create one
-            print "Creating new id, idx: ", cls.idxid, "; current length: ", len(cls.ids)
-            cls.ids.append(wx.NewId())
+        See GH Issue #589
+        """
+        cls._idxid += 1
 
-        return cls.ids[cls.idxid]
+        if cls._idxid >= len(cls._ids):  # We don't ahve an ID for this index, create one
+            cls._ids.append(wx.NewId())
+
+        return cls._ids[cls._idxid]
 
     def getText(self, context, selection):
         """
