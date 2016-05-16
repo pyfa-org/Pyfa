@@ -46,6 +46,8 @@ class Slot(Enum):
     # system effects. They are projected "modules" and pyfa assumes all modules
     # have a slot. In this case, make one up.
     SYSTEM = 7
+    # used for citadel services
+    SERVICE = 8
     # fighter 'slots'. Just easier to put them here...
     F_LIGHT = 10
     F_SUPPORT = 11
@@ -534,7 +536,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                          "loPower" : Slot.LOW,
                          "medPower" : Slot.MED,
                          "hiPower" : Slot.HIGH,
-                         "subSystem" : Slot.SUBSYSTEM}
+                         "subSystem" : Slot.SUBSYSTEM,
+                         "serviceSlot": Slot.SERVICE}
         if item is None:
             return None
         for effectName, slot in effectSlotMap.iteritems():

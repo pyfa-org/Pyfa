@@ -42,9 +42,7 @@ class Ship(ItemAttrShortcut, HandledItem):
     }
 
     def __init__(self, item, parent=None):
-
-        if item.category.name not in ("Ship", "Structure"):
-            raise ValueError('Passed item "%s" (category: (%s)) is not under Ship category'%(item.name, item.category.name))
+        self.validate(item)
 
         self.__item = item
         self.__modeItems = self.__getModeItems()
@@ -57,6 +55,10 @@ class Ship(ItemAttrShortcut, HandledItem):
         # skills for ship-role gang boosts (Titans)
         self.parent = parent
         self.commandBonus = 0
+
+    def validate(self, item):
+        if item.category.name != "Ship":
+            raise ValueError('Passed item "%s" (category: (%s)) is not under Ship category'%(item.name, item.category.name))
 
     @property
     def item(self):

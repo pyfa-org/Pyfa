@@ -24,7 +24,7 @@ from itertools import chain
 from eos import capSim
 from copy import deepcopy
 from math import sqrt, log, asinh
-from eos.types import Drone, Cargo, Ship, Character, State, Slot, Module, Implant, Booster, Skill
+from eos.types import Drone, Cargo, Ship, Character, State, Slot, Module, Implant, Booster, Skill, Citadel
 from eos.saveddata.module import State, Hardpoint
 from eos.saveddata.mode import Mode
 import eos.db
@@ -92,7 +92,11 @@ class Fit(object):
                 return
 
             try:
-                self.__ship = Ship(item, self)
+                try:
+                    self.__ship = Ship(item, self)
+                except ValueError:
+                    self.__ship = Citadel(item, self)
+                print self.__ship
                 # @todo extra attributes is now useless, however it set to be
                 # the same as ship attributes for ease (so we don't have to
                 # change all instances in source). Remove this at some point
@@ -564,7 +568,7 @@ class Fit(object):
         if self.ship is None:
             return
 
-        for slotType in (Slot.LOW, Slot.MED, Slot.HIGH, Slot.RIG, Slot.SUBSYSTEM):
+        for slotType in (Slot.LOW, Slot.MED, Slot.HIGH, Slot.RIG, Slot.SUBSYSTEM, Slot.SERVICE):
             amount = self.getSlotsFree(slotType, True)
             if amount > 0:
                 for _ in xrange(int(amount)):
@@ -639,6 +643,7 @@ class Fit(object):
              Slot.HIGH: "hiSlots",
              Slot.RIG: "rigSlots",
              Slot.SUBSYSTEM: "maxSubSystems",
+             Slot.SERVICE: "serviceSlots",
              Slot.F_LIGHT: "fighterLightSlots",
              Slot.F_SUPPORT: "fighterSupportSlots",
              Slot.F_HEAVY: "fighterHeavySlots"}
