@@ -157,7 +157,10 @@ class Fit(object):
         return fit.modules[pos]
 
     def newFit(self, shipID, name=None):
-        ship = eos.types.Ship(eos.db.getItem(shipID))
+        try:
+            ship = eos.types.Ship(eos.db.getItem(shipID))
+        except ValueError:
+            ship = eos.types.Citadel(eos.db.getItem(shipID))
         fit = eos.types.Fit(ship)
         fit.name = name if name is not None else "New %s" % fit.ship.item.name
         fit.damagePattern = self.pattern

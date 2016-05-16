@@ -24,6 +24,7 @@ from eos.effectHandlerHelpers import HandledItem, HandledCharge
 from eos.enum import Enum
 from eos.mathUtils import floorFloat
 import eos.db
+from eos.types import Citadel
 import logging
 
 logger = logging.getLogger(__name__)
@@ -393,6 +394,11 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                     fitsOnGroup.add(shipGroup)
 
         if (len(fitsOnGroup) > 0 or len(fitsOnType) > 0) and fit.ship.item.group.ID not in fitsOnGroup and fit.ship.item.ID not in fitsOnType:
+            return False
+
+        # AFAIK Citadel modules will always be restricted based on canFitShipType/Group. If we are fitting to a Citadel
+        # and the module does not have these properties, return false to prevent regular ship modules from being used
+        if isinstance(fit.ship, Citadel) and len(fitsOnGroup) == 0 and len(fitsOnType) == 0:
             return False
 
         # If the mod is a subsystem, don't let two subs in the same slot fit
