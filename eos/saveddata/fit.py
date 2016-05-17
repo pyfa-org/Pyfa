@@ -96,7 +96,6 @@ class Fit(object):
                     self.__ship = Ship(item, self)
                 except ValueError:
                     self.__ship = Citadel(item, self)
-                print self.__ship
                 # @todo extra attributes is now useless, however it set to be
                 # the same as ship attributes for ease (so we don't have to
                 # change all instances in source). Remove this at some point

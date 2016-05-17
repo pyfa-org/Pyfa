@@ -363,7 +363,6 @@ class Fit(object):
 
             drone.amount += 1
         elif thing.category.name == "Fighter":
-            print "dskfnds"
             fighter = eos.types.Fighter(thing)
             fit.projectedFighters.append(fighter)
         elif thing.group.name == "Effect Beacon":
