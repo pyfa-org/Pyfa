@@ -7,7 +7,11 @@ type= "projected", "active"
 def handler(fit, module, context):
     if "projected" not in context:
         return
+
+    print "in sensor damp projection on ", fit, module.getModifiedItemAttr("maxTargetRangeBonus")
+    print fit.ship.getModifiedItemAttr('maxTargetRange')
     fit.ship.boostItemAttr("maxTargetRange", module.getModifiedItemAttr("maxTargetRangeBonus"),
-                           stackingPenalties = True)
+                           stackingPenalties = True, remoteResists=True)
+    print fit.ship.getModifiedItemAttr('maxTargetRange')
     fit.ship.boostItemAttr("scanResolution", module.getModifiedItemAttr("scanResolutionBonus"),
-                           stackingPenalties = True)
+                           stackingPenalties = True, remoteResists=True)

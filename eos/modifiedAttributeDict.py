@@ -313,13 +313,26 @@ class ModifiedAttributeDict(collections.MutableMapping):
             if not attributeName in self.__multipliers:
                 self.__multipliers[attributeName] = 1
             self.__multipliers[attributeName] *= multiplier
+
         self.__placehold(attributeName)
         self.__afflict(attributeName, "%s*" % ("s" if stackingPenalties else ""), multiplier, multiplier != 1)
 
-    def boost(self, attributeName, boostFactor, skill=None, *args, **kwargs):
+    def boost(self, attributeName, boostFactor, skill=None, remoteResists=False, *args, **kwargs):
         """Boost value by some percentage"""
         if skill:
             boostFactor *= self.__handleSkill(skill)
+
+        if remoteResists:
+            # @todo: this is such a disgusting hack. Look into sending these checks to the module class before the
+            # effect is applied.
+            mod = self.fit.getModifier()
+            remoteResistID = mod.getModifiedItemAttr("remoteResistanceID") or None
+
+            # We really don't have a way of getting a ships attribute by ID. Fail.
+            resist = next((x for x in self.fit.ship.item.attributes.values() if x.ID == remoteResistID), None)
+
+            if remoteResistID and resist:
+                boostFactor *= resist.value
 
         # We just transform percentage boost into multiplication factor
         self.multiply(attributeName, 1 + boostFactor / 100.0, *args, **kwargs)
