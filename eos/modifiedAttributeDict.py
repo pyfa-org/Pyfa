@@ -153,7 +153,8 @@ class ModifiedAttributeDict(collections.MutableMapping):
             if attrInfo is None:
                 cappingId = cappingAttrKeyCache[key] = None
             else:
-                cappingId = cappingAttrKeyCache[key] = attrInfo.maxAttributeID
+                # see GH issue #620
+                cappingId = cappingAttrKeyCache[key] = None if attrInfo.maxAttributeID == 797 else attrInfo.maxAttributeID
             if cappingId is None:
                 cappingKey = None
             else:
