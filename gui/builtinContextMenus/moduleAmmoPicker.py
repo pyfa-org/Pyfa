@@ -98,7 +98,7 @@ class ModuleAmmoPicker(ContextMenu):
         return map(self.numericConverter, parts)
 
     def addCharge(self, menu, charge):
-        id = wx.NewId()
+        id = ContextMenu.nextID()
         name = charge.name if charge is not None else "Empty"
         self.chargeIds[id] = charge
         item = wx.MenuItem(menu, id, name)
@@ -112,7 +112,7 @@ class ModuleAmmoPicker(ContextMenu):
         return item
 
     def addSeperator(self, m, text):
-        id = wx.NewId()
+        id = ContextMenu.nextID()
         m.Append(id, u'─ %s ─' % text)
         m.Enable(id, False)
 

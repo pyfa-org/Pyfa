@@ -20,7 +20,7 @@ class FighterAbility(ContextMenu):
 
     def addAbility(self, menu, ability):
         label = ability.name
-        id = wx.NewId()
+        id = ContextMenu.nextID()
         self.abilityIds[id] = ability
         menuItem = wx.MenuItem(menu, id, label, kind=wx.ITEM_CHECK)
         menu.Bind(wx.EVT_MENU, self.handleMode, menuItem)

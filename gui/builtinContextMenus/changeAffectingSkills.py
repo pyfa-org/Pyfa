@@ -60,7 +60,7 @@ class ChangeAffectingSkills(ContextMenu):
         else:
             label = "Level %s" % i
 
-        id = wx.NewId()
+        id = ContextMenu.nextID()
         self.skillIds[id] = (skill, i)
         menuItem = wx.MenuItem(rootMenu, id, label, kind=wx.ITEM_RADIO)
         rootMenu.Bind(wx.EVT_MENU, self.handleSkillChange, menuItem)
@@ -72,7 +72,7 @@ class ChangeAffectingSkills(ContextMenu):
         sub = wx.Menu()
 
         for skill in self.skills:
-            skillItem = wx.MenuItem(sub, wx.NewId(), skill.item.name)
+            skillItem = wx.MenuItem(sub, ContextMenu.nextID(), skill.item.name)
             grandSub = wx.Menu()
             skillItem.SetSubMenu(grandSub)
             if skill.learned:
