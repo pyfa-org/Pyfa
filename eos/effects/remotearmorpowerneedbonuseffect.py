@@ -1,9 +1,3 @@
-# remoteArmorPowerNeedBonusEffect
-#
-# Used by:
-# Ship: Guardian
-# Ship: Oneiros
 type = "passive"
-def handler(fit, ship, context):
-    fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == "Remote Armor Repairer",
-                                  "power", ship.getModifiedItemAttr("remoteArmorPowerNeedBonus"))
+def handler(fit, src, context):
+    fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Remote Armor Repair Systems"), "power", src.getModifiedItemAttr("remoteArmorPowerNeedBonus"))
