@@ -1,3 +1,7 @@
+# moduleBonusAncillaryRemoteArmorRepairer
+#
+# Used by:
+# Modules from group: Ancillary Remote Armor Repairer (4 of 4)
 runTime = "late"
 type = "projected", "active"
 def handler(fit, module, context):

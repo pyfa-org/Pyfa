@@ -1,7 +1,4 @@
-# remoteHullRepair
-#
-# Used by:
-# Drones named like: Hull Maintenance Bot (6 of 6)
+# Not used by any item
 type = "projected", "active"
 runTime = "late"
 def handler(fit, module, context):

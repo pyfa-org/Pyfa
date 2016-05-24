@@ -1,7 +1,4 @@
-# marauderModeEffect26
-#
-# Used by:
-# Module: Bastion Module I
+# Not used by any item
 type = "active"
 runTime = "early"
 def handler(fit, module, context):

@@ -1,7 +1,4 @@
-# decreaseTargetSpeed
-#
-# Used by:
-# Drones from group: Stasis Webifying Drone (3 of 3)
+# Not used by any item
 type = "active", "projected"
 def handler(fit, module, context):
     if "projected" not in context:
