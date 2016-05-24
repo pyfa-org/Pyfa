@@ -19,7 +19,7 @@ saveInRoot = False
 
 # Version data
 version = "1.21.3"
-tag = "git"
+tag = "Stable"
 expansionName = "Citadel"
 expansionVersion = "1.11"
 evemonMinVersion = "4081"
