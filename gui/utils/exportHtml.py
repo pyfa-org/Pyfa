@@ -272,8 +272,8 @@ class exportHtmlThread(threading.Thread):
                         return
                     try:
                         dnaFit = sFit.exportDna(fit[0])                  
-                        HTML += '          <a class="inGameBrowserLink" target="_blank" href=javascript:CCPEVE.showFitting("'+dnaFit+'");>IGB</a>' +\
-                        ' / <a class="outOfGameBrowserLink" target="_blank" href="' + dnaUrl + dnaFit + '">OOGB</a>    '+ fit[1]+ '<br>'
+                        HTML += '<a class="inGameBrowserLink" target="_blank" href=javascript:CCPEVE.showFitting("'+dnaFit+'");>IGB</a>' +\
+								' / <a class="outOfGameBrowserLink" target="_blank" href="' + dnaUrl + dnaFit + '">OOGB</a>    '+ship.name +': '+ fit[1]+ '<br> \n'
                     except:
                         continue
                     finally:
