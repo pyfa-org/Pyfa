@@ -477,6 +477,8 @@ class Miscellanea(ViewColumn):
                 tooltip = "E{0}".format(tooltip)
             else:
                 hpRatio = 1
+            if itemGroup == "Ancillary Armor Repairer":
+                hpRatio *= 3
             ehp = hp * hpRatio
             duration = cycles * cycleTime / 1000
             text = "{0} / {1}s".format(formatAmount(ehp, 3, 0, 9), formatAmount(duration, 3, 0, 3))
