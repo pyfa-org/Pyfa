@@ -18,6 +18,8 @@ class PFHTMLExportPref ( PreferenceView):
     desc2 = "Enabling automatic exporting will update the HTML file after any change "+\
             "to a fit is made. Under certain circumstance, this may cause performance issues."
     desc3 = "Preferred website to view fits while not using in-game browser can be selected below."
+    desc4 = "Export Fittings in a minmal HTML Version, just containing the Fittingslinks " +\
+            "without any visual styling or javscript features"
 
     def populatePanel( self, panel ):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
@@ -57,6 +59,17 @@ class PFHTMLExportPref ( PreferenceView):
         self.exportEnabled.SetValue(self.HTMLExportSettings.getEnabled())
         self.exportEnabled.Bind(wx.EVT_CHECKBOX, self.OnExportEnabledChange)
         mainSizer.Add( self.exportEnabled, 0, wx.ALL|wx.EXPAND, 5 )
+        
+        
+        
+        self.stDesc4 = wx.StaticText( panel, wx.ID_ANY, self.desc4, wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.stDesc4.Wrap(dlgWidth - 50)
+        mainSizer.Add( self.stDesc4, 0, wx.ALL, 5 )        
+        
+        self.exportMinimal = wx.CheckBox( panel, wx.ID_ANY, u"Enable minimal export Format", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.exportMinimal.SetValue(self.HTMLExportSettings.getMinimalEnabled())
+        self.exportMinimal.Bind(wx.EVT_CHECKBOX, self.OnMinimalEnabledChange)
+        mainSizer.Add( self.exportMinimal, 0, wx.ALL|wx.EXPAND, 5 )
 
         self.stDesc3 = wx.StaticText( panel, wx.ID_ANY, self.desc3, wx.DefaultPosition, wx.DefaultSize, 0 )
         self.stDesc3.Wrap(dlgWidth - 50)
@@ -93,6 +106,9 @@ class PFHTMLExportPref ( PreferenceView):
 
     def OnExportEnabledChange(self, event):
         self.HTMLExportSettings.setEnabled(self.exportEnabled.GetValue())
+        
+    def OnMinimalEnabledChange(self, event):
+        self.HTMLExportSettings.setMinimalEnabled(self.exportMinimal.GetValue())
 
     def OnCHWebsiteTypeSelect(self, event):
         choice = self.chWebsiteType.GetStringSelection()
