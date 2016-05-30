@@ -154,13 +154,23 @@ class ModifiedAttributeDict(collections.MutableMapping):
                 cappingId = cappingAttrKeyCache[key] = None
             else:
                 # see GH issue #620
-                cappingId = cappingAttrKeyCache[key] = None if attrInfo.maxAttributeID == 797 else attrInfo.maxAttributeID
+                cappingId = cappingAttrKeyCache[key] = attrInfo.maxAttributeID
             if cappingId is None:
                 cappingKey = None
             else:
                 cappingAttrInfo = getAttributeInfo(cappingId)
                 cappingKey = None if cappingAttrInfo is None else cappingAttrInfo.name
-        cappingValue = self.__calculateValue(cappingKey) if cappingKey is not None else None
+
+        if cappingKey:
+            if cappingKey in self.original:
+                #  some items come with their own caps (ie: carriers). If they do, use this
+                cappingValue = self.original.get(cappingKey).value
+            else:
+                # If not, get info about the default value
+                cappingValue = self.__calculateValue(cappingKey)
+        else:
+            cappingValue = None
+
         # If value is forced, we don't have to calculate anything,
         # just return forced value instead
         force = self.__forced[key] if key in self.__forced else None
