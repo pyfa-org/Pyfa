@@ -18,7 +18,7 @@
 #===============================================================================
 
 from sqlalchemy.orm import eagerload
-from sqlalchemy.sql import and_
+from sqlalchemy.sql import and_, or_
 
 replace = {"attributes": "_Item__attributes",
            "modules": "_Fit__modules",
