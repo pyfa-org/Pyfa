@@ -1,7 +1,4 @@
-# energyDestabilizationNew
-#
-# Used by:
-# Drones from group: Energy Neutralizer Drone (3 of 3)
+# Not used by any item
 from eos.types import State
 type = "active", "projected"
 def handler(fit, container, context):

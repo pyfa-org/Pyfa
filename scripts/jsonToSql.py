@@ -208,6 +208,8 @@ def main(db, json_path):
                     row["iconFile"] = row["iconFile"].lower().replace("modules/", "").replace(".png", "")
 
                 for k, v in row.iteritems():
+                    if (isinstance(v, basestring)):
+                        v = v.strip()
                     setattr(instance, fieldMap.get(k, k), v)
 
                 eos.db.gamedata_session.add(instance)

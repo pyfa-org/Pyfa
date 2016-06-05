@@ -42,7 +42,7 @@ class ImplantSets(ContextMenu):
         self.idmap = {}
 
         for set in implantSets:
-            id = wx.NewId()
+            id = ContextMenu.nextID()
             mitem = wx.MenuItem(rootMenu, id, set.name)
             bindmenu.Bind(wx.EVT_MENU, self.handleSelection, mitem)
             self.idmap[id] = set

@@ -20,7 +20,7 @@
 from sqlalchemy import Table, Column, Integer, ForeignKey, Boolean
 from sqlalchemy.orm import mapper
 from eos.db import saveddata_meta
-from eos.types import Fighter
+from eos.types import Fighter, Fit
 from sqlalchemy.orm import *
 from sqlalchemy.sql import and_
 from eos.effectHandlerHelpers import *
@@ -42,6 +42,7 @@ fighter_abilities_table = Table("fightersAbilities", saveddata_meta,
 
 mapper(Fighter, fighters_table,
        properties = {
+            "owner": relation(Fit),
             "_Fighter__abilities": relation(
                 FighterAbility,
                 backref="fighter",

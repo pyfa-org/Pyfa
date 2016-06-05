@@ -159,25 +159,11 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         if self.__dps is None:
             self.__volley = 0
             self.__dps = 0
-            if self.active:
+            if self.active and self.amountActive > 0:
                 for ability in self.abilities:
-                    if ability.dealsDamage and ability.active and self.amountActive > 0:
-
-                        cycleTime = self.getModifiedItemAttr("{}Duration".format(ability.attrPrefix))
-                        if ability.attrPrefix == "fighterAbilityLaunchBomb":
-                            # bomb calcs
-                            volley = sum(map(lambda attr: (self.getModifiedChargeAttr("%sDamage" % attr) or 0) * (1 - getattr(targetResists, "%sAmount" % attr, 0)), self.DAMAGE_TYPES))
-                            print volley
-                        else:
-                            volley = sum(map(lambda d2, d:
-                                         (self.getModifiedItemAttr("{}Damage{}".format(ability.attrPrefix, d2)) or 0) *
-                                         (1-getattr(targetResists, "{}Amount".format(d), 0)),
-                                         self.DAMAGE_TYPES2, self.DAMAGE_TYPES))
-
-                        volley *= self.amountActive
-                        volley *= self.getModifiedItemAttr("{}DamageMultiplier".format(ability.attrPrefix)) or 1
-                        self.__volley += volley
-                        self.__dps += volley / (cycleTime / 1000.0)
+                    dps, volley = ability.damageStats(targetResists)
+                    self.__dps += dps
+                    self.__volley += volley
 
         return self.__dps, self.__volley
 
@@ -222,6 +208,7 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         self.__miningyield = None
         self.itemModifiedAttributes.clear()
         self.chargeModifiedAttributes.clear()
+        [x.clear() for x in self.abilities]
 
     def canBeApplied(self, projectedOnto):
         """Check if fighter can engage specific fitting"""

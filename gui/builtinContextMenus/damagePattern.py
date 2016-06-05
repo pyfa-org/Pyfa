@@ -48,7 +48,7 @@ class DamagePattern(ContextMenu):
         return self.m
 
     def addPattern(self, rootMenu, pattern):
-        id = wx.NewId()
+        id = ContextMenu.nextID()
         name = getattr(pattern, "_name", pattern.name) if pattern is not None else "No Profile"
 
         self.patternIds[id] = pattern

@@ -719,6 +719,7 @@ class PFTabsContainer(wx.Panel):
         self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnErase)
         self.Bind(wx.EVT_LEFT_DOWN, self.OnLeftDown)
         self.Bind(wx.EVT_LEFT_UP, self.OnLeftUp)
+        self.Bind(wx.EVT_MIDDLE_UP, self.OnMiddleUp)
         self.Bind(wx.EVT_MOTION, self.OnMotion)
         self.Bind(wx.EVT_SIZE, self.OnSize)
         self.Bind(wx.EVT_SYS_COLOUR_CHANGED, self.OnSysColourChanged)
@@ -795,6 +796,28 @@ class PFTabsContainer(wx.Panel):
         for tab in self.tabs:
             if self.CheckTabClose(tab, mposx, mposy):
                 return
+
+    def OnMiddleUp(self, event):
+        mposx, mposy = event.GetPosition()
+
+        tab = self.FindTabAtPos(mposx, mposy)
+
+        if tab is None or not tab.closeButton:  # if not able to close, return False
+            return False
+
+        index = self.tabs.index(tab)
+        ev = PageClosing(index)
+        wx.PostEvent(self.Parent, ev)
+        if ev.isVetoed():
+            return False
+
+        index = self.GetTabIndex(tab)
+        self.DeleteTab(index)
+        wx.PostEvent(self.Parent, PageClosed(index=index))
+        sel = self.GetSelected()
+
+        if sel is not None:
+            wx.PostEvent(self.Parent, PageChanged(-1, sel))
 
     def GetSelectedTab(self):
         for tab in self.tabs:

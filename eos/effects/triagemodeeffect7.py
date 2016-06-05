@@ -83,6 +83,7 @@ def handler(fit, module, context):
         'Burst Projectors',
         'Weapon Disruptor',
         'ECM',
+        'Stasis Grappler',
         'Remote Sensor Damper',
         'Target Painter']
 

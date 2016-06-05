@@ -1,4 +1,4 @@
-# 	skillRemoteHullRepairSystemsCapNeedBonus
+# skillRemoteHullRepairSystemsCapNeedBonus
 #
 # Used by:
 # Skill: Remote Hull Repair Systems

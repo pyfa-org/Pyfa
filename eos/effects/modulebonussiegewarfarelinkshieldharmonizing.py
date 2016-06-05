@@ -3,7 +3,7 @@
 # Used by:
 # Variations of module: Siege Warfare Link - Shield Harmonizing I (2 of 2)
 type = "gang", "active"
-runTime = "late"
+#runTime = "late"
 
 gangBoost = "shieldResistance"
 def handler(fit, module, context):

@@ -42,13 +42,12 @@ def handler(fit, src, context):
         'Burst Jammer',
         'Weapon Disruptor',
         'ECM',
+		'Stasis Grappler',
         'Sensor Dampener',
         'Target Painter']
 
     fit.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups or
                                               mod.item.requiresSkill("Propulsion Jamming"),
-                                  "capacitorNeed", src.getModifiedItemAttr("ewCapacitorNeedBonus"))
-    fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Propulsion Jamming"),
                                   "capacitorNeed", src.getModifiedItemAttr("ewCapacitorNeedBonus"))
 
     # todo: test for April 2016 release

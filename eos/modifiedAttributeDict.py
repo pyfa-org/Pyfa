@@ -153,13 +153,24 @@ class ModifiedAttributeDict(collections.MutableMapping):
             if attrInfo is None:
                 cappingId = cappingAttrKeyCache[key] = None
             else:
+                # see GH issue #620
                 cappingId = cappingAttrKeyCache[key] = attrInfo.maxAttributeID
             if cappingId is None:
                 cappingKey = None
             else:
                 cappingAttrInfo = getAttributeInfo(cappingId)
                 cappingKey = None if cappingAttrInfo is None else cappingAttrInfo.name
-        cappingValue = self.__calculateValue(cappingKey) if cappingKey is not None else None
+
+        if cappingKey:
+            if cappingKey in self.original:
+                #  some items come with their own caps (ie: carriers). If they do, use this
+                cappingValue = self.original.get(cappingKey).value
+            else:
+                # If not, get info about the default value
+                cappingValue = self.__calculateValue(cappingKey)
+        else:
+            cappingValue = None
+
         # If value is forced, we don't have to calculate anything,
         # just return forced value instead
         force = self.__forced[key] if key in self.__forced else None
@@ -312,13 +323,26 @@ class ModifiedAttributeDict(collections.MutableMapping):
             if not attributeName in self.__multipliers:
                 self.__multipliers[attributeName] = 1
             self.__multipliers[attributeName] *= multiplier
+
         self.__placehold(attributeName)
         self.__afflict(attributeName, "%s*" % ("s" if stackingPenalties else ""), multiplier, multiplier != 1)
 
-    def boost(self, attributeName, boostFactor, skill=None, *args, **kwargs):
+    def boost(self, attributeName, boostFactor, skill=None, remoteResists=False, *args, **kwargs):
         """Boost value by some percentage"""
         if skill:
             boostFactor *= self.__handleSkill(skill)
+
+        if remoteResists:
+            # @todo: this is such a disgusting hack. Look into sending these checks to the module class before the
+            # effect is applied.
+            mod = self.fit.getModifier()
+            remoteResistID = mod.getModifiedItemAttr("remoteResistanceID") or None
+
+            # We really don't have a way of getting a ships attribute by ID. Fail.
+            resist = next((x for x in self.fit.ship.item.attributes.values() if x.ID == remoteResistID), None)
+
+            if remoteResistID and resist:
+                boostFactor *= resist.value
 
         # We just transform percentage boost into multiplication factor
         self.multiply(attributeName, 1 + boostFactor / 100.0, *args, **kwargs)

@@ -29,7 +29,7 @@ class WhProjector(ContextMenu):
             sub.AppendItem(subItem)
 
             for swData in sorted(effdata[swType], key=lambda tpl: tpl[2]):
-                wxid = wx.NewId()
+                wxid = ContextMenu.nextID()
                 swObj, swName, swClass = swData
                 self.idmap[wxid] = (swObj, swName)
                 grandSubItem = wx.MenuItem(grandSub, wxid, swClass)

@@ -78,9 +78,13 @@ class FitDpsGraph(Graph):
                 dps, _ =  drone.damageStats(fit.targetResists)
                 total += dps * multiplier
 
+        # this is janky as fuck
         for fighter in fit.fighters:
-            dps, _ = fighter.damageStats(fit.targetResists)
-            total += dps
+            for ability in fighter.abilities:
+                if ability.dealsDamage and ability.active:
+                    multiplier = self.calculateFighterMissileMultiplier(ability, data)
+                    dps, _ = ability.damageStats(fit.targetResists)
+                    total += dps * multiplier
 
         return total
 
@@ -115,6 +119,35 @@ class FitDpsGraph(Graph):
             targetSigRad = data["signatureRadius"]
             multiplier = min(1, (float(targetSigRad) / dmgScaling) ** 2)
         return multiplier
+
+    def calculateFighterMissileMultiplier(self, ability, data):
+        prefix = ability.attrPrefix
+
+        targetSigRad = data["signatureRadius"]
+        targetVelocity = data["velocity"]
+        explosionRadius = ability.fighter.getModifiedItemAttr("{}ExplosionRadius".format(prefix))
+        explosionVelocity = ability.fighter.getModifiedItemAttr("{}ExplosionVelocity".format(prefix))
+        damageReductionFactor = ability.fighter.getModifiedItemAttr("{}ReductionFactor".format(prefix))
+
+        # the following conditionals are because CCP can't keep a decent naming convention, as if fighter implementation
+        # wasn't already fucked.
+        if damageReductionFactor is None:
+            damageReductionFactor = ability.fighter.getModifiedItemAttr("{}DamageReductionFactor".format(prefix))
+
+        damageReductionSensitivity = ability.fighter.getModifiedItemAttr("{}ReductionSensitivity".format(prefix))
+        if damageReductionSensitivity is None:
+            damageReductionSensitivity = ability.fighter.getModifiedItemAttr("{}DamageReductionSensitivity".format(prefix))
+
+        targetSigRad = explosionRadius if targetSigRad is None else targetSigRad
+        sigRadiusFactor = targetSigRad / explosionRadius
+
+        if targetVelocity:
+            velocityFactor = (explosionVelocity / explosionRadius * targetSigRad / targetVelocity) ** (
+            log(damageReductionFactor) / log(damageReductionSensitivity))
+        else:
+            velocityFactor = 1
+
+        return min(sigRadiusFactor, velocityFactor, 1)
 
     def calculateTurretChanceToHit(self, mod, data):
         distance = data["distance"] * 1000
