@@ -56,3 +56,5 @@ else:
     # create and set version
     eos.db.saveddata_meta.create_all()
     eos.db.saveddata_engine.execute('PRAGMA user_version = {}'.format(migration.getAppVersion()))
+    #Import default database values
+    databaseDefaults.defaultDatabaseValues.importDefaults()
