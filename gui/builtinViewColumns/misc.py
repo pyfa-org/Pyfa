@@ -234,21 +234,17 @@ class Miscellanea(ViewColumn):
             gravBonus = stuff.getModifiedItemAttr("scanGravimetricStrengthPercent")
             if scanResBonus is None or lockRangeBonus is None or gravBonus is None:
                 return "", None
-            display = 0
-            for bonus in (scanResBonus, lockRangeBonus, gravBonus):
-                if abs(bonus) > abs(display):
-                    display = bonus
-            if not display:
-                return "", None
-            text = "{0}%".format(formatAmount(display, 3, 0, 3, forceSign=True))
-            ttEntries = []
-            if display == lockRangeBonus:
-                ttEntries.append("lock range")
-            if display == scanResBonus:
-                ttEntries.append("scan resolution")
-            if display == gravBonus:
-                ttEntries.append("sensor strength")
-            tooltip = "{0} bonus".format(formatList(ttEntries)).capitalize()
+
+            text = "{0}% | {1}% | {2}%".format(
+                formatAmount(scanResBonus, 3, 0, 3),
+                formatAmount(lockRangeBonus, 3, 0, 3),
+                formatAmount(gravBonus, 3, 0, 3),
+            )
+            tooltip = "Applied bonuses:\n{0}% scan resolution| {1}% lock range | {2}% sensor strength".format(
+                formatAmount(scanResBonus, 3, 0, 3),
+                formatAmount(lockRangeBonus, 3, 0, 3),
+                formatAmount(gravBonus, 3, 0, 3),
+            )
             return text, tooltip
         elif itemGroup in ("Projected ECCM", "ECCM", "Sensor Backup Array"):
             grav = stuff.getModifiedItemAttr("scanGravimetricStrengthPercent")
