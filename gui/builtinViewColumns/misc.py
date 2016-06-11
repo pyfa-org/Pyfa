@@ -231,10 +231,11 @@ class Miscellanea(ViewColumn):
         elif itemGroup in ("Remote Sensor Booster", "Sensor Booster", "Signal Amplifier"):
             scanResBonus = stuff.getModifiedItemAttr("scanResolutionBonus")
             lockRangeBonus = stuff.getModifiedItemAttr("maxTargetRangeBonus")
-            if scanResBonus is None or lockRangeBonus is None:
+            gravBonus = stuff.getModifiedItemAttr("scanGravimetricStrengthPercent")
+            if scanResBonus is None or lockRangeBonus is None or gravBonus is None:
                 return "", None
             display = 0
-            for bonus in (scanResBonus, lockRangeBonus):
+            for bonus in (scanResBonus, lockRangeBonus, gravBonus):
                 if abs(bonus) > abs(display):
                     display = bonus
             if not display:
@@ -245,6 +246,8 @@ class Miscellanea(ViewColumn):
                 ttEntries.append("lock range")
             if display == scanResBonus:
                 ttEntries.append("scan resolution")
+            if display == gravBonus:
+                ttEntries.append("sensor strength")
             tooltip = "{0} bonus".format(formatList(ttEntries)).capitalize()
             return text, tooltip
         elif itemGroup in ("Projected ECCM", "ECCM", "Sensor Backup Array"):
