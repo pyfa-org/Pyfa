@@ -240,7 +240,7 @@ class Miscellanea(ViewColumn):
                 formatAmount(lockRangeBonus, 3, 0, 3),
                 formatAmount(gravBonus, 3, 0, 3),
             )
-            tooltip = "Applied bonuses:\n{0}% scan resolution| {1}% lock range | {2}% sensor strength".format(
+            tooltip = "Applied bonuses:\n{0}% scan resolution | {1}% lock range | {2}% sensor strength".format(
                 formatAmount(scanResBonus, 3, 0, 3),
                 formatAmount(lockRangeBonus, 3, 0, 3),
                 formatAmount(gravBonus, 3, 0, 3),
