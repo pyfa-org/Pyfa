@@ -477,8 +477,6 @@ class Fit(object):
 
     def changeModule(self, fitID, position, newItemID):
         fit = eos.db.getFit(fitID)
-        if fit.modules[position].isEmpty:
-            return None
 
         # Dummy it out in case the next bit fails
         fit.modules.toDummy(position)
