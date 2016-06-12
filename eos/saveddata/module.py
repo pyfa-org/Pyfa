@@ -629,7 +629,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     @property
     def rawCycleTime(self):
-        speed =  self.getModifiedItemAttr("speed") or self.getModifiedItemAttr("duration")
+        speed = self.getModifiedItemAttr("speed") or self.getModifiedItemAttr("duration")
         return speed
 
     @property

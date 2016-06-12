@@ -11,5 +11,8 @@ prefix = "fighterAbilityMissiles"
 
 type = "active"
 
+# This flag is required for effects that use charges in order to properly calculate reload time
+hasCharges = True
+
 def handler(fit, src, context):
     pass
