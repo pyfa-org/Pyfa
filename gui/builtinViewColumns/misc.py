@@ -484,6 +484,25 @@ class Miscellanea(ViewColumn):
             text = "{0} / {1}s".format(formatAmount(ehp, 3, 0, 9), formatAmount(duration, 3, 0, 3))
 
             return text, tooltip
+        elif itemGroup == "Armor Resistance Shift Hardener":
+            itemArmorResistanceShiftHardenerEM = (1-stuff.getModifiedItemAttr("armorEmDamageResonance"))*100
+            itemArmorResistanceShiftHardenerTherm = (1-stuff.getModifiedItemAttr("armorThermalDamageResonance")) * 100
+            itemArmorResistanceShiftHardenerKin = (1-stuff.getModifiedItemAttr("armorKineticDamageResonance")) * 100
+            itemArmorResistanceShiftHardenerExp = (1-stuff.getModifiedItemAttr("armorExplosiveDamageResonance")) * 100
+
+            text = "{0}% | {1}% | {2}% | {3}%".format(
+                formatAmount(itemArmorResistanceShiftHardenerEM, 3, 0, 3),
+                formatAmount(itemArmorResistanceShiftHardenerTherm, 3, 0, 3),
+                formatAmount(itemArmorResistanceShiftHardenerKin, 3, 0, 3),
+                formatAmount(itemArmorResistanceShiftHardenerExp, 3, 0, 3),
+            )
+            tooltip = "Resistances Shifted to Damage Profile:\n{0}% EM | {1}% Therm | {2}% Kin | {3}% Exp".format(
+                formatAmount(itemArmorResistanceShiftHardenerEM, 3, 0, 3),
+                formatAmount(itemArmorResistanceShiftHardenerTherm, 3, 0, 3),
+                formatAmount(itemArmorResistanceShiftHardenerKin, 3, 0, 3),
+                formatAmount(itemArmorResistanceShiftHardenerExp, 3, 0, 3),
+            )
+            return text, tooltip
         elif stuff.charge is not None:
             chargeGroup = stuff.charge.group.name
             if chargeGroup in ("Rocket", "Advanced Rocket", "Light Missile", "Advanced Light Missile", "FoF Light Missile",
