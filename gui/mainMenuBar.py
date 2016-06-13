@@ -73,6 +73,8 @@ class MainMenuBar(wx.MenuBar):
         fileMenu.Append(self.exportSkillsNeededId, "Export &Skills Needed", "Export skills needed for this fitting")
         fileMenu.Append(self.importCharacterId, "Import C&haracter File", "Import characters into pyfa from file")
         fileMenu.AppendSeparator()
+        fileMenu.Append(self.importDatabaseDefaults, "Import D&atabase Defaults", "Imports missing database defaults")
+        fileMenu.AppendSeparator()
         fileMenu.Append(wx.ID_EXIT)
 
         # Edit menu
@@ -139,7 +141,6 @@ class MainMenuBar(wx.MenuBar):
                 attrItem = wx.MenuItem(windowMenu, self.attrEditorId, "Attribute Overrides\tCTRL+B")
                 attrItem.SetBitmap(BitmapLoader.getBitmap("fit_rename_small", "gui"))
                 windowMenu.AppendItem(attrItem)
-
                 editMenu.AppendSeparator()
                 editMenu.Append(self.toggleOverridesId, "Turn Overrides On")
 

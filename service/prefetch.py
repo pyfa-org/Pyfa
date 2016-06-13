@@ -22,6 +22,7 @@ import config
 import os
 import eos.types
 import eos.db.migration as migration
+import eos.db.saveddata.loadDefaultDatabaseValues as loadDefaultDatabaseValues
 
 class PrefetchThread(threading.Thread):
     def run(self):
@@ -57,4 +58,11 @@ else:
     eos.db.saveddata_meta.create_all()
     eos.db.saveddata_engine.execute('PRAGMA user_version = {}'.format(migration.getAppVersion()))
     #Import default database values
-    databaseDefaults.defaultDatabaseValues.importDefaults()
+    importDBDefaults = loadDefaultDatabaseValues.defaultDatabaseValues()
+    #Import values that must exist otherwise Pyfa breaks
+    importDBDefaults.importRequiredDefaults()
+    #Import default values for damage profiles
+    importDBDefaults.importDamageProfileDefaults()
+    #Import default values for target resist profiles
+    importDBDefaults.importResistProfileDefaults()
+
