@@ -49,6 +49,7 @@ class MainMenuBar(wx.MenuBar):
         self.ssoLoginId = wx.NewId()
         self.attrEditorId = wx.NewId()
         self.toggleOverridesId = wx.NewId()
+        self.importDatabaseDefaultsId = wx.NewId()
 
         if 'wxMac' in wx.PlatformInfo and wx.VERSION >= (3,0):
             wx.ID_COPY = wx.NewId()
@@ -73,7 +74,7 @@ class MainMenuBar(wx.MenuBar):
         fileMenu.Append(self.exportSkillsNeededId, "Export &Skills Needed", "Export skills needed for this fitting")
         fileMenu.Append(self.importCharacterId, "Import C&haracter File", "Import characters into pyfa from file")
         fileMenu.AppendSeparator()
-        fileMenu.Append(self.importDatabaseDefaults, "Import D&atabase Defaults", "Imports missing database defaults")
+        fileMenu.Append(self.importDatabaseDefaultsId, "Import D&atabase Defaults", "Imports missing database defaults")
         fileMenu.AppendSeparator()
         fileMenu.Append(wx.ID_EXIT)
 
@@ -173,5 +174,3 @@ class MainMenuBar(wx.MenuBar):
         self.Enable(self.revertCharId, char.isDirty)
 
         event.Skip()
-
-
