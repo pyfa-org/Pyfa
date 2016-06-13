@@ -342,10 +342,12 @@ class ItemParams (wx.Panel):
     def PopulateList(self):
         self.paramList.InsertColumn(0,"Attribute")
         self.paramList.InsertColumn(1,"Current Value")
-        self.paramList.InsertColumn(2,"Base Value")
+        if self.stuff is not None:
+            self.paramList.InsertColumn(2,"Base Value")
         self.paramList.SetColumnWidth(0,110)
         self.paramList.SetColumnWidth(1,90)
-        self.paramList.SetColumnWidth(2,90)
+        if self.stuff is not None:
+            self.paramList.SetColumnWidth(2,90)
         self.paramList.setResizeColumn(0)
         self.imageList = wx.ImageList(16, 16)
         self.paramList.SetImageList(self.imageList,wx.IMAGE_LIST_SMALL)
@@ -408,7 +410,8 @@ class ItemParams (wx.Panel):
                 valueUnitDefault = formatAmount(valueDefault, 3, 0, 0)
 
             self.paramList.SetStringItem(index, 1, valueUnit)
-            self.paramList.SetStringItem(index, 2, valueUnitDefault)
+            if self.stuff is not None:
+                self.paramList.SetStringItem(index, 2, valueUnitDefault)
 
 
 
