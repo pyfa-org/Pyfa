@@ -136,12 +136,11 @@ class MainMenuBar(wx.MenuBar):
                 self.Enable(self.exportToEveId, False)
 
             if not gui.mainFrame.disableOverrideEditor:
+                windowMenu.AppendSeparator()
                 attrItem = wx.MenuItem(windowMenu, self.attrEditorId, "Attribute Overrides\tCTRL+B")
                 attrItem.SetBitmap(BitmapLoader.getBitmap("fit_rename_small", "gui"))
                 windowMenu.AppendItem(attrItem)
-
-                editMenu.AppendSeparator()
-                editMenu.Append(self.toggleOverridesId, "Turn Overrides On")
+                windowMenu.Append(self.toggleOverridesId, "Turn Overrides On")
 
         # Help menu
         helpMenu = wx.Menu()
