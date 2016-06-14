@@ -224,7 +224,7 @@ class Miscellanea(ViewColumn):
                     formatAmount(displayMax, 3, 0, 3),
                     formatAmount(displayMin, 3, 0, 3),
                 )
-            tooltip = "ECM Jammer Strength:\n{0} gravimetric | {1} ladar | {2} magnetometric | {3} radar".format(
+            tooltip = "ECM Jammer Strength:\n{0} Gravimetric | {1} Ladar | {2} Magnetometric | {3} Radar".format(
                 formatAmount(grav, 3, 0, 3),
                 formatAmount(ladar, 3, 0, 3),
                 formatAmount(radar, 3, 0, 3),
