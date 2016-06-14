@@ -38,6 +38,7 @@ import gui.aboutData
 import gui.chromeTabs
 import gui.utils.animUtils as animUtils
 import gui.globalEvents as GE
+import eos.db.saveddata.loadDefaultDatabaseValues as loadDefaultDatabaseValues
 
 from gui.bitmapLoader import BitmapLoader
 from gui.mainMenuBar import MainMenuBar
@@ -405,10 +406,22 @@ class MainFrame(wx.Frame):
     def goForums(self, event):
         webbrowser.open('https://forums.eveonline.com/default.aspx?g=posts&t=466425')
 
+    def loadDatabaseDefaults(self, event):
+        # Import default database values
+        importDBDefaults = loadDefaultDatabaseValues.defaultDatabaseValues()
+        # Import values that must exist otherwise Pyfa breaks
+        importDBDefaults.importRequiredDefaults()
+        # Import default values for damage profiles
+        importDBDefaults.importDamageProfileDefaults()
+        # Import default values for target resist profiles
+        importDBDefaults.importResistProfileDefaults()
+
     def registerMenu(self):
         menuBar = self.GetMenuBar()
         # Quit
         self.Bind(wx.EVT_MENU, self.ExitApp, id=wx.ID_EXIT)
+        # Load Default Database values
+        self.Bind(wx.EVT_MENU, self.loadDatabaseDefaults, id=menuBar.importDatabaseDefaultsId)
         # Widgets Inspector
         if config.debug:
             self.Bind(wx.EVT_MENU, self.openWXInspectTool, id = self.widgetInspectMenuID)

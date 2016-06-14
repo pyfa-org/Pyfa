@@ -19,6 +19,7 @@
 
 import eos.db
 import eos.types
+import eos.db.saveddata.loadDefaultDatabaseValues as loadDefaultDatabaseValues
 import copy
 
 class ImportError(Exception):
@@ -35,10 +36,9 @@ class DamagePattern():
 
     def __init__(self):
         uniform = eos.db.getDamagePattern("Uniform")
+        importDBDefaults = loadDefaultDatabaseValues.defaultDatabaseValues()
         if uniform is None:
-            uniform = eos.types.DamagePattern(25, 25, 25, 25)
-            uniform.name = "Uniform"
-            eos.db.save(uniform)
+            importDBDefaults.importRequiredDefaults()
 
     def getDamagePatternList(self):
         return eos.db.getDamagePatternList()
@@ -96,4 +96,3 @@ class DamagePattern():
 
         patterns.sort(key=lambda p: p.name)
         return eos.types.DamagePattern.exportPatterns(*patterns)
-
