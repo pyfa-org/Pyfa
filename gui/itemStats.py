@@ -84,9 +84,9 @@ class ItemStatsDialog(wx.Dialog):
 
         self.SetMinSize((300, 200))
         if "wxGTK" in wx.PlatformInfo:  # GTK has huge tab widgets, give it a bit more room
-            self.SetSize((530, 300))
+            self.SetSize((580, 500))
         else:
-            self.SetSize((500, 300))
+            self.SetSize((550, 500))
         #self.SetMaxSize((500, -1))
         self.mainSizer = wx.BoxSizer(wx.VERTICAL)
         self.container = ItemStatsContainer(self, victim, item, itmContext)
@@ -341,9 +341,14 @@ class ItemParams (wx.Panel):
 
     def PopulateList(self):
         self.paramList.InsertColumn(0,"Attribute")
-        self.paramList.InsertColumn(1,"Value")
-        self.paramList.SetColumnWidth(1,150)
-        self.paramList.setResizeColumn(1)
+        self.paramList.InsertColumn(1,"Current Value")
+        if self.stuff is not None:
+            self.paramList.InsertColumn(2,"Base Value")
+        self.paramList.SetColumnWidth(0,110)
+        self.paramList.SetColumnWidth(1,90)
+        if self.stuff is not None:
+            self.paramList.SetColumnWidth(2,90)
+        self.paramList.setResizeColumn(0)
         self.imageList = wx.ImageList(16, 16)
         self.paramList.SetImageList(self.imageList,wx.IMAGE_LIST_SMALL)
 
@@ -354,9 +359,11 @@ class ItemParams (wx.Panel):
         idCount = 0
         for name in names:
             info = self.attrInfo.get(name)
-
-
             att = self.attrValues[name]
+
+            valDefault = getattr(info, "value", None)
+            valueDefault = valDefault if valDefault is not None else att
+
             val = getattr(att, "value", None)
             value = val if val is not None else att
 
@@ -395,8 +402,16 @@ class ItemParams (wx.Panel):
             else:
                 valueUnit = formatAmount(value, 3, 0, 0)
 
+            if self.toggleView != 1:
+                valueUnitDefault = str(valueDefault)
+            elif info and info.unit:
+                valueUnitDefault = self.TranslateValueUnit(valueDefault, info.unit.displayName, info.unit.name)
+            else:
+                valueUnitDefault = formatAmount(valueDefault, 3, 0, 0)
 
             self.paramList.SetStringItem(index, 1, valueUnit)
+            if self.stuff is not None:
+                self.paramList.SetStringItem(index, 2, valueUnitDefault)
 
 
 
