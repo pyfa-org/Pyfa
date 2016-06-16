@@ -26,6 +26,14 @@ class FighterAbility(object):
     DAMAGE_TYPES = ("em", "kinetic", "explosive", "thermal")
     DAMAGE_TYPES2 = ("EM", "Kin", "Exp", "Therm")
 
+    # We aren't able to get data on the charges that can be stored with fighters. So we hardcode that data here, keyed
+    # with the fighter squadron role
+    NUM_SHOTS_MAPPING = {
+        2: 8,  # Light fighter / Attack
+        4: 6,  # Heavy fighter / Heavy attack
+        5: 2,  # Heavy fighter / Long range attack
+    }
+
     def __init__(self, effect):
         """Initialize from the program"""
         self.__effect = effect
@@ -71,12 +79,36 @@ class FighterAbility(object):
         # is the ability applied per fighter (webs, returns False), or as a group (MWD, returned True)
         return self.__effect.getattr('grouped')
 
+    @property
+    def hasCharges(self):
+        return self.__effect.getattr('hasCharges')
+
+    @property
+    def reloadTime(self):
+        return self.fighter.getModifiedItemAttr("fighterRefuelingTime") * self.numShots
+
+    @property
+    def numShots(self):
+        return self.NUM_SHOTS_MAPPING[self.fighter.getModifiedItemAttr("fighterSquadronRole")] or 0 if self.hasCharges else 0
+
+    @property
+    def cycleTime(self):
+        speed = self.fighter.getModifiedItemAttr("{}Duration".format(self.attrPrefix))
+        reload = self.reloadTime
+
+        if self.fighter.owner.factorReload:
+            numShots = self.numShots
+            # Speed here already takes into consideration reactivation time
+            speed = (speed * numShots + reload) / numShots if numShots > 0 else speed
+
+        return speed
+
     def damageStats(self, targetResists=None):
         if self.__dps is None:
             self.__volley = 0
             self.__dps = 0
             if self.dealsDamage and self.active:
-                cycleTime = self.fighter.getModifiedItemAttr("{}Duration".format(self.attrPrefix))
+                cycleTime = self.cycleTime
 
                 if self.attrPrefix == "fighterAbilityLaunchBomb":
                     # bomb calcs
