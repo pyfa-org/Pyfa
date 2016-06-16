@@ -36,9 +36,8 @@ class DamagePattern():
 
     def __init__(self):
         uniform = eos.db.getDamagePattern("Uniform")
-        importDBDefaults = loadDefaultDatabaseValues.defaultDatabaseValues()
         if uniform is None:
-            importDBDefaults.importRequiredDefaults()
+            loadDefaultDatabaseValues.defaultDatabaseValues.importRequiredDefaults()
 
     def getDamagePatternList(self):
         return eos.db.getDamagePatternList()
