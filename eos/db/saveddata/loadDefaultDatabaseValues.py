@@ -23,7 +23,7 @@ import eos.types
 class ImportError(Exception):
     pass
 
-class defaultDatabaseValues():
+class DefaultDatabaseValues():
     instance = None
 
     @classmethod
