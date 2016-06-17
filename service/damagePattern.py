@@ -35,13 +35,6 @@ class DamagePattern():
 
         return cls.instance
 
-    def __init__(self):
-        uniform = eos.db.getDamagePattern("Uniform")
-        if uniform is None:
-            # Import default database values
-            # Import values that must exist otherwise Pyfa breaks
-            DefaultDatabaseValues.importRequiredDefaults()
-
     def getDamagePatternList(self):
         return eos.db.getDamagePatternList()
 
