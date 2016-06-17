@@ -92,14 +92,6 @@ class MiningYieldViewFull(StatsView):
 
         self._cachedValues.append(0)
 
-        image = BitmapLoader.getBitmap("turret_small", "gui")
-        firepower = wx.BitmapButton(contentPanel, -1, image)
-        firepower.SetToolTip(wx.ToolTip("Click to toggle to Firepower View"))
-        firepower.Bind(wx.EVT_BUTTON, self.switchToFirepowerView)
-        sizerMiningYield.Add(firepower, 0, wx.ALIGN_LEFT)
-
-        self._cachedValues.append(0)
-
     def switchToFirepowerView(self, event):
         # Getting the active fit
         mainFrame = gui.mainFrame.MainFrame.getInstance()
