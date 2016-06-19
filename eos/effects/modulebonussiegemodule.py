@@ -44,11 +44,6 @@ def handler(fit, src, context):
     fit.ship.forceItemAttr("disallowAssistance", src.getModifiedItemAttr("disallowAssistance"))
 
     # new in April 2016 release
-    for scanType in ('Magnetometric', 'Ladar', 'Gravimetric', 'Radar'):
-        fit.ship.boostItemAttr("scan{}Strength".format(scanType),
-                               src.getModifiedItemAttr("scan{}StrengthPercent".format(scanType)),
-                               stackingPenalties=True)
-
     # missile ROF bonus
     for group in ("Missile Launcher XL Torpedo", "Missile Launcher Rapid Torpedo", "Missile Launcher XL Cruise"):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == group, "speed", src.getModifiedItemAttr("siegeLauncherROFBonus"), stackingPenalties=True)

@@ -56,12 +56,6 @@ def handler(fit, src, context):
     fit.ship.forceItemAttr("disallowAssistance", src.getModifiedItemAttr("disallowAssistance"))
 
     # new in April 2016 release
-
-    for scanType in ('Magnetometric', 'Ladar', 'Gravimetric', 'Radar'):
-        fit.ship.boostItemAttr("scan{}Strength".format(scanType),
-                               src.getModifiedItemAttr("scan{}StrengthPercent".format(scanType)),
-                               stackingPenalties=True)
-
     fit.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill("Drones"), "damageMultiplier", src.getModifiedItemAttr("droneDamageBonus"), stackingPenalties=True)
 
     fit.ship.increaseItemAttr("warpScrambleStatus", src.getModifiedItemAttr("siegeModeWarpStatus"))
