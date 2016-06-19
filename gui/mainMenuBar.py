@@ -49,6 +49,7 @@ class MainMenuBar(wx.MenuBar):
         self.ssoLoginId = wx.NewId()
         self.attrEditorId = wx.NewId()
         self.toggleOverridesId = wx.NewId()
+        self.importDatabaseDefaultsId = wx.NewId()
 
         if 'wxMac' in wx.PlatformInfo and wx.VERSION >= (3,0):
             wx.ID_COPY = wx.NewId()
