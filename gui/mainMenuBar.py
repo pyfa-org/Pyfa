@@ -148,6 +148,8 @@ class MainMenuBar(wx.MenuBar):
         helpMenu.Append(self.wikiId, "Wiki", "Go to wiki on GitHub")
         helpMenu.Append(self.forumId, "Forums", "Go to EVE Online Forum thread")
         helpMenu.AppendSeparator()
+        helpMenu.Append(self.importDatabaseDefaultsId, "Import D&atabase Defaults", "Imports missing database defaults")
+        helpMenu.AppendSeparator()
         helpMenu.Append(wx.ID_ABOUT)
 
         if config.debug:

@@ -23,10 +23,10 @@ import eos.types
 class ImportError(Exception):
     pass
 
-class defaultDatabaseValues():
+class DefaultDatabaseValues():
     instance = None
-    @classmethod
 
+    @classmethod
     def importDamageProfileDefaults(self):
         damageProfileList = []
         damageProfileList.append(["Uniform", "25", "25", "25", "25"])
@@ -115,12 +115,14 @@ class defaultDatabaseValues():
         damageProfileList.append(["[NPC][Other] Sansha Incursion", "1682", "1347", "3678", "3678"])
 
         for damageProfileRow in damageProfileList:
-            damageProfile = eos.db.getDamagePattern(damageProfileRow[0])
+            name, em, therm, kin, exp = damageProfileRow
+            damageProfile = eos.db.getDamagePattern(name)
             if damageProfile is None:
-                damageProfile = eos.types.DamagePattern(damageProfileRow[1], damageProfileRow[2], damageProfileRow[3], damageProfileRow[4])
-                damageProfile.name = damageProfileRow[0]
+                damageProfile = eos.types.DamagePattern(em, therm, kin, exp)
+                damageProfile.name = name
                 eos.db.save(damageProfile)
 
+    @classmethod
     def importResistProfileDefaults(self):
         targetResistProfileList = []
         targetResistProfileList.append(["Uniform (25%)", "0.25", "0.25", "0.25", "0.25"])
@@ -165,22 +167,24 @@ class defaultDatabaseValues():
         targetResistProfileList.append(["[NPC][Burner] Ashimmu (Blood Raiders)", "0.8", "0.76", "0.68", "0.7"])
         targetResistProfileList.append(["[NPC][Burner] Talos", "0.68", "0.59", "0.59", "0.43"])
         targetResistProfileList.append(["[NPC][Burner] Sentinel", "0.58", "0.45", "0.52", "0.66"])
-        
+
         for targetResistProfileRow in targetResistProfileList:
-            resistsProfile = eos.db.getTargetResists(targetResistProfileRow[0])
+            name, em, therm, kin, exp = targetResistProfileRow
+            resistsProfile = eos.db.eos.db.getTargetResists(name)
             if resistsProfile is None:
-                resistsProfile = eos.types.eos.types.TargetResists(targetResistProfileRow[1], targetResistProfileRow[2], targetResistProfileRow[3], targetResistProfileRow[4])
-                resistsProfile.name = targetResistProfileRow[0]
+                resistsProfile = eos.types.TargetResists(em, therm, kin, exp)
+                resistsProfile.name = name
                 eos.db.save(resistsProfile)
 
+    @classmethod
     def importRequiredDefaults(self):
         damageProfileList = []
         damageProfileList.append(["Uniform", "25", "25", "25", "25"])
 
         for damageProfileRow in damageProfileList:
-            damageProfile = eos.db.getDamagePattern(damageProfileRow[0])
+            name, em, therm, kin, exp = damageProfileRow
+            damageProfile = eos.db.getDamagePattern(name)
             if damageProfile is None:
-                damageProfile = eos.types.DamagePattern(damageProfileRow[1], damageProfileRow[2], damageProfileRow[3],
-                                                        damageProfileRow[4])
-                damageProfile.name = damageProfileRow[0]
+                damageProfile = eos.types.DamagePattern(em, therm, kin, exp)
+                damageProfile.name = name
                 eos.db.save(damageProfile)

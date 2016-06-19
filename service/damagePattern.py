@@ -19,8 +19,9 @@
 
 import eos.db
 import eos.types
-import eos.db.saveddata.loadDefaultDatabaseValues as loadDefaultDatabaseValues
 import copy
+
+from eos.db.saveddata.loadDefaultDatabaseValues import DefaultDatabaseValues
 
 class ImportError(Exception):
     pass
@@ -33,12 +34,6 @@ class DamagePattern():
             cls.instance = DamagePattern()
 
         return cls.instance
-
-    def __init__(self):
-        uniform = eos.db.getDamagePattern("Uniform")
-        importDBDefaults = loadDefaultDatabaseValues.defaultDatabaseValues()
-        if uniform is None:
-            importDBDefaults.importRequiredDefaults()
 
     def getDamagePatternList(self):
         return eos.db.getDamagePatternList()

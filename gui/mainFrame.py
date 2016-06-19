@@ -38,7 +38,6 @@ import gui.aboutData
 import gui.chromeTabs
 import gui.utils.animUtils as animUtils
 import gui.globalEvents as GE
-import eos.db.saveddata.loadDefaultDatabaseValues as loadDefaultDatabaseValues
 
 from gui.bitmapLoader import BitmapLoader
 from gui.mainMenuBar import MainMenuBar
@@ -62,6 +61,7 @@ from gui.builtinViews import *
 
 # import this to access override setting
 from eos.modifiedAttributeDict import ModifiedAttributeDict
+from eos.db.saveddata.loadDefaultDatabaseValues import DefaultDatabaseValues
 
 from time import gmtime, strftime
 
@@ -407,14 +407,12 @@ class MainFrame(wx.Frame):
         webbrowser.open('https://forums.eveonline.com/default.aspx?g=posts&t=466425')
 
     def loadDatabaseDefaults(self, event):
-        # Import default database values
-        importDBDefaults = loadDefaultDatabaseValues.defaultDatabaseValues()
         # Import values that must exist otherwise Pyfa breaks
-        importDBDefaults.importRequiredDefaults()
+        DefaultDatabaseValues.importRequiredDefaults()
         # Import default values for damage profiles
-        importDBDefaults.importDamageProfileDefaults()
+        DefaultDatabaseValues.importDamageProfileDefaults()
         # Import default values for target resist profiles
-        importDBDefaults.importResistProfileDefaults()
+        DefaultDatabaseValues.importResistProfileDefaults()
 
     def registerMenu(self):
         menuBar = self.GetMenuBar()
