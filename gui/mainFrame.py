@@ -61,6 +61,7 @@ from gui.builtinViews import *
 
 # import this to access override setting
 from eos.modifiedAttributeDict import ModifiedAttributeDict
+from eos.db.saveddata.loadDefaultDatabaseValues import DefaultDatabaseValues
 
 from time import gmtime, strftime
 
@@ -405,10 +406,20 @@ class MainFrame(wx.Frame):
     def goForums(self, event):
         webbrowser.open('https://forums.eveonline.com/default.aspx?g=posts&t=466425')
 
+    def loadDatabaseDefaults(self, event):
+        # Import values that must exist otherwise Pyfa breaks
+        DefaultDatabaseValues.importRequiredDefaults()
+        # Import default values for damage profiles
+        DefaultDatabaseValues.importDamageProfileDefaults()
+        # Import default values for target resist profiles
+        DefaultDatabaseValues.importResistProfileDefaults()
+
     def registerMenu(self):
         menuBar = self.GetMenuBar()
         # Quit
         self.Bind(wx.EVT_MENU, self.ExitApp, id=wx.ID_EXIT)
+        # Load Default Database values
+        self.Bind(wx.EVT_MENU, self.loadDatabaseDefaults, id=menuBar.importDatabaseDefaultsId)
         # Widgets Inspector
         if config.debug:
             self.Bind(wx.EVT_MENU, self.openWXInspectTool, id = self.widgetInspectMenuID)

@@ -14,6 +14,7 @@ __all__ = [
     "targetResists",
     "override",
     "crest",
-    "implantSet"
+    "implantSet",
+    "loadDefaultDatabaseValues"
 ]
 

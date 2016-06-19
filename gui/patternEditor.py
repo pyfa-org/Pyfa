@@ -239,7 +239,7 @@ class DmgPatternEditorDlg(wx.Dialog):
 
         for field in self.DAMAGE_TYPES:
             edit = getattr(self, "%sEdit" % field)
-            amount = getattr(p, "%sAmount" % field)
+            amount = int(round(getattr(p, "%sAmount" % field)))
             edit.SetValue(amount)
 
         self.block = False

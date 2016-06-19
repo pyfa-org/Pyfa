@@ -49,6 +49,7 @@ class MainMenuBar(wx.MenuBar):
         self.ssoLoginId = wx.NewId()
         self.attrEditorId = wx.NewId()
         self.toggleOverridesId = wx.NewId()
+        self.importDatabaseDefaultsId = wx.NewId()
 
         if 'wxMac' in wx.PlatformInfo and wx.VERSION >= (3,0):
             wx.ID_COPY = wx.NewId()
@@ -147,6 +148,8 @@ class MainMenuBar(wx.MenuBar):
         self.Append(helpMenu, "&Help")
         helpMenu.Append(self.wikiId, "Wiki", "Go to wiki on GitHub")
         helpMenu.Append(self.forumId, "Forums", "Go to EVE Online Forum thread")
+        helpMenu.AppendSeparator()
+        helpMenu.Append(self.importDatabaseDefaultsId, "Import D&atabase Defaults", "Imports missing database defaults")
         helpMenu.AppendSeparator()
         helpMenu.Append(wx.ID_ABOUT)
 
