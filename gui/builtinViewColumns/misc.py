@@ -210,23 +210,26 @@ class Miscellanea(ViewColumn):
             ladar = stuff.getModifiedItemAttr("scanLadarStrengthBonus")
             radar = stuff.getModifiedItemAttr("scanRadarStrengthBonus")
             magnet = stuff.getModifiedItemAttr("scanMagnetometricStrengthBonus")
-            if grav is None or ladar is None or radar is None or magnet is None:
+            displayMax = max(grav, ladar, radar, magnet)
+            displayMin = min(grav, ladar, radar, magnet)
+            if grav is None or ladar is None or radar is None or magnet is None or displayMax is None:
                 return "", None
-            display = max(grav, ladar, radar, magnet)
-            if not display:
-                return "", None
-            text = "{0}".format(formatAmount(display, 3, 0, 3))
-            ttEntries = []
-            if display == grav:
-                ttEntries.append("gravimetric")
-            if display == ladar:
-                ttEntries.append("ladar")
-            if display == magnet:
-                ttEntries.append("magnetometric")
-            if display == radar:
-                ttEntries.append("radar")
-            plu = "" if len(ttEntries) == 1 else "s"
-            tooltip = "{0} strength{1}".format(formatList(ttEntries), plu).capitalize()
+
+            if displayMax == displayMin or displayMin is None:
+                text = "{0}".format(
+                    formatAmount(displayMax, 3, 0, 3),
+                )
+            else:
+                text = "{0} | {1}".format(
+                    formatAmount(displayMax, 3, 0, 3),
+                    formatAmount(displayMin, 3, 0, 3),
+                )
+            tooltip = "ECM Jammer Strength:\n{0} Gravimetric | {1} Ladar | {2} Magnetometric | {3} Radar".format(
+                formatAmount(grav, 3, 0, 3),
+                formatAmount(ladar, 3, 0, 3),
+                formatAmount(radar, 3, 0, 3),
+                formatAmount(magnet, 3, 0, 3),
+            )
             return text, tooltip
         elif itemGroup in ("Remote Sensor Booster", "Sensor Booster", "Signal Amplifier"):
             scanResBonus = stuff.getModifiedItemAttr("scanResolutionBonus")
