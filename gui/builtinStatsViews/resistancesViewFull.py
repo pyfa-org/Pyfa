@@ -168,10 +168,6 @@ class ResistancesViewFull(StatsView):
             self.showEffective = True
             wx.PostEvent(self.mainFrame, EffectiveHpToggled(effective=True))
             return
-        elif fit is not None and fit.ID != self.activeFit and not self.showEffective:
-            self.showEffective = True
-            wx.PostEvent(self.mainFrame, EffectiveHpToggled(effective=True))
-            return
 
         self.stEHPs.SetLabel("EHP" if self.showEffective else "HP")
         self.activeFit = fit.ID if fit is not None else None
