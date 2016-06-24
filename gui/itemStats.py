@@ -487,7 +487,8 @@ class ItemCompare(wx.Panel):
         # get a dict of attrName: attrInfo of all unique attributes across all items
         for item in self.items:
             for attr in item.attributes.keys():
-                self.attrs[attr] = item.attributes[attr].info
+                if item.attributes[attr].info.displayName:
+                    self.attrs[attr] = item.attributes[attr].info
 
         # Process attributes for items and find ones that differ
         for attr in self.attrs.keys():
