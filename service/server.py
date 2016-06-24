@@ -12,8 +12,29 @@ logger = logging.getLogger(__name__)
 HTML = '''
 <!DOCTYPE html>
 <html>
+
+<head>
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+    <title>pyfa Local Server</title>
+    <style type="text/css">
+        body { text-align: center; padding: 150px; }
+        h1 { font-size: 40px; }
+        body { font: 20px Helvetica, sans-serif; color: #333; }
+        #article { display: block; text-align: left; width: 650px; margin: 0 auto; }
+        a { color: #dc8100; text-decoration: none; }
+        a:hover { color: #333; text-decoration: none; }
+    </style>
+</head>
+
 <body>
-Done. Please close this window.
+
+<!-- Layout from Short Circuit's CREST login. Shout out! https://github.com/farshield/shortcircuit -->
+<div id="article">
+    <h1>pyfa</h1>
+    <div>
+        <p>If you see this message then it means you should be logged into CREST. You may close this window and return to the application.</p>
+    </div>
+</div>
 <script type="text/javascript">
 function extractFromHash(name, hash) {
     var match = hash.match(new RegExp(name + "=([^&]+)"));
