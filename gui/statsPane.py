@@ -30,7 +30,7 @@ import gui.globalEvents as GE
 class StatsPane(wx.Panel):
     DEFAULT_VIEWS = ["resourcesViewFull", "resistancesViewFull" ,"rechargeViewFull", "firepowerViewFull",
                      "capacitorViewFull", "targetingmiscViewFull",
-                     "priceViewFull","cargoViewFull",]
+                     "priceViewFull","miningyieldViewFull"]
 
     def fitChanged(self, event):
         sFit = service.Fit.getInstance()
