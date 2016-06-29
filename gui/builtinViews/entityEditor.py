@@ -98,7 +98,8 @@ class EntityEditor (wx.Panel):
         dlg.CenterOnParent()
 
         if dlg.ShowModal() == wx.ID_OK:
-            new = self.DoNew(dlg.GetValue().strip())
+            # using dlg.textctrl.GetValue instead of simply dlg.GetValue because the proper way does not work in wxPython 2.8
+            new = self.DoNew(dlg.txtctrl.GetValue().strip())
             self.refreshEntityList(new)
             wx.PostEvent(self.entityChoices, wx.CommandEvent(wx.wxEVT_COMMAND_CHOICE_SELECTED))
         else:
@@ -114,7 +115,7 @@ class EntityEditor (wx.Panel):
         dlg.CenterOnParent()
 
         if dlg.ShowModal() == wx.ID_OK:
-            copy = self.DoCopy(active, dlg.GetValue().strip())
+            copy = self.DoCopy(active, dlg.txtctrl.GetValue().strip())
             self.refreshEntityList(copy)
             wx.PostEvent(self.entityChoices, wx.CommandEvent(wx.wxEVT_COMMAND_CHOICE_SELECTED))
 
@@ -128,7 +129,7 @@ class EntityEditor (wx.Panel):
         dlg.CenterOnParent()
 
         if dlg.ShowModal() == wx.ID_OK:
-            self.DoRename(active, dlg.GetValue().strip())
+            self.DoRename(active, dlg.txtctrl.GetValue().strip())
             self.refreshEntityList(active)
             wx.PostEvent(self.entityChoices, wx.CommandEvent(wx.wxEVT_COMMAND_CHOICE_SELECTED))
 

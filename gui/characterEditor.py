@@ -37,14 +37,14 @@ class CharacterTextValidor(BaseValidator):
         return CharacterTextValidor()
 
     def Validate(self, win):
-        profileEditor = win.Parent
+        entityEditor = win.parent
         textCtrl = self.GetWindow()
         text = textCtrl.GetValue().strip()
 
         try:
             if len(text) == 0:
                 raise ValueError("You must supply a name for the Character!")
-            elif text in [x.name for x in profileEditor.entityEditor.choices]:
+            elif text in [x.name for x in entityEditor.choices]:
                 raise ValueError("Character name already in use, please choose another.")
 
             return True
