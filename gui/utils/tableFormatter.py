@@ -1,37 +1,35 @@
 import wx
 import gui.mainFrame
 
-def formatTable(valList, numColumns):
+def formatTable(valueList, numColumns, panel):
+    '''
+    bSizer = wx.BoxSizer(wx.VERTICAL)
 
-    damageProfileList.append(["[NPC][Other] Sleepers", "1472", "1472", "1384", "1384"])
-    damageProfileList.append(["[NPC][Other] Sansha Incursion", "1682", "1347", "3678", "3678"])
+    for valueRow in valueList:
+        gSizer = wx.GridSizer(0, numColumns, 0, 0)
 
-    for valueRow in valList:
-        name, em, therm, kin, exp = valueRow
-        damageProfile = eos.db.getDamagePattern(name)
-        if damageProfile is None:
-            damageProfile = eos.types.DamagePattern(em, therm, kin, exp)
-            damageProfile.name = name
-            eos.db.save(damageProfile)
+        for valueColumn in valueRow:
+            #panel.StaticText = wx.StaticText(panel, wx.ID_ANY, valueColumn, wx.DefaultPosition, wx.DefaultSize, 0)
+            panel.StaticText = wx.StaticText(panel, wx.ID_ANY, valueColumn, wx.DefaultPosition, wx.DefaultSize, 0)
+            panel.StaticText.Wrap(-1)
+            gSizer.Add(panel.StaticText, 0, wx.ALIGN_LEFT, 0)
 
-    for miningType, image in (("miner", "mining"), ("drone", "drones")):
-        baseBox = wx.BoxSizer(wx.HORIZONTAL)
-        sizerMiningYield.Add(baseBox, 1, wx.ALIGN_LEFT if counter == 0 else wx.ALIGN_CENTER_HORIZONTAL)
+        bSizer.Add(gSizer, 1, wx.ALIGN_LEFT, 0)
+    '''
 
-        # baseBox.Add(BitmapLoader.getStaticBitmap("%s_big" % image, parent, "gui"), 0, wx.ALIGN_CENTER)
+    fgSizer = wx.FlexGridSizer(0, numColumns, 0, 0)
+    fgSizer.SetFlexibleDirection(wx.BOTH)
+    fgSizer.SetNonFlexibleGrowMode(wx.FLEX_GROWMODE_SPECIFIED)
 
-        box = wx.BoxSizer(wx.VERTICAL)
-        baseBox.Add(box, 0, wx.ALIGN_CENTER)
-        baseBox.Add()
+    for valueRow in valueList:
+        #gSizer = wx.GridSizer(0, numColumns, 0, 0)
 
-        lbl = wx.StaticText(parent, wx.ID_ANY, u"0.0 m\u00B3/s")
-        setattr(self, "label%sminingyield%s" % (panel.capitalize(), miningType.capitalize()), lbl)
+        for valueColumn in valueRow:
+            panel.StaticText = wx.StaticText(panel, wx.ID_ANY, valueColumn, wx.DefaultPosition, wx.DefaultSize, 50)
+            panel.StaticText.Wrap(-1)
+            fgSizer.Add(panel.StaticText, 0, wx.ALIGN_LEFT, 50)
 
-        box.Add(wx.StaticText(parent, wx.ID_ANY, miningType.capitalize() + ": "), 0, wx.ALIGN_LEFT)
+        #bSizer.Add(gSizer, 1, wx.ALIGN_LEFT, 0)
 
-        hbox = wx.BoxSizer(wx.HORIZONTAL)
-        box.Add(hbox, 1, wx.ALIGN_CENTER)
 
-        box.Add(lbl, 0, wx.ALIGN_CENTER)
-        self._cachedValues.append(0)
-        counter += 1
+    return fgSizer
