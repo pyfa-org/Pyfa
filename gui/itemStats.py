@@ -392,9 +392,9 @@ class ItemParams (wx.Panel):
 
                     attrIcon = self.imageList.Add(icon)
                 else:
-                    attrIcon = self.imageList.Add(BitmapLoader.getBitmap("07_15", "icons"))
+                    attrIcon = self.imageList.Add(BitmapLoader.getBitmap("7_15", "icons"))
             else:
-                attrIcon = self.imageList.Add(BitmapLoader.getBitmap("07_15", "icons"))
+                attrIcon = self.imageList.Add(BitmapLoader.getBitmap("7_15", "icons"))
 
 
             index = self.paramList.InsertImageStringItem(sys.maxint, attrName, attrIcon)
@@ -958,9 +958,9 @@ class ItemAffectedBy (wx.Panel):
                             icon = BitmapLoader.getBitmap("transparent16x16", "gui")
                         attrIcon = self.imageList.Add(icon)
                     else:
-                        attrIcon = self.imageList.Add(BitmapLoader.getBitmap("07_15", "icons"))
+                        attrIcon = self.imageList.Add(BitmapLoader.getBitmap("7_15", "icons"))
                 else:
-                    attrIcon = self.imageList.Add(BitmapLoader.getBitmap("07_15", "icons"))
+                    attrIcon = self.imageList.Add(BitmapLoader.getBitmap("7_15", "icons"))
 
                 if self.showRealNames:
                     display = attrName
@@ -1117,9 +1117,9 @@ class ItemAffectedBy (wx.Panel):
 
                                 attrIcon = self.imageList.Add(icon)
                             else:
-                                attrIcon = self.imageList.Add(BitmapLoader.getBitmap("07_15", "icons"))
+                                attrIcon = self.imageList.Add(BitmapLoader.getBitmap("7_15", "icons"))
                         else:
-                            attrIcon = self.imageList.Add(BitmapLoader.getBitmap("07_15", "icons"))
+                            attrIcon = self.imageList.Add(BitmapLoader.getBitmap("7_15", "icons"))
 
                         if attrModifier == "s*":
                             attrModifier = "*"
