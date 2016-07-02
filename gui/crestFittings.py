@@ -254,13 +254,20 @@ class ExportToEve(wx.Frame):
         return self.charChoice.GetClientData(selection) if selection is not None else None
 
     def exportFitting(self, event):
+        sFit = service.Fit.getInstance()
+        fitID = self.mainFrame.getActiveFit()
+
         self.statusbar.SetStatusText("", 0)
+
+        if fitID is None:
+            self.statusbar.SetStatusText("Please select an active fitting in the main window", 1)
+            return
+
         self.statusbar.SetStatusText("Sending request and awaiting response", 1)
         sCrest = service.Crest.getInstance()
 
         try:
-            sFit = service.Fit.getInstance()
-            data = sFit.exportCrest(self.mainFrame.getActiveFit())
+            data = sFit.exportCrest(fitID)
             res = sCrest.postFitting(self.getActiveCharacter(), data)
 
             self.statusbar.SetStatusText("%d: %s"%(res.status_code, res.reason), 0)

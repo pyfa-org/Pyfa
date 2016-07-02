@@ -127,13 +127,14 @@ def unzero(fname):
         except (TypeError, ValueError):
             pass
         if size is None:
-            fname = '{}_{}{}'.format(prefix, suffix, tail)
+            fname = '{}_{}'.format(prefix, suffix)
         else:
-            fname = '{}_{}_{}{}'.format(prefix, size, suffix, tail)
+            fname = '{}_{}_{}'.format(prefix, size, suffix)
         return fname
     else:
         return fname
 
+# Get a list of needed icons based on the items / attributes / etc from the database
 for query in (query_items, query_groups, query_cats, query_market, query_attrib):
     for row in cursor.execute(query):
         fname = row[0]
@@ -142,6 +143,7 @@ for query in (query_items, query_groups, query_cats, query_market, query_attrib)
         fname = strip_path(fname)
         needed.add(fname)
 
+# Get a list of all the icons we currently have
 for fname in os.listdir(icons_dir):
     if not os.path.isfile(os.path.join(icons_dir, fname)):
         continue
@@ -151,6 +153,7 @@ for fname in os.listdir(icons_dir):
     print fname,"exists"
     existing.add(fname)
 
+# Get a list of all the icons currently available
 for dir in dirs:
     for fname in os.listdir(dir):
         if not os.path.isfile(os.path.join(dir, fname)):
@@ -162,8 +165,6 @@ for dir in dirs:
         sizeless = re.sub('^(?P<prefix>[^_]+)_(?P<size>\d+)_(?P<suffix>[^_]+)$', r'\1_\3', stripped)
         # Often items referred to with 01_01 format,
         fnames = export.setdefault(stripped.lower(), set())
-        fnames.add(fname)
-        fnames = export.setdefault(sizeless.lower(), set())
         fnames.add(fname)
 
 def crop_image(img):
