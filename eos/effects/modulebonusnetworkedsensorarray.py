@@ -4,9 +4,8 @@
 # Module: Networked Sensor Array
 type = "active"
 def handler(fit, src, context):
-    fit.ship.increaseItemAttr("maxLockedTargets", src.getModifiedItemAttr("maxLockedTargetsBonus"))
     fit.ship.multiplyItemAttr("maxTargetRange", src.getModifiedItemAttr("maxTargetRangeMultiplier"), stackingPenalties=True, penaltyGroup="postMul")
-    fit.ship.multiplyItemAttr("scanResolution", src.getModifiedItemAttr("scanResolutionMultiplier"), stackingPenalties=True)
+    fit.ship.boostItemAttr("scanResolution", src.getModifiedItemAttr("scanResolutionBonus"), stackingPenalties=True)
 
     for scanType in ('Magnetometric', 'Ladar', 'Gravimetric', 'Radar'):
         fit.ship.boostItemAttr("scan{}Strength".format(scanType),

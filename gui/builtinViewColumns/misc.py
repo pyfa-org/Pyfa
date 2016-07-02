@@ -86,7 +86,7 @@ class Miscellanea(ViewColumn):
                     info.append("{0}{1}".format(n, slot[0].upper()))
             return "+ "+", ".join(info), "Slot Modifiers"
         elif itemGroup == "Energy Neutralizer":
-            neutAmount = stuff.getModifiedItemAttr("energyDestabilizationAmount")
+            neutAmount = stuff.getModifiedItemAttr("energyNeutralizerAmount")
             cycleTime = stuff.cycleTime
             if not neutAmount or not cycleTime:
                 return "", None
@@ -429,8 +429,8 @@ class Miscellanea(ViewColumn):
             tooltip = "{0} repaired per second".format(formatList(ttEntries)).capitalize()
             return text, tooltip
         elif itemGroup == "Energy Neutralizer Drone":
-            neutAmount = stuff.getModifiedItemAttr("energyDestabilizationAmount")
-            cycleTime = stuff.getModifiedItemAttr("duration")
+            neutAmount = stuff.getModifiedItemAttr("energyNeutralizerAmount")
+            cycleTime = stuff.getModifiedItemAttr("energyNeutralizerDuration")
             if not neutAmount or not cycleTime:
                 return "", None
             capPerSec = float(-neutAmount) * 1000 / cycleTime

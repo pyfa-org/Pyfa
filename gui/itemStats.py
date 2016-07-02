@@ -150,6 +150,8 @@ class ItemStatsContainer ( wx.Panel ):
 
     def __init__( self, parent, stuff, item, context = None):
         wx.Panel.__init__ ( self, parent )
+        sMkt = service.Market.getInstance()
+
         mainSizer = wx.BoxSizer( wx.VERTICAL )
 
         self.nbContainer = wx.Notebook( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, 0 )
@@ -164,6 +166,11 @@ class ItemStatsContainer ( wx.Panel ):
 
         self.params = ItemParams(self.nbContainer, stuff, item, context)
         self.nbContainer.AddPage(self.params, "Attributes")
+
+        items = sMkt.getVariationsByItems([item])
+        if len(items) > 1:
+            self.compare = ItemCompare(self.nbContainer, stuff, item, items, context)
+            self.nbContainer.AddPage(self.compare, "Compare")
 
         self.reqs = ItemRequirements(self.nbContainer, stuff, item)
         self.nbContainer.AddPage(self.reqs, "Requirements")
@@ -385,9 +392,9 @@ class ItemParams (wx.Panel):
 
                     attrIcon = self.imageList.Add(icon)
                 else:
-                    attrIcon = self.imageList.Add(BitmapLoader.getBitmap("07_15", "icons"))
+                    attrIcon = self.imageList.Add(BitmapLoader.getBitmap("7_15", "icons"))
             else:
-                attrIcon = self.imageList.Add(BitmapLoader.getBitmap("07_15", "icons"))
+                attrIcon = self.imageList.Add(BitmapLoader.getBitmap("7_15", "icons"))
 
 
             index = self.paramList.InsertImageStringItem(sys.maxint, attrName, attrIcon)
@@ -458,6 +465,159 @@ class ItemParams (wx.Panel):
             return "%s %s" % (fvalue , override[1])
         else:
             return "%s %s" % (formatAmount(value, 3, 0),unitName)
+
+class ItemCompare(wx.Panel):
+    def __init__(self, parent, stuff, item, items, context=None):
+        wx.Panel.__init__(self, parent)
+        mainSizer = wx.BoxSizer(wx.VERTICAL)
+
+        self.paramList = AutoListCtrl(self, wx.ID_ANY,
+                                      style=  # wx.LC_HRULES |
+                                      # wx.LC_NO_HEADER |
+                                      wx.LC_REPORT | wx.LC_SINGLE_SEL | wx.LC_VRULES | wx.NO_BORDER)
+        mainSizer.Add(self.paramList, 1, wx.ALL | wx.EXPAND, 0)
+        self.SetSizer(mainSizer)
+
+        self.toggleView = 1
+        self.stuff = stuff
+        self.item = item
+        self.items = sorted(items, key=lambda x: x.attributes['metaLevel'].value)
+        self.attrs = {}
+
+        # get a dict of attrName: attrInfo of all unique attributes across all items
+        for item in self.items:
+            for attr in item.attributes.keys():
+                if item.attributes[attr].info.displayName:
+                    self.attrs[attr] = item.attributes[attr].info
+
+        # Process attributes for items and find ones that differ
+        for attr in self.attrs.keys():
+            value = None
+
+            for item in self.items:
+                # we can automatically break here if this item doesn't have the attribute,
+                # as that means at least one item did
+                if attr not in item.attributes:
+                    break
+
+                # this is the first attribute for the item set, set the initial value
+                if value is None:
+                    value = item.attributes[attr].value
+                    continue
+
+                if attr not in item.attributes or item.attributes[attr].value != value:
+                    break
+            else:
+                # attribute values were all the same, delete
+                del self.attrs[attr]
+
+        self.m_staticline = wx.StaticLine(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize,
+                                          wx.LI_HORIZONTAL)
+        mainSizer.Add(self.m_staticline, 0, wx.EXPAND)
+        bSizer = wx.BoxSizer(wx.HORIZONTAL)
+
+        self.totalAttrsLabel = wx.StaticText(self, wx.ID_ANY, u" ", wx.DefaultPosition, wx.DefaultSize, 0)
+        bSizer.Add(self.totalAttrsLabel, 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT)
+
+        self.toggleViewBtn = wx.ToggleButton(self, wx.ID_ANY, u"Toggle view mode", wx.DefaultPosition,
+                                             wx.DefaultSize, 0)
+        bSizer.Add(self.toggleViewBtn, 0, wx.ALIGN_CENTER_VERTICAL)
+
+        if stuff is not None:
+            self.refreshBtn = wx.Button(self, wx.ID_ANY, u"Refresh", wx.DefaultPosition, wx.DefaultSize,
+                                        wx.BU_EXACTFIT)
+            bSizer.Add(self.refreshBtn, 0, wx.ALIGN_CENTER_VERTICAL)
+            self.refreshBtn.Bind(wx.EVT_BUTTON, self.RefreshValues)
+
+        mainSizer.Add(bSizer, 0, wx.ALIGN_RIGHT)
+
+        self.PopulateList()
+
+        self.toggleViewBtn.Bind(wx.EVT_TOGGLEBUTTON, self.ToggleViewMode)
+
+    def UpdateList(self):
+        self.Freeze()
+        self.paramList.ClearAll()
+        self.PopulateList()
+        self.Thaw()
+        self.paramList.resizeLastColumn(100)
+
+    def RefreshValues(self, event):
+        self.UpdateList()
+        event.Skip()
+
+    def ToggleViewMode(self, event):
+        self.toggleView *= -1
+        self.UpdateList()
+        event.Skip()
+
+    def PopulateList(self):
+        self.paramList.InsertColumn(0, "Item")
+        self.paramList.SetColumnWidth(0, 200)
+
+        for i, attr in enumerate(self.attrs.keys()):
+            name = self.attrs[attr].displayName if self.attrs[attr].displayName else attr
+            self.paramList.InsertColumn(i+1, name)
+            self.paramList.SetColumnWidth(i+1, 120)
+
+        for item in self.items:
+            i = self.paramList.InsertStringItem(sys.maxint, item.name)
+            for x, attr in enumerate(self.attrs.keys()):
+                if attr in item.attributes:
+                    info = self.attrs[attr]
+                    value = item.attributes[attr].value
+                    if self.toggleView != 1:
+                        valueUnit = str(value)
+                    if info and info.unit:
+                        valueUnit = self.TranslateValueUnit(value, info.unit.displayName, info.unit.name)
+                    else:
+                        valueUnit = formatAmount(value, 3, 0, 0)
+
+                    self.paramList.SetStringItem(i, x+1, valueUnit)
+
+        self.paramList.RefreshRows()
+        self.Layout()
+
+    def TranslateValueUnit(self, value, unitName, unitDisplayName):
+        def itemIDCallback():
+            item = service.Market.getInstance().getItem(value)
+            return "%s (%d)" % (item.name, value) if item is not None else str(value)
+
+        def groupIDCallback():
+            group = service.Market.getInstance().getGroup(value)
+            return "%s (%d)" % (group.name, value) if group is not None else str(value)
+
+        def attributeIDCallback():
+            attribute = service.Attribute.getInstance().getAttributeInfo(value)
+            return "%s (%d)" % (attribute.name.capitalize(), value)
+
+        trans = {"Inverse Absolute Percent": (lambda: (1 - value) * 100, unitName),
+                 "Inversed Modifier Percent": (lambda: (1 - value) * 100, unitName),
+                 "Modifier Percent": (
+                 lambda: ("%+.2f" if ((value - 1) * 100) % 1 else "%+d") % ((value - 1) * 100), unitName),
+                 "Volume": (lambda: value, u"m\u00B3"),
+                 "Sizeclass": (lambda: value, ""),
+                 "Absolute Percent": (lambda: (value * 100), unitName),
+                 "Milliseconds": (lambda: value / 1000.0, unitName),
+                 "typeID": (itemIDCallback, ""),
+                 "groupID": (groupIDCallback, ""),
+                 "attributeID": (attributeIDCallback, "")}
+
+        override = trans.get(unitDisplayName)
+        if override is not None:
+
+            if type(override[0]()) == type(str()):
+                fvalue = override[0]()
+            else:
+                v = override[0]()
+                if isinstance(v, (int, float, long)):
+                    fvalue = formatAmount(v, 3, 0, 0)
+                else:
+                    fvalue = v
+            return "%s %s" % (fvalue, override[1])
+        else:
+            return "%s %s" % (formatAmount(value, 3, 0), unitName)
+
 
 ###########################################################################
 ## Class ItemRequirements
@@ -798,9 +958,9 @@ class ItemAffectedBy (wx.Panel):
                             icon = BitmapLoader.getBitmap("transparent16x16", "gui")
                         attrIcon = self.imageList.Add(icon)
                     else:
-                        attrIcon = self.imageList.Add(BitmapLoader.getBitmap("07_15", "icons"))
+                        attrIcon = self.imageList.Add(BitmapLoader.getBitmap("7_15", "icons"))
                 else:
-                    attrIcon = self.imageList.Add(BitmapLoader.getBitmap("07_15", "icons"))
+                    attrIcon = self.imageList.Add(BitmapLoader.getBitmap("7_15", "icons"))
 
                 if self.showRealNames:
                     display = attrName
@@ -957,9 +1117,9 @@ class ItemAffectedBy (wx.Panel):
 
                                 attrIcon = self.imageList.Add(icon)
                             else:
-                                attrIcon = self.imageList.Add(BitmapLoader.getBitmap("07_15", "icons"))
+                                attrIcon = self.imageList.Add(BitmapLoader.getBitmap("7_15", "icons"))
                         else:
-                            attrIcon = self.imageList.Add(BitmapLoader.getBitmap("07_15", "icons"))
+                            attrIcon = self.imageList.Add(BitmapLoader.getBitmap("7_15", "icons"))
 
                         if attrModifier == "s*":
                             attrModifier = "*"
