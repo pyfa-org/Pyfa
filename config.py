@@ -18,10 +18,10 @@ debug = False
 saveInRoot = False
 
 # Version data
-version = "1.21.4"
-tag = "git"
-expansionName = "Citadel"
-expansionVersion = "1.11"
+version = "1.22.0"
+tag = "Stable"
+expansionName = "YC 118.6"
+expansionVersion = "1.0"
 evemonMinVersion = "4081"
 
 pyfaPath = None
