@@ -481,7 +481,7 @@ class ItemCompare(wx.Panel):
         self.toggleView = 1
         self.stuff = stuff
         self.item = item
-        self.items = sorted(items, key=lambda x: x.attributes['metaLevel'].value)
+        self.items = sorted(items, key=lambda x: x.attributes['metaLevel'].value if 'metaLevel' in x.attributes else None)
         self.attrs = {}
 
         # get a dict of attrName: attrInfo of all unique attributes across all items
