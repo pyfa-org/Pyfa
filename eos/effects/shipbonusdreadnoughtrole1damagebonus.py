@@ -1,7 +1,7 @@
 # shipBonusDreadnoughtRole1DamageBonus
 #
 # Used by:
-# Ship: Vehement (used to be used by Naglfar)
+# Ship: Vehement
 type = "passive"
 def handler(fit, ship, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Capital Hybrid Turret"),
