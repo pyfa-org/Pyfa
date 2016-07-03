@@ -1,4 +1,4 @@
-#===============================================================================
+# ===============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,7 +15,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# ===============================================================================
 
 import locale
 import copy
@@ -39,6 +39,7 @@ from service.settings import SettingsProvider
 from service.port import Port
 
 logger = logging.getLogger(__name__)
+
 
 class FitBackupThread(threading.Thread):
     def __init__(self, path, callback):
@@ -260,7 +261,7 @@ class Fit(object):
 
             if not projected:
                 for fitP in fit.projectedFits:
-                    self.getFit(fitP.ID, projected = True)
+                    self.getFit(fitP.ID, projected=True)
                 self.recalc(fit, withBoosters=True)
                 fit.fill()
 
@@ -415,7 +416,7 @@ class Fit(object):
     def changeActiveFighters(self, fitID, fighter, amount):
         fit = eos.db.getFit(fitID)
         fighter.amountActive = amount
-        
+
         eos.db.commit()
         self.recalc(fit)
 
@@ -429,7 +430,7 @@ class Fit(object):
             fit.projectedFighters.remove(thing)
         else:
             del fit.__projectedFits[thing.ID]
-            #fit.projectedFits.remove(thing)
+            # fit.projectedFits.remove(thing)
 
         eos.db.commit()
         self.recalc(fit)
@@ -479,8 +480,6 @@ class Fit(object):
 
     def changeModule(self, fitID, position, newItemID):
         fit = eos.db.getFit(fitID)
-        if fit.modules[position].isEmpty:
-            return None
 
         # Dummy it out in case the next bit fails
         fit.modules.toDummy(position)
@@ -947,7 +946,7 @@ class Fit(object):
         fits = []
         for path in paths:
             if callback:  # Pulse
-                wx.CallAfter(callback, 1, "Processing file:\n%s"%path)
+                wx.CallAfter(callback, 1, "Processing file:\n%s" % path)
 
             file = open(path, "r")
             srcString = file.read()
@@ -959,38 +958,38 @@ class Fit(object):
             # If file had ANSI encoding, decode it to unicode using detection
             # of BOM header or if there is no header try default
             # codepage then fallback to utf-16, cp1252
-        
+
             if isinstance(srcString, str):
                 encoding_map = (
-                ('\xef\xbb\xbf', 'utf-8'),
-                ('\xff\xfe\0\0', 'utf-32'),
-                ('\0\0\xfe\xff', 'UTF-32BE'),
-                ('\xff\xfe', 'utf-16'),
-                ('\xfe\xff', 'UTF-16BE'))
+                    ('\xef\xbb\xbf', 'utf-8'),
+                    ('\xff\xfe\0\0', 'utf-32'),
+                    ('\0\0\xfe\xff', 'UTF-32BE'),
+                    ('\xff\xfe', 'utf-16'),
+                    ('\xfe\xff', 'UTF-16BE'))
 
                 for bom, encoding in encoding_map:
                     if srcString.startswith(bom):
                         codec_found = encoding
                         savebom = bom
-            
+
                 if codec_found is None:
                     logger.info("Unicode BOM not found in file %s.", path)
                     attempt_codecs = (defcodepage, "utf-8", "utf-16", "cp1252")
 
                     for page in attempt_codecs:
-                         try:
-                             logger.info("Attempting to decode file %s using %s page.", path, page)
-                             srcString = unicode(srcString, page)
-                             codec_found = page
-                             logger.info("File %s decoded using %s page.", path, page)
-                         except UnicodeDecodeError:
-                             logger.info("Error unicode decoding %s from page %s, trying next codec", path, page)
-                         else:
-                             break
+                        try:
+                            logger.info("Attempting to decode file %s using %s page.", path, page)
+                            srcString = unicode(srcString, page)
+                            codec_found = page
+                            logger.info("File %s decoded using %s page.", path, page)
+                        except UnicodeDecodeError:
+                            logger.info("Error unicode decoding %s from page %s, trying next codec", path, page)
+                        else:
+                            break
                 else:
                     logger.info("Unicode BOM detected in %s, using %s page.", path, codec_found)
                     srcString = unicode(srcString[len(savebom):], codec_found)
-            
+
             else:
                 # nasty hack to detect other transparent utf-16 loading
                 if srcString[0] == '<' and 'utf-16' in srcString[:128].lower():
@@ -1005,10 +1004,10 @@ class Fit(object):
                 _, fitsImport = Port.importAuto(srcString, path, callback=callback, encoding=codec_found)
                 fits += fitsImport
             except xml.parsers.expat.ExpatError, e:
-                return False, "Malformed XML in %s"%path
+                return False, "Malformed XML in %s" % path
             except Exception, e:
                 logger.exception("Unknown exception processing: %s", path)
-                return False, "Unknown Error while processing %s"%path
+                return False, "Unknown Error while processing %s" % path
 
         IDs = []
         numFits = len(fits)
@@ -1023,7 +1022,7 @@ class Fit(object):
                 wx.CallAfter(
                     callback, 1,
                     "Processing complete, saving fits to database\n(%d/%d)" %
-                    (i+1, numFits)
+                    (i + 1, numFits)
                 )
 
         return True, fits
@@ -1126,7 +1125,7 @@ class Fit(object):
         self.recalc(fit)
 
     def recalc(self, fit, withBoosters=True):
-        logger.debug("="*10+"recalc"+"="*10)
+        logger.debug("=" * 10 + "recalc" + "=" * 10)
         if fit.factorReload is not self.serviceFittingOptions["useGlobalForceReload"]:
             fit.factorReload = self.serviceFittingOptions["useGlobalForceReload"]
         fit.clear()

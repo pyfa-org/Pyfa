@@ -14,4 +14,4 @@ def handler(fit, src, context):
         ):
             fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill("Missile Launcher Operation"),
                                         tgtAttr, src.getModifiedItemAttr(srcAttr),
-                                        stackingPenalties=True)
+                                        stackingPenalties=True, remoteResists=True)

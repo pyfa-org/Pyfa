@@ -1,7 +1,4 @@
-# ewTargetPaint
-#
-# Used by:
-# Drones named like: TP (3 of 3)
+# Not used by any item
 type = "projected", "active"
 def handler(fit, container, context):
     if "projected" in context:

@@ -26,6 +26,7 @@ import Queue
 import config
 import eos.db
 import eos.types
+from sqlalchemy.sql import and_, or_
 from service.settings import SettingsProvider, NetworkSettings
 import service
 import service.conversions as conversions
@@ -125,7 +126,7 @@ class SearchWorkerThread(threading.Thread):
             sMkt = Market.getInstance()
             if filterOn is True:
                 # Rely on category data provided by eos as we don't hardcode them much in service
-                filter = eos.types.Category.name.in_(sMkt.SEARCH_CATEGORIES)
+                filter = or_(eos.types.Category.name.in_(sMkt.SEARCH_CATEGORIES), eos.types.Group.name.in_(sMkt.SEARCH_GROUPS))
             elif filterOn:  # filter by selected categories
                 filter = eos.types.Category.name.in_(filterOn)
             else:
@@ -314,7 +315,8 @@ class Market():
             "Standard Cerebral Accelerator": 977, # Implants & Boosters > Booster
             "Talocan Data Analyzer I": 714, # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
             "Terran Data Analyzer I": 714, # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
-            "Tetrimon Data Analyzer I": 714 } # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
+            "Tetrimon Data Analyzer I": 714  # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
+        }
 
         self.ITEMS_FORCEDMARKETGROUP_R = self.__makeRevDict(self.ITEMS_FORCEDMARKETGROUP)
 
@@ -330,6 +332,7 @@ class Market():
                                      ("complex", frozenset((6,))),
                                      ("officer", frozenset((5,)))])
         self.SEARCH_CATEGORIES = ("Drone", "Module", "Subsystem", "Charge", "Implant", "Deployable", "Fighter", "Structure")
+        self.SEARCH_GROUPS = ("Ice Product",)
         self.ROOT_MARKET_GROUPS = (9,     # Modules
                                    1111,  # Rigs
                                    157,   # Drones

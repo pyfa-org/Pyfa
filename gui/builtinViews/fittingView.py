@@ -186,7 +186,7 @@ class FittingView(d.Display):
         elif data[0] == "cargo":
             self.swapCargo(x, y, int(data[1]))
         elif data[0] == "market":
-            wx.PostEvent(self.mainFrame, gui.marketBrowser.ItemSelected(itemID=int(data[1])))
+            self.addModule(x, y, int(data[1]))
 
     def handleDrag(self, type, fitID):
         #Those are drags coming from pyfa sources, NOT builtin wx drags
@@ -342,6 +342,20 @@ class FittingView(d.Display):
         if populate is not None:
             self.slotsChanged()
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.activeFitID))
+
+    def addModule(self, x, y, srcIdx):
+        '''Add a module from the market browser'''
+        mstate = wx.GetMouseState()
+
+        dstRow, _ = self.HitTest((x, y))
+        if dstRow != -1 and dstRow not in self.blanks:
+            sFit = service.Fit.getInstance()
+            fitID = self.mainFrame.getActiveFit()
+            moduleChanged = sFit.changeModule(fitID, self.mods[dstRow].position, srcIdx)
+            if moduleChanged is None:
+                # the new module doesn't fit in specified slot, try to simply append it
+                wx.PostEvent(self.mainFrame, gui.marketBrowser.ItemSelected(itemID=srcIdx))
+            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
 
     def swapCargo(self, x, y, srcIdx):
         '''Swap a module from cargo to fitting window'''

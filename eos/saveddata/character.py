@@ -315,7 +315,10 @@ class Skill(HandledItem):
         return self.__item
 
     def getModifiedItemAttr(self, key):
-        return self.item.attributes[key].value
+        if key in self.item.attributes:
+            return self.item.attributes[key].value
+        else:
+            return None
 
     def calculateModifiedAttributes(self, fit, runTime):
         if self.__suppressed: # or not self.learned - removed for GH issue 101

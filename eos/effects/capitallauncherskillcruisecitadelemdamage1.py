@@ -1,4 +1,4 @@
-# 	capitalLauncherSkillCruiseCitadelEmDamage1
+# capitalLauncherSkillCruiseCitadelEmDamage1
 #
 # Used by:
 # Skill: XL Cruise Missiles

@@ -70,11 +70,11 @@ class MetaSwap(ContextMenu):
 
             if thisgroup != group:
                 group = thisgroup
-                id = wx.NewId()
+                id = ContextMenu.nextID()
                 m.Append(id, u'─ %s ─' % group)
                 m.Enable(id, False)
 
-            id = wx.NewId()
+            id = ContextMenu.nextID()
             mitem = wx.MenuItem(rootMenu, id, item.name)
             bindmenu.Bind(wx.EVT_MENU, self.handleModule, mitem)
             self.moduleLookup[id] = item

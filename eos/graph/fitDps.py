@@ -95,11 +95,10 @@ class FitDpsGraph(Graph):
         targetSigRad = explosionRadius if targetSigRad is None else targetSigRad
         explosionVelocity = mod.getModifiedChargeAttr("aoeVelocity")
         damageReductionFactor = mod.getModifiedChargeAttr("aoeDamageReductionFactor")
-        damageReductionSensitivity = mod.getModifiedChargeAttr("aoeDamageReductionSensitivity")
 
         sigRadiusFactor = targetSigRad / explosionRadius
         if targetVelocity:
-            velocityFactor = (explosionVelocity / explosionRadius * targetSigRad / targetVelocity) ** (log(damageReductionFactor) / log(damageReductionSensitivity))
+            velocityFactor = (explosionVelocity / explosionRadius * targetSigRad / targetVelocity) ** damageReductionFactor
         else:
             velocityFactor = 1
 

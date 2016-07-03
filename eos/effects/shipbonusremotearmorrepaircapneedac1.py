@@ -3,6 +3,5 @@
 # Used by:
 # Ship: Augoror
 type = "passive"
-def handler(fit, ship, context):
-    fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == "Remote Armor Repairer",
-                                  "capacitorNeed", ship.getModifiedItemAttr("shipBonusAC"), skill="Amarr Cruiser")
+def handler(fit, src, context):
+    fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Remote Armor Repair Systems"), "capacitorNeed", src.getModifiedItemAttr("shipBonusAC"), skill="Amarr Cruiser")

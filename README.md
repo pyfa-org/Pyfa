@@ -14,8 +14,13 @@ The latest version along with release notes can always be found on the project's
 ## Installation
 Windows and OS X users are supplied self-contained builds of pyfa on the [latest releases](https://github.com/pyfa-org/Pyfa/releases/latest) page. An `.exe` installer is also available for Windows builds. Linux users can run pyfa using their distribution's Python interpreter. There is no official self-contained package for Linux, however, there are a number of third-party packages available through distribution-specific repositories.
 
-### OS X
-If you got [Homebrew](http://brew.sh), simply fire up in terminal:
+#### OS X
+There are two different distributives for OS X: `-mac` and `-mac-deprecated`. 
+
+* `-mac`: based on wxPython 3.0.2.0 and has updated libraries. This is the recommended build.
+* `-mac-deprecated`: utilizes older binaries running on wxPython 2.8; because of this, some features are not available (currently CREST support and Attribute Overrides). Additionally, as development happens primarily on wxPython 3.0, a few GUI bugs may pop up as `-mac-deprecated` is not actively tested. However, due to some general issues with wxPython 3.0, especially on some newer OS X versions, `-mac-deprecated` is still offered for those that need it.
+
+There is also a [Homebrew](http://brew.sh) option for installing pyfa on OS X. Please note this is maintained by a third-party and is not tested by pyfa developers. Simply fire up in terminal:
 ```
 $ brew cask install pyfa
 ```
@@ -59,4 +64,4 @@ pyfa is licensed under the GNU GPL v3.0, see LICENSE
     * Email: sable.blitzmann@gmail.com
 
 ## CCP Copyright Notice
-EVE Online, the EVE logo, EVE and all associated logos and designs are the intellectual property of CCP hf. All artwork, screenshots, characters, vehicles, storylines, world facts or other recognizable features of the intellectual property relating to these trademarks are likewise the intellectual property of CCP hf. EVE Online and the EVE logo are the registered trademarks of CCP hf. All rights are reserved worldwide. All other trademarks are the property of their respective owners. CCP hf. has granted permission to Osmium to use EVE Online and all associated logos and designs for promotional and information purposes on its website but does not endorse, and is not in any way affiliated with, Osmium. CCP is in no way responsible for the content on or functioning of this website, nor can it be liable for any damage arising from the use of this website.
+EVE Online, the EVE logo, EVE and all associated logos and designs are the intellectual property of CCP hf. All artwork, screenshots, characters, vehicles, storylines, world facts or other recognizable features of the intellectual property relating to these trademarks are likewise the intellectual property of CCP hf. EVE Online and the EVE logo are the registered trademarks of CCP hf. All rights are reserved worldwide. All other trademarks are the property of their respective owners. CCP hf. has granted permission to pyfa to use EVE Online and all associated logos and designs for promotional and information purposes on its website but does not endorse, and is not in any way affiliated with, pyfa. CCP is in no way responsible for the content on or functioning of this program, nor can it be liable for any damage arising from the use of this program.

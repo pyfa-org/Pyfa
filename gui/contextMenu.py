@@ -18,9 +18,14 @@
 #===============================================================================
 
 import wx
+import logging
+
+logger = logging.getLogger(__name__)
 
 class ContextMenu(object):
     menus = []
+    _ids = [] #[wx.NewId() for x in xrange(200)]  # init with decent amount
+    _idxid = -1
 
     @classmethod
     def register(cls):
@@ -44,6 +49,8 @@ class ContextMenu(object):
                 (('marketItemGroup', 'Implant'),)
                 (('fittingShip', 'Ship'),)
         """
+        cls._idxid = -1
+        debug_start = len(cls._ids)
 
         rootMenu = wx.Menu()
         rootMenu.info = {}
@@ -68,7 +75,7 @@ class ContextMenu(object):
                     bitmap = m.getBitmap(srcContext, selection)
                     multiple = not isinstance(bitmap, wx.Bitmap)
                     for it, text in enumerate(texts):
-                        id = wx.NewId()
+                        id = cls.nextID()
                         rootItem = wx.MenuItem(rootMenu, id, text)
                         rootMenu.info[id] = (m, fullContext, it)
 
@@ -109,6 +116,10 @@ class ContextMenu(object):
             if amount > 0 and i != len(fullContexts) - 1:
                 rootMenu.AppendSeparator()
 
+        debug_end = len(cls._ids)
+        if (debug_end - debug_start):
+            logger.debug("%d new IDs created for this menu" % (debug_end - debug_start))
+
         return rootMenu if empty is False else None
 
     @classmethod
@@ -133,6 +144,22 @@ class ContextMenu(object):
 
     def getSubMenu(self, context, selection, rootMenu, i, pitem):
         return None
+
+    @classmethod
+    def nextID(cls):
+        """
+        Fetches an ID from the pool of IDs allocated to Context Menu.
+        If we don't have enough ID's to fulfill request, create new
+        ID and add it to the pool.
+
+        See GH Issue #589
+        """
+        cls._idxid += 1
+
+        if cls._idxid >= len(cls._ids):  # We don't ahve an ID for this index, create one
+            cls._ids.append(wx.NewId())
+
+        return cls._ids[cls._idxid]
 
     def getText(self, context, selection):
         """

@@ -1,7 +1,7 @@
 # scanStrengthBonusPercentPassive
 #
 # Used by:
-# Implants named like: High grade (20 of 60)
+# Implants named like: High grade (20 of 61)
 type = "passive"
 def handler(fit, implant, context):
     for type in ("Gravimetric", "Magnetometric", "Radar", "Ladar"):

@@ -36,14 +36,14 @@ class DmgPatternTextValidor(BaseValidator):
         return DmgPatternTextValidor()
 
     def Validate(self, win):
-        profileEditor = win.Parent
+        entityEditor = win.parent
         textCtrl = self.GetWindow()
         text = textCtrl.GetValue().strip()
 
         try:
             if len(text) == 0:
                 raise ValueError("You must supply a name for your Damage Profile!")
-            elif text in [x.name for x in profileEditor.entityEditor.choices]:
+            elif text in [x.name for x in entityEditor.choices]:
                 raise ValueError("Damage Profile name already in use, please choose another.")
 
             return True
@@ -239,7 +239,7 @@ class DmgPatternEditorDlg(wx.Dialog):
 
         for field in self.DAMAGE_TYPES:
             edit = getattr(self, "%sEdit" % field)
-            amount = getattr(p, "%sAmount" % field)
+            amount = int(round(getattr(p, "%sAmount" % field)))
             edit.SetValue(amount)
 
         self.block = False

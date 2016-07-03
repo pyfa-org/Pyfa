@@ -46,7 +46,7 @@ class Ship(ItemAttrShortcut, HandledItem):
 
         self.__item = item
         self.__modeItems = self.__getModeItems()
-        self.__itemModifiedAttributes = ModifiedAttributeDict()
+        self.__itemModifiedAttributes = ModifiedAttributeDict(parent=self)
         self.__itemModifiedAttributes.original = dict(self.item.attributes)
         self.__itemModifiedAttributes.original.update(self.EXTRA_ATTRIBUTES)
         self.__itemModifiedAttributes.overrides = self.item.overrides
