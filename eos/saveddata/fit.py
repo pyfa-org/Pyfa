@@ -334,7 +334,7 @@ class Fit(object):
 
     @property
     def alignTime(self):
-        agility = self.ship.getModifiedItemAttr("agility")
+        agility = self.ship.getModifiedItemAttr("agility") or 0
         mass = self.ship.getModifiedItemAttr("mass")
 
         return -log(0.25) * agility * mass / 1000000

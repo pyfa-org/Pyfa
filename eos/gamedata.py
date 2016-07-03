@@ -89,7 +89,7 @@ class Effect(EqBase):
         The type of the effect, automaticly fetched from effects/<effectName>.py if the file exists.
 
         Valid values are:
-        "passive", "active", "projected", "gang"
+        "passive", "active", "projected", "gang", "structure"
 
         Each gives valuable information to eos about what type the module having
         the effect is. passive vs active gives eos clues about wether to module
