@@ -38,7 +38,8 @@ ITEM_CATEGORIES = (
     16,  # Skill
     18,  # Drone
     20,  # Implant
-    32   # Subsystem
+    32,  # Subsystem
+    66  # Structure Module
 )
 
 MARKET_ROOTS = {
@@ -48,7 +49,8 @@ MARKET_ROOTS = {
     11,  # Ammo
     1112,  # Subsystems
     24,  # Implants & Boosters
-    404  # Deployables
+    404,  # Deployables
+    2202  # Structure Equipment
 }
 
 # Add children to market group list
@@ -153,7 +155,7 @@ for fname in os.listdir(icons_dir):
     print fname,"exists"
     existing.add(fname)
 
-# Get a list of all the icons currently available
+# Get a list of all the icons currently available in export
 for dir in dirs:
     for fname in os.listdir(dir):
         if not os.path.isfile(os.path.join(dir, fname)):
@@ -164,7 +166,7 @@ for dir in dirs:
         # convention without size specification
         sizeless = re.sub('^(?P<prefix>[^_]+)_(?P<size>\d+)_(?P<suffix>[^_]+)$', r'\1_\3', stripped)
         # Often items referred to with 01_01 format,
-        fnames = export.setdefault(stripped.lower(), set())
+        fnames = export.setdefault(sizeless.lower(), set())
         fnames.add(fname)
 
 def crop_image(img):
