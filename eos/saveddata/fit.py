@@ -517,6 +517,11 @@ class Fit(object):
                 self.boosters,
                 self.appliedImplants,
                 self.modules
+            ] if not self.isStructure else [
+                # Ensure a restricted set for citadels
+                (self.character, self.ship),
+                self.fighters,
+                self.modules
             ]
 
             # Items that are restricted. These items are only run on the local

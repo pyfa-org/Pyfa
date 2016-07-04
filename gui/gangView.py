@@ -365,8 +365,10 @@ class GangView ( ScrolledPanel ):
         #Those are drags coming from pyfa sources, NOT builtin wx drags
         self.draggedFitID = None
         if type == "fit":
-            activeFit = self.mainFrame.getActiveFit()
-            if activeFit:
+            sFit = service.Fit.getInstance()
+            fit = sFit.getFit(self.mainFrame.getActiveFit())
+
+            if fit and not fit.isStructuree:
                 self.draggedFitID = fitID
 
                 pos = wx.GetMousePosition()

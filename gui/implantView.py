@@ -139,6 +139,12 @@ class ImplantDisplay(d.Display):
     def addItem(self, event):
         sFit = service.Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
+
+        fit = sFit.getFit(fitID)
+
+        if fit.isStructure:
+            return
+
         trigger = sFit.addImplant(fitID, event.itemID)
         if trigger:
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
