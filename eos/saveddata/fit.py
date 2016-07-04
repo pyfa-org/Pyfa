@@ -195,6 +195,10 @@ class Fit(object):
             self.extraAttributes = self.ship.itemModifiedAttributes
 
     @property
+    def isStructure(self):
+        return isinstance(self.ship, Citadel)
+
+    @property
     def drones(self):
         return self.__drones
 

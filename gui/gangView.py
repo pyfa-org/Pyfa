@@ -26,7 +26,6 @@ import gui.globalEvents as GE
 
 from gui import characterEditor as CharEditor
 
-
 class GangView ( ScrolledPanel ):
 
     def __init__( self, parent ):
@@ -247,6 +246,9 @@ class GangView ( ScrolledPanel ):
         activeFitID = self.mainFrame.getActiveFit()
         sFit = service.Fit.getInstance()
         fit = sFit.getFit(event.fitID or activeFitID)
+
+        self.Parent.Parent.DisablePage(self, not fit or fit.isStructure)
+
         commanders = (None, None, None)
 
         if activeFitID:
