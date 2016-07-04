@@ -162,7 +162,7 @@ class ProjectedView(d.Display):
         sFit = service.Fit.getInstance()
         fit = sFit.getFit(event.fitID)
 
-        self.Parent.Parent.DisablePage(self, not fit)
+        self.Parent.Parent.DisablePage(self, not fit or fit.isStructure)
 
         #Clear list and get out if current fitId is None
         if event.fitID is None and self.lastFitId is not None:
