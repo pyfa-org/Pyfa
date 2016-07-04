@@ -13,7 +13,7 @@ def handler(fit, module, context):
             ("explosionDelayBonus", "explosionDelay"),
         ):
             fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill("Missile Launcher Operation"),
-                                        tgtAttr, src.getModifiedItemAttr(srcAttr),
+                                        tgtAttr, module.getModifiedItemAttr(srcAttr),
                                         stackingPenalties=True, remoteResists=True)
 
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Gunnery"),
