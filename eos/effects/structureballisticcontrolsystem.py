@@ -1,14 +1,13 @@
-# missileDMGBonus
-#
-# Used by:
-# Modules from group: Ballistic Control system (17 of 17)
-# Modules named like: QA Multiship Module Players (4 of 4)
 type = "passive"
 def handler(fit, module, context):
+    missileGroups = ("Structure Anti-Capital Missile", "Structure Anti-Subcapital Missile")
+
     for dmgType in ("em", "kinetic", "explosive", "thermal"):
-        fit.modules.filteredChargeMultiply(lambda mod: mod.charge.requiresSkill("Missile Launcher Operation"),
+        fit.modules.filteredChargeMultiply(lambda mod: mod.charge.group.name in missileGroups,
                                     "%sDamage" % dmgType, module.getModifiedItemAttr("missileDamageMultiplierBonus"),
                                     stackingPenalties = True)
-    fit.modules.filteredItemMultiply(lambda mod: mod.item.requiresSkill("Missile Launcher Operation"),
+
+    launcherGroups = ("Structure AXL Missile Launcher", "Structure ASML Missile Launcher")
+    fit.modules.filteredItemMultiply(lambda mod: mod.item.group.name in launcherGroups,
                                      "speed", module.getModifiedItemAttr("speedMultiplier"),
                                      stackingPenalties=True)

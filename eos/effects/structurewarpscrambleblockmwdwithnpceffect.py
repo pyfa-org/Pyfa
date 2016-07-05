@@ -1,7 +1,3 @@
-# structureWarpScrambleBlockMWDWithNPCEffect
-#
-# Used by:
-# Modules named like: Standup Warp Scrambler
 runTime = "early"
 type = "projected", "active"
 
@@ -14,8 +10,3 @@ def handler(fit, module, context):
     for mod in fit.modules:
         if not mod.isEmpty and mod.item.requiresSkill("High Speed Maneuvering") and mod.state > State.ONLINE:
             mod.state = State.ONLINE
-
-
-# TODO
-# believe this doesn't actual require skills to use.
-# Need to figure out how to remove the skill req *OR* tie it to the structure.
