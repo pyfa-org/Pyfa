@@ -39,7 +39,7 @@ ITEM_CATEGORIES = (
     18,  # Drone
     20,  # Implant
     32,  # Subsystem
-    66  # Structure Module
+    66,  # Structure Module
 )
 
 MARKET_ROOTS = {
@@ -50,7 +50,8 @@ MARKET_ROOTS = {
     1112,  # Subsystems
     24,  # Implants & Boosters
     404,  # Deployables
-    2202  # Structure Equipment
+    2202,  # Structure Equipment
+    2203  # Structure Modifications (Rigs)
 }
 
 # Add children to market group list

@@ -331,7 +331,7 @@ class Market():
                                      ("faction", frozenset((4, 3))),
                                      ("complex", frozenset((6,))),
                                      ("officer", frozenset((5,)))])
-        self.SEARCH_CATEGORIES = ("Drone", "Module", "Subsystem", "Charge", "Implant", "Deployable", "Fighter", "Structure")
+        self.SEARCH_CATEGORIES = ("Drone", "Module", "Subsystem", "Charge", "Implant", "Deployable", "Fighter", "Structure", "Structure Module")
         self.SEARCH_GROUPS = ("Ice Product",)
         self.ROOT_MARKET_GROUPS = (9,     # Modules
                                    1111,  # Rigs
@@ -340,7 +340,9 @@ class Market():
                                    1112,  # Subsystems
                                    24,    # Implants & Boosters
                                    404,   # Deployables
-                                   2202)  # Structure Equipment
+                                   2202,  # Structure Equipment
+                                   2203   # Structure Modifications
+                                   )
         # Tell other threads that Market is at their service
         mktRdy.set()
 
