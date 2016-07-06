@@ -231,8 +231,11 @@ class PFNotebook(wx.Panel):
         idx = self.GetPageIndex(page)
 
         if toggle and page == self.activePage:
-            # Set page to the first non-disabled page
-            self.SetSelection(next(i for i, _ in enumerate(self.pages) if not self.tabsContainer.tabs[i].disabled))
+            try:
+                # Set page to the first non-disabled page
+                self.SetSelection(next(i for i, _ in enumerate(self.pages) if not self.tabsContainer.tabs[i].disabled))
+            except StopIteration, ex:
+                self.SetSelection(0)
 
         self.tabsContainer.DisableTab(idx, toggle)
 

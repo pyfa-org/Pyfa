@@ -41,6 +41,7 @@ class MetaSwap(ContextMenu):
         self.moduleLookup = {}
 
         def get_metalevel(x):
+            if "metaLevel" not in x.attributes: return 0
             return x.attributes["metaLevel"].value
 
         def get_metagroup(x):
