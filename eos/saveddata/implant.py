@@ -104,3 +104,8 @@ class Implant(HandledItem, ItemAttrShortcut):
         copy = Implant(self.item)
         copy.active = self.active
         return copy
+
+    def __repr__(self):
+        return "Implant(ID={}, name={}) at {}".format(
+            self.item.ID, self.item.name, hex(id(self))
+        )
