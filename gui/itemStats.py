@@ -29,6 +29,7 @@ from gui.utils.numberFormatter import formatAmount
 import service
 import config
 from gui.contextMenu import ContextMenu
+from gui.utils.numberFormatter import formatAmount
 
 try:
     from collections import OrderedDict
@@ -551,6 +552,10 @@ class ItemCompare(wx.Panel):
         self.UpdateList()
         event.Skip()
 
+    def processPrices(self, prices):
+        for i, price in enumerate(prices):
+            self.paramList.SetStringItem(i, len(self.attrs)+1, formatAmount(price.price, 3, 3, 9, currency=True))
+
     def PopulateList(self):
         self.paramList.InsertColumn(0, "Item")
         self.paramList.SetColumnWidth(0, 200)
@@ -559,6 +564,12 @@ class ItemCompare(wx.Panel):
             name = self.attrs[attr].displayName if self.attrs[attr].displayName else attr
             self.paramList.InsertColumn(i+1, name)
             self.paramList.SetColumnWidth(i+1, 120)
+
+        self.paramList.InsertColumn(len(self.attrs)+1, "Price")
+        self.paramList.SetColumnWidth(len(self.attrs)+1, 60)
+
+        sMkt = service.Market.getInstance()
+        sMkt.getPrices([x.ID for x in self.items], self.processPrices)
 
         for item in self.items:
             i = self.paramList.InsertStringItem(sys.maxint, item.name)
