@@ -5,6 +5,6 @@
 runTime = "early"
 type = ("projected", "passive")
 def handler(fit, module, context):
-    fit.modules.filteredItemMultiply(lambda mod: mod.item.group.name == "Remote Shield Booster",
+    fit.modules.filteredItemMultiply(lambda mod: mod.item.requiresSkill("Shield Emission Systems"),
                                      "shieldBonus", module.getModifiedItemAttr("shieldBonusMultiplierRemote"),
                                      stackingPenalties=True, penaltyGroup="postMul")
