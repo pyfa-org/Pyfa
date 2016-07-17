@@ -14,14 +14,14 @@ def handler(fit, module, context):
     energyNeutralizerSignatureResolution = module.getModifiedItemAttr("energyNeutralizerSignatureResolution")
     signatureRadius = fit.ship.getModifiedItemAttr("signatureRadius")
 
-    # Signature reduction, uses the bomb formula as per CCP Larrikin
-    if energyNeutralizerSignatureResolution:
-        sigRatio = signatureRadius / energyNeutralizerSignatureResolution
-
-        sigReductionList = [1, sigRatio]
-        amount = amount * min(sigReductionList)
-
     if "projected" in context:
+        # Signature reduction, uses the bomb formula as per CCP Larrikin
+        if energyNeutralizerSignatureResolution:
+            sigRatio = signatureRadius / energyNeutralizerSignatureResolution
+
+            sigReductionList = [1, sigRatio]
+            amount = amount * min(sigReductionList)
+
         #Small rigged ships
         if (rigSize == 1) and modifierSmall:
             amount = amount*modifierSmall
