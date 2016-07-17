@@ -4,16 +4,17 @@
 # Drones from group: Energy Neutralizer Drone (3 of 3)
 from eos.types import State
 type = "active", "projected"
-def handler(fit, module, context):
-    if "projected" in context and ((hasattr(module, "state") \
-    and module.state >= State.ACTIVE) or hasattr(module, "amountActive")):
-        amount = module.getModifiedItemAttr("energyNeutralizerAmount")
-        time = module.getModifiedItemAttr("energyNeutralizerDuration")
+
+
+def handler(fit, src, context):
+    if "projected" in context and ((hasattr(src, "state") and src.state >= State.ACTIVE) or hasattr(src, "amountActive")):
+        amount = src.getModifiedItemAttr("energyNeutralizerAmount")
+        time = src.getModifiedItemAttr("energyNeutralizerDuration")
         rigSize = fit.ship.getModifiedItemAttr("rigSize")
-        modifierLarge = module.getModifiedItemAttr("entityCapacitorLevelModifierLarge")
-        modifierMedium = module.getModifiedItemAttr("entityCapacitorLevelModifierMedium")
-        modifierSmall = module.getModifiedItemAttr("entityCapacitorLevelModifierSmall")
-        energyNeutralizerSignatureResolution = module.getModifiedItemAttr("energyNeutralizerSignatureResolution")
+        modifierLarge = src.getModifiedItemAttr("entityCapacitorLevelModifierLarge")
+        modifierMedium = src.getModifiedItemAttr("entityCapacitorLevelModifierMedium")
+        modifierSmall = src.getModifiedItemAttr("entityCapacitorLevelModifierSmall")
+        energyNeutralizerSignatureResolution = src.getModifiedItemAttr("energyNeutralizerSignatureResolution")
         signatureRadius = fit.ship.getModifiedItemAttr("signatureRadius")
 
         #Signature reduction, uses the bomb formula as per CCP Larrikin

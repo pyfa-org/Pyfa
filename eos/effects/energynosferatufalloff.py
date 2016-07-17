@@ -4,14 +4,16 @@
 # Modules from group: Energy Nosferatu (51 of 51)
 type = "active", "projected"
 runTime = "late"
-def handler(fit, module, context):
-    amount = module.getModifiedItemAttr("powerTransferAmount")
-    time = module.getModifiedItemAttr("duration")
+
+
+def handler(fit, src, context):
+    amount = src.getModifiedItemAttr("powerTransferAmount")
+    time = src.getModifiedItemAttr("duration")
     rigSize = fit.ship.getModifiedItemAttr("rigSize")
-    modifierLarge = module.getModifiedItemAttr("entityCapacitorLevelModifierLarge")
-    modifierMedium = module.getModifiedItemAttr("entityCapacitorLevelModifierMedium")
-    modifierSmall = module.getModifiedItemAttr("entityCapacitorLevelModifierSmall")
-    energyNeutralizerSignatureResolution = module.getModifiedItemAttr("energyNeutralizerSignatureResolution")
+    modifierLarge = src.getModifiedItemAttr("entityCapacitorLevelModifierLarge")
+    modifierMedium = src.getModifiedItemAttr("entityCapacitorLevelModifierMedium")
+    modifierSmall = src.getModifiedItemAttr("entityCapacitorLevelModifierSmall")
+    energyNeutralizerSignatureResolution = src.getModifiedItemAttr("energyNeutralizerSignatureResolution")
     signatureRadius = fit.ship.getModifiedItemAttr("signatureRadius")
 
     if "projected" in context:
@@ -36,4 +38,4 @@ def handler(fit, module, context):
 
         fit.addDrain(time, amount, 0)
     elif "module" in context:
-        module.itemModifiedAttributes.force("capacitorNeed", -amount)
+        src.itemModifiedAttributes.force("capacitorNeed", -amount)
