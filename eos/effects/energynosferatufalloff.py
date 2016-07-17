@@ -11,6 +11,15 @@ def handler(fit, module, context):
     modifierLarge = module.getModifiedItemAttr("entityCapacitorLevelModifierLarge")
     modifierMedium = module.getModifiedItemAttr("entityCapacitorLevelModifierMedium")
     modifierSmall = module.getModifiedItemAttr("entityCapacitorLevelModifierSmall")
+    energyNeutralizerSignatureResolution = module.getModifiedItemAttr("energyNeutralizerSignatureResolution")
+    signatureRadius = fit.ship.getModifiedItemAttr("signatureRadius")
+
+    # Signature reduction, uses the bomb formula as per CCP Larrikin
+    if energyNeutralizerSignatureResolution:
+        sigRatio = signatureRadius / energyNeutralizerSignatureResolution
+
+        sigReductionList = [1, sigRatio]
+        amount = amount * min(sigReductionList)
 
     if "projected" in context:
         #Small rigged ships
