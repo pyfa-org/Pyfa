@@ -5,6 +5,6 @@
 runTime = "early"
 type = ("projected", "passive")
 def handler(fit, module, context):
-    fit.modules.filteredItemMultiply(lambda mod: mod.item.group.name == "Remote Armor Repairer",
+    fit.modules.filteredItemMultiply(lambda mod: mod.item.requiresSkill("Remote Armor Repair Systems"),
                                      "armorDamageAmount", module.getModifiedItemAttr("armorDamageAmountMultiplierRemote"),
                                      stackingPenalties=True)
