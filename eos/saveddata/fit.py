@@ -873,8 +873,24 @@ class Fit(object):
         rechargeRate = self.ship.getModifiedItemAttr("shieldRechargeRate") / 1000.0
         return 10 / rechargeRate * sqrt(percent) * (1 - sqrt(percent)) * capacity
 
-    def addDrain(self, cycleTime, capNeed, clipSize=0):
+    def addDrain(self, src, cycleTime, capNeed, clipSize=0):
         """ Used for both cap drains and cap fills (fills have negative capNeed) """
+
+        rigSize = self.ship.getModifiedItemAttr("rigSize")
+        energyNeutralizerSignatureResolution = src.getModifiedItemAttr("energyNeutralizerSignatureResolution")
+        signatureRadius = self.ship.getModifiedItemAttr("signatureRadius")
+        neutSizes = {1.0: 'Small', 2.0: 'Medium', 3.0: 'Large', 4.0: 'Capital'}
+
+        #Signature reduction, uses the bomb formula as per CCP Larrikin
+        if energyNeutralizerSignatureResolution:
+            capNeed = capNeed*min(1, signatureRadius/energyNeutralizerSignatureResolution)
+
+        #Size reduction, reduces neuts based off ship rig size
+        for sizeInt, sizeName in neutSizes.iteritems():
+            capacitorLevelModifier = src.getModifiedItemAttr("entityCapacitorLevelModifier{}".format(sizeName))
+            if (rigSize == sizeInt) and capacitorLevelModifier:
+                capNeed = capNeed*capacitorLevelModifier
+
         resistance = self.ship.getModifiedItemAttr("energyWarfareResistance") or 1 if capNeed > 0 else 1
         self.__extraDrains.append((cycleTime, capNeed * resistance, clipSize))
 
