@@ -9,10 +9,10 @@ def handler(fit, module, context):
 
         #Adjust RAH to match the current damage pattern
         damagePattern = fit.damagePattern
-        attrDamagePattern = "%sAmount" % type
-        damagePatternModifier = getattr(damagePattern,attrDamagePattern)/float(sum((damagePattern.emAmount,damagePattern.thermalAmount,damagePattern.kineticAmount,damagePattern.explosiveAmount)))
-        modifiedResistModifier = (1-(((1-module.getModifiedItemAttr(attr))*4)*(damagePatternModifier)))
-        module.forceItemAttr(attr, modifiedResistModifier)
+        if damagePattern:
+            attrDamagePattern = "%sAmount" % type
+            damagePatternModifier = getattr(damagePattern,attrDamagePattern)/float(sum((damagePattern.emAmount,damagePattern.thermalAmount,damagePattern.kineticAmount,damagePattern.explosiveAmount)))
+            modifiedResistModifier = (1-(((1-module.getModifiedItemAttr(attr))*4)*(damagePatternModifier)))
+            module.forceItemAttr(attr, modifiedResistModifier)
 
-        fit.ship.multiplyItemAttr(attr, module.getModifiedItemAttr(attr),
-                                  stackingPenalties=True, penaltyGroup="preMul")
+        fit.ship.multiplyItemAttr(attr, module.getModifiedItemAttr(attr), stackingPenalties=True, penaltyGroup="preMul")
