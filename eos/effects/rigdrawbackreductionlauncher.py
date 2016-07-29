@@ -1,3 +1,7 @@
+# rigDrawbackReductionLauncher
+#
+# Used by:
+# Skill: Launcher Rigging
 type = "passive"
 def handler(fit, src, context):
     lvl = src.level

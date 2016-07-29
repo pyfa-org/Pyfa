@@ -757,7 +757,7 @@ class Market():
         def cb():
             try:
                 callback(requests)
-            except:
+            except Exception, e:
                 pass
             eos.db.commit()
 

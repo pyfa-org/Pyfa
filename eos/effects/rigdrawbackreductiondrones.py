@@ -1,3 +1,7 @@
+# rigDrawbackReductionDrones
+#
+# Used by:
+# Skill: Drones Rigging
 type = "passive"
 def handler(fit, src, context):
     lvl = src.level

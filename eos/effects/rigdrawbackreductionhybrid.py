@@ -1,3 +1,7 @@
+# rigDrawbackReductionHybrid
+#
+# Used by:
+# Skill: Hybrid Weapon Rigging
 type = "passive"
 def handler(fit, src, context):
     lvl = src.level

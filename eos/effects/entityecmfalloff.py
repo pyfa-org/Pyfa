@@ -1,3 +1,7 @@
+# entityECMFalloff
+#
+# Used by:
+# Drones named like: EC (3 of 3)
 type = "projected", "active"
 def handler(fit, module, context):
     if "projected" in context:

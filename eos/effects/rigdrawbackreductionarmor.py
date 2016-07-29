@@ -1,3 +1,7 @@
+# rigDrawbackReductionArmor
+#
+# Used by:
+# Skill: Armor Rigging
 type = "passive"
 def handler(fit, src, context):
     lvl = src.level
