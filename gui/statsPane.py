@@ -47,6 +47,11 @@ class StatsPane(wx.Panel):
 
             # TODO
             # Add logging
+    '''
+    DEFAULT_VIEWS = ["resourcesViewFull", "resistancesViewFull", "rechargeViewFull", "firepowerViewFull",
+                     "capacitorViewFull", "targetingmiscViewFull",
+                     "priceViewFull", "miningyieldViewFull"]
+    '''
 
     test = DEFAULT_VIEWS
 
