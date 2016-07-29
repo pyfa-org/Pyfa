@@ -342,7 +342,7 @@ class statViewSettings():
         # 0 - Do not show
         # 1 - Minimal/Text Only View
         # 2 - Full View
-        serviceStatViewDefaultSettings = {"Resources": 2, "Resistances": 2, "TankRecharge": 2, "Firepower": 2, "Capacitor": 1, "Misc": 2, "Price": 2, "Mining": 0}
+        serviceStatViewDefaultSettings = {"resources": 2, "resistances": 2, "recharge": 2, "firepower": 2, "capacitor": 1, "targetingmisc": 2, "price": 2, "miningyield": 0}
 
         self.serviceStatViewDefaultSettings = SettingsProvider.getInstance().getSettings("pyfaServiceStatViewSettings",
                                                                                serviceStatViewDefaultSettings)
