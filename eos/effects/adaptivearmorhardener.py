@@ -40,6 +40,7 @@ def handler(fit, module, context):
         for num in range(50):
             #logger.debug("Starting cycle %d.", num)
             # The strange order is to emulate the ingame sorting when different types have taken the same amount of damage.
+            # This doesn't take into account stacking penalties. In a few cases fitting a Damage Control causes an inaccurate result.
             damagePattern_tuples = [
                 (0, baseDamageTaken[0] * RAHResistance[0], RAHResistance[0]),
                 (3, baseDamageTaken[3] * RAHResistance[3], RAHResistance[3]), 
@@ -53,12 +54,20 @@ def handler(fit, module, context):
             
             if sortedDamagePattern_tuples[2][1] == 0:
                 # One damage type: the top damage type takes from the other three
-                change0 = min(resistanceShiftAmount, 1 - sortedDamagePattern_tuples[0][2])
-                change1 = min(resistanceShiftAmount, 1 - sortedDamagePattern_tuples[1][2])
-                change2 = min(resistanceShiftAmount, 1 - sortedDamagePattern_tuples[2][2])
+                # Since the resistances not taking damage will end up going to the type taking damage we just do the whole thing at once.
+                change0 = 1 - sortedDamagePattern_tuples[0][2]
+                change1 = 1 - sortedDamagePattern_tuples[1][2]
+                change2 = 1 - sortedDamagePattern_tuples[2][2]
                 change3 = -(change0 + change1 + change2)
+            elif sortedDamagePattern_tuples[1][1] == 0:
+                # Two damage types: the top two damage types take from the other two
+                # Since the resistances not taking damage will end up going equally to the types taking damage we just do the whole thing at once.
+                change0 = 1 - sortedDamagePattern_tuples[0][2]
+                change1 = 1 - sortedDamagePattern_tuples[1][2]
+                change2 = -(change0 + change1) / 2
+                change3 = -(change0 + change1) / 2
             else:
-                # Two or more damage types: the top two damage types take from the other two
+                # Three or four damage types: the top two damage types take from the other two
                 change0 = min(resistanceShiftAmount, 1 - sortedDamagePattern_tuples[0][2])
                 change1 = min(resistanceShiftAmount, 1 - sortedDamagePattern_tuples[1][2])
                 change2 = -(change0 + change1) / 2
@@ -75,7 +84,7 @@ def handler(fit, module, context):
                 tolerance = 1e-09 
                 if abs(RAHResistance[0] - val[0]) <= tolerance and abs(RAHResistance[1] - val[1]) <= tolerance and abs(RAHResistance[2] - val[2]) <= tolerance and abs(RAHResistance[3] - val[3]) <= tolerance:
                     loopStart = i
-                    #logger.debug("Loop found: %d-%d", loopStart + 1, num)
+                    #logger.debug("Loop found: %d-%d", loopStart, num)
                     break
                 if loopStart >= 0: break
             if loopStart >= 0: break
@@ -83,7 +92,7 @@ def handler(fit, module, context):
             cycleList.append(list(RAHResistance))
             
         if loopStart < 0:
-            logger.error("Reactive Armor Hardener failed to find equalibrium. Damage profile after armor: %f/%f/%f/%f", baseDamageTaken[0], baseDamageTaken[1], baseDamageTaken[2], baseDamageTaken[3])
+            logger.error("Reactive Armor Hardener failed to find equilibrium. Damage profile after armor: %f/%f/%f/%f", baseDamageTaken[0], baseDamageTaken[1], baseDamageTaken[2], baseDamageTaken[3])
         
         # Average the RAH profiles that it loops through
         loopCycles = cycleList[loopStart:]
@@ -95,8 +104,7 @@ def handler(fit, module, context):
             
         # Set the new resistances
         #logger.debug("Setting new resist profile: %f/%f/%f/%f", average[0], average[1], average[2],average[3])
-        for i, damagePatternType in enumerate(('Em', 'Thermal', 'Kinetic', 'Explosive')):
-            attr = "armor%sDamageResonance" % damagePatternType
+        for i, attr in enumerate(('armorEmDamageResonance', 'armorThermalDamageResonance', 'armorKineticDamageResonance', 'armorExplosiveDamageResonance')):
             module.forceItemAttr(attr, average[i])
-            fit.ship.multiplyItemAttr(attr, module.getModifiedItemAttr(attr), stackingPenalties=True, penaltyGroup="preMul")
+            fit.ship.multiplyItemAttr(attr, average[i], stackingPenalties=True, penaltyGroup="preMul")
     
