@@ -30,8 +30,8 @@ import gui.globalEvents as GE
 
 EffectiveHpToggled, EFFECTIVE_HP_TOGGLED = wx.lib.newevent.NewEvent()
 
-class ResistancesViewFull(StatsView):
-    name = "resistancesViewFull"
+class ResistancesViewMinimal(StatsView):
+    name = "resistancesViewMinimal"
     def __init__(self, parent):
         StatsView.__init__(self)
         self.parent = parent
@@ -223,5 +223,5 @@ class ResistancesViewFull(StatsView):
         self.panel.Layout()
         self.headerPanel.Layout()
 
-ResistancesViewFull.register()
+ResistancesViewMinimal.register()
 

@@ -20,11 +20,12 @@
 import wx
 import service
 import gui.mainFrame
+from gui.utils.tableFormatter import formatTable
 from gui.statsView import StatsView
 from gui.bitmapLoader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 
-class MiningYieldViewMinmal(StatsView):
+class MiningYieldViewMinimal(StatsView):
     name = "miningyieldViewMinimal"
     def __init__(self, parent):
         StatsView.__init__(self)
@@ -44,6 +45,17 @@ class MiningYieldViewMinmal(StatsView):
 
         panel = "full"
 
+        miningYieldList = []
+        miningYieldList.append(["Lasers:", "100", " | ", "Drones:", "100", " | ", "Total:", "200"])
+        miningYieldList.append(["Targets:", "100", " | ", "Align Time:", "100", " | ", "Warp Speed:", "200"])
+        miningYieldList.append(["Drone Range:", "100", " | ", "Cargo:", "100", " | ", "Signature:", "200"])
+        miningSizer = formatTable(miningYieldList, 8, contentPanel)
+
+        #self.SetSizer(miningSizer)
+        #self.Layout()
+        contentSizer.Add(miningSizer, 0, wx.EXPAND, 0)
+
+
         sizerMiningYield = wx.FlexGridSizer(1, 4)
         sizerMiningYield.AddGrowableCol(1)
 
@@ -51,33 +63,34 @@ class MiningYieldViewMinmal(StatsView):
 
         counter = 0
 
+
+
         for miningType, image in (("miner", "mining") , ("drone", "drones")):
             baseBox = wx.BoxSizer(wx.HORIZONTAL)
             sizerMiningYield.Add(baseBox, 1, wx.ALIGN_LEFT if counter == 0 else wx.ALIGN_CENTER_HORIZONTAL)
 
-            #baseBox.Add(BitmapLoader.getStaticBitmap("%s_big" % image, parent, "gui"), 0, wx.ALIGN_CENTER)
+            baseBox.Add(BitmapLoader.getStaticBitmap("%s_big" % image, parent, "gui"), 0, wx.ALIGN_CENTER)
 
             box = wx.BoxSizer(wx.VERTICAL)
             baseBox.Add(box, 0, wx.ALIGN_CENTER)
-            baseBox.Add()
 
-            lbl = wx.StaticText(parent, wx.ID_ANY, u"0.0 m\u00B3/s")
-            setattr(self, "label%sminingyield%s" % (panel.capitalize() ,miningType.capitalize()), lbl)
-
-
-            box.Add(wx.StaticText(parent, wx.ID_ANY, miningType.capitalize() + ": " ), 0, wx.ALIGN_LEFT)
+            box.Add(wx.StaticText(parent, wx.ID_ANY, miningType.capitalize()), 0, wx.ALIGN_LEFT)
 
             hbox = wx.BoxSizer(wx.HORIZONTAL)
             box.Add(hbox, 1, wx.ALIGN_CENTER)
 
+            lbl = wx.StaticText(parent, wx.ID_ANY, u"0.0 m\u00B3/s")
+            setattr(self, "label%sminingyield%s" % (panel.capitalize() ,miningType.capitalize()), lbl)
 
-            box.Add(lbl, 0, wx.ALIGN_CENTER)
+            hbox.Add(lbl, 0, wx.ALIGN_CENTER)
             self._cachedValues.append(0)
             counter += 1
         targetSizer = sizerMiningYield
 
         baseBox = wx.BoxSizer(wx.HORIZONTAL)
         targetSizer.Add(baseBox, 0, wx.ALIGN_LEFT)
+
+        baseBox.Add(BitmapLoader.getStaticBitmap("cargoBay_big", parent, "gui"), 0, wx.ALIGN_CENTER)
 
         box = wx.BoxSizer(wx.VERTICAL)
         baseBox.Add(box, 0, wx.EXPAND)
@@ -136,4 +149,4 @@ class MiningYieldViewMinmal(StatsView):
         self.panel.Layout()
         self.headerPanel.Layout()
 
-MiningYieldViewMinmal.register()
+MiningYieldViewMinimal.register()

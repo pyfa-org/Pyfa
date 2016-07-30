@@ -25,8 +25,8 @@ import gui.mainFrame
 import gui.builtinStatsViews.resistancesViewFull as rvf
 import service
 
-class RechargeViewFull(StatsView):
-    name = "rechargeViewFull"
+class RechargeViewMinimal(StatsView):
+    name = "rechargeViewMinimal"
     def __init__(self, parent):
         StatsView.__init__(self)
         self.parent = parent
@@ -122,4 +122,4 @@ class RechargeViewFull(StatsView):
         self.panel.Layout()
         self.headerPanel.Layout()
 
-RechargeViewFull.register()
+RechargeViewMinimal.register()

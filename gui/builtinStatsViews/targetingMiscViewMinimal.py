@@ -27,8 +27,8 @@ try:
 except ImportError:
     from utils.compat import OrderedDict
 
-class TargetingMiscViewFull(StatsView):
-    name = "targetingmiscViewFull"
+class TargetingMiscViewMinimal(StatsView):
+    name = "targetingmiscViewMinimal"
     def __init__(self, parent):
         StatsView.__init__(self)
         self.parent = parent
@@ -247,4 +247,4 @@ class TargetingMiscViewFull(StatsView):
         self.panel.Layout()
         self.headerPanel.Layout()
 
-TargetingMiscViewFull.register()
+TargetingMiscViewMinimal.register()

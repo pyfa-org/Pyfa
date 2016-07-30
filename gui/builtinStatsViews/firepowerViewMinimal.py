@@ -24,8 +24,8 @@ from gui.statsView import StatsView
 from gui.bitmapLoader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 
-class FirepowerViewFull(StatsView):
-    name = "firepowerViewFull"
+class FirepowerViewMinimal(StatsView):
+    name = "firepowerViewMinimal"
     def __init__(self, parent):
         StatsView.__init__(self)
         self.parent = parent
@@ -145,4 +145,4 @@ class FirepowerViewFull(StatsView):
         self.panel.Layout()
         self.headerPanel.Layout()
 
-FirepowerViewFull.register()
+FirepowerViewMinimal.register()
