@@ -50,17 +50,17 @@ class PriceViewMinimal(StatsView):
 
         gridPrice = wx.GridSizer(1, 3)
         contentSizer.Add(gridPrice, 0, wx.EXPAND | wx.ALL, 0)
-        for type in ("ship", "fittings", "total"):
+        for type in ("ship", "total"):
             image = "%sPrice_big" % type if type != "ship" else "ship_big"
             box = wx.BoxSizer(wx.HORIZONTAL)
             gridPrice.Add(box, 0, wx.ALIGN_TOP)
 
-            box.Add(BitmapLoader.getStaticBitmap(image, contentPanel, "gui"), 0, wx.ALIGN_CENTER)
+            #box.Add(BitmapLoader.getStaticBitmap(image, contentPanel, "gui"), 0, wx.ALIGN_CENTER)
 
-            vbox = wx.BoxSizer(wx.VERTICAL)
+            vbox = wx.BoxSizer(wx.HORIZONTAL)
             box.Add(vbox, 1, wx.EXPAND)
 
-            vbox.Add(wx.StaticText(contentPanel, wx.ID_ANY, type.capitalize()), 0, wx.ALIGN_LEFT)
+            vbox.Add(wx.StaticText(contentPanel, wx.ID_ANY, "%s: " % type.capitalize()), 0, wx.ALIGN_LEFT)
 
             hbox = wx.BoxSizer(wx.HORIZONTAL)
             vbox.Add(hbox)
@@ -98,7 +98,7 @@ class PriceViewMinimal(StatsView):
         else:
             self.labelEMStatus.SetLabel("")
             self.labelPriceShip.SetLabel("0.0 ISK")
-            self.labelPriceFittings.SetLabel("0.0 ISK")
+            #self.labelPriceFittings.SetLabel("0.0 ISK")
             self.labelPriceTotal.SetLabel("0.0 ISK")
             self._cachedFittings = self._cachedShip = self._cachedTotal = 0
             self.panel.Layout()

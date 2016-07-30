@@ -45,17 +45,6 @@ class MiningYieldViewFull(StatsView):
 
         panel = "full"
 
-        miningYieldList = []
-        miningYieldList.append(["Lasers:", "100", " | ", "Drones:", "100", " | ", "Total:", "200"])
-        miningYieldList.append(["Targets:", "100", " | ", "Align Time:", "100", " | ", "Warp Speed:", "200"])
-        miningYieldList.append(["Drone Range:", "100", " | ", "Cargo:", "100", " | ", "Signature:", "200"])
-        miningSizer = formatTable(miningYieldList, 8, contentPanel)
-
-        #self.SetSizer(miningSizer)
-        #self.Layout()
-        contentSizer.Add(miningSizer, 0, wx.EXPAND, 0)
-
-
         sizerMiningYield = wx.FlexGridSizer(1, 4)
         sizerMiningYield.AddGrowableCol(1)
 
