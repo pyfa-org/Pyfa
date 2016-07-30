@@ -47,13 +47,19 @@ class capacitorViewMinimal(StatsView):
         # Capacitor capacity and time
         baseBox = wx.BoxSizer(wx.HORIZONTAL)
 
+        sizerCapacitor.Add(baseBox, 0, wx.ALIGN_LEFT)
+        #bitmap = BitmapLoader.getStaticBitmap("capacitorInfo_big", parent, "gui")
+        #tooltip = wx.ToolTip("Capacitor stability")
+        #bitmap.SetToolTip(tooltip)
+        #baseBox.Add(bitmap, 0, wx.ALIGN_CENTER)
+
         box = wx.BoxSizer(wx.VERTICAL)
         baseBox.Add(box, 0, wx.ALIGN_LEFT)
 
         hbox = wx.BoxSizer(wx.HORIZONTAL)
         box.Add(hbox, 0, wx.ALIGN_LEFT)
 
-        lbl = wx.StaticText(parent, wx.ID_ANY, "Lasts ")
+        lbl = wx.StaticText(parent, wx.ID_ANY, "Lasts: ")
         hbox.Add(lbl, 0, wx.ALIGN_LEFT | wx.LEFT, 3)
         setattr(self, "label%sCapacitorState" % panel.capitalize(), lbl)
 
@@ -64,11 +70,13 @@ class capacitorViewMinimal(StatsView):
         # Capacitor balance
         baseBox = wx.BoxSizer(wx.HORIZONTAL)
 
+        sizerCapacitor.Add(baseBox, 0, wx.ALIGN_CENTER_HORIZONTAL)
+
         # Delta (+GJ/s + -GJ/s)
         chargeSizer = wx.FlexGridSizer(2, 3)
         baseBox.Add(chargeSizer, 0, wx.ALIGN_CENTER)
 
-        chargeSizer.Add(wx.StaticText(parent, wx.ID_ANY, "Delta "), 0, wx.ALIGN_CENTER)
+        chargeSizer.Add(wx.StaticText(parent, wx.ID_ANY, "Delta: "), 0, wx.ALIGN_CENTER)
         lbl = wx.StaticText(parent, wx.ID_ANY, "0.0")
         setattr(self, "label%sCapacitorDelta" % panel.capitalize(), lbl)
         chargeSizer.Add(lbl, 0, wx.ALIGN_CENTER)
@@ -107,7 +115,7 @@ class capacitorViewMinimal(StatsView):
                 else:
                     t = "%ds" % capState
 
-            s = "Stable: " if capStable else "Lasts "
+            s = "Stable: " if capStable else "Lasts: "
 
         getattr(self, lblNameTime % panel).SetLabel(t)
         getattr(self, lblNameState % panel).SetLabel(s)

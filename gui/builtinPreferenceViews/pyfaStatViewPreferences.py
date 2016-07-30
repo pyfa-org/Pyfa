@@ -10,12 +10,12 @@ from service.crest import CrestModes
 from wx.lib.intctrl import IntCtrl
 
 class PFStatViewPref ( PreferenceView):
-    title = "Statistics Panel"
+    title = "Statistics Panel (Requires Restart)"
 
     def populatePanel( self, panel ):
-
-        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = service.settings.statViewSettings.getInstance()
+        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+        
         self.dirtySettings = False
         dlgWidth = panel.GetParent().GetParent().ClientSize.width
         mainSizer = wx.BoxSizer( wx.VERTICAL )
@@ -32,20 +32,20 @@ class PFStatViewPref ( PreferenceView):
 
         rbSizerRow1 = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.rbMode = wx.RadioBox(panel, -1, "Resources", wx.DefaultPosition, wx.DefaultSize, ['None', 'Minimal', 'Full'], 1, wx.RA_SPECIFY_COLS)
-        self.rbMode.SetSelection(self.settings.get('Resources'))
-        rbSizerRow1.Add(self.rbMode, 1, wx.TOP | wx.RIGHT, 5 )
-        self.rbMode.Bind(wx.EVT_RADIOBOX, self.OnModeChange)
+        self.rbResources = wx.RadioBox(panel, -1, "Resources", wx.DefaultPosition, wx.DefaultSize, ['None', 'Minimal', 'Full'], 1, wx.RA_SPECIFY_COLS)
+        self.rbResources.SetSelection(self.settings.get('resources'))
+        rbSizerRow1.Add(self.rbResources, 1, wx.TOP | wx.RIGHT, 5 )
+        self.rbResources.Bind(wx.EVT_RADIOBOX, self.OnResourcesChange)
 
-        self.rbServer = wx.RadioBox(panel, -1, "Resistances", wx.DefaultPosition, wx.DefaultSize, ['None', 'Minimal', 'Full'], 1, wx.RA_SPECIFY_COLS)
-        self.rbServer.SetSelection(self.settings.get('Resistances'))
-        rbSizerRow1.Add(self.rbServer, 1, wx.ALL, 5 )
-        self.rbServer.Bind(wx.EVT_RADIOBOX, self.OnServerChange)
+        self.rbResistances = wx.RadioBox(panel, -1, "Resistances", wx.DefaultPosition, wx.DefaultSize, ['None', 'Minimal', 'Full'], 1, wx.RA_SPECIFY_COLS)
+        self.rbResistances.SetSelection(self.settings.get('resistances'))
+        rbSizerRow1.Add(self.rbResistances, 1, wx.ALL, 5 )
+        self.rbResistances.Bind(wx.EVT_RADIOBOX, self.OnResistancesChange)
 
-        self.rbTankRecharge = wx.RadioBox(panel, -1, "Shield/Armor Regen", wx.DefaultPosition, wx.DefaultSize, ['None', 'Minimal', 'Full'], 1, wx.RA_SPECIFY_COLS)
-        self.rbTankRecharge.SetSelection(self.settings.get('TankRecharge'))
-        rbSizerRow1.Add(self.rbTankRecharge, 1, wx.ALL, 5 )
-        self.rbServer.Bind(wx.EVT_RADIOBOX, self.OnServerChange)
+        self.rbRecharge = wx.RadioBox(panel, -1, "Shield/Armor Regen", wx.DefaultPosition, wx.DefaultSize, ['None', 'Minimal', 'Full'], 1, wx.RA_SPECIFY_COLS)
+        self.rbRecharge.SetSelection(self.settings.get('recharge'))
+        rbSizerRow1.Add(self.rbRecharge, 1, wx.ALL, 5 )
+        self.rbRecharge.Bind(wx.EVT_RADIOBOX, self.OnRechargeChange)
 
         mainSizer.Add(rbSizerRow1, 1, wx.ALL|wx.EXPAND, 0)
 
@@ -55,20 +55,20 @@ class PFStatViewPref ( PreferenceView):
 
         rbSizerRow2 = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.rbMode = wx.RadioBox(panel, -1, "Firepower", wx.DefaultPosition, wx.DefaultSize, ['None', 'Minimal', 'Full'], 1, wx.RA_SPECIFY_COLS)
-        self.rbMode.SetSelection(self.settings.get('Firepower'))
-        rbSizerRow2.Add(self.rbMode, 1, wx.TOP | wx.RIGHT, 5 )
-        self.rbMode.Bind(wx.EVT_RADIOBOX, self.OnModeChange)
+        self.rbFirepower = wx.RadioBox(panel, -1, "Firepower", wx.DefaultPosition, wx.DefaultSize, ['None', 'Minimal', 'Full'], 1, wx.RA_SPECIFY_COLS)
+        self.rbFirepower.SetSelection(self.settings.get('firepower'))
+        rbSizerRow2.Add(self.rbFirepower, 1, wx.TOP | wx.RIGHT, 5 )
+        self.rbFirepower.Bind(wx.EVT_RADIOBOX, self.OnFirepowerChange)
 
-        self.rbServer = wx.RadioBox(panel, -1, "Capacitor", wx.DefaultPosition, wx.DefaultSize, ['None', 'Minimal', 'Full'], 1, wx.RA_SPECIFY_COLS)
-        self.rbServer.SetSelection(self.settings.get('Capacitor'))
-        rbSizerRow2.Add(self.rbServer, 1, wx.ALL, 5 )
-        self.rbServer.Bind(wx.EVT_RADIOBOX, self.OnServerChange)
+        self.rbCapacitor = wx.RadioBox(panel, -1, "Capacitor", wx.DefaultPosition, wx.DefaultSize, ['None', 'Minimal', 'Full'], 1, wx.RA_SPECIFY_COLS)
+        self.rbCapacitor.SetSelection(self.settings.get('capacitor'))
+        rbSizerRow2.Add(self.rbCapacitor, 1, wx.ALL, 5 )
+        self.rbCapacitor.Bind(wx.EVT_RADIOBOX, self.OnCapacitorChange)
 
-        self.rbTankRecharge = wx.RadioBox(panel, -1, "Misc", wx.DefaultPosition, wx.DefaultSize, ['None', 'Minimal', 'Full'], 1, wx.RA_SPECIFY_COLS)
-        self.rbTankRecharge.SetSelection(self.settings.get('Misc'))
-        rbSizerRow2.Add(self.rbTankRecharge, 1, wx.ALL, 5 )
-        self.rbServer.Bind(wx.EVT_RADIOBOX, self.OnServerChange)
+        self.rbMisc = wx.RadioBox(panel, -1, "Misc", wx.DefaultPosition, wx.DefaultSize, ['None', 'Minimal', 'Full'], 1, wx.RA_SPECIFY_COLS)
+        self.rbMisc.SetSelection(self.settings.get('targetingmisc'))
+        rbSizerRow2.Add(self.rbMisc, 1, wx.ALL, 5 )
+        self.rbMisc.Bind(wx.EVT_RADIOBOX, self.OnTargetingMiscChange)
 
         mainSizer.Add(rbSizerRow2, 1, wx.ALL|wx.EXPAND, 0)
 
@@ -78,66 +78,55 @@ class PFStatViewPref ( PreferenceView):
 
         rbSizerRow3 = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.rbMode = wx.RadioBox(panel, -1, "Price", wx.DefaultPosition, wx.DefaultSize, ['None', 'Minimal', 'Full'], 1, wx.RA_SPECIFY_COLS)
-        self.rbMode.SetSelection(self.settings.get('Price'))
-        rbSizerRow3.Add(self.rbMode, 1, wx.TOP | wx.RIGHT, 5 )
-        self.rbMode.Bind(wx.EVT_RADIOBOX, self.OnModeChange)
+        self.rbPrice = wx.RadioBox(panel, -1, "Price", wx.DefaultPosition, wx.DefaultSize, ['None', 'Minimal', 'Full'], 1, wx.RA_SPECIFY_COLS)
+        self.rbPrice.SetSelection(self.settings.get('price'))
+        rbSizerRow3.Add(self.rbPrice, 1, wx.TOP | wx.RIGHT, 5 )
+        self.rbPrice.Bind(wx.EVT_RADIOBOX, self.OnPriceChange)
 
-        self.rbServer = wx.RadioBox(panel, -1, "Mining", wx.DefaultPosition, wx.DefaultSize, ['None', 'Minimal', 'Full'], 1, wx.RA_SPECIFY_COLS)
-        self.rbServer.SetSelection(self.settings.get('Mining'))
-        rbSizerRow3.Add(self.rbServer, 1, wx.ALL, 5 )
-        self.rbServer.Bind(wx.EVT_RADIOBOX, self.OnServerChange)
+        self.rbMining = wx.RadioBox(panel, -1, "Mining", wx.DefaultPosition, wx.DefaultSize, ['None', 'Minimal', 'Full'], 1, wx.RA_SPECIFY_COLS)
+        self.rbMining.SetSelection(self.settings.get('miningyield'))
+        rbSizerRow3.Add(self.rbMining, 1, wx.ALL, 5 )
+        self.rbMining.Bind(wx.EVT_RADIOBOX, self.OnMiningYieldChange)
 
+        '''
         self.rbTankRecharge = wx.RadioBox(panel, -1, "???", wx.DefaultPosition, wx.DefaultSize, ['None', 'Minimal', 'Full'], 1, wx.RA_SPECIFY_COLS)
-        self.rbTankRecharge.SetSelection(self.settings.get('Misc'))
+        self.rbTankRecharge.SetSelection(self.settings.get('Other'))
         rbSizerRow3.Add(self.rbTankRecharge, 1, wx.ALL, 5 )
-        self.rbServer.Bind(wx.EVT_RADIOBOX, self.OnServerChange)
+        self.rbServer.Bind(wx.EVT_RADIOBOX, self.OnSettingChange)
+        '''
 
         mainSizer.Add(rbSizerRow3, 1, wx.ALL|wx.EXPAND, 0)
-
-
-        self.btnApply = wx.Button( panel, wx.ID_ANY, u"Save Client Settings", wx.DefaultPosition, wx.DefaultSize, 0 )
-        self.btnApply.Bind(wx.EVT_BUTTON, self.OnBtnApply)
-
-        #mainSizer.Add( fgAddrSizer, 0, wx.EXPAND, 5)
-        mainSizer.Add( self.btnApply, 0, wx.ALIGN_RIGHT, 5)
-
-        #self.ToggleProxySettings(self.settings.get('mode'))
-
 
         panel.SetSizer( mainSizer )
         panel.Layout()
 
-    def OnTimeoutChange(self, event):
-        self.settings.set('timeout', event.GetEventObject().GetValue())
+    #serviceStatViewDefaultSettings = {"resources": 2, "resistances": 2, "recharge": 2, "firepower": 2, "capacitor": 1,
+    #                                 "targetingmisc": 2, "price": 2, "miningyield": 0}
 
-    def OnModeChange(self, event):
-        self.settings.set('mode', event.GetInt())
-        self.ToggleProxySettings(self.settings.get('mode'))
-        service.Crest.restartService()
+    def OnResourcesChange(self, event):
+        self.settings.set('resources', event.GetInt())
 
-    def OnServerChange(self, event):
-        self.settings.set('server', event.GetInt())
-        service.Crest.restartService()
+    def OnResistancesChange(self, event):
+        self.settings.set('resistances', event.GetInt())
+    
+    def OnRechargeChange(self, event):
+        self.settings.set('recharge', event.GetInt())
 
-    def OnBtnApply(self, event):
-        self.settings.set('clientID', self.inputClientID.GetValue().strip())
-        self.settings.set('clientSecret', self.inputClientSecret.GetValue().strip())
-        sCrest = service.Crest.getInstance()
-        sCrest.delAllCharacters()
+    def OnFirepowerChange(self, event):
+        self.settings.set('firepower', event.GetInt())
 
-    def ToggleProxySettings(self, mode):
-        if mode:
-            self.stSetID.Enable()
-            self.inputClientID.Enable()
-            self.stSetSecret.Enable()
-            self.inputClientSecret.Enable()
-        else:
-            self.stSetID.Disable()
-            self.inputClientID.Disable()
-            self.stSetSecret.Disable()
-            self.inputClientSecret.Disable()
+    def OnCapacitorChange(self, event):
+        self.settings.set('capacitor', event.GetInt())
 
+    def OnTargetingMiscChange(self, event):
+        self.settings.set('targetingmisc', event.GetInt())
+
+    def OnPriceChange(self, event):
+        self.settings.set('price', event.GetInt())
+
+    def OnMiningYieldChange(self, event):
+        self.settings.set('miningyield', event.GetInt())
+        
     def getImage(self):
         return BitmapLoader.getBitmap("eve", "gui")
 

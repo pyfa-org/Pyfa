@@ -69,7 +69,7 @@ class CapacitorViewFull(StatsView):
         hbox = wx.BoxSizer(wx.HORIZONTAL)
         box.Add(hbox, 0, wx.ALIGN_LEFT)
 
-        lbl = wx.StaticText(parent, wx.ID_ANY, "Lasts ")
+        lbl = wx.StaticText(parent, wx.ID_ANY, "Lasts: ")
         hbox.Add(lbl, 0, wx.ALIGN_LEFT | wx.LEFT, 3)
         setattr(self, "label%sCapacitorState" % panel.capitalize(), lbl)
 
@@ -139,7 +139,7 @@ class CapacitorViewFull(StatsView):
                 else:
                     t = "%ds" % capState
 
-            s = "Stable: " if capStable else "Lasts "
+            s = "Stable: " if capStable else "Lasts: "
 
         getattr(self, lblNameTime % panel).SetLabel(t)
         getattr(self, lblNameState % panel).SetLabel(s)

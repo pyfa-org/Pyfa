@@ -24,8 +24,8 @@ from gui.bitmapLoader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 import service
 
-class PriceViewFull(StatsView):
-    name = "priceViewFull"
+class PriceViewMinimal(StatsView):
+    name = "priceViewMinimal"
     def __init__(self, parent):
         StatsView.__init__(self)
         self.parent = parent
@@ -123,4 +123,4 @@ class PriceViewFull(StatsView):
             self._cachedTotal = shipPrice + modPrice
         self.panel.Layout()
 
-PriceViewFull.register()
+PriceViewMinimal.register()
