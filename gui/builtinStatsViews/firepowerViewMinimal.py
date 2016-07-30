@@ -61,17 +61,15 @@ class FirepowerViewMinimal(StatsView):
             baseBox = wx.BoxSizer(wx.HORIZONTAL)
             sizerFirepower.Add(baseBox, 1, wx.ALIGN_LEFT if counter == 0 else wx.ALIGN_CENTER_HORIZONTAL)
 
-            baseBox.Add(BitmapLoader.getStaticBitmap("%s_big" % image, parent, "gui"), 0, wx.ALIGN_CENTER)
-
-            box = wx.BoxSizer(wx.VERTICAL)
+            box = wx.BoxSizer(wx.HORIZONTAL)
             baseBox.Add(box, 0, wx.ALIGN_CENTER)
 
-            box.Add(wx.StaticText(parent, wx.ID_ANY, damageType.capitalize()), 0, wx.ALIGN_LEFT)
+            box.Add(wx.StaticText(parent, wx.ID_ANY, "%s: " % damageType.capitalize()), 0, wx.ALIGN_LEFT)
 
             hbox = wx.BoxSizer(wx.HORIZONTAL)
             box.Add(hbox, 1, wx.ALIGN_CENTER)
 
-            lbl = wx.StaticText(parent, wx.ID_ANY, "0.0 DPS")
+            lbl = wx.StaticText(parent, wx.ID_ANY, "0.0")
             setattr(self, "label%sDps%s" % (panel.capitalize(), damageType.capitalize()), lbl)
 
             hbox.Add(lbl, 0, wx.ALIGN_CENTER)
@@ -82,18 +80,9 @@ class FirepowerViewMinimal(StatsView):
         baseBox = wx.BoxSizer(wx.HORIZONTAL)
         targetSizer.Add(baseBox, 0, wx.ALIGN_RIGHT)
 
-        baseBox.Add(BitmapLoader.getStaticBitmap("volley_big", parent, "gui"), 0, wx.ALIGN_CENTER)
-
         gridS = wx.GridSizer(2,2,0,0)
 
         baseBox.Add(gridS, 0)
-
-        lbl = wx.StaticText(parent, wx.ID_ANY, "0.0")
-        setattr(self, "label%sVolleyTotal" % panel.capitalize(), lbl)
-        gridS.Add(wx.StaticText(parent, wx.ID_ANY, " Volley: "), 0, wx.ALL | wx.ALIGN_RIGHT)
-        gridS.Add(lbl, 0, wx.ALIGN_LEFT)
-
-        self._cachedValues.append(0)
 
         lbl = wx.StaticText(parent, wx.ID_ANY, "0.0")
         setattr(self, "label%sDpsTotal" % panel.capitalize(), lbl)
@@ -119,9 +108,8 @@ class FirepowerViewMinimal(StatsView):
         else:
             self.stEff.Hide()
 
-        stats = (("labelFullDpsWeapon", lambda: fit.weaponDPS, 3, 0, 0, "%s DPS",None),
-                 ("labelFullDpsDrone", lambda: fit.droneDPS, 3, 0, 0, "%s DPS", None),
-                 ("labelFullVolleyTotal", lambda: fit.totalVolley, 3, 0, 0, "%s", "Volley: %.1f"),
+        stats = (("labelFullDpsWeapon", lambda: fit.weaponDPS, 3, 0, 0, "%s",None),
+                 ("labelFullDpsDrone", lambda: fit.droneDPS, 3, 0, 0, "%s", None),
                  ("labelFullDpsTotal", lambda: fit.totalDPS, 3, 0, 0, "%s", None))
         # See GH issue #
         #if fit is not None and fit.totalYield > 0:
