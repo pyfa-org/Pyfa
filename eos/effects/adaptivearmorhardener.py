@@ -87,7 +87,7 @@ def handler(fit, module, context):
         
         # Average the RAH profiles that it loops through
         loopCycles = cycleList[loopStart:]
-		numCycles = len(loopCycles)
+        numCycles = len(loopCycles)
         average = [0, 0, 0, 0]
         for cycle in loopCycles:
             for i in range(4):
