@@ -192,13 +192,15 @@ class ItemView(d.Display):
             return
 
         sMkt = service.Market.getInstance()
-        sMkt.searchItems(search, self.populateSearch, False)
+        # TODO
+        # For some reason setting the filter off breaks the search.
+        # sMkt.searchItems(search, self.populateSearch, False)
+        sMkt.searchItems(search, self.populateSearch)
 
     def populateSearch(self, items):
         logger.debug('Populating Search')
         self.items = list(items)
         self.update(items)
-
 
 class AttributeGrid(wxpg.PropertyGrid):
 
