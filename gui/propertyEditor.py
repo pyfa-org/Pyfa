@@ -24,6 +24,7 @@ logger = logging.getLogger(__name__)
 class AttributeEditor( wx.Frame ):
 
     def __init__( self, parent ):
+        logger.debug('Initialize propertyEditor.py')
         wx.Frame.__init__(self, parent, wx.ID_ANY, title="Attribute Editor", pos=wx.DefaultPosition,
                             size=wx.Size(650, 600), style=wx.DEFAULT_FRAME_STYLE|wx.FRAME_FLOAT_ON_PARENT|wx.TAB_TRAVERSAL)
 
@@ -180,7 +181,7 @@ class ItemView(d.Display):
             self.update(self.things)
 
     def scheduleSearch(self, event=None):
-        sMkt = service.Market.getInstance()
+        logger.debug('Initiating search')
 
         search = self.searchBox.GetLineText(0)
         # Make sure we do not count wildcard as search symbol
@@ -190,12 +191,16 @@ class ItemView(d.Display):
             self.clearSearch()
             return
 
-        sMkt.searchItems(search, self.populateSearch, False)
+        sMkt = service.Market.getInstance()
+        # TODO
+        # For some reason setting the filter off breaks the search.
+        # sMkt.searchItems(search, self.populateSearch, False)
+        sMkt.searchItems(search, self.populateSearch)
 
     def populateSearch(self, items):
+        logger.debug('Populating Search')
         self.items = list(items)
         self.update(items)
-
 
 class AttributeGrid(wxpg.PropertyGrid):
 
