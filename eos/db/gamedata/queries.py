@@ -194,8 +194,8 @@ def searchItems(nameLike, where=None, join=None, eager=None):
     items = gamedata_session.query(Item).options(*processEager(eager)).join(*join)
     for token in nameLike.split(' '):
         token_safe = u"%{0}%".format(sqlizeString(token))
-        #items = items.filter(and_(Item.name.like(token_safe, escape="\\"), where))
-        items = items.filter(processWhere(Item.name.like(token_safe, escape="\\"), where))
+        items = items.filter(and_(Item.name.like(token_safe), where))
+        #items = items.filter(processWhere(Item.name.like(token_safe, escape="\\"), where))
     items = items.limit(100).all()
     return items
 
