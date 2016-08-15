@@ -24,6 +24,7 @@ from itertools import chain
 from eos.effectHandlerHelpers import HandledItem, HandledImplantBoosterList
 import eos.db
 import eos
+import eos.types
 import logging
 
 logger = logging.getLogger(__name__)
@@ -329,7 +330,7 @@ class Skill(HandledItem):
             return
 
         for effect in item.effects.itervalues():
-            if effect.runTime == runTime and effect.isType("passive"):
+            if effect.runTime == runTime and effect.isType("passive") and (not fit.isStructure or effect.isType("structure")):
                 try:
                     effect.handler(fit, self, ("skill",))
                 except AttributeError:
