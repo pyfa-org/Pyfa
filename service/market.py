@@ -689,7 +689,7 @@ class Market():
 
     def searchShips(self, name):
         """Find ships according to given text pattern"""
-        filter = eos.types.Category.name.in_(["Ship"])
+        filter = eos.types.Category.name.in_(["Ship", "Structure"])
         results = eos.db.searchItems(name, where=filter,
                                      join=(eos.types.Item.group, eos.types.Group.category),
                                      eager=("icon", "group.category", "metaGroup", "metaGroup.parent"))
