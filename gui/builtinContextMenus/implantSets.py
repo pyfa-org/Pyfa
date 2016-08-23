@@ -12,7 +12,7 @@ class ImplantSets(ContextMenu):
         return srcContext in ("implantView", "implantEditor")
 
     def getText(self, itmContext, selection):
-        return "Add Implant Set"
+        return "Fit Implant Set"
 
     def getSubMenu(self, context, selection, rootMenu, i, pitem):
         """
@@ -59,6 +59,7 @@ class ImplantSets(ContextMenu):
 
         if self.context == "implantEditor":
             # we are calling from character editor, the implant source is different
+            # todo this part seems to be doesn't work (not my fault!)
             sChar = service.Character.getInstance()
             charID = self.selection.getActiveCharacter()
 
