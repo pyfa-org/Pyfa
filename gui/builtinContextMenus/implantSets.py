@@ -69,6 +69,11 @@ class ImplantSets(ContextMenu):
         else:
             sFit = service.Fit.getInstance()
             fitID = self.mainFrame.getActiveFit()
+
+            # at first remove all implants
+            sFit.removeAllImplants(fitID)
+
+            # and add new implants from set
             for implant in set.implants:
                 sFit.addImplant(fitID, implant.item.ID, recalc=implant == set.implants[-1])
 

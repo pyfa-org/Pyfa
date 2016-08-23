@@ -304,6 +304,19 @@ class Fit(object):
         self.recalc(fit)
         return True
 
+    def removeAllImplants(self, fitID):
+        if fitID is None:
+            return False
+
+        fit = eos.db.getFit(fitID)
+        implants = fit.implants if fit is not None else None
+        if not implants:
+            return False
+        for _ in xrange(len(implants)):
+            self.removeImplant(fitID, 0)
+        self.recalc(fit)
+        return True
+
     def addBooster(self, fitID, itemID):
         if fitID is None:
             return False
