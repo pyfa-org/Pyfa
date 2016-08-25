@@ -288,8 +288,12 @@ class Item(EqBase):
     @property
     def race(self):
         if self.__race is None:
+
             try:
-                self.__race = self.factionMap[self.factionID]
+                if self.category.categoryName == 'Structure':
+                    self.__race = "upwell"
+                else:
+                    self.__race = self.factionMap[self.factionID]
             # Some ships (like few limited issue ships) do not have factionID set,
             # thus keep old mechanism for now
             except KeyError:
