@@ -1,3 +1,3 @@
 type = "passive"
 def handler(fit, src, context):
-    fit.ship.increaseItemAttr("maxLockedTargets", src.getModifiedItemAttr("structureRigMaxTargetBonus"))
+    fit.ship.filteredItemIncrease("maxLockedTargets", src.getModifiedItemAttr("structureRigMaxTargetBonus"))

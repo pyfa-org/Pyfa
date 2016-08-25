@@ -1,4 +1,4 @@
 type = "passive"
 def handler(fit, src, context):
-    fit.ship.boostItemAttr("scanResolution", src.getModifiedItemAttr("structureRigScanResBonus"),
+    fit.ship.filteredItemBoost("scanResolution", src.getModifiedItemAttr("structureRigScanResBonus"),
                             stackingPenalties=True)
