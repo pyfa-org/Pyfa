@@ -22,7 +22,7 @@ There are two different distributives for OS X: `-mac` and `-mac-deprecated`.
 
 There is also a [Homebrew](http://brew.sh) option for installing pyfa on OS X. Please note this is maintained by a third-party and is not tested by pyfa developers. Simply fire up in terminal:
 ```
-$ brew cask install pyfa
+$ brew install Caskroom/cask/pyfa
 ```
 
 ### Linux Distro-specific Packages
