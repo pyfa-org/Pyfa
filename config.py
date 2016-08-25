@@ -18,10 +18,10 @@ debug = False
 saveInRoot = False
 
 # Version data
-version = "1.22.3"
-tag = "git"
-expansionName = "Singularity"
-expansionVersion = "1053072"
+version = "1.23.0"
+tag = "Stable"
+expansionName = "YC 118.7"
+expansionVersion = "1.4"
 evemonMinVersion = "4081"
 
 pyfaPath = None
