@@ -24,7 +24,7 @@ from eos.db import saveddata_meta
 from eos.types import Override
 
 overrides_table = Table("overrides", saveddata_meta,
-                     Column("itemID", Integer, primary_key=True,  index = True),
+                     Column("itemID", Integer, primary_key=True, index = True),
                      Column("attrID", Integer, primary_key=True, index = True),
                      Column("value", Float, nullable = False))
 

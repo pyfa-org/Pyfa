@@ -707,7 +707,11 @@ class Market():
         overrides = eos.db.getAllOverrides()
         items = set()
         for x in overrides:
-            items.add(x.item)
+            if (x.item is None):
+                eos.db.saveddata_session.delete(x)
+                eos.db.commit()
+            else:
+                items.add(x.item)
         return list(items)
 
     def directAttrRequest(self, items, attribs):
