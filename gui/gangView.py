@@ -368,7 +368,7 @@ class GangView ( ScrolledPanel ):
             sFit = service.Fit.getInstance()
             fit = sFit.getFit(self.mainFrame.getActiveFit())
 
-            if fit and not fit.isStructuree:
+            if fit and not fit.isStructure:
                 self.draggedFitID = fitID
 
                 pos = wx.GetMousePosition()
