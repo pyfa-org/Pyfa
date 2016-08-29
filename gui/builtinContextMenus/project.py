@@ -3,6 +3,7 @@ import gui.mainFrame
 import service
 import gui.globalEvents as GE
 import wx
+import eos.db
 
 class Project(ContextMenu):
     def __init__(self):
@@ -10,6 +11,13 @@ class Project(ContextMenu):
 
     def display(self, srcContext, selection):
         if srcContext not in ("marketItemGroup", "marketItemMisc") or self.mainFrame.getActiveFit() is None:
+            return False
+
+        sFit = service.Fit.getInstance()
+        fitID = self.mainFrame.getActiveFit()
+        fit = sFit.getFit(fitID)
+
+        if fit.isStructure:
             return False
 
         item = selection[0]
