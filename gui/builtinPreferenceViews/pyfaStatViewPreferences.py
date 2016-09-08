@@ -10,7 +10,7 @@ from service.crest import CrestModes
 from wx.lib.intctrl import IntCtrl
 
 class PFStatViewPref ( PreferenceView):
-    title = "Statistics Panel (Requires Restart)"
+    title = "Statistics Panel"
 
     def populatePanel( self, panel ):
         self.settings = service.settings.statViewSettings.getInstance()
@@ -26,6 +26,10 @@ class PFStatViewPref ( PreferenceView):
 
         mainSizer.Add( self.stTitle, 0, wx.ALL, 5 )
 
+        self.stInfo = wx.StaticText( panel, wx.ID_ANY, u"Requires restart.", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.stInfo.Wrap(dlgWidth - 50)
+        mainSizer.Add( self.stInfo, 0, wx.EXPAND|wx.TOP|wx.BOTTOM, 5 )
+
         # Row 1
         self.m_staticline1 = wx.StaticLine( panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
         mainSizer.Add( self.m_staticline1, 0, wx.EXPAND|wx.TOP|wx.BOTTOM, 5 )
@@ -37,12 +41,12 @@ class PFStatViewPref ( PreferenceView):
         rbSizerRow1.Add(self.rbResources, 1, wx.TOP | wx.RIGHT, 5 )
         self.rbResources.Bind(wx.EVT_RADIOBOX, self.OnResourcesChange)
 
-        self.rbResistances = wx.RadioBox(panel, -1, "Resistances", wx.DefaultPosition, wx.DefaultSize, ['None', 'Minimal', 'Full'], 1, wx.RA_SPECIFY_COLS)
+        self.rbResistances = wx.RadioBox(panel, -1, "Resistances", wx.DefaultPosition, wx.DefaultSize, ['None', 'Full'], 1, wx.RA_SPECIFY_COLS)
         self.rbResistances.SetSelection(self.settings.get('resistances'))
         rbSizerRow1.Add(self.rbResistances, 1, wx.ALL, 5 )
         self.rbResistances.Bind(wx.EVT_RADIOBOX, self.OnResistancesChange)
 
-        self.rbRecharge = wx.RadioBox(panel, -1, "Shield/Armor Regen", wx.DefaultPosition, wx.DefaultSize, ['None', 'Minimal', 'Full'], 1, wx.RA_SPECIFY_COLS)
+        self.rbRecharge = wx.RadioBox(panel, -1, "Shield/Armor Regen", wx.DefaultPosition, wx.DefaultSize, ['None', 'Full'], 1, wx.RA_SPECIFY_COLS)
         self.rbRecharge.SetSelection(self.settings.get('recharge'))
         rbSizerRow1.Add(self.rbRecharge, 1, wx.ALL, 5 )
         self.rbRecharge.Bind(wx.EVT_RADIOBOX, self.OnRechargeChange)

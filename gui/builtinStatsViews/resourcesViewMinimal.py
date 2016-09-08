@@ -52,7 +52,7 @@ class ResourcesViewMinimal(StatsView):
 
         sizer = wx.BoxSizer(wx.HORIZONTAL)
         root.Add(sizer, 0, wx.EXPAND)
-        root.Add(wx.StaticLine(contentPanel, wx.ID_ANY, style=wx.HORIZONTAL), 0, wx.EXPAND)
+        #root.Add(wx.StaticLine(contentPanel, wx.ID_ANY, style=wx.HORIZONTAL), 0, wx.EXPAND)
 
         sizerResources = wx.BoxSizer(wx.HORIZONTAL)
         root.Add(sizerResources, 1, wx.EXPAND, 0)
