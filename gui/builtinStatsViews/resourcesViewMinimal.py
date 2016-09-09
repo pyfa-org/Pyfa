@@ -89,7 +89,18 @@ class ResourcesViewMinimal(StatsView):
             attr = "label%sTotal%s%s" % (panel.capitalize(), type.capitalize(), suffix[type].capitalize())
             setattr(self, attr, lbl)
             box.Add(lbl, 0, wx.ALIGN_CENTER)
+
+
+            if type in ("cpu","pg"):
+                lbl = wx.StaticText(parent, wx.ID_ANY, "0")
+                box.Add(wx.StaticText(parent, wx.ID_ANY, " ("), 0, wx.ALIGN_CENTER)
+                attr = "label%sPercent%s%s" % (panel.capitalize(), type.capitalize(), suffix[type].capitalize())
+                setattr(self, attr, lbl)
+                box.Add(lbl, 0, wx.ALIGN_CENTER)
+                box.Add(wx.StaticText(parent, wx.ID_ANY, "%)"), 0, wx.ALIGN_CENTER)
+
             setattr(self, "boxSizer{}".format(type.capitalize()), box)
+
 
             # Hack - We add a spacer after each thing, but we are always hiding something. The spacer is stil there.
             # This way, we only have one space after the drones/fighters
@@ -106,6 +117,8 @@ class ResourcesViewMinimal(StatsView):
                     ("label%sUsedCpuTf", lambda: fit.cpuUsed, 0, 0, 0),
                     ("label%sTotalPgMw", lambda: fit.ship.getModifiedItemAttr("powerOutput"), 0, 0, 0),
                     ("label%sTotalCpuTf", lambda: fit.ship.getModifiedItemAttr("cpuOutput"), 0, 0, 0),
+                    ("label%sPercentPgMw", lambda: (fit.pgUsed/fit.ship.getModifiedItemAttr("powerOutput"))*100, 0, 0, 0),
+                    ("label%sPercentCpuTf", lambda: (fit.cpuUsed/fit.ship.getModifiedItemAttr("cpuOutput"))*100, 0, 0, 0),
                  )
         panel = "Full"
 
@@ -122,6 +135,10 @@ class ResourcesViewMinimal(StatsView):
                 totalCpuTf = value
                 labelTCPU = label
 
+            if labelName % panel == "label%sPercentCpuTf" % panel:
+                percentCpuTf = value
+                labelPCPU = label
+
             if labelName % panel == "label%sUsedPgMw" % panel:
                 usedPgMw = value
                 labelUPG = label
@@ -129,6 +146,10 @@ class ResourcesViewMinimal(StatsView):
             if labelName % panel == "label%sTotalPgMw" % panel:
                 totalPgMw = value
                 labelTPG = label
+
+            if labelName % panel == "label%sPercentPgMw" % panel:
+                percentPgMw = value
+                labelPPG = label
 
             if labelName % panel == "label%sUsedCalibrationPoints" % panel:
                 usedCalibrationPoints = value
@@ -165,8 +186,10 @@ class ResourcesViewMinimal(StatsView):
 
         labelUCPU.SetForegroundColour(colorCPU)
         labelTCPU.SetForegroundColour(colorCPU)
+        labelPCPU.SetForegroundColour(colorCPU)
         labelUPG.SetForegroundColour(colorPG)
         labelTPG.SetForegroundColour(colorPG)
+        labelPPG.SetForegroundColour(colorPG)
         labelUCP.SetForegroundColour(colorC)
         labelTCP.SetForegroundColour(colorC)
 
