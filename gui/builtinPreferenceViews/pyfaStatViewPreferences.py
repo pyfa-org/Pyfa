@@ -26,7 +26,7 @@ class PFStatViewPref ( PreferenceView):
 
         mainSizer.Add( self.stTitle, 0, wx.ALL, 5 )
 
-        self.stInfo = wx.StaticText( panel, wx.ID_ANY, u"Requires restart.", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.stInfo = wx.StaticText( panel, wx.ID_ANY, u"Changes require restart of Pyfa to take effect.", wx.DefaultPosition, wx.DefaultSize, 0 )
         self.stInfo.Wrap(dlgWidth - 50)
         mainSizer.Add( self.stInfo, 0, wx.EXPAND|wx.TOP|wx.BOTTOM, 5 )
 
@@ -41,12 +41,16 @@ class PFStatViewPref ( PreferenceView):
         rbSizerRow1.Add(self.rbResources, 1, wx.TOP | wx.RIGHT, 5 )
         self.rbResources.Bind(wx.EVT_RADIOBOX, self.OnResourcesChange)
 
-        self.rbResistances = wx.RadioBox(panel, -1, "Resistances", wx.DefaultPosition, wx.DefaultSize, ['None', 'Full'], 1, wx.RA_SPECIFY_COLS)
+        self.rbResistances = wx.RadioBox(panel, -1, "Resistances", wx.DefaultPosition, wx.DefaultSize, ['None', 'Minimal', 'Full'], 1, wx.RA_SPECIFY_COLS)
+        #Disable minimal as we don't have a view for this yet
+        self.rbResistances.EnableItem(1, False)
         self.rbResistances.SetSelection(self.settings.get('resistances'))
         rbSizerRow1.Add(self.rbResistances, 1, wx.ALL, 5 )
         self.rbResistances.Bind(wx.EVT_RADIOBOX, self.OnResistancesChange)
 
-        self.rbRecharge = wx.RadioBox(panel, -1, "Shield/Armor Regen", wx.DefaultPosition, wx.DefaultSize, ['None', 'Full'], 1, wx.RA_SPECIFY_COLS)
+        self.rbRecharge = wx.RadioBox(panel, -1, "Shield/Armor Regen", wx.DefaultPosition, wx.DefaultSize, ['None', 'Minimal', 'Full'], 1, wx.RA_SPECIFY_COLS)
+        # Disable minimal as we don't have a view for this yet
+        self.rbRecharge.EnableItem(1, False)
         self.rbRecharge.SetSelection(self.settings.get('recharge'))
         rbSizerRow1.Add(self.rbRecharge, 1, wx.ALL, 5 )
         self.rbRecharge.Bind(wx.EVT_RADIOBOX, self.OnRechargeChange)
@@ -70,6 +74,8 @@ class PFStatViewPref ( PreferenceView):
         self.rbCapacitor.Bind(wx.EVT_RADIOBOX, self.OnCapacitorChange)
 
         self.rbMisc = wx.RadioBox(panel, -1, "Misc", wx.DefaultPosition, wx.DefaultSize, ['None', 'Minimal', 'Full'], 1, wx.RA_SPECIFY_COLS)
+        # Disable full as we don't have a view for this yet
+        self.rbMisc.EnableItem(2, False)
         self.rbMisc.SetSelection(self.settings.get('targetingmisc'))
         rbSizerRow2.Add(self.rbMisc, 1, wx.ALL, 5 )
         self.rbMisc.Bind(wx.EVT_RADIOBOX, self.OnTargetingMiscChange)

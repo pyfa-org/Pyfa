@@ -103,12 +103,15 @@ class FirepowerViewFull(StatsView):
 
         gridS.Add(lbl, 0, wx.ALIGN_LEFT)
 
-        image = BitmapLoader.getBitmap("mining_small", "gui")
+        image = BitmapLoader.getBitmap("turret_small", "gui")
         self.miningyield = wx.BitmapButton(contentPanel, -1, image)
         self.miningyield.SetToolTip(wx.ToolTip("Click to choose target resist profile"))
         #Need to point to the context menu
         #self.miningyield.Bind(wx.EVT_BUTTON, self.switchToMiningYieldView)
         sizerFirepower.Add(self.miningyield, 0, wx.ALIGN_LEFT)
+
+        #self.btnApply = wx.Button( panel, wx.ID_ANY, u"Save Client Settings", wx.DefaultPosition, wx.DefaultSize, 0 )
+        #self.btnApply.Bind(wx.EVT_BUTTON, self.OnBtnApply)
 
         self._cachedValues.append(0)
 
