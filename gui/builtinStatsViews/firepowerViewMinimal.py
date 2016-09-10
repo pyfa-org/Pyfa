@@ -110,8 +110,8 @@ class FirepowerViewMinimal(StatsView):
         viewName = self.name
 
         menu = ContextMenu.getMenu(None, (viewName,))
-        if menu is not None:
-            contentPanel.PopupMenu(menu)
+        #if menu is not None:
+        #    contentPanel.PopupMenu(menu)
 
         test = 1
         #event.Skip()
