@@ -30,7 +30,7 @@ cursor = db.cursor()
 RENDER_SIZE = (32, 32)
 
 
-query_ships = 'select it.typeID from invtypes as it inner join invgroups as ig on it.groupID = ig.groupID where ig.categoryID = 6'
+query_ships = 'select it.typeID from invtypes as it inner join invgroups as ig on it.groupID = ig.groupID where ig.categoryID in (6, 65)'
 
 
 needed = set()

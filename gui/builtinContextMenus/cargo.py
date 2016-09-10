@@ -11,8 +11,12 @@ class Cargo(ContextMenu):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     def display(self, srcContext, selection):
+        sFit = service.Fit.getInstance()
+        fitID = self.mainFrame.getActiveFit()
+
+        fit = sFit.getFit(fitID)
         # Make sure context menu registers in the correct view
-        if srcContext not in ("marketItemGroup", "marketItemMisc") or self.mainFrame.getActiveFit() is None:
+        if srcContext not in ("marketItemGroup", "marketItemMisc") or not fit or fit.isStructure:
             return False
         return True
 

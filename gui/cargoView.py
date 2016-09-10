@@ -125,15 +125,17 @@ class CargoView(d.Display):
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
 
     def fitChanged(self, event):
+        sFit = service.Fit.getInstance()
+        fit = sFit.getFit(event.fitID)
+
+        self.Parent.Parent.DisablePage(self, not fit or fit.isStructure)
+
         #Clear list and get out if current fitId is None
         if event.fitID is None and self.lastFitId is not None:
             self.DeleteAllItems()
             self.lastFitId = None
             event.Skip()
             return
-
-        sFit = service.Fit.getInstance()
-        fit = sFit.getFit(event.fitID)
 
         self.original = fit.cargo if fit is not None else None
         self.cargo = stuff = fit.cargo if fit is not None else None

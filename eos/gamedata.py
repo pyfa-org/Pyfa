@@ -89,7 +89,7 @@ class Effect(EqBase):
         The type of the effect, automaticly fetched from effects/<effectName>.py if the file exists.
 
         Valid values are:
-        "passive", "active", "projected", "gang"
+        "passive", "active", "projected", "gang", "structure"
 
         Each gives valuable information to eos about what type the module having
         the effect is. passive vs active gives eos clues about wether to module
@@ -288,8 +288,12 @@ class Item(EqBase):
     @property
     def race(self):
         if self.__race is None:
+
             try:
-                self.__race = self.factionMap[self.factionID]
+                if self.category.categoryName == 'Structure':
+                    self.__race = "upwell"
+                else:
+                    self.__race = self.factionMap[self.factionID]
             # Some ships (like few limited issue ships) do not have factionID set,
             # thus keep old mechanism for now
             except KeyError:

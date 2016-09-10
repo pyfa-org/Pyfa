@@ -227,6 +227,18 @@ class PFNotebook(wx.Panel):
         self.activePage = tabWnd
         self.ShowActive(True)
 
+    def DisablePage(self, page, toggle):
+        idx = self.GetPageIndex(page)
+
+        if toggle and page == self.activePage:
+            try:
+                # Set page to the first non-disabled page
+                self.SetSelection(next(i for i, _ in enumerate(self.pages) if not self.tabsContainer.tabs[i].disabled))
+            except StopIteration, ex:
+                self.SetSelection(0)
+
+        self.tabsContainer.DisableTab(idx, toggle)
+
     def SetSelection(self, page):
         oldsel = self.GetSelection()
         if oldsel != page:
@@ -354,6 +366,7 @@ class PFTabRenderer:
 
         self.inclination = inclination
         self.text = text
+        self.disabled = False
         self.tabSize = (width, height)
         self.closeButton = closeButton
         self.selected = False
@@ -548,7 +561,7 @@ class PFTabRenderer:
         mdc.DrawBitmap(self.tabBackBitmap, 0, 0, True)
 
         if self.tabImg:
-            bmp = wx.BitmapFromImage(self.tabImg)
+            bmp = wx.BitmapFromImage(self.tabImg.ConvertToGreyscale() if self.disabled else self.tabImg)
             if self.contentWidth > 16:  # @todo: is this conditional relevant anymore?
                 # Draw tab icon
                 mdc.DrawBitmap(bmp, self.leftWidth + self.padding - bmp.GetWidth()/2, (height - bmp.GetHeight())/2)
@@ -591,6 +604,10 @@ class PFTabRenderer:
         bmp = wx.BitmapFromImage(img)
         self.tabBitmap = bmp
 
+    def __repr__(self):
+        return "PFTabRenderer(text={}, disabled={}) at {}".format(
+            self.text, self.disabled, hex(id(self))
+        )
 
 class PFAddRenderer:
     def __init__(self):
@@ -848,6 +865,7 @@ class PFTabsContainer(wx.Panel):
             return True
 
         if self.TabHitTest(tab, x, y):
+            if tab.disabled: return
             tab.SetSelected(True)
             oldSelTab.SetSelected(False)
 
@@ -1185,6 +1203,13 @@ class PFTabsContainer(wx.Panel):
     def ClearTabsSelected(self):
         for tab in self.tabs:
             tab.SetSelected(False)
+
+    def DisableTab(self, tab, disabled=True):
+        tabRenderer = self.tabs[tab]
+        tabRenderer.disabled = disabled
+
+        self.AdjustTabsSize()
+        self.Refresh()
 
     def DeleteTab(self, tab, external=False):
         tabRenderer = self.tabs[tab]

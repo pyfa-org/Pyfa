@@ -409,7 +409,7 @@ class FittingView(d.Display):
         sFit = service.Fit.getInstance()
         fit = sFit.getFit(self.activeFitID)
 
-        slotOrder = [Slot.SUBSYSTEM, Slot.HIGH, Slot.MED, Slot.LOW, Slot.RIG]
+        slotOrder = [Slot.SUBSYSTEM, Slot.HIGH, Slot.MED, Slot.LOW, Slot.RIG, Slot.SERVICE]
 
         if fit is not None:
             self.mods = fit.modules[:]
@@ -503,7 +503,10 @@ class FittingView(d.Display):
 
             sel = self.GetNextSelected(sel)
 
-        contexts.append(("fittingShip", "Ship"))
+        sFit = service.Fit.getInstance()
+        fit = sFit.getFit(self.activeFitID)
+
+        contexts.append(("fittingShip", "Ship" if not fit.isStructure else "Citadel"))
 
         menu = ContextMenu.getMenu(selection, *contexts)
         self.PopupMenu(menu)
@@ -554,7 +557,7 @@ class FittingView(d.Display):
                      5: ''}
 
     def slotColour(self, slot):
-        return self.slotColourMap[slot] or self.GetBackgroundColour()
+        return self.slotColourMap.get(slot) or self.GetBackgroundColour()
 
     def refresh(self, stuff):
         '''

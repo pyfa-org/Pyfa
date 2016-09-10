@@ -156,7 +156,7 @@ class MainFrame(wx.Frame):
         self.marketBrowser.splitter.SetSashPosition(self.marketHeight)
 
         self.shipBrowser = ShipBrowser(self.notebookBrowsers)
-        self.notebookBrowsers.AddPage(self.shipBrowser, "Ships", tabImage = shipBrowserImg, showClose = False)
+        self.notebookBrowsers.AddPage(self.shipBrowser, "Fittings", tabImage = shipBrowserImg, showClose = False)
 
         #=======================================================================
         # DISABLED FOR RC2 RELEASE

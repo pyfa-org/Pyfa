@@ -12,7 +12,7 @@ class ShipJump(ContextMenu):
         return srcContext == "fittingShip"
 
     def getText(self, itmContext, selection):
-        return "Open in Ship Browser"
+        return "Open in Fitting Browser"
 
     def activate(self, fullContext, selection, i):
         fitID = self.mainFrame.getActiveFit()

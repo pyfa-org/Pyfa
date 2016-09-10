@@ -224,6 +224,10 @@ class FighterDisplay(d.Display):
     '''
 
     def fitChanged(self, event):
+        sFit = service.Fit.getInstance()
+        fit = sFit.getFit(event.fitID)
+
+        self.Parent.Parent.Parent.DisablePage(self.Parent, not fit)
 
         #Clear list and get out if current fitId is None
         if event.fitID is None and self.lastFitId is not None:
@@ -231,9 +235,6 @@ class FighterDisplay(d.Display):
             self.lastFitId = None
             event.Skip()
             return
-
-        sFit = service.Fit.getInstance()
-        fit = sFit.getFit(event.fitID)
 
         self.original = fit.fighters if fit is not None else None
         self.fighters = stuff = fit.fighters[:] if fit is not None else None

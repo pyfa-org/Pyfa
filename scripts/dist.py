@@ -70,7 +70,7 @@ def zipdir(path, zip):
         for file in files:
             zip.write(os.path.join(root, file))
 
-skels = ['win', 'mac', 'src', 'mac-wx3']
+skels = ['win', 'src', 'mac', 'mac-deprecated']
 iscc =  "C:\Program Files (x86)\Inno Setup 5\ISCC.exe" # inno script location via wine
 
 if __name__ == "__main__":
@@ -79,7 +79,7 @@ if __name__ == "__main__":
     parser.add_option("-s", "--skeleton", dest="skeleton", help="Location of Pyfa-skel directory")
     parser.add_option("-b", "--base", dest="base", help="Location of cleaned read-only base directory")
     parser.add_option("-d", "--destination", dest="destination", help="Where to copy our distributable")
-    parser.add_option("-p", "--platforms", dest="platforms", help="Comma-separated list of platforms to build", default="win,src,mac,mac-wx3")
+    parser.add_option("-p", "--platforms", dest="platforms", help="Comma-separated list of platforms to build", default=','.join(skels))
     parser.add_option("-q", "--quiet", dest="silent", action="store_true")
     parser.add_option("-w", "--winexe", dest="winexe", action="store_true", help="Build the Windows installer file (needs Inno Setup). Must include 'win' in platform options")
     parser.add_option("-z", "--zip", dest="zip", action="store_true", help="zip archive instead of tar")
@@ -172,15 +172,16 @@ if __name__ == "__main__":
             # it's library)
             if skel == 'mac':
                 setup['include_files'] += ['pyfa.py']
-            if skel == 'src':
+            if skel in ('src', 'mac-deprecated'):
                 setup['include_files'] += ['pyfa.py', 'config.py']
 
             print
             print "Copying included files:",
 
             for file in setup['include_files']:
-                print file,
-                copyanything(file, os.path.join(root, file))
+                if isinstance(file, basestring):
+                    print file,
+                    copyanything(file, os.path.join(root, file))
 
             print
             print "Creating images zipfile:",
