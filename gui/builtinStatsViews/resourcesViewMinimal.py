@@ -24,6 +24,7 @@ from gui.bitmapLoader import BitmapLoader
 from gui import pygauge as PG
 import gui.mainFrame
 import gui.chromeTabs
+import math
 
 from eos.types import Hardpoint
 
@@ -83,21 +84,12 @@ class ResourcesViewMinimal(StatsView):
             setattr(self, attr, lbl)
             box.Add(lbl, 0, wx.ALIGN_CENTER | wx.LEFT, 5)
 
-            box.Add(wx.StaticText(parent, wx.ID_ANY, "/"), 0, wx.ALIGN_CENTER)
-
             lbl = wx.StaticText(parent, wx.ID_ANY, "0")
-            attr = "label%sTotal%s%s" % (panel.capitalize(), type.capitalize(), suffix[type].capitalize())
+            box.Add(wx.StaticText(parent, wx.ID_ANY, " ("), 0, wx.ALIGN_CENTER)
+            attr = "label%sPercent%s%s" % (panel.capitalize(), type.capitalize(), suffix[type].capitalize())
             setattr(self, attr, lbl)
             box.Add(lbl, 0, wx.ALIGN_CENTER)
-
-
-            if type in ("cpu","pg"):
-                lbl = wx.StaticText(parent, wx.ID_ANY, "0")
-                box.Add(wx.StaticText(parent, wx.ID_ANY, " ("), 0, wx.ALIGN_CENTER)
-                attr = "label%sPercent%s%s" % (panel.capitalize(), type.capitalize(), suffix[type].capitalize())
-                setattr(self, attr, lbl)
-                box.Add(lbl, 0, wx.ALIGN_CENTER)
-                box.Add(wx.StaticText(parent, wx.ID_ANY, "%)"), 0, wx.ALIGN_CENTER)
+            box.Add(wx.StaticText(parent, wx.ID_ANY, "%)"), 0, wx.ALIGN_CENTER)
 
             setattr(self, "boxSizer{}".format(type.capitalize()), box)
 
@@ -111,14 +103,12 @@ class ResourcesViewMinimal(StatsView):
     def refreshPanel(self, fit):
         #If we did anything intresting, we'd update our labels to reflect the new fit's stats here
 
-        stats = (("label%sUsedCalibrationPoints", lambda: fit.calibrationUsed, 0, 0, 0),
-                    ("label%sTotalCalibrationPoints", lambda: fit.ship.getModifiedItemAttr('upgradeCapacity'), 0, 0, 0),
-                    ("label%sUsedPgMw", lambda: fit.pgUsed, 0, 0, 0),
-                    ("label%sUsedCpuTf", lambda: fit.cpuUsed, 0, 0, 0),
-                    ("label%sTotalPgMw", lambda: fit.ship.getModifiedItemAttr("powerOutput"), 0, 0, 0),
-                    ("label%sTotalCpuTf", lambda: fit.ship.getModifiedItemAttr("cpuOutput"), 0, 0, 0),
+        stats = (("label%sUsedCalibrationPoints", lambda: fit.ship.getModifiedItemAttr('upgradeCapacity')-fit.calibrationUsed, 0, 0, 0),
+                    ("label%sUsedPgMw", lambda: fit.ship.getModifiedItemAttr("powerOutput")-fit.pgUsed, 0, 0, 0),
+                    ("label%sUsedCpuTf", lambda: fit.ship.getModifiedItemAttr("cpuOutput")-fit.cpuUsed, 0, 0, 0),
                     ("label%sPercentPgMw", lambda: (fit.pgUsed/fit.ship.getModifiedItemAttr("powerOutput"))*100, 0, 0, 0),
                     ("label%sPercentCpuTf", lambda: (fit.cpuUsed/fit.ship.getModifiedItemAttr("cpuOutput"))*100, 0, 0, 0),
+                    ("label%sPercentCalibrationPoints", lambda: (fit.calibrationUsed/fit.ship.getModifiedItemAttr('upgradeCapacity'))*100, 0, 0, 0),
                  )
         panel = "Full"
 
@@ -131,10 +121,6 @@ class ResourcesViewMinimal(StatsView):
                 usedCpuTf = value
                 labelUCPU = label
 
-            if labelName % panel == "label%sTotalCpuTf" % panel:
-                totalCpuTf = value
-                labelTCPU = label
-
             if labelName % panel == "label%sPercentCpuTf" % panel:
                 percentCpuTf = value
                 labelPCPU = label
@@ -142,10 +128,6 @@ class ResourcesViewMinimal(StatsView):
             if labelName % panel == "label%sUsedPgMw" % panel:
                 usedPgMw = value
                 labelUPG = label
-
-            if labelName % panel == "label%sTotalPgMw" % panel:
-                totalPgMw = value
-                labelTPG = label
 
             if labelName % panel == "label%sPercentPgMw" % panel:
                 percentPgMw = value
@@ -155,9 +137,9 @@ class ResourcesViewMinimal(StatsView):
                 usedCalibrationPoints = value
                 labelUCP = label
 
-            if labelName % panel == "label%sTotalCalibrationPoints" % panel:
-                totalCalibrationPoints = value
-                labelTCP = label
+            if labelName % panel == "label%sPercentCalibrationPoints" % panel:
+                percentCalibrationPoints = value
+                labelPCP = label
 
             if isinstance(value, basestring):
                 label.SetLabel(value)
@@ -169,29 +151,27 @@ class ResourcesViewMinimal(StatsView):
         colorWarn = wx.Colour(204, 51, 51)
         colorNormal = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOWTEXT)
 
-        if usedCpuTf > totalCpuTf:
+        if usedCpuTf < 0:
             colorCPU = colorWarn
         else:
             colorCPU = colorNormal
 
-        if usedPgMw > totalPgMw:
+        if usedPgMw < 0:
             colorPG = colorWarn
         else:
             colorPG = colorNormal
 
-        if usedCalibrationPoints > totalCalibrationPoints:
+        if usedCalibrationPoints < 0:
             colorC = colorWarn
         else:
             colorC = colorNormal
 
         labelUCPU.SetForegroundColour(colorCPU)
-        labelTCPU.SetForegroundColour(colorCPU)
         labelPCPU.SetForegroundColour(colorCPU)
         labelUPG.SetForegroundColour(colorPG)
-        labelTPG.SetForegroundColour(colorPG)
         labelPPG.SetForegroundColour(colorPG)
         labelUCP.SetForegroundColour(colorC)
-        labelTCP.SetForegroundColour(colorC)
+        labelPCP.SetForegroundColour(colorC)
 
         if fit is not None:
             resMax = (lambda: fit.ship.getModifiedItemAttr("cpuOutput"),

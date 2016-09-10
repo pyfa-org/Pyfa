@@ -23,6 +23,7 @@ import gui.mainFrame
 from gui.statsView import StatsView
 from gui.bitmapLoader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
+from gui.contextMenu import ContextMenu
 
 class FirepowerViewMinimal(StatsView):
     name = "firepowerViewMinimal"
@@ -101,9 +102,19 @@ class FirepowerViewMinimal(StatsView):
 
         self._cachedValues.append(0)
 
-    def loadProfiles(self, event):
+    def loadProfiles(self, contentPanel):
         test = 1
         #wx.PostEvent(self.mainFrame, EffectiveHpToggled(effective=self.stEHPs.GetLabel() == "HP"))
+
+
+        viewName = self.name
+
+        menu = ContextMenu.getMenu(None, (viewName,))
+        if menu is not None:
+            contentPanel.PopupMenu(menu)
+
+        test = 1
+        #event.Skip()
 
     def refreshPanel(self, fit):
         #If we did anything intresting, we'd update our labels to reflect the new fit's stats here
