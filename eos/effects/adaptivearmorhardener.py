@@ -45,6 +45,25 @@ def handler(fit, module, context):
         runLoop = 1
         countPasses = 0
         while runLoop == 1:
+
+            # Update tuple with current values
+            # damagePattern_tuple[0]
+            attr = "armor%sDamageResonance" % damagePattern_tuple[0][0].capitalize()
+            damagePattern_tuple[0][1] = fit.ship.getModifiedItemAttr(attr)
+            damagePattern_tuple[0][3] = damagePattern_tuple[0][2] * damagePattern_tuple[0][1]
+            # damagePattern_tuple[1]
+            attr = "armor%sDamageResonance" % damagePattern_tuple[1][0].capitalize()
+            damagePattern_tuple[1][1] = fit.ship.getModifiedItemAttr(attr)
+            damagePattern_tuple[1][3] = damagePattern_tuple[1][2] * damagePattern_tuple[1][1]
+            # damagePattern_tuple[2]
+            attr = "armor%sDamageResonance" % damagePattern_tuple[2][0].capitalize()
+            damagePattern_tuple[2][1] = fit.ship.getModifiedItemAttr(attr)
+            damagePattern_tuple[2][3] = damagePattern_tuple[2][2] * damagePattern_tuple[2][1]
+            # damagePattern_tuple[3]
+            attr = "armor%sDamageResonance" % damagePattern_tuple[3][0].capitalize()
+            damagePattern_tuple[3][1] = fit.ship.getModifiedItemAttr(attr)
+            damagePattern_tuple[3][3] = damagePattern_tuple[3][2] * damagePattern_tuple[3][1]
+
             damagePattern_tuple = sorted(damagePattern_tuple, key=lambda damagePattern_tuple: damagePattern_tuple[3])
 
             logger.debug("damageType | resistAmount | damagePatternAmount |  modifiedDamageAmount | reactiveAmount")
