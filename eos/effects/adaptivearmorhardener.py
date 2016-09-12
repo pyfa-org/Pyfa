@@ -43,6 +43,7 @@ def handler(fit, module, context):
                 module.getModifiedItemAttr('armorExplosiveDamageResonance')])
 
         runLoop = 1
+        countPasses = 0
         while runLoop == 1:
             damagePattern_tuple = sorted(damagePattern_tuple, key=lambda damagePattern_tuple: damagePattern_tuple[3])
 
@@ -65,23 +66,34 @@ def handler(fit, module, context):
                     # We've run out of resists to steal.
                     break
                 elif damagePattern_tuple[0][4] == 1:
-                    # Need to figure out something clever here to prevent infinite loops
-                    pass
+                    countPasses = countPasses+1
+
+                    # If our weakest resist is at 0, and we're still looping, bail out after we've tried this a few times.
+                    # Most likely the RAH is cycling between two different profiles and is in an infinite loop.
+                    if countPasses == 15:
+                        break
+                    else:
+                        pass
 
                 if damagePattern_tuple[0][4] < .97:
+                    # If there is more than 3% to steal, let's steal 3% and reduce the resit by that amount.
                     vampDmgOne = .03
                     damagePattern_tuple[0][4] = damagePattern_tuple[0][4] + .03
                 else:
+                    # If there is equal to or less than 3% left to steal, grab what we can and set the resist to 0%.
                     vampDmgOne = 1-damagePattern_tuple[0][4]
                     damagePattern_tuple[0][4] = 1
 
                 if damagePattern_tuple[1][4] < .97:
+                    # If there is more than 3% to steal, let's steal 3% and reduce the resit by that amount.
                     vampDmgTwo = .03
                     damagePattern_tuple[1][4] = damagePattern_tuple[1][4] + .03
                 else:
+                    # If there is equal to or less than 3% left to steal, grab what we can and set the resist to 0%.
                     vampDmgTwo = 1-damagePattern_tuple[1][4]
                     damagePattern_tuple[1][4] = 1
 
+                #Add up the two amounts we stole, and divide it equally between the two 
                 vampDmgTotal = vampDmgOne + vampDmgTwo
                 vampDmgTotal = vampDmgTotal / 2
                 logger.debug("Vamped %f from %f and %f", vampDmgTotal*2, vampDmgOne, vampDmgTwo)
