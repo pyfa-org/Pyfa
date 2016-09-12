@@ -54,11 +54,21 @@ def handler(fit, module, context):
             if damagePattern.emAmount == damagePattern.thermalAmount == damagePattern.kineticAmount == damagePattern.explosiveAmount:
                 # If damage pattern is even across the board, we "reset" back to default resists.
                 logger.debug("Setting adaptivearmorhardener resists to uniform profile.")
-                adjustedDamagePattern_tuples = [
+                damagePattern_tuple = [
                     (damagePattern_tuple[0][4], .85),
                     (damagePattern_tuple[1][4], .85),
                     (damagePattern_tuple[2][4], .85),
                     (damagePattern_tuple[3][4], .85),
+                ]
+                runLoop = 0
+            elif damagePattern_tuple[2][2] == 0:
+                # If damage pattern is a single source, we set all resists to one damage profile.
+                logger.debug("Setting adaptivearmorhardener resists to uniform profile.")
+                damagePattern_tuple = [
+                    (damagePattern_tuple[0][4], 1),
+                    (damagePattern_tuple[1][4], 1),
+                    (damagePattern_tuple[2][4], 1),
+                    (damagePattern_tuple[3][4], .6),
                 ]
                 runLoop = 0
             else:
@@ -93,7 +103,7 @@ def handler(fit, module, context):
                     vampDmgTwo = 1-damagePattern_tuple[1][4]
                     damagePattern_tuple[1][4] = 1
 
-                #Add up the two amounts we stole, and divide it equally between the two 
+                #Add up the two amounts we stole, and divide it equally between the two
                 vampDmgTotal = vampDmgOne + vampDmgTwo
                 vampDmgTotal = vampDmgTotal / 2
                 logger.debug("Vamped %f from %f and %f", vampDmgTotal*2, vampDmgOne, vampDmgTwo)
