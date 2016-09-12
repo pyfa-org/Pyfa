@@ -68,15 +68,16 @@ def handler(fit, module, context):
                 damagePattern_tuple[3][4]=.4
                 runLoop = 0
             else:
+                logger.debug("Setting adaptivearmorhardener resists to multiple damage profile.")
                 if damagePattern_tuple[1][4] == 1 == damagePattern_tuple[0][4]:
-                    # We've run out of resists to steal.
+                    logger.debug("We've run out of resists to steal. Breaking out of RAH cycle.")
                     break
                 elif damagePattern_tuple[0][4] == 1:
                     countPasses = countPasses+1
-
                     # If our weakest resist is at 0, and we're still looping, bail out after we've tried this a few times.
                     # Most likely the RAH is cycling between two different profiles and is in an infinite loop.
                     if countPasses == 15:
+                        logger.debug("Looped %f times. Most likely the RAH is cycling between two different profiles and is in an infinite loop. Breaking out of RAH cycle.", countPasses)
                         break
                     else:
                         pass
