@@ -54,22 +54,18 @@ def handler(fit, module, context):
             if damagePattern.emAmount == damagePattern.thermalAmount == damagePattern.kineticAmount == damagePattern.explosiveAmount:
                 # If damage pattern is even across the board, we "reset" back to default resists.
                 logger.debug("Setting adaptivearmorhardener resists to uniform profile.")
-                damagePattern_tuple = [
-                    (damagePattern_tuple[0][4], .85),
-                    (damagePattern_tuple[1][4], .85),
-                    (damagePattern_tuple[2][4], .85),
-                    (damagePattern_tuple[3][4], .85),
-                ]
+                damagePattern_tuple[0][4]=.85
+                damagePattern_tuple[1][4]=.85
+                damagePattern_tuple[2][4]=.85
+                damagePattern_tuple[3][4]=.85
                 runLoop = 0
             elif damagePattern_tuple[2][2] == 0:
                 # If damage pattern is a single source, we set all resists to one damage profile.
-                logger.debug("Setting adaptivearmorhardener resists to uniform profile.")
-                damagePattern_tuple = [
-                    (damagePattern_tuple[0][4], 1),
-                    (damagePattern_tuple[1][4], 1),
-                    (damagePattern_tuple[2][4], 1),
-                    (damagePattern_tuple[3][4], .6),
-                ]
+                logger.debug("Setting adaptivearmorhardener resists to single damage profile.")
+                damagePattern_tuple[0][4]=1
+                damagePattern_tuple[1][4]=1
+                damagePattern_tuple[2][4]=1
+                damagePattern_tuple[3][4]=.4
                 runLoop = 0
             else:
                 if damagePattern_tuple[1][4] == 1 == damagePattern_tuple[0][4]:
@@ -110,6 +106,8 @@ def handler(fit, module, context):
 
                 damagePattern_tuple[2][4] = damagePattern_tuple[2][4] - vampDmgTotal
                 damagePattern_tuple[3][4] = damagePattern_tuple[3][4] - vampDmgTotal
+
+
 
             logger.debug("Setting new resist profile.")
             for damagePatternType in damagePattern_tuple:
