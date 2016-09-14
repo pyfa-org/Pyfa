@@ -678,6 +678,10 @@ class MainFrame(wx.Frame):
         sFit = service.Fit.getInstance()
         toClipboard(sFit.exportXml(None, self.getActiveFit()))
 
+    def clipboardMultiBuy(self):
+        sFit = service.Fit.getInstance()
+        toClipboard(sFit.exportMultiBuy(self.getActiveFit()))
+
     def importFromClipboard(self, event):
         sFit = service.Fit.getInstance()
         try:
@@ -692,7 +696,8 @@ class MainFrame(wx.Frame):
                           CopySelectDialog.copyFormatEftImps: self.clipboardEftImps,
                           CopySelectDialog.copyFormatXml: self.clipboardXml,
                           CopySelectDialog.copyFormatDna: self.clipboardDna,
-                          CopySelectDialog.copyFormatCrest: self.clipboardCrest}
+                          CopySelectDialog.copyFormatCrest: self.clipboardCrest,
+                          CopySelectDialog.copyFormatMultiBuy: self.clipboardMultiBuy}
         dlg = CopySelectDialog(self)
         dlg.ShowModal()
         selected = dlg.GetSelected()

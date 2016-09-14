@@ -858,3 +858,42 @@ class Port(object):
                     wx.CallAfter(callback, i)
 
         return doc.toprettyxml()
+
+    @staticmethod
+    def exportMultiBuy(fit):
+        offineSuffix = " /OFFLINE"
+        export = "%s\n" % (fit.ship.item.name)
+        stuff = {}
+        sFit = service.Fit.getInstance()
+        for module in fit.modules:
+            slot = module.slot
+            if not slot in stuff:
+                stuff[slot] = []
+            curr = module.item.name if module.item else (
+            "")
+            if module.charge and sFit.serviceFittingOptions["exportCharges"]:
+                curr += "\n%s" % module.charge.name
+            if module.state == State.OFFLINE:
+                curr += offineSuffix
+            curr += "\n"
+            stuff[slot].append(curr)
+
+        for slotType in EFT_SLOT_ORDER:
+            data = stuff.get(slotType)
+            if data is not None:
+                # export += "\n"
+                for curr in data:
+                    export += curr
+
+        if len(fit.drones) > 0:
+            for drone in fit.drones:
+                export += "%s x%s\n" % (drone.item.name, drone.amount)
+
+        if len(fit.cargo) > 0:
+            for cargo in fit.cargo:
+                export += "%s x%s\n" % (cargo.item.name, cargo.amount)
+
+        if export[-1] == "\n":
+            export = export[:-1]
+
+        return export
