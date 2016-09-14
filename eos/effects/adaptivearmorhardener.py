@@ -16,8 +16,17 @@ def handler(fit, module, context):
     if damagePattern:
 
         # Populate a tuple with the damage profile modified by current armor resists.
-
+        # Build this up front as there are a number of values we only need to touch once
         damagePattern_tuple = []
+
+        '''
+        # Bit of documentation for how the tuple is layed out
+        damagePattern_tuple.append(['RESIST TYPE',
+                SHIP ARMOR RESIST AMOUNT,
+                DAMAGE PATTERN AMOUNT,
+                MODIFIED DAMAGE PATTERN AMOUNT (SHIP ARMOR RESIST AMOUNT * DAMAGE PATTERN AMOUND),
+                ADAPTIVE RESIST AMOUNT)
+        '''
 
         damagePattern_tuple.append(['Em',
                 fit.ship.getModifiedItemAttr('armorEmDamageResonance'),
@@ -50,22 +59,12 @@ def handler(fit, module, context):
             for i in range(4):
                 # Update tuple with current values
                 attr = "armor%sDamageResonance" % damagePattern_tuple[i][0].capitalize()
-                damagePattern_tuple[i][1] = fit.ship.getModifiedItemAttr(attr)
                 damagePattern_tuple[i][3] = damagePattern_tuple[i][2] * damagePattern_tuple[i][1]
                 damagePattern_tuple[i][4] = module.getModifiedItemAttr(attr)
-                #logger.debug("Update values (Type|Resist|ModifiedDamage|AdaptiveResists): %s | %f | %f | %f", damagePattern_tuple[i][0], damagePattern_tuple[i][1], damagePattern_tuple[i][3], damagePattern_tuple[i][4])
+                #logger.debug("Update values (Type|Resist|ModifiedDamage|AdaptiveResists): %s | %f | %f | %f", damagePattern_tuple[i][0], fit.ship.getModifiedItemAttr(attr), damagePattern_tuple[i][3], damagePattern_tuple[i][4])
 
-            #damagePattern_tuple = sorted(damagePattern_tuple, key=lambda damagePattern_tuple: damagePattern_tuple[3])
-            #keytest = operator.itemgetter(3)
-            damagePattern_tuplepre = damagePattern_tuple
+            # Sort the tuple by which resist took the most damage
             damagePattern_tuple = sorted(damagePattern_tuple, key=operator.itemgetter(3))
-
-            '''
-            # Only enable for in depth debug logging
-            logger.debug("damageType | resistAmount | damagePatternAmount |  modifiedDamageAmount | reactiveAmount")
-            for damageType_tuple in damagePattern_tuple:
-                logger.debug("%s | %f | %f | %f | %f", damageType_tuple[0], damageType_tuple[1], damageType_tuple[2],damageType_tuple[3],damageType_tuple[4])
-            '''
 
             if damagePattern.emAmount == damagePattern.thermalAmount == damagePattern.kineticAmount == damagePattern.explosiveAmount:
                 # If damage pattern is even across the board, we "reset" back to default resists.
@@ -84,7 +83,7 @@ def handler(fit, module, context):
                 damagePattern_tuple[3][4]=.4
                 runLoop = 0
             else:
-                #logger.debug("Setting adaptivearmorhardener resists to multiple damage profile.")
+                # We have more than one damage source
                 if damagePattern_tuple[1][4] == 1 == damagePattern_tuple[0][4]:
                     logger.debug("We've run out of resists to steal. Breaking out of RAH cycle.")
                     break
@@ -92,7 +91,7 @@ def handler(fit, module, context):
                     countPasses = countPasses+1
                     # If our weakest resist is at 0, and we're still looping, bail out after we've tried this a few times.
                     # Most likely the RAH is cycling between two different profiles and is in an infinite loop.
-                    if countPasses == 150:
+                    if countPasses == 15:
                         logger.debug("Looped %f times. Most likely the RAH is cycling between two different profiles and is in an infinite loop. Breaking out of RAH cycle.", countPasses)
                         break
                     else:
@@ -105,48 +104,82 @@ def handler(fit, module, context):
                     if damagePattern_tuple[i][4] < .97:
                         # If there is more than 3% to steal, let's steal 3% and reduce the resit by that amount.
                         vampDmg[i] = .03
-                        newResist = damagePattern_tuple[i][4]+.03
                     else:
                         # If there is equal to or less than 3% left to steal, grab what we can and set the resist to 0%.
                         vampDmg[i] = 1-damagePattern_tuple[i][4]
-                        newResist = 1
-                    #module.preAssignItemAttr(attr, newResist)
-                    module.forceItemAttr(attr, newResist)
+
+                    # Adjust the module resists down
+                    if vampDmg[i] > 0:
+                        module.increaseItemAttr(attr, vampDmg[i])
+                        # Set our "ship" resists
+                        damagePattern_tuple[i][1] = fit.ship.getModifiedItemAttr(attr) * module.getModifiedItemAttr(attr)
 
                 #Add up the two amounts we stole, and divide it equally between the two
                 vampDmgTotal = vampDmg[0] + vampDmg[1]
-                #logger.debug("Vamped %f from %f and %f", vampDmgTotal, vampDmg[0], vampDmg[1])
 
                 # Loop through the resists that took the most damage, and add what we vamped from the weakest resists.
                 for i in [2,3]:
                     attr = "armor%sDamageResonance" % damagePattern_tuple[i][0].capitalize()
                     # And by add we mean subtract, because in CCPland up is down and down is up
-                    newResist = damagePattern_tuple[i][4]-(vampDmgTotal/2)
-                    module.preAssignItemAttr(attr, newResist)
+                    if vampDmgTotal > 0:
+                        module.increaseItemAttr(attr, 0-(vampDmgTotal/2))
+                        # Set our "ship" resists
+                        damagePattern_tuple[i][1] = fit.ship.getModifiedItemAttr(attr)*module.getModifiedItemAttr(attr)
 
             adaptiveResists_tuple = [0.0] * 12
-            #logger.debug("Setting new resist profile.")
             for damagePatternType in damagePattern_tuple:
                 attr = "armor%sDamageResonance" % damagePatternType[0].capitalize()
-                fit.ship.multiplyItemAttr(attr, module.getModifiedItemAttr(attr), stackingPenalties=True, penaltyGroup="preMul")
-                #fit.ship.multiplyItemAttr(attr, module.getModifiedItemAttr(attr), stackingPenalties=False, penaltyGroup="preMul")
-                #logger.debug("%s: %f", attr, damagePatternType[4])
 
                 if damagePatternType[0] == 'Em':
                     adaptiveResists_tuple[0] = module.getModifiedItemAttr(attr)
-                    adaptiveResists_tuple[4] = fit.ship.getModifiedItemAttr(attr)
+                    adaptiveResists_tuple[4] = damagePatternType[1]
                     adaptiveResists_tuple[8] = damagePatternType[3]
                 elif damagePatternType[0] == 'Thermal':
                     adaptiveResists_tuple[1] = module.getModifiedItemAttr(attr)
-                    adaptiveResists_tuple[5] = fit.ship.getModifiedItemAttr(attr)
+                    adaptiveResists_tuple[5] = damagePatternType[1]
                     adaptiveResists_tuple[9] = damagePatternType[3]
                 elif damagePatternType[0] == 'Kinetic':
                     adaptiveResists_tuple[2] = module.getModifiedItemAttr(attr)
-                    adaptiveResists_tuple[6] = fit.ship.getModifiedItemAttr(attr)
+                    adaptiveResists_tuple[6] = damagePatternType[1]
                     adaptiveResists_tuple[10] = damagePatternType[3]
                 elif damagePatternType[0] == 'Explosive':
                     adaptiveResists_tuple[3] = module.getModifiedItemAttr(attr)
-                    adaptiveResists_tuple[7] = fit.ship.getModifiedItemAttr(attr)
+                    adaptiveResists_tuple[7] = damagePatternType[1]
                     adaptiveResists_tuple[11] = damagePatternType[3]
 
-            logger.debug("Adaptive Resists, Ship Resists, Modified Damage (EM|The|Kin|Exp) : %f | %f | %f | %f || %f | %f | %f | %f || %f | %f | %f | %f", adaptiveResists_tuple[0], adaptiveResists_tuple[1], adaptiveResists_tuple[2], adaptiveResists_tuple[3], adaptiveResists_tuple[4], adaptiveResists_tuple[5], adaptiveResists_tuple[6], adaptiveResists_tuple[7], adaptiveResists_tuple[8], adaptiveResists_tuple[9], adaptiveResists_tuple[10], adaptiveResists_tuple[11])
+            logger.debug(
+                "Adaptive Resists, Ship Resists, Modified Damage (EM|The|Kin|Exp) : %f | %f | %f | %f || %f | %f | %f | %f || %f | %f | %f | %f",
+                adaptiveResists_tuple[0], adaptiveResists_tuple[1], adaptiveResists_tuple[2], adaptiveResists_tuple[3],
+                adaptiveResists_tuple[4], adaptiveResists_tuple[5], adaptiveResists_tuple[6], adaptiveResists_tuple[7],
+                adaptiveResists_tuple[8], adaptiveResists_tuple[9], adaptiveResists_tuple[10],
+                adaptiveResists_tuple[11])
+
+        adaptiveResists_tuple = [0.0] * 12
+        # Apply module resists to the ship (for reals this time and not just pretend)
+        for damagePatternType in damagePattern_tuple:
+            attr = "armor%sDamageResonance" % damagePatternType[0].capitalize()
+
+            fit.ship.multiplyItemAttr(attr, module.getModifiedItemAttr(attr), stackingPenalties=True, penaltyGroup="preMul")
+
+            if damagePatternType[0] == 'Em':
+                adaptiveResists_tuple[0] = module.getModifiedItemAttr(attr)
+                adaptiveResists_tuple[4] = fit.ship.getModifiedItemAttr(attr)
+                adaptiveResists_tuple[8] = damagePatternType[3]
+            elif damagePatternType[0] == 'Thermal':
+                adaptiveResists_tuple[1] = module.getModifiedItemAttr(attr)
+                adaptiveResists_tuple[5] = fit.ship.getModifiedItemAttr(attr)
+                adaptiveResists_tuple[9] = damagePatternType[3]
+            elif damagePatternType[0] == 'Kinetic':
+                adaptiveResists_tuple[2] = module.getModifiedItemAttr(attr)
+                adaptiveResists_tuple[6] = fit.ship.getModifiedItemAttr(attr)
+                adaptiveResists_tuple[10] = damagePatternType[3]
+            elif damagePatternType[0] == 'Explosive':
+                adaptiveResists_tuple[3] = module.getModifiedItemAttr(attr)
+                adaptiveResists_tuple[7] = fit.ship.getModifiedItemAttr(attr)
+                adaptiveResists_tuple[11] = damagePatternType[3]
+
+        logger.debug(
+            "Adaptive Resists, Ship Resists, Modified Damage (EM|The|Kin|Exp) : %f | %f | %f | %f || %f | %f | %f | %f || %f | %f | %f | %f",
+            adaptiveResists_tuple[0], adaptiveResists_tuple[1], adaptiveResists_tuple[2], adaptiveResists_tuple[3],
+            adaptiveResists_tuple[4], adaptiveResists_tuple[5], adaptiveResists_tuple[6], adaptiveResists_tuple[7],
+            adaptiveResists_tuple[8], adaptiveResists_tuple[9], adaptiveResists_tuple[10], adaptiveResists_tuple[11])
