@@ -2,6 +2,7 @@
 #
 # Used by:
 # Ship: Nyx
+# Ship: Vendetta
 type = "passive"
 def handler(fit, src, context):
     fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill("Fighters"), "fighterAbilityAttackTurretDamageMultiplier", src.getModifiedItemAttr("shipBonusSupercarrierG1"), skill="Gallente Carrier")

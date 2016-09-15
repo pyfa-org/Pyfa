@@ -704,7 +704,7 @@ class ShipBrowser(wx.Panel):
         "amarr", "caldari", "gallente", "minmatar",
         "sisters", "ore",
         "serpentis", "angel", "blood", "sansha", "guristas", "mordu",
-        "jove", None
+        "jove", "upwell", None
     ]
 
     def raceNameKey(self, ship):
@@ -1538,7 +1538,10 @@ class FitItem(SFItem.SFBrowserItem):
         menu.Check(toggleItem.GetId(), self.fitBooster)
         self.Bind(wx.EVT_MENU, self.OnToggleBooster, toggleItem)
 
-        if self.mainFrame.getActiveFit():
+        sFit = service.Fit.getInstance()
+        fit = sFit.getFit(self.mainFrame.getActiveFit())
+
+        if fit and not fit.isStructure:
             # If there is an active fit, get menu for setting individual boosters
             menu.AppendSeparator()
             boosterMenu = self.mainFrame.additionsPane.gangPage.buildBoostermenu()

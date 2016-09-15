@@ -49,6 +49,7 @@ class MainMenuBar(wx.MenuBar):
         self.ssoLoginId = wx.NewId()
         self.attrEditorId = wx.NewId()
         self.toggleOverridesId = wx.NewId()
+        self.importDatabaseDefaultsId = wx.NewId()
 
         if 'wxMac' in wx.PlatformInfo and wx.VERSION >= (3,0):
             wx.ID_COPY = wx.NewId()
@@ -136,18 +137,19 @@ class MainMenuBar(wx.MenuBar):
                 self.Enable(self.exportToEveId, False)
 
             if not gui.mainFrame.disableOverrideEditor:
+                windowMenu.AppendSeparator()
                 attrItem = wx.MenuItem(windowMenu, self.attrEditorId, "Attribute Overrides\tCTRL+B")
                 attrItem.SetBitmap(BitmapLoader.getBitmap("fit_rename_small", "gui"))
                 windowMenu.AppendItem(attrItem)
-
-                editMenu.AppendSeparator()
-                editMenu.Append(self.toggleOverridesId, "Turn Overrides On")
+                windowMenu.Append(self.toggleOverridesId, "Turn Overrides On")
 
         # Help menu
         helpMenu = wx.Menu()
         self.Append(helpMenu, "&Help")
         helpMenu.Append(self.wikiId, "Wiki", "Go to wiki on GitHub")
         helpMenu.Append(self.forumId, "Forums", "Go to EVE Online Forum thread")
+        helpMenu.AppendSeparator()
+        helpMenu.Append(self.importDatabaseDefaultsId, "Import D&atabase Defaults", "Imports missing database defaults")
         helpMenu.AppendSeparator()
         helpMenu.Append(wx.ID_ABOUT)
 

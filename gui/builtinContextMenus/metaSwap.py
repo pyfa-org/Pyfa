@@ -29,6 +29,9 @@ class MetaSwap(ContextMenu):
 
         self.selection = selection
 
+        if len(self.variations) == 1:
+            return False  # no variations from current module
+
         return True
 
     def getText(self, itmContext, selection):
@@ -38,6 +41,7 @@ class MetaSwap(ContextMenu):
         self.moduleLookup = {}
 
         def get_metalevel(x):
+            if "metaLevel" not in x.attributes: return 0
             return x.attributes["metaLevel"].value
 
         def get_metagroup(x):

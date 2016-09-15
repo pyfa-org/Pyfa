@@ -65,7 +65,7 @@ class Port(object):
         # max length is 50 characters
         name = ofit.name[:47] + '...' if len(ofit.name) > 50 else ofit.name
         fit['name'] = name
-        fit['ship']['href'] = "%stypes/%d/"%(eve._authed_endpoint, ofit.ship.item.ID)
+        fit['ship']['href'] = "%sinventory/types/%d/"%(eve._authed_endpoint, ofit.ship.item.ID)
         fit['ship']['id'] = ofit.ship.item.ID
         fit['ship']['name'] = ''
 
@@ -93,7 +93,7 @@ class Port(object):
                 slotNum[slot] += 1
 
             item['quantity'] = 1
-            item['type']['href'] = "%stypes/%d/"%(eve._authed_endpoint, module.item.ID)
+            item['type']['href'] = "%sinventory/types/%d/"%(eve._authed_endpoint, module.item.ID)
             item['type']['id'] = module.item.ID
             item['type']['name'] = ''
             fit['items'].append(item)
@@ -108,7 +108,7 @@ class Port(object):
             item = nested_dict()
             item['flag'] = INV_FLAG_CARGOBAY
             item['quantity'] = cargo.amount
-            item['type']['href'] = "%stypes/%d/"%(eve._authed_endpoint, cargo.item.ID)
+            item['type']['href'] = "%sinventory/types/%d/"%(eve._authed_endpoint, cargo.item.ID)
             item['type']['id'] = cargo.item.ID
             item['type']['name'] = ''
             fit['items'].append(item)
@@ -117,7 +117,7 @@ class Port(object):
             item = nested_dict()
             item['flag'] = INV_FLAG_CARGOBAY
             item['quantity'] = amount
-            item['type']['href'] = "%stypes/%d/"%(eve._authed_endpoint, chargeID)
+            item['type']['href'] = "%sinventory/types/%d/"%(eve._authed_endpoint, chargeID)
             item['type']['id'] = chargeID
             item['type']['name'] = ''
             fit['items'].append(item)
@@ -126,7 +126,7 @@ class Port(object):
             item = nested_dict()
             item['flag'] = INV_FLAG_DRONEBAY
             item['quantity'] = drone.amount
-            item['type']['href'] = "%stypes/%d/"%(eve._authed_endpoint, drone.item.ID)
+            item['type']['href'] = "%sinventory/types/%d/"%(eve._authed_endpoint, drone.item.ID)
             item['type']['id'] = drone.item.ID
             item['type']['name'] = ''
             fit['items'].append(item)

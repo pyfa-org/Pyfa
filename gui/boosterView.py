@@ -85,15 +85,17 @@ class BoosterView(d.Display):
         event.Skip()
 
     def fitChanged(self, event):
+        sFit = service.Fit.getInstance()
+        fit = sFit.getFit(event.fitID)
+
+        self.Parent.Parent.DisablePage(self, not fit or fit.isStructure)
+
         #Clear list and get out if current fitId is None
         if event.fitID is None and self.lastFitId is not None:
             self.DeleteAllItems()
             self.lastFitId = None
             event.Skip()
             return
-
-        sFit = service.Fit.getInstance()
-        fit = sFit.getFit(event.fitID)
 
         self.origional = fit.boosters if fit is not None else None
         self.boosters = stuff = fit.boosters[:] if fit is not None else None
@@ -115,6 +117,12 @@ class BoosterView(d.Display):
     def addItem(self, event):
         sFit = service.Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
+
+        fit = sFit.getFit(fitID)
+
+        if fit.isStructure:
+            return
+
         trigger = sFit.addBooster(fitID, event.itemID)
         if trigger:
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))

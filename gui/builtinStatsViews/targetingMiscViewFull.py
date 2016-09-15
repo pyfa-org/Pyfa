@@ -201,7 +201,7 @@ class TargetingMiscViewFull(StatsView):
                     elif labelName == "labelFullAlignTime":
                         alignTime = "Align:\t%.3fs"%mainValue
                         mass = 'Mass:\t{:,.0f}kg'.format(fit.ship.getModifiedItemAttr("mass"))
-                        agility = "Agility:\t%.3fx"%fit.ship.getModifiedItemAttr("agility")
+                        agility = "Agility:\t%.3fx"%(fit.ship.getModifiedItemAttr("agility") or 0)
                         label.SetToolTip(wx.ToolTip("%s\n%s\n%s" % (alignTime, mass, agility)))
                     elif labelName == "labelFullCargo":
                         tipLines = []

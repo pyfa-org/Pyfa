@@ -36,14 +36,14 @@ class ImplantTextValidor(BaseValidator):
         return ImplantTextValidor()
 
     def Validate(self, win):
-        profileEditor = win.parent.Parent
+        entityEditor = win.parent
         textCtrl = self.GetWindow()
         text = textCtrl.GetValue().strip()
 
         try:
             if len(text) == 0:
                 raise ValueError("You must supply a name for the Implant Set!")
-            elif text in [x.name for x in profileEditor.entityEditor.choices]:
+            elif text in [x.name for x in entityEditor.choices]:
                 raise ValueError("Imlplant Set name already in use, please choose another.")
 
             return True

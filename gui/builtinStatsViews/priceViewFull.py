@@ -83,6 +83,11 @@ class PriceViewFull(StatsView):
             for drone in fit.drones:
                 for _ in xrange(drone.amount):
                     typeIDs.append(drone.itemID)
+
+            for fighter in fit.fighters:
+                for _ in xrange(fighter.amountActive):
+                    typeIDs.append(fighter.itemID)
+
             for cargo in fit.cargo:
                 for _ in xrange(cargo.amount):
                     typeIDs.append(cargo.itemID)

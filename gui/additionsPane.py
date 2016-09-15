@@ -58,22 +58,35 @@ class AdditionsPane(TogglePanel):
         gangImg = BitmapLoader.getImage("fleet_fc_small", "gui")
         cargoImg = BitmapLoader.getImage("cargo_small", "gui")
 
-        self.notebook.AddPage(DroneView(self.notebook), "Drones", tabImage = droneImg, showClose = False)
-        self.notebook.AddPage(FighterView(self.notebook), "Fighters", tabImage = fighterImg, showClose = False)
-        self.notebook.AddPage(CargoView(self.notebook), "Cargo", tabImage = cargoImg, showClose = False)
-        self.notebook.AddPage(ImplantView(self.notebook), "Implants", tabImage = implantImg, showClose = False)
-        self.notebook.AddPage(BoosterView(self.notebook), "Boosters", tabImage = boosterImg, showClose = False)
+        self.drone = DroneView(self.notebook)
+        self.notebook.AddPage(self.drone, "Drones", tabImage = droneImg, showClose = False)
+
+        self.fighter = FighterView(self.notebook)
+        self.notebook.AddPage(self.fighter, "Fighters", tabImage = fighterImg, showClose = False)
+
+        self.cargo = CargoView(self.notebook)
+        self.notebook.AddPage(self.cargo, "Cargo", tabImage = cargoImg, showClose = False)
+
+        self.implant = ImplantView(self.notebook)
+        self.notebook.AddPage(self.implant, "Implants", tabImage = implantImg, showClose = False)
+
+        self.booster = BoosterView(self.notebook)
+        self.notebook.AddPage(self.booster, "Boosters", tabImage = boosterImg, showClose = False)
 
         self.projectedPage = ProjectedView(self.notebook)
         self.notebook.AddPage(self.projectedPage, "Projected", tabImage = projectedImg, showClose = False)
 
         self.gangPage = GangView(self.notebook)
         self.notebook.AddPage(self.gangPage, "Fleet", tabImage = gangImg, showClose = False)
+
         self.notebook.SetSelection(0)
 
     PANES = ["Drones", "Fighters", "Cargo", "Implants", "Boosters", "Projected", "Fleet"]
     def select(self, name):
         self.notebook.SetSelection(self.PANES.index(name))
+
+    def toggleBoosters(self, event):
+        self.notebook.ToggleShown(self.booster)
 
     def getName(self, idx):
         return self.PANES[idx]

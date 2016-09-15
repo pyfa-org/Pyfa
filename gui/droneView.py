@@ -159,6 +159,10 @@ class DroneView(d.Display):
                 drone.item.name)
 
     def fitChanged(self, event):
+        sFit = service.Fit.getInstance()
+        fit = sFit.getFit(event.fitID)
+
+        self.Parent.Parent.DisablePage(self, not fit or fit.isStructure)
 
         #Clear list and get out if current fitId is None
         if event.fitID is None and self.lastFitId is not None:
@@ -166,9 +170,6 @@ class DroneView(d.Display):
             self.lastFitId = None
             event.Skip()
             return
-
-        sFit = service.Fit.getInstance()
-        fit = sFit.getFit(event.fitID)
 
         self.original = fit.drones if fit is not None else None
         self.drones = stuff = fit.drones[:] if fit is not None else None
@@ -194,6 +195,12 @@ class DroneView(d.Display):
     def addItem(self, event):
         sFit = service.Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
+
+        fit = sFit.getFit(fitID)
+
+        if fit.isStructure:
+            return
+
         trigger = sFit.addDrone(fitID, event.itemID)
         if trigger:
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))

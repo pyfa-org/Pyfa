@@ -24,6 +24,7 @@ from eos.effectHandlerHelpers import HandledItem, HandledCharge
 from eos.enum import Enum
 from eos.mathUtils import floorFloat
 import eos.db
+from eos.types import Citadel
 import logging
 
 logger = logging.getLogger(__name__)
@@ -46,6 +47,8 @@ class Slot(Enum):
     # system effects. They are projected "modules" and pyfa assumes all modules
     # have a slot. In this case, make one up.
     SYSTEM = 7
+    # used for citadel services
+    SERVICE = 8
     # fighter 'slots'. Just easier to put them here...
     F_LIGHT = 10
     F_SUPPORT = 11
@@ -151,7 +154,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     def isInvalid(self):
         if self.isEmpty:
             return False
-        return self.__item is None or (self.__item.category.name not in ("Module", "Subsystem") and self.__item.group.name != "Effect Beacon")
+        return self.__item is None or (self.__item.category.name not in ("Module", "Subsystem", "Structure Module") and self.__item.group.name != "Effect Beacon")
 
     @property
     def numCharges(self):
@@ -393,6 +396,11 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         if (len(fitsOnGroup) > 0 or len(fitsOnType) > 0) and fit.ship.item.group.ID not in fitsOnGroup and fit.ship.item.ID not in fitsOnType:
             return False
 
+        # AFAIK Citadel modules will always be restricted based on canFitShipType/Group. If we are fitting to a Citadel
+        # and the module does not have these properties, return false to prevent regular ship modules from being used
+        if isinstance(fit.ship, Citadel) and len(fitsOnGroup) == 0 and len(fitsOnType) == 0:
+            return False
+
         # If the mod is a subsystem, don't let two subs in the same slot fit
         if self.slot == Slot.SUBSYSTEM:
             subSlot = self.getModifiedItemAttr("subSystemSlot")
@@ -534,7 +542,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                          "loPower" : Slot.LOW,
                          "medPower" : Slot.MED,
                          "hiPower" : Slot.HIGH,
-                         "subSystem" : Slot.SUBSYSTEM}
+                         "subSystem" : Slot.SUBSYSTEM,
+                         "serviceSlot": Slot.SERVICE}
         if item is None:
             return None
         for effectName, slot in effectSlotMap.iteritems():
@@ -629,7 +638,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     @property
     def rawCycleTime(self):
-        speed =  self.getModifiedItemAttr("speed") or self.getModifiedItemAttr("duration")
+        speed = self.getModifiedItemAttr("speed") or self.getModifiedItemAttr("duration")
         return speed
 
     @property

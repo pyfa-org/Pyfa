@@ -4,9 +4,11 @@
 # Drones from group: Energy Neutralizer Drone (3 of 3)
 from eos.types import State
 type = "active", "projected"
-def handler(fit, container, context):
-    if "projected" in context and ((hasattr(container, "state") \
-    and container.state >= State.ACTIVE) or hasattr(container, "amountActive")):
-        amount = container.getModifiedItemAttr("energyDestabilizationAmount")
-        time = container.getModifiedItemAttr("duration")
-        fit.addDrain(time, amount, 0)
+
+
+def handler(fit, src, context):
+    if "projected" in context and ((hasattr(src, "state") and src.state >= State.ACTIVE) or hasattr(src, "amountActive")):
+        amount = src.getModifiedItemAttr("energyNeutralizerAmount")
+        time = src.getModifiedItemAttr("duration")
+
+        fit.addDrain(src, time, amount, 0)

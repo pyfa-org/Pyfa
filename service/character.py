@@ -366,6 +366,10 @@ class Character(object):
             if isinstance(thing, eos.types.Module) and thing.slot == eos.types.Slot.RIG:
                 continue
             for attr in ("item", "charge"):
+                if attr == "charge" and isinstance(thing, eos.types.Fighter):
+                    # Fighter Bombers are automatically charged with micro bombs.
+                    # These have skill requirements attached, but aren't used in EVE.
+                    continue
                 subThing = getattr(thing, attr, None)
                 subReqs = {}
                 if subThing is not None:

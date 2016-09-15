@@ -186,7 +186,7 @@ class FittingView(d.Display):
         elif data[0] == "cargo":
             self.swapCargo(x, y, int(data[1]))
         elif data[0] == "market":
-            wx.PostEvent(self.mainFrame, gui.marketBrowser.ItemSelected(itemID=int(data[1])))
+            self.addModule(x, y, int(data[1]))
 
     def handleDrag(self, type, fitID):
         #Those are drags coming from pyfa sources, NOT builtin wx drags
@@ -343,6 +343,20 @@ class FittingView(d.Display):
             self.slotsChanged()
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.activeFitID))
 
+    def addModule(self, x, y, srcIdx):
+        '''Add a module from the market browser'''
+        mstate = wx.GetMouseState()
+
+        dstRow, _ = self.HitTest((x, y))
+        if dstRow != -1 and dstRow not in self.blanks:
+            sFit = service.Fit.getInstance()
+            fitID = self.mainFrame.getActiveFit()
+            moduleChanged = sFit.changeModule(fitID, self.mods[dstRow].position, srcIdx)
+            if moduleChanged is None:
+                # the new module doesn't fit in specified slot, try to simply append it
+                wx.PostEvent(self.mainFrame, gui.marketBrowser.ItemSelected(itemID=srcIdx))
+            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
+
     def swapCargo(self, x, y, srcIdx):
         '''Swap a module from cargo to fitting window'''
         mstate = wx.GetMouseState()
@@ -395,7 +409,7 @@ class FittingView(d.Display):
         sFit = service.Fit.getInstance()
         fit = sFit.getFit(self.activeFitID)
 
-        slotOrder = [Slot.SUBSYSTEM, Slot.HIGH, Slot.MED, Slot.LOW, Slot.RIG]
+        slotOrder = [Slot.SUBSYSTEM, Slot.HIGH, Slot.MED, Slot.LOW, Slot.RIG, Slot.SERVICE]
 
         if fit is not None:
             self.mods = fit.modules[:]
@@ -489,7 +503,10 @@ class FittingView(d.Display):
 
             sel = self.GetNextSelected(sel)
 
-        contexts.append(("fittingShip", "Ship"))
+        sFit = service.Fit.getInstance()
+        fit = sFit.getFit(self.activeFitID)
+
+        contexts.append(("fittingShip", "Ship" if not fit.isStructure else "Citadel"))
 
         menu = ContextMenu.getMenu(selection, *contexts)
         self.PopupMenu(menu)
@@ -540,7 +557,7 @@ class FittingView(d.Display):
                      5: ''}
 
     def slotColour(self, slot):
-        return self.slotColourMap[slot] or self.GetBackgroundColour()
+        return self.slotColourMap.get(slot) or self.GetBackgroundColour()
 
     def refresh(self, stuff):
         '''

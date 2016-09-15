@@ -159,6 +159,11 @@ class ProjectedView(d.Display):
         return fit.name
 
     def fitChanged(self, event):
+        sFit = service.Fit.getInstance()
+        fit = sFit.getFit(event.fitID)
+
+        self.Parent.Parent.DisablePage(self, not fit or fit.isStructure)
+
         #Clear list and get out if current fitId is None
         if event.fitID is None and self.lastFitId is not None:
             self.DeleteAllItems()
@@ -166,8 +171,6 @@ class ProjectedView(d.Display):
             event.Skip()
             return
 
-        sFit = service.Fit.getInstance()
-        fit = sFit.getFit(event.fitID)
         stuff = []
         if fit is not None:
             self.modules = fit.projectedModules[:]

@@ -25,6 +25,8 @@ from eos.saveddata.crestchar import CrestChar
 from eos.saveddata.damagePattern import DamagePattern
 from eos.saveddata.targetResists import TargetResists
 from eos.saveddata.character import Character, Skill
+from eos.saveddata.ship import Ship
+from eos.saveddata.citadel import Citadel
 from eos.saveddata.module import Module, State, Slot, Hardpoint, Rack
 from eos.saveddata.drone import Drone
 from eos.saveddata.fighterAbility import FighterAbility
@@ -34,10 +36,10 @@ from eos.saveddata.implant import Implant
 from eos.saveddata.implantSet import ImplantSet
 from eos.saveddata.booster import SideEffect
 from eos.saveddata.booster import Booster
-from eos.saveddata.ship import Ship
 from eos.saveddata.fit import Fit, ImplantLocation
 from eos.saveddata.mode import Mode
 from eos.saveddata.fleet import Fleet, Wing, Squad
 from eos.saveddata.miscData import MiscData
 from eos.saveddata.override import Override
+
 import eos.db
