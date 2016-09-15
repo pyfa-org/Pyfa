@@ -55,7 +55,6 @@ from gui.preferenceDialog import PreferenceDialog
 from gui.graphFrame import GraphFrame
 from gui.copySelectDialog import CopySelectDialog
 from gui.utils.clipboard import toClipboard, fromClipboard
-from gui.fleetBrowser import FleetBrowser
 from gui.updateDialog import UpdateDialog
 from gui.builtinViews import *
 
@@ -157,12 +156,6 @@ class MainFrame(wx.Frame):
 
         self.shipBrowser = ShipBrowser(self.notebookBrowsers)
         self.notebookBrowsers.AddPage(self.shipBrowser, "Fittings", tabImage = shipBrowserImg, showClose = False)
-
-        #=======================================================================
-        # DISABLED FOR RC2 RELEASE
-        #self.fleetBrowser = FleetBrowser(self.notebookBrowsers)
-        #self.notebookBrowsers.AddPage(self.fleetBrowser, "Fleets", showClose = False)
-        #=======================================================================
 
         self.notebookBrowsers.SetSelection(1)
 
