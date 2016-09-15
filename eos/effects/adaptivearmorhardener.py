@@ -26,7 +26,7 @@ def handler(fit, module, context):
                 DAMAGE PATTERN AMOUNT,
                 MODIFIED DAMAGE PATTERN AMOUNT (SHIP ARMOR RESIST AMOUNT * DAMAGE PATTERN AMOUND),
                 ADAPTIVE RESIST AMOUNT,
-                ADAPTIVE RESIST AMOUNT (Original))
+                ADAPTIVE RESIST AMOUNT (ORIGINAL))
         '''
 
         damagePattern_tuple.append(['Em',
