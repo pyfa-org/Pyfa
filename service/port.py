@@ -861,7 +861,6 @@ class Port(object):
 
     @staticmethod
     def exportMultiBuy(fit):
-        offineSuffix = " /OFFLINE"
         export = "%s\n" % (fit.ship.item.name)
         stuff = {}
         sFit = service.Fit.getInstance()
@@ -869,13 +868,10 @@ class Port(object):
             slot = module.slot
             if not slot in stuff:
                 stuff[slot] = []
-            curr = module.item.name if module.item else (
+            curr = "%s\n" % module.item.name if module.item else (
             "")
             if module.charge and sFit.serviceFittingOptions["exportCharges"]:
-                curr += "\n%s" % module.charge.name
-            if module.state == State.OFFLINE:
-                curr += offineSuffix
-            curr += "\n"
+                curr += "%s\n" % module.charge.name
             stuff[slot].append(curr)
 
         for slotType in EFT_SLOT_ORDER:
