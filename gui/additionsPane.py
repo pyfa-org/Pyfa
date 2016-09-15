@@ -26,6 +26,7 @@ from gui.cargoView import CargoView
 from gui.implantView import ImplantView
 from gui.projectedView import ProjectedView
 from gui.pyfatogglepanel import TogglePanel
+from gui.gangView import GangView
 from gui.bitmapLoader import BitmapLoader
 
 import gui.chromeTabs
@@ -54,6 +55,7 @@ class AdditionsPane(TogglePanel):
         implantImg = BitmapLoader.getImage("implant_small", "gui")
         boosterImg = BitmapLoader.getImage("booster_small", "gui")
         projectedImg = BitmapLoader.getImage("projected_small", "gui")
+        gangImg = BitmapLoader.getImage("fleet_fc_small", "gui")
         cargoImg = BitmapLoader.getImage("cargo_small", "gui")
 
         self.drone = DroneView(self.notebook)
@@ -74,9 +76,12 @@ class AdditionsPane(TogglePanel):
         self.projectedPage = ProjectedView(self.notebook)
         self.notebook.AddPage(self.projectedPage, "Projected", tabImage = projectedImg, showClose = False)
 
+        self.gangPage = GangView(self.notebook)
+        self.notebook.AddPage(self.gangPage, "Fleet", tabImage = gangImg, showClose = False)
+
         self.notebook.SetSelection(0)
 
-    PANES = ["Drones", "Fighters", "Cargo", "Implants", "Boosters", "Projected"]
+    PANES = ["Drones", "Fighters", "Cargo", "Implants", "Boosters", "Projected", "Fleet"]
     def select(self, name):
         self.notebook.SetSelection(self.PANES.index(name))
 

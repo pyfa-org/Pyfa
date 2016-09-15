@@ -34,6 +34,7 @@ from eos.types import State, Slot
 from service.market import Market
 from service.damagePattern import DamagePattern
 from service.character import Character
+from service.fleet import Fleet
 from service.settings import SettingsProvider
 from service.port import Port
 
@@ -183,6 +184,8 @@ class Fit(object):
 
     def deleteFit(self, fitID):
         fit = eos.db.getFit(fitID)
+        sFleet = Fleet.getInstance()
+        sFleet.removeAssociatedFleetData(fit)
 
         eos.db.remove(fit)
 
@@ -233,7 +236,7 @@ class Fit(object):
         self.recalc(fit, withBoosters=True)
 
     def getFit(self, fitID, projected=False, basic=False):
-        ''' Gets fit from database.
+        ''' Gets fit from database, and populates fleet data.
 
         Projected is a recursion flag that is set to reduce recursions into projected fits
         Basic is a flag to simply return the fit without any other processing
@@ -248,6 +251,14 @@ class Fit(object):
         inited = getattr(fit, "inited", None)
 
         if inited is None or inited is False:
+            sFleet = Fleet.getInstance()
+            f = sFleet.getLinearFleet(fit)
+            if f is None:
+                sFleet.removeAssociatedFleetData(fit)
+                fit.fleet = None
+            else:
+                fit.fleet = f
+
             if not projected:
                 for fitP in fit.projectedFits:
                     self.getFit(fitP.ID, projected=True)
