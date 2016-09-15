@@ -901,6 +901,10 @@ class Port(object):
             for booster in fit.boosters:
                 export += "%s\n" % booster.item.name
 
+        if len(fit.fighters) > 0:
+            for fighter in fit.fighters:
+                export += "%s x%s\n" % (fighter.item.name, fighter.amountActive)
+
         if export[-1] == "\n":
             export = export[:-1]
 
