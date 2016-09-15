@@ -22,7 +22,6 @@ import copy
 import threading
 import logging
 import wx
-import gui
 import sched, time
 from codecs import open
 
