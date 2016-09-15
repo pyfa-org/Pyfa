@@ -25,35 +25,41 @@ def handler(fit, module, context):
                 SHIP ARMOR RESIST AMOUNT,
                 DAMAGE PATTERN AMOUNT,
                 MODIFIED DAMAGE PATTERN AMOUNT (SHIP ARMOR RESIST AMOUNT * DAMAGE PATTERN AMOUND),
-                ADAPTIVE RESIST AMOUNT)
+                ADAPTIVE RESIST AMOUNT,
+                ADAPTIVE RESIST AMOUNT (Original))
         '''
 
         damagePattern_tuple.append(['Em',
                 fit.ship.getModifiedItemAttr('armorEmDamageResonance'),
                 damagePattern.emAmount,
                 damagePattern.emAmount*fit.ship.getModifiedItemAttr('armorEmDamageResonance'),
+                module.getModifiedItemAttr('armorEmDamageResonance'),
                 module.getModifiedItemAttr('armorEmDamageResonance')])
 
         damagePattern_tuple.append(['Thermal',
                 fit.ship.getModifiedItemAttr('armorThermalDamageResonance'),
                 damagePattern.thermalAmount,
                 damagePattern.thermalAmount * fit.ship.getModifiedItemAttr('armorThermalDamageResonance'),
+                module.getModifiedItemAttr('armorThermalDamageResonance'),
                 module.getModifiedItemAttr('armorThermalDamageResonance')])
 
         damagePattern_tuple.append(['Kinetic',
                 fit.ship.getModifiedItemAttr('armorKineticDamageResonance'),
                 damagePattern.kineticAmount,
                 damagePattern.kineticAmount*fit.ship.getModifiedItemAttr('armorKineticDamageResonance'),
+                module.getModifiedItemAttr('armorKineticDamageResonance'),
                 module.getModifiedItemAttr('armorKineticDamageResonance')])
 
         damagePattern_tuple.append(['Explosive',
                 fit.ship.getModifiedItemAttr('armorExplosiveDamageResonance'),
                 damagePattern.explosiveAmount,
                 damagePattern.explosiveAmount*fit.ship.getModifiedItemAttr('armorExplosiveDamageResonance'),
+                module.getModifiedItemAttr('armorExplosiveDamageResonance'),
                 module.getModifiedItemAttr('armorExplosiveDamageResonance')])
 
         runLoop = 1
         countPasses = 0
+        resistanceShiftAmount = module.getModifiedItemAttr('resistanceShiftAmount')/100
         while runLoop == 1:
 
             for i in range(4):
@@ -64,15 +70,15 @@ def handler(fit, module, context):
                 #logger.debug("Update values (Type|Resist|ModifiedDamage|AdaptiveResists): %s | %f | %f | %f", damagePattern_tuple[i][0], fit.ship.getModifiedItemAttr(attr), damagePattern_tuple[i][3], damagePattern_tuple[i][4])
 
             # Sort the tuple by which resist took the most damage
-            damagePattern_tuple = sorted(damagePattern_tuple, key=operator.itemgetter(3))
+            damagePattern_tuple = sorted(damagePattern_tuple, key=operator.itemgetter(3,0))
 
             if damagePattern.emAmount == damagePattern.thermalAmount == damagePattern.kineticAmount == damagePattern.explosiveAmount:
                 # If damage pattern is even across the board, we "reset" back to default resists.
                 logger.debug("Setting adaptivearmorhardener resists to uniform profile.")
-                damagePattern_tuple[0][4]=.85
-                damagePattern_tuple[1][4]=.85
-                damagePattern_tuple[2][4]=.85
-                damagePattern_tuple[3][4]=.85
+                damagePattern_tuple[0][4]=damagePattern_tuple[0][5]
+                damagePattern_tuple[1][4]=damagePattern_tuple[0][5]
+                damagePattern_tuple[2][4]=damagePattern_tuple[0][5]
+                damagePattern_tuple[3][4]=damagePattern_tuple[0][5]
                 runLoop = 0
             elif damagePattern_tuple[2][2] == 0:
                 # If damage pattern is a single source, we set all resists to one damage profile.
@@ -88,9 +94,15 @@ def handler(fit, module, context):
                     logger.debug("We've run out of resists to steal. Breaking out of RAH cycle.")
                     break
                 elif damagePattern_tuple[0][4] == 1:
-                    countPasses = countPasses+1
                     # If our weakest resist is at 0, and we're still looping, bail out after we've tried this a few times.
                     # Most likely the RAH is cycling between two different profiles and is in an infinite loop.
+                    countPasses = countPasses+1
+
+                    # Reduce the amount of resists we shift each loop, to try and stabilize on a more average profile.
+                    if resistanceShiftAmount > .01:
+                        resistanceShiftAmount = resistanceShiftAmount - .01
+                        logger.debug("Reducing resistance shift amount to %f", resistanceShiftAmount)
+
                     if countPasses == 15:
                         logger.debug("Looped %f times. Most likely the RAH is cycling between two different profiles and is in an infinite loop. Breaking out of RAH cycle.", countPasses)
                         break
@@ -101,9 +113,9 @@ def handler(fit, module, context):
                 vampDmg=[0]*2
                 for i in [0,1]:
                     attr = "armor%sDamageResonance" % damagePattern_tuple[i][0].capitalize()
-                    if damagePattern_tuple[i][4] < .97:
+                    if damagePattern_tuple[i][4] < 1-resistanceShiftAmount:
                         # If there is more than 3% to steal, let's steal 3% and reduce the resit by that amount.
-                        vampDmg[i] = .03
+                        vampDmg[i] = resistanceShiftAmount
                     else:
                         # If there is equal to or less than 3% left to steal, grab what we can and set the resist to 0%.
                         vampDmg[i] = 1-damagePattern_tuple[i][4]
