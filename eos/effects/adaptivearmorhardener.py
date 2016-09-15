@@ -73,20 +73,25 @@ def handler(fit, module, context):
             damagePattern_tuple = sorted(damagePattern_tuple, key=operator.itemgetter(3,0))
 
             if damagePattern.emAmount == damagePattern.thermalAmount == damagePattern.kineticAmount == damagePattern.explosiveAmount:
-                # If damage pattern is even across the board, we "reset" back to default resists.
+                # If damage pattern is even across the board, we "reset" back to original resist values.
                 logger.debug("Setting adaptivearmorhardener resists to uniform profile.")
-                damagePattern_tuple[0][4]=damagePattern_tuple[0][5]
-                damagePattern_tuple[1][4]=damagePattern_tuple[0][5]
-                damagePattern_tuple[2][4]=damagePattern_tuple[0][5]
-                damagePattern_tuple[3][4]=damagePattern_tuple[0][5]
+                # Do nothing, because the RAH gets recalculated, so just don't change it
                 runLoop = 0
             elif damagePattern_tuple[0][2] == damagePattern_tuple[1][2] == damagePattern_tuple[2][2] == 0:
                 # If damage pattern is a single source, we set all resists to one damage profile.
                 logger.debug("Setting adaptivearmorhardener resists to single damage profile.")
-                damagePattern_tuple[0][4]=1
-                damagePattern_tuple[1][4]=1
-                damagePattern_tuple[2][4]=1
-                damagePattern_tuple[3][4]=.4
+
+                #Do this dynamically just in case CCP mucks with the values.
+                vampDmg=0
+                for i in [0,1,2]:
+                    attr = "armor%sDamageResonance" % damagePattern_tuple[i][0].capitalize()
+                    vampDmg = vampDmg+1-damagePattern_tuple[i][4]
+                    module.increaseItemAttr(attr, (1-damagePattern_tuple[i][4]))
+                    damagePattern_tuple[i][4] = 1
+
+                attr = "armor%sDamageResonance" % damagePattern_tuple[3][0].capitalize()
+                damagePattern_tuple[3][4]=damagePattern_tuple[3][4]-vampDmg
+                module.increaseItemAttr(attr, 0-vampDmg)
                 runLoop = 0
             else:
                 # We have more than one damage source
