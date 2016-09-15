@@ -80,7 +80,7 @@ def handler(fit, module, context):
                 damagePattern_tuple[2][4]=damagePattern_tuple[0][5]
                 damagePattern_tuple[3][4]=damagePattern_tuple[0][5]
                 runLoop = 0
-            elif damagePattern_tuple[2][2] == 0:
+            elif damagePattern_tuple[0][2] == damagePattern_tuple[1][2] == damagePattern_tuple[2][2] == 0:
                 # If damage pattern is a single source, we set all resists to one damage profile.
                 logger.debug("Setting adaptivearmorhardener resists to single damage profile.")
                 damagePattern_tuple[0][4]=1
