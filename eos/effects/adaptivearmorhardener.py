@@ -58,7 +58,8 @@ def handler(fit, module, context):
                 module.getModifiedItemAttr('armorExplosiveDamageResonance')])
 
         runLoop = 1
-        countPasses = 0
+        countPasses = 1
+        countPassesDos = 1
         resistanceShiftAmount = module.getModifiedItemAttr('resistanceShiftAmount')/100
         while runLoop == 1:
 
@@ -94,25 +95,30 @@ def handler(fit, module, context):
                 module.increaseItemAttr(attr, 0-vampDmg)
                 runLoop = 0
             else:
-                # We have more than one damage source
+                #logger.debug("Multiple damage type profile.")
                 if damagePattern_tuple[1][4] == 1 == damagePattern_tuple[0][4]:
                     logger.debug("We've run out of resists to steal. Breaking out of RAH cycle.")
                     break
-                elif damagePattern_tuple[0][4] == 1:
-                    # If our weakest resist is at 0, and we're still looping, bail out after we've tried this a few times.
+                elif (countPasses >= 100) or (countPassesDos >= 5):
+                    logger.debug("Looped a total of %f times, and %f times after resistance shift amount was reduced. Most likely the RAH is cycling between two different profiles and is in an infinite loop. Breaking out of RAH cycle.", countPasses, countPassesDos)
+                    # If we hit this break point and have over 100 passes, something has gone horribly wrong.
+                    # Most likely we'll hit this after we've reduced the resist shifting down to .01 and looped 5 times.
+                    break
+                elif (damagePattern_tuple[0][4] == 1) or (countPasses >= 15):
                     # Most likely the RAH is cycling between two different profiles and is in an infinite loop.
-                    countPasses = countPasses+1
-
                     # Reduce the amount of resists we shift each loop, to try and stabilize on a more average profile.
                     if resistanceShiftAmount > .01:
                         resistanceShiftAmount = resistanceShiftAmount - .01
                         logger.debug("Reducing resistance shift amount to %f", resistanceShiftAmount)
-
-                    if countPasses == 15:
-                        logger.debug("Looped %f times. Most likely the RAH is cycling between two different profiles and is in an infinite loop. Breaking out of RAH cycle.", countPasses)
-                        break
                     else:
-                        pass
+                        # Start a new counter
+                        countPassesDos = countPassesDos+1
+
+                    countPasses = countPasses+1
+                    #logger.debug("Looped %f times.", countPasses)
+                else:
+                    countPasses = countPasses+1
+                    #logger.debug("Looped %f times.",countPasses)
 
                 # Loop through the resists that did least damage and figure out how much there is to steal
                 vampDmg=[0]*2
