@@ -893,6 +893,14 @@ class Port(object):
             for cargo in fit.cargo:
                 export += "%s x%s\n" % (cargo.item.name, cargo.amount)
 
+        if len(fit.implants) > 0:
+            for implant in fit.implants:
+                export += "%s\n" % implant.item.name
+
+        if len(fit.boosters) > 0:
+            for booster in fit.boosters:
+                export += "%s\n" % booster.item.name
+
         if export[-1] == "\n":
             export = export[:-1]
 
