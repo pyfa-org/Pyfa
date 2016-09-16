@@ -698,6 +698,11 @@ class Port(object):
             for drone in fit.drones:
                 export += "%s x%s\n" % (drone.item.name, drone.amount)
 
+        if len(fit.fighters) > 0:
+            export += "\n\n"
+            for fighter in fit.fighters:
+                export += "%s x%s\n" % (fighter.item.name, fighter.amountActive)
+
         if export[-1] == "\n":
             export = export[:-1]
 
