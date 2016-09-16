@@ -725,10 +725,13 @@ class Port(object):
     def exportEftImps(cls, fit):
         export = cls._exportEftBase(fit)
 
-        if len(fit.implants) > 0:
+        if len(fit.implants) > 0 or len(fit.boosters) > 0:
             export += "\n\n\n"
             for implant in fit.implants:
                 export += "%s\n" % implant.item.name
+            for booster in fit.boosters:
+                export += "%s\n" % booster.item.name
+
         if export[-1] == "\n":
             export = export[:-1]
 
