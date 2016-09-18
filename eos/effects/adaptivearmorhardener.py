@@ -99,7 +99,10 @@ def handler(fit, module, context):
                 if damagePattern_tuple[1][4] == 1 == damagePattern_tuple[0][4]:
                     logger.debug("We've run out of resists to steal. Breaking out of RAH cycle.")
                     break
-                elif (countPasses >= 100) or (countPassesDos >= 10):
+                elif ((1-damagePattern_tuple[0][4]) < resistanceShiftAmount and (1-damagePattern_tuple[1][4]) < resistanceShiftAmount):
+                    logger.debug("Our two bottom resists have very small numbers left. Bail so we don't get too weird of numbers.")
+                    break
+                elif (countPasses >= 100):
                     logger.debug("Looped a total of %f times, and %f times after resistance shift amount was reduced. Most likely the RAH is cycling between two different profiles and is in an infinite loop. Breaking out of RAH cycle.", countPasses, countPassesDos)
                     # If we hit this break point and have over 100 passes, something has gone horribly wrong.
                     # Most likely we'll hit this after we've reduced the resist shifting down to .01 and looped 5 times.
