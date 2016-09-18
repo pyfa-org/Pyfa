@@ -36,7 +36,7 @@ def handler(fit, module, context):
         # Simulate RAH cycles until the RAH either stops changing or enters a loop.
         # The number of iterations is limited to prevent an infinite loop if something goes wrong.
         cycleList = []
-        loopStart = -1
+        loopStart = -20
         for num in range(50):
             #logger.debug("Starting cycle %d.", num)
             # The strange order is to emulate the ingame sorting when different types have taken the same amount of damage.
@@ -81,12 +81,11 @@ def handler(fit, module, context):
             
             # See if the current RAH profile has been encountered before, indicating a loop.
             for i, val in enumerate(cycleList):
-                tolerance = 1e-09 
+                tolerance = 1e-06 
                 if abs(RAHResistance[0] - val[0]) <= tolerance and abs(RAHResistance[1] - val[1]) <= tolerance and abs(RAHResistance[2] - val[2]) <= tolerance and abs(RAHResistance[3] - val[3]) <= tolerance:
                     loopStart = i
                     #logger.debug("Loop found: %d-%d", loopStart, num)
                     break
-                if loopStart >= 0: break
             if loopStart >= 0: break
             
             cycleList.append(list(RAHResistance))
@@ -94,13 +93,16 @@ def handler(fit, module, context):
         if loopStart < 0:
             logger.error("Reactive Armor Hardener failed to find equilibrium. Damage profile after armor: %f/%f/%f/%f", baseDamageTaken[0], baseDamageTaken[1], baseDamageTaken[2], baseDamageTaken[3])
         
-        # Average the RAH profiles that it loops through
+        # Average the profiles in the RAH loop, or the last 20 if it didn't find a loop. 
         loopCycles = cycleList[loopStart:]
         numCycles = len(loopCycles)
         average = [0, 0, 0, 0]
         for cycle in loopCycles:
             for i in range(4):
-                average[i] += cycle[i] / numCycles
+                average[i] += cycle[i]
+		
+        for i in range(4):
+            average[i] = round(average[i] / numCycles, 3)
             
         # Set the new resistances
         #logger.debug("Setting new resist profile: %f/%f/%f/%f", average[0], average[1], average[2],average[3])
