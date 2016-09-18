@@ -103,9 +103,9 @@ def handler(fit, module, context):
                 elif ((1-damagePattern_tuple[0][4]) < resistanceShiftAmount and (1-damagePattern_tuple[1][4]) < resistanceShiftAmount) and (countPasses > 10):
                     logger.debug("Our two bottom resists have less thatn %f resists left. Bail so we don't get too weird of numbers.", resistanceShiftAmount)
                     break
-                elif (countPasses >= 30):
+                elif (countPasses >= 50):
                     logger.debug("Looped a total of %f times. Most likely the RAH is cycling between different profiles and is in an infinite loop. Breaking out of RAH cycle.", countPasses)
-                    # If we hit this break point and have over 100 passes, something has gone horribly wrong.
+                    # If we hit this break point something has gone horribly wrong.
                     # Most likely we'll hit this after we've reduced the resist shifting down to .01 and looped 5 times.
                     break
                 elif ((damagePattern_tuple[0][4] == 1 and countPasses >= 7)) or (countPasses >= 10):
@@ -207,3 +207,4 @@ def handler(fit, module, context):
             adaptiveResists_tuple[0], adaptiveResists_tuple[1], adaptiveResists_tuple[2], adaptiveResists_tuple[3],
             adaptiveResists_tuple[4], adaptiveResists_tuple[5], adaptiveResists_tuple[6], adaptiveResists_tuple[7],
             adaptiveResists_tuple[8], adaptiveResists_tuple[9], adaptiveResists_tuple[10], adaptiveResists_tuple[11])
+
