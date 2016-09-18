@@ -4,6 +4,7 @@
 # Module: Reactive Armor Hardener
 import logging
 import operator
+import time
 
 logger = logging.getLogger(__name__)
 
@@ -100,22 +101,19 @@ def handler(fit, module, context):
                     logger.debug("We've run out of resists to steal. Breaking out of RAH cycle.")
                     break
                 elif ((1-damagePattern_tuple[0][4]) < resistanceShiftAmount and (1-damagePattern_tuple[1][4]) < resistanceShiftAmount) and (countPasses > 10):
-                    logger.debug("Our two bottom resists have very small numbers left. Bail so we don't get too weird of numbers.")
+                    logger.debug("Our two bottom resists have less thatn %f resists left. Bail so we don't get too weird of numbers.", resistanceShiftAmount)
                     break
-                elif (countPasses >= 100):
-                    logger.debug("Looped a total of %f times, and %f times after resistance shift amount was reduced. Most likely the RAH is cycling between two different profiles and is in an infinite loop. Breaking out of RAH cycle.", countPasses, countPassesDos)
+                elif (countPasses >= 30):
+                    logger.debug("Looped a total of %f times. Most likely the RAH is cycling between different profiles and is in an infinite loop. Breaking out of RAH cycle.", countPasses)
                     # If we hit this break point and have over 100 passes, something has gone horribly wrong.
                     # Most likely we'll hit this after we've reduced the resist shifting down to .01 and looped 5 times.
                     break
                 elif ((damagePattern_tuple[0][4] == 1 and countPasses >= 7)) or (countPasses >= 10):
-                    # Most likely the RAH is cycling between two different profiles and is in an infinite loop.
+                    # Most likely the RAH is cycling between multiple profiles and may be in an infinite loop.
                     # Reduce the amount of resists we shift each loop, to try and stabilize on a more average profile.
                     if resistanceShiftAmount > .01:
                         resistanceShiftAmount = resistanceShiftAmount - .01
                         logger.debug("Reducing resistance shift amount to %f", resistanceShiftAmount)
-                    else:
-                        # Start a new counter
-                        countPassesDos = countPassesDos+1
 
                     countPasses = countPasses+1
                     #logger.debug("Looped %f times.", countPasses)
