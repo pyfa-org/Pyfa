@@ -99,7 +99,7 @@ def handler(fit, module, context):
                 if damagePattern_tuple[1][4] == 1 == damagePattern_tuple[0][4]:
                     logger.debug("We've run out of resists to steal. Breaking out of RAH cycle.")
                     break
-                elif ((1-damagePattern_tuple[0][4]) < resistanceShiftAmount and (1-damagePattern_tuple[1][4]) < resistanceShiftAmount):
+                elif ((1-damagePattern_tuple[0][4]) < resistanceShiftAmount and (1-damagePattern_tuple[1][4]) < resistanceShiftAmount) and (countPasses > 10):
                     logger.debug("Our two bottom resists have very small numbers left. Bail so we don't get too weird of numbers.")
                     break
                 elif (countPasses >= 100):
