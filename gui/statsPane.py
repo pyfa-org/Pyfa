@@ -97,16 +97,8 @@ class StatsPane(wx.Panel):
             view.refreshPanel(None)
 
             contentPanel.Bind(wx.EVT_RIGHT_DOWN, self.contextHandler(contentPanel))
-            # Exclude firepower view from context menus. It is handled separately.
-            if viewName != 'firepowerViewFull':
-                for child in contentPanel.GetChildren():
-                    child.Bind(wx.EVT_RIGHT_DOWN, self.contextHandler(contentPanel))
-
-            # This is a TOTAL hack, but it's the cleanest place to put it.
-            # Updates firepower view to show resists context menu on buttom click.
-            if viewName == 'firepowerViewFull':
-                for child in contentPanel.GetChildren():
-                    child.Bind(wx.EVT_BUTTON, self.contextHandler(contentPanel))
+            for child in contentPanel.GetChildren():
+                child.Bind(wx.EVT_RIGHT_DOWN, self.contextHandler(contentPanel))
 
             mainSizer.Add(tp, 0, wx.EXPAND | wx.LEFT, 3)
             if i < maxviews - 1:
