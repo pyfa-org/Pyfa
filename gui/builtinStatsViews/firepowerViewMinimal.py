@@ -25,7 +25,6 @@ from gui.bitmapLoader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 from gui.contextMenu import ContextMenu
 
-
 class FirepowerViewMinimal(StatsView):
     name = "firepowerViewMinimal"
     def __init__(self, parent):
@@ -107,12 +106,14 @@ class FirepowerViewMinimal(StatsView):
         test = 1
         #wx.PostEvent(self.mainFrame, EffectiveHpToggled(effective=self.stEHPs.GetLabel() == "HP"))
 
+
         viewName = self.name
 
         menu = ContextMenu.getMenu(None, (viewName,))
-        if menu is not None:
-            contentPanel.PopupMenu(menu)
+        #if menu is not None:
+        #    contentPanel.PopupMenu(menu)
 
+        test = 1
         #event.Skip()
 
     def refreshPanel(self, fit):
