@@ -107,6 +107,6 @@ def handler(fit, module, context):
         # Set the new resistances
         #logger.debug("Setting new resist profile: %f/%f/%f/%f", average[0], average[1], average[2],average[3])
         for i, attr in enumerate(('armorEmDamageResonance', 'armorThermalDamageResonance', 'armorKineticDamageResonance', 'armorExplosiveDamageResonance')):
-            module.forceItemAttr(attr, average[i])
+            module.increaseItemAttr(attr, average[i] - module.getModifiedItemAttr(attr))
             fit.ship.multiplyItemAttr(attr, average[i], stackingPenalties=True, penaltyGroup="preMul")
     
