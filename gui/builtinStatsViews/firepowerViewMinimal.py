@@ -24,6 +24,8 @@ from gui.statsView import StatsView
 from gui.bitmapLoader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 from gui.contextMenu import ContextMenu
+#from gui.statsPane import StatsPane
+import gui.statsPane
 
 
 class FirepowerViewMinimal(StatsView):
@@ -98,7 +100,11 @@ class FirepowerViewMinimal(StatsView):
         self.miningyield = wx.BitmapButton(contentPanel, -1, image)
         self.miningyield.SetToolTip(wx.ToolTip("Click to choose target resist profile"))
         #Need to point to the context menu
-        self.miningyield.Bind(wx.EVT_BUTTON, self.loadProfiles)
+        self.miningyield.Bind(wx.EVT_BUTTON, gui.statsPane.StatsPane.contextHandler(contentPanel))
+
+
+
+        #child.Bind(wx.EVT_BUTTON, self.contextHandler(contentPanel))
         sizerFirepower.Add(self.miningyield, 0, wx.ALIGN_LEFT)
 
         self._cachedValues.append(0)
