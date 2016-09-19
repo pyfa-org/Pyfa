@@ -106,14 +106,17 @@ class FirepowerViewFull(StatsView):
         image = BitmapLoader.getBitmap("turret_small", "gui")
         self.miningyield = wx.BitmapButton(contentPanel, -1, image)
         self.miningyield.SetToolTip(wx.ToolTip("Click to choose target resist profile"))
-        #Need to point to the context menu
-        #self.miningyield.Bind(wx.EVT_BUTTON, self.switchToMiningYieldView)
+        # Need to point to dummy event handler for context menus to work
+        self.miningyield.Bind(wx.EVT_BUTTON, self.dummy)
         sizerFirepower.Add(self.miningyield, 0, wx.ALIGN_LEFT)
 
         #self.btnApply = wx.Button( panel, wx.ID_ANY, u"Save Client Settings", wx.DefaultPosition, wx.DefaultSize, 0 )
         #self.btnApply.Bind(wx.EVT_BUTTON, self.OnBtnApply)
 
         self._cachedValues.append(0)
+
+    def dummy(self, context):
+        pass
 
     def refreshPanel(self, fit):
         #If we did anything intresting, we'd update our labels to reflect the new fit's stats here
