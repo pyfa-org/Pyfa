@@ -5,3 +5,9 @@ def handler(fit, src, context):
     # This is all wrong.  We need to modify the module attached to the ship (citadel) and add the bonus from the rig.
     # So Rig -> Ship -> Module
 '''
+
+type = "passive"
+def handler(fit, src, context):
+    for module in fit.modules:
+        if module.getModifiedItemAttr("lightningWeaponTargetAmount"):
+            module.increaseItemAttr("lightningWeaponTargetAmount",src.getModifiedItemAttr("structureRigDoomsdayTargetAmountBonus"))
