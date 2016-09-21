@@ -30,7 +30,7 @@ import gui.globalEvents as GE
 class StatsPane(wx.Panel):
     AVAILIBLE_VIEWS = ["resources", "resistances", "recharge", "firepower",
                      "capacitor", "targetingmisc",
-                     "price", "miningyield"]
+                     "price", "miningyield", "drones"]
 
     DEFAULT_VIEWS = []
 

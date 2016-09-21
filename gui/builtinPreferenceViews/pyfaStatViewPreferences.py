@@ -98,12 +98,10 @@ class PFStatViewPref ( PreferenceView):
         rbSizerRow3.Add(self.rbMining, 1, wx.ALL, 5 )
         self.rbMining.Bind(wx.EVT_RADIOBOX, self.OnMiningYieldChange)
 
-        '''
-        self.rbTankRecharge = wx.RadioBox(panel, -1, "???", wx.DefaultPosition, wx.DefaultSize, ['None', 'Minimal', 'Full'], 1, wx.RA_SPECIFY_COLS)
-        self.rbTankRecharge.SetSelection(self.settings.get('Other'))
-        rbSizerRow3.Add(self.rbTankRecharge, 1, wx.ALL, 5 )
-        self.rbServer.Bind(wx.EVT_RADIOBOX, self.OnSettingChange)
-        '''
+        self.rbDrones = wx.RadioBox(panel, -1, "Drones", wx.DefaultPosition, wx.DefaultSize, ['None', 'Minimal', 'Full'], 1, wx.RA_SPECIFY_COLS)
+        self.rbDrones.SetSelection(self.settings.get('drones'))
+        rbSizerRow3.Add(self.rbDrones, 1, wx.ALL, 5 )
+        self.rbDrones.Bind(wx.EVT_RADIOBOX, self.OnDroneChange)
 
         mainSizer.Add(rbSizerRow3, 1, wx.ALL|wx.EXPAND, 0)
 
@@ -136,7 +134,10 @@ class PFStatViewPref ( PreferenceView):
 
     def OnMiningYieldChange(self, event):
         self.settings.set('miningyield', event.GetInt())
-        
+
+    def OnDroneChange(self, event):
+        self.settings.set('drones', event.GetInt())
+
     def getImage(self):
         return BitmapLoader.getBitmap("eve", "gui")
 
