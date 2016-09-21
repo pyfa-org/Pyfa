@@ -6,5 +6,5 @@ __all__ = ["resourcesViewFull", "resourcesViewMinimal",
            "targetingMiscViewFull", "targetingMiscViewMinimal",
            "priceViewFull", "priceViewMinimal",
            "miningyieldViewFull", "miningyieldViewMinimal",
-           "droneViewFull", "droneViewMinimal",
+           "dronesViewFull", "dronesViewMinimal",
            "cargoViewFull", "cargoViewMinimal"]

@@ -29,52 +29,18 @@ from eos.types import Hardpoint
 
 from gui.utils.numberFormatter import formatAmount
 
-class DroneViewMin(StatsView):
-    name = "droneViewMin"
-    contexts = ["drone","fighter"]
+class ResourcesViewFull(StatsView):
+    name = "dronesViewFull"
+    contexts = ["drones", "fighter", "cargo"]
 
     def __init__(self, parent):
         StatsView.__init__(self)
         self.parent = parent
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.mainFrame.additionsPane.notebook.Bind(gui.chromeTabs.EVT_NOTEBOOK_PAGE_CHANGED, self.pageChanged)
-
-    def pageChanged(self, event):
-        page = self.mainFrame.additionsPane.getName(event.GetSelection())
-        if page == "Fighters":
-            self.toggleContext("fighter")
-        else:
-            self.toggleContext("drone")
-
-    def toggleContext(self, context):
-        # Apparently you cannot .Hide(True) on a Window, otherwise I would just .Hide(context !== x).
-        # This is a gimpy way to toggle this shit
-        for x in self.contexts:
-            bitmap = getattr(self, "bitmapFull{}Bay".format(x.capitalize()))
-            base = getattr(self, "baseFull{}Bay".format(x.capitalize()))
-
-            if context == x:
-                bitmap.Show()
-                base.Show(True)
-            else:
-                bitmap.Hide()
-                base.Hide(True)
-
-        fighter_sizer = getattr(self, "boxSizerFighter")
-        drone_sizer = getattr(self, "boxSizerDrones")
-
-        if context != "fighter":
-            fighter_sizer.ShowItems(False)
-            drone_sizer.ShowItems(True)
-        else:
-            fighter_sizer.ShowItems(True)
-            drone_sizer.ShowItems(False)
-
-        self.panel.Layout()
-        self.headerPanel.Layout()
+        #self.mainFrame.additionsPane.notebook.Bind(gui.chromeTabs.EVT_NOTEBOOK_PAGE_CHANGED, self.pageChanged)
 
     def getHeaderText(self, fit):
-        return "Resources"
+        return "Drones/Fighters"
 
     def getTextExtentW(self, text):
         width, height = self.parent.GetTextExtent( text )
@@ -101,29 +67,28 @@ class DroneViewMin(StatsView):
         base = sizerResources
         sizer.AddSpacer((0, 0), 1, wx.EXPAND, 5)
         #Turrets & launcher hardslots display
-        tooltipText = {"drones":"Drones active", "fighter": "Fighter squadrons active"}
-        for type in ("drones", "fighter"):
+        tooltipText = {"Controlrange":"Control Range"}
+        suffix = {'Controlrange':'km'}
+
+        typeValues = []
+        typeValues.append("Controlrange")
+        for type in typeValues:
             box = wx.BoxSizer(wx.HORIZONTAL)
 
-            bitmap = BitmapLoader.getStaticBitmap("%s_big" % type, parent, "gui")
-            tooltip = wx.ToolTip(tooltipText[type])
-            bitmap.SetToolTip(tooltip)
-
-            box.Add(bitmap, 0, wx.ALIGN_CENTER)
+            text = tooltipText[type]
+            typeText = wx.StaticText(parent, wx.ID_ANY, "%s : " % (text))
+            box.Add(typeText, 0, wx.ALIGN_CENTER | wx.LEFT, 5)
 
             sizer.Add(box, 0, wx.ALIGN_CENTER)
 
-            suffix = {'drones':'Active', 'fighter':'Tubes'}
             lbl = wx.StaticText(parent, wx.ID_ANY, "0")
-            setattr(self, "label%sUsed%s%s" % (panel.capitalize(), type.capitalize(), suffix[type].capitalize()), lbl)
+            setattr(self, "label%s%s" % (panel.capitalize(), type.capitalize()), lbl)
+
             box.Add(lbl, 0, wx.ALIGN_CENTER | wx.LEFT, 5)
 
-            box.Add(wx.StaticText(parent, wx.ID_ANY, "/"), 0, wx.ALIGN_CENTER)
-
-            lbl = wx.StaticText(parent, wx.ID_ANY, "0")
-            setattr(self, "label%sTotal%s%s" % (panel.capitalize(), type.capitalize(), suffix[type].capitalize()), lbl)
-            box.Add(lbl, 0, wx.ALIGN_CENTER)
-            setattr(self, "boxSizer{}".format(type.capitalize()), box)
+            text = suffix[type]
+            typeSuffix = wx.StaticText(parent, wx.ID_ANY, "%s" % (text))
+            box.Add(typeSuffix, 0, wx.ALIGN_CENTER | wx.LEFT, 5)
 
             # Hack - We add a spacer after each thing, but we are always hiding something. The spacer is stil there.
             # This way, we only have one space after the drones/fighters
@@ -132,8 +97,10 @@ class DroneViewMin(StatsView):
 
 
         #PG, Cpu & drone stuff
-        tooltipText = {"droneBay":"Drone bay", "fighterBay": "Fighter bay", "droneBandwidth":"Drone bandwidth"}
-        for i, group in enumerate(("droneBay", "fighterBay", "droneBandwidth")):
+        tooltipText = {"cpu":"CPU", "pg":"PowerGrid", "droneBay":"Drone bay", "fighterBay": "Fighter bay", "droneBandwidth":"Drone bandwidth", "cargoBay":"Cargo bay", "turret":"Turret hardpoints", "launcher":"Launcher hardpoints", "drones":"Drones active", "fighter": "Fighter squadrons active", "calibration":"Calibration"}
+        units = {"droneBandwidth": " mbit/s", "droneBay": u" m\u00B3", "fighterBay": u" m\u00B3", "cargoBay": u" m\u00B3", 'drones': ' Active', 'fighter': ' Tubes'}
+
+        for i, group in enumerate((("drones", "droneBandwidth", "droneBay"), ("fighter", "fighterBay"))):
             main = wx.BoxSizer(wx.VERTICAL)
             base.Add(main, 1 , wx.ALIGN_CENTER)
 
@@ -155,6 +122,7 @@ class DroneViewMin(StatsView):
                 b.Add(stats, 1, wx.EXPAND)
 
                 lbl = wx.StaticText(parent, wx.ID_ANY, "0")
+                test = ("label%sUsed%s" % (panel.capitalize(), capitalizedType), lbl)
                 setattr(self, "label%sUsed%s" % (panel.capitalize(), capitalizedType), lbl)
                 absolute.Add(lbl, 0, wx.ALIGN_LEFT | wx.LEFT, 3)
 
@@ -164,7 +132,6 @@ class DroneViewMin(StatsView):
                 setattr(self, "label%sTotal%s" % (panel.capitalize(), capitalizedType), lbl)
                 absolute.Add(lbl, 0, wx.ALIGN_LEFT)
 
-                units = {"droneBandwidth":" mbit/s", "droneBay":u" m\u00B3", "fighterBay":u" m\u00B3"}
                 lbl = wx.StaticText(parent, wx.ID_ANY, "%s" % units[type])
                 absolute.Add(lbl, 0, wx.ALIGN_LEFT)
 
@@ -181,33 +148,22 @@ class DroneViewMin(StatsView):
                 setattr(self, "base%s%s" % (panel.capitalize(), capitalizedType), b)
                 setattr(self, "bitmap%s%s" % (panel.capitalize(), capitalizedType), bitmap)
 
-        self.toggleContext("drone")
+        #self.toggleContext("drone")
 
     def refreshPanel(self, fit):
         #If we did anything intresting, we'd update our labels to reflect the new fit's stats here
 
-        stats = (("label%sUsedTurretHardpoints", lambda: fit.getHardpointsUsed(Hardpoint.TURRET), 0, 0, 0),
-                         ("label%sTotalTurretHardpoints", lambda: fit.ship.getModifiedItemAttr('turretSlotsLeft'), 0, 0, 0),
-                         ("label%sUsedLauncherHardpoints", lambda: fit.getHardpointsUsed(Hardpoint.MISSILE), 0, 0, 0),
-                         ("label%sTotalLauncherHardpoints", lambda: fit.ship.getModifiedItemAttr('launcherSlotsLeft'), 0, 0, 0),
-                         ("label%sUsedDronesActive", lambda: fit.activeDrones, 0, 0, 0),
-                         ("label%sTotalDronesActive", lambda: fit.extraAttributes["maxActiveDrones"], 0, 0, 0),
-                         ("label%sUsedFighterTubes", lambda: fit.fighterTubesUsed, 3, 0, 9),
-                         ("label%sTotalFighterTubes", lambda: fit.ship.getModifiedItemAttr("fighterTubes"), 3, 0, 9),
-                         ("label%sUsedCalibrationPoints", lambda: fit.calibrationUsed, 0, 0, 0),
-                         ("label%sTotalCalibrationPoints", lambda: fit.ship.getModifiedItemAttr('upgradeCapacity'), 0, 0, 0),
-                         ("label%sUsedPg", lambda: fit.pgUsed, 4, 0, 9),
-                         ("label%sUsedCpu", lambda: fit.cpuUsed, 4, 0, 9),
-                         ("label%sTotalPg", lambda: fit.ship.getModifiedItemAttr("powerOutput"), 4, 0, 9),
-                         ("label%sTotalCpu", lambda: fit.ship.getModifiedItemAttr("cpuOutput"), 4, 0, 9),
+        stats = (("label%sUsedDrones", lambda: fit.activeDrones, 0, 0, 0),
+                         ("label%sTotalDrones", lambda: fit.extraAttributes["maxActiveDrones"], 0, 0, 0),
+                         ("label%sUsedFighter", lambda: fit.fighterTubesUsed, 3, 0, 9),
+                         ("label%sTotalFighter", lambda: fit.ship.getModifiedItemAttr("fighterTubes"), 3, 0, 9),
                          ("label%sUsedDroneBay", lambda: fit.droneBayUsed, 3, 0, 9),
                          ("label%sUsedFighterBay", lambda: fit.fighterBayUsed, 3, 0, 9),
                          ("label%sUsedDroneBandwidth", lambda: fit.droneBandwidthUsed, 3, 0, 9),
                          ("label%sTotalDroneBay", lambda: fit.ship.getModifiedItemAttr("droneCapacity"), 3, 0, 9),
                          ("label%sTotalDroneBandwidth", lambda: fit.ship.getModifiedItemAttr("droneBandwidth"), 3, 0, 9),
                          ("label%sTotalFighterBay", lambda: fit.ship.getModifiedItemAttr("fighterCapacity"), 3, 0, 9),
-                         ("label%sUsedCargoBay", lambda: fit.cargoBayUsed, 3, 0, 9),
-                         ("label%sTotalCargoBay", lambda: fit.ship.getModifiedItemAttr("capacity"), 3, 0, 9))
+                         ("label%sControlrange", lambda: fit.extraAttributes["droneControlRange"]/1000, 3, 0, 9))
         panel = "Full"
         usedTurretHardpoints = 0
         totalTurretHardpoints = 0
@@ -219,20 +175,20 @@ class DroneViewMin(StatsView):
             value = value() if fit is not None else 0
             value = value if value is not None else 0
 
-            if labelName % panel == "label%sUsedDronesActive" % panel:
-                usedDronesActive = value
+            if labelName % panel == "label%sUsedDrones" % panel:
+                usedDrones = value
                 labelUDA = label
 
-            if labelName % panel == "label%sTotalDronesActive" % panel:
-                totalDronesActive = value
+            if labelName % panel == "label%sTotalDrones" % panel:
+                totalDrones = value
                 labelTDA = label
 
-            if labelName % panel == "label%sUsedFighterTubes" % panel:
-                usedFighterTubes = value
+            if labelName % panel == "label%sUsedFighter" % panel:
+                usedFighter = value
                 labelUFT = label
 
-            if labelName % panel == "label%sTotalFighterTubes" % panel:
-                totalFighterTubes = value
+            if labelName % panel == "label%sTotalFighter" % panel:
+                totalFighter = value
                 labelTFT = label
 
             if isinstance(value, basestring):
@@ -245,6 +201,16 @@ class DroneViewMin(StatsView):
         colorWarn = wx.Colour(204, 51, 51)
         colorNormal = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOWTEXT)
 
+        '''
+        if usedTurretHardpoints > totalTurretHardpoints:
+            colorT = colorWarn
+        else:
+            colorT = colorNormal
+        if usedLauncherHardpoints > totalLauncherHardPoints:
+            colorL = colorWarn
+        else:
+            colorL = colorNormal
+
         if usedDronesActive > totalDronesActive:
             colorD = colorWarn
         else:
@@ -253,17 +219,24 @@ class DroneViewMin(StatsView):
             colorF = colorWarn
         else:
             colorF = colorNormal
+        if usedCalibrationPoints > totalCalibrationPoints:
+            colorC = colorWarn
+        else:
+            colorC = colorNormal
+        '''
 
-        #labelUTH.SetForegroundColour(colorT)
-        #labelTTH.SetForegroundColour(colorT)
-        #labelULH.SetForegroundColour(colorL)
-        #labelTLH.SetForegroundColour(colorL)
+        '''
+        labelUTH.SetForegroundColour(colorT)
+        labelTTH.SetForegroundColour(colorT)
+        labelULH.SetForegroundColour(colorL)
+        labelTLH.SetForegroundColour(colorL)
         labelUDA.SetForegroundColour(colorD)
         labelTDA.SetForegroundColour(colorD)
         labelUFT.SetForegroundColour(colorF)
         labelTFT.SetForegroundColour(colorF)
-        #labelUCP.SetForegroundColour(colorC)
-        #labelTCP.SetForegroundColour(colorC)
+        labelUCP.SetForegroundColour(colorC)
+        labelTCP.SetForegroundColour(colorC)
+        '''
 
         if fit is not None:
             resMax = (lambda: fit.ship.getModifiedItemAttr("droneCapacity"),
@@ -271,26 +244,38 @@ class DroneViewMin(StatsView):
                     lambda: fit.ship.getModifiedItemAttr("droneBandwidth"))
 
         i = 0
-        for resourceType in ("droneBay", "fighterBay", "droneBandwidth"):
+        for resourceType in ("droneBay", "fighterBay", "droneBandwidth", "drones", "fighter"):
+
+            try:
+                testUsed = "used%s" % resourceType.capitalize()
+                resUsed = eval(testUsed)
+            except NameError:
+                resUsed = None
+
+            try:
+                testTotal = "total%s" % resourceType.capitalize()
+                resTotal = eval(testTotal)
+            except NameError:
+                resTotal = None
+
             if fit is not None:
                 capitalizedType = resourceType[0].capitalize() + resourceType[1:]
-
                 gauge = getattr(self, "gauge%s%s" % (panel, capitalizedType))
-                resUsed = getattr(fit,"%sUsed" % resourceType)
+                if resUsed is None:
+                    resUsed = getattr(fit,"%sUsed" % resourceType)
 
-                gauge.SetValueRange(resUsed or 0, resMax[i]() or 0)
+                if resTotal is None:
+                    resTotal = resMax[i]()
 
+                gauge.SetValueRange(resUsed or 0, resTotal or 0)
                 i+=1
             else:
                 capitalizedType = resourceType[0].capitalize() + resourceType[1:]
-
                 gauge = getattr(self, "gauge%s%s" % (panel, capitalizedType))
-
                 gauge.SetValueRange(0, 0)
-
                 i+=1
 
         self.panel.Layout()
         self.headerPanel.Layout()
 
-DroneViewMin.register()
+ResourcesViewFull.register()
