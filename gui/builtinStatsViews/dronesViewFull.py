@@ -24,6 +24,7 @@ from gui.bitmapLoader import BitmapLoader
 from gui import pygauge as PG
 import gui.mainFrame
 import gui.chromeTabs
+import service.guiCreator
 
 from eos.types import Hardpoint
 
@@ -100,6 +101,14 @@ class ResourcesViewFull(StatsView):
         tooltipText = {"cpu":"CPU", "pg":"PowerGrid", "droneBay":"Drone bay", "fighterBay": "Fighter bay", "droneBandwidth":"Drone bandwidth", "cargoBay":"Cargo bay", "turret":"Turret hardpoints", "launcher":"Launcher hardpoints", "drones":"Drones active", "fighter": "Fighter squadrons active", "calibration":"Calibration"}
         units = {"droneBandwidth": " mbit/s", "droneBay": u" m\u00B3", "fighterBay": u" m\u00B3", "cargoBay": u" m\u00B3", 'drones': ' Active', 'fighter': ' Tubes'}
 
+        guiInfo = []
+        # guiInfo format
+        # ["Text","Type","Column","Bitmap","Tooltip","Suffix"]
+        guiInfo = ["drones","Drones"]
+
+        returnValue = service.guiCreator.guiCreator.createColumns(contentPanel, headerPanel, guiInfo)
+
+        ''''''
         for i, group in enumerate((("drones", "droneBandwidth", "droneBay"), ("fighter", "fighterBay"))):
             main = wx.BoxSizer(wx.VERTICAL)
             base.Add(main, 1 , wx.ALIGN_CENTER)
