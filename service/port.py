@@ -21,7 +21,7 @@ import re
 import os
 import xml.dom
 
-from eos.types import State, Slot, Module, Cargo, Fit, Ship, Drone, Implant, Booster
+from eos.types import State, Slot, Module, Cargo, Fit, Ship, Drone, Implant, Booster, Citadel
 import service
 import wx
 import logging
@@ -174,7 +174,10 @@ class Port(object):
         f.name = fit['name']
 
         try:
-            f.ship = Ship(sMkt.getItem(fit['ship']['id']))
+            try:
+                f.ship = Ship(sMkt.getItem(fit['ship']['id']))
+            except ValueError:
+                f.ship = Citadel(sMkt.getItem(fit['ship']['id']))
         except:
             return None
 
@@ -228,7 +231,13 @@ class Port(object):
         ids = map(int, re.findall(r'\d+', string))
         for id in ids:
             try:
-                Ship(sMkt.getItem(id))
+                try:
+                    try:
+                        Ship(sMkt.getItem(sMkt.getItem(id)))
+                    except ValueError:
+                        Citadel(sMkt.getItem(sMkt.getItem(id)))
+                except ValueError:
+                    Citadel(sMkt.getItem(id))
                 string = string[string.index(str(id)):]
                 break
             except:
@@ -238,7 +247,10 @@ class Port(object):
 
         f = Fit()
         try:
-            f.ship = Ship(sMkt.getItem(int(info[0])))
+            try:
+                f.ship = Ship(sMkt.getItem(int(info[0])))
+            except ValueError:
+                f.ship = Citadel(sMkt.getItem(int(info[0])))
             f.name = "{0} - DNA Imported".format(f.ship.item.name)
         except UnicodeEncodeError as e:
             def logtransform(s):
@@ -309,7 +321,10 @@ class Port(object):
 
         try:
             ship = sMkt.getItem(shipType)
-            fit.ship = Ship(ship)
+            try:
+                fit.ship = Ship(ship)
+            except ValueError:
+                fit.ship = Citadel(ship)
             fit.name = fitName
         except:
             return
@@ -463,7 +478,10 @@ class Port(object):
                 # Strip square brackets and pull out a fit name
                 f.name = fitLines[0][1:-1]
                 # Assign ship to fitting
-                f.ship = Ship(sMkt.getItem(shipname))
+                try:
+                    f.ship = Ship(sMkt.getItem(shipname))
+                except ValueError:
+                    f.ship = Citadel(sMkt.getItem(shipname))
 
                 moduleList = []
                 for x in range(1, len(fitLines)):
@@ -610,7 +628,10 @@ class Port(object):
             # <localized hint="Maelstrom">Maelstrom</localized>
             shipType = fitting.getElementsByTagName("shipType").item(0).getAttribute("value")
             try:
-                f.ship = Ship(sMkt.getItem(shipType))
+                try:
+                    f.ship = Ship(sMkt.getItem(shipType))
+                except ValueError:
+                    f.ship = Citadel(sMkt.getItem(shipType))
             except:
                 continue
             hardwares = fitting.getElementsByTagName("hardware")
