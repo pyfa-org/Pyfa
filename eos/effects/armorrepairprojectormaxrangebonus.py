@@ -7,6 +7,6 @@
 # Ship: Exequror
 # Ship: Inquisitor
 type = "passive"
-def handler(fit, ship, context):
-    fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == "Remote Armor Repairer",
-                                  "maxRange", ship.getModifiedItemAttr("maxRangeBonus"))
+def handler(fit, src, context):
+    fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == "Remote Armor Repairer", "maxRange", src.getModifiedItemAttr("maxRangeBonus"))
+    fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == "Ancillary Remote Armor Repairer", "maxRange", src.getModifiedItemAttr("maxRangeBonus"))
