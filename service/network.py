@@ -75,8 +75,23 @@ class Network():
 
         proxy = NetworkSettings.getInstance().getProxySettings()
         if proxy is not None:
-            proxy = urllib2.ProxyHandler({'https': "{0}:{1}".format(*proxy)})
-            opener = urllib2.build_opener(proxy)
+            # proxy is tuple of (host, port):  (u'192.168.20.1', 3128)
+            proxy_handler = urllib2.ProxyHandler({'https': "{0}:{1}".format(proxy[0], proxy[1])})
+            proxy_auth = NetworkSettings.getInstance().getProxyAuthDetails()
+            if proxy_auth is not None:
+                # if we have proxy login/pass configured, construct a different opener,
+                # which uses both proxy handler *and* proxy auth handler
+                password_mgr = urllib2.HTTPPasswordMgrWithDefaultRealm()
+                # A realm of None is considered a catch-all realm, which is searched if no other realm fits.
+                password_mgr.add_password(realm=None,
+                                          uri='https://{0}:{1}'.format(proxy[0], proxy[1]),  # TODO: is uri correct?
+                                          user=proxy_auth[0],
+                                          passwd=proxy_auth[1])
+                proxy_auth_handler = urllib2.ProxyBasicAuthHandler(password_mgr)
+                opener = urllib2.build_opener(proxy_handler, proxy_auth_handler)
+            else:
+                # With no proxy login/pass provided, use opener with the only proxy handler
+                opener = urllib2.build_opener(proxy_handler)
             urllib2.install_opener(opener)
 
         request = urllib2.Request(url, headers=headers, data=urllib.urlencode(data) if data else None)
