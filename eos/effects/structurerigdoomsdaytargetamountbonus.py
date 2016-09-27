@@ -1,5 +1,5 @@
 type = "passive"
 def handler(fit, src, context):
-    fit.modules.filteredItemIncrease(lambda mod: mod.item.group.name == "Structure Doomsday Weapon",
-                                     "lightningWeaponTargetAmount", src.getModifiedItemAttr("structureRigDoomsdayTargetAmountBonus"),
-                                     stackingPenalties=True)
+    for module in fit.modules:
+        if module.getModifiedItemAttr("lightningWeaponTargetAmount"):
+            module.increaseItemAttr("lightningWeaponTargetAmount",src.getModifiedItemAttr("structureRigDoomsdayTargetAmountBonus"))

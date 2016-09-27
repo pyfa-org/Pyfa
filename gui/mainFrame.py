@@ -65,6 +65,10 @@ from eos.db.saveddata.loadDefaultDatabaseValues import DefaultDatabaseValues
 
 from time import gmtime, strftime
 
+#Import logging
+import logging
+logger = logging.getLogger("pyfa.service.port")
+
 if not 'wxMac' in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3,0)):
     from service.crest import CrestModes
     from gui.crestFittings import CrestFittings, ExportToEve, CrestMgmt
@@ -683,7 +687,7 @@ class MainFrame(wx.Frame):
         try:
             fits = sFit.importFitFromBuffer(fromClipboard(), self.getActiveFit())
         except:
-            pass
+            logger.error("Failed to import fit.")
         else:
             self._openAfterImport(fits)
 
