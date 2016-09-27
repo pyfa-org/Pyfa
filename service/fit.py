@@ -925,6 +925,10 @@ class Fit(object):
         fits = map(lambda fitID: eos.db.getFit(fitID), fitIDs)
         return Port.exportXml(callback, *fits)
 
+    def exportMultiBuy(self, fitID):
+        fit = eos.db.getFit(fitID)
+        return Port.exportMultiBuy(fit)
+
     def backupFits(self, path, callback):
         thread = FitBackupThread(path, callback)
         thread.start()

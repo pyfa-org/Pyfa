@@ -719,6 +719,11 @@ class Port(object):
             for drone in fit.drones:
                 export += "%s x%s\n" % (drone.item.name, drone.amount)
 
+        if len(fit.fighters) > 0:
+            export += "\n\n"
+            for fighter in fit.fighters:
+                export += "%s x%s\n" % (fighter.item.name, fighter.amountActive)
+
         if export[-1] == "\n":
             export = export[:-1]
 
@@ -741,10 +746,13 @@ class Port(object):
     def exportEftImps(cls, fit):
         export = cls._exportEftBase(fit)
 
-        if len(fit.implants) > 0:
+        if len(fit.implants) > 0 or len(fit.boosters) > 0:
             export += "\n\n\n"
             for implant in fit.implants:
                 export += "%s\n" % implant.item.name
+            for booster in fit.boosters:
+                export += "%s\n" % booster.item.name
+
         if export[-1] == "\n":
             export = export[:-1]
 
@@ -879,3 +887,50 @@ class Port(object):
                     wx.CallAfter(callback, i)
 
         return doc.toprettyxml()
+
+    @staticmethod
+    def exportMultiBuy(fit):
+        export = "%s\n" % (fit.ship.item.name)
+        stuff = {}
+        sFit = service.Fit.getInstance()
+        for module in fit.modules:
+            slot = module.slot
+            if not slot in stuff:
+                stuff[slot] = []
+            curr = "%s\n" % module.item.name if module.item else (
+            "")
+            if module.charge and sFit.serviceFittingOptions["exportCharges"]:
+                curr += "%s x%s\n" % (module.charge.name, module.numShots)
+            stuff[slot].append(curr)
+
+        for slotType in EFT_SLOT_ORDER:
+            data = stuff.get(slotType)
+            if data is not None:
+                # export += "\n"
+                for curr in data:
+                    export += curr
+
+        if len(fit.drones) > 0:
+            for drone in fit.drones:
+                export += "%s x%s\n" % (drone.item.name, drone.amount)
+
+        if len(fit.cargo) > 0:
+            for cargo in fit.cargo:
+                export += "%s x%s\n" % (cargo.item.name, cargo.amount)
+
+        if len(fit.implants) > 0:
+            for implant in fit.implants:
+                export += "%s\n" % implant.item.name
+
+        if len(fit.boosters) > 0:
+            for booster in fit.boosters:
+                export += "%s\n" % booster.item.name
+
+        if len(fit.fighters) > 0:
+            for fighter in fit.fighters:
+                export += "%s x%s\n" % (fighter.item.name, fighter.amountActive)
+
+        if export[-1] == "\n":
+            export = export[:-1]
+
+        return export
