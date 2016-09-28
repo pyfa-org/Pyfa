@@ -1,3 +1,7 @@
+# roleBonusIceOreMiningDurationCap
+#
+# Used by:
+# Variations of ship: Covetor (2 of 2)
 type = "passive"
 def handler(fit, src, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Mining"), "capacitorNeed", src.getModifiedItemAttr("miningDurationRoleBonus"))

@@ -1,3 +1,7 @@
+# skillStructureEngineeringSystemsCapNeedBonus
+#
+# Used by:
+# Skill: Structure Engineering Systems
 type = "passive", "structure"
 def handler(fit, src, context):
     groups = ("Structure Energy Neutralizer", "Structure Area Denial Module")

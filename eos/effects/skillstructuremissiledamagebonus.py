@@ -1,3 +1,7 @@
+# skillStructureMissileDamageBonus
+#
+# Used by:
+# Skill: Structure Missile Systems
 type = "passive", "structure"
 def handler(fit, src, context):
     groups = ("Structure Anti-Capital Missile", "Structure Anti-Subcapital Missile", "Structure Guided Bomb")

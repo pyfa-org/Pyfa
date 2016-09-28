@@ -1,4 +1,4 @@
-# skillBonusFighterHangerManagement
+# skillBonusFighterHangarManagement
 #
 # Used by:
 # Skill: Fighter Hangar Management

@@ -1,3 +1,4 @@
+# Not used by any item
 type = "passive"
 def handler(fit, module, context):
     missileGroups = ("Structure Anti-Capital Missile", "Structure Anti-Subcapital Missile")

@@ -1,3 +1,4 @@
+# Not used by any item
 type = "passive"
 def handler(fit, src, context):
     groups = ("Structure ECM Battery", "Structure Disruption Battery")

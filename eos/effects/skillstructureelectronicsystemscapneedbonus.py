@@ -1,3 +1,7 @@
+# skillStructureElectronicSystemsCapNeedBonus
+#
+# Used by:
+# Skill: Structure Electronic Systems
 type = "passive", "structure"
 def handler(fit, src, context):
     groups = ("Structure Warp Scrambler", "Structure Disruption Battery", "Structure Stasis Webifier")
