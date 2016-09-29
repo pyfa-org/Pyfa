@@ -224,6 +224,14 @@ class NetworkSettings():
         # in all other cases, return tuple of (login, password)
         return (self.serviceNetworkSettings["login"], self.serviceNetworkSettings["password"])
 
+    def setProxyAuthDetails(self, login, password):
+        if (login is None) or (password is None):
+            self.serviceNetworkSettings["login"] = None
+            self.serviceNetworkSettings["password"] = None
+            return
+        self.serviceNetworkSettings["login"] = login
+        self.serviceNetworkSettings["password"] = password
+
 
 
 """
