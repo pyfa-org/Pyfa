@@ -29,9 +29,10 @@ class FighterAbility(object):
     # We aren't able to get data on the charges that can be stored with fighters. So we hardcode that data here, keyed
     # with the fighter squadron role
     NUM_SHOTS_MAPPING = {
-        2: 8,  # Light fighter / Attack
+        1: 0,  # Superiority fighter / Attack
+        2: 12,  # Light fighter / Attack
         4: 6,  # Heavy fighter / Heavy attack
-        5: 2,  # Heavy fighter / Long range attack
+        5: 3,  # Heavy fighter / Long range attack
     }
 
     def __init__(self, effect):
