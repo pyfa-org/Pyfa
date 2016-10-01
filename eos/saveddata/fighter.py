@@ -164,6 +164,26 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                     dps, volley = ability.damageStats(targetResists)
                     self.__dps += dps
                     self.__volley += volley
+                    
+                # For forward compatability this assumes a fighter can have more than 2 damaging abilities and/or multiple that use charges.
+                if self.owner.factorReload:
+                    activeTimes = []
+                    reloadTimes = []
+                    constantDps = 0
+                    for ability in self.abilities:
+                        if not ability.active:
+                            continue
+                        if ability.numShots == 0:
+                            dps, volley = ability.damageStats(targetResists)
+                            constantDps += dps
+                            continue
+                        activeTimes.append(ability.numShots * ability.cycleTime)
+                        reloadTimes.append(ability.reloadTime)
+                    
+                    if(len(activeTimes) > 0):
+                        shortestActive = sorted(activeTimes)[0]
+                        longestReload = sorted(reloadTimes, reverse=True)[0]
+                        self.__dps = max(constantDps, self.__dps * shortestActive / (shortestActive + longestReload))
 
         return self.__dps, self.__volley
 
