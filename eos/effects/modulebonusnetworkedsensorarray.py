@@ -4,11 +4,16 @@
 # Module: Networked Sensor Array
 type = "active"
 def handler(fit, src, context):
-    fit.ship.multiplyItemAttr("maxTargetRange", src.getModifiedItemAttr("maxTargetRangeMultiplier"), stackingPenalties=True, penaltyGroup="postMul")
     fit.ship.boostItemAttr("scanResolution", src.getModifiedItemAttr("scanResolutionBonus"), stackingPenalties=True)
 
     for scanType in ('Magnetometric', 'Ladar', 'Gravimetric', 'Radar'):
         fit.ship.boostItemAttr("scan{}Strength".format(scanType),
+                               src.getModifiedItemAttr("scan{}StrengthPercent".format(scanType)),
+                               stackingPenalties=True)
+                               
+    for fighter in fit.fighters:
+        for scanType in ('Magnetometric', 'Ladar', 'Gravimetric', 'Radar'):
+            fighter.boostItemAttr("scan{}Strength".format(scanType),
                                src.getModifiedItemAttr("scan{}StrengthPercent".format(scanType)),
                                stackingPenalties=True)
 

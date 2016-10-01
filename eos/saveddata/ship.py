@@ -17,7 +17,7 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 #===============================================================================
 
-from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut
+from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut, cappingAttrKeyCache
 from eos.effectHandlerHelpers import HandledItem
 from eos.saveddata.mode import Mode
 import eos.db
@@ -52,6 +52,9 @@ class Ship(ItemAttrShortcut, HandledItem):
         self.__itemModifiedAttributes.original = dict(self.item.attributes)
         self.__itemModifiedAttributes.original.update(self.EXTRA_ATTRIBUTES)
         self.__itemModifiedAttributes.overrides = self.item.overrides
+        
+        if "maximumRangeCap" in self.__itemModifiedAttributes.original:
+            cappingAttrKeyCache["maxTargetRange"] = "maximumRangeCap"
 
         # there are occasions when we need to get to the parent fit of the ship, such as when we need the character
         # skills for ship-role gang boosts (Titans)

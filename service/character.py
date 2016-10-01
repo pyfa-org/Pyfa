@@ -369,6 +369,8 @@ class Character(object):
                 subThing = getattr(thing, attr, None)
                 subReqs = {}
                 if subThing is not None:
+                    if isinstance(thing, eos.types.Fighter) and attr == "charge":
+                        continue
                     self._checkRequirements(fit, fit.character, subThing, subReqs)
                     if subReqs:
                         reqs[subThing] = subReqs
