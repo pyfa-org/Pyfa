@@ -43,6 +43,7 @@ class ServerError(StandardError):
 class TimeoutError(StandardError):
     pass
 
+
 class Network():
     # Request constants - every request must supply this, as it is checked if
     # enabled or not via settings
@@ -71,28 +72,29 @@ class Network():
 
         # Set up some things for the request
         versionString = "{0} {1} - {2} {3}".format(config.version, config.tag, config.expansionName, config.expansionVersion)
-        headers={"User-Agent" : "pyfa {0} (Python-urllib2)".format(versionString)}
+        headers = {"User-Agent" : "pyfa {0} (Python-urllib2)".format(versionString)}
 
         proxy = NetworkSettings.getInstance().getProxySettings()
         if proxy is not None:
             # proxy is tuple of (host, port):  (u'192.168.20.1', 3128)
+            # build default proxy handler
             proxy_handler = urllib2.ProxyHandler({'https': "{0}:{1}".format(proxy[0], proxy[1])})
             proxy_auth = NetworkSettings.getInstance().getProxyAuthDetails()
             if proxy_auth is not None:
-                # if we have proxy login/pass configured, construct a different opener,
-                # which uses both proxy handler *and* proxy auth handler
-                password_mgr = urllib2.HTTPPasswordMgrWithDefaultRealm()
-                # A realm of None is considered a catch-all realm, which is searched if no other realm fits.
-                password_mgr.add_password(realm=None,
-                                          uri='https://{0}:{1}'.format(proxy[0], proxy[1]),  # TODO: is uri correct?
-                                          user=proxy_auth[0],
-                                          passwd=proxy_auth[1])
-                proxy_auth_handler = urllib2.ProxyBasicAuthHandler(password_mgr)
-                opener = urllib2.build_opener(proxy_handler, proxy_auth_handler)
-            else:
-                # With no proxy login/pass provided, use opener with the only proxy handler
-                opener = urllib2.build_opener(proxy_handler)
+                # add login:password@ in front of proxy address
+                new_proxy_address = '{0}:{1}@{2}:{3}'.format(proxy_auth[0], proxy_auth[1], proxy[0], proxy[1])
+                proxy_handler = urllib2.ProxyHandler({'https': new_proxy_address})
+            opener = urllib2.build_opener(proxy_handler)
             urllib2.install_opener(opener)
+        else:
+            # This is a bug fix, explicitly disable possibly previously installed
+            # opener with proxy, by urllib2.install_opener() a few lines above in code.
+            # Now this explicitly disables proxy handler, "uninstalling" opener.
+            # This is used in case when user had proxy enabled, so proxy_handler was already
+            # installed globally, and then user had disabled the proxy, so we should clear that opener
+            urllib2.install_opener(None)
+            # another option could be installing a default opener:
+            # urllib2.install_opener(urllib2.build_opener())
 
         request = urllib2.Request(url, headers=headers, data=urllib.urlencode(data) if data else None)
         try:
