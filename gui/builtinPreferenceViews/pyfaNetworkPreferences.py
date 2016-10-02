@@ -69,6 +69,7 @@ class PFNetworkPref ( PreferenceView):
         self.nAddr = self.settings.getAddress()
         self.nPort = self.settings.getPort()
         self.nType = self.settings.getType()
+        self.nAuth = self.settings.getProxyAuthDetails()  # tuple of (login, password)
 
         ptypeSizer = wx.BoxSizer( wx.HORIZONTAL )
 
@@ -111,6 +112,21 @@ class PFNetworkPref ( PreferenceView):
 
         mainSizer.Add( fgAddrSizer, 0, wx.EXPAND, 5)
 
+        # proxy auth information: login and pass
+        self.stPSetLogin = wx.StaticText(panel, wx.ID_ANY, u"Proxy login:", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.stPSetLogin.Wrap(-1)
+        self.editProxySettingsLogin = wx.TextCtrl(panel, wx.ID_ANY, self.nAuth[0], wx.DefaultPosition, wx.DefaultSize, 0)
+        self.stPSetPassword = wx.StaticText(panel, wx.ID_ANY, u"pass:", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.stPSetPassword.Wrap(-1)
+        self.editProxySettingsPassword = wx.TextCtrl(panel, wx.ID_ANY, self.nAuth[1], wx.DefaultPosition,
+                                                     wx.DefaultSize, wx.TE_PASSWORD)
+        pAuthSizer = wx.BoxSizer(wx.HORIZONTAL)
+        pAuthSizer.Add(self.stPSetLogin, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
+        pAuthSizer.Add(self.editProxySettingsLogin, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
+        pAuthSizer.Add(self.stPSetPassword, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
+        pAuthSizer.Add(self.editProxySettingsPassword, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
+        mainSizer.Add(pAuthSizer, 0, wx.EXPAND, 5)
+
         self.stPSAutoDetected = wx.StaticText( panel, wx.ID_ANY, u"Auto-detected: ", wx.DefaultPosition, wx.DefaultSize, 0 )
         self.stPSAutoDetected.Wrap( -1 )
         mainSizer.Add( self.stPSAutoDetected, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
@@ -138,13 +154,15 @@ class PFNetworkPref ( PreferenceView):
         self.chProxyType.Bind(wx.EVT_CHOICE, self.OnCHProxyTypeSelect)
         self.editProxySettingsAddr.Bind(wx.EVT_TEXT, self.OnEditPSAddrText)
         self.editProxySettingsPort.Bind(wx.EVT_TEXT, self.OnEditPSPortText)
+        self.editProxySettingsLogin.Bind(wx.EVT_TEXT, self.OnEditPSLoginText)
+        self.editProxySettingsPassword.Bind(wx.EVT_TEXT, self.OnEditPSPasswordText)
 
 
         self.btnApply.Bind(wx.EVT_BUTTON, self.OnBtnApply)
 
         self.UpdateApplyButtonState()
 
-        if self.nMode is not 2:
+        if self.nMode is not service.settings.NetworkSettings.PROXY_MODE_MANUAL:  # == 2
             self.ToggleProxySettings(False)
         else:
             self.ToggleProxySettings(True)
@@ -180,6 +198,16 @@ class PFNetworkPref ( PreferenceView):
         self.dirtySettings = True
         self.UpdateApplyButtonState()
 
+    def OnEditPSLoginText(self, event):
+        self.nAuth = (self.editProxySettingsLogin.GetValue(), self.nAuth[1])
+        self.dirtySettings = True
+        self.UpdateApplyButtonState()
+
+    def OnEditPSPasswordText(self, event):
+        self.nAuth = (self.nAuth[0], self.editProxySettingsPassword.GetValue())
+        self.dirtySettings = True
+        self.UpdateApplyButtonState()
+
     def OnBtnApply(self, event):
         self.dirtySettings = False
         self.UpdateApplyButtonState()
@@ -190,6 +218,7 @@ class PFNetworkPref ( PreferenceView):
         self.settings.setAddress(self.nAddr)
         self.settings.setPort(self.nPort)
         self.settings.setType(self.nType)
+        self.settings.setProxyAuthDetails(self.nAuth[0], self.nAuth[1])
 
     def UpdateApplyButtonState(self):
         if self.dirtySettings:
@@ -205,7 +234,7 @@ class PFNetworkPref ( PreferenceView):
 
         self.UpdateApplyButtonState()
 
-        if choice is not 2:
+        if choice is not service.settings.NetworkSettings.PROXY_MODE_MANUAL:
             self.ToggleProxySettings(False)
         else:
             self.ToggleProxySettings(True)
@@ -216,11 +245,19 @@ class PFNetworkPref ( PreferenceView):
             self.editProxySettingsAddr.Enable()
             self.stPSetPort.Enable()
             self.editProxySettingsPort.Enable()
+            self.stPSetLogin.Enable()
+            self.stPSetPassword.Enable()
+            self.editProxySettingsLogin.Enable()
+            self.editProxySettingsPassword.Enable()
         else:
             self.stPSetAddr.Disable()
             self.editProxySettingsAddr.Disable()
             self.stPSetPort.Disable()
             self.editProxySettingsPort.Disable()
+            self.stPSetLogin.Disable()
+            self.stPSetPassword.Disable()
+            self.editProxySettingsLogin.Disable()
+            self.editProxySettingsPassword.Disable()
 
     def getImage(self):
         return BitmapLoader.getBitmap("prefs_proxy", "gui")
