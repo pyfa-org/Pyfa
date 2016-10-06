@@ -900,7 +900,7 @@ class Port(object):
             curr = "%s\n" % module.item.name if module.item else (
             "")
             if module.charge and sFit.serviceFittingOptions["exportCharges"]:
-                curr += "%s x%s\n" % (module.charge.name, module.numShots)
+                curr += "%s x%s\n" % (module.charge.name, module.numCharges)
             stuff[slot].append(curr)
 
         for slotType in EFT_SLOT_ORDER:
