@@ -76,14 +76,16 @@ class Network():
 
         proxy = NetworkSettings.getInstance().getProxySettings()
         if proxy is not None:
-            # proxy is tuple of (host, port):  (u'192.168.20.1', 3128)
-            # build default proxy handler
-            proxy_handler = urllib2.ProxyHandler({'https': "{0}:{1}".format(proxy[0], proxy[1])})
+            # proxy is a tuple of (host, port):  (u'192.168.20.1', 3128)
             proxy_auth = NetworkSettings.getInstance().getProxyAuthDetails()
+            # proxy_auth is a tuple of (login, password) or None
             if proxy_auth is not None:
                 # add login:password@ in front of proxy address
-                new_proxy_address = '{0}:{1}@{2}:{3}'.format(proxy_auth[0], proxy_auth[1], proxy[0], proxy[1])
-                proxy_handler = urllib2.ProxyHandler({'https': new_proxy_address})
+                proxy_handler = urllib2.ProxyHandler({'https': '{0}:{1}@{2}:{3}'.format(
+                    proxy_auth[0], proxy_auth[1], proxy[0], proxy[1])})
+            else:
+                # build proxy handler with no login/pass info
+                proxy_handler = urllib2.ProxyHandler({'https': "{0}:{1}".format(proxy[0], proxy[1])})
             opener = urllib2.build_opener(proxy_handler)
             urllib2.install_opener(opener)
         else:
