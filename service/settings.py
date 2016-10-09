@@ -229,6 +229,10 @@ class NetworkSettings():
             self.serviceNetworkSettings["login"] = None
             self.serviceNetworkSettings["password"] = None
             return
+        if login == "":  # empty login unsets proxy auth info
+            self.serviceNetworkSettings["login"] = None
+            self.serviceNetworkSettings["password"] = None
+            return
         self.serviceNetworkSettings["login"] = login
         self.serviceNetworkSettings["password"] = password
 
