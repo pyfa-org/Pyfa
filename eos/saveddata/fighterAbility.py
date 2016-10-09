@@ -29,10 +29,19 @@ class FighterAbility(object):
     # We aren't able to get data on the charges that can be stored with fighters. So we hardcode that data here, keyed
     # with the fighter squadron role
     NUM_SHOTS_MAPPING = {
-        2: 8,  # Light fighter / Attack
+        1: 0,  # Superiority fighter / Attack
+        2: 12, # Light fighter / Attack
         4: 6,  # Heavy fighter / Heavy attack
-        5: 2,  # Heavy fighter / Long range attack
+        5: 3,  # Heavy fighter / Long range attack
     }
+    # Same as above
+    REARM_TIME_MAPPING = {
+        1: 0,     # Superiority fighter / Attack
+        2: 4000,  # Light fighter / Attack
+        4: 6000,  # Heavy fighter / Heavy attack
+        5: 20000, # Heavy fighter / Long range attack
+    }
+    
 
     def __init__(self, effect):
         """Initialize from the program"""
@@ -85,7 +94,7 @@ class FighterAbility(object):
 
     @property
     def reloadTime(self):
-        return self.fighter.getModifiedItemAttr("fighterRefuelingTime") * self.numShots
+        return self.fighter.getModifiedItemAttr("fighterRefuelingTime") + (self.REARM_TIME_MAPPING[self.fighter.getModifiedItemAttr("fighterSquadronRole")] or 0 if self.hasCharges else 0) * self.numShots
 
     @property
     def numShots(self):
@@ -96,10 +105,10 @@ class FighterAbility(object):
         speed = self.fighter.getModifiedItemAttr("{}Duration".format(self.attrPrefix))
         reload = self.reloadTime
 
-        if self.fighter.owner.factorReload:
-            numShots = self.numShots
-            # Speed here already takes into consideration reactivation time
-            speed = (speed * numShots + reload) / numShots if numShots > 0 else speed
+        #if self.fighter.owner.factorReload:
+        #    numShots = self.numShots
+        #    # Speed here already takes into consideration reactivation time
+        #    speed = (speed * numShots + reload) / numShots if numShots > 0 else speed
 
         return speed
 
