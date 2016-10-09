@@ -115,10 +115,10 @@ class PFNetworkPref ( PreferenceView):
         mainSizer.Add( fgAddrSizer, 0, wx.EXPAND, 5)
 
         # proxy auth information: login and pass
-        self.stPSetLogin = wx.StaticText(panel, wx.ID_ANY, u"Proxy login:", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.stPSetLogin = wx.StaticText(panel, wx.ID_ANY, u"Username:", wx.DefaultPosition, wx.DefaultSize, 0)
         self.stPSetLogin.Wrap(-1)
         self.editProxySettingsLogin = wx.TextCtrl(panel, wx.ID_ANY, self.nAuth[0], wx.DefaultPosition, wx.DefaultSize, 0)
-        self.stPSetPassword = wx.StaticText(panel, wx.ID_ANY, u"pass:", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.stPSetPassword = wx.StaticText(panel, wx.ID_ANY, u"Password:", wx.DefaultPosition, wx.DefaultSize, 0)
         self.stPSetPassword.Wrap(-1)
         self.editProxySettingsPassword = wx.TextCtrl(panel, wx.ID_ANY, self.nAuth[1], wx.DefaultPosition,
                                                      wx.DefaultSize, wx.TE_PASSWORD)
