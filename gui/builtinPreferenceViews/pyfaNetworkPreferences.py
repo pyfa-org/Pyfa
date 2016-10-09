@@ -70,6 +70,8 @@ class PFNetworkPref ( PreferenceView):
         self.nPort = self.settings.getPort()
         self.nType = self.settings.getType()
         self.nAuth = self.settings.getProxyAuthDetails()  # tuple of (login, password)
+        if self.nAuth is None:
+            self.nAuth = ("", "")  # we don't want None here, it should be a tuple
 
         ptypeSizer = wx.BoxSizer( wx.HORIZONTAL )
 
