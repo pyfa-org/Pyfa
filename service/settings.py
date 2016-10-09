@@ -218,9 +218,9 @@ class NetworkSettings():
 
     def getProxyAuthDetails(self):
         if self.getMode() == self.PROXY_MODE_NONE:
-            return ("", "")  # never return none, return tuple with empty strings
+            return None
         if (self.serviceNetworkSettings["login"] is None) or (self.serviceNetworkSettings["password"] is None):
-            return ("", "")  # never return none, return tuple with empty strings
+            return None
         # in all other cases, return tuple of (login, password)
         return (self.serviceNetworkSettings["login"], self.serviceNetworkSettings["password"])
 
