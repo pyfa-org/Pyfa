@@ -6,3 +6,5 @@
 type = "passive"
 def handler(fit, module, context):
     module.multiplyItemAttr("specialtyMiningAmount", module.getModifiedChargeAttr("specialisationAsteroidYieldMultiplier"))
+    fit.modules.filteredItemMultiply(lambda mod: mod.item.requiresSkill("Mining"),
+                              "miningAmount", module.getModifiedChargeAttr("specialisationAsteroidYieldMultiplier"))
