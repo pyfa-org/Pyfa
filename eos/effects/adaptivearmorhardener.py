@@ -218,34 +218,9 @@ def handler(fit, module, context):
                 adaptiveResists_tuple[8], adaptiveResists_tuple[9], adaptiveResists_tuple[10],
                 adaptiveResists_tuple[11])
 
-        adaptiveResists_tuple = [0.0] * 12
         # Apply module resists to the ship (for reals this time and not just pretend)
         for damagePatternType in damagePattern_tuple:
             attr = "armor%sDamageResonance" % damagePatternType[0].capitalize()
 
             fit.ship.multiplyItemAttr(attr, module.getModifiedItemAttr(attr), stackingPenalties=True,
                                       penaltyGroup="preMul")
-
-            if damagePatternType[0] == 'Em':
-                adaptiveResists_tuple[0] = module.getModifiedItemAttr(attr)
-                adaptiveResists_tuple[4] = fit.ship.getModifiedItemAttr(attr)
-                adaptiveResists_tuple[8] = damagePatternType[3]
-            elif damagePatternType[0] == 'Thermal':
-                adaptiveResists_tuple[1] = module.getModifiedItemAttr(attr)
-                adaptiveResists_tuple[5] = fit.ship.getModifiedItemAttr(attr)
-                adaptiveResists_tuple[9] = damagePatternType[3]
-            elif damagePatternType[0] == 'Kinetic':
-                adaptiveResists_tuple[2] = module.getModifiedItemAttr(attr)
-                adaptiveResists_tuple[6] = fit.ship.getModifiedItemAttr(attr)
-                adaptiveResists_tuple[10] = damagePatternType[3]
-            elif damagePatternType[0] == 'Explosive':
-                adaptiveResists_tuple[3] = module.getModifiedItemAttr(attr)
-                adaptiveResists_tuple[7] = fit.ship.getModifiedItemAttr(attr)
-                adaptiveResists_tuple[11] = damagePatternType[3]
-
-        logger.debug(
-            "Adaptive Resists, Ship Resists, Modified Damage (EM|The|Kin|Exp): "
-            "%f | %f | %f | %f || %f | %f | %f | %f || %f | %f | %f | %f",
-            adaptiveResists_tuple[0], adaptiveResists_tuple[1], adaptiveResists_tuple[2], adaptiveResists_tuple[3],
-            adaptiveResists_tuple[4], adaptiveResists_tuple[5], adaptiveResists_tuple[6], adaptiveResists_tuple[7],
-            adaptiveResists_tuple[8], adaptiveResists_tuple[9], adaptiveResists_tuple[10], adaptiveResists_tuple[11])
