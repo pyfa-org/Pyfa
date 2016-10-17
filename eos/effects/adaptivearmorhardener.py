@@ -132,6 +132,8 @@ def handler(fit, module, context):
                         "Our two bottom resists have less thatn %f resists left. "
                         "Bail so we don't get too weird of numbers.",
                         resistanceShiftAmount)
+                    # There isn't enough left to transfer around.
+                    # Break out so that we don't get super ugly numbers.
                     break
                 elif countPasses >= 50:
                     logger.debug(
@@ -139,21 +141,20 @@ def handler(fit, module, context):
                         "Most likely the RAH is cycling between different profiles and is in an infinite loop. "
                         "Breaking out of RAH cycle.",
                         countPasses)
-                    # If we hit this break point something has gone horribly wrong.
-                    # Most likely we'll hit this after we've reduced the resist shifting down to .01 and looped 5 times.
+                    # If we hit this break point something has likely gone horribly wrong.
+                    # We catch this so we can make sure we don't loop forever.
                     break
                 elif (damagePattern_tuple[0][4] == 1 and countPasses >= 7) or (countPasses >= 10):
                     # Most likely the RAH is cycling between multiple profiles and may be in an infinite loop.
-                    # Reduce the amount of resists we shift each loop, to try and stabilize on a more average profile.
+                    # Reduce the amount of resists we shift each loop, to try and stabilize on a more median profile.
                     if resistanceShiftAmount > .01:
                         resistanceShiftAmount -= .01
                         logger.debug("Reducing resistance shift amount to %f", resistanceShiftAmount)
-
                     countPasses += 1
-                    # logger.debug("Looped %f times.", countPasses)
                 else:
+                    # Just a normal cycle here,
+                    # didn't need to break out or do anything special.
                     countPasses += 1
-                    # logger.debug("Looped %f times.",countPasses)
 
                 # Loop through the resists that did least damage and figure out how much there is to steal
                 vampDmg = [0] * 2
@@ -173,10 +174,12 @@ def handler(fit, module, context):
                         damagePattern_tuple[i][1] = fit.ship.getModifiedItemAttr(attr) * module.getModifiedItemAttr(
                             attr)
 
-                # Add up the two amounts we stole, and divide it equally between the two
+                # Add up the two amounts we stole
                 vampDmgTotal = vampDmg[0] + vampDmg[1]
 
-                # Loop through the resists that took the most damage, and add what we vamped from the weakest resists.
+                # Loop through the resists that took the most damage,
+                # and add what we vamped from the weakest resists.
+                # Only add half of the total, because we have to share.
                 for i in [2, 3]:
                     attr = "armor%sDamageResonance" % damagePattern_tuple[i][0].capitalize()
                     # And by add we mean subtract, because in CCPland up is down and down is up
