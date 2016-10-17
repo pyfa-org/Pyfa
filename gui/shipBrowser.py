@@ -1489,6 +1489,7 @@ class FitItem(SFItem.SFBrowserItem):
         self.tcFitName.Bind(wx.EVT_TEXT_ENTER, self.renameFit)
         self.tcFitName.Bind(wx.EVT_KILL_FOCUS, self.editLostFocus)
         self.tcFitName.Bind(wx.EVT_KEY_DOWN, self.editCheckEsc)
+        self.Bind(wx.EVT_MOUSE_CAPTURE_LOST, self.OnMouseCaptureLost)
 
         self.animTimerId = wx.NewId()
         self.animTimer = wx.Timer(self, self.animTimerId)
@@ -1525,8 +1526,19 @@ class FitItem(SFItem.SFBrowserItem):
         wx.PostEvent(self.mainFrame, BoosterListUpdated())
         event.Skip()
 
+    def OnMouseCaptureLost(self, event):
+        ''' Destroy drag information (GH issue #479)'''
+        if self.dragging and self.dragged:
+            self.dragging = False
+            self.dragged = False
+            if self.HasCapture():
+                self.ReleaseMouse()
+            self.dragWindow.Show(False)
+            self.dragWindow = None
+
     def OnContextMenu(self, event):
         ''' Handles context menu for fit. Dragging is handled by MouseLeftUp() '''
+
         pos = wx.GetMousePosition()
         pos = self.ScreenToClient(pos)
 
@@ -1679,12 +1691,7 @@ class FitItem(SFItem.SFBrowserItem):
 
     def MouseLeftUp(self, event):
         if self.dragging and self.dragged:
-            self.dragging = False
-            self.dragged = False
-            if self.HasCapture():
-                self.ReleaseMouse()
-            self.dragWindow.Show(False)
-            self.dragWindow = None
+            self.OnMouseCaptureLost(event)
 
             targetWnd = wx.FindWindowAtPointer()
 
