@@ -95,6 +95,26 @@ def handler(fit, module, context):
                 damagePattern_tuple[3][4]=damagePattern_tuple[3][4]-vampDmg
                 module.increaseItemAttr(attr, 0-vampDmg)
                 runLoop = 0
+            elif (damagePattern_tuple[0][2] == damagePattern_tuple[1][2]) and (damagePattern_tuple[2][2] != 0):
+                # If damage pattern is from two damage types, we split resists 50/50.
+                logger.debug("Setting adaptivearmorhardener resists to dual damage profile.")
+
+                #Do this dynamically just in case CCP mucks with the values.
+                vampDmg=0
+                for i in [0,1]:
+                    attr = "armor%sDamageResonance" % damagePattern_tuple[i][0].capitalize()
+                    vampDmg = vampDmg+1-damagePattern_tuple[i][4]
+                    module.increaseItemAttr(attr, (1-damagePattern_tuple[i][4]))
+                    damagePattern_tuple[i][4] = 1
+
+                vampDmgTotal = vampDmg/2
+
+                for i in [2,3]:
+                    attr = "armor%sDamageResonance" % damagePattern_tuple[i][0].capitalize()
+                    damagePattern_tuple[i][4] = damagePattern_tuple[i][4] - vampDmgTotal
+                    module.increaseItemAttr(attr, 0 - vampDmgTotal)
+
+                runLoop = 0
             else:
                 #logger.debug("Multiple damage type profile.")
                 if damagePattern_tuple[1][4] == 1 == damagePattern_tuple[0][4]:
