@@ -1,6 +1,6 @@
 # pyfa
 
-[![Join the chat at https://gitter.im/pyfa-org/Pyfa](https://badges.gitter.im/pyfa-org/Pyfa.svg)](https://gitter.im/pyfa-org/Pyfa?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Join us on Slack!](https://pyfainvite.azurewebsites.net/badge.svg)](https://pyfainvite.azurewebsites.net/)
 
 ![pyfa](https://cloud.githubusercontent.com/assets/3904767/10271512/af385ef2-6ade-11e5-8f67-52b8b1e4c797.PNG)
 
