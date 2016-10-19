@@ -30,7 +30,7 @@ class DefaultDatabaseValues():
     instance = None
 
     @classmethod
-    def importDamageProfileDefaults(self):
+    def importDamageProfileDefaults(cls):
         damageProfileList = [["Uniform", "25", "25", "25", "25"], ["[Generic]EM", "100", "0", "0", "0"],
                              ["[Generic]Thermal", "0", "100", "0", "0"], ["[Generic]Kinetic", "0", "0", "100", "0"],
                              ["[Generic]Explosive", "0", "0", "0", "100"],
@@ -121,7 +121,7 @@ class DefaultDatabaseValues():
                 eos.db.save(damageProfile)
 
     @classmethod
-    def importResistProfileDefaults(self):
+    def importResistProfileDefaults(cls):
         targetResistProfileList = [["Uniform (25%)", "0.25", "0.25", "0.25", "0.25"],
                                    ["Uniform (50%)", "0.50", "0.50", "0.50", "0.50"],
                                    ["Uniform (75%)", "0.75", "0.75", "0.75", "0.75"],
@@ -183,7 +183,7 @@ class DefaultDatabaseValues():
                 eos.db.save(resistsProfile)
 
     @classmethod
-    def importRequiredDefaults(self):
+    def importRequiredDefaults(cls):
         damageProfileList = [["Uniform", "25", "25", "25", "25"]]
 
         for damageProfileRow in damageProfileList:
