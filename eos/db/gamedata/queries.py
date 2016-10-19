@@ -1,4 +1,4 @@
-# ===============================================================================
+#===============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of eos.
@@ -15,23 +15,21 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
-# ===============================================================================
+#===============================================================================
 
-from sqlalchemy.orm import join, exc
-from sqlalchemy.sql import and_, or_, select
-
-import eos.config
 from eos.db import gamedata_session
 from eos.db.gamedata.metaGroup import metatypes_table, items_table
-from eos.db.util import processEager, processWhere
+from sqlalchemy.sql import and_, or_, select, func
+from sqlalchemy.orm import join, exc
 from eos.types import Item, Category, Group, MarketGroup, AttributeInfo, MetaData, MetaGroup
+from eos.db.util import processEager, processWhere
+import eos.config
 
 configVal = getattr(eos.config, "gamedataCache", None)
 if configVal is True:
     def cachedQuery(amount, *keywords):
         def deco(function):
             cache = {}
-
             def checkAndReturn(*args, **kwargs):
                 useCache = kwargs.pop("useCache", True)
                 cacheKey = []
@@ -47,7 +45,6 @@ if configVal is True:
                 return handler
 
             return checkAndReturn
-
         return deco
 
 elif callable(configVal):
@@ -59,9 +56,7 @@ else:
                 return function(*args, **kwargs)
 
             return checkAndReturn
-
         return deco
-
 
 def sqlizeString(line):
     # Escape backslashes first, as they will be as escape symbol in queries
@@ -70,10 +65,7 @@ def sqlizeString(line):
     line = line.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_").replace("*", "%")
     return line
 
-
 itemNameMap = {}
-
-
 @cachedQuery(1, "lookfor")
 def getItem(lookfor, eager=None):
     if isinstance(lookfor, int):
@@ -96,10 +88,7 @@ def getItem(lookfor, eager=None):
         raise TypeError("Need integer or string as argument")
     return item
 
-
 groupNameMap = {}
-
-
 @cachedQuery(1, "lookfor")
 def getGroup(lookfor, eager=None):
     if isinstance(lookfor, int):
@@ -122,64 +111,51 @@ def getGroup(lookfor, eager=None):
         raise TypeError("Need integer or string as argument")
     return group
 
-
 categoryNameMap = {}
-
-
 @cachedQuery(1, "lookfor")
 def getCategory(lookfor, eager=None):
     if isinstance(lookfor, int):
         if eager is None:
             category = gamedata_session.query(Category).get(lookfor)
         else:
-            category = gamedata_session.query(Category).options(*processEager(eager)).filter(
-                Category.ID == lookfor).first()
+            category = gamedata_session.query(Category).options(*processEager(eager)).filter(Category.ID == lookfor).first()
     elif isinstance(lookfor, basestring):
         if lookfor in categoryNameMap:
             id = categoryNameMap[lookfor]
             if eager is None:
                 category = gamedata_session.query(Category).get(id)
             else:
-                category = gamedata_session.query(Category).options(*processEager(eager)).filter(
-                    Category.ID == id).first()
+                category = gamedata_session.query(Category).options(*processEager(eager)).filter(Category.ID == id).first()
         else:
             # Category names are unique, so we can use first() instead of one()
-            category = gamedata_session.query(Category).options(*processEager(eager)).filter(
-                Category.name == lookfor).first()
+            category = gamedata_session.query(Category).options(*processEager(eager)).filter(Category.name == lookfor).first()
             categoryNameMap[lookfor] = category.ID
     else:
         raise TypeError("Need integer or string as argument")
     return category
 
-
 metaGroupNameMap = {}
-
-
 @cachedQuery(1, "lookfor")
 def getMetaGroup(lookfor, eager=None):
     if isinstance(lookfor, int):
         if eager is None:
             metaGroup = gamedata_session.query(MetaGroup).get(lookfor)
         else:
-            metaGroup = gamedata_session.query(MetaGroup).options(*processEager(eager)).filter(
-                MetaGroup.ID == lookfor).first()
+            metaGroup = gamedata_session.query(MetaGroup).options(*processEager(eager)).filter(MetaGroup.ID == lookfor).first()
     elif isinstance(lookfor, basestring):
         if lookfor in metaGroupNameMap:
             id = metaGroupNameMap[lookfor]
             if eager is None:
                 metaGroup = gamedata_session.query(MetaGroup).get(id)
             else:
-                metaGroup = gamedata_session.query(MetaGroup).options(*processEager(eager)).filter(
-                    MetaGroup.ID == id).first()
+                metaGroup = gamedata_session.query(MetaGroup).options(*processEager(eager)).filter(MetaGroup.ID == id).first()
         else:
             # MetaGroup names are unique, so we can use first() instead of one()
-            metaGroup = gamedata_session.query(MetaGroup).options(*processEager(eager)).filter(
-                MetaGroup.name == lookfor).first()
+            metaGroup = gamedata_session.query(MetaGroup).options(*processEager(eager)).filter(MetaGroup.name == lookfor).first()
             metaGroupNameMap[lookfor] = metaGroup.ID
     else:
         raise TypeError("Need integer or string as argument")
     return metaGroup
-
 
 @cachedQuery(1, "lookfor")
 def getMarketGroup(lookfor, eager=None):
@@ -187,12 +163,10 @@ def getMarketGroup(lookfor, eager=None):
         if eager is None:
             marketGroup = gamedata_session.query(MarketGroup).get(lookfor)
         else:
-            marketGroup = gamedata_session.query(MarketGroup).options(*processEager(eager)).filter(
-                MarketGroup.ID == lookfor).first()
+            marketGroup = gamedata_session.query(MarketGroup).options(*processEager(eager)).filter(MarketGroup.ID == lookfor).first()
     else:
         raise TypeError("Need integer as argument")
     return marketGroup
-
 
 @cachedQuery(2, "where", "filter")
 def getItemsByCategory(filter, where=None, eager=None):
@@ -204,9 +178,7 @@ def getItemsByCategory(filter, where=None, eager=None):
         raise TypeError("Need integer or string as argument")
 
     filter = processWhere(filter, where)
-    return gamedata_session.query(Item).options(*processEager(eager)).join(Item.group, Group.category).filter(
-        filter).all()
-
+    return gamedata_session.query(Item).options(*processEager(eager)).join(Item.group, Group.category).filter(filter).all()
 
 @cachedQuery(3, "where", "nameLike", "join")
 def searchItems(nameLike, where=None, join=None, eager=None):
@@ -229,7 +201,6 @@ def searchItems(nameLike, where=None, join=None, eager=None):
     items = items.limit(100).all()
     return items
 
-
 @cachedQuery(2, "where", "itemids")
 def getVariations(itemids, where=None, eager=None):
     for itemid in itemids:
@@ -242,10 +213,8 @@ def getVariations(itemids, where=None, eager=None):
     itemfilter = or_(*(metatypes_table.c.parentTypeID == itemid for itemid in itemids))
     filter = processWhere(itemfilter, where)
     joinon = items_table.c.typeID == metatypes_table.c.typeID
-    vars = gamedata_session.query(Item).options(*processEager(eager)).join((metatypes_table, joinon)).filter(
-        filter).all()
+    vars = gamedata_session.query(Item).options(*processEager(eager)).join((metatypes_table, joinon)).filter(filter).all()
     return vars
-
 
 @cachedQuery(1, "attr")
 def getAttributeInfo(attr, eager=None):
@@ -261,7 +230,6 @@ def getAttributeInfo(attr, eager=None):
         result = None
     return result
 
-
 @cachedQuery(1, "field")
 def getMetaData(field):
     if isinstance(field, basestring):
@@ -269,7 +237,6 @@ def getMetaData(field):
     else:
         raise TypeError("Need string as argument")
     return data
-
 
 @cachedQuery(2, "itemIDs", "attributeID")
 def directAttributeRequest(itemIDs, attrIDs):
@@ -281,8 +248,8 @@ def directAttributeRequest(itemIDs, attrIDs):
             raise TypeError("All itemIDs must be integer")
 
     q = select((eos.types.Item.typeID, eos.types.Attribute.attributeID, eos.types.Attribute.value),
-               and_(eos.types.Attribute.attributeID.in_(attrIDs), eos.types.Item.typeID.in_(itemIDs)),
-               from_obj=[join(eos.types.Attribute, eos.types.Item)])
+                                  and_(eos.types.Attribute.attributeID.in_(attrIDs), eos.types.Item.typeID.in_(itemIDs)),
+                                  from_obj=[join(eos.types.Attribute, eos.types.Item)])
 
     result = gamedata_session.execute(q).fetchall()
     return result

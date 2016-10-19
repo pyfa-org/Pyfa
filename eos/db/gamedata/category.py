@@ -1,4 +1,4 @@
-# ===============================================================================
+#===============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of eos.
@@ -15,7 +15,7 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
-# ===============================================================================
+#===============================================================================
 
 from sqlalchemy import Column, String, Integer, ForeignKey, Boolean, Table
 from sqlalchemy.orm import relation, mapper, synonym, deferred
@@ -24,14 +24,14 @@ from eos.db import gamedata_meta
 from eos.types import Category, Icon
 
 categories_table = Table("invcategories", gamedata_meta,
-                         Column("categoryID", Integer, primary_key=True),
+                         Column("categoryID", Integer, primary_key = True),
                          Column("categoryName", String),
                          Column("description", String),
                          Column("published", Boolean),
                          Column("iconID", Integer, ForeignKey("icons.iconID")))
 
 mapper(Category, categories_table,
-       properties={"icon": relation(Icon),
-                   "ID": synonym("categoryID"),
-                   "name": synonym("categoryName"),
-                   "description": deferred(categories_table.c.description)})
+       properties = {"icon" : relation(Icon),
+                     "ID" : synonym("categoryID"),
+                     "name" : synonym("categoryName"),
+                     "description" : deferred(categories_table.c.description)})

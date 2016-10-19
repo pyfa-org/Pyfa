@@ -1,4 +1,4 @@
-# ===============================================================================
+#===============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of eos.
@@ -15,18 +15,18 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
-# ===============================================================================
+#===============================================================================
 
 from sqlalchemy import Column, String, Integer, Boolean, ForeignKey, Table, Float
-from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import relation, mapper, synonym, deferred
+from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm.collections import attribute_mapped_collection
 
 from eos.db import gamedata_meta
 from eos.types import Icon, Attribute, Item, Effect, MetaType, Group, Traits
 
 items_table = Table("invtypes", gamedata_meta,
-                    Column("typeID", Integer, primary_key=True),
+                    Column("typeID", Integer, primary_key = True),
                     Column("typeName", String, index=True),
                     Column("description", String),
                     Column("raceID", Integer),
@@ -43,19 +43,19 @@ from .metaGroup import metatypes_table
 from .traits import traits_table
 
 mapper(Item, items_table,
-       properties={"group": relation(Group, backref="items"),
-                   "icon": relation(Icon),
-                   "_Item__attributes": relation(Attribute, collection_class=attribute_mapped_collection('name')),
-                   "effects": relation(Effect, collection_class=attribute_mapped_collection('name')),
-                   "metaGroup": relation(MetaType,
-                                         primaryjoin=metatypes_table.c.typeID == items_table.c.typeID,
-                                         uselist=False),
-                   "ID": synonym("typeID"),
-                   "name": synonym("typeName"),
-                   "description": deferred(items_table.c.description),
-                   "traits": relation(Traits,
-                                      primaryjoin=traits_table.c.typeID == items_table.c.typeID,
-                                      uselist=False)
-                   })
+       properties = {"group" : relation(Group, backref = "items"),
+                     "icon" : relation(Icon),
+                     "_Item__attributes" : relation(Attribute, collection_class = attribute_mapped_collection('name')),
+                     "effects" : relation(Effect, collection_class = attribute_mapped_collection('name')),
+                     "metaGroup" : relation(MetaType,
+                                            primaryjoin = metatypes_table.c.typeID == items_table.c.typeID,
+                                            uselist = False),
+                     "ID" : synonym("typeID"),
+                     "name" : synonym("typeName"),
+                     "description" : deferred(items_table.c.description),
+                     "traits" : relation(Traits,
+                                         primaryjoin = traits_table.c.typeID == items_table.c.typeID,
+                                         uselist = False)
+                    })
 
 Item.category = association_proxy("group", "category")

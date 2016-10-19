@@ -1,4 +1,4 @@
-# ===============================================================================
+#===============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of eos.
@@ -15,7 +15,7 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
-# ===============================================================================
+#===============================================================================
 
 from sqlalchemy import Column, String, Integer, Boolean, ForeignKey, Table
 from sqlalchemy.orm import relation, mapper, synonym, deferred
@@ -24,19 +24,17 @@ from eos.db import gamedata_meta
 from eos.types import Item, MarketGroup, Icon
 
 marketgroups_table = Table("invmarketgroups", gamedata_meta,
-                           Column("marketGroupID", Integer, primary_key=True),
+                           Column("marketGroupID", Integer, primary_key = True),
                            Column("marketGroupName", String),
                            Column("description", String),
                            Column("hasTypes", Boolean),
-                           Column("parentGroupID", Integer,
-                                  ForeignKey("invmarketgroups.marketGroupID", initially="DEFERRED", deferrable=True)),
+                           Column("parentGroupID", Integer, ForeignKey("invmarketgroups.marketGroupID", initially="DEFERRED", deferrable=True)),
                            Column("iconID", Integer, ForeignKey("icons.iconID")))
 
 mapper(MarketGroup, marketgroups_table,
-       properties={"items": relation(Item, backref="marketGroup"),
-                   "parent": relation(MarketGroup, backref="children",
-                                      remote_side=[marketgroups_table.c.marketGroupID]),
-                   "icon": relation(Icon),
-                   "ID": synonym("marketGroupID"),
-                   "name": synonym("marketGroupName"),
-                   "description": deferred(marketgroups_table.c.description)})
+       properties = {"items" : relation(Item, backref = "marketGroup"),
+                     "parent" : relation(MarketGroup, backref = "children", remote_side = [marketgroups_table.c.marketGroupID]),
+                     "icon" : relation(Icon),
+                     "ID" : synonym("marketGroupID"),
+                     "name" : synonym("marketGroupName"),
+                     "description" : deferred(marketgroups_table.c.description)})
