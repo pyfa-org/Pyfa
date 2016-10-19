@@ -900,7 +900,6 @@ class Fit(object):
     def addDrain(self, src, cycleTime, capNeed, clipSize=0):
         """ Used for both cap drains and cap fills (fills have negative capNeed) """
 
-        rigSize = self.ship.getModifiedItemAttr("rigSize")
         energyNeutralizerSignatureResolution = src.getModifiedItemAttr("energyNeutralizerSignatureResolution")
         signatureRadius = self.ship.getModifiedItemAttr("signatureRadius")
 
