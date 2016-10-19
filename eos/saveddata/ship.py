@@ -79,7 +79,8 @@ class Ship(ItemAttrShortcut, HandledItem):
         self.commandBonus = 0
 
     def calculateModifiedAttributes(self, fit, runTime, forceProjected=False):
-        if forceProjected: return
+        if forceProjected:
+            return
         for effect in self.item.effects.itervalues():
             if effect.runTime == runTime and effect.isType("passive"):
                 # Ships have effects that utilize the level of a skill as an

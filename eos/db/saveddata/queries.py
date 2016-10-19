@@ -93,7 +93,7 @@ if configVal is True:
 
 
     def removeCachedEntry(type, ID):
-        if not type in queryCache:
+        if type not in queryCache:
             return
         functionCache = queryCache[type]
         for _, localCache in functionCache.iteritems():
