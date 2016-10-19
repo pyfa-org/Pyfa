@@ -243,7 +243,7 @@ class Character(object):
                "apiKey" : lambda val: val is None or (isinstance(val, basestring) and len(val) > 0),
                "ownerID" : lambda val: isinstance(val, int) or val is None}
 
-        if map[key](val) == False: raise ValueError(str(val) + " is not a valid value for " + key)
+        if not map[key](val): raise ValueError(str(val) + " is not a valid value for " + key)
         else: return val
 
     def __repr__(self):
@@ -354,7 +354,7 @@ class Skill(HandledItem):
         map = {"characterID": lambda val: isinstance(val, int),
                "skillID" : lambda val: isinstance(val, int)}
 
-        if map[key](val) == False: raise ValueError(str(val) + " is not a valid value for " + key)
+        if not map[key](val): raise ValueError(str(val) + " is not a valid value for " + key)
         else: return val
 
     def __deepcopy__(self, memo):

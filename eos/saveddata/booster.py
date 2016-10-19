@@ -105,7 +105,7 @@ class Booster(HandledItem, ItemAttrShortcut):
 
     def calculateModifiedAttributes(self, fit, runTime, forceProjected = False):
         if forceProjected: return
-        if self.active == False: return
+        if not self.active: return
         for effect in self.item.effects.itervalues():
             if effect.runTime == runTime and effect.isType("passive"):
                 effect.handler(fit, self, ("booster",))
@@ -122,7 +122,7 @@ class Booster(HandledItem, ItemAttrShortcut):
                "active" : lambda val: isinstance(val, bool),
                "slot" : lambda val: isinstance(val, int) and val >= 1 and val <= 3}
 
-        if map[key](val) == False: raise ValueError(str(val) + " is not a valid value for " + key)
+        if not map[key](val): raise ValueError(str(val) + " is not a valid value for " + key)
         else: return val
 
     def __deepcopy__(self, memo):

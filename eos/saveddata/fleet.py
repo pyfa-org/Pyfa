@@ -41,7 +41,7 @@ class Fleet(object):
             self.broken = True
 
         #Now calculate our own if we aren't broken
-        if self.broken == False:
+        if not self.broken:
             #We only get our own bonuses *Sadface*
             store.apply(leader, "fleet")
 
@@ -104,7 +104,7 @@ class Wing(object):
             self.broken = True
 
         #Check if we aren't broken, if we aren't, boost
-        if self.broken == False:
+        if not self.broken:
             store.apply(leader, "wing")
         else:
             #We broke, don't go up
@@ -165,7 +165,7 @@ class Squad(object):
         if len(self.members) <= 0 or leader is None or leader.character is None or leader.character.getSkill("Leadership").level * 2 < len(self.members):
             self.broken = True
 
-        if self.broken == False:
+        if not self.broken:
             for member in self.members:
                 store.apply(member, "squad")
         else:

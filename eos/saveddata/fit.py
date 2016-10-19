@@ -364,7 +364,7 @@ class Fit(object):
                "ownerID" : lambda val: isinstance(val, int) or val is None,
                "shipID" : lambda val: isinstance(val, int) or val is None}
 
-        if map[key](val) == False: raise ValueError(str(val) + " is not a valid value for " + key)
+        if not map[key](val): raise ValueError(str(val) + " is not a valid value for " + key)
         else: return val
 
     def clear(self, projected=False):

@@ -561,7 +561,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                "itemID" : lambda val: val is None or isinstance(val, int),
                "ammoID" : lambda val: isinstance(val, int)}
 
-        if map[key](val) == False: raise ValueError(str(val) + " is not a valid value for " + key)
+        if not map[key](val): raise ValueError(str(val) + " is not a valid value for " + key)
         else: return val
 
     def clear(self):

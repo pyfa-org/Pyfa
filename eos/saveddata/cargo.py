@@ -71,7 +71,7 @@ class Cargo(HandledItem, ItemAttrShortcut):
         map = {"fitID": lambda val: isinstance(val, int),
                "itemID" : lambda val: isinstance(val, int)}
 
-        if map[key](val) == False: raise ValueError(str(val) + " is not a valid value for " + key)
+        if not map[key](val): raise ValueError(str(val) + " is not a valid value for " + key)
         else: return val
 
     def __deepcopy__(self, memo):
