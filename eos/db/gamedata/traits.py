@@ -8,4 +8,4 @@ traits_table = Table("invtraits", gamedata_meta,
                      Column("typeID", Integer, ForeignKey("invtypes.typeID"), primary_key=True),
                      Column("traitText", String))
 
-mapper(Traits, traits_table);
+mapper(Traits, traits_table)
