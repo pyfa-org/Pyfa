@@ -15,20 +15,20 @@ def handler(fit, module, context):
                                       stackingPenalties=penalize, penaltyGroup="preMul")
 
     # Turrets
-    fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Large Energy Turret") or \
-                                              mod.item.requiresSkill("Large Hybrid Turret") or \
+    fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Large Energy Turret") or
+                                              mod.item.requiresSkill("Large Hybrid Turret") or
                                               mod.item.requiresSkill("Large Projectile Turret"),
                                   "maxRange", module.getModifiedItemAttr("maxRangeBonus"),
                                   stackingPenalties=True)
-    fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Large Energy Turret") or \
-                                              mod.item.requiresSkill("Large Hybrid Turret") or \
+    fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Large Energy Turret") or
+                                              mod.item.requiresSkill("Large Hybrid Turret") or
                                               mod.item.requiresSkill("Large Projectile Turret"),
                                   "falloff", module.getModifiedItemAttr("falloffBonus"),
                                   stackingPenalties=True)
 
     # Missiles
-    fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill("Torpedoes") or \
-                                                mod.charge.requiresSkill("Cruise Missiles") or \
+    fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill("Torpedoes") or
+                                                mod.charge.requiresSkill("Cruise Missiles") or
                                                 mod.charge.requiresSkill("Heavy Missiles"),
                                     "maxVelocity", module.getModifiedItemAttr("missileVelocityBonus"))
 

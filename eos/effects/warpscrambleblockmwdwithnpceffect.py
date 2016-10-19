@@ -2,10 +2,11 @@
 #
 # Used by:
 # Modules named like: Warp Scrambler (26 of 26)
-runTime = "early"
-type = "projected", "active"
 
 from eos.types import State
+
+runTime = "early"
+type = "projected", "active"
 
 
 def handler(fit, module, context):
