@@ -1,0 +1,7 @@
+requests==2.11.1
+sqlalchemy==1.0.14
+
+# Need to investigate these
+# wx
+# dateutil
+# urllib3
