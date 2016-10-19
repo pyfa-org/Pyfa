@@ -1,4 +1,4 @@
-#===============================================================================
+# ===============================================================================
 # Copyright (C) 2014 Ryan Holmes
 #
 # This file is part of eos.
@@ -15,15 +15,16 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# ===============================================================================
 
 import re
+
 
 class TargetResists(object):
     # also determined import/export order - VERY IMPORTANT
     DAMAGE_TYPES = ("em", "thermal", "kinetic", "explosive")
 
-    def __init__(self, emAmount = 0, thermalAmount = 0, kineticAmount = 0, explosiveAmount = 0):
+    def __init__(self, emAmount=0, thermalAmount=0, kineticAmount=0, explosiveAmount=0):
         self.emAmount = emAmount
         self.thermalAmount = thermalAmount
         self.kineticAmount = kineticAmount
@@ -38,8 +39,8 @@ class TargetResists(object):
             try:
                 if line.strip()[0] == "#":  # comments
                     continue
-                line = line.split('#',1)[0]  # allows for comments
-                type, data = line.rsplit('=',1)
+                line = line.split('#', 1)[0]  # allows for comments
+                type, data = line.rsplit('=', 1)
                 type, data = type.strip(), data.split(',')
             except:
                 # Data isn't in correct format, continue to next line
@@ -56,11 +57,11 @@ class TargetResists(object):
                 val = float(val)
                 try:
                     assert 0 <= val <= 100
-                    fields["%sAmount" % cls.DAMAGE_TYPES[index]] = val/100
+                    fields["%sAmount" % cls.DAMAGE_TYPES[index]] = val / 100
                 except:
                     continue
 
-            if len(fields) == 4: # Avoid possible blank lines
+            if len(fields) == 4:  # Avoid possible blank lines
                 pattern = TargetResists(**fields)
                 pattern.name = name.strip()
                 patterns.append(pattern)
@@ -68,13 +69,15 @@ class TargetResists(object):
         return patterns, numPatterns
 
     EXPORT_FORMAT = "TargetResists = %s,%.1f,%.1f,%.1f,%.1f\n"
+
     @classmethod
     def exportPatterns(cls, *patterns):
-        out  = "# Exported from pyfa\n#\n"
+        out = "# Exported from pyfa\n#\n"
         out += "# Values are in following format:\n"
         out += "# TargetResists = [name],[EM %],[Thermal %],[Kinetic %],[Explosive %]\n\n"
         for dp in patterns:
-            out += cls.EXPORT_FORMAT % (dp.name, dp.emAmount*100, dp.thermalAmount*100, dp.kineticAmount*100, dp.explosiveAmount*100)
+            out += cls.EXPORT_FORMAT % (
+            dp.name, dp.emAmount * 100, dp.thermalAmount * 100, dp.kineticAmount * 100, dp.explosiveAmount * 100)
 
         return out.strip()
 

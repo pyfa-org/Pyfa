@@ -1,4 +1,4 @@
-#===============================================================================
+# ===============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of eos.
@@ -15,15 +15,17 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# ===============================================================================
 
-from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut, cappingAttrKeyCache
-from eos.effectHandlerHelpers import HandledItem
-from eos.saveddata.mode import Mode
-import eos.db
 import logging
 
+import eos.db
+from eos.effectHandlerHelpers import HandledItem
+from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut, cappingAttrKeyCache
+from eos.saveddata.mode import Mode
+
 logger = logging.getLogger(__name__)
+
 
 class Ship(ItemAttrShortcut, HandledItem):
     EXTRA_ATTRIBUTES = {
@@ -50,7 +52,7 @@ class Ship(ItemAttrShortcut, HandledItem):
         self.__itemModifiedAttributes.original = dict(self.item.attributes)
         self.__itemModifiedAttributes.original.update(self.EXTRA_ATTRIBUTES)
         self.__itemModifiedAttributes.overrides = self.item.overrides
-        
+
         if "maximumRangeCap" in self.__itemModifiedAttributes.original:
             cappingAttrKeyCache["maxTargetRange"] = "maximumRangeCap"
 
@@ -61,7 +63,8 @@ class Ship(ItemAttrShortcut, HandledItem):
 
     def validate(self, item):
         if item.category.name != "Ship":
-            raise ValueError('Passed item "%s" (category: (%s)) is not under Ship category'%(item.name, item.category.name))
+            raise ValueError(
+                'Passed item "%s" (category: (%s)) is not under Ship category' % (item.name, item.category.name))
 
     @property
     def item(self):
@@ -75,7 +78,7 @@ class Ship(ItemAttrShortcut, HandledItem):
         self.itemModifiedAttributes.clear()
         self.commandBonus = 0
 
-    def calculateModifiedAttributes(self, fit, runTime, forceProjected = False):
+    def calculateModifiedAttributes(self, fit, runTime, forceProjected=False):
         if forceProjected: return
         for effect in self.item.effects.itervalues():
             if effect.runTime == runTime and effect.isType("passive"):

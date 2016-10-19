@@ -1,4 +1,4 @@
-#===============================================================================
+# ===============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of eos.
@@ -15,12 +15,14 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# ===============================================================================
 
-from sqlalchemy.orm import validates, reconstructor
 import logging
 
+from sqlalchemy.orm import reconstructor
+
 logger = logging.getLogger(__name__)
+
 
 class FighterAbility(object):
     DAMAGE_TYPES = ("em", "kinetic", "explosive", "thermal")
@@ -30,18 +32,17 @@ class FighterAbility(object):
     # with the fighter squadron role
     NUM_SHOTS_MAPPING = {
         1: 0,  # Superiority fighter / Attack
-        2: 12, # Light fighter / Attack
+        2: 12,  # Light fighter / Attack
         4: 6,  # Heavy fighter / Heavy attack
         5: 3,  # Heavy fighter / Long range attack
     }
     # Same as above
     REARM_TIME_MAPPING = {
-        1: 0,     # Superiority fighter / Attack
+        1: 0,  # Superiority fighter / Attack
         2: 4000,  # Light fighter / Attack
         4: 6000,  # Heavy fighter / Heavy attack
-        5: 20000, # Heavy fighter / Long range attack
+        5: 20000,  # Heavy fighter / Long range attack
     }
-    
 
     def __init__(self, effect):
         """Initialize from the program"""
@@ -94,11 +95,14 @@ class FighterAbility(object):
 
     @property
     def reloadTime(self):
-        return self.fighter.getModifiedItemAttr("fighterRefuelingTime") + (self.REARM_TIME_MAPPING[self.fighter.getModifiedItemAttr("fighterSquadronRole")] or 0 if self.hasCharges else 0) * self.numShots
+        return self.fighter.getModifiedItemAttr("fighterRefuelingTime") + (self.REARM_TIME_MAPPING[
+                                                                               self.fighter.getModifiedItemAttr(
+                                                                                   "fighterSquadronRole")] or 0 if self.hasCharges else 0) * self.numShots
 
     @property
     def numShots(self):
-        return self.NUM_SHOTS_MAPPING[self.fighter.getModifiedItemAttr("fighterSquadronRole")] or 0 if self.hasCharges else 0
+        return self.NUM_SHOTS_MAPPING[
+                   self.fighter.getModifiedItemAttr("fighterSquadronRole")] or 0 if self.hasCharges else 0
 
     @property
     def cycleTime(self):
@@ -126,7 +130,7 @@ class FighterAbility(object):
                 if self.attrPrefix == "fighterAbilityLaunchBomb":
                     # bomb calcs
                     volley = sum(map(lambda attr: (self.fighter.getModifiedChargeAttr("%sDamage" % attr) or 0) * (
-                    1 - getattr(targetResists, "%sAmount" % attr, 0)), self.DAMAGE_TYPES))
+                        1 - getattr(targetResists, "%sAmount" % attr, 0)), self.DAMAGE_TYPES))
                 else:
                     volley = sum(map(lambda d2, d:
                                      (self.fighter.getModifiedItemAttr(

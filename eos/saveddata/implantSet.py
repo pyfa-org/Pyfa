@@ -1,4 +1,4 @@
-#===============================================================================
+# ===============================================================================
 # Copyright (C) 2016 Ryan Holmes
 #
 # This file is part of eos.
@@ -15,10 +15,12 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# ===============================================================================
+
+from copy import deepcopy
 
 from eos.effectHandlerHelpers import HandledImplantBoosterList
-from copy import deepcopy
+
 
 class ImplantSet(object):
     def __init__(self, name=None):
@@ -31,12 +33,12 @@ class ImplantSet(object):
 
     @classmethod
     def exportSets(cls, *sets):
-        out  = "# Exported from pyfa\n#\n" \
-               "# Values are in following format:\n" \
-               "# [Implant Set name]\n" \
-               "# [Implant name]\n" \
-               "# [Implant name]\n" \
-               "# ...\n\n"
+        out = "# Exported from pyfa\n#\n" \
+              "# Values are in following format:\n" \
+              "# [Implant Set name]\n" \
+              "# [Implant name]\n" \
+              "# [Implant name]\n" \
+              "# ...\n\n"
 
         for set in sets:
             out += "[{}]\n".format(set.name)
