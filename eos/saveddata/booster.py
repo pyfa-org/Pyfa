@@ -98,7 +98,7 @@ class Booster(HandledItem, ItemAttrShortcut):
         return self.__item
 
     def __calculateSlot(self, item):
-        if not "boosterness" in item.attributes:
+        if "boosterness" not in item.attributes:
             raise ValueError("Passed item is not a booster")
 
         return int(item.attributes["boosterness"].value)
@@ -107,8 +107,10 @@ class Booster(HandledItem, ItemAttrShortcut):
         self.itemModifiedAttributes.clear()
 
     def calculateModifiedAttributes(self, fit, runTime, forceProjected=False):
-        if forceProjected: return
-        if not self.active: return
+        if forceProjected:
+            return
+        if not self.active:
+            return
         for effect in self.item.effects.itervalues():
             if effect.runTime == runTime and effect.isType("passive"):
                 effect.handler(fit, self, ("booster",))

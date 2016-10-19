@@ -306,7 +306,7 @@ class ModifiedAttributeDict(collections.MutableMapping):
             tbl = self.__postIncreases
         else:
             raise ValueError("position should be either pre or post")
-        if not attributeName in tbl:
+        if  attributeName not in tbl:
             tbl[attributeName] = 0
         tbl[attributeName] += increase
         self.__placehold(attributeName)
@@ -323,15 +323,15 @@ class ModifiedAttributeDict(collections.MutableMapping):
         # If we're asked to do stacking penalized multiplication, append values
         # to per penalty group lists
         if stackingPenalties:
-            if not attributeName in self.__penalizedMultipliers:
+            if attributeName not in self.__penalizedMultipliers:
                 self.__penalizedMultipliers[attributeName] = {}
-            if not penaltyGroup in self.__penalizedMultipliers[attributeName]:
+            if penaltyGroup not in self.__penalizedMultipliers[attributeName]:
                 self.__penalizedMultipliers[attributeName][penaltyGroup] = []
             tbl = self.__penalizedMultipliers[attributeName][penaltyGroup]
             tbl.append(multiplier)
         # Non-penalized multiplication factors go to the single list
         else:
-            if not attributeName in self.__multipliers:
+            if attributeName not in self.__multipliers:
                 self.__multipliers[attributeName] = 1
             self.__multipliers[attributeName] *= multiplier
 

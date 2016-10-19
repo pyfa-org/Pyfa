@@ -79,7 +79,7 @@ class Implant(HandledItem, ItemAttrShortcut):
         return self.__item
 
     def __calculateSlot(self, item):
-        if not "implantness" in item.attributes:
+        if  "implantness" not in item.attributes:
             raise ValueError("Passed item is not an implant")
 
         return int(item.attributes["implantness"].value)
@@ -88,8 +88,10 @@ class Implant(HandledItem, ItemAttrShortcut):
         self.itemModifiedAttributes.clear()
 
     def calculateModifiedAttributes(self, fit, runTime, forceProjected=False):
-        if forceProjected: return
-        if not self.active: return
+        if forceProjected:
+            return
+        if not self.active:
+            return
         for effect in self.item.effects.itervalues():
             if effect.runTime == runTime and effect.isType("passive"):
                 effect.handler(fit, self, ("implant",))

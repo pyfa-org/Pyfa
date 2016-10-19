@@ -167,7 +167,9 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                     self.__dps += dps
                     self.__volley += volley
 
-                # For forward compatability this assumes a fighter can have more than 2 damaging abilities and/or multiple that use charges.
+                # For forward compatability this assumes a fighter
+                # can have more than 2 damaging abilities and/or
+                # multiple that use charges.
                 if self.owner.factorReload:
                     activeTimes = []
                     reloadTimes = []
@@ -196,7 +198,8 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                  "ecmBurstRange", "maxRange")
         for attr in attrs:
             maxRange = self.getModifiedItemAttr(attr)
-            if maxRange is not None: return maxRange
+            if maxRange is not None:
+                return maxRange
         if self.charge is not None:
             delay = self.getModifiedChargeAttr("explosionDelay")
             speed = self.getModifiedChargeAttr("maxVelocity")
@@ -211,7 +214,8 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         attrs = ("falloff", "falloffEffectiveness")
         for attr in attrs:
             falloff = self.getModifiedItemAttr(attr)
-            if falloff is not None: return falloff
+            if falloff is not None:
+                return falloff
 
     @validates("ID", "itemID", "chargeID", "amount", "amountActive")
     def validator(self, key, val):

@@ -216,7 +216,8 @@ class Character(object):
                 element.boostItemAttr(*args, **kwargs)
 
     def calculateModifiedAttributes(self, fit, runTime, forceProjected=False):
-        if forceProjected: return
+        if forceProjected:
+            return
         for skill in self.skills:
             fit.register(skill)
             skill.calculateModifiedAttributes(fit, runTime)
@@ -303,7 +304,7 @@ class Skill(HandledItem):
         if (level < 0 or level > 5) and level is not None:
             raise ValueError(str(level) + " is not a valid value for level")
 
-        if hasattr(self, "_Skill__ro") and self.__ro == True:
+        if hasattr(self, "_Skill__ro") and self.__ro is True:
             raise ReadOnlyException()
 
         self.activeLevel = level
@@ -337,8 +338,8 @@ class Skill(HandledItem):
             return
 
         for effect in item.effects.itervalues():
-            if effect.runTime == runTime and effect.isType("passive") and (
-                not fit.isStructure or effect.isType("structure")):
+            if effect.runTime == runTime and effect.isType("passive") and \
+                    (not fit.isStructure or effect.isType("structure")):
                 try:
                     effect.handler(fit, self, ("skill",))
                 except AttributeError:
@@ -356,7 +357,7 @@ class Skill(HandledItem):
 
     @validates("characterID", "skillID", "level")
     def validator(self, key, val):
-        if hasattr(self, "_Skill__ro") and self.__ro == True and key != "characterID":
+        if hasattr(self, "_Skill__ro") and self.__ro is True and key != "characterID":
             raise ReadOnlyException()
 
         map = {"characterID": lambda val: isinstance(val, int),

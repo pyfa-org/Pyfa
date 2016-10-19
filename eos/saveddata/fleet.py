@@ -27,7 +27,8 @@ class Fleet(object):
     def calculateModifiedAttributes(self):
         # Make sure ALL fits in the gang have been calculated
         for c in chain(self.wings, (self.leader,)):
-            if c is not None: c.calculateModifiedAttributes()
+            if c is not None:
+                c.calculateModifiedAttributes()
 
         leader = self.leader
         self.booster = booster = self.booster if self.booster is not None else leader
@@ -91,7 +92,8 @@ class Fleet(object):
 class Wing(object):
     def calculateModifiedAttributes(self):
         for c in chain(self.squads, (self.leader,)):
-            if c is not None: c.calculateModifiedAttributes()
+            if c is not None:
+                c.calculateModifiedAttributes()
 
     def calculateGangBonusses(self, store):
         self.broken = False

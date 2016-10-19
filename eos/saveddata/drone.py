@@ -165,7 +165,8 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                  "ecmBurstRange", "maxRange")
         for attr in attrs:
             maxRange = self.getModifiedItemAttr(attr)
-            if maxRange is not None: return maxRange
+            if maxRange is not None:
+                return maxRange
         if self.charge is not None:
             delay = self.getModifiedChargeAttr("explosionDelay")
             speed = self.getModifiedChargeAttr("maxVelocity")
@@ -180,7 +181,8 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         attrs = ("falloff", "falloffEffectiveness")
         for attr in attrs:
             falloff = self.getModifiedItemAttr(attr)
-            if falloff is not None: return falloff
+            if falloff is not None:
+                return falloff
 
     @validates("ID", "itemID", "chargeID", "amount", "amountActive")
     def validator(self, key, val):
@@ -230,8 +232,8 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
         for effect in self.item.effects.itervalues():
             if effect.runTime == runTime and \
-                    ((projected == True and effect.isType("projected")) or
-                                 projected == False and effect.isType("passive")):
+                    ((projected is True and effect.isType("projected")) or
+                        projected is False and effect.isType("passive")):
                 # See GH issue #765
                 if effect.getattr('grouped'):
                     effect.handler(fit, self, context)

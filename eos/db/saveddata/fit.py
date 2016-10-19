@@ -98,7 +98,7 @@ mapper(Fit, fits_table,
            "_Fit__modules": relation(
                Module,
                collection_class=HandledModuleList,
-               primaryjoin=and_(modules_table.c.fitID == fits_table.c.ID, modules_table.c.projected == False),
+               primaryjoin=and_(modules_table.c.fitID == fits_table.c.ID, modules_table.c.projected is False),
                order_by=modules_table.c.position,
                cascade='all, delete, delete-orphan'),
            "_Fit__projectedModules": relation(

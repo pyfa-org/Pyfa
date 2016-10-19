@@ -18,7 +18,6 @@
 # ===============================================================================
 
 import copy
-import logging
 import time
 from copy import deepcopy
 from itertools import chain
@@ -877,7 +876,8 @@ class Fit(object):
                 # calculate how much the repper can rep stability & add to total
                 totalPeakRecharge = self.capRecharge
                 for mod in repairers:
-                    if capUsed > totalPeakRecharge: break
+                    if capUsed > totalPeakRecharge:
+                        break
                     cycleTime = mod.cycleTime
                     capPerSec = mod.capUse
                     if capPerSec is not None and cycleTime is not None:
@@ -886,8 +886,7 @@ class Fit(object):
 
                         # Add the sustainable amount
                         amount = mod.getModifiedItemAttr(groupAttrMap[mod.item.group.name])
-                        sustainable[groupStoreMap[mod.item.group.name]] += sustainability * (
-                        amount / (cycleTime / 1000.0))
+                        sustainable[groupStoreMap[mod.item.group.name]] += sustainability * (amount / (cycleTime / 1000.0))
                         capUsed += capPerSec
 
             sustainable["passiveShield"] = self.calculateShieldRecharge()
@@ -1096,8 +1095,15 @@ class Fit(object):
         copy.targetResists = self.targetResists
 
         toCopy = (
-        "modules", "drones", "fighters", "cargo", "implants", "boosters", "projectedModules", "projectedDrones",
-        "projectedFighters")
+            "modules",
+            "drones",
+            "fighters",
+            "cargo",
+            "implants",
+            "boosters",
+            "projectedModules",
+            "projectedDrones",
+            "projectedFighters")
         for name in toCopy:
             orig = getattr(self, name)
             c = getattr(copy, name)

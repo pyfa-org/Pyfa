@@ -17,6 +17,7 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
+
 class EqBase(object):
     def __init__(self):
         self.ID = None

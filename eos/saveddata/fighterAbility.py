@@ -96,9 +96,9 @@ class FighterAbility(object):
 
     @property
     def reloadTime(self):
-        return self.fighter.getModifiedItemAttr("fighterRefuelingTime") + (self.REARM_TIME_MAPPING[
-                                                                               self.fighter.getModifiedItemAttr(
-                                                                                   "fighterSquadronRole")] or 0 if self.hasCharges else 0) * self.numShots
+        return self.fighter.getModifiedItemAttr("fighterRefuelingTime") + \
+               (self.REARM_TIME_MAPPING[self.fighter.getModifiedItemAttr(
+                   "fighterSquadronRole")] or 0 if self.hasCharges else 0) * self.numShots
 
     @property
     def numShots(self):

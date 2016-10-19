@@ -169,8 +169,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     def isInvalid(self):
         if self.isEmpty:
             return False
-        return self.__item is None or (self.__item.category.name not in (
-        "Module", "Subsystem", "Structure Module") and self.__item.group.name != "Effect Beacon")
+        return self.__item is None or (self.__item.category.name not in ("Module", "Subsystem", "Structure Module") and self.__item.group.name != "Effect Beacon")
 
     @property
     def numCharges(self):
@@ -252,7 +251,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                  "shipScanRange", "surveyScanRange")
         for attr in attrs:
             maxRange = self.getModifiedItemAttr(attr)
-            if maxRange is not None: return maxRange
+            if maxRange is not None:
+                return maxRange
         if self.charge is not None:
             try:
                 chargeName = self.charge.group.name
@@ -280,7 +280,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         attrs = ("falloffEffectiveness", "falloff", "shipScanFalloff")
         for attr in attrs:
             falloff = self.getModifiedItemAttr(attr)
-            if falloff is not None: return falloff
+            if falloff is not None:
+                return falloff
 
     @property
     def slot(self):
@@ -513,7 +514,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     def isValidCharge(self, charge):
         # Check sizes, if 'charge size > module volume' it won't fit
-        if charge is None: return True
+        if charge is None:
+            return True
         chargeVolume = charge.volume
         moduleCapacity = self.item.capacity
         if chargeVolume is not None and moduleCapacity is not None and chargeVolume > moduleCapacity:
@@ -528,8 +530,10 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         chargeGroup = charge.groupID
         for i in range(5):
             itemChargeGroup = self.getModifiedItemAttr('chargeGroup' + str(i))
-            if itemChargeGroup is None: continue
-            if itemChargeGroup == chargeGroup: return True
+            if itemChargeGroup is None:
+                continue
+            if itemChargeGroup == chargeGroup:
+                return True
 
         return False
 
