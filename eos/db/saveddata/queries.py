@@ -19,7 +19,6 @@
 
 from sqlalchemy.sql import and_
 
-import eos.config
 from eos.db import saveddata_session, sd_lock
 from eos.db.saveddata.fit import projectedFits_table
 from eos.db.saveddata.fleet import squadmembers_table

@@ -1,4 +1,4 @@
-#===============================================================================
+# ===============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of eos.
@@ -15,10 +15,10 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# ===============================================================================
 
 from sqlalchemy.orm import eagerload
-from sqlalchemy.sql import and_, or_
+from sqlalchemy.sql import and_
 
 replace = {"attributes": "_Item__attributes",
            "modules": "_Fit__modules",
@@ -30,6 +30,7 @@ replace = {"attributes": "_Item__attributes",
            "character": "_Fit__character",
            "damagePattern": "_Fit__damagePattern",
            "projectedFits": "_Fit__projectedFits"}
+
 
 def processEager(eager):
     if eager is None:
@@ -44,6 +45,7 @@ def processEager(eager):
 
         return l
 
+
 def _replacements(eagerString):
     splitEager = eagerString.split(".")
     for i in xrange(len(splitEager)):
@@ -53,6 +55,7 @@ def _replacements(eagerString):
             splitEager[i] = replacement
 
     return ".".join(splitEager)
+
 
 def processWhere(clause, where):
     if where is not None:
