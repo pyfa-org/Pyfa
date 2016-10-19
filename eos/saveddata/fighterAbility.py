@@ -52,7 +52,7 @@ class FighterAbility(object):
 
     @reconstructor
     def init(self):
-        '''Initialize from the database'''
+        """Initialize from the database"""
         self.__effect = None
 
         if self.effectID:

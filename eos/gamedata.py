@@ -32,7 +32,7 @@ except ImportError:
     from utils.compat import OrderedDict
 
 class Effect(EqBase):
-    '''
+    """
     The effect handling class, it is used to proxy and load effect handler code,
     as well as a container for extra information regarding effects coming
     from the gamedata db.
@@ -41,26 +41,26 @@ class Effect(EqBase):
     @ivar name: The name of this effect
     @ivar description: The description of this effect, this is usualy pretty useless
     @ivar published: Wether this effect is published or not, unpublished effects are typicaly unused.
-    '''
+    """
     #Filter to change names of effects to valid python method names
     nameFilter = re.compile("[^A-Za-z0-9]")
 
     @reconstructor
     def init(self):
-        '''
+        """
         Reconstructor, composes the object as we grab it from the database
-        '''
+        """
         self.__generated = False
         self.__effectModule = None
         self.handlerName = re.sub(self.nameFilter, "", self.name).lower()
 
     @property
     def handler(self):
-        '''
+        """
         The handler for the effect,
         It is automaticly fetched from effects/<effectName>.py if the file exists
         the first time this property is accessed.
-        '''
+        """
         if not self.__generated:
             self.__generateHandler()
 
@@ -68,7 +68,7 @@ class Effect(EqBase):
 
     @property
     def runTime(self):
-        '''
+        """
         The runTime that this effect should be run at.
         This property is also automaticly fetched from effects/<effectName>.py if the file exists.
         the possible values are:
@@ -77,7 +77,7 @@ class Effect(EqBase):
 
         effects with an early runTime will be ran first when things are calculated,
         followed by effects with a normal runTime and as last effects with a late runTime are ran.
-        '''
+        """
         if not self.__generated:
             self.__generateHandler()
 
@@ -85,7 +85,7 @@ class Effect(EqBase):
 
     @property
     def type(self):
-        '''
+        """
         The type of the effect, automaticly fetched from effects/<effectName>.py if the file exists.
 
         Valid values are:
@@ -95,7 +95,7 @@ class Effect(EqBase):
         the effect is. passive vs active gives eos clues about wether to module
         is activatable or not (duh!) and projected and gang each tell eos that the
         module can be projected onto other fits, or used as a gang booster module respectivly
-        '''
+        """
         if not self.__generated:
             self.__generateHandler()
 
@@ -103,23 +103,23 @@ class Effect(EqBase):
 
     @property
     def isImplemented(self):
-        '''
+        """
         Wether this effect is implemented in code or not,
         unimplemented effects simply do nothing at all when run
-        '''
+        """
         return self.handler != effectDummy
 
     def isType(self, type):
-        '''
+        """
         Check if this effect is of the passed type
-        '''
+        """
         return self.type is not None and type in self.type
 
     def __generateHandler(self):
-        '''
+        """
         Grab the handler, type and runTime from the effect code if it exists,
         if it doesn't, set dummy values and add a dummy handler
-        '''
+        """
         try:
             self.__effectModule = effectModule = __import__('eos.effects.' + self.handlerName, fromlist=True)
             try:

@@ -683,8 +683,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             return "EmptyModule() at {}".format(hex(id(self)))
 
 class Rack(Module):
-    '''
+    """
     This is simply the Module class named something else to differentiate
     it for app logic. This class does not do anything special
-    '''
+    """
     pass
