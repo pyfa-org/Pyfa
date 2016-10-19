@@ -25,6 +25,8 @@ from eos.db.saveddata.fleet import squadmembers_table
 from eos.db.util import processEager, processWhere
 from eos.types import *
 
+import eos.config
+
 configVal = getattr(eos.config, "saveddataCache", None)
 if configVal is True:
     import weakref
