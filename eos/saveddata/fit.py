@@ -461,11 +461,16 @@ class Fit(object):
         timer = Timer(u'Fit: {}, {}'.format(self.ID, self.name), logger)
         logger.debug("Starting fit calculation on: %r, withBoosters: %s", self, withBoosters)
 
+        try:
+            projectionInfo = self.getProjectionInfo(targetFit.ID)
+        except:
+            pass
+        else:
+            logger.debug("ProjectionInfo: %s", projectionInfo)
+
         shadow = False
         if targetFit:
             logger.debug("Applying projections to target: %r", targetFit)
-            projectionInfo = self.getProjectionInfo(targetFit.ID)
-            logger.debug("ProjectionInfo: %s", projectionInfo)
             if self == targetFit:
                 copied = self  # original fit
                 shadow = True
