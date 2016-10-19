@@ -6,4 +6,4 @@
 type = "passive"
 def handler(fit, ship, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Mining"),
-                                  "duration", ship.getModifiedItemAttr("shipBonusORE3"), skill=("Mining Barge"))
+                                  "duration", ship.getModifiedItemAttr("shipBonusORE3"), skill="Mining Barge")

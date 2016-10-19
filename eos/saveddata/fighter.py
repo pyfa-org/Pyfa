@@ -180,7 +180,7 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                         activeTimes.append(ability.numShots * ability.cycleTime)
                         reloadTimes.append(ability.reloadTime)
                     
-                    if(len(activeTimes) > 0):
+                    if len(activeTimes) > 0:
                         shortestActive = sorted(activeTimes)[0]
                         longestReload = sorted(reloadTimes, reverse=True)[0]
                         self.__dps = max(constantDps, self.__dps * shortestActive / (shortestActive + longestReload))
