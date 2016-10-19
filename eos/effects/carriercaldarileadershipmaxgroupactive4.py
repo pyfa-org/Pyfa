@@ -3,6 +3,9 @@
 # Used by:
 # Ship: Wyvern
 type = "passive"
+
+
 def handler(fit, ship, context):
     fit.modules.filteredItemIncrease(lambda mod: mod.item.group.name == "Gang Coordinator",
-                                     "maxGroupActive", ship.getModifiedItemAttr("carrierCaldariBonus4"), skill="Caldari Carrier")
+                                     "maxGroupActive", ship.getModifiedItemAttr("carrierCaldariBonus4"),
+                                     skill="Caldari Carrier")

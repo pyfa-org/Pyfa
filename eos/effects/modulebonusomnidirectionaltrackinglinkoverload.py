@@ -3,6 +3,8 @@
 # Used by:
 # Modules from group: Drone Tracking Modules (10 of 10)
 type = "overheat"
+
+
 def handler(fit, module, context):
     overloadBonus = module.getModifiedItemAttr("overloadTrackingModuleStrengthBonus")
     module.boostItemAttr("maxRangeBonus", overloadBonus)

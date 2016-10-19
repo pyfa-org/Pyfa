@@ -3,6 +3,9 @@
 # Used by:
 # Ship: Garmur
 type = "passive"
+
+
 def handler(fit, ship, context):
     fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill("Missile Launcher Operation"),
-                                    "explosiveDamage", ship.getModifiedItemAttr("shipBonusCF2"), skill="Caldari Frigate")
+                                    "explosiveDamage", ship.getModifiedItemAttr("shipBonusCF2"),
+                                    skill="Caldari Frigate")

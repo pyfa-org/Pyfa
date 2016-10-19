@@ -4,6 +4,7 @@ type = "projected", "active"
 
 from eos.types import State
 
+
 def handler(fit, module, context):
     if "projected" not in context:
         return

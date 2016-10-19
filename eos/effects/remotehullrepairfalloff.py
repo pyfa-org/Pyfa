@@ -4,6 +4,8 @@
 # Modules from group: Remote Hull Repairer (8 of 8)
 type = "projected", "active"
 runTime = "late"
+
+
 def handler(fit, module, context):
     if "projected" not in context: return
     bonus = module.getModifiedItemAttr("structureDamageAmount")

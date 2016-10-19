@@ -11,6 +11,9 @@
 # Subsystems named like: Offensive Covert Reconfiguration (4 of 4)
 # Ship: Astero
 type = "passive"
+
+
 def handler(fit, container, context):
     fit.modules.filteredItemForce(lambda mod: mod.item.requiresSkill("Cloaking"),
-                                  "moduleReactivationDelay", container.getModifiedItemAttr("covertOpsAndReconOpsCloakModuleDelay"))
+                                  "moduleReactivationDelay",
+                                  container.getModifiedItemAttr("covertOpsAndReconOpsCloakModuleDelay"))

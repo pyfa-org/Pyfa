@@ -3,6 +3,8 @@
 # Used by:
 # Module: QA ECCM
 type = "active"
+
+
 def handler(fit, module, context):
     for scanType in ("Gravimetric", "Magnetometric", "Radar", "Ladar"):
         fit.ship.boostItemAttr(

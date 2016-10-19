@@ -6,6 +6,8 @@
 # Implant: Genolution Core Augmentation CA-1
 # Skill: Power Grid Management
 type = "passive"
+
+
 def handler(fit, container, context):
     level = container.level if "skill" in context else 1
     fit.ship.boostItemAttr("powerOutput", container.getModifiedItemAttr("powerEngineeringOutputBonus") * level)
