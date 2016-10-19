@@ -1,4 +1,4 @@
-#===============================================================================
+# ===============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of eos.
@@ -15,12 +15,13 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# ===============================================================================
 
 import itertools
 
+
 class Graph(object):
-    def __init__(self, fit, function, data = None):
+    def __init__(self, fit, function, data=None):
         self.fit = fit
         self.data = {}
         if data is not None:
@@ -39,8 +40,8 @@ class Graph(object):
         pointNames = []
         pointIterators = []
         for data in self.data.itervalues():
-                pointNames.append(data.name)
-                pointIterators.append(data)
+            pointNames.append(data.name)
+            pointIterators.append(data)
 
         return self._iterator(pointNames, pointIterators)
 
@@ -66,7 +67,7 @@ class Data(object):
         dataList = []
         for data in dataString.split(";"):
             if isinstance(data, basestring) and "-" in data:
-                #Dealing with a range
+                # Dealing with a range
                 dataList.append(Range(data, self.step))
             else:
                 dataList.append(Constant(data))
@@ -94,6 +95,7 @@ class Constant(object):
 
     def isConstant(self):
         return True
+
 
 class Range(object):
     def __init__(self, string, step):
