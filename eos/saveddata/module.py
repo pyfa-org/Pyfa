@@ -620,11 +620,11 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
             for effect in self.item.effects.itervalues():
                 if effect.runTime == runTime and \
-                (effect.isType("offline") or
-                (effect.isType("passive") and self.state >= State.ONLINE) or \
-                (effect.isType("active") and self.state >= State.ACTIVE)) and \
-                ((projected and effect.isType("projected")) or not projected):
-                        effect.handler(fit, self, context)
+                        (effect.isType("offline") or
+                             (effect.isType("passive") and self.state >= State.ONLINE) or
+                             (effect.isType("active") and self.state >= State.ACTIVE)) and \
+                        ((projected and effect.isType("projected")) or not projected):
+                    effect.handler(fit, self, context)
 
     @property
     def cycleTime(self):

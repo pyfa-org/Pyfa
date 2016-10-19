@@ -223,8 +223,8 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
         for effect in self.item.effects.itervalues():
             if effect.runTime == runTime and \
-            ((projected == True and effect.isType("projected")) or \
-             projected == False and effect.isType("passive")):
+                    ((projected == True and effect.isType("projected")) or
+                                 projected == False and effect.isType("passive")):
                 # See GH issue #765
                 if effect.getattr('grouped'):
                     effect.handler(fit, self, context)
