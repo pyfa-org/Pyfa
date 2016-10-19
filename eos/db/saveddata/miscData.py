@@ -1,4 +1,4 @@
-#===============================================================================
+# ===============================================================================
 # Copyright (C) 2011 Anton Vorobyov
 #
 # This file is part of eos.
@@ -15,15 +15,16 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# ===============================================================================
 
 from sqlalchemy import Column, Table, String
 from sqlalchemy.orm import mapper
-from eos.types import MiscData
+
 from eos.db import saveddata_meta
+from eos.types import MiscData
 
 miscdata_table = Table("miscdata", saveddata_meta,
-                           Column("fieldName", String, primary_key=True),
-                           Column("fieldValue", String))
+                       Column("fieldName", String, primary_key=True),
+                       Column("fieldValue", String))
 
 mapper(MiscData, miscdata_table)
