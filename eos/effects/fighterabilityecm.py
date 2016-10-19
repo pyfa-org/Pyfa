@@ -13,7 +13,8 @@ type = "projected", "active"
 
 
 def handler(fit, module, context):
-    if "projected" not in context: return
+    if "projected" not in context:
+        return
     # jam formula: 1 - (1- (jammer str/ship str))^(# of jam mods with same str))
     strModifier = 1 - module.getModifiedItemAttr("{}Strength{}".format(prefix, fit.scanType)) / fit.scanStrength
 

@@ -8,7 +8,8 @@ gangBonus = "commandBonus"
 
 
 def handler(fit, module, context):
-    if "gang" not in context: return
+    if "gang" not in context:
+          return
     fit.ship.boostItemAttr("maxTargetRange", module.getModifiedItemAttr("commandBonus"),
                            stackingPenalties=True)
     for scanType in ("Gravimetric", "Radar", "Ladar", "Magnetometric"):

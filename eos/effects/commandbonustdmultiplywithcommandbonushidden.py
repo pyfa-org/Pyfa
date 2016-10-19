@@ -8,7 +8,8 @@ type = "active", "gang"
 
 
 def handler(fit, module, context):
-    if "gang" not in context: return
+    if "gang" not in context:
+        return
     for bonus in (
             "missileVelocityBonus",
             "explosionDelayBonus",

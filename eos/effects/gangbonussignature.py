@@ -7,6 +7,7 @@ gangBoost = "signatureRadius"
 
 
 def handler(fit, module, context):
-    if "gang" not in context: return
+    if "gang" not in context:
+        return
     fit.ship.boostItemAttr("signatureRadius", module.getModifiedItemAttr("commandBonus"),
                            stackingPenalties=True)
