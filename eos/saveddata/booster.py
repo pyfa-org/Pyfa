@@ -120,7 +120,7 @@ class Booster(HandledItem, ItemAttrShortcut):
                "itemID" : lambda val: isinstance(val, int),
                "ammoID" : lambda val: isinstance(val, int),
                "active" : lambda val: isinstance(val, bool),
-               "slot" : lambda val: isinstance(val, int) and val >= 1 and val <= 3}
+               "slot" : lambda val: isinstance(val, int) and 1 <= val <= 3}
 
         if not map[key](val): raise ValueError(str(val) + " is not a valid value for " + key)
         else: return val

@@ -183,7 +183,7 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                "itemID" : lambda val: isinstance(val, int),
                "chargeID" : lambda val: isinstance(val, int),
                "amount" : lambda val: isinstance(val, int) and val >= 0,
-               "amountActive" : lambda val: isinstance(val, int) and val <= self.amount and val >= 0}
+               "amountActive" : lambda val: isinstance(val, int) and self.amount >= val >= 0}
 
         if not map[key](val): raise ValueError(str(val) + " is not a valid value for " + key)
         else: return val
