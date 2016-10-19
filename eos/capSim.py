@@ -1,12 +1,12 @@
 import heapq
-from math import sqrt, exp
 import time
-
+from math import sqrt, exp
 
 DAY = 24 * 60 * 60 * 1000
 
-def lcm(a,b):
-    n = a*b
+
+def lcm(a, b):
+    n = a * b
     while b:
         a, b = b, a % b
     return n / a
@@ -40,20 +40,19 @@ class CapSimulator(object):
         # relevant decimal digits of capacitor for LCM period optimization
         self.stability_precision = 1
 
-
     def scale_activation(self, duration, capNeed):
         for res in self.scale_resolutions:
             mod = duration % res
             if mod:
-                if mod > res/2.0:
-                    mod = res-mod
+                if mod > res / 2.0:
+                    mod = res - mod
                 else:
                     mod = -mod
 
-                if abs(mod) <= duration/100.0:
+                if abs(mod) <= duration / 100.0:
                     # only adjust if the adjustment is less than 1%
                     duration += mod
-                    capNeed += float(mod)/duration * capNeed
+                    capNeed += float(mod) / duration * capNeed
                     break
 
         return duration, capNeed
@@ -91,12 +90,12 @@ class CapSimulator(object):
         for (duration, capNeed, clipSize, disableStagger), amount in mods.iteritems():
             if self.stagger and not disableStagger:
                 if clipSize == 0:
-                    duration = int(duration/amount)
+                    duration = int(duration / amount)
                 else:
-                    stagger_amount = (duration*clipSize+10000)/(amount*clipSize)
+                    stagger_amount = (duration * clipSize + 10000) / (amount * clipSize)
                     for i in range(1, amount):
                         heapq.heappush(self.state,
-                                       [i*stagger_amount, duration,
+                                       [i * stagger_amount, duration,
                                         capNeed, 0, clipSize])
             else:
                 capNeed *= amount
@@ -109,12 +108,10 @@ class CapSimulator(object):
 
             heapq.heappush(self.state, [0, duration, capNeed, 0, clipSize])
 
-
         if disable_period:
             self.period = self.t_max
         else:
             self.period = period
-
 
     def run(self):
         """Run the simulation"""
@@ -135,11 +132,11 @@ class CapSimulator(object):
         capCapacity = self.capacitorCapacity
         tau = self.capacitorRecharge / 5.0
 
-        cap_wrap = capCapacity                # cap value at last period
-        cap_lowest = capCapacity            # lowest cap value encountered
-        cap_lowest_pre = capCapacity    # lowest cap value before activations
-        cap = capCapacity                         # current cap value
-        t_wrap = self.period                    # point in time of next period
+        cap_wrap = capCapacity  # cap value at last period
+        cap_lowest = capCapacity  # lowest cap value encountered
+        cap_lowest_pre = capCapacity  # lowest cap value before activations
+        cap = capCapacity  # current cap value
+        t_wrap = self.period  # point in time of next period
 
         t_last = 0
         t_max = self.t_max
@@ -150,7 +147,7 @@ class CapSimulator(object):
             if t_now >= t_max:
                 break
 
-            cap = ((1.0+(sqrt(cap/capCapacity)-1.0)*exp((t_last-t_now)/tau))**2)*capCapacity
+            cap = ((1.0 + (sqrt(cap / capCapacity) - 1.0) * exp((t_last - t_now) / tau)) ** 2) * capCapacity
 
             if t_now != t_last:
                 if cap < cap_lowest_pre:
@@ -182,7 +179,7 @@ class CapSimulator(object):
             if clipSize:
                 if shot % clipSize == 0:
                     shot = 0
-                    t_now += 10000    # include reload time
+                    t_now += 10000  # include reload time
             activation[0] = t_now
             activation[3] = shot
 
@@ -195,19 +192,17 @@ class CapSimulator(object):
 
         # calculate EVE's stability value
         try:
-            avgDrain = reduce(float.__add__, map(lambda x: x[2]/x[1], self.state), 0.0)
-            self.cap_stable_eve = 0.25 * (1.0 + sqrt(-(2.0 * avgDrain * tau - capCapacity)/capCapacity)) ** 2
+            avgDrain = reduce(float.__add__, map(lambda x: x[2] / x[1], self.state), 0.0)
+            self.cap_stable_eve = 0.25 * (1.0 + sqrt(-(2.0 * avgDrain * tau - capCapacity) / capCapacity)) ** 2
         except ValueError:
             self.cap_stable_eve = 0.0
-
 
         if cap > 0.0:
             # capacitor low/high water marks
             self.cap_stable_low = cap_lowest
             self.cap_stable_high = cap_lowest_pre
         else:
-            self.cap_stable_low =\
-            self.cap_stable_high = 0.0
+            self.cap_stable_low = \
+                self.cap_stable_high = 0.0
 
-
-        self.runtime = time.time()-start
+        self.runtime = time.time() - start

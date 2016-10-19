@@ -1,4 +1,4 @@
-#===============================================================================
+# ===============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of eos.
@@ -15,13 +15,14 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# ===============================================================================
 
-from math import exp
 import collections
+from math import exp
 
 defaultValuesCache = {}
 cappingAttrKeyCache = {}
+
 
 class ItemAttrShortcut(object):
     def getModifiedItemAttr(self, key):
@@ -30,6 +31,7 @@ class ItemAttrShortcut(object):
         else:
             return None
 
+
 class ChargeAttrShortcut(object):
     def getModifiedChargeAttr(self, key):
         if key in self.chargeModifiedAttributes:
@@ -37,8 +39,8 @@ class ChargeAttrShortcut(object):
         else:
             return None
 
-class ModifiedAttributeDict(collections.MutableMapping):
 
+class ModifiedAttributeDict(collections.MutableMapping):
     OVERRIDES = False
 
     class CalculationPlaceholder():
@@ -130,7 +132,8 @@ class ModifiedAttributeDict(collections.MutableMapping):
         return (key for key in all)
 
     def __contains__(self, key):
-        return (self.__original is not None and key in self.__original) or key in self.__modified or key in self.__intermediary
+        return (
+               self.__original is not None and key in self.__original) or key in self.__modified or key in self.__intermediary
 
     def __placehold(self, key):
         """Create calculation placeholder in item's modified attribute dict"""
@@ -197,7 +200,8 @@ class ModifiedAttributeDict(collections.MutableMapping):
             else:
                 dv = attrInfo.defaultValue
                 default = defaultValuesCache[key] = dv if dv is not None else 0.0
-        val = self.__intermediary[key] if key in self.__intermediary else self.__preAssigns[key] if key in self.__preAssigns else self.getOriginal(key) if key in self.__original else default
+        val = self.__intermediary[key] if key in self.__intermediary else self.__preAssigns[
+            key] if key in self.__preAssigns else self.getOriginal(key) if key in self.__original else default
 
         # We'll do stuff in the following order:
         # preIncrease > multiplier > stacking penalized multipliers > postIncrease
@@ -353,6 +357,7 @@ class ModifiedAttributeDict(collections.MutableMapping):
         self.__forced[attributeName] = value
         self.__placehold(attributeName)
         self.__afflict(attributeName, u"\u2263", value)
+
 
 class Affliction():
     def __init__(self, type, amount):

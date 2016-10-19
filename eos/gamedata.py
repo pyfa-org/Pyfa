@@ -1,4 +1,4 @@
-#===============================================================================
+# ===============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of eos.
@@ -15,21 +15,21 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# ===============================================================================
 
 import re
+import traceback
 
 from sqlalchemy.orm import reconstructor
 
-from eqBase import EqBase
-
-import traceback
 import eos.db
+from eqBase import EqBase
 
 try:
     from collections import OrderedDict
 except ImportError:
     from utils.compat import OrderedDict
+
 
 class Effect(EqBase):
     """
@@ -42,7 +42,7 @@ class Effect(EqBase):
     @ivar description: The description of this effect, this is usualy pretty useless
     @ivar published: Wether this effect is published or not, unpublished effects are typicaly unused.
     """
-    #Filter to change names of effects to valid python method names
+    # Filter to change names of effects to valid python method names
     nameFilter = re.compile("[^A-Za-z0-9]")
 
     @reconstructor
@@ -159,10 +159,11 @@ class Effect(EqBase):
 def effectDummy(*args, **kwargs):
     pass
 
+
 class Item(EqBase):
-    MOVE_ATTRS = (4,   # Mass
+    MOVE_ATTRS = (4,  # Mass
                   38,  # Capacity
-                  161) # Volume
+                  161)  # Volume
 
     MOVE_ATTR_INFO = None
 
@@ -301,14 +302,14 @@ class Item(EqBase):
                 map = {1: "caldari",
                        2: "minmatar",
                        4: "amarr",
-                       5: "sansha", # Caldari + Amarr
-                       6: "blood", # Minmatar + Amarr
+                       5: "sansha",  # Caldari + Amarr
+                       6: "blood",  # Minmatar + Amarr
                        8: "gallente",
-                       9: "guristas", # Caldari + Gallente
-                       10: "angelserp", # Minmatar + Gallente, final race depends on the order of skills
-                       12: "sisters", # Amarr + Gallente
+                       9: "guristas",  # Caldari + Gallente
+                       10: "angelserp",  # Minmatar + Gallente, final race depends on the order of skills
+                       12: "sisters",  # Amarr + Gallente
                        16: "jove",
-                       32: "sansha", # Incrusion Sansha
+                       32: "sansha",  # Incrusion Sansha
                        128: "ore"}
                 # Race is None by default
                 race = None
@@ -328,7 +329,6 @@ class Item(EqBase):
                 # Store our final value
                 self.__race = race
         return self.__race
-
 
     @property
     def assistive(self):
@@ -387,23 +387,30 @@ class Item(EqBase):
 class MetaData(EqBase):
     pass
 
+
 class EffectInfo(EqBase):
     pass
+
 
 class AttributeInfo(EqBase):
     pass
 
+
 class Attribute(EqBase):
     pass
+
 
 class Category(EqBase):
     pass
 
+
 class Group(EqBase):
     pass
 
+
 class Icon(EqBase):
     pass
+
 
 class MarketGroup(EqBase):
     def __repr__(self):
@@ -411,14 +418,18 @@ class MarketGroup(EqBase):
             self.ID, self.name, getattr(self.parent, "name", None), self.name, hex(id(self))
         ).encode('utf8')
 
+
 class MetaGroup(EqBase):
     pass
+
 
 class MetaType(EqBase):
     pass
 
+
 class Unit(EqBase):
     pass
+
 
 class Traits(EqBase):
     pass

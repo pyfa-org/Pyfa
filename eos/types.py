@@ -1,4 +1,4 @@
-#===============================================================================
+# ===============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of eos.
@@ -15,7 +15,7 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# ===============================================================================
 
 from eos.gamedata import Attribute, Category, Effect, Group, Icon, Item, MarketGroup, \
 MetaGroup, AttributeInfo, Unit, EffectInfo, MetaType, MetaData, Traits
