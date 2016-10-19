@@ -1,4 +1,4 @@
-#===============================================================================
+# ===============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of eos.
@@ -15,7 +15,7 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# ===============================================================================
 
 from sqlalchemy import Column, Table, Integer, String
 from sqlalchemy.orm import mapper, synonym
@@ -24,10 +24,10 @@ from eos.db import gamedata_meta
 from eos.types import Unit
 
 groups_table = Table("dgmunits", gamedata_meta,
-                     Column("unitID", Integer, primary_key = True),
+                     Column("unitID", Integer, primary_key=True),
                      Column("unitName", String),
                      Column("displayName", String))
 
 mapper(Unit, groups_table,
-       properties = {"ID" : synonym("unitID"),
-                     "name" : synonym("unitName")})
+       properties={"ID": synonym("unitID"),
+                   "name": synonym("unitName")})
