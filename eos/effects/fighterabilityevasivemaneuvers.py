@@ -13,12 +13,25 @@ grouped = True
 
 type = "active"
 runTime = "late"
-def handler(fit, module, context):
-    module.boostItemAttr("maxVelocity", module.getModifiedItemAttr("fighterAbilityEvasiveManeuversSpeedBonus"))
-    module.boostItemAttr("signatureRadius", module.getModifiedItemAttr("fighterAbilityEvasiveManeuversSignatureRadiusBonus"), stackingPenalties = True)
-    
-	# These may not have stacking penalties, but there's nothing else that affects the attributes yet to check.
-    module.multiplyItemAttr("shieldEmDamageResonance", module.getModifiedItemAttr("fighterAbilityEvasiveManeuversEmResonance"), stackingPenalties = True)
-    module.multiplyItemAttr("shieldThermalDamageResonance", module.getModifiedItemAttr("fighterAbilityEvasiveManeuversThermResonance"), stackingPenalties = True)
-    module.multiplyItemAttr("shieldKineticDamageResonance", module.getModifiedItemAttr("fighterAbilityEvasiveManeuversKinResonance"), stackingPenalties = True)
-    module.multiplyItemAttr("shieldExplosiveDamageResonance", module.getModifiedItemAttr("fighterAbilityEvasiveManeuversExpResonance"), stackingPenalties = True)
+
+
+def handler(fit, container, context):
+    container.boostItemAttr("maxVelocity",
+                            container.getModifiedItemAttr("fighterAbilityEvasiveManeuversSpeedBonus"))
+    container.boostItemAttr("signatureRadius",
+                            container.getModifiedItemAttr("fighterAbilityEvasiveManeuversSignatureRadiusBonus"),
+                            stackingPenalties=True)
+
+    # These may not have stacking penalties, but there's nothing else that affects the attributes yet to check.
+    container.multiplyItemAttr("shieldEmDamageResonance",
+                               container.getModifiedItemAttr("fighterAbilityEvasiveManeuversEmResonance"),
+                               stackingPenalties=True)
+    container.multiplyItemAttr("shieldThermalDamageResonance",
+                               container.getModifiedItemAttr("fighterAbilityEvasiveManeuversThermResonance"),
+                               stackingPenalties=True)
+    container.multiplyItemAttr("shieldKineticDamageResonance",
+                               container.getModifiedItemAttr("fighterAbilityEvasiveManeuversKinResonance"),
+                               stackingPenalties=True)
+    container.multiplyItemAttr("shieldExplosiveDamageResonance",
+                               container.getModifiedItemAttr("fighterAbilityEvasiveManeuversExpResonance"),
+                               stackingPenalties=True)
