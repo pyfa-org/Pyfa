@@ -57,6 +57,7 @@ projectedFits_table = Table("projectedFits", saveddata_meta,
 
 class ProjectedFit(object):
     def __init__(self, sourceID, source_fit, amount=1, active=True):
+        self.victim_fit = None
         self.sourceID = sourceID
         self.source_fit = source_fit
         self.active = active

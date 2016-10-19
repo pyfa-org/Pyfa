@@ -46,6 +46,7 @@ class FighterAbility(object):
 
     def __init__(self, effect):
         """Initialize from the program"""
+        self.fighter = None
         self.__effect = effect
         self.effectID = effect.ID if effect is not None else None
         self.active = False

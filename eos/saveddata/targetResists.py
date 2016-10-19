@@ -25,6 +25,7 @@ class TargetResists(object):
     DAMAGE_TYPES = ("em", "thermal", "kinetic", "explosive")
 
     def __init__(self, emAmount=0, thermalAmount=0, kineticAmount=0, explosiveAmount=0):
+        self.name = None
         self.emAmount = emAmount
         self.thermalAmount = thermalAmount
         self.kineticAmount = kineticAmount

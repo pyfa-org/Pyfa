@@ -25,6 +25,9 @@ cappingAttrKeyCache = {}
 
 
 class ItemAttrShortcut(object):
+    def __init__(self):
+        self.itemModifiedAttributes = None
+
     def getModifiedItemAttr(self, key):
         if key in self.itemModifiedAttributes:
             return self.itemModifiedAttributes[key]
@@ -33,6 +36,9 @@ class ItemAttrShortcut(object):
 
 
 class ChargeAttrShortcut(object):
+    def __init__(self):
+        self.chargeModifiedAttributes = None
+
     def getModifiedChargeAttr(self, key):
         if key in self.chargeModifiedAttributes:
             return self.chargeModifiedAttributes[key]

@@ -93,6 +93,8 @@ class Character(object):
         return all0
 
     def __init__(self, name, defaultLevel=None, initSkills=True):
+        self.ID = None
+        self.apiID = None
         self.savedName = name
         self.__owner = None
         self.defaultLevel = defaultLevel
@@ -258,6 +260,7 @@ class Character(object):
 
 class Skill(HandledItem):
     def __init__(self, item, level=0, ro=False, learned=True):
+        self.character = None
         self.__item = item if not isinstance(item, int) else None
         self.itemID = item.ID if not isinstance(item, int) else item
         self.__level = level if learned else None

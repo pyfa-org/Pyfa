@@ -35,6 +35,7 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     def __init__(self, item):
         """Initialize a fighter from the program"""
+        self.owner = None
         self.__item = item
 
         if self.isInvalid:

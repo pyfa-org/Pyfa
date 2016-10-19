@@ -24,6 +24,7 @@ class DamagePattern(object):
     DAMAGE_TYPES = ("em", "thermal", "kinetic", "explosive")
 
     def __init__(self, emAmount=25, thermalAmount=25, kineticAmount=25, explosiveAmount=25):
+        self.name = None
         self.emAmount = emAmount
         self.thermalAmount = thermalAmount
         self.kineticAmount = kineticAmount
