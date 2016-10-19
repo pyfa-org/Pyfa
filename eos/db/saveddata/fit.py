@@ -98,7 +98,7 @@ mapper(Fit, fits_table,
            "_Fit__modules": relation(
                Module,
                collection_class=HandledModuleList,
-               primaryjoin=and_(modules_table.c.fitID == fits_table.c.ID, modules_table.c.projected is False),
+               primaryjoin=and_(modules_table.c.fitID == fits_table.c.ID, modules_table.c.projected == False),
                order_by=modules_table.c.position,
                cascade='all, delete, delete-orphan'),
            "_Fit__projectedModules": relation(
@@ -106,7 +106,7 @@ mapper(Fit, fits_table,
                collection_class=HandledProjectedModList,
                cascade='all, delete, delete-orphan',
                single_parent=True,
-               primaryjoin=and_(modules_table.c.fitID == fits_table.c.ID, modules_table.c.projected is True)),
+               primaryjoin=and_(modules_table.c.fitID == fits_table.c.ID, modules_table.c.projected == True)),
            "owner": relation(
                User,
                backref="fits"),
