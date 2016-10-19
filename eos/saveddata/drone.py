@@ -117,7 +117,7 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         return self.damageStats()
 
     def damageStats(self, targetResists = None):
-        if self.__dps == None:
+        if self.__dps is None:
             self.__volley = 0
             self.__dps = 0
             if self.dealsDamage is True and self.amountActive > 0:
@@ -140,7 +140,7 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     @property
     def miningStats(self):
-        if self.__miningyield == None:
+        if self.__miningyield is None:
             if self.mines is True and self.amountActive > 0:
                 attr = "duration"
                 getter = self.getModifiedItemAttr

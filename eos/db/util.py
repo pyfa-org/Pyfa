@@ -32,7 +32,7 @@ replace = {"attributes": "_Item__attributes",
            "projectedFits": "_Fit__projectedFits"}
 
 def processEager(eager):
-    if eager == None:
+    if eager is None:
         return tuple()
     else:
         l = []

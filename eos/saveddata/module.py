@@ -311,7 +311,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         self.__itemModifiedAttributes.clear()
 
     def damageStats(self, targetResists):
-        if self.__dps == None:
+        if self.__dps is None:
             self.__dps = 0
             self.__volley = 0
 
@@ -332,7 +332,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     @property
     def miningStats(self):
-        if self.__miningyield == None:
+        if self.__miningyield is None:
             if self.isEmpty:
                 self.__miningyield = 0
             else:
