@@ -24,6 +24,9 @@ class ImportError(Exception):
     pass
 
 class DefaultDatabaseValues():
+    def __init__(self):
+        pass
+
     instance = None
 
     @classmethod

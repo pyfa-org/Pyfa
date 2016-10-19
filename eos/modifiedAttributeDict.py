@@ -42,7 +42,8 @@ class ModifiedAttributeDict(collections.MutableMapping):
     OVERRIDES = False
 
     class CalculationPlaceholder():
-        pass
+        def __init__(self):
+            pass
 
     def __init__(self, fit=None, parent=None):
         self.parent = parent

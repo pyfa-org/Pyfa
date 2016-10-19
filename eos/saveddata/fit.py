@@ -44,6 +44,9 @@ except ImportError:
     from utils.compat import OrderedDict
 
 class ImplantLocation(Enum):
+    def __init__(self):
+        pass
+
     FIT = 0
     CHARACTER = 1
 

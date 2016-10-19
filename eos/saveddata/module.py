@@ -30,12 +30,18 @@ import logging
 logger = logging.getLogger(__name__)
 
 class State(Enum):
+    def __init__(self):
+        pass
+
     OFFLINE = -1
     ONLINE = 0
     ACTIVE = 1
     OVERHEATED = 2
 
 class Slot(Enum):
+    def __init__(self):
+        pass
+
     # These are self-explanatory
     LOW = 1
     MED = 2
@@ -55,6 +61,9 @@ class Slot(Enum):
     F_HEAVY = 12
 
 class Hardpoint(Enum):
+    def __init__(self):
+        pass
+
     NONE = 0
     MISSILE = 1
     TURRET = 2
