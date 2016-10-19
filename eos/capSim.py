@@ -141,7 +141,7 @@ class CapSimulator(object):
         cap = capCapacity                         # current cap value
         t_wrap = self.period                    # point in time of next period
 
-        t_now = t_last = 0
+        t_last = 0
         t_max = self.t_max
 
         while 1:
