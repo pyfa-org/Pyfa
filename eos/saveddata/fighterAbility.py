@@ -103,12 +103,16 @@ class FighterAbility(object):
     @property
     def cycleTime(self):
         speed = self.fighter.getModifiedItemAttr("{}Duration".format(self.attrPrefix))
+
+        # Factor in reload
+        '''
         reload = self.reloadTime
 
-        #if self.fighter.owner.factorReload:
-        #    numShots = self.numShots
-        #    # Speed here already takes into consideration reactivation time
-        #    speed = (speed * numShots + reload) / numShots if numShots > 0 else speed
+        if self.fighter.owner.factorReload:
+            numShots = self.numShots
+            # Speed here already takes into consideration reactivation time
+            speed = (speed * numShots + reload) / numShots if numShots > 0 else speed
+        '''
 
         return speed
 
