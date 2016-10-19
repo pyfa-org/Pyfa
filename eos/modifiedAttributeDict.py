@@ -306,7 +306,7 @@ class ModifiedAttributeDict(collections.MutableMapping):
             tbl = self.__postIncreases
         else:
             raise ValueError("position should be either pre or post")
-        if  attributeName not in tbl:
+        if attributeName not in tbl:
             tbl[attributeName] = 0
         tbl[attributeName] += increase
         self.__placehold(attributeName)

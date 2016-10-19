@@ -106,7 +106,7 @@ mapper(Fit, fits_table,
                collection_class=HandledProjectedModList,
                cascade='all, delete, delete-orphan',
                single_parent=True,
-               primaryjoin=and_(modules_table.c.fitID == fits_table.c.ID, modules_table.c.projected == True)),
+               primaryjoin=and_(modules_table.c.fitID == fits_table.c.ID, modules_table.c.projected is True)),
            "owner": relation(
                User,
                backref="fits"),
