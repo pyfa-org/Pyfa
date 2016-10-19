@@ -808,10 +808,9 @@ class Fit(object):
     def calculateSustainableTank(self, effective=True):
         if self.__sustainableTank is None:
             if self.capStable:
-                sustainable = {}
-                sustainable["armorRepair"] = self.extraAttributes["armorRepair"]
-                sustainable["shieldRepair"] = self.extraAttributes["shieldRepair"]
-                sustainable["hullRepair"] = self.extraAttributes["hullRepair"]
+                sustainable = {"armorRepair": self.extraAttributes["armorRepair"],
+                               "shieldRepair": self.extraAttributes["shieldRepair"],
+                               "hullRepair": self.extraAttributes["hullRepair"]}
             else:
                 sustainable = {}
 
