@@ -8,7 +8,7 @@ gangBoost = "shieldResistance"
 
 def handler(fit, module, context):
     if "gang" not in context:
-          return
+        return
     for damageType in ("Em", "Explosive", "Thermal", "Kinetic"):
         fit.ship.boostItemAttr("shield%sDamageResonance" % damageType,
                                module.getModifiedItemAttr("commandBonus"),

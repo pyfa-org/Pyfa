@@ -10,7 +10,7 @@ gangBoost = "electronicMaxRange"
 
 def handler(fit, module, context):
     if "gang" not in context:
-          return
+        return
     groups = ("Target Painter", "Weapon Disruptor", "Sensor Dampener", "ECM", "Burst Jammer")
     fit.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups,
                                   "maxRange", module.getModifiedItemAttr("commandBonus"),

@@ -10,7 +10,7 @@ gangBoost = "speedFactor"
 
 def handler(fit, module, context):
     if "gang" not in context:
-          return
+        return
     fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == "Propulsion Module",
                                   "speedFactor", module.getModifiedItemAttr("commandBonus"),
                                   stackingPenalties=True)

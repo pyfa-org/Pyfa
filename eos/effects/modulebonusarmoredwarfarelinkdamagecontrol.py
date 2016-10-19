@@ -10,7 +10,7 @@ gangBoost = "armorRepairCapacitorNeed"
 
 def handler(fit, module, context):
     if "gang" not in context:
-          return
+        return
     fit.modules.filteredItemBoost(
         lambda mod: mod.item.requiresSkill("Repair Systems") or mod.item.requiresSkill("Remote Armor Repair Systems"),
         "capacitorNeed", module.getModifiedItemAttr("commandBonus"))
