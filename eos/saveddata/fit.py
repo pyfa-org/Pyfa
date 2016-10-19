@@ -480,6 +480,8 @@ class Fit(object):
             if self == targetFit:
                 copied = self  # original fit
                 shadow = True
+                # Don't inspect this, we genuinely want to reassign self
+                # noinspection PyMethodFirstArgAssignment
                 self = copy.deepcopy(self)
                 self.fleet = copied.fleet
                 logger.debug("Handling self projection - making shadow copy of fit. %r => %r", copied, self)
