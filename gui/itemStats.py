@@ -30,6 +30,7 @@ import service
 import config
 from gui.contextMenu import ContextMenu
 from gui.utils.numberFormatter import formatAmount
+import csv
 
 try:
     from collections import OrderedDict
@@ -299,6 +300,9 @@ class ItemParams (wx.Panel):
         self.toggleViewBtn = wx.ToggleButton( self, wx.ID_ANY, u"Toggle view mode", wx.DefaultPosition, wx.DefaultSize, 0 )
         bSizer.Add( self.toggleViewBtn, 0, wx.ALIGN_CENTER_VERTICAL)
 
+        self.exportStatsBtn = wx.ToggleButton( self, wx.ID_ANY, u"Export Item Stats", wx.DefaultPosition, wx.DefaultSize, 0 )
+        bSizer.Add( self.exportStatsBtn, 0, wx.ALIGN_CENTER_VERTICAL)
+
         if stuff is not None:
             self.refreshBtn = wx.Button( self, wx.ID_ANY, u"Refresh", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT )
             bSizer.Add( self.refreshBtn, 0, wx.ALIGN_CENTER_VERTICAL)
@@ -309,6 +313,7 @@ class ItemParams (wx.Panel):
         self.PopulateList()
 
         self.toggleViewBtn.Bind(wx.EVT_TOGGLEBUTTON,self.ToggleViewMode)
+        self.exportStatsBtn.Bind(wx.EVT_TOGGLEBUTTON, self.ExportItemStats)
 
     def _fetchValues(self):
         if self.stuff is None:
@@ -346,6 +351,49 @@ class ItemParams (wx.Panel):
         self.toggleView *=-1
         self.UpdateList()
         event.Skip()
+
+    def ExportItemStats(self, event):
+        self.UpdateList()
+        event.Skip()
+
+        exportFileName = self.item.name + " (" + str(self.item.ID) + ").csv"
+
+        saveFileDialog = wx.FileDialog(self, "Save CSV file", "", exportFileName,
+                                       "CSV files (*.csv)|*.csv", wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT)
+
+        if saveFileDialog.ShowModal() == wx.ID_CANCEL:
+            return  # the user hit cancel...
+
+        with open(saveFileDialog.GetPath(), "wb") as exportFile:
+            writer = csv.writer(exportFile, delimiter=',')
+
+            writer.writerow(
+                [
+                    "ID",
+                    "Internal Name",
+                    "Friendly Name",
+                    "Modified Value",
+                    "Base Value",
+                ]
+            )
+
+            for attributeName in self.attrInfo:
+                attribute = self.attrInfo[attributeName]
+
+                try:
+                    modifiedAttributeValue = self.attrValues[attributeName].value
+                except (KeyError, AttributeError):
+                    modifiedAttributeValue = self.attrValues[attributeName]
+
+                writer.writerow(
+                    [
+                        attribute.ID,
+                        attribute.name,
+                        attribute.displayName,
+                        modifiedAttributeValue,
+                        attribute.value,
+                    ]
+                )
 
     def PopulateList(self):
         self.paramList.InsertColumn(0,"Attribute")
