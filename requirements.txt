@@ -1,7 +1,9 @@
 requests==2.11.1
 sqlalchemy==1.0.14
+python-dateutil=2.5.3
+matplotlib=1.5.3
+requests=2.11.1
+urllib3=1.18
 
-# Need to investigate these
+# Need to install:
 # wx
-# dateutil
-# urllib3
