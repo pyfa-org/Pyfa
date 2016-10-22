@@ -353,9 +353,6 @@ class ItemParams (wx.Panel):
         event.Skip()
 
     def ExportItemStats(self, event):
-        self.UpdateList()
-        event.Skip()
-
         exportFileName = self.item.name + " (" + str(self.item.ID) + ").csv"
 
         saveFileDialog = wx.FileDialog(self, "Save CSV file", "", exportFileName,
