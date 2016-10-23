@@ -25,6 +25,7 @@ import sys
 import wx.lib.mixins.listctrl as listmix
 import wx.html
 from eos.types import Fit, Ship, Citadel, Module, Skill, Booster, Implant, Drone, Mode, Fighter
+import eos.db
 from gui.utils.numberFormatter import formatAmount
 import service
 import config
@@ -375,11 +376,15 @@ class ItemParams (wx.Panel):
             )
 
             for attribute in self.attrValues:
+                attribute_db_info = eos.db.getAttributeInfo(attribute)
 
                 try:
                     attribute_id = self.attrInfo[attribute].ID
                 except (KeyError, AttributeError):
-                    attribute_id = ''
+                    try:
+                        attribute_id = attribute_db_info.ID
+                    except (KeyError, AttributeError):
+                        attribute_id = ''
 
                 try:
                     attribute_name = self.attrInfo[attribute].name
@@ -389,12 +394,18 @@ class ItemParams (wx.Panel):
                 try:
                     attribute_displayname = self.attrInfo[attribute].displayName
                 except (KeyError, AttributeError):
-                    attribute_displayname = ''
+                    try:
+                        attribute_displayname = attribute_db_info.displayName
+                    except (KeyError, AttributeError):
+                        attribute_displayname = ''
 
                 try:
                     attribute_value = self.attrInfo[attribute].value
                 except (KeyError, AttributeError):
-                    attribute_value = ''
+                    try:
+                        attribute_value = attribute_db_info.defaultValue
+                    except (KeyError, AttributeError):
+                        attribute_value = ''
 
                 try:
                     attribute_modified_value = self.attrValues[attribute].value
@@ -430,11 +441,26 @@ class ItemParams (wx.Panel):
         idNameMap = {}
         idCount = 0
         for name in names:
+
             info = self.attrInfo.get(name)
+
+            if not info:
+                # We don't have this attribute cached on the fit
+                # Grab from the database
+                info = eos.db.getAttributeInfo(name)
+
+
             att = self.attrValues[name]
 
-            valDefault = getattr(info, "value", None)
-            valueDefault = valDefault if valDefault is not None else att
+            valueDefault = getattr(info, "value", None)
+
+            if not valueDefault:
+                try:
+                    valueDefault = info.defaultValue
+                except (AttributeError):
+                    # Attribute doesn't exist,
+                    # so quietly continue
+                    valueDefault = None
 
             val = getattr(att, "value", None)
             value = val if val is not None else att
