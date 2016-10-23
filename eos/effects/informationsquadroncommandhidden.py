@@ -1,9 +1,9 @@
 # informationSquadronCommandHidden
 #
 # Used by:
-# Skill: Information Warfare Specialist
+# Skill: Information Command Specialist
 runTime = "early"
 type = "passive"
 def handler(fit, skill, context):
-    fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Information Warfare Specialist"),
+    fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Information Command Specialist"),
                                   "commandBonusHidden", skill.getModifiedItemAttr("squadronCommandBonus") * skill.level)

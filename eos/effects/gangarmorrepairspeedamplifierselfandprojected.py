@@ -1,7 +1,7 @@
 # gangArmorRepairSpeedAmplifierSelfAndProjected
 #
 # Used by:
-# Variations of module: Armored Warfare Link - Rapid Repair I (2 of 2)
+# Variations of module: Armored Command Link - Rapid Repair I (2 of 2)
 type = "gang", "active"
 gangBoost = "armorRepairDuration"
 def handler(fit, module, context):

@@ -1,7 +1,7 @@
 # moduleBonusArmoredWarfareLinkPassiveDefense
 #
 # Used by:
-# Variations of module: Armored Warfare Link - Passive Defense I (2 of 2)
+# Variations of module: Armored Command Link - Passive Defense I (2 of 2)
 type = "gang", "active"
 gangBoost = "armorResistance"
 #runTime = "late"

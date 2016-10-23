@@ -1,7 +1,7 @@
 # armorWarfareArmorHpReplacer
 #
 # Used by:
-# Implant: Armored Warfare Mindlink
+# Implant: Armored Command Mindlink
 # Implant: Federation Navy Warfare Mindlink
 # Implant: Imperial Navy Warfare Mindlink
 type = "gang", "active"

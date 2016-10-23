@@ -1,7 +1,7 @@
 # armorTankingGang
 #
 # Used by:
-# Skill: Armored Warfare
+# Skill: Armored Command
 type = "gang"
 gangBoost = "armorHP"
 gangBonus = "armorHpBonus"
