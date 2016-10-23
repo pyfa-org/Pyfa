@@ -374,21 +374,40 @@ class ItemParams (wx.Panel):
                 ]
             )
 
-            for attributeName in self.attrInfo:
-                attribute = self.attrInfo[attributeName]
+            for attribute in self.attrValues:
 
                 try:
-                    modifiedAttributeValue = self.attrValues[attributeName].value
+                    attribute_id = self.attrInfo[attribute].ID
                 except (KeyError, AttributeError):
-                    modifiedAttributeValue = self.attrValues[attributeName]
+                    attribute_id = ''
+
+                try:
+                    attribute_name = self.attrInfo[attribute].name
+                except (KeyError, AttributeError):
+                    attribute_name = attribute
+
+                try:
+                    attribute_displayname = self.attrInfo[attribute].displayName
+                except (KeyError, AttributeError):
+                    attribute_displayname = ''
+
+                try:
+                    attribute_value = self.attrInfo[attribute].value
+                except (KeyError, AttributeError):
+                    attribute_value = ''
+
+                try:
+                    attribute_modified_value = self.attrValues[attribute].value
+                except (KeyError, AttributeError):
+                    attribute_modified_value = self.attrValues[attribute]
 
                 writer.writerow(
                     [
-                        attribute.ID,
-                        attribute.name,
-                        attribute.displayName,
-                        modifiedAttributeValue,
-                        attribute.value,
+                        attribute_id,
+                        attribute_name,
+                        attribute_displayname,
+                        attribute_modified_value,
+                        attribute_value,
                     ]
                 )
 
