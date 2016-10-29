@@ -106,7 +106,9 @@ class Fit(object):
             "showTooltip": True,
             "showMarketShortcuts": False,
             "enableGaugeAnimation": True,
-            "exportCharges": True}
+            "exportCharges": True,
+            "openFitInNew":False
+            }
 
         self.serviceFittingOptions = SettingsProvider.getInstance().getSettings(
             "pyfaServiceFittingOptions", serviceFittingDefaultOptions)
@@ -237,7 +239,6 @@ class Fit(object):
 
     def getFit(self, fitID, projected=False, basic=False):
         ''' Gets fit from database, and populates fleet data.
-
         Projected is a recursion flag that is set to reduce recursions into projected fits
         Basic is a flag to simply return the fit without any other processing
         '''
@@ -512,7 +513,6 @@ class Fit(object):
         """
         Moves cargo to fitting window. Can either do a copy, move, or swap with current module
         If we try to copy/move into a spot with a non-empty module, we swap instead.
-
         To avoid redundancy in converting Cargo item, this function does the
         sanity checks as opposed to the GUI View. This is different than how the
         normal .swapModules() does things, which is mostly a blind swap.
@@ -578,7 +578,6 @@ class Fit(object):
     def cloneModule(self, fitID, src, dst):
         """
         Clone a module from src to dst
-
         This will overwrite dst! Checking for empty module must be
         done at a higher level
         """
@@ -942,7 +941,6 @@ class Fit(object):
         Imports fits from file(s). First processes all provided paths and stores
         assembled fits into a list. This allows us to call back to the GUI as
         fits are processed as well as when fits are being saved.
-
         returns
         """
         defcodepage = locale.getpreferredencoding()
