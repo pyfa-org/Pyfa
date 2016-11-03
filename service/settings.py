@@ -113,6 +113,12 @@ class Settings():
 
 class NetworkSettings():
     _instance = None
+
+    # constants for serviceNetworkDefaultSettings["mode"] parameter
+    PROXY_MODE_NONE = 0        # 0 - No proxy
+    PROXY_MODE_AUTODETECT = 1  # 1 - Auto-detected proxy settings
+    PROXY_MODE_MANUAL = 2      # 2 - Manual proxy settings
+
     @classmethod
     def getInstance(cls):
         if cls._instance == None:
@@ -122,13 +128,18 @@ class NetworkSettings():
 
     def __init__(self):
 
-        # mode
-        # 0 - No proxy
-        # 1 - Auto-detected proxy settings
-        # 2 - Manual proxy settings
-        serviceNetworkDefaultSettings = {"mode": 1, "type": "https", "address": "", "port": "", "access": 15}
+        serviceNetworkDefaultSettings = {
+            "mode": self.PROXY_MODE_AUTODETECT,
+            "type": "https",
+            "address": "",
+            "port": "",
+            "access": 15,
+            "login": None,
+            "password": None
+        }
 
-        self.serviceNetworkSettings = SettingsProvider.getInstance().getSettings("pyfaServiceNetworkSettings", serviceNetworkDefaultSettings)
+        self.serviceNetworkSettings = SettingsProvider.getInstance().getSettings(
+            "pyfaServiceNetworkSettings", serviceNetworkDefaultSettings)
 
     def isEnabled(self, type):
         if type & self.serviceNetworkSettings["access"]:
@@ -198,12 +209,32 @@ class NetworkSettings():
 
     def getProxySettings(self):
 
-        if self.getMode() == 0:
+        if self.getMode() == self.PROXY_MODE_NONE:
             return None
-        if self.getMode() == 1:
+        if self.getMode() == self.PROXY_MODE_AUTODETECT:
             return self.autodetect()
-        if self.getMode() == 2:
+        if self.getMode() == self.PROXY_MODE_MANUAL:
             return (self.getAddress(), int(self.getPort()))
+
+    def getProxyAuthDetails(self):
+        if self.getMode() == self.PROXY_MODE_NONE:
+            return None
+        if (self.serviceNetworkSettings["login"] is None) or (self.serviceNetworkSettings["password"] is None):
+            return None
+        # in all other cases, return tuple of (login, password)
+        return (self.serviceNetworkSettings["login"], self.serviceNetworkSettings["password"])
+
+    def setProxyAuthDetails(self, login, password):
+        if (login is None) or (password is None):
+            self.serviceNetworkSettings["login"] = None
+            self.serviceNetworkSettings["password"] = None
+            return
+        if login == "":  # empty login unsets proxy auth info
+            self.serviceNetworkSettings["login"] = None
+            self.serviceNetworkSettings["password"] = None
+            return
+        self.serviceNetworkSettings["login"] = login
+        self.serviceNetworkSettings["password"] = password
 
 
 
