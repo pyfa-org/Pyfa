@@ -22,6 +22,7 @@ import copy
 import threading
 import logging
 import wx
+import sched, time
 from codecs import open
 
 import xml.parsers.expat
@@ -40,6 +41,8 @@ from service.port import Port
 
 logger = logging.getLogger(__name__)
 
+schedule = sched.scheduler(time.time, time.sleep)
+recalcJob = []
 
 class FitBackupThread(threading.Thread):
     def __init__(self, path, callback):
@@ -1129,8 +1132,41 @@ class Fit(object):
         self.recalc(fit)
 
     def recalc(self, fit, withBoosters=True):
+        global recalcJob
+
+        if not schedule.empty():
+            if recalcJob in schedule.queue:
+                logger.debug("Job already scheduled. Cancelling existing job")
+                schedule.cancel(recalcJob)
+                pass
+            else:
+                pass
+
+        logger.debug("Scheduling fitting job")
+            #args = [fit, withBoosters]
+        args = [fit, True]
+        recalcJob = schedule.enter(1,1,self.recalcJobs,args)
+
+        threading.Timer(1, self.runRecalcJobs, ()).start()
+
+    def runRecalcJobs(self):
+        if schedule.empty():
+            pass
+        else:
+            logger.debug("Running scheduled jobs")
+            schedule.run()
+
+    def recalcJobs(self, fit, withBoosters=True):
         logger.debug("=" * 10 + "recalc" + "=" * 10)
         if fit.factorReload is not self.serviceFittingOptions["useGlobalForceReload"]:
             fit.factorReload = self.serviceFittingOptions["useGlobalForceReload"]
         fit.clear()
         fit.calculateModifiedAttributes(withBoosters=withBoosters)
+        fit.fill()
+
+        # Check that the states of all modules are valid
+        self.checkStates(fit, None)
+
+        eos.db.commit()
+        #fit.inited = True
+        logger.debug("=" * 10 + "recalc end" + "=" * 10)
