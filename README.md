@@ -50,7 +50,7 @@ The preferred method of reporting bugs is through the project's [GitHub Issues i
 pyfa is licensed under the GNU GPL v3.0, see LICENSE
 
 ## Resources
-* Development repository: [http://github.com/DarkFenX/Pyfa](http://github.com/DarkFenX/Pyfa)
+* Development repository: [https://github.com/pyfa-org/Pyfa](https://github.com/pyfa-org/Pyfa)
 * XMPP conference: [pyfa@conference.jabber.org](pyfa@conference.jabber.org)
 * [EVE forum thread](http://forums.eveonline.com/default.aspx?g=posts&t=247609)
 * [EVE University guide using pyfa](http://wiki.eveuniversity.org/Guide_to_using_PYFA)
