@@ -57,9 +57,6 @@ class Fit(object):
     def __init__(self, ship=None, name=""):
         """Initialize a fit from the program"""
         # use @mode.setter's to set __attr and IDs. This will set mode as well
-        self.ID = None
-        self.owner = None
-        self.projectedOnto = None
         self.ship = ship
         if self.ship:
             self.ship.parent = self
