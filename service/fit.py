@@ -658,6 +658,13 @@ class Fit(object):
             '''
             if fighter is None:
                 fighter = eos.types.Fighter(item)
+                used = fit.getSlotsUsed(fighter.slot)
+                total = fit.getNumSlots(fighter.slot)
+                for ability in fighter.abilities:
+                    ability.active = True if ability.effect.isImplemented else False
+                if used >= total:
+                    fighter.active = False
+
                 if fighter.fits(fit) is True:
                     fit.fighters.append(fighter)
                 else:
