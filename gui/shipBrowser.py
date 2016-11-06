@@ -745,10 +745,8 @@ class ShipBrowser(wx.Panel):
             filter = subRacesFilter[ship.race] if ship.race else True
             if override:
                 filter = True
-            if ship.traits is not None:
-                shipTrait = ship.traits.traitText
-            else:
-                shipTrait = ""             
+
+            shipTrait = ship.traits.traitText if (ship.traits is not None) else ""  # empty string if no traits
                 
             if self.filterShipsWithNoFits:
                 if fits>0:
@@ -850,10 +848,8 @@ class ShipBrowser(wx.Panel):
 
         self._stage3ShipName = shipName
         self._stage3Data = shipID
-        if ship.traits is not None:
-            shipTrait = ship.traits.traitText 
-        else:
-            shipTrait = ""
+
+        shipTrait = ship.traits.traitText if (ship.traits is not None) else ""  # empty string if no traits
 
         for ID, name, booster, timestamp in fitList:
             self.lpane.AddWidget(FitItem(self.lpane, ID, (shipName, shipTrait, name, booster, timestamp),shipID))
@@ -890,18 +886,14 @@ class ShipBrowser(wx.Panel):
             fitList = sFit.searchFits(query)
             
             for ship in ships:
-                if ship.traits is not None:
-                    shipTrait = ship.traits.traitText
-                else:
-                    shipTrait =  ""
+                shipTrait = ship.traits.traitText if (ship.traits is not None) else "" # empty string if no traits
+
                 self.lpane.AddWidget(ShipItem(self.lpane, ship.ID, (ship.name, shipTrait, len(sFit.getFitsWithShip(ship.ID))), ship.race))
             
             for ID, name, shipID, shipName, booster, timestamp in fitList:
                 ship = sMkt.getItem(shipID)
-                if ship.traits is not None: 
-                    shipTrait = ship.traits.traitText
-                else:
-                    shipTrait = ""   
+                shipTrait = ship.traits.traitText if (ship.traits is not None) else ""  # empty string if no traits
+
                 self.lpane.AddWidget(FitItem(self.lpane, ID, (shipName, shipTrait, name, booster, timestamp), shipID))
             if len(ships) == 0 and len(fitList) == 0 :
                 self.lpane.AddWidget(PFStaticText(self.lpane, label = u"No matching results."))
@@ -937,10 +929,8 @@ class ShipBrowser(wx.Panel):
 
         if fits:
             for fit in fits:
-                if fit.ship.traits is None:
-                    shipTrait = ""
-                else:
-                    shipTrait = fit.ship.traits.traitText  
+                shipTrait = fit.ship.traits.traitText if (fit.ship.traits is not None) else ""  # empty string if no traits
+
                 self.lpane.AddWidget(FitItem(
                     self.lpane,
                     fit.ID, (
@@ -1480,7 +1470,7 @@ class FitItem(SFItem.SFBrowserItem):
         self.dragTLFBmp = None
 
         self.bkBitmap = None
-        if self.shipTrait != "":
+        if self.shipTrait != "": # show no tooltip if no trait available
             self.SetToolTip(wx.ToolTip(self.shipName+'\n--------------------------\n'+self.shipTrait)) 
         self.padding = 4
         self.editWidth = 150
