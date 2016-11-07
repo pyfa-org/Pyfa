@@ -4,7 +4,27 @@
 # Modules from group: Missile Launcher Heavy (12 of 12)
 # Modules from group: Missile Launcher Rocket (15 of 15)
 # Modules named like: Launcher (151 of 151)
-type = 'active'
-def handler(fit, module, context):
+type = 'active', "projected"
+
+
+def handler(fit, src, context):
     # Set reload time to 10 seconds
-    module.reloadTime = 10000
+    src.reloadTime = 10000
+
+    if "projected" in context:
+        if src.item.group.name == unicode("Missile Launcher Bomb"):
+            # Bomb Launcher Cooldown Timer
+            moduleReactivationDelay = src.getModifiedItemAttr("moduleReactivationDelay")
+
+            # Void and Focused Void Bombs
+            neutAmount = src.getModifiedChargeAttr("energyNeutralizerAmount")
+
+            if moduleReactivationDelay and neutAmount:
+                fit.addDrain(src, moduleReactivationDelay, neutAmount, 0)
+
+            # Lockbreaker Bombs
+            ecmStrengthBonus = src.getModifiedChargeAttr("scan{0}StrengthBonus".format(fit.scanType))
+
+            if ecmStrengthBonus:
+                strModifier = 1 - ecmStrengthBonus / fit.scanStrength
+                fit.ecmProjectedStr *= strModifier
