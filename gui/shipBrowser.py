@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import wx
 import re
 import copy
@@ -1135,7 +1136,7 @@ class ShipItem(SFItem.SFBrowserItem):
 
         self.raceDropShadowBmp = drawUtils.CreateDropShadowBitmap(self.raceBmp, 0.2)
 
-        self.SetToolTip(wx.ToolTip(self.shipTrait)) 
+        self.SetToolTip(wx.ToolTip(self.shipTrait))
 
         self.shipBrowser = self.Parent.Parent
 
@@ -1471,7 +1472,7 @@ class FitItem(SFItem.SFBrowserItem):
 
         self.bkBitmap = None
         if self.shipTrait != "": # show no tooltip if no trait available
-            self.SetToolTip(wx.ToolTip(self.shipName+'\n--------------------------\n'+self.shipTrait)) 
+            self.SetToolTip(wx.ToolTip(u'{}\n{}\n{}'.format(self.shipName, u'─'*20, self.shipTrait)))
         self.padding = 4
         self.editWidth = 150
 
