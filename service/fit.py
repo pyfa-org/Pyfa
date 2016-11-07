@@ -660,8 +660,20 @@ class Fit(object):
                 fighter = eos.types.Fighter(item)
                 used = fit.getSlotsUsed(fighter.slot)
                 total = fit.getNumSlots(fighter.slot)
+                standardAttackActive = False;
                 for ability in fighter.abilities:
-                    ability.active = True if ability.effect.isImplemented else False
+                    if (ability.effect.isImplemented and ability.effect.handlerName == u'fighterabilityattackm'):
+                        # Activate "standard attack" if available
+                        ability.active = True
+                        standardAttackActive = True
+                    else:
+                        # Activate all other abilities (Neut, Web, etc) except propmods if no standard attack is active
+                        if (ability.effect.isImplemented
+                            and standardAttackActive == False
+                            and ability.effect.handlerName != u'fighterabilitymicrowarpdrive'
+                            and ability.effect.handlerName != u'fighterabilityevasivemaneuvers'):
+                            ability.active = True
+
                 if used >= total:
                     fighter.active = False
 
