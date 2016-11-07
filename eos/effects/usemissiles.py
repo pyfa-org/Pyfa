@@ -12,7 +12,7 @@ def handler(fit, src, context):
     src.reloadTime = 10000
 
     if "projected" in context:
-        if src.item.group.name == unicode("Missile Launcher Bomb"):
+        if src.item.group.name == u'Missile Launcher Bomb':
             # Bomb Launcher Cooldown Timer
             moduleReactivationDelay = src.getModifiedItemAttr("moduleReactivationDelay")
 
