@@ -85,15 +85,25 @@ class Effect(EqBase):
 
     @property
     def activeByDefault(self):
-        '''
-        The runTime that this effect should be run at.
+        """
+        The state that this effect should be be in.
         This property is also automaticly fetched from effects/<effectName>.py if the file exists.
         the possible values are:
         None, True, False
-        None and False are equivalent. True is the default if the effect is also implemented.
 
-        effects that are not active will not be calculated.
-        '''
+        If this is not set:
+        We simply assume that missing/none = True, and set it accordingly
+        (much as we set runTime to Normalif not otherwise set).
+        Nearly all effect files will fall under this category.
+
+        If this is set to True:
+        We would enable it anyway, but hey, it's double enabled.
+        No effect files are currently configured this way (and probably will never be).
+
+        If this is set to False:
+        Basically we simply skip adding the effect to the effect handler when the effect is called,
+        much as if the run time didn't match or other criteria failed.
+        """
         if not self.__generated:
             self.__generateHandler()
 
@@ -101,8 +111,10 @@ class Effect(EqBase):
 
     @activeByDefault.setter
     def activeByDefault(self, value):
-        # Just assign the input values to the ``numbers`` attribute.
-        # You *could* do something more interesting here if you wanted.
+        """
+        Just assign the input values to the activeByDefault attribute.
+        You *could* do something more interesting here if you wanted.
+        """
         self.__activeByDefault = value
 
     @property
