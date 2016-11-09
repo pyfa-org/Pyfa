@@ -330,7 +330,10 @@ class Skill(HandledItem):
             return
 
         for effect in item.effects.itervalues():
-            if effect.runTime == runTime and effect.isType("passive") and (not fit.isStructure or effect.isType("structure")):
+            if effect.runTime == runTime and \
+                    effect.isType("passive") and \
+                    (not fit.isStructure or effect.isType("structure")) and \
+                    effect.activeByDefault:
                 try:
                     effect.handler(fit, self, ("skill",))
                 except AttributeError:

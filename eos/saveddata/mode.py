@@ -50,5 +50,5 @@ class Mode(ItemAttrShortcut, HandledItem):
     def calculateModifiedAttributes(self, fit, runTime, forceProjected = False):
         if self.item:
             for effect in self.item.effects.itervalues():
-                if effect.runTime == runTime:
+                if effect.runTime == runTime and effect.activeByDefault:
                     effect.handler(fit, self, context = ("module",))
