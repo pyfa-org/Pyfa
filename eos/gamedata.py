@@ -84,6 +84,28 @@ class Effect(EqBase):
         return self.__runTime
 
     @property
+    def activeByDefault(self):
+        '''
+        The runTime that this effect should be run at.
+        This property is also automaticly fetched from effects/<effectName>.py if the file exists.
+        the possible values are:
+        None, True, False
+        None and False are equivalent. True is the default if the effect is also implemented.
+
+        effects that are not active will not be calculated.
+        '''
+        if not self.__generated:
+            self.__generateHandler()
+
+        return self.__activeByDefault
+
+    @activeByDefault.setter
+    def activeByDefault(self, value):
+        # Just assign the input values to the ``numbers`` attribute.
+        # You *could* do something more interesting here if you wanted.
+        self.__activeByDefault = value
+
+    @property
     def type(self):
         """
         The type of the effect, automaticly fetched from effects/<effectName>.py if the file exists.
@@ -134,6 +156,11 @@ class Effect(EqBase):
                 self.__runTime = "normal"
 
             try:
+                self.__activeByDefault = getattr(effectModule, "activeByDefault")
+            except AttributeError:
+                self.__activeByDefault = True
+
+            try:
                 t = getattr(effectModule, "type")
             except AttributeError:
                 t = None
@@ -143,6 +170,7 @@ class Effect(EqBase):
         except (ImportError, AttributeError) as e:
             self.__handler = effectDummy
             self.__runTime = "normal"
+            self.__activeByDefault = True
             self.__type = None
         except Exception as e:
             traceback.print_exc(e)

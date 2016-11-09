@@ -440,7 +440,7 @@ class Fit(object):
         for name, info in self.gangBoosts.iteritems():
             # Unpack all data required to run effect properly
             effect, thing = info[1]
-            if effect.runTime == runTime:
+            if effect.runTime == runTime and effect.activeByDefault:
                 context = ("gang", thing.__class__.__name__.lower())
                 if isinstance(thing, Module):
                     if effect.isType("offline") or (effect.isType("passive") and thing.state >= State.ONLINE) or \

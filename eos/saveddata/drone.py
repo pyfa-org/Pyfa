@@ -232,6 +232,7 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
         for effect in self.item.effects.itervalues():
             if effect.runTime == runTime and \
+                effect.activeByDefault and \
                     ((projected is True and effect.isType("projected")) or
                         projected is False and effect.isType("passive")):
                 # See GH issue #765
@@ -245,7 +246,7 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
         if self.charge:
             for effect in self.charge.effects.itervalues():
-                if effect.runTime == runTime:
+                if effect.runTime == runTime and effect.activeByDefault:
                     effect.handler(fit, self, ("droneCharge",))
 
     def __deepcopy__(self, memo):

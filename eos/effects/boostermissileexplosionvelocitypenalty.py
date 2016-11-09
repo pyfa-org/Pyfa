@@ -3,6 +3,7 @@
 # Used by:
 # Implants named like: Blue Pill Booster (3 of 5)
 type = "boosterSideEffect"
+activeByDefault = False
 
 
 def handler(fit, booster, context):
