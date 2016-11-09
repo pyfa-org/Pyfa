@@ -381,6 +381,25 @@ class Fit(object):
         self.recalc(fit)
         return True
 
+    def addCommandFit(self, fitID, thing):
+        if fitID is None:
+            return
+
+        fit = eos.db.getFit(fitID)
+
+        if thing in fit.commandFits:
+            return
+
+        fit.__commandFits[thing.ID] = thing
+
+        # this bit is required -- see GH issue # 83
+        eos.db.saveddata_session.flush()
+        eos.db.saveddata_session.refresh(thing)
+
+        eos.db.commit()
+        self.recalc(fit)
+        return True
+
     def toggleProjected(self, fitID, thing, click):
         fit = eos.db.getFit(fitID)
         if isinstance(thing, eos.types.Drone):
@@ -398,6 +417,15 @@ class Fit(object):
             projectionInfo = thing.getProjectionInfo(fitID)
             if projectionInfo:
                 projectionInfo.active = not projectionInfo.active
+
+        eos.db.commit()
+        self.recalc(fit)
+
+    def toggleCommandFit(self, fitID, thing):
+        fit = eos.db.getFit(fitID)
+        commandInfo = thing.getCommandInfo(fitID)
+        if commandInfo:
+            commandInfo.active = not commandInfo.active
 
         eos.db.commit()
         self.recalc(fit)
@@ -431,6 +459,13 @@ class Fit(object):
         else:
             del fit.__projectedFits[thing.ID]
             # fit.projectedFits.remove(thing)
+
+        eos.db.commit()
+        self.recalc(fit)
+
+    def removeCommand(self, fitID, thing):
+        fit = eos.db.getFit(fitID)
+        del fit.__commandFits[thing.ID]
 
         eos.db.commit()
         self.recalc(fit)

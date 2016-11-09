@@ -93,7 +93,7 @@ class CommandView(d.Display):
             sFit = service.Fit.getInstance()
             row = self.GetFirstSelected()
             if row != -1:
-                sFit.removeProjected(fitID, self.get(row))
+                sFit.removeCommand(fitID, self.get(row))
                 wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
     def handleDrag(self, type, fitID):
@@ -103,7 +103,7 @@ class CommandView(d.Display):
             if activeFit:
                 sFit = service.Fit.getInstance()
                 draggedFit = sFit.getFit(fitID)
-                sFit.project(activeFit, draggedFit)
+                sFit.addCommandFit(activeFit, draggedFit)
                 wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=activeFit))
 
     def startDrag(self, event):
@@ -115,14 +115,6 @@ class CommandView(d.Display):
             dropSource = wx.DropSource(self)
             dropSource.SetData(data)
             dropSource.DoDragDrop()
-
-    def _merge(self, src, dst):
-        dstDrone = self.get(dst)
-        if isinstance(dstDrone, eos.types.Drone):
-            sFit = service.Fit.getInstance()
-            fitID = self.mainFrame.getActiveFit()
-            if sFit.mergeDrones(fitID, self.get(src), dstDrone, True):
-                wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
     def fitSort(self, fit):
         return fit.name
@@ -142,7 +134,7 @@ class CommandView(d.Display):
 
         stuff = []
         if fit is not None:
-            self.fits = fit.projectedFits[:]
+            self.fits = fit.commandFits[:]
             self.fits.sort(key=self.fitSort)
             stuff.extend(self.fits)
 
@@ -158,7 +150,7 @@ class CommandView(d.Display):
 
         # todo: verify
         if stuff == []:
-            stuff = [DummyEntry("Drag an item or fit, or use right-click menu for system effects")]
+            stuff = [DummyEntry("Drag a fit to this area")]
 
         self.update(stuff)
 
@@ -179,7 +171,7 @@ class CommandView(d.Display):
             if col == self.getColIndex(State):
                 fitID = self.mainFrame.getActiveFit()
                 sFit = service.Fit.getInstance()
-                sFit.toggleProjected(fitID, item, "right" if event.Button == 3 else "left")
+                sFit.toggleCommandFit(fitID, item)
                 wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
     def scheduleMenu(self, event):
@@ -193,36 +185,16 @@ class CommandView(d.Display):
         if sel != -1:
             item = self.get(sel)
             sMkt = service.Market.getInstance()
-            if isinstance(item, eos.types.Drone):
-                srcContext = "projectedDrone"
-                itemContext = sMkt.getCategoryByItem(item.item).name
-                context = ((srcContext, itemContext),)
-            elif isinstance(item, eos.types.Fighter):
-                srcContext = "projectedFighter"
-                itemContext = sMkt.getCategoryByItem(item.item).name
-                context = ((srcContext, itemContext),)
-            elif isinstance(item, eos.types.Module):
-                modSrcContext = "projectedModule"
-                modItemContext = sMkt.getCategoryByItem(item.item).name
-                modFullContext = (modSrcContext, modItemContext)
-                if item.charge is not None:
-                    chgSrcContext = "projectedCharge"
-                    chgItemContext = sMkt.getCategoryByItem(item.charge).name
-                    chgFullContext = (chgSrcContext, chgItemContext)
-                    context = (modFullContext, chgFullContext)
-                else:
-                    context = (modFullContext,)
-            else:
-                fitSrcContext = "projectedFit"
-                fitItemContext = item.name
-                context = ((fitSrcContext,fitItemContext),)
-            context = context + (("projected",),)
+            fitSrcContext = "commandFit"
+            fitItemContext = item.name
+            context = ((fitSrcContext,fitItemContext),)
+            context = context + (("command",),)
             menu = ContextMenu.getMenu((item,), *context)
         elif sel == -1:
             fitID = self.mainFrame.getActiveFit()
             if fitID is None:
                 return
-            context = (("projected",),)
+            context = (("command",),)
             menu = ContextMenu.getMenu([], *context)
         if menu is not None:
             self.PopupMenu(menu)
@@ -234,5 +206,5 @@ class CommandView(d.Display):
             if col != self.getColIndex(State):
                 fitID = self.mainFrame.getActiveFit()
                 sFit = service.Fit.getInstance()
-                sFit.removeProjected(fitID, self.get(row))
+                sFit.removeCommand(fitID, self.get(row))
                 wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))

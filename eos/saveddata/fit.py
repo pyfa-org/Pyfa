@@ -232,8 +232,15 @@ class Fit(object):
         # not return them.
         return [fit for fit in self.__projectedFits.values() if not fit.isInvalid]
 
+    @property
+    def commandFits(self):
+        return [fit for fit in self.__commandFits.values() if not fit.isInvalid]
+
     def getProjectionInfo(self, fitID):
         return self.projectedOnto.get(fitID, None)
+
+    def getCommandInfo(self, fitID):
+        return self.boostedOnto.get(fitID, None)
 
     @property
     def projectedDrones(self):
