@@ -121,6 +121,10 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         self.amount = int(max(min(i, self.getModifiedItemAttr("fighterSquadronMaxSize")), 0))
 
     @property
+    def fighterSquadronMaxSize(self):
+        return int(self.getModifiedItemAttr("fighterSquadronMaxSize"))
+
+    @property
     def abilities(self):
         return self.__abilities or []
 
