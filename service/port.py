@@ -21,7 +21,7 @@ import re
 import os
 import xml.dom
 
-from eos.types import State, Slot, Module, Cargo, Fit, Ship, Drone, Implant, Booster, Citadel
+from eos.types import State, Slot, Module, Cargo, Fit, Ship, Drone, Implant, Booster, Citadel, Fighter
 import service
 import wx
 import logging
@@ -270,6 +270,11 @@ class Port(object):
                     d = Drone(item)
                     d.amount = int(amount)
                     f.drones.append(d)
+                elif item.category.name == "Fighter":
+                    ft = Fighter(item)
+                    ft.amount = int(amount) if ft.amount <= ft.fighterSquadronMaxSize else ft.fighterSquadronMaxSize
+                    if ft.fits(f):
+                        f.fighters.append(ft)
                 elif item.category.name == "Charge":
                     c = Cargo(item)
                     c.amount = int(amount)
@@ -374,7 +379,15 @@ class Port(object):
                 if not modName in droneMap:
                     droneMap[modName] = 0
                 droneMap[modName] += extraAmount
-            if len(modExtra) == 2 and item.category.name != "Drone":
+            elif item.category.name == "Fighter":
+                extraAmount = int(extraAmount) if extraAmount is not None else 1
+                fighterItem = Fighter(item)
+                if (extraAmount > fighterItem.fighterSquadronMaxSize): #Amount bigger then max fightergroup size
+                    extraAmount = fighterItem.fighterSquadronMaxSize
+                if fighterItem.fits(fit):
+                    fit.fighters.append(fighterItem)
+
+            if len(modExtra) == 2 and item.category.name != "Drone" and item.category.name != "Fighter":
                 extraAmount = int(extraAmount) if extraAmount is not None else 1
                 if not modName in cargoMap:
                     cargoMap[modName] = 0
@@ -507,16 +520,21 @@ class Port(object):
                                 droneItem = sMkt.getItem(droneName, eager="group.category")
                             except:
                                 continue
-                            if droneItem.category.name != "Drone":
+                            if droneItem.category.name == "Drone":
+                                # Add drone to the fitting
+                                d = Drone(droneItem)
+                                d.amount = droneAmount
+                                if entityState == "Active":
+                                    d.amountActive = droneAmount
+                                elif entityState == "Inactive":
+                                    d.amountActive = 0
+                                f.drones.append(d)
+                            elif droneItem.category.name == "Fighter": # EFT saves fighter as drones
+                                ft = Fighter(droneItem)
+                                ft.amount = int(droneAmount) if ft.amount <= ft.fighterSquadronMaxSize else ft.fighterSquadronMaxSize
+                                f.fighters.append(ft)
+                            else:
                                 continue
-                            # Add drone to the fitting
-                            d = Drone(droneItem)
-                            d.amount = droneAmount
-                            if entityState == "Active":
-                                d.amountActive = droneAmount
-                            elif entityState == "Inactive":
-                                d.amountActive = 0
-                            f.drones.append(d)
                         elif entityType == "Implant":
                             # Bail if we can't get item or it's not from implant category
                             try:
@@ -648,6 +666,10 @@ class Port(object):
                             d = Drone(item)
                             d.amount = int(hardware.getAttribute("qty"))
                             f.drones.append(d)
+                        elif item.category.name == "Fighter":
+                            ft = Fighter(item)
+                            ft.amount = int(hardware.getAttribute("qty")) if ft.amount <= ft.fighterSquadronMaxSize else ft.fighterSquadronMaxSize
+                            f.fighters.append(ft)
                         elif hardware.getAttribute("slot").lower() == "cargo":
                             # although the eve client only support charges in cargo, third-party programs
                             # may support items or "refits" in cargo. Support these by blindly adding all
@@ -795,6 +817,9 @@ class Port(object):
         for drone in fit.drones:
             dna += ":{0};{1}".format(drone.itemID, drone.amount)
 
+        for fighter in fit.fighters:
+            dna += ":{0};{1}".format(fighter.itemID, fighter.amountActive)
+
         for cargo in fit.cargo:
             # DNA format is a simple/dumb format. As CCP uses the slot information of the item itself
             # without designating slots in the DNA standard, we need to make sure we only include
@@ -866,6 +891,13 @@ class Port(object):
                     hardware.setAttribute("qty", "%d" % drone.amount)
                     hardware.setAttribute("slot", "drone bay")
                     hardware.setAttribute("type", drone.item.name)
+                    fitting.appendChild(hardware)
+
+                for fighter in fit.fighters:
+                    hardware = doc.createElement("hardware")
+                    hardware.setAttribute("qty", "%d" % fighter.amountActive)
+                    hardware.setAttribute("slot", "fighter bay")
+                    hardware.setAttribute("type", fighter.item.name)
                     fitting.appendChild(hardware)
 
                 for cargo in fit.cargo:
