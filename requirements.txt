@@ -1,0 +1,7 @@
+matplotlib
+PyYAML
+python-dateutil
+urllib3
+requests
+sqlalchemy
+EVE-Gnosis
