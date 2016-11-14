@@ -32,7 +32,7 @@ import time
 import copy
 from utils.timer import Timer
 from eos.enum import Enum
-
+from gnosis.formulas.formulas import Formulas
 
 import logging
 
@@ -49,8 +49,6 @@ class ImplantLocation(Enum):
 
 class Fit(object):
     """Represents a fitting, with modules, ship, implants, etc."""
-
-    PEAK_RECHARGE = 0.25
 
     def __init__(self, ship=None, name=""):
         """Initialize a fit from the program"""
@@ -880,15 +878,29 @@ class Fit(object):
 
         return self.__sustainableTank
 
-    def calculateCapRecharge(self, percent = PEAK_RECHARGE):
-        capacity = self.ship.getModifiedItemAttr("capacitorCapacity")
-        rechargeRate = self.ship.getModifiedItemAttr("rechargeRate") / 1000.0
-        return 10 / rechargeRate * sqrt(percent) * (1 - sqrt(percent)) * capacity
+    def calculateCapRecharge(self):
+        return_matrix = Formulas.capacitor_shield_regen_matrix(self.ship.getModifiedItemAttr("capacitorCapacity"),
+                                                               self.ship.getModifiedItemAttr("rechargeRate"))
+        high_water_percent = 0
+        high_water_delta = 0
+        for item in return_matrix:
+            if high_water_delta < item['DeltaAmount']:
+                high_water_percent = item['Percent']
+                high_water_delta = item['DeltaAmount']
 
-    def calculateShieldRecharge(self, percent = PEAK_RECHARGE):
-        capacity = self.ship.getModifiedItemAttr("shieldCapacity")
-        rechargeRate = self.ship.getModifiedItemAttr("shieldRechargeRate") / 1000.0
-        return 10 / rechargeRate * sqrt(percent) * (1 - sqrt(percent)) * capacity
+        return high_water_delta
+
+    def calculateShieldRecharge(self):
+        return_matrix = Formulas.capacitor_shield_regen_matrix(self.ship.getModifiedItemAttr("shieldCapacity"),
+                                                               self.ship.getModifiedItemAttr("shieldRechargeRate"))
+        high_water_percent = 0
+        high_water_delta = 0
+        for item in return_matrix:
+            if high_water_delta < item['DeltaAmount']:
+                high_water_percent = item['Percent']
+                high_water_delta = item['DeltaAmount']
+
+        return high_water_delta
 
     def addDrain(self, src, cycleTime, capNeed, clipSize=0):
         """ Used for both cap drains and cap fills (fills have negative capNeed) """
