@@ -89,9 +89,8 @@ class capWarfareGraph(Graph):
                     reload_time = False
 
                 if charges == 0 or charges == None:
-                    if reload_time:
-                        # We have a reload time but no charges, so lets give it 1 so it can count down properly.
-                        # Most likely comes from a module with a reactivation delay.
+                    if reload_time and reactivation_delay:
+                        # We have a reload time and activation delay, so lets give it 1 so it can count down properly.
                         charges = 1
                     else:
                         charges = False
