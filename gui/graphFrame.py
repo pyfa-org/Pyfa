@@ -161,36 +161,38 @@ class GraphFrame(wx.Frame):
         self.fields.clear()
 
         #Setup textboxes
-        for field, defaultVal in view.getFields().iteritems():
+        fields = view.getFields()
+        if fields:
+            for field, defaultVal in fields.iteritems():
 
-            textBox = wx.TextCtrl(self.gridPanel, wx.ID_ANY, style=0)
-            self.fields[field] = textBox
-            textBox.Bind(wx.EVT_TEXT, self.onFieldChanged)
-            sizer.Add(textBox, 1, wx.EXPAND | wx.ALIGN_CENTER_VERTICAL  | wx.ALL, 3)
-            if defaultVal is not None:
-                if not isinstance(defaultVal, basestring):
-                    defaultVal = ("%f" % defaultVal).rstrip("0")
-                    if defaultVal[-1:] == ".":
-                        defaultVal = defaultVal + "0"
+                textBox = wx.TextCtrl(self.gridPanel, wx.ID_ANY, style=0)
+                self.fields[field] = textBox
+                textBox.Bind(wx.EVT_TEXT, self.onFieldChanged)
+                sizer.Add(textBox, 1, wx.EXPAND | wx.ALIGN_CENTER_VERTICAL  | wx.ALL, 3)
+                if defaultVal is not None:
+                    if not isinstance(defaultVal, basestring):
+                        defaultVal = ("%f" % defaultVal).rstrip("0")
+                        if defaultVal[-1:] == ".":
+                            defaultVal = defaultVal + "0"
 
-                textBox.ChangeValue(defaultVal)
+                    textBox.ChangeValue(defaultVal)
 
-            imgLabelSizer = wx.BoxSizer(wx.HORIZONTAL)
-            if icons:
-                icon = icons.get(field)
-                if icon is not None:
-                    static = wx.StaticBitmap(self.gridPanel)
-                    static.SetBitmap(icon)
-                    imgLabelSizer.Add(static, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 1)
+                imgLabelSizer = wx.BoxSizer(wx.HORIZONTAL)
+                if icons:
+                    icon = icons.get(field)
+                    if icon is not None:
+                        static = wx.StaticBitmap(self.gridPanel)
+                        static.SetBitmap(icon)
+                        imgLabelSizer.Add(static, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 1)
 
-            if labels:
-                label = labels.get(field)
-                label = label if label is not None else field
-            else:
-                label = field
+                if labels:
+                    label = labels.get(field)
+                    label = label if label is not None else field
+                else:
+                    label = field
 
-            imgLabelSizer.Add(wx.StaticText(self.gridPanel, wx.ID_ANY, label), 0, wx.LEFT | wx.RIGHT | wx.ALIGN_CENTER_VERTICAL, 3)
-            sizer.Add(imgLabelSizer, 0, wx.ALIGN_CENTER_VERTICAL)
+                imgLabelSizer.Add(wx.StaticText(self.gridPanel, wx.ID_ANY, label), 0, wx.LEFT | wx.RIGHT | wx.ALIGN_CENTER_VERTICAL, 3)
+                sizer.Add(imgLabelSizer, 0, wx.ALIGN_CENTER_VERTICAL)
         self.draw()
 
     def draw(self, event=None):
