@@ -24,6 +24,7 @@ from gui.bitmapLoader import BitmapLoader
 from eos.graph import Data
 import gui.mainFrame
 from gnosis.simulations.capacitor import Capacitor
+from gnosis.formulas.formulas import Formulas
 
 class capWarfareGraph(Graph):
     '''
