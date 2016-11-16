@@ -79,6 +79,14 @@ class Fit(object):
 
         self.build()
 
+    def addCommandBonus(self, warfareBuffID, value, module):
+        # oh fuck this is so janky
+        # @todo should we pass in min/max to this function, or is abs okay? (abs is old method, ccp now provides the aggregate function in their data)
+        print "Add command bonus: ", warfareBuffID, " - value: ", value
+
+        if warfareBuffID not in self.commandBonuses or abs(self.commandBonuses[warfareBuffID][0]) > abs(value):
+            self.commandBonuses[warfareBuffID] = (value, module)
+
     @reconstructor
     def init(self):
         """Initialize a fit from the database and validate"""
@@ -136,6 +144,7 @@ class Fit(object):
         self.boostsFits = set()
         self.gangBoosts = None
         self.ecmProjectedStr = 1
+        self.commandBonuses = {}
 
     @property
     def targetResists(self):
@@ -558,6 +567,9 @@ class Fit(object):
                             item.calculateModifiedAttributes(targetFit, runTime, True)
 
             timer.checkpoint('Done with runtime: %s'%runTime)
+
+        print "Command: "
+        print self.commandBonuses
 
         # Mark fit as calculated
         self.__calculated = True
