@@ -32,7 +32,9 @@ import time
 import copy
 from utils.timer import Timer
 from eos.enum import Enum
-from gnosis.formulas.formulas import Formulas
+from service.gnosis import GnosisFormulas
+
+
 
 import logging
 
@@ -879,28 +881,13 @@ class Fit(object):
         return self.__sustainableTank
 
     def calculateCapRecharge(self):
-        return_matrix = Formulas.capacitor_shield_regen_matrix(self.ship.getModifiedItemAttr("capacitorCapacity"),
-                                                               self.ship.getModifiedItemAttr("rechargeRate"))
-        high_water_percent = 0
-        high_water_delta = 0
-        for item in return_matrix:
-            if high_water_delta < item['DeltaAmount']:
-                high_water_percent = item['Percent']
-                high_water_delta = item['DeltaAmount']
-
-        return high_water_delta
+        peak_return = GnosisFormulas.get_peak_regen(self.ship.getModifiedItemAttr("capacitorCapacity"), self.ship.getModifiedItemAttr("rechargeRate"))
+        return peak_return['Percent']
 
     def calculateShieldRecharge(self):
-        return_matrix = Formulas.capacitor_shield_regen_matrix(self.ship.getModifiedItemAttr("shieldCapacity"),
+        peak_return = GnosisFormulas.get_peak_regen(self.ship.getModifiedItemAttr("shieldCapacity"),
                                                                self.ship.getModifiedItemAttr("shieldRechargeRate"))
-        high_water_percent = 0
-        high_water_delta = 0
-        for item in return_matrix:
-            if high_water_delta < item['DeltaAmount']:
-                high_water_percent = item['Percent']
-                high_water_delta = item['DeltaAmount']
-
-        return high_water_delta
+        return peak_return['Percent']
 
     def addDrain(self, src, cycleTime, capNeed, clipSize=0):
         """ Used for both cap drains and cap fills (fills have negative capNeed) """

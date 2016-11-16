@@ -23,8 +23,9 @@ from gui.bitmapLoader import BitmapLoader
 #from eos.graph.fitDps import FitDpsGraph as FitDps
 from eos.graph import Data
 import gui.mainFrame
-from gnosis.simulations.capacitor import Capacitor
-from gnosis.formulas.formulas import Formulas
+from service.gnosis import Formulas
+from service.gnosis import GnosisSimulation
+from eos.types import Fleet
 
 class capWarfareGraph(Graph):
     '''
@@ -73,47 +74,8 @@ class capWarfareGraph(Graph):
     def getPoints(self, fit, fields):
         capacitor_amount = fit.ship.getModifiedItemAttr("capacitorCapacity")
         capacitor_recharge = fit.ship.getModifiedItemAttr("rechargeRate")
-        module_list = []
 
-        for module in fit.modules:
-            if module.getModifiedItemAttr("capacitorNeed") and getattr(module, 'state', None) == 1:
-                capacitor_need = module.getModifiedItemAttr("capacitorNeed")*-1 # Turn drains into negative and boosts to positive
-                duration = module.getModifiedItemAttr("duration")
-                charges = getattr(module,'numCharges', None)
-                reload_time_one = module.getModifiedItemAttr("reloadTime")
-                reload_time_two = getattr(module, 'reloadTime', None)
-                reactivation_delay = module.getModifiedItemAttr("moduleReactivationDelay")
-
-                reload_time = max(reload_time_one, reload_time_two, reactivation_delay, 0)
-
-                if reload_time == 0 or reload_time == None:
-                    reload_time = False
-
-                if charges == 0 or charges == None:
-                    if reload_time and reactivation_delay:
-                        # We have a reload time and activation delay, so lets give it 1 so it can count down properly.
-                        charges = 1
-                    else:
-                        charges = False
-
-                if capacitor_need:
-                    module_list.append(
-                        {
-                            'Amount': capacitor_need,
-                            'CycleTime': duration,
-                            'Charges': charges,
-                            'ReloadTime': reload_time,
-                        }
-                    )
-
-        test = fit.projectedModules
-        '''
-        for projected_ship in fit.victimOf:
-            for projected_ship.source_fit.
-            fit
-        '''
-
-        return_matrix = Capacitor.capacitor_time_simulator(module_list, capacitor_amount, capacitor_recharge)
+        return_matrix = GnosisSimulation.capacitor_simulation(fit, capacitor_amount, capacitor_recharge)
 
         x = []
         y = []
