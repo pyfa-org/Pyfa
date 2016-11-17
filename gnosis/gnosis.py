@@ -33,7 +33,7 @@ class GnosisSimulation:
     def capacitor_simulation(fit, projected_items, capacity, recharge_rate):
         module_list = []
         for module in fit.modules:
-            if module.getModifiedItemAttr("capacitorNeed") and getattr(module, 'state', None) == 1:
+            if module.getModifiedItemAttr("capacitorNeed") and getattr(module, 'state', None) > 0:
                 capacitor_need = module.getModifiedItemAttr(
                     "capacitorNeed") * -1  # Turn drains into negative and boosts to positive
                 duration_one = module.getModifiedItemAttr("duration")
