@@ -82,7 +82,7 @@ class CapacitorViewFull(StatsView):
 
         sizerCapacitor.Add(baseBox, 0, wx.ALIGN_CENTER_HORIZONTAL)
 
-        tooltip = wx.ToolTip("Capacitor throughput")
+        tooltip = wx.ToolTip("Capacitor peak regen and module usage")
         bitmap = BitmapLoader.getStaticBitmap("capacitorRecharge_big", parent, "gui")
         bitmap.SetToolTip(tooltip)
         baseBox.Add(bitmap, 0, wx.ALIGN_CENTER)
@@ -91,14 +91,14 @@ class CapacitorViewFull(StatsView):
         chargeSizer = wx.FlexGridSizer(2, 3)
         baseBox.Add(chargeSizer, 0, wx.ALIGN_CENTER)
 
-        chargeSizer.Add(wx.StaticText(parent, wx.ID_ANY, "+ "), 0, wx.ALIGN_CENTER)
+        chargeSizer.Add(wx.StaticText(parent, wx.ID_ANY, "Peak: "), 0, wx.ALIGN_CENTER)
         lbl = wx.StaticText(parent, wx.ID_ANY, "0.0")
         setattr(self, "label%sCapacitorRecharge" % panel.capitalize(), lbl)
         chargeSizer.Add(lbl, 0, wx.ALIGN_CENTER)
         chargeSizer.Add(wx.StaticText(parent, wx.ID_ANY, " GJ/s"), 0, wx.ALIGN_CENTER)
 
         # Discharge
-        chargeSizer.Add(wx.StaticText(parent, wx.ID_ANY, "- "), 0, wx.ALIGN_CENTER)
+        chargeSizer.Add(wx.StaticText(parent, wx.ID_ANY, "Used: "), 0, wx.ALIGN_CENTER)
         lbl = wx.StaticText(parent, wx.ID_ANY, "0.0")
         setattr(self, "label%sCapacitorDischarge" % panel.capitalize(), lbl)
         chargeSizer.Add(lbl, 0, wx.ALIGN_CENTER)
@@ -108,41 +108,60 @@ class CapacitorViewFull(StatsView):
     def refreshPanel(self, fit):
         #If we did anything intresting, we'd update our labels to reflect the new fit's stats here
         stats= (("label%sCapacitorCapacity", lambda: fit.ship.getModifiedItemAttr("capacitorCapacity"), 3, 0, 9),
-                ("label%sCapacitorRecharge", lambda: fit.capRecharge, 3, 0, 0),
+                ("label%sCapacitorRecharge", lambda: fit.capRecharge['DeltaAmount'], 3, 0, 0),
                 ("label%sCapacitorDischarge", lambda: fit.capUsed, 3, 0, 0))
+
+        try:
+            peak_percentage = fit.capRecharge['Percent']
+        except AttributeError:
+            peak_percentage = 0
 
         panel = "Full"
         for labelName, value, prec, lowest, highest in stats:
             label = getattr(self, labelName % panel)
+
             value = value() if fit is not None else 0
             value = value if value is not None else 0
+
+            if labelName == "label%sCapacitorRecharge":
+                tooltip_value = "Peak recharge at: " + str(peak_percentage*100) + "%"
+            elif labelName == "label%sCapacitorDischarge":
+                tooltip_value = "Capacitor delta from local and projected modules"
+            else:
+                tooltip_value = str(value)
+
             if isinstance(value, basestring):
                 label.SetLabel(value)
-                label.SetToolTip(wx.ToolTip(value))
+                label.SetToolTip(wx.ToolTip(tooltip_value))
             else:
                 label.SetLabel(formatAmount(value, prec, lowest, highest))
-                label.SetToolTip(wx.ToolTip("%.1f" % value))
+                label.SetToolTip(wx.ToolTip(tooltip_value))
 
         capState = fit.capState if fit is not None else 0
-        capStable = fit.capStable if fit is not None else False
+        capStable = fit.capStable if fit is not None else 0
         lblNameTime = "label%sCapacitorTime"
         lblNameState = "label%sCapacitorState"
-        if isinstance(capState, tuple):
-            t = "%.1f%%-%.1f%%" % capState
-            s = ""
+
+        if capStable:
+            capStable *= 100
+            s = "Stable: " + str(capStable) + "%"
+            t = ""
         else:
-            if capStable:
-                t = "%.1f%%" % capState
-            else:
+            s = "Lasts: "
+
+            if capState:
+                capState /= 1000
                 if capState > 60:
                     t = "%dm%ds" % divmod(capState, 60)
                 else:
                     t = "%ds" % capState
+            else:
+                t = ""
 
-            s = "Stable: " if capStable else "Lasts "
+        #s = "Stable: " if capStable else "Lasts "
 
-        getattr(self, lblNameTime % panel).SetLabel(t)
         getattr(self, lblNameState % panel).SetLabel(s)
+        getattr(self, lblNameTime % panel).SetLabel(t)
 
         self.panel.Layout()
         self.headerPanel.Layout()

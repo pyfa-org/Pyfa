@@ -1,4 +1,4 @@
-#===============================================================================
+# ===============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,33 +15,17 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# ===============================================================================
 
 from gui.graph import Graph
 import service
 from gui.bitmapLoader import BitmapLoader
-#from eos.graph.fitDps import FitDpsGraph as FitDps
 from eos.graph import Data
 import gui.mainFrame
-from service.gnosis import Formulas
-from service.gnosis import GnosisSimulation
-from eos.types import Fleet
+from gnosis.gnosis import GnosisSimulation
+
 
 class capWarfareGraph(Graph):
-    '''
-    propertyAttributeMap = {"angle": "maxVelocity",
-                            "distance": "maxRange",
-                            "signatureRadius": "signatureRadius",
-                            "velocity": "maxVelocity"}
-
-    propertyLabelMap = {"angle": "Target Angle (degrees)",
-                        "distance": "Distance to Target (km)",
-                        "signatureRadius": "Target Signature Radius (m)",
-                        "velocity": "Target Velocity (m/s)"}
-
-    defaults = FitDps.defaults.copy()
-    '''
-
     def __init__(self):
         Graph.__init__(self)
         # self.defaults["time"] = "0-300"
@@ -50,15 +34,16 @@ class capWarfareGraph(Graph):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     def getFields(self):
-        #return self.defaults
+        # return self.defaults
         return None
 
-    def getLabels(self):
-        #return self.propertyLabelMap
+    @staticmethod
+    def getLabels():
+        # return self.propertyLabelMap
         return None
 
     def getIcons(self):
-        '''
+        """
         icons = {}
         sAttr = service.Attribute.getInstance()
         for key, attrName in self.propertyAttributeMap.iteritems():
@@ -68,21 +53,23 @@ class capWarfareGraph(Graph):
                 icons[key] = bitmap
 
         return icons
-        '''
+        """
         return None
 
     def getPoints(self, fit, fields):
         capacitor_amount = fit.ship.getModifiedItemAttr("capacitorCapacity")
         capacitor_recharge = fit.ship.getModifiedItemAttr("rechargeRate")
 
-        return_matrix = GnosisSimulation.capacitor_simulation(fit, capacitor_amount, capacitor_recharge)
+        return_matrix = GnosisSimulation.capacitor_simulation(fit, fit.__extraDrains, capacitor_amount,
+                                                              capacitor_recharge)
 
         x = []
         y = []
         for tick in return_matrix['Cached Runs']:
-            x.append(tick['Current Time']/1000) # Divide by 1000 to give seconds
-            y.append(tick['Capacitor Percentage']*100)
+            x.append(tick['Current Time'] / 1000)  # Divide by 1000 to give seconds
+            y.append(tick['Capacitor Percentage'] * 100)
 
         return x, y
+
 
 capWarfareGraph.register()

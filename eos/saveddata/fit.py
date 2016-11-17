@@ -21,7 +21,6 @@ from eos.effectHandlerHelpers import *
 from eos.modifiedAttributeDict import ModifiedAttributeDict
 from sqlalchemy.orm import validates, reconstructor
 from itertools import chain
-from eos import capSim
 from copy import deepcopy
 from math import sqrt, log, asinh
 from eos.types import Drone, Cargo, Ship, Character, State, Slot, Module, Implant, Booster, Skill, Citadel
@@ -32,8 +31,7 @@ import time
 import copy
 from utils.timer import Timer
 from eos.enum import Enum
-from service.gnosis import GnosisFormulas
-
+from gnosis.gnosis import GnosisFormulas, GnosisSimulation
 
 
 import logging
@@ -804,7 +802,7 @@ class Fit(object):
 
     def calculateSustainableTank(self, effective=True):
         if self.__sustainableTank is None:
-            if self.capStable:
+            if self.capStable > 0:
                 sustainable = {}
                 sustainable["armorRepair"] = self.extraAttributes["armorRepair"]
                 sustainable["shieldRepair"] = self.extraAttributes["shieldRepair"]
@@ -861,7 +859,7 @@ class Fit(object):
                 #Loop through every module until we're above peak recharge
                 #Most efficient first, as we sorted earlier.
                 #calculate how much the repper can rep stability & add to total
-                totalPeakRecharge = self.capRecharge
+                totalPeakRecharge = self.capRecharge['DeltaAmount']
                 for mod in repairers:
                     if capUsed > totalPeakRecharge: break
                     cycleTime = mod.cycleTime
@@ -892,75 +890,46 @@ class Fit(object):
     def addDrain(self, src, cycleTime, capNeed, clipSize=0):
         """ Used for both cap drains and cap fills (fills have negative capNeed) """
 
-        rigSize = self.ship.getModifiedItemAttr("rigSize")
         energyNeutralizerSignatureResolution = src.getModifiedItemAttr("energyNeutralizerSignatureResolution")
         signatureRadius = self.ship.getModifiedItemAttr("signatureRadius")
 
         #Signature reduction, uses the bomb formula as per CCP Larrikin
         if energyNeutralizerSignatureResolution:
-            capNeed = capNeed*min(1, signatureRadius/energyNeutralizerSignatureResolution)
+            capNeed *= min(1, signatureRadius/energyNeutralizerSignatureResolution)
 
-        resistance = self.ship.getModifiedItemAttr("energyWarfareResistance") or 1 if capNeed > 0 else 1
-        self.__extraDrains.append((cycleTime, capNeed * resistance, clipSize))
+        if self.ship.getModifiedItemAttr("energyWarfareResistance"):
+            capNeed *= min(1,self.ship.getModifiedItemAttr("energyWarfareResistance"))
 
-    def removeDrain(self, i):
-        del self.__extraDrains[i]
-
-    def iterDrains(self):
-        return self.__extraDrains.__iter__()
-
-    def __generateDrain(self):
-        drains = []
-        capUsed = 0
-        capAdded = 0
-        for mod in self.modules:
-            if mod.state >= State.ACTIVE:
-                if (mod.getModifiedItemAttr("capacitorNeed") or 0) != 0:
-                    cycleTime = mod.rawCycleTime or 0
-                    reactivationTime = mod.getModifiedItemAttr("moduleReactivationDelay") or 0
-                    fullCycleTime = cycleTime + reactivationTime
-                    if fullCycleTime > 0:
-                        capNeed = mod.capUse
-                        if capNeed > 0:
-                            capUsed += capNeed
-                        else:
-                            capAdded -= capNeed
-
-                        # If this is a turret, don't stagger activations
-                        disableStagger = mod.hardpoint == Hardpoint.TURRET
-
-                        drains.append((int(fullCycleTime), mod.getModifiedItemAttr("capacitorNeed") or 0, mod.numShots or 0, disableStagger))
-
-        for fullCycleTime, capNeed, clipSize in self.iterDrains():
-            # Stagger incoming effects for cap simulation
-            drains.append((int(fullCycleTime), capNeed, clipSize, False))
-            if capNeed > 0:
-                capUsed += capNeed / (fullCycleTime / 1000.0)
-            else:
-                capAdded += -capNeed / (fullCycleTime / 1000.0)
-
-        return drains, capUsed, capAdded
+        self.__extraDrains.append((src, cycleTime, capNeed, clipSize))
 
     def simulateCap(self):
-        drains, self.__capUsed, self.__capRecharge = self.__generateDrain()
-        self.__capRecharge += self.calculateCapRecharge()
-        if len(drains) > 0:
-            sim = capSim.CapSimulator()
-            sim.init(drains)
-            sim.capacitorCapacity = self.ship.getModifiedItemAttr("capacitorCapacity")
-            sim.capacitorRecharge = self.ship.getModifiedItemAttr("rechargeRate")
-            sim.stagger = True
-            sim.scale = False
-            sim.t_max = 6 * 60 * 60 * 1000
-            sim.reload = self.factorReload
-            sim.run()
+        simulation_matrix = GnosisSimulation.capacitor_simulation(self,
+                                                                  self.__extraDrains,
+                                                                  self.ship.getModifiedItemAttr("capacitorCapacity"),
+                                                                  self.ship.getModifiedItemAttr("rechargeRate"))
 
-            capState = (sim.cap_stable_low + sim.cap_stable_high) / (2 * sim.capacitorCapacity)
-            self.__capStable = capState > 0
-            self.__capState = min(100, capState * 100) if self.__capStable else sim.t / 1000.0
-        else:
-            self.__capStable = True
-            self.__capState = 100
+        self.__capRecharge = GnosisFormulas.get_peak_regen(self.ship.getModifiedItemAttr("capacitorCapacity"),
+                                                   self.ship.getModifiedItemAttr("rechargeRate"))
+
+        cap_per_second = 0
+        for module_list in simulation_matrix['ModuleDict']:
+            if module_list['Charges']:
+                total_run_time = module_list['CycleTime']*module_list['Charges']
+                total_amount = module_list['Amount']*module_list['Charges']
+            else:
+                total_run_time = module_list['CycleTime']
+                total_amount = module_list['Amount']
+
+            if module_list['ReloadTime']:
+                total_run_time += module_list['ReloadTime']
+
+            cap_per_second += total_amount/(total_run_time/1000)
+
+        self.__capUsed = cap_per_second
+
+        low_water_mark = simulation_matrix['Matrix']['Stability']['LowWaterMark']
+        self.__capStable = round(low_water_mark/self.ship.getModifiedItemAttr("capacitorCapacity"), 2)
+        self.__capState = simulation_matrix['Matrix']['Stability']['Time']
 
     @property
     def hp(self):
