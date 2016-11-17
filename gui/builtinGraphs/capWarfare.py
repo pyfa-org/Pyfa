@@ -60,12 +60,17 @@ class capWarfareGraph(Graph):
         capacitor_amount = fit.ship.getModifiedItemAttr("capacitorCapacity")
         capacitor_recharge = fit.ship.getModifiedItemAttr("rechargeRate")
 
-        return_matrix = GnosisSimulation.capacitor_simulation(fit, fit.__extraDrains, capacitor_amount,
+        try:
+           projected = fit.__extraDrains
+        except AttributeError:
+            projected = []
+
+        return_matrix = GnosisSimulation.capacitor_simulation(fit, projected, capacitor_amount,
                                                               capacitor_recharge)
 
         x = []
         y = []
-        for tick in return_matrix['Cached Runs']:
+        for tick in return_matrix['Matrix']['Cached Runs']:
             x.append(tick['Current Time'] / 1000)  # Divide by 1000 to give seconds
             y.append(tick['Capacitor Percentage'] * 100)
 
