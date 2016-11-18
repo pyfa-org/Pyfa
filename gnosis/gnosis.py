@@ -44,13 +44,20 @@ class GnosisSimulation:
                 reload_time_two = getattr(module, 'reloadTime', None)
                 reactivation_delay = module.getModifiedItemAttr("moduleReactivationDelay")
 
-                reload_time = max(reload_time_one, reload_time_two, reactivation_delay, 0)
+                reload_time = max(reload_time_one, reload_time_two, 0)
 
                 if not reload_time:
                     reload_time = False
 
                 if not charges:
                     charges = False
+
+                if not reactivation_delay:
+                    reactivation_delay = False
+
+                if reload_time and reactivation_delay:
+                    reload_time = max(reload_time, reactivation_delay)
+                    reactivation_delay = False
 
                 if capacitor_need and duration:
                     module_list.append(
@@ -59,6 +66,7 @@ class GnosisSimulation:
                             'CycleTime': duration,
                             'Charges': charges,
                             'ReloadTime': reload_time,
+                            'ReactivationDelay': reactivation_delay,
                         }
                     )
 
@@ -87,13 +95,20 @@ class GnosisSimulation:
                 reload_time_two = getattr(projected_src, 'reloadTime', None)
                 reactivation_delay = projected_src.getModifiedItemAttr("moduleReactivationDelay")
 
-                reload_time = max(reload_time_one, reload_time_two, reactivation_delay, 0)
+                reload_time = max(reload_time_one, reload_time_two, 0)
 
                 if not reload_time:
                     reload_time = False
 
                 if not charges:
                     charges = False
+
+                if not reactivation_delay:
+                    reactivation_delay = False
+
+                if reload_time and reactivation_delay:
+                    reload_time = max(reload_time, reactivation_delay)
+                    reactivation_delay = False
 
                 if capacitor_need and duration:
                     module_list.append(
@@ -102,6 +117,7 @@ class GnosisSimulation:
                             'CycleTime': duration,
                             'Charges': charges,
                             'ReloadTime': reload_time,
+                            'ReactivationDelay': reactivation_delay,
                         }
                     )
 

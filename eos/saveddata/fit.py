@@ -920,8 +920,11 @@ class Fit(object):
                 total_run_time = module_list['CycleTime']
                 total_amount = module_list['Amount']
 
-            if module_list['ReloadTime']:
+            if module_list['ReloadTime'] and module_list['Charges']:
                 total_run_time += module_list['ReloadTime']
+
+            if module_list['ReactivationDelay']:
+                total_run_time += module_list['ReactivationDelay']
 
             cap_per_second += total_amount/(total_run_time/1000)
 

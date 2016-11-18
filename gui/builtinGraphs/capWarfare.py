@@ -63,6 +63,15 @@ class capWarfareGraph(Graph):
         try:
            projected = fit.__extraDrains
         except AttributeError:
+            projected = False
+
+        try:
+            if not projected:
+                projected = fit._Fit__extraDrains
+        except AttributeError:
+            projected = False
+
+        if not projected:
             projected = []
 
         return_matrix = GnosisSimulation.capacitor_simulation(fit, projected, capacitor_amount,
