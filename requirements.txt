@@ -2,6 +2,6 @@ matplotlib
 PyYAML
 python-dateutil
 urllib3
-requests
+requests==2.11.1
 sqlalchemy
-EVE-Gnosis
+EVE-Gnosis>=2016.11.17post2
