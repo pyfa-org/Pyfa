@@ -6,5 +6,4 @@ type = "passive"
 
 
 def handler(fit, module, context):
-    fit.ship.multiplyItemAttr("maxVelocity", module.getModifiedItemAttr("maxVelocityBonus"),
-                              stackingPenalties=True)
+    fit.ship.multiplyItemAttr("maxVelocity", module.getModifiedItemAttr("maxVelocityModifier"), stackingPenalties=True)

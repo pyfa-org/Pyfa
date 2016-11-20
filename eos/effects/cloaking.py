@@ -13,4 +13,4 @@ def handler(fit, module, context):
     # Doesn't apply to covops cloaks
     fit.extraAttributes["cloaked"] = True
     # Apply speed penalty
-    fit.ship.multiplyItemAttr("maxVelocity", module.getModifiedItemAttr("maxVelocityBonus"))
+    fit.ship.multiplyItemAttr("maxVelocity", module.getModifiedItemAttr("maxVelocityModifier"))

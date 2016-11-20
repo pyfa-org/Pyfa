@@ -10,7 +10,7 @@ def handler(fit, module, context):
             "aoeCloudSizeBonus",
             "explosionDelayBonus",
             "missileVelocityBonus",
-            "maxVelocityBonus",
+            "maxVelocityModifier",
             "aoeVelocityBonus"
     ):
         module.boostItemAttr(tgtAttr, module.getModifiedItemAttr("overloadTrackingModuleStrengthBonus"))
