@@ -1,7 +1,7 @@
-# Drone hitpoints, damage, and mining yield
+# shipBonusDroneHPDamageMiningORECapital4
 #
 # Used by:
-# Orca
+# Ship: Rorqual
 type = "passive"
 
 

@@ -1,7 +1,4 @@
-# subSystemBonusCaldariDefensiveInformationWarfareHidden
-#
-# Used by:
-# Subsystem: Tengu Defensive - Warfare Processor
+# Not used by any item
 type = "passive"
 def handler(fit, module, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Information Command Specialist"),

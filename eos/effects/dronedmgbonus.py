@@ -1,8 +1,7 @@
 # droneDmgBonus
 #
 # Used by:
-# Skills from group: Drones (8 of 23)
-# Skills named like: Drone Specialization (4 of 4)
+# Skills from group: Drones (8 of 26)
 type = "passive"
 
 

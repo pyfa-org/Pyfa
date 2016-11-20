@@ -2,6 +2,7 @@
 #
 # Used by:
 # Ship: Jackdaw
+# Ship: Sunesis
 type = "passive"
 
 

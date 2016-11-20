@@ -1,3 +1,7 @@
+# shieldCommandStrengthBonus
+#
+# Used by:
+# Skill: Shield Command Specialist
 type = "passive"
 def handler(fit, src, context):
     lvl = src.level

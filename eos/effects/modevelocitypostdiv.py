@@ -1,7 +1,7 @@
 # modeVelocityPostDiv
 #
 # Used by:
-# Modules named like: Propulsion Mode (3 of 4)
+# Module: Jackdaw Propulsion Mode
 type = "passive"
 
 

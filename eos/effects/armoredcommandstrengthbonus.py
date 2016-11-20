@@ -1,3 +1,7 @@
+# armoredCommandStrengthBonus
+#
+# Used by:
+# Skill: Armored Command Specialist
 type = "passive"
 def handler(fit, src, context):
     lvl = src.level

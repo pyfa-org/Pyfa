@@ -1,8 +1,4 @@
-# eliteBonusCommandDestroyerInfoHidden1
-#
-# Used by:
-# Ship: Pontifex
-# Ship: Stork
+# Not used by any item
 type = "passive"
 
 

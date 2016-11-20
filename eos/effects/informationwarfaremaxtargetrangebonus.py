@@ -1,9 +1,4 @@
-# informationWarfareMaxTargetRangeBonus
-#
-# Used by:
-# Implant: Caldari Navy Warfare Mindlink
-# Implant: Imperial Navy Warfare Mindlink
-# Implant: Information Warfare Mindlink
+# Not used by any item
 type = "gang"
 gangBoost = "maxTargetRange"
 gangBonus = "maxTargetRangeBonus"

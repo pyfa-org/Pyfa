@@ -2,6 +2,7 @@
 #
 # Used by:
 # Ship: Guardian
+# Ship: Rabisu
 type = "passive"
 
 

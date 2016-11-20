@@ -1,7 +1,7 @@
-# miningDroneOperationMiningAmountBonusPostPercentMiningDroneAmountPercentChar
+# mining
 #
 # Used by:
-# Mining Drones
+# Drones from group: Mining Drone (10 of 10)
 
 type = "passive"
 grouped = True

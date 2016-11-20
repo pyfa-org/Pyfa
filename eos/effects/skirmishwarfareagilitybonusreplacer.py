@@ -1,9 +1,4 @@
-# skirmishWarfareAgilityBonusReplacer
-#
-# Used by:
-# Implant: Federation Navy Warfare Mindlink
-# Implant: Republic Fleet Warfare Mindlink
-# Implant: Skirmish Warfare Mindlink
+# Not used by any item
 type = "gang"
 gangBoost = "agility"
 gangBonus = "agilityBonus"

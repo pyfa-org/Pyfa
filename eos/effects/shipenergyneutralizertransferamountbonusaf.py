@@ -1,6 +1,7 @@
 # shipEnergyNeutralizerTransferAmountBonusAF
 #
 # Used by:
+# Ship: Caedes
 # Ship: Cruor
 # Ship: Sentinel
 type = "passive"

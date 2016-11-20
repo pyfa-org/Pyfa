@@ -1,6 +1,7 @@
 # shipEnergyDrainAmountAF1
 #
 # Used by:
+# Ship: Caedes
 # Ship: Cruor
 # Ship: Sentinel
 type = "passive"

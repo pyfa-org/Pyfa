@@ -1,4 +1,11 @@
-# We should probably have something a little less hacky in place, but time is money!
+# chargeBonusWarfareCharge
+#
+# Used by:
+# Charges from group: Armor Command Burst Charges (3 of 3)
+# Charges from group: Information Command Burst Charges (3 of 3)
+# Charges from group: Mining Foreman Burst Charges (3 of 3)
+# Charges from group: Shield Command Burst Charges (3 of 3)
+# Charges from group: Skirmish Command Burst Charges (3 of 3)
 
 
 '''

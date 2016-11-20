@@ -1,7 +1,7 @@
 # shieldTransportCpuNeedBonusEffect
 #
 # Used by:
-# Ships from group: Logistics (3 of 5)
+# Ships from group: Logistics (3 of 6)
 type = "passive"
 
 

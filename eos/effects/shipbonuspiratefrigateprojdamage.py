@@ -3,6 +3,7 @@
 # Used by:
 # Ship: Chremoas
 # Ship: Dramiel
+# Ship: Sunesis
 # Ship: Svipul
 type = "passive"
 

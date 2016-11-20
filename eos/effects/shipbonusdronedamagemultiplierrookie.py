@@ -1,8 +1,8 @@
 # shipBonusDroneDamageMultiplierRookie
 #
 # Used by:
-# Variations of ship: Procurer (2 of 2)
 # Ship: Gnosis
+# Ship: Sunesis
 # Ship: Taipan
 # Ship: Velator
 type = "passive"

@@ -1,6 +1,7 @@
 # shipBonusStasisMF2
 #
 # Used by:
+# Ship: Caedes
 # Ship: Cruor
 # Ship: Freki
 type = "passive"

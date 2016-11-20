@@ -2,6 +2,7 @@
 #
 # Used by:
 # Ship: Ashimmu
+# Ship: Rabisu
 # Ship: Vangel
 type = "passive"
 

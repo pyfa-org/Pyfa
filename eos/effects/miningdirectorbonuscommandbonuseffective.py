@@ -1,7 +1,4 @@
-# miningDirectorBonusCommandBonusEffective
-#
-# Used by:
-# Ship: Rorqual
+# Not used by any item
 type = "passive"
 
 

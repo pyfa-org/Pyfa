@@ -1,7 +1,4 @@
-# shipModeScanResPostDiv
-#
-# Used by:
-# Modules named like: Sharpshooter Mode (4 of 4)
+# Not used by any item
 type = "passive"
 
 

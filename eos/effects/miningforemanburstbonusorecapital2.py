@@ -1,7 +1,7 @@
-# Mining Command Boost
+# miningForemanBurstBonusORECapital2
 #
 # Used by:
-# Orca
+# Ship: Rorqual
 type = "passive"
 
 

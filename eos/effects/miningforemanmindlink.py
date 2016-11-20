@@ -1,3 +1,8 @@
+# miningForemanMindlink
+#
+# Used by:
+# Implant: Mining Foreman Mindlink
+# Implant: ORE Mining Director Mindlink
 type = "passive"
 def handler(fit, src, context):
     fit.modules.filteredChargeBoost(lambda mod: mod.item.requiresSkill("Mining Foreman"), "warfareBuff4Value", src.getModifiedItemAttr("mindlinkBonus"))

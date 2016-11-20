@@ -4,6 +4,7 @@
 # Ships named like: Stratios (2 of 2)
 # Ship: Astero
 # Ship: Gnosis
+# Ship: Sunesis
 type = "passive"
 
 

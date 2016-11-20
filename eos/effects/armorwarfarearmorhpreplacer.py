@@ -1,9 +1,4 @@
-# armorWarfareArmorHpReplacer
-#
-# Used by:
-# Implant: Armored Command Mindlink
-# Implant: Federation Navy Warfare Mindlink
-# Implant: Imperial Navy Warfare Mindlink
+# Not used by any item
 type = "gang", "active"
 gangBonus = "armorHpBonus2"
 gangBoost = "armorHP"

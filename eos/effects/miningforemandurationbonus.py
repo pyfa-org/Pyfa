@@ -1,3 +1,7 @@
+# miningForemanDurationBonus
+#
+# Used by:
+# Skill: Mining Foreman
 type = "passive"
 def handler(fit, src, context):
     lvl = src.level

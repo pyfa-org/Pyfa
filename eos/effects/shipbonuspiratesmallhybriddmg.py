@@ -3,6 +3,7 @@
 # Used by:
 # Ship: Daredevil
 # Ship: Hecate
+# Ship: Sunesis
 type = "passive"
 
 

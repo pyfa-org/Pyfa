@@ -1,7 +1,7 @@
-# Ice Harvesting Drone Duration
+# shipBonusDroneIceHarvestingORECapital5
 #
 # Used by:
-# Orca
+# Ship: Rorqual
 type = "passive"
 
 

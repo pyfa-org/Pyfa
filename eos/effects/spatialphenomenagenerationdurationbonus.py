@@ -1,3 +1,7 @@
+# spatialPhenomenaGenerationDurationBonus
+#
+# Used by:
+# Skill: Spatial Phenomena Generation
 type = "passive"
 def handler(fit, src, context):
     lvl = src.level

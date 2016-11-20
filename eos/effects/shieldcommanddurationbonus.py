@@ -1,3 +1,7 @@
+# shieldCommandDurationBonus
+#
+# Used by:
+# Skill: Shield Command
 type = "passive"
 def handler(fit, src, context):
     lvl = src.level

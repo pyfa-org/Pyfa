@@ -1,3 +1,7 @@
+# shieldCommandBurstBonusORECapital3
+#
+# Used by:
+# Ship: Rorqual
 type = "passive"
 
 

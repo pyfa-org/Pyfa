@@ -1,4 +1,4 @@
-# eliteBonusCommandDestroyerSiege1
+# eliteBonusCommandDestroyerShield1
 #
 # Used by:
 # Ship: Bifrost

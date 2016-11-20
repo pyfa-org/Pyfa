@@ -1,3 +1,7 @@
+# shieldCommandBurstBonusICS3
+#
+# Used by:
+# Ship: Orca
 type = "passive"
 
 

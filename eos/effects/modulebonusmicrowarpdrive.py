@@ -1,3 +1,7 @@
+# moduleBonusMicrowarpdrive
+#
+# Used by:
+# Modules from group: Propulsion Module (65 of 127)
 type = "active"
 runTime = "late"
 

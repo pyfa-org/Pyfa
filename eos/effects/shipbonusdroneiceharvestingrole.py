@@ -1,7 +1,7 @@
-# Ice Harvesting Drone Duration
+# shipBonusDroneIceHarvestingRole
 #
 # Used by:
-# Orca
+# Ship: Orca
 type = "passive"
 
 

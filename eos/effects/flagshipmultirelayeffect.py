@@ -1,7 +1,4 @@
-# flagshipmultiRelayEffect
-#
-# Used by:
-# Module: Command Processor I
+# Not used by any item
 type = "passive"
 
 

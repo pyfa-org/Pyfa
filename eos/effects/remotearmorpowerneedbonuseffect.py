@@ -1,8 +1,7 @@
 # remoteArmorPowerNeedBonusEffect
 #
 # Used by:
-# Ship: Guardian
-# Ship: Oneiros
+# Ships from group: Logistics (3 of 6)
 type = "passive"
 
 

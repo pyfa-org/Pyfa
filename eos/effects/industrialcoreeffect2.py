@@ -1,7 +1,7 @@
 # industrialCoreEffect2
 #
 # Used by:
-# Module: Industrial Core I
+# Variations of module: Industrial Core I (2 of 2)
 type = "active"
 runTime = "early"
 

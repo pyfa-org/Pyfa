@@ -1,3 +1,7 @@
+# informationCommandStrengthBonus
+#
+# Used by:
+# Skill: Information Command Specialist
 type = "passive"
 def handler(fit, src, context):
     lvl = src.level

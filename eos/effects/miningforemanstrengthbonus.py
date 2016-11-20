@@ -1,3 +1,7 @@
+# miningForemanStrengthBonus
+#
+# Used by:
+# Skill: Mining Director
 type = "passive"
 def handler(fit, src, context):
     lvl = src.level

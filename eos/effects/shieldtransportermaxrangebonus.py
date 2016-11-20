@@ -1,7 +1,9 @@
 # shieldTransporterMaxRangeBonus
 #
 # Used by:
+# Ships from group: Industrial Command Ship (2 of 2)
 # Ship: Osprey
+# Ship: Rorqual
 # Ship: Scythe
 type = "passive"
 

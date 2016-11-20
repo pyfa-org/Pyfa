@@ -1,7 +1,4 @@
-# eliteBonusCommandShipInformationHiddenCS3
-#
-# Used by:
-# Ships from group: Command Ship (4 of 8)
+# Not used by any item
 type = "passive"
 def handler(fit, module, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Information Command Specialist"),

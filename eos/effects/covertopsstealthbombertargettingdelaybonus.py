@@ -3,9 +3,11 @@
 # Used by:
 # Ships from group: Black Ops (4 of 4)
 # Ships from group: Stealth Bomber (4 of 4)
+# Ship: Caedes
 # Ship: Chremoas
 # Ship: Endurance
 # Ship: Etana
+# Ship: Rabisu
 type = "passive"
 
 

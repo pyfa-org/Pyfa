@@ -1,3 +1,7 @@
+# miningDroneSpecBonus
+#
+# Used by:
+# Skill: Mining Drone Specialization
 type = "passive"
 def handler(fit, src, context):
     lvl = src.level

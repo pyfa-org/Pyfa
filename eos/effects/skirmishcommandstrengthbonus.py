@@ -1,3 +1,7 @@
+# skirmishCommandStrengthBonus
+#
+# Used by:
+# Skill: Skirmish Command Specialist
 type = "passive"
 def handler(fit, src, context):
     lvl = src.level
