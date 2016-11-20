@@ -3,72 +3,9 @@
 # Used by:
 # Ship: Rorqual
 type = "passive"
-
-
 def handler(fit, src, context):
-    fit.modules.filteredItemIncrease(lambda mod: mod.item.group.name in
-                                                 (
-                                                     "Command Burst",
-                                                 ) and
-                                                 mod.item.requiresSkill in
-                                                 (
-                                                     "Shield Command",
-                                                 ),
-                                     "buffDuration",
-                                     src.getModifiedItemAttr("shipBonusORECapital3"),
-                                     skill="Capital Industrial Ships",
-                                     )
-
-    fit.modules.filteredItemIncrease(lambda mod: mod.item.group.name in
-                                                 (
-                                                     "Command Burst",
-                                                 ) and
-                                                 mod.item.requiresSkill in
-                                                 (
-                                                     "Shield Command",
-                                                 ),
-                                     "warfareBuff1Value",
-                                     src.getModifiedItemAttr("shipBonusORECapital3"),
-                                     skill="Capital Industrial Ships",
-                                     )
-
-    fit.modules.filteredItemIncrease(lambda mod: mod.item.group.name in
-                                                 (
-                                                     "Command Burst",
-                                                 ) and
-                                                 mod.item.requiresSkill in
-                                                 (
-                                                     "Shield Command",
-                                                 ),
-                                     "warfareBuff2Value",
-                                     src.getModifiedItemAttr("shipBonusORECapital3"),
-                                     skill="Capital Industrial Ships",
-                                     )
-
-    fit.modules.filteredItemIncrease(lambda mod: mod.item.group.name in
-                                                 (
-                                                     "Command Burst",
-                                                 ) and
-                                                 mod.item.requiresSkill in
-                                                 (
-                                                     "Shield Command",
-                                                 ),
-                                     "warfareBuff3Value",
-                                     src.getModifiedItemAttr("shipBonusORECapital3"),
-                                     skill="Capital Industrial Ships",
-                                     )
-
-    fit.modules.filteredItemIncrease(lambda mod: mod.item.group.name in
-                                                 (
-                                                     "Command Burst",
-                                                 ) and
-                                                 mod.item.requiresSkill in
-                                                 (
-                                                     "Shield Command",
-                                                 ),
-                                     "warfareBuff4Value",
-                                     src.getModifiedItemAttr("shipBonusORECapital3"),
-                                     skill="Capital Industrial Ships",
-                                     )
-
-#  TODO: test
+    fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Shield Command"), "warfareBuff4Modifier", src.getModifiedItemAttr("shipBonusORECapital3"), skill="Capital Industrial Ships")
+    fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Shield Command"), "buffDuration", src.getModifiedItemAttr("shipBonusORECapital3"), skill="Capital Industrial Ships")
+    fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Shield Command"), "warfareBuff1Modifier", src.getModifiedItemAttr("shipBonusORECapital3"), skill="Capital Industrial Ships")
+    fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Shield Command"), "warfareBuff3Modifier", src.getModifiedItemAttr("shipBonusORECapital3"), skill="Capital Industrial Ships")
+    fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Shield Command"), "warfareBuff2Modifier", src.getModifiedItemAttr("shipBonusORECapital3"), skill="Capital Industrial Ships")

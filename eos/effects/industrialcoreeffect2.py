@@ -7,6 +7,9 @@ runTime = "early"
 
 
 def handler(fit, module, context):
+    return
+
+    # @todo: finish this
     fit.extraAttributes["siege"] = True
     fit.ship.boostItemAttr("maxVelocity", module.getModifiedItemAttr("speedFactor"))
     fit.ship.multiplyItemAttr("mass", module.getModifiedItemAttr("siegeMassMultiplier"))
@@ -20,7 +23,7 @@ def handler(fit, module, context):
                                                  (
                                                      "Shield Command",
                                                  ),
-                                     "warfareBuff4Value",
-                                     src.getModifiedItemAttr("shipBonusORECapital3"),
+                                     "warfareBuff4Modifier",
+                                     module.getModifiedItemAttr("shipBonusORECapital3"),
                                      skill="Capital Industrial Ships",
                                      )

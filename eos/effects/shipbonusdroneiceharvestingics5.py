@@ -11,5 +11,3 @@ def handler(fit, src, context):
                                  src.getModifiedItemAttr("shipBonusICS5"),
                                  skill="Industrial Command Ships"
                                  )
-
-#  TODO: test

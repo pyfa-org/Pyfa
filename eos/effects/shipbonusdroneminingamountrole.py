@@ -10,5 +10,3 @@ def handler(fit, src, context):
                                  "miningAmount",
                                  src.getModifiedItemAttr("roleBonusDroneMiningYield"),
                                  )
-
-#  TODO: test

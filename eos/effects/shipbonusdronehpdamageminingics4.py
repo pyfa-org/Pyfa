@@ -36,4 +36,3 @@ def handler(fit, src, context):
                                  skill="Industrial Command Ships"
                                  )
 
-#  TODO: test

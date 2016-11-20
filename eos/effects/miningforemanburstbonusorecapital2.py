@@ -3,68 +3,9 @@
 # Used by:
 # Ship: Rorqual
 type = "passive"
-
-
 def handler(fit, src, context):
-    fit.modules.filteredItemIncrease(lambda mod: mod.item.group.name in
-                                                 (
-                                                     "Command Burst",
-                                                 ) and
-                                                 mod.item.requiresSkill in
-                                                 (
-                                                     "Mining Foreman",
-                                                 ),
-                                     "buffDuration",
-                                     src.getModifiedItemAttr("shipBonusORECapital2"),
-                                     )
-
-    fit.modules.filteredItemIncrease(lambda mod: mod.item.group.name in
-                                                 (
-                                                     "Command Burst",
-                                                 ) and
-                                                 mod.item.requiresSkill in
-                                                 (
-                                                     "Mining Foreman",
-                                                 ),
-                                     "warfareBuff1Value",
-                                     src.getModifiedItemAttr("shipBonusORECapital2"),
-                                     )
-
-    fit.modules.filteredItemIncrease(lambda mod: mod.item.group.name in
-                                                 (
-                                                     "Command Burst",
-                                                 ) and
-                                                 mod.item.requiresSkill in
-                                                 (
-                                                     "Mining Foreman",
-                                                 ),
-                                     "warfareBuff2Value",
-                                     src.getModifiedItemAttr("shipBonusORECapital2"),
-                                     )
-
-    fit.modules.filteredItemIncrease(lambda mod: mod.item.group.name in
-                                                 (
-                                                     "Command Burst",
-                                                 ) and
-                                                 mod.item.requiresSkill in
-                                                 (
-                                                     "Mining Foreman",
-                                                 ),
-                                     "warfareBuff3Value",
-                                     src.getModifiedItemAttr("shipBonusORECapital2"),
-                                     )
-
-    fit.modules.filteredItemIncrease(lambda mod: mod.item.group.name in
-                                                 (
-                                                     "Command Burst",
-                                                 ) and
-                                                 mod.item.requiresSkill in
-                                                 (
-                                                     "Mining Foreman",
-                                                 ),
-                                     "warfareBuff4Value",
-                                     src.getModifiedItemAttr("shipBonusORECapital2"),
-                                     skill="Capital Industrial Ships",
-                                     )
-
-#  TODO: test
+    fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Mining Foreman"), "warfareBuff1Modifier", src.getModifiedItemAttr("shipBonusORECapital2"), skill="Capital Industrial Ships")
+    fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Mining Foreman"), "warfareBuff2Modifier", src.getModifiedItemAttr("shipBonusORECapital2"), skill="Capital Industrial Ships")
+    fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Mining Foreman"), "warfareBuff4Modifier", src.getModifiedItemAttr("shipBonusORECapital2"), skill="Capital Industrial Ships")
+    fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Mining Foreman"), "warfareBuff3Modifier", src.getModifiedItemAttr("shipBonusORECapital2"), skill="Capital Industrial Ships")
+    fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Mining Foreman"), "buffDuration", src.getModifiedItemAttr("shipBonusORECapital2"), skill="Capital Industrial Ships")
