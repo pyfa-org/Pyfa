@@ -80,6 +80,17 @@ def handler(fit, module, context, **kwargs):
         if id == 22:  # Skirmish Burst: Rapid Deployment: AB/MWD Speed Increase
             fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Afterburner") or mod.item.requiresSkill("High Speed Maneuvering"), "speedFactor", value, stackingPenalties=True)
 
+        if id == 23:  # Mining Burst: Mining Laser Field Enhancement: Mining/Survey Range
+            fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Mining") or mod.item.requiresSkill("Ice Harvesting") or mod.item.requiresSkill("Gas Cloud Harvesting"), "maxRange", value, stackingPenalties=True)
+            fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("CPU Management"), "surveyScanRange", value, stackingPenalties=True)
+
+        if id == 24:  # Mining Burst: Mining Laser Optimization: Mining Capacitor/Duration
+            fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Mining") or mod.item.requiresSkill("Ice Harvesting") or mod.item.requiresSkill("Gas Cloud Harvesting"), "capacitorNeed", value, stackingPenalties=True)
+            fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Mining") or mod.item.requiresSkill("Ice Harvesting") or mod.item.requiresSkill("Gas Cloud Harvesting"), "duration", value, stackingPenalties = True)
+
+        if id == 25:  # Mining Burst: Mining Equipment Preservation: Crystal Volatility
+            fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Mining"), "crystalVolatilityChance", value, stackingPenalties=True)
+
     for x in xrange(1, 4):
         if module.getModifiedChargeAttr("warfareBuff{}ID".format(x)):
             value = module.getModifiedChargeAttr("warfareBuff{}Value".format(x))
