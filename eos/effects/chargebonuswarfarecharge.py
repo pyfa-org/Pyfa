@@ -10,13 +10,12 @@ bonuses and actually run the effect. To do this, we have a special argument pass
 which warfareBuffID to run (shouldn't need this right now, but better safe than sorry)
 '''
 
-
-type = "passive"
-def handler(fit, module, context, warfareBuffID = None):
+type = "passive", "gang"
+def handler(fit, module, context, **kwargs):
     print "In chargeBonusWarfareEffect, context: ", context
 
     def runEffect(id, value):
-        print "RUN EFFECT: ",
+        print "RUN EFFECT: ", fit,
         if id == 21:  # Skirmish Burst: Interdiction Maneuvers: Tackle Range
             print "Tackle Range"
             return
@@ -33,11 +32,12 @@ def handler(fit, module, context, warfareBuffID = None):
         if module.getModifiedChargeAttr("warfareBuff{}ID".format(x)):
             value = module.getModifiedChargeAttr("warfareBuff{}Value".format(x))
             id = module.getModifiedChargeAttr("warfareBuff{}ID".format(x))
-
-            if 'commandRun' not in context:
-                print "Add buffID", warfareBuffID, " to ", fit
-                fit.addCommandBonus(id, value, module)
-            elif warfareBuffID is not None and warfareBuffID == id:
-                print "Running buffID ", warfareBuffID, " on ", fit
-                runEffect(warfareBuffID, value)
+            print "Buff ID: ",id," value: ",value
+            if id:
+                if 'commandRun' not in context:
+                    print "Add buffID", id, " to ", fit
+                    fit.addCommandBonus(id, value, module, kwargs['effect'])
+                elif kwargs['warfareBuffID'] is not None and kwargs['warfareBuffID'] == id:
+                    print "Running buffID ", kwargs['warfareBuffID'], " on ", fit
+                    runEffect(kwargs['warfareBuffID'], value)
 

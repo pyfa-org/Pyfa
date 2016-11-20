@@ -1168,4 +1168,4 @@ class Fit(object):
         if fit.factorReload is not self.serviceFittingOptions["useGlobalForceReload"]:
             fit.factorReload = self.serviceFittingOptions["useGlobalForceReload"]
         fit.clear()
-        fit.calculateModifiedAttributes(withBoosters=withBoosters)
+        fit.calculateModifiedAttributes(withBoosters=False)

@@ -573,7 +573,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         self.itemModifiedAttributes.clear()
         self.chargeModifiedAttributes.clear()
 
-    def calculateModifiedAttributes(self, fit, runTime, forceProjected = False):
+    def calculateModifiedAttributes(self, fit, runTime, forceProjected = False, gang = False):
         #We will run the effect when two conditions are met:
         #1: It makes sense to run the effect
         #    The effect is either offline
@@ -590,12 +590,23 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             context = ("module",)
             projected = False
 
+        # if gang:
+        #     context += ("commandRun",)
+
         if self.charge is not None:
             # fix for #82 and it's regression #106
-            if not projected or (self.projected and not forceProjected):
+            if not projected or (self.projected and not forceProjected) or gang:
                 for effect in self.charge.effects.itervalues():
-                    if effect.runTime == runTime:
-                        effect.handler(fit, self, ("moduleCharge",))
+                    if effect.runTime == runTime and (not gang or (gang and effect.isType("gang"))):
+                        # todo: ensure that these are run when the module is active only
+                        thing = ("moduleCharge",)
+                        # For gang effects, we pass in the effect itself as an argument. However, to avoid going through
+                        # all the effect files and defining this argument, do a simple try/catch here and be done with it.
+                        # @todo: possibly fix this
+                        try:
+                            effect.handler(fit, self, thing, effect=effect)
+                        except:
+                            effect.handler(fit, self, thing)
 
         if self.item:
             if self.state >= State.OVERHEATED:

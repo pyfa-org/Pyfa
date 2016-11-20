@@ -79,13 +79,14 @@ class Fit(object):
 
         self.build()
 
-    def addCommandBonus(self, warfareBuffID, value, module):
+    def addCommandBonus(self, warfareBuffID, value, module, effect):
         # oh fuck this is so janky
-        # @todo should we pass in min/max to this function, or is abs okay? (abs is old method, ccp now provides the aggregate function in their data)
+        # @todo should we pass in min/max to this function, or is abs okay?
+        # (abs is old method, ccp now provides the aggregate function in their data)
         print "Add command bonus: ", warfareBuffID, " - value: ", value
 
-        if warfareBuffID not in self.commandBonuses or abs(self.commandBonuses[warfareBuffID][0]) > abs(value):
-            self.commandBonuses[warfareBuffID] = (value, module)
+        if warfareBuffID not in self.commandBonuses or abs(self.commandBonuses[warfareBuffID][0]) < abs(value):
+            self.commandBonuses[warfareBuffID] = (value, module, effect)
 
     @reconstructor
     def init(self):
@@ -446,36 +447,42 @@ class Fit(object):
     def getOrigin(self):
         return self.__origin
 
-    def __calculateGangBoosts(self, runTime):
-        logger.debug("Applying gang boosts in `%s` runtime for %r", runTime, self)
-        for name, info in self.gangBoosts.iteritems():
+    def __runCommandBoosts(self):
+        logger.debug("Applying gang boosts for %r", self)
+        for warfareBuffID, info in self.commandBonuses.iteritems():
             # Unpack all data required to run effect properly
-            effect, thing = info[1]
-            if effect.runTime == runTime:
-                context = ("gang", thing.__class__.__name__.lower())
-                if isinstance(thing, Module):
-                    if effect.isType("offline") or (effect.isType("passive") and thing.state >= State.ONLINE) or \
-                    (effect.isType("active") and thing.state >= State.ACTIVE):
-                        # Run effect, and get proper bonuses applied
-                        try:
-                            self.register(thing)
-                            effect.handler(self, thing, context)
-                        except:
-                            pass
-                else:
-                    # Run effect, and get proper bonuses applied
-                    try:
-                        self.register(thing)
-                        effect.handler(self, thing, context)
-                    except:
-                        pass
+            value, thing, effect = info
+
+            context = ("commandRun", thing.__class__.__name__.lower())
+            if isinstance(thing, Module):
+                if effect.isType("gang"):
+                    # todo: ensure that these are run with the module is active only
+                    context += ("commandRun",)
+                    self.register(thing)
+                    effect.handler(self, thing, context, warfareBuffID = warfareBuffID)
+
+                # if effect.isType("offline") or (effect.isType("passive") and thing.state >= State.ONLINE) or \
+                # (effect.isType("active") and thing.state >= State.ACTIVE):
+                #     # Run effect, and get proper bonuses applied
+                #     try:
+                #         self.register(thing)
+                #         effect.handler(self, thing, context)
+                #     except:
+                #         pass
+            else:
+                # Run effect, and get proper bonuses applied
+                try:
+                    self.register(thing)
+                    effect.handler(self, thing, context)
+                except:
+                    pass
 
     def calculateModifiedAttributes(self, targetFit=None, withBoosters=False, dirtyStorage=None):
         timer = Timer(u'Fit: {}, {}'.format(self.ID, self.name), logger)
         logger.debug("Starting fit calculation on: %r, withBoosters: %s", self, withBoosters)
 
         shadow = False
-        if targetFit:
+        if targetFit and not withBoosters:
             logger.debug("Applying projections to target: %r", targetFit)
             projectionInfo = self.getProjectionInfo(targetFit.ID)
             logger.debug("ProjectionInfo: %s", projectionInfo)
@@ -490,13 +497,29 @@ class Fit(object):
                 # not want to save this fit to the database, so simply remove it
                 eos.db.saveddata_session.delete(self)
 
-        if self.fleet is not None and withBoosters is True:
-            logger.debug("Fleet is set, gathering gang boosts")
-            self.gangBoosts = self.fleet.recalculateLinear(withBoosters=withBoosters)
+        if self.commandFits and not withBoosters:
+            print "Calculatate command fits and apply to fit"
+            for fit in self.commandFits:
+                print "calculating ", fit
+                fit.calculateModifiedAttributes(self, True)
+                #
+                # for thing in chain(fit.modules, fit.implants, fit.character.skills, (fit.ship,)):
+                #     if thing.item is None:
+                #         continue
+                #     for effect in thing.item.effects.itervalues():
+                #         # And check if it actually has gang boosting effects
+                #         if effect.isType("gang"):
+                #             effect.handler(self, thing, ("commandRun"))
 
-            timer.checkpoint("Done calculating gang boosts for %r"%self)
-        elif self.fleet is None:
-            self.gangBoosts = None
+        # if self.fleet is not None and withBoosters is True:
+        #     logger.debug("Fleet is set, gathering gang boosts")
+        #
+        #     self.gangBoosts = self.fleet.recalculateLinear(withBoosters=withBoosters)
+        #
+        #     timer.checkpoint("Done calculating gang boosts for %r"%self)
+
+        # elif self.fleet is None:
+        #     self.gangBoosts = None
 
         # If we're not explicitly asked to project fit onto something,
         # set self as target fit
@@ -504,7 +527,7 @@ class Fit(object):
             targetFit = self
             projected = False
         else:
-            projected = True
+            projected = not withBoosters
 
         # If fit is calculated and we have nothing to do here, get out
 
@@ -548,8 +571,8 @@ class Fit(object):
             c = chain.from_iterable(u+r)
 
             # We calculate gang bonuses first so that projected fits get them
-            if self.gangBoosts is not None:
-                self.__calculateGangBoosts(runTime)
+            # if self.gangBoosts is not None:
+            #     self.__calculateGangBoosts(runTime)
 
             for item in c:
                 # Registering the item about to affect the fit allows us to
@@ -566,6 +589,11 @@ class Fit(object):
                             targetFit.register(item, origin=self)
                             item.calculateModifiedAttributes(targetFit, runTime, True)
 
+                    if targetFit and withBoosters and item in self.modules:
+                        # Apply the gang boosts to target fit
+                        # targetFit.register(item, origin=self)
+                        item.calculateModifiedAttributes(targetFit, runTime, False, True)
+
             timer.checkpoint('Done with runtime: %s'%runTime)
 
         print "Command: "
@@ -579,6 +607,9 @@ class Fit(object):
             for fit in self.projectedFits:
                 if fit.getProjectionInfo(self.ID).active:
                     fit.calculateModifiedAttributes(self, withBoosters=withBoosters, dirtyStorage=dirtyStorage)
+
+        if not withBoosters and self.commandBonuses:
+            self.__runCommandBoosts()
 
         timer.checkpoint('Done with fit calculation')
 
