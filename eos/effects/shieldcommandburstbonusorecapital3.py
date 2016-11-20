@@ -11,8 +11,8 @@ def handler(fit, src, context):
                                                      "Shield Command",
                                                  ),
                                      "buffDuration",
-                                     src.getModifiedItemAttr("shipBonusICS3"),
-                                     skill="Industrial Command Ships",
+                                     src.getModifiedItemAttr("shipBonusORECapital3"),
+                                     skill="Capital Industrial Ships",
                                      )
 
     fit.modules.filteredItemIncrease(lambda mod: mod.item.group.name in
@@ -24,8 +24,8 @@ def handler(fit, src, context):
                                                      "Shield Command",
                                                  ),
                                      "warfareBuff1Value",
-                                     src.getModifiedItemAttr("shipBonusICS3"),
-                                     skill="Industrial Command Ships",
+                                     src.getModifiedItemAttr("shipBonusORECapital3"),
+                                     skill="Capital Industrial Ships",
                                      )
 
     fit.modules.filteredItemIncrease(lambda mod: mod.item.group.name in
@@ -37,8 +37,8 @@ def handler(fit, src, context):
                                                      "Shield Command",
                                                  ),
                                      "warfareBuff2Value",
-                                     src.getModifiedItemAttr("shipBonusICS3"),
-                                     skill="Industrial Command Ships",
+                                     src.getModifiedItemAttr("shipBonusORECapital3"),
+                                     skill="Capital Industrial Ships",
                                      )
 
     fit.modules.filteredItemIncrease(lambda mod: mod.item.group.name in
@@ -50,8 +50,8 @@ def handler(fit, src, context):
                                                      "Shield Command",
                                                  ),
                                      "warfareBuff3Value",
-                                     src.getModifiedItemAttr("shipBonusICS3"),
-                                     skill="Industrial Command Ships",
+                                     src.getModifiedItemAttr("shipBonusORECapital3"),
+                                     skill="Capital Industrial Ships",
                                      )
 
     fit.modules.filteredItemIncrease(lambda mod: mod.item.group.name in
@@ -60,11 +60,11 @@ def handler(fit, src, context):
                                                  ) and
                                                  mod.item.requiresSkill in
                                                  (
-                                                     "Shield Command"
+                                                     "Shield Command",
                                                  ),
                                      "warfareBuff4Value",
-                                     src.getModifiedItemAttr("shipBonusICS3"),
-                                     skill="Industrial Command Ships",
+                                     src.getModifiedItemAttr("shipBonusORECapital3"),
+                                     skill="Capital Industrial Ships",
                                      )
 
 #  TODO: test

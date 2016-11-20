@@ -13,6 +13,6 @@ def handler(fit, ship, context):
                                                      "Command Burst",
                                                  ),
                                      "maxGroupOnline",
-                                     ship.getModifiedItemAttr("shipBonusICS2"),
+                                     ship.getModifiedItemAttr("maxGangModules"),
                                      )
 #  TODO: test

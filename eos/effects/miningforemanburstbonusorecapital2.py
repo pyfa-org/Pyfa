@@ -1,3 +1,7 @@
+# Mining Command Boost
+#
+# Used by:
+# Orca
 type = "passive"
 
 
@@ -8,11 +12,10 @@ def handler(fit, src, context):
                                                  ) and
                                                  mod.item.requiresSkill in
                                                  (
-                                                     "Shield Command",
+                                                     "Mining Foreman",
                                                  ),
                                      "buffDuration",
-                                     src.getModifiedItemAttr("shipBonusICS3"),
-                                     skill="Industrial Command Ships",
+                                     src.getModifiedItemAttr("shipBonusORECapital2"),
                                      )
 
     fit.modules.filteredItemIncrease(lambda mod: mod.item.group.name in
@@ -21,11 +24,10 @@ def handler(fit, src, context):
                                                  ) and
                                                  mod.item.requiresSkill in
                                                  (
-                                                     "Shield Command",
+                                                     "Mining Foreman",
                                                  ),
                                      "warfareBuff1Value",
-                                     src.getModifiedItemAttr("shipBonusICS3"),
-                                     skill="Industrial Command Ships",
+                                     src.getModifiedItemAttr("shipBonusORECapital2"),
                                      )
 
     fit.modules.filteredItemIncrease(lambda mod: mod.item.group.name in
@@ -34,11 +36,10 @@ def handler(fit, src, context):
                                                  ) and
                                                  mod.item.requiresSkill in
                                                  (
-                                                     "Shield Command",
+                                                     "Mining Foreman",
                                                  ),
                                      "warfareBuff2Value",
-                                     src.getModifiedItemAttr("shipBonusICS3"),
-                                     skill="Industrial Command Ships",
+                                     src.getModifiedItemAttr("shipBonusORECapital2"),
                                      )
 
     fit.modules.filteredItemIncrease(lambda mod: mod.item.group.name in
@@ -47,11 +48,10 @@ def handler(fit, src, context):
                                                  ) and
                                                  mod.item.requiresSkill in
                                                  (
-                                                     "Shield Command",
+                                                     "Mining Foreman",
                                                  ),
                                      "warfareBuff3Value",
-                                     src.getModifiedItemAttr("shipBonusICS3"),
-                                     skill="Industrial Command Ships",
+                                     src.getModifiedItemAttr("shipBonusORECapital2"),
                                      )
 
     fit.modules.filteredItemIncrease(lambda mod: mod.item.group.name in
@@ -60,11 +60,11 @@ def handler(fit, src, context):
                                                  ) and
                                                  mod.item.requiresSkill in
                                                  (
-                                                     "Shield Command"
+                                                     "Mining Foreman",
                                                  ),
                                      "warfareBuff4Value",
-                                     src.getModifiedItemAttr("shipBonusICS3"),
-                                     skill="Industrial Command Ships",
+                                     src.getModifiedItemAttr("shipBonusORECapital2"),
+                                     skill="Capital Industrial Ships",
                                      )
 
 #  TODO: test
