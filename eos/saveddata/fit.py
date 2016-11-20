@@ -401,6 +401,8 @@ class Fit(object):
         self.__capUsed = None
         self.__capRecharge = None
         self.ecmProjectedStr = 1
+        self.commandBonuses = {}
+
         del self.__calculatedTargets[:]
         del self.__extraDrains[:]
 
@@ -542,7 +544,7 @@ class Fit(object):
         # projections from the normal fit calculations. But we must ensure that
         # projection have modifying stuff applied, such as gang boosts and other
         # local modules that may help
-        if self.__calculated and not projected:
+        if self.__calculated and not projected and not withBoosters:
             logger.debug("Fit has already been calculated and is not projected, returning: %r", self)
             return
 

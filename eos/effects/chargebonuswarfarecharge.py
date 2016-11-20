@@ -43,7 +43,6 @@ def handler(fit, module, context, **kwargs):
             fit.ship.boostItemAttr("scanResolution", value, stackingPenalties=True)
 
         if id == 17:  # Information Burst: Electronic Superiority: EWAR Range and Strength
-            pass
             groups = ("ECM", "Sensor Dampener", "Weapon Disruptor", "Target Painter")
             fit.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups, "maxRange", value, stackingPenalties=True)
             fit.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups, "falloffEffectiveness", value, stackingPenalties=True)
@@ -76,8 +75,7 @@ def handler(fit, module, context, **kwargs):
 
         if id == 21:  # Skirmish Burst: Interdiction Maneuvers: Tackle Range
             groups = ("Stasis Web", "Warp Scrambler")
-            fit.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups, "maxRange", value,
-                                          stackingPenalties=True)
+            fit.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups, "maxRange", value, stackingPenalties=True)
 
         if id == 22:  # Skirmish Burst: Rapid Deployment: AB/MWD Speed Increase
             fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Afterburner") or mod.item.requiresSkill("High Speed Maneuvering"), "speedFactor", value, stackingPenalties=True)
