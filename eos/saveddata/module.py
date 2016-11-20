@@ -594,15 +594,16 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             # fix for #82 and it's regression #106
             if not projected or (self.projected and not forceProjected):
                 for effect in self.charge.effects.itervalues():
-                    if effect.runTime == runTime:
+                    if effect.runTime == runTime and effect.activeByDefault:
                         effect.handler(fit, self, ("moduleCharge",))
 
         if self.item:
             if self.state >= State.OVERHEATED:
                 for effect in self.item.effects.itervalues():
                     if effect.runTime == runTime and \
-                       effect.isType("overheat") and \
-                       not forceProjected:
+                            effect.isType("overheat") and \
+                            not forceProjected and \
+                            effect.activeByDefault:
                         effect.handler(fit, self, context)
 
             for effect in self.item.effects.itervalues():
@@ -610,7 +611,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                 (effect.isType("offline") or
                 (effect.isType("passive") and self.state >= State.ONLINE) or \
                 (effect.isType("active") and self.state >= State.ACTIVE)) and \
-                ((projected and effect.isType("projected")) or not projected):
+                ((projected and effect.isType("projected")) or not projected) and \
+                effect.activeByDefault:
                         effect.handler(fit, self, context)
 
     @property

@@ -88,7 +88,7 @@ class Implant(HandledItem, ItemAttrShortcut):
         if forceProjected: return
         if self.active == False: return
         for effect in self.item.effects.itervalues():
-            if effect.runTime == runTime and effect.isType("passive"):
+            if effect.runTime == runTime and effect.isType("passive") and effect.activeByDefault:
                 effect.handler(fit, self, ("implant",))
 
     @validates("fitID", "itemID", "active")

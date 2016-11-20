@@ -31,6 +31,7 @@ boosters_table = Table("boosters", saveddata_meta,
                        Column("active", Boolean),
                        )
 
+# Legacy booster side effect code, should disable but a mapper relies on it.
 activeSideEffects_table = Table("boostersActiveSideEffects", saveddata_meta,
                                 Column("boosterID", ForeignKey("boosters.ID"), primary_key = True),
                                 Column("effectID", Integer, primary_key = True))

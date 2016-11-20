@@ -61,13 +61,18 @@ class Booster(HandledItem, ItemAttrShortcut):
         self.__itemModifiedAttributes.overrides = self.__item.overrides
         self.__slot = self.__calculateSlot(self.__item)
 
+        # Legacy booster side effect code, disabling as not currently implemented
+        '''
         for effect in self.__item.effects.itervalues():
             if effect.isType("boosterSideEffect"):
                 s = SideEffect(self)
                 s.effect = effect
                 s.active = effect.ID in self.__activeSideEffectIDs
                 self.__sideEffects.append(s)
+        '''
 
+    # Legacy booster side effect code, disabling as not currently implemented
+    '''
     def iterSideEffects(self):
         return self.__sideEffects.__iter__()
 
@@ -77,6 +82,7 @@ class Booster(HandledItem, ItemAttrShortcut):
                 return sideEffect
 
         raise KeyError("SideEffect with %s as name not found" % name)
+    '''
 
     @property
     def itemModifiedAttributes(self):
@@ -107,12 +113,17 @@ class Booster(HandledItem, ItemAttrShortcut):
         if forceProjected: return
         if self.active == False: return
         for effect in self.item.effects.itervalues():
-            if effect.runTime == runTime and effect.isType("passive"):
+            if effect.runTime == runTime and \
+                    (effect.isType("passive") or effect.isType("boosterSideEffect")) and \
+                    effect.activeByDefault:
                 effect.handler(fit, self, ("booster",))
 
+        # Legacy booster code, not fully implemented
+        '''
         for sideEffect in self.iterSideEffects():
             if sideEffect.active and sideEffect.effect.runTime == runTime:
                 sideEffect.effect.handler(fit, self, ("boosterSideEffect",))
+        '''
 
     @validates("ID", "itemID", "ammoID", "active")
     def validator(self, key, val):
@@ -128,46 +139,52 @@ class Booster(HandledItem, ItemAttrShortcut):
     def __deepcopy__(self, memo):
         copy = Booster(self.item)
         copy.active = self.active
+
+        # Legacy booster side effect code, disabling as not currently implemented
+        '''
         origSideEffects = list(self.iterSideEffects())
         copySideEffects = list(copy.iterSideEffects())
         i = 0
         while i < len(origSideEffects):
             copySideEffects[i].active = origSideEffects[i].active
             i += 1
+        '''
 
         return copy
 
+# Legacy booster side effect code, disabling as not currently implemented
+'''
+    class SideEffect(object):
+        def __init__(self, owner):
+            self.__owner = owner
+            self.__active = False
+            self.__effect = None
 
-class SideEffect(object):
-    def __init__(self, owner):
-        self.__owner = owner
-        self.__active = False
-        self.__effect = None
+        @property
+        def active(self):
+            return self.__active
 
-    @property
-    def active(self):
-        return self.__active
+        @active.setter
+        def active(self, active):
+            if not isinstance(active, bool):
+                raise TypeError("Expecting a bool, not a " + type(active))
 
-    @active.setter
-    def active(self, active):
-        if not isinstance(active, bool):
-            raise TypeError("Expecting a bool, not a " + type(active))
+            if active != self.__active:
+                if active:
+                    self.__owner._Booster__activeSideEffectIDs.append(self.effect.ID)
+                else:
+                    self.__owner._Booster__activeSideEffectIDs.remove(self.effect.ID)
 
-        if active != self.__active:
-            if active:
-                self.__owner._Booster__activeSideEffectIDs.append(self.effect.ID)
-            else:
-                self.__owner._Booster__activeSideEffectIDs.remove(self.effect.ID)
+                self.__active = active
 
-            self.__active = active
+        @property
+        def effect(self):
+            return self.__effect
 
-    @property
-    def effect(self):
-        return self.__effect
+        @effect.setter
+        def effect(self, effect):
+            if not hasattr(effect, "handler"):
+                raise TypeError("Need an effect with a handler")
 
-    @effect.setter
-    def effect(self, effect):
-        if not hasattr(effect, "handler"):
-            raise TypeError("Need an effect with a handler")
-
-        self.__effect = effect
+            self.__effect = effect
+'''
