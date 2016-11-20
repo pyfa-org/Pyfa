@@ -1,5 +1,5 @@
 
-type = "passive", "gang"
+type = "active", "gang"
 def handler(fit, module, context, **kwargs):
     def runEffect(id, value):
         if id == 39:  # Avatar Effect Generator : Capacitor Recharge bonus

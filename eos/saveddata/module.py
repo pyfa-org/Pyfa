@@ -597,16 +597,20 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             # fix for #82 and it's regression #106
             if not projected or (self.projected and not forceProjected) or gang:
                 for effect in self.charge.effects.itervalues():
-                    if effect.runTime == runTime and (not gang or (gang and effect.isType("gang"))):
-                        # todo: ensure that these are run when the module is active only
-                        thing = ("moduleCharge",)
+                    if effect.runTime == runTime and \
+                        (effect.isType("offline") or
+                        (effect.isType("passive") and self.state >= State.ONLINE) or
+                        (effect.isType("active") and self.state >= State.ACTIVE)) and \
+                        (not gang or (gang and effect.isType("gang"))):
+
+                        chargeContext = ("moduleCharge",)
                         # For gang effects, we pass in the effect itself as an argument. However, to avoid going through
                         # all the effect files and defining this argument, do a simple try/catch here and be done with it.
                         # @todo: possibly fix this
                         try:
-                            effect.handler(fit, self, thing, effect=effect)
+                            effect.handler(fit, self, chargeContext, effect=effect)
                         except:
-                            effect.handler(fit, self, thing)
+                            effect.handler(fit, self, chargeContext)
 
         if self.item:
             if self.state >= State.OVERHEATED:
