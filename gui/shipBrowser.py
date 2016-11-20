@@ -1550,8 +1550,7 @@ class FitItem(SFItem.SFBrowserItem):
             projectedFit = sFit.getFit(self.fitID)
             sFit.project(activeFit, projectedFit)
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=activeFit))
-
-
+            self.mainFrame.additionsPane.select("Projected")
 
     def OnMouseCaptureLost(self, event):
         ''' Destroy drag information (GH issue #479)'''
@@ -1573,14 +1572,16 @@ class FitItem(SFItem.SFBrowserItem):
         self.mainFrame.additionsPane.gangPage.draggedFitID = self.fitID
 
         menu = wx.Menu()
-        projectedItem = menu.Append(wx.ID_ANY, "Set as 'Projected' to selected fitting")
-        self.Bind(wx.EVT_MENU, self.OnProjectToFit, projectedItem)
         toggleItem = menu.Append(wx.ID_ANY, "Booster Fit", kind=wx.ITEM_CHECK)
         menu.Check(toggleItem.GetId(), self.fitBooster)
         self.Bind(wx.EVT_MENU, self.OnToggleBooster, toggleItem)
 
         sFit = service.Fit.getInstance()
         fit = sFit.getFit(self.mainFrame.getActiveFit())
+
+        if fit:
+            projectedItem = menu.Append(wx.ID_ANY, "Project onto Active Fit")
+            self.Bind(wx.EVT_MENU, self.OnProjectToFit, projectedItem)
 
         if fit and not fit.isStructure:
             # If there is an active fit, get menu for setting individual boosters
