@@ -45,6 +45,7 @@ fits_table = Table("fits", saveddata_meta,
                    Column("targetResistsID", ForeignKey("targetResists.ID"), nullable=True),
                    Column("modeID", Integer, nullable=True),
                    Column("implantLocation", Integer, nullable=False, default=ImplantLocation.FIT),
+                   Column("notes", String, nullable = True),
                    )
 
 projectedFits_table = Table("projectedFits", saveddata_meta,
