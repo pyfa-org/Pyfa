@@ -4,17 +4,17 @@
 #Kwrite/Gedit/Other crapapps making backups
 *~
 
-
 #Patch files
 *.patch
 
 #Personal
 /saveddata/
 
-
 #Pyfa file
 pyfaFits.html
 
+#Temporary files
+*.py__jb_tmp__
 
 # Based on https://github.com/github/gitignore
 
