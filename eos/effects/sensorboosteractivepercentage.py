@@ -3,11 +3,13 @@
 # Used by:
 # Modules from group: Sensor Booster (16 of 16)
 type = "active"
+
+
 def handler(fit, module, context):
     fit.ship.boostItemAttr("maxTargetRange", module.getModifiedItemAttr("maxTargetRangeBonus"),
-                           stackingPenalties = True)
+                           stackingPenalties=True)
     fit.ship.boostItemAttr("scanResolution", module.getModifiedItemAttr("scanResolutionBonus"),
-                           stackingPenalties = True)
+                           stackingPenalties=True)
 
     for scanType in ("Gravimetric", "Magnetometric", "Radar", "Ladar"):
         fit.ship.boostItemAttr(

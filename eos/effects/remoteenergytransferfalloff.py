@@ -3,6 +3,8 @@
 # Used by:
 # Modules from group: Remote Capacitor Transmitter (41 of 41)
 type = "projected", "active"
+
+
 def handler(fit, src, context):
     if "projected" in context:
         amount = src.getModifiedItemAttr("powerTransferAmount")

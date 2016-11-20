@@ -1,4 +1,6 @@
+# -*- coding: utf-8 -*-
 import wx
+import re
 import copy
 from gui.bitmapLoader import BitmapLoader
 import gui.mainFrame
@@ -742,17 +744,18 @@ class ShipBrowser(wx.Panel):
             fits = sFit.countFitsWithShip(ship.ID)
             t_fits += fits
             filter = subRacesFilter[ship.race] if ship.race else True
-
             if override:
                 filter = True
 
+            shipTrait = ship.traits.traitText if (ship.traits is not None) else ""  # empty string if no traits
+                
             if self.filterShipsWithNoFits:
                 if fits>0:
-                    if filter:
-                        self.lpane.AddWidget(ShipItem(self.lpane, ship.ID, (ship.name, fits), ship.race))
+                    if filter:                       
+                        self.lpane.AddWidget(ShipItem(self.lpane, ship.ID, (ship.name, shipTrait, fits), ship.race))
             else:
                 if filter:
-                    self.lpane.AddWidget(ShipItem(self.lpane, ship.ID, (ship.name, fits), ship.race))
+                    self.lpane.AddWidget(ShipItem(self.lpane, ship.ID, (ship.name, shipTrait, fits), ship.race))
 
         self.raceselect.RebuildRaces(racesList)
 
@@ -847,8 +850,10 @@ class ShipBrowser(wx.Panel):
         self._stage3ShipName = shipName
         self._stage3Data = shipID
 
+        shipTrait = ship.traits.traitText if (ship.traits is not None) else ""  # empty string if no traits
+
         for ID, name, booster, timestamp in fitList:
-            self.lpane.AddWidget(FitItem(self.lpane, ID, (shipName, name, booster, timestamp),shipID))
+            self.lpane.AddWidget(FitItem(self.lpane, ID, (shipName, shipTrait, name, booster, timestamp),shipID))
 
         self.lpane.RefreshList()
         self.lpane.Thaw()
@@ -880,12 +885,17 @@ class ShipBrowser(wx.Panel):
         if query:
             ships = sMkt.searchShips(query)
             fitList = sFit.searchFits(query)
-
+            
             for ship in ships:
-                self.lpane.AddWidget(ShipItem(self.lpane, ship.ID, (ship.name, len(sFit.getFitsWithShip(ship.ID))), ship.race))
+                shipTrait = ship.traits.traitText if (ship.traits is not None) else "" # empty string if no traits
 
+                self.lpane.AddWidget(ShipItem(self.lpane, ship.ID, (ship.name, shipTrait, len(sFit.getFitsWithShip(ship.ID))), ship.race))
+            
             for ID, name, shipID, shipName, booster, timestamp in fitList:
-                self.lpane.AddWidget(FitItem(self.lpane, ID, (shipName, name, booster, timestamp), shipID))
+                ship = sMkt.getItem(shipID)
+                shipTrait = ship.traits.traitText if (ship.traits is not None) else ""  # empty string if no traits
+
+                self.lpane.AddWidget(FitItem(self.lpane, ID, (shipName, shipTrait, name, booster, timestamp), shipID))
             if len(ships) == 0 and len(fitList) == 0 :
                 self.lpane.AddWidget(PFStaticText(self.lpane, label = u"No matching results."))
             self.lpane.RefreshList(doFocus = False)
@@ -920,10 +930,13 @@ class ShipBrowser(wx.Panel):
 
         if fits:
             for fit in fits:
+                shipTrait = fit.ship.traits.traitText if (fit.ship.traits is not None) else ""  # empty string if no traits
+
                 self.lpane.AddWidget(FitItem(
                     self.lpane,
                     fit.ID, (
                         fit.ship.item.name,
+                        shipTrait,
                         fit.name,
                         fit.booster,
                         fit.timestamp),
@@ -1080,7 +1093,7 @@ class CategoryItem(SFItem.SFBrowserItem):
 
 
 class ShipItem(SFItem.SFBrowserItem):
-    def __init__(self, parent, shipID=None, shipFittingInfo=("Test", 2), itemData=None,
+    def __init__(self, parent, shipID=None, shipFittingInfo=("Test","TestTrait", 2), itemData=None,
                  id=wx.ID_ANY, pos=wx.DefaultPosition,
                  size=(0, 40), style=0):
         SFItem.SFBrowserItem.__init__(self, parent, size = size)
@@ -1104,7 +1117,8 @@ class ShipItem(SFItem.SFBrowserItem):
             self.shipBmp = BitmapLoader.getBitmap("ship_no_image_big", "gui")
 
         self.shipFittingInfo = shipFittingInfo
-        self.shipName, self.shipFits = shipFittingInfo
+        self.shipName, self.shipTrait, self.shipFits = shipFittingInfo
+        self.shipTrait = re.sub("<.*?>", " ", self.shipTrait)
 
         self.newBmp = BitmapLoader.getBitmap("fit_add_small", "gui")
         self.acceptBmp = BitmapLoader.getBitmap("faccept_small", "gui")
@@ -1121,6 +1135,8 @@ class ShipItem(SFItem.SFBrowserItem):
             self.raceBmp = BitmapLoader.getBitmap("fit_delete_small","gui")
 
         self.raceDropShadowBmp = drawUtils.CreateDropShadowBitmap(self.raceBmp, 0.2)
+
+        self.SetToolTip(wx.ToolTip(self.shipTrait))
 
         self.shipBrowser = self.Parent.Parent
 
@@ -1198,7 +1214,7 @@ class ShipItem(SFItem.SFBrowserItem):
             self.newBtn.SetBitmap(self.newBmp)
             self.Refresh()
         else:
-            shipName, fittings = self.shipFittingInfo
+            shipName, shipTrait, fittings = self.shipFittingInfo
             if fittings > 0:
                 wx.PostEvent(self.shipBrowser, Stage3Selected(shipID=self.shipID, back=True))
             else:
@@ -1264,7 +1280,7 @@ class ShipItem(SFItem.SFBrowserItem):
 
         self.shipNamey = (rect.height - self.shipBmp.GetHeight()) / 2
 
-        shipName, fittings = self.shipFittingInfo
+        shipName, shipTrait, fittings = self.shipFittingInfo
 
         mdc.SetFont(self.fontBig)
         wtext, htext = mdc.GetTextExtent(shipName)
@@ -1303,7 +1319,7 @@ class ShipItem(SFItem.SFBrowserItem):
         mdc.DrawBitmap(self.raceDropShadowBmp, self.raceBmpx + 1, self.raceBmpy + 1)
         mdc.DrawBitmap(self.raceBmp,self.raceBmpx, self.raceBmpy)
 
-        shipName, fittings = self.shipFittingInfo
+        shipName, shipTrait, fittings = self.shipFittingInfo
 
         if fittings <1:
             fformat = "No fits"
@@ -1401,7 +1417,7 @@ class PFBitmapFrame(wx.Frame):
 
 
 class FitItem(SFItem.SFBrowserItem):
-    def __init__(self, parent, fitID=None, shipFittingInfo=("Test", "cnc's avatar", 0, 0 ), shipID = None, itemData=None,
+    def __init__(self, parent, fitID=None, shipFittingInfo=("Test", "TestTrait", "cnc's avatar", 0, 0 ), shipID = None, itemData=None,
                  id=wx.ID_ANY, pos=wx.DefaultPosition,
                  size=(0, 40), style=0):
 
@@ -1435,8 +1451,8 @@ class FitItem(SFItem.SFBrowserItem):
             self.shipBmp = BitmapLoader.getBitmap("ship_no_image_big","gui")
 
         self.shipFittingInfo = shipFittingInfo
-        self.shipName, self.fitName, self.fitBooster, self.timestamp = shipFittingInfo
-
+        self.shipName, self.shipTrait, self.fitName, self.fitBooster, self.timestamp = shipFittingInfo
+        self.shipTrait = re.sub("<.*?>", " ", self.shipTrait)
         # see GH issue #62
         if self.fitBooster is None: self.fitBooster = False
 
@@ -1455,7 +1471,8 @@ class FitItem(SFItem.SFBrowserItem):
         self.dragTLFBmp = None
 
         self.bkBitmap = None
-
+        if self.shipTrait != "": # show no tooltip if no trait available
+            self.SetToolTip(wx.ToolTip(u'{}\n{}\n{}'.format(self.shipName, u'─'*20, self.shipTrait)))
         self.padding = 4
         self.editWidth = 150
 
@@ -1526,6 +1543,15 @@ class FitItem(SFItem.SFBrowserItem):
         wx.PostEvent(self.mainFrame, BoosterListUpdated())
         event.Skip()
 
+    def OnProjectToFit(self, event):
+        activeFit = self.mainFrame.getActiveFit()
+        if activeFit:
+            sFit = service.Fit.getInstance()
+            projectedFit = sFit.getFit(self.fitID)
+            sFit.project(activeFit, projectedFit)
+            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=activeFit))
+            self.mainFrame.additionsPane.select("Projected")
+
     def OnMouseCaptureLost(self, event):
         ''' Destroy drag information (GH issue #479)'''
         if self.dragging and self.dragged:
@@ -1553,11 +1579,16 @@ class FitItem(SFItem.SFBrowserItem):
         sFit = service.Fit.getInstance()
         fit = sFit.getFit(self.mainFrame.getActiveFit())
 
+
         # if fit and not fit.isStructure:
         #     # If there is an active fit, get menu for setting individual boosters
         #     menu.AppendSeparator()
         #     boosterMenu = self.mainFrame.additionsPane.gangPage.buildBoostermenu()
         #     menu.AppendSubMenu(boosterMenu, 'Set Booster')
+
+        if fit:
+            projectedItem = menu.Append(wx.ID_ANY, "Project onto Active Fit")
+            self.Bind(wx.EVT_MENU, self.OnProjectToFit, projectedItem)
 
         self.PopupMenu(menu, pos)
 
@@ -1805,7 +1836,7 @@ class FitItem(SFItem.SFBrowserItem):
 
         mdc.DrawBitmap(self.shipBmp, self.shipBmpx, self.shipBmpy, 0)
 
-        shipName, fittings, booster, timestamp = self.shipFittingInfo
+        shipName, shipTrait, fittings, booster, timestamp = self.shipFittingInfo
 
         mdc.SetFont(self.fontNormal)
 

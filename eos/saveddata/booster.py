@@ -1,4 +1,4 @@
-#===============================================================================
+# ===============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of eos.
@@ -15,15 +15,18 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# ===============================================================================
 
-from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut
-from eos.effectHandlerHelpers import HandledItem
-from sqlalchemy.orm import reconstructor, validates
-import eos.db
 import logging
 
+from sqlalchemy.orm import reconstructor, validates
+
+import eos.db
+from eos.effectHandlerHelpers import HandledItem
+from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut
+
 logger = logging.getLogger(__name__)
+
 
 class Booster(HandledItem, ItemAttrShortcut):
     def __init__(self, item):
@@ -95,7 +98,7 @@ class Booster(HandledItem, ItemAttrShortcut):
         return self.__item
 
     def __calculateSlot(self, item):
-        if not "boosterness" in item.attributes:
+        if "boosterness" not in item.attributes:
             raise ValueError("Passed item is not a booster")
 
         return int(item.attributes["boosterness"].value)
@@ -103,9 +106,11 @@ class Booster(HandledItem, ItemAttrShortcut):
     def clear(self):
         self.itemModifiedAttributes.clear()
 
-    def calculateModifiedAttributes(self, fit, runTime, forceProjected = False):
-        if forceProjected: return
-        if self.active == False: return
+    def calculateModifiedAttributes(self, fit, runTime, forceProjected=False):
+        if forceProjected:
+            return
+        if not self.active:
+            return
         for effect in self.item.effects.itervalues():
             if effect.runTime == runTime and effect.isType("passive"):
                 effect.handler(fit, self, ("booster",))
@@ -117,13 +122,15 @@ class Booster(HandledItem, ItemAttrShortcut):
     @validates("ID", "itemID", "ammoID", "active")
     def validator(self, key, val):
         map = {"ID": lambda val: isinstance(val, int),
-               "itemID" : lambda val: isinstance(val, int),
-               "ammoID" : lambda val: isinstance(val, int),
-               "active" : lambda val: isinstance(val, bool),
-               "slot" : lambda val: isinstance(val, int) and val >= 1 and val <= 3}
+               "itemID": lambda val: isinstance(val, int),
+               "ammoID": lambda val: isinstance(val, int),
+               "active": lambda val: isinstance(val, bool),
+               "slot": lambda val: isinstance(val, int) and 1 <= val <= 3}
 
-        if map[key](val) == False: raise ValueError(str(val) + " is not a valid value for " + key)
-        else: return val
+        if not map[key](val):
+            raise ValueError(str(val) + " is not a valid value for " + key)
+        else:
+            return val
 
     def __deepcopy__(self, memo):
         copy = Booster(self.item)

@@ -1,4 +1,4 @@
-#===============================================================================
+# ===============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of eos.
@@ -15,25 +15,26 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# ===============================================================================
 
-from sqlalchemy import Table, Column, ForeignKey, Integer, UniqueConstraint, Boolean
-from sqlalchemy.orm import mapper, relation
+from sqlalchemy import Table, Column, ForeignKey, Integer, Boolean
 from sqlalchemy.ext.associationproxy import association_proxy
+from sqlalchemy.orm import mapper, relation
 
 from eos.db import saveddata_meta
 from eos.types import Booster
 
 boosters_table = Table("boosters", saveddata_meta,
-                       Column("ID", Integer, primary_key = True),
+                       Column("ID", Integer, primary_key=True),
                        Column("itemID", Integer),
-                       Column("fitID", Integer, ForeignKey("fits.ID"), nullable = False),
+                       Column("fitID", Integer, ForeignKey("fits.ID"), nullable=False),
                        Column("active", Boolean),
                        )
 
 activeSideEffects_table = Table("boostersActiveSideEffects", saveddata_meta,
-                                Column("boosterID", ForeignKey("boosters.ID"), primary_key = True),
-                                Column("effectID", Integer, primary_key = True))
+                                Column("boosterID", ForeignKey("boosters.ID"), primary_key=True),
+                                Column("effectID", Integer, primary_key=True))
+
 
 class ActiveSideEffectsDummy(object):
     def __init__(self, effectID):
@@ -42,6 +43,6 @@ class ActiveSideEffectsDummy(object):
 
 mapper(ActiveSideEffectsDummy, activeSideEffects_table)
 mapper(Booster, boosters_table,
-       properties = {"_Booster__activeSideEffectDummies" : relation(ActiveSideEffectsDummy)})
+       properties={"_Booster__activeSideEffectDummies": relation(ActiveSideEffectsDummy)})
 
 Booster._Booster__activeSideEffectIDs = association_proxy("_Booster__activeSideEffectDummies", "effectID")

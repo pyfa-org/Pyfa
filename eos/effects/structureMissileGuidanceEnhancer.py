@@ -3,6 +3,8 @@
 # Used by:
 # Modules from group: Missile Guidance Enhancer (3 of 3)
 type = "passive"
+
+
 def handler(fit, module, context):
     groups = ("Structure Anti-Capital Missile", "Structure Anti-Subcapital Missile")
     fit.modules.filteredChargeBoost(lambda mod: mod.charge.group.name in groups,

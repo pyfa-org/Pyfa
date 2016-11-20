@@ -1,4 +1,4 @@
-#===============================================================================
+# ===============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of eos.
@@ -15,17 +15,18 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# ===============================================================================
 
-from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut
 from eos.effectHandlerHelpers import HandledItem
-import eos.db
+from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut
+
 
 class Mode(ItemAttrShortcut, HandledItem):
     def __init__(self, item):
 
         if item.group.name != "Ship Modifiers":
-            raise ValueError('Passed item "%s" (category: (%s)) is not a Ship Modifier'%(item.name, item.category.name))
+            raise ValueError(
+                'Passed item "%s" (category: (%s)) is not a Ship Modifier' % (item.name, item.category.name))
 
         self.__item = item
         self.__itemModifiedAttributes = ModifiedAttributeDict()
@@ -47,8 +48,8 @@ class Mode(ItemAttrShortcut, HandledItem):
     def clear(self):
         self.itemModifiedAttributes.clear()
 
-    def calculateModifiedAttributes(self, fit, runTime, forceProjected = False):
+    def calculateModifiedAttributes(self, fit, runTime, forceProjected=False):
         if self.item:
             for effect in self.item.effects.itervalues():
                 if effect.runTime == runTime:
-                    effect.handler(fit, self, context = ("module",))
+                    effect.handler(fit, self, context=("module",))

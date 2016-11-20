@@ -1,8 +1,9 @@
+from eos.types import State
+
 # Not used by any item
 runTime = "early"
 type = "projected", "active"
 
-from eos.types import State
 
 def handler(fit, module, context):
     if "projected" not in context:

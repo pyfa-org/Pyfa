@@ -82,7 +82,7 @@ if not args.nojson:
            "invtypes,mapbulk_marketGroups,phbmetadata,phbtraits,fsdTypeOverrides,"\
            "evegroups,evetypes,evecategories,marketProxy()_GetMarketGroups()"
 
-    FlowManager(miners, writers).run('', "en-us")
+    FlowManager(miners, writers).run(list, "en-us")
 
 ### SQL Convert
 import jsonToSql

@@ -1,4 +1,4 @@
-#===============================================================================
+# ===============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of eos.
@@ -15,38 +15,36 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# ===============================================================================
 
 from sqlalchemy import Table, Column, Integer, ForeignKey, Boolean
-from sqlalchemy.orm import mapper
+from sqlalchemy.orm import *
+
 from eos.db import saveddata_meta
 from eos.types import Fighter, Fit
-from sqlalchemy.orm import *
-from sqlalchemy.sql import and_
-from eos.effectHandlerHelpers import *
 from eos.types import FighterAbility
 
-
 fighters_table = Table("fighters", saveddata_meta,
-                     Column("groupID", Integer, primary_key=True),
-                     Column("fitID", Integer, ForeignKey("fits.ID"), nullable = False, index = True),
-                     Column("itemID", Integer, nullable = False),
-                     Column("active", Boolean, nullable=True),
-                     Column("amount", Integer, nullable = False),
-                     Column("projected", Boolean, default = False))
+                       Column("groupID", Integer, primary_key=True),
+                       Column("fitID", Integer, ForeignKey("fits.ID"), nullable=False, index=True),
+                       Column("itemID", Integer, nullable=False),
+                       Column("active", Boolean, nullable=True),
+                       Column("amount", Integer, nullable=False),
+                       Column("projected", Boolean, default=False))
 
 fighter_abilities_table = Table("fightersAbilities", saveddata_meta,
-                     Column("groupID", Integer, ForeignKey("fighters.groupID"), primary_key=True, index = True),
-                     Column("effectID", Integer, nullable = False, primary_key=True),
-                     Column("active", Boolean, default = False))
+                                Column("groupID", Integer, ForeignKey("fighters.groupID"), primary_key=True,
+                                       index=True),
+                                Column("effectID", Integer, nullable=False, primary_key=True),
+                                Column("active", Boolean, default=False))
 
 mapper(Fighter, fighters_table,
-       properties = {
-            "owner": relation(Fit),
-            "_Fighter__abilities": relation(
-                FighterAbility,
-                backref="fighter",
-                cascade='all, delete, delete-orphan'),
+       properties={
+           "owner": relation(Fit),
+           "_Fighter__abilities": relation(
+               FighterAbility,
+               backref="fighter",
+               cascade='all, delete, delete-orphan'),
        })
 
 mapper(FighterAbility, fighter_abilities_table)

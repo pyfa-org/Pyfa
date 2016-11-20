@@ -1,4 +1,4 @@
-#===============================================================================
+# ===============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of eos.
@@ -15,24 +15,24 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# ===============================================================================
 
 import re
+import traceback
 
 from sqlalchemy.orm import reconstructor
 
-from eqBase import EqBase
-
-import traceback
 import eos.db
+from eqBase import EqBase
 
 try:
     from collections import OrderedDict
 except ImportError:
     from utils.compat import OrderedDict
 
+
 class Effect(EqBase):
-    '''
+    """
     The effect handling class, it is used to proxy and load effect handler code,
     as well as a container for extra information regarding effects coming
     from the gamedata db.
@@ -41,26 +41,26 @@ class Effect(EqBase):
     @ivar name: The name of this effect
     @ivar description: The description of this effect, this is usualy pretty useless
     @ivar published: Wether this effect is published or not, unpublished effects are typicaly unused.
-    '''
-    #Filter to change names of effects to valid python method names
+    """
+    # Filter to change names of effects to valid python method names
     nameFilter = re.compile("[^A-Za-z0-9]")
 
     @reconstructor
     def init(self):
-        '''
+        """
         Reconstructor, composes the object as we grab it from the database
-        '''
+        """
         self.__generated = False
         self.__effectModule = None
         self.handlerName = re.sub(self.nameFilter, "", self.name).lower()
 
     @property
     def handler(self):
-        '''
+        """
         The handler for the effect,
         It is automaticly fetched from effects/<effectName>.py if the file exists
         the first time this property is accessed.
-        '''
+        """
         if not self.__generated:
             self.__generateHandler()
 
@@ -68,7 +68,7 @@ class Effect(EqBase):
 
     @property
     def runTime(self):
-        '''
+        """
         The runTime that this effect should be run at.
         This property is also automaticly fetched from effects/<effectName>.py if the file exists.
         the possible values are:
@@ -77,7 +77,7 @@ class Effect(EqBase):
 
         effects with an early runTime will be ran first when things are calculated,
         followed by effects with a normal runTime and as last effects with a late runTime are ran.
-        '''
+        """
         if not self.__generated:
             self.__generateHandler()
 
@@ -85,7 +85,7 @@ class Effect(EqBase):
 
     @property
     def type(self):
-        '''
+        """
         The type of the effect, automaticly fetched from effects/<effectName>.py if the file exists.
 
         Valid values are:
@@ -95,7 +95,7 @@ class Effect(EqBase):
         the effect is. passive vs active gives eos clues about wether to module
         is activatable or not (duh!) and projected and gang each tell eos that the
         module can be projected onto other fits, or used as a gang booster module respectivly
-        '''
+        """
         if not self.__generated:
             self.__generateHandler()
 
@@ -103,23 +103,23 @@ class Effect(EqBase):
 
     @property
     def isImplemented(self):
-        '''
+        """
         Wether this effect is implemented in code or not,
         unimplemented effects simply do nothing at all when run
-        '''
+        """
         return self.handler != effectDummy
 
     def isType(self, type):
-        '''
+        """
         Check if this effect is of the passed type
-        '''
+        """
         return self.type is not None and type in self.type
 
     def __generateHandler(self):
-        '''
+        """
         Grab the handler, type and runTime from the effect code if it exists,
         if it doesn't, set dummy values and add a dummy handler
-        '''
+        """
         try:
             self.__effectModule = effectModule = __import__('eos.effects.' + self.handlerName, fromlist=True)
             try:
@@ -159,10 +159,11 @@ class Effect(EqBase):
 def effectDummy(*args, **kwargs):
     pass
 
+
 class Item(EqBase):
-    MOVE_ATTRS = (4,   # Mass
+    MOVE_ATTRS = (4,  # Mass
                   38,  # Capacity
-                  161) # Volume
+                  161)  # Volume
 
     MOVE_ATTR_INFO = None
 
@@ -301,14 +302,14 @@ class Item(EqBase):
                 map = {1: "caldari",
                        2: "minmatar",
                        4: "amarr",
-                       5: "sansha", # Caldari + Amarr
-                       6: "blood", # Minmatar + Amarr
+                       5: "sansha",  # Caldari + Amarr
+                       6: "blood",  # Minmatar + Amarr
                        8: "gallente",
-                       9: "guristas", # Caldari + Gallente
-                       10: "angelserp", # Minmatar + Gallente, final race depends on the order of skills
-                       12: "sisters", # Amarr + Gallente
+                       9: "guristas",  # Caldari + Gallente
+                       10: "angelserp",  # Minmatar + Gallente, final race depends on the order of skills
+                       12: "sisters",  # Amarr + Gallente
                        16: "jove",
-                       32: "sansha", # Incrusion Sansha
+                       32: "sansha",  # Incrusion Sansha
                        128: "ore"}
                 # Race is None by default
                 race = None
@@ -328,7 +329,6 @@ class Item(EqBase):
                 # Store our final value
                 self.__race = race
         return self.__race
-
 
     @property
     def assistive(self):
@@ -387,23 +387,30 @@ class Item(EqBase):
 class MetaData(EqBase):
     pass
 
+
 class EffectInfo(EqBase):
     pass
+
 
 class AttributeInfo(EqBase):
     pass
 
+
 class Attribute(EqBase):
     pass
+
 
 class Category(EqBase):
     pass
 
+
 class Group(EqBase):
     pass
 
+
 class Icon(EqBase):
     pass
+
 
 class MarketGroup(EqBase):
     def __repr__(self):
@@ -411,14 +418,18 @@ class MarketGroup(EqBase):
             self.ID, self.name, getattr(self.parent, "name", None), self.name, hex(id(self))
         ).encode('utf8')
 
+
 class MetaGroup(EqBase):
     pass
+
 
 class MetaType(EqBase):
     pass
 
+
 class Unit(EqBase):
     pass
+
 
 class Traits(EqBase):
     pass

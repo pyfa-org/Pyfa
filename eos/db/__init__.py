@@ -1,4 +1,4 @@
-#===============================================================================
+# ===============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of eos.
@@ -15,7 +15,7 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# ===============================================================================
 
 import threading
 
@@ -24,17 +24,20 @@ from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import pool
 
-from eos import config
+
 import migration
+from eos import config
+
 
 class ReadOnlyException(Exception):
     pass
 
+
 gamedata_connectionstring = config.gamedata_connectionstring
 if callable(gamedata_connectionstring):
-    gamedata_engine = create_engine("sqlite://", creator=gamedata_connectionstring, echo = config.debug)
+    gamedata_engine = create_engine("sqlite://", creator=gamedata_connectionstring, echo=config.debug)
 else:
-    gamedata_engine = create_engine(gamedata_connectionstring, echo = config.debug)
+    gamedata_engine = create_engine(gamedata_connectionstring, echo=config.debug)
 
 gamedata_meta = MetaData()
 gamedata_meta.bind = gamedata_engine
@@ -44,8 +47,8 @@ gamedata_session = sessionmaker(bind=gamedata_engine, autoflush=False, expire_on
 # game db because we haven't reached gamedata_meta.create_all()
 try:
     config.gamedata_version = gamedata_session.execute(
-            "SELECT `field_value` FROM `metadata` WHERE `field_name` LIKE 'client_build'"
-        ).fetchone()[0]
+        "SELECT `field_value` FROM `metadata` WHERE `field_name` LIKE 'client_build'"
+    ).fetchone()[0]
 except:
     config.gamedata_version = None
 
@@ -63,19 +66,19 @@ if saveddata_connectionstring is not None:
 # Lock controlling any changes introduced to session
 sd_lock = threading.Lock()
 
-#Import all the definitions for all our database stuff
+# Import all the definitions for all our database stuff
 from eos.db.gamedata import *
 from eos.db.saveddata import *
 
-#Import queries
+# Import queries
 from eos.db.gamedata.queries import *
 from eos.db.saveddata.queries import *
 
-#If using in memory saveddata, you'll want to reflect it so the data structure is good.
+# If using in memory saveddata, you'll want to reflect it so the data structure is good.
 if config.saveddata_connectionstring == "sqlite:///:memory:":
     saveddata_meta.create_all()
+
 
 def rollback():
     with sd_lock:
         saveddata_session.rollback()
-

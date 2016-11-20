@@ -3,6 +3,8 @@
 # Used by:
 # Drones named like: Shield Maintenance Bot (6 of 6)
 type = "projected", "active"
+
+
 def handler(fit, container, context):
     if "projected" in context:
         bonus = container.getModifiedItemAttr("shieldBonus")

@@ -126,7 +126,7 @@ def main(db, json_path):
         for row in data:
             typeLines = []
             typeId = row["typeID"]
-            traitData = row["traits_en-us"]
+            traitData = row["traits"]
             for skillData in sorted(traitData.get("skills", ()), key=lambda i: i["header"]):
                 typeLines.append(convertSection(skillData))
             if "role" in traitData:

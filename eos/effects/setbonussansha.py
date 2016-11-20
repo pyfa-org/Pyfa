@@ -5,6 +5,8 @@
 # Implant: High-grade Halo Omega
 runTime = "early"
 type = "passive"
+
+
 def handler(fit, implant, context):
     fit.appliedImplants.filteredItemMultiply(lambda target: target.item.requiresSkill("Cybernetics"),
-                                      "armorHpBonus", implant.getModifiedItemAttr("implantSetSansha") or 1)
+                                             "armorHpBonus", implant.getModifiedItemAttr("implantSetSansha") or 1)

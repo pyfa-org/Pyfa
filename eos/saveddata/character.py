@@ -1,4 +1,4 @@
-#===============================================================================
+# ===============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of eos.
@@ -15,19 +15,21 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# ===============================================================================
 
 
-from sqlalchemy.orm import validates, reconstructor
+import logging
 from itertools import chain
 
-from eos.effectHandlerHelpers import HandledItem, HandledImplantBoosterList
-import eos.db
+from sqlalchemy.orm import validates, reconstructor
+
 import eos
+import eos.db
 import eos.types
-import logging
+from eos.effectHandlerHelpers import HandledItem, HandledImplantBoosterList
 
 logger = logging.getLogger(__name__)
+
 
 class Character(object):
     __itemList = None
@@ -211,8 +213,9 @@ class Character(object):
             if filter(element):
                 element.boostItemAttr(*args, **kwargs)
 
-    def calculateModifiedAttributes(self, fit, runTime, forceProjected = False):
-        if forceProjected: return
+    def calculateModifiedAttributes(self, fit, runTime, forceProjected=False):
+        if forceProjected:
+            return
         for skill in self.skills:
             fit.register(skill)
             skill.calculateModifiedAttributes(fit, runTime)
@@ -239,17 +242,20 @@ class Character(object):
     @validates("ID", "name", "apiKey", "ownerID")
     def validator(self, key, val):
         map = {"ID": lambda val: isinstance(val, int),
-               "name" : lambda val: True,
-               "apiKey" : lambda val: val is None or (isinstance(val, basestring) and len(val) > 0),
-               "ownerID" : lambda val: isinstance(val, int) or val is None}
+               "name": lambda val: True,
+               "apiKey": lambda val: val is None or (isinstance(val, basestring) and len(val) > 0),
+               "ownerID": lambda val: isinstance(val, int) or val is None}
 
-        if map[key](val) == False: raise ValueError(str(val) + " is not a valid value for " + key)
-        else: return val
+        if not map[key](val):
+            raise ValueError(str(val) + " is not a valid value for " + key)
+        else:
+            return val
 
     def __repr__(self):
         return "Character(ID={}, name={}) at {}".format(
             self.ID, self.name, hex(id(self))
         )
+
 
 class Skill(HandledItem):
     def __init__(self, item, level=0, ro=False, learned=True):
@@ -295,7 +301,7 @@ class Skill(HandledItem):
         if (level < 0 or level > 5) and level is not None:
             raise ValueError(str(level) + " is not a valid value for level")
 
-        if hasattr(self, "_Skill__ro") and self.__ro == True:
+        if hasattr(self, "_Skill__ro") and self.__ro is True:
             raise ReadOnlyException()
 
         self.activeLevel = level
@@ -304,13 +310,12 @@ class Skill(HandledItem):
         if self.activeLevel == self.__level and self in self.character.dirtySkills:
             self.character.dirtySkills.remove(self)
 
-
     @property
     def item(self):
         if self.__item is None:
             self.__item = item = Character.getSkillIDMap().get(self.itemID)
             if item is None:
-                #This skill is no longer in the database and thus invalid it, get rid of it.
+                # This skill is no longer in the database and thus invalid it, get rid of it.
                 self.character.removeSkill(self)
 
         return self.__item
@@ -322,7 +327,7 @@ class Skill(HandledItem):
             return None
 
     def calculateModifiedAttributes(self, fit, runTime):
-        if self.__suppressed: # or not self.learned - removed for GH issue 101
+        if self.__suppressed:  # or not self.learned - removed for GH issue 101
             return
 
         item = self.item
@@ -330,7 +335,8 @@ class Skill(HandledItem):
             return
 
         for effect in item.effects.itervalues():
-            if effect.runTime == runTime and effect.isType("passive") and (not fit.isStructure or effect.isType("structure")):
+            if effect.runTime == runTime and effect.isType("passive") and \
+                    (not fit.isStructure or effect.isType("structure")):
                 try:
                     effect.handler(fit, self, ("skill",))
                 except AttributeError:
@@ -348,14 +354,16 @@ class Skill(HandledItem):
 
     @validates("characterID", "skillID", "level")
     def validator(self, key, val):
-        if hasattr(self, "_Skill__ro") and self.__ro == True and key != "characterID":
+        if hasattr(self, "_Skill__ro") and self.__ro is True and key != "characterID":
             raise ReadOnlyException()
 
         map = {"characterID": lambda val: isinstance(val, int),
-               "skillID" : lambda val: isinstance(val, int)}
+               "skillID": lambda val: isinstance(val, int)}
 
-        if map[key](val) == False: raise ValueError(str(val) + " is not a valid value for " + key)
-        else: return val
+        if not map[key](val):
+            raise ValueError(str(val) + " is not a valid value for " + key)
+        else:
+            return val
 
     def __deepcopy__(self, memo):
         copy = Skill(self.item, self.level, self.__ro)
@@ -365,6 +373,7 @@ class Skill(HandledItem):
         return "Skill(ID={}, name={}) at {}".format(
             self.item.ID, self.item.name, hex(id(self))
         )
+
 
 class ReadOnlyException(Exception):
     pass

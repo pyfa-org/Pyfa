@@ -1,4 +1,7 @@
 class Enum():
+    def __init__(self):
+        pass
+
     @classmethod
     def getTypes(cls):
         for stuff in cls.__dict__:

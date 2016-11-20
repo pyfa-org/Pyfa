@@ -7,6 +7,9 @@
 # Ship: Endurance
 # Ship: Etana
 type = "passive"
+
+
 def handler(fit, ship, context):
     fit.modules.filteredItemForce(lambda mod: mod.item.group.name == "Cloaking Device",
-                                  "cloakingTargetingDelay", ship.getModifiedItemAttr("covertOpsStealthBomberTargettingDelay"))
+                                  "cloakingTargetingDelay",
+                                  ship.getModifiedItemAttr("covertOpsStealthBomberTargettingDelay"))

@@ -1,4 +1,4 @@
-#===============================================================================
+# ===============================================================================
 # Copyright (C) 2010 Diego Duclos
 # Copyright (C) 2011 Anton Vorobyov
 #
@@ -16,13 +16,14 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# ===============================================================================
 
 import time
+
 from sqlalchemy.orm import reconstructor
 
-class Price(object):
 
+class Price(object):
     def __init__(self, typeID):
         self.typeID = typeID
         self.time = 0

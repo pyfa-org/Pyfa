@@ -5,6 +5,9 @@
 # Celestials named like: Pulsar Effect Beacon Class (6 of 6)
 runTime = "early"
 type = ("projected", "passive")
+
+
 def handler(fit, beacon, context):
-    fit.ship.boostItemAttr("armorThermalDamageResonance", beacon.getModifiedItemAttr("armorThermalDamageResistanceBonus"),
+    fit.ship.boostItemAttr("armorThermalDamageResonance",
+                           beacon.getModifiedItemAttr("armorThermalDamageResistanceBonus"),
                            stackingPenalties=True)

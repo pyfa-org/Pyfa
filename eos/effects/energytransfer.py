@@ -1,5 +1,7 @@
 # Not used by any item
 type = "projected", "active"
+
+
 def handler(fit, src, context):
     if "projected" in context:
         amount = src.getModifiedItemAttr("powerTransferAmount")

@@ -64,6 +64,9 @@ class PFGeneralPref ( PreferenceView):
 
         self.cbExportCharges = wx.CheckBox( panel, wx.ID_ANY, u"Export loaded charges", wx.DefaultPosition, wx.DefaultSize, 0 )
         mainSizer.Add( self.cbExportCharges, 0, wx.ALL|wx.EXPAND, 5 )
+        
+        self.cbOpenFitInNew = wx.CheckBox( panel, wx.ID_ANY, u"Open fittings in a new page by default", wx.DefaultPosition, wx.DefaultSize, 0 )
+        mainSizer.Add( self.cbOpenFitInNew, 0, wx.ALL|wx.EXPAND, 5 )
 
         defCharSizer = wx.BoxSizer( wx.HORIZONTAL )
 
@@ -81,6 +84,7 @@ class PFGeneralPref ( PreferenceView):
         self.cbMarketShortcuts.SetValue(self.sFit.serviceFittingOptions["showMarketShortcuts"] or False)
         self.cbGaugeAnimation.SetValue(self.sFit.serviceFittingOptions["enableGaugeAnimation"])
         self.cbExportCharges.SetValue(self.sFit.serviceFittingOptions["exportCharges"])
+        self.cbOpenFitInNew.SetValue(self.sFit.serviceFittingOptions["openFitInNew"])
 
         self.cbGlobalChar.Bind(wx.EVT_CHECKBOX, self.OnCBGlobalCharStateChange)
         self.cbGlobalDmgPattern.Bind(wx.EVT_CHECKBOX, self.OnCBGlobalDmgPatternStateChange)
@@ -94,6 +98,7 @@ class PFGeneralPref ( PreferenceView):
         self.cbMarketShortcuts.Bind(wx.EVT_CHECKBOX, self.onCBShowShortcuts)
         self.cbGaugeAnimation.Bind(wx.EVT_CHECKBOX, self.onCBGaugeAnimation)
         self.cbExportCharges.Bind(wx.EVT_CHECKBOX, self.onCBExportCharges)
+        self.cbOpenFitInNew.Bind(wx.EVT_CHECKBOX, self.onCBOpenFitInNew)
 
         self.cbRackLabels.Enable(self.sFit.serviceFittingOptions["rackSlots"] or False)
 
@@ -158,6 +163,9 @@ class PFGeneralPref ( PreferenceView):
 
     def onCBExportCharges(self, event):
         self.sFit.serviceFittingOptions["exportCharges"] = self.cbExportCharges.GetValue()
+    
+    def onCBOpenFitInNew(self, event):
+        self.sFit.serviceFittingOptions["openFitInNew"] = self.cbOpenFitInNew.GetValue()
 
     def getImage(self):
         return BitmapLoader.getBitmap("prefs_settings", "gui")
