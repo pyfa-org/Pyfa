@@ -1543,6 +1543,16 @@ class FitItem(SFItem.SFBrowserItem):
         wx.PostEvent(self.mainFrame, BoosterListUpdated())
         event.Skip()
 
+    def OnProjectToFit(self, event):
+        activeFit = self.mainFrame.getActiveFit()
+        if activeFit:
+            sFit = service.Fit.getInstance()
+            projectedFit = sFit.getFit(self.fitID)
+            sFit.project(activeFit, projectedFit)
+            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=activeFit))
+
+
+
     def OnMouseCaptureLost(self, event):
         ''' Destroy drag information (GH issue #479)'''
         if self.dragging and self.dragged:
@@ -1563,6 +1573,8 @@ class FitItem(SFItem.SFBrowserItem):
         self.mainFrame.additionsPane.gangPage.draggedFitID = self.fitID
 
         menu = wx.Menu()
+        projectedItem = menu.Append(wx.ID_ANY, "Set as 'Projected' to selected fitting")
+        self.Bind(wx.EVT_MENU, self.OnProjectToFit, projectedItem)
         toggleItem = menu.Append(wx.ID_ANY, "Booster Fit", kind=wx.ITEM_CHECK)
         menu.Check(toggleItem.GetId(), self.fitBooster)
         self.Bind(wx.EVT_MENU, self.OnToggleBooster, toggleItem)
