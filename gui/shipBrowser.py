@@ -1553,11 +1553,11 @@ class FitItem(SFItem.SFBrowserItem):
         sFit = service.Fit.getInstance()
         fit = sFit.getFit(self.mainFrame.getActiveFit())
 
-        if fit and not fit.isStructure:
-            # If there is an active fit, get menu for setting individual boosters
-            menu.AppendSeparator()
-            boosterMenu = self.mainFrame.additionsPane.gangPage.buildBoostermenu()
-            menu.AppendSubMenu(boosterMenu, 'Set Booster')
+        # if fit and not fit.isStructure:
+        #     # If there is an active fit, get menu for setting individual boosters
+        #     menu.AppendSeparator()
+        #     boosterMenu = self.mainFrame.additionsPane.gangPage.buildBoostermenu()
+        #     menu.AppendSubMenu(boosterMenu, 'Set Booster')
 
         self.PopupMenu(menu, pos)
 

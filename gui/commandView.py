@@ -182,6 +182,7 @@ class CommandView(d.Display):
         menu = None
         if sel != -1:
             item = self.get(sel)
+            if item is None: return
             sMkt = service.Market.getInstance()
             fitSrcContext = "commandFit"
             fitItemContext = item.name

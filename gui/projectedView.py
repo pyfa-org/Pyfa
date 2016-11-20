@@ -245,6 +245,7 @@ class ProjectedView(d.Display):
         menu = None
         if sel != -1:
             item = self.get(sel)
+            if item is None: return
             sMkt = service.Market.getInstance()
             if isinstance(item, eos.types.Drone):
                 srcContext = "projectedDrone"

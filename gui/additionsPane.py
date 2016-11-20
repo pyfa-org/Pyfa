@@ -78,7 +78,7 @@ class AdditionsPane(TogglePanel):
         self.notebook.AddPage(self.projectedPage, "Projected", tabImage = projectedImg, showClose = False)
 
         self.gangPage = CommandView(self.notebook)
-        self.notebook.AddPage(self.gangPage, "Fleet", tabImage = gangImg, showClose = False)
+        self.notebook.AddPage(self.gangPage, "Command", tabImage = gangImg, showClose = False)
 
         self.notebook.SetSelection(0)
 
