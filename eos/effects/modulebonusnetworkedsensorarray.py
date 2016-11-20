@@ -3,6 +3,8 @@
 # Used by:
 # Module: Networked Sensor Array
 type = "active"
+
+
 def handler(fit, src, context):
     fit.ship.boostItemAttr("scanResolution", src.getModifiedItemAttr("scanResolutionBonus"), stackingPenalties=True)
 
@@ -10,7 +12,8 @@ def handler(fit, src, context):
         attr = "scan{}Strength".format(scanType)
         bonus = src.getModifiedItemAttr("scan{}StrengthPercent".format(scanType))
         fit.ship.boostItemAttr(attr, bonus, stackingPenalties=True)
-        fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill("Fighters"), attr, bonus, stackingPenalties=True)
+        fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill("Fighters"), attr, bonus,
+                                       stackingPenalties=True)
 
     # EW cap need increase
     groups = [

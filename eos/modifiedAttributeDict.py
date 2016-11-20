@@ -1,4 +1,4 @@
-#===============================================================================
+# ===============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of eos.
@@ -15,13 +15,14 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# ===============================================================================
 
-from math import exp
 import collections
+from math import exp
 
 defaultValuesCache = {}
 cappingAttrKeyCache = {}
+
 
 class ItemAttrShortcut(object):
     def getModifiedItemAttr(self, key):
@@ -30,6 +31,7 @@ class ItemAttrShortcut(object):
         else:
             return None
 
+
 class ChargeAttrShortcut(object):
     def getModifiedChargeAttr(self, key):
         if key in self.chargeModifiedAttributes:
@@ -37,12 +39,13 @@ class ChargeAttrShortcut(object):
         else:
             return None
 
-class ModifiedAttributeDict(collections.MutableMapping):
 
+class ModifiedAttributeDict(collections.MutableMapping):
     OVERRIDES = False
 
     class CalculationPlaceholder():
-        pass
+        def __init__(self):
+            pass
 
     def __init__(self, fit=None, parent=None):
         self.parent = parent
@@ -129,7 +132,8 @@ class ModifiedAttributeDict(collections.MutableMapping):
         return (key for key in all)
 
     def __contains__(self, key):
-        return (self.__original is not None and key in self.__original) or key in self.__modified or key in self.__intermediary
+        return (
+               self.__original is not None and key in self.__original) or key in self.__modified or key in self.__intermediary
 
     def __placehold(self, key):
         """Create calculation placeholder in item's modified attribute dict"""
@@ -196,7 +200,8 @@ class ModifiedAttributeDict(collections.MutableMapping):
             else:
                 dv = attrInfo.defaultValue
                 default = defaultValuesCache[key] = dv if dv is not None else 0.0
-        val = self.__intermediary[key] if key in self.__intermediary else self.__preAssigns[key] if key in self.__preAssigns else self.getOriginal(key) if key in self.__original else default
+        val = self.__intermediary[key] if key in self.__intermediary else self.__preAssigns[
+            key] if key in self.__preAssigns else self.getOriginal(key) if key in self.__original else default
 
         # We'll do stuff in the following order:
         # preIncrease > multiplier > stacking penalized multipliers > postIncrease
@@ -295,7 +300,7 @@ class ModifiedAttributeDict(collections.MutableMapping):
             tbl = self.__postIncreases
         else:
             raise ValueError("position should be either pre or post")
-        if not attributeName in tbl:
+        if attributeName not in tbl:
             tbl[attributeName] = 0
         tbl[attributeName] += increase
         self.__placehold(attributeName)
@@ -312,15 +317,15 @@ class ModifiedAttributeDict(collections.MutableMapping):
         # If we're asked to do stacking penalized multiplication, append values
         # to per penalty group lists
         if stackingPenalties:
-            if not attributeName in self.__penalizedMultipliers:
+            if attributeName not in self.__penalizedMultipliers:
                 self.__penalizedMultipliers[attributeName] = {}
-            if not penaltyGroup in self.__penalizedMultipliers[attributeName]:
+            if penaltyGroup not in self.__penalizedMultipliers[attributeName]:
                 self.__penalizedMultipliers[attributeName][penaltyGroup] = []
             tbl = self.__penalizedMultipliers[attributeName][penaltyGroup]
             tbl.append(multiplier)
         # Non-penalized multiplication factors go to the single list
         else:
-            if not attributeName in self.__multipliers:
+            if attributeName not in self.__multipliers:
                 self.__multipliers[attributeName] = 1
             self.__multipliers[attributeName] *= multiplier
 
@@ -352,6 +357,7 @@ class ModifiedAttributeDict(collections.MutableMapping):
         self.__forced[attributeName] = value
         self.__placehold(attributeName)
         self.__afflict(attributeName, u"\u2263", value)
+
 
 class Affliction():
     def __init__(self, type, amount):

@@ -5,8 +5,11 @@
 gangBonus = "commandBonusTP"
 gangBoost = "ewarStrTP"
 type = "active", "gang"
+
+
 def handler(fit, module, context):
-    if "gang" not in context: return
+    if "gang" not in context:
+        return
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Target Painting"),
                                   "signatureRadiusBonus", module.getModifiedItemAttr("commandBonusTP"),
-                                  stackingPenalties = True)
+                                  stackingPenalties=True)

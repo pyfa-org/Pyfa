@@ -5,5 +5,8 @@
 # Ship: Cambion
 # Ship: Whiptail
 type = "passive"
+
+
 def handler(fit, ship, context):
-    fit.ship.boostItemAttr("shieldKineticDamageResonance", ship.getModifiedItemAttr("shipBonusCF"), skill="Caldari Frigate")
+    fit.ship.boostItemAttr("shieldKineticDamageResonance", ship.getModifiedItemAttr("shipBonusCF"),
+                           skill="Caldari Frigate")

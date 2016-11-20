@@ -8,6 +8,8 @@
 # Skill: Astrometric Rangefinding
 # Skill: Astrometrics
 type = "passive"
+
+
 def handler(fit, container, context):
     level = container.level if "skill" in context else 1
     penalized = False if "skill" in context or "implant" in context else True

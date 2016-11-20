@@ -6,5 +6,7 @@
 # Modules from group: Reactor Control Unit (22 of 22)
 # Modules named like: Flux Coil (12 of 12)
 type = "passive"
+
+
 def handler(fit, module, context):
     fit.ship.multiplyItemAttr("shieldCapacity", module.getModifiedItemAttr("shieldCapacityMultiplier"))

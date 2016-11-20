@@ -5,6 +5,8 @@
 # Skill: Rockets
 # Skill: Torpedoes
 type = "passive"
+
+
 def handler(fit, skill, context):
     fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill(skill),
                                     "thermalDamage", skill.getModifiedItemAttr("damageMultiplierBonus") * skill.level)

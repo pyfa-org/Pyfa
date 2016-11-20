@@ -5,5 +5,7 @@
 # Items from market group: Ship Equipment > Turrets & Bays (428 of 848)
 # Module: Interdiction Sphere Launcher I
 type = "overheat"
+
+
 def handler(fit, module, context):
     module.boostItemAttr("speed", module.getModifiedItemAttr("overloadRofBonus"))

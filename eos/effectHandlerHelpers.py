@@ -1,4 +1,4 @@
-#===============================================================================
+# ===============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of eos.
@@ -15,14 +15,16 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# ===============================================================================
 
-#from sqlalchemy.orm.attributes import flag_modified
-import eos.db
-import eos.types
+# from sqlalchemy.orm.attributes import flag_modified
 import logging
 
+import eos.db
+import eos.types
+
 logger = logging.getLogger(__name__)
+
 
 class HandledList(list):
     def filteredItemPreAssign(self, filter, *args, **kwargs):
@@ -108,10 +110,11 @@ class HandledList(list):
     def remove(self, thing):
         # We must flag it as modified, otherwise it not be removed from the database
         # @todo: flag_modified isn't in os x skel. need to rebuild to include
-        #flag_modified(thing, "itemID")
+        # flag_modified(thing, "itemID")
         if thing.isInvalid:  # see GH issue #324
             thing.itemID = 0
         list.remove(self, thing)
+
 
 class HandledModuleList(HandledList):
     def append(self, mod):
@@ -169,10 +172,11 @@ class HandledModuleList(HandledList):
         self[index] = mod
 
     def freeSlot(self, slot):
-        for i in range(len(self) -1, -1, -1):
+        for i in range(len(self) - 1, -1, -1):
             mod = self[i]
             if mod.getModifiedItemAttr("subSystemSlot") == slot:
                 del self[i]
+
 
 class HandledDroneCargoList(HandledList):
     def find(self, item):
@@ -190,6 +194,7 @@ class HandledDroneCargoList(HandledList):
         if thing.isInvalid:
             self.remove(thing)
 
+
 class HandledImplantBoosterList(HandledList):
     def append(self, thing):
         if thing.isInvalid:
@@ -205,6 +210,7 @@ class HandledImplantBoosterList(HandledList):
             self.remove(oldObj)
 
         HandledList.append(self, thing)
+
 
 class HandledProjectedModList(HandledList):
     def append(self, proj):
@@ -232,6 +238,7 @@ class HandledProjectedModList(HandledList):
         if not proj.item.isType("projected") and not isSystemEffect:
             self.remove(proj)
 
+
 class HandledProjectedDroneList(HandledDroneCargoList):
     def append(self, proj):
         proj.projected = True
@@ -240,6 +247,7 @@ class HandledProjectedDroneList(HandledDroneCargoList):
         # Remove invalid or non-projectable drones
         if proj.isInvalid or not proj.item.isType("projected"):
             self.remove(proj)
+
 
 class HandledItem(object):
     def preAssignItemAttr(self, *args, **kwargs):
@@ -256,6 +264,7 @@ class HandledItem(object):
 
     def forceItemAttr(self, *args, **kwargs):
         self.itemModifiedAttributes.force(*args, **kwargs)
+
 
 class HandledCharge(object):
     def preAssignChargeAttr(self, *args, **kwargs):

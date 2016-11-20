@@ -1,4 +1,4 @@
-#===============================================================================
+# ===============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of eos.
@@ -15,41 +15,46 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# ===============================================================================
 
-from itertools import chain
-from eos.types import Skill, Module, Ship
 from copy import deepcopy
+from itertools import chain
+
+from eos.types import Skill, Module, Ship
+
 
 class Fleet(object):
     def calculateModifiedAttributes(self):
-        #Make sure ALL fits in the gang have been calculated
+        # Make sure ALL fits in the gang have been calculated
         for c in chain(self.wings, (self.leader,)):
-            if c is not None: c.calculateModifiedAttributes()
+            if c is not None:
+                c.calculateModifiedAttributes()
 
         leader = self.leader
         self.booster = booster = self.booster if self.booster is not None else leader
         self.broken = False
         self.store = store = Store()
         store.set(booster, "fleet")
-        #Go all the way down for each subtree we have.
+        # Go all the way down for each subtree we have.
         for wing in self.wings:
             wing.calculateGangBonusses(store)
 
         # Check skill requirements and wing amount to see if we break or not
-        if len(self.wings) == 0 or leader is None or leader.character is None or leader.character.getSkill("Fleet Command").level < len(self.wings):
+        if len(self.wings) == 0 or leader is None or leader.character is None or leader.character.getSkill(
+                "Fleet Command").level < len(self.wings):
             self.broken = True
 
-        #Now calculate our own if we aren't broken
-        if self.broken == False:
-            #We only get our own bonuses *Sadface*
+        # Now calculate our own if we aren't broken
+        if not self.broken:
+            # We only get our own bonuses *Sadface*
             store.apply(leader, "fleet")
 
     def recalculateLinear(self, withBoosters=True, dirtyStorage=None):
         self.store = Store()
         self.linearBoosts = {}
         if withBoosters is True:
-            if self.leader is not None and self.leader.character is not None and self.leader.character.getSkill("Fleet Command").level >= 1:
+            if self.leader is not None and self.leader.character is not None and self.leader.character.getSkill(
+                    "Fleet Command").level >= 1:
                 self.leader.boostsFits.add(self.wings[0].squads[0].members[0].ID)
                 self.leader.calculateModifiedAttributes()
                 self.store.set(self.leader, "squad", clearingUpdate=True)
@@ -83,10 +88,12 @@ class Fleet(object):
 
         return copy
 
+
 class Wing(object):
     def calculateModifiedAttributes(self):
         for c in chain(self.squads, (self.leader,)):
-            if c is not None: c.calculateModifiedAttributes()
+            if c is not None:
+                c.calculateModifiedAttributes()
 
     def calculateGangBonusses(self, store):
         self.broken = False
@@ -95,24 +102,26 @@ class Wing(object):
 
         store.set(booster, "wing")
 
-        #ALWAYS move down
+        # ALWAYS move down
         for squad in self.squads:
             squad.calculateGangBonusses(store)
 
         # Check skill requirements and squad amount to see if we break or not
-        if len(self.squads) == 0 or leader is None or leader.character is None or leader.character.getSkill("Wing Command").level < len(self.squads):
+        if len(self.squads) == 0 or leader is None or leader.character is None or leader.character.getSkill(
+                "Wing Command").level < len(self.squads):
             self.broken = True
 
-        #Check if we aren't broken, if we aren't, boost
-        if self.broken == False:
+        # Check if we aren't broken, if we aren't, boost
+        if not self.broken:
             store.apply(leader, "wing")
         else:
-            #We broke, don't go up
+            # We broke, don't go up
             self.gang.broken = True
 
     def recalculateLinear(self, store, withBoosters=True, dirtyStorage=None):
         if withBoosters is True:
-            if self.leader is not None and self.leader.character is not None and self.leader.character.getSkill("Wing Command").level >= 1:
+            if self.leader is not None and self.leader.character is not None and self.leader.character.getSkill(
+                    "Wing Command").level >= 1:
                 self.leader.boostsFits.add(self.squads[0].members[0].ID)
                 self.leader.calculateModifiedAttributes()
                 store.set(self.leader, "squad", clearingUpdate=False)
@@ -162,10 +171,11 @@ class Squad(object):
         store.set(booster, "squad")
 
         # Check skill requirements and squad size to see if we break or not
-        if len(self.members) <= 0 or leader is None or leader.character is None or leader.character.getSkill("Leadership").level * 2 < len(self.members):
+        if len(self.members) <= 0 or leader is None or leader.character is None or leader.character.getSkill(
+                "Leadership").level * 2 < len(self.members):
             self.broken = True
 
-        if self.broken == False:
+        if not self.broken:
             for member in self.members:
                 store.apply(member, "squad")
         else:
@@ -173,7 +183,8 @@ class Squad(object):
 
     def recalculateLinear(self, store, withBoosters=True, dirtyStorage=None):
         if withBoosters is True:
-            if self.leader is not None and self.leader.character is not None and self.leader.character.getSkill("Leadership").level >= 1:
+            if self.leader is not None and self.leader.character is not None and self.leader.character.getSkill(
+                    "Leadership").level >= 1:
                 self.leader.boostsFits.add(self.members[0].ID)
                 self.leader.calculateModifiedAttributes(dirtyStorage=dirtyStorage)
                 store.set(self.leader, "squad", clearingUpdate=False)
@@ -230,6 +241,7 @@ class Squad(object):
             copy.members.append(deepcopy(member))
 
         return copy
+
 
 class Store(object):
     def __init__(self):

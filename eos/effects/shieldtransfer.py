@@ -3,6 +3,8 @@
 # Used by:
 # Module: QA Shield Transporter - 5 Players
 type = "projected", "active"
+
+
 def handler(fit, container, context):
     if "projected" in context:
         bonus = container.getModifiedItemAttr("shieldBonus")

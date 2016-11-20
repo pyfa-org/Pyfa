@@ -1,4 +1,4 @@
-#===============================================================================
+# ===============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of eos.
@@ -15,19 +15,20 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# ===============================================================================
 
 from sqlalchemy import Table, Column, Integer, ForeignKey, Boolean
 from sqlalchemy.orm import mapper
+
 from eos.db import saveddata_meta
 from eos.types import Drone
 
 drones_table = Table("drones", saveddata_meta,
                      Column("groupID", Integer, primary_key=True),
-                     Column("fitID", Integer, ForeignKey("fits.ID"), nullable = False, index = True),
-                     Column("itemID", Integer, nullable = False),
-                     Column("amount", Integer, nullable = False),
-                     Column("amountActive", Integer, nullable = False),
-                     Column("projected", Boolean, default = False))
+                     Column("fitID", Integer, ForeignKey("fits.ID"), nullable=False, index=True),
+                     Column("itemID", Integer, nullable=False),
+                     Column("amount", Integer, nullable=False),
+                     Column("amountActive", Integer, nullable=False),
+                     Column("projected", Boolean, default=False))
 
 mapper(Drone, drones_table)

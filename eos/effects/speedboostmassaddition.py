@@ -4,6 +4,8 @@
 # Modules from group: Propulsion Module (62 of 127)
 type = "active"
 runTime = "late"
+
+
 def handler(fit, module, context):
     fit.ship.increaseItemAttr("mass", module.getModifiedItemAttr("massAddition"))
     speedBoost = module.getModifiedItemAttr("speedFactor")

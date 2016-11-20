@@ -1,4 +1,4 @@
-#===============================================================================
+# ===============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of eos.
@@ -15,26 +15,23 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# ===============================================================================
 
-from eos.effectHandlerHelpers import *
-from eos.modifiedAttributeDict import ModifiedAttributeDict
-from sqlalchemy.orm import validates, reconstructor
-from itertools import chain
-from eos import capSim
-from copy import deepcopy
-from math import sqrt, log, asinh
-from eos.types import Drone, Cargo, Ship, Character, State, Slot, Module, Implant, Booster, Skill, Citadel
-from eos.saveddata.module import State, Hardpoint
-from eos.saveddata.mode import Mode
-import eos.db
-import time
 import copy
-from utils.timer import Timer
+import time
+from copy import deepcopy
+from itertools import chain
+from math import sqrt, log, asinh
+
+from sqlalchemy.orm import validates, reconstructor
+
+import eos.db
+from eos import capSim
+from eos.effectHandlerHelpers import *
 from eos.enum import Enum
-
-
-import logging
+from eos.saveddata.module import State, Hardpoint
+from eos.types import Ship, Character, Slot, Module, Citadel
+from utils.timer import Timer
 
 logger = logging.getLogger(__name__)
 
@@ -43,9 +40,14 @@ try:
 except ImportError:
     from utils.compat import OrderedDict
 
+
 class ImplantLocation(Enum):
+    def __init__(self):
+        pass
+
     FIT = 0
     CHARACTER = 1
+
 
 class Fit(object):
     """Represents a fitting, with modules, ship, implants, etc."""
@@ -65,7 +67,7 @@ class Fit(object):
         self.__cargo = HandledDroneCargoList()
         self.__implants = HandledImplantBoosterList()
         self.__boosters = HandledImplantBoosterList()
-        #self.__projectedFits = {}
+        # self.__projectedFits = {}
         self.__projectedModules = HandledProjectedModList()
         self.__projectedDrones = HandledProjectedDroneList()
         self.__projectedFighters = HandledProjectedDroneList()
@@ -299,7 +301,8 @@ class Fit(object):
 
     @property
     def maxTargets(self):
-        return min(self.extraAttributes["maxTargetsLockedFromSkills"], self.ship.getModifiedItemAttr("maxLockedTargets"))
+        return min(self.extraAttributes["maxTargetsLockedFromSkills"],
+                   self.ship.getModifiedItemAttr("maxLockedTargets"))
 
     @property
     def maxTargetRange(self):
@@ -326,7 +329,7 @@ class Fit(object):
 
     @property
     def jamChance(self):
-        return (1-self.ecmProjectedStr)*100
+        return (1 - self.ecmProjectedStr) * 100
 
     @property
     def maxSpeed(self):
@@ -361,11 +364,13 @@ class Fit(object):
     @validates("ID", "ownerID", "shipID")
     def validator(self, key, val):
         map = {"ID": lambda val: isinstance(val, int),
-               "ownerID" : lambda val: isinstance(val, int) or val is None,
-               "shipID" : lambda val: isinstance(val, int) or val is None}
+               "ownerID": lambda val: isinstance(val, int) or val is None,
+               "shipID": lambda val: isinstance(val, int) or val is None}
 
-        if map[key](val) == False: raise ValueError(str(val) + " is not a valid value for " + key)
-        else: return val
+        if not map[key](val):
+            raise ValueError(str(val) + " is not a valid value for " + key)
+        else:
+            return val
 
     def clear(self, projected=False):
         self.__effectiveTank = None
@@ -414,8 +419,8 @@ class Fit(object):
                 if stuff is not None and stuff != self:
                     stuff.clear(projected=True)
 
-    #Methods to register and get the thing currently affecting the fit,
-    #so we can correctly map "Affected By"
+    # Methods to register and get the thing currently affecting the fit,
+    # so we can correctly map "Affected By"
     def register(self, currModifier, origin=None):
         self.__modifier = currModifier
         self.__origin = origin
@@ -439,7 +444,7 @@ class Fit(object):
                 context = ("gang", thing.__class__.__name__.lower())
                 if isinstance(thing, Module):
                     if effect.isType("offline") or (effect.isType("passive") and thing.state >= State.ONLINE) or \
-                    (effect.isType("active") and thing.state >= State.ACTIVE):
+                            (effect.isType("active") and thing.state >= State.ACTIVE):
                         # Run effect, and get proper bonuses applied
                         try:
                             self.register(thing)
@@ -466,6 +471,8 @@ class Fit(object):
             if self == targetFit:
                 copied = self  # original fit
                 shadow = True
+                # Don't inspect this, we genuinely want to reassign self
+                # noinspection PyMethodFirstArgAssignment
                 self = copy.deepcopy(self)
                 self.fleet = copied.fleet
                 logger.debug("Handling self projection - making shadow copy of fit. %r => %r", copied, self)
@@ -478,7 +485,7 @@ class Fit(object):
             logger.debug("Fleet is set, gathering gang boosts")
             self.gangBoosts = self.fleet.recalculateLinear(withBoosters=withBoosters)
 
-            timer.checkpoint("Done calculating gang boosts for %r"%self)
+            timer.checkpoint("Done calculating gang boosts for %r" % self)
         elif self.fleet is None:
             self.gangBoosts = None
 
@@ -529,7 +536,7 @@ class Fit(object):
             r = [(self.mode,), self.projectedDrones, self.projectedFighters, self.projectedModules]
 
             # chain unrestricted and restricted into one iterable
-            c = chain.from_iterable(u+r)
+            c = chain.from_iterable(u + r)
 
             # We calculate gang bonuses first so that projected fits get them
             if self.gangBoosts is not None:
@@ -550,7 +557,7 @@ class Fit(object):
                             targetFit.register(item, origin=self)
                             item.calculateModifiedAttributes(targetFit, runTime, True)
 
-            timer.checkpoint('Done with runtime: %s'%runTime)
+            timer.checkpoint('Done with runtime: %s' % runTime)
 
         # Mark fit as calculated
         self.__calculated = True
@@ -583,7 +590,7 @@ class Fit(object):
                     self.modules.append(Module.buildEmpty(slotType))
 
             if amount < 0:
-                #Look for any dummies of that type to remove
+                # Look for any dummies of that type to remove
                 toRemove = []
                 for mod in self.modules:
                     if mod.isEmpty and mod.slot == slotType:
@@ -602,7 +609,7 @@ class Fit(object):
 
     @property
     def modCount(self):
-        x=0
+        x = 0
         for i in xrange(len(self.modules) - 1, -1, -1):
             mod = self.modules[i]
             if not mod.isEmpty:
@@ -725,7 +732,7 @@ class Fit(object):
     def activeDrones(self):
         amount = 0
         for d in self.drones:
-            amount +=d.amountActive
+            amount += d.amountActive
 
         return amount
 
@@ -794,7 +801,6 @@ class Fit(object):
 
         return self.__capRecharge
 
-
     @property
     def sustainableTank(self):
         if self.__sustainableTank is None:
@@ -805,30 +811,29 @@ class Fit(object):
     def calculateSustainableTank(self, effective=True):
         if self.__sustainableTank is None:
             if self.capStable:
-                sustainable = {}
-                sustainable["armorRepair"] = self.extraAttributes["armorRepair"]
-                sustainable["shieldRepair"] = self.extraAttributes["shieldRepair"]
-                sustainable["hullRepair"] = self.extraAttributes["hullRepair"]
+                sustainable = {"armorRepair": self.extraAttributes["armorRepair"],
+                               "shieldRepair": self.extraAttributes["shieldRepair"],
+                               "hullRepair": self.extraAttributes["hullRepair"]}
             else:
                 sustainable = {}
 
                 repairers = []
-                #Map a repairer type to the attribute it uses
+                # Map a repairer type to the attribute it uses
                 groupAttrMap = {"Armor Repair Unit": "armorDamageAmount",
-                     "Ancillary Armor Repairer": "armorDamageAmount",
-                     "Hull Repair Unit": "structureDamageAmount",
-                     "Shield Booster": "shieldBonus",
-                     "Ancillary Shield Booster": "shieldBonus",
-                     "Remote Armor Repairer": "armorDamageAmount",
-                     "Remote Shield Booster": "shieldBonus"}
-                #Map repairer type to attribute
+                                "Ancillary Armor Repairer": "armorDamageAmount",
+                                "Hull Repair Unit": "structureDamageAmount",
+                                "Shield Booster": "shieldBonus",
+                                "Ancillary Shield Booster": "shieldBonus",
+                                "Remote Armor Repairer": "armorDamageAmount",
+                                "Remote Shield Booster": "shieldBonus"}
+                # Map repairer type to attribute
                 groupStoreMap = {"Armor Repair Unit": "armorRepair",
                                  "Hull Repair Unit": "hullRepair",
                                  "Shield Booster": "shieldRepair",
                                  "Ancillary Shield Booster": "shieldRepair",
                                  "Remote Armor Repairer": "armorRepair",
                                  "Remote Shield Booster": "shieldRepair",
-                                 "Ancillary Armor Repairer": "armorRepair",}
+                                 "Ancillary Armor Repairer": "armorRepair", }
 
                 capUsed = self.capUsed
                 for attr in ("shieldRepair", "armorRepair", "hullRepair"):
@@ -854,23 +859,24 @@ class Fit(object):
                                     sustainable[attr] -= amount / (cycleTime / 1000.0)
                                     repairers.append(mod)
 
+                # Sort repairers by efficiency. We want to use the most efficient repairers first
+                repairers.sort(key=lambda mod: mod.getModifiedItemAttr(
+                    groupAttrMap[mod.item.group.name]) / mod.getModifiedItemAttr("capacitorNeed"), reverse=True)
 
-                #Sort repairers by efficiency. We want to use the most efficient repairers first
-                repairers.sort(key=lambda mod: mod.getModifiedItemAttr(groupAttrMap[mod.item.group.name]) / mod.getModifiedItemAttr("capacitorNeed"), reverse = True)
-
-                #Loop through every module until we're above peak recharge
-                #Most efficient first, as we sorted earlier.
-                #calculate how much the repper can rep stability & add to total
+                # Loop through every module until we're above peak recharge
+                # Most efficient first, as we sorted earlier.
+                # calculate how much the repper can rep stability & add to total
                 totalPeakRecharge = self.capRecharge
                 for mod in repairers:
-                    if capUsed > totalPeakRecharge: break
+                    if capUsed > totalPeakRecharge:
+                        break
                     cycleTime = mod.cycleTime
                     capPerSec = mod.capUse
                     if capPerSec is not None and cycleTime is not None:
-                        #Check how much this repper can work
+                        # Check how much this repper can work
                         sustainability = min(1, (totalPeakRecharge - capUsed) / capPerSec)
 
-                        #Add the sustainable amount
+                        # Add the sustainable amount
                         amount = mod.getModifiedItemAttr(groupAttrMap[mod.item.group.name])
                         sustainable[groupStoreMap[mod.item.group.name]] += sustainability * (amount / (cycleTime / 1000.0))
                         capUsed += capPerSec
@@ -880,12 +886,12 @@ class Fit(object):
 
         return self.__sustainableTank
 
-    def calculateCapRecharge(self, percent = PEAK_RECHARGE):
+    def calculateCapRecharge(self, percent=PEAK_RECHARGE):
         capacity = self.ship.getModifiedItemAttr("capacitorCapacity")
         rechargeRate = self.ship.getModifiedItemAttr("rechargeRate") / 1000.0
         return 10 / rechargeRate * sqrt(percent) * (1 - sqrt(percent)) * capacity
 
-    def calculateShieldRecharge(self, percent = PEAK_RECHARGE):
+    def calculateShieldRecharge(self, percent=PEAK_RECHARGE):
         capacity = self.ship.getModifiedItemAttr("shieldCapacity")
         rechargeRate = self.ship.getModifiedItemAttr("shieldRechargeRate") / 1000.0
         return 10 / rechargeRate * sqrt(percent) * (1 - sqrt(percent)) * capacity
@@ -893,13 +899,12 @@ class Fit(object):
     def addDrain(self, src, cycleTime, capNeed, clipSize=0):
         """ Used for both cap drains and cap fills (fills have negative capNeed) """
 
-        rigSize = self.ship.getModifiedItemAttr("rigSize")
         energyNeutralizerSignatureResolution = src.getModifiedItemAttr("energyNeutralizerSignatureResolution")
         signatureRadius = self.ship.getModifiedItemAttr("signatureRadius")
 
-        #Signature reduction, uses the bomb formula as per CCP Larrikin
+        # Signature reduction, uses the bomb formula as per CCP Larrikin
         if energyNeutralizerSignatureResolution:
-            capNeed = capNeed*min(1, signatureRadius/energyNeutralizerSignatureResolution)
+            capNeed = capNeed * min(1, signatureRadius / energyNeutralizerSignatureResolution)
 
         resistance = self.ship.getModifiedItemAttr("energyWarfareResistance") or 1 if capNeed > 0 else 1
         self.__extraDrains.append((cycleTime, capNeed * resistance, clipSize))
@@ -930,7 +935,8 @@ class Fit(object):
                         # If this is a turret, don't stagger activations
                         disableStagger = mod.hardpoint == Hardpoint.TURRET
 
-                        drains.append((int(fullCycleTime), mod.getModifiedItemAttr("capacitorNeed") or 0, mod.numShots or 0, disableStagger))
+                        drains.append((int(fullCycleTime), mod.getModifiedItemAttr("capacitorNeed") or 0,
+                                       mod.numShots or 0, disableStagger))
 
         for fullCycleTime, capNeed, clipSize in self.iterDrains():
             # Stagger incoming effects for cap simulation
@@ -984,7 +990,7 @@ class Fit(object):
 
     @property
     def tank(self):
-        hps = {"passiveShield" : self.calculateShieldRecharge()}
+        hps = {"passiveShield": self.calculateShieldRecharge()}
         for type in ("shield", "armor", "hull"):
             hps["%sRepair" % type] = self.extraAttributes["%sRepair" % type]
 
@@ -1014,13 +1020,12 @@ class Fit(object):
 
         return self.__effectiveSustainableTank
 
-
     def calculateLockTime(self, radius):
         scanRes = self.ship.getModifiedItemAttr("scanResolution")
         if scanRes is not None and scanRes > 0:
             # Yes, this function returns time in seconds, not miliseconds.
             # 40,000 is indeed the correct constant here.
-            return min(40000 / scanRes / asinh(radius)**2, 30*60)
+            return min(40000 / scanRes / asinh(radius) ** 2, 30 * 60)
         else:
             return self.ship.getModifiedItemAttr("scanSpeed") / 1000.0
 
@@ -1073,7 +1078,7 @@ class Fit(object):
 
     def __deepcopy__(self, memo):
         copy = Fit()
-        #Character and owner are not copied
+        # Character and owner are not copied
         copy.character = self.__character
         copy.owner = self.owner
         copy.ship = deepcopy(self.ship, memo)
@@ -1081,7 +1086,16 @@ class Fit(object):
         copy.damagePattern = self.damagePattern
         copy.targetResists = self.targetResists
 
-        toCopy = ("modules", "drones", "fighters", "cargo", "implants", "boosters", "projectedModules", "projectedDrones", "projectedFighters")
+        toCopy = (
+            "modules",
+            "drones",
+            "fighters",
+            "cargo",
+            "implants",
+            "boosters",
+            "projectedModules",
+            "projectedDrones",
+            "projectedFighters")
         for name in toCopy:
             orig = getattr(self, name)
             c = getattr(copy, name)

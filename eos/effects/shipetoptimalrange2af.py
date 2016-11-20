@@ -3,6 +3,8 @@
 # Used by:
 # Ship: Imperial Navy Slicer
 type = "passive"
+
+
 def handler(fit, ship, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Small Energy Turret"),
                                   "maxRange", ship.getModifiedItemAttr("shipBonus2AF"), skill="Amarr Frigate")

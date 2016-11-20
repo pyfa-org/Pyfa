@@ -1,6 +1,8 @@
 # Not used by any item
 type = "projected", "active"
 runTime = "late"
+
+
 def handler(fit, module, context):
     if "projected" not in context: return
     bonus = module.getModifiedItemAttr("structureDamageAmount")

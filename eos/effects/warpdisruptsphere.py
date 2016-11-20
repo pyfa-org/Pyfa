@@ -4,6 +4,8 @@
 # Modules from group: Warp Disrupt Field Generator (7 of 7)
 type = "active"
 runTime = "early"
+
+
 def handler(fit, module, context):
     fit.ship.boostItemAttr("mass", module.getModifiedItemAttr("massBonusPercentage"))
     fit.ship.boostItemAttr("signatureRadius", module.getModifiedItemAttr("signatureRadiusBonus"))

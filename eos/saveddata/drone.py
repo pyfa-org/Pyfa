@@ -1,4 +1,4 @@
-#===============================================================================
+# ===============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of eos.
@@ -15,15 +15,18 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# ===============================================================================
 
-from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut, ChargeAttrShortcut
-from eos.effectHandlerHelpers import HandledItem, HandledCharge
-from sqlalchemy.orm import validates, reconstructor
-import eos.db
 import logging
 
+from sqlalchemy.orm import validates, reconstructor
+
+import eos.db
+from eos.effectHandlerHelpers import HandledItem, HandledCharge
+from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut, ChargeAttrShortcut
+
 logger = logging.getLogger(__name__)
+
 
 class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     DAMAGE_TYPES = ("em", "kinetic", "explosive", "thermal")
@@ -116,8 +119,8 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     def dps(self):
         return self.damageStats()
 
-    def damageStats(self, targetResists = None):
-        if self.__dps == None:
+    def damageStats(self, targetResists=None):
+        if self.__dps is None:
             self.__volley = 0
             self.__dps = 0
             if self.dealsDamage is True and self.amountActive > 0:
@@ -125,12 +128,14 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                     attr = "missileLaunchDuration"
                     getter = self.getModifiedChargeAttr
                 else:
-                    attr =  "speed"
+                    attr = "speed"
                     getter = self.getModifiedItemAttr
 
                 cycleTime = self.getModifiedItemAttr(attr)
 
-                volley = sum(map(lambda d: (getter("%sDamage"%d) or 0) * (1-getattr(targetResists, "%sAmount"%d, 0)), self.DAMAGE_TYPES))
+                volley = sum(
+                    map(lambda d: (getter("%sDamage" % d) or 0) * (1 - getattr(targetResists, "%sAmount" % d, 0)),
+                        self.DAMAGE_TYPES))
                 volley *= self.amountActive
                 volley *= self.getModifiedItemAttr("damageMultiplier") or 1
                 self.__volley = volley
@@ -140,7 +145,7 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     @property
     def miningStats(self):
-        if self.__miningyield == None:
+        if self.__miningyield is None:
             if self.mines is True and self.amountActive > 0:
                 attr = "duration"
                 getter = self.getModifiedItemAttr
@@ -160,7 +165,8 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                  "ecmBurstRange", "maxRange")
         for attr in attrs:
             maxRange = self.getModifiedItemAttr(attr)
-            if maxRange is not None: return maxRange
+            if maxRange is not None:
+                return maxRange
         if self.charge is not None:
             delay = self.getModifiedChargeAttr("explosionDelay")
             speed = self.getModifiedChargeAttr("maxVelocity")
@@ -175,18 +181,21 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         attrs = ("falloff", "falloffEffectiveness")
         for attr in attrs:
             falloff = self.getModifiedItemAttr(attr)
-            if falloff is not None: return falloff
+            if falloff is not None:
+                return falloff
 
     @validates("ID", "itemID", "chargeID", "amount", "amountActive")
     def validator(self, key, val):
         map = {"ID": lambda val: isinstance(val, int),
-               "itemID" : lambda val: isinstance(val, int),
-               "chargeID" : lambda val: isinstance(val, int),
-               "amount" : lambda val: isinstance(val, int) and val >= 0,
-               "amountActive" : lambda val: isinstance(val, int) and val <= self.amount and val >= 0}
+               "itemID": lambda val: isinstance(val, int),
+               "chargeID": lambda val: isinstance(val, int),
+               "amount": lambda val: isinstance(val, int) and val >= 0,
+               "amountActive": lambda val: isinstance(val, int) and self.amount >= val >= 0}
 
-        if map[key](val) == False: raise ValueError(str(val) + " is not a valid value for " + key)
-        else: return val
+        if not map[key](val):
+            raise ValueError(str(val) + " is not a valid value for " + key)
+        else:
+            return val
 
     def clear(self):
         self.__dps = None
@@ -201,7 +210,10 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         # Do not allow to apply offensive modules on ship with offensive module immunite, with few exceptions
         # (all effects which apply instant modification are exception, generally speaking)
         if item.offensive and projectedOnto.ship.getModifiedItemAttr("disallowOffensiveModifiers") == 1:
-            offensiveNonModifiers = set(("energyDestabilizationNew", "leech", "energyNosferatuFalloff", "energyNeutralizerFalloff"))
+            offensiveNonModifiers = {"energyDestabilizationNew",
+                                     "leech",
+                                     "energyNosferatuFalloff",
+                                     "energyNeutralizerFalloff"}
             if not offensiveNonModifiers.intersection(set(item.effects)):
                 return False
         # If assistive modules are not allowed, do not let to apply these altogether
@@ -210,7 +222,7 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         else:
             return True
 
-    def calculateModifiedAttributes(self, fit, runTime, forceProjected = False):
+    def calculateModifiedAttributes(self, fit, runTime, forceProjected=False):
         if self.projected or forceProjected:
             context = "projected", "drone"
             projected = True
@@ -220,8 +232,8 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
         for effect in self.item.effects.itervalues():
             if effect.runTime == runTime and \
-            ((projected == True and effect.isType("projected")) or \
-             projected == False and effect.isType("passive")):
+                    ((projected is True and effect.isType("projected")) or
+                        projected is False and effect.isType("passive")):
                 # See GH issue #765
                 if effect.getattr('grouped'):
                     effect.handler(fit, self, context)

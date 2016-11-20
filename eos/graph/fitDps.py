@@ -1,4 +1,4 @@
-#===============================================================================
+# ===============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of eos.
@@ -15,11 +15,13 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# ===============================================================================
 
-from eos.graph import Graph, Data
-from eos.types import Hardpoint, State
 from math import log, sin, radians, exp
+
+from eos.graph import Graph
+from eos.types import Hardpoint, State
+
 
 class FitDpsGraph(Graph):
     defaults = {"angle": 0,
@@ -32,7 +34,7 @@ class FitDpsGraph(Graph):
         self.fit = fit
 
     def calcDps(self, data):
-        ew = {'signatureRadius':[],'velocity':[]}
+        ew = {'signatureRadius': [], 'velocity': []}
         fit = self.fit
         total = 0
         distance = data["distance"] * 1000
@@ -41,13 +43,17 @@ class FitDpsGraph(Graph):
         for mod in fit.modules:
             if not mod.isEmpty and mod.state >= State.ACTIVE:
                 if "remoteTargetPaintFalloff" in mod.item.effects:
-                    ew['signatureRadius'].append(1+(mod.getModifiedItemAttr("signatureRadiusBonus") / 100) * self.calculateModuleMultiplier(mod, data))
+                    ew['signatureRadius'].append(
+                        1 + (mod.getModifiedItemAttr("signatureRadiusBonus") / 100) * self.calculateModuleMultiplier(
+                            mod, data))
                 if "remoteWebifierFalloff" in mod.item.effects:
                     if distance <= mod.getModifiedItemAttr("maxRange"):
-                        ew['velocity'].append(1+(mod.getModifiedItemAttr("speedFactor") / 100))
+                        ew['velocity'].append(1 + (mod.getModifiedItemAttr("speedFactor") / 100))
                     elif mod.getModifiedItemAttr("falloffEffectiveness") > 0:
-                        #I am affected by falloff
-                        ew['velocity'].append(1+(mod.getModifiedItemAttr("speedFactor") / 100) * self.calculateModuleMultiplier(mod, data))
+                        # I am affected by falloff
+                        ew['velocity'].append(
+                            1 + (mod.getModifiedItemAttr("speedFactor") / 100) * self.calculateModuleMultiplier(mod,
+                                                                                                                data))
 
         ew['signatureRadius'].sort(key=abssort)
         ew['velocity'].sort(key=abssort)
@@ -63,7 +69,7 @@ class FitDpsGraph(Graph):
                 pass
 
         for mod in fit.modules:
-            dps, _ =  mod.damageStats(fit.targetResists)
+            dps, _ = mod.damageStats(fit.targetResists)
             if mod.hardpoint == Hardpoint.TURRET:
                 if mod.state >= State.ACTIVE:
                     total += dps * self.calculateTurretMultiplier(mod, data)
@@ -74,8 +80,9 @@ class FitDpsGraph(Graph):
 
         if distance <= fit.extraAttributes["droneControlRange"]:
             for drone in fit.drones:
-                multiplier = 1 if drone.getModifiedItemAttr("maxVelocity") > 1 else self.calculateTurretMultiplier(drone, data)
-                dps, _ =  drone.damageStats(fit.targetResists)
+                multiplier = 1 if drone.getModifiedItemAttr("maxVelocity") > 1 else self.calculateTurretMultiplier(
+                    drone, data)
+                dps, _ = drone.damageStats(fit.targetResists)
                 total += dps * multiplier
 
         # this is janky as fuck
@@ -98,20 +105,21 @@ class FitDpsGraph(Graph):
 
         sigRadiusFactor = targetSigRad / explosionRadius
         if targetVelocity:
-            velocityFactor = (explosionVelocity / explosionRadius * targetSigRad / targetVelocity) ** damageReductionFactor
+            velocityFactor = (
+                             explosionVelocity / explosionRadius * targetSigRad / targetVelocity) ** damageReductionFactor
         else:
             velocityFactor = 1
 
         return min(sigRadiusFactor, velocityFactor, 1)
 
     def calculateTurretMultiplier(self, mod, data):
-        #Source for most of turret calculation info: http://wiki.eveonline.com/en/wiki/Falloff
+        # Source for most of turret calculation info: http://wiki.eveonline.com/en/wiki/Falloff
         chanceToHit = self.calculateTurretChanceToHit(mod, data)
         if chanceToHit > 0.01:
-            #AvgDPS = Base Damage * [ ( ChanceToHit^2 + ChanceToHit + 0.0499 ) / 2 ]
+            # AvgDPS = Base Damage * [ ( ChanceToHit^2 + ChanceToHit + 0.0499 ) / 2 ]
             multiplier = (chanceToHit ** 2 + chanceToHit + 0.0499) / 2
         else:
-            #All hits are wreckings
+            # All hits are wreckings
             multiplier = chanceToHit * 3
         dmgScaling = mod.getModifiedItemAttr("turretDamageScalingRadius")
         if dmgScaling:
@@ -135,14 +143,15 @@ class FitDpsGraph(Graph):
 
         damageReductionSensitivity = ability.fighter.getModifiedItemAttr("{}ReductionSensitivity".format(prefix))
         if damageReductionSensitivity is None:
-            damageReductionSensitivity = ability.fighter.getModifiedItemAttr("{}DamageReductionSensitivity".format(prefix))
+            damageReductionSensitivity = ability.fighter.getModifiedItemAttr(
+                "{}DamageReductionSensitivity".format(prefix))
 
         targetSigRad = explosionRadius if targetSigRad is None else targetSigRad
         sigRadiusFactor = targetSigRad / explosionRadius
 
         if targetVelocity:
             velocityFactor = (explosionVelocity / explosionRadius * targetSigRad / targetVelocity) ** (
-            log(damageReductionFactor) / log(damageReductionSensitivity))
+                log(damageReductionFactor) / log(damageReductionSensitivity))
         else:
             velocityFactor = 1
 
@@ -164,8 +173,8 @@ class FitDpsGraph(Graph):
         return 0.5 ** (trackingEq + rangeEq)
 
     def calculateModuleMultiplier(self, mod, data):
-        #Simplified formula, we make some assumptions about the module
-        #This is basically the calculateTurretChanceToHit without tracking values
+        # Simplified formula, we make some assumptions about the module
+        # This is basically the calculateTurretChanceToHit without tracking values
         distance = data["distance"] * 1000
         turretOptimal = mod.maxRange
         turretFalloff = mod.falloff

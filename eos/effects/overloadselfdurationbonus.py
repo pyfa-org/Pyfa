@@ -16,5 +16,7 @@
 # Module: Reactive Armor Hardener
 # Module: Target Spectrum Breaker
 type = "overheat"
+
+
 def handler(fit, module, context):
     module.boostItemAttr("duration", module.getModifiedItemAttr("overloadSelfDurationBonus") or 0)

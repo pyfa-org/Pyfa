@@ -3,13 +3,15 @@
 # Used by:
 # Modules from group: Drone Tracking Enhancer (10 of 10)
 type = "passive"
+
+
 def handler(fit, module, context):
     fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill("Drones"),
                                  "maxRange", module.getModifiedItemAttr("maxRangeBonus"),
-                                 stackingPenalties = True)
+                                 stackingPenalties=True)
     fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill("Drones"),
                                  "falloff", module.getModifiedItemAttr("falloffBonus"),
-                                 stackingPenalties = True)
+                                 stackingPenalties=True)
     fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill("Drones"),
                                  "trackingSpeed", module.getModifiedItemAttr("trackingSpeedBonus"),
-                                 stackingPenalties = True)
+                                 stackingPenalties=True)

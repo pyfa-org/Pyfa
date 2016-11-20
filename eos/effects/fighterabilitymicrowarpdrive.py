@@ -11,6 +11,10 @@ grouped = True
 
 type = "active"
 runTime = "late"
+
+
 def handler(fit, module, context):
     module.boostItemAttr("maxVelocity", module.getModifiedItemAttr("fighterAbilityMicroWarpDriveSpeedBonus"))
-    module.boostItemAttr("signatureRadius", module.getModifiedItemAttr("fighterAbilityMicroWarpDriveSignatureRadiusBonus"), stackingPenalties = True)
+    module.boostItemAttr("signatureRadius",
+                         module.getModifiedItemAttr("fighterAbilityMicroWarpDriveSignatureRadiusBonus"),
+                         stackingPenalties=True)

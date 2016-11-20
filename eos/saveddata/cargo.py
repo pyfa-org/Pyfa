@@ -1,4 +1,4 @@
-#===============================================================================
+# ===============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of eos.
@@ -15,18 +15,20 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# ===============================================================================
 
-from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut, ChargeAttrShortcut
-from eos.effectHandlerHelpers import HandledItem, HandledCharge
-from sqlalchemy.orm import validates, reconstructor
-import eos.db
 import logging
+
+from sqlalchemy.orm import validates, reconstructor
+
+import eos.db
+from eos.effectHandlerHelpers import HandledItem
+from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut
 
 logger = logging.getLogger(__name__)
 
-class Cargo(HandledItem, ItemAttrShortcut):
 
+class Cargo(HandledItem, ItemAttrShortcut):
     def __init__(self, item):
         """Initialize cargo from the program"""
         self.__item = item
@@ -69,10 +71,12 @@ class Cargo(HandledItem, ItemAttrShortcut):
     @validates("fitID", "itemID")
     def validator(self, key, val):
         map = {"fitID": lambda val: isinstance(val, int),
-               "itemID" : lambda val: isinstance(val, int)}
+               "itemID": lambda val: isinstance(val, int)}
 
-        if map[key](val) == False: raise ValueError(str(val) + " is not a valid value for " + key)
-        else: return val
+        if not map[key](val):
+            raise ValueError(str(val) + " is not a valid value for " + key)
+        else:
+            return val
 
     def __deepcopy__(self, memo):
         copy = Cargo(self.item)

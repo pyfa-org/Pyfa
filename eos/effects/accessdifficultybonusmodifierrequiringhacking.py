@@ -5,7 +5,9 @@
 # Implant: Poteque 'Prospector' Environmental Analysis EY-1005
 # Implant: Poteque 'Prospector' Hacking HC-905
 type = "passive"
+
+
 def handler(fit, container, context):
     fit.modules.filteredItemIncrease(lambda c: c.item.requiresSkill("Hacking"),
-                                  "accessDifficultyBonus",
-                                  container.getModifiedItemAttr("accessDifficultyBonusModifier"), position="post")
+                                     "accessDifficultyBonus",
+                                     container.getModifiedItemAttr("accessDifficultyBonusModifier"), position="post")

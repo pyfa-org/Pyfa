@@ -3,6 +3,8 @@
 # Used by:
 # Items from category: Charge (465 of 884)
 type = "passive"
+
+
 def handler(fit, module, context):
     # Dirty hack to work around cap charges setting cap booster
     # injection amount to zero

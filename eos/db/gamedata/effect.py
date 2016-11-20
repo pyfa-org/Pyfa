@@ -1,4 +1,4 @@
-#===============================================================================
+# ===============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of eos.
@@ -15,35 +15,35 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# ===============================================================================
 
 from sqlalchemy import Column, String, Integer, Boolean, Table, ForeignKey
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import mapper, synonym, relation, deferred
-from eos.types import Effect, EffectInfo
+
 from eos.db import gamedata_meta
+from eos.types import Effect, EffectInfo
 
 typeeffects_table = Table("dgmtypeeffects", gamedata_meta,
                           Column("typeID", Integer, ForeignKey("invtypes.typeID"), primary_key=True, index=True),
                           Column("effectID", Integer, ForeignKey("dgmeffects.effectID"), primary_key=True))
 
 effects_table = Table("dgmeffects", gamedata_meta,
-                      Column("effectID", Integer, primary_key = True),
+                      Column("effectID", Integer, primary_key=True),
                       Column("effectName", String),
                       Column("description", String),
                       Column("published", Boolean),
                       Column("isAssistance", Boolean),
                       Column("isOffensive", Boolean))
 
-
 mapper(EffectInfo, effects_table,
-       properties = {"ID" : synonym("effectID"),
-                     "name" : synonym("effectName"),
-                     "description" : deferred(effects_table.c.description)})
+       properties={"ID": synonym("effectID"),
+                   "name": synonym("effectName"),
+                   "description": deferred(effects_table.c.description)})
 
 mapper(Effect, typeeffects_table,
-       properties = {"ID": synonym("effectID"),
-                     "info": relation(EffectInfo, lazy=False)})
+       properties={"ID": synonym("effectID"),
+                   "info": relation(EffectInfo, lazy=False)})
 
 Effect.name = association_proxy("info", "name")
 Effect.description = association_proxy("info", "description")
