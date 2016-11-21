@@ -18,7 +18,7 @@ def handler(fit, src, context):
                                   src.getModifiedItemAttr("industrialCoreRemoteLogisticsDurationBonus"),
                                   )
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Capital Shield Emission Systems"),
-                                  "capacitorNeed",
+                                  "maxRange",
                                   src.getModifiedItemAttr("industrialCoreRemoteLogisticsRangeBonus"),
                                   )
 
@@ -75,10 +75,6 @@ def handler(fit, src, context):
                                  "maxVelocity",
                                  src.getModifiedItemAttr("industrialCoreBonusDroneVelocity"),
                                  )
-    fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill("Ice Harvesting Drone Operation"),
-                                 "duration",
-                                 src.getModifiedItemAttr("industrialCoreBonusDroneIceHarvesting"),
-                                 )
     fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill("Drones"),
                                  "damageMultiplier",
                                  src.getModifiedItemAttr("industrialCoreBonusDroneDamageHP"),
@@ -97,4 +93,3 @@ def handler(fit, src, context):
                                  )
 
     #  Todo: remote impedance (no reps, etc)
-2
