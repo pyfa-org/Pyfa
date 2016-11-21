@@ -6,7 +6,10 @@ Migration 17
 
 import sqlalchemy
 
+
 def upgrade(saveddata_engine):
+    from eos.db import saveddata_session
+    from eos.db.saveddata.fit import commandFits_table
 
     sql = """
           SELECT sm.memberID as boostedFit, s.leaderID AS squadBoost, w.leaderID AS wingBoost, g.leaderID AS gangBoost
@@ -15,18 +18,22 @@ def upgrade(saveddata_engine):
           JOIN wings w on w.ID = s.wingID
           JOIN gangs g on g.ID = w.gangID
           """
-    with saveddata_engine.connect() as connection:
-        results = saveddata_engine.execute(sql)
 
+    results = saveddata_session.execute(sql)
 
-        for row in results:
-            boosted = row["boostedFit"]
-            types = ("squad", "wing", "gang")
-            for x in types:
-                value = row["{}Boost".format(x)]
-                if value is None:
-                    continue
-                try:
-                        connection.execute('INSERT INTO commandFits ("boosterID", "boostedID", "active") VALUES (?, ?, 1)', (value, boosted))
-                except Exception, e:
-                    continue
+    inserts = []
+
+    for row in results:
+        boosted = row["boostedFit"]
+        types = ("squad", "wing", "gang")
+        for x in types:
+            value = row["{}Boost".format(x)]
+            if value is None:
+                continue
+
+            inserts.append({"boosterID": value, "boostedID": boosted, "active": 1})
+            try:
+                saveddata_session.execute(commandFits_table.insert(), {"boosterID": value, "boostedID": boosted, "active": 1})
+            except Exception, e:
+                pass
+    saveddata_session.commit()
