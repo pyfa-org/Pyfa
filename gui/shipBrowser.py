@@ -1552,6 +1552,15 @@ class FitItem(SFItem.SFBrowserItem):
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=activeFit))
             self.mainFrame.additionsPane.select("Projected")
 
+    def OnAddCommandFit(self, event):
+        activeFit = self.mainFrame.getActiveFit()
+        if activeFit:
+            sFit = service.Fit.getInstance()
+            commandFit = sFit.getFit(self.fitID)
+            sFit.addCommandFit(activeFit, commandFit)
+            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=activeFit))
+            self.mainFrame.additionsPane.select("Command")
+
     def OnMouseCaptureLost(self, event):
         ''' Destroy drag information (GH issue #479)'''
         if self.dragging and self.dragged:
@@ -1564,6 +1573,11 @@ class FitItem(SFItem.SFBrowserItem):
 
     def OnContextMenu(self, event):
         ''' Handles context menu for fit. Dragging is handled by MouseLeftUp() '''
+        sFit = service.Fit.getInstance()
+        fit = sFit.getFit(self.mainFrame.getActiveFit())
+
+        if not fit:
+            return
 
         pos = wx.GetMousePosition()
         pos = self.ScreenToClient(pos)
@@ -1572,13 +1586,9 @@ class FitItem(SFItem.SFBrowserItem):
         self.mainFrame.additionsPane.gangPage.draggedFitID = self.fitID
 
         menu = wx.Menu()
-        toggleItem = menu.Append(wx.ID_ANY, "Booster Fit", kind=wx.ITEM_CHECK)
-        menu.Check(toggleItem.GetId(), self.fitBooster)
-        self.Bind(wx.EVT_MENU, self.OnToggleBooster, toggleItem)
-
-        sFit = service.Fit.getInstance()
-        fit = sFit.getFit(self.mainFrame.getActiveFit())
-
+        # toggleItem = menu.Append(wx.ID_ANY, "Booster Fit", kind=wx.ITEM_CHECK)
+        # menu.Check(toggleItem.GetId(), self.fitBooster)
+        # self.Bind(wx.EVT_MENU, self.OnToggleBooster, toggleItem)
 
         # if fit and not fit.isStructure:
         #     # If there is an active fit, get menu for setting individual boosters
@@ -1589,6 +1599,9 @@ class FitItem(SFItem.SFBrowserItem):
         if fit:
             projectedItem = menu.Append(wx.ID_ANY, "Project onto Active Fit")
             self.Bind(wx.EVT_MENU, self.OnProjectToFit, projectedItem)
+
+            commandItem = menu.Append(wx.ID_ANY, "Add Command Booster")
+            self.Bind(wx.EVT_MENU, self.OnAddCommandFit, commandItem )
 
         self.PopupMenu(menu, pos)
 

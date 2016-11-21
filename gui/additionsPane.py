@@ -82,7 +82,7 @@ class AdditionsPane(TogglePanel):
 
         self.notebook.SetSelection(0)
 
-    PANES = ["Drones", "Fighters", "Cargo", "Implants", "Boosters", "Projected", "Fleet"]
+    PANES = ["Drones", "Fighters", "Cargo", "Implants", "Boosters", "Projected", "Command"]
     def select(self, name):
         self.notebook.SetSelection(self.PANES.index(name))
 
