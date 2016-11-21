@@ -1085,6 +1085,7 @@ class Fit(object):
         copy.name = "%s copy" % self.name
         copy.damagePattern = self.damagePattern
         copy.targetResists = self.targetResists
+        copy.notes = self.notes
 
         toCopy = (
             "modules",
