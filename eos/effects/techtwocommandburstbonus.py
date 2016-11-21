@@ -4,4 +4,4 @@ runTime = "late"
 
 def handler(fit, module, context):
     for x in xrange(1, 4):
-        module.boostChargeAttr("warfareBuff{}Modifier".format(x), module.getModifiedItemAttr("commandBurstStrengthBonus"))
+        module.boostChargeAttr("warfareBuff{}Multiplier".format(x), module.getModifiedItemAttr("commandBurstStrengthBonus"))

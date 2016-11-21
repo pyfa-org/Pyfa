@@ -1,7 +1,7 @@
-# moduleBonusWarfareLinkShield
+# moduleBonusWarfareLinkMining
 #
 # Used by:
-# Variations of module: Shield Command Burst I (2 of 2)
+# Variations of module: Mining Foreman Burst I (2 of 2)
 type = "active"
 runTime = "late"
 

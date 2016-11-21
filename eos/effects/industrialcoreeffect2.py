@@ -23,7 +23,7 @@ def handler(fit, module, context):
                                                  (
                                                      "Shield Command",
                                                  ),
-                                     "warfareBuff4Modifier",
+                                     "warfareBuff4Multiplier",
                                      module.getModifiedItemAttr("shipBonusORECapital3"),
                                      skill="Capital Industrial Ships",
                                      )
