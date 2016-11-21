@@ -93,3 +93,9 @@ def handler(fit, src, context):
                                  )
 
     #  Todo: remote impedance (no reps, etc)
+    fit.ship.increaseItemAttr("warpScrambleStatus", src.getModifiedItemAttr("siegeModeWarpStatus"))
+    fit.ship.boostItemAttr("remoteRepairImpedance", src.getModifiedItemAttr("remoteRepairImpedanceBonus"))
+    fit.ship.increaseItemAttr("disallowTethering", src.getModifiedItemAttr("disallowTethering"))
+    fit.ship.boostItemAttr("sensorDampenerResistance", src.getModifiedItemAttr("sensorDampenerResistanceBonus"))
+    fit.ship.boostItemAttr("remoteAssistanceImpedance", src.getModifiedItemAttr("remoteAssistanceImpedanceBonus"))
+    fit.ship.increaseItemAttr("disallowDocking", src.getModifiedItemAttr("disallowDocking"))
