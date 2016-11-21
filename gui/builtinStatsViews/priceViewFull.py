@@ -69,6 +69,10 @@ class PriceViewFull(StatsView):
             setattr(self, "labelPrice%s" % type.capitalize(), lbl)
             hbox.Add(lbl, 0, wx.ALIGN_LEFT)
 
+        self.priceChoice = wx.Choice(contentPanel, choices=["Jita", "Amarr", "Dodixie", "Rens", "Hek"])
+        contentSizer.Add(self.priceChoice, 1, wx.RIGHT | wx.LEFT, 3)
+        self.priceChoice.SetStringSelection("Jita")
+
     def refreshPanel(self, fit):
         if fit is not None:
             self.fit = fit
