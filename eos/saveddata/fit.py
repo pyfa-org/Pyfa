@@ -511,6 +511,9 @@ class Fit(object):
         if self.commandFits and not withBoosters:
             print "Calculatate command fits and apply to fit"
             for fit in self.commandFits:
+                if self == fit:
+                    print "nope"
+                    continue
                 print "calculating ", fit
                 fit.calculateModifiedAttributes(self, True)
                 #
