@@ -10,7 +10,7 @@ class NotesView(wx.Panel):
         self.lastFitId = None
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         mainSizer = wx.BoxSizer(wx.VERTICAL)
-        self.editNotes = wx.TextCtrl(self, style=wx.TE_MULTILINE)
+        self.editNotes = wx.TextCtrl(self, style=wx.TE_MULTILINE | wx.BORDER_NONE, )
         mainSizer.Add(self.editNotes, 1, wx.EXPAND)
         self.SetSizer(mainSizer)
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
