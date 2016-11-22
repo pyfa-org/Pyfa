@@ -4,6 +4,7 @@
 # Implants named like: Exile Booster (3 of 4)
 # Implants named like: Mindflood Booster (3 of 4)
 type = "boosterSideEffect"
+activeByDefault = False
 
 
 def handler(fit, booster, context):

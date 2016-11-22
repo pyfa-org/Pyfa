@@ -82,7 +82,9 @@ class Ship(ItemAttrShortcut, HandledItem):
         if forceProjected:
             return
         for effect in self.item.effects.itervalues():
-            if effect.runTime == runTime and effect.isType("passive"):
+            if effect.runTime == runTime and \
+                    effect.isType("passive") and \
+                    effect.activeByDefault:
                 # Ships have effects that utilize the level of a skill as an
                 # additional operator to the modifier. These are defined in
                 # the effect itself, and these skillbooks are registered when

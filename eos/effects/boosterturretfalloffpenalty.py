@@ -4,6 +4,7 @@
 # Implants named like: Drop Booster (3 of 4)
 # Implants named like: X Instinct Booster (3 of 4)
 type = "boosterSideEffect"
+activeByDefault = False
 
 
 def handler(fit, booster, context):

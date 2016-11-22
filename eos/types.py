@@ -34,7 +34,8 @@ from eos.saveddata.fighter import Fighter
 from eos.saveddata.cargo import Cargo
 from eos.saveddata.implant import Implant
 from eos.saveddata.implantSet import ImplantSet
-from eos.saveddata.booster import SideEffect
+# Legacy booster side effect code, disabling as not currently implemented
+# from eos.saveddata.booster import SideEffect
 from eos.saveddata.booster import Booster
 from eos.saveddata.fit import Fit, ImplantLocation
 from eos.saveddata.mode import Mode
