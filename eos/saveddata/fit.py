@@ -462,6 +462,8 @@ class Fit(object):
 
             context = ("commandRun", thing.__class__.__name__.lower())
             if isinstance(thing, Module):
+                # This should always be a gang effect, otherwise it wouldn't be added to commandBonuses
+                # @todo: Check this
                 if effect.isType("gang"):
                     # todo: ensure that these are run with the module is active only
                     context += ("commandRun",)
@@ -509,6 +511,9 @@ class Fit(object):
         if self.commandFits and not withBoosters:
             print "Calculatate command fits and apply to fit"
             for fit in self.commandFits:
+                if self == fit:
+                    print "nope"
+                    continue
                 print "calculating ", fit
                 fit.calculateModifiedAttributes(self, True)
                 #

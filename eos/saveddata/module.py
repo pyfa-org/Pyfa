@@ -625,6 +625,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             if not projected or (self.projected and not forceProjected) or gang:
                 for effect in self.charge.effects.itervalues():
                     if effect.runTime == runTime and \
+                        effect.activeByDefault and \
                         (effect.isType("offline") or
                         (effect.isType("passive") and self.state >= State.ONLINE) or
                         (effect.isType("active") and self.state >= State.ACTIVE)) and \
@@ -645,19 +646,18 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                     if effect.runTime == runTime and \
                             effect.isType("overheat") \
                             and not forceProjected \
+                            and effect.activeByDefault \
                             and ((gang and effect.isType("gang")) or not gang):
                         effect.handler(fit, self, context)
 
             for effect in self.item.effects.itervalues():
                 if effect.runTime == runTime and \
+                        effect.activeByDefault and \
                         (effect.isType("offline") or
                              (effect.isType("passive") and self.state >= State.ONLINE) or
                              (effect.isType("active") and self.state >= State.ACTIVE))\
                         and ((projected and effect.isType("projected")) or not projected)\
                         and ((gang and effect.isType("gang")) or not gang):
-                    thing = effect.isType("gang")
-                    if gang:
-                        pass
                     effect.handler(fit, self, context)
 
     @property
