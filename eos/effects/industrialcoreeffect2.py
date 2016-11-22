@@ -54,10 +54,7 @@ def handler(fit, src, context):
                                   )
 
     #  Command Burst Range Bonus
-    fit.modules.filteredItemBoost(lambda mod: mod.item.group.name in
-                                              (
-                                                  "Command Burst",
-                                              ),
+    fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Leadership"),
                                   "buffDuration",
                                   src.getModifiedItemAttr("industrialCoreBonusCommandBurstRange"),
                                   )
