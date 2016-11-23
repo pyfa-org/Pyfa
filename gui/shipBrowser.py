@@ -1454,7 +1454,10 @@ class FitItem(SFItem.SFBrowserItem):
         self.shipName, self.shipTrait, self.fitName, self.fitBooster, self.timestamp = shipFittingInfo
         self.shipTrait = re.sub("<.*?>", " ", self.shipTrait)
         # see GH issue #62
-        if self.fitBooster is None: self.fitBooster = False
+
+        # Disabling this due to change in gang boosts Nov 2016
+        #if self.fitBooster is None: self.fitBooster = False
+        self.fitBooster = False
 
         self.boosterBmp = BitmapLoader.getBitmap("fleet_fc_small", "gui")
         self.copyBmp    = BitmapLoader.getBitmap("fit_add_small", "gui")
