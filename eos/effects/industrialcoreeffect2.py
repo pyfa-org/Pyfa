@@ -61,6 +61,12 @@ def handler(fit, src, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Leadership"),
                                   "maxRange",
                                   src.getModifiedItemAttr("industrialCoreBonusCommandBurstRange"),
+                                  stackingPenalties=True
+                                  )
+    fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Leadership"),
+                                  "falloffEffectiveness",
+                                  src.getModifiedItemAttr("industrialCoreBonusCommandBurstRange"),
+                                  stackingPenalties=True
                                   )
 
     # Drone Bonuses
