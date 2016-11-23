@@ -24,6 +24,11 @@ def handler(fit, src, context):
                                   src.getModifiedItemAttr("industrialCoreRemoteLogisticsRangeBonus"),
                                   stackingPenalties=True
                                   )
+    fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Capital Shield Emission Systems"),
+                                  "falloffEffectiveness",
+                                  src.getModifiedItemAttr("industrialCoreRemoteLogisticsRangeBonus"),
+                                  stackingPenalties=True
+                                  )
 
     #  Local Shield Repper Bonuses
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Capital Shield Operation"),
