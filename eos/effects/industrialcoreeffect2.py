@@ -10,7 +10,9 @@ def handler(fit, src, context):
     fit.extraAttributes["siege"] = True
     fit.ship.boostItemAttr("maxVelocity", src.getModifiedItemAttr("speedFactor"))
     fit.ship.multiplyItemAttr("mass", src.getModifiedItemAttr("siegeMassMultiplier"))
-    fit.ship.multiplyItemAttr("scanResolution", src.getModifiedItemAttr("scanResolutionMultiplier"))
+    fit.ship.multiplyItemAttr("scanResolution",
+                              src.getModifiedItemAttr("scanResolutionMultiplier"),
+                              stackingPenalties=True)
 
     #  Remote Shield Repper Bonuses
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Capital Shield Emission Systems"),
@@ -20,6 +22,7 @@ def handler(fit, src, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Capital Shield Emission Systems"),
                                   "maxRange",
                                   src.getModifiedItemAttr("industrialCoreRemoteLogisticsRangeBonus"),
+                                  stackingPenalties=True
                                   )
 
     #  Local Shield Repper Bonuses
@@ -30,6 +33,7 @@ def handler(fit, src, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Capital Shield Operation"),
                                   "shieldBonus",
                                   src.getModifiedItemAttr("industrialCoreLocalLogisticsAmountBonus"),
+                                  stackingPenalties=True
                                   )
 
     # Mining Burst Bonuses
@@ -55,7 +59,7 @@ def handler(fit, src, context):
 
     #  Command Burst Range Bonus
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Leadership"),
-                                  "buffDuration",
+                                  "maxRange",
                                   src.getModifiedItemAttr("industrialCoreBonusCommandBurstRange"),
                                   )
 
@@ -75,6 +79,7 @@ def handler(fit, src, context):
     fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill("Drones"),
                                  "damageMultiplier",
                                  src.getModifiedItemAttr("industrialCoreBonusDroneDamageHP"),
+                                 stackingPenalties=True
                                  )
     fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill("Drones"),
                                  "shieldCapacity",
