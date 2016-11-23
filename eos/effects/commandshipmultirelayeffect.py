@@ -6,13 +6,6 @@
 # Ship: Rorqual
 type = "passive"
 
-
-def handler(fit, ship, context):
-    fit.modules.filteredItemIncrease(lambda mod: mod.item.group.name in
-                                                 (
-                                                     "Command Burst",
-                                                 ),
-                                     "maxGroupOnline",
-                                     ship.getModifiedItemAttr("maxGangModules"),
-                                     )
-#  TODO: test
+def handler(fit, src, context):
+    fit.modules.filteredItemIncrease(lambda mod: mod.item.requiresSkill("Leadership"), "maxGroupActive", src.getModifiedItemAttr("maxGangModules"))
+    fit.modules.filteredItemIncrease(lambda mod: mod.item.requiresSkill("Leadership"), "maxGroupOnline", src.getModifiedItemAttr("maxGangModules"))
