@@ -8,7 +8,7 @@ runTime = "early"
 
 def handler(fit, src, context):
     fit.extraAttributes["siege"] = True
-    fit.ship.boostItemAttr("maxVelocity", src.getModifiedItemAttr("speedFactor"))
+    fit.ship.boostItemAttr("maxVelocity", src.getModifiedItemAttr("speedFactor"), stackingPenalties=True)
     fit.ship.multiplyItemAttr("mass", src.getModifiedItemAttr("siegeMassMultiplier"))
     fit.ship.multiplyItemAttr("scanResolution",
                               src.getModifiedItemAttr("scanResolutionMultiplier"),
@@ -23,6 +23,10 @@ def handler(fit, src, context):
                                   "maxRange",
                                   src.getModifiedItemAttr("industrialCoreRemoteLogisticsRangeBonus"),
                                   stackingPenalties=True
+                                  )
+    fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Capital Shield Emission Systems"),
+                                  "capacitorNeed",
+                                  src.getModifiedItemAttr("industrialCoreRemoteLogisticsDurationBonus")
                                   )
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Capital Shield Emission Systems"),
                                   "falloffEffectiveness",
@@ -68,11 +72,6 @@ def handler(fit, src, context):
                                   src.getModifiedItemAttr("industrialCoreBonusCommandBurstRange"),
                                   stackingPenalties=True
                                   )
-    fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Leadership"),
-                                  "falloffEffectiveness",
-                                  src.getModifiedItemAttr("industrialCoreBonusCommandBurstRange"),
-                                  stackingPenalties=True
-                                  )
 
     # Drone Bonuses
     fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill("Ice Harvesting Drone Operation"),
@@ -87,6 +86,7 @@ def handler(fit, src, context):
                                  "maxVelocity",
                                  src.getModifiedItemAttr("industrialCoreBonusDroneVelocity"),
                                  )
+
     fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill("Drones"),
                                  "damageMultiplier",
                                  src.getModifiedItemAttr("industrialCoreBonusDroneDamageHP"),
