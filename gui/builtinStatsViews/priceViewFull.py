@@ -23,6 +23,8 @@ from gui import builtinStatsViews
 from gui.bitmapLoader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 import service
+from service import Price
+
 
 class PriceViewFull(StatsView):
     name = "priceViewFull"
@@ -69,9 +71,10 @@ class PriceViewFull(StatsView):
             setattr(self, "labelPrice%s" % type.capitalize(), lbl)
             hbox.Add(lbl, 0, wx.ALIGN_LEFT)
 
-        self.priceChoice = wx.Choice(contentPanel, choices=["Jita", "Amarr", "Dodixie", "Rens", "Hek"])
+        self.priceChoice = wx.Choice(contentPanel, choices=Price.systemsList.keys())
         contentSizer.Add(self.priceChoice, 1, wx.RIGHT | wx.LEFT, 3)
         self.priceChoice.SetStringSelection("Jita")
+        Price.currentSystemId = Price.systemsList.get(self.priceChoice.GetString(self.priceChoice.GetSelection()))
 
     def refreshPanel(self, fit):
         if fit is not None:
