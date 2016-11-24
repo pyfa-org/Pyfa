@@ -60,7 +60,7 @@ def main(db, json_path):
         "evetypes": eos.gamedata.Item,
         "phbtraits": eos.gamedata.Traits,
         "phbmetadata": eos.gamedata.MetaData,
-        "marketProxy()_GetMarketGroups()": eos.gamedata.MarketGroup
+        "mapbulk_marketGroups": eos.gamedata.MarketGroup
     }
 
     fieldMapping = {
@@ -89,7 +89,7 @@ def main(db, json_path):
             "description_en-us": "description"
         },
         #phbtraits???
-        "marketProxy()_GetMarketGroups()": {
+        "mapbulk_marketGroups": {
             "marketGroupName_en-us": "marketGroupName",
             "description_en-us": "description"
         }
