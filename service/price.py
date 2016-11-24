@@ -29,6 +29,16 @@ TIMEOUT = 15*60  # Network timeout delay for connection issues, 15 minutes
 
 class Price():
 
+    systemsList = {
+        "Jita": 30000142,
+        "Amarr": 30002187,
+        "Dodixie": 30002659,
+        "Rens": 30002510,
+        "Hek": 30002053
+    }
+
+    currentSystemId = systemsList.get("Jita")
+
     @classmethod
     def fetchPrices(cls, prices):
         """Fetch all prices passed to this method"""
@@ -64,7 +74,7 @@ class Price():
 
         # Base request URL
         baseurl = "https://eve-central.com/api/marketstat"
-        data.append(("usesystem", 30000142)) # Use Jita for market
+        data.append(("usesystem", Price.currentSystemId)) # Use Jita for market
 
         for typeID in toRequest:  # Add all typeID arguments
             data.append(("typeid", typeID))
