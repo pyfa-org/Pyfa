@@ -1305,8 +1305,7 @@ class RecalcJob(threading.Thread):
                         skipPause = True
                         logger.debug("DB commit error")
 
-                        # fit.inited = True
-                        logger.debug("=" * 10 + "recalc end" + "=" * 10)
+                    logger.debug("=" * 10 + "recalc end" + "=" * 10)
 
                 # Don't run the recalc again, unless something went wrong
                 if not skipPause:
