@@ -19,6 +19,7 @@
 
 import locale
 import copy
+import config
 import threading
 import logging
 import wx
@@ -44,7 +45,8 @@ from service.port import Port
 logger = logging.getLogger(__name__)
 
 schedule = sched.scheduler(time.time, time.sleep)
-recalcJob = []
+recalcJobID = []
+
 
 class FitBackupThread(threading.Thread):
     def __init__(self, path, callback):
@@ -98,8 +100,8 @@ class Fit(object):
         self.character = Character.getInstance().all5()
         self.booster = False
         self.dirtyFitIDs = set()
-        RecalcTimer = RecalcJob()
-        RecalcTimer.start()
+        self.RecalcTimer = RecalcJob()
+        self.RecalcTimer.start()
 
         serviceFittingDefaultOptions = {
             "useGlobalCharacter": False,
@@ -1128,97 +1130,50 @@ class Fit(object):
             return None
 
         fit = eos.db.getFit(fitID)
+
+        if fit.factorReload is not fit.serviceFittingOptions["useGlobalForceReload"]:
+            fit.factorReload = fit.serviceFittingOptions["useGlobalForceReload"]
+
         eos.db.commit()
         self.recalc(fit)
 
     def recalc(self, fit, withBoosters=True):
-        global recalcJob
-
-        logger.debug("Thread Jobs: " + str(threading.active_count()))
-        logger.debug("Scheduler Queue: " + str(schedule.queue.__len__()))
+        global recalcJobID
 
         if not schedule.empty():
-            if recalcJob in schedule.queue:
+            if recalcJobID in schedule.queue:
                 logger.debug("Job already scheduled. Cancelling existing job")
-                schedule.cancel(recalcJob)
+                schedule.cancel(recalcJobID)
                 pass
             else:
                 pass
 
-        logger.debug("Scheduling fitting job")
-            #args = [fit, withBoosters]
-        args = [fit, True]
-        recalcJob = schedule.enter(500,1,self.triggerRecalc,args)
+        if fit:
+            logger.debug("Scheduling fitting job")
+            args = []
+            #  Slow down processing to account for the longer time debug mode takes
+            if config.debug:
+                recalcJobID = schedule.enter(2, 1, self.triggerRecalc, args)
+            else:
+                recalcJobID = schedule.enter(1, 1, self.triggerRecalc, args)
 
-        '''
-        if not threading.active_count():
-            logger.debug("Scheduling Fitting Thread")
-            threading.Timer(1, self.runRecalcJobsDos, ()).start()
-        '''
+            #schedule.run()
+        else:
+            logger.debug("Fit empty, skipping job creation.")
 
 
     def triggerRecalc(self):
-        global recalcJob
+        global recalcJobID
         if schedule.empty():
             logger.debug("Scheduler empty")
             pass
         else:
-            RecalcTimer = RecalcJob()
-            RecalcTimer.resume()
-
-
-
-    def runRecalcJobs(self):
-        if schedule.empty():
-            logger.debug("Scheduler empty")
             pass
 
-            pass
-        else:
-            logger.debug("Running scheduled jobs")
-            logger.debug("Thread Jobs: " + str(threading.active_count()))
-            logger.debug("Scheduler Queue: " + str(schedule.queue.__len__()))
-            schedule.run()
+        logger.debug("Running recalc job")
+        # RecalcTimer = RecalcJob()
+        self.RecalcTimer.resume()
 
-            logger.debug("=" * 10 + "refresh gui" + "=" * 10)
-            self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-            self.sFit = Fit.getInstance()
-            fitID = self.mainFrame.getActiveFit()
-            self.sFit.refreshFit(fitID)
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
-            # event.Skip()
-
-    def recalcJobs(self, fit, withBoosters=True):
-        logger.debug("=" * 10 + "recalc" + "=" * 10)
-        if fit.factorReload is not self.serviceFittingOptions["useGlobalForceReload"]:
-            fit.factorReload = self.serviceFittingOptions["useGlobalForceReload"]
-        fit.clear()
-        fit.calculateModifiedAttributes(withBoosters=withBoosters)
-        fit.fill()
-
-        # Check that the states of all modules are valid
-        self.checkStates(fit, None)
-
-        eos.db.commit()
-        #fit.inited = True
-        logger.debug("=" * 10 + "recalc end" + "=" * 10)
-
-
-        pass
-
-    @staticmethod
-    def namedTimer(name, interval, function, *args, **kwargs):
-        """Factory function to create named Timer objects.
-
-        Timers call a function after a specified number of seconds:
-
-            t = Timer('Name', 30.0, f, args=None, kwargs=None)
-            t.start()
-            t.cancel()  # stop the timer's action if it's still waiting
-        """
-        timer = threading._Timer(interval, function, *args, **kwargs)
-        timer.name = name
-        return timer
 
 class RecalcJob(threading.Thread):
     def __init__(self):
@@ -1229,39 +1184,87 @@ class RecalcJob(threading.Thread):
         self.state = threading.Condition()
 
     def run(self):
-        self.resume() # unpause self
+        self.resume()  # unpause self
         while True:
             with self.state:
-                if self.paused:
-                    self.state.wait() # block until notified
-            # do stuff
-            time.sleep(.1)
-            self.iterations += 1
+                pass
+            if self.paused:
+                #logger.debug("Nothing to run")
+                if not schedule.empty():
+                    if schedule.queue[0].time < time.time():
+                        schedule.run()
 
-            self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-            self.sFit = Fit.getInstance()
+                # Slow down processing to account for the longer time debug mode takes
+                if config.debug:
+                    time.sleep(1)
+                else:
+                    time.sleep(.5)
+            else:
+                logger.debug("Starting Recalc Job")
+                #  do stuff
+                time.sleep(.1)
+                self.iterations += 1
 
-            logger.debug("=" * 10 + "recalc" + "=" * 10)
-            if self.sFit.factorReload is not self.sFit.serviceFittingOptions["useGlobalForceReload"]:
-                self.sFit.factorReload = self.sFit.serviceFittingOptions["useGlobalForceReload"]
-            self.sFit.clear()
-            self.sFit.calculateModifiedAttributes(withBoosters=True)
-            self.sFit.fill()
+                mainFrame = gui.mainFrame.MainFrame.getInstance()
+                sFit = Fit.getInstance()
 
-            logger.debug("=" * 10 + "refresh gui" + "=" * 10)
-            fitID = self.mainFrame.getActiveFit()
-            #self.sFit.refreshFit(fitID)
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+                fitID = mainFrame.getActiveFit()
+                if fitID:
+                    fit = eos.db.getFit(fitID)
+                else:
+                    fit = sFit.getFit(mainFrame.getActiveFit())
 
-            # Check that the states of all modules are valid
-            self.sFit.checkStates(self.sFit, None)
+                pass
+                skipPause = False
+                if fit:
+                    logger.debug("=" * 10 + "recalc" + "=" * 10)
 
-            eos.db.commit()
-            # fit.inited = True
-            logger.debug("=" * 10 + "recalc end" + "=" * 10)
+                    try:
+                        eos.db.commit()
+                        # Delay to let the DB catch up
+                        time.sleep(.1)
+                    except:
+                        #  Something went wrong, let the job run again to try and recalc
+                        skipPause = True
+                        logger.debug("DB commit error")
 
-            #  Pause job
-            self.pause()
+                    try:
+                        fit.clear()
+                        fit.calculateModifiedAttributes(withBoosters=True)
+                        fit.fill()
+                        # Delay to let the GUI catch up
+                        time.sleep(.1)
+                    except:
+                        #  Something went wrong, let the job run again to try and recalc
+                        skipPause = True
+                        logger.debug("Fit refresh error")
+
+                    logger.debug("=" * 10 + "refresh gui" + "=" * 10)
+
+                    # self.sFit.refreshFit(fitID)
+                    wx.PostEvent(mainFrame, GE.FitChanged(fitID=fitID))
+
+                    # Check that the states of all modules are valid
+                    try:
+                        sFit.checkStates(fit, None)
+                    except:
+                        #  Something went wrong, let the job run again to try and recalc
+                        skipPause = True
+                        logger.debug("Fit check states error")
+
+                    try:
+                        eos.db.commit()
+                    except:
+                        #  Something went wrong, let the job run again to try and recalc
+                        skipPause = True
+                        logger.debug("DB commit error")
+
+                        # fit.inited = True
+                        logger.debug("=" * 10 + "recalc end" + "=" * 10)
+
+                #  Don't run the recalc again, unless something went wrong
+                if not skipPause:
+                    self.pause()
 
     def resume(self):
         with self.state:
