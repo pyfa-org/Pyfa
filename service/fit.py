@@ -19,9 +19,13 @@
 
 import locale
 import copy
+import config
 import threading
 import logging
 import wx
+import gui
+import gui.globalEvents as GE
+import sched, time
 from codecs import open
 
 import xml.parsers.expat
@@ -39,6 +43,7 @@ from service.settings import SettingsProvider
 from service.port import Port
 
 logger = logging.getLogger(__name__)
+schedule = sched.scheduler(time.time, time.sleep)
 
 
 class FitBackupThread(threading.Thread):
@@ -93,6 +98,11 @@ class Fit(object):
         self.character = Character.getInstance().all5()
         self.booster = False
         self.dirtyFitIDs = set()
+
+        #  Recalc job
+        self.recalcJobID = []
+        self.RecalcTimer = RecalcJob()
+        self.RecalcTimer.start()
 
         serviceFittingDefaultOptions = {
             "useGlobalCharacter": False,
@@ -1181,9 +1191,141 @@ class Fit(object):
         self.recalc(fit)
 
     def recalc(self, fit, withBoosters=True):
-        logger.debug("=" * 10 + "recalc" + "=" * 10)
+        global recalcJobID
+
         if fit.factorReload is not self.serviceFittingOptions["useGlobalForceReload"]:
             fit.factorReload = self.serviceFittingOptions["useGlobalForceReload"]
-        fit.clear()
 
-        fit.calculateModifiedAttributes(withBoosters=False)
+        if not schedule.empty():
+            if recalcJobID in schedule.queue:
+                logger.debug("Job already scheduled. Cancelling existing job")
+                schedule.cancel(recalcJobID)
+                pass
+            else:
+                pass
+
+        if fit:
+            logger.debug("Scheduling fitting job")
+            args = []
+            #  Slow down processing to account for the longer time debug mode takes
+            if config.debug:
+                recalcJobID = schedule.enter(2, 1, self.triggerRecalc, args)
+            else:
+                recalcJobID = schedule.enter(1, 1, self.triggerRecalc, args)
+
+            #schedule.run()
+        else:
+            logger.debug("Fit empty, skipping job creation.")
+
+
+    def triggerRecalc(self):
+        global recalcJobID
+        if schedule.empty():
+            logger.debug("Scheduler empty")
+            pass
+        else:
+            pass
+
+        logger.debug("Running recalc job")
+        # RecalcTimer = RecalcJob()
+        self.RecalcTimer.resume()
+
+
+class RecalcJob(threading.Thread):
+    def __init__(self):
+        threading.Thread.__init__(self)
+        self.iterations = 0
+        self.daemon = True  # OK for main to exit even if instance is still running
+        self.paused = True  # start out paused
+        self.state = threading.Condition()
+
+    def run(self):
+        self.resume()  # unpause self
+        while True:
+            if self.paused:
+                #logger.debug("Nothing to run")
+                if not schedule.empty():
+                    if schedule.queue[0].time < time.time():
+                        #  Check if we're past the scheduled time for the job, then run it
+                        schedule.run()
+
+                # Slow down processing to account for the longer time debug mode takes
+                if config.debug:
+                    time.sleep(1)
+                else:
+                    time.sleep(.5)
+            else:
+                logger.debug("Starting Recalc Job")
+                #  do stuff
+                time.sleep(.1)
+                self.iterations += 1
+
+                mainFrame = gui.mainFrame.MainFrame.getInstance()
+                sFit = Fit.getInstance()
+
+                fitID = mainFrame.getActiveFit()
+                if fitID:
+                    fit = eos.db.getFit(fitID)
+                else:
+                    fit = sFit.getFit(mainFrame.getActiveFit())
+
+                pass
+                skipPause = False
+                if fit:
+                    logger.debug("=" * 10 + "recalc" + "=" * 10)
+
+                    try:
+                        eos.db.commit()
+                        # Delay to let the DB catch up
+                        time.sleep(.1)
+                    except:
+                        #  Something went wrong, let the job run again to try and recalc
+                        skipPause = True
+                        logger.debug("DB commit error")
+
+                    try:
+                        fit.clear()
+                        fit.calculateModifiedAttributes(withBoosters=True)
+                        fit.fill()
+                        # Delay to let the GUI catch up
+                        time.sleep(.1)
+                    except:
+                        #  Something went wrong, let the job run again to try and recalc
+                        skipPause = True
+                        logger.debug("Fit refresh error")
+
+                    logger.debug("=" * 10 + "refresh gui" + "=" * 10)
+
+                    # self.sFit.refreshFit(fitID)
+                    wx.PostEvent(mainFrame, GE.FitChanged(fitID=fitID))
+
+                    # Check that the states of all modules are valid
+                    try:
+                        sFit.checkStates(fit, None)
+                    except:
+                        #  Something went wrong, let the job run again to try and recalc
+                        skipPause = True
+                        logger.debug("Fit check states error")
+
+                    try:
+                        eos.db.commit()
+                    except:
+                        #  Something went wrong, let the job run again to try and recalc
+                        skipPause = True
+                        logger.debug("DB commit error")
+
+                        # fit.inited = True
+                        logger.debug("=" * 10 + "recalc end" + "=" * 10)
+
+                #  Don't run the recalc again, unless something went wrong
+                if not skipPause:
+                    self.pause()
+
+    def resume(self):
+        with self.state:
+            self.paused = False
+            self.state.notify()  # unblock self if waiting
+
+    def pause(self):
+        with self.state:
+            self.paused = True  # make self block and wait
