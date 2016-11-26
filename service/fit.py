@@ -117,8 +117,8 @@ class Fit(object):
             "showMarketShortcuts": False,
             "enableGaugeAnimation": True,
             "exportCharges": True,
-            "openFitInNew":False
-            }
+            "openFitInNew": False
+        }
 
         self.serviceFittingOptions = SettingsProvider.getInstance().getSettings(
             "pyfaServiceFittingOptions", serviceFittingDefaultOptions)
@@ -1213,21 +1213,12 @@ class Fit(object):
             else:
                 recalcJobID = schedule.enter(1, 1, self.triggerRecalc, args)
 
-            #schedule.run()
+                # schedule.run()
         else:
             logger.debug("Fit empty, skipping job creation.")
 
-
     def triggerRecalc(self):
-        global recalcJobID
-        if schedule.empty():
-            logger.debug("Scheduler empty")
-            pass
-        else:
-            pass
-
         logger.debug("Running recalc job")
-        # RecalcTimer = RecalcJob()
         self.RecalcTimer.resume()
 
 
@@ -1243,7 +1234,7 @@ class RecalcJob(threading.Thread):
         self.resume()  # unpause self
         while True:
             if self.paused:
-                #logger.debug("Nothing to run")
+                # logger.debug("Nothing to run")
                 if not schedule.empty():
                     if schedule.queue[0].time < time.time():
                         #  Check if we're past the scheduled time for the job, then run it
@@ -1317,7 +1308,7 @@ class RecalcJob(threading.Thread):
                         # fit.inited = True
                         logger.debug("=" * 10 + "recalc end" + "=" * 10)
 
-                #  Don't run the recalc again, unless something went wrong
+                # Don't run the recalc again, unless something went wrong
                 if not skipPause:
                     self.pause()
 
