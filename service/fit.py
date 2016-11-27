@@ -1209,11 +1209,9 @@ class Fit(object):
             args = []
             #  Slow down processing to account for the longer time debug mode takes
             if config.debug:
-                recalcJobID = schedule.enter(2, 1, self.triggerRecalc, args)
+                recalcJobID = schedule.enter(1.75, 1, self.triggerRecalc, args)
             else:
-                recalcJobID = schedule.enter(1, 1, self.triggerRecalc, args)
-
-                # schedule.run()
+                recalcJobID = schedule.enter(1.5, 1, self.triggerRecalc, args)
         else:
             logger.debug("Fit empty, skipping job creation.")
 
@@ -1232,6 +1230,9 @@ class RecalcJob(threading.Thread):
 
     def run(self):
         self.resume()  # unpause self
+        # Slow down the first run, otherwise it errors out
+        # AttributeError: 'MainFrame' object has no attribute 'fitMultiSwitch'
+        time.sleep(1)
         while True:
             if self.paused:
                 # logger.debug("Nothing to run")
@@ -1242,25 +1243,27 @@ class RecalcJob(threading.Thread):
 
                 # Slow down processing to account for the longer time debug mode takes
                 if config.debug:
-                    time.sleep(1)
-                else:
                     time.sleep(.5)
+                else:
+                    time.sleep(.25)
             else:
                 logger.debug("Starting Recalc Job")
                 #  do stuff
-                time.sleep(.1)
                 self.iterations += 1
 
-                mainFrame = gui.mainFrame.MainFrame.getInstance()
-                sFit = Fit.getInstance()
+                try:
+                    mainFrame = gui.mainFrame.MainFrame.getInstance()
+                    sFit = Fit.getInstance()
 
-                fitID = mainFrame.getActiveFit()
-                if fitID:
-                    fit = eos.db.getFit(fitID)
-                else:
-                    fit = sFit.getFit(mainFrame.getActiveFit())
+                    fitID = mainFrame.getActiveFit()
+                    if fitID:
+                        fit = eos.db.getFit(fitID)
+                    else:
+                        fit = sFit.getFit(mainFrame.getActiveFit())
+                except AttributeError:
+                    # Mainframe doesn't exist yet most likely
+                    fit = None
 
-                pass
                 skipPause = False
                 if fit:
                     logger.debug("=" * 10 + "recalc" + "=" * 10)
