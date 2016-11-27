@@ -1,14 +1,17 @@
-import os
 import base64
+import logging
+import os
+import re
 import time
 import zlib
 
 import requests
+from requests.adapters import HTTPAdapter
 
-from . import version
+import config
 from compat import bytes_, text_
 from errors import APIException
-from requests.adapters import HTTPAdapter
+from . import version
 
 try:
     from urllib.parse import urlparse, urlunparse, parse_qsl
@@ -24,9 +27,7 @@ try:
     from urllib.parse import quote
 except ImportError:  # pragma: no cover
     from urllib import quote
-import logging
-import re
-import config
+
 
 logger = logging.getLogger("pycrest.eve")
 cache_re = re.compile(r'max-age=([0-9]+)')
@@ -51,7 +52,13 @@ class FileCache(APICache):
             os.mkdir(self.path, 0o700)
 
     def _getpath(self, key):
-        return os.path.join(self.path, str(hash(key)) + '.cache')
+        path = os.path.join(self.path, str(hash(key)) + '.cache')
+        if type(path) == str:  # leave unicode ones alone
+            try:
+                path = path.decode('utf8')
+            except UnicodeDecodeError:
+                path = path.decode('windows-1252')
+        return path
 
     def put(self, key, value):
         with open(self._getpath(key), 'wb') as f:
@@ -111,7 +118,7 @@ class APIConnection(object):
         })
         session.headers.update(additional_headers)
         session.mount('https://public-crest.eveonline.com',
-                HTTPAdapter())
+                      HTTPAdapter())
         self._session = session
         if cache:
             if isinstance(cache, APICache):
@@ -249,19 +256,18 @@ class EVE(APIConnection):
 
     def temptoken_authorize(self, access_token=None, expires_in=0, refresh_token=None):
         self.set_auth_values({'access_token': access_token,
-                                 'refresh_token': refresh_token,
-                                 'expires_in': expires_in})
+                              'refresh_token': refresh_token,
+                              'expires_in': expires_in})
 
 
 class AuthedConnection(EVE):
-
     def __call__(self):
         if not self._data:
             self._data = APIObject(self.get(self._endpoint), self)
         return self._data
 
     def whoami(self):
-        #if 'whoami' not in self._cache:
+        # if 'whoami' not in self._cache:
         #    print "Setting this whoami cache"
         #    self._cache['whoami'] = self.get("%s/verify" % self._oauth_endpoint)
         return self.get("%s/verify" % self._oauth_endpoint)
@@ -280,6 +286,7 @@ class AuthedConnection(EVE):
         if self.refresh_token and int(time.time()) >= self.expires:
             self.refr_authorize(self.refresh_token)
         return self._session.delete(resource, params=params)
+
 
 class APIObject(object):
     def __init__(self, parent, connection):

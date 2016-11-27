@@ -1,4 +1,4 @@
-#===============================================================================
+# ===============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,38 +15,41 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# ===============================================================================
+
+import csv
+import re
+import sys
 
 import wx
-import re
-import gui.mainFrame
-from gui.bitmapLoader import BitmapLoader
-import sys
-import wx.lib.mixins.listctrl as listmix
 import wx.html
-from eos.types import Fit, Ship, Citadel, Module, Skill, Booster, Implant, Drone, Mode, Fighter
-from gui.utils.numberFormatter import formatAmount
-import service
+import wx.lib.mixins.listctrl as listmix
+
 import config
+import gui.mainFrame
+import service
+from eos.types import Fit, Ship, Citadel, Module, Skill, Booster, Implant, Drone, Mode, Fighter
+from gui.bitmapLoader import BitmapLoader
 from gui.contextMenu import ContextMenu
 from gui.utils.numberFormatter import formatAmount
-import csv
 
 try:
     from collections import OrderedDict
 except ImportError:
     from utils.compat import OrderedDict
 
+
 class ItemStatsDialog(wx.Dialog):
     counter = 0
+
     def __init__(
             self,
             victim,
             fullContext=None,
             pos=wx.DefaultPosition,
             size=wx.DefaultSize,
-            maximized = False
-        ):
+            maximized=False
+    ):
 
         wx.Dialog.__init__(
             self,
@@ -55,7 +58,7 @@ class ItemStatsDialog(wx.Dialog):
             title="Item stats",
             pos=pos,
             size=size,
-            style=wx.CAPTION | wx.CLOSE_BOX | wx.MINIMIZE_BOX | wx.MAXIMIZE_BOX | wx.RESIZE_BORDER| wx.SYSTEM_MENU
+            style=wx.CAPTION | wx.CLOSE_BOX | wx.MINIMIZE_BOX | wx.MAXIMIZE_BOX | wx.RESIZE_BORDER | wx.SYSTEM_MENU
         )
 
         empty = getattr(victim, "isEmpty", False)
@@ -77,26 +80,27 @@ class ItemStatsDialog(wx.Dialog):
             victim = None
         self.context = itmContext
         if item.icon is not None:
-            before,sep,after = item.icon.iconFile.rpartition("_")
-            iconFile = "%s%s%s" % (before,sep,"0%s" % after if len(after) < 2 else after)
+            before, sep, after = item.icon.iconFile.rpartition("_")
+            iconFile = "%s%s%s" % (before, sep, "0%s" % after if len(after) < 2 else after)
             itemImg = BitmapLoader.getBitmap(iconFile, "icons")
             if itemImg is not None:
                 self.SetIcon(wx.IconFromBitmap(itemImg))
-        self.SetTitle("%s: %s%s" % ("%s Stats" % itmContext if itmContext is not None else "Stats", item.name, " (%d)"%item.ID if config.debug else ""))
+        self.SetTitle("%s: %s%s" % ("%s Stats" % itmContext if itmContext is not None else "Stats", item.name,
+                                    " (%d)" % item.ID if config.debug else ""))
 
         self.SetMinSize((300, 200))
         if "wxGTK" in wx.PlatformInfo:  # GTK has huge tab widgets, give it a bit more room
             self.SetSize((580, 500))
         else:
             self.SetSize((550, 500))
-        #self.SetMaxSize((500, -1))
+        # self.SetMaxSize((500, -1))
         self.mainSizer = wx.BoxSizer(wx.VERTICAL)
         self.container = ItemStatsContainer(self, victim, item, itmContext)
         self.mainSizer.Add(self.container, 1, wx.EXPAND)
 
         if "wxGTK" in wx.PlatformInfo:
-            self.closeBtn = wx.Button( self, wx.ID_ANY, u"Close", wx.DefaultPosition, wx.DefaultSize, 0 )
-            self.mainSizer.Add( self.closeBtn, 0, wx.ALL|wx.ALIGN_RIGHT, 5 )
+            self.closeBtn = wx.Button(self, wx.ID_ANY, u"Close", wx.DefaultPosition, wx.DefaultSize, 0)
+            self.mainSizer.Add(self.closeBtn, 0, wx.ALL | wx.ALIGN_RIGHT, 5)
             self.closeBtn.Bind(wx.EVT_BUTTON, self.closeEvent)
 
         self.SetSizer(self.mainSizer)
@@ -112,13 +116,13 @@ class ItemStatsDialog(wx.Dialog):
 
         counter = ItemStatsDialog.counter
         dlgStep = 30
-        if counter * dlgStep > ppos.x+psize.width-dlgsize.x or counter * dlgStep > ppos.y+psize.height-dlgsize.y:
+        if counter * dlgStep > ppos.x + psize.width - dlgsize.x or counter * dlgStep > ppos.y + psize.height - dlgsize.y:
             ItemStatsDialog.counter = 1
 
         dlgx = ppos.x + counter * dlgStep
         dlgy = ppos.y + counter * dlgStep
         if pos == wx.DefaultPosition:
-            self.SetPosition((dlgx,dlgy))
+            self.SetPosition((dlgx, dlgy))
         else:
             self.SetPosition(pos)
         if maximized:
@@ -138,26 +142,26 @@ class ItemStatsDialog(wx.Dialog):
 
     def closeEvent(self, event):
 
-        if self.dlgOrder==ItemStatsDialog.counter:
+        if self.dlgOrder == ItemStatsDialog.counter:
             ItemStatsDialog.counter -= 1
         self.parentWnd.UnregisterStatsWindow(self)
 
         self.Destroy()
 
+
 ###########################################################################
 ## Class ItemStatsContainer
 ###########################################################################
 
-class ItemStatsContainer ( wx.Panel ):
-
-    def __init__( self, parent, stuff, item, context = None):
-        wx.Panel.__init__ ( self, parent )
+class ItemStatsContainer(wx.Panel):
+    def __init__(self, parent, stuff, item, context=None):
+        wx.Panel.__init__(self, parent)
         sMkt = service.Market.getInstance()
 
-        mainSizer = wx.BoxSizer( wx.VERTICAL )
+        mainSizer = wx.BoxSizer(wx.VERTICAL)
 
-        self.nbContainer = wx.Notebook( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, 0 )
-        mainSizer.Add( self.nbContainer, 1, wx.EXPAND |wx.ALL, 2 )
+        self.nbContainer = wx.Notebook(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, 0)
+        mainSizer.Add(self.nbContainer, 1, wx.EXPAND | wx.ALL, 2)
 
         if item.traits is not None:
             self.traits = ItemTraits(self.nbContainer, stuff, item)
@@ -188,7 +192,7 @@ class ItemStatsContainer ( wx.Panel ):
         self.SetSizer(mainSizer)
         self.Layout()
 
-    def __del__( self ):
+    def __del__(self):
         pass
 
     def mouseHit(self, event):
@@ -196,54 +200,54 @@ class ItemStatsContainer ( wx.Panel ):
         if tab != -1:
             self.nbContainer.SetSelection(tab)
 
+
 ###########################################################################
 ## Class AutoListCtrl
 ###########################################################################
 
 class AutoListCtrl(wx.ListCtrl, listmix.ListCtrlAutoWidthMixin, listmix.ListRowHighlighter):
-
     def __init__(self, parent, ID, pos=wx.DefaultPosition,
                  size=wx.DefaultSize, style=0):
         wx.ListCtrl.__init__(self, parent, ID, pos, size, style)
         listmix.ListCtrlAutoWidthMixin.__init__(self)
         listmix.ListRowHighlighter.__init__(self)
 
+
 ###########################################################################
 ## Class AutoListCtrl
 ###########################################################################
 
 class AutoListCtrlNoHighlight(wx.ListCtrl, listmix.ListCtrlAutoWidthMixin, listmix.ListRowHighlighter):
-
     def __init__(self, parent, ID, pos=wx.DefaultPosition,
                  size=wx.DefaultSize, style=0):
         wx.ListCtrl.__init__(self, parent, ID, pos, size, style)
         listmix.ListCtrlAutoWidthMixin.__init__(self)
 
+
 ###########################################################################
 ## Class ItemTraits
 ###########################################################################
 
-class ItemTraits ( wx.Panel ):
-
+class ItemTraits(wx.Panel):
     def __init__(self, parent, stuff, item):
-        wx.Panel.__init__ (self, parent)
+        wx.Panel.__init__(self, parent)
         mainSizer = wx.BoxSizer(wx.VERTICAL)
         self.SetSizer(mainSizer)
 
         self.traits = wx.html.HtmlWindow(self)
         self.traits.SetPage(item.traits.traitText)
 
-        mainSizer.Add(self.traits, 1, wx.ALL|wx.EXPAND, 0)
+        mainSizer.Add(self.traits, 1, wx.ALL | wx.EXPAND, 0)
         self.Layout()
+
 
 ###########################################################################
 ## Class ItemDescription
 ###########################################################################
 
-class ItemDescription ( wx.Panel ):
-
+class ItemDescription(wx.Panel):
     def __init__(self, parent, stuff, item):
-        wx.Panel.__init__ (self, parent)
+        wx.Panel.__init__(self, parent)
         mainSizer = wx.BoxSizer(wx.VERTICAL)
         self.SetSizer(mainSizer)
 
@@ -260,28 +264,30 @@ class ItemDescription ( wx.Panel ):
         desc = re.sub("<( *)font( *)color( *)=(.*?)>(?P<inside>.*?)<( *)/( *)font( *)>", "\g<inside>", desc)
         # Strip URLs
         desc = re.sub("<( *)a(.*?)>(?P<inside>.*?)<( *)/( *)a( *)>", "\g<inside>", desc)
-        desc = "<body bgcolor='" + bgcolor.GetAsString(wx.C2S_HTML_SYNTAX) + "' text='" + fgcolor.GetAsString(wx.C2S_HTML_SYNTAX) + "' >" + desc + "</body>"
+        desc = "<body bgcolor='" + bgcolor.GetAsString(wx.C2S_HTML_SYNTAX) + "' text='" + fgcolor.GetAsString(
+            wx.C2S_HTML_SYNTAX) + "' >" + desc + "</body>"
 
         self.description.SetPage(desc)
 
-        mainSizer.Add(self.description, 1, wx.ALL|wx.EXPAND, 0)
+        mainSizer.Add(self.description, 1, wx.ALL | wx.EXPAND, 0)
         self.Layout()
+
 
 ###########################################################################
 ## Class ItemParams
 ###########################################################################
 
-class ItemParams (wx.Panel):
-    def __init__(self, parent, stuff, item, context = None):
-        wx.Panel.__init__ (self, parent)
-        mainSizer = wx.BoxSizer( wx.VERTICAL )
+class ItemParams(wx.Panel):
+    def __init__(self, parent, stuff, item, context=None):
+        wx.Panel.__init__(self, parent)
+        mainSizer = wx.BoxSizer(wx.VERTICAL)
 
         self.paramList = AutoListCtrl(self, wx.ID_ANY,
-                                     style = #wx.LC_HRULES |
-                                      #wx.LC_NO_HEADER |
-                                      wx.LC_REPORT |wx.LC_SINGLE_SEL |wx.LC_VRULES |wx.NO_BORDER)
-        mainSizer.Add( self.paramList, 1, wx.ALL|wx.EXPAND, 0 )
-        self.SetSizer( mainSizer )
+                                      style=  # wx.LC_HRULES |
+                                      # wx.LC_NO_HEADER |
+                                      wx.LC_REPORT | wx.LC_SINGLE_SEL | wx.LC_VRULES | wx.NO_BORDER)
+        mainSizer.Add(self.paramList, 1, wx.ALL | wx.EXPAND, 0)
+        self.SetSizer(mainSizer)
 
         self.toggleView = 1
         self.stuff = stuff
@@ -290,29 +296,31 @@ class ItemParams (wx.Panel):
         self.attrValues = {}
         self._fetchValues()
 
-        self.m_staticline = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
-        mainSizer.Add( self.m_staticline, 0, wx.EXPAND)
-        bSizer = wx.BoxSizer( wx.HORIZONTAL )
+        self.m_staticline = wx.StaticLine(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL)
+        mainSizer.Add(self.m_staticline, 0, wx.EXPAND)
+        bSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.totalAttrsLabel = wx.StaticText( self, wx.ID_ANY, u" ", wx.DefaultPosition, wx.DefaultSize, 0 )
-        bSizer.Add( self.totalAttrsLabel, 0, wx.ALIGN_CENTER_VERTICAL|wx.RIGHT)
+        self.totalAttrsLabel = wx.StaticText(self, wx.ID_ANY, u" ", wx.DefaultPosition, wx.DefaultSize, 0)
+        bSizer.Add(self.totalAttrsLabel, 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT)
 
-        self.toggleViewBtn = wx.ToggleButton( self, wx.ID_ANY, u"Toggle view mode", wx.DefaultPosition, wx.DefaultSize, 0 )
-        bSizer.Add( self.toggleViewBtn, 0, wx.ALIGN_CENTER_VERTICAL)
+        self.toggleViewBtn = wx.ToggleButton(self, wx.ID_ANY, u"Toggle view mode", wx.DefaultPosition, wx.DefaultSize,
+                                             0)
+        bSizer.Add(self.toggleViewBtn, 0, wx.ALIGN_CENTER_VERTICAL)
 
-        self.exportStatsBtn = wx.ToggleButton( self, wx.ID_ANY, u"Export Item Stats", wx.DefaultPosition, wx.DefaultSize, 0 )
-        bSizer.Add( self.exportStatsBtn, 0, wx.ALIGN_CENTER_VERTICAL)
+        self.exportStatsBtn = wx.ToggleButton(self, wx.ID_ANY, u"Export Item Stats", wx.DefaultPosition, wx.DefaultSize,
+                                              0)
+        bSizer.Add(self.exportStatsBtn, 0, wx.ALIGN_CENTER_VERTICAL)
 
         if stuff is not None:
-            self.refreshBtn = wx.Button( self, wx.ID_ANY, u"Refresh", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT )
-            bSizer.Add( self.refreshBtn, 0, wx.ALIGN_CENTER_VERTICAL)
-            self.refreshBtn.Bind( wx.EVT_BUTTON, self.RefreshValues )
+            self.refreshBtn = wx.Button(self, wx.ID_ANY, u"Refresh", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT)
+            bSizer.Add(self.refreshBtn, 0, wx.ALIGN_CENTER_VERTICAL)
+            self.refreshBtn.Bind(wx.EVT_BUTTON, self.RefreshValues)
 
-        mainSizer.Add( bSizer, 0, wx.ALIGN_RIGHT)
+        mainSizer.Add(bSizer, 0, wx.ALIGN_RIGHT)
 
         self.PopulateList()
 
-        self.toggleViewBtn.Bind(wx.EVT_TOGGLEBUTTON,self.ToggleViewMode)
+        self.toggleViewBtn.Bind(wx.EVT_TOGGLEBUTTON, self.ToggleViewMode)
         self.exportStatsBtn.Bind(wx.EVT_TOGGLEBUTTON, self.ExportItemStats)
 
     def _fetchValues(self):
@@ -348,7 +356,7 @@ class ItemParams (wx.Panel):
         event.Skip()
 
     def ToggleViewMode(self, event):
-        self.toggleView *=-1
+        self.toggleView *= -1
         self.UpdateList()
         event.Skip()
 
@@ -412,17 +420,17 @@ class ItemParams (wx.Panel):
                 )
 
     def PopulateList(self):
-        self.paramList.InsertColumn(0,"Attribute")
-        self.paramList.InsertColumn(1,"Current Value")
+        self.paramList.InsertColumn(0, "Attribute")
+        self.paramList.InsertColumn(1, "Current Value")
         if self.stuff is not None:
-            self.paramList.InsertColumn(2,"Base Value")
-        self.paramList.SetColumnWidth(0,110)
-        self.paramList.SetColumnWidth(1,90)
+            self.paramList.InsertColumn(2, "Base Value")
+        self.paramList.SetColumnWidth(0, 110)
+        self.paramList.SetColumnWidth(1, 90)
         if self.stuff is not None:
-            self.paramList.SetColumnWidth(2,90)
+            self.paramList.SetColumnWidth(2, 90)
         self.paramList.setResizeColumn(0)
         self.imageList = wx.ImageList(16, 16)
-        self.paramList.SetImageList(self.imageList,wx.IMAGE_LIST_SMALL)
+        self.paramList.SetImageList(self.imageList, wx.IMAGE_LIST_SMALL)
 
         names = list(self.attrValues.iterkeys())
         names.sort()
@@ -461,7 +469,6 @@ class ItemParams (wx.Panel):
             else:
                 attrIcon = self.imageList.Add(BitmapLoader.getBitmap("7_15", "icons"))
 
-
             index = self.paramList.InsertImageStringItem(sys.maxint, attrName, attrIcon)
             idNameMap[idCount] = attrName
             self.paramList.SetItemData(index, idCount)
@@ -485,11 +492,9 @@ class ItemParams (wx.Panel):
             if self.stuff is not None:
                 self.paramList.SetStringItem(index, 2, valueUnitDefault)
 
-
-
         self.paramList.SortItems(lambda id1, id2: cmp(idNameMap[id1], idNameMap[id2]))
         self.paramList.RefreshRows()
-        self.totalAttrsLabel.SetLabel("%d attributes. " %idCount)
+        self.totalAttrsLabel.SetLabel("%d attributes. " % idCount)
         self.Layout()
 
     def TranslateValueUnit(self, value, unitName, unitDisplayName):
@@ -505,15 +510,16 @@ class ItemParams (wx.Panel):
             attribute = service.Attribute.getInstance().getAttributeInfo(value)
             return "%s (%d)" % (attribute.name.capitalize(), value)
 
-        trans = {"Inverse Absolute Percent": (lambda: (1-value)*100, unitName),
-                 "Inversed Modifier Percent": (lambda: (1-value) * 100, unitName),
-                 "Modifier Percent": (lambda: ("%+.2f" if ((value - 1) * 100) % 1 else "%+d") % ((value - 1) * 100), unitName),
+        trans = {"Inverse Absolute Percent": (lambda: (1 - value) * 100, unitName),
+                 "Inversed Modifier Percent": (lambda: (1 - value) * 100, unitName),
+                 "Modifier Percent": (
+                 lambda: ("%+.2f" if ((value - 1) * 100) % 1 else "%+d") % ((value - 1) * 100), unitName),
                  "Volume": (lambda: value, u"m\u00B3"),
                  "Sizeclass": (lambda: value, ""),
-                 "Absolute Percent": (lambda: (value * 100) , unitName),
+                 "Absolute Percent": (lambda: (value * 100), unitName),
                  "Milliseconds": (lambda: value / 1000.0, unitName),
                  "typeID": (itemIDCallback, ""),
-                 "groupID": (groupIDCallback,""),
+                 "groupID": (groupIDCallback, ""),
                  "attributeID": (attributeIDCallback, "")}
 
         override = trans.get(unitDisplayName)
@@ -527,9 +533,10 @@ class ItemParams (wx.Panel):
                     fvalue = formatAmount(v, 3, 0, 0)
                 else:
                     fvalue = v
-            return "%s %s" % (fvalue , override[1])
+            return "%s %s" % (fvalue, override[1])
         else:
-            return "%s %s" % (formatAmount(value, 3, 0),unitName)
+            return "%s %s" % (formatAmount(value, 3, 0), unitName)
+
 
 class ItemCompare(wx.Panel):
     def __init__(self, parent, stuff, item, items, context=None):
@@ -548,7 +555,8 @@ class ItemCompare(wx.Panel):
         self.currentSort = None
         self.sortReverse = False
         self.item = item
-        self.items = sorted(items, key=lambda x: x.attributes['metaLevel'].value if 'metaLevel' in x.attributes else None)
+        self.items = sorted(items,
+                            key=lambda x: x.attributes['metaLevel'].value if 'metaLevel' in x.attributes else None)
         self.attrs = {}
 
         # get a dict of attrName: attrInfo of all unique attributes across all items
@@ -627,7 +635,7 @@ class ItemCompare(wx.Panel):
 
     def processPrices(self, prices):
         for i, price in enumerate(prices):
-            self.paramList.SetStringItem(i, len(self.attrs)+1, formatAmount(price.price, 3, 3, 9, currency=True))
+            self.paramList.SetStringItem(i, len(self.attrs) + 1, formatAmount(price.price, 3, 3, 9, currency=True))
 
     def PopulateList(self, sort=None):
 
@@ -658,11 +666,11 @@ class ItemCompare(wx.Panel):
 
         for i, attr in enumerate(self.attrs.keys()):
             name = self.attrs[attr].displayName if self.attrs[attr].displayName else attr
-            self.paramList.InsertColumn(i+1, name)
-            self.paramList.SetColumnWidth(i+1, 120)
+            self.paramList.InsertColumn(i + 1, name)
+            self.paramList.SetColumnWidth(i + 1, 120)
 
-        self.paramList.InsertColumn(len(self.attrs)+1, "Price")
-        self.paramList.SetColumnWidth(len(self.attrs)+1, 60)
+        self.paramList.InsertColumn(len(self.attrs) + 1, "Price")
+        self.paramList.SetColumnWidth(len(self.attrs) + 1, 60)
 
         sMkt = service.Market.getInstance()
         sMkt.getPrices([x.ID for x in self.items], self.processPrices)
@@ -680,7 +688,7 @@ class ItemCompare(wx.Panel):
                     else:
                         valueUnit = formatAmount(value, 3, 0, 0)
 
-                    self.paramList.SetStringItem(i, x+1, valueUnit)
+                    self.paramList.SetStringItem(i, x + 1, valueUnit)
 
         self.paramList.RefreshRows()
         self.Layout()
@@ -701,7 +709,7 @@ class ItemCompare(wx.Panel):
         trans = {"Inverse Absolute Percent": (lambda: (1 - value) * 100, unitName),
                  "Inversed Modifier Percent": (lambda: (1 - value) * 100, unitName),
                  "Modifier Percent": (
-                 lambda: ("%+.2f" if ((value - 1) * 100) % 1 else "%+d") % ((value - 1) * 100), unitName),
+                     lambda: ("%+.2f" if ((value - 1) * 100) % 1 else "%+d") % ((value - 1) * 100), unitName),
                  "Volume": (lambda: value, u"m\u00B3"),
                  "Sizeclass": (lambda: value, ""),
                  "Absolute Percent": (lambda: (value * 100), unitName),
@@ -730,19 +738,18 @@ class ItemCompare(wx.Panel):
 ## Class ItemRequirements
 ###########################################################################
 
-class ItemRequirements ( wx.Panel ):
-
+class ItemRequirements(wx.Panel):
     def __init__(self, parent, stuff, item):
-        wx.Panel.__init__ (self, parent, style = wx.TAB_TRAVERSAL)
+        wx.Panel.__init__(self, parent, style=wx.TAB_TRAVERSAL)
 
-        #itemId is set by the parent.
-        self.romanNb = ["0","I","II","III","IV","V","VI","VII","VIII","IX","X"]
-        self.skillIdHistory=[]
-        mainSizer = wx.BoxSizer( wx.VERTICAL )
+        # itemId is set by the parent.
+        self.romanNb = ["0", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"]
+        self.skillIdHistory = []
+        mainSizer = wx.BoxSizer(wx.VERTICAL)
 
-        self.reqTree = wx.TreeCtrl(self, style = wx.TR_DEFAULT_STYLE | wx.TR_HIDE_ROOT | wx.NO_BORDER)
+        self.reqTree = wx.TreeCtrl(self, style=wx.TR_DEFAULT_STYLE | wx.TR_HIDE_ROOT | wx.NO_BORDER)
 
-        mainSizer.Add(self.reqTree, 1, wx.ALL|wx.EXPAND, 0)
+        mainSizer.Add(self.reqTree, 1, wx.ALL | wx.EXPAND, 0)
 
         self.SetSizer(mainSizer)
         self.root = self.reqTree.AddRoot("WINRARZOR")
@@ -752,17 +759,17 @@ class ItemRequirements ( wx.Panel ):
         self.reqTree.SetImageList(self.imageList)
         skillBookId = self.imageList.Add(BitmapLoader.getBitmap("skill_small", "gui"))
 
-        self.getFullSkillTree(item,self.root,skillBookId)
+        self.getFullSkillTree(item, self.root, skillBookId)
 
         self.reqTree.ExpandAll()
 
         self.Layout()
 
-    def getFullSkillTree(self,parentSkill,parent,sbIconId):
+    def getFullSkillTree(self, parentSkill, parent, sbIconId):
         for skill, level in parentSkill.requiredSkills.iteritems():
-            child = self.reqTree.AppendItem(parent,"%s  %s" %(skill.name,self.romanNb[int(level)]), sbIconId)
+            child = self.reqTree.AppendItem(parent, "%s  %s" % (skill.name, self.romanNb[int(level)]), sbIconId)
             if skill.ID not in self.skillIdHistory:
-                self.getFullSkillTree(skill,child,sbIconId)
+                self.getFullSkillTree(skill, child, sbIconId)
                 self.skillIdHistory.append(skill.ID)
 
 
@@ -770,7 +777,7 @@ class ItemRequirements ( wx.Panel ):
 ## Class ItemEffects
 ###########################################################################
 
-class ItemEffects (wx.Panel):
+class ItemEffects(wx.Panel):
     def __init__(self, parent, stuff, item):
         wx.Panel.__init__(self, parent)
         self.item = item
@@ -793,17 +800,17 @@ class ItemEffects (wx.Panel):
 
     def PopulateList(self):
 
-        self.effectList.InsertColumn(0,"Name")
-        self.effectList.InsertColumn(1,"Active")
+        self.effectList.InsertColumn(0, "Name")
+        self.effectList.InsertColumn(1, "Active")
         self.effectList.InsertColumn(2, "Type")
         if config.debug:
             self.effectList.InsertColumn(3, "Run Time")
-            self.effectList.InsertColumn(4,"ID")
+            self.effectList.InsertColumn(4, "ID")
 
-        #self.effectList.SetColumnWidth(0,385)
+        # self.effectList.SetColumnWidth(0,385)
 
         self.effectList.setResizeColumn(0)
-        self.effectList.SetColumnWidth(1,50)
+        self.effectList.SetColumnWidth(1, 50)
         self.effectList.SetColumnWidth(2, 80)
         if config.debug:
             self.effectList.SetColumnWidth(3, 65)
@@ -872,7 +879,7 @@ class ItemEffects (wx.Panel):
         """
 
         import os
-        file = os.path.join(config.pyfaPath, "eos", "effects", "%s.py"%event.GetText().lower())
+        file = config.getPyfaPath("eos\\effects\\%s.py" % event.GetText().lower())
 
         if not os.path.isfile(file):
             open(file, 'a').close()
@@ -880,7 +887,7 @@ class ItemEffects (wx.Panel):
         if 'wxMSW' in wx.PlatformInfo:
             os.startfile(file)
         elif 'wxMac' in wx.PlatformInfo:
-            os.system("open "+file)
+            os.system("open " + file)
         else:
             import subprocess
             subprocess.call(["xdg-open", file])
@@ -894,13 +901,15 @@ class ItemEffects (wx.Panel):
         self.Thaw()
         event.Skip()
 
+
 ###########################################################################
 ## Class ItemAffectedBy
 ###########################################################################
 
 
-class ItemAffectedBy (wx.Panel):
+class ItemAffectedBy(wx.Panel):
     ORDER = [Fit, Ship, Citadel, Mode, Module, Drone, Fighter, Implant, Booster, Skill]
+
     def __init__(self, parent, stuff, item):
         wx.Panel.__init__(self, parent)
         self.stuff = stuff
@@ -916,33 +925,33 @@ class ItemAffectedBy (wx.Panel):
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
-        self.affectedBy = wx.TreeCtrl(self, style = wx.TR_DEFAULT_STYLE | wx.TR_HIDE_ROOT | wx.NO_BORDER)
-        mainSizer.Add(self.affectedBy, 1, wx.ALL|wx.EXPAND, 0)
+        self.affectedBy = wx.TreeCtrl(self, style=wx.TR_DEFAULT_STYLE | wx.TR_HIDE_ROOT | wx.NO_BORDER)
+        mainSizer.Add(self.affectedBy, 1, wx.ALL | wx.EXPAND, 0)
 
-        self.m_staticline = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
+        self.m_staticline = wx.StaticLine(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL)
 
-        mainSizer.Add( self.m_staticline, 0, wx.EXPAND)
-        bSizer = wx.BoxSizer( wx.HORIZONTAL )
+        mainSizer.Add(self.m_staticline, 0, wx.EXPAND)
+        bSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.toggleExpandBtn = wx.ToggleButton( self, wx.ID_ANY, u"Expand All", wx.DefaultPosition, wx.DefaultSize, 0 )
-        bSizer.Add( self.toggleExpandBtn, 0, wx.ALIGN_CENTER_VERTICAL)
+        self.toggleExpandBtn = wx.ToggleButton(self, wx.ID_ANY, u"Expand All", wx.DefaultPosition, wx.DefaultSize, 0)
+        bSizer.Add(self.toggleExpandBtn, 0, wx.ALIGN_CENTER_VERTICAL)
 
-        self.toggleNameBtn = wx.ToggleButton( self, wx.ID_ANY, u"Toggle Names", wx.DefaultPosition, wx.DefaultSize, 0 )
-        bSizer.Add( self.toggleNameBtn, 0, wx.ALIGN_CENTER_VERTICAL)
+        self.toggleNameBtn = wx.ToggleButton(self, wx.ID_ANY, u"Toggle Names", wx.DefaultPosition, wx.DefaultSize, 0)
+        bSizer.Add(self.toggleNameBtn, 0, wx.ALIGN_CENTER_VERTICAL)
 
-        self.toggleViewBtn = wx.ToggleButton( self, wx.ID_ANY, u"Toggle View", wx.DefaultPosition, wx.DefaultSize, 0 )
-        bSizer.Add( self.toggleViewBtn, 0, wx.ALIGN_CENTER_VERTICAL)
+        self.toggleViewBtn = wx.ToggleButton(self, wx.ID_ANY, u"Toggle View", wx.DefaultPosition, wx.DefaultSize, 0)
+        bSizer.Add(self.toggleViewBtn, 0, wx.ALIGN_CENTER_VERTICAL)
 
         if stuff is not None:
-            self.refreshBtn = wx.Button( self, wx.ID_ANY, u"Refresh", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT )
-            bSizer.Add( self.refreshBtn, 0, wx.ALIGN_CENTER_VERTICAL)
-            self.refreshBtn.Bind( wx.EVT_BUTTON, self.RefreshTree )
+            self.refreshBtn = wx.Button(self, wx.ID_ANY, u"Refresh", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT)
+            bSizer.Add(self.refreshBtn, 0, wx.ALIGN_CENTER_VERTICAL)
+            self.refreshBtn.Bind(wx.EVT_BUTTON, self.RefreshTree)
 
-        self.toggleNameBtn.Bind(wx.EVT_TOGGLEBUTTON,self.ToggleNameMode)
-        self.toggleExpandBtn.Bind(wx.EVT_TOGGLEBUTTON,self.ToggleExpand)
-        self.toggleViewBtn.Bind(wx.EVT_TOGGLEBUTTON,self.ToggleViewMode)
+        self.toggleNameBtn.Bind(wx.EVT_TOGGLEBUTTON, self.ToggleNameMode)
+        self.toggleExpandBtn.Bind(wx.EVT_TOGGLEBUTTON, self.ToggleExpand)
+        self.toggleViewBtn.Bind(wx.EVT_TOGGLEBUTTON, self.ToggleViewMode)
 
-        mainSizer.Add( bSizer, 0, wx.ALIGN_RIGHT)
+        mainSizer.Add(bSizer, 0, wx.ALIGN_RIGHT)
         self.SetSizer(mainSizer)
         self.PopulateTree()
         self.Layout()
@@ -982,7 +991,7 @@ class ItemAffectedBy (wx.Panel):
 
         self.Thaw()
 
-    def ToggleExpand(self,event):
+    def ToggleExpand(self, event):
         self.expand *= -1
         self.ExpandCollapseTree()
 
@@ -1091,7 +1100,8 @@ class ItemAffectedBy (wx.Panel):
                     else:
                         item = afflictor.item
 
-                    items[attrName].append((type(afflictor), afflictor, item, modifier, amount, getattr(afflictor, "projected", False)))
+                    items[attrName].append(
+                        (type(afflictor), afflictor, item, modifier, amount, getattr(afflictor, "projected", False)))
 
         # Make sure projected fits are on top
         rootOrder = container.keys()
@@ -1166,7 +1176,6 @@ class ItemAffectedBy (wx.Panel):
                     display = "%s %s %.2f %s" % (displayStr, attrModifier, attrAmount, penalized)
                     treeItem = self.affectedBy.AppendItem(child, display, itemIcon)
                     self.affectedBy.SetPyData(treeItem, afflictor)
-
 
     def buildModuleView(self, root):
         # We first build a usable dictionary of items. The key is either a fit
@@ -1291,9 +1300,10 @@ class ItemAffectedBy (wx.Panel):
                         else:
                             penalized = ""
 
-                        attributes.append((attrName, (displayName if displayName != "" else attrName), attrModifier, attrAmount, penalized, attrIcon))
+                        attributes.append((attrName, (displayName if displayName != "" else attrName), attrModifier,
+                                           attrAmount, penalized, attrIcon))
 
-                    attrSorted = sorted(attributes, key = lambda attribName: attribName[0])
+                    attrSorted = sorted(attributes, key=lambda attribName: attribName[0])
                     for attr in attrSorted:
                         attrName, displayName, attrModifier, attrAmount, penalized, attrIcon = attr
 

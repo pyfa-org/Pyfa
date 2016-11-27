@@ -31,18 +31,20 @@ gameDB = None
 
 
 class StreamToLogger(object):
-   """
-   Fake file-like stream object that redirects writes to a logger instance.
-   From: http://www.electricmonk.nl/log/2011/08/14/redirect-stdout-and-stderr-to-a-logger-in-python/
-   """
-   def __init__(self, logger, log_level=logging.INFO):
-      self.logger = logger
-      self.log_level = log_level
-      self.linebuf = ''
+    """
+    Fake file-like stream object that redirects writes to a logger instance.
+    From: http://www.electricmonk.nl/log/2011/08/14/redirect-stdout-and-stderr-to-a-logger-in-python/
+    """
 
-   def write(self, buf):
-      for line in buf.rstrip().splitlines():
-         self.logger.log(self.log_level, line.rstrip())
+    def __init__(self, logger, log_level=logging.INFO):
+        self.logger = logger
+        self.log_level = log_level
+        self.linebuf = ''
+
+    def write(self, buf):
+        for line in buf.rstrip().splitlines():
+            self.logger.log(self.log_level, line.rstrip())
+
 
 def isFrozen():
     if hasattr(sys, 'frozen'):
@@ -50,15 +52,11 @@ def isFrozen():
     else:
         return False
 
-def getPyfaRoot():
-    base = getattr(sys.modules['__main__'], "__file__", sys.executable) if isFrozen() else sys.argv[0]
-    root = os.path.dirname(os.path.realpath(os.path.abspath(base)))
-    root = unicode(root, sys.getfilesystemencoding())
-    return root
 
 def __createDirs(path):
     if not os.path.exists(path):
         os.makedirs(path)
+
 
 def defPaths(customSavePath):
     global debug
@@ -77,32 +75,32 @@ def defPaths(customSavePath):
     # Python 2.X uses ANSI by default, so we need to convert the character encoding
     pyfaPath = getattr(configforced, "pyfaPath", pyfaPath)
     if pyfaPath is None:
-        pyfaPath = getPyfaRoot()
+        pyfaPath = getPyfaPath()
 
     # Where we store the saved fits etc, default is the current users home directory
     if saveInRoot is True:
         savePath = getattr(configforced, "savePath", None)
         if savePath is None:
-            savePath = os.path.join(pyfaPath, "saveddata")
+            savePath = getPyfaPath("saveddata")
     else:
         savePath = getattr(configforced, "savePath", None)
         if savePath is None:
-            if customSavePath is None: # customSavePath is not overriden
-                savePath = unicode(os.path.expanduser(os.path.join("~", ".pyfa")),
-                               sys.getfilesystemencoding())
+            if customSavePath is None:  # customSavePath is not overriden
+                savePath = getSavePath()
             else:
                 savePath = customSavePath
 
     __createDirs(savePath)
 
     if isFrozen():
-        os.environ["REQUESTS_CA_BUNDLE"] = os.path.join(pyfaPath, "cacert.pem")
-        os.environ["SSL_CERT_FILE"] = os.path.join(pyfaPath, "cacert.pem")
+        certName = "cacert.pem"
+        os.environ["REQUESTS_CA_BUNDLE"] = getPyfaPath(certName)
+        os.environ["SSL_CERT_FILE"] = getPyfaPath(certName)
 
-    format = '%(asctime)s %(name)-24s %(levelname)-8s %(message)s'
-    logging.basicConfig(format=format, level=logLevel)
-    handler = logging.handlers.RotatingFileHandler(os.path.join(savePath, "log.txt"), maxBytes=1000000, backupCount=3)
-    formatter = logging.Formatter(format)
+    loggingFormat = '%(asctime)s %(name)-24s %(levelname)-8s %(message)s'
+    logging.basicConfig(format=loggingFormat, level=logLevel)
+    handler = logging.handlers.RotatingFileHandler(getSavePath("log.txt"), maxBytes=1000000, backupCount=3)
+    formatter = logging.Formatter(loggingFormat)
     handler.setFormatter(formatter)
     logging.getLogger('').addHandler(handler)
 
@@ -114,23 +112,68 @@ def defPaths(customSavePath):
         sys.stdout = sl
 
         # This interferes with cx_Freeze's own handling of exceptions. Find a way to fix this.
-        #stderr_logger = logging.getLogger('STDERR')
-        #sl = StreamToLogger(stderr_logger, logging.ERROR)
-        #sys.stderr = sl
+        # stderr_logger = logging.getLogger('STDERR')
+        # sl = StreamToLogger(stderr_logger, logging.ERROR)
+        # sys.stderr = sl
 
     # The database where we store all the fits etc
-    saveDB = os.path.join(savePath, "saveddata.db")
+    saveDB = getSavePath("saveddata.db")
 
     # The database where the static EVE data from the datadump is kept.
     # This is not the standard sqlite datadump but a modified version created by eos
     # maintenance script
-    gameDB = os.path.join(pyfaPath, "eve.db")
+    gameDB = getPyfaPath("eve.db")
 
     ## DON'T MODIFY ANYTHING BELOW ##
     import eos.config
 
-    #Caching modifiers, disable all gamedata caching, its unneeded.
+    # Caching modifiers, disable all gamedata caching, its unneeded.
     eos.config.gamedataCache = False
     # saveddata db location modifier, shouldn't ever need to touch this
     eos.config.saveddata_connectionstring = "sqlite:///" + saveDB + "?check_same_thread=False"
     eos.config.gamedata_connectionstring = "sqlite:///" + gameDB + "?check_same_thread=False"
+
+
+def getPyfaPath(Append=None):
+    base = getattr(sys.modules['__main__'], "__file__", sys.executable) if isFrozen() else sys.argv[0]
+    root = os.path.dirname(os.path.realpath(os.path.abspath(base)))
+    if type(root) == str:  # leave unicode ones alone
+        try:
+            root = root.decode('utf8')
+        except UnicodeDecodeError:
+            root = root.decode('windows-1252')
+
+    if not Append:
+        return root
+
+    if type(root) == str:  # leave unicode ones alone
+        try:
+            path = os.path.abspath(os.path.join(root, Append)).decode('utf8')
+        except UnicodeDecodeError:
+            path = os.path.abspath(os.path.join(root, Append)).decode('windows-1252')
+    else:
+        path = os.path.abspath(os.path.join(root, Append))
+
+    return path
+
+
+def getSavePath(Append=None):
+    root = os.path.expanduser(os.path.join("~", ".pyfa"))
+    if type(root) == str:  # leave unicode ones alone
+        try:
+            root = root.decode('utf8')
+        except UnicodeDecodeError:
+            root = root.decode('windows-1252')
+
+    if not Append:
+        return root
+
+    if type(root) == str:  # leave unicode ones alone
+        try:
+            path = os.path.abspath(os.path.join(root, Append)).decode('utf8')
+        except UnicodeDecodeError:
+            path = os.path.abspath(os.path.join(root, Append)).decode('windows-1252')
+    else:
+        path = os.path.abspath(os.path.join(root, Append))
+
+    return path
