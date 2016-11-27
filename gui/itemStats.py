@@ -40,7 +40,14 @@ from gui.contextMenu import ContextMenu
 class ItemStatsDialog(wx.Dialog):
     counter = 0
 
-    def __init__(self, victim, fullContext=None, pos=wx.DefaultPosition, size=wx.DefaultSize, maximized=False):
+    def __init__(
+            self,
+            victim,
+            fullContext=None,
+            pos=wx.DefaultPosition,
+            size=wx.DefaultSize,
+            maximized=False
+    ):
 
         wx.Dialog.__init__(
             self,
@@ -827,7 +834,7 @@ class ItemEffects(wx.Panel):
         If effect file does not exist, create it
         """
 
-        file_ = os.path.join(config.pyfaPath, "eos", "effects", "%s.py" % event.GetText().lower())
+        file_ = config.getPyfaPath("eos\\effects\\%s.py" % event.GetText().lower())
 
         if not os.path.isfile(file_):
             open(file_, 'a').close()

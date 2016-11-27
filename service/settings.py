@@ -45,6 +45,11 @@ class SettingsProvider(object):
         s = self.settings.get(area)
         if s is None:
             p = os.path.join(self.BASE_PATH, area)
+            if type(p) == str:  # leave unicode ones alone
+                try:
+                    p = p.decode('utf8')
+                except UnicodeDecodeError:
+                    p = p.decode('windows-1252')
 
             if not os.path.exists(p):
                 info = {}
@@ -188,10 +193,10 @@ class NetworkSettings(object):
     def setAccess(self, access):
         self.serviceNetworkSettings["access"] = access
 
-    def autodetect(self):
+    @staticmethod
+    def autodetect():
 
         proxy = None
-        proxAddr = proxPort = ""
         proxydict = urllib2.ProxyHandler().proxies
 
         validPrefixes = ("http", "https")

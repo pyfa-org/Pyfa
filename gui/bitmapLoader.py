@@ -31,7 +31,7 @@ except ImportError:
 
 class BitmapLoader(object):
     try:
-        archive = zipfile.ZipFile(os.path.join(config.pyfaPath, 'imgs.zip'), 'r')
+        archive = zipfile.ZipFile(config.getPyfaPath('imgs.zip'), 'r')
     except IOError:
         archive = None
 
@@ -85,7 +85,7 @@ class BitmapLoader(object):
             except KeyError:
                 print("Missing icon file from zip: {0}".format(path))
         else:
-            path = os.path.join(config.pyfaPath, 'imgs', location, filename)
+            path = config.getPyfaPath('imgs\\' + location + "\\" + filename)
 
             if os.path.exists(path):
                 return wx.Image(path)

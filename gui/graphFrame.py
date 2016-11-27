@@ -48,9 +48,20 @@ class GraphFrame(wx.Frame):
             try:
                 cache_dir = mpl._get_cachedir()
             except:
-                cache_dir = unicode(os.path.expanduser(os.path.join("~", ".matplotlib")))
+                cache_dir = os.path.expanduser(os.path.join("~", ".matplotlib"))
+                if type(cache_dir) == str:  # leave unicode ones alone
+                    try:
+                        cache_dir = cache_dir.decode('utf8')
+                    except UnicodeDecodeError:
+                        cache_dir = cache_dir.decode('windows-1252')
 
             cache_file = os.path.join(cache_dir, 'fontList.cache')
+            if type(cache_file) == str:  # leave unicode ones alone
+                try:
+                    cache_file = cache_file.decode('utf8')
+                except UnicodeDecodeError:
+                    cache_file = cache_file.decode('windows-1252')
+
             if os.access(cache_dir, os.W_OK | os.X_OK) and os.path.isfile(cache_file):
                 # remove matplotlib font cache, see #234
                 os.remove(cache_file)
@@ -174,7 +185,7 @@ class GraphFrame(wx.Frame):
                 if not isinstance(defaultVal, basestring):
                     defaultVal = ("%f" % defaultVal).rstrip("0")
                     if defaultVal[-1:] == ".":
-                        defaultVal = defaultVal + "0"
+                        defaultVal += "0"
 
                 textBox.ChangeValue(defaultVal)
 
