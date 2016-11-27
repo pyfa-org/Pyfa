@@ -37,7 +37,12 @@ class Price():
         "Hek": 30002053
     }
 
-    currentSystemId = systemsList.get("Jita")
+    currentSystemId = ""
+
+    @classmethod
+    def invalidPrices(self, prices):
+        for price in prices:
+            price.time = 0
 
     @classmethod
     def fetchPrices(cls, prices):
