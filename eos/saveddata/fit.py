@@ -821,8 +821,8 @@ class Fit(object):
             else:
                 cap_stable = True
 
-            if cap_stable_count == 1000:
-                # Something went horribly wrong, break out
+            if cap_stable_count == 100:
+                # Something went horribly wrong, or we can't get cap stable, break out
                 break
 
         shield_regen_matrix = GnosisFormulas.get_peak_regen(self.ship.getModifiedItemAttr("shieldCapacity"),
@@ -925,7 +925,10 @@ class Fit(object):
 
     @property
     def tank(self):
-        hps = {"passiveShield" : self.calculateShieldRecharge()}
+        shield_regen_matrix = GnosisFormulas.get_peak_regen(self.ship.getModifiedItemAttr("shieldCapacity"),
+                                                            self.ship.getModifiedItemAttr("shieldRechargeRate"))
+
+        hps = {"passiveShield" : shield_regen_matrix['DeltaAmount']}
         for type in ("shield", "armor", "hull"):
             hps["%sRepair" % type] = self.extraAttributes["%sRepair" % type]
 
