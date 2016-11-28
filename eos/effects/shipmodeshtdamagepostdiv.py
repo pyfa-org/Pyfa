@@ -1,3 +1,7 @@
+# shipModeSHTDamagePostDiv
+#
+# Used by:
+# Module: Hecate Sharpshooter Mode
 type = "passive"
 
 

@@ -1,3 +1,7 @@
+# shipModeSETDamagePostDiv
+#
+# Used by:
+# Module: Confessor Sharpshooter Mode
 type = "passive"
 
 

@@ -1,3 +1,8 @@
+# modeMWDandABBoostPostDiv
+#
+# Used by:
+# Module: Confessor Propulsion Mode
+# Module: Svipul Propulsion Mode
 type = "passive"
 
 

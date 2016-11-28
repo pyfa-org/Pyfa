@@ -1,3 +1,7 @@
+# shipModeSmallMissileDamagePostDiv
+#
+# Used by:
+# Module: Jackdaw Sharpshooter Mode
 type = "passive"
 
 def handler(fit, module, context):

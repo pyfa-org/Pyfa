@@ -1,3 +1,7 @@
+# shipModeSPTDamagePostDiv
+#
+# Used by:
+# Module: Svipul Sharpshooter Mode
 type = "passive"
 
 
