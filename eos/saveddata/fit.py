@@ -825,9 +825,6 @@ class Fit(object):
                 # Something went horribly wrong, or we can't get cap stable, break out
                 break
 
-        shield_regen_matrix = GnosisFormulas.get_peak_regen(self.ship.getModifiedItemAttr("shieldCapacity"),
-                                      self.ship.getModifiedItemAttr("shieldRechargeRate"))
-
         total_shield_reps = 0
         total_armor_reps = 0
         total_hull_reps = 0
@@ -843,19 +840,19 @@ class Fit(object):
         sustainable["armorRepair"] = total_armor_reps/total_time
         sustainable["shieldRepair"] = total_shield_reps/total_time
         sustainable["hullRepair"] = total_hull_reps/total_time
-        sustainable["passiveShield"] = shield_regen_matrix['DeltaAmount']
+        sustainable["passiveShield"] = self.calculateShieldRecharge()
         self.__sustainableTank = sustainable
 
         return self.__sustainableTank
 
     def calculateCapRecharge(self):
         peak_return = GnosisFormulas.get_peak_regen(self.ship.getModifiedItemAttr("capacitorCapacity"), self.ship.getModifiedItemAttr("rechargeRate"))
-        return peak_return['Percent']
+        return peak_return['DeltaAmount']
 
     def calculateShieldRecharge(self):
         peak_return = GnosisFormulas.get_peak_regen(self.ship.getModifiedItemAttr("shieldCapacity"),
-                                                               self.ship.getModifiedItemAttr("shieldRechargeRate"))
-        return peak_return['Percent']
+                                                    self.ship.getModifiedItemAttr("shieldRechargeRate"))
+        return peak_return['DeltaAmount']
 
     def addDrain(self, src, cycleTime, capNeed, clipSize=0):
         """ Used for both cap drains and cap fills (fills have negative capNeed) """
@@ -925,10 +922,7 @@ class Fit(object):
 
     @property
     def tank(self):
-        shield_regen_matrix = GnosisFormulas.get_peak_regen(self.ship.getModifiedItemAttr("shieldCapacity"),
-                                                            self.ship.getModifiedItemAttr("shieldRechargeRate"))
-
-        hps = {"passiveShield" : shield_regen_matrix['DeltaAmount']}
+        hps = {"passiveShield" : self.calculateShieldRecharge()}
         for type in ("shield", "armor", "hull"):
             hps["%sRepair" % type] = self.extraAttributes["%sRepair" % type]
 
