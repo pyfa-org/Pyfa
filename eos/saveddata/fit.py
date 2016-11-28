@@ -801,41 +801,29 @@ class Fit(object):
         return self.__sustainableTank
 
     def calculateSustainableTank(self):
-        reactivation_delay = 0
-        cap_stable = False
-        cap_stable_count = 0
-
-        while not cap_stable:
-            cap_stable_count += 1
-            simulation_matrix = GnosisSimulation.capacitor_simulation(self,
-                                                                      self.__extraDrains,
-                                                                      self.ship.getModifiedItemAttr("capacitorCapacity"),
-                                                                      self.ship.getModifiedItemAttr("rechargeRate"),
-                                                                      reactivation_delay
-                                                                      )
-
-            if simulation_matrix['Matrix']['Stability']['LowWaterMark'] == 0:
-                # We aren't cap stable, so slow down modules
-                # without a reactivation delay to try and get cap stable.
-                reactivation_delay += 1000
-            else:
-                cap_stable = True
-
-            if cap_stable_count == 100:
-                # Something went horribly wrong, or we can't get cap stable, break out
-                break
-
         total_shield_reps = 0
         total_armor_reps = 0
         total_hull_reps = 0
-        last_time = simulation_matrix['Matrix']['Stability']['Time']
-        for _ in simulation_matrix['Matrix']['Cached Runs']:
-            total_shield_reps += _['Shield Reps']
-            total_armor_reps += _['Armor Reps']
-            total_hull_reps += _['Hull Reps']
-            last_time = _['Current Time']
 
-        total_time = last_time/1000
+        simulation_matrix = GnosisSimulation.capacitor_simulation(self,
+                                                                  self.__extraDrains,
+                                                                  self.ship.getModifiedItemAttr("capacitorCapacity"),
+                                                                  self.ship.getModifiedItemAttr("rechargeRate")
+                                                                  )
+
+        if simulation_matrix['Matrix']['Stability']['FailedToRunModules']:
+            #Modules failed to run, so lets get the effective HP/s only after they failed
+            start_recording_time = simulation_matrix['Matrix']['Stability']['FailedToRunModulesTime']
+        else:
+            start_recording_time = 0
+
+        for _ in simulation_matrix['Matrix']['Cached Runs']:
+            if _['Current Time'] > start_recording_time:
+                total_shield_reps += _['Shield Reps']
+                total_armor_reps += _['Armor Reps']
+                total_hull_reps += _['Hull Reps']
+
+        total_time = (simulation_matrix['Matrix']['Stability']['RunTime']-start_recording_time)/1000
         sustainable = {}
         sustainable["shieldRepair"] = total_shield_reps/total_time
         sustainable["armorRepair"] = total_armor_reps/total_time
@@ -910,9 +898,14 @@ class Fit(object):
 
         self.__capUsed = cap_per_second
 
-        low_water_mark = simulation_matrix['Matrix']['Stability']['LowWaterMark']
-        self.__capStable = round(low_water_mark/self.ship.getModifiedItemAttr("capacitorCapacity"), 2)
-        self.__capState = simulation_matrix['Matrix']['Stability']['Time']
+        if simulation_matrix['Matrix']['Stability']['FailedToRunModules']:
+            # We ran our of cap to run modules.
+            self.__capStable = 0
+            self.__capState = simulation_matrix['Matrix']['Stability']['FailedToRunModulesTime']
+        else:
+            low_water_mark = simulation_matrix['Matrix']['Stability']['LowWaterMark']
+            self.__capStable = round(low_water_mark/self.ship.getModifiedItemAttr("capacitorCapacity"), 2)
+            self.__capState = simulation_matrix['Matrix']['Stability']['LowWaterMarkTime']
 
     @property
     def hp(self):

@@ -144,17 +144,24 @@ class CapacitorViewFull(StatsView):
 
         if capStable:
             capStable *= 100
-            s = "Stable: " + str(capStable) + "%"
-            t = ""
+            s = "Stable: " + str(capStable) + "% "
+            if capState:
+                capState /= 1000
+                if capState > 60:
+                    t = "(%dm%ds)" % divmod(capState, 60)
+                else:
+                    t = "(%ds)" % capState
+            else:
+                t = ""
         else:
-            s = "Lasts: "
+            s = "Stable: " + str(capStable) + "% "
 
             if capState:
                 capState /= 1000
                 if capState > 60:
-                    t = "%dm%ds" % divmod(capState, 60)
+                    t = "(%dm%ds)" % divmod(capState, 60)
                 else:
-                    t = "%ds" % capState
+                    t = "(%ds)" % capState
             else:
                 t = ""
 
