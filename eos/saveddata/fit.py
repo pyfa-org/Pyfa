@@ -837,10 +837,23 @@ class Fit(object):
 
         total_time = last_time/1000
         sustainable = {}
-        sustainable["armorRepair"] = total_armor_reps/total_time
         sustainable["shieldRepair"] = total_shield_reps/total_time
+        sustainable["armorRepair"] = total_armor_reps/total_time
         sustainable["hullRepair"] = total_hull_reps/total_time
         sustainable["passiveShield"] = self.calculateShieldRecharge()
+
+        # Check to make sure we're not over the maximum reps
+        # This can occur if we cut off in the middle of a cycle
+        # For example, AAR if we cut off right before a reload
+        if sustainable["shieldRepair"] > self.extraAttributes.get("shieldRepair"):
+            sustainable["shieldRepair"] = self.extraAttributes.get("shieldRepair")
+
+        if sustainable["armorRepair"] > self.extraAttributes.get("armorRepair"):
+            sustainable["armorRepair"] = self.extraAttributes.get("armorRepair")
+
+        if sustainable["hullRepair"] > self.extraAttributes.get("hullRepair"):
+            sustainable["hullRepair"] = self.extraAttributes.get("hullRepair")
+
         self.__sustainableTank = sustainable
 
         return self.__sustainableTank
