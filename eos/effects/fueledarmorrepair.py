@@ -7,7 +7,7 @@ type = "active"
 
 
 def handler(fit, module, context):
-    if module.charge and module.charge.name == "Nanite Repair Paste":
+    if module.charge:
         module.multiplyItemAttr("armorDamageAmount", module.getModifiedItemAttr("chargedArmorDamageMultiplier"))
         number_of_charges = module.getModifiedItemAttr("chargeRate") * (module.getModifiedItemAttr("capacity") /
                                                                         getattr(module.charge, "volume", False))
@@ -23,6 +23,6 @@ def handler(fit, module, context):
         speed = ((module.getModifiedItemAttr("duration") * number_of_charges) + reload_time) / 1000
     else:
         amount = module.getModifiedItemAttr("armorDamageAmount")
-        speed = module.getModifiedItemAttr("duration")
+        speed = module.getModifiedItemAttr("duration") / 1000
 
     fit.extraAttributes.increase("armorRepair", amount / speed)

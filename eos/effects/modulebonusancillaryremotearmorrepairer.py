@@ -24,6 +24,6 @@ def handler(fit, module, context):
             speed = ((module.getModifiedItemAttr("duration") * number_of_charges) + reload_time) / 1000
         else:
             amount = module.getModifiedItemAttr("armorDamageAmount")
-            speed = module.getModifiedItemAttr("duration")
+            speed = module.getModifiedItemAttr("duration") / 1000
 
         fit.extraAttributes.increase("armorRepair", amount / speed)
