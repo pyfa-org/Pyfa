@@ -800,81 +800,51 @@ class Fit(object):
 
         return self.__sustainableTank
 
-    def calculateSustainableTank(self, effective=True):
-        if self.__sustainableTank is None:
-            if self.capStable > 0:
-                sustainable = {}
-                sustainable["armorRepair"] = self.extraAttributes["armorRepair"]
-                sustainable["shieldRepair"] = self.extraAttributes["shieldRepair"]
-                sustainable["hullRepair"] = self.extraAttributes["hullRepair"]
+    def calculateSustainableTank(self):
+        reactivation_delay = 0
+        cap_stable = False
+        cap_stable_count = 0
+
+        while not cap_stable:
+            cap_stable_count += 1
+            simulation_matrix = GnosisSimulation.capacitor_simulation(self,
+                                                                      self.__extraDrains,
+                                                                      self.ship.getModifiedItemAttr("capacitorCapacity"),
+                                                                      self.ship.getModifiedItemAttr("rechargeRate"),
+                                                                      reactivation_delay
+                                                                      )
+
+            if simulation_matrix['Matrix']['Stability']['LowWaterMark'] == 0:
+                # We aren't cap stable, so slow down modules
+                # without a reactivation delay to try and get cap stable.
+                reactivation_delay += 1000
             else:
-                sustainable = {}
+                cap_stable = True
 
-                repairers = []
-                #Map a repairer type to the attribute it uses
-                groupAttrMap = {"Armor Repair Unit": "armorDamageAmount",
-                     "Ancillary Armor Repairer": "armorDamageAmount",
-                     "Hull Repair Unit": "structureDamageAmount",
-                     "Shield Booster": "shieldBonus",
-                     "Ancillary Shield Booster": "shieldBonus",
-                     "Remote Armor Repairer": "armorDamageAmount",
-                     "Remote Shield Booster": "shieldBonus"}
-                #Map repairer type to attribute
-                groupStoreMap = {"Armor Repair Unit": "armorRepair",
-                                 "Hull Repair Unit": "hullRepair",
-                                 "Shield Booster": "shieldRepair",
-                                 "Ancillary Shield Booster": "shieldRepair",
-                                 "Remote Armor Repairer": "armorRepair",
-                                 "Remote Shield Booster": "shieldRepair",
-                                 "Ancillary Armor Repairer": "armorRepair",}
+            if cap_stable_count == 1000:
+                # Something went horribly wrong, break out
+                break
 
-                capUsed = self.capUsed
-                for attr in ("shieldRepair", "armorRepair", "hullRepair"):
-                    sustainable[attr] = self.extraAttributes[attr]
-                    dict = self.extraAttributes.getAfflictions(attr)
-                    if self in dict:
-                        for mod, _, amount, used in dict[self]:
-                            if not used:
-                                continue
-                            if mod.projected is False:
-                                usesCap = True
-                                try:
-                                    if mod.capUse:
-                                        capUsed -= mod.capUse
-                                    else:
-                                        usesCap = False
-                                except AttributeError:
-                                    usesCap = False
-                                # Modules which do not use cap are not penalized based on cap use
-                                if usesCap:
-                                    cycleTime = mod.getModifiedItemAttr("duration")
-                                    amount = mod.getModifiedItemAttr(groupAttrMap[mod.item.group.name])
-                                    sustainable[attr] -= amount / (cycleTime / 1000.0)
-                                    repairers.append(mod)
+        shield_regen_matrix = GnosisFormulas.get_peak_regen(self.ship.getModifiedItemAttr("shieldCapacity"),
+                                      self.ship.getModifiedItemAttr("shieldRechargeRate"))
 
+        total_shield_reps = 0
+        total_armor_reps = 0
+        total_hull_reps = 0
+        last_time = simulation_matrix['Matrix']['Stability']['Time']
+        for _ in simulation_matrix['Matrix']['Cached Runs']:
+            total_shield_reps += _['Shield Reps']
+            total_armor_reps += _['Armor Reps']
+            total_hull_reps += _['Hull Reps']
+            last_time = _['Current Time']
 
-                #Sort repairers by efficiency. We want to use the most efficient repairers first
-                repairers.sort(key=lambda mod: mod.getModifiedItemAttr(groupAttrMap[mod.item.group.name]) / mod.getModifiedItemAttr("capacitorNeed"), reverse = True)
-
-                #Loop through every module until we're above peak recharge
-                #Most efficient first, as we sorted earlier.
-                #calculate how much the repper can rep stability & add to total
-                totalPeakRecharge = self.capRecharge['DeltaAmount']
-                for mod in repairers:
-                    if capUsed > totalPeakRecharge: break
-                    cycleTime = mod.cycleTime
-                    capPerSec = mod.capUse
-                    if capPerSec is not None and cycleTime is not None:
-                        #Check how much this repper can work
-                        sustainability = min(1, (totalPeakRecharge - capUsed) / capPerSec)
-
-                        #Add the sustainable amount
-                        amount = mod.getModifiedItemAttr(groupAttrMap[mod.item.group.name])
-                        sustainable[groupStoreMap[mod.item.group.name]] += sustainability * (amount / (cycleTime / 1000.0))
-                        capUsed += capPerSec
-
-            sustainable["passiveShield"] = self.calculateShieldRecharge()
-            self.__sustainableTank = sustainable
+        total_time = last_time/1000
+        sustainable = {}
+        sustainable["armorRepair"] = total_armor_reps/total_time
+        sustainable["shieldRepair"] = total_shield_reps/total_time
+        sustainable["hullRepair"] = total_hull_reps/total_time
+        sustainable["passiveShield"] = shield_regen_matrix['DeltaAmount']
+        self.__sustainableTank = sustainable
 
         return self.__sustainableTank
 
