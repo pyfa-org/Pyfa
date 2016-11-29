@@ -147,6 +147,7 @@ class GnosisSimulation:
                             'Charges': charges,
                             'ReloadTime': reload_time,
                             'ReactivationDelay': reactivation_delay,
+                            'Projected': True,
                         }
                     )
 
