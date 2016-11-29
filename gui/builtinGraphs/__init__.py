@@ -1,1 +1,7 @@
-__all__ = ["fitDps", "capWarfare"]
+__all__ = [
+    "fitDps",
+    "capWarfare",
+    "shieldReps",
+    "armorReps",
+    "hullReps",
+]
