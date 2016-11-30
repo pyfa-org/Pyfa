@@ -7,6 +7,7 @@ import gui.mainFrame
 import service
 import gui.globalEvents as GE
 
+
 class PFGeneralPref ( PreferenceView):
     title = "General"
 
@@ -63,7 +64,7 @@ class PFGeneralPref ( PreferenceView):
 
         self.cbExportCharges = wx.CheckBox( panel, wx.ID_ANY, u"Export loaded charges", wx.DefaultPosition, wx.DefaultSize, 0 )
         mainSizer.Add( self.cbExportCharges, 0, wx.ALL|wx.EXPAND, 5 )
-        
+
         self.cbOpenFitInNew = wx.CheckBox( panel, wx.ID_ANY, u"Open fittings in a new page by default", wx.DefaultPosition, wx.DefaultSize, 0 )
         mainSizer.Add( self.cbOpenFitInNew, 0, wx.ALL|wx.EXPAND, 5 )
 
@@ -162,7 +163,7 @@ class PFGeneralPref ( PreferenceView):
 
     def onCBExportCharges(self, event):
         self.sFit.serviceFittingOptions["exportCharges"] = self.cbExportCharges.GetValue()
-    
+
     def onCBOpenFitInNew(self, event):
         self.sFit.serviceFittingOptions["openFitInNew"] = self.cbOpenFitInNew.GetValue()
 
