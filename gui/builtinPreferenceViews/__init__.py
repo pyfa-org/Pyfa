@@ -1,4 +1,10 @@
-__all__ = ["pyfaGeneralPreferences","pyfaHTMLExportPreferences","pyfaUpdatePreferences","pyfaNetworkPreferences","pyfaDatabasePreferences","pyfaLoggingPreferences"]
+__all__ = [
+    "pyfaGeneralPreferences",
+    "pyfaHTMLExportPreferences",
+    "pyfaUpdatePreferences",
+    "pyfaNetworkPreferences",
+    "pyfaDatabasePreferences",
+]
 
 import wx
 
