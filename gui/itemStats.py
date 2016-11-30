@@ -628,11 +628,23 @@ class ItemCompare(wx.Panel):
             self.paramList.SetStringItem(i, len(self.attrs)+1, formatAmount(price.price, 3, 3, 9, currency=True))
 
     def PopulateList(self, sort=None):
-        if sort:
+        if sort is not None:
             if isinstance(sort, basestring):
-                # Do nothing to the string
-                pass
-            if not isinstance(sort, basestring):
+                # A string was passed in, see if we can sort by that attribute name
+                try:
+                    sort = str(self.attrs.keys()[sort])
+                except IndexError:
+                    # attribute must not exist
+                    sort = None
+            elif isinstance(sort, int) and sort == 0:
+                try:
+                    # Column 0 is the name.  We can't sort by name (it's not an attribute),
+                    # BUT we CAN default back to the metaLevel sorting
+                    sort = 'metaLevel'
+                except IndexError:
+                    # Clicked on a column that's not part of our array (price most likely)
+                    sort = None
+            elif isinstance(sort, int):
                 try:
                     # Remember to reduce by 1, because the attrs array
                     # starts at 0 while the list has the item name as column 0.
@@ -640,10 +652,7 @@ class ItemCompare(wx.Panel):
                 except IndexError:
                     # Clicked on a column that's not part of our array (price most likely)
                     sort = None
-            else:
-                sort = None
-        else:
-            sort = None
+
 
         self.items = sorted(self.items,key=lambda x: x.attributes[sort].value if sort in x.attributes else None)
 
