@@ -7,6 +7,7 @@ import gui.mainFrame
 import service
 import gui.globalEvents as GE
 
+
 class PFGeneralPref ( PreferenceView):
     title = "General"
 
