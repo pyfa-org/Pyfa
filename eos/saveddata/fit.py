@@ -486,6 +486,8 @@ class Fit(object):
                 except:
                     pass
 
+        self.commandBonuses.clear()
+
     def calculateModifiedAttributes(self, targetFit=None, withBoosters=False, dirtyStorage=None):
         timer = Timer(u'Fit: {}, {}'.format(self.ID, self.name), logger)
         logger.debug("Starting fit calculation on: %r, withBoosters: %s", self, withBoosters)
@@ -608,10 +610,13 @@ class Fit(object):
                         # targetFit.register(item, origin=self)
                         item.calculateModifiedAttributes(targetFit, runTime, False, True)
 
-            timer.checkpoint('Done with runtime: %s'%runTime)
+            print "Command: "
+            print self.commandBonuses
 
-        print "Command: "
-        print self.commandBonuses
+            if not withBoosters and self.commandBonuses:
+                self.__runCommandBoosts()
+
+            timer.checkpoint('Done with runtime: %s'%runTime)
 
         # Mark fit as calculated
         self.__calculated = True
@@ -621,9 +626,6 @@ class Fit(object):
             for fit in self.projectedFits:
                 if fit.getProjectionInfo(self.ID).active:
                     fit.calculateModifiedAttributes(self, withBoosters=withBoosters, dirtyStorage=dirtyStorage)
-
-        if not withBoosters and self.commandBonuses:
-            self.__runCommandBoosts()
 
         timer.checkpoint('Done with fit calculation')
 
