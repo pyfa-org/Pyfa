@@ -4,6 +4,7 @@ __all__ = [
     "pyfaUpdatePreferences",
     "pyfaNetworkPreferences",
     "pyfaDatabasePreferences",
+    "pyfaLoggingPreferences",
 ]
 
 import wx
