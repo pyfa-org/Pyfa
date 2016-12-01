@@ -1,17 +1,14 @@
-import wx
-
-from gui.preferenceView import PreferenceView
-from gui.bitmapLoader import BitmapLoader
-
-import gui.mainFrame
-import service
-import config
-
 import logging
 
-logger = logging.getLogger(__name__)
+import wx
 
-from eos.db.saveddata.loadDefaultDatabaseValues import DefaultDatabaseValues
+import gui.globalEvents as GE
+import gui.mainFrame
+import service
+from gui.bitmapLoader import BitmapLoader
+from gui.preferenceView import PreferenceView
+
+logger = logging.getLogger(__name__)
 
 
 class PFFittingEnginePref ( PreferenceView):
