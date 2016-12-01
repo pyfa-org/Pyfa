@@ -28,9 +28,37 @@ import gui.mainFrame
 import gui.globalEvents as GE
 
 class StatsPane(wx.Panel):
-    DEFAULT_VIEWS = ["resourcesViewFull", "resistancesViewFull" ,"rechargeViewFull", "firepowerViewFull",
-                     "capacitorViewFull", "targetingmiscViewFull",
-                     "priceViewFull",]
+    AVAILIBLE_VIEWS = [
+        "resources",
+        "resistances",
+        "recharge",
+        "firepower",
+        "capacitor",
+        "targetingmisc",
+        "price",
+    ]
+
+    # Don't have these....yet....
+    '''
+    "miningyield", "drones"
+    ]
+    '''
+
+    DEFAULT_VIEWS = []
+
+    settings = service.settings.statViewSettings.getInstance()
+
+    for aView in AVAILIBLE_VIEWS:
+        if settings.get(aView) == 2:
+            DEFAULT_VIEWS.extend(["%sViewFull" % aView])
+
+        if settings.get(aView) == 1:
+            DEFAULT_VIEWS.extend(["%sViewMinimal" % aView])
+
+            # If it's 0, it's disabled and we don't do anything.
+
+            # TODO
+            # Add logging
 
     def fitChanged(self, event):
         sFit = service.Fit.getInstance()
@@ -63,7 +91,12 @@ class StatsPane(wx.Panel):
             contentPanel = tp.GetContentPane()
             contentPanel.viewName = viewName
 
-            view = StatsView.getView(viewName)(self)
+            try:
+                view = StatsView.getView(viewName)(self)
+            except KeyError:
+                # View doesn't exist. Skip to next view
+                continue
+
             self.nameViewMap[viewName] = view
             self.views.append(view)
 
