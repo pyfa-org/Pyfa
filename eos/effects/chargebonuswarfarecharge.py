@@ -1,11 +1,7 @@
 # chargeBonusWarfareCharge
 #
 # Used by:
-# Charges from group: Armor Command Burst Charges (3 of 3)
-# Charges from group: Information Command Burst Charges (3 of 3)
-# Charges from group: Mining Foreman Burst Charges (3 of 3)
-# Charges from group: Shield Command Burst Charges (3 of 3)
-# Charges from group: Skirmish Command Burst Charges (3 of 3)
+# Items from market group: Ammunition & Charges > Command Burst Charges (15 of 15)
 
 
 '''

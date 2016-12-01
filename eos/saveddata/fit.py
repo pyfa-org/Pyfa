@@ -81,15 +81,6 @@ class Fit(object):
 
         self.build()
 
-    def addCommandBonus(self, warfareBuffID, value, module, effect):
-        # oh fuck this is so janky
-        # @todo should we pass in min/max to this function, or is abs okay?
-        # (abs is old method, ccp now provides the aggregate function in their data)
-        print "Add command bonus: ", warfareBuffID, " - value: ", value
-
-        if warfareBuffID not in self.commandBonuses or abs(self.commandBonuses[warfareBuffID][0]) < abs(value):
-            self.commandBonuses[warfareBuffID] = (value, module, effect)
-
     @reconstructor
     def init(self):
         """Initialize a fit from the database and validate"""
@@ -454,11 +445,23 @@ class Fit(object):
     def getOrigin(self):
         return self.__origin
 
-    def __runCommandBoosts(self):
+    def addCommandBonus(self, warfareBuffID, value, module, effect, runTime="normal"):
+        # oh fuck this is so janky
+        # @todo should we pass in min/max to this function, or is abs okay?
+        # (abs is old method, ccp now provides the aggregate function in their data)
+        print "Add command bonus: ", warfareBuffID, " - value: ", value
+
+        if warfareBuffID not in self.commandBonuses or abs(self.commandBonuses[warfareBuffID][0]) < abs(value):
+            self.commandBonuses[warfareBuffID] = (runTime, value, module, effect)
+
+    def __runCommandBoosts(self, runTime="normal"):
         logger.debug("Applying gang boosts for %r", self)
         for warfareBuffID, info in self.commandBonuses.iteritems():
             # Unpack all data required to run effect properly
-            value, thing, effect = info
+            effect_runTime, value, thing, effect = info
+
+            if runTime != effect_runTime:
+                continue
 
             context = ("commandRun", thing.__class__.__name__.lower())
             if isinstance(thing, Module):
@@ -485,6 +488,8 @@ class Fit(object):
                     effect.handler(self, thing, context)
                 except:
                     pass
+
+        self.commandBonuses.clear()
 
     def calculateModifiedAttributes(self, targetFit=None, withBoosters=False, dirtyStorage=None):
         timer = Timer(u'Fit: {}, {}'.format(self.ID, self.name), logger)
@@ -608,10 +613,13 @@ class Fit(object):
                         # targetFit.register(item, origin=self)
                         item.calculateModifiedAttributes(targetFit, runTime, False, True)
 
-            timer.checkpoint('Done with runtime: %s'%runTime)
+            print "Command: "
+            print self.commandBonuses
 
-        print "Command: "
-        print self.commandBonuses
+            if not withBoosters and self.commandBonuses:
+                self.__runCommandBoosts(runTime)
+
+            timer.checkpoint('Done with runtime: %s'%runTime)
 
         # Mark fit as calculated
         self.__calculated = True
@@ -621,9 +629,6 @@ class Fit(object):
             for fit in self.projectedFits:
                 if fit.getProjectionInfo(self.ID).active:
                     fit.calculateModifiedAttributes(self, withBoosters=withBoosters, dirtyStorage=dirtyStorage)
-
-        if not withBoosters and self.commandBonuses:
-            self.__runCommandBoosts()
 
         timer.checkpoint('Done with fit calculation')
 

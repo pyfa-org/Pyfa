@@ -5,4 +5,4 @@
 # Skill: Ice Harvesting Drone Operation
 type = "passive"
 def handler(fit, src, context):
-    fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill("Ice Harvesting Drone Operation"), "duration", src.getModifiedItemAttr("rofBonus"))
+    fit.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill("Ice Harvesting Drone Operation"), "duration", src.getModifiedItemAttr("rofBonus"))

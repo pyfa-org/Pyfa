@@ -26,10 +26,12 @@ licenses = (
     "Fat Cow Icons by fatcow.com - Creative Commons Attribution 3.0 License"
 )
 developers = (
-    "blitzmann \t(Sable Blitzmann) (maintainer)",
-    "cncfanatics \t(Sakari Orisi)" ,
-    "DarkPhoenix \t(Kadesh Priestess)",
-    "Darriele \t\t(Darriele)")
+    "blitzmann \tSable Blitzmann (maintainer)",
+    "cncfanatics \tSakari Orisi (retired)" ,
+    "DarkPhoenix \tKadesh Priestess (retired)",
+    "Darriele \t\tDarriele (retired)",
+    "Ebag333 \t\tEbag Trescientas"
+)
 credits = (
     "Entity (Entity) \tCapacitor calculations / EVEAPI python lib / Reverence",
     "Aurora \t\tMaths",
