@@ -469,7 +469,15 @@ class Miscellanea(ViewColumn):
             fit = Fit.getInstance().getFit(self.mainFrame.getActiveFit())
             ehpTotal = fit.ehp
             hpTotal = fit.hp
-            useEhp = self.mainFrame.statsPane.nameViewMap["resistancesViewFull"].showEffective
+
+            try:
+                # Probably shouldn't hard code this to a specific name.....
+                useEhp = self.mainFrame.statsPane.nameViewMap["resistancesViewFull"].showEffective
+            except KeyError:
+                # The resistancesViewFull pane doesn't exist. Return nothing,
+                # because there's nothing to update.
+                return "", None
+
             tooltip = "HP restored over duration using charges"
             if useEhp:
                 if itemGroup == "Ancillary Armor Repairer":
