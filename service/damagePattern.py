@@ -17,14 +17,10 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 #===============================================================================
 
-import eos.db
-import eos.types
 import copy
 
-from eos.db.saveddata.loadDefaultDatabaseValues import DefaultDatabaseValues
-
-class ImportError(Exception):
-    pass
+import eos.db
+import eos.types
 
 class DamagePattern():
     instance = None

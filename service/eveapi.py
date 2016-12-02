@@ -166,7 +166,7 @@ from xml.parsers import expat
 from time import strptime
 from calendar import timegm
 
-import service
+from service.network import Network
 
 proxy = None
 proxySSL = False
@@ -395,7 +395,7 @@ class _RootContext(_Context):
             response = None
 
         if response is None:
-            network = service.Network.getInstance()
+            network = Network.getInstance()
 
             req = self._scheme+'://'+self._host+path
 
@@ -414,7 +414,7 @@ class _RootContext(_Context):
             # implementor is handling fallbacks...
             try:
                 return _ParseXML(response, True, store and (lambda obj: cache.store(self._host, path, kw, response, obj)))
-            except Error, e:
+            except Error as e:
                 response = retrieve_fallback(self._host, path, kw, reason=e)
                 if response is not None:
                     return response

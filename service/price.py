@@ -17,11 +17,12 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 #===============================================================================
 
-import service
-import eos.db
-import eos.types
+
 import time
 from xml.dom import minidom
+
+import eos
+from service.network import Network
 
 VALIDITY = 24*60*60  # Price validity period, 24 hours
 REREQUEST = 4*60*60  # Re-request delay for failed fetches, 4 hours
@@ -71,15 +72,15 @@ class Price():
 
         # Attempt to send request and process it
         try:
-            network = service.Network.getInstance()
+            network = Network.getInstance()
             data = network.request(baseurl, network.PRICES, data)
             xml = minidom.parse(data)
             types = xml.getElementsByTagName("marketstat").item(0).getElementsByTagName("type")
             # Cycle through all types we've got from request
-            for type in types:
+            for type_ in types:
                 # Get data out of each typeID details tree
-                typeID = int(type.getAttribute("id"))
-                sell = type.getElementsByTagName("sell").item(0)
+                typeID = int(type_.getAttribute("id"))
+                sell = type_.getElementsByTagName("sell").item(0)
                 # If price data wasn't there, set price to zero
                 try:
                     percprice = float(sell.getElementsByTagName("percentile").item(0).firstChild.data)
@@ -96,7 +97,7 @@ class Price():
                 del priceMap[typeID]
 
         # If getting or processing data returned any errors
-        except service.network.TimeoutError, e:
+        except TimeoutError:
             # Timeout error deserves special treatment
             for typeID in priceMap.keys():
                 priceobj = priceMap[typeID]

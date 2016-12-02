@@ -17,10 +17,11 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 #===============================================================================
 
+import copy
+
 import eos.db
 import eos.types
-import copy
-import service.market
+from service.market import Market
 
 class ImportError(Exception):
     pass
@@ -75,9 +76,9 @@ class ImplantSets():
 
     def saveChanges(self, s):
         eos.db.save(s)
-        
+
     def importSets(self, text):
-        sMkt = service.Market.getInstance()
+        sMkt = Market.getInstance()
         lines = text.splitlines()
         newSets = []
         errors = 0
@@ -117,9 +118,8 @@ class ImplantSets():
             raise ImportError("No patterns found for import")
         if errors > 0:
             raise ImportError("%d sets imported from clipboard; %d errors"%(lenImports, errors))
-        
+
     def exportSets(self):
         patterns = self.getImplantSetList()
         patterns.sort(key=lambda p: p.name)
         return eos.types.ImplantSet.exportSets(*patterns)
-

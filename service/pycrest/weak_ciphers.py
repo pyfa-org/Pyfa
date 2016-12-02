@@ -1,32 +1,23 @@
 import datetime
 import ssl
-import sys
 import warnings
 
 from requests.adapters import HTTPAdapter
 
 try:
-  from requests.packages import urllib3
-  from requests.packages.urllib3.util import ssl_
-
-  from requests.packages.urllib3.exceptions import (
-      SystemTimeWarning,
-      SecurityWarning,
-  )
-  from requests.packages.urllib3.packages.ssl_match_hostname import \
-          match_hostname
+    from requests.packages import urllib3
+    from requests.packages.urllib3.util import ssl_
+    from requests.packages.urllib3.exceptions import (
+        SystemTimeWarning,
+        SecurityWarning,
+    )
+    from requests.packages.urllib3.packages.ssl_match_hostname import \
+        match_hostname
 except:
-  import urllib3
-  from urllib3.util import ssl_
-
-  from urllib3.exceptions import (
-      SystemTimeWarning,
-      SecurityWarning,
-  )
-  from urllib3.packages.ssl_match_hostname import \
-          match_hostname
-
-
+    import urllib3
+    from urllib3.util import ssl_
+    from urllib3.exceptions import SystemTimeWarning, SecurityWarning
+    from urllib3.packages.ssl_match_hostname import match_hostname
 
 
 class WeakCiphersHTTPSConnection(

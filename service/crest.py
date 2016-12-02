@@ -9,10 +9,9 @@ import time
 import eos.db
 from eos.enum import Enum
 from eos.types import CrestChar
-
-import service
-
 import gui.globalEvents as GE
+from service.server import StoppableHTTPServer, AuthHandler
+from service.pycrest.eve import EVE
 
 logger = logging.getLogger(__name__)
 
@@ -64,7 +63,7 @@ class Crest():
         characters still in the cache (if USER mode)
         """
 
-        self.settings = service.settings.CRESTSettings.getInstance()
+        self.settings = settings.CRESTSettings.getInstance()
         self.scopes = ['characterFittingsRead', 'characterFittingsWrite']
 
         # these will be set when needed
@@ -73,7 +72,7 @@ class Crest():
         self.ssoTimer = None
 
         # Base EVE connection that is copied to all characters
-        self.eve = service.pycrest.EVE(
+        self.eve = EVE(
             client_id=self.settings.get('clientID') if self.settings.get('mode') == CrestModes.USER else self.clientIDs.get(self.settings.get('server')),
             api_key=self.settings.get('clientSecret') if self.settings.get('mode') == CrestModes.USER else None,
             redirect_uri=self.clientCallback,
@@ -161,7 +160,7 @@ class Crest():
         if self.httpd:
             self.stopServer()
             time.sleep(1)  # we need this to ensure that the previous get_request finishes, and then the socket will close
-        self.httpd = service.StoppableHTTPServer(('', 6461), service.AuthHandler)
+        self.httpd = StoppableHTTPServer(('', 6461), AuthHandler)
         thread.start_new_thread(self.httpd.serve, (self.handleLogin,))
 
         self.state = str(uuid.uuid4())

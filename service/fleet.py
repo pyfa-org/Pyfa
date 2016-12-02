@@ -17,9 +17,9 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 #===============================================================================
 
+import copy
 import eos.db
 from eos.types import Fleet as Fleet_, Wing, Squad
-import copy
 
 class Fleet(object):
     instance = None

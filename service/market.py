@@ -19,18 +19,17 @@
 
 import re
 import threading
-import wx
-
+import logging
 import Queue
+
+import wx
+from sqlalchemy.sql import or_
 
 import config
 import eos.db
 import eos.types
-from sqlalchemy.sql import and_, or_
-from service.settings import SettingsProvider, NetworkSettings
-import service
-import service.conversions as conversions
-import logging
+from service import conversions
+from service.settings import SettingsProvider
 
 try:
     from collections import OrderedDict
@@ -766,7 +765,7 @@ class Market():
         def cb():
             try:
                 callback(requests)
-            except Exception, e:
+            except Exception:
                 pass
             eos.db.commit()
 

@@ -17,14 +17,11 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 #===============================================================================
 
-import eos.db
-import eos.types
 import copy
 
-class ImportError(Exception):
-    pass
+import eos
 
-class TargetResists():
+class TargetResists(object):
     instance = None
     @classmethod
     def getInstance(cls):
@@ -85,4 +82,3 @@ class TargetResists():
         patterns = self.getTargetResistsList()
         patterns.sort(key=lambda p: p.name)
         return eos.types.TargetResists.exportPatterns(*patterns)
-
