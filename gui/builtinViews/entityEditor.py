@@ -1,6 +1,5 @@
 import wx
 from gui.bitmapLoader import BitmapLoader
-import service
 
 class BaseValidator(wx.PyValidator):
     def __init__(self):

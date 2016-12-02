@@ -18,12 +18,12 @@
 #===============================================================================
 
 import wx
-import service
 
 from gui.utils.numberFormatter import formatAmount
 from gui.viewColumn import ViewColumn
 from gui.bitmapLoader import BitmapLoader
 from eos.types import Mode
+from service.attribute import Attribute
 
 class CapacitorUse(ViewColumn):
     name = "Capacitor Usage"
@@ -32,7 +32,7 @@ class CapacitorUse(ViewColumn):
 
         self.mask = wx.LIST_MASK_IMAGE
 
-        sAttr = service.Attribute.getInstance()
+        sAttr = Attribute.getInstance()
         info = sAttr.getAttributeInfo("capacitorNeed")
         self.imageId = fittingView.imageList.GetImageIndex("capacitorRecharge_small", "gui")
         self.bitmap = BitmapLoader.getBitmap("capacitorRecharge_small", "gui")

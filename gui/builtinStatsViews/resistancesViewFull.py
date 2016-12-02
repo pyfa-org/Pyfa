@@ -23,7 +23,6 @@ from gui import builtinStatsViews
 from gui.bitmapLoader import BitmapLoader
 from gui import pygauge as PG
 from gui.utils.numberFormatter import formatAmount
-import service
 import gui.mainFrame
 import gui.builtinViews.fittingView as fv
 import gui.globalEvents as GE

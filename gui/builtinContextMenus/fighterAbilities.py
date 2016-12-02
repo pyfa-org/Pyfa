@@ -1,7 +1,6 @@
 import wx
 from gui.contextMenu import ContextMenu
 import gui.mainFrame
-import service
 import gui.globalEvents as GE
 
 class FighterAbility(ContextMenu):
@@ -48,7 +47,7 @@ class FighterAbility(ContextMenu):
             event.Skip()
             return
 
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
         sFit.toggleFighterAbility(fitID, ability)
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))

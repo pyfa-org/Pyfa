@@ -5,8 +5,9 @@ from gui.preferenceView import PreferenceView
 from gui.bitmapLoader import BitmapLoader
 
 import gui.mainFrame
-import service
 import gui.globalEvents as GE
+
+from service.settings import HTMLExportSettings
 
 
 class PFHTMLExportPref ( PreferenceView):
@@ -22,7 +23,7 @@ class PFHTMLExportPref ( PreferenceView):
 
     def populatePanel( self, panel ):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.HTMLExportSettings = service.settings.HTMLExportSettings.getInstance()
+        self.HTMLExportSettings = HTMLExportSettings.getInstance()
         self.dirtySettings = False
         dlgWidth = panel.GetParent().GetParent().ClientSize.width
         mainSizer = wx.BoxSizer( wx.VERTICAL )

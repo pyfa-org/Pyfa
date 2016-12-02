@@ -19,10 +19,15 @@
 import wx
 from wx.lib.scrolledpanel import ScrolledPanel
 
-import service
 import gui.mainFrame
 import gui.shipBrowser
 import gui.globalEvents as GE
+
+from service.fit import Fit
+from service.fleet import Fleet
+from service.character import Character
+from service.market import Market
+
 
 from gui import characterEditor as CharEditor
 
@@ -157,14 +162,14 @@ class GangView ( ScrolledPanel ):
             event.Skip()
             return
 
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
 
-        fleetSrv = service.Fleet.getInstance()
+        fleetSrv = Fleet.getInstance()
 
         activeFitID = self.mainFrame.getActiveFit()
         fit = sFit.getFit(activeFitID)
 
-        sChar = service.Character.getInstance()
+        sChar = Character.getInstance()
         charList = sChar.getCharacterList()
 
         if activeFitID:
@@ -211,11 +216,11 @@ class GangView ( ScrolledPanel ):
         for id in self.fleet:
             if location == self.fleet[id]['stText']: type = id
 
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         boostee = sFit.getFit(activeFitID)
         booster = None
 
-        fleetSrv = service.Fleet.getInstance()
+        fleetSrv = Fleet.getInstance()
 
         if type == 0: fleetSrv.setLinearFleetCom(boostee, booster)
         if type == 1: fleetSrv.setLinearWingCom(boostee, booster)
@@ -231,7 +236,7 @@ class GangView ( ScrolledPanel ):
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=activeFitID))
 
     def fitRenamed(self, event):
-        fleetSrv = service.Fleet.getInstance()
+        fleetSrv = Fleet.getInstance()
         activeFitID = self.mainFrame.getActiveFit()
 
         if activeFitID:
@@ -241,10 +246,10 @@ class GangView ( ScrolledPanel ):
 
     def fitSelected(self, event):
         ''' Fires when active fit is selected and when booster is saved to fit. Update the UI to reflect changes '''
-        fleetSrv = service.Fleet.getInstance()
+        fleetSrv = Fleet.getInstance()
 
         activeFitID = self.mainFrame.getActiveFit()
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fit = sFit.getFit(event.fitID or activeFitID)
 
         self.Parent.Parent.DisablePage(self, not fit or fit.isStructure)
@@ -291,12 +296,12 @@ class GangView ( ScrolledPanel ):
 
         activeFitID = self.mainFrame.getActiveFit()
         if activeFitID:
-            sFit = service.Fit.getInstance()
+            sFit = Fit.getInstance()
 
             boostee = sFit.getFit(activeFitID)
             booster = sFit.getFit(fitID)
 
-            fleetSrv = service.Fleet.getInstance()
+            fleetSrv = Fleet.getInstance()
 
             if type == 0: fleetSrv.setLinearFleetCom(boostee, booster)
             if type == 1: fleetSrv.setLinearWingCom(boostee, booster)
@@ -306,8 +311,8 @@ class GangView ( ScrolledPanel ):
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=activeFitID))
 
     def RefreshBoosterFits(self, event = None):
-        sFit = service.Fit.getInstance()
-        sMkt = service.Market.getInstance()
+        sFit = Fit.getInstance()
+        sMkt = Market.getInstance()
         fitList = sFit.getBoosterFits()
 
         for id in self.fleet:
@@ -336,7 +341,7 @@ class GangView ( ScrolledPanel ):
                     choice.SetSelection(0)
 
     def RefreshCharacterList(self, event = None):
-        sChar = service.Character.getInstance()
+        sChar = Character.getInstance()
         charList = sChar.getCharacterList()
         for id in self.fleet:
             choice = self.fleet[id]['chChar']
@@ -365,7 +370,7 @@ class GangView ( ScrolledPanel ):
         #Those are drags coming from pyfa sources, NOT builtin wx drags
         self.draggedFitID = None
         if type == "fit":
-            sFit = service.Fit.getInstance()
+            sFit = Fit.getInstance()
             fit = sFit.getFit(self.mainFrame.getActiveFit())
 
             if fit and not fit.isStructure:
@@ -384,7 +389,7 @@ class GangView ( ScrolledPanel ):
         type = self.options.index(menuItem.GetText())
 
         if self.draggedFitID:
-            sFit = service.Fit.getInstance()
+            sFit = Fit.getInstance()
             draggedFit = sFit.getFit(self.draggedFitID)
 
             self.AddCommander(draggedFit.ID, type)
@@ -392,7 +397,7 @@ class GangView ( ScrolledPanel ):
 
     def OnFitChoiceSelected(self, event):
         ''' Fired when booster choice is selected '''
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
 
         # set type via choice box used
         chFit = event.GetEventObject()

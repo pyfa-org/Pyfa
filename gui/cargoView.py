@@ -18,12 +18,12 @@
 #===============================================================================
 
 import wx
-import service
 import gui.display as d
 import gui.marketBrowser as mb
 from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
 import globalEvents as GE
+from service.fit import Fit
 
 class CargoViewDrop(wx.PyDropTarget):
         def __init__(self, dropFn):
@@ -75,7 +75,7 @@ class CargoView(d.Display):
         if data[0] == "fitting":
             self.swapModule(x, y, int(data[1]))
         elif data[0] == "market":
-            sFit = service.Fit.getInstance()
+            sFit = Fit.getInstance()
             sFit.addCargo(self.mainFrame.getActiveFit(), int(data[1]), 1)
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
 
@@ -94,7 +94,7 @@ class CargoView(d.Display):
         keycode = event.GetKeyCode()
         if keycode == wx.WXK_DELETE or keycode == wx.WXK_NUMPAD_DELETE:
             fitID = self.mainFrame.getActiveFit()
-            sFit = service.Fit.getInstance()
+            sFit = Fit.getInstance()
             row = self.GetFirstSelected()
             if row != -1:
                 sFit.removeCargo(fitID, self.GetItemData(row))
@@ -103,7 +103,7 @@ class CargoView(d.Display):
 
     def swapModule(self, x, y, modIdx):
         '''Swap a module from fitting window with cargo'''
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fit = sFit.getFit(self.mainFrame.getActiveFit())
         dstRow, _ = self.HitTest((x, y))
         mstate = wx.GetMouseState()
@@ -125,7 +125,7 @@ class CargoView(d.Display):
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
 
     def fitChanged(self, event):
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fit = sFit.getFit(event.fitID)
 
         self.Parent.Parent.DisablePage(self, not fit or fit.isStructure)
@@ -161,7 +161,7 @@ class CargoView(d.Display):
             col = self.getColumn(event.Position)
             if col != self.getColIndex(State):
                 fitID = self.mainFrame.getActiveFit()
-                sFit = service.Fit.getInstance()
+                sFit = Fit.getInstance()
                 cargo = self.cargo[self.GetItemData(row)]
                 sFit.removeCargo(fitID, self.original.index(cargo))
                 wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
@@ -174,11 +174,11 @@ class CargoView(d.Display):
     def spawnMenu(self):
         sel = self.GetFirstSelected()
         if sel != -1:
-            sFit = service.Fit.getInstance()
+            sFit = Fit.getInstance()
             fit = sFit.getFit(self.mainFrame.getActiveFit())
             cargo = fit.cargo[sel]
 
-            sMkt = service.Market.getInstance()
+            sMkt = Market.getInstance()
             sourceContext = "cargoItem"
             itemContext = sMkt.getCategoryByItem(cargo.item).name
 

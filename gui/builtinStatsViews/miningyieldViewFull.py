@@ -18,7 +18,6 @@
 #===============================================================================
 
 import wx
-import service
 import gui.mainFrame
 from gui.statsView import StatsView
 from gui.bitmapLoader import BitmapLoader
@@ -103,7 +102,7 @@ class MiningYieldViewFull(StatsView):
     def switchToFirepowerView(self, event):
         # Getting the active fit
         mainFrame = gui.mainFrame.MainFrame.getInstance()
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fit = sFit.getFit(mainFrame.getActiveFit())
         # Remove ourselves from statsPane's view list
         self.parent.views.remove(self)
@@ -124,9 +123,9 @@ class MiningYieldViewFull(StatsView):
     def refreshPanel(self, fit):
         #If we did anything intresting, we'd update our labels to reflect the new fit's stats here
 
-        stats = (("labelFullminingyieldMiner", lambda: fit.minerYield * 3600, 3, 0, 0, u"%s m\u00B3/h",None),
-                 ("labelFullminingyieldDrone", lambda: fit.droneYield * 3600, 3, 0, 0, u"%s m\u00B3/h", None),
-                 ("labelFullminingyieldTotal", lambda: fit.totalYield * 3600, 3, 0, 0, u"%s m\u00B3/h", None))
+        stats = (("labelFullminingyieldMiner", lambda: fit.minerYield, 3, 0, 0, u"%s m\u00B3/s",None),
+                 ("labelFullminingyieldDrone", lambda: fit.droneYield, 3, 0, 0, u"%s m\u00B3/s", None),
+                 ("labelFullminingyieldTotal", lambda: fit.totalYield, 3, 0, 0, u"%s m\u00B3/s", None))
 
         counter = 0
         for labelName, value, prec, lowest, highest, valueFormat, altFormat in stats:

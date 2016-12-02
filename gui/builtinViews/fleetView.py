@@ -1,6 +1,5 @@
 import wx.gizmos
 import gui.fleetBrowser
-import service
 from gui.bitmapLoader import BitmapLoader
 
 #Tab spawning handler

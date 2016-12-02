@@ -17,11 +17,13 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 #===============================================================================
 
-from service.settings import NetworkSettings
+
 import urllib2
 import urllib
-import config
 import socket
+
+import config
+from service.settings import NetworkSettings
 
 # network timeout, otherwise pyfa hangs for a long while if no internet connection
 timeout = 3
@@ -35,14 +37,13 @@ class RequestError(StandardError):
     pass
 
 class AuthenticationError(StandardError):
-    pass
+   pass
 
 class ServerError(StandardError):
-    pass
+   pass
 
 class TimeoutError(StandardError):
-    pass
-
+   pass
 
 class Network():
     # Request constants - every request must supply this, as it is checked if
@@ -55,7 +56,7 @@ class Network():
     _instance = None
     @classmethod
     def getInstance(cls):
-        if cls._instance == None:
+        if cls._instance is None:
             cls._instance = Network()
 
         return cls._instance
@@ -101,14 +102,14 @@ class Network():
         request = urllib2.Request(url, headers=headers, data=urllib.urlencode(data) if data else None)
         try:
             return urllib2.urlopen(request)
-        except urllib2.HTTPError, error:
+        except urllib2.HTTPError as error:
             if error.code == 404:
                 raise RequestError()
             elif error.code == 403:
                 raise AuthenticationError()
             elif error.code >= 500:
                 raise ServerError()
-        except urllib2.URLError, error:
+        except urllib2.URLError as error:
             if "timed out" in error.reason:
                 raise TimeoutError()
             else:

@@ -19,7 +19,6 @@
 
 import wx
 import wx.lib.newevent
-import service
 import gui.mainFrame
 import gui.marketBrowser
 import gui.display as d
@@ -31,6 +30,9 @@ from gui.builtinViewColumns.state import State
 from gui.bitmapLoader import BitmapLoader
 import gui.builtinViews.emptyView
 from gui.utils.exportHtml import exportHtml
+
+from service.fit import Fit
+from service.market import Market
 
 import gui.globalEvents as GE
 
@@ -55,7 +57,7 @@ class FitSpawner(gui.multiSwitch.TabSpawner):
                 pass
         if count < 0:
             startup = getattr(event, "startup", False)  # see OpenFitsThread in gui.mainFrame
-            sFit = service.Fit.getInstance()
+            sFit = Fit.getInstance()
             openFitInNew = sFit.serviceFittingOptions["openFitInNew"]
             mstate = wx.GetMouseState()
 
@@ -207,7 +209,7 @@ class FittingView(d.Display):
     def pageChanged(self, event):
         if self.parent.IsActive(self):
             fitID = self.getActiveFit()
-            sFit = service.Fit.getInstance()
+            sFit = Fit.getInstance()
             sFit.switchFit(fitID)
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
@@ -262,7 +264,7 @@ class FittingView(d.Display):
 
         try:
             # Sometimes there is no active page after deletion, hence the try block
-            sFit = service.Fit.getInstance()
+            sFit = Fit.getInstance()
             sFit.refreshFit(self.getActiveFit())
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.activeFitID))
         except wx._core.PyDeadObjectError:
@@ -282,7 +284,7 @@ class FittingView(d.Display):
             fitID = event.fitID
             startup = getattr(event, "startup", False)
             self.activeFitID = fitID
-            sFit = service.Fit.getInstance()
+            sFit = Fit.getInstance()
             self.updateTab()
             if not startup or startup == 2:  # see OpenFitsThread in gui.mainFrame
                 self.Show(fitID is not None)
@@ -293,7 +295,7 @@ class FittingView(d.Display):
         event.Skip()
 
     def updateTab(self):
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fit = sFit.getFit(self.getActiveFit(), basic=True)
 
         bitmap = BitmapLoader.getImage("race_%s_small" % fit.ship.item.race, "gui")
@@ -308,7 +310,7 @@ class FittingView(d.Display):
             itemID = event.itemID
             fitID = self.activeFitID
             if fitID != None:
-                sFit = service.Fit.getInstance()
+                sFit = Fit.getInstance()
                 if sFit.isAmmo(itemID):
                     modules = []
                     sel = self.GetFirstSelected()
@@ -337,7 +339,7 @@ class FittingView(d.Display):
                     self.click(event)
 
     def removeModule(self, module):
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fit = sFit.getFit(self.activeFitID)
         populate = sFit.removeModule(self.activeFitID, fit.modules.index(module))
 
@@ -351,7 +353,7 @@ class FittingView(d.Display):
 
         dstRow, _ = self.HitTest((x, y))
         if dstRow != -1 and dstRow not in self.blanks:
-            sFit = service.Fit.getInstance()
+            sFit = Fit.getInstance()
             fitID = self.mainFrame.getActiveFit()
             moduleChanged = sFit.changeModule(fitID, self.mods[dstRow].position, srcIdx)
             if moduleChanged is None:
@@ -367,7 +369,7 @@ class FittingView(d.Display):
         if dstRow != -1 and dstRow not in self.blanks:
             module = self.mods[dstRow]
 
-            sFit = service.Fit.getInstance()
+            sFit = Fit.getInstance()
             sFit.moveCargoToModule(self.mainFrame.getActiveFit(), module.position, srcIdx, mstate.CmdDown() and module.isEmpty)
 
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
@@ -375,7 +377,7 @@ class FittingView(d.Display):
     def swapItems(self, x, y, srcIdx):
         '''Swap two modules in fitting window'''
         mstate = wx.GetMouseState()
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fit = sFit.getFit(self.activeFitID)
 
         if mstate.CmdDown():
@@ -408,7 +410,7 @@ class FittingView(d.Display):
         known to the display, and not the backend, so it's safe.
         '''
 
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fit = sFit.getFit(self.activeFitID)
 
         slotOrder = [Slot.SUBSYSTEM, Slot.HIGH, Slot.MED, Slot.LOW, Slot.RIG, Slot.SERVICE]
@@ -481,7 +483,7 @@ class FittingView(d.Display):
         if self.activeFitID is None:
             return
 
-        sMkt = service.Market.getInstance()
+        sMkt = Market.getInstance()
         selection = []
         sel = self.GetFirstSelected()
         contexts = []
@@ -505,7 +507,7 @@ class FittingView(d.Display):
 
             sel = self.GetNextSelected(sel)
 
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fit = sFit.getFit(self.activeFitID)
 
         contexts.append(("fittingShip", "Ship" if not fit.isStructure else "Citadel"))
@@ -537,7 +539,7 @@ class FittingView(d.Display):
             else:
                 mods = self.getSelectedMods()
 
-            sFit = service.Fit.getInstance()
+            sFit = Fit.getInstance()
             fitID = self.mainFrame.getActiveFit()
             ctrl = wx.GetMouseState().CmdDown() or wx.GetMouseState().MiddleDown()
             click = "ctrl" if ctrl is True else "right" if event.GetButton() == 3 else "left"
@@ -571,7 +573,7 @@ class FittingView(d.Display):
         self.Freeze()
         d.Display.refresh(self, stuff)
 
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fit = sFit.getFit(self.activeFitID)
         slotMap = {}
 
@@ -637,7 +639,7 @@ class FittingView(d.Display):
         for i in xrange(len(self.DEFAULT_COLS)):
             columnsWidths.append(0)
 
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         try:
             fit = sFit.getFit(self.activeFitID)
         except:

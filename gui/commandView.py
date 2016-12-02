@@ -20,11 +20,13 @@
 import wx
 import gui.display as d
 import gui.globalEvents as GE
-import service
+
 import gui.droneView
 from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
 import eos.types
+from service.fit import Fit
+from service.market import Market
 
 
 class DummyItem:
@@ -88,7 +90,7 @@ class CommandView(d.Display):
         keycode = event.GetKeyCode()
         if keycode == wx.WXK_DELETE or keycode == wx.WXK_NUMPAD_DELETE:
             fitID = self.mainFrame.getActiveFit()
-            sFit = service.Fit.getInstance()
+            sFit = Fit.getInstance()
             row = self.GetFirstSelected()
             if row != -1:
                 sFit.removeCommand(fitID, self.get(row))
@@ -99,7 +101,7 @@ class CommandView(d.Display):
         if type == "fit":
             activeFit = self.mainFrame.getActiveFit()
             if activeFit:
-                sFit = service.Fit.getInstance()
+                sFit = Fit.getInstance()
                 draggedFit = sFit.getFit(fitID)
                 sFit.addCommandFit(activeFit, draggedFit)
                 wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=activeFit))
@@ -118,7 +120,7 @@ class CommandView(d.Display):
         return fit.name
 
     def fitChanged(self, event):
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fit = sFit.getFit(event.fitID)
 
         self.Parent.Parent.DisablePage(self, not fit or fit.isStructure)
@@ -168,7 +170,7 @@ class CommandView(d.Display):
             col = self.getColumn(event.Position)
             if col == self.getColIndex(State):
                 fitID = self.mainFrame.getActiveFit()
-                sFit = service.Fit.getInstance()
+                sFit = Fit.getInstance()
                 sFit.toggleCommandFit(fitID, item)
                 wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
@@ -183,7 +185,7 @@ class CommandView(d.Display):
         if sel != -1:
             item = self.get(sel)
             if item is None: return
-            sMkt = service.Market.getInstance()
+            sMkt = Market.getInstance()
             fitSrcContext = "commandFit"
             fitItemContext = item.name
             context = ((fitSrcContext,fitItemContext),)
@@ -204,6 +206,6 @@ class CommandView(d.Display):
             col = self.getColumn(event.Position)
             if col != self.getColIndex(State):
                 fitID = self.mainFrame.getActiveFit()
-                sFit = service.Fit.getInstance()
+                sFit = Fit.getInstance()
                 sFit.removeCommand(fitID, self.get(row))
                 wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))

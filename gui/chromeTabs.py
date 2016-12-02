@@ -25,7 +25,8 @@ import gui.utils.fonts as fonts
 from gui.bitmapLoader import BitmapLoader
 import gui.utils.fonts as fonts
 
-import service
+from service.fit import Fit
+
 
 _PageChanging, EVT_NOTEBOOK_PAGE_CHANGING = wx.lib.newevent.NewEvent()
 _PageChanged, EVT_NOTEBOOK_PAGE_CHANGED = wx.lib.newevent.NewEvent()
@@ -699,7 +700,7 @@ class PFTabsContainer(wx.Panel):
         self.containerHeight = height
         self.startDrag = False
         self.dragging = False
-        self.sFit = service.Fit.getInstance()
+        self.sFit = Fit.getInstance()
 
         self.inclination = 7
         if canAdd:

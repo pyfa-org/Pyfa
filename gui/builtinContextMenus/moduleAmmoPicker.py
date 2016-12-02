@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 from gui.contextMenu import ContextMenu
 import gui.mainFrame
-import service
 import wx
 from gui.bitmapLoader import BitmapLoader
 from eos.types import Hardpoint
 import gui.globalEvents as GE
+from service.market import Market
+from service.fit import Fit
 
 class ModuleAmmoPicker(ContextMenu):
     DAMAGE_TYPES = ("em", "explosive", "kinetic", "thermal")
@@ -40,7 +41,7 @@ class ModuleAmmoPicker(ContextMenu):
             return False
 
         self.modules = modules
-        self.charges = list(filter(lambda charge: service.Market.getInstance().getPublicityByItem(charge), validCharges))
+        self.charges = list(filter(lambda charge: Market.getInstance().getPublicityByItem(charge), validCharges))
         return len(self.charges) > 0
 
     def getText(self, itmContext, selection):
@@ -214,7 +215,7 @@ class ModuleAmmoPicker(ContextMenu):
             event.Skip()
             return
 
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
 
         sFit.setAmmo(fitID, charge.ID if charge is not None else None, self.modules)

@@ -19,7 +19,6 @@
 
 import wx
 
-import service
 import gui.globalEvents as GE
 import gui.marketBrowser as mb
 import gui.mainFrame
@@ -27,6 +26,7 @@ import gui.display as d
 from gui.builtinViewColumns.state import State
 from eos.types import Slot
 from gui.contextMenu import ContextMenu
+from service.fit import Fit
 
 class FighterViewDrop(wx.PyDropTarget):
         def __init__(self, dropFn):
@@ -81,7 +81,7 @@ class FighterView(wx.Panel):
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
 
     def fitChanged(self, event):
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         activeFitID = self.mainFrame.getActiveFit()
         fit = sFit.getFit(activeFitID)
 
@@ -215,7 +215,7 @@ class FighterDisplay(d.Display):
                    'Electronic Warfare Drones', 'Logistic Drones', 'Mining Drones', 'Salvage Drones',
                    'Light Fighters', 'Heavy Fighters', 'Support Fighters')
     def droneKey(self, drone):
-        sMkt = service.Market.getInstance()
+        sMkt = Market.getInstance()
 
         groupName = sMkt.getMarketGroupByItem(drone.item).name
         print groupName
@@ -224,7 +224,7 @@ class FighterDisplay(d.Display):
     '''
 
     def fitChanged(self, event):
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fit = sFit.getFit(event.fitID)
 
         self.Parent.Parent.Parent.DisablePage(self.Parent, not fit)
@@ -259,7 +259,7 @@ class FighterDisplay(d.Display):
 
 
     def addItem(self, event):
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
         trigger = sFit.addFighter(fitID, event.itemID)
         if trigger:
@@ -278,7 +278,7 @@ class FighterDisplay(d.Display):
 
     def removeFighter(self, fighter):
         fitID = self.mainFrame.getActiveFit()
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         sFit.removeFighter(fitID, self.original.index(fighter))
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
@@ -289,7 +289,7 @@ class FighterDisplay(d.Display):
             col = self.getColumn(event.Position)
             if col == self.getColIndex(State):
                 fitID = self.mainFrame.getActiveFit()
-                sFit = service.Fit.getInstance()
+                sFit = Fit.getInstance()
                 fighter = self.fighters[row]
                 sFit.toggleFighter(fitID, self.original.index(fighter))
                 wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
@@ -304,7 +304,7 @@ class FighterDisplay(d.Display):
         if sel != -1:
             fighter = self.fighters[sel]
 
-            sMkt = service.Market.getInstance()
+            sMkt = Market.getInstance()
             sourceContext = "fighterItem"
             itemContext = sMkt.getCategoryByItem(fighter.item).name
             menu = ContextMenu.getMenu((fighter,), (sourceContext, itemContext))

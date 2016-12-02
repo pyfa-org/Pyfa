@@ -18,10 +18,11 @@
 #===============================================================================
 
 import threading
-import config
 import os
+
+import config
 import eos.types
-import eos.db.migration as migration
+from eos.db import migration
 from eos.db.saveddata.loadDefaultDatabaseValues import DefaultDatabaseValues
 
 class PrefetchThread(threading.Thread):
@@ -44,27 +45,26 @@ prefetch.start()
 # @ todo: move this to pyfa.py
 ########
 
-#Make sure the saveddata db exists
-if not os.path.exists(config.savePath):
+# Make sure the saveddata db exists
+if config.savePath and not os.path.exists(config.savePath):
     os.mkdir(config.savePath)
 
-if os.path.isfile(config.saveDB):
+if config.saveDB and os.path.isfile(config.saveDB):
     # If database exists, run migration after init'd database
     eos.db.saveddata_meta.create_all()
     migration.update(eos.db.saveddata_engine)
     # Import default database values
     # Import values that must exist otherwise Pyfa breaks
     DefaultDatabaseValues.importRequiredDefaults()
-else:
+elif config.saveDB:
     # If database does not exist, do not worry about migration. Simply
     # create and set version
     eos.db.saveddata_meta.create_all()
     eos.db.saveddata_engine.execute('PRAGMA user_version = {}'.format(migration.getAppVersion()))
-    #Import default database values
+    # Import default database values
     # Import values that must exist otherwise Pyfa breaks
     DefaultDatabaseValues.importRequiredDefaults()
     # Import default values for damage profiles
     DefaultDatabaseValues.importDamageProfileDefaults()
     # Import default values for target resist profiles
     DefaultDatabaseValues.importResistProfileDefaults()
-

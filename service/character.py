@@ -20,6 +20,7 @@
 import copy
 import itertools
 import json
+import logging
 import threading
 from codecs import open
 from xml.etree import ElementTree
@@ -28,11 +29,10 @@ import gzip
 
 import wx
 
+import config
 import eos.db
 import eos.types
-import service
-import config
-import logging
+from service.eveapi import EVEAPIConnection, ParseXML
 
 logger = logging.getLogger(__name__)
 
@@ -49,7 +49,7 @@ class CharacterImportThread(threading.Thread):
             try:
                 # we try to parse api XML data first
                 with open(path, mode='r') as charFile:
-                    sheet = service.ParseXML(charFile)
+                    sheet = ParseXML(charFile)
                     char = sCharacter.new(sheet.name+" (imported)")
                     sCharacter.apiUpdateCharSheet(char.ID, sheet.skills)
             except:
@@ -87,8 +87,6 @@ class SkillBackupThread(threading.Thread):
     def run(self):
         path = self.path
         sCharacter = Character.getInstance()
-        sFit = service.Fit.getInstance()
-        fit = sFit.getFit(self.activeFit)
         backupData = ""
         if self.saveFmt == "xml" or self.saveFmt == "emp":
             backupData = sCharacter.exportXml()
@@ -284,7 +282,7 @@ class Character(object):
         char.apiID = userID
         char.apiKey = apiKey
 
-        api = service.EVEAPIConnection()
+        api = EVEAPIConnection()
         auth = api.auth(keyID=userID, vCode=apiKey)
         apiResult = auth.account.Characters()
         charList = map(lambda c: unicode(c.name), apiResult.characters)
@@ -296,7 +294,7 @@ class Character(object):
         dbChar = eos.db.getCharacter(charID)
         dbChar.defaultChar = charName
 
-        api = service.EVEAPIConnection()
+        api = EVEAPIConnection()
         auth = api.auth(keyID=dbChar.apiID, vCode=dbChar.apiKey)
         apiResult = auth.account.Characters()
         charID = None

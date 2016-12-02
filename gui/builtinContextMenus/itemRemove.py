@@ -1,6 +1,5 @@
 from gui.contextMenu import ContextMenu
 import gui.mainFrame
-import service
 import wx
 import gui.globalEvents as GE
 
@@ -21,7 +20,7 @@ class ItemRemove(ContextMenu):
 
     def activate(self, fullContext, selection, i):
         srcContext = fullContext[0]
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
         fit = sFit.getFit(fitID)
 

@@ -18,7 +18,6 @@
 #===============================================================================
 
 import wx
-import service
 import gui.display as d
 import gui.marketBrowser as mb
 import gui.mainFrame
@@ -26,6 +25,7 @@ from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
 import globalEvents as GE
 from eos.types import ImplantLocation
+from service.fit import Fit
 
 
 class ImplantView(wx.Panel):
@@ -56,7 +56,7 @@ class ImplantView(wx.Panel):
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
 
     def fitChanged(self, event):
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         activeFitID = self.mainFrame.getActiveFit()
         fit = sFit.getFit(activeFitID)
         if fit:
@@ -70,7 +70,7 @@ class ImplantView(wx.Panel):
 
     def OnRadioSelect(self, event):
         fitID = self.mainFrame.getActiveFit()
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         sFit.toggleImplantSource(fitID, ImplantLocation.FIT if self.rbFit.GetValue() else ImplantLocation.CHARACTER)
 
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
@@ -107,7 +107,7 @@ class ImplantDisplay(d.Display):
         event.Skip()
 
     def fitChanged(self, event):
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fit = sFit.getFit(event.fitID)
 
         self.Parent.Parent.Parent.DisablePage(self.Parent, not fit or fit.isStructure)
@@ -137,7 +137,7 @@ class ImplantDisplay(d.Display):
         event.Skip()
 
     def addItem(self, event):
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
 
         fit = sFit.getFit(fitID)
@@ -161,7 +161,7 @@ class ImplantDisplay(d.Display):
 
     def removeImplant(self, implant):
         fitID = self.mainFrame.getActiveFit()
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         sFit.removeImplant(fitID, self.original.index(implant))
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
@@ -172,7 +172,7 @@ class ImplantDisplay(d.Display):
             col = self.getColumn(event.Position)
             if col == self.getColIndex(State):
                 fitID = self.mainFrame.getActiveFit()
-                sFit = service.Fit.getInstance()
+                sFit = Fit.getInstance()
                 sFit.toggleImplant(fitID, row)
                 wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
@@ -185,7 +185,7 @@ class ImplantDisplay(d.Display):
         sel = self.GetFirstSelected()
         menu = None
 
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fit = sFit.getFit(self.mainFrame.getActiveFit())
 
         if not fit:
@@ -194,7 +194,7 @@ class ImplantDisplay(d.Display):
         if sel != -1:
             implant = fit.appliedImplants[sel]
 
-            sMkt = service.Market.getInstance()
+            sMkt = Market.getInstance()
             sourceContext = "implantItem" if fit.implantSource == ImplantLocation.FIT else "implantItemChar"
             itemContext = sMkt.getCategoryByItem(implant.item).name
 

@@ -2,9 +2,10 @@
 from gui.contextMenu import ContextMenu
 from gui.itemStats import ItemStatsDialog
 import gui.mainFrame
-import service
 import wx
 import gui.globalEvents as GE
+from service.market import Market
+from service.fit import Fit
 
 class MetaSwap(ContextMenu):
     def __init__(self):
@@ -17,7 +18,7 @@ class MetaSwap(ContextMenu):
 
         # Check if list of variations is same for all of selection
         # If not - don't show the menu
-        mkt = service.Market.getInstance()
+        mkt = Market.getInstance()
         self.variations = None
         for i in selection:
             variations = mkt.getVariationsByItems([i.item])
@@ -88,7 +89,7 @@ class MetaSwap(ContextMenu):
             event.Skip()
             return
 
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
         fit = sFit.getFit(fitID)
         

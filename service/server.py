@@ -2,10 +2,11 @@ import BaseHTTPServer
 import urlparse
 import socket
 import thread
-import wx
-from service.settings import CRESTSettings
-
 import logging
+
+import wx
+
+from service.settings import CRESTSettings
 
 logger = logging.getLogger(__name__)
 
@@ -121,4 +122,3 @@ if __name__ == "__main__":
     thread.start_new_thread(httpd.serve, ())
     raw_input("Press <RETURN> to stop server\n")
     httpd.stop()
-

@@ -405,9 +405,9 @@ class Miscellanea(ViewColumn):
             cycleTime = stuff.cycleTime
             if not miningAmount or not cycleTime:
                 return "", None
-            minePerHour = (float(miningAmount) * 1000 / cycleTime) * 3600
-            text = "{0}/h".format(formatAmount(minePerHour, 3, 0, 3))
-            tooltip = "Mining Yield per hour"
+            minePerSec = float(miningAmount) * 1000 / cycleTime
+            text = "{0}/s".format(formatAmount(minePerSec, 3, 0, 3))
+            tooltip = "Yield per second"
             return text, tooltip
         elif itemGroup == "Logistic Drone":
             armorAmount = stuff.getModifiedItemAttr("armorDamageAmount")
@@ -442,9 +442,9 @@ class Miscellanea(ViewColumn):
             cycleTime = stuff.getModifiedItemAttr("duration")
             if not miningAmount or not cycleTime:
                 return "", None
-            minePerHour = (float(miningAmount) * 1000 / cycleTime) * 3600
-            text = "{0}/h".format(formatAmount(minePerHour, 3, 0, 3))
-            tooltip = "Mining Yield per hour"
+            minePerSec = float(miningAmount) * 1000 / cycleTime
+            text = "{0}/s".format(formatAmount(minePerSec, 3, 0, 3))
+            tooltip = "Yield per second"
             return text, tooltip
         elif itemGroup == "Micro Jump Drive":
             cycleTime = stuff.getModifiedItemAttr("duration") / 1000

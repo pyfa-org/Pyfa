@@ -4,9 +4,9 @@ from gui.preferenceView import PreferenceView
 from gui.bitmapLoader import BitmapLoader
 
 import gui.mainFrame
-import service
 import gui.globalEvents as GE
-
+from service.settings import SettingsProvider
+from service.fit import Fit
 
 class PFGeneralPref ( PreferenceView):
     title = "General"
@@ -14,7 +14,7 @@ class PFGeneralPref ( PreferenceView):
     def populatePanel( self, panel ):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.dirtySettings = False
-        self.openFitsSettings = service.SettingsProvider.getInstance().getSettings("pyfaPrevOpenFits", {"enabled": False, "pyfaOpenFits": []})
+        self.openFitsSettings = SettingsProvider.getInstance().getSettings("pyfaPrevOpenFits", {"enabled": False, "pyfaOpenFits": []})
 
         mainSizer = wx.BoxSizer( wx.VERTICAL )
 
@@ -70,7 +70,7 @@ class PFGeneralPref ( PreferenceView):
 
         defCharSizer = wx.BoxSizer( wx.HORIZONTAL )
 
-        self.sFit = service.Fit.getInstance()
+        self.sFit = Fit.getInstance()
 
         self.cbGlobalChar.SetValue(self.sFit.serviceFittingOptions["useGlobalCharacter"])
         self.cbGlobalDmgPattern.SetValue(self.sFit.serviceFittingOptions["useGlobalDamagePattern"])

@@ -20,11 +20,11 @@
 import wx
 import gui.display as d
 import gui.globalEvents as GE
-import service
 import gui.droneView
 from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
 import eos.types
+from service.fit import Fit
 
 
 class DummyItem:
@@ -91,7 +91,7 @@ class ProjectedView(d.Display):
             # if source is coming from projected, we are trying to combine drones.
             self.mergeDrones(x, y, int(data[1]))
         elif data[0] == "market":
-            sFit = service.Fit.getInstance()
+            sFit = Fit.getInstance()
             fitID = self.mainFrame.getActiveFit()
             sFit.project(fitID, int(data[1]))
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
@@ -100,7 +100,7 @@ class ProjectedView(d.Display):
         keycode = event.GetKeyCode()
         if keycode == wx.WXK_DELETE or keycode == wx.WXK_NUMPAD_DELETE:
             fitID = self.mainFrame.getActiveFit()
-            sFit = service.Fit.getInstance()
+            sFit = Fit.getInstance()
             row = self.GetFirstSelected()
             if row != -1:
                 sFit.removeProjected(fitID, self.get(row))
@@ -111,7 +111,7 @@ class ProjectedView(d.Display):
         if type == "fit":
             activeFit = self.mainFrame.getActiveFit()
             if activeFit:
-                sFit = service.Fit.getInstance()
+                sFit = Fit.getInstance()
                 draggedFit = sFit.getFit(fitID)
                 sFit.project(activeFit, draggedFit)
                 wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=activeFit))
@@ -135,7 +135,7 @@ class ProjectedView(d.Display):
     def _merge(self, src, dst):
         dstDrone = self.get(dst)
         if isinstance(dstDrone, eos.types.Drone):
-            sFit = service.Fit.getInstance()
+            sFit = Fit.getInstance()
             fitID = self.mainFrame.getActiveFit()
             if sFit.mergeDrones(fitID, self.get(src), dstDrone, True):
                 wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
@@ -159,7 +159,7 @@ class ProjectedView(d.Display):
         return fit.name
 
     def fitChanged(self, event):
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fit = sFit.getFit(event.fitID)
 
         self.Parent.Parent.DisablePage(self, not fit or fit.isStructure)
@@ -231,7 +231,7 @@ class ProjectedView(d.Display):
             col = self.getColumn(event.Position)
             if col == self.getColIndex(State):
                 fitID = self.mainFrame.getActiveFit()
-                sFit = service.Fit.getInstance()
+                sFit = Fit.getInstance()
                 sFit.toggleProjected(fitID, item, "right" if event.Button == 3 else "left")
                 wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
@@ -246,7 +246,7 @@ class ProjectedView(d.Display):
         if sel != -1:
             item = self.get(sel)
             if item is None: return
-            sMkt = service.Market.getInstance()
+            sMkt = Market.getInstance()
             if isinstance(item, eos.types.Drone):
                 srcContext = "projectedDrone"
                 itemContext = sMkt.getCategoryByItem(item.item).name
@@ -287,6 +287,6 @@ class ProjectedView(d.Display):
             col = self.getColumn(event.Position)
             if col != self.getColIndex(State):
                 fitID = self.mainFrame.getActiveFit()
-                sFit = service.Fit.getInstance()
+                sFit = Fit.getInstance()
                 sFit.removeProjected(fitID, self.get(row))
                 wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))

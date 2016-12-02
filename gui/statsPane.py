@@ -19,7 +19,7 @@
 
 import wx
 from gui.statsView import StatsView
-import service
+from service.fit import Fit
 from gui.pyfatogglepanel import TogglePanel
 import gui.builtinStatsViews
 from gui.contextMenu import ContextMenu
@@ -33,7 +33,7 @@ class StatsPane(wx.Panel):
                      "priceViewFull",]
 
     def fitChanged(self, event):
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fit = sFit.getFit(event.fitID)
         for view in self.views:
             view.refreshPanel(fit)

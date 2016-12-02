@@ -4,7 +4,6 @@ import json
 import wx
 import requests
 
-import service
 from service.crest import CrestModes
 
 from eos.types import Cargo
@@ -23,7 +22,7 @@ class CrestFittings(wx.Frame):
 
         self.mainFrame = parent
         mainSizer = wx.BoxSizer(wx.VERTICAL)
-        sCrest = service.Crest.getInstance()
+        sCrest = Crest.getInstance()
 
         characterSelectSizer = wx.BoxSizer( wx.HORIZONTAL )
 
@@ -90,7 +89,7 @@ class CrestFittings(wx.Frame):
         event.Skip()
 
     def updateCharList(self):
-        sCrest = service.Crest.getInstance()
+        sCrest = Crest.getInstance()
         chars = sCrest.getCrestCharacters()
 
         if len(chars) == 0:
@@ -123,7 +122,7 @@ class CrestFittings(wx.Frame):
         event.Skip()
 
     def getActiveCharacter(self):
-        sCrest = service.Crest.getInstance()
+        sCrest = Crest.getInstance()
 
         if sCrest.settings.get('mode') == CrestModes.IMPLICIT:
             return sCrest.implicitCharacter.ID
@@ -132,7 +131,7 @@ class CrestFittings(wx.Frame):
         return self.charChoice.GetClientData(selection) if selection is not None else None
 
     def fetchFittings(self, event):
-        sCrest = service.Crest.getInstance()
+        sCrest = Crest.getInstance()
         try:
             waitDialog = wx.BusyInfo("Fetching fits, please wait...", parent=self)
             fittings = sCrest.getFittings(self.getActiveCharacter())
@@ -150,12 +149,12 @@ class CrestFittings(wx.Frame):
         if not selection:
             return
         data = self.fitTree.fittingsTreeCtrl.GetPyData(selection)
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fits = sFit.importFitFromBuffer(data)
         self.mainFrame._openAfterImport(fits)
 
     def deleteFitting(self, event):
-        sCrest = service.Crest.getInstance()
+        sCrest = Crest.getInstance()
         selection = self.fitView.fitSelection
         if not selection:
             return
@@ -180,7 +179,7 @@ class ExportToEve(wx.Frame):
         self.mainFrame = parent
         self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
 
-        sCrest = service.Crest.getInstance()
+        sCrest = Crest.getInstance()
         mainSizer = wx.BoxSizer(wx.VERTICAL)
         hSizer = wx.BoxSizer(wx.HORIZONTAL)
 
@@ -217,7 +216,7 @@ class ExportToEve(wx.Frame):
         self.Centre(wx.BOTH)
 
     def updateCharList(self):
-        sCrest = service.Crest.getInstance()
+        sCrest = Crest.getInstance()
         chars = sCrest.getCrestCharacters()
 
         if len(chars) == 0:
@@ -245,7 +244,7 @@ class ExportToEve(wx.Frame):
         event.Skip()
 
     def getActiveCharacter(self):
-        sCrest = service.Crest.getInstance()
+        sCrest = Crest.getInstance()
 
         if sCrest.settings.get('mode') == CrestModes.IMPLICIT:
             return sCrest.implicitCharacter.ID
@@ -254,7 +253,7 @@ class ExportToEve(wx.Frame):
         return self.charChoice.GetClientData(selection) if selection is not None else None
 
     def exportFitting(self, event):
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
 
         self.statusbar.SetStatusText("", 0)
@@ -264,7 +263,7 @@ class ExportToEve(wx.Frame):
             return
 
         self.statusbar.SetStatusText("Sending request and awaiting response", 1)
-        sCrest = service.Crest.getInstance()
+        sCrest = Crest.getInstance()
 
         try:
             data = sFit.exportCrest(fitID)
@@ -321,7 +320,7 @@ class CrestMgmt(wx.Dialog):
         event.Skip()
 
     def popCharList(self):
-        sCrest = service.Crest.getInstance()
+        sCrest = Crest.getInstance()
         chars = sCrest.getCrestCharacters()
 
         self.lcCharacters.DeleteAllItems()
@@ -335,7 +334,7 @@ class CrestMgmt(wx.Dialog):
         self.lcCharacters.SetColumnWidth(1, wx.LIST_AUTOSIZE)
 
     def addChar(self, event):
-        sCrest = service.Crest.getInstance()
+        sCrest = Crest.getInstance()
         uri = sCrest.startServer()
         webbrowser.open(uri)
 
@@ -343,7 +342,7 @@ class CrestMgmt(wx.Dialog):
         item = self.lcCharacters.GetFirstSelected()
         if item > -1:
             charID = self.lcCharacters.GetItemData(item)
-            sCrest = service.Crest.getInstance()
+            sCrest = Crest.getInstance()
             sCrest.delCrestCharacter(charID)
             self.popCharList()
 

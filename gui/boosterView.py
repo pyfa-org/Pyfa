@@ -18,12 +18,12 @@
 #===============================================================================
 
 import wx
-import service
 import gui.display as d
 import gui.globalEvents as GE
 import gui.marketBrowser as mb
 from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
+from service.fit import Fit
 
 class BoosterViewDrop(wx.PyDropTarget):
         def __init__(self, dropFn):
@@ -85,7 +85,7 @@ class BoosterView(d.Display):
         event.Skip()
 
     def fitChanged(self, event):
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fit = sFit.getFit(event.fitID)
 
         self.Parent.Parent.DisablePage(self, not fit or fit.isStructure)
@@ -115,7 +115,7 @@ class BoosterView(d.Display):
         event.Skip()
 
     def addItem(self, event):
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
 
         fit = sFit.getFit(fitID)
@@ -139,7 +139,7 @@ class BoosterView(d.Display):
 
     def removeBooster(self, booster):
         fitID = self.mainFrame.getActiveFit()
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         sFit.removeBooster(fitID, self.origional.index(booster))
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
@@ -150,7 +150,7 @@ class BoosterView(d.Display):
             col = self.getColumn(event.Position)
             if col == self.getColIndex(State):
                 fitID = self.mainFrame.getActiveFit()
-                sFit = service.Fit.getInstance()
+                sFit = Fit.getInstance()
                 sFit.toggleBooster(fitID, row)
                 wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
@@ -163,7 +163,7 @@ class BoosterView(d.Display):
     def spawnMenu(self):
         sel = self.GetFirstSelected()
         if sel != -1:
-            sFit = service.Fit.getInstance()
+            sFit = Fit.getInstance()
             fit = sFit.getFit(self.mainFrame.getActiveFit())
             item = fit.boosters[sel]
 

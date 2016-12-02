@@ -4,8 +4,9 @@ from gui.preferenceView import PreferenceView
 from gui.bitmapLoader import BitmapLoader
 
 import gui.mainFrame
-import service
 from service.crest import CrestModes
+from service.crest import Crest
+from service.settings import CRESTSettings
 
 from wx.lib.intctrl import IntCtrl
 
@@ -15,7 +16,7 @@ class PFCrestPref ( PreferenceView):
     def populatePanel( self, panel ):
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.settings = service.settings.CRESTSettings.getInstance()
+        self.settings = CRESTSettings.getInstance()
         self.dirtySettings = False
         dlgWidth = panel.GetParent().GetParent().ClientSize.width
         mainSizer = wx.BoxSizer( wx.VERTICAL )
@@ -107,16 +108,16 @@ class PFCrestPref ( PreferenceView):
     def OnModeChange(self, event):
         self.settings.set('mode', event.GetInt())
         self.ToggleProxySettings(self.settings.get('mode'))
-        service.Crest.restartService()
+        Crest.restartService()
 
     def OnServerChange(self, event):
         self.settings.set('server', event.GetInt())
-        service.Crest.restartService()
+        Crest.restartService()
 
     def OnBtnApply(self, event):
         self.settings.set('clientID', self.inputClientID.GetValue().strip())
         self.settings.set('clientSecret', self.inputClientSecret.GetValue().strip())
-        sCrest = service.Crest.getInstance()
+        sCrest = Crest.getInstance()
         sCrest.delAllCharacters()
 
     def ToggleProxySettings(self, mode):

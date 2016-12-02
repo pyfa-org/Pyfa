@@ -1,6 +1,5 @@
 from gui.contextMenu import ContextMenu
 import gui.mainFrame
-import service
 import wx
 import gui.globalEvents as GE
 
@@ -25,7 +24,7 @@ class AmmoPattern(ContextMenu):
     def activate(self, fullContext, selection, i):
         item = selection[0]
         fit = self.mainFrame.getActiveFit()
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         sFit.setAsPattern(fit, item)
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fit))
 

@@ -1,9 +1,10 @@
 from gui.contextMenu import ContextMenu
 import gui.mainFrame
-import service
 import gui.globalEvents as GE
 import wx
 from gui.bitmapLoader import BitmapLoader
+from service import targetResists as svc_targetResists
+from service.fit import Fit
 
 try:
     from collections import OrderedDict
@@ -18,7 +19,7 @@ class TargetResists(ContextMenu):
         if self.mainFrame.getActiveFit() is None or srcContext != "firepowerViewFull":
             return False
 
-        sTR = service.TargetResists.getInstance()
+        sTR = svc_targetResists.TargetResists.getInstance()
         self.patterns = sTR.getTargetResistsList()
         self.patterns.sort(key=lambda p: (p.name in ["None"], p.name))
 
@@ -33,7 +34,7 @@ class TargetResists(ContextMenu):
             event.Skip()
             return
 
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
         sFit.setTargetResists(fitID, pattern)
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
@@ -50,7 +51,7 @@ class TargetResists(ContextMenu):
         item.pattern = pattern
 
         # determine active pattern
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
         f = sFit.getFit(fitID)
         tr = f.targetResists

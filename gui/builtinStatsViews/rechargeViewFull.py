@@ -23,7 +23,7 @@ from gui.bitmapLoader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 import gui.mainFrame
 import gui.builtinStatsViews.resistancesViewFull as rvf
-import service
+from service.fit import Fit
 
 class RechargeViewFull(StatsView):
     name = "rechargeViewFull"
@@ -43,7 +43,7 @@ class RechargeViewFull(StatsView):
 
     def toggleEffective(self, event):
         self.effective = event.effective
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         self.refreshPanel(sFit.getFit(self.mainFrame.getActiveFit()))
         event.Skip()
 

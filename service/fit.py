@@ -27,16 +27,18 @@ from codecs import open
 import xml.parsers.expat
 
 import eos.db
-import eos.types
-
-from eos.types import State, Slot
+from eos.types import State, Slot, Module, Drone, Fighter
+from eos.types import Fit as FitType
 
 from service.market import Market
 from service.damagePattern import DamagePattern
 from service.character import Character
+from eos.saveddata.character import Character as saveddata_Character
 from service.fleet import Fleet
 from service.settings import SettingsProvider
-from service.port import Port
+
+# TODO: port this to port.py
+#from service.port import Port
 
 logger = logging.getLogger(__name__)
 
@@ -90,7 +92,7 @@ class Fit(object):
     def __init__(self):
         self.pattern = DamagePattern.getInstance().getDamagePattern("Uniform")
         self.targetResists = None
-        self.character = Character.getInstance().all5()
+        self.character = saveddata_Character.getAll5()
         self.booster = False
         self.dirtyFitIDs = set()
 
@@ -107,7 +109,7 @@ class Fit(object):
             "showMarketShortcuts": False,
             "enableGaugeAnimation": True,
             "exportCharges": True,
-            "openFitInNew":False
+            "openFitInNew": False
             }
 
         self.serviceFittingOptions = SettingsProvider.getInstance().getSettings(
@@ -164,7 +166,7 @@ class Fit(object):
             ship = eos.types.Ship(eos.db.getItem(shipID))
         except ValueError:
             ship = eos.types.Citadel(eos.db.getItem(shipID))
-        fit = eos.types.Fit(ship)
+        fit = FitType(ship)
         fit.name = name if name is not None else "New %s" % fit.ship.item.name
         fit.damagePattern = self.pattern
         fit.targetResists = self.targetResists
@@ -343,7 +345,7 @@ class Fit(object):
             thing = eos.db.getItem(thing,
                                    eager=("attributes", "group.category"))
 
-        if isinstance(thing, eos.types.Fit):
+        if isinstance(thing, FitType):
             if thing in fit.projectedFits:
                 return
 
@@ -414,7 +416,7 @@ class Fit(object):
             thing.state = self.__getProposedState(thing, click)
             if not thing.canHaveState(thing.state, fit):
                 thing.state = State.OFFLINE
-        elif isinstance(thing, eos.types.Fit):
+        elif isinstance(thing, FitType):
             projectionInfo = thing.getProjectionInfo(fitID)
             if projectionInfo:
                 projectionInfo.active = not projectionInfo.active
@@ -559,7 +561,7 @@ class Fit(object):
 
         # Gather modules and convert Cargo item to Module, silently return if not a module
         try:
-            cargoP = eos.types.Module(cargo.item)
+            cargoP = Module(cargo.item)
             cargoP.owner = fit
             if cargoP.isValidState(State.ACTIVE):
                 cargoP.state = State.ACTIVE
@@ -692,10 +694,10 @@ class Fit(object):
                     break
             '''
             if fighter is None:
-                fighter = eos.types.Fighter(item)
+                fighter = Fighter(item)
                 used = fit.getSlotsUsed(fighter.slot)
                 total = fit.getNumSlots(fighter.slot)
-                standardAttackActive = False;
+                standardAttackActive = False
                 for ability in fighter.abilities:
                     if (ability.effect.isImplemented and ability.effect.handlerName == u'fighterabilityattackm'):
                         # Activate "standard attack" if available
@@ -704,7 +706,7 @@ class Fit(object):
                     else:
                         # Activate all other abilities (Neut, Web, etc) except propmods if no standard attack is active
                         if (ability.effect.isImplemented
-                            and standardAttackActive == False
+                            and standardAttackActive is False
                             and ability.effect.handlerName != u'fighterabilitymicrowarpdrive'
                             and ability.effect.handlerName != u'fighterabilityevasivemaneuvers'):
                             ability.active = True
@@ -783,7 +785,7 @@ class Fit(object):
         d.amount = amount
         d.amountActive = amount if active else 0
 
-        newD = eos.types.Drone(d.item)
+        newD = Drone(d.item)
         newD.amount = total - amount
         newD.amountActive = newD.amount if active else 0
         l.append(newD)
@@ -958,6 +960,8 @@ class Fit(object):
         fit.damagePattern = dp
         self.recalc(fit)
 
+    # TODO: port this to port.py
+    '''
     def exportFit(self, fitID):
         fit = eos.db.getFit(fitID)
         return Port.exportEft(fit)
@@ -981,6 +985,7 @@ class Fit(object):
     def exportMultiBuy(self, fitID):
         fit = eos.db.getFit(fitID)
         return Port.exportMultiBuy(fit)
+    '''
 
     def backupFits(self, path, callback):
         thread = FitBackupThread(path, callback)
@@ -1056,14 +1061,17 @@ class Fit(object):
             if codec_found is None:
                 return False, "Proper codec could not be established for %s" % path
 
+            # TODO: port this to port.py
+            '''
             try:
                 _, fitsImport = Port.importAuto(srcString, path, callback=callback, encoding=codec_found)
                 fits += fitsImport
-            except xml.parsers.expat.ExpatError, e:
+            except xml.parsers.expat.ExpatError:
                 return False, "Malformed XML in %s" % path
-            except Exception, e:
+            except Exception:
                 logger.exception("Unknown exception processing: %s", path)
                 return False, "Unknown Error while processing %s" % path
+            '''
 
         IDs = []
         numFits = len(fits)
@@ -1083,6 +1091,8 @@ class Fit(object):
 
         return True, fits
 
+    # TODO: port this to port.py
+    '''
     def importFitFromBuffer(self, bufferStr, activeFit=None):
         _, fits = Port.importAuto(bufferStr, activeFit=activeFit)
         for fit in fits:
@@ -1091,6 +1101,7 @@ class Fit(object):
             fit.targetResists = self.targetResists
             eos.db.save(fit)
         return fits
+    '''
 
     def checkStates(self, fit, base):
         changed = False

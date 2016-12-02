@@ -1,9 +1,10 @@
 from gui.contextMenu import ContextMenu
 import gui.mainFrame
-import service
 import gui.globalEvents as GE
 import wx
 from gui.bitmapLoader import BitmapLoader
+from service.fit import Fit
+from service.damagePattern import DamagePattern as import_DamagePattern
 
 try:
     from collections import OrderedDict
@@ -18,8 +19,8 @@ class DamagePattern(ContextMenu):
         return srcContext == "resistancesViewFull" and self.mainFrame.getActiveFit() is not None
 
     def getText(self, itmContext, selection):
-        sDP = service.DamagePattern.getInstance()
-        sFit = service.Fit.getInstance()
+        sDP = import_DamagePattern.getInstance()
+        sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
         self.fit = sFit.getFit(fitID)
 
@@ -59,7 +60,7 @@ class DamagePattern(ContextMenu):
         menuItem.pattern = pattern
 
         # determine active pattern
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
         f = sFit.getFit(fitID)
         dp = f.damagePattern
@@ -98,7 +99,7 @@ class DamagePattern(ContextMenu):
             event.Skip()
             return
 
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
         sFit.setDamagePattern(fitID, pattern)
         setattr(self.mainFrame,"_activeDmgPattern", pattern)

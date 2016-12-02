@@ -18,7 +18,6 @@
 #===============================================================================
 
 import wx
-import service
 import gui.mainFrame
 from gui.statsView import StatsView
 from gui.bitmapLoader import BitmapLoader
@@ -114,7 +113,7 @@ class FirepowerViewFull(StatsView):
     def switchToMiningYieldView(self, event):
         # Getting the active fit
         mainFrame = gui.mainFrame.MainFrame.getInstance()
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fit = sFit.getFit(mainFrame.getActiveFit())
         # Remove ourselves from statsPane's view list
         self.parent.views.remove(self)

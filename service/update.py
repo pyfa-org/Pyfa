@@ -18,23 +18,25 @@
 #===============================================================================
 
 import threading
-import wx
-import urllib2
 import json
-import config
-import service
-import dateutil.parser
 import calendar
+
+import wx
+import dateutil.parser
+
+import config
+from service.network import Network
+from service.settings import UpdateSettings
 
 class CheckUpdateThread(threading.Thread):
     def __init__(self, callback):
         threading.Thread.__init__(self)
         self.callback = callback
-        self.settings = service.settings.UpdateSettings.getInstance()
-        self.network = service.Network.getInstance()
+        self.settings = UpdateSettings.getInstance()
+        self.network = Network.getInstance()
 
     def run(self):
-        network = service.Network.getInstance()
+        network = Network.getInstance()
 
         try:
             response = network.request('https://api.github.com/repos/pyfa-org/Pyfa/releases', network.UPDATE)
@@ -91,5 +93,3 @@ class Update():
         if cls.instance == None:
             cls.instance = Update()
         return cls.instance
-
-

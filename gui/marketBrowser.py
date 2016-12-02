@@ -18,11 +18,12 @@
 #===============================================================================
 
 import wx
-import service
 import gui.display as d
 from gui.cachingImageList import CachingImageList
 from gui.contextMenu import ContextMenu
 import gui.PFSearchBox as SBox
+from service.market import Market
+from service.attribute import Attribute
 
 from gui.bitmapLoader import BitmapLoader
 
@@ -45,7 +46,7 @@ class MarketBrowser(wx.Panel):
         vbox.Add(self.splitter, 1, wx.EXPAND)
 
         # Grab market service instance and create child objects
-        self.sMkt = service.Market.getInstance()
+        self.sMkt = Market.getInstance()
         self.searchMode = False
         self.marketView = MarketTree(self.splitter, self)
         self.itemView = ItemView(self.splitter, self)
@@ -416,7 +417,7 @@ class ItemView(d.Display):
     def populate(self, items):
         if len(items) > 0:
             # Get dictionary with meta level attribute
-            sAttr = service.Attribute.getInstance()
+            sAttr = Attribute.getInstance()
             attrs = sAttr.getAttributeInfo("metaLevel")
             sMkt = self.sMkt
             self.metalvls = sMkt.directAttrRequest(items, attrs)
@@ -432,7 +433,7 @@ class ItemView(d.Display):
     def refresh(self, items):
         if len(items) > 1:
             # Get dictionary with meta level attribute
-            sAttr = service.Attribute.getInstance()
+            sAttr = Attribute.getInstance()
             attrs = sAttr.getAttributeInfo("metaLevel")
             sMkt = self.sMkt
             self.metalvls = sMkt.directAttrRequest(items, attrs)

@@ -19,11 +19,11 @@
 
 import wx
 from gui.bitmapLoader import BitmapLoader
-import service
 from wx.lib.intctrl import IntCtrl
 from gui.utils.clipboard import toClipboard, fromClipboard
 from service.damagePattern import ImportError
 from gui.builtinViews.entityEditor import EntityEditor, BaseValidator
+from service.damagePattern import DamagePattern, ImportError
 ###########################################################################
 ## Class DmgPatternEditorDlg
 ###########################################################################
@@ -59,26 +59,26 @@ class DmgPatternEntityEditor(EntityEditor):
         self.SetEditorValidator(DmgPatternTextValidor)
 
     def getEntitiesFromContext(self):
-        sDP = service.DamagePattern.getInstance()
+        sDP = DamagePattern.getInstance()
         choices = sorted(sDP.getDamagePatternList(), key=lambda p: p.name)
         return [c for c in choices if c.name != "Selected Ammo"]
 
     def DoNew(self, name):
-        sDP = service.DamagePattern.getInstance()
+        sDP = DamagePattern.getInstance()
         return sDP.newPattern(name)
 
     def DoRename(self, entity, name):
-        sDP = service.DamagePattern.getInstance()
+        sDP = DamagePattern.getInstance()
         sDP.renamePattern(entity, name)
 
     def DoCopy(self, entity, name):
-        sDP = service.DamagePattern.getInstance()
+        sDP = DamagePattern.getInstance()
         copy = sDP.copyPattern(entity)
         sDP.renamePattern(copy, name)
         return copy
 
     def DoDelete(self, entity):
-        sDP = service.DamagePattern.getInstance()
+        sDP = DamagePattern.getInstance()
         sDP.deletePattern(entity)
 
 class DmgPatternEditorDlg(wx.Dialog):
@@ -208,7 +208,7 @@ class DmgPatternEditorDlg(wx.Dialog):
         if event is not None:
             event.Skip()
 
-        service.DamagePattern.getInstance().saveChanges(p)
+        DamagePattern.getInstance().saveChanges(p)
 
     def restrict(self):
         for type in self.DAMAGE_TYPES:
@@ -251,11 +251,11 @@ class DmgPatternEditorDlg(wx.Dialog):
     def importPatterns(self, event):
         text = fromClipboard()
         if text:
-            sDP = service.DamagePattern.getInstance()
+            sDP = DamagePattern.getInstance()
             try:
                 sDP.importPatterns(text)
                 self.stNotice.SetLabel("Patterns successfully imported from clipboard")
-            except service.damagePattern.ImportError, e:
+            except ImportError, e:
                 self.stNotice.SetLabel(str(e))
             except Exception, e:
                 self.stNotice.SetLabel("Could not import from clipboard: unknown errors")
@@ -265,6 +265,6 @@ class DmgPatternEditorDlg(wx.Dialog):
             self.stNotice.SetLabel("Could not import from clipboard")
 
     def exportPatterns(self, event):
-        sDP = service.DamagePattern.getInstance()
+        sDP = DamagePattern.getInstance()
         toClipboard( sDP.exportPatterns() )
         self.stNotice.SetLabel("Patterns exported to clipboard")

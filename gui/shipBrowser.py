@@ -19,7 +19,8 @@ import gui.sfBrowserItem as SFItem
 from gui.contextMenu import ContextMenu
 import gui.utils.fonts as fonts
 
-import service
+from service.fit import Fit
+from service.market import Market
 import gui.utils.fonts as fonts
 
 FitRenamed, EVT_FIT_RENAMED = wx.lib.newevent.NewEvent()
@@ -437,7 +438,7 @@ class NavigationPanel(SFItem.SFBrowserItem):
         if stage == 3:
             shipID = self.Parent.GetStageData(stage)
             shipName = self.Parent.GetStage3ShipName()
-            sFit = service.Fit.getInstance()
+            sFit = Fit.getInstance()
             fitID = sFit.newFit(shipID, "%s fit" %shipName)
             self.shipBrowser.fitIDMustEditName = fitID
             wx.PostEvent(self.Parent,Stage3Selected(shipID=shipID))
@@ -671,8 +672,8 @@ class ShipBrowser(wx.Panel):
         self.navpanel.ShowNewFitButton(False)
         self.navpanel.ShowSwitchEmptyGroupsButton(False)
 
-        sMkt = service.Market.getInstance()
-        sFit = service.Fit.getInstance()
+        sMkt = Market.getInstance()
+        sFit = Fit.getInstance()
         self.lpane.ShowLoading(False)
 
         self.lpane.Freeze()
@@ -718,7 +719,7 @@ class ShipBrowser(wx.Panel):
 
         categoryID = self._stage2Data
         ships = list(data[1])
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
 
         ships.sort(key=self.raceNameKey)
         racesList = []
@@ -789,7 +790,7 @@ class ShipBrowser(wx.Panel):
         self.lpane.RemoveAllChildren()
 
 
-        sMkt = service.Market.getInstance()
+        sMkt = Market.getInstance()
         sMkt.getShipListDelayed(categoryID, self.stage2Callback)
 
         self._stage2Data = categoryID
@@ -819,8 +820,8 @@ class ShipBrowser(wx.Panel):
         self._lastStage = self._activeStage
         self._activeStage = 3
 
-        sFit = service.Fit.getInstance()
-        sMkt = service.Market.getInstance()
+        sFit = Fit.getInstance()
+        sMkt = Market.getInstance()
 
         ship = sMkt.getItem(shipID)
         categoryID = ship.group.ID
@@ -875,8 +876,8 @@ class ShipBrowser(wx.Panel):
             self._lastStage = self._activeStage
             self._activeStage = 4
 
-        sMkt = service.Market.getInstance()
-        sFit = service.Fit.getInstance()
+        sMkt = Market.getInstance()
+        sFit = Fit.getInstance()
         query = event.text
 
         self.lpane.Freeze()
@@ -1162,7 +1163,7 @@ class ShipItem(SFItem.SFBrowserItem):
 
         self.Bind(wx.EVT_CONTEXT_MENU, self.OnShowPopup)
 
-        self.marketInstance = service.Market.getInstance()
+        self.marketInstance = Market.getInstance()
         self.baseItem = self.marketInstance.getItem(self.shipID)
 
         #=======================================================================\
@@ -1249,7 +1250,7 @@ class ShipItem(SFItem.SFBrowserItem):
     def createNewFit(self, event=None):
         self.tcFitName.Show(False)
 
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fitID = sFit.newFit(self.shipID, self.tcFitName.GetValue())
 
         wx.PostEvent(self.shipBrowser,Stage3Selected(shipID=self.shipID, back=False))
@@ -1538,7 +1539,7 @@ class FitItem(SFItem.SFBrowserItem):
         self.Bind(wx.EVT_RIGHT_UP, self.OnContextMenu)
 
     def OnToggleBooster(self, event):
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         sFit.toggleBoostFit(self.fitID)
         self.fitBooster = not self.fitBooster
         self.boosterBtn.Show(self.fitBooster)
@@ -1549,7 +1550,7 @@ class FitItem(SFItem.SFBrowserItem):
     def OnProjectToFit(self, event):
         activeFit = self.mainFrame.getActiveFit()
         if activeFit:
-            sFit = service.Fit.getInstance()
+            sFit = Fit.getInstance()
             projectedFit = sFit.getFit(self.fitID)
             sFit.project(activeFit, projectedFit)
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=activeFit))
@@ -1558,7 +1559,7 @@ class FitItem(SFItem.SFBrowserItem):
     def OnAddCommandFit(self, event):
         activeFit = self.mainFrame.getActiveFit()
         if activeFit:
-            sFit = service.Fit.getInstance()
+            sFit = Fit.getInstance()
             commandFit = sFit.getFit(self.fitID)
             sFit.addCommandFit(activeFit, commandFit)
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=activeFit))
@@ -1576,7 +1577,7 @@ class FitItem(SFItem.SFBrowserItem):
 
     def OnContextMenu(self, event):
         ''' Handles context menu for fit. Dragging is handled by MouseLeftUp() '''
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fit = sFit.getFit(self.mainFrame.getActiveFit())
 
         if not fit:
@@ -1666,7 +1667,7 @@ class FitItem(SFItem.SFBrowserItem):
         self.copyFit()
 
     def copyFit(self, event=None):
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fitID = sFit.copyFit(self.fitID)
         self.shipBrowser.fitIDMustEditName = fitID
         wx.PostEvent(self.shipBrowser,Stage3Selected(shipID=self.shipID))
@@ -1686,7 +1687,7 @@ class FitItem(SFItem.SFBrowserItem):
             self.Refresh()
 
     def renameFit(self, event=None):
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         self.tcFitName.Show(False)
         self.editWasShown = 0
         fitName = self.tcFitName.GetValue()
@@ -1720,7 +1721,7 @@ class FitItem(SFItem.SFBrowserItem):
         else:
             self.deleted = True
 
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fit = sFit.getFit(self.fitID)
 
         sFit.deleteFit(self.fitID)

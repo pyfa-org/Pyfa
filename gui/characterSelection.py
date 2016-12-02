@@ -18,10 +18,11 @@
 #===============================================================================
 
 import wx
-import service
 from gui.bitmapLoader import BitmapLoader
 import gui.globalEvents as GE
 import gui.mainFrame
+from service.character import Character
+from service.fit import Fit
 
 class CharacterSelection(wx.Panel):
     def __init__(self, parent):
@@ -76,7 +77,7 @@ class CharacterSelection(wx.Panel):
 
     def refreshCharacterList(self, event=None):
         choice = self.charChoice
-        sChar = service.Character.getInstance()
+        sChar = Character.getInstance()
         activeChar = self.getActiveCharacter()
 
         choice.Clear()
@@ -94,7 +95,7 @@ class CharacterSelection(wx.Panel):
             charID = sChar.all5ID()
             self.selectChar(charID)
             fitID = self.mainFrame.getActiveFit()
-            sFit = service.Fit.getInstance()
+            sFit = Fit.getInstance()
             sFit.changeChar(fitID, charID)
 
         choice.Append(u"\u2015 Open Character Editor \u2015", -1)
@@ -104,7 +105,7 @@ class CharacterSelection(wx.Panel):
             event.Skip()
 
     def refreshApi(self, event):
-        sChar = service.Character.getInstance()
+        sChar = Character.getInstance()
         ID, key, charName, chars = sChar.getApiDetails(self.getActiveCharacter())
         if charName:
             try:
@@ -117,7 +118,7 @@ class CharacterSelection(wx.Panel):
     def charChanged(self, event):
         fitID = self.mainFrame.getActiveFit()
         charID = self.getActiveCharacter()
-        sChar = service.Character.getInstance()
+        sChar = Character.getInstance()
 
         if charID == -1:
             # revert to previous character
@@ -129,7 +130,7 @@ class CharacterSelection(wx.Panel):
         else:
             self.btnRefresh.Enable(False)
 
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         sFit.changeChar(fitID, charID)
         self.charCache = self.charChoice.GetCurrentSelection()
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
@@ -148,7 +149,7 @@ class CharacterSelection(wx.Panel):
     def fitChanged(self, event):
         self.charChoice.Enable(event.fitID != None)
         choice = self.charChoice
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         currCharID = choice.GetClientData(choice.GetCurrentSelection())
         fit = sFit.getFit(event.fitID)
         newCharID = fit.character.ID if fit is not None else None
@@ -156,7 +157,7 @@ class CharacterSelection(wx.Panel):
             self.skillReqsStaticBitmap.SetBitmap(self.cleanSkills)
             self.skillReqsStaticBitmap.SetToolTipString("No active fit")
         else:
-            sCharacter = service.Character.getInstance()
+            sCharacter = Character.getInstance()
             reqs = sCharacter.checkRequirements(fit)
             sCharacter.skillReqsDict = {'charname':fit.character.name, 'skills':[]}
             if len(reqs) == 0:
@@ -175,7 +176,7 @@ class CharacterSelection(wx.Panel):
             self.skillReqsStaticBitmap.SetToolTipString(tip.strip())
 
         if newCharID == None:
-            sChar = service.Character.getInstance()
+            sChar = Character.getInstance()
             self.selectChar(sChar.all5ID())
 
         elif currCharID != newCharID:
@@ -187,7 +188,7 @@ class CharacterSelection(wx.Panel):
 
     def _buildSkillsTooltip(self, reqs, currItem = "", tabulationLevel = 0):
         tip = ""
-        sCharacter = service.Character.getInstance()
+        sCharacter = Character.getInstance()
 
         if tabulationLevel == 0:
             for item, subReqs in reqs.iteritems():
@@ -210,7 +211,7 @@ class CharacterSelection(wx.Panel):
         return tip
 
     def _buildSkillsTooltipCondensed(self, reqs, currItem = "", tabulationLevel = 0, skillsMap = {}):
-        sCharacter = service.Character.getInstance()
+        sCharacter = Character.getInstance()
 
         if tabulationLevel == 0:
             for item, subReqs in reqs.iteritems():

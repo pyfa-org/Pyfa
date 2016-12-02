@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 from gui.contextMenu import ContextMenu
 import gui.mainFrame
-import service
 import wx
 from gui.bitmapLoader import BitmapLoader
 from eos.types import Skill
 import gui.globalEvents as GE
+from service.fit import Fit
+from service.character import Character
 
 class ChangeAffectingSkills(ContextMenu):
     def __init__(self):
@@ -15,8 +16,8 @@ class ChangeAffectingSkills(ContextMenu):
         if self.mainFrame.getActiveFit() is None or srcContext not in ("fittingModule", "fittingCharge", "fittingShip"):
             return False
 
-        self.sChar = service.Character.getInstance()
-        self.sFit = service.Fit.getInstance()
+        self.sChar = Character.getInstance()
+        self.sFit = Fit.getInstance()
         fit = self.sFit.getFit(self.mainFrame.getActiveFit())
 
         self.charID = fit.character.ID
@@ -26,7 +27,7 @@ class ChangeAffectingSkills(ContextMenu):
 
         if srcContext == "fittingShip":
             fitID = self.mainFrame.getActiveFit()
-            sFit = service.Fit.getInstance()
+            sFit = Fit.getInstance()
             self.stuff = sFit.getFit(fitID).ship
             cont = sFit.getFit(fitID).ship.itemModifiedAttributes
         elif srcContext == "fittingCharge":

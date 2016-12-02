@@ -20,14 +20,29 @@
 import re
 import os
 import xml.dom
-
-from eos.types import State, Slot, Module, Cargo, Fit, Ship, Drone, Implant, Booster, Citadel
-import service
-import wx
 import logging
-import config
 import collections
 import json
+
+import wx
+
+from eos.types import State, Slot, Module, Cargo, Fit, Ship, Drone, Implant, Booster, Citadel
+from service.crest import Crest
+from service.market import Market
+
+import wx
+
+from eos.types import State, Slot, Module, Cargo, Ship, Drone, Implant, Booster, Citadel
+from service.crest import Crest
+from service.market import Market
+from service.fit import Fit
+
+import wx
+
+from eos.types import State, Slot, Module, Cargo, Ship, Drone, Implant, Booster, Citadel
+from service.crest import Crest
+from service.market import Market
+from service.fit import Fit
 
 logger = logging.getLogger("pyfa.service.port")
 
@@ -57,8 +72,8 @@ class Port(object):
 
         nested_dict = lambda: collections.defaultdict(nested_dict)
         fit = nested_dict()
-        sCrest = service.Crest.getInstance()
-        sFit = service.Fit.getInstance()
+        sCrest = Crest.getInstance()
+        sFit = Fit.getInstance()
 
         eve = sCrest.eve
 
@@ -69,7 +84,7 @@ class Port(object):
         fit['ship']['id'] = ofit.ship.item.ID
         fit['ship']['name'] = ''
 
-        fit['description'] = "<pyfa:%d />"%ofit.ID
+        fit['description'] = "<pyfa:%d />" % ofit.ID
         fit['items'] = []
 
         slotNum = {}
@@ -86,7 +101,7 @@ class Port(object):
                 slot = int(module.getModifiedItemAttr("subSystemSlot"))
                 item['flag'] = slot
             else:
-                if not slot in slotNum:
+                if slot not in slotNum:
                     slotNum[slot] = INV_FLAGS[slot]
 
                 item['flag'] = slotNum[slot]
@@ -99,7 +114,7 @@ class Port(object):
             fit['items'].append(item)
 
             if module.charge and sFit.serviceFittingOptions["exportCharges"]:
-                if not module.chargeID in charges:
+                if module.chargeID not in charges:
                     charges[module.chargeID] = 0
                 # `or 1` because some charges (ie scripts) are without qty
                 charges[module.chargeID] += module.numCharges or 1
@@ -168,7 +183,7 @@ class Port(object):
     @staticmethod
     def importCrest(str):
         fit = json.loads(str)
-        sMkt = service.Market.getInstance()
+        sMkt = Market.getInstance()
 
         f = Fit()
         f.name = fit['name']
@@ -216,7 +231,7 @@ class Port(object):
                 continue
 
         # Recalc to get slot numbers correct for T3 cruisers
-        service.Fit.getInstance().recalc(f)
+        Fit.getInstance().recalc(f)
 
         for module in moduleList:
             if module.fits(f):
@@ -226,7 +241,7 @@ class Port(object):
 
     @staticmethod
     def importDna(string):
-        sMkt = service.Market.getInstance()
+        sMkt = Market.getInstance()
 
         ids = map(int, re.findall(r'\d+', string))
         for id in ids:
@@ -291,7 +306,7 @@ class Port(object):
                             moduleList.append(m)
 
         # Recalc to get slot numbers correct for T3 cruisers
-        service.Fit.getInstance().recalc(f)
+        Fit.getInstance().recalc(f)
 
         for module in moduleList:
             if module.fits(f):
@@ -304,7 +319,7 @@ class Port(object):
 
     @staticmethod
     def importEft(eftString):
-        sMkt = service.Market.getInstance()
+        sMkt = Market.getInstance()
         offineSuffix = " /OFFLINE"
 
         fit = Fit()
@@ -371,12 +386,12 @@ class Port(object):
 
             if item.category.name == "Drone":
                 extraAmount = int(extraAmount) if extraAmount is not None else 1
-                if not modName in droneMap:
+                if modName not in droneMap:
                     droneMap[modName] = 0
                 droneMap[modName] += extraAmount
             if len(modExtra) == 2 and item.category.name != "Drone":
                 extraAmount = int(extraAmount) if extraAmount is not None else 1
-                if not modName in cargoMap:
+                if modName not in cargoMap:
                     cargoMap[modName] = 0
                 cargoMap[modName] += extraAmount
             elif item.category.name == "Implant":
@@ -415,13 +430,13 @@ class Port(object):
                     moduleList.append(m)
 
         # Recalc to get slot numbers correct for T3 cruisers
-        service.Fit.getInstance().recalc(fit)
+        Fit.getInstance().recalc(fit)
 
         for m in moduleList:
             if m.fits(fit):
                 m.owner = fit
                 if not m.isValidState(m.state):
-                    print "Error: Module", m, "cannot have state", m.state
+                    print("Error: Module", m, "cannot have state", m.state)
 
                 fit.modules.append(m)
 
@@ -442,7 +457,7 @@ class Port(object):
         """Handle import from EFT config store file"""
 
         # Check if we have such ship in database, bail if we don't
-        sMkt = service.Market.getInstance()
+        sMkt = Market.getInstance()
         try:
             sMkt.getItem(shipname)
         except:
@@ -596,7 +611,7 @@ class Port(object):
                             moduleList.append(m)
 
                 # Recalc to get slot numbers correct for T3 cruisers
-                service.Fit.getInstance().recalc(f)
+                Fit.getInstance().recalc(f)
 
                 for module in moduleList:
                     if module.fits(f):
@@ -615,7 +630,7 @@ class Port(object):
 
     @staticmethod
     def importXml(text, callback=None, encoding="utf-8"):
-        sMkt = service.Market.getInstance()
+        sMkt = Market.getInstance()
 
         doc = xml.dom.minidom.parseString(text.encode(encoding))
         fittings = doc.getElementsByTagName("fittings").item(0)
@@ -676,7 +691,7 @@ class Port(object):
                     continue
 
             # Recalc to get slot numbers correct for T3 cruisers
-            service.Fit.getInstance().recalc(f)
+            Fit.getInstance().recalc(f)
 
             for module in moduleList:
                 if module.fits(f):
@@ -694,10 +709,10 @@ class Port(object):
         offineSuffix = " /OFFLINE"
         export = "[%s, %s]\n" % (fit.ship.item.name, fit.name)
         stuff = {}
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         for module in fit.modules:
             slot = module.slot
-            if not slot in stuff:
+            if slot not in stuff:
                 stuff[slot] = []
             curr = module.item.name if module.item else ("[Empty %s slot]" % Slot.getName(slot).capitalize() if slot is not None else "")
             if module.charge and sFit.serviceFittingOptions["exportCharges"]:
@@ -776,12 +791,12 @@ class Port(object):
                 if mod.slot == Slot.SUBSYSTEM:
                     subsystems.append(mod)
                     continue
-                if not mod.itemID in mods:
+                if mod.itemID not in mods:
                     mods[mod.itemID] = 0
                 mods[mod.itemID] += 1
 
                 if mod.charge:
-                    if not mod.chargeID in charges:
+                    if mod.chargeID not in charges:
                         charges[mod.chargeID] = 0
                     # `or 1` because some charges (ie scripts) are without qty
                     charges[mod.chargeID] += mod.numCharges or 1
@@ -792,13 +807,8 @@ class Port(object):
         for mod in mods:
             dna += ":{0};{1}".format(mod, mods[mod])
 
-        # drones are known to be in split stacks
-        groupedDrones = OrderedDict()
         for drone in fit.drones:
-            groupedDrones[drone.itemID] = groupedDrones.get(drone.itemID, 0) + drone.amount
-
-        for droneItemID in groupedDrones:
-            dna += ":{0};{1}".format(droneItemID, groupedDrones[droneItemID])
+            dna += ":{0};{1}".format(drone.itemID, drone.amount)
 
         for cargo in fit.cargo:
             # DNA format is a simple/dumb format. As CCP uses the slot information of the item itself
@@ -807,7 +817,7 @@ class Port(object):
             # as being "Fitted" to whatever slot they are for, and it causes an corruption error in the
             # client when trying to save the fit
             if cargo.item.category.name == "Charge":
-                if not cargo.item.ID in charges:
+                if cargo.item.ID not in charges:
                     charges[cargo.item.ID] = 0
                 charges[cargo.item.ID] += cargo.amount
 
@@ -821,7 +831,7 @@ class Port(object):
         doc = xml.dom.minidom.Document()
         fittings = doc.createElement("fittings")
         doc.appendChild(fittings)
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
 
         for i, fit in enumerate(fits):
             try:
@@ -847,7 +857,7 @@ class Port(object):
                         # Order of subsystem matters based on this attr. See GH issue #130
                         slotId = module.getModifiedItemAttr("subSystemSlot") - 125
                     else:
-                        if not slot in slotNum:
+                        if slot not in slotNum:
                             slotNum[slot] = 0
 
                         slotId = slotNum[slot]
@@ -861,7 +871,7 @@ class Port(object):
                     fitting.appendChild(hardware)
 
                     if module.charge and sFit.serviceFittingOptions["exportCharges"]:
-                        if not module.charge.name in charges:
+                        if module.charge.name not in charges:
                             charges[module.charge.name] = 0
                         # `or 1` because some charges (ie scripts) are without qty
                         charges[module.charge.name] += module.numCharges or 1
@@ -874,7 +884,7 @@ class Port(object):
                     fitting.appendChild(hardware)
 
                 for cargo in fit.cargo:
-                    if not cargo.item.name in charges:
+                    if cargo.item.name not in charges:
                         charges[cargo.item.name] = 0
                     charges[cargo.item.name] += cargo.amount
 
@@ -885,7 +895,7 @@ class Port(object):
                     hardware.setAttribute("type", name)
                     fitting.appendChild(hardware)
             except:
-                print "Failed on fitID: %d"%fit.ID
+                print("Failed on fitID: %d" % fit.ID)
                 continue
             finally:
                 if callback:
@@ -897,13 +907,12 @@ class Port(object):
     def exportMultiBuy(fit):
         export = "%s\n" % (fit.ship.item.name)
         stuff = {}
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         for module in fit.modules:
             slot = module.slot
-            if not slot in stuff:
+            if slot not in stuff:
                 stuff[slot] = []
-            curr = "%s\n" % module.item.name if module.item else (
-            "")
+            curr = "%s\n" % module.item.name if module.item else ""
             if module.charge and sFit.serviceFittingOptions["exportCharges"]:
                 curr += "%s x%s\n" % (module.charge.name, module.numCharges)
             stuff[slot].append(curr)

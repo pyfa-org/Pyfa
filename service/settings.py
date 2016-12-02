@@ -19,11 +19,12 @@
 
 import cPickle
 import os.path
-import config
 import urllib2
 
+import config
+
 class SettingsProvider():
-    BASE_PATH = os.path.join(config.savePath, "settings")
+    BASE_PATH = os.path.join(config.savePath or ".", "settings")
     settings = {}
     _instance = None
     @classmethod
@@ -260,8 +261,8 @@ class HTMLExportSettings():
 
     def setEnabled(self, enabled):
         self.serviceHTMLExportSettings["enabled"] = enabled
-        
-        
+
+
     def getMinimalEnabled(self):
         return self.serviceHTMLExportSettings["minimal"]
 

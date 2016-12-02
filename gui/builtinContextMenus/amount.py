@@ -2,7 +2,6 @@ from gui.contextMenu import ContextMenu
 from gui.itemStats import ItemStatsDialog
 import eos.types
 import gui.mainFrame
-import service
 import gui.globalEvents as GE
 import wx
 
@@ -46,7 +45,7 @@ class AmountChanger(wx.Dialog):
         self.button.Bind(wx.EVT_BUTTON, self.change)
 
     def change(self, event):
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         mainFrame = gui.mainFrame.MainFrame.getInstance()
         fitID = mainFrame.getActiveFit()
 

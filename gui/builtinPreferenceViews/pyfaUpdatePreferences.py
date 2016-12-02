@@ -1,11 +1,10 @@
 import wx
-import service
 import os
 
 from gui.preferenceView import PreferenceView
 from gui.bitmapLoader import BitmapLoader
+from service.settings import UpdateSettings
 
-import service
 import gui.globalEvents as GE
 
 
@@ -17,7 +16,7 @@ class PFUpdatePref (PreferenceView):
             "suppressed release notifications, if any."
 
     def populatePanel( self, panel ):
-        self.UpdateSettings = service.settings.UpdateSettings.getInstance()
+        self.UpdateSettings = UpdateSettings.getInstance()
         self.dirtySettings = False
 
         dlgWidth = panel.GetParent().GetParent().ClientSize.width

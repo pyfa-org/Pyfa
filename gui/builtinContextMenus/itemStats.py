@@ -1,8 +1,8 @@
 from gui.contextMenu import ContextMenu
 from gui.itemStats import ItemStatsDialog
 import gui.mainFrame
-import service
 import wx
+from service.fit import Fit
 
 class ItemStats(ContextMenu):
     def __init__(self):
@@ -27,7 +27,7 @@ class ItemStats(ContextMenu):
         srcContext = fullContext[0]
         if srcContext == "fittingShip":
             fitID = self.mainFrame.getActiveFit()
-            sFit = service.Fit.getInstance()
+            sFit = Fit.getInstance()
             stuff = sFit.getFit(fitID).ship
         else:
             stuff = selection[0]
