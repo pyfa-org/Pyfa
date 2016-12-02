@@ -792,8 +792,13 @@ class Port(object):
         for mod in mods:
             dna += ":{0};{1}".format(mod, mods[mod])
 
+        # drones are known to be in split stacks
+        groupedDrones = OrderedDict()
         for drone in fit.drones:
-            dna += ":{0};{1}".format(drone.itemID, drone.amount)
+            groupedDrones[drone.itemID] = groupedDrones.get(drone.itemID, 0) + drone.amount
+
+        for droneItemID in groupedDrones:
+            dna += ":{0};{1}".format(droneItemID, groupedDrones[droneItemID])
 
         for cargo in fit.cargo:
             # DNA format is a simple/dumb format. As CCP uses the slot information of the item itself
