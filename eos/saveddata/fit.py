@@ -31,7 +31,7 @@ import time
 import copy
 from utils.timer import Timer
 from eos.enum import Enum
-from gnosis.gnosis import GnosisFormulas, GnosisSimulation
+from service.gnosis import GnosisFormulas, GnosisSimulation
 
 
 import logging
