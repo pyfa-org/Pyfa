@@ -7,7 +7,7 @@ from EVE_Gnosis.simulations.capacitor import Capacitor
 
 import sys
 test = True
-#import service
+import service
 #try:
 #    import service
 #except ImportError:
