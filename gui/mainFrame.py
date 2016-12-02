@@ -68,6 +68,9 @@ from service.update import Update
 # import this to access override setting
 from eos.modifiedAttributeDict import ModifiedAttributeDict
 from eos.db.saveddata.loadDefaultDatabaseValues import DefaultDatabaseValues
+from eos import db
+from service.port import Port
+from service.settings import HTMLExportSettings
 
 from time import gmtime, strftime
 
@@ -665,28 +668,29 @@ class MainFrame(wx.Frame):
             self.marketBrowser.search.Focus()
 
     def clipboardEft(self):
-        sFit = Fit.getInstance()
-        toClipboard(sFit.exportFit(self.getActiveFit()))
+        fit = db.getFit(self.getActiveFit())
+        toClipboard(Port.exportEft(fit))
 
     def clipboardEftImps(self):
-        sFit = Fit.getInstance()
-        toClipboard(sFit.exportEftImps(self.getActiveFit()))
+        fit = db.getFit(self.getActiveFit())
+        toClipboard(Port.exportEftImps(fit))
 
     def clipboardDna(self):
-        sFit = Fit.getInstance()
-        toClipboard(sFit.exportDna(self.getActiveFit()))
+        fit = db.getFit(self.getActiveFit())
+        toClipboard(Port.exportDna(fit))
 
     def clipboardCrest(self):
-        sFit = Fit.getInstance()
-        toClipboard(sFit.exportCrest(self.getActiveFit()))
+        fit = db.getFit(self.getActiveFit())
+        toClipboard(Port.exportCrest(fit))
 
     def clipboardXml(self):
-        sFit = Fit.getInstance()
-        toClipboard(sFit.exportXml(None, self.getActiveFit()))
+        fitIDs = self.getActiveFit()
+        fits = map(lambda fitID: db.getFit(fitID), fitIDs)
+        toClipboard(Port.exportXml(None, *fits))
 
     def clipboardMultiBuy(self):
-        sFit = Fit.getInstance()
-        toClipboard(sFit.exportMultiBuy(self.getActiveFit()))
+        fit = db.getFit(self.getActiveFit())
+        toClipboard(Port.exportMultiBuy(fit))
 
     def importFromClipboard(self, event):
         sFit = Fit.getInstance()
@@ -786,7 +790,7 @@ class MainFrame(wx.Frame):
     def exportHtml(self, event):
         from gui.utils.exportHtml import exportHtml
         sFit = Fit.getInstance()
-        settings = service.settings.HTMLExportSettings.getInstance()
+        settings = HTMLExportSettings.getInstance()
 
         max = sFit.countAllFits()
         path = settings.getPath()

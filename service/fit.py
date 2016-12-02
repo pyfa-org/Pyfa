@@ -960,33 +960,7 @@ class Fit(object):
         fit.damagePattern = dp
         self.recalc(fit)
 
-    # TODO: port this to port.py
-    '''
-    def exportFit(self, fitID):
-        fit = eos.db.getFit(fitID)
-        return Port.exportEft(fit)
-
-    def exportEftImps(self, fitID):
-        fit = eos.db.getFit(fitID)
-        return Port.exportEftImps(fit)
-
-    def exportDna(self, fitID):
-        fit = eos.db.getFit(fitID)
-        return Port.exportDna(fit)
-
-    def exportCrest(self, fitID, callback=None):
-        fit = eos.db.getFit(fitID)
-        return Port.exportCrest(fit, callback)
-
-    def exportXml(self, callback=None, *fitIDs):
-        fits = map(lambda fitID: eos.db.getFit(fitID), fitIDs)
-        return Port.exportXml(callback, *fits)
-
-    def exportMultiBuy(self, fitID):
-        fit = eos.db.getFit(fitID)
-        return Port.exportMultiBuy(fit)
-    '''
-
+    # TODO: Should move all the backup/import stuff out of here
     def backupFits(self, path, callback):
         thread = FitBackupThread(path, callback)
         thread.start()
