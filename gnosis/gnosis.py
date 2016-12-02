@@ -5,6 +5,14 @@ Integrates Gnosis into Pyfa
 from EVE_Gnosis.formulas.formulas import Formulas
 from EVE_Gnosis.simulations.capacitor import Capacitor
 
+import sys
+test = True
+#import service
+#try:
+#    import service
+#except ImportError:
+#    import sys
+#    Service = sys.modules['service']
 
 class GnosisFormulas:
     def __init__(self):
@@ -32,6 +40,11 @@ class GnosisSimulation:
     @staticmethod
     def capacitor_simulation(fit, projected_capacitor, capacity, recharge_rate, add_reactivation_delay=None):
 
+        sFit = service.Fit.getInstance()
+
+        # Get user preferences for running the Gnosis engine
+        setting_factor_reload_time = sFit.serviceFittingOptions["useGlobalForceReload"]
+
         module_list = []
         for module in fit.modules:
 
@@ -50,16 +63,20 @@ class GnosisSimulation:
                 duration_two = module.getModifiedItemAttr("speed")
                 duration = max(duration_one, duration_two, 0)
 
-                # Get number of charges/reloads
-                charges = getattr(module, 'numCharges', None)
-                if not charges:
-                    charges = False
+                if setting_factor_reload_time:
+                    # Get number of charges/reloads
+                    charges = getattr(module, 'numCharges', None)
+                    if not charges:
+                        charges = False
 
-                # Get reload time
-                reload_time_one = module.getModifiedItemAttr("reloadTime")
-                reload_time_two = getattr(module, 'reloadTime', None)
-                reload_time = max(reload_time_one, reload_time_two, 0)
-                if not reload_time:
+                    # Get reload time
+                    reload_time_one = module.getModifiedItemAttr("reloadTime")
+                    reload_time_two = getattr(module, 'reloadTime', None)
+                    reload_time = max(reload_time_one, reload_time_two, 0)
+                    if not reload_time:
+                        reload_time = False
+                else:
+                    charges = False
                     reload_time = False
 
                 # Get reactivation delay
@@ -125,15 +142,20 @@ class GnosisSimulation:
                     duration_two = projected_src.getModifiedItemAttr("speed")
                     duration = max(duration_one, duration_two, 0)
 
-                if not charges:
-                    charges = getattr(projected_src, 'numCharges', None)
-                if not charges:
-                    charges = False
+                if setting_factor_reload_time:
+                    if not charges:
+                        # Get number of charges/reloads
+                        charges = getattr(projected_src, 'numCharges', None)
+                    if not charges:
+                        charges = False
 
-                reload_time_one = projected_src.getModifiedItemAttr("reloadTime")
-                reload_time_two = getattr(projected_src, 'reloadTime', None)
-                reload_time = max(reload_time_one, reload_time_two, 0)
-                if not reload_time:
+                    reload_time_one = projected_src.getModifiedItemAttr("reloadTime")
+                    reload_time_two = getattr(projected_src, 'reloadTime', None)
+                    reload_time = max(reload_time_one, reload_time_two, 0)
+                    if not reload_time:
+                        reload_time = False
+                else:
+                    charges = False
                     reload_time = False
 
                 reactivation_delay = projected_src.getModifiedItemAttr("moduleReactivationDelay")
@@ -157,7 +179,8 @@ class GnosisSimulation:
                 'armorRepair',
                 'hullRepair',
         ):
-            for projecting_fit, afflictors in fit.extraAttributes.getAfflictions(projection_extraAttributes_type).iteritems():
+            for projecting_fit, afflictors in fit.extraAttributes.getAfflictions(
+                    projection_extraAttributes_type).iteritems():
                 if projecting_fit == fit:
                     # We can see local modules projected back on the fit. This is bad. Don't do this.
                     pass
@@ -172,16 +195,20 @@ class GnosisSimulation:
                         duration_two = afflictor.getModifiedItemAttr("speed")
                         duration = max(duration_one, duration_two, 0)
 
-                        # Get number of charges/reloads
-                        charges = getattr(afflictor, 'numCharges', None)
-                        if not charges:
-                            charges = False
+                        if setting_factor_reload_time:
+                            # Get number of charges/reloads
+                            charges = getattr(afflictor, 'numCharges', None)
+                            if not charges:
+                                charges = False
 
-                        # Get reload time
-                        reload_time_one = afflictor.getModifiedItemAttr("reloadTime")
-                        reload_time_two = getattr(afflictor, 'reloadTime', None)
-                        reload_time = max(reload_time_one, reload_time_two, 0)
-                        if not reload_time:
+                            # Get reload time
+                            reload_time_one = afflictor.getModifiedItemAttr("reloadTime")
+                            reload_time_two = getattr(afflictor, 'reloadTime', None)
+                            reload_time = max(reload_time_one, reload_time_two, 0)
+                            if not reload_time:
+                                reload_time = False
+                        else:
+                            charges = False
                             reload_time = False
 
                         # Get reactivation delay
