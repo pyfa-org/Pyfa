@@ -24,6 +24,7 @@ from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
 import globalEvents as GE
 from service.fit import Fit
+from service.market import Market
 
 class CargoViewDrop(wx.PyDropTarget):
         def __init__(self, dropFn):

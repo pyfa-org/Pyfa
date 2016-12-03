@@ -4,6 +4,7 @@ import eos.types
 import gui.mainFrame
 import gui.globalEvents as GE
 import wx
+from service.fit import Fit
 
 class ChangeAmount(ContextMenu):
     def __init__(self):
