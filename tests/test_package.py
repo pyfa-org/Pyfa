@@ -23,7 +23,7 @@ def service_modules():
         for file_ in files:
             if file_.endswith(".py") and not file_.startswith("_"):
                 mod_name = "{}.{}".format(
-                    root.replace("/", "."),
+                    root.replace(os.path.sep, "."),
                     file_.split(".py")[0],
                 )
                 yield mod_name
