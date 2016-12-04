@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,19 +15,22 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
 import wx
+
 import config
-from gui.bitmapLoader import BitmapLoader
+from service.crest import Crest
+from service.character import Character
 import gui.mainFrame
 import gui.graphFrame
 import gui.globalEvents as GE
-from service.crest import Crest
-from service.character import Character
+from gui.bitmapLoader import BitmapLoader
 
-if not 'wxMac' in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3,0)):
+
+if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3, 0)):
     from service.crest import CrestModes
+
 
 class MainMenuBar(wx.MenuBar):
     def __init__(self):
@@ -52,7 +55,7 @@ class MainMenuBar(wx.MenuBar):
         self.toggleOverridesId = wx.NewId()
         self.importDatabaseDefaultsId = wx.NewId()
 
-        if 'wxMac' in wx.PlatformInfo and wx.VERSION >= (3,0):
+        if 'wxMac' in wx.PlatformInfo and wx.VERSION >= (3, 0):
             wx.ID_COPY = wx.NewId()
             wx.ID_PASTE = wx.NewId()
 
@@ -81,8 +84,8 @@ class MainMenuBar(wx.MenuBar):
         editMenu = wx.Menu()
         self.Append(editMenu, "&Edit")
 
-        #editMenu.Append(wx.ID_UNDO)
-        #editMenu.Append(wx.ID_REDO)
+        # editMenu.Append(wx.ID_UNDO)
+        # editMenu.Append(wx.ID_REDO)
 
         editMenu.Append(wx.ID_COPY, "To Clipboard\tCTRL+C", "Export a fit to the clipboard")
         editMenu.Append(wx.ID_PASTE, "From Clipboard\tCTRL+V", "Import a fit from the clipboard")
@@ -116,11 +119,11 @@ class MainMenuBar(wx.MenuBar):
         windowMenu.AppendItem(graphFrameItem)
 
         preferencesShortCut = "CTRL+," if 'wxMac' in wx.PlatformInfo else "CTRL+P"
-        preferencesItem = wx.MenuItem(windowMenu, wx.ID_PREFERENCES, "Preferences\t"+preferencesShortCut)
+        preferencesItem = wx.MenuItem(windowMenu, wx.ID_PREFERENCES, "Preferences\t" + preferencesShortCut)
         preferencesItem.SetBitmap(BitmapLoader.getBitmap("preferences_small", "gui"))
         windowMenu.AppendItem(preferencesItem)
 
-        if not 'wxMac' in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3,0)):
+        if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3, 0)):
             self.sCrest = Crest.getInstance()
 
             # CREST Menu
@@ -155,7 +158,7 @@ class MainMenuBar(wx.MenuBar):
         helpMenu.Append(wx.ID_ABOUT)
 
         if config.debug:
-            helpMenu.Append( self.mainFrame.widgetInspectMenuID, "Open Widgets Inspect tool", "Open Widgets Inspect tool")
+            helpMenu.Append(self.mainFrame.widgetInspectMenuID, "Open Widgets Inspect tool", "Open Widgets Inspect tool")
 
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
 
@@ -175,5 +178,3 @@ class MainMenuBar(wx.MenuBar):
         self.Enable(self.revertCharId, char.isDirty)
 
         event.Skip()
-
-

@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,16 +15,16 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
 import wx
 import gui.display as d
-import gui.marketBrowser as mb
 from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
 import globalEvents as GE
 from service.fit import Fit
 from service.market import Market
+
 
 class CargoViewDrop(wx.PyDropTarget):
         def __init__(self, dropFn):
@@ -39,6 +39,7 @@ class CargoViewDrop(wx.PyDropTarget):
                 data = self.dropData.GetText().split(':')
                 self.dropFn(x, y, data)
             return t
+
 
 #  @todo: Was copied form another class and modified. Look through entire file, refine
 class CargoView(d.Display):
@@ -59,7 +60,7 @@ class CargoView(d.Display):
         self.SetDropTarget(CargoViewDrop(self.handleListDrag))
         self.Bind(wx.EVT_LIST_BEGIN_DRAG, self.startDrag)
 
-        if "__WXGTK__" in  wx.PlatformInfo:
+        if "__WXGTK__" in wx.PlatformInfo:
             self.Bind(wx.EVT_RIGHT_UP, self.scheduleMenu)
         else:
             self.Bind(wx.EVT_RIGHT_DOWN, self.scheduleMenu)
@@ -85,13 +86,13 @@ class CargoView(d.Display):
 
         if row != -1:
             data = wx.PyTextDataObject()
-            data.SetText("cargo:"+str(row))
+            data.SetText("cargo:" + str(row))
 
             dropSource = wx.DropSource(self)
             dropSource.SetData(data)
-            res = dropSource.DoDragDrop()
+            dropSource.DoDragDrop()
 
-    def kbEvent(self,event):
+    def kbEvent(self, event):
         keycode = event.GetKeyCode()
         if keycode == wx.WXK_DELETE or keycode == wx.WXK_NUMPAD_DELETE:
             fitID = self.mainFrame.getActiveFit()
@@ -112,16 +113,16 @@ class CargoView(d.Display):
         # Gather module information to get position
         module = fit.modules[modIdx]
 
-        if dstRow != -1: # we're swapping with cargo
-            if mstate.CmdDown(): # if copying, append to cargo
+        if dstRow != -1:  # we're swapping with cargo
+            if mstate.CmdDown():  # if copying, append to cargo
                 sFit.addCargo(self.mainFrame.getActiveFit(), module.item.ID)
-            else: # else, move / swap
+            else:  # else, move / swap
                 sFit.moveCargoToModule(self.mainFrame.getActiveFit(), module.position, dstRow)
-        else: # dragging to blank spot, append
+        else:  # dragging to blank spot, append
             sFit.addCargo(self.mainFrame.getActiveFit(), module.item.ID)
 
-            if not mstate.CmdDown(): # if not copying, remove module
-               sFit.removeModule(self.mainFrame.getActiveFit(), module.position)
+            if not mstate.CmdDown():  # if not copying, remove module
+                sFit.removeModule(self.mainFrame.getActiveFit(), module.position)
 
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
 
@@ -131,7 +132,7 @@ class CargoView(d.Display):
 
         self.Parent.Parent.DisablePage(self, not fit or fit.isStructure)
 
-        #Clear list and get out if current fitId is None
+        # Clear list and get out if current fitId is None
         if event.fitID is None and self.lastFitId is not None:
             self.DeleteAllItems()
             self.lastFitId = None
@@ -140,7 +141,8 @@ class CargoView(d.Display):
 
         self.original = fit.cargo if fit is not None else None
         self.cargo = stuff = fit.cargo if fit is not None else None
-        if stuff is not None: stuff.sort(key=lambda cargo: cargo.itemID)
+        if stuff is not None:
+            stuff.sort(key=lambda cargo: cargo.itemID)
 
         if event.fitID != self.lastFitId:
             self.lastFitId = event.fitID

@@ -21,6 +21,7 @@ class DroneSplit(ContextMenu):
         dlg.ShowModal()
         dlg.Destroy()
 
+
 DroneSplit.register()
 
 

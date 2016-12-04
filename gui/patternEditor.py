@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,17 +15,15 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.    If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
 import wx
-from gui.bitmapLoader import BitmapLoader
 from wx.lib.intctrl import IntCtrl
+
+from service.damagePattern import DamagePattern
+from gui.bitmapLoader import BitmapLoader
 from gui.utils.clipboard import toClipboard, fromClipboard
 from gui.builtinViews.entityEditor import EntityEditor, BaseValidator
-from service.damagePattern import DamagePattern
-###########################################################################
-## Class DmgPatternEditorDlg
-###########################################################################
 
 
 class DmgPatternTextValidor(BaseValidator):

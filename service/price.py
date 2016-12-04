@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,7 +15,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
 
 import time
@@ -30,7 +30,6 @@ TIMEOUT = 15 * 60  # Network timeout delay for connection issues, 15 minutes
 
 
 class Price(object):
-
     @classmethod
     def fetchPrices(cls, prices):
         """Fetch all prices passed to this method"""

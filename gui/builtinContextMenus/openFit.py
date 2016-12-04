@@ -18,4 +18,5 @@ class OpenFit(ContextMenu):
         fit = selection[0]
         wx.PostEvent(self.mainFrame, FitSelected(fitID=fit.ID, startup=2))
 
+
 OpenFit.register()

@@ -25,4 +25,5 @@ class ItemRemove(ContextMenu):
 
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
+
 ItemRemove.register()

@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2014 Alexandros Kosiaris
 #
 # This file is part of pyfa.
@@ -15,7 +15,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
 import wx
 import gui.mainFrame
@@ -145,5 +145,6 @@ class MiningYieldViewFull(StatsView):
             counter += 1
         self.panel.Layout()
         self.headerPanel.Layout()
+
 
 MiningYieldViewFull.register()

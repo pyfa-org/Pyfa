@@ -33,4 +33,5 @@ class AmmoPattern(ContextMenu):
     def getBitmap(self, context, selection):
         return None
 
+
 AmmoPattern.register()

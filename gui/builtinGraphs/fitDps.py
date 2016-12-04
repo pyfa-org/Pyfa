@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,7 +15,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
 from gui.graph import Graph
 from gui.bitmapLoader import BitmapLoader
@@ -23,6 +23,7 @@ from eos.graph.fitDps import FitDpsGraph as FitDps
 from eos.graph import Data
 import gui.mainFrame
 from service.attribute import Attribute
+
 
 class FitDpsGraph(Graph):
     propertyAttributeMap = {"angle": "maxVelocity",
@@ -74,7 +75,7 @@ class FitDpsGraph(Graph):
                 if variable is None:
                     variable = fieldName
                 else:
-                    #We can't handle more then one variable atm, OOPS FUCK OUT
+                    # We can't handle more then one variable atm, OOPS FUCK OUT
                     return False, "Can only handle 1 variable"
 
             fitDps.setData(d)
@@ -89,5 +90,6 @@ class FitDpsGraph(Graph):
             y.append(val)
 
         return x, y
+
 
 FitDpsGraph.register()

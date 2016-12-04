@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,17 +15,18 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
 import wx
+
+import eos.types
+from service.fit import Fit
+from service.market import Market
 import gui.display as d
 import gui.globalEvents as GE
 import gui.droneView
 from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
-import eos.types
-from service.fit import Fit
-from service.market import Market
 
 
 class DummyItem:

@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,18 +15,19 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
 import wx
-import gui.display as d
-import gui.marketBrowser as mb
-import gui.mainFrame
-from gui.builtinViewColumns.state import State
-from gui.contextMenu import ContextMenu
-import globalEvents as GE
+
 from eos.types import ImplantLocation
 from service.fit import Fit
 from service.market import Market
+import gui.display as d
+import gui.marketBrowser as mb
+import gui.mainFrame
+import gui.globalEvents as GE
+from gui.builtinViewColumns.state import State
+from gui.contextMenu import ContextMenu
 
 
 class ImplantView(wx.Panel):

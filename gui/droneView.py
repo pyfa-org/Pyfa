@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,7 +15,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
 import wx
 
@@ -27,29 +27,33 @@ from gui.contextMenu import ContextMenu
 from service.fit import Fit
 from service.market import Market
 
-class DroneViewDrop(wx.PyDropTarget):
-        def __init__(self, dropFn):
-            wx.PyDropTarget.__init__(self)
-            self.dropFn = dropFn
-            # this is really transferring an EVE itemID
-            self.dropData = wx.PyTextDataObject()
-            self.SetDataObject(self.dropData)
 
-        def OnData(self, x, y, t):
-            if self.GetData():
-                data = self.dropData.GetText().split(':')
-                self.dropFn(x, y, data)
-            return t
+class DroneViewDrop(wx.PyDropTarget):
+    def __init__(self, dropFn):
+        wx.PyDropTarget.__init__(self)
+        self.dropFn = dropFn
+        # this is really transferring an EVE itemID
+        self.dropData = wx.PyTextDataObject()
+        self.SetDataObject(self.dropData)
+
+    def OnData(self, x, y, t):
+        if self.GetData():
+            data = self.dropData.GetText().split(':')
+            self.dropFn(x, y, data)
+        return t
+
 
 class DroneView(d.Display):
-    DEFAULT_COLS = ["State",
-                    #"Base Icon",
-                    "Base Name",
-                    # "prop:droneDps,droneBandwidth",
-                    "Max Range",
-                    "Miscellanea",
-                    "attr:maxVelocity",
-                    "Price",]
+    DEFAULT_COLS = [
+        "State",
+        # "Base Icon",
+        "Base Name",
+        # "prop:droneDps,droneBandwidth",
+        "Max Range",
+        "Miscellanea",
+        "attr:maxVelocity",
+        "Price",
+    ]
 
     def __init__(self, parent):
         d.Display.__init__(self, parent, style=wx.LC_SINGLE_SEL | wx.BORDER_NONE)
@@ -67,11 +71,10 @@ class DroneView(d.Display):
         self.Bind(wx.EVT_MOTION, self.OnMouseMove)
         self.Bind(wx.EVT_LEAVE_WINDOW, self.OnLeaveWindow)
 
-        if "__WXGTK__" in  wx.PlatformInfo:
+        if "__WXGTK__" in wx.PlatformInfo:
             self.Bind(wx.EVT_RIGHT_UP, self.scheduleMenu)
         else:
             self.Bind(wx.EVT_RIGHT_DOWN, self.scheduleMenu)
-
 
         self.Bind(wx.EVT_LIST_BEGIN_DRAG, self.startDrag)
         self.SetDropTarget(DroneViewDrop(self.handleDragDrop))
@@ -108,7 +111,6 @@ class DroneView(d.Display):
         keycode = event.GetKeyCode()
         if keycode == wx.WXK_DELETE or keycode == wx.WXK_NUMPAD_DELETE:
             row = self.GetFirstSelected()
-            firstSel = row
             if row != -1:
                 drone = self.drones[self.GetItemData(row)]
                 self.removeDrone(drone)
@@ -119,11 +121,11 @@ class DroneView(d.Display):
         row = event.GetIndex()
         if row != -1:
             data = wx.PyTextDataObject()
-            data.SetText("drone:"+str(row))
+            data.SetText("drone:" + str(row))
 
             dropSource = wx.DropSource(self)
             dropSource.SetData(data)
-            res = dropSource.DoDragDrop()
+            dropSource.DoDragDrop()
 
     def handleDragDrop(self, x, y, data):
         '''
@@ -151,6 +153,7 @@ class DroneView(d.Display):
                    'Heavy Attack Drones', 'Sentry Drones', 'Fighters',
                    'Fighter Bombers', 'Combat Utility Drones',
                    'Electronic Warfare Drones', 'Logistic Drones', 'Mining Drones', 'Salvage Drones')
+
     def droneKey(self, drone):
         sMkt = Market.getInstance()
 
@@ -165,7 +168,7 @@ class DroneView(d.Display):
 
         self.Parent.Parent.DisablePage(self, not fit or fit.isStructure)
 
-        #Clear list and get out if current fitId is None
+        # Clear list and get out if current fitId is None
         if event.fitID is None and self.lastFitId is not None:
             self.DeleteAllItems()
             self.lastFitId = None
@@ -177,7 +180,6 @@ class DroneView(d.Display):
 
         if stuff is not None:
             stuff.sort(key=self.droneKey)
-
 
         if event.fitID != self.lastFitId:
             self.lastFitId = event.fitID
@@ -191,7 +193,6 @@ class DroneView(d.Display):
 
         self.update(stuff)
         event.Skip()
-
 
     def addItem(self, event):
         sFit = Fit.getInstance()

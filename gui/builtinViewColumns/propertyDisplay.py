@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,7 +15,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
 from gui.viewColumn import ViewColumn
 from gui.utils.numberFormatter import formatAmount
@@ -66,5 +66,6 @@ class PropertyDisplay(ViewColumn):
                 ("attributeSlave", str, None),
                 ("displayName", bool, False),
                 ("showIcon", bool, True))
+
 
 PropertyDisplay.register()

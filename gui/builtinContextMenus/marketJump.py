@@ -45,4 +45,5 @@ class MarketJump(ContextMenu):
         self.mainFrame.notebookBrowsers.SetSelection(0)
         self.mainFrame.marketBrowser.jump(item)
 
+
 MarketJump.register()

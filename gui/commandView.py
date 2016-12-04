@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,7 +15,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
 import wx
 import gui.display as d
@@ -26,7 +26,6 @@ from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
 import eos.types
 from service.fit import Fit
-from service.market import Market
 
 
 class DummyItem:
@@ -34,29 +33,32 @@ class DummyItem:
         self.name = txt
         self.icon = None
 
+
 class DummyEntry:
     def __init__(self, txt):
         self.item = DummyItem(txt)
 
-class CommandViewDrop(wx.PyDropTarget):
-   def __init__(self, dropFn):
-       wx.PyDropTarget.__init__(self)
-       self.dropFn = dropFn
-       # this is really transferring an EVE itemID
-       self.dropData = wx.PyTextDataObject()
-       self.SetDataObject(self.dropData)
 
-   def OnData(self, x, y, t):
-       if self.GetData():
-           data = self.dropData.GetText().split(':')
-           self.dropFn(x, y, data)
-       return t
+class CommandViewDrop(wx.PyDropTarget):
+    def __init__(self, dropFn):
+        wx.PyDropTarget.__init__(self)
+        self.dropFn = dropFn
+        # this is really transferring an EVE itemID
+        self.dropData = wx.PyTextDataObject()
+        self.SetDataObject(self.dropData)
+
+    def OnData(self, x, y, t):
+        if self.GetData():
+            data = self.dropData.GetText().split(':')
+            self.dropFn(x, y, data)
+        return t
+
 
 class CommandView(d.Display):
-    DEFAULT_COLS = ["Base Name",]
+    DEFAULT_COLS = ["Base Name"]
 
     def __init__(self, parent):
-        d.Display.__init__(self, parent, style = wx.LC_SINGLE_SEL | wx.BORDER_NONE)
+        d.Display.__init__(self, parent, style=wx.LC_SINGLE_SEL | wx.BORDER_NONE)
 
         self.lastFitId = None
 
@@ -68,7 +70,7 @@ class CommandView(d.Display):
 
         self.droneView = gui.droneView.DroneView
 
-        if "__WXGTK__" in  wx.PlatformInfo:
+        if "__WXGTK__" in wx.PlatformInfo:
             self.Bind(wx.EVT_RIGHT_UP, self.scheduleMenu)
         else:
             self.Bind(wx.EVT_RIGHT_DOWN, self.scheduleMenu)
@@ -86,7 +88,7 @@ class CommandView(d.Display):
         '''
         pass
 
-    def kbEvent(self,event):
+    def kbEvent(self, event):
         keycode = event.GetKeyCode()
         if keycode == wx.WXK_DELETE or keycode == wx.WXK_NUMPAD_DELETE:
             fitID = self.mainFrame.getActiveFit()
@@ -97,7 +99,7 @@ class CommandView(d.Display):
                 wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
     def handleDrag(self, type, fitID):
-        #Those are drags coming from pyfa sources, NOT builtin wx drags
+        # Those are drags coming from pyfa sources, NOT builtin wx drags
         if type == "fit":
             activeFit = self.mainFrame.getActiveFit()
             if activeFit:
@@ -110,7 +112,7 @@ class CommandView(d.Display):
         row = event.GetIndex()
         if row != -1 and isinstance(self.get(row), eos.types.Drone):
             data = wx.PyTextDataObject()
-            data.SetText("command:"+str(self.GetItemData(row)))
+            data.SetText("command:" + str(self.GetItemData(row)))
 
             dropSource = wx.DropSource(self)
             dropSource.SetData(data)
@@ -125,7 +127,7 @@ class CommandView(d.Display):
 
         self.Parent.Parent.DisablePage(self, not fit or fit.isStructure)
 
-        #Clear list and get out if current fitId is None
+        # Clear list and get out if current fitId is None
         if event.fitID is None and self.lastFitId is not None:
             self.DeleteAllItems()
             self.lastFitId = None
@@ -184,11 +186,11 @@ class CommandView(d.Display):
         menu = None
         if sel != -1:
             item = self.get(sel)
-            if item is None: return
-            sMkt = Market.getInstance()
+            if item is None:
+                return
             fitSrcContext = "commandFit"
             fitItemContext = item.name
-            context = ((fitSrcContext,fitItemContext),)
+            context = ((fitSrcContext, fitItemContext),)
             context = context + (("command",),)
             menu = ContextMenu.getMenu((item,), *context)
         elif sel == -1:

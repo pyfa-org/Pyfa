@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,7 +15,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
 import cPickle
 import os.path
@@ -23,20 +23,22 @@ import urllib2
 
 import config
 
-class SettingsProvider():
+
+class SettingsProvider(object):
     BASE_PATH = os.path.join(config.savePath or ".", "settings")
     settings = {}
     _instance = None
+
     @classmethod
     def getInstance(cls):
-        if cls._instance == None:
+        if cls._instance is None:
             cls._instance = SettingsProvider()
 
         return cls._instance
 
     def __init__(self):
         if not os.path.exists(self.BASE_PATH):
-            os.mkdir(self.BASE_PATH);
+            os.mkdir(self.BASE_PATH)
 
     def getSettings(self, area, defaults=None):
 
@@ -72,7 +74,8 @@ class SettingsProvider():
         for settings in self.settings.itervalues():
             settings.save()
 
-class Settings():
+
+class Settings(object):
     def __init__(self, location, info):
         self.location = location
         self.info = info
@@ -112,7 +115,7 @@ class Settings():
         return self.info.items()
 
 
-class NetworkSettings():
+class NetworkSettings(object):
     _instance = None
 
     # constants for serviceNetworkDefaultSettings["mode"] parameter
@@ -122,7 +125,7 @@ class NetworkSettings():
 
     @classmethod
     def getInstance(cls):
-        if cls._instance == None:
+        if cls._instance is None:
             cls._instance = NetworkSettings()
 
         return cls._instance
@@ -190,12 +193,11 @@ class NetworkSettings():
         proxy = None
         proxAddr = proxPort = ""
         proxydict = urllib2.ProxyHandler().proxies
-        txt = "Auto-detected: "
 
         validPrefixes = ("http", "https")
 
         for prefix in validPrefixes:
-            if not prefix in proxydict:
+            if prefix not in proxydict:
                 continue
             proxyline = proxydict[prefix]
             proto = "{0}://".format(prefix)
@@ -238,22 +240,21 @@ class NetworkSettings():
         self.serviceNetworkSettings["password"] = password
 
 
-
-"""
-Settings used by the HTML export feature.
-"""
-class HTMLExportSettings():
+class HTMLExportSettings(object):
+    """
+    Settings used by the HTML export feature.
+    """
     _instance = None
 
     @classmethod
     def getInstance(cls):
-        if cls._instance == None:
+        if cls._instance is None:
             cls._instance = HTMLExportSettings()
 
         return cls._instance
 
     def __init__(self):
-        serviceHTMLExportDefaultSettings = {"enabled": False, "path": config.pyfaPath + os.sep + 'pyfaFits.html', "minimal": False }
+        serviceHTMLExportDefaultSettings = {"enabled": False, "path": config.pyfaPath + os.sep + 'pyfaFits.html', "minimal": False}
         self.serviceHTMLExportSettings = SettingsProvider.getInstance().getSettings("pyfaServiceHTMLExportSettings", serviceHTMLExportDefaultSettings)
 
     def getEnabled(self):
@@ -262,13 +263,11 @@ class HTMLExportSettings():
     def setEnabled(self, enabled):
         self.serviceHTMLExportSettings["enabled"] = enabled
 
-
     def getMinimalEnabled(self):
         return self.serviceHTMLExportSettings["minimal"]
 
     def setMinimalEnabled(self, minimal):
         self.serviceHTMLExportSettings["minimal"] = minimal
-
 
     def getPath(self):
         return self.serviceHTMLExportSettings["path"]
@@ -276,15 +275,16 @@ class HTMLExportSettings():
     def setPath(self, path):
         self.serviceHTMLExportSettings["path"] = path
 
-"""
-Settings used by update notification
-"""
-class UpdateSettings():
+
+class UpdateSettings(object):
+    """
+    Settings used by update notification
+    """
     _instance = None
 
     @classmethod
     def getInstance(cls):
-        if cls._instance == None:
+        if cls._instance is None:
             cls._instance = UpdateSettings()
 
         return cls._instance
@@ -294,7 +294,7 @@ class UpdateSettings():
         # Updates are completely suppressed via network settings
         # prerelease - If True, suppress prerelease notifications
         # version    - Set to release tag that user does not want notifications for
-        serviceUpdateDefaultSettings = {"prerelease": True, 'version': None }
+        serviceUpdateDefaultSettings = {"prerelease": True, 'version': None}
         self.serviceUpdateSettings = SettingsProvider.getInstance().getSettings("pyfaServiceUpdateSettings", serviceUpdateDefaultSettings)
 
     def get(self, type):
@@ -303,7 +303,8 @@ class UpdateSettings():
     def set(self, type, value):
         self.serviceUpdateSettings[type] = value
 
-class CRESTSettings():
+
+class CRESTSettings(object):
     _instance = None
 
     @classmethod

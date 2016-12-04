@@ -1,12 +1,12 @@
-# -*- coding: utf-8 -*-
-from gui.contextMenu import ContextMenu
-import gui.mainFrame
 import wx
-from gui.bitmapLoader import BitmapLoader
-from eos.types import Hardpoint
-import gui.globalEvents as GE
-from service.market import Market
+
 from service.fit import Fit
+from service.market import Market
+from eos.types import Hardpoint
+import gui.mainFrame
+import gui.globalEvents as GE
+from gui.contextMenu import ContextMenu
+from gui.bitmapLoader import BitmapLoader
 
 
 class ModuleAmmoPicker(ContextMenu):
@@ -137,8 +137,8 @@ class ModuleAmmoPicker(ContextMenu):
                 if "Orbital" in charge.name:
                     # uncomment if we ever want to include Oribital ammo in ammo picker - see issue #71
                     # This allows us to hide the ammo, but it's still loadable from the market
-                    #item = self.addCharge(m, charge)
-                    #items.append(item)
+                    # item = self.addCharge(m, charge)
+                    # items.append(item)
                     continue
                 currBase = charge.name.rsplit()[-2:]
                 currRange = charge.getAttribute("weaponRangeMultiplier")
@@ -221,5 +221,6 @@ class ModuleAmmoPicker(ContextMenu):
 
         sFit.setAmmo(fitID, charge.ID if charge is not None else None, self.modules)
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+
 
 ModuleAmmoPicker.register()

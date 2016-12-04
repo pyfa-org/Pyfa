@@ -108,8 +108,8 @@ class Fit(object):
             "showMarketShortcuts": False,
             "enableGaugeAnimation": True,
             "exportCharges": True,
-            "openFitInNew": False
-            }
+            "openFitInNew": False,
+        }
 
         self.serviceFittingOptions = SettingsProvider.getInstance().getSettings(
             "pyfaServiceFittingOptions", serviceFittingDefaultOptions)

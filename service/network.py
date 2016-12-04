@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2014 Ryan Holmes
 #
 # This file is part of pyfa.
@@ -15,7 +15,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
 
 import urllib2
@@ -60,6 +60,7 @@ class Network(object):
     UPDATE = 8
 
     _instance = None
+
     @classmethod
     def getInstance(cls):
         if cls._instance is None:
@@ -69,7 +70,7 @@ class Network(object):
 
     def request(self, url, type, data=None):
         # URL is required to be https as of right now
-        #print "Starting request: %s\n\tType: %s\n\tPost Data: %s"%(url,type,data)
+        # print "Starting request: %s\n\tType: %s\n\tPost Data: %s"%(url,type,data)
 
         # Make sure request is enabled
         access = NetworkSettings.getInstance().getAccess()
@@ -79,7 +80,7 @@ class Network(object):
 
         # Set up some things for the request
         versionString = "{0} {1} - {2} {3}".format(config.version, config.tag, config.expansionName, config.expansionVersion)
-        headers = {"User-Agent" : "pyfa {0} (Python-urllib2)".format(versionString)}
+        headers = {"User-Agent": "pyfa {0} (Python-urllib2)".format(versionString)}
 
         proxy = NetworkSettings.getInstance().getProxySettings()
         if proxy is not None:

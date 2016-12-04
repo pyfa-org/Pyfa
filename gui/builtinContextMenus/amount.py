@@ -21,6 +21,7 @@ class ChangeAmount(ContextMenu):
         dlg = AmountChanger(self.mainFrame, selection[0], srcContext)
         dlg.ShowModal()
 
+
 ChangeAmount.register()
 
 

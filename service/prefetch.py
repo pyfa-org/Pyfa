@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,7 +15,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
 import threading
 import os
@@ -35,16 +35,15 @@ class PrefetchThread(threading.Thread):
         except:
             pass
 
+
 prefetch = PrefetchThread()
 prefetch.daemon = True
 prefetch.start()
 
-########
 # The following code does not belong here, however until we rebuild skeletons
 # to include modified pyfa.py, this is the best place to put it. See GH issue
 # #176
 # @ todo: move this to pyfa.py
-########
 
 # Make sure the saveddata db exists
 if config.savePath and not os.path.exists(config.savePath):

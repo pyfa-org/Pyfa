@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,22 +15,24 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
 import wx
-from gui.statsView import StatsView
+
 from service.fit import Fit
-from gui.pyfatogglepanel import TogglePanel
-import gui.builtinStatsViews
-from gui.contextMenu import ContextMenu
-#import gui.builtinViews.fittingView as fv
 import gui.mainFrame
+import gui.builtinStatsViews
 import gui.globalEvents as GE
+# import gui.builtinViews.fittingView as fv
+from gui.statsView import StatsView
+from gui.contextMenu import ContextMenu
+from gui.pyfatogglepanel import TogglePanel
+
 
 class StatsPane(wx.Panel):
-    DEFAULT_VIEWS = ["resourcesViewFull", "resistancesViewFull" ,"rechargeViewFull", "firepowerViewFull",
+    DEFAULT_VIEWS = ["resourcesViewFull", "resistancesViewFull", "rechargeViewFull", "firepowerViewFull",
                      "capacitorViewFull", "targetingmiscViewFull",
-                     "priceViewFull",]
+                     "priceViewFull"]
 
     def fitChanged(self, event):
         sFit = Fit.getInstance()
@@ -44,7 +46,7 @@ class StatsPane(wx.Panel):
 
         # Use 25% smaller fonts if MAC or force font size to 8 for msw/linux
 
-        if "__WXMAC__" in  wx.PlatformInfo :
+        if "__WXMAC__" in wx.PlatformInfo:
             self.SetWindowVariant(wx.WINDOW_VARIANT_SMALL)
         else:
             standardFont = wx.SystemSettings.GetFont(wx.SYS_DEFAULT_GUI_FONT)
@@ -57,7 +59,7 @@ class StatsPane(wx.Panel):
         self.views = []
         self.nameViewMap = {}
         maxviews = len(self.DEFAULT_VIEWS)
-        i=0
+        i = 0
         for viewName in self.DEFAULT_VIEWS:
             tp = TogglePanel(self)
             contentPanel = tp.GetContentPane()
@@ -80,18 +82,18 @@ class StatsPane(wx.Panel):
             mainSizer.Add(tp, 0, wx.EXPAND | wx.LEFT, 3)
             if i < maxviews - 1:
                 mainSizer.Add(wx.StaticLine(self, wx.ID_ANY, style=wx.HORIZONTAL), 0, wx.EXPAND | wx.TOP | wx.LEFT | wx.RIGHT, 2)
-            i+=1
+            i += 1
             tp.OnStateChange(tp.GetBestSize())
 
-        width,height = self.GetSize()
-        self.SetMinSize((width+9,-1))
-
+        width, height = self.GetSize()
+        self.SetMinSize((width + 9, -1))
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
 
     def contextHandler(self, contentPanel):
         viewName = contentPanel.viewName
+
         def handler(event):
             menu = ContextMenu.getMenu(None, (viewName,))
             if menu is not None:

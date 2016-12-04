@@ -5,8 +5,10 @@ from service.settings import HTMLExportSettings
 from service.fit import Fit
 from service.market import Market
 
+
 class exportHtml():
     _instance = None
+
     @classmethod
     def getInstance(cls):
         if cls._instance is None:
@@ -24,6 +26,7 @@ class exportHtml():
             self.thread.stop()
             self.thread = exportHtmlThread(callback)
             self.thread.start()
+
 
 class exportHtmlThread(threading.Thread):
 
@@ -45,35 +48,30 @@ class exportHtmlThread(threading.Thread):
         sFit = Fit.getInstance()
         settings = HTMLExportSettings.getInstance()
 
-        timestamp = time.localtime(time.time())
-        localDate = "%d/%02d/%02d %02d:%02d" % (timestamp[0], timestamp[1], timestamp[2], timestamp[3], timestamp[4])
-
-        minimal = settings.getMinimalEnabled();
+        minimal = settings.getMinimalEnabled()
         dnaUrl = "https://o.smium.org/loadout/dna/"
 
         if minimal:
-            HTML = self.generateMinimalHTML(sMkt,sFit, dnaUrl)
+            HTML = self.generateMinimalHTML(sMkt, sFit, dnaUrl)
         else:
-            HTML = self.generateFullHTML(sMkt,sFit, dnaUrl)
+            HTML = self.generateFullHTML(sMkt, sFit, dnaUrl)
 
         try:
             FILE = open(settings.getPath(), "w")
             FILE.write(HTML.encode('utf-8'))
             FILE.close()
         except IOError:
-            print "Failed to write to " + settings.getPath()
+            print("Failed to write to " + settings.getPath())
             pass
 
         if self.callback:
             wx.CallAfter(self.callback, -1)
 
-
-
-    def generateFullHTML(self,sMkt,sFit,dnaUrl):
+    def generateFullHTML(self, sMkt, sFit, dnaUrl):
         """ Generate the complete HTML with styling and javascript """
         timestamp = time.localtime(time.time())
         localDate = "%d/%02d/%02d %02d:%02d" % (timestamp[0], timestamp[1], timestamp[2], timestamp[3], timestamp[4])
-        
+
         HTML = """
 <!DOCTYPE html>
 <html>
@@ -152,7 +150,7 @@ class exportHtmlThread(threading.Thread):
       $('a[data-dna]').each(function( index ) {
         var dna = $(this).data('dna');
         if (typeof CCPEVE !== 'undefined') { // inside IGB
-          $(this).attr('href', 'javascript:CCPEVE.showFitting("'+dna+'");');} 
+          $(this).attr('href', 'javascript:CCPEVE.showFitting("'+dna+'");');}
         else {                               // outside IGB
           $(this).attr('href', '%s'+dna); }
       });
@@ -194,8 +192,7 @@ class exportHtmlThread(threading.Thread):
                         fit = fits[0]
                         try:
                             dnaFit = sFit.exportDna(fit[0])
-                            HTMLgroup += (
-                            '        <li><a data-dna="' + dnaFit + '" target="_blank">' + ship.name + ": " + fit[1] + '</a></li>\n')
+                            HTMLgroup += '        <li><a data-dna="' + dnaFit + '" target="_blank">' + ship.name + ": " + fit[1] + '</a></li>\n'
                         except:
                             pass
                         finally:
@@ -205,9 +202,10 @@ class exportHtmlThread(threading.Thread):
                     else:
                         # Ship group header
                         HTMLship = (
-                        '        <li data-role="collapsible" data-iconpos="right" data-shadow="false" data-corners="false">\n'
-                        '        <h2>' + ship.name + ' <span class="ui-li-count">'+str(len(fits))+'</span></h2>\n'
-                        '          <ul data-role="listview" data-shadow="false" data-inset="true" data-corners="false">\n')
+                            '        <li data-role="collapsible" data-iconpos="right" data-shadow="false" data-corners="false">\n'
+                            '        <h2>' + ship.name + ' <span class="ui-li-count">' + str(len(fits)) + '</span></h2>\n'
+                            '          <ul data-role="listview" data-shadow="false" data-inset="true" data-corners="false">\n'
+                        )
 
                         for fit in fits:
                             if self.stopRunning:
@@ -227,12 +225,12 @@ class exportHtmlThread(threading.Thread):
             if groupFits > 0:
                 # Market group header
                 HTML += (
-                '    <li data-role="collapsible" data-iconpos="right" data-shadow="false" data-corners="false">\n'
-                '      <h2>' + group.groupName + ' <span class="ui-li-count">'+str(groupFits)+'</span></h2>\n'
-                '      <ul data-role="listview" data-shadow="false" data-inset="true" data-corners="false">\n'
-                + HTMLgroup +
-                '      </ul>\n'
-                '    </li>')
+                    '    <li data-role="collapsible" data-iconpos="right" data-shadow="false" data-corners="false">\n'
+                    '      <h2>' + group.groupName + ' <span class="ui-li-count">' + str(groupFits) + '</span></h2>\n'
+                    '      <ul data-role="listview" data-shadow="false" data-inset="true" data-corners="false">\n' + HTMLgroup +
+                    '      </ul>\n'
+                    '    </li>'
+                )
 
         HTML += """
   </ul>
@@ -243,7 +241,7 @@ class exportHtmlThread(threading.Thread):
 
         return HTML
 
-    def generateMinimalHTML(self,sMkt,sFit,dnaUrl):
+    def generateMinimalHTML(self, sMkt, sFit, dnaUrl):
         """ Generate a minimal HTML version of the fittings, without any javascript or styling"""
         categoryList = list(sMkt.getShipRoot())
         categoryList.sort(key=lambda ship: ship.name)
@@ -252,7 +250,6 @@ class exportHtmlThread(threading.Thread):
         HTML = ''
         for group in categoryList:
             # init market group string to give ships something to attach to
-            
 
             ships = list(sMkt.getShipList(group.ID))
             ships.sort(key=lambda ship: ship.name)
@@ -265,8 +262,8 @@ class exportHtmlThread(threading.Thread):
                     if self.stopRunning:
                         return
                     try:
-                        dnaFit = sFit.exportDna(fit[0])                  
-                        HTML += '<a class="outOfGameBrowserLink" target="_blank" href="' + dnaUrl + dnaFit + '">'+ship.name +': '+ fit[1]+ '</a><br> \n'
+                        dnaFit = sFit.exportDna(fit[0])
+                        HTML += '<a class="outOfGameBrowserLink" target="_blank" href="' + dnaUrl + dnaFit + '">' + ship.name + ': ' + fit[1] + '</a><br> \n'
                     except:
                         continue
                     finally:

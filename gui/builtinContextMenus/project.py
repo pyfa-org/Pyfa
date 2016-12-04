@@ -34,4 +34,5 @@ class Project(ContextMenu):
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
             self.mainFrame.additionsPane.select("Projected")
 
+
 Project.register()

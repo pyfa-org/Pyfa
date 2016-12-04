@@ -1,9 +1,8 @@
 import wx
 
-
+from service.fit import Fit
 import gui.globalEvents as GE
 import gui.mainFrame
-from service.fit import Fit
 
 
 class NotesView(wx.Panel):
@@ -36,7 +35,7 @@ class NotesView(wx.Panel):
 
     def onText(self, event):
         # delay the save so we're not writing to sqlite on every keystroke
-        self.saveTimer.Stop() # cancel the existing timer
+        self.saveTimer.Stop()  # cancel the existing timer
         self.saveTimer.Start(1000, True)
 
     def delayedSave(self, event):

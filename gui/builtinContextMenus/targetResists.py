@@ -107,4 +107,5 @@ class TargetResists(ContextMenu):
 
         return sub
 
+
 TargetResists.register()

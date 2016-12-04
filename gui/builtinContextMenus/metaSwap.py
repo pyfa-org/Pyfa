@@ -1,11 +1,10 @@
-# -*- coding: utf-8 -*-
-from gui.contextMenu import ContextMenu
-from gui.itemStats import ItemStatsDialog
-import gui.mainFrame
 import wx
-import gui.globalEvents as GE
-from service.market import Market
+
 from service.fit import Fit
+from service.market import Market
+import gui.mainFrame
+import gui.globalEvents as GE
+from gui.contextMenu import ContextMenu
 
 
 class MetaSwap(ContextMenu):
@@ -43,7 +42,8 @@ class MetaSwap(ContextMenu):
         self.moduleLookup = {}
 
         def get_metalevel(x):
-            if "metaLevel" not in x.attributes: return 0
+            if "metaLevel" not in x.attributes:
+                return 0
             return x.attributes["metaLevel"].value
 
         def get_metagroup(x):
@@ -99,5 +99,6 @@ class MetaSwap(ContextMenu):
             sFit.changeModule(fitID, pos, item.ID)
 
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+
 
 MetaSwap.register()
