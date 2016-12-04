@@ -217,7 +217,7 @@ class Crest(object):
                 char = CrestChar(info['CharacterID'], info['CharacterName'], eve.refresh_token)
                 char.eve = eve
             self.charCache[int(info['CharacterID'])] = char
-            eos.db.save(char)
+            eds_queries.save(char)
 
             wx.PostEvent(self.mainFrame, GE.SsoLogin(type=CrestModes.USER))
 

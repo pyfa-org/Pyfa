@@ -46,34 +46,34 @@ class ImplantSets(object):
 
     def addImplant(self, setID, itemID):
         eos.db.getImplantSet(setID).implants.append(
-            eos.types.Implant(eos.db.getItem(itemID))
+            eos.types.Implant(eds_queries.getItem(itemID))
         )
-        eos.db.commit()
+        eds_queries.commit()
 
     def removeImplant(self, setID, implant):
         eos.db.getImplantSet(setID).implants.remove(implant)
-        eos.db.commit()
+        eds_queries.commit()
 
     def newSet(self, name):
         implant_set = eos.types.ImplantSet()
         implant_set.name = name
-        eos.db.save(implant_set)
+        eds_queries.save(implant_set)
         return implant_set
 
     def renameSet(self, implant_set, newName):
         implant_set.name = newName
-        eos.db.save(implant_set)
+        eds_queries.save(implant_set)
 
     def deleteSet(self, implant_set):
         eos.db.remove(implant_set)
 
     def copySet(self, implant_set):
         newS = copy.deepcopy(implant_set)
-        eos.db.save(newS)
+        eds_queries.save(newS)
         return newS
 
     def saveChanges(self, implant_set):
-        eos.db.save(implant_set)
+        eds_queries.save(implant_set)
 
     def importSets(self, text):
         sMkt = Market.getInstance()
@@ -107,9 +107,9 @@ class ImplantSets(object):
                 for implant in implant_set.implants:
                     match.implants.append(es_Implant(implant.item))
             else:
-                eos.db.save(implant_set)
+                eds_queries.save(implant_set)
 
-        eos.db.commit()
+        eds_queries.commit()
 
         lenImports = len(newSets)
         if lenImports == 0:

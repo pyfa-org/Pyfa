@@ -51,7 +51,7 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         self.__item = None
 
         if self.itemID:
-            self.__item = eos.db.getItem(self.itemID)
+            self.__item = eds_queries.getItem(self.itemID)
             if self.__item is None:
                 logger.error("Item (id: %d) does not exist", self.itemID)
                 return
@@ -75,7 +75,7 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         self.__chargeModifiedAttributes = ModifiedAttributeDict()
         chargeID = self.getModifiedItemAttr("entityMissileTypeID")
         if chargeID is not None:
-            charge = eos.db.getItem(int(chargeID))
+            charge = eds_queries.getItem(int(chargeID))
             self.__charge = charge
             self.__chargeModifiedAttributes.original = charge.attributes
             self.__chargeModifiedAttributes.overrides = charge.overrides

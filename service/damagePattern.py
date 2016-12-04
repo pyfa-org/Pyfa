@@ -42,23 +42,23 @@ class DamagePattern():
     def newPattern(self, name):
         p = es_DamagePattern(0, 0, 0, 0)
         p.name = name
-        eos.db.save(p)
+        eds_queries.save(p)
         return p
 
     def renamePattern(self, p, newName):
         p.name = newName
-        eos.db.save(p)
+        eds_queries.save(p)
 
     def deletePattern(self, p):
         eos.db.remove(p)
 
     def copyPattern(self, p):
         newP = copy.deepcopy(p)
-        eos.db.save(newP)
+        eds_queries.save(newP)
         return newP
 
     def saveChanges(self, p):
-        eos.db.save(p)
+        eds_queries.save(p)
 
     def importPatterns(self, text):
         lookup = {}
@@ -72,8 +72,8 @@ class DamagePattern():
                 match = lookup[pattern.name]
                 match.__dict__.update(pattern.__dict__)
             else:
-                eos.db.save(pattern)
-        eos.db.commit()
+                eds_queries.save(pattern)
+        eds_queries.commit()
 
         lenImports = len(imports)
         if lenImports == 0:

@@ -27,7 +27,6 @@ from eos.enum import Enum
 from eos.mathUtils import floorFloat
 from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut, ChargeAttrShortcut
 from eos.saveddata.citadel import Citadel as Citadel
-from eos.saveddata.module import Module as Module
 
 logger = logging.getLogger(__name__)
 
@@ -95,7 +94,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, l
         self.__slot = self.dummySlot
 
         if self.itemID:
-            self.__item = eos.db.getItem(self.itemID)
+            self.__item = eds_queries.getItem(self.itemID)
             if self.__item is None:
                 logger.error("Item (id: %d) does not exist", self.itemID)
                 return
@@ -105,7 +104,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, l
             return
 
         if self.chargeID:
-            self.__charge = eos.db.getItem(self.chargeID)
+            self.__charge = eds_queries.getItem(self.chargeID)
 
         self.build()
 

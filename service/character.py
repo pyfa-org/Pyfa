@@ -213,7 +213,7 @@ class Character(object):
         char = eos.db.getCharacter(charID)
         newChar = copy.deepcopy(char)
         newChar.name = newName
-        eos.db.save(newChar)
+        eds_queries.save(newChar)
 
         # revert old char
         char.revertLevels()
@@ -240,7 +240,7 @@ class Character(object):
         return skills
 
     def getSkillDescription(self, itemID):
-        return eos.db.getItem(itemID).description
+        return eds_queries.getItem(itemID).description
 
     def getGroupDescription(self, groupID):
         return eos.db.getMarketGroup(groupID).description
@@ -257,16 +257,16 @@ class Character(object):
 
     def new(self, name="New Character"):
         char = es_Character(name)
-        eos.db.save(char)
+        eds_queries.save(char)
         return char
 
     def rename(self, char, newName):
         char.name = newName
-        eos.db.commit()
+        eds_queries.commit()
 
     def copy(self, char):
         newChar = copy.deepcopy(char)
-        eos.db.save(newChar)
+        eds_queries.save(newChar)
         return newChar
 
     def delete(self, char):
@@ -316,12 +316,12 @@ class Character(object):
         sheet = auth.character(charID).CharacterSheet()
 
         dbChar.apiUpdateCharSheet(sheet.skills)
-        eos.db.commit()
+        eds_queries.commit()
 
     def apiUpdateCharSheet(self, charID, skills):
         char = eos.db.getCharacter(charID)
         char.apiUpdateCharSheet(skills)
-        eos.db.commit()
+        eds_queries.commit()
 
     def changeLevel(self, charID, skillID, level, persist=False):
         char = eos.db.getCharacter(charID)
@@ -334,7 +334,7 @@ class Character(object):
         if persist:
             skill.saveLevel()
 
-        eos.db.commit()
+        eds_queries.commit()
 
     def revertLevel(self, charID, skillID):
         char = eos.db.getCharacter(charID)
@@ -352,14 +352,14 @@ class Character(object):
             logger.error("Trying to add implant to read-only character")
             return
 
-        implant = es_Implant(eos.db.getItem(itemID))
+        implant = es_Implant(eds_queries.getItem(itemID))
         char.implants.append(implant)
-        eos.db.commit()
+        eds_queries.commit()
 
     def removeImplant(self, charID, implant):
         char = eos.db.getCharacter(charID)
         char.implants.remove(implant)
-        eos.db.commit()
+        eds_queries.commit()
 
     def getImplants(self, charID):
         char = eos.db.getCharacter(charID)

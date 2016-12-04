@@ -50,16 +50,16 @@ class Fleet(object):
 
     def addFleet(self):
         f = Fleet_()
-        eos.db.save(f)
+        eds_queries.save(f)
         return f
 
     def renameFleet(self, fleet, newName):
         fleet.name = newName
-        eos.db.commit()
+        eds_queries.commit()
 
     def copyFleet(self, fleet):
         newFleet = copy.deepcopy(fleet)
-        eos.db.save(newFleet)
+        eds_queries.save(newFleet)
         return newFleet
 
     def copyFleetByID(self, ID):
@@ -81,7 +81,7 @@ class Fleet(object):
         w.squads.append(s)
         s.members.append(fit)
         fit.fleet = f
-        eos.db.save(f)
+        eds_queries.save(f)
 
     def setLinearFleetCom(self, boostee, booster):
         # if boostee == booster:

@@ -92,7 +92,7 @@ class Fit(object):
         self.__mode = None
 
         if self.shipID:
-            item = eos.db.getItem(self.shipID)
+            item = eds_queries.getItem(self.shipID)
             if item is None:
                 logger.error("Item (id: %d) does not exist", self.shipID)
                 return
@@ -111,7 +111,7 @@ class Fit(object):
                 return
 
         if self.modeID and self.__ship:
-            item = eos.db.getItem(self.modeID)
+            item = eds_queries.getItem(self.modeID)
             # Don't need to verify if it's a proper item, as validateModeItem assures this
             self.__mode = self.ship.validateModeItem(item)
         else:

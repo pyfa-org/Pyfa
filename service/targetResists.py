@@ -19,7 +19,7 @@
 
 import copy
 
-from eos import db
+from eos.db.saveddata import queries as eds_queries
 from eos.saveddata.targetResists import TargetResists as es_TargetResists
 
 
@@ -34,31 +34,31 @@ class TargetResists(object):
         return cls.instance
 
     def getTargetResistsList(self):
-        return db.getTargetResistsList()
+        return eds_queries.getTargetResistsList()
 
     def getTargetResists(self, name):
-        return db.getTargetResists(name)
+        return eds_queries.getTargetResists(name)
 
     def newPattern(self, name):
         p = es_TargetResists(0.0, 0.0, 0.0, 0.0)
         p.name = name
-        db.save(p)
+        eds_queries.save(p)
         return p
 
     def renamePattern(self, p, newName):
         p.name = newName
-        db.save(p)
+        eds_queries.save(p)
 
     def deletePattern(self, p):
-        db.remove(p)
+        eds_queries.remove(p)
 
     def copyPattern(self, p):
         newP = copy.deepcopy(p)
-        db.save(newP)
+        eds_queries.save(newP)
         return newP
 
     def saveChanges(self, p):
-        db.save(p)
+        eds_queries.save(p)
 
     def importPatterns(self, text):
         lookup = {}
@@ -72,8 +72,8 @@ class TargetResists(object):
                 match = lookup[pattern.name]
                 match.__dict__.update(pattern.__dict__)
             else:
-                db.save(pattern)
-        db.commit()
+                eds_queries.save(pattern)
+        eds_queries.commit()
 
         lenImports = len(imports)
         if lenImports == 0:

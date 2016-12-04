@@ -77,7 +77,7 @@ class Character(object):
             # edited character data. If this ever runs, it will be during the
             # get character list phase when pyfa first starts
             all5 = Character("All 5", 5)
-            eos.db.save(all5)
+            eds_queries.save(all5)
 
         return all5
 
@@ -87,7 +87,7 @@ class Character(object):
 
         if all0 is None:
             all0 = Character("All 0")
-            eos.db.save(all0)
+            eds_queries.save(all0)
 
         return all0
 
@@ -189,7 +189,7 @@ class Character(object):
             skill.saveLevel()
 
         self.dirtySkills = set()
-        eos.db.commit()
+        eds_queries.commit()
 
     def revertLevels(self):
         for skill in self.dirtySkills.copy():

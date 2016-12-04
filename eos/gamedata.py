@@ -273,12 +273,12 @@ class Item(EqBase):
         else:
             override = Override(self, attr, value)
             self.__overrides[attr.name] = override
-        eos.db.save(override)
+        eds_queries.save(override)
 
     def deleteOverride(self, attr):
         override = self.__overrides.pop(attr.name, None)
         eos.db.saveddata_session.delete(override)
-        eos.db.commit()
+        eds_queries.commit()
 
     @property
     def requiredSkills(self):
