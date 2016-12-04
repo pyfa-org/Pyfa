@@ -761,13 +761,6 @@ class Mapper:
                            "name": synonym("categoryName"),
                            "description": deferred(categories_table.c.description)})
 
-    class Traits:
-        traits_table = Table("invtraits", gamedata_meta,
-                             Column("typeID", Integer, ForeignKey("invtypes.typeID"), primary_key=True),
-                             Column("traitText", String))
-
-        mapper(Traits, traits_table)
-
     class Effects:
         typeeffects_table = Table("dgmtypeeffects", gamedata_meta,
                                   Column("typeID", Integer, ForeignKey("invtypes.typeID"), primary_key=True, index=True),
@@ -836,7 +829,12 @@ class Mapper:
                                 Column("parentTypeID", Integer, ForeignKey("invtypes.typeID")),
                                 Column("metaGroupID", Integer, ForeignKey("invmetagroups.metaGroupID")))
 
-    class Items:
+        traits_table = Table("invtraits", gamedata_meta,
+                             Column("typeID", Integer, ForeignKey("invtypes.typeID"), primary_key=True),
+                             Column("traitText", String))
+
+        mapper(Traits, traits_table)
+
         items_table = Table("invtypes", gamedata_meta,
                             Column("typeID", Integer, primary_key=True),
                             Column("typeName", String, index=True),
@@ -869,7 +867,6 @@ class Mapper:
 
         Item.category = association_proxy("group", "category")
 
-    class MetaGroup:
         mapper(MetaGroup, metagroups_table,
                properties={"ID": synonym("metaGroupID"),
                            "name": synonym("metaGroupName")})
