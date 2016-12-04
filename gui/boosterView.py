@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,7 +15,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
 import wx
 import gui.display as d
@@ -25,19 +25,21 @@ from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
 from service.fit import Fit
 
-class BoosterViewDrop(wx.PyDropTarget):
-        def __init__(self, dropFn):
-            wx.PyDropTarget.__init__(self)
-            self.dropFn = dropFn
-            # this is really transferring an EVE itemID
-            self.dropData = wx.PyTextDataObject()
-            self.SetDataObject(self.dropData)
 
-        def OnData(self, x, y, t):
-            if self.GetData():
-                data = self.dropData.GetText().split(':')
-                self.dropFn(x, y, data)
-            return t
+class BoosterViewDrop(wx.PyDropTarget):
+    def __init__(self, dropFn):
+        wx.PyDropTarget.__init__(self)
+        self.dropFn = dropFn
+        # this is really transferring an EVE itemID
+        self.dropData = wx.PyTextDataObject()
+        self.SetDataObject(self.dropData)
+
+    def OnData(self, x, y, t):
+        if self.GetData():
+            data = self.dropData.GetText().split(':')
+            self.dropFn(x, y, data)
+        return t
+
 
 class BoosterView(d.Display):
     DEFAULT_COLS = ["State",
@@ -58,7 +60,7 @@ class BoosterView(d.Display):
 
         self.SetDropTarget(BoosterViewDrop(self.handleListDrag))
 
-        if "__WXGTK__" in  wx.PlatformInfo:
+        if "__WXGTK__" in wx.PlatformInfo:
             self.Bind(wx.EVT_RIGHT_UP, self.scheduleMenu)
         else:
             self.Bind(wx.EVT_RIGHT_DOWN, self.scheduleMenu)
@@ -75,7 +77,7 @@ class BoosterView(d.Display):
         if data[0] == "market":
             wx.PostEvent(self.mainFrame, mb.ItemSelected(itemID=int(data[1])))
 
-    def kbEvent(self,event):
+    def kbEvent(self, event):
         keycode = event.GetKeyCode()
         if keycode == wx.WXK_DELETE or keycode == wx.WXK_NUMPAD_DELETE:
             row = self.GetFirstSelected()
@@ -90,7 +92,7 @@ class BoosterView(d.Display):
 
         self.Parent.Parent.DisablePage(self, not fit or fit.isStructure)
 
-        #Clear list and get out if current fitId is None
+        # Clear list and get out if current fitId is None
         if event.fitID is None and self.lastFitId is not None:
             self.DeleteAllItems()
             self.lastFitId = None
@@ -153,7 +155,6 @@ class BoosterView(d.Display):
                 sFit = Fit.getInstance()
                 sFit.toggleBooster(fitID, row)
                 wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
-
 
     def scheduleMenu(self, event):
         event.Skip()

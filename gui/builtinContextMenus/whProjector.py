@@ -54,4 +54,5 @@ class WhProjector(ContextMenu):
         sFit.project(fitID, swObj)
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
+
 WhProjector.register()

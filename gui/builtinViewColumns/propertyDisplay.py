@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,15 +15,18 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
 from gui.viewColumn import ViewColumn
 from gui.bitmapLoader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
+from service.attribute import Attribute
 import wx
+
 
 class PropertyDisplay(ViewColumn):
     name = "prop"
+
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
         sAttr = Attribute.getInstance()
@@ -65,5 +68,6 @@ class PropertyDisplay(ViewColumn):
                 ("attributeSlave", str, None),
                 ("displayName", bool, False),
                 ("showIcon", bool, True))
+
 
 PropertyDisplay.register()

@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2016 Ryan Holmes
 #
 # This file is part of pyfa.
@@ -15,7 +15,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
 import copy
 
@@ -27,8 +27,9 @@ from eos.saveddata.implantSet import ImplantSet as es_ImplantSet
 class ImportError(Exception):
     pass
 
-class ImplantSets():
+class ImplantSets(object):
     instance = None
+
     @classmethod
     def getInstance(cls):
         if cls.instance is None:
@@ -43,8 +44,7 @@ class ImplantSets():
         return eos.db.getImplantSet(name)
 
     def getImplants(self, setID):
-        set = eos.db.getImplantSet(setID)
-        return set.implants
+        return eos.db.getImplantSet(setID).implants
 
     def addImplant(self, setID, itemID):
         set = eos.db.getImplantSet(setID)
@@ -53,30 +53,29 @@ class ImplantSets():
         eos.db.commit()
 
     def removeImplant(self, setID, implant):
-        set = eos.db.getImplantSet(setID)
-        set.implants.remove(implant)
+        eos.db.getImplantSet(setID).implants.remove(implant)
         eos.db.commit()
 
     def newSet(self, name):
-        s = es_ImplantSet()
-        s.name = name
-        eos.db.save(s)
-        return s
+        implant_set = es_ImplantSet()
+        implant_set.name = name
+        eos.db.save(implant_set)
+        return implant_set
 
-    def renameSet(self, s, newName):
-        s.name = newName
-        eos.db.save(s)
+    def renameSet(self, implant_set, newName):
+        implant_set.name = newName
+        eos.db.save(implant_set)
 
-    def deleteSet(self, s):
-        eos.db.remove(s)
+    def deleteSet(self, implant_set):
+        eos.db.remove(implant_set)
 
-    def copySet(self, s):
-        newS = copy.deepcopy(s)
+    def copySet(self, implant_set):
+        newS = copy.deepcopy(implant_set)
         eos.db.save(newS)
         return newS
 
-    def saveChanges(self, s):
-        eos.db.save(s)
+    def saveChanges(self, implant_set):
+        eos.db.save(implant_set)
 
     def importSets(self, text):
         sMkt = Market.getInstance()
@@ -101,16 +100,16 @@ class ImplantSets():
                 errors += 1
                 continue
 
-        for set in self.getImplantSetList():
-            lookup[set.name] = set
+        for implant_set in self.getImplantSetList():
+            lookup[implant_set.name] = implant_set
 
-        for set in newSets:
-            if set.name in lookup:
-                match = lookup[set.name]
-                for implant in set.implants:
+        for implant_set in newSets:
+            if implant_set.name in lookup:
+                match = lookup[implant_set.name]
+                for implant in implant_set.implants:
                     match.implants.append(es_Implant(implant.item))
             else:
-                eos.db.save(set)
+                eos.db.save(implant_set)
 
         eos.db.commit()
 
@@ -118,7 +117,8 @@ class ImplantSets():
         if lenImports == 0:
             raise ImportError("No patterns found for import")
         if errors > 0:
-            raise ImportError("%d sets imported from clipboard; %d errors"%(lenImports, errors))
+            raise ImportError("%d sets imported from clipboard; %d errors" %
+                              (lenImports, errors))
 
     def exportSets(self):
         patterns = self.getImplantSetList()

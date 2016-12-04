@@ -23,4 +23,5 @@ class ShipJump(ContextMenu):
         self.mainFrame.notebookBrowsers.SetSelection(1)
         wx.PostEvent(self.mainFrame.shipBrowser,Stage3Selected(shipID=stuff.item.ID, back=groupID))
 
+
 ShipJump.register()

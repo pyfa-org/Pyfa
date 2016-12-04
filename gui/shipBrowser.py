@@ -1,27 +1,23 @@
-# -*- coding: utf-8 -*-
-import wx
 import re
-import copy
-from gui.bitmapLoader import BitmapLoader
-import gui.mainFrame
-import gui.globalEvents as GE
 import time
-from gui.PFListPane import PFListPane
 
+import wx
 from wx.lib.buttons import GenBitmapButton
 
+from service.fit import Fit
+from service.market import Market
+import gui.mainFrame
+import gui.utils.fonts as fonts
+import gui.globalEvents as GE
+import gui.sfBrowserItem as SFItem
 import gui.utils.colorUtils as colorUtils
 import gui.utils.drawUtils as drawUtils
 import gui.utils.animUtils as animUtils
 import gui.utils.animEffects as animEffects
-
-import gui.sfBrowserItem as SFItem
+from gui.PFListPane import PFListPane
 from gui.contextMenu import ContextMenu
-import gui.utils.fonts as fonts
+from gui.bitmapLoader import BitmapLoader
 
-from service.fit import Fit
-from service.market import Market
-import gui.utils.fonts as fonts
 
 FitRenamed, EVT_FIT_RENAMED = wx.lib.newevent.NewEvent()
 FitSelected, EVT_FIT_SELECTED = wx.lib.newevent.NewEvent()
@@ -35,21 +31,22 @@ Stage3Selected, EVT_SB_STAGE3_SEL = wx.lib.newevent.NewEvent()
 SearchSelected, EVT_SB_SEARCH_SEL = wx.lib.newevent.NewEvent()
 ImportSelected, EVT_SB_IMPORT_SEL = wx.lib.newevent.NewEvent()
 
-class PFWidgetsContainer(PFListPane):
-    def __init__(self,parent):
-        PFListPane.__init__(self,parent)
 
-        self.anim = animUtils.LoadAnimation(self,label = "", size=(100,12))
+class PFWidgetsContainer(PFListPane):
+    def __init__(self, parent):
+        PFListPane.__init__(self, parent)
+
+        self.anim = animUtils.LoadAnimation(self, label="", size=(100, 12))
         self.anim.Stop()
         self.anim.Show(False)
 
-    def ShowLoading(self, mode = True):
+    def ShowLoading(self, mode=True):
         if mode:
-            aweight,aheight = self.anim.GetSize()
-            cweight,cheight = self.GetSize()
-            ax = (cweight - aweight)/2
-            ay = (cheight - aheight)/2
-            self.anim.SetPosition((ax,ay))
+            aweight, aheight = self.anim.GetSize()
+            cweight, cheight = self.GetSize()
+            ax = (cweight - aweight) / 2
+            ay = (cheight - aheight) / 2
+            self.anim.SetPosition((ax, ay))
             self.anim.Show()
             self.anim.Play()
         else:
@@ -68,8 +65,8 @@ class PFWidgetsContainer(PFListPane):
 
 
 class RaceSelector(wx.Window):
-    def __init__ (self, parent, id = wx.ID_ANY, label = "", pos = wx.DefaultPosition, size = wx.DefaultSize, style = 0, layout = wx.VERTICAL, animate = False):
-        wx.Window.__init__(self, parent, id, pos = pos, size = size, style = style)
+    def __init__(self, parent, id=wx.ID_ANY, label="", pos=wx.DefaultPosition, size=wx.DefaultSize, style=0, layout=wx.VERTICAL, animate=False):
+        wx.Window.__init__(self, parent, id, pos=pos, size=size, style=style)
 
         self.animTimerID = wx.NewId()
         self.animTimer = wx.Timer(self, self.animTimerID)
@@ -92,7 +89,6 @@ class RaceSelector(wx.Window):
             self.SetSize(wx.Size(-1, self.minHeight))
             self.SetMinSize(wx.Size(-1, self.minHeight))
 
-
         self.checkTimerID = wx.NewId()
         self.checkTimer = wx.Timer(self, self.checkTimerID)
         self.checkPeriod = 250
@@ -103,20 +99,20 @@ class RaceSelector(wx.Window):
         self.hoveredItem = None
 
         if layout == wx.VERTICAL:
-            self.buttonsBarPos = (4,0)
+            self.buttonsBarPos = (4, 0)
         else:
-            self.buttonsBarPos = (0,4)
+            self.buttonsBarPos = (0, 4)
 
         self.buttonsPadding = 4
 
         if layout == wx.VERTICAL:
-            self.bmpArrow = BitmapLoader.getBitmap("down-arrow2","gui")
+            self.bmpArrow = BitmapLoader.getBitmap("down-arrow2", "gui")
         else:
-            self.bmpArrow = BitmapLoader.getBitmap("up-arrow2","gui")
+            self.bmpArrow = BitmapLoader.getBitmap("up-arrow2", "gui")
 
-        #    Make the bitmaps have the same color as window text
+        # Make the bitmaps have the same color as window text
 
-        sysTextColour = wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOWTEXT )
+        sysTextColour = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT)
 
         img = self.bmpArrow.ConvertToImage()
         if layout == wx.VERTICAL:
@@ -141,9 +137,9 @@ class RaceSelector(wx.Window):
         self.Layout()
 
     def OnMouseMove(self, event):
-        mx,my = event.GetPosition()
+        mx, my = event.GetPosition()
 
-        location = self.HitTest(mx,my)
+        location = self.HitTest(mx, my)
         if location != self.hoveredItem:
             self.hoveredItem = location
             self.Refresh()
@@ -152,7 +148,7 @@ class RaceSelector(wx.Window):
             else:
                 self.SetCursor(wx.StockCursor(wx.CURSOR_ARROW))
 
-    def OnSizeUpdate(self,event):
+    def OnSizeUpdate(self, event):
         self.CalcButtonsBarPos()
 
         self.Refresh()
@@ -176,9 +172,9 @@ class RaceSelector(wx.Window):
 
     def OnLeftUp(self, event):
 
-        mx,my = event.GetPosition()
+        mx, my = event.GetPosition()
 
-        toggle = self.HitTest(mx,my)
+        toggle = self.HitTest(mx, my)
 
         if toggle is not None:
             self.Refresh()
@@ -189,11 +185,11 @@ class RaceSelector(wx.Window):
 
             if stage == 2:
                 categoryID = self.shipBrowser.GetStageData(stage)
-                wx.PostEvent(self.shipBrowser,Stage2Selected(categoryID=categoryID, back = True))
+                wx.PostEvent(self.shipBrowser, Stage2Selected(categoryID=categoryID, back=True))
         event.Skip()
 
-    def HitTest(self, mx,my):
-        x,y = self.buttonsBarPos
+    def HitTest(self, mx, my):
+        x, y = self.buttonsBarPos
         padding = self.buttonsPadding
 
         for bmp in self.raceBmps:
@@ -222,16 +218,15 @@ class RaceSelector(wx.Window):
         rect = self.GetRect()
 
         windowColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
-        bkColor = colorUtils.GetSuitableColor(windowColor, 0.1)
+        # bkColor = colorUtils.GetSuitableColor(windowColor, 0.1)
         sepColor = colorUtils.GetSuitableColor(windowColor, 0.2)
 
         mdc = wx.BufferedPaintDC(self)
 
         bkBitmap = drawUtils.RenderGradientBar(windowColor, rect.width, rect.height, 0.1, 0.1, 0.2, 2)
-        mdc.DrawBitmap(bkBitmap,0,0,True)
+        mdc.DrawBitmap(bkBitmap, 0, 0, True)
 
-
-        x ,y = self.buttonsBarPos
+        x, y = self.buttonsBarPos
 
         if self.direction == 1:
             for raceBmp in self.raceBmps:
@@ -250,27 +245,25 @@ class RaceSelector(wx.Window):
                 if self.layout == wx.VERTICAL:
                     mdc.DrawBitmap(dropShadow, rect.width - self.buttonsPadding - bmp.GetWidth() + 1, y + 1)
                     mdc.DrawBitmap(bmp, rect.width - self.buttonsPadding - bmp.GetWidth(), y)
-                    y+=raceBmp.GetHeight() + self.buttonsPadding
-                    mdc.SetPen(wx.Pen(sepColor,1))
-                    mdc.DrawLine(rect.width - 1, 0, rect.width -1, rect.height)
+                    y += raceBmp.GetHeight() + self.buttonsPadding
+                    mdc.SetPen(wx.Pen(sepColor, 1))
+                    mdc.DrawLine(rect.width - 1, 0, rect.width - 1, rect.height)
                 else:
                     mdc.DrawBitmap(dropShadow, x + 1, self.buttonsPadding + 1)
                     mdc.DrawBitmap(bmp, x, self.buttonsPadding)
-                    x+=raceBmp.GetWidth() + self.buttonsPadding
-                    mdc.SetPen(wx.Pen(sepColor,1))
+                    x += raceBmp.GetWidth() + self.buttonsPadding
+                    mdc.SetPen(wx.Pen(sepColor, 1))
                     mdc.DrawLine(0, 0, rect.width, 0)
 
         if self.direction < 1:
             if self.layout == wx.VERTICAL:
                 mdc.DrawBitmap(self.bmpArrow, -2, (rect.height - self.bmpArrow.GetHeight()) / 2)
             else:
-                mdc.SetPen(wx.Pen(sepColor,1))
+                mdc.SetPen(wx.Pen(sepColor, 1))
                 mdc.DrawLine(0, 0, rect.width, 0)
                 mdc.DrawBitmap(self.bmpArrow, (rect.width - self.bmpArrow.GetWidth()) / 2, -2)
 
-
-
-    def OnTimer(self,event):
+    def OnTimer(self, event):
         if event.GetId() == self.animTimerID:
             start = 0
             if self.layout == wx.VERTICAL:
@@ -298,7 +291,7 @@ class RaceSelector(wx.Window):
                 self.animTimer.Start(self.animPeriod)
 
     def AdjustSize(self, delta):
-        self.SetMinSize(wx.Size(delta,-1) if self.layout == wx.VERTICAL else wx.Size(-1, delta))
+        self.SetMinSize(wx.Size(delta, -1) if self.layout == wx.VERTICAL else wx.Size(-1, delta))
         self.Parent.Layout()
         self.Refresh()
 
@@ -327,19 +320,20 @@ class RaceSelector(wx.Window):
 
         event.Skip()
 
+
 class NavigationPanel(SFItem.SFBrowserItem):
-    def __init__(self,parent, size = (-1, 24)):
-        SFItem.SFBrowserItem.__init__(self,parent,size = size)
+    def __init__(self, parent, size=(-1, 24)):
+        SFItem.SFBrowserItem.__init__(self, parent, size=size)
 
-        self.rewBmpH = BitmapLoader.getBitmap("frewind_small","gui")
-        self.forwBmp = BitmapLoader.getBitmap("fforward_small","gui")
-        self.searchBmpH = BitmapLoader.getBitmap("fsearch_small","gui")
-        self.newBmpH = BitmapLoader.getBitmap("fit_add_small","gui")
-        self.resetBmpH = BitmapLoader.getBitmap("freset_small","gui")
-        self.switchBmpH = BitmapLoader.getBitmap("fit_switch_view_mode_small","gui")
+        self.rewBmpH = BitmapLoader.getBitmap("frewind_small", "gui")
+        self.forwBmp = BitmapLoader.getBitmap("fforward_small", "gui")
+        self.searchBmpH = BitmapLoader.getBitmap("fsearch_small", "gui")
+        self.newBmpH = BitmapLoader.getBitmap("fit_add_small", "gui")
+        self.resetBmpH = BitmapLoader.getBitmap("freset_small", "gui")
+        self.switchBmpH = BitmapLoader.getBitmap("fit_switch_view_mode_small", "gui")
 
-        switchImg = BitmapLoader.getImage("fit_switch_view_mode_small","gui")
-        switchImg = switchImg.AdjustChannels(1,1,1,0.4)
+        switchImg = BitmapLoader.getImage("fit_switch_view_mode_small", "gui")
+        switchImg = switchImg.AdjustChannels(1, 1, 1, 0.4)
         self.switchBmpD = wx.BitmapFromImage(switchImg)
 
         self.resetBmp = self.AdjustChannels(self.resetBmpH)
@@ -348,11 +342,11 @@ class NavigationPanel(SFItem.SFBrowserItem):
         self.switchBmp = self.AdjustChannels(self.switchBmpH)
         self.newBmp = self.AdjustChannels(self.newBmpH)
 
-        self.toolbar.AddButton(self.resetBmp, "Ship groups", clickCallback = self.OnHistoryReset, hoverBitmap = self.resetBmpH)
-        self.toolbar.AddButton(self.rewBmp, "Back", clickCallback = self.OnHistoryBack, hoverBitmap = self.rewBmpH)
-        self.btnNew = self.toolbar.AddButton(self.newBmp, "New fitting", clickCallback = self.OnNewFitting, hoverBitmap = self.newBmpH, show = False)
-        self.btnSwitch = self.toolbar.AddButton(self.switchBmpD, "Hide empty ship groups", clickCallback  = self.ToggleEmptyGroupsView, hoverBitmap = self.switchBmpH, show = False)
-        self.toolbar.AddButton(self.searchBmp, "Search fittings", clickCallback = self.ToggleSearchBox, hoverBitmap = self.searchBmpH)
+        self.toolbar.AddButton(self.resetBmp, "Ship groups", clickCallback=self.OnHistoryReset, hoverBitmap=self.resetBmpH)
+        self.toolbar.AddButton(self.rewBmp, "Back", clickCallback=self.OnHistoryBack, hoverBitmap=self.rewBmpH)
+        self.btnNew = self.toolbar.AddButton(self.newBmp, "New fitting", clickCallback=self.OnNewFitting, hoverBitmap=self.newBmpH, show=False)
+        self.btnSwitch = self.toolbar.AddButton(self.switchBmpD, "Hide empty ship groups", clickCallback=self.ToggleEmptyGroupsView, hoverBitmap=self.switchBmpH, show=False)
+        self.toolbar.AddButton(self.searchBmp, "Search fittings", clickCallback=self.ToggleSearchBox, hoverBitmap=self.searchBmpH)
 
         self.padding = 4
         self.lastSearch = ""
@@ -360,8 +354,8 @@ class NavigationPanel(SFItem.SFBrowserItem):
         self.inSearch = False
 
         self.fontSmall = wx.Font(fonts.SMALL, wx.SWISS, wx.NORMAL, wx.NORMAL)
-        w,h = size
-        self.BrowserSearchBox = wx.TextCtrl(self, wx.ID_ANY, "", wx.DefaultPosition, (-1, h - 2 if 'wxGTK' in wx.PlatformInfo else -1 ), wx.TE_PROCESS_ENTER | (wx.BORDER_NONE if 'wxGTK' in wx.PlatformInfo else 0))
+        w, h = size
+        self.BrowserSearchBox = wx.TextCtrl(self, wx.ID_ANY, "", wx.DefaultPosition, (-1, h - 2 if 'wxGTK' in wx.PlatformInfo else -1), wx.TE_PROCESS_ENTER | (wx.BORDER_NONE if 'wxGTK' in wx.PlatformInfo else 0))
         self.BrowserSearchBox.Show(False)
 
         self.BrowserSearchBox.Bind(wx.EVT_TEXT_ENTER, self.OnBrowserSearchBoxEnter)
@@ -381,8 +375,7 @@ class NavigationPanel(SFItem.SFBrowserItem):
         realsearch = search.replace("*", "")
         if len(realsearch) >= 3:
             self.lastSearch = search
-            wx.PostEvent(self.shipBrowser,SearchSelected(text=search, back = False))
-
+            wx.PostEvent(self.shipBrowser, SearchSelected(text=search, back=False))
 
     def ToggleSearchBox(self):
         if self.BrowserSearchBox.IsShown():
@@ -420,10 +413,10 @@ class NavigationPanel(SFItem.SFBrowserItem):
         stage = self.shipBrowser.GetActiveStage()
 
         if stage == 1:
-            wx.PostEvent(self.shipBrowser,Stage1Selected())
+            wx.PostEvent(self.shipBrowser, Stage1Selected())
         elif stage == 2:
             categoryID = self.shipBrowser.GetStageData(stage)
-            wx.PostEvent(self.shipBrowser,Stage2Selected(categoryID=categoryID, back = True))
+            wx.PostEvent(self.shipBrowser, Stage2Selected(categoryID=categoryID, back=True))
 
     def ShowNewFitButton(self, show):
         self.btnNew.Show(show)
@@ -439,19 +432,19 @@ class NavigationPanel(SFItem.SFBrowserItem):
             shipID = self.Parent.GetStageData(stage)
             shipName = self.Parent.GetStage3ShipName()
             sFit = Fit.getInstance()
-            fitID = sFit.newFit(shipID, "%s fit" %shipName)
+            fitID = sFit.newFit(shipID, "%s fit" % shipName)
             self.shipBrowser.fitIDMustEditName = fitID
-            wx.PostEvent(self.Parent,Stage3Selected(shipID=shipID))
+            wx.PostEvent(self.Parent, Stage3Selected(shipID=shipID))
             wx.PostEvent(self.mainFrame, FitSelected(fitID=fitID))
 
     def OnHistoryReset(self):
         if self.shipBrowser.browseHist:
             self.shipBrowser.browseHist = []
-        self.gotoStage(1,0)
+        self.gotoStage(1, 0)
 
     def OnHistoryBack(self):
         if len(self.shipBrowser.browseHist) > 0:
-            stage,data = self.shipBrowser.browseHist.pop()
+            stage, data = self.shipBrowser.browseHist.pop()
             self.gotoStage(stage, data)
 
     def AdjustChannels(self, bitmap):
@@ -467,10 +460,10 @@ class NavigationPanel(SFItem.SFBrowserItem):
 
         mdc.SetFont(self.fontSmall)
 
-        wlabel,hlabel = mdc.GetTextExtent(self.toolbar.hoverLabel)
+        wlabel, hlabel = mdc.GetTextExtent(self.toolbar.hoverLabel)
 
         self.thoverx = self.toolbar.GetWidth() + self.padding
-        self.thovery = (rect.height - hlabel)/2
+        self.thovery = (rect.height - hlabel) / 2
         self.thoverw = wlabel
 
         self.browserBoxX = self.thoverx
@@ -495,8 +488,8 @@ class NavigationPanel(SFItem.SFBrowserItem):
         self.toolbar.SetPosition((self.toolbarx, self.toolbary))
         mdc.SetFont(self.fontSmall)
         mdc.DrawText(self.toolbar.hoverLabel, self.thoverx, self.thovery)
-        mdc.SetPen(wx.Pen(sepColor,1))
-        mdc.DrawLine(0,rect.height - 1, rect.width, rect.height - 1)
+        mdc.SetPen(wx.Pen(sepColor, 1))
+        mdc.DrawLine(0, rect.height - 1, rect.width, rect.height - 1)
 
     def RenderBackground(self):
         rect = self.GetRect()
@@ -505,7 +498,7 @@ class NavigationPanel(SFItem.SFBrowserItem):
 
         sFactor = 0.1
 
-        shipGroupsFilter = getattr(self.shipBrowser,"filterShipsWithNoFits", None)
+        shipGroupsFilter = getattr(self.shipBrowser, "filterShipsWithNoFits", None)
         if shipGroupsFilter:
             sFactor = 0.15
             mFactor = 0.25
@@ -516,7 +509,7 @@ class NavigationPanel(SFItem.SFBrowserItem):
 
         if self.bkBitmap:
             if self.bkBitmap.eFactor == eFactor and self.bkBitmap.sFactor == sFactor and self.bkBitmap.mFactor == mFactor \
-             and rect.width == self.bkBitmap.GetWidth() and rect.height == self.bkBitmap.GetHeight() :
+                    and rect.width == self.bkBitmap.GetWidth() and rect.height == self.bkBitmap.GetHeight():
                 return
             else:
                 del self.bkBitmap
@@ -526,7 +519,6 @@ class NavigationPanel(SFItem.SFBrowserItem):
         self.bkBitmap.sFactor = sFactor
         self.bkBitmap.eFactor = eFactor
         self.bkBitmap.mFactor = mFactor
-
 
     def gotoStage(self, stage, data=None):
         if stage == 1:
@@ -546,16 +538,16 @@ class NavigationPanel(SFItem.SFBrowserItem):
 
 class ShipBrowser(wx.Panel):
     def __init__(self, parent):
-        wx.Panel.__init__ (self, parent,style = 0)
+        wx.Panel.__init__(self, parent, style=0)
 
         self._lastWidth = 0
         self._activeStage = 1
         self._lastStage = 0
         self.browseHist = []
-        self.lastStage = (0,0)
+        self.lastStage = (0, 0)
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
-        self.categoryList=[]
+        self.categoryList = []
         self.categoryFitCache = {}
 
         self._stage1Data = -1
@@ -581,16 +573,16 @@ class ShipBrowser(wx.Panel):
         layout = wx.HORIZONTAL
 
         self.navpanel = NavigationPanel(self)
-        mainSizer.Add(self.navpanel, 0 , wx.EXPAND)
-        self.raceselect = RaceSelector(self, layout = layout, animate = False)
+        mainSizer.Add(self.navpanel, 0, wx.EXPAND)
+        self.raceselect = RaceSelector(self, layout=layout, animate=False)
         container = wx.BoxSizer(wx.VERTICAL if layout == wx.HORIZONTAL else wx.HORIZONTAL)
 
         if layout == wx.HORIZONTAL:
-            container.Add(self.lpane,1,wx.EXPAND)
-            container.Add(self.raceselect,0,wx.EXPAND)
+            container.Add(self.lpane, 1, wx.EXPAND)
+            container.Add(self.raceselect, 0, wx.EXPAND)
         else:
-            container.Add(self.raceselect,0,wx.EXPAND)
-            container.Add(self.lpane,1,wx.EXPAND)
+            container.Add(self.raceselect, 0, wx.EXPAND)
+            container.Add(self.lpane, 1, wx.EXPAND)
 
         mainSizer.Add(container, 1, wx.EXPAND)
         self.SetSizer(mainSizer)
@@ -667,7 +659,7 @@ class ShipBrowser(wx.Panel):
         self._lastStage = self._activeStage
         self._activeStage = 1
         self.lastdata = 0
-        self.browseHist = [(1,0)]
+        self.browseHist = [(1, 0)]
 
         self.navpanel.ShowNewFitButton(False)
         self.navpanel.ShowSwitchEmptyGroupsButton(False)
@@ -731,7 +723,7 @@ class ShipBrowser(wx.Panel):
                 if ship.race not in racesList:
                     racesList.append(ship.race)
 
-        for race,state in self.racesFilter.iteritems():
+        for race, state in self.racesFilter.iteritems():
             if race in racesList:
                 subRacesFilter[race] = self.racesFilter[race]
 
@@ -744,18 +736,18 @@ class ShipBrowser(wx.Panel):
         for ship in ships:
             fits = sFit.countFitsWithShip(ship.ID)
             t_fits += fits
-            filter = subRacesFilter[ship.race] if ship.race else True
+            filter_ = subRacesFilter[ship.race] if ship.race else True
             if override:
-                filter = True
+                filter_ = True
 
             shipTrait = ship.traits.traitText if (ship.traits is not None) else ""  # empty string if no traits
-                
+
             if self.filterShipsWithNoFits:
-                if fits>0:
-                    if filter:                       
+                if fits > 0:
+                    if filter_:
                         self.lpane.AddWidget(ShipItem(self.lpane, ship.ID, (ship.name, shipTrait, fits), ship.race))
             else:
-                if filter:
+                if filter_:
                     self.lpane.AddWidget(ShipItem(self.lpane, ship.ID, (ship.name, shipTrait, fits), ship.race))
 
         self.raceselect.RebuildRaces(racesList)
@@ -775,9 +767,8 @@ class ShipBrowser(wx.Panel):
             self.Layout()
 
     def stage2(self, event):
-        back = event.back
-
-        #if not back:
+        # back = event.back
+        # if not back:
         #    self.browseHist.append( (1,0) )
 
         self._lastStage = self._activeStage
@@ -788,7 +779,6 @@ class ShipBrowser(wx.Panel):
         self.lpane.ShowLoading()
 
         self.lpane.RemoveAllChildren()
-
 
         sMkt = Market.getInstance()
         sMkt.getShipListDelayed(categoryID, self.stage2Callback)
@@ -831,9 +821,9 @@ class ShipBrowser(wx.Panel):
         fitList = sFit.getFitsWithShip(shipID)
 
         if len(fitList) == 0:
-            stage,data = self.browseHist.pop()
+            stage, data = self.browseHist.pop()
             self.lpane.Thaw()
-            self.navpanel.gotoStage(stage,data)
+            self.navpanel.gotoStage(stage, data)
             return
 
         self.categoryFitCache[categoryID] = True
@@ -854,7 +844,7 @@ class ShipBrowser(wx.Panel):
         shipTrait = ship.traits.traitText if (ship.traits is not None) else ""  # empty string if no traits
 
         for ID, name, booster, timestamp in fitList:
-            self.lpane.AddWidget(FitItem(self.lpane, ID, (shipName, shipTrait, name, booster, timestamp),shipID))
+            self.lpane.AddWidget(FitItem(self.lpane, ID, (shipName, shipTrait, name, booster, timestamp), shipID))
 
         self.lpane.RefreshList()
         self.lpane.Thaw()
@@ -886,20 +876,20 @@ class ShipBrowser(wx.Panel):
         if query:
             ships = sMkt.searchShips(query)
             fitList = sFit.searchFits(query)
-            
+
             for ship in ships:
-                shipTrait = ship.traits.traitText if (ship.traits is not None) else "" # empty string if no traits
+                shipTrait = ship.traits.traitText if (ship.traits is not None) else ""  # empty string if no traits
 
                 self.lpane.AddWidget(ShipItem(self.lpane, ship.ID, (ship.name, shipTrait, len(sFit.getFitsWithShip(ship.ID))), ship.race))
-            
+
             for ID, name, shipID, shipName, booster, timestamp in fitList:
                 ship = sMkt.getItem(shipID)
                 shipTrait = ship.traits.traitText if (ship.traits is not None) else ""  # empty string if no traits
 
                 self.lpane.AddWidget(FitItem(self.lpane, ID, (shipName, shipTrait, name, booster, timestamp), shipID))
-            if len(ships) == 0 and len(fitList) == 0 :
-                self.lpane.AddWidget(PFStaticText(self.lpane, label = u"No matching results."))
-            self.lpane.RefreshList(doFocus = False)
+            if len(ships) == 0 and len(fitList) == 0:
+                self.lpane.AddWidget(PFStaticText(self.lpane, label=u"No matching results."))
+            self.lpane.RefreshList(doFocus=False)
         self.lpane.Thaw()
 
         self.raceselect.RebuildRaces(self.RACE_ORDER)
@@ -935,13 +925,16 @@ class ShipBrowser(wx.Panel):
 
                 self.lpane.AddWidget(FitItem(
                     self.lpane,
-                    fit.ID, (
+                    fit.ID,
+                    (
                         fit.ship.item.name,
                         shipTrait,
                         fit.name,
                         fit.booster,
-                        fit.timestamp),
-                    fit.ship.item.ID))
+                        fit.timestamp,
+                    ),
+                    fit.ship.item.ID,
+                ))
             self.lpane.RefreshList(doFocus=False)
         self.lpane.Thaw()
 
@@ -951,19 +944,22 @@ class ShipBrowser(wx.Panel):
             self.raceselect.Show(False)
             self.Layout()
 
+
 class PFStaticText(wx.Panel):
     def __init__(self, parent, label=wx.EmptyString):
-        wx.Panel.__init__ (self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size = parent.GetSize())
+        wx.Panel.__init__(self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=parent.GetSize())
         self.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW))
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
-        text = wx.StaticText( self, wx.ID_ANY, label, wx.DefaultPosition, wx.DefaultSize, wx.ALIGN_CENTRE )
-        text.Wrap( -1 )
-        mainSizer.Add( text, 1, wx.ALL, 10  )
+        text = wx.StaticText(self, wx.ID_ANY, label, wx.DefaultPosition, wx.DefaultSize, wx.ALIGN_CENTRE)
+        text.Wrap(-1)
+        mainSizer.Add(text, 1, wx.ALL, 10)
         self.SetSizer(mainSizer)
         self.Layout()
+
     def GetType(self):
         return -1
+
 
 class PFGenBitmapButton(GenBitmapButton):
     def __init__(self, parent, id, bitmap, pos, size, style):
@@ -976,14 +972,15 @@ class PFGenBitmapButton(GenBitmapButton):
     def GetBackgroundBrush(self, dc):
         return self.bgcolor
 
+
 class CategoryItem(SFItem.SFBrowserItem):
-    def __init__(self,parent, categoryID, fittingInfo, size = (0,16)):
-        SFItem.SFBrowserItem.__init__(self,parent,size = size)
+    def __init__(self, parent, categoryID, fittingInfo, size=(0, 16)):
+        SFItem.SFBrowserItem.__init__(self, parent, size=size)
 
         if categoryID:
-            self.shipBmp = BitmapLoader.getBitmap("ship_small","gui")
+            self.shipBmp = BitmapLoader.getBitmap("ship_small", "gui")
         else:
-            self.shipBmp = wx.EmptyBitmap(16,16)
+            self.shipBmp = wx.EmptyBitmap(16, 16)
 
         self.dropShadowBitmap = drawUtils.CreateDropShadowBitmap(self.shipBmp, 0.2)
 
@@ -1004,31 +1001,30 @@ class CategoryItem(SFItem.SFBrowserItem):
 
         self.Bind(wx.EVT_TIMER, self.OnTimer)
 
-        #=======================================================================
+        # =====================================================================
         # Disabled - it will be added as an option to Preferences
         self.animCount = 0
         # self.animTimer.Start(self.animPeriod)
-        #=======================================================================
-
+        # =====================================================================
 
     def OnTimer(self, event):
         step = self.OUT_QUAD(self.animStep, 0, 10, self.animDuration)
         self.animCount = 10 - step
         self.animStep += self.animPeriod
-        if self.animStep > self.animDuration or self.animCount < 0 :
+        if self.animStep > self.animDuration or self.animCount < 0:
             self.animCount = 0
             self.animTimer.Stop()
         self.Refresh()
 
-    def OUT_QUAD (self, t, b, c, d):
-        t=float(t)
-        b=float(b)
-        c=float(c)
-        d=float(d)
+    def OUT_QUAD(self, t, b, c, d):
+        t = float(t)
+        b = float(b)
+        c = float(c)
+        d = float(d)
 
-        t/=d
+        t /= d
 
-        return -c *(t)*(t-2) + b
+        return -c * t * (t - 2) + b
 
     def GetType(self):
         return 1
@@ -1036,12 +1032,12 @@ class CategoryItem(SFItem.SFBrowserItem):
     def MouseLeftUp(self, event):
 
         categoryID = self.categoryID
-        wx.PostEvent(self.shipBrowser,Stage2Selected(categoryID=categoryID, back=False))
+        wx.PostEvent(self.shipBrowser, Stage2Selected(categoryID=categoryID, back=False))
 
     def UpdateElementsPos(self, mdc):
         rect = self.GetRect()
         self.shipBmpx = self.padding
-        self.shipBmpy = (rect.height-self.shipBmp.GetWidth())/2
+        self.shipBmpy = (rect.height - self.shipBmp.GetWidth()) / 2
 
         self.shipBmpx -= self.animCount
 
@@ -1049,13 +1045,11 @@ class CategoryItem(SFItem.SFBrowserItem):
         categoryName, fittings = self.fittingInfo
         wtext, htext = mdc.GetTextExtent(categoryName)
 
-
         self.catx = self.shipBmpx + self.shipBmp.GetWidth() + self.padding
         self.caty = (rect.height - htext) / 2
 
     def DrawItem(self, mdc):
-        rect = self.GetRect()
-
+        # rect = self.GetRect()
         self.UpdateElementsPos(mdc)
 
         windowColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
@@ -1063,7 +1057,7 @@ class CategoryItem(SFItem.SFBrowserItem):
 
         mdc.SetTextForeground(textColor)
         mdc.DrawBitmap(self.dropShadowBitmap, self.shipBmpx + 1, self.shipBmpy + 1)
-        mdc.DrawBitmap(self.shipBmp,self.shipBmpx,self.shipBmpy,0)
+        mdc.DrawBitmap(self.shipBmp, self.shipBmpx, self.shipBmpy, 0)
 
         mdc.SetFont(self.fontBig)
 
@@ -1071,7 +1065,7 @@ class CategoryItem(SFItem.SFBrowserItem):
 
         mdc.DrawText(categoryName, self.catx, self.caty)
 
-#===============================================================================
+# =============================================================================
 #        Waiting for total #fits impl in eos/service
 #
 #        mdc.SetFont(wx.Font(8, wx.SWISS, wx.NORMAL, wx.NORMAL, False))
@@ -1090,14 +1084,14 @@ class CategoryItem(SFItem.SFBrowserItem):
 #        else:
 #            xtext, ytext = mdc.GetTextExtent(fformat)
 #            ypos = (rect.height - ytext)/2
-#===============================================================================
+# =============================================================================
 
 
 class ShipItem(SFItem.SFBrowserItem):
-    def __init__(self, parent, shipID=None, shipFittingInfo=("Test","TestTrait", 2), itemData=None,
+    def __init__(self, parent, shipID=None, shipFittingInfo=("Test", "TestTrait", 2), itemData=None,
                  id=wx.ID_ANY, pos=wx.DefaultPosition,
                  size=(0, 40), style=0):
-        SFItem.SFBrowserItem.__init__(self, parent, size = size)
+        SFItem.SFBrowserItem.__init__(self, parent, size=size)
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
@@ -1124,7 +1118,7 @@ class ShipItem(SFItem.SFBrowserItem):
         self.newBmp = BitmapLoader.getBitmap("fit_add_small", "gui")
         self.acceptBmp = BitmapLoader.getBitmap("faccept_small", "gui")
 
-        self.shipEffBk = BitmapLoader.getBitmap("fshipbk_big","gui")
+        self.shipEffBk = BitmapLoader.getBitmap("fshipbk_big", "gui")
 
         img = wx.ImageFromBitmap(self.shipEffBk)
         img = img.Mirror(False)
@@ -1133,7 +1127,7 @@ class ShipItem(SFItem.SFBrowserItem):
         self.raceBmp = BitmapLoader.getBitmap("race_%s_small" % self.shipRace, "gui")
 
         if not self.raceBmp:
-            self.raceBmp = BitmapLoader.getBitmap("fit_delete_small","gui")
+            self.raceBmp = BitmapLoader.getBitmap("fit_delete_small", "gui")
 
         self.raceDropShadowBmp = drawUtils.CreateDropShadowBitmap(self.raceBmp, 0.2)
 
@@ -1144,11 +1138,10 @@ class ShipItem(SFItem.SFBrowserItem):
         self.editWidth = 150
         self.padding = 4
 
-        self.tcFitName = wx.TextCtrl(self, wx.ID_ANY, "%s fit" % self.shipName, wx.DefaultPosition, (120,-1), wx.TE_PROCESS_ENTER)
+        self.tcFitName = wx.TextCtrl(self, wx.ID_ANY, "%s fit" % self.shipName, wx.DefaultPosition, (120, -1), wx.TE_PROCESS_ENTER)
         self.tcFitName.Show(False)
 
-
-        self.newBtn = self.toolbar.AddButton(self.newBmp,"New", self.newBtnCB)
+        self.newBtn = self.toolbar.AddButton(self.newBmp, "New", self.newBtnCB)
 
         self.tcFitName.Bind(wx.EVT_TEXT_ENTER, self.createNewFit)
         self.tcFitName.Bind(wx.EVT_KILL_FOCUS, self.editLostFocus)
@@ -1166,7 +1159,7 @@ class ShipItem(SFItem.SFBrowserItem):
         self.marketInstance = Market.getInstance()
         self.baseItem = self.marketInstance.getItem(self.shipID)
 
-        #=======================================================================\
+        # =====================================================================
         # DISABLED - it will be added as an option in PREFERENCES
 
         self.animCount = 0
@@ -1176,8 +1169,7 @@ class ShipItem(SFItem.SFBrowserItem):
         #    self.animTimer.Start(self.animPeriod)
         # else:
         #    self.animCount = 0
-        #=======================================================================
-
+        # =====================================================================
 
     def OnShowPopup(self, event):
         pos = event.GetPosition()
@@ -1191,20 +1183,20 @@ class ShipItem(SFItem.SFBrowserItem):
         step = self.OUT_QUAD(self.animStep, 0, 10, self.animDuration)
         self.animCount = 10 - step
         self.animStep += self.animPeriod
-        if self.animStep > self.animDuration or self.animCount < 0 :
+        if self.animStep > self.animDuration or self.animCount < 0:
             self.animCount = 0
             self.animTimer.Stop()
         self.Refresh()
 
-    def OUT_QUAD (self, t, b, c, d):
-        t=float(t)
-        b=float(b)
-        c=float(c)
-        d=float(d)
+    def OUT_QUAD(self, t, b, c, d):
+        t = float(t)
+        b = float(b)
+        c = float(c)
+        d = float(d)
 
-        t/=d
+        t /= d
 
-        return -c *(t)*(t-2) + b
+        return -c * t * (t - 2) + b
 
     def GetType(self):
         return 2
@@ -1253,7 +1245,7 @@ class ShipItem(SFItem.SFBrowserItem):
         sFit = Fit.getInstance()
         fitID = sFit.newFit(self.shipID, self.tcFitName.GetValue())
 
-        wx.PostEvent(self.shipBrowser,Stage3Selected(shipID=self.shipID, back=False))
+        wx.PostEvent(self.shipBrowser, Stage3Selected(shipID=self.shipID, back=False))
         wx.PostEvent(self.mainFrame, FitSelected(fitID=fitID))
 
     def UpdateElementsPos(self, mdc):
@@ -1264,18 +1256,18 @@ class ShipItem(SFItem.SFBrowserItem):
 
         self.toolbarx = self.toolbarx + self.animCount
 
-        self.shipEffx = self.padding + (rect.height - self.shipEffBk.GetWidth())/2
-        self.shipEffy = (rect.height - self.shipEffBk.GetHeight())/2
+        self.shipEffx = self.padding + (rect.height - self.shipEffBk.GetWidth()) / 2
+        self.shipEffy = (rect.height - self.shipEffBk.GetHeight()) / 2
 
         self.shipEffx = self.shipEffx - self.animCount
 
         self.shipBmpx = self.padding + (rect.height - self.shipBmp.GetWidth()) / 2
         self.shipBmpy = (rect.height - self.shipBmp.GetHeight()) / 2
 
-        self.shipBmpx= self.shipBmpx - self.animCount
+        self.shipBmpx = self.shipBmpx - self.animCount
 
         self.raceBmpx = self.shipEffx + self.shipEffBk.GetWidth() + self.padding
-        self.raceBmpy = (rect.height - self.raceBmp.GetHeight())/2
+        self.raceBmpy = (rect.height - self.raceBmp.GetHeight()) / 2
 
         self.textStartx = self.raceBmpx + self.raceBmp.GetWidth() + self.padding
 
@@ -1290,14 +1282,14 @@ class ShipItem(SFItem.SFBrowserItem):
 
         mdc.SetFont(self.fontSmall)
 
-        wlabel,hlabel = mdc.GetTextExtent(self.toolbar.hoverLabel)
+        wlabel, hlabel = mdc.GetTextExtent(self.toolbar.hoverLabel)
 
         self.thoverx = self.toolbarx - self.padding - wlabel
-        self.thovery = (rect.height - hlabel)/2
+        self.thovery = (rect.height - hlabel) / 2
         self.thoverw = wlabel
 
     def DrawItem(self, mdc):
-        rect = self.GetRect()
+        # rect = self.GetRect()
 
         windowColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
         textColor = colorUtils.GetSuitableColor(windowColor, 1)
@@ -1318,20 +1310,19 @@ class ShipItem(SFItem.SFBrowserItem):
         mdc.DrawBitmap(self.shipBmp, self.shipBmpx, self.shipBmpy, 0)
 
         mdc.DrawBitmap(self.raceDropShadowBmp, self.raceBmpx + 1, self.raceBmpy + 1)
-        mdc.DrawBitmap(self.raceBmp,self.raceBmpx, self.raceBmpy)
+        mdc.DrawBitmap(self.raceBmp, self.raceBmpx, self.raceBmpy)
 
         shipName, shipTrait, fittings = self.shipFittingInfo
 
-        if fittings <1:
+        if fittings < 1:
             fformat = "No fits"
+        elif fittings == 1:
+            fformat = "%d fit"
         else:
-            if fittings == 1:
-                fformat = "%d fit"
-            else:
-                fformat = "%d fits"
+            fformat = "%d fits"
 
         mdc.SetFont(self.fontNormal)
-        mdc.DrawText(fformat %fittings if fittings >0 else fformat, self.textStartx, self.fittingsy)
+        mdc.DrawText(fformat % fittings if fittings > 0 else fformat, self.textStartx, self.fittingsy)
 
         mdc.SetFont(self.fontSmall)
         mdc.DrawText(self.toolbar.hoverLabel, self.thoverx, self.thovery)
@@ -1349,51 +1340,49 @@ class ShipItem(SFItem.SFBrowserItem):
         fnEditSize = editCtl.GetSize()
         wSize = self.GetSize()
         fnEditPosX = end
-        fnEditPosY = (wSize.height - fnEditSize.height)/2
+        fnEditPosY = (wSize.height - fnEditSize.height) / 2
         if fnEditPosX < start:
-            editCtl.SetSize((self.editWidth + fnEditPosX - start,-1))
-            editCtl.SetPosition((start,fnEditPosY))
+            editCtl.SetSize((self.editWidth + fnEditPosX - start, -1))
+            editCtl.SetPosition((start, fnEditPosY))
         else:
-            editCtl.SetSize((self.editWidth,-1))
-            editCtl.SetPosition((fnEditPosX,fnEditPosY))
+            editCtl.SetSize((self.editWidth, -1))
+            editCtl.SetPosition((fnEditPosX, fnEditPosY))
+
 
 class PFBitmapFrame(wx.Frame):
-    def __init__ (self, parent, pos, bitmap):
-        wx.Frame.__init__(self, parent, id = wx.ID_ANY, title = wx.EmptyString, pos = pos, size = wx.DefaultSize, style =
-                                                               wx.NO_BORDER
-                                                             | wx.FRAME_NO_TASKBAR
-                                                             | wx.STAY_ON_TOP)
+    def __init__(self, parent, pos, bitmap):
+        wx.Frame.__init__(self, parent, id=wx.ID_ANY, title=wx.EmptyString, pos=pos, size=wx.DefaultSize, style=wx.NO_BORDER | wx.FRAME_NO_TASKBAR | wx.STAY_ON_TOP)
         img = bitmap.ConvertToImage()
         img = img.ConvertToGreyscale()
         bitmap = wx.BitmapFromImage(img)
         self.bitmap = bitmap
         self.SetSize((bitmap.GetWidth(), bitmap.GetHeight()))
-        self.Bind(wx.EVT_PAINT,self.OnWindowPaint)
+        self.Bind(wx.EVT_PAINT, self.OnWindowPaint)
         self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnWindowEraseBk)
         self.Bind(wx.EVT_TIMER, self.OnTimer)
 
-        self.timer = wx.Timer(self,wx.ID_ANY)
+        self.timer = wx.Timer(self, wx.ID_ANY)
         self.direction = 1
         self.transp = 0
-        self.SetSize((bitmap.GetWidth(),bitmap.GetHeight()))
+        self.SetSize((bitmap.GetWidth(), bitmap.GetHeight()))
 
         self.SetTransparent(0)
         self.Refresh()
 
     def OnTimer(self, event):
-        self.transp += 20*self.direction
+        self.transp += 20 * self.direction
         if self.transp > 200:
             self.transp = 200
             self.timer.Stop()
         if self.transp < 0:
             self.transp = 0
             self.timer.Stop()
-            wx.Frame.Show(self,False)
+            wx.Frame.Show(self, False)
             self.Destroy()
             return
         self.SetTransparent(self.transp)
 
-    def Show(self, showWnd = True):
+    def Show(self, showWnd=True):
         if showWnd:
             wx.Frame.Show(self, showWnd)
             self.Parent.SetFocus()
@@ -1403,33 +1392,33 @@ class PFBitmapFrame(wx.Frame):
             self.direction = -1
             self.timer.Start(5)
 
-    def OnWindowEraseBk(self,event):
+    def OnWindowEraseBk(self, event):
         pass
 
-    def OnWindowPaint(self,event):
+    def OnWindowPaint(self, event):
         rect = self.GetRect()
         canvas = wx.EmptyBitmap(rect.width, rect.height)
         mdc = wx.BufferedPaintDC(self)
         mdc.SelectObject(canvas)
         mdc.DrawBitmap(self.bitmap, 0, 0)
-        mdc.SetPen( wx.Pen("#000000", width = 1 ) )
-        mdc.SetBrush( wx.TRANSPARENT_BRUSH )
-        mdc.DrawRectangle( 0,0,rect.width,rect.height)
+        mdc.SetPen(wx.Pen("#000000", width=1))
+        mdc.SetBrush(wx.TRANSPARENT_BRUSH)
+        mdc.DrawRectangle(0, 0, rect.width, rect.height)
 
 
 class FitItem(SFItem.SFBrowserItem):
-    def __init__(self, parent, fitID=None, shipFittingInfo=("Test", "TestTrait", "cnc's avatar", 0, 0 ), shipID = None, itemData=None,
+    def __init__(self, parent, fitID=None, shipFittingInfo=("Test", "TestTrait", "cnc's avatar", 0, 0), shipID=None, itemData=None,
                  id=wx.ID_ANY, pos=wx.DefaultPosition,
                  size=(0, 40), style=0):
 
-        #===============================================================================
+        # =====================================================================
         # animCount should be 10 if we enable animation in Preferences
-        #===============================================================================
+        # =====================================================================
 
         self.animCount = 0
         self.selectedDelta = 0
 
-        SFItem.SFBrowserItem.__init__(self,parent,size = size)
+        SFItem.SFBrowserItem.__init__(self, parent, size=size)
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
@@ -1446,10 +1435,10 @@ class FitItem(SFItem.SFBrowserItem):
         self.deleted = False
 
         if shipID:
-            self.shipBmp = BitmapLoader.getBitmap(str(shipID),"renders")
+            self.shipBmp = BitmapLoader.getBitmap(str(shipID), "renders")
 
         if not self.shipBmp:
-            self.shipBmp = BitmapLoader.getBitmap("ship_no_image_big","gui")
+            self.shipBmp = BitmapLoader.getBitmap("ship_no_image_big", "gui")
 
         self.shipFittingInfo = shipFittingInfo
         self.shipName, self.shipTrait, self.fitName, self.fitBooster, self.timestamp = shipFittingInfo
@@ -1457,16 +1446,15 @@ class FitItem(SFItem.SFBrowserItem):
         # see GH issue #62
 
         # Disabling this due to change in gang boosts Nov 2016
-        #if self.fitBooster is None: self.fitBooster = False
+        # if self.fitBooster is None: self.fitBooster = False
         self.fitBooster = False
 
         self.boosterBmp = BitmapLoader.getBitmap("fleet_fc_small", "gui")
-        self.copyBmp    = BitmapLoader.getBitmap("fit_add_small", "gui")
-        self.renameBmp  = BitmapLoader.getBitmap("fit_rename_small", "gui")
-        self.deleteBmp  = BitmapLoader.getBitmap("fit_delete_small","gui")
-        self.acceptBmp  = BitmapLoader.getBitmap("faccept_small", "gui")
-
-        self.shipEffBk = BitmapLoader.getBitmap("fshipbk_big","gui")
+        self.copyBmp = BitmapLoader.getBitmap("fit_add_small", "gui")
+        self.renameBmp = BitmapLoader.getBitmap("fit_rename_small", "gui")
+        self.deleteBmp = BitmapLoader.getBitmap("fit_delete_small", "gui")
+        self.acceptBmp = BitmapLoader.getBitmap("faccept_small", "gui")
+        self.shipEffBk = BitmapLoader.getBitmap("fshipbk_big", "gui")
 
         img = wx.ImageFromBitmap(self.shipEffBk)
         img = img.Mirror(False)
@@ -1475,8 +1463,8 @@ class FitItem(SFItem.SFBrowserItem):
         self.dragTLFBmp = None
 
         self.bkBitmap = None
-        if self.shipTrait != "": # show no tooltip if no trait available
-            self.SetToolTip(wx.ToolTip(u'{}\n{}\n{}'.format(self.shipName, u'─'*20, self.shipTrait)))
+        if self.shipTrait != "":  # show no tooltip if no trait available
+            self.SetToolTip(wx.ToolTip(u'{}\n{}\n{}'.format(self.shipName, u'─' * 20, self.shipTrait)))
         self.padding = 4
         self.editWidth = 150
 
@@ -1492,12 +1480,12 @@ class FitItem(SFItem.SFBrowserItem):
 
         self.SetDraggable()
 
-        self.boosterBtn = self.toolbar.AddButton(self.boosterBmp,"Booster", show=self.fitBooster)
-        self.toolbar.AddButton(self.copyBmp,"Copy", self.copyBtnCB)
-        self.renameBtn = self.toolbar.AddButton(self.renameBmp,"Rename", self.renameBtnCB)
+        self.boosterBtn = self.toolbar.AddButton(self.boosterBmp, "Booster", show=self.fitBooster)
+        self.toolbar.AddButton(self.copyBmp, "Copy", self.copyBtnCB)
+        self.renameBtn = self.toolbar.AddButton(self.renameBmp, "Rename", self.renameBtnCB)
         self.toolbar.AddButton(self.deleteBmp, "Delete", self.deleteBtnCB)
 
-        self.tcFitName = wx.TextCtrl(self, wx.ID_ANY, "%s" % self.fitName, wx.DefaultPosition, (self.editWidth,-1), wx.TE_PROCESS_ENTER)
+        self.tcFitName = wx.TextCtrl(self, wx.ID_ANY, "%s" % self.fitName, wx.DefaultPosition, (self.editWidth, -1), wx.TE_PROCESS_ENTER)
 
         if self.shipBrowser.fitIDMustEditName != self.fitID:
             self.tcFitName.Show(False)
@@ -1522,18 +1510,18 @@ class FitItem(SFItem.SFBrowserItem):
 
         self.Bind(wx.EVT_TIMER, self.OnTimer)
 
-        #=======================================================================
+        # =====================================================================
         # DISABLED - it will be added as an option in PREFERENCES
 
         # if self.shipBrowser.GetActiveStage() != 4 and self.shipBrowser.GetLastStage() !=3:
         #    self.animTimer.Start(self.animPeriod)
         # else:
         #    self.animCount = 0
-        #=======================================================================
+        # =====================================================================
 
         self.selTimerID = wx.NewId()
 
-        self.selTimer = wx.Timer(self,self.selTimerID)
+        self.selTimer = wx.Timer(self, self.selTimerID)
         self.selTimer.Start(100)
 
         self.Bind(wx.EVT_RIGHT_UP, self.OnContextMenu)
@@ -1605,7 +1593,7 @@ class FitItem(SFItem.SFBrowserItem):
             self.Bind(wx.EVT_MENU, self.OnProjectToFit, projectedItem)
 
             commandItem = menu.Append(wx.ID_ANY, "Add Command Booster")
-            self.Bind(wx.EVT_MENU, self.OnAddCommandFit, commandItem )
+            self.Bind(wx.EVT_MENU, self.OnAddCommandFit, commandItem)
 
         self.PopupMenu(menu, pos)
 
@@ -1621,7 +1609,7 @@ class FitItem(SFItem.SFBrowserItem):
             interval = 5
             if ctimestamp < self.timestamp + interval:
                 delta = (ctimestamp - self.timestamp) / interval
-                self.selectedDelta = self.CalculateDelta(0x0,self.maxDelta,delta)
+                self.selectedDelta = self.CalculateDelta(0x0, self.maxDelta, delta)
                 self.Refresh()
             else:
                 self.selectedDelta = self.maxDelta
@@ -1631,23 +1619,23 @@ class FitItem(SFItem.SFBrowserItem):
             step = self.OUT_QUAD(self.animStep, 0, 10, self.animDuration)
             self.animCount = 10 - step
             self.animStep += self.animPeriod
-            if self.animStep > self.animDuration or self.animCount < 0 :
+            if self.animStep > self.animDuration or self.animCount < 0:
                 self.animCount = 0
                 self.animTimer.Stop()
             self.Refresh()
 
     def CalculateDelta(self, start, end, delta):
-        return start + (end-start)*delta
+        return start + (end - start) * delta
 
-    def OUT_QUAD (self, t, b, c, d):
-        t=float(t)
-        b=float(b)
-        c=float(c)
-        d=float(d)
+    def OUT_QUAD(self, t, b, c, d):
+        t = float(t)
+        b = float(b)
+        c = float(c)
+        d = float(d)
 
-        t/=d
+        t /= d
 
-        return -c *(t)*(t-2) + b
+        return -c * t * (t - 2) + b
 
     def editLostFocus(self, event):
         self.RestoreEditButton()
@@ -1670,7 +1658,7 @@ class FitItem(SFItem.SFBrowserItem):
         sFit = Fit.getInstance()
         fitID = sFit.copyFit(self.fitID)
         self.shipBrowser.fitIDMustEditName = fitID
-        wx.PostEvent(self.shipBrowser,Stage3Selected(shipID=self.shipID))
+        wx.PostEvent(self.shipBrowser, Stage3Selected(shipID=self.shipID))
         wx.PostEvent(self.mainFrame, FitSelected(fitID=fitID))
 
     def renameBtnCB(self):
@@ -1708,9 +1696,12 @@ class FitItem(SFItem.SFBrowserItem):
         if wx.GetMouseState().ShiftDown() or wx.GetMouseState().MiddleDown():
             self.deleteFit()
         else:
-            dlg = wx.MessageDialog(self,
-                 "Do you really want to delete this fit?",
-                 "Confirm Delete", wx.YES | wx.NO | wx.ICON_QUESTION)
+            dlg = wx.MessageDialog(
+                self,
+                "Do you really want to delete this fit?",
+                "Confirm Delete",
+                wx.YES | wx.NO | wx.ICON_QUESTION
+            )
 
             if dlg.ShowModal() == wx.ID_YES:
                 self.deleteFit()
@@ -1727,8 +1718,8 @@ class FitItem(SFItem.SFBrowserItem):
         sFit.deleteFit(self.fitID)
 
         if self.shipBrowser.GetActiveStage() == 5:
-            if fit in self.shipBrowser.lastdata: # remove fit from import cache
-                 self.shipBrowser.lastdata.remove(fit)
+            if fit in self.shipBrowser.lastdata:  # remove fit from import cache
+                self.shipBrowser.lastdata.remove(fit)
             wx.PostEvent(self.shipBrowser, ImportSelected(fits=self.shipBrowser.lastdata))
         elif self.shipBrowser.GetActiveStage() == 4:
             wx.PostEvent(self.shipBrowser, SearchSelected(text=self.shipBrowser.navpanel.lastSearch, back=True))
@@ -1793,9 +1784,9 @@ class FitItem(SFItem.SFBrowserItem):
         wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fitID))
 
     def RestoreEditButton(self):
-            self.tcFitName.Show(False)
-            self.renameBtn.SetBitmap(self.renameBmp)
-            self.Refresh()
+        self.tcFitName.Show(False)
+        self.renameBtn.SetBitmap(self.renameBmp)
+        self.Refresh()
 
     def UpdateElementsPos(self, mdc):
         rect = self.GetRect()
@@ -1805,15 +1796,15 @@ class FitItem(SFItem.SFBrowserItem):
 
         self.toolbarx = self.toolbarx + self.animCount
 
-        self.shipEffx = self.padding + (rect.height - self.shipEffBk.GetWidth())/2
-        self.shipEffy = (rect.height - self.shipEffBk.GetHeight())/2
+        self.shipEffx = self.padding + (rect.height - self.shipEffBk.GetWidth()) / 2
+        self.shipEffy = (rect.height - self.shipEffBk.GetHeight()) / 2
 
         self.shipEffx = self.shipEffx - self.animCount
 
         self.shipBmpx = self.padding + (rect.height - self.shipBmp.GetWidth()) / 2
         self.shipBmpy = (rect.height - self.shipBmp.GetHeight()) / 2
 
-        self.shipBmpx= self.shipBmpx - self.animCount
+        self.shipBmpx = self.shipBmpx - self.animCount
 
         self.textStartx = self.shipEffx + self.shipEffBk.GetWidth() + self.padding
 
@@ -1826,10 +1817,10 @@ class FitItem(SFItem.SFBrowserItem):
 
         mdc.SetFont(self.fontSmall)
 
-        wlabel,hlabel = mdc.GetTextExtent(self.toolbar.hoverLabel)
+        wlabel, hlabel = mdc.GetTextExtent(self.toolbar.hoverLabel)
 
         self.thoverx = self.toolbarx - self.padding - wlabel
-        self.thovery = (rect.height - hlabel)/2
+        self.thovery = (rect.height - hlabel) / 2
         self.thoverw = wlabel
 
     def DrawItem(self, mdc):
@@ -1858,7 +1849,7 @@ class FitItem(SFItem.SFBrowserItem):
         mdc.SetFont(self.fontNormal)
 
         fitDate = time.localtime(self.timestamp)
-        fitLocalDate = "%d/%02d/%02d %02d:%02d" % ( fitDate[0], fitDate[1], fitDate[2], fitDate[3], fitDate[4])
+        fitLocalDate = "%d/%02d/%02d %02d:%02d" % (fitDate[0], fitDate[1], fitDate[2], fitDate[3], fitDate[4])
         pfdate = drawUtils.GetPartialText(mdc, fitLocalDate, self.toolbarx - self.textStartx - self.padding * 2 - self.thoverw)
 
         mdc.DrawText(pfdate, self.textStartx, self.timestampy)
@@ -1885,13 +1876,13 @@ class FitItem(SFItem.SFBrowserItem):
         fnEditSize = editCtl.GetSize()
         wSize = self.GetSize()
         fnEditPosX = end
-        fnEditPosY = (wSize.height - fnEditSize.height)/2
+        fnEditPosY = (wSize.height - fnEditSize.height) / 2
         if fnEditPosX < start:
-            editCtl.SetSize((self.editWidth + fnEditPosX - start,-1))
-            editCtl.SetPosition((start,fnEditPosY))
+            editCtl.SetSize((self.editWidth + fnEditPosX - start, -1))
+            editCtl.SetPosition((start, fnEditPosY))
         else:
-            editCtl.SetSize((self.editWidth,-1))
-            editCtl.SetPosition((fnEditPosX,fnEditPosY))
+            editCtl.SetSize((self.editWidth, -1))
+            editCtl.SetPosition((fnEditPosX, fnEditPosY))
 
     def GetState(self):
         activeFitID = self.mainFrame.getActiveFit()
@@ -1902,7 +1893,7 @@ class FitItem(SFItem.SFBrowserItem):
         else:
             if activeFitID == self.fitID:
                 if self.highlighted:
-                    state = SFItem.SB_ITEM_SELECTED  | SFItem.SB_ITEM_HIGHLIGHTED
+                    state = SFItem.SB_ITEM_SELECTED | SFItem.SB_ITEM_HIGHLIGHTED
                 else:
                     state = SFItem.SB_ITEM_SELECTED
             else:
@@ -1914,8 +1905,7 @@ class FitItem(SFItem.SFBrowserItem):
 
         windowColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
 
-        activeFitID = self.mainFrame.getActiveFit()
-
+        # activeFitID = self.mainFrame.getActiveFit()
         state = self.GetState()
 
         sFactor = 0.2
@@ -1926,18 +1916,18 @@ class FitItem(SFItem.SFBrowserItem):
             mFactor = 0.45
             eFactor = 0.30
 
-        elif state == SFItem.SB_ITEM_SELECTED  | SFItem.SB_ITEM_HIGHLIGHTED:
+        elif state == SFItem.SB_ITEM_SELECTED | SFItem.SB_ITEM_HIGHLIGHTED:
             eFactor = 0.3
             mFactor = 0.4
 
         elif state == SFItem.SB_ITEM_SELECTED:
-            eFactor = (self.maxDelta - self.selectedDelta)/100 + 0.25
+            eFactor = (self.maxDelta - self.selectedDelta) / 100 + 0.25
         else:
             sFactor = 0
 
         if self.bkBitmap:
             if self.bkBitmap.eFactor == eFactor and self.bkBitmap.sFactor == sFactor and self.bkBitmap.mFactor == mFactor \
-             and rect.width == self.bkBitmap.GetWidth() and rect.height == self.bkBitmap.GetHeight() :
+                    and rect.width == self.bkBitmap.GetWidth() and rect.height == self.bkBitmap.GetHeight():
                 return
             else:
                 del self.bkBitmap
@@ -1947,4 +1937,3 @@ class FitItem(SFItem.SFBrowserItem):
         self.bkBitmap.sFactor = sFactor
         self.bkBitmap.eFactor = eFactor
         self.bkBitmap.mFactor = mFactor
-

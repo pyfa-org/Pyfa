@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -16,18 +15,18 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
+import wx
+from eos.types import Drone, Cargo, Module, Slot, Rack, Implant, Fighter
+from service.fit import Fit
 from gui.viewColumn import ViewColumn
 import gui.mainFrame
 
-#from eos.saveddata.fit import Fit
-from service.fit import Fit
-import wx
-from eos.types import Drone, Cargo, Module, Slot, Rack, Implant, Fighter
 
 class BaseName(ViewColumn):
     name = "Base Name"
+
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
 
@@ -40,7 +39,7 @@ class BaseName(ViewColumn):
     def getText(self, stuff):
         if isinstance(stuff, Drone):
             return "%dx %s" % (stuff.amount, stuff.item.name)
-        if isinstance(stuff, Fighter):
+        elif isinstance(stuff, Fighter):
             return "%d/%d %s" % (stuff.amountActive, stuff.getModifiedItemAttr("fighterSquadronMaxSize"), stuff.item.name)
         elif isinstance(stuff, Cargo):
             return "%dx %s" % (stuff.amount, stuff.item.name)
@@ -74,10 +73,11 @@ class BaseName(ViewColumn):
 
                 if marketShortcut:
                     # use unicode subscript to display shortcut value
-                    shortcut = unichr(marketShortcut+8320)+u" "
+                    shortcut = unichr(marketShortcut + 8320) + u" "
                     del item.marketShortcut
-                    return shortcut+item.name
+                    return shortcut + item.name
 
             return item.name
+
 
 BaseName.register()

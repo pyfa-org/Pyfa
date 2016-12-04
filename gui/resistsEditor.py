@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2014 Ryan Holmes
 #
 # This file is part of pyfa.
@@ -15,14 +15,13 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.    If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
 import wx
+from service.targetResists import TargetResists
 from gui.bitmapLoader import BitmapLoader
 from gui.utils.clipboard import toClipboard, fromClipboard
-from service.targetResists import ImportError
 from gui.builtinViews.entityEditor import EntityEditor, BaseValidator
-from service.targetResists import TargetResists
 
 
 class TargetResistsTextValidor(BaseValidator):
@@ -44,7 +43,7 @@ class TargetResistsTextValidor(BaseValidator):
                 raise ValueError("Target Resist Profile name already in use, please choose another.")
 
             return True
-        except ValueError, e:
+        except ValueError as e:
             wx.MessageBox(u"{}".format(e), "Error")
             textCtrl.SetFocus()
             return False
@@ -78,12 +77,13 @@ class TargetResistsEntityEditor(EntityEditor):
         sTR = TargetResists.getInstance()
         sTR.deletePattern(entity)
 
+
 class ResistsEditorDlg(wx.Dialog):
 
     DAMAGE_TYPES = ("em", "thermal", "kinetic", "explosive")
 
     def __init__(self, parent):
-        wx.Dialog.__init__(self, parent, id = wx.ID_ANY, title = u"Target Resists Editor", size = wx.Size( 350,240 ))
+        wx.Dialog.__init__(self, parent, id=wx.ID_ANY, title=u"Target Resists Editor", size=wx.Size(350, 240))
 
         self.block = False
         self.SetSizeHintsSz(wx.DefaultSize, wx.DefaultSize)
@@ -104,24 +104,23 @@ class ResistsEditorDlg(wx.Dialog):
         resistEditSizer.SetFlexibleDirection(wx.BOTH)
         resistEditSizer.SetNonFlexibleGrowMode(wx.FLEX_GROWMODE_SPECIFIED)
 
-        width = -1
-        defSize = wx.Size(50,-1)
+        defSize = wx.Size(50, -1)
 
-        for i, type in enumerate(self.DAMAGE_TYPES):
-            if i%2:
+        for i, type_ in enumerate(self.DAMAGE_TYPES):
+            if i % 2:
                 style = wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_RIGHT | wx.LEFT
                 border = 25
             else:
                 style = wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_RIGHT
                 border = 5
 
-            bmp = wx.StaticBitmap(self, wx.ID_ANY, BitmapLoader.getBitmap("%s_big"%type, "gui"))
+            bmp = wx.StaticBitmap(self, wx.ID_ANY, BitmapLoader.getBitmap("%s_big" % type_, "gui"))
             resistEditSizer.Add(bmp, 0, style, border)
             # set text edit
-            setattr(self, "%sEdit"%type, wx.TextCtrl(self, wx.ID_ANY, "", wx.DefaultPosition, defSize))
-            editObj = getattr(self, "%sEdit"%type)
+            setattr(self, "%sEdit" % type_, wx.TextCtrl(self, wx.ID_ANY, "", wx.DefaultPosition, defSize))
+            editObj = getattr(self, "%sEdit" % type_)
             resistEditSizer.Add(editObj, 0, wx.BOTTOM | wx.TOP | wx.ALIGN_CENTER_VERTICAL, 5)
-            resistEditSizer.Add(wx.StaticText( self, wx.ID_ANY, u"%", wx.DefaultPosition, wx.DefaultSize, 0 ), 0, wx.BOTTOM | wx.TOP | wx.ALIGN_CENTER_VERTICAL, 5)
+            resistEditSizer.Add(wx.StaticText(self, wx.ID_ANY, u"%", wx.DefaultPosition, wx.DefaultSize, 0), 0, wx.BOTTOM | wx.TOP | wx.ALIGN_CENTER_VERTICAL, 5)
             editObj.Bind(wx.EVT_TEXT, self.ValuesUpdated)
 
         # Color we use to reset invalid value color
@@ -138,7 +137,7 @@ class ResistsEditorDlg(wx.Dialog):
         self.stNotice.Wrap(-1)
         perSizer.Add(self.stNotice, 0, wx.BOTTOM | wx.TOP | wx.LEFT, 5)
 
-        footerSizer.Add(perSizer, 1,  wx.ALIGN_CENTER_VERTICAL, 5)
+        footerSizer.Add(perSizer, 1, wx.ALIGN_CENTER_VERTICAL, 5)
 
         self.totSizer = wx.BoxSizer(wx.VERTICAL)
 
@@ -147,8 +146,8 @@ class ResistsEditorDlg(wx.Dialog):
         mainSizer.Add(contentSizer, 1, wx.EXPAND, 0)
 
         if "wxGTK" in wx.PlatformInfo:
-            self.closeBtn = wx.Button( self, wx.ID_ANY, u"Close", wx.DefaultPosition, wx.DefaultSize, 0 )
-            mainSizer.Add( self.closeBtn, 0, wx.ALL|wx.ALIGN_RIGHT, 5 )
+            self.closeBtn = wx.Button(self, wx.ID_ANY, u"Close", wx.DefaultPosition, wx.DefaultSize, 0)
+            mainSizer.Add(self.closeBtn, 0, wx.ALL | wx.ALIGN_RIGHT, 5)
             self.closeBtn.Bind(wx.EVT_BUTTON, self.closeEvent)
 
         self.SetSizer(mainSizer)
@@ -160,13 +159,13 @@ class ResistsEditorDlg(wx.Dialog):
             bitmap = wx.ArtProvider.GetBitmap(art, wx.ART_BUTTON)
             btn = wx.BitmapButton(self, wx.ID_ANY, bitmap)
 
-            btn.SetMinSize( btn.GetSize() )
-            btn.SetMaxSize( btn.GetSize() )
+            btn.SetMinSize(btn.GetSize())
+            btn.SetMaxSize(btn.GetSize())
 
             btn.Layout()
             setattr(self, name, btn)
             btn.Enable(True)
-            btn.SetToolTipString("%s patterns %s clipboard" % (name, direction) )
+            btn.SetToolTipString("%s patterns %s clipboard" % (name, direction))
             footerSizer.Add(btn, 0, wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_RIGHT)
             btn.Bind(wx.EVT_BUTTON, getattr(self, "{}Patterns".format(name.lower())))
 
@@ -201,8 +200,8 @@ class ResistsEditorDlg(wx.Dialog):
         try:
             p = self.entityEditor.getActiveEntity()
 
-            for type in self.DAMAGE_TYPES:
-                editObj = getattr(self, "%sEdit"%type)
+            for type_ in self.DAMAGE_TYPES:
+                editObj = getattr(self, "%sEdit" % type_)
 
                 if editObj.GetValue() == "":
                     # if we are blank, overwrite with 0
@@ -215,7 +214,7 @@ class ResistsEditorDlg(wx.Dialog):
                 assert 0 <= value <= 100
 
                 # if everything checks out, set resist attribute
-                setattr(p, "%sAmount"%type, value/100)
+                setattr(p, "%sAmount" % type_, value / 100)
                 editObj.SetForegroundColour(self.colorReset)
 
             self.stNotice.SetLabel("")
@@ -250,13 +249,13 @@ class ResistsEditorDlg(wx.Dialog):
         # Set new values
         for field in self.DAMAGE_TYPES:
             edit = getattr(self, "%sEdit" % field)
-            amount = getattr(p, "%sAmount" % field)*100
+            amount = getattr(p, "%sAmount" % field) * 100
             edit.ChangeValue(str(amount))
 
         self.block = False
         self.ValuesUpdated()
 
-    def __del__( self ):
+    def __del__(self):
         pass
 
     def importPatterns(self, event):
@@ -268,9 +267,9 @@ class ResistsEditorDlg(wx.Dialog):
             try:
                 sTR.importPatterns(text)
                 self.stNotice.SetLabel("Patterns successfully imported from clipboard")
-            except service.targetResists.ImportError, e:
+            except ImportError as e:
                 self.stNotice.SetLabel(str(e))
-            except Exception, e:
+            except Exception:
                 self.stNotice.SetLabel("Could not import from clipboard: unknown errors")
             finally:
                 self.entityEditor.refreshEntityList()
@@ -280,5 +279,5 @@ class ResistsEditorDlg(wx.Dialog):
     def exportPatterns(self, event):
         "Event fired when export to clipboard button is clicked"
         sTR = TargetResists.getInstance()
-        toClipboard( sTR.exportPatterns() )
+        toClipboard(sTR.exportPatterns())
         self.stNotice.SetLabel("Patterns exported to clipboard")

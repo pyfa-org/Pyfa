@@ -16,7 +16,7 @@ class MarketJump(ContextMenu):
                          "implantItemChar", "fighterItem",
                          "projectedDrone")
 
-        if not srcContext in validContexts or selection is None or len(selection) < 1:
+        if srcContext not in validContexts or selection is None or len(selection) < 1:
             return False
 
         sMkt = Market.getInstance()
@@ -44,5 +44,6 @@ class MarketJump(ContextMenu):
 
         self.mainFrame.notebookBrowsers.SetSelection(0)
         self.mainFrame.marketBrowser.jump(item)
+
 
 MarketJump.register()

@@ -19,4 +19,5 @@ class PriceClear(ContextMenu):
         sMkt.clearPriceCache()
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
 
+
 PriceClear.register()

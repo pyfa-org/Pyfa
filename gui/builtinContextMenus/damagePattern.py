@@ -105,4 +105,5 @@ class DamagePattern(ContextMenu):
         setattr(self.mainFrame,"_activeDmgPattern", pattern)
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
+
 DamagePattern.register()

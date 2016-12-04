@@ -2,8 +2,8 @@ from gui.contextMenu import ContextMenu
 import gui.mainFrame
 import gui.globalEvents as GE
 import wx
-import eos.db
 from service.fit import Fit
+
 
 class Project(ContextMenu):
     def __init__(self):
@@ -33,5 +33,6 @@ class Project(ContextMenu):
         if trigger:
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
             self.mainFrame.additionsPane.select("Projected")
+
 
 Project.register()

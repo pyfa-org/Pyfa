@@ -32,4 +32,5 @@ class Cargo(ContextMenu):
         self.mainFrame.additionsPane.select("Cargo")
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
+
 Cargo.register()

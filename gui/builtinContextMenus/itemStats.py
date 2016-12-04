@@ -4,6 +4,7 @@ import gui.mainFrame
 import wx
 from service.fit import Fit
 
+
 class ItemStats(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
@@ -58,5 +59,6 @@ class ItemStats(ContextMenu):
 
         else:
             ItemStatsDialog(stuff, fullContext)
+
 
 ItemStats.register()

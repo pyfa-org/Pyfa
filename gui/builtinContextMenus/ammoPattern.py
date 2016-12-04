@@ -2,6 +2,8 @@ from gui.contextMenu import ContextMenu
 import gui.mainFrame
 import wx
 import gui.globalEvents as GE
+from service.fit import Fit
+
 
 class AmmoPattern(ContextMenu):
     def __init__(self):
@@ -30,5 +32,6 @@ class AmmoPattern(ContextMenu):
 
     def getBitmap(self, context, selection):
         return None
+
 
 AmmoPattern.register()

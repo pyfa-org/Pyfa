@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2014 Ryan Holmes
 #
 # This file is part of pyfa.
@@ -15,7 +15,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
 import re
 import os
@@ -31,13 +31,13 @@ from codecs import open
 import xml.parsers.expat
 
 from eos import db
+from service.fit import Fit
 
 import wx
 
-from eos.types import Fit, State, Slot, Module, Cargo, Ship, Drone, Implant, Booster, Citadel
+from eos.types import State, Slot, Module, Cargo, Fit, Ship, Drone, Implant, Booster, Citadel
 from service.crest import Crest
 from service.market import Market
-from service.fit import Fit
 
 logger = logging.getLogger("pyfa.service.port")
 
@@ -48,14 +48,16 @@ except ImportError:
 
 EFT_SLOT_ORDER = [Slot.LOW, Slot.MED, Slot.HIGH, Slot.RIG, Slot.SUBSYSTEM]
 INV_FLAGS = {
-            Slot.LOW: 11,
-            Slot.MED: 19,
-            Slot.HIGH: 27,
-            Slot.RIG: 92,
-            Slot.SUBSYSTEM: 125}
+    Slot.LOW: 11,
+    Slot.MED: 19,
+    Slot.HIGH: 27,
+    Slot.RIG: 92,
+    Slot.SUBSYSTEM: 125
+}
 
 INV_FLAG_CARGOBAY = 5
 INV_FLAG_DRONEBAY = 87
+
 
 class Port(object):
     def backupFits(self, path, callback):
@@ -185,7 +187,7 @@ class Port(object):
         # max length is 50 characters
         name = ofit.name[:47] + '...' if len(ofit.name) > 50 else ofit.name
         fit['name'] = name
-        fit['ship']['href'] = "%sinventory/types/%d/"%(eve._authed_endpoint, ofit.ship.item.ID)
+        fit['ship']['href'] = "%sinventory/types/%d/" % (eve._authed_endpoint, ofit.ship.item.ID)
         fit['ship']['id'] = ofit.ship.item.ID
         fit['ship']['name'] = ''
 
@@ -213,7 +215,7 @@ class Port(object):
                 slotNum[slot] += 1
 
             item['quantity'] = 1
-            item['type']['href'] = "%sinventory/types/%d/"%(eve._authed_endpoint, module.item.ID)
+            item['type']['href'] = "%sinventory/types/%d/" % (eve._authed_endpoint, module.item.ID)
             item['type']['id'] = module.item.ID
             item['type']['name'] = ''
             fit['items'].append(item)
@@ -228,7 +230,7 @@ class Port(object):
             item = nested_dict()
             item['flag'] = INV_FLAG_CARGOBAY
             item['quantity'] = cargo.amount
-            item['type']['href'] = "%sinventory/types/%d/"%(eve._authed_endpoint, cargo.item.ID)
+            item['type']['href'] = "%sinventory/types/%d/" % (eve._authed_endpoint, cargo.item.ID)
             item['type']['id'] = cargo.item.ID
             item['type']['name'] = ''
             fit['items'].append(item)
@@ -237,7 +239,7 @@ class Port(object):
             item = nested_dict()
             item['flag'] = INV_FLAG_CARGOBAY
             item['quantity'] = amount
-            item['type']['href'] = "%sinventory/types/%d/"%(eve._authed_endpoint, chargeID)
+            item['type']['href'] = "%sinventory/types/%d/" % (eve._authed_endpoint, chargeID)
             item['type']['id'] = chargeID
             item['type']['name'] = ''
             fit['items'].append(item)
@@ -246,7 +248,7 @@ class Port(object):
             item = nested_dict()
             item['flag'] = INV_FLAG_DRONEBAY
             item['quantity'] = drone.amount
-            item['type']['href'] = "%sinventory/types/%d/"%(eve._authed_endpoint, drone.item.ID)
+            item['type']['href'] = "%sinventory/types/%d/" % (eve._authed_endpoint, drone.item.ID)
             item['type']['id'] = drone.item.ID
             item['type']['name'] = ''
             fit['items'].append(item)
@@ -372,12 +374,12 @@ class Port(object):
             except ValueError:
                 f.ship = Citadel(sMkt.getItem(int(info[0])))
             f.name = "{0} - DNA Imported".format(f.ship.item.name)
-        except UnicodeEncodeError as e:
+        except UnicodeEncodeError:
             def logtransform(s):
                 if len(s) > 10:
                     return s[:10] + "..."
                 return s
-            logger.exception("Couldn't import ship data %r", [ logtransform(s) for s in info ])
+            logger.exception("Couldn't import ship data %r", [logtransform(s) for s in info])
             return None
 
         moduleList = []

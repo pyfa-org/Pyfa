@@ -17,10 +17,14 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-
+import locale
 import copy
+import threading
 import logging
 import wx
+from codecs import open
+
+import xml.parsers.expat
 
 import eos.db
 from eos.types import State, Slot, Module, Drone, Fighter, Fit as FitType
@@ -80,8 +84,8 @@ class Fit(object):
             "showMarketShortcuts": False,
             "enableGaugeAnimation": True,
             "exportCharges": True,
-            "openFitInNew": False
-            }
+            "openFitInNew": False,
+        }
 
         self.serviceFittingOptions = SettingsProvider.getInstance().getSettings(
             "pyfaServiceFittingOptions", serviceFittingDefaultOptions)
@@ -532,7 +536,7 @@ class Fit(object):
 
         # Gather modules and convert Cargo item to Module, silently return if not a module
         try:
-            cargoP = Module(cargo.item)
+            cargoP = es_Module(cargo.item)
             cargoP.owner = fit
             if cargoP.isValidState(State.ACTIVE):
                 cargoP.state = State.ACTIVE
@@ -665,7 +669,7 @@ class Fit(object):
                     break
             '''
             if fighter is None:
-                fighter = Fighter(item)
+                fighter = es_Fighter(item)
                 used = fit.getSlotsUsed(fighter.slot)
                 total = fit.getNumSlots(fighter.slot)
                 standardAttackActive = False
@@ -756,7 +760,7 @@ class Fit(object):
         d.amount = amount
         d.amountActive = amount if active else 0
 
-        newD = Drone(d.item)
+        newD = es_Drone(d.item)
         newD.amount = total - amount
         newD.amountActive = newD.amount if active else 0
         l.append(newD)

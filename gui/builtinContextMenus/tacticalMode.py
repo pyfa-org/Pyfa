@@ -58,4 +58,5 @@ class TacticalMode(ContextMenu):
         sFit.setMode(fitID, self.modeIds[event.Id])
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
+
 TacticalMode.register()

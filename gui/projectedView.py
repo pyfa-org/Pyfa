@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,7 +15,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
 import wx
 import gui.display as d
@@ -25,6 +25,7 @@ from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
 import eos.types
 from service.fit import Fit
+from service.market import Market
 
 
 class DummyItem:
@@ -32,23 +33,26 @@ class DummyItem:
         self.name = txt
         self.icon = None
 
+
 class DummyEntry:
     def __init__(self, txt):
         self.item = DummyItem(txt)
 
-class ProjectedViewDrop(wx.PyDropTarget):
-   def __init__(self, dropFn):
-       wx.PyDropTarget.__init__(self)
-       self.dropFn = dropFn
-       # this is really transferring an EVE itemID
-       self.dropData = wx.PyTextDataObject()
-       self.SetDataObject(self.dropData)
 
-   def OnData(self, x, y, t):
-       if self.GetData():
-           data = self.dropData.GetText().split(':')
-           self.dropFn(x, y, data)
-       return t
+class ProjectedViewDrop(wx.PyDropTarget):
+    def __init__(self, dropFn):
+        wx.PyDropTarget.__init__(self)
+        self.dropFn = dropFn
+        # this is really transferring an EVE itemID
+        self.dropData = wx.PyTextDataObject()
+        self.SetDataObject(self.dropData)
+
+    def OnData(self, x, y, t):
+        if self.GetData():
+            data = self.dropData.GetText().split(':')
+            self.dropFn(x, y, data)
+        return t
+
 
 class ProjectedView(d.Display):
     DEFAULT_COLS = ["State",
@@ -58,7 +62,7 @@ class ProjectedView(d.Display):
                     "Ammo"]
 
     def __init__(self, parent):
-        d.Display.__init__(self, parent, style = wx.LC_SINGLE_SEL | wx.BORDER_NONE)
+        d.Display.__init__(self, parent, style=wx.LC_SINGLE_SEL | wx.BORDER_NONE)
 
         self.lastFitId = None
 
@@ -70,7 +74,7 @@ class ProjectedView(d.Display):
 
         self.droneView = gui.droneView.DroneView
 
-        if "__WXGTK__" in  wx.PlatformInfo:
+        if "__WXGTK__" in wx.PlatformInfo:
             self.Bind(wx.EVT_RIGHT_UP, self.scheduleMenu)
         else:
             self.Bind(wx.EVT_RIGHT_DOWN, self.scheduleMenu)
@@ -96,7 +100,7 @@ class ProjectedView(d.Display):
             sFit.project(fitID, int(data[1]))
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
 
-    def kbEvent(self,event):
+    def kbEvent(self, event):
         keycode = event.GetKeyCode()
         if keycode == wx.WXK_DELETE or keycode == wx.WXK_NUMPAD_DELETE:
             fitID = self.mainFrame.getActiveFit()
@@ -107,7 +111,7 @@ class ProjectedView(d.Display):
                 wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
     def handleDrag(self, type, fitID):
-        #Those are drags coming from pyfa sources, NOT builtin wx drags
+        # Those are drags coming from pyfa sources, NOT builtin wx drags
         if type == "fit":
             activeFit = self.mainFrame.getActiveFit()
             if activeFit:
@@ -120,14 +124,14 @@ class ProjectedView(d.Display):
         row = event.GetIndex()
         if row != -1 and isinstance(self.get(row), es_Drone):
             data = wx.PyTextDataObject()
-            data.SetText("projected:"+str(self.GetItemData(row)))
+            data.SetText("projected:" + str(self.GetItemData(row)))
 
             dropSource = wx.DropSource(self)
             dropSource.SetData(data)
             dropSource.DoDragDrop()
 
     def mergeDrones(self, x, y, itemID):
-        srcRow = self.FindItemData(-1,itemID)
+        srcRow = self.FindItemData(-1, itemID)
         dstRow, _ = self.HitTest((x, y))
         if srcRow != -1 and dstRow != -1:
             self._merge(srcRow, dstRow)
@@ -139,7 +143,6 @@ class ProjectedView(d.Display):
             fitID = self.mainFrame.getActiveFit()
             if sFit.mergeDrones(fitID, self.get(src), dstDrone, True):
                 wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
-
 
     def moduleSort(self, module):
         return module.item.name
@@ -164,7 +167,7 @@ class ProjectedView(d.Display):
 
         self.Parent.Parent.DisablePage(self, not fit or fit.isStructure)
 
-        #Clear list and get out if current fitId is None
+        # Clear list and get out if current fitId is None
         if event.fitID is None and self.lastFitId is not None:
             self.DeleteAllItems()
             self.lastFitId = None
@@ -245,7 +248,8 @@ class ProjectedView(d.Display):
         menu = None
         if sel != -1:
             item = self.get(sel)
-            if item is None: return
+            if item is None:
+                return
             sMkt = Market.getInstance()
             if isinstance(item, es_Drone):
                 srcContext = "projectedDrone"
@@ -269,7 +273,7 @@ class ProjectedView(d.Display):
             else:
                 fitSrcContext = "projectedFit"
                 fitItemContext = item.name
-                context = ((fitSrcContext,fitItemContext),)
+                context = ((fitSrcContext, fitItemContext),)
             context = context + (("projected",),)
             menu = ContextMenu.getMenu((item,), *context)
         elif sel == -1:

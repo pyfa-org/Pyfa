@@ -2,7 +2,9 @@ from gui.contextMenu import ContextMenu
 from gui.itemStats import ItemStatsDialog
 import gui.mainFrame
 import gui.globalEvents as GE
+from service.fit import Fit
 import wx
+
 
 class DroneSplit(ContextMenu):
     def __init__(self):
@@ -19,6 +21,7 @@ class DroneSplit(ContextMenu):
         dlg = DroneSpinner(self.mainFrame, selection[0], srcContext)
         dlg.ShowModal()
         dlg.Destroy()
+
 
 DroneSplit.register()
 

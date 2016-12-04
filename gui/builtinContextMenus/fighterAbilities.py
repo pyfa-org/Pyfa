@@ -52,4 +52,5 @@ class FighterAbility(ContextMenu):
         sFit.toggleFighterAbility(fitID, ability)
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
+
 FighterAbility.register()

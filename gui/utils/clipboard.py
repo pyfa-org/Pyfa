@@ -1,11 +1,13 @@
 import wx
 
+
 def toClipboard(text):
     clip = wx.TheClipboard
     clip.Open()
     data = wx.TextDataObject(text)
     clip.SetData(data)
     clip.Close()
+
 
 def fromClipboard():
     clip = wx.TheClipboard

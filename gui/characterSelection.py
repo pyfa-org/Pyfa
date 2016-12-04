@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,7 +15,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
 import wx
 from gui.bitmapLoader import BitmapLoader
@@ -23,6 +23,7 @@ import gui.globalEvents as GE
 import gui.mainFrame
 from service.character import Character
 from service.fit import Fit
+
 
 class CharacterSelection(wx.Panel):
     def __init__(self, parent):
@@ -43,9 +44,9 @@ class CharacterSelection(wx.Panel):
         self.refreshCharacterList()
 
         self.cleanSkills = BitmapLoader.getBitmap("skill_big", "gui")
-        self.redSkills   = BitmapLoader.getBitmap("skillRed_big", "gui")
+        self.redSkills = BitmapLoader.getBitmap("skillRed_big", "gui")
         self.greenSkills = BitmapLoader.getBitmap("skillGreen_big", "gui")
-        self.refresh     = BitmapLoader.getBitmap("refresh", "gui")
+        self.refresh = BitmapLoader.getBitmap("refresh", "gui")
 
         self.btnRefresh = wx.BitmapButton(self, wx.ID_ANY, self.refresh)
         size = self.btnRefresh.GetSize()
@@ -67,7 +68,7 @@ class CharacterSelection(wx.Panel):
         self.mainFrame.Bind(GE.CHAR_LIST_UPDATED, self.refreshCharacterList)
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
 
-        self.SetMinSize(wx.Size(25,-1))
+        self.SetMinSize(wx.Size(25, -1))
 
         self.charChoice.Enable(False)
 
@@ -138,16 +139,16 @@ class CharacterSelection(wx.Panel):
     def selectChar(self, charID):
         choice = self.charChoice
         numItems = len(choice.GetItems())
-        for i in xrange(numItems):
-            id = choice.GetClientData(i)
-            if id == charID:
+        for i in range(numItems):
+            id_ = choice.GetClientData(i)
+            if id_ == charID:
                 choice.SetSelection(i)
                 return True
 
         return False
 
     def fitChanged(self, event):
-        self.charChoice.Enable(event.fitID != None)
+        self.charChoice.Enable(event.fitID is not None)
         choice = self.charChoice
         sFit = Fit.getInstance()
         currCharID = choice.GetClientData(choice.GetCurrentSelection())
@@ -159,23 +160,23 @@ class CharacterSelection(wx.Panel):
         else:
             sCharacter = Character.getInstance()
             reqs = sCharacter.checkRequirements(fit)
-            sCharacter.skillReqsDict = {'charname':fit.character.name, 'skills':[]}
+            sCharacter.skillReqsDict = {'charname': fit.character.name, 'skills': []}
             if len(reqs) == 0:
                 tip = "All skill prerequisites have been met"
                 self.skillReqsStaticBitmap.SetBitmap(self.greenSkills)
             else:
-                tip  = "Skills required:\n"
+                tip = "Skills required:\n"
                 condensed = sFit.serviceFittingOptions["compactSkills"]
                 if condensed:
-                    dict = self._buildSkillsTooltipCondensed(reqs, skillsMap = {})
-                    for key in sorted(dict):
-                        tip += "%s: %d\n" % (key, dict[key])
+                    dict_ = self._buildSkillsTooltipCondensed(reqs, skillsMap={})
+                    for key in sorted(dict_):
+                        tip += "%s: %d\n" % (key, dict_[key])
                 else:
                     tip += self._buildSkillsTooltip(reqs)
                 self.skillReqsStaticBitmap.SetBitmap(self.redSkills)
             self.skillReqsStaticBitmap.SetToolTipString(tip.strip())
 
-        if newCharID == None:
+        if newCharID is None:
             sChar = Character.getInstance()
             self.selectChar(sChar.all5ID())
 
@@ -183,10 +184,9 @@ class CharacterSelection(wx.Panel):
             self.selectChar(newCharID)
             self.charChanged(None)
 
-
         event.Skip()
 
-    def _buildSkillsTooltip(self, reqs, currItem = "", tabulationLevel = 0):
+    def _buildSkillsTooltip(self, reqs, currItem="", tabulationLevel=0):
         tip = ""
         sCharacter = Character.getInstance()
 
@@ -198,11 +198,11 @@ class CharacterSelection(wx.Panel):
             for name, info in reqs.iteritems():
                 level, ID, more = info
                 sCharacter.skillReqsDict['skills'].append({
-                    'item' : currItem,
-                    'skillID' : ID,
-                    'skill' : name,
-                    'level' : level,
-                    'indent' : tabulationLevel
+                    'item': currItem,
+                    'skillID': ID,
+                    'skill': name,
+                    'level': level,
+                    'indent': tabulationLevel,
                 })
 
                 tip += "%s%s: %d\n" % ("    " * tabulationLevel, name, level)
@@ -210,7 +210,10 @@ class CharacterSelection(wx.Panel):
 
         return tip
 
-    def _buildSkillsTooltipCondensed(self, reqs, currItem = "", tabulationLevel = 0, skillsMap = {}):
+    def _buildSkillsTooltipCondensed(self, reqs, currItem="", tabulationLevel=0, skillsMap=None):
+        if skillsMap is None:
+            skillsMap = {}
+
         sCharacter = Character.getInstance()
 
         if tabulationLevel == 0:
@@ -221,11 +224,11 @@ class CharacterSelection(wx.Panel):
             for name, info in reqs.iteritems():
                 level, ID, more = info
                 sCharacter.skillReqsDict['skills'].append({
-                    'item' : currItem,
-                    'skillID' : ID,
-                    'skill' : name,
-                    'level' : level,
-                    'indent' : tabulationLevel
+                    'item': currItem,
+                    'skillID': ID,
+                    'skill': name,
+                    'level': level,
+                    'indent': tabulationLevel,
                 })
 
                 if name not in skillsMap:
@@ -233,6 +236,6 @@ class CharacterSelection(wx.Panel):
                 elif skillsMap[name] < level:
                     skillsMap[name] = level
 
-                skillMap = self._buildSkillsTooltipCondensed(more, currItem, tabulationLevel + 1, skillsMap)
+                skillsMap = self._buildSkillsTooltipCondensed(more, currItem, tabulationLevel + 1, skillsMap)
 
         return skillsMap
