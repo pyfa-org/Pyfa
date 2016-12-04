@@ -55,8 +55,8 @@ from sqlalchemy import Table, Column, Integer, ForeignKey, String
 from sqlalchemy.orm import mapper
 
 # TODO: Import fix
-import eos.saveddata.character as Character
-import eos.saveddata.fleet as Fleet
+#import eos.saveddata.character as Character
+#import eos.saveddata.fleet as Fleet
 """
 This should not be a lazy import
 ".\eos\saveddata\character.py"
@@ -128,6 +128,8 @@ class implants_table:
     mapper(Implant, implants_table)
 
 class characters_table:
+    # TODO: Import refactoring.  This is a terrible work around.
+    import eos.saveddata.character as Character
     characters_table = Table("characters", saveddata_meta,
                              Column("ID", Integer, primary_key=True),
                              Column("name", String, nullable=False),
@@ -300,6 +302,9 @@ class CommandFit(object):
         )
 
 class fits_table:
+    # TODO: Import refactoring.  This is a terrible work around.
+    import eos.saveddata.character as Character
+
     Fit._Fit__projectedFits = association_proxy(
         "victimOf",  # look at the victimOf association...
         "source_fit",  # .. and return the source fits
@@ -414,6 +419,8 @@ class fits_table:
     mapper(CommandFit, fits_table.commandFits_table)
 
 class fleet_table:
+    # TODO: Import refactor.
+    import eos.saveddata.fleet as Fleet
     gangs_table = Table("gangs", saveddata_meta,
                         Column("ID", Integer, primary_key=True),
                         Column("leaderID", ForeignKey("fits.ID")),

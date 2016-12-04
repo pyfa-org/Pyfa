@@ -20,8 +20,8 @@
 from sqlalchemy.sql import and_
 
 # TODO: Import fix
-import eos.db.saveddata.mapper as mapper
 """
+import eos.db.saveddata.mapper as mapper
 This should not be a lazy import
 ".\eos\saveddata\character.py"
 from eos.db.saveddata import queries as eds_queries
@@ -489,7 +489,8 @@ def searchFits(nameLike, where=None, eager=None):
 
     return fits
 
-
+# TODO: Import refactor.  Commenting this out breaks stuff
+'''
 def getSquadsIDsWithFitID(fitID):
     if isinstance(fitID, int):
         with sd_lock:
@@ -510,7 +511,7 @@ def getProjectedFits(fitID):
             return fits
     else:
         raise TypeError("Need integer as argument")
-
+'''
 
 def getCrestCharacters(eager=None):
     eager = processEager(eager)
