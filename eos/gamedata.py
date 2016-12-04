@@ -159,7 +159,7 @@ class Effect(EqBase):
             try:
                 self.__handler = getattr(effectModule, "handler")
             except AttributeError:
-                print "effect {} exists, but no handler".format(self.handlerName)
+                print("effect {} exists, but no handler".format(self.handlerName))
                 raise
 
             try:

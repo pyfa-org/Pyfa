@@ -26,12 +26,20 @@ import wx
 from sqlalchemy.sql import or_
 
 import config
-import eos.db
 from service import conversions
 from service.settings import SettingsProvider
 from service.price import Price
 
+from eos.gamedata import MetaType
 from eos.gamedata import Category as e_Category, Group as e_Group, Item as e_Item
+from eos.gamedata.metaGroup import MetaGroup
+from eos.gamedata.marketGroup import MarketGroup
+from eos.db import saveddata_session
+from eos.db.saveddata.queries import getAllOverrides, getPrice, clearPrices, commit, add
+from eos.db.gamedata.queries import (
+    getItem, searchItems, getGroup, getCategory, getMetaGroup, getMarketGroup,
+    getVariations, directAttributeRequest
+)
 
 try:
     from collections import OrderedDict
@@ -136,9 +144,9 @@ class SearchWorkerThread(threading.Thread):
             else:
                 where = None
 
-            results = eos.db.searchItems(request, where=where,
-                                         join=(e_Item.group, e_Group.category),
-                                         eager=("icon", "group.category", "metaGroup", "metaGroup.parent"))
+            results = searchItems(request, where=where,
+                                  join=(e_Item.group, e_Group.category),
+                                  eager=("icon", "group.category", "metaGroup", "metaGroup.parent"))
 
             items = set()
             # Return only published items, consult with Market service this time
@@ -375,15 +383,15 @@ class Market():
             if isinstance(identity, e_Item):
                 item = identity
             elif isinstance(identity, int):
-                item = eos.db.getItem(identity, *args, **kwargs)
+                item = getItem(identity, *args, **kwargs)
             elif isinstance(identity, basestring):
                 # We normally lookup with string when we are using import/export
                 # features. Check against overrides
                 identity = conversions.all.get(identity, identity)
-                item = eos.db.getItem(identity, *args, **kwargs)
+                item = getItem(identity, *args, **kwargs)
             elif isinstance(identity, float):
                 id = int(identity)
-                item = eos.db.getItem(id, *args, **kwargs)
+                item = getItem(id, *args, **kwargs)
             else:
                 raise TypeError("Need Item object, integer, float or string as argument")
         except:
@@ -406,7 +414,7 @@ class Market():
                     # Return first match
                     return cgrp
             # Return eos group if everything else returned nothing
-            return eos.db.getGroup(identity, *args, **kwargs)
+            return getGroup(identity, *args, **kwargs)
         else:
             raise TypeError("Need Group object, integer, float or string as argument")
 
@@ -415,34 +423,34 @@ class Market():
         if isinstance(identity, e_Category):
             category = identity
         elif isinstance(identity, (int, basestring)):
-            category = eos.db.getCategory(identity, *args, **kwargs)
+            category = getCategory(identity, *args, **kwargs)
         elif isinstance(identity, float):
             id = int(identity)
-            category = eos.db.getCategory(id, *args, **kwargs)
+            category = getCategory(id, *args, **kwargs)
         else:
             raise TypeError("Need Category object, integer, float or string as argument")
         return category
 
     def getMetaGroup(self, identity, *args, **kwargs):
         """Get meta group by its ID or name"""
-        if isinstance(identity, eos.types.MetaGroup):
+        if isinstance(identity, MetaGroup):
             metaGroup = identity
         elif isinstance(identity, (int, basestring)):
-            metaGroup = eos.db.getMetaGroup(identity, *args, **kwargs)
+            metaGroup = getMetaGroup(identity, *args, **kwargs)
         elif isinstance(identity, float):
             id = int(identity)
-            metaGroup = eos.db.getMetaGroup(id, *args, **kwargs)
+            metaGroup = getMetaGroup(id, *args, **kwargs)
         else:
             raise TypeError("Need MetaGroup object, integer, float or string as argument")
         return metaGroup
 
     def getMarketGroup(self, identity, *args, **kwargs):
         """Get market group by its ID"""
-        if isinstance(identity, eos.types.MarketGroup):
+        if isinstance(identity, MarketGroup):
             marketGroup = identity
         elif isinstance(identity, (int, float)):
             id = int(identity)
-            marketGroup = eos.db.getMarketGroup(id, *args, **kwargs)
+            marketGroup = getMarketGroup(id, *args, **kwargs)
         else:
             raise TypeError("Need MarketGroup object, integer or float as argument")
         return marketGroup
@@ -466,7 +474,7 @@ class Market():
         # Check if item is in forced metagroup map
         if item.name in self.ITEMS_FORCEDMETAGROUP:
             # Create meta group from scratch
-            metaGroup = eos.types.MetaType()
+            metaGroup = MetaType()
             # Get meta group info object based on meta group name
             metaGroupInfo = self.getMetaGroup(self.ITEMS_FORCEDMETAGROUP[item.name][0])
             # Get parent item based on its name
@@ -545,7 +553,7 @@ class Market():
         variations.update(parents)
         # Add all variations of parents to the set
         parentids = tuple(item.ID for item in parents)
-        variations.update(eos.db.getVariations(parentids))
+        variations.update(getVariations(parentids))
         return variations
 
     def getGroupsByCategory(self, cat):
@@ -698,9 +706,9 @@ class Market():
     def searchShips(self, name):
         """Find ships according to given text pattern"""
         filter = e_Category.name.in_(["Ship", "Structure"])
-        results = eos.db.searchItems(name, where=filter,
-                                     join=(e_Item.group, e_Group.category),
-                                     eager=("icon", "group.category", "metaGroup", "metaGroup.parent"))
+        results = searchItems(name, where=filter,
+                              join=(e_Item.group, e_Group.category),
+                              eager=("icon", "group.category", "metaGroup", "metaGroup.parent"))
         ships = set()
         for item in results:
             if self.getPublicityByItem(item):
@@ -712,12 +720,12 @@ class Market():
         self.searchWorkerThread.scheduleSearch(name, callback, filterOn)
 
     def getItemsWithOverrides(self):
-        overrides = eos.db.getAllOverrides()
+        overrides = getAllOverrides()
         items = set()
         for x in overrides:
             if (x.item is None):
-                eos.db.saveddata_session.delete(x)
-                eos.db.commit()
+                saveddata_session.delete(x)
+                commit()
             else:
                 items.add(x.item)
         return list(items)
@@ -732,7 +740,7 @@ class Market():
         except TypeError:
             attrIDs = (attribs.ID,)
         info = {}
-        for itemID, typeID, val in eos.db.directAttributeRequest(itemIDs, attrIDs):
+        for itemID, typeID, val in directAttributeRequest(itemIDs, attrIDs):
             info[itemID] = val
 
         return info
@@ -751,10 +759,10 @@ class Market():
         """Get price for provided typeID"""
         price = self.priceCache.get(typeID)
         if price is None:
-            price = eos.db.getPrice(typeID)
+            price = getPrice(typeID)
             if price is None:
-                price = eos.types.Price(typeID)
-                eos.db.add(price)
+                price = Price(typeID)
+                add(price)
 
             self.priceCache[typeID] = price
 
@@ -776,7 +784,7 @@ class Market():
                 callback(requests)
             except Exception:
                 pass
-            eos.db.commit()
+            commit()
 
         self.priceWorkerThread.trigger(requests, cb)
 
@@ -797,7 +805,7 @@ class Market():
 
     def clearPriceCache(self):
         self.priceCache.clear()
-        eos.db.clearPrices()
+        clearPrices()
 
     def getSystemWideEffects(self):
         """
