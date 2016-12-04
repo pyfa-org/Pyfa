@@ -40,6 +40,3 @@ class StatsView(object):
 
     def refreshPanel(self, fit):
         raise NotImplementedError()
-
-
-from gui.builtinStatsViews import *  # noqa

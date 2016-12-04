@@ -33,6 +33,3 @@ class Graph(object):
 
     def getIcons(self):
         return None
-
-
-from gui.builtinGraphs import *  # noqa

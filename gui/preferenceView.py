@@ -35,6 +35,3 @@ class PreferenceView(object):
 
     def getImage(self):
         return wx.NullBitmap
-
-
-from gui.builtinPreferenceViews import *  # noqa
