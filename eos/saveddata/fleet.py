@@ -21,6 +21,7 @@ from copy import deepcopy
 from itertools import chain
 
 from eos.db import saveddata_session, sd_lock
+from eos.db.savedata import mapper
 from eos.db.saveddata.queries import cachedQuery
 from eos.db.util import processEager
 from eos.saveddata.character import Skill as Skill
@@ -345,6 +346,7 @@ class Store(object):
             except:
                 pass
 
+
 @cachedQuery(Fleet, 1, "fleetID")
 def getFleet(fleetID, eager=None):
     if isinstance(fleetID, int):
@@ -396,6 +398,7 @@ def getFleetList(eager=None):
         fleets = saveddata_session.query(Fleet).options(*eager).all()
     return fleets
 
+
 def getSquadsIDsWithFitID(fitID):
     if isinstance(fitID, int):
         with sd_lock:
@@ -405,5 +408,3 @@ def getSquadsIDsWithFitID(fitID):
             return squads
     else:
         raise TypeError("Need integer as argument")
-
-

@@ -383,11 +383,6 @@ class Skill(HandledItem):
         )
 
 
-class ReadOnlyException(Exception):
-    pass
-
-
-
 @cachedQuery(Character, 1, "lookfor")
 def getCharacter(lookfor, eager=None):
     if isinstance(lookfor, int):

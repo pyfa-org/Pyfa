@@ -20,6 +20,7 @@
 from eos import config as eos_config
 from eos.db import saveddata_session, sd_lock
 
+
 configVal = getattr(eos_config, "saveddataCache", None)
 if configVal is True:
     import weakref
@@ -124,6 +125,7 @@ def sqlizeString(line):
     # Finally, replace generic wildcards with sql-style wildcards
     line = line.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_").replace("*", "%")
     return line
+
 
 def removeInvalid(fits):
     invalids = [f for f in fits if f.isInvalid]

@@ -34,4 +34,3 @@ def getMiscData(field):
     else:
         raise TypeError("Need string as argument")
     return data
-

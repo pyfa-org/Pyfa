@@ -23,6 +23,7 @@ from eos.db import saveddata_session, sd_lock
 from eos.db.saveddata.queries import cachedQuery
 from eos.db.util import processEager
 from eos.effectHandlerHelpers import HandledImplantBoosterList
+from eos.saveddata.targetResists import TargetResists
 
 
 class ImplantSet(object):

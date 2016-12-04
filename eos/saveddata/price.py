@@ -23,7 +23,7 @@ import time
 from sqlalchemy.orm import reconstructor
 
 from eos.db import saveddata_session, sd_lock
-from eos.db.saveddata.queries import cachedQuery
+from eos.db.saveddata.queries import cachedQuery, commit
 
 
 class Price(object):
@@ -43,7 +43,6 @@ class Price(object):
         return self.time >= time.time()
 
 
-
 @cachedQuery(Price, 1, "typeID")
 def getPrice(typeID):
     if isinstance(typeID, int):
@@ -59,4 +58,3 @@ def clearPrices():
         deleted_rows = saveddata_session.query(Price).delete()
     commit()
     return deleted_rows
-

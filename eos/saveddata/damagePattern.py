@@ -124,6 +124,7 @@ class DamagePattern(object):
         p.name = "%s copy" % self.name
         return p
 
+
 def getDamagePatternList(eager=None):
     eager = processEager(eager)
     with sd_lock:
@@ -150,4 +151,3 @@ def getDamagePattern(lookfor, eager=None):
     else:
         raise TypeError("Need integer or string as argument")
     return pattern
-

@@ -24,14 +24,15 @@ from copy import deepcopy
 from itertools import chain
 from math import sqrt, log, asinh
 
+from sqlalchemy.sql import and_
 from sqlalchemy.orm import validates, reconstructor
 
 import eos.db
 from eos import capSim
 from eos.db import saveddata_session, sd_lock
 from eos.db.gamedata import queries as edg_queries
-from eos.db.saveddata.queries import cachedQuery
-from eos.db.saveddata.queries import removeInvalid
+from eos.db.savedata import mapper
+from eos.db.saveddata.queries import cachedQuery, removeInvalid, sqlizeString
 from eos.db.util import processEager, processWhere
 from eos.effectHandlerHelpers import (
     HandledModuleList,
@@ -1194,7 +1195,6 @@ class Fit(object):
         ).encode('utf8')
 
 
-
 @cachedQuery(Fit, 1, "lookfor")
 def getFit(lookfor, eager=None):
     if isinstance(lookfor, int):
@@ -1236,7 +1236,6 @@ def getFitsWithShip(shipID, ownerID=None, where=None, eager=None):
         raise TypeError("ShipID must be integer")
 
     return fits
-
 
 
 def getBoosterFits(ownerID=None, where=None, eager=None):
@@ -1294,7 +1293,6 @@ def getFitList(eager=None):
     return fits
 
 
-
 def searchFits(nameLike, where=None, eager=None):
     if not isinstance(nameLike, basestring):
         raise TypeError("Need string as argument")
@@ -1308,6 +1306,7 @@ def searchFits(nameLike, where=None, eager=None):
         fits = removeInvalid(saveddata_session.query(Fit).options(*eager).filter(filter).all())
 
     return fits
+
 
 def getProjectedFits(fitID):
     if isinstance(fitID, int):

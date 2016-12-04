@@ -21,9 +21,10 @@ import logging
 
 from sqlalchemy.orm import reconstructor
 
+from eos.eqBase import EqBase
 from eos.db import saveddata_session, sd_lock
 from eos.db.gamedata import queries as edg_queries
-from eos.eqBase import EqBase
+from eos.db.saveddata import queries as eds_queries
 
 logger = logging.getLogger(__name__)
 
@@ -72,10 +73,9 @@ def getOverrides(itemID, eager=None):
 def clearOverrides():
     with sd_lock:
         deleted_rows = saveddata_session.query(Override).delete()
-    commit()
+    eds_queries.commit()
     return deleted_rows
 
 
 def getAllOverrides(eager=None):
     return saveddata_session.query(Override).all()
-
