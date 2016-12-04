@@ -106,7 +106,7 @@ class ResourcesViewFull(StatsView):
         for type_ in ("turret", "launcher", "drones", "fighter", "calibration"):
             box = wx.BoxSizer(wx.HORIZONTAL)
 
-            bitmap = BitmapLoader.getStaticBitmap("%s_big" % type, parent, "gui")
+            bitmap = BitmapLoader.getStaticBitmap("%s_big" % type_, parent, "gui")
             tooltip = wx.ToolTip(tooltipText[type_])
             bitmap.SetToolTip(tooltip)
 
