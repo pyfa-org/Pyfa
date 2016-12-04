@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2014 Alexandros Kosiaris
 #
 # This file is part of pyfa.
@@ -15,26 +15,29 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
 import wx
-import service
 import gui.mainFrame
 from gui.statsView import StatsView
 from gui.bitmapLoader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
+from service.fit import Fit
+
 
 class MiningYieldViewFull(StatsView):
     name = "miningyieldViewFull"
+
     def __init__(self, parent):
         StatsView.__init__(self)
         self.parent = parent
         self._cachedValues = []
+
     def getHeaderText(self, fit):
         return "Mining Yield"
 
     def getTextExtentW(self, text):
-        width, height = self.parent.GetTextExtent( text )
+        width, height = self.parent.GetTextExtent(text)
         return width
 
     def populatePanel(self, contentPanel, headerPanel):
@@ -47,11 +50,11 @@ class MiningYieldViewFull(StatsView):
         sizerMiningYield = wx.FlexGridSizer(1, 4)
         sizerMiningYield.AddGrowableCol(1)
 
-        contentSizer.Add( sizerMiningYield, 0, wx.EXPAND, 0)
+        contentSizer.Add(sizerMiningYield, 0, wx.EXPAND, 0)
 
         counter = 0
 
-        for miningType, image in (("miner", "mining") , ("drone", "drones")):
+        for miningType, image in (("miner", "mining"), ("drone", "drones")):
             baseBox = wx.BoxSizer(wx.HORIZONTAL)
             sizerMiningYield.Add(baseBox, 1, wx.ALIGN_LEFT if counter == 0 else wx.ALIGN_CENTER_HORIZONTAL)
 
@@ -66,7 +69,7 @@ class MiningYieldViewFull(StatsView):
             box.Add(hbox, 1, wx.ALIGN_CENTER)
 
             lbl = wx.StaticText(parent, wx.ID_ANY, u"0.0 m\u00B3/s")
-            setattr(self, "label%sminingyield%s" % (panel.capitalize() ,miningType.capitalize()), lbl)
+            setattr(self, "label%sminingyield%s" % (panel.capitalize(), miningType.capitalize()), lbl)
 
             hbox.Add(lbl, 0, wx.ALIGN_CENTER)
             self._cachedValues.append(0)
@@ -103,7 +106,7 @@ class MiningYieldViewFull(StatsView):
     def switchToFirepowerView(self, event):
         # Getting the active fit
         mainFrame = gui.mainFrame.MainFrame.getInstance()
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fit = sFit.getFit(mainFrame.getActiveFit())
         # Remove ourselves from statsPane's view list
         self.parent.views.remove(self)
@@ -122,9 +125,9 @@ class MiningYieldViewFull(StatsView):
         view.refreshPanel(fit)
 
     def refreshPanel(self, fit):
-        #If we did anything intresting, we'd update our labels to reflect the new fit's stats here
+        # If we did anything intresting, we'd update our labels to reflect the new fit's stats here
 
-        stats = (("labelFullminingyieldMiner", lambda: fit.minerYield, 3, 0, 0, u"%s m\u00B3/s",None),
+        stats = (("labelFullminingyieldMiner", lambda: fit.minerYield, 3, 0, 0, u"%s m\u00B3/s", None),
                  ("labelFullminingyieldDrone", lambda: fit.droneYield, 3, 0, 0, u"%s m\u00B3/s", None),
                  ("labelFullminingyieldTotal", lambda: fit.totalYield, 3, 0, 0, u"%s m\u00B3/s", None))
 
@@ -139,8 +142,9 @@ class MiningYieldViewFull(StatsView):
                 tipStr = valueFormat % valueStr if altFormat is None else altFormat % value
                 label.SetToolTip(wx.ToolTip(tipStr))
                 self._cachedValues[counter] = value
-            counter +=1
+            counter += 1
         self.panel.Layout()
         self.headerPanel.Layout()
+
 
 MiningYieldViewFull.register()

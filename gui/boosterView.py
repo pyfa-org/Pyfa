@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,29 +15,31 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
 import wx
-import service
 import gui.display as d
 import gui.globalEvents as GE
 import gui.marketBrowser as mb
 from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
+from service.fit import Fit
+
 
 class BoosterViewDrop(wx.PyDropTarget):
-        def __init__(self, dropFn):
-            wx.PyDropTarget.__init__(self)
-            self.dropFn = dropFn
-            # this is really transferring an EVE itemID
-            self.dropData = wx.PyTextDataObject()
-            self.SetDataObject(self.dropData)
+    def __init__(self, dropFn):
+        wx.PyDropTarget.__init__(self)
+        self.dropFn = dropFn
+        # this is really transferring an EVE itemID
+        self.dropData = wx.PyTextDataObject()
+        self.SetDataObject(self.dropData)
 
-        def OnData(self, x, y, t):
-            if self.GetData():
-                data = self.dropData.GetText().split(':')
-                self.dropFn(x, y, data)
-            return t
+    def OnData(self, x, y, t):
+        if self.GetData():
+            data = self.dropData.GetText().split(':')
+            self.dropFn(x, y, data)
+        return t
+
 
 class BoosterView(d.Display):
     DEFAULT_COLS = ["State",
@@ -58,7 +60,7 @@ class BoosterView(d.Display):
 
         self.SetDropTarget(BoosterViewDrop(self.handleListDrag))
 
-        if "__WXGTK__" in  wx.PlatformInfo:
+        if "__WXGTK__" in wx.PlatformInfo:
             self.Bind(wx.EVT_RIGHT_UP, self.scheduleMenu)
         else:
             self.Bind(wx.EVT_RIGHT_DOWN, self.scheduleMenu)
@@ -75,7 +77,7 @@ class BoosterView(d.Display):
         if data[0] == "market":
             wx.PostEvent(self.mainFrame, mb.ItemSelected(itemID=int(data[1])))
 
-    def kbEvent(self,event):
+    def kbEvent(self, event):
         keycode = event.GetKeyCode()
         if keycode == wx.WXK_DELETE or keycode == wx.WXK_NUMPAD_DELETE:
             row = self.GetFirstSelected()
@@ -85,12 +87,12 @@ class BoosterView(d.Display):
         event.Skip()
 
     def fitChanged(self, event):
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fit = sFit.getFit(event.fitID)
 
         self.Parent.Parent.DisablePage(self, not fit or fit.isStructure)
 
-        #Clear list and get out if current fitId is None
+        # Clear list and get out if current fitId is None
         if event.fitID is None and self.lastFitId is not None:
             self.DeleteAllItems()
             self.lastFitId = None
@@ -115,7 +117,7 @@ class BoosterView(d.Display):
         event.Skip()
 
     def addItem(self, event):
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
 
         fit = sFit.getFit(fitID)
@@ -139,7 +141,7 @@ class BoosterView(d.Display):
 
     def removeBooster(self, booster):
         fitID = self.mainFrame.getActiveFit()
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         sFit.removeBooster(fitID, self.origional.index(booster))
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
@@ -150,10 +152,9 @@ class BoosterView(d.Display):
             col = self.getColumn(event.Position)
             if col == self.getColIndex(State):
                 fitID = self.mainFrame.getActiveFit()
-                sFit = service.Fit.getInstance()
+                sFit = Fit.getInstance()
                 sFit.toggleBooster(fitID, row)
                 wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
-
 
     def scheduleMenu(self, event):
         event.Skip()
@@ -163,7 +164,7 @@ class BoosterView(d.Display):
     def spawnMenu(self):
         sel = self.GetFirstSelected()
         if sel != -1:
-            sFit = service.Fit.getInstance()
+            sFit = Fit.getInstance()
             fit = sFit.getFit(self.mainFrame.getActiveFit())
             item = fit.boosters[sel]
 

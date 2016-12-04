@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,15 +15,17 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
 import copy
 
 import eos.db
 import eos.types
 
+
 class DamagePattern():
     instance = None
+
     @classmethod
     def getInstance(cls):
         if cls.instance is None:
@@ -77,7 +79,7 @@ class DamagePattern():
         if lenImports == 0:
             raise ImportError("No patterns found for import")
         if lenImports != num:
-            raise ImportError("%d patterns imported from clipboard; %d had errors"%(num, num-lenImports))
+            raise ImportError("%d patterns imported from clipboard; %d had errors" % (num, num - lenImports))
 
     def exportPatterns(self):
         patterns = self.getDamagePatternList()

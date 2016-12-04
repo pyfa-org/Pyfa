@@ -5,6 +5,7 @@ class NullHandler(logging.Handler):
     def emit(self, record):
         pass
 
+
 logger = logging.getLogger('pycrest')
 logger.addHandler(NullHandler())
 

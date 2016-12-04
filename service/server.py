@@ -57,6 +57,7 @@ else {
 </html>
 '''
 
+
 # https://github.com/fuzzysteve/CREST-Market-Downloader/
 class AuthHandler(BaseHTTPServer.BaseHTTPRequestHandler):
     def do_GET(self):
@@ -72,6 +73,7 @@ class AuthHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
     def log_message(self, format, *args):
         return
+
 
 # http://code.activestate.com/recipes/425210-simple-stoppable-server-using-socket-timeout/
 class StoppableHTTPServer(BaseHTTPServer.HTTPServer):
@@ -102,7 +104,7 @@ class StoppableHTTPServer(BaseHTTPServer.HTTPServer):
         self.run = False
 
     def handle_timeout(self):
-        #logger.debug("Number of tries: %d"%self.tries)
+        # logger.debug("Number of tries: %d"%self.tries)
         self.tries += 1
         if self.tries == self.max_tries:
             logger.debug("Server timed out waiting for connection")
@@ -116,6 +118,7 @@ class StoppableHTTPServer(BaseHTTPServer.HTTPServer):
             except TypeError:
                 pass
         self.server_close()
+
 
 if __name__ == "__main__":
     httpd = StoppableHTTPServer(('', 6461), AuthHandler)

@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 from gui.contextMenu import ContextMenu
 import gui.mainFrame
-import service
 import wx
 from gui.bitmapLoader import BitmapLoader
 from eos.types import Skill
 import gui.globalEvents as GE
+from service.fit import Fit
+from service.character import Character
+
 
 class ChangeAffectingSkills(ContextMenu):
     def __init__(self):
@@ -15,18 +17,18 @@ class ChangeAffectingSkills(ContextMenu):
         if self.mainFrame.getActiveFit() is None or srcContext not in ("fittingModule", "fittingCharge", "fittingShip"):
             return False
 
-        self.sChar = service.Character.getInstance()
-        self.sFit = service.Fit.getInstance()
+        self.sChar = Character.getInstance()
+        self.sFit = Fit.getInstance()
         fit = self.sFit.getFit(self.mainFrame.getActiveFit())
 
         self.charID = fit.character.ID
 
-        #if self.sChar.getCharName(self.charID) in ("All 0", "All 5"):
+        # if self.sChar.getCharName(self.charID) in ("All 0", "All 5"):
         #    return False
 
         if srcContext == "fittingShip":
             fitID = self.mainFrame.getActiveFit()
-            sFit = service.Fit.getInstance()
+            sFit = Fit.getInstance()
             self.stuff = sFit.getFit(fitID).ship
             cont = sFit.getFit(fitID).ship.itemModifiedAttributes
         elif srcContext == "fittingCharge":
@@ -60,9 +62,9 @@ class ChangeAffectingSkills(ContextMenu):
         else:
             label = "Level %s" % i
 
-        id = ContextMenu.nextID()
-        self.skillIds[id] = (skill, i)
-        menuItem = wx.MenuItem(rootMenu, id, label, kind=wx.ITEM_RADIO)
+        id_ = ContextMenu.nextID()
+        self.skillIds[id_] = (skill, i)
+        menuItem = wx.MenuItem(rootMenu, id_, label, kind=wx.ITEM_RADIO)
         rootMenu.Bind(wx.EVT_MENU, self.handleSkillChange, menuItem)
         return menuItem
 
@@ -80,7 +82,7 @@ class ChangeAffectingSkills(ContextMenu):
                 if bitmap is not None:
                     skillItem.SetBitmap(bitmap)
 
-            for i in xrange(-1, 6):
+            for i in range(-1, 6):
                 levelItem = self.addSkill(rootMenu if msw else grandSub, skill, i)
                 grandSub.AppendItem(levelItem)
                 if (not skill.learned and i == -1) or (skill.learned and skill.level == i):
@@ -98,5 +100,6 @@ class ChangeAffectingSkills(ContextMenu):
 
         wx.PostEvent(self.mainFrame, GE.CharListUpdated())
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+
 
 ChangeAffectingSkills.register()

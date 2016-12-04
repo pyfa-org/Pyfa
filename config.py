@@ -31,18 +31,19 @@ gameDB = None
 
 
 class StreamToLogger(object):
-   """
-   Fake file-like stream object that redirects writes to a logger instance.
-   From: http://www.electricmonk.nl/log/2011/08/14/redirect-stdout-and-stderr-to-a-logger-in-python/
-   """
-   def __init__(self, logger, log_level=logging.INFO):
-      self.logger = logger
-      self.log_level = log_level
-      self.linebuf = ''
+    """
+    Fake file-like stream object that redirects writes to a logger instance.
+    From: http://www.electricmonk.nl/log/2011/08/14/redirect-stdout-and-stderr-to-a-logger-in-python/
+    """
+    def __init__(self, logger, log_level=logging.INFO):
+        self.logger = logger
+        self.log_level = log_level
+        self.linebuf = ''
 
-   def write(self, buf):
-      for line in buf.rstrip().splitlines():
-         self.logger.log(self.log_level, line.rstrip())
+    def write(self, buf):
+        for line in buf.rstrip().splitlines():
+            self.logger.log(self.log_level, line.rstrip())
+
 
 def isFrozen():
     if hasattr(sys, 'frozen'):
@@ -50,15 +51,18 @@ def isFrozen():
     else:
         return False
 
+
 def getPyfaRoot():
     base = getattr(sys.modules['__main__'], "__file__", sys.executable) if isFrozen() else sys.argv[0]
     root = os.path.dirname(os.path.realpath(os.path.abspath(base)))
     root = unicode(root, sys.getfilesystemencoding())
     return root
 
+
 def __createDirs(path):
     if not os.path.exists(path):
         os.makedirs(path)
+
 
 def defPaths(customSavePath):
     global debug
@@ -87,9 +91,9 @@ def defPaths(customSavePath):
     else:
         savePath = getattr(configforced, "savePath", None)
         if savePath is None:
-            if customSavePath is None: # customSavePath is not overriden
+            if customSavePath is None:  # customSavePath is not overriden
                 savePath = unicode(os.path.expanduser(os.path.join("~", ".pyfa")),
-                               sys.getfilesystemencoding())
+                                   sys.getfilesystemencoding())
             else:
                 savePath = customSavePath
 
@@ -114,9 +118,9 @@ def defPaths(customSavePath):
         sys.stdout = sl
 
         # This interferes with cx_Freeze's own handling of exceptions. Find a way to fix this.
-        #stderr_logger = logging.getLogger('STDERR')
-        #sl = StreamToLogger(stderr_logger, logging.ERROR)
-        #sys.stderr = sl
+        # stderr_logger = logging.getLogger('STDERR')
+        # sl = StreamToLogger(stderr_logger, logging.ERROR)
+        # sys.stderr = sl
 
     # The database where we store all the fits etc
     saveDB = os.path.join(savePath, "saveddata.db")
@@ -126,10 +130,10 @@ def defPaths(customSavePath):
     # maintenance script
     gameDB = os.path.join(pyfaPath, "eve.db")
 
-    ## DON'T MODIFY ANYTHING BELOW ##
+    # DON'T MODIFY ANYTHING BELOW!
     import eos.config
 
-    #Caching modifiers, disable all gamedata caching, its unneeded.
+    # Caching modifiers, disable all gamedata caching, its unneeded.
     eos.config.gamedataCache = False
     # saveddata db location modifier, shouldn't ever need to touch this
     eos.config.saveddata_connectionstring = "sqlite:///" + saveDB + "?check_same_thread=False"

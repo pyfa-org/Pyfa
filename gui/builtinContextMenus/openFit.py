@@ -3,6 +3,7 @@ import gui.mainFrame
 import wx
 from gui.shipBrowser import FitSelected
 
+
 class OpenFit(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
@@ -16,5 +17,6 @@ class OpenFit(ContextMenu):
     def activate(self, fullContext, selection, i):
         fit = selection[0]
         wx.PostEvent(self.mainFrame, FitSelected(fitID=fit.ID, startup=2))
+
 
 OpenFit.register()

@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2014 Ryan Holmes
 #
 # This file is part of pyfa.
@@ -15,14 +15,17 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
 import copy
 
 import eos
+from eos.saveddata import targetResists as db_targetResists
+
 
 class TargetResists(object):
     instance = None
+
     @classmethod
     def getInstance(cls):
         if cls.instance is None:
@@ -76,9 +79,9 @@ class TargetResists(object):
         if lenImports == 0:
             raise ImportError("No patterns found for import")
         if lenImports != num:
-            raise ImportError("%d patterns imported from clipboard; %d had errors"%(num, num-lenImports))
+            raise ImportError("%d patterns imported from clipboard; %d had errors" % (num, num - lenImports))
 
     def exportPatterns(self):
         patterns = self.getTargetResistsList()
         patterns.sort(key=lambda p: p.name)
-        return eos.types.TargetResists.exportPatterns(*patterns)
+        return db_targetResists.TargetResists.exportPatterns(*patterns)

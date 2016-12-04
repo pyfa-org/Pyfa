@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,21 +15,21 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
 
 import time
 from xml.dom import minidom
 
 import eos
-from service.network import Network
+from service.network import Network, TimeoutError
 
-VALIDITY = 24*60*60  # Price validity period, 24 hours
-REREQUEST = 4*60*60  # Re-request delay for failed fetches, 4 hours
-TIMEOUT = 15*60  # Network timeout delay for connection issues, 15 minutes
+VALIDITY = 24 * 60 * 60  # Price validity period, 24 hours
+REREQUEST = 4 * 60 * 60  # Re-request delay for failed fetches, 4 hours
+TIMEOUT = 15 * 60  # Network timeout delay for connection issues, 15 minutes
 
-class Price():
 
+class Price(object):
     @classmethod
     def fetchPrices(cls, prices):
         """Fetch all prices passed to this method"""
@@ -65,7 +65,7 @@ class Price():
 
         # Base request URL
         baseurl = "https://eve-central.com/api/marketstat"
-        data.append(("usesystem", 30000142)) # Use Jita for market
+        data.append(("usesystem", 30000142))  # Use Jita for market
 
         for typeID in toRequest:  # Add all typeID arguments
             data.append(("typeid", typeID))

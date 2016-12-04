@@ -24,17 +24,20 @@ import logging
 import wx
 from codecs import open
 
-import xml.parsers.expat
-
 import eos.db
-from eos.types import State, Slot, Character, Module, Drone, Fighter
+from eos.types import State, Slot, Module, Drone, Fighter
 from eos.types import Fit as FitType
+from eos.saveddata.character import Character as saveddata_Character
 
-from service.market import Market
-from service.damagePattern import DamagePattern
 from service.fleet import Fleet
+from service.market import Market
+from service.character import Character
 from service.settings import SettingsProvider
-from service.port import Port
+from service.damagePattern import DamagePattern
+
+
+# TODO: port this to port.py
+# from service.port import Port
 
 logger = logging.getLogger(__name__)
 
@@ -88,7 +91,7 @@ class Fit(object):
     def __init__(self):
         self.pattern = DamagePattern.getInstance().getDamagePattern("Uniform")
         self.targetResists = None
-        self.character = Character.getAll5()
+        self.character = saveddata_Character.getAll5()
         self.booster = False
         self.dirtyFitIDs = set()
 
@@ -105,8 +108,8 @@ class Fit(object):
             "showMarketShortcuts": False,
             "enableGaugeAnimation": True,
             "exportCharges": True,
-            "openFitInNew": False
-            }
+            "openFitInNew": False,
+        }
 
         self.serviceFittingOptions = SettingsProvider.getInstance().getSettings(
             "pyfaServiceFittingOptions", serviceFittingDefaultOptions)
@@ -701,10 +704,10 @@ class Fit(object):
                         standardAttackActive = True
                     else:
                         # Activate all other abilities (Neut, Web, etc) except propmods if no standard attack is active
-                        if (ability.effect.isImplemented
-                            and standardAttackActive is False
-                            and ability.effect.handlerName != u'fighterabilitymicrowarpdrive'
-                            and ability.effect.handlerName != u'fighterabilityevasivemaneuvers'):
+                        if (ability.effect.isImplemented and
+                                standardAttackActive is False and
+                                ability.effect.handlerName != u'fighterabilitymicrowarpdrive' and
+                                ability.effect.handlerName != u'fighterabilityevasivemaneuvers'):
                             ability.active = True
 
                 if used >= total:
@@ -956,30 +959,7 @@ class Fit(object):
         fit.damagePattern = dp
         self.recalc(fit)
 
-    def exportFit(self, fitID):
-        fit = eos.db.getFit(fitID)
-        return Port.exportEft(fit)
-
-    def exportEftImps(self, fitID):
-        fit = eos.db.getFit(fitID)
-        return Port.exportEftImps(fit)
-
-    def exportDna(self, fitID):
-        fit = eos.db.getFit(fitID)
-        return Port.exportDna(fit)
-
-    def exportCrest(self, fitID, callback=None):
-        fit = eos.db.getFit(fitID)
-        return Port.exportCrest(fit, callback)
-
-    def exportXml(self, callback=None, *fitIDs):
-        fits = map(lambda fitID: eos.db.getFit(fitID), fitIDs)
-        return Port.exportXml(callback, *fits)
-
-    def exportMultiBuy(self, fitID):
-        fit = eos.db.getFit(fitID)
-        return Port.exportMultiBuy(fit)
-
+    # TODO: Should move all the backup/import stuff out of here
     def backupFits(self, path, callback):
         thread = FitBackupThread(path, callback)
         thread.start()
@@ -1054,6 +1034,8 @@ class Fit(object):
             if codec_found is None:
                 return False, "Proper codec could not be established for %s" % path
 
+            # TODO: port this to port.py
+            '''
             try:
                 _, fitsImport = Port.importAuto(srcString, path, callback=callback, encoding=codec_found)
                 fits += fitsImport
@@ -1062,6 +1044,7 @@ class Fit(object):
             except Exception:
                 logger.exception("Unknown exception processing: %s", path)
                 return False, "Unknown Error while processing %s" % path
+            '''
 
         IDs = []
         numFits = len(fits)
@@ -1081,6 +1064,8 @@ class Fit(object):
 
         return True, fits
 
+    # TODO: port this to port.py
+    '''
     def importFitFromBuffer(self, bufferStr, activeFit=None):
         _, fits = Port.importAuto(bufferStr, activeFit=activeFit)
         for fit in fits:
@@ -1089,6 +1074,7 @@ class Fit(object):
             fit.targetResists = self.targetResists
             eos.db.save(fit)
         return fits
+    '''
 
     def checkStates(self, fit, base):
         changed = False

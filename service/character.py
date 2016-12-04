@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,7 +15,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
 import copy
 import itertools
@@ -33,9 +33,9 @@ import config
 import eos.db
 import eos.types
 from service.eveapi import EVEAPIConnection, ParseXML
-from service.fit import Fit
 
 logger = logging.getLogger(__name__)
+
 
 class CharacterImportThread(threading.Thread):
     def __init__(self, paths, callback):
@@ -51,7 +51,7 @@ class CharacterImportThread(threading.Thread):
                 # we try to parse api XML data first
                 with open(path, mode='r') as charFile:
                     sheet = ParseXML(charFile)
-                    char = sCharacter.new(sheet.name+" (imported)")
+                    char = sCharacter.new(sheet.name + " (imported)")
                     sCharacter.apiUpdateCharSheet(char.ID, sheet.skills)
             except:
                 # if it's not api XML data, try this
@@ -69,13 +69,14 @@ class CharacterImportThread(threading.Thread):
                             "typeID": int(skill.getAttribute("typeID")),
                             "level": int(skill.getAttribute("level")),
                         })
-                    char = sCharacter.new(name+" (EVEMon)")
+                    char = sCharacter.new(name + " (EVEMon)")
                     sCharacter.apiUpdateCharSheet(char.ID, skills)
-                except Exception, e:
-                    print e.message
+                except Exception as e:
+                    print(e.message)
                     continue
 
         wx.CallAfter(self.callback)
+
 
 class SkillBackupThread(threading.Thread):
     def __init__(self, path, saveFmt, activeFit, callback):
@@ -88,8 +89,7 @@ class SkillBackupThread(threading.Thread):
     def run(self):
         path = self.path
         sCharacter = Character.getInstance()
-        sFit = Fit.getInstance()
-        fit = sFit.getFit(self.activeFit)
+
         backupData = ""
         if self.saveFmt == "xml" or self.saveFmt == "emp":
             backupData = sCharacter.exportXml()
@@ -100,10 +100,11 @@ class SkillBackupThread(threading.Thread):
             with gzip.open(path, mode='wb') as backupFile:
                 backupFile.write(backupData)
         else:
-            with open(path, mode='w',encoding='utf-8') as backupFile:
+            with open(path, mode='w', encoding='utf-8') as backupFile:
                 backupFile.write(backupData)
 
         wx.CallAfter(self.callback)
+
 
 class Character(object):
     instance = None
@@ -122,7 +123,7 @@ class Character(object):
         self.all5()
 
     def exportText(self):
-        data  = "Pyfa exported plan for \""+self.skillReqsDict['charname']+"\"\n"
+        data = "Pyfa exported plan for \"" + self.skillReqsDict['charname'] + "\"\n"
         data += "=" * 79 + "\n"
         data += "\n"
         item = ""
@@ -138,7 +139,7 @@ class Character(object):
 
     def exportXml(self):
         root = ElementTree.Element("plan")
-        root.attrib["name"] = "Pyfa exported plan for "+self.skillReqsDict['charname']
+        root.attrib["name"] = "Pyfa exported plan for " + self.skillReqsDict['charname']
         root.attrib["revision"] = config.evemonMinVersion
 
         sorts = ElementTree.SubElement(root, "sorting")
@@ -149,7 +150,7 @@ class Character(object):
         skillsSeen = set()
 
         for s in self.skillReqsDict['skills']:
-            skillKey = str(s["skillID"])+"::"+s["skill"]+"::"+str(int(s["level"]))
+            skillKey = str(s["skillID"]) + "::" + s["skill"] + "::" + str(int(s["level"]))
             if skillKey in skillsSeen:
                 pass   # Duplicate skills confuse EVEMon
             else:
@@ -163,7 +164,7 @@ class Character(object):
                 notes = ElementTree.SubElement(entry, "notes")
                 notes.text = entry.attrib["skill"]
 
-        tree = ElementTree.ElementTree(root)
+        # tree = ElementTree.ElementTree(root)
         data = ElementTree.tostring(root, 'utf-8')
         prettydata = minidom.parseString(data).toprettyxml(indent="  ")
 
@@ -230,7 +231,7 @@ class Character(object):
         group = eos.db.getGroup(groupID)
         skills = []
         for skill in group.items:
-            if skill.published == True:
+            if skill.published is True:
                 skills.append((skill.ID, skill.name))
         return skills
 
@@ -305,7 +306,7 @@ class Character(object):
             if char.name == charName:
                 charID = char.characterID
 
-        if charID == None:
+        if charID is None:
             return
 
         sheet = auth.character(charID).CharacterSheet()
@@ -361,7 +362,7 @@ class Character(object):
         return char.implants
 
     def checkRequirements(self, fit):
-        toCheck = []
+        # toCheck = []
         reqs = {}
         for thing in itertools.chain(fit.modules, fit.drones, fit.fighters, (fit.ship,)):
             if isinstance(thing, eos.types.Module) and thing.slot == eos.types.Slot.RIG:

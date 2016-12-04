@@ -1,8 +1,11 @@
 from gui.contextMenu import ContextMenu
 import gui.mainFrame
-import service
-import gui.globalEvents as GE
 import wx
+import gui.globalEvents as GE
+from service.fit import Fit
+from service.character import Character
+from service.implantSet import ImplantSets as ImplantSet
+
 
 class ImplantSets(ContextMenu):
     def __init__(self):
@@ -32,7 +35,7 @@ class ImplantSets(ContextMenu):
         m = wx.Menu()
         bindmenu = rootMenu if "wxMSW" in wx.PlatformInfo else m
 
-        sIS = service.ImplantSets.getInstance()
+        sIS = ImplantSet.getInstance()
         implantSets = sIS.getImplantSetList()
 
         self.context = context
@@ -41,36 +44,36 @@ class ImplantSets(ContextMenu):
 
         self.idmap = {}
 
-        for set in implantSets:
-            id = ContextMenu.nextID()
-            mitem = wx.MenuItem(rootMenu, id, set.name)
+        for implantSet in implantSets:
+            id_ = ContextMenu.nextID()
+            mitem = wx.MenuItem(rootMenu, id_, implantSet.name)
             bindmenu.Bind(wx.EVT_MENU, self.handleSelection, mitem)
-            self.idmap[id] = set
+            self.idmap[id_] = implantSet
             m.AppendItem(mitem)
 
         return m
 
     def handleSelection(self, event):
-        set = self.idmap.get(event.Id, None)
+        implant_set = self.idmap.get(event.Id, None)
 
-        if set is None:
+        if implant_set is None:
             event.Skip()
             return
 
         if self.context == "implantEditor":
             # we are calling from character editor, the implant source is different
-            sChar = service.Character.getInstance()
+            sChar = Character.getInstance()
             charID = self.selection.getActiveCharacter()
 
-            for implant in set.implants:
+            for implant in implant_set.implants:
                 sChar.addImplant(charID, implant.item.ID)
 
             wx.PostEvent(self.selection, GE.CharChanged())
         else:
-            sFit = service.Fit.getInstance()
+            sFit = Fit.getInstance()
             fitID = self.mainFrame.getActiveFit()
-            for implant in set.implants:
-                sFit.addImplant(fitID, implant.item.ID, recalc=implant == set.implants[-1])
+            for implant in implant_set.implants:
+                sFit.addImplant(fitID, implant.item.ID, recalc=implant == implant_set.implants[-1])
 
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
