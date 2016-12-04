@@ -18,7 +18,6 @@
 # ===============================================================================
 
 
-
 from sqlalchemy import CheckConstraint
 from sqlalchemy import Float
 from sqlalchemy import ForeignKey, Boolean
@@ -51,12 +50,10 @@ from eos.saveddata.override import Override as Override
 from eos.saveddata.price import Price as Price
 from eos.saveddata.targetResists import TargetResists as TargetResists
 from eos.saveddata.user import User as User
-from sqlalchemy import Table, Column, Integer, ForeignKey, String
-from sqlalchemy.orm import mapper
 
 # TODO: Import fix
-#import eos.saveddata.character as Character
-#import eos.saveddata.fleet as Fleet
+# import eos.saveddata.character as Character
+# import eos.saveddata.fleet as Fleet
 """
 This should not be a lazy import
 ".\eos\saveddata\character.py"
@@ -85,11 +82,9 @@ class boosters_table():
                                     Column("boosterID", ForeignKey("boosters.ID"), primary_key=True),
                                     Column("effectID", Integer, primary_key=True))
 
-
     class ActiveSideEffectsDummy(object):
         def __init__(self, effectID):
             self.effectID = effectID
-
 
     mapper(ActiveSideEffectsDummy, activeSideEffects_table)
     mapper(Booster, boosters_table,
@@ -97,7 +92,8 @@ class boosters_table():
 
     Booster._Booster__activeSideEffectIDs = association_proxy("_Booster__activeSideEffectDummies", "effectID")
 
-class cargo_table():
+
+class cargo_table:
     cargo_table = Table("cargo", saveddata_meta,
                         Column("ID", Integer, primary_key=True),
                         Column("fitID", Integer, ForeignKey("fits.ID"), nullable=False, index=True),
@@ -126,6 +122,7 @@ class implants_table:
                                  Column("implantID", ForeignKey("implants.ID"), primary_key=True))
 
     mapper(Implant, implants_table)
+
 
 class characters_table:
     # TODO: Import refactoring.  This is a terrible work around.
@@ -159,8 +156,8 @@ class characters_table:
                    primaryjoin=implants_table.charImplants_table.c.charID == characters_table.c.ID,
                    secondaryjoin=implants_table.charImplants_table.c.implantID == Implant.ID,
                    secondary=implants_table.charImplants_table),
-           }
-           )
+           })
+
 
 class crest_table():
     crest_table = Table("crest", saveddata_meta,
@@ -169,6 +166,7 @@ class crest_table():
                         Column("refresh_token", String, nullable=False))
 
     mapper(CrestChar, crest_table)
+
 
 class drones_table():
     drones_table = Table("drones", saveddata_meta,
@@ -180,6 +178,7 @@ class drones_table():
                          Column("projected", Boolean, default=False))
 
     mapper(Drone, drones_table)
+
 
 class fighters_table:
     fighters_table = Table("fighters", saveddata_meta,
@@ -206,6 +205,7 @@ class fighters_table:
            })
 
     mapper(FighterAbility, fighter_abilities_table)
+
 
 class fits_table:
     fits_table = Table("fits", saveddata_meta,
@@ -236,6 +236,7 @@ class fits_table:
                               Column("active", Boolean, nullable=False, default=1)
                               )
 
+
 class ProjectedFit(object):
     def __init__(self, sourceID, source_fit, amount=1, active=True):
         self.sourceID = sourceID
@@ -265,6 +266,7 @@ class ProjectedFit(object):
         return "ProjectedFit(sourceID={}, victimID={}, amount={}, active={}) at {}".format(
             self.sourceID, self.victimID, self.amount, self.active, hex(id(self))
         )
+
 
 class modules_table:
     modules_table = Table("modules", saveddata_meta,
@@ -300,6 +302,7 @@ class CommandFit(object):
         return "CommandFit(boosterID={}, boostedID={}, active={}) at {}".format(
             self.boosterID, self.boostedID, self.active, hex(id(self))
         )
+
 
 class fits_table:
     # TODO: Import refactoring.  This is a terrible work around.
@@ -418,6 +421,7 @@ class fits_table:
 
     mapper(CommandFit, fits_table.commandFits_table)
 
+
 class fleet_table:
     # TODO: Import refactor.
     import eos.saveddata.fleet as Fleet
@@ -461,6 +465,7 @@ class fleet_table:
                                            secondaryjoin=squadmembers_table.c.memberID == fits_table.c.ID,
                                            secondary=squadmembers_table)})
 
+
 class implant_set_table:
     implant_set_table = Table("implantSets", saveddata_meta,
                               Column("ID", Integer, primary_key=True),
@@ -481,12 +486,14 @@ class implant_set_table:
            }
            )
 
+
 class miscdata_table:
     miscdata_table = Table("miscdata", saveddata_meta,
                            Column("fieldName", String, primary_key=True),
                            Column("fieldValue", String))
 
     mapper(MiscData, miscdata_table)
+
 
 class overrides_table:
     overrides_table = Table("overrides", saveddata_meta,
@@ -495,6 +502,7 @@ class overrides_table:
                             Column("value", Float, nullable=False))
 
     mapper(Override, overrides_table)
+
 
 class prices_table:
     prices_table = Table("prices", saveddata_meta,
@@ -505,6 +513,7 @@ class prices_table:
 
     mapper(Price, prices_table)
 
+
 class skills_table:
     skills_table = Table("characterSkills", saveddata_meta,
                          Column("characterID", ForeignKey("characters.ID"), primary_key=True, index=True),
@@ -512,6 +521,7 @@ class skills_table:
                          Column("_Skill__level", Integer, nullable=True))
 
     mapper(Character.Skill, skills_table)
+
 
 class targetResists_table:
     targetResists_table = Table("targetResists", saveddata_meta,
@@ -525,6 +535,7 @@ class targetResists_table:
 
     mapper(TargetResists, targetResists_table)
 
+
 class users_table:
     users_table = Table("users", saveddata_meta,
                         Column("ID", Integer, primary_key=True),
@@ -533,6 +544,7 @@ class users_table:
                         Column("admin", Boolean, nullable=False))
 
     mapper(User, users_table)
+
 
 class damagePatterns_table:
     damagePatterns_table = Table("damagePatterns", saveddata_meta,
