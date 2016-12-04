@@ -54,7 +54,7 @@ from eos.saveddata.fleet import Fleet
 from eos.saveddata.fleet import Wing
 from eos.saveddata.fleet import Squad
 from eos.saveddata.skill import Skill
-
+import eos.saveddata.character as Character
 
 class boosters_table():
     boosters_table = Table("boosters", saveddata_meta,
@@ -112,8 +112,6 @@ class implants_table:
 
 
 class characters_table:
-    # TODO: Import refactoring.  This is a terrible work around.
-    import eos.saveddata.character as Character
     characters_table = Table("characters", saveddata_meta,
                              Column("ID", Integer, primary_key=True),
                              Column("name", String, nullable=False),
