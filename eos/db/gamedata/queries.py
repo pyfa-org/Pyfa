@@ -24,7 +24,7 @@ from sqlalchemy.sql import and_, or_, select
 from eos.gamedata import Attribute, Category, Group, Item, MarketGroup, MetaGroup, MetaData
 from eos.db import gamedata_session
 from eos.db.util import processEager, processWhere, sqlizeString
-from eos.db.gamedata.mapper import metatypes_table, items_table
+from eos.db.gamedata import mapper
 from eos.db.gamedata.cache import cachedQuery
 
 
@@ -196,10 +196,10 @@ def getVariations(itemids, where=None, eager=None):
     if len(itemids) == 0:
         return []
 
-    itemfilter = or_(*(metatypes_table.c.parentTypeID == itemid for itemid in itemids))
+    itemfilter = or_(*(mapper.metatypes_table.c.parentTypeID == itemid for itemid in itemids))
     filter = processWhere(itemfilter, where)
-    joinon = items_table.c.typeID == metatypes_table.c.typeID
-    vars = gamedata_session.query(Item).options(*processEager(eager)).join((metatypes_table, joinon)).filter(
+    joinon = mapper.items_table.c.typeID == mapper.metatypes_table.c.typeID
+    vars = gamedata_session.query(Item).options(*processEager(eager)).join((mapper.metatypes_table, joinon)).filter(
         filter).all()
     return vars
 
