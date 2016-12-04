@@ -9,7 +9,7 @@ from service.crest import Crest
 from service.fit import Fit
 
 from eos.types import Cargo
-from eos.db import getItem
+from eos.db.gamedata.queries import getItem
 
 import gui.display as d
 import gui.globalEvents as GE

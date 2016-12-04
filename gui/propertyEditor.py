@@ -11,7 +11,7 @@ except:
     else:
         raise
 
-import eos.db
+from eso.db.gamedata.queries import getItem, getAttributeInfo
 from service.market import Market
 import gui.display as d
 import gui.globalEvents as GE
@@ -101,8 +101,8 @@ class AttributeEditor(wx.Frame):
                 spamreader = csv.reader(csvfile)
                 for row in spamreader:
                     itemID, attrID, value = row
-                    item = eos.db.getItem(int(itemID))
-                    attr = eos.db.getAttributeInfo(int(attrID))
+                    item = getItem(int(itemID))
+                    attr = getAttributeInfo(int(attrID))
                     item.setOverride(attr, float(value))
             self.itemView.updateItems(True)
 

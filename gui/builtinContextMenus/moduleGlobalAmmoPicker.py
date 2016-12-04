@@ -3,8 +3,8 @@ import gui.mainFrame
 import wx
 import gui.globalEvents as GE
 from gui.builtinContextMenus.moduleAmmoPicker import ModuleAmmoPicker
-import eos.db
 from service.fit import Fit
+from eos.db.saveddata.queries import getFit
 
 
 class ModuleGlobalAmmoPicker(ModuleAmmoPicker):
@@ -26,7 +26,7 @@ class ModuleGlobalAmmoPicker(ModuleAmmoPicker):
 
         sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
-        fit = eos.db.getFit(fitID)
+        fit = getFit(fitID)
 
         selectedModule = self.modules[0]
         allModules = []
