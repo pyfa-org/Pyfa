@@ -19,9 +19,10 @@
 
 
 import wx
-from eos.types import Fighter
-from gui.viewColumn import ViewColumn
+
 import gui.mainFrame
+from eos.saveddata.fighter import Fighter as Fighter
+from gui.viewColumn import ViewColumn
 
 
 class Abilities(ViewColumn):

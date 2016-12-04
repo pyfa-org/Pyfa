@@ -18,8 +18,9 @@
 # =============================================================================
 
 import copy
+
 import eos.db
-from eos.types import Fleet as Fleet_
+from eos.saveddata.fleet import Fleet as Fleet_
 
 
 class Fleet(object):

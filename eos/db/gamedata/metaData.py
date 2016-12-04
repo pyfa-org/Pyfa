@@ -21,7 +21,7 @@ from sqlalchemy import Column, Table, String
 from sqlalchemy.orm import mapper
 
 from eos.db import gamedata_meta
-from eos.types import MetaData
+from eos.gamedata import MetaData
 
 metadata_table = Table("metadata", gamedata_meta,
                        Column("field_name", String, primary_key=True),

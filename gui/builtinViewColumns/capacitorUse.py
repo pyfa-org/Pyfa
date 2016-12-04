@@ -19,11 +19,12 @@
 
 import wx
 
-from eos.types import Mode
-from service.attribute import Attribute
+from eos.gamedata import Attribute
+from eos.saveddata.mode import Mode as Mode
+from gui.bitmapLoader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 from gui.viewColumn import ViewColumn
-from gui.bitmapLoader import BitmapLoader
+from service.attribute import Attribute
 
 
 class CapacitorUse(ViewColumn):

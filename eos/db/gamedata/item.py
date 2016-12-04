@@ -23,7 +23,7 @@ from sqlalchemy.orm import relation, mapper, synonym, deferred
 from sqlalchemy.orm.collections import attribute_mapped_collection
 
 from eos.db import gamedata_meta
-from eos.types import Icon, Attribute, Item, Effect, MetaType, Group, Traits
+from eos.gamedata import Attribute, Effect, Group, Icon, Item, MetaType, Traits
 
 items_table = Table("invtypes", gamedata_meta,
                     Column("typeID", Integer, primary_key=True),

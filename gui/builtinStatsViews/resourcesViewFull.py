@@ -18,14 +18,13 @@
 # =============================================================================
 
 import wx
-from gui.statsView import StatsView
-from gui.bitmapLoader import BitmapLoader
-from gui import pygauge as PG
-import gui.mainFrame
+
 import gui.chromeTabs
-
-from eos.types import Hardpoint
-
+import gui.mainFrame
+from eos.saveddata.module import Hardpoint as Hardpoint
+from gui import pygauge as PG
+from gui.bitmapLoader import BitmapLoader
+from gui.statsView import StatsView
 from gui.utils.numberFormatter import formatAmount
 
 

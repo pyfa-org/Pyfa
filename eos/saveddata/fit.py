@@ -29,8 +29,11 @@ import eos.db
 from eos import capSim
 from eos.effectHandlerHelpers import *
 from eos.enum import Enum
-from eos.saveddata.module import State, Hardpoint
-from eos.types import Ship, Character, Slot, Module, Citadel
+from eos.saveddata.character import Character as Character
+from eos.saveddata.citadel import Citadel as Citadel
+from eos.saveddata.fit import Fit as Fit, ImplantLocation as ImplantLocation
+from eos.saveddata.module import Slot as Slot, Module as Module, State as State, Hardpoint as Hardpoint
+from eos.saveddata.ship import Ship as Ship
 from utils.timer import Timer
 
 logger = logging.getLogger(__name__)

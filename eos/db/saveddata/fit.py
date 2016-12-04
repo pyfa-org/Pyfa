@@ -31,8 +31,17 @@ from eos.db.saveddata.fighter import fighters_table
 from eos.db.saveddata.implant import fitImplants_table
 from eos.db.saveddata.module import modules_table
 from eos.effectHandlerHelpers import HandledModuleList, HandledImplantBoosterList, HandledProjectedModList, HandledDroneCargoList, HandledProjectedDroneList
-from eos.types import Fit, Module, User, Booster, Drone, Fighter, Cargo, Implant, Character, DamagePattern, \
-    TargetResists, ImplantLocation
+from eos.saveddata.booster import Booster as Booster
+from eos.saveddata.cargo import Cargo as Cargo
+from eos.saveddata.character import Character as Character
+from eos.saveddata.damagePattern import DamagePattern as DamagePattern
+from eos.saveddata.drone import Drone as Drone
+from eos.saveddata.fighter import Fighter as Fighter
+from eos.saveddata.fit import Fit as Fit, ImplantLocation as ImplantLocation
+from eos.saveddata.implant import Implant as Implant
+from eos.saveddata.module import Module as Module
+from eos.saveddata.targetResists import TargetResists as TargetResists
+from eos.saveddata.user import User as User
 
 fits_table = Table("fits", saveddata_meta,
                    Column("ID", Integer, primary_key=True),

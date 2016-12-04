@@ -67,12 +67,12 @@ if saveddata_connectionstring is not None:
 sd_lock = threading.Lock()
 
 # Import all the definitions for all our database stuff
-from eos.db.gamedata import *
-from eos.db.saveddata import *
+#from eos.db.gamedata import *
+#from eos.db.saveddata import *
 
 # Import queries
-from eos.db.gamedata.queries import *
-from eos.db.saveddata.queries import *
+#from eos.db.gamedata.queries import *
+#from eos.db.saveddata.queries import *
 
 # If using in memory saveddata, you'll want to reflect it so the data structure is good.
 if config.saveddata_connectionstring == "sqlite:///:memory:":

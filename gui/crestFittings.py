@@ -1,18 +1,17 @@
+import json
 import time
 import webbrowser
-import json
-import wx
+
 import requests
-
-from service.crest import CrestModes
-from service.crest import Crest
-from service.fit import Fit
-
-from eos.types import Cargo
-from eos.db import getItem
+import wx
 
 import gui.display as d
 import gui.globalEvents as GE
+from eos.db import getItem
+from eos.saveddata.cargo import Cargo as Cargo
+from service.crest import Crest
+from service.crest import CrestModes
+from service.fit import Fit
 
 
 class CrestFittings(wx.Frame):

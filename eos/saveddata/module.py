@@ -26,7 +26,8 @@ from eos.effectHandlerHelpers import HandledItem, HandledCharge
 from eos.enum import Enum
 from eos.mathUtils import floorFloat
 from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut, ChargeAttrShortcut
-from eos.types import Citadel
+from eos.saveddata.citadel import Citadel as Citadel
+from eos.saveddata.module import Module as Module
 
 logger = logging.getLogger(__name__)
 

@@ -21,11 +21,10 @@ from sqlalchemy.orm import join, exc
 from sqlalchemy.sql import and_, or_, select
 
 import eos.config
-from eos.gamedata import Item, Attribute
 from eos.db import gamedata_session
 from eos.db.gamedata.metaGroup import metatypes_table, items_table
 from eos.db.util import processEager, processWhere
-from eos.types import Item, Category, Group, MarketGroup, AttributeInfo, MetaData, MetaGroup
+from eos.gamedata import Attribute, Category, Group, Item, MarketGroup, MetaGroup, AttributeInfo, MetaData
 
 configVal = getattr(eos.config, "gamedataCache", None)
 if configVal is True:

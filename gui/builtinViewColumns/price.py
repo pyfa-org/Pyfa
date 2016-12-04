@@ -19,11 +19,12 @@
 
 import wx
 
-from eos.types import Drone, Cargo
-from service.market import Market
-from gui.viewColumn import ViewColumn
+from eos.saveddata.cargo import Cargo as Cargo
+from eos.saveddata.drone import Drone as Drone
 from gui.bitmapLoader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
+from gui.viewColumn import ViewColumn
+from service.market import Market
 
 
 class Price(ViewColumn):

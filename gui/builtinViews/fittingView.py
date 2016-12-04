@@ -19,22 +19,22 @@
 
 import wx
 import wx.lib.newevent
+
+import gui.builtinViews.emptyView
+import gui.display as d
+import gui.globalEvents as GE
 import gui.mainFrame
 import gui.marketBrowser
-import gui.display as d
-from gui.contextMenu import ContextMenu
-import gui.shipBrowser
 import gui.multiSwitch
-from eos.types import Slot, Rack, Module
-from gui.builtinViewColumns.state import State
+import gui.shipBrowser
+from eos.saveddata.fit import Fit as Fit
+from eos.saveddata.module import Slot as Slot, Module as Module, State as State, Rack as Rack
 from gui.bitmapLoader import BitmapLoader
-import gui.builtinViews.emptyView
+from gui.builtinViewColumns.state import State
+from gui.contextMenu import ContextMenu
 from gui.utils.exportHtml import exportHtml
-
 from service.fit import Fit
 from service.market import Market
-
-import gui.globalEvents as GE
 
 
 # Tab spawning handler

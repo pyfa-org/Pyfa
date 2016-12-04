@@ -18,9 +18,10 @@
 # =============================================================================
 
 import wx
-from eos.types import Fighter
-from gui.viewColumn import ViewColumn
+
+from eos.saveddata.fighter import Fighter as Fighter
 from gui.bitmapLoader import BitmapLoader
+from gui.viewColumn import ViewColumn
 
 
 class Ammo(ViewColumn):

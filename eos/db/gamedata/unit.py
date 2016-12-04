@@ -21,7 +21,7 @@ from sqlalchemy import Column, Table, Integer, String
 from sqlalchemy.orm import mapper, synonym
 
 from eos.db import gamedata_meta
-from eos.types import Unit
+from eos.gamedata import Unit
 
 groups_table = Table("dgmunits", gamedata_meta,
                      Column("unitID", Integer, primary_key=True),

@@ -19,13 +19,14 @@
 
 from sqlalchemy.sql import and_
 
+import eos.config
 from eos.db import saveddata_session, sd_lock
 from eos.db.saveddata.fit import projectedFits_table
 from eos.db.saveddata.fleet import squadmembers_table
 from eos.db.util import processEager, processWhere
-from eos.types import *
-
-import eos.config
+from eos.saveddata.character import Character as Character
+from eos.saveddata.damagePattern import DamagePattern as DamagePattern
+from eos.saveddata.implantSet import ImplantSet as ImplantSet
 
 configVal = getattr(eos.config, "saveddataCache", None)
 if configVal is True:
