@@ -22,8 +22,10 @@ import traceback
 
 from sqlalchemy.orm import reconstructor
 
-import eos.db
-from eqBase import EqBase
+from eos.eqBase import EqBase
+from eos.db import saveddata_session
+from eos.db.saveddata import queries as eds_queries
+from eos.db.gamedata import getAttributeInfo
 
 try:
     from collections import OrderedDict
@@ -213,7 +215,7 @@ class Item(EqBase):
         if info is None:
             cls.MOVE_ATTR_INFO = info = []
             for id in cls.MOVE_ATTRS:
-                info.append(eos.db.getAttributeInfo(id))
+                info.append(getAttributeInfo(id))
 
         return info
 
@@ -258,7 +260,7 @@ class Item(EqBase):
     def overrides(self):
         if self.__overrides is None:
             self.__overrides = {}
-            overrides = eos.db.getOverrides(self.ID)
+            overrides = eds_queries.getOverrides(self.ID)
             for x in overrides:
                 if x.attr.name in self.__attributes:
                     self.__overrides[x.attr.name] = x
@@ -277,7 +279,7 @@ class Item(EqBase):
 
     def deleteOverride(self, attr):
         override = self.__overrides.pop(attr.name, None)
-        eos.db.saveddata_session.delete(override)
+        saveddata_session.delete(override)
         eds_queries.commit()
 
     @property
