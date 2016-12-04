@@ -27,10 +27,11 @@ from sqlalchemy.sql import or_
 
 import config
 import eos.db
-import eos.types
 from service import conversions
 from service.settings import SettingsProvider
 from service.price import Price
+
+from eos.gamedata import Category as e_Category, Group as e_Group, Item as e_Item
 
 try:
     from collections import OrderedDict
@@ -129,14 +130,14 @@ class SearchWorkerThread(threading.Thread):
             sMkt = Market.getInstance()
             if filterOn is True:
                 # Rely on category data provided by eos as we don't hardcode them much in service
-                where = or_(eos.types.Category.name.in_(sMkt.SEARCH_CATEGORIES), eos.types.Group.name.in_(sMkt.SEARCH_GROUPS))
+                where = or_(e_Category.name.in_(sMkt.SEARCH_CATEGORIES), e_Group.name.in_(sMkt.SEARCH_GROUPS))
             elif filterOn:  # filter by selected categories
-                where = eos.types.Category.name.in_(filterOn)
+                where = e_Category.name.in_(filterOn)
             else:
                 where = None
 
             results = eos.db.searchItems(request, where=where,
-                                         join=(eos.types.Item.group, eos.types.Group.category),
+                                         join=(e_Item.group, e_Group.category),
                                          eager=("icon", "group.category", "metaGroup", "metaGroup.parent"))
 
             items = set()
@@ -182,7 +183,7 @@ class Market():
         # Items' group overrides
         self.customGroups = set()
         # Limited edition ships
-        self.les_grp = eos.types.Group()
+        self.les_grp = e_Group()
         self.les_grp.ID = -1
         self.les_grp.name = "Limited Issue Ships"
         self.les_grp.published = True
@@ -371,7 +372,7 @@ class Market():
     def getItem(self, identity, *args, **kwargs):
         """Get item by its ID or name"""
         try:
-            if isinstance(identity, eos.types.Item):
+            if isinstance(identity, e_Item):
                 item = identity
             elif isinstance(identity, int):
                 item = eos.db.getItem(identity, *args, **kwargs)
@@ -393,7 +394,7 @@ class Market():
 
     def getGroup(self, identity, *args, **kwargs):
         """Get group by its ID or name"""
-        if isinstance(identity, eos.types.Group):
+        if isinstance(identity, e_Group):
             return identity
         elif isinstance(identity, (int, float, basestring)):
             if isinstance(identity, float):
@@ -411,7 +412,7 @@ class Market():
 
     def getCategory(self, identity, *args, **kwargs):
         """Get category by its ID or name"""
-        if isinstance(identity, eos.types.Category):
+        if isinstance(identity, e_Category):
             category = identity
         elif isinstance(identity, (int, basestring)):
             category = eos.db.getCategory(identity, *args, **kwargs)
@@ -696,9 +697,9 @@ class Market():
 
     def searchShips(self, name):
         """Find ships according to given text pattern"""
-        filter = eos.types.Category.name.in_(["Ship", "Structure"])
+        filter = e_Category.name.in_(["Ship", "Structure"])
         results = eos.db.searchItems(name, where=filter,
-                                     join=(eos.types.Item.group, eos.types.Group.category),
+                                     join=(e_Item.group, e_Group.category),
                                      eager=("icon", "group.category", "metaGroup", "metaGroup.parent"))
         ships = set()
         for item in results:

@@ -21,8 +21,9 @@ import threading
 import os
 
 import config
-import eos.types
+from eos import db
 from eos.db import migration
+from eos.saveddata.character import Character as es_Character
 from eos.db.saveddata.loadDefaultDatabaseValues import DefaultDatabaseValues
 
 
@@ -31,7 +32,7 @@ class PrefetchThread(threading.Thread):
         # We're a daemon thread, as such, interpreter might get shut down while we do stuff
         # Make sure we don't throw tracebacks to console
         try:
-            eos.types.Character.setSkillList(eos.db.getItemsByCategory("Skill", eager=("effects", "attributes", "attributes.info.icon", "attributes.info.unit", "icon")))
+            es_Character.setSkillList(db.getItemsByCategory("Skill", eager=("effects", "attributes", "attributes.info.icon", "attributes.info.unit", "icon")))
         except:
             pass
 
@@ -51,16 +52,16 @@ if config.savePath and not os.path.exists(config.savePath):
 
 if config.saveDB and os.path.isfile(config.saveDB):
     # If database exists, run migration after init'd database
-    eos.db.saveddata_meta.create_all()
-    migration.update(eos.db.saveddata_engine)
+    db.saveddata_meta.create_all()
+    migration.update(db.saveddata_engine)
     # Import default database values
     # Import values that must exist otherwise Pyfa breaks
     DefaultDatabaseValues.importRequiredDefaults()
 elif config.saveDB:
     # If database does not exist, do not worry about migration. Simply
     # create and set version
-    eos.db.saveddata_meta.create_all()
-    eos.db.saveddata_engine.execute('PRAGMA user_version = {}'.format(migration.getAppVersion()))
+    db.saveddata_meta.create_all()
+    db.saveddata_engine.execute('PRAGMA user_version = {}'.format(migration.getAppVersion()))
     # Import default database values
     # Import values that must exist otherwise Pyfa breaks
     DefaultDatabaseValues.importRequiredDefaults()

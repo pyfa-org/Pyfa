@@ -4,6 +4,8 @@ import gui.mainFrame
 import gui.globalEvents as GE
 import wx
 from service.fit import Fit
+from eos.saveddata.cargo import Cargo as es_Cargo
+from eos.saveddata.fighter import Fighter as es_Fighter
 
 
 class ChangeAmount(ContextMenu):
@@ -52,11 +54,11 @@ class AmountChanger(wx.Dialog):
         mainFrame = gui.mainFrame.MainFrame.getInstance()
         fitID = mainFrame.getActiveFit()
 
-        if isinstance(self.thing, eos.types.Cargo):
+        if isinstance(self.thing, es_Cargo):
             sFit.addCargo(fitID, self.thing.item.ID, int(self.input.GetLineText(0)), replace=True)
         elif isinstance(self.thing, eos.types.Fit):
             sFit.changeAmount(fitID, self.thing, int(self.input.GetLineText(0)))
-        elif isinstance(self.thing, eos.types.Fighter):
+        elif isinstance(self.thing, es_Fighter):
             sFit.changeActiveFighters(fitID, self.thing, int(self.input.GetLineText(0)))
 
         wx.PostEvent(mainFrame, GE.FitChanged(fitID=fitID))
