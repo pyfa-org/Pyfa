@@ -103,10 +103,10 @@ def defPaths(customSavePath):
         os.environ["REQUESTS_CA_BUNDLE"] = os.path.join(pyfaPath, "cacert.pem")
         os.environ["SSL_CERT_FILE"] = os.path.join(pyfaPath, "cacert.pem")
 
-    format = '%(asctime)s %(name)-24s %(levelname)-8s %(message)s'
-    logging.basicConfig(format=format, level=logLevel)
+    format_ = '%(asctime)s %(name)-24s %(levelname)-8s %(message)s'
+    logging.basicConfig(format=format_, level=logLevel)
     handler = logging.handlers.RotatingFileHandler(os.path.join(savePath, "log.txt"), maxBytes=1000000, backupCount=3)
-    formatter = logging.Formatter(format)
+    formatter = logging.Formatter(format_)
     handler.setFormatter(formatter)
     logging.getLogger('').addHandler(handler)
 
