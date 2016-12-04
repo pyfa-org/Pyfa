@@ -23,10 +23,11 @@ import os
 import config
 from eos import db
 from eos.db import migration
-from eos.saveddata.character import Character as es_Character
+#from eos.saveddata.character import Character as es_Character
 from eos.db.saveddata.loadDefaultDatabaseValues import DefaultDatabaseValues
 
-
+# TODO: Import cleanup. This is awful
+'''
 class PrefetchThread(threading.Thread):
     def run(self):
         # We're a daemon thread, as such, interpreter might get shut down while we do stuff
@@ -40,6 +41,7 @@ class PrefetchThread(threading.Thread):
 prefetch = PrefetchThread()
 prefetch.daemon = True
 prefetch.start()
+'''
 
 # The following code does not belong here, however until we rebuild skeletons
 # to include modified pyfa.py, this is the best place to put it. See GH issue

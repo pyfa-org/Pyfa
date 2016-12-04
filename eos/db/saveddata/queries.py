@@ -19,10 +19,25 @@
 
 from sqlalchemy.sql import and_
 
-import eos.config
-from eos.db import saveddata_session, sd_lock
+# TODO: Import fix
+import eos.db.saveddata.mapper as mapper
+"""
+This should not be a lazy import
+".\eos\saveddata\character.py"
+from eos.db.saveddata import queries as eds_queries
+".\eos\db\saveddata\queries.py"
 from eos.db.saveddata.mapper import projectedFits_table
-from eos.db.saveddata.mapper import squadmembers_table
+".\eos\db\saveddata\mapper.py"
+from eos.saveddata.character import Character as Character
+Old imports
+    from eos.db.saveddata.mapper import projectedFits_table
+    from eos.db.saveddata.mapper import squadmembers_table
+"""
+
+
+from eos import config as eos_config
+
+from eos.db import saveddata_session, sd_lock
 from eos.db.util import processEager, processWhere
 from eos.saveddata.user import User
 from eos.saveddata.character import Character
@@ -36,13 +51,13 @@ from eos.saveddata.implantSet import ImplantSet
 from eos.saveddata.crestchar import CrestChar
 from eos.saveddata.override import Override
 
-
-configVal = getattr(eos.config, "saveddataCache", None)
+configVal = getattr(eos_config, "saveddataCache", None)
 if configVal is True:
     import weakref
 
     itemCache = {}
     queryCache = {}
+
 
     def cachedQuery(type, amount, *keywords):
         itemCache[type] = localItemCache = weakref.WeakValueDictionary()
@@ -102,6 +117,7 @@ if configVal is True:
 
         return deco
 
+
     def removeCachedEntry(type, ID):
         if type not in queryCache:
             return
@@ -120,7 +136,7 @@ if configVal is True:
                 del itemCache[type][ID]
 
 elif callable(configVal):
-    cachedQuery, removeCachedEntry = eos.config.gamedataCache
+    cachedQuery, removeCachedEntry = eos_config.gamedataCache
 else:
     def cachedQuery(amount, *keywords):
         def deco(function):
@@ -130,6 +146,7 @@ else:
             return checkAndReturn
 
         return deco
+
 
     def removeCachedEntry(*args, **kwargs):
         return
@@ -476,8 +493,8 @@ def searchFits(nameLike, where=None, eager=None):
 def getSquadsIDsWithFitID(fitID):
     if isinstance(fitID, int):
         with sd_lock:
-            squads = saveddata_session.query(squadmembers_table.c.squadID).filter(
-                squadmembers_table.c.memberID == fitID).all()
+            squads = saveddata_session.query(mapper.fleet_table.squadmembers_table.c.squadID).filter(
+                mapper.fleet_table.squadmembers_table.c.memberID == fitID).all()
             squads = tuple(entry[0] for entry in squads)
             return squads
     else:
@@ -487,7 +504,8 @@ def getSquadsIDsWithFitID(fitID):
 def getProjectedFits(fitID):
     if isinstance(fitID, int):
         with sd_lock:
-            filter = and_(projectedFits_table.c.sourceID == fitID, Fit.ID == projectedFits_table.c.victimID)
+            filter = and_(mapper.fits_table.projectedFits_table.c.sourceID == fitID,
+                          Fit.ID == mapper.fits_table.projectedFits_table.c.victimID)
             fits = saveddata_session.query(Fit).filter(filter).all()
             return fits
     else:

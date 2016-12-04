@@ -23,12 +23,9 @@ from itertools import chain
 
 from sqlalchemy.orm import validates, reconstructor
 
-import eos
-import eos.db
-from eos.effectHandlerHelpers import HandledItem, HandledImplantBoosterList
-
-from eos.db.saveddata import queries as eds_queries
 from eos.db.gamedata import queries as edg_queries
+from eos.db.saveddata import queries as eds_queries
+from eos.effectHandlerHelpers import HandledItem, HandledImplantBoosterList
 
 logger = logging.getLogger(__name__)
 
