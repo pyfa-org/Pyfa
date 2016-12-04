@@ -119,14 +119,6 @@ else:
         return
 
 
-def sqlizeString(line):
-    # Escape backslashes first, as they will be as escape symbol in queries
-    # Then escape percent and underscore signs
-    # Finally, replace generic wildcards with sql-style wildcards
-    line = line.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_").replace("*", "%")
-    return line
-
-
 def removeInvalid(fits):
     invalids = [f for f in fits if f.isInvalid]
 

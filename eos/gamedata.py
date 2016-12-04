@@ -20,17 +20,16 @@
 import re
 import traceback
 
-from sqlalchemy.orm import join, exc
-from sqlalchemy.orm import reconstructor
+from sqlalchemy.orm import reconstructor, exc, join
 from sqlalchemy.sql import and_, or_, select
 
+from eos.eqBase import EqBase
 from eos.db import gamedata_session
 from eos.db import saveddata_session
 from eos.db.gamedata.mapper import metatypes_table, items_table
-from eos.db.gamedata.queries import cachedQuery, sqlizeString
 from eos.db.saveddata import queries as eds_queries
-from eos.db.util import processEager, processWhere
-from eos.eqBase import EqBase
+from eos.db.util import processEager, processWhere, sqlizeString
+from eos.db.gamedata.cache import cachedQuery
 
 try:
     from collections import OrderedDict
@@ -429,6 +428,21 @@ class Item(EqBase):
         return "Item(ID={}, name={}) at {}".format(
             self.ID, self.name, hex(id(self))
         )
+
+
+@cachedQuery(1, "attr")
+def getAttributeInfo(attr, eager=None):
+    if isinstance(attr, basestring):
+        filter_ = AttributeInfo.name == attr
+    elif isinstance(attr, int):
+        filter_ = AttributeInfo.ID == attr
+    else:
+        raise TypeError("Need integer or string as argument")
+    try:
+        result = gamedata_session.query(AttributeInfo).options(*processEager(eager)).filter(filter_).one()
+    except exc.NoResultFound:
+        result = None
+    return result
 
 
 class MetaData(EqBase):
