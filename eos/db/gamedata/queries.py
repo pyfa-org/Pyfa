@@ -281,8 +281,8 @@ def directAttributeRequest(itemIDs, attrIDs):
             raise TypeError("All itemIDs must be integer")
 
     q = select((Item.typeID, Attribute.attributeID, Attribute.value),
-                                  and_(Attribute.attributeID.in_(attrIDs), Item.typeID.in_(itemIDs)),
-                                  from_obj=[join(Attribute, Item)])
+               and_(Attribute.attributeID.in_(attrIDs), Item.typeID.in_(itemIDs)),
+               from_obj=[join(Attribute, Item)])
 
     result = gamedata_session.execute(q).fetchall()
     return result
