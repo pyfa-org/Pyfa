@@ -32,8 +32,8 @@ from service.price import Price
 
 from eos.gamedata import MetaType
 from eos.gamedata import Category as e_Category, Group as e_Group, Item as e_Item
-from eos.gamedata.metaGroup import MetaGroup
-from eos.gamedata.marketGroup import MarketGroup
+from eos.gamedata import MetaGroup
+from eos.gamedata import MarketGroup
 from eos.db import saveddata_session
 from eos.db.saveddata.queries import getAllOverrides, getPrice, clearPrices, commit, add
 from eos.db.gamedata.queries import (
