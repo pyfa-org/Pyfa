@@ -1,3 +1,5 @@
+# coding: utf-8
+
 import wx
 
 from service.fit import Fit
