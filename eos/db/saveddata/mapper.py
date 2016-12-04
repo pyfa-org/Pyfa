@@ -31,11 +31,9 @@ from sqlalchemy.sql import and_
 
 from eos.db import saveddata_meta
 from eos.db import saveddata_session
-from eos.db.saveddata.implant import charImplants_table
-from eos.db.saveddata.implant import fitImplants_table
-from eos.db.saveddata.module import modules_table
 from eos.effectHandlerHelpers import HandledImplantBoosterList
-from eos.effectHandlerHelpers import HandledModuleList, HandledProjectedModList, HandledDroneCargoList, HandledProjectedDroneList
+from eos.effectHandlerHelpers import HandledModuleList, HandledProjectedModList, HandledDroneCargoList, \
+    HandledProjectedDroneList
 from eos.saveddata.booster import Booster as Booster
 from eos.saveddata.cargo import Cargo as Cargo
 from eos.saveddata.character import Character as Character
@@ -81,7 +79,6 @@ mapper(Booster, boosters_table,
 
 Booster._Booster__activeSideEffectIDs = association_proxy("_Booster__activeSideEffectDummies", "effectID")
 
-
 cargo_table = Table("cargo", saveddata_meta,
                     Column("ID", Integer, primary_key=True),
                     Column("fitID", Integer, ForeignKey("fits.ID"), nullable=False, index=True),
@@ -89,6 +86,25 @@ cargo_table = Table("cargo", saveddata_meta,
                     Column("amount", Integer, nullable=False))
 
 mapper(Cargo, cargo_table)
+
+implants_table = Table("implants", saveddata_meta,
+                       Column("ID", Integer, primary_key=True),
+                       Column("itemID", Integer),
+                       Column("active", Boolean))
+
+fitImplants_table = Table("fitImplants", saveddata_meta,
+                          Column("fitID", ForeignKey("fits.ID"), index=True),
+                          Column("implantID", ForeignKey("implants.ID"), primary_key=True))
+
+charImplants_table = Table("charImplants", saveddata_meta,
+                           Column("charID", ForeignKey("characters.ID"), index=True),
+                           Column("implantID", ForeignKey("implants.ID"), primary_key=True))
+
+implantsSetMap_table = Table("implantSetMap", saveddata_meta,
+                             Column("setID", ForeignKey("implantSets.ID"), index=True),
+                             Column("implantID", ForeignKey("implants.ID"), primary_key=True))
+
+mapper(Implant, implants_table)
 
 characters_table = Table("characters", saveddata_meta,
                          Column("ID", Integer, primary_key=True),
@@ -129,7 +145,6 @@ crest_table = Table("crest", saveddata_meta,
 
 mapper(CrestChar, crest_table)
 
-
 drones_table = Table("drones", saveddata_meta,
                      Column("groupID", Integer, primary_key=True),
                      Column("fitID", Integer, ForeignKey("fits.ID"), nullable=False, index=True),
@@ -139,7 +154,6 @@ drones_table = Table("drones", saveddata_meta,
                      Column("projected", Boolean, default=False))
 
 mapper(Drone, drones_table)
-
 
 fighters_table = Table("fighters", saveddata_meta,
                        Column("groupID", Integer, primary_key=True),
@@ -165,7 +179,6 @@ mapper(Fighter, fighters_table,
        })
 
 mapper(FighterAbility, fighter_abilities_table)
-
 
 fits_table = Table("fits", saveddata_meta,
                    Column("ID", Integer, primary_key=True),
@@ -227,6 +240,21 @@ class ProjectedFit(object):
         )
 
 
+modules_table = Table("modules", saveddata_meta,
+                      Column("ID", Integer, primary_key=True),
+                      Column("fitID", Integer, ForeignKey("fits.ID"), nullable=False, index=True),
+                      Column("itemID", Integer, nullable=True),
+                      Column("dummySlot", Integer, nullable=True, default=None),
+                      Column("chargeID", Integer),
+                      Column("state", Integer, CheckConstraint("state >= -1"), CheckConstraint("state <= 2")),
+                      Column("projected", Boolean, default=False, nullable=False),
+                      Column("position", Integer),
+                      CheckConstraint('("dummySlot" = NULL OR "itemID" = NULL) AND "dummySlot" != "itemID"'))
+
+mapper(Module, modules_table,
+       properties={"owner": relation(Fit)})
+
+
 class CommandFit(object):
     def __init__(self, boosterID, booster_fit, active=True):
         self.boosterID = boosterID
@@ -245,6 +273,7 @@ class CommandFit(object):
         return "CommandFit(boosterID={}, boostedID={}, active={}) at {}".format(
             self.boosterID, self.boostedID, self.active, hex(id(self))
         )
+
 
 Fit._Fit__projectedFits = association_proxy(
     "victimOf",  # look at the victimOf association...
@@ -359,7 +388,6 @@ mapper(ProjectedFit, projectedFits_table,
 
 mapper(CommandFit, commandFits_table)
 
-
 gangs_table = Table("gangs", saveddata_meta,
                     Column("ID", Integer, primary_key=True),
                     Column("leaderID", ForeignKey("fits.ID")),
@@ -400,25 +428,6 @@ mapper(Squad, squads_table,
                                        secondaryjoin=squadmembers_table.c.memberID == fits_table.c.ID,
                                        secondary=squadmembers_table)})
 
-implants_table = Table("implants", saveddata_meta,
-                       Column("ID", Integer, primary_key=True),
-                       Column("itemID", Integer),
-                       Column("active", Boolean))
-
-fitImplants_table = Table("fitImplants", saveddata_meta,
-                          Column("fitID", ForeignKey("fits.ID"), index=True),
-                          Column("implantID", ForeignKey("implants.ID"), primary_key=True))
-
-charImplants_table = Table("charImplants", saveddata_meta,
-                           Column("charID", ForeignKey("characters.ID"), index=True),
-                           Column("implantID", ForeignKey("implants.ID"), primary_key=True))
-
-implantsSetMap_table = Table("implantSetMap", saveddata_meta,
-                             Column("setID", ForeignKey("implantSets.ID"), index=True),
-                             Column("implantID", ForeignKey("implants.ID"), primary_key=True))
-
-mapper(Implant, implants_table)
-
 implant_set_table = Table("implantSets", saveddata_meta,
                           Column("ID", Integer, primary_key=True),
                           Column("name", String, nullable=False),
@@ -444,20 +453,6 @@ miscdata_table = Table("miscdata", saveddata_meta,
 
 mapper(MiscData, miscdata_table)
 
-modules_table = Table("modules", saveddata_meta,
-                      Column("ID", Integer, primary_key=True),
-                      Column("fitID", Integer, ForeignKey("fits.ID"), nullable=False, index=True),
-                      Column("itemID", Integer, nullable=True),
-                      Column("dummySlot", Integer, nullable=True, default=None),
-                      Column("chargeID", Integer),
-                      Column("state", Integer, CheckConstraint("state >= -1"), CheckConstraint("state <= 2")),
-                      Column("projected", Boolean, default=False, nullable=False),
-                      Column("position", Integer),
-                      CheckConstraint('("dummySlot" = NULL OR "itemID" = NULL) AND "dummySlot" != "itemID"'))
-
-mapper(Module, modules_table,
-       properties={"owner": relation(Fit)})
-
 overrides_table = Table("overrides", saveddata_meta,
                         Column("itemID", Integer, primary_key=True, index=True),
                         Column("attrID", Integer, primary_key=True, index=True),
@@ -480,7 +475,6 @@ skills_table = Table("characterSkills", saveddata_meta,
 
 mapper(Skill, skills_table)
 
-
 targetResists_table = Table("targetResists", saveddata_meta,
                             Column("ID", Integer, primary_key=True),
                             Column("name", String),
@@ -492,8 +486,6 @@ targetResists_table = Table("targetResists", saveddata_meta,
 
 mapper(TargetResists, targetResists_table)
 
-
-
 users_table = Table("users", saveddata_meta,
                     Column("ID", Integer, primary_key=True),
                     Column("username", String, nullable=False, unique=True),
@@ -501,7 +493,6 @@ users_table = Table("users", saveddata_meta,
                     Column("admin", Boolean, nullable=False))
 
 mapper(User, users_table)
-
 
 from sqlalchemy import Table, Column, Integer, ForeignKey, String
 from sqlalchemy.orm import mapper
