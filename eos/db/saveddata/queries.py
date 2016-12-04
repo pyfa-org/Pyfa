@@ -19,28 +19,11 @@
 
 from sqlalchemy.sql import and_
 
-# TODO: Import fix
-"""
-import eos.db.saveddata.mapper as mapper
-This should not be a lazy import
-".\eos\saveddata\character.py"
-from eos.db.saveddata import queries as eds_queries
-".\eos\db\saveddata\queries.py"
-from eos.db.saveddata.mapper import projectedFits_table
-".\eos\db\saveddata\mapper.py"
-from eos.saveddata.character import Character as Character
-Old imports
-    from eos.db.saveddata.mapper import projectedFits_table
-    from eos.db.saveddata.mapper import squadmembers_table
-"""
-
-
 from eos import config as eos_config
 
 from eos.db import saveddata_session, sd_lock
 from eos.db.util import processEager, processWhere
 from eos.saveddata.user import User
-from eos.saveddata.character import Character
 from eos.saveddata.fit import Fit
 from eos.saveddata.fleet import Fleet, Wing, Squad
 from eos.saveddata.price import Price
@@ -174,43 +157,6 @@ def getUser(lookfor, eager=None):
     else:
         raise TypeError("Need integer or string as argument")
     return user
-
-
-@cachedQuery(Character, 1, "lookfor")
-def getCharacter(lookfor, eager=None):
-    if isinstance(lookfor, int):
-        if eager is None:
-            with sd_lock:
-                character = saveddata_session.query(Character).get(lookfor)
-        else:
-            eager = processEager(eager)
-            with sd_lock:
-                character = saveddata_session.query(Character).options(*eager).filter(Character.ID == lookfor).first()
-    elif isinstance(lookfor, basestring):
-        eager = processEager(eager)
-        with sd_lock:
-            character = saveddata_session.query(Character).options(*eager).filter(
-                Character.savedName == lookfor).first()
-    else:
-        raise TypeError("Need integer or string as argument")
-    return character
-
-
-def getCharacterList(eager=None):
-    eager = processEager(eager)
-    with sd_lock:
-        characters = saveddata_session.query(Character).options(*eager).all()
-    return characters
-
-
-def getCharactersForUser(lookfor, eager=None):
-    if isinstance(lookfor, int):
-        eager = processEager(eager)
-        with sd_lock:
-            characters = saveddata_session.query(Character).options(*eager).filter(Character.ownerID == lookfor).all()
-    else:
-        raise TypeError("Need integer as argument")
-    return characters
 
 
 @cachedQuery(Fit, 1, "lookfor")
