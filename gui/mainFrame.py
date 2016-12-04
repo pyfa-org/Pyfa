@@ -794,7 +794,7 @@ class MainFrame(wx.Frame):
                 parent=self,
                 style=wx.PD_APP_MODAL | wx.PD_ELAPSED_TIME,
             )
-            sFit.backupFits(filePath, self.backupCallback)
+            Port.backupFits(filePath, self.backupCallback)
             self.progressDialog.ShowModal()
 
     def exportHtml(self, event):

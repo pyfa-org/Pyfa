@@ -21,7 +21,6 @@
 import logging
 
 import eos.db
-import eos.types
 
 logger = logging.getLogger(__name__)
 
@@ -159,13 +158,6 @@ class HandledModuleList(HandledList):
         mod.position = None
         for i in xrange(oldPos, len(self)):
             self[i].position -= 1
-
-    def toDummy(self, index):
-        mod = self[index]
-        if not mod.isEmpty:
-            dummy = eos.types.Module.buildEmpty(mod.slot)
-            dummy.position = index
-            self[index] = dummy
 
     def toModule(self, index, mod):
         mod.position = index

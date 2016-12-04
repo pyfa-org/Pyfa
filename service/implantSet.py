@@ -20,8 +20,9 @@
 import copy
 
 import eos.db
-import eos.types
 from service.market import Market
+from eos.saveddata.implant import Implant as es_Implant
+from eos.saveddata.implantSet import ImplantSet as es_ImplantSet
 
 
 class ImplantSets(object):
@@ -88,11 +89,11 @@ class ImplantSets(object):
                 if line == '' or line[0] == "#":  # comments / empty string
                     continue
                 if line[:1] == "[" and line[-1:] == "]":
-                    current = eos.types.ImplantSet(line[1:-1])
+                    current = es_ImplantSet(line[1:-1])
                     newSets.append(current)
                 else:
                     item = sMkt.getItem(line)
-                    current.implants.append(eos.types.Implant(item))
+                    current.implants.append(es_Implant(item))
             except:
                 errors += 1
                 continue
@@ -104,7 +105,7 @@ class ImplantSets(object):
             if implant_set.name in lookup:
                 match = lookup[implant_set.name]
                 for implant in implant_set.implants:
-                    match.implants.append(eos.types.Implant(implant.item))
+                    match.implants.append(es_Implant(implant.item))
             else:
                 eos.db.save(implant_set)
 
@@ -120,4 +121,4 @@ class ImplantSets(object):
     def exportSets(self):
         patterns = self.getImplantSetList()
         patterns.sort(key=lambda p: p.name)
-        return eos.types.ImplantSet.exportSets(*patterns)
+        return es_ImplantSet.exportSets(*patterns)
