@@ -808,9 +808,9 @@ class Mapper:
 
     class Units:
         units_table = Table("dgmunits", gamedata_meta,
-                             Column("unitID", Integer, primary_key=True),
-                             Column("unitName", String),
-                             Column("displayName", String))
+                            Column("unitID", Integer, primary_key=True),
+                            Column("unitName", String),
+                            Column("displayName", String))
 
         mapper(Unit, units_table,
                properties={"ID": synonym("unitID"),
