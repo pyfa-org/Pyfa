@@ -63,6 +63,3 @@ class ViewColumn(object):
 
     def delayedText(self, display, colItem):
         raise NotImplementedError()
-
-
-from gui.builtinViewColumns import *  # noqa

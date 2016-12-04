@@ -175,6 +175,3 @@ class ContextMenu(object):
 
     def getBitmap(self, context, selection):
         return None
-
-
-from gui.builtinContextMenus import *  # noqa
