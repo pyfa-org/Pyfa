@@ -9,7 +9,7 @@ import sqlalchemy
 
 def upgrade(saveddata_engine):
     from eos.db import saveddata_session
-    from eos.db.saveddata.fit import commandFits_table
+    from eos.db.saveddata.mapper import commandFits_table
 
     sql = """
           SELECT sm.memberID as boostedFit, s.leaderID AS squadBoost, w.leaderID AS wingBoost, g.leaderID AS gangBoost

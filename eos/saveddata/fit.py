@@ -18,22 +18,17 @@
 # ===============================================================================
 
 import copy
-import time
 import logging
+import time
 from copy import deepcopy
 from itertools import chain
 from math import sqrt, log, asinh
 
 from sqlalchemy.orm import validates, reconstructor
 
-from utils.timer import Timer
 import eos.db
 from eos import capSim
-from eos.enum import Enum
-from eos.saveddata.character import Character as Character
-from eos.saveddata.citadel import Citadel as Citadel
-from eos.saveddata.module import Slot as Slot, Module as Module, State as State, Hardpoint as Hardpoint
-from eos.saveddata.ship import Ship as Ship
+from eos.db.gamedata import queries as edg_queries
 from eos.effectHandlerHelpers import (
     HandledModuleList,
     HandledDroneCargoList,
@@ -41,6 +36,11 @@ from eos.effectHandlerHelpers import (
     HandledProjectedModList,
     HandledProjectedDroneList,
 )
+from eos.enum import Enum
+from eos.saveddata.citadel import Citadel as Citadel
+from eos.saveddata.module import Slot as Slot, Module as Module, State as State, Hardpoint as Hardpoint
+from eos.saveddata.ship import Ship as Ship
+from utils.timer import Timer
 
 logger = logging.getLogger(__name__)
 
@@ -92,7 +92,7 @@ class Fit(object):
         self.__mode = None
 
         if self.shipID:
-            item = eds_queries.getItem(self.shipID)
+            item = edg_queries.getItem(self.shipID)
             if item is None:
                 logger.error("Item (id: %d) does not exist", self.shipID)
                 return
@@ -111,7 +111,7 @@ class Fit(object):
                 return
 
         if self.modeID and self.__ship:
-            item = eds_queries.getItem(self.modeID)
+            item = edg_queries.getItem(self.modeID)
             # Don't need to verify if it's a proper item, as validateModeItem assures this
             self.__mode = self.ship.validateModeItem(item)
         else:
@@ -181,7 +181,9 @@ class Fit(object):
 
     @property
     def character(self):
-        return self.__character if self.__character is not None else Character.getAll0()
+        # TODO: Can't call Character from here, cyclical import.
+        #return self.__character if self.__character is not None else Character.getAll0()
+        return self.__character if self.__character is not None else None
 
     @character.setter
     def character(self, char):
