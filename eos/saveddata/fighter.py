@@ -21,11 +21,11 @@ import logging
 
 from sqlalchemy.orm import validates, reconstructor
 
-import eos.db
 from eos.effectHandlerHelpers import HandledItem, HandledCharge
 from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut, ChargeAttrShortcut
 from eos.saveddata.fighterAbility import FighterAbility as FighterAbility
 from eos.saveddata.module import Slot as Slot
+from eos.db.saveddata import queries as eds_queries
 
 logger = logging.getLogger(__name__)
 
@@ -144,10 +144,6 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     @property
     def item(self):
         return self.__item
-
-    @property
-    def charge(self):
-        return self.__charge
 
     @property
     def hasAmmo(self):
@@ -271,7 +267,7 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             if ability.active:
                 effect = ability.effect
                 if effect.runTime == runTime and \
-                effect.activeByDefault and \
+                        effect.activeByDefault and \
                         ((projected and effect.isType("projected")) or not projected):
                     if ability.grouped:
                         effect.handler(fit, self, context)

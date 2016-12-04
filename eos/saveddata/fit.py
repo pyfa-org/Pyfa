@@ -182,7 +182,7 @@ class Fit(object):
     @property
     def character(self):
         # TODO: Can't call Character from here, cyclical import.
-        #return self.__character if self.__character is not None else Character.getAll0()
+        # return self.__character if self.__character is not None else Character.getAll0()
         return self.__character if self.__character is not None else None
 
     @character.setter

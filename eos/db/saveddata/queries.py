@@ -58,7 +58,6 @@ if configVal is True:
     itemCache = {}
     queryCache = {}
 
-
     def cachedQuery(type, amount, *keywords):
         itemCache[type] = localItemCache = weakref.WeakValueDictionary()
         queryCache[type] = typeQueryCache = {}
@@ -117,7 +116,6 @@ if configVal is True:
 
         return deco
 
-
     def removeCachedEntry(type, ID):
         if type not in queryCache:
             return
@@ -146,7 +144,6 @@ else:
             return checkAndReturn
 
         return deco
-
 
     def removeCachedEntry(*args, **kwargs):
         return
@@ -489,6 +486,7 @@ def searchFits(nameLike, where=None, eager=None):
 
     return fits
 
+
 # TODO: Import refactor.  Commenting this out breaks stuff
 '''
 def getSquadsIDsWithFitID(fitID):
@@ -512,6 +510,7 @@ def getProjectedFits(fitID):
     else:
         raise TypeError("Need integer as argument")
 '''
+
 
 def getCrestCharacters(eager=None):
     eager = processEager(eager)

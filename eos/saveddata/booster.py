@@ -21,9 +21,9 @@ import logging
 
 from sqlalchemy.orm import reconstructor, validates
 
-import eos.db
 from eos.effectHandlerHelpers import HandledItem
 from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut
+from eos.db.saveddata import queries as eds_queries
 
 logger = logging.getLogger(__name__)
 
@@ -158,6 +158,7 @@ class Booster(HandledItem, ItemAttrShortcut):
         '''
 
         return copy
+
 
 # Legacy booster side effect code, disabling as not currently implemented
 '''

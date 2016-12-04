@@ -21,9 +21,9 @@ import logging
 
 from sqlalchemy.orm import validates, reconstructor
 
-import eos.db
 from eos.effectHandlerHelpers import HandledItem, HandledCharge
 from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut, ChargeAttrShortcut
+from eos.db.saveddata import queries as eds_queries
 
 logger = logging.getLogger(__name__)
 
