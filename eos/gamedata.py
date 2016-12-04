@@ -430,21 +430,6 @@ class Item(EqBase):
         )
 
 
-@cachedQuery(1, "attr")
-def getAttributeInfo(attr, eager=None):
-    if isinstance(attr, basestring):
-        filter_ = AttributeInfo.name == attr
-    elif isinstance(attr, int):
-        filter_ = AttributeInfo.ID == attr
-    else:
-        raise TypeError("Need integer or string as argument")
-    try:
-        result = gamedata_session.query(AttributeInfo).options(*processEager(eager)).filter(filter_).one()
-    except exc.NoResultFound:
-        result = None
-    return result
-
-
 class MetaData(EqBase):
     pass
 
@@ -675,13 +660,13 @@ def getVariations(itemids, where=None, eager=None):
 @cachedQuery(1, "attr")
 def getAttributeInfo(attr, eager=None):
     if isinstance(attr, basestring):
-        filter = AttributeInfo.name == attr
+        filter_ = AttributeInfo.name == attr
     elif isinstance(attr, int):
-        filter = AttributeInfo.ID == attr
+        filter_ = AttributeInfo.ID == attr
     else:
         raise TypeError("Need integer or string as argument")
     try:
-        result = gamedata_session.query(AttributeInfo).options(*processEager(eager)).filter(filter).one()
+        result = gamedata_session.query(AttributeInfo).options(*processEager(eager)).filter(filter_).one()
     except exc.NoResultFound:
         result = None
     return result

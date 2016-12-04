@@ -1,5 +1,6 @@
 import eos.config
 
+
 configVal = getattr(eos.config, "gamedataCache", None)
 if configVal is True:
     def cachedQuery(amount, *keywords):

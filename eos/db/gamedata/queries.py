@@ -228,4 +228,3 @@ def directAttributeRequest(itemIDs, attrIDs):
 
     result = gamedata_session.execute(q).fetchall()
     return result
->>>>>>> Stashed changes
