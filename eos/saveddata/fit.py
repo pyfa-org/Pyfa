@@ -31,7 +31,7 @@ import eos.db
 from eos import capSim
 from eos.db import saveddata_session, sd_lock
 from eos.db.gamedata import queries as edg_queries
-from eos.db.savedata import mapper
+from eos.db.saveddata import mapper
 from eos.db.saveddata.queries import cachedQuery, removeInvalid, sqlizeString
 from eos.db.util import processEager, processWhere
 from eos.effectHandlerHelpers import (
