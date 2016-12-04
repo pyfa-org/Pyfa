@@ -22,7 +22,8 @@ from sqlalchemy.orm import mapper, relation
 
 from eos.db import saveddata_meta
 from eos.db.saveddata.fit import fits_table
-from eos.types import Fleet, Wing, Squad, Fit
+from eos.saveddata.fit import Fit as Fit
+from eos.saveddata.fleet import Fleet as Fleet, Wing as Wing, Squad as Squad
 
 gangs_table = Table("gangs", saveddata_meta,
                     Column("ID", Integer, primary_key=True),

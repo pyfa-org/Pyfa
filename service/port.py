@@ -17,24 +17,31 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
-import re
-import os
-import xml.dom
-import logging
 import collections
 import json
-import threading
 import locale
+import logging
+import os
+import re
+import threading
+import xml.dom
 import xml.parsers.expat
 from codecs import open
 
 import wx
 
 from eos import db
-from eos.types import State, Slot, Module, Cargo, Ship, Drone, Implant, Booster, Citadel
+from eos.saveddata.booster import Booster as Booster
+from eos.saveddata.cargo import Cargo as Cargo
+from eos.saveddata.citadel import Citadel as Citadel
+from eos.saveddata.drone import Drone as Drone
+from eos.saveddata.fit import Fit as Fit
+from eos.saveddata.implant import Implant as Implant
+from eos.saveddata.module import Slot as Slot, Module as Module, State as State
+from eos.saveddata.ship import Ship as Ship
 from service.crest import Crest
-from service.market import Market
 from service.fit import Fit
+from service.market import Market
 
 try:
     from collections import OrderedDict

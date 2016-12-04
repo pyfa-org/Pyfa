@@ -20,11 +20,12 @@
 
 import wx
 
-from eos.types import Drone, Module, Rack, Fit, Implant
-from eos.types import State as State_
-from gui.viewColumn import ViewColumn
-
 import gui.mainFrame
+from eos.saveddata.drone import Drone as Drone
+from eos.saveddata.fit import Fit as Fit
+from eos.saveddata.implant import Implant as Implant
+from eos.saveddata.module import Module as Module, Rack as Rack, State as State_
+from gui.viewColumn import ViewColumn
 
 
 class State(ViewColumn):

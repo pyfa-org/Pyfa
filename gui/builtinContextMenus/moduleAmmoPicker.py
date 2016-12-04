@@ -2,13 +2,14 @@
 
 import wx
 
+import gui.globalEvents as GE
+import gui.mainFrame
+from eos.saveddata.fit import Fit as Fit
+from eos.saveddata.module import Hardpoint as Hardpoint
+from gui.bitmapLoader import BitmapLoader
+from gui.contextMenu import ContextMenu
 from service.fit import Fit
 from service.market import Market
-from eos.types import Hardpoint
-import gui.mainFrame
-import gui.globalEvents as GE
-from gui.contextMenu import ContextMenu
-from gui.bitmapLoader import BitmapLoader
 
 
 class ModuleAmmoPicker(ContextMenu):

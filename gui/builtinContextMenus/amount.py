@@ -1,5 +1,4 @@
 from gui.contextMenu import ContextMenu
-import eos.types
 import gui.mainFrame
 import gui.globalEvents as GE
 import wx
@@ -56,7 +55,7 @@ class AmountChanger(wx.Dialog):
 
         if isinstance(self.thing, es_Cargo):
             sFit.addCargo(fitID, self.thing.item.ID, int(self.input.GetLineText(0)), replace=True)
-        elif isinstance(self.thing, eos.types.Fit):
+        elif isinstance(self.thing, Fit):
             sFit.changeAmount(fitID, self.thing, int(self.input.GetLineText(0)))
         elif isinstance(self.thing, es_Fighter):
             sFit.changeActiveFighters(fitID, self.thing, int(self.input.GetLineText(0)))

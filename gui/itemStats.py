@@ -17,24 +17,34 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
-import re
-import os
 import csv
-import sys
+import os
+import re
 import subprocess
+import sys
 
 import wx
 import wx.html
 import wx.lib.mixins.listctrl as listmix
 
 import config
-from eos.types import Fit, Ship, Citadel, Module, Skill, Booster, Implant, Drone, Mode, Fighter
-from service.market import Market
-from service.attribute import Attribute
 import gui.mainFrame
+from eos.gamedata import Attribute
+from eos.saveddata.booster import Booster as Booster
+from eos.saveddata.character import Skill as Skill
+from eos.saveddata.citadel import Citadel as Citadel
+from eos.saveddata.drone import Drone as Drone
+from eos.saveddata.fighter import Fighter as Fighter
+from eos.saveddata.fit import Fit as Fit
+from eos.saveddata.implant import Implant as Implant
+from eos.saveddata.mode import Mode as Mode
+from eos.saveddata.module import Module as Module
+from eos.saveddata.ship import Ship as Ship
 from gui.bitmapLoader import BitmapLoader
-from gui.utils.numberFormatter import formatAmount
 from gui.contextMenu import ContextMenu
+from gui.utils.numberFormatter import formatAmount
+from service.attribute import Attribute
+from service.market import Market
 
 
 class ItemStatsDialog(wx.Dialog):

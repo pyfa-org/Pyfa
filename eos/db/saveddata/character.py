@@ -23,7 +23,9 @@ from sqlalchemy.orm import relation, mapper
 from eos.db import saveddata_meta
 from eos.db.saveddata.implant import charImplants_table
 from eos.effectHandlerHelpers import HandledImplantBoosterList
-from eos.types import Character, User, Skill, Implant
+from eos.saveddata.character import Character as Character, Skill as Skill
+from eos.saveddata.implant import Implant as Implant
+from eos.saveddata.user import User as User
 
 characters_table = Table("characters", saveddata_meta,
                          Column("ID", Integer, primary_key=True),

@@ -1,5 +1,9 @@
 import wx
-from eos.types import Drone, Fit, Module, Slot, Rack, Implant
+
+from eos.saveddata.drone import Drone as Drone
+from eos.saveddata.fit import Fit as Fit
+from eos.saveddata.implant import Implant as Implant
+from eos.saveddata.module import Slot as Slot, Module as Module, Rack as Rack
 from gui.viewColumn import ViewColumn
 
 

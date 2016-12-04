@@ -20,7 +20,9 @@
 from copy import deepcopy
 from itertools import chain
 
-from eos.types import Skill, Module, Ship
+from eos.saveddata.character import Skill as Skill
+from eos.saveddata.module import Module as Module
+from eos.saveddata.ship import Ship as Ship
 
 
 class Fleet(object):

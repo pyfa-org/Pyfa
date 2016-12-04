@@ -1,19 +1,19 @@
-import wx
-import thread
-import logging
-import threading
 import copy
-import uuid
+import logging
+import thread
+import threading
 import time
+import uuid
+
+import wx
 
 import eos.db
-from eos.enum import Enum
-from eos.types import CrestChar
 import gui.globalEvents as GE
-
-from service.settings import CRESTSettings
-from service.server import StoppableHTTPServer, AuthHandler
+from eos.enum import Enum
+from eos.saveddata.crestchar import CrestChar as CrestChar
 from service.pycrest.eve import EVE
+from service.server import StoppableHTTPServer, AuthHandler
+from service.settings import CRESTSettings
 
 logger = logging.getLogger(__name__)
 

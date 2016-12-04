@@ -17,9 +17,10 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
-from gui.viewColumn import ViewColumn
 import wx
-from eos.types import Module
+
+from eos.saveddata.module import Module as Module
+from gui.viewColumn import ViewColumn
 
 
 class AmmoIcon(ViewColumn):

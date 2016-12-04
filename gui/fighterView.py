@@ -19,12 +19,13 @@
 
 import wx
 
-import gui.globalEvents as GE
-import gui.marketBrowser as mb
-import gui.mainFrame
 import gui.display as d
+import gui.globalEvents as GE
+import gui.mainFrame
+import gui.marketBrowser as mb
+from eos.saveddata.fit import Fit as Fit
+from eos.saveddata.module import Slot as Slot, State as State
 from gui.builtinViewColumns.state import State
-from eos.types import Slot
 from gui.contextMenu import ContextMenu
 from service.fit import Fit
 from service.market import Market

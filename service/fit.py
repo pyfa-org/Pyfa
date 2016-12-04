@@ -22,25 +22,29 @@ import copy
 import logging
 
 import eos.db
-from eos.types import State, Slot, Module, Drone, Fighter, Fit as FitType
-
-from eos.saveddata.character import Character as saveddata_Character
-from eos.saveddata.ship import Ship as es_Ship
-from eos.saveddata.citadel import Citadel as es_Citadel
-from eos.saveddata.implant import Implant as es_Implant
 from eos.saveddata.booster import Booster as es_Booster
-from eos.saveddata.module import Module as es_Module
-from eos.saveddata.fighter import Fighter as es_Fighter
-from eos.saveddata.drone import Drone as es_Drone
 from eos.saveddata.cargo import Cargo as es_Cargo
+from eos.saveddata.character import Character as Character
+from eos.saveddata.character import Character as saveddata_Character
+from eos.saveddata.citadel import Citadel as es_Citadel
+from eos.saveddata.damagePattern import DamagePattern as DamagePattern
 from eos.saveddata.damagePattern import DamagePattern as es_DamagePattern
-
+from eos.saveddata.drone import Drone as Drone
+from eos.saveddata.drone import Drone as es_Drone
+from eos.saveddata.fighter import Fighter as Fighter
+from eos.saveddata.fighter import Fighter as es_Fighter
+from eos.saveddata.fit import Fit as Fit
+from eos.saveddata.fleet import Fleet as Fleet
+from eos.saveddata.implant import Implant as es_Implant
+from eos.saveddata.module import Module as es_Module
+from eos.saveddata.module import Slot as Slot, Module as Module, State as State
+from eos.saveddata.ship import Ship as es_Ship
+from eos.saveddata.fit import Fit as FitType
+from service.character import Character
+from service.damagePattern import DamagePattern
 from service.fleet import Fleet
 from service.market import Market
-from service.character import Character
 from service.settings import SettingsProvider
-from service.damagePattern import DamagePattern
-
 
 # TODO: port this to port.py
 # from service.port import Port
