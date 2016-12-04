@@ -286,7 +286,7 @@ class Item(EqBase):
     def requiredSkills(self):
         if self.__requiredSkills is None:
             # This import should be here to make sure it's fully initialized
-            from eos import db
+            from eos.db.gamedata import queries as edg_queries
             requiredSkills = OrderedDict()
             self.__requiredSkills = requiredSkills
             # Map containing attribute IDs we may need for required skills
@@ -297,7 +297,7 @@ class Item(EqBase):
             # { attributeID : attributeValue }
             skillAttrs = {}
             # Get relevant attribute values from db (required skill IDs and levels) for our item
-            for attrInfo in db.directAttributeRequest((self.ID,), tuple(combinedAttrIDs)):
+            for attrInfo in edg_queries.directAttributeRequest((self.ID,), tuple(combinedAttrIDs)):
                 attrID = attrInfo[1]
                 attrVal = attrInfo[2]
                 skillAttrs[attrID] = attrVal
@@ -308,7 +308,7 @@ class Item(EqBase):
                     skillID = int(skillAttrs[srqIDAtrr])
                     skillLvl = skillAttrs[srqLvlAttr]
                     # Fetch item from database and fill map
-                    item = db.getItem(skillID)
+                    item = edg_queries.getItem(skillID)
                     requiredSkills[item] = skillLvl
         return self.__requiredSkills
 
