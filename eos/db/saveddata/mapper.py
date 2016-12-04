@@ -28,6 +28,7 @@ from sqlalchemy.orm import relation, mapper
 from sqlalchemy.orm.collections import attribute_mapped_collection
 from sqlalchemy.sql import and_
 
+import eos.saveddata.character as Character
 from eos.db import saveddata_meta
 from eos.db import saveddata_session
 from eos.effectHandlerHelpers import HandledImplantBoosterList
@@ -42,19 +43,19 @@ from eos.saveddata.fighter import Fighter as Fighter
 from eos.saveddata.fighterAbility import FighterAbility as FighterAbility
 from eos.saveddata.fit import Fit as Fit
 from eos.saveddata.fit import ImplantLocation as ImplantLocation
+from eos.saveddata.fleet import Fleet
+from eos.saveddata.fleet import Squad
+from eos.saveddata.fleet import Wing
 from eos.saveddata.implant import Implant as Implant
 from eos.saveddata.implantSet import ImplantSet as ImplantSet
 from eos.saveddata.miscData import MiscData as MiscData
 from eos.saveddata.module import Module as Module
 from eos.saveddata.override import Override as Override
 from eos.saveddata.price import Price as Price
+from eos.saveddata.skill import Skill
 from eos.saveddata.targetResists import TargetResists as TargetResists
 from eos.saveddata.user import User as User
-from eos.saveddata.fleet import Fleet
-from eos.saveddata.fleet import Wing
-from eos.saveddata.fleet import Squad
-from eos.saveddata.skill import Skill
-import eos.saveddata.character as Character
+
 
 class boosters_table():
     boosters_table = Table("boosters", saveddata_meta,
@@ -221,78 +222,6 @@ class fits_table:
                               Column("active", Boolean, nullable=False, default=1)
                               )
 
-
-class ProjectedFit(object):
-    def __init__(self, sourceID, source_fit, amount=1, active=True):
-        self.sourceID = sourceID
-        self.source_fit = source_fit
-        self.active = active
-        self.__amount = amount
-
-    @reconstructor
-    def init(self):
-        if self.source_fit.isInvalid:
-            # Very rare for this to happen, but be prepared for it
-            saveddata_session.delete(self.source_fit)
-            saveddata_session.flush()
-            saveddata_session.refresh(self.victim_fit)
-
-    # We have a series of setters and getters here just in case someone
-    # downgrades and screws up the table with NULL values
-    @property
-    def amount(self):
-        return self.__amount or 1
-
-    @amount.setter
-    def amount(self, amount):
-        self.__amount = amount
-
-    def __repr__(self):
-        return "ProjectedFit(sourceID={}, victimID={}, amount={}, active={}) at {}".format(
-            self.sourceID, self.victimID, self.amount, self.active, hex(id(self))
-        )
-
-
-class modules_table:
-    modules_table = Table("modules", saveddata_meta,
-                          Column("ID", Integer, primary_key=True),
-                          Column("fitID", Integer, ForeignKey("fits.ID"), nullable=False, index=True),
-                          Column("itemID", Integer, nullable=True),
-                          Column("dummySlot", Integer, nullable=True, default=None),
-                          Column("chargeID", Integer),
-                          Column("state", Integer, CheckConstraint("state >= -1"), CheckConstraint("state <= 2")),
-                          Column("projected", Boolean, default=False, nullable=False),
-                          Column("position", Integer),
-                          CheckConstraint('("dummySlot" = NULL OR "itemID" = NULL) AND "dummySlot" != "itemID"'))
-
-    mapper(Module, modules_table,
-           properties={"owner": relation(Fit)})
-
-
-class CommandFit(object):
-    def __init__(self, boosterID, booster_fit, active=True):
-        self.boosterID = boosterID
-        self.booster_fit = booster_fit
-        self.active = active
-
-    @reconstructor
-    def init(self):
-        if self.booster_fit.isInvalid:
-            # Very rare for this to happen, but be prepared for it
-            saveddata_session.delete(self.booster_fit)
-            saveddata_session.flush()
-            saveddata_session.refresh(self.boosted_fit)
-
-    def __repr__(self):
-        return "CommandFit(boosterID={}, boostedID={}, active={}) at {}".format(
-            self.boosterID, self.boostedID, self.active, hex(id(self))
-        )
-
-
-class fits_table:
-    # TODO: Import refactoring.  This is a terrible work around.
-    import eos.saveddata.character as Character
-
     Fit._Fit__projectedFits = association_proxy(
         "victimOf",  # look at the victimOf association...
         "source_fit",  # .. and return the source fits
@@ -405,6 +334,74 @@ class fits_table:
            properties={"_ProjectedFit__amount": fits_table.projectedFits_table.c.amount})
 
     mapper(CommandFit, fits_table.commandFits_table)
+
+
+class ProjectedFit(object):
+    def __init__(self, sourceID, source_fit, amount=1, active=True):
+        self.sourceID = sourceID
+        self.source_fit = source_fit
+        self.active = active
+        self.__amount = amount
+
+    @reconstructor
+    def init(self):
+        if self.source_fit.isInvalid:
+            # Very rare for this to happen, but be prepared for it
+            saveddata_session.delete(self.source_fit)
+            saveddata_session.flush()
+            saveddata_session.refresh(self.victim_fit)
+
+    # We have a series of setters and getters here just in case someone
+    # downgrades and screws up the table with NULL values
+    @property
+    def amount(self):
+        return self.__amount or 1
+
+    @amount.setter
+    def amount(self, amount):
+        self.__amount = amount
+
+    def __repr__(self):
+        return "ProjectedFit(sourceID={}, victimID={}, amount={}, active={}) at {}".format(
+            self.sourceID, self.victimID, self.amount, self.active, hex(id(self))
+        )
+
+
+class modules_table:
+    modules_table = Table("modules", saveddata_meta,
+                          Column("ID", Integer, primary_key=True),
+                          Column("fitID", Integer, ForeignKey("fits.ID"), nullable=False, index=True),
+                          Column("itemID", Integer, nullable=True),
+                          Column("dummySlot", Integer, nullable=True, default=None),
+                          Column("chargeID", Integer),
+                          Column("state", Integer, CheckConstraint("state >= -1"), CheckConstraint("state <= 2")),
+                          Column("projected", Boolean, default=False, nullable=False),
+                          Column("position", Integer),
+                          CheckConstraint('("dummySlot" = NULL OR "itemID" = NULL) AND "dummySlot" != "itemID"'))
+
+    mapper(Module, modules_table,
+           properties={"owner": relation(Fit)})
+
+
+class CommandFit(object):
+    def __init__(self, boosterID, booster_fit, active=True):
+        self.boosterID = boosterID
+        self.booster_fit = booster_fit
+        self.active = active
+
+    @reconstructor
+    def init(self):
+        if self.booster_fit.isInvalid:
+            # Very rare for this to happen, but be prepared for it
+            saveddata_session.delete(self.booster_fit)
+            saveddata_session.flush()
+            saveddata_session.refresh(self.boosted_fit)
+
+    def __repr__(self):
+        return "CommandFit(boosterID={}, boostedID={}, active={}) at {}".format(
+            self.boosterID, self.boostedID, self.active, hex(id(self))
+        )
+
 
 
 class fleet_table:
