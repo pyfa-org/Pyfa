@@ -33,6 +33,10 @@ from eos.effectHandlerHelpers import HandledItem, HandledImplantBoosterList
 logger = logging.getLogger(__name__)
 
 
+class ReadOnlyException(Exception):
+    pass
+
+
 class Character(object):
     __itemList = None
     __itemIDMap = None

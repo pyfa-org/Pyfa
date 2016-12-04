@@ -50,23 +50,10 @@ from eos.saveddata.override import Override as Override
 from eos.saveddata.price import Price as Price
 from eos.saveddata.targetResists import TargetResists as TargetResists
 from eos.saveddata.user import User as User
-
-# TODO: Import fix
-# import eos.saveddata.character as Character
-# import eos.saveddata.fleet as Fleet
-"""
-This should not be a lazy import
-".\eos\saveddata\character.py"
-from eos.db.saveddata import queries as eds_queries
-".\eos\db\saveddata\queries.py"
-from eos.db.saveddata.mapper import projectedFits_table
-".\eos\db\saveddata\mapper.py"
-from eos.saveddata.character import Character as Character
-Old imports
-    from eos.saveddata.character import Character as Character
-    from eos.saveddata.character import Skill as Skill
-    from eos.saveddata.fleet import Fleet as Fleet, Wing as Wing, Squad as Squad
-"""
+from eos.saveddata.fleet import Fleet
+from eos.saveddata.fleet import Wing
+from eos.saveddata.fleet import Squad
+from eos.saveddata.skill import Skill
 
 
 class boosters_table():
@@ -423,8 +410,6 @@ class fits_table:
 
 
 class fleet_table:
-    # TODO: Import refactor.
-    import eos.saveddata.fleet as Fleet
     gangs_table = Table("gangs", saveddata_meta,
                         Column("ID", Integer, primary_key=True),
                         Column("leaderID", ForeignKey("fits.ID")),
@@ -520,7 +505,7 @@ class skills_table:
                          Column("itemID", Integer, primary_key=True),
                          Column("_Skill__level", Integer, nullable=True))
 
-    mapper(Character.Skill, skills_table)
+    mapper(Skill, skills_table)
 
 
 class targetResists_table:
