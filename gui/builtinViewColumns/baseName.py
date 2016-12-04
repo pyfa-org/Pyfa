@@ -24,7 +24,6 @@ import gui.mainFrame
 from eos.saveddata.cargo import Cargo as Cargo
 from eos.saveddata.drone import Drone as Drone
 from eos.saveddata.fighter import Fighter as Fighter
-from eos.saveddata.fit import Fit as Fit
 from eos.saveddata.implant import Implant as Implant
 from eos.saveddata.module import Slot as Slot, Module as Module, Rack as Rack
 from gui.viewColumn import ViewColumn

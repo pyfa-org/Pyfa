@@ -35,7 +35,7 @@ from eos.saveddata.booster import Booster as Booster
 from eos.saveddata.cargo import Cargo as Cargo
 from eos.saveddata.citadel import Citadel as Citadel
 from eos.saveddata.drone import Drone as Drone
-from eos.saveddata.fit import Fit as Fit
+# from eos.saveddata.fit import Fit as Fit
 from eos.saveddata.implant import Implant as Implant
 from eos.saveddata.module import Slot as Slot, Module as Module, State as State
 from eos.saveddata.ship import Ship as Ship

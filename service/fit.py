@@ -21,22 +21,20 @@
 import copy
 import logging
 
+from eos.db import saveddata_session
 from eos.saveddata.booster import Booster as es_Booster
 from eos.saveddata.cargo import Cargo as es_Cargo
-from eos.saveddata.character import Character as Character
 from eos.saveddata.character import Character as saveddata_Character
 from eos.saveddata.citadel import Citadel as es_Citadel
 from eos.saveddata.damagePattern import DamagePattern as es_DamagePattern
-from eos.saveddata.drone import Drone as Drone
 from eos.saveddata.drone import Drone as es_Drone
-from eos.saveddata.fighter import Fighter as Fighter
 from eos.saveddata.fighter import Fighter as es_Fighter
-from eos.saveddata.fleet import Fleet as Fleet
+# from eos.saveddata.fleet import Fleet as es_Fleet
 from eos.saveddata.implant import Implant as es_Implant
 from eos.saveddata.module import Module as es_Module
 from eos.saveddata.module import Slot as Slot, Module as Module, State as State
 from eos.saveddata.ship import Ship as es_Ship
-from eos.saveddata.fit import Fit as FitType
+from eos.saveddata.fit import Fit as es_Fit
 from service.character import Character
 from service.damagePattern import DamagePattern
 from service.fleet import Fleet
@@ -61,8 +59,8 @@ class Fit(object):
 
     def __init__(self):
         # TODO: This is broken. Import cleanup.
-        #self.pattern = DamagePattern.getInstance().getDamagePattern("Uniform")
-        #self.pattern = DamagePattern.getDamagePattern(DamagePattern.getInstance(),"Uniform")
+        # self.pattern = DamagePattern.getInstance().getDamagePattern("Uniform")
+        # self.pattern = DamagePattern.getDamagePattern(DamagePattern.getInstance(),"Uniform")
 
         self.targetResists = None
         self.character = saveddata_Character.getAll5()
@@ -139,7 +137,7 @@ class Fit(object):
             ship = es_Ship(edg_queries.getItem(shipID))
         except ValueError:
             ship = es_Citadel(edg_queries.getItem(shipID))
-        fit = FitType(ship)
+        fit = es_Fit(ship)
         fit.name = name if name is not None else "New %s" % fit.ship.item.name
         fit.damagePattern = self.pattern
         fit.targetResists = self.targetResists
@@ -169,7 +167,7 @@ class Fit(object):
         # refresh any fits this fit is projected onto. Otherwise, if we have
         # already loaded those fits, they will not reflect the changes
         for projection in fit.projectedOnto.values():
-            if projection.victim_fit in eos.db.saveddata_session:  # GH issue #359
+            if projection.victim_fit in saveddata_session:  # GH issue #359
                 eds_queries.saveddata_session.refresh(projection.victim_fit)
 
     def copyFit(self, fitID):
@@ -316,17 +314,17 @@ class Fit(object):
 
         if isinstance(thing, int):
             thing = eds_queries.getItem(thing,
-                                   eager=("attributes", "group.category"))
+                                        eager=("attributes", "group.category"))
 
-        if isinstance(thing, FitType):
+        if isinstance(thing, es_Fit):
             if thing in fit.projectedFits:
                 return
 
             fit.__projectedFits[thing.ID] = thing
 
             # this bit is required -- see GH issue # 83
-            eos.db.saveddata_session.flush()
-            eos.db.saveddata_session.refresh(thing)
+            saveddata_session.flush()
+            saveddata_session.refresh(thing)
         elif thing.category.name == "Drone":
             drone = None
             for d in fit.projectedDrones.find(thing):
@@ -369,8 +367,8 @@ class Fit(object):
         fit.__commandFits[thing.ID] = thing
 
         # this bit is required -- see GH issue # 83
-        eos.db.saveddata_session.flush()
-        eos.db.saveddata_session.refresh(thing)
+        saveddata_session.flush()
+        saveddata_session.refresh(thing)
 
         eds_queries.commit()
         self.recalc(fit)
@@ -389,7 +387,7 @@ class Fit(object):
             thing.state = self.__getProposedState(thing, click)
             if not thing.canHaveState(thing.state, fit):
                 thing.state = State.OFFLINE
-        elif isinstance(thing, FitType):
+        elif isinstance(thing, es_Fit):
             projectionInfo = thing.getProjectionInfo(fitID)
             if projectionInfo:
                 projectionInfo.active = not projectionInfo.active
@@ -667,7 +665,7 @@ class Fit(object):
                     break
             '''
             if fighter is None:
-                fighter = Fighter(item)
+                fighter = es_Fighter(item)
                 used = fit.getSlotsUsed(fighter.slot)
                 total = fit.getNumSlots(fighter.slot)
                 standardAttackActive = False
@@ -758,7 +756,7 @@ class Fit(object):
         d.amount = amount
         d.amountActive = amount if active else 0
 
-        newD = Drone(d.item)
+        newD = es_Drone(d.item)
         newD.amount = total - amount
         newD.amountActive = newD.amount if active else 0
         l.append(newD)

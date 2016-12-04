@@ -7,9 +7,9 @@ import uuid
 
 import wx
 
-import eos.db
 import gui.globalEvents as GE
 from eos.enum import Enum
+from eos.db.saveddata import queries as eds_queries
 from eos.saveddata.crestchar import CrestChar as CrestChar
 from service.pycrest.eve import EVE
 from service.server import StoppableHTTPServer, AuthHandler
@@ -100,20 +100,20 @@ class Crest(object):
         return self.settings.get('server') == Servers.SISI
 
     def delCrestCharacter(self, charID):
-        char = eos.db.getCrestCharacter(charID)
+        char = eds_queries.getCrestCharacter(charID)
         del self.charCache[char.ID]
-        eos.db.remove(char)
+        eds_queries.remove(char)
         wx.PostEvent(self.mainFrame, GE.SsoLogout(type=CrestModes.USER, numChars=len(self.charCache)))
 
     def delAllCharacters(self):
-        chars = eos.db.getCrestCharacters()
+        chars = eds_queries.getCrestCharacters()
         for char in chars:
-            eos.db.remove(char)
+            eds_queries.remove(char)
         self.charCache = {}
         wx.PostEvent(self.mainFrame, GE.SsoLogout(type=CrestModes.USER, numChars=0))
 
     def getCrestCharacters(self):
-        chars = eos.db.getCrestCharacters()
+        chars = eds_queries.getCrestCharacters()
         # I really need to figure out that DB cache problem, this is ridiculous
         chars2 = [self.getCrestCharacter(char.ID) for char in chars]
         return chars2
@@ -130,7 +130,7 @@ class Crest(object):
         if charID in self.charCache:
             return self.charCache.get(charID)
 
-        char = eos.db.getCrestCharacter(charID)
+        char = eds_queries.getCrestCharacter(charID)
         if char and not hasattr(char, "eve"):
             char.eve = copy.deepcopy(self.eve)
             char.eve.temptoken_authorize(refresh_token=char.refresh_token)

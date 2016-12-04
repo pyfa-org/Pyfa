@@ -29,7 +29,7 @@ import wx.lib.mixins.listctrl as listmix
 
 import config
 import gui.mainFrame
-from eos.gamedata import Attribute
+# from eos.gamedata import Attribute
 from eos.saveddata.booster import Booster as Booster
 from eos.saveddata.character import Skill as Skill
 from eos.saveddata.citadel import Citadel as Citadel

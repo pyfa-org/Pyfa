@@ -19,7 +19,6 @@
 
 import wx
 
-from eos.gamedata import Attribute
 from eos.saveddata.mode import Mode as Mode
 from gui.bitmapLoader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
