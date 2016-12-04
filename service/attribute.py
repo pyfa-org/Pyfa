@@ -19,8 +19,10 @@
 
 import eos.db
 
+
 class Attribute():
     instance = None
+
     @classmethod
     def getInstance(cls):
         if cls.instance is None:
@@ -32,6 +34,5 @@ class Attribute():
         if isinstance(identity, (int, basestring)):
             info = eos.db.getAttributeInfo(identity, eager=("icon", "unit"))
         elif isinstance(identity, (int, float)):
-            id = int(identity)
-            info = eos.db.getAttributeInfo(id, eager=("icon", "unit"))
+            info = eos.db.getAttributeInfo(int(identity), eager=("icon", "unit"))
         return info

@@ -25,6 +25,7 @@ import eos.types
 from eos.db import migration
 from eos.db.saveddata.loadDefaultDatabaseValues import DefaultDatabaseValues
 
+
 class PrefetchThread(threading.Thread):
     def run(self):
         # We're a daemon thread, as such, interpreter might get shut down while we do stuff

@@ -19,10 +19,12 @@
 
 import copy
 import eos.db
-from eos.types import Fleet as Fleet_, Wing, Squad
+from eos.types import Fleet as Fleet_
+
 
 class Fleet(object):
     instance = None
+
     @classmethod
     def getInstance(cls):
         if cls.instance is None:
@@ -72,16 +74,16 @@ class Fleet(object):
 
     def makeLinearFleet(self, fit):
         f = Fleet_()
-        w = Wing()
+        w = Fleet_()
+        s = Fleet_()
         f.wings.append(w)
-        s = Squad()
         w.squads.append(s)
         s.members.append(fit)
         fit.fleet = f
         eos.db.save(f)
 
     def setLinearFleetCom(self, boostee, booster):
-        #if boostee == booster:
+        # if boostee == booster:
         #    return
         if self.getLinearFleet(boostee) is None:
             self.removeAssociatedFleetData(boostee)
@@ -101,7 +103,7 @@ class Fleet(object):
         sFit.recalc(boostee, withBoosters=True)
 
     def setLinearWingCom(self, boostee, booster):
-        #if boostee == booster:
+        # if boostee == booster:
         #    return
         if self.getLinearFleet(boostee) is None:
             self.removeAssociatedFleetData(boostee)
@@ -121,7 +123,7 @@ class Fleet(object):
         sFit.recalc(boostee, withBoosters=True)
 
     def setLinearSquadCom(self, boostee, booster):
-        #if boostee == booster:
+        # if boostee == booster:
         #    return
         if self.getLinearFleet(boostee) is None:
             self.removeAssociatedFleetData(boostee)
@@ -139,7 +141,6 @@ class Fleet(object):
         from service.fit import Fit
         sFit = Fit.getInstance()
         sFit.recalc(boostee, withBoosters=True)
-
 
     def getLinearFleet(self, fit):
         sqIDs = eos.db.getSquadsIDsWithFitID(fit.ID)

@@ -13,11 +13,12 @@ from gui.marketBrowser import SearchBox
 import gui.display as d
 import gui.globalEvents as GE
 from gui.bitmapLoader import BitmapLoader
-import service
 import csv
 import eos.db
 
 import logging
+
+from service.market import Market
 
 logger = logging.getLogger(__name__)
 
@@ -108,7 +109,7 @@ class AttributeEditor( wx.Frame ):
             self.itemView.updateItems(True)
 
     def OnExport(self, event):
-        sMkt = service.Market.getInstance()
+        sMkt = Market.getInstance()
         items = sMkt.getItemsWithOverrides()
         defaultFile = "pyfa_overrides.csv"
 
@@ -131,7 +132,7 @@ class AttributeEditor( wx.Frame ):
                  "Confirm Delete", wx.YES | wx.NO | wx.ICON_EXCLAMATION)
 
         if dlg.ShowModal() == wx.ID_YES:
-            sMkt = service.Market.getInstance()
+            sMkt = Market.getInstance()
             items = sMkt.getItemsWithOverrides()
             # We can't just delete overrides, as loaded items will still have
             # them assigned. Deleting them from the database won't propagate
@@ -152,7 +153,7 @@ class ItemView(d.Display):
 
     def __init__(self, parent):
         d.Display.__init__(self, parent)
-        sMkt = service.Market.getInstance()
+        sMkt = Market.getInstance()
 
         self.things = sMkt.getItemsWithOverrides()
         self.items = self.things
@@ -173,14 +174,14 @@ class ItemView(d.Display):
         self.update(self.items)
 
     def updateItems(self, updateDisplay=False):
-        sMkt = service.Market.getInstance()
+        sMkt = Market.getInstance()
         self.things = sMkt.getItemsWithOverrides()
         self.items = self.things
         if updateDisplay:
             self.update(self.things)
 
     def scheduleSearch(self, event=None):
-        sMkt = service.Market.getInstance()
+        sMkt = Market.getInstance()
 
         search = self.searchBox.GetLineText(0)
         # Make sure we do not count wildcard as search symbol

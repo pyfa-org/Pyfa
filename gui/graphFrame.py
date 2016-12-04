@@ -24,8 +24,8 @@ import gui.display
 import gui.globalEvents as GE
 
 from gui.graph import Graph
-import service
 import gui.mainFrame
+from service.fit import Fit
 
 enabled = True
 mplImported = False
@@ -78,7 +78,7 @@ class GraphFrame(wx.Frame):
         self.mainSizer = wx.BoxSizer(wx.VERTICAL)
         self.SetSizer(self.mainSizer)
 
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fit = sFit.getFit(self.mainFrame.getActiveFit())
         self.fits = [fit] if fit is not None else []
         self.fitList = FitList(self)
@@ -242,7 +242,7 @@ class GraphFrame(wx.Frame):
         self.draw()
 
     def AppendFitToList(self, fitID):
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fit = sFit.getFit(fitID)
         if fit not in self.fits:
             self.fits.append(fit)

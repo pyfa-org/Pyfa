@@ -4,7 +4,8 @@ from gui.preferenceView import PreferenceView
 from gui.bitmapLoader import BitmapLoader
 
 import gui.mainFrame
-import service
+from service.settings import NetworkSettings
+from service.network import Network
 
 class PFNetworkPref ( PreferenceView):
     title = "Network"
@@ -12,8 +13,8 @@ class PFNetworkPref ( PreferenceView):
     def populatePanel( self, panel ):
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.settings = service.settings.NetworkSettings.getInstance()
-        self.network = service.Network.getInstance()
+        self.settings = NetworkSettings.getInstance()
+        self.network = Network.getInstance()
         self.dirtySettings = False
 
         mainSizer = wx.BoxSizer( wx.VERTICAL )
@@ -164,7 +165,7 @@ class PFNetworkPref ( PreferenceView):
 
         self.UpdateApplyButtonState()
 
-        if self.nMode is not service.settings.NetworkSettings.PROXY_MODE_MANUAL:  # == 2
+        if self.nMode is not NetworkSettings.PROXY_MODE_MANUAL:  # == 2
             self.ToggleProxySettings(False)
         else:
             self.ToggleProxySettings(True)
@@ -236,7 +237,7 @@ class PFNetworkPref ( PreferenceView):
 
         self.UpdateApplyButtonState()
 
-        if choice is not service.settings.NetworkSettings.PROXY_MODE_MANUAL:
+        if choice is not NetworkSettings.PROXY_MODE_MANUAL:
             self.ToggleProxySettings(False)
         else:
             self.ToggleProxySettings(True)

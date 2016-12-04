@@ -1,10 +1,10 @@
 import wx
-import service
 import gui.display as d
 from gui.bitmapLoader import BitmapLoader
 import gui.PFSearchBox as SBox
 from gui.marketBrowser import SearchBox
 from wx.lib.buttons import GenBitmapButton
+from service.market import Market
 
 class BaseImplantEditorView (wx.Panel):
     def addMarketViewImage(self, iconFile):
@@ -71,7 +71,7 @@ class BaseImplantEditorView (wx.Panel):
 
         # Populate the market tree
 
-        sMkt = service.Market.getInstance()
+        sMkt = Market.getInstance()
         for mktGrp in sMkt.getImplantTree():
             iconId = self.addMarketViewImage(sMkt.getIconByMarketGroup(mktGrp))
             childId = self.availableImplantsTree.AppendItem(root, mktGrp.name, iconId, data=wx.TreeItemData(mktGrp.ID))
@@ -126,7 +126,7 @@ class BaseImplantEditorView (wx.Panel):
 
     def expandLookup(self, event):
         tree = self.availableImplantsTree
-        sMkt = service.Market.getInstance()
+        sMkt = Market.getInstance()
         parent = event.Item
         child, _ = tree.GetFirstChild(parent)
         text = tree.GetItemText(child)
@@ -235,7 +235,7 @@ class ItemView(d.Display):
         self.update(self.items)
 
     def scheduleSearch(self, event=None):
-        sMkt = service.Market.getInstance()
+        sMkt = Market.getInstance()
 
         search = self.searchBox.GetLineText(0)
         # Make sure we do not count wildcard as search symbol

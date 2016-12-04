@@ -33,9 +33,9 @@ import config
 import eos.db
 import eos.types
 from service.eveapi import EVEAPIConnection, ParseXML
-from service.fit import Fit
 
 logger = logging.getLogger(__name__)
+
 
 class CharacterImportThread(threading.Thread):
     def __init__(self, paths, callback):
@@ -71,11 +71,12 @@ class CharacterImportThread(threading.Thread):
                         })
                     char = sCharacter.new(name+" (EVEMon)")
                     sCharacter.apiUpdateCharSheet(char.ID, skills)
-                except Exception, e:
-                    print e.message
+                except Exception as e:
+                    print(e.message)
                     continue
 
         wx.CallAfter(self.callback)
+
 
 class SkillBackupThread(threading.Thread):
     def __init__(self, path, saveFmt, activeFit, callback):
@@ -88,8 +89,7 @@ class SkillBackupThread(threading.Thread):
     def run(self):
         path = self.path
         sCharacter = Character.getInstance()
-        sFit = Fit.getInstance()
-        fit = sFit.getFit(self.activeFit)
+
         backupData = ""
         if self.saveFmt == "xml" or self.saveFmt == "emp":
             backupData = sCharacter.exportXml()
@@ -100,10 +100,11 @@ class SkillBackupThread(threading.Thread):
             with gzip.open(path, mode='wb') as backupFile:
                 backupFile.write(backupData)
         else:
-            with open(path, mode='w',encoding='utf-8') as backupFile:
+            with open(path, mode='w', encoding='utf-8') as backupFile:
                 backupFile.write(backupData)
 
         wx.CallAfter(self.callback)
+
 
 class Character(object):
     instance = None
@@ -230,7 +231,7 @@ class Character(object):
         group = eos.db.getGroup(groupID)
         skills = []
         for skill in group.items:
-            if skill.published == True:
+            if skill.published is True:
                 skills.append((skill.ID, skill.name))
         return skills
 
@@ -305,7 +306,7 @@ class Character(object):
             if char.name == charName:
                 charID = char.characterID
 
-        if charID == None:
+        if charID is None:
             return
 
         sheet = auth.character(charID).CharacterSheet()

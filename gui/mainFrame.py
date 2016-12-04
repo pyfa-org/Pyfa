@@ -29,7 +29,6 @@ from codecs import open
 from wx._core import PyDeadObjectError
 from wx.lib.wordwrap import wordwrap
 
-import service
 import config
 import threading
 import webbrowser
@@ -58,10 +57,20 @@ from gui.utils.clipboard import toClipboard, fromClipboard
 from gui.fleetBrowser import FleetBrowser
 from gui.updateDialog import UpdateDialog
 from gui.builtinViews import *
+from gui import graphFrame
+
+from service.settings import SettingsProvider
+from service.fit import Fit
+from service.character import Character
+from service.crest import Crest
+from service.update import Update
 
 # import this to access override setting
 from eos.modifiedAttributeDict import ModifiedAttributeDict
 from eos.db.saveddata.loadDefaultDatabaseValues import DefaultDatabaseValues
+from eos import db
+from service.port import Port
+from service.settings import HTMLExportSettings
 
 from time import gmtime, strftime
 
@@ -208,7 +217,7 @@ class MainFrame(wx.Frame):
         self.LoadPreviousOpenFits()
 
         #Check for updates
-        self.sUpdate = service.Update.getInstance()
+        self.sUpdate = Update.getInstance()
         self.sUpdate.CheckUpdate(self.ShowUpdateBox)
 
         if not 'wxMac' in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3,0)):
@@ -223,9 +232,9 @@ class MainFrame(wx.Frame):
         dlg.ShowModal()
 
     def LoadPreviousOpenFits(self):
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
 
-        self.prevOpenFits = service.SettingsProvider.getInstance().getSettings("pyfaPrevOpenFits", {"enabled": False, "pyfaOpenFits": []})
+        self.prevOpenFits = SettingsProvider.getInstance().getSettings("pyfaPrevOpenFits", {"enabled": False, "pyfaOpenFits": []})
         fits = self.prevOpenFits['pyfaOpenFits']
 
         # Remove any fits that cause exception when fetching (non-existent fits)
@@ -245,7 +254,7 @@ class MainFrame(wx.Frame):
 
     def LoadMainFrameAttribs(self):
         mainFrameDefaultAttribs = {"wnd_width": 1000, "wnd_height": 700, "wnd_maximized": False, "browser_width": 300, "market_height": 0, "fitting_height": -200}
-        self.mainFrameAttribs = service.SettingsProvider.getInstance().getSettings("pyfaMainWindowAttribs", mainFrameDefaultAttribs)
+        self.mainFrameAttribs = SettingsProvider.getInstance().getSettings("pyfaMainWindowAttribs", mainFrameDefaultAttribs)
 
         if self.mainFrameAttribs["wnd_maximized"]:
             width = mainFrameDefaultAttribs["wnd_width"]
@@ -319,7 +328,7 @@ class MainFrame(wx.Frame):
                  self.prevOpenFits['pyfaOpenFits'].append(m())
 
         # save all teh settingz
-        service.SettingsProvider.getInstance().saveAll()
+        SettingsProvider.getInstance().saveAll()
         event.Skip()
 
     def ExitApp(self, event):
@@ -372,7 +381,7 @@ class MainFrame(wx.Frame):
 
     def showExportDialog(self, event):
         """ Export active fit """
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fit = sFit.getFit(self.getActiveFit())
         defaultFile = "%s - %s.xml"%(fit.ship.item.name, fit.name) if fit else None
 
@@ -540,7 +549,7 @@ class MainFrame(wx.Frame):
         dlg.Show()
 
     def updateTitle(self, event):
-        sCrest = service.Crest.getInstance()
+        sCrest = Crest.getInstance()
         char = sCrest.implicitCharacter
         if char:
             t = time.gmtime(char.eve.expires-time.time())
@@ -575,7 +584,7 @@ class MainFrame(wx.Frame):
         self.SetTitle(self.title)
 
         menu = self.GetMenuBar()
-        sCrest = service.Crest.getInstance()
+        sCrest = Crest.getInstance()
 
         if type == CrestModes.IMPLICIT:
             menu.SetLabel(menu.ssoLoginId, "Login to EVE")
@@ -588,7 +597,7 @@ class MainFrame(wx.Frame):
             menu.Enable(menu.exportToEveId, not enable)
 
     def ssoHandler(self, event):
-        sCrest = service.Crest.getInstance()
+        sCrest = Crest.getInstance()
         if sCrest.settings.get('mode') == CrestModes.IMPLICIT:
             if sCrest.implicitCharacter is not None:
                 sCrest.logout()
@@ -610,7 +619,7 @@ class MainFrame(wx.Frame):
         menu.SetLabel(menu.toggleOverridesId, "Turn Overrides Off" if ModifiedAttributeDict.OVERRIDES else "Turn Overrides On")
 
     def saveChar(self, event):
-        sChr = service.Character.getInstance()
+        sChr = Character.getInstance()
         charID = self.charSelection.getActiveCharacter()
         sChr.saveCharacter(charID)
         wx.PostEvent(self, GE.CharListUpdated())
@@ -621,7 +630,7 @@ class MainFrame(wx.Frame):
         dlg.ShowModal()
 
     def revertChar(self, event):
-        sChr = service.Character.getInstance()
+        sChr = Character.getInstance()
         charID = self.charSelection.getActiveCharacter()
         sChr.revertCharacter(charID)
         wx.PostEvent(self, GE.CharListUpdated())
@@ -659,31 +668,32 @@ class MainFrame(wx.Frame):
             self.marketBrowser.search.Focus()
 
     def clipboardEft(self):
-        sFit = service.Fit.getInstance()
-        toClipboard(sFit.exportFit(self.getActiveFit()))
+        fit = db.getFit(self.getActiveFit())
+        toClipboard(Port.exportEft(fit))
 
     def clipboardEftImps(self):
-        sFit = service.Fit.getInstance()
-        toClipboard(sFit.exportEftImps(self.getActiveFit()))
+        fit = db.getFit(self.getActiveFit())
+        toClipboard(Port.exportEftImps(fit))
 
     def clipboardDna(self):
-        sFit = service.Fit.getInstance()
-        toClipboard(sFit.exportDna(self.getActiveFit()))
+        fit = db.getFit(self.getActiveFit())
+        toClipboard(Port.exportDna(fit))
 
     def clipboardCrest(self):
-        sFit = service.Fit.getInstance()
-        toClipboard(sFit.exportCrest(self.getActiveFit()))
+        fit = db.getFit(self.getActiveFit())
+        toClipboard(Port.exportCrest(fit))
 
     def clipboardXml(self):
-        sFit = service.Fit.getInstance()
-        toClipboard(sFit.exportXml(None, self.getActiveFit()))
+        fitIDs = self.getActiveFit()
+        fits = map(lambda fitID: db.getFit(fitID), fitIDs)
+        toClipboard(Port.exportXml(None, *fits))
 
     def clipboardMultiBuy(self):
-        sFit = service.Fit.getInstance()
-        toClipboard(sFit.exportMultiBuy(self.getActiveFit()))
+        fit = db.getFit(self.getActiveFit())
+        toClipboard(Port.exportMultiBuy(fit))
 
     def importFromClipboard(self, event):
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         try:
             fits = sFit.importFitFromBuffer(fromClipboard(), self.getActiveFit())
         except:
@@ -709,7 +719,7 @@ class MainFrame(wx.Frame):
 
     def exportSkillsNeeded(self, event):
         """ Exports skills needed for active fit and active character """
-        sCharacter = service.Character.getInstance()
+        sCharacter = Character.getInstance()
         saveDialog = wx.FileDialog(self, "Export Skills Needed As...",
                     wildcard = "EVEMon skills training file (*.emp)|*.emp|" \
                                "EVEMon skills training XML file (*.xml)|*.xml|" \
@@ -737,7 +747,7 @@ class MainFrame(wx.Frame):
 
     def fileImportDialog(self, event):
         """Handles importing single/multiple EVE XML / EFT cfg fit files"""
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         dlg = wx.FileDialog(self, "Open One Or More Fitting Files",
                     wildcard = "EVE XML fitting files (*.xml)|*.xml|" \
                                 "EFT text fitting files (*.cfg)|*.cfg|" \
@@ -767,7 +777,7 @@ class MainFrame(wx.Frame):
             if '.' not in os.path.basename(filePath):
                 filePath += ".xml"
 
-            sFit = service.Fit.getInstance()
+            sFit = Fit.getInstance()
             max = sFit.countAllFits()
 
             self.progressDialog = wx.ProgressDialog("Backup fits",
@@ -779,8 +789,8 @@ class MainFrame(wx.Frame):
 
     def exportHtml(self, event):
         from gui.utils.exportHtml import exportHtml
-        sFit = service.Fit.getInstance()
-        settings = service.settings.HTMLExportSettings.getInstance()
+        sFit = Fit.getInstance()
+        settings = HTMLExportSettings.getInstance()
 
         max = sFit.countAllFits()
         path = settings.getPath()
@@ -865,7 +875,7 @@ class MainFrame(wx.Frame):
 
         if dlg.ShowModal() == wx.ID_OK:
             self.waitDialog = wx.BusyInfo("Importing Character...")
-            sCharacter = service.Character.getInstance()
+            sCharacter = Character.getInstance()
             sCharacter.importCharacter(dlg.GetPaths(), self.importCharacterCallback)
 
     def importCharacterCallback(self):
@@ -878,7 +888,8 @@ class MainFrame(wx.Frame):
     def openGraphFrame(self, event):
         if not self.graphFrame:
             self.graphFrame = GraphFrame(self)
-            if gui.graphFrame.enabled:
+
+            if graphFrame.enabled:
                 self.graphFrame.Show()
         else:
             self.graphFrame.SetFocus()

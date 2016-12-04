@@ -22,7 +22,7 @@ from gui.bitmapLoader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 from eos.types import Drone, Cargo
 import wx
-import service
+from service.market import Market
 
 class Price(ViewColumn):
     name = "Price"
@@ -36,7 +36,7 @@ class Price(ViewColumn):
         if stuff.item is None or stuff.item.group.name == "Ship Modifiers":
             return ""
 
-        sMkt = service.Market.getInstance()
+        sMkt = Market.getInstance()
         price = sMkt.getPriceNow(stuff.item.ID)
 
         if not price or not price.price or not price.isValid:
@@ -50,7 +50,7 @@ class Price(ViewColumn):
         return formatAmount(price, 3, 3, 9, currency=True)
 
     def delayedText(self, mod, display, colItem):
-        sMkt = service.Market.getInstance()
+        sMkt = Market.getInstance()
         def callback(item):
             price = sMkt.getPriceNow(item.ID)
             text = formatAmount(price.price, 3, 3, 9, currency=True) if price.price else ""

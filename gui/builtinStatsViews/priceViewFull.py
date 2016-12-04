@@ -22,7 +22,7 @@ from gui.statsView import StatsView
 from gui import builtinStatsViews
 from gui.bitmapLoader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
-import service
+from service.market import Market
 
 class PriceViewFull(StatsView):
     name = "priceViewFull"
@@ -92,7 +92,7 @@ class PriceViewFull(StatsView):
                 for _ in xrange(cargo.amount):
                     typeIDs.append(cargo.itemID)
 
-            sMkt = service.Market.getInstance()
+            sMkt = Market.getInstance()
             sMkt.getPrices(typeIDs, self.processPrices)
             self.labelEMStatus.SetLabel("Updating prices...")
         else:

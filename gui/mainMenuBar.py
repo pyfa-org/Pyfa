@@ -23,7 +23,8 @@ from gui.bitmapLoader import BitmapLoader
 import gui.mainFrame
 import gui.graphFrame
 import gui.globalEvents as GE
-import service
+from service.crest import Crest
+from service.character import Character
 
 if not 'wxMac' in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3,0)):
     from service.crest import CrestModes
@@ -120,7 +121,7 @@ class MainMenuBar(wx.MenuBar):
         windowMenu.AppendItem(preferencesItem)
 
         if not 'wxMac' in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3,0)):
-            self.sCrest = service.Crest.getInstance()
+            self.sCrest = Crest.getInstance()
 
             # CREST Menu
             crestMenu = wx.Menu()
@@ -164,7 +165,7 @@ class MainMenuBar(wx.MenuBar):
         self.Enable(wx.ID_COPY, enable)
         self.Enable(self.exportSkillsNeededId, enable)
 
-        sChar = service.Character.getInstance()
+        sChar = Character.getInstance()
         charID = self.mainFrame.charSelection.getActiveCharacter()
         char = sChar.getCharacter(charID)
 

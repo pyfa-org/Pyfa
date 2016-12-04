@@ -29,21 +29,29 @@ from service.settings import NetworkSettings
 timeout = 3
 socket.setdefaulttimeout(timeout)
 
-class Error(StandardError):
+
+class Error(Exception):
     def __init__(self, msg=None):
         self.message = msg
 
-class RequestError(StandardError):
-    pass
 
-class AuthenticationError(StandardError):
-    pass
-
-class ServerError(StandardError):
+class RequestError(Exception):
     pass
 
 
-class Network():
+class AuthenticationError(Exception):
+    pass
+
+
+class ServerError(Exception):
+    pass
+
+
+class TimeoutError(Exception):
+    pass
+
+
+class Network(object):
     # Request constants - every request must supply this, as it is checked if
     # enabled or not via settings
     ENABLED = 1

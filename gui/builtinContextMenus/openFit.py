@@ -3,6 +3,7 @@ import gui.mainFrame
 import wx
 from gui.shipBrowser import FitSelected
 
+
 class OpenFit(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()

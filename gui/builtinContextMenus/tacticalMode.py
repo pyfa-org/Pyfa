@@ -1,8 +1,10 @@
 import wx
 from gui.contextMenu import ContextMenu
 import gui.mainFrame
-import service
+
 import gui.globalEvents as GE
+from service.fit import Fit
+
 
 class TacticalMode(ContextMenu):
     def __init__(self):
@@ -12,7 +14,7 @@ class TacticalMode(ContextMenu):
         if self.mainFrame.getActiveFit() is None or srcContext != "fittingShip":
             return False
 
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
         fit = sFit.getFit(fitID)
 
@@ -26,9 +28,9 @@ class TacticalMode(ContextMenu):
 
     def addMode(self, menu, mode):
         label = mode.item.name.rsplit()[-2]
-        id = ContextMenu.nextID()
-        self.modeIds[id] = mode
-        menuItem = wx.MenuItem(menu, id, label, kind=wx.ITEM_RADIO)
+        id_ = ContextMenu.nextID()
+        self.modeIds[id_] = mode
+        menuItem = wx.MenuItem(menu, id_, label, kind=wx.ITEM_RADIO)
         menu.Bind(wx.EVT_MENU, self.handleMode, menuItem)
         return menuItem
 
@@ -52,7 +54,7 @@ class TacticalMode(ContextMenu):
             event.Skip()
             return
 
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
         sFit.setMode(fitID, self.modeIds[event.Id])
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))

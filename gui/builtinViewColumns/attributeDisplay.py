@@ -22,14 +22,16 @@ from gui.viewColumn import ViewColumn
 from gui.bitmapLoader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 
-import service
+from service.attribute import Attribute
+from service.market import Market
+
 import wx
 
 class AttributeDisplay(ViewColumn):
     name = "attr"
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
-        sAttr = service.Attribute.getInstance()
+        sAttr = Attribute.getInstance()
         info = sAttr.getAttributeInfo(params["attribute"])
         self.info = info
         if params["showIcon"]:
@@ -57,7 +59,7 @@ class AttributeDisplay(ViewColumn):
             self.direct = True
             self.view = fittingView
             originalRefresh = fittingView.refresh
-            sMkt = service.Market.getInstance()
+            sMkt = Market.getInstance()
             #Hack into our master view and add a callback for ourselves to know when to query
             def refresh(stuff):
                 self.directInfo = sMkt.directAttrRequest(stuff, info) if stuff else None

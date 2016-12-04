@@ -20,10 +20,11 @@
 from gui import builtinViewColumns
 from gui.viewColumn import ViewColumn
 from gui.bitmapLoader import BitmapLoader
-import service
 from gui.utils.numberFormatter import formatAmount
 import wx
 from eos.types import Mode
+
+from service.attribute import Attribute
 
 class MaxRange(ViewColumn):
     name = "Max Range"
@@ -33,7 +34,7 @@ class MaxRange(ViewColumn):
                       "displayName": False}
         ViewColumn.__init__(self, fittingView)
 
-        sAttr = service.Attribute.getInstance()
+        sAttr = Attribute.getInstance()
         info = sAttr.getAttributeInfo("maxRange")
         self.info = info
         if params["showIcon"]:

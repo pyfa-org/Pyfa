@@ -20,11 +20,11 @@
 import wx
 from gui.bitmapLoader import BitmapLoader
 from gui.builtinViews.implantEditor import BaseImplantEditorView
-import service
 from gui.utils.clipboard import toClipboard, fromClipboard
 from service.implantSet import ImportError
 import logging
 from gui.builtinViews.entityEditor import EntityEditor, BaseValidator
+from service.implantSet import ImplantSets
 
 logger = logging.getLogger(__name__)
 
@@ -59,25 +59,25 @@ class ImplantSetEntityEditor(EntityEditor):
         self.SetEditorValidator(ImplantTextValidor)
 
     def getEntitiesFromContext(self):
-        sIS = service.ImplantSets.getInstance()
+        sIS = ImplantSets.getInstance()
         return sorted(sIS.getImplantSetList(), key=lambda c: c.name)
 
     def DoNew(self, name):
-        sIS = service.ImplantSets.getInstance()
+        sIS = ImplantSets.getInstance()
         return sIS.newSet(name)
 
     def DoRename(self, entity, name):
-        sIS = service.ImplantSets.getInstance()
+        sIS = ImplantSets.getInstance()
         sIS.renameSet(entity, name)
 
     def DoCopy(self, entity, name):
-        sIS = service.ImplantSets.getInstance()
+        sIS = ImplantSets.getInstance()
         copy = sIS.copySet(entity)
         sIS.renameSet(copy, name)
         return copy
 
     def DoDelete(self, entity):
-        sIS = service.ImplantSets.getInstance()
+        sIS = ImplantSets.getInstance()
         sIS.deleteSet(entity)
 
 
@@ -91,20 +91,20 @@ class ImplantSetEditor(BaseImplantEditorView):
         self.Parent.entityEditor.Bind(wx.EVT_CHOICE, self.contextChanged)
 
     def getImplantsFromContext(self):
-        sIS = service.ImplantSets.getInstance()
+        sIS = ImplantSets.getInstance()
         set = self.Parent.entityEditor.getActiveEntity()
         if set:
             return sIS.getImplants(set.ID)
         return []
 
     def addImplantToContext(self, item):
-        sIS = service.ImplantSets.getInstance()
+        sIS = ImplantSets.getInstance()
         set = self.Parent.entityEditor.getActiveEntity()
 
         sIS.addImplant(set.ID, item.ID)
 
     def removeImplantFromContext(self, implant):
-        sIS = service.ImplantSets.getInstance()
+        sIS = ImplantSets.getInstance()
         set = self.Parent.entityEditor.getActiveEntity()
 
         sIS.removeImplant(set.ID, implant)
@@ -191,7 +191,7 @@ class ImplantSetEditorDlg(wx.Dialog):
 
         text = fromClipboard()
         if text:
-            sIS = service.ImplantSets.getInstance()
+            sIS = ImplantSets.getInstance()
             try:
                 sIS.importSets(text)
                 self.stNotice.SetLabel("Patterns successfully imported from clipboard")
@@ -209,6 +209,6 @@ class ImplantSetEditorDlg(wx.Dialog):
     def exportPatterns(self, event):
         "Event fired when export to clipboard button is clicked"
 
-        sIS = service.ImplantSets.getInstance()
+        sIS = ImplantSets.getInstance()
         toClipboard(sIS.exportSets())
         self.stNotice.SetLabel("Sets exported to clipboard")

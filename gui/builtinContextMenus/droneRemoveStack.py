@@ -1,8 +1,9 @@
 from gui.contextMenu import ContextMenu
 import gui.mainFrame
-import service
 import wx
 import gui.globalEvents as GE
+from service.fit import Fit
+
 
 class ItemRemove(ContextMenu):
     def __init__(self):
@@ -15,7 +16,7 @@ class ItemRemove(ContextMenu):
         return "Remove {0} Stack".format(itmContext)
 
     def activate(self, fullContext, selection, i):
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
         fit = sFit.getFit(fitID)
 

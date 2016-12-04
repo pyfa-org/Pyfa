@@ -19,12 +19,13 @@
 
 import wx
 
-import service
 import gui.globalEvents as GE
 import gui.marketBrowser as mb
 import gui.display as d
 from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
+from service.fit import Fit
+from service.market import Market
 
 class DroneViewDrop(wx.PyDropTarget):
         def __init__(self, dropFn):
@@ -141,7 +142,7 @@ class DroneView(d.Display):
             wx.PostEvent(self.mainFrame, mb.ItemSelected(itemID=int(data[1])))
 
     def _merge(self, src, dst):
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
         if sFit.mergeDrones(fitID, self.drones[src], self.drones[dst]):
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
@@ -151,7 +152,7 @@ class DroneView(d.Display):
                    'Fighter Bombers', 'Combat Utility Drones',
                    'Electronic Warfare Drones', 'Logistic Drones', 'Mining Drones', 'Salvage Drones')
     def droneKey(self, drone):
-        sMkt = service.Market.getInstance()
+        sMkt = Market.getInstance()
 
         groupName = sMkt.getMarketGroupByItem(drone.item).name
 
@@ -159,7 +160,7 @@ class DroneView(d.Display):
                 drone.item.name)
 
     def fitChanged(self, event):
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fit = sFit.getFit(event.fitID)
 
         self.Parent.Parent.DisablePage(self, not fit or fit.isStructure)
@@ -193,7 +194,7 @@ class DroneView(d.Display):
 
 
     def addItem(self, event):
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
 
         fit = sFit.getFit(fitID)
@@ -218,7 +219,7 @@ class DroneView(d.Display):
 
     def removeDrone(self, drone):
         fitID = self.mainFrame.getActiveFit()
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         sFit.removeDrone(fitID, self.original.index(drone))
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
@@ -229,7 +230,7 @@ class DroneView(d.Display):
             col = self.getColumn(event.Position)
             if col == self.getColIndex(State):
                 fitID = self.mainFrame.getActiveFit()
-                sFit = service.Fit.getInstance()
+                sFit = Fit.getInstance()
                 drone = self.drones[row]
                 sFit.toggleDrone(fitID, self.original.index(drone))
                 wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
@@ -244,7 +245,7 @@ class DroneView(d.Display):
         if sel != -1:
             drone = self.drones[sel]
 
-            sMkt = service.Market.getInstance()
+            sMkt = Market.getInstance()
             sourceContext = "droneItem"
             itemContext = sMkt.getCategoryByItem(drone.item).name
             menu = ContextMenu.getMenu((drone,), (sourceContext, itemContext))

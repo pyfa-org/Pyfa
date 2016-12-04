@@ -22,8 +22,10 @@ import copy
 import eos.db
 import eos.types
 
+
 class DamagePattern():
     instance = None
+
     @classmethod
     def getInstance(cls):
         if cls.instance is None:

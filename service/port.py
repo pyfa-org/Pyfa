@@ -26,9 +26,10 @@ import json
 
 import wx
 
-from eos.types import State, Slot, Module, Cargo, Fit, Ship, Drone, Implant, Booster, Citadel
+from eos.types import State, Slot, Module, Cargo, Ship, Drone, Implant, Booster, Citadel
 from service.crest import Crest
 from service.market import Market
+from service.fit import Fit
 
 logger = logging.getLogger("pyfa.service.port")
 
@@ -416,7 +417,7 @@ class Port(object):
                     moduleList.append(m)
 
         # Recalc to get slot numbers correct for T3 cruisers
-        service.Fit.getInstance().recalc(fit)
+        Fit.getInstance().recalc(fit)
 
         for m in moduleList:
             if m.fits(fit):

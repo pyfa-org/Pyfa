@@ -2,9 +2,11 @@
 from gui.contextMenu import ContextMenu
 from gui.itemStats import ItemStatsDialog
 import gui.mainFrame
-import service
 import wx
 import gui.globalEvents as GE
+from service.market import Market
+from service.fit import Fit
+
 
 class MetaSwap(ContextMenu):
     def __init__(self):
@@ -17,7 +19,7 @@ class MetaSwap(ContextMenu):
 
         # Check if list of variations is same for all of selection
         # If not - don't show the menu
-        mkt = service.Market.getInstance()
+        mkt = Market.getInstance()
         self.variations = None
         for i in selection:
             variations = mkt.getVariationsByItems([i.item])
@@ -71,14 +73,14 @@ class MetaSwap(ContextMenu):
 
             if thisgroup != group:
                 group = thisgroup
-                id = ContextMenu.nextID()
-                m.Append(id, u'─ %s ─' % group)
-                m.Enable(id, False)
+                id_ = ContextMenu.nextID()
+                m.Append(id_, u'─ %s ─' % group)
+                m.Enable(id_, False)
 
-            id = ContextMenu.nextID()
-            mitem = wx.MenuItem(rootMenu, id, item.name)
+            id_ = ContextMenu.nextID()
+            mitem = wx.MenuItem(rootMenu, id_, item.name)
             bindmenu.Bind(wx.EVT_MENU, self.handleModule, mitem)
-            self.moduleLookup[id] = item
+            self.moduleLookup[id_] = item
             m.AppendItem(mitem)
         return m
 
@@ -88,10 +90,10 @@ class MetaSwap(ContextMenu):
             event.Skip()
             return
 
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
         fit = sFit.getFit(fitID)
-        
+
         for mod in self.selection:
             pos = fit.modules.index(mod)
             sFit.changeModule(fitID, pos, item.ID)

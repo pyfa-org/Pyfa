@@ -20,9 +20,12 @@
 import copy
 
 import eos
+from eos.saveddata import targetResists as db_targetResists
+
 
 class TargetResists(object):
     instance = None
+
     @classmethod
     def getInstance(cls):
         if cls.instance is None:
@@ -81,4 +84,4 @@ class TargetResists(object):
     def exportPatterns(self):
         patterns = self.getTargetResistsList()
         patterns.sort(key=lambda p: p.name)
-        return eos.types.TargetResists.exportPatterns(*patterns)
+        return db_targetResists.TargetResists.exportPatterns(*patterns)

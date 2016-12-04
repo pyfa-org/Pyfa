@@ -26,11 +26,12 @@ import wx.lib.mixins.listctrl as listmix
 import wx.html
 from eos.types import Fit, Ship, Citadel, Module, Skill, Booster, Implant, Drone, Mode, Fighter
 from gui.utils.numberFormatter import formatAmount
-import service
 import config
 from gui.contextMenu import ContextMenu
 from gui.utils.numberFormatter import formatAmount
 import csv
+from service.market import Market
+from service.attribute import Attribute
 
 try:
     from collections import OrderedDict
@@ -72,7 +73,7 @@ class ItemStatsDialog(wx.Dialog):
             itmContext = None
         item = getattr(victim, "item", None) if srcContext.lower() not in ("projectedcharge", "fittingcharge") else getattr(victim, "charge", None)
         if item is None:
-            sMkt = service.Market.getInstance()
+            sMkt = Market.getInstance()
             item = sMkt.getItem(victim.ID)
             victim = None
         self.context = itmContext
@@ -152,7 +153,7 @@ class ItemStatsContainer ( wx.Panel ):
 
     def __init__( self, parent, stuff, item, context = None):
         wx.Panel.__init__ ( self, parent )
-        sMkt = service.Market.getInstance()
+        sMkt = Market.getInstance()
 
         mainSizer = wx.BoxSizer( wx.VERTICAL )
 
@@ -494,15 +495,15 @@ class ItemParams (wx.Panel):
 
     def TranslateValueUnit(self, value, unitName, unitDisplayName):
         def itemIDCallback():
-            item = service.Market.getInstance().getItem(value)
+            item = Market.getInstance().getItem(value)
             return "%s (%d)" % (item.name, value) if item is not None else str(value)
 
         def groupIDCallback():
-            group = service.Market.getInstance().getGroup(value)
+            group = Market.getInstance().getGroup(value)
             return "%s (%d)" % (group.name, value) if group is not None else str(value)
 
         def attributeIDCallback():
-            attribute = service.Attribute.getInstance().getAttributeInfo(value)
+            attribute = Attribute.getInstance().getAttributeInfo(value)
             return "%s (%d)" % (attribute.name.capitalize(), value)
 
         trans = {"Inverse Absolute Percent": (lambda: (1-value)*100, unitName),
@@ -664,7 +665,7 @@ class ItemCompare(wx.Panel):
         self.paramList.InsertColumn(len(self.attrs)+1, "Price")
         self.paramList.SetColumnWidth(len(self.attrs)+1, 60)
 
-        sMkt = service.Market.getInstance()
+        sMkt = Market.getInstance()
         sMkt.getPrices([x.ID for x in self.items], self.processPrices)
 
         for item in self.items:
@@ -687,15 +688,15 @@ class ItemCompare(wx.Panel):
 
     def TranslateValueUnit(self, value, unitName, unitDisplayName):
         def itemIDCallback():
-            item = service.Market.getInstance().getItem(value)
+            item = Market.getInstance().getItem(value)
             return "%s (%d)" % (item.name, value) if item is not None else str(value)
 
         def groupIDCallback():
-            group = service.Market.getInstance().getGroup(value)
+            group = Market.getInstance().getGroup(value)
             return "%s (%d)" % (group.name, value) if group is not None else str(value)
 
         def attributeIDCallback():
-            attribute = service.Attribute.getInstance().getAttributeInfo(value)
+            attribute = Attribute.getInstance().getAttributeInfo(value)
             return "%s (%d)" % (attribute.name.capitalize(), value)
 
         trans = {"Inverse Absolute Percent": (lambda: (1 - value) * 100, unitName),

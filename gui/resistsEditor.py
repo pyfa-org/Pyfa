@@ -19,10 +19,10 @@
 
 import wx
 from gui.bitmapLoader import BitmapLoader
-import service
 from gui.utils.clipboard import toClipboard, fromClipboard
 from service.targetResists import ImportError
 from gui.builtinViews.entityEditor import EntityEditor, BaseValidator
+from service.targetResists import TargetResists
 
 
 class TargetResistsTextValidor(BaseValidator):
@@ -56,26 +56,26 @@ class TargetResistsEntityEditor(EntityEditor):
         self.SetEditorValidator(TargetResistsTextValidor)
 
     def getEntitiesFromContext(self):
-        sTR = service.TargetResists.getInstance()
+        sTR = TargetResists.getInstance()
         choices = sorted(sTR.getTargetResistsList(), key=lambda p: p.name)
         return choices
 
     def DoNew(self, name):
-        sTR = service.TargetResists.getInstance()
+        sTR = TargetResists.getInstance()
         return sTR.newPattern(name)
 
     def DoRename(self, entity, name):
-        sTR = service.TargetResists.getInstance()
+        sTR = TargetResists.getInstance()
         sTR.renamePattern(entity, name)
 
     def DoCopy(self, entity, name):
-        sTR = service.TargetResists.getInstance()
+        sTR = TargetResists.getInstance()
         copy = sTR.copyPattern(entity)
         sTR.renamePattern(copy, name)
         return copy
 
     def DoDelete(self, entity):
-        sTR = service.TargetResists.getInstance()
+        sTR = TargetResists.getInstance()
         sTR.deletePattern(entity)
 
 class ResistsEditorDlg(wx.Dialog):
@@ -224,7 +224,7 @@ class ResistsEditorDlg(wx.Dialog):
             if event is not None:
                 event.Skip()
 
-            service.TargetResists.getInstance().saveChanges(p)
+            TargetResists.getInstance().saveChanges(p)
 
         except ValueError:
             editObj.SetForegroundColour(wx.RED)
@@ -264,7 +264,7 @@ class ResistsEditorDlg(wx.Dialog):
 
         text = fromClipboard()
         if text:
-            sTR = service.TargetResists.getInstance()
+            sTR = TargetResists.getInstance()
             try:
                 sTR.importPatterns(text)
                 self.stNotice.SetLabel("Patterns successfully imported from clipboard")
@@ -279,6 +279,6 @@ class ResistsEditorDlg(wx.Dialog):
 
     def exportPatterns(self, event):
         "Event fired when export to clipboard button is clicked"
-        sTR = service.TargetResists.getInstance()
+        sTR = TargetResists.getInstance()
         toClipboard( sTR.exportPatterns() )
         self.stNotice.SetLabel("Patterns exported to clipboard")

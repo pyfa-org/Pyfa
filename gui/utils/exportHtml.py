@@ -1,7 +1,9 @@
 import threading
 import time
-import service
 import wx
+from service.settings import HTMLExportSettings
+from service.fit import Fit
+from service.market import Market
 
 class exportHtml():
     _instance = None
@@ -16,7 +18,7 @@ class exportHtml():
         self.thread = exportHtmlThread()
 
     def refreshFittingHtml(self, force=False, callback=False):
-        settings = service.settings.HTMLExportSettings.getInstance()
+        settings = HTMLExportSettings.getInstance()
 
         if force or settings.getEnabled():
             self.thread.stop()
@@ -39,9 +41,9 @@ class exportHtmlThread(threading.Thread):
         if self.stopRunning:
             return
 
-        sMkt = service.Market.getInstance()
-        sFit = service.Fit.getInstance()
-        settings = service.settings.HTMLExportSettings.getInstance()
+        sMkt = Market.getInstance()
+        sFit = Fit.getInstance()
+        settings = HTMLExportSettings.getInstance()
 
         timestamp = time.localtime(time.time())
         localDate = "%d/%02d/%02d %02d:%02d" % (timestamp[0], timestamp[1], timestamp[2], timestamp[3], timestamp[4])
