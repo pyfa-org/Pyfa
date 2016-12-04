@@ -17,13 +17,13 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
-import threading
+# import threading
 import os
 
 import config
 from eos import db
 from eos.db import migration
-#from eos.saveddata.character import Character as es_Character
+# from eos.saveddata.character import Character as es_Character
 from eos.db.saveddata.loadDefaultDatabaseValues import DefaultDatabaseValues
 
 # TODO: Import cleanup. This is awful
