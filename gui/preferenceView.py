@@ -19,7 +19,6 @@
 
 import wx
 
-
 class PreferenceView(object):
     views = []
 
@@ -35,6 +34,3 @@ class PreferenceView(object):
 
     def getImage(self):
         return wx.NullBitmap
-
-
-from gui.builtinPreferenceViews import *  # noqa
