@@ -30,14 +30,8 @@ from eos.db.saveddata.drone import drones_table
 from eos.db.saveddata.fighter import fighters_table
 from eos.db.saveddata.implant import fitImplants_table
 from eos.db.saveddata.module import modules_table
+from eos.effectHandlerHelpers import HandledModuleList, HandledImplantBoosterList, HandledProjectedModList, HandledDroneCargoList, HandledProjectedDroneList
 from eos.types import Fit, Module, User, Booster, Drone, Fighter, Cargo, Implant, Character, DamagePattern, TargetResists, ImplantLocation
-from eos.effectHandlerHelpers import (
-    HandledImplantBoosterList,
-    HandledDroneCargoList,
-    HandledProjectedModList,
-    HandledProjectedDroneList,
-    HandledModuleList,
-)
 
 
 fits_table = Table("fits", saveddata_meta,
