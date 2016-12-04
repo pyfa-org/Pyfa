@@ -17,13 +17,13 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
-import threading
+# import threading
 import os
 
 import config
 from eos import db
 from eos.db import migration
-#from eos.saveddata.character import Character as es_Character
+# from eos.saveddata.character import Character as es_Character
 from eos.db.saveddata.loadDefaultDatabaseValues import DefaultDatabaseValues
 
 # TODO: Import cleanup. This is awful
@@ -59,7 +59,7 @@ if config.saveDB and os.path.isfile(config.saveDB):
     # Import default database values
     # Import values that must exist otherwise Pyfa breaks
     # Todo: Currently broken. Import refactoring fixes. :(
-    #DefaultDatabaseValues.importRequiredDefaults()
+    # DefaultDatabaseValues.importRequiredDefaults()
 elif config.saveDB:
     # If database does not exist, do not worry about migration. Simply
     # create and set version

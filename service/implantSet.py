@@ -19,10 +19,11 @@
 
 import copy
 
-import eos.db
-from service.market import Market
+from eos.db.saveddata import queries as eds_queries
 from eos.saveddata.implant import Implant as es_Implant
 from eos.saveddata.implantSet import ImplantSet as es_ImplantSet
+
+from service.market import Market
 
 
 class ImplantSets(object):
@@ -36,26 +37,26 @@ class ImplantSets(object):
         return cls.instance
 
     def getImplantSetList(self):
-        return eos.db.getImplantSetList(None)
+        return eds_queries.getImplantSetList(None)
 
     def getImplantSet(self, name):
-        return eos.db.getImplantSet(name)
+        return eds_queries.getImplantSet(name)
 
     def getImplants(self, setID):
-        return eos.db.getImplantSet(setID).implants
+        return eds_queries.getImplantSet(setID).implants
 
     def addImplant(self, setID, itemID):
-        eos.db.getImplantSet(setID).implants.append(
-            eos.types.Implant(eds_queries.getItem(itemID))
+        eds_queries.getImplantSet(setID).implants.append(
+            es_Implant(eds_queries.getItem(itemID))
         )
         eds_queries.commit()
 
     def removeImplant(self, setID, implant):
-        eos.db.getImplantSet(setID).implants.remove(implant)
+        eds_queries.getImplantSet(setID).implants.remove(implant)
         eds_queries.commit()
 
     def newSet(self, name):
-        implant_set = eos.types.ImplantSet()
+        implant_set = es_ImplantSet()
         implant_set.name = name
         eds_queries.save(implant_set)
         return implant_set
@@ -65,7 +66,7 @@ class ImplantSets(object):
         eds_queries.save(implant_set)
 
     def deleteSet(self, implant_set):
-        eos.db.remove(implant_set)
+        eds_queries.remove(implant_set)
 
     def copySet(self, implant_set):
         newS = copy.deepcopy(implant_set)

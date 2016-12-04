@@ -27,8 +27,7 @@ import gui.mainFrame
 import gui.marketBrowser
 import gui.multiSwitch
 import gui.shipBrowser
-from eos.saveddata.fit import Fit as Fit
-from eos.saveddata.module import Slot as Slot, Module as Module, State as State, Rack as Rack
+from eos.saveddata.module import Slot as Slot, Module as Module, Rack as Rack
 from gui.bitmapLoader import BitmapLoader
 from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu

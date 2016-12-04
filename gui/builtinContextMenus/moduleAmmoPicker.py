@@ -4,7 +4,6 @@ import wx
 
 import gui.globalEvents as GE
 import gui.mainFrame
-from eos.saveddata.fit import Fit as Fit
 from eos.saveddata.module import Hardpoint as Hardpoint
 from gui.bitmapLoader import BitmapLoader
 from gui.contextMenu import ContextMenu

@@ -19,6 +19,7 @@
 
 import wx
 
+
 class PreferenceView(object):
     views = []
 

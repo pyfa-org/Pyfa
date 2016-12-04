@@ -33,6 +33,7 @@ import config
 import eos.db
 from service.eveapi import EVEAPIConnection, ParseXML
 
+from eos.db.saveddata import queries as eds_queries
 from eos.saveddata.implant import Implant as es_Implant
 from eos.saveddata.character import Character as es_Character
 from eos.saveddata.module import Slot as es_Slot, Module as es_Module

@@ -38,4 +38,3 @@ class Attribute():
         else:
             info = None
         return info
-

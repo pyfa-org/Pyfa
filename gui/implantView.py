@@ -23,8 +23,7 @@ import gui.display as d
 import gui.globalEvents as GE
 import gui.mainFrame
 import gui.marketBrowser as mb
-from eos.saveddata.fit import Fit as Fit, ImplantLocation as ImplantLocation
-from eos.saveddata.module import State as State
+from eos.saveddata.fit import ImplantLocation as ImplantLocation
 from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
 from service.fit import Fit
