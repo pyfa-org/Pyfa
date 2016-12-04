@@ -22,6 +22,9 @@ import time
 
 from sqlalchemy.orm import reconstructor
 
+from eos.db import saveddata_session, sd_lock
+from eos.db.saveddata.queries import cachedQuery
+
 
 class Price(object):
     def __init__(self, typeID):
@@ -38,3 +41,22 @@ class Price(object):
     @property
     def isValid(self):
         return self.time >= time.time()
+
+
+
+@cachedQuery(Price, 1, "typeID")
+def getPrice(typeID):
+    if isinstance(typeID, int):
+        with sd_lock:
+            price = saveddata_session.query(Price).get(typeID)
+    else:
+        raise TypeError("Need integer as argument")
+    return price
+
+
+def clearPrices():
+    with sd_lock:
+        deleted_rows = saveddata_session.query(Price).delete()
+    commit()
+    return deleted_rows
+

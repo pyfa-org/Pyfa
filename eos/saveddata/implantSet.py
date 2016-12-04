@@ -19,6 +19,9 @@
 
 from copy import deepcopy
 
+from eos.db import saveddata_session, sd_lock
+from eos.db.saveddata.queries import cachedQuery
+from eos.db.util import processEager
 from eos.effectHandlerHelpers import HandledImplantBoosterList
 
 
@@ -58,3 +61,30 @@ class ImplantSet(object):
             c.append(deepcopy(i, memo))
 
         return copy
+
+
+def getImplantSetList(eager=None):
+    eager = processEager(eager)
+    with sd_lock:
+        sets = saveddata_session.query(ImplantSet).options(*eager).all()
+    return sets
+
+
+@cachedQuery(ImplantSet, 1, "lookfor")
+def getImplantSet(lookfor, eager=None):
+    if isinstance(lookfor, int):
+        if eager is None:
+            with sd_lock:
+                pattern = saveddata_session.query(ImplantSet).get(lookfor)
+        else:
+            eager = processEager(eager)
+            with sd_lock:
+                pattern = saveddata_session.query(ImplantSet).options(*eager).filter(
+                    TargetResists.ID == lookfor).first()
+    elif isinstance(lookfor, basestring):
+        eager = processEager(eager)
+        with sd_lock:
+            pattern = saveddata_session.query(ImplantSet).options(*eager).filter(TargetResists.name == lookfor).first()
+    else:
+        raise TypeError("Improper argument")
+    return pattern

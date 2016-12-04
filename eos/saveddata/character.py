@@ -23,8 +23,11 @@ from itertools import chain
 
 from sqlalchemy.orm import validates, reconstructor
 
+from eos.db import saveddata_session, sd_lock
 from eos.db.gamedata import queries as edg_queries
 from eos.db.saveddata import queries as eds_queries
+from eos.db.saveddata.queries import cachedQuery
+from eos.db.util import processEager
 from eos.effectHandlerHelpers import HandledItem, HandledImplantBoosterList
 
 logger = logging.getLogger(__name__)
@@ -378,3 +381,41 @@ class Skill(HandledItem):
 
 class ReadOnlyException(Exception):
     pass
+
+
+
+@cachedQuery(Character, 1, "lookfor")
+def getCharacter(lookfor, eager=None):
+    if isinstance(lookfor, int):
+        if eager is None:
+            with sd_lock:
+                character = saveddata_session.query(Character).get(lookfor)
+        else:
+            eager = processEager(eager)
+            with sd_lock:
+                character = saveddata_session.query(Character).options(*eager).filter(Character.ID == lookfor).first()
+    elif isinstance(lookfor, basestring):
+        eager = processEager(eager)
+        with sd_lock:
+            character = saveddata_session.query(Character).options(*eager).filter(
+                Character.savedName == lookfor).first()
+    else:
+        raise TypeError("Need integer or string as argument")
+    return character
+
+
+def getCharacterList(eager=None):
+    eager = processEager(eager)
+    with sd_lock:
+        characters = saveddata_session.query(Character).options(*eager).all()
+    return characters
+
+
+def getCharactersForUser(lookfor, eager=None):
+    if isinstance(lookfor, int):
+        eager = processEager(eager)
+        with sd_lock:
+            characters = saveddata_session.query(Character).options(*eager).filter(Character.ownerID == lookfor).all()
+    else:
+        raise TypeError("Need integer as argument")
+    return characters

@@ -28,7 +28,11 @@ from sqlalchemy.orm import validates, reconstructor
 
 import eos.db
 from eos import capSim
+from eos.db import saveddata_session, sd_lock
 from eos.db.gamedata import queries as edg_queries
+from eos.db.saveddata.queries import cachedQuery
+from eos.db.saveddata.queries import removeInvalid
+from eos.db.util import processEager, processWhere
 from eos.effectHandlerHelpers import (
     HandledModuleList,
     HandledDroneCargoList,
@@ -1188,3 +1192,129 @@ class Fit(object):
         return u"{} ({})".format(
             self.name, self.ship.item.name
         ).encode('utf8')
+
+
+
+@cachedQuery(Fit, 1, "lookfor")
+def getFit(lookfor, eager=None):
+    if isinstance(lookfor, int):
+        if eager is None:
+            with sd_lock:
+                fit = saveddata_session.query(Fit).get(lookfor)
+        else:
+            eager = processEager(eager)
+            with sd_lock:
+                fit = saveddata_session.query(Fit).options(*eager).filter(Fit.ID == lookfor).first()
+    else:
+        raise TypeError("Need integer as argument")
+
+    if fit and fit.isInvalid:
+        with sd_lock:
+            removeInvalid([fit])
+        return None
+
+    return fit
+
+
+def getFitsWithShip(shipID, ownerID=None, where=None, eager=None):
+    """
+    Get all the fits using a certain ship.
+    If no user is passed, do this for all users.
+    """
+    if isinstance(shipID, int):
+        if ownerID is not None and not isinstance(ownerID, int):
+            raise TypeError("OwnerID must be integer")
+        filter = Fit.shipID == shipID
+        if ownerID is not None:
+            filter = and_(filter, Fit.ownerID == ownerID)
+
+        filter = processWhere(filter, where)
+        eager = processEager(eager)
+        with sd_lock:
+            fits = removeInvalid(saveddata_session.query(Fit).options(*eager).filter(filter).all())
+    else:
+        raise TypeError("ShipID must be integer")
+
+    return fits
+
+
+
+def getBoosterFits(ownerID=None, where=None, eager=None):
+    """
+    Get all the fits that are flagged as a boosting ship
+    If no user is passed, do this for all users.
+    """
+
+    if ownerID is not None and not isinstance(ownerID, int):
+        raise TypeError("OwnerID must be integer")
+    filter = Fit.booster == 1
+    if ownerID is not None:
+        filter = and_(filter, Fit.ownerID == ownerID)
+
+    filter = processWhere(filter, where)
+    eager = processEager(eager)
+    with sd_lock:
+        fits = removeInvalid(saveddata_session.query(Fit).options(*eager).filter(filter).all())
+
+    return fits
+
+
+def countAllFits():
+    with sd_lock:
+        count = saveddata_session.query(Fit).count()
+    return count
+
+
+def countFitsWithShip(shipID, ownerID=None, where=None, eager=None):
+    """
+    Get all the fits using a certain ship.
+    If no user is passed, do this for all users.
+    """
+    if isinstance(shipID, int):
+        if ownerID is not None and not isinstance(ownerID, int):
+            raise TypeError("OwnerID must be integer")
+        filter = Fit.shipID == shipID
+        if ownerID is not None:
+            filter = and_(filter, Fit.ownerID == ownerID)
+
+        filter = processWhere(filter, where)
+        eager = processEager(eager)
+        with sd_lock:
+            count = saveddata_session.query(Fit).options(*eager).filter(filter).count()
+    else:
+        raise TypeError("ShipID must be integer")
+    return count
+
+
+def getFitList(eager=None):
+    eager = processEager(eager)
+    with sd_lock:
+        fits = removeInvalid(saveddata_session.query(Fit).options(*eager).all())
+
+    return fits
+
+
+
+def searchFits(nameLike, where=None, eager=None):
+    if not isinstance(nameLike, basestring):
+        raise TypeError("Need string as argument")
+    # Prepare our string for request
+    nameLike = u"%{0}%".format(sqlizeString(nameLike))
+
+    # Add any extra components to the search to our where clause
+    filter = processWhere(Fit.name.like(nameLike, escape="\\"), where)
+    eager = processEager(eager)
+    with sd_lock:
+        fits = removeInvalid(saveddata_session.query(Fit).options(*eager).filter(filter).all())
+
+    return fits
+
+def getProjectedFits(fitID):
+    if isinstance(fitID, int):
+        with sd_lock:
+            filter = and_(mapper.fits_table.projectedFits_table.c.sourceID == fitID,
+                          Fit.ID == mapper.fits_table.projectedFits_table.c.victimID)
+            fits = saveddata_session.query(Fit).filter(filter).all()
+            return fits
+    else:
+        raise TypeError("Need integer as argument")

@@ -19,8 +19,9 @@
 
 from sqlalchemy.orm import reconstructor
 
-
-# from tomorrow import threads
+from eos.db import saveddata_session, sd_lock
+from eos.db.saveddata.queries import cachedQuery
+from eos.db.util import processEager
 
 
 class CrestChar(object):
@@ -42,3 +43,29 @@ class CrestChar(object):
         fp.close()
         self.img = StringIO(data)
     '''
+
+
+def getCrestCharacters(eager=None):
+    eager = processEager(eager)
+    with sd_lock:
+        characters = saveddata_session.query(CrestChar).options(*eager).all()
+    return characters
+
+
+@cachedQuery(CrestChar, 1, "lookfor")
+def getCrestCharacter(lookfor, eager=None):
+    if isinstance(lookfor, int):
+        if eager is None:
+            with sd_lock:
+                character = saveddata_session.query(CrestChar).get(lookfor)
+        else:
+            eager = processEager(eager)
+            with sd_lock:
+                character = saveddata_session.query(CrestChar).options(*eager).filter(CrestChar.ID == lookfor).first()
+    elif isinstance(lookfor, basestring):
+        eager = processEager(eager)
+        with sd_lock:
+            character = saveddata_session.query(CrestChar).options(*eager).filter(CrestChar.name == lookfor).first()
+    else:
+        raise TypeError("Need integer or string as argument")
+    return character

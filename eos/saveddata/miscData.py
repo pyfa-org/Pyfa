@@ -17,6 +17,7 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
+from eos.db import saveddata_session, sd_lock
 from eos.eqBase import EqBase
 
 
@@ -24,3 +25,13 @@ class MiscData(EqBase):
     def __init__(self, name, val=None):
         self.fieldName = name
         self.fieldValue = val
+
+
+def getMiscData(field):
+    if isinstance(field, basestring):
+        with sd_lock:
+            data = saveddata_session.query(MiscData).get(field)
+    else:
+        raise TypeError("Need string as argument")
+    return data
+

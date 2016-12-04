@@ -21,8 +21,9 @@ import logging
 
 from sqlalchemy.orm import reconstructor
 
-from eos.eqBase import EqBase
+from eos.db import saveddata_session, sd_lock
 from eos.db.gamedata import queries as edg_queries
+from eos.eqBase import EqBase
 
 logger = logging.getLogger(__name__)
 
@@ -59,3 +60,22 @@ class Override(EqBase):
     @property
     def item(self):
         return self.__item
+
+
+def getOverrides(itemID, eager=None):
+    if isinstance(itemID, int):
+        return saveddata_session.query(Override).filter(Override.itemID == itemID).all()
+    else:
+        raise TypeError("Need integer as argument")
+
+
+def clearOverrides():
+    with sd_lock:
+        deleted_rows = saveddata_session.query(Override).delete()
+    commit()
+    return deleted_rows
+
+
+def getAllOverrides(eager=None):
+    return saveddata_session.query(Override).all()
+
