@@ -240,7 +240,8 @@ class fits_table:
             "_Fit__modules": relation(
                 Module,
                 collection_class=HandledModuleList,
-                primaryjoin=and_(modules_table.modules_table.c.fitID == fits_table.c.ID, modules_table.modules_table.c.projected is False),
+                primaryjoin=and_(modules_table.modules_table.c.fitID == fits_table.c.ID,
+                                 modules_table.modules_table.c.projected is False),
                 order_by=modules_table.modules_table.c.position,
                 cascade='all, delete, delete-orphan'),
             "_Fit__projectedModules": relation(
@@ -248,7 +249,8 @@ class fits_table:
                 collection_class=HandledProjectedModList,
                 cascade='all, delete, delete-orphan',
                 single_parent=True,
-                primaryjoin=and_(modules_table.modules_table.c.fitID == fits_table.c.ID, modules_table.modules_table.c.projected is True)),
+                primaryjoin=and_(modules_table.modules_table.c.fitID == fits_table.c.ID,
+                                 modules_table.modules_table.c.projected is True)),
             "owner": relation(
                 User,
                 backref="fits"),
@@ -264,31 +266,35 @@ class fits_table:
                 collection_class=HandledDroneCargoList,
                 cascade='all, delete, delete-orphan',
                 single_parent=True,
-                primaryjoin=and_(drones_table.c.fitID == fits_table.c.ID, drones_table.c.projected is False)),
+                primaryjoin=and_(drones_table.drones_table.c.fitID == fits_table.c.ID,
+                                 drones_table.drones_table.c.projected is False)),
             "_Fit__fighters": relation(
                 Fighter,
                 collection_class=HandledDroneCargoList,
                 cascade='all, delete, delete-orphan',
                 single_parent=True,
-                primaryjoin=and_(fighters_table.c.fitID == fits_table.c.ID, fighters_table.c.projected is False)),
+                primaryjoin=and_(fighters_table.fighters_table.c.fitID == fits_table.c.ID,
+                                 fighters_table.fighters_table.c.projected is False)),
             "_Fit__cargo": relation(
                 Cargo,
                 collection_class=HandledDroneCargoList,
                 cascade='all, delete, delete-orphan',
                 single_parent=True,
-                primaryjoin=and_(cargo_table.c.fitID == fits_table.c.ID)),
+                primaryjoin=and_(cargo_table.cargo_table.c.fitID == fits_table.c.ID)),
             "_Fit__projectedDrones": relation(
                 Drone,
                 collection_class=HandledProjectedDroneList,
                 cascade='all, delete, delete-orphan',
                 single_parent=True,
-                primaryjoin=and_(drones_table.c.fitID == fits_table.c.ID, drones_table.c.projected is True)),
+                primaryjoin=and_(drones_table.drones_table.c.fitID == fits_table.c.ID,
+                                 drones_table.drones_table.c.projected is True)),
             "_Fit__projectedFighters": relation(
                 Fighter,
                 collection_class=HandledProjectedDroneList,
                 cascade='all, delete, delete-orphan',
                 single_parent=True,
-                primaryjoin=and_(fighters_table.c.fitID == fits_table.c.ID, fighters_table.c.projected is True)),
+                primaryjoin=and_(fighters_table.fighters_table.c.fitID == fits_table.c.ID,
+                                 fighters_table.fighters_table.c.projected is True)),
             "_Fit__implants": relation(
                 Implant,
                 collection_class=HandledImplantBoosterList,
@@ -403,7 +409,6 @@ class CommandFit(object):
         )
 
 
-
 class fleet_table:
     gangs_table = Table("gangs", saveddata_meta,
                         Column("ID", Integer, primary_key=True),
@@ -426,23 +431,22 @@ class fleet_table:
     squadmembers_table = Table("squadmembers", saveddata_meta,
                                Column("squadID", ForeignKey("squads.ID"), primary_key=True),
                                Column("memberID", ForeignKey("fits.ID"), primary_key=True))
-
     mapper(Fleet, gangs_table,
-           properties={"wings": relation(Fleet.Wing, backref="gang"),
-                       "leader": relation(Fit, primaryjoin=gangs_table.c.leaderID == fits_table.c.ID),
-                       "booster": relation(Fit, primaryjoin=gangs_table.c.boosterID == fits_table.c.ID)})
+           properties={"wings": relation(Wing, backref="gang"),
+                       "leader": relation(Fit, primaryjoin=gangs_table.c.leaderID == fits_table.fits_table.c.ID),
+                       "booster": relation(Fit, primaryjoin=gangs_table.c.boosterID == fits_table.fits_table.c.ID)})
 
     mapper(Wing, wings_table,
-           properties={"squads": relation(Fleet.Squad, backref="wing"),
-                       "leader": relation(Fit, primaryjoin=wings_table.c.leaderID == fits_table.c.ID),
-                       "booster": relation(Fit, primaryjoin=wings_table.c.boosterID == fits_table.c.ID)})
+           properties={"squads": relation(Squad, backref="wing"),
+                       "leader": relation(Fit, primaryjoin=wings_table.c.leaderID == fits_table.fits_table.c.ID),
+                       "booster": relation(Fit, primaryjoin=wings_table.c.boosterID == fits_table.fits_table.c.ID)})
 
     mapper(Squad, squads_table,
-           properties={"leader": relation(Fit, primaryjoin=squads_table.c.leaderID == fits_table.c.ID),
-                       "booster": relation(Fit, primaryjoin=squads_table.c.boosterID == fits_table.c.ID),
+           properties={"leader": relation(Fit, primaryjoin=squads_table.c.leaderID == fits_table.fits_table.c.ID),
+                       "booster": relation(Fit, primaryjoin=squads_table.c.boosterID == fits_table.fits_table.c.ID),
                        "members": relation(Fit,
                                            primaryjoin=squads_table.c.ID == squadmembers_table.c.squadID,
-                                           secondaryjoin=squadmembers_table.c.memberID == fits_table.c.ID,
+                                           secondaryjoin=squadmembers_table.c.memberID == fits_table.fits_table.c.ID,
                                            secondary=squadmembers_table)})
 
 
