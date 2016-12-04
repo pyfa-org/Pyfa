@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-#===============================================================================
+# ==============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -16,13 +16,14 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# ==============================================================================
 
 import sys
 import re
 import config
 
 from optparse import OptionParser, BadOptionError, AmbiguousOptionError
+
 
 class PassThroughOptionParser(OptionParser):
     """
@@ -33,9 +34,10 @@ class PassThroughOptionParser(OptionParser):
     def _process_args(self, largs, rargs, values):
         while rargs:
             try:
-                OptionParser._process_args(self,largs,rargs,values)
-            except (BadOptionError,AmbiguousOptionError), e:
+                OptionParser._process_args(self, largs, rargs, values)
+            except (BadOptionError, AmbiguousOptionError) as e:
                 largs.append(e.opt_str)
+
 
 # Parse command line options
 usage = "usage: %prog [--root]"
@@ -50,7 +52,7 @@ parser.add_option("-s", "--savepath", action="store", dest="savepath", help="Set
 
 if not hasattr(sys, 'frozen'):
 
-    if sys.version_info < (2,6) or sys.version_info > (3,0):
+    if sys.version_info < (2, 6) or sys.version_info > (3, 0):
         print("Pyfa requires python 2.x branch ( >= 2.6 )\nExiting.")
         sys.exit(1)
 
@@ -66,13 +68,13 @@ if not hasattr(sys, 'frozen'):
         else:
             wxversion.select(['3.0', '2.8'])
     except wxversion.VersionError:
-        print "Installed wxPython version doesn't meet requirements.\nYou can download wxPython 2.8 or 3.0 from http://www.wxpython.org/"
+        print("Installed wxPython version doesn't meet requirements.\nYou can download wxPython 2.8 or 3.0 from http://www.wxpython.org/")
         sys.exit(1)
 
     try:
         import sqlalchemy
 
-        saVersion =  sqlalchemy.__version__
+        saVersion = sqlalchemy.__version__
         saMatch = re.match("([0-9]+).([0-9]+)([b\.])([0-9]+)", saVersion)
         if saMatch:
             saMajor = int(saMatch.group(1))
@@ -88,10 +90,10 @@ if not hasattr(sys, 'frozen'):
     except ImportError:
         print("Cannot find sqlalchemy.\nYou can download sqlalchemy (0.6+) from http://www.sqlalchemy.org/")
         sys.exit(1)
-    
+
     # check also for dateutil module installed.
     try:
-        import dateutil.parser  # Copied import statement from service/update.py
+        import dateutil.parser  # noqa - Copied import statement from service/update.py
     except ImportError:
         print("Cannot find python-dateutil.\nYou can download python-dateutil from https://pypi.python.org/pypi/python-dateutil")
         sys.exit(1)
@@ -101,10 +103,10 @@ if __name__ == "__main__":
     # Configure paths
     if options.rootsavedata is True:
         config.saveInRoot = True
-        
+
     # set title if it wasn't supplied by argument
-    if options.title == None:
-        options.title = "pyfa %s%s - Python Fitting Assistant"%(config.version, "" if config.tag.lower() != 'git' else " (git)")
+    if options.title is None:
+        options.title = "pyfa %s%s - Python Fitting Assistant" % (config.version, "" if config.tag.lower() != 'git' else " (git)")
 
     config.debug = options.debug
     # convert to unicode if it is set
@@ -122,10 +124,10 @@ if __name__ == "__main__":
     import os.path
 
     import eos.db
-    import service.prefetch
+    import service.prefetch  # noqa
     from gui.mainFrame import MainFrame
 
-    #Make sure the saveddata db exists
+    # Make sure the saveddata db exists
     if not os.path.exists(config.savePath):
         os.mkdir(config.savePath)
 
