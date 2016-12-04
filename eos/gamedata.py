@@ -768,7 +768,7 @@ class Mapper:
 
         mapper(Traits, traits_table)
 
-    class Effects
+    class Effects:
         typeeffects_table = Table("dgmtypeeffects", gamedata_meta,
                                   Column("typeID", Integer, ForeignKey("invtypes.typeID"), primary_key=True, index=True),
                                   Column("effectID", Integer, ForeignKey("dgmeffects.effectID"), primary_key=True))

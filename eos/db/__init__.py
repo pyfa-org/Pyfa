@@ -59,13 +59,13 @@ if saveddata_connectionstring is not None:
     saveddata_meta.bind = saveddata_engine
     saveddata_session = sessionmaker(bind=saveddata_engine, autoflush=False, expire_on_commit=False)()
 
+    # If using in memory saveddata, you'll want to reflect it so the data structure is good.
+    if config.saveddata_connectionstring == "sqlite:///:memory:":
+        saveddata_meta.create_all()
+
+
 # Lock controlling any changes introduced to session
 sd_lock = threading.Lock()
-
-
-# If using in memory saveddata, you'll want to reflect it so the data structure is good.
-if config.saveddata_connectionstring == "sqlite:///:memory:":
-    saveddata_meta.create_all()
 
 
 def rollback():
