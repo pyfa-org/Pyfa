@@ -5,6 +5,8 @@
 # Implant: Imperial Navy Command Mindlink
 # Implant: Information Command Mindlink
 type = "passive"
+
+
 def handler(fit, src, context):
     fit.modules.filteredChargeBoost(lambda mod: mod.item.requiresSkill("Information Command"), "warfareBuff4Multiplier", src.getModifiedItemAttr("mindlinkBonus"))
     fit.modules.filteredChargeBoost(lambda mod: mod.item.requiresSkill("Information Command"), "warfareBuff3Multiplier", src.getModifiedItemAttr("mindlinkBonus"))

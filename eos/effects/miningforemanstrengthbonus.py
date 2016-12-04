@@ -3,6 +3,8 @@
 # Used by:
 # Skill: Mining Director
 type = "passive"
+
+
 def handler(fit, src, context):
     lvl = src.level
     fit.modules.filteredChargeBoost(lambda mod: mod.item.requiresSkill("Mining Foreman"), "warfareBuff4Multiplier", src.getModifiedItemAttr("commandStrengthBonus") * lvl)

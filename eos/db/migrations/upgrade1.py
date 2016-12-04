@@ -13,6 +13,7 @@ Migration 1
 
 import sqlalchemy
 
+
 CONVERSIONS = {
     6135: [  # Scoped Cargo Scanner
         6133,  # Interior Type-E Cargo Identifier
@@ -70,7 +71,7 @@ CONVERSIONS = {
         16543,  # Micro 'Vigor' Core Augmentation
     ],
     8089: [  # Compact Light Missile Launcher
-       8093,  # Prototype 'Arbalest' Light Missile Launcher
+        8093,  # Prototype 'Arbalest' Light Missile Launcher
     ],
     8091: [  # Ample Light Missile Launcher
         7993,  # Experimental TE-2100 Light Missile Launcher
@@ -81,6 +82,7 @@ CONVERSIONS = {
         6129,  # Surface Cargo Scanner I
     ]
 }
+
 
 def upgrade(saveddata_engine):
     # Update fits schema to include target resists attribute
@@ -94,4 +96,3 @@ def upgrade(saveddata_engine):
         for retired_item in list:
             saveddata_engine.execute('UPDATE "modules" SET "itemID" = ? WHERE "itemID" = ?', (replacement_item, retired_item))
             saveddata_engine.execute('UPDATE "cargo" SET "itemID" = ? WHERE "itemID" = ?', (replacement_item, retired_item))
-

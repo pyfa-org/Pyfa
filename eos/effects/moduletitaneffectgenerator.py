@@ -4,6 +4,8 @@
 # Modules from group: Titan Phenomena Generator (4 of 4)
 
 type = "active", "gang"
+
+
 def handler(fit, module, context, **kwargs):
     def runEffect(id, value):
         if id == 39:  # Avatar Effect Generator : Capacitor Recharge bonus
@@ -62,7 +64,7 @@ def handler(fit, module, context, **kwargs):
             groups = ("Energy Weapon", "Hybrid Weapon")
             fit.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups, "maxRange", value, stackingPenalties=True)
 
-    for x in xrange(1, 4):
+    for x in range(1, 4):
         if module.getModifiedChargeAttr("warfareBuff{}ID".format(x)):
             value = module.getModifiedChargeAttr("warfareBuff{}Multiplier".format(x))
             id = module.getModifiedChargeAttr("warfareBuff{}ID".format(x))
@@ -72,4 +74,3 @@ def handler(fit, module, context, **kwargs):
                     fit.addCommandBonus(id, value, module, kwargs['effect'])
                 elif kwargs['warfareBuffID'] is not None and kwargs['warfareBuffID'] == id:
                     runEffect(kwargs['warfareBuffID'], value)
-

@@ -15,10 +15,10 @@ CONVERSIONS = {
     )
 }
 
+
 def upgrade(saveddata_engine):
 
     # Convert ships
     for replacement_item, list in CONVERSIONS.iteritems():
         for retired_item in list:
             saveddata_engine.execute('UPDATE "fits" SET "shipID" = ? WHERE "shipID" = ?', (replacement_item, retired_item))
-

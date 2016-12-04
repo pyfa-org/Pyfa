@@ -6,6 +6,7 @@ Migration 14
 
 import sqlalchemy
 
+
 def upgrade(saveddata_engine):
     if saveddata_engine.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='fighters'").scalar() == 'fighters':
         # Fighters table exists
