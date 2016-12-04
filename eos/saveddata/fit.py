@@ -19,26 +19,29 @@
 
 import copy
 import time
+import logging
 from copy import deepcopy
 from itertools import chain
 from math import sqrt, log, asinh
 
 from sqlalchemy.orm import validates, reconstructor
 
+from utils.timer import Timer
+
 import eos.db
 from eos import capSim
-from eos.effectHandlerHelpers import *
 from eos.enum import Enum
 from eos.saveddata.module import State, Hardpoint
 from eos.types import Ship, Character, Slot, Module, Citadel
-from utils.timer import Timer
+from eos.effectHandlerHelpers import (
+    HandledModuleList,
+    HandledDroneCargoList,
+    HandledImplantBoosterList,
+    HandledProjectedModList,
+    HandledProjectedDroneList,
+)
 
 logger = logging.getLogger(__name__)
-
-try:
-    from collections import OrderedDict
-except ImportError:
-    from utils.compat import OrderedDict
 
 
 class ImplantLocation(Enum):
@@ -449,7 +452,7 @@ class Fit(object):
         # oh fuck this is so janky
         # @todo should we pass in min/max to this function, or is abs okay?
         # (abs is old method, ccp now provides the aggregate function in their data)
-        print "Add command bonus: ", warfareBuffID, " - value: ", value
+        print("Add command bonus: ", warfareBuffID, " - value: ", value)
 
         if warfareBuffID not in self.commandBonuses or abs(self.commandBonuses[warfareBuffID][0]) < abs(value):
             self.commandBonuses[warfareBuffID] = (runTime, value, module, effect)
@@ -471,7 +474,7 @@ class Fit(object):
                     # todo: ensure that these are run with the module is active only
                     context += ("commandRun",)
                     self.register(thing)
-                    effect.handler(self, thing, context, warfareBuffID = warfareBuffID)
+                    effect.handler(self, thing, context, warfareBuffID=warfareBuffID)
 
                 # if effect.isType("offline") or (effect.isType("passive") and thing.state >= State.ONLINE) or \
                 # (effect.isType("active") and thing.state >= State.ACTIVE):
@@ -514,12 +517,12 @@ class Fit(object):
                 eos.db.saveddata_session.delete(self)
 
         if self.commandFits and not withBoosters:
-            print "Calculatate command fits and apply to fit"
+            print("Calculatate command fits and apply to fit")
             for fit in self.commandFits:
                 if self == fit:
-                    print "nope"
+                    print("nope")
                     continue
-                print "calculating ", fit
+                print("calculating ", fit)
                 fit.calculateModifiedAttributes(self, True)
                 #
                 # for thing in chain(fit.modules, fit.implants, fit.character.skills, (fit.ship,)):
@@ -613,13 +616,13 @@ class Fit(object):
                         # targetFit.register(item, origin=self)
                         item.calculateModifiedAttributes(targetFit, runTime, False, True)
 
-            print "Command: "
-            print self.commandBonuses
+            print("Command: ")
+            print(self.commandBonuses)
 
             if not withBoosters and self.commandBonuses:
                 self.__runCommandBoosts(runTime)
 
-            timer.checkpoint('Done with runtime: %s'%runTime)
+            timer.checkpoint('Done with runtime: %s' % runTime)
 
         # Mark fit as calculated
         self.__calculated = True
