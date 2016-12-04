@@ -26,7 +26,6 @@ from eos.saveddata.cargo import Cargo as es_Cargo
 from eos.saveddata.character import Character as Character
 from eos.saveddata.character import Character as saveddata_Character
 from eos.saveddata.citadel import Citadel as es_Citadel
-from eos.saveddata.damagePattern import DamagePattern as DamagePattern
 from eos.saveddata.damagePattern import DamagePattern as es_DamagePattern
 from eos.saveddata.drone import Drone as Drone
 from eos.saveddata.drone import Drone as es_Drone
@@ -46,6 +45,7 @@ from service.settings import SettingsProvider
 from eos.db.saveddata import queries as eds_queries
 from eos.db.gamedata import queries as edg_queries
 
+
 logger = logging.getLogger(__name__)
 
 
@@ -60,7 +60,10 @@ class Fit(object):
         return cls.instance
 
     def __init__(self):
-        self.pattern = DamagePattern.getInstance().getDamagePattern("Uniform")
+        # TODO: This is broken. Import cleanup.
+        #self.pattern = DamagePattern.getInstance().getDamagePattern("Uniform")
+        #self.pattern = DamagePattern.getDamagePattern(DamagePattern.getInstance(),"Uniform")
+
         self.targetResists = None
         self.character = saveddata_Character.getAll5()
         self.booster = False
@@ -850,7 +853,7 @@ class Fit(object):
             return
 
         fit = eds_queries.getFit(fitID)
-        fit.character = self.character = eos.db.getCharacter(charID)
+        fit.character = self.character = eds_queries.getCharacter(charID)
         self.recalc(fit)
 
     def isAmmo(self, itemID):

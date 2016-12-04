@@ -195,22 +195,22 @@ class Character(object):
         return self.all5().ID
 
     def getCharacterList(self):
-        return eos.db.getCharacterList()
+        return eds_queries.getCharacterList()
 
     def getCharacter(self, charID):
-        char = eos.db.getCharacter(charID)
+        char = eds_queries.getCharacter(charID)
         return char
 
     def saveCharacter(self, charID):
         """Save edited skills"""
         if charID == self.all5ID() or charID == self.all0ID():
             return
-        char = eos.db.getCharacter(charID)
+        char = eds_queries.getCharacter(charID)
         char.saveLevels()
 
     def saveCharacterAs(self, charID, newName):
         """Save edited skills as a new character"""
-        char = eos.db.getCharacter(charID)
+        char = eds_queries.getCharacter(charID)
         newChar = copy.deepcopy(char)
         newChar.name = newName
         eds_queries.save(newChar)
@@ -220,7 +220,7 @@ class Character(object):
 
     def revertCharacter(self, charID):
         """Rollback edited skills"""
-        char = eos.db.getCharacter(charID)
+        char = eds_queries.getCharacter(charID)
         char.revertLevels()
 
     def getSkillGroups(self):
@@ -246,14 +246,14 @@ class Character(object):
         return eos.db.getMarketGroup(groupID).description
 
     def getSkillLevel(self, charID, skillID):
-        skill = eos.db.getCharacter(charID).getSkill(skillID)
+        skill = eds_queries.getCharacter(charID).getSkill(skillID)
         return (skill.level if skill.learned else "Not learned", skill.isDirty)
 
     def getDirtySkills(self, charID):
-        return eos.db.getCharacter(charID).dirtySkills
+        return eds_queries.getCharacter(charID).dirtySkills
 
     def getCharName(self, charID):
-        return eos.db.getCharacter(charID).name
+        return eds_queries.getCharacter(charID).name
 
     def new(self, name="New Character"):
         char = es_Character(name)
@@ -273,7 +273,7 @@ class Character(object):
         eos.db.remove(char)
 
     def getApiDetails(self, charID):
-        char = eos.db.getCharacter(charID)
+        char = eds_queries.getCharacter(charID)
         if char.chars is not None:
             chars = json.loads(char.chars)
         else:
@@ -285,7 +285,7 @@ class Character(object):
         return id is not "" and key is not "" and default is not ""
 
     def apiCharList(self, charID, userID, apiKey):
-        char = eos.db.getCharacter(charID)
+        char = eds_queries.getCharacter(charID)
 
         char.apiID = userID
         char.apiKey = apiKey
@@ -299,7 +299,7 @@ class Character(object):
         return charList
 
     def apiFetch(self, charID, charName):
-        dbChar = eos.db.getCharacter(charID)
+        dbChar = eds_queries.getCharacter(charID)
         dbChar.defaultChar = charName
 
         api = EVEAPIConnection()
@@ -319,12 +319,12 @@ class Character(object):
         eds_queries.commit()
 
     def apiUpdateCharSheet(self, charID, skills):
-        char = eos.db.getCharacter(charID)
+        char = eds_queries.getCharacter(charID)
         char.apiUpdateCharSheet(skills)
         eds_queries.commit()
 
     def changeLevel(self, charID, skillID, level, persist=False):
-        char = eos.db.getCharacter(charID)
+        char = eds_queries.getCharacter(charID)
         skill = char.getSkill(skillID)
         if isinstance(level, basestring) or level > 5 or level < 0:
             skill.level = None
@@ -337,17 +337,17 @@ class Character(object):
         eds_queries.commit()
 
     def revertLevel(self, charID, skillID):
-        char = eos.db.getCharacter(charID)
+        char = eds_queries.getCharacter(charID)
         skill = char.getSkill(skillID)
         skill.revert()
 
     def saveSkill(self, charID, skillID):
-        char = eos.db.getCharacter(charID)
+        char = eds_queries.getCharacter(charID)
         skill = char.getSkill(skillID)
         skill.saveLevel()
 
     def addImplant(self, charID, itemID):
-        char = eos.db.getCharacter(charID)
+        char = eds_queries.getCharacter(charID)
         if char.ro:
             logger.error("Trying to add implant to read-only character")
             return
@@ -357,12 +357,12 @@ class Character(object):
         eds_queries.commit()
 
     def removeImplant(self, charID, implant):
-        char = eos.db.getCharacter(charID)
+        char = eds_queries.getCharacter(charID)
         char.implants.remove(implant)
         eds_queries.commit()
 
     def getImplants(self, charID):
-        char = eos.db.getCharacter(charID)
+        char = eds_queries.getCharacter(charID)
         return char.implants
 
     def checkRequirements(self, fit):

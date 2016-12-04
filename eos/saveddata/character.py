@@ -27,6 +27,9 @@ import eos
 import eos.db
 from eos.effectHandlerHelpers import HandledItem, HandledImplantBoosterList
 
+from eos.db.saveddata import queries as eds_queries
+from eos.db.gamedata import queries as edg_queries
+
 logger = logging.getLogger(__name__)
 
 
@@ -38,7 +41,7 @@ class Character(object):
     @classmethod
     def getSkillList(cls):
         if cls.__itemList is None:
-            cls.__itemList = eos.db.getItemsByCategory("Skill")
+            cls.__itemList = edg_queries.getItemsByCategory("Skill")
 
         return cls.__itemList
 
@@ -70,7 +73,7 @@ class Character(object):
 
     @classmethod
     def getAll5(cls):
-        all5 = eos.db.getCharacter("All 5")
+        all5 = eds_queries.getCharacter("All 5")
 
         if all5 is None:
             # We do not have to be afraid of committing here and saving
@@ -83,7 +86,7 @@ class Character(object):
 
     @classmethod
     def getAll0(cls):
-        all0 = eos.db.getCharacter("All 0")
+        all0 = eds_queries.getCharacter("All 0")
 
         if all0 is None:
             all0 = Character("All 0")

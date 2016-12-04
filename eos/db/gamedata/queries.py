@@ -22,7 +22,7 @@ from sqlalchemy.sql import and_, or_, select
 
 import eos.config
 from eos.db import gamedata_session
-from eos.db.gamedata.metaGroup import metatypes_table, items_table
+from eos.db.gamedata.mapper import metatypes_table, items_table
 from eos.db.util import processEager, processWhere
 from eos.gamedata import Attribute, Category, Group, Item, MarketGroup, MetaGroup, AttributeInfo, MetaData
 

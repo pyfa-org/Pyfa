@@ -19,7 +19,7 @@
 
 import copy
 
-import eos.db
+from eos.db.saveddata import queries as eds_queries
 from eos.saveddata.damagePattern import DamagePattern as es_DamagePattern
 
 
@@ -34,10 +34,10 @@ class DamagePattern():
         return cls.instance
 
     def getDamagePatternList(self):
-        return eos.db.getDamagePatternList()
+        return eds_queries.getDamagePatternList()
 
     def getDamagePattern(self, name):
-        return eos.db.getDamagePattern(name)
+        return eds_queries.getDamagePattern(name)
 
     def newPattern(self, name):
         p = es_DamagePattern(0, 0, 0, 0)
@@ -50,7 +50,7 @@ class DamagePattern():
         eds_queries.save(p)
 
     def deletePattern(self, p):
-        eos.db.remove(p)
+        eds_queries.remove(p)
 
     def copyPattern(self, p):
         newP = copy.deepcopy(p)

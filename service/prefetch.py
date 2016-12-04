@@ -56,7 +56,8 @@ if config.saveDB and os.path.isfile(config.saveDB):
     migration.update(db.saveddata_engine)
     # Import default database values
     # Import values that must exist otherwise Pyfa breaks
-    DefaultDatabaseValues.importRequiredDefaults()
+    # Todo: Currently broken. Import refactoring fixes. :(
+    #DefaultDatabaseValues.importRequiredDefaults()
 elif config.saveDB:
     # If database does not exist, do not worry about migration. Simply
     # create and set version
