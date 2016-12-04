@@ -784,7 +784,8 @@ class MainFrame(wx.Frame):
                               "Backing up %d fits to: %s"%(max, filePath),
                               maximum=max, parent=self,
                               style=wx.PD_APP_MODAL | wx.PD_ELAPSED_TIME)
-            sFit.backupFits(filePath, self.backupCallback)
+
+            Port.backupFits(filePath, self.backupCallback)
             self.progressDialog.ShowModal()
 
     def exportHtml(self, event):

@@ -21,7 +21,7 @@
 import time
 from xml.dom import minidom
 
-import eos
+from eos import db
 from service.network import Network, TimeoutError
 
 VALIDITY = 24*60*60  # Price validity period, 24 hours
@@ -50,7 +50,7 @@ class Price():
         # Compose list of items we're going to request
         for typeID in priceMap:
             # Get item object
-            item = eos.db.getItem(typeID)
+            item = db.getItem(typeID)
             # We're not going to request items only with market group, as eve-central
             # doesn't provide any data for items not on the market
             if item is not None and item.marketGroupID:

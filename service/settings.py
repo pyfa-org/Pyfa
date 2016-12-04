@@ -36,7 +36,7 @@ class SettingsProvider():
 
     def __init__(self):
         if not os.path.exists(self.BASE_PATH):
-            os.mkdir(self.BASE_PATH);
+            os.mkdir(self.BASE_PATH)
 
     def getSettings(self, area, defaults=None):
 

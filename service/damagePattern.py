@@ -20,8 +20,7 @@
 import copy
 
 import eos.db
-import eos.types
-
+from eos.saveddata.damagePattern import DamagePattern as es_DamagePattern
 
 class ImportError(Exception):
      pass
@@ -41,7 +40,7 @@ class DamagePattern():
         return eos.db.getDamagePattern(name)
 
     def newPattern(self, name):
-        p = eos.types.DamagePattern(0, 0, 0, 0)
+        p = es_DamagePattern(0, 0, 0, 0)
         p.name = name
         eos.db.save(p)
         return p
@@ -67,7 +66,7 @@ class DamagePattern():
         for pattern in current:
             lookup[pattern.name] = pattern
 
-        imports, num = eos.types.DamagePattern.importPatterns(text)
+        imports, num = es_DamagePattern.importPatterns(text)
         for pattern in imports:
             if pattern.name in lookup:
                 match = lookup[pattern.name]
@@ -89,4 +88,4 @@ class DamagePattern():
                 del patterns[i]
 
         patterns.sort(key=lambda p: p.name)
-        return eos.types.DamagePattern.exportPatterns(*patterns)
+        return es_DamagePattern.exportPatterns(*patterns)

@@ -31,8 +31,12 @@ import wx
 
 import config
 import eos.db
-import eos.types
 from service.eveapi import EVEAPIConnection, ParseXML
+
+from eos.saveddata.implant import Implant as es_Implant
+from eos.saveddata.character import Character as es_Character
+from eos.saveddata.module import Slot as es_Slot, Module as es_Module
+from eos.saveddata.fighter import Fighter as es_Fighter
 
 logger = logging.getLogger(__name__)
 
@@ -175,13 +179,13 @@ class Character(object):
         thread.start()
 
     def all0(self):
-        return eos.types.Character.getAll0()
+        return es_Character.getAll0()
 
     def all0ID(self):
         return self.all0().ID
 
     def all5(self):
-        return eos.types.Character.getAll5()
+        return es_Character.getAll5()
 
     def all5ID(self):
         return self.all5().ID
@@ -248,7 +252,7 @@ class Character(object):
         return eos.db.getCharacter(charID).name
 
     def new(self, name="New Character"):
-        char = eos.types.Character(name)
+        char = es_Character(name)
         eos.db.save(char)
         return char
 
@@ -344,7 +348,7 @@ class Character(object):
             logger.error("Trying to add implant to read-only character")
             return
 
-        implant = eos.types.Implant(eos.db.getItem(itemID))
+        implant = es_Implant(eos.db.getItem(itemID))
         char.implants.append(implant)
         eos.db.commit()
 
@@ -361,17 +365,17 @@ class Character(object):
         toCheck = []
         reqs = {}
         for thing in itertools.chain(fit.modules, fit.drones, fit.fighters, (fit.ship,)):
-            if isinstance(thing, eos.types.Module) and thing.slot == eos.types.Slot.RIG:
+            if isinstance(thing, es_Module) and thing.slot == es_Slot.RIG:
                 continue
             for attr in ("item", "charge"):
-                if attr == "charge" and isinstance(thing, eos.types.Fighter):
+                if attr == "charge" and isinstance(thing, es_Fighter):
                     # Fighter Bombers are automatically charged with micro bombs.
                     # These have skill requirements attached, but aren't used in EVE.
                     continue
                 subThing = getattr(thing, attr, None)
                 subReqs = {}
                 if subThing is not None:
-                    if isinstance(thing, eos.types.Fighter) and attr == "charge":
+                    if isinstance(thing, es_Fighter) and attr == "charge":
                         continue
                     self._checkRequirements(fit, fit.character, subThing, subReqs)
                     if subReqs:

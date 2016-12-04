@@ -23,23 +23,18 @@ import xml.dom
 import logging
 import collections
 import json
+import threading
+import locale
+
+from codecs import open
+
+import xml.parsers.expat
+
+from eos import db
 
 import wx
 
-from eos.types import State, Slot, Module, Cargo, Fit, Ship, Drone, Implant, Booster, Citadel
-from service.crest import Crest
-from service.market import Market
-
-import wx
-
-from eos.types import State, Slot, Module, Cargo, Ship, Drone, Implant, Booster, Citadel
-from service.crest import Crest
-from service.market import Market
-from service.fit import Fit
-
-import wx
-
-from eos.types import State, Slot, Module, Cargo, Ship, Drone, Implant, Booster, Citadel
+from eos.types import Fit, State, Slot, Module, Cargo, Ship, Drone, Implant, Booster, Citadel
 from service.crest import Crest
 from service.market import Market
 from service.fit import Fit
@@ -63,6 +58,116 @@ INV_FLAG_CARGOBAY = 5
 INV_FLAG_DRONEBAY = 87
 
 class Port(object):
+    def backupFits(self, path, callback):
+        thread = FitBackupThread(path, callback)
+        thread.start()
+
+    def importFitsThreaded(self, paths, callback):
+        thread = FitImportThread(paths, callback)
+        thread.start()
+
+    def importFitFromFiles(self, paths, callback=None):
+        """
+        Imports fits from file(s). First processes all provided paths and stores
+        assembled fits into a list. This allows us to call back to the GUI as
+        fits are processed as well as when fits are being saved.
+        returns
+        """
+        defcodepage = locale.getpreferredencoding()
+
+        fits = []
+        for path in paths:
+            if callback:  # Pulse
+                wx.CallAfter(callback, 1, "Processing file:\n%s" % path)
+
+            file = open(path, "r")
+            srcString = file.read()
+
+            if len(srcString) == 0:  # ignore blank files
+                continue
+
+            codec_found = None
+            # If file had ANSI encoding, decode it to unicode using detection
+            # of BOM header or if there is no header try default
+            # codepage then fallback to utf-16, cp1252
+
+            if isinstance(srcString, str):
+                encoding_map = (
+                    ('\xef\xbb\xbf', 'utf-8'),
+                    ('\xff\xfe\0\0', 'utf-32'),
+                    ('\0\0\xfe\xff', 'UTF-32BE'),
+                    ('\xff\xfe', 'utf-16'),
+                    ('\xfe\xff', 'UTF-16BE'))
+
+                for bom, encoding in encoding_map:
+                    if srcString.startswith(bom):
+                        codec_found = encoding
+                        savebom = bom
+
+                if codec_found is None:
+                    logger.info("Unicode BOM not found in file %s.", path)
+                    attempt_codecs = (defcodepage, "utf-8", "utf-16", "cp1252")
+
+                    for page in attempt_codecs:
+                        try:
+                            logger.info("Attempting to decode file %s using %s page.", path, page)
+                            srcString = unicode(srcString, page)
+                            codec_found = page
+                            logger.info("File %s decoded using %s page.", path, page)
+                        except UnicodeDecodeError:
+                            logger.info("Error unicode decoding %s from page %s, trying next codec", path, page)
+                        else:
+                            break
+                else:
+                    logger.info("Unicode BOM detected in %s, using %s page.", path, codec_found)
+                    srcString = unicode(srcString[len(savebom):], codec_found)
+
+            else:
+                # nasty hack to detect other transparent utf-16 loading
+                if srcString[0] == '<' and 'utf-16' in srcString[:128].lower():
+                    codec_found = "utf-16"
+                else:
+                    codec_found = "utf-8"
+
+            if codec_found is None:
+                return False, "Proper codec could not be established for %s" % path
+
+            try:
+                _, fitsImport = Port.importAuto(srcString, path, callback=callback, encoding=codec_found)
+                fits += fitsImport
+            except xml.parsers.expat.ExpatError:
+                return False, "Malformed XML in %s" % path
+            except Exception:
+                logger.exception("Unknown exception processing: %s", path)
+                return False, "Unknown Error while processing %s" % path
+
+        IDs = []
+        numFits = len(fits)
+        for i, fit in enumerate(fits):
+            # Set some more fit attributes and save
+            fit.character = self.character
+            fit.damagePattern = self.pattern
+            fit.targetResists = self.targetResists
+            db.save(fit)
+            IDs.append(fit.ID)
+            if callback:  # Pulse
+                wx.CallAfter(
+                    callback, 1,
+                    "Processing complete, saving fits to database\n(%d/%d)" %
+                    (i + 1, numFits)
+                )
+
+        return True, fits
+
+    def importFitFromBuffer(self, bufferStr, activeFit=None):
+        _, fits = Port.importAuto(bufferStr, activeFit=activeFit)
+        for fit in fits:
+            fit.character = self.character
+            fit.damagePattern = self.pattern
+            fit.targetResists = self.targetResists
+            db.save(fit)
+        return fits
+
     """Service which houses all import/export format functions"""
     @classmethod
     def exportCrest(cls, ofit, callback=None):
@@ -948,3 +1053,38 @@ class Port(object):
             export = export[:-1]
 
         return export
+
+
+class FitBackupThread(threading.Thread):
+    def __init__(self, path, callback):
+        threading.Thread.__init__(self)
+        self.path = path
+        self.callback = callback
+
+    def run(self):
+        path = self.path
+        sFit = Fit.getInstance()
+        allFits = map(lambda x: x[0], sFit.getAllFits())
+        backedUpFits = sFit.exportXml(self.callback, *allFits)
+        backupFile = open(path, "w", encoding="utf-8")
+        backupFile.write(backedUpFits)
+        backupFile.close()
+
+        # Send done signal to GUI
+        wx.CallAfter(self.callback, -1)
+
+class FitImportThread(threading.Thread):
+    def __init__(self, paths, callback):
+        threading.Thread.__init__(self)
+        self.paths = paths
+        self.callback = callback
+
+    def run(self):
+        sFit = Fit.getInstance()
+        success, result = sFit.importFitFromFiles(self.paths, self.callback)
+
+        if not success:  # there was an error during processing
+            logger.error("Error while processing file import: %s", result)
+            wx.CallAfter(self.callback, -2, result)
+        else:  # Send done signal to GUI
+            wx.CallAfter(self.callback, -1, result)

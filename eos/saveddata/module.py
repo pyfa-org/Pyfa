@@ -32,9 +32,6 @@ logger = logging.getLogger(__name__)
 
 
 class State(Enum):
-    def __init__(self):
-        pass
-
     OFFLINE = -1
     ONLINE = 0
     ACTIVE = 1
@@ -42,8 +39,6 @@ class State(Enum):
 
 
 class Slot(Enum):
-    def __init__(self):
-        pass
 
     # These are self-explanatory
     LOW = 1
@@ -65,15 +60,13 @@ class Slot(Enum):
 
 
 class Hardpoint(Enum):
-    def __init__(self):
-        pass
 
     NONE = 0
     MISSILE = 1
     TURRET = 2
 
 
-class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
+class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, list):
     """An instance of this class represents a module together with its charge and modified attributes"""
     DAMAGE_TYPES = ("em", "thermal", "kinetic", "explosive")
     MINING_ATTRIBUTES = ("miningAmount",)
@@ -140,6 +133,13 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         if self.__charge:
             self.__chargeModifiedAttributes.original = self.__charge.attributes
             self.__chargeModifiedAttributes.overrides = self.__charge.overrides
+
+    def toDummy(self, index):
+        mod = self[index]
+        if not mod.isEmpty:
+            dummy = Module.buildEmpty(mod.slot)
+            dummy.position = index
+            self[index] = dummy
 
     @classmethod
     def buildEmpty(cls, slot):

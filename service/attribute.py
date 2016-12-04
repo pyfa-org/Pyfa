@@ -34,4 +34,6 @@ class Attribute():
         elif isinstance(identity, (int, float)):
             id = int(identity)
             info = eos.db.getAttributeInfo(id, eager=("icon", "unit"))
+        else:
+            info = None
         return info

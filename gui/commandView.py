@@ -24,9 +24,9 @@ import gui.globalEvents as GE
 import gui.droneView
 from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
-import eos.types
 from service.fit import Fit
 from service.market import Market
+from eos.saveddata.drone import Drone as es_Drone
 
 
 class DummyItem:
@@ -108,7 +108,7 @@ class CommandView(d.Display):
 
     def startDrag(self, event):
         row = event.GetIndex()
-        if row != -1 and isinstance(self.get(row), eos.types.Drone):
+        if row != -1 and isinstance(self.get(row), es_Drone):
             data = wx.PyTextDataObject()
             data.SetText("command:"+str(self.GetItemData(row)))
 

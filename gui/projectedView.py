@@ -118,7 +118,7 @@ class ProjectedView(d.Display):
 
     def startDrag(self, event):
         row = event.GetIndex()
-        if row != -1 and isinstance(self.get(row), eos.types.Drone):
+        if row != -1 and isinstance(self.get(row), es_Drone):
             data = wx.PyTextDataObject()
             data.SetText("projected:"+str(self.GetItemData(row)))
 
@@ -134,7 +134,7 @@ class ProjectedView(d.Display):
 
     def _merge(self, src, dst):
         dstDrone = self.get(dst)
-        if isinstance(dstDrone, eos.types.Drone):
+        if isinstance(dstDrone, es_Drone):
             sFit = Fit.getInstance()
             fitID = self.mainFrame.getActiveFit()
             if sFit.mergeDrones(fitID, self.get(src), dstDrone, True):
@@ -247,15 +247,15 @@ class ProjectedView(d.Display):
             item = self.get(sel)
             if item is None: return
             sMkt = Market.getInstance()
-            if isinstance(item, eos.types.Drone):
+            if isinstance(item, es_Drone):
                 srcContext = "projectedDrone"
                 itemContext = sMkt.getCategoryByItem(item.item).name
                 context = ((srcContext, itemContext),)
-            elif isinstance(item, eos.types.Fighter):
+            elif isinstance(item, es_Fighter):
                 srcContext = "projectedFighter"
                 itemContext = sMkt.getCategoryByItem(item.item).name
                 context = ((srcContext, itemContext),)
-            elif isinstance(item, eos.types.Module):
+            elif isinstance(item, es_Module):
                 modSrcContext = "projectedModule"
                 modItemContext = sMkt.getCategoryByItem(item.item).name
                 modFullContext = (modSrcContext, modItemContext)

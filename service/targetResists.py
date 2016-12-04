@@ -19,8 +19,8 @@
 
 import copy
 
-import eos
-from eos.saveddata import targetResists as db_targetResists
+from eos import db
+from eos.saveddata.targetResists import TargetResists as es_TargetResists
 
 
 class ImportError(Exception):
@@ -36,31 +36,31 @@ class TargetResists(object):
         return cls.instance
 
     def getTargetResistsList(self):
-        return eos.db.getTargetResistsList()
+        return db.getTargetResistsList()
 
     def getTargetResists(self, name):
-        return eos.db.getTargetResists(name)
+        return db.getTargetResists(name)
 
     def newPattern(self, name):
-        p = eos.types.TargetResists(0.0, 0.0, 0.0, 0.0)
+        p = es_TargetResists(0.0, 0.0, 0.0, 0.0)
         p.name = name
-        eos.db.save(p)
+        db.save(p)
         return p
 
     def renamePattern(self, p, newName):
         p.name = newName
-        eos.db.save(p)
+        db.save(p)
 
     def deletePattern(self, p):
-        eos.db.remove(p)
+        db.remove(p)
 
     def copyPattern(self, p):
         newP = copy.deepcopy(p)
-        eos.db.save(newP)
+        db.save(newP)
         return newP
 
     def saveChanges(self, p):
-        eos.db.save(p)
+        db.save(p)
 
     def importPatterns(self, text):
         lookup = {}
@@ -68,14 +68,14 @@ class TargetResists(object):
         for pattern in current:
             lookup[pattern.name] = pattern
 
-        imports, num = eos.types.TargetResists.importPatterns(text)
+        imports, num = es_TargetResists.importPatterns(text)
         for pattern in imports:
             if pattern.name in lookup:
                 match = lookup[pattern.name]
                 match.__dict__.update(pattern.__dict__)
             else:
-                eos.db.save(pattern)
-        eos.db.commit()
+                db.save(pattern)
+        db.commit()
 
         lenImports = len(imports)
         if lenImports == 0:
@@ -86,4 +86,4 @@ class TargetResists(object):
     def exportPatterns(self):
         patterns = self.getTargetResistsList()
         patterns.sort(key=lambda p: p.name)
-        return db_targetResists.TargetResists.exportPatterns(*patterns)
+        return es_TargetResists.exportPatterns(*patterns)
