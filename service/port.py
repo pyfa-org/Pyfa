@@ -57,6 +57,7 @@ INV_FLAGS = {
 
 INV_FLAG_CARGOBAY = 5
 INV_FLAG_DRONEBAY = 87
+INV_FLAG_FIGHTER = 158
 
 
 class Port(object):
@@ -254,6 +255,15 @@ class Port(object):
             item['type']['name'] = ''
             fit['items'].append(item)
 
+        for fighter in ofit.fighters:
+            item = nested_dict()
+            item['flag'] = INV_FLAG_FIGHTER
+            item['quantity'] = fighter.amountActive
+            item['type']['href'] = "%sinventory/types/%d/"%(eve._authed_endpoint, fighter.item.ID)
+            item['type']['id'] = fighter.item.ID
+            item['type']['name'] = fighter.item.name
+            fit['items'].append(item)
+
         return json.dumps(fit)
 
     @classmethod
@@ -319,6 +329,9 @@ class Port(object):
                     c = Cargo(item)
                     c.amount = module['quantity']
                     f.cargo.append(c)
+                elif module['flag'] == INV_FLAG_FIGHTER:
+                    fighter = Fighter(item)
+                    f.fighters.append(fighter)
                 else:
                     try:
                         m = Module(item)
