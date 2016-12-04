@@ -18,7 +18,7 @@
 # ===============================================================================
 
 from sqlalchemy import Table, Column, Integer, ForeignKey, Boolean
-from sqlalchemy.orm import *
+from sqlalchemy.orm import mapper, relation
 
 from eos.db import saveddata_meta
 from eos.saveddata.fighter import Fighter as Fighter

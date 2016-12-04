@@ -24,9 +24,18 @@ from eos.db import saveddata_session, sd_lock
 from eos.db.saveddata.fit import projectedFits_table
 from eos.db.saveddata.fleet import squadmembers_table
 from eos.db.util import processEager, processWhere
-from eos.saveddata.character import Character as Character
-from eos.saveddata.damagePattern import DamagePattern as DamagePattern
-from eos.saveddata.implantSet import ImplantSet as ImplantSet
+from eos.saveddata.user import User
+from eos.saveddata.character import Character
+from eos.saveddata.fit import Fit
+from eos.saveddata.fleet import Fleet, Wing, Squad
+from eos.saveddata.price import Price
+from eos.saveddata.miscData import MiscData
+from eos.saveddata.damagePattern import DamagePattern
+from eos.saveddata.targetResists import TargetResists
+from eos.saveddata.implantSet import ImplantSet
+from eos.saveddata.crestchar import CrestChar
+from eos.saveddata.override import Override
+
 
 configVal = getattr(eos.config, "saveddataCache", None)
 if configVal is True:
@@ -34,7 +43,6 @@ if configVal is True:
 
     itemCache = {}
     queryCache = {}
-
 
     def cachedQuery(type, amount, *keywords):
         itemCache[type] = localItemCache = weakref.WeakValueDictionary()
@@ -94,7 +102,6 @@ if configVal is True:
 
         return deco
 
-
     def removeCachedEntry(type, ID):
         if type not in queryCache:
             return
@@ -123,7 +130,6 @@ else:
             return checkAndReturn
 
         return deco
-
 
     def removeCachedEntry(*args, **kwargs):
         return
