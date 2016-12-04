@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,9 +15,10 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
 import wx
+
 
 class ViewColumn(object):
     '''
@@ -26,6 +27,7 @@ class ViewColumn(object):
     they can be used as columns in a view.
     '''
     columns = {}
+
     def __init__(self, fittingView):
         self.fittingView = fittingView
         self.columnText = ""
@@ -61,5 +63,3 @@ class ViewColumn(object):
 
     def delayedText(self, display, colItem):
         raise NotImplementedError()
-
-from gui.builtinViewColumns import *

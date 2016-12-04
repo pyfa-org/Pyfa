@@ -9,22 +9,26 @@ import time
 import eos.db
 from eos.enum import Enum
 from eos.types import CrestChar
-
-import service
-
 import gui.globalEvents as GE
 
+from service.settings import CRESTSettings
+from service.server import StoppableHTTPServer, AuthHandler
+from service.pycrest.eve import EVE
+
 logger = logging.getLogger(__name__)
+
 
 class Servers(Enum):
     TQ = 0
     SISI = 1
 
+
 class CrestModes(Enum):
     IMPLICIT = 0
     USER = 1
 
-class Crest():
+
+class Crest(object):
 
     clientIDs = {
         Servers.TQ: 'f9be379951c046339dc13a00e6be7704',
@@ -36,9 +40,10 @@ class Crest():
     clientTest = True
 
     _instance = None
+
     @classmethod
     def getInstance(cls):
-        if cls._instance == None:
+        if cls._instance is None:
             cls._instance = Crest()
 
         return cls._instance
@@ -64,7 +69,7 @@ class Crest():
         characters still in the cache (if USER mode)
         """
 
-        self.settings = service.settings.CRESTSettings.getInstance()
+        self.settings = CRESTSettings.getInstance()
         self.scopes = ['characterFittingsRead', 'characterFittingsWrite']
 
         # these will be set when needed
@@ -73,7 +78,7 @@ class Crest():
         self.ssoTimer = None
 
         # Base EVE connection that is copied to all characters
-        self.eve = service.pycrest.EVE(
+        self.eve = EVE(
             client_id=self.settings.get('clientID') if self.settings.get('mode') == CrestModes.USER else self.clientIDs.get(self.settings.get('server')),
             api_key=self.settings.get('clientSecret') if self.settings.get('mode') == CrestModes.USER else None,
             redirect_uri=self.clientCallback,
@@ -134,16 +139,16 @@ class Crest():
 
     def getFittings(self, charID):
         char = self.getCrestCharacter(charID)
-        return char.eve.get('%scharacters/%d/fittings/'%(char.eve._authed_endpoint,char.ID))
+        return char.eve.get('%scharacters/%d/fittings/' % (char.eve._authed_endpoint, char.ID))
 
     def postFitting(self, charID, json):
-        #@todo: new fitting ID can be recovered from Location header, ie: Location -> https://api-sisi.testeveonline.com/characters/1611853631/fittings/37486494/
+        # @todo: new fitting ID can be recovered from Location header, ie: Location -> https://api-sisi.testeveonline.com/characters/1611853631/fittings/37486494/
         char = self.getCrestCharacter(charID)
-        return char.eve.post('%scharacters/%d/fittings/'%(char.eve._authed_endpoint,char.ID), data=json)
+        return char.eve.post('%scharacters/%d/fittings/' % (char.eve._authed_endpoint, char.ID), data=json)
 
     def delFitting(self, charID, fittingID):
         char = self.getCrestCharacter(charID)
-        return char.eve.delete('%scharacters/%d/fittings/%d/'%(char.eve._authed_endpoint, char.ID, fittingID))
+        return char.eve.delete('%scharacters/%d/fittings/%d/' % (char.eve._authed_endpoint, char.ID, fittingID))
 
     def logout(self):
         """Logout of implicit character"""
@@ -161,7 +166,7 @@ class Crest():
         if self.httpd:
             self.stopServer()
             time.sleep(1)  # we need this to ensure that the previous get_request finishes, and then the socket will close
-        self.httpd = service.StoppableHTTPServer(('', 6461), service.AuthHandler)
+        self.httpd = StoppableHTTPServer(('', 6461), AuthHandler)
         thread.start_new_thread(self.httpd.serve, (self.handleLogin,))
 
         self.state = str(uuid.uuid4())
@@ -175,7 +180,7 @@ class Crest():
             logger.warn("OAUTH state mismatch")
             return
 
-        logger.debug("Handling CREST login with: %s"%message)
+        logger.debug("Handling CREST login with: %s", message)
 
         if 'access_token' in message:  # implicit
             eve = copy.deepcopy(self.eve)
@@ -189,11 +194,11 @@ class Crest():
             eve()
             info = eve.whoami()
 
-            logger.debug("Got character info: %s" % info)
+            logger.debug("Got character info: %s", info)
 
             self.implicitCharacter = CrestChar(info['CharacterID'], info['CharacterName'])
             self.implicitCharacter.eve = eve
-            #self.implicitCharacter.fetchImage()
+            # self.implicitCharacter.fetchImage()
 
             wx.PostEvent(self.mainFrame, GE.SsoLogin(type=CrestModes.IMPLICIT))
         elif 'code' in message:
@@ -202,7 +207,7 @@ class Crest():
             eve()
             info = eve.whoami()
 
-            logger.debug("Got character info: %s" % info)
+            logger.debug("Got character info: %s", info)
 
             # check if we have character already. If so, simply replace refresh_token
             char = self.getCrestCharacter(int(info['CharacterID']))

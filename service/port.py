@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2014 Ryan Holmes
 #
 # This file is part of pyfa.
@@ -15,39 +15,159 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
 import re
 import os
 import xml.dom
-
-from eos.types import State, Slot, Module, Cargo, Fit, Ship, Drone, Implant, Booster, Citadel
-import service
-import wx
 import logging
-import config
 import collections
 import json
+import threading
+import locale
+import xml.parsers.expat
+from codecs import open
 
-logger = logging.getLogger("pyfa.service.port")
+import wx
+
+from eos import db
+from eos.types import State, Slot, Module, Cargo, Ship, Drone, Implant, Booster, Citadel
+from service.crest import Crest
+from service.market import Market
+from service.fit import Fit
 
 try:
     from collections import OrderedDict
 except ImportError:
     from utils.compat import OrderedDict
 
+
+logger = logging.getLogger("pyfa.service.port")
+
 EFT_SLOT_ORDER = [Slot.LOW, Slot.MED, Slot.HIGH, Slot.RIG, Slot.SUBSYSTEM]
 INV_FLAGS = {
-            Slot.LOW: 11,
-            Slot.MED: 19,
-            Slot.HIGH: 27,
-            Slot.RIG: 92,
-            Slot.SUBSYSTEM: 125}
+    Slot.LOW: 11,
+    Slot.MED: 19,
+    Slot.HIGH: 27,
+    Slot.RIG: 92,
+    Slot.SUBSYSTEM: 125
+}
 
 INV_FLAG_CARGOBAY = 5
 INV_FLAG_DRONEBAY = 87
 
+
 class Port(object):
+    def backupFits(self, path, callback):
+        thread = FitBackupThread(path, callback)
+        thread.start()
+
+    def importFitsThreaded(self, paths, callback):
+        thread = FitImportThread(paths, callback)
+        thread.start()
+
+    def importFitFromFiles(self, paths, callback=None):
+        """
+        Imports fits from file(s). First processes all provided paths and stores
+        assembled fits into a list. This allows us to call back to the GUI as
+        fits are processed as well as when fits are being saved.
+        returns
+        """
+        defcodepage = locale.getpreferredencoding()
+
+        fits = []
+        for path in paths:
+            if callback:  # Pulse
+                wx.CallAfter(callback, 1, "Processing file:\n%s" % path)
+
+            file = open(path, "r")
+            srcString = file.read()
+
+            if len(srcString) == 0:  # ignore blank files
+                continue
+
+            codec_found = None
+            # If file had ANSI encoding, decode it to unicode using detection
+            # of BOM header or if there is no header try default
+            # codepage then fallback to utf-16, cp1252
+
+            if isinstance(srcString, str):
+                encoding_map = (
+                    ('\xef\xbb\xbf', 'utf-8'),
+                    ('\xff\xfe\0\0', 'utf-32'),
+                    ('\0\0\xfe\xff', 'UTF-32BE'),
+                    ('\xff\xfe', 'utf-16'),
+                    ('\xfe\xff', 'UTF-16BE'))
+
+                for bom, encoding in encoding_map:
+                    if srcString.startswith(bom):
+                        codec_found = encoding
+                        savebom = bom
+
+                if codec_found is None:
+                    logger.info("Unicode BOM not found in file %s.", path)
+                    attempt_codecs = (defcodepage, "utf-8", "utf-16", "cp1252")
+
+                    for page in attempt_codecs:
+                        try:
+                            logger.info("Attempting to decode file %s using %s page.", path, page)
+                            srcString = unicode(srcString, page)
+                            codec_found = page
+                            logger.info("File %s decoded using %s page.", path, page)
+                        except UnicodeDecodeError:
+                            logger.info("Error unicode decoding %s from page %s, trying next codec", path, page)
+                        else:
+                            break
+                else:
+                    logger.info("Unicode BOM detected in %s, using %s page.", path, codec_found)
+                    srcString = unicode(srcString[len(savebom):], codec_found)
+
+            else:
+                # nasty hack to detect other transparent utf-16 loading
+                if srcString[0] == '<' and 'utf-16' in srcString[:128].lower():
+                    codec_found = "utf-16"
+                else:
+                    codec_found = "utf-8"
+
+            if codec_found is None:
+                return False, "Proper codec could not be established for %s" % path
+
+            try:
+                _, fitsImport = Port.importAuto(srcString, path, callback=callback, encoding=codec_found)
+                fits += fitsImport
+            except xml.parsers.expat.ExpatError:
+                return False, "Malformed XML in %s" % path
+            except Exception:
+                logger.exception("Unknown exception processing: %s", path)
+                return False, "Unknown Error while processing %s" % path
+
+        IDs = []
+        numFits = len(fits)
+        for i, fit in enumerate(fits):
+            # Set some more fit attributes and save
+            fit.character = self.character
+            fit.damagePattern = self.pattern
+            fit.targetResists = self.targetResists
+            db.save(fit)
+            IDs.append(fit.ID)
+            if callback:  # Pulse
+                wx.CallAfter(
+                    callback, 1,
+                    "Processing complete, saving fits to database\n(%d/%d)" %
+                    (i + 1, numFits)
+                )
+
+        return True, fits
+
+    def importFitFromBuffer(self, bufferStr, activeFit=None):
+        _, fits = Port.importAuto(bufferStr, activeFit=activeFit)
+        for fit in fits:
+            fit.character = self.character
+            fit.damagePattern = self.pattern
+            fit.targetResists = self.targetResists
+            db.save(fit)
+        return fits
+
     """Service which houses all import/export format functions"""
     @classmethod
     def exportCrest(cls, ofit, callback=None):
@@ -57,19 +177,19 @@ class Port(object):
 
         nested_dict = lambda: collections.defaultdict(nested_dict)
         fit = nested_dict()
-        sCrest = service.Crest.getInstance()
-        sFit = service.Fit.getInstance()
+        sCrest = Crest.getInstance()
+        sFit = Fit.getInstance()
 
         eve = sCrest.eve
 
         # max length is 50 characters
         name = ofit.name[:47] + '...' if len(ofit.name) > 50 else ofit.name
         fit['name'] = name
-        fit['ship']['href'] = "%sinventory/types/%d/"%(eve._authed_endpoint, ofit.ship.item.ID)
+        fit['ship']['href'] = "%sinventory/types/%d/" % (eve._authed_endpoint, ofit.ship.item.ID)
         fit['ship']['id'] = ofit.ship.item.ID
         fit['ship']['name'] = ''
 
-        fit['description'] = "<pyfa:%d />"%ofit.ID
+        fit['description'] = "<pyfa:%d />" % ofit.ID
         fit['items'] = []
 
         slotNum = {}
@@ -86,20 +206,20 @@ class Port(object):
                 slot = int(module.getModifiedItemAttr("subSystemSlot"))
                 item['flag'] = slot
             else:
-                if not slot in slotNum:
+                if slot not in slotNum:
                     slotNum[slot] = INV_FLAGS[slot]
 
                 item['flag'] = slotNum[slot]
                 slotNum[slot] += 1
 
             item['quantity'] = 1
-            item['type']['href'] = "%sinventory/types/%d/"%(eve._authed_endpoint, module.item.ID)
+            item['type']['href'] = "%sinventory/types/%d/" % (eve._authed_endpoint, module.item.ID)
             item['type']['id'] = module.item.ID
             item['type']['name'] = ''
             fit['items'].append(item)
 
             if module.charge and sFit.serviceFittingOptions["exportCharges"]:
-                if not module.chargeID in charges:
+                if module.chargeID not in charges:
                     charges[module.chargeID] = 0
                 # `or 1` because some charges (ie scripts) are without qty
                 charges[module.chargeID] += module.numCharges or 1
@@ -108,7 +228,7 @@ class Port(object):
             item = nested_dict()
             item['flag'] = INV_FLAG_CARGOBAY
             item['quantity'] = cargo.amount
-            item['type']['href'] = "%sinventory/types/%d/"%(eve._authed_endpoint, cargo.item.ID)
+            item['type']['href'] = "%sinventory/types/%d/" % (eve._authed_endpoint, cargo.item.ID)
             item['type']['id'] = cargo.item.ID
             item['type']['name'] = ''
             fit['items'].append(item)
@@ -117,7 +237,7 @@ class Port(object):
             item = nested_dict()
             item['flag'] = INV_FLAG_CARGOBAY
             item['quantity'] = amount
-            item['type']['href'] = "%sinventory/types/%d/"%(eve._authed_endpoint, chargeID)
+            item['type']['href'] = "%sinventory/types/%d/" % (eve._authed_endpoint, chargeID)
             item['type']['id'] = chargeID
             item['type']['name'] = ''
             fit['items'].append(item)
@@ -126,7 +246,7 @@ class Port(object):
             item = nested_dict()
             item['flag'] = INV_FLAG_DRONEBAY
             item['quantity'] = drone.amount
-            item['type']['href'] = "%sinventory/types/%d/"%(eve._authed_endpoint, drone.item.ID)
+            item['type']['href'] = "%sinventory/types/%d/" % (eve._authed_endpoint, drone.item.ID)
             item['type']['id'] = drone.item.ID
             item['type']['name'] = ''
             fit['items'].append(item)
@@ -168,7 +288,7 @@ class Port(object):
     @staticmethod
     def importCrest(str):
         fit = json.loads(str)
-        sMkt = service.Market.getInstance()
+        sMkt = Market.getInstance()
 
         f = Fit()
         f.name = fit['name']
@@ -216,7 +336,7 @@ class Port(object):
                 continue
 
         # Recalc to get slot numbers correct for T3 cruisers
-        service.Fit.getInstance().recalc(f)
+        Fit.getInstance().recalc(f)
 
         for module in moduleList:
             if module.fits(f):
@@ -226,7 +346,7 @@ class Port(object):
 
     @staticmethod
     def importDna(string):
-        sMkt = service.Market.getInstance()
+        sMkt = Market.getInstance()
 
         ids = map(int, re.findall(r'\d+', string))
         for id in ids:
@@ -252,12 +372,12 @@ class Port(object):
             except ValueError:
                 f.ship = Citadel(sMkt.getItem(int(info[0])))
             f.name = "{0} - DNA Imported".format(f.ship.item.name)
-        except UnicodeEncodeError as e:
+        except UnicodeEncodeError:
             def logtransform(s):
                 if len(s) > 10:
                     return s[:10] + "..."
                 return s
-            logger.exception("Couldn't import ship data %r", [ logtransform(s) for s in info ])
+            logger.exception("Couldn't import ship data %r", [logtransform(s) for s in info])
             return None
 
         moduleList = []
@@ -291,7 +411,7 @@ class Port(object):
                             moduleList.append(m)
 
         # Recalc to get slot numbers correct for T3 cruisers
-        service.Fit.getInstance().recalc(f)
+        Fit.getInstance().recalc(f)
 
         for module in moduleList:
             if module.fits(f):
@@ -304,7 +424,7 @@ class Port(object):
 
     @staticmethod
     def importEft(eftString):
-        sMkt = service.Market.getInstance()
+        sMkt = Market.getInstance()
         offineSuffix = " /OFFLINE"
 
         fit = Fit()
@@ -371,12 +491,12 @@ class Port(object):
 
             if item.category.name == "Drone":
                 extraAmount = int(extraAmount) if extraAmount is not None else 1
-                if not modName in droneMap:
+                if modName not in droneMap:
                     droneMap[modName] = 0
                 droneMap[modName] += extraAmount
             if len(modExtra) == 2 and item.category.name != "Drone":
                 extraAmount = int(extraAmount) if extraAmount is not None else 1
-                if not modName in cargoMap:
+                if modName not in cargoMap:
                     cargoMap[modName] = 0
                 cargoMap[modName] += extraAmount
             elif item.category.name == "Implant":
@@ -415,13 +535,13 @@ class Port(object):
                     moduleList.append(m)
 
         # Recalc to get slot numbers correct for T3 cruisers
-        service.Fit.getInstance().recalc(fit)
+        Fit.getInstance().recalc(fit)
 
         for m in moduleList:
             if m.fits(fit):
                 m.owner = fit
                 if not m.isValidState(m.state):
-                    print "Error: Module", m, "cannot have state", m.state
+                    print("Error: Module", m, "cannot have state", m.state)
 
                 fit.modules.append(m)
 
@@ -442,7 +562,7 @@ class Port(object):
         """Handle import from EFT config store file"""
 
         # Check if we have such ship in database, bail if we don't
-        sMkt = service.Market.getInstance()
+        sMkt = Market.getInstance()
         try:
             sMkt.getItem(shipname)
         except:
@@ -596,7 +716,7 @@ class Port(object):
                             moduleList.append(m)
 
                 # Recalc to get slot numbers correct for T3 cruisers
-                service.Fit.getInstance().recalc(f)
+                Fit.getInstance().recalc(f)
 
                 for module in moduleList:
                     if module.fits(f):
@@ -615,7 +735,7 @@ class Port(object):
 
     @staticmethod
     def importXml(text, callback=None, encoding="utf-8"):
-        sMkt = service.Market.getInstance()
+        sMkt = Market.getInstance()
 
         doc = xml.dom.minidom.parseString(text.encode(encoding))
         fittings = doc.getElementsByTagName("fittings").item(0)
@@ -676,7 +796,7 @@ class Port(object):
                     continue
 
             # Recalc to get slot numbers correct for T3 cruisers
-            service.Fit.getInstance().recalc(f)
+            Fit.getInstance().recalc(f)
 
             for module in moduleList:
                 if module.fits(f):
@@ -694,10 +814,10 @@ class Port(object):
         offineSuffix = " /OFFLINE"
         export = "[%s, %s]\n" % (fit.ship.item.name, fit.name)
         stuff = {}
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         for module in fit.modules:
             slot = module.slot
-            if not slot in stuff:
+            if slot not in stuff:
                 stuff[slot] = []
             curr = module.item.name if module.item else ("[Empty %s slot]" % Slot.getName(slot).capitalize() if slot is not None else "")
             if module.charge and sFit.serviceFittingOptions["exportCharges"]:
@@ -776,12 +896,12 @@ class Port(object):
                 if mod.slot == Slot.SUBSYSTEM:
                     subsystems.append(mod)
                     continue
-                if not mod.itemID in mods:
+                if mod.itemID not in mods:
                     mods[mod.itemID] = 0
                 mods[mod.itemID] += 1
 
                 if mod.charge:
-                    if not mod.chargeID in charges:
+                    if mod.chargeID not in charges:
                         charges[mod.chargeID] = 0
                     # `or 1` because some charges (ie scripts) are without qty
                     charges[mod.chargeID] += mod.numCharges or 1
@@ -792,13 +912,8 @@ class Port(object):
         for mod in mods:
             dna += ":{0};{1}".format(mod, mods[mod])
 
-        # drones are known to be in split stacks
-        groupedDrones = OrderedDict()
         for drone in fit.drones:
-            groupedDrones[drone.itemID] = groupedDrones.get(drone.itemID, 0) + drone.amount
-
-        for droneItemID in groupedDrones:
-            dna += ":{0};{1}".format(droneItemID, groupedDrones[droneItemID])
+            dna += ":{0};{1}".format(drone.itemID, drone.amount)
 
         for cargo in fit.cargo:
             # DNA format is a simple/dumb format. As CCP uses the slot information of the item itself
@@ -807,7 +922,7 @@ class Port(object):
             # as being "Fitted" to whatever slot they are for, and it causes an corruption error in the
             # client when trying to save the fit
             if cargo.item.category.name == "Charge":
-                if not cargo.item.ID in charges:
+                if cargo.item.ID not in charges:
                     charges[cargo.item.ID] = 0
                 charges[cargo.item.ID] += cargo.amount
 
@@ -821,7 +936,7 @@ class Port(object):
         doc = xml.dom.minidom.Document()
         fittings = doc.createElement("fittings")
         doc.appendChild(fittings)
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
 
         for i, fit in enumerate(fits):
             try:
@@ -847,7 +962,7 @@ class Port(object):
                         # Order of subsystem matters based on this attr. See GH issue #130
                         slotId = module.getModifiedItemAttr("subSystemSlot") - 125
                     else:
-                        if not slot in slotNum:
+                        if slot not in slotNum:
                             slotNum[slot] = 0
 
                         slotId = slotNum[slot]
@@ -861,7 +976,7 @@ class Port(object):
                     fitting.appendChild(hardware)
 
                     if module.charge and sFit.serviceFittingOptions["exportCharges"]:
-                        if not module.charge.name in charges:
+                        if module.charge.name not in charges:
                             charges[module.charge.name] = 0
                         # `or 1` because some charges (ie scripts) are without qty
                         charges[module.charge.name] += module.numCharges or 1
@@ -874,7 +989,7 @@ class Port(object):
                     fitting.appendChild(hardware)
 
                 for cargo in fit.cargo:
-                    if not cargo.item.name in charges:
+                    if cargo.item.name not in charges:
                         charges[cargo.item.name] = 0
                     charges[cargo.item.name] += cargo.amount
 
@@ -885,7 +1000,7 @@ class Port(object):
                     hardware.setAttribute("type", name)
                     fitting.appendChild(hardware)
             except:
-                print "Failed on fitID: %d"%fit.ID
+                print("Failed on fitID: %d" % fit.ID)
                 continue
             finally:
                 if callback:
@@ -897,13 +1012,12 @@ class Port(object):
     def exportMultiBuy(fit):
         export = "%s\n" % (fit.ship.item.name)
         stuff = {}
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         for module in fit.modules:
             slot = module.slot
-            if not slot in stuff:
+            if slot not in stuff:
                 stuff[slot] = []
-            curr = "%s\n" % module.item.name if module.item else (
-            "")
+            curr = "%s\n" % module.item.name if module.item else ""
             if module.charge and sFit.serviceFittingOptions["exportCharges"]:
                 curr += "%s x%s\n" % (module.charge.name, module.numCharges)
             stuff[slot].append(curr)
@@ -939,3 +1053,39 @@ class Port(object):
             export = export[:-1]
 
         return export
+
+
+class FitBackupThread(threading.Thread):
+    def __init__(self, path, callback):
+        threading.Thread.__init__(self)
+        self.path = path
+        self.callback = callback
+
+    def run(self):
+        path = self.path
+        sFit = Fit.getInstance()
+        allFits = map(lambda x: x[0], sFit.getAllFits())
+        backedUpFits = sFit.exportXml(self.callback, *allFits)
+        backupFile = open(path, "w", encoding="utf-8")
+        backupFile.write(backedUpFits)
+        backupFile.close()
+
+        # Send done signal to GUI
+        wx.CallAfter(self.callback, -1)
+
+
+class FitImportThread(threading.Thread):
+    def __init__(self, paths, callback):
+        threading.Thread.__init__(self)
+        self.paths = paths
+        self.callback = callback
+
+    def run(self):
+        sFit = Fit.getInstance()
+        success, result = sFit.importFitFromFiles(self.paths, self.callback)
+
+        if not success:  # there was an error during processing
+            logger.error("Error while processing file import: %s", result)
+            wx.CallAfter(self.callback, -2, result)
+        else:  # Send done signal to GUI
+            wx.CallAfter(self.callback, -1, result)

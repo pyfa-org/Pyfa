@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Darriele
 #
 # This file is part of pyfa.
@@ -15,7 +15,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
 import wx
 import wx.lib.newevent
@@ -23,9 +23,9 @@ import gui.utils.colorUtils as colorUtils
 import gui.utils.drawUtils as drawUtils
 import gui.utils.fonts as fonts
 from gui.bitmapLoader import BitmapLoader
-import gui.utils.fonts as fonts
 
-import service
+from service.fit import Fit
+
 
 _PageChanging, EVT_NOTEBOOK_PAGE_CHANGING = wx.lib.newevent.NewEvent()
 _PageChanged, EVT_NOTEBOOK_PAGE_CHANGED = wx.lib.newevent.NewEvent()
@@ -33,6 +33,7 @@ _PageAdding, EVT_NOTEBOOK_PAGE_ADDING = wx.lib.newevent.NewEvent()
 _PageClosing, EVT_NOTEBOOK_PAGE_CLOSING = wx.lib.newevent.NewEvent()
 PageAdded, EVT_NOTEBOOK_PAGE_ADDED = wx.lib.newevent.NewEvent()
 PageClosed, EVT_NOTEBOOK_PAGE_CLOSED = wx.lib.newevent.NewEvent()
+
 
 class VetoAble():
     def __init__(self):
@@ -91,7 +92,6 @@ class PageAdding(_PageAdding, VetoAble):
 
 
 class PFNotebook(wx.Panel):
-
     def __init__(self, parent, canAdd=True):
         """
         Instance of Pyfa Notebook. Initializes general layout, includes methods
@@ -100,8 +100,8 @@ class PFNotebook(wx.Panel):
         parent - wx parent element
         canAdd - True if tabs be deleted and added, passed directly to
                  PFTabsContainer
-
         """
+
         wx.Panel.__init__(self, parent, wx.ID_ANY, size=(-1, -1))
 
         self.pages = []
@@ -234,7 +234,7 @@ class PFNotebook(wx.Panel):
             try:
                 # Set page to the first non-disabled page
                 self.SetSelection(next(i for i, _ in enumerate(self.pages) if not self.tabsContainer.tabs[i].disabled))
-            except StopIteration, ex:
+            except StopIteration:
                 self.SetSelection(0)
 
         self.tabsContainer.DisableTab(idx, toggle)
@@ -337,7 +337,7 @@ class PFNotebook(wx.Panel):
 
 
 class PFTabRenderer:
-    def __init__(self, size=(36, 24), text=wx.EmptyString, img=None, inclination=6 , closeButton=True):
+    def __init__(self, size=(36, 24), text=wx.EmptyString, img=None, inclination=6, closeButton=True):
         """
         Renders a new tab
 
@@ -432,7 +432,7 @@ class PFTabRenderer:
         mdc.SelectObject(ebmp)
         mdc.SetFont(self.font)
         textSizeX, textSizeY = mdc.GetTextExtent(self.text)
-        totalSize = self.leftWidth + self.rightWidth + textSizeX + self.closeBtnWidth/2 + 16 + self.padding*2
+        totalSize = self.leftWidth + self.rightWidth + textSizeX + self.closeBtnWidth / 2 + 16 + self.padding * 2
         mdc.SelectObject(wx.NullBitmap)
         return totalSize, self.tabHeight
 
@@ -497,7 +497,7 @@ class PFTabRenderer:
         mdc = wx.MemoryDC()
         mdc.SelectObject(bkbmp)
 
-        #mdc.SetBackground(wx.Brush((0x12, 0x23, 0x32)))
+        # mdc.SetBackground(wx.Brush((0x12, 0x23, 0x32)))
         mdc.Clear()
 
         mdc.DrawBitmap(self.ctabLeftBmp, 0, 0)  # set the left bitmap
@@ -506,14 +506,14 @@ class PFTabRenderer:
         cm = self.ctabMiddleBmp.ConvertToImage()
         mimg = cm.Scale(self.contentWidth, self.ctabMiddle.GetHeight(), wx.IMAGE_QUALITY_NORMAL)
         mbmp = wx.BitmapFromImage(mimg)
-        mdc.DrawBitmap(mbmp, self.leftWidth, 0 ) # set middle bitmap, offset by left
+        mdc.DrawBitmap(mbmp, self.leftWidth, 0)  # set middle bitmap, offset by left
 
         # set right bitmap offset by left + middle
         mdc.DrawBitmap(self.ctabRightBmp, self.contentWidth + self.leftWidth, 0)
 
         mdc.SelectObject(wx.NullBitmap)
 
-        #bkbmp.SetMaskColour((0x12, 0x23, 0x32))
+        # bkbmp.SetMaskColour((0x12, 0x23, 0x32))
 
         if self.tabBackBitmap:
             del self.tabBackBitmap
@@ -527,7 +527,7 @@ class PFTabRenderer:
         """
         self.tabRegion = wx.RegionFromBitmap(self.tabBackBitmap)
         self.closeBtnRegion = wx.RegionFromBitmap(self.ctabCloseBmp)
-        self.closeBtnRegion.Offset(self.contentWidth + self.leftWidth - self.ctabCloseBmp.GetWidth()/2, (self.tabHeight - self.ctabCloseBmp.GetHeight())/2)
+        self.closeBtnRegion.Offset(self.contentWidth + self.leftWidth - self.ctabCloseBmp.GetWidth() / 2, (self.tabHeight - self.ctabCloseBmp.GetHeight()) / 2)
 
     def InitColors(self):
         """Determines colors used for tab, based on system settings"""
@@ -545,33 +545,33 @@ class PFTabRenderer:
 
         height = self.tabHeight
 
-        #rect = wx.Rect(0, 0, self.tabWidth, self.tabHeight)
+        # rect = wx.Rect(0, 0, self.tabWidth, self.tabHeight)
 
         canvas = wx.EmptyBitmap(self.tabWidth, self.tabHeight, 24)
 
         mdc = wx.MemoryDC()
 
         mdc.SelectObject(canvas)
-        #mdc.SetBackground(wx.Brush ((0x12,0x23,0x32)))
+        # mdc.SetBackground(wx.Brush ((0x12,0x23,0x32)))
         mdc.Clear()
 
-        #r = copy.copy(rect)
-        #r.top = r.left = 0
-        #r.height = height
+        # r = copy.copy(rect)
+        # r.top = r.left = 0
+        # r.height = height
         mdc.DrawBitmap(self.tabBackBitmap, 0, 0, True)
 
         if self.tabImg:
             bmp = wx.BitmapFromImage(self.tabImg.ConvertToGreyscale() if self.disabled else self.tabImg)
             if self.contentWidth > 16:  # @todo: is this conditional relevant anymore?
                 # Draw tab icon
-                mdc.DrawBitmap(bmp, self.leftWidth + self.padding - bmp.GetWidth()/2, (height - bmp.GetHeight())/2)
-            textStart = self.leftWidth + self.padding + bmp.GetWidth()/2
+                mdc.DrawBitmap(bmp, self.leftWidth + self.padding - bmp.GetWidth() / 2, (height - bmp.GetHeight()) / 2)
+            textStart = self.leftWidth + self.padding + bmp.GetWidth() / 2
         else:
             textStart = self.leftWidth
 
         mdc.SetFont(self.font)
 
-        maxsize = self.tabWidth - textStart - self.rightWidth - self.padding*4
+        maxsize = self.tabWidth - textStart - self.rightWidth - self.padding * 4
         color = self.selectedColor if self.selected else self.inactiveColor
 
         mdc.SetTextForeground(colorUtils.GetSuitableColor(color, 1))
@@ -589,9 +589,10 @@ class PFTabRenderer:
                 cbmp = wx.BitmapFromImage(cimg)
 
             mdc.DrawBitmap(
-                        cbmp,
-                        self.contentWidth + self.leftWidth - self.ctabCloseBmp.GetWidth()/2,
-                        (height - self.ctabCloseBmp.GetHeight())/2)
+                cbmp,
+                self.contentWidth + self.leftWidth - self.ctabCloseBmp.GetWidth() / 2,
+                (height - self.ctabCloseBmp.GetHeight()) / 2,
+            )
 
         mdc.SelectObject(wx.NullBitmap)
 
@@ -608,6 +609,7 @@ class PFTabRenderer:
         return "PFTabRenderer(text={}, disabled={}) at {}".format(
             self.text, self.disabled, hex(id(self))
         )
+
 
 class PFAddRenderer:
     def __init__(self):
@@ -628,7 +630,7 @@ class PFAddRenderer:
     def GetPosition(self):
         return self.position
 
-    def SetPosition(self,pos):
+    def SetPosition(self, pos):
         self.position = pos
 
     def GetSize(self):
@@ -689,7 +691,7 @@ class PFTabsContainer(wx.Panel):
         """
 
         wx.Panel.__init__(self, parent, id, pos, size)
-        if wx.VERSION >= (3,0):
+        if wx.VERSION >= (3, 0):
             self.SetBackgroundStyle(wx.BG_STYLE_PAINT)
 
         self.tabs = []
@@ -699,7 +701,7 @@ class PFTabsContainer(wx.Panel):
         self.containerHeight = height
         self.startDrag = False
         self.dragging = False
-        self.sFit = service.Fit.getInstance()
+        self.sFit = Fit.getInstance()
 
         self.inclination = 7
         if canAdd:
@@ -865,7 +867,8 @@ class PFTabsContainer(wx.Panel):
             return True
 
         if self.TabHitTest(tab, x, y):
-            if tab.disabled: return
+            if tab.disabled:
+                return
             tab.SetSelected(True)
             oldSelTab.SetSelected(False)
 
@@ -942,7 +945,7 @@ class PFTabsContainer(wx.Panel):
             closeBtnReg = tab.GetCloseButtonRegion()
             tabPos = tab.GetPosition()
             tabPosX, tabPosY = tabPos
-            closeBtnReg.Offset(tabPosX,tabPosY)
+            closeBtnReg.Offset(tabPosX, tabPosY)
 
             if closeBtnReg.Contains(x, y):
                 if not tab.GetCloseButtonHoverStatus():
@@ -984,7 +987,6 @@ class PFTabsContainer(wx.Panel):
 
     def GetTabAtRight(self, tabIndex):
         return self.tabs[tabIndex + 1] if tabIndex < self.GetTabsCount() - 1 else None
-
 
     def SwitchTabs(self, src, dest, draggedTab=None):
         self.tabs[src], self.tabs[dest] = self.tabs[dest], self.tabs[src]
@@ -1110,14 +1112,12 @@ class PFTabsContainer(wx.Panel):
     def OnPaint(self, event):
         if "wxGTK" in wx.PlatformInfo:
             mdc = wx.AutoBufferedPaintDC(self)
-
         else:
-            rect = self.GetRect()
             mdc = wx.BufferedPaintDC(self)
 
         selected = 0
 
-        if 'wxMac' in wx.PlatformInfo and wx.VERSION < (3,0):
+        if 'wxMac' in wx.PlatformInfo and wx.VERSION < (3, 0):
             color = wx.Colour(0, 0, 0)
             brush = wx.Brush(color)
 
@@ -1128,7 +1128,7 @@ class PFTabsContainer(wx.Panel):
             brush = wx.Brush(color)
 
         if "wxGTK" not in wx.PlatformInfo:
-            mdc.SetBackground (brush)
+            mdc.SetBackground(brush)
             mdc.Clear()
 
         selected = None
@@ -1136,21 +1136,18 @@ class PFTabsContainer(wx.Panel):
         tabsWidth = 0
 
         for tab in self.tabs:
-            tabsWidth += tab.tabWidth - self.inclination*2
-
-        pos = tabsWidth
+            tabsWidth += tab.tabWidth - self.inclination * 2
 
         if self.showAddButton:
-            ax,ay = self.addButton.GetPosition()
+            ax, ay = self.addButton.GetPosition()
             mdc.DrawBitmap(self.addButton.Render(), ax, ay, True)
 
-        for i in xrange(len(self.tabs) - 1, -1, -1):
+        for i in range(len(self.tabs) - 1, -1, -1):
             tab = self.tabs[i]
-            width = tab.tabWidth - 6
             posx, posy = tab.GetPosition()
 
             if not tab.IsSelected():
-                mdc.DrawBitmap(self.efxBmp, posx, posy, True )
+                mdc.DrawBitmap(self.efxBmp, posx, posy, True)
                 bmp = tab.Render()
                 img = bmp.ConvertToImage()
                 img = img.AdjustChannels(1, 1, 1, 0.85)
@@ -1265,13 +1262,13 @@ class PFTabsContainer(wx.Panel):
     def UpdateTabsPosition(self, skipTab=None):
         tabsWidth = 0
         for tab in self.tabs:
-            tabsWidth += tab.tabWidth - self.inclination*2
+            tabsWidth += tab.tabWidth - self.inclination * 2
 
         pos = tabsWidth
         selected = None
-        for i in xrange(len(self.tabs) - 1, -1, -1):
+        for i in range(len(self.tabs) - 1, -1, -1):
             tab = self.tabs[i]
-            width = tab.tabWidth - self.inclination*2
+            width = tab.tabWidth - self.inclination * 2
             pos -= width
             if not tab.IsSelected():
                 tab.SetPosition((pos, self.containerHeight - self.height))
@@ -1280,7 +1277,7 @@ class PFTabsContainer(wx.Panel):
                 selpos = pos
         if selected is not skipTab:
             selected.SetPosition((selpos, self.containerHeight - self.height))
-        self.addButton.SetPosition((round(tabsWidth) + self.inclination*2, self.containerHeight - self.height/2 - self.addButton.GetHeight()/3))
+        self.addButton.SetPosition((round(tabsWidth) + self.inclination * 2, self.containerHeight - self.height / 2 - self.addButton.GetHeight() / 3))
 
     def OnLeaveWindow(self, event):
 
@@ -1305,17 +1302,15 @@ class PFTabsContainer(wx.Panel):
             if not self.previewTab.GetSelected():
                 page = self.Parent.GetPage(self.GetTabIndex(self.previewTab))
                 if page.Snapshot():
-                    self.previewWnd = PFNotebookPagePreview(self, (mposx+3, mposy+3), page.Snapshot(), self.previewTab.text)
+                    self.previewWnd = PFNotebookPagePreview(self, (mposx + 3, mposy + 3), page.Snapshot(), self.previewTab.text)
                     self.previewWnd.Show()
 
         event.Skip()
 
+
 class PFNotebookPagePreview(wx.Frame):
-    def __init__ (self,parent, pos, bitmap, title):
-        wx.Frame.__init__(self, parent, id=wx.ID_ANY, title=wx.EmptyString, pos=pos, size=wx.DefaultSize, style=
-                                                               wx.NO_BORDER
-                                                             | wx.FRAME_NO_TASKBAR
-                                                             | wx.STAY_ON_TOP)
+    def __init__(self, parent, pos, bitmap, title):
+        wx.Frame.__init__(self, parent, id=wx.ID_ANY, title=wx.EmptyString, pos=pos, size=wx.DefaultSize, style=wx.NO_BORDER | wx.FRAME_NO_TASKBAR | wx.STAY_ON_TOP)
 
         self.title = title
         self.bitmap = bitmap
@@ -1342,13 +1337,13 @@ class PFNotebookPagePreview(wx.Frame):
         else:
             width = bitmap.GetWidth()
 
-        self.SetSize((width, bitmap.GetHeight()+16))
+        self.SetSize((width, bitmap.GetHeight() + 16))
 
         self.SetTransparent(0)
         self.Refresh()
 
     def OnTimer(self, event):
-        self.transp += 20*self.direction
+        self.transp += 20 * self.direction
 
         if self.transp > 220:
             self.transp = 220
@@ -1357,7 +1352,7 @@ class PFNotebookPagePreview(wx.Frame):
         if self.transp < 0:
             self.transp = 0
             self.timer.Stop()
-            wx.Frame.Show(self,False)
+            wx.Frame.Show(self, False)
             self.Destroy()
             return
         self.SetTransparent(self.transp)
@@ -1381,8 +1376,7 @@ class PFNotebookPagePreview(wx.Frame):
             self.direction = -1
             self.timer.Start(10)
 
-
-    def OnWindowEraseBk(self,event):
+    def OnWindowEraseBk(self, event):
         pass
 
     def OnWindowPaint(self, event):
@@ -1394,17 +1388,17 @@ class PFNotebookPagePreview(wx.Frame):
         mdc.SetBackground(wx.Brush(color))
         mdc.Clear()
 
-        font = wx.Font(fonts.NORMAL, wx.SWISS, wx.NORMAL,wx.NORMAL, False)
+        font = wx.Font(fonts.NORMAL, wx.SWISS, wx.NORMAL, wx.NORMAL, False)
         mdc.SetFont(font)
 
-        x,y = mdc.GetTextExtent(self.title)
+        x, y = mdc.GetTextExtent(self.title)
 
         mdc.SetBrush(wx.Brush(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOWTEXT)))
         mdc.DrawRectangle(0, 0, rect.width, 16)
 
         mdc.SetTextForeground(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW))
 
-        mdc.DrawText(self.title, (rect.width - x)/2, (16 - y)/2)
+        mdc.DrawText(self.title, (rect.width - x) / 2, (16 - y) / 2)
 
         mdc.DrawBitmap(self.bitmap, 0, 16)
 
