@@ -18,8 +18,9 @@
 # ===============================================================================
 
 from eos.db.saveddata import queries as eds_queries
-from eos.saveddata.damagePattern import DamagePattern as es_DamagePattern
+from eos.saveddata.damagePattern import getDamagePatternList, DamagePattern as es_DamagePattern
 from eos.saveddata.targetResists import TargetResists as es_TargetResists
+from eos.saveddata.targetResists import getTargetResists
 
 
 class ImportError(Exception):
@@ -117,7 +118,7 @@ class DefaultDatabaseValues():
 
         for damageProfileRow in damageProfileList:
             name, em, therm, kin, exp = damageProfileRow
-            damageProfile = eds_queries.getDamagePattern(name)
+            damageProfile = getDamagePatternList(name)
             if damageProfile is None:
                 damageProfile = es_DamagePattern(em, therm, kin, exp)
                 damageProfile.name = name
@@ -179,7 +180,7 @@ class DefaultDatabaseValues():
 
         for targetResistProfileRow in targetResistProfileList:
             name, em, therm, kin, exp = targetResistProfileRow
-            resistsProfile = eds_queries.getTargetResists(name)
+            resistsProfile = getTargetResists(name)
             if resistsProfile is None:
                 resistsProfile = es_TargetResists(em, therm, kin, exp)
                 resistsProfile.name = name
@@ -191,7 +192,7 @@ class DefaultDatabaseValues():
 
         for damageProfileRow in damageProfileList:
             name, em, therm, kin, exp = damageProfileRow
-            damageProfile = eds_queries.getDamagePattern(name)
+            damageProfile = getDamagePatternList(name)
             if damageProfile is None:
                 damageProfile = es_DamagePattern(em, therm, kin, exp)
                 damageProfile.name = name

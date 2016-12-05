@@ -20,7 +20,7 @@
 import copy
 
 from eos.db.saveddata import queries as eds_queries
-from eos.saveddata.targetResists import TargetResists as es_TargetResists
+from eos.saveddata.targetResists import TargetResists as es_TargetResists, getTargetResistsList
 
 
 class TargetResists(object):
@@ -32,12 +32,6 @@ class TargetResists(object):
             cls.instance = TargetResists()
 
         return cls.instance
-
-    def getTargetResistsList(self):
-        return eds_queries.getTargetResistsList()
-
-    def getTargetResists(self, name):
-        return eds_queries.getTargetResists(name)
 
     def newPattern(self, name):
         p = es_TargetResists(0.0, 0.0, 0.0, 0.0)
@@ -62,7 +56,7 @@ class TargetResists(object):
 
     def importPatterns(self, text):
         lookup = {}
-        current = self.getTargetResistsList()
+        current = getTargetResistsList()
         for pattern in current:
             lookup[pattern.name] = pattern
 
@@ -82,6 +76,6 @@ class TargetResists(object):
             raise ImportError("%d patterns imported from clipboard; %d had errors" % (num, num - lenImports))
 
     def exportPatterns(self):
-        patterns = self.getTargetResistsList()
+        patterns = getTargetResistsList()
         patterns.sort(key=lambda p: p.name)
         return es_TargetResists.exportPatterns(*patterns)

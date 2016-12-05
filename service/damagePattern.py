@@ -20,7 +20,7 @@
 import copy
 
 from eos.db.saveddata import queries as eds_queries
-from eos.saveddata.damagePattern import DamagePattern as es_DamagePattern
+from eos.saveddata.damagePattern import getDamagePatternList, DamagePattern as es_DamagePattern
 
 
 class DamagePattern():
@@ -32,12 +32,6 @@ class DamagePattern():
             cls.instance = DamagePattern()
 
         return cls.instance
-
-    def getDamagePatternList(self):
-        return eds_queries.getDamagePatternList()
-
-    def getDamagePattern(self, name):
-        return eds_queries.getDamagePattern(name)
 
     def newPattern(self, name):
         p = es_DamagePattern(0, 0, 0, 0)
@@ -62,7 +56,7 @@ class DamagePattern():
 
     def importPatterns(self, text):
         lookup = {}
-        current = self.getDamagePatternList()
+        current = getDamagePatternList()
         for pattern in current:
             lookup[pattern.name] = pattern
 
@@ -82,7 +76,7 @@ class DamagePattern():
             raise ImportError("%d patterns imported from clipboard; %d had errors" % (num, num - lenImports))
 
     def exportPatterns(self):
-        patterns = self.getDamagePatternList()
+        patterns = getDamagePatternList()
         for i in xrange(len(patterns) - 1, -1, -1):
             if patterns[i].name in ("Uniform", "Selected Ammo"):
                 del patterns[i]

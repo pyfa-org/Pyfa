@@ -11,8 +11,7 @@ Migration 1
     and output of itemDiff.py
 """
 
-import sqlalchemy
-
+from sqlalchemy import exc as sqlalchemy_exc
 
 CONVERSIONS = {
     6135: [  # Scoped Cargo Scanner
@@ -46,7 +45,7 @@ CONVERSIONS = {
         8746,  # Quantum Co-Processor
         8745,  # Photonic CPU Enhancer
         15425,  # Naiyon's Modified Co-Processor (never existed but convert
-                # anyway as some fits may include it)
+        # anyway as some fits may include it)
     ],
     8748: [  # Upgraded Co-Processor
         8747,  # Nanomechanical CPU Enhancer I
@@ -88,11 +87,13 @@ def upgrade(saveddata_engine):
     # Update fits schema to include target resists attribute
     try:
         saveddata_engine.execute("SELECT targetResistsID FROM fits LIMIT 1")
-    except sqlalchemy.exc.DatabaseError:
+    except sqlalchemy_exc.DatabaseError:
         saveddata_engine.execute("ALTER TABLE fits ADD COLUMN targetResistsID INTEGER;")
 
     # Convert modules
     for replacement_item, list in CONVERSIONS.iteritems():
         for retired_item in list:
-            saveddata_engine.execute('UPDATE "modules" SET "itemID" = ? WHERE "itemID" = ?', (replacement_item, retired_item))
-            saveddata_engine.execute('UPDATE "cargo" SET "itemID" = ? WHERE "itemID" = ?', (replacement_item, retired_item))
+            saveddata_engine.execute('UPDATE "modules" SET "itemID" = ? WHERE "itemID" = ?',
+                                     (replacement_item, retired_item))
+            saveddata_engine.execute('UPDATE "cargo" SET "itemID" = ? WHERE "itemID" = ?',
+                                     (replacement_item, retired_item))

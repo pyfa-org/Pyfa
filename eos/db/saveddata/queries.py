@@ -64,8 +64,8 @@ if configVal is True:
                     items = setCache(cacheKey, args, kwargs)
                 else:
                     l, IDs = info
+                    items = []
                     if l:
-                        items = []
                         for ID in IDs:
                             data = localItemCache.get(ID)
                             if data is None:
