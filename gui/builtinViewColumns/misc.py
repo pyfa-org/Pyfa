@@ -226,8 +226,8 @@ class Miscellanea(ViewColumn):
             tooltip = "ECM Jammer Strength:\n{0} Gravimetric | {1} Ladar | {2} Magnetometric | {3} Radar".format(
                 formatAmount(grav, 3, 0, 3),
                 formatAmount(ladar, 3, 0, 3),
-                formatAmount(radar, 3, 0, 3),
                 formatAmount(magnet, 3, 0, 3),
+                formatAmount(radar, 3, 0, 3),
             )
             return text, tooltip
         elif itemGroup in ("Remote Sensor Booster", "Sensor Booster", "Signal Amplifier"):
