@@ -20,7 +20,8 @@
 
 import wx
 
-from gui.mainFrame import MainFrame
+# TODO: Import refactor. This should not be a lazy import, but it's cyclical and hard to fix :(
+import gui.mainFrame
 from eos.saveddata.cargo import Cargo as Cargo
 from eos.saveddata.drone import Drone as Drone
 from eos.saveddata.fighter import Fighter as Fighter
@@ -37,7 +38,7 @@ class BaseName(ViewColumn):
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
 
-        self.mainFrame = MainFrame.getInstance()
+        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.columnText = "Name"
         self.shipImage = fittingView.imageList.GetImageIndex("ship_small", "gui")
         self.mask = wx.LIST_MASK_TEXT

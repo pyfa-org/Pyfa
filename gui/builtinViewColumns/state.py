@@ -20,6 +20,7 @@
 
 import wx
 
+# TODO: Import refactor. This should not be a lazy import, but it's cyclical and hard to fix :(
 import gui.mainFrame
 from eos.saveddata.drone import Drone as Drone
 from eos.saveddata.fit import Fit as Fit

@@ -44,7 +44,6 @@ class ViewColumn(object):
 
     @classmethod
     def getColumn(cls, name):
-        test = True
         return ViewColumn.columns[name]
 
     def getRestrictions(self):
