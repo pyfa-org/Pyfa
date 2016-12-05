@@ -20,7 +20,7 @@
 
 import wx
 
-import gui.mainFrame
+from gui.mainFrame import MainFrame
 from eos.saveddata.cargo import Cargo as Cargo
 from eos.saveddata.drone import Drone as Drone
 from eos.saveddata.fighter import Fighter as Fighter
@@ -28,7 +28,8 @@ from eos.saveddata.implant import Implant as Implant
 from eos.saveddata.module import Slot as Slot, Module as Module, Rack as Rack
 from gui.viewColumn import ViewColumn
 from service.fit import Fit
-
+from gui.projectedView import ProjectedView
+from eos.saveddata.fit import Fit
 
 class BaseName(ViewColumn):
     name = "Base Name"
@@ -36,11 +37,11 @@ class BaseName(ViewColumn):
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
 
-        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+        self.mainFrame = MainFrame.getInstance()
         self.columnText = "Name"
         self.shipImage = fittingView.imageList.GetImageIndex("ship_small", "gui")
         self.mask = wx.LIST_MASK_TEXT
-        self.projectedView = isinstance(fittingView, gui.projectedView.ProjectedView)
+        self.projectedView = isinstance(fittingView, ProjectedView)
 
     def getText(self, stuff):
         if isinstance(stuff, Drone):

@@ -39,12 +39,7 @@ class PrefetchThread(threading.Thread):
         except:
             pass
         '''
-        es_Character.setSkillList(getItemsByCategory("Skill", eager=(
-            "effects",
-            "attributes",
-            "attributes.info.icon",
-            "attributes.info.unit",
-            "icon")))
+        es_Character.setSkillList(getItemsByCategory("Skill"))
 
 
 prefetch = PrefetchThread()

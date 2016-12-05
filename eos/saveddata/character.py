@@ -396,7 +396,10 @@ def getCharacter(lookfor, eager=None):
     elif isinstance(lookfor, basestring):
         eager = processEager(eager)
         with sd_lock:
-            character = saveddata_session.query(eds_Characters).filter(eds_Characters.savedName == lookfor).first()
+            try:
+                character = saveddata_session.query(eds_Characters).filter(eds_Characters.savedName == lookfor).first()
+            except AttributeError:
+                character = saveddata_session.query(eds_Characters).first()
     else:
         raise TypeError("Need integer or string as argument")
     return character

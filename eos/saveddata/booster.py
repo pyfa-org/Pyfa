@@ -23,7 +23,8 @@ from sqlalchemy.orm import reconstructor, validates
 
 from eos.effectHandlerHelpers import HandledItem
 from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut
-
+from sqlalchemy.orm import reconstructor, relationship, relation, mapper
+from eos.db.saveddata.mapper import Boosters as BoostersTable
 
 logger = logging.getLogger(__name__)
 
@@ -38,6 +39,8 @@ class Booster(HandledItem, ItemAttrShortcut):
         self.itemID = item.ID if item is not None else None
         self.active = True
         self.build()
+
+        mapper(Booster, back_populates=BoostersTable)
 
     @reconstructor
     def init(self):

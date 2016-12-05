@@ -39,10 +39,12 @@ class ViewColumn(object):
 
     @classmethod
     def register(cls):
+        test = True
         ViewColumn.columns[cls.name] = cls
 
     @classmethod
     def getColumn(cls, name):
+        test = True
         return ViewColumn.columns[name]
 
     def getRestrictions(self):

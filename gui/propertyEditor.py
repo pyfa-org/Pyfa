@@ -11,7 +11,7 @@ except:
     else:
         raise
 
-from eso.db.gamedata.queries import getItem, getAttributeInfo
+from eos.gamedata import getItem, getAttributeInfo
 from service.market import Market
 import gui.display as d
 import gui.globalEvents as GE

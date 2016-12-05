@@ -665,28 +665,28 @@ class MainFrame(wx.Frame):
             self.marketBrowser.search.Focus()
 
     def clipboardEft(self):
-        fit = db.getFit(self.getActiveFit())
+        fit = Fit.getFit(self.getActiveFit())
         toClipboard(Port.exportEft(fit))
 
     def clipboardEftImps(self):
-        fit = db.getFit(self.getActiveFit())
+        fit = Fit.getFit(self.getActiveFit())
         toClipboard(Port.exportEftImps(fit))
 
     def clipboardDna(self):
-        fit = db.getFit(self.getActiveFit())
+        fit = Fit.getFit(self.getActiveFit())
         toClipboard(Port.exportDna(fit))
 
     def clipboardCrest(self):
-        fit = db.getFit(self.getActiveFit())
+        fit = Fit.getFit(self.getActiveFit())
         toClipboard(Port.exportCrest(fit))
 
     def clipboardXml(self):
         fitIDs = self.getActiveFit()
-        fits = map(lambda fitID: db.getFit(fitID), fitIDs)
+        fits = map(lambda fitID: Fit.getFit(fitID), fitIDs)
         toClipboard(Port.exportXml(None, *fits))
 
     def clipboardMultiBuy(self):
-        fit = db.getFit(self.getActiveFit())
+        fit = Fit.getFit(self.getActiveFit())
         toClipboard(Port.exportMultiBuy(fit))
 
     def importFromClipboard(self, event):
