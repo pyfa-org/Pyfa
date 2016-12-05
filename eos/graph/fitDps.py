@@ -20,7 +20,7 @@
 from math import log, sin, radians, exp
 
 from eos.graph import Graph
-from eos.types import Hardpoint, State
+from eos.saveddata.module import State as State, Hardpoint as Hardpoint
 
 
 class FitDpsGraph(Graph):
@@ -105,8 +105,7 @@ class FitDpsGraph(Graph):
 
         sigRadiusFactor = targetSigRad / explosionRadius
         if targetVelocity:
-            velocityFactor = (
-                             explosionVelocity / explosionRadius * targetSigRad / targetVelocity) ** damageReductionFactor
+            velocityFactor = (explosionVelocity / explosionRadius * targetSigRad / targetVelocity) ** damageReductionFactor
         else:
             velocityFactor = 1
 

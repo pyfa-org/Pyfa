@@ -19,6 +19,10 @@
 
 import re
 
+from eos.db import saveddata_session, sd_lock
+from eos.db.saveddata.queries import cachedQuery
+from eos.db.util import processEager
+
 
 class TargetResists(object):
     # also determined import/export order - VERY IMPORTANT
@@ -77,7 +81,7 @@ class TargetResists(object):
         out += "# TargetResists = [name],[EM %],[Thermal %],[Kinetic %],[Explosive %]\n\n"
         for dp in patterns:
             out += cls.EXPORT_FORMAT % (
-            dp.name, dp.emAmount * 100, dp.thermalAmount * 100, dp.kineticAmount * 100, dp.explosiveAmount * 100)
+                dp.name, dp.emAmount * 100, dp.thermalAmount * 100, dp.kineticAmount * 100, dp.explosiveAmount * 100)
 
         return out.strip()
 
@@ -85,3 +89,31 @@ class TargetResists(object):
         p = TargetResists(self.emAmount, self.thermalAmount, self.kineticAmount, self.explosiveAmount)
         p.name = "%s copy" % self.name
         return p
+
+
+def getTargetResistsList(eager=None):
+    eager = processEager(eager)
+    with sd_lock:
+        patterns = saveddata_session.query(TargetResists).options(*eager).all()
+    return patterns
+
+
+@cachedQuery(TargetResists, 1, "lookfor")
+def getTargetResists(lookfor, eager=None):
+    if isinstance(lookfor, int):
+        if eager is None:
+            with sd_lock:
+                pattern = saveddata_session.query(TargetResists).get(lookfor)
+        else:
+            eager = processEager(eager)
+            with sd_lock:
+                pattern = saveddata_session.query(TargetResists).options(*eager).filter(
+                    TargetResists.ID == lookfor).first()
+    elif isinstance(lookfor, basestring):
+        eager = processEager(eager)
+        with sd_lock:
+            pattern = saveddata_session.query(TargetResists).options(*eager).filter(
+                TargetResists.name == lookfor).first()
+    else:
+        raise TypeError("Need integer or string as argument")
+    return pattern

@@ -21,8 +21,10 @@ import logging
 
 from sqlalchemy.orm import reconstructor
 
-import eos.db
 from eos.eqBase import EqBase
+from eos.db import saveddata_session, sd_lock
+
+from eos.db.saveddata import queries as eds_queries
 
 logger = logging.getLogger(__name__)
 
@@ -41,13 +43,13 @@ class Override(EqBase):
         self.__item = None
 
         if self.attrID:
-            self.__attr = eos.db.getAttributeInfo(self.attrID)
+            self.__attr = edg_queries.getAttributeInfo(self.attrID)
             if self.__attr is None:
                 logger.error("Attribute (id: %d) does not exist", self.attrID)
                 return
 
         if self.itemID:
-            self.__item = eos.db.getItem(self.itemID)
+            self.__item = edg_queries.getItem(self.itemID)
             if self.__item is None:
                 logger.error("Item (id: %d) does not exist", self.itemID)
                 return
@@ -59,3 +61,21 @@ class Override(EqBase):
     @property
     def item(self):
         return self.__item
+
+
+def getOverrides(itemID, eager=None):
+    if isinstance(itemID, int):
+        return saveddata_session.query(Override).filter(Override.itemID == itemID).all()
+    else:
+        raise TypeError("Need integer as argument")
+
+
+def clearOverrides():
+    with sd_lock:
+        deleted_rows = saveddata_session.query(Override).delete()
+    eds_queries.commit()
+    return deleted_rows
+
+
+def getAllOverrides(eager=None):
+    return saveddata_session.query(Override).all()

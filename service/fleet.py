@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,14 +15,17 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
-import eos.db
-from eos.types import Fleet as Fleet_, Wing, Squad
 import copy
+
+from eos.db.saveddata import queries as eds_queries
+from eos.saveddata.fleet import Fleet as Fleet_, getFleet, getFleetList, getSquad, getSquadsIDsWithFitID, getWing
+
 
 class Fleet(object):
     instance = None
+
     @classmethod
     def getInstance(cls):
         if cls.instance is None:
@@ -35,28 +38,28 @@ class Fleet(object):
 
     def getFleetList(self):
         fleetList = []
-        fleets = eos.db.getFleetList()
+        fleets = getFleetList()
         for fleet in fleets:
             fleetList.append((fleet.ID, fleet.name, fleet.count()))
 
         return fleetList
 
     def getFleetByID(self, ID):
-        f = eos.db.getFleet(ID)
+        f = getFleet(ID)
         return f
 
     def addFleet(self):
         f = Fleet_()
-        eos.db.save(f)
+        eds_queries.save(f)
         return f
 
     def renameFleet(self, fleet, newName):
         fleet.name = newName
-        eos.db.commit()
+        eds_queries.commit()
 
     def copyFleet(self, fleet):
         newFleet = copy.deepcopy(fleet)
-        eos.db.save(newFleet)
+        eds_queries.save(newFleet)
         return newFleet
 
     def copyFleetByID(self, ID):
@@ -64,7 +67,7 @@ class Fleet(object):
         return self.copyFleet(fleet)
 
     def deleteFleet(self, fleet):
-        eos.db.remove(fleet)
+        eds_queries.remove(fleet)
 
     def deleteFleetByID(self, ID):
         fleet = self.getFleetByID(ID)
@@ -72,22 +75,22 @@ class Fleet(object):
 
     def makeLinearFleet(self, fit):
         f = Fleet_()
-        w = Wing()
+        w = Fleet_()
+        s = Fleet_()
         f.wings.append(w)
-        s = Squad()
         w.squads.append(s)
         s.members.append(fit)
         fit.fleet = f
-        eos.db.save(f)
+        eds_queries.save(f)
 
     def setLinearFleetCom(self, boostee, booster):
-        #if boostee == booster:
+        # if boostee == booster:
         #    return
         if self.getLinearFleet(boostee) is None:
             self.removeAssociatedFleetData(boostee)
             self.makeLinearFleet(boostee)
-        squadIDs = set(eos.db.getSquadsIDsWithFitID(boostee.ID))
-        squad = eos.db.getSquad(squadIDs.pop())
+        squadIDs = set(getSquadsIDsWithFitID(boostee.ID))
+        squad = getSquad(squadIDs.pop())
         if squad.wing.gang.leader is not None and booster is None:
             try:
                 squad.wing.gang.leader.boostsFits.remove(boostee.ID)
@@ -101,13 +104,13 @@ class Fleet(object):
         sFit.recalc(boostee, withBoosters=True)
 
     def setLinearWingCom(self, boostee, booster):
-        #if boostee == booster:
+        # if boostee == booster:
         #    return
         if self.getLinearFleet(boostee) is None:
             self.removeAssociatedFleetData(boostee)
             self.makeLinearFleet(boostee)
-        squadIDs = set(eos.db.getSquadsIDsWithFitID(boostee.ID))
-        squad = eos.db.getSquad(squadIDs.pop())
+        squadIDs = set(getSquadsIDsWithFitID(boostee.ID))
+        squad = getSquad(squadIDs.pop())
         if squad.wing.leader is not None and booster is None:
             try:
                 squad.wing.leader.boostsFits.remove(boostee.ID)
@@ -121,13 +124,13 @@ class Fleet(object):
         sFit.recalc(boostee, withBoosters=True)
 
     def setLinearSquadCom(self, boostee, booster):
-        #if boostee == booster:
+        # if boostee == booster:
         #    return
         if self.getLinearFleet(boostee) is None:
             self.removeAssociatedFleetData(boostee)
             self.makeLinearFleet(boostee)
-        squadIDs = set(eos.db.getSquadsIDsWithFitID(boostee.ID))
-        squad = eos.db.getSquad(squadIDs.pop())
+        squadIDs = set(getSquadsIDsWithFitID(boostee.ID))
+        squad = getSquad(squadIDs.pop())
         if squad.leader is not None and booster is None:
             try:
                 squad.leader.boostsFits.remove(boostee.ID)
@@ -140,12 +143,11 @@ class Fleet(object):
         sFit = Fit.getInstance()
         sFit.recalc(boostee, withBoosters=True)
 
-
     def getLinearFleet(self, fit):
-        sqIDs = eos.db.getSquadsIDsWithFitID(fit.ID)
+        sqIDs = getSquadsIDsWithFitID(fit.ID)
         if len(sqIDs) != 1:
             return None
-        s = eos.db.getSquad(sqIDs[0])
+        s = getSquad(sqIDs[0])
         if len(s.members) != 1:
             return None
         w = s.wing
@@ -157,44 +159,44 @@ class Fleet(object):
         return f
 
     def removeAssociatedFleetData(self, fit):
-        squadIDs = set(eos.db.getSquadsIDsWithFitID(fit.ID))
+        squadIDs = set(getSquadsIDsWithFitID(fit.ID))
         if len(squadIDs) == 0:
             return
-        squads = list(eos.db.getSquad(sqID) for sqID in squadIDs)
+        squads = list(getSquad(sqID) for sqID in squadIDs)
         wingIDs = set(squad.wing.ID for squad in squads)
         fleetIDs = set(squad.wing.gang.ID for squad in squads)
         for fleetID in fleetIDs:
-            fleet = eos.db.getFleet(fleetID)
+            fleet = getFleet(fleetID)
             for wing in fleet.wings:
                 wingIDs.add(wing.ID)
         for wingID in wingIDs:
-            wing = eos.db.getWing(wingID)
+            wing = getWing(wingID)
             for squad in wing.squads:
                 squadIDs.add(squad.ID)
         for squadID in squadIDs:
-            squad = eos.db.getSquad(squadID)
+            squad = getSquad(squadID)
             if squad.leader is not None:
                 try:
                     squad.leader.boostsFits.remove(fit.ID)
                 except KeyError:
                     pass
-            eos.db.remove(squad)
+            eds_queries.remove(squad)
         for wingID in wingIDs:
-            wing = eos.db.getWing(wingID)
+            wing = getWing(wingID)
             if wing.leader is not None:
                 try:
                     wing.leader.boostsFits.remove(fit.ID)
                 except KeyError:
                     pass
-            eos.db.remove(wing)
+            eds_queries.remove(wing)
         for fleetID in fleetIDs:
-            fleet = eos.db.getFleet(fleetID)
+            fleet = getFleet(fleetID)
             if fleet.leader is not None:
                 try:
                     fleet.leader.boostsFits.remove(fit.ID)
                 except KeyError:
                     pass
-            eos.db.remove(fleet)
+            eds_queries.remove(fleet)
         fit.fleet = None
         return
 
@@ -208,8 +210,8 @@ class Fleet(object):
     def loadLinearFleet(self, fit):
         if self.getLinearFleet(fit) is None:
             return None
-        squadID = eos.db.getSquadsIDsWithFitID(fit.ID)[0]
-        s = eos.db.getSquad(squadID)
+        squadID = getSquadsIDsWithFitID(fit.ID)[0]
+        s = getSquad(squadID)
         w = s.wing
         f = w.gang
         return (f.leader, w.leader, s.leader)

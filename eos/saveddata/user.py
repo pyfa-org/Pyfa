@@ -23,6 +23,10 @@ import string
 
 from sqlalchemy.orm import validates
 
+from eos.db import saveddata_session, sd_lock
+from eos.db.saveddata.queries import cachedQuery
+from eos.db.util import processEager
+
 
 class User(object):
     def __init__(self, username, password=None, admin=False):
@@ -58,3 +62,22 @@ class User(object):
             raise ValueError(str(val) + " is not a valid value for " + key)
         else:
             return val
+
+
+@cachedQuery(User, 1, "lookfor")
+def getUser(lookfor, eager=None):
+    if isinstance(lookfor, int):
+        if eager is None:
+            with sd_lock:
+                user = saveddata_session.query(User).get(lookfor)
+        else:
+            eager = processEager(eager)
+            with sd_lock:
+                user = saveddata_session.query(User).options(*eager).filter(User.ID == lookfor).first()
+    elif isinstance(lookfor, basestring):
+        eager = processEager(eager)
+        with sd_lock:
+            user = saveddata_session.query(User).options(*eager).filter(User.username == lookfor).first()
+    else:
+        raise TypeError("Need integer or string as argument")
+    return user

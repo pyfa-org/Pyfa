@@ -24,6 +24,6 @@ def handler(fit, src, context):
         'Sensor Dampener',
         'Target Painter']
 
-    fit.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups or
-                                              mod.item.requiresSkill("Propulsion Jamming"),
+    fit.modules.filteredItemBoost(lambda mod: (mod.item.group.name in groups or
+                                               mod.item.requiresSkill("Propulsion Jamming")),
                                   "capacitorNeed", src.getModifiedItemAttr("ewCapacitorNeedBonus"))

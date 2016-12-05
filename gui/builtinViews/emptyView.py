@@ -2,7 +2,7 @@ import wx
 import gui.globalEvents as GE
 import gui.chromeTabs
 import gui.mainFrame
-import service
+
 
 class BlankPage(wx.Panel):
     def __init__(self, parent):
@@ -23,8 +23,8 @@ class BlankPage(wx.Panel):
     def pageChanged(self, event):
         if self.parent.IsActive(self):
             fitID = None
-#            sFit = service.Fit.getInstance()
-#            sFit.switchFit(fitID)
+            # sFit = Fit.getInstance()
+            # sFit.switchFit(fitID)
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
         event.Skip()

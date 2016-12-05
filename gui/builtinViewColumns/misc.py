@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,24 +15,26 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
+import wx
 
+from service.fit import Fit
+from service.market import Market
 import gui.mainFrame
 from gui.viewColumn import ViewColumn
 from gui.bitmapLoader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 from gui.utils.listFormatter import formatList
-from service.fit import Fit, Market
 
-import wx
 
 class Miscellanea(ViewColumn):
     name = "Miscellanea"
-    def __init__(self, fittingView, params = None):
-        if params == None:
-            params = {"showIcon": True,
-                      "displayName": False}
+
+    def __init__(self, fittingView, params=None):
+        if params is None:
+            params = {"showIcon": True, "displayName": False}
+
         ViewColumn.__init__(self, fittingView)
         if params["showIcon"]:
             self.imageId = fittingView.imageList.GetImageIndex("column_misc", "gui")
@@ -47,19 +49,16 @@ class Miscellanea(ViewColumn):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     def getText(self, stuff):
-        text = self.__getData(stuff)[0]
-        return text
+        return self.__getData(stuff)[0]
 
     def getToolTip(self, mod):
-        text = self.__getData(mod)[1]
-        return text
+        return self.__getData(mod)[1]
 
     def getImageId(self, mod):
         return -1
 
     def getParameters(self):
-        return (("displayName", bool, False),
-                ("showIcon", bool, True))
+        return (("displayName", bool, False), ("showIcon", bool, True))
 
     def __getData(self, stuff):
         item = stuff.item
@@ -81,10 +80,10 @@ class Miscellanea(ViewColumn):
             slots = ("hi", "med", "low")
             info = []
             for slot in slots:
-                n = int(stuff.getModifiedItemAttr("%sSlotModifier"%slot))
+                n = int(stuff.getModifiedItemAttr("%sSlotModifier" % slot))
                 if n > 0:
                     info.append("{0}{1}".format(n, slot[0].upper()))
-            return "+ "+", ".join(info), "Slot Modifiers"
+            return "+ " + ", ".join(info), "Slot Modifiers"
         elif itemGroup == "Energy Neutralizer":
             neutAmount = stuff.getModifiedItemAttr("energyNeutralizerAmount")
             cycleTime = stuff.cycleTime
@@ -276,7 +275,7 @@ class Miscellanea(ViewColumn):
             recalibration = stuff.getModifiedItemAttr("cloakingTargetingDelay")
             if recalibration is None:
                 return "", None
-            text = "{0}s".format(formatAmount(float(recalibration)/1000, 3, 0, 3))
+            text = "{0}s".format(formatAmount(float(recalibration) / 1000, 3, 0, 3))
             tooltip = "Sensor recalibration time"
             return text, tooltip
         elif itemGroup == "Remote Armor Repairer":
@@ -405,9 +404,9 @@ class Miscellanea(ViewColumn):
             cycleTime = stuff.cycleTime
             if not miningAmount or not cycleTime:
                 return "", None
-            minePerHour = (float(miningAmount) * 1000 / cycleTime) * 3600
-            text = "{0}/h".format(formatAmount(minePerHour, 3, 0, 3))
-            tooltip = "Mining Yield per hour"
+            minePerSec = float(miningAmount) * 1000 / cycleTime
+            text = "{0}/s".format(formatAmount(minePerSec, 3, 0, 3))
+            tooltip = "Yield per second"
             return text, tooltip
         elif itemGroup == "Logistic Drone":
             armorAmount = stuff.getModifiedItemAttr("armorDamageAmount")
@@ -442,9 +441,9 @@ class Miscellanea(ViewColumn):
             cycleTime = stuff.getModifiedItemAttr("duration")
             if not miningAmount or not cycleTime:
                 return "", None
-            minePerHour = (float(miningAmount) * 1000 / cycleTime) * 3600
-            text = "{0}/h".format(formatAmount(minePerHour, 3, 0, 3))
-            tooltip = "Mining Yield per hour"
+            minePerSec = float(miningAmount) * 1000 / cycleTime
+            text = "{0}/s".format(formatAmount(minePerSec, 3, 0, 3))
+            tooltip = "Yield per second"
             return text, tooltip
         elif itemGroup == "Micro Jump Drive":
             cycleTime = stuff.getModifiedItemAttr("duration") / 1000
@@ -487,10 +486,10 @@ class Miscellanea(ViewColumn):
 
             return text, tooltip
         elif itemGroup == "Armor Resistance Shift Hardener":
-            itemArmorResistanceShiftHardenerEM = (1-stuff.getModifiedItemAttr("armorEmDamageResonance"))*100
-            itemArmorResistanceShiftHardenerTherm = (1-stuff.getModifiedItemAttr("armorThermalDamageResonance")) * 100
-            itemArmorResistanceShiftHardenerKin = (1-stuff.getModifiedItemAttr("armorKineticDamageResonance")) * 100
-            itemArmorResistanceShiftHardenerExp = (1-stuff.getModifiedItemAttr("armorExplosiveDamageResonance")) * 100
+            itemArmorResistanceShiftHardenerEM = (1 - stuff.getModifiedItemAttr("armorEmDamageResonance")) * 100
+            itemArmorResistanceShiftHardenerTherm = (1 - stuff.getModifiedItemAttr("armorThermalDamageResonance")) * 100
+            itemArmorResistanceShiftHardenerKin = (1 - stuff.getModifiedItemAttr("armorKineticDamageResonance")) * 100
+            itemArmorResistanceShiftHardenerExp = (1 - stuff.getModifiedItemAttr("armorExplosiveDamageResonance")) * 100
 
             text = "{0}% | {1}% | {2}% | {3}%".format(
                 formatAmount(itemArmorResistanceShiftHardenerEM, 3, 0, 3),
@@ -539,5 +538,6 @@ class Miscellanea(ViewColumn):
                 return "", None
         else:
             return "", None
+
 
 Miscellanea.register()

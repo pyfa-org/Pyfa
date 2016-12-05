@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,37 +15,39 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
 import wx
 
-import service
-import gui.globalEvents as GE
-import gui.marketBrowser as mb
-import gui.mainFrame
 import gui.display as d
+import gui.globalEvents as GE
+import gui.mainFrame
+import gui.marketBrowser as mb
+from eos.saveddata.module import Slot as Slot
 from gui.builtinViewColumns.state import State
-from eos.types import Slot
 from gui.contextMenu import ContextMenu
+from service.fit import Fit
+from service.market import Market
+
 
 class FighterViewDrop(wx.PyDropTarget):
-        def __init__(self, dropFn):
-            wx.PyDropTarget.__init__(self)
-            self.dropFn = dropFn
-            # this is really transferring an EVE itemID
-            self.dropData = wx.PyTextDataObject()
-            self.SetDataObject(self.dropData)
+    def __init__(self, dropFn):
+        wx.PyDropTarget.__init__(self)
+        self.dropFn = dropFn
+        # this is really transferring an EVE itemID
+        self.dropData = wx.PyTextDataObject()
+        self.SetDataObject(self.dropData)
 
-        def OnData(self, x, y, t):
-            if self.GetData():
-                data = self.dropData.GetText().split(':')
-                self.dropFn(x, y, data)
-            return t
+    def OnData(self, x, y, t):
+        if self.GetData():
+            data = self.dropData.GetText().split(':')
+            self.dropFn(x, y, data)
+        return t
 
 
 class FighterView(wx.Panel):
     def __init__(self, parent):
-        wx.Panel.__init__(self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, style=wx.TAB_TRAVERSAL )
+        wx.Panel.__init__(self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, style=wx.TAB_TRAVERSAL)
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.labels = ["Light", "Heavy", "Support"]
 
@@ -55,7 +57,7 @@ class FighterView(wx.Panel):
         mainSizer.Add(self.fighterDisplay, 1, wx.EXPAND, 0)
 
         textSizer = wx.BoxSizer(wx.HORIZONTAL)
-        textSizer.AddSpacer(( 0, 0), 1, wx.EXPAND, 5)
+        textSizer.AddSpacer((0, 0), 1, wx.EXPAND, 5)
 
         for x in self.labels:
             lbl = wx.StaticText(self, wx.ID_ANY, x.capitalize())
@@ -74,14 +76,13 @@ class FighterView(wx.Panel):
 
         mainSizer.Add(textSizer, 0, wx.EXPAND, 5)
 
-        self.SetSizer( mainSizer )
+        self.SetSizer(mainSizer)
         self.SetAutoLayout(True)
-
 
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
 
     def fitChanged(self, event):
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         activeFitID = self.mainFrame.getActiveFit()
         fit = sFit.getFit(activeFitID)
 
@@ -104,15 +105,16 @@ class FighterView(wx.Panel):
 
 
 class FighterDisplay(d.Display):
-    DEFAULT_COLS = ["State",
-                    #"Base Icon",
-                    "Base Name",
-                    # "prop:droneDps,droneBandwidth",
-                    #"Max Range",
-                    #"Miscellanea",
-                    "attr:maxVelocity",
-                    "Fighter Abilities"
-                    #"Price",
+    DEFAULT_COLS = [
+        "State",
+        # "Base Icon",
+        "Base Name",
+        # "prop:droneDps,droneBandwidth",
+        # "Max Range",
+        # "Miscellanea",
+        "attr:maxVelocity",
+        "Fighter Abilities"
+        # "Price",
     ]
 
     def __init__(self, parent):
@@ -131,11 +133,10 @@ class FighterDisplay(d.Display):
         self.Bind(wx.EVT_MOTION, self.OnMouseMove)
         self.Bind(wx.EVT_LEAVE_WINDOW, self.OnLeaveWindow)
 
-        if "__WXGTK__" in  wx.PlatformInfo:
+        if "__WXGTK__" in wx.PlatformInfo:
             self.Bind(wx.EVT_RIGHT_UP, self.scheduleMenu)
         else:
             self.Bind(wx.EVT_RIGHT_DOWN, self.scheduleMenu)
-
 
         self.Bind(wx.EVT_LIST_BEGIN_DRAG, self.startDrag)
         self.SetDropTarget(FighterViewDrop(self.handleDragDrop))
@@ -172,7 +173,6 @@ class FighterDisplay(d.Display):
         keycode = event.GetKeyCode()
         if keycode == wx.WXK_DELETE or keycode == wx.WXK_NUMPAD_DELETE:
             row = self.GetFirstSelected()
-            firstSel = row
             if row != -1:
                 fighter = self.fighters[self.GetItemData(row)]
                 self.removeFighter(fighter)
@@ -183,11 +183,11 @@ class FighterDisplay(d.Display):
         row = event.GetIndex()
         if row != -1:
             data = wx.PyTextDataObject()
-            data.SetText("fighter:"+str(row))
+            data.SetText("fighter:" + str(row))
 
             dropSource = wx.DropSource(self)
             dropSource.SetData(data)
-            res = dropSource.DoDragDrop()
+            dropSource.DoDragDrop()
 
     def handleDragDrop(self, x, y, data):
         '''
@@ -215,7 +215,7 @@ class FighterDisplay(d.Display):
                    'Electronic Warfare Drones', 'Logistic Drones', 'Mining Drones', 'Salvage Drones',
                    'Light Fighters', 'Heavy Fighters', 'Support Fighters')
     def droneKey(self, drone):
-        sMkt = service.Market.getInstance()
+        sMkt = Market.getInstance()
 
         groupName = sMkt.getMarketGroupByItem(drone.item).name
         print groupName
@@ -224,12 +224,12 @@ class FighterDisplay(d.Display):
     '''
 
     def fitChanged(self, event):
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fit = sFit.getFit(event.fitID)
 
         self.Parent.Parent.Parent.DisablePage(self.Parent, not fit)
 
-        #Clear list and get out if current fitId is None
+        # Clear list and get out if current fitId is None
         if event.fitID is None and self.lastFitId is not None:
             self.DeleteAllItems()
             self.lastFitId = None
@@ -257,9 +257,8 @@ class FighterDisplay(d.Display):
         self.update(stuff)
         event.Skip()
 
-
     def addItem(self, event):
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
         trigger = sFit.addFighter(fitID, event.itemID)
         if trigger:
@@ -278,7 +277,7 @@ class FighterDisplay(d.Display):
 
     def removeFighter(self, fighter):
         fitID = self.mainFrame.getActiveFit()
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         sFit.removeFighter(fitID, self.original.index(fighter))
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
@@ -289,7 +288,7 @@ class FighterDisplay(d.Display):
             col = self.getColumn(event.Position)
             if col == self.getColIndex(State):
                 fitID = self.mainFrame.getActiveFit()
-                sFit = service.Fit.getInstance()
+                sFit = Fit.getInstance()
                 fighter = self.fighters[row]
                 sFit.toggleFighter(fitID, self.original.index(fighter))
                 wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
@@ -304,7 +303,7 @@ class FighterDisplay(d.Display):
         if sel != -1:
             fighter = self.fighters[sel]
 
-            sMkt = service.Market.getInstance()
+            sMkt = Market.getInstance()
             sourceContext = "fighterItem"
             itemContext = sMkt.getCategoryByItem(fighter.item).name
             menu = ContextMenu.getMenu((fighter,), (sourceContext, itemContext))

@@ -1,9 +1,10 @@
 import wx.gizmos
 import gui.fleetBrowser
-import service
 from gui.bitmapLoader import BitmapLoader
+from service.fleet import Fleet
 
-#Tab spawning handler
+
+# Tab spawning handler
 class FleetSpawner(gui.multiSwitch.TabSpawner):
     def __init__(self, multiSwitch):
         self.multiSwitch = multiSwitch
@@ -12,18 +13,20 @@ class FleetSpawner(gui.multiSwitch.TabSpawner):
 
     def fleetSelected(self, event):
         if self.multiSwitch.GetPageCount() == 0:
-            self.multiSwitch.AddPage(wx.Panel(self.multiSwitch, size = (0,0)), "Empty Tab")
+            self.multiSwitch.AddPage(wx.Panel(self.multiSwitch, size=(0, 0)), "Empty Tab")
 
         view = FleetView(self.multiSwitch)
         self.multiSwitch.ReplaceActivePage(view)
         view.populate(event.fleetID)
         view.Show()
 
+
 FleetSpawner.register()
 
+
 class FleetView(wx.gizmos.TreeListCtrl):
-    def __init__(self, parent, size = (0,0)):
-        wx.gizmos.TreeListCtrl.__init__(self, parent, size = size)
+    def __init__(self, parent, size=(0, 0)):
+        wx.gizmos.TreeListCtrl.__init__(self, parent, size=size)
 
         self.tabManager = parent
 
@@ -49,13 +52,13 @@ class FleetView(wx.gizmos.TreeListCtrl):
         self.mainFrame.Bind(gui.fleetBrowser.EVT_FLEET_REMOVED, self.fleetRemoved)
 
     def Destroy(self):
-        self.mainFrame.Unbind(gui.fleetBrowser.EVT_FLEET_REMOVED, handler = self.fleetRemoved)
-        self.mainFrame.Unbind(gui.fleetBrowser.EVT_FLEET_RENAMED, handler = self.fleetRenamed)
+        self.mainFrame.Unbind(gui.fleetBrowser.EVT_FLEET_REMOVED, handler=self.fleetRemoved)
+        self.mainFrame.Unbind(gui.fleetBrowser.EVT_FLEET_RENAMED, handler=self.fleetRenamed)
         wx.gizmos.TreeListCtrl.Destroy(self)
 
     def fleetRenamed(self, event):
         if event.fleetID == self.fleetId:
-            sFleet = service.Fleet.getInstance()
+            sFleet = Fleet.getInstance()
             f = sFleet.getFleetByID(event.fleetID)
             self.UpdateTab(f.name, self.fleetImg)
 
@@ -70,18 +73,17 @@ class FleetView(wx.gizmos.TreeListCtrl):
     def checkNew(self, event):
         data = self.GetPyData(event.Item)
         if data and isinstance(data, tuple) and data[0] == "add":
-            layer = data[1]
-
+            data[1]
 
     def UpdateTab(self, name, img):
         self.tabManager.SetPageTextIcon(self.tabManager.GetSelection(), name, img)
 
     def populate(self, fleetID):
-        sFleet = service.Fleet.getInstance()
+        sFleet = Fleet.getInstance()
         f = sFleet.getFleetByID(fleetID)
         self.fleetId = fleetID
 
-        self.UpdateTab( f.name, self.fleetImg)
+        self.UpdateTab(f.name, self.fleetImg)
         self.fleet = f
         self.DeleteAllItems()
         root = self.AddRoot("")
@@ -101,7 +103,7 @@ class FleetView(wx.gizmos.TreeListCtrl):
 
         self.ExpandAll(root)
         self.SetColumnWidth(0, 16)
-        for i in xrange(1, 5):
+        for i in range(1, 5):
             self.SetColumnWidth(i, wx.LIST_AUTOSIZE_USEHEADER)
             headerWidth = self.GetColumnWidth(i) + 5
             self.SetColumnWidth(i, wx.LIST_AUTOSIZE)
@@ -111,11 +113,10 @@ class FleetView(wx.gizmos.TreeListCtrl):
             else:
                 self.SetColumnWidth(i, baseWidth)
 
-
     def addAdder(self, treeItemId, layer):
-        id = self.AppendItem(treeItemId, "Add new %s" % layer.capitalize())
-        self.SetPyData(id, ("add", layer))
-        self.SetItemImage(id, self.addImage, 1)
+        id_ = self.AppendItem(treeItemId, "Add new %s" % layer.capitalize())
+        self.SetPyData(id_, ("add", layer))
+        self.SetItemImage(id_, self.addImage, 1)
 
     def setEntry(self, treeItemId, fit, layer, info):
         self.SetPyData(treeItemId, info)

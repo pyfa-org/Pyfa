@@ -17,8 +17,10 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-import eos.db
-import eos.types
+from eos.db.saveddata import queries as eds_queries
+from eos.saveddata.damagePattern import getDamagePatternList, DamagePattern as es_DamagePattern
+from eos.saveddata.targetResists import TargetResists as es_TargetResists
+from eos.saveddata.targetResists import getTargetResists
 
 
 class ImportError(Exception):
@@ -116,11 +118,11 @@ class DefaultDatabaseValues():
 
         for damageProfileRow in damageProfileList:
             name, em, therm, kin, exp = damageProfileRow
-            damageProfile = eos.db.getDamagePattern(name)
+            damageProfile = getDamagePatternList(name)
             if damageProfile is None:
-                damageProfile = eos.types.DamagePattern(em, therm, kin, exp)
+                damageProfile = es_DamagePattern(em, therm, kin, exp)
                 damageProfile.name = name
-                eos.db.save(damageProfile)
+                eds_queries.save(damageProfile)
 
     @classmethod
     def importResistProfileDefaults(cls):
@@ -178,11 +180,11 @@ class DefaultDatabaseValues():
 
         for targetResistProfileRow in targetResistProfileList:
             name, em, therm, kin, exp = targetResistProfileRow
-            resistsProfile = eos.db.eos.db.getTargetResists(name)
+            resistsProfile = getTargetResists(name)
             if resistsProfile is None:
-                resistsProfile = eos.types.TargetResists(em, therm, kin, exp)
+                resistsProfile = es_TargetResists(em, therm, kin, exp)
                 resistsProfile.name = name
-                eos.db.save(resistsProfile)
+                eds_queries.save(resistsProfile)
 
     @classmethod
     def importRequiredDefaults(cls):
@@ -190,8 +192,8 @@ class DefaultDatabaseValues():
 
         for damageProfileRow in damageProfileList:
             name, em, therm, kin, exp = damageProfileRow
-            damageProfile = eos.db.getDamagePattern(name)
+            damageProfile = getDamagePatternList(name)
             if damageProfile is None:
-                damageProfile = eos.types.DamagePattern(em, therm, kin, exp)
+                damageProfile = es_DamagePattern(em, therm, kin, exp)
                 damageProfile.name = name
-                eos.db.save(damageProfile)
+                eds_queries.save(damageProfile)

@@ -20,12 +20,8 @@
 import threading
 
 from sqlalchemy import MetaData, create_engine
-from sqlalchemy.orm import sessionmaker, scoped_session
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import pool
+from sqlalchemy.orm import sessionmaker
 
-
-import migration
 from eos import config
 
 
@@ -66,17 +62,11 @@ if saveddata_connectionstring is not None:
 # Lock controlling any changes introduced to session
 sd_lock = threading.Lock()
 
-# Import all the definitions for all our database stuff
-from eos.db.gamedata import *
-from eos.db.saveddata import *
-
-# Import queries
-from eos.db.gamedata.queries import *
-from eos.db.saveddata.queries import *
-
 # If using in memory saveddata, you'll want to reflect it so the data structure is good.
 if config.saveddata_connectionstring == "sqlite:///:memory:":
     saveddata_meta.create_all()
+
+
 
 
 def rollback():

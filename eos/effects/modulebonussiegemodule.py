@@ -8,21 +8,21 @@ runTime = "early"
 
 def handler(fit, src, context):
     # Turrets
-    fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Capital Energy Turret") or
-                                              mod.item.requiresSkill("Capital Hybrid Turret") or
-                                              mod.item.requiresSkill("Capital Projectile Turret"),
+    fit.modules.filteredItemBoost(lambda mod: (mod.item.requiresSkill("Capital Energy Turret") or
+                                               mod.item.requiresSkill("Capital Hybrid Turret") or
+                                               mod.item.requiresSkill("Capital Projectile Turret")),
                                   "damageMultiplier", src.getModifiedItemAttr("siegeTurretDamageBonus"))
 
     # Missiles
     for type in ("kinetic", "thermal", "explosive", "em"):
-        fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill("XL Torpedoes") or
-                                                    mod.charge.requiresSkill("XL Cruise Missiles") or
-                                                    mod.charge.requiresSkill("Torpedoes"),
+        fit.modules.filteredChargeBoost(lambda mod: (mod.charge.requiresSkill("XL Torpedoes") or
+                                                     mod.charge.requiresSkill("XL Cruise Missiles") or
+                                                     mod.charge.requiresSkill("Torpedoes")),
                                         "%sDamage" % type, src.getModifiedItemAttr("siegeMissileDamageBonus"))
 
     # Reppers
-    fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Capital Shield Operation") or
-                                              mod.item.requiresSkill("Capital Repair Systems"),
+    fit.modules.filteredItemBoost(lambda mod: (mod.item.requiresSkill("Capital Shield Operation") or
+                                               mod.item.requiresSkill("Capital Repair Systems")),
                                   "duration", src.getModifiedItemAttr("siegeLocalLogisticsDurationBonus"))
 
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Capital Shield Operation"),

@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos, Lucas Thode
 #
 # This file is part of pyfa.
@@ -15,17 +15,21 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
-from gui.viewColumn import ViewColumn
+import wx
+
+from eos.saveddata.cargo import Cargo as Cargo
+from eos.saveddata.drone import Drone as Drone
 from gui.bitmapLoader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
-from eos.types import Drone, Cargo
-import wx
-import service
+from gui.viewColumn import ViewColumn
+from service.market import Market
+
 
 class Price(ViewColumn):
     name = "Price"
+
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
         self.mask = wx.LIST_MASK_IMAGE
@@ -36,7 +40,7 @@ class Price(ViewColumn):
         if stuff.item is None or stuff.item.group.name == "Ship Modifiers":
             return ""
 
-        sMkt = service.Market.getInstance()
+        sMkt = Market.getInstance()
         price = sMkt.getPriceNow(stuff.item.ID)
 
         if not price or not price.price or not price.isValid:
@@ -45,20 +49,21 @@ class Price(ViewColumn):
         price = price.price  # Set new price variable with what we need
 
         if isinstance(stuff, Drone) or isinstance(stuff, Cargo):
-           price *= stuff.amount
+            price *= stuff.amount
 
         return formatAmount(price, 3, 3, 9, currency=True)
 
     def delayedText(self, mod, display, colItem):
-        sMkt = service.Market.getInstance()
+        sMkt = Market.getInstance()
+
         def callback(item):
             price = sMkt.getPriceNow(item.ID)
             text = formatAmount(price.price, 3, 3, 9, currency=True) if price.price else ""
-            if price.failed: text += " (!)"
+            if price.failed:
+                text += " (!)"
             colItem.SetText(text)
 
             display.SetItem(colItem)
-
 
         sMkt.waitForPrice(mod.item, callback)
 
@@ -67,5 +72,6 @@ class Price(ViewColumn):
 
     def getToolTip(self, mod):
         return self.name
+
 
 Price.register()

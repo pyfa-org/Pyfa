@@ -1,9 +1,9 @@
 from gui.contextMenu import ContextMenu
-from gui.itemStats import ItemStatsDialog
 import gui.mainFrame
-import gui.globalEvents as GE
-import service
 import wx
+import gui.globalEvents as GE
+from service.fit import Fit
+
 
 class DroneSplit(ContextMenu):
     def __init__(self):
@@ -20,6 +20,7 @@ class DroneSplit(ContextMenu):
         dlg = DroneSpinner(self.mainFrame, selection[0], srcContext)
         dlg.ShowModal()
         dlg.Destroy()
+
 
 DroneSplit.register()
 
@@ -48,7 +49,7 @@ class DroneSpinner(wx.Dialog):
         self.button.Bind(wx.EVT_BUTTON, self.split)
 
     def split(self, event):
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         mainFrame = gui.mainFrame.MainFrame.getInstance()
         fitID = mainFrame.getActiveFit()
         if self.context == "droneItem":

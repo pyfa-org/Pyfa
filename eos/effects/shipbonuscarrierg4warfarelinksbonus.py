@@ -3,6 +3,8 @@
 # Used by:
 # Ship: Thanatos
 type = "passive"
+
+
 def handler(fit, src, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Skirmish Command") or mod.item.requiresSkill("Armored Command"), "warfareBuff2Value", src.getModifiedItemAttr("shipBonusCarrierG4"), skill="Gallente Carrier")
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Skirmish Command") or mod.item.requiresSkill("Armored Command"), "warfareBuff3Value", src.getModifiedItemAttr("shipBonusCarrierG4"), skill="Gallente Carrier")

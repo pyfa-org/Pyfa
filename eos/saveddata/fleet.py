@@ -20,7 +20,12 @@
 from copy import deepcopy
 from itertools import chain
 
-from eos.types import Skill, Module, Ship
+from eos.db import saveddata_session, sd_lock
+from eos.db.saveddata.queries import cachedQuery
+from eos.db.util import processEager
+from eos.saveddata.character import Skill as Skill
+from eos.saveddata.module import Module as Module
+from eos.saveddata.ship import Ship as Ship
 
 
 class Fleet(object):
@@ -339,3 +344,70 @@ class Store(object):
                 effect.handler(fitBoosted, thing, context)
             except:
                 pass
+
+
+@cachedQuery(Fleet, 1, "fleetID")
+def getFleet(fleetID, eager=None):
+    if isinstance(fleetID, int):
+        if eager is None:
+            with sd_lock:
+                fleet = saveddata_session.query(Fleet).get(fleetID)
+        else:
+            eager = processEager(eager)
+            with sd_lock:
+                fleet = saveddata_session.query(Fleet).options(*eager).filter(Fleet.ID == fleetID).first()
+    else:
+        raise TypeError("Need integer as argument")
+    return fleet
+
+
+@cachedQuery(Wing, 1, "wingID")
+def getWing(wingID, eager=None):
+    if isinstance(wingID, int):
+        if eager is None:
+            with sd_lock:
+                wing = saveddata_session.query(Wing).get(wingID)
+        else:
+            eager = processEager(eager)
+            with sd_lock:
+                wing = saveddata_session.query(Wing).options(*eager).filter(Wing.ID == wingID).first()
+    else:
+        raise TypeError("Need integer as argument")
+    return wing
+
+
+@cachedQuery(Squad, 1, "squadID")
+def getSquad(squadID, eager=None):
+    if isinstance(squadID, int):
+        if eager is None:
+            with sd_lock:
+                squad = saveddata_session.query(Squad).get(squadID)
+        else:
+            eager = processEager(eager)
+            with sd_lock:
+                squad = saveddata_session.query(Squad).options(*eager).filter(Fleet.ID == squadID).first()
+    else:
+        raise TypeError("Need integer as argument")
+    return squad
+
+
+def getFleetList(eager=None):
+    eager = processEager(eager)
+    with sd_lock:
+        fleets = saveddata_session.query(Fleet).options(*eager).all()
+    return fleets
+
+
+def getSquadsIDsWithFitID(fitID):
+    # TODO: Import refactor.  Cannot do this inside fleet, cannot reference mapper.
+    '''
+    if isinstance(fitID, int):
+        with sd_lock:
+            squads = saveddata_session.query(Fleet.squadmembers_table.c.squadID).filter(
+                Fleet.squadmembers_table.c.memberID == fitID).all()
+            squads = tuple(entry[0] for entry in squads)
+            return squads
+    else:
+        raise TypeError("Need integer as argument")
+    '''
+    raise TypeError("Needs to be migrated. Import Refactor")

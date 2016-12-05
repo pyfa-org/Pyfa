@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,14 +15,13 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
 import wx
 
+
 class PreferenceView(object):
     views = []
-    def __init__(self):
-        pass
 
     @classmethod
     def register(cls):
@@ -36,6 +35,3 @@ class PreferenceView(object):
 
     def getImage(self):
         return wx.NullBitmap
-
-from gui.builtinPreferenceViews import *
-

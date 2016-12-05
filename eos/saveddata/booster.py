@@ -21,9 +21,10 @@ import logging
 
 from sqlalchemy.orm import reconstructor, validates
 
-import eos.db
 from eos.effectHandlerHelpers import HandledItem
 from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut
+from sqlalchemy.orm import reconstructor, relationship, relation, mapper
+from eos.db.saveddata.mapper import Boosters as BoostersTable
 
 logger = logging.getLogger(__name__)
 
@@ -39,13 +40,15 @@ class Booster(HandledItem, ItemAttrShortcut):
         self.active = True
         self.build()
 
+        mapper(Booster, back_populates=BoostersTable)
+
     @reconstructor
     def init(self):
         """Initialize a booster from the database and validate"""
         self.__item = None
 
         if self.itemID:
-            self.__item = eos.db.getItem(self.itemID)
+            self.__item = edg_queries.getItem(self.itemID)
             if self.__item is None:
                 logger.error("Item (id: %d) does not exist", self.itemID)
                 return
@@ -158,6 +161,7 @@ class Booster(HandledItem, ItemAttrShortcut):
         '''
 
         return copy
+
 
 # Legacy booster side effect code, disabling as not currently implemented
 '''

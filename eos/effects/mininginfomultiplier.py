@@ -8,4 +8,4 @@ type = "passive"
 
 def handler(fit, module, context):
     module.multiplyItemAttr("specialtyMiningAmount", module.getModifiedChargeAttr("specialisationAsteroidYieldMultiplier"))
-    #module.multiplyItemAttr("miningAmount", module.getModifiedChargeAttr("specialisationAsteroidYieldMultiplier"))
+    # module.multiplyItemAttr("miningAmount", module.getModifiedChargeAttr("specialisationAsteroidYieldMultiplier"))

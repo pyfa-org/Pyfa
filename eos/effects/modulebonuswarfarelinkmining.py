@@ -5,7 +5,8 @@
 type = "active"
 runTime = "late"
 
+
 def handler(fit, module, context):
-    for x in xrange(1, 4):
+    for x in range(1, 4):
         value = module.getModifiedItemAttr("warfareBuff{}Value".format(x))
         module.multiplyChargeAttr("warfareBuff{}Multiplier".format(x), value)

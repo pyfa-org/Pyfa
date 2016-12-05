@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,26 +15,32 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
 import copy
+import gzip
 import itertools
 import json
+import logging
 import threading
 from codecs import open
-from xml.etree import ElementTree
 from xml.dom import minidom
-import gzip
+from xml.etree import ElementTree
 
 import wx
 
-import eos.db
-import eos.types
-import service
 import config
-import logging
+from eos.db.saveddata import queries
+from eos.db.saveddata import queries as eds_queries
+from eos.gamedata import getCategory, getGroup, getItem, getMarketGroup
+from eos.saveddata.character import Character as es_Character, getCharacter
+from eos.saveddata.fighter import Fighter as es_Fighter
+from eos.saveddata.implant import Implant as es_Implant
+from eos.saveddata.module import Slot as es_Slot, Module as es_Module
+from service.eveapi import EVEAPIConnection, ParseXML
 
 logger = logging.getLogger(__name__)
+
 
 class CharacterImportThread(threading.Thread):
     def __init__(self, paths, callback):
@@ -49,8 +55,8 @@ class CharacterImportThread(threading.Thread):
             try:
                 # we try to parse api XML data first
                 with open(path, mode='r') as charFile:
-                    sheet = service.ParseXML(charFile)
-                    char = sCharacter.new(sheet.name+" (imported)")
+                    sheet = ParseXML(charFile)
+                    char = sCharacter.new(sheet.name + " (imported)")
                     sCharacter.apiUpdateCharSheet(char.ID, sheet.skills)
             except:
                 # if it's not api XML data, try this
@@ -68,13 +74,14 @@ class CharacterImportThread(threading.Thread):
                             "typeID": int(skill.getAttribute("typeID")),
                             "level": int(skill.getAttribute("level")),
                         })
-                    char = sCharacter.new(name+" (EVEMon)")
+                    char = sCharacter.new(name + " (EVEMon)")
                     sCharacter.apiUpdateCharSheet(char.ID, skills)
-                except Exception, e:
-                    print e.message
+                except Exception as e:
+                    print(e.message)
                     continue
 
         wx.CallAfter(self.callback)
+
 
 class SkillBackupThread(threading.Thread):
     def __init__(self, path, saveFmt, activeFit, callback):
@@ -87,8 +94,7 @@ class SkillBackupThread(threading.Thread):
     def run(self):
         path = self.path
         sCharacter = Character.getInstance()
-        sFit = service.Fit.getInstance()
-        fit = sFit.getFit(self.activeFit)
+
         backupData = ""
         if self.saveFmt == "xml" or self.saveFmt == "emp":
             backupData = sCharacter.exportXml()
@@ -99,10 +105,11 @@ class SkillBackupThread(threading.Thread):
             with gzip.open(path, mode='wb') as backupFile:
                 backupFile.write(backupData)
         else:
-            with open(path, mode='w',encoding='utf-8') as backupFile:
+            with open(path, mode='w', encoding='utf-8') as backupFile:
                 backupFile.write(backupData)
 
         wx.CallAfter(self.callback)
+
 
 class Character(object):
     instance = None
@@ -121,7 +128,7 @@ class Character(object):
         self.all5()
 
     def exportText(self):
-        data  = "Pyfa exported plan for \""+self.skillReqsDict['charname']+"\"\n"
+        data = "Pyfa exported plan for \"" + self.skillReqsDict['charname'] + "\"\n"
         data += "=" * 79 + "\n"
         data += "\n"
         item = ""
@@ -137,7 +144,7 @@ class Character(object):
 
     def exportXml(self):
         root = ElementTree.Element("plan")
-        root.attrib["name"] = "Pyfa exported plan for "+self.skillReqsDict['charname']
+        root.attrib["name"] = "Pyfa exported plan for " + self.skillReqsDict['charname']
         root.attrib["revision"] = config.evemonMinVersion
 
         sorts = ElementTree.SubElement(root, "sorting")
@@ -148,9 +155,9 @@ class Character(object):
         skillsSeen = set()
 
         for s in self.skillReqsDict['skills']:
-            skillKey = str(s["skillID"])+"::"+s["skill"]+"::"+str(int(s["level"]))
+            skillKey = str(s["skillID"]) + "::" + s["skill"] + "::" + str(int(s["level"]))
             if skillKey in skillsSeen:
-                pass   # Duplicate skills confuse EVEMon
+                pass  # Duplicate skills confuse EVEMon
             else:
                 skillsSeen.add(skillKey)
                 entry = ElementTree.SubElement(root, "entry")
@@ -162,7 +169,7 @@ class Character(object):
                 notes = ElementTree.SubElement(entry, "notes")
                 notes.text = entry.attrib["skill"]
 
-        tree = ElementTree.ElementTree(root)
+        # tree = ElementTree.ElementTree(root)
         data = ElementTree.tostring(root, 'utf-8')
         prettydata = minidom.parseString(data).toprettyxml(indent="  ")
 
@@ -177,48 +184,41 @@ class Character(object):
         thread.start()
 
     def all0(self):
-        return eos.types.Character.getAll0()
+        return es_Character.getAll0()
 
     def all0ID(self):
         return self.all0().ID
 
     def all5(self):
-        return eos.types.Character.getAll5()
+        return es_Character.getAll5()
 
     def all5ID(self):
         return self.all5().ID
-
-    def getCharacterList(self):
-        return eos.db.getCharacterList()
-
-    def getCharacter(self, charID):
-        char = eos.db.getCharacter(charID)
-        return char
 
     def saveCharacter(self, charID):
         """Save edited skills"""
         if charID == self.all5ID() or charID == self.all0ID():
             return
-        char = eos.db.getCharacter(charID)
+        char = getCharacter(charID)
         char.saveLevels()
 
     def saveCharacterAs(self, charID, newName):
         """Save edited skills as a new character"""
-        char = eos.db.getCharacter(charID)
+        char = getCharacter(charID)
         newChar = copy.deepcopy(char)
         newChar.name = newName
-        eos.db.save(newChar)
+        eds_queries.save(newChar)
 
         # revert old char
         char.revertLevels()
 
     def revertCharacter(self, charID):
         """Rollback edited skills"""
-        char = eos.db.getCharacter(charID)
+        char = getCharacter(charID)
         char.revertLevels()
 
     def getSkillGroups(self):
-        cat = eos.db.getCategory(16)
+        cat = getCategory(16)
         groups = []
         for grp in cat.groups:
             if grp.published:
@@ -226,48 +226,48 @@ class Character(object):
         return groups
 
     def getSkills(self, groupID):
-        group = eos.db.getGroup(groupID)
+        group = getGroup(groupID)
         skills = []
         for skill in group.items:
-            if skill.published == True:
+            if skill.published is True:
                 skills.append((skill.ID, skill.name))
         return skills
 
     def getSkillDescription(self, itemID):
-        return eos.db.getItem(itemID).description
+        return getItem(itemID).description
 
     def getGroupDescription(self, groupID):
-        return eos.db.getMarketGroup(groupID).description
+        return getMarketGroup(groupID).description
 
     def getSkillLevel(self, charID, skillID):
-        skill = eos.db.getCharacter(charID).getSkill(skillID)
+        skill = getCharacter(charID).getSkill(skillID)
         return (skill.level if skill.learned else "Not learned", skill.isDirty)
 
     def getDirtySkills(self, charID):
-        return eos.db.getCharacter(charID).dirtySkills
+        return getCharacter(charID).dirtySkills
 
     def getCharName(self, charID):
-        return eos.db.getCharacter(charID).name
+        return getCharacter(charID).name
 
     def new(self, name="New Character"):
-        char = eos.types.Character(name)
-        eos.db.save(char)
+        char = es_Character(name)
+        eds_queries.save(char)
         return char
 
     def rename(self, char, newName):
         char.name = newName
-        eos.db.commit()
+        eds_queries.commit()
 
     def copy(self, char):
         newChar = copy.deepcopy(char)
-        eos.db.save(newChar)
+        eds_queries.save(newChar)
         return newChar
 
     def delete(self, char):
-        eos.db.remove(char)
+        queries.remove(char)
 
     def getApiDetails(self, charID):
-        char = eos.db.getCharacter(charID)
+        char = getCharacter(charID)
         if char.chars is not None:
             chars = json.loads(char.chars)
         else:
@@ -279,12 +279,12 @@ class Character(object):
         return id is not "" and key is not "" and default is not ""
 
     def apiCharList(self, charID, userID, apiKey):
-        char = eos.db.getCharacter(charID)
+        char = getCharacter(charID)
 
         char.apiID = userID
         char.apiKey = apiKey
 
-        api = service.EVEAPIConnection()
+        api = EVEAPIConnection()
         auth = api.auth(keyID=userID, vCode=apiKey)
         apiResult = auth.account.Characters()
         charList = map(lambda c: unicode(c.name), apiResult.characters)
@@ -293,10 +293,10 @@ class Character(object):
         return charList
 
     def apiFetch(self, charID, charName):
-        dbChar = eos.db.getCharacter(charID)
+        dbChar = getCharacter(charID)
         dbChar.defaultChar = charName
 
-        api = service.EVEAPIConnection()
+        api = EVEAPIConnection()
         auth = api.auth(keyID=dbChar.apiID, vCode=dbChar.apiKey)
         apiResult = auth.account.Characters()
         charID = None
@@ -304,21 +304,21 @@ class Character(object):
             if char.name == charName:
                 charID = char.characterID
 
-        if charID == None:
+        if charID is None:
             return
 
         sheet = auth.character(charID).CharacterSheet()
 
         dbChar.apiUpdateCharSheet(sheet.skills)
-        eos.db.commit()
+        eds_queries.commit()
 
     def apiUpdateCharSheet(self, charID, skills):
-        char = eos.db.getCharacter(charID)
+        char = getCharacter(charID)
         char.apiUpdateCharSheet(skills)
-        eos.db.commit()
+        eds_queries.commit()
 
     def changeLevel(self, charID, skillID, level, persist=False):
-        char = eos.db.getCharacter(charID)
+        char = getCharacter(charID)
         skill = char.getSkill(skillID)
         if isinstance(level, basestring) or level > 5 or level < 0:
             skill.level = None
@@ -328,52 +328,52 @@ class Character(object):
         if persist:
             skill.saveLevel()
 
-        eos.db.commit()
+        eds_queries.commit()
 
     def revertLevel(self, charID, skillID):
-        char = eos.db.getCharacter(charID)
+        char = getCharacter(charID)
         skill = char.getSkill(skillID)
         skill.revert()
 
     def saveSkill(self, charID, skillID):
-        char = eos.db.getCharacter(charID)
+        char = getCharacter(charID)
         skill = char.getSkill(skillID)
         skill.saveLevel()
 
     def addImplant(self, charID, itemID):
-        char = eos.db.getCharacter(charID)
+        char = getCharacter(charID)
         if char.ro:
             logger.error("Trying to add implant to read-only character")
             return
 
-        implant = eos.types.Implant(eos.db.getItem(itemID))
+        implant = es_Implant(getItem(itemID))
         char.implants.append(implant)
-        eos.db.commit()
+        eds_queries.commit()
 
     def removeImplant(self, charID, implant):
-        char = eos.db.getCharacter(charID)
+        char = getCharacter(charID)
         char.implants.remove(implant)
-        eos.db.commit()
+        eds_queries.commit()
 
     def getImplants(self, charID):
-        char = eos.db.getCharacter(charID)
+        char = getCharacter(charID)
         return char.implants
 
     def checkRequirements(self, fit):
-        toCheck = []
+        # toCheck = []
         reqs = {}
         for thing in itertools.chain(fit.modules, fit.drones, fit.fighters, (fit.ship,)):
-            if isinstance(thing, eos.types.Module) and thing.slot == eos.types.Slot.RIG:
+            if isinstance(thing, es_Module) and thing.slot == es_Slot.RIG:
                 continue
             for attr in ("item", "charge"):
-                if attr == "charge" and isinstance(thing, eos.types.Fighter):
+                if attr == "charge" and isinstance(thing, es_Fighter):
                     # Fighter Bombers are automatically charged with micro bombs.
                     # These have skill requirements attached, but aren't used in EVE.
                     continue
                 subThing = getattr(thing, attr, None)
                 subReqs = {}
                 if subThing is not None:
-                    if isinstance(thing, eos.types.Fighter) and attr == "charge":
+                    if isinstance(thing, es_Fighter) and attr == "charge":
                         continue
                     self._checkRequirements(fit, fit.character, subThing, subReqs)
                     if subReqs:

@@ -1,8 +1,9 @@
-import wx
 from gui.contextMenu import ContextMenu
 import gui.mainFrame
-import service
+import wx
 import gui.globalEvents as GE
+from service.fit import Fit
+
 
 class FighterAbility(ContextMenu):
     def __init__(self):
@@ -20,9 +21,9 @@ class FighterAbility(ContextMenu):
 
     def addAbility(self, menu, ability):
         label = ability.name
-        id = ContextMenu.nextID()
-        self.abilityIds[id] = ability
-        menuItem = wx.MenuItem(menu, id, label, kind=wx.ITEM_CHECK)
+        id_ = ContextMenu.nextID()
+        self.abilityIds[id_] = ability
+        menuItem = wx.MenuItem(menu, id_, label, kind=wx.ITEM_CHECK)
         menu.Bind(wx.EVT_MENU, self.handleMode, menuItem)
         return menuItem
 
@@ -48,9 +49,10 @@ class FighterAbility(ContextMenu):
             event.Skip()
             return
 
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
         sFit.toggleFighterAbility(fitID, ability)
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+
 
 FighterAbility.register()

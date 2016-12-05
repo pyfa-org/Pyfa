@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2014 Ryan Holmes
 #
 # This file is part of pyfa.
@@ -15,26 +15,29 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
 import threading
-import wx
-import urllib2
 import json
-import config
-import service
-import dateutil.parser
 import calendar
+
+import wx
+import dateutil.parser
+
+import config
+from service.network import Network
+from service.settings import UpdateSettings
+
 
 class CheckUpdateThread(threading.Thread):
     def __init__(self, callback):
         threading.Thread.__init__(self)
         self.callback = callback
-        self.settings = service.settings.UpdateSettings.getInstance()
-        self.network = service.Network.getInstance()
+        self.settings = UpdateSettings.getInstance()
+        self.network = Network.getInstance()
 
     def run(self):
-        network = service.Network.getInstance()
+        network = Network.getInstance()
 
         try:
             response = network.request('https://api.github.com/repos/pyfa-org/Pyfa/releases', network.UPDATE)
@@ -47,7 +50,7 @@ class CheckUpdateThread(threading.Thread):
                     continue
 
                 # Handle use-case of updating to suppressed version
-                if self.settings.get('version') == 'v'+config.version:
+                if self.settings.get('version') == 'v' + config.version:
                     self.settings.set('version', None)
 
                 # Suppress version
@@ -61,15 +64,15 @@ class CheckUpdateThread(threading.Thread):
                     rVersion = release['tag_name'].replace('v', '', 1)
 
                 if config.tag is 'git' and not release['prerelease'] and self.versiontuple(rVersion) >= self.versiontuple(config.version):
-                    wx.CallAfter(self.callback, release) # git (dev/Singularity) -> Stable
+                    wx.CallAfter(self.callback, release)  # git (dev/Singularity) -> Stable
                 elif config.expansionName is not "Singularity":
                     if release['prerelease']:
-                        wx.CallAfter(self.callback, release) # Stable -> Singularity
+                        wx.CallAfter(self.callback, release)  # Stable -> Singularity
                     elif self.versiontuple(rVersion) > self.versiontuple(config.version):
-                        wx.CallAfter(self.callback, release) # Stable -> Stable
+                        wx.CallAfter(self.callback, release)  # Stable -> Stable
                 else:
                     if release['prerelease'] and rVersion > config.expansionVersion:
-                        wx.CallAfter(self.callback, release) # Singularity -> Singularity
+                        wx.CallAfter(self.callback, release)  # Singularity -> Singularity
                 break
         except:
             pass
@@ -77,10 +80,9 @@ class CheckUpdateThread(threading.Thread):
     def versiontuple(self, v):
         return tuple(map(int, (v.split("."))))
 
+
 class Update():
     instance = None
-    def __init__(self):
-       pass
 
     def CheckUpdate(self, callback):
         thread = CheckUpdateThread(callback)
@@ -88,8 +90,6 @@ class Update():
 
     @classmethod
     def getInstance(cls):
-        if cls.instance == None:
+        if cls.instance is None:
             cls.instance = Update()
         return cls.instance
-
-

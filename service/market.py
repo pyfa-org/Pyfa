@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,22 +15,32 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
-
-import re
-import threading
-import wx
+# =============================================================================
 
 import Queue
+import logging
+import re
+import threading
+
+import wx
+from eos.gamedata import (
+    getItem, searchItems, getGroup, getCategory, getMetaGroup, getMarketGroup,
+    getVariations, directAttributeRequest
+)
+from sqlalchemy.sql import or_
 
 import config
-import eos.db
-import eos.types
-from sqlalchemy.sql import and_, or_
-from service.settings import SettingsProvider, NetworkSettings
-import service
-import service.conversions as conversions
-import logging
+from eos.db import saveddata_session
+from eos.db.saveddata.queries import commit, add
+from eos.saveddata.override import getAllOverrides
+from eos.saveddata.price import getPrice, clearPrices
+from eos.gamedata import Category as e_Category, Group as e_Group, Item as e_Item
+from eos.gamedata import MarketGroup
+from eos.gamedata import MetaGroup
+from eos.gamedata import MetaType
+from service import conversions
+from service.price import Price
+from service.settings import SettingsProvider
 
 try:
     from collections import OrderedDict
@@ -41,6 +51,7 @@ logger = logging.getLogger(__name__)
 
 # Event which tells threads dependent on Market that it's initialized
 mktRdy = threading.Event()
+
 
 class ShipBrowserWorkerThread(threading.Thread):
     def run(self):
@@ -72,6 +83,7 @@ class ShipBrowserWorkerThread(threading.Thread):
                 except:
                     pass
 
+
 class PriceWorkerThread(threading.Thread):
     def run(self):
         self.queue = Queue.Queue()
@@ -86,7 +98,7 @@ class PriceWorkerThread(threading.Thread):
 
             # Grab prices, this is the time-consuming part
             if len(requests) > 0:
-                service.Price.fetchPrices(requests)
+                Price.fetchPrices(requests)
 
             wx.CallAfter(callback)
             queue.task_done()
@@ -105,6 +117,7 @@ class PriceWorkerThread(threading.Thread):
         if itemID not in self.wait:
             self.wait[itemID] = []
         self.wait[itemID].append(callback)
+
 
 class SearchWorkerThread(threading.Thread):
     def run(self):
@@ -126,15 +139,15 @@ class SearchWorkerThread(threading.Thread):
             sMkt = Market.getInstance()
             if filterOn is True:
                 # Rely on category data provided by eos as we don't hardcode them much in service
-                filter = or_(eos.types.Category.name.in_(sMkt.SEARCH_CATEGORIES), eos.types.Group.name.in_(sMkt.SEARCH_GROUPS))
+                where = or_(e_Category.name.in_(sMkt.SEARCH_CATEGORIES), e_Group.name.in_(sMkt.SEARCH_GROUPS))
             elif filterOn:  # filter by selected categories
-                filter = eos.types.Category.name.in_(filterOn)
+                where = e_Category.name.in_(filterOn)
             else:
-                filter=None
+                where = None
 
-            results = eos.db.searchItems(request, where=filter,
-                                         join=(eos.types.Item.group, eos.types.Group.category),
-                                         eager=("icon", "group.category", "metaGroup", "metaGroup.parent"))
+            results = searchItems(request, where=where,
+                                  join=(e_Item.group, e_Group.category),
+                                  eager=("icon", "group.category", "metaGroup", "metaGroup.parent"))
 
             items = set()
             # Return only published items, consult with Market service this time
@@ -149,12 +162,14 @@ class SearchWorkerThread(threading.Thread):
         self.cv.notify()
         self.cv.release()
 
+
 class Market():
     instance = None
+
     def __init__(self):
         self.priceCache = {}
 
-        #Init recently used module storage
+        # Init recently used module storage
         serviceMarketRecentlyUsedModules = {"pyfaMarketRecentlyUsedModules": []}
 
         self.serviceMarketRecentlyUsedModules = SettingsProvider.getInstance().getSettings("pyfaMarketRecentlyUsedModules", serviceMarketRecentlyUsedModules)
@@ -177,7 +192,7 @@ class Market():
         # Items' group overrides
         self.customGroups = set()
         # Limited edition ships
-        self.les_grp = eos.types.Group()
+        self.les_grp = e_Group()
         self.les_grp.ID = -1
         self.les_grp.name = "Limited Issue Ships"
         self.les_grp.published = True
@@ -187,36 +202,36 @@ class Market():
         self.les_grp.description = ""
         self.les_grp.icon = None
         self.ITEMS_FORCEGROUP = {
-            "Opux Luxury Yacht": self.les_grp, # One of those is wedding present at CCP fanfest, another was hijacked from ISD guy during an event
+            "Opux Luxury Yacht": self.les_grp,  # One of those is wedding present at CCP fanfest, another was hijacked from ISD guy during an event
             "Silver Magnate": self.les_grp,  # Amarr Championship prize
             "Gold Magnate": self.les_grp,  # Amarr Championship prize
-            "Armageddon Imperial Issue": self.les_grp,  # Amarr Championship prize
-            "Apocalypse Imperial Issue": self.les_grp, # Amarr Championship prize
-            "Guardian-Vexor": self.les_grp, # Illegal rewards for the Gallente Frontier Tour Lines event arc
-            "Megathron Federate Issue": self.les_grp, # Reward during Crielere event
+            "Armageddon Imperial Issue": self.les_grp,   # Amarr Championship prize
+            "Apocalypse Imperial Issue": self.les_grp,  # Amarr Championship prize
+            "Guardian-Vexor": self.les_grp,  # Illegal rewards for the Gallente Frontier Tour Lines event arc
+            "Megathron Federate Issue": self.les_grp,  # Reward during Crielere event
             "Raven State Issue": self.les_grp,  # AT4 prize
-            "Tempest Tribal Issue": self.les_grp, # AT4 prize
-            "Apotheosis": self.les_grp, # 5th EVE anniversary present
-            "Zephyr": self.les_grp, # 2010 new year gift
-            "Primae": self.les_grp, # Promotion of planetary interaction
-            "Freki": self.les_grp, # AT7 prize
-            "Mimir": self.les_grp, # AT7 prize
-            "Utu": self.les_grp, # AT8 prize
-            "Adrestia": self.les_grp, # AT8 prize
-            "Echelon": self.les_grp, # 2011 new year gift
-            "Malice": self.les_grp, # AT9 prize
-            "Vangel": self.les_grp, # AT9 prize
-            "Cambion": self.les_grp, # AT10 prize
-            "Etana": self.les_grp, # AT10 prize
-            "Chremoas": self.les_grp, # AT11 prize :(
-            "Moracha": self.les_grp, # AT11 prize
-            "Stratios Emergency Responder": self.les_grp, # Issued for Somer Blink lottery
-            "Miasmos Quafe Ultra Edition": self.les_grp, # Gift to people who purchased FF HD stream
+            "Tempest Tribal Issue": self.les_grp,  # AT4 prize
+            "Apotheosis": self.les_grp,  # 5th EVE anniversary present
+            "Zephyr": self.les_grp,  # 2010 new year gift
+            "Primae": self.les_grp,  # Promotion of planetary interaction
+            "Freki": self.les_grp,  # AT7 prize
+            "Mimir": self.les_grp,  # AT7 prize
+            "Utu": self.les_grp,  # AT8 prize
+            "Adrestia": self.les_grp,  # AT8 prize
+            "Echelon": self.les_grp,  # 2011 new year gift
+            "Malice": self.les_grp,  # AT9 prize
+            "Vangel": self.les_grp,  # AT9 prize
+            "Cambion": self.les_grp,  # AT10 prize
+            "Etana": self.les_grp,  # AT10 prize
+            "Chremoas": self.les_grp,  # AT11 prize :(
+            "Moracha": self.les_grp,  # AT11 prize
+            "Stratios Emergency Responder": self.les_grp,  # Issued for Somer Blink lottery
+            "Miasmos Quafe Ultra Edition": self.les_grp,  # Gift to people who purchased FF HD stream
             "InterBus Shuttle": self.les_grp,
-            "Leopard": self.les_grp, # 2013 new year gift
-            "Whiptail": self.les_grp, # AT12 prize
-            "Chameleon": self.les_grp, # AT12 prize
-            "Victorieux Luxury Yacht":  self.les_grp,  # Worlds Collide prize \o/ chinese getting owned
+            "Leopard": self.les_grp,  # 2013 new year gift
+            "Whiptail": self.les_grp,  # AT12 prize
+            "Chameleon": self.les_grp,  # AT12 prize
+            "Victorieux Luxury Yacht": self.les_grp,  # Worlds Collide prize \o/ chinese getting owned
             "Imp": self.les_grp,  # AT13 prize
             "Fiend": self.les_grp,  # AT13 prize
         }
@@ -227,8 +242,8 @@ class Market():
 
         # List of items which are forcibly published or hidden
         self.ITEMS_FORCEPUBLISHED = {
-            "Data Subverter I": False, # Not used in EVE, probably will appear with Dust link
-            "QA Cross Protocol Analyzer": False, # QA modules used by CCP internally
+            "Data Subverter I": False,  # Not used in EVE, probably will appear with Dust link
+            "QA Cross Protocol Analyzer": False,  # QA modules used by CCP internally
             "QA Damage Module": False,
             "QA ECCM": False,
             "QA Immunity Module": False,
@@ -264,7 +279,8 @@ class Market():
 
         # List of groups which are forcibly published
         self.GROUPS_FORCEPUBLISHED = {
-            "Prototype Exploration Ship": False } # We moved the only ship from this group to other group anyway
+            "Prototype Exploration Ship": False
+        }  # We moved the only ship from this group to other group anyway
 
         # Dictionary of items with forced meta groups, uses following format:
         # Item name: (metagroup name, parent type name)
@@ -273,61 +289,62 @@ class Market():
             "'Wild' Miner I": ("Storyline", "Miner I"),
             "Medium Nano Armor Repair Unit I": ("Tech I", "Medium Armor Repairer I"),
             "Large 'Reprieve' Vestment Reconstructer I": ("Storyline", "Large Armor Repairer I"),
-            "Khanid Navy Torpedo Launcher": ("Faction", "Torpedo Launcher I"),}
+            "Khanid Navy Torpedo Launcher": ("Faction", "Torpedo Launcher I"),
+        }
         # Parent type name: set(item names)
         self.ITEMS_FORCEDMETAGROUP_R = {}
         for item, value in self.ITEMS_FORCEDMETAGROUP.items():
             parent = value[1]
-            if not parent in self.ITEMS_FORCEDMETAGROUP_R:
+            if parent not in self.ITEMS_FORCEDMETAGROUP_R:
                 self.ITEMS_FORCEDMETAGROUP_R[parent] = set()
             self.ITEMS_FORCEDMETAGROUP_R[parent].add(item)
         # Dictionary of items with forced market group (service assumes they have no
         # market group assigned in db, otherwise they'll appear in both original and forced groups)
         self.ITEMS_FORCEDMARKETGROUP = {
-            "'Alpha' Data Analyzer I": 714, # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
-            "'Codex' Data Analyzer I": 714, # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
-            "'Daemon' Data Analyzer I": 714, # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
-            "'Libram' Data Analyzer I": 714, # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
-            "Advanced Cerebral Accelerator": 977, # Implants & Boosters > Booster
-            "Civilian Damage Control": 615, # Ship Equipment > Hull & Armor > Damage Controls
-            "Civilian EM Ward Field": 1695, # Ship Equipment > Shield > Shield Hardeners > EM Shield Hardeners
-            "Civilian Explosive Deflection Field": 1694, # Ship Equipment > Shield > Shield Hardeners > Explosive Shield Hardeners
-            "Civilian Hobgoblin": 837, # Drones > Combat Drones > Light Scout Drones
-            "Civilian Kinetic Deflection Field": 1693, # Ship Equipment > Shield > Shield Hardeners > Kinetic Shield Hardeners
-            "Civilian Light Missile Launcher": 640, # Ship Equipment > Turrets & Bays > Missile Launchers > Light Missile Launchers
-            "Civilian Scourge Light Missile": 920, # Ammunition & Charges > Missiles > Light Missiles > Standard Light Missiles
-            "Civilian Small Remote Armor Repairer": 1059, # Ship Equipment > Hull & Armor > Remote Armor Repairers > Small
-            "Civilian Small Remote Shield Booster": 603, # Ship Equipment > Shield > Remote Shield Boosters > Small
-            "Civilian Stasis Webifier": 683, # Ship Equipment > Electronic Warfare > Stasis Webifiers
-            "Civilian Thermic Dissipation Field": 1692, # Ship Equipment > Shield > Shield Hardeners > Thermal Shield Hardeners
-            "Civilian Warp Disruptor": 1935, # Ship Equipment > Electronic Warfare > Warp Disruptors
-            "Hardwiring - Zainou 'Sharpshooter' ZMX10": 1493, # Implants & Boosters > Implants > Skill Hardwiring > Missile Implants > Implant Slot 06
-            "Hardwiring - Zainou 'Sharpshooter' ZMX100": 1493, # Implants & Boosters > Implants > Skill Hardwiring > Missile Implants > Implant Slot 06
-            "Hardwiring - Zainou 'Sharpshooter' ZMX1000": 1493, # Implants & Boosters > Implants > Skill Hardwiring > Missile Implants > Implant Slot 06
-            "Hardwiring - Zainou 'Sharpshooter' ZMX11": 1493, # Implants & Boosters > Implants > Skill Hardwiring > Missile Implants > Implant Slot 06
-            "Hardwiring - Zainou 'Sharpshooter' ZMX110": 1493, # Implants & Boosters > Implants > Skill Hardwiring > Missile Implants > Implant Slot 06
-            "Hardwiring - Zainou 'Sharpshooter' ZMX1100": 1493, # Implants & Boosters > Implants > Skill Hardwiring > Missile Implants > Implant Slot 06
-            "Nugoehuvi Synth Blue Pill Booster": 977, # Implants & Boosters > Booster
-            "Prototype Cerebral Accelerator": 977, # Implants & Boosters > Booster
-            "Prototype Iris Probe Launcher": 712, # Ship Equipment > Turrets & Bays > Scan Probe Launchers
-            "Shadow": 1310, # Drones > Combat Drones > Fighter Bombers
-            "Sleeper Data Analyzer I": 714, # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
-            "Standard Cerebral Accelerator": 977, # Implants & Boosters > Booster
-            "Talocan Data Analyzer I": 714, # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
-            "Terran Data Analyzer I": 714, # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
-            "Tetrimon Data Analyzer I": 714  # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
+            "'Alpha' Data Analyzer I": 714,                      # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
+            "'Codex' Data Analyzer I": 714,                      # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
+            "'Daemon' Data Analyzer I": 714,                     # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
+            "'Libram' Data Analyzer I": 714,                     # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
+            "Advanced Cerebral Accelerator": 977,                # Implants & Boosters > Booster
+            "Civilian Damage Control": 615,                      # Ship Equipment > Hull & Armor > Damage Controls
+            "Civilian EM Ward Field": 1695,                      # Ship Equipment > Shield > Shield Hardeners > EM Shield Hardeners
+            "Civilian Explosive Deflection Field": 1694,         # Ship Equipment > Shield > Shield Hardeners > Explosive Shield Hardeners
+            "Civilian Hobgoblin": 837,                           # Drones > Combat Drones > Light Scout Drones
+            "Civilian Kinetic Deflection Field": 1693,           # Ship Equipment > Shield > Shield Hardeners > Kinetic Shield Hardeners
+            "Civilian Light Missile Launcher": 640,              # Ship Equipment > Turrets & Bays > Missile Launchers > Light Missile Launchers
+            "Civilian Scourge Light Missile": 920,               # Ammunition & Charges > Missiles > Light Missiles > Standard Light Missiles
+            "Civilian Small Remote Armor Repairer": 1059,        # Ship Equipment > Hull & Armor > Remote Armor Repairers > Small
+            "Civilian Small Remote Shield Booster": 603,         # Ship Equipment > Shield > Remote Shield Boosters > Small
+            "Civilian Stasis Webifier": 683,                     # Ship Equipment > Electronic Warfare > Stasis Webifiers
+            "Civilian Thermic Dissipation Field": 1692,          # Ship Equipment > Shield > Shield Hardeners > Thermal Shield Hardeners
+            "Civilian Warp Disruptor": 1935,                     # Ship Equipment > Electronic Warfare > Warp Disruptors
+            "Hardwiring - Zainou 'Sharpshooter' ZMX10": 1493,    # Implants & Boosters > Implants > Skill Hardwiring > Missile Implants > Implant Slot 06
+            "Hardwiring - Zainou 'Sharpshooter' ZMX100": 1493,   # Implants & Boosters > Implants > Skill Hardwiring > Missile Implants > Implant Slot 06
+            "Hardwiring - Zainou 'Sharpshooter' ZMX1000": 1493,  # Implants & Boosters > Implants > Skill Hardwiring > Missile Implants > Implant Slot 06
+            "Hardwiring - Zainou 'Sharpshooter' ZMX11": 1493,    # Implants & Boosters > Implants > Skill Hardwiring > Missile Implants > Implant Slot 06
+            "Hardwiring - Zainou 'Sharpshooter' ZMX110": 1493,   # Implants & Boosters > Implants > Skill Hardwiring > Missile Implants > Implant Slot 06
+            "Hardwiring - Zainou 'Sharpshooter' ZMX1100": 1493,  # Implants & Boosters > Implants > Skill Hardwiring > Missile Implants > Implant Slot 06
+            "Nugoehuvi Synth Blue Pill Booster": 977,            # Implants & Boosters > Booster
+            "Prototype Cerebral Accelerator": 977,               # Implants & Boosters > Booster
+            "Prototype Iris Probe Launcher": 712,                # Ship Equipment > Turrets & Bays > Scan Probe Launchers
+            "Shadow": 1310,                                      # Drones > Combat Drones > Fighter Bombers
+            "Sleeper Data Analyzer I": 714,                      # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
+            "Standard Cerebral Accelerator": 977,                # Implants & Boosters > Booster
+            "Talocan Data Analyzer I": 714,                      # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
+            "Terran Data Analyzer I": 714,                       # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
+            "Tetrimon Data Analyzer I": 714                      # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
         }
 
         self.ITEMS_FORCEDMARKETGROUP_R = self.__makeRevDict(self.ITEMS_FORCEDMARKETGROUP)
 
         self.FORCEDMARKETGROUP = {
-            685: False, # Ship Equipment > Electronic Warfare > ECCM
-            681: False, # Ship Equipment > Electronic Warfare > Sensor Backup Arrays
+            685: False,  # Ship Equipment > Electronic Warfare > ECCM
+            681: False,  # Ship Equipment > Electronic Warfare > Sensor Backup Arrays
         }
 
         # Misc definitions
         # 0 is for items w/o meta group
-        self.META_MAP = OrderedDict([("normal",  frozenset((0, 1, 2, 14))),
+        self.META_MAP = OrderedDict([("normal", frozenset((0, 1, 2, 14))),
                                      ("faction", frozenset((4, 3))),
                                      ("complex", frozenset((6,))),
                                      ("officer", frozenset((5,)))])
@@ -348,7 +365,7 @@ class Market():
 
     @classmethod
     def getInstance(cls):
-        if cls.instance == None:
+        if cls.instance is None:
             cls.instance = Market()
         return cls.instance
 
@@ -356,7 +373,7 @@ class Market():
         """Creates reverse dictionary"""
         rev = {}
         for item, value in orig.items():
-            if not value in rev:
+            if value not in rev:
                 rev[value] = set()
             rev[value].add(item)
         return rev
@@ -364,18 +381,18 @@ class Market():
     def getItem(self, identity, *args, **kwargs):
         """Get item by its ID or name"""
         try:
-            if isinstance(identity, eos.types.Item):
+            if isinstance(identity, e_Item):
                 item = identity
             elif isinstance(identity, int):
-                item = eos.db.getItem(identity, *args, **kwargs)
+                item = getItem(identity, *args, **kwargs)
             elif isinstance(identity, basestring):
                 # We normally lookup with string when we are using import/export
                 # features. Check against overrides
                 identity = conversions.all.get(identity, identity)
-                item = eos.db.getItem(identity, *args, **kwargs)
+                item = getItem(identity, *args, **kwargs)
             elif isinstance(identity, float):
                 id = int(identity)
-                item = eos.db.getItem(id, *args, **kwargs)
+                item = getItem(id, *args, **kwargs)
             else:
                 raise TypeError("Need Item object, integer, float or string as argument")
         except:
@@ -386,7 +403,7 @@ class Market():
 
     def getGroup(self, identity, *args, **kwargs):
         """Get group by its ID or name"""
-        if isinstance(identity, eos.types.Group):
+        if isinstance(identity, e_Group):
             return identity
         elif isinstance(identity, (int, float, basestring)):
             if isinstance(identity, float):
@@ -398,43 +415,43 @@ class Market():
                     # Return first match
                     return cgrp
             # Return eos group if everything else returned nothing
-            return eos.db.getGroup(identity, *args, **kwargs)
+            return getGroup(identity, *args, **kwargs)
         else:
             raise TypeError("Need Group object, integer, float or string as argument")
 
     def getCategory(self, identity, *args, **kwargs):
         """Get category by its ID or name"""
-        if isinstance(identity, eos.types.Category):
+        if isinstance(identity, e_Category):
             category = identity
         elif isinstance(identity, (int, basestring)):
-            category = eos.db.getCategory(identity, *args, **kwargs)
+            category = getCategory(identity, *args, **kwargs)
         elif isinstance(identity, float):
             id = int(identity)
-            category = eos.db.getCategory(id, *args, **kwargs)
+            category = getCategory(id, *args, **kwargs)
         else:
             raise TypeError("Need Category object, integer, float or string as argument")
         return category
 
     def getMetaGroup(self, identity, *args, **kwargs):
         """Get meta group by its ID or name"""
-        if isinstance(identity, eos.types.MetaGroup):
+        if isinstance(identity, MetaGroup):
             metaGroup = identity
         elif isinstance(identity, (int, basestring)):
-            metaGroup = eos.db.getMetaGroup(identity, *args, **kwargs)
+            metaGroup = getMetaGroup(identity, *args, **kwargs)
         elif isinstance(identity, float):
             id = int(identity)
-            metaGroup = eos.db.getMetaGroup(id, *args, **kwargs)
+            metaGroup = getMetaGroup(id, *args, **kwargs)
         else:
             raise TypeError("Need MetaGroup object, integer, float or string as argument")
         return metaGroup
 
     def getMarketGroup(self, identity, *args, **kwargs):
         """Get market group by its ID"""
-        if isinstance(identity, eos.types.MarketGroup):
+        if isinstance(identity, MarketGroup):
             marketGroup = identity
         elif isinstance(identity, (int, float)):
             id = int(identity)
-            marketGroup = eos.db.getMarketGroup(id, *args, **kwargs)
+            marketGroup = getMarketGroup(id, *args, **kwargs)
         else:
             raise TypeError("Need MarketGroup object, integer or float as argument")
         return marketGroup
@@ -458,7 +475,7 @@ class Market():
         # Check if item is in forced metagroup map
         if item.name in self.ITEMS_FORCEDMETAGROUP:
             # Create meta group from scratch
-            metaGroup = eos.types.MetaType()
+            metaGroup = MetaType()
             # Get meta group info object based on meta group name
             metaGroupInfo = self.getMetaGroup(self.ITEMS_FORCEDMETAGROUP[item.name][0])
             # Get parent item based on its name
@@ -537,7 +554,7 @@ class Market():
         variations.update(parents)
         # Add all variations of parents to the set
         parentids = tuple(item.ID for item in parents)
-        variations.update(eos.db.getVariations(parentids))
+        variations.update(getVariations(parentids))
         return variations
 
     def getGroupsByCategory(self, cat):
@@ -679,8 +696,11 @@ class Market():
         """Get ships for given group id"""
         grp = self.getGroup(grpid, eager=("items", "items.group", "items.marketGroup"))
         ships = self.getItemsByGroup(grp)
+        # TODO: Figure out why this was here.
+        '''
         for ship in ships:
             ship.race
+        '''
         return ships
 
     def getShipListDelayed(self, id, callback):
@@ -689,10 +709,10 @@ class Market():
 
     def searchShips(self, name):
         """Find ships according to given text pattern"""
-        filter = eos.types.Category.name.in_(["Ship", "Structure"])
-        results = eos.db.searchItems(name, where=filter,
-                                     join=(eos.types.Item.group, eos.types.Group.category),
-                                     eager=("icon", "group.category", "metaGroup", "metaGroup.parent"))
+        filter = e_Category.name.in_(["Ship", "Structure"])
+        results = searchItems(name, where=filter,
+                              join=(e_Item.group, e_Group.category),
+                              eager=("icon", "group.category", "metaGroup", "metaGroup.parent"))
         ships = set()
         for item in results:
             if self.getPublicityByItem(item):
@@ -704,12 +724,12 @@ class Market():
         self.searchWorkerThread.scheduleSearch(name, callback, filterOn)
 
     def getItemsWithOverrides(self):
-        overrides = eos.db.getAllOverrides()
+        overrides = getAllOverrides()
         items = set()
         for x in overrides:
             if (x.item is None):
-                eos.db.saveddata_session.delete(x)
-                eos.db.commit()
+                saveddata_session.delete(x)
+                commit()
             else:
                 items.add(x.item)
         return list(items)
@@ -724,7 +744,7 @@ class Market():
         except TypeError:
             attrIDs = (attribs.ID,)
         info = {}
-        for itemID, typeID, val in eos.db.directAttributeRequest(itemIDs, attrIDs):
+        for itemID, typeID, val in directAttributeRequest(itemIDs, attrIDs):
             info[itemID] = val
 
         return info
@@ -743,10 +763,10 @@ class Market():
         """Get price for provided typeID"""
         price = self.priceCache.get(typeID)
         if price is None:
-            price = eos.db.getPrice(typeID)
+            price = getPrice(typeID)
             if price is None:
-                price = eos.types.Price(typeID)
-                eos.db.add(price)
+                price = Price(typeID)
+                add(price)
 
             self.priceCache[typeID] = price
 
@@ -766,9 +786,9 @@ class Market():
         def cb():
             try:
                 callback(requests)
-            except Exception, e:
+            except Exception:
                 pass
-            eos.db.commit()
+            commit()
 
         self.priceWorkerThread.trigger(requests, cb)
 
@@ -789,7 +809,7 @@ class Market():
 
     def clearPriceCache(self):
         self.priceCache.clear()
-        deleted_rows = eos.db.clearPrices()
+        clearPrices()
 
     def getSystemWideEffects(self):
         """
@@ -832,7 +852,7 @@ class Market():
                         groupname = re.sub(garbage, "", groupname)
                     groupname = re.sub(" {2,}", " ", groupname).strip()
                     # Add stuff to dictionary
-                    if not groupname in effects:
+                    if groupname not in effects:
                         effects[groupname] = set()
                     effects[groupname].add((beacon, beaconname, shortname))
                     # Break loop on 1st result

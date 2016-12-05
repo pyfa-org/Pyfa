@@ -14,11 +14,13 @@ which warfareBuffID to run (shouldn't need this right now, but better safe than 
 '''
 
 type = "active", "gang"
+
+
 def handler(fit, module, context, **kwargs):
-    print "In chargeBonusWarfareEffect, context: ", context
+    print("In chargeBonusWarfareEffect, context: ", context)
 
     def runEffect(id, value):
-        print "RUN EFFECT: ", fit,
+        print("RUN EFFECT: ", fit)
 
         if id == 10:  # Shield Burst: Shield Harmonizing: Shield Resistance
             for damageType in ("Em", "Explosive", "Thermal", "Kinetic"):
@@ -89,7 +91,7 @@ def handler(fit, module, context, **kwargs):
 
         if id == 24:  # Mining Burst: Mining Laser Optimization: Mining Capacitor/Duration
             fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Mining") or mod.item.requiresSkill("Ice Harvesting") or mod.item.requiresSkill("Gas Cloud Harvesting"), "capacitorNeed", value, stackingPenalties=True)
-            fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Mining") or mod.item.requiresSkill("Ice Harvesting") or mod.item.requiresSkill("Gas Cloud Harvesting"), "duration", value, stackingPenalties = True)
+            fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Mining") or mod.item.requiresSkill("Ice Harvesting") or mod.item.requiresSkill("Gas Cloud Harvesting"), "duration", value, stackingPenalties=True)
 
         if id == 25:  # Mining Burst: Mining Equipment Preservation: Crystal Volatility
             fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Mining"), "crystalVolatilityChance", value, stackingPenalties=True)
@@ -98,12 +100,11 @@ def handler(fit, module, context, **kwargs):
         if module.getModifiedChargeAttr("warfareBuff{}ID".format(x)):
             value = module.getModifiedChargeAttr("warfareBuff{}Multiplier".format(x))
             id = module.getModifiedChargeAttr("warfareBuff{}ID".format(x))
-            print "Buff ID: ",id," value: ",value
+            print("Buff ID: ", id, " value: ", value)
             if id:
                 if 'commandRun' not in context:
-                    print "Add buffID", id, " to ", fit
+                    print("Add buffID", id, " to ", fit)
                     fit.addCommandBonus(id, value, module, kwargs['effect'])
                 elif kwargs['warfareBuffID'] is not None and kwargs['warfareBuffID'] == id:
-                    print "Running buffID ", kwargs['warfareBuffID'], " on ", fit
+                    print("Running buffID ", kwargs['warfareBuffID'], " on ", fit)
                     runEffect(kwargs['warfareBuffID'], value)
-

@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,18 +15,22 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
-from gui.viewColumn import ViewColumn
-from gui.bitmapLoader import BitmapLoader
-import gui.mainFrame
 
 import wx
-from eos.types import Drone, Module, Rack, Fit, Implant
-from eos.types import State as State_
+
+import gui.mainFrame
+from eos.saveddata.drone import Drone as Drone
+from eos.saveddata.fit import Fit as Fit
+from eos.saveddata.implant import Implant as Implant
+from eos.saveddata.module import Module as Module, Rack as Rack, State as State_
+from gui.viewColumn import ViewColumn
+
 
 class State(ViewColumn):
     name = "State"
+
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
@@ -77,5 +81,6 @@ class State(ViewColumn):
             if active:
                 return generic_active
             return generic_inactive
+
 
 State.register()

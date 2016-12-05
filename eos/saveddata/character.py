@@ -23,12 +23,18 @@ from itertools import chain
 
 from sqlalchemy.orm import validates, reconstructor
 
-import eos
-import eos.db
-import eos.types
+from eos.db import saveddata_session, sd_lock
+from eos.db.saveddata import queries as eds_queries
+from eos.db.saveddata.queries import cachedQuery
+from eos.db.util import processEager
 from eos.effectHandlerHelpers import HandledItem, HandledImplantBoosterList
+from eos.db.saveddata.mapper import Characters as eds_Characters
 
 logger = logging.getLogger(__name__)
+
+
+class ReadOnlyException(Exception):
+    pass
 
 
 class Character(object):
@@ -39,7 +45,7 @@ class Character(object):
     @classmethod
     def getSkillList(cls):
         if cls.__itemList is None:
-            cls.__itemList = eos.db.getItemsByCategory("Skill")
+            cls.__itemList = edg_queries.getItemsByCategory("Skill")
 
         return cls.__itemList
 
@@ -71,24 +77,24 @@ class Character(object):
 
     @classmethod
     def getAll5(cls):
-        all5 = eos.db.getCharacter("All 5")
+        all5 = getCharacter("All 5")
 
         if all5 is None:
             # We do not have to be afraid of committing here and saving
             # edited character data. If this ever runs, it will be during the
             # get character list phase when pyfa first starts
             all5 = Character("All 5", 5)
-            eos.db.save(all5)
+            eds_queries.save(all5)
 
         return all5
 
     @classmethod
     def getAll0(cls):
-        all0 = eos.db.getCharacter("All 0")
+        all0 = getCharacter("All 0")
 
         if all0 is None:
             all0 = Character("All 0")
-            eos.db.save(all0)
+            eds_queries.save(all0)
 
         return all0
 
@@ -190,7 +196,7 @@ class Character(object):
             skill.saveLevel()
 
         self.dirtySkills = set()
-        eos.db.commit()
+        eds_queries.commit()
 
     def revertLevels(self):
         for skill in self.dirtySkills.copy():
@@ -377,5 +383,40 @@ class Skill(HandledItem):
         )
 
 
-class ReadOnlyException(Exception):
-    pass
+@cachedQuery(Character, 1, "lookfor")
+def getCharacter(lookfor, eager=None):
+    if isinstance(lookfor, int):
+        if eager is None:
+            with sd_lock:
+                character = saveddata_session.query(eds_Characters).get(lookfor)
+        else:
+            eager = processEager(eager)
+            with sd_lock:
+                character = saveddata_session.query(eds_Characters).options(*eager).filter(eds_Characters.ID == lookfor).first()
+    elif isinstance(lookfor, basestring):
+        eager = processEager(eager)
+        with sd_lock:
+            try:
+                character = saveddata_session.query(eds_Characters).filter(eds_Characters.savedName == lookfor).first()
+            except AttributeError:
+                character = saveddata_session.query(eds_Characters).first()
+    else:
+        raise TypeError("Need integer or string as argument")
+    return character
+
+
+def getCharacterList(eager=None):
+    eager = processEager(eager)
+    with sd_lock:
+        characters = saveddata_session.query(eds_Characters).options(*eager).all()
+    return characters
+
+
+def getCharactersForUser(lookfor, eager=None):
+    if isinstance(lookfor, int):
+        eager = processEager(eager)
+        with sd_lock:
+            characters = saveddata_session.query(eds_Characters).options(*eager).filter(eds_Characters.ownerID == lookfor).all()
+    else:
+        raise TypeError("Need integer as argument")
+    return characters

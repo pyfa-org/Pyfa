@@ -19,6 +19,7 @@
 
 import collections
 from math import exp
+from eos.gamedata import getAttributeInfo
 
 defaultValuesCache = {}
 cappingAttrKeyCache = {}
@@ -132,8 +133,7 @@ class ModifiedAttributeDict(collections.MutableMapping):
         return (key for key in all)
 
     def __contains__(self, key):
-        return (
-               self.__original is not None and key in self.__original) or key in self.__modified or key in self.__intermediary
+        return (self.__original is not None and key in self.__original) or key in self.__modified or key in self.__intermediary
 
     def __placehold(self, key):
         """Create calculation placeholder in item's modified attribute dict"""
@@ -152,7 +152,6 @@ class ModifiedAttributeDict(collections.MutableMapping):
         try:
             cappingKey = cappingAttrKeyCache[key]
         except KeyError:
-            from eos.db.gamedata.queries import getAttributeInfo
             attrInfo = getAttributeInfo(key)
             if attrInfo is None:
                 cappingId = cappingAttrKeyCache[key] = None
@@ -193,7 +192,6 @@ class ModifiedAttributeDict(collections.MutableMapping):
         try:
             default = defaultValuesCache[key]
         except KeyError:
-            from eos.db.gamedata.queries import getAttributeInfo
             attrInfo = getAttributeInfo(key)
             if attrInfo is None:
                 default = defaultValuesCache[key] = 0.0

@@ -4,6 +4,8 @@
 # Implant: Mining Foreman Mindlink
 # Implant: ORE Mining Director Mindlink
 type = "passive"
+
+
 def handler(fit, src, context):
     fit.modules.filteredChargeBoost(lambda mod: mod.item.requiresSkill("Mining Foreman"), "warfareBuff4Multiplier", src.getModifiedItemAttr("mindlinkBonus"))
     fit.modules.filteredChargeBoost(lambda mod: mod.item.requiresSkill("Mining Foreman"), "warfareBuff2Multiplier", src.getModifiedItemAttr("mindlinkBonus"))

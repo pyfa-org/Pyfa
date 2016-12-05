@@ -18,27 +18,35 @@
 # ===============================================================================
 
 import copy
+import logging
 import time
 from copy import deepcopy
 from itertools import chain
 from math import sqrt, log, asinh
 
+from sqlalchemy.sql import and_
 from sqlalchemy.orm import validates, reconstructor
 
 import eos.db
 from eos import capSim
-from eos.effectHandlerHelpers import *
+from eos.db import saveddata_session, sd_lock
+
+from eos.db.saveddata.queries import cachedQuery, removeInvalid
+from eos.db.util import processEager, processWhere, sqlizeString
+from eos.effectHandlerHelpers import (
+    HandledModuleList,
+    HandledDroneCargoList,
+    HandledImplantBoosterList,
+    HandledProjectedModList,
+    HandledProjectedDroneList,
+)
 from eos.enum import Enum
-from eos.saveddata.module import State, Hardpoint
-from eos.types import Ship, Character, Slot, Module, Citadel
+from eos.saveddata.citadel import Citadel as Citadel
+from eos.saveddata.module import Slot as Slot, Module as Module, State as State, Hardpoint as Hardpoint
+from eos.saveddata.ship import Ship as Ship
 from utils.timer import Timer
 
 logger = logging.getLogger(__name__)
-
-try:
-    from collections import OrderedDict
-except ImportError:
-    from utils.compat import OrderedDict
 
 
 class ImplantLocation(Enum):
@@ -88,7 +96,7 @@ class Fit(object):
         self.__mode = None
 
         if self.shipID:
-            item = eos.db.getItem(self.shipID)
+            item = edg_queries.getItem(self.shipID)
             if item is None:
                 logger.error("Item (id: %d) does not exist", self.shipID)
                 return
@@ -107,7 +115,7 @@ class Fit(object):
                 return
 
         if self.modeID and self.__ship:
-            item = eos.db.getItem(self.modeID)
+            item = edg_queries.getItem(self.modeID)
             # Don't need to verify if it's a proper item, as validateModeItem assures this
             self.__mode = self.ship.validateModeItem(item)
         else:
@@ -177,7 +185,9 @@ class Fit(object):
 
     @property
     def character(self):
-        return self.__character if self.__character is not None else Character.getAll0()
+        # TODO: Can't call Character from here, cyclical import.
+        # return self.__character if self.__character is not None else Character.getAll0()
+        return self.__character if self.__character is not None else None
 
     @character.setter
     def character(self, char):
@@ -449,7 +459,7 @@ class Fit(object):
         # oh fuck this is so janky
         # @todo should we pass in min/max to this function, or is abs okay?
         # (abs is old method, ccp now provides the aggregate function in their data)
-        print "Add command bonus: ", warfareBuffID, " - value: ", value
+        print("Add command bonus: ", warfareBuffID, " - value: ", value)
 
         if warfareBuffID not in self.commandBonuses or abs(self.commandBonuses[warfareBuffID][0]) < abs(value):
             self.commandBonuses[warfareBuffID] = (runTime, value, module, effect)
@@ -471,7 +481,7 @@ class Fit(object):
                     # todo: ensure that these are run with the module is active only
                     context += ("commandRun",)
                     self.register(thing)
-                    effect.handler(self, thing, context, warfareBuffID = warfareBuffID)
+                    effect.handler(self, thing, context, warfareBuffID=warfareBuffID)
 
                 # if effect.isType("offline") or (effect.isType("passive") and thing.state >= State.ONLINE) or \
                 # (effect.isType("active") and thing.state >= State.ACTIVE):
@@ -514,12 +524,12 @@ class Fit(object):
                 eos.db.saveddata_session.delete(self)
 
         if self.commandFits and not withBoosters:
-            print "Calculatate command fits and apply to fit"
+            print("Calculatate command fits and apply to fit")
             for fit in self.commandFits:
                 if self == fit:
-                    print "nope"
+                    print("nope")
                     continue
-                print "calculating ", fit
+                print("calculating ", fit)
                 fit.calculateModifiedAttributes(self, True)
                 #
                 # for thing in chain(fit.modules, fit.implants, fit.character.skills, (fit.ship,)):
@@ -613,13 +623,13 @@ class Fit(object):
                         # targetFit.register(item, origin=self)
                         item.calculateModifiedAttributes(targetFit, runTime, False, True)
 
-            print "Command: "
-            print self.commandBonuses
+            print("Command: ")
+            print(self.commandBonuses)
 
             if not withBoosters and self.commandBonuses:
                 self.__runCommandBoosts(runTime)
 
-            timer.checkpoint('Done with runtime: %s'%runTime)
+            timer.checkpoint('Done with runtime: %s' % runTime)
 
         # Mark fit as calculated
         self.__calculated = True
@@ -1182,3 +1192,132 @@ class Fit(object):
         return u"{} ({})".format(
             self.name, self.ship.item.name
         ).encode('utf8')
+
+
+@cachedQuery(Fit, 1, "lookfor")
+def getFit(lookfor, eager=None):
+    if isinstance(lookfor, int):
+        if eager is None:
+            with sd_lock:
+                fit = saveddata_session.query(Fit).get(lookfor)
+        else:
+            eager = processEager(eager)
+            with sd_lock:
+                fit = saveddata_session.query(Fit).options(*eager).filter(Fit.ID == lookfor).first()
+    else:
+        raise TypeError("Need integer as argument")
+
+    if fit and fit.isInvalid:
+        with sd_lock:
+            removeInvalid([fit])
+        return None
+
+    return fit
+
+
+def getFitsWithShip(shipID, ownerID=None, where=None, eager=None):
+    """
+    Get all the fits using a certain ship.
+    If no user is passed, do this for all users.
+    """
+    if isinstance(shipID, int):
+        if ownerID is not None and not isinstance(ownerID, int):
+            raise TypeError("OwnerID must be integer")
+        filter = Fit.shipID == shipID
+        if ownerID is not None:
+            filter = and_(filter, Fit.ownerID == ownerID)
+
+        filter = processWhere(filter, where)
+        eager = processEager(eager)
+        with sd_lock:
+            fits = removeInvalid(saveddata_session.query(Fit).options(*eager).filter(filter).all())
+    else:
+        raise TypeError("ShipID must be integer")
+
+    return fits
+
+
+def getBoosterFits(ownerID=None, where=None, eager=None):
+    """
+    Get all the fits that are flagged as a boosting ship
+    If no user is passed, do this for all users.
+    """
+
+    if ownerID is not None and not isinstance(ownerID, int):
+        raise TypeError("OwnerID must be integer")
+    filter = Fit.booster == 1
+    if ownerID is not None:
+        filter = and_(filter, Fit.ownerID == ownerID)
+
+    filter = processWhere(filter, where)
+    eager = processEager(eager)
+    with sd_lock:
+        fits = removeInvalid(saveddata_session.query(Fit).options(*eager).filter(filter).all())
+
+    return fits
+
+
+def countAllFits():
+    with sd_lock:
+        count = saveddata_session.query(Fit).count()
+    return count
+
+
+def countFitsWithShip(shipID, ownerID=None, where=None, eager=None):
+    """
+    Get all the fits using a certain ship.
+    If no user is passed, do this for all users.
+    """
+    if isinstance(shipID, int):
+        if ownerID is not None and not isinstance(ownerID, int):
+            raise TypeError("OwnerID must be integer")
+        filter = Fit.shipID == shipID
+        if ownerID is not None:
+            filter = and_(filter, Fit.ownerID == ownerID)
+
+        filter = processWhere(filter, where)
+        eager = processEager(eager)
+        with sd_lock:
+            count = saveddata_session.query(Fit).options(*eager).filter(filter).count()
+    else:
+        raise TypeError("ShipID must be integer")
+    return count
+
+
+def getFitList(eager=None):
+    eager = processEager(eager)
+    with sd_lock:
+        fits = removeInvalid(saveddata_session.query(Fit).options(*eager).all())
+
+    return fits
+
+
+def searchFits(nameLike, where=None, eager=None):
+    if not isinstance(nameLike, basestring):
+        raise TypeError("Need string as argument")
+    # Prepare our string for request
+    nameLike = u"%{0}%".format(sqlizeString(nameLike))
+
+    # Add any extra components to the search to our where clause
+    filter = processWhere(Fit.name.like(nameLike, escape="\\"), where)
+    eager = processEager(eager)
+    with sd_lock:
+        fits = removeInvalid(saveddata_session.query(Fit).options(*eager).filter(filter).all())
+
+    return fits
+
+
+def getProjectedFits(fitID):
+    # TODO: Import refactor.  Need to move this out of fit, or rewrite it to get this in another way.
+    # We *CANNOT* call mapper.
+    '''
+    if isinstance(fitID, int):
+        with sd_lock:
+            filter = and_(mapper.fits_table.projectedFits_table.c.sourceID == fitID,
+                          Fit.ID == mapper.fits_table.projectedFits_table.c.victimID)
+            fits = saveddata_session.query(Fit).filter(filter).all()
+            return fits
+    else:
+        raise TypeError("Need integer as argument")
+    '''
+    raise TypeError("Needs to be migrated. Import Refactor")

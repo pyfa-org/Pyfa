@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,25 +15,27 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
-from gui import builtinViewColumns
-from gui.viewColumn import ViewColumn
-from gui.bitmapLoader import BitmapLoader
-import service
-from gui.utils.numberFormatter import formatAmount
 import wx
-from eos.types import Mode
+
+from eos.saveddata.mode import Mode as Mode
+from gui.bitmapLoader import BitmapLoader
+from gui.utils.numberFormatter import formatAmount
+from gui.viewColumn import ViewColumn
+from service.attribute import Attribute
+
 
 class MaxRange(ViewColumn):
     name = "Max Range"
-    def __init__(self, fittingView, params = None):
-        if params == None:
-            params = {"showIcon": True,
-                      "displayName": False}
+
+    def __init__(self, fittingView, params=None):
+        if params is None:
+            params = {"showIcon": True, "displayName": False}
+
         ViewColumn.__init__(self, fittingView)
 
-        sAttr = service.Attribute.getInstance()
+        sAttr = Attribute.getInstance()
         info = sAttr.getAttributeInfo("maxRange")
         self.info = info
         if params["showIcon"]:
@@ -71,10 +73,10 @@ class MaxRange(ViewColumn):
         return -1
 
     def getParameters(self):
-        return (("displayName", bool, False),
-                ("showIcon", bool, True))
+        return (("displayName", bool, False), ("showIcon", bool, True))
 
     def getToolTip(self, mod):
         return "Optimal + Falloff"
+
 
 MaxRange.register()

@@ -19,6 +19,12 @@
 
 import re
 
+from eos.db import saveddata_session, sd_lock
+from eos.db.saveddata.queries import cachedQuery
+from eos.db.util import processEager
+
+from eos.db.saveddata.mapper import DamagePatterns as eds_DamagePatterns
+
 
 class DamagePattern(object):
     DAMAGE_TYPES = ("em", "thermal", "kinetic", "explosive")
@@ -119,3 +125,31 @@ class DamagePattern(object):
         p = DamagePattern(self.emAmount, self.thermalAmount, self.kineticAmount, self.explosiveAmount)
         p.name = "%s copy" % self.name
         return p
+
+
+def getDamagePatternList(eager=None):
+    eager = processEager(eager)
+    with sd_lock:
+        patterns = saveddata_session.query(eds_DamagePatterns).all()
+    return patterns
+
+
+@cachedQuery(DamagePattern, 1, "lookfor")
+def getDamagePattern(lookfor, eager=None):
+    if isinstance(lookfor, int):
+        if eager is None:
+            with sd_lock:
+                pattern = saveddata_session.query(DamagePattern).get(lookfor)
+        else:
+            eager = processEager(eager)
+            with sd_lock:
+                pattern = saveddata_session.query(DamagePattern).options(*eager).filter(
+                    DamagePattern.ID == lookfor).first()
+    elif isinstance(lookfor, basestring):
+        eager = processEager(eager)
+        with sd_lock:
+            pattern = saveddata_session.query(DamagePattern).options(*eager).filter(
+                DamagePattern.name == lookfor).first()
+    else:
+        raise TypeError("Need integer or string as argument")
+    return pattern

@@ -1,11 +1,15 @@
-from gui import builtinViewColumns
-from gui.viewColumn import ViewColumn
-from gui.bitmapLoader import BitmapLoader
 import wx
-from eos.types import Drone, Fit, Module, Slot, Rack, Implant
+
+from eos.saveddata.drone import Drone as Drone
+from eos.saveddata.fit import Fit as Fit
+from eos.saveddata.implant import Implant as Implant
+from eos.saveddata.module import Slot as Slot, Module as Module, Rack as Rack
+from gui.viewColumn import ViewColumn
+
 
 class BaseIcon(ViewColumn):
     name = "Base Icon"
+
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
         self.size = 24
@@ -17,16 +21,16 @@ class BaseIcon(ViewColumn):
     def getImageId(self, stuff):
         if isinstance(stuff, Drone):
             return -1
-        if isinstance(stuff, Fit):
+        elif isinstance(stuff, Fit):
             return self.shipImage
-        if isinstance(stuff, Rack):
+        elif isinstance(stuff, Rack):
             return -1
-        if isinstance(stuff, Implant):
+        elif isinstance(stuff, Implant):
             if stuff.character:  # if it has a character as it's parent
                 return self.fittingView.imageList.GetImageIndex("character_small", "gui")
             else:
                 return self.shipImage
-        if isinstance(stuff, Module):
+        elif isinstance(stuff, Module):
             if stuff.isEmpty:
                 return self.fittingView.imageList.GetImageIndex("slot_%s_small" % Slot.getName(stuff.slot).lower(), "gui")
             else:
@@ -40,5 +44,6 @@ class BaseIcon(ViewColumn):
             return self.fittingView.imageList.GetImageIndex(iconFile, "icons")
         else:
             return -1
+
 
 BaseIcon.register()

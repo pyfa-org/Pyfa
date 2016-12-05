@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,26 +15,28 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
 import wx
 import wx.lib.newevent
-import service
+
+import gui.builtinViews.emptyView
+import gui.display as d
+import gui.globalEvents as GE
 import gui.mainFrame
 import gui.marketBrowser
-import gui.display as d
-from gui.contextMenu import ContextMenu
-import gui.shipBrowser
 import gui.multiSwitch
-from eos.types import Slot, Rack, Module
-from gui.builtinViewColumns.state import State
+import gui.shipBrowser
+from eos.saveddata.module import Slot as Slot, Module as Module, Rack as Rack
 from gui.bitmapLoader import BitmapLoader
-import gui.builtinViews.emptyView
+from gui.builtinViewColumns.state import State
+from gui.contextMenu import ContextMenu
 from gui.utils.exportHtml import exportHtml
+from service.fit import Fit
+from service.market import Market
 
-import gui.globalEvents as GE
 
-#Tab spawning handler
+# Tab spawning handler
 class FitSpawner(gui.multiSwitch.TabSpawner):
     def __init__(self, multiSwitch):
         self.multiSwitch = multiSwitch
@@ -55,7 +57,7 @@ class FitSpawner(gui.multiSwitch.TabSpawner):
                 pass
         if count < 0:
             startup = getattr(event, "startup", False)  # see OpenFitsThread in gui.mainFrame
-            sFit = service.Fit.getInstance()
+            sFit = Fit.getInstance()
             openFitInNew = sFit.serviceFittingOptions["openFitInNew"]
             mstate = wx.GetMouseState()
 
@@ -84,9 +86,11 @@ class FitSpawner(gui.multiSwitch.TabSpawner):
             self.multiSwitch.AddPage(view)
             view.handleDrag(type, fitID)
 
+
 FitSpawner.register()
 
-#Drag'n'drop handler
+
+# Drag'n'drop handler
 class FittingViewDrop(wx.PyDropTarget):
         def __init__(self, dropFn):
             wx.PyDropTarget.__init__(self)
@@ -100,6 +104,7 @@ class FittingViewDrop(wx.PyDropTarget):
                 data = self.dropData.GetText().split(':')
                 self.dropFn(x, y, data)
             return t
+
 
 class FittingView(d.Display):
     DEFAULT_COLS = ["State",
@@ -116,7 +121,7 @@ class FittingView(d.Display):
                     ]
 
     def __init__(self, parent):
-        d.Display.__init__(self, parent, size = (0,0), style =  wx.BORDER_NONE)
+        d.Display.__init__(self, parent, size=(0, 0), style=wx.BORDER_NONE)
         self.Show(False)
         self.parent = parent
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
@@ -126,7 +131,7 @@ class FittingView(d.Display):
 
         self.Bind(wx.EVT_LEFT_DCLICK, self.removeItem)
         self.Bind(wx.EVT_LIST_BEGIN_DRAG, self.startDrag)
-        if "__WXGTK__" in  wx.PlatformInfo:
+        if "__WXGTK__" in wx.PlatformInfo:
             self.Bind(wx.EVT_RIGHT_UP, self.scheduleMenu)
         else:
             self.Bind(wx.EVT_RIGHT_DOWN, self.scheduleMenu)
@@ -191,7 +196,7 @@ class FittingView(d.Display):
             self.addModule(x, y, int(data[1]))
 
     def handleDrag(self, type, fitID):
-        #Those are drags coming from pyfa sources, NOT builtin wx drags
+        # Those are drags coming from pyfa sources, NOT builtin wx drags
         if type == "fit":
             wx.PostEvent(self.mainFrame, gui.shipBrowser.FitSelected(fitID=fitID))
 
@@ -207,7 +212,7 @@ class FittingView(d.Display):
     def pageChanged(self, event):
         if self.parent.IsActive(self):
             fitID = self.getActiveFit()
-            sFit = service.Fit.getInstance()
+            sFit = Fit.getInstance()
             sFit.switchFit(fitID)
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
@@ -221,11 +226,11 @@ class FittingView(d.Display):
 
         if row != -1 and row not in self.blanks:
             data = wx.PyTextDataObject()
-            data.SetText("fitting:"+str(self.mods[row].position))
+            data.SetText("fitting:" + str(self.mods[row].position))
 
             dropSource = wx.DropSource(self)
             dropSource.SetData(data)
-            res = dropSource.DoDragDrop()
+            dropSource.DoDragDrop()
 
     def getSelectedMods(self):
         sel = []
@@ -236,15 +241,14 @@ class FittingView(d.Display):
 
         return sel
 
-    def kbEvent(self,event):
+    def kbEvent(self, event):
         keycode = event.GetKeyCode()
         if keycode == wx.WXK_DELETE or keycode == wx.WXK_NUMPAD_DELETE:
             row = self.GetFirstSelected()
-            firstSel = row
             while row != -1:
                 if row not in self.blanks:
                     self.removeModule(self.mods[row])
-                self.Select(row,0)
+                self.Select(row, 0)
                 row = self.GetNextSelected(row)
 
         event.Skip()
@@ -262,7 +266,7 @@ class FittingView(d.Display):
 
         try:
             # Sometimes there is no active page after deletion, hence the try block
-            sFit = service.Fit.getInstance()
+            sFit = Fit.getInstance()
             sFit.refreshFit(self.getActiveFit())
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.activeFitID))
         except wx._core.PyDeadObjectError:
@@ -282,7 +286,7 @@ class FittingView(d.Display):
             fitID = event.fitID
             startup = getattr(event, "startup", False)
             self.activeFitID = fitID
-            sFit = service.Fit.getInstance()
+            sFit = Fit.getInstance()
             self.updateTab()
             if not startup or startup == 2:  # see OpenFitsThread in gui.mainFrame
                 self.Show(fitID is not None)
@@ -293,7 +297,7 @@ class FittingView(d.Display):
         event.Skip()
 
     def updateTab(self):
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fit = sFit.getFit(self.getActiveFit(), basic=True)
 
         bitmap = BitmapLoader.getImage("race_%s_small" % fit.ship.item.race, "gui")
@@ -307,8 +311,8 @@ class FittingView(d.Display):
         if self.parent.IsActive(self):
             itemID = event.itemID
             fitID = self.activeFitID
-            if fitID != None:
-                sFit = service.Fit.getInstance()
+            if fitID is not None:
+                sFit = Fit.getInstance()
                 if sFit.isAmmo(itemID):
                     modules = []
                     sel = self.GetFirstSelected()
@@ -337,7 +341,7 @@ class FittingView(d.Display):
                     self.click(event)
 
     def removeModule(self, module):
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fit = sFit.getFit(self.activeFitID)
         populate = sFit.removeModule(self.activeFitID, fit.modules.index(module))
 
@@ -347,11 +351,10 @@ class FittingView(d.Display):
 
     def addModule(self, x, y, srcIdx):
         '''Add a module from the market browser'''
-        mstate = wx.GetMouseState()
 
         dstRow, _ = self.HitTest((x, y))
         if dstRow != -1 and dstRow not in self.blanks:
-            sFit = service.Fit.getInstance()
+            sFit = Fit.getInstance()
             fitID = self.mainFrame.getActiveFit()
             moduleChanged = sFit.changeModule(fitID, self.mods[dstRow].position, srcIdx)
             if moduleChanged is None:
@@ -367,7 +370,7 @@ class FittingView(d.Display):
         if dstRow != -1 and dstRow not in self.blanks:
             module = self.mods[dstRow]
 
-            sFit = service.Fit.getInstance()
+            sFit = Fit.getInstance()
             sFit.moveCargoToModule(self.mainFrame.getActiveFit(), module.position, srcIdx, mstate.CmdDown() and module.isEmpty)
 
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
@@ -375,7 +378,7 @@ class FittingView(d.Display):
     def swapItems(self, x, y, srcIdx):
         '''Swap two modules in fitting window'''
         mstate = wx.GetMouseState()
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fit = sFit.getFit(self.activeFitID)
 
         if mstate.CmdDown():
@@ -408,7 +411,7 @@ class FittingView(d.Display):
         known to the display, and not the backend, so it's safe.
         '''
 
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fit = sFit.getFit(self.activeFitID)
 
         slotOrder = [Slot.SUBSYSTEM, Slot.HIGH, Slot.MED, Slot.LOW, Slot.RIG, Slot.SERVICE]
@@ -431,12 +434,12 @@ class FittingView(d.Display):
                 for i, mod in enumerate(self.mods):
                     if mod.slot != slotDivider:
                         slotDivider = mod.slot
-                        self.blanks.append((i, slotDivider)) # where and what
+                        self.blanks.append((i, slotDivider))  # where and what
 
                 # second loop modifies self.mods, rewrites self.blanks to represent actual index of blanks
                 for i, (x, slot) in enumerate(self.blanks):
-                    self.blanks[i] = x+i # modify blanks with actual index
-                    self.mods.insert(x+i, Rack.buildRack(slot))
+                    self.blanks[i] = x + i  # modify blanks with actual index
+                    self.mods.insert(x + i, Rack.buildRack(slot))
 
             if fit.mode:
                 # Modes are special snowflakes and need a little manual loving
@@ -481,7 +484,7 @@ class FittingView(d.Display):
         if self.activeFitID is None:
             return
 
-        sMkt = service.Market.getInstance()
+        sMkt = Market.getInstance()
         selection = []
         sel = self.GetFirstSelected()
         contexts = []
@@ -492,20 +495,20 @@ class FittingView(d.Display):
                 srcContext = "fittingModule"
                 itemContext = sMkt.getCategoryByItem(mod.item).name
                 fullContext = (srcContext, itemContext)
-                if not srcContext in tuple(fCtxt[0] for fCtxt in contexts):
+                if srcContext not in tuple(fCtxt[0] for fCtxt in contexts):
                     contexts.append(fullContext)
                 if mod.charge is not None:
                     srcContext = "fittingCharge"
                     itemContext = sMkt.getCategoryByItem(mod.charge).name
                     fullContext = (srcContext, itemContext)
-                    if not srcContext in tuple(fCtxt[0] for fCtxt in contexts):
+                    if srcContext not in tuple(fCtxt[0] for fCtxt in contexts):
                         contexts.append(fullContext)
 
                 selection.append(mod)
 
             sel = self.GetNextSelected(sel)
 
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fit = sFit.getFit(self.activeFitID)
 
         contexts.append(("fittingShip", "Ship" if not fit.isStructure else "Citadel"))
@@ -528,7 +531,7 @@ class FittingView(d.Display):
             sel = []
             curr = self.GetFirstSelected()
 
-            while curr != -1 and row not in self.blanks :
+            while curr != -1 and row not in self.blanks:
                 sel.append(curr)
                 curr = self.GetNextSelected(curr)
 
@@ -537,7 +540,7 @@ class FittingView(d.Display):
             else:
                 mods = self.getSelectedMods()
 
-            sFit = service.Fit.getInstance()
+            sFit = Fit.getInstance()
             fitID = self.mainFrame.getActiveFit()
             ctrl = wx.GetMouseState().CmdDown() or wx.GetMouseState().MiddleDown()
             click = "ctrl" if ctrl is True else "right" if event.GetButton() == 3 else "left"
@@ -571,7 +574,7 @@ class FittingView(d.Display):
         self.Freeze()
         d.Display.refresh(self, stuff)
 
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fit = sFit.getFit(self.activeFitID)
         slotMap = {}
 
@@ -609,7 +612,7 @@ class FittingView(d.Display):
             try:
                 self.MakeSnapshot()
             except:
-               pass
+                pass
 
     def OnShow(self, event):
         if event.GetShow():
@@ -622,22 +625,22 @@ class FittingView(d.Display):
     def Snapshot(self):
         return self.FVsnapshot
 
-    def MakeSnapshot(self, maxColumns = 1337):
+    def MakeSnapshot(self, maxColumns=1337):
 
         if self.FVsnapshot:
             del self.FVsnapshot
 
-        tbmp = wx.EmptyBitmap(16,16)
+        tbmp = wx.EmptyBitmap(16, 16)
         tdc = wx.MemoryDC()
         tdc.SelectObject(tbmp)
         font = wx.SystemSettings_GetFont(wx.SYS_DEFAULT_GUI_FONT)
         tdc.SetFont(font)
 
         columnsWidths = []
-        for i in xrange(len(self.DEFAULT_COLS)):
+        for i in range(len(self.DEFAULT_COLS)):
             columnsWidths.append(0)
 
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         try:
             fit = sFit.getFit(self.activeFitID)
         except:
@@ -658,25 +661,25 @@ class FittingView(d.Display):
         maxWidth = 0
         maxRowHeight = isize
         rows = 0
-        for id,st in enumerate(self.mods):
+        for st in self.mods:
             for i, col in enumerate(self.activeColumns):
-                if i>maxColumns:
+                if i > maxColumns:
                     break
                 name = col.getText(st)
 
                 if not isinstance(name, basestring):
                     name = ""
 
-                nx,ny = tdc.GetTextExtent(name)
+                nx, ny = tdc.GetTextExtent(name)
                 imgId = col.getImageId(st)
                 cw = 0
                 if imgId != -1:
                     cw += isize + padding
                 if name != "":
-                    cw += nx + 4*padding
+                    cw += nx + 4 * padding
 
                 if imgId == -1 and name == "":
-                    cw += isize +padding
+                    cw += isize + padding
 
                 maxRowHeight = max(ny, maxRowHeight)
                 columnsWidths[i] = max(columnsWidths[i], cw)
@@ -685,7 +688,7 @@ class FittingView(d.Display):
 
         render = wx.RendererNative.Get()
 
-        #Fix column widths (use biggest between header or items)
+        # Fix column widths (use biggest between header or items)
 
         for i, col in enumerate(self.activeColumns):
             if i > maxColumns:
@@ -703,26 +706,23 @@ class FittingView(d.Display):
                 opts.m_labelText = name
 
             if imgId != -1:
-                opts.m_labelBitmap = wx.EmptyBitmap(isize,isize)
+                opts.m_labelBitmap = wx.EmptyBitmap(isize, isize)
 
-            width = render.DrawHeaderButton(self, tdc, (0, 0, 16, 16),
-                                sortArrow = wx.HDR_SORT_ICON_NONE, params = opts)
+            width = render.DrawHeaderButton(self, tdc, (0, 0, 16, 16), sortArrow=wx.HDR_SORT_ICON_NONE, params=opts)
 
             columnsWidths[i] = max(columnsWidths[i], width)
 
         tdc.SelectObject(wx.NullBitmap)
 
-
         maxWidth = padding * 2
 
-        for i in xrange(len(self.DEFAULT_COLS)):
+        for i in range(len(self.DEFAULT_COLS)):
             if i > maxColumns:
                 break
             maxWidth += columnsWidths[i]
 
-
         mdc = wx.MemoryDC()
-        mbmp = wx.EmptyBitmap(maxWidth, (maxRowHeight) * rows + padding*4 + headerSize)
+        mbmp = wx.EmptyBitmap(maxWidth, (maxRowHeight) * rows + padding * 4 + headerSize)
 
         mdc.SelectObject(mbmp)
 
@@ -752,8 +752,8 @@ class FittingView(d.Display):
                 bmp = col.bitmap
                 opts.m_labelBitmap = bmp
 
-            width = render.DrawHeaderButton (self, mdc, (cx, padding, columnsWidths[i], headerSize), wx.CONTROL_CURRENT,
-                                sortArrow = wx.HDR_SORT_ICON_NONE, params = opts)
+            width = render.DrawHeaderButton(self, mdc, (cx, padding, columnsWidths[i], headerSize), wx.CONTROL_CURRENT,
+                                            sortArrow=wx.HDR_SORT_ICON_NONE, params=opts)
 
             cx += columnsWidths[i]
 
@@ -763,15 +763,15 @@ class FittingView(d.Display):
         mdc.SetPen(pen)
         mdc.SetBrush(brush)
 
-        cy = padding*2 + headerSize
-        for id,st in enumerate(self.mods):
+        cy = padding * 2 + headerSize
+        for st in self.mods:
             cx = padding
 
             if slotMap[st.slot]:
-                mdc.DrawRectangle(cx,cy,maxWidth - cx,maxRowHeight)
+                mdc.DrawRectangle(cx, cy, maxWidth - cx, maxRowHeight)
 
             for i, col in enumerate(self.activeColumns):
-                if i>maxColumns:
+                if i > maxColumns:
                     break
 
                 name = col.getText(st)
@@ -782,14 +782,14 @@ class FittingView(d.Display):
                 tcx = cx
 
                 if imgId != -1:
-                    self.imageList.Draw(imgId,mdc,cx,cy,wx.IMAGELIST_DRAW_TRANSPARENT,False)
+                    self.imageList.Draw(imgId, mdc, cx, cy, wx.IMAGELIST_DRAW_TRANSPARENT, False)
                     tcx += isize + padding
 
                 if name != "":
-                    nx,ny = mdc.GetTextExtent(name)
+                    nx, ny = mdc.GetTextExtent(name)
                     rect = wx.Rect()
                     rect.top = cy
-                    rect.left = cx + 2*padding
+                    rect.left = cx + 2 * padding
                     rect.width = nx
                     rect.height = maxRowHeight + padding
                     mdc.DrawLabel(name, rect, wx.ALIGN_CENTER_VERTICAL)

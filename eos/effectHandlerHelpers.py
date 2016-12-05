@@ -17,11 +17,7 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-# from sqlalchemy.orm.attributes import flag_modified
 import logging
-
-import eos.db
-import eos.types
 
 logger = logging.getLogger(__name__)
 
@@ -140,9 +136,12 @@ class HandledModuleList(HandledList):
             self.remove(mod)
             return
 
+        # TODO: Import refactor. Migrate this somewhere else, probably to module.py
         # fix for #529, where a module may be in incorrect state after CCP changes mechanics of module
+        '''
         if not mod.isValidState(mod.state):
-            mod.state = eos.types.State.ONLINE
+            mod.state = State.ONLINE
+        '''
 
     def insert(self, index, mod):
         mod.position = index
@@ -159,13 +158,6 @@ class HandledModuleList(HandledList):
         mod.position = None
         for i in xrange(oldPos, len(self)):
             self[i].position -= 1
-
-    def toDummy(self, index):
-        mod = self[index]
-        if not mod.isEmpty:
-            dummy = eos.types.Module.buildEmpty(mod.slot)
-            dummy.position = index
-            self[index] = dummy
 
     def toModule(self, index, mod):
         mod.position = index

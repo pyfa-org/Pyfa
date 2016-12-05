@@ -4,10 +4,8 @@ Migration 15
 - Delete projected modules on citadels
 """
 
-import sqlalchemy
 
 def upgrade(saveddata_engine):
-
     sql = """
     DELETE FROM modules WHERE ID IN
     (

@@ -16,6 +16,7 @@ CREATE TABLE boostersTemp (
 )
 """
 
+
 def upgrade(saveddata_engine):
     saveddata_engine.execute(tmpTable)
     saveddata_engine.execute("INSERT INTO boostersTemp (ID, itemID, fitID, active) SELECT ID, itemID, fitID, active FROM boosters")

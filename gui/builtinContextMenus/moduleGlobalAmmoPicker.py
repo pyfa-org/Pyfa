@@ -1,13 +1,11 @@
 # -*- coding: utf-8 -*-
-from gui.contextMenu import ContextMenu
 import gui.mainFrame
-import service
 import wx
-from gui.bitmapLoader import BitmapLoader
-from eos.types import Hardpoint
 import gui.globalEvents as GE
 from gui.builtinContextMenus.moduleAmmoPicker import ModuleAmmoPicker
-import eos.db
+from service.fit import Fit
+from eos.db.saveddata.queries import getFit
+
 
 class ModuleGlobalAmmoPicker(ModuleAmmoPicker):
     def __init__(self):
@@ -26,9 +24,9 @@ class ModuleGlobalAmmoPicker(ModuleAmmoPicker):
             event.Skip()
             return
 
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
-        fit = eos.db.getFit(fitID)
+        fit = getFit(fitID)
 
         selectedModule = self.modules[0]
         allModules = []
