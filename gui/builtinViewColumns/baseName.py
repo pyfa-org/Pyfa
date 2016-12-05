@@ -20,17 +20,16 @@
 
 import wx
 
-# TODO: Import refactor. This should not be a lazy import, but it's cyclical and hard to fix :(
 import gui.mainFrame
 from eos.saveddata.cargo import Cargo as Cargo
 from eos.saveddata.drone import Drone as Drone
 from eos.saveddata.fighter import Fighter as Fighter
 from eos.saveddata.implant import Implant as Implant
 from eos.saveddata.module import Slot as Slot, Module as Module, Rack as Rack
-from gui.viewColumn import ViewColumn
-from service.fit import Fit
 from gui.projectedView import ProjectedView
-from eos.saveddata.fit import Fit
+from gui.viewColumn import ViewColumn
+from service.fit import Fit as s_Fit
+
 
 class BaseName(ViewColumn):
     name = "Base Name"
@@ -48,10 +47,11 @@ class BaseName(ViewColumn):
         if isinstance(stuff, Drone):
             return "%dx %s" % (stuff.amount, stuff.item.name)
         elif isinstance(stuff, Fighter):
-            return "%d/%d %s" % (stuff.amountActive, stuff.getModifiedItemAttr("fighterSquadronMaxSize"), stuff.item.name)
+            return "%d/%d %s" % (
+            stuff.amountActive, stuff.getModifiedItemAttr("fighterSquadronMaxSize"), stuff.item.name)
         elif isinstance(stuff, Cargo):
             return "%dx %s" % (stuff.amount, stuff.item.name)
-        elif isinstance(stuff, Fit):
+        elif isinstance(stuff, s_Fit):
             if self.projectedView:
                 # we need a little more information for the projected view
                 fitID = self.mainFrame.getActiveFit()
@@ -59,7 +59,7 @@ class BaseName(ViewColumn):
             else:
                 return "%s (%s)" % (stuff.name, stuff.ship.item.name)
         elif isinstance(stuff, Rack):
-            if Fit.getInstance().serviceFittingOptions["rackLabels"]:
+            if s_Fit.getInstance().serviceFittingOptions["rackLabels"]:
                 if stuff.slot == Slot.MODE:
                     return u'─ Tactical Mode ─'
                 else:
@@ -76,7 +76,7 @@ class BaseName(ViewColumn):
         else:
             item = getattr(stuff, "item", stuff)
 
-            if Fit.getInstance().serviceFittingOptions["showMarketShortcuts"]:
+            if s_Fit.getInstance().serviceFittingOptions["showMarketShortcuts"]:
                 marketShortcut = getattr(item, "marketShortcut", None)
 
                 if marketShortcut:

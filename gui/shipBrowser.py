@@ -679,9 +679,8 @@ class ShipBrowser(wx.Panel):
             self.categoryList.sort(key=lambda ship: ship.name)
 
             # set map & cache of fittings per category
-            # TODO: Import recursion fix.  Commenting this out as there are issues with it
-            #for cat in self.categoryList:
-            #    self.categoryFitCache[cat.ID] = sFit.groupHasFits(cat.ID)
+            for cat in self.categoryList:
+                self.categoryFitCache[cat.ID] = sFit.groupHasFits(cat.ID)
 
         for ship in self.categoryList:
             if self.filterShipsWithNoFits and not self.categoryFitCache[ship.ID]:

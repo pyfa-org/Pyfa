@@ -20,7 +20,6 @@
 
 import wx
 
-# TODO: Import refactor. This should not be a lazy import, but it's cyclical and hard to fix :(
 import gui.mainFrame
 from eos.saveddata.drone import Drone as Drone
 from eos.saveddata.fit import Fit as Fit
@@ -49,7 +48,8 @@ class State(ViewColumn):
 
     def getImageId(self, stuff):
         generic_active = self.fittingView.imageList.GetImageIndex("state_%s_small" % State_.getName(1).lower(), "gui")
-        generic_inactive = self.fittingView.imageList.GetImageIndex("state_%s_small" % State_.getName(-1).lower(), "gui")
+        generic_inactive = self.fittingView.imageList.GetImageIndex("state_%s_small" % State_.getName(-1).lower(),
+                                                                    "gui")
 
         if isinstance(stuff, Drone):
             if stuff.amountActive > 0:
@@ -62,7 +62,8 @@ class State(ViewColumn):
             if stuff.isEmpty:
                 return -1
             else:
-                return self.fittingView.imageList.GetImageIndex("state_%s_small" % State_.getName(stuff.state).lower(), "gui")
+                return self.fittingView.imageList.GetImageIndex("state_%s_small" % State_.getName(stuff.state).lower(),
+                                                                "gui")
         elif isinstance(stuff, Fit):
             fitID = self.mainFrame.getActiveFit()
             projectionInfo = stuff.getProjectionInfo(fitID)

@@ -203,8 +203,8 @@ class Market():
         self.les_grp.description = ""
         self.les_grp.icon = None
         self.ITEMS_FORCEGROUP = {
+            # One of those is wedding present at CCP fanfest, another was hijacked from ISD guy during an event
             "Opux Luxury Yacht": self.les_grp,
-        # One of those is wedding present at CCP fanfest, another was hijacked from ISD guy during an event
             "Silver Magnate": self.les_grp,  # Amarr Championship prize
             "Gold Magnate": self.les_grp,  # Amarr Championship prize
             "Armageddon Imperial Issue": self.les_grp,  # Amarr Championship prize
@@ -304,57 +304,57 @@ class Market():
         # market group assigned in db, otherwise they'll appear in both original and forced groups)
         self.ITEMS_FORCEDMARKETGROUP = {
             "'Alpha' Data Analyzer I": 714,
-        # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
+            # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
             "'Codex' Data Analyzer I": 714,
-        # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
+            # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
             "'Daemon' Data Analyzer I": 714,
-        # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
+            # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
             "'Libram' Data Analyzer I": 714,
-        # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
+            # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
             "Advanced Cerebral Accelerator": 977,  # Implants & Boosters > Booster
             "Civilian Damage Control": 615,  # Ship Equipment > Hull & Armor > Damage Controls
             "Civilian EM Ward Field": 1695,  # Ship Equipment > Shield > Shield Hardeners > EM Shield Hardeners
             "Civilian Explosive Deflection Field": 1694,
-        # Ship Equipment > Shield > Shield Hardeners > Explosive Shield Hardeners
+            # Ship Equipment > Shield > Shield Hardeners > Explosive Shield Hardeners
             "Civilian Hobgoblin": 837,  # Drones > Combat Drones > Light Scout Drones
             "Civilian Kinetic Deflection Field": 1693,
-        # Ship Equipment > Shield > Shield Hardeners > Kinetic Shield Hardeners
+            # Ship Equipment > Shield > Shield Hardeners > Kinetic Shield Hardeners
             "Civilian Light Missile Launcher": 640,
-        # Ship Equipment > Turrets & Bays > Missile Launchers > Light Missile Launchers
+            # Ship Equipment > Turrets & Bays > Missile Launchers > Light Missile Launchers
             "Civilian Scourge Light Missile": 920,
-        # Ammunition & Charges > Missiles > Light Missiles > Standard Light Missiles
+            # Ammunition & Charges > Missiles > Light Missiles > Standard Light Missiles
             "Civilian Small Remote Armor Repairer": 1059,
-        # Ship Equipment > Hull & Armor > Remote Armor Repairers > Small
+            # Ship Equipment > Hull & Armor > Remote Armor Repairers > Small
             "Civilian Small Remote Shield Booster": 603,  # Ship Equipment > Shield > Remote Shield Boosters > Small
             "Civilian Stasis Webifier": 683,  # Ship Equipment > Electronic Warfare > Stasis Webifiers
             "Civilian Thermic Dissipation Field": 1692,
-        # Ship Equipment > Shield > Shield Hardeners > Thermal Shield Hardeners
+            # Ship Equipment > Shield > Shield Hardeners > Thermal Shield Hardeners
             "Civilian Warp Disruptor": 1935,  # Ship Equipment > Electronic Warfare > Warp Disruptors
             "Hardwiring - Zainou 'Sharpshooter' ZMX10": 1493,
-        # Implants & Boosters > Implants > Skill Hardwiring > Missile Implants > Implant Slot 06
+            # Implants & Boosters > Implants > Skill Hardwiring > Missile Implants > Implant Slot 06
             "Hardwiring - Zainou 'Sharpshooter' ZMX100": 1493,
-        # Implants & Boosters > Implants > Skill Hardwiring > Missile Implants > Implant Slot 06
+            # Implants & Boosters > Implants > Skill Hardwiring > Missile Implants > Implant Slot 06
             "Hardwiring - Zainou 'Sharpshooter' ZMX1000": 1493,
-        # Implants & Boosters > Implants > Skill Hardwiring > Missile Implants > Implant Slot 06
+            # Implants & Boosters > Implants > Skill Hardwiring > Missile Implants > Implant Slot 06
             "Hardwiring - Zainou 'Sharpshooter' ZMX11": 1493,
-        # Implants & Boosters > Implants > Skill Hardwiring > Missile Implants > Implant Slot 06
+            # Implants & Boosters > Implants > Skill Hardwiring > Missile Implants > Implant Slot 06
             "Hardwiring - Zainou 'Sharpshooter' ZMX110": 1493,
-        # Implants & Boosters > Implants > Skill Hardwiring > Missile Implants > Implant Slot 06
+            # Implants & Boosters > Implants > Skill Hardwiring > Missile Implants > Implant Slot 06
             "Hardwiring - Zainou 'Sharpshooter' ZMX1100": 1493,
-        # Implants & Boosters > Implants > Skill Hardwiring > Missile Implants > Implant Slot 06
+            # Implants & Boosters > Implants > Skill Hardwiring > Missile Implants > Implant Slot 06
             "Nugoehuvi Synth Blue Pill Booster": 977,  # Implants & Boosters > Booster
             "Prototype Cerebral Accelerator": 977,  # Implants & Boosters > Booster
             "Prototype Iris Probe Launcher": 712,  # Ship Equipment > Turrets & Bays > Scan Probe Launchers
             "Shadow": 1310,  # Drones > Combat Drones > Fighter Bombers
             "Sleeper Data Analyzer I": 714,
-        # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
+            # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
             "Standard Cerebral Accelerator": 977,  # Implants & Boosters > Booster
             "Talocan Data Analyzer I": 714,
-        # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
+            # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
             "Terran Data Analyzer I": 714,
-        # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
+            # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
             "Tetrimon Data Analyzer I": 714
-        # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
+            # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
         }
 
         self.ITEMS_FORCEDMARKETGROUP_R = self.__makeRevDict(self.ITEMS_FORCEDMARKETGROUP)

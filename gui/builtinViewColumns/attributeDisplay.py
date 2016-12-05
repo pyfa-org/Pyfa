@@ -19,10 +19,9 @@
 
 import wx
 
-from gui.viewColumn import ViewColumn
 from gui.bitmapLoader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
-
+from gui.viewColumn import ViewColumn
 from service.attribute import Attribute
 from service.market import Market
 

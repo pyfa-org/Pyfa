@@ -32,7 +32,8 @@ class BaseIcon(ViewColumn):
                 return self.shipImage
         elif isinstance(stuff, Module):
             if stuff.isEmpty:
-                return self.fittingView.imageList.GetImageIndex("slot_%s_small" % Slot.getName(stuff.slot).lower(), "gui")
+                return self.fittingView.imageList.GetImageIndex("slot_%s_small" % Slot.getName(stuff.slot).lower(),
+                                                                "gui")
             else:
                 return self.loadIconFile(stuff.item.icon.iconFile if stuff.item.icon else "")
 

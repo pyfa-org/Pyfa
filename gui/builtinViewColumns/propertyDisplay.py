@@ -17,8 +17,8 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
-from gui.viewColumn import ViewColumn
 from gui.utils.numberFormatter import formatAmount
+from gui.viewColumn import ViewColumn
 from service.attribute import Attribute
 
 

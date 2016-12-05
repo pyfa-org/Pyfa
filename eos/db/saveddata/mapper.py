@@ -31,8 +31,6 @@ from sqlalchemy import CheckConstraint, Float, ForeignKey, Boolean, Column, Inte
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import reconstructor
 
-Base = declarative_base()
-
 from eos.db import saveddata_session
 
 '''
@@ -63,6 +61,8 @@ from eos.saveddata.skill import Skill as es_Skill
 from eos.saveddata.targetResists import TargetResists as es_TargetResists
 from eos.saveddata.user import User as es_User
 '''
+
+Base = declarative_base()
 
 
 class Modules(Base):
@@ -220,7 +220,6 @@ class FighterAbilities(Base):
     groupID = Column(Integer, ForeignKey("fighters.groupID"), primary_key=True, index=True)
     effectID = Column(Integer, nullable=False, primary_key=True)
     active = Column(Boolean, default=False, nullable=False)
-
 
     # mapper(es_FighterAbility, fighter_abilities_table)
 
