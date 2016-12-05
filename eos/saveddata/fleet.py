@@ -26,6 +26,7 @@ from eos.db.util import processEager
 from eos.saveddata.character import Skill as Skill
 from eos.saveddata.module import Module as Module
 from eos.saveddata.ship import Ship as Ship
+from eos.db.saveddata.mapper import Fleet
 
 
 class Fleet(object):
@@ -401,8 +402,8 @@ def getFleetList(eager=None):
 def getSquadsIDsWithFitID(fitID):
     if isinstance(fitID, int):
         with sd_lock:
-            squads = saveddata_session.query(mapper.fleet_table.squadmembers_table.c.squadID).filter(
-                mapper.fleet_table.squadmembers_table.c.memberID == fitID).all()
+            squads = saveddata_session.query(Fleet.squadmembers_table.c.squadID).filter(
+                Fleet.squadmembers_table.c.memberID == fitID).all()
             squads = tuple(entry[0] for entry in squads)
             return squads
     else:
