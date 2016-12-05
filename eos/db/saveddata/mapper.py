@@ -17,16 +17,21 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-
+'''
+Old sqlAlchemy imports
 from sqlalchemy import CheckConstraint, Float, ForeignKey, Boolean, Table, Column, Integer, String
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import reconstructor, relationship, relation, mapper
 from sqlalchemy.orm.collections import attribute_mapped_collection
 from sqlalchemy.sql import and_
 from sqlalchemy.ext.declarative import declarative_base
+'''
+
+from sqlalchemy import CheckConstraint, Float, ForeignKey, Boolean, Column, Integer, String
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import reconstructor
 
 Base = declarative_base()
-
 
 from eos.db import saveddata_session
 
@@ -58,6 +63,7 @@ from eos.saveddata.skill import Skill as es_Skill
 from eos.saveddata.targetResists import TargetResists as es_TargetResists
 from eos.saveddata.user import User as es_User
 '''
+
 
 class Modules(Base):
     __tablename__ = 'modules'
@@ -91,6 +97,7 @@ class Boosters(Base):
            properties={"_Booster__activeSideEffectDummies": relation(ActiveSideEffectsDummy)})
     '''
 
+
 class Cargo(Base):
     __tablename__ = 'cargo'
     ID = Column(Integer, primary_key=True)
@@ -99,7 +106,8 @@ class Cargo(Base):
     amount = Column(Integer, nullable=True)
 
     # Legacy Code
-    #mapper(es_Cargo, cargo_table)
+    # mapper(es_Cargo, cargo_table)
+
 
 class Implants(Base):
     __tablename__ = 'implants'
@@ -108,17 +116,20 @@ class Implants(Base):
     amount = Column(Integer, nullable=True)
     active = Column(Boolean, default=False, nullable=False)
 
-    #mapper(es_Implant, implants_table)
+    # mapper(es_Implant, implants_table)
+
 
 class FitImplants(Base):
     __tablename__ = 'fitImplants'
     fitID = Column(Integer, ForeignKey("fits.ID"), nullable=False, index=True)
     implantID = Column(Integer, ForeignKey("implants.ID"), nullable=False, primary_key=True)
 
+
 class CharImplants(Base):
     __tablename__ = 'charImplants'
     charID = Column(Integer, ForeignKey("characters.ID"), nullable=False, index=True)
     implantID = Column(Integer, ForeignKey("implants.ID"), nullable=False, primary_key=True)
+
 
 class ImplantSetMap(Base):
     __tablename__ = 'implantSetMap'
@@ -168,7 +179,7 @@ class Crest(Base):
     name = Column(String, nullable=False, unique=True)
     refresh_token = Column(String, nullable=False)
 
-    #mapper(es_CrestChar, crest_table)
+    # mapper(es_CrestChar, crest_table)
 
 
 class Drones(Base):
@@ -180,7 +191,7 @@ class Drones(Base):
     amountActive = Column(Integer, nullable=False)
     projected = Column(Boolean, default=False, nullable=False)
 
-    #mapper(es_Drone, drones_table)
+    # mapper(es_Drone, drones_table)
 
 
 class Fighters(Base):
@@ -203,6 +214,7 @@ class Fighters(Base):
            })
     '''
 
+
 class FighterAbilities(Base):
     __tablename__ = 'fightersAbilities'
     groupID = Column(Integer, ForeignKey("fighters.groupID"), primary_key=True, index=True)
@@ -210,18 +222,15 @@ class FighterAbilities(Base):
     active = Column(Boolean, default=False, nullable=False)
 
 
-    #mapper(es_FighterAbility, fighter_abilities_table)
+    # mapper(es_FighterAbility, fighter_abilities_table)
 
 
 class ProjectedFit(object):
-
-
     def __init__(self, sourceID, source_fit, amount=1, active=True):
         self.sourceID = sourceID
         self.source_fit = source_fit
         self.active = active
         self.__amount = amount
-
 
     @reconstructor
     def init(self):
@@ -231,18 +240,15 @@ class ProjectedFit(object):
             saveddata_session.flush()
             saveddata_session.refresh(self.victim_fit)
 
-
     # We have a series of setters and getters here just in case someone
     # downgrades and screws up the table with NULL values
     @property
     def amount(self):
         return self.__amount or 1
 
-
     @amount.setter
     def amount(self, amount):
         self.__amount = amount
-
 
     def __repr__(self):
         return "ProjectedFit(sourceID={}, victimID={}, amount={}, active={}) at {}".format(
@@ -264,7 +270,6 @@ class CommandFit(object):
             saveddata_session.flush()
             saveddata_session.refresh(self.boosted_fit)
 
-
     def __repr__(self):
         return "CommandFit(boosterID={}, boostedID={}, active={}) at {}".format(
             self.boosterID, self.boostedID, self.active, hex(id(self))
@@ -284,9 +289,10 @@ class Fits(Base):
     targetResistsID = Column(ForeignKey("targetResists.ID"), nullable=True)
     modeID = Column(Integer, nullable=True)
     # TODO: Import cleanup. Figure out what to do with this
-    #implantLocation = Column(Integer, nullable=False, default=es_ImplantLocation.FIT)
+    # implantLocation = Column(Integer, nullable=False, default=es_ImplantLocation.FIT)
     implantLocation = Column(Integer, nullable=False)
     notes = Column(String, nullable=True)
+
 
 class ProjectedFits(Base):
     __tablename__ = 'projectedFits'
@@ -424,12 +430,14 @@ mapper(ProjectedFit, projectedFits_table,
 mapper(CommandFit, commandFits_table)
 '''
 
+
 class Gangs(Base):
     __tablename__ = 'gangs'
     ID = Column(Integer, primary_key=True)
     leaderID = Column(ForeignKey("fits.ID"))
     boosterID = Column(ForeignKey("fits.ID"))
     name = Column(String)
+
 
 class Wings(Base):
     __tablename__ = 'wings'
@@ -438,6 +446,7 @@ class Wings(Base):
     boosterID = Column(ForeignKey("fits.ID"))
     leaderID = Column(ForeignKey("fits.ID"))
 
+
 class Squads(Base):
     __tablename__ = 'squads'
     ID = Column(Integer, primary_key=True)
@@ -445,10 +454,12 @@ class Squads(Base):
     leaderID = Column(ForeignKey("fits.ID"))
     boosterID = Column(ForeignKey("fits.ID"))
 
+
 class SquadMembers(Base):
     __tablename__ = 'squadmembers'
     squadID = Column(ForeignKey("squads.ID"), primary_key=True)
     memberID = Column(ForeignKey("fits.ID"), primary_key=True)
+
 
 '''
 mapper(es_Fleet, gangs_table,
@@ -470,10 +481,12 @@ mapper(es_Squad, squads_table,
                                        secondary=squadmembers_table)})
 '''
 
+
 class ImplantSets(Base):
     __tablename__ = 'implantSets'
     ID = Column(Integer, primary_key=True)
     name = Column(String, nullable=False),
+
 
 '''
 mapper(es_ImplantSet, implant_set_table,
@@ -491,12 +504,14 @@ mapper(es_ImplantSet, implant_set_table,
        )
 '''
 
+
 class Miscdata(Base):
     __tablename__ = 'miscdata'
     fieldName = Column(String, primary_key=True)
     fieldValue = Column(String)
 
-#mapper(es_MiscData, miscdata_table)
+
+# mapper(es_MiscData, miscdata_table)
 
 
 class Overrides(Base):
@@ -505,7 +520,8 @@ class Overrides(Base):
     attrID = Column(Integer, primary_key=True, index=True)
     value = Column(Float, nullable=False)
 
-#mapper(es_Override, overrides_table)
+
+# mapper(es_Override, overrides_table)
 
 
 class Prices(Base):
@@ -515,7 +531,8 @@ class Prices(Base):
     time = Column(Integer, nullable=False)
     failed = Column(Integer)
 
-#mapper(es_Price, prices_table)
+
+# mapper(es_Price, prices_table)
 
 
 class CharacterSkills(Base):
@@ -524,7 +541,8 @@ class CharacterSkills(Base):
     itemID = Column(Integer, primary_key=True)
     _Skill__level = Column(Integer, nullable=True)
 
-#mapper(es_Skill, skills_table)
+
+# mapper(es_Skill, skills_table)
 
 
 class TargetResists(Base):
@@ -537,7 +555,8 @@ class TargetResists(Base):
     explosiveAmount = Column(Float)
     ownerID = Column(ForeignKey("users.ID"), nullable=True)
 
-#mapper(es_TargetResists, targetResists_table)
+
+# mapper(es_TargetResists, targetResists_table)
 
 
 class Users(Base):
@@ -547,7 +566,8 @@ class Users(Base):
     password = Column(String, nullable=False)
     admin = Column(Boolean, nullable=False)
 
-#mapper(es_User, users_table)
+
+# mapper(es_User, users_table)
 
 
 class DamagePatterns(Base):
@@ -560,5 +580,4 @@ class DamagePatterns(Base):
     explosiveAmount = Column(Integer)
     ownerID = Column(ForeignKey("users.ID"), nullable=True)
 
-
-#mapper(es_DamagePattern, damagePatterns_table)
+# mapper(es_DamagePattern, damagePatterns_table)

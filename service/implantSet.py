@@ -20,10 +20,9 @@
 import copy
 
 from eos.db.saveddata import queries as eds_queries
+from eos.gamedata import getItem
 from eos.saveddata.implant import Implant as es_Implant
 from eos.saveddata.implantSet import ImplantSet as es_ImplantSet, getImplantSet, getImplantSetList
-from eos.gamedata import getItem
-
 from service.market import Market
 
 

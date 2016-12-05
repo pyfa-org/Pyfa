@@ -22,8 +22,8 @@ import copy
 import logging
 
 from eos.db import saveddata_session
-
 from eos.db.saveddata import queries as eds_queries
+from eos.gamedata import getItem
 from eos.saveddata.booster import Booster as es_Booster
 from eos.saveddata.cargo import Cargo as es_Cargo
 from eos.saveddata.character import Character as saveddata_Character, getCharacter
@@ -40,9 +40,8 @@ from eos.saveddata.ship import Ship as es_Ship
 from service.character import Character
 from service.damagePattern import DamagePattern as s_DamagePattern
 from service.fleet import Fleet
-from service.market import Market, getItem
+from service.market import Market
 from service.settings import SettingsProvider
-from eos.gamedata import getItem
 
 logger = logging.getLogger(__name__)
 

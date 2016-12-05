@@ -20,13 +20,13 @@
 from eos import config as eos_config
 from eos.db import saveddata_session, sd_lock
 
-
 configVal = getattr(eos_config, "saveddataCache", None)
 if configVal is True:
     import weakref
 
     itemCache = {}
     queryCache = {}
+
 
     def cachedQuery(type, amount, *keywords):
         itemCache[type] = localItemCache = weakref.WeakValueDictionary()
@@ -86,6 +86,7 @@ if configVal is True:
 
         return deco
 
+
     def removeCachedEntry(type, ID):
         if type not in queryCache:
             return
@@ -114,6 +115,7 @@ else:
             return checkAndReturn
 
         return deco
+
 
     def removeCachedEntry(*args, **kwargs):
         return

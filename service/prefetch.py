@@ -17,15 +17,15 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
-import threading
 import os
+import threading
 
 import config
 from eos import db
 from eos.db import migration
-from eos.saveddata.character import Character as es_Character
 from eos.db.saveddata.loadDefaultDatabaseValues import DefaultDatabaseValues
 from eos.gamedata import getItemsByCategory
+from eos.saveddata.character import Character as es_Character
 
 
 class PrefetchThread(threading.Thread):

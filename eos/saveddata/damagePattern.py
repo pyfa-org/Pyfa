@@ -20,10 +20,9 @@
 import re
 
 from eos.db import saveddata_session, sd_lock
+from eos.db.saveddata.mapper import DamagePatterns as eds_DamagePatterns
 from eos.db.saveddata.queries import cachedQuery
 from eos.db.util import processEager
-
-from eos.db.saveddata.mapper import DamagePatterns as eds_DamagePatterns
 
 
 class DamagePattern(object):

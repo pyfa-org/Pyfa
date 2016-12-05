@@ -4,7 +4,6 @@ Migration 8
 - Converts modules from old Warfare Links to Command Modules
 """
 
-
 CONVERSIONS = {
     42526: (  # Armor Command Burst I
         20069,  # Armored Warfare Link - Damage Control I
@@ -34,7 +33,7 @@ CONVERSIONS = {
     43555: (  # Shield Command Burst II
         4280,  # Siege Warfare Link - Active Shielding II
         4282,  # Siege Warfare Link - Shield Efficiency II
-        4284   # Siege Warfare Link - Shield Harmonizing II
+        4284  # Siege Warfare Link - Shield Harmonizing II
     ),
     42530: (  # Skirmish Command Burst I
         11017,  # Skirmish Warfare Link - Interdiction Maneuvers I
@@ -44,7 +43,7 @@ CONVERSIONS = {
     43556: (  # Skirmish Command Burst II
         4286,  # Skirmish Warfare Link - Evasive Maneuvers II
         4288,  # Skirmish Warfare Link - Interdiction Maneuvers II
-        4290   # Skirmish Warfare Link - Rapid Deployment II
+        4290  # Skirmish Warfare Link - Rapid Deployment II
     ),
     42528: (  # Mining Foreman Burst I
         22553,  # Mining Foreman Link - Harvester Capacitor Efficiency I
@@ -54,7 +53,7 @@ CONVERSIONS = {
     43551: (  # Mining Foreman Burst II
         4274,  # Mining Foreman Link - Harvester Capacitor Efficiency II
         4276,  # Mining Foreman Link - Laser Optimization II
-        4278   # Mining Foreman Link - Mining Laser Field Enhancement II
+        4278  # Mining Foreman Link - Mining Laser Field Enhancement II
     ),
 }
 
@@ -63,5 +62,7 @@ def upgrade(saveddata_engine):
     # Convert modules
     for replacement_item, list in CONVERSIONS.iteritems():
         for retired_item in list:
-            saveddata_engine.execute('UPDATE "modules" SET "itemID" = ? WHERE "itemID" = ?', (replacement_item, retired_item))
-            saveddata_engine.execute('UPDATE "cargo" SET "itemID" = ? WHERE "itemID" = ?', (replacement_item, retired_item))
+            saveddata_engine.execute('UPDATE "modules" SET "itemID" = ? WHERE "itemID" = ?',
+                                     (replacement_item, retired_item))
+            saveddata_engine.execute('UPDATE "cargo" SET "itemID" = ? WHERE "itemID" = ?',
+                                     (replacement_item, retired_item))

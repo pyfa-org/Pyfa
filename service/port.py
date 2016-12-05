@@ -28,27 +28,24 @@ import xml.dom
 import xml.parsers.expat
 from codecs import open
 
-
 import wx
 
+from eos.db.saveddata import queries as eds_queries
 from eos.saveddata.booster import Booster as Booster
 from eos.saveddata.cargo import Cargo as Cargo
 from eos.saveddata.citadel import Citadel as Citadel
 from eos.saveddata.drone import Drone as Drone
-# from eos.saveddata.fit import Fit as Fit
 from eos.saveddata.implant import Implant as Implant
 from eos.saveddata.module import Slot as Slot, Module as Module, State as State
 from eos.saveddata.ship import Ship as Ship
 from service.crest import Crest
 from service.fit import Fit
 from service.market import Market
-from eos.db.saveddata import queries as eds_queries
 
 try:
     from collections import OrderedDict
 except ImportError:
     from utils.compat import OrderedDict
-
 
 logger = logging.getLogger("pyfa.service.port")
 
@@ -177,6 +174,7 @@ class Port(object):
         return fits
 
     """Service which houses all import/export format functions"""
+
     @classmethod
     def exportCrest(cls, ofit, callback=None):
         # A few notes:
@@ -385,6 +383,7 @@ class Port(object):
                 if len(s) > 10:
                     return s[:10] + "..."
                 return s
+
             logger.exception("Couldn't import ship data %r", [logtransform(s) for s in info])
             return None
 
@@ -827,7 +826,8 @@ class Port(object):
             slot = module.slot
             if slot not in stuff:
                 stuff[slot] = []
-            curr = module.item.name if module.item else ("[Empty %s slot]" % Slot.getName(slot).capitalize() if slot is not None else "")
+            curr = module.item.name if module.item else (
+            "[Empty %s slot]" % Slot.getName(slot).capitalize() if slot is not None else "")
             if module.charge and sFit.serviceFittingOptions["exportCharges"]:
                 curr += ", %s" % module.charge.name
             if module.state == State.OFFLINE:

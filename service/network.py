@@ -18,9 +18,9 @@
 # =============================================================================
 
 
-import urllib2
-import urllib
 import socket
+import urllib
+import urllib2
 
 import config
 from service.settings import NetworkSettings
@@ -79,7 +79,8 @@ class Network(object):
             raise Error("Access not enabled - please enable in Preferences > Network")
 
         # Set up some things for the request
-        versionString = "{0} {1} - {2} {3}".format(config.version, config.tag, config.expansionName, config.expansionVersion)
+        versionString = "{0} {1} - {2} {3}".format(config.version, config.tag, config.expansionName,
+                                                   config.expansionVersion)
         headers = {"User-Agent": "pyfa {0} (Python-urllib2)".format(versionString)}
 
         proxy = NetworkSettings.getInstance().getProxySettings()

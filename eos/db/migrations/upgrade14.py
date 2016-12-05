@@ -8,7 +8,8 @@ from sqlalchemy import exc as sqlalchemy_exc
 
 
 def upgrade(saveddata_engine):
-    if saveddata_engine.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='fighters'").scalar() == 'fighters':
+    if saveddata_engine.execute(
+            "SELECT name FROM sqlite_master WHERE type='table' AND name='fighters'").scalar() == 'fighters':
         # Fighters table exists
         try:
             saveddata_engine.execute("SELECT active FROM fighters LIMIT 1")

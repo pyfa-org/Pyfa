@@ -7,7 +7,6 @@ Migration 8
     modules with their new replacements
 """
 
-
 CONVERSIONS = {
     8529: (  # Large F-S9 Regolith Compact Shield Extender
         8409,  # Large Subordinate Screen Stabilizer I
@@ -80,5 +79,7 @@ def upgrade(saveddata_engine):
     # Convert modules
     for replacement_item, list in CONVERSIONS.iteritems():
         for retired_item in list:
-            saveddata_engine.execute('UPDATE "modules" SET "itemID" = ? WHERE "itemID" = ?', (replacement_item, retired_item))
-            saveddata_engine.execute('UPDATE "cargo" SET "itemID" = ? WHERE "itemID" = ?', (replacement_item, retired_item))
+            saveddata_engine.execute('UPDATE "modules" SET "itemID" = ? WHERE "itemID" = ?',
+                                     (replacement_item, retired_item))
+            saveddata_engine.execute('UPDATE "cargo" SET "itemID" = ? WHERE "itemID" = ?',
+                                     (replacement_item, retired_item))

@@ -19,6 +19,7 @@
 
 from eos.gamedata import getAttributeInfo
 
+
 class Attribute():
     instance = None
 

@@ -301,7 +301,6 @@ class Item(EqBase):
         if self.__requiredSkills is None:
             # TODO: Import refactor.  Figure out how to get rid of this.
             # This import should be here to make sure it's fully initialized
-            import eos.db
             requiredSkills = OrderedDict()
             self.__requiredSkills = requiredSkills
             # Map containing attribute IDs we may need for required skills
@@ -663,7 +662,8 @@ def getVariations(itemids, where=None, eager=None):
     itemfilter = or_(*(Mapper.Items.metatypes_table.c.parentTypeID == itemid for itemid in itemids))
     filter = processWhere(itemfilter, where)
     joinon = Mapper.Items.items_table.c.typeID == Mapper.Items.metatypes_table.c.typeID
-    vars = gamedata_session.query(Item).options(*processEager(eager)).join((Mapper.Items.metatypes_table, joinon)).filter(
+    vars = gamedata_session.query(Item).options(*processEager(eager)).join(
+        (Mapper.Items.metatypes_table, joinon)).filter(
         filter).all()
     return vars
 
@@ -717,7 +717,8 @@ class Mapper:
     class Attributes:
         typeattributes_table = Table("dgmtypeattribs", gamedata_meta,
                                      Column("value", Float),
-                                     Column("typeID", Integer, ForeignKey("invtypes.typeID"), primary_key=True, index=True),
+                                     Column("typeID", Integer, ForeignKey("invtypes.typeID"), primary_key=True,
+                                            index=True),
                                      Column("attributeID", ForeignKey("dgmattribs.attributeID"), primary_key=True))
 
         attributes_table = Table("dgmattribs", gamedata_meta,
@@ -768,7 +769,8 @@ class Mapper:
 
     class Effects:
         typeeffects_table = Table("dgmtypeeffects", gamedata_meta,
-                                  Column("typeID", Integer, ForeignKey("invtypes.typeID"), primary_key=True, index=True),
+                                  Column("typeID", Integer, ForeignKey("invtypes.typeID"), primary_key=True,
+                                         index=True),
                                   Column("effectID", Integer, ForeignKey("dgmeffects.effectID"), primary_key=True))
 
         effects_table = Table("dgmeffects", gamedata_meta,
@@ -857,7 +859,8 @@ class Mapper:
         mapper(Item, items_table,
                properties={"group": relation(Group, backref="items"),
                            "icon": relation(Icon),
-                           "_Item__attributes": relation(Attribute, collection_class=attribute_mapped_collection('name')),
+                           "_Item__attributes": relation(Attribute,
+                                                         collection_class=attribute_mapped_collection('name')),
                            "effects": relation(Effect, collection_class=attribute_mapped_collection('name')),
                            "metaGroup": relation(MetaType,
                                                  primaryjoin=metatypes_table.c.typeID == items_table.c.typeID,

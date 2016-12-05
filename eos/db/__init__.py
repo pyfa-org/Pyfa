@@ -67,8 +67,6 @@ if config.saveddata_connectionstring == "sqlite:///:memory:":
     saveddata_meta.create_all()
 
 
-
-
 def rollback():
     with sd_lock:
         saveddata_session.rollback()

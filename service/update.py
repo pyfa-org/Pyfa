@@ -17,12 +17,12 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
-import threading
-import json
 import calendar
+import json
+import threading
 
-import wx
 import dateutil.parser
+import wx
 
 import config
 from service.network import Network
@@ -42,7 +42,8 @@ class CheckUpdateThread(threading.Thread):
         try:
             response = network.request('https://api.github.com/repos/pyfa-org/Pyfa/releases', network.UPDATE)
             jsonResponse = json.loads(response.read())
-            jsonResponse.sort(key=lambda x: calendar.timegm(dateutil.parser.parse(x['published_at']).utctimetuple()), reverse=True)
+            jsonResponse.sort(key=lambda x: calendar.timegm(dateutil.parser.parse(x['published_at']).utctimetuple()),
+                              reverse=True)
 
             for release in jsonResponse:
                 # Suppress pre releases
@@ -63,7 +64,8 @@ class CheckUpdateThread(threading.Thread):
                 else:
                     rVersion = release['tag_name'].replace('v', '', 1)
 
-                if config.tag is 'git' and not release['prerelease'] and self.versiontuple(rVersion) >= self.versiontuple(config.version):
+                if config.tag is 'git' and not release['prerelease'] and self.versiontuple(
+                        rVersion) >= self.versiontuple(config.version):
                     wx.CallAfter(self.callback, release)  # git (dev/Singularity) -> Stable
                 elif config.expansionName is not "Singularity":
                     if release['prerelease']:
