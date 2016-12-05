@@ -24,7 +24,6 @@ from itertools import chain
 from sqlalchemy.orm import validates, reconstructor
 
 from eos.db import saveddata_session, sd_lock
-from eos.db.gamedata import queries as edg_queries
 from eos.db.saveddata import queries as eds_queries
 from eos.db.saveddata.queries import cachedQuery
 from eos.db.util import processEager

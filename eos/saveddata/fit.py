@@ -30,8 +30,7 @@ from sqlalchemy.orm import validates, reconstructor
 import eos.db
 from eos import capSim
 from eos.db import saveddata_session, sd_lock
-from eos.db.gamedata import queries as edg_queries
-from eos.db.saveddata import mapper
+
 from eos.db.saveddata.queries import cachedQuery, removeInvalid
 from eos.db.util import processEager, processWhere, sqlizeString
 from eos.effectHandlerHelpers import (
@@ -1309,6 +1308,9 @@ def searchFits(nameLike, where=None, eager=None):
 
 
 def getProjectedFits(fitID):
+    # TODO: Import refactor.  Need to move this out of fit, or rewrite it to get this in another way.
+    # We *CANNOT* call mapper.
+    '''
     if isinstance(fitID, int):
         with sd_lock:
             filter = and_(mapper.fits_table.projectedFits_table.c.sourceID == fitID,
@@ -1317,3 +1319,5 @@ def getProjectedFits(fitID):
             return fits
     else:
         raise TypeError("Need integer as argument")
+    '''
+    raise TypeError("Needs to be migrated. Import Refactor")

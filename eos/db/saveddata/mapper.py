@@ -378,35 +378,35 @@ class Fits:
             "_Fit__targetResists": relation(es_TargetResists),
             "projectedOnto": relationship(
                 ProjectedFit,
-                primaryjoin=fits_table.projectedFits_table.c.sourceID == fits_table.c.ID,
+                primaryjoin=projectedFits_table.c.sourceID == fits_table.c.ID,
                 backref='source_fit',
                 collection_class=attribute_mapped_collection('victimID'),
                 cascade='all, delete, delete-orphan'),
             "victimOf": relationship(
                 ProjectedFit,
-                primaryjoin=fits_table.c.ID == fits_table.projectedFits_table.c.victimID,
+                primaryjoin=fits_table.c.ID == projectedFits_table.c.victimID,
                 backref='victim_fit',
                 collection_class=attribute_mapped_collection('sourceID'),
                 cascade='all, delete, delete-orphan'),
             "boostedOnto": relationship(
                 CommandFit,
-                primaryjoin=fits_table.commandFits_table.c.boosterID == fits_table.c.ID,
+                primaryjoin=commandFits_table.c.boosterID == fits_table.c.ID,
                 backref='booster_fit',
                 collection_class=attribute_mapped_collection('boostedID'),
                 cascade='all, delete, delete-orphan'),
             "boostedOf": relationship(
                 CommandFit,
-                primaryjoin=fits_table.c.ID == fits_table.commandFits_table.c.boostedID,
+                primaryjoin=fits_table.c.ID == commandFits_table.c.boostedID,
                 backref='boosted_fit',
                 collection_class=attribute_mapped_collection('boosterID'),
                 cascade='all, delete, delete-orphan'),
         }
     )
 
-    mapper(ProjectedFit, fits_table.projectedFits_table,
-           properties={"_ProjectedFit__amount": fits_table.projectedFits_table.c.amount})
+    mapper(ProjectedFit, projectedFits_table,
+           properties={"_ProjectedFit__amount": projectedFits_table.c.amount})
 
-    mapper(CommandFit, fits_table.commandFits_table)
+    mapper(CommandFit, commandFits_table)
 
 
 class Fleet:

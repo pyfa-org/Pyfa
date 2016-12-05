@@ -22,7 +22,7 @@ import copy
 import logging
 
 from eos.db import saveddata_session
-from eos.db.gamedata import queries as edg_queries
+
 from eos.db.saveddata import queries as eds_queries
 from eos.saveddata.booster import Booster as es_Booster
 from eos.saveddata.cargo import Cargo as es_Cargo

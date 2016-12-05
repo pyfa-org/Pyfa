@@ -23,7 +23,7 @@ from sqlalchemy.orm import validates, reconstructor
 
 from eos.effectHandlerHelpers import HandledItem, HandledCharge
 from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut, ChargeAttrShortcut
-from eos.db.gamedata import queries as edg_queries
+
 
 logger = logging.getLogger(__name__)
 

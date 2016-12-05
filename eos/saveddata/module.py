@@ -26,7 +26,7 @@ from eos.enum import Enum
 from eos.mathUtils import floorFloat
 from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut, ChargeAttrShortcut
 from eos.saveddata.citadel import Citadel as Citadel
-from eos.db.gamedata import queries as edg_queries
+
 
 logger = logging.getLogger(__name__)
 

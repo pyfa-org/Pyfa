@@ -1,7 +1,7 @@
 from sqlalchemy.orm import validates, reconstructor
 
 from eos.effectHandlerHelpers import HandledItem
-from eos.db.gamedata import queries as edg_queries
+
 
 
 class ReadOnlyException(Exception):

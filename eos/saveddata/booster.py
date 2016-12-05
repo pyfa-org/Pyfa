@@ -23,7 +23,7 @@ from sqlalchemy.orm import reconstructor, validates
 
 from eos.effectHandlerHelpers import HandledItem
 from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut
-from eos.db.gamedata import queries as edg_queries
+
 
 logger = logging.getLogger(__name__)
 

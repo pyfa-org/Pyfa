@@ -25,7 +25,7 @@ from eos.effectHandlerHelpers import HandledItem, HandledCharge
 from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut, ChargeAttrShortcut
 from eos.saveddata.fighterAbility import FighterAbility as FighterAbility
 from eos.saveddata.module import Slot as Slot
-from eos.db.gamedata import queries as edg_queries
+
 
 logger = logging.getLogger(__name__)
 
