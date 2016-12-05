@@ -28,6 +28,7 @@ from eos.db.saveddata import queries as eds_queries
 from eos.db.saveddata.queries import cachedQuery
 from eos.db.util import processEager
 from eos.effectHandlerHelpers import HandledItem, HandledImplantBoosterList
+from eos.db.saveddata.mapper import Characters as eds_Characters
 
 logger = logging.getLogger(__name__)
 
@@ -387,16 +388,15 @@ def getCharacter(lookfor, eager=None):
     if isinstance(lookfor, int):
         if eager is None:
             with sd_lock:
-                character = saveddata_session.query(Character).get(lookfor)
+                character = saveddata_session.query(eds_Characters).get(lookfor)
         else:
             eager = processEager(eager)
             with sd_lock:
-                character = saveddata_session.query(Character).options(*eager).filter(Character.ID == lookfor).first()
+                character = saveddata_session.query(eds_Characters).options(*eager).filter(eds_Characters.ID == lookfor).first()
     elif isinstance(lookfor, basestring):
         eager = processEager(eager)
         with sd_lock:
-            character = saveddata_session.query(Character).options(*eager).filter(
-                Character.savedName == lookfor).first()
+            character = saveddata_session.query(eds_Characters).filter(eds_Characters.savedName == lookfor).first()
     else:
         raise TypeError("Need integer or string as argument")
     return character
@@ -405,7 +405,7 @@ def getCharacter(lookfor, eager=None):
 def getCharacterList(eager=None):
     eager = processEager(eager)
     with sd_lock:
-        characters = saveddata_session.query(Character).options(*eager).all()
+        characters = saveddata_session.query(eds_Characters).options(*eager).all()
     return characters
 
 
@@ -413,7 +413,7 @@ def getCharactersForUser(lookfor, eager=None):
     if isinstance(lookfor, int):
         eager = processEager(eager)
         with sd_lock:
-            characters = saveddata_session.query(Character).options(*eager).filter(Character.ownerID == lookfor).all()
+            characters = saveddata_session.query(eds_Characters).options(*eager).filter(eds_Characters.ownerID == lookfor).all()
     else:
         raise TypeError("Need integer as argument")
     return characters

@@ -23,6 +23,8 @@ from eos.db import saveddata_session, sd_lock
 from eos.db.saveddata.queries import cachedQuery
 from eos.db.util import processEager
 
+from eos.db.saveddata.mapper import DamagePatterns as eds_DamagePatterns
+
 
 class DamagePattern(object):
     DAMAGE_TYPES = ("em", "thermal", "kinetic", "explosive")
@@ -128,7 +130,7 @@ class DamagePattern(object):
 def getDamagePatternList(eager=None):
     eager = processEager(eager)
     with sd_lock:
-        patterns = saveddata_session.query(DamagePattern).options(*eager).all()
+        patterns = saveddata_session.query(eds_DamagePatterns).all()
     return patterns
 
 

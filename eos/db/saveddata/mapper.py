@@ -27,9 +27,12 @@ from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 
+
+from eos.db import saveddata_session
+
+'''
 import eos.saveddata.character as Character
 from eos.db import saveddata_meta
-from eos.db import saveddata_session
 from eos.effectHandlerHelpers import HandledImplantBoosterList
 from eos.effectHandlerHelpers import HandledModuleList, HandledProjectedModList, HandledDroneCargoList, \
     HandledProjectedDroneList
@@ -54,7 +57,7 @@ from eos.saveddata.price import Price as es_Price
 from eos.saveddata.skill import Skill as es_Skill
 from eos.saveddata.targetResists import TargetResists as es_TargetResists
 from eos.saveddata.user import User as es_User
-
+'''
 
 class Modules(Base):
     __tablename__ = 'modules'
@@ -280,7 +283,9 @@ class Fits(Base):
     booster = Column(Boolean, nullable=False, index=True, default=0)
     targetResistsID = Column(ForeignKey("targetResists.ID"), nullable=True)
     modeID = Column(Integer, nullable=True)
-    implantLocation = Column(Integer, nullable=False, default=es_ImplantLocation.FIT)
+    # TODO: Import cleanup. Figure out what to do with this
+    #implantLocation = Column(Integer, nullable=False, default=es_ImplantLocation.FIT)
+    implantLocation = Column(Integer, nullable=False)
     notes = Column(String, nullable=True)
 
 class ProjectedFits(Base):

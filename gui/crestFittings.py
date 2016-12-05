@@ -8,7 +8,7 @@ import wx
 import gui.display as d
 import gui.globalEvents as GE
 from eos.saveddata.cargo import Cargo as Cargo
-from eos.db.gamedata.queries import getItem
+from eos.gamedata import getItem
 from service.crest import Crest
 from service.crest import CrestModes
 from service.fit import Fit
