@@ -18,15 +18,14 @@
 # ===============================================================================
 
 
-from sqlalchemy import CheckConstraint
-from sqlalchemy import Float
-from sqlalchemy import ForeignKey, Boolean
-from sqlalchemy import Table, Column, Integer, String
+from sqlalchemy import CheckConstraint, Float, ForeignKey, Boolean, Table, Column, Integer, String
 from sqlalchemy.ext.associationproxy import association_proxy
-from sqlalchemy.orm import reconstructor, relationship
-from sqlalchemy.orm import relation, mapper
+from sqlalchemy.orm import reconstructor, relationship, relation, mapper
 from sqlalchemy.orm.collections import attribute_mapped_collection
 from sqlalchemy.sql import and_
+from sqlalchemy.ext.declarative import declarative_base
+
+Base = declarative_base()
 
 import eos.saveddata.character as Character
 from eos.db import saveddata_meta
@@ -57,88 +56,86 @@ from eos.saveddata.targetResists import TargetResists as es_TargetResists
 from eos.saveddata.user import User as es_User
 
 
-class Modules:
-    modules_table = Table("modules", saveddata_meta,
-                          Column("ID", Integer, primary_key=True),
-                          Column("fitID", Integer, ForeignKey("fits.ID"), nullable=False, index=True),
-                          Column("itemID", Integer, nullable=True),
-                          Column("dummySlot", Integer, nullable=True, default=None),
-                          Column("chargeID", Integer),
-                          Column("state", Integer, CheckConstraint("state >= -1"), CheckConstraint("state <= 2")),
-                          Column("projected", Boolean, default=False, nullable=False),
-                          Column("position", Integer),
-                          CheckConstraint('("dummySlot" = NULL OR "itemID" = NULL) AND "dummySlot" != "itemID"'))
+class Modules(Base):
+    __tablename__ = 'modules'
+    ID = Column(Integer, primary_key=True)
+    fitID = Column(Integer, ForeignKey("fits.ID"), nullable=False, index=True)
+    itemID = Column(Integer, nullable=True)
+    dummySlot = Column(Integer, nullable=True, default=None)
+    chargeID = Column(Integer)
+    state = Column(Integer, CheckConstraint("state >= -1"), CheckConstraint("state <= 2"))
+    projected = Column(Boolean, default=False, nullable=False)
+    position = Column(Integer)
+    CheckConstraint('("dummySlot" = NULL OR "itemID" = NULL) AND "dummySlot" != "itemID"')
 
+    # Legacy code
+    '''
     mapper(es_Module, modules_table,
            properties={"owner": relation(es_Fit)})
+    '''
 
 
-class Boosters:
-    boosters_table = Table("boosters", saveddata_meta,
-                           Column("ID", Integer, primary_key=True),
-                           Column("itemID", Integer),
-                           Column("fitID", Integer, ForeignKey("fits.ID"), nullable=False),
-                           Column("active", Boolean),
-                           )
+class Boosters(Base):
+    __tablename__ = 'boosters'
+    ID = Column(Integer, primary_key=True)
+    itemID = Column(Integer, nullable=True)
+    fitID = Column(Integer, ForeignKey("fits.ID"), nullable=False, index=True)
+    active = Column(Boolean, default=False, nullable=False)
 
-    # Legacy booster side effect code, should disable but a mapper relies on it.
-    activeSideEffects_table = Table("boostersActiveSideEffects", saveddata_meta,
-                                    Column("boosterID", ForeignKey("boosters.ID"), primary_key=True),
-                                    Column("effectID", Integer, primary_key=True))
-
-    class ActiveSideEffectsDummy(object):
-        def __init__(self, effectID):
-            self.effectID = effectID
-
-    mapper(ActiveSideEffectsDummy, activeSideEffects_table)
+    # Legacy code
+    '''
     mapper(es_Booster, boosters_table,
            properties={"_Booster__activeSideEffectDummies": relation(ActiveSideEffectsDummy)})
+    '''
 
-    es_Booster._Booster__activeSideEffectIDs = association_proxy("_Booster__activeSideEffectDummies", "effectID")
+class Cargo(Base):
+    __tablename__ = 'cargo'
+    ID = Column(Integer, primary_key=True)
+    fitID = Column(Integer, ForeignKey("fits.ID"), nullable=False, index=True)
+    itemID = Column(Integer, nullable=True)
+    amount = Column(Integer, nullable=True)
+
+    # Legacy Code
+    #mapper(es_Cargo, cargo_table)
+
+class Implants(Base):
+    __tablename__ = 'implants'
+    ID = Column(Integer, primary_key=True)
+    itemID = Column(Integer, nullable=True)
+    amount = Column(Integer, nullable=True)
+    active = Column(Boolean, default=False, nullable=False)
+
+    #mapper(es_Implant, implants_table)
+
+class FitImplants(Base):
+    __tablename__ = 'fitImplants'
+    fitID = Column(Integer, ForeignKey("fits.ID"), nullable=False, index=True)
+    implantID = Column(Integer, ForeignKey("implants.ID"), nullable=False, primary_key=True)
+
+class CharImplants(Base):
+    __tablename__ = 'charImplants'
+    charID = Column(Integer, ForeignKey("characters.ID"), nullable=False, index=True)
+    implantID = Column(Integer, ForeignKey("implants.ID"), nullable=False, primary_key=True)
+
+class ImplantSetMap(Base):
+    __tablename__ = 'implantSetMap'
+    setID = Column(Integer, ForeignKey("implantSets.ID"), nullable=False, index=True)
+    implantID = Column(Integer, ForeignKey("implants.ID"), nullable=False, primary_key=True)
 
 
-class Cargo:
-    cargo_table = Table("cargo", saveddata_meta,
-                        Column("ID", Integer, primary_key=True),
-                        Column("fitID", Integer, ForeignKey("fits.ID"), nullable=False, index=True),
-                        Column("itemID", Integer, nullable=False),
-                        Column("amount", Integer, nullable=False))
+class Characters(Base):
+    __tablename__ = 'characters'
+    ID = Column(Integer, primary_key=True)
+    name = Column(String, nullable=False)
+    apiID = Column(Integer)
+    apiKey = Column(Integer)
+    defaultChar = Column(Integer)
+    chars = Column(String, nullable=True)
+    defaultLevel = Column(Integer, nullable=True)
+    ownerID = Column(Integer, ForeignKey("users.ID"), nullable=True)
 
-    mapper(es_Cargo, cargo_table)
-
-
-class Implants:
-    implants_table = Table("implants", saveddata_meta,
-                           Column("ID", Integer, primary_key=True),
-                           Column("itemID", Integer),
-                           Column("active", Boolean))
-
-    fitImplants_table = Table("fitImplants", saveddata_meta,
-                              Column("fitID", ForeignKey("fits.ID"), index=True),
-                              Column("implantID", ForeignKey("implants.ID"), primary_key=True))
-
-    charImplants_table = Table("charImplants", saveddata_meta,
-                               Column("charID", ForeignKey("characters.ID"), index=True),
-                               Column("implantID", ForeignKey("implants.ID"), primary_key=True))
-
-    implantsSetMap_table = Table("implantSetMap", saveddata_meta,
-                                 Column("setID", ForeignKey("implantSets.ID"), index=True),
-                                 Column("implantID", ForeignKey("implants.ID"), primary_key=True))
-
-    mapper(es_Implant, implants_table)
-
-
-class Characters:
-    characters_table = Table("characters", saveddata_meta,
-                             Column("ID", Integer, primary_key=True),
-                             Column("name", String, nullable=False),
-                             Column("apiID", Integer),
-                             Column("apiKey", String),
-                             Column("defaultChar", Integer),
-                             Column("chars", String, nullable=True),
-                             Column("defaultLevel", Integer, nullable=True),
-                             Column("ownerID", ForeignKey("users.ID"), nullable=True))
-
+    # Legacy code
+    '''
     mapper(Character.Character, characters_table,
            properties={
                "savedName": characters_table.c.name,
@@ -159,44 +156,40 @@ class Characters:
                    secondaryjoin=Implants.charImplants_table.c.implantID == es_Implant.ID,
                    secondary=Implants.charImplants_table),
            })
+    '''
 
 
-class Crest:
-    crest_table = Table("crest", saveddata_meta,
-                        Column("ID", Integer, primary_key=True),
-                        Column("name", String, nullable=False, unique=True),
-                        Column("refresh_token", String, nullable=False))
+class Crest(Base):
+    __tablename__ = 'crest'
+    ID = Column(Integer, primary_key=True)
+    name = Column(String, nullable=False, unique=True)
+    refresh_token = Column(String, nullable=False)
 
-    mapper(es_CrestChar, crest_table)
-
-
-class Drones:
-    drones_table = Table("drones", saveddata_meta,
-                         Column("groupID", Integer, primary_key=True),
-                         Column("fitID", Integer, ForeignKey("fits.ID"), nullable=False, index=True),
-                         Column("itemID", Integer, nullable=False),
-                         Column("amount", Integer, nullable=False),
-                         Column("amountActive", Integer, nullable=False),
-                         Column("projected", Boolean, default=False))
-
-    mapper(es_Drone, drones_table)
+    #mapper(es_CrestChar, crest_table)
 
 
-class Fighters:
-    fighters_table = Table("fighters", saveddata_meta,
-                           Column("groupID", Integer, primary_key=True),
-                           Column("fitID", Integer, ForeignKey("fits.ID"), nullable=False, index=True),
-                           Column("itemID", Integer, nullable=False),
-                           Column("active", Boolean, nullable=True),
-                           Column("amount", Integer, nullable=False),
-                           Column("projected", Boolean, default=False))
+class Drones(Base):
+    __tablename__ = 'drones'
+    groupID = Column(Integer, primary_key=True)
+    fitID = Column(Integer, ForeignKey("fits.ID"), nullable=False, index=True)
+    itemID = Column(Integer, nullable=False)
+    amount = Column(Integer, nullable=False)
+    amountActive = Column(Integer, nullable=False)
+    projected = Column(Boolean, default=False, nullable=False)
 
-    fighter_abilities_table = Table("fightersAbilities", saveddata_meta,
-                                    Column("groupID", Integer, ForeignKey("fighters.groupID"), primary_key=True,
-                                           index=True),
-                                    Column("effectID", Integer, nullable=False, primary_key=True),
-                                    Column("active", Boolean, default=False))
+    #mapper(es_Drone, drones_table)
 
+
+class Fighters(Base):
+    __tablename__ = 'fighters'
+    groupID = Column(Integer, primary_key=True)
+    fitID = Column(Integer, ForeignKey("fits.ID"), nullable=False, index=True)
+    itemID = Column(Integer, nullable=False)
+    active = Column(Boolean, default=False, nullable=False)
+    amount = Column(Integer, nullable=False)
+    projected = Column(Boolean, default=False, nullable=False)
+
+    '''
     mapper(es_Fighter, fighters_table,
            properties={
                "owner": relation(es_Fit),
@@ -205,16 +198,27 @@ class Fighters:
                    backref="fighter",
                    cascade='all, delete, delete-orphan'),
            })
+    '''
 
-    mapper(es_FighterAbility, fighter_abilities_table)
+class FighterAbilities(Base):
+    __tablename__ = 'fightersAbilities'
+    groupID = Column(Integer, ForeignKey("fighters.groupID"), primary_key=True, index=True)
+    effectID = Column(Integer, nullable=False, primary_key=True)
+    active = Column(Boolean, default=False, nullable=False)
+
+
+    #mapper(es_FighterAbility, fighter_abilities_table)
 
 
 class ProjectedFit(object):
+
+
     def __init__(self, sourceID, source_fit, amount=1, active=True):
         self.sourceID = sourceID
         self.source_fit = source_fit
         self.active = active
         self.__amount = amount
+
 
     @reconstructor
     def init(self):
@@ -224,15 +228,18 @@ class ProjectedFit(object):
             saveddata_session.flush()
             saveddata_session.refresh(self.victim_fit)
 
+
     # We have a series of setters and getters here just in case someone
     # downgrades and screws up the table with NULL values
     @property
     def amount(self):
         return self.__amount or 1
 
+
     @amount.setter
     def amount(self, amount):
         self.__amount = amount
+
 
     def __repr__(self):
         return "ProjectedFit(sourceID={}, victimID={}, amount={}, active={}) at {}".format(
@@ -254,290 +261,299 @@ class CommandFit(object):
             saveddata_session.flush()
             saveddata_session.refresh(self.boosted_fit)
 
+
     def __repr__(self):
         return "CommandFit(boosterID={}, boostedID={}, active={}) at {}".format(
             self.boosterID, self.boostedID, self.active, hex(id(self))
         )
 
 
-class Fits:
-    fits_table = Table("fits", saveddata_meta,
-                       Column("ID", Integer, primary_key=True),
-                       Column("ownerID", ForeignKey("users.ID"), nullable=True, index=True),
-                       Column("shipID", Integer, nullable=False, index=True),
-                       Column("name", String, nullable=False),
-                       Column("timestamp", Integer, nullable=False),
-                       Column("characterID", ForeignKey("characters.ID"), nullable=True),
-                       Column("damagePatternID", ForeignKey("damagePatterns.ID"), nullable=True),
-                       Column("booster", Boolean, nullable=False, index=True, default=0),
-                       Column("targetResistsID", ForeignKey("targetResists.ID"), nullable=True),
-                       Column("modeID", Integer, nullable=True),
-                       Column("implantLocation", Integer, nullable=False, default=es_ImplantLocation.FIT),
-                       Column("notes", String, nullable=True),
-                       )
+class Fits(Base):
+    __tablename__ = 'fits'
+    ID = Column(Integer, primary_key=True)
+    ownerID = Column(ForeignKey("users.ID"), nullable=True, index=True)
+    shipID = Column(Integer, nullable=False, index=True)
+    name = Column(String, nullable=False)
+    timestamp = Column(Integer, nullable=False)
+    characterID = Column(ForeignKey("characters.ID"), nullable=True)
+    damagePatternID = Column(ForeignKey("damagePatterns.ID"), nullable=True)
+    booster = Column(Boolean, nullable=False, index=True, default=0)
+    targetResistsID = Column(ForeignKey("targetResists.ID"), nullable=True)
+    modeID = Column(Integer, nullable=True)
+    implantLocation = Column(Integer, nullable=False, default=es_ImplantLocation.FIT)
+    notes = Column(String, nullable=True)
 
-    projectedFits_table = Table("projectedFits", saveddata_meta,
-                                Column("sourceID", ForeignKey("fits.ID"), primary_key=True),
-                                Column("victimID", ForeignKey("fits.ID"), primary_key=True),
-                                Column("amount", Integer, nullable=False, default=1),
-                                Column("active", Boolean, nullable=False, default=1),
-                                )
-
-    commandFits_table = Table("commandFits", saveddata_meta,
-                              Column("boosterID", ForeignKey("fits.ID"), primary_key=True),
-                              Column("boostedID", ForeignKey("fits.ID"), primary_key=True),
-                              Column("active", Boolean, nullable=False, default=1)
-                              )
-
-    es_Fit._Fit__projectedFits = association_proxy(
-        "victimOf",  # look at the victimOf association...
-        "source_fit",  # .. and return the source fits
-        creator=lambda sourceID, source_fit: ProjectedFit(sourceID, source_fit)
-    )
-
-    es_Fit._Fit__commandFits = association_proxy(
-        "boostedOf",  # look at the boostedOf association...
-        "booster_fit",  # .. and return the booster fit
-        creator=lambda boosterID, booster_fit: CommandFit(boosterID, booster_fit)
-    )
-    mapper(
-        es_Fit,
-        fits_table,
-        properties={
-            "_Fit__modules": relation(
-                es_Module,
-                collection_class=HandledModuleList,
-                primaryjoin=and_(Modules.modules_table.c.fitID == fits_table.c.ID,
-                                 Modules.modules_table.c.projected is False),
-                order_by=Modules.modules_table.c.position,
-                cascade='all, delete, delete-orphan'),
-            "_Fit__projectedModules": relation(
-                es_Module,
-                collection_class=HandledProjectedModList,
-                cascade='all, delete, delete-orphan',
-                single_parent=True,
-                primaryjoin=and_(Modules.modules_table.c.fitID == fits_table.c.ID,
-                                 Modules.modules_table.c.projected is True)),
-            "owner": relation(
-                es_User,
-                backref="fits"),
-            "itemID": fits_table.c.shipID,
-            "shipID": fits_table.c.shipID,
-            "_Fit__boosters": relation(
-                es_Booster,
-                collection_class=HandledImplantBoosterList,
-                cascade='all, delete, delete-orphan',
-                single_parent=True),
-            "_Fit__drones": relation(
-                es_Drone,
-                collection_class=HandledDroneCargoList,
-                cascade='all, delete, delete-orphan',
-                single_parent=True,
-                primaryjoin=and_(Drones.drones_table.c.fitID == fits_table.c.ID,
-                                 Drones.drones_table.c.projected is False)),
-            "_Fit__fighters": relation(
-                es_Fighter,
-                collection_class=HandledDroneCargoList,
-                cascade='all, delete, delete-orphan',
-                single_parent=True,
-                primaryjoin=and_(Fighters.fighters_table.c.fitID == fits_table.c.ID,
-                                 Fighters.fighters_table.c.projected is False)),
-            "_Fit__cargo": relation(
-                es_Cargo,
-                collection_class=HandledDroneCargoList,
-                cascade='all, delete, delete-orphan',
-                single_parent=True,
-                primaryjoin=and_(Cargo.cargo_table.c.fitID == fits_table.c.ID)),
-            "_Fit__projectedDrones": relation(
-                es_Drone,
-                collection_class=HandledProjectedDroneList,
-                cascade='all, delete, delete-orphan',
-                single_parent=True,
-                primaryjoin=and_(Drones.drones_table.c.fitID == fits_table.c.ID,
-                                 Drones.drones_table.c.projected is True)),
-            "_Fit__projectedFighters": relation(
-                es_Fighter,
-                collection_class=HandledProjectedDroneList,
-                cascade='all, delete, delete-orphan',
-                single_parent=True,
-                primaryjoin=and_(Fighters.fighters_table.c.fitID == fits_table.c.ID,
-                                 Fighters.fighters_table.c.projected is True)),
-            "_Fit__implants": relation(
-                es_Implant,
-                collection_class=HandledImplantBoosterList,
-                cascade='all, delete, delete-orphan',
-                backref='fit',
-                single_parent=True,
-                primaryjoin=Implants.fitImplants_table.c.fitID == fits_table.c.ID,
-                secondaryjoin=Implants.fitImplants_table.c.implantID == es_Implant.ID,
-                secondary=Implants.fitImplants_table),
-            "_Fit__character": relation(
-                Character.Character,
-                backref="fits"),
-            "_Fit__damagePattern": relation(es_DamagePattern),
-            "_Fit__targetResists": relation(es_TargetResists),
-            "projectedOnto": relationship(
-                ProjectedFit,
-                primaryjoin=projectedFits_table.c.sourceID == fits_table.c.ID,
-                backref='source_fit',
-                collection_class=attribute_mapped_collection('victimID'),
-                cascade='all, delete, delete-orphan'),
-            "victimOf": relationship(
-                ProjectedFit,
-                primaryjoin=fits_table.c.ID == projectedFits_table.c.victimID,
-                backref='victim_fit',
-                collection_class=attribute_mapped_collection('sourceID'),
-                cascade='all, delete, delete-orphan'),
-            "boostedOnto": relationship(
-                CommandFit,
-                primaryjoin=commandFits_table.c.boosterID == fits_table.c.ID,
-                backref='booster_fit',
-                collection_class=attribute_mapped_collection('boostedID'),
-                cascade='all, delete, delete-orphan'),
-            "boostedOf": relationship(
-                CommandFit,
-                primaryjoin=fits_table.c.ID == commandFits_table.c.boostedID,
-                backref='boosted_fit',
-                collection_class=attribute_mapped_collection('boosterID'),
-                cascade='all, delete, delete-orphan'),
-        }
-    )
-
-    mapper(ProjectedFit, projectedFits_table,
-           properties={"_ProjectedFit__amount": projectedFits_table.c.amount})
-
-    mapper(CommandFit, commandFits_table)
+class ProjectedFits(Base):
+    __tablename__ = 'projectedFits'
+    sourceID = Column(ForeignKey("fits.ID"), primary_key=True)
+    victimID = Column(ForeignKey("fits.ID"), primary_key=True)
+    amount = Column(Integer, nullable=False, default=1)
+    active = Column(Boolean, nullable=False, default=1)
 
 
-class Fleet:
-    gangs_table = Table("gangs", saveddata_meta,
-                        Column("ID", Integer, primary_key=True),
-                        Column("leaderID", ForeignKey("fits.ID")),
-                        Column("boosterID", ForeignKey("fits.ID")),
-                        Column("name", String))
-
-    wings_table = Table("wings", saveddata_meta,
-                        Column("ID", Integer, primary_key=True),
-                        Column("gangID", ForeignKey("gangs.ID")),
-                        Column("boosterID", ForeignKey("fits.ID")),
-                        Column("leaderID", ForeignKey("fits.ID")))
-
-    squads_table = Table("squads", saveddata_meta,
-                         Column("ID", Integer, primary_key=True),
-                         Column("wingID", ForeignKey("wings.ID")),
-                         Column("leaderID", ForeignKey("fits.ID")),
-                         Column("boosterID", ForeignKey("fits.ID")))
-
-    squadmembers_table = Table("squadmembers", saveddata_meta,
-                               Column("squadID", ForeignKey("squads.ID"), primary_key=True),
-                               Column("memberID", ForeignKey("fits.ID"), primary_key=True))
-    mapper(es_Fleet, gangs_table,
-           properties={"wings": relation(es_Wing, backref="gang"),
-                       "leader": relation(es_Fit, primaryjoin=gangs_table.c.leaderID == Fits.fits_table.c.ID),
-                       "booster": relation(es_Fit, primaryjoin=gangs_table.c.boosterID == Fits.fits_table.c.ID)})
-
-    mapper(es_Wing, wings_table,
-           properties={"squads": relation(es_Squad, backref="wing"),
-                       "leader": relation(es_Fit, primaryjoin=wings_table.c.leaderID == Fits.fits_table.c.ID),
-                       "booster": relation(es_Fit, primaryjoin=wings_table.c.boosterID == Fits.fits_table.c.ID)})
-
-    mapper(es_Squad, squads_table,
-           properties={"leader": relation(es_Fit, primaryjoin=squads_table.c.leaderID == Fits.fits_table.c.ID),
-                       "booster": relation(es_Fit, primaryjoin=squads_table.c.boosterID == Fits.fits_table.c.ID),
-                       "members": relation(es_Fit,
-                                           primaryjoin=squads_table.c.ID == squadmembers_table.c.squadID,
-                                           secondaryjoin=squadmembers_table.c.memberID == Fits.fits_table.c.ID,
-                                           secondary=squadmembers_table)})
+class CommandFits(Base):
+    __tablename__ = 'commandFits'
+    boosterID = Column(ForeignKey("fits.ID"), primary_key=True)
+    boostedID = Column(ForeignKey("fits.ID"), primary_key=True)
+    active = Column(Boolean, nullable=False, default=1)
 
 
-class Implant_set:
-    implant_set_table = Table("implantSets", saveddata_meta,
-                              Column("ID", Integer, primary_key=True),
-                              Column("name", String, nullable=False),
-                              )
+'''
+es_Fit._Fit__projectedFits = association_proxy(
+    "victimOf",  # look at the victimOf association...
+    "source_fit",  # .. and return the source fits
+    creator=lambda sourceID, source_fit: ProjectedFit(sourceID, source_fit)
+es_Fit._Fit__commandFits = association_proxy(
+    "boostedOf",  # look at the boostedOf association...
+    "booster_fit",  # .. and return the booster fit
+    creator=lambda boosterID, booster_fit: CommandFit(boosterID, booster_fit)
+)
 
-    mapper(es_ImplantSet, implant_set_table,
-           properties={
-               "_ImplantSet__implants": relation(
-                   es_Implant,
-                   collection_class=HandledImplantBoosterList,
-                   cascade='all, delete, delete-orphan',
-                   backref='set',
-                   single_parent=True,
-                   primaryjoin=Implants.implantsSetMap_table.c.setID == implant_set_table.c.ID,
-                   secondaryjoin=Implants.implantsSetMap_table.c.implantID == es_Implant.ID,
-                   secondary=Implants.implantsSetMap_table),
-           }
-           )
+mapper(
+    es_Fit,
+    fits_table,
+    properties={
+        "_Fit__modules": relation(
+            es_Module,
+            collection_class=HandledModuleList,
+            primaryjoin=and_(Modules.modules_table.c.fitID == fits_table.c.ID,
+                             Modules.modules_table.c.projected is False),
+            order_by=Modules.modules_table.c.position,
+            cascade='all, delete, delete-orphan'),
+        "_Fit__projectedModules": relation(
+            es_Module,
+            collection_class=HandledProjectedModList,
+            cascade='all, delete, delete-orphan',
+            single_parent=True,
+            primaryjoin=and_(Modules.modules_table.c.fitID == fits_table.c.ID,
+                             Modules.modules_table.c.projected is True)),
+        "owner": relation(
+            es_User,
+            backref="fits"),
+        "itemID": fits_table.c.shipID,
+        "shipID": fits_table.c.shipID,
+        "_Fit__boosters": relation(
+            es_Booster,
+            collection_class=HandledImplantBoosterList,
+            cascade='all, delete, delete-orphan',
+            single_parent=True),
+        "_Fit__drones": relation(
+            es_Drone,
+            collection_class=HandledDroneCargoList,
+            cascade='all, delete, delete-orphan',
+            single_parent=True,
+            primaryjoin=and_(Drones.drones_table.c.fitID == fits_table.c.ID,
+                             Drones.drones_table.c.projected is False)),
+        "_Fit__fighters": relation(
+            es_Fighter,
+            collection_class=HandledDroneCargoList,
+            cascade='all, delete, delete-orphan',
+            single_parent=True,
+            primaryjoin=and_(Fighters.fighters_table.c.fitID == fits_table.c.ID,
+                             Fighters.fighters_table.c.projected is False)),
+        "_Fit__cargo": relation(
+            es_Cargo,
+            collection_class=HandledDroneCargoList,
+            cascade='all, delete, delete-orphan',
+            single_parent=True,
+            primaryjoin=and_(Cargo.cargo_table.c.fitID == fits_table.c.ID)),
+        "_Fit__projectedDrones": relation(
+            es_Drone,
+            collection_class=HandledProjectedDroneList,
+            cascade='all, delete, delete-orphan',
+            single_parent=True,
+            primaryjoin=and_(Drones.drones_table.c.fitID == fits_table.c.ID,
+                             Drones.drones_table.c.projected is True)),
+        "_Fit__projectedFighters": relation(
+            es_Fighter,
+            collection_class=HandledProjectedDroneList,
+            cascade='all, delete, delete-orphan',
+            single_parent=True,
+            primaryjoin=and_(Fighters.fighters_table.c.fitID == fits_table.c.ID,
+                             Fighters.fighters_table.c.projected is True)),
+        "_Fit__implants": relation(
+            es_Implant,
+            collection_class=HandledImplantBoosterList,
+            cascade='all, delete, delete-orphan',
+            backref='fit',
+            single_parent=True,
+            primaryjoin=Implants.fitImplants_table.c.fitID == fits_table.c.ID,
+            secondaryjoin=Implants.fitImplants_table.c.implantID == es_Implant.ID,
+            secondary=Implants.fitImplants_table),
+        "_Fit__character": relation(
+            Character.Character,
+            backref="fits"),
+        "_Fit__damagePattern": relation(es_DamagePattern),
+        "_Fit__targetResists": relation(es_TargetResists),
+        "projectedOnto": relationship(
+            ProjectedFit,
+            primaryjoin=projectedFits_table.c.sourceID == fits_table.c.ID,
+            backref='source_fit',
+            collection_class=attribute_mapped_collection('victimID'),
+            cascade='all, delete, delete-orphan'),
+        "victimOf": relationship(
+            ProjectedFit,
+            primaryjoin=fits_table.c.ID == projectedFits_table.c.victimID,
+            backref='victim_fit',
+            collection_class=attribute_mapped_collection('sourceID'),
+            cascade='all, delete, delete-orphan'),
+        "boostedOnto": relationship(
+            CommandFit,
+            primaryjoin=commandFits_table.c.boosterID == fits_table.c.ID,
+            backref='booster_fit',
+            collection_class=attribute_mapped_collection('boostedID'),
+            cascade='all, delete, delete-orphan'),
+        "boostedOf": relationship(
+            CommandFit,
+            primaryjoin=fits_table.c.ID == commandFits_table.c.boostedID,
+            backref='boosted_fit',
+            collection_class=attribute_mapped_collection('boosterID'),
+            cascade='all, delete, delete-orphan'),
+    }
+)
 
 
-class Miscdata:
-    miscdata_table = Table("miscdata", saveddata_meta,
-                           Column("fieldName", String, primary_key=True),
-                           Column("fieldValue", String))
+mapper(ProjectedFit, projectedFits_table,
+       properties={"_ProjectedFit__amount": projectedFits_table.c.amount})
 
-    mapper(es_MiscData, miscdata_table)
+mapper(CommandFit, commandFits_table)
+'''
+
+class Gangs(Base):
+    __tablename__ = 'gangs'
+    ID = Column(Integer, primary_key=True)
+    leaderID = Column(ForeignKey("fits.ID"))
+    boosterID = Column(ForeignKey("fits.ID"))
+    name = Column(String)
+
+class Wings(Base):
+    __tablename__ = 'wings'
+    ID = Column(Integer, primary_key=True)
+    gangID = Column(ForeignKey("gangs.ID"))
+    boosterID = Column(ForeignKey("fits.ID"))
+    leaderID = Column(ForeignKey("fits.ID"))
+
+class Squads(Base):
+    __tablename__ = 'squads'
+    ID = Column(Integer, primary_key=True)
+    wingID = Column(ForeignKey("wings.ID"))
+    leaderID = Column(ForeignKey("fits.ID"))
+    boosterID = Column(ForeignKey("fits.ID"))
+
+class SquadMembers(Base):
+    __tablename__ = 'squadmembers'
+    squadID = Column(ForeignKey("squads.ID"), primary_key=True)
+    memberID = Column(ForeignKey("fits.ID"), primary_key=True)
+
+'''
+mapper(es_Fleet, gangs_table,
+       properties={"wings": relation(es_Wing, backref="gang"),
+                   "leader": relation(es_Fit, primaryjoin=gangs_table.c.leaderID == Fits.fits_table.c.ID),
+                   "booster": relation(es_Fit, primaryjoin=gangs_table.c.boosterID == Fits.fits_table.c.ID)})
+
+mapper(es_Wing, wings_table,
+       properties={"squads": relation(es_Squad, backref="wing"),
+                   "leader": relation(es_Fit, primaryjoin=wings_table.c.leaderID == Fits.fits_table.c.ID),
+                   "booster": relation(es_Fit, primaryjoin=wings_table.c.boosterID == Fits.fits_table.c.ID)})
+
+mapper(es_Squad, squads_table,
+       properties={"leader": relation(es_Fit, primaryjoin=squads_table.c.leaderID == Fits.fits_table.c.ID),
+                   "booster": relation(es_Fit, primaryjoin=squads_table.c.boosterID == Fits.fits_table.c.ID),
+                   "members": relation(es_Fit,
+                                       primaryjoin=squads_table.c.ID == squadmembers_table.c.squadID,
+                                       secondaryjoin=squadmembers_table.c.memberID == Fits.fits_table.c.ID,
+                                       secondary=squadmembers_table)})
+'''
+
+class ImplantSets(Base):
+    __tablename__ = 'implantSets'
+    ID = Column(Integer, primary_key=True)
+    name = Column(String, nullable=False),
+
+'''
+mapper(es_ImplantSet, implant_set_table,
+       properties={
+           "_ImplantSet__implants": relation(
+               es_Implant,
+               collection_class=HandledImplantBoosterList,
+               cascade='all, delete, delete-orphan',
+               backref='set',
+               single_parent=True,
+               primaryjoin=Implants.implantsSetMap_table.c.setID == implant_set_table.c.ID,
+               secondaryjoin=Implants.implantsSetMap_table.c.implantID == es_Implant.ID,
+               secondary=Implants.implantsSetMap_table),
+       }
+       )
+'''
+
+class Miscdata(Base):
+    __tablename__ = 'miscdata'
+    fieldName = Column(String, primary_key=True)
+    fieldValue = Column(String)
+
+#mapper(es_MiscData, miscdata_table)
 
 
-class Overrides:
-    overrides_table = Table("overrides", saveddata_meta,
-                            Column("itemID", Integer, primary_key=True, index=True),
-                            Column("attrID", Integer, primary_key=True, index=True),
-                            Column("value", Float, nullable=False))
+class Overrides(Base):
+    __tablename__ = 'overrides'
+    itemID = Column(Integer, primary_key=True, index=True)
+    attrID = Column(Integer, primary_key=True, index=True)
+    value = Column(Float, nullable=False)
 
-    mapper(es_Override, overrides_table)
-
-
-class Prices:
-    prices_table = Table("prices", saveddata_meta,
-                         Column("typeID", Integer, primary_key=True),
-                         Column("price", Float),
-                         Column("time", Integer, nullable=False),
-                         Column("failed", Integer))
-
-    mapper(es_Price, prices_table)
+#mapper(es_Override, overrides_table)
 
 
-class Skills:
-    skills_table = Table("characterSkills", saveddata_meta,
-                         Column("characterID", ForeignKey("characters.ID"), primary_key=True, index=True),
-                         Column("itemID", Integer, primary_key=True),
-                         Column("_Skill__level", Integer, nullable=True))
+class Prices(Base):
+    __tablename__ = 'prices'
+    typeID = Column(Integer, primary_key=True)
+    price = Column(Float)
+    time = Column(Integer, nullable=False)
+    failed = Column(Integer)
 
-    mapper(es_Skill, skills_table)
-
-
-class TargetResists:
-    targetResists_table = Table("targetResists", saveddata_meta,
-                                Column("ID", Integer, primary_key=True),
-                                Column("name", String),
-                                Column("emAmount", Float),
-                                Column("thermalAmount", Float),
-                                Column("kineticAmount", Float),
-                                Column("explosiveAmount", Float),
-                                Column("ownerID", ForeignKey("users.ID"), nullable=True))
-
-    mapper(es_TargetResists, targetResists_table)
+#mapper(es_Price, prices_table)
 
 
-class Users:
-    users_table = Table("users", saveddata_meta,
-                        Column("ID", Integer, primary_key=True),
-                        Column("username", String, nullable=False, unique=True),
-                        Column("password", String, nullable=False),
-                        Column("admin", Boolean, nullable=False))
+class CharacterSkills(Base):
+    __tablename__ = 'characterSkills'
+    characterID = Column(ForeignKey("characters.ID"), primary_key=True, index=True)
+    itemID = Column(Integer, primary_key=True)
+    _Skill__level = Column(Integer, nullable=True)
 
-    mapper(es_User, users_table)
+#mapper(es_Skill, skills_table)
 
 
-class DamagePatterns:
-    damagePatterns_table = Table("damagePatterns", saveddata_meta,
-                                 Column("ID", Integer, primary_key=True),
-                                 Column("name", String),
-                                 Column("emAmount", Integer),
-                                 Column("thermalAmount", Integer),
-                                 Column("kineticAmount", Integer),
-                                 Column("explosiveAmount", Integer),
-                                 Column("ownerID", ForeignKey("users.ID"), nullable=True))
+class TargetResists(Base):
+    __tablename__ = 'targetResists'
+    ID = Column(Integer, primary_key=True)
+    name = Column(String)
+    emAmount = Column(Float)
+    thermalAmount = Column(Float)
+    kineticAmount = Column(Float)
+    explosiveAmount = Column(Float)
+    ownerID = Column(ForeignKey("users.ID"), nullable=True)
 
-    mapper(es_DamagePattern, damagePatterns_table)
+#mapper(es_TargetResists, targetResists_table)
+
+
+class Users(Base):
+    __tablename__ = 'users'
+    ID = Column(Integer, primary_key=True)
+    username = Column(String, nullable=False, unique=True)
+    password = Column(String, nullable=False)
+    admin = Column(Boolean, nullable=False)
+
+#mapper(es_User, users_table)
+
+
+class DamagePatterns(Base):
+    __tablename__ = 'damagePatterns'
+    ID = Column(Integer, primary_key=True)
+    name = Column(String)
+    emAmount = Column(Integer)
+    thermalAmount = Column(Integer)
+    kineticAmount = Column(Integer)
+    explosiveAmount = Column(Integer)
+    ownerID = Column(ForeignKey("users.ID"), nullable=True)
+
+
+#mapper(es_DamagePattern, damagePatterns_table)
