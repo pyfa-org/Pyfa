@@ -26,7 +26,6 @@ from eos.db.util import processEager
 from eos.saveddata.character import Skill as Skill
 from eos.saveddata.module import Module as Module
 from eos.saveddata.ship import Ship as Ship
-from eos.db.saveddata.mapper import Fleet
 
 
 class Fleet(object):
@@ -400,6 +399,8 @@ def getFleetList(eager=None):
 
 
 def getSquadsIDsWithFitID(fitID):
+    # TODO: Import refactor.  Cannot do this inside fleet, cannot reference mapper.
+    '''
     if isinstance(fitID, int):
         with sd_lock:
             squads = saveddata_session.query(Fleet.squadmembers_table.c.squadID).filter(
@@ -408,3 +409,5 @@ def getSquadsIDsWithFitID(fitID):
             return squads
     else:
         raise TypeError("Need integer as argument")
+    '''
+    raise TypeError("Needs to be migrated. Import Refactor")
