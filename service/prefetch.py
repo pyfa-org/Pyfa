@@ -17,31 +17,39 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
-# import threading
+import threading
 import os
 
 import config
 from eos import db
 from eos.db import migration
-# from eos.saveddata.character import Character as es_Character
+from eos.saveddata.character import Character as es_Character
 from eos.db.saveddata.loadDefaultDatabaseValues import DefaultDatabaseValues
+from eos.gamedata import getItemsByCategory
 
-# TODO: Import cleanup. This is awful
-'''
+
 class PrefetchThread(threading.Thread):
     def run(self):
+        # TODO: This is awful.  Why would we hide errors? :(
+        '''
         # We're a daemon thread, as such, interpreter might get shut down while we do stuff
         # Make sure we don't throw tracebacks to console
         try:
             es_Character.setSkillList(db.getItemsByCategory("Skill", eager=("effects", "attributes", "attributes.info.icon", "attributes.info.unit", "icon")))
         except:
             pass
+        '''
+        es_Character.setSkillList(getItemsByCategory("Skill", eager=(
+            "effects",
+            "attributes",
+            "attributes.info.icon",
+            "attributes.info.unit",
+            "icon")))
 
 
 prefetch = PrefetchThread()
 prefetch.daemon = True
 prefetch.start()
-'''
 
 # The following code does not belong here, however until we rebuild skeletons
 # to include modified pyfa.py, this is the best place to put it. See GH issue
@@ -58,8 +66,7 @@ if config.saveDB and os.path.isfile(config.saveDB):
     migration.update(db.saveddata_engine)
     # Import default database values
     # Import values that must exist otherwise Pyfa breaks
-    # Todo: Currently broken. Import refactoring fixes. :(
-    # DefaultDatabaseValues.importRequiredDefaults()
+    DefaultDatabaseValues.importRequiredDefaults()
 elif config.saveDB:
     # If database does not exist, do not worry about migration. Simply
     # create and set version

@@ -28,9 +28,9 @@ import xml.dom
 import xml.parsers.expat
 from codecs import open
 
+
 import wx
 
-from eos import db
 from eos.saveddata.booster import Booster as Booster
 from eos.saveddata.cargo import Cargo as Cargo
 from eos.saveddata.citadel import Citadel as Citadel
@@ -42,6 +42,7 @@ from eos.saveddata.ship import Ship as Ship
 from service.crest import Crest
 from service.fit import Fit
 from service.market import Market
+from eos.db.saveddata import queries as eds_queries
 
 try:
     from collections import OrderedDict
@@ -155,7 +156,7 @@ class Port(object):
             fit.character = self.character
             fit.damagePattern = self.pattern
             fit.targetResists = self.targetResists
-            db.save(fit)
+            eds_queries.save(fit)
             IDs.append(fit.ID)
             if callback:  # Pulse
                 wx.CallAfter(
@@ -172,7 +173,7 @@ class Port(object):
             fit.character = self.character
             fit.damagePattern = self.pattern
             fit.targetResists = self.targetResists
-            db.save(fit)
+            eds_queries.save(fit)
         return fits
 
     """Service which houses all import/export format functions"""
