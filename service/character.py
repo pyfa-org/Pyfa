@@ -30,8 +30,9 @@ from xml.etree import ElementTree
 import wx
 
 import config
-import eos.db
+from eos.db.saveddata import queries
 from eos.db.saveddata import queries as eds_queries
+from eos.gamedata import getCategory, getGroup, getItem, getMarketGroup
 from eos.saveddata.character import Character as es_Character, getCharacter
 from eos.saveddata.fighter import Fighter as es_Fighter
 from eos.saveddata.implant import Implant as es_Implant
@@ -156,7 +157,7 @@ class Character(object):
         for s in self.skillReqsDict['skills']:
             skillKey = str(s["skillID"]) + "::" + s["skill"] + "::" + str(int(s["level"]))
             if skillKey in skillsSeen:
-                pass   # Duplicate skills confuse EVEMon
+                pass  # Duplicate skills confuse EVEMon
             else:
                 skillsSeen.add(skillKey)
                 entry = ElementTree.SubElement(root, "entry")
@@ -217,7 +218,7 @@ class Character(object):
         char.revertLevels()
 
     def getSkillGroups(self):
-        cat = eos.db.getCategory(16)
+        cat = getCategory(16)
         groups = []
         for grp in cat.groups:
             if grp.published:
@@ -225,7 +226,7 @@ class Character(object):
         return groups
 
     def getSkills(self, groupID):
-        group = eos.db.getGroup(groupID)
+        group = getGroup(groupID)
         skills = []
         for skill in group.items:
             if skill.published is True:
@@ -233,10 +234,10 @@ class Character(object):
         return skills
 
     def getSkillDescription(self, itemID):
-        return eds_queries.getItem(itemID).description
+        return getItem(itemID).description
 
     def getGroupDescription(self, groupID):
-        return eos.db.getMarketGroup(groupID).description
+        return getMarketGroup(groupID).description
 
     def getSkillLevel(self, charID, skillID):
         skill = getCharacter(charID).getSkill(skillID)
@@ -263,7 +264,7 @@ class Character(object):
         return newChar
 
     def delete(self, char):
-        eos.db.remove(char)
+        queries.remove(char)
 
     def getApiDetails(self, charID):
         char = getCharacter(charID)
@@ -345,7 +346,7 @@ class Character(object):
             logger.error("Trying to add implant to read-only character")
             return
 
-        implant = es_Implant(eds_queries.getItem(itemID))
+        implant = es_Implant(getItem(itemID))
         char.implants.append(implant)
         eds_queries.commit()
 

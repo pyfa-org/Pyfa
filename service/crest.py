@@ -8,9 +8,10 @@ import uuid
 import wx
 
 import gui.globalEvents as GE
-from eos.enum import Enum
 from eos.db.saveddata import queries as eds_queries
+from eos.enum import Enum
 from eos.saveddata.crestchar import CrestChar as CrestChar
+from eos.saveddata.crestchar import getCrestCharacter, getCrestCharacters
 from service.pycrest.eve import EVE
 from service.server import StoppableHTTPServer, AuthHandler
 from service.settings import CRESTSettings
@@ -29,7 +30,6 @@ class CrestModes(Enum):
 
 
 class Crest(object):
-
     clientIDs = {
         Servers.TQ: 'f9be379951c046339dc13a00e6be7704',
         Servers.SISI: 'af87365240d644f7950af563b8418bad'
@@ -79,7 +79,8 @@ class Crest(object):
 
         # Base EVE connection that is copied to all characters
         self.eve = EVE(
-            client_id=self.settings.get('clientID') if self.settings.get('mode') == CrestModes.USER else self.clientIDs.get(self.settings.get('server')),
+            client_id=self.settings.get('clientID') if self.settings.get(
+                'mode') == CrestModes.USER else self.clientIDs.get(self.settings.get('server')),
             api_key=self.settings.get('clientSecret') if self.settings.get('mode') == CrestModes.USER else None,
             redirect_uri=self.clientCallback,
             testing=self.isTestServer
@@ -100,20 +101,20 @@ class Crest(object):
         return self.settings.get('server') == Servers.SISI
 
     def delCrestCharacter(self, charID):
-        char = eds_queries.getCrestCharacter(charID)
+        char = getCrestCharacter(charID)
         del self.charCache[char.ID]
         eds_queries.remove(char)
         wx.PostEvent(self.mainFrame, GE.SsoLogout(type=CrestModes.USER, numChars=len(self.charCache)))
 
     def delAllCharacters(self):
-        chars = eds_queries.getCrestCharacters()
+        chars = getCrestCharacters()
         for char in chars:
             eds_queries.remove(char)
         self.charCache = {}
         wx.PostEvent(self.mainFrame, GE.SsoLogout(type=CrestModes.USER, numChars=0))
 
     def getCrestCharacters(self):
-        chars = eds_queries.getCrestCharacters()
+        chars = getCrestCharacters()
         # I really need to figure out that DB cache problem, this is ridiculous
         chars2 = [self.getCrestCharacter(char.ID) for char in chars]
         return chars2
@@ -130,7 +131,7 @@ class Crest(object):
         if charID in self.charCache:
             return self.charCache.get(charID)
 
-        char = eds_queries.getCrestCharacter(charID)
+        char = getCrestCharacter(charID)
         if char and not hasattr(char, "eve"):
             char.eve = copy.deepcopy(self.eve)
             char.eve.temptoken_authorize(refresh_token=char.refresh_token)
@@ -165,7 +166,8 @@ class Crest(object):
         logging.debug("Starting server")
         if self.httpd:
             self.stopServer()
-            time.sleep(1)  # we need this to ensure that the previous get_request finishes, and then the socket will close
+            time.sleep(
+                1)  # we need this to ensure that the previous get_request finishes, and then the socket will close
         self.httpd = StoppableHTTPServer(('', 6461), AuthHandler)
         thread.start_new_thread(self.httpd.serve, (self.handleLogin,))
 

@@ -17,8 +17,7 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
-import eos.db
-
+from eos.gamedata import getAttributeInfo
 
 class Attribute():
     instance = None
@@ -32,9 +31,9 @@ class Attribute():
 
     def getAttributeInfo(self, identity):
         if isinstance(identity, (int, basestring)):
-            return eos.db.getAttributeInfo(identity, eager=("icon", "unit"))
+            return getAttributeInfo(identity, eager=("icon", "unit"))
         elif isinstance(identity, (int, float)):
-            return eos.db.getAttributeInfo(int(identity), eager=("icon", "unit"))
+            return getAttributeInfo(int(identity), eager=("icon", "unit"))
         else:
             info = None
         return info
