@@ -77,7 +77,7 @@ class Character(object):
 
     @classmethod
     def getAll5(cls):
-        all5 = eds_queries.getCharacter("All 5")
+        all5 = getCharacter("All 5")
 
         if all5 is None:
             # We do not have to be afraid of committing here and saving
@@ -90,7 +90,7 @@ class Character(object):
 
     @classmethod
     def getAll0(cls):
-        all0 = eds_queries.getCharacter("All 0")
+        all0 = getCharacter("All 0")
 
         if all0 is None:
             all0 = Character("All 0")

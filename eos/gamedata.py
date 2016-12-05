@@ -295,8 +295,6 @@ class Item(EqBase):
     @property
     def requiredSkills(self):
         if self.__requiredSkills is None:
-            # This import should be here to make sure it's fully initialized
-            from eos.db.gamedata import queries as edg_queries
             requiredSkills = OrderedDict()
             self.__requiredSkills = requiredSkills
             # Map containing attribute IDs we may need for required skills
