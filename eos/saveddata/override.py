@@ -21,10 +21,10 @@ import logging
 
 from sqlalchemy.orm import reconstructor
 
-from eos.eqBase import EqBase
 from eos.db import saveddata_session, sd_lock
-
 from eos.db.saveddata import queries as eds_queries
+from eos.eqBase import EqBase
+from eos.gamedata import getItem, getAttributeInfo
 
 logger = logging.getLogger(__name__)
 
@@ -43,13 +43,13 @@ class Override(EqBase):
         self.__item = None
 
         if self.attrID:
-            self.__attr = edg_queries.getAttributeInfo(self.attrID)
+            self.__attr = getAttributeInfo(self.attrID)
             if self.__attr is None:
                 logger.error("Attribute (id: %d) does not exist", self.attrID)
                 return
 
         if self.itemID:
-            self.__item = edg_queries.getItem(self.itemID)
+            self.__item = getItem(self.itemID)
             if self.__item is None:
                 logger.error("Item (id: %d) does not exist", self.itemID)
                 return

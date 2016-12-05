@@ -24,13 +24,12 @@ from copy import deepcopy
 from itertools import chain
 from math import sqrt, log, asinh
 
-from sqlalchemy.sql import and_
 from sqlalchemy.orm import validates, reconstructor
+from sqlalchemy.sql import and_
 
-import eos.db
 from eos import capSim
+from eos import db
 from eos.db import saveddata_session, sd_lock
-
 from eos.db.saveddata.queries import cachedQuery, removeInvalid
 from eos.db.util import processEager, processWhere, sqlizeString
 from eos.effectHandlerHelpers import (
@@ -41,6 +40,7 @@ from eos.effectHandlerHelpers import (
     HandledProjectedDroneList,
 )
 from eos.enum import Enum
+from eos.gamedata import getItem
 from eos.saveddata.citadel import Citadel as Citadel
 from eos.saveddata.module import Slot as Slot, Module as Module, State as State, Hardpoint as Hardpoint
 from eos.saveddata.ship import Ship as Ship
@@ -96,7 +96,7 @@ class Fit(object):
         self.__mode = None
 
         if self.shipID:
-            item = edg_queries.getItem(self.shipID)
+            item = getItem(self.shipID)
             if item is None:
                 logger.error("Item (id: %d) does not exist", self.shipID)
                 return
@@ -115,7 +115,7 @@ class Fit(object):
                 return
 
         if self.modeID and self.__ship:
-            item = edg_queries.getItem(self.modeID)
+            item = getItem(self.modeID)
             # Don't need to verify if it's a proper item, as validateModeItem assures this
             self.__mode = self.ship.validateModeItem(item)
         else:
@@ -483,14 +483,14 @@ class Fit(object):
                     self.register(thing)
                     effect.handler(self, thing, context, warfareBuffID=warfareBuffID)
 
-                # if effect.isType("offline") or (effect.isType("passive") and thing.state >= State.ONLINE) or \
-                # (effect.isType("active") and thing.state >= State.ACTIVE):
-                #     # Run effect, and get proper bonuses applied
-                #     try:
-                #         self.register(thing)
-                #         effect.handler(self, thing, context)
-                #     except:
-                #         pass
+                    # if effect.isType("offline") or (effect.isType("passive") and thing.state >= State.ONLINE) or \
+                    # (effect.isType("active") and thing.state >= State.ACTIVE):
+                    #     # Run effect, and get proper bonuses applied
+                    #     try:
+                    #         self.register(thing)
+                    #         effect.handler(self, thing, context)
+                    #     except:
+                    #         pass
             else:
                 # Run effect, and get proper bonuses applied
                 try:
@@ -521,7 +521,7 @@ class Fit(object):
                 # we delete the fit because when we copy a fit, flush() is
                 # called to properly handle projection updates. However, we do
                 # not want to save this fit to the database, so simply remove it
-                eos.db.saveddata_session.delete(self)
+                db.saveddata_session.delete(self)
 
         if self.commandFits and not withBoosters:
             print("Calculatate command fits and apply to fit")
@@ -950,7 +950,8 @@ class Fit(object):
 
                         # Add the sustainable amount
                         amount = mod.getModifiedItemAttr(groupAttrMap[mod.item.group.name])
-                        sustainable[groupStoreMap[mod.item.group.name]] += sustainability * (amount / (cycleTime / 1000.0))
+                        sustainable[groupStoreMap[mod.item.group.name]] += sustainability * (
+                        amount / (cycleTime / 1000.0))
                         capUsed += capPerSec
 
             sustainable["passiveShield"] = self.calculateShieldRecharge()
@@ -1178,8 +1179,8 @@ class Fit(object):
         for fit in self.projectedFits:
             copy.__projectedFits[fit.ID] = fit
             # this bit is required -- see GH issue # 83
-            eos.db.saveddata_session.flush()
-            eos.db.saveddata_session.refresh(fit)
+            db.saveddata_session.flush()
+            db.saveddata_session.refresh(fit)
 
         return copy
 

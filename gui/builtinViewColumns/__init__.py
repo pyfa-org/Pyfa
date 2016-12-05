@@ -3,6 +3,7 @@ from gui.builtinViewColumns.ammo import Ammo
 from gui.builtinViewColumns.ammoIcon import AmmoIcon
 from gui.builtinViewColumns.attributeDisplay import AttributeDisplay
 from gui.builtinViewColumns.baseIcon import BaseIcon
+from gui.builtinViewColumns.baseName import BaseName
 from gui.builtinViewColumns.capacitorUse import CapacitorUse
 from gui.builtinViewColumns.maxRange import MaxRange
 from gui.builtinViewColumns.misc import Miscellanea
@@ -18,6 +19,7 @@ Ammo.register()
 AmmoIcon.register()
 AttributeDisplay.register()
 BaseIcon.register()
+BaseName.register()
 CapacitorUse.register()
 MaxRange.register()
 Miscellanea.register()

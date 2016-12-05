@@ -1,7 +1,7 @@
 from sqlalchemy.orm import validates, reconstructor
 
 from eos.effectHandlerHelpers import HandledItem
-
+from eos.gamedata import getItemsByCategory
 
 
 class ReadOnlyException(Exception):
@@ -15,7 +15,7 @@ class Skill(HandledItem):
     @classmethod
     def getSkillList(cls):
         if cls.__itemList is None:
-            cls.__itemList = edg_queries.getItemsByCategory("Skill")
+            cls.__itemList = getItemsByCategory("Skill")
 
         return cls.__itemList
 

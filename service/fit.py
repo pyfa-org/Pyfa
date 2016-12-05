@@ -42,6 +42,7 @@ from service.damagePattern import DamagePattern as s_DamagePattern
 from service.fleet import Fleet
 from service.market import Market, getItem
 from service.settings import SettingsProvider
+from eos.gamedata import getItem
 
 logger = logging.getLogger(__name__)
 
@@ -133,9 +134,9 @@ class Fit(object):
 
     def newFit(self, shipID, name=None):
         try:
-            ship = es_Ship(edg_queries.getItem(shipID))
+            ship = es_Ship(getItem(shipID))
         except ValueError:
-            ship = es_Citadel(edg_queries.getItem(shipID))
+            ship = es_Citadel(getItem(shipID))
         fit = es_Fit(ship)
         fit.name = name if name is not None else "New %s" % fit.ship.item.name
         fit.damagePattern = self.pattern

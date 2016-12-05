@@ -25,10 +25,11 @@ from sqlalchemy.orm import validates, reconstructor
 
 from eos.db import saveddata_session, sd_lock
 from eos.db.saveddata import queries as eds_queries
+from eos.db.saveddata.mapper import Characters as eds_Characters
 from eos.db.saveddata.queries import cachedQuery
 from eos.db.util import processEager
 from eos.effectHandlerHelpers import HandledItem, HandledImplantBoosterList
-from eos.db.saveddata.mapper import Characters as eds_Characters
+from eos.gamedata import getItemsByCategory
 
 logger = logging.getLogger(__name__)
 
@@ -45,7 +46,7 @@ class Character(object):
     @classmethod
     def getSkillList(cls):
         if cls.__itemList is None:
-            cls.__itemList = edg_queries.getItemsByCategory("Skill")
+            cls.__itemList = getItemsByCategory("Skill")
 
         return cls.__itemList
 
@@ -392,7 +393,8 @@ def getCharacter(lookfor, eager=None):
         else:
             eager = processEager(eager)
             with sd_lock:
-                character = saveddata_session.query(eds_Characters).options(*eager).filter(eds_Characters.ID == lookfor).first()
+                character = saveddata_session.query(eds_Characters).options(*eager).filter(
+                    eds_Characters.ID == lookfor).first()
     elif isinstance(lookfor, basestring):
         eager = processEager(eager)
         with sd_lock:
@@ -416,7 +418,8 @@ def getCharactersForUser(lookfor, eager=None):
     if isinstance(lookfor, int):
         eager = processEager(eager)
         with sd_lock:
-            characters = saveddata_session.query(eds_Characters).options(*eager).filter(eds_Characters.ownerID == lookfor).all()
+            characters = saveddata_session.query(eds_Characters).options(*eager).filter(
+                eds_Characters.ownerID == lookfor).all()
     else:
         raise TypeError("Need integer as argument")
     return characters

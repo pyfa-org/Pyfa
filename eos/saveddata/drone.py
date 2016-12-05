@@ -22,8 +22,8 @@ import logging
 from sqlalchemy.orm import validates, reconstructor
 
 from eos.effectHandlerHelpers import HandledItem, HandledCharge
+from eos.gamedata import getItem
 from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut, ChargeAttrShortcut
-
 
 logger = logging.getLogger(__name__)
 
@@ -51,7 +51,7 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         self.__item = None
 
         if self.itemID:
-            self.__item = edg_queries.getItem(self.itemID)
+            self.__item = getItem(self.itemID)
             if self.__item is None:
                 logger.error("Item (id: %d) does not exist", self.itemID)
                 return
@@ -75,7 +75,7 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         self.__chargeModifiedAttributes = ModifiedAttributeDict()
         chargeID = self.getModifiedItemAttr("entityMissileTypeID")
         if chargeID is not None:
-            charge = edg_queries.getItem(int(chargeID))
+            charge = getItem(int(chargeID))
             self.__charge = charge
             self.__chargeModifiedAttributes.original = charge.attributes
             self.__chargeModifiedAttributes.overrides = charge.overrides
@@ -232,9 +232,9 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
         for effect in self.item.effects.itervalues():
             if effect.runTime == runTime and \
-                effect.activeByDefault and \
+                    effect.activeByDefault and \
                     ((projected is True and effect.isType("projected")) or
-                        projected is False and effect.isType("passive")):
+                                 projected is False and effect.isType("passive")):
                 # See GH issue #765
                 if effect.getattr('grouped'):
                     effect.handler(fit, self, context)

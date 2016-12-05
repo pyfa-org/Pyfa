@@ -22,10 +22,10 @@ import logging
 from sqlalchemy.orm import validates, reconstructor
 
 from eos.effectHandlerHelpers import HandledItem, HandledCharge
+from eos.gamedata import getItem
 from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut, ChargeAttrShortcut
 from eos.saveddata.fighterAbility import FighterAbility as FighterAbility
 from eos.saveddata.module import Slot as Slot
-
 
 logger = logging.getLogger(__name__)
 
@@ -59,7 +59,7 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         self.__item = None
 
         if self.itemID:
-            self.__item = edg_queries.getItem(self.itemID)
+            self.__item = getItem(self.itemID)
             if self.__item is None:
                 logger.error("Item (id: %d) does not exist", self.itemID)
                 return
@@ -91,7 +91,7 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
             chargeID = self.getModifiedItemAttr("fighterAbilityLaunchBombType")
             if chargeID is not None:
-                charge = edg_queries.getItem(int(chargeID))
+                charge = getItem(int(chargeID))
                 self.__charge = charge
                 self.__chargeModifiedAttributes.original = charge.attributes
                 self.__chargeModifiedAttributes.overrides = charge.overrides

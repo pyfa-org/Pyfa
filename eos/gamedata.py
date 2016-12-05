@@ -36,7 +36,6 @@ from eos.db.gamedata.cache import cachedQuery
 from eos.db.saveddata import queries as eds_queries
 from eos.db.util import processEager, processWhere, sqlizeString
 from eos.eqBase import EqBase
-from eos.saveddata.override import getOverrides
 
 try:
     from collections import OrderedDict
@@ -267,6 +266,9 @@ class Item(EqBase):
 
         return False
 
+    # TODO: Import refactor
+    # Cannot call overrides from here, cyclical import
+    '''
     @property
     def overrides(self):
         if self.__overrides is None:
@@ -277,6 +279,7 @@ class Item(EqBase):
                     self.__overrides[x.attr.name] = x
 
         return self.__overrides
+    '''
 
     def setOverride(self, attr, value):
         from eos.saveddata.override import Override

@@ -23,10 +23,10 @@ from sqlalchemy.orm import validates, reconstructor
 
 from eos.effectHandlerHelpers import HandledItem, HandledCharge
 from eos.enum import Enum
+from eos.gamedata import getItem, getGroup
 from eos.mathUtils import floorFloat
 from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut, ChargeAttrShortcut
 from eos.saveddata.citadel import Citadel as Citadel
-
 
 logger = logging.getLogger(__name__)
 
@@ -39,7 +39,6 @@ class State(Enum):
 
 
 class Slot(Enum):
-
     # These are self-explanatory
     LOW = 1
     MED = 2
@@ -60,7 +59,6 @@ class Slot(Enum):
 
 
 class Hardpoint(Enum):
-
     NONE = 0
     MISSILE = 1
     TURRET = 2
@@ -94,7 +92,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, l
         self.__slot = self.dummySlot
 
         if self.itemID:
-            self.__item = edg_queries.getItem(self.itemID)
+            self.__item = getItem(self.itemID)
             if self.__item is None:
                 logger.error("Item (id: %d) does not exist", self.itemID)
                 return
@@ -104,7 +102,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, l
             return
 
         if self.chargeID:
-            self.__charge = edg_queries.getItem(self.chargeID)
+            self.__charge = getItem(self.chargeID)
 
         self.build()
 
@@ -167,7 +165,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, l
     def isInvalid(self):
         if self.isEmpty:
             return False
-        return self.__item is None or (self.__item.category.name not in ("Module", "Subsystem", "Structure Module") and self.__item.group.name != "Effect Beacon")
+        return self.__item is None or (self.__item.category.name not in (
+        "Module", "Subsystem", "Structure Module") and self.__item.group.name != "Effect Beacon")
 
     @property
     def numCharges(self):
@@ -540,7 +539,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, l
         for i in range(5):
             itemChargeGroup = self.getModifiedItemAttr('chargeGroup' + str(i))
             if itemChargeGroup is not None:
-                g = edg_queries.getGroup(int(itemChargeGroup), eager=("items.icon", "items.attributes"))
+                g = getGroup(int(itemChargeGroup), eager=("items.icon", "items.attributes"))
                 if g is None:
                     continue
                 for singleItem in g.items:
@@ -625,9 +624,9 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, l
             if not projected or (self.projected and not forceProjected) or gang:
                 for effect in self.charge.effects.itervalues():
                     if effect.runTime == runTime and effect.activeByDefault and \
-                        (effect.isType("offline") or
-                         (effect.isType("passive") and self.state >= State.ONLINE) or
-                         (effect.isType("active") and self.state >= State.ACTIVE)) and \
+                            (effect.isType("offline") or
+                                 (effect.isType("passive") and self.state >= State.ONLINE) or
+                                 (effect.isType("active") and self.state >= State.ACTIVE)) and \
                             (not gang or (gang and effect.isType("gang"))):
 
                         chargeContext = ("moduleCharge",)
@@ -653,9 +652,9 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, l
                 if effect.runTime == runTime and \
                         effect.activeByDefault and \
                         (effect.isType("offline") or
-                         (effect.isType("passive") and self.state >= State.ONLINE) or
-                         (effect.isType("active") and self.state >= State.ACTIVE)) \
-                        and ((projected and effect.isType("projected")) or not projected)\
+                             (effect.isType("passive") and self.state >= State.ONLINE) or
+                             (effect.isType("active") and self.state >= State.ACTIVE)) \
+                        and ((projected and effect.isType("projected")) or not projected) \
                         and ((gang and effect.isType("gang")) or not gang):
                     effect.handler(fit, self, context)
 

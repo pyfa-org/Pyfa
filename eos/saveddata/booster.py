@@ -19,12 +19,13 @@
 
 import logging
 
-from sqlalchemy.orm import reconstructor, validates
+from sqlalchemy.orm import reconstructor, mapper
+from sqlalchemy.orm import validates
 
-from eos.effectHandlerHelpers import HandledItem
-from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut
-from sqlalchemy.orm import reconstructor, relationship, relation, mapper
 from eos.db.saveddata.mapper import Boosters as BoostersTable
+from eos.effectHandlerHelpers import HandledItem
+from eos.gamedata import getItem
+from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut
 
 logger = logging.getLogger(__name__)
 
@@ -48,7 +49,7 @@ class Booster(HandledItem, ItemAttrShortcut):
         self.__item = None
 
         if self.itemID:
-            self.__item = edg_queries.getItem(self.itemID)
+            self.__item = getItem(self.itemID)
             if self.__item is None:
                 logger.error("Item (id: %d) does not exist", self.itemID)
                 return
