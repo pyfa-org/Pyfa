@@ -19,6 +19,7 @@
 
 import collections
 from math import exp
+from eos.gamedata import getAttributeInfo
 
 defaultValuesCache = {}
 cappingAttrKeyCache = {}

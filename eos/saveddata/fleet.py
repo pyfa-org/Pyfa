@@ -21,7 +21,6 @@ from copy import deepcopy
 from itertools import chain
 
 from eos.db import saveddata_session, sd_lock
-from eos.db.savedata import mapper
 from eos.db.saveddata.queries import cachedQuery
 from eos.db.util import processEager
 from eos.saveddata.character import Skill as Skill

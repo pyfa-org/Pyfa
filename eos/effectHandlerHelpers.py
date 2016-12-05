@@ -20,7 +20,7 @@
 # from sqlalchemy.orm.attributes import flag_modified
 import logging
 
-import eos.db
+from eos.saveddata.module import State as State
 
 logger = logging.getLogger(__name__)
 
@@ -141,7 +141,7 @@ class HandledModuleList(HandledList):
 
         # fix for #529, where a module may be in incorrect state after CCP changes mechanics of module
         if not mod.isValidState(mod.state):
-            mod.state = eos.types.State.ONLINE
+            mod.state = State.ONLINE
 
     def insert(self, index, mod):
         mod.position = index

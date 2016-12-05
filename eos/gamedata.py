@@ -36,6 +36,27 @@ from eos.db.gamedata.cache import cachedQuery
 from eos.db.saveddata import queries as eds_queries
 from eos.db.util import processEager, processWhere, sqlizeString
 from eos.eqBase import EqBase
+from eos.saveddata.booster import Booster as Booster
+from eos.saveddata.cargo import Cargo as Cargo
+from eos.saveddata.character import Character as Character, Skill as Skill
+from eos.saveddata.citadel import Citadel as Citadel
+from eos.saveddata.crestchar import CrestChar as CrestChar
+from eos.saveddata.damagePattern import DamagePattern as DamagePattern
+from eos.saveddata.drone import Drone as Drone
+from eos.saveddata.fighter import Fighter as Fighter
+from eos.saveddata.fighterAbility import FighterAbility as FighterAbility
+from eos.saveddata.fit import Fit as Fit, ImplantLocation as ImplantLocation
+from eos.saveddata.fleet import Fleet as Fleet, Wing as Wing, Squad as Squad
+from eos.saveddata.implant import Implant as Implant
+from eos.saveddata.implantSet import ImplantSet as ImplantSet
+from eos.saveddata.miscData import MiscData as MiscData
+from eos.saveddata.mode import Mode as Mode
+from eos.saveddata.module import Slot as Slot, Module as Module, State as State, Hardpoint as Hardpoint, Rack as Rack
+from eos.saveddata.override import Override as Override, getOverrides
+from eos.saveddata.price import Price as Price
+from eos.saveddata.ship import Ship as Ship
+from eos.saveddata.targetResists import TargetResists as TargetResists
+from eos.saveddata.user import User as User
 
 try:
     from collections import OrderedDict
@@ -270,7 +291,7 @@ class Item(EqBase):
     def overrides(self):
         if self.__overrides is None:
             self.__overrides = {}
-            overrides = eds_queries.getOverrides(self.ID)
+            overrides = getOverrides(self.ID)
             for x in overrides:
                 if x.attr.name in self.__attributes:
                     self.__overrides[x.attr.name] = x
@@ -305,7 +326,7 @@ class Item(EqBase):
             # { attributeID : attributeValue }
             skillAttrs = {}
             # Get relevant attribute values from db (required skill IDs and levels) for our item
-            for attrInfo in edg_queries.directAttributeRequest((self.ID,), tuple(combinedAttrIDs)):
+            for attrInfo in directAttributeRequest((self.ID,), tuple(combinedAttrIDs)):
                 attrID = attrInfo[1]
                 attrVal = attrInfo[2]
                 skillAttrs[attrID] = attrVal
@@ -316,7 +337,7 @@ class Item(EqBase):
                     skillID = int(skillAttrs[srqIDAtrr])
                     skillLvl = skillAttrs[srqLvlAttr]
                     # Fetch item from database and fill map
-                    item = edg_queries.getItem(skillID)
+                    item = getItem(skillID)
                     requiredSkills[item] = skillLvl
         return self.__requiredSkills
 
@@ -653,10 +674,10 @@ def getVariations(itemids, where=None, eager=None):
     if len(itemids) == 0:
         return []
 
-    itemfilter = or_(*(Mapper.metatypes_table.c.parentTypeID == itemid for itemid in itemids))
+    itemfilter = or_(*(Mapper.Items.metatypes_table.c.parentTypeID == itemid for itemid in itemids))
     filter = processWhere(itemfilter, where)
-    joinon = Mapper.items_table.c.typeID == Mapper.metatypes_table.c.typeID
-    vars = gamedata_session.query(Item).options(*processEager(eager)).join((Mapper.metatypes_table, joinon)).filter(
+    joinon = Mapper.Items.items_table.c.typeID == Mapper.Items.metatypes_table.c.typeID
+    vars = gamedata_session.query(Item).options(*processEager(eager)).join((Mapper.Items.metatypes_table, joinon)).filter(
         filter).all()
     return vars
 

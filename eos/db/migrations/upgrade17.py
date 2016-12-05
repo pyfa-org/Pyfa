@@ -5,7 +5,7 @@ Migration 17
 """
 
 from eos.db import saveddata_session
-from eos.db.saveddata.mapper import fits_table
+from eos.db.saveddata.mapper import Fits
 
 
 def upgrade(saveddata_engine):
@@ -31,7 +31,7 @@ def upgrade(saveddata_engine):
 
             inserts.append({"boosterID": value, "boostedID": boosted, "active": 1})
             try:
-                saveddata_session.execute(fits_table.commandFits_table.insert(), {"boosterID": value, "boostedID": boosted, "active": 1})
+                saveddata_session.execute(Fits.commandFits_table.insert(), {"boosterID": value, "boostedID": boosted, "active": 1})
             except Exception:
                 pass
     saveddata_session.commit()
