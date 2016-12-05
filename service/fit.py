@@ -22,27 +22,26 @@ import copy
 import logging
 
 from eos.db import saveddata_session
+from eos.db.gamedata import queries as edg_queries
+from eos.db.saveddata import queries as eds_queries
 from eos.saveddata.booster import Booster as es_Booster
 from eos.saveddata.cargo import Cargo as es_Cargo
-from eos.saveddata.character import Character as saveddata_Character
+from eos.saveddata.character import Character as saveddata_Character, getCharacter
 from eos.saveddata.citadel import Citadel as es_Citadel
 from eos.saveddata.damagePattern import DamagePattern as es_DamagePattern
 from eos.saveddata.drone import Drone as es_Drone
 from eos.saveddata.fighter import Fighter as es_Fighter
-# from eos.saveddata.fleet import Fleet as es_Fleet
+from eos.saveddata.fit import Fit as es_Fit, getFit, getBoosterFits, getFitList, getFitsWithShip
+from eos.saveddata.fit import countAllFits, countFitsWithShip, searchFits
 from eos.saveddata.implant import Implant as es_Implant
 from eos.saveddata.module import Module as es_Module
 from eos.saveddata.module import Slot as Slot, Module as Module, State as State
 from eos.saveddata.ship import Ship as es_Ship
-from eos.saveddata.fit import Fit as es_Fit
 from service.character import Character
-from service.damagePattern import DamagePattern
+from service.damagePattern import DamagePattern as s_DamagePattern
 from service.fleet import Fleet
-from service.market import Market
+from service.market import Market, getItem
 from service.settings import SettingsProvider
-from eos.db.saveddata import queries as eds_queries
-from eos.db.gamedata import queries as edg_queries
-
 
 logger = logging.getLogger(__name__)
 
@@ -87,7 +86,7 @@ class Fit(object):
             "pyfaServiceFittingOptions", serviceFittingDefaultOptions)
 
     def getAllFits(self):
-        fits = eds_queries.getFitList()
+        fits = getFitList()
         names = []
         for fit in fits:
             names.append((fit.ID, fit.name))
@@ -96,7 +95,7 @@ class Fit(object):
 
     def getFitsWithShip(self, shipID):
         """ Lists fits of shipID, used with shipBrowser """
-        fits = eds_queries.getFitsWithShip(shipID)
+        fits = getFitsWithShip(shipID)
         names = []
         for fit in fits:
             names.append((fit.ID, fit.name, fit.booster, fit.timestamp))
@@ -105,7 +104,7 @@ class Fit(object):
 
     def getBoosterFits(self):
         """ Lists fits flagged as booster """
-        fits = eds_queries.getBoosterFits()
+        fits = getBoosterFits()
         names = []
         for fit in fits:
             names.append((fit.ID, fit.name, fit.shipID))
@@ -113,10 +112,10 @@ class Fit(object):
         return names
 
     def countAllFits(self):
-        return eds_queries.countAllFits()
+        return countAllFits()
 
     def countFitsWithShip(self, shipID):
-        count = eds_queries.countFitsWithShip(shipID)
+        count = countFitsWithShip(shipID)
         return count
 
     def groupHasFits(self, groupID):
@@ -129,7 +128,7 @@ class Fit(object):
         return False
 
     def getModule(self, fitID, pos):
-        fit = eds_queries.getFit(fitID)
+        fit = getFit(fitID)
         return fit.modules[pos]
 
     def newFit(self, shipID, name=None):
@@ -148,17 +147,17 @@ class Fit(object):
         return fit.ID
 
     def toggleBoostFit(self, fitID):
-        fit = eds_queries.getFit(fitID)
+        fit = getFit(fitID)
         fit.booster = not fit.booster
         eds_queries.commit()
 
     def renameFit(self, fitID, newName):
-        fit = eds_queries.getFit(fitID)
+        fit = getFit(fitID)
         fit.name = newName
         eds_queries.commit()
 
     def deleteFit(self, fitID):
-        fit = eds_queries.getFit(fitID)
+        fit = getFit(fitID)
         sFleet = Fleet.getInstance()
         sFleet.removeAssociatedFleetData(fit)
 
@@ -168,10 +167,10 @@ class Fit(object):
         # already loaded those fits, they will not reflect the changes
         for projection in fit.projectedOnto.values():
             if projection.victim_fit in saveddata_session:  # GH issue #359
-                eds_queries.saveddata_session.refresh(projection.victim_fit)
+                saveddata_session.refresh(projection.victim_fit)
 
     def copyFit(self, fitID):
-        fit = eds_queries.getFit(fitID)
+        fit = getFit(fitID)
         newFit = copy.deepcopy(fit)
         eds_queries.save(newFit)
         return newFit.ID
@@ -180,7 +179,7 @@ class Fit(object):
         if fitID is None:
             return None
 
-        fit = eds_queries.getFit(fitID)
+        fit = getFit(fitID)
         fit.clear()
         return fit
 
@@ -188,7 +187,7 @@ class Fit(object):
         if fitID is None:
             return None
 
-        fit = eds_queries.getFit(fitID)
+        fit = getFit(fitID)
         fit.factorReload = not fit.factorReload
         eds_queries.commit()
         self.recalc(fit)
@@ -197,7 +196,7 @@ class Fit(object):
         if fitID is None:
             return None
 
-        fit = eds_queries.getFit(fitID)
+        fit = getFit(fitID)
 
         if self.serviceFittingOptions["useGlobalCharacter"]:
             if fit.character != self.character:
@@ -217,7 +216,7 @@ class Fit(object):
         '''
         if fitID is None:
             return None
-        fit = eds_queries.getFit(fitID)
+        fit = getFit(fitID)
 
         if basic:
             return fit
@@ -247,7 +246,7 @@ class Fit(object):
         return fit
 
     def searchFits(self, name):
-        results = eds_queries.searchFits(name)
+        results = searchFits(name)
         fits = []
         for fit in results:
             fits.append((
@@ -259,8 +258,8 @@ class Fit(object):
         if fitID is None:
             return False
 
-        fit = eds_queries.getFit(fitID)
-        item = eds_queries.getItem(itemID, eager="attributes")
+        fit = getFit(fitID)
+        item = getItem(itemID, eager="attributes")
         try:
             implant = es_Implant(item)
         except ValueError:
@@ -275,7 +274,7 @@ class Fit(object):
         if fitID is None:
             return False
 
-        fit = eds_queries.getFit(fitID)
+        fit = getFit(fitID)
         implant = fit.implants[position]
         fit.implants.remove(implant)
         self.recalc(fit)
@@ -285,8 +284,8 @@ class Fit(object):
         if fitID is None:
             return False
 
-        fit = eds_queries.getFit(fitID)
-        item = eds_queries.getItem(itemID, eager="attributes")
+        fit = getFit(fitID)
+        item = getItem(itemID, eager="attributes")
         try:
             booster = es_Booster(item)
         except ValueError:
@@ -300,7 +299,7 @@ class Fit(object):
         if fitID is None:
             return False
 
-        fit = eds_queries.getFit(fitID)
+        fit = getFit(fitID)
         booster = fit.boosters[position]
         fit.boosters.remove(booster)
         self.recalc(fit)
@@ -310,11 +309,11 @@ class Fit(object):
         if fitID is None:
             return
 
-        fit = eds_queries.getFit(fitID)
+        fit = getFit(fitID)
 
         if isinstance(thing, int):
-            thing = eds_queries.getItem(thing,
-                                        eager=("attributes", "group.category"))
+            thing = getItem(thing,
+                            eager=("attributes", "group.category"))
 
         if isinstance(thing, es_Fit):
             if thing in fit.projectedFits:
@@ -359,7 +358,7 @@ class Fit(object):
         if fitID is None:
             return
 
-        fit = eds_queries.getFit(fitID)
+        fit = getFit(fitID)
 
         if thing in fit.commandFits:
             return
@@ -375,7 +374,7 @@ class Fit(object):
         return True
 
     def toggleProjected(self, fitID, thing, click):
-        fit = eds_queries.getFit(fitID)
+        fit = getFit(fitID)
         if isinstance(thing, es_Drone):
             if thing.amountActive == 0 and thing.canBeApplied(fit):
                 thing.amountActive = thing.amount
@@ -396,7 +395,7 @@ class Fit(object):
         self.recalc(fit)
 
     def toggleCommandFit(self, fitID, thing):
-        fit = eds_queries.getFit(fitID)
+        fit = getFit(fitID)
         commandInfo = thing.getCommandInfo(fitID)
         if commandInfo:
             commandInfo.active = not commandInfo.active
@@ -406,7 +405,7 @@ class Fit(object):
 
     def changeAmount(self, fitID, projected_fit, amount):
         """Change amount of projected fits"""
-        fit = eds_queries.getFit(fitID)
+        fit = getFit(fitID)
         amount = min(20, max(1, amount))  # 1 <= a <= 20
         projectionInfo = projected_fit.getProjectionInfo(fitID)
         if projectionInfo:
@@ -416,14 +415,14 @@ class Fit(object):
         self.recalc(fit)
 
     def changeActiveFighters(self, fitID, fighter, amount):
-        fit = eds_queries.getFit(fitID)
+        fit = getFit(fitID)
         fighter.amountActive = amount
 
         eds_queries.commit()
         self.recalc(fit)
 
     def removeProjected(self, fitID, thing):
-        fit = eds_queries.getFit(fitID)
+        fit = getFit(fitID)
         if isinstance(thing, es_Drone):
             fit.projectedDrones.remove(thing)
         elif isinstance(thing, es_Module):
@@ -438,15 +437,15 @@ class Fit(object):
         self.recalc(fit)
 
     def removeCommand(self, fitID, thing):
-        fit = eds_queries.getFit(fitID)
+        fit = getFit(fitID)
         del fit.__commandFits[thing.ID]
 
         eds_queries.commit()
         self.recalc(fit)
 
     def appendModule(self, fitID, itemID):
-        fit = eds_queries.getFit(fitID)
-        item = eds_queries.getItem(itemID, eager=("attributes", "group.category"))
+        fit = getFit(fitID)
+        item = getItem(itemID, eager=("attributes", "group.category"))
         try:
             m = es_Module(item)
         except ValueError:
@@ -475,7 +474,7 @@ class Fit(object):
             return None
 
     def removeModule(self, fitID, position):
-        fit = eds_queries.getFit(fitID)
+        fit = getFit(fitID)
         if fit.modules[position].isEmpty:
             return None
 
@@ -488,12 +487,12 @@ class Fit(object):
         return numSlots != len(fit.modules)
 
     def changeModule(self, fitID, position, newItemID):
-        fit = eds_queries.getFit(fitID)
+        fit = getFit(fitID)
 
         # Dummy it out in case the next bit fails
         fit.modules.toDummy(position)
 
-        item = eds_queries.getItem(newItemID, eager=("attributes", "group.category"))
+        item = getItem(newItemID, eager=("attributes", "group.category"))
         try:
             m = es_Module(item)
         except ValueError:
@@ -525,7 +524,7 @@ class Fit(object):
         sanity checks as opposed to the GUI View. This is different than how the
         normal .swapModules() does things, which is mostly a blind swap.
         """
-        fit = eds_queries.getFit(fitID)
+        fit = getFit(fitID)
 
         module = fit.modules[moduleIdx]
         cargo = fit.cargo[cargoIdx]
@@ -570,7 +569,7 @@ class Fit(object):
         self.recalc(fit)
 
     def swapModules(self, fitID, src, dst):
-        fit = eds_queries.getFit(fitID)
+        fit = getFit(fitID)
         # Gather modules
         srcMod = fit.modules[src]
         dstMod = fit.modules[dst]
@@ -589,7 +588,7 @@ class Fit(object):
         This will overwrite dst! Checking for empty module must be
         done at a higher level
         """
-        fit = eds_queries.getFit(fitID)
+        fit = getFit(fitID)
         # Gather modules
         srcMod = fit.modules[src]
         dstMod = fit.modules[dst]  # should be a placeholder module
@@ -613,8 +612,8 @@ class Fit(object):
         if fitID is None:
             return False
 
-        fit = eds_queries.getFit(fitID)
-        item = eds_queries.getItem(itemID)
+        fit = getFit(fitID)
+        item = getItem(itemID)
         cargo = None
 
         # adding from market
@@ -644,7 +643,7 @@ class Fit(object):
         if fitID is None:
             return False
 
-        fit = eds_queries.getFit(fitID)
+        fit = getFit(fitID)
         charge = fit.cargo[position]
         fit.cargo.remove(charge)
         self.recalc(fit)
@@ -654,8 +653,8 @@ class Fit(object):
         if fitID is None:
             return False
 
-        fit = eds_queries.getFit(fitID)
-        item = eds_queries.getItem(itemID, eager=("attributes", "group.category"))
+        fit = getFit(fitID)
+        item = getItem(itemID, eager=("attributes", "group.category"))
         if item.category.name == "Fighter":
             fighter = None
             '''
@@ -677,9 +676,9 @@ class Fit(object):
                     else:
                         # Activate all other abilities (Neut, Web, etc) except propmods if no standard attack is active
                         if (ability.effect.isImplemented and
-                                standardAttackActive is False and
-                                ability.effect.handlerName != u'fighterabilitymicrowarpdrive' and
-                                ability.effect.handlerName != u'fighterabilityevasivemaneuvers'):
+                                    standardAttackActive is False and
+                                    ability.effect.handlerName != u'fighterabilitymicrowarpdrive' and
+                                    ability.effect.handlerName != u'fighterabilityevasivemaneuvers'):
                             ability.active = True
 
                 if used >= total:
@@ -697,7 +696,7 @@ class Fit(object):
             return False
 
     def removeFighter(self, fitID, i):
-        fit = eds_queries.getFit(fitID)
+        fit = getFit(fitID)
         f = fit.fighters[i]
         fit.fighters.remove(f)
 
@@ -709,8 +708,8 @@ class Fit(object):
         if fitID is None:
             return False
 
-        fit = eds_queries.getFit(fitID)
-        item = eds_queries.getItem(itemID, eager=("attributes", "group.category"))
+        fit = getFit(fitID)
+        item = getItem(itemID, eager=("attributes", "group.category"))
         if item.category.name == "Drone":
             drone = None
             for d in fit.drones.find(item):
@@ -735,7 +734,7 @@ class Fit(object):
         if fitID is None:
             return False
 
-        fit = eds_queries.getFit(fitID)
+        fit = getFit(fitID)
         if d1.item != d2.item:
             return False
 
@@ -766,18 +765,18 @@ class Fit(object):
         if fitID is None:
             return False
 
-        fit = eds_queries.getFit(fitID)
+        fit = getFit(fitID)
         self.splitDrones(fit, d, amount, fit.projectedDrones)
 
     def splitDroneStack(self, fitID, d, amount):
         if fitID is None:
             return False
 
-        fit = eds_queries.getFit(fitID)
+        fit = getFit(fitID)
         self.splitDrones(fit, d, amount, fit.drones)
 
     def removeDrone(self, fitID, i, numDronesToRemove=1):
-        fit = eds_queries.getFit(fitID)
+        fit = getFit(fitID)
         d = fit.drones[i]
         d.amount -= numDronesToRemove
         if d.amountActive > 0:
@@ -791,7 +790,7 @@ class Fit(object):
         return True
 
     def toggleDrone(self, fitID, i):
-        fit = eds_queries.getFit(fitID)
+        fit = getFit(fitID)
         d = fit.drones[i]
         if d.amount == d.amountActive:
             d.amountActive = 0
@@ -803,7 +802,7 @@ class Fit(object):
         return True
 
     def toggleFighter(self, fitID, i):
-        fit = eds_queries.getFit(fitID)
+        fit = getFit(fitID)
         f = fit.fighters[i]
         f.active = not f.active
 
@@ -812,7 +811,7 @@ class Fit(object):
         return True
 
     def toggleImplant(self, fitID, i):
-        fit = eds_queries.getFit(fitID)
+        fit = getFit(fitID)
         implant = fit.implants[i]
         implant.active = not implant.active
 
@@ -821,7 +820,7 @@ class Fit(object):
         return True
 
     def toggleImplantSource(self, fitID, source):
-        fit = eds_queries.getFit(fitID)
+        fit = getFit(fitID)
         fit.implantSource = source
 
         eds_queries.commit()
@@ -829,7 +828,7 @@ class Fit(object):
         return True
 
     def toggleBooster(self, fitID, i):
-        fit = eds_queries.getFit(fitID)
+        fit = getFit(fitID)
         booster = fit.boosters[i]
         booster.active = not booster.active
 
@@ -838,7 +837,7 @@ class Fit(object):
         return True
 
     def toggleFighterAbility(self, fitID, ability):
-        fit = eds_queries.getFit(fitID)
+        fit = getFit(fitID)
         ability.active = not ability.active
         eds_queries.commit()
         self.recalc(fit)
@@ -850,19 +849,19 @@ class Fit(object):
 
             return
 
-        fit = eds_queries.getFit(fitID)
-        fit.character = self.character = eds_queries.getCharacter(charID)
+        fit = getFit(fitID)
+        fit.character = self.character = getCharacter(charID)
         self.recalc(fit)
 
     def isAmmo(self, itemID):
-        return eds_queries.getItem(itemID).category.name == "Charge"
+        return getItem(itemID).category.name == "Charge"
 
     def setAmmo(self, fitID, ammoID, modules):
         if fitID is None:
             return
 
-        fit = eds_queries.getFit(fitID)
-        ammo = eds_queries.getItem(ammoID) if ammoID else None
+        fit = getFit(fitID)
+        ammo = getItem(ammoID) if ammoID else None
 
         for mod in modules:
             if mod.isValidCharge(ammo):
@@ -874,14 +873,14 @@ class Fit(object):
         if fitID is None:
             return
 
-        fit = eds_queries.getFit(fitID)
+        fit = getFit(fitID)
         return fit.targetResists
 
     def setTargetResists(self, fitID, pattern):
         if fitID is None:
             return
 
-        fit = eds_queries.getFit(fitID)
+        fit = getFit(fitID)
         fit.targetResists = pattern
         eds_queries.commit()
 
@@ -891,14 +890,14 @@ class Fit(object):
         if fitID is None:
             return
 
-        fit = eds_queries.getFit(fitID)
+        fit = getFit(fitID)
         return fit.damagePattern
 
     def setDamagePattern(self, fitID, pattern):
         if fitID is None:
             return
 
-        fit = eds_queries.getFit(fitID)
+        fit = getFit(fitID)
         fit.damagePattern = self.pattern = pattern
         eds_queries.commit()
 
@@ -908,7 +907,7 @@ class Fit(object):
         if fitID is None:
             return
 
-        fit = eds_queries.getFit(fitID)
+        fit = getFit(fitID)
         fit.mode = mode
         eds_queries.commit()
 
@@ -918,13 +917,13 @@ class Fit(object):
         if fitID is None:
             return
 
-        sDP = DamagePattern.getInstance()
+        sDP = s_DamagePattern.getInstance()
         dp = sDP.getDamagePattern("Selected Ammo")
         if dp is None:
             dp = es_DamagePattern()
             dp.name = "Selected Ammo"
 
-        fit = eds_queries.getFit(fitID)
+        fit = getFit(fitID)
         for attr in ("em", "thermal", "kinetic", "explosive"):
             setattr(dp, "%sAmount" % attr, ammo.getAttribute("%sDamage" % attr) or 0)
 
@@ -961,7 +960,7 @@ class Fit(object):
                                                         proposedState)
 
         eds_queries.commit()
-        fit = eds_queries.getFit(fitID)
+        fit = getFit(fitID)
 
         # As some items may affect state-limiting attributes of the ship, calculate new attributes first
         self.recalc(fit)
@@ -1015,7 +1014,7 @@ class Fit(object):
         if fitID is None:
             return None
 
-        fit = eds_queries.getFit(fitID)
+        fit = getFit(fitID)
         eds_queries.commit()
         self.recalc(fit)
 
