@@ -819,7 +819,7 @@ class Mapper:
                properties={"ID": synonym("iconID"),
                            "description": deferred(icons_table.c.description)})
 
-    class Metagroups:
+    class Items:
         metagroups_table = Table("invmetagroups", gamedata_meta,
                                  Column("metaGroupID", Integer, primary_key=True),
                                  Column("metaGroupName", String))
