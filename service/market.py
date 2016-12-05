@@ -696,8 +696,11 @@ class Market():
         """Get ships for given group id"""
         grp = self.getGroup(grpid, eager=("items", "items.group", "items.marketGroup"))
         ships = self.getItemsByGroup(grp)
+        # TODO: Figure out why this was here.
+        '''
         for ship in ships:
             ship.race
+        '''
         return ships
 
     def getShipListDelayed(self, id, callback):

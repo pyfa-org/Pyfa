@@ -21,7 +21,8 @@ import copy
 
 from eos.db.saveddata import queries as eds_queries
 from eos.saveddata.implant import Implant as es_Implant
-from eos.saveddata.implantSet import ImplantSet as es_ImplantSet
+from eos.saveddata.implantSet import ImplantSet as es_ImplantSet, getImplantSet, getImplantSetList
+from eos.gamedata import getItem
 
 from service.market import Market
 
@@ -37,22 +38,22 @@ class ImplantSets(object):
         return cls.instance
 
     def getImplantSetList(self):
-        return eds_queries.getImplantSetList(None)
+        return getImplantSetList(None)
 
     def getImplantSet(self, name):
-        return eds_queries.getImplantSet(name)
+        return getImplantSet(name)
 
     def getImplants(self, setID):
-        return eds_queries.getImplantSet(setID).implants
+        return getImplantSet(setID).implants
 
     def addImplant(self, setID, itemID):
-        eds_queries.getImplantSet(setID).implants.append(
-            es_Implant(eds_queries.getItem(itemID))
+        getImplantSet(setID).implants.append(
+            es_Implant(getItem(itemID))
         )
         eds_queries.commit()
 
     def removeImplant(self, setID, implant):
-        eds_queries.getImplantSet(setID).implants.remove(implant)
+        getImplantSet(setID).implants.remove(implant)
         eds_queries.commit()
 
     def newSet(self, name):
