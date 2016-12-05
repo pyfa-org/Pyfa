@@ -296,6 +296,9 @@ class Item(EqBase):
     @property
     def requiredSkills(self):
         if self.__requiredSkills is None:
+            # TODO: Import refactor.  Figure out how to get rid of this.
+            # This import should be here to make sure it's fully initialized
+            import eos.db
             requiredSkills = OrderedDict()
             self.__requiredSkills = requiredSkills
             # Map containing attribute IDs we may need for required skills
