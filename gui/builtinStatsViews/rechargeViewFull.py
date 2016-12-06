@@ -18,12 +18,13 @@
 # =============================================================================
 
 import wx
-from gui.statsView import StatsView
-from gui.bitmapLoader import BitmapLoader
-from gui.utils.numberFormatter import formatAmount
-import gui.mainFrame
+
 import gui.builtinStatsViews.resistancesViewFull as rvf
-from service.fit import Fit
+import gui.mainFrame
+from gui.bitmapLoader import BitmapLoader
+from gui.statsView import StatsView
+from gui.utils.numberFormatter import formatAmount
+from gui_service.fit import Fit
 
 
 class RechargeViewFull(StatsView):

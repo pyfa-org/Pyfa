@@ -32,8 +32,8 @@ from gui.bitmapLoader import BitmapLoader
 from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
 from gui.utils.exportHtml import exportHtml
-from service.fit import Fit
-from service.market import Market
+from gui_service.fit import Fit
+from gui_service import Market
 
 
 # Tab spawning handler

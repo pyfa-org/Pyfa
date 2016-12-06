@@ -18,12 +18,13 @@
 # =============================================================================
 
 import logging
+
 import wx
 
-from service.implantSet import ImplantSets
+from gui.builtinViews.entityEditor import EntityEditor, BaseValidator
 from gui.builtinViews.implantEditor import BaseImplantEditorView
 from gui.utils.clipboard import toClipboard, fromClipboard
-from gui.builtinViews.entityEditor import EntityEditor, BaseValidator
+from gui_service.implantSet import ImplantSets
 
 logger = logging.getLogger(__name__)
 

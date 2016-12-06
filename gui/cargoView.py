@@ -18,12 +18,13 @@
 # =============================================================================
 
 import wx
+
+import globalEvents as GE
 import gui.display as d
 from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
-import globalEvents as GE
-from service.fit import Fit
-from service.market import Market
+from gui_service.fit import Fit
+from gui_service import Market
 
 
 class CargoViewDrop(wx.PyDropTarget):

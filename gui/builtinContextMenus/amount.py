@@ -1,10 +1,11 @@
-from gui.contextMenu import ContextMenu
-import gui.mainFrame
-import gui.globalEvents as GE
 import wx
-from service.fit import Fit
+
+import gui.globalEvents as GE
+import gui.mainFrame
 from eos.saveddata.cargo import Cargo as es_Cargo
 from eos.saveddata.fighter import Fighter as es_Fighter
+from gui.contextMenu import ContextMenu
+from gui_service.fit import Fit
 
 
 class ChangeAmount(ContextMenu):

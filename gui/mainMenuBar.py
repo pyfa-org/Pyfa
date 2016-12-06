@@ -20,16 +20,15 @@
 import wx
 
 import config
-from service.crest import Crest
-from service.character import Character
-import gui.mainFrame
-import gui.graphFrame
 import gui.globalEvents as GE
+import gui.graphFrame
+import gui.mainFrame
 from gui.bitmapLoader import BitmapLoader
-
+from gui_service.character import Character
+from gui_service import Crest
 
 if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3, 0)):
-    from service.crest import CrestModes
+    from gui_service.crest import CrestModes
 
 
 class MainMenuBar(wx.MenuBar):

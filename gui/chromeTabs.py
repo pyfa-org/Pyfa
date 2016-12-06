@@ -19,13 +19,12 @@
 
 import wx
 import wx.lib.newevent
+
 import gui.utils.colorUtils as colorUtils
 import gui.utils.drawUtils as drawUtils
 import gui.utils.fonts as fonts
 from gui.bitmapLoader import BitmapLoader
-
-from service.fit import Fit
-
+from gui_service.fit import Fit
 
 _PageChanging, EVT_NOTEBOOK_PAGE_CHANGING = wx.lib.newevent.NewEvent()
 _PageChanged, EVT_NOTEBOOK_PAGE_CHANGED = wx.lib.newevent.NewEvent()

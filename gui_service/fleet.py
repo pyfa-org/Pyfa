@@ -99,7 +99,7 @@ class Fleet(object):
         squad.wing.gang.leader = booster
         if self.anyBoosters(squad) is False:
             self.removeAssociatedFleetData(boostee)
-        from service.fit import Fit
+        from gui_service.fit import Fit
         sFit = Fit.getInstance()
         sFit.recalc(boostee, withBoosters=True)
 
@@ -119,7 +119,7 @@ class Fleet(object):
         squad.wing.leader = booster
         if self.anyBoosters(squad) is False:
             self.removeAssociatedFleetData(boostee)
-        from service.fit import Fit
+        from gui_service.fit import Fit
         sFit = Fit.getInstance()
         sFit.recalc(boostee, withBoosters=True)
 
@@ -139,7 +139,7 @@ class Fleet(object):
         squad.leader = booster
         if self.anyBoosters(squad) is False:
             self.removeAssociatedFleetData(boostee)
-        from service.fit import Fit
+        from gui_service.fit import Fit
         sFit = Fit.getInstance()
         sFit.recalc(boostee, withBoosters=True)
 

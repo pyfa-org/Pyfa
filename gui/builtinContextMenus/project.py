@@ -1,8 +1,9 @@
-from gui.contextMenu import ContextMenu
-import gui.mainFrame
-import gui.globalEvents as GE
 import wx
-from service.fit import Fit
+
+import gui.globalEvents as GE
+import gui.mainFrame
+from gui.contextMenu import ContextMenu
+from gui_service.fit import Fit
 
 
 class Project(ContextMenu):

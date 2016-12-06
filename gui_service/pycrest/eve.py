@@ -1,16 +1,16 @@
-import logging
-import re
-import os
 import base64
+import logging
+import os
+import re
 import time
 import zlib
 
 import requests
 from requests.adapters import HTTPAdapter
+from gui_service.pycrest.errors import APIException
 
 import config
-from service.pycrest.compat import bytes_, text_
-from service.pycrest.errors import APIException
+from gui_service.pycrest.compat import bytes_, text_
 
 try:
     from urllib.parse import urlparse, urlunparse, parse_qsl

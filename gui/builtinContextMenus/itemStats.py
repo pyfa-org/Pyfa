@@ -1,8 +1,9 @@
+import wx
+
+import gui.mainFrame
 from gui.contextMenu import ContextMenu
 from gui.itemStats import ItemStatsDialog
-import gui.mainFrame
-import wx
-from service.fit import Fit
+from gui_service.fit import Fit
 
 
 class ItemStats(ContextMenu):

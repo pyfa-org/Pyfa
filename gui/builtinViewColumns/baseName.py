@@ -28,7 +28,7 @@ from eos.saveddata.implant import Implant as Implant
 from eos.saveddata.module import Slot as Slot, Module as Module, Rack as Rack
 from gui.projectedView import ProjectedView
 from gui.viewColumn import ViewColumn
-from service.fit import Fit as s_Fit
+from gui_service.fit import Fit as s_Fit
 
 
 class BaseName(ViewColumn):

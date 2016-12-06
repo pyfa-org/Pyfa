@@ -80,7 +80,7 @@ Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChang
 ; These will delete left over generated files from 1.14 and below
 Type: filesandordirs; Name: "{app}\eos"
 Type: filesandordirs; Name: "{app}\gui"
-Type: filesandordirs; Name: "{app}\service"
+Type: filesandordirs; Name: "{app}\gui_service"
 Type: filesandordirs; Name: "{app}\utils"
 Type: files; Name: "{app}\*.pyo"
 Type: files; Name: "{app}\*.pyc"

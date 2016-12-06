@@ -1,10 +1,11 @@
-from gui.contextMenu import ContextMenu
-import gui.mainFrame
-import gui.globalEvents as GE
 import wx
+from gui_service.damagePattern import DamagePattern as import_DamagePattern
+
+import gui.globalEvents as GE
+import gui.mainFrame
 from gui.bitmapLoader import BitmapLoader
-from service.fit import Fit
-from service.damagePattern import DamagePattern as import_DamagePattern
+from gui.contextMenu import ContextMenu
+from gui_service.fit import Fit
 
 try:
     from collections import OrderedDict

@@ -20,14 +20,13 @@
 import wx
 from wx.lib.scrolledpanel import ScrolledPanel
 
-from service.fit import Fit
-from service.fleet import Fleet
-from service.character import Character
-from service.market import Market
-
+import gui.globalEvents as GE
 import gui.mainFrame
 import gui.shipBrowser
-import gui.globalEvents as GE
+from gui_service.fit import Fit
+from gui_service import Character
+from gui_service import Fleet
+from gui_service import Market
 
 
 class GangView(ScrolledPanel):

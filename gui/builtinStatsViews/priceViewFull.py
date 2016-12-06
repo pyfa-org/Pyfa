@@ -18,10 +18,11 @@
 # =============================================================================
 
 import wx
-from gui.statsView import StatsView
+
 from gui.bitmapLoader import BitmapLoader
+from gui.statsView import StatsView
 from gui.utils.numberFormatter import formatAmount
-from service.market import Market
+from gui_service.market import Market
 
 
 class PriceViewFull(StatsView):

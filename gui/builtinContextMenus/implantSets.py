@@ -1,10 +1,11 @@
-from gui.contextMenu import ContextMenu
-import gui.mainFrame
 import wx
+from gui_service.character import Character
+from gui_service.implantSet import ImplantSets as ImplantSet
+
 import gui.globalEvents as GE
-from service.fit import Fit
-from service.character import Character
-from service.implantSet import ImplantSets as ImplantSet
+import gui.mainFrame
+from gui.contextMenu import ContextMenu
+from gui_service.fit import Fit
 
 
 class ImplantSets(ContextMenu):

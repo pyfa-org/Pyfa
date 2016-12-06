@@ -7,7 +7,7 @@ Windows executable + installer: python setup.py bdist_msi
 import requests.certs
 
 # The modules that contain the bulk of teh source
-packages = ['eos', 'gui', 'service', 'utils']
+packages = ['eos', 'gui', 'gui_service', 'utils']
 # Extra files that will be copied into the root directory
 include_files = ['eve.db', 'LICENSE', 'README.md', (requests.certs.where(),'cacert.pem')]
 # this is read by dist.py to package the icons

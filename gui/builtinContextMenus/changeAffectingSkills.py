@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 import wx
+from gui_service.character import Character
 
 import gui.globalEvents as GE
 import gui.mainFrame
 from eos.saveddata.character import Skill as Skill
 from gui.bitmapLoader import BitmapLoader
 from gui.contextMenu import ContextMenu
-from service.character import Character
-from service.fit import Fit
+from gui_service.fit import Fit
 
 
 class ChangeAffectingSkills(ContextMenu):

@@ -1,8 +1,9 @@
-from gui.contextMenu import ContextMenu
-import gui.mainFrame
 import wx
+
 import gui.globalEvents as GE
-from service.fit import Fit
+import gui.mainFrame
+from gui.contextMenu import ContextMenu
+from gui_service.fit import Fit
 
 
 class FighterAbility(ContextMenu):

@@ -18,14 +18,14 @@
 # =============================================================================
 
 import wx
-import gui.display as d
-import gui.globalEvents as GE
 
+import gui.display as d
 import gui.droneView
+import gui.globalEvents as GE
+from eos.saveddata.drone import Drone as es_Drone
 from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
-from service.fit import Fit
-from eos.saveddata.drone import Drone as es_Drone
+from gui_service.fit import Fit
 
 
 class DummyItem:

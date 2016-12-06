@@ -11,15 +11,15 @@ PyfaGauge is a generic Gauge implementation tailored for PYFA (Python Fitting As
 It uses the easeOutQuad equation from caurina.transitions.Tweener to do the animation stuff
 """
 
-import wx
 import copy
 
-from gui.utils import colorUtils
-import gui.utils.drawUtils as drawUtils
-import gui.utils.animEffects as animEffects
-import gui.utils.fonts as fonts
+import wx
 
-from service import fit
+import gui.utils.animEffects as animEffects
+import gui.utils.drawUtils as drawUtils
+import gui.utils.fonts as fonts
+from gui.utils import colorUtils
+from gui_service import fit
 
 
 class PyGauge(wx.PyWindow):

@@ -18,11 +18,12 @@
 # =============================================================================
 
 import wx
-from gui.bitmapLoader import BitmapLoader
+
 import gui.globalEvents as GE
 import gui.mainFrame
-from service.character import Character
-from service.fit import Fit
+from gui.bitmapLoader import BitmapLoader
+from gui_service.fit import Fit
+from gui_service import Character
 
 
 class CharacterSelection(wx.Panel):

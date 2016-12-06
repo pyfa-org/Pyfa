@@ -6,15 +6,15 @@ import time
 import uuid
 
 import wx
+from gui_service.settings import CRESTSettings
 
 import gui.globalEvents as GE
 from eos.db.saveddata import queries as eds_queries
 from eos.enum import Enum
 from eos.saveddata.crestchar import CrestChar as CrestChar
 from eos.saveddata.crestchar import getCrestCharacter, getCrestCharacters
-from service.pycrest.eve import EVE
-from service.server import StoppableHTTPServer, AuthHandler
-from service.settings import CRESTSettings
+from gui_service.pycrest.eve import EVE
+from gui_service.server import StoppableHTTPServer, AuthHandler
 
 logger = logging.getLogger(__name__)
 

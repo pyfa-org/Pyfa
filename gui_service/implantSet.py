@@ -23,7 +23,7 @@ from eos.db.saveddata import queries as eds_queries
 from eos.gamedata import getItem
 from eos.saveddata.implant import Implant as es_Implant
 from eos.saveddata.implantSet import ImplantSet as es_ImplantSet, getImplantSet, getImplantSetList
-from service.market import Market
+from gui_service.market import Market
 
 
 class ImplantSets(object):

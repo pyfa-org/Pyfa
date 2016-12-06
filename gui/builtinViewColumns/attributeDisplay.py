@@ -22,8 +22,8 @@ import wx
 from gui.bitmapLoader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 from gui.viewColumn import ViewColumn
-from service.attribute import Attribute
-from service.market import Market
+from gui_service.market import Market
+from gui_service import Attribute
 
 
 class AttributeDisplay(ViewColumn):

@@ -21,6 +21,11 @@
 import copy
 import logging
 
+from gui_service.character import Character
+from gui_service.fleet import Fleet
+from gui_service.market import Market
+from gui_service.settings import SettingsProvider
+
 from eos.db import saveddata_session
 from eos.db.saveddata import queries as eds_queries
 from eos.gamedata import getItem
@@ -37,11 +42,7 @@ from eos.saveddata.implant import Implant as es_Implant
 from eos.saveddata.module import Module as es_Module
 from eos.saveddata.module import Slot as Slot, Module as Module, State as State
 from eos.saveddata.ship import Ship as es_Ship
-from service.character import Character
-from service.damagePattern import DamagePattern as s_DamagePattern
-from service.fleet import Fleet
-from service.market import Market
-from service.settings import SettingsProvider
+from gui_service.damagePattern import DamagePattern as s_DamagePattern
 
 logger = logging.getLogger(__name__)
 

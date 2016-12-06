@@ -1,12 +1,12 @@
 # coding: utf-8
 
 import wx
+from gui_service.market import Market
 
-from service.fit import Fit
-from service.market import Market
-import gui.mainFrame
 import gui.globalEvents as GE
+import gui.mainFrame
 from gui.contextMenu import ContextMenu
+from gui_service.fit import Fit
 
 
 class MetaSwap(ContextMenu):

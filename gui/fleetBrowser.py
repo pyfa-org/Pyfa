@@ -1,14 +1,13 @@
 import wx
 from wx.lib.buttons import GenBitmapButton
 
-import service.fleet
 import gui.mainFrame
-import gui.utils.colorUtils as colorUtils
 import gui.sfBrowserItem as SFItem
-from gui.bitmapLoader import BitmapLoader
+import gui.utils.colorUtils as colorUtils
+import gui_service.fleet
 from gui.PFListPane import PFListPane
+from gui.bitmapLoader import BitmapLoader
 from gui.utils.drawUtils import GetPartialText
-
 
 FleetSelected, EVT_FLEET_SELECTED = wx.lib.newevent.NewEvent()
 FleetRenamed, EVT_FLEET_RENAMED = wx.lib.newevent.NewEvent()
@@ -24,7 +23,7 @@ class FleetBrowser(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent)
 
-        self.sFleet = service.fleet.Fleet.getInstance()
+        self.sFleet = gui_service.fleet.Fleet.getInstance()
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)

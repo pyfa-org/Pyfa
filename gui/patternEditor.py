@@ -20,10 +20,10 @@
 import wx
 from wx.lib.intctrl import IntCtrl
 
-from service.damagePattern import DamagePattern
 from gui.bitmapLoader import BitmapLoader
-from gui.utils.clipboard import toClipboard, fromClipboard
 from gui.builtinViews.entityEditor import EntityEditor, BaseValidator
+from gui.utils.clipboard import toClipboard, fromClipboard
+from gui_service.damagePattern import DamagePattern
 
 
 class DmgPatternTextValidor(BaseValidator):

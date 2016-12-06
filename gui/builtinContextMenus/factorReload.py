@@ -1,9 +1,10 @@
-from gui.contextMenu import ContextMenu
-import gui.mainFrame
-import gui.globalEvents as GE
 import wx
+
+import gui.globalEvents as GE
+import gui.mainFrame
 from gui.bitmapLoader import BitmapLoader
-from service.fit import Fit
+from gui.contextMenu import ContextMenu
+from gui_service.fit import Fit
 
 
 class FactorReload(ContextMenu):

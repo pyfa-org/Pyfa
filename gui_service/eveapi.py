@@ -165,7 +165,7 @@ from calendar import timegm
 from time import strptime
 from xml.parsers import expat
 
-from service.network import Network
+from gui_service.network import Network
 
 proxy = None
 proxySSL = False

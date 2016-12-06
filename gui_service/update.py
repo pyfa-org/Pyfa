@@ -23,10 +23,10 @@ import threading
 
 import dateutil.parser
 import wx
+from gui_service.settings import UpdateSettings
 
 import config
-from service.network import Network
-from service.settings import UpdateSettings
+from gui_service.network import Network
 
 
 class CheckUpdateThread(threading.Thread):

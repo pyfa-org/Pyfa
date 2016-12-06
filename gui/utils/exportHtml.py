@@ -1,9 +1,11 @@
 import threading
 import time
+
 import wx
-from service.settings import HTMLExportSettings
-from service.fit import Fit
-from service.market import Market
+
+from gui_service.fit import Fit
+from gui_service import HTMLExportSettings
+from gui_service import Market
 
 
 class exportHtml():

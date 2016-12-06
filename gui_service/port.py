@@ -29,6 +29,8 @@ import xml.parsers.expat
 from codecs import open
 
 import wx
+from gui_service.crest import Crest
+from gui_service.market import Market
 
 from eos.db.saveddata import queries as eds_queries
 from eos.saveddata.booster import Booster as Booster
@@ -38,16 +40,14 @@ from eos.saveddata.drone import Drone as Drone
 from eos.saveddata.implant import Implant as Implant
 from eos.saveddata.module import Slot as Slot, Module as Module, State as State
 from eos.saveddata.ship import Ship as Ship
-from service.crest import Crest
-from service.fit import Fit
-from service.market import Market
+from gui_service.fit import Fit
 
 try:
     from collections import OrderedDict
 except ImportError:
     from utils.compat import OrderedDict
 
-logger = logging.getLogger("pyfa.service.port")
+logger = logging.getLogger("pyfa.gui_service.port")
 
 EFT_SLOT_ORDER = [Slot.LOW, Slot.MED, Slot.HIGH, Slot.RIG, Slot.SUBSYSTEM]
 INV_FLAGS = {

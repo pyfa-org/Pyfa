@@ -19,14 +19,13 @@
 
 import wx
 
-from service.fit import Fit
-import gui.mainFrame
 import gui.builtinStatsViews
 import gui.globalEvents as GE
-# import gui.builtinViews.fittingView as fv
-from gui.statsView import StatsView
+import gui.mainFrame
 from gui.contextMenu import ContextMenu
 from gui.pyfatogglepanel import TogglePanel
+from gui.statsView import StatsView
+from gui_service.fit import Fit
 
 
 class StatsPane(wx.Panel):

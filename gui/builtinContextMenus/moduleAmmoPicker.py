@@ -7,8 +7,8 @@ import gui.mainFrame
 from eos.saveddata.module import Hardpoint as Hardpoint
 from gui.bitmapLoader import BitmapLoader
 from gui.contextMenu import ContextMenu
-from service.fit import Fit
-from service.market import Market
+from gui_service.fit import Fit
+from gui_service.market import Market
 
 
 class ModuleAmmoPicker(ContextMenu):

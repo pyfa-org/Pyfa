@@ -17,10 +17,10 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
-import wx
 import dateutil.parser
+import wx
 
-from service.settings import UpdateSettings
+from gui_service.settings import UpdateSettings
 
 
 class UpdateDialog(wx.Dialog):

@@ -17,12 +17,12 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
-from gui.graph import Graph
-from gui.bitmapLoader import BitmapLoader
-from eos.graph.fitDps import FitDpsGraph as FitDps
-from eos.graph import Data
 import gui.mainFrame
-from service.attribute import Attribute
+from eos.graph import Data
+from eos.graph.fitDps import FitDpsGraph as FitDps
+from gui.bitmapLoader import BitmapLoader
+from gui.graph import Graph
+from gui_service.attribute import Attribute
 
 
 class FitDpsGraph(Graph):

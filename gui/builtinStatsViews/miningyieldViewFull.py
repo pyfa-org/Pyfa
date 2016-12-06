@@ -18,11 +18,12 @@
 # =============================================================================
 
 import wx
+
 import gui.mainFrame
-from gui.statsView import StatsView
 from gui.bitmapLoader import BitmapLoader
+from gui.statsView import StatsView
 from gui.utils.numberFormatter import formatAmount
-from service.fit import Fit
+from gui_service.fit import Fit
 
 
 class MiningYieldViewFull(StatsView):

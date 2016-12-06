@@ -1,6 +1,6 @@
-from gui.contextMenu import ContextMenu
 import gui.mainFrame
-from service.market import Market
+from gui.contextMenu import ContextMenu
+from gui_service.market import Market
 
 
 class MarketJump(ContextMenu):

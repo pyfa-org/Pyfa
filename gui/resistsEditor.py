@@ -18,10 +18,11 @@
 # =============================================================================
 
 import wx
-from service.targetResists import TargetResists
+
 from gui.bitmapLoader import BitmapLoader
-from gui.utils.clipboard import toClipboard, fromClipboard
 from gui.builtinViews.entityEditor import EntityEditor, BaseValidator
+from gui.utils.clipboard import toClipboard, fromClipboard
+from gui_service.targetResists import TargetResists
 
 
 class TargetResistsTextValidor(BaseValidator):

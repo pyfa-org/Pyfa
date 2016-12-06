@@ -6,20 +6,19 @@ import time
 import wx
 from wx.lib.buttons import GenBitmapButton
 
-from service.fit import Fit
-from service.market import Market
-import gui.mainFrame
-import gui.utils.fonts as fonts
 import gui.globalEvents as GE
+import gui.mainFrame
 import gui.sfBrowserItem as SFItem
+import gui.utils.animEffects as animEffects
+import gui.utils.animUtils as animUtils
 import gui.utils.colorUtils as colorUtils
 import gui.utils.drawUtils as drawUtils
-import gui.utils.animUtils as animUtils
-import gui.utils.animEffects as animEffects
+import gui.utils.fonts as fonts
 from gui.PFListPane import PFListPane
-from gui.contextMenu import ContextMenu
 from gui.bitmapLoader import BitmapLoader
-
+from gui.contextMenu import ContextMenu
+from gui_service.fit import Fit
+from gui_service import Market
 
 FitRenamed, EVT_FIT_RENAMED = wx.lib.newevent.NewEvent()
 FitSelected, EVT_FIT_SELECTED = wx.lib.newevent.NewEvent()

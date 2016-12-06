@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
-import gui.mainFrame
 import wx
+
 import gui.globalEvents as GE
-from gui.builtinContextMenus.moduleAmmoPicker import ModuleAmmoPicker
-from service.fit import Fit
+import gui.mainFrame
 from eos.db.saveddata.queries import getFit
+from gui.builtinContextMenus.moduleAmmoPicker import ModuleAmmoPicker
+from gui_service.fit import Fit
 
 
 class ModuleGlobalAmmoPicker(ModuleAmmoPicker):

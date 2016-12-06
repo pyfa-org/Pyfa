@@ -1,8 +1,9 @@
 import wx
-from gui.contextMenu import ContextMenu
+
 import gui.mainFrame
+from gui.contextMenu import ContextMenu
 from gui.shipBrowser import Stage3Selected
-from service.fit import Fit
+from gui_service.fit import Fit
 
 
 class ShipJump(ContextMenu):

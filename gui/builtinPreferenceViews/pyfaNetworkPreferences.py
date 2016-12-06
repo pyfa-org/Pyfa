@@ -1,11 +1,10 @@
 import wx
 
-from gui.preferenceView import PreferenceView
-from gui.bitmapLoader import BitmapLoader
-
 import gui.mainFrame
-from service.settings import NetworkSettings
-from service.network import Network
+from gui.bitmapLoader import BitmapLoader
+from gui.preferenceView import PreferenceView
+from gui_service.network import Network
+from gui_service import NetworkSettings
 
 
 class PFNetworkPref(PreferenceView):

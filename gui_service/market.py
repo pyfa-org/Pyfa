@@ -23,6 +23,7 @@ import re
 import threading
 
 import wx
+from gui_service.settings import SettingsProvider
 from sqlalchemy.sql import or_
 
 import config
@@ -38,9 +39,8 @@ from eos.gamedata import (
 )
 from eos.saveddata.override import getAllOverrides
 from eos.saveddata.price import getPrice, clearPrices
-from service import conversions
-from service.price import Price
-from service.settings import SettingsProvider
+from gui_service import conversions
+from gui_service.price import Price
 
 try:
     from collections import OrderedDict

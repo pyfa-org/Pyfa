@@ -22,7 +22,7 @@ import time
 from xml.dom import minidom
 
 from eos.gamedata import getItem
-from service.network import Network, TimeoutError
+from gui_service.network import Network, TimeoutError
 
 VALIDITY = 24 * 60 * 60  # Price validity period, 24 hours
 REREQUEST = 4 * 60 * 60  # Re-request delay for failed fetches, 4 hours

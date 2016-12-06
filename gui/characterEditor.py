@@ -18,18 +18,18 @@
 # =============================================================================
 
 import wx
-
-import wx.lib.newevent
 import wx.gizmos
-from gui.bitmapLoader import BitmapLoader
-from gui.contextMenu import ContextMenu
+import wx.lib.newevent
+
 import gui.globalEvents as GE
-from gui.builtinViews.implantEditor import BaseImplantEditorView
+from gui.bitmapLoader import BitmapLoader
 from gui.builtinViews.entityEditor import EntityEditor, BaseValidator
-from service.fit import Fit
-from service.character import Character
-from service.network import AuthenticationError, TimeoutError
-from service.market import Market
+from gui.builtinViews.implantEditor import BaseImplantEditorView
+from gui.contextMenu import ContextMenu
+from gui_service.fit import Fit
+from gui_service import AuthenticationError, TimeoutError
+from gui_service import Character
+from gui_service import Market
 
 
 class CharacterTextValidor(BaseValidator):

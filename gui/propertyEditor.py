@@ -12,7 +12,7 @@ except:
         raise
 
 from eos.gamedata import getItem, getAttributeInfo
-from service.market import Market
+from gui_service.market import Market
 import gui.display as d
 import gui.globalEvents as GE
 import gui.PFSearchBox as SBox

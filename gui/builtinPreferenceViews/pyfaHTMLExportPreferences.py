@@ -1,12 +1,11 @@
-import wx
 import os
 
-from gui.preferenceView import PreferenceView
-from gui.bitmapLoader import BitmapLoader
+import wx
 
 import gui.mainFrame
-
-from service.settings import HTMLExportSettings
+from gui.bitmapLoader import BitmapLoader
+from gui.preferenceView import PreferenceView
+from gui_service.settings import HTMLExportSettings
 
 
 class PFHTMLExportPref(PreferenceView):

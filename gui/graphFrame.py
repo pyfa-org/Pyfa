@@ -21,12 +21,12 @@ import os
 
 import wx
 
-from service.fit import Fit
 import gui.display
-import gui.mainFrame
 import gui.globalEvents as GE
-from gui.graph import Graph
+import gui.mainFrame
 from gui.bitmapLoader import BitmapLoader
+from gui.graph import Graph
+from gui_service.fit import Fit
 
 
 enabled = True

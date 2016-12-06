@@ -18,14 +18,14 @@
 # =============================================================================
 
 import wx
-from service.market import Market
-from service.attribute import Attribute
-import gui.display as d
+
 import gui.PFSearchBox as SBox
+import gui.display as d
+from gui.bitmapLoader import BitmapLoader
 from gui.cachingImageList import CachingImageList
 from gui.contextMenu import ContextMenu
-from gui.bitmapLoader import BitmapLoader
-
+from gui_service.market import Market
+from gui_service import Attribute
 
 ItemSelected, ITEM_SELECTED = wx.lib.newevent.NewEvent()
 

@@ -26,8 +26,8 @@ import gui.marketBrowser as mb
 from eos.saveddata.fit import ImplantLocation as ImplantLocation
 from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
-from service.fit import Fit
-from service.market import Market
+from gui_service.fit import Fit
+from gui_service import Market
 
 
 class ImplantView(wx.Panel):

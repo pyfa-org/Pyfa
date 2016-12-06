@@ -6,7 +6,7 @@ import urlparse
 
 import wx
 
-from service.settings import CRESTSettings
+from gui_service.settings import CRESTSettings
 
 logger = logging.getLogger(__name__)
 

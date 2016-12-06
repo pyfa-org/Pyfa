@@ -19,16 +19,16 @@
 
 import wx
 
-from service.fit import Fit
-from service.market import Market
 import gui.display as d
-import gui.globalEvents as GE
 import gui.droneView
+import gui.globalEvents as GE
+from eos.saveddata.drone import Drone as es_Drone
+from eos.saveddata.fighter import Fighter as es_Fighter
+from eos.saveddata.module import Module as es_Module
 from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
-from eos.saveddata.drone import Drone as es_Drone
-from eos.saveddata.module import Module as es_Module
-from eos.saveddata.fighter import Fighter as es_Fighter
+from gui_service.fit import Fit
+from gui_service import Market
 
 
 class DummyItem:

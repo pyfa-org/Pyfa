@@ -7,11 +7,11 @@ import wx
 
 import gui.display as d
 import gui.globalEvents as GE
-from eos.saveddata.cargo import Cargo as Cargo
 from eos.gamedata import getItem
-from service.crest import Crest
-from service.crest import CrestModes
-from service.fit import Fit
+from eos.saveddata.cargo import Cargo as Cargo
+from gui_service.fit import Fit
+from gui_service import Crest
+from gui_service import CrestModes
 
 
 class CrestFittings(wx.Frame):

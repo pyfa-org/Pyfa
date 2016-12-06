@@ -1,13 +1,11 @@
 import wx
-
-from gui.preferenceView import PreferenceView
-from gui.bitmapLoader import BitmapLoader
+from wx.lib.intctrl import IntCtrl
 
 import gui.mainFrame
-from service.crest import Crest
-from service.settings import CRESTSettings
-
-from wx.lib.intctrl import IntCtrl
+from gui.bitmapLoader import BitmapLoader
+from gui.preferenceView import PreferenceView
+from gui_service.crest import Crest
+from gui_service import CRESTSettings
 
 
 class PFCrestPref(PreferenceView):

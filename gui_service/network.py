@@ -23,7 +23,7 @@ import urllib
 import urllib2
 
 import config
-from service.settings import NetworkSettings
+from gui_service.settings import NetworkSettings
 
 # network timeout, otherwise pyfa hangs for a long while if no internet connection
 timeout = 3

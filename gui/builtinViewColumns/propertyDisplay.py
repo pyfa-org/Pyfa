@@ -19,7 +19,7 @@
 
 from gui.utils.numberFormatter import formatAmount
 from gui.viewColumn import ViewColumn
-from service.attribute import Attribute
+from gui_service.attribute import Attribute
 
 
 class PropertyDisplay(ViewColumn):

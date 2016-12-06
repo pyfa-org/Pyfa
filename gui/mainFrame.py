@@ -17,10 +17,10 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
-import sys
 import os.path
-import time
+import sys
 import threading
+import time
 import webbrowser
 from codecs import open
 from time import gmtime, strftime
@@ -30,44 +30,39 @@ import wx
 from wx.lib.wordwrap import wordwrap
 
 import config
-
 import gui.aboutData
 import gui.chromeTabs
 import gui.globalEvents as GE
-from gui.bitmapLoader import BitmapLoader
-from gui.mainMenuBar import MainMenuBar
-from gui.additionsPane import AdditionsPane
-from gui.marketBrowser import MarketBrowser, ItemSelected
-from gui.multiSwitch import MultiSwitch
-from gui.statsPane import StatsPane
-# from gui.shipBrowser import ShipBrowser, FitSelected, ImportSelected, Stage3Selected
 import gui.shipBrowser
+from eos.db.saveddata.loadDefaultDatabaseValues import DefaultDatabaseValues
+from eos.modifiedAttributeDict import ModifiedAttributeDict
+from gui import graphFrame
+from gui.additionsPane import AdditionsPane
+from gui.bitmapLoader import BitmapLoader
 from gui.characterEditor import CharacterEditor, SaveCharacterAs
 from gui.characterSelection import CharacterSelection
+from gui.copySelectDialog import CopySelectDialog
+from gui.graphFrame import GraphFrame
+from gui.mainMenuBar import MainMenuBar
+from gui.marketBrowser import MarketBrowser, ItemSelected
+from gui.multiSwitch import MultiSwitch
 from gui.patternEditor import DmgPatternEditorDlg
+from gui.preferenceDialog import PreferenceDialog
 from gui.resistsEditor import ResistsEditorDlg
 from gui.setEditor import ImplantSetEditorDlg
-from gui.preferenceDialog import PreferenceDialog
-from gui.graphFrame import GraphFrame
-from gui.copySelectDialog import CopySelectDialog
-from gui.utils.clipboard import toClipboard, fromClipboard
+from gui.statsPane import StatsPane
 from gui.updateDialog import UpdateDialog
-from gui import graphFrame
-
-from service.settings import SettingsProvider
-from service.fit import Fit
-from service.character import Character
-from service.crest import Crest
-from service.update import Update
-
-# import this to access override setting
-from eos.modifiedAttributeDict import ModifiedAttributeDict
-from eos.db.saveddata.loadDefaultDatabaseValues import DefaultDatabaseValues
-from service.port import Port
-from service.settings import HTMLExportSettings
+from gui.utils.clipboard import toClipboard, fromClipboard
+from gui_service.fit import Fit
+from gui_service import Character
+from gui_service import Crest
+from gui_service import HTMLExportSettings
+from gui_service import Port
+from gui_service import SettingsProvider
+from gui_service import Update
 
 if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3, 0)):
-    from service.crest import CrestModes
+    from gui_service.crest import CrestModes
     from gui.crestFittings import CrestFittings, ExportToEve, CrestMgmt
 
     try:

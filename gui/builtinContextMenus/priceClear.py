@@ -1,8 +1,9 @@
-from gui.contextMenu import ContextMenu
-import gui.mainFrame
 import wx
+
 import gui.globalEvents as GE
-from service.market import Market
+import gui.mainFrame
+from gui.contextMenu import ContextMenu
+from gui_service.market import Market
 
 
 class PriceClear(ContextMenu):

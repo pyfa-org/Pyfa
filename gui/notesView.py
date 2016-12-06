@@ -1,8 +1,8 @@
 import wx
 
-from service.fit import Fit
 import gui.globalEvents as GE
 import gui.mainFrame
+from gui_service.fit import Fit
 
 
 class NotesView(wx.Panel):

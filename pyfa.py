@@ -18,11 +18,11 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # ==============================================================================
 
-import sys
 import re
-import config
-
+import sys
 from optparse import OptionParser, BadOptionError, AmbiguousOptionError
+
+import config
 
 
 class PassThroughOptionParser(OptionParser):
@@ -124,7 +124,6 @@ if __name__ == "__main__":
     import os.path
 
     import eos.db
-    import service.prefetch  # noqa
     from gui.mainFrame import MainFrame
 
     # Make sure the saveddata db exists

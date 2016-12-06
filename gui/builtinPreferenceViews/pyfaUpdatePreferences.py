@@ -1,8 +1,8 @@
 import wx
 
-from gui.preferenceView import PreferenceView
 from gui.bitmapLoader import BitmapLoader
-from service.settings import UpdateSettings
+from gui.preferenceView import PreferenceView
+from gui_service.settings import UpdateSettings
 
 
 class PFUpdatePref(PreferenceView):

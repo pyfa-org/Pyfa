@@ -1,12 +1,11 @@
 import wx
 
-from gui.preferenceView import PreferenceView
-from gui.bitmapLoader import BitmapLoader
-
-import gui.mainFrame
 import gui.globalEvents as GE
-from service.settings import SettingsProvider
-from service.fit import Fit
+import gui.mainFrame
+from gui.bitmapLoader import BitmapLoader
+from gui.preferenceView import PreferenceView
+from gui_service.fit import Fit
+from gui_service import SettingsProvider
 
 
 class PFGeneralPref(PreferenceView):
