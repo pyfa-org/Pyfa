@@ -6,8 +6,8 @@ env:
 before_install:
   - pip install -U tox
 install:
-  - pip install codecov
-  - pip install pytest-cov
+  - pip install -r requirements.txt
+  - pip install -r requirements_test.txt
 script:
   - tox
   - py.test --cov=./
