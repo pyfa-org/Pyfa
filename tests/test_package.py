@@ -2,8 +2,15 @@
 
 import importlib
 import os
+import sys
 
 import pytest
+
+# Work around for Travic-CI to be able to import modules directly from out path
+script_dir = os.path.dirname(os.path.abspath(__file__))
+# Add Gnosis module to python paths
+sys.path.append(os.path.realpath(os.path.join(script_dir, '..', '..')))
+sys.path.append(os.path.realpath(os.path.join(script_dir, '..')))
 
 from gui_service import __all__ as all_gui_services
 from gui_service import attribute
