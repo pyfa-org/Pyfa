@@ -43,7 +43,7 @@ from gui.bitmapLoader import BitmapLoader
 from gui.contextMenu import ContextMenu
 from gui.utils.numberFormatter import formatAmount
 from gui_service.market import Market
-from gui_service import Attribute
+from gui_service.attribute import Attribute
 
 
 class ItemStatsDialog(wx.Dialog):

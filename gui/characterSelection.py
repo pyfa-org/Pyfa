@@ -23,7 +23,7 @@ import gui.globalEvents as GE
 import gui.mainFrame
 from gui.bitmapLoader import BitmapLoader
 from gui_service.fit import Fit
-from gui_service import Character
+from gui_service.character import Character
 
 
 class CharacterSelection(wx.Panel):

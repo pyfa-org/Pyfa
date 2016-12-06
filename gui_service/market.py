@@ -39,6 +39,7 @@ from eos.gamedata import (
 )
 from eos.saveddata.override import getAllOverrides
 from eos.saveddata.price import getPrice, clearPrices
+# Import refactor, this is probably wrong, but can't find convesions
 from gui_service import conversions
 from gui_service.price import Price
 

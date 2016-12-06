@@ -4,7 +4,7 @@ import gui.mainFrame
 from gui.bitmapLoader import BitmapLoader
 from gui.preferenceView import PreferenceView
 from gui_service.network import Network
-from gui_service import NetworkSettings
+from gui_service.network import NetworkSettings
 
 
 class PFNetworkPref(PreferenceView):

@@ -25,7 +25,7 @@ from gui.utils.listFormatter import formatList
 from gui.utils.numberFormatter import formatAmount
 from gui.viewColumn import ViewColumn
 from gui_service.fit import Fit
-from gui_service import Market
+from gui_service.market import Market
 
 
 class Miscellanea(ViewColumn):

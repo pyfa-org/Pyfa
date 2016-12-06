@@ -4,7 +4,7 @@ import gui.globalEvents as GE
 import gui.mainFrame
 from gui.contextMenu import ContextMenu
 from gui_service.fit import Fit
-from gui_service import Market
+from gui_service.market import Market
 
 
 class WhProjector(ContextMenu):

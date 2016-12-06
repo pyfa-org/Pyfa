@@ -25,7 +25,7 @@ import gui.graphFrame
 import gui.mainFrame
 from gui.bitmapLoader import BitmapLoader
 from gui_service.character import Character
-from gui_service import Crest
+from gui_service.crest import Crest
 
 if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3, 0)):
     from gui_service.crest import CrestModes

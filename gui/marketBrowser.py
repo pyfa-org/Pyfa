@@ -25,7 +25,7 @@ from gui.bitmapLoader import BitmapLoader
 from gui.cachingImageList import CachingImageList
 from gui.contextMenu import ContextMenu
 from gui_service.market import Market
-from gui_service import Attribute
+from gui_service.attribute import Attribute
 
 ItemSelected, ITEM_SELECTED = wx.lib.newevent.NewEvent()
 

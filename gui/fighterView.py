@@ -27,7 +27,7 @@ from eos.saveddata.module import Slot as Slot
 from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
 from gui_service.fit import Fit
-from gui_service import Market
+from gui_service.market import Market
 
 
 class FighterViewDrop(wx.PyDropTarget):

@@ -5,7 +5,7 @@ import gui.mainFrame
 from gui.bitmapLoader import BitmapLoader
 from gui.preferenceView import PreferenceView
 from gui_service.crest import Crest
-from gui_service import CRESTSettings
+from gui_service.crest import CRESTSettings
 
 
 class PFCrestPref(PreferenceView):

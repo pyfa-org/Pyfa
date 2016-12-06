@@ -5,7 +5,7 @@ import gui.mainFrame
 from gui.bitmapLoader import BitmapLoader
 from gui.preferenceView import PreferenceView
 from gui_service.fit import Fit
-from gui_service import SettingsProvider
+from gui_service.settings import SettingsProvider
 
 
 class PFGeneralPref(PreferenceView):

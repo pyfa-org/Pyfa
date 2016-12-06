@@ -54,12 +54,12 @@ from gui.statsPane import StatsPane
 from gui.updateDialog import UpdateDialog
 from gui.utils.clipboard import toClipboard, fromClipboard
 from gui_service.fit import Fit
-from gui_service import Character
-from gui_service import Crest
-from gui_service import HTMLExportSettings
-from gui_service import Port
-from gui_service import SettingsProvider
-from gui_service import Update
+from gui_service.character import Character
+from gui_service.crest import Crest
+from gui_service.settings import HTMLExportSettings
+from gui_service.port import Port
+from gui_service.settings import SettingsProvider
+from gui_service.update import Update
 
 if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3, 0)):
     from gui_service.crest import CrestModes

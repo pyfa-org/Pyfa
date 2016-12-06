@@ -4,8 +4,8 @@ import time
 import wx
 
 from gui_service.fit import Fit
-from gui_service import HTMLExportSettings
-from gui_service import Market
+from gui_service.settings import HTMLExportSettings
+from gui_service.market import Market
 
 
 class exportHtml():

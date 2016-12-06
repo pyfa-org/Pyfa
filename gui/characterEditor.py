@@ -27,9 +27,9 @@ from gui.builtinViews.entityEditor import EntityEditor, BaseValidator
 from gui.builtinViews.implantEditor import BaseImplantEditorView
 from gui.contextMenu import ContextMenu
 from gui_service.fit import Fit
-from gui_service import AuthenticationError, TimeoutError
-from gui_service import Character
-from gui_service import Market
+from gui_service.network import AuthenticationError, TimeoutError
+from gui_service.character import Character
+from gui_service.market import Market
 
 
 class CharacterTextValidor(BaseValidator):
