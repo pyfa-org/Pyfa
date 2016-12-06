@@ -12,47 +12,12 @@ script_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.realpath(os.path.join(script_dir, '..', '..')))
 sys.path.append(os.path.realpath(os.path.join(script_dir, '..')))
 
-from gui_service import __all__ as all_gui_services
-from gui_service import attribute
-from gui_service import character
-from gui_service import crest
-from gui_service import damagePattern
-from gui_service import eveapi
-from gui_service import fit
-from gui_service import fleet
-from gui_service import implantSet
-from gui_service import market
-from gui_service import network
-from gui_service import port
-from gui_service import prefetch
-from gui_service import price
-from gui_service import server
-from gui_service import settings
-from gui_service import targetResists
-from gui_service import update
+import eos
 
 
 def test_packages():
     # gui_service modules
-    assert attribute
-    assert character
-    assert crest
-    assert damagePattern
-    assert eveapi
-    assert fit
-    assert fleet
-    assert implantSet
-    assert market
-    assert network
-    assert port
-    assert prefetch
-    assert price
-    assert server
-    assert settings
-    assert targetResists
-    assert update
-    for _ in all_gui_services:
-        assert _
+    assert eos
 
 
 def service_modules():
@@ -65,6 +30,7 @@ def service_modules():
                 )
                 yield mod_name
 
+
 def eos_modules():
     for root, folders, files in os.walk("eos"):
         for file_ in files:
@@ -74,6 +40,7 @@ def eos_modules():
                     file_.split(".py")[0],
                 )
                 yield mod_name
+
 
 @pytest.mark.parametrize("mod_name", eos_modules())
 def test_service_imports(mod_name):
