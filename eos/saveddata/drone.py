@@ -234,7 +234,7 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             if effect.runTime == runTime and \
                     effect.activeByDefault and \
                     ((projected is True and effect.isType("projected")) or
-                                 projected is False and effect.isType("passive")):
+                     projected is False and effect.isType("passive")):
                 # See GH issue #765
                 if effect.getattr('grouped'):
                     effect.handler(fit, self, context)

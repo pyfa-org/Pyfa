@@ -62,7 +62,6 @@ from service.update import Update
 # import this to access override setting
 from eos.modifiedAttributeDict import ModifiedAttributeDict
 from eos.db.saveddata.loadDefaultDatabaseValues import DefaultDatabaseValues
-from eos import db
 from service.port import Port
 from service.settings import HTMLExportSettings
 

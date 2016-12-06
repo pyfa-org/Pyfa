@@ -826,8 +826,7 @@ class Port(object):
             slot = module.slot
             if slot not in stuff:
                 stuff[slot] = []
-            curr = module.item.name if module.item else (
-            "[Empty %s slot]" % Slot.getName(slot).capitalize() if slot is not None else "")
+            curr = module.item.name if module.item else ("[Empty %s slot]" % Slot.getName(slot).capitalize() if slot is not None else "")
             if module.charge and sFit.serviceFittingOptions["exportCharges"]:
                 curr += ", %s" % module.charge.name
             if module.state == State.OFFLINE:

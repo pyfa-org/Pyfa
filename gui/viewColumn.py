@@ -39,7 +39,7 @@ class ViewColumn(object):
 
     @classmethod
     def register(cls):
-        test = True
+        # test = True
         ViewColumn.columns[cls.name] = cls
 
     @classmethod

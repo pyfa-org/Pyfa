@@ -370,8 +370,7 @@ class Market():
                                      ("faction", frozenset((4, 3))),
                                      ("complex", frozenset((6,))),
                                      ("officer", frozenset((5,)))])
-        self.SEARCH_CATEGORIES = (
-        "Drone", "Module", "Subsystem", "Charge", "Implant", "Deployable", "Fighter", "Structure", "Structure Module")
+        self.SEARCH_CATEGORIES = ("Drone", "Module", "Subsystem", "Charge", "Implant", "Deployable", "Fighter", "Structure", "Structure Module")
         self.SEARCH_GROUPS = ("Ice Product",)
         self.ROOT_MARKET_GROUPS = (9,  # Modules
                                    1111,  # Rigs

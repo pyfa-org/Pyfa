@@ -950,8 +950,7 @@ class Fit(object):
 
                         # Add the sustainable amount
                         amount = mod.getModifiedItemAttr(groupAttrMap[mod.item.group.name])
-                        sustainable[groupStoreMap[mod.item.group.name]] += sustainability * (
-                        amount / (cycleTime / 1000.0))
+                        sustainable[groupStoreMap[mod.item.group.name]] += sustainability * (amount / (cycleTime / 1000.0))
                         capUsed += capPerSec
 
             sustainable["passiveShield"] = self.calculateShieldRecharge()

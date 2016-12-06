@@ -134,8 +134,7 @@ class ModifiedAttributeDict(collections.MutableMapping):
         return (key for key in all)
 
     def __contains__(self, key):
-        return (
-               self.__original is not None and key in self.__original) or key in self.__modified or key in self.__intermediary
+        return (self.__original is not None and key in self.__original) or key in self.__modified or key in self.__intermediary
 
     def __placehold(self, key):
         """Create calculation placeholder in item's modified attribute dict"""
