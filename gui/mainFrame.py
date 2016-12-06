@@ -40,7 +40,7 @@ from gui.additionsPane import AdditionsPane
 from gui.marketBrowser import MarketBrowser, ItemSelected
 from gui.multiSwitch import MultiSwitch
 from gui.statsPane import StatsPane
-#from gui.shipBrowser import ShipBrowser, FitSelected, ImportSelected, Stage3Selected
+# from gui.shipBrowser import ShipBrowser, FitSelected, ImportSelected, Stage3Selected
 import gui.shipBrowser
 from gui.characterEditor import CharacterEditor, SaveCharacterAs
 from gui.characterSelection import CharacterSelection
@@ -867,10 +867,10 @@ class MainFrame(wx.Frame):
         if len(fits) > 0:
             if len(fits) == 1:
                 fit = fits[0]
-                wx.PostEvent(self, FitSelected(fitID=fit.ID))
-                wx.PostEvent(self.shipBrowser, Stage3Selected(shipID=fit.shipID, back=True))
+                wx.PostEvent(self, gui.shipBrowser.FitSelected(fitID=fit.ID))
+                wx.PostEvent(self.shipBrowser, gui.shipBrowser.Stage3Selected(shipID=fit.shipID, back=True))
             else:
-                wx.PostEvent(self.shipBrowser, ImportSelected(fits=fits, back=True))
+                wx.PostEvent(self.shipBrowser, gui.shipBrowser.ImportSelected(fits=fits, back=True))
 
     def closeProgressDialog(self):
         # Windows apparently handles ProgressDialogs differently. We can
