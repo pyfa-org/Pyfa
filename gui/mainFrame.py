@@ -40,7 +40,8 @@ from gui.additionsPane import AdditionsPane
 from gui.marketBrowser import MarketBrowser, ItemSelected
 from gui.multiSwitch import MultiSwitch
 from gui.statsPane import StatsPane
-from gui.shipBrowser import ShipBrowser, FitSelected, ImportSelected, Stage3Selected
+#from gui.shipBrowser import ShipBrowser, FitSelected, ImportSelected, Stage3Selected
+import gui.shipBrowser
 from gui.characterEditor import CharacterEditor, SaveCharacterAs
 from gui.characterSelection import CharacterSelection
 from gui.patternEditor import DmgPatternEditorDlg
@@ -110,9 +111,9 @@ class OpenFitsThread(threading.Thread):
         # We use 1 for all fits except the last one where we use 2 so that we
         # have correct calculations displayed at startup
         for fitID in self.fits[:-1]:
-            wx.PostEvent(self.mainFrame, FitSelected(fitID=fitID, startup=1))
+            wx.PostEvent(self.mainFrame, gui.shipBrowser.FitSelected(fitID=fitID, startup=1))
 
-        wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fits[-1], startup=2))
+        wx.PostEvent(self.mainFrame, gui.shipBrowser.FitSelected(fitID=self.fits[-1], startup=2))
         wx.CallAfter(self.callback)
 
 
@@ -160,7 +161,7 @@ class MainFrame(wx.Frame):
         self.notebookBrowsers.AddPage(self.marketBrowser, "Market", tabImage=marketImg, showClose=False)
         self.marketBrowser.splitter.SetSashPosition(self.marketHeight)
 
-        self.shipBrowser = ShipBrowser(self.notebookBrowsers)
+        self.shipBrowser = gui.shipBrowser.ShipBrowser(self.notebookBrowsers)
         self.notebookBrowsers.AddPage(self.shipBrowser, "Fittings", tabImage=shipBrowserImg, showClose=False)
 
         # =====================================================================
