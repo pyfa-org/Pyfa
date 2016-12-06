@@ -5,5 +5,11 @@ env:
   - TOXENV=pep8
 before_install:
   - pip install -U tox
+install:
+  - pip install codecov
+  - pip install pytest-cov
 script:
   - tox
+  - py.test --cov=./
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
