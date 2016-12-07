@@ -24,8 +24,9 @@ from copy import deepcopy
 from itertools import chain
 from math import sqrt, log, asinh
 
-from sqlalchemy.orm import validates, reconstructor
+from sqlalchemy.orm import validates, reconstructor, mapper, relationship, relation
 from sqlalchemy.sql import and_
+from sqlalchemy.orm.collections import attribute_mapped_collection
 
 from eos import capSim
 from eos import db
@@ -44,7 +45,32 @@ from eos.gamedata import getItem
 from eos.saveddata.citadel import Citadel as Citadel
 from eos.saveddata.module import Slot as Slot, Module as Module, State as State, Hardpoint as Hardpoint
 from eos.saveddata.ship import Ship as Ship
+from eos.saveddata.booster import Booster
+from eos.saveddata.drone import Drone
+from eos.saveddata.character import Character
+from eos.saveddata.user import User
+from eos.saveddata.fighter import Fighter
+from eos.saveddata.implant import Implant
+from eos.saveddata.cargo import Cargo
+from eos.saveddata.damagePattern import DamagePattern
+from eos.saveddata.targetResists import TargetResists
+from eos.db.saveddata.mapper import ProjectedFit, CommandFit
+
 from utils.timer import Timer
+from eos.db.saveddata.mapper import (
+    Fits as fits_table,
+    Modules as modules_table,
+    # Boosters as boosters_table,
+    Drones as drones_table,
+    # Characters as characters_table,
+    # Users as users_table,
+    Fighters as fighters_table,
+    Implants as implants_table,
+    FitImplants as fitImplants_table,
+    ProjectedFits as projectedFits_table,
+    CommandFits as commandFits_table,
+    Cargo as cargo_table,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -88,6 +114,7 @@ class Fit(object):
         self.modeID = None
 
         self.build()
+        self.map_table()
 
     @reconstructor
     def init(self):
@@ -147,6 +174,110 @@ class Fit(object):
         self.gangBoosts = None
         self.ecmProjectedStr = 1
         self.commandBonuses = {}
+
+    def map_table(self):
+        mapper(
+            Fit,
+            fits_table,
+            properties={
+                "_Fit__modules": relation(
+                    Module,
+                    collection_class=HandledModuleList,
+                    primaryjoin=and_(modules_table.fitID == fits_table.ID,
+                                     modules_table.projected is False),
+                    order_by=modules_table.position,
+                    cascade='all, delete, delete-orphan'),
+                "_Fit__projectedModules": relation(
+                    Module,
+                    collection_class=HandledProjectedModList,
+                    cascade='all, delete, delete-orphan',
+                    single_parent=True,
+                    primaryjoin=and_(modules_table.fitID == fits_table.ID,
+                                     modules_table.projected is True)),
+                "owner": relation(
+                    User,
+                    backref="fits"),
+                "itemID": fits_table.shipID,
+                "shipID": fits_table.shipID,
+                "_Fit__boosters": relation(
+                    Booster,
+                    collection_class=HandledImplantBoosterList,
+                    cascade='all, delete, delete-orphan',
+                    single_parent=True),
+                "_Fit__drones": relation(
+                    Drone,
+                    collection_class=HandledDroneCargoList,
+                    cascade='all, delete, delete-orphan',
+                    single_parent=True,
+                    primaryjoin=and_(drones_table.fitID == fits_table.ID,
+                                     drones_table.projected is False)),
+                "_Fit__fighters": relation(
+                    Fighter,
+                    collection_class=HandledDroneCargoList,
+                    cascade='all, delete, delete-orphan',
+                    single_parent=True,
+                    primaryjoin=and_(fighters_table.fitID == fits_table.ID,
+                                     fighters_table.projected is False)),
+                "_Fit__cargo": relation(
+                    Cargo,
+                    collection_class=HandledDroneCargoList,
+                    cascade='all, delete, delete-orphan',
+                    single_parent=True,
+                    primaryjoin=and_(cargo_table.fitID == fits_table.ID)),
+                "_Fit__projectedDrones": relation(
+                    Drone,
+                    collection_class=HandledProjectedDroneList,
+                    cascade='all, delete, delete-orphan',
+                    single_parent=True,
+                    primaryjoin=and_(drones_table.fitID == fits_table.ID,
+                                     drones_table.projected is True)),
+                "_Fit__projectedFighters": relation(
+                    Fighter,
+                    collection_class=HandledProjectedDroneList,
+                    cascade='all, delete, delete-orphan',
+                    single_parent=True,
+                    primaryjoin=and_(fighters_table.fitID == fits_table.ID,
+                                     fighters_table.projected is True)),
+                "_Fit__implants": relation(
+                    Implant,
+                    collection_class=HandledImplantBoosterList,
+                    cascade='all, delete, delete-orphan',
+                    backref='fit',
+                    single_parent=True,
+                    primaryjoin=fitImplants_table.fitID == fits_table.ID,
+                    secondaryjoin=fitImplants_table.implantID == implants_table.ID,
+                    secondary=fitImplants_table),
+                "_Fit__character": relation(
+                    Character,
+                    backref="fits"),
+                "_Fit__damagePattern": relation(DamagePattern),
+                "_Fit__targetResists": relation(TargetResists),
+                "projectedOnto": relationship(
+                    ProjectedFit,
+                    primaryjoin=projectedFits_table.sourceID == fits_table.ID,
+                    backref='source_fit',
+                    collection_class=attribute_mapped_collection('victimID'),
+                    cascade='all, delete, delete-orphan'),
+                "victimOf": relationship(
+                    ProjectedFit,
+                    primaryjoin=fits_table.ID == projectedFits_table.victimID,
+                    backref='victim_fit',
+                    collection_class=attribute_mapped_collection('sourceID'),
+                    cascade='all, delete, delete-orphan'),
+                "boostedOnto": relationship(
+                    CommandFit,
+                    primaryjoin=commandFits_table.boosterID == fits_table.ID,
+                    backref='booster_fit',
+                    collection_class=attribute_mapped_collection('boostedID'),
+                    cascade='all, delete, delete-orphan'),
+                "boostedOf": relationship(
+                    CommandFit,
+                    primaryjoin=fits_table.ID == commandFits_table.boostedID,
+                    backref='boosted_fit',
+                    collection_class=attribute_mapped_collection('boosterID'),
+                    cascade='all, delete, delete-orphan'),
+            }
+        )
 
     @property
     def targetResists(self):

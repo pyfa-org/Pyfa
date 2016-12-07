@@ -1,4 +1,4 @@
-'''
+"""
 from gui_service.market import Market
 from gui_service.fit import Fit
 from gui_service.attribute import Attribute
@@ -18,7 +18,7 @@ if not 'wxMac' in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION 
     from gui_service.pycrest.eve import EVE
     from gui_service.server import StoppableHTTPServer, AuthHandler
     from gui_service.crest import Crest
-'''
+"""
 
 __all__ = [
     "attribute",
@@ -38,4 +38,3 @@ __all__ = [
     "targetResitss",
     "update",
     ]
-

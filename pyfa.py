@@ -24,6 +24,12 @@ from optparse import OptionParser, BadOptionError, AmbiguousOptionError
 
 import config
 
+import eos.db
+# Import this to build the Fit object.
+from eos.saveddata.fit import Fit
+
+testFit = Fit()
+
 
 class PassThroughOptionParser(OptionParser):
     """
@@ -123,7 +129,6 @@ if __name__ == "__main__":
     import os
     import os.path
 
-    import eos.db
     from gui.mainFrame import MainFrame
 
     # Make sure the saveddata db exists
