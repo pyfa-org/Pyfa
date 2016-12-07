@@ -26,7 +26,7 @@ from gui_service.fleet import Fleet
 from gui_service.market import Market
 from gui_service.settings import SettingsProvider
 
-from eos.db import saveddata_session
+from eos.db.sqlAlchemy import sqlAlchemy
 from eos.db.saveddata import queries as eds_queries
 from eos.gamedata import getItem
 from eos.saveddata.booster import Booster as es_Booster
@@ -167,8 +167,8 @@ class Fit(object):
         # refresh any fits this fit is projected onto. Otherwise, if we have
         # already loaded those fits, they will not reflect the changes
         for projection in fit.projectedOnto.values():
-            if projection.victim_fit in saveddata_session:  # GH issue #359
-                saveddata_session.refresh(projection.victim_fit)
+            if projection.victim_fit in sqlAlchemy.saveddata_session:  # GH issue #359
+                sqlAlchemy.saveddata_session.refresh(projection.victim_fit)
 
     def copyFit(self, fitID):
         fit = getFit(fitID)
@@ -323,8 +323,8 @@ class Fit(object):
             fit.__projectedFits[thing.ID] = thing
 
             # this bit is required -- see GH issue # 83
-            saveddata_session.flush()
-            saveddata_session.refresh(thing)
+            sqlAlchemy.saveddata_session.flush()
+            sqlAlchemy.saveddata_session.refresh(thing)
         elif thing.category.name == "Drone":
             drone = None
             for d in fit.projectedDrones.find(thing):
@@ -367,8 +367,8 @@ class Fit(object):
         fit.__commandFits[thing.ID] = thing
 
         # this bit is required -- see GH issue # 83
-        saveddata_session.flush()
-        saveddata_session.refresh(thing)
+        sqlAlchemy.saveddata_session.flush()
+        sqlAlchemy.saveddata_session.refresh(thing)
 
         eds_queries.commit()
         self.recalc(fit)

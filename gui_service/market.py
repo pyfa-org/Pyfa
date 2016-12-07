@@ -27,7 +27,7 @@ from gui_service.settings import SettingsProvider
 from sqlalchemy.sql import or_
 
 import config
-from eos.db import saveddata_session
+from eos.db.sqlAlchemy import sqlAlchemy
 from eos.db.saveddata.queries import commit, add
 from eos.gamedata import Category as e_Category, Group as e_Group, Item as e_Item
 from eos.gamedata import MarketGroup
@@ -752,7 +752,7 @@ class Market():
         items = set()
         for x in overrides:
             if (x.item is None):
-                saveddata_session.delete(x)
+                sqlAlchemy.saveddata_session.delete(x)
                 commit()
             else:
                 items.add(x.item)

@@ -29,9 +29,7 @@ from sqlalchemy.orm import relation, mapper, synonym, deferred
 from sqlalchemy.orm.collections import attribute_mapped_collection
 from sqlalchemy.sql import and_, or_, select
 
-from eos.db import gamedata_meta
-from eos.db import gamedata_session
-from eos.db import saveddata_session
+from eos.db.sqlAlchemy import sqlAlchemy
 from eos.db.gamedata.cache import cachedQuery
 from eos.db.saveddata import queries as eds_queries
 from eos.db.util import processEager, processWhere, sqlizeString
@@ -293,7 +291,7 @@ class Item(EqBase):
 
     def deleteOverride(self, attr):
         override = self.__overrides.pop(attr.name, None)
-        saveddata_session.delete(override)
+        sqlAlchemy.saveddata_session.delete(override)
         eds_queries.commit()
 
     @property
@@ -498,19 +496,19 @@ itemNameMap = {}
 def getItem(lookfor, eager=None):
     if isinstance(lookfor, int):
         if eager is None:
-            item = gamedata_session.query(Item).get(lookfor)
+            item = sqlAlchemy.gamedata_session.query(Item).get(lookfor)
         else:
-            item = gamedata_session.query(Item).options(*processEager(eager)).filter(Item.ID == lookfor).first()
+            item = sqlAlchemy.gamedata_session.query(Item).options(*processEager(eager)).filter(Item.ID == lookfor).first()
     elif isinstance(lookfor, basestring):
         if lookfor in itemNameMap:
             id = itemNameMap[lookfor]
             if eager is None:
-                item = gamedata_session.query(Item).get(id)
+                item = sqlAlchemy.gamedata_session.query(Item).get(id)
             else:
-                item = gamedata_session.query(Item).options(*processEager(eager)).filter(Item.ID == id).first()
+                item = sqlAlchemy.gamedata_session.query(Item).options(*processEager(eager)).filter(Item.ID == id).first()
         else:
             # Item names are unique, so we can use first() instead of one()
-            item = gamedata_session.query(Item).options(*processEager(eager)).filter(Item.name == lookfor).first()
+            item = sqlAlchemy.gamedata_session.query(Item).options(*processEager(eager)).filter(Item.name == lookfor).first()
             itemNameMap[lookfor] = item.ID
     else:
         raise TypeError("Need integer or string as argument")
@@ -524,19 +522,19 @@ groupNameMap = {}
 def getGroup(lookfor, eager=None):
     if isinstance(lookfor, int):
         if eager is None:
-            group = gamedata_session.query(Group).get(lookfor)
+            group = sqlAlchemy.gamedata_session.query(Group).get(lookfor)
         else:
-            group = gamedata_session.query(Group).options(*processEager(eager)).filter(Group.ID == lookfor).first()
+            group = sqlAlchemy.gamedata_session.query(Group).options(*processEager(eager)).filter(Group.ID == lookfor).first()
     elif isinstance(lookfor, basestring):
         if lookfor in groupNameMap:
             id = groupNameMap[lookfor]
             if eager is None:
-                group = gamedata_session.query(Group).get(id)
+                group = sqlAlchemy.gamedata_session.query(Group).get(id)
             else:
-                group = gamedata_session.query(Group).options(*processEager(eager)).filter(Group.ID == id).first()
+                group = sqlAlchemy.gamedata_session.query(Group).options(*processEager(eager)).filter(Group.ID == id).first()
         else:
             # Group names are unique, so we can use first() instead of one()
-            group = gamedata_session.query(Group).options(*processEager(eager)).filter(Group.name == lookfor).first()
+            group = sqlAlchemy.gamedata_session.query(Group).options(*processEager(eager)).filter(Group.name == lookfor).first()
             groupNameMap[lookfor] = group.ID
     else:
         raise TypeError("Need integer or string as argument")
@@ -550,21 +548,21 @@ categoryNameMap = {}
 def getCategory(lookfor, eager=None):
     if isinstance(lookfor, int):
         if eager is None:
-            category = gamedata_session.query(Category).get(lookfor)
+            category = sqlAlchemy.gamedata_session.query(Category).get(lookfor)
         else:
-            category = gamedata_session.query(Category).options(*processEager(eager)).filter(
+            category = sqlAlchemy.gamedata_session.query(Category).options(*processEager(eager)).filter(
                 Category.ID == lookfor).first()
     elif isinstance(lookfor, basestring):
         if lookfor in categoryNameMap:
             id = categoryNameMap[lookfor]
             if eager is None:
-                category = gamedata_session.query(Category).get(id)
+                category = sqlAlchemy.gamedata_session.query(Category).get(id)
             else:
-                category = gamedata_session.query(Category).options(*processEager(eager)).filter(
+                category = sqlAlchemy.gamedata_session.query(Category).options(*processEager(eager)).filter(
                     Category.ID == id).first()
         else:
             # Category names are unique, so we can use first() instead of one()
-            category = gamedata_session.query(Category).options(*processEager(eager)).filter(
+            category = sqlAlchemy.gamedata_session.query(Category).options(*processEager(eager)).filter(
                 Category.name == lookfor).first()
             categoryNameMap[lookfor] = category.ID
     else:
@@ -579,21 +577,21 @@ metaGroupNameMap = {}
 def getMetaGroup(lookfor, eager=None):
     if isinstance(lookfor, int):
         if eager is None:
-            metaGroup = gamedata_session.query(MetaGroup).get(lookfor)
+            metaGroup = sqlAlchemy.gamedata_session.query(MetaGroup).get(lookfor)
         else:
-            metaGroup = gamedata_session.query(MetaGroup).options(*processEager(eager)).filter(
+            metaGroup = sqlAlchemy.gamedata_session.query(MetaGroup).options(*processEager(eager)).filter(
                 MetaGroup.ID == lookfor).first()
     elif isinstance(lookfor, basestring):
         if lookfor in metaGroupNameMap:
             id = metaGroupNameMap[lookfor]
             if eager is None:
-                metaGroup = gamedata_session.query(MetaGroup).get(id)
+                metaGroup = sqlAlchemy.gamedata_session.query(MetaGroup).get(id)
             else:
-                metaGroup = gamedata_session.query(MetaGroup).options(*processEager(eager)).filter(
+                metaGroup = sqlAlchemy.gamedata_session.query(MetaGroup).options(*processEager(eager)).filter(
                     MetaGroup.ID == id).first()
         else:
             # MetaGroup names are unique, so we can use first() instead of one()
-            metaGroup = gamedata_session.query(MetaGroup).options(*processEager(eager)).filter(
+            metaGroup = sqlAlchemy.gamedata_session.query(MetaGroup).options(*processEager(eager)).filter(
                 MetaGroup.name == lookfor).first()
             metaGroupNameMap[lookfor] = metaGroup.ID
     else:
@@ -605,9 +603,9 @@ def getMetaGroup(lookfor, eager=None):
 def getMarketGroup(lookfor, eager=None):
     if isinstance(lookfor, int):
         if eager is None:
-            marketGroup = gamedata_session.query(MarketGroup).get(lookfor)
+            marketGroup = sqlAlchemy.gamedata_session.query(MarketGroup).get(lookfor)
         else:
-            marketGroup = gamedata_session.query(MarketGroup).options(*processEager(eager)).filter(
+            marketGroup = sqlAlchemy.gamedata_session.query(MarketGroup).options(*processEager(eager)).filter(
                 MarketGroup.ID == lookfor).first()
     else:
         raise TypeError("Need integer as argument")
@@ -624,7 +622,7 @@ def getItemsByCategory(filter, where=None, eager=None):
         raise TypeError("Need integer or string as argument")
 
     filter = processWhere(filter, where)
-    return gamedata_session.query(Item).options(*processEager(eager)).join(Item.group, Group.category).filter(
+    return sqlAlchemy.gamedata_session.query(Item).options(*processEager(eager)).join(Item.group, Group.category).filter(
         filter).all()
 
 
@@ -639,7 +637,7 @@ def searchItems(nameLike, where=None, join=None, eager=None):
     if not hasattr(join, "__iter__"):
         join = (join,)
 
-    items = gamedata_session.query(Item).options(*processEager(eager)).join(*join)
+    items = sqlAlchemy.gamedata_session.query(Item).options(*processEager(eager)).join(*join)
     for token in nameLike.split(' '):
         token_safe = u"%{0}%".format(sqlizeString(token))
         if where is not None:
@@ -662,7 +660,7 @@ def getVariations(itemids, where=None, eager=None):
     itemfilter = or_(*(Mapper.Items.metatypes_table.c.parentTypeID == itemid for itemid in itemids))
     filter = processWhere(itemfilter, where)
     joinon = Mapper.Items.items_table.c.typeID == Mapper.Items.metatypes_table.c.typeID
-    vars = gamedata_session.query(Item).options(*processEager(eager)).join(
+    vars = sqlAlchemy.gamedata_session.query(Item).options(*processEager(eager)).join(
         (Mapper.Items.metatypes_table, joinon)).filter(
         filter).all()
     return vars
@@ -677,7 +675,7 @@ def getAttributeInfo(attr, eager=None):
     else:
         raise TypeError("Need integer or string as argument")
     try:
-        result = gamedata_session.query(AttributeInfo).options(*processEager(eager)).filter(filter_).one()
+        result = sqlAlchemy.gamedata_session.query(AttributeInfo).options(*processEager(eager)).filter(filter_).one()
     except exc.NoResultFound:
         result = None
     return result
@@ -686,7 +684,7 @@ def getAttributeInfo(attr, eager=None):
 @cachedQuery(1, "field")
 def getMetaData(field):
     if isinstance(field, basestring):
-        data = gamedata_session.query(MetaData).get(field)
+        data = sqlAlchemy.gamedata_session.query(MetaData).get(field)
     else:
         raise TypeError("Need string as argument")
     return data
@@ -705,7 +703,7 @@ def directAttributeRequest(itemIDs, attrIDs):
                and_(Attribute.attributeID.in_(attrIDs), Item.typeID.in_(itemIDs)),
                from_obj=[join(Attribute, Item)])
 
-    result = gamedata_session.execute(q).fetchall()
+    result = sqlAlchemy.gamedata_session.execute(q).fetchall()
     return result
 
 
@@ -715,13 +713,13 @@ class Mapper:
     Effect.published = association_proxy("info", "published")
 
     class Attributes:
-        typeattributes_table = Table("dgmtypeattribs", gamedata_meta,
+        typeattributes_table = Table("dgmtypeattribs", sqlAlchemy.gamedata_meta,
                                      Column("value", Float),
                                      Column("typeID", Integer, ForeignKey("invtypes.typeID"), primary_key=True,
                                             index=True),
                                      Column("attributeID", ForeignKey("dgmattribs.attributeID"), primary_key=True))
 
-        attributes_table = Table("dgmattribs", gamedata_meta,
+        attributes_table = Table("dgmattribs", sqlAlchemy.gamedata_meta,
                                  Column("attributeID", Integer, primary_key=True),
                                  Column("attributeName", String),
                                  Column("defaultValue", Float),
@@ -754,7 +752,7 @@ class Mapper:
         Attribute.unit = association_proxy("info", "unit")
 
     class Categories:
-        categories_table = Table("invcategories", gamedata_meta,
+        categories_table = Table("invcategories", sqlAlchemy.gamedata_meta,
                                  Column("categoryID", Integer, primary_key=True),
                                  Column("categoryName", String),
                                  Column("description", String),
@@ -768,12 +766,12 @@ class Mapper:
                            "description": deferred(categories_table.c.description)})
 
     class Effects:
-        typeeffects_table = Table("dgmtypeeffects", gamedata_meta,
+        typeeffects_table = Table("dgmtypeeffects", sqlAlchemy.gamedata_meta,
                                   Column("typeID", Integer, ForeignKey("invtypes.typeID"), primary_key=True,
                                          index=True),
                                   Column("effectID", Integer, ForeignKey("dgmeffects.effectID"), primary_key=True))
 
-        effects_table = Table("dgmeffects", gamedata_meta,
+        effects_table = Table("dgmeffects", sqlAlchemy.gamedata_meta,
                               Column("effectID", Integer, primary_key=True),
                               Column("effectName", String),
                               Column("description", String),
@@ -791,7 +789,7 @@ class Mapper:
                            "info": relation(EffectInfo, lazy=False)})
 
     class Groups:
-        groups_table = Table("invgroups", gamedata_meta,
+        groups_table = Table("invgroups", sqlAlchemy.gamedata_meta,
                              Column("groupID", Integer, primary_key=True),
                              Column("groupName", String),
                              Column("description", String),
@@ -807,7 +805,7 @@ class Mapper:
                            "description": deferred(groups_table.c.description)})
 
     class Units:
-        units_table = Table("dgmunits", gamedata_meta,
+        units_table = Table("dgmunits", sqlAlchemy.gamedata_meta,
                             Column("unitID", Integer, primary_key=True),
                             Column("unitName", String),
                             Column("displayName", String))
@@ -817,7 +815,7 @@ class Mapper:
                            "name": synonym("unitName")})
 
     class Icons:
-        icons_table = Table("icons", gamedata_meta,
+        icons_table = Table("icons", sqlAlchemy.gamedata_meta,
                             Column("iconID", Integer, primary_key=True),
                             Column("description", String),
                             Column("iconFile", String))
@@ -827,22 +825,22 @@ class Mapper:
                            "description": deferred(icons_table.c.description)})
 
     class Items:
-        metagroups_table = Table("invmetagroups", gamedata_meta,
+        metagroups_table = Table("invmetagroups", sqlAlchemy.gamedata_meta,
                                  Column("metaGroupID", Integer, primary_key=True),
                                  Column("metaGroupName", String))
 
-        metatypes_table = Table("invmetatypes", gamedata_meta,
+        metatypes_table = Table("invmetatypes", sqlAlchemy.gamedata_meta,
                                 Column("typeID", Integer, ForeignKey("invtypes.typeID"), primary_key=True),
                                 Column("parentTypeID", Integer, ForeignKey("invtypes.typeID")),
                                 Column("metaGroupID", Integer, ForeignKey("invmetagroups.metaGroupID")))
 
-        traits_table = Table("invtraits", gamedata_meta,
+        traits_table = Table("invtraits", sqlAlchemy.gamedata_meta,
                              Column("typeID", Integer, ForeignKey("invtypes.typeID"), primary_key=True),
                              Column("traitText", String))
 
         mapper(Traits, traits_table)
 
-        items_table = Table("invtypes", gamedata_meta,
+        items_table = Table("invtypes", sqlAlchemy.gamedata_meta,
                             Column("typeID", Integer, primary_key=True),
                             Column("typeName", String, index=True),
                             Column("description", String),
@@ -888,7 +886,7 @@ class Mapper:
         MetaType.name = association_proxy("info", "name")
 
     class MarketGroups:
-        marketgroups_table = Table("invmarketgroups", gamedata_meta,
+        marketgroups_table = Table("invmarketgroups", sqlAlchemy.gamedata_meta,
                                    Column("marketGroupID", Integer, primary_key=True),
                                    Column("marketGroupName", String),
                                    Column("description", String),
@@ -908,7 +906,7 @@ class Mapper:
                            "description": deferred(marketgroups_table.c.description)})
 
     class Metadata:
-        metadata_table = Table("metadata", gamedata_meta,
+        metadata_table = Table("metadata", sqlAlchemy.gamedata_meta,
                                Column("field_name", String, primary_key=True),
                                Column("field_value", String))
 

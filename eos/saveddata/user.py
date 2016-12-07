@@ -20,12 +20,14 @@
 import hashlib
 import random
 import string
+from sqlalchemy.orm import mapper
 
 from sqlalchemy.orm import validates
 
-from eos.db import saveddata_session, sd_lock
+from eos.db.sqlAlchemy import sqlAlchemy
 from eos.db.saveddata.queries import cachedQuery
 from eos.db.util import processEager
+from eos.db.saveddata.mapper import Users as users_table
 
 
 class User(object):
@@ -34,6 +36,8 @@ class User(object):
         if password is not None:
             self.encodeAndSetPassword(password)
         self.admin = admin
+
+        mapper(User, users_table)
 
     def encodeAndSetPassword(self, pw):
         h = hashlib.new("sha256")
@@ -68,16 +72,16 @@ class User(object):
 def getUser(lookfor, eager=None):
     if isinstance(lookfor, int):
         if eager is None:
-            with sd_lock:
-                user = saveddata_session.query(User).get(lookfor)
+            with sqlAlchemy.sd_lock:
+                user = sqlAlchemy.saveddata_session.query(User).get(lookfor)
         else:
             eager = processEager(eager)
-            with sd_lock:
-                user = saveddata_session.query(User).options(*eager).filter(User.ID == lookfor).first()
+            with sqlAlchemy.sd_lock:
+                user = sqlAlchemy.saveddata_session.query(User).options(*eager).filter(User.ID == lookfor).first()
     elif isinstance(lookfor, basestring):
         eager = processEager(eager)
-        with sd_lock:
-            user = saveddata_session.query(User).options(*eager).filter(User.username == lookfor).first()
+        with sqlAlchemy.sd_lock:
+            user = sqlAlchemy.saveddata_session.query(User).options(*eager).filter(User.username == lookfor).first()
     else:
         raise TypeError("Need integer or string as argument")
     return user

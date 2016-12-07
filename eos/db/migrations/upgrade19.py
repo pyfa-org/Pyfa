@@ -6,7 +6,7 @@ Migration 19
 
 
 def upgrade(saveddata_engine):
-    from eos.db import saveddata_session
+    from eos.db.sqlAlchemy import saveddata_session
 
     sql = """
           DELETE FROM commandFits

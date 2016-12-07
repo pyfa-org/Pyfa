@@ -18,18 +18,39 @@
 # ===============================================================================
 
 from copy import deepcopy
+from sqlalchemy.orm import mapper, relation
 
-from eos.db import saveddata_session, sd_lock
+from eos.db.sqlAlchemy import sqlAlchemy
 from eos.db.saveddata.queries import cachedQuery
 from eos.db.util import processEager
 from eos.effectHandlerHelpers import HandledImplantBoosterList
 from eos.saveddata.targetResists import TargetResists
+from eos.db.saveddata.mapper import (
+    ImplantSetMap as implantsSetMap_table,
+    ImplantSets as implant_set_table
+)
+# TODO: Import cleanup, shouldn't be a lazy import
+import eos.saveddata.implant
 
 
 class ImplantSet(object):
     def __init__(self, name=None):
         self.name = name
         self.__implants = HandledImplantBoosterList()
+
+        mapper(ImplantSet, implant_set_table,
+               properties={
+                   "_ImplantSet__implants": relation(
+                       eos.saveddata.implant.Implant,
+                       collection_class=HandledImplantBoosterList,
+                       cascade='all, delete, delete-orphan',
+                       backref='set',
+                       single_parent=True,
+                       primaryjoin=implantsSetMap_table.setID == implant_set_table.ID,
+                       secondaryjoin=implantsSetMap_table.implantID == eos.saveddata.implant.Implant.ID,
+                       secondary=implantsSetMap_table),
+               }
+               )
 
     @property
     def implants(self):
@@ -66,8 +87,8 @@ class ImplantSet(object):
 
 def getImplantSetList(eager=None):
     eager = processEager(eager)
-    with sd_lock:
-        sets = saveddata_session.query(ImplantSet).options(*eager).all()
+    with sqlAlchemy.sd_lock:
+        sets = sqlAlchemy.saveddata_session.query(ImplantSet).options(*eager).all()
     return sets
 
 
@@ -75,17 +96,17 @@ def getImplantSetList(eager=None):
 def getImplantSet(lookfor, eager=None):
     if isinstance(lookfor, int):
         if eager is None:
-            with sd_lock:
-                pattern = saveddata_session.query(ImplantSet).get(lookfor)
+            with sqlAlchemy.sd_lock:
+                pattern = sqlAlchemy.saveddata_session.query(ImplantSet).get(lookfor)
         else:
             eager = processEager(eager)
-            with sd_lock:
-                pattern = saveddata_session.query(ImplantSet).options(*eager).filter(
+            with sqlAlchemy.sd_lock:
+                pattern = sqlAlchemy.saveddata_session.query(ImplantSet).options(*eager).filter(
                     TargetResists.ID == lookfor).first()
     elif isinstance(lookfor, basestring):
         eager = processEager(eager)
-        with sd_lock:
-            pattern = saveddata_session.query(ImplantSet).options(*eager).filter(TargetResists.name == lookfor).first()
+        with sqlAlchemy.sd_lock:
+            pattern = sqlAlchemy.saveddata_session.query(ImplantSet).options(*eager).filter(TargetResists.name == lookfor).first()
     else:
         raise TypeError("Improper argument")
     return pattern

@@ -1,7 +1,8 @@
-from sqlalchemy.orm import validates, reconstructor
+from sqlalchemy.orm import validates, reconstructor, mapper
 
 from eos.effectHandlerHelpers import HandledItem
 from eos.gamedata import getItemsByCategory
+from eos.db.saveddata.mapper import CharacterSkills as skills_table
 
 
 class ReadOnlyException(Exception):
@@ -36,6 +37,8 @@ class Skill(HandledItem):
         self.__level = level if learned else None
         self.commandBonus = 0
         self.build(ro)
+
+        mapper(Skill, skills_table)
 
     @reconstructor
     def init(self):

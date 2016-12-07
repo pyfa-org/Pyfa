@@ -17,14 +17,18 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-from eos.db import saveddata_session, sd_lock
+from eos.db.sqlAlchemy import saveddata_session, sd_lock
 from eos.eqBase import EqBase
+from sqlalchemy.orm import mapper
+from eos.db.saveddata.mapper import Miscdata as miscdata_table
 
 
 class MiscData(EqBase):
     def __init__(self, name, val=None):
         self.fieldName = name
         self.fieldValue = val
+
+        mapper(MiscData, miscdata_table)
 
 
 def getMiscData(field):

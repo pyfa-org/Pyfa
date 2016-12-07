@@ -18,7 +18,7 @@
 # ===============================================================================
 
 from eos import config as eos_config
-from eos.db import saveddata_session, sd_lock
+from eos.db.sqlAlchemy import sqlAlchemy
 
 configVal = getattr(eos_config, "saveddataCache", None)
 if configVal is True:
@@ -123,15 +123,15 @@ def removeInvalid(fits):
 
     if invalids:
         map(fits.remove, invalids)
-        map(saveddata_session.delete, invalids)
-        saveddata_session.commit()
+        map(sqlAlchemy.saveddata_session.delete, invalids)
+        sqlAlchemy.saveddata_session.commit()
 
     return fits
 
 
 def add(stuff):
-    with sd_lock:
-        saveddata_session.add(stuff)
+    with sqlAlchemy.sd_lock:
+        sqlAlchemy.saveddata_session.add(stuff)
 
 
 def save(stuff):
@@ -141,12 +141,12 @@ def save(stuff):
 
 def remove(stuff):
     removeCachedEntry(type(stuff), stuff.ID)
-    with sd_lock:
-        saveddata_session.delete(stuff)
+    with sqlAlchemy.sd_lock:
+        sqlAlchemy.saveddata_session.delete(stuff)
     commit()
 
 
 def commit():
-    with sd_lock:
-        saveddata_session.commit()
-        saveddata_session.flush()
+    with sqlAlchemy.sd_lock:
+        sqlAlchemy.saveddata_session.commit()
+        sqlAlchemy.saveddata_session.flush()

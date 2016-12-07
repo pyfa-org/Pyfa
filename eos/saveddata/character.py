@@ -23,7 +23,7 @@ from itertools import chain
 
 from sqlalchemy.orm import validates, reconstructor
 
-from eos.db import saveddata_session, sd_lock
+from eos.db.sqlAlchemy import sqlAlchemy
 from eos.db.saveddata import queries as eds_queries
 from eos.db.saveddata.mapper import Characters as eds_Characters
 from eos.db.saveddata.queries import cachedQuery
@@ -388,20 +388,20 @@ class Skill(HandledItem):
 def getCharacter(lookfor, eager=None):
     if isinstance(lookfor, int):
         if eager is None:
-            with sd_lock:
-                character = saveddata_session.query(eds_Characters).get(lookfor)
+            with sqlAlchemy.sd_lock:
+                character = sqlAlchemy.saveddata_session.query(eds_Characters).get(lookfor)
         else:
             eager = processEager(eager)
-            with sd_lock:
-                character = saveddata_session.query(eds_Characters).options(*eager).filter(
+            with sqlAlchemy.sd_lock:
+                character = sqlAlchemy.saveddata_session.query(eds_Characters).options(*eager).filter(
                     eds_Characters.ID == lookfor).first()
     elif isinstance(lookfor, basestring):
         eager = processEager(eager)
-        with sd_lock:
+        with sqlAlchemy.sd_lock:
             try:
-                character = saveddata_session.query(eds_Characters).filter(eds_Characters.savedName == lookfor).first()
+                character = sqlAlchemy.saveddata_session.query(eds_Characters).filter(eds_Characters.savedName == lookfor).first()
             except AttributeError:
-                character = saveddata_session.query(eds_Characters).first()
+                character = sqlAlchemy.saveddata_session.query(eds_Characters).first()
     else:
         raise TypeError("Need integer or string as argument")
     return character
@@ -409,16 +409,16 @@ def getCharacter(lookfor, eager=None):
 
 def getCharacterList(eager=None):
     eager = processEager(eager)
-    with sd_lock:
-        characters = saveddata_session.query(eds_Characters).options(*eager).all()
+    with sqlAlchemy.sd_lock:
+        characters = sqlAlchemy.saveddata_session.query(eds_Characters).options(*eager).all()
     return characters
 
 
 def getCharactersForUser(lookfor, eager=None):
     if isinstance(lookfor, int):
         eager = processEager(eager)
-        with sd_lock:
-            characters = saveddata_session.query(eds_Characters).options(*eager).filter(
+        with sqlAlchemy.sd_lock:
+            characters = sqlAlchemy.saveddata_session.query(eds_Characters).options(*eager).filter(
                 eds_Characters.ownerID == lookfor).all()
     else:
         raise TypeError("Need integer as argument")

@@ -23,12 +23,7 @@ import sys
 from optparse import OptionParser, BadOptionError, AmbiguousOptionError
 
 import config
-
-import eos.db
-# Import this to build the Fit object.
-from eos.saveddata.fit import Fit
-
-testFit = Fit()
+from eos.db.sqlAlchemy import sqlAlchemy
 
 
 class PassThroughOptionParser(OptionParser):
@@ -135,7 +130,7 @@ if __name__ == "__main__":
     if not os.path.exists(config.savePath):
         os.mkdir(config.savePath)
 
-    eos.db.saveddata_meta.create_all()
+    sqlAlchemy.saveddata_meta.create_all()
 
     pyfa = wx.App(False)
     MainFrame(options.title)

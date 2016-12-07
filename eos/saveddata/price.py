@@ -20,10 +20,11 @@
 
 import time
 
-from sqlalchemy.orm import reconstructor
+from sqlalchemy.orm import reconstructor, mapper
 
-from eos.db import saveddata_session, sd_lock
+from eos.db.sqlAlchemy import sqlAlchemy
 from eos.db.saveddata.queries import cachedQuery, commit
+from eos.db.saveddata.mapper import Prices as prices_table
 
 
 class Price(object):
@@ -33,6 +34,8 @@ class Price(object):
         self.price = 0
         self.failed = None
         self.__item = None
+
+        mapper(Price, prices_table)
 
     @reconstructor
     def init(self):
@@ -46,15 +49,15 @@ class Price(object):
 @cachedQuery(Price, 1, "typeID")
 def getPrice(typeID):
     if isinstance(typeID, int):
-        with sd_lock:
-            price = saveddata_session.query(Price).get(typeID)
+        with sqlAlchemy.sd_lock:
+            price = sqlAlchemy.saveddata_session.query(Price).get(typeID)
     else:
         raise TypeError("Need integer as argument")
     return price
 
 
 def clearPrices():
-    with sd_lock:
-        deleted_rows = saveddata_session.query(Price).delete()
+    with sqlAlchemy.sd_lock:
+        deleted_rows = sqlAlchemy.saveddata_session.query(Price).delete()
     commit()
     return deleted_rows

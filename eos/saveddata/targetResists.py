@@ -18,10 +18,12 @@
 # ===============================================================================
 
 import re
+from sqlalchemy.orm import mapper
 
-from eos.db import saveddata_session, sd_lock
+from eos.db.sqlAlchemy import sqlAlchemy
 from eos.db.saveddata.queries import cachedQuery
 from eos.db.util import processEager
+from eos.db.saveddata.mapper import TargetResists as targetResists_table
 
 
 class TargetResists(object):
@@ -33,6 +35,8 @@ class TargetResists(object):
         self.thermalAmount = thermalAmount
         self.kineticAmount = kineticAmount
         self.explosiveAmount = explosiveAmount
+
+        mapper(TargetResists, targetResists_table)
 
     @classmethod
     def importPatterns(cls, text):
@@ -93,8 +97,8 @@ class TargetResists(object):
 
 def getTargetResistsList(eager=None):
     eager = processEager(eager)
-    with sd_lock:
-        patterns = saveddata_session.query(TargetResists).options(*eager).all()
+    with sqlAlchemy.sd_lock:
+        patterns = sqlAlchemy.saveddata_session.query(TargetResists).options(*eager).all()
     return patterns
 
 
@@ -102,17 +106,17 @@ def getTargetResistsList(eager=None):
 def getTargetResists(lookfor, eager=None):
     if isinstance(lookfor, int):
         if eager is None:
-            with sd_lock:
-                pattern = saveddata_session.query(TargetResists).get(lookfor)
+            with sqlAlchemy.sd_lock:
+                pattern = sqlAlchemy.saveddata_session.query(TargetResists).get(lookfor)
         else:
             eager = processEager(eager)
-            with sd_lock:
-                pattern = saveddata_session.query(TargetResists).options(*eager).filter(
+            with sqlAlchemy.sd_lock:
+                pattern = sqlAlchemy.saveddata_session.query(TargetResists).options(*eager).filter(
                     TargetResists.ID == lookfor).first()
     elif isinstance(lookfor, basestring):
         eager = processEager(eager)
-        with sd_lock:
-            pattern = saveddata_session.query(TargetResists).options(*eager).filter(
+        with sqlAlchemy.sd_lock:
+            pattern = sqlAlchemy.saveddata_session.query(TargetResists).options(*eager).filter(
                 TargetResists.name == lookfor).first()
     else:
         raise TypeError("Need integer or string as argument")

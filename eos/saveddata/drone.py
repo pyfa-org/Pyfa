@@ -19,11 +19,12 @@
 
 import logging
 
-from sqlalchemy.orm import validates, reconstructor
+from sqlalchemy.orm import validates, reconstructor, mapper
 
 from eos.effectHandlerHelpers import HandledItem, HandledCharge
 from eos.gamedata import getItem
 from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut, ChargeAttrShortcut
+from eos.db.saveddata.mapper import Drones as drones_table
 
 logger = logging.getLogger(__name__)
 
@@ -44,6 +45,7 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         self.amountActive = 0
         self.projected = False
         self.build()
+        mapper(Drone, drones_table)
 
     @reconstructor
     def init(self):

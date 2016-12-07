@@ -27,10 +27,11 @@ from math import sqrt, log, asinh
 from sqlalchemy.orm import validates, reconstructor, mapper, relationship, relation
 from sqlalchemy.sql import and_
 from sqlalchemy.orm.collections import attribute_mapped_collection
+from sqlalchemy.ext.associationproxy import association_proxy
 
 from eos import capSim
 from eos import db
-from eos.db import saveddata_session, sd_lock
+from eos.db.sqlAlchemy import sqlAlchemy
 from eos.db.saveddata.queries import cachedQuery, removeInvalid
 from eos.db.util import processEager, processWhere, sqlizeString
 from eos.effectHandlerHelpers import (
@@ -50,6 +51,7 @@ from eos.saveddata.drone import Drone
 from eos.saveddata.character import Character
 from eos.saveddata.user import User
 from eos.saveddata.fighter import Fighter
+from eos.saveddata.fighterAbility import FighterAbility
 from eos.saveddata.implant import Implant
 from eos.saveddata.cargo import Cargo
 from eos.saveddata.damagePattern import DamagePattern
@@ -278,6 +280,34 @@ class Fit(object):
                     cascade='all, delete, delete-orphan'),
             }
         )
+
+        Fit._Fit__projectedFits = association_proxy(
+            "victimOf",  # look at the victimOf association...
+            "source_fit",  # .. and return the source fits
+            creator=lambda sourceID, source_fit: ProjectedFit(sourceID, source_fit)
+        )
+        Fit._Fit__commandFits = association_proxy(
+            "boostedOf",  # look at the boostedOf association...
+            "booster_fit",  # .. and return the booster fit
+            creator=lambda boosterID, booster_fit: CommandFit(boosterID, booster_fit)
+        )
+
+        mapper(ProjectedFit, projectedFits_table,
+               properties={"_ProjectedFit__amount": projectedFits_table.c.amount})
+
+        mapper(CommandFit, commandFits_table)
+
+        mapper(Module, modules_table,
+               properties={"owner": relation(Fit)})
+
+        mapper(Fighter, fighters_table,
+               properties={
+                   "owner": relation(Fit),
+                   "_Fighter__abilities": relation(
+                       FighterAbility,
+                       backref="fighter",
+                       cascade='all, delete, delete-orphan'),
+               })
 
     @property
     def targetResists(self):
@@ -1329,17 +1359,17 @@ class Fit(object):
 def getFit(lookfor, eager=None):
     if isinstance(lookfor, int):
         if eager is None:
-            with sd_lock:
-                fit = saveddata_session.query(Fit).get(lookfor)
+            with sqlAlchemy.sd_lock:
+                fit = sqlAlchemy.saveddata_session.query(Fit).get(lookfor)
         else:
             eager = processEager(eager)
-            with sd_lock:
-                fit = saveddata_session.query(Fit).options(*eager).filter(Fit.ID == lookfor).first()
+            with sqlAlchemy.sd_lock:
+                fit = sqlAlchemy.saveddata_session.query(Fit).options(*eager).filter(Fit.ID == lookfor).first()
     else:
         raise TypeError("Need integer as argument")
 
     if fit and fit.isInvalid:
-        with sd_lock:
+        with sqlAlchemy.sd_lock:
             removeInvalid([fit])
         return None
 
@@ -1360,8 +1390,8 @@ def getFitsWithShip(shipID, ownerID=None, where=None, eager=None):
 
         filter = processWhere(filter, where)
         eager = processEager(eager)
-        with sd_lock:
-            fits = removeInvalid(saveddata_session.query(Fit).options(*eager).filter(filter).all())
+        with sqlAlchemy.sd_lock:
+            fits = removeInvalid(sqlAlchemy.saveddata_session.query(Fit).options(*eager).filter(filter).all())
     else:
         raise TypeError("ShipID must be integer")
 
@@ -1382,15 +1412,15 @@ def getBoosterFits(ownerID=None, where=None, eager=None):
 
     filter = processWhere(filter, where)
     eager = processEager(eager)
-    with sd_lock:
-        fits = removeInvalid(saveddata_session.query(Fit).options(*eager).filter(filter).all())
+    with sqlAlchemy.sd_lock:
+        fits = removeInvalid(sqlAlchemy.saveddata_session.query(Fit).options(*eager).filter(filter).all())
 
     return fits
 
 
 def countAllFits():
-    with sd_lock:
-        count = saveddata_session.query(Fit).count()
+    with sqlAlchemy.sd_lock:
+        count = sqlAlchemy.saveddata_session.query(Fit).count()
     return count
 
 
@@ -1408,8 +1438,8 @@ def countFitsWithShip(shipID, ownerID=None, where=None, eager=None):
 
         filter = processWhere(filter, where)
         eager = processEager(eager)
-        with sd_lock:
-            count = saveddata_session.query(Fit).options(*eager).filter(filter).count()
+        with sqlAlchemy.sd_lock:
+            count = sqlAlchemy.saveddata_session.query(Fit).options(*eager).filter(filter).count()
     else:
         raise TypeError("ShipID must be integer")
     return count
@@ -1417,8 +1447,8 @@ def countFitsWithShip(shipID, ownerID=None, where=None, eager=None):
 
 def getFitList(eager=None):
     eager = processEager(eager)
-    with sd_lock:
-        fits = removeInvalid(saveddata_session.query(Fit).options(*eager).all())
+    with sqlAlchemy.sd_lock:
+        fits = removeInvalid(sqlAlchemy.saveddata_session.query(Fit).options(*eager).all())
 
     return fits
 
@@ -1432,8 +1462,8 @@ def searchFits(nameLike, where=None, eager=None):
     # Add any extra components to the search to our where clause
     filter = processWhere(Fit.name.like(nameLike, escape="\\"), where)
     eager = processEager(eager)
-    with sd_lock:
-        fits = removeInvalid(saveddata_session.query(Fit).options(*eager).filter(filter).all())
+    with sqlAlchemy.sd_lock:
+        fits = removeInvalid(sqlAlchemy.saveddata_session.query(Fit).options(*eager).filter(filter).all())
 
     return fits
 

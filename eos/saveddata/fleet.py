@@ -20,15 +20,32 @@
 from copy import deepcopy
 from itertools import chain
 
-from eos.db import saveddata_session, sd_lock
+from sqlalchemy.orm import mapper, relation
+
+from eos.db.sqlAlchemy import sqlAlchemy
 from eos.db.saveddata.queries import cachedQuery
 from eos.db.util import processEager
 from eos.saveddata.character import Skill as Skill
 from eos.saveddata.module import Module as Module
 from eos.saveddata.ship import Ship as Ship
+from eos.db.saveddata.mapper import (
+    Gangs as gangs_table,
+    Fits as fits_table,
+    Wings as wings_table,
+    Squads as squads_table,
+    SquadMembers as squadmembers_table,
+)
+
+import eos.saveddata.fit
 
 
 class Fleet(object):
+    def __init__(self):
+        mapper(Fleet, gangs_table,
+               properties={"wings": relation(Wing, backref="gang"),
+                           "leader": relation(eos.saveddata.fit.Fit, primaryjoin=gangs_table.c.leaderID == fits_table.ID),
+                           "booster": relation(eos.saveddata.fit.Fit, primaryjoin=gangs_table.c.boosterID == fits_table.ID)})
+
     def calculateModifiedAttributes(self):
         # Make sure ALL fits in the gang have been calculated
         for c in chain(self.wings, (self.leader,)):
@@ -95,6 +112,12 @@ class Fleet(object):
 
 
 class Wing(object):
+    def __init__(self):
+        mapper(Wing, wings_table,
+               properties={"squads": relation(Squad, backref="wing"),
+                           "leader": relation(eos.saveddata.fit.Fit, primaryjoin=wings_table.c.leaderID == fits_table.ID),
+                           "booster": relation(eos.saveddata.fit.Fit, primaryjoin=wings_table.c.boosterID == fits_table.ID)})
+
     def calculateModifiedAttributes(self):
         for c in chain(self.squads, (self.leader,)):
             if c is not None:
@@ -165,6 +188,15 @@ class Wing(object):
 
 
 class Squad(object):
+    def __init__(self):
+        mapper(Squad, squads_table,
+               properties={"leader": relation(eos.saveddata.fit.Fit, primaryjoin=squads_table.c.leaderID == fits_table.ID),
+                           "booster": relation(eos.saveddata.fit.Fit, primaryjoin=squads_table.c.boosterID == fits_table.ID),
+                           "members": relation(eos.saveddata.fit.Fit,
+                                               primaryjoin=squads_table.c.ID == squadmembers_table.squadID,
+                                               secondaryjoin=squadmembers_table.memberID == fits_table.ID,
+                                               secondary=squadmembers_table)})
+
     def calculateModifiedAttributes(self):
         for member in self.members:
             member.calculateModifiedAttributes()
@@ -350,12 +382,12 @@ class Store(object):
 def getFleet(fleetID, eager=None):
     if isinstance(fleetID, int):
         if eager is None:
-            with sd_lock:
-                fleet = saveddata_session.query(Fleet).get(fleetID)
+            with sqlAlchemy.sd_lock:
+                fleet = sqlAlchemy.saveddata_session.query(Fleet).get(fleetID)
         else:
             eager = processEager(eager)
-            with sd_lock:
-                fleet = saveddata_session.query(Fleet).options(*eager).filter(Fleet.ID == fleetID).first()
+            with sqlAlchemy.sd_lock:
+                fleet = sqlAlchemy.saveddata_session.query(Fleet).options(*eager).filter(Fleet.ID == fleetID).first()
     else:
         raise TypeError("Need integer as argument")
     return fleet
@@ -365,12 +397,12 @@ def getFleet(fleetID, eager=None):
 def getWing(wingID, eager=None):
     if isinstance(wingID, int):
         if eager is None:
-            with sd_lock:
-                wing = saveddata_session.query(Wing).get(wingID)
+            with sqlAlchemy.sd_lock:
+                wing = sqlAlchemy.saveddata_session.query(Wing).get(wingID)
         else:
             eager = processEager(eager)
-            with sd_lock:
-                wing = saveddata_session.query(Wing).options(*eager).filter(Wing.ID == wingID).first()
+            with sqlAlchemy.sd_lock:
+                wing = sqlAlchemy.saveddata_session.query(Wing).options(*eager).filter(Wing.ID == wingID).first()
     else:
         raise TypeError("Need integer as argument")
     return wing
@@ -380,12 +412,12 @@ def getWing(wingID, eager=None):
 def getSquad(squadID, eager=None):
     if isinstance(squadID, int):
         if eager is None:
-            with sd_lock:
-                squad = saveddata_session.query(Squad).get(squadID)
+            with sqlAlchemy.sd_lock:
+                squad = sqlAlchemy.saveddata_session.query(Squad).get(squadID)
         else:
             eager = processEager(eager)
-            with sd_lock:
-                squad = saveddata_session.query(Squad).options(*eager).filter(Fleet.ID == squadID).first()
+            with sqlAlchemy.sd_lock:
+                squad = sqlAlchemy.saveddata_session.query(Squad).options(*eager).filter(Fleet.ID == squadID).first()
     else:
         raise TypeError("Need integer as argument")
     return squad
@@ -393,8 +425,8 @@ def getSquad(squadID, eager=None):
 
 def getFleetList(eager=None):
     eager = processEager(eager)
-    with sd_lock:
-        fleets = saveddata_session.query(Fleet).options(*eager).all()
+    with sqlAlchemy.sd_lock:
+        fleets = sqlAlchemy.saveddata_session.query(Fleet).options(*eager).all()
     return fleets
 
 

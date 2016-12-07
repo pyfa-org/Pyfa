@@ -19,7 +19,8 @@
 
 import logging
 
-from sqlalchemy.orm import reconstructor
+from sqlalchemy.orm import reconstructor, mapper
+from eos.db.saveddata.mapper import FighterAbilities as fighter_abilities_table
 
 logger = logging.getLogger(__name__)
 
@@ -50,6 +51,8 @@ class FighterAbility(object):
         self.effectID = effect.ID if effect is not None else None
         self.active = False
         self.build()
+
+        mapper(FighterAbility, fighter_abilities_table)
 
     @reconstructor
     def init(self):
