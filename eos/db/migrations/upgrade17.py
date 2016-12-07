@@ -31,8 +31,14 @@ def upgrade(saveddata_engine):
 
             inserts.append({"boosterID": value, "boostedID": boosted, "active": 1})
             try:
-                sqlAlchemy.saveddata_session.execute(Fits.commandFits_table.insert(),
-                                          {"boosterID": value, "boostedID": boosted, "active": 1})
+                sqlAlchemy.saveddata_session.execute(
+                    Fits.commandFits_table.insert(),
+                    {
+                        "boosterID": value,
+                        "boostedID": boosted,
+                        "active": 1
+                    }
+                )
             except Exception:
                 pass
         sqlAlchemy.saveddata_session.commit()
