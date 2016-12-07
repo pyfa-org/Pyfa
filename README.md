@@ -1,4 +1,4 @@
-# pyfa
+# pyfa [![Build Status](https://travis-ci.org/a-tal/Pyfa.svg?branch=master)](https://travis-ci.org/a-tal/Pyfa) [![codecov](https://codecov.io/gh/a-tal/Pyfa/branch/master/graph/badge.svg)](https://codecov.io/gh/a-tal/Pyfa)
 
 [![Join us on Slack!](https://pyfainvite.azurewebsites.net/badge.svg)](https://pyfainvite.azurewebsites.net/)
 
