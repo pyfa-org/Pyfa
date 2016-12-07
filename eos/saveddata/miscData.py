@@ -17,7 +17,7 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-from eos.db.sqlAlchemy import saveddata_session, sd_lock
+from eos.db.sqlAlchemy import sqlAlchemy
 from eos.eqBase import EqBase
 from sqlalchemy.orm import mapper
 from eos.db.saveddata.mapper import Miscdata as miscdata_table
@@ -33,8 +33,8 @@ class MiscData(EqBase):
 
 def getMiscData(field):
     if isinstance(field, basestring):
-        with sd_lock:
-            data = saveddata_session.query(MiscData).get(field)
+        with sqlAlchemy.sd_lock:
+            data = sqlAlchemy.saveddata_session.query(MiscData).get(field)
     else:
         raise TypeError("Need string as argument")
     return data
