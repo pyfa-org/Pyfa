@@ -4,7 +4,7 @@ Migration 17
 - Moves all fleet boosters to the new schema
 """
 
-from eos.db.sqlAlchemy import saveddata_session
+from eos.db.sqlAlchemy import sqlAlchemy
 from eos.db.saveddata.mapper import Fits
 
 
@@ -17,7 +17,7 @@ def upgrade(saveddata_engine):
           JOIN gangs g on g.ID = w.gangID
           """
 
-    results = saveddata_session.execute(sql)
+    results = sqlAlchemy.saveddata_session.execute(sql)
 
     inserts = []
 
@@ -31,8 +31,8 @@ def upgrade(saveddata_engine):
 
             inserts.append({"boosterID": value, "boostedID": boosted, "active": 1})
             try:
-                saveddata_session.execute(Fits.commandFits_table.insert(),
+                sqlAlchemy.saveddata_session.execute(Fits.commandFits_table.insert(),
                                           {"boosterID": value, "boostedID": boosted, "active": 1})
             except Exception:
                 pass
-    saveddata_session.commit()
+        sqlAlchemy.saveddata_session.commit()

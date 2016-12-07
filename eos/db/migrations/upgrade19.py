@@ -6,7 +6,7 @@ Migration 19
 
 
 def upgrade(saveddata_engine):
-    from eos.db.sqlAlchemy import saveddata_session
+    from eos.db.sqlAlchemy import sqlAlchemy
 
     sql = """
           DELETE FROM commandFits
@@ -14,5 +14,5 @@ def upgrade(saveddata_engine):
           OR boostedID NOT IN (select ID from fits)
           """
 
-    saveddata_session.execute(sql)
-    saveddata_session.commit()
+    sqlAlchemy.saveddata_session.execute(sql)
+    sqlAlchemy.saveddata_session.commit()
