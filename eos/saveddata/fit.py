@@ -17,24 +17,22 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 #===============================================================================
 
-from eos.effectHandlerHelpers import *
-from eos.modifiedAttributeDict import ModifiedAttributeDict
-from sqlalchemy.orm import validates, reconstructor
-from itertools import chain
-from copy import deepcopy
-from math import sqrt, log, asinh
-from eos.types import Drone, Cargo, Ship, Character, State, Slot, Module, Implant, Booster, Skill, Citadel
-from eos.saveddata.module import State, Hardpoint
-from eos.saveddata.mode import Mode
-import eos.db
-import time
 import copy
-from utils.timer import Timer
-from eos.enum import Enum
-from service.gnosis import GnosisFormulas, GnosisSimulation
-
-
 import logging
+import time
+from copy import deepcopy
+from itertools import chain
+from math import log, asinh
+
+from sqlalchemy.orm import validates, reconstructor
+
+import eos.db
+from eos.effectHandlerHelpers import *
+from eos.enum import Enum
+from eos.saveddata.module import State
+from eos.types import Ship, Character, Slot, Module, Citadel
+from eos_service.gnosis import GnosisFormulas, GnosisSimulation
+from utils.timer import Timer
 
 logger = logging.getLogger(__name__)
 

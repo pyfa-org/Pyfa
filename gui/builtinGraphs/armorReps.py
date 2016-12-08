@@ -22,7 +22,7 @@ import service
 from gui.bitmapLoader import BitmapLoader
 from eos.graph import Data
 import gui.mainFrame
-from gnosis.gnosis import GnosisSimulation
+from eos_service.gnosis import GnosisSimulation
 
 
 class armorRepsGraph(Graph):

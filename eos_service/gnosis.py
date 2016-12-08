@@ -4,15 +4,7 @@ Integrates Gnosis into Pyfa
 
 from EVE_Gnosis.formulas.formulas import Formulas
 from EVE_Gnosis.simulations.capacitor import Capacitor
-
-import sys
-test = True
-import service
-#try:
-#    import service
-#except ImportError:
-#    import sys
-#    Service = sys.modules['service']
+from eos import config
 
 class GnosisFormulas:
     def __init__(self):
@@ -40,10 +32,13 @@ class GnosisSimulation:
     @staticmethod
     def capacitor_simulation(fit, projected_capacitor, capacity, recharge_rate, add_reactivation_delay=None):
 
+        '''
         sFit = service.Fit.getInstance()
 
         # Get user preferences for running the Gnosis engine
         setting_factor_reload_time = sFit.serviceFittingOptions["useGlobalForceReload"]
+        '''
+        setting_factor_reload_time = False
 
         module_list = []
         for module in fit.modules:
