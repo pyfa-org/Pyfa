@@ -72,13 +72,8 @@ class ContextMenu(object):
                     texts = m.getText(itemContext, selection)
 
                     # Check the selected item to see if it has special reasons for not showing the menu item
-                    skip_menu_item = False
-                    for sel in selection:
-                        if hasattr(sel, "_Mode__item") and texts == "Remove Module":
-                            # Don't show remove for modes, these are special modules that cannot be removed
-                            skip_menu_item = True
-
-                    if skip_menu_item == True:
+                    if srcContext == "fittingMode" and texts == "Remove Module":
+                        # Don't show remove for modes, these are special modules that cannot be removed
                         continue
 
                     if isinstance(texts, basestring):
