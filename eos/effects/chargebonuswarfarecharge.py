@@ -22,7 +22,7 @@ def handler(fit, module, context, **kwargs):
 
         if id == 10:  # Shield Burst: Shield Harmonizing: Shield Resistance
             for damageType in ("Em", "Explosive", "Thermal", "Kinetic"):
-                fit.ship.boostItemAttr("shield%sDamageResonance" % damageType, value, stackingPenalties=True)
+                fit.ship.boostItemAttr("shield%sDamageResonance" % damageType, value)
 
         if id == 11:  # Shield Burst: Active Shielding: Repair Duration/Capacitor
             fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Shield Operation") or mod.item.requiresSkill("Shield Emission Systems"), "capacitorNeed", value)
