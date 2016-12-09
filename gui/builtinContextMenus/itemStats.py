@@ -18,7 +18,8 @@ class ItemStats(ContextMenu):
                               "skillItem", "projectedModule",
                               "projectedDrone", "projectedCharge",
                               "itemStats", "fighterItem",
-                              "implantItemChar", "projectedFighter")
+                              "implantItemChar", "projectedFighter",
+                              "fittingMode")
 
     def getText(self, itmContext, selection):
         return "{0} Stats".format(itmContext if itmContext is not None else "Item")
@@ -29,6 +30,8 @@ class ItemStats(ContextMenu):
             fitID = self.mainFrame.getActiveFit()
             sFit = service.Fit.getInstance()
             stuff = sFit.getFit(fitID).ship
+        elif srcContext == "fittingMode":
+            stuff = selection[0].item
         else:
             stuff = selection[0]
 

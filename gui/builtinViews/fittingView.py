@@ -496,12 +496,19 @@ class FittingView(d.Display):
         while sel != -1 and sel not in self.blanks:
             mod = self.mods[self.GetItemData(sel)]
 
-            # Test if mod.isEmpty does not exist.
-            # Certain special module can be missing this trait
-            # Example: T3D modes
-            if not hasattr(mod, 'isEmpty'):
-                # Set it if missing, prevents later stack traces.
-                mod.isEmpty = False
+            # Test if this is a mode, which is a special snowflake of a Module
+            if hasattr(mod, "_Mode__item"):
+                srcContext = "fittingMode"
+                # Skip the normal processing
+                mod.isEmpty = True
+
+                itemContext = sMkt.getCategoryByItem(mod.item).name
+                fullContext = (srcContext, itemContext)
+                if not srcContext in tuple(fCtxt[0] for fCtxt in contexts):
+                    contexts.append(fullContext)
+
+                selection.append(mod)
+
 
             if not mod.isEmpty:
                 srcContext = "fittingModule"
@@ -510,12 +517,6 @@ class FittingView(d.Display):
                 if not srcContext in tuple(fCtxt[0] for fCtxt in contexts):
                     contexts.append(fullContext)
 
-                # Test if mod.charge exists
-                try:
-                    mod.charge
-                except AttributeError:
-                    # The attribute doesn't exist at all.  Set to none so we don't get errors later.
-                    mod.charge = None
 
                 if mod.charge is not None:
                     srcContext = "fittingCharge"
