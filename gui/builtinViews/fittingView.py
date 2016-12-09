@@ -497,10 +497,11 @@ class FittingView(d.Display):
         while sel != -1 and sel not in self.blanks:
             mod = self.mods[self.GetItemData(sel)]
 
-            # Test if mod.isEmpty exists.
-            try:
-                mod.isEmpty
-            except AttributeError:
+            # Test if mod.isEmpty does not exist.
+            # Certain special module can be missing this trait
+            # Example: T3D modes
+            if not hasattr(mod, 'isEmpty'):
+                # Set it if missing, prevents later stack traces.
                 mod.isEmpty = False
 
             if not mod.isEmpty:
