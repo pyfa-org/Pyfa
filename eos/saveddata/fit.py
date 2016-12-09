@@ -815,13 +815,19 @@ class Fit(object):
         else:
             start_recording_time = 0
 
+        total_time = (simulation_matrix['Matrix']['Stability']['RunTime']-start_recording_time)/1000
+        if total_time < 60:
+            # This is an uncommon scenario, where we run out of cap *RIGHT* as the simulation ends.
+            # In this case lets grab the last minute of stats.
+            start_recording_time -= 60000
+            total_time = 60
+
         for _ in simulation_matrix['Matrix']['Cached Runs']:
             if _['Current Time'] > start_recording_time:
                 total_shield_reps += _['Shield Reps']
                 total_armor_reps += _['Armor Reps']
                 total_hull_reps += _['Hull Reps']
 
-        total_time = (simulation_matrix['Matrix']['Stability']['RunTime']-start_recording_time)/1000
         sustainable = {}
         sustainable["shieldRepair"] = total_shield_reps/total_time
         sustainable["armorRepair"] = total_armor_reps/total_time
