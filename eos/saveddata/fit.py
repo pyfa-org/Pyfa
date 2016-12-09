@@ -458,9 +458,9 @@ class Fit(object):
 
     def __runCommandBoosts(self, runTime="normal"):
         logger.debug("Applying gang boosts for %r", self)
-        for warfareBuffID, info in self.commandBonuses.iteritems():
+        for warfareBuffID in self.commandBonuses.keys():
             # Unpack all data required to run effect properly
-            effect_runTime, value, thing, effect = info
+            effect_runTime, value, thing, effect = self.commandBonuses[warfareBuffID]
 
             if runTime != effect_runTime:
                 continue
@@ -491,7 +491,7 @@ class Fit(object):
                 except:
                     pass
 
-        self.commandBonuses.clear()
+            del self.commandBonuses[warfareBuffID]
 
     def calculateModifiedAttributes(self, targetFit=None, withBoosters=False, dirtyStorage=None):
         timer = Timer(u'Fit: {}, {}'.format(self.ID, self.name), logger)
