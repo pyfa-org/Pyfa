@@ -30,11 +30,14 @@ from gui.builtinViewColumns.state import State
 from gui.bitmapLoader import BitmapLoader
 import gui.builtinViews.emptyView
 from gui.utils.exportHtml import exportHtml
+from logging import getLogger, Formatter
 
 from service.fit import Fit
 from service.market import Market
 
 import gui.globalEvents as GE
+
+logger = getLogger(__name__)
 
 
 # Tab spawning handler
@@ -348,6 +351,7 @@ class FittingView(d.Display):
             populate = sFit.removeModule(self.activeFitID, fit.modules.index(module))
         except ValueError:
             # This module isn't in our list of modules, don't remove anything. Likely a special snowflake.
+            logger.debug("Failed attempt to remove %s from fit" % module.item.name)
             populate = None
 
         if populate is not None:
@@ -515,6 +519,7 @@ class FittingView(d.Display):
                 try:
                     mod.charge
                 except AttributeError:
+                    # The attribute doesn't exist at all.  Set to none so we don't get errors later.
                     mod.charge = None
 
                 if mod.charge is not None:
