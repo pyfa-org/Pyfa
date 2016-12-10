@@ -71,11 +71,6 @@ class ContextMenu(object):
                     amount += 1
                     texts = m.getText(itemContext, selection)
 
-                    # Check the selected item to see if it has special reasons for not showing the menu item
-                    if srcContext == "fittingMode" and texts == "Remove Module":
-                        # Don't show remove for modes, these are special modules that cannot be removed
-                        continue
-
                     if isinstance(texts, basestring):
                         texts = (texts,)
 

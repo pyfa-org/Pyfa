@@ -25,7 +25,7 @@ import gui.display as d
 from gui.contextMenu import ContextMenu
 import gui.shipBrowser
 import gui.multiSwitch
-from eos.types import Slot, Rack, Module
+from eos.types import Slot, Rack, Module, Mode
 from gui.builtinViewColumns.state import State
 from gui.bitmapLoader import BitmapLoader
 import gui.builtinViews.emptyView
@@ -336,7 +336,7 @@ class FittingView(d.Display):
 
     def removeItem(self, event):
         row, _ = self.HitTest(event.Position)
-        if row != -1 and row not in self.blanks:
+        if row != -1 and row not in self.blanks and isinstance(self.mods[row], Module):
             col = self.getColumn(event.Position)
             if col != self.getColIndex(State):
                 self.removeModule(self.mods[row])
@@ -347,12 +347,7 @@ class FittingView(d.Display):
     def removeModule(self, module):
         sFit = Fit.getInstance()
         fit = sFit.getFit(self.activeFitID)
-        try:
-            populate = sFit.removeModule(self.activeFitID, fit.modules.index(module))
-        except ValueError:
-            # This module isn't in our list of modules, don't remove anything. Likely a special snowflake.
-            logger.debug("Failed attempt to remove %s from fit" % module.item.name)
-            populate = None
+        populate = sFit.removeModule(self.activeFitID, fit.modules.index(module))
 
         if populate is not None:
             self.slotsChanged()
@@ -502,20 +497,17 @@ class FittingView(d.Display):
             mod = self.mods[self.GetItemData(sel)]
 
             # Test if this is a mode, which is a special snowflake of a Module
-            if hasattr(mod, "_Mode__item"):
+            if isinstance(mod, Mode):
                 srcContext = "fittingMode"
-                # Skip the normal processing
-                mod.isEmpty = True
 
-                itemContext = sMkt.getCategoryByItem(mod.item).name
+                itemContext = "Tactical Mode"
                 fullContext = (srcContext, itemContext)
                 if not srcContext in tuple(fCtxt[0] for fCtxt in contexts):
                     contexts.append(fullContext)
 
                 selection.append(mod)
 
-
-            if not mod.isEmpty:
+            elif not mod.isEmpty:
                 srcContext = "fittingModule"
                 itemContext = sMkt.getCategoryByItem(mod.item).name
                 fullContext = (srcContext, itemContext)
