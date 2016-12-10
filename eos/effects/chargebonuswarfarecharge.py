@@ -33,7 +33,7 @@ def handler(fit, module, context, **kwargs):
 
         if id == 13:  # Armor Burst: Armor Energizing: Armor Resistance
             for damageType in ("Em", "Thermal", "Explosive", "Kinetic"):
-                fit.ship.boostItemAttr("armor%sDamageResonance" % damageType, value, stackingPenalties=True)
+                fit.ship.boostItemAttr("armor%sDamageResonance" % damageType, value)
 
         if id == 14:  # Armor Burst: Rapid Repair: Repair Duration/Capacitor
             fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Remote Armor Repair Systems") or mod.item.requiresSkill("Repair Systems"), "capacitorNeed", value)
@@ -93,6 +93,9 @@ def handler(fit, module, context, **kwargs):
 
         if id == 25:  # Mining Burst: Mining Equipment Preservation: Crystal Volatility
             fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Mining"), "crystalVolatilityChance", value, stackingPenalties=True)
+
+        if id == 60:  # Skirmish Burst: Evasive Maneuvers: Agility
+            fit.ship.boostItemAttr("agility", value, stackingPenalties=True)
 
     for x in xrange(1, 4):
         if module.getModifiedChargeAttr("warfareBuff{}ID".format(x)):
