@@ -14,8 +14,7 @@ class ItemRemove(ContextMenu):
                               "boosterItem", "projectedModule",
                               "projectedCharge", "cargoItem",
                               "projectedFit", "projectedDrone",
-                              "fighterItem", "projectedFighter",
-                              "fittingMode",)
+                              "fighterItem", "projectedFighter")
 
     def getText(self, itmContext, selection):
         return "Remove {0}".format(itmContext if itmContext is not None else "Item")
