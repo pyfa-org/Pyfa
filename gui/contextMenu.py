@@ -69,6 +69,7 @@ class ContextMenu(object):
                 if m.display(srcContext, selection):
                     amount += 1
                     texts = m.getText(itemContext, selection)
+
                     if isinstance(texts, basestring):
                         texts = (texts,)
 
