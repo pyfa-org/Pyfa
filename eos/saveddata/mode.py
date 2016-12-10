@@ -53,3 +53,8 @@ class Mode(ItemAttrShortcut, HandledItem):
             for effect in self.item.effects.itervalues():
                 if effect.runTime == runTime and effect.activeByDefault:
                     effect.handler(fit, self, context=("module",))
+
+    def getValidCharges(self):
+        # Modes don't have charges, but it is queried for so return nothing.
+        validCharges = set()
+        return validCharges

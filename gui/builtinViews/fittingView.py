@@ -31,8 +31,11 @@ from gui.builtinViewColumns.state import State
 from gui.bitmapLoader import BitmapLoader
 import gui.builtinViews.emptyView
 from gui.utils.exportHtml import exportHtml
+from logging import getLogger, Formatter
 
 import gui.globalEvents as GE
+
+logger = getLogger(__name__)
 
 #Tab spawning handler
 class FitSpawner(gui.multiSwitch.TabSpawner):
@@ -339,7 +342,12 @@ class FittingView(d.Display):
     def removeModule(self, module):
         sFit = service.Fit.getInstance()
         fit = sFit.getFit(self.activeFitID)
-        populate = sFit.removeModule(self.activeFitID, fit.modules.index(module))
+        try:
+            populate = sFit.removeModule(self.activeFitID, fit.modules.index(module))
+        except ValueError:
+            # This module isn't in our list of modules, don't remove anything. Likely a special snowflake.
+            logger.debug("Failed attempt to remove %s from fit" % module.item.name)
+            populate = None
 
         if populate is not None:
             self.slotsChanged()
@@ -441,12 +449,11 @@ class FittingView(d.Display):
             if fit.mode:
                 # Modes are special snowflakes and need a little manual loving
                 # We basically append the Mode rack and Mode to the modules
-                # while also marking their positions in the Blanks list
+                # while also marking the mode header position in the Blanks list
                 if sFit.serviceFittingOptions["rackSlots"]:
                     self.blanks.append(len(self.mods))
                     self.mods.append(Rack.buildRack(Slot.MODE))
 
-                self.blanks.append(len(self.mods))
                 self.mods.append(fit.mode)
         else:
             self.mods = None
@@ -488,12 +495,29 @@ class FittingView(d.Display):
 
         while sel != -1 and sel not in self.blanks:
             mod = self.mods[self.GetItemData(sel)]
+
+            # Test if this is a mode, which is a special snowflake of a Module
+            if hasattr(mod, "_Mode__item"):
+                srcContext = "fittingMode"
+                # Skip the normal processing
+                mod.isEmpty = True
+
+                itemContext = sMkt.getCategoryByItem(mod.item).name
+                fullContext = (srcContext, itemContext)
+                if not srcContext in tuple(fCtxt[0] for fCtxt in contexts):
+                    contexts.append(fullContext)
+
+                selection.append(mod)
+
+
             if not mod.isEmpty:
                 srcContext = "fittingModule"
                 itemContext = sMkt.getCategoryByItem(mod.item).name
                 fullContext = (srcContext, itemContext)
                 if not srcContext in tuple(fCtxt[0] for fCtxt in contexts):
                     contexts.append(fullContext)
+
+
                 if mod.charge is not None:
                     srcContext = "fittingCharge"
                     itemContext = sMkt.getCategoryByItem(mod.charge).name
