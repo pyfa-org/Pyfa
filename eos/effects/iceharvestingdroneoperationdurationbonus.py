@@ -7,5 +7,6 @@ type = "passive"
 
 
 def handler(fit, src, context):
-    fit.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill("Ice Harvesting Drone Operation"), "duration",
-                                 src.getModifiedItemAttr("rofBonus"))
+    lvl = src.level if "skill" in context else 1
+    fit.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill("Ice Harvesting Drone Operation"),
+                                 "duration", src.getModifiedItemAttr("rofBonus") * lvl)
