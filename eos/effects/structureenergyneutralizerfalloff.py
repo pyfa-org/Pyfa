@@ -10,4 +10,4 @@ def handler(fit, container, context):
                                     and container.state >= State.ACTIVE) or hasattr(container, "amountActive")):
         amount = container.getModifiedItemAttr("energyNeutralizerAmount")
     time = container.getModifiedItemAttr("duration")
-    fit.addDrain(time, amount, 0)
+    fit.addDrain(container, time, amount, 0)
