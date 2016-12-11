@@ -47,6 +47,7 @@ def main(db, json_path):
 
     # Config dict
     tables = {
+        "clonegrades": eos.gamedata.AlphaCloneSkill,
         "dgmattribs": eos.gamedata.AttributeInfo,
         "dgmeffects": eos.gamedata.EffectInfo,
         "dgmtypeattribs": eos.gamedata.Attribute,
@@ -60,7 +61,8 @@ def main(db, json_path):
         "evetypes": eos.gamedata.Item,
         "phbtraits": eos.gamedata.Traits,
         "phbmetadata": eos.gamedata.MetaData,
-        "mapbulk_marketGroups": eos.gamedata.MarketGroup
+        "mapbulk_marketGroups": eos.gamedata.MarketGroup,
+
     }
 
     fieldMapping = {
@@ -108,6 +110,19 @@ def main(db, json_path):
             v["iconID"] = k
             new.append(v)
         return new
+
+    def convertClones(data):
+        newData = []
+
+        for ID in data:
+            for skill in data[ID]["skills"]:
+                newData.append({
+                    "alphaCloneID": int(ID),
+                    "alphaCloneName": data[ID]["internalDescription"],
+                    "typeID": skill["typeID"],
+                    "level": skill["level"]})
+
+        return newData
 
     def convertTraits(data):
 
@@ -167,6 +182,8 @@ def main(db, json_path):
             tableData = convertTraits(tableData)
         if jsonName == "evetypes":
             tableData = convertTypes(tableData)
+        if jsonName == "clonegrades":
+            tableData = convertClones(tableData)
         data[jsonName] = tableData
 
     # Set with typeIDs which we will have in our database
@@ -191,7 +208,10 @@ def main(db, json_path):
     # Loop through each json file and write it away, checking ignored rows
     for jsonName, table in data.iteritems():
         fieldMap = fieldMapping.get(jsonName, {})
+        tmp = []
+
         print "processing {}".format(jsonName)
+
         for row in table:
             # We don't care about some kind of rows, filter it out if so
             if not isIgnored(jsonName, row):
@@ -206,6 +226,14 @@ def main(db, json_path):
                         row['iconFile'] = "{}_{}".format(split[0], split[2])
                 if jsonName is "icons" and "modules/" in str(row["iconFile"]).lower():
                     row["iconFile"] = row["iconFile"].lower().replace("modules/", "").replace(".png", "")
+
+                if jsonName is "clonegrades":
+                    if (row["alphaCloneID"] not in tmp):
+                        cloneParent = eos.gamedata.AlphaClone()
+                        setattr(cloneParent, "alphaCloneID", row["alphaCloneID"])
+                        setattr(cloneParent, "alphaCloneName", row["alphaCloneName"])
+                        eos.db.gamedata_session.add(cloneParent)
+                        tmp.append(row['alphaCloneID'])
 
                 for k, v in row.iteritems():
                     if (isinstance(v, basestring)):

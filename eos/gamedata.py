@@ -444,6 +444,14 @@ class Category(EqBase):
     pass
 
 
+class AlphaClone(EqBase):
+    pass
+
+
+class AlphaCloneSkill(EqBase):
+    pass
+
+
 class Group(EqBase):
     pass
 
