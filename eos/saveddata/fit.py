@@ -451,7 +451,7 @@ class Fit(object):
         # (abs is old method, ccp now provides the aggregate function in their data)
         print "Add command bonus: ", warfareBuffID, " - value: ", value
 
-        if warfareBuffID not in self.commandBonuses or abs(self.commandBonuses[warfareBuffID][0]) < abs(value):
+        if warfareBuffID not in self.commandBonuses or abs(self.commandBonuses[warfareBuffID][1]) < abs(value):
             self.commandBonuses[warfareBuffID] = (runTime, value, module, effect)
 
     def __runCommandBoosts(self, runTime="normal"):
