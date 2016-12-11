@@ -19,7 +19,7 @@ saveInRoot = False
 
 # Version data
 version = "1.25.1"
-tag = "git"
+tag = "Stable"
 expansionName = "Ascension"
 expansionVersion = "1.9"
 evemonMinVersion = "4081"
