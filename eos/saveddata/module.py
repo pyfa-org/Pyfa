@@ -658,7 +658,10 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, l
                              (effect.isType("active") and self.state >= State.ACTIVE)) \
                         and ((projected and effect.isType("projected")) or not projected) \
                         and ((gang and effect.isType("gang")) or not gang):
-                    effect.handler(fit, self, context)
+                    try:
+                        effect.handler(fit, self, context, effect=effect)
+                    except:
+                        effect.handler(fit, self, context)
 
     @property
     def cycleTime(self):
