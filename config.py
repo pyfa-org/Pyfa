@@ -143,31 +143,16 @@ def defPaths(customSavePath):
     eos.config.gamedata_connectionstring = "sqlite:///" + gameDB + "?check_same_thread=False"
 
 
-def getPyfaPath(Append=None):
+def getPyfaPath(append=None):
     base = getattr(sys.modules['__main__'], "__file__", sys.executable) if isFrozen() else sys.argv[0]
     root = os.path.dirname(os.path.realpath(os.path.abspath(base)))
-    if type(root) == str:  # leave unicode ones alone
-        try:
-            root = root.decode('utf8')
-        except UnicodeDecodeError:
-            root = root.decode('windows-1252')
+    return _getPath(root, append)
 
-    if not Append:
-        return root
-
-    if type(root) == str:  # leave unicode ones alone
-        try:
-            path = os.path.abspath(os.path.join(root, Append)).decode('utf8')
-        except UnicodeDecodeError:
-            path = os.path.abspath(os.path.join(root, Append)).decode('windows-1252')
-    else:
-        path = os.path.abspath(os.path.join(root, Append))
-
-    return path
-
-
-def getSavePath(Append=None):
+def getSavePath(append=None):
     root = os.path.expanduser(os.path.join("~", ".pyfa"))
+    return _getPath(root, append)
+
+def _getPath(root, Append=None):
     if type(root) == str:  # leave unicode ones alone
         try:
             root = root.decode('utf8')
