@@ -449,14 +449,16 @@ class Fit(object):
         # oh fuck this is so janky
         # @todo should we pass in min/max to this function, or is abs okay?
         # (abs is old method, ccp now provides the aggregate function in their data)
-        if warfareBuffID not in self.commandBonuses or abs(self.commandBonuses[warfareBuffID][1]) < abs(value):
+        print "Add command bonus: ", warfareBuffID, " - value: ", value
+
+        if warfareBuffID not in self.commandBonuses or abs(self.commandBonuses[warfareBuffID][0]) < abs(value):
             self.commandBonuses[warfareBuffID] = (runTime, value, module, effect)
 
     def __runCommandBoosts(self, runTime="normal"):
         logger.debug("Applying gang boosts for %r", self)
-        for warfareBuffID in self.commandBonuses.keys():
+        for warfareBuffID, info in self.commandBonuses.iteritems():
             # Unpack all data required to run effect properly
-            effect_runTime, value, thing, effect = self.commandBonuses[warfareBuffID]
+            effect_runTime, value, thing, effect = info
 
             if runTime != effect_runTime:
                 continue
@@ -487,7 +489,7 @@ class Fit(object):
                 except:
                     pass
 
-            del self.commandBonuses[warfareBuffID]
+        self.commandBonuses.clear()
 
     def calculateModifiedAttributes(self, targetFit=None, withBoosters=False, dirtyStorage=None):
         timer = Timer(u'Fit: {}, {}'.format(self.ID, self.name), logger)
@@ -512,10 +514,12 @@ class Fit(object):
                 eos.db.saveddata_session.delete(self)
 
         if self.commandFits and not withBoosters:
+            print "Calculatate command fits and apply to fit"
             for fit in self.commandFits:
                 if self == fit:
+                    print "nope"
                     continue
-
+                print "calculating ", fit
                 fit.calculateModifiedAttributes(self, True)
                 #
                 # for thing in chain(fit.modules, fit.implants, fit.character.skills, (fit.ship,)):
