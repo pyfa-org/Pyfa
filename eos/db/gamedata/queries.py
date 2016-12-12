@@ -24,7 +24,7 @@ import eos.config
 from eos.db import gamedata_session
 from eos.db.gamedata.metaGroup import metatypes_table, items_table
 from eos.db.util import processEager, processWhere
-from eos.types import Item, Category, Group, MarketGroup, AttributeInfo, MetaData, MetaGroup
+from eos.types import Item, Category, Group, MarketGroup, AttributeInfo, MetaData, MetaGroup, AlphaClone
 
 configVal = getattr(eos.config, "gamedataCache", None)
 if configVal is True:
@@ -94,6 +94,18 @@ def getItem(lookfor, eager=None):
             itemNameMap[lookfor] = item.ID
     else:
         raise TypeError("Need integer or string as argument")
+    return item
+
+
+@cachedQuery(1, "lookfor")
+def getAlphaClone(lookfor, eager=None):
+    if isinstance(lookfor, int):
+        if eager is None:
+            item = gamedata_session.query(AlphaClone).get(lookfor)
+        else:
+            item = gamedata_session.query(AlphaClone).options(*processEager(eager)).filter(AlphaClone.ID == lookfor).first()
+    else:
+        raise TypeError("Need integer as argument")
     return item
 
 

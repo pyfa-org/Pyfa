@@ -445,7 +445,18 @@ class Category(EqBase):
 
 
 class AlphaClone(EqBase):
-    pass
+    @reconstructor
+    def init(self):
+        self.skillCache = {}
+
+        for x in self.skills:
+            self.skillCache[x.typeID] = x
+
+    def getSkillLevel(self, skill):
+        if skill.item.ID in self.skillCache:
+            return self.skillCache[skill.item.ID].level
+        else:
+            return None
 
 
 class AlphaCloneSkill(EqBase):
