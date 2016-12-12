@@ -449,8 +449,6 @@ class Fit(object):
         # oh fuck this is so janky
         # @todo should we pass in min/max to this function, or is abs okay?
         # (abs is old method, ccp now provides the aggregate function in their data)
-        print "Add command bonus: ", warfareBuffID, " - value: ", value
-
         if warfareBuffID not in self.commandBonuses or abs(self.commandBonuses[warfareBuffID][1]) < abs(value):
             self.commandBonuses[warfareBuffID] = (runTime, value, module, effect)
 
@@ -514,12 +512,10 @@ class Fit(object):
                 eos.db.saveddata_session.delete(self)
 
         if self.commandFits and not withBoosters:
-            print "Calculatate command fits and apply to fit"
             for fit in self.commandFits:
                 if self == fit:
-                    print "nope"
                     continue
-                print "calculating ", fit
+
                 fit.calculateModifiedAttributes(self, True)
                 #
                 # for thing in chain(fit.modules, fit.implants, fit.character.skills, (fit.ship,)):
