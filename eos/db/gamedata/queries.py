@@ -109,6 +109,12 @@ def getAlphaClone(lookfor, eager=None):
     return item
 
 
+def getAlphaCloneList(eager=None):
+    eager = processEager(eager)
+    clones = gamedata_session.query(AlphaClone).options(*eager).all()
+    return clones
+
+
 groupNameMap = {}
 
 

@@ -188,6 +188,9 @@ class Character(object):
     def all5ID(self):
         return self.all5().ID
 
+    def getAlphaCloneList(self):
+        return eos.db.getAlphaCloneList()
+
     def getCharacterList(self):
         return eos.db.getCharacterList()
 
@@ -232,6 +235,10 @@ class Character(object):
             if skill.published == True:
                 skills.append((skill.ID, skill.name))
         return skills
+
+    def setAlphaClone(self, char, cloneID):
+        char.alphaCloneID = cloneID
+        eos.db.commit()
 
     def getSkillDescription(self, itemID):
         return eos.db.getItem(itemID).description

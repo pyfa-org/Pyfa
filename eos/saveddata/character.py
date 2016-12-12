@@ -99,6 +99,7 @@ class Character(object):
         self.__skills = []
         self.__skillIdMap = {}
         self.dirtySkills = set()
+        self.alphaClone = None
 
         if initSkills:
             for item in self.getSkillList():
@@ -115,8 +116,10 @@ class Character(object):
             self.__skillIdMap[skill.itemID] = skill
         self.dirtySkills = set()
 
-        if self.alphaClone:
-            self.alphaClone = eos.db.getAlphaClone(self.alphaClone)
+        self.alphaClone = None
+
+        if self.alphaCloneID:
+            self.alphaClone = eos.db.getAlphaClone(self.alphaCloneID)
 
     def apiUpdateCharSheet(self, skills):
         del self.__skills[:]
@@ -143,6 +146,15 @@ class Character(object):
     @name.setter
     def name(self, name):
         self.savedName = name
+
+    @property
+    def alphaCloneID(self):
+        return self.__alphaCloneID
+
+    @alphaCloneID.setter
+    def alphaCloneID(self, cloneID):
+        self.__alphaCloneID = cloneID
+        self.alphaClone = eos.db.getAlphaClone(cloneID) if cloneID is not None else None
 
     @property
     def skills(self):
