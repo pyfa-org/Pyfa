@@ -15,7 +15,7 @@ def handler(fit, module, context, **kwargs):
             for attr in ("armorKineticDamageResonance", "shieldKineticDamageResonance", "hullKineticDamageResonance"):
                 fit.ship.boostItemAttr(attr, value)
 
-        if id == 49:  # Avatar Effect Generator : EM resistance penalty
+        if id == 41:  # Avatar Effect Generator : EM resistance penalty
             for attr in ("armorEmDamageResonance", "shieldEmDamageResonance", "hullEmDamageResonance"):
                 fit.ship.boostItemAttr(attr, value)
 
