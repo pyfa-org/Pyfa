@@ -21,7 +21,7 @@
 import logging
 from itertools import chain
 
-from sqlalchemy.orm import validates, reconstructor
+from sqlalchemy.orm import validates, reconstructor, mapper, relation
 
 from eos.db.sqlAlchemy import sqlAlchemy
 from eos.db.saveddata import queries as eds_queries
@@ -30,6 +30,13 @@ from eos.db.saveddata.queries import cachedQuery
 from eos.db.util import processEager
 from eos.effectHandlerHelpers import HandledItem, HandledImplantBoosterList
 from eos.gamedata import getItemsByCategory
+from eos.db.saveddata.mapper import (
+    Characters as characters_table,
+    CharImplants as charImplants_table,
+    Implants as implant_table,
+)
+from eos.saveddata.implant import Implant
+from eos.saveddata.user import User
 
 logger = logging.getLogger(__name__)
 
@@ -113,6 +120,27 @@ class Character(object):
 
         self.__implants = HandledImplantBoosterList()
         self.apiKey = None
+
+        mapper(Character, characters_table,
+               properties={
+                   "savedName": characters_table.c.name,
+                   "_Character__owner": relation(
+                       User,
+                       backref="characters"),
+                   "_Character__skills": relation(
+                       Character.Skill,
+                       backref="character",
+                       cascade="all,delete-orphan"),
+                   "_Character__implants": relation(
+                       Implant,
+                       collection_class=HandledImplantBoosterList,
+                       cascade='all,delete-orphan',
+                       backref='character',
+                       single_parent=True,
+                       primaryjoin=charImplants_table.charID == characters_table.c.ID,
+                       secondaryjoin=charImplants_table.implantID == implant_table.ID,
+                       secondary=charImplants_table),
+               })
 
     @reconstructor
     def init(self):

@@ -92,30 +92,6 @@ class Characters(Base):
     defaultLevel = Column(Integer, nullable=True)
     ownerID = Column(Integer, ForeignKey("users.ID"), nullable=True)
 
-    # Legacy code
-    '''
-    mapper(Character.Character, characters_table,
-           properties={
-               "savedName": characters_table.c.name,
-               "_Character__owner": relation(
-                   es_User,
-                   backref="characters"),
-               "_Character__skills": relation(
-                   Character.Skill,
-                   backref="character",
-                   cascade="all,delete-orphan"),
-               "_Character__implants": relation(
-                   es_Implant,
-                   collection_class=HandledImplantBoosterList,
-                   cascade='all,delete-orphan',
-                   backref='character',
-                   single_parent=True,
-                   primaryjoin=Implants.charImplants_table.c.charID == characters_table.c.ID,
-                   secondaryjoin=Implants.charImplants_table.c.implantID == es_Implant.ID,
-                   secondary=Implants.charImplants_table),
-           })
-    '''
-
 
 class Crest(Base):
     __tablename__ = 'crest'
