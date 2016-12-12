@@ -114,7 +114,7 @@ class Character(object):
         for skill in self.__skills:
             self.__skillIdMap[skill.itemID] = skill
         self.dirtySkills = set()
-        
+
         if self.alphaClone:
             self.alphaClone = eos.db.getAlphaClone(self.alphaClone)
 
