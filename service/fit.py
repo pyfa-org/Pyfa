@@ -199,7 +199,7 @@ class Fit(object):
         self.recalc(fit, withBoosters=True)
 
     def getFit(self, fitID, projected=False, basic=False):
-        ''' Gets fit from database.
+        ''' Gets fit from database
 
         Projected is a recursion flag that is set to reduce recursions into projected fits
         Basic is a flag to simply return the fit without any other processing

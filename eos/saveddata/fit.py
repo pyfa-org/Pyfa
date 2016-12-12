@@ -136,7 +136,6 @@ class Fit(object):
         self.__capRecharge = None
         self.__calculatedTargets = []
         self.factorReload = False
-        self.fleet = None
         self.boostsFits = set()
         self.gangBoosts = None
         self.ecmProjectedStr = 1
@@ -473,14 +472,6 @@ class Fit(object):
                     self.register(thing)
                     effect.handler(self, thing, context, warfareBuffID=warfareBuffID)
 
-                # if effect.isType("offline") or (effect.isType("passive") and thing.state >= State.ONLINE) or \
-                # (effect.isType("active") and thing.state >= State.ACTIVE):
-                #     # Run effect, and get proper bonuses applied
-                #     try:
-                #         self.register(thing)
-                #         effect.handler(self, thing, context)
-                #     except:
-                #         pass
             else:
                 # Run effect, and get proper bonuses applied
                 try:
@@ -506,7 +497,6 @@ class Fit(object):
                 # Don't inspect this, we genuinely want to reassign self
                 # noinspection PyMethodFirstArgAssignment
                 self = copy.deepcopy(self)
-                self.fleet = copied.fleet
                 logger.debug("Handling self projection - making shadow copy of fit. %r => %r", copied, self)
                 # we delete the fit because when we copy a fit, flush() is
                 # called to properly handle projection updates. However, we do
@@ -519,24 +509,6 @@ class Fit(object):
                     continue
 
                 fit.calculateModifiedAttributes(self, True)
-                #
-                # for thing in chain(fit.modules, fit.implants, fit.character.skills, (fit.ship,)):
-                #     if thing.item is None:
-                #         continue
-                #     for effect in thing.item.effects.itervalues():
-                #         # And check if it actually has gang boosting effects
-                #         if effect.isType("gang"):
-                #             effect.handler(self, thing, ("commandRun"))
-
-        # if self.fleet is not None and withBoosters is True:
-        #     logger.debug("Fleet is set, gathering gang boosts")
-        #
-        #     self.gangBoosts = self.fleet.recalculateLinear(withBoosters=withBoosters)
-        #
-        #     timer.checkpoint("Done calculating gang boosts for %r"%self)
-
-        # elif self.fleet is None:
-        #     self.gangBoosts = None
 
         # If we're not explicitly asked to project fit onto something,
         # set self as target fit
