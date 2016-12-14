@@ -19,7 +19,7 @@ import gui.utils.drawUtils as drawUtils
 import gui.utils.animEffects as animEffects
 import gui.utils.fonts as fonts
 
-from service import fit
+from service.fit import Fit
 
 
 class PyGauge(wx.PyWindow):
@@ -173,7 +173,7 @@ class PyGauge(wx.PyWindow):
         return self._range
 
     def Animate(self):
-        sFit = fit.Fit.getInstance()
+        sFit = Fit.getInstance()
         if sFit.serviceFittingOptions["enableGaugeAnimation"]:
             if not self._timer:
                 self._timer = wx.Timer(self, self._timerId)

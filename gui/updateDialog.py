@@ -19,7 +19,7 @@
 
 import wx
 import dateutil.parser
-from service import settings
+from service.settings import UpdateSettings as svc_UpdateSettings
 
 
 class UpdateDialog(wx.Dialog):
@@ -27,7 +27,7 @@ class UpdateDialog(wx.Dialog):
         wx.Dialog.__init__(self, parent, id=wx.ID_ANY, title="Pyfa Update", pos=wx.DefaultPosition,
                            size=wx.Size(400, 300), style=wx.DEFAULT_DIALOG_STYLE)
 
-        self.UpdateSettings = settings.UpdateSettings.getInstance()
+        self.UpdateSettings = svc_UpdateSettings.getInstance()
         self.releaseInfo = release
         self.SetSizeHintsSz(wx.DefaultSize, wx.DefaultSize)
 

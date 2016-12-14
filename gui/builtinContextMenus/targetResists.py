@@ -3,7 +3,7 @@ import gui.mainFrame
 import gui.globalEvents as GE
 import wx
 from gui.bitmapLoader import BitmapLoader
-from service import targetResists as svc_targetResists
+from service.targetResists import TargetResists as svc_TargetResists
 from service.fit import Fit
 
 try:
@@ -20,7 +20,7 @@ class TargetResists(ContextMenu):
         if self.mainFrame.getActiveFit() is None or srcContext != "firepowerViewFull":
             return False
 
-        sTR = svc_targetResists.TargetResists.getInstance()
+        sTR = svc_TargetResists.getInstance()
         self.patterns = sTR.getTargetResistsList()
         self.patterns.sort(key=lambda p: (p.name in ["None"], p.name))
 
