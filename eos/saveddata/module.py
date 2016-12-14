@@ -132,13 +132,6 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, l
             self.__chargeModifiedAttributes.original = self.__charge.attributes
             self.__chargeModifiedAttributes.overrides = self.__charge.overrides
 
-    def toDummy(self, index):
-        mod = self[index]
-        if not mod.isEmpty:
-            dummy = Module.buildEmpty(mod.slot)
-            dummy.position = index
-            self[index] = dummy
-
     @classmethod
     def buildEmpty(cls, slot):
         empty = Module(None)

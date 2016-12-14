@@ -28,7 +28,7 @@ from sqlalchemy.sql import or_
 import config
 import eos.db
 # TODO: Find out what this is.  There is no conversions
-# from service import conversions
+from service import conversions
 from service.settings import SettingsProvider
 from service.price import Price
 
@@ -410,15 +410,13 @@ class Market():
                 item = identity
             elif isinstance(identity, int):
                 item = eos.db.getItem(identity, *args, **kwargs)
-                # TODO: Find out what this is.  There is no conversions
-                """
-                # Unindent 1 tab
-                elif isinstance(identity, basestring):
-                    # We normally lookup with string when we are using import/export
-                    # features. Check against overrides
-                    identity = conversions.all.get(identity, identity)
-                    item = eos.db.getItem(identity, *args, **kwargs)
-                """
+            # TODO: Find out what this is.  There is no conversions
+            elif isinstance(identity, basestring):
+                # We normally lookup with string when we are using import/export
+                # features. Check against overrides
+                identity = conversions.all.get(identity, identity)
+                item = eos.db.getItem(identity, *args, **kwargs)
+
             elif isinstance(identity, float):
                 id = int(identity)
                 item = eos.db.getItem(id, *args, **kwargs)
