@@ -13,7 +13,8 @@ BTN_DISABLED = 8
 
 
 class PFBaseButton(object):
-    def __init__(self, normalBitmap=wx.NullBitmap, label="", callback=None, hoverBitmap=None, disabledBitmap=None, show=True):
+    def __init__(self, normalBitmap=wx.NullBitmap, label="", callback=None, hoverBitmap=None, disabledBitmap=None,
+                 show=True):
 
         self.normalBmp = normalBitmap
         self.dropShadowOpacity = 0.2

@@ -19,7 +19,6 @@
 
 import config
 
-
 versionString = "{0} {1} - {2} {3}".format(config.version, config.tag, config.expansionName, config.expansionVersion)
 licenses = (
     "pyfa is released under GNU GPLv3 - see included LICENSE file",

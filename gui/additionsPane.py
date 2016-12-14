@@ -35,7 +35,6 @@ import gui.chromeTabs
 
 
 class AdditionsPane(TogglePanel):
-
     def __init__(self, parent):
 
         TogglePanel.__init__(self, parent, forceLayout=1)

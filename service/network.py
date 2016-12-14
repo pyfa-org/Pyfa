@@ -29,21 +29,27 @@ from service.settings import NetworkSettings
 timeout = 3
 socket.setdefaulttimeout(timeout)
 
+
 class Error(StandardError):
     def __init__(self, msg=None):
         self.message = msg
 
+
 class RequestError(StandardError):
     pass
 
+
 class AuthenticationError(StandardError):
-   pass
+    pass
+
 
 class ServerError(StandardError):
-   pass
+    pass
+
 
 class TimeoutError(StandardError):
-   pass
+    pass
+
 
 class Network():
     # Request constants - every request must supply this, as it is checked if
@@ -73,7 +79,8 @@ class Network():
             raise Error("Access not enabled - please enable in Preferences > Network")
 
         # Set up some things for the request
-        versionString = "{0} {1} - {2} {3}".format(config.version, config.tag, config.expansionName, config.expansionVersion)
+        versionString = "{0} {1} - {2} {3}".format(config.version, config.tag, config.expansionName,
+                                                   config.expansionVersion)
         headers = {"User-Agent": "pyfa {0} (Python-urllib2)".format(versionString)}
 
         proxy = NetworkSettings.getInstance().getProxySettings()

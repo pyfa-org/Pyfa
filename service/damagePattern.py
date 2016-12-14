@@ -22,12 +22,14 @@ import copy
 import eos.db
 from eos.saveddata.damagePattern import DamagePattern as es_DamagePattern
 
+
 class ImportError(Exception):
-     pass
+    pass
 
 
 class DamagePattern():
     instance = None
+
     @classmethod
     def getInstance(cls):
         if cls.instance is None:

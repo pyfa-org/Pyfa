@@ -27,7 +27,6 @@ import gui.graphFrame
 import gui.globalEvents as GE
 from gui.bitmapLoader import BitmapLoader
 
-
 if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3, 0)):
     from service.crest import CrestModes
 
@@ -158,7 +157,8 @@ class MainMenuBar(wx.MenuBar):
         helpMenu.Append(wx.ID_ABOUT)
 
         if config.debug:
-            helpMenu.Append(self.mainFrame.widgetInspectMenuID, "Open Widgets Inspect tool", "Open Widgets Inspect tool")
+            helpMenu.Append(self.mainFrame.widgetInspectMenuID, "Open Widgets Inspect tool",
+                            "Open Widgets Inspect tool")
 
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
 

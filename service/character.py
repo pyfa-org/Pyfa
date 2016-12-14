@@ -40,6 +40,7 @@ from eos.saveddata.fighter import Fighter as es_Fighter
 
 logger = logging.getLogger(__name__)
 
+
 class CharacterImportThread(threading.Thread):
     def __init__(self, paths, callback):
         threading.Thread.__init__(self)
@@ -80,6 +81,7 @@ class CharacterImportThread(threading.Thread):
 
         wx.CallAfter(self.callback)
 
+
 class SkillBackupThread(threading.Thread):
     def __init__(self, path, saveFmt, activeFit, callback):
         threading.Thread.__init__(self)
@@ -100,10 +102,11 @@ class SkillBackupThread(threading.Thread):
             with gzip.open(path, mode='wb') as backupFile:
                 backupFile.write(backupData)
         else:
-            with open(path, mode='w',encoding='utf-8') as backupFile:
+            with open(path, mode='w', encoding='utf-8') as backupFile:
                 backupFile.write(backupData)
 
         wx.CallAfter(self.callback)
+
 
 class Character(object):
     instance = None
@@ -151,7 +154,7 @@ class Character(object):
         for s in self.skillReqsDict['skills']:
             skillKey = str(s["skillID"]) + "::" + s["skill"] + "::" + str(int(s["level"]))
             if skillKey in skillsSeen:
-                pass   # Duplicate skills confuse EVEMon
+                pass  # Duplicate skills confuse EVEMon
             else:
                 skillsSeen.add(skillKey)
                 entry = ElementTree.SubElement(root, "entry")
@@ -230,7 +233,7 @@ class Character(object):
         group = eos.db.getGroup(groupID)
         skills = []
         for skill in group.items:
-            if skill.published == True:
+            if skill.published is True:
                 skills.append((skill.ID, skill.name))
         return skills
 
@@ -305,7 +308,7 @@ class Character(object):
             if char.name == charName:
                 charID = char.characterID
 
-        if charID == None:
+        if charID is None:
             return
 
         sheet = auth.character(charID).CharacterSheet()

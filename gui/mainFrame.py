@@ -81,6 +81,7 @@ if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION 
 
     try:
         from gui.propertyEditor import AttributeEditor
+
         disableOverrideEditor = False
     except ImportError as e:
         print("Error loading Attribute Editor: %s.\nAccess to Attribute Editor is disabled." % e.message)
@@ -240,7 +241,8 @@ class MainFrame(wx.Frame):
     def LoadPreviousOpenFits(self):
         sFit = Fit.getInstance()
 
-        self.prevOpenFits = SettingsProvider.getInstance().getSettings("pyfaPrevOpenFits", {"enabled": False, "pyfaOpenFits": []})
+        self.prevOpenFits = SettingsProvider.getInstance().getSettings("pyfaPrevOpenFits",
+                                                                       {"enabled": False, "pyfaOpenFits": []})
         fits = self.prevOpenFits['pyfaOpenFits']
 
         # Remove any fits that cause exception when fetching (non-existent fits)
@@ -259,8 +261,10 @@ class MainFrame(wx.Frame):
         OpenFitsThread(fits, self.closeWaitDialog)
 
     def LoadMainFrameAttribs(self):
-        mainFrameDefaultAttribs = {"wnd_width": 1000, "wnd_height": 700, "wnd_maximized": False, "browser_width": 300, "market_height": 0, "fitting_height": -200}
-        self.mainFrameAttribs = SettingsProvider.getInstance().getSettings("pyfaMainWindowAttribs", mainFrameDefaultAttribs)
+        mainFrameDefaultAttribs = {"wnd_width": 1000, "wnd_height": 700, "wnd_maximized": False, "browser_width": 300,
+                                   "market_height": 0, "fitting_height": -200}
+        self.mainFrameAttribs = SettingsProvider.getInstance().getSettings("pyfaMainWindowAttribs",
+                                                                           mainFrameDefaultAttribs)
 
         if self.mainFrameAttribs["wnd_maximized"]:
             width = mainFrameDefaultAttribs["wnd_width"]
@@ -623,7 +627,8 @@ class MainFrame(wx.Frame):
         ModifiedAttributeDict.OVERRIDES = not ModifiedAttributeDict.OVERRIDES
         wx.PostEvent(self, GE.FitChanged(fitID=self.getActiveFit()))
         menu = self.GetMenuBar()
-        menu.SetLabel(menu.toggleOverridesId, "Turn Overrides Off" if ModifiedAttributeDict.OVERRIDES else "Turn Overrides On")
+        menu.SetLabel(menu.toggleOverridesId,
+                      "Turn Overrides Off" if ModifiedAttributeDict.OVERRIDES else "Turn Overrides On")
 
     def saveChar(self, event):
         sChr = Character.getInstance()

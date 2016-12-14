@@ -79,7 +79,6 @@ class TargetResistsEntityEditor(EntityEditor):
 
 
 class ResistsEditorDlg(wx.Dialog):
-
     DAMAGE_TYPES = ("em", "thermal", "kinetic", "explosive")
 
     def __init__(self, parent):
@@ -120,7 +119,8 @@ class ResistsEditorDlg(wx.Dialog):
             setattr(self, "%sEdit" % type_, wx.TextCtrl(self, wx.ID_ANY, "", wx.DefaultPosition, defSize))
             editObj = getattr(self, "%sEdit" % type_)
             resistEditSizer.Add(editObj, 0, wx.BOTTOM | wx.TOP | wx.ALIGN_CENTER_VERTICAL, 5)
-            resistEditSizer.Add(wx.StaticText(self, wx.ID_ANY, u"%", wx.DefaultPosition, wx.DefaultSize, 0), 0, wx.BOTTOM | wx.TOP | wx.ALIGN_CENTER_VERTICAL, 5)
+            resistEditSizer.Add(wx.StaticText(self, wx.ID_ANY, u"%", wx.DefaultPosition, wx.DefaultSize, 0), 0,
+                                wx.BOTTOM | wx.TOP | wx.ALIGN_CENTER_VERTICAL, 5)
             editObj.Bind(wx.EVT_TEXT, self.ValuesUpdated)
 
         # Color we use to reset invalid value color

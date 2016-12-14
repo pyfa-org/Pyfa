@@ -28,24 +28,25 @@ from eos.types import Slot
 from gui.contextMenu import ContextMenu
 from service.fit import Fit
 
-class FighterViewDrop(wx.PyDropTarget):
-        def __init__(self, dropFn):
-            wx.PyDropTarget.__init__(self)
-            self.dropFn = dropFn
-            # this is really transferring an EVE itemID
-            self.dropData = wx.PyTextDataObject()
-            self.SetDataObject(self.dropData)
 
-        def OnData(self, x, y, t):
-            if self.GetData():
-                data = self.dropData.GetText().split(':')
-                self.dropFn(x, y, data)
-            return t
+class FighterViewDrop(wx.PyDropTarget):
+    def __init__(self, dropFn):
+        wx.PyDropTarget.__init__(self)
+        self.dropFn = dropFn
+        # this is really transferring an EVE itemID
+        self.dropData = wx.PyTextDataObject()
+        self.SetDataObject(self.dropData)
+
+    def OnData(self, x, y, t):
+        if self.GetData():
+            data = self.dropData.GetText().split(':')
+            self.dropFn(x, y, data)
+        return t
 
 
 class FighterView(wx.Panel):
     def __init__(self, parent):
-        wx.Panel.__init__(self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, style=wx.TAB_TRAVERSAL )
+        wx.Panel.__init__(self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, style=wx.TAB_TRAVERSAL)
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.labels = ["Light", "Heavy", "Support"]
 
@@ -55,7 +56,7 @@ class FighterView(wx.Panel):
         mainSizer.Add(self.fighterDisplay, 1, wx.EXPAND, 0)
 
         textSizer = wx.BoxSizer(wx.HORIZONTAL)
-        textSizer.AddSpacer(( 0, 0), 1, wx.EXPAND, 5)
+        textSizer.AddSpacer((0, 0), 1, wx.EXPAND, 5)
 
         for x in self.labels:
             lbl = wx.StaticText(self, wx.ID_ANY, x.capitalize())
@@ -74,9 +75,8 @@ class FighterView(wx.Panel):
 
         mainSizer.Add(textSizer, 0, wx.EXPAND, 5)
 
-        self.SetSizer( mainSizer )
+        self.SetSizer(mainSizer)
         self.SetAutoLayout(True)
-
 
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
 
@@ -90,7 +90,8 @@ class FighterView(wx.Panel):
                 slot = getattr(Slot, "F_{}".format(x.upper()))
                 used = fit.getSlotsUsed(slot)
                 total = fit.getNumSlots(slot)
-                color = wx.Colour(204, 51, 51) if used > total else wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOWTEXT)
+                color = wx.Colour(204, 51, 51) if used > total else wx.SystemSettings_GetColour(
+                    wx.SYS_COLOUR_WINDOWTEXT)
 
                 lbl = getattr(self, "label%sUsed" % x.capitalize())
                 lbl.SetLabel(str(int(used)))
@@ -105,15 +106,15 @@ class FighterView(wx.Panel):
 
 class FighterDisplay(d.Display):
     DEFAULT_COLS = ["State",
-                    #"Base Icon",
+                    # "Base Icon",
                     "Base Name",
                     # "prop:droneDps,droneBandwidth",
-                    #"Max Range",
-                    #"Miscellanea",
+                    # "Max Range",
+                    # "Miscellanea",
                     "attr:maxVelocity",
                     "Fighter Abilities"
-                    #"Price",
-    ]
+                    # "Price",
+                    ]
 
     def __init__(self, parent):
         d.Display.__init__(self, parent, style=wx.LC_SINGLE_SEL | wx.BORDER_NONE)
@@ -131,11 +132,10 @@ class FighterDisplay(d.Display):
         self.Bind(wx.EVT_MOTION, self.OnMouseMove)
         self.Bind(wx.EVT_LEAVE_WINDOW, self.OnLeaveWindow)
 
-        if "__WXGTK__" in  wx.PlatformInfo:
+        if "__WXGTK__" in wx.PlatformInfo:
             self.Bind(wx.EVT_RIGHT_UP, self.scheduleMenu)
         else:
             self.Bind(wx.EVT_RIGHT_DOWN, self.scheduleMenu)
-
 
         self.Bind(wx.EVT_LIST_BEGIN_DRAG, self.startDrag)
         self.SetDropTarget(FighterViewDrop(self.handleDragDrop))
@@ -183,7 +183,7 @@ class FighterDisplay(d.Display):
         row = event.GetIndex()
         if row != -1:
             data = wx.PyTextDataObject()
-            data.SetText("fighter:"+str(row))
+            data.SetText("fighter:" + str(row))
 
             dropSource = wx.DropSource(self)
             dropSource.SetData(data)
@@ -229,7 +229,7 @@ class FighterDisplay(d.Display):
 
         self.Parent.Parent.Parent.DisablePage(self.Parent, not fit)
 
-        #Clear list and get out if current fitId is None
+        # Clear list and get out if current fitId is None
         if event.fitID is None and self.lastFitId is not None:
             self.DeleteAllItems()
             self.lastFitId = None
@@ -256,7 +256,6 @@ class FighterDisplay(d.Display):
 
         self.update(stuff)
         event.Skip()
-
 
     def addItem(self, event):
         sFit = Fit.getInstance()

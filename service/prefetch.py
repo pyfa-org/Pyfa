@@ -26,12 +26,14 @@ from eos.db import migration
 from eos.db.saveddata.loadDefaultDatabaseValues import DefaultDatabaseValues
 from eos.saveddata.character import Character as es_Character
 
+
 class PrefetchThread(threading.Thread):
     def run(self):
         # We're a daemon thread, as such, interpreter might get shut down while we do stuff
         # Make sure we don't throw tracebacks to console
         try:
-            es_Character.setSkillList(db.getItemsByCategory("Skill", eager=("effects", "attributes", "attributes.info.icon", "attributes.info.unit", "icon")))
+            es_Character.setSkillList(db.getItemsByCategory("Skill", eager=(
+            "effects", "attributes", "attributes.info.icon", "attributes.info.unit", "icon")))
         except:
             pass
 

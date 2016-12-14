@@ -20,7 +20,6 @@ from gui.PFListPane import PFListPane
 from gui.contextMenu import ContextMenu
 from gui.bitmapLoader import BitmapLoader
 
-
 FitRenamed, EVT_FIT_RENAMED = wx.lib.newevent.NewEvent()
 FitSelected, EVT_FIT_SELECTED = wx.lib.newevent.NewEvent()
 FitRemoved, EVT_FIT_REMOVED = wx.lib.newevent.NewEvent()
@@ -67,7 +66,8 @@ class PFWidgetsContainer(PFListPane):
 
 
 class RaceSelector(wx.Window):
-    def __init__(self, parent, id=wx.ID_ANY, label="", pos=wx.DefaultPosition, size=wx.DefaultSize, style=0, layout=wx.VERTICAL, animate=False):
+    def __init__(self, parent, id=wx.ID_ANY, label="", pos=wx.DefaultPosition, size=wx.DefaultSize, style=0,
+                 layout=wx.VERTICAL, animate=False):
         wx.Window.__init__(self, parent, id, pos=pos, size=size, style=style)
 
         self.animTimerID = wx.NewId()
@@ -344,11 +344,16 @@ class NavigationPanel(SFItem.SFBrowserItem):
         self.switchBmp = self.AdjustChannels(self.switchBmpH)
         self.newBmp = self.AdjustChannels(self.newBmpH)
 
-        self.toolbar.AddButton(self.resetBmp, "Ship groups", clickCallback=self.OnHistoryReset, hoverBitmap=self.resetBmpH)
+        self.toolbar.AddButton(self.resetBmp, "Ship groups", clickCallback=self.OnHistoryReset,
+                               hoverBitmap=self.resetBmpH)
         self.toolbar.AddButton(self.rewBmp, "Back", clickCallback=self.OnHistoryBack, hoverBitmap=self.rewBmpH)
-        self.btnNew = self.toolbar.AddButton(self.newBmp, "New fitting", clickCallback=self.OnNewFitting, hoverBitmap=self.newBmpH, show=False)
-        self.btnSwitch = self.toolbar.AddButton(self.switchBmpD, "Hide empty ship groups", clickCallback=self.ToggleEmptyGroupsView, hoverBitmap=self.switchBmpH, show=False)
-        self.toolbar.AddButton(self.searchBmp, "Search fittings", clickCallback=self.ToggleSearchBox, hoverBitmap=self.searchBmpH)
+        self.btnNew = self.toolbar.AddButton(self.newBmp, "New fitting", clickCallback=self.OnNewFitting,
+                                             hoverBitmap=self.newBmpH, show=False)
+        self.btnSwitch = self.toolbar.AddButton(self.switchBmpD, "Hide empty ship groups",
+                                                clickCallback=self.ToggleEmptyGroupsView, hoverBitmap=self.switchBmpH,
+                                                show=False)
+        self.toolbar.AddButton(self.searchBmp, "Search fittings", clickCallback=self.ToggleSearchBox,
+                               hoverBitmap=self.searchBmpH)
 
         self.padding = 4
         self.lastSearch = ""
@@ -357,7 +362,9 @@ class NavigationPanel(SFItem.SFBrowserItem):
 
         self.fontSmall = wx.Font(fonts.SMALL, wx.SWISS, wx.NORMAL, wx.NORMAL)
         w, h = size
-        self.BrowserSearchBox = wx.TextCtrl(self, wx.ID_ANY, "", wx.DefaultPosition, (-1, h - 2 if 'wxGTK' in wx.PlatformInfo else -1), wx.TE_PROCESS_ENTER | (wx.BORDER_NONE if 'wxGTK' in wx.PlatformInfo else 0))
+        self.BrowserSearchBox = wx.TextCtrl(self, wx.ID_ANY, "", wx.DefaultPosition,
+                                            (-1, h - 2 if 'wxGTK' in wx.PlatformInfo else -1),
+                                            wx.TE_PROCESS_ENTER | (wx.BORDER_NONE if 'wxGTK' in wx.PlatformInfo else 0))
         self.BrowserSearchBox.Show(False)
 
         self.BrowserSearchBox.Bind(wx.EVT_TEXT_ENTER, self.OnBrowserSearchBoxEnter)
@@ -882,7 +889,9 @@ class ShipBrowser(wx.Panel):
             for ship in ships:
                 shipTrait = ship.traits.traitText if (ship.traits is not None) else ""  # empty string if no traits
 
-                self.lpane.AddWidget(ShipItem(self.lpane, ship.ID, (ship.name, shipTrait, len(sFit.getFitsWithShip(ship.ID))), ship.race))
+                self.lpane.AddWidget(
+                    ShipItem(self.lpane, ship.ID, (ship.name, shipTrait, len(sFit.getFitsWithShip(ship.ID))),
+                             ship.race))
 
             for ID, name, shipID, shipName, booster, timestamp in fitList:
                 ship = sMkt.getItem(shipID)
@@ -923,7 +932,8 @@ class ShipBrowser(wx.Panel):
 
         if fits:
             for fit in fits:
-                shipTrait = fit.ship.traits.traitText if (fit.ship.traits is not None) else ""  # empty string if no traits
+                shipTrait = fit.ship.traits.traitText if (
+                fit.ship.traits is not None) else ""  # empty string if no traits
 
                 self.lpane.AddWidget(FitItem(
                     self.lpane,
@@ -1067,6 +1077,7 @@ class CategoryItem(SFItem.SFBrowserItem):
 
         mdc.DrawText(categoryName, self.catx, self.caty)
 
+
 # =============================================================================
 #        Waiting for total #fits impl in eos/service
 #
@@ -1140,7 +1151,8 @@ class ShipItem(SFItem.SFBrowserItem):
         self.editWidth = 150
         self.padding = 4
 
-        self.tcFitName = wx.TextCtrl(self, wx.ID_ANY, "%s fit" % self.shipName, wx.DefaultPosition, (120, -1), wx.TE_PROCESS_ENTER)
+        self.tcFitName = wx.TextCtrl(self, wx.ID_ANY, "%s fit" % self.shipName, wx.DefaultPosition, (120, -1),
+                                     wx.TE_PROCESS_ENTER)
         self.tcFitName.Show(False)
 
         self.newBtn = self.toolbar.AddButton(self.newBmp, "New", self.newBtnCB)
@@ -1331,7 +1343,8 @@ class ShipItem(SFItem.SFBrowserItem):
 
         mdc.SetFont(self.fontBig)
 
-        psname = drawUtils.GetPartialText(mdc, shipName, self.toolbarx - self.textStartx - self.padding * 2 - self.thoverw)
+        psname = drawUtils.GetPartialText(mdc, shipName,
+                                          self.toolbarx - self.textStartx - self.padding * 2 - self.thoverw)
 
         mdc.DrawText(psname, self.textStartx, self.shipNamey)
 
@@ -1353,7 +1366,8 @@ class ShipItem(SFItem.SFBrowserItem):
 
 class PFBitmapFrame(wx.Frame):
     def __init__(self, parent, pos, bitmap):
-        wx.Frame.__init__(self, parent, id=wx.ID_ANY, title=wx.EmptyString, pos=pos, size=wx.DefaultSize, style=wx.NO_BORDER | wx.FRAME_NO_TASKBAR | wx.STAY_ON_TOP)
+        wx.Frame.__init__(self, parent, id=wx.ID_ANY, title=wx.EmptyString, pos=pos, size=wx.DefaultSize,
+                          style=wx.NO_BORDER | wx.FRAME_NO_TASKBAR | wx.STAY_ON_TOP)
         img = bitmap.ConvertToImage()
         img = img.ConvertToGreyscale()
         bitmap = wx.BitmapFromImage(img)
@@ -1409,7 +1423,8 @@ class PFBitmapFrame(wx.Frame):
 
 
 class FitItem(SFItem.SFBrowserItem):
-    def __init__(self, parent, fitID=None, shipFittingInfo=("Test", "TestTrait", "cnc's avatar", 0, 0), shipID=None, itemData=None,
+    def __init__(self, parent, fitID=None, shipFittingInfo=("Test", "TestTrait", "cnc's avatar", 0, 0), shipID=None,
+                 itemData=None,
                  id=wx.ID_ANY, pos=wx.DefaultPosition,
                  size=(0, 40), style=0):
 
@@ -1487,7 +1502,8 @@ class FitItem(SFItem.SFBrowserItem):
         self.renameBtn = self.toolbar.AddButton(self.renameBmp, "Rename", self.renameBtnCB)
         self.toolbar.AddButton(self.deleteBmp, "Delete", self.deleteBtnCB)
 
-        self.tcFitName = wx.TextCtrl(self, wx.ID_ANY, "%s" % self.fitName, wx.DefaultPosition, (self.editWidth, -1), wx.TE_PROCESS_ENTER)
+        self.tcFitName = wx.TextCtrl(self, wx.ID_ANY, "%s" % self.fitName, wx.DefaultPosition, (self.editWidth, -1),
+                                     wx.TE_PROCESS_ENTER)
 
         if self.shipBrowser.fitIDMustEditName != self.fitID:
             self.tcFitName.Show(False)
@@ -1852,7 +1868,8 @@ class FitItem(SFItem.SFBrowserItem):
 
         fitDate = time.localtime(self.timestamp)
         fitLocalDate = "%d/%02d/%02d %02d:%02d" % (fitDate[0], fitDate[1], fitDate[2], fitDate[3], fitDate[4])
-        pfdate = drawUtils.GetPartialText(mdc, fitLocalDate, self.toolbarx - self.textStartx - self.padding * 2 - self.thoverw)
+        pfdate = drawUtils.GetPartialText(mdc, fitLocalDate,
+                                          self.toolbarx - self.textStartx - self.padding * 2 - self.thoverw)
 
         mdc.DrawText(pfdate, self.textStartx, self.timestampy)
 
@@ -1861,7 +1878,8 @@ class FitItem(SFItem.SFBrowserItem):
 
         mdc.SetFont(self.fontBig)
 
-        psname = drawUtils.GetPartialText(mdc, self.fitName, self.toolbarx - self.textStartx - self.padding * 2 - self.thoverw)
+        psname = drawUtils.GetPartialText(mdc, self.fitName,
+                                          self.toolbarx - self.textStartx - self.padding * 2 - self.thoverw)
 
         mdc.DrawText(psname, self.textStartx, self.fitNamey)
 

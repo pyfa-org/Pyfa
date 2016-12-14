@@ -164,18 +164,18 @@ class DmgPatternEditorDlg(wx.Dialog):
                         ("Export", wx.ART_FILE_SAVE_AS, "to"))
 
         for name, art, direction in importExport:
-                bitmap = wx.ArtProvider.GetBitmap(art, wx.ART_BUTTON)
-                btn = wx.BitmapButton(self, wx.ID_ANY, bitmap)
+            bitmap = wx.ArtProvider.GetBitmap(art, wx.ART_BUTTON)
+            btn = wx.BitmapButton(self, wx.ID_ANY, bitmap)
 
-                btn.SetMinSize(btn.GetSize())
-                btn.SetMaxSize(btn.GetSize())
+            btn.SetMinSize(btn.GetSize())
+            btn.SetMaxSize(btn.GetSize())
 
-                btn.Layout()
-                setattr(self, name, btn)
-                btn.Enable(True)
-                btn.SetToolTipString("%s patterns %s clipboard" % (name, direction))
-                footerSizer.Add(btn, 0, wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_RIGHT)
-                btn.Bind(wx.EVT_BUTTON, getattr(self, "{}Patterns".format(name.lower())))
+            btn.Layout()
+            setattr(self, name, btn)
+            btn.Enable(True)
+            btn.SetToolTipString("%s patterns %s clipboard" % (name, direction))
+            footerSizer.Add(btn, 0, wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_RIGHT)
+            btn.Bind(wx.EVT_BUTTON, getattr(self, "{}Patterns".format(name.lower())))
 
         self.Layout()
         bsize = self.GetBestSize()
@@ -196,10 +196,10 @@ class DmgPatternEditorDlg(wx.Dialog):
         p = self.entityEditor.getActiveEntity()
         total = sum(map(lambda attr: getattr(self, "%sEdit" % attr).GetValue(), self.DAMAGE_TYPES))
         for type_ in self.DAMAGE_TYPES:
-                editObj = getattr(self, "%sEdit" % type_)
-                percObj = getattr(self, "%sPerc" % type_)
-                setattr(p, "%sAmount" % type_, editObj.GetValue())
-                percObj.SetLabel("%.1f%%" % (float(editObj.GetValue()) * 100 / total if total > 0 else 0))
+            editObj = getattr(self, "%sEdit" % type_)
+            percObj = getattr(self, "%sPerc" % type_)
+            setattr(p, "%sAmount" % type_, editObj.GetValue())
+            percObj.SetLabel("%.1f%%" % (float(editObj.GetValue()) * 100 / total if total > 0 else 0))
 
         self.totSizer.Layout()
 

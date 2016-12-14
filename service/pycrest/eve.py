@@ -22,7 +22,6 @@ try:
 except ImportError:  # pragma: no cover
     import cPickle as pickle
 
-
 logger = logging.getLogger("pycrest.eve")
 cache_re = re.compile(r'max-age=([0-9]+)')
 

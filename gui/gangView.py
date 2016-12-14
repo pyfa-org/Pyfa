@@ -32,7 +32,8 @@ import gui.globalEvents as GE
 
 class GangView(ScrolledPanel):
     def __init__(self, parent):
-        ScrolledPanel.__init__(self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.Size(100, 20), style=wx.TAB_TRAVERSAL | wx.HSCROLL | wx.VSCROLL)
+        ScrolledPanel.__init__(self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.Size(100, 20),
+                               style=wx.TAB_TRAVERSAL | wx.HSCROLL | wx.VSCROLL)
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
         self.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW))
@@ -49,10 +50,10 @@ class GangView(ScrolledPanel):
 
         self.fleet = {}
         for id_, option in enumerate(self.options):
-
             # set content for each commander
             self.fleet[id_] = {}
-            self.fleet[id_]['stLabel'] = wx.StaticText(self, wx.ID_ANY, self.options[id_] + ':', wx.DefaultPosition, wx.DefaultSize, 0)
+            self.fleet[id_]['stLabel'] = wx.StaticText(self, wx.ID_ANY, self.options[id_] + ':', wx.DefaultPosition,
+                                                       wx.DefaultSize, 0)
             self.fleet[id_]['stText'] = wx.StaticText(self, wx.ID_ANY, 'None', wx.DefaultPosition, wx.DefaultSize, 0)
             self.fleet[id_]['chFit'] = wx.Choice(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, [])
             self.fleet[id_]['chChar'] = wx.Choice(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, [])
@@ -94,7 +95,8 @@ class GangView(ScrolledPanel):
         for id_ in self.fleet:
             # set various properties
             self.fleet[id_]['stLabel'].Wrap(-1)
-            self.fleet[id_]['stLabel'].SetFont(wx.Font(wx.NORMAL_FONT.GetPointSize(), 70, 90, 92, False, wx.EmptyString))
+            self.fleet[id_]['stLabel'].SetFont(
+                wx.Font(wx.NORMAL_FONT.GetPointSize(), 70, 90, 92, False, wx.EmptyString))
             self.fleet[id_]['stText'].Wrap(-1)
 
             # bind text and choice events
@@ -107,7 +109,8 @@ class GangView(ScrolledPanel):
 
             # add fit text and choice to the fit sizer
             self.fleet[id_]['fitSizer'].Add(self.fleet[id_]['stText'], 0, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
-            self.fleet[id_]['fitSizer'].Add(self.fleet[id_]['chFit'], 0, wx.ALIGN_CENTER_VERTICAL | wx.ALL | wx.EXPAND, 1)
+            self.fleet[id_]['fitSizer'].Add(self.fleet[id_]['chFit'], 0, wx.ALIGN_CENTER_VERTICAL | wx.ALL | wx.EXPAND,
+                                            1)
 
             # add everything to the content sizer
             contentFGSizer.Add(self.fleet[id_]['stLabel'], 0, wx.ALIGN_RIGHT | wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
@@ -271,7 +274,8 @@ class GangView(ScrolledPanel):
                     raise Exception()
 
                 self.fleet[id_]['stText'].SetLabel(commander.ship.item.name + ": " + commander.name)
-                self.fleet[id_]['chChar'].SetStringSelection(commander.character.name if commander.character is not None else "All 0")
+                self.fleet[id_]['chChar'].SetStringSelection(
+                    commander.character.name if commander.character is not None else "All 0")
                 self.fleet[id_]['chChar'].Enable()
                 self.fleet[id_]['chFit'].Hide()
                 self.fleet[id_]['stText'].Show()

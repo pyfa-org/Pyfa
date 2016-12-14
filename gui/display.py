@@ -70,9 +70,8 @@ class Display(wx.ListCtrl):
 
         self.imageListBase = self.imageList.ImageCount
 
-
-# Override native HitTestSubItem (doesn't work as it should on GTK)
-# Source: ObjectListView
+    # Override native HitTestSubItem (doesn't work as it should on GTK)
+    # Source: ObjectListView
 
     def HitTestSubItem(self, pt):
         """
@@ -282,7 +281,7 @@ class Display(wx.ListCtrl):
                             self.SetColumnWidth(i, headerWidth)
                     else:
                         self.SetColumnWidth(i, col.size)
-        # self.Thaw()
+                        # self.Thaw()
 
     def update(self, stuff):
         self.populate(stuff)

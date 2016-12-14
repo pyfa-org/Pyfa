@@ -22,7 +22,8 @@ import wx
 
 class PFListPane(wx.ScrolledWindow):
     def __init__(self, parent):
-        wx.ScrolledWindow.__init__(self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.Size(1, 1), style=wx.TAB_TRAVERSAL)
+        wx.ScrolledWindow.__init__(self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.Size(1, 1),
+                                   style=wx.TAB_TRAVERSAL)
 
         self._wList = []
         self._wCount = 0

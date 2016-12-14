@@ -28,7 +28,6 @@ import gui.globalEvents as GE
 from gui.graph import Graph
 from gui.bitmapLoader import BitmapLoader
 
-
 enabled = True
 mplImported = False
 
@@ -106,7 +105,8 @@ class GraphFrame(wx.Frame):
         self.subplot.grid(True)
 
         self.mainSizer.Add(self.canvas, 1, wx.EXPAND)
-        self.mainSizer.Add(wx.StaticLine(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL), 0, wx.EXPAND)
+        self.mainSizer.Add(wx.StaticLine(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL), 0,
+                           wx.EXPAND)
 
         self.gridPanel = wx.Panel(self)
         self.mainSizer.Add(self.gridPanel, 0, wx.EXPAND)
@@ -192,7 +192,8 @@ class GraphFrame(wx.Frame):
             else:
                 label = field
 
-            imgLabelSizer.Add(wx.StaticText(self.gridPanel, wx.ID_ANY, label), 0, wx.LEFT | wx.RIGHT | wx.ALIGN_CENTER_VERTICAL, 3)
+            imgLabelSizer.Add(wx.StaticText(self.gridPanel, wx.ID_ANY, label), 0,
+                              wx.LEFT | wx.RIGHT | wx.ALIGN_CENTER_VERTICAL, 3)
             sizer.Add(imgLabelSizer, 0, wx.ALIGN_CENTER_VERTICAL)
         self.draw()
 

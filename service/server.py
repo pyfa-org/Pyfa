@@ -77,7 +77,6 @@ class AuthHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
 # http://code.activestate.com/recipes/425210-simple-stoppable-server-using-socket-timeout/
 class StoppableHTTPServer(BaseHTTPServer.HTTPServer):
-
     def server_bind(self):
         BaseHTTPServer.HTTPServer.server_bind(self)
         self.settings = CRESTSettings.getInstance()

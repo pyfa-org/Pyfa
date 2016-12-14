@@ -24,8 +24,10 @@ from service.market import Market
 from eos.saveddata.implant import Implant as es_Implant
 from eos.saveddata.implantSet import ImplantSet as es_ImplantSet
 
+
 class ImportError(Exception):
     pass
+
 
 class ImplantSets(object):
     instance = None

@@ -174,6 +174,7 @@ proxySSL = False
 _default_useragent = "eveapi.py/1.3"
 _useragent = None  # use set_user_agent() to set this.
 
+
 # -----------------------------------------------------------------------------
 
 
@@ -309,6 +310,7 @@ def _ParseXML(response, fromContext, storeFunc):
 
     return result
 
+
 # -----------------------------------------------------------------------------
 # API Classes
 # -----------------------------------------------------------------------------
@@ -414,7 +416,8 @@ class _RootContext(_Context):
         if retrieve_fallback:
             # implementor is handling fallbacks...
             try:
-                return _ParseXML(response, True, store and (lambda obj: cache.store(self._host, path, kw, response, obj)))
+                return _ParseXML(response, True,
+                                 store and (lambda obj: cache.store(self._host, path, kw, response, obj)))
             except Error as e:
                 response = retrieve_fallback(self._host, path, kw, reason=e)
                 if response is not None:
@@ -563,7 +566,9 @@ class _Parser(object):
                 if not self.container._cols or (numAttr > numCols):
                     # the row data contains more attributes than were defined.
                     self.container._cols = attributes[0::2]
-                self.container.append([_castfunc(attributes[i], attributes[i + 1]) for i in xrange(0, len(attributes), 2)])
+                self.container.append(
+                    [_castfunc(attributes[i], attributes[i + 1]) for i in xrange(0, len(attributes), 2)]
+                )
             # </hack>
 
             this._isrow = True
@@ -675,9 +680,11 @@ class _Parser(object):
                 # into a Rowset, adding the sibling element and this one.
                 rs = Rowset()
                 rs.__catch = rs._name = this._name
-                row = [_castfunc(attributes[i], attributes[i + 1]) for i in xrange(0, len(attributes), 2)] + [getattr(this, col) for col in attributes2]
+                row = [_castfunc(attributes[i], attributes[i + 1]) for i in xrange(0, len(attributes), 2)] + \
+                      [getattr(this, col) for col in attributes2]
                 rs.append(row)
-                row = [getattr(sibling, attributes[i]) for i in xrange(0, len(attributes), 2)] + [getattr(sibling, col) for col in attributes2]
+                row = [getattr(sibling, attributes[i]) for i in xrange(0, len(attributes), 2)] + \
+                      [getattr(sibling, col) for col in attributes2]
                 rs.append(row)
                 rs._cols = [attributes[i] for i in xrange(0, len(attributes), 2)] + [col for col in attributes2]
                 setattr(self.container, this._name, rs)

@@ -146,17 +146,17 @@ class ImplantSetEditorDlg(wx.Dialog):
                         ("Export", wx.ART_FILE_SAVE_AS, "to"))
 
         for name, art, direction in importExport:
-                bitmap = wx.ArtProvider.GetBitmap(art, wx.ART_BUTTON)
-                btn = wx.BitmapButton(self, wx.ID_ANY, bitmap)
+            bitmap = wx.ArtProvider.GetBitmap(art, wx.ART_BUTTON)
+            btn = wx.BitmapButton(self, wx.ID_ANY, bitmap)
 
-                btn.SetMinSize(btn.GetSize())
-                btn.SetMaxSize(btn.GetSize())
+            btn.SetMinSize(btn.GetSize())
+            btn.SetMaxSize(btn.GetSize())
 
-                btn.Layout()
-                setattr(self, name, btn)
-                btn.Enable(True)
-                btn.SetToolTipString("%s implant sets %s clipboard" % (name, direction))
-                footerSizer.Add(btn, 0, wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_RIGHT)
+            btn.Layout()
+            setattr(self, name, btn)
+            btn.Enable(True)
+            btn.SetToolTipString("%s implant sets %s clipboard" % (name, direction))
+            footerSizer.Add(btn, 0, wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_RIGHT)
 
         mainSizer.Add(footerSizer, 0, wx.ALL | wx.EXPAND, 5)
 

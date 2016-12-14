@@ -26,7 +26,6 @@ from gui.cachingImageList import CachingImageList
 from gui.contextMenu import ContextMenu
 from gui.bitmapLoader import BitmapLoader
 
-
 ItemSelected, ITEM_SELECTED = wx.lib.newevent.NewEvent()
 
 RECENTLY_USED_MODULES = -2

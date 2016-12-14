@@ -9,7 +9,6 @@ from gui.bitmapLoader import BitmapLoader
 from gui.PFListPane import PFListPane
 from gui.utils.drawUtils import GetPartialText
 
-
 FleetSelected, EVT_FLEET_SELECTED = wx.lib.newevent.NewEvent()
 FleetRenamed, EVT_FLEET_RENAMED = wx.lib.newevent.NewEvent()
 FleetRemoved, EVT_FLEET_REMOVED = wx.lib.newevent.NewEvent()
@@ -126,7 +125,8 @@ class FleetBrowser(wx.Panel):
 
 class FleetBrowserHeader(wx.Panel):
     def __init__(self, parent):
-        wx.Panel.__init__(self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.Size(500, 24), style=wx.TAB_TRAVERSAL)
+        wx.Panel.__init__(self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.Size(500, 24),
+                          style=wx.TAB_TRAVERSAL)
         self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
 
         self.newBmp = BitmapLoader.getBitmap("fit_add_small", "gui")
@@ -277,7 +277,8 @@ class FleetItem(SFItem.SFBrowserItem):
         self.toolbar.AddButton(self.deleteBmp, "Delete", self.DeleteFleetCB)
 
         self.editWidth = 150
-        self.tcFleetName = wx.TextCtrl(self, wx.ID_ANY, "%s" % self.fleetName, wx.DefaultPosition, (self.editWidth, -1), wx.TE_PROCESS_ENTER)
+        self.tcFleetName = wx.TextCtrl(self, wx.ID_ANY, "%s" % self.fleetName, wx.DefaultPosition, (self.editWidth, -1),
+                                       wx.TE_PROCESS_ENTER)
 
         if self.fleetBrowser.fleetIDMustEditName != self.fleetID:
             self.tcFleetName.Show(False)
@@ -343,9 +344,9 @@ class FleetItem(SFItem.SFBrowserItem):
         wx.PostEvent(self.fleetBrowser, FleetItemDelete(fleetID=self.fleetID))
 
     def RestoreEditButton(self):
-            self.tcFleetName.Show(False)
-            self.renameBtn.SetBitmap(self.renameBmp)
-            self.Refresh()
+        self.tcFleetName.Show(False)
+        self.renameBtn.SetBitmap(self.renameBmp)
+        self.Refresh()
 
     def OnEditLostFocus(self, event):
         self.RestoreEditButton()

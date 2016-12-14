@@ -119,9 +119,9 @@ class NetworkSettings(object):
     _instance = None
 
     # constants for serviceNetworkDefaultSettings["mode"] parameter
-    PROXY_MODE_NONE = 0        # 0 - No proxy
+    PROXY_MODE_NONE = 0  # 0 - No proxy
     PROXY_MODE_AUTODETECT = 1  # 1 - Auto-detected proxy settings
-    PROXY_MODE_MANUAL = 2      # 2 - Manual proxy settings
+    PROXY_MODE_MANUAL = 2  # 2 - Manual proxy settings
 
     @classmethod
     def getInstance(cls):
@@ -254,8 +254,15 @@ class HTMLExportSettings(object):
         return cls._instance
 
     def __init__(self):
-        serviceHTMLExportDefaultSettings = {"enabled": False, "path": config.pyfaPath + os.sep + 'pyfaFits.html', "minimal": False}
-        self.serviceHTMLExportSettings = SettingsProvider.getInstance().getSettings("pyfaServiceHTMLExportSettings", serviceHTMLExportDefaultSettings)
+        serviceHTMLExportDefaultSettings = {
+            "enabled": False,
+            "path": config.pyfaPath + os.sep + 'pyfaFits.html',
+            "minimal": False
+        }
+        self.serviceHTMLExportSettings = SettingsProvider.getInstance().getSettings(
+            "pyfaServiceHTMLExportSettings",
+            serviceHTMLExportDefaultSettings
+        )
 
     def getEnabled(self):
         return self.serviceHTMLExportSettings["enabled"]
@@ -295,7 +302,10 @@ class UpdateSettings(object):
         # prerelease - If True, suppress prerelease notifications
         # version    - Set to release tag that user does not want notifications for
         serviceUpdateDefaultSettings = {"prerelease": True, 'version': None}
-        self.serviceUpdateSettings = SettingsProvider.getInstance().getSettings("pyfaServiceUpdateSettings", serviceUpdateDefaultSettings)
+        self.serviceUpdateSettings = SettingsProvider.getInstance().getSettings(
+            "pyfaServiceUpdateSettings",
+            serviceUpdateDefaultSettings
+        )
 
     def get(self, type):
         return self.serviceUpdateSettings[type]
@@ -315,19 +325,20 @@ class CRESTSettings(object):
         return cls._instance
 
     def __init__(self):
-
         # mode
         # 0 - Implicit authentication
         # 1 - User-supplied client details
         serviceCRESTDefaultSettings = {"mode": 0, "server": 0, "clientID": "", "clientSecret": "", "timeout": 60}
 
-        self.serviceCRESTSettings = SettingsProvider.getInstance().getSettings("pyfaServiceCRESTSettings", serviceCRESTDefaultSettings)
+        self.serviceCRESTSettings = SettingsProvider.getInstance().getSettings(
+            "pyfaServiceCRESTSettings",
+            serviceCRESTDefaultSettings
+        )
 
     def get(self, type):
         return self.serviceCRESTSettings[type]
 
     def set(self, type, value):
         self.serviceCRESTSettings[type] = value
-
 
 # @todo: migrate fit settings (from fit service) here?

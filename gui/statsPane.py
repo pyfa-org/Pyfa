@@ -81,7 +81,8 @@ class StatsPane(wx.Panel):
 
             mainSizer.Add(tp, 0, wx.EXPAND | wx.LEFT, 3)
             if i < maxviews - 1:
-                mainSizer.Add(wx.StaticLine(self, wx.ID_ANY, style=wx.HORIZONTAL), 0, wx.EXPAND | wx.TOP | wx.LEFT | wx.RIGHT, 2)
+                mainSizer.Add(wx.StaticLine(self, wx.ID_ANY, style=wx.HORIZONTAL), 0,
+                              wx.EXPAND | wx.TOP | wx.LEFT | wx.RIGHT, 2)
             i += 1
             tp.OnStateChange(tp.GetBestSize())
 

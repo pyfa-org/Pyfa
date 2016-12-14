@@ -26,7 +26,6 @@ from gui.bitmapLoader import BitmapLoader
 
 from service.fit import Fit
 
-
 _PageChanging, EVT_NOTEBOOK_PAGE_CHANGING = wx.lib.newevent.NewEvent()
 _PageChanged, EVT_NOTEBOOK_PAGE_CHANGED = wx.lib.newevent.NewEvent()
 _PageAdding, EVT_NOTEBOOK_PAGE_ADDING = wx.lib.newevent.NewEvent()
@@ -527,7 +526,10 @@ class PFTabRenderer:
         """
         self.tabRegion = wx.RegionFromBitmap(self.tabBackBitmap)
         self.closeBtnRegion = wx.RegionFromBitmap(self.ctabCloseBmp)
-        self.closeBtnRegion.Offset(self.contentWidth + self.leftWidth - self.ctabCloseBmp.GetWidth() / 2, (self.tabHeight - self.ctabCloseBmp.GetHeight()) / 2)
+        self.closeBtnRegion.Offset(
+            self.contentWidth + self.leftWidth - self.ctabCloseBmp.GetWidth() / 2,
+            (self.tabHeight - self.ctabCloseBmp.GetHeight()) / 2
+        )
 
     def InitColors(self):
         """Determines colors used for tab, based on system settings"""
@@ -1277,7 +1279,12 @@ class PFTabsContainer(wx.Panel):
                 selpos = pos
         if selected is not skipTab:
             selected.SetPosition((selpos, self.containerHeight - self.height))
-        self.addButton.SetPosition((round(tabsWidth) + self.inclination * 2, self.containerHeight - self.height / 2 - self.addButton.GetHeight() / 3))
+        self.addButton.SetPosition(
+            (
+                round(tabsWidth) + self.inclination * 2,
+                self.containerHeight - self.height / 2 - self.addButton.GetHeight() / 3
+            )
+        )
 
     def OnLeaveWindow(self, event):
 
@@ -1302,7 +1309,12 @@ class PFTabsContainer(wx.Panel):
             if not self.previewTab.GetSelected():
                 page = self.Parent.GetPage(self.GetTabIndex(self.previewTab))
                 if page.Snapshot():
-                    self.previewWnd = PFNotebookPagePreview(self, (mposx + 3, mposy + 3), page.Snapshot(), self.previewTab.text)
+                    self.previewWnd = PFNotebookPagePreview(
+                        self,
+                        (mposx + 3, mposy + 3),
+                        page.Snapshot(),
+                        self.previewTab.text
+                    )
                     self.previewWnd.Show()
 
         event.Skip()
@@ -1310,7 +1322,15 @@ class PFTabsContainer(wx.Panel):
 
 class PFNotebookPagePreview(wx.Frame):
     def __init__(self, parent, pos, bitmap, title):
-        wx.Frame.__init__(self, parent, id=wx.ID_ANY, title=wx.EmptyString, pos=pos, size=wx.DefaultSize, style=wx.NO_BORDER | wx.FRAME_NO_TASKBAR | wx.STAY_ON_TOP)
+        wx.Frame.__init__(
+            self,
+            parent,
+            id=wx.ID_ANY,
+            title=wx.EmptyString,
+            pos=pos,
+            size=wx.DefaultSize,
+            style=wx.NO_BORDER | wx.FRAME_NO_TASKBAR | wx.STAY_ON_TOP
+        )
 
         self.title = title
         self.bitmap = bitmap

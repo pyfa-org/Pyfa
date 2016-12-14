@@ -27,7 +27,8 @@ from gui.bitmapLoader import BitmapLoader
 
 class TogglePanel(wx.Panel):
     def __init__(self, parent, forceLayout=-1):
-        wx.Panel.__init__(self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.Size(-1, -1), style=wx.TAB_TRAVERSAL)
+        wx.Panel.__init__(self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.Size(-1, -1),
+                          style=wx.TAB_TRAVERSAL)
 
         self._toggle = 1
         self.parent = parent

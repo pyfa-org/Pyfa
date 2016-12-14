@@ -64,7 +64,8 @@ class ItemStatsDialog(wx.Dialog):
             itmContext = fullContext[1]
         except IndexError:
             itmContext = None
-        item = getattr(victim, "item", None) if srcContext.lower() not in ("projectedcharge", "fittingcharge") else getattr(victim, "charge", None)
+        item = getattr(victim, "item", None) if srcContext.lower() not in (
+        "projectedcharge", "fittingcharge") else getattr(victim, "charge", None)
         if item is None:
             sMkt = Market.getInstance()
             item = sMkt.getItem(victim.ID)
@@ -76,7 +77,8 @@ class ItemStatsDialog(wx.Dialog):
             itemImg = BitmapLoader.getBitmap(iconFile, "icons")
             if itemImg is not None:
                 self.SetIcon(wx.IconFromBitmap(itemImg))
-        self.SetTitle("%s: %s%s" % ("%s Stats" % itmContext if itmContext is not None else "Stats", item.name, " (%d)" % item.ID if config.debug else ""))
+        self.SetTitle("%s: %s%s" % ("%s Stats" % itmContext if itmContext is not None else "Stats", item.name,
+                                    " (%d)" % item.ID if config.debug else ""))
 
         self.SetMinSize((300, 200))
         if "wxGTK" in wx.PlatformInfo:  # GTK has huge tab widgets, give it a bit more room
@@ -232,7 +234,8 @@ class ItemDescription(wx.Panel):
         desc = re.sub("<( *)font( *)color( *)=(.*?)>(?P<inside>.*?)<( *)/( *)font( *)>", "\g<inside>", desc)
         # Strip URLs
         desc = re.sub("<( *)a(.*?)>(?P<inside>.*?)<( *)/( *)a( *)>", "\g<inside>", desc)
-        desc = "<body bgcolor='" + bgcolor.GetAsString(wx.C2S_HTML_SYNTAX) + "' text='" + fgcolor.GetAsString(wx.C2S_HTML_SYNTAX) + "' >" + desc + "</body>"
+        desc = "<body bgcolor='" + bgcolor.GetAsString(wx.C2S_HTML_SYNTAX) + "' text='" + fgcolor.GetAsString(
+            wx.C2S_HTML_SYNTAX) + "' >" + desc + "</body>"
 
         self.description.SetPage(desc)
 
@@ -240,12 +243,13 @@ class ItemDescription(wx.Panel):
         self.Layout()
 
 
-class ItemParams (wx.Panel):
+class ItemParams(wx.Panel):
     def __init__(self, parent, stuff, item, context=None):
         wx.Panel.__init__(self, parent)
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
-        self.paramList = AutoListCtrl(self, wx.ID_ANY, style=wx.LC_REPORT | wx.LC_SINGLE_SEL | wx.LC_VRULES | wx.NO_BORDER)
+        self.paramList = AutoListCtrl(self, wx.ID_ANY,
+                                      style=wx.LC_REPORT | wx.LC_SINGLE_SEL | wx.LC_VRULES | wx.NO_BORDER)
         mainSizer.Add(self.paramList, 1, wx.ALL | wx.EXPAND, 0)
         self.SetSizer(mainSizer)
 
@@ -263,10 +267,12 @@ class ItemParams (wx.Panel):
         self.totalAttrsLabel = wx.StaticText(self, wx.ID_ANY, u" ", wx.DefaultPosition, wx.DefaultSize, 0)
         bSizer.Add(self.totalAttrsLabel, 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT)
 
-        self.toggleViewBtn = wx.ToggleButton(self, wx.ID_ANY, u"Toggle view mode", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.toggleViewBtn = wx.ToggleButton(self, wx.ID_ANY, u"Toggle view mode", wx.DefaultPosition, wx.DefaultSize,
+                                             0)
         bSizer.Add(self.toggleViewBtn, 0, wx.ALIGN_CENTER_VERTICAL)
 
-        self.exportStatsBtn = wx.ToggleButton(self, wx.ID_ANY, u"Export Item Stats", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.exportStatsBtn = wx.ToggleButton(self, wx.ID_ANY, u"Export Item Stats", wx.DefaultPosition, wx.DefaultSize,
+                                              0)
         bSizer.Add(self.exportStatsBtn, 0, wx.ALIGN_CENTER_VERTICAL)
 
         if stuff is not None:
@@ -470,7 +476,8 @@ class ItemParams (wx.Panel):
 
         trans = {"Inverse Absolute Percent": (lambda: (1 - value) * 100, unitName),
                  "Inversed Modifier Percent": (lambda: (1 - value) * 100, unitName),
-                 "Modifier Percent": (lambda: ("%+.2f" if ((value - 1) * 100) % 1 else "%+d") % ((value - 1) * 100), unitName),
+                 "Modifier Percent": (
+                 lambda: ("%+.2f" if ((value - 1) * 100) % 1 else "%+d") % ((value - 1) * 100), unitName),
                  "Volume": (lambda: value, u"m\u00B3"),
                  "Sizeclass": (lambda: value, ""),
                  "Absolute Percent": (lambda: (value * 100), unitName),
@@ -508,7 +515,8 @@ class ItemCompare(wx.Panel):
         self.currentSort = None
         self.sortReverse = False
         self.item = item
-        self.items = sorted(items, key=lambda x: x.attributes['metaLevel'].value if 'metaLevel' in x.attributes else None)
+        self.items = sorted(items,
+                            key=lambda x: x.attributes['metaLevel'].value if 'metaLevel' in x.attributes else None)
         self.attrs = {}
 
         # get a dict of attrName: attrInfo of all unique attributes across all items
@@ -661,7 +669,7 @@ class ItemCompare(wx.Panel):
         trans = {"Inverse Absolute Percent": (lambda: (1 - value) * 100, unitName),
                  "Inversed Modifier Percent": (lambda: (1 - value) * 100, unitName),
                  "Modifier Percent": (
-                 lambda: ("%+.2f" if ((value - 1) * 100) % 1 else "%+d") % ((value - 1) * 100), unitName),
+                     lambda: ("%+.2f" if ((value - 1) * 100) % 1 else "%+d") % ((value - 1) * 100), unitName),
                  "Volume": (lambda: value, u"m\u00B3"),
                  "Sizeclass": (lambda: value, ""),
                  "Absolute Percent": (lambda: (value * 100), unitName),
@@ -719,14 +727,15 @@ class ItemRequirements(wx.Panel):
                 self.skillIdHistory.append(skill.ID)
 
 
-class ItemEffects (wx.Panel):
+class ItemEffects(wx.Panel):
     def __init__(self, parent, stuff, item):
         wx.Panel.__init__(self, parent)
         self.item = item
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
-        self.effectList = AutoListCtrl(self, wx.ID_ANY, style=wx.LC_REPORT | wx.LC_SINGLE_SEL | wx.LC_VRULES | wx.NO_BORDER)
+        self.effectList = AutoListCtrl(self, wx.ID_ANY,
+                                       style=wx.LC_REPORT | wx.LC_SINGLE_SEL | wx.LC_VRULES | wx.NO_BORDER)
         mainSizer.Add(self.effectList, 1, wx.ALL | wx.EXPAND, 0)
         self.SetSizer(mainSizer)
 
@@ -1033,7 +1042,8 @@ class ItemAffectedBy(wx.Panel):
                     else:
                         item = afflictor.item
 
-                    items[attrName].append((type(afflictor), afflictor, item, modifier, amount, getattr(afflictor, "projected", False)))
+                    items[attrName].append(
+                        (type(afflictor), afflictor, item, modifier, amount, getattr(afflictor, "projected", False)))
 
         # Make sure projected fits are on top
         rootOrder = container.keys()
@@ -1234,7 +1244,8 @@ class ItemAffectedBy(wx.Panel):
                         else:
                             penalized = ""
 
-                        attributes.append((attrName, (displayName if displayName != "" else attrName), attrModifier, attrAmount, penalized, attrIcon))
+                        attributes.append((attrName, (displayName if displayName != "" else attrName), attrModifier,
+                                           attrAmount, penalized, attrIcon))
 
                     attrSorted = sorted(attributes, key=lambda attribName: attribName[0])
                     for attr in attrSorted:
@@ -1242,9 +1253,11 @@ class ItemAffectedBy(wx.Panel):
 
                         if self.showRealNames:
                             display = "%s %s %.2f %s" % (attrName, attrModifier, attrAmount, penalized)
-                            saved = "%s %s %.2f %s" % ((displayName if displayName != "" else attrName), attrModifier, attrAmount, penalized)
+                            saved = "%s %s %.2f %s" % (
+                            (displayName if displayName != "" else attrName), attrModifier, attrAmount, penalized)
                         else:
-                            display = "%s %s %.2f %s" % ((displayName if displayName != "" else attrName), attrModifier, attrAmount, penalized)
+                            display = "%s %s %.2f %s" % (
+                            (displayName if displayName != "" else attrName), attrModifier, attrAmount, penalized)
                             saved = "%s %s %.2f %s" % (attrName, attrModifier, attrAmount, penalized)
 
                         treeitem = self.affectedBy.AppendItem(child, display, attrIcon)

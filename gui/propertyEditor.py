@@ -25,7 +25,8 @@ logger = logging.getLogger(__name__)
 class AttributeEditor(wx.Frame):
     def __init__(self, parent):
         wx.Frame.__init__(self, parent, wx.ID_ANY, title="Attribute Editor", pos=wx.DefaultPosition,
-                          size=wx.Size(650, 600), style=wx.DEFAULT_FRAME_STYLE | wx.FRAME_FLOAT_ON_PARENT | wx.TAB_TRAVERSAL)
+                          size=wx.Size(650, 600),
+                          style=wx.DEFAULT_FRAME_STYLE | wx.FRAME_FLOAT_ON_PARENT | wx.TAB_TRAVERSAL)
 
         i = wx.IconFromBitmap(BitmapLoader.getBitmap("fit_rename_small", "gui"))
         self.SetIcon(i)
@@ -54,7 +55,8 @@ class AttributeEditor(wx.Frame):
         mainSizer = wx.BoxSizer(wx.HORIZONTAL)
 
         leftSizer = wx.BoxSizer(wx.VERTICAL)
-        leftPanel = wx.Panel(panel, wx.ID_ANY, style=wx.DOUBLE_BORDER if 'wxMSW' in wx.PlatformInfo else wx.SIMPLE_BORDER)
+        leftPanel = wx.Panel(panel, wx.ID_ANY,
+                             style=wx.DOUBLE_BORDER if 'wxMSW' in wx.PlatformInfo else wx.SIMPLE_BORDER)
 
         self.searchBox = SearchBox(leftPanel)
         self.itemView = ItemView(leftPanel)
@@ -66,7 +68,8 @@ class AttributeEditor(wx.Frame):
         mainSizer.Add(leftPanel, 1, wx.ALL | wx.EXPAND, 5)
 
         rightSizer = wx.BoxSizer(wx.VERTICAL)
-        self.btnRemoveOverrides = wx.Button(panel, wx.ID_ANY, u"Remove Overides for Item", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.btnRemoveOverrides = wx.Button(panel, wx.ID_ANY, u"Remove Overides for Item", wx.DefaultPosition,
+                                            wx.DefaultSize, 0)
         self.pg = AttributeGrid(panel)
         rightSizer.Add(self.pg, 1, wx.ALL | wx.EXPAND, 5)
         rightSizer.Add(self.btnRemoveOverrides, 0, wx.ALL | wx.EXPAND, 5)
@@ -202,7 +205,8 @@ class ItemView(d.Display):
 
 class AttributeGrid(wxpg.PropertyGrid):
     def __init__(self, parent):
-        wxpg.PropertyGrid.__init__(self, parent, style=wxpg.PG_HIDE_MARGIN | wxpg.PG_HIDE_CATEGORIES | wxpg.PG_BOLD_MODIFIED | wxpg.PG_TOOLTIPS)
+        wxpg.PropertyGrid.__init__(self, parent,
+                                   style=wxpg.PG_HIDE_MARGIN | wxpg.PG_HIDE_CATEGORIES | wxpg.PG_BOLD_MODIFIED | wxpg.PG_TOOLTIPS)
         self.SetExtraStyle(wxpg.PG_EX_HELP_AS_TOOLTIPS)
 
         self.item = None

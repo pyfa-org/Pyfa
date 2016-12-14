@@ -17,37 +17,28 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-import locale
 import copy
-import threading
 import logging
-import wx
-from codecs import open
-
-import xml.parsers.expat
 
 import eos.db
-from eos.types import State, Slot, Module, Drone, Fighter, Fit as FitType
-
-from eos.saveddata.ship import Ship as es_Ship
-from eos.saveddata.citadel import Citadel as es_Citadel
-from eos.saveddata.implant import Implant as es_Implant
 from eos.saveddata.booster import Booster as es_Booster
-from eos.saveddata.module import Module as es_Module
-from eos.saveddata.fighter import Fighter as es_Fighter
-from eos.saveddata.drone import Drone as es_Drone
 from eos.saveddata.cargo import Cargo as es_Cargo
-from eos.saveddata.damagePattern import DamagePattern as es_DamagePattern
-
-from service.market import Market
-from service.damagePattern import DamagePattern
-from service.character import Character
 from eos.saveddata.character import Character as saveddata_Character
+from eos.saveddata.citadel import Citadel as es_Citadel
+from eos.saveddata.damagePattern import DamagePattern as es_DamagePattern
+from eos.saveddata.drone import Drone as es_Drone
+from eos.saveddata.fighter import Fighter as es_Fighter
+from eos.saveddata.implant import Implant as es_Implant
+from eos.saveddata.module import Module as es_Module
+from eos.saveddata.ship import Ship as es_Ship
+from eos.types import State, Slot, Fit as FitType
+from service.character import Character
+from service.damagePattern import DamagePattern
 from service.fleet import Fleet
+from service.market import Market
 from service.settings import SettingsProvider
 
 logger = logging.getLogger(__name__)
-
 
 
 class Fit(object):

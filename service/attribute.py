@@ -19,8 +19,10 @@
 
 import eos.db
 
+
 class Attribute():
     instance = None
+
     @classmethod
     def getInstance(cls):
         if cls.instance is None:

@@ -2,7 +2,6 @@ import wx
 import gui.utils.colorUtils as colorUtils
 import gui.utils.drawUtils as drawUtils
 
-
 SearchButton, EVT_SEARCH_BTN = wx.lib.newevent.NewEvent()
 CancelButton, EVT_CANCEL_BTN = wx.lib.newevent.NewEvent()
 TextEnter, EVT_TEXT_ENTER = wx.lib.newevent.NewEvent()
@@ -40,7 +39,9 @@ class PFSearchBox(wx.Window):
         self._hl = False
 
         w, h = size
-        self.EditBox = wx.TextCtrl(self, wx.ID_ANY, "", wx.DefaultPosition, (-1, h - 2 if 'wxGTK' in wx.PlatformInfo else -1), wx.TE_PROCESS_ENTER | (wx.BORDER_NONE if 'wxGTK' in wx.PlatformInfo else 0))
+        self.EditBox = wx.TextCtrl(self, wx.ID_ANY, "", wx.DefaultPosition,
+                                   (-1, h - 2 if 'wxGTK' in wx.PlatformInfo else -1),
+                                   wx.TE_PROCESS_ENTER | (wx.BORDER_NONE if 'wxGTK' in wx.PlatformInfo else 0))
 
         self.Bind(wx.EVT_PAINT, self.OnPaint)
         self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBk)

@@ -171,6 +171,7 @@ class Port(object):
         return fits
 
     """Service which houses all import/export format functions"""
+
     @classmethod
     def exportCrest(cls, ofit, callback=None):
         # A few notes:
@@ -379,6 +380,7 @@ class Port(object):
                 if len(s) > 10:
                     return s[:10] + "..."
                 return s
+
             logger.exception("Couldn't import ship data %r", [logtransform(s) for s in info])
             return None
 
@@ -821,7 +823,8 @@ class Port(object):
             slot = module.slot
             if slot not in stuff:
                 stuff[slot] = []
-            curr = module.item.name if module.item else ("[Empty %s slot]" % Slot.getName(slot).capitalize() if slot is not None else "")
+            curr = module.item.name if module.item else (
+            "[Empty %s slot]" % Slot.getName(slot).capitalize() if slot is not None else "")
             if module.charge and sFit.serviceFittingOptions["exportCharges"]:
                 curr += ", %s" % module.charge.name
             if module.state == State.OFFLINE:
@@ -1074,6 +1077,7 @@ class FitBackupThread(threading.Thread):
 
         # Send done signal to GUI
         wx.CallAfter(self.callback, -1)
+
 
 class FitImportThread(threading.Thread):
     def __init__(self, paths, callback):

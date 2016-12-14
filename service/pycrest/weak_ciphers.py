@@ -67,7 +67,7 @@ class WeakCiphersHTTPSConnection(urllib3.connection.VerifiedHTTPSConnection):  #
             warnings.warn((
                 'System time is way off (before {0}). This will probably '
                 'lead to SSL verification errors').format(
-                    urllib3.connection.RECENT_DATE),
+                urllib3.connection.RECENT_DATE),
                 SystemTimeWarning
             )
 
@@ -103,13 +103,11 @@ class WeakCiphersHTTPSConnection(urllib3.connection.VerifiedHTTPSConnection):  #
 
 
 class WeakCiphersHTTPSConnectionPool(
-        urllib3.connectionpool.HTTPSConnectionPool):
-
+    urllib3.connectionpool.HTTPSConnectionPool):
     ConnectionCls = WeakCiphersHTTPSConnection
 
 
 class WeakCiphersPoolManager(urllib3.poolmanager.PoolManager):
-
     def _new_pool(self, scheme, host, port):
         if scheme == 'https':
             return WeakCiphersHTTPSConnectionPool(host, port, **(self.connection_pool_kw))

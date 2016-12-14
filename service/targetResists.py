@@ -24,10 +24,12 @@ from eos.saveddata.targetResists import TargetResists as es_TargetResists
 
 
 class ImportError(Exception):
-     pass
+    pass
+
 
 class TargetResists(object):
     instance = None
+
     @classmethod
     def getInstance(cls):
         if cls.instance is None:
