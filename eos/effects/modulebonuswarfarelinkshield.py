@@ -1,11 +1,12 @@
-# moduleBonusWarfareLinkShield
-#
-# Used by:
-# Variations of module: Shield Command Burst I (2 of 2)
-type = "active"
-runTime = "early"
 
-def handler(fit, module, context):
+type = "active", "gang"
+def handler(fit, module, context, **kwargs):
+    print "submitting command bonuses to registrar"
+
     for x in xrange(1, 4):
-        value = module.getModifiedItemAttr("warfareBuff{}Value".format(x))
-        module.multiplyChargeAttr("warfareBuff{}Multiplier".format(x), value)
+        if module.getModifiedChargeAttr("warfareBuff{}ID".format(x)):
+            value = module.getModifiedItemAttr("warfareBuff{}Value".format(x))
+            id = module.getModifiedChargeAttr("warfareBuff{}ID".format(x))
+
+            if id:
+                fit.addCommandBonus(id, value, module, kwargs['effect'])
