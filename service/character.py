@@ -37,7 +37,6 @@ from eos.saveddata.implant import Implant as es_Implant
 from eos.saveddata.character import Character as es_Character
 from eos.saveddata.module import Slot as es_Slot, Module as es_Module
 from eos.saveddata.fighter import Fighter as es_Fighter
-from service.fit import Fit as es_Fit
 
 logger = logging.getLogger(__name__)
 
@@ -92,9 +91,6 @@ class SkillBackupThread(threading.Thread):
     def run(self):
         path = self.path
         sCharacter = Character.getInstance()
-        sFit = es_Fit.getInstance()
-        fit = sFit.getFit(self.activeFit)
-        backupData = ""
         if self.saveFmt == "xml" or self.saveFmt == "emp":
             backupData = sCharacter.exportXml()
         else:

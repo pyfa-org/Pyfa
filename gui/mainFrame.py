@@ -72,6 +72,9 @@ from service.settings import HTMLExportSettings
 
 from time import gmtime, strftime
 
+import threading
+import webbrowser
+
 if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3, 0)):
     from service.crest import CrestModes
     from gui.crestFittings import CrestFittings, ExportToEve, CrestMgmt

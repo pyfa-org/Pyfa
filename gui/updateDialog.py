@@ -21,13 +21,14 @@ import wx
 from gui.bitmapLoader import BitmapLoader
 import config
 import dateutil.parser
+from service import settings
 
 class UpdateDialog(wx.Dialog):
 
     def __init__(self, parent, release):
         wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = "Pyfa Update", pos = wx.DefaultPosition, size = wx.Size( 400,300 ), style = wx.DEFAULT_DIALOG_STYLE )
 
-        self.UpdateSettings = service.settings.UpdateSettings.getInstance()
+        self.UpdateSettings = settings.UpdateSettings.getInstance()
         self.releaseInfo = release
         self.SetSizeHintsSz( wx.DefaultSize, wx.DefaultSize )
 

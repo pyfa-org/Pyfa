@@ -46,10 +46,6 @@ from eos.saveddata.character import Character as saveddata_Character
 from service.fleet import Fleet
 from service.settings import SettingsProvider
 
-
-# TODO: port this to port.py
-#from service.port import Port
-
 logger = logging.getLogger(__name__)
 
 

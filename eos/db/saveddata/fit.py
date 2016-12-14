@@ -24,12 +24,13 @@ from sqlalchemy.orm.collections import attribute_mapped_collection
 from sqlalchemy.sql import and_
 
 from eos.db import saveddata_meta
+from eos.db import saveddata_session
 from eos.db.saveddata.cargo import cargo_table
 from eos.db.saveddata.drone import drones_table
 from eos.db.saveddata.fighter import fighters_table
 from eos.db.saveddata.implant import fitImplants_table
 from eos.db.saveddata.module import modules_table
-from eos.effectHandlerHelpers import *
+from eos.effectHandlerHelpers import HandledModuleList, HandledImplantBoosterList, HandledProjectedModList, HandledDroneCargoList, HandledProjectedDroneList
 from eos.types import Fit, Module, User, Booster, Drone, Fighter, Cargo, Implant, Character, DamagePattern, \
     TargetResists, ImplantLocation
 
@@ -72,9 +73,9 @@ class ProjectedFit(object):
     def init(self):
         if self.source_fit.isInvalid:
             # Very rare for this to happen, but be prepared for it
-            eos.db.saveddata_session.delete(self.source_fit)
-            eos.db.saveddata_session.flush()
-            eos.db.saveddata_session.refresh(self.victim_fit)
+            saveddata_session.delete(self.source_fit)
+            saveddata_session.flush()
+            saveddata_session.refresh(self.victim_fit)
 
     # We have a series of setters and getters here just in case someone
     # downgrades and screws up the table with NULL values
@@ -101,9 +102,9 @@ class CommandFit(object):
     def init(self):
         if self.booster_fit.isInvalid:
             # Very rare for this to happen, but be prepared for it
-            eos.db.saveddata_session.delete(self.booster_fit)
-            eos.db.saveddata_session.flush()
-            eos.db.saveddata_session.refresh(self.boosted_fit)
+            saveddata_session.delete(self.booster_fit)
+            saveddata_session.flush()
+            saveddata_session.refresh(self.boosted_fit)
 
     def __repr__(self):
         return "CommandFit(boosterID={}, boostedID={}, active={}) at {}".format(
