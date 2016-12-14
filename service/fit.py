@@ -34,7 +34,6 @@ from eos.saveddata.ship import Ship as es_Ship
 from eos.types import State, Slot, Fit as FitType
 from service.character import Character
 from service.damagePattern import DamagePattern
-from service.fleet import Fleet
 from service.market import Market
 from service.settings import SettingsProvider
 
