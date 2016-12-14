@@ -1,7 +1,7 @@
 import wx
 from wx.lib.buttons import GenBitmapButton
 
-import service.fleet
+from service.fleet import Fleet
 import gui.mainFrame
 import gui.utils.colorUtils as colorUtils
 import gui.sfBrowserItem as SFItem
@@ -23,7 +23,7 @@ class FleetBrowser(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent)
 
-        self.sFleet = service.fleet.Fleet.getInstance()
+        self.sFleet = Fleet.getInstance()
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)

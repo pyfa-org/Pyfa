@@ -17,7 +17,6 @@ def test_packages():
     assert eos
     assert utils
 
-
 def service_modules():
     for root, folders, files in os.walk("service"):
         for file_ in files:
@@ -28,7 +27,16 @@ def service_modules():
                 )
                 yield mod_name
 
+def eos_modules():
+    for root, folders, files in os.walk("eos"):
+        for file_ in files:
+            if file_.endswith(".py") and not file_.startswith("_"):
+                mod_name = "{}.{}".format(
+                    root.replace("/", "."),
+                    file_.split(".py")[0],
+                )
+                yield mod_name
 
-@pytest.mark.parametrize("mod_name", service_modules())
+@pytest.mark.parametrize("mod_name", eos_modules())
 def test_service_imports(mod_name):
     assert importlib.import_module(mod_name)
