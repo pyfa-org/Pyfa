@@ -39,10 +39,14 @@ class PFHTMLExportPref(PreferenceView):
         self.stDesc.Wrap(dlgWidth - 50)
         mainSizer.Add(self.stDesc, 0, wx.ALL, 5)
 
-        self.PathLinkCtrl = wx.HyperlinkCtrl(panel, wx.ID_ANY, self.HTMLExportSettings.getPath(), u'file:///{}'.format(self.HTMLExportSettings.getPath()), wx.DefaultPosition, wx.DefaultSize, wx.HL_ALIGN_LEFT | wx.NO_BORDER | wx.HL_CONTEXTMENU)
+        self.PathLinkCtrl = wx.HyperlinkCtrl(panel, wx.ID_ANY, self.HTMLExportSettings.getPath(),
+                                             u'file:///{}'.format(self.HTMLExportSettings.getPath()),
+                                             wx.DefaultPosition, wx.DefaultSize,
+                                             wx.HL_ALIGN_LEFT | wx.NO_BORDER | wx.HL_CONTEXTMENU)
         mainSizer.Add(self.PathLinkCtrl, 0, wx.ALL | wx.EXPAND, 5)
 
-        self.fileSelectDialog = wx.FileDialog(None, "Save Fitting As...", wildcard="EVE IGB HTML fitting file (*.html)|*.html", style=wx.FD_SAVE)
+        self.fileSelectDialog = wx.FileDialog(None, "Save Fitting As...",
+                                              wildcard="EVE IGB HTML fitting file (*.html)|*.html", style=wx.FD_SAVE)
         self.fileSelectDialog.SetPath(self.HTMLExportSettings.getPath())
         self.fileSelectDialog.SetFilename(os.path.basename(self.HTMLExportSettings.getPath()))
 
@@ -54,7 +58,8 @@ class PFHTMLExportPref(PreferenceView):
         self.stDesc2.Wrap(dlgWidth - 50)
         mainSizer.Add(self.stDesc2, 0, wx.ALL, 5)
 
-        self.exportEnabled = wx.CheckBox(panel, wx.ID_ANY, u"Enable automatic HTML export", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.exportEnabled = wx.CheckBox(panel, wx.ID_ANY, u"Enable automatic HTML export", wx.DefaultPosition,
+                                         wx.DefaultSize, 0)
         self.exportEnabled.SetValue(self.HTMLExportSettings.getEnabled())
         self.exportEnabled.Bind(wx.EVT_CHECKBOX, self.OnExportEnabledChange)
         mainSizer.Add(self.exportEnabled, 0, wx.ALL | wx.EXPAND, 5)
@@ -63,7 +68,8 @@ class PFHTMLExportPref(PreferenceView):
         self.stDesc4.Wrap(dlgWidth - 50)
         mainSizer.Add(self.stDesc4, 0, wx.ALL, 5)
 
-        self.exportMinimal = wx.CheckBox(panel, wx.ID_ANY, u"Enable minimal export Format", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.exportMinimal = wx.CheckBox(panel, wx.ID_ANY, u"Enable minimal export Format", wx.DefaultPosition,
+                                         wx.DefaultSize, 0)
         self.exportMinimal.SetValue(self.HTMLExportSettings.getMinimalEnabled())
         self.exportMinimal.Bind(wx.EVT_CHECKBOX, self.OnMinimalEnabledChange)
         mainSizer.Add(self.exportMinimal, 0, wx.ALL | wx.EXPAND, 5)

@@ -2,6 +2,8 @@ from gui.contextMenu import ContextMenu
 import gui.mainFrame
 import wx
 import gui.globalEvents as GE
+from service.fit import Fit
+
 
 class ItemRemove(ContextMenu):
     def __init__(self):
@@ -27,8 +29,8 @@ class ItemRemove(ContextMenu):
         if srcContext == "fittingModule":
             for module in selection:
                 if module is not None:
-                    sFit.removeModule(fitID,fit.modules.index(module))
-        elif srcContext in ("fittingCharge" , "projectedCharge"):
+                    sFit.removeModule(fitID, fit.modules.index(module))
+        elif srcContext in ("fittingCharge", "projectedCharge"):
             sFit.setAmmo(fitID, None, selection)
         elif srcContext == "droneItem":
             sFit.removeDrone(fitID, fit.drones.index(selection[0]))
@@ -44,8 +46,6 @@ class ItemRemove(ContextMenu):
             sFit.removeProjected(fitID, selection[0])
 
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
-
-
 
 
 ItemRemove.register()

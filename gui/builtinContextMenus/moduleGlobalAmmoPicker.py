@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
-from gui.contextMenu import ContextMenu
 import gui.mainFrame
 import wx
-from gui.bitmapLoader import BitmapLoader
-from eos.types import Hardpoint
 import gui.globalEvents as GE
 from gui.builtinContextMenus.moduleAmmoPicker import ModuleAmmoPicker
 import eos.db
+from service.fit import Fit
+
 
 class ModuleGlobalAmmoPicker(ModuleAmmoPicker):
     def __init__(self):

@@ -34,7 +34,7 @@ def formatAmount(val, prec=3, lowest=0, highest=0, currency=False, forceSign=Fal
         # Start from highest possible suffix
         for key in posOrders:
             # Find first suitable suffix and check if it's not above highest order
-            if abs(val) >= 10**key and key <= highest:
+            if abs(val) >= 10 ** key and key <= highest:
                 mantissa, suffix = val / float(10 ** key), posSuffixMap[key]
                 # Do additional step to eliminate results like 999999 => 1000k
                 # If we're already using our greatest order, we can't do anything useful
@@ -49,7 +49,7 @@ def formatAmount(val, prec=3, lowest=0, highest=0, currency=False, forceSign=Fal
                         # If it is, bail - we already have acceptable results
                         break
                     # Find multiplier to get from one order to another
-                    orderDiff = 10**(prevKey - key)
+                    orderDiff = 10 ** (prevKey - key)
                     # If rounded mantissa according to our specifications is greater than
                     # or equal to multiplier
                     if roundToPrec(mantissa, prec) >= orderDiff:
@@ -67,8 +67,8 @@ def formatAmount(val, prec=3, lowest=0, highest=0, currency=False, forceSign=Fal
             except IndexError:
                 nextKey = 0
             # Check if mantissa with next suffix is in range [1, 1000)
-            if abs(val) < 10**(nextKey) and key >= lowest:
-                mantissa, suffix = val / float(10**key), negSuffixMap[key]
+            if abs(val) < 10 ** (nextKey) and key >= lowest:
+                mantissa, suffix = val / float(10 ** key), negSuffixMap[key]
                 # Do additional step to eliminate results like 0.9999 => 1000m
                 # Check if the key we're potentially switching to is greater than our
                 # upper boundary
@@ -76,7 +76,7 @@ def formatAmount(val, prec=3, lowest=0, highest=0, currency=False, forceSign=Fal
                     # If it is, leave loop with results we already have
                     break
                 # Find the multiplier between current and next order
-                orderDiff = 10**(nextKey - key)
+                orderDiff = 10 ** (nextKey - key)
                 # If rounded mantissa according to our specifications is greater than
                 # or equal to multiplier
                 if roundToPrec(mantissa, prec) >= orderDiff:

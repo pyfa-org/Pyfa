@@ -124,7 +124,7 @@ if __name__ == "__main__":
     import os.path
 
     import eos.db
-    import service.prefetch  # noqa
+    import service.prefetch
     from gui.mainFrame import MainFrame
 
     # Make sure the saveddata db exists

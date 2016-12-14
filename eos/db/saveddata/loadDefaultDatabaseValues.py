@@ -21,6 +21,7 @@ import eos.db
 from eos.saveddata.damagePattern import DamagePattern as es_DamagePattern
 from eos.saveddata.targetResists import TargetResists as es_TargetResists
 
+
 class ImportError(Exception):
     pass
 

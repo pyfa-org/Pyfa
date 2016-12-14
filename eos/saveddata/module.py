@@ -39,7 +39,6 @@ class State(Enum):
 
 
 class Slot(Enum):
-
     # These are self-explanatory
     LOW = 1
     MED = 2
@@ -60,7 +59,6 @@ class Slot(Enum):
 
 
 class Hardpoint(Enum):
-
     NONE = 0
     MISSILE = 1
     TURRET = 2
@@ -167,7 +165,9 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, l
     def isInvalid(self):
         if self.isEmpty:
             return False
-        return self.__item is None or (self.__item.category.name not in ("Module", "Subsystem", "Structure Module") and self.__item.group.name != "Effect Beacon")
+        return self.__item is None or \
+               (self.__item.category.name not in ("Module", "Subsystem", "Structure Module") and
+                self.__item.group.name != "Effect Beacon")
 
     @property
     def numCharges(self):
@@ -600,9 +600,9 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, l
         self.itemModifiedAttributes.clear()
         self.chargeModifiedAttributes.clear()
 
-    def calculateModifiedAttributes(self, fit, runTime, forceProjected = False, gang = False):
-        #We will run the effect when two conditions are met:
-        #1: It makes sense to run the effect
+    def calculateModifiedAttributes(self, fit, runTime, forceProjected=False, gang=False):
+        # We will run the effect when two conditions are met:
+        # 1: It makes sense to run the effect
         #    The effect is either offline
         #    or the effect is passive and the module is in the online state (or higher)
 
@@ -625,11 +625,11 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, l
             if not projected or (self.projected and not forceProjected) or gang:
                 for effect in self.charge.effects.itervalues():
                     if effect.runTime == runTime and \
-                        effect.activeByDefault and \
-                        (effect.isType("offline") or
-                        (effect.isType("passive") and self.state >= State.ONLINE) or
-                        (effect.isType("active") and self.state >= State.ACTIVE)) and \
-                        (not gang or (gang and effect.isType("gang"))):
+                            effect.activeByDefault and \
+                            (effect.isType("offline") or
+                                (effect.isType("passive") and self.state >= State.ONLINE) or
+                                (effect.isType("active") and self.state >= State.ACTIVE)) and \
+                            (not gang or (gang and effect.isType("gang"))):
 
                         chargeContext = ("moduleCharge",)
                         # For gang effects, we pass in the effect itself as an argument. However, to avoid going through
@@ -655,8 +655,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, l
                         effect.activeByDefault and \
                         (effect.isType("offline") or
                              (effect.isType("passive") and self.state >= State.ONLINE) or
-                             (effect.isType("active") and self.state >= State.ACTIVE))\
-                        and ((projected and effect.isType("projected")) or not projected)\
+                             (effect.isType("active") and self.state >= State.ACTIVE)) \
+                        and ((projected and effect.isType("projected")) or not projected) \
                         and ((gang and effect.isType("gang")) or not gang):
                     effect.handler(fit, self, context)
 

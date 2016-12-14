@@ -18,10 +18,8 @@
 # =============================================================================
 
 from gui.viewColumn import ViewColumn
-from gui.bitmapLoader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 from service.attribute import Attribute
-import wx
 
 
 class PropertyDisplay(ViewColumn):

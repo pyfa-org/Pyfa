@@ -1,10 +1,9 @@
 from gui.contextMenu import ContextMenu
-from gui.itemStats import ItemStatsDialog
-import eos.types
 import gui.mainFrame
 import gui.globalEvents as GE
 import wx
 from service.fit import Fit
+
 
 class Cargo(ContextMenu):
     def __init__(self):

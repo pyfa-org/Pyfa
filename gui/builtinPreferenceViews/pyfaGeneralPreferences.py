@@ -15,7 +15,8 @@ class PFGeneralPref(PreferenceView):
     def populatePanel(self, panel):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.dirtySettings = False
-        self.openFitsSettings = SettingsProvider.getInstance().getSettings("pyfaPrevOpenFits", {"enabled": False, "pyfaOpenFits": []})
+        self.openFitsSettings = SettingsProvider.getInstance().getSettings("pyfaPrevOpenFits",
+                                                                           {"enabled": False, "pyfaOpenFits": []})
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
@@ -28,22 +29,28 @@ class PFGeneralPref(PreferenceView):
         self.m_staticline1 = wx.StaticLine(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL)
         mainSizer.Add(self.m_staticline1, 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 5)
 
-        self.cbGlobalChar = wx.CheckBox(panel, wx.ID_ANY, u"Use global character", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.cbGlobalChar = wx.CheckBox(panel, wx.ID_ANY, u"Use global character", wx.DefaultPosition, wx.DefaultSize,
+                                        0)
         mainSizer.Add(self.cbGlobalChar, 0, wx.ALL | wx.EXPAND, 5)
 
-        self.cbGlobalDmgPattern = wx.CheckBox(panel, wx.ID_ANY, u"Use global damage pattern", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.cbGlobalDmgPattern = wx.CheckBox(panel, wx.ID_ANY, u"Use global damage pattern", wx.DefaultPosition,
+                                              wx.DefaultSize, 0)
         mainSizer.Add(self.cbGlobalDmgPattern, 0, wx.ALL | wx.EXPAND, 5)
 
-        self.cbGlobalForceReload = wx.CheckBox(panel, wx.ID_ANY, u"Factor in reload time", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.cbGlobalForceReload = wx.CheckBox(panel, wx.ID_ANY, u"Factor in reload time", wx.DefaultPosition,
+                                               wx.DefaultSize, 0)
         mainSizer.Add(self.cbGlobalForceReload, 0, wx.ALL | wx.EXPAND, 5)
 
-        self.cbCompactSkills = wx.CheckBox(panel, wx.ID_ANY, u"Compact skills needed tooltip", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.cbCompactSkills = wx.CheckBox(panel, wx.ID_ANY, u"Compact skills needed tooltip", wx.DefaultPosition,
+                                           wx.DefaultSize, 0)
         mainSizer.Add(self.cbCompactSkills, 0, wx.ALL | wx.EXPAND, 5)
 
-        self.cbFitColorSlots = wx.CheckBox(panel, wx.ID_ANY, u"Color fitting view by slot", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.cbFitColorSlots = wx.CheckBox(panel, wx.ID_ANY, u"Color fitting view by slot", wx.DefaultPosition,
+                                           wx.DefaultSize, 0)
         mainSizer.Add(self.cbFitColorSlots, 0, wx.ALL | wx.EXPAND, 5)
 
-        self.cbReopenFits = wx.CheckBox(panel, wx.ID_ANY, u"Reopen previous fits on startup", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.cbReopenFits = wx.CheckBox(panel, wx.ID_ANY, u"Reopen previous fits on startup", wx.DefaultPosition,
+                                        wx.DefaultSize, 0)
         mainSizer.Add(self.cbReopenFits, 0, wx.ALL | wx.EXPAND, 5)
 
         self.cbRackSlots = wx.CheckBox(panel, wx.ID_ANY, u"Separate Racks", wx.DefaultPosition, wx.DefaultSize, 0)
@@ -57,16 +64,19 @@ class PFGeneralPref(PreferenceView):
         self.cbShowTooltip = wx.CheckBox(panel, wx.ID_ANY, u"Show tab tooltips", wx.DefaultPosition, wx.DefaultSize, 0)
         mainSizer.Add(self.cbShowTooltip, 0, wx.ALL | wx.EXPAND, 5)
 
-        self.cbMarketShortcuts = wx.CheckBox(panel, wx.ID_ANY, u"Show market shortcuts", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.cbMarketShortcuts = wx.CheckBox(panel, wx.ID_ANY, u"Show market shortcuts", wx.DefaultPosition,
+                                             wx.DefaultSize, 0)
         mainSizer.Add(self.cbMarketShortcuts, 0, wx.ALL | wx.EXPAND, 5)
 
         self.cbGaugeAnimation = wx.CheckBox(panel, wx.ID_ANY, u"Animate gauges", wx.DefaultPosition, wx.DefaultSize, 0)
         mainSizer.Add(self.cbGaugeAnimation, 0, wx.ALL | wx.EXPAND, 5)
 
-        self.cbExportCharges = wx.CheckBox(panel, wx.ID_ANY, u"Export loaded charges", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.cbExportCharges = wx.CheckBox(panel, wx.ID_ANY, u"Export loaded charges", wx.DefaultPosition,
+                                           wx.DefaultSize, 0)
         mainSizer.Add(self.cbExportCharges, 0, wx.ALL | wx.EXPAND, 5)
 
-        self.cbOpenFitInNew = wx.CheckBox(panel, wx.ID_ANY, u"Open fittings in a new page by default", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.cbOpenFitInNew = wx.CheckBox(panel, wx.ID_ANY, u"Open fittings in a new page by default",
+                                          wx.DefaultPosition, wx.DefaultSize, 0)
         mainSizer.Add(self.cbOpenFitInNew, 0, wx.ALL | wx.EXPAND, 5)
 
         wx.BoxSizer(wx.HORIZONTAL)

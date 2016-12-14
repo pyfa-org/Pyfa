@@ -5,6 +5,7 @@ import wx
 from service.market import Market
 from service.fit import Fit
 
+
 class WhProjector(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
@@ -42,7 +43,7 @@ class WhProjector(ContextMenu):
         return sub
 
     def handleSelection(self, event):
-        #Skip events ids that aren't mapped
+        # Skip events ids that aren't mapped
 
         swObj, swName = self.idmap.get(event.Id, (False, False))
         if not swObj and not swName:

@@ -4,6 +4,7 @@ import wx
 import gui.globalEvents as GE
 from service.market import Market
 
+
 class PriceClear(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()

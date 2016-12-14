@@ -8,7 +8,7 @@ from gui.bitmapLoader import BitmapLoader
 from gui.marketBrowser import SearchBox
 
 
-class BaseImplantEditorView (wx.Panel):
+class BaseImplantEditorView(wx.Panel):
     def addMarketViewImage(self, iconFile):
         if iconFile is None:
             return -1
@@ -19,7 +19,8 @@ class BaseImplantEditorView (wx.Panel):
             return self.availableImplantsImageList.Add(bitmap)
 
     def __init__(self, parent):
-        wx.Panel.__init__(self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize, style=wx.TAB_TRAVERSAL)
+        wx.Panel.__init__(self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
+                          style=wx.TAB_TRAVERSAL)
         self.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW))
 
         pmainSizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -53,10 +54,12 @@ class BaseImplantEditorView (wx.Panel):
         buttonSizer = wx.BoxSizer(wx.VERTICAL)
         buttonSizer.AddSpacer((0, 0), 1)
 
-        self.btnAdd = GenBitmapButton(self, wx.ID_ADD, BitmapLoader.getBitmap("fit_add_small", "gui"), style=wx.BORDER_NONE)
+        self.btnAdd = GenBitmapButton(self, wx.ID_ADD, BitmapLoader.getBitmap("fit_add_small", "gui"),
+                                      style=wx.BORDER_NONE)
         buttonSizer.Add(self.btnAdd, 0)
 
-        self.btnRemove = GenBitmapButton(self, wx.ID_REMOVE, BitmapLoader.getBitmap("fit_delete_small", "gui"), style=wx.BORDER_NONE)
+        self.btnRemove = GenBitmapButton(self, wx.ID_REMOVE, BitmapLoader.getBitmap("fit_delete_small", "gui"),
+                                         style=wx.BORDER_NONE)
         buttonSizer.Add(self.btnRemove, 0)
 
         buttonSizer.AddSpacer((0, 0), 1)

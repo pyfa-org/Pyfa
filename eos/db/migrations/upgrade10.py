@@ -6,6 +6,7 @@ Migration 10
 
 import sqlalchemy
 
+
 def upgrade(saveddata_engine):
     # Update projectedFits schema to include active attribute
     try:

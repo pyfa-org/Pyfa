@@ -23,9 +23,11 @@ import gui.globalEvents as GE
 import gui.droneView
 from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
-import eos.types
 from service.fit import Fit
 from service.market import Market
+from eos.saveddata.drone import Drone as es_Drone
+from eos.saveddata.fighter import Fighter as es_Fighter
+from eos.saveddata.module import Module as es_Module
 
 
 class DummyItem:

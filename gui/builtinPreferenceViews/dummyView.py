@@ -25,7 +25,6 @@ class DummyView(PreferenceView):
     title = "Dummy"
 
     def populatePanel(self, panel):
-
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
         headerSizer = self.initHeader(panel)

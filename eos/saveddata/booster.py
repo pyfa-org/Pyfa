@@ -159,6 +159,7 @@ class Booster(HandledItem, ItemAttrShortcut):
 
         return copy
 
+
 # Legacy booster side effect code, disabling as not currently implemented
 '''
     class SideEffect(object):

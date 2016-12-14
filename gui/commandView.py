@@ -25,7 +25,6 @@ import gui.droneView
 from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
 from service.fit import Fit
-from service.market import Market
 from eos.saveddata.drone import Drone as es_Drone
 
 

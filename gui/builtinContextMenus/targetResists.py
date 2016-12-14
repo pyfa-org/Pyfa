@@ -11,6 +11,7 @@ try:
 except ImportError:
     from gui.utils.compat import OrderedDict
 
+
 class TargetResists(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
@@ -65,15 +66,15 @@ class TargetResists(ContextMenu):
         msw = True if "wxMSW" in wx.PlatformInfo else False
         self.patternIds = {}
         self.subMenus = OrderedDict()
-        self.singles  = []
+        self.singles = []
 
         sub = wx.Menu()
         for pattern in self.patterns:
             start, end = pattern.name.find('['), pattern.name.find(']')
             if start is not -1 and end is not -1:
-                currBase = pattern.name[start+1:end]
+                currBase = pattern.name[start + 1:end]
                 # set helper attr
-                setattr(pattern, "_name", pattern.name[end+1:].strip())
+                setattr(pattern, "_name", pattern.name[end + 1:].strip())
                 if currBase not in self.subMenus:
                     self.subMenus[currBase] = []
                 self.subMenus[currBase].append(pattern)
@@ -94,7 +95,7 @@ class TargetResists(ContextMenu):
 
             # Create menu for child items
             grandSub = wx.Menu()
-            #sub.Bind(wx.EVT_MENU, self.handleResistSwitch)
+            # sub.Bind(wx.EVT_MENU, self.handleResistSwitch)
 
             # Apply child menu to parent item
             item.SetSubMenu(grandSub)
@@ -102,7 +103,7 @@ class TargetResists(ContextMenu):
             # Append child items to child menu
             for pattern in patterns:
                 grandSub.AppendItem(self.addPattern(rootMenu if msw else grandSub, pattern))
-            sub.AppendItem(item)  #finally, append parent item to root menu
+            sub.AppendItem(item)  # finally, append parent item to root menu
 
         return sub
 

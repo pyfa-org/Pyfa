@@ -360,7 +360,16 @@ class Market():
                                      ("complex", frozenset((6,))),
                                      ("officer", frozenset((5,)))])
         self.SEARCH_CATEGORIES = (
-        "Drone", "Module", "Subsystem", "Charge", "Implant", "Deployable", "Fighter", "Structure", "Structure Module")
+            "Drone",
+            "Module",
+            "Subsystem",
+            "Charge",
+            "Implant",
+            "Deployable",
+            "Fighter",
+            "Structure",
+            "Structure Module",
+        )
         self.SEARCH_GROUPS = ("Ice Product",)
         self.ROOT_MARKET_GROUPS = (9,  # Modules
                                    1111,  # Rigs
@@ -377,7 +386,7 @@ class Market():
 
     @classmethod
     def getInstance(cls):
-        if cls.instance == None:
+        if cls.instance is None:
             cls.instance = Market()
         return cls.instance
 
@@ -385,7 +394,7 @@ class Market():
         """Creates reverse dictionary"""
         rev = {}
         for item, value in orig.items():
-            if not value in rev:
+            if value not in rev:
                 rev[value] = set()
             rev[value].add(item)
         return rev
@@ -796,7 +805,7 @@ class Market():
         def cb():
             try:
                 callback(requests)
-            except Exception, e:
+            except Exception:
                 pass
             eos.db.commit()
 
@@ -819,7 +828,7 @@ class Market():
 
     def clearPriceCache(self):
         self.priceCache.clear()
-        deleted_rows = eos.db.clearPrices()
+        eos.db.clearPrices()
 
     def getSystemWideEffects(self):
         """
@@ -862,7 +871,7 @@ class Market():
                         groupname = re.sub(garbage, "", groupname)
                     groupname = re.sub(" {2,}", " ", groupname).strip()
                     # Add stuff to dictionary
-                    if not groupname in effects:
+                    if groupname not in effects:
                         effects[groupname] = set()
                     effects[groupname].add((beacon, beaconname, shortname))
                     # Break loop on 1st result

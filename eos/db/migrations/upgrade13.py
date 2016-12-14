@@ -6,6 +6,7 @@ Migration 13
 
 import sqlalchemy
 
+
 def upgrade(saveddata_engine):
     # Update fits schema to include implant location attribute
     try:

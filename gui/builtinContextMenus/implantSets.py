@@ -2,6 +2,10 @@ from gui.contextMenu import ContextMenu
 import gui.mainFrame
 import gui.globalEvents as GE
 import wx
+from service.implantSet import ImplantSets as s_ImplantSets
+from service.character import Character
+from service.fit import Fit
+
 
 class ImplantSets(ContextMenu):
     def __init__(self):
@@ -31,7 +35,7 @@ class ImplantSets(ContextMenu):
         m = wx.Menu()
         bindmenu = rootMenu if "wxMSW" in wx.PlatformInfo else m
 
-        sIS = service.ImplantSets.getInstance()
+        sIS = s_ImplantSets.getInstance()
         implantSets = sIS.getImplantSetList()
 
         self.context = context

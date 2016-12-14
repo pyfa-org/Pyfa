@@ -1,7 +1,7 @@
 from gui.contextMenu import ContextMenu
-from gui.itemStats import ItemStatsDialog
 import gui.mainFrame
 from service.market import Market
+
 
 class MarketJump(ContextMenu):
     def __init__(self):

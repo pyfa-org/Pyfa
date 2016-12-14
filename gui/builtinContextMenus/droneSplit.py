@@ -1,5 +1,4 @@
 from gui.contextMenu import ContextMenu
-from gui.itemStats import ItemStatsDialog
 import gui.mainFrame
 import gui.globalEvents as GE
 from service.fit import Fit
@@ -27,7 +26,6 @@ DroneSplit.register()
 
 
 class DroneSpinner(wx.Dialog):
-
     def __init__(self, parent, drone, context):
         wx.Dialog.__init__(self, parent, title="Select Amount", size=wx.Size(220, 60))
         self.drone = drone

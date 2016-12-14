@@ -52,8 +52,10 @@ class ModuleAmmoPicker(ContextMenu):
 
     def turretSorter(self, charge):
         damage = 0
-        range_ = (self.module.getModifiedItemAttr("maxRange") or 0) * (charge.getAttribute("weaponRangeMultiplier") or 1)
-        falloff = (self.module.getModifiedItemAttr("falloff") or 0) * (charge.getAttribute("fallofMultiplier") or 1)
+        range_ = (self.module.getModifiedItemAttr("maxRange") or 0) * \
+                 (charge.getAttribute("weaponRangeMultiplier") or 1)
+        falloff = (self.module.getModifiedItemAttr("falloff") or 0) * \
+                  (charge.getAttribute("fallofMultiplier") or 1)
         for type_ in self.DAMAGE_TYPES:
             d = charge.getAttribute("%sDamage" % type_)
             if d > 0:

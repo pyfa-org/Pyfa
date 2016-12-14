@@ -557,7 +557,7 @@ class APIView(wx.Panel):
 
         if chars:
             for charName in chars:
-                i = self.charChoice.Append(charName)
+                self.charChoice.Append(charName)
             self.charChoice.SetStringSelection(char)
             self.charChoice.Enable(True)
             self.btnFetchSkills.Enable(True)
@@ -598,7 +598,7 @@ class APIView(wx.Panel):
         else:
             self.charChoice.Clear()
             for charName in list:
-                i = self.charChoice.Append(charName)
+                self.charChoice.Append(charName)
 
             self.btnFetchSkills.Enable(True)
             self.charChoice.Enable(True)

@@ -29,7 +29,6 @@ class exportHtml():
 
 
 class exportHtmlThread(threading.Thread):
-
     def __init__(self, callback=False):
         threading.Thread.__init__(self)
         self.callback = callback
@@ -192,7 +191,8 @@ class exportHtmlThread(threading.Thread):
                         fit = fits[0]
                         try:
                             dnaFit = sFit.exportDna(fit[0])
-                            HTMLgroup += '        <li><a data-dna="' + dnaFit + '" target="_blank">' + ship.name + ": " + fit[1] + '</a></li>\n'
+                            HTMLgroup += '        <li><a data-dna="' + dnaFit + '" target="_blank">' + ship.name + ": " + \
+                                         fit[1] + '</a></li>\n'
                         except:
                             pass
                         finally:
@@ -203,8 +203,9 @@ class exportHtmlThread(threading.Thread):
                         # Ship group header
                         HTMLship = (
                             '        <li data-role="collapsible" data-iconpos="right" data-shadow="false" data-corners="false">\n'
-                            '        <h2>' + ship.name + ' <span class="ui-li-count">' + str(len(fits)) + '</span></h2>\n'
-                            '          <ul data-role="listview" data-shadow="false" data-inset="true" data-corners="false">\n'
+                            '        <h2>' + ship.name + ' <span class="ui-li-count">' + str(
+                                len(fits)) + '</span></h2>\n'
+                                             '          <ul data-role="listview" data-shadow="false" data-inset="true" data-corners="false">\n'
                         )
 
                         for fit in fits:
@@ -212,7 +213,8 @@ class exportHtmlThread(threading.Thread):
                                 return
                             try:
                                 dnaFit = sFit.exportDna(fit[0])
-                                HTMLship += '          <li><a data-dna="' + dnaFit + '" target="_blank">' + fit[1] + '</a></li>\n'
+                                HTMLship += '          <li><a data-dna="' + dnaFit + '" target="_blank">' + fit[
+                                    1] + '</a></li>\n'
                             except:
                                 continue
                             finally:
@@ -227,7 +229,7 @@ class exportHtmlThread(threading.Thread):
                 HTML += (
                     '    <li data-role="collapsible" data-iconpos="right" data-shadow="false" data-corners="false">\n'
                     '      <h2>' + group.groupName + ' <span class="ui-li-count">' + str(groupFits) + '</span></h2>\n'
-                    '      <ul data-role="listview" data-shadow="false" data-inset="true" data-corners="false">\n' + HTMLgroup +
+                                                                                                      '      <ul data-role="listview" data-shadow="false" data-inset="true" data-corners="false">\n' + HTMLgroup +
                     '      </ul>\n'
                     '    </li>'
                 )
@@ -263,7 +265,8 @@ class exportHtmlThread(threading.Thread):
                         return
                     try:
                         dnaFit = sFit.exportDna(fit[0])
-                        HTML += '<a class="outOfGameBrowserLink" target="_blank" href="' + dnaUrl + dnaFit + '">' + ship.name + ': ' + fit[1] + '</a><br> \n'
+                        HTML += '<a class="outOfGameBrowserLink" target="_blank" href="' + dnaUrl + dnaFit + '">' + ship.name + ': ' + \
+                                fit[1] + '</a><br> \n'
                     except:
                         continue
                     finally:

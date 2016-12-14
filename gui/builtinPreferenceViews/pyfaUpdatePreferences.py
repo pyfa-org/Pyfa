@@ -32,7 +32,8 @@ class PFUpdatePref(PreferenceView):
         self.stDesc.Wrap(dlgWidth - 50)
         mainSizer.Add(self.stDesc, 0, wx.ALL, 5)
 
-        self.suppressPrerelease = wx.CheckBox(panel, wx.ID_ANY, u"Allow pre-release notifications", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.suppressPrerelease = wx.CheckBox(panel, wx.ID_ANY, u"Allow pre-release notifications", wx.DefaultPosition,
+                                              wx.DefaultSize, 0)
         self.suppressPrerelease.Bind(wx.EVT_CHECKBOX, self.OnPrereleaseStateChange)
         self.suppressPrerelease.SetValue(not self.UpdateSettings.get('prerelease'))
 
@@ -41,7 +42,8 @@ class PFUpdatePref(PreferenceView):
         if (self.UpdateSettings.get('version')):
             self.versionSizer = wx.BoxSizer(wx.VERTICAL)
 
-            self.versionTitle = wx.StaticText(panel, wx.ID_ANY, "Suppressing {0} Notifications".format(self.UpdateSettings.get('version')), wx.DefaultPosition, wx.DefaultSize, 0)
+            self.versionTitle = wx.StaticText(panel, wx.ID_ANY, "Suppressing {0} Notifications".format(
+                self.UpdateSettings.get('version')), wx.DefaultPosition, wx.DefaultSize, 0)
             self.versionTitle.Wrap(-1)
             self.versionTitle.SetFont(wx.Font(12, 70, 90, 90, False, wx.EmptyString))
 
@@ -51,7 +53,8 @@ class PFUpdatePref(PreferenceView):
 
             self.versionSizer.AddSpacer((5, 5), 0, wx.EXPAND, 5)
 
-            self.versionSizer.Add(wx.StaticLine(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL), 0, wx.EXPAND, 5)
+            self.versionSizer.Add(wx.StaticLine(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL),
+                                  0, wx.EXPAND, 5)
             self.versionSizer.AddSpacer((5, 5), 0, wx.EXPAND, 5)
 
             self.versionSizer.Add(self.versionTitle, 0, wx.EXPAND, 5)

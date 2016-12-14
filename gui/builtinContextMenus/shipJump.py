@@ -4,6 +4,7 @@ import gui.mainFrame
 from gui.shipBrowser import Stage3Selected
 from service.fit import Fit
 
+
 class ShipJump(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
@@ -21,7 +22,7 @@ class ShipJump(ContextMenu):
         groupID = stuff.item.group.ID
 
         self.mainFrame.notebookBrowsers.SetSelection(1)
-        wx.PostEvent(self.mainFrame.shipBrowser,Stage3Selected(shipID=stuff.item.ID, back=groupID))
+        wx.PostEvent(self.mainFrame.shipBrowser, Stage3Selected(shipID=stuff.item.ID, back=groupID))
 
 
 ShipJump.register()

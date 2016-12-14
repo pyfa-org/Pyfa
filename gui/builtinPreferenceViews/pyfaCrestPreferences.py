@@ -30,13 +30,17 @@ class PFCrestPref(PreferenceView):
         self.m_staticline1 = wx.StaticLine(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL)
         mainSizer.Add(self.m_staticline1, 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 5)
 
-        self.stInfo = wx.StaticText(panel, wx.ID_ANY, u"Please see the pyfa wiki on GitHub for information regarding these options.", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.stInfo = wx.StaticText(panel, wx.ID_ANY,
+                                    u"Please see the pyfa wiki on GitHub for information regarding these options.",
+                                    wx.DefaultPosition, wx.DefaultSize, 0)
         self.stInfo.Wrap(dlgWidth - 50)
         mainSizer.Add(self.stInfo, 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 5)
 
         rbSizer = wx.BoxSizer(wx.HORIZONTAL)
-        self.rbMode = wx.RadioBox(panel, -1, "Mode", wx.DefaultPosition, wx.DefaultSize, ['Implicit', 'User-supplied details'], 1, wx.RA_SPECIFY_COLS)
-        self.rbServer = wx.RadioBox(panel, -1, "Server", wx.DefaultPosition, wx.DefaultSize, ['Tranquility', 'Singularity'], 1, wx.RA_SPECIFY_COLS)
+        self.rbMode = wx.RadioBox(panel, -1, "Mode", wx.DefaultPosition, wx.DefaultSize,
+                                  ['Implicit', 'User-supplied details'], 1, wx.RA_SPECIFY_COLS)
+        self.rbServer = wx.RadioBox(panel, -1, "Server", wx.DefaultPosition, wx.DefaultSize,
+                                    ['Tranquility', 'Singularity'], 1, wx.RA_SPECIFY_COLS)
 
         self.rbMode.SetSelection(self.settings.get('mode'))
         self.rbServer.SetSelection(self.settings.get('server'))
@@ -67,7 +71,8 @@ class PFCrestPref(PreferenceView):
         detailsTitle.SetFont(wx.Font(12, 70, 90, 90, False, wx.EmptyString))
 
         mainSizer.Add(detailsTitle, 0, wx.ALL, 5)
-        mainSizer.Add(wx.StaticLine(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL), 0, wx.EXPAND, 5)
+        mainSizer.Add(wx.StaticLine(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL), 0,
+                      wx.EXPAND, 5)
 
         fgAddrSizer = wx.FlexGridSizer(2, 2, 0, 0)
         fgAddrSizer.AddGrowableCol(1)
@@ -78,7 +83,8 @@ class PFCrestPref(PreferenceView):
         self.stSetID.Wrap(-1)
         fgAddrSizer.Add(self.stSetID, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
 
-        self.inputClientID = wx.TextCtrl(panel, wx.ID_ANY, self.settings.get('clientID'), wx.DefaultPosition, wx.DefaultSize, 0)
+        self.inputClientID = wx.TextCtrl(panel, wx.ID_ANY, self.settings.get('clientID'), wx.DefaultPosition,
+                                         wx.DefaultSize, 0)
 
         fgAddrSizer.Add(self.inputClientID, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL | wx.EXPAND, 5)
 
@@ -87,7 +93,8 @@ class PFCrestPref(PreferenceView):
 
         fgAddrSizer.Add(self.stSetSecret, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
 
-        self.inputClientSecret = wx.TextCtrl(panel, wx.ID_ANY, self.settings.get('clientSecret'), wx.DefaultPosition, wx.DefaultSize, 0)
+        self.inputClientSecret = wx.TextCtrl(panel, wx.ID_ANY, self.settings.get('clientSecret'), wx.DefaultPosition,
+                                             wx.DefaultSize, 0)
 
         fgAddrSizer.Add(self.inputClientSecret, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL | wx.EXPAND, 5)
 

@@ -95,14 +95,12 @@ class FighterAbility(object):
 
     @property
     def reloadTime(self):
-        return self.fighter.getModifiedItemAttr("fighterRefuelingTime") + \
-               (self.REARM_TIME_MAPPING[self.fighter.getModifiedItemAttr(
-                   "fighterSquadronRole")] or 0 if self.hasCharges else 0) * self.numShots
+        rearm_time = (self.REARM_TIME_MAPPING[self.fighter.getModifiedItemAttr("fighterSquadronRole")] or 0 if self.hasCharges else 0)
+        return self.fighter.getModifiedItemAttr("fighterRefuelingTime") + rearm_time * self.numShots
 
     @property
     def numShots(self):
-        return self.NUM_SHOTS_MAPPING[
-                   self.fighter.getModifiedItemAttr("fighterSquadronRole")] or 0 if self.hasCharges else 0
+        return self.NUM_SHOTS_MAPPING[self.fighter.getModifiedItemAttr("fighterSquadronRole")] or 0 if self.hasCharges else 0
 
     @property
     def cycleTime(self):

@@ -62,7 +62,8 @@ class RechargeViewFull(StatsView):
 
         # Add an empty label first for correct alignment.
         sizerTankStats.Add(wx.StaticText(contentPanel, wx.ID_ANY, ""), 0)
-        toolTipText = {"shieldPassive": "Passive shield recharge", "shieldActive": "Active shield boost", "armorActive": "Armor repair amount", "hullActive": "Hull repair amount"}
+        toolTipText = {"shieldPassive": "Passive shield recharge", "shieldActive": "Active shield boost",
+                       "armorActive": "Armor repair amount", "hullActive": "Hull repair amount"}
         for tankType in ("shieldPassive", "shieldActive", "armorActive", "hullActive"):
             bitmap = BitmapLoader.getStaticBitmap("%s_big" % tankType, contentPanel, "gui")
             tooltip = wx.ToolTip(toolTipText[tankType])

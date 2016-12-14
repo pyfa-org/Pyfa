@@ -26,14 +26,12 @@ import time
 
 from codecs import open
 
-from wx._core import PyDeadObjectError
 from wx.lib.wordwrap import wordwrap
 
 import config
 
 import gui.aboutData
 import gui.chromeTabs
-import gui.utils.animUtils as animUtils
 import gui.globalEvents as GE
 
 from gui.bitmapLoader import BitmapLoader
@@ -52,9 +50,9 @@ from gui.preferenceDialog import PreferenceDialog
 from gui.graphFrame import GraphFrame
 from gui.copySelectDialog import CopySelectDialog
 from gui.utils.clipboard import toClipboard, fromClipboard
-from gui.fleetBrowser import FleetBrowser
+from gui.fleetBrowser import FleetBrowser # Noqa - TODO: unsure if this is needed here
 from gui.updateDialog import UpdateDialog
-from gui.builtinViews import *
+from gui.builtinViews import * # Noqa - TODO: unsure if this is needed here
 from gui import graphFrame
 
 from service.settings import SettingsProvider

@@ -102,7 +102,8 @@ class ResourcesViewFull(StatsView):
         base = sizerResources
         sizer.AddSpacer((0, 0), 1, wx.EXPAND, 5)
         # Turrets & launcher hardslots display
-        tooltipText = {"turret": "Turret hardpoints", "launcher": "Launcher hardpoints", "drones": "Drones active", "fighter": "Fighter squadrons active", "calibration": "Calibration"}
+        tooltipText = {"turret": "Turret hardpoints", "launcher": "Launcher hardpoints", "drones": "Drones active",
+                       "fighter": "Fighter squadrons active", "calibration": "Calibration"}
         for type_ in ("turret", "launcher", "drones", "fighter", "calibration"):
             box = wx.BoxSizer(wx.HORIZONTAL)
 
@@ -114,7 +115,8 @@ class ResourcesViewFull(StatsView):
 
             sizer.Add(box, 0, wx.ALIGN_CENTER)
 
-            suffix = {'turret': 'Hardpoints', 'launcher': 'Hardpoints', 'drones': 'Active', 'fighter': 'Tubes', 'calibration': 'Points'}
+            suffix = {'turret': 'Hardpoints', 'launcher': 'Hardpoints', 'drones': 'Active', 'fighter': 'Tubes',
+                      'calibration': 'Points'}
             lbl = wx.StaticText(parent, wx.ID_ANY, "0")
             setattr(self, "label%sUsed%s%s" % (panel.capitalize(), type_.capitalize(), suffix[type_].capitalize()), lbl)
             box.Add(lbl, 0, wx.ALIGN_CENTER | wx.LEFT, 5)
@@ -122,7 +124,8 @@ class ResourcesViewFull(StatsView):
             box.Add(wx.StaticText(parent, wx.ID_ANY, "/"), 0, wx.ALIGN_CENTER)
 
             lbl = wx.StaticText(parent, wx.ID_ANY, "0")
-            setattr(self, "label%sTotal%s%s" % (panel.capitalize(), type_.capitalize(), suffix[type_].capitalize()), lbl)
+            setattr(self, "label%sTotal%s%s" % (panel.capitalize(), type_.capitalize(), suffix[type_].capitalize()),
+                    lbl)
             box.Add(lbl, 0, wx.ALIGN_CENTER)
             setattr(self, "boxSizer{}".format(type_.capitalize()), box)
 
@@ -132,7 +135,8 @@ class ResourcesViewFull(StatsView):
                 sizer.AddSpacer((0, 0), 1, wx.EXPAND, 5)
 
         # PG, Cpu & drone stuff
-        tooltipText = {"cpu": "CPU", "pg": "PowerGrid", "droneBay": "Drone bay", "fighterBay": "Fighter bay", "droneBandwidth": "Drone bandwidth", "cargoBay": "Cargo bay"}
+        tooltipText = {"cpu": "CPU", "pg": "PowerGrid", "droneBay": "Drone bay", "fighterBay": "Fighter bay",
+                       "droneBandwidth": "Drone bandwidth", "cargoBay": "Cargo bay"}
         for i, group in enumerate((("cpu", "pg"), ("cargoBay", "droneBay", "fighterBay", "droneBandwidth"))):
             main = wx.BoxSizer(wx.VERTICAL)
             base.Add(main, 1, wx.ALIGN_CENTER)
@@ -164,7 +168,8 @@ class ResourcesViewFull(StatsView):
                 setattr(self, "label%sTotal%s" % (panel.capitalize(), capitalizedType), lbl)
                 absolute.Add(lbl, 0, wx.ALIGN_LEFT)
 
-                units = {"cpu": " tf", "pg": " MW", "droneBandwidth": " mbit/s", "droneBay": u" m\u00B3", "fighterBay": u" m\u00B3", "cargoBay": u" m\u00B3"}
+                units = {"cpu": " tf", "pg": " MW", "droneBandwidth": " mbit/s", "droneBay": u" m\u00B3",
+                         "fighterBay": u" m\u00B3", "cargoBay": u" m\u00B3"}
                 lbl = wx.StaticText(parent, wx.ID_ANY, "%s" % units[type_])
                 absolute.Add(lbl, 0, wx.ALIGN_LEFT)
 

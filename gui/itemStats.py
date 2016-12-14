@@ -65,7 +65,9 @@ class ItemStatsDialog(wx.Dialog):
         except IndexError:
             itmContext = None
         item = getattr(victim, "item", None) if srcContext.lower() not in (
-        "projectedcharge", "fittingcharge") else getattr(victim, "charge", None)
+            "projectedcharge",
+            "fittingcharge"
+        ) else getattr(victim, "charge", None)
         if item is None:
             sMkt = Market.getInstance()
             item = sMkt.getItem(victim.ID)
@@ -477,7 +479,7 @@ class ItemParams(wx.Panel):
         trans = {"Inverse Absolute Percent": (lambda: (1 - value) * 100, unitName),
                  "Inversed Modifier Percent": (lambda: (1 - value) * 100, unitName),
                  "Modifier Percent": (
-                 lambda: ("%+.2f" if ((value - 1) * 100) % 1 else "%+d") % ((value - 1) * 100), unitName),
+                     lambda: ("%+.2f" if ((value - 1) * 100) % 1 else "%+d") % ((value - 1) * 100), unitName),
                  "Volume": (lambda: value, u"m\u00B3"),
                  "Sizeclass": (lambda: value, ""),
                  "Absolute Percent": (lambda: (value * 100), unitName),
@@ -1254,10 +1256,18 @@ class ItemAffectedBy(wx.Panel):
                         if self.showRealNames:
                             display = "%s %s %.2f %s" % (attrName, attrModifier, attrAmount, penalized)
                             saved = "%s %s %.2f %s" % (
-                            (displayName if displayName != "" else attrName), attrModifier, attrAmount, penalized)
+                                displayName if displayName != "" else attrName,
+                                attrModifier,
+                                attrAmount,
+                                penalized
+                            )
                         else:
                             display = "%s %s %.2f %s" % (
-                            (displayName if displayName != "" else attrName), attrModifier, attrAmount, penalized)
+                                displayName if displayName != "" else attrName,
+                                attrModifier,
+                                attrAmount,
+                                penalized
+                            )
                             saved = "%s %s %.2f %s" % (attrName, attrModifier, attrAmount, penalized)
 
                         treeitem = self.affectedBy.AppendItem(child, display, attrIcon)

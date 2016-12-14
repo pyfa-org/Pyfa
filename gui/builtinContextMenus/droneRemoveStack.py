@@ -2,6 +2,8 @@ from gui.contextMenu import ContextMenu
 import gui.mainFrame
 import wx
 import gui.globalEvents as GE
+from service.fit import Fit
+
 
 class ItemRemove(ContextMenu):
     def __init__(self):

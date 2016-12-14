@@ -71,10 +71,14 @@ class FleetView(wx.gizmos.TreeListCtrl):
         event.Skip()
 
     def checkNew(self, event):
+        self.GetPyData(event.Item)
+
+        # TODO: Doesn't seem to be used
+        '''
         data = self.GetPyData(event.Item)
         if data and isinstance(data, tuple) and data[0] == "add":
             layer = data[1]
-
+        '''
 
     def UpdateTab(self, name, img):
         self.tabManager.SetPageTextIcon(self.tabManager.GetSelection(), name, img)

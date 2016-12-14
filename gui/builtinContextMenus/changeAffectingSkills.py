@@ -8,6 +8,7 @@ import gui.globalEvents as GE
 from service.fit import Fit
 from service.character import Character
 
+
 class ChangeAffectingSkills(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
@@ -22,7 +23,7 @@ class ChangeAffectingSkills(ContextMenu):
 
         self.charID = fit.character.ID
 
-        #if self.sChar.getCharName(self.charID) in ("All 0", "All 5"):
+        # if self.sChar.getCharName(self.charID) in ("All 0", "All 5"):
         #    return False
 
         if srcContext == "fittingShip":

@@ -93,18 +93,18 @@ FitSpawner.register()
 
 # Drag'n'drop handler
 class FittingViewDrop(wx.PyDropTarget):
-        def __init__(self, dropFn):
-            wx.PyDropTarget.__init__(self)
-            self.dropFn = dropFn
-            # this is really transferring an EVE itemID
-            self.dropData = wx.PyTextDataObject()
-            self.SetDataObject(self.dropData)
+    def __init__(self, dropFn):
+        wx.PyDropTarget.__init__(self)
+        self.dropFn = dropFn
+        # this is really transferring an EVE itemID
+        self.dropData = wx.PyTextDataObject()
+        self.SetDataObject(self.dropData)
 
-        def OnData(self, x, y, t):
-            if self.GetData():
-                data = self.dropData.GetText().split(':')
-                self.dropFn(x, y, data)
-            return t
+    def OnData(self, x, y, t):
+        if self.GetData():
+            data = self.dropData.GetText().split(':')
+            self.dropFn(x, y, data)
+        return t
 
 
 class FittingView(d.Display):
@@ -372,7 +372,8 @@ class FittingView(d.Display):
             module = self.mods[dstRow]
 
             sFit = Fit.getInstance()
-            sFit.moveCargoToModule(self.mainFrame.getActiveFit(), module.position, srcIdx, mstate.CmdDown() and module.isEmpty)
+            sFit.moveCargoToModule(self.mainFrame.getActiveFit(), module.position, srcIdx,
+                                   mstate.CmdDown() and module.isEmpty)
 
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
 
@@ -425,7 +426,7 @@ class FittingView(d.Display):
             # as Racks and tactical Modes. This allows us to skip over common
             # module operations such as swapping, removing, copying, etc. that
             # would otherwise cause complications
-            self.blanks = []   # preliminary markers where blanks will be inserted
+            self.blanks = []  # preliminary markers where blanks will be inserted
 
             if sFit.serviceFittingOptions["rackSlots"]:
                 # flag to know when to add blanks, based on previous slot

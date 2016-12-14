@@ -35,7 +35,7 @@ from service.fit import Fit
 
 import wx
 
-from eos.types import State, Slot, Module, Cargo, Fit, Ship, Drone, Implant, Booster, Citadel
+from eos.types import State, Slot, Module, Cargo, Ship, Drone, Implant, Booster, Citadel
 from service.crest import Crest
 from service.market import Market
 
@@ -823,8 +823,8 @@ class Port(object):
             slot = module.slot
             if slot not in stuff:
                 stuff[slot] = []
-            curr = module.item.name if module.item else (
-            "[Empty %s slot]" % Slot.getName(slot).capitalize() if slot is not None else "")
+            curr = module.item.name if module.item \
+                else ("[Empty %s slot]" % Slot.getName(slot).capitalize() if slot is not None else "")
             if module.charge and sFit.serviceFittingOptions["exportCharges"]:
                 curr += ", %s" % module.charge.name
             if module.state == State.OFFLINE:

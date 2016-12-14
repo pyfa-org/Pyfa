@@ -667,10 +667,10 @@ class Fit(object):
                         standardAttackActive = True
                     else:
                         # Activate all other abilities (Neut, Web, etc) except propmods if no standard attack is active
-                        if (ability.effect.isImplemented
-                            and standardAttackActive is False
-                            and ability.effect.handlerName != u'fighterabilitymicrowarpdrive'
-                            and ability.effect.handlerName != u'fighterabilityevasivemaneuvers'):
+                        if ability.effect.isImplemented and \
+                                standardAttackActive is False and \
+                                ability.effect.handlerName != u'fighterabilitymicrowarpdrive' and \
+                                ability.effect.handlerName != u'fighterabilityevasivemaneuvers':
                             ability.active = True
 
                 if used >= total:

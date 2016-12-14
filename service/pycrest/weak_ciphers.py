@@ -102,8 +102,7 @@ class WeakCiphersHTTPSConnection(urllib3.connection.VerifiedHTTPSConnection):  #
         self.is_verified = (resolved_cert_reqs == ssl.CERT_REQUIRED or self.assert_fingerprint is not None)
 
 
-class WeakCiphersHTTPSConnectionPool(
-    urllib3.connectionpool.HTTPSConnectionPool):
+class WeakCiphersHTTPSConnectionPool(urllib3.connectionpool.HTTPSConnectionPool):
     ConnectionCls = WeakCiphersHTTPSConnection
 
 

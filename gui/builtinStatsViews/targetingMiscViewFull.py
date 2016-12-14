@@ -133,14 +133,17 @@ class TargetingMiscViewFull(StatsView):
             "specialSmallShipHoldCapacity": lambda: fit.ship.getModifiedItemAttr("specialSmallShipHoldCapacity"),
             "specialMediumShipHoldCapacity": lambda: fit.ship.getModifiedItemAttr("specialMediumShipHoldCapacity"),
             "specialLargeShipHoldCapacity": lambda: fit.ship.getModifiedItemAttr("specialLargeShipHoldCapacity"),
-            "specialIndustrialShipHoldCapacity": lambda: fit.ship.getModifiedItemAttr("specialIndustrialShipHoldCapacity"),
+            "specialIndustrialShipHoldCapacity": lambda: fit.ship.getModifiedItemAttr(
+                "specialIndustrialShipHoldCapacity"),
             "specialOreHoldCapacity": lambda: fit.ship.getModifiedItemAttr("specialOreHoldCapacity"),
             "specialMineralHoldCapacity": lambda: fit.ship.getModifiedItemAttr("specialMineralHoldCapacity"),
             "specialMaterialBayCapacity": lambda: fit.ship.getModifiedItemAttr("specialMaterialBayCapacity"),
             "specialGasHoldCapacity": lambda: fit.ship.getModifiedItemAttr("specialGasHoldCapacity"),
             "specialSalvageHoldCapacity": lambda: fit.ship.getModifiedItemAttr("specialSalvageHoldCapacity"),
-            "specialCommandCenterHoldCapacity": lambda: fit.ship.getModifiedItemAttr("specialCommandCenterHoldCapacity"),
-            "specialPlanetaryCommoditiesHoldCapacity": lambda: fit.ship.getModifiedItemAttr("specialPlanetaryCommoditiesHoldCapacity"),
+            "specialCommandCenterHoldCapacity": lambda: fit.ship.getModifiedItemAttr(
+                "specialCommandCenterHoldCapacity"),
+            "specialPlanetaryCommoditiesHoldCapacity": lambda: fit.ship.getModifiedItemAttr(
+                "specialPlanetaryCommoditiesHoldCapacity"),
             "specialQuafeHoldCapacity": lambda: fit.ship.getModifiedItemAttr("specialQuafeHoldCapacity")
         }
 
@@ -196,7 +199,8 @@ class TargetingMiscViewFull(StatsView):
                         label.SetToolTip(wx.ToolTip("Max Warp Distance: %.1f AU" % fit.maxWarpDistance))
                     elif labelName == "labelSensorStr":
                         if fit.jamChance > 0:
-                            label.SetToolTip(wx.ToolTip("Type: %s\n%.1f%% Chance of Jam" % (fit.scanType, fit.jamChance)))
+                            label.SetToolTip(
+                                wx.ToolTip("Type: %s\n%.1f%% Chance of Jam" % (fit.scanType, fit.jamChance)))
                         else:
                             label.SetToolTip(wx.ToolTip("Type: %s" % (fit.scanType)))
                     elif labelName == "labelFullAlignTime":
@@ -206,7 +210,8 @@ class TargetingMiscViewFull(StatsView):
                         label.SetToolTip(wx.ToolTip("%s\n%s\n%s" % (alignTime, mass, agility)))
                     elif labelName == "labelFullCargo":
                         tipLines = []
-                        tipLines.append(u"Cargohold: {:,.2f}m\u00B3 / {:,.2f}m\u00B3".format(fit.cargoBayUsed, newValues["main"]))
+                        tipLines.append(
+                            u"Cargohold: {:,.2f}m\u00B3 / {:,.2f}m\u00B3".format(fit.cargoBayUsed, newValues["main"]))
                         for attrName, tipAlias in cargoNamesOrder.items():
                             if newValues[attrName] > 0:
                                 tipLines.append(u"{}: {:,.2f}m\u00B3".format(tipAlias, newValues[attrName]))
@@ -235,7 +240,8 @@ class TargetingMiscViewFull(StatsView):
                     # if you add stuff to cargo, the capacity doesn't change and thus it is still cached
                     # This assures us that we force refresh of cargo tooltip
                     tipLines = []
-                    tipLines.append(u"Cargohold: {:,.2f}m\u00B3 / {:,.2f}m\u00B3".format(fit.cargoBayUsed, cachedCargo["main"]))
+                    tipLines.append(
+                        u"Cargohold: {:,.2f}m\u00B3 / {:,.2f}m\u00B3".format(fit.cargoBayUsed, cachedCargo["main"]))
                     for attrName, tipAlias in cargoNamesOrder.items():
                         if cachedCargo[attrName] > 0:
                             tipLines.append(u"{}: {:,.2f}m\u00B3".format(tipAlias, cachedCargo[attrName]))

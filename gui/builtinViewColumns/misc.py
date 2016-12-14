@@ -400,7 +400,8 @@ class Miscellanea(ViewColumn):
             tooltip = "Optimal signature radius"
             return text, tooltip
         elif itemGroup in ("Frequency Mining Laser", "Strip Miner", "Mining Laser", "Gas Cloud Harvester"):
-            miningAmount = stuff.getModifiedItemAttr("specialtyMiningAmount") or stuff.getModifiedItemAttr("miningAmount")
+            miningAmount = stuff.getModifiedItemAttr("specialtyMiningAmount") or stuff.getModifiedItemAttr(
+                "miningAmount")
             cycleTime = stuff.cycleTime
             if not miningAmount or not cycleTime:
                 return "", None
@@ -506,10 +507,25 @@ class Miscellanea(ViewColumn):
             return text, tooltip
         elif stuff.charge is not None:
             chargeGroup = stuff.charge.group.name
-            if chargeGroup in ("Rocket", "Advanced Rocket", "Light Missile", "Advanced Light Missile", "FoF Light Missile",
-                               "Heavy Assault Missile", "Advanced Heavy Assault Missile", "Heavy Missile", "Advanced Heavy Missile", "FoF Heavy Missile",
-                               "Torpedo", "Advanced Torpedo", "Cruise Missile", "Advanced Cruise Missile", "FoF Cruise Missile",
-                               "XL Torpedo", "XL Cruise Missile"):
+            if chargeGroup in (
+                    "Rocket",
+                    "Advanced Rocket",
+                    "Light Missile",
+                    "Advanced Light Missile",
+                    "FoF Light Missile",
+                    "Heavy Assault Missile",
+                    "Advanced Heavy Assault Missile",
+                    "Heavy Missile",
+                    "Advanced Heavy Missile",
+                    "FoF Heavy Missile",
+                    "Torpedo",
+                    "Advanced Torpedo",
+                    "Cruise Missile",
+                    "Advanced Cruise Missile",
+                    "FoF Cruise Missile",
+                    "XL Torpedo",
+                    "XL Cruise Missile"
+            ):
                 cloudSize = stuff.getModifiedChargeAttr("aoeCloudSize")
                 aoeVelocity = stuff.getModifiedChargeAttr("aoeVelocity")
                 if not cloudSize or not aoeVelocity:

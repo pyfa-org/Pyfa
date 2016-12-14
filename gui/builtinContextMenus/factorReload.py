@@ -5,6 +5,7 @@ import wx
 from gui.bitmapLoader import BitmapLoader
 from service.fit import Fit
 
+
 class FactorReload(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()

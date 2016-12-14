@@ -8,6 +8,7 @@ import gui.mainFrame
 import gui.globalEvents as GE
 from gui.contextMenu import ContextMenu
 
+
 class MetaSwap(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
@@ -94,7 +95,7 @@ class MetaSwap(ContextMenu):
         sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
         fit = sFit.getFit(fitID)
-        
+
         for mod in self.selection:
             pos = fit.modules.index(mod)
             sFit.changeModule(fitID, pos, item.ID)

@@ -4,6 +4,8 @@
 # Modules from group: Titan Phenomena Generator (4 of 4)
 
 type = "active", "gang"
+
+
 def handler(fit, module, context, **kwargs):
     def runEffect(id, value):
         if id == 39:  # Avatar Effect Generator : Capacitor Recharge bonus
@@ -53,14 +55,17 @@ def handler(fit, module, context, **kwargs):
             fit.ship.boostItemAttr("maxVelocity", value, stackingPenalties=True)
 
         if id == 52:  # Erebus Effect Generator : Shield RR penalty
-            fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Shield Emission Systems"), "shieldBonus", value, stackingPenalties=True)
+            fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Shield Emission Systems"), "shieldBonus",
+                                          value, stackingPenalties=True)
 
         if id == 53:  # Leviathan Effect Generator : Armor RR penalty
-            fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Remote Armor Repair Systems"), "armorDamageAmount", value, stackingPenalties=True)
+            fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Remote Armor Repair Systems"),
+                                          "armorDamageAmount", value, stackingPenalties=True)
 
         if id == 54:  # Ragnarok Effect Generator : Laser and Hybrid Optimal penalty
             groups = ("Energy Weapon", "Hybrid Weapon")
-            fit.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups, "maxRange", value, stackingPenalties=True)
+            fit.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups, "maxRange", value,
+                                          stackingPenalties=True)
 
     for x in xrange(1, 4):
         if module.getModifiedChargeAttr("warfareBuff{}ID".format(x)):
@@ -72,4 +77,3 @@ def handler(fit, module, context, **kwargs):
                     fit.addCommandBonus(id, value, module, kwargs['effect'])
                 elif kwargs['warfareBuffID'] is not None and kwargs['warfareBuffID'] == id:
                     runEffect(kwargs['warfareBuffID'], value)
-

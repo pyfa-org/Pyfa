@@ -33,7 +33,8 @@ class PFNetworkPref(PreferenceView):
         mainSizer.Add(self.cbEnableNetwork, 0, wx.ALL | wx.EXPAND, 5)
 
         subSizer = wx.BoxSizer(wx.VERTICAL)
-        self.cbEve = wx.CheckBox(panel, wx.ID_ANY, u"EVE Servers (API && CREST import)", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.cbEve = wx.CheckBox(panel, wx.ID_ANY, u"EVE Servers (API && CREST import)", wx.DefaultPosition,
+                                 wx.DefaultSize, 0)
         subSizer.Add(self.cbEve, 0, wx.ALL | wx.EXPAND, 5)
 
         self.cbPricing = wx.CheckBox(panel, wx.ID_ANY, u"Pricing updates", wx.DefaultPosition, wx.DefaultSize, 0)
@@ -49,7 +50,8 @@ class PFNetworkPref(PreferenceView):
         proxyTitle.SetFont(wx.Font(12, 70, 90, 90, False, wx.EmptyString))
 
         mainSizer.Add(proxyTitle, 0, wx.ALL, 5)
-        mainSizer.Add(wx.StaticLine(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL), 0, wx.EXPAND, 5)
+        mainSizer.Add(wx.StaticLine(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL), 0,
+                      wx.EXPAND, 5)
 
         self.cbEnableNetwork.SetValue(self.settings.isEnabled(self.network.ENABLED))
         self.cbEve.SetValue(self.settings.isEnabled(self.network.EVE))
@@ -117,7 +119,8 @@ class PFNetworkPref(PreferenceView):
         # proxy auth information: login and pass
         self.stPSetLogin = wx.StaticText(panel, wx.ID_ANY, u"Username:", wx.DefaultPosition, wx.DefaultSize, 0)
         self.stPSetLogin.Wrap(-1)
-        self.editProxySettingsLogin = wx.TextCtrl(panel, wx.ID_ANY, self.nAuth[0], wx.DefaultPosition, wx.DefaultSize, 0)
+        self.editProxySettingsLogin = wx.TextCtrl(panel, wx.ID_ANY, self.nAuth[0], wx.DefaultPosition, wx.DefaultSize,
+                                                  0)
         self.stPSetPassword = wx.StaticText(panel, wx.ID_ANY, u"Password:", wx.DefaultPosition, wx.DefaultSize, 0)
         self.stPSetPassword.Wrap(-1)
         self.editProxySettingsPassword = wx.TextCtrl(panel, wx.ID_ANY, self.nAuth[1], wx.DefaultPosition,
@@ -129,7 +132,8 @@ class PFNetworkPref(PreferenceView):
         pAuthSizer.Add(self.editProxySettingsPassword, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
         mainSizer.Add(pAuthSizer, 0, wx.EXPAND, 5)
 
-        self.stPSAutoDetected = wx.StaticText(panel, wx.ID_ANY, u"Auto-detected: ", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.stPSAutoDetected = wx.StaticText(panel, wx.ID_ANY, u"Auto-detected: ", wx.DefaultPosition, wx.DefaultSize,
+                                              0)
         self.stPSAutoDetected.Wrap(-1)
         mainSizer.Add(self.stPSAutoDetected, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
 

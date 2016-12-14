@@ -1,5 +1,4 @@
 from gui.contextMenu import ContextMenu
-from gui.itemStats import ItemStatsDialog
 import eos.types
 import gui.mainFrame
 import gui.globalEvents as GE
@@ -8,12 +7,13 @@ from service.fit import Fit
 from eos.saveddata.cargo import Cargo as es_Cargo
 from eos.saveddata.fighter import Fighter as es_Fighter
 
+
 class ChangeAmount(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     def display(self, srcContext, selection):
-        return srcContext in ("cargoItem","projectedFit","fighterItem","projectedFighter")
+        return srcContext in ("cargoItem", "projectedFit", "fighterItem", "projectedFighter")
 
     def getText(self, itmContext, selection):
         return "Change {0} Quantity".format(itmContext)
@@ -26,8 +26,8 @@ class ChangeAmount(ContextMenu):
 
 ChangeAmount.register()
 
-class AmountChanger(wx.Dialog):
 
+class AmountChanger(wx.Dialog):
     def __init__(self, parent, thing, context):
         wx.Dialog.__init__(self, parent, title="Select Amount", size=wx.Size(220, 60))
         self.thing = thing
@@ -65,15 +65,14 @@ class AmountChanger(wx.Dialog):
         event.Skip()
         self.Close()
 
-    ## checks to make sure it's valid number
+    # checks to make sure it's valid number
     def onChar(self, event):
         key = event.GetKeyCode()
 
         acceptable_characters = "1234567890"
-        acceptable_keycode    = [3, 22, 13, 8, 127] # modifiers like delete, copy, paste
+        acceptable_keycode = [3, 22, 13, 8, 127]  # modifiers like delete, copy, paste
         if key in acceptable_keycode or key >= 255 or (key < 255 and chr(key) in acceptable_characters):
             event.Skip()
             return
         else:
             return False
-

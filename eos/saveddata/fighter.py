@@ -125,10 +125,6 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         return self.__abilities or []
 
     @property
-    def charge(self):
-        return self.__charge
-
-    @property
     def itemModifiedAttributes(self):
         return self.__itemModifiedAttributes
 
@@ -269,8 +265,7 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         for ability in self.abilities:
             if ability.active:
                 effect = ability.effect
-                if effect.runTime == runTime and \
-                effect.activeByDefault and \
+                if effect.runTime == runTime and effect.activeByDefault and \
                         ((projected and effect.isType("projected")) or not projected):
                     if ability.grouped:
                         effect.handler(fit, self, context)

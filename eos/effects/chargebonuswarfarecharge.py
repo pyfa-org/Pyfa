@@ -14,6 +14,8 @@ which warfareBuffID to run (shouldn't need this right now, but better safe than 
 '''
 
 type = "active", "gang"
+
+
 def handler(fit, module, context, **kwargs):
     print "In chargeBonusWarfareEffect, context: ", context
 
@@ -25,8 +27,12 @@ def handler(fit, module, context, **kwargs):
                 fit.ship.boostItemAttr("shield%sDamageResonance" % damageType, value, stackingPenalties=True)
 
         if id == 11:  # Shield Burst: Active Shielding: Repair Duration/Capacitor
-            fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Shield Operation") or mod.item.requiresSkill("Shield Emission Systems"), "capacitorNeed", value)
-            fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Shield Operation") or mod.item.requiresSkill("Shield Emission Systems"), "duration", value)
+            fit.modules.filteredItemBoost(
+                lambda mod: mod.item.requiresSkill("Shield Operation") or mod.item.requiresSkill(
+                    "Shield Emission Systems"), "capacitorNeed", value)
+            fit.modules.filteredItemBoost(
+                lambda mod: mod.item.requiresSkill("Shield Operation") or mod.item.requiresSkill(
+                    "Shield Emission Systems"), "duration", value)
 
         if id == 12:  # Shield Burst: Shield Extension: Shield HP
             fit.ship.boostItemAttr("shieldCapacity", value, stackingPenalties=True)
@@ -36,8 +42,12 @@ def handler(fit, module, context, **kwargs):
                 fit.ship.boostItemAttr("armor%sDamageResonance" % damageType, value, stackingPenalties=True)
 
         if id == 14:  # Armor Burst: Rapid Repair: Repair Duration/Capacitor
-            fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Remote Armor Repair Systems") or mod.item.requiresSkill("Repair Systems"), "capacitorNeed", value)
-            fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Remote Armor Repair Systems") or mod.item.requiresSkill("Repair Systems"), "duration", value)
+            fit.modules.filteredItemBoost(
+                lambda mod: mod.item.requiresSkill("Remote Armor Repair Systems") or mod.item.requiresSkill(
+                    "Repair Systems"), "capacitorNeed", value)
+            fit.modules.filteredItemBoost(
+                lambda mod: mod.item.requiresSkill("Remote Armor Repair Systems") or mod.item.requiresSkill(
+                    "Repair Systems"), "duration", value)
 
         if id == 15:  # Armor Burst: Armor Reinforcement: Armor HP
             fit.ship.boostItemAttr("armorHP", value, stackingPenalties=True)
@@ -47,11 +57,14 @@ def handler(fit, module, context, **kwargs):
 
         if id == 17:  # Information Burst: Electronic Superiority: EWAR Range and Strength
             groups = ("ECM", "Sensor Dampener", "Weapon Disruptor", "Target Painter")
-            fit.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups, "maxRange", value, stackingPenalties=True)
-            fit.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups, "falloffEffectiveness", value, stackingPenalties=True)
+            fit.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups, "maxRange", value,
+                                          stackingPenalties=True)
+            fit.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups, "falloffEffectiveness", value,
+                                          stackingPenalties=True)
 
             for scanType in ("Magnetometric", "Radar", "Ladar", "Gravimetric"):
-                fit.modules.filteredItemBoost(lambda mod: mod.item.group.nam == "ECM", "scan%sStrengthBonus" % scanType, value, stackingPenalties=True)
+                fit.modules.filteredItemBoost(lambda mod: mod.item.group.nam == "ECM", "scan%sStrengthBonus" % scanType,
+                                              value, stackingPenalties=True)
 
             for attr in ("missileVelocityBonus", "explosionDelayBonus", "aoeVelocityBonus", "falloffBonus",
                          "maxRangeBonus", "aoeCloudSizeBonus", "trackingSpeedBonus"):
@@ -60,7 +73,8 @@ def handler(fit, module, context, **kwargs):
             for attr in ("maxTargetRangeBonus", "scanResolutionBonus"):
                 fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == "Sensor Dampener", attr, value)
 
-            fit.modules.filteredItemBoost(lambda mod: mod.item.gorup.name == "Target Painter", "signatureRadiusBonus", value, stackingPenalties=True)
+            fit.modules.filteredItemBoost(lambda mod: mod.item.gorup.name == "Target Painter", "signatureRadiusBonus",
+                                          value, stackingPenalties=True)
 
         if id == 18:  # Information Burst: Electronic Hardening: Scan Strength
             for scanType in ("Gravimetric", "Radar", "Ladar", "Magnetometric"):
@@ -78,27 +92,39 @@ def handler(fit, module, context, **kwargs):
 
         if id == 21:  # Skirmish Burst: Interdiction Maneuvers: Tackle Range
             groups = ("Stasis Web", "Warp Scrambler")
-            fit.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups, "maxRange", value, stackingPenalties=True)
+            fit.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups, "maxRange", value,
+                                          stackingPenalties=True)
 
         if id == 22:  # Skirmish Burst: Rapid Deployment: AB/MWD Speed Increase
-            fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Afterburner") or mod.item.requiresSkill("High Speed Maneuvering"), "speedFactor", value, stackingPenalties=True)
+            fit.modules.filteredItemBoost(
+                lambda mod: mod.item.requiresSkill("Afterburner") or mod.item.requiresSkill("High Speed Maneuvering"),
+                "speedFactor", value, stackingPenalties=True)
 
         if id == 23:  # Mining Burst: Mining Laser Field Enhancement: Mining/Survey Range
-            fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Mining") or mod.item.requiresSkill("Ice Harvesting") or mod.item.requiresSkill("Gas Cloud Harvesting"), "maxRange", value, stackingPenalties=True)
-            fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("CPU Management"), "surveyScanRange", value, stackingPenalties=True)
+            fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Mining") or
+                                                      mod.item.requiresSkill("Ice Harvesting") or
+                                                      mod.item.requiresSkill("Gas Cloud Harvesting"),
+                                          "maxRange",
+                                          value,
+                                          stackingPenalties=True)
+            fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("CPU Management"), "surveyScanRange",
+                                          value, stackingPenalties=True)
 
         if id == 24:  # Mining Burst: Mining Laser Optimization: Mining Capacitor/Duration
-            fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Mining") or mod.item.requiresSkill("Ice Harvesting") or mod.item.requiresSkill("Gas Cloud Harvesting"), "capacitorNeed", value, stackingPenalties=True)
-            fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Mining") or mod.item.requiresSkill("Ice Harvesting") or mod.item.requiresSkill("Gas Cloud Harvesting"), "duration", value, stackingPenalties = True)
+            fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Mining") or mod.item.requiresSkill(
+                "Ice Harvesting") or mod.item.requiresSkill("Gas Cloud Harvesting"), "capacitorNeed", value, stackingPenalties=True)
+            fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Mining") or mod.item.requiresSkill(
+                "Ice Harvesting") or mod.item.requiresSkill("Gas Cloud Harvesting"), "duration", value, stackingPenalties=True)
 
         if id == 25:  # Mining Burst: Mining Equipment Preservation: Crystal Volatility
-            fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Mining"), "crystalVolatilityChance", value, stackingPenalties=True)
+            fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Mining"), "crystalVolatilityChance",
+                                          value, stackingPenalties=True)
 
     for x in xrange(1, 4):
         if module.getModifiedChargeAttr("warfareBuff{}ID".format(x)):
             value = module.getModifiedChargeAttr("warfareBuff{}Multiplier".format(x))
             id = module.getModifiedChargeAttr("warfareBuff{}ID".format(x))
-            print "Buff ID: ",id," value: ",value
+            print "Buff ID: ", id, " value: ", value
             if id:
                 if 'commandRun' not in context:
                     print "Add buffID", id, " to ", fit
@@ -106,4 +132,3 @@ def handler(fit, module, context, **kwargs):
                 elif kwargs['warfareBuffID'] is not None and kwargs['warfareBuffID'] == id:
                     print "Running buffID ", kwargs['warfareBuffID'], " on ", fit
                     runEffect(kwargs['warfareBuffID'], value)
-

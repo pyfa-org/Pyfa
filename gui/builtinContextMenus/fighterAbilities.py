@@ -2,6 +2,8 @@ import wx
 from gui.contextMenu import ContextMenu
 import gui.mainFrame
 import gui.globalEvents as GE
+from service.fit import Fit
+
 
 class FighterAbility(ContextMenu):
     def __init__(self):

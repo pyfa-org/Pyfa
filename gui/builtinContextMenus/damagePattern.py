@@ -11,6 +11,7 @@ try:
 except ImportError:
     from gui.utils.compat import OrderedDict
 
+
 class DamagePattern(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
@@ -35,9 +36,9 @@ class DamagePattern(ContextMenu):
         for pattern in self.patterns:
             start, end = pattern.name.find('['), pattern.name.find(']')
             if start is not -1 and end is not -1:
-                currBase = pattern.name[start+1:end]
+                currBase = pattern.name[start + 1:end]
                 # set helper attr
-                setattr(pattern, "_name", pattern.name[end+1:].strip())
+                setattr(pattern, "_name", pattern.name[end + 1:].strip())
                 if currBase not in self.subMenus:
                     self.subMenus[currBase] = []
                 self.subMenus[currBase].append(pattern)
@@ -102,7 +103,7 @@ class DamagePattern(ContextMenu):
         sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
         sFit.setDamagePattern(fitID, pattern)
-        setattr(self.mainFrame,"_activeDmgPattern", pattern)
+        setattr(self.mainFrame, "_activeDmgPattern", pattern)
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
 

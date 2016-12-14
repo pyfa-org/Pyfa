@@ -105,8 +105,7 @@ class FitDpsGraph(Graph):
 
         sigRadiusFactor = targetSigRad / explosionRadius
         if targetVelocity:
-            velocityFactor = (
-                             explosionVelocity / explosionRadius * targetSigRad / targetVelocity) ** damageReductionFactor
+            velocityFactor = (explosionVelocity / explosionRadius * targetSigRad / targetVelocity) ** damageReductionFactor
         else:
             velocityFactor = 1
 

@@ -6,8 +6,8 @@ Migration 15
 
 import sqlalchemy
 
-def upgrade(saveddata_engine):
 
+def upgrade(saveddata_engine):
     sql = """
     DELETE FROM modules WHERE ID IN
     (

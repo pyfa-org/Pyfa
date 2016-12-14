@@ -932,8 +932,8 @@ class ShipBrowser(wx.Panel):
 
         if fits:
             for fit in fits:
-                shipTrait = fit.ship.traits.traitText if (
-                fit.ship.traits is not None) else ""  # empty string if no traits
+                shipTrait = fit.ship.traits.traitText if (fit.ship.traits is not None) else ""
+                # empty string if no traits
 
                 self.lpane.AddWidget(FitItem(
                     self.lpane,

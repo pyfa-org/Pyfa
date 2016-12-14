@@ -27,6 +27,7 @@ from gui.builtinViewColumns.state import State
 from eos.types import Slot
 from gui.contextMenu import ContextMenu
 from service.fit import Fit
+from service.market import Market
 
 
 class FighterViewDrop(wx.PyDropTarget):
@@ -172,7 +173,6 @@ class FighterDisplay(d.Display):
         keycode = event.GetKeyCode()
         if keycode == wx.WXK_DELETE or keycode == wx.WXK_NUMPAD_DELETE:
             row = self.GetFirstSelected()
-            firstSel = row
             if row != -1:
                 fighter = self.fighters[self.GetItemData(row)]
                 self.removeFighter(fighter)
@@ -187,7 +187,7 @@ class FighterDisplay(d.Display):
 
             dropSource = wx.DropSource(self)
             dropSource.SetData(data)
-            res = dropSource.DoDragDrop()
+            dropSource.DoDragDrop()
 
     def handleDragDrop(self, x, y, data):
         '''

@@ -5,6 +5,7 @@ import gui.mainFrame
 import gui.globalEvents as GE
 from service.fit import Fit
 
+
 class TacticalMode(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
