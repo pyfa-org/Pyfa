@@ -1,0 +1,25 @@
+language: python
+python:
+  - '2.7'
+env:
+  - TOXENV=pep8
+addons:
+  apt:
+    packages:
+      # for wxPython:
+      - python-wxgtk2.8
+      - python-wxtools
+      - wx2.8-doc
+      - wx2.8-examples
+      - wx2.8-headers
+      - wx2.8-i18n
+before_install:
+  - pip install -U tox
+install:
+  - pip install -r requirements.txt
+  - pip install -r requirements_test.txt
+script:
+  - tox
+  - py.test --cov=./
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
