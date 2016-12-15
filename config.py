@@ -44,11 +44,6 @@ class StreamToLogger(object):
     From: http://www.electricmonk.nl/log/2011/08/14/redirect-stdout-and-stderr-to-a-logger-in-python/
     """
 
-    def __init__(self, logger, log_level=logging.INFO):
-        self.logger = logger
-        self.log_level = log_level
-        self.linebuf = ''
-
     def write(self, buf):
         for line in buf.rstrip().splitlines():
             self.logger.log(self.log_level, line.rstrip())
@@ -59,7 +54,6 @@ def isFrozen():
         return True
     else:
         return False
-
 
 
 def __createDirs(path):
@@ -148,9 +142,11 @@ def getPyfaPath(append=None):
     root = os.path.dirname(os.path.realpath(os.path.abspath(base)))
     return _getPath(root, append)
 
+
 def getSavePath(append=None):
     root = os.path.expanduser(os.path.join("~", ".pyfa"))
     return _getPath(root, append)
+
 
 def _getPath(root, Append=None):
     if type(root) == str:  # leave unicode ones alone

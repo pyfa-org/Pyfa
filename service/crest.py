@@ -118,9 +118,9 @@ class Crest():
         return chars2
 
     def getCrestCharacter(self, charID):
-        '''
+        """
         Get character, and modify to include the eve connection
-        '''
+        """
         if self.settings.get('mode') == CrestModes.IMPLICIT:
             if self.implicitCharacter.ID != charID:
                 raise ValueError("CharacterID does not match currently logged in character.")
@@ -141,7 +141,8 @@ class Crest():
         return char.eve.get('%scharacters/%d/fittings/' % (char.eve._authed_endpoint, char.ID))
 
     def postFitting(self, charID, json):
-        # @todo: new fitting ID can be recovered from Location header, ie: Location -> https://api-sisi.testeveonline.com/characters/1611853631/fittings/37486494/
+        # @todo: new fitting ID can be recovered from Location header,
+        # ie: Location -> https://api-sisi.testeveonline.com/characters/1611853631/fittings/37486494/
         char = self.getCrestCharacter(charID)
         return char.eve.post('%scharacters/%d/fittings/' % (char.eve._authed_endpoint, char.ID), data=json)
 

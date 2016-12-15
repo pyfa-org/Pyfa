@@ -49,9 +49,9 @@ class ImplantSets(object):
         return eos.db.getImplantSet(setID).implants
 
     def addImplant(self, setID, itemID):
-        set = eos.db.getImplantSet(setID)
+        implant_set = eos.db.getImplantSet(setID)
         implant = es_Implant(eos.db.getItem(itemID))
-        set.implants.append(implant)
+        implant_set.implants.append(implant)
         eos.db.commit()
 
     def removeImplant(self, setID, implant):

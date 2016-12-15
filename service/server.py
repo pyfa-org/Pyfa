@@ -10,6 +10,7 @@ from service.settings import CRESTSettings
 
 logger = logging.getLogger(__name__)
 
+# noinspection PyPep8
 HTML = '''
 <!DOCTYPE html>
 <html>

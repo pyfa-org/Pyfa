@@ -34,8 +34,8 @@ class Attribute():
         if isinstance(identity, (int, basestring)):
             info = eos.db.getAttributeInfo(identity, eager=("icon", "unit"))
         elif isinstance(identity, (int, float)):
-            id = int(identity)
-            info = eos.db.getAttributeInfo(id, eager=("icon", "unit"))
+            id_ = int(identity)
+            info = eos.db.getAttributeInfo(id_, eager=("icon", "unit"))
         else:
             info = None
         return info

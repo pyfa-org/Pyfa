@@ -60,13 +60,13 @@ class ShipBrowserWorkerThread(threading.Thread):
         sMkt = Market.getInstance()
         while True:
             try:
-                id, callback = queue.get()
-                set = cache.get(id)
-                if set is None:
-                    set = sMkt.getShipList(id)
-                    cache[id] = set
+                id_, callback = queue.get()
+                set_ = cache.get(id_)
+                if set_ is None:
+                    set_ = sMkt.getShipList(id_)
+                    cache[id_] = set_
 
-                wx.CallAfter(callback, (id, set))
+                wx.CallAfter(callback, (id_, set_))
             except:
                 pass
             finally:
@@ -131,13 +131,13 @@ class SearchWorkerThread(threading.Thread):
             sMkt = Market.getInstance()
             if filterOn is True:
                 # Rely on category data provided by eos as we don't hardcode them much in service
-                filter = or_(e_Category.name.in_(sMkt.SEARCH_CATEGORIES), e_Group.name.in_(sMkt.SEARCH_GROUPS))
+                filter_ = or_(e_Category.name.in_(sMkt.SEARCH_CATEGORIES), e_Group.name.in_(sMkt.SEARCH_GROUPS))
             elif filterOn:  # filter by selected categories
-                filter = e_Category.name.in_(filterOn)
+                filter_ = e_Category.name.in_(filterOn)
             else:
-                filter = None
+                filter_ = None
 
-            results = eos.db.searchItems(request, where=filter,
+            results = eos.db.searchItems(request, where=filter_,
                                          join=(e_Item.group, e_Group.category),
                                          eager=("icon", "group.category", "metaGroup", "metaGroup.parent"))
 
@@ -418,8 +418,8 @@ class Market():
                 item = eos.db.getItem(identity, *args, **kwargs)
 
             elif isinstance(identity, float):
-                id = int(identity)
-                item = eos.db.getItem(id, *args, **kwargs)
+                id_ = int(identity)
+                item = eos.db.getItem(id_, *args, **kwargs)
             else:
                 raise TypeError("Need Item object, integer, float or string as argument")
         except:
@@ -453,8 +453,8 @@ class Market():
         elif isinstance(identity, (int, basestring)):
             category = eos.db.getCategory(identity, *args, **kwargs)
         elif isinstance(identity, float):
-            id = int(identity)
-            category = eos.db.getCategory(id, *args, **kwargs)
+            id_ = int(identity)
+            category = eos.db.getCategory(id_, *args, **kwargs)
         else:
             raise TypeError("Need Category object, integer, float or string as argument")
         return category
@@ -466,8 +466,8 @@ class Market():
         elif isinstance(identity, (int, basestring)):
             metaGroup = eos.db.getMetaGroup(identity, *args, **kwargs)
         elif isinstance(identity, float):
-            id = int(identity)
-            metaGroup = eos.db.getMetaGroup(id, *args, **kwargs)
+            id_ = int(identity)
+            metaGroup = eos.db.getMetaGroup(id_, *args, **kwargs)
         else:
             raise TypeError("Need MetaGroup object, integer, float or string as argument")
         return metaGroup
@@ -477,8 +477,8 @@ class Market():
         if isinstance(identity, eos.types.MarketGroup):
             marketGroup = identity
         elif isinstance(identity, (int, float)):
-            id = int(identity)
-            marketGroup = eos.db.getMarketGroup(id, *args, **kwargs)
+            id_ = int(identity)
+            marketGroup = eos.db.getMarketGroup(id_, *args, **kwargs)
         else:
             raise TypeError("Need MarketGroup object, integer or float as argument")
         return marketGroup
@@ -522,8 +522,8 @@ class Market():
 
     def getMetaGroupIdByItem(self, item, fallback=0):
         """Get meta group ID by item"""
-        id = getattr(self.getMetaGroupByItem(item), "ID", fallback)
-        return id
+        id_ = getattr(self.getMetaGroupByItem(item), "ID", fallback)
+        return id_
 
     def getMarketGroupByItem(self, item, parentcheck=True):
         """Get market group by item, its ID or name"""
@@ -607,7 +607,7 @@ class Market():
             filter(lambda item: self.getPublicityByItem(item) and self.getGroupByItem(item) == group, groupItems))
         return items
 
-    def getItemsByMarketGroup(self, mg, vars=True):
+    def getItemsByMarketGroup(self, mg, vars_=True):
         """Get items in the given market group"""
         result = set()
         # Get items from eos market group
@@ -616,7 +616,7 @@ class Market():
         if mg.ID in self.ITEMS_FORCEDMARKETGROUP_R:
             forceditms = set(self.getItem(itmn) for itmn in self.ITEMS_FORCEDMARKETGROUP_R[mg.ID])
             baseitms.update(forceditms)
-        if vars:
+        if vars_:
             parents = set()
             for item in baseitms:
                 # Add one of the base market group items to result
@@ -634,7 +634,7 @@ class Market():
         else:
             result = baseitms
         # Get rid of unpublished items
-        result = set(filter(lambda item: self.getPublicityByItem(item), result))
+        result = set(filter(lambda item_: self.getPublicityByItem(item_), result))
         return result
 
     def marketGroupHasTypesCheck(self, mg):
@@ -669,7 +669,7 @@ class Market():
             elif self.marketGroupHasTypesCheck(mg):
                 # Do not request variations to make process faster
                 # Pick random item and use its icon
-                items = self.getItemsByMarketGroup(mg, vars=False)
+                items = self.getItemsByMarketGroup(mg, vars_=False)
                 try:
                     item = items.pop()
                 except KeyError:
@@ -707,8 +707,8 @@ class Market():
         the ID, the name and the icon of the group
         """
         root = set()
-        for id in self.ROOT_MARKET_GROUPS:
-            mg = self.getMarketGroup(id, eager="icon")
+        for id_ in self.ROOT_MARKET_GROUPS:
+            mg = self.getMarketGroup(id_, eager="icon")
             root.add(mg)
 
         return root
@@ -728,14 +728,14 @@ class Market():
             ship.race
         return ships
 
-    def getShipListDelayed(self, id, callback):
+    def getShipListDelayed(self, id_, callback):
         """Background version of getShipList"""
-        self.shipBrowserWorkerThread.queue.put((id, callback))
+        self.shipBrowserWorkerThread.queue.put((id_, callback))
 
     def searchShips(self, name):
         """Find ships according to given text pattern"""
-        filter = e_Category.name.in_(["Ship", "Structure"])
-        results = eos.db.searchItems(name, where=filter,
+        filter_ = e_Category.name.in_(["Ship", "Structure"])
+        results = eos.db.searchItems(name, where=filter_,
                                      join=(e_Item.group, e_Group.category),
                                      eager=("icon", "group.category", "metaGroup", "metaGroup.parent"))
         ships = set()

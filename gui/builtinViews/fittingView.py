@@ -502,7 +502,7 @@ class FittingView(d.Display):
 
                 itemContext = "Tactical Mode"
                 fullContext = (srcContext, itemContext)
-                if not srcContext in tuple(fCtxt[0] for fCtxt in contexts):
+                if srcContext not in tuple(fCtxt[0] for fCtxt in contexts):
                     contexts.append(fullContext)
 
                 selection.append(mod)
@@ -513,7 +513,6 @@ class FittingView(d.Display):
                 fullContext = (srcContext, itemContext)
                 if srcContext not in tuple(fCtxt[0] for fCtxt in contexts):
                     contexts.append(fullContext)
-
 
                 if mod.charge is not None:
                     srcContext = "fittingCharge"

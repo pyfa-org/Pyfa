@@ -949,28 +949,28 @@ class FilterRowset(object):
     # - Each key maps to a Rowset, containing only the rows where the value
     #   of the column this FilterRowset was made on matches the key.
 
-    def __init__(self, cols=None, rows=None, key=None, key2=None, dict=None):
-        if dict is not None:
-            self._items = items = dict
+    def __init__(self, cols=None, rows=None, key=None, key2=None, dict_=None):
+        if dict_ is not None:
+            self._items = items = dict_
         elif cols is not None:
             self._items = items = {}
 
             idfield = cols.index(key)
             if not key2:
                 for row in rows:
-                    id = row[idfield]
-                    if id in items:
-                        items[id].append(row)
+                    id_ = row[idfield]
+                    if id_ in items:
+                        items[id_].append(row)
                     else:
-                        items[id] = [row]
+                        items[id_] = [row]
             else:
                 idfield2 = cols.index(key2)
                 for row in rows:
-                    id = row[idfield]
-                    if id in items:
-                        items[id][row[idfield2]] = row
+                    id_ = row[idfield]
+                    if id_ in items:
+                        items[id_][row[idfield2]] = row
                     else:
-                        items[id] = {row[idfield2]: row}
+                        items[id_] = {row[idfield2]: row}
 
         self._cols = cols
         self.key = key
@@ -987,7 +987,7 @@ class FilterRowset(object):
         self.__iter__ = items.__iter__
 
     def copy(self):
-        return FilterRowset(self._cols[:], None, self.key, self.key2, dict=copy.deepcopy(self._items))
+        return FilterRowset(self._cols[:], None, self.key, self.key2, dict_=copy.deepcopy(self._items))
 
     def get(self, key, default=_unspecified):
         try:

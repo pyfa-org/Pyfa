@@ -208,6 +208,7 @@ def getFit(lookfor, eager=None):
 
     return fit
 
+
 def getFitsWithShip(shipID, ownerID=None, where=None, eager=None):
     """
     Get all the fits using a certain ship.
@@ -283,6 +284,7 @@ def getFitList(eager=None):
         fits = removeInvalid(saveddata_session.query(Fit).options(*eager).all())
 
     return fits
+
 
 @cachedQuery(Price, 1, "typeID")
 def getPrice(typeID):
@@ -406,6 +408,7 @@ def searchFits(nameLike, where=None, eager=None):
         fits = removeInvalid(saveddata_session.query(Fit).options(*eager).filter(filter).all())
 
     return fits
+
 
 def getProjectedFits(fitID):
     if isinstance(fitID, int):

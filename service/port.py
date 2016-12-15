@@ -35,7 +35,7 @@ from service.fit import Fit
 
 import wx
 
-from eos.types import State, Slot, Module, Cargo, Ship, Drone, Implant, Booster, Citadel
+from eos.types import State, Slot, Module, Cargo, Ship, Drone, Implant, Booster, Citadel, Fighter
 from service.crest import Crest
 from service.market import Market
 
@@ -83,8 +83,8 @@ class Port(object):
             if callback:  # Pulse
                 wx.CallAfter(callback, 1, "Processing file:\n%s" % path)
 
-            file = open(path, "r")
-            srcString = file.read()
+            file_ = open(path, "r")
+            srcString = file_.read()
 
             if len(srcString) == 0:  # ignore blank files
                 continue
@@ -259,7 +259,7 @@ class Port(object):
             item = nested_dict()
             item['flag'] = INV_FLAG_FIGHTER
             item['quantity'] = fighter.amountActive
-            item['type']['href'] = "%sinventory/types/%d/"%(eve._authed_endpoint, fighter.item.ID)
+            item['type']['href'] = "%sinventory/types/%d/" % (eve._authed_endpoint, fighter.item.ID)
             item['type']['id'] = fighter.item.ID
             item['type']['name'] = fighter.item.name
             fit['items'].append(item)
@@ -299,8 +299,8 @@ class Port(object):
         return "DNA", (cls.importDna(string),)
 
     @staticmethod
-    def importCrest(str):
-        fit = json.loads(str)
+    def importCrest(str_):
+        fit = json.loads(str_)
         sMkt = Market.getInstance()
 
         f = Fit()
@@ -365,16 +365,16 @@ class Port(object):
         sMkt = Market.getInstance()
 
         ids = map(int, re.findall(r'\d+', string))
-        for id in ids:
+        for id_ in ids:
             try:
                 try:
                     try:
-                        Ship(sMkt.getItem(sMkt.getItem(id)))
+                        Ship(sMkt.getItem(sMkt.getItem(id_)))
                     except ValueError:
-                        Citadel(sMkt.getItem(sMkt.getItem(id)))
+                        Citadel(sMkt.getItem(sMkt.getItem(id_)))
                 except ValueError:
-                    Citadel(sMkt.getItem(id))
-                string = string[string.index(str(id)):]
+                    Citadel(sMkt.getItem(id_))
+                string = string[string.index(str(id_)):]
                 break
             except:
                 pass
@@ -389,10 +389,10 @@ class Port(object):
                 f.ship = Citadel(sMkt.getItem(int(info[0])))
             f.name = "{0} - DNA Imported".format(f.ship.item.name)
         except UnicodeEncodeError:
-            def logtransform(s):
-                if len(s) > 10:
-                    return s[:10] + "..."
-                return s
+            def logtransform(s_):
+                if len(s_) > 10:
+                    return s_[:10] + "..."
+                return s_
 
             logger.exception("Couldn't import ship data %r", [logtransform(s) for s in info])
             return None
@@ -519,7 +519,7 @@ class Port(object):
             elif item.category.name == "Fighter":
                 extraAmount = int(extraAmount) if extraAmount is not None else 1
                 fighterItem = Fighter(item)
-                if (extraAmount > fighterItem.fighterSquadronMaxSize): #Amount bigger then max fightergroup size
+                if (extraAmount > fighterItem.fighterSquadronMaxSize):  # Amount bigger then max fightergroup size
                     extraAmount = fighterItem.fighterSquadronMaxSize
                 if fighterItem.fits(fit):
                     fit.fighters.append(fighterItem)
@@ -666,9 +666,10 @@ class Port(object):
                                 elif entityState == "Inactive":
                                     d.amountActive = 0
                                 f.drones.append(d)
-                            elif droneItem.category.name == "Fighter": # EFT saves fighter as drones
+                            elif droneItem.category.name == "Fighter":  # EFT saves fighter as drones
                                 ft = Fighter(droneItem)
-                                ft.amount = int(droneAmount) if ft.amount <= ft.fighterSquadronMaxSize else ft.fighterSquadronMaxSize
+                                ft.amount = int(droneAmount) if ft.amount <= ft.fighterSquadronMaxSize \
+                                    else ft.fighterSquadronMaxSize
                                 f.fighters.append(ft)
                             else:
                                 continue
@@ -805,7 +806,8 @@ class Port(object):
                             f.drones.append(d)
                         elif item.category.name == "Fighter":
                             ft = Fighter(item)
-                            ft.amount = int(hardware.getAttribute("qty")) if ft.amount <= ft.fighterSquadronMaxSize else ft.fighterSquadronMaxSize
+                            ft.amount = int(hardware.getAttribute("qty")) if ft.amount <= ft.fighterSquadronMaxSize \
+                                else ft.fighterSquadronMaxSize
                             f.fighters.append(ft)
                         elif hardware.getAttribute("slot").lower() == "cargo":
                             # although the eve client only support charges in cargo, third-party programs
@@ -946,7 +948,7 @@ class Port(object):
                     # `or 1` because some charges (ie scripts) are without qty
                     charges[mod.chargeID] += mod.numCharges or 1
 
-        for subsystem in sorted(subsystems, key=lambda mod: mod.getModifiedItemAttr("subSystemSlot")):
+        for subsystem in sorted(subsystems, key=lambda mod_: mod_.getModifiedItemAttr("subSystemSlot")):
             dna += ":{0};1".format(subsystem.itemID)
 
         for mod in mods:
