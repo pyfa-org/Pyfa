@@ -31,6 +31,8 @@ from wx.lib.wordwrap import wordwrap
 
 import config
 
+from eos.config import gamedata_version
+
 import gui.aboutData
 import gui.chromeTabs
 import gui.globalEvents as GE
@@ -346,7 +348,6 @@ class MainFrame(wx.Frame):
         event.Skip()
 
     def ShowAboutBox(self, evt):
-        import eos.config
         v = sys.version_info
         info = wx.AboutDialogInfo()
         info.Name = "pyfa"
@@ -357,7 +358,7 @@ class MainFrame(wx.Frame):
                                     "\n\t".join(gui.aboutData.credits) +
                                     "\n\nLicenses:\n\t" +
                                     "\n\t".join(gui.aboutData.licenses) +
-                                    "\n\nEVE Data: \t" + eos.config.gamedata_version +
+                                    "\n\nEVE Data: \t" + gamedata_version +
                                     "\nPython: \t\t" + '{}.{}.{}'.format(v.major, v.minor, v.micro) +
                                     "\nwxPython: \t" + wx.__version__ +
                                     "\nSQLAlchemy: \t" + sqlalchemy.__version__,
