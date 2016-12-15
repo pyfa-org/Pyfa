@@ -31,11 +31,11 @@ from codecs import open
 import xml.parsers.expat
 
 from eos import db
-from service.fit import Fit
+from service.fit import Fit as svcFit
 
 import wx
 
-from eos.types import State, Slot, Module, Cargo, Ship, Drone, Implant, Booster, Citadel, Fighter
+from eos.types import State, Slot, Module, Cargo, Ship, Drone, Implant, Booster, Citadel, Fighter, Fit
 from service.crest import Crest
 from service.market import Market
 
@@ -77,6 +77,7 @@ class Port(object):
         returns
         """
         defcodepage = locale.getpreferredencoding()
+        sFit = svcFit.getInstance()
 
         fits = []
         for path in paths:
@@ -148,9 +149,9 @@ class Port(object):
         numFits = len(fits)
         for i, fit in enumerate(fits):
             # Set some more fit attributes and save
-            fit.character = self.character
-            fit.damagePattern = self.pattern
-            fit.targetResists = self.targetResists
+            fit.character = sFit.character
+            fit.damagePattern = sFit.pattern
+            fit.targetResists = sFit.targetResists
             db.save(fit)
             IDs.append(fit.ID)
             if callback:  # Pulse
@@ -163,11 +164,12 @@ class Port(object):
         return True, fits
 
     def importFitFromBuffer(self, bufferStr, activeFit=None):
+        sFit = svcFit.getInstance()
         _, fits = Port.importAuto(bufferStr, activeFit=activeFit)
         for fit in fits:
-            fit.character = self.character
-            fit.damagePattern = self.pattern
-            fit.targetResists = self.targetResists
+            fit.character = sFit.character
+            fit.damagePattern = sFit.pattern
+            fit.targetResists = sFit.targetResists
             db.save(fit)
         return fits
 
@@ -182,7 +184,7 @@ class Port(object):
         nested_dict = lambda: collections.defaultdict(nested_dict)
         fit = nested_dict()
         sCrest = Crest.getInstance()
-        sFit = Fit.getInstance()
+        sFit = svcFit.getInstance()
 
         eve = sCrest.eve
 
@@ -352,7 +354,7 @@ class Port(object):
                 continue
 
         # Recalc to get slot numbers correct for T3 cruisers
-        Fit.getInstance().recalc(f)
+        svcFit.getInstance().recalc(f)
 
         for module in moduleList:
             if module.fits(f):
@@ -433,7 +435,7 @@ class Port(object):
                             moduleList.append(m)
 
         # Recalc to get slot numbers correct for T3 cruisers
-        Fit.getInstance().recalc(f)
+        svcFit.getInstance().recalc(f)
 
         for module in moduleList:
             if module.fits(f):
@@ -565,7 +567,7 @@ class Port(object):
                     moduleList.append(m)
 
         # Recalc to get slot numbers correct for T3 cruisers
-        Fit.getInstance().recalc(fit)
+        svcFit.getInstance().recalc(fit)
 
         for m in moduleList:
             if m.fits(fit):
@@ -752,7 +754,7 @@ class Port(object):
                             moduleList.append(m)
 
                 # Recalc to get slot numbers correct for T3 cruisers
-                Fit.getInstance().recalc(f)
+                svcFit.getInstance().recalc(f)
 
                 for module in moduleList:
                     if module.fits(f):
@@ -837,7 +839,7 @@ class Port(object):
                     continue
 
             # Recalc to get slot numbers correct for T3 cruisers
-            Fit.getInstance().recalc(f)
+            svcFit.getInstance().recalc(f)
 
             for module in moduleList:
                 if module.fits(f):
@@ -855,7 +857,7 @@ class Port(object):
         offineSuffix = " /OFFLINE"
         export = "[%s, %s]\n" % (fit.ship.item.name, fit.name)
         stuff = {}
-        sFit = Fit.getInstance()
+        sFit = svcFit.getInstance()
         for module in fit.modules:
             slot = module.slot
             if slot not in stuff:
@@ -981,7 +983,7 @@ class Port(object):
         doc = xml.dom.minidom.Document()
         fittings = doc.createElement("fittings")
         doc.appendChild(fittings)
-        sFit = Fit.getInstance()
+        sFit = svcFit.getInstance()
 
         for i, fit in enumerate(fits):
             try:
@@ -1064,7 +1066,7 @@ class Port(object):
     def exportMultiBuy(fit):
         export = "%s\n" % (fit.ship.item.name)
         stuff = {}
-        sFit = Fit.getInstance()
+        sFit = svcFit.getInstance()
         for module in fit.modules:
             slot = module.slot
             if slot not in stuff:
@@ -1115,7 +1117,7 @@ class FitBackupThread(threading.Thread):
 
     def run(self):
         path = self.path
-        sFit = Fit.getInstance()
+        sFit = svcFit.getInstance()
         allFits = map(lambda x: x[0], sFit.getAllFits())
         backedUpFits = sFit.exportXml(self.callback, *allFits)
         backupFile = open(path, "w", encoding="utf-8")
@@ -1133,7 +1135,7 @@ class FitImportThread(threading.Thread):
         self.callback = callback
 
     def run(self):
-        sFit = Fit.getInstance()
+        sFit = svcFit.getInstance()
         success, result = sFit.importFitFromFiles(self.paths, self.callback)
 
         if not success:  # there was an error during processing

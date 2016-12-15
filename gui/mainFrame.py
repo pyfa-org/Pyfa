@@ -19,6 +19,7 @@
 
 import sys
 import os.path
+import logging
 
 import sqlalchemy
 import wx
@@ -83,6 +84,8 @@ if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION 
     except ImportError as e:
         print("Error loading Attribute Editor: %s.\nAccess to Attribute Editor is disabled." % e.message)
         disableOverrideEditor = True
+
+logger = logging.getLogger("pyfa.gui.mainFrame")
 
 
 # dummy panel(no paint no erasebk)
@@ -702,11 +705,11 @@ class MainFrame(wx.Frame):
         toClipboard(Port.exportMultiBuy(fit))
 
     def importFromClipboard(self, event):
-        sFit = Fit.getInstance()
+        clipboard = fromClipboard()
         try:
-            fits = sFit.importFitFromBuffer(fromClipboard(), self.getActiveFit())
+            fits = Port().importFitFromBuffer(clipboard, self.getActiveFit())
         except:
-            pass
+            logger.error("Attempt to import failed:\n%s", clipboard)
         else:
             self._openAfterImport(fits)
 
