@@ -64,7 +64,7 @@ class Hardpoint(Enum):
     TURRET = 2
 
 
-class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut, list):
+class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     """An instance of this class represents a module together with its charge and modified attributes"""
     DAMAGE_TYPES = ("em", "thermal", "kinetic", "explosive")
     MINING_ATTRIBUTES = ("miningAmount",)
