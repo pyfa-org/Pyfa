@@ -32,7 +32,8 @@ from service import conversions
 from service.settings import SettingsProvider
 from service.price import Price
 
-from eos.gamedata import Category as e_Category, Group as e_Group, Item as e_Item
+# TODO: Convert eos.types over to eos.gamedata
+# from eos.gamedata import Category as e_Category, Group as e_Group, Item as e_Item
 
 from eos.types import MarketGroup as types_MarketGroup, MetaGroup as types_MetaGroup, MetaType as types_MetaType, \
     Category as types_Category, Item as types_Item, Group as types_Group, Price as types_Price
@@ -188,8 +189,7 @@ class Market():
         # Items' group overrides
         self.customGroups = set()
         # Limited edition ships
-        # TODO: Import Refactor - Figure out which group this needs :(
-        self.les_grp = e_Group()
+        self.les_grp = types_Group()
         self.les_grp.ID = -1
         self.les_grp.name = "Limited Issue Ships"
         self.les_grp.published = True
@@ -410,8 +410,7 @@ class Market():
     def getItem(self, identity, *args, **kwargs):
         """Get item by its ID or name"""
         try:
-            # TODO: Import Refactor - Figure out which Item this needs :(
-            if isinstance(identity, e_Item):
+            if isinstance(identity, types_Item):
                 item = identity
             elif isinstance(identity, int):
                 item = eos.db.getItem(identity, *args, **kwargs)
@@ -435,8 +434,7 @@ class Market():
 
     def getGroup(self, identity, *args, **kwargs):
         """Get group by its ID or name"""
-        # TODO: Import Refactor - Figure out which group this needs :(
-        if isinstance(identity, e_Group):
+        if isinstance(identity, types_Group):
             return identity
         elif isinstance(identity, (int, float, basestring)):
             if isinstance(identity, float):
@@ -454,8 +452,7 @@ class Market():
 
     def getCategory(self, identity, *args, **kwargs):
         """Get category by its ID or name"""
-        # TODO: Import Refactor - Figure out which category this needs :(
-        if isinstance(identity, e_Category):
+        if isinstance(identity, types_Category):
             category = identity
         elif isinstance(identity, (int, basestring)):
             category = eos.db.getCategory(identity, *args, **kwargs)
