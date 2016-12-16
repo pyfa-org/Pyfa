@@ -34,6 +34,9 @@ from service.price import Price
 
 from eos.gamedata import Category as e_Category, Group as e_Group, Item as e_Item
 
+from eos.types import MarketGroup as types_MarketGroup, MetaGroup as types_MetaGroup, MetaType as types_MetaType, \
+    Category as types_Category, Item as types_Item, Group as types_Group, Price as types_Price
+
 try:
     from collections import OrderedDict
 except ImportError:
@@ -131,14 +134,14 @@ class SearchWorkerThread(threading.Thread):
             sMkt = Market.getInstance()
             if filterOn is True:
                 # Rely on category data provided by eos as we don't hardcode them much in service
-                filter_ = or_(e_Category.name.in_(sMkt.SEARCH_CATEGORIES), e_Group.name.in_(sMkt.SEARCH_GROUPS))
+                filter_ = or_(types_Category.name.in_(sMkt.SEARCH_CATEGORIES), types_Group.name.in_(sMkt.SEARCH_GROUPS))
             elif filterOn:  # filter by selected categories
-                filter_ = e_Category.name.in_(filterOn)
+                filter_ = types_Category.name.in_(filterOn)
             else:
                 filter_ = None
 
             results = eos.db.searchItems(request, where=filter_,
-                                         join=(e_Item.group, e_Group.category),
+                                         join=(types_Item.group, types_Group.category),
                                          eager=("icon", "group.category", "metaGroup", "metaGroup.parent"))
 
             items = set()
@@ -185,6 +188,7 @@ class Market():
         # Items' group overrides
         self.customGroups = set()
         # Limited edition ships
+        # TODO: Import Refactor - Figure out which group this needs :(
         self.les_grp = e_Group()
         self.les_grp.ID = -1
         self.les_grp.name = "Limited Issue Ships"
@@ -406,11 +410,12 @@ class Market():
     def getItem(self, identity, *args, **kwargs):
         """Get item by its ID or name"""
         try:
+            # TODO: Import Refactor - Figure out which Item this needs :(
             if isinstance(identity, e_Item):
                 item = identity
             elif isinstance(identity, int):
                 item = eos.db.getItem(identity, *args, **kwargs)
-            # TODO: Find out what this is.  There is no conversions
+            # TODO: Import refactor - Find out what this is.  There is no conversions
             elif isinstance(identity, basestring):
                 # We normally lookup with string when we are using import/export
                 # features. Check against overrides
@@ -430,6 +435,7 @@ class Market():
 
     def getGroup(self, identity, *args, **kwargs):
         """Get group by its ID or name"""
+        # TODO: Import Refactor - Figure out which group this needs :(
         if isinstance(identity, e_Group):
             return identity
         elif isinstance(identity, (int, float, basestring)):
@@ -448,6 +454,7 @@ class Market():
 
     def getCategory(self, identity, *args, **kwargs):
         """Get category by its ID or name"""
+        # TODO: Import Refactor - Figure out which category this needs :(
         if isinstance(identity, e_Category):
             category = identity
         elif isinstance(identity, (int, basestring)):
@@ -461,7 +468,7 @@ class Market():
 
     def getMetaGroup(self, identity, *args, **kwargs):
         """Get meta group by its ID or name"""
-        if isinstance(identity, eos.types.MetaGroup):
+        if isinstance(identity, types_MetaGroup):
             metaGroup = identity
         elif isinstance(identity, (int, basestring)):
             metaGroup = eos.db.getMetaGroup(identity, *args, **kwargs)
@@ -474,7 +481,7 @@ class Market():
 
     def getMarketGroup(self, identity, *args, **kwargs):
         """Get market group by its ID"""
-        if isinstance(identity, eos.types.MarketGroup):
+        if isinstance(identity, types_MarketGroup):
             marketGroup = identity
         elif isinstance(identity, (int, float)):
             id_ = int(identity)
@@ -502,7 +509,7 @@ class Market():
         # Check if item is in forced metagroup map
         if item.name in self.ITEMS_FORCEDMETAGROUP:
             # Create meta group from scratch
-            metaGroup = eos.types.MetaType()
+            metaGroup = types_MetaType()
             # Get meta group info object based on meta group name
             metaGroupInfo = self.getMetaGroup(self.ITEMS_FORCEDMETAGROUP[item.name][0])
             # Get parent item based on its name
@@ -734,9 +741,9 @@ class Market():
 
     def searchShips(self, name):
         """Find ships according to given text pattern"""
-        filter_ = e_Category.name.in_(["Ship", "Structure"])
+        filter_ = types_Category.name.in_(["Ship", "Structure"])
         results = eos.db.searchItems(name, where=filter_,
-                                     join=(e_Item.group, e_Group.category),
+                                     join=(types_Item.group, types_Group.category),
                                      eager=("icon", "group.category", "metaGroup", "metaGroup.parent"))
         ships = set()
         for item in results:
@@ -790,7 +797,7 @@ class Market():
         if price is None:
             price = eos.db.getPrice(typeID)
             if price is None:
-                price = eos.types.Price(typeID)
+                price = types_Price(typeID)
                 eos.db.add(price)
 
             self.priceCache[typeID] = price
