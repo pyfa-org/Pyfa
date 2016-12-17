@@ -18,5 +18,5 @@ def handler(fit, src, context):
     fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill("Fighters"),
                                    "fighterAbilityMissilesDamageMultiplier",
                                    src.getModifiedItemAttr("damageMultiplierBonus") * lvl)
-    fit.drones.filteredItemBoost(lambda drone: drone.item.group.name == "Mining Drone", "miningDroneAmountPercent",
+    fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill("Mining Drone Operation"), "miningDroneAmountPercent",
                                  src.getModifiedItemAttr("miningAmountBonus") * lvl)
