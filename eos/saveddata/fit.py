@@ -575,60 +575,60 @@ class Fit(object):
 
                 # Titan effects
 
-                if id == 39:  # Avatar Effect Generator : Capacitor Recharge bonus
+                if warfareBuffID == 39:  # Avatar Effect Generator : Capacitor Recharge bonus
                     self.ship.boostItemAttr("rechargeRate", value, stackingPenalties=True)
 
-                if id == 40:  # Avatar Effect Generator : Kinetic resistance bonus
-                    for attr in ("armorKineticDamageResonance", "shieldKineticDamageResonance", "hullKineticDamageResonance"):
-                        self.ship.boostItemAttr(attr, value)
+                if warfareBuffID == 40:  # Avatar Effect Generator : Kinetic resistance bonus
+                    for attr in ("armorKineticDamageResonance", "shieldKineticDamageResonance", "kineticDamageResonance"):
+                        self.ship.boostItemAttr(attr, value, stackingPenalties=True)
 
-                if id == 41:  # Avatar Effect Generator : EM resistance penalty
-                    for attr in ("armorEmDamageResonance", "shieldEmDamageResonance", "hullEmDamageResonance"):
-                        self.ship.boostItemAttr(attr, value)
+                if warfareBuffID == 41:  # Avatar Effect Generator : EM resistance penalty
+                    for attr in ("armorEmDamageResonance", "shieldEmDamageResonance", "emDamageResonance"):
+                        self.ship.boostItemAttr(attr, value, stackingPenalties=True)
 
-                if id == 42:  # Erebus Effect Generator : Armor HP bonus
+                if warfareBuffID == 42:  # Erebus Effect Generator : Armor HP bonus
                     self.ship.boostItemAttr("armorHP", value, stackingPenalties=True)
 
-                if id == 43:  # Erebus Effect Generator : Explosive resistance bonus
-                    for attr in ("armorExplosiveDamageResonance", "shieldExplosiveDamageResonance", "hullExplosiveDamageResonance"):
-                        self.ship.boostItemAttr(attr, value)
+                if warfareBuffID == 43:  # Erebus Effect Generator : Explosive resistance bonus
+                    for attr in ("armorExplosiveDamageResonance", "shieldExplosiveDamageResonance", "explosiveDamageResonance"):
+                        self.ship.boostItemAttr(attr, value, stackingPenalties=True)
 
-                if id == 44:  # Erebus Effect Generator : Thermal resistance penalty
-                    for attr in ("armorThermalDamageResonance", "shieldThermalDamageResonance", "hullThermalDamageResonance"):
-                        self.ship.boostItemAttr(attr, value)
+                if warfareBuffID == 44:  # Erebus Effect Generator : Thermal resistance penalty
+                    for attr in ("armorThermalDamageResonance", "shieldThermalDamageResonance", "thermalDamageResonance"):
+                        self.ship.boostItemAttr(attr, value, stackingPenalties=True)
 
-                if id == 45:  # Ragnarok Effect Generator : Signature Radius bonus
+                if warfareBuffID == 45:  # Ragnarok Effect Generator : Signature Radius bonus
                     self.ship.boostItemAttr("signatureRadius", value, stackingPenalties=True)
 
-                if id == 46:  # Ragnarok Effect Generator : Thermal resistance bonus
-                    for attr in ("armorThermalDamageResonance", "shieldThermalDamageResonance", "hullThermalDamageResonance"):
-                        self.ship.boostItemAttr(attr, value)
+                if warfareBuffID == 46:  # Ragnarok Effect Generator : Thermal resistance bonus
+                    for attr in ("armorThermalDamageResonance", "shieldThermalDamageResonance", "thermalDamageResonance"):
+                        self.ship.boostItemAttr(attr, value, stackingPenalties=True)
 
-                if id == 47:  # Ragnarok Effect Generator : Explosive resistance penaly
-                    for attr in ("armorExplosiveDamageResonance", "shieldExplosiveDamageResonance", "hullExplosiveDamageResonance"):
-                        self.ship.boostItemAttr(attr, value)
+                if warfareBuffID == 47:  # Ragnarok Effect Generator : Explosive resistance penaly
+                    for attr in ("armorExplosiveDamageResonance", "shieldExplosiveDamageResonance", "explosiveDamageResonance"):
+                        self.ship.boostItemAttr(attr, value, stackingPenalties=True)
 
-                if id == 48:  # Leviathan Effect Generator : Shield HP bonus
+                if warfareBuffID == 48:  # Leviathan Effect Generator : Shield HP bonus
                     self.ship.boostItemAttr("shieldCapacity", value, stackingPenalties=True)
 
-                if id == 49:  # Leviathan Effect Generator : EM resistance bonus
-                    for attr in ("armorEmDamageResonance", "shieldEmDamageResonance", "hullEmDamageResonance"):
-                        self.ship.boostItemAttr(attr, value)
+                if warfareBuffID == 49:  # Leviathan Effect Generator : EM resistance bonus
+                    for attr in ("armorEmDamageResonance", "shieldEmDamageResonance", "emDamageResonance"):
+                        self.ship.boostItemAttr(attr, value, stackingPenalties=True)
 
-                if id == 50:  # Leviathan Effect Generator : Kinetic resistance penalty
-                    for attr in ("armorKineticDamageResonance", "shieldKineticDamageResonance", "hullKineticDamageResonance"):
-                        self.ship.boostItemAttr(attr, value)
+                if warfareBuffID == 50:  # Leviathan Effect Generator : Kinetic resistance penalty
+                    for attr in ("armorKineticDamageResonance", "shieldKineticDamageResonance", "kineticDamageResonance"):
+                        self.ship.boostItemAttr(attr, value, stackingPenalties=True)
 
-                if id == 51:  # Avatar Effect Generator : Velocity penalty
+                if warfareBuffID == 51:  # Avatar Effect Generator : Velocity penalty
                     self.ship.boostItemAttr("maxVelocity", value, stackingPenalties=True)
 
-                if id == 52:  # Erebus Effect Generator : Shield RR penalty
+                if warfareBuffID == 52:  # Erebus Effect Generator : Shield RR penalty
                     self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Shield Emission Systems"), "shieldBonus", value, stackingPenalties=True)
 
-                if id == 53:  # Leviathan Effect Generator : Armor RR penalty
+                if warfareBuffID == 53:  # Leviathan Effect Generator : Armor RR penalty
                     self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Remote Armor Repair Systems"), "armorDamageAmount", value, stackingPenalties=True)
 
-                if id == 54:  # Ragnarok Effect Generator : Laser and Hybrid Optimal penalty
+                if warfareBuffID == 54:  # Ragnarok Effect Generator : Laser and Hybrid Optimal penalty
                     groups = ("Energy Weapon", "Hybrid Weapon")
                     self.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups, "maxRange", value, stackingPenalties=True)
 
