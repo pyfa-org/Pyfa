@@ -1,7 +1,7 @@
 # hybridWeaponSpeedMultiply
 #
 # Used by:
-# Modules from group: Magnetic Field Stabilizer (12 of 12)
+# Modules from group: Magnetic Field Stabilizer (14 of 14)
 type = "passive"
 
 

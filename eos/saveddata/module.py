@@ -265,7 +265,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             flightTime = self.getModifiedChargeAttr("explosionDelay") / 1000.0
             mass = self.getModifiedChargeAttr("mass")
             agility = self.getModifiedChargeAttr("agility")
-            if maxVelocity and flightTime and mass and agility:
+            if maxVelocity and (flightTime or mass or agility):
                 accelTime = min(flightTime, mass * agility / 1000000)
                 # Average distance done during acceleration
                 duringAcceleration = maxVelocity / 2 * accelTime
