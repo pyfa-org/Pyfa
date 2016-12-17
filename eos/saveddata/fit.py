@@ -461,17 +461,119 @@ class Fit(object):
             if runTime != effect_runTime:
                 continue
 
-            context = ("commandRun", thing.__class__.__name__.lower())
-            if isinstance(thing, Module):
-                # This should always be a gang effect, otherwise it wouldn't be added to commandBonuses
-                # @todo: Check this
-                if effect.isType("gang"):
-                    # todo: ensure that these are run with the module is active only
-                    context += ("commandRun",)
-                    self.register(thing)
-                    effect.handler(self, thing, context, warfareBuffID = warfareBuffID)
+            # This should always be a gang effect, otherwise it wouldn't be added to commandBonuses
+            # @todo: Check this
+            if effect.isType("gang"):
+                self.register(thing)
 
-                # if effect.isType("offline") or (effect.isType("passive") and thing.state >= State.ONLINE) or \
+                if warfareBuffID == 10:  # Shield Burst: Shield Harmonizing: Shield Resistance
+                    for damageType in ("Em", "Explosive", "Thermal", "Kinetic"):
+                        self.ship.boostItemAttr("shield%sDamageResonance" % damageType, value)
+
+                if warfareBuffID == 11:  # Shield Burst: Active Shielding: Repair Duration/Capacitor
+                    self.modules.filteredItemBoost(
+                        lambda mod: mod.item.requiresSkill("Shield Operation") or mod.item.requiresSkill(
+                            "Shield Emission Systems"), "capacitorNeed", value)
+                    self.modules.filteredItemBoost(
+                        lambda mod: mod.item.requiresSkill("Shield Operation") or mod.item.requiresSkill(
+                            "Shield Emission Systems"), "duration", value)
+
+                if warfareBuffID == 12:  # Shield Burst: Shield Extension: Shield HP
+                    self.ship.boostItemAttr("shieldCapacity", value, stackingPenalties=True)
+
+                if warfareBuffID == 13:  # Armor Burst: Armor Energizing: Armor Resistance
+                    for damageType in ("Em", "Thermal", "Explosive", "Kinetic"):
+                        self.ship.boostItemAttr("armor%sDamageResonance" % damageType, value)
+
+                if warfareBuffID == 14:  # Armor Burst: Rapid Repair: Repair Duration/Capacitor
+                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill(
+                        "Remote Armor Repair Systems") or mod.item.requiresSkill("Repair Systems"),
+                                                  "capacitorNeed", value)
+                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill(
+                        "Remote Armor Repair Systems") or mod.item.requiresSkill("Repair Systems"), "duration",
+                                                  value)
+
+                if warfareBuffID == 15:  # Armor Burst: Armor Reinforcement: Armor HP
+                    self.ship.boostItemAttr("armorHP", value, stackingPenalties=True)
+
+                if warfareBuffID == 16:  # Information Burst: Sensor Optimization: Scan Resolution
+                    self.ship.boostItemAttr("scanResolution", value, stackingPenalties=True)
+
+                if warfareBuffID == 17:  # Information Burst: Electronic Superiority: EWAR Range and Strength
+                    groups = ("ECM", "Sensor Dampener", "Weapon Disruptor", "Target Painter")
+                    self.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups, "maxRange", value,
+                                                  stackingPenalties=True)
+                    self.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups,
+                                                  "falloffEffectiveness", value, stackingPenalties=True)
+
+                    for scanType in ("Magnetometric", "Radar", "Ladar", "Gravimetric"):
+                        self.modules.filteredItemBoost(lambda mod: mod.item.group.nam == "ECM",
+                                                      "scan%sStrengthBonus" % scanType, value,
+                                                      stackingPenalties=True)
+
+                    for attr in (
+                    "missileVelocityBonus", "explosionDelayBonus", "aoeVelocityBonus", "falloffBonus",
+                    "maxRangeBonus", "aoeCloudSizeBonus", "trackingSpeedBonus"):
+                        self.modules.filteredItemBoost(lambda mod: mod.item.group.name == "Weapon Disruptor",
+                                                      attr, value)
+
+                    for attr in ("maxTargetRangeBonus", "scanResolutionBonus"):
+                        self.modules.filteredItemBoost(lambda mod: mod.item.group.name == "Sensor Dampener",
+                                                      attr, value)
+
+                        self.modules.filteredItemBoost(lambda mod: mod.item.gorup.name == "Target Painter",
+                                                  "signatureRadiusBonus", value, stackingPenalties=True)
+
+                if warfareBuffID == 18:  # Information Burst: Electronic Hardening: Scan Strength
+                    for scanType in ("Gravimetric", "Radar", "Ladar", "Magnetometric"):
+                        self.ship.boostItemAttr("scan%sStrength" % scanType, value, stackingPenalties=True)
+
+                if warfareBuffID == 19:  # Information Burst: Electronic Hardening: RSD/RWD Resistance
+                    self.ship.boostItemAttr("sensorDampenerResistance", value)
+                    self.ship.boostItemAttr("weaponDisruptionResistance", value)
+
+                if warfareBuffID == 26:  # Information Burst: Sensor Optimization: Targeting Range
+                    self.ship.boostItemAttr("maxTargetRange", value)
+
+                if warfareBuffID == 20:  # Skirmish Burst: Evasive Maneuvers: Signature Radius
+                    self.ship.boostItemAttr("signatureRadius", value, stackingPenalties=True)
+
+                if warfareBuffID == 21:  # Skirmish Burst: Interdiction Maneuvers: Tackle Range
+                    groups = ("Stasis Web", "Warp Scrambler")
+                    self.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups, "maxRange", value,
+                                                  stackingPenalties=True)
+
+                if warfareBuffID == 22:  # Skirmish Burst: Rapid Deployment: AB/MWD Speed Increase
+                    self.modules.filteredItemBoost(
+                        lambda mod: mod.item.requiresSkill("Afterburner") or mod.item.requiresSkill(
+                            "High Speed Maneuvering"), "speedFactor", value, stackingPenalties=True)
+
+                if warfareBuffID == 23:  # Mining Burst: Mining Laser Field Enhancement: Mining/Survey Range
+                    self.modules.filteredItemBoost(
+                        lambda mod: mod.item.requiresSkill("Mining") or mod.item.requiresSkill(
+                            "Ice Harvesting") or mod.item.requiresSkill("Gas Cloud Harvesting"), "maxRange",
+                        value, stackingPenalties=True)
+                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("CPU Management"),
+                                                  "surveyScanRange", value, stackingPenalties=True)
+
+                if warfareBuffID == 24:  # Mining Burst: Mining Laser Optimization: Mining Capacitor/Duration
+                    self.modules.filteredItemBoost(
+                        lambda mod: mod.item.requiresSkill("Mining") or mod.item.requiresSkill(
+                            "Ice Harvesting") or mod.item.requiresSkill("Gas Cloud Harvesting"),
+                        "capacitorNeed", value, stackingPenalties=True)
+                    self.modules.filteredItemBoost(
+                        lambda mod: mod.item.requiresSkill("Mining") or mod.item.requiresSkill(
+                            "Ice Harvesting") or mod.item.requiresSkill("Gas Cloud Harvesting"), "duration",
+                        value, stackingPenalties=True)
+
+                if warfareBuffID == 25:  # Mining Burst: Mining Equipment Preservation: Crystal Volatility
+                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Mining"),
+                                                  "crystalVolatilityChance", value, stackingPenalties=True)
+
+                if warfareBuffID == 60:  # Skirmish Burst: Evasive Maneuvers: Agility
+                    self.ship.boostItemAttr("agility", value, stackingPenalties=True)
+
+                            # if effect.isType("offline") or (effect.isType("passive") and thing.state >= State.ONLINE) or \
                 # (effect.isType("active") and thing.state >= State.ACTIVE):
                 #     # Run effect, and get proper bonuses applied
                 #     try:
