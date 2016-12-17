@@ -1,3 +1,7 @@
+# chargeBonusWarfareCharge
+#
+# Used by:
+# Items from market group: Ammunition & Charges > Command Burst Charges (15 of 15)
 type = "active"
 
 def handler(fit, module, context):

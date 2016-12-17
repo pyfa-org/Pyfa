@@ -1,3 +1,7 @@
+# shipBonusCommandDestroyerRole1DefenderBonus
+#
+# Used by:
+# Ships from group: Command Destroyer (4 of 4)
 type = "passive"
 
 

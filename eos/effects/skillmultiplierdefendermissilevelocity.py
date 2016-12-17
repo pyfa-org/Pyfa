@@ -1,3 +1,7 @@
+# skillMultiplierDefenderMissileVelocity
+#
+# Used by:
+# Skill: Defender Missiles
 type = "passive"
 
 
