@@ -33,8 +33,6 @@ class PFGeneralPref ( PreferenceView):
         self.cbGlobalDmgPattern = wx.CheckBox( panel, wx.ID_ANY, u"Use global damage pattern", wx.DefaultPosition, wx.DefaultSize, 0 )
         mainSizer.Add( self.cbGlobalDmgPattern, 0, wx.ALL|wx.EXPAND, 5 )
 
-        self.cbGlobalForceReload = wx.CheckBox( panel, wx.ID_ANY, u"Factor in reload time", wx.DefaultPosition, wx.DefaultSize, 0 )
-        mainSizer.Add( self.cbGlobalForceReload, 0, wx.ALL|wx.EXPAND, 5 )
 
         self.cbCompactSkills = wx.CheckBox( panel, wx.ID_ANY, u"Compact skills needed tooltip", wx.DefaultPosition, wx.DefaultSize, 0 )
         mainSizer.Add( self.cbCompactSkills, 0, wx.ALL|wx.EXPAND, 5 )
@@ -64,7 +62,7 @@ class PFGeneralPref ( PreferenceView):
 
         self.cbExportCharges = wx.CheckBox( panel, wx.ID_ANY, u"Export loaded charges", wx.DefaultPosition, wx.DefaultSize, 0 )
         mainSizer.Add( self.cbExportCharges, 0, wx.ALL|wx.EXPAND, 5 )
-        
+
         self.cbOpenFitInNew = wx.CheckBox( panel, wx.ID_ANY, u"Open fittings in a new page by default", wx.DefaultPosition, wx.DefaultSize, 0 )
         mainSizer.Add( self.cbOpenFitInNew, 0, wx.ALL|wx.EXPAND, 5 )
 
@@ -74,7 +72,6 @@ class PFGeneralPref ( PreferenceView):
 
         self.cbGlobalChar.SetValue(self.sFit.serviceFittingOptions["useGlobalCharacter"])
         self.cbGlobalDmgPattern.SetValue(self.sFit.serviceFittingOptions["useGlobalDamagePattern"])
-        self.cbGlobalForceReload.SetValue(self.sFit.serviceFittingOptions["useGlobalForceReload"])
         self.cbFitColorSlots.SetValue(self.sFit.serviceFittingOptions["colorFitBySlot"] or False)
         self.cbRackSlots.SetValue(self.sFit.serviceFittingOptions["rackSlots"] or False)
         self.cbRackLabels.SetValue(self.sFit.serviceFittingOptions["rackLabels"] or False)
@@ -88,7 +85,6 @@ class PFGeneralPref ( PreferenceView):
 
         self.cbGlobalChar.Bind(wx.EVT_CHECKBOX, self.OnCBGlobalCharStateChange)
         self.cbGlobalDmgPattern.Bind(wx.EVT_CHECKBOX, self.OnCBGlobalDmgPatternStateChange)
-        self.cbGlobalForceReload.Bind(wx.EVT_CHECKBOX, self.OnCBGlobalForceReloadStateChange)
         self.cbFitColorSlots.Bind(wx.EVT_CHECKBOX, self.onCBGlobalColorBySlot)
         self.cbRackSlots.Bind(wx.EVT_CHECKBOX, self.onCBGlobalRackSlots)
         self.cbRackLabels.Bind(wx.EVT_CHECKBOX, self.onCBGlobalRackLabels)
@@ -127,13 +123,6 @@ class PFGeneralPref ( PreferenceView):
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
         event.Skip()
 
-    def OnCBGlobalForceReloadStateChange(self, event):
-        self.sFit.serviceFittingOptions["useGlobalForceReload"] = self.cbGlobalForceReload.GetValue()
-        fitID = self.mainFrame.getActiveFit()
-        self.sFit.refreshFit(fitID)
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
-        event.Skip()
-
     def OnCBGlobalCharStateChange(self, event):
         self.sFit.serviceFittingOptions["useGlobalCharacter"] = self.cbGlobalChar.GetValue()
         event.Skip()
@@ -163,7 +152,7 @@ class PFGeneralPref ( PreferenceView):
 
     def onCBExportCharges(self, event):
         self.sFit.serviceFittingOptions["exportCharges"] = self.cbExportCharges.GetValue()
-    
+
     def onCBOpenFitInNew(self, event):
         self.sFit.serviceFittingOptions["openFitInNew"] = self.cbOpenFitInNew.GetValue()
 

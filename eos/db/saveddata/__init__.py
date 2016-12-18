@@ -8,6 +8,7 @@ __all__ = [
     "booster",
     "drone",
     "implant",
+    "fleet",
     "damagePattern",
     "miscData",
     "targetResists",

@@ -341,4 +341,46 @@ class CRESTSettings():
     def set(self, type, value):
         self.serviceCRESTSettings[type] = value
 
+class statViewSettings():
+    _instance = None
+
+    @classmethod
+    def getInstance(cls):
+        if cls._instance is None:
+            cls._instance = statViewSettings()
+
+        return cls._instance
+
+    def __init__(self):
+        # mode
+        # 0 - Do not show
+        # 1 - Minimal/Text Only View
+        # 2 - Full View
+        serviceStatViewDefaultSettings = {
+            "resources": 2,
+            "resistances": 2,
+            "recharge": 2,
+            "firepower": 2,
+            "capacitor": 2,
+            "targetingmisc": 1,
+            "price": 2,
+            "miningyield": 2,
+            "drones": 2
+        }
+
+        # We don't have these....yet
+        '''
+        "miningyield": 2,
+        "drones": 2
+        '''
+
+        self.serviceStatViewDefaultSettings = SettingsProvider.getInstance().getSettings("pyfaServiceStatViewSettings",
+                                                                               serviceStatViewDefaultSettings)
+
+    def get(self, type):
+        return self.serviceStatViewDefaultSettings[type]
+
+    def set(self, type, value):
+        self.serviceStatViewDefaultSettings[type] = value
+
 # @todo: migrate fit settings (from fit service) here?
