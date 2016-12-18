@@ -1,7 +1,7 @@
 # boosterMaxVelocityPenalty
 #
 # Used by:
-# Implants from group: Booster (12 of 47)
+# Implants from group: Booster (12 of 48)
 type = "boosterSideEffect"
 activeByDefault = False
 

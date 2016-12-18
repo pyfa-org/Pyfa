@@ -10,6 +10,7 @@
 # Ships named like: Stratios (2 of 2)
 # Subsystems named like: Offensive Covert Reconfiguration (4 of 4)
 # Ship: Astero
+# Ship: Rabisu
 type = "passive"
 
 
