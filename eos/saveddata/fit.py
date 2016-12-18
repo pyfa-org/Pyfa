@@ -507,7 +507,7 @@ class Fit(object):
                                                   "falloffEffectiveness", value, stackingPenalties=True)
 
                     for scanType in ("Magnetometric", "Radar", "Ladar", "Gravimetric"):
-                        self.modules.filteredItemBoost(lambda mod: mod.item.group.nam == "ECM",
+                        self.modules.filteredItemBoost(lambda mod: mod.item.group.name == "ECM",
                                                       "scan%sStrengthBonus" % scanType, value,
                                                       stackingPenalties=True)
 
@@ -521,7 +521,7 @@ class Fit(object):
                         self.modules.filteredItemBoost(lambda mod: mod.item.group.name == "Sensor Dampener",
                                                       attr, value)
 
-                        self.modules.filteredItemBoost(lambda mod: mod.item.gorup.name == "Target Painter",
+                    self.modules.filteredItemBoost(lambda mod: mod.item.gorup.name == "Target Painter",
                                                   "signatureRadiusBonus", value, stackingPenalties=True)
 
                 if warfareBuffID == 18:  # Information Burst: Electronic Hardening: Scan Strength
