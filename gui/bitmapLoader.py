@@ -1,4 +1,4 @@
-# ===============================================================================
+#===============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,25 +15,23 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-# ===============================================================================
+#===============================================================================
 
-import cStringIO
 import os.path
-import zipfile
-
-import wx
-
 import config
+import wx
+import zipfile
+import cStringIO
 
 try:
     from collections import OrderedDict
 except ImportError:
     from utils.compat import OrderedDict
 
-
 class BitmapLoader():
+
     try:
-        archive = zipfile.ZipFile(config.getPyfaPath('imgs.zip'), 'r')
+        archive = zipfile.ZipFile(os.path.join(config.pyfaPath, 'imgs.zip'), 'r')
     except IOError:
         archive = None
 
@@ -44,7 +42,7 @@ class BitmapLoader():
     @classmethod
     def getStaticBitmap(cls, name, parent, location):
         static = wx.StaticBitmap(parent)
-        static.SetBitmap(cls.getBitmap(name, location))
+        static.SetBitmap(cls.getBitmap(name,location))
         return static
 
     @classmethod
@@ -87,7 +85,7 @@ class BitmapLoader():
             except KeyError:
                 print "Missing icon file from zip: {0}".format(path)
         else:
-            path = config.getPyfaPath('imgs\\' + location + "\\" + filename)
+            path = os.path.join(config.pyfaPath, 'imgs', location, filename)
 
             if os.path.exists(path):
                 return wx.Image(path)
