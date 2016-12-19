@@ -27,6 +27,7 @@ import gui.mainFrame
 import service
 from gui.bitmapLoader import BitmapLoader
 from gui.graph import Graph
+from config import parsePath
 
 enabled = True
 mplImported = False
@@ -49,18 +50,8 @@ class GraphFrame(wx.Frame):
                 cache_dir = mpl._get_cachedir()
             except:
                 cache_dir = os.path.expanduser(os.path.join("~", ".matplotlib"))
-                if type(cache_dir) == str:  # leave unicode ones alone
-                    try:
-                        cache_dir = cache_dir.decode('utf8')
-                    except UnicodeDecodeError:
-                        cache_dir = cache_dir.decode('windows-1252')
 
-            cache_file = os.path.join(cache_dir, 'fontList.cache')
-            if type(cache_file) == str:  # leave unicode ones alone
-                try:
-                    cache_file = cache_file.decode('utf8')
-                except UnicodeDecodeError:
-                    cache_file = cache_file.decode('windows-1252')
+            cache_file = parsePath(cache_dir, 'fontList.cache')
 
             if os.access(cache_dir, os.W_OK | os.X_OK) and os.path.isfile(cache_file):
                 # remove matplotlib font cache, see #234

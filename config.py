@@ -94,8 +94,8 @@ def defPaths(customSavePath):
 
     if isFrozen():
         certName = "cacert.pem"
-        os.environ["REQUESTS_CA_BUNDLE"] = getPyfaPath(certName)
-        os.environ["SSL_CERT_FILE"] = getPyfaPath(certName)
+        os.environ["REQUESTS_CA_BUNDLE"] = getPyfaPath(certName).encode('utf8')
+        os.environ["SSL_CERT_FILE"] = getPyfaPath(certName).encode('utf8')
 
     loggingFormat = '%(asctime)s %(name)-24s %(levelname)-8s %(message)s'
     logging.basicConfig(format=loggingFormat, level=logLevel)
@@ -137,43 +137,36 @@ def defPaths(customSavePath):
 def getPyfaPath(Append=None):
     base = getattr(sys.modules['__main__'], "__file__", sys.executable) if isFrozen() else sys.argv[0]
     root = os.path.dirname(os.path.realpath(os.path.abspath(base)))
-    if type(root) == str:  # leave unicode ones alone
-        try:
-            root = root.decode('utf8')
-        except UnicodeDecodeError:
-            root = root.decode('windows-1252')
 
-    if not Append:
-        return root
-
-    if type(root) == str:  # leave unicode ones alone
-        try:
-            path = os.path.abspath(os.path.join(root, Append)).decode('utf8')
-        except UnicodeDecodeError:
-            path = os.path.abspath(os.path.join(root, Append)).decode('windows-1252')
+    if Append:
+        path = parsePath(root, Append)
     else:
-        path = os.path.abspath(os.path.join(root, Append))
+        path = parsePath(root)
 
     return path
 
 
 def getSavePath(Append=None):
     root = os.path.expanduser(os.path.join("~", ".pyfa"))
-    if type(root) == str:  # leave unicode ones alone
-        try:
-            root = root.decode('utf8')
-        except UnicodeDecodeError:
-            root = root.decode('windows-1252')
 
-    if not Append:
-        return root
-
-    if type(root) == str:  # leave unicode ones alone
-        try:
-            path = os.path.abspath(os.path.join(root, Append)).decode('utf8')
-        except UnicodeDecodeError:
-            path = os.path.abspath(os.path.join(root, Append)).decode('windows-1252')
+    if Append:
+        path = parsePath(root, Append)
     else:
-        path = os.path.abspath(os.path.join(root, Append))
+        path = parsePath(root)
+
+    return path
+
+
+def parsePath(root, Append=None):
+    if Append:
+        path = os.path.join(root, Append)
+    else:
+        path = root
+
+    if type(path) == str:  # leave unicode ones alone
+        try:
+            path = path.decode('utf8')
+        except UnicodeDecodeError:
+            path = path.decode('windows-1252')
 
     return path

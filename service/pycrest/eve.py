@@ -52,12 +52,7 @@ class FileCache(APICache):
             os.mkdir(self.path, 0o700)
 
     def _getpath(self, key):
-        path = os.path.join(self.path, str(hash(key)) + '.cache')
-        if type(path) == str:  # leave unicode ones alone
-            try:
-                path = path.decode('utf8')
-            except UnicodeDecodeError:
-                path = path.decode('windows-1252')
+        path = config.parsePath(self.path, str(hash(key)) + '.cache')
         return path
 
     def put(self, key, value):

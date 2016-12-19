@@ -44,12 +44,7 @@ class SettingsProvider():
 
         s = self.settings.get(area)
         if s is None:
-            p = os.path.join(self.BASE_PATH, area)
-            if type(p) == str:  # leave unicode ones alone
-                try:
-                    p = p.decode('utf8')
-                except UnicodeDecodeError:
-                    p = p.decode('windows-1252')
+            p = config.parsePath(self.BASE_PATH, area)
 
             if not os.path.exists(p):
                 info = {}

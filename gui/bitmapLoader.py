@@ -20,6 +20,7 @@
 import cStringIO
 import os.path
 import zipfile
+from config import parsePath
 
 import wx
 
@@ -76,7 +77,7 @@ class BitmapLoader():
         filename = "{0}.png".format(name)
 
         if cls.archive:
-            path = os.path.join(location, filename)
+            path = parsePath(location, filename)
             if os.sep != "/" and os.sep in path:
                 path = path.replace(os.sep, "/")
 
