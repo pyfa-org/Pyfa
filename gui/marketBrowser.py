@@ -31,6 +31,25 @@ ItemSelected, ITEM_SELECTED = wx.lib.newevent.NewEvent()
 RECENTLY_USED_MODULES = -2
 MAX_RECENTLY_USED_MODULES = 20
 
+class MetaButton(wx.ToggleButton):
+    def __init__(self, *args, **kwargs):
+        super(MetaButton, self).__init__(*args, **kwargs)
+        self.setUserSelection(True)
+
+    def setUserSelection(self, isSelected):
+        self.userSelected = isSelected
+        self.SetValue(isSelected)
+
+    def setMetaAvailable(self, isAvailable):
+        self.Enable(isAvailable)
+        # need to also SetValue(False) for windows because Enabled=False AND SetValue(True) looks enabled.
+        if not isAvailable:
+            self.SetValue(False)
+
+    def reset(self):
+        self.Enable(True)
+        self.SetValue(self.userSelected)
+
 class MarketBrowser(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent)
@@ -62,7 +81,7 @@ class MarketBrowser(wx.Panel):
         vbox.Add(p, 0, wx.EXPAND)
         self.metaButtons = []
         for name in self.sMkt.META_MAP.keys():
-            btn = wx.ToggleButton(p, wx.ID_ANY, name.capitalize(), style=wx.BU_EXACTFIT)
+            btn = MetaButton(p, wx.ID_ANY, name.capitalize(), style=wx.BU_EXACTFIT)
             setattr(self, name, btn)
             box.Add(btn, 1, wx.ALIGN_CENTER)
             btn.Bind(wx.EVT_TOGGLEBUTTON, self.toggleMetaButton)
@@ -80,10 +99,7 @@ class MarketBrowser(wx.Panel):
         if not ctrl:
             for btn in self.metaButtons:
                 if btn.Enabled:
-                    if btn == ebtn:
-                        btn.SetValue(True)
-                    else:
-                        btn.SetValue(False)
+                    btn.setUserSelection(btn == ebtn)
         else:
             # Note: using the 'wrong' value for clicked button might seem weird,
             # But the button is toggled by wx and we should deal with it
@@ -94,7 +110,7 @@ class MarketBrowser(wx.Panel):
             # Do 'nothing' if we're trying to turn last active button off
             if len(activeBtns) == 1 and activeBtns.pop() == ebtn:
                 # Keep button in the same state
-                ebtn.SetValue(True)
+                ebtn.setUserSelection(True)
                 return
         # Leave old unfiltered list contents, just re-filter them and show
         self.itemView.filterItemStore()
@@ -175,7 +191,6 @@ class MarketTree(wx.TreeCtrl):
         self.marketBrowser.searchMode = False
         sMkt = self.sMkt
         mg = sMkt.getMarketGroupByItem(item)
-        metaId = sMkt.getMetaGroupIdByItem(item)
 
         jumpList = []
         while mg is not None:
@@ -197,7 +212,7 @@ class MarketTree(wx.TreeCtrl):
             self.Expand(item)
 
         self.SelectItem(item)
-        self.marketBrowser.itemView.selectionMade(forcedMetaSelect=metaId)
+        self.marketBrowser.itemView.selectionMade()
 
 class ItemView(d.Display):
     DEFAULT_COLS = ["Base Icon",
@@ -269,7 +284,7 @@ class ItemView(d.Display):
 
         self.sMkt.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"].append(itemID)
 
-    def selectionMade(self, event=None, forcedMetaSelect=None):
+    def selectionMade(self, event=None):
         self.marketBrowser.searchMode = False
         # Grab the threeview selection and check if it's fine
         sel = self.marketView.GetSelection()
@@ -299,7 +314,7 @@ class ItemView(d.Display):
 
             # Set toggle buttons / use search mode flag if recently used modules category is selected (in order to have all modules listed and not filtered)
             if seldata is not RECENTLY_USED_MODULES:
-                self.setToggles(forcedMetaSelect=forcedMetaSelect)
+                self.setToggles()
             else:
                 self.marketBrowser.searchMode = True
                 self.setToggles()
@@ -319,33 +334,19 @@ class ItemView(d.Display):
         self.filteredStore = sMkt.filterItemsByMeta(self.unfilteredStore, selectedMetas)
         self.update(list(self.filteredStore))
 
-    def setToggles(self, forcedMetaSelect=None):
+    def setToggles(self):
         metaIDs = set()
         sMkt = self.sMkt
         for item in self.unfilteredStore:
             metaIDs.add(sMkt.getMetaGroupIdByItem(item))
-        anySelection = False
+
         for btn in self.marketBrowser.metaButtons:
+            btn.reset()
             btnMetas = sMkt.META_MAP[btn.metaName]
             if len(metaIDs.intersection(btnMetas)) > 0:
-                btn.Enable(True)
-                # Select all available buttons if we're searching
-                if self.marketBrowser.searchMode is True:
-                    btn.SetValue(True)
-                # Select explicitly requested button
-                if forcedMetaSelect is not None:
-                    btn.SetValue(True if forcedMetaSelect in btnMetas else False)
+                btn.setMetaAvailable(True)
             else:
-                btn.Enable(False)
-                btn.SetValue(False)
-            if btn.GetValue():
-                anySelection = True
-        # If no buttons are pressed, press first active
-        if anySelection is False:
-            for btn in self.marketBrowser.metaButtons:
-                if btn.Enabled:
-                    btn.SetValue(True)
-                    break
+                btn.setMetaAvailable(False)
 
     def scheduleSearch(self, event=None):
         search = self.marketBrowser.search.GetLineText(0)
