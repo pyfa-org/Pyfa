@@ -38,7 +38,7 @@ class GnosisSimulation:
         # Get user preferences for running the Gnosis engine
         setting_factor_reload_time = sFit.serviceFittingOptions["useGlobalForceReload"]
         '''
-        setting_factor_reload_time = False
+        setting_factor_reload_time = True
 
         module_list = []
         for module in fit.modules:

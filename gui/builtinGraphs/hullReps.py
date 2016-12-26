@@ -17,12 +17,9 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-from gui.graph import Graph
-import service
-from gui.bitmapLoader import BitmapLoader
-from eos.graph import Data
 import gui.mainFrame
-from eos_service.gnosis import GnosisSimulation
+from eos.gnosis import GnosisSimulation
+from gui.graph import Graph
 
 
 class hullRepsGraph(Graph):

@@ -18,7 +18,6 @@
 #===============================================================================
 
 import copy
-import logging
 import time
 from copy import deepcopy
 from itertools import chain
@@ -29,9 +28,9 @@ from sqlalchemy.orm import validates, reconstructor
 import eos.db
 from eos.effectHandlerHelpers import *
 from eos.enum import Enum
+from eos.gnosis import GnosisFormulas, GnosisSimulation
 from eos.saveddata.module import State
 from eos.types import Ship, Character, Slot, Module, Citadel
-from eos_service.gnosis import GnosisFormulas, GnosisSimulation
 from utils.timer import Timer
 
 logger = logging.getLogger(__name__)
