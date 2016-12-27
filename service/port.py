@@ -406,7 +406,11 @@ class Port(object):
                     cargoMap[modName] = 0
                 cargoMap[modName] += extraAmount
             elif item.category.name == "Implant":
-                fit.implants.append(Implant(item))
+                try:
+                    fit.implants.append(Implant(item))
+                except ValueError:
+                    # Passed item isn't an implant.  Try loading it as a booster.
+                    fit.boosters.append(Booster(item))
             # elif item.category.name == "Subsystem":
             #     try:
             #         subsystem = Module(item)
