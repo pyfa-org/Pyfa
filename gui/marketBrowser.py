@@ -94,26 +94,23 @@ class MarketBrowser(wx.Panel):
 
     def toggleMetaButton(self, event):
         """Process clicks on toggle buttons"""
-        ctrl = wx.GetMouseState().CmdDown()
-        ebtn = event.EventObject
-        if not ctrl:
-            for btn in self.metaButtons:
-                if btn.Enabled:
-                    btn.setUserSelection(btn == ebtn)
-        else:
-            # Note: using the 'wrong' value for clicked button might seem weird,
-            # But the button is toggled by wx and we should deal with it
-            activeBtns = set()
-            for btn in self.metaButtons:
-                if (btn.GetValue() is True and btn != ebtn) or (btn.GetValue() is False and btn == ebtn):
-                    activeBtns.add(btn)
-            # Do 'nothing' if we're trying to turn last active button off
-            if len(activeBtns) == 1 and activeBtns.pop() == ebtn:
+        appendMeta = wx.GetMouseState().CmdDown()
+        clickedBtn = event.EventObject
+
+        if appendMeta:
+            activeBtns = [btn for btn in self.metaButtons if btn.GetValue()]
+            if activeBtns:
+                clickedBtn.setUserSelection(clickedBtn.GetValue())
+                self.itemView.filterItemStore()
+            else:
+                # Do 'nothing' if we're trying to turn last active button off
                 # Keep button in the same state
-                ebtn.setUserSelection(True)
-                return
-        # Leave old unfiltered list contents, just re-filter them and show
-        self.itemView.filterItemStore()
+                clickedBtn.setUserSelection(True)
+        else:
+            for btn in self.metaButtons:
+                btn.setUserSelection(btn == clickedBtn)
+
+            self.itemView.filterItemStore()
 
     def jump(self, item):
         self.marketView.jump(item)
