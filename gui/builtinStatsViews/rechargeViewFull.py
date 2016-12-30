@@ -123,7 +123,7 @@ class RechargeViewFull(StatsView):
             label = getattr(self, "labelTankSustainedShieldPassive")
             label.SetLabel("0")
 
-        label.SetToolTip(wx.ToolTip("Passive Tank %.3f" % value))
+        label.SetToolTip(wx.ToolTip("Passive Tank: %.3f HP/s" % value))
         self.panel.Layout()
         self.headerPanel.Layout()
 
