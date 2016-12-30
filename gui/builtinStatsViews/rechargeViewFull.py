@@ -105,6 +105,9 @@ class RechargeViewFull(StatsView):
                 lbl = getattr(self, "labelTank%s%sActive" % (stability.capitalize(), name.capitalize()))
                 if tank is not None:
                     lbl.SetLabel("%.1f" % tank["%sRepair" % name])
+                    if (tank["%sRepair" % name] > 0) & (not fit.capStable): #show tooltip only if fit is not capstable
+                        totalDPSTank = tank["%sRepair" % name] * fit.capState
+                        lbl.SetToolTip(wx.ToolTip("Total DPS Tank: %.0f HP" % totalDPSTank))
                 else:
                     lbl.SetLabel("0.0")
 
@@ -118,7 +121,7 @@ class RechargeViewFull(StatsView):
             label = getattr(self, "labelTankSustainedShieldPassive")
             label.SetLabel("0")
 
-        label.SetToolTip(wx.ToolTip("%.3f" % value))
+        label.SetToolTip(wx.ToolTip("Passive Tank %.3f" % value))
         self.panel.Layout()
         self.headerPanel.Layout()
 
