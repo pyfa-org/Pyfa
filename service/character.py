@@ -272,8 +272,11 @@ class Character(object):
         return char
 
     def rename(self, char, newName):
-        char.name = newName
-        eos.db.commit()
+        if char.name in ("All 0", "All 5"):
+            logger.info("Cannot rename built in characters.")
+        else:
+            char.name = newName
+            eos.db.commit()
 
     def copy(self, char):
         newChar = copy.deepcopy(char)
