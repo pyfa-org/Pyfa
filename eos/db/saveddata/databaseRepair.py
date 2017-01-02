@@ -37,17 +37,13 @@ class DatabaseCleanup:
         # See issue #917
         try:
             logger.debug("Running database cleanup for character skills.")
-            results = saveddata_engine.execute("SELECT * FROM characterSkills "
+            results = saveddata_engine.execute("SELECT COUNT(*) AS num FROM characterSkills "
                                                "WHERE characterID NOT IN (SELECT ID from characters)")
 
-            # Count how many records exist.  This is ugly, but SQLAlchemy doesn't return a count from a select query.
-            result_count = 0
-            for _ in results:
-                result_count += 1
+            if results.fetchone()['num'] > 0:
+                delete = saveddata_engine.execute("DELETE FROM characterSkills WHERE characterID NOT IN (SELECT ID from characters)")
+                logger.error("Database corruption found. Cleaning up %d records.", delete.rowcount)
 
-            if result_count > 0:
-                logger.error("Database corruption found. Cleaning up %d records.", result_count)
-                saveddata_engine.execute("DELETE FROM characterSkills WHERE characterID NOT IN (SELECT ID from characters)")
         except sqlalchemy.exc.DatabaseError:
             logger.error("Failed to connect to database.")
 
@@ -58,14 +54,9 @@ class DatabaseCleanup:
         # See issue #777
         try:
             logger.debug("Running database cleanup for orphaned damage patterns attached to fits.")
-            results = saveddata_engine.execute("SELECT * FROM fits WHERE damagePatternID not in (select ID from damagePatterns)")
+            results = saveddata_engine.execute("SELECT COUNT(*) AS num FROM fits WHERE damagePatternID not in (select ID from damagePatterns)")
 
-            # Count how many records exist.  This is ugly, but SQLAlchemy doesn't return a count from a select query.
-            result_count = 0
-            for _ in results:
-                result_count += 1
-
-            if result_count > 0:
+            if results.fetchone()['num'] > 0:
                 # Get Uniform damage pattern ID
                 uniform_results = saveddata_engine.execute("select ID from damagePatterns WHERE name = 'Uniform'")
 
@@ -80,10 +71,10 @@ class DatabaseCleanup:
                 elif uniform_result_count > 1:
                     logger.error("More than one uniform damage pattern found.")
                 else:
-                    logger.error("Database corruption found. Cleaning up %d records.", result_count)
-                    saveddata_engine.execute("UPDATE 'fits' SET 'damagePatternID' = ? "
+                    update = saveddata_engine.execute("UPDATE 'fits' SET 'damagePatternID' = ? "
                                              "WHERE damagePatternID NOT IN (SELECT ID FROM damagePatterns)",
                                              uniform_damage_pattern_id)
+                    logger.error("Database corruption found. Cleaning up %d records.", update.rowcount)
         except sqlalchemy.exc.DatabaseError:
             logger.error("Failed to connect to database.")
 
@@ -92,14 +83,10 @@ class DatabaseCleanup:
         # Find orphaned character IDs. This solves an issue where the chaaracter doesn't exist, but fits reference the pattern.
         try:
             logger.debug("Running database cleanup for orphaned characters attached to fits.")
-            results = saveddata_engine.execute("SELECT * FROM fits WHERE characterID NOT IN (SELECT ID FROM characters)")
+            results = saveddata_engine.execute("SELECT COUNT(*) AS num FROM fits WHERE characterID NOT IN (SELECT ID FROM characters)")
 
             # Count how many records exist.  This is ugly, but SQLAlchemy doesn't return a count from a select query.
-            result_count = 0
-            for _ in results:
-                result_count += 1
-
-            if result_count > 0:
+            if results.fetchone()['num'] > 0:
                 # Get All 5 character ID
                 all5_results = saveddata_engine.execute("SELECT ID FROM characters WHERE name = 'All 5'")
 
@@ -114,9 +101,9 @@ class DatabaseCleanup:
                 elif all5_result_count > 1:
                     logger.error("More than one 'All 5' character found.")
                 else:
-                    logger.error("Database corruption found. Cleaning up %d records.", result_count)
-                    saveddata_engine.execute("UPDATE 'fits' SET 'damagePatternID' = ? "
+                    update = saveddata_engine.execute("UPDATE 'fits' SET 'damagePatternID' = ? "
                                              "WHERE damagePatternID not in (select ID from damagePatterns)",
                                              all5_id)
+                    logger.error("Database corruption found. Cleaning up %d records.", update.rowcount)
         except sqlalchemy.exc.DatabaseError:
             logger.error("Failed to connect to database.")
