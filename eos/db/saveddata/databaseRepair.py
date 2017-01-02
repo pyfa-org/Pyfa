@@ -19,7 +19,6 @@
 
 import sqlalchemy
 import logging
-from eos.db.saveddata.queries import executeDatabaseQuery
 
 logger = logging.getLogger(__name__)
 
@@ -42,7 +41,7 @@ class DatabaseCleanup:
                                                "WHERE characterID NOT IN (SELECT ID from characters)")
             row = results.first()
 
-            if row['num']:
+            if row and row['num']:
                 delete = saveddata_engine.execute("DELETE FROM characterSkills WHERE characterID NOT IN (SELECT ID from characters)")
                 logger.error("Database corruption found. Cleaning up %d records.", delete.rowcount)
 
@@ -60,19 +59,20 @@ class DatabaseCleanup:
             results = saveddata_engine.execute("SELECT COUNT(*) AS num FROM fits WHERE damagePatternID NOT IN (SELECT ID FROM damagePatterns) OR damagePatternID IS NULL")
             row = results.first()
 
-            if row['num']:
+            if row and row['num']:
                 # Get Uniform damage pattern ID
-                query_return = executeDatabaseQuery(saveddata_engine, "SELECT ID FROM damagePatterns WHERE name = 'Uniform'")
+                query = saveddata_engine.execute("SELECT ID FROM damagePatterns WHERE name = 'Uniform'")
+                rows = query.fetchall()
 
-                if query_return.__len__() <= 0:
+                if len(rows) == 0:
                     logger.error("Missing uniform damage pattern.")
-                elif query_return.__len__() > 1:
+                elif len(rows) > 1:
                     logger.error("More than one uniform damage pattern found.")
                 else:
-                    uniform_damage_pattern_id = query_return[0]['ID']
+                    uniform_damage_pattern_id = rows[0]['ID']
                     update = saveddata_engine.execute("UPDATE 'fits' SET 'damagePatternID' = ? "
-                                             "WHERE damagePatternID NOT IN (SELECT ID FROM damagePatterns) OR damagePatternID IS NULL",
-                                             uniform_damage_pattern_id)
+                                                      "WHERE damagePatternID NOT IN (SELECT ID FROM damagePatterns) OR damagePatternID IS NULL",
+                                                       uniform_damage_pattern_id)
                     logger.error("Database corruption found. Cleaning up %d records.", update.rowcount)
         except sqlalchemy.exc.DatabaseError:
             logger.error("Failed to connect to database.")
@@ -87,17 +87,18 @@ class DatabaseCleanup:
 
             if row['num']:
                 # Get All 5 character ID
-                query_return = executeDatabaseQuery(saveddata_engine, "SELECT ID FROM characters WHERE name = 'All 5'")
+                query = saveddata_engine.execute("SELECT ID FROM characters WHERE name = 'All 5'")
+                rows = query.fetchall()
 
-                if query_return.__len__() <= 0:
+                if len(rows) == 0:
                     logger.error("Missing 'All 5' character.")
-                elif query_return.__len__() > 1:
+                elif len(rows) > 1:
                     logger.error("More than one 'All 5' character found.")
                 else:
-                    all5_id = query_return[0]['ID']
+                    all5_id = rows[0]['ID']
                     update = saveddata_engine.execute("UPDATE 'fits' SET 'characterID' = ? "
-                                             "WHERE characterID not in (select ID from characters) OR characterID IS NULL",
-                                             all5_id)
+                                                      "WHERE characterID not in (select ID from characters) OR characterID IS NULL",
+                                                       all5_id)
                     logger.error("Database corruption found. Cleaning up %d records.", update.rowcount)
         except sqlalchemy.exc.DatabaseError:
             logger.error("Failed to connect to database.")
