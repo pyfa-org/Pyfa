@@ -40,13 +40,9 @@ class DatabaseCleanup:
             results = saveddata_engine.execute("SELECT COUNT(*) AS num FROM characterSkills "
                                                "WHERE characterID NOT IN (SELECT ID from characters)")
 
-            count_results = 0
-            for result in results:
-                count_results = result[0]
-                break
+            row = results.first()
 
-            # Count how many records exist.  This is ugly, but SQLAlchemy doesn't return a count from a select query.
-            if count_results > 0:
+            if row and row['num'] > 0:
                 delete = saveddata_engine.execute("DELETE FROM characterSkills WHERE characterID NOT IN (SELECT ID from characters)")
                 logger.error("Database corruption found. Cleaning up %d records.", delete.rowcount)
 
@@ -62,13 +58,9 @@ class DatabaseCleanup:
             logger.debug("Running database cleanup for orphaned damage patterns attached to fits.")
             results = saveddata_engine.execute("SELECT COUNT(*) AS num FROM fits WHERE damagePatternID not in (select ID from damagePatterns)")
 
-            count_results = 0
-            for result in results:
-                count_results = result[0]
-                break
+            row = results.first()
 
-            # Count how many records exist.  This is ugly, but SQLAlchemy doesn't return a count from a select query.
-            if count_results > 0:
+            if row and row['num'] > 0:
                 # Get Uniform damage pattern ID
                 uniform_results = saveddata_engine.execute("select ID from damagePatterns WHERE name = 'Uniform'")
 
@@ -97,13 +89,9 @@ class DatabaseCleanup:
             logger.debug("Running database cleanup for orphaned characters attached to fits.")
             results = saveddata_engine.execute("SELECT COUNT(*) AS num FROM fits WHERE characterID NOT IN (SELECT ID FROM characters)")
 
-            count_results = 0
-            for result in results:
-                count_results = result[0]
-                break
+            row = results.first()
 
-            # Count how many records exist.  This is ugly, but SQLAlchemy doesn't return a count from a select query.
-            if count_results > 0:
+            if row and row['num'] > 0:
                 # Get All 5 character ID
                 all5_results = saveddata_engine.execute("SELECT ID FROM characters WHERE name = 'All 5'")
 
