@@ -34,6 +34,8 @@ import service
 import config
 import logging
 
+from eos.saveddata.character import Character as es_Character
+
 logger = logging.getLogger(__name__)
 
 class CharacterImportThread(threading.Thread):
@@ -45,6 +47,12 @@ class CharacterImportThread(threading.Thread):
     def run(self):
         paths = self.paths
         sCharacter = Character.getInstance()
+        all5_character = es_Character("All 5", 5)
+        all_skill_ids = []
+        for skill in all5_character.skills:
+            # Parse out the skill item IDs to make searching it easier later on
+            all_skill_ids.append(skill.itemID)
+
         for path in paths:
             try:
                 # we try to parse api XML data first
@@ -59,19 +67,28 @@ class CharacterImportThread(threading.Thread):
                     charFile = open(path, mode='r').read()
                     doc = minidom.parseString(charFile)
                     if doc.documentElement.tagName not in ("SerializableCCPCharacter", "SerializableUriCharacter"):
+                        logger.error("Incorrect EVEMon XML sheet")
                         raise RuntimeError("Incorrect EVEMon XML sheet")
                     name = doc.getElementsByTagName("name")[0].firstChild.nodeValue
                     skill_els = doc.getElementsByTagName("skill")
                     skills = []
                     for skill in skill_els:
-                        skills.append({
-                            "typeID": int(skill.getAttribute("typeID")),
-                            "level": int(skill.getAttribute("level")),
-                        })
+                        if int(skill.getAttribute("typeID")) in all_skill_ids and (0 <= int(skill.getAttribute("level")) <= 5):
+                            skills.append({
+                                "typeID": int(skill.getAttribute("typeID")),
+                                "level": int(skill.getAttribute("level")),
+                            })
+                        else:
+                            logger.error("Attempted to import unknown skill %s (ID: %s) (Level: %s)",
+                                         skill.getAttribute("name"),
+                                         skill.getAttribute("typeID"),
+                                         skill.getAttribute("level"),
+                                         )
                     char = sCharacter.new(name+" (EVEMon)")
                     sCharacter.apiUpdateCharSheet(char.ID, skills)
                 except Exception, e:
-                    print e.message
+                    logger.error("Exception on character import:")
+                    logger.error(e)
                     continue
 
         wx.CallAfter(self.callback)
@@ -255,8 +272,11 @@ class Character(object):
         return char
 
     def rename(self, char, newName):
-        char.name = newName
-        eos.db.commit()
+        if char.name in ("All 0", "All 5"):
+            logger.info("Cannot rename built in characters.")
+        else:
+            char.name = newName
+            eos.db.commit()
 
     def copy(self, char):
         newChar = copy.deepcopy(char)
