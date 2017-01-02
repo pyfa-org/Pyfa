@@ -407,6 +407,22 @@ def getCrestCharacter(lookfor, eager=None):
         raise TypeError("Need integer or string as argument")
     return character
 
+def executeDatabaseQuery(saveddata_engine, query):
+    # Executes a query against the database, and returns a dict instead of a resultsproxy
+    results = saveddata_engine.execute(query)
+
+    return_list = []
+
+    for row in results:
+        internal_row = {}
+        for key in row._keymap:
+            idx = row._keymap[key][2]
+            internal_row.update({key: row._row[idx]})
+
+        return_list.append(internal_row)
+
+    return return_list
+
 def getOverrides(itemID, eager=None):
     if isinstance(itemID, int):
         return saveddata_session.query(Override).filter(Override.itemID == itemID).all()
