@@ -543,6 +543,7 @@ class Market():
     def getGroupsByCategory(self, cat):
         """Get groups from given category"""
         groups = set(filter(lambda grp: self.getPublicityByGroup(grp), cat.groups))
+
         return groups
 
     def getMarketGroupChildren(self, mg):
