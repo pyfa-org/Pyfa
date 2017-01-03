@@ -782,7 +782,7 @@ class Fit(object):
         self.__calculated = True
 
         # Only apply projected fits if fit it not projected itself.
-        if not projected:
+        if not projected and not withBoosters:
             for fit in self.projectedFits:
                 if fit.getProjectionInfo(self.ID).active:
                     fit.calculateModifiedAttributes(self, withBoosters=withBoosters, dirtyStorage=dirtyStorage)
