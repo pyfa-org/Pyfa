@@ -56,7 +56,11 @@ class GnosisSimulation:
                 # Get how long the module takes to cycle
                 duration_one = module.getModifiedItemAttr("duration")
                 duration_two = module.getModifiedItemAttr("speed")
-                duration = max(duration_one, duration_two, 0)
+                duration_three = module.getModifiedItemAttr("durationSensorDampeningBurstProjector")
+                duration_four = module.getModifiedItemAttr("durationTargetIlluminationBurstProjector")
+                duration_five = module.getModifiedItemAttr("durationECMJammerBurstProjector")
+                duration_six = module.getModifiedItemAttr("durationWeaponDisruptionBurstProjector")
+                duration = max(duration_one, duration_two, duration_three, duration_four, duration_five, duration_six, 0)
 
                 if setting_factor_reload_time:
                     # Get number of charges/reloads
@@ -133,9 +137,14 @@ class GnosisSimulation:
 
             if getattr(projected_src, 'state', 0) > 0:
                 if not duration:
+                    # Get how long the module takes to cycle
                     duration_one = projected_src.getModifiedItemAttr("duration")
                     duration_two = projected_src.getModifiedItemAttr("speed")
-                    duration = max(duration_one, duration_two, 0)
+                    duration_three = projected_src.getModifiedItemAttr("durationSensorDampeningBurstProjector")
+                    duration_four = projected_src.getModifiedItemAttr("durationTargetIlluminationBurstProjector")
+                    duration_five = projected_src.getModifiedItemAttr("durationECMJammerBurstProjector")
+                    duration_six = projected_src.getModifiedItemAttr("durationWeaponDisruptionBurstProjector")
+                    duration = max(duration_one, duration_two, duration_three, duration_four, duration_five, duration_six, 0)
 
                 if setting_factor_reload_time:
                     if not charges:
@@ -188,7 +197,11 @@ class GnosisSimulation:
                         # Get how long the module takes to cycle
                         duration_one = afflictor.getModifiedItemAttr("duration")
                         duration_two = afflictor.getModifiedItemAttr("speed")
-                        duration = max(duration_one, duration_two, 0)
+                        duration_three = afflictor.getModifiedItemAttr("durationSensorDampeningBurstProjector")
+                        duration_four = afflictor.getModifiedItemAttr("durationTargetIlluminationBurstProjector")
+                        duration_five = afflictor.getModifiedItemAttr("durationECMJammerBurstProjector")
+                        duration_six = afflictor.getModifiedItemAttr("durationWeaponDisruptionBurstProjector")
+                        duration = max(duration_one, duration_two, duration_three, duration_four, duration_five, duration_six, 0)
 
                         if setting_factor_reload_time:
                             # Get number of charges/reloads
