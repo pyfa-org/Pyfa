@@ -306,24 +306,31 @@ def countAllFits():
     return count
 
 
-def countFitsWithShip(shipID, ownerID=None, where=None, eager=None):
+def countFitsWithShip(lookfor, ownerID=None, where=None, eager=None):
     """
     Get all the fits using a certain ship.
     If no user is passed, do this for all users.
     """
-    if isinstance(shipID, int):
-        if ownerID is not None and not isinstance(ownerID, int):
-            raise TypeError("OwnerID must be integer")
-        filter = Fit.shipID == shipID
-        if ownerID is not None:
-            filter = and_(filter, Fit.ownerID == ownerID)
+    if ownerID is not None and not isinstance(ownerID, int):
+        raise TypeError("OwnerID must be integer")
 
-        filter = processWhere(filter, where)
-        eager = processEager(eager)
-        with sd_lock:
-            count = saveddata_session.query(Fit).options(*eager).filter(filter).count()
+    if isinstance(lookfor, int):
+        filter = Fit.shipID == lookfor
+    elif isinstance(lookfor, list):
+        if len(lookfor) == 0:
+            return 0
+        filter = Fit.shipID.in_(lookfor)
     else:
-        raise TypeError("ShipID must be integer")
+        raise TypeError("You must supply either an integer or ShipID must be integer")
+
+    if ownerID is not None:
+        filter = and_(filter, Fit.ownerID == ownerID)
+
+    filter = processWhere(filter, where)
+    eager = processEager(eager)
+    with sd_lock:
+        count = saveddata_session.query(Fit).options(*eager).filter(filter).count()
+
     return count
 
 
