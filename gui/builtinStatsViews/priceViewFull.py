@@ -25,6 +25,7 @@ from gui.bitmapLoader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 import service
 from service import Price
+import gui.globalEvents as GE
 
 
 class PriceViewFull(StatsView):
@@ -35,6 +36,7 @@ class PriceViewFull(StatsView):
         self._cachedShip = 0
         self._cachedFittings = 0
         self._cachedTotal = 0
+        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     def getHeaderText(self, fit):
         return "Price"
@@ -73,12 +75,13 @@ class PriceViewFull(StatsView):
             hbox.Add(lbl, 0, wx.ALIGN_LEFT)
 
         self.priceChoice = wx.Choice(contentPanel, choices=Price.systemsList.keys())
-        contentSizer.Add(self.priceChoice, 1, wx.RIGHT | wx.LEFT, 3)
+        contentSizer.Add(self.priceChoice)
         self.priceChoice.SetStringSelection("Jita")
         self.priceChoice.Bind(wx.EVT_CHOICE, self.priceSelection)
 
     def priceSelection(self, event):
         Price.currentSystemId = Price.systemsList.get(self.priceChoice.GetString(self.priceChoice.GetSelection()))
+        fitID = self.mainFrame.getActiveFit()
 
         mainFrame = gui.mainFrame.MainFrame.getInstance()
         sFit = service.Fit.getInstance()
@@ -89,8 +92,8 @@ class PriceViewFull(StatsView):
         sMkt = service.Market.getInstance()
         sMkt.getPrices(typeIDs, Price.invalidPrices)
 
-        self.refreshPanel(fit);
-
+        self.refreshPanel(fit)
+        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
     def fitItemsList(self, fit):
         # Compose a list of all the data we need & request it
