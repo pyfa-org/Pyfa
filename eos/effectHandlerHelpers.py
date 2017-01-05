@@ -172,10 +172,11 @@ class HandledModuleList(HandledList):
         self[index] = mod
 
     def freeSlot(self, slot):
-        for i in range(len(self) - 1, -1, -1):
+        for i in range(len(self)):
             mod = self[i]
             if mod.getModifiedItemAttr("subSystemSlot") == slot:
-                del self[i]
+                self.toDummy(i)
+                break
 
 
 class HandledDroneCargoList(HandledList):
