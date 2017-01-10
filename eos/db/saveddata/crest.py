@@ -21,7 +21,7 @@ from sqlalchemy import Table, Column, Integer, String
 from sqlalchemy.orm import mapper
 
 from eos.db import saveddata_meta
-from eos.types import CrestChar
+from eos.saveddata.crestchar import CrestChar
 
 crest_table = Table("crest", saveddata_meta,
                     Column("ID", Integer, primary_key=True),

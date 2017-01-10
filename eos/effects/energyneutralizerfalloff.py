@@ -2,7 +2,7 @@
 #
 # Used by:
 # Modules from group: Energy Neutralizer (51 of 51)
-from eos.types import State
+from eos.saveddata.module import State
 
 type = "active", "projected"
 

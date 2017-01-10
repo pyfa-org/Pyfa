@@ -28,7 +28,16 @@ import wx.html
 import wx.lib.mixins.listctrl as listmix
 
 import config
-from eos.types import Fit, Ship, Citadel, Module, Skill, Booster, Implant, Drone, Mode, Fighter
+from eos.saveddata.mode import Mode
+from eos.saveddata.character import Skill
+from eos.saveddata.implant import Implant
+from eos.saveddata.booster import Booster
+from eos.saveddata.drone import Drone
+from eos.saveddata.fighter import Fighter
+from eos.saveddata.module import Module
+from eos.saveddata.ship import Ship
+from eos.saveddata.citadel import Citadel
+from eos.saveddata.fit import Fit
 from service.market import Market
 from service.attribute import Attribute
 import gui.mainFrame

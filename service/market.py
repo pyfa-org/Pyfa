@@ -32,11 +32,9 @@ from service import conversions
 from service.settings import SettingsProvider
 from service.price import Price
 
-# TODO: Convert eos.types over to eos.gamedata
-# from eos.gamedata import Category as e_Category, Group as e_Group, Item as e_Item
-
-from eos.types import MarketGroup as types_MarketGroup, MetaGroup as types_MetaGroup, MetaType as types_MetaType, \
-    Category as types_Category, Item as types_Item, Group as types_Group, Price as types_Price
+from eos.gamedata import Category as types_Category, Group as types_Group, Item as types_Item, MarketGroup as types_MarketGroup, \
+    MetaGroup as types_MetaGroup, MetaType as types_MetaType
+from eos.saveddata.price import Price as types_Price
 
 try:
     from collections import OrderedDict

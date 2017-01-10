@@ -35,7 +35,15 @@ from service.fit import Fit as svcFit
 
 import wx
 
-from eos.types import State, Slot, Module, Cargo, Ship, Drone, Implant, Booster, Citadel, Fighter, Fit
+from eos.saveddata.cargo import Cargo
+from eos.saveddata.implant import Implant
+from eos.saveddata.booster import Booster
+from eos.saveddata.drone import Drone
+from eos.saveddata.fighter import Fighter
+from eos.saveddata.module import Module, State, Slot
+from eos.saveddata.ship import Ship
+from eos.saveddata.citadel import Citadel
+from eos.saveddata.fit import Fit
 from service.crest import Crest
 from service.market import Market
 

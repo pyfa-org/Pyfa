@@ -19,7 +19,11 @@
 # =============================================================================
 
 import wx
-from eos.types import Drone, Cargo, Module, Slot, Rack, Implant, Fighter
+from eos.saveddata.cargo import Cargo
+from eos.saveddata.implant import Implant
+from eos.saveddata.drone import Drone
+from eos.saveddata.fighter import Fighter
+from eos.saveddata.module import Module, Slot, Rack
 from service.fit import Fit
 from gui.viewColumn import ViewColumn
 import gui.mainFrame

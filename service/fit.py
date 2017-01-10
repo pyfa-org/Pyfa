@@ -29,9 +29,9 @@ from eos.saveddata.damagePattern import DamagePattern as es_DamagePattern
 from eos.saveddata.drone import Drone as es_Drone
 from eos.saveddata.fighter import Fighter as es_Fighter
 from eos.saveddata.implant import Implant as es_Implant
-from eos.saveddata.module import Module as es_Module
 from eos.saveddata.ship import Ship as es_Ship
-from eos.types import State, Slot, Fit as FitType
+from eos.saveddata.module import Module as es_Module, State, Slot
+from eos.saveddata.fit import Fit as FitType
 from service.character import Character
 from service.damagePattern import DamagePattern
 from service.market import Market

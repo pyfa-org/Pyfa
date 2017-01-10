@@ -24,7 +24,7 @@ import gui.marketBrowser as mb
 import gui.mainFrame
 import gui.display as d
 from gui.builtinViewColumns.state import State
-from eos.types import Slot
+from eos.saveddata.module import Slot
 from gui.contextMenu import ContextMenu
 from service.fit import Fit
 from service.market import Market

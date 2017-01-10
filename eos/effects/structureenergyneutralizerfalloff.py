@@ -1,5 +1,5 @@
 # Not used by any item
-from eos.types import State
+from eos.saveddata.module import State
 
 type = "active", "projected"
 

@@ -8,7 +8,7 @@ import time
 
 import eos.db
 from eos.enum import Enum
-from eos.types import CrestChar
+from eos.saveddata.crestchar import CrestChar
 import gui.globalEvents as GE
 from service.settings import CRESTSettings
 from service.server import StoppableHTTPServer, AuthHandler

@@ -21,7 +21,7 @@ from sqlalchemy import Table, Column, Integer, ForeignKey, Boolean
 from sqlalchemy.orm import mapper
 
 from eos.db import saveddata_meta
-from eos.types import Implant
+from eos.saveddata.implant import Implant
 
 implants_table = Table("implants", saveddata_meta,
                        Column("ID", Integer, primary_key=True),

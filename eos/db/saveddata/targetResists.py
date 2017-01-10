@@ -21,7 +21,7 @@ from sqlalchemy import Table, Column, Integer, Float, ForeignKey, String
 from sqlalchemy.orm import mapper
 
 from eos.db import saveddata_meta
-from eos.types import TargetResists
+from eos.saveddata.targetResists import TargetResists
 
 targetResists_table = Table("targetResists", saveddata_meta,
                             Column("ID", Integer, primary_key=True),

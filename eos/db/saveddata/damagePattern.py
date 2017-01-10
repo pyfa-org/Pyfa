@@ -21,7 +21,7 @@ from sqlalchemy import Table, Column, Integer, ForeignKey, String
 from sqlalchemy.orm import mapper
 
 from eos.db import saveddata_meta
-from eos.types import DamagePattern
+from eos.saveddata.damagePattern import DamagePattern
 
 damagePatterns_table = Table("damagePatterns", saveddata_meta,
                              Column("ID", Integer, primary_key=True),

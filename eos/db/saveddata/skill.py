@@ -21,7 +21,7 @@ from sqlalchemy import Table, Column, Integer, ForeignKey
 from sqlalchemy.orm import mapper
 
 from eos.db import saveddata_meta
-from eos.types import Skill
+from eos.saveddata.character import Skill
 
 skills_table = Table("characterSkills", saveddata_meta,
                      Column("characterID", ForeignKey("characters.ID"), primary_key=True, index=True),

@@ -21,7 +21,8 @@ from sqlalchemy import Table, Column, Integer, ForeignKey, CheckConstraint, Bool
 from sqlalchemy.orm import relation, mapper
 
 from eos.db import saveddata_meta
-from eos.types import Module, Fit
+from eos.saveddata.module import Module
+from eos.saveddata.fit import Fit
 
 modules_table = Table("modules", saveddata_meta,
                       Column("ID", Integer, primary_key=True),

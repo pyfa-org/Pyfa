@@ -21,7 +21,7 @@ from sqlalchemy import Table, Column, Integer, String, Boolean
 from sqlalchemy.orm import mapper
 
 from eos.db import saveddata_meta
-from eos.types import User
+from eos.saveddata.user import User
 
 users_table = Table("users", saveddata_meta,
                     Column("ID", Integer, primary_key=True),

@@ -20,7 +20,7 @@
 from math import log, sin, radians, exp
 
 from eos.graph import Graph
-from eos.types import Hardpoint, State
+from eos.saveddata.module import State, Hardpoint
 
 
 class FitDpsGraph(Graph):

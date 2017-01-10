@@ -8,7 +8,7 @@ from service.crest import CrestModes
 from service.crest import Crest
 from service.fit import Fit
 
-from eos.types import Cargo
+from eos.saveddata.cargo import Cargo
 from eos.db import getItem
 
 import gui.display as d

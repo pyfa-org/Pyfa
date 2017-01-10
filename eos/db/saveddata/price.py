@@ -21,7 +21,7 @@ from sqlalchemy import Table, Column, Float, Integer
 from sqlalchemy.orm import mapper
 
 from eos.db import saveddata_meta
-from eos.types import Price
+from eos.saveddata.price import Price
 
 prices_table = Table("prices", saveddata_meta,
                      Column("typeID", Integer, primary_key=True),

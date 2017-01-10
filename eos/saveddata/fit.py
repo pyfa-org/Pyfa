@@ -30,8 +30,10 @@ from eos import capSim
 from eos.effectHandlerHelpers import *
 from eos.effectHandlerHelpers import HandledModuleList, HandledDroneCargoList, HandledImplantBoosterList, HandledProjectedDroneList, HandledProjectedModList
 from eos.enum import Enum
-from eos.saveddata.module import State, Hardpoint
-from eos.types import Ship, Character, Slot, Module, Citadel
+from eos.saveddata.ship import Ship
+from eos.saveddata.character import Character
+from eos.saveddata.citadel import Citadel
+from eos.saveddata.module import Module, State, Slot, Hardpoint
 from utils.timer import Timer
 import logging
 

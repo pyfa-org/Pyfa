@@ -19,6 +19,8 @@
 
 # from sqlalchemy.orm.attributes import flag_modified
 import logging
+# TODO: This can't point to es_Module, cyclical import loop
+# from eos.saveddata.module import Module as es_Module, State as es_State
 
 import eos.db
 
@@ -140,8 +142,11 @@ class HandledModuleList(HandledList):
             return
 
         # fix for #529, where a module may be in incorrect state after CCP changes mechanics of module
+        # TODO: This can't point to es_module, cyclical import loop
+        '''
         if not mod.isValidState(mod.state):
-            mod.state = eos.types.State.ONLINE
+            mod.state = es_State.ONLINE
+            '''
 
     def insert(self, index, mod):
         mod.position = index
@@ -162,9 +167,13 @@ class HandledModuleList(HandledList):
     def toDummy(self, index):
         mod = self[index]
         if not mod.isEmpty:
-            dummy = eos.types.Module.buildEmpty(mod.slot)
+            pass
+            # TODO: This can't point to es_Module, cyclical import loop
+            '''
+            dummy = es_Module.buildEmpty(mod.slot)
             dummy.position = index
             self[index] = dummy
+            '''
 
     def toModule(self, index, mod):
         mod.position = index
