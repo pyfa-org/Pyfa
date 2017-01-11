@@ -631,14 +631,6 @@ class Fit(object):
                     groups = ("Energy Weapon", "Hybrid Weapon")
                     self.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups, "maxRange", value, stackingPenalties=True)
 
-            else:
-                # Run effect, and get proper bonuses applied
-                try:
-                    self.register(thing)
-                    effect.handler(self, thing, context)
-                except:
-                    pass
-
             del self.commandBonuses[warfareBuffID]
 
     def calculateModifiedAttributes(self, targetFit=None, withBoosters=False, dirtyStorage=None):
