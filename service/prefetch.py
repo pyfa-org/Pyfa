@@ -23,6 +23,11 @@ import os
 import eos.types
 import eos.db.migration as migration
 from eos.db.saveddata.loadDefaultDatabaseValues import DefaultDatabaseValues
+from eos.db.saveddata.databaseRepair import DatabaseCleanup
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 class PrefetchThread(threading.Thread):
     def run(self):
@@ -55,6 +60,14 @@ if os.path.isfile(config.saveDB):
     # Import default database values
     # Import values that must exist otherwise Pyfa breaks
     DefaultDatabaseValues.importRequiredDefaults()
+
+    logging.debug("Starting database validation.")
+    database_cleanup_instance = DatabaseCleanup()
+    database_cleanup_instance.OrphanedCharacterSkills(eos.db.saveddata_engine)
+    database_cleanup_instance.OrphanedFitCharacterIDs(eos.db.saveddata_engine)
+    database_cleanup_instance.OrphanedFitDamagePatterns(eos.db.saveddata_engine)
+    logging.debug("Completed database validation.")
+
 else:
     # If database does not exist, do not worry about migration. Simply
     # create and set version
@@ -67,4 +80,3 @@ else:
     DefaultDatabaseValues.importDamageProfileDefaults()
     # Import default values for target resist profiles
     DefaultDatabaseValues.importResistProfileDefaults()
-
