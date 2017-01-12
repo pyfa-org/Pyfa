@@ -519,7 +519,40 @@ class Market():
         parents = set()
         # Set-container for variables
         variations = set()
+        variations_limiter = set()
         for item in items:
+            if item.category.ID == 20:  # Implants and Boosters
+                implant_remove_list = set()
+                implant_remove_list.add("Low-Grade ")
+                implant_remove_list.add("Low-grade ")
+                implant_remove_list.add("Mid-Grade ")
+                implant_remove_list.add("Mid-grade ")
+                implant_remove_list.add("High-Grade ")
+                implant_remove_list.add("High-grade ")
+                implant_remove_list.add("Limited ")
+                implant_remove_list.add(" - Advanced")
+                implant_remove_list.add(" - Basic")
+                implant_remove_list.add(" - Elite")
+                implant_remove_list.add(" - Improved")
+                implant_remove_list.add(" - Standard")
+                implant_remove_list.add("Copper ")
+                implant_remove_list.add("Gold ")
+                implant_remove_list.add("Silver ")
+                implant_remove_list.add("Advanced ")
+                implant_remove_list.add("Improved ")
+                implant_remove_list.add("Prototype ")
+                implant_remove_list.add("Standard ")
+                implant_remove_list.add("Strong ")
+                implant_remove_list.add("Synth ")
+
+                for implant_prefix in ("-6","-7","-8","-9","-10"):
+                    for i in range(50):
+                        implant_remove_list.add(implant_prefix + str("%02d" % i))
+
+                for text_to_remove in implant_remove_list:
+                    if text_to_remove in item.name:
+                        variations_limiter.add(item.name.replace(text_to_remove,""))
+
             # Get parent item
             if alreadyparent is False:
                 parent = self.getParentItemByItem(item)
@@ -538,7 +571,15 @@ class Market():
         # Add all variations of parents to the set
         parentids = tuple(item.ID for item in parents)
         groupids = tuple(item.group.ID for item in parents)
-        variations.update(eos.db.getVariations(parentids, groupids))
+        variations_list = eos.db.getVariations(parentids, groupids)
+
+        if variations_limiter:
+            for limit in variations_limiter:
+                trimmed_variations_list = [variation_item for variation_item in variations_list if limit in variation_item.name]
+            if trimmed_variations_list:
+                variations_list = trimmed_variations_list
+
+        variations.update(variations_list)
         return variations
 
     def getGroupsByCategory(self, cat):
