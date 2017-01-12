@@ -23,6 +23,7 @@ from sqlalchemy.sql import and_, or_, select
 import eos.config
 from eos.db import gamedata_session
 from eos.db.gamedata.metaGroup import metatypes_table, items_table
+from eos.db.gamedata.group import groups_table
 from eos.db.util import processEager, processWhere
 from eos.types import Item, Category, Group, MarketGroup, AttributeInfo, MetaData, MetaGroup
 
@@ -231,7 +232,7 @@ def searchItems(nameLike, where=None, join=None, eager=None):
 
 
 @cachedQuery(2, "where", "itemids")
-def getVariations(itemids, where=None, eager=None):
+def getVariations(itemids, groupIDs=None, where=None, eager=None):
     for itemid in itemids:
         if not isinstance(itemid, int):
             raise TypeError("All passed item IDs must be integers")
@@ -244,7 +245,18 @@ def getVariations(itemids, where=None, eager=None):
     joinon = items_table.c.typeID == metatypes_table.c.typeID
     vars = gamedata_session.query(Item).options(*processEager(eager)).join((metatypes_table, joinon)).filter(
         filter).all()
-    return vars
+
+    if vars:
+        return vars
+    elif groupIDs:
+        itemfilter = or_(*(groups_table.c.groupID == groupID for groupID in groupIDs))
+        filter = processWhere(itemfilter, where)
+        joinon = items_table.c.groupID == groups_table.c.groupID
+        vars = gamedata_session.query(Item).options(*processEager(eager)).join((groups_table, joinon)).filter(
+            filter).all()
+
+        return vars
+
 
 
 @cachedQuery(1, "attr")

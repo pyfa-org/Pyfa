@@ -537,7 +537,8 @@ class Market():
         variations.update(parents)
         # Add all variations of parents to the set
         parentids = tuple(item.ID for item in parents)
-        variations.update(eos.db.getVariations(parentids))
+        groupids = tuple(item.group.ID for item in parents)
+        variations.update(eos.db.getVariations(parentids, groupids))
         return variations
 
     def getGroupsByCategory(self, cat):

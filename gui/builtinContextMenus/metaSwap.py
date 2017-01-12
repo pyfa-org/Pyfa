@@ -12,7 +12,13 @@ class MetaSwap(ContextMenu):
 
     def display(self, srcContext, selection):
 
-        if self.mainFrame.getActiveFit() is None or srcContext not in ("fittingModule",):
+        if self.mainFrame.getActiveFit() is None or srcContext not in (
+                "fittingModule",
+                "droneItem",
+                "fighterItem",
+                "boosterItem",
+                "implantItem",
+        ):
             return False
 
         # Check if list of variations is same for all of selection
@@ -92,9 +98,58 @@ class MetaSwap(ContextMenu):
         fitID = self.mainFrame.getActiveFit()
         fit = sFit.getFit(fitID)
         
-        for mod in self.selection:
-            pos = fit.modules.index(mod)
-            sFit.changeModule(fitID, pos, item.ID)
+        for selected_item in self.selection:
+            if type(selected_item).__name__== 'Module':
+                pos = fit.modules.index(selected_item)
+                sFit.changeModule(fitID, pos, item.ID)
+
+            elif type(selected_item).__name__== 'Drone':
+                drone_count = None
+                drone_index = None
+
+                for idx, drone_stack in enumerate(fit.drones):
+                    if drone_stack is selected_item:
+                        drone_count = drone_stack.amount
+                        sFit.removeDrone(fitID, idx, drone_count)
+                        break
+
+                if drone_count:
+                    sFit.addDrone(fitID, item.ID, drone_count)
+
+            elif type(selected_item).__name__== 'Fighter':
+                fighter_count = None
+                fighter_index = None
+
+                for idx, fighter_stack in enumerate(fit.fighters):
+                    # Right now fighters always will have max stack size.
+                    # Including this for future improvement, so if adjustable
+                    # fighter stacks get added we're ready for it.
+                    if fighter_stack is selected_item:
+                        if fighter_stack.amount > 0:
+                            fighter_count = fighter_stack.amount
+                        elif fighter_stack.amount == -1:
+                            fighter_count = fighter_stack.amountActive
+                        else:
+                            fighter_count.amount = 0
+
+                        sFit.removeFighter(fitID, idx)
+                        break
+
+                sFit.addFighter(fitID, item.ID)
+
+            elif type(selected_item).__name__== 'Booster':
+                for idx, booster_stack in enumerate(fit.boosters):
+                    if booster_stack is selected_item:
+                        sFit.removeBooster(fitID, idx)
+                        sFit.addBooster(fitID, item.ID)
+                        break
+
+            elif type(selected_item).__name__== 'Implant':
+                for idx, implant_stack in enumerate(fit.implants):
+                    if implant_stack is selected_item:
+                        sFit.removeImplant(fitID, idx)
+                        sFit.addImplant(fitID, item.ID, False)
+                        break
 
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
