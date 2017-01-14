@@ -1,4 +1,4 @@
-#===============================================================================
+# ===============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,20 +15,23 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# ===============================================================================
+
+import os
 
 import wx
-import os
-from gui.bitmapLoader import BitmapLoader
+
 import gui.display
 import gui.globalEvents as GE
-
-from gui.graph import Graph
-import service
 import gui.mainFrame
+import service
+from gui.bitmapLoader import BitmapLoader
+from gui.graph import Graph
+from config import parsePath
 
 enabled = True
 mplImported = False
+
 
 class GraphFrame(wx.Frame):
     def __init__(self, parent, style=wx.DEFAULT_FRAME_STYLE | wx.NO_FULL_REPAINT_ON_RESIZE | wx.FRAME_FLOAT_ON_PARENT):
@@ -46,9 +49,10 @@ class GraphFrame(wx.Frame):
             try:
                 cache_dir = mpl._get_cachedir()
             except:
-                cache_dir = unicode(os.path.expanduser(os.path.join("~", ".matplotlib")))
+                cache_dir = os.path.expanduser(os.path.join("~", ".matplotlib"))
 
-            cache_file = os.path.join(cache_dir, 'fontList.cache')
+            cache_file = parsePath(cache_dir, 'fontList.cache')
+
             if os.access(cache_dir, os.W_OK | os.X_OK) and os.path.isfile(cache_file):
                 # remove matplotlib font cache, see #234
                 os.remove(cache_file)
@@ -58,7 +62,7 @@ class GraphFrame(wx.Frame):
             from matplotlib.figure import Figure
             enabled = True
             if mpl.__version__[0] != "1":
-                print "pyfa: Found matplotlib version ",mpl.__version__, " - activating OVER9000 workarounds"
+                print "pyfa: Found matplotlib version ", mpl.__version__, " - activating OVER9000 workarounds"
                 print "pyfa: Recommended minimum matplotlib version is 1.0.0"
                 self.legendFix = True
         except:
@@ -91,19 +95,20 @@ class GraphFrame(wx.Frame):
 
         self.figure = Figure(figsize=(4, 3))
 
-        rgbtuple = wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNFACE ).Get()
-        clr = [c/255. for c in rgbtuple]
-        self.figure.set_facecolor( clr )
-        self.figure.set_edgecolor( clr )
+        rgbtuple = wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE).Get()
+        clr = [c / 255. for c in rgbtuple]
+        self.figure.set_facecolor(clr)
+        self.figure.set_edgecolor(clr)
 
         self.canvas = Canvas(self, -1, self.figure)
-        self.canvas.SetBackgroundColour( wx.Colour( *rgbtuple ) )
+        self.canvas.SetBackgroundColour(wx.Colour(*rgbtuple))
 
         self.subplot = self.figure.add_subplot(111)
         self.subplot.grid(True)
 
         self.mainSizer.Add(self.canvas, 1, wx.EXPAND)
-        self.mainSizer.Add(wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL ), 0 , wx.EXPAND)
+        self.mainSizer.Add(wx.StaticLine(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL), 0,
+                           wx.EXPAND)
 
         self.gridPanel = wx.Panel(self)
         self.mainSizer.Add(self.gridPanel, 0, wx.EXPAND)
@@ -122,8 +127,8 @@ class GraphFrame(wx.Frame):
         self.graphSelection.SetSelection(0)
         self.fields = {}
         self.select(0)
-        self.sl1 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
-        self.mainSizer.Add(self.sl1,0, wx.EXPAND)
+        self.sl1 = wx.StaticLine(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL)
+        self.mainSizer.Add(self.sl1, 0, wx.EXPAND)
         self.mainSizer.Add(self.fitList, 0, wx.EXPAND)
 
         self.fitList.fitList.Bind(wx.EVT_LEFT_DCLICK, self.removeItem)
@@ -160,18 +165,18 @@ class GraphFrame(wx.Frame):
         self.gridPanel.DestroyChildren()
         self.fields.clear()
 
-        #Setup textboxes
+        # Setup textboxes
         for field, defaultVal in view.getFields().iteritems():
 
             textBox = wx.TextCtrl(self.gridPanel, wx.ID_ANY, style=0)
             self.fields[field] = textBox
             textBox.Bind(wx.EVT_TEXT, self.onFieldChanged)
-            sizer.Add(textBox, 1, wx.EXPAND | wx.ALIGN_CENTER_VERTICAL  | wx.ALL, 3)
+            sizer.Add(textBox, 1, wx.EXPAND | wx.ALIGN_CENTER_VERTICAL | wx.ALL, 3)
             if defaultVal is not None:
                 if not isinstance(defaultVal, basestring):
                     defaultVal = ("%f" % defaultVal).rstrip("0")
                     if defaultVal[-1:] == ".":
-                        defaultVal = defaultVal + "0"
+                        defaultVal += "0"
 
                 textBox.ChangeValue(defaultVal)
 
@@ -189,7 +194,8 @@ class GraphFrame(wx.Frame):
             else:
                 label = field
 
-            imgLabelSizer.Add(wx.StaticText(self.gridPanel, wx.ID_ANY, label), 0, wx.LEFT | wx.RIGHT | wx.ALIGN_CENTER_VERTICAL, 3)
+            imgLabelSizer.Add(wx.StaticText(self.gridPanel, wx.ID_ANY, label), 0,
+                              wx.LEFT | wx.RIGHT | wx.ALIGN_CENTER_VERTICAL, 3)
             sizer.Add(imgLabelSizer, 0, wx.ALIGN_CENTER_VERTICAL)
         self.draw()
 
@@ -204,7 +210,7 @@ class GraphFrame(wx.Frame):
             try:
                 success, status = view.getPoints(fit, values)
                 if not success:
-                    #TODO: Add a pwetty statys bar to report errors with
+                    # TODO: Add a pwetty statys bar to report errors with
                     self.SetStatusText(status)
                     return
 
@@ -218,15 +224,15 @@ class GraphFrame(wx.Frame):
                 return
 
         if self.legendFix and len(legend) > 0:
-            leg = self.subplot.legend(tuple(legend), "upper right" , shadow = False)
+            leg = self.subplot.legend(tuple(legend), "upper right", shadow=False)
             for t in leg.get_texts():
                 t.set_fontsize('small')
 
             for l in leg.get_lines():
                 l.set_linewidth(1)
 
-        elif not self.legendFix and len(legend) >0:
-            leg = self.subplot.legend(tuple(legend), "upper right" , shadow = False, frameon = False)
+        elif not self.legendFix and len(legend) > 0:
+            leg = self.subplot.legend(tuple(legend), "upper right", shadow=False, frameon=False)
             for t in leg.get_texts():
                 t.set_fontsize('small')
 
@@ -269,10 +275,10 @@ class FitList(wx.Panel):
         fitToolTip = wx.ToolTip("Drag a fit into this list to graph it")
         self.fitList.SetToolTip(fitToolTip)
 
+
 class FitDisplay(gui.display.Display):
     DEFAULT_COLS = ["Base Icon",
                     "Base Name"]
 
     def __init__(self, parent):
         gui.display.Display.__init__(self, parent)
-
