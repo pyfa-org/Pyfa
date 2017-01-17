@@ -1097,10 +1097,8 @@ class Fit(object):
         if energyNeutralizerSignatureResolution:
             capNeed = capNeed * min(1, signatureRadius / energyNeutralizerSignatureResolution)
 
-        # Check if source module has the attribute to for remote neut resistance
-        if src.getModifiedItemAttr("remoteResistanceID") == 2045:
-            resistance = self.ship.getModifiedItemAttr("energyWarfareResistance") or 1 if capNeed > 0 else 1
-            self.__extraDrains.append((cycleTime, capNeed * resistance, clipSize))
+        resistance = self.ship.getModifiedItemAttr("energyWarfareResistance") or 1 if capNeed > 0 else 1
+        self.__extraDrains.append((cycleTime, capNeed * resistance, clipSize))
 
     def removeDrain(self, i):
         del self.__extraDrains[i]
