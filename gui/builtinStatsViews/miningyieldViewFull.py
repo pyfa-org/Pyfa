@@ -124,9 +124,9 @@ class MiningYieldViewFull(StatsView):
     def refreshPanel(self, fit):
         #If we did anything intresting, we'd update our labels to reflect the new fit's stats here
 
-        stats = (("labelFullminingyieldMiner", lambda: fit.minerYield * 3600, 3, 0, 0, u"%s m\u00B3/h",None),
-                 ("labelFullminingyieldDrone", lambda: fit.droneYield * 3600, 3, 0, 0, u"%s m\u00B3/h", None),
-                 ("labelFullminingyieldTotal", lambda: fit.totalYield * 3600, 3, 0, 0, u"%s m\u00B3/h", None))
+        stats = (("labelFullminingyieldMiner", lambda: fit.minerYield, 3, 0, 0, u"%s m\u00B3/s",None),
+                 ("labelFullminingyieldDrone", lambda: fit.droneYield, 3, 0, 0, u"%s m\u00B3/s", None),
+                 ("labelFullminingyieldTotal", lambda: fit.totalYield, 3, 0, 0, u"%s m\u00B3/s", None))
 
         counter = 0
         for labelName, value, prec, lowest, highest, valueFormat, altFormat in stats:
@@ -136,7 +136,7 @@ class MiningYieldViewFull(StatsView):
             if self._cachedValues[counter] != value:
                 valueStr = formatAmount(value, prec, lowest, highest)
                 label.SetLabel(valueFormat % valueStr)
-                tipStr = valueFormat % valueStr if altFormat is None else altFormat % value
+                tipStr = "Mining Yield per second ({0} per hour)".format(formatAmount(value * 3600, 3, 0, 3))
                 label.SetToolTip(wx.ToolTip(tipStr))
                 self._cachedValues[counter] = value
             counter +=1

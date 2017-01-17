@@ -400,14 +400,14 @@ class Miscellanea(ViewColumn):
             text = "{0}m".format(formatAmount(optimalSig, 3, 0, 3))
             tooltip = "Optimal signature radius"
             return text, tooltip
-        elif itemGroup in ("Frequency Mining Laser", "Strip Miner", "Mining Laser", "Gas Cloud Harvester"):
+        elif itemGroup in ("Frequency Mining Laser", "Strip Miner", "Mining Laser", "Gas Cloud Harvester", "Mining Drone"):
             miningAmount = stuff.getModifiedItemAttr("specialtyMiningAmount") or stuff.getModifiedItemAttr("miningAmount")
-            cycleTime = stuff.cycleTime
+            cycleTime = getattr(stuff, 'cycleTime', stuff.getModifiedItemAttr("duration"))
             if not miningAmount or not cycleTime:
                 return "", None
-            minePerHour = (float(miningAmount) * 1000 / cycleTime) * 3600
-            text = "{0}/h".format(formatAmount(minePerHour, 3, 0, 3))
-            tooltip = "Mining Yield per hour"
+            minePerSec = (float(miningAmount) * 1000 / cycleTime)
+            text = "{0} m3/s".format(formatAmount(minePerSec, 3, 0, 3))
+            tooltip = "Mining Yield per second ({0} per hour)".format(formatAmount(minePerSec * 3600, 3, 0, 3))
             return text, tooltip
         elif itemGroup == "Logistic Drone":
             armorAmount = stuff.getModifiedItemAttr("armorDamageAmount")
@@ -436,15 +436,6 @@ class Miscellanea(ViewColumn):
             capPerSec = float(-neutAmount) * 1000 / cycleTime
             text = "{0}/s".format(formatAmount(capPerSec, 3, 0, 3))
             tooltip = "Energy neutralization per second"
-            return text, tooltip
-        elif itemGroup == "Mining Drone":
-            miningAmount = stuff.getModifiedItemAttr("miningAmount")
-            cycleTime = stuff.getModifiedItemAttr("duration")
-            if not miningAmount or not cycleTime:
-                return "", None
-            minePerHour = (float(miningAmount) * 1000 / cycleTime) * 3600
-            text = "{0}/h".format(formatAmount(minePerHour, 3, 0, 3))
-            tooltip = "Mining Yield per hour"
             return text, tooltip
         elif itemGroup == "Micro Jump Drive":
             cycleTime = stuff.getModifiedItemAttr("duration") / 1000
