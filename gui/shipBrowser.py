@@ -34,6 +34,7 @@ Stage3Selected, EVT_SB_STAGE3_SEL = wx.lib.newevent.NewEvent()
 SearchSelected, EVT_SB_SEARCH_SEL = wx.lib.newevent.NewEvent()
 ImportSelected, EVT_SB_IMPORT_SEL = wx.lib.newevent.NewEvent()
 
+
 class PFWidgetsContainer(PFListPane):
     def __init__(self,parent):
         PFListPane.__init__(self,parent)
@@ -685,7 +686,8 @@ class ShipBrowser(wx.Panel):
 
             # set map & cache of fittings per category
             for cat in self.categoryList:
-                self.categoryFitCache[cat.ID] = sFit.groupHasFits(cat.ID)
+                itemIDs = [x.ID for x in cat.items]
+                self.categoryFitCache[cat.ID] = sFit.countFitsWithShip(itemIDs) > 1
 
         for ship in self.categoryList:
             if self.filterShipsWithNoFits and not self.categoryFitCache[ship.ID]:

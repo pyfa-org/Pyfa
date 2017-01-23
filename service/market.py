@@ -219,6 +219,8 @@ class Market():
             "Victorieux Luxury Yacht":  self.les_grp,  # Worlds Collide prize \o/ chinese getting owned
             "Imp": self.les_grp,  # AT13 prize
             "Fiend": self.les_grp,  # AT13 prize
+            "Caedes": self.les_grp,  # AT14 prize
+            "Rabisu": self.les_grp,  # AT14 prize
         }
 
         self.ITEMS_FORCEGROUP_R = self.__makeRevDict(self.ITEMS_FORCEGROUP)
@@ -543,6 +545,7 @@ class Market():
     def getGroupsByCategory(self, cat):
         """Get groups from given category"""
         groups = set(filter(lambda grp: self.getPublicityByGroup(grp), cat.groups))
+
         return groups
 
     def getMarketGroupChildren(self, mg):

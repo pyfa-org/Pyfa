@@ -202,6 +202,11 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             return self.__chargeCycles
 
     @property
+    def modPosition(self):
+        if self.owner:
+            return self.owner.modules.index(self)
+
+    @property
     def hpBeforeReload(self):
         """
         If item is some kind of repairer with charges, calculate

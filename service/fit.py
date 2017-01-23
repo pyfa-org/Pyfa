@@ -141,18 +141,9 @@ class Fit(object):
     def countAllFits(self):
         return eos.db.countAllFits()
 
-    def countFitsWithShip(self, shipID):
-        count = eos.db.countFitsWithShip(shipID)
+    def countFitsWithShip(self, stuff):
+        count = eos.db.countFitsWithShip(stuff)
         return count
-
-    def groupHasFits(self, groupID):
-        sMkt = Market.getInstance()
-        grp = sMkt.getGroup(groupID)
-        items = sMkt.getItemsByGroup(grp)
-        for item in items:
-            if self.countFitsWithShip(item.ID) > 0:
-                return True
-        return False
 
     def getModule(self, fitID, pos):
         fit = eos.db.getFit(fitID)

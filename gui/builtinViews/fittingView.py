@@ -224,7 +224,7 @@ class FittingView(d.Display):
 
         if row != -1 and row not in self.blanks:
             data = wx.PyTextDataObject()
-            data.SetText("fitting:"+str(self.mods[row].position))
+            data.SetText("fitting:"+str(self.mods[row].modPosition))
 
             dropSource = wx.DropSource(self)
             dropSource.SetData(data)
@@ -356,7 +356,7 @@ class FittingView(d.Display):
         if dstRow != -1 and dstRow not in self.blanks:
             sFit = service.Fit.getInstance()
             fitID = self.mainFrame.getActiveFit()
-            moduleChanged = sFit.changeModule(fitID, self.mods[dstRow].position, srcIdx)
+            moduleChanged = sFit.changeModule(fitID, self.mods[dstRow].modPosition, srcIdx)
             if moduleChanged is None:
                 # the new module doesn't fit in specified slot, try to simply append it
                 wx.PostEvent(self.mainFrame, gui.marketBrowser.ItemSelected(itemID=srcIdx))
@@ -371,7 +371,7 @@ class FittingView(d.Display):
             module = self.mods[dstRow]
 
             sFit = service.Fit.getInstance()
-            sFit.moveCargoToModule(self.mainFrame.getActiveFit(), module.position, srcIdx, mstate.CmdDown() and module.isEmpty)
+            sFit.moveCargoToModule(self.mainFrame.getActiveFit(), module.modPosition, srcIdx, mstate.CmdDown() and module.isEmpty)
 
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
 
@@ -389,6 +389,7 @@ class FittingView(d.Display):
         dstRow, _ = self.HitTest((x, y))
 
         if dstRow != -1 and dstRow not in self.blanks:
+
             mod1 = fit.modules[srcIdx]
             mod2 = self.mods[dstRow]
 
@@ -397,9 +398,9 @@ class FittingView(d.Display):
                 return
 
             if clone and mod2.isEmpty:
-                sFit.cloneModule(self.mainFrame.getActiveFit(), mod1.position, mod2.position)
+                sFit.cloneModule(self.mainFrame.getActiveFit(), srcIdx,  mod2.modPosition)
             else:
-                sFit.swapModules(self.mainFrame.getActiveFit(), mod1.position, mod2.position)
+                sFit.swapModules(self.mainFrame.getActiveFit(), srcIdx, mod2.modPosition)
 
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
 
