@@ -10,7 +10,6 @@ Migration 4
     and output of itemDiff.py
 """
 
-
 CONVERSIONS = {
     506: (  # 'Basic' Capacitor Power Relay
         8205,  # Alpha Reactor Control: Capacitor Power Relay
@@ -131,11 +130,12 @@ CONVERSIONS = {
     ),
 }
 
-def upgrade(saveddata_engine):
 
+def upgrade(saveddata_engine):
     # Convert modules
     for replacement_item, list in CONVERSIONS.iteritems():
         for retired_item in list:
-            saveddata_engine.execute('UPDATE "modules" SET "itemID" = ? WHERE "itemID" = ?', (replacement_item, retired_item))
-            saveddata_engine.execute('UPDATE "cargo" SET "itemID" = ? WHERE "itemID" = ?', (replacement_item, retired_item))
-
+            saveddata_engine.execute('UPDATE "modules" SET "itemID" = ? WHERE "itemID" = ?',
+                                     (replacement_item, retired_item))
+            saveddata_engine.execute('UPDATE "cargo" SET "itemID" = ? WHERE "itemID" = ?',
+                                     (replacement_item, retired_item))

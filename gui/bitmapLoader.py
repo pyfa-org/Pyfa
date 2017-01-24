@@ -1,4 +1,4 @@
-# ===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,7 +15,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-# ===============================================================================
+# =============================================================================
 
 import cStringIO
 import os.path
@@ -86,11 +86,11 @@ class BitmapLoader():
                 sbuf = cStringIO.StringIO(img_data)
                 return wx.ImageFromStream(sbuf)
             except KeyError:
-                print "Missing icon file from zip: {0}".format(path)
+                print("Missing icon file from zip: {0}".format(path))
         else:
             path = config.getPyfaPath('imgs\\' + location + "\\" + filename)
 
             if os.path.exists(path):
                 return wx.Image(path)
             else:
-                print "Missing icon file: {0}".format(path)
+                print("Missing icon file: {0}".format(path))

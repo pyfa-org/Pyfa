@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,18 +15,21 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
-from gui.viewColumn import ViewColumn
-from gui.bitmapLoader import BitmapLoader
-import gui.mainFrame
 
 import wx
+
 from eos.types import Drone, Module, Rack, Fit, Implant
 from eos.types import State as State_
+from gui.viewColumn import ViewColumn
+
+import gui.mainFrame
+
 
 class State(ViewColumn):
     name = "State"
+
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
@@ -44,7 +47,8 @@ class State(ViewColumn):
 
     def getImageId(self, stuff):
         generic_active = self.fittingView.imageList.GetImageIndex("state_%s_small" % State_.getName(1).lower(), "gui")
-        generic_inactive = self.fittingView.imageList.GetImageIndex("state_%s_small" % State_.getName(-1).lower(), "gui")
+        generic_inactive = self.fittingView.imageList.GetImageIndex("state_%s_small" % State_.getName(-1).lower(),
+                                                                    "gui")
 
         if isinstance(stuff, Drone):
             if stuff.amountActive > 0:
@@ -57,7 +61,8 @@ class State(ViewColumn):
             if stuff.isEmpty:
                 return -1
             else:
-                return self.fittingView.imageList.GetImageIndex("state_%s_small" % State_.getName(stuff.state).lower(), "gui")
+                return self.fittingView.imageList.GetImageIndex("state_%s_small" % State_.getName(stuff.state).lower(),
+                                                                "gui")
         elif isinstance(stuff, Fit):
             fitID = self.mainFrame.getActiveFit()
             projectionInfo = stuff.getProjectionInfo(fitID)
@@ -77,5 +82,6 @@ class State(ViewColumn):
             if active:
                 return generic_active
             return generic_inactive
+
 
 State.register()

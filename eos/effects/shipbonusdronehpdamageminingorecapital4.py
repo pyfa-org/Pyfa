@@ -35,4 +35,3 @@ def handler(fit, src, context):
                                  src.getModifiedItemAttr("shipBonusORECapital4"),
                                  skill="Capital Industrial Ships"
                                  )
-

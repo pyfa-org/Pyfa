@@ -6,6 +6,7 @@ Migration 2
 
 import sqlalchemy
 
+
 def upgrade(saveddata_engine):
     # Update characters schema to include default chars
     try:

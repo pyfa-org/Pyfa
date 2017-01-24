@@ -11,6 +11,7 @@ def handler(fit, module, context):
     # Make so that reloads are always taken into account during clculations
     module.forceReload = True
 
-    if module.charge is None: return
+    if module.charge is None:
+        return
     capAmount = module.getModifiedChargeAttr("capacitorBonus") or 0
     module.itemModifiedAttributes["capacitorNeed"] = -capAmount

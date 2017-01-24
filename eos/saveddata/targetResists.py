@@ -77,7 +77,12 @@ class TargetResists(object):
         out += "# TargetResists = [name],[EM %],[Thermal %],[Kinetic %],[Explosive %]\n\n"
         for dp in patterns:
             out += cls.EXPORT_FORMAT % (
-            dp.name, dp.emAmount * 100, dp.thermalAmount * 100, dp.kineticAmount * 100, dp.explosiveAmount * 100)
+                dp.name,
+                dp.emAmount * 100,
+                dp.thermalAmount * 100,
+                dp.kineticAmount * 100,
+                dp.explosiveAmount * 100
+            )
 
         return out.strip()
 

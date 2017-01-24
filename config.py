@@ -124,7 +124,7 @@ def defPaths(customSavePath):
     # maintenance script
     gameDB = getPyfaPath("eve.db")
 
-    ## DON'T MODIFY ANYTHING BELOW ##
+    # DON'T MODIFY ANYTHING BELOW!
     import eos.config
 
     # Caching modifiers, disable all gamedata caching, its unneeded.

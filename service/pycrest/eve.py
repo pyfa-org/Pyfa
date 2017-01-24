@@ -9,14 +9,13 @@ import requests
 from requests.adapters import HTTPAdapter
 
 import config
-from compat import bytes_, text_
-from errors import APIException
-from . import version
+from service.pycrest.compat import bytes_, text_
+from service.pycrest.errors import APIException
 
 try:
-    from urllib.parse import urlparse, urlunparse, parse_qsl
+    from urllib.parse import urlparse, urlunparse, parse_qsl, quote
 except ImportError:  # pragma: no cover
-    from urlparse import urlparse, urlunparse, parse_qsl
+    from urlparse import urlparse, urlunparse, parse_qsl, quote
 
 try:
     import pickle
@@ -27,7 +26,9 @@ try:
     from urllib.parse import quote
 except ImportError:  # pragma: no cover
     from urllib import quote
-
+import logging
+import re
+import config
 
 logger = logging.getLogger("pycrest.eve")
 cache_re = re.compile(r'max-age=([0-9]+)')
@@ -52,8 +53,7 @@ class FileCache(APICache):
             os.mkdir(self.path, 0o700)
 
     def _getpath(self, key):
-        path = config.parsePath(self.path, str(hash(key)) + '.cache')
-        return path
+        return config.parsePath(self.path, str(hash(key)) + '.cache')
 
     def put(self, key, value):
         with open(self._getpath(key), 'wb') as f:
@@ -112,8 +112,7 @@ class APIConnection(object):
             "Accept": "application/json",
         })
         session.headers.update(additional_headers)
-        session.mount('https://public-crest.eveonline.com',
-                      HTTPAdapter())
+        session.mount('https://public-crest.eveonline.com', HTTPAdapter())
         self._session = session
         if cache:
             if isinstance(cache, APICache):

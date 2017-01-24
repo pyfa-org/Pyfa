@@ -33,7 +33,8 @@ def upgrade(saveddata_engine):
 
             inserts.append({"boosterID": value, "boostedID": boosted, "active": 1})
             try:
-                saveddata_session.execute(commandFits_table.insert(), {"boosterID": value, "boostedID": boosted, "active": 1})
-            except Exception, e:
+                saveddata_session.execute(commandFits_table.insert(),
+                                          {"boosterID": value, "boostedID": boosted, "active": 1})
+            except Exception:
                 pass
     saveddata_session.commit()

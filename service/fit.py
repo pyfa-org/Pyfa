@@ -17,63 +17,27 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-import locale
 import copy
-import threading
 import logging
-import wx
-from codecs import open
-
-import xml.parsers.expat
 
 import eos.db
-import eos.types
-
-from eos.types import State, Slot
-
-from service.market import Market
-from service.damagePattern import DamagePattern
+from eos.saveddata.booster import Booster as es_Booster
+from eos.saveddata.cargo import Cargo as es_Cargo
+from eos.saveddata.character import Character as saveddata_Character
+from eos.saveddata.citadel import Citadel as es_Citadel
+from eos.saveddata.damagePattern import DamagePattern as es_DamagePattern
+from eos.saveddata.drone import Drone as es_Drone
+from eos.saveddata.fighter import Fighter as es_Fighter
+from eos.saveddata.implant import Implant as es_Implant
+from eos.saveddata.module import Module as es_Module
+from eos.saveddata.ship import Ship as es_Ship
+from eos.types import State, Slot, Fit as FitType
 from service.character import Character
+from service.damagePattern import DamagePattern
+from service.market import Market
 from service.settings import SettingsProvider
-from service.port import Port
 
 logger = logging.getLogger(__name__)
-
-
-class FitBackupThread(threading.Thread):
-    def __init__(self, path, callback):
-        threading.Thread.__init__(self)
-        self.path = path
-        self.callback = callback
-
-    def run(self):
-        path = self.path
-        sFit = Fit.getInstance()
-        allFits = map(lambda x: x[0], sFit.getAllFits())
-        backedUpFits = sFit.exportXml(self.callback, *allFits)
-        backupFile = open(path, "w", encoding="utf-8")
-        backupFile.write(backedUpFits)
-        backupFile.close()
-
-        # Send done signal to GUI
-        wx.CallAfter(self.callback, -1)
-
-
-class FitImportThread(threading.Thread):
-    def __init__(self, paths, callback):
-        threading.Thread.__init__(self)
-        self.paths = paths
-        self.callback = callback
-
-    def run(self):
-        sFit = Fit.getInstance()
-        success, result = sFit.importFitFromFiles(self.paths, self.callback)
-
-        if not success:  # there was an error during processing
-            logger.error("Error while processing file import: %s", result)
-            wx.CallAfter(self.callback, -2, result)
-        else:  # Send done signal to GUI
-            wx.CallAfter(self.callback, -1, result)
 
 
 class Fit(object):
@@ -89,7 +53,7 @@ class Fit(object):
     def __init__(self):
         self.pattern = DamagePattern.getInstance().getDamagePattern("Uniform")
         self.targetResists = None
-        self.character = Character.getInstance().all5()
+        self.character = saveddata_Character.getAll5()
         self.booster = False
         self.dirtyFitIDs = set()
 
@@ -106,8 +70,8 @@ class Fit(object):
             "showMarketShortcuts": False,
             "enableGaugeAnimation": True,
             "exportCharges": True,
-            "openFitInNew":False
-            }
+            "openFitInNew": False,
+        }
 
         self.serviceFittingOptions = SettingsProvider.getInstance().getSettings(
             "pyfaServiceFittingOptions", serviceFittingDefaultOptions)
@@ -151,10 +115,10 @@ class Fit(object):
 
     def newFit(self, shipID, name=None):
         try:
-            ship = eos.types.Ship(eos.db.getItem(shipID))
+            ship = es_Ship(eos.db.getItem(shipID))
         except ValueError:
-            ship = eos.types.Citadel(eos.db.getItem(shipID))
-        fit = eos.types.Fit(ship)
+            ship = es_Citadel(eos.db.getItem(shipID))
+        fit = FitType(ship)
         fit.name = name if name is not None else "New %s" % fit.ship.item.name
         fit.damagePattern = self.pattern
         fit.targetResists = self.targetResists
@@ -226,11 +190,12 @@ class Fit(object):
         self.recalc(fit, withBoosters=True)
 
     def getFit(self, fitID, projected=False, basic=False):
-        ''' Gets fit from database
+        """
+        Gets fit from database
 
         Projected is a recursion flag that is set to reduce recursions into projected fits
         Basic is a flag to simply return the fit without any other processing
-        '''
+        """
         if fitID is None:
             return None
         fit = eos.db.getFit(fitID)
@@ -270,7 +235,7 @@ class Fit(object):
         fit = eos.db.getFit(fitID)
         item = eos.db.getItem(itemID, eager="attributes")
         try:
-            implant = eos.types.Implant(item)
+            implant = es_Implant(item)
         except ValueError:
             return False
 
@@ -296,7 +261,7 @@ class Fit(object):
         fit = eos.db.getFit(fitID)
         item = eos.db.getItem(itemID, eager="attributes")
         try:
-            booster = eos.types.Booster(item)
+            booster = es_Booster(item)
         except ValueError:
             return False
 
@@ -324,7 +289,7 @@ class Fit(object):
             thing = eos.db.getItem(thing,
                                    eager=("attributes", "group.category"))
 
-        if isinstance(thing, eos.types.Fit):
+        if isinstance(thing, FitType):
             if thing in fit.projectedFits:
                 return
 
@@ -341,19 +306,19 @@ class Fit(object):
                     break
 
             if drone is None:
-                drone = eos.types.Drone(thing)
+                drone = es_Drone(thing)
                 fit.projectedDrones.append(drone)
 
             drone.amount += 1
         elif thing.category.name == "Fighter":
-            fighter = eos.types.Fighter(thing)
+            fighter = es_Fighter(thing)
             fit.projectedFighters.append(fighter)
         elif thing.group.name == "Effect Beacon":
-            module = eos.types.Module(thing)
+            module = es_Module(thing)
             module.state = State.ONLINE
             fit.projectedModules.append(module)
         else:
-            module = eos.types.Module(thing)
+            module = es_Module(thing)
             module.state = State.ACTIVE
             if not module.canHaveState(module.state, fit):
                 module.state = State.OFFLINE
@@ -384,18 +349,18 @@ class Fit(object):
 
     def toggleProjected(self, fitID, thing, click):
         fit = eos.db.getFit(fitID)
-        if isinstance(thing, eos.types.Drone):
+        if isinstance(thing, es_Drone):
             if thing.amountActive == 0 and thing.canBeApplied(fit):
                 thing.amountActive = thing.amount
             else:
                 thing.amountActive = 0
-        elif isinstance(thing, eos.types.Fighter):
+        elif isinstance(thing, es_Fighter):
             thing.active = not thing.active
-        elif isinstance(thing, eos.types.Module):
+        elif isinstance(thing, es_Module):
             thing.state = self.__getProposedState(thing, click)
             if not thing.canHaveState(thing.state, fit):
                 thing.state = State.OFFLINE
-        elif isinstance(thing, eos.types.Fit):
+        elif isinstance(thing, FitType):
             projectionInfo = thing.getProjectionInfo(fitID)
             if projectionInfo:
                 projectionInfo.active = not projectionInfo.active
@@ -432,11 +397,11 @@ class Fit(object):
 
     def removeProjected(self, fitID, thing):
         fit = eos.db.getFit(fitID)
-        if isinstance(thing, eos.types.Drone):
+        if isinstance(thing, es_Drone):
             fit.projectedDrones.remove(thing)
-        elif isinstance(thing, eos.types.Module):
+        elif isinstance(thing, es_Module):
             fit.projectedModules.remove(thing)
-        elif isinstance(thing, eos.types.Fighter):
+        elif isinstance(thing, es_Fighter):
             fit.projectedFighters.remove(thing)
         else:
             del fit.__projectedFits[thing.ID]
@@ -456,7 +421,7 @@ class Fit(object):
         fit = eos.db.getFit(fitID)
         item = eos.db.getItem(itemID, eager=("attributes", "group.category"))
         try:
-            m = eos.types.Module(item)
+            m = es_Module(item)
         except ValueError:
             return False
 
@@ -503,7 +468,7 @@ class Fit(object):
 
         item = eos.db.getItem(newItemID, eager=("attributes", "group.category"))
         try:
-            m = eos.types.Module(item)
+            m = es_Module(item)
         except ValueError:
             return False
 
@@ -540,7 +505,7 @@ class Fit(object):
 
         # Gather modules and convert Cargo item to Module, silently return if not a module
         try:
-            cargoP = eos.types.Module(cargo.item)
+            cargoP = es_Module(cargo.item)
             cargoP.owner = fit
             if cargoP.isValidState(State.ACTIVE):
                 cargoP.state = State.ACTIVE
@@ -570,7 +535,7 @@ class Fit(object):
                 x.amount += 1
                 break
             else:
-                moduleP = eos.types.Cargo(module.item)
+                moduleP = es_Cargo(module.item)
                 moduleP.amount = 1
                 fit.cargo.insert(cargoIdx, moduleP)
 
@@ -635,7 +600,7 @@ class Fit(object):
 
         if cargo is None:
             # if we don't have the item already in cargo, use default values
-            cargo = eos.types.Cargo(item)
+            cargo = es_Cargo(item)
 
         fit.cargo.append(cargo)
         if replace:
@@ -673,10 +638,10 @@ class Fit(object):
                     break
             '''
             if fighter is None:
-                fighter = eos.types.Fighter(item)
+                fighter = es_Fighter(item)
                 used = fit.getSlotsUsed(fighter.slot)
                 total = fit.getNumSlots(fighter.slot)
-                standardAttackActive = False;
+                standardAttackActive = False
                 for ability in fighter.abilities:
                     if (ability.effect.isImplemented and ability.effect.handlerName == u'fighterabilityattackm'):
                         # Activate "standard attack" if available
@@ -684,10 +649,10 @@ class Fit(object):
                         standardAttackActive = True
                     else:
                         # Activate all other abilities (Neut, Web, etc) except propmods if no standard attack is active
-                        if (ability.effect.isImplemented
-                            and standardAttackActive == False
-                            and ability.effect.handlerName != u'fighterabilitymicrowarpdrive'
-                            and ability.effect.handlerName != u'fighterabilityevasivemaneuvers'):
+                        if ability.effect.isImplemented and \
+                                standardAttackActive is False and \
+                                ability.effect.handlerName != u'fighterabilitymicrowarpdrive' and \
+                                ability.effect.handlerName != u'fighterabilityevasivemaneuvers':
                             ability.active = True
 
                 if used >= total:
@@ -727,7 +692,7 @@ class Fit(object):
                     break
 
             if drone is None:
-                drone = eos.types.Drone(item)
+                drone = es_Drone(item)
                 if drone.fits(fit) is True:
                     fit.drones.append(drone)
                 else:
@@ -764,7 +729,7 @@ class Fit(object):
         d.amount = amount
         d.amountActive = amount if active else 0
 
-        newD = eos.types.Drone(d.item)
+        newD = es_Drone(d.item)
         newD.amount = total - amount
         newD.amountActive = newD.amount if active else 0
         l.append(newD)
@@ -929,7 +894,7 @@ class Fit(object):
         sDP = DamagePattern.getInstance()
         dp = sDP.getDamagePattern("Selected Ammo")
         if dp is None:
-            dp = eos.types.DamagePattern()
+            dp = es_DamagePattern()
             dp.name = "Selected Ammo"
 
         fit = eos.db.getFit(fitID)
@@ -938,140 +903,6 @@ class Fit(object):
 
         fit.damagePattern = dp
         self.recalc(fit)
-
-    def exportFit(self, fitID):
-        fit = eos.db.getFit(fitID)
-        return Port.exportEft(fit)
-
-    def exportEftImps(self, fitID):
-        fit = eos.db.getFit(fitID)
-        return Port.exportEftImps(fit)
-
-    def exportDna(self, fitID):
-        fit = eos.db.getFit(fitID)
-        return Port.exportDna(fit)
-
-    def exportCrest(self, fitID, callback=None):
-        fit = eos.db.getFit(fitID)
-        return Port.exportCrest(fit, callback)
-
-    def exportXml(self, callback=None, *fitIDs):
-        fits = map(lambda fitID: eos.db.getFit(fitID), fitIDs)
-        return Port.exportXml(callback, *fits)
-
-    def exportMultiBuy(self, fitID):
-        fit = eos.db.getFit(fitID)
-        return Port.exportMultiBuy(fit)
-
-    def backupFits(self, path, callback):
-        thread = FitBackupThread(path, callback)
-        thread.start()
-
-    def importFitsThreaded(self, paths, callback):
-        thread = FitImportThread(paths, callback)
-        thread.start()
-
-    def importFitFromFiles(self, paths, callback=None):
-        """
-        Imports fits from file(s). First processes all provided paths and stores
-        assembled fits into a list. This allows us to call back to the GUI as
-        fits are processed as well as when fits are being saved.
-        returns
-        """
-        defcodepage = locale.getpreferredencoding()
-
-        fits = []
-        for path in paths:
-            if callback:  # Pulse
-                wx.CallAfter(callback, 1, "Processing file:\n%s" % path)
-
-            file = open(path, "r")
-            srcString = file.read()
-
-            if len(srcString) == 0:  # ignore blank files
-                continue
-
-            codec_found = None
-            # If file had ANSI encoding, decode it to unicode using detection
-            # of BOM header or if there is no header try default
-            # codepage then fallback to utf-16, cp1252
-
-            if isinstance(srcString, str):
-                encoding_map = (
-                    ('\xef\xbb\xbf', 'utf-8'),
-                    ('\xff\xfe\0\0', 'utf-32'),
-                    ('\0\0\xfe\xff', 'UTF-32BE'),
-                    ('\xff\xfe', 'utf-16'),
-                    ('\xfe\xff', 'UTF-16BE'))
-
-                for bom, encoding in encoding_map:
-                    if srcString.startswith(bom):
-                        codec_found = encoding
-                        savebom = bom
-
-                if codec_found is None:
-                    logger.info("Unicode BOM not found in file %s.", path)
-                    attempt_codecs = (defcodepage, "utf-8", "utf-16", "cp1252")
-
-                    for page in attempt_codecs:
-                        try:
-                            logger.info("Attempting to decode file %s using %s page.", path, page)
-                            srcString = unicode(srcString, page)
-                            codec_found = page
-                            logger.info("File %s decoded using %s page.", path, page)
-                        except UnicodeDecodeError:
-                            logger.info("Error unicode decoding %s from page %s, trying next codec", path, page)
-                        else:
-                            break
-                else:
-                    logger.info("Unicode BOM detected in %s, using %s page.", path, codec_found)
-                    srcString = unicode(srcString[len(savebom):], codec_found)
-
-            else:
-                # nasty hack to detect other transparent utf-16 loading
-                if srcString[0] == '<' and 'utf-16' in srcString[:128].lower():
-                    codec_found = "utf-16"
-                else:
-                    codec_found = "utf-8"
-
-            if codec_found is None:
-                return False, "Proper codec could not be established for %s" % path
-
-            try:
-                _, fitsImport = Port.importAuto(srcString, path, callback=callback, encoding=codec_found)
-                fits += fitsImport
-            except xml.parsers.expat.ExpatError, e:
-                return False, "Malformed XML in %s" % path
-            except Exception, e:
-                logger.exception("Unknown exception processing: %s", path)
-                return False, "Unknown Error while processing %s" % path
-
-        IDs = []
-        numFits = len(fits)
-        for i, fit in enumerate(fits):
-            # Set some more fit attributes and save
-            fit.character = self.character
-            fit.damagePattern = self.pattern
-            fit.targetResists = self.targetResists
-            eos.db.save(fit)
-            IDs.append(fit.ID)
-            if callback:  # Pulse
-                wx.CallAfter(
-                    callback, 1,
-                    "Processing complete, saving fits to database\n(%d/%d)" %
-                    (i + 1, numFits)
-                )
-
-        return True, fits
-
-    def importFitFromBuffer(self, bufferStr, activeFit=None):
-        _, fits = Port.importAuto(bufferStr, activeFit=activeFit)
-        for fit in fits:
-            fit.character = self.character
-            fit.damagePattern = self.pattern
-            fit.targetResists = self.targetResists
-            eos.db.save(fit)
-        return fits
 
     def checkStates(self, fit, base):
         changed = False

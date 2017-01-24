@@ -1,4 +1,4 @@
-# ===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,28 +15,26 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-# ===============================================================================
+# =============================================================================
 
-import csv
 import re
+import os
+import csv
 import sys
+import subprocess
 
 import wx
 import wx.html
 import wx.lib.mixins.listctrl as listmix
 
 import config
-import gui.mainFrame
-import service
 from eos.types import Fit, Ship, Citadel, Module, Skill, Booster, Implant, Drone, Mode, Fighter
+from service.market import Market
+from service.attribute import Attribute
+import gui.mainFrame
 from gui.bitmapLoader import BitmapLoader
-from gui.contextMenu import ContextMenu
 from gui.utils.numberFormatter import formatAmount
-
-try:
-    from collections import OrderedDict
-except ImportError:
-    from utils.compat import OrderedDict
+from gui.contextMenu import ContextMenu
 
 
 class ItemStatsDialog(wx.Dialog):
@@ -73,9 +71,12 @@ class ItemStatsDialog(wx.Dialog):
             itmContext = fullContext[1]
         except IndexError:
             itmContext = None
-        item = getattr(victim, "item", None) if srcContext.lower() not in ("projectedcharge", "fittingcharge") else getattr(victim, "charge", None)
+        item = getattr(victim, "item", None) if srcContext.lower() not in (
+            "projectedcharge",
+            "fittingcharge"
+        ) else getattr(victim, "charge", None)
         if item is None:
-            sMkt = service.Market.getInstance()
+            sMkt = Market.getInstance()
             item = sMkt.getItem(victim.ID)
             victim = None
         self.context = itmContext
@@ -149,14 +150,10 @@ class ItemStatsDialog(wx.Dialog):
         self.Destroy()
 
 
-###########################################################################
-## Class ItemStatsContainer
-###########################################################################
-
 class ItemStatsContainer(wx.Panel):
     def __init__(self, parent, stuff, item, context=None):
         wx.Panel.__init__(self, parent)
-        sMkt = service.Market.getInstance()
+        sMkt = Market.getInstance()
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
@@ -201,32 +198,18 @@ class ItemStatsContainer(wx.Panel):
             self.nbContainer.SetSelection(tab)
 
 
-###########################################################################
-## Class AutoListCtrl
-###########################################################################
-
 class AutoListCtrl(wx.ListCtrl, listmix.ListCtrlAutoWidthMixin, listmix.ListRowHighlighter):
-    def __init__(self, parent, ID, pos=wx.DefaultPosition,
-                 size=wx.DefaultSize, style=0):
+    def __init__(self, parent, ID, pos=wx.DefaultPosition, size=wx.DefaultSize, style=0):
         wx.ListCtrl.__init__(self, parent, ID, pos, size, style)
         listmix.ListCtrlAutoWidthMixin.__init__(self)
         listmix.ListRowHighlighter.__init__(self)
 
 
-###########################################################################
-## Class AutoListCtrl
-###########################################################################
-
 class AutoListCtrlNoHighlight(wx.ListCtrl, listmix.ListCtrlAutoWidthMixin, listmix.ListRowHighlighter):
-    def __init__(self, parent, ID, pos=wx.DefaultPosition,
-                 size=wx.DefaultSize, style=0):
+    def __init__(self, parent, ID, pos=wx.DefaultPosition, size=wx.DefaultSize, style=0):
         wx.ListCtrl.__init__(self, parent, ID, pos, size, style)
         listmix.ListCtrlAutoWidthMixin.__init__(self)
 
-
-###########################################################################
-## Class ItemTraits
-###########################################################################
 
 class ItemTraits(wx.Panel):
     def __init__(self, parent, stuff, item):
@@ -240,10 +223,6 @@ class ItemTraits(wx.Panel):
         mainSizer.Add(self.traits, 1, wx.ALL | wx.EXPAND, 0)
         self.Layout()
 
-
-###########################################################################
-## Class ItemDescription
-###########################################################################
 
 class ItemDescription(wx.Panel):
     def __init__(self, parent, stuff, item):
@@ -273,19 +252,13 @@ class ItemDescription(wx.Panel):
         self.Layout()
 
 
-###########################################################################
-## Class ItemParams
-###########################################################################
-
 class ItemParams(wx.Panel):
     def __init__(self, parent, stuff, item, context=None):
         wx.Panel.__init__(self, parent)
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
         self.paramList = AutoListCtrl(self, wx.ID_ANY,
-                                      style=  # wx.LC_HRULES |
-                                      # wx.LC_NO_HEADER |
-                                      wx.LC_REPORT | wx.LC_SINGLE_SEL | wx.LC_VRULES | wx.NO_BORDER)
+                                      style=wx.LC_REPORT | wx.LC_SINGLE_SEL | wx.LC_VRULES | wx.NO_BORDER)
         mainSizer.Add(self.paramList, 1, wx.ALL | wx.EXPAND, 0)
         self.SetSizer(mainSizer)
 
@@ -499,21 +472,21 @@ class ItemParams(wx.Panel):
 
     def TranslateValueUnit(self, value, unitName, unitDisplayName):
         def itemIDCallback():
-            item = service.Market.getInstance().getItem(value)
+            item = Market.getInstance().getItem(value)
             return "%s (%d)" % (item.name, value) if item is not None else str(value)
 
         def groupIDCallback():
-            group = service.Market.getInstance().getGroup(value)
+            group = Market.getInstance().getGroup(value)
             return "%s (%d)" % (group.name, value) if group is not None else str(value)
 
         def attributeIDCallback():
-            attribute = service.Attribute.getInstance().getAttributeInfo(value)
+            attribute = Attribute.getInstance().getAttributeInfo(value)
             return "%s (%d)" % (attribute.name.capitalize(), value)
 
         trans = {"Inverse Absolute Percent": (lambda: (1 - value) * 100, unitName),
                  "Inversed Modifier Percent": (lambda: (1 - value) * 100, unitName),
                  "Modifier Percent": (
-                 lambda: ("%+.2f" if ((value - 1) * 100) % 1 else "%+d") % ((value - 1) * 100), unitName),
+                     lambda: ("%+.2f" if ((value - 1) * 100) % 1 else "%+d") % ((value - 1) * 100), unitName),
                  "Volume": (lambda: value, u"m\u00B3"),
                  "Sizeclass": (lambda: value, ""),
                  "Absolute Percent": (lambda: (value * 100), unitName),
@@ -524,15 +497,13 @@ class ItemParams(wx.Panel):
 
         override = trans.get(unitDisplayName)
         if override is not None:
-
-            if type(override[0]()) == type(str()):
-                fvalue = override[0]()
+            v = override[0]()
+            if isinstance(v, str):
+                fvalue = v
+            elif isinstance(v, (int, float, long)):
+                fvalue = formatAmount(v, 3, 0, 0)
             else:
-                v = override[0]()
-                if isinstance(v, (int, float, long)):
-                    fvalue = formatAmount(v, 3, 0, 0)
-                else:
-                    fvalue = v
+                fvalue = v
             return "%s %s" % (fvalue, override[1])
         else:
             return "%s %s" % (formatAmount(value, 3, 0), unitName)
@@ -544,9 +515,7 @@ class ItemCompare(wx.Panel):
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
         self.paramList = AutoListCtrl(self, wx.ID_ANY,
-                                      style=  # wx.LC_HRULES |
-                                      # wx.LC_NO_HEADER |
-                                      wx.LC_REPORT | wx.LC_SINGLE_SEL | wx.LC_VRULES | wx.NO_BORDER)
+                                      style=wx.LC_REPORT | wx.LC_SINGLE_SEL | wx.LC_VRULES | wx.NO_BORDER)
         mainSizer.Add(self.paramList, 1, wx.ALL | wx.EXPAND, 0)
         self.SetSizer(mainSizer)
 
@@ -611,7 +580,7 @@ class ItemCompare(wx.Panel):
         self.toggleViewBtn.Bind(wx.EVT_TOGGLEBUTTON, self.ToggleViewMode)
         self.Bind(wx.EVT_LIST_COL_CLICK, self.SortCompareCols)
 
-    def SortCompareCols(self,event):
+    def SortCompareCols(self, event):
         self.Freeze()
         self.paramList.ClearAll()
         self.PopulateList(event.Column)
@@ -672,7 +641,7 @@ class ItemCompare(wx.Panel):
         self.paramList.InsertColumn(len(self.attrs) + 1, "Price")
         self.paramList.SetColumnWidth(len(self.attrs) + 1, 60)
 
-        sMkt = service.Market.getInstance()
+        sMkt = Market.getInstance()
         sMkt.getPrices([x.ID for x in self.items], self.processPrices)
 
         for item in self.items:
@@ -695,15 +664,15 @@ class ItemCompare(wx.Panel):
 
     def TranslateValueUnit(self, value, unitName, unitDisplayName):
         def itemIDCallback():
-            item = service.Market.getInstance().getItem(value)
+            item = Market.getInstance().getItem(value)
             return "%s (%d)" % (item.name, value) if item is not None else str(value)
 
         def groupIDCallback():
-            group = service.Market.getInstance().getGroup(value)
+            group = Market.getInstance().getGroup(value)
             return "%s (%d)" % (group.name, value) if group is not None else str(value)
 
         def attributeIDCallback():
-            attribute = service.Attribute.getInstance().getAttributeInfo(value)
+            attribute = Attribute.getInstance().getAttributeInfo(value)
             return "%s (%d)" % (attribute.name.capitalize(), value)
 
         trans = {"Inverse Absolute Percent": (lambda: (1 - value) * 100, unitName),
@@ -720,23 +689,17 @@ class ItemCompare(wx.Panel):
 
         override = trans.get(unitDisplayName)
         if override is not None:
-
-            if type(override[0]()) == type(str()):
-                fvalue = override[0]()
+            v = override[0]()
+            if isinstance(v, str):
+                fvalue = v
+            elif isinstance(v, (int, float, long)):
+                fvalue = formatAmount(v, 3, 0, 0)
             else:
-                v = override[0]()
-                if isinstance(v, (int, float, long)):
-                    fvalue = formatAmount(v, 3, 0, 0)
-                else:
-                    fvalue = v
+                fvalue = v
             return "%s %s" % (fvalue, override[1])
         else:
             return "%s %s" % (formatAmount(value, 3, 0), unitName)
 
-
-###########################################################################
-## Class ItemRequirements
-###########################################################################
 
 class ItemRequirements(wx.Panel):
     def __init__(self, parent, stuff, item):
@@ -773,10 +736,6 @@ class ItemRequirements(wx.Panel):
                 self.skillIdHistory.append(skill.ID)
 
 
-###########################################################################
-## Class ItemEffects
-###########################################################################
-
 class ItemEffects(wx.Panel):
     def __init__(self, parent, stuff, item):
         wx.Panel.__init__(self, parent)
@@ -785,10 +744,7 @@ class ItemEffects(wx.Panel):
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
         self.effectList = AutoListCtrl(self, wx.ID_ANY,
-                                       style=
-                                       # wx.LC_HRULES |
-                                       # wx.LC_NO_HEADER |
-                                       wx.LC_REPORT | wx.LC_SINGLE_SEL | wx.LC_VRULES | wx.NO_BORDER)
+                                       style=wx.LC_REPORT | wx.LC_SINGLE_SEL | wx.LC_VRULES | wx.NO_BORDER)
         mainSizer.Add(self.effectList, 1, wx.ALL | wx.EXPAND, 0)
         self.SetSizer(mainSizer)
 
@@ -878,19 +834,17 @@ class ItemEffects(wx.Panel):
         If effect file does not exist, create it
         """
 
-        import os
-        file = config.getPyfaPath("eos\\effects\\%s.py" % event.GetText().lower())
+        file_ = config.getPyfaPath("eos\\effects\\%s.py" % event.GetText().lower())
 
-        if not os.path.isfile(file):
-            open(file, 'a').close()
+        if not os.path.isfile(file_):
+            open(file_, 'a').close()
 
         if 'wxMSW' in wx.PlatformInfo:
-            os.startfile(file)
+            os.startfile(file_)
         elif 'wxMac' in wx.PlatformInfo:
-            os.system("open " + file)
+            os.system("open " + file_)
         else:
-            import subprocess
-            subprocess.call(["xdg-open", file])
+            subprocess.call(["xdg-open", file_])
 
     def RefreshValues(self, event):
         self.Freeze()
@@ -900,11 +854,6 @@ class ItemEffects(wx.Panel):
         self.Layout()
         self.Thaw()
         event.Skip()
-
-
-###########################################################################
-## Class ItemAffectedBy
-###########################################################################
 
 
 class ItemAffectedBy(wx.Panel):
@@ -973,9 +922,9 @@ class ItemAffectedBy(wx.Panel):
         # Skills are different in that they don't have itemModifiedAttributes,
         # which is needed if we send the container to itemStats dialog. So
         # instead, we send the item.
-        type = stuff.__class__.__name__
-        contexts.append(("itemStats", type))
-        menu = ContextMenu.getMenu(stuff if type != "Skill" else stuff.item, *contexts)
+        type_ = stuff.__class__.__name__
+        contexts.append(("itemStats", type_))
+        menu = ContextMenu.getMenu(stuff if type_ != "Skill" else stuff.item, *contexts)
         self.PopupMenu(menu)
 
     def ExpandCollapseTree(self):
@@ -1051,20 +1000,22 @@ class ItemAffectedBy(wx.Panel):
         return attr
 
     def buildAttributeView(self, root):
-        # We first build a usable dictionary of items. The key is either a fit
-        # if the afflictions stem from a projected fit, or self.stuff if they
-        # are local afflictions (everything else, even gang boosts at this time)
-        # The value of this is yet another dictionary in the following format:
-        #
-        # "attribute name": {
-        #       "Module Name": [
-        #            class of affliction,
-        #            affliction item (required due to GH issue #335)
-        #            modifier type
-        #            amount of modification
-        #            whether this affliction was projected
-        #       ]
-        # }
+        """
+        We first build a usable dictionary of items. The key is either a fit
+        if the afflictions stem from a projected fit, or self.stuff if they
+        are local afflictions (everything else, even gang boosts at this time)
+        The value of this is yet another dictionary in the following format:
+
+        "attribute name": {
+              "Module Name": [
+                   class of affliction,
+                   affliction item (required due to GH issue #335)
+                   modifier type
+                   amount of modification
+                   whether this affliction was projected
+              ]
+        }
+        """
 
         attributes = self.stuff.itemModifiedAttributes if self.item == self.stuff.item else self.stuff.chargeModifiedAttributes
         container = {}
@@ -1178,18 +1129,20 @@ class ItemAffectedBy(wx.Panel):
                     self.affectedBy.SetPyData(treeItem, afflictor)
 
     def buildModuleView(self, root):
-        # We first build a usable dictionary of items. The key is either a fit
-        # if the afflictions stem from a projected fit, or self.stuff if they
-        # are local afflictions (everything else, even gang boosts at this time)
-        # The value of this is yet another dictionary in the following format:
-        #
-        # "Module Name": [
-        #     class of affliction,
-        #     set of afflictors (such as 2 of the same module),
-        #     info on affliction (attribute name, modifier, and modification amount),
-        #     item that will be used to determine icon (required due to GH issue #335)
-        #     whether this affliction is actually used (unlearned skills are not used)
-        # ]
+        """
+        We first build a usable dictionary of items. The key is either a fit
+        if the afflictions stem from a projected fit, or self.stuff if they
+        are local afflictions (everything else, even gang boosts at this time)
+        The value of this is yet another dictionary in the following format:
+
+        "Module Name": [
+            class of affliction,
+            set of afflictors (such as 2 of the same module),
+            info on affliction (attribute name, modifier, and modification amount),
+            item that will be used to determine icon (required due to GH issue #335)
+            whether this affliction is actually used (unlearned skills are not used)
+        ]
+        """
 
         attributes = self.stuff.itemModifiedAttributes if self.item == self.stuff.item else self.stuff.chargeModifiedAttributes
         container = {}
@@ -1309,9 +1262,19 @@ class ItemAffectedBy(wx.Panel):
 
                         if self.showRealNames:
                             display = "%s %s %.2f %s" % (attrName, attrModifier, attrAmount, penalized)
-                            saved = "%s %s %.2f %s" % ((displayName if displayName != "" else attrName), attrModifier, attrAmount, penalized)
+                            saved = "%s %s %.2f %s" % (
+                                displayName if displayName != "" else attrName,
+                                attrModifier,
+                                attrAmount,
+                                penalized
+                            )
                         else:
-                            display = "%s %s %.2f %s" % ((displayName if displayName != "" else attrName), attrModifier, attrAmount, penalized)
+                            display = "%s %s %.2f %s" % (
+                                displayName if displayName != "" else attrName,
+                                attrModifier,
+                                attrAmount,
+                                penalized
+                            )
                             saved = "%s %s %.2f %s" % (attrName, attrModifier, attrAmount, penalized)
 
                         treeitem = self.affectedBy.AppendItem(child, display, attrIcon)

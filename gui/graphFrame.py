@@ -1,4 +1,4 @@
-# ===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,19 +15,18 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-# ===============================================================================
+# =============================================================================
 
 import os
 
 import wx
 
+from service.fit import Fit
 import gui.display
-import gui.globalEvents as GE
 import gui.mainFrame
-import service
-from gui.bitmapLoader import BitmapLoader
+import gui.globalEvents as GE
 from gui.graph import Graph
-from config import parsePath
+from gui.bitmapLoader import BitmapLoader
 
 enabled = True
 mplImported = False
@@ -62,11 +61,11 @@ class GraphFrame(wx.Frame):
             from matplotlib.figure import Figure
             enabled = True
             if mpl.__version__[0] != "1":
-                print "pyfa: Found matplotlib version ", mpl.__version__, " - activating OVER9000 workarounds"
-                print "pyfa: Recommended minimum matplotlib version is 1.0.0"
+                print("pyfa: Found matplotlib version ", mpl.__version__, " - activating OVER9000 workarounds")
+                print("pyfa: Recommended minimum matplotlib version is 1.0.0")
                 self.legendFix = True
         except:
-            print "Problems importing matplotlib; continuing without graphs"
+            print("Problems importing matplotlib; continuing without graphs")
             enabled = False
             return
 
@@ -82,7 +81,7 @@ class GraphFrame(wx.Frame):
         self.mainSizer = wx.BoxSizer(wx.VERTICAL)
         self.SetSizer(self.mainSizer)
 
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fit = sFit.getFit(self.mainFrame.getActiveFit())
         self.fits = [fit] if fit is not None else []
         self.fitList = FitList(self)
@@ -248,7 +247,7 @@ class GraphFrame(wx.Frame):
         self.draw()
 
     def AppendFitToList(self, fitID):
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fit = sFit.getFit(fitID)
         if fit not in self.fits:
             self.fits.append(fit)

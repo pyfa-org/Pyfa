@@ -1,7 +1,7 @@
 from gui.contextMenu import ContextMenu
-from gui.itemStats import ItemStatsDialog
 import gui.mainFrame
-import service
+from service.market import Market
+
 
 class MarketJump(ContextMenu):
     def __init__(self):
@@ -16,10 +16,10 @@ class MarketJump(ContextMenu):
                          "implantItemChar", "fighterItem",
                          "projectedDrone")
 
-        if not srcContext in validContexts or selection is None or len(selection) < 1:
+        if srcContext not in validContexts or selection is None or len(selection) < 1:
             return False
 
-        sMkt = service.Market.getInstance()
+        sMkt = Market.getInstance()
         item = getattr(selection[0], "item", selection[0])
         mktGrp = sMkt.getMarketGroupByItem(item)
 
@@ -44,5 +44,6 @@ class MarketJump(ContextMenu):
 
         self.mainFrame.notebookBrowsers.SetSelection(0)
         self.mainFrame.marketBrowser.jump(item)
+
 
 MarketJump.register()

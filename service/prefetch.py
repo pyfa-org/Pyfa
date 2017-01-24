@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,15 +15,18 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
 import threading
-import config
 import os
-import eos.types
-import eos.db.migration as migration
+
+import config
+from eos import db
+from eos.db import migration
 from eos.db.saveddata.loadDefaultDatabaseValues import DefaultDatabaseValues
 from eos.db.saveddata.databaseRepair import DatabaseCleanup
+from eos.saveddata.character import Character as es_Character
+
 import logging
 
 logger = logging.getLogger(__name__)
@@ -34,29 +37,31 @@ class PrefetchThread(threading.Thread):
         # We're a daemon thread, as such, interpreter might get shut down while we do stuff
         # Make sure we don't throw tracebacks to console
         try:
-            eos.types.Character.setSkillList(eos.db.getItemsByCategory("Skill", eager=("effects", "attributes", "attributes.info.icon", "attributes.info.unit", "icon")))
+            es_Character.setSkillList(db.getItemsByCategory(
+                "Skill",
+                eager=("effects", "attributes", "attributes.info.icon", "attributes.info.unit", "icon")
+            ))
         except:
             pass
+
 
 prefetch = PrefetchThread()
 prefetch.daemon = True
 prefetch.start()
 
-########
 # The following code does not belong here, however until we rebuild skeletons
 # to include modified pyfa.py, this is the best place to put it. See GH issue
 # #176
 # @ todo: move this to pyfa.py
-########
 
-#Make sure the saveddata db exists
-if not os.path.exists(config.savePath):
+# Make sure the saveddata db exists
+if config.savePath and not os.path.exists(config.savePath):
     os.mkdir(config.savePath)
 
-if os.path.isfile(config.saveDB):
+if config.saveDB and os.path.isfile(config.saveDB):
     # If database exists, run migration after init'd database
-    eos.db.saveddata_meta.create_all()
-    migration.update(eos.db.saveddata_engine)
+    db.saveddata_meta.create_all()
+    migration.update(db.saveddata_engine)
     # Import default database values
     # Import values that must exist otherwise Pyfa breaks
     DefaultDatabaseValues.importRequiredDefaults()
@@ -71,9 +76,9 @@ if os.path.isfile(config.saveDB):
 else:
     # If database does not exist, do not worry about migration. Simply
     # create and set version
-    eos.db.saveddata_meta.create_all()
-    eos.db.saveddata_engine.execute('PRAGMA user_version = {}'.format(migration.getAppVersion()))
-    #Import default database values
+    db.saveddata_meta.create_all()
+    db.saveddata_engine.execute('PRAGMA user_version = {}'.format(migration.getAppVersion()))
+    # Import default database values
     # Import values that must exist otherwise Pyfa breaks
     DefaultDatabaseValues.importRequiredDefaults()
     # Import default values for damage profiles

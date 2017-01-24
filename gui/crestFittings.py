@@ -4,8 +4,9 @@ import json
 import wx
 import requests
 
-import service
 from service.crest import CrestModes
+from service.crest import Crest
+from service.fit import Fit
 
 from eos.types import Cargo
 from eos.db import getItem
@@ -15,52 +16,53 @@ import gui.globalEvents as GE
 
 
 class CrestFittings(wx.Frame):
-
     def __init__(self, parent):
-        wx.Frame.__init__(self, parent, id=wx.ID_ANY, title="Browse EVE Fittings", pos=wx.DefaultPosition, size=wx.Size( 550,450 ), style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL)
+        wx.Frame.__init__(self, parent, id=wx.ID_ANY, title="Browse EVE Fittings", pos=wx.DefaultPosition,
+                          size=wx.Size(550, 450), style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL)
 
         self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
 
         self.mainFrame = parent
         mainSizer = wx.BoxSizer(wx.VERTICAL)
-        sCrest = service.Crest.getInstance()
+        sCrest = Crest.getInstance()
 
-        characterSelectSizer = wx.BoxSizer( wx.HORIZONTAL )
+        characterSelectSizer = wx.BoxSizer(wx.HORIZONTAL)
 
         if sCrest.settings.get('mode') == CrestModes.IMPLICIT:
-            self.stLogged = wx.StaticText(self, wx.ID_ANY, "Currently logged in as %s"%sCrest.implicitCharacter.name, wx.DefaultPosition, wx.DefaultSize)
-            self.stLogged.Wrap( -1 )
+            self.stLogged = wx.StaticText(self, wx.ID_ANY, "Currently logged in as %s" % sCrest.implicitCharacter.name,
+                                          wx.DefaultPosition, wx.DefaultSize)
+            self.stLogged.Wrap(-1)
 
-            characterSelectSizer.Add( self.stLogged, 1,  wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5 )
+            characterSelectSizer.Add(self.stLogged, 1, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
         else:
             self.charChoice = wx.Choice(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, [])
-            characterSelectSizer.Add( self.charChoice, 1,  wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5 )
+            characterSelectSizer.Add(self.charChoice, 1, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
             self.updateCharList()
 
-        self.fetchBtn = wx.Button( self, wx.ID_ANY, u"Fetch Fits", wx.DefaultPosition, wx.DefaultSize, 5 )
-        characterSelectSizer.Add( self.fetchBtn, 0, wx.ALL, 5 )
-        mainSizer.Add( characterSelectSizer, 0, wx.EXPAND, 5 )
+        self.fetchBtn = wx.Button(self, wx.ID_ANY, u"Fetch Fits", wx.DefaultPosition, wx.DefaultSize, 5)
+        characterSelectSizer.Add(self.fetchBtn, 0, wx.ALL, 5)
+        mainSizer.Add(characterSelectSizer, 0, wx.EXPAND, 5)
 
-        self.sl = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
-        mainSizer.Add( self.sl, 0, wx.EXPAND |wx.ALL, 5 )
+        self.sl = wx.StaticLine(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL)
+        mainSizer.Add(self.sl, 0, wx.EXPAND | wx.ALL, 5)
 
-        contentSizer = wx.BoxSizer( wx.HORIZONTAL )
-        browserSizer = wx.BoxSizer( wx.VERTICAL )
+        contentSizer = wx.BoxSizer(wx.HORIZONTAL)
+        browserSizer = wx.BoxSizer(wx.VERTICAL)
 
         self.fitTree = FittingsTreeView(self)
-        browserSizer.Add( self.fitTree, 1, wx.ALL|wx.EXPAND, 5 )
-        contentSizer.Add( browserSizer, 1, wx.EXPAND, 0 )
-        fitSizer = wx.BoxSizer( wx.VERTICAL )
+        browserSizer.Add(self.fitTree, 1, wx.ALL | wx.EXPAND, 5)
+        contentSizer.Add(browserSizer, 1, wx.EXPAND, 0)
+        fitSizer = wx.BoxSizer(wx.VERTICAL)
 
         self.fitView = FitView(self)
-        fitSizer.Add( self.fitView, 1, wx.ALL|wx.EXPAND, 5 )
+        fitSizer.Add(self.fitView, 1, wx.ALL | wx.EXPAND, 5)
 
-        btnSizer = wx.BoxSizer( wx.HORIZONTAL )
-        self.importBtn = wx.Button( self, wx.ID_ANY, u"Import to pyfa", wx.DefaultPosition, wx.DefaultSize, 5 )
-        self.deleteBtn = wx.Button( self, wx.ID_ANY, u"Delete from EVE", wx.DefaultPosition, wx.DefaultSize, 5 )
-        btnSizer.Add( self.importBtn, 1, wx.ALL, 5 )
-        btnSizer.Add( self.deleteBtn, 1, wx.ALL, 5 )
-        fitSizer.Add( btnSizer, 0, wx.EXPAND )
+        btnSizer = wx.BoxSizer(wx.HORIZONTAL)
+        self.importBtn = wx.Button(self, wx.ID_ANY, u"Import to pyfa", wx.DefaultPosition, wx.DefaultSize, 5)
+        self.deleteBtn = wx.Button(self, wx.ID_ANY, u"Delete from EVE", wx.DefaultPosition, wx.DefaultSize, 5)
+        btnSizer.Add(self.importBtn, 1, wx.ALL, 5)
+        btnSizer.Add(self.deleteBtn, 1, wx.ALL, 5)
+        fitSizer.Add(btnSizer, 0, wx.EXPAND)
 
         contentSizer.Add(fitSizer, 1, wx.EXPAND, 0)
         mainSizer.Add(contentSizer, 1, wx.EXPAND, 5)
@@ -90,7 +92,7 @@ class CrestFittings(wx.Frame):
         event.Skip()
 
     def updateCharList(self):
-        sCrest = service.Crest.getInstance()
+        sCrest = Crest.getInstance()
         chars = sCrest.getCrestCharacters()
 
         if len(chars) == 0:
@@ -103,12 +105,12 @@ class CrestFittings(wx.Frame):
         self.charChoice.SetSelection(0)
 
     def updateCacheStatus(self, event):
-        t = time.gmtime(self.cacheTime-time.time())
+        t = time.gmtime(self.cacheTime - time.time())
         if t < 0:
             self.cacheTimer.Stop()
         else:
             sTime = time.strftime("%H:%M:%S", t)
-            self.statusbar.SetStatusText("Cached for %s"%sTime, 0)
+            self.statusbar.SetStatusText("Cached for %s" % sTime, 0)
 
     def ssoLogout(self, event):
         if event.type == CrestModes.IMPLICIT:
@@ -123,7 +125,7 @@ class CrestFittings(wx.Frame):
         event.Skip()
 
     def getActiveCharacter(self):
-        sCrest = service.Crest.getInstance()
+        sCrest = Crest.getInstance()
 
         if sCrest.settings.get('mode') == CrestModes.IMPLICIT:
             return sCrest.implicitCharacter.ID
@@ -132,7 +134,7 @@ class CrestFittings(wx.Frame):
         return self.charChoice.GetClientData(selection) if selection is not None else None
 
     def fetchFittings(self, event):
-        sCrest = service.Crest.getInstance()
+        sCrest = Crest.getInstance()
         try:
             waitDialog = wx.BusyInfo("Fetching fits, please wait...", parent=self)
             fittings = sCrest.getFittings(self.getActiveCharacter())
@@ -150,20 +152,20 @@ class CrestFittings(wx.Frame):
         if not selection:
             return
         data = self.fitTree.fittingsTreeCtrl.GetPyData(selection)
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fits = sFit.importFitFromBuffer(data)
         self.mainFrame._openAfterImport(fits)
 
     def deleteFitting(self, event):
-        sCrest = service.Crest.getInstance()
+        sCrest = Crest.getInstance()
         selection = self.fitView.fitSelection
         if not selection:
             return
         data = json.loads(self.fitTree.fittingsTreeCtrl.GetPyData(selection))
 
         dlg = wx.MessageDialog(self,
-                 "Do you really want to delete %s (%s) from EVE?"%(data['name'], data['ship']['name']),
-                 "Confirm Delete", wx.YES | wx.NO | wx.ICON_QUESTION)
+                               "Do you really want to delete %s (%s) from EVE?" % (data['name'], data['ship']['name']),
+                               "Confirm Delete", wx.YES | wx.NO | wx.ICON_QUESTION)
 
         if dlg.ShowModal() == wx.ID_YES:
             try:
@@ -173,32 +175,33 @@ class CrestFittings(wx.Frame):
 
 
 class ExportToEve(wx.Frame):
-
     def __init__(self, parent):
-        wx.Frame.__init__(self, parent, id=wx.ID_ANY, title="Export fit to EVE", pos=wx.DefaultPosition, size=(wx.Size(350,100)), style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL)
+        wx.Frame.__init__(self, parent, id=wx.ID_ANY, title="Export fit to EVE", pos=wx.DefaultPosition,
+                          size=(wx.Size(350, 100)), style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL)
 
         self.mainFrame = parent
         self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
 
-        sCrest = service.Crest.getInstance()
+        sCrest = Crest.getInstance()
         mainSizer = wx.BoxSizer(wx.VERTICAL)
         hSizer = wx.BoxSizer(wx.HORIZONTAL)
 
         if sCrest.settings.get('mode') == CrestModes.IMPLICIT:
-            self.stLogged = wx.StaticText(self, wx.ID_ANY, "Currently logged in as %s"%sCrest.implicitCharacter.name, wx.DefaultPosition, wx.DefaultSize)
-            self.stLogged.Wrap( -1 )
+            self.stLogged = wx.StaticText(self, wx.ID_ANY, "Currently logged in as %s" % sCrest.implicitCharacter.name,
+                                          wx.DefaultPosition, wx.DefaultSize)
+            self.stLogged.Wrap(-1)
 
-            hSizer.Add( self.stLogged, 1, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5 )
+            hSizer.Add(self.stLogged, 1, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
         else:
             self.charChoice = wx.Choice(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, [])
-            hSizer.Add( self.charChoice, 1, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5 )
+            hSizer.Add(self.charChoice, 1, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
             self.updateCharList()
             self.charChoice.SetSelection(0)
 
-        self.exportBtn = wx.Button( self, wx.ID_ANY, u"Export Fit", wx.DefaultPosition, wx.DefaultSize, 5 )
-        hSizer.Add( self.exportBtn, 0, wx.ALL, 5 )
+        self.exportBtn = wx.Button(self, wx.ID_ANY, u"Export Fit", wx.DefaultPosition, wx.DefaultSize, 5)
+        hSizer.Add(self.exportBtn, 0, wx.ALL, 5)
 
-        mainSizer.Add( hSizer, 0, wx.EXPAND, 5 )
+        mainSizer.Add(hSizer, 0, wx.EXPAND, 5)
 
         self.exportBtn.Bind(wx.EVT_BUTTON, self.exportFitting)
 
@@ -217,7 +220,7 @@ class ExportToEve(wx.Frame):
         self.Centre(wx.BOTH)
 
     def updateCharList(self):
-        sCrest = service.Crest.getInstance()
+        sCrest = Crest.getInstance()
         chars = sCrest.getCrestCharacters()
 
         if len(chars) == 0:
@@ -245,7 +248,7 @@ class ExportToEve(wx.Frame):
         event.Skip()
 
     def getActiveCharacter(self):
-        sCrest = service.Crest.getInstance()
+        sCrest = Crest.getInstance()
 
         if sCrest.settings.get('mode') == CrestModes.IMPLICIT:
             return sCrest.implicitCharacter.ID
@@ -254,7 +257,7 @@ class ExportToEve(wx.Frame):
         return self.charChoice.GetClientData(selection) if selection is not None else None
 
     def exportFitting(self, event):
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
 
         self.statusbar.SetStatusText("", 0)
@@ -264,13 +267,13 @@ class ExportToEve(wx.Frame):
             return
 
         self.statusbar.SetStatusText("Sending request and awaiting response", 1)
-        sCrest = service.Crest.getInstance()
+        sCrest = Crest.getInstance()
 
         try:
             data = sFit.exportCrest(fitID)
             res = sCrest.postFitting(self.getActiveCharacter(), data)
 
-            self.statusbar.SetStatusText("%d: %s"%(res.status_code, res.reason), 0)
+            self.statusbar.SetStatusText("%d: %s" % (res.status_code, res.reason), 0)
             try:
                 text = json.loads(res.text)
                 self.statusbar.SetStatusText(text['message'], 1)
@@ -281,47 +284,47 @@ class ExportToEve(wx.Frame):
 
 
 class CrestMgmt(wx.Dialog):
-
-    def __init__( self, parent ):
-        wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = "CREST Character Management", pos = wx.DefaultPosition, size = wx.Size( 550,250 ), style = wx.DEFAULT_DIALOG_STYLE )
+    def __init__(self, parent):
+        wx.Dialog.__init__(self, parent, id=wx.ID_ANY, title="CREST Character Management", pos=wx.DefaultPosition,
+                           size=wx.Size(550, 250), style=wx.DEFAULT_DIALOG_STYLE)
         self.mainFrame = parent
-        mainSizer = wx.BoxSizer( wx.HORIZONTAL )
+        mainSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.lcCharacters = wx.ListCtrl( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LC_REPORT)
+        self.lcCharacters = wx.ListCtrl(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LC_REPORT)
 
         self.lcCharacters.InsertColumn(0, heading='Character')
         self.lcCharacters.InsertColumn(1, heading='Refresh Token')
 
         self.popCharList()
 
-        mainSizer.Add( self.lcCharacters, 1, wx.ALL|wx.EXPAND, 5 )
+        mainSizer.Add(self.lcCharacters, 1, wx.ALL | wx.EXPAND, 5)
 
-        btnSizer = wx.BoxSizer( wx.VERTICAL )
+        btnSizer = wx.BoxSizer(wx.VERTICAL)
 
-        self.addBtn = wx.Button( self, wx.ID_ANY, u"Add Character", wx.DefaultPosition, wx.DefaultSize, 0 )
-        btnSizer.Add( self.addBtn, 0, wx.ALL | wx.EXPAND, 5 )
+        self.addBtn = wx.Button(self, wx.ID_ANY, u"Add Character", wx.DefaultPosition, wx.DefaultSize, 0)
+        btnSizer.Add(self.addBtn, 0, wx.ALL | wx.EXPAND, 5)
 
-        self.deleteBtn = wx.Button( self, wx.ID_ANY, u"Revoke Character", wx.DefaultPosition, wx.DefaultSize, 0 )
-        btnSizer.Add( self.deleteBtn, 0, wx.ALL | wx.EXPAND, 5 )
+        self.deleteBtn = wx.Button(self, wx.ID_ANY, u"Revoke Character", wx.DefaultPosition, wx.DefaultSize, 0)
+        btnSizer.Add(self.deleteBtn, 0, wx.ALL | wx.EXPAND, 5)
 
-        mainSizer.Add( btnSizer, 0, wx.EXPAND, 5 )
+        mainSizer.Add(btnSizer, 0, wx.EXPAND, 5)
 
         self.addBtn.Bind(wx.EVT_BUTTON, self.addChar)
         self.deleteBtn.Bind(wx.EVT_BUTTON, self.delChar)
 
         self.mainFrame.Bind(GE.EVT_SSO_LOGIN, self.ssoLogin)
 
-        self.SetSizer( mainSizer )
+        self.SetSizer(mainSizer)
         self.Layout()
 
-        self.Centre( wx.BOTH )
+        self.Centre(wx.BOTH)
 
     def ssoLogin(self, event):
         self.popCharList()
         event.Skip()
 
     def popCharList(self):
-        sCrest = service.Crest.getInstance()
+        sCrest = Crest.getInstance()
         chars = sCrest.getCrestCharacters()
 
         self.lcCharacters.DeleteAllItems()
@@ -335,7 +338,7 @@ class CrestMgmt(wx.Dialog):
         self.lcCharacters.SetColumnWidth(1, wx.LIST_AUTOSIZE)
 
     def addChar(self, event):
-        sCrest = service.Crest.getInstance()
+        sCrest = Crest.getInstance()
         uri = sCrest.startServer()
         webbrowser.open(uri)
 
@@ -343,7 +346,7 @@ class CrestMgmt(wx.Dialog):
         item = self.lcCharacters.GetFirstSelected()
         if item > -1:
             charID = self.lcCharacters.GetItemData(item)
-            sCrest = service.Crest.getInstance()
+            sCrest = Crest.getInstance()
             sCrest.delCrestCharacter(charID)
             self.popCharList()
 
