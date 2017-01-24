@@ -68,9 +68,9 @@ if config.saveDB and os.path.isfile(config.saveDB):
 
     logging.debug("Starting database validation.")
     database_cleanup_instance = DatabaseCleanup()
-    database_cleanup_instance.OrphanedCharacterSkills(eos.db.saveddata_engine)
-    database_cleanup_instance.OrphanedFitCharacterIDs(eos.db.saveddata_engine)
-    database_cleanup_instance.OrphanedFitDamagePatterns(eos.db.saveddata_engine)
+    database_cleanup_instance.OrphanedCharacterSkills(db.saveddata_engine)
+    database_cleanup_instance.OrphanedFitCharacterIDs(db.saveddata_engine)
+    database_cleanup_instance.OrphanedFitDamagePatterns(db.saveddata_engine)
     logging.debug("Completed database validation.")
 
 else:

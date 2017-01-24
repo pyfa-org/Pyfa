@@ -13,9 +13,9 @@ from service.pycrest.compat import bytes_, text_
 from service.pycrest.errors import APIException
 
 try:
-    from urllib.parse import urlparse, urlunparse, parse_qsl, quote
+    from urllib.parse import urlparse, urlunparse, parse_qsl
 except ImportError:  # pragma: no cover
-    from urlparse import urlparse, urlunparse, parse_qsl, quote
+    from urlparse import urlparse, urlunparse, parse_qsl
 
 try:
     import pickle
