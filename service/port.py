@@ -61,6 +61,8 @@ INV_FLAG_FIGHTER = 158
 
 
 class Port(object):
+    instance = None
+    
     @classmethod
     def getInstance(cls):
         if cls.instance is None:
