@@ -691,6 +691,7 @@ class MainFrame(wx.Frame):
         toClipboard(Port.exportCrest(fit))
 
     def clipboardXml(self):
+        # exportXml expects an iterable, so stuff the single fit into a set
         fit = {db.getFit(self.getActiveFit())}
         toClipboard(Port.exportXml(None, *{fit}))
 
