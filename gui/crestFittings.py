@@ -7,6 +7,7 @@ import requests
 from service.crest import CrestModes
 from service.crest import Crest
 from service.fit import Fit
+from service.port import Port
 
 from eos.types import Cargo
 from eos.db import getItem
@@ -152,8 +153,8 @@ class CrestFittings(wx.Frame):
         if not selection:
             return
         data = self.fitTree.fittingsTreeCtrl.GetPyData(selection)
-        sFit = Fit.getInstance()
-        fits = sFit.importFitFromBuffer(data)
+        sPort = Port.getInstance()
+        fits = sPort.importFitFromBuffer(data)
         self.mainFrame._openAfterImport(fits)
 
     def deleteFitting(self, event):

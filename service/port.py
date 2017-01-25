@@ -61,6 +61,13 @@ INV_FLAG_FIGHTER = 158
 
 
 class Port(object):
+    @classmethod
+    def getInstance(cls):
+        if cls.instance is None:
+            cls.instance = Port()
+
+        return cls.instance
+
     def backupFits(self, path, callback):
         thread = FitBackupThread(path, callback)
         thread.start()
