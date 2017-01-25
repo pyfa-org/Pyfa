@@ -691,9 +691,8 @@ class MainFrame(wx.Frame):
         toClipboard(Port.exportCrest(fit))
 
     def clipboardXml(self):
-        fitIDs = self.getActiveFit()
-        fits = map(lambda fitID: db.getFit(fitID), fitIDs)
-        toClipboard(Port.exportXml(None, *fits))
+        fit = {db.getFit(self.getActiveFit())}
+        toClipboard(Port.exportXml(None, *{fit}))
 
     def clipboardMultiBuy(self):
         fit = db.getFit(self.getActiveFit())
