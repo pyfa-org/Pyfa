@@ -18,6 +18,8 @@
 # =============================================================================
 
 import os
+import logging
+logger = logging.getLogger(__name__)
 
 import wx
 
@@ -27,9 +29,17 @@ import gui.mainFrame
 import gui.globalEvents as GE
 from gui.graph import Graph
 from gui.bitmapLoader import BitmapLoader
+from config import parsePath
 
-enabled = True
-mplImported = False
+try:
+    import matplotlib as mpl
+    from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as Canvas
+    from matplotlib.figure import Figure
+    enabled = True
+    mplImported = False
+except ImportError:
+    enabled = False
+    logger.info("Problems importing matplotlib; continuing without graphs")
 
 
 class GraphFrame(wx.Frame):
@@ -43,31 +53,23 @@ class GraphFrame(wx.Frame):
             return
 
         try:
-            import matplotlib as mpl
-
-            try:
-                cache_dir = mpl._get_cachedir()
-            except:
-                cache_dir = os.path.expanduser(os.path.join("~", ".matplotlib"))
-
-            cache_file = parsePath(cache_dir, 'fontList.cache')
-
-            if os.access(cache_dir, os.W_OK | os.X_OK) and os.path.isfile(cache_file):
-                # remove matplotlib font cache, see #234
-                os.remove(cache_file)
-            if not mplImported:
-                mpl.use('wxagg')
-            from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as Canvas
-            from matplotlib.figure import Figure
-            enabled = True
-            if mpl.__version__[0] != "1":
-                print("pyfa: Found matplotlib version ", mpl.__version__, " - activating OVER9000 workarounds")
-                print("pyfa: Recommended minimum matplotlib version is 1.0.0")
-                self.legendFix = True
+            cache_dir = mpl._get_cachedir()
         except:
-            print("Problems importing matplotlib; continuing without graphs")
-            enabled = False
-            return
+            cache_dir = os.path.expanduser(os.path.join("~", ".matplotlib"))
+
+        cache_file = parsePath(cache_dir, 'fontList.cache')
+
+        if os.access(cache_dir, os.W_OK | os.X_OK) and os.path.isfile(cache_file):
+            # remove matplotlib font cache, see #234
+            os.remove(cache_file)
+        if not mplImported:
+            mpl.use('wxagg')
+
+        enabled = True
+        if mpl.__version__[0] != "1":
+            print("pyfa: Found matplotlib version ", mpl.__version__, " - activating OVER9000 workarounds")
+            print("pyfa: Recommended minimum matplotlib version is 1.0.0")
+            self.legendFix = True
 
         mplImported = True
 
