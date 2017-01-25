@@ -61,11 +61,14 @@ if os.path.isfile(config.saveDB):
     # Import values that must exist otherwise Pyfa breaks
     DefaultDatabaseValues.importRequiredDefaults()
 
+    # Finds and fixes database corruption issues.
     logging.debug("Starting database validation.")
     database_cleanup_instance = DatabaseCleanup()
     database_cleanup_instance.OrphanedCharacterSkills(eos.db.saveddata_engine)
     database_cleanup_instance.OrphanedFitCharacterIDs(eos.db.saveddata_engine)
     database_cleanup_instance.OrphanedFitDamagePatterns(eos.db.saveddata_engine)
+    database_cleanup_instance.NullDamagePatternNames(eos.db.saveddata_engine)
+    database_cleanup_instance.NullTargetResistNames(eos.db.saveddata_engine)
     logging.debug("Completed database validation.")
 
 else:

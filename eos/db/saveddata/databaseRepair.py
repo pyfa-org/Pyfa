@@ -29,9 +29,6 @@ class DatabaseCleanup:
 
     @staticmethod
     def OrphanedCharacterSkills(saveddata_engine):
-        # Finds and fixes database corruption issues.
-        logger.debug("Start databsae validation and cleanup.")
-
         # Find orphaned character skills.
         # This solves an issue where the character doesn't exist, but skills for that character do.
         # See issue #917
@@ -100,5 +97,41 @@ class DatabaseCleanup:
                                                       "WHERE characterID not in (select ID from characters) OR characterID IS NULL",
                                                        all5_id)
                     logger.error("Database corruption found. Cleaning up %d records.", update.rowcount)
+        except sqlalchemy.exc.DatabaseError:
+            logger.error("Failed to connect to database.")
+
+    @staticmethod
+    def NullDamagePatternNames(saveddata_engine):
+        # Find damage patterns that are missing the name.
+        # This solves an issue where the damage pattern ends up with a name that is null.
+        # See issue #949
+        try:
+            logger.debug("Running database cleanup for missing damage pattern names.")
+
+            # Damage Patterns
+            results = saveddata_engine.execute("SELECT COUNT(*) AS num FROM damagePatterns WHERE name IS NULL OR name = ''")
+            row = results.first()
+
+            if row and row['num']:
+                update = saveddata_engine.execute("UPDATE 'damagePatterns' SET 'name' = 'Unknown' WHERE name IS NULL OR name = ''")
+                logger.error("Database corruption found. Cleaning up %d records.", update.rowcount)
+        except sqlalchemy.exc.DatabaseError:
+            logger.error("Failed to connect to database.")
+
+    @staticmethod
+    def NullTargetResistNames(saveddata_engine):
+        # Find target resists that are missing the name.
+        # This solves an issue where the target resist ends up with a name that is null.
+        # See issue #949
+        try:
+            logger.debug("Running database cleanup for missing target resist names.")
+
+            # Damage Patterns
+            results = saveddata_engine.execute("SELECT COUNT(*) AS num FROM targetResists WHERE name IS NULL OR name = ''")
+            row = results.first()
+
+            if row and row['num']:
+                update = saveddata_engine.execute("UPDATE 'targetResists' SET 'name' = 'Unknown' WHERE name IS NULL OR name = ''")
+                logger.error("Database corruption found. Cleaning up %d records.", update.rowcount)
         except sqlalchemy.exc.DatabaseError:
             logger.error("Failed to connect to database.")
