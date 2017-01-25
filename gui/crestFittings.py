@@ -6,7 +6,6 @@ import requests
 
 from service.crest import CrestModes
 from service.crest import Crest
-from service.fit import Fit
 from service.port import Port
 
 from eos.types import Cargo
@@ -258,7 +257,7 @@ class ExportToEve(wx.Frame):
         return self.charChoice.GetClientData(selection) if selection is not None else None
 
     def exportFitting(self, event):
-        sFit = Fit.getInstance()
+        sPort = Port.getInstance()
         fitID = self.mainFrame.getActiveFit()
 
         self.statusbar.SetStatusText("", 0)
@@ -271,7 +270,7 @@ class ExportToEve(wx.Frame):
         sCrest = Crest.getInstance()
 
         try:
-            data = sFit.exportCrest(fitID)
+            data = sPort.exportCrest(fitID)
             res = sCrest.postFitting(self.getActiveCharacter(), data)
 
             self.statusbar.SetStatusText("%d: %s" % (res.status_code, res.reason), 0)
