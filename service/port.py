@@ -1133,8 +1133,8 @@ class FitBackupThread(threading.Thread):
     def run(self):
         path = self.path
         sFit = svcFit.getInstance()
-        allFits = map(lambda x: x[0], sFit.getAllFits())
-        backedUpFits = sFit.exportXml(self.callback, *allFits)
+        sPort = Port.getInstance()
+        backedUpFits = sPort.exportXml(self.callback, *sFit.getAllFits())
         backupFile = open(path, "w", encoding="utf-8")
         backupFile.write(backedUpFits)
         backupFile.close()

@@ -78,11 +78,7 @@ class Fit(object):
 
     def getAllFits(self):
         fits = eos.db.getFitList()
-        names = []
-        for fit in fits:
-            names.append((fit.ID, fit.name))
-
-        return names
+        return fits
 
     def getFitsWithShip(self, shipID):
         """ Lists fits of shipID, used with shipBrowser """
