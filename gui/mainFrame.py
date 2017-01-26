@@ -399,7 +399,6 @@ class MainFrame(wx.Frame):
             if format_ == 0:
                 sPort = Port.getInstance()
                 output = sPort.exportXml(None, fit)
-                output_test = sPort.exportXml(None, self.getActiveFit())
                 if '.' not in os.path.basename(path):
                     path += ".xml"
             else:
