@@ -27,7 +27,6 @@ from sqlalchemy.sql import or_
 
 import config
 import eos.db
-# TODO: Find out what this is.  There is no conversions
 from service import conversions
 from service.settings import SettingsProvider
 from service.price import Price
@@ -264,12 +263,9 @@ class Market():
             "Civilian Light Electron Blaster": True,
         }
 
-        # TODO: Find out what this is.  There is no conversions
         # do not publish ships that we convert
-        '''
         for name in conversions.packs['skinnedShips']:
             self.ITEMS_FORCEPUBLISHED[name] = False
-        '''
 
         if config.debug:
             # Publish Tactical Dessy Modes if in debug
@@ -416,7 +412,6 @@ class Market():
                 item = identity
             elif isinstance(identity, int):
                 item = eos.db.getItem(identity, *args, **kwargs)
-            # TODO: Import refactor - Find out what this is.  There is no conversions
             elif isinstance(identity, basestring):
                 # We normally lookup with string when we are using import/export
                 # features. Check against overrides
