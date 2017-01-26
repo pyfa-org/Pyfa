@@ -399,6 +399,7 @@ class MainFrame(wx.Frame):
             if format_ == 0:
                 sPort = Port.getInstance()
                 output = sPort.exportXml(None, fit)
+                output_test = sPort.exportXml(None, self.getActiveFit())
                 if '.' not in os.path.basename(path):
                     path += ".xml"
             else:
@@ -756,7 +757,7 @@ class MainFrame(wx.Frame):
 
     def fileImportDialog(self, event):
         """Handles importing single/multiple EVE XML / EFT cfg fit files"""
-        sFit = Fit.getInstance()
+        sPort = Port.getInstance()
         dlg = wx.FileDialog(
             self,
             "Open One Or More Fitting Files",
@@ -773,7 +774,7 @@ class MainFrame(wx.Frame):
                 style=wx.PD_APP_MODAL | wx.PD_ELAPSED_TIME
             )
             self.progressDialog.message = None
-            sFit.importFitsThreaded(dlg.GetPaths(), self.fileImportCallback)
+            sPort.importFitsThreaded(dlg.GetPaths(), self.fileImportCallback)
             self.progressDialog.ShowModal()
             dlg.Destroy()
 
