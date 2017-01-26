@@ -4,9 +4,9 @@ import json
 import wx
 import requests
 
-from service.crest import CrestModes
-from service.crest import Crest
+from service.crest import Crest, CrestModes
 from service.port import Port
+from service.fit import Fit
 
 from eos.types import Cargo
 from eos.db import getItem
@@ -270,7 +270,8 @@ class ExportToEve(wx.Frame):
         sCrest = Crest.getInstance()
 
         try:
-            data = sPort.exportCrest(fitID)
+            sFit = Fit.getInstance()
+            data = sPort.exportCrest(sFit.getFit(fitID))
             res = sCrest.postFitting(self.getActiveCharacter(), data)
 
             self.statusbar.SetStatusText("%d: %s" % (res.status_code, res.reason), 0)
