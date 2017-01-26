@@ -1150,8 +1150,8 @@ class FitImportThread(threading.Thread):
         self.callback = callback
 
     def run(self):
-        sFit = svcFit.getInstance()
-        success, result = sFit.importFitFromFiles(self.paths, self.callback)
+        sPort = Port.getInstance()
+        success, result = sPort.importFitFromFiles(self.paths, self.callback)
 
         if not success:  # there was an error during processing
             logger.error("Error while processing file import: %s", result)
