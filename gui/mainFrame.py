@@ -398,7 +398,7 @@ class MainFrame(wx.Frame):
             path = dlg.GetPath()
             if format_ == 0:
                 sPort = Port.getInstance()
-                output = sPort.exportXml(None, self.getActiveFit())
+                output = sPort.exportXml(None, fit)
                 if '.' not in os.path.basename(path):
                     path += ".xml"
             else:
@@ -692,9 +692,8 @@ class MainFrame(wx.Frame):
         toClipboard(Port.exportCrest(fit))
 
     def clipboardXml(self):
-        # exportXml expects an iterable, so stuff the single fit into a set
-        fit = {db.getFit(self.getActiveFit())}
-        toClipboard(Port.exportXml(None, *{fit}))
+        fit = db.getFit(self.getActiveFit())
+        toClipboard(Port.exportXml(None, fit))
 
     def clipboardMultiBuy(self):
         fit = db.getFit(self.getActiveFit())
