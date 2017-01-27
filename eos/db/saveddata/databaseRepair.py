@@ -165,7 +165,7 @@ class DatabaseCleanup:
     def OrphanedFitIDItemID(saveddata_engine):
         # Orphaned items that are missing the fit ID or item ID.
         # See issue #954
-        for table in ['drones', 'cargo', 'fighters', 'modules']:
+        for table in ['drones', 'cargo', 'fighters']:
             logger.debug("Running database cleanup for orphaned %s items.", table)
             query = "SELECT COUNT(*) AS num FROM " + table + " WHERE itemID IS NULL OR itemID = '' or itemID = '0' or fitID IS NULL OR fitID = '' or fitID = '0'"
             results = DatabaseCleanup.ExecuteSQLQuery(saveddata_engine, query)
@@ -177,6 +177,21 @@ class DatabaseCleanup:
 
             if row and row['num']:
                 query = "DELETE FROM " + table + " WHERE itemID IS NULL OR itemID = '' or itemID = '0' or fitID IS NULL OR fitID = '' or fitID = '0'"
+                delete = DatabaseCleanup.ExecuteSQLQuery(saveddata_engine, query)
+                logger.error("Database corruption found. Cleaning up %d records.", delete.rowcount)
+
+        for table in ['modules']:
+            logger.debug("Running database cleanup for orphaned %s items.", table)
+            query = "SELECT COUNT(*) AS num FROM " + table + " WHERE itemID = '0' or fitID IS NULL OR fitID = '' or fitID = '0'"
+            results = DatabaseCleanup.ExecuteSQLQuery(saveddata_engine, query)
+
+            if results is None:
+                return
+
+            row = results.first()
+
+            if row and row['num']:
+                query = "DELETE FROM " + table + " WHERE itemID = '0' or fitID IS NULL OR fitID = '' or fitID = '0'"
                 delete = DatabaseCleanup.ExecuteSQLQuery(saveddata_engine, query)
                 logger.error("Database corruption found. Cleaning up %d records.", delete.rowcount)
 
