@@ -63,6 +63,9 @@ from eos.modifiedAttributeDict import ModifiedAttributeDict
 from eos.db.saveddata.loadDefaultDatabaseValues import DefaultDatabaseValues
 
 from time import gmtime, strftime
+import logging
+
+logger = logging.getLogger(__name__)
 
 if not 'wxMac' in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3,0)):
     from service.crest import CrestModes
@@ -358,7 +361,10 @@ class MainFrame(wx.Frame):
     def showDamagePatternEditor(self, event):
         dlg=DmgPatternEditorDlg(self)
         dlg.ShowModal()
-        dlg.Destroy()
+        try:
+            dlg.Destroy()
+        except PyDeadObjectError:
+            logger.error("Tried to destroy an object that doesn't exist in <showDamagePatternEditor>.")
 
     def showImplantSetEditor(self, event):
         ImplantSetEditorDlg(self)
@@ -382,12 +388,18 @@ class MainFrame(wx.Frame):
                     path += ".xml"
             else:
                 print "oops, invalid fit format %d" % format
-                dlg.Destroy()
+                try:
+                    dlg.Destroy()
+                except PyDeadObjectError:
+                    logger.error("Tried to destroy an object that doesn't exist in <showExportDialog>.")
                 return
             file = open(path, "w", encoding="utf-8")
             file.write(output)
             file.close()
-        dlg.Destroy()
+        try:
+            dlg.Destroy()
+        except PyDeadObjectError:
+            logger.error("Tried to destroy an object that doesn't exist in <showExportDialog>.")
 
     def showPreferenceDialog(self, event):
         dlg = PreferenceDialog(self)
@@ -697,8 +709,10 @@ class MainFrame(wx.Frame):
 
         CopySelectDict[selected]()
 
-
-        dlg.Destroy()
+        try:
+            dlg.Destroy()
+        except PyDeadObjectError:
+            logger.error("Tried to destroy an object that doesn't exist in <exportToClipboard>.")
 
     def exportSkillsNeeded(self, event):
         """ Exports skills needed for active fit and active character """
@@ -744,7 +758,10 @@ class MainFrame(wx.Frame):
             self.progressDialog.message = None
             sFit.importFitsThreaded(dlg.GetPaths(), self.fileImportCallback)
             self.progressDialog.ShowModal()
-            dlg.Destroy()
+            try:
+                dlg.Destroy()
+            except PyDeadObjectError:
+                logger.error("Tried to destroy an object that doesn't exist in <fileImportDialog>.")
 
     def backupToXml(self, event):
         """ Back up all fits to EVE XML file """
