@@ -29,7 +29,6 @@ from gui.projectedView import ProjectedView
 from gui.commandView import CommandView
 from gui.notesView import NotesView
 from gui.pyfatogglepanel import TogglePanel
-from gui.gangView import GangView
 from gui.bitmapLoader import BitmapLoader
 
 import gui.chromeTabs

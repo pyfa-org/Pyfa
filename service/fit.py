@@ -34,7 +34,6 @@ from eos.types import State, Slot
 from service.market import Market
 from service.damagePattern import DamagePattern
 from service.character import Character
-from service.fleet import Fleet
 from service.settings import SettingsProvider
 from service.port import Port
 
@@ -142,18 +141,9 @@ class Fit(object):
     def countAllFits(self):
         return eos.db.countAllFits()
 
-    def countFitsWithShip(self, shipID):
-        count = eos.db.countFitsWithShip(shipID)
+    def countFitsWithShip(self, stuff):
+        count = eos.db.countFitsWithShip(stuff)
         return count
-
-    def groupHasFits(self, groupID):
-        sMkt = Market.getInstance()
-        grp = sMkt.getGroup(groupID)
-        items = sMkt.getItemsByGroup(grp)
-        for item in items:
-            if self.countFitsWithShip(item.ID) > 0:
-                return True
-        return False
 
     def getModule(self, fitID, pos):
         fit = eos.db.getFit(fitID)
@@ -186,8 +176,6 @@ class Fit(object):
 
     def deleteFit(self, fitID):
         fit = eos.db.getFit(fitID)
-        sFleet = Fleet.getInstance()
-        sFleet.removeAssociatedFleetData(fit)
 
         eos.db.remove(fit)
 
@@ -238,7 +226,8 @@ class Fit(object):
         self.recalc(fit, withBoosters=True)
 
     def getFit(self, fitID, projected=False, basic=False):
-        ''' Gets fit from database, and populates fleet data.
+        ''' Gets fit from database
+
         Projected is a recursion flag that is set to reduce recursions into projected fits
         Basic is a flag to simply return the fit without any other processing
         '''
@@ -252,14 +241,6 @@ class Fit(object):
         inited = getattr(fit, "inited", None)
 
         if inited is None or inited is False:
-            sFleet = Fleet.getInstance()
-            f = sFleet.getLinearFleet(fit)
-            if f is None:
-                sFleet.removeAssociatedFleetData(fit)
-                fit.fleet = None
-            else:
-                fit.fleet = f
-
             if not projected:
                 for fitP in fit.projectedFits:
                     self.getFit(fitP.ID, projected=True)

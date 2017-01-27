@@ -202,6 +202,11 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             return self.__chargeCycles
 
     @property
+    def modPosition(self):
+        if self.owner:
+            return self.owner.modules.index(self)
+
+    @property
     def hpBeforeReload(self):
         """
         If item is some kind of repairer with charges, calculate
@@ -265,7 +270,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             flightTime = self.getModifiedChargeAttr("explosionDelay") / 1000.0
             mass = self.getModifiedChargeAttr("mass")
             agility = self.getModifiedChargeAttr("agility")
-            if maxVelocity and flightTime and mass and agility:
+            if maxVelocity and (flightTime or mass or agility):
                 accelTime = min(flightTime, mass * agility / 1000000)
                 # Average distance done during acceleration
                 duringAcceleration = maxVelocity / 2 * accelTime
@@ -655,10 +660,14 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                         effect.activeByDefault and \
                         (effect.isType("offline") or
                              (effect.isType("passive") and self.state >= State.ONLINE) or
+
                              (effect.isType("active") and self.state >= State.ACTIVE))\
                         and ((projected and effect.isType("projected")) or not projected)\
                         and ((gang and effect.isType("gang")) or not gang):
-                    effect.handler(fit, self, context)
+                    try:
+                        effect.handler(fit, self, context, effect=effect)
+                    except:
+                        effect.handler(fit, self, context)
 
     @property
     def cycleTime(self):
