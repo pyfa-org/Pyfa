@@ -26,6 +26,7 @@ import wx
 import time
 
 from codecs import open
+from wx._core import PyDeadObjectError
 
 from wx.lib.wordwrap import wordwrap
 
@@ -70,6 +71,9 @@ from service.port import Port
 from service.settings import HTMLExportSettings
 
 from time import gmtime, strftime
+import logging
+
+logger = logging.getLogger(__name__)
 
 import threading
 import webbrowser
@@ -389,7 +393,10 @@ class MainFrame(wx.Frame):
     def showDamagePatternEditor(self, event):
         dlg = DmgPatternEditorDlg(self)
         dlg.ShowModal()
-        dlg.Destroy()
+        try:
+            dlg.Destroy()
+        except PyDeadObjectError:
+            logger.error("Tried to destroy an object that doesn't exist in <showDamagePatternEditor>.")
 
     def showImplantSetEditor(self, event):
         ImplantSetEditorDlg(self)
@@ -414,14 +421,20 @@ class MainFrame(wx.Frame):
                     path += ".xml"
             else:
                 print("oops, invalid fit format %d" % format_)
-                dlg.Destroy()
+                try:
+                    dlg.Destroy()
+                except PyDeadObjectError:
+                    logger.error("Tried to destroy an object that doesn't exist in <showExportDialog>.")
                 return
 
             with open(path, "w", encoding="utf-8") as openfile:
                 openfile.write(output)
                 openfile.close()
 
-        dlg.Destroy()
+        try:
+            dlg.Destroy()
+        except PyDeadObjectError:
+            logger.error("Tried to destroy an object that doesn't exist in <showExportDialog>.")
 
     def showPreferenceDialog(self, event):
         dlg = PreferenceDialog(self)
@@ -732,7 +745,10 @@ class MainFrame(wx.Frame):
 
         CopySelectDict[selected]()
 
-        dlg.Destroy()
+        try:
+            dlg.Destroy()
+        except PyDeadObjectError:
+            logger.error("Tried to destroy an object that doesn't exist in <exportToClipboard>.")
 
     def exportSkillsNeeded(self, event):
         """ Exports skills needed for active fit and active character """
@@ -786,7 +802,10 @@ class MainFrame(wx.Frame):
             self.progressDialog.message = None
             sPort.importFitsThreaded(dlg.GetPaths(), self.fileImportCallback)
             self.progressDialog.ShowModal()
-            dlg.Destroy()
+            try:
+                dlg.Destroy()
+            except PyDeadObjectError:
+                logger.error("Tried to destroy an object that doesn't exist in <fileImportDialog>.")
 
     def backupToXml(self, event):
         """ Back up all fits to EVE XML file """
