@@ -158,6 +158,8 @@ class CharacterEditor(wx.Frame):
         self.Bind(GE.CHAR_LIST_UPDATED, self.refreshCharacterList)
         self.entityEditor.Bind(wx.EVT_CHOICE, self.charChanged)
 
+        self.charChanged(None)
+
     def btnRestrict(self):
         char = self.entityEditor.getActiveEntity()
 
