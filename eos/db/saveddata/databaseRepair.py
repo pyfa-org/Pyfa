@@ -199,3 +199,21 @@ class DatabaseCleanup:
                     query = "UPDATE '" + profileType + "' SET '" + damageType + "Amount' = '0' WHERE " + damageType + "Amount IS NULL OR emAmount = ''"
                     delete = DatabaseCleanup.ExecuteSQLQuery(saveddata_engine, query)
                     logger.error("Database corruption found. Cleaning up %d records.", delete.rowcount)
+
+    @staticmethod
+    def DuplicateSelectedAmmoName(saveddata_engine):
+        # Orphaned items that are missing the fit ID or item ID.
+        # See issue #954
+        logger.debug("Running database cleanup for duplicated selected ammo profiles.")
+        query = "SELECT COUNT(*) AS num FROM damagePatterns WHERE name = 'Selected Ammo'"
+        results = DatabaseCleanup.ExecuteSQLQuery(saveddata_engine, query)
+
+        if results is None:
+            return
+
+        row = results.first()
+
+        if row and row['num'] > 1:
+            query = "DELETE FROM damagePatterns WHERE name = 'Selected Ammo'"
+            delete = DatabaseCleanup.ExecuteSQLQuery(saveddata_engine, query)
+            logger.error("Database corruption found. Cleaning up %d records.", delete.rowcount)
