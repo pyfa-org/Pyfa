@@ -239,9 +239,24 @@ class SkillTreeView (wx.Panel):
 
         pmainSizer = wx.BoxSizer(wx.VERTICAL)
 
+        self.clonesChoice = wx.Choice(self, wx.ID_ANY, style=0)
+        i = self.clonesChoice.Append("Omega Clone", None)
+        self.clonesChoice.SetSelection(i)
+        pmainSizer.Add(self.clonesChoice, 0, wx.ALL | wx.EXPAND, 5)
+
+        sChar = service.Character.getInstance()
+        self.alphaClones = sChar.getAlphaCloneList()
+        char = self.charEditor.entityEditor.getActiveEntity()
+
+        for clone in self.alphaClones:
+            i = self.clonesChoice.Append(clone.alphaCloneName, clone.ID)
+            if clone.ID == char.alphaCloneID:
+                self.clonesChoice.SetSelection(i)
+
+        self.clonesChoice.Bind(wx.EVT_CHOICE, self.cloneChanged)
+
         tree = self.skillTreeListCtrl = wx.gizmos.TreeListCtrl(self, wx.ID_ANY, style=wx.TR_DEFAULT_STYLE | wx.TR_HIDE_ROOT)
         pmainSizer.Add(tree, 1, wx.EXPAND | wx.ALL, 5)
-
 
         self.imageList = wx.ImageList(16, 16)
         tree.SetImageList(self.imageList)
@@ -262,7 +277,7 @@ class SkillTreeView (wx.Panel):
         tree.Bind(wx.EVT_TREE_ITEM_RIGHT_CLICK, self.scheduleMenu)
 
         # bind the Character selection event
-        self.charEditor.entityEditor.Bind(wx.EVT_CHOICE, self.populateSkillTree)
+        self.charEditor.entityEditor.Bind(wx.EVT_CHOICE, self.charChanged)
         self.charEditor.Bind(GE.CHAR_LIST_UPDATED, self.populateSkillTree)
 
         srcContext = "skillItem"
@@ -295,10 +310,29 @@ class SkillTreeView (wx.Panel):
 
         self.Layout()
 
+    def cloneChanged(self, event):
+        sChar = service.Character.getInstance()
+        sChar.setAlphaClone(self.charEditor.entityEditor.getActiveEntity(), event.ClientData)
+        self.populateSkillTree()
+
+    def charChanged(self, event=None):
+        char = self.charEditor.entityEditor.getActiveEntity()
+        for i in range(self.clonesChoice.GetCount()):
+            cloneID = self.clonesChoice.GetClientData(i)
+            if char.alphaCloneID == cloneID:
+                self.clonesChoice.SetSelection(i)
+
+        self.populateSkillTree(event)
+
     def populateSkillTree(self, event=None):
         sChar = service.Character.getInstance()
         char = self.charEditor.entityEditor.getActiveEntity()
         dirtyGroups = set([skill.item.group.ID for skill in char.dirtySkills])
+
+        if char.name in ("All 0", "All 5"):
+            self.clonesChoice.Disable()
+        else:
+            self.clonesChoice.Enable()
 
         groups = sChar.getSkillGroups()
         imageId = self.skillBookImageId

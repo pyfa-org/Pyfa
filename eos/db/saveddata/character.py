@@ -33,10 +33,12 @@ characters_table = Table("characters", saveddata_meta,
                          Column("defaultChar", Integer),
                          Column("chars", String, nullable=True),
                          Column("defaultLevel", Integer, nullable=True),
+                         Column("alphaCloneID", Integer, nullable=True),
                          Column("ownerID", ForeignKey("users.ID"), nullable=True))
 
 mapper(Character, characters_table,
        properties={
+           "_Character__alphaCloneID": characters_table.c.alphaCloneID,
            "savedName": characters_table.c.name,
            "_Character__owner": relation(
                User,

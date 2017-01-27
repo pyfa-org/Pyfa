@@ -80,7 +80,7 @@ if not args.nojson:
     list = "dgmexpressions,dgmattribs,dgmeffects,dgmtypeattribs,dgmtypeeffects,"\
            "dgmunits,invcategories,invgroups,invmetagroups,invmetatypes,"\
            "invtypes,mapbulk_marketGroups,phbmetadata,phbtraits,fsdTypeOverrides,"\
-           "evegroups,evetypes,evecategories,mapbulk_marketGroups"
+           "evegroups,evetypes,evecategories,mapbulk_marketGroups,clonegrades"
 
     FlowManager(miners, writers).run(list, "en-us")
 

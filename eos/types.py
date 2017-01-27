@@ -18,7 +18,8 @@
 # ===============================================================================
 
 from eos.gamedata import Attribute, Category, Effect, Group, Icon, Item, MarketGroup, \
-    MetaGroup, AttributeInfo, Unit, EffectInfo, MetaType, MetaData, Traits
+    MetaGroup, AttributeInfo, Unit, EffectInfo, MetaType, MetaData, Traits, AlphaClone, \
+    AlphaCloneSkill
 from eos.saveddata.price import Price
 from eos.saveddata.user import User
 from eos.saveddata.crestchar import CrestChar
