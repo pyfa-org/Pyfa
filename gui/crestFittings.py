@@ -4,7 +4,9 @@ import json
 import wx
 import requests
 
-from service.crest import Crest, CrestModes
+if not 'wxMac' in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3,0)):
+    from service.crest import Crest, CrestModes
+
 from service.port import Port
 from service.fit import Fit
 

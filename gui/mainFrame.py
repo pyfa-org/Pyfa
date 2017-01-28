@@ -60,7 +60,6 @@ from gui import graphFrame
 from service.settings import SettingsProvider
 from service.fit import Fit
 from service.character import Character
-from service.crest import Crest
 from service.update import Update
 
 # import this to access override setting
@@ -76,6 +75,7 @@ import threading
 import webbrowser
 
 if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3, 0)):
+    from service.crest import Crest
     from service.crest import CrestModes
     from gui.crestFittings import CrestFittings, ExportToEve, CrestMgmt
 

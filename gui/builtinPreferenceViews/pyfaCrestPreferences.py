@@ -4,7 +4,10 @@ from gui.preferenceView import PreferenceView
 from gui.bitmapLoader import BitmapLoader
 
 import gui.mainFrame
-from service.crest import Crest
+
+if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3, 0)):
+    from service.crest import Crest
+
 from service.settings import CRESTSettings
 
 from wx.lib.intctrl import IntCtrl

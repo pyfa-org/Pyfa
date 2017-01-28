@@ -36,7 +36,10 @@ from service.fit import Fit as svcFit
 import wx
 
 from eos.types import State, Slot, Module, Cargo, Ship, Drone, Implant, Booster, Citadel, Fighter, Fit
-from service.crest import Crest
+
+if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3, 0)):
+    from service.crest import Crest
+
 from service.market import Market
 
 logger = logging.getLogger("pyfa.service.port")
