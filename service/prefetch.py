@@ -30,6 +30,10 @@ logger = logging.getLogger(__name__)
 
 
 class PrefetchThread(threading.Thread):
+    def __init__(self):
+        threading.Thread.__init__(self)
+        self.name = "Prefetch"
+
     def run(self):
         # We're a daemon thread, as such, interpreter might get shut down while we do stuff
         # Make sure we don't throw tracebacks to console
@@ -40,6 +44,7 @@ class PrefetchThread(threading.Thread):
 
 prefetch = PrefetchThread()
 prefetch.daemon = True
+
 prefetch.start()
 
 ########

@@ -43,6 +43,10 @@ logger = logging.getLogger(__name__)
 mktRdy = threading.Event()
 
 class ShipBrowserWorkerThread(threading.Thread):
+    def __init__(self):
+        threading.Thread.__init__(self)
+        self.name = "ShipBrowser"
+
     def run(self):
         self.queue = Queue.Queue()
         self.cache = {}
@@ -73,6 +77,10 @@ class ShipBrowserWorkerThread(threading.Thread):
                     pass
 
 class PriceWorkerThread(threading.Thread):
+    def __init__(self):
+        threading.Thread.__init__(self)
+        self.name = "PriceWorker"
+
     def run(self):
         self.queue = Queue.Queue()
         self.wait = {}
@@ -107,6 +115,10 @@ class PriceWorkerThread(threading.Thread):
         self.wait[itemID].append(callback)
 
 class SearchWorkerThread(threading.Thread):
+    def __init__(self):
+        threading.Thread.__init__(self)
+        self.name = "SearchWorker"
+
     def run(self):
         self.cv = threading.Condition()
         self.searchRequest = None

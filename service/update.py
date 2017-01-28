@@ -29,6 +29,7 @@ import calendar
 class CheckUpdateThread(threading.Thread):
     def __init__(self, callback):
         threading.Thread.__init__(self)
+        self.name = "CheckUpdate"
         self.callback = callback
         self.settings = service.settings.UpdateSettings.getInstance()
         self.network = service.Network.getInstance()

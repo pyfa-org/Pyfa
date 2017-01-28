@@ -41,6 +41,7 @@ logger = logging.getLogger(__name__)
 class CharacterImportThread(threading.Thread):
     def __init__(self, paths, callback):
         threading.Thread.__init__(self)
+        self.name = "CharacterImport"
         self.paths = paths
         self.callback = callback
 
@@ -96,6 +97,7 @@ class CharacterImportThread(threading.Thread):
 class SkillBackupThread(threading.Thread):
     def __init__(self, path, saveFmt, activeFit, callback):
         threading.Thread.__init__(self)
+        self.name = "SkillBackup"
         self.path = path
         self.saveFmt = saveFmt
         self.activeFit = activeFit

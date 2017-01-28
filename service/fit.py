@@ -43,6 +43,7 @@ logger = logging.getLogger(__name__)
 class FitBackupThread(threading.Thread):
     def __init__(self, path, callback):
         threading.Thread.__init__(self)
+        self.name = "FitBackup"
         self.path = path
         self.callback = callback
 
@@ -62,6 +63,7 @@ class FitBackupThread(threading.Thread):
 class FitImportThread(threading.Thread):
     def __init__(self, paths, callback):
         threading.Thread.__init__(self)
+        self.name = "FitImport"
         self.paths = paths
         self.callback = callback
 
