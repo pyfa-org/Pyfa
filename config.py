@@ -86,7 +86,7 @@ def defPaths(customSavePath):
         savePath = getattr(configforced, "savePath", None)
         if savePath is None:
             if customSavePath is None:  # customSavePath is not overriden
-                savePath = getSavePath()
+                savePath = os.path.expanduser(os.path.join("~", ".pyfa"))
             else:
                 savePath = customSavePath
 
@@ -147,7 +147,7 @@ def getPyfaPath(Append=None):
 
 
 def getSavePath(Append=None):
-    root = os.path.expanduser(os.path.join("~", ".pyfa"))
+    root = savePath
 
     if Append:
         path = parsePath(root, Append)
