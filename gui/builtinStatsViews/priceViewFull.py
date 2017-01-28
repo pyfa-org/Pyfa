@@ -81,16 +81,14 @@ class PriceViewFull(StatsView):
                     typeIDs.append(mod.itemID)
 
             for drone in fit.drones:
-                for _ in xrange(drone.amount):
-                    typeIDs.append(drone.itemID)
+                typeIDs.append(drone.itemID)
 
             for fighter in fit.fighters:
-                for _ in xrange(fighter.amountActive):
+                if fighter.amountActive > 0:
                     typeIDs.append(fighter.itemID)
 
             for cargo in fit.cargo:
-                for _ in xrange(cargo.amount):
-                    typeIDs.append(cargo.itemID)
+                typeIDs.append(cargo.itemID)
 
             sMkt = service.Market.getInstance()
             sMkt.getPrices(typeIDs, self.processPrices)
