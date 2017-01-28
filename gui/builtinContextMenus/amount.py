@@ -46,10 +46,15 @@ class AmountChanger(wx.Dialog):
         self.button.Bind(wx.EVT_BUTTON, self.change)
 
     def change(self, event):
+        if self.input.GetLineText(0).strip() == '':
+            event.Skip()
+            return
+
         sFit = service.Fit.getInstance()
         mainFrame = gui.mainFrame.MainFrame.getInstance()
         fitID = mainFrame.getActiveFit()
 
+        print self.input.GetLineText(0), type(self.input.GetLineText(0))
         if isinstance(self.thing, eos.types.Cargo):
             sFit.addCargo(fitID, self.thing.item.ID, int(float(self.input.GetLineText(0))), replace=True)
         elif isinstance(self.thing, eos.types.Fit):
@@ -60,7 +65,6 @@ class AmountChanger(wx.Dialog):
         wx.PostEvent(mainFrame, GE.FitChanged(fitID=fitID))
 
         event.Skip()
-        self.Close()
 
     ## checks to make sure it's valid number
     def onChar(self, event):
