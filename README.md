@@ -38,7 +38,7 @@ If you wish to help with development or simply need to run pyfa through a Python
 
 * Python 2.7
 * `wxPython` 2.8/3.0
-* `sqlalchemy` >= 0.6
+* `sqlalchemy` >= 1.0.5
 * `dateutil`
 * `matplotlib` (for some Linux distributions you may need to install separate wxPython bindings such as `python-matplotlib-wx`)
 * `requests`
