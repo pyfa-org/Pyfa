@@ -29,9 +29,6 @@ class DatabaseCleanup:
 
     @staticmethod
     def OrphanedCharacterSkills(saveddata_engine):
-        # Finds and fixes database corruption issues.
-        logger.debug("Start databsae validation and cleanup.")
-
         # Find orphaned character skills.
         # This solves an issue where the character doesn't exist, but skills for that character do.
         # See issue #917
@@ -43,6 +40,31 @@ class DatabaseCleanup:
 
             if row and row['num']:
                 delete = saveddata_engine.execute("DELETE FROM characterSkills WHERE characterID NOT IN (SELECT ID from characters)")
+                logger.error("Database corruption found. Cleaning up %d records.", delete.rowcount)
+
+        except sqlalchemy.exc.DatabaseError:
+            logger.error("Failed to connect to database.")
+
+    @staticmethod
+    def DuplicateModulesOnFit(saveddata_engine):
+        # Finds fits with multiple modules in a single slot.
+        # See issue #932
+        try:
+            logger.debug("Running database cleanup for multiple modules in a single slot on a fit.")
+            results = saveddata_engine.execute("SELECT count(*) AS num FROM modules m1 "
+                                               "JOIN (SELECT count(*) as count, fitID, position from modules "
+                                               "GROUP BY fitID, position) as m2 "
+                                               "ON m1.fitID = m2.fitID and m1.position = m2.position "
+                                               "WHERE m2.count > 1")
+            row = results.first()
+
+            if row and row['num']:
+                delete = saveddata_engine.execute("DELETE FROM modules WHERE ID IN "
+                                                  "(SELECT ID FROM modules m1 "
+                                                  "JOIN (SELECT count(*) as count, fitID, position from modules "
+                                                  "GROUP BY fitID, position) m2 "
+                                                  "ON m1.fitID = m2.fitID and m1.position = m2.position "
+                                                  "WHERE m2.count > 1)")
                 logger.error("Database corruption found. Cleaning up %d records.", delete.rowcount)
 
         except sqlalchemy.exc.DatabaseError:
