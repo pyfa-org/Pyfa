@@ -879,7 +879,7 @@ class ItemEffects(wx.Panel):
         """
 
         import os
-        file = config.getPyfaPath("eos\\effects\\%s.py" % event.GetText().lower())
+        file = config.getPyfaPath(os.path.join("eos" , "effects", "%s.py" % event.GetText().lower()))
 
         if not os.path.isfile(file):
             open(file, 'a').close()

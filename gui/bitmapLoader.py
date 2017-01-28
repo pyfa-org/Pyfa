@@ -88,7 +88,7 @@ class BitmapLoader():
             except KeyError:
                 print "Missing icon file from zip: {0}".format(path)
         else:
-            path = config.getPyfaPath('imgs\\' + location + "\\" + filename)
+            path = config.getPyfaPath('imgs' + os.sep + location + os.sep + filename)
 
             if os.path.exists(path):
                 return wx.Image(path)
