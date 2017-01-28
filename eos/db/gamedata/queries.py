@@ -21,6 +21,9 @@ from sqlalchemy.orm import join, exc
 from sqlalchemy.sql import and_, or_, select
 
 import eos.config
+# TODO: Unsure which item the code below needs :(
+# from eos.gamedata import Item
+from eos.gamedata import Attribute
 from eos.db import gamedata_session
 from eos.db.gamedata.metaGroup import metatypes_table, items_table
 from eos.db.util import processEager, processWhere
@@ -298,9 +301,9 @@ def directAttributeRequest(itemIDs, attrIDs):
         if not isinstance(itemID, int):
             raise TypeError("All itemIDs must be integer")
 
-    q = select((eos.types.Item.typeID, eos.types.Attribute.attributeID, eos.types.Attribute.value),
-               and_(eos.types.Attribute.attributeID.in_(attrIDs), eos.types.Item.typeID.in_(itemIDs)),
-               from_obj=[join(eos.types.Attribute, eos.types.Item)])
+    q = select((Item.typeID, Attribute.attributeID, Attribute.value),
+               and_(Attribute.attributeID.in_(attrIDs), Item.typeID.in_(itemIDs)),
+               from_obj=[join(Attribute, Item)])
 
     result = gamedata_session.execute(q).fetchall()
     return result

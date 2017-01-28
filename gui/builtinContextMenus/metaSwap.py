@@ -1,10 +1,13 @@
-# -*- coding: utf-8 -*-
-from gui.contextMenu import ContextMenu
-from gui.itemStats import ItemStatsDialog
-import gui.mainFrame
-import service
+# coding: utf-8
+
 import wx
+
+from service.fit import Fit
+from service.market import Market
+import gui.mainFrame
 import gui.globalEvents as GE
+from gui.contextMenu import ContextMenu
+
 
 class MetaSwap(ContextMenu):
     def __init__(self):
@@ -17,7 +20,7 @@ class MetaSwap(ContextMenu):
 
         # Check if list of variations is same for all of selection
         # If not - don't show the menu
-        mkt = service.Market.getInstance()
+        mkt = Market.getInstance()
         self.variations = None
         for i in selection:
             variations = mkt.getVariationsByItems([i.item])
@@ -41,7 +44,8 @@ class MetaSwap(ContextMenu):
         self.moduleLookup = {}
 
         def get_metalevel(x):
-            if "metaLevel" not in x.attributes: return 0
+            if "metaLevel" not in x.attributes:
+                return 0
             return x.attributes["metaLevel"].value
 
         def get_metagroup(x):
@@ -88,14 +92,15 @@ class MetaSwap(ContextMenu):
             event.Skip()
             return
 
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
         fit = sFit.getFit(fitID)
-        
+
         for mod in self.selection:
             pos = fit.modules.index(mod)
             sFit.changeModule(fitID, pos, item.ID)
 
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+
 
 MetaSwap.register()

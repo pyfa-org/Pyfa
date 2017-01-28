@@ -1,4 +1,4 @@
-# ===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,7 +15,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-# ===============================================================================
+# =============================================================================
 
 import cPickle
 import os.path
@@ -24,7 +24,7 @@ import urllib2
 import config
 
 
-class SettingsProvider():
+class SettingsProvider(object):
     BASE_PATH = config.getSavePath("settings")
     settings = {}
     _instance = None
@@ -75,7 +75,7 @@ class SettingsProvider():
             settings.save()
 
 
-class Settings():
+class Settings(object):
     def __init__(self, location, info):
         self.location = location
         self.info = info
@@ -115,7 +115,7 @@ class Settings():
         return self.info.items()
 
 
-class NetworkSettings():
+class NetworkSettings(object):
     _instance = None
 
     # constants for serviceNetworkDefaultSettings["mode"] parameter
@@ -197,7 +197,7 @@ class NetworkSettings():
         validPrefixes = ("http", "https")
 
         for prefix in validPrefixes:
-            if not prefix in proxydict:
+            if prefix not in proxydict:
                 continue
             proxyline = proxydict[prefix]
             proto = "{0}://".format(prefix)
@@ -240,12 +240,10 @@ class NetworkSettings():
         self.serviceNetworkSettings["password"] = password
 
 
-"""
-Settings used by the HTML export feature.
-"""
-
-
-class HTMLExportSettings():
+class HTMLExportSettings(object):
+    """
+    Settings used by the HTML export feature.
+    """
     _instance = None
 
     @classmethod
@@ -256,10 +254,15 @@ class HTMLExportSettings():
         return cls._instance
 
     def __init__(self):
-        serviceHTMLExportDefaultSettings = {"enabled": False, "path": config.pyfaPath + os.sep + 'pyfaFits.html',
-                                            "minimal": False}
-        self.serviceHTMLExportSettings = SettingsProvider.getInstance().getSettings("pyfaServiceHTMLExportSettings",
-                                                                                    serviceHTMLExportDefaultSettings)
+        serviceHTMLExportDefaultSettings = {
+            "enabled": False,
+            "path": config.pyfaPath + os.sep + 'pyfaFits.html',
+            "minimal": False
+        }
+        self.serviceHTMLExportSettings = SettingsProvider.getInstance().getSettings(
+            "pyfaServiceHTMLExportSettings",
+            serviceHTMLExportDefaultSettings
+        )
 
     def getEnabled(self):
         return self.serviceHTMLExportSettings["enabled"]
@@ -280,12 +283,10 @@ class HTMLExportSettings():
         self.serviceHTMLExportSettings["path"] = path
 
 
-"""
-Settings used by update notification
-"""
-
-
-class UpdateSettings():
+class UpdateSettings(object):
+    """
+    Settings used by update notification
+    """
     _instance = None
 
     @classmethod
@@ -301,8 +302,10 @@ class UpdateSettings():
         # prerelease - If True, suppress prerelease notifications
         # version    - Set to release tag that user does not want notifications for
         serviceUpdateDefaultSettings = {"prerelease": True, 'version': None}
-        self.serviceUpdateSettings = SettingsProvider.getInstance().getSettings("pyfaServiceUpdateSettings",
-                                                                                serviceUpdateDefaultSettings)
+        self.serviceUpdateSettings = SettingsProvider.getInstance().getSettings(
+            "pyfaServiceUpdateSettings",
+            serviceUpdateDefaultSettings
+        )
 
     def get(self, type):
         return self.serviceUpdateSettings[type]
@@ -311,7 +314,7 @@ class UpdateSettings():
         self.serviceUpdateSettings[type] = value
 
 
-class CRESTSettings():
+class CRESTSettings(object):
     _instance = None
 
     @classmethod
@@ -327,8 +330,10 @@ class CRESTSettings():
         # 1 - User-supplied client details
         serviceCRESTDefaultSettings = {"mode": 0, "server": 0, "clientID": "", "clientSecret": "", "timeout": 60}
 
-        self.serviceCRESTSettings = SettingsProvider.getInstance().getSettings("pyfaServiceCRESTSettings",
-                                                                               serviceCRESTDefaultSettings)
+        self.serviceCRESTSettings = SettingsProvider.getInstance().getSettings(
+            "pyfaServiceCRESTSettings",
+            serviceCRESTDefaultSettings
+        )
 
     def get(self, type):
         return self.serviceCRESTSettings[type]

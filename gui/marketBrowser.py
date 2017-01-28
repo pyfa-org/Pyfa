@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,15 +15,15 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
 import wx
-import service
+from service.market import Market
+from service.attribute import Attribute
 import gui.display as d
+import gui.PFSearchBox as SBox
 from gui.cachingImageList import CachingImageList
 from gui.contextMenu import ContextMenu
-import gui.PFSearchBox as SBox
-
 from gui.bitmapLoader import BitmapLoader
 
 ItemSelected, ITEM_SELECTED = wx.lib.newevent.NewEvent()
@@ -60,11 +60,11 @@ class MarketBrowser(wx.Panel):
         self.search = SearchBox(self)
         vbox.Add(self.search, 0, wx.EXPAND)
 
-        self.splitter = wx.SplitterWindow(self, style = wx.SP_LIVE_UPDATE)
+        self.splitter = wx.SplitterWindow(self, style=wx.SP_LIVE_UPDATE)
         vbox.Add(self.splitter, 1, wx.EXPAND)
 
         # Grab market service instance and create child objects
-        self.sMkt = service.Market.getInstance()
+        self.sMkt = Market.getInstance()
         self.searchMode = False
         self.marketView = MarketTree(self.splitter, self)
         self.itemView = ItemView(self.splitter, self)
@@ -115,15 +115,17 @@ class MarketBrowser(wx.Panel):
     def jump(self, item):
         self.marketView.jump(item)
 
+
 class SearchBox(SBox.PFSearchBox):
     def __init__(self, parent, **kwargs):
         SBox.PFSearchBox.__init__(self, parent, **kwargs)
-        cancelBitmap = BitmapLoader.getBitmap("fit_delete_small","gui")
-        searchBitmap = BitmapLoader.getBitmap("fsearch_small","gui")
+        cancelBitmap = BitmapLoader.getBitmap("fit_delete_small", "gui")
+        searchBitmap = BitmapLoader.getBitmap("fsearch_small", "gui")
         self.SetSearchBitmap(searchBitmap)
         self.SetCancelBitmap(cancelBitmap)
         self.ShowSearchButton()
         self.ShowCancelButton()
+
 
 class MarketTree(wx.TreeCtrl):
     def __init__(self, parent, marketBrowser):
@@ -148,7 +150,7 @@ class MarketTree(wx.TreeCtrl):
 
         # Add recently used modules node
         rumIconId = self.addImage("market_small", "gui")
-        self.AppendItem(self.root, "Recently Used Modules", rumIconId, data = wx.TreeItemData(RECENTLY_USED_MODULES))
+        self.AppendItem(self.root, "Recently Used Modules", rumIconId, data=wx.TreeItemData(RECENTLY_USED_MODULES))
 
         # Bind our lookup method to when the tree gets expanded
         self.Bind(wx.EVT_TREE_ITEM_EXPANDING, self.expandLookup)
@@ -196,10 +198,10 @@ class MarketTree(wx.TreeCtrl):
 
         for id in sMkt.ROOT_MARKET_GROUPS:
             if id in jumpList:
-                jumpList = jumpList[:jumpList.index(id)+1]
+                jumpList = jumpList[:jumpList.index(id) + 1]
 
         item = self.root
-        for i in range(len(jumpList) -1, -1, -1):
+        for i in range(len(jumpList) - 1, -1, -1):
             target = jumpList[i]
             child, cookie = self.GetFirstChild(item)
             while self.GetItemPyData(child) != target:
@@ -210,6 +212,7 @@ class MarketTree(wx.TreeCtrl):
 
         self.SelectItem(item)
         self.marketBrowser.itemView.selectionMade()
+
 
 class ItemView(d.Display):
     DEFAULT_COLS = ["Base Icon",
@@ -253,12 +256,11 @@ class ItemView(d.Display):
 
         if row != -1:
             data = wx.PyTextDataObject()
-            data.SetText("market:"+str(self.active[row].ID))
+            data.SetText("market:" + str(self.active[row].ID))
 
             dropSource = wx.DropSource(self)
             dropSource.SetData(data)
-            res = dropSource.DoDragDrop()
-
+            dropSource.DoDragDrop()
 
     def itemActivated(self, event=None):
         # Check if something is selected, if so, spawn the menu for it
@@ -388,12 +390,12 @@ class ItemView(d.Display):
             mktgrpid = sMkt.getMarketGroupByItem(item).ID
         except AttributeError:
             mktgrpid = None
-            print "unable to find market group for", item.name
+            print("unable to find market group for", item.name)
         parentname = sMkt.getParentItemByItem(item).name
         # Get position of market group
         metagrpid = sMkt.getMetaGroupIdByItem(item)
         metatab = self.metaMap.get(metagrpid)
-        metalvl =  self.metalvls.get(item.ID, 0)
+        metalvl = self.metalvls.get(item.ID, 0)
         return (catname, mktgrpid, parentname, metatab, metalvl, item.name)
 
     def contextMenu(self, event):
@@ -414,7 +416,7 @@ class ItemView(d.Display):
     def populate(self, items):
         if len(items) > 0:
             # Get dictionary with meta level attribute
-            sAttr = service.Attribute.getInstance()
+            sAttr = Attribute.getInstance()
             attrs = sAttr.getAttributeInfo("metaLevel")
             sMkt = self.sMkt
             self.metalvls = sMkt.directAttrRequest(items, attrs)
@@ -430,7 +432,7 @@ class ItemView(d.Display):
     def refresh(self, items):
         if len(items) > 1:
             # Get dictionary with meta level attribute
-            sAttr = service.Attribute.getInstance()
+            sAttr = Attribute.getInstance()
             attrs = sAttr.getAttributeInfo("metaLevel")
             sMkt = self.sMkt
             self.metalvls = sMkt.directAttrRequest(items, attrs)
@@ -439,7 +441,7 @@ class ItemView(d.Display):
 
         for i, item in enumerate(items[:9]):
             # set shortcut info for first 9 modules
-            item.marketShortcut = i+1
+            item.marketShortcut = i + 1
 
         d.Display.refresh(self, items)
 

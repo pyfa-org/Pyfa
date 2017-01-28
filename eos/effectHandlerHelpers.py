@@ -21,7 +21,6 @@
 import logging
 
 import eos.db
-import eos.types
 
 logger = logging.getLogger(__name__)
 
