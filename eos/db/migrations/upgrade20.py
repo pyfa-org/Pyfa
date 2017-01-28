@@ -12,4 +12,4 @@ def upgrade(saveddata_engine):
     try:
         saveddata_engine.execute("SELECT alphaCloneID FROM characters LIMIT 1")
     except sqlalchemy.exc.DatabaseError:
-        saveddata_engine.execute("ALTER TABLE characters ADD COLUMN alphaCloneID INT;")
+        saveddata_engine.execute("ALTER TABLE characters ADD COLUMN alphaCloneID INTEGER;")
