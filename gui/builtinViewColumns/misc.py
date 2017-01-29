@@ -459,28 +459,23 @@ class Miscellanea(ViewColumn):
         ):
             if "Armor" in itemGroup or "Shield" in itemGroup:
                 boosted_attribute = "HP"
+                reload_time = item.getAttribute("reloadTime", 0) / 1000
             elif "Capacitor" in itemGroup:
                 boosted_attribute = "Cap"
+                reload_time = 10
             else:
-                boosted_attribute = None
+                boosted_attribute = ""
+                reload_time = 0
 
-            hp = stuff.hpBeforeReload
             cycles = stuff.numShots
             cycleTime = stuff.rawCycleTime
 
-            if boosted_attribute == "Cap":
-                if hp is None:
-                    local_booster = stuff.charge.getAttribute("capacitorBonus", 0)
-                    hp = max(local_booster, 0) * cycles
-                reload_time = 10
-            elif boosted_attribute == "HP":
-                if hp is None:
-                    armor_repairer = item.getAttribute("armorDamageAmount", None)
-                    shield_booster = item.getAttribute("shieldBonus", None)
-                    hp = max(armor_repairer, shield_booster, 0)
-                reload_time = item.getAttribute("reloadTime", 0) / 1000
-            else:
-                reload_time = 0
+            # Get HP or boosted amount
+            stuff_hp = stuff.hpBeforeReload
+            armor_hp = stuff.getModifiedItemAttr("armorDamageAmount", 0)
+            capacitor_hp = stuff.charge.getModifiedChargeAttr("capacitorBonus", 0)
+            shield_hp = stuff.getModifiedItemAttr("shieldBonus", 0)
+            hp = max(stuff_hp, armor_hp * cycles, capacitor_hp * cycles, shield_hp * cycles, 0)
 
             if not hp or not cycleTime or not cycles:
                 return "", None
