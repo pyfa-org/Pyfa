@@ -51,10 +51,6 @@ class MainMenuBar(wx.MenuBar):
         self.toggleOverridesId = wx.NewId()
         self.importDatabaseDefaultsId = wx.NewId()
 
-        if 'wxMac' in wx.PlatformInfo and wx.VERSION >= (3,0):
-            wx.ID_COPY = wx.NewId()
-            wx.ID_PASTE = wx.NewId()
-
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         wx.MenuBar.__init__(self)
 
