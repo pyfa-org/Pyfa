@@ -496,7 +496,7 @@ class Miscellanea(ViewColumn):
                 hpRatio = 1
 
             if ("Ancillary" and "Armor") in itemGroup:
-                hpRatio *= 3
+                hpRatio *= stuff.getModifiedItemAttr("chargedArmorDamageMultiplier", 1)
 
             ehp = hp * hpRatio
 
@@ -508,6 +508,7 @@ class Miscellanea(ViewColumn):
                     formatAmount((duration+reload_time)*number_of_cycles, 3, 0, 3),
                     formatAmount(number_of_cycles, 3, 0, 3)
                 )
+
             text = "{0} / {1}s (+{2}s)".format(
                 formatAmount(ehp, 3, 0, 9),
                 formatAmount(duration, 3, 0, 3),
