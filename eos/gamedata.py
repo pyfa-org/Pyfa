@@ -244,9 +244,12 @@ class Item(EqBase):
         return self.__attributes
 
     def getAttribute(self, key, default=None):
-        if key in self.attributes:
-            return self.attributes[key].value
-        else:
+        try:
+            if key in self.attributes:
+                return self.attributes[key].value
+            else:
+                return default
+        except AttributeError:
             return default
 
     def isType(self, type):
