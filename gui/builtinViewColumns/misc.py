@@ -467,13 +467,13 @@ class Miscellanea(ViewColumn):
                 boosted_attribute = ""
                 reload_time = 0
 
-            cycles = stuff.numShots
-            cycleTime = stuff.rawCycleTime
+            cycles = max(stuff.numShots, 0)
+            cycleTime = max(stuff.rawCycleTime, 0)
 
             # Get HP or boosted amount
-            stuff_hp = stuff.hpBeforeReload
+            stuff_hp = max(stuff.hpBeforeReload, 0)
             armor_hp = stuff.getModifiedItemAttr("armorDamageAmount", 0)
-            capacitor_hp = stuff.charge.getModifiedChargeAttr("capacitorBonus", 0)
+            capacitor_hp = stuff.getModifiedChargeAttr("capacitorBonus", 0)
             shield_hp = stuff.getModifiedItemAttr("shieldBonus", 0)
             hp = max(stuff_hp, armor_hp * cycles, capacitor_hp * cycles, shield_hp * cycles, 0)
 
@@ -495,7 +495,7 @@ class Miscellanea(ViewColumn):
             else:
                 hpRatio = 1
 
-            if ("Ancillary" and "Armor") in itemGroup:
+            if "Ancillary" in itemGroup and "Armor" in itemGroup:
                 hpRatio *= stuff.getModifiedItemAttr("chargedArmorDamageMultiplier", 1)
 
             ehp = hp * hpRatio
