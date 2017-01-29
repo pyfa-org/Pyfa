@@ -48,6 +48,7 @@ if config.saveDB and os.path.isfile(config.saveDB):
     # Import values that must exist otherwise Pyfa breaks
     DefaultDatabaseValues.importRequiredDefaults()
 
+    # Finds and fixes database corruption issues.
     logging.debug("Starting database validation.")
     database_cleanup_instance = DatabaseCleanup()
     database_cleanup_instance.OrphanedCharacterSkills(db.saveddata_engine)
