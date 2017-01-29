@@ -246,10 +246,8 @@ class Item(EqBase):
     def getAttribute(self, key, default=None):
         if key in self.attributes:
             return self.attributes[key].value
-        elif default:
-            return default
         else:
-            return None
+            return default
 
     def isType(self, type):
         for effect in self.effects.itervalues():
