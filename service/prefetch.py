@@ -28,25 +28,6 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-
-class PrefetchThread(threading.Thread):
-    def __init__(self):
-        threading.Thread.__init__(self)
-        self.name = "Prefetch"
-
-    def run(self):
-        # We're a daemon thread, as such, interpreter might get shut down while we do stuff
-        # Make sure we don't throw tracebacks to console
-        try:
-            eos.types.Character.setSkillList(eos.db.getItemsByCategory("Skill", eager=("effects", "attributes", "attributes.info.icon", "attributes.info.unit", "icon")))
-        except:
-            pass
-
-prefetch = PrefetchThread()
-prefetch.daemon = True
-
-prefetch.start()
-
 ########
 # The following code does not belong here, however until we rebuild skeletons
 # to include modified pyfa.py, this is the best place to put it. See GH issue
