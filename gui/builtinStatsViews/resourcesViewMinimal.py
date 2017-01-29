@@ -1,0 +1,185 @@
+#===============================================================================
+# Copyright (C) 2010 Diego Duclos
+#
+# This file is part of pyfa.
+#
+# pyfa is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# pyfa is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
+#===============================================================================
+
+import wx
+from gui.statsView import StatsView
+from gui import builtinStatsViews
+from gui.bitmapLoader import BitmapLoader
+from gui import pygauge as PG
+import gui.mainFrame
+import gui.chromeTabs
+import math
+
+from eos.types import Hardpoint
+
+from gui.utils.numberFormatter import formatAmount
+
+class ResourcesViewMinimal(StatsView):
+    name = "resourcesViewMinimal"
+
+    def __init__(self, parent):
+        StatsView.__init__(self)
+        self.parent = parent
+        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+
+    def getHeaderText(self, fit):
+        return "Fitting Resources"
+
+    def getTextExtentW(self, text):
+        width, height = self.parent.GetTextExtent( text )
+        return width
+
+    def populatePanel(self, contentPanel, headerPanel):
+
+        contentSizer = contentPanel.GetSizer()
+        root = wx.BoxSizer(wx.VERTICAL)
+        contentSizer.Add(root, 0, wx.EXPAND, 0)
+
+        sizer = wx.BoxSizer(wx.HORIZONTAL)
+        root.Add(sizer, 0, wx.EXPAND)
+        #root.Add(wx.StaticLine(contentPanel, wx.ID_ANY, style=wx.HORIZONTAL), 0, wx.EXPAND)
+
+        sizerResources = wx.BoxSizer(wx.HORIZONTAL)
+        root.Add(sizerResources, 1, wx.EXPAND, 0)
+
+        parent = self.panel = contentPanel
+        self.headerPanel = headerPanel
+        panel = "full"
+
+
+        base = sizerResources
+        sizer.AddSpacer((0, 0), 1, wx.EXPAND, 5)
+        #Turrets & launcher hardslots display
+        tooltipText = {"cpu":"CPU", "pg":"PowerGrid", "turret":"Turret hardpoints", "launcher":"Launcher hardpoints", "drones":"Drones active", "fighter": "Fighter squadrons active", "calibration":"Calibration"}
+        for type in ("cpu", "pg", "calibration"):
+            box = wx.BoxSizer(wx.HORIZONTAL)
+
+            bitmap = BitmapLoader.getStaticBitmap("%s_big" % type, parent, "gui")
+            tooltip = wx.ToolTip(tooltipText[type])
+            bitmap.SetToolTip(tooltip)
+
+            box.Add(bitmap, 0, wx.ALIGN_CENTER)
+
+            sizer.Add(box, 0, wx.ALIGN_CENTER)
+
+            suffix = {"cpu":"tf", "pg":"MW", 'turret':'Hardpoints', 'launcher':'Hardpoints', 'drones':'Active', 'fighter':'Tubes', 'calibration':'Points'}
+            lbl = wx.StaticText(parent, wx.ID_ANY, "0")
+            attr = "label%sUsed%s%s" % (panel.capitalize(), type.capitalize(), suffix[type].capitalize())
+            setattr(self, attr, lbl)
+            box.Add(lbl, 0, wx.ALIGN_CENTER | wx.LEFT, 5)
+
+            lbl = wx.StaticText(parent, wx.ID_ANY, "0")
+            box.Add(wx.StaticText(parent, wx.ID_ANY, " ("), 0, wx.ALIGN_CENTER)
+            attr = "label%sPercent%s%s" % (panel.capitalize(), type.capitalize(), suffix[type].capitalize())
+            setattr(self, attr, lbl)
+            box.Add(lbl, 0, wx.ALIGN_CENTER)
+            box.Add(wx.StaticText(parent, wx.ID_ANY, "%)"), 0, wx.ALIGN_CENTER)
+
+            setattr(self, "boxSizer{}".format(type.capitalize()), box)
+
+
+            # Hack - We add a spacer after each thing, but we are always hiding something. The spacer is stil there.
+            # This way, we only have one space after the drones/fighters
+            if type != "drones":
+                sizer.AddSpacer((0, 0), 1, wx.EXPAND, 5)
+
+
+    def refreshPanel(self, fit):
+        #If we did anything intresting, we'd update our labels to reflect the new fit's stats here
+
+        stats = (("label%sUsedCalibrationPoints", lambda: fit.ship.getModifiedItemAttr('upgradeCapacity')-fit.calibrationUsed, 0, 0, 0),
+                    ("label%sUsedPgMw", lambda: fit.ship.getModifiedItemAttr("powerOutput")-fit.pgUsed, 0, 0, 0),
+                    ("label%sUsedCpuTf", lambda: fit.ship.getModifiedItemAttr("cpuOutput")-fit.cpuUsed, 0, 0, 0),
+                    ("label%sPercentPgMw", lambda: (fit.pgUsed/fit.ship.getModifiedItemAttr("powerOutput"))*100, 0, 0, 0),
+                    ("label%sPercentCpuTf", lambda: (fit.cpuUsed/fit.ship.getModifiedItemAttr("cpuOutput"))*100, 0, 0, 0),
+                    ("label%sPercentCalibrationPoints", lambda: (fit.calibrationUsed/fit.ship.getModifiedItemAttr('upgradeCapacity'))*100, 0, 0, 0),
+                 )
+        panel = "Full"
+
+        for labelName, value, prec, lowest, highest in stats:
+            label = getattr(self, labelName % panel)
+            value = value() if fit is not None else 0
+            value = value if value is not None else 0
+
+            if labelName % panel == "label%sUsedCpuTf" % panel:
+                usedCpuTf = value
+                labelUCPU = label
+
+            if labelName % panel == "label%sPercentCpuTf" % panel:
+                percentCpuTf = value
+                labelPCPU = label
+
+            if labelName % panel == "label%sUsedPgMw" % panel:
+                usedPgMw = value
+                labelUPG = label
+
+            if labelName % panel == "label%sPercentPgMw" % panel:
+                percentPgMw = value
+                labelPPG = label
+
+            if labelName % panel == "label%sUsedCalibrationPoints" % panel:
+                usedCalibrationPoints = value
+                labelUCP = label
+
+            if labelName % panel == "label%sPercentCalibrationPoints" % panel:
+                percentCalibrationPoints = value
+                labelPCP = label
+
+            if isinstance(value, basestring):
+                label.SetLabel(value)
+                label.SetToolTip(wx.ToolTip(value))
+            else:
+                label.SetLabel(formatAmount(value, prec, lowest, highest))
+                label.SetToolTip(wx.ToolTip("%.1f" % value))
+
+        colorWarn = wx.Colour(204, 51, 51)
+        colorNormal = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOWTEXT)
+
+        if usedCpuTf < 0:
+            colorCPU = colorWarn
+        else:
+            colorCPU = colorNormal
+
+        if usedPgMw < 0:
+            colorPG = colorWarn
+        else:
+            colorPG = colorNormal
+
+        if usedCalibrationPoints < 0:
+            colorC = colorWarn
+        else:
+            colorC = colorNormal
+
+        labelUCPU.SetForegroundColour(colorCPU)
+        labelPCPU.SetForegroundColour(colorCPU)
+        labelUPG.SetForegroundColour(colorPG)
+        labelPPG.SetForegroundColour(colorPG)
+        labelUCP.SetForegroundColour(colorC)
+        labelPCP.SetForegroundColour(colorC)
+
+        if fit is not None:
+            resMax = (lambda: fit.ship.getModifiedItemAttr("cpuOutput"),
+                        lambda: fit.ship.getModifiedItemAttr("powerOutput"),
+                    )
+
+
+        self.panel.Layout()
+        self.headerPanel.Layout()
+
+ResourcesViewMinimal.register()

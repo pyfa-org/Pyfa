@@ -29,14 +29,53 @@ from eos.types import Hardpoint
 
 from gui.utils.numberFormatter import formatAmount
 
-class ResourcesViewFull(StatsView):
-    name = "resourcesViewFull"
-    contexts = ["drone", "fighter", "cargo"]
+class CargoViewFull(StatsView):
+    name = "cargoViewFull"
+    contexts = ["cargo"]
 
     def __init__(self, parent):
         StatsView.__init__(self)
         self.parent = parent
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+        self.mainFrame.additionsPane.notebook.Bind(gui.chromeTabs.EVT_NOTEBOOK_PAGE_CHANGED, self.pageChanged)
+
+    def pageChanged(self, event):
+        page = self.mainFrame.additionsPane.getName(event.GetSelection())
+        """
+        if page == "Cargo":
+            self.toggleContext("cargo")
+        elif page == "Fighters":
+            self.toggleContext("fighter")
+        else:
+            self.toggleContext("drone")
+        """
+
+    def toggleContext(self, context):
+        # Apparently you cannot .Hide(True) on a Window, otherwise I would just .Hide(context !== x).
+        # This is a gimpy way to toggle this shit
+        for x in self.contexts:
+            bitmap = getattr(self, "bitmapFull{}Bay".format(x.capitalize()))
+            base = getattr(self, "baseFull{}Bay".format(x.capitalize()))
+
+            if context == x:
+                bitmap.Show()
+                base.Show(True)
+            else:
+                bitmap.Hide()
+                base.Hide(True)
+
+        fighter_sizer = getattr(self, "boxSizerFighter")
+        drone_sizer = getattr(self, "boxSizerDrones")
+
+        if context != "fighter":
+            fighter_sizer.ShowItems(False)
+            drone_sizer.ShowItems(True)
+        else:
+            fighter_sizer.ShowItems(True)
+            drone_sizer.ShowItems(False)
+
+        self.panel.Layout()
+        self.headerPanel.Layout()
 
     def getHeaderText(self, fit):
         return "Resources"
@@ -65,50 +104,13 @@ class ResourcesViewFull(StatsView):
 
         base = sizerResources
         sizer.AddSpacer((0, 0), 1, wx.EXPAND, 5)
-        #Turrets & launcher hardslots display
-        tooltipText = {"turret":"Turret hardpoints", "launcher":"Launcher hardpoints", "drones":"Drones active", "fighter": "Fighter squadrons active", "calibration":"Calibration"}
-        suffix = {'turret': 'Hardpoints', 'launcher': 'Hardpoints', 'drones': 'Active', 'fighter': 'Tubes', 'calibration': 'Points'}
-        for type in ("turret", "launcher"):
-            box = wx.BoxSizer(wx.HORIZONTAL)
 
-            bitmap = BitmapLoader.getStaticBitmap("%s_big" % type, parent, "gui")
-            tooltip = wx.ToolTip(tooltipText[type])
-            bitmap.SetToolTip(tooltip)
-
-            box.Add(bitmap, 0, wx.ALIGN_CENTER)
-
-            sizer.Add(box, 0, wx.ALIGN_CENTER)
-
-            lbl = wx.StaticText(parent, wx.ID_ANY, "0")
-            setattr(self, "label%sUsed%s%s" % (panel.capitalize(), type.capitalize(), suffix[type].capitalize()), lbl)
-            box.Add(lbl, 0, wx.ALIGN_CENTER | wx.LEFT, 5)
-
-            box.Add(wx.StaticText(parent, wx.ID_ANY, "/"), 0, wx.ALIGN_CENTER)
-
-            lbl = wx.StaticText(parent, wx.ID_ANY, "0")
-            setattr(self, "label%sTotal%s%s" % (panel.capitalize(), type.capitalize(), suffix[type].capitalize()), lbl)
-            box.Add(lbl, 0, wx.ALIGN_CENTER)
-            setattr(self, "boxSizer{}".format(type.capitalize()), box)
-
-            # Hack - We add a spacer after each thing, but we are always hiding something. The spacer is stil there.
-            # This way, we only have one space after the drones/fighters
-            if type != "drones":
-                sizer.AddSpacer((0, 0), 1, wx.EXPAND, 5)
+        #left column
 
 
         #PG, Cpu & drone stuff
-        tooltipText = {"cpu":"CPU", "pg":"PowerGrid", "droneBay":"Drone bay", "fighterBay": "Fighter bay", "droneBandwidth":"Drone bandwidth", "cargoBay":"Cargo bay", "calibration":"Calibration"}
-        units = {"cpu": " tf", "pg": " MW", "droneBandwidth": " mbit/s", "droneBay": u" m\u00B3", "fighterBay": u" m\u00B3", "cargoBay": u" m\u00B3", 'calibration': ' Points'}
-
-        leftColumn = []
-        leftColumn.append("cpu")
-        leftColumn.append("pg")
-
-        rightColumn = []
-        rightColumn.append("calibration")
-        rightColumn.append("cargoBay")
-
-        for i, group in enumerate(((leftColumn), (rightColumn))):
+        tooltipText = {"cpu":"CPU", "pg":"PowerGrid", "droneBay":"Drone bay", "fighterBay": "Fighter bay", "droneBandwidth":"Drone bandwidth", "cargoBay":"Cargo bay"}
+        for i, group in enumerate((("cargoBay"), ("cargoBay"))):
             main = wx.BoxSizer(wx.VERTICAL)
             base.Add(main, 1 , wx.ALIGN_CENTER)
 
@@ -139,6 +141,7 @@ class ResourcesViewFull(StatsView):
                 setattr(self, "label%sTotal%s" % (panel.capitalize(), capitalizedType), lbl)
                 absolute.Add(lbl, 0, wx.ALIGN_LEFT)
 
+                units = {"cpu":" tf", "pg":" MW", "droneBandwidth":" mbit/s", "droneBay":u" m\u00B3", "fighterBay":u" m\u00B3", "cargoBay":u" m\u00B3"}
                 lbl = wx.StaticText(parent, wx.ID_ANY, "%s" % units[type])
                 absolute.Add(lbl, 0, wx.ALIGN_LEFT)
 
@@ -155,20 +158,12 @@ class ResourcesViewFull(StatsView):
                 setattr(self, "base%s%s" % (panel.capitalize(), capitalizedType), b)
                 setattr(self, "bitmap%s%s" % (panel.capitalize(), capitalizedType), bitmap)
 
+        #self.toggleContext("drone")
+
     def refreshPanel(self, fit):
         #If we did anything intresting, we'd update our labels to reflect the new fit's stats here
 
-        stats = (("label%sUsedTurretHardpoints", lambda: fit.getHardpointsUsed(Hardpoint.TURRET), 0, 0, 0),
-                         ("label%sTotalTurretHardpoints", lambda: fit.ship.getModifiedItemAttr('turretSlotsLeft'), 0, 0, 0),
-                         ("label%sUsedLauncherHardpoints", lambda: fit.getHardpointsUsed(Hardpoint.MISSILE), 0, 0, 0),
-                         ("label%sTotalLauncherHardpoints", lambda: fit.ship.getModifiedItemAttr('launcherSlotsLeft'), 0, 0, 0),
-                         ("label%sUsedCalibration", lambda: fit.calibrationUsed, 0, 0, 0),
-                         ("label%sTotalCalibration", lambda: fit.ship.getModifiedItemAttr('upgradeCapacity'), 0, 0, 0),
-                         ("label%sUsedPg", lambda: fit.pgUsed, 4, 0, 9),
-                         ("label%sUsedCpu", lambda: fit.cpuUsed, 4, 0, 9),
-                         ("label%sTotalPg", lambda: fit.ship.getModifiedItemAttr("powerOutput"), 4, 0, 9),
-                         ("label%sTotalCpu", lambda: fit.ship.getModifiedItemAttr("cpuOutput"), 4, 0, 9),
-                         ("label%sUsedCargoBay", lambda: fit.cargoBayUsed, 3, 0, 9),
+        stats = (("label%sUsedCargoBay", lambda: fit.cargoBayUsed, 3, 0, 9),
                          ("label%sTotalCargoBay", lambda: fit.ship.getModifiedItemAttr("capacity"), 3, 0, 9))
         panel = "Full"
         usedTurretHardpoints = 0
@@ -180,29 +175,6 @@ class ResourcesViewFull(StatsView):
             label = getattr(self, labelName % panel)
             value = value() if fit is not None else 0
             value = value if value is not None else 0
-            if labelName % panel == "label%sUsedTurretHardpoints" % panel:
-                usedTurretHardpoints = value
-                labelUTH = label
-
-            if labelName % panel == "label%sTotalTurretHardpoints" % panel:
-                totalTurretHardpoints = value
-                labelTTH = label
-
-            if labelName % panel == "label%sUsedLauncherHardpoints" % panel:
-                usedLauncherHardpoints = value
-                labelULH = label
-
-            if labelName % panel == "label%sTotalLauncherHardpoints" % panel:
-                totalLauncherHardPoints = value
-                labelTLH = label
-
-            if labelName % panel == "label%sUsedCalibration" % panel:
-                usedCalibrationPoints = value
-                labelUCP = label
-
-            if labelName % panel == "label%sTotalCalibration" % panel:
-                totalCalibrationPoints = value
-                labelTCP = label
 
             if isinstance(value, basestring):
                 label.SetLabel(value)
@@ -214,34 +186,16 @@ class ResourcesViewFull(StatsView):
         colorWarn = wx.Colour(204, 51, 51)
         colorNormal = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOWTEXT)
 
-        if usedTurretHardpoints > totalTurretHardpoints:
-            colorT = colorWarn
-        else:
-            colorT = colorNormal
-        if usedLauncherHardpoints > totalLauncherHardPoints:
-            colorL = colorWarn
-        else:
-            colorL = colorNormal
-        if usedCalibrationPoints > totalCalibrationPoints:
-            colorC = colorWarn
-        else:
-            colorC = colorNormal
-
-        labelUTH.SetForegroundColour(colorT)
-        labelTTH.SetForegroundColour(colorT)
-        labelULH.SetForegroundColour(colorL)
-        labelTLH.SetForegroundColour(colorL)
-        labelUCP.SetForegroundColour(colorC)
-        labelTCP.SetForegroundColour(colorC)
-
         if fit is not None:
             resMax = (lambda: fit.ship.getModifiedItemAttr("cpuOutput"),
                     lambda: fit.ship.getModifiedItemAttr("powerOutput"),
-                    lambda: fit.ship.getModifiedItemAttr("capacity"),
-                    lambda: fit.ship.getModifiedItemAttr('upgradeCapacity'))
+                    lambda: fit.ship.getModifiedItemAttr("droneCapacity"),
+                    lambda: fit.ship.getModifiedItemAttr("fighterCapacity"),
+                    lambda: fit.ship.getModifiedItemAttr("droneBandwidth"),
+                    lambda: fit.ship.getModifiedItemAttr("capacity"))
 
         i = 0
-        for resourceType in ("cpu", "pg", "cargoBay", "calibration"):
+        for resourceType in ("cpu", "pg", "droneBay", "fighterBay", "droneBandwidth", "cargoBay"):
             if fit is not None:
                 capitalizedType = resourceType[0].capitalize() + resourceType[1:]
 
@@ -263,4 +217,4 @@ class ResourcesViewFull(StatsView):
         self.panel.Layout()
         self.headerPanel.Layout()
 
-ResourcesViewFull.register()
+CargoViewFull.register()

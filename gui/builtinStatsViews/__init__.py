@@ -1,3 +1,10 @@
-__all__ = ["resourcesViewFull", "resistancesViewFull",
-           "rechargeViewFull", "firepowerViewFull", "capacitorViewFull",
-           "targetingMiscViewFull", "priceViewFull", "miningyieldViewFull"]
+__all__ = ["resourcesViewFull", "resourcesViewMinimal",
+           "resistancesViewFull", "resistancesViewMinimal",
+           "rechargeViewFull", "rechargeViewMinimal",
+           "firepowerViewFull", "firepowerViewMinimal",
+           "capacitorViewFull", "capacitorViewMinimal",
+           "targetingMiscViewFull", "targetingMiscViewMinimal",
+           "priceViewFull", "priceViewMinimal",
+           "miningyieldViewFull", "miningyieldViewMinimal",
+           "dronesViewFull", "dronesViewMinimal",
+           "cargoViewFull", "cargoViewMinimal"]

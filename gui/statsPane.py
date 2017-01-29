@@ -28,9 +28,32 @@ import gui.mainFrame
 import gui.globalEvents as GE
 
 class StatsPane(wx.Panel):
-    DEFAULT_VIEWS = ["resourcesViewFull", "resistancesViewFull" ,"rechargeViewFull", "firepowerViewFull",
+    AVAILIBLE_VIEWS = ["resources", "resistances", "recharge", "firepower",
+                     "capacitor", "targetingmisc",
+                     "price", "miningyield", "drones"]
+
+    DEFAULT_VIEWS = []
+
+    settings = service.settings.statViewSettings.getInstance()
+
+    for aView in AVAILIBLE_VIEWS:
+        if settings.get(aView) == 2:
+            DEFAULT_VIEWS.extend(["%sViewFull" % aView])
+
+        if settings.get(aView) == 1:
+            DEFAULT_VIEWS.extend(["%sViewMinimal" % aView])
+
+            # If it's 0, it's disabled and we don't do anything.
+
+            # TODO
+            # Add logging
+    '''
+    DEFAULT_VIEWS = ["resourcesViewFull", "resistancesViewFull", "rechargeViewFull", "firepowerViewFull",
                      "capacitorViewFull", "targetingmiscViewFull",
-                     "priceViewFull",]
+                     "priceViewFull", "miningyieldViewFull"]
+    '''
+
+    test = DEFAULT_VIEWS
 
     def fitChanged(self, event):
         sFit = service.Fit.getInstance()
@@ -73,9 +96,16 @@ class StatsPane(wx.Panel):
             tp.SetLabel(view.getHeaderText(None))
             view.refreshPanel(None)
 
-            contentPanel.Bind(wx.EVT_RIGHT_DOWN, self.contextHandler(contentPanel))
-            for child in contentPanel.GetChildren():
-                child.Bind(wx.EVT_RIGHT_DOWN, self.contextHandler(contentPanel))
+            # Handle right-click events for all panels except firepower
+            if viewName != 'firepowerViewFull':
+                contentPanel.Bind(wx.EVT_RIGHT_DOWN, self.contextHandler(contentPanel))
+                for child in contentPanel.GetChildren():
+                    child.Bind(wx.EVT_RIGHT_DOWN, self.contextHandler(contentPanel))
+
+            # Firepower is handled special because context menus are bound to buttons
+            if viewName == 'firepowerViewFull':
+                for child in contentPanel.GetChildren():
+                    child.Bind(wx.EVT_BUTTON, self.contextHandler(contentPanel))
 
             mainSizer.Add(tp, 0, wx.EXPAND | wx.LEFT, 3)
             if i < maxviews - 1:

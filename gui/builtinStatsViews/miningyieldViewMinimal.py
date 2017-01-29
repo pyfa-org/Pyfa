@@ -25,8 +25,8 @@ from gui.statsView import StatsView
 from gui.bitmapLoader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 
-class MiningYieldViewFull(StatsView):
-    name = "miningyieldViewFull"
+class MiningYieldViewMinimal(StatsView):
+    name = "miningyieldViewMinimal"
     def __init__(self, parent):
         StatsView.__init__(self)
         self.parent = parent
@@ -52,18 +52,14 @@ class MiningYieldViewFull(StatsView):
 
         counter = 0
 
-
-
         for miningType, image in (("miner", "mining") , ("drone", "drones")):
             baseBox = wx.BoxSizer(wx.HORIZONTAL)
             sizerMiningYield.Add(baseBox, 1, wx.ALIGN_LEFT if counter == 0 else wx.ALIGN_CENTER_HORIZONTAL)
 
-            baseBox.Add(BitmapLoader.getStaticBitmap("%s_big" % image, parent, "gui"), 0, wx.ALIGN_CENTER)
-
-            box = wx.BoxSizer(wx.VERTICAL)
+            box = wx.BoxSizer(wx.HORIZONTAL)
             baseBox.Add(box, 0, wx.ALIGN_CENTER)
 
-            box.Add(wx.StaticText(parent, wx.ID_ANY, miningType.capitalize()), 0, wx.ALIGN_LEFT)
+            box.Add(wx.StaticText(parent, wx.ID_ANY, "%s: " % miningType.capitalize()), 0, wx.ALIGN_LEFT)
 
             hbox = wx.BoxSizer(wx.HORIZONTAL)
             box.Add(hbox, 1, wx.ALIGN_CENTER)
@@ -79,12 +75,10 @@ class MiningYieldViewFull(StatsView):
         baseBox = wx.BoxSizer(wx.HORIZONTAL)
         targetSizer.Add(baseBox, 0, wx.ALIGN_LEFT)
 
-        baseBox.Add(BitmapLoader.getStaticBitmap("cargoBay_big", parent, "gui"), 0, wx.ALIGN_CENTER)
-
-        box = wx.BoxSizer(wx.VERTICAL)
+        box = wx.BoxSizer(wx.HORIZONTAL)
         baseBox.Add(box, 0, wx.EXPAND)
 
-        box.Add(wx.StaticText(parent, wx.ID_ANY, "Total"), 0, wx.ALIGN_LEFT)
+        box.Add(wx.StaticText(parent, wx.ID_ANY, "Total: "), 0, wx.ALIGN_LEFT)
 
         hbox = wx.BoxSizer(wx.HORIZONTAL)
         box.Add(hbox, 1, wx.EXPAND)
@@ -95,33 +89,12 @@ class MiningYieldViewFull(StatsView):
 
         self._cachedValues.append(0)
 
-    def switchToFirepowerView(self, event):
-        # Getting the active fit
-        mainFrame = gui.mainFrame.MainFrame.getInstance()
-        sFit = service.Fit.getInstance()
-        fit = sFit.getFit(mainFrame.getActiveFit())
-        # Remove ourselves from statsPane's view list
-        self.parent.views.remove(self)
-        self._cachedValues = []
-        # And no longer display us
-        self.panel.GetSizer().Clear(True)
-        self.panel.GetSizer().Layout()
-        # Get the new view
-        view = StatsView.getView("firepowerViewFull")(self.parent)
-        view.populatePanel(self.panel, self.headerPanel)
-        # Populate us in statsPane's view list
-        self.parent.views.append(view)
-        # Get the TogglePanel
-        tp = self.panel.GetParent()
-        tp.SetLabel(view.getHeaderText(fit))
-        view.refreshPanel(fit)
-
     def refreshPanel(self, fit):
         #If we did anything intresting, we'd update our labels to reflect the new fit's stats here
 
-        stats = (("labelFullminingyieldMiner", lambda: fit.minerYield * 3600, 3, 0, 0, u"%s m\u00B3/h",None),
-                 ("labelFullminingyieldDrone", lambda: fit.droneYield * 3600, 3, 0, 0, u"%s m\u00B3/h", None),
-                 ("labelFullminingyieldTotal", lambda: fit.totalYield * 3600, 3, 0, 0, u"%s m\u00B3/h", None))
+        stats = (("labelFullminingyieldMiner", lambda: fit.minerYield, 3, 0, 0, u"%s m\u00B3/s",None),
+                 ("labelFullminingyieldDrone", lambda: fit.droneYield, 3, 0, 0, u"%s m\u00B3/s", None),
+                 ("labelFullminingyieldTotal", lambda: fit.totalYield, 3, 0, 0, u"%s m\u00B3/s", None))
 
         counter = 0
         for labelName, value, prec, lowest, highest, valueFormat, altFormat in stats:
@@ -138,4 +111,4 @@ class MiningYieldViewFull(StatsView):
         self.panel.Layout()
         self.headerPanel.Layout()
 
-MiningYieldViewFull.register()
+MiningYieldViewMinimal.register()

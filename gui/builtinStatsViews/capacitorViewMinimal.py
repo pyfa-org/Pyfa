@@ -23,8 +23,8 @@ from gui import builtinStatsViews
 from gui.bitmapLoader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 
-class CapacitorViewFull(StatsView):
-    name = "capacitorViewFull"
+class capacitorViewMinimal(StatsView):
+    name = "capacitorViewMinimal"
     def __init__(self, parent):
         StatsView.__init__(self)
         self.parent = parent
@@ -48,23 +48,13 @@ class CapacitorViewFull(StatsView):
         baseBox = wx.BoxSizer(wx.HORIZONTAL)
 
         sizerCapacitor.Add(baseBox, 0, wx.ALIGN_LEFT)
-        bitmap = BitmapLoader.getStaticBitmap("capacitorInfo_big", parent, "gui")
-        tooltip = wx.ToolTip("Capacitor stability")
-        bitmap.SetToolTip(tooltip)
-        baseBox.Add(bitmap, 0, wx.ALIGN_CENTER)
+        #bitmap = BitmapLoader.getStaticBitmap("capacitorInfo_big", parent, "gui")
+        #tooltip = wx.ToolTip("Capacitor stability")
+        #bitmap.SetToolTip(tooltip)
+        #baseBox.Add(bitmap, 0, wx.ALIGN_CENTER)
 
         box = wx.BoxSizer(wx.VERTICAL)
         baseBox.Add(box, 0, wx.ALIGN_LEFT)
-
-        hbox = wx.BoxSizer(wx.HORIZONTAL)
-        box.Add(hbox, 0, wx.ALIGN_LEFT)
-
-        hbox.Add(wx.StaticText(parent, wx.ID_ANY, "Total: "), 0, wx.ALIGN_LEFT | wx.LEFT, 3)
-        lbl = wx.StaticText(parent, wx.ID_ANY, "0.0")
-        setattr(self, "label%sCapacitorCapacity" % panel.capitalize(), lbl)
-        hbox.Add(lbl, 0, wx.ALIGN_LEFT)
-
-        hbox.Add(wx.StaticText(parent, wx.ID_ANY, " GJ"), 0, wx.ALIGN_LEFT)
 
         hbox = wx.BoxSizer(wx.HORIZONTAL)
         box.Add(hbox, 0, wx.ALIGN_LEFT)
@@ -82,34 +72,20 @@ class CapacitorViewFull(StatsView):
 
         sizerCapacitor.Add(baseBox, 0, wx.ALIGN_CENTER_HORIZONTAL)
 
-        tooltip = wx.ToolTip("Capacitor throughput")
-        bitmap = BitmapLoader.getStaticBitmap("capacitorRecharge_big", parent, "gui")
-        bitmap.SetToolTip(tooltip)
-        baseBox.Add(bitmap, 0, wx.ALIGN_CENTER)
-
-        # Recharge
+        # Delta (+GJ/s + -GJ/s)
         chargeSizer = wx.FlexGridSizer(2, 3)
         baseBox.Add(chargeSizer, 0, wx.ALIGN_CENTER)
 
-        chargeSizer.Add(wx.StaticText(parent, wx.ID_ANY, "+ "), 0, wx.ALIGN_CENTER)
+        chargeSizer.Add(wx.StaticText(parent, wx.ID_ANY, "Delta: "), 0, wx.ALIGN_CENTER)
         lbl = wx.StaticText(parent, wx.ID_ANY, "0.0")
-        setattr(self, "label%sCapacitorRecharge" % panel.capitalize(), lbl)
-        chargeSizer.Add(lbl, 0, wx.ALIGN_CENTER)
-        chargeSizer.Add(wx.StaticText(parent, wx.ID_ANY, " GJ/s"), 0, wx.ALIGN_CENTER)
-
-        # Discharge
-        chargeSizer.Add(wx.StaticText(parent, wx.ID_ANY, "- "), 0, wx.ALIGN_CENTER)
-        lbl = wx.StaticText(parent, wx.ID_ANY, "0.0")
-        setattr(self, "label%sCapacitorDischarge" % panel.capitalize(), lbl)
+        setattr(self, "label%sCapacitorDelta" % panel.capitalize(), lbl)
         chargeSizer.Add(lbl, 0, wx.ALIGN_CENTER)
         chargeSizer.Add(wx.StaticText(parent, wx.ID_ANY, " GJ/s"), 0, wx.ALIGN_CENTER)
 
 
     def refreshPanel(self, fit):
         #If we did anything intresting, we'd update our labels to reflect the new fit's stats here
-        stats= (("label%sCapacitorCapacity", lambda: fit.ship.getModifiedItemAttr("capacitorCapacity"), 3, 0, 9),
-                ("label%sCapacitorRecharge", lambda: fit.capRecharge, 3, 0, 0),
-                ("label%sCapacitorDischarge", lambda: fit.capUsed, 3, 0, 0))
+        stats= [("label%sCapacitorDelta", lambda: fit.capRecharge-fit.capUsed, 3, 0, 0)]
 
         panel = "Full"
         for labelName, value, prec, lowest, highest in stats:
@@ -147,4 +123,4 @@ class CapacitorViewFull(StatsView):
         self.panel.Layout()
         self.headerPanel.Layout()
 
-CapacitorViewFull.register()
+capacitorViewMinimal.register()

@@ -30,8 +30,8 @@ import gui.globalEvents as GE
 
 EffectiveHpToggled, EFFECTIVE_HP_TOGGLED = wx.lib.newevent.NewEvent()
 
-class ResistancesViewFull(StatsView):
-    name = "resistancesViewFull"
+class ResistancesViewMinimal(StatsView):
+    name = "resistancesViewMinimal"
     def __init__(self, parent):
         StatsView.__init__(self)
         self.parent = parent
@@ -145,17 +145,8 @@ class ResistancesViewFull(StatsView):
             box = wx.BoxSizer(wx.VERTICAL)
             box.SetMinSize(wx.Size(self.getTextExtentW("WWWWk"), -1))
 
-            if tankType != "damagePattern":
-                lbl = wx.StaticText(contentPanel, wx.ID_ANY, "0")
-                box.Add(lbl, 0, wx.ALIGN_CENTER)
-            else:
-                image = BitmapLoader.getBitmap("turret_small", "gui")
-                self.damageprofiles = wx.BitmapButton(contentPanel, -1, image)
-                self.damageprofiles.SetToolTip(wx.ToolTip("Click to choose damage profile"))
-                #self.damageprofiles.Bind(wx.EVT_BUTTON, self.loadProfiles)
-                box.Add(self.damageprofiles, 0, wx.ALIGN_CENTER)
-
-
+            lbl = wx.StaticText(contentPanel, wx.ID_ANY, "0" if tankType != "damagePattern" else "")
+            box.Add(lbl, 0, wx.ALIGN_CENTER)
 
             setattr(self, "labelResistance%sEhp" % tankType.capitalize(), lbl)
             sizerResistances.Add(box, wx.GBPosition( row, col ), wx.GBSpan( 1, 1 ), wx.ALIGN_CENTER)
@@ -232,5 +223,5 @@ class ResistancesViewFull(StatsView):
         self.panel.Layout()
         self.headerPanel.Layout()
 
-ResistancesViewFull.register()
+ResistancesViewMinimal.register()
 
