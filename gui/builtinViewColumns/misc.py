@@ -496,7 +496,7 @@ class Miscellanea(ViewColumn):
                 hpRatio = 1
 
             if ("Ancillary" and "Armor") in itemGroup:
-                hpRatio *= 3
+                hpRatio *= stuff.getModifiedItemAttr("chargedArmorDamageMultiplier", 1)
 
             ehp = hp * hpRatio
 
