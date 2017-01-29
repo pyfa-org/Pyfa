@@ -470,7 +470,7 @@ class Miscellanea(ViewColumn):
 
             if boosted_attribute == "Cap":
                 if hp is None:
-                    local_booster = stuff.charge.getAttribute("capacitorBonus",0)
+                    local_booster = stuff.charge.getAttribute("capacitorBonus", 0)
                     hp = max(local_booster, 0) * cycles
                 reload_time = 10
             elif boosted_attribute == "HP":
@@ -503,7 +503,6 @@ class Miscellanea(ViewColumn):
             if ("Ancillary" and "Armor") in itemGroup:
                 hpRatio *= 3
 
-
             ehp = hp * hpRatio
 
             duration = cycles * cycleTime / 1000
@@ -514,7 +513,11 @@ class Miscellanea(ViewColumn):
                     formatAmount((duration+reload_time)*number_of_cycles, 3, 0, 3),
                     formatAmount(number_of_cycles, 3, 0, 3)
                 )
-            text = "{0} / {1}s (+{2}s)".format(formatAmount(ehp, 3, 0, 9), formatAmount(duration, 3, 0, 3), formatAmount(reload_time, 3, 0, 3))
+            text = "{0} / {1}s (+{2}s)".format(
+                formatAmount(ehp, 3, 0, 9),
+                formatAmount(duration, 3, 0, 3),
+                formatAmount(reload_time, 3, 0, 3)
+            )
 
             return text, tooltip
         elif itemGroup == "Armor Resistance Shift Hardener":
