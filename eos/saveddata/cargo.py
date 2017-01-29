@@ -17,6 +17,7 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
+import sys
 import logging
 
 from sqlalchemy.orm import validates, reconstructor
@@ -68,10 +69,14 @@ class Cargo(HandledItem, ItemAttrShortcut):
     def clear(self):
         self.itemModifiedAttributes.clear()
 
-    @validates("fitID", "itemID")
+    @validates("fitID", "itemID", "amount")
     def validator(self, key, val):
         map = {"fitID": lambda val: isinstance(val, int),
-               "itemID": lambda val: isinstance(val, int)}
+               "itemID": lambda val: isinstance(val, int),
+               "amount": lambda val: isinstance(val, int)}
+
+        if key == "amount" and val > sys.maxint:
+            val = sys.maxint
 
         if not map[key](val):
             raise ValueError(str(val) + " is not a valid value for " + key)

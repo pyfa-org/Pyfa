@@ -107,6 +107,7 @@ class PFPanel(wx.Panel):
 class OpenFitsThread(threading.Thread):
     def __init__(self, fits, callback):
         threading.Thread.__init__(self)
+        self.name = "LoadingOpenFits"
         self.mainFrame = MainFrame.getInstance()
         self.callback = callback
         self.fits = fits

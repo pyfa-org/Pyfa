@@ -32,6 +32,7 @@ from service.settings import UpdateSettings
 class CheckUpdateThread(threading.Thread):
     def __init__(self, callback):
         threading.Thread.__init__(self)
+        self.name = "CheckUpdate"
         self.callback = callback
         self.settings = UpdateSettings.getInstance()
         self.network = Network.getInstance()

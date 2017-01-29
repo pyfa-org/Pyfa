@@ -31,6 +31,7 @@ class exportHtml():
 class exportHtmlThread(threading.Thread):
     def __init__(self, callback=False):
         threading.Thread.__init__(self)
+        self.name = "HTMLExport"
         self.callback = callback
         self.stopRunning = False
 

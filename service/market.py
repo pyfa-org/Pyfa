@@ -49,6 +49,10 @@ mktRdy = threading.Event()
 
 
 class ShipBrowserWorkerThread(threading.Thread):
+    def __init__(self):
+        threading.Thread.__init__(self)
+        self.name = "ShipBrowser"
+
     def run(self):
         self.queue = Queue.Queue()
         self.cache = {}
@@ -80,6 +84,10 @@ class ShipBrowserWorkerThread(threading.Thread):
 
 
 class PriceWorkerThread(threading.Thread):
+    def __init__(self):
+        threading.Thread.__init__(self)
+        self.name = "PriceWorker"
+
     def run(self):
         self.queue = Queue.Queue()
         self.wait = {}
@@ -115,6 +123,10 @@ class PriceWorkerThread(threading.Thread):
 
 
 class SearchWorkerThread(threading.Thread):
+    def __init__(self):
+        threading.Thread.__init__(self)
+        self.name = "SearchWorker"
+
     def run(self):
         self.cv = threading.Condition()
         self.searchRequest = None
