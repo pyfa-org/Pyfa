@@ -17,11 +17,10 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-import logging
+from logbook import Logger
+logger = Logger(__name__)
 
 from eos.types import Ship
-
-logger = logging.getLogger(__name__)
 
 
 class Citadel(Ship):

@@ -17,11 +17,10 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-import logging
+from logbook import Logger
+logger = Logger(__name__)
 
 from sqlalchemy.orm import reconstructor
-
-logger = logging.getLogger(__name__)
 
 
 class FighterAbility(object):

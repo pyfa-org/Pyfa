@@ -19,7 +19,8 @@
 
 import re
 import threading
-import logging
+from logbook import Logger
+logger = Logger(__name__)
 import Queue
 
 import wx
@@ -41,8 +42,6 @@ try:
     from collections import OrderedDict
 except ImportError:
     from utils.compat import OrderedDict
-
-logger = logging.getLogger(__name__)
 
 # Event which tells threads dependent on Market that it's initialized
 mktRdy = threading.Event()

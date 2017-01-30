@@ -17,7 +17,8 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-import logging
+from logbook import Logger
+logger = Logger(__name__)
 
 from sqlalchemy.orm import validates, reconstructor
 
@@ -25,8 +26,6 @@ import eos.db
 from eos.effectHandlerHelpers import HandledItem, HandledCharge
 from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut, ChargeAttrShortcut
 from eos.types import FighterAbility, Slot
-
-logger = logging.getLogger(__name__)
 
 
 class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):

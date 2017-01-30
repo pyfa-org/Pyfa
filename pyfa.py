@@ -25,7 +25,7 @@ import config
 from optparse import OptionParser, BadOptionError, AmbiguousOptionError
 
 from logbook import RotatingFileHandler, Logger, StreamHandler, NestedSetup, FingersCrossedHandler, NullHandler
-log = Logger(__name__)
+logger = Logger(__name__)
 
 
 class PassThroughOptionParser(OptionParser):
@@ -187,33 +187,33 @@ if __name__ == "__main__":
 
     with logging_setup.threadbound():
         # Output all stdout (print) messages as warnings
-        sys.stdout = LoggerWriter(log.warning)
+        sys.stdout = LoggerWriter(logger.warning)
         # Output all stderr (stacktrace) messages as critical
-        sys.stderr = LoggerWriter(log.critical)
+        sys.stderr = LoggerWriter(logger.critical)
 
-        log.info("Starting Pyfa")
+        logger.info("Starting Pyfa")
 
         # Import everything
-        log.debug("Import wx")
+        logger.debug("Import wx")
         import wx
         import os
         import os.path
 
-        log.debug("Import eos.db")
+        logger.debug("Import eos.db")
         import eos.db
         import service.prefetch
         from gui.mainFrame import MainFrame
 
-        log.debug("Make sure the saveddata db exists")
+        logger.debug("Make sure the saveddata db exists")
         if not os.path.exists(config.savePath):
             os.mkdir(config.savePath)
 
         eos.db.saveddata_meta.create_all()
 
         pyfa = wx.App(False)
-        log.debug("Show GUI")
+        logger.debug("Show GUI")
         MainFrame(options.title)
 
         # run the gui mainloop
-        log.debug("Run MainLoop()")
+        logger.debug("Run MainLoop()")
         pyfa.MainLoop()

@@ -17,14 +17,13 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-import logging
+from logbook import Logger
+logger = Logger(__name__)
 
 from sqlalchemy.orm import reconstructor
 
 import eos.db
 from eos.eqBase import EqBase
-
-logger = logging.getLogger(__name__)
 
 
 class Override(EqBase):

@@ -18,9 +18,8 @@
 # =============================================================================
 
 import wx
-import logging
-
-logger = logging.getLogger(__name__)
+from logbook import Logger
+logger = Logger(__name__)
 
 
 class ContextMenu(object):

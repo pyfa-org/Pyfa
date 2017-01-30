@@ -18,9 +18,8 @@
 # ===============================================================================
 
 import sqlalchemy
-import logging
-
-logger = logging.getLogger(__name__)
+from logbook import Logger
+logger = Logger(__name__)
 
 
 class DatabaseCleanup:

@@ -20,7 +20,8 @@
 import copy
 import itertools
 import json
-import logging
+from logbook import Logger
+logger = Logger(__name__)
 import threading
 from codecs import open
 from xml.etree import ElementTree
@@ -37,8 +38,6 @@ from eos.saveddata.implant import Implant as es_Implant
 from eos.saveddata.character import Character as es_Character
 from eos.saveddata.module import Slot as es_Slot, Module as es_Module
 from eos.saveddata.fighter import Fighter as es_Fighter
-
-logger = logging.getLogger(__name__)
 
 
 class CharacterImportThread(threading.Thread):

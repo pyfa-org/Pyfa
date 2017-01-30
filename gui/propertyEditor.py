@@ -1,5 +1,6 @@
 import csv
-import logging
+from logbook import Logger
+logger = Logger(__name__)
 
 import wx
 
@@ -18,8 +19,6 @@ import gui.globalEvents as GE
 import gui.PFSearchBox as SBox
 from gui.marketBrowser import SearchBox
 from gui.bitmapLoader import BitmapLoader
-
-logger = logging.getLogger(__name__)
 
 
 class AttributeEditor(wx.Frame):

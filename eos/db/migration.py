@@ -1,11 +1,11 @@
-import logging
+from logbook import Logger
+logger = Logger(__name__)
+
 import shutil
 import time
 
 import config
 import migrations
-
-logger = logging.getLogger(__name__)
 
 
 def getVersion(db):

@@ -17,7 +17,8 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-import logging
+from logbook import Logger
+logger = Logger(__name__)
 
 from sqlalchemy.orm import validates, reconstructor
 
@@ -27,8 +28,6 @@ from eos.enum import Enum
 from eos.mathUtils import floorFloat
 from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut, ChargeAttrShortcut
 from eos.types import Citadel
-
-logger = logging.getLogger(__name__)
 
 
 class State(Enum):

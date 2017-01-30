@@ -33,9 +33,8 @@ from eos.enum import Enum
 from eos.saveddata.module import State, Hardpoint
 from eos.types import Ship, Character, Slot, Module, Citadel
 from utils.timer import Timer
-import logging
-
-logger = logging.getLogger(__name__)
+from logbook import Logger
+logger = Logger(__name__)
 
 try:
     from collections import OrderedDict

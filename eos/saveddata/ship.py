@@ -17,14 +17,13 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-import logging
+from logbook import Logger
+logger = Logger(__name__)
 
 import eos.db
 from eos.effectHandlerHelpers import HandledItem
 from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut, cappingAttrKeyCache
 from eos.saveddata.mode import Mode
-
-logger = logging.getLogger(__name__)
 
 
 class Ship(ItemAttrShortcut, HandledItem):

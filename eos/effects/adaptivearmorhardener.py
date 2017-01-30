@@ -2,9 +2,8 @@
 #
 # Used by:
 # Module: Reactive Armor Hardener
-import logging
-
-logger = logging.getLogger(__name__)
+from logbook import Logger
+logger = Logger(__name__)
 
 runTime = "late"
 type = "active"

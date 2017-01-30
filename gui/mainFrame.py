@@ -19,7 +19,8 @@
 
 import sys
 import os.path
-import logging
+from logbook import Logger
+logger = Logger(__name__)
 
 import sqlalchemy
 import wx
@@ -87,7 +88,8 @@ if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION 
         print("Error loading Attribute Editor: %s.\nAccess to Attribute Editor is disabled." % e.message)
         disableOverrideEditor = True
 
-logger = logging.getLogger("pyfa.gui.mainFrame")
+# TODO: Remove this if we don't need a special name for it
+# logger = logging.getLogger("pyfa.gui.mainFrame")
 
 
 # dummy panel(no paint no erasebk)

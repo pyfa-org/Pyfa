@@ -18,7 +18,9 @@
 # ===============================================================================
 
 
-import logging
+from logbook import Logger
+logger = Logger(__name__)
+
 from itertools import chain
 
 from sqlalchemy.orm import validates, reconstructor
@@ -27,8 +29,6 @@ import eos
 import eos.db
 import eos.types
 from eos.effectHandlerHelpers import HandledItem, HandledImplantBoosterList
-
-logger = logging.getLogger(__name__)
 
 
 class Character(object):

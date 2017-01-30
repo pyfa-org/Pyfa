@@ -1,6 +1,7 @@
 import wx
 import thread
-import logging
+from logbook import Logger
+logger = Logger(__name__)
 import threading
 import copy
 import uuid
@@ -13,8 +14,6 @@ import gui.globalEvents as GE
 from service.settings import CRESTSettings
 from service.server import StoppableHTTPServer, AuthHandler
 from service.pycrest.eve import EVE
-
-logger = logging.getLogger(__name__)
 
 
 class Servers(Enum):

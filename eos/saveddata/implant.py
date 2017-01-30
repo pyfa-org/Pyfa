@@ -17,15 +17,14 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-import logging
+from logbook import Logger
+logger = Logger(__name__)
 
 from sqlalchemy.orm import validates, reconstructor
 
 import eos.db
 from eos.effectHandlerHelpers import HandledItem
 from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut
-
-logger = logging.getLogger(__name__)
 
 
 class Implant(HandledItem, ItemAttrShortcut):

@@ -17,15 +17,14 @@
 # along with pyfa.    If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
-import logging
+from logbook import Logger
+logger = Logger(__name__)
 import wx
 
 from service.implantSet import ImplantSets
 from gui.builtinViews.implantEditor import BaseImplantEditorView
 from gui.utils.clipboard import toClipboard, fromClipboard
 from gui.builtinViews.entityEditor import EntityEditor, BaseValidator
-
-logger = logging.getLogger(__name__)
 
 
 class ImplantTextValidor(BaseValidator):

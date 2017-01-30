@@ -18,11 +18,10 @@
 # ===============================================================================
 
 # from sqlalchemy.orm.attributes import flag_modified
-import logging
+from logbook import Logger
+logger = Logger(__name__)
 
 import eos.db
-
-logger = logging.getLogger(__name__)
 
 
 class HandledList(list):

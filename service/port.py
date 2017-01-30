@@ -20,7 +20,8 @@
 import re
 import os
 import xml.dom
-import logging
+from logbook import Logger
+logger = Logger(__name__)
 import collections
 import json
 import threading
@@ -42,7 +43,6 @@ if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION 
 
 from service.market import Market
 
-logger = logging.getLogger("pyfa.service.port")
 
 try:
     from collections import OrderedDict

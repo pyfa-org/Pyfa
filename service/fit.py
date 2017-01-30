@@ -18,7 +18,8 @@
 # ===============================================================================
 
 import copy
-import logging
+from logbook import Logger
+logger = Logger(__name__)
 
 import eos.db
 from eos.saveddata.booster import Booster as es_Booster
@@ -36,8 +37,6 @@ from service.character import Character
 from service.damagePattern import DamagePattern
 from service.market import Market
 from service.settings import SettingsProvider
-
-logger = logging.getLogger(__name__)
 
 from logbook import Logger
 log = Logger(__name__)
