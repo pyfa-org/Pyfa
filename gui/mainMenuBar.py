@@ -164,17 +164,19 @@ class MainMenuBar(wx.MenuBar):
 
     def fitChanged(self, event):
         enable = event.fitID is not None
-        self.Enable(wx.ID_SAVEAS, enable)
-        self.Enable(wx.ID_COPY, enable)
-        self.Enable(self.exportSkillsNeededId, enable)
 
-        sChar = Character.getInstance()
-        charID = self.mainFrame.charSelection.getActiveCharacter()
-        char = sChar.getCharacter(charID)
+        if enable:
+            self.Enable(wx.ID_SAVEAS, enable)
+            self.Enable(wx.ID_COPY, enable)
+            self.Enable(self.exportSkillsNeededId, enable)
 
-        # enable/disable character saving stuff
-        self.Enable(self.saveCharId, not char.ro and char.isDirty)
-        self.Enable(self.saveCharAsId, char.isDirty)
-        self.Enable(self.revertCharId, char.isDirty)
+            sChar = Character.getInstance()
+            charID = self.mainFrame.charSelection.getActiveCharacter()
+            char = sChar.getCharacter(charID)
+
+            # enable/disable character saving stuff
+            self.Enable(self.saveCharId, not char.ro and char.isDirty)
+            self.Enable(self.saveCharAsId, char.isDirty)
+            self.Enable(self.revertCharId, char.isDirty)
 
         event.Skip()
