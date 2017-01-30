@@ -27,10 +27,8 @@ from eos.db.saveddata.loadDefaultDatabaseValues import DefaultDatabaseValues
 from eos.db.saveddata.databaseRepair import DatabaseCleanup
 from eos.saveddata.character import Character as es_Character
 
-import logging
-
-logger = logging.getLogger(__name__)
-
+from logbook import Logger
+logger = Logger(__name__)
 
 class PrefetchThread(threading.Thread):
     def run(self):
@@ -66,12 +64,12 @@ if config.saveDB and os.path.isfile(config.saveDB):
     # Import values that must exist otherwise Pyfa breaks
     DefaultDatabaseValues.importRequiredDefaults()
 
-    logging.debug("Starting database validation.")
+    logger.debug("Starting database validation.")
     database_cleanup_instance = DatabaseCleanup()
     database_cleanup_instance.OrphanedCharacterSkills(db.saveddata_engine)
     database_cleanup_instance.OrphanedFitCharacterIDs(db.saveddata_engine)
     database_cleanup_instance.OrphanedFitDamagePatterns(db.saveddata_engine)
-    logging.debug("Completed database validation.")
+    logger.debug("Completed database validation.")
 
 else:
     # If database does not exist, do not worry about migration. Simply
