@@ -70,11 +70,13 @@ class ShipBrowserWorkerThread(threading.Thread):
 
                 wx.CallAfter(callback, (id_, set_))
             except:
+                logger.debug("Callback failed.")
                 pass
             finally:
                 try:
                     queue.task_done()
                 except:
+                    logger.debug("Queue task done failed.")
                     pass
 
 
@@ -813,6 +815,7 @@ class Market():
             try:
                 callback(requests)
             except Exception:
+                logger.debug("Callback failed.")
                 pass
             eos.db.commit()
 
@@ -829,6 +832,7 @@ class Market():
             try:
                 callback(item)
             except:
+                logger.debug("Callback failed.")
                 pass
 
         self.priceWorkerThread.setToWait(item.ID, cb)
