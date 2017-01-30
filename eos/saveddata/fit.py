@@ -91,7 +91,7 @@ class Fit(object):
         if self.shipID:
             item = eos.db.getItem(self.shipID)
             if item is None:
-                logger.error("Item (id: %d) does not exist", self.shipID)
+                logger.error("Item (id: {0}) does not exist", self.shipID)
                 return
 
             try:
@@ -104,7 +104,7 @@ class Fit(object):
                 # change all instances in source). Remove this at some point
                 self.extraAttributes = self.__ship.itemModifiedAttributes
             except ValueError:
-                logger.error("Item (id: %d) is not a Ship", self.shipID)
+                logger.error("Item (id: {0}) is not a Ship", self.shipID)
                 return
 
         if self.modeID and self.__ship:
@@ -453,7 +453,7 @@ class Fit(object):
             self.commandBonuses[warfareBuffID] = (runTime, value, module, effect)
 
     def __runCommandBoosts(self, runTime="normal"):
-        logger.debug("Applying gang boosts for %r", self)
+        logger.debug("Applying gang boosts for {0}", self)
         for warfareBuffID in self.commandBonuses.keys():
             # Unpack all data required to run effect properly
             effect_runTime, value, thing, effect = self.commandBonuses[warfareBuffID]
@@ -636,20 +636,20 @@ class Fit(object):
 
     def calculateModifiedAttributes(self, targetFit=None, withBoosters=False, dirtyStorage=None):
         timer = Timer(u'Fit: {}, {}'.format(self.ID, self.name), logger)
-        logger.debug("Starting fit calculation on: %r, withBoosters: %s", self, withBoosters)
+        logger.debug("Starting fit calculation on: {0}, withBoosters: {1}", self, withBoosters)
 
         shadow = False
         if targetFit and not withBoosters:
-            logger.debug("Applying projections to target: %r", targetFit)
+            logger.debug("Applying projections to target: {0}", targetFit)
             projectionInfo = self.getProjectionInfo(targetFit.ID)
-            logger.debug("ProjectionInfo: %s", projectionInfo)
+            logger.debug("ProjectionInfo: {0}", projectionInfo)
             if self == targetFit:
                 copied = self  # original fit
                 shadow = True
                 # Don't inspect this, we genuinely want to reassign self
                 # noinspection PyMethodFirstArgAssignment
                 self = copy.deepcopy(self)
-                logger.debug("Handling self projection - making shadow copy of fit. %r => %r", copied, self)
+                logger.debug("Handling self projection - making shadow copy of fit. {0} => {1}", copied, self)
                 # we delete the fit because when we copy a fit, flush() is
                 # called to properly handle projection updates. However, we do
                 # not want to save this fit to the database, so simply remove it
@@ -684,7 +684,7 @@ class Fit(object):
         # projection have modifying stuff applied, such as gang boosts and other
         # local modules that may help
         if self.__calculated and not projected and not withBoosters:
-            logger.debug("Fit has already been calculated and is not projected, returning: %r", self)
+            logger.debug("Fit has already been calculated and is not projected, returning: {0}", self)
             return
 
         for runTime in ("early", "normal", "late"):

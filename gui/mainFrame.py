@@ -139,6 +139,7 @@ class MainFrame(wx.Frame):
         return cls.__instance if cls.__instance is not None else MainFrame()
 
     def __init__(self, title):
+        logger.debug("Initialize MainFrame")
         self.title = title
         wx.Frame.__init__(self, None, wx.ID_ANY, self.title)
 
@@ -706,7 +707,7 @@ class MainFrame(wx.Frame):
         try:
             fits = Port().importFitFromBuffer(clipboard, self.getActiveFit())
         except:
-            logger.error("Attempt to import failed:\n%s", clipboard)
+            logger.error("Attempt to import failed:\n{0}", clipboard)
         else:
             self._openAfterImport(fits)
 

@@ -82,9 +82,11 @@ class ShipBrowserWorkerThread(threading.Thread):
 
 class PriceWorkerThread(threading.Thread):
     def run(self):
+        logger.debug("Run start")
         self.queue = Queue.Queue()
         self.wait = {}
         self.processUpdates()
+        logger.debug("Run end")
 
     def processUpdates(self):
         queue = self.queue
@@ -425,7 +427,7 @@ class Market():
             else:
                 raise TypeError("Need Item object, integer, float or string as argument")
         except:
-            logger.error("Could not get item: %s", identity)
+            logger.error("Could not get item: {0}", identity)
             raise
 
         return item

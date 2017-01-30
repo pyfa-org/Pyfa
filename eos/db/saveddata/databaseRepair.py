@@ -42,7 +42,7 @@ class DatabaseCleanup:
 
             if row and row['num']:
                 delete = saveddata_engine.execute("DELETE FROM characterSkills WHERE characterID NOT IN (SELECT ID from characters)")
-                logger.error("Database corruption found. Cleaning up %d records.", delete.rowcount)
+                logger.error("Database corruption found. Cleaning up {0} records.", delete.rowcount)
 
         except sqlalchemy.exc.DatabaseError:
             logger.error("Failed to connect to database.")
@@ -72,7 +72,7 @@ class DatabaseCleanup:
                     update = saveddata_engine.execute("UPDATE 'fits' SET 'damagePatternID' = ? "
                                                       "WHERE damagePatternID NOT IN (SELECT ID FROM damagePatterns) OR damagePatternID IS NULL",
                                                        uniform_damage_pattern_id)
-                    logger.error("Database corruption found. Cleaning up %d records.", update.rowcount)
+                    logger.error("Database corruption found. Cleaning up {0} records.", update.rowcount)
         except sqlalchemy.exc.DatabaseError:
             logger.error("Failed to connect to database.")
 
@@ -98,6 +98,6 @@ class DatabaseCleanup:
                     update = saveddata_engine.execute("UPDATE 'fits' SET 'characterID' = ? "
                                                       "WHERE characterID not in (select ID from characters) OR characterID IS NULL",
                                                        all5_id)
-                    logger.error("Database corruption found. Cleaning up %d records.", update.rowcount)
+                    logger.error("Database corruption found. Cleaning up {0} records.", update.rowcount)
         except sqlalchemy.exc.DatabaseError:
             logger.error("Failed to connect to database.")

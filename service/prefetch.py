@@ -58,10 +58,12 @@ if config.savePath and not os.path.exists(config.savePath):
 
 if config.saveDB and os.path.isfile(config.saveDB):
     # If database exists, run migration after init'd database
+    logger.debug("Run database migration.")
     db.saveddata_meta.create_all()
     migration.update(db.saveddata_engine)
     # Import default database values
     # Import values that must exist otherwise Pyfa breaks
+    logger.debug("Import Required Database Values.")
     DefaultDatabaseValues.importRequiredDefaults()
 
     logger.debug("Starting database validation.")

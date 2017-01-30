@@ -180,7 +180,7 @@ class Crest():
             logger.warn("OAUTH state mismatch")
             return
 
-        logger.debug("Handling CREST login with: %s" % message)
+        logger.debug("Handling CREST login with: {0}", message)
 
         if 'access_token' in message:  # implicit
             eve = copy.deepcopy(self.eve)
@@ -194,7 +194,7 @@ class Crest():
             eve()
             info = eve.whoami()
 
-            logger.debug("Got character info: %s" % info)
+            logger.debug("Got character info: {0}", info)
 
             self.implicitCharacter = CrestChar(info['CharacterID'], info['CharacterName'])
             self.implicitCharacter.eve = eve
@@ -207,7 +207,7 @@ class Crest():
             eve()
             info = eve.whoami()
 
-            logger.debug("Got character info: %s" % info)
+            logger.debug("Got character info: {0}", info)
 
             # check if we have character already. If so, simply replace refresh_token
             char = self.getCrestCharacter(int(info['CharacterID']))

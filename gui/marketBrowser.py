@@ -54,6 +54,7 @@ class MetaButton(wx.ToggleButton):
 
 class MarketBrowser(wx.Panel):
     def __init__(self, parent):
+        logger.debug("Initialize marketBrowser")
         wx.Panel.__init__(self, parent)
         vbox = wx.BoxSizer(wx.VERTICAL)
         self.SetSizer(vbox)
@@ -131,6 +132,7 @@ class SearchBox(SBox.PFSearchBox):
 
 class MarketTree(wx.TreeCtrl):
     def __init__(self, parent, marketBrowser):
+        logger.debug("Initialize marketTree")
         wx.TreeCtrl.__init__(self, parent, style=wx.TR_DEFAULT_STYLE | wx.TR_HIDE_ROOT)
         self.root = self.AddRoot("root")
 
@@ -224,6 +226,7 @@ class ItemView(d.Display):
                     "attr:cpu,,,True"]
 
     def __init__(self, parent, marketBrowser):
+        logger.debug("Initialize ItemView")
         d.Display.__init__(self, parent)
         marketBrowser.Bind(wx.EVT_TREE_SEL_CHANGED, self.selectionMade)
 
@@ -251,6 +254,7 @@ class ItemView(d.Display):
         self.metaMap = self.makeReverseMetaMap()
 
         # Fill up recently used modules set
+        logger.debug("Fill up recently used modules set")
         for itemID in self.sMkt.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"]:
             self.recentlyUsedModules.add(self.sMkt.getItem(itemID))
 

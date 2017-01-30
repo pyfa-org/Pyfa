@@ -81,7 +81,7 @@ class CharacterImportThread(threading.Thread):
                                 "level": int(skill.getAttribute("level")),
                             })
                         else:
-                            logger.error("Attempted to import unknown skill %s (ID: %s) (Level: %s)",
+                            logger.error("Attempted to import unknown skill {0} (ID: {1}) (Level: {2})",
                                          skill.getAttribute("name"),
                                          skill.getAttribute("typeID"),
                                          skill.getAttribute("level"),

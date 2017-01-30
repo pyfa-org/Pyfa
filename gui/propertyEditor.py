@@ -267,7 +267,7 @@ class AttributeGrid(wxpg.PropertyGrid):
 
         self.itemView.updateItems()
 
-        logger.debug('%s changed to "%s"' % (p.GetName(), p.GetValueAsString()))
+        logger.debug('{0} changed to "{1}"', p.GetName(), p.GetValueAsString())
 
     def OnPropGridSelect(self, event):
         pass

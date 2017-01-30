@@ -83,7 +83,7 @@ class StoppableHTTPServer(BaseHTTPServer.HTTPServer):
 
         # Allow listening for x seconds
         sec = self.settings.get('timeout')
-        logger.debug("Running server for %d seconds", sec)
+        logger.debug("Running server for {0} seconds", sec)
 
         self.socket.settimeout(0.5)
         self.max_tries = sec / self.socket.gettimeout()

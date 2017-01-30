@@ -121,21 +121,21 @@ class Port(object):
                         savebom = bom
 
                 if codec_found is None:
-                    logger.info("Unicode BOM not found in file %s.", path)
+                    logger.info("Unicode BOM not found in file {0}.", path)
                     attempt_codecs = (defcodepage, "utf-8", "utf-16", "cp1252")
 
                     for page in attempt_codecs:
                         try:
-                            logger.info("Attempting to decode file %s using %s page.", path, page)
+                            logger.info("Attempting to decode file {0} using {1} page.", path, page)
                             srcString = unicode(srcString, page)
                             codec_found = page
-                            logger.info("File %s decoded using %s page.", path, page)
+                            logger.info("File {0} decoded using {1} page.", path, page)
                         except UnicodeDecodeError:
-                            logger.info("Error unicode decoding %s from page %s, trying next codec", path, page)
+                            logger.info("Error unicode decoding {0} from page {1}, trying next codec", path, page)
                         else:
                             break
                 else:
-                    logger.info("Unicode BOM detected in %s, using %s page.", path, codec_found)
+                    logger.info("Unicode BOM detected in {0}, using {1} page.", path, codec_found)
                     srcString = unicode(srcString[len(savebom):], codec_found)
 
             else:
@@ -154,7 +154,7 @@ class Port(object):
             except xml.parsers.expat.ExpatError:
                 return False, "Malformed XML in %s" % path
             except Exception:
-                logger.exception("Unknown exception processing: %s", path)
+                logger.exception("Unknown exception processing: {0}", path)
                 return False, "Unknown Error while processing %s" % path
 
         IDs = []
@@ -412,7 +412,7 @@ class Port(object):
                     return s_[:10] + "..."
                 return s_
 
-            logger.exception("Couldn't import ship data %r", [logtransform(s) for s in info])
+            logger.exception("Couldn't import ship data {0}", [logtransform(s) for s in info])
             return None
 
         moduleList = []
@@ -556,7 +556,7 @@ class Port(object):
                 elif "boosterness" in item.attributes:
                     fit.boosters.append(Booster(item))
                 else:
-                    logger.error("Failed to import implant: %s", line)
+                    logger.error("Failed to import implant: {0}", line)
             # elif item.category.name == "Subsystem":
             #     try:
             #         subsystem = Module(item)
@@ -1175,7 +1175,7 @@ class FitImportThread(threading.Thread):
         success, result = sPort.importFitFromFiles(self.paths, self.callback)
 
         if not success:  # there was an error during processing
-            logger.error("Error while processing file import: %s", result)
+            logger.error("Error while processing file import: {0}", result)
             wx.CallAfter(self.callback, -2, result)
         else:  # Send done signal to GUI
             wx.CallAfter(self.callback, -1, result)

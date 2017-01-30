@@ -248,12 +248,12 @@ if __name__ == "__main__":
             try:
                 shutil.rmtree(tmpDir)
             except:
-                logger.warning("Failed to remove: %s" % tmpDir)
+                logger.warning("Failed to remove: {0}", tmpDir)
                 pass
             try:
                 os.unlink(tmpFile)
             except:
-                logger.warning("Faileld to remove: %s" % tmpFile)
+                logger.warning("Faileld to remove: {0}", tmpFile)
                 pass
 
         sys.stdout = oldstd

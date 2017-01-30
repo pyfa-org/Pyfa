@@ -97,7 +97,7 @@ def handler(fit, module, context):
             cycleList.append(list(RAHResistance))
 
         if loopStart < 0:
-            logger.error("Reactive Armor Hardener failed to find equilibrium. Damage profile after armor: %f/%f/%f/%f",
+            logger.error("Reactive Armor Hardener failed to find equilibrium. Damage profile after armor: {0}/{1}/{2}/{3}",
                          baseDamageTaken[0], baseDamageTaken[1], baseDamageTaken[2], baseDamageTaken[3])
 
         # Average the profiles in the RAH loop, or the last 20 if it didn't find a loop.

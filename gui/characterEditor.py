@@ -660,7 +660,7 @@ class APIView(wx.Panel):
                 sChar.apiFetch(activeChar.ID, charName)
                 self.stStatus.SetLabel("Successfully fetched %s\'s skills from EVE API." % charName)
             except Exception, e:
-                logger.error("Unable to retrieve %s\'s skills. Error message:\n%s" % (charName, e))
+                logger.error("Unable to retrieve {0}\'s skills. Error message:\n{1}", charName, e)
                 self.stStatus.SetLabel("Unable to retrieve %s\'s skills. Error message:\n%s" % (charName, e))
 
 

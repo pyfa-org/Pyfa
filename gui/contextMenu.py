@@ -119,7 +119,7 @@ class ContextMenu(object):
 
         debug_end = len(cls._ids)
         if (debug_end - debug_start):
-            logger.debug("%d new IDs created for this menu" % (debug_end - debug_start))
+            logger.debug("{0} new IDs created for this menu", (debug_end - debug_start))
 
         return rootMenu if empty is False else None
 
