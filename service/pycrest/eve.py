@@ -1,5 +1,6 @@
 import base64
-import logging
+from logbook import Logger
+logger = Logger(__name__)
 import os
 import re
 import time
@@ -26,11 +27,9 @@ try:
     from urllib.parse import quote
 except ImportError:  # pragma: no cover
     from urllib import quote
-import logging
 import re
 import config
 
-logger = logging.getLogger("pycrest.eve")
 cache_re = re.compile(r'max-age=([0-9]+)')
 
 

@@ -2,13 +2,12 @@ import BaseHTTPServer
 import urlparse
 import socket
 import thread
-import logging
+from logbook import Logger
+logger = Logger(__name__)
 
 import wx
 
 from service.settings import CRESTSettings
-
-logger = logging.getLogger(__name__)
 
 # noinspection PyPep8
 HTML = '''
