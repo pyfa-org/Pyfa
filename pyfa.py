@@ -24,6 +24,9 @@ import config
 
 from optparse import OptionParser, BadOptionError, AmbiguousOptionError
 
+from logbook import RotatingFileHandler, Logger, StreamHandler, NestedSetup
+log = Logger(__name__)
+
 
 class PassThroughOptionParser(OptionParser):
     """
@@ -115,24 +118,47 @@ if __name__ == "__main__":
     config.defPaths(options.savepath)
 
     # Basic logging initialization
-    import logging
-    logging.basicConfig()
+    logging_setup = NestedSetup([
+        # make sure we never bubble up to the stderr handler
+        # if we run out of setup handling
+        # NullHandler(),
+        StreamHandler(sys.stdout),
+        # then write messages that are at least warnings to a logfile
+        # FileHandler('application.log', level='WARNING'),
+        RotatingFileHandler(
+            config.getSavePath("log_rotate_test.txt"),
+            level=0,
+            max_size=1048576,
+            backup_count=5,
+            bubble=True
+        ),
+    ])
 
-    # Import everything
-    import wx
-    import os
-    import os.path
+    with logging_setup.threadbound():
 
-    import eos.db
-    import service.prefetch
-    from gui.mainFrame import MainFrame
+        log.info("Starting Pyfa")
+        #sys.excepthook = exception_hook
 
-    # Make sure the saveddata db exists
-    if not os.path.exists(config.savePath):
-        os.mkdir(config.savePath)
+        # Import everything
+        log.debug("Import wx")
+        import wx
+        import os
+        import os.path
 
-    eos.db.saveddata_meta.create_all()
+        log.debug("Import eos.db")
+        import eos.db
+        import service.prefetch
+        from gui.mainFrame import MainFrame
 
-    pyfa = wx.App(False)
-    MainFrame(options.title)
-    pyfa.MainLoop()
+        log.debug("Make sure the saveddata db exists")
+        if not os.path.exists(config.savePath):
+            os.mkdir(config.savePath)
+
+        eos.db.saveddata_meta.create_all()
+
+        pyfa = wx.App(False)
+        MainFrame(options.title)
+
+        # run the gui mainloop
+        log.debug("Run MainLoop()")
+        pyfa.MainLoop()
