@@ -24,7 +24,7 @@ import config
 
 from optparse import OptionParser, BadOptionError, AmbiguousOptionError
 
-from logbook import RotatingFileHandler, Logger, StreamHandler, NestedSetup
+from logbook import RotatingFileHandler, Logger, StreamHandler, NestedSetup, FingersCrossedHandler, NullHandler
 log = Logger(__name__)
 
 
@@ -41,6 +41,25 @@ class PassThroughOptionParser(OptionParser):
             except (BadOptionError, AmbiguousOptionError) as e:
                 largs.append(e.opt_str)
 
+
+class LoggerWriter:
+    def __init__(self, level):
+        # self.level is really like using log.debug(message)
+        # at least in my case
+        self.level = level
+
+    def write(self, message):
+        # if statement reduces the amount of newlines that are
+        # printed to the logger
+        if message not in {'\n', '    '}:
+            self.level(message.replace("\n", ""))
+
+    def flush(self):
+        # create a flush method so things can be flushed when
+        # the system wants to. Not sure if simply 'printing'
+        # sys.stderr is the correct way to do it, but it seemed
+        # to work properly for me.
+        self.level(sys.stderr)
 
 # Parse command line options
 usage = "usage: %prog [--root]"
@@ -118,26 +137,61 @@ if __name__ == "__main__":
     config.defPaths(options.savepath)
 
     # Basic logging initialization
-    logging_setup = NestedSetup([
-        # make sure we never bubble up to the stderr handler
-        # if we run out of setup handling
-        # NullHandler(),
-        StreamHandler(sys.stdout),
-        # then write messages that are at least warnings to a logfile
-        # FileHandler('application.log', level='WARNING'),
-        RotatingFileHandler(
-            config.getSavePath("log_rotate_test.txt"),
-            level=0,
-            max_size=1048576,
-            backup_count=5,
-            bubble=True
-        ),
-    ])
+
+    # Logging levels:
+    '''
+    logbook.CRITICAL
+    logbook.ERROR
+    logbook.WARNING
+    logbook.INFO
+    logbook.DEBUG
+    logbook.NOTSET
+    '''
+
+    if options.debug:
+        logging_setup = NestedSetup([
+            # make sure we never bubble up to the stderr handler
+            # if we run out of setup handling
+            NullHandler(),
+            StreamHandler(
+                sys.stdout,
+                bubble=False
+            ),
+            RotatingFileHandler(
+                config.getSavePath("Pyfa_debug.log"),
+                level=0,
+                max_size=1048576,
+                backup_count=5,
+                bubble=True
+            )
+        ])
+    else:
+        logging_setup = NestedSetup([
+            # make sure we never bubble up to the stderr handler
+            # if we run out of setup handling
+            NullHandler(),
+            FingersCrossedHandler(
+                RotatingFileHandler(
+                    config.getSavePath("Pyfa.log"),
+                    level=0,
+                    max_size=1048576,
+                    backup_count=5,
+                    bubble=False
+                ),
+                # action_level=Warning,
+                # buffer_size=1000,
+                # pull_information=True,
+                # reset=False,
+            )
+        ])
 
     with logging_setup.threadbound():
+        # Output all stdout (print) messages as warnings
+        sys.stdout = LoggerWriter(log.warning)
+        # Output all stderr (stacktrace) messages as critical
+        sys.stderr = LoggerWriter(log.critical)
 
         log.info("Starting Pyfa")
-        #sys.excepthook = exception_hook
 
         # Import everything
         log.debug("Import wx")
@@ -157,6 +211,7 @@ if __name__ == "__main__":
         eos.db.saveddata_meta.create_all()
 
         pyfa = wx.App(False)
+        log.debug("Show GUI")
         MainFrame(options.title)
 
         # run the gui mainloop
