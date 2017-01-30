@@ -636,13 +636,13 @@ class Fit(object):
 
     def calculateModifiedAttributes(self, targetFit=None, withBoosters=False, dirtyStorage=None):
         timer = Timer(u'Fit: {}, {}'.format(self.ID, self.name), logger)
-        logger.debug("Starting fit calculation on: {0}, withBoosters: {1}", self, withBoosters)
+        logger.info("Starting fit calculation on: {0}, withBoosters: {1}", self, withBoosters)
 
         shadow = False
         if targetFit and not withBoosters:
             logger.debug("Applying projections to target: {0}", targetFit)
             projectionInfo = self.getProjectionInfo(targetFit.ID)
-            logger.debug("ProjectionInfo: {0}", projectionInfo)
+            logger.info("ProjectionInfo: {0}", projectionInfo)
             if self == targetFit:
                 copied = self  # original fit
                 shadow = True
