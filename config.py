@@ -1,10 +1,8 @@
 import os
 import sys
 
-# TODO: move all logging back to pyfa.py main loop
-# We moved it here just to avoid rebuilding windows skeleton for now (any change to pyfa.py needs it)
-import logging
-import logging.handlers
+from logbook import Logger
+logger = Logger(__name__)
 
 # Load variable overrides specific to distribution type
 try:
@@ -29,23 +27,6 @@ savePath = None
 saveDB = None
 gameDB = None
 
-
-class StreamToLogger(object):
-    """
-    Fake file-like stream object that redirects writes to a logger instance.
-    From: http://www.electricmonk.nl/log/2011/08/14/redirect-stdout-and-stderr-to-a-logger-in-python/
-    """
-
-    def __init__(self, logger, log_level=logging.INFO):
-        self.logger = logger
-        self.log_level = log_level
-        self.linebuf = ''
-
-    def write(self, buf):
-        for line in buf.rstrip().splitlines():
-            self.logger.log(self.log_level, line.rstrip())
-
-
 def isFrozen():
     if hasattr(sys, 'frozen'):
         return True
@@ -66,10 +47,7 @@ def defPaths(customSavePath):
     global gameDB
     global saveInRoot
 
-    if debug:
-        logLevel = logging.DEBUG
-    else:
-        logLevel = logging.WARN
+    logger.debug("Configuring Pyfa")
 
     # The main pyfa directory which contains run.py
     # Python 2.X uses ANSI by default, so we need to convert the character encoding
@@ -97,19 +75,9 @@ def defPaths(customSavePath):
         os.environ["REQUESTS_CA_BUNDLE"] = getPyfaPath(certName).encode('utf8')
         os.environ["SSL_CERT_FILE"] = getPyfaPath(certName).encode('utf8')
 
-    loggingFormat = '%(asctime)s %(name)-24s %(levelname)-8s %(message)s'
-    logging.basicConfig(format=loggingFormat, level=logLevel)
-    handler = logging.handlers.RotatingFileHandler(getSavePath("log.txt"), maxBytes=1000000, backupCount=3)
-    formatter = logging.Formatter(loggingFormat)
-    handler.setFormatter(formatter)
-    logging.getLogger('').addHandler(handler)
-
-    logging.info("Starting pyfa")
 
     if hasattr(sys, 'frozen'):
-        stdout_logger = logging.getLogger('STDOUT')
-        sl = StreamToLogger(stdout_logger, logging.INFO)
-        sys.stdout = sl
+        pass
 
         # This interferes with cx_Freeze's own handling of exceptions. Find a way to fix this.
         # stderr_logger = logging.getLogger('STDERR')
