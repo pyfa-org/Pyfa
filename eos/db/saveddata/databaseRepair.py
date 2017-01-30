@@ -138,7 +138,7 @@ class DatabaseCleanup:
         row = results.first()
 
         if row and row['num']:
-            query = "UPDATE 'damagePatterns' SET 'name' = 'Unknown' WHERE name IS NULL OR name = ''"
+            query = "DELETE FROM damagePatterns WHERE name IS NULL OR name = ''"
             delete = DatabaseCleanup.ExecuteSQLQuery(saveddata_engine, query)
             logger.error("Database corruption found. Cleaning up %d records.", delete.rowcount)
 
@@ -157,6 +157,6 @@ class DatabaseCleanup:
         row = results.first()
 
         if row and row['num']:
-            query = "UPDATE 'targetResists' SET 'name' = 'Unknown' WHERE name IS NULL OR name = ''"
+            query = "DELETE FROM targetResists WHERE name IS NULL OR name = ''"
             delete = DatabaseCleanup.ExecuteSQLQuery(saveddata_engine, query)
             logger.error("Database corruption found. Cleaning up %d records.", delete.rowcount)

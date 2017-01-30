@@ -54,6 +54,8 @@ if config.saveDB and os.path.isfile(config.saveDB):
     database_cleanup_instance.OrphanedCharacterSkills(db.saveddata_engine)
     database_cleanup_instance.OrphanedFitCharacterIDs(db.saveddata_engine)
     database_cleanup_instance.OrphanedFitDamagePatterns(db.saveddata_engine)
+    database_cleanup_instance.NullDamagePatternNames(db.saveddata_engine)
+    database_cleanup_instance.NullTargetResistNames(db.saveddata_engine)
     logging.debug("Completed database validation.")
 
 else:
