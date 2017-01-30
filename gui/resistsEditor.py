@@ -22,6 +22,8 @@ from service.targetResists import TargetResists
 from gui.bitmapLoader import BitmapLoader
 from gui.utils.clipboard import toClipboard, fromClipboard
 from gui.builtinViews.entityEditor import EntityEditor, BaseValidator
+from logbook import Logger
+logger = Logger(__name__)
 
 
 class TargetResistsTextValidor(BaseValidator):
@@ -44,6 +46,7 @@ class TargetResistsTextValidor(BaseValidator):
 
             return True
         except ValueError as e:
+            logger.error(e)
             wx.MessageBox(u"{}".format(e), "Error")
             textCtrl.SetFocus()
             return False
@@ -227,10 +230,14 @@ class ResistsEditorDlg(wx.Dialog):
 
         except ValueError:
             editObj.SetForegroundColour(wx.RED)
-            self.stNotice.SetLabel("Incorrect Formatting (decimals only)")
+            msg = "Incorrect Formatting (decimals only)"
+            logger.warning(msg)
+            self.stNotice.SetLabel(msg)
         except AssertionError:
             editObj.SetForegroundColour(wx.RED)
-            self.stNotice.SetLabel("Incorrect Range (must be 0-100)")
+            msg = "Incorrect Range (must be 0-100)"
+            logger.warning(msg)
+            self.stNotice.SetLabel(msg)
         finally:  # Refresh for color changes to take effect immediately
             self.Refresh()
 
@@ -268,9 +275,12 @@ class ResistsEditorDlg(wx.Dialog):
                 sTR.importPatterns(text)
                 self.stNotice.SetLabel("Patterns successfully imported from clipboard")
             except ImportError as e:
+                logger.error(e)
                 self.stNotice.SetLabel(str(e))
             except Exception:
-                self.stNotice.SetLabel("Could not import from clipboard: unknown errors")
+                msg = "Could not import from clipboard: unknown errors"
+                logger.warning(msg)
+                self.stNotice.SetLabel(msg)
             finally:
                 self.entityEditor.refreshEntityList()
         else:

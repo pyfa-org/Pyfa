@@ -25,6 +25,8 @@ import gui.PFSearchBox as SBox
 from gui.cachingImageList import CachingImageList
 from gui.contextMenu import ContextMenu
 from gui.bitmapLoader import BitmapLoader
+from logbook import Logger
+logger = Logger(__name__)
 
 ItemSelected, ITEM_SELECTED = wx.lib.newevent.NewEvent()
 
@@ -179,6 +181,7 @@ class MarketTree(wx.TreeCtrl):
                 try:
                     childId = self.AppendItem(root, childMktGrp.name, iconId, data=wx.TreeItemData(childMktGrp.ID))
                 except:
+                    logger.debug("Error appending item.")
                     continue
                 if sMkt.marketGroupHasTypesCheck(childMktGrp) is False:
                     self.AppendItem(childId, "dummy")

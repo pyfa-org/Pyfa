@@ -97,6 +97,7 @@ class StoppableHTTPServer(BaseHTTPServer.HTTPServer):
                 sock.settimeout(None)
                 return (sock, addr)
             except socket.timeout:
+                logger.warning("Server timed out waiting for connection")
                 pass
 
     def stop(self):
@@ -115,6 +116,7 @@ class StoppableHTTPServer(BaseHTTPServer.HTTPServer):
             try:
                 self.handle_request()
             except TypeError:
+                logger.debug("Caught exception in serve")
                 pass
         self.server_close()
 

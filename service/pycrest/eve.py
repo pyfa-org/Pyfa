@@ -67,6 +67,7 @@ class FileCache(APICache):
             with open(self._getpath(key), 'rb') as f:
                 return pickle.loads(zlib.decompress(f.read()))
         except IOError as ex:
+            logger.debug("IO error opening zip file. (May not exist yet.")
             if ex.errno == 2:  # file does not exist (yet)
                 return None
             else:
@@ -78,6 +79,7 @@ class FileCache(APICache):
         try:
             os.unlink(self._getpath(key))
         except OSError as ex:
+            logger.debug("Caught exception in invalidate")
             if ex.errno == 2:  # does not exist
                 pass
             else:

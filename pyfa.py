@@ -39,6 +39,7 @@ class PassThroughOptionParser(OptionParser):
             try:
                 OptionParser._process_args(self, largs, rargs, values)
             except (BadOptionError, AmbiguousOptionError) as e:
+                logger.error("Bad startup option passed.")
                 largs.append(e.opt_str)
 
 

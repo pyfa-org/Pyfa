@@ -23,6 +23,8 @@ import gui.globalEvents as GE
 import gui.mainFrame
 from service.character import Character
 from service.fit import Fit
+from logbook import Logger
+logger = Logger(__name__)
 
 
 class CharacterSelection(wx.Panel):
@@ -113,6 +115,7 @@ class CharacterSelection(wx.Panel):
                 sChar.apiFetch(self.getActiveCharacter(), charName)
             except:
                 # can we do a popup, notifying user of API error?
+                logger.error("API fetch error")
                 pass
         self.refreshCharacterList()
 

@@ -47,6 +47,7 @@ class ImplantTextValidor(BaseValidator):
 
             return True
         except ValueError as e:
+            logger.error(e)
             wx.MessageBox(u"{}".format(e), "Error")
             textCtrl.SetFocus()
             return False
@@ -196,9 +197,10 @@ class ImplantSetEditorDlg(wx.Dialog):
                 self.stNotice.SetLabel("Patterns successfully imported from clipboard")
                 self.showInput(False)
             except ImportError as e:
+                logger.error(e)
                 self.stNotice.SetLabel(str(e))
             except Exception as e:
-                logging.exception("Unhandled Exception")
+                logger.error(e)
                 self.stNotice.SetLabel("Could not import from clipboard: unknown errors")
             finally:
                 self.updateChoices()

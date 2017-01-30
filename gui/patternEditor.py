@@ -23,6 +23,8 @@ from wx.lib.intctrl import IntCtrl
 from gui.utils.clipboard import toClipboard, fromClipboard
 from gui.builtinViews.entityEditor import EntityEditor, BaseValidator
 from service.damagePattern import DamagePattern, ImportError
+from logbook import Logger
+logger = Logger(__name__)
 
 
 class DmgPatternTextValidor(BaseValidator):
@@ -45,6 +47,7 @@ class DmgPatternTextValidor(BaseValidator):
 
             return True
         except ValueError as e:
+            logger.error(e)
             wx.MessageBox(u"{}".format(e), "Error")
             textCtrl.SetFocus()
             return False
@@ -254,9 +257,12 @@ class DmgPatternEditorDlg(wx.Dialog):
                 sDP.importPatterns(text)
                 self.stNotice.SetLabel("Patterns successfully imported from clipboard")
             except ImportError as e:
+                logger.error(e)
                 self.stNotice.SetLabel(str(e))
             except Exception:
-                self.stNotice.SetLabel("Could not import from clipboard: unknown errors")
+                msg = "Could not import from clipboard: unknown errors"
+                logger.warning(msg)
+                self.stNotice.SetLabel(msg)
             finally:
                 self.entityEditor.refreshEntityList()
         else:

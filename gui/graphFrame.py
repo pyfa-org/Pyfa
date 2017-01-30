@@ -220,7 +220,9 @@ class GraphFrame(wx.Frame):
                 self.subplot.plot(x, y)
                 legend.append(fit.name)
             except:
-                self.SetStatusText("Invalid values in '%s'" % fit.name)
+                msg = "Invalid values in '%s'" % fit.name
+                logger.error(msg)
+                self.SetStatusText(msg)
                 self.canvas.draw()
                 return
 

@@ -1,6 +1,9 @@
 # Backport of OrderedDict() class that runs on Python 2.4, 2.5, 2.6, 2.7 and pypy.
 # Passes Python2.7's test suite and incorporates all the latest updates.
 
+from logbook import Logger
+logger = Logger(__name__)
+
 try:
     from thread import get_ident as _get_ident
 except ImportError:
@@ -9,6 +12,7 @@ except ImportError:
 try:
     from _abcoll import KeysView, ValuesView, ItemsView
 except ImportError:
+    logger.warning("Failed to import from _abcoll")
     pass
 
 

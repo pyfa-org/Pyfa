@@ -26,6 +26,9 @@ import wx
 
 import config
 
+from logbook import Logger
+logger = Logger(__name__)
+
 try:
     from collections import OrderedDict
 except ImportError:
@@ -36,6 +39,7 @@ class BitmapLoader():
     try:
         archive = zipfile.ZipFile(config.getPyfaPath('imgs.zip'), 'r')
     except IOError:
+        logger.info("Using local image files instead of zip.")
         archive = None
 
     cachedBitmaps = OrderedDict()

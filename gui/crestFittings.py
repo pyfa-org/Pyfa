@@ -16,6 +16,9 @@ from eos.db import getItem
 import gui.display as d
 import gui.globalEvents as GE
 
+from logbook import Logger
+logger = Logger(__name__)
+
 
 class CrestFittings(wx.Frame):
     def __init__(self, parent):
@@ -145,7 +148,9 @@ class CrestFittings(wx.Frame):
             self.cacheTimer.Start(1000)
             self.fitTree.populateSkillTree(fittings)
         except requests.exceptions.ConnectionError:
-            self.statusbar.SetStatusText("Connection error, please check your internet connection")
+            msg = "Connection error, please check your internet connection"
+            logger.error(msg)
+            self.statusbar.SetStatusText(msg)
         finally:
             del waitDialog
 
@@ -173,7 +178,9 @@ class CrestFittings(wx.Frame):
             try:
                 sCrest.delFitting(self.getActiveCharacter(), data['fittingID'])
             except requests.exceptions.ConnectionError:
-                self.statusbar.SetStatusText("Connection error, please check your internet connection")
+                msg = "Connection error, please check your internet connection"
+                logger.error(msg)
+                self.statusbar.SetStatusText(msg)
 
 
 class ExportToEve(wx.Frame):
@@ -281,9 +288,12 @@ class ExportToEve(wx.Frame):
                 text = json.loads(res.text)
                 self.statusbar.SetStatusText(text['message'], 1)
             except ValueError:
+                logger.warning("Value error on loading JSON.")
                 self.statusbar.SetStatusText("", 1)
         except requests.exceptions.ConnectionError:
-            self.statusbar.SetStatusText("Connection error, please check your internet connection", 1)
+            msg = "Connection error, please check your internet connection"
+            logger.error(msg)
+            self.statusbar.SetStatusText(msg)
 
 
 class CrestMgmt(wx.Dialog):
@@ -405,6 +415,7 @@ class FittingsTreeView(wx.Panel):
                 cargo.amount = item['quantity']
                 list.append(cargo)
             except:
+                logger.error("Exception caught in displayFit")
                 pass
 
         self.parent.fitView.fitSelection = selection

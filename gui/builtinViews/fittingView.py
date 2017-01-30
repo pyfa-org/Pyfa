@@ -58,6 +58,7 @@ class FitSpawner(gui.multiSwitch.TabSpawner):
                     wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=event.fitID))
                     break
             except:
+                logger.warning("Caught exception in fitSelected")
                 pass
         if count < 0:
             startup = getattr(event, "startup", False)  # see OpenFitsThread in gui.mainFrame
@@ -274,6 +275,7 @@ class FittingView(d.Display):
             sFit.refreshFit(self.getActiveFit())
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.activeFitID))
         except wx._core.PyDeadObjectError:
+            logger.warning("Caught dead object")
             pass
 
         event.Skip()
@@ -476,6 +478,7 @@ class FittingView(d.Display):
 
             self.Show(self.activeFitID is not None and self.activeFitID == event.fitID)
         except wx._core.PyDeadObjectError:
+            logger.warning("Caught dead object")
             pass
         finally:
             event.Skip()
@@ -630,6 +633,7 @@ class FittingView(d.Display):
             try:
                 self.MakeSnapshot()
             except:
+                logger.warning("Failed to make snapshot")
                 pass
 
     def OnShow(self, event):
@@ -637,6 +641,7 @@ class FittingView(d.Display):
             try:
                 self.MakeSnapshot()
             except:
+                logger.warning("Failed to make snapshot")
                 pass
         event.Skip()
 
@@ -662,6 +667,7 @@ class FittingView(d.Display):
         try:
             fit = sFit.getFit(self.activeFitID)
         except:
+            logger.warning("Failed to get fit")
             return
 
         if fit is None:

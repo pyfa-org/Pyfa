@@ -326,6 +326,7 @@ class Port(object):
             except ValueError:
                 f.ship = Citadel(sMkt.getItem(fit['ship']['id']))
         except:
+            logger.warning("Caught exception in importCrest")
             return None
 
         items = fit['items']
@@ -351,6 +352,7 @@ class Port(object):
                         m = Module(item)
                     # When item can't be added to any slot (unknown item or just charge), ignore it
                     except ValueError:
+                        logger.debug("Item can't be added to any slot (unknown item or just charge)")
                         continue
                     # Add subsystems before modules to make sure T3 cruisers have subsystems installed
                     if item.category.name == "Subsystem":
@@ -363,6 +365,7 @@ class Port(object):
                         moduleList.append(m)
 
             except:
+                logger.warning("Could not process module.")
                 continue
 
         # Recalc to get slot numbers correct for T3 cruisers
@@ -391,6 +394,7 @@ class Port(object):
                 string = string[string.index(str(id_)):]
                 break
             except:
+                logger.warning("Exception caught in importDna")
                 pass
         string = string[:string.index("::") + 2]
         info = string.split(":")
@@ -435,6 +439,7 @@ class Port(object):
                         try:
                             m = Module(item)
                         except:
+                            logger.warning("Exception caught in importDna")
                             continue
                         # Add subsystems before modules to make sure T3 cruisers have subsystems installed
                         if item.category.name == "Subsystem":
@@ -483,6 +488,7 @@ class Port(object):
                 fit.ship = Citadel(ship)
             fit.name = fitName
         except:
+            logger.warning("Exception caught in importEft")
             return
 
         # maintain map of drones and their quantities
@@ -523,6 +529,7 @@ class Port(object):
                 item = sMkt.getItem(modName, eager="group.category")
             except:
                 # if no data can be found (old names)
+                logger.warning("no data can be found (old names)")
                 continue
 
             if item.category.name == "Drone":
@@ -675,6 +682,7 @@ class Port(object):
                             try:
                                 droneItem = sMkt.getItem(droneName, eager="group.category")
                             except:
+                                logger.warning("Cannot get item.")
                                 continue
                             if droneItem.category.name == "Drone":
                                 # Add drone to the fitting
@@ -696,6 +704,7 @@ class Port(object):
                             try:
                                 implantItem = sMkt.getItem(entityData, eager="group.category")
                             except:
+                                logger.warning("Cannot get item.")
                                 continue
                             if implantItem.category.name != "Implant":
                                 continue
@@ -711,6 +720,7 @@ class Port(object):
                             try:
                                 boosterItem = sMkt.getItem(entityData, eager="group.category")
                             except:
+                                logger.warning("Cannot get item.")
                                 continue
                             # All boosters have implant category
                             if boosterItem.category.name != "Implant":
@@ -731,6 +741,7 @@ class Port(object):
                         try:
                             item = sMkt.getItem(cargoName)
                         except:
+                            logger.warning("Cannot get item.")
                             continue
                         # Add Cargo to the fitting
                         c = Cargo(item)
@@ -744,6 +755,7 @@ class Port(object):
                         try:
                             modItem = sMkt.getItem(modName)
                         except:
+                            logger.warning("Cannot get item.")
                             continue
 
                         # Create module
@@ -765,6 +777,7 @@ class Port(object):
                                     if chargeItem.category.name == "Charge":
                                         m.charge = chargeItem
                                 except:
+                                    logger.warning("Cannot get item.")
                                     pass
                             # Append module to fit
                             moduleList.append(m)
@@ -783,6 +796,7 @@ class Port(object):
                     wx.CallAfter(callback, None)
             # Skip fit silently if we get an exception
             except Exception:
+                logger.error("Caught exception on fit.")
                 pass
 
         return fits
@@ -807,6 +821,7 @@ class Port(object):
                 except ValueError:
                     f.ship = Citadel(sMkt.getItem(shipType))
             except:
+                logger.warning("Caught exception on importXml")
                 continue
             hardwares = fitting.getElementsByTagName("hardware")
             moduleList = []
@@ -816,6 +831,7 @@ class Port(object):
                     try:
                         item = sMkt.getItem(moduleName, eager="group.category")
                     except:
+                        logger.warning("Caught exception on importXml")
                         continue
                     if item:
                         if item.category.name == "Drone":
@@ -838,6 +854,7 @@ class Port(object):
                                 m = Module(item)
                             # When item can't be added to any slot (unknown item or just charge), ignore it
                             except ValueError:
+                                logger.warning("item can't be added to any slot (unknown item or just charge), ignore it")
                                 continue
                             # Add subsystems before modules to make sure T3 cruisers have subsystems installed
                             if item.category.name == "Subsystem":
@@ -851,6 +868,7 @@ class Port(object):
                                 moduleList.append(m)
 
                 except KeyboardInterrupt:
+                    logger.warning("Keyboard Interrupt")
                     continue
 
             # Recalc to get slot numbers correct for T3 cruisers

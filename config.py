@@ -8,6 +8,7 @@ logger = Logger(__name__)
 try:
     import configforced
 except ImportError:
+    logger.warning("Failed to import: configforced")
     configforced = None
 
 # Turns on debug mode

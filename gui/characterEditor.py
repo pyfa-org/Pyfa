@@ -30,6 +30,8 @@ from service.fit import Fit
 from service.character import Character
 from service.network import AuthenticationError, TimeoutError
 from service.market import Market
+from logbook import Logger
+logger = Logger(__name__)
 
 
 class CharacterTextValidor(BaseValidator):
@@ -52,6 +54,7 @@ class CharacterTextValidor(BaseValidator):
 
             return True
         except ValueError, e:
+            logger.error(e)
             wx.MessageBox(u"{}".format(e), "Error")
             textCtrl.SetFocus()
             return False
@@ -626,10 +629,15 @@ class APIView(wx.Panel):
             activeChar = self.charEditor.entityEditor.getActiveEntity()
             list = sChar.apiCharList(activeChar.ID, self.inputID.GetLineText(0), self.inputKey.GetLineText(0))
         except AuthenticationError, e:
-            self.stStatus.SetLabel("Authentication failure. Please check keyID and vCode combination.")
+            msg = "Authentication failure. Please check keyID and vCode combination."
+            logger.info(msg)
+            self.stStatus.SetLabel(msg)
         except TimeoutError, e:
-            self.stStatus.SetLabel("Request timed out. Please check network connectivity and/or proxy settings.")
+            msg = "Request timed out. Please check network connectivity and/or proxy settings."
+            logger.info(msg)
+            self.stStatus.SetLabel(msg)
         except Exception, e:
+            logger.error(e)
             self.stStatus.SetLabel("Error:\n%s" % e.message)
         else:
             self.charChoice.Clear()
@@ -652,6 +660,7 @@ class APIView(wx.Panel):
                 sChar.apiFetch(activeChar.ID, charName)
                 self.stStatus.SetLabel("Successfully fetched %s\'s skills from EVE API." % charName)
             except Exception, e:
+                logger.error("Unable to retrieve %s\'s skills. Error message:\n%s" % (charName, e))
                 self.stStatus.SetLabel("Unable to retrieve %s\'s skills. Error message:\n%s" % (charName, e))
 
 

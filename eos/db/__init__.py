@@ -25,8 +25,8 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import pool
 from logbook import Logger
 
-log = Logger(__name__)
-log.debug("Initializing")
+logger = Logger(__name__)
+logger.debug("Initializing")
 
 import migration
 from eos import config
@@ -53,6 +53,7 @@ try:
         "SELECT `field_value` FROM `metadata` WHERE `field_name` LIKE 'client_build'"
     ).fetchone()[0]
 except:
+    logger.warning("Missing gamedata version.")
     config.gamedata_version = None
 
 saveddata_connectionstring = config.saveddata_connectionstring
