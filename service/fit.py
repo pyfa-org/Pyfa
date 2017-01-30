@@ -39,6 +39,9 @@ from service.settings import SettingsProvider
 
 logger = logging.getLogger(__name__)
 
+from logbook import Logger
+log = Logger(__name__)
+
 
 class Fit(object):
     instance = None
@@ -51,6 +54,7 @@ class Fit(object):
         return cls.instance
 
     def __init__(self):
+        log.debug("Initialize Fit class")
         self.pattern = DamagePattern.getInstance().getDamagePattern("Uniform")
         self.targetResists = None
         self.character = saveddata_Character.getAll5()

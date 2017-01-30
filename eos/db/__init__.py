@@ -23,7 +23,10 @@ from sqlalchemy import MetaData, create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import pool
+from logbook import Logger
 
+log = Logger(__name__)
+log.debug("Initializing")
 
 import migration
 from eos import config

@@ -24,6 +24,9 @@ import config
 
 from optparse import OptionParser, BadOptionError, AmbiguousOptionError
 
+from logbook import RotatingFileHandler, Logger, StreamHandler, NestedSetup, FingersCrossedHandler, NullHandler
+log = Logger(__name__)
+
 
 class PassThroughOptionParser(OptionParser):
     """
@@ -38,6 +41,25 @@ class PassThroughOptionParser(OptionParser):
             except (BadOptionError, AmbiguousOptionError) as e:
                 largs.append(e.opt_str)
 
+
+class LoggerWriter:
+    def __init__(self, level):
+        # self.level is really like using log.debug(message)
+        # at least in my case
+        self.level = level
+
+    def write(self, message):
+        # if statement reduces the amount of newlines that are
+        # printed to the logger
+        if message not in {'\n', '    '}:
+            self.level(message.replace("\n", ""))
+
+    def flush(self):
+        # create a flush method so things can be flushed when
+        # the system wants to. Not sure if simply 'printing'
+        # sys.stderr is the correct way to do it, but it seemed
+        # to work properly for me.
+        self.level(sys.stderr)
 
 # Parse command line options
 usage = "usage: %prog [--root]"
@@ -115,24 +137,83 @@ if __name__ == "__main__":
     config.defPaths(options.savepath)
 
     # Basic logging initialization
-    import logging
-    logging.basicConfig()
 
-    # Import everything
-    import wx
-    import os
-    import os.path
+    # Logging levels:
+    '''
+    logbook.CRITICAL
+    logbook.ERROR
+    logbook.WARNING
+    logbook.INFO
+    logbook.DEBUG
+    logbook.NOTSET
+    '''
 
-    import eos.db
-    import service.prefetch
-    from gui.mainFrame import MainFrame
+    if options.debug:
+        logging_setup = NestedSetup([
+            # make sure we never bubble up to the stderr handler
+            # if we run out of setup handling
+            NullHandler(),
+            StreamHandler(
+                sys.stdout,
+                bubble=False
+            ),
+            RotatingFileHandler(
+                config.getSavePath("Pyfa_debug.log"),
+                level=0,
+                max_size=1048576,
+                backup_count=5,
+                bubble=True
+            )
+        ])
+    else:
+        logging_setup = NestedSetup([
+            # make sure we never bubble up to the stderr handler
+            # if we run out of setup handling
+            NullHandler(),
+            FingersCrossedHandler(
+                RotatingFileHandler(
+                    config.getSavePath("Pyfa.log"),
+                    level=0,
+                    max_size=1048576,
+                    backup_count=5,
+                    bubble=False
+                ),
+                # action_level=Warning,
+                # buffer_size=1000,
+                # pull_information=True,
+                # reset=False,
+            )
+        ])
 
-    # Make sure the saveddata db exists
-    if not os.path.exists(config.savePath):
-        os.mkdir(config.savePath)
+    with logging_setup.threadbound():
+        # Output all stdout (print) messages as warnings
+        sys.stdout = LoggerWriter(log.warning)
+        # Output all stderr (stacktrace) messages as critical
+        sys.stderr = LoggerWriter(log.critical)
 
-    eos.db.saveddata_meta.create_all()
+        log.info("Starting Pyfa")
 
-    pyfa = wx.App(False)
-    MainFrame(options.title)
-    pyfa.MainLoop()
+        # Import everything
+        log.debug("Import wx")
+        import wx
+        import os
+        import os.path
+
+        log.debug("Import eos.db")
+        import eos.db
+        import service.prefetch
+        from gui.mainFrame import MainFrame
+
+        log.debug("Make sure the saveddata db exists")
+        if not os.path.exists(config.savePath):
+            os.mkdir(config.savePath)
+
+        eos.db.saveddata_meta.create_all()
+
+        pyfa = wx.App(False)
+        log.debug("Show GUI")
+        MainFrame(options.title)
+
+        # run the gui mainloop
+        log.debug("Run MainLoop()")
+        pyfa.MainLoop()
