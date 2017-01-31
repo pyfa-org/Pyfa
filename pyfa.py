@@ -158,7 +158,7 @@ if __name__ == "__main__":
     savePath_Destination = config.getSavePath(savePath_filename)
 
     try:
-        if options.debug and savePath_Destination:
+        if options.debug:
             logging_mode = "Debug"
             logging_setup = NestedSetup([
                 # make sure we never bubble up to the stderr handler
@@ -176,7 +176,7 @@ if __name__ == "__main__":
                     bubble=True
                 )
             ])
-        elif savePath_Destination:
+        else:
             logging_mode = "User"
             logging_setup = NestedSetup([
                 # make sure we never bubble up to the stderr handler
