@@ -188,9 +188,15 @@ if __name__ == "__main__":
 
     with logging_setup.threadbound():
         # Output all stdout (print) messages as warnings
-        sys.stdout = LoggerWriter(logger.warning)
+        try:
+            sys.stdout = LoggerWriter(logger.warning)
+        except ValueError:
+            logger.critical("Cannot access log file.  Continuing without writing stdout to log.")
         # Output all stderr (stacktrace) messages as critical
-        sys.stderr = LoggerWriter(logger.critical)
+        try:
+            sys.stderr = LoggerWriter(logger.critical)
+        except ValueError:
+            logger.critical("Cannot access log file.  Continuing without writing stderr to log.")
 
         logger.info("Starting Pyfa")
 
