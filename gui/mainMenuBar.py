@@ -167,7 +167,7 @@ class MainMenuBar(wx.MenuBar):
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
 
     def fitChanged(self, event):
-        logger.debug("fitChanged - Start")
+        logger.debug("fitChanged triggered")
         enable = event.fitID is not None
         self.Enable(wx.ID_SAVEAS, enable)
         self.Enable(wx.ID_COPY, enable)
