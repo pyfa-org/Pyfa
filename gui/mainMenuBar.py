@@ -183,5 +183,3 @@ class MainMenuBar(wx.MenuBar):
         self.Enable(self.revertCharId, char.isDirty)
 
         event.Skip()
-
-        logger.debug("fitChanged - End")

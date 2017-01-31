@@ -19,6 +19,7 @@
 # ==============================================================================
 
 import sys
+import os
 import re
 import config
 
@@ -150,6 +151,53 @@ if __name__ == "__main__":
     '''
 
     if options.debug:
+        savePath_filename = "Pyfa_debug.log"
+    else:
+        savePath_filename = "Pyfa.log"
+
+    savePath_Destination = config.getSavePath(savePath_filename)
+
+    try:
+        if options.debug and savePath_Destination:
+            logging_mode = "Debug"
+            logging_setup = NestedSetup([
+                # make sure we never bubble up to the stderr handler
+                # if we run out of setup handling
+                NullHandler(),
+                StreamHandler(
+                    sys.stdout,
+                    bubble=False
+                ),
+                RotatingFileHandler(
+                    savePath_Destination,
+                    level=0,
+                    max_size=1048576,
+                    backup_count=5,
+                    bubble=True
+                )
+            ])
+        elif savePath_Destination:
+            logging_mode = "User"
+            logging_setup = NestedSetup([
+                # make sure we never bubble up to the stderr handler
+                # if we run out of setup handling
+                NullHandler(),
+                FingersCrossedHandler(
+                    RotatingFileHandler(
+                        savePath_Destination,
+                        level=0,
+                        max_size=1048576,
+                        backup_count=5,
+                        bubble=False
+                    ),
+                    # action_level=Warning,
+                    # buffer_size=1000,
+                    # pull_information=True,
+                    # reset=False,
+                )
+            ])
+    except:
+        logging_mode = "Console Only"
         logging_setup = NestedSetup([
             # make sure we never bubble up to the stderr handler
             # if we run out of setup handling
@@ -157,32 +205,6 @@ if __name__ == "__main__":
             StreamHandler(
                 sys.stdout,
                 bubble=False
-            ),
-            RotatingFileHandler(
-                config.getSavePath("Pyfa_debug.log"),
-                level=0,
-                max_size=1048576,
-                backup_count=5,
-                bubble=True
-            )
-        ])
-    else:
-        logging_setup = NestedSetup([
-            # make sure we never bubble up to the stderr handler
-            # if we run out of setup handling
-            NullHandler(),
-            FingersCrossedHandler(
-                RotatingFileHandler(
-                    config.getSavePath("Pyfa.log"),
-                    level=0,
-                    max_size=1048576,
-                    backup_count=5,
-                    bubble=False
-                ),
-                # action_level=Warning,
-                # buffer_size=1000,
-                # pull_information=True,
-                # reset=False,
             )
         ])
 
@@ -199,6 +221,7 @@ if __name__ == "__main__":
             logger.critical("Cannot access log file.  Continuing without writing stderr to log.")
 
         logger.info("Starting Pyfa")
+        logger.info("Running in logging mode: {0}", logging_mode)
 
         # Import everything
         logger.debug("Import wx")
