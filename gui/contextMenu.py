@@ -119,7 +119,7 @@ class ContextMenu(object):
 
         debug_end = len(cls._ids)
         if (debug_end - debug_start):
-            logger.debug("{0} new IDs created for this menu", (debug_end - debug_start))
+            logger.debug("{0} new IDs created for this menu",   (debug_end - debug_start))
 
         return rootMenu if empty is False else None
 
@@ -176,4 +176,5 @@ class ContextMenu(object):
         return None
 
 
-from gui.builtinContextMenus import *  # noqa
+# from gui.builtinContextMenus import *  # noqa
+from gui.builtinContextMenus import ammoPattern, amount, cargo, changeAffectingSkills, damagePattern, droneRemoveStack, droneSplit, factorReload, fighterAbilities, implantSets, itemRemove, itemStats, marketJump, metaSwap, moduleAmmoPicker, moduleGlobalAmmoPicker, openFit, priceClear, project, shipJump, tacticalMode, targetResists, whProjector

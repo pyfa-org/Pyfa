@@ -76,15 +76,6 @@ def defPaths(customSavePath):
         os.environ["REQUESTS_CA_BUNDLE"] = getPyfaPath(certName).encode('utf8')
         os.environ["SSL_CERT_FILE"] = getPyfaPath(certName).encode('utf8')
 
-
-    if hasattr(sys, 'frozen'):
-        pass
-
-        # This interferes with cx_Freeze's own handling of exceptions. Find a way to fix this.
-        # stderr_logger = logging.getLogger('STDERR')
-        # sl = StreamToLogger(stderr_logger, logging.ERROR)
-        # sys.stderr = sl
-
     # The database where we store all the fits etc
     saveDB = getSavePath("saveddata.db")
 
@@ -104,7 +95,7 @@ def defPaths(customSavePath):
 
 
 def getPyfaPath(Append=None):
-    base = getattr(sys.modules['__main__'], "__file__", sys.executable) if isFrozen() else sys.argv[0]
+    base = sys.argv[0]
     root = os.path.dirname(os.path.realpath(os.path.abspath(base)))
 
     if Append:

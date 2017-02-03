@@ -42,4 +42,5 @@ class StatsView(object):
         raise NotImplementedError()
 
 
-from gui.builtinStatsViews import *  # noqa
+# from gui.builtinStatsViews import *  # noqa
+from gui.builtinStatsViews import capacitorViewFull, firepowerViewFull, miningyieldViewFull, priceViewFull, rechargeViewFull, resistancesViewFull, resourcesViewFull, targetingMiscViewFull

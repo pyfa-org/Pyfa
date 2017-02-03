@@ -55,7 +55,7 @@ from gui.graphFrame import GraphFrame
 from gui.copySelectDialog import CopySelectDialog
 from gui.utils.clipboard import toClipboard, fromClipboard
 from gui.updateDialog import UpdateDialog
-from gui.builtinViews import *  # TODO: unsure if this is needed here
+from gui.builtinViews import emptyView, entityEditor, fittingView, implantEditor
 from gui import graphFrame
 
 from service.settings import SettingsProvider

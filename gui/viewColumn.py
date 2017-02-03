@@ -65,4 +65,5 @@ class ViewColumn(object):
         raise NotImplementedError()
 
 
-from gui.builtinViewColumns import *  # noqa
+#from gui.builtinViewColumns import *  # noqa
+from gui.builtinViewColumns import abilities, ammo, ammoIcon, attributeDisplay, baseIcon, baseName, capacitorUse, maxRange, misc, price, propertyDisplay, state

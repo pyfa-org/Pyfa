@@ -267,8 +267,12 @@ class Market():
         }
 
         # do not publish ships that we convert
+        # TODO: Rewrite conversions to not be....this....
+        # TODO: TL:DR; importing it this way is terrible and breaks packaging it
+        '''
         for name in conversions.packs['skinnedShips']:
             self.ITEMS_FORCEPUBLISHED[name] = False
+        '''
 
         if config.debug:
             # Publish Tactical Dessy Modes if in debug
