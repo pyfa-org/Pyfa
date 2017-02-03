@@ -197,6 +197,8 @@ if __name__ == "__main__":
                 )
             ])
     except:
+        # We are unable to properly access the Pyfa log file.  Write everything to console.
+        # This is not ideal, but a fallback for when files are locked or unable to be accessed.
         logging_mode = "Console Only"
         logging_setup = NestedSetup([
             # make sure we never bubble up to the stderr handler
@@ -211,20 +213,22 @@ if __name__ == "__main__":
     with logging_setup.threadbound():
 
         # Don't redirect stdout or stderr if frozen
-        if not hasattr(sys, 'frozen'):
-            # Output all stdout (print) messages as warnings
-            try:
-                sys.stdout = LoggerWriter(logger.warning)
-            except ValueError:
-                logger.critical("Cannot access log file.  Continuing without writing stdout to log.")
-            # Output all stderr (stacktrace) messages as critical
-            try:
-                sys.stderr = LoggerWriter(logger.critical)
-            except ValueError:
-                logger.critical("Cannot access log file.  Continuing without writing stderr to log.")
+        #if not hasattr(sys, 'frozen'):
+        #    pass
 
-            logger.info("Starting Pyfa")
-            logger.info("Running in logging mode: {0}", logging_mode)
+        # Output all stdout (print) messages as warnings
+        try:
+            sys.stdout = LoggerWriter(logger.warning)
+        except ValueError:
+            logger.critical("Cannot access log file.  Continuing without writing stdout to log.")
+        # Output all stderr (stacktrace) messages as critical
+        try:
+            sys.stderr = LoggerWriter(logger.critical)
+        except ValueError:
+            logger.critical("Cannot access log file.  Continuing without writing stderr to log.")
+
+        logger.info("Starting Pyfa")
+        logger.info("Running in logging mode: {0}", logging_mode)
 
         # Import everything
         logger.debug("Import wx")
