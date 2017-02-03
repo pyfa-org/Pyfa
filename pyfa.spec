@@ -1898,6 +1898,7 @@ import_these = [
     "eos.effects.zcolinorcasurveyscannerbonus",
     "eos.effects.zcolinorcatractorrangebonus",
     "eos.effects.zcolinorcatractorvelocitybonus",
+    "service.conversions.__init__",
     "service.conversions.releaseApril2016",
     "service.conversions.releaseCarnyx",
     "service.conversions.releaseDecember15",
