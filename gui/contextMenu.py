@@ -177,4 +177,6 @@ class ContextMenu(object):
         return None
 
 
-from gui.builtinContextMenus import *  # noqa
+from gui.builtinContextMenus import ammoPattern, amount, cargo, changeAffectingSkills, damagePattern, droneRemoveStack, \
+    droneSplit, factorReload, fighterAbilities, implantSets, itemRemove, itemStats, marketJump, metaSwap, moduleAmmoPicker, \
+    moduleGlobalAmmoPicker, openFit, priceClear, project, shipJump, tacticalMode, targetResists, whProjector

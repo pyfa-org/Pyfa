@@ -35,4 +35,4 @@ class Graph(object):
         return None
 
 
-from gui.builtinGraphs import *  # noqa
+from gui.builtinGraphs import fitDps
