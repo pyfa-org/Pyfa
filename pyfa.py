@@ -209,16 +209,18 @@ if __name__ == "__main__":
         ])
 
     with logging_setup.threadbound():
-        # Output all stdout (print) messages as warnings
-        try:
-            sys.stdout = LoggerWriter(logger.warning)
-        except ValueError:
-            logger.critical("Cannot access log file.  Continuing without writing stdout to log.")
-        # Output all stderr (stacktrace) messages as critical
-        try:
-            sys.stderr = LoggerWriter(logger.critical)
-        except ValueError:
-            logger.critical("Cannot access log file.  Continuing without writing stderr to log.")
+        # Don't redirect if frozen
+        if not hasattr(sys, 'frozen'):
+            # Output all stdout (print) messages as warnings
+            try:
+                sys.stdout = LoggerWriter(logger.warning)
+            except ValueError:
+                logger.critical("Cannot access log file.  Continuing without writing stdout to log.")
+            # Output all stderr (stacktrace) messages as critical
+            try:
+                sys.stderr = LoggerWriter(logger.critical)
+            except ValueError:
+                logger.critical("Cannot access log file.  Continuing without writing stderr to log.")
 
         logger.info("Starting Pyfa")
         logger.info("Running in logging mode: {0}", logging_mode)
