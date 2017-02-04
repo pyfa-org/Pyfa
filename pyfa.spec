@@ -2,7 +2,7 @@
 
 # Command line to build:
 # (Run from directory where pyfa.py and pyfa.spec lives.)
-# pyinstaller.exe --clean --noconfirm --windowed --upx-dir=.\scripts\upx.exe pyfa.spec
+# c:\Python27\scripts\pyinstaller.exe --clean --noconfirm --windowed --upx-dir=.\scripts\upx.exe pyfa.spec
 
 # Don't forget to change the path to where your pyfa.py and pyfa.spec lives
 #  pathex=['C:\\Users\\Ebag333\\Documents\\GitHub\\Ebag333\\Pyfa'],
