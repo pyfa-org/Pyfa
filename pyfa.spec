@@ -1,8 +1,11 @@
 # -*- mode: python -*-
 
 # Command line to build:
-# c:\Python27\Scripts\pyinstaller.exe --onefile --clean --noconfirm pyfa.spec
 # (Run from directory where pyfa.py and pyfa.spec lives.)
+# pyinstaller.exe --clean --noconfirm --windowed --upx-dir=.\scripts\upx.exe pyfa.spec
+
+# Don't forget to change the path to where your pyfa.py and pyfa.spec lives
+#  pathex=['C:\\Users\\Ebag333\\Documents\\GitHub\\Ebag333\\Pyfa'],
 
 block_cipher = None
 
@@ -1899,19 +1902,6 @@ import_these = [
     "eos.effects.zcolinorcasurveyscannerbonus",
     "eos.effects.zcolinorcatractorrangebonus",
     "eos.effects.zcolinorcatractorvelocitybonus",
-    "service.conversions.__init__",
-    "service.conversions.releaseApril2016",
-    "service.conversions.releaseCarnyx",
-    "service.conversions.releaseDecember15",
-    "service.conversions.releaseFeb2016",
-    "service.conversions.releaseJan2016",
-    "service.conversions.releaseMar2016",
-    "service.conversions.releaseNov2016",
-    "service.conversions.releaseOceanus",
-    "service.conversions.releaseParallax",
-    "service.conversions.releaseProteus",
-    "service.conversions.releaseTiamat",
-    "service.conversions.skinnedShips",
             ]
 
 
@@ -1928,24 +1918,33 @@ a = Analysis(
              win_private_assemblies=False,
              cipher=block_cipher,
              )
+
 pyz = PYZ(
           a.pure,
           a.zipped_data,
           cipher=block_cipher,
           )
+
 exe = EXE(pyz,
           a.scripts,
           exclude_binaries=True,
           debug=False,
           console=False,
           strip=False,
+          upx=True,
           name='pyfa',
           icon='dist_assets/win/pyfa.ico',
+          onefile=False,
           )
+
 coll = COLLECT(
                exe,
                a.binaries,
                a.zipfiles,
                a.datas,
+               strip=False,
+               upx=True,
+               onefile=False,
                name='pyfa',
+               icon='dist_assets/win/pyfa.ico',
                )
