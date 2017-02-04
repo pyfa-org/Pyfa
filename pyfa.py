@@ -172,7 +172,7 @@ if __name__ == "__main__":
                         savePath_Destination,
                         level=0,
                         backup_count=3,
-                        bubble=False,
+                        bubble=True,
                         date_format='%Y-%m-%d',
                 ),
             ])
