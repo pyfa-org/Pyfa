@@ -171,7 +171,7 @@ if __name__ == "__main__":
                 TimedRotatingFileHandler(
                         savePath_Destination,
                         level=0,
-                        backup_count=5,
+                        backup_count=3,
                         bubble=False,
                         date_format='%Y-%m-%d',
                 ),
@@ -186,7 +186,7 @@ if __name__ == "__main__":
                     TimedRotatingFileHandler(
                         savePath_Destination,
                         level=0,
-                        backup_count=5,
+                        backup_count=3,
                         bubble=False,
                         date_format='%Y-%m-%d',
                     ),
