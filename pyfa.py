@@ -25,7 +25,7 @@ import config
 
 from optparse import OptionParser, BadOptionError, AmbiguousOptionError
 
-from logbook import RotatingFileHandler, Logger, StreamHandler, NestedSetup, FingersCrossedHandler, NullHandler
+from logbook import TimedRotatingFileHandler, Logger, StreamHandler, NestedSetup, FingersCrossedHandler, NullHandler
 logger = Logger(__name__)
 
 
@@ -168,13 +168,13 @@ if __name__ == "__main__":
                     sys.stdout,
                     bubble=False
                 ),
-                RotatingFileHandler(
-                    savePath_Destination,
-                    level=0,
-                    max_size=1048576,
-                    backup_count=5,
-                    bubble=True
-                )
+                TimedRotatingFileHandler(
+                        savePath_Destination,
+                        level=0,
+                        backup_count=5,
+                        bubble=False,
+                        date_format='%Y-%m-%d',
+                ),
             ])
         else:
             logging_mode = "User"
@@ -183,12 +183,12 @@ if __name__ == "__main__":
                 # if we run out of setup handling
                 NullHandler(),
                 FingersCrossedHandler(
-                    RotatingFileHandler(
+                    TimedRotatingFileHandler(
                         savePath_Destination,
                         level=0,
-                        max_size=1048576,
                         backup_count=5,
-                        bubble=False
+                        bubble=False,
+                        date_format='%Y-%m-%d',
                     ),
                     # action_level=Warning,
                     # buffer_size=1000,
