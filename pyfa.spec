@@ -12,6 +12,7 @@ added_files = [
              ( 'imgs/icons/*.png', 'imgs/icons' ),
              ( 'imgs/renders/*.png', 'imgs/renders' ),
              ( 'dist_assets/win/pyfa.ico', '.' ),
+             ( 'dist_assets/cacert.pem', '.' ),
              ( 'eve.db', '.' ),
              ( 'README.md', '.' ),
              ( 'LICENSE', '.' ),
