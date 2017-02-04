@@ -18,7 +18,7 @@
 # ===============================================================================
 
 from logbook import Logger
-logger = Logger(__name__)
+logging = Logger(__name__)
 
 from sqlalchemy.orm import reconstructor
 
@@ -58,7 +58,7 @@ class FighterAbility(object):
         if self.effectID:
             self.__effect = next((x for x in self.fighter.item.effects.itervalues() if x.ID == self.effectID), None)
             if self.__effect is None:
-                logger.error("Effect (id: {0}) does not exist", self.effectID)
+                logging.error("Effect (id: {0}) does not exist", self.effectID)
                 return
 
         self.build()

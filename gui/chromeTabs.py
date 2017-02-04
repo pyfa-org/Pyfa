@@ -24,7 +24,7 @@ import gui.utils.drawUtils as drawUtils
 import gui.utils.fonts as fonts
 from gui.bitmapLoader import BitmapLoader
 from logbook import Logger
-logger = Logger(__name__)
+logging = Logger(__name__)
 
 from service.fit import Fit
 
@@ -1090,7 +1090,7 @@ class PFTabsContainer(wx.Panel):
                             self.previewTimer.Start(500, True)
                             break
                     except:
-                        logger.warning("Exception caught in CheckTabPreview.")
+                        logging.warning("Exception caught in CheckTabPreview.")
                         pass
 
     def CheckAddHighlighted(self, x, y):

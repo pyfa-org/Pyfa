@@ -20,7 +20,7 @@
 import re
 import threading
 from logbook import Logger
-logger = Logger(__name__)
+logging = Logger(__name__)
 import Queue
 
 import wx
@@ -70,23 +70,23 @@ class ShipBrowserWorkerThread(threading.Thread):
 
                 wx.CallAfter(callback, (id_, set_))
             except:
-                logger.debug("Callback failed.")
+                logging.debug("Callback failed.")
                 pass
             finally:
                 try:
                     queue.task_done()
                 except:
-                    logger.debug("Queue task done failed.")
+                    logging.debug("Queue task done failed.")
                     pass
 
 
 class PriceWorkerThread(threading.Thread):
     def run(self):
-        logger.debug("Run start")
+        logging.debug("Run start")
         self.queue = Queue.Queue()
         self.wait = {}
         self.processUpdates()
-        logger.debug("Run end")
+        logging.debug("Run end")
 
     def processUpdates(self):
         queue = self.queue
@@ -427,7 +427,7 @@ class Market():
             else:
                 raise TypeError("Need Item object, integer, float or string as argument")
         except:
-            logger.error("Could not get item: {0}", identity)
+            logging.error("Could not get item: {0}", identity)
             raise
 
         return item
@@ -817,7 +817,7 @@ class Market():
             try:
                 callback(requests)
             except Exception:
-                logger.debug("Callback failed.")
+                logging.debug("Callback failed.")
                 pass
             eos.db.commit()
 
@@ -834,7 +834,7 @@ class Market():
             try:
                 callback(item)
             except:
-                logger.debug("Callback failed.")
+                logging.debug("Callback failed.")
                 pass
 
         self.priceWorkerThread.setToWait(item.ID, cb)

@@ -18,7 +18,7 @@
 # ===============================================================================
 
 from logbook import Logger
-logger = Logger(__name__)
+logging = Logger(__name__)
 
 from sqlalchemy.orm import validates, reconstructor
 
@@ -45,11 +45,11 @@ class Implant(HandledItem, ItemAttrShortcut):
         if self.itemID:
             self.__item = eos.db.getItem(self.itemID)
             if self.__item is None:
-                logger.error("Item (id: {0}) does not exist", self.itemID)
+                logging.error("Item (id: {0}) does not exist", self.itemID)
                 return
 
         if self.isInvalid:
-            logger.error("Item (id: {0}) is not an Implant", self.itemID)
+            logging.error("Item (id: {0}) is not an Implant", self.itemID)
             return
 
         self.build()

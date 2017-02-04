@@ -26,7 +26,7 @@ from gui.cachingImageList import CachingImageList
 from gui.contextMenu import ContextMenu
 from gui.bitmapLoader import BitmapLoader
 from logbook import Logger
-logger = Logger(__name__)
+logging = Logger(__name__)
 
 ItemSelected, ITEM_SELECTED = wx.lib.newevent.NewEvent()
 
@@ -54,7 +54,7 @@ class MetaButton(wx.ToggleButton):
 
 class MarketBrowser(wx.Panel):
     def __init__(self, parent):
-        logger.debug("Initialize marketBrowser")
+        logging.debug("Initialize marketBrowser")
         wx.Panel.__init__(self, parent)
         vbox = wx.BoxSizer(wx.VERTICAL)
         self.SetSizer(vbox)
@@ -132,7 +132,7 @@ class SearchBox(SBox.PFSearchBox):
 
 class MarketTree(wx.TreeCtrl):
     def __init__(self, parent, marketBrowser):
-        logger.debug("Initialize marketTree")
+        logging.debug("Initialize marketTree")
         wx.TreeCtrl.__init__(self, parent, style=wx.TR_DEFAULT_STYLE | wx.TR_HIDE_ROOT)
         self.root = self.AddRoot("root")
 
@@ -183,7 +183,7 @@ class MarketTree(wx.TreeCtrl):
                 try:
                     childId = self.AppendItem(root, childMktGrp.name, iconId, data=wx.TreeItemData(childMktGrp.ID))
                 except:
-                    logger.debug("Error appending item.")
+                    logging.debug("Error appending item.")
                     continue
                 if sMkt.marketGroupHasTypesCheck(childMktGrp) is False:
                     self.AppendItem(childId, "dummy")
@@ -226,7 +226,7 @@ class ItemView(d.Display):
                     "attr:cpu,,,True"]
 
     def __init__(self, parent, marketBrowser):
-        logger.debug("Initialize ItemView")
+        logging.debug("Initialize ItemView")
         d.Display.__init__(self, parent)
         marketBrowser.Bind(wx.EVT_TREE_SEL_CHANGED, self.selectionMade)
 
@@ -254,7 +254,7 @@ class ItemView(d.Display):
         self.metaMap = self.makeReverseMetaMap()
 
         # Fill up recently used modules set
-        logger.debug("Fill up recently used modules set")
+        logging.debug("Fill up recently used modules set")
         for itemID in self.sMkt.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"]:
             self.recentlyUsedModules.add(self.sMkt.getItem(itemID))
 

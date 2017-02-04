@@ -19,7 +19,7 @@
 
 import copy
 from logbook import Logger
-logger = Logger(__name__)
+logging = Logger(__name__)
 
 import eos.db
 from eos.saveddata.booster import Booster as es_Booster
@@ -992,7 +992,7 @@ class Fit(object):
         self.recalc(fit)
 
     def recalc(self, fit, withBoosters=True):
-        logger.info("=" * 10 + "recalc" + "=" * 10)
+        logging.info("=" * 10 + "recalc" + "=" * 10)
         if fit.factorReload is not self.serviceFittingOptions["useGlobalForceReload"]:
             fit.factorReload = self.serviceFittingOptions["useGlobalForceReload"]
         fit.clear()

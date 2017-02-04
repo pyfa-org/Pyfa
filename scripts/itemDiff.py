@@ -31,7 +31,7 @@ import re
 import sqlite3
 import sys
 from logbook import Logger
-logger = Logger(__name__)
+logging = Logger(__name__)
 
 script_dir = os.path.dirname(__file__)
 default_old = os.path.join(script_dir, "..", "eve.db")
@@ -410,7 +410,7 @@ def main(old, new, groups=True, effects=True, attributes=True, renames=True):
         for row in new_cursor:
             new_meta[row[0]] = row[1]
     except:
-        logger.warning("Failed to get db metadata")
+        logging.warning("Failed to get db metadata")
         pass
     # Print jobs
     print("Comparing databases:\n{0} -> {1}\n".format(old_meta.get("client_build"), new_meta.get("client_build")))

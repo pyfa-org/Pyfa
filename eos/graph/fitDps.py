@@ -23,7 +23,7 @@ from eos.graph import Graph
 from eos.types import Hardpoint, State
 
 from logbook import Logger
-logger = Logger(__name__)
+logging = Logger(__name__)
 
 
 class FitDpsGraph(Graph):
@@ -69,7 +69,7 @@ class FitDpsGraph(Graph):
                     val *= 1 + (bonus - 1) * exp(- i ** 2 / 7.1289)
                 data[attr] = val
             except:
-                logger.warning("Caught exception in calcDPS.")
+                logging.warning("Caught exception in calcDPS.")
                 pass
 
         for mod in fit.modules:

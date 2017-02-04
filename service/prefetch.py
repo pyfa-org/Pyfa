@@ -28,7 +28,7 @@ from eos.db.saveddata.databaseRepair import DatabaseCleanup
 from eos.saveddata.character import Character as es_Character
 
 from logbook import Logger
-logger = Logger(__name__)
+logging = Logger(__name__)
 
 class PrefetchThread(threading.Thread):
     def run(self):
@@ -58,20 +58,20 @@ if config.savePath and not os.path.exists(config.savePath):
 
 if config.saveDB and os.path.isfile(config.saveDB):
     # If database exists, run migration after init'd database
-    logger.debug("Run database migration.")
+    logging.debug("Run database migration.")
     db.saveddata_meta.create_all()
     migration.update(db.saveddata_engine)
     # Import default database values
     # Import values that must exist otherwise Pyfa breaks
-    logger.debug("Import Required Database Values.")
+    logging.debug("Import Required Database Values.")
     DefaultDatabaseValues.importRequiredDefaults()
 
-    logger.debug("Starting database validation.")
+    logging.debug("Starting database validation.")
     database_cleanup_instance = DatabaseCleanup()
     database_cleanup_instance.OrphanedCharacterSkills(db.saveddata_engine)
     database_cleanup_instance.OrphanedFitCharacterIDs(db.saveddata_engine)
     database_cleanup_instance.OrphanedFitDamagePatterns(db.saveddata_engine)
-    logger.debug("Completed database validation.")
+    logging.debug("Completed database validation.")
 
 else:
     # If database does not exist, do not worry about migration. Simply

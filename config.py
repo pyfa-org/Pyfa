@@ -2,13 +2,13 @@ import os
 import sys
 
 from logbook import Logger
-logger = Logger(__name__)
+logging = Logger(__name__)
 
 # Load variable overrides specific to distribution type
 try:
     import configforced
 except ImportError:
-    logger.warning("Failed to import: configforced")
+    logging.warning("Failed to import: configforced")
     configforced = None
 
 # Turns on debug mode
@@ -48,7 +48,7 @@ def defPaths(customSavePath):
     global gameDB
     global saveInRoot
 
-    logger.debug("Configuring Pyfa")
+    logging.debug("Configuring Pyfa")
 
     # The main pyfa directory which contains run.py
     # Python 2.X uses ANSI by default, so we need to convert the character encoding

@@ -18,7 +18,7 @@
 # ===============================================================================
 
 from logbook import Logger
-logger = Logger(__name__)
+logging = Logger(__name__)
 
 from sqlalchemy.orm import reconstructor
 
@@ -42,13 +42,13 @@ class Override(EqBase):
         if self.attrID:
             self.__attr = eos.db.getAttributeInfo(self.attrID)
             if self.__attr is None:
-                logger.error("Attribute (id: {0}) does not exist", self.attrID)
+                logging.error("Attribute (id: {0}) does not exist", self.attrID)
                 return
 
         if self.itemID:
             self.__item = eos.db.getItem(self.itemID)
             if self.__item is None:
-                logger.error("Item (id: {0}) does not exist", self.itemID)
+                logging.error("Item (id: {0}) does not exist", self.itemID)
                 return
 
     @property

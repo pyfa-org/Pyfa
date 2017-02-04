@@ -31,7 +31,7 @@ except ImportError:
     from utils.compat import OrderedDict
 
 from logbook import Logger
-logger = Logger(__name__)
+logging = Logger(__name__)
 
 
 class Effect(EqBase):
@@ -67,7 +67,7 @@ class Effect(EqBase):
         if not self.__generated:
             self.__generateHandler()
 
-        logger.debug("Generating effect: {0} ({1}) [runTime: {2}]", self.name, self.effectID, self.runTime)
+        logging.debug("Generating effect: {0} ({1}) [runTime: {2}]", self.name, self.effectID, self.runTime)
 
         return self.__handler
 

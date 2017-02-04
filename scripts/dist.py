@@ -36,7 +36,7 @@ import zipfile
 import errno
 from subprocess import call
 from logbook import Logger
-logger = Logger(__name__)
+logging = Logger(__name__)
 
 
 class FileStub():
@@ -243,17 +243,17 @@ if __name__ == "__main__":
             try:
                 shutil.rmtree("dist") # Inno dir
             except:
-                logger.warning("Failed to remove dist")
+                logging.warning("Failed to remove dist")
                 pass
             try:
                 shutil.rmtree(tmpDir)
             except:
-                logger.warning("Failed to remove: {0}", tmpDir)
+                logging.warning("Failed to remove: {0}", tmpDir)
                 pass
             try:
                 os.unlink(tmpFile)
             except:
-                logger.warning("Faileld to remove: {0}", tmpFile)
+                logging.warning("Faileld to remove: {0}", tmpFile)
                 pass
 
         sys.stdout = oldstd

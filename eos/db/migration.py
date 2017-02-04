@@ -1,5 +1,5 @@
 from logbook import Logger
-logger = Logger(__name__)
+logging = Logger(__name__)
 
 import shutil
 import time
@@ -37,7 +37,7 @@ def update(saveddata_engine):
         for version in xrange(dbVersion, appVersion):
             func = migrations.updates[version + 1]
             if func:
-                logger.info("Applying database update: {0}", version + 1)
+                logging.info("Applying database update: {0}", version + 1)
                 func(saveddata_engine)
 
         # when all is said and done, set version to current

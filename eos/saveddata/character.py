@@ -19,7 +19,7 @@
 
 
 from logbook import Logger
-logger = Logger(__name__)
+logging = Logger(__name__)
 
 from itertools import chain
 

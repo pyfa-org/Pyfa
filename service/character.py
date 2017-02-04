@@ -21,7 +21,7 @@ import copy
 import itertools
 import json
 from logbook import Logger
-logger = Logger(__name__)
+logging = Logger(__name__)
 import threading
 from codecs import open
 from xml.etree import ElementTree
@@ -69,7 +69,7 @@ class CharacterImportThread(threading.Thread):
                     charFile = open(path, mode='r').read()
                     doc = minidom.parseString(charFile)
                     if doc.documentElement.tagName not in ("SerializableCCPCharacter", "SerializableUriCharacter"):
-                        logger.error("Incorrect EVEMon XML sheet")
+                        logging.error("Incorrect EVEMon XML sheet")
                         raise RuntimeError("Incorrect EVEMon XML sheet")
                     name = doc.getElementsByTagName("name")[0].firstChild.nodeValue
                     skill_els = doc.getElementsByTagName("skill")
@@ -81,7 +81,7 @@ class CharacterImportThread(threading.Thread):
                                 "level": int(skill.getAttribute("level")),
                             })
                         else:
-                            logger.error("Attempted to import unknown skill {0} (ID: {1}) (Level: {2})",
+                            logging.error("Attempted to import unknown skill {0} (ID: {1}) (Level: {2})",
                                          skill.getAttribute("name"),
                                          skill.getAttribute("typeID"),
                                          skill.getAttribute("level"),
@@ -89,8 +89,8 @@ class CharacterImportThread(threading.Thread):
                     char = sCharacter.new(name+" (EVEMon)")
                     sCharacter.apiUpdateCharSheet(char.ID, skills)
                 except Exception, e:
-                    logger.error("Exception on character import:")
-                    logger.error(e)
+                    logging.error("Exception on character import:")
+                    logging.error(e)
                     continue
 
         wx.CallAfter(self.callback)
@@ -281,7 +281,7 @@ class Character(object):
 
     def rename(self, char, newName):
         if char.name in ("All 0", "All 5"):
-            logger.info("Cannot rename built in characters.")
+            logging.info("Cannot rename built in characters.")
         else:
             char.name = newName
             eos.db.commit()
@@ -371,7 +371,7 @@ class Character(object):
     def addImplant(self, charID, itemID):
         char = eos.db.getCharacter(charID)
         if char.ro:
-            logger.error("Trying to add implant to read-only character")
+            logging.error("Trying to add implant to read-only character")
             return
 
         implant = es_Implant(eos.db.getItem(itemID))

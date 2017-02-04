@@ -17,7 +17,7 @@ import gui.display as d
 import gui.globalEvents as GE
 
 from logbook import Logger
-logger = Logger(__name__)
+logging = Logger(__name__)
 
 
 class CrestFittings(wx.Frame):
@@ -149,7 +149,7 @@ class CrestFittings(wx.Frame):
             self.fitTree.populateSkillTree(fittings)
         except requests.exceptions.ConnectionError:
             msg = "Connection error, please check your internet connection"
-            logger.error(msg)
+            logging.error(msg)
             self.statusbar.SetStatusText(msg)
         finally:
             del waitDialog
@@ -179,7 +179,7 @@ class CrestFittings(wx.Frame):
                 sCrest.delFitting(self.getActiveCharacter(), data['fittingID'])
             except requests.exceptions.ConnectionError:
                 msg = "Connection error, please check your internet connection"
-                logger.error(msg)
+                logging.error(msg)
                 self.statusbar.SetStatusText(msg)
 
 
@@ -288,11 +288,11 @@ class ExportToEve(wx.Frame):
                 text = json.loads(res.text)
                 self.statusbar.SetStatusText(text['message'], 1)
             except ValueError:
-                logger.warning("Value error on loading JSON.")
+                logging.warning("Value error on loading JSON.")
                 self.statusbar.SetStatusText("", 1)
         except requests.exceptions.ConnectionError:
             msg = "Connection error, please check your internet connection"
-            logger.error(msg)
+            logging.error(msg)
             self.statusbar.SetStatusText(msg)
 
 
@@ -415,7 +415,7 @@ class FittingsTreeView(wx.Panel):
                 cargo.amount = item['quantity']
                 list.append(cargo)
             except:
-                logger.error("Exception caught in displayFit")
+                logging.error("Exception caught in displayFit")
                 pass
 
         self.parent.fitView.fitSelection = selection

@@ -2,7 +2,7 @@
 # Passes Python2.7's test suite and incorporates all the latest updates.
 
 from logbook import Logger
-logger = Logger(__name__)
+logging = Logger(__name__)
 
 try:
     from thread import get_ident as _get_ident
@@ -12,7 +12,7 @@ except ImportError:
 try:
     from _abcoll import KeysView, ValuesView, ItemsView
 except ImportError:
-    logger.warning("Failed to import from _abcoll")
+    logging.warning("Failed to import from _abcoll")
     pass
 
 

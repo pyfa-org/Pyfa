@@ -1,6 +1,6 @@
 import csv
 from logbook import Logger
-logger = Logger(__name__)
+logging = Logger(__name__)
 
 import wx
 
@@ -267,7 +267,7 @@ class AttributeGrid(wxpg.PropertyGrid):
 
         self.itemView.updateItems()
 
-        logger.debug('{0} changed to "{1}"', p.GetName(), p.GetValueAsString())
+        logging.debug('{0} changed to "{1}"', p.GetName(), p.GetValueAsString())
 
     def OnPropGridSelect(self, event):
         pass

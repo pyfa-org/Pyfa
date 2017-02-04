@@ -18,7 +18,7 @@
 # =============================================================================
 
 from logbook import Logger
-logger = Logger(__name__)
+logging = Logger(__name__)
 import wx
 
 from service.implantSet import ImplantSets
@@ -47,7 +47,7 @@ class ImplantTextValidor(BaseValidator):
 
             return True
         except ValueError as e:
-            logger.error(e)
+            logging.error(e)
             wx.MessageBox(u"{}".format(e), "Error")
             textCtrl.SetFocus()
             return False
@@ -197,10 +197,10 @@ class ImplantSetEditorDlg(wx.Dialog):
                 self.stNotice.SetLabel("Patterns successfully imported from clipboard")
                 self.showInput(False)
             except ImportError as e:
-                logger.error(e)
+                logging.error(e)
                 self.stNotice.SetLabel(str(e))
             except Exception as e:
-                logger.error(e)
+                logging.error(e)
                 self.stNotice.SetLabel("Could not import from clipboard: unknown errors")
             finally:
                 self.updateChoices()

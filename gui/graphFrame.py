@@ -19,7 +19,7 @@
 
 import os
 from logbook import Logger
-logger = Logger(__name__)
+logging = Logger(__name__)
 
 import wx
 
@@ -39,7 +39,7 @@ try:
     mplImported = False
 except ImportError:
     enabled = False
-    logger.info("Problems importing matplotlib; continuing without graphs")
+    logging.info("Problems importing matplotlib; continuing without graphs")
 
 
 class GraphFrame(wx.Frame):
@@ -221,7 +221,7 @@ class GraphFrame(wx.Frame):
                 legend.append(fit.name)
             except:
                 msg = "Invalid values in '%s'" % fit.name
-                logger.error(msg)
+                logging.error(msg)
                 self.SetStatusText(msg)
                 self.canvas.draw()
                 return

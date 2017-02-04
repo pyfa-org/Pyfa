@@ -28,7 +28,7 @@ import config
 from service.network import Network
 from service.settings import UpdateSettings
 from logbook import Logger
-logger = Logger(__name__)
+logging = Logger(__name__)
 
 
 class CheckUpdateThread(threading.Thread):
@@ -82,7 +82,7 @@ class CheckUpdateThread(threading.Thread):
                         wx.CallAfter(self.callback, release)  # Singularity -> Singularity
                 break
         except:
-            logger.warning("Caught exception in run")
+            logging.warning("Caught exception in run")
             pass
 
     def versiontuple(self, v):

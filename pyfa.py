@@ -26,7 +26,7 @@ import config
 from optparse import OptionParser, BadOptionError, AmbiguousOptionError
 
 from logbook import TimedRotatingFileHandler, Logger, StreamHandler, NestedSetup, FingersCrossedHandler, NullHandler
-logger = Logger(__name__)
+logging = Logger(__name__)
 
 
 class PassThroughOptionParser(OptionParser):
@@ -40,7 +40,7 @@ class PassThroughOptionParser(OptionParser):
             try:
                 OptionParser._process_args(self, largs, rargs, values)
             except (BadOptionError, AmbiguousOptionError) as e:
-                logger.error("Bad startup option passed.")
+                logging.error("Bad startup option passed.")
                 largs.append(e.opt_str)
 
 
@@ -213,39 +213,39 @@ if __name__ == "__main__":
         if not hasattr(sys, 'frozen'):
             # Output all stdout (print) messages as warnings
             try:
-                sys.stdout = LoggerWriter(logger.warning)
+                sys.stdout = LoggerWriter(logging.warning)
             except ValueError:
-                logger.critical("Cannot access log file.  Continuing without writing stdout to log.")
+                logging.critical("Cannot access log file.  Continuing without writing stdout to log.")
             # Output all stderr (stacktrace) messages as critical
             try:
-                sys.stderr = LoggerWriter(logger.critical)
+                sys.stderr = LoggerWriter(logging.critical)
             except ValueError:
-                logger.critical("Cannot access log file.  Continuing without writing stderr to log.")
+                logging.critical("Cannot access log file.  Continuing without writing stderr to log.")
 
-        logger.info("Starting Pyfa")
-        logger.info("Running in logging mode: {0}", logging_mode)
+        logging.info("Starting Pyfa")
+        logging.info("Running in logging mode: {0}", logging_mode)
 
         # Import everything
-        logger.debug("Import wx")
+        logging.debug("Import wx")
         import wx
         import os
         import os.path
 
-        logger.debug("Import eos.db")
+        logging.debug("Import eos.db")
         import eos.db
         import service.prefetch
         from gui.mainFrame import MainFrame
 
-        logger.debug("Make sure the saveddata db exists")
+        logging.debug("Make sure the saveddata db exists")
         if not os.path.exists(config.savePath):
             os.mkdir(config.savePath)
 
         eos.db.saveddata_meta.create_all()
 
         pyfa = wx.App(False)
-        logger.debug("Show GUI")
+        logging.debug("Show GUI")
         MainFrame(options.title)
 
         # run the gui mainloop
-        logger.debug("Run MainLoop()")
+        logging.debug("Run MainLoop()")
         pyfa.MainLoop()

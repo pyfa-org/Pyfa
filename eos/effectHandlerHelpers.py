@@ -19,7 +19,7 @@
 
 # from sqlalchemy.orm.attributes import flag_modified
 from logbook import Logger
-logger = Logger(__name__)
+logging = Logger(__name__)
 
 import eos.db
 

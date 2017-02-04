@@ -19,7 +19,7 @@
 
 import sqlalchemy
 from logbook import Logger
-logger = Logger(__name__)
+logging = Logger(__name__)
 
 
 class DatabaseCleanup:
@@ -29,23 +29,23 @@ class DatabaseCleanup:
     @staticmethod
     def OrphanedCharacterSkills(saveddata_engine):
         # Finds and fixes database corruption issues.
-        logger.debug("Start databsae validation and cleanup.")
+        logging.debug("Start databsae validation and cleanup.")
 
         # Find orphaned character skills.
         # This solves an issue where the character doesn't exist, but skills for that character do.
         # See issue #917
         try:
-            logger.debug("Running database cleanup for character skills.")
+            logging.debug("Running database cleanup for character skills.")
             results = saveddata_engine.execute("SELECT COUNT(*) AS num FROM characterSkills "
                                                "WHERE characterID NOT IN (SELECT ID from characters)")
             row = results.first()
 
             if row and row['num']:
                 delete = saveddata_engine.execute("DELETE FROM characterSkills WHERE characterID NOT IN (SELECT ID from characters)")
-                logger.error("Database corruption found. Cleaning up {0} records.", delete.rowcount)
+                logging.error("Database corruption found. Cleaning up {0} records.", delete.rowcount)
 
         except sqlalchemy.exc.DatabaseError:
-            logger.error("Failed to connect to database.")
+            logging.error("Failed to connect to database.")
 
     @staticmethod
     def OrphanedFitDamagePatterns(saveddata_engine):
@@ -53,7 +53,7 @@ class DatabaseCleanup:
         # This solves an issue where the damage pattern doesn't exist, but fits reference the pattern.
         # See issue #777
         try:
-            logger.debug("Running database cleanup for orphaned damage patterns attached to fits.")
+            logging.debug("Running database cleanup for orphaned damage patterns attached to fits.")
 
             results = saveddata_engine.execute("SELECT COUNT(*) AS num FROM fits WHERE damagePatternID NOT IN (SELECT ID FROM damagePatterns) OR damagePatternID IS NULL")
             row = results.first()
@@ -64,23 +64,23 @@ class DatabaseCleanup:
                 rows = query.fetchall()
 
                 if len(rows) == 0:
-                    logger.error("Missing uniform damage pattern.")
+                    logging.error("Missing uniform damage pattern.")
                 elif len(rows) > 1:
-                    logger.error("More than one uniform damage pattern found.")
+                    logging.error("More than one uniform damage pattern found.")
                 else:
                     uniform_damage_pattern_id = rows[0]['ID']
                     update = saveddata_engine.execute("UPDATE 'fits' SET 'damagePatternID' = ? "
                                                       "WHERE damagePatternID NOT IN (SELECT ID FROM damagePatterns) OR damagePatternID IS NULL",
                                                        uniform_damage_pattern_id)
-                    logger.error("Database corruption found. Cleaning up {0} records.", update.rowcount)
+                    logging.error("Database corruption found. Cleaning up {0} records.", update.rowcount)
         except sqlalchemy.exc.DatabaseError:
-            logger.error("Failed to connect to database.")
+            logging.error("Failed to connect to database.")
 
     @staticmethod
     def OrphanedFitCharacterIDs(saveddata_engine):
         # Find orphaned character IDs. This solves an issue where the character doesn't exist, but fits reference the pattern.
         try:
-            logger.debug("Running database cleanup for orphaned characters attached to fits.")
+            logging.debug("Running database cleanup for orphaned characters attached to fits.")
             results = saveddata_engine.execute("SELECT COUNT(*) AS num FROM fits WHERE characterID NOT IN (SELECT ID FROM characters) OR characterID IS NULL")
             row = results.first()
 
@@ -90,14 +90,14 @@ class DatabaseCleanup:
                 rows = query.fetchall()
 
                 if len(rows) == 0:
-                    logger.error("Missing 'All 5' character.")
+                    logging.error("Missing 'All 5' character.")
                 elif len(rows) > 1:
-                    logger.error("More than one 'All 5' character found.")
+                    logging.error("More than one 'All 5' character found.")
                 else:
                     all5_id = rows[0]['ID']
                     update = saveddata_engine.execute("UPDATE 'fits' SET 'characterID' = ? "
                                                       "WHERE characterID not in (select ID from characters) OR characterID IS NULL",
                                                        all5_id)
-                    logger.error("Database corruption found. Cleaning up {0} records.", update.rowcount)
+                    logging.error("Database corruption found. Cleaning up {0} records.", update.rowcount)
         except sqlalchemy.exc.DatabaseError:
-            logger.error("Failed to connect to database.")
+            logging.error("Failed to connect to database.")

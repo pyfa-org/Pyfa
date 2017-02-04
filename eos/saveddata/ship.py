@@ -18,7 +18,7 @@
 # ===============================================================================
 
 from logbook import Logger
-logger = Logger(__name__)
+logging = Logger(__name__)
 
 import eos.db
 from eos.effectHandlerHelpers import HandledItem

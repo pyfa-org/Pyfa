@@ -3,7 +3,7 @@ import urlparse
 import socket
 import thread
 from logbook import Logger
-logger = Logger(__name__)
+logging = Logger(__name__)
 
 import wx
 
@@ -83,7 +83,7 @@ class StoppableHTTPServer(BaseHTTPServer.HTTPServer):
 
         # Allow listening for x seconds
         sec = self.settings.get('timeout')
-        logger.debug("Running server for {0} seconds", sec)
+        logging.debug("Running server for {0} seconds", sec)
 
         self.socket.settimeout(0.5)
         self.max_tries = sec / self.socket.gettimeout()
@@ -97,17 +97,17 @@ class StoppableHTTPServer(BaseHTTPServer.HTTPServer):
                 sock.settimeout(None)
                 return (sock, addr)
             except socket.timeout:
-                logger.warning("Server timed out waiting for connection")
+                logging.warning("Server timed out waiting for connection")
                 pass
 
     def stop(self):
         self.run = False
 
     def handle_timeout(self):
-        # logger.debug("Number of tries: %d"%self.tries)
+        # logging.debug("Number of tries: %d"%self.tries)
         self.tries += 1
         if self.tries == self.max_tries:
-            logger.debug("Server timed out waiting for connection")
+            logging.debug("Server timed out waiting for connection")
             self.stop()
 
     def serve(self, callback):
@@ -116,7 +116,7 @@ class StoppableHTTPServer(BaseHTTPServer.HTTPServer):
             try:
                 self.handle_request()
             except TypeError:
-                logger.debug("Caught exception in serve")
+                logging.debug("Caught exception in serve")
                 pass
         self.server_close()
 
