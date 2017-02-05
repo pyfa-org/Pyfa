@@ -19,7 +19,6 @@
 
 import os
 import logging
-logger = logging.getLogger(__name__)
 
 import wx
 
@@ -39,6 +38,9 @@ try:
     mplImported = False
 except ImportError:
     enabled = False
+
+logger = logging.getLogger(__name__)
+if not enabled:
     logger.info("Problems importing matplotlib; continuing without graphs")
 
 

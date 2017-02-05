@@ -834,7 +834,6 @@ class ItemEffects(wx.Panel):
         If effect file does not exist, create it
         """
 
-        import os
         file_ = config.getPyfaPath(os.path.join("eos", "effects", "%s.py" % event.GetText().lower()))
 
         if not os.path.isfile(file_):

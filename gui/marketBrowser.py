@@ -31,6 +31,7 @@ ItemSelected, ITEM_SELECTED = wx.lib.newevent.NewEvent()
 RECENTLY_USED_MODULES = -2
 MAX_RECENTLY_USED_MODULES = 20
 
+
 class MetaButton(wx.ToggleButton):
     def __init__(self, *args, **kwargs):
         super(MetaButton, self).__init__(*args, **kwargs)
@@ -49,6 +50,7 @@ class MetaButton(wx.ToggleButton):
     def reset(self):
         self.Enable(True)
         self.SetValue(self.userSelected)
+
 
 class MarketBrowser(wx.Panel):
     def __init__(self, parent):

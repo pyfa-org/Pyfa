@@ -4,9 +4,6 @@ import json
 import wx
 import requests
 
-if not 'wxMac' in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3,0)):
-    from service.crest import Crest, CrestModes
-
 from service.port import Port
 from service.fit import Fit
 
@@ -15,6 +12,9 @@ from eos.db import getItem
 
 import gui.display as d
 import gui.globalEvents as GE
+
+if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3, 0)):
+    from service.crest import Crest, CrestModes
 
 
 class CrestFittings(wx.Frame):
