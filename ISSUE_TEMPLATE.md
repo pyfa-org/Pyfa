@@ -1,32 +1,32 @@
 # Submit a bug report bug report or feature request
 
-Replace any "X" with your information. Before you submit an issue,
-check to see if this issue has [already been reported][1].
-
-Any questions should be directed to @blitzmann.
+Here you can inform pyfa developers of potential bugs or suggest features / improvements to the project. Please check
+to make sure that the bug hasn't been reported or feature requested before submitting. If you have general questions
+about the project and want to reach out to the developers personally, please check out out our (Slack)
+[https://pyfainvite.azurewebsites.net/].
 
 ---
+
 ## Bug Report
 
 
-### Please provide detailed steps to reproduce:
+### Expected behavior:
 
-X
 
-### Please provide the fits involved in EFT format (Edit > To Clipboard > EFT)
+### Actual behavior:
 
-X
 
-### Are you using a stable release or development git branch? Please note the version or commit hash
+### Detailed steps to reproduce:
 
-X
 
-### Please note your operating system and version (eg: Windows 10, OS X 10.9, OS X 10.11, Ubuntu 16.10):
+### Fits involved in EFT format (Edit > To Clipboard > EFT):
 
-X
+
+### Release or development git branch? Please note the release version or commit hash:
+
+
+### Operating system and version (eg: Windows 10, OS X 10.9, OS X 10.11, Ubuntu 16.10):
+
 
 ### Other relevant information:
 
-X
-
-[1]: https://github.com/{user}/{repo}/issues
