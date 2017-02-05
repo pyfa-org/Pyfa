@@ -635,7 +635,7 @@ class Fit(object):
             del self.commandBonuses[warfareBuffID]
 
     def calculateModifiedAttributes(self, targetFit=None, withBoosters=False, dirtyStorage=None):
-        timer = Timer(u'Fit: {}, {}'.format(self.ID, self.name), logger)
+        timer = Timer(u'Fit: {}, {}'.format(self.ID, self.name), logging)
         logging.info("Starting fit calculation on: {0}, withBoosters: {1}", self, withBoosters)
 
         shadow = False
