@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,7 +15,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
 import gui.chromeTabs
 import gui.builtinViews.emptyView
@@ -24,7 +24,7 @@ import gui.builtinViews.emptyView
 class MultiSwitch(gui.chromeTabs.PFNotebook):
     def __init__(self, parent):
         gui.chromeTabs.PFNotebook.__init__(self, parent)
-        #self.AddPage() # now handled by mainFrame
+        # self.AddPage() # now handled by mainFrame
         self.handlers = handlers = []
         for type in TabSpawner.tabTypes:
             handlers.append(type(self))

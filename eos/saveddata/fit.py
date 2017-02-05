@@ -28,10 +28,12 @@ from sqlalchemy.orm import validates, reconstructor
 import eos.db
 from eos import capSim
 from eos.effectHandlerHelpers import *
+from eos.effectHandlerHelpers import HandledModuleList, HandledDroneCargoList, HandledImplantBoosterList, HandledProjectedDroneList, HandledProjectedModList
 from eos.enum import Enum
 from eos.saveddata.module import State, Hardpoint
 from eos.types import Ship, Character, Slot, Module, Citadel
 from utils.timer import Timer
+import logging
 
 logger = logging.getLogger(__name__)
 
@@ -740,7 +742,7 @@ class Fit(object):
             if not withBoosters and self.commandBonuses:
                 self.__runCommandBoosts(runTime)
 
-            timer.checkpoint('Done with runtime: %s'%runTime)
+            timer.checkpoint('Done with runtime: %s' % runTime)
 
         # Mark fit as calculated
         self.__calculated = True

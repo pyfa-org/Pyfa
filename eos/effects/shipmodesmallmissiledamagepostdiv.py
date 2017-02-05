@@ -4,6 +4,7 @@
 # Module: Jackdaw Sharpshooter Mode
 type = "passive"
 
+
 def handler(fit, module, context):
     types = ("thermal", "em", "explosive", "kinetic")
     for type in types:

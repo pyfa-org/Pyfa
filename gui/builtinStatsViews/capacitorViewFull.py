@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,24 +15,26 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
 import wx
 from gui.statsView import StatsView
-from gui import builtinStatsViews
 from gui.bitmapLoader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 
+
 class CapacitorViewFull(StatsView):
     name = "capacitorViewFull"
+
     def __init__(self, parent):
         StatsView.__init__(self)
         self.parent = parent
+
     def getHeaderText(self, fit):
         return "Capacitor"
 
     def getTextExtentW(self, text):
-        width, height = self.parent.GetTextExtent( text )
+        width, height = self.parent.GetTextExtent(text)
         return width
 
     def populatePanel(self, contentPanel, headerPanel):
@@ -104,12 +106,13 @@ class CapacitorViewFull(StatsView):
         chargeSizer.Add(lbl, 0, wx.ALIGN_CENTER)
         chargeSizer.Add(wx.StaticText(parent, wx.ID_ANY, " GJ/s"), 0, wx.ALIGN_CENTER)
 
-
     def refreshPanel(self, fit):
-        #If we did anything intresting, we'd update our labels to reflect the new fit's stats here
-        stats= (("label%sCapacitorCapacity", lambda: fit.ship.getModifiedItemAttr("capacitorCapacity"), 3, 0, 9),
-                ("label%sCapacitorRecharge", lambda: fit.capRecharge, 3, 0, 0),
-                ("label%sCapacitorDischarge", lambda: fit.capUsed, 3, 0, 0))
+        # If we did anything intresting, we'd update our labels to reflect the new fit's stats here
+        stats = (
+            ("label%sCapacitorCapacity", lambda: fit.ship.getModifiedItemAttr("capacitorCapacity"), 3, 0, 9),
+            ("label%sCapacitorRecharge", lambda: fit.capRecharge, 3, 0, 0),
+            ("label%sCapacitorDischarge", lambda: fit.capUsed, 3, 0, 0),
+        )
 
         panel = "Full"
         for labelName, value, prec, lowest, highest in stats:
@@ -146,5 +149,6 @@ class CapacitorViewFull(StatsView):
 
         self.panel.Layout()
         self.headerPanel.Layout()
+
 
 CapacitorViewFull.register()

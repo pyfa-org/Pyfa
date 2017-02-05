@@ -21,10 +21,13 @@ from sqlalchemy.orm import join, exc
 from sqlalchemy.sql import and_, or_, select
 
 import eos.config
+# TODO: Unsure which item the code below needs :(
+# from eos.gamedata import Item
+from eos.gamedata import Attribute
 from eos.db import gamedata_session
 from eos.db.gamedata.metaGroup import metatypes_table, items_table
 from eos.db.util import processEager, processWhere
-from eos.types import Item, Category, Group, MarketGroup, AttributeInfo, MetaData, MetaGroup
+from eos.types import Item, Category, Group, MarketGroup, AttributeInfo, MetaData, MetaGroup, AlphaClone
 
 configVal = getattr(eos.config, "gamedataCache", None)
 if configVal is True:
@@ -95,6 +98,24 @@ def getItem(lookfor, eager=None):
     else:
         raise TypeError("Need integer or string as argument")
     return item
+
+
+@cachedQuery(1, "lookfor")
+def getAlphaClone(lookfor, eager=None):
+    if isinstance(lookfor, int):
+        if eager is None:
+            item = gamedata_session.query(AlphaClone).get(lookfor)
+        else:
+            item = gamedata_session.query(AlphaClone).options(*processEager(eager)).filter(AlphaClone.ID == lookfor).first()
+    else:
+        raise TypeError("Need integer as argument")
+    return item
+
+
+def getAlphaCloneList(eager=None):
+    eager = processEager(eager)
+    clones = gamedata_session.query(AlphaClone).options(*eager).all()
+    return clones
 
 
 groupNameMap = {}
@@ -280,9 +301,9 @@ def directAttributeRequest(itemIDs, attrIDs):
         if not isinstance(itemID, int):
             raise TypeError("All itemIDs must be integer")
 
-    q = select((eos.types.Item.typeID, eos.types.Attribute.attributeID, eos.types.Attribute.value),
-               and_(eos.types.Attribute.attributeID.in_(attrIDs), eos.types.Item.typeID.in_(itemIDs)),
-               from_obj=[join(eos.types.Attribute, eos.types.Item)])
+    q = select((Item.typeID, Attribute.attributeID, Attribute.value),
+               and_(Attribute.attributeID.in_(attrIDs), Item.typeID.in_(itemIDs)),
+               from_obj=[join(Attribute, Item)])
 
     result = gamedata_session.execute(q).fetchall()
     return result

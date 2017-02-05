@@ -1,14 +1,16 @@
-import os
 import base64
+import logging
+import os
+import re
 import time
 import zlib
 
 import requests
-
-from . import version
-from compat import bytes_, text_
-from errors import APIException
 from requests.adapters import HTTPAdapter
+
+import config
+from service.pycrest.compat import bytes_, text_
+from service.pycrest.errors import APIException
 
 try:
     from urllib.parse import urlparse, urlunparse, parse_qsl
@@ -51,7 +53,7 @@ class FileCache(APICache):
             os.mkdir(self.path, 0o700)
 
     def _getpath(self, key):
-        return os.path.join(self.path, str(hash(key)) + '.cache')
+        return config.parsePath(self.path, str(hash(key)) + '.cache')
 
     def put(self, key, value):
         with open(self._getpath(key), 'wb') as f:
@@ -110,8 +112,7 @@ class APIConnection(object):
             "Accept": "application/json",
         })
         session.headers.update(additional_headers)
-        session.mount('https://public-crest.eveonline.com',
-                HTTPAdapter())
+        session.mount('https://public-crest.eveonline.com', HTTPAdapter())
         self._session = session
         if cache:
             if isinstance(cache, APICache):
@@ -249,19 +250,18 @@ class EVE(APIConnection):
 
     def temptoken_authorize(self, access_token=None, expires_in=0, refresh_token=None):
         self.set_auth_values({'access_token': access_token,
-                                 'refresh_token': refresh_token,
-                                 'expires_in': expires_in})
+                              'refresh_token': refresh_token,
+                              'expires_in': expires_in})
 
 
 class AuthedConnection(EVE):
-
     def __call__(self):
         if not self._data:
             self._data = APIObject(self.get(self._endpoint), self)
         return self._data
 
     def whoami(self):
-        #if 'whoami' not in self._cache:
+        # if 'whoami' not in self._cache:
         #    print "Setting this whoami cache"
         #    self._cache['whoami'] = self.get("%s/verify" % self._oauth_endpoint)
         return self.get("%s/verify" % self._oauth_endpoint)
@@ -280,6 +280,7 @@ class AuthedConnection(EVE):
         if self.refresh_token and int(time.time()) >= self.expires:
             self.refr_authorize(self.refresh_token)
         return self._session.delete(resource, params=params)
+
 
 class APIObject(object):
     def __init__(self, parent, connection):

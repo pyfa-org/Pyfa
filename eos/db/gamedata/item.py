@@ -39,8 +39,8 @@ items_table = Table("invtypes", gamedata_meta,
                     Column("iconID", Integer, ForeignKey("icons.iconID")),
                     Column("groupID", Integer, ForeignKey("invgroups.groupID"), index=True))
 
-from .metaGroup import metatypes_table
-from .traits import traits_table
+from .metaGroup import metatypes_table # noqa
+from .traits import traits_table # noqa
 
 mapper(Item, items_table,
        properties={"group": relation(Group, backref="items"),

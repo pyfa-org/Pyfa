@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,7 +15,8 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
+
 
 class Graph(object):
     views = []
@@ -33,4 +34,5 @@ class Graph(object):
     def getIcons(self):
         return None
 
-from gui.builtinGraphs import *
+
+from gui.builtinGraphs import *  # noqa
