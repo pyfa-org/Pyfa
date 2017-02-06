@@ -210,7 +210,7 @@ if __name__ == "__main__":
 
     with logging_setup.threadbound():
         # Don't redirect if frozen
-        if not hasattr(sys, 'frozen'):
+        if not hasattr(sys, 'frozen') and not options.debug:
             # Output all stdout (print) messages as warnings
             try:
                 sys.stdout = LoggerWriter(logging.warning)
