@@ -23,16 +23,20 @@ from sqlalchemy.orm import relation, mapper, synonym
 from eos.db import gamedata_meta
 from eos.types import AlphaClone, AlphaCloneSkill
 
-alphaclones_table = Table("alphaClones", gamedata_meta,
-                         Column("alphaCloneID", Integer, primary_key=True),
-                         Column("alphaCloneName", String),
-                        )
+alphaclones_table = Table(
+        "alphaClones",
+        gamedata_meta,
+        Column("alphaCloneID", Integer, primary_key=True),
+        Column("alphaCloneName", String),
+)
 
-alphacloneskskills_table = Table("alphaCloneSkills", gamedata_meta,
-                         Column("alphaCloneID", Integer, ForeignKey("alphaClones.alphaCloneID"), primary_key=True),
-                         Column("typeID", Integer, primary_key=True),
-                         Column("level", Integer),
-                         )
+alphacloneskskills_table = Table(
+        "alphaCloneSkills",
+        gamedata_meta,
+        Column("alphaCloneID", Integer, ForeignKey("alphaClones.alphaCloneID"), primary_key=True),
+        Column("typeID", Integer, primary_key=True),
+        Column("level", Integer),
+)
 
 mapper(AlphaClone, alphaclones_table,
        properties={

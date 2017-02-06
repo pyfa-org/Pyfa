@@ -88,7 +88,7 @@ class CharacterImportThread(threading.Thread):
                                          skill.getAttribute("typeID"),
                                          skill.getAttribute("level"),
                                          )
-                    char = sCharacter.new(name+" (EVEMon)")
+                    char = sCharacter.new(name + " (EVEMon)")
                     sCharacter.apiUpdateCharSheet(char.ID, skills)
                 except Exception, e:
                     logger.error("Exception on character import:")

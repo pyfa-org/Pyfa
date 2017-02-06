@@ -34,13 +34,12 @@ from eos import db
 from service.fit import Fit as svcFit
 
 import wx
+from service.market import Market
 
 from eos.types import State, Slot, Module, Cargo, Ship, Drone, Implant, Booster, Citadel, Fighter, Fit
 
 if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3, 0)):
     from service.crest import Crest
-
-from service.market import Market
 
 logger = logging.getLogger("pyfa.service.port")
 
@@ -65,7 +64,7 @@ INV_FLAG_FIGHTER = 158
 
 class Port(object):
     instance = None
-    
+
     @classmethod
     def getInstance(cls):
         if cls.instance is None:
@@ -685,7 +684,7 @@ class Port(object):
                                 elif entityState == "Inactive":
                                     d.amountActive = 0
                                 f.drones.append(d)
-                            elif droneItem.category.name == "Fighter": # EFT saves fighter as drones
+                            elif droneItem.category.name == "Fighter":  # EFT saves fighter as drones
                                 ft = Fighter(droneItem)
                                 ft.amount = int(droneAmount) if ft.amount <= ft.fighterSquadronMaxSize else ft.fighterSquadronMaxSize
                                 f.fighters.append(ft)
