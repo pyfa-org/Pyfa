@@ -82,7 +82,8 @@ if not hasattr(sys, 'frozen'):
             betaFlag = True if saMatch.group(3) == "b" else False
             saBuild = int(saMatch.group(4)) if not betaFlag else 0
             if saMajor == 0 and (saMinor < 5 or (saMinor == 5 and saBuild < 8)):
-                print("Pyfa requires sqlalchemy 0.5.8 at least  but current sqlalchemy version is %s\nYou can download sqlalchemy (0.5.8+) from http://www.sqlalchemy.org/".format(sqlalchemy.__version__))
+                print("Pyfa requires sqlalchemy 0.5.8 at least  but current sqlalchemy version is %s\n"
+                      "You can download sqlalchemy (0.5.8+) from http://www.sqlalchemy.org/".format(sqlalchemy.__version__))
                 sys.exit(1)
         else:
             print("Unknown sqlalchemy version string format, skipping check")
