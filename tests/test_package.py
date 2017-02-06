@@ -1,13 +1,23 @@
 """import tests."""
 
 import os
+import sys
 import importlib
 
 import pytest
 
+
+script_dir = os.path.dirname(os.path.abspath(__file__))
+# Add root to python paths, this allows us to import submodules
+sys.path.append(os.path.realpath(os.path.join(script_dir, '..')))
+
+# noinspection PyPep8
 import service
+# noinspection PyPep8
 import gui
+# noinspection PyPep8
 import eos
+# noinspection PyPep8
 import utils
 
 
@@ -39,9 +49,6 @@ def eos_modules():
                 )
                 yield mod_name
 
-# Disable test
-'''
 @pytest.mark.parametrize("mod_name", eos_modules())
 def test_eos_imports(mod_name):
     assert importlib.import_module(mod_name)
-'''
