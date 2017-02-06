@@ -5,6 +5,8 @@
 # Ship: Maulus Navy Issue
 # Ship: Tristan
 type = "passive"
+
+
 def handler(fit, ship, context):
     for layer in ("shieldCapacity", "armorHP", "hp"):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill("Drones"),

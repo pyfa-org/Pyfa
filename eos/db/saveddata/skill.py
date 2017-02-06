@@ -1,4 +1,4 @@
-#===============================================================================
+# ===============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of eos.
@@ -15,7 +15,7 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# ===============================================================================
 
 from sqlalchemy import Table, Column, Integer, ForeignKey
 from sqlalchemy.orm import mapper
@@ -24,8 +24,8 @@ from eos.db import saveddata_meta
 from eos.types import Skill
 
 skills_table = Table("characterSkills", saveddata_meta,
-                     Column("characterID", ForeignKey("characters.ID"), primary_key = True, index = True),
-                     Column("itemID", Integer, primary_key = True),
-                     Column("_Skill__level", Integer, nullable = True))
+                     Column("characterID", ForeignKey("characters.ID"), primary_key=True, index=True),
+                     Column("itemID", Integer, primary_key=True),
+                     Column("_Skill__level", Integer, nullable=True))
 
 mapper(Skill, skills_table)

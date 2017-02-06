@@ -1,4 +1,4 @@
-#===============================================================================
+# ===============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of eos.
@@ -15,14 +15,15 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# ===============================================================================
 
-from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut, ChargeAttrShortcut
-from eos.effectHandlerHelpers import HandledItem, HandledCharge, HandledDroneCargoList
-from sqlalchemy.orm import validates, reconstructor
-import eos.db
-from eos.enum import Enum
 import logging
+
+from sqlalchemy.orm import validates, reconstructor
+
+import eos.db
+from eos.effectHandlerHelpers import HandledItem, HandledCharge
+from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut, ChargeAttrShortcut
 from eos.types import FighterAbility, Slot
 
 logger = logging.getLogger(__name__)
@@ -120,6 +121,10 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         self.amount = int(max(min(i, self.getModifiedItemAttr("fighterSquadronMaxSize")), 0))
 
     @property
+    def fighterSquadronMaxSize(self):
+        return int(self.getModifiedItemAttr("fighterSquadronMaxSize"))
+
+    @property
     def abilities(self):
         return self.__abilities or []
 
@@ -144,10 +149,6 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         return self.__item
 
     @property
-    def charge(self):
-        return self.__charge
-
-    @property
     def hasAmmo(self):
         return self.charge is not None
 
@@ -155,7 +156,7 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     def dps(self):
         return self.damageStats()
 
-    def damageStats(self, targetResists = None):
+    def damageStats(self, targetResists=None):
         if self.__dps is None:
             self.__volley = 0
             self.__dps = 0
@@ -164,6 +165,28 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                     dps, volley = ability.damageStats(targetResists)
                     self.__dps += dps
                     self.__volley += volley
+
+                # For forward compatability this assumes a fighter
+                # can have more than 2 damaging abilities and/or
+                # multiple that use charges.
+                if self.owner.factorReload:
+                    activeTimes = []
+                    reloadTimes = []
+                    constantDps = 0
+                    for ability in self.abilities:
+                        if not ability.active:
+                            continue
+                        if ability.numShots == 0:
+                            dps, volley = ability.damageStats(targetResists)
+                            constantDps += dps
+                            continue
+                        activeTimes.append(ability.numShots * ability.cycleTime)
+                        reloadTimes.append(ability.reloadTime)
+
+                    if len(activeTimes) > 0:
+                        shortestActive = sorted(activeTimes)[0]
+                        longestReload = sorted(reloadTimes, reverse=True)[0]
+                        self.__dps = max(constantDps, self.__dps * shortestActive / (shortestActive + longestReload))
 
         return self.__dps, self.__volley
 
@@ -174,7 +197,8 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                  "ecmBurstRange", "maxRange")
         for attr in attrs:
             maxRange = self.getModifiedItemAttr(attr)
-            if maxRange is not None: return maxRange
+            if maxRange is not None:
+                return maxRange
         if self.charge is not None:
             delay = self.getModifiedChargeAttr("explosionDelay")
             speed = self.getModifiedChargeAttr("maxVelocity")
@@ -189,18 +213,21 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         attrs = ("falloff", "falloffEffectiveness")
         for attr in attrs:
             falloff = self.getModifiedItemAttr(attr)
-            if falloff is not None: return falloff
+            if falloff is not None:
+                return falloff
 
     @validates("ID", "itemID", "chargeID", "amount", "amountActive")
     def validator(self, key, val):
         map = {"ID": lambda val: isinstance(val, int),
-               "itemID" : lambda val: isinstance(val, int),
-               "chargeID" : lambda val: isinstance(val, int),
-               "amount" : lambda val: isinstance(val, int) and val >= -1,
+               "itemID": lambda val: isinstance(val, int),
+               "chargeID": lambda val: isinstance(val, int),
+               "amount": lambda val: isinstance(val, int) and val >= -1,
                }
 
-        if map[key](val) == False: raise ValueError(str(val) + " is not a valid value for " + key)
-        else: return val
+        if not map[key](val):
+            raise ValueError(str(val) + " is not a valid value for " + key)
+        else:
+            return val
 
     def clear(self):
         self.__dps = None
@@ -216,7 +243,10 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         # Do not allow to apply offensive modules on ship with offensive module immunite, with few exceptions
         # (all effects which apply instant modification are exception, generally speaking)
         if item.offensive and projectedOnto.ship.getModifiedItemAttr("disallowOffensiveModifiers") == 1:
-            offensiveNonModifiers = set(("energyDestabilizationNew", "leech", "energyNosferatuFalloff", "energyNeutralizerFalloff"))
+            offensiveNonModifiers = {"energyDestabilizationNew",
+                                     "leech",
+                                     "energyNosferatuFalloff",
+                                     "energyNeutralizerFalloff"}
             if not offensiveNonModifiers.intersection(set(item.effects)):
                 return False
         # If assistive modules are not allowed, do not let to apply these altogether
@@ -225,7 +255,7 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         else:
             return True
 
-    def calculateModifiedAttributes(self, fit, runTime, forceProjected = False):
+    def calculateModifiedAttributes(self, fit, runTime, forceProjected=False):
         if not self.active:
             return
 
@@ -239,8 +269,8 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         for ability in self.abilities:
             if ability.active:
                 effect = ability.effect
-                if effect.runTime == runTime and \
-                ((projected and effect.isType("projected")) or not projected):
+                if effect.runTime == runTime and effect.activeByDefault and \
+                        ((projected and effect.isType("projected")) or not projected):
                     if ability.grouped:
                         effect.handler(fit, self, context)
                     else:
@@ -260,4 +290,3 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             return False
 
         return True
-

@@ -70,7 +70,9 @@ parser.add_option("-d", "--database", help="path to eve cache data dump in \
 parser.add_option("-e", "--effects", help="explicit comma-separated list of \
 effects to process", type="string", default="")
 parser.add_option("-r", "--remove", help="remove effect files that are not \
-used", action="store_true", dest="remove", default=False)
+used by any items", action="store_true", dest="remove", default=False)
+parser.add_option("-x", "--remove2", help="remove effect files that do not exist \
+in database", action="store_true", dest="remove2", default=False)
 parser.add_option("-u", "--debug", help="debug level, 0 by default",
                   type="int", default=0)
 (options, args) = parser.parse_args()
@@ -419,7 +421,13 @@ for effect_name in effect_list:
     if effect_name in globalmap_effectnameeos_effectid:
         effectids = globalmap_effectnameeos_effectid[effect_name]
     else:
-        print("Effect {0} not found and will be skipped".format(effect_name))
+        if options.remove2:
+            print("Warning: effect file " + effect_name +
+              " exists but is not in database, removing")
+            os.remove(os.path.join(effects_path, effect_file))
+        else:
+            print("Warning: effect file " + effect_name +
+              " exists but is not in database")
         continue
     for effectid in effectids:
         cursor.execute(QUERY_EFFECTID_TYPEID, (effectid,))

@@ -1,4 +1,4 @@
-#===============================================================================
+# ===============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of eos.
@@ -15,22 +15,20 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# ===============================================================================
 
-from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut
-from eos.effectHandlerHelpers import HandledItem
-from eos.saveddata.mode import Mode
-import eos.db
-from eos.types import Ship
 import logging
+
+from eos.types import Ship
 
 logger = logging.getLogger(__name__)
 
-class Citadel(Ship):
 
+class Citadel(Ship):
     def validate(self, item):
         if item.category.name != "Structure":
-            raise ValueError('Passed item "%s" (category: (%s)) is not under Structure category'%(item.name, item.category.name))
+            raise ValueError(
+                'Passed item "%s" (category: (%s)) is not under Structure category' % (item.name, item.category.name))
 
     def __deepcopy__(self, memo):
         copy = Citadel(self.item)

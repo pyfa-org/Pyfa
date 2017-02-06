@@ -5,5 +5,7 @@
 # Variations of module: EM Ward Field I (19 of 19)
 # Module: Civilian EM Ward Field
 type = "overheat"
+
+
 def handler(fit, module, context):
     module.boostItemAttr("emDamageResistanceBonus", module.getModifiedItemAttr("overloadHardeningBonus"))

@@ -4,6 +4,8 @@
 # Modules from group: Armor Repair Unit (105 of 105)
 runTime = "late"
 type = "active"
+
+
 def handler(fit, module, context):
     amount = module.getModifiedItemAttr("armorDamageAmount")
     speed = module.getModifiedItemAttr("duration") / 1000.0

@@ -1,19 +1,21 @@
-import config
+import logging
 import shutil
 import time
-import re
-import os
+
+import config
 import migrations
-import logging
 
 logger = logging.getLogger(__name__)
+
 
 def getVersion(db):
     cursor = db.execute('PRAGMA user_version')
     return cursor.fetchone()[0]
 
+
 def getAppVersion():
     return migrations.appVersion
+
 
 def update(saveddata_engine):
     dbVersion = getVersion(saveddata_engine)
@@ -24,7 +26,7 @@ def update(saveddata_engine):
 
     if dbVersion < appVersion:
         # Automatically backup database
-        toFile = "%s/saveddata_migration_%d-%d_%s.db"%(
+        toFile = "%s/saveddata_migration_%d-%d_%s.db" % (
             config.savePath,
             dbVersion,
             appVersion,
@@ -33,9 +35,9 @@ def update(saveddata_engine):
         shutil.copyfile(config.saveDB, toFile)
 
         for version in xrange(dbVersion, appVersion):
-            func = migrations.updates[version+1]
+            func = migrations.updates[version + 1]
             if func:
-                logger.info("Applying database update: %d", version+1)
+                logger.info("Applying database update: %d", version + 1)
                 func(saveddata_engine)
 
         # when all is said and done, set version to current

@@ -1,4 +1,4 @@
-#===============================================================================
+# ===============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of eos.
@@ -15,17 +15,15 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
-
-import urllib
-from cStringIO import StringIO
+# ===============================================================================
 
 from sqlalchemy.orm import reconstructor
-#from tomorrow import threads
+
+
+# from tomorrow import threads
 
 
 class CrestChar(object):
-
     def __init__(self, id, name, refresh_token=None):
         self.ID = id
         self.name = name

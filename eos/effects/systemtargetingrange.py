@@ -5,6 +5,8 @@
 # Celestials named like: Magnetar Effect Beacon Class (6 of 6)
 runTime = "early"
 type = ("projected", "passive")
+
+
 def handler(fit, beacon, context):
     fit.ship.multiplyItemAttr("maxTargetRange", beacon.getModifiedItemAttr("maxTargetRangeMultiplier"),
                               stackingPenalties=True, penaltyGroup="postMul")

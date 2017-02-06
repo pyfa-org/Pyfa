@@ -4,50 +4,54 @@ from gui.preferenceView import PreferenceView
 from gui.bitmapLoader import BitmapLoader
 
 import gui.mainFrame
-import service
+from service.settings import NetworkSettings
+from service.network import Network
 
-class PFNetworkPref ( PreferenceView):
+
+class PFNetworkPref(PreferenceView):
     title = "Network"
 
-    def populatePanel( self, panel ):
+    def populatePanel(self, panel):
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.settings = service.settings.NetworkSettings.getInstance()
-        self.network = service.Network.getInstance()
+        self.settings = NetworkSettings.getInstance()
+        self.network = Network.getInstance()
         self.dirtySettings = False
 
-        mainSizer = wx.BoxSizer( wx.VERTICAL )
+        mainSizer = wx.BoxSizer(wx.VERTICAL)
 
-        self.stTitle = wx.StaticText( panel, wx.ID_ANY, self.title, wx.DefaultPosition, wx.DefaultSize, 0 )
-        self.stTitle.Wrap( -1 )
-        self.stTitle.SetFont( wx.Font( 12, 70, 90, 90, False, wx.EmptyString ) )
+        self.stTitle = wx.StaticText(panel, wx.ID_ANY, self.title, wx.DefaultPosition, wx.DefaultSize, 0)
+        self.stTitle.Wrap(-1)
+        self.stTitle.SetFont(wx.Font(12, 70, 90, 90, False, wx.EmptyString))
 
-        mainSizer.Add( self.stTitle, 0, wx.ALL, 5 )
+        mainSizer.Add(self.stTitle, 0, wx.ALL, 5)
 
-        self.m_staticline1 = wx.StaticLine( panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
-        mainSizer.Add( self.m_staticline1, 0, wx.EXPAND|wx.TOP|wx.BOTTOM, 5 )
+        self.m_staticline1 = wx.StaticLine(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL)
+        mainSizer.Add(self.m_staticline1, 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 5)
 
-        self.cbEnableNetwork = wx.CheckBox( panel, wx.ID_ANY, u"Enable Network", wx.DefaultPosition, wx.DefaultSize, 0 )
-        mainSizer.Add( self.cbEnableNetwork, 0, wx.ALL|wx.EXPAND, 5 )
+        self.cbEnableNetwork = wx.CheckBox(panel, wx.ID_ANY, u"Enable Network", wx.DefaultPosition, wx.DefaultSize, 0)
+        mainSizer.Add(self.cbEnableNetwork, 0, wx.ALL | wx.EXPAND, 5)
 
-        subSizer = wx.BoxSizer( wx.VERTICAL )
-        self.cbEve = wx.CheckBox( panel, wx.ID_ANY, u"EVE Servers (API && CREST import)", wx.DefaultPosition, wx.DefaultSize, 0 )
-        subSizer.Add( self.cbEve, 0, wx.ALL|wx.EXPAND, 5 )
+        subSizer = wx.BoxSizer(wx.VERTICAL)
+        self.cbEve = wx.CheckBox(panel, wx.ID_ANY, u"EVE Servers (API && CREST import)", wx.DefaultPosition,
+                                 wx.DefaultSize, 0)
+        subSizer.Add(self.cbEve, 0, wx.ALL | wx.EXPAND, 5)
 
-        self.cbPricing = wx.CheckBox( panel, wx.ID_ANY, u"Pricing updates", wx.DefaultPosition, wx.DefaultSize, 0 )
-        subSizer.Add( self.cbPricing, 0, wx.ALL|wx.EXPAND, 5 )
+        self.cbPricing = wx.CheckBox(panel, wx.ID_ANY, u"Pricing updates", wx.DefaultPosition, wx.DefaultSize, 0)
+        subSizer.Add(self.cbPricing, 0, wx.ALL | wx.EXPAND, 5)
 
-        self.cbPyfaUpdate = wx.CheckBox( panel, wx.ID_ANY, u"Pyfa Update checks", wx.DefaultPosition, wx.DefaultSize, 0 )
-        subSizer.Add( self.cbPyfaUpdate, 0, wx.ALL|wx.EXPAND, 5 )
+        self.cbPyfaUpdate = wx.CheckBox(panel, wx.ID_ANY, u"Pyfa Update checks", wx.DefaultPosition, wx.DefaultSize, 0)
+        subSizer.Add(self.cbPyfaUpdate, 0, wx.ALL | wx.EXPAND, 5)
 
-        mainSizer.Add( subSizer, 0, wx.LEFT|wx.EXPAND, 30 )
+        mainSizer.Add(subSizer, 0, wx.LEFT | wx.EXPAND, 30)
 
-        proxyTitle = wx.StaticText( panel, wx.ID_ANY, "Proxy settings", wx.DefaultPosition, wx.DefaultSize, 0 )
-        proxyTitle.Wrap( -1 )
-        proxyTitle.SetFont( wx.Font( 12, 70, 90, 90, False, wx.EmptyString ) )
+        proxyTitle = wx.StaticText(panel, wx.ID_ANY, "Proxy settings", wx.DefaultPosition, wx.DefaultSize, 0)
+        proxyTitle.Wrap(-1)
+        proxyTitle.SetFont(wx.Font(12, 70, 90, 90, False, wx.EmptyString))
 
-        mainSizer.Add( proxyTitle, 0, wx.ALL, 5 )
-        mainSizer.Add( wx.StaticLine( panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL ), 0, wx.EXPAND, 5 )
+        mainSizer.Add(proxyTitle, 0, wx.ALL, 5)
+        mainSizer.Add(wx.StaticLine(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL), 0,
+                      wx.EXPAND, 5)
 
         self.cbEnableNetwork.SetValue(self.settings.isEnabled(self.network.ENABLED))
         self.cbEve.SetValue(self.settings.isEnabled(self.network.EVE))
@@ -61,73 +65,91 @@ class PFNetworkPref ( PreferenceView):
 
         self.toggleNetworks(self.cbEnableNetwork.GetValue())
 
-        #---------------
+        # ---------------
         # Proxy
-        #---------------
+        # ---------------
 
         self.nMode = self.settings.getMode()
         self.nAddr = self.settings.getAddress()
         self.nPort = self.settings.getPort()
         self.nType = self.settings.getType()
+        self.nAuth = self.settings.getProxyAuthDetails()  # tuple of (login, password)
+        if self.nAuth is None:
+            self.nAuth = ("", "")  # we don't want None here, it should be a tuple
 
-        ptypeSizer = wx.BoxSizer( wx.HORIZONTAL )
+        ptypeSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.stPType = wx.StaticText( panel, wx.ID_ANY, u"Mode:", wx.DefaultPosition, wx.DefaultSize, 0 )
-        self.stPType.Wrap( -1 )
-        ptypeSizer.Add( self.stPType, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+        self.stPType = wx.StaticText(panel, wx.ID_ANY, u"Mode:", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.stPType.Wrap(-1)
+        ptypeSizer.Add(self.stPType, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
 
-        self.chProxyTypeChoices = [ u"No proxy", u"Auto-detected proxy settings", u"Manual proxy settings" ]
-        self.chProxyType = wx.Choice( panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, self.chProxyTypeChoices, 0 )
+        self.chProxyTypeChoices = [u"No proxy", u"Auto-detected proxy settings", u"Manual proxy settings"]
+        self.chProxyType = wx.Choice(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, self.chProxyTypeChoices, 0)
 
+        self.chProxyType.SetSelection(self.nMode)
 
-        self.chProxyType.SetSelection( self.nMode )
+        ptypeSizer.Add(self.chProxyType, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
 
-        ptypeSizer.Add( self.chProxyType, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+        mainSizer.Add(ptypeSizer, 0, wx.EXPAND, 5)
 
-        mainSizer.Add( ptypeSizer, 0, wx.EXPAND, 5 )
+        fgAddrSizer = wx.FlexGridSizer(2, 2, 0, 0)
+        fgAddrSizer.AddGrowableCol(1)
+        fgAddrSizer.SetFlexibleDirection(wx.BOTH)
+        fgAddrSizer.SetNonFlexibleGrowMode(wx.FLEX_GROWMODE_SPECIFIED)
 
-        fgAddrSizer = wx.FlexGridSizer( 2, 2, 0, 0 )
-        fgAddrSizer.AddGrowableCol( 1 )
-        fgAddrSizer.SetFlexibleDirection( wx.BOTH )
-        fgAddrSizer.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_SPECIFIED )
+        self.stPSetAddr = wx.StaticText(panel, wx.ID_ANY, u"Addr:", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.stPSetAddr.Wrap(-1)
+        fgAddrSizer.Add(self.stPSetAddr, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
 
+        self.editProxySettingsAddr = wx.TextCtrl(panel, wx.ID_ANY, self.nAddr, wx.DefaultPosition, wx.DefaultSize, 0)
 
-        self.stPSetAddr = wx.StaticText( panel, wx.ID_ANY, u"Addr:", wx.DefaultPosition, wx.DefaultSize, 0 )
-        self.stPSetAddr.Wrap( -1 )
-        fgAddrSizer.Add( self.stPSetAddr, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+        fgAddrSizer.Add(self.editProxySettingsAddr, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL | wx.EXPAND, 5)
 
-        self.editProxySettingsAddr = wx.TextCtrl( panel, wx.ID_ANY, self.nAddr, wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.stPSetPort = wx.StaticText(panel, wx.ID_ANY, u"Port:", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.stPSetPort.Wrap(-1)
 
-        fgAddrSizer.Add( self.editProxySettingsAddr, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL | wx.EXPAND, 5 )
+        fgAddrSizer.Add(self.stPSetPort, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
 
-        self.stPSetPort = wx.StaticText( panel, wx.ID_ANY, u"Port:", wx.DefaultPosition, wx.DefaultSize, 0 )
-        self.stPSetPort.Wrap( -1 )
+        self.editProxySettingsPort = wx.TextCtrl(panel, wx.ID_ANY, self.nPort, wx.DefaultPosition, wx.DefaultSize, 0)
 
-        fgAddrSizer.Add( self.stPSetPort, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+        fgAddrSizer.Add(self.editProxySettingsPort, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL | wx.EXPAND, 5)
 
-        self.editProxySettingsPort = wx.TextCtrl( panel, wx.ID_ANY, self.nPort, wx.DefaultPosition, wx.DefaultSize, 0 )
+        mainSizer.Add(fgAddrSizer, 0, wx.EXPAND, 5)
 
-        fgAddrSizer.Add( self.editProxySettingsPort, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL | wx.EXPAND, 5 )
+        # proxy auth information: login and pass
+        self.stPSetLogin = wx.StaticText(panel, wx.ID_ANY, u"Username:", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.stPSetLogin.Wrap(-1)
+        self.editProxySettingsLogin = wx.TextCtrl(panel, wx.ID_ANY, self.nAuth[0], wx.DefaultPosition, wx.DefaultSize,
+                                                  0)
+        self.stPSetPassword = wx.StaticText(panel, wx.ID_ANY, u"Password:", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.stPSetPassword.Wrap(-1)
+        self.editProxySettingsPassword = wx.TextCtrl(panel, wx.ID_ANY, self.nAuth[1], wx.DefaultPosition,
+                                                     wx.DefaultSize, wx.TE_PASSWORD)
+        pAuthSizer = wx.BoxSizer(wx.HORIZONTAL)
+        pAuthSizer.Add(self.stPSetLogin, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
+        pAuthSizer.Add(self.editProxySettingsLogin, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
+        pAuthSizer.Add(self.stPSetPassword, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
+        pAuthSizer.Add(self.editProxySettingsPassword, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
+        mainSizer.Add(pAuthSizer, 0, wx.EXPAND, 5)
 
-        mainSizer.Add( fgAddrSizer, 0, wx.EXPAND, 5)
+        self.stPSAutoDetected = wx.StaticText(panel, wx.ID_ANY, u"Auto-detected: ", wx.DefaultPosition, wx.DefaultSize,
+                                              0)
+        self.stPSAutoDetected.Wrap(-1)
+        mainSizer.Add(self.stPSAutoDetected, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
 
-        self.stPSAutoDetected = wx.StaticText( panel, wx.ID_ANY, u"Auto-detected: ", wx.DefaultPosition, wx.DefaultSize, 0 )
-        self.stPSAutoDetected.Wrap( -1 )
-        mainSizer.Add( self.stPSAutoDetected, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+        btnSizer = wx.BoxSizer(wx.HORIZONTAL)
+        btnSizer.AddSpacer((0, 0), 1, wx.EXPAND, 5)
 
-        btnSizer = wx.BoxSizer( wx.HORIZONTAL )
-        btnSizer.AddSpacer( ( 0, 0), 1, wx.EXPAND, 5 )
+        self.btnApply = wx.Button(panel, wx.ID_ANY, u"Apply Proxy Settings", wx.DefaultPosition, wx.DefaultSize, 0)
 
-        self.btnApply = wx.Button( panel, wx.ID_ANY, u"Apply Proxy Settings", wx.DefaultPosition, wx.DefaultSize, 0 )
+        btnSizer.Add(self.btnApply, 0, wx.ALL, 5)
 
-        btnSizer.Add( self.btnApply, 0, wx.ALL, 5 )
-
-        mainSizer.Add(btnSizer, 0, wx.EXPAND,5)
+        mainSizer.Add(btnSizer, 0, wx.EXPAND, 5)
 
         proxy = self.settings.autodetect()
 
         if proxy is not None:
-            addr,port  =  proxy
+            addr, port = proxy
             txt = addr + ":" + str(port)
         else:
             txt = "None"
@@ -138,18 +160,19 @@ class PFNetworkPref ( PreferenceView):
         self.chProxyType.Bind(wx.EVT_CHOICE, self.OnCHProxyTypeSelect)
         self.editProxySettingsAddr.Bind(wx.EVT_TEXT, self.OnEditPSAddrText)
         self.editProxySettingsPort.Bind(wx.EVT_TEXT, self.OnEditPSPortText)
-
+        self.editProxySettingsLogin.Bind(wx.EVT_TEXT, self.OnEditPSLoginText)
+        self.editProxySettingsPassword.Bind(wx.EVT_TEXT, self.OnEditPSPasswordText)
 
         self.btnApply.Bind(wx.EVT_BUTTON, self.OnBtnApply)
 
         self.UpdateApplyButtonState()
 
-        if self.nMode is not 2:
+        if self.nMode is not NetworkSettings.PROXY_MODE_MANUAL:  # == 2
             self.ToggleProxySettings(False)
         else:
             self.ToggleProxySettings(True)
 
-        panel.SetSizer( mainSizer )
+        panel.SetSizer(mainSizer)
         panel.Layout()
 
     def toggleNetworks(self, toggle):
@@ -180,6 +203,16 @@ class PFNetworkPref ( PreferenceView):
         self.dirtySettings = True
         self.UpdateApplyButtonState()
 
+    def OnEditPSLoginText(self, event):
+        self.nAuth = (self.editProxySettingsLogin.GetValue(), self.nAuth[1])
+        self.dirtySettings = True
+        self.UpdateApplyButtonState()
+
+    def OnEditPSPasswordText(self, event):
+        self.nAuth = (self.nAuth[0], self.editProxySettingsPassword.GetValue())
+        self.dirtySettings = True
+        self.UpdateApplyButtonState()
+
     def OnBtnApply(self, event):
         self.dirtySettings = False
         self.UpdateApplyButtonState()
@@ -190,6 +223,7 @@ class PFNetworkPref ( PreferenceView):
         self.settings.setAddress(self.nAddr)
         self.settings.setPort(self.nPort)
         self.settings.setType(self.nType)
+        self.settings.setProxyAuthDetails(self.nAuth[0], self.nAuth[1])
 
     def UpdateApplyButtonState(self):
         if self.dirtySettings:
@@ -205,7 +239,7 @@ class PFNetworkPref ( PreferenceView):
 
         self.UpdateApplyButtonState()
 
-        if choice is not 2:
+        if choice is not NetworkSettings.PROXY_MODE_MANUAL:
             self.ToggleProxySettings(False)
         else:
             self.ToggleProxySettings(True)
@@ -216,13 +250,22 @@ class PFNetworkPref ( PreferenceView):
             self.editProxySettingsAddr.Enable()
             self.stPSetPort.Enable()
             self.editProxySettingsPort.Enable()
+            self.stPSetLogin.Enable()
+            self.stPSetPassword.Enable()
+            self.editProxySettingsLogin.Enable()
+            self.editProxySettingsPassword.Enable()
         else:
             self.stPSetAddr.Disable()
             self.editProxySettingsAddr.Disable()
             self.stPSetPort.Disable()
             self.editProxySettingsPort.Disable()
+            self.stPSetLogin.Disable()
+            self.stPSetPassword.Disable()
+            self.editProxySettingsLogin.Disable()
+            self.editProxySettingsPassword.Disable()
 
     def getImage(self):
         return BitmapLoader.getBitmap("prefs_proxy", "gui")
+
 
 PFNetworkPref.register()

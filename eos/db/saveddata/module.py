@@ -1,4 +1,4 @@
-#===============================================================================
+# ===============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of eos.
@@ -15,7 +15,7 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# ===============================================================================
 
 from sqlalchemy import Table, Column, Integer, ForeignKey, CheckConstraint, Boolean
 from sqlalchemy.orm import relation, mapper
@@ -24,16 +24,15 @@ from eos.db import saveddata_meta
 from eos.types import Module, Fit
 
 modules_table = Table("modules", saveddata_meta,
-                      Column("ID", Integer, primary_key = True),
-                      Column("fitID", Integer, ForeignKey("fits.ID"), nullable = False, index = True),
-                      Column("itemID", Integer, nullable = True),
-                      Column("dummySlot", Integer, nullable = True, default = None),
+                      Column("ID", Integer, primary_key=True),
+                      Column("fitID", Integer, ForeignKey("fits.ID"), nullable=False, index=True),
+                      Column("itemID", Integer, nullable=True),
+                      Column("dummySlot", Integer, nullable=True, default=None),
                       Column("chargeID", Integer),
                       Column("state", Integer, CheckConstraint("state >= -1"), CheckConstraint("state <= 2")),
-                      Column("projected", Boolean, default = False, nullable = False),
+                      Column("projected", Boolean, default=False, nullable=False),
                       Column("position", Integer),
                       CheckConstraint('("dummySlot" = NULL OR "itemID" = NULL) AND "dummySlot" != "itemID"'))
 
 mapper(Module, modules_table,
-       properties = {"owner" : relation(Fit)})
-
+       properties={"owner": relation(Fit)})

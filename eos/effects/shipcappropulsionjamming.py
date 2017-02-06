@@ -7,6 +7,8 @@
 # Ship: Executioner
 # Ship: Slasher
 type = "passive"
+
+
 def handler(fit, ship, context):
     groups = ("Stasis Web", "Warp Scrambler")
     fit.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups,

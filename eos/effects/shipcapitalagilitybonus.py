@@ -8,5 +8,7 @@
 # Ships from group: Titan (5 of 5)
 # Ship: Rorqual
 type = "passive"
+
+
 def handler(fit, src, context):
     fit.ship.multiplyItemAttr("agility", src.getModifiedItemAttr("advancedCapitalAgility"), stackingPenalties=True)

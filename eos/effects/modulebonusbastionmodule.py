@@ -4,6 +4,8 @@
 # Module: Bastion Module I
 type = "active"
 runTime = "early"
+
+
 def handler(fit, src, context):
     # Resistances
     for layer, attrPrefix in (('shield', 'shield'), ('armor', 'armor'), ('hull', '')):
@@ -16,21 +18,21 @@ def handler(fit, src, context):
                                       stackingPenalties=penalize, penaltyGroup="preMul")
 
     # Turrets
-    fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Large Energy Turret") or \
-                                  mod.item.requiresSkill("Large Hybrid Turret") or \
-                                  mod.item.requiresSkill("Large Projectile Turret"),
+    fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Large Energy Turret") or
+                                              mod.item.requiresSkill("Large Hybrid Turret") or
+                                              mod.item.requiresSkill("Large Projectile Turret"),
                                   "maxRange", src.getModifiedItemAttr("maxRangeBonus"),
                                   stackingPenalties=True)
-    fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Large Energy Turret") or \
-                                  mod.item.requiresSkill("Large Hybrid Turret") or \
-                                  mod.item.requiresSkill("Large Projectile Turret"),
+    fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Large Energy Turret") or
+                                              mod.item.requiresSkill("Large Hybrid Turret") or
+                                              mod.item.requiresSkill("Large Projectile Turret"),
                                   "falloff", src.getModifiedItemAttr("falloffBonus"),
                                   stackingPenalties=True)
 
     # Missiles
-    fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill("Torpedoes") or \
-                                    mod.charge.requiresSkill("Cruise Missiles") or \
-                                    mod.charge.requiresSkill("Heavy Missiles"),
+    fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill("Torpedoes") or
+                                                mod.charge.requiresSkill("Cruise Missiles") or
+                                                mod.charge.requiresSkill("Heavy Missiles"),
                                     "maxVelocity", src.getModifiedItemAttr("missileVelocityBonus"))
 
     # Tanking
@@ -60,7 +62,8 @@ def handler(fit, src, context):
     fit.ship.boostItemAttr("remoteRepairImpedance", src.getModifiedItemAttr("remoteRepairImpedanceBonus"))
     fit.ship.boostItemAttr("remoteAssistanceImpedance", src.getModifiedItemAttr("remoteAssistanceImpedanceBonus"))
     fit.ship.boostItemAttr("sensorDampenerResistance", src.getModifiedItemAttr("sensorDampenerResistanceBonus"))
-    fit.modules.filteredItemIncrease(lambda mod: mod.item.requiresSkill("Micro Jump Drive Operation"), "activationBlocked", src.getModifiedItemAttr("activationBlockedStrenght"))
+    fit.modules.filteredItemIncrease(lambda mod: mod.item.requiresSkill("Micro Jump Drive Operation"),
+                                     "activationBlocked", src.getModifiedItemAttr("activationBlockedStrenght"))
     fit.ship.boostItemAttr("targetPainterResistance", src.getModifiedItemAttr("targetPainterResistanceBonus"))
     fit.ship.boostItemAttr("weaponDisruptionResistance", src.getModifiedItemAttr("weaponDisruptionResistanceBonus"))
     fit.ship.increaseItemAttr("warpScrambleStatus", src.getModifiedItemAttr("siegeModeWarpStatus"))

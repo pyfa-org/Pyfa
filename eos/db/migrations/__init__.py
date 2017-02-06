@@ -11,7 +11,6 @@ upgrade files 1-5)
 import pkgutil
 import re
 
-
 updates = {}
 appVersion = 0
 

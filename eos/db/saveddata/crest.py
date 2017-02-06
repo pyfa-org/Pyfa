@@ -1,4 +1,4 @@
-#===============================================================================
+# ===============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of eos.
@@ -15,17 +15,17 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# ===============================================================================
 
-from sqlalchemy import Table, Column, Integer, String, Boolean
+from sqlalchemy import Table, Column, Integer, String
 from sqlalchemy.orm import mapper
 
 from eos.db import saveddata_meta
 from eos.types import CrestChar
 
 crest_table = Table("crest", saveddata_meta,
-                         Column("ID", Integer, primary_key = True),
-                         Column("name", String, nullable = False, unique = True),
-                         Column("refresh_token", String, nullable = False))
+                    Column("ID", Integer, primary_key=True),
+                    Column("name", String, nullable=False, unique=True),
+                    Column("refresh_token", String, nullable=False))
 
 mapper(CrestChar, crest_table)

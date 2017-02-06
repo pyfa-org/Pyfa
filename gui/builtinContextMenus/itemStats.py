@@ -1,8 +1,9 @@
 from gui.contextMenu import ContextMenu
 from gui.itemStats import ItemStatsDialog
 import gui.mainFrame
-import service
 import wx
+from service.fit import Fit
+
 
 class ItemStats(ContextMenu):
     def __init__(self):
@@ -18,7 +19,8 @@ class ItemStats(ContextMenu):
                               "skillItem", "projectedModule",
                               "projectedDrone", "projectedCharge",
                               "itemStats", "fighterItem",
-                              "implantItemChar", "projectedFighter")
+                              "implantItemChar", "projectedFighter",
+                              "fittingMode")
 
     def getText(self, itmContext, selection):
         return "{0} Stats".format(itmContext if itmContext is not None else "Item")
@@ -27,8 +29,10 @@ class ItemStats(ContextMenu):
         srcContext = fullContext[0]
         if srcContext == "fittingShip":
             fitID = self.mainFrame.getActiveFit()
-            sFit = service.Fit.getInstance()
+            sFit = Fit.getInstance()
             stuff = sFit.getFit(fitID).ship
+        elif srcContext == "fittingMode":
+            stuff = selection[0].item
         else:
             stuff = selection[0]
 
@@ -58,5 +62,6 @@ class ItemStats(ContextMenu):
 
         else:
             ItemStatsDialog(stuff, fullContext)
+
 
 ItemStats.register()

@@ -1,4 +1,4 @@
-#===============================================================================
+# ===============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of eos.
@@ -15,25 +15,24 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# ===============================================================================
 
-from eos.effectHandlerHelpers import *
-from eos.modifiedAttributeDict import ModifiedAttributeDict
-from sqlalchemy.orm import validates, reconstructor
-from itertools import chain
-from eos import capSim
-from copy import deepcopy
-from math import sqrt, log, asinh
-from eos.types import Drone, Cargo, Ship, Character, State, Slot, Module, Implant, Booster, Skill, Citadel
-from eos.saveddata.module import State, Hardpoint
-from eos.saveddata.mode import Mode
-import eos.db
-import time
 import copy
-from utils.timer import Timer
+import time
+from copy import deepcopy
+from itertools import chain
+from math import sqrt, log, asinh
+
+from sqlalchemy.orm import validates, reconstructor
+
+import eos.db
+from eos import capSim
+from eos.effectHandlerHelpers import *
+from eos.effectHandlerHelpers import HandledModuleList, HandledDroneCargoList, HandledImplantBoosterList, HandledProjectedDroneList, HandledProjectedModList
 from eos.enum import Enum
-
-
+from eos.saveddata.module import State, Hardpoint
+from eos.types import Ship, Character, Slot, Module, Citadel
+from utils.timer import Timer
 import logging
 
 logger = logging.getLogger(__name__)
@@ -43,9 +42,14 @@ try:
 except ImportError:
     from utils.compat import OrderedDict
 
+
 class ImplantLocation(Enum):
+    def __init__(self):
+        pass
+
     FIT = 0
     CHARACTER = 1
+
 
 class Fit(object):
     """Represents a fitting, with modules, ship, implants, etc."""
@@ -65,7 +69,7 @@ class Fit(object):
         self.__cargo = HandledDroneCargoList()
         self.__implants = HandledImplantBoosterList()
         self.__boosters = HandledImplantBoosterList()
-        #self.__projectedFits = {}
+        # self.__projectedFits = {}
         self.__projectedModules = HandledProjectedModList()
         self.__projectedDrones = HandledProjectedDroneList()
         self.__projectedFighters = HandledProjectedDroneList()
@@ -132,10 +136,10 @@ class Fit(object):
         self.__capRecharge = None
         self.__calculatedTargets = []
         self.factorReload = False
-        self.fleet = None
         self.boostsFits = set()
         self.gangBoosts = None
         self.ecmProjectedStr = 1
+        self.commandBonuses = {}
 
     @property
     def targetResists(self):
@@ -232,8 +236,15 @@ class Fit(object):
         # not return them.
         return [fit for fit in self.__projectedFits.values() if not fit.isInvalid]
 
+    @property
+    def commandFits(self):
+        return [fit for fit in self.__commandFits.values() if not fit.isInvalid]
+
     def getProjectionInfo(self, fitID):
         return self.projectedOnto.get(fitID, None)
+
+    def getCommandInfo(self, fitID):
+        return self.boostedOnto.get(fitID, None)
 
     @property
     def projectedDrones(self):
@@ -299,7 +310,8 @@ class Fit(object):
 
     @property
     def maxTargets(self):
-        return min(self.extraAttributes["maxTargetsLockedFromSkills"], self.ship.getModifiedItemAttr("maxLockedTargets"))
+        return min(self.extraAttributes["maxTargetsLockedFromSkills"],
+                   self.ship.getModifiedItemAttr("maxLockedTargets"))
 
     @property
     def maxTargetRange(self):
@@ -326,7 +338,7 @@ class Fit(object):
 
     @property
     def jamChance(self):
-        return (1-self.ecmProjectedStr)*100
+        return (1 - self.ecmProjectedStr) * 100
 
     @property
     def maxSpeed(self):
@@ -361,11 +373,13 @@ class Fit(object):
     @validates("ID", "ownerID", "shipID")
     def validator(self, key, val):
         map = {"ID": lambda val: isinstance(val, int),
-               "ownerID" : lambda val: isinstance(val, int) or val is None,
-               "shipID" : lambda val: isinstance(val, int) or val is None}
+               "ownerID": lambda val: isinstance(val, int) or val is None,
+               "shipID": lambda val: isinstance(val, int) or val is None}
 
-        if map[key](val) == False: raise ValueError(str(val) + " is not a valid value for " + key)
-        else: return val
+        if not map[key](val):
+            raise ValueError(str(val) + " is not a valid value for " + key)
+        else:
+            return val
 
     def clear(self, projected=False):
         self.__effectiveTank = None
@@ -384,6 +398,8 @@ class Fit(object):
         self.__capUsed = None
         self.__capRecharge = None
         self.ecmProjectedStr = 1
+        self.commandBonuses = {}
+
         del self.__calculatedTargets[:]
         del self.__extraDrains[:]
 
@@ -414,8 +430,8 @@ class Fit(object):
                 if stuff is not None and stuff != self:
                     stuff.clear(projected=True)
 
-    #Methods to register and get the thing currently affecting the fit,
-    #so we can correctly map "Affected By"
+    # Methods to register and get the thing currently affecting the fit,
+    # so we can correctly map "Affected By"
     def register(self, currModifier, origin=None):
         self.__modifier = currModifier
         self.__origin = origin
@@ -430,57 +446,219 @@ class Fit(object):
     def getOrigin(self):
         return self.__origin
 
-    def __calculateGangBoosts(self, runTime):
-        logger.debug("Applying gang boosts in `%s` runtime for %r", runTime, self)
-        for name, info in self.gangBoosts.iteritems():
+    def addCommandBonus(self, warfareBuffID, value, module, effect, runTime="normal"):
+        # oh fuck this is so janky
+        # @todo should we pass in min/max to this function, or is abs okay?
+        # (abs is old method, ccp now provides the aggregate function in their data)
+        if warfareBuffID not in self.commandBonuses or abs(self.commandBonuses[warfareBuffID][1]) < abs(value):
+            self.commandBonuses[warfareBuffID] = (runTime, value, module, effect)
+
+    def __runCommandBoosts(self, runTime="normal"):
+        logger.debug("Applying gang boosts for %r", self)
+        for warfareBuffID in self.commandBonuses.keys():
             # Unpack all data required to run effect properly
-            effect, thing = info[1]
-            if effect.runTime == runTime:
-                context = ("gang", thing.__class__.__name__.lower())
-                if isinstance(thing, Module):
-                    if effect.isType("offline") or (effect.isType("passive") and thing.state >= State.ONLINE) or \
-                    (effect.isType("active") and thing.state >= State.ACTIVE):
-                        # Run effect, and get proper bonuses applied
-                        try:
-                            self.register(thing)
-                            effect.handler(self, thing, context)
-                        except:
-                            pass
-                else:
-                    # Run effect, and get proper bonuses applied
-                    try:
-                        self.register(thing)
-                        effect.handler(self, thing, context)
-                    except:
-                        pass
+            effect_runTime, value, thing, effect = self.commandBonuses[warfareBuffID]
+
+            if runTime != effect_runTime:
+                continue
+
+            # This should always be a gang effect, otherwise it wouldn't be added to commandBonuses
+            # @todo: Check this
+            if effect.isType("gang"):
+                self.register(thing)
+
+                if warfareBuffID == 10:  # Shield Burst: Shield Harmonizing: Shield Resistance
+                    for damageType in ("Em", "Explosive", "Thermal", "Kinetic"):
+                        self.ship.boostItemAttr("shield%sDamageResonance" % damageType, value)
+
+                if warfareBuffID == 11:  # Shield Burst: Active Shielding: Repair Duration/Capacitor
+                    self.modules.filteredItemBoost(
+                        lambda mod: mod.item.requiresSkill("Shield Operation") or mod.item.requiresSkill(
+                            "Shield Emission Systems"), "capacitorNeed", value)
+                    self.modules.filteredItemBoost(
+                        lambda mod: mod.item.requiresSkill("Shield Operation") or mod.item.requiresSkill(
+                            "Shield Emission Systems"), "duration", value)
+
+                if warfareBuffID == 12:  # Shield Burst: Shield Extension: Shield HP
+                    self.ship.boostItemAttr("shieldCapacity", value, stackingPenalties=True)
+
+                if warfareBuffID == 13:  # Armor Burst: Armor Energizing: Armor Resistance
+                    for damageType in ("Em", "Thermal", "Explosive", "Kinetic"):
+                        self.ship.boostItemAttr("armor%sDamageResonance" % damageType, value)
+
+                if warfareBuffID == 14:  # Armor Burst: Rapid Repair: Repair Duration/Capacitor
+                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Remote Armor Repair Systems") or mod.item.requiresSkill("Repair Systems"),
+                                                  "capacitorNeed", value)
+                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Remote Armor Repair Systems") or mod.item.requiresSkill("Repair Systems"), "duration",
+                                                  value)
+
+                if warfareBuffID == 15:  # Armor Burst: Armor Reinforcement: Armor HP
+                    self.ship.boostItemAttr("armorHP", value, stackingPenalties=True)
+
+                if warfareBuffID == 16:  # Information Burst: Sensor Optimization: Scan Resolution
+                    self.ship.boostItemAttr("scanResolution", value, stackingPenalties=True)
+
+                if warfareBuffID == 17:  # Information Burst: Electronic Superiority: EWAR Range and Strength
+                    groups = ("ECM", "Sensor Dampener", "Weapon Disruptor", "Target Painter")
+                    self.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups, "maxRange", value,
+                                                  stackingPenalties=True)
+                    self.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups,
+                                                  "falloffEffectiveness", value, stackingPenalties=True)
+
+                    for scanType in ("Magnetometric", "Radar", "Ladar", "Gravimetric"):
+                        self.modules.filteredItemBoost(lambda mod: mod.item.group.name == "ECM",
+                                                      "scan%sStrengthBonus" % scanType, value,
+                                                      stackingPenalties=True)
+
+                    for attr in ("missileVelocityBonus", "explosionDelayBonus", "aoeVelocityBonus", "falloffBonus",
+                                 "maxRangeBonus", "aoeCloudSizeBonus", "trackingSpeedBonus"):
+                        self.modules.filteredItemBoost(lambda mod: mod.item.group.name == "Weapon Disruptor",
+                                                      attr, value)
+
+                    for attr in ("maxTargetRangeBonus", "scanResolutionBonus"):
+                        self.modules.filteredItemBoost(lambda mod: mod.item.group.name == "Sensor Dampener",
+                                                      attr, value)
+
+                    self.modules.filteredItemBoost(lambda mod: mod.item.gorup.name == "Target Painter",
+                                                  "signatureRadiusBonus", value, stackingPenalties=True)
+
+                if warfareBuffID == 18:  # Information Burst: Electronic Hardening: Scan Strength
+                    for scanType in ("Gravimetric", "Radar", "Ladar", "Magnetometric"):
+                        self.ship.boostItemAttr("scan%sStrength" % scanType, value, stackingPenalties=True)
+
+                if warfareBuffID == 19:  # Information Burst: Electronic Hardening: RSD/RWD Resistance
+                    self.ship.boostItemAttr("sensorDampenerResistance", value)
+                    self.ship.boostItemAttr("weaponDisruptionResistance", value)
+
+                if warfareBuffID == 26:  # Information Burst: Sensor Optimization: Targeting Range
+                    self.ship.boostItemAttr("maxTargetRange", value)
+
+                if warfareBuffID == 20:  # Skirmish Burst: Evasive Maneuvers: Signature Radius
+                    self.ship.boostItemAttr("signatureRadius", value, stackingPenalties=True)
+
+                if warfareBuffID == 21:  # Skirmish Burst: Interdiction Maneuvers: Tackle Range
+                    groups = ("Stasis Web", "Warp Scrambler")
+                    self.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups, "maxRange", value,
+                                                  stackingPenalties=True)
+
+                if warfareBuffID == 22:  # Skirmish Burst: Rapid Deployment: AB/MWD Speed Increase
+                    self.modules.filteredItemBoost(
+                        lambda mod: mod.item.requiresSkill("Afterburner") or mod.item.requiresSkill(
+                            "High Speed Maneuvering"), "speedFactor", value, stackingPenalties=True)
+
+                if warfareBuffID == 23:  # Mining Burst: Mining Laser Field Enhancement: Mining/Survey Range
+                    self.modules.filteredItemBoost(
+                        lambda mod: mod.item.requiresSkill("Mining") or mod.item.requiresSkill(
+                            "Ice Harvesting") or mod.item.requiresSkill("Gas Cloud Harvesting"), "maxRange",
+                        value, stackingPenalties=True)
+                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("CPU Management"),
+                                                  "surveyScanRange", value, stackingPenalties=True)
+
+                if warfareBuffID == 24:  # Mining Burst: Mining Laser Optimization: Mining Capacitor/Duration
+                    self.modules.filteredItemBoost(
+                        lambda mod: mod.item.requiresSkill("Mining") or mod.item.requiresSkill(
+                            "Ice Harvesting") or mod.item.requiresSkill("Gas Cloud Harvesting"),
+                        "capacitorNeed", value, stackingPenalties=True)
+                    self.modules.filteredItemBoost(
+                        lambda mod: mod.item.requiresSkill("Mining") or mod.item.requiresSkill(
+                            "Ice Harvesting") or mod.item.requiresSkill("Gas Cloud Harvesting"), "duration",
+                        value, stackingPenalties=True)
+
+                if warfareBuffID == 25:  # Mining Burst: Mining Equipment Preservation: Crystal Volatility
+                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Mining"),
+                                                  "crystalVolatilityChance", value, stackingPenalties=True)
+
+                if warfareBuffID == 60:  # Skirmish Burst: Evasive Maneuvers: Agility
+                    self.ship.boostItemAttr("agility", value, stackingPenalties=True)
+
+                # Titan effects
+
+                if warfareBuffID == 39:  # Avatar Effect Generator : Capacitor Recharge bonus
+                    self.ship.boostItemAttr("rechargeRate", value, stackingPenalties=True)
+
+                if warfareBuffID == 40:  # Avatar Effect Generator : Kinetic resistance bonus
+                    for attr in ("armorKineticDamageResonance", "shieldKineticDamageResonance", "kineticDamageResonance"):
+                        self.ship.boostItemAttr(attr, value, stackingPenalties=True)
+
+                if warfareBuffID == 41:  # Avatar Effect Generator : EM resistance penalty
+                    for attr in ("armorEmDamageResonance", "shieldEmDamageResonance", "emDamageResonance"):
+                        self.ship.boostItemAttr(attr, value, stackingPenalties=True)
+
+                if warfareBuffID == 42:  # Erebus Effect Generator : Armor HP bonus
+                    self.ship.boostItemAttr("armorHP", value, stackingPenalties=True)
+
+                if warfareBuffID == 43:  # Erebus Effect Generator : Explosive resistance bonus
+                    for attr in ("armorExplosiveDamageResonance", "shieldExplosiveDamageResonance", "explosiveDamageResonance"):
+                        self.ship.boostItemAttr(attr, value, stackingPenalties=True)
+
+                if warfareBuffID == 44:  # Erebus Effect Generator : Thermal resistance penalty
+                    for attr in ("armorThermalDamageResonance", "shieldThermalDamageResonance", "thermalDamageResonance"):
+                        self.ship.boostItemAttr(attr, value, stackingPenalties=True)
+
+                if warfareBuffID == 45:  # Ragnarok Effect Generator : Signature Radius bonus
+                    self.ship.boostItemAttr("signatureRadius", value, stackingPenalties=True)
+
+                if warfareBuffID == 46:  # Ragnarok Effect Generator : Thermal resistance bonus
+                    for attr in ("armorThermalDamageResonance", "shieldThermalDamageResonance", "thermalDamageResonance"):
+                        self.ship.boostItemAttr(attr, value, stackingPenalties=True)
+
+                if warfareBuffID == 47:  # Ragnarok Effect Generator : Explosive resistance penaly
+                    for attr in ("armorExplosiveDamageResonance", "shieldExplosiveDamageResonance", "explosiveDamageResonance"):
+                        self.ship.boostItemAttr(attr, value, stackingPenalties=True)
+
+                if warfareBuffID == 48:  # Leviathan Effect Generator : Shield HP bonus
+                    self.ship.boostItemAttr("shieldCapacity", value, stackingPenalties=True)
+
+                if warfareBuffID == 49:  # Leviathan Effect Generator : EM resistance bonus
+                    for attr in ("armorEmDamageResonance", "shieldEmDamageResonance", "emDamageResonance"):
+                        self.ship.boostItemAttr(attr, value, stackingPenalties=True)
+
+                if warfareBuffID == 50:  # Leviathan Effect Generator : Kinetic resistance penalty
+                    for attr in ("armorKineticDamageResonance", "shieldKineticDamageResonance", "kineticDamageResonance"):
+                        self.ship.boostItemAttr(attr, value, stackingPenalties=True)
+
+                if warfareBuffID == 51:  # Avatar Effect Generator : Velocity penalty
+                    self.ship.boostItemAttr("maxVelocity", value, stackingPenalties=True)
+
+                if warfareBuffID == 52:  # Erebus Effect Generator : Shield RR penalty
+                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Shield Emission Systems"), "shieldBonus", value, stackingPenalties=True)
+
+                if warfareBuffID == 53:  # Leviathan Effect Generator : Armor RR penalty
+                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Remote Armor Repair Systems"), "armorDamageAmount", value, stackingPenalties=True)
+
+                if warfareBuffID == 54:  # Ragnarok Effect Generator : Laser and Hybrid Optimal penalty
+                    groups = ("Energy Weapon", "Hybrid Weapon")
+                    self.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups, "maxRange", value, stackingPenalties=True)
+
+            del self.commandBonuses[warfareBuffID]
 
     def calculateModifiedAttributes(self, targetFit=None, withBoosters=False, dirtyStorage=None):
         timer = Timer(u'Fit: {}, {}'.format(self.ID, self.name), logger)
         logger.debug("Starting fit calculation on: %r, withBoosters: %s", self, withBoosters)
 
         shadow = False
-        if targetFit:
+        if targetFit and not withBoosters:
             logger.debug("Applying projections to target: %r", targetFit)
             projectionInfo = self.getProjectionInfo(targetFit.ID)
             logger.debug("ProjectionInfo: %s", projectionInfo)
             if self == targetFit:
                 copied = self  # original fit
                 shadow = True
+                # Don't inspect this, we genuinely want to reassign self
+                # noinspection PyMethodFirstArgAssignment
                 self = copy.deepcopy(self)
-                self.fleet = copied.fleet
                 logger.debug("Handling self projection - making shadow copy of fit. %r => %r", copied, self)
                 # we delete the fit because when we copy a fit, flush() is
                 # called to properly handle projection updates. However, we do
                 # not want to save this fit to the database, so simply remove it
                 eos.db.saveddata_session.delete(self)
 
-        if self.fleet is not None and withBoosters is True:
-            logger.debug("Fleet is set, gathering gang boosts")
-            self.gangBoosts = self.fleet.recalculateLinear(withBoosters=withBoosters)
+        if self.commandFits and not withBoosters:
+            for fit in self.commandFits:
+                if self == fit:
+                    continue
 
-            timer.checkpoint("Done calculating gang boosts for %r"%self)
-        elif self.fleet is None:
-            self.gangBoosts = None
+                fit.calculateModifiedAttributes(self, True)
 
         # If we're not explicitly asked to project fit onto something,
         # set self as target fit
@@ -488,7 +666,7 @@ class Fit(object):
             targetFit = self
             projected = False
         else:
-            projected = True
+            projected = not withBoosters
 
         # If fit is calculated and we have nothing to do here, get out
 
@@ -503,7 +681,7 @@ class Fit(object):
         # projections from the normal fit calculations. But we must ensure that
         # projection have modifying stuff applied, such as gang boosts and other
         # local modules that may help
-        if self.__calculated and not projected:
+        if self.__calculated and not projected and not withBoosters:
             logger.debug("Fit has already been calculated and is not projected, returning: %r", self)
             return
 
@@ -529,11 +707,11 @@ class Fit(object):
             r = [(self.mode,), self.projectedDrones, self.projectedFighters, self.projectedModules]
 
             # chain unrestricted and restricted into one iterable
-            c = chain.from_iterable(u+r)
+            c = chain.from_iterable(u + r)
 
             # We calculate gang bonuses first so that projected fits get them
-            if self.gangBoosts is not None:
-                self.__calculateGangBoosts(runTime)
+            # if self.gangBoosts is not None:
+            #     self.__calculateGangBoosts(runTime)
 
             for item in c:
                 # Registering the item about to affect the fit allows us to
@@ -550,13 +728,24 @@ class Fit(object):
                             targetFit.register(item, origin=self)
                             item.calculateModifiedAttributes(targetFit, runTime, True)
 
-            timer.checkpoint('Done with runtime: %s'%runTime)
+                    if targetFit and withBoosters and item in self.modules:
+                        # Apply the gang boosts to target fit
+                        # targetFit.register(item, origin=self)
+                        item.calculateModifiedAttributes(targetFit, runTime, False, True)
+
+            print "Command: "
+            print self.commandBonuses
+
+            if not withBoosters and self.commandBonuses:
+                self.__runCommandBoosts(runTime)
+
+            timer.checkpoint('Done with runtime: %s' % runTime)
 
         # Mark fit as calculated
         self.__calculated = True
 
         # Only apply projected fits if fit it not projected itself.
-        if not projected:
+        if not projected and not withBoosters:
             for fit in self.projectedFits:
                 if fit.getProjectionInfo(self.ID).active:
                     fit.calculateModifiedAttributes(self, withBoosters=withBoosters, dirtyStorage=dirtyStorage)
@@ -583,7 +772,7 @@ class Fit(object):
                     self.modules.append(Module.buildEmpty(slotType))
 
             if amount < 0:
-                #Look for any dummies of that type to remove
+                # Look for any dummies of that type to remove
                 toRemove = []
                 for mod in self.modules:
                     if mod.isEmpty and mod.slot == slotType:
@@ -602,7 +791,7 @@ class Fit(object):
 
     @property
     def modCount(self):
-        x=0
+        x = 0
         for i in xrange(len(self.modules) - 1, -1, -1):
             mod = self.modules[i]
             if not mod.isEmpty:
@@ -725,7 +914,7 @@ class Fit(object):
     def activeDrones(self):
         amount = 0
         for d in self.drones:
-            amount +=d.amountActive
+            amount += d.amountActive
 
         return amount
 
@@ -794,7 +983,6 @@ class Fit(object):
 
         return self.__capRecharge
 
-
     @property
     def sustainableTank(self):
         if self.__sustainableTank is None:
@@ -805,30 +993,29 @@ class Fit(object):
     def calculateSustainableTank(self, effective=True):
         if self.__sustainableTank is None:
             if self.capStable:
-                sustainable = {}
-                sustainable["armorRepair"] = self.extraAttributes["armorRepair"]
-                sustainable["shieldRepair"] = self.extraAttributes["shieldRepair"]
-                sustainable["hullRepair"] = self.extraAttributes["hullRepair"]
+                sustainable = {"armorRepair": self.extraAttributes["armorRepair"],
+                               "shieldRepair": self.extraAttributes["shieldRepair"],
+                               "hullRepair": self.extraAttributes["hullRepair"]}
             else:
                 sustainable = {}
 
                 repairers = []
-                #Map a repairer type to the attribute it uses
+                # Map a repairer type to the attribute it uses
                 groupAttrMap = {"Armor Repair Unit": "armorDamageAmount",
-                     "Ancillary Armor Repairer": "armorDamageAmount",
-                     "Hull Repair Unit": "structureDamageAmount",
-                     "Shield Booster": "shieldBonus",
-                     "Ancillary Shield Booster": "shieldBonus",
-                     "Remote Armor Repairer": "armorDamageAmount",
-                     "Remote Shield Booster": "shieldBonus"}
-                #Map repairer type to attribute
+                                "Ancillary Armor Repairer": "armorDamageAmount",
+                                "Hull Repair Unit": "structureDamageAmount",
+                                "Shield Booster": "shieldBonus",
+                                "Ancillary Shield Booster": "shieldBonus",
+                                "Remote Armor Repairer": "armorDamageAmount",
+                                "Remote Shield Booster": "shieldBonus"}
+                # Map repairer type to attribute
                 groupStoreMap = {"Armor Repair Unit": "armorRepair",
                                  "Hull Repair Unit": "hullRepair",
                                  "Shield Booster": "shieldRepair",
                                  "Ancillary Shield Booster": "shieldRepair",
                                  "Remote Armor Repairer": "armorRepair",
                                  "Remote Shield Booster": "shieldRepair",
-                                 "Ancillary Armor Repairer": "armorRepair",}
+                                 "Ancillary Armor Repairer": "armorRepair", }
 
                 capUsed = self.capUsed
                 for attr in ("shieldRepair", "armorRepair", "hullRepair"):
@@ -854,23 +1041,24 @@ class Fit(object):
                                     sustainable[attr] -= amount / (cycleTime / 1000.0)
                                     repairers.append(mod)
 
+                # Sort repairers by efficiency. We want to use the most efficient repairers first
+                repairers.sort(key=lambda mod: mod.getModifiedItemAttr(
+                    groupAttrMap[mod.item.group.name]) / mod.getModifiedItemAttr("capacitorNeed"), reverse=True)
 
-                #Sort repairers by efficiency. We want to use the most efficient repairers first
-                repairers.sort(key=lambda mod: mod.getModifiedItemAttr(groupAttrMap[mod.item.group.name]) / mod.getModifiedItemAttr("capacitorNeed"), reverse = True)
-
-                #Loop through every module until we're above peak recharge
-                #Most efficient first, as we sorted earlier.
-                #calculate how much the repper can rep stability & add to total
+                # Loop through every module until we're above peak recharge
+                # Most efficient first, as we sorted earlier.
+                # calculate how much the repper can rep stability & add to total
                 totalPeakRecharge = self.capRecharge
                 for mod in repairers:
-                    if capUsed > totalPeakRecharge: break
+                    if capUsed > totalPeakRecharge:
+                        break
                     cycleTime = mod.cycleTime
                     capPerSec = mod.capUse
                     if capPerSec is not None and cycleTime is not None:
-                        #Check how much this repper can work
+                        # Check how much this repper can work
                         sustainability = min(1, (totalPeakRecharge - capUsed) / capPerSec)
 
-                        #Add the sustainable amount
+                        # Add the sustainable amount
                         amount = mod.getModifiedItemAttr(groupAttrMap[mod.item.group.name])
                         sustainable[groupStoreMap[mod.item.group.name]] += sustainability * (amount / (cycleTime / 1000.0))
                         capUsed += capPerSec
@@ -880,12 +1068,12 @@ class Fit(object):
 
         return self.__sustainableTank
 
-    def calculateCapRecharge(self, percent = PEAK_RECHARGE):
+    def calculateCapRecharge(self, percent=PEAK_RECHARGE):
         capacity = self.ship.getModifiedItemAttr("capacitorCapacity")
         rechargeRate = self.ship.getModifiedItemAttr("rechargeRate") / 1000.0
         return 10 / rechargeRate * sqrt(percent) * (1 - sqrt(percent)) * capacity
 
-    def calculateShieldRecharge(self, percent = PEAK_RECHARGE):
+    def calculateShieldRecharge(self, percent=PEAK_RECHARGE):
         capacity = self.ship.getModifiedItemAttr("shieldCapacity")
         rechargeRate = self.ship.getModifiedItemAttr("shieldRechargeRate") / 1000.0
         return 10 / rechargeRate * sqrt(percent) * (1 - sqrt(percent)) * capacity
@@ -893,13 +1081,12 @@ class Fit(object):
     def addDrain(self, src, cycleTime, capNeed, clipSize=0):
         """ Used for both cap drains and cap fills (fills have negative capNeed) """
 
-        rigSize = self.ship.getModifiedItemAttr("rigSize")
         energyNeutralizerSignatureResolution = src.getModifiedItemAttr("energyNeutralizerSignatureResolution")
         signatureRadius = self.ship.getModifiedItemAttr("signatureRadius")
 
-        #Signature reduction, uses the bomb formula as per CCP Larrikin
+        # Signature reduction, uses the bomb formula as per CCP Larrikin
         if energyNeutralizerSignatureResolution:
-            capNeed = capNeed*min(1, signatureRadius/energyNeutralizerSignatureResolution)
+            capNeed = capNeed * min(1, signatureRadius / energyNeutralizerSignatureResolution)
 
         resistance = self.ship.getModifiedItemAttr("energyWarfareResistance") or 1 if capNeed > 0 else 1
         self.__extraDrains.append((cycleTime, capNeed * resistance, clipSize))
@@ -930,7 +1117,8 @@ class Fit(object):
                         # If this is a turret, don't stagger activations
                         disableStagger = mod.hardpoint == Hardpoint.TURRET
 
-                        drains.append((int(fullCycleTime), mod.getModifiedItemAttr("capacitorNeed") or 0, mod.numShots or 0, disableStagger))
+                        drains.append((int(fullCycleTime), mod.getModifiedItemAttr("capacitorNeed") or 0,
+                                       mod.numShots or 0, disableStagger))
 
         for fullCycleTime, capNeed, clipSize in self.iterDrains():
             # Stagger incoming effects for cap simulation
@@ -984,7 +1172,7 @@ class Fit(object):
 
     @property
     def tank(self):
-        hps = {"passiveShield" : self.calculateShieldRecharge()}
+        hps = {"passiveShield": self.calculateShieldRecharge()}
         for type in ("shield", "armor", "hull"):
             hps["%sRepair" % type] = self.extraAttributes["%sRepair" % type]
 
@@ -1014,13 +1202,12 @@ class Fit(object):
 
         return self.__effectiveSustainableTank
 
-
     def calculateLockTime(self, radius):
         scanRes = self.ship.getModifiedItemAttr("scanResolution")
         if scanRes is not None and scanRes > 0:
             # Yes, this function returns time in seconds, not miliseconds.
             # 40,000 is indeed the correct constant here.
-            return min(40000 / scanRes / asinh(radius)**2, 30*60)
+            return min(40000 / scanRes / asinh(radius) ** 2, 30 * 60)
         else:
             return self.ship.getModifiedItemAttr("scanSpeed") / 1000.0
 
@@ -1073,15 +1260,25 @@ class Fit(object):
 
     def __deepcopy__(self, memo):
         copy = Fit()
-        #Character and owner are not copied
+        # Character and owner are not copied
         copy.character = self.__character
         copy.owner = self.owner
         copy.ship = deepcopy(self.ship, memo)
         copy.name = "%s copy" % self.name
         copy.damagePattern = self.damagePattern
         copy.targetResists = self.targetResists
+        copy.notes = self.notes
 
-        toCopy = ("modules", "drones", "fighters", "cargo", "implants", "boosters", "projectedModules", "projectedDrones", "projectedFighters")
+        toCopy = (
+            "modules",
+            "drones",
+            "fighters",
+            "cargo",
+            "implants",
+            "boosters",
+            "projectedModules",
+            "projectedDrones",
+            "projectedFighters")
         for name in toCopy:
             orig = getattr(self, name)
             c = getattr(copy, name)

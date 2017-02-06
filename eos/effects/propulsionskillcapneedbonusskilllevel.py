@@ -4,6 +4,8 @@
 # Implants named like: Zainou 'Gypsy' Propulsion Jamming PJ (6 of 6)
 # Skill: Propulsion Jamming
 type = "passive"
+
+
 def handler(fit, container, context):
     groups = ("Stasis Web", "Stasis Grappler", "Warp Scrambler", "Warp Disrupt Field Generator")
     level = container.level if "skill" in context else 1

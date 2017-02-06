@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,11 +15,12 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
 import copy
 import itertools
 import json
+import logging
 import threading
 from codecs import open
 from xml.etree import ElementTree
@@ -28,29 +29,40 @@ import gzip
 
 import wx
 
-import eos.db
-import eos.types
-import service
 import config
-import logging
+import eos.db
+from service.eveapi import EVEAPIConnection, ParseXML
+
+from eos.saveddata.implant import Implant as es_Implant
+from eos.saveddata.character import Character as es_Character
+from eos.saveddata.module import Slot as es_Slot, Module as es_Module
+from eos.saveddata.fighter import Fighter as es_Fighter
 
 logger = logging.getLogger(__name__)
+
 
 class CharacterImportThread(threading.Thread):
     def __init__(self, paths, callback):
         threading.Thread.__init__(self)
+        self.name = "CharacterImport"
         self.paths = paths
         self.callback = callback
 
     def run(self):
         paths = self.paths
         sCharacter = Character.getInstance()
+        all5_character = es_Character("All 5", 5)
+        all_skill_ids = []
+        for skill in all5_character.skills:
+            # Parse out the skill item IDs to make searching it easier later on
+            all_skill_ids.append(skill.itemID)
+
         for path in paths:
             try:
                 # we try to parse api XML data first
                 with open(path, mode='r') as charFile:
-                    sheet = service.ParseXML(charFile)
-                    char = sCharacter.new(sheet.name+" (imported)")
+                    sheet = ParseXML(charFile)
+                    char = sCharacter.new(sheet.name + " (imported)")
                     sCharacter.apiUpdateCharSheet(char.ID, sheet.skills)
             except:
                 # if it's not api XML data, try this
@@ -59,26 +71,37 @@ class CharacterImportThread(threading.Thread):
                     charFile = open(path, mode='r').read()
                     doc = minidom.parseString(charFile)
                     if doc.documentElement.tagName not in ("SerializableCCPCharacter", "SerializableUriCharacter"):
+                        logger.error("Incorrect EVEMon XML sheet")
                         raise RuntimeError("Incorrect EVEMon XML sheet")
                     name = doc.getElementsByTagName("name")[0].firstChild.nodeValue
                     skill_els = doc.getElementsByTagName("skill")
                     skills = []
                     for skill in skill_els:
-                        skills.append({
-                            "typeID": int(skill.getAttribute("typeID")),
-                            "level": int(skill.getAttribute("level")),
-                        })
-                    char = sCharacter.new(name+" (EVEMon)")
+                        if int(skill.getAttribute("typeID")) in all_skill_ids and (0 <= int(skill.getAttribute("level")) <= 5):
+                            skills.append({
+                                "typeID": int(skill.getAttribute("typeID")),
+                                "level": int(skill.getAttribute("level")),
+                            })
+                        else:
+                            logger.error("Attempted to import unknown skill %s (ID: %s) (Level: %s)",
+                                         skill.getAttribute("name"),
+                                         skill.getAttribute("typeID"),
+                                         skill.getAttribute("level"),
+                                         )
+                    char = sCharacter.new(name + " (EVEMon)")
                     sCharacter.apiUpdateCharSheet(char.ID, skills)
                 except Exception, e:
-                    print e.message
+                    logger.error("Exception on character import:")
+                    logger.error(e)
                     continue
 
         wx.CallAfter(self.callback)
 
+
 class SkillBackupThread(threading.Thread):
     def __init__(self, path, saveFmt, activeFit, callback):
         threading.Thread.__init__(self)
+        self.name = "SkillBackup"
         self.path = path
         self.saveFmt = saveFmt
         self.activeFit = activeFit
@@ -87,9 +110,6 @@ class SkillBackupThread(threading.Thread):
     def run(self):
         path = self.path
         sCharacter = Character.getInstance()
-        sFit = service.Fit.getInstance()
-        fit = sFit.getFit(self.activeFit)
-        backupData = ""
         if self.saveFmt == "xml" or self.saveFmt == "emp":
             backupData = sCharacter.exportXml()
         else:
@@ -99,10 +119,11 @@ class SkillBackupThread(threading.Thread):
             with gzip.open(path, mode='wb') as backupFile:
                 backupFile.write(backupData)
         else:
-            with open(path, mode='w',encoding='utf-8') as backupFile:
+            with open(path, mode='w', encoding='utf-8') as backupFile:
                 backupFile.write(backupData)
 
         wx.CallAfter(self.callback)
+
 
 class Character(object):
     instance = None
@@ -121,7 +142,7 @@ class Character(object):
         self.all5()
 
     def exportText(self):
-        data  = "Pyfa exported plan for \""+self.skillReqsDict['charname']+"\"\n"
+        data = "Pyfa exported plan for \"" + self.skillReqsDict['charname'] + "\"\n"
         data += "=" * 79 + "\n"
         data += "\n"
         item = ""
@@ -137,7 +158,7 @@ class Character(object):
 
     def exportXml(self):
         root = ElementTree.Element("plan")
-        root.attrib["name"] = "Pyfa exported plan for "+self.skillReqsDict['charname']
+        root.attrib["name"] = "Pyfa exported plan for " + self.skillReqsDict['charname']
         root.attrib["revision"] = config.evemonMinVersion
 
         sorts = ElementTree.SubElement(root, "sorting")
@@ -148,9 +169,9 @@ class Character(object):
         skillsSeen = set()
 
         for s in self.skillReqsDict['skills']:
-            skillKey = str(s["skillID"])+"::"+s["skill"]+"::"+str(int(s["level"]))
+            skillKey = str(s["skillID"]) + "::" + s["skill"] + "::" + str(int(s["level"]))
             if skillKey in skillsSeen:
-                pass   # Duplicate skills confuse EVEMon
+                pass  # Duplicate skills confuse EVEMon
             else:
                 skillsSeen.add(skillKey)
                 entry = ElementTree.SubElement(root, "entry")
@@ -162,7 +183,7 @@ class Character(object):
                 notes = ElementTree.SubElement(entry, "notes")
                 notes.text = entry.attrib["skill"]
 
-        tree = ElementTree.ElementTree(root)
+        # tree = ElementTree.ElementTree(root)
         data = ElementTree.tostring(root, 'utf-8')
         prettydata = minidom.parseString(data).toprettyxml(indent="  ")
 
@@ -177,16 +198,19 @@ class Character(object):
         thread.start()
 
     def all0(self):
-        return eos.types.Character.getAll0()
+        return es_Character.getAll0()
 
     def all0ID(self):
         return self.all0().ID
 
     def all5(self):
-        return eos.types.Character.getAll5()
+        return es_Character.getAll5()
 
     def all5ID(self):
         return self.all5().ID
+
+    def getAlphaCloneList(self):
+        return eos.db.getAlphaCloneList()
 
     def getCharacterList(self):
         return eos.db.getCharacterList()
@@ -229,9 +253,13 @@ class Character(object):
         group = eos.db.getGroup(groupID)
         skills = []
         for skill in group.items:
-            if skill.published == True:
+            if skill.published is True:
                 skills.append((skill.ID, skill.name))
         return skills
+
+    def setAlphaClone(self, char, cloneID):
+        char.alphaCloneID = cloneID
+        eos.db.commit()
 
     def getSkillDescription(self, itemID):
         return eos.db.getItem(itemID).description
@@ -250,13 +278,16 @@ class Character(object):
         return eos.db.getCharacter(charID).name
 
     def new(self, name="New Character"):
-        char = eos.types.Character(name)
+        char = es_Character(name)
         eos.db.save(char)
         return char
 
     def rename(self, char, newName):
-        char.name = newName
-        eos.db.commit()
+        if char.name in ("All 0", "All 5"):
+            logger.info("Cannot rename built in characters.")
+        else:
+            char.name = newName
+            eos.db.commit()
 
     def copy(self, char):
         newChar = copy.deepcopy(char)
@@ -275,8 +306,8 @@ class Character(object):
         return (char.apiID or "", char.apiKey or "", char.defaultChar or "", chars or [])
 
     def apiEnabled(self, charID):
-        id, key, default, _ = self.getApiDetails(charID)
-        return id is not "" and key is not "" and default is not ""
+        id_, key, default, _ = self.getApiDetails(charID)
+        return id_ is not "" and key is not "" and default is not ""
 
     def apiCharList(self, charID, userID, apiKey):
         char = eos.db.getCharacter(charID)
@@ -284,7 +315,7 @@ class Character(object):
         char.apiID = userID
         char.apiKey = apiKey
 
-        api = service.EVEAPIConnection()
+        api = EVEAPIConnection()
         auth = api.auth(keyID=userID, vCode=apiKey)
         apiResult = auth.account.Characters()
         charList = map(lambda c: unicode(c.name), apiResult.characters)
@@ -296,7 +327,7 @@ class Character(object):
         dbChar = eos.db.getCharacter(charID)
         dbChar.defaultChar = charName
 
-        api = service.EVEAPIConnection()
+        api = EVEAPIConnection()
         auth = api.auth(keyID=dbChar.apiID, vCode=dbChar.apiKey)
         apiResult = auth.account.Characters()
         charID = None
@@ -304,7 +335,7 @@ class Character(object):
             if char.name == charName:
                 charID = char.characterID
 
-        if charID == None:
+        if charID is None:
             return
 
         sheet = auth.character(charID).CharacterSheet()
@@ -346,7 +377,7 @@ class Character(object):
             logger.error("Trying to add implant to read-only character")
             return
 
-        implant = eos.types.Implant(eos.db.getItem(itemID))
+        implant = es_Implant(eos.db.getItem(itemID))
         char.implants.append(implant)
         eos.db.commit()
 
@@ -360,19 +391,21 @@ class Character(object):
         return char.implants
 
     def checkRequirements(self, fit):
-        toCheck = []
+        # toCheck = []
         reqs = {}
         for thing in itertools.chain(fit.modules, fit.drones, fit.fighters, (fit.ship,)):
-            if isinstance(thing, eos.types.Module) and thing.slot == eos.types.Slot.RIG:
+            if isinstance(thing, es_Module) and thing.slot == es_Slot.RIG:
                 continue
             for attr in ("item", "charge"):
-                if attr == "charge" and isinstance(thing, eos.types.Fighter):
+                if attr == "charge" and isinstance(thing, es_Fighter):
                     # Fighter Bombers are automatically charged with micro bombs.
                     # These have skill requirements attached, but aren't used in EVE.
                     continue
                 subThing = getattr(thing, attr, None)
                 subReqs = {}
                 if subThing is not None:
+                    if isinstance(thing, es_Fighter) and attr == "charge":
+                        continue
                     self._checkRequirements(fit, fit.character, subThing, subReqs)
                     if subReqs:
                         reqs[subThing] = subReqs

@@ -1,4 +1,4 @@
-#===============================================================================
+# ===============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of eos.
@@ -15,17 +15,20 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# ===============================================================================
+
+import hashlib
+import random
+import string
 
 from sqlalchemy.orm import validates
-import hashlib
-import string
-import random
+
 
 class User(object):
-    def __init__(self, username, password = None, admin = False):
+    def __init__(self, username, password=None, admin=False):
         self.username = username
-        if password is not None: self.encodeAndSetPassword(password)
+        if password is not None:
+            self.encodeAndSetPassword(password)
         self.admin = admin
 
     def encodeAndSetPassword(self, pw):
@@ -36,7 +39,8 @@ class User(object):
         self.password = ("%s%s" % (h.hexdigest(), salt))
 
     def isPasswordValid(self, pw):
-        if self.password is None: return False
+        if self.password is None:
+            return False
         salt = self.password[-32:]
         h = hashlib.new("sha256")
         h.update(pw)
@@ -46,9 +50,11 @@ class User(object):
     @validates("ID", "username", "password", "admin")
     def validator(self, key, val):
         map = {"ID": lambda val: isinstance(val, int),
-               "username" : lambda val: isinstance(val, basestring),
-               "password" : lambda val: isinstance(val, basestring) and len(val) == 96,
-               "admin" : lambda val: isinstance(val, bool)}
+               "username": lambda val: isinstance(val, basestring),
+               "password": lambda val: isinstance(val, basestring) and len(val) == 96,
+               "admin": lambda val: isinstance(val, bool)}
 
-        if map[key](val) == False: raise ValueError(str(val) + " is not a valid value for " + key)
-        else: return val
+        if not map[key](val):
+            raise ValueError(str(val) + " is not a valid value for " + key)
+        else:
+            return val

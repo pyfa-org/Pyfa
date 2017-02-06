@@ -1,4 +1,4 @@
-#===============================================================================
+# ===============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of eos.
@@ -15,15 +15,16 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# ===============================================================================
 
 from sqlalchemy import Column, Table, String
 from sqlalchemy.orm import mapper
-from eos.types import MetaData
+
 from eos.db import gamedata_meta
+from eos.types import MetaData
 
 metadata_table = Table("metadata", gamedata_meta,
-                           Column("field_name", String, primary_key=True),
-                           Column("field_value", String))
+                       Column("field_name", String, primary_key=True),
+                       Column("field_value", String))
 
 mapper(MetaData, metadata_table)

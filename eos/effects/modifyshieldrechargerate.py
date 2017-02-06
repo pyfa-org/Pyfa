@@ -8,5 +8,7 @@
 # Modules named like: Flux Coil (12 of 12)
 # Modules named like: QA Multiship Module Players (4 of 4)
 type = "passive"
+
+
 def handler(fit, module, context):
     fit.ship.multiplyItemAttr("shieldRechargeRate", module.getModifiedItemAttr("shieldRechargeRateMultiplier") or 1)

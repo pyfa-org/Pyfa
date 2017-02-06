@@ -1,10 +1,10 @@
 # shipAdvancedSpaceshipCommandAgilityBonus
 #
 # Used by:
-# Ships from group: Dreadnought (5 of 5)
-# Ships from group: Titan (5 of 5)
-# Items from market group: Ships > Capital Ships (32 of 33)
+# Items from market group: Ships > Capital Ships (34 of 34)
 type = "passive"
+
+
 def handler(fit, ship, context):
     skillName = "Advanced Spaceship Command"
     skill = fit.character.getSkill(skillName)

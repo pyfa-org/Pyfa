@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,7 +15,8 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
+
 import config
 
 versionString = "{0} {1} - {2} {3}".format(config.version, config.tag, config.expansionName, config.expansionVersion)
@@ -26,10 +27,12 @@ licenses = (
     "Fat Cow Icons by fatcow.com - Creative Commons Attribution 3.0 License"
 )
 developers = (
-    "blitzmann \t(Sable Blitzmann) (maintainer)",
-    "cncfanatics \t(Sakari Orisi)" ,
-    "DarkPhoenix \t(Kadesh Priestess)",
-    "Darriele \t\t(Darriele)")
+    "blitzmann \tSable Blitzmann (maintainer)",
+    "cncfanatics \tSakari Orisi (retired)",
+    "DarkPhoenix \tKadesh Priestess (retired)",
+    "Darriele \t\tDarriele (retired)",
+    "Ebag333 \t\tEbag Trescientas"
+)
 credits = (
     "Entity (Entity) \tCapacitor calculations / EVEAPI python lib / Reverence",
     "Aurora \t\tMaths",

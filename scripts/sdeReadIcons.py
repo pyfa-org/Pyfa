@@ -9,7 +9,7 @@ import json
 
 iconDict = {}
 
-stream = open(r"C:\path\to\sde\fsd\iconIDs.yaml", "r")
+stream = open(r"C:\Users\Ryan\Sync\Git\blitzmann\Pyfa\scripts\iconIDs.yaml", "r")
 docs = yaml.load_all(stream)
 
 for doc in docs:

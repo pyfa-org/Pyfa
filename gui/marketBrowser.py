@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,21 +15,42 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
 import wx
-import service
+from service.market import Market
+from service.attribute import Attribute
 import gui.display as d
+import gui.PFSearchBox as SBox
 from gui.cachingImageList import CachingImageList
 from gui.contextMenu import ContextMenu
-import gui.PFSearchBox as SBox
-
 from gui.bitmapLoader import BitmapLoader
 
 ItemSelected, ITEM_SELECTED = wx.lib.newevent.NewEvent()
 
 RECENTLY_USED_MODULES = -2
 MAX_RECENTLY_USED_MODULES = 20
+
+
+class MetaButton(wx.ToggleButton):
+    def __init__(self, *args, **kwargs):
+        super(MetaButton, self).__init__(*args, **kwargs)
+        self.setUserSelection(True)
+
+    def setUserSelection(self, isSelected):
+        self.userSelected = isSelected
+        self.SetValue(isSelected)
+
+    def setMetaAvailable(self, isAvailable):
+        self.Enable(isAvailable)
+        # need to also SetValue(False) for windows because Enabled=False AND SetValue(True) looks enabled.
+        if not isAvailable:
+            self.SetValue(False)
+
+    def reset(self):
+        self.Enable(True)
+        self.SetValue(self.userSelected)
+
 
 class MarketBrowser(wx.Panel):
     def __init__(self, parent):
@@ -41,11 +62,11 @@ class MarketBrowser(wx.Panel):
         self.search = SearchBox(self)
         vbox.Add(self.search, 0, wx.EXPAND)
 
-        self.splitter = wx.SplitterWindow(self, style = wx.SP_LIVE_UPDATE)
+        self.splitter = wx.SplitterWindow(self, style=wx.SP_LIVE_UPDATE)
         vbox.Add(self.splitter, 1, wx.EXPAND)
 
         # Grab market service instance and create child objects
-        self.sMkt = service.Market.getInstance()
+        self.sMkt = Market.getInstance()
         self.searchMode = False
         self.marketView = MarketTree(self.splitter, self)
         self.itemView = ItemView(self.splitter, self)
@@ -62,7 +83,7 @@ class MarketBrowser(wx.Panel):
         vbox.Add(p, 0, wx.EXPAND)
         self.metaButtons = []
         for name in self.sMkt.META_MAP.keys():
-            btn = wx.ToggleButton(p, wx.ID_ANY, name.capitalize(), style=wx.BU_EXACTFIT)
+            btn = MetaButton(p, wx.ID_ANY, name.capitalize(), style=wx.BU_EXACTFIT)
             setattr(self, name, btn)
             box.Add(btn, 1, wx.ALIGN_CENTER)
             btn.Bind(wx.EVT_TOGGLEBUTTON, self.toggleMetaButton)
@@ -75,42 +96,38 @@ class MarketBrowser(wx.Panel):
 
     def toggleMetaButton(self, event):
         """Process clicks on toggle buttons"""
-        ctrl = wx.GetMouseState().CmdDown()
-        ebtn = event.EventObject
-        if not ctrl:
-            for btn in self.metaButtons:
-                if btn.Enabled:
-                    if btn == ebtn:
-                        btn.SetValue(True)
-                    else:
-                        btn.SetValue(False)
-        else:
-            # Note: using the 'wrong' value for clicked button might seem weird,
-            # But the button is toggled by wx and we should deal with it
-            activeBtns = set()
-            for btn in self.metaButtons:
-                if (btn.GetValue() is True and btn != ebtn) or (btn.GetValue() is False and btn == ebtn):
-                    activeBtns.add(btn)
-            # Do 'nothing' if we're trying to turn last active button off
-            if len(activeBtns) == 1 and activeBtns.pop() == ebtn:
+        appendMeta = wx.GetMouseState().CmdDown()
+        clickedBtn = event.EventObject
+
+        if appendMeta:
+            activeBtns = [btn for btn in self.metaButtons if btn.GetValue()]
+            if activeBtns:
+                clickedBtn.setUserSelection(clickedBtn.GetValue())
+                self.itemView.filterItemStore()
+            else:
+                # Do 'nothing' if we're trying to turn last active button off
                 # Keep button in the same state
-                ebtn.SetValue(True)
-                return
-        # Leave old unfiltered list contents, just re-filter them and show
-        self.itemView.filterItemStore()
+                clickedBtn.setUserSelection(True)
+        else:
+            for btn in self.metaButtons:
+                btn.setUserSelection(btn == clickedBtn)
+
+            self.itemView.filterItemStore()
 
     def jump(self, item):
         self.marketView.jump(item)
 
+
 class SearchBox(SBox.PFSearchBox):
     def __init__(self, parent, **kwargs):
         SBox.PFSearchBox.__init__(self, parent, **kwargs)
-        cancelBitmap = BitmapLoader.getBitmap("fit_delete_small","gui")
-        searchBitmap = BitmapLoader.getBitmap("fsearch_small","gui")
+        cancelBitmap = BitmapLoader.getBitmap("fit_delete_small", "gui")
+        searchBitmap = BitmapLoader.getBitmap("fsearch_small", "gui")
         self.SetSearchBitmap(searchBitmap)
         self.SetCancelBitmap(cancelBitmap)
         self.ShowSearchButton()
         self.ShowCancelButton()
+
 
 class MarketTree(wx.TreeCtrl):
     def __init__(self, parent, marketBrowser):
@@ -135,7 +152,7 @@ class MarketTree(wx.TreeCtrl):
 
         # Add recently used modules node
         rumIconId = self.addImage("market_small", "gui")
-        self.AppendItem(self.root, "Recently Used Modules", rumIconId, data = wx.TreeItemData(RECENTLY_USED_MODULES))
+        self.AppendItem(self.root, "Recently Used Modules", rumIconId, data=wx.TreeItemData(RECENTLY_USED_MODULES))
 
         # Bind our lookup method to when the tree gets expanded
         self.Bind(wx.EVT_TREE_ITEM_EXPANDING, self.expandLookup)
@@ -175,7 +192,6 @@ class MarketTree(wx.TreeCtrl):
         self.marketBrowser.searchMode = False
         sMkt = self.sMkt
         mg = sMkt.getMarketGroupByItem(item)
-        metaId = sMkt.getMetaGroupIdByItem(item)
 
         jumpList = []
         while mg is not None:
@@ -184,10 +200,10 @@ class MarketTree(wx.TreeCtrl):
 
         for id in sMkt.ROOT_MARKET_GROUPS:
             if id in jumpList:
-                jumpList = jumpList[:jumpList.index(id)+1]
+                jumpList = jumpList[:jumpList.index(id) + 1]
 
         item = self.root
-        for i in range(len(jumpList) -1, -1, -1):
+        for i in range(len(jumpList) - 1, -1, -1):
             target = jumpList[i]
             child, cookie = self.GetFirstChild(item)
             while self.GetItemPyData(child) != target:
@@ -197,7 +213,8 @@ class MarketTree(wx.TreeCtrl):
             self.Expand(item)
 
         self.SelectItem(item)
-        self.marketBrowser.itemView.selectionMade(forcedMetaSelect=metaId)
+        self.marketBrowser.itemView.selectionMade()
+
 
 class ItemView(d.Display):
     DEFAULT_COLS = ["Base Icon",
@@ -241,12 +258,11 @@ class ItemView(d.Display):
 
         if row != -1:
             data = wx.PyTextDataObject()
-            data.SetText("market:"+str(self.active[row].ID))
+            data.SetText("market:" + str(self.active[row].ID))
 
             dropSource = wx.DropSource(self)
             dropSource.SetData(data)
-            res = dropSource.DoDragDrop()
-
+            dropSource.DoDragDrop()
 
     def itemActivated(self, event=None):
         # Check if something is selected, if so, spawn the menu for it
@@ -269,7 +285,7 @@ class ItemView(d.Display):
 
         self.sMkt.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"].append(itemID)
 
-    def selectionMade(self, event=None, forcedMetaSelect=None):
+    def selectionMade(self, event=None):
         self.marketBrowser.searchMode = False
         # Grab the threeview selection and check if it's fine
         sel = self.marketView.GetSelection()
@@ -299,7 +315,7 @@ class ItemView(d.Display):
 
             # Set toggle buttons / use search mode flag if recently used modules category is selected (in order to have all modules listed and not filtered)
             if seldata is not RECENTLY_USED_MODULES:
-                self.setToggles(forcedMetaSelect=forcedMetaSelect)
+                self.setToggles()
             else:
                 self.marketBrowser.searchMode = True
                 self.setToggles()
@@ -319,33 +335,19 @@ class ItemView(d.Display):
         self.filteredStore = sMkt.filterItemsByMeta(self.unfilteredStore, selectedMetas)
         self.update(list(self.filteredStore))
 
-    def setToggles(self, forcedMetaSelect=None):
+    def setToggles(self):
         metaIDs = set()
         sMkt = self.sMkt
         for item in self.unfilteredStore:
             metaIDs.add(sMkt.getMetaGroupIdByItem(item))
-        anySelection = False
+
         for btn in self.marketBrowser.metaButtons:
+            btn.reset()
             btnMetas = sMkt.META_MAP[btn.metaName]
             if len(metaIDs.intersection(btnMetas)) > 0:
-                btn.Enable(True)
-                # Select all available buttons if we're searching
-                if self.marketBrowser.searchMode is True:
-                    btn.SetValue(True)
-                # Select explicitly requested button
-                if forcedMetaSelect is not None:
-                    btn.SetValue(True if forcedMetaSelect in btnMetas else False)
+                btn.setMetaAvailable(True)
             else:
-                btn.Enable(False)
-                btn.SetValue(False)
-            if btn.GetValue():
-                anySelection = True
-        # If no buttons are pressed, press first active
-        if anySelection is False:
-            for btn in self.marketBrowser.metaButtons:
-                if btn.Enabled:
-                    btn.SetValue(True)
-                    break
+                btn.setMetaAvailable(False)
 
     def scheduleSearch(self, event=None):
         search = self.marketBrowser.search.GetLineText(0)
@@ -390,12 +392,12 @@ class ItemView(d.Display):
             mktgrpid = sMkt.getMarketGroupByItem(item).ID
         except AttributeError:
             mktgrpid = None
-            print "unable to find market group for", item.name
+            print("unable to find market group for", item.name)
         parentname = sMkt.getParentItemByItem(item).name
         # Get position of market group
         metagrpid = sMkt.getMetaGroupIdByItem(item)
         metatab = self.metaMap.get(metagrpid)
-        metalvl =  self.metalvls.get(item.ID, 0)
+        metalvl = self.metalvls.get(item.ID, 0)
         return (catname, mktgrpid, parentname, metatab, metalvl, item.name)
 
     def contextMenu(self, event):
@@ -416,7 +418,7 @@ class ItemView(d.Display):
     def populate(self, items):
         if len(items) > 0:
             # Get dictionary with meta level attribute
-            sAttr = service.Attribute.getInstance()
+            sAttr = Attribute.getInstance()
             attrs = sAttr.getAttributeInfo("metaLevel")
             sMkt = self.sMkt
             self.metalvls = sMkt.directAttrRequest(items, attrs)
@@ -432,7 +434,7 @@ class ItemView(d.Display):
     def refresh(self, items):
         if len(items) > 1:
             # Get dictionary with meta level attribute
-            sAttr = service.Attribute.getInstance()
+            sAttr = Attribute.getInstance()
             attrs = sAttr.getAttributeInfo("metaLevel")
             sMkt = self.sMkt
             self.metalvls = sMkt.directAttrRequest(items, attrs)
@@ -441,7 +443,7 @@ class ItemView(d.Display):
 
         for i, item in enumerate(items[:9]):
             # set shortcut info for first 9 modules
-            item.marketShortcut = i+1
+            item.marketShortcut = i + 1
 
         d.Display.refresh(self, items)
 

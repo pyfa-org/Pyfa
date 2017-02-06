@@ -5,5 +5,7 @@
 # Implant: Genolution Core Augmentation CA-3
 # Implant: Shaqil's Speed Enhancer
 type = "passive"
+
+
 def handler(fit, implant, context):
     fit.ship.boostItemAttr("maxVelocity", implant.getModifiedItemAttr("implantBonusVelocity"))

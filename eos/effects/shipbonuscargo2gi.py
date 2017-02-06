@@ -5,6 +5,8 @@
 # Variations of ship: Nereus (2 of 2)
 # Ship: Iteron Mark V
 type = "passive"
+
+
 def handler(fit, ship, context):
     # TODO: investigate if we can live without such ifs or hardcoding
     # Viator doesn't have GI bonus

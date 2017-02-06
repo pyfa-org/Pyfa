@@ -5,6 +5,8 @@
 # Modules from group: Sensor Booster (16 of 16)
 # Modules from group: Sensor Dampener (6 of 6)
 type = "overheat"
+
+
 def handler(fit, module, context):
     module.boostItemAttr("maxTargetRangeBonus", module.getModifiedItemAttr("overloadSensorModuleStrengthBonus"))
     module.boostItemAttr("scanResolutionBonus", module.getModifiedItemAttr("overloadSensorModuleStrengthBonus"),

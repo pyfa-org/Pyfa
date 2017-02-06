@@ -1,4 +1,4 @@
-#===============================================================================
+# ===============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of eos.
@@ -15,7 +15,7 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# ===============================================================================
 
 from sqlalchemy import Table, Column, Integer, ForeignKey, String
 from sqlalchemy.orm import mapper
@@ -24,7 +24,7 @@ from eos.db import saveddata_meta
 from eos.types import DamagePattern
 
 damagePatterns_table = Table("damagePatterns", saveddata_meta,
-                             Column("ID", Integer, primary_key = True),
+                             Column("ID", Integer, primary_key=True),
                              Column("name", String),
                              Column("emAmount", Integer),
                              Column("thermalAmount", Integer),

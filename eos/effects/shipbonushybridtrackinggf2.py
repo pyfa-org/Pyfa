@@ -5,6 +5,8 @@
 # Ship: Federation Navy Comet
 # Ship: Tristan
 type = "passive"
+
+
 def handler(fit, ship, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Small Hybrid Turret"),
-                                    "trackingSpeed", ship.getModifiedItemAttr("shipBonusGF2"), skill="Gallente Frigate")
+                                  "trackingSpeed", ship.getModifiedItemAttr("shipBonusGF2"), skill="Gallente Frigate")

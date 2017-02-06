@@ -8,5 +8,7 @@
 # Modules from group: Reactor Control Unit (22 of 22)
 # Modules from group: Shield Power Relay (6 of 6)
 type = "passive"
+
+
 def handler(fit, module, context):
     fit.ship.multiplyItemAttr("rechargeRate", module.getModifiedItemAttr("capacitorRechargeRateMultiplier"))

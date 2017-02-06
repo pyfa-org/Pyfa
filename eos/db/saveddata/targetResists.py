@@ -1,4 +1,4 @@
-#===============================================================================
+# ===============================================================================
 # Copyright (C) 2014 Ryan Holmes
 #
 # This file is part of eos.
@@ -15,7 +15,7 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# ===============================================================================
 
 from sqlalchemy import Table, Column, Integer, Float, ForeignKey, String
 from sqlalchemy.orm import mapper
@@ -24,12 +24,12 @@ from eos.db import saveddata_meta
 from eos.types import TargetResists
 
 targetResists_table = Table("targetResists", saveddata_meta,
-                             Column("ID", Integer, primary_key = True),
-                             Column("name", String),
-                             Column("emAmount", Float),
-                             Column("thermalAmount", Float),
-                             Column("kineticAmount", Float),
-                             Column("explosiveAmount", Float),
-                             Column("ownerID", ForeignKey("users.ID"), nullable=True))
+                            Column("ID", Integer, primary_key=True),
+                            Column("name", String),
+                            Column("emAmount", Float),
+                            Column("thermalAmount", Float),
+                            Column("kineticAmount", Float),
+                            Column("explosiveAmount", Float),
+                            Column("ownerID", ForeignKey("users.ID"), nullable=True))
 
 mapper(TargetResists, targetResists_table)

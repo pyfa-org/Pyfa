@@ -1,4 +1,4 @@
-#===============================================================================
+# ===============================================================================
 # Copyright (C) 2015 Ryan Holmes
 #
 # This file is part of eos.
@@ -15,17 +15,19 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# ===============================================================================
 
-from eos.eqBase import EqBase
-from sqlalchemy.orm import validates, reconstructor
-import eos.db
 import logging
+
+from sqlalchemy.orm import reconstructor
+
+import eos.db
+from eos.eqBase import EqBase
 
 logger = logging.getLogger(__name__)
 
-class Override(EqBase):
 
+class Override(EqBase):
     def __init__(self, item, attr, value):
         self.itemID = item.ID
         self.__item = item

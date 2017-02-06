@@ -6,5 +6,7 @@
 # Modules from group: Power Diagnostic System (23 of 23)
 # Modules from group: Reactor Control Unit (22 of 22)
 type = "passive"
+
+
 def handler(fit, module, context):
     fit.ship.multiplyItemAttr("powerOutput", module.getModifiedItemAttr("powerOutputMultiplier"))

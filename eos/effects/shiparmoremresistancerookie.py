@@ -7,5 +7,7 @@
 # Ship: Phobos
 # Ship: Silver Magnate
 type = "passive"
+
+
 def handler(fit, ship, context):
     fit.ship.boostItemAttr("armorEmDamageResonance", ship.getModifiedItemAttr("rookieArmorResistanceBonus"))

@@ -5,6 +5,9 @@
 # Ship: Cynabal
 # Ship: Moracha
 type = "passive"
+
+
 def handler(fit, ship, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Medium Projectile Turret"),
-                                  "damageMultiplier", ship.getModifiedItemAttr("shipBonusMC2"), skill="Minmatar Cruiser")
+                                  "damageMultiplier", ship.getModifiedItemAttr("shipBonusMC2"),
+                                  skill="Minmatar Cruiser")

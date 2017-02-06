@@ -4,5 +4,8 @@
 # Variations of ship: Prophecy (2 of 2)
 # Ship: Absolution
 type = "passive"
+
+
 def handler(fit, ship, context):
-    fit.ship.boostItemAttr("armorEmDamageResonance", ship.getModifiedItemAttr("shipBonusABC1"), skill="Amarr Battlecruiser")
+    fit.ship.boostItemAttr("armorEmDamageResonance", ship.getModifiedItemAttr("shipBonusABC1"),
+                           skill="Amarr Battlecruiser")

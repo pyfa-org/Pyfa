@@ -1,3 +1,6 @@
+# Not used by any item
 type = "passive"
+
+
 def handler(fit, src, context):
-    fit.ship.filteredItemIncrease("maxLockedTargets", src.getModifiedItemAttr("structureRigMaxTargetBonus"))
+    fit.extraAttributes.increase("maxTargetsLockedFromSkills", src.getModifiedItemAttr("structureRigMaxTargetBonus"))

@@ -3,6 +3,8 @@
 # Used by:
 # Ship: Widow
 type = "passive"
+
+
 def handler(fit, ship, context):
     sensorTypes = ("Gravimetric", "Ladar", "Magnetometric", "Radar")
     for type in sensorTypes:

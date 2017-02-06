@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,7 +15,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
 import wx
 import gui.mainFrame
@@ -25,17 +25,19 @@ from gui.fighterView import FighterView
 from gui.cargoView import CargoView
 from gui.implantView import ImplantView
 from gui.projectedView import ProjectedView
+
+from gui.commandView import CommandView
+from gui.notesView import NotesView
 from gui.pyfatogglepanel import TogglePanel
-from gui.gangView import GangView
 from gui.bitmapLoader import BitmapLoader
 
 import gui.chromeTabs
 
-class AdditionsPane(TogglePanel):
 
+class AdditionsPane(TogglePanel):
     def __init__(self, parent):
 
-        TogglePanel.__init__(self, parent, forceLayout = 1)
+        TogglePanel.__init__(self, parent, forceLayout=1)
 
         self.SetLabel("Additions")
         pane = self.GetContentPane()
@@ -57,31 +59,36 @@ class AdditionsPane(TogglePanel):
         projectedImg = BitmapLoader.getImage("projected_small", "gui")
         gangImg = BitmapLoader.getImage("fleet_fc_small", "gui")
         cargoImg = BitmapLoader.getImage("cargo_small", "gui")
+        notesImg = BitmapLoader.getImage("skill_small", "gui")
 
         self.drone = DroneView(self.notebook)
-        self.notebook.AddPage(self.drone, "Drones", tabImage = droneImg, showClose = False)
+        self.notebook.AddPage(self.drone, "Drones", tabImage=droneImg, showClose=False)
 
         self.fighter = FighterView(self.notebook)
-        self.notebook.AddPage(self.fighter, "Fighters", tabImage = fighterImg, showClose = False)
+        self.notebook.AddPage(self.fighter, "Fighters", tabImage=fighterImg, showClose=False)
 
         self.cargo = CargoView(self.notebook)
-        self.notebook.AddPage(self.cargo, "Cargo", tabImage = cargoImg, showClose = False)
+        self.notebook.AddPage(self.cargo, "Cargo", tabImage=cargoImg, showClose=False)
 
         self.implant = ImplantView(self.notebook)
-        self.notebook.AddPage(self.implant, "Implants", tabImage = implantImg, showClose = False)
+        self.notebook.AddPage(self.implant, "Implants", tabImage=implantImg, showClose=False)
 
         self.booster = BoosterView(self.notebook)
-        self.notebook.AddPage(self.booster, "Boosters", tabImage = boosterImg, showClose = False)
+        self.notebook.AddPage(self.booster, "Boosters", tabImage=boosterImg, showClose=False)
 
         self.projectedPage = ProjectedView(self.notebook)
-        self.notebook.AddPage(self.projectedPage, "Projected", tabImage = projectedImg, showClose = False)
+        self.notebook.AddPage(self.projectedPage, "Projected", tabImage=projectedImg, showClose=False)
 
-        self.gangPage = GangView(self.notebook)
-        self.notebook.AddPage(self.gangPage, "Fleet", tabImage = gangImg, showClose = False)
+        self.gangPage = CommandView(self.notebook)
+        self.notebook.AddPage(self.gangPage, "Command", tabImage=gangImg, showClose=False)
+
+        self.notes = NotesView(self.notebook)
+        self.notebook.AddPage(self.notes, "Notes", tabImage=notesImg, showClose=False)
 
         self.notebook.SetSelection(0)
 
-    PANES = ["Drones", "Fighters", "Cargo", "Implants", "Boosters", "Projected", "Fleet"]
+    PANES = ["Drones", "Fighters", "Cargo", "Implants", "Boosters", "Projected", "Command", "Notes"]
+
     def select(self, name):
         self.notebook.SetSelection(self.PANES.index(name))
 
@@ -93,12 +100,12 @@ class AdditionsPane(TogglePanel):
 
     def toggleContent(self, event):
         TogglePanel.toggleContent(self, event)
-        h = self.headerPanel.GetSize()[1]+4
+        h = self.headerPanel.GetSize()[1] + 4
 
         if self.IsCollapsed():
             self.old_pos = self.parent.GetSashPosition()
             self.parent.SetMinimumPaneSize(h)
-            self.parent.SetSashPosition(h*-1, True)
+            self.parent.SetSashPosition(h * -1, True)
             # only available in >= wx2.9
             if getattr(self.parent, "SetSashInvisible", None):
                 self.parent.SetSashInvisible(True)
@@ -107,4 +114,3 @@ class AdditionsPane(TogglePanel):
                 self.parent.SetSashInvisible(False)
             self.parent.SetMinimumPaneSize(200)
             self.parent.SetSashPosition(self.old_pos, True)
-

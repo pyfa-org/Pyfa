@@ -1,4 +1,4 @@
-#===============================================================================
+# ===============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of eos.
@@ -15,7 +15,7 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# ===============================================================================
 
 from sqlalchemy import Table, Column, Integer, ForeignKey, Boolean
 from sqlalchemy.orm import mapper
@@ -24,20 +24,20 @@ from eos.db import saveddata_meta
 from eos.types import Implant
 
 implants_table = Table("implants", saveddata_meta,
-                     Column("ID", Integer, primary_key = True),
-                     Column("itemID", Integer),
-                     Column("active", Boolean))
+                       Column("ID", Integer, primary_key=True),
+                       Column("itemID", Integer),
+                       Column("active", Boolean))
 
 fitImplants_table = Table("fitImplants", saveddata_meta,
-                          Column("fitID", ForeignKey("fits.ID"), index = True),
-                          Column("implantID", ForeignKey("implants.ID"), primary_key = True))
+                          Column("fitID", ForeignKey("fits.ID"), index=True),
+                          Column("implantID", ForeignKey("implants.ID"), primary_key=True))
 
 charImplants_table = Table("charImplants", saveddata_meta,
-                           Column("charID", ForeignKey("characters.ID"), index = True),
-                           Column("implantID", ForeignKey("implants.ID"), primary_key = True))
+                           Column("charID", ForeignKey("characters.ID"), index=True),
+                           Column("implantID", ForeignKey("implants.ID"), primary_key=True))
 
 implantsSetMap_table = Table("implantSetMap", saveddata_meta,
-                             Column("setID", ForeignKey("implantSets.ID"), index = True),
-                             Column("implantID", ForeignKey("implants.ID"), primary_key = True))
+                             Column("setID", ForeignKey("implantSets.ID"), index=True),
+                             Column("implantID", ForeignKey("implants.ID"), primary_key=True))
 
 mapper(Implant, implants_table)

@@ -1,4 +1,4 @@
-#===============================================================================
+# ===============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of eos.
@@ -15,7 +15,7 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# ===============================================================================
 
 from sqlalchemy import Table, Column, Integer, Float
 from sqlalchemy.orm import mapper
@@ -24,8 +24,8 @@ from eos.db import saveddata_meta
 from eos.types import Override
 
 overrides_table = Table("overrides", saveddata_meta,
-                     Column("itemID", Integer, primary_key=True, index = True),
-                     Column("attrID", Integer, primary_key=True, index = True),
-                     Column("value", Float, nullable = False))
+                        Column("itemID", Integer, primary_key=True, index=True),
+                        Column("attrID", Integer, primary_key=True, index=True),
+                        Column("value", Float, nullable=False))
 
 mapper(Override, overrides_table)

@@ -5,5 +5,7 @@
 # Variations of module: Kinetic Deflection Field I (19 of 19)
 # Module: Civilian Kinetic Deflection Field
 type = "overheat"
+
+
 def handler(fit, module, context):
     module.boostItemAttr("kineticDamageResistanceBonus", module.getModifiedItemAttr("overloadHardeningBonus"))

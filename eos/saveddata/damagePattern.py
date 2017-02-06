@@ -1,4 +1,4 @@
-#===============================================================================
+# ===============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of eos.
@@ -15,14 +15,15 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# ===============================================================================
 
 import re
+
 
 class DamagePattern(object):
     DAMAGE_TYPES = ("em", "thermal", "kinetic", "explosive")
 
-    def __init__(self, emAmount = 25, thermalAmount = 25, kineticAmount = 25, explosiveAmount = 25):
+    def __init__(self, emAmount=25, thermalAmount=25, kineticAmount=25, explosiveAmount=25):
         self.emAmount = emAmount
         self.thermalAmount = thermalAmount
         self.kineticAmount = kineticAmount
@@ -50,7 +51,7 @@ class DamagePattern(object):
         totalDamage = sum((self.emAmount, self.thermalAmount, self.kineticAmount, self.explosiveAmount))
         specificDivider = 0
         for damageType in self.DAMAGE_TYPES:
-            #Compose an attribute name, then make sure the first letter is NOT capitalized
+            # Compose an attribute name, then make sure the first letter is NOT capitalized
             attrName = "%s%sDamageResonance" % (type, damageType.capitalize())
             attrName = attrName[0].lower() + attrName[1:]
 
@@ -65,6 +66,7 @@ class DamagePattern(object):
                  "therm": "thermal",
                  "kin": "kinetic",
                  "exp": "explosive"}
+
     @classmethod
     def importPatterns(cls, text):
         lines = re.split('[\n\r]+', text)
@@ -74,8 +76,8 @@ class DamagePattern(object):
             try:
                 if line.strip()[0] == "#":  # comments
                     continue
-                line = line.split('#',1)[0]  # allows for comments
-                type, data = line.rsplit('=',1)
+                line = line.split('#', 1)[0]  # allows for comments
+                type, data = line.rsplit('=', 1)
                 type, data = type.strip(), data.split(',')
             except:
                 # Data isn't in correct format, continue to next line
@@ -94,7 +96,7 @@ class DamagePattern(object):
                 except:
                     continue
 
-            if len(fields) == 4: # Avoid possible blank lines
+            if len(fields) == 4:  # Avoid possible blank lines
                 pattern = DamagePattern(**fields)
                 pattern.name = name.strip()
                 patterns.append(pattern)
@@ -102,9 +104,10 @@ class DamagePattern(object):
         return patterns, numPatterns
 
     EXPORT_FORMAT = "DamageProfile = %s,%d,%d,%d,%d\n"
+
     @classmethod
     def exportPatterns(cls, *patterns):
-        out  = "# Exported from pyfa\n#\n"
+        out = "# Exported from pyfa\n#\n"
         out += "# Values are in following format:\n"
         out += "# DamageProfile = [name],[EM amount],[Thermal amount],[Kinetic amount],[Explosive amount]\n\n"
         for dp in patterns:
