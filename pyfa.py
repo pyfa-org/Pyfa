@@ -206,8 +206,8 @@ if __name__ == "__main__":
                                 bubble=False,
                                 date_format='%Y-%m-%d',
                         ),
-                        # action_level=Warning,
-                        # buffer_size=1000,
+                        action_level=ERROR,
+                        buffer_size=1000,
                         # pull_information=True,
                         # reset=False,
                 )
