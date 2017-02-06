@@ -25,7 +25,8 @@ import config
 
 from optparse import OptionParser, BadOptionError, AmbiguousOptionError
 
-from logbook import TimedRotatingFileHandler, Logger, StreamHandler, NestedSetup, FingersCrossedHandler, NullHandler
+from logbook import TimedRotatingFileHandler, Logger, StreamHandler, NestedSetup, FingersCrossedHandler, NullHandler, \
+    CRITICAL, ERROR, WARNING, DEBUG, INFO
 logging = Logger(__name__)
 
 
@@ -71,8 +72,22 @@ parser.add_option("-w", "--wx28", action="store_true", dest="force28", help="For
 parser.add_option("-d", "--debug", action="store_true", dest="debug", help="Set logger to debug level.", default=False)
 parser.add_option("-t", "--title", action="store", dest="title", help="Set Window Title", default=None)
 parser.add_option("-s", "--savepath", action="store", dest="savepath", help="Set the folder for savedata", default=None)
+parser.add_option("-l", "--logginglevel", action="store", dest="logginglevel", help="Set the desired logging level (Critical, Error, Warning, Info, Debug)", default="Error")
 
 (options, args) = parser.parse_args()
+
+if options.logginglevel == "Critical":
+    options.logginglevel = CRITICAL
+elif options.logginglevel == "Error":
+    options.logginglevel = ERROR
+elif options.logginglevel == "Warning":
+    options.logginglevel = WARNING
+elif options.logginglevel == "Info":
+    options.logginglevel = INFO
+elif options.logginglevel == "Debug":
+    options.logginglevel = DEBUG
+else:
+    options.logginglevel = ERROR
 
 if not hasattr(sys, 'frozen'):
 
@@ -165,8 +180,9 @@ if __name__ == "__main__":
                 # if we run out of setup handling
                 NullHandler(),
                 StreamHandler(
-                    sys.stdout,
-                    bubble=False
+                        sys.stdout,
+                        bubble=False,
+                        level=options.logginglevel
                 ),
                 TimedRotatingFileHandler(
                         savePath_Destination,
@@ -183,17 +199,17 @@ if __name__ == "__main__":
                 # if we run out of setup handling
                 NullHandler(),
                 FingersCrossedHandler(
-                    TimedRotatingFileHandler(
-                        savePath_Destination,
-                        level=0,
-                        backup_count=3,
-                        bubble=False,
-                        date_format='%Y-%m-%d',
-                    ),
-                    # action_level=Warning,
-                    # buffer_size=1000,
-                    # pull_information=True,
-                    # reset=False,
+                        TimedRotatingFileHandler(
+                                savePath_Destination,
+                                level=0,
+                                backup_count=3,
+                                bubble=False,
+                                date_format='%Y-%m-%d',
+                        ),
+                        # action_level=Warning,
+                        # buffer_size=1000,
+                        # pull_information=True,
+                        # reset=False,
                 )
             ])
     except:
@@ -245,6 +261,8 @@ if __name__ == "__main__":
         pyfa = wx.App(False)
         logging.debug("Show GUI")
         MainFrame(options.title)
+
+        logging.critical("Force logging")
 
         # run the gui mainloop
         logging.debug("Run MainLoop()")
