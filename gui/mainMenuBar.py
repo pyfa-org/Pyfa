@@ -21,7 +21,6 @@ import wx
 
 import config
 from service.character import Character
-import gui.mainFrame
 #import gui.graphFrame
 import gui.globalEvents as GE
 from gui.bitmapLoader import BitmapLoader
@@ -32,7 +31,7 @@ if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION 
 
 
 class MainMenuBar(wx.MenuBar):
-    def __init__(self):
+    def __init__(self, mainFrame):
         self.characterEditorId = wx.NewId()
         self.damagePatternEditorId = wx.NewId()
         self.targetResistsEditorId = wx.NewId()
@@ -58,7 +57,7 @@ class MainMenuBar(wx.MenuBar):
             wx.ID_COPY = wx.NewId()
             wx.ID_PASTE = wx.NewId()
 
-        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+        self.mainFrame = mainFrame
         wx.MenuBar.__init__(self)
 
         # File menu
@@ -139,7 +138,7 @@ class MainMenuBar(wx.MenuBar):
                 self.Enable(self.eveFittingsId, False)
                 self.Enable(self.exportToEveId, False)
 
-            if not gui.mainFrame.disableOverrideEditor:
+            if not self.mainFrame.disableOverrideEditor:
                 windowMenu.AppendSeparator()
                 attrItem = wx.MenuItem(windowMenu, self.attrEditorId, "Attribute Overrides\tCTRL+B")
                 attrItem.SetBitmap(BitmapLoader.getBitmap("fit_rename_small", "gui"))
