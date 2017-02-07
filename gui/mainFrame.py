@@ -20,17 +20,16 @@
 import sys
 import os.path
 import logging
+import time
 
 import sqlalchemy
 import wx
-import time
 
 from codecs import open
 
 from wx.lib.wordwrap import wordwrap
 
 import config
-from config import parsePath
 from gui.graph import Graph
 
 from eos.config import gamedata_version
@@ -67,8 +66,6 @@ from eos.db.saveddata.loadDefaultDatabaseValues import DefaultDatabaseValues
 from eos.db.saveddata.queries import getFit as db_getFit
 from service.port import Port
 from service.settings import HTMLExportSettings
-
-from time import gmtime, strftime
 
 import threading
 import webbrowser
@@ -150,7 +147,7 @@ class MainFrame(wx.Frame):
 
     @classmethod
     def getInstance(cls):
-        return cls.__instance if cls.__instance is not None else MainFrame()
+        return cls.__instance if cls.__instance is not None else MainFrame("")
 
     def __init__(self, title):
         self.title = title
@@ -795,7 +792,7 @@ class MainFrame(wx.Frame):
 
     def backupToXml(self, event):
         """ Back up all fits to EVE XML file """
-        defaultFile = "pyfa-fits-%s.xml" % strftime("%Y%m%d_%H%M%S", gmtime())
+        defaultFile = "pyfa-fits-%s.xml" % time.strftime("%Y%m%d_%H%M%S", time.gmtime())
 
         saveDialog = wx.FileDialog(
             self,
@@ -1116,7 +1113,7 @@ class GraphFrame(wx.Frame):
         except:
             cache_dir = os.path.expanduser(os.path.join("~", ".matplotlib"))
 
-        cache_file = parsePath(cache_dir, 'fontList.cache')
+        cache_file = config.parsePath(cache_dir, 'fontList.cache')
 
         if os.access(cache_dir, os.W_OK | os.X_OK) and os.path.isfile(cache_file):
             # remove matplotlib font cache, see #234
