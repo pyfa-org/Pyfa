@@ -25,19 +25,25 @@ cappingAttrKeyCache = {}
 
 
 class ItemAttrShortcut(object):
-    def getModifiedItemAttr(self, key):
-        if key in self.itemModifiedAttributes:
-            return self.itemModifiedAttributes[key]
-        else:
-            return None
+    def getModifiedItemAttr(self, key, default=None):
+        try:
+            if key in self.itemModifiedAttributes:
+                return self.itemModifiedAttributes[key]
+            else:
+                return default
+        except AttributeError:
+            return default
 
 
 class ChargeAttrShortcut(object):
-    def getModifiedChargeAttr(self, key):
-        if key in self.chargeModifiedAttributes:
-            return self.chargeModifiedAttributes[key]
-        else:
-            return None
+    def getModifiedChargeAttr(self, key, default=None):
+        try:
+            if key in self.chargeModifiedAttributes:
+                return self.chargeModifiedAttributes[key]
+            else:
+                return default
+        except AttributeError:
+            return default
 
 
 class ModifiedAttributeDict(collections.MutableMapping):
