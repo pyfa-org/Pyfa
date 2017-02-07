@@ -118,7 +118,6 @@ CONVERSIONS = {
     "'Full Duplex' Ballistic Targeting System": "'Full Duplex' Ballistic Control System",
     "'Kindred' Stabilization Actuator I": "'Kindred' Gyrostabilizer",
     "Process-Interruptive Warp Disruptor": "'Interruptive' Warp Disruptor",
-    "Multi Sensor Firewall": "'Firewall' Signal Amplifier",
     "'Inception' Target Painter I": "'Inception' Target Painter",
     "Citadel Torpedoes": "XL Torpedoes",
     "'Shady' ECCM - Gravimetric I": "'Shady' Sensor Booster",

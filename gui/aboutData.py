@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,7 +15,8 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
+
 import config
 
 versionString = "{0} {1} - {2} {3}".format(config.version, config.tag, config.expansionName, config.expansionVersion)
@@ -27,7 +28,7 @@ licenses = (
 )
 developers = (
     "blitzmann \tSable Blitzmann (maintainer)",
-    "cncfanatics \tSakari Orisi (retired)" ,
+    "cncfanatics \tSakari Orisi (retired)",
     "DarkPhoenix \tKadesh Priestess (retired)",
     "Darriele \t\tDarriele (retired)",
     "Ebag333 \t\tEbag Trescientas"

@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,24 +15,26 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
+import wx
 
+from service.fit import Fit
+from service.market import Market
 import gui.mainFrame
 from gui.viewColumn import ViewColumn
 from gui.bitmapLoader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 from gui.utils.listFormatter import formatList
-from service.fit import Fit, Market
 
-import wx
 
 class Miscellanea(ViewColumn):
     name = "Miscellanea"
-    def __init__(self, fittingView, params = None):
-        if params == None:
-            params = {"showIcon": True,
-                      "displayName": False}
+
+    def __init__(self, fittingView, params=None):
+        if params is None:
+            params = {"showIcon": True, "displayName": False}
+
         ViewColumn.__init__(self, fittingView)
         if params["showIcon"]:
             self.imageId = fittingView.imageList.GetImageIndex("column_misc", "gui")
@@ -47,19 +49,16 @@ class Miscellanea(ViewColumn):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     def getText(self, stuff):
-        text = self.__getData(stuff)[0]
-        return text
+        return self.__getData(stuff)[0]
 
     def getToolTip(self, mod):
-        text = self.__getData(mod)[1]
-        return text
+        return self.__getData(mod)[1]
 
     def getImageId(self, mod):
         return -1
 
     def getParameters(self):
-        return (("displayName", bool, False),
-                ("showIcon", bool, True))
+        return (("displayName", bool, False), ("showIcon", bool, True))
 
     def __getData(self, stuff):
         item = stuff.item
@@ -81,10 +80,10 @@ class Miscellanea(ViewColumn):
             slots = ("hi", "med", "low")
             info = []
             for slot in slots:
-                n = int(stuff.getModifiedItemAttr("%sSlotModifier"%slot))
+                n = int(stuff.getModifiedItemAttr("%sSlotModifier" % slot))
                 if n > 0:
                     info.append("{0}{1}".format(n, slot[0].upper()))
-            return "+ "+", ".join(info), "Slot Modifiers"
+            return "+ " + ", ".join(info), "Slot Modifiers"
         elif itemGroup == "Energy Neutralizer":
             neutAmount = stuff.getModifiedItemAttr("energyNeutralizerAmount")
             cycleTime = stuff.cycleTime
@@ -276,7 +275,7 @@ class Miscellanea(ViewColumn):
             recalibration = stuff.getModifiedItemAttr("cloakingTargetingDelay")
             if recalibration is None:
                 return "", None
-            text = "{0}s".format(formatAmount(float(recalibration)/1000, 3, 0, 3))
+            text = "{0}s".format(formatAmount(float(recalibration) / 1000, 3, 0, 3))
             tooltip = "Sensor recalibration time"
             return text, tooltip
         elif itemGroup == "Remote Armor Repairer":
@@ -451,37 +450,76 @@ class Miscellanea(ViewColumn):
                 return text, item.name
             else:
                 return "", None
-        elif itemGroup in ("Ancillary Armor Repairer", "Ancillary Shield Booster"):
-            hp = stuff.hpBeforeReload
-            cycles = stuff.numShots
-            cycleTime = stuff.rawCycleTime
+        elif itemGroup in (
+                "Ancillary Armor Repairer",
+                "Ancillary Shield Booster",
+                "Capacitor Booster",
+                "Ancillary Remote Armor Repairer",
+                "Ancillary Remote Shield Booster",
+        ):
+            if "Armor" in itemGroup or "Shield" in itemGroup:
+                boosted_attribute = "HP"
+                reload_time = item.getAttribute("reloadTime", 0) / 1000
+            elif "Capacitor" in itemGroup:
+                boosted_attribute = "Cap"
+                reload_time = 10
+            else:
+                boosted_attribute = ""
+                reload_time = 0
+
+            cycles = max(stuff.numShots, 0)
+            cycleTime = max(stuff.rawCycleTime, 0)
+
+            # Get HP or boosted amount
+            stuff_hp = max(stuff.hpBeforeReload, 0)
+            armor_hp = stuff.getModifiedItemAttr("armorDamageAmount", 0)
+            capacitor_hp = stuff.getModifiedChargeAttr("capacitorBonus", 0)
+            shield_hp = stuff.getModifiedItemAttr("shieldBonus", 0)
+            hp = max(stuff_hp, armor_hp * cycles, capacitor_hp * cycles, shield_hp * cycles, 0)
+
             if not hp or not cycleTime or not cycles:
                 return "", None
+
             fit = Fit.getInstance().getFit(self.mainFrame.getActiveFit())
             ehpTotal = fit.ehp
             hpTotal = fit.hp
             useEhp = self.mainFrame.statsPane.nameViewMap["resistancesViewFull"].showEffective
-            tooltip = "HP restored over duration using charges"
-            if useEhp:
-                if itemGroup == "Ancillary Armor Repairer":
+            tooltip = "{0} restored over duration using charges (plus reload)".format(boosted_attribute)
+
+            if useEhp and boosted_attribute == "HP" and "Remote" not in itemGroup:
+                if "Ancillary Armor Repairer" in itemGroup:
                     hpRatio = ehpTotal["armor"] / hpTotal["armor"]
                 else:
                     hpRatio = ehpTotal["shield"] / hpTotal["shield"]
                 tooltip = "E{0}".format(tooltip)
             else:
                 hpRatio = 1
-            if itemGroup == "Ancillary Armor Repairer":
-                hpRatio *= 3
+
+            if "Ancillary" in itemGroup and "Armor" in itemGroup:
+                hpRatio *= stuff.getModifiedItemAttr("chargedArmorDamageMultiplier", 1)
+
             ehp = hp * hpRatio
+
             duration = cycles * cycleTime / 1000
-            text = "{0} / {1}s".format(formatAmount(ehp, 3, 0, 9), formatAmount(duration, 3, 0, 3))
+            for number_of_cycles in {5, 10, 25}:
+                tooltip = "{0}\n{1} charges lasts {2} seconds ({3} cycles)".format(
+                    tooltip,
+                    formatAmount(number_of_cycles*cycles, 3, 0, 3),
+                    formatAmount((duration+reload_time)*number_of_cycles, 3, 0, 3),
+                    formatAmount(number_of_cycles, 3, 0, 3)
+                )
+            text = "{0} / {1}s (+{2}s)".format(
+                formatAmount(ehp, 3, 0, 9),
+                formatAmount(duration, 3, 0, 3),
+                formatAmount(reload_time, 3, 0, 3)
+            )
 
             return text, tooltip
         elif itemGroup == "Armor Resistance Shift Hardener":
-            itemArmorResistanceShiftHardenerEM = (1-stuff.getModifiedItemAttr("armorEmDamageResonance"))*100
-            itemArmorResistanceShiftHardenerTherm = (1-stuff.getModifiedItemAttr("armorThermalDamageResonance")) * 100
-            itemArmorResistanceShiftHardenerKin = (1-stuff.getModifiedItemAttr("armorKineticDamageResonance")) * 100
-            itemArmorResistanceShiftHardenerExp = (1-stuff.getModifiedItemAttr("armorExplosiveDamageResonance")) * 100
+            itemArmorResistanceShiftHardenerEM = (1 - stuff.getModifiedItemAttr("armorEmDamageResonance")) * 100
+            itemArmorResistanceShiftHardenerTherm = (1 - stuff.getModifiedItemAttr("armorThermalDamageResonance")) * 100
+            itemArmorResistanceShiftHardenerKin = (1 - stuff.getModifiedItemAttr("armorKineticDamageResonance")) * 100
+            itemArmorResistanceShiftHardenerExp = (1 - stuff.getModifiedItemAttr("armorExplosiveDamageResonance")) * 100
 
             text = "{0}% | {1}% | {2}% | {3}%".format(
                 formatAmount(itemArmorResistanceShiftHardenerEM, 3, 0, 3),
@@ -498,10 +536,25 @@ class Miscellanea(ViewColumn):
             return text, tooltip
         elif stuff.charge is not None:
             chargeGroup = stuff.charge.group.name
-            if chargeGroup in ("Rocket", "Advanced Rocket", "Light Missile", "Advanced Light Missile", "FoF Light Missile",
-                               "Heavy Assault Missile", "Advanced Heavy Assault Missile", "Heavy Missile", "Advanced Heavy Missile", "FoF Heavy Missile",
-                               "Torpedo", "Advanced Torpedo", "Cruise Missile", "Advanced Cruise Missile", "FoF Cruise Missile",
-                               "XL Torpedo", "XL Cruise Missile"):
+            if chargeGroup in (
+                    "Rocket",
+                    "Advanced Rocket",
+                    "Light Missile",
+                    "Advanced Light Missile",
+                    "FoF Light Missile",
+                    "Heavy Assault Missile",
+                    "Advanced Heavy Assault Missile",
+                    "Heavy Missile",
+                    "Advanced Heavy Missile",
+                    "FoF Heavy Missile",
+                    "Torpedo",
+                    "Advanced Torpedo",
+                    "Cruise Missile",
+                    "Advanced Cruise Missile",
+                    "FoF Cruise Missile",
+                    "XL Torpedo",
+                    "XL Cruise Missile"
+            ):
                 cloudSize = stuff.getModifiedChargeAttr("aoeCloudSize")
                 aoeVelocity = stuff.getModifiedChargeAttr("aoeVelocity")
                 if not cloudSize or not aoeVelocity:
@@ -530,5 +583,6 @@ class Miscellanea(ViewColumn):
                 return "", None
         else:
             return "", None
+
 
 Miscellanea.register()

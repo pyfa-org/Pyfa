@@ -7,7 +7,6 @@ Migration 11
     modules with their new replacements
 """
 
-
 CONVERSIONS = {
     16467: (  # Medium Gremlin Compact Energy Neutralizer
         16471,  # Medium Unstable Power Fluctuator I
@@ -106,11 +105,12 @@ CONVERSIONS = {
     ),
 }
 
-def upgrade(saveddata_engine):
 
+def upgrade(saveddata_engine):
     # Convert modules
     for replacement_item, list in CONVERSIONS.iteritems():
         for retired_item in list:
-            saveddata_engine.execute('UPDATE "modules" SET "itemID" = ? WHERE "itemID" = ?', (replacement_item, retired_item))
-            saveddata_engine.execute('UPDATE "cargo" SET "itemID" = ? WHERE "itemID" = ?', (replacement_item, retired_item))
-
+            saveddata_engine.execute('UPDATE "modules" SET "itemID" = ? WHERE "itemID" = ?',
+                                     (replacement_item, retired_item))
+            saveddata_engine.execute('UPDATE "cargo" SET "itemID" = ? WHERE "itemID" = ?',
+                                     (replacement_item, retired_item))

@@ -17,12 +17,13 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-from eos.db.util import processEager, processWhere
+from sqlalchemy.sql import and_
+
 from eos.db import saveddata_session, sd_lock
+from eos.db.saveddata.fit import projectedFits_table
+from eos.db.util import processEager, processWhere
 
 from eos.types import *
-from eos.db.saveddata.fit import projectedFits_table
-from sqlalchemy.sql import and_
 import eos.config
 
 configVal = getattr(eos.config, "saveddataCache", None)
@@ -31,7 +32,6 @@ if configVal is True:
 
     itemCache = {}
     queryCache = {}
-
 
     def cachedQuery(type, amount, *keywords):
         itemCache[type] = localItemCache = weakref.WeakValueDictionary()
@@ -91,7 +91,6 @@ if configVal is True:
 
         return deco
 
-
     def removeCachedEntry(type, ID):
         if type not in queryCache:
             return
@@ -120,7 +119,6 @@ else:
             return checkAndReturn
 
         return deco
-
 
     def removeCachedEntry(*args, **kwargs):
         return
@@ -210,6 +208,7 @@ def getFit(lookfor, eager=None):
 
     return fit
 
+
 def getFitsWithShip(shipID, ownerID=None, where=None, eager=None):
     """
     Get all the fits using a certain ship.
@@ -292,6 +291,7 @@ def getFitList(eager=None):
         fits = removeInvalid(saveddata_session.query(Fit).options(*eager).all())
 
     return fits
+
 
 @cachedQuery(Price, 1, "typeID")
 def getPrice(typeID):
@@ -415,6 +415,7 @@ def searchFits(nameLike, where=None, eager=None):
         fits = removeInvalid(saveddata_session.query(Fit).options(*eager).filter(filter).all())
 
     return fits
+
 
 def getProjectedFits(fitID):
     if isinstance(fitID, int):

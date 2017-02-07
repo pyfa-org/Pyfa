@@ -25,19 +25,25 @@ cappingAttrKeyCache = {}
 
 
 class ItemAttrShortcut(object):
-    def getModifiedItemAttr(self, key):
-        if key in self.itemModifiedAttributes:
-            return self.itemModifiedAttributes[key]
-        else:
-            return None
+    def getModifiedItemAttr(self, key, default=None):
+        try:
+            if key in self.itemModifiedAttributes:
+                return self.itemModifiedAttributes[key]
+            else:
+                return default
+        except AttributeError:
+            return default
 
 
 class ChargeAttrShortcut(object):
-    def getModifiedChargeAttr(self, key):
-        if key in self.chargeModifiedAttributes:
-            return self.chargeModifiedAttributes[key]
-        else:
-            return None
+    def getModifiedChargeAttr(self, key, default=None):
+        try:
+            if key in self.chargeModifiedAttributes:
+                return self.chargeModifiedAttributes[key]
+            else:
+                return default
+        except AttributeError:
+            return default
 
 
 class ModifiedAttributeDict(collections.MutableMapping):
@@ -132,8 +138,8 @@ class ModifiedAttributeDict(collections.MutableMapping):
         return (key for key in all)
 
     def __contains__(self, key):
-        return (
-               self.__original is not None and key in self.__original) or key in self.__modified or key in self.__intermediary
+        return (self.__original is not None and key in self.__original) or \
+            key in self.__modified or key in self.__intermediary
 
     def __placehold(self, key):
         """Create calculation placeholder in item's modified attribute dict"""

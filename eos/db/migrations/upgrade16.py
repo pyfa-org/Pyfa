@@ -6,6 +6,7 @@ Migration 16
 
 import sqlalchemy
 
+
 def upgrade(saveddata_engine):
     # Update fits schema to include notes attribute
     try:

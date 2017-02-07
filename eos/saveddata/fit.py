@@ -28,10 +28,12 @@ from sqlalchemy.orm import validates, reconstructor
 import eos.db
 from eos import capSim
 from eos.effectHandlerHelpers import *
+from eos.effectHandlerHelpers import HandledModuleList, HandledDroneCargoList, HandledImplantBoosterList, HandledProjectedDroneList, HandledProjectedModList
 from eos.enum import Enum
 from eos.saveddata.module import State, Hardpoint
 from eos.types import Ship, Character, Slot, Module, Citadel
 from utils.timer import Timer
+import logging
 
 logger = logging.getLogger(__name__)
 
@@ -485,12 +487,12 @@ class Fit(object):
                         self.ship.boostItemAttr("armor%sDamageResonance" % damageType, value)
 
                 if warfareBuffID == 14:  # Armor Burst: Rapid Repair: Repair Duration/Capacitor
-                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill(
-                        "Remote Armor Repair Systems") or mod.item.requiresSkill("Repair Systems"),
-                                                  "capacitorNeed", value)
-                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill(
-                        "Remote Armor Repair Systems") or mod.item.requiresSkill("Repair Systems"), "duration",
-                                                  value)
+                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Remote Armor Repair Systems") or
+                                                               mod.item.requiresSkill("Repair Systems"),
+                                                   "capacitorNeed", value)
+                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Remote Armor Repair Systems") or
+                                                               mod.item.requiresSkill("Repair Systems"),
+                                                   "duration", value)
 
                 if warfareBuffID == 15:  # Armor Burst: Armor Reinforcement: Armor HP
                     self.ship.boostItemAttr("armorHP", value, stackingPenalties=True)
@@ -510,9 +512,8 @@ class Fit(object):
                                                       "scan%sStrengthBonus" % scanType, value,
                                                       stackingPenalties=True)
 
-                    for attr in (
-                    "missileVelocityBonus", "explosionDelayBonus", "aoeVelocityBonus", "falloffBonus",
-                    "maxRangeBonus", "aoeCloudSizeBonus", "trackingSpeedBonus"):
+                    for attr in ("missileVelocityBonus", "explosionDelayBonus", "aoeVelocityBonus", "falloffBonus",
+                                 "maxRangeBonus", "aoeCloudSizeBonus", "trackingSpeedBonus"):
                         self.modules.filteredItemBoost(lambda mod: mod.item.group.name == "Weapon Disruptor",
                                                       attr, value)
 
@@ -625,7 +626,8 @@ class Fit(object):
                     self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Shield Emission Systems"), "shieldBonus", value, stackingPenalties=True)
 
                 if warfareBuffID == 53:  # Leviathan Effect Generator : Armor RR penalty
-                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Remote Armor Repair Systems"), "armorDamageAmount", value, stackingPenalties=True)
+                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Remote Armor Repair Systems"),
+                                                   "armorDamageAmount", value, stackingPenalties=True)
 
                 if warfareBuffID == 54:  # Ragnarok Effect Generator : Laser and Hybrid Optimal penalty
                     groups = ("Energy Weapon", "Hybrid Weapon")
@@ -740,7 +742,7 @@ class Fit(object):
             if not withBoosters and self.commandBonuses:
                 self.__runCommandBoosts(runTime)
 
-            timer.checkpoint('Done with runtime: %s'%runTime)
+            timer.checkpoint('Done with runtime: %s' % runTime)
 
         # Mark fit as calculated
         self.__calculated = True
