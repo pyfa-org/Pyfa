@@ -1322,7 +1322,7 @@ class GraphFrame(wx.Frame):
                     selected_color = legend_colors[i]
                 except:
                     selected_color = None
-                legend2.append(Patch(color=selected_color,label=i_name),)
+                legend2.append(Patch(color=selected_color, label=i_name))
 
             if len(legend2) > 0:
                 leg = self.subplot.legend(handles=legend2)
