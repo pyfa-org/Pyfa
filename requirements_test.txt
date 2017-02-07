@@ -5,3 +5,4 @@ pytest-capturelog==0.7
 coverage==4.2
 coveralls==1.1
 codecov
+tox

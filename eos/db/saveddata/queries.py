@@ -22,11 +22,8 @@ from sqlalchemy.sql import and_
 from eos.db import saveddata_session, sd_lock
 from eos.db.saveddata.fit import projectedFits_table
 from eos.db.util import processEager, processWhere
-from eos.db import saveddata_session, sd_lock
 
 from eos.types import *
-from eos.db.saveddata.fit import projectedFits_table
-from sqlalchemy.sql import and_
 import eos.config
 
 configVal = getattr(eos.config, "saveddataCache", None)

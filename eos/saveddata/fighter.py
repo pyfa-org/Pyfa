@@ -149,10 +149,6 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         return self.__item
 
     @property
-    def charge(self):
-        return self.__charge
-
-    @property
     def hasAmmo(self):
         return self.charge is not None
 

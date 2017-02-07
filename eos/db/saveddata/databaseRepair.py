@@ -33,7 +33,7 @@ class DatabaseCleanup:
             results = saveddata_engine.execute(query)
             return results
         except sqlalchemy.exc.DatabaseError:
-            logger.error("Failed to connect to database or error executing query:\n%s",query)
+            logger.error("Failed to connect to database or error executing query:\n%s", query)
             return None
 
     @staticmethod

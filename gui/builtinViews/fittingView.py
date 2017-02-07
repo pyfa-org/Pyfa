@@ -230,7 +230,7 @@ class FittingView(d.Display):
 
         if row != -1 and row not in self.blanks:
             data = wx.PyTextDataObject()
-            data.SetText("fitting:"+str(self.mods[row].modPosition))
+            data.SetText("fitting:" + str(self.mods[row].modPosition))
 
             dropSource = wx.DropSource(self)
             dropSource.SetData(data)
@@ -403,7 +403,7 @@ class FittingView(d.Display):
                 return
 
             if clone and mod2.isEmpty:
-                sFit.cloneModule(self.mainFrame.getActiveFit(), srcIdx,  mod2.modPosition)
+                sFit.cloneModule(self.mainFrame.getActiveFit(), srcIdx, mod2.modPosition)
             else:
                 sFit.swapModules(self.mainFrame.getActiveFit(), srcIdx, mod2.modPosition)
 
@@ -503,7 +503,7 @@ class FittingView(d.Display):
 
                 itemContext = "Tactical Mode"
                 fullContext = (srcContext, itemContext)
-                if not srcContext in tuple(fCtxt[0] for fCtxt in contexts):
+                if srcContext not in tuple(fCtxt[0] for fCtxt in contexts):
                     contexts.append(fullContext)
 
                 selection.append(mod)
