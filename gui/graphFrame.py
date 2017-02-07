@@ -19,7 +19,6 @@
 
 import os
 import logging
-import imp
 
 import wx
 
@@ -31,14 +30,14 @@ from gui.graph import Graph
 from gui.bitmapLoader import BitmapLoader
 from config import parsePath
 
-# Don't actually import the thing, since it takes for fucking ever
 try:
-    imp.find_module('matplotlib')
+    import matplotlib as mpl
+    from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as Canvas
+    from matplotlib.figure import Figure
     enabled = True
+    mplImported = False
 except ImportError:
     enabled = False
-
-mplImported = False
 
 logger = logging.getLogger(__name__)
 if not enabled:
@@ -50,15 +49,6 @@ class GraphFrame(wx.Frame):
 
         global enabled
         global mplImported
-
-        # Import here
-        try:
-            import matplotlib as mpl
-            from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as Canvas
-            from matplotlib.figure import Figure
-            enabled = True
-        except ImportError:
-            enabled = False
 
         self.legendFix = False
         if not enabled:
