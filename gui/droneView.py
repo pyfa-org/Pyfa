@@ -20,8 +20,8 @@
 import wx
 
 import gui.globalEvents as GE
-import gui.marketBrowser as mb
-import gui.display as d
+from gui.marketBrowser import ITEM_SELECTED, ItemSelected
+from gui.display import Display
 from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
 from service.fit import Fit
@@ -43,7 +43,7 @@ class DroneViewDrop(wx.PyDropTarget):
         return t
 
 
-class DroneView(d.Display):
+class DroneView(Display):
     DEFAULT_COLS = [
         "State",
         # "Base Icon",
@@ -56,7 +56,7 @@ class DroneView(d.Display):
     ]
 
     def __init__(self, parent):
-        d.Display.__init__(self, parent, style=wx.LC_SINGLE_SEL | wx.BORDER_NONE)
+        Display.__init__(self, parent, style=wx.LC_SINGLE_SEL | wx.BORDER_NONE)
 
         self.lastFitId = None
 
@@ -64,7 +64,7 @@ class DroneView(d.Display):
         self.hoveredColumn = None
 
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
-        self.mainFrame.Bind(mb.ITEM_SELECTED, self.addItem)
+        self.mainFrame.Bind(ITEM_SELECTED, self.addItem)
         self.Bind(wx.EVT_LEFT_DCLICK, self.removeItem)
         self.Bind(wx.EVT_LEFT_DOWN, self.click)
         self.Bind(wx.EVT_KEY_UP, self.kbEvent)
@@ -141,7 +141,7 @@ class DroneView(d.Display):
             if srcRow != -1 and dstRow != -1:
                 self._merge(srcRow, dstRow)
         elif data[0] == "market":
-            wx.PostEvent(self.mainFrame, mb.ItemSelected(itemID=int(data[1])))
+            wx.PostEvent(self.mainFrame, ItemSelected(itemID=int(data[1])))
 
     def _merge(self, src, dst):
         sFit = Fit.getInstance()
