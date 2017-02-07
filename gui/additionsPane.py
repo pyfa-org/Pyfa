@@ -18,7 +18,6 @@
 # =============================================================================
 
 import wx
-import gui.mainFrame
 from gui.boosterView import BoosterView
 from gui.droneView import DroneView
 from gui.fighterView import FighterView
@@ -44,8 +43,6 @@ class AdditionsPane(TogglePanel):
 
         baseSizer = wx.BoxSizer(wx.HORIZONTAL)
         pane.SetSizer(baseSizer)
-
-        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
         self.notebook = PFNotebook(pane, False)
         self.notebook.SetMinSize((-1, 1000))
