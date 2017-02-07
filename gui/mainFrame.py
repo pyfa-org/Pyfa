@@ -72,14 +72,20 @@ import webbrowser
 
 try:
     import matplotlib as mpl
+    if mpl.__version__[0] >= "2":
+        mpl.use('wxagg')
+        mplImported = True
+        from matplotlib.patches import Patch
+    else:
+        mplImported = False
     from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as Canvas
     from matplotlib.figure import Figure
     graphFrame_enabled = True
-    mplImported = False
 except ImportError:
     mpl = None
     Canvas = None
     Figure = None
+    mplImported = False
     graphFrame_enabled = False
 
 if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3, 0)):
@@ -1122,10 +1128,12 @@ class GraphFrame(wx.Frame):
             mpl.use('wxagg')
 
         graphFrame_enabled = True
-        if mpl.__version__[0] != "1":
+        if mpl.__version__[0] < "1":
             print("pyfa: Found matplotlib version ", mpl.__version__, " - activating OVER9000 workarounds")
             print("pyfa: Recommended minimum matplotlib version is 1.0.0")
             self.legendFix = True
+
+        self.mpl_version = mpl.__version__[0]
 
         mplImported = True
 
@@ -1280,21 +1288,49 @@ class GraphFrame(wx.Frame):
                 self.canvas.draw()
                 return
 
-        if self.legendFix and len(legend) > 0:
-            leg = self.subplot.legend(tuple(legend), "upper right", shadow=False)
-            for t in leg.get_texts():
-                t.set_fontsize('small')
+        if self.mpl_version < 2:
+            if self.legendFix and len(legend) > 0:
+                leg = self.subplot.legend(tuple(legend), "upper right", shadow=False)
+                for t in leg.get_texts():
+                    t.set_fontsize('small')
 
-            for l in leg.get_lines():
-                l.set_linewidth(1)
+                for l in leg.get_lines():
+                    l.set_linewidth(1)
 
-        elif not self.legendFix and len(legend) > 0:
-            leg = self.subplot.legend(tuple(legend), "upper right", shadow=False, frameon=False)
-            for t in leg.get_texts():
-                t.set_fontsize('small')
+            elif not self.legendFix and len(legend) > 0:
+                leg = self.subplot.legend(tuple(legend), "upper right", shadow=False, frameon=False)
+                for t in leg.get_texts():
+                    t.set_fontsize('small')
 
-            for l in leg.get_lines():
-                l.set_linewidth(1)
+                for l in leg.get_lines():
+                    l.set_linewidth(1)
+        elif self.mpl_version >= 2:
+            legend2 = []
+            legend_colors = {
+                0: "blue",
+                1: "orange",
+                2: "green",
+                3: "red",
+                4: "purple",
+                5: "brown",
+                6: "pink",
+                7: "grey",
+            }
+
+            for i, i_name in enumerate(legend):
+                try:
+                    selected_color = legend_colors[i]
+                except:
+                    selected_color = None
+                legend2.append(Patch(color=selected_color,label=i_name),)
+
+            if len(legend2) > 0:
+                leg = self.subplot.legend(handles=legend2)
+                for t in leg.get_texts():
+                    t.set_fontsize('small')
+
+                for l in leg.get_lines():
+                    l.set_linewidth(1)
 
         self.canvas.draw()
         self.SetStatusText("")
