@@ -16,6 +16,7 @@ import gui.utils.colorUtils as colorUtils
 import gui.utils.drawUtils as drawUtils
 import gui.utils.animUtils as animUtils
 import gui.utils.animEffects as animEffects
+from gui.display import Display
 from gui.PFListPane import PFListPane
 from gui.contextMenu import ContextMenu
 from gui.bitmapLoader import BitmapLoader
@@ -1958,3 +1959,23 @@ class FitItem(SFItem.SFBrowserItem):
         self.bkBitmap.sFactor = sFactor
         self.bkBitmap.eFactor = eFactor
         self.bkBitmap.mFactor = mFactor
+
+
+class FitList(wx.Panel):
+    def __init__(self, parent):
+        wx.Panel.__init__(self, parent)
+        self.mainSizer = wx.BoxSizer(wx.VERTICAL)
+        self.SetSizer(self.mainSizer)
+
+        self.fitList = FitDisplay(self)
+        self.mainSizer.Add(self.fitList, 1, wx.EXPAND)
+        fitToolTip = wx.ToolTip("Drag a fit into this list to graph it")
+        self.fitList.SetToolTip(fitToolTip)
+
+
+class FitDisplay(Display):
+    DEFAULT_COLS = ["Base Icon",
+                    "Base Name"]
+
+    def __init__(self, parent):
+        Display.__init__(self, parent)
