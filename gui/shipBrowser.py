@@ -16,6 +16,7 @@ import gui.utils.colorUtils as colorUtils
 import gui.utils.drawUtils as drawUtils
 import gui.utils.animUtils as animUtils
 import gui.utils.animEffects as animEffects
+from gui.display import Display
 from gui.PFListPane import PFListPane
 from gui.contextMenu import ContextMenu
 from gui.bitmapLoader import BitmapLoader
@@ -1972,7 +1973,9 @@ class FitList(wx.Panel):
         self.fitList.SetToolTip(fitToolTip)
 
 
+class FitDisplay(Display):
     DEFAULT_COLS = ["Base Icon",
                     "Base Name"]
 
     def __init__(self, parent):
+        Display.__init__(self, parent)
