@@ -146,6 +146,8 @@ class MainFrame(wx.Frame):
         # Load stored settings (width/height/maximized..)
         self.LoadMainFrameAttribs()
 
+        self.disableOverrideEditor = disableOverrideEditor
+
         # Fix for msw (have the frame background color match panel color
         if 'wxMSW' in wx.PlatformInfo:
             self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
@@ -205,7 +207,7 @@ class MainFrame(wx.Frame):
         self.closePageId = wx.NewId()
 
         self.widgetInspectMenuID = wx.NewId()
-        self.SetMenuBar(MainMenuBar())
+        self.SetMenuBar(MainMenuBar(self))
         self.registerMenu()
 
         # Internal vars to keep track of other windows (graphing/stats)
