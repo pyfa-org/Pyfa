@@ -35,7 +35,7 @@ import config
 from eos.config import gamedata_version
 
 import gui.aboutData
-import gui.chromeTabs
+from gui.chromeTabs import PFNotebook
 import gui.globalEvents as GE
 
 from gui.bitmapLoader import BitmapLoader
@@ -55,7 +55,7 @@ from gui.graphFrame import GraphFrame
 from gui.copySelectDialog import CopySelectDialog
 from gui.utils.clipboard import toClipboard, fromClipboard
 from gui.updateDialog import UpdateDialog
-from gui.builtinViews import *  # TODO: unsure if this is needed here
+from gui.builtinViews import emptyView, entityEditor, fittingView, implantEditor
 from gui import graphFrame
 
 from service.settings import SettingsProvider
@@ -66,7 +66,7 @@ from service.update import Update
 # import this to access override setting
 from eos.modifiedAttributeDict import ModifiedAttributeDict
 from eos.db.saveddata.loadDefaultDatabaseValues import DefaultDatabaseValues
-from eos import db
+from eos.db.saveddata.queries import getFit as db_getFit
 from service.port import Port
 from service.settings import HTMLExportSettings
 
@@ -171,7 +171,7 @@ class MainFrame(wx.Frame):
         self.fitMultiSwitch = MultiSwitch(self.fitting_additions_split)
         self.additionsPane = AdditionsPane(self.fitting_additions_split)
 
-        self.notebookBrowsers = gui.chromeTabs.PFNotebook(self.browser_fitting_split, False)
+        self.notebookBrowsers = PFNotebook(self.browser_fitting_split, False)
 
         marketImg = BitmapLoader.getImage("market_small", "gui")
         shipBrowserImg = BitmapLoader.getImage("ship_small", "gui")
@@ -700,27 +700,27 @@ class MainFrame(wx.Frame):
             self.marketBrowser.search.Focus()
 
     def clipboardEft(self):
-        fit = db.getFit(self.getActiveFit())
+        fit = db_getFit(self.getActiveFit())
         toClipboard(Port.exportEft(fit))
 
     def clipboardEftImps(self):
-        fit = db.getFit(self.getActiveFit())
+        fit = db_getFit(self.getActiveFit())
         toClipboard(Port.exportEftImps(fit))
 
     def clipboardDna(self):
-        fit = db.getFit(self.getActiveFit())
+        fit = db_getFit(self.getActiveFit())
         toClipboard(Port.exportDna(fit))
 
     def clipboardCrest(self):
-        fit = db.getFit(self.getActiveFit())
+        fit = db_getFit(self.getActiveFit())
         toClipboard(Port.exportCrest(fit))
 
     def clipboardXml(self):
-        fit = db.getFit(self.getActiveFit())
+        fit = db_getFit(self.getActiveFit())
         toClipboard(Port.exportXml(None, fit))
 
     def clipboardMultiBuy(self):
-        fit = db.getFit(self.getActiveFit())
+        fit = db_getFit(self.getActiveFit())
         toClipboard(Port.exportMultiBuy(fit))
 
     def importFromClipboard(self, event):

@@ -22,7 +22,7 @@ from gui.statsView import StatsView
 from gui.bitmapLoader import BitmapLoader
 from gui import pygauge as PG
 import gui.mainFrame
-import gui.chromeTabs
+from gui.chromeTabs import EVT_NOTEBOOK_PAGE_CHANGED
 
 from eos.saveddata.module import Hardpoint
 
@@ -37,7 +37,7 @@ class ResourcesViewFull(StatsView):
         StatsView.__init__(self)
         self.parent = parent
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.mainFrame.additionsPane.notebook.Bind(gui.chromeTabs.EVT_NOTEBOOK_PAGE_CHANGED, self.pageChanged)
+        self.mainFrame.additionsPane.notebook.Bind(EVT_NOTEBOOK_PAGE_CHANGED, self.pageChanged)
 
     def pageChanged(self, event):
         page = self.mainFrame.additionsPane.getName(event.GetSelection())

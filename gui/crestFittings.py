@@ -10,7 +10,7 @@ from service.fit import Fit
 from eos.saveddata.cargo import Cargo
 from eos.db import getItem
 
-import gui.display as d
+from gui.display import Display
 import gui.globalEvents as GE
 
 if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3, 0)):
@@ -411,10 +411,10 @@ class FittingsTreeView(wx.Panel):
         self.parent.fitView.update(list)
 
 
-class FitView(d.Display):
+class FitView(Display):
     DEFAULT_COLS = ["Base Icon",
                     "Base Name"]
 
     def __init__(self, parent):
-        d.Display.__init__(self, parent, style=wx.LC_SINGLE_SEL)
+        Display.__init__(self, parent, style=wx.LC_SINGLE_SEL)
         self.fitSelection = None
