@@ -20,7 +20,7 @@
 import wx
 from service.market import Market
 from service.attribute import Attribute
-import gui.display as d
+from gui.display import Display
 import gui.PFSearchBox as SBox
 from gui.cachingImageList import CachingImageList
 from gui.contextMenu import ContextMenu
@@ -216,14 +216,14 @@ class MarketTree(wx.TreeCtrl):
         self.marketBrowser.itemView.selectionMade()
 
 
-class ItemView(d.Display):
+class ItemView(Display):
     DEFAULT_COLS = ["Base Icon",
                     "Base Name",
                     "attr:power,,,True",
                     "attr:cpu,,,True"]
 
     def __init__(self, parent, marketBrowser):
-        d.Display.__init__(self, parent)
+        Display.__init__(self, parent)
         marketBrowser.Bind(wx.EVT_TREE_SEL_CHANGED, self.selectionMade)
 
         self.unfilteredStore = set()
@@ -429,7 +429,7 @@ class ItemView(d.Display):
         # Mark current item list as active
         self.active = items
         # Show them
-        d.Display.populate(self, items)
+        Display.populate(self, items)
 
     def refresh(self, items):
         if len(items) > 1:
@@ -445,7 +445,7 @@ class ItemView(d.Display):
             # set shortcut info for first 9 modules
             item.marketShortcut = i + 1
 
-        d.Display.refresh(self, items)
+        Display.refresh(self, items)
 
     def makeReverseMetaMap(self):
         """

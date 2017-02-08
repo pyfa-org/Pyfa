@@ -450,30 +450,69 @@ class Miscellanea(ViewColumn):
                 return text, item.name
             else:
                 return "", None
-        elif itemGroup in ("Ancillary Armor Repairer", "Ancillary Shield Booster"):
-            hp = stuff.hpBeforeReload
-            cycles = stuff.numShots
-            cycleTime = stuff.rawCycleTime
+        elif itemGroup in (
+                "Ancillary Armor Repairer",
+                "Ancillary Shield Booster",
+                "Capacitor Booster",
+                "Ancillary Remote Armor Repairer",
+                "Ancillary Remote Shield Booster",
+        ):
+            if "Armor" in itemGroup or "Shield" in itemGroup:
+                boosted_attribute = "HP"
+                reload_time = item.getAttribute("reloadTime", 0) / 1000
+            elif "Capacitor" in itemGroup:
+                boosted_attribute = "Cap"
+                reload_time = 10
+            else:
+                boosted_attribute = ""
+                reload_time = 0
+
+            cycles = max(stuff.numShots, 0)
+            cycleTime = max(stuff.rawCycleTime, 0)
+
+            # Get HP or boosted amount
+            stuff_hp = max(stuff.hpBeforeReload, 0)
+            armor_hp = stuff.getModifiedItemAttr("armorDamageAmount", 0)
+            capacitor_hp = stuff.getModifiedChargeAttr("capacitorBonus", 0)
+            shield_hp = stuff.getModifiedItemAttr("shieldBonus", 0)
+            hp = max(stuff_hp, armor_hp * cycles, capacitor_hp * cycles, shield_hp * cycles, 0)
+
             if not hp or not cycleTime or not cycles:
                 return "", None
+
             fit = Fit.getInstance().getFit(self.mainFrame.getActiveFit())
             ehpTotal = fit.ehp
             hpTotal = fit.hp
             useEhp = self.mainFrame.statsPane.nameViewMap["resistancesViewFull"].showEffective
-            tooltip = "HP restored over duration using charges"
-            if useEhp:
-                if itemGroup == "Ancillary Armor Repairer":
+            tooltip = "{0} restored over duration using charges (plus reload)".format(boosted_attribute)
+
+            if useEhp and boosted_attribute == "HP" and "Remote" not in itemGroup:
+                if "Ancillary Armor Repairer" in itemGroup:
                     hpRatio = ehpTotal["armor"] / hpTotal["armor"]
                 else:
                     hpRatio = ehpTotal["shield"] / hpTotal["shield"]
                 tooltip = "E{0}".format(tooltip)
             else:
                 hpRatio = 1
-            if itemGroup == "Ancillary Armor Repairer":
-                hpRatio *= 3
+
+            if "Ancillary" in itemGroup and "Armor" in itemGroup:
+                hpRatio *= stuff.getModifiedItemAttr("chargedArmorDamageMultiplier", 1)
+
             ehp = hp * hpRatio
+
             duration = cycles * cycleTime / 1000
-            text = "{0} / {1}s".format(formatAmount(ehp, 3, 0, 9), formatAmount(duration, 3, 0, 3))
+            for number_of_cycles in {5, 10, 25}:
+                tooltip = "{0}\n{1} charges lasts {2} seconds ({3} cycles)".format(
+                    tooltip,
+                    formatAmount(number_of_cycles*cycles, 3, 0, 3),
+                    formatAmount((duration+reload_time)*number_of_cycles, 3, 0, 3),
+                    formatAmount(number_of_cycles, 3, 0, 3)
+                )
+            text = "{0} / {1}s (+{2}s)".format(
+                formatAmount(ehp, 3, 0, 9),
+                formatAmount(duration, 3, 0, 3),
+                formatAmount(reload_time, 3, 0, 3)
+            )
 
             return text, tooltip
         elif itemGroup == "Armor Resistance Shift Hardener":

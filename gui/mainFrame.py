@@ -20,42 +20,40 @@
 import sys
 import os.path
 import logging
+import time
 
 import sqlalchemy
 import wx
-import time
 
 from codecs import open
 
 from wx.lib.wordwrap import wordwrap
 
 import config
+from gui.graph import Graph
 
 from eos.config import gamedata_version
 
 import gui.aboutData
-import gui.chromeTabs
+from gui.chromeTabs import PFNotebook
 import gui.globalEvents as GE
 
 from gui.bitmapLoader import BitmapLoader
-from gui.mainMenuBar import MainMenuBar
 from gui.additionsPane import AdditionsPane
 from gui.marketBrowser import MarketBrowser, ItemSelected
 from gui.multiSwitch import MultiSwitch
 from gui.statsPane import StatsPane
-from gui.shipBrowser import ShipBrowser, FitSelected, ImportSelected, Stage3Selected
+from gui.shipBrowser import ShipBrowser, FitSelected, ImportSelected, Stage3Selected, FitList
 from gui.characterEditor import CharacterEditor, SaveCharacterAs
 from gui.characterSelection import CharacterSelection
 from gui.patternEditor import DmgPatternEditorDlg
 from gui.resistsEditor import ResistsEditorDlg
 from gui.setEditor import ImplantSetEditorDlg
 from gui.preferenceDialog import PreferenceDialog
-from gui.graphFrame import GraphFrame
 from gui.copySelectDialog import CopySelectDialog
 from gui.utils.clipboard import toClipboard, fromClipboard
 from gui.updateDialog import UpdateDialog
-from gui.builtinViews import *  # TODO: unsure if this is needed here
-from gui import graphFrame
+from gui.builtinViews import fittingView, implantEditor
 
 from service.settings import SettingsProvider
 from service.fit import Fit
@@ -65,14 +63,35 @@ from service.update import Update
 # import this to access override setting
 from eos.modifiedAttributeDict import ModifiedAttributeDict
 from eos.db.saveddata.loadDefaultDatabaseValues import DefaultDatabaseValues
-from eos import db
+from eos.db.saveddata.queries import getFit as db_getFit
 from service.port import Port
 from service.settings import HTMLExportSettings
 
 from time import gmtime, strftime
-
 import threading
 import webbrowser
+import logging
+
+logger = logging.getLogger(__name__)
+
+
+try:
+    import matplotlib as mpl
+    if mpl.__version__[0] >= "2":
+        mpl.use('wxagg')
+        mplImported = True
+        from matplotlib.patches import Patch
+    else:
+        mplImported = False
+    from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as Canvas
+    from matplotlib.figure import Figure
+    graphFrame_enabled = True
+except ImportError:
+    mpl = None
+    Canvas = None
+    Figure = None
+    mplImported = False
+    graphFrame_enabled = False
 
 if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3, 0)):
     from service.crest import Crest
@@ -84,10 +103,14 @@ if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION 
 
         disableOverrideEditor = False
     except ImportError as e:
+        AttributeEditor = None
         print("Error loading Attribute Editor: %s.\nAccess to Attribute Editor is disabled." % e.message)
         disableOverrideEditor = True
 
 logger = logging.getLogger("pyfa.gui.mainFrame")
+
+if not graphFrame_enabled:
+    logger.info("Problems importing matplotlib; continuing without graphs")
 
 
 # dummy panel(no paint no erasebk)
@@ -135,7 +158,7 @@ class MainFrame(wx.Frame):
 
     @classmethod
     def getInstance(cls):
-        return cls.__instance if cls.__instance is not None else MainFrame()
+        return cls.__instance if cls.__instance is not None else MainFrame("")
 
     def __init__(self, title):
         self.title = title
@@ -145,8 +168,6 @@ class MainFrame(wx.Frame):
 
         # Load stored settings (width/height/maximized..)
         self.LoadMainFrameAttribs()
-
-        self.disableOverrideEditor = disableOverrideEditor
 
         # Fix for msw (have the frame background color match panel color
         if 'wxMSW' in wx.PlatformInfo:
@@ -167,7 +188,7 @@ class MainFrame(wx.Frame):
         self.fitMultiSwitch = MultiSwitch(self.fitting_additions_split)
         self.additionsPane = AdditionsPane(self.fitting_additions_split)
 
-        self.notebookBrowsers = gui.chromeTabs.PFNotebook(self.browser_fitting_split, False)
+        self.notebookBrowsers = PFNotebook(self.browser_fitting_split, False)
 
         marketImg = BitmapLoader.getImage("market_small", "gui")
         shipBrowserImg = BitmapLoader.getImage("ship_small", "gui")
@@ -207,7 +228,7 @@ class MainFrame(wx.Frame):
         self.closePageId = wx.NewId()
 
         self.widgetInspectMenuID = wx.NewId()
-        self.SetMenuBar(MainMenuBar(self))
+        self.SetMenuBar(MainMenuBar())
         self.registerMenu()
 
         # Internal vars to keep track of other windows (graphing/stats)
@@ -381,7 +402,10 @@ class MainFrame(wx.Frame):
     def showDamagePatternEditor(self, event):
         dlg = DmgPatternEditorDlg(self)
         dlg.ShowModal()
-        dlg.Destroy()
+        try:
+            dlg.Destroy()
+        except PyDeadObjectError:
+            logger.error("Tried to destroy an object that doesn't exist in <showDamagePatternEditor>.")
 
     def showImplantSetEditor(self, event):
         ImplantSetEditorDlg(self)
@@ -405,15 +429,19 @@ class MainFrame(wx.Frame):
                 if '.' not in os.path.basename(path):
                     path += ".xml"
             else:
-                print("oops, invalid fit format %d" % format_)
-                dlg.Destroy()
+                print "oops, invalid fit format %d" % format
+                try:
+                    dlg.Destroy()
+                except PyDeadObjectError:
+                    logger.error("Tried to destroy an object that doesn't exist in <showExportDialog>.")
                 return
-
             with open(path, "w", encoding="utf-8") as openfile:
                 openfile.write(output)
                 openfile.close()
-
-        dlg.Destroy()
+        try:
+            dlg.Destroy()
+        except PyDeadObjectError:
+            logger.error("Tried to destroy an object that doesn't exist in <showExportDialog>.")
 
     def showPreferenceDialog(self, event):
         dlg = PreferenceDialog(self)
@@ -679,27 +707,27 @@ class MainFrame(wx.Frame):
             self.marketBrowser.search.Focus()
 
     def clipboardEft(self):
-        fit = db.getFit(self.getActiveFit())
+        fit = db_getFit(self.getActiveFit())
         toClipboard(Port.exportEft(fit))
 
     def clipboardEftImps(self):
-        fit = db.getFit(self.getActiveFit())
+        fit = db_getFit(self.getActiveFit())
         toClipboard(Port.exportEftImps(fit))
 
     def clipboardDna(self):
-        fit = db.getFit(self.getActiveFit())
+        fit = db_getFit(self.getActiveFit())
         toClipboard(Port.exportDna(fit))
 
     def clipboardCrest(self):
-        fit = db.getFit(self.getActiveFit())
+        fit = db_getFit(self.getActiveFit())
         toClipboard(Port.exportCrest(fit))
 
     def clipboardXml(self):
-        fit = db.getFit(self.getActiveFit())
+        fit = db_getFit(self.getActiveFit())
         toClipboard(Port.exportXml(None, fit))
 
     def clipboardMultiBuy(self):
-        fit = db.getFit(self.getActiveFit())
+        fit = db_getFit(self.getActiveFit())
         toClipboard(Port.exportMultiBuy(fit))
 
     def importFromClipboard(self, event):
@@ -724,7 +752,10 @@ class MainFrame(wx.Frame):
 
         CopySelectDict[selected]()
 
-        dlg.Destroy()
+        try:
+            dlg.Destroy()
+        except PyDeadObjectError:
+            logger.error("Tried to destroy an object that doesn't exist in <exportToClipboard>.")
 
     def exportSkillsNeeded(self, event):
         """ Exports skills needed for active fit and active character """
@@ -778,11 +809,14 @@ class MainFrame(wx.Frame):
             self.progressDialog.message = None
             sPort.importFitsThreaded(dlg.GetPaths(), self.fileImportCallback)
             self.progressDialog.ShowModal()
-            dlg.Destroy()
+            try:
+                dlg.Destroy()
+            except PyDeadObjectError:
+                logger.error("Tried to destroy an object that doesn't exist in <fileImportDialog>.")
 
     def backupToXml(self, event):
         """ Back up all fits to EVE XML file """
-        defaultFile = "pyfa-fits-%s.xml" % strftime("%Y%m%d_%H%M%S", gmtime())
+        defaultFile = "pyfa-fits-%s.xml" % time.strftime("%Y%m%d_%H%M%S", time.gmtime())
 
         saveDialog = wx.FileDialog(
             self,
@@ -916,10 +950,12 @@ class MainFrame(wx.Frame):
         del self.waitDialog
 
     def openGraphFrame(self, event):
+        global graphFrame_enabled
+
         if not self.graphFrame:
             self.graphFrame = GraphFrame(self)
 
-            if graphFrame.enabled:
+            if graphFrame_enabled:
                 self.graphFrame.Show()
         else:
             self.graphFrame.SetFocus()
@@ -935,3 +971,405 @@ class MainFrame(wx.Frame):
         if not wnd:
             wnd = self
         InspectionTool().Show(wnd, True)
+
+
+class MainMenuBar(wx.MenuBar):
+    def __init__(self):
+        self.characterEditorId = wx.NewId()
+        self.damagePatternEditorId = wx.NewId()
+        self.targetResistsEditorId = wx.NewId()
+        self.implantSetEditorId = wx.NewId()
+        self.graphFrameId = wx.NewId()
+        self.backupFitsId = wx.NewId()
+        self.exportSkillsNeededId = wx.NewId()
+        self.importCharacterId = wx.NewId()
+        self.exportHtmlId = wx.NewId()
+        self.wikiId = wx.NewId()
+        self.forumId = wx.NewId()
+        self.saveCharId = wx.NewId()
+        self.saveCharAsId = wx.NewId()
+        self.revertCharId = wx.NewId()
+        self.eveFittingsId = wx.NewId()
+        self.exportToEveId = wx.NewId()
+        self.ssoLoginId = wx.NewId()
+        self.attrEditorId = wx.NewId()
+        self.toggleOverridesId = wx.NewId()
+        self.importDatabaseDefaultsId = wx.NewId()
+
+        if 'wxMac' in wx.PlatformInfo and wx.VERSION >= (3, 0):
+            wx.ID_COPY = wx.NewId()
+            wx.ID_PASTE = wx.NewId()
+
+        self.mainFrame = MainFrame.getInstance()
+        wx.MenuBar.__init__(self)
+
+        # File menu
+        fileMenu = wx.Menu()
+        self.Append(fileMenu, "&File")
+
+        fileMenu.Append(self.mainFrame.addPageId, "&New Tab\tCTRL+T", "Open a new fitting tab")
+        fileMenu.Append(self.mainFrame.closePageId, "&Close Tab\tCTRL+W", "Close the current fit")
+        fileMenu.AppendSeparator()
+
+        fileMenu.Append(self.backupFitsId, "&Backup All Fittings", "Backup all fittings to a XML file")
+        fileMenu.Append(wx.ID_OPEN, "&Import Fittings\tCTRL+O", "Import fittings into pyfa")
+        fileMenu.Append(wx.ID_SAVEAS, "&Export Fitting\tCTRL+S", "Export fitting to another format")
+        fileMenu.AppendSeparator()
+        fileMenu.Append(self.exportHtmlId, "Export HTML", "Export fits to HTML file (set in Preferences)")
+        fileMenu.Append(self.exportSkillsNeededId, "Export &Skills Needed", "Export skills needed for this fitting")
+        fileMenu.Append(self.importCharacterId, "Import C&haracter File", "Import characters into pyfa from file")
+        fileMenu.AppendSeparator()
+        fileMenu.Append(wx.ID_EXIT)
+
+        # Edit menu
+        editMenu = wx.Menu()
+        self.Append(editMenu, "&Edit")
+
+        # editMenu.Append(wx.ID_UNDO)
+        # editMenu.Append(wx.ID_REDO)
+
+        editMenu.Append(wx.ID_COPY, "To Clipboard\tCTRL+C", "Export a fit to the clipboard")
+        editMenu.Append(wx.ID_PASTE, "From Clipboard\tCTRL+V", "Import a fit from the clipboard")
+        editMenu.AppendSeparator()
+        editMenu.Append(self.saveCharId, "Save Character")
+        editMenu.Append(self.saveCharAsId, "Save Character As...")
+        editMenu.Append(self.revertCharId, "Revert Character")
+
+        # Character menu
+        windowMenu = wx.Menu()
+        self.Append(windowMenu, "&Window")
+
+        charEditItem = wx.MenuItem(windowMenu, self.characterEditorId, "&Character Editor\tCTRL+E")
+        charEditItem.SetBitmap(BitmapLoader.getBitmap("character_small", "gui"))
+        windowMenu.AppendItem(charEditItem)
+
+        damagePatternEditItem = wx.MenuItem(windowMenu, self.damagePatternEditorId, "Damage Pattern Editor\tCTRL+D")
+        damagePatternEditItem.SetBitmap(BitmapLoader.getBitmap("damagePattern_small", "gui"))
+        windowMenu.AppendItem(damagePatternEditItem)
+
+        targetResistsEditItem = wx.MenuItem(windowMenu, self.targetResistsEditorId, "Target Resists Editor\tCTRL+R")
+        targetResistsEditItem.SetBitmap(BitmapLoader.getBitmap("explosive_small", "gui"))
+        windowMenu.AppendItem(targetResistsEditItem)
+
+        implantSetEditItem = wx.MenuItem(windowMenu, self.implantSetEditorId, "Implant Set Editor\tCTRL+I")
+        implantSetEditItem.SetBitmap(BitmapLoader.getBitmap("hardwire_small", "gui"))
+        windowMenu.AppendItem(implantSetEditItem)
+
+        graphFrameItem = wx.MenuItem(windowMenu, self.graphFrameId, "Graphs\tCTRL+G")
+        graphFrameItem.SetBitmap(BitmapLoader.getBitmap("graphs_small", "gui"))
+        windowMenu.AppendItem(graphFrameItem)
+
+        preferencesShortCut = "CTRL+," if 'wxMac' in wx.PlatformInfo else "CTRL+P"
+        preferencesItem = wx.MenuItem(windowMenu, wx.ID_PREFERENCES, "Preferences\t" + preferencesShortCut)
+        preferencesItem.SetBitmap(BitmapLoader.getBitmap("preferences_small", "gui"))
+        windowMenu.AppendItem(preferencesItem)
+
+        if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3, 0)):
+            self.sCrest = Crest.getInstance()
+
+            # CREST Menu
+            crestMenu = wx.Menu()
+            self.Append(crestMenu, "&CREST")
+            if self.sCrest.settings.get('mode') != CrestModes.IMPLICIT:
+                crestMenu.Append(self.ssoLoginId, "Manage Characters")
+            else:
+                crestMenu.Append(self.ssoLoginId, "Login to EVE")
+            crestMenu.Append(self.eveFittingsId, "Browse EVE Fittings")
+            crestMenu.Append(self.exportToEveId, "Export To EVE")
+
+            if self.sCrest.settings.get('mode') == CrestModes.IMPLICIT or len(self.sCrest.getCrestCharacters()) == 0:
+                self.Enable(self.eveFittingsId, False)
+                self.Enable(self.exportToEveId, False)
+
+            if not disableOverrideEditor:
+                windowMenu.AppendSeparator()
+                attrItem = wx.MenuItem(windowMenu, self.attrEditorId, "Attribute Overrides\tCTRL+B")
+                attrItem.SetBitmap(BitmapLoader.getBitmap("fit_rename_small", "gui"))
+                windowMenu.AppendItem(attrItem)
+                windowMenu.Append(self.toggleOverridesId, "Turn Overrides On")
+
+        # Help menu
+        helpMenu = wx.Menu()
+        self.Append(helpMenu, "&Help")
+        helpMenu.Append(self.wikiId, "Wiki", "Go to wiki on GitHub")
+        helpMenu.Append(self.forumId, "Forums", "Go to EVE Online Forum thread")
+        helpMenu.AppendSeparator()
+        helpMenu.Append(self.importDatabaseDefaultsId, "Import D&atabase Defaults", "Imports missing database defaults")
+        helpMenu.AppendSeparator()
+        helpMenu.Append(wx.ID_ABOUT)
+
+        if config.debug:
+            helpMenu.Append(self.mainFrame.widgetInspectMenuID, "Open Widgets Inspect tool",
+                            "Open Widgets Inspect tool")
+
+        self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
+
+    def fitChanged(self, event):
+        enable = event.fitID is not None
+        self.Enable(wx.ID_SAVEAS, enable)
+        self.Enable(wx.ID_COPY, enable)
+        self.Enable(self.exportSkillsNeededId, enable)
+
+        sChar = Character.getInstance()
+        charID = self.mainFrame.charSelection.getActiveCharacter()
+        char = sChar.getCharacter(charID)
+
+        # enable/disable character saving stuff
+        self.Enable(self.saveCharId, not char.ro and char.isDirty)
+        self.Enable(self.saveCharAsId, char.isDirty)
+        self.Enable(self.revertCharId, char.isDirty)
+
+        event.Skip()
+
+
+class GraphFrame(wx.Frame):
+    def __init__(self, parent, style=wx.DEFAULT_FRAME_STYLE | wx.NO_FULL_REPAINT_ON_RESIZE | wx.FRAME_FLOAT_ON_PARENT):
+
+        global graphFrame_enabled
+        global mplImported
+
+        self.legendFix = False
+        if not graphFrame_enabled:
+            return
+
+        try:
+            cache_dir = mpl._get_cachedir()
+        except:
+            cache_dir = os.path.expanduser(os.path.join("~", ".matplotlib"))
+
+        cache_file = config.parsePath(cache_dir, 'fontList.cache')
+
+        if os.access(cache_dir, os.W_OK | os.X_OK) and os.path.isfile(cache_file):
+            # remove matplotlib font cache, see #234
+            os.remove(cache_file)
+        if not mplImported:
+            mpl.use('wxagg')
+
+        graphFrame_enabled = True
+        if mpl.__version__[0] < "1":
+            print("pyfa: Found matplotlib version ", mpl.__version__, " - activating OVER9000 workarounds")
+            print("pyfa: Recommended minimum matplotlib version is 1.0.0")
+            self.legendFix = True
+
+        self.mpl_version = mpl.__version__[0]
+
+        mplImported = True
+
+        wx.Frame.__init__(self, parent, title=u"pyfa: Graph Generator", style=style, size=(520, 390))
+
+        i = wx.IconFromBitmap(BitmapLoader.getBitmap("graphs_small", "gui"))
+        self.SetIcon(i)
+        self.mainFrame = MainFrame.getInstance()
+        self.CreateStatusBar()
+
+        self.mainSizer = wx.BoxSizer(wx.VERTICAL)
+        self.SetSizer(self.mainSizer)
+
+        sFit = Fit.getInstance()
+        fit = sFit.getFit(self.mainFrame.getActiveFit())
+        self.fits = [fit] if fit is not None else []
+        self.fitList = FitList(self)
+        self.fitList.SetMinSize((270, -1))
+
+        self.fitList.fitList.update(self.fits)
+
+        self.graphSelection = wx.Choice(self, wx.ID_ANY, style=0)
+        self.mainSizer.Add(self.graphSelection, 0, wx.EXPAND)
+
+        self.figure = Figure(figsize=(4, 3))
+
+        rgbtuple = wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE).Get()
+        clr = [c / 255. for c in rgbtuple]
+        self.figure.set_facecolor(clr)
+        self.figure.set_edgecolor(clr)
+
+        self.canvas = Canvas(self, -1, self.figure)
+        self.canvas.SetBackgroundColour(wx.Colour(*rgbtuple))
+
+        self.subplot = self.figure.add_subplot(111)
+        self.subplot.grid(True)
+
+        self.mainSizer.Add(self.canvas, 1, wx.EXPAND)
+        self.mainSizer.Add(wx.StaticLine(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL), 0,
+                           wx.EXPAND)
+
+        self.gridPanel = wx.Panel(self)
+        self.mainSizer.Add(self.gridPanel, 0, wx.EXPAND)
+
+        dummyBox = wx.BoxSizer(wx.VERTICAL)
+        self.gridPanel.SetSizer(dummyBox)
+
+        self.gridSizer = wx.FlexGridSizer(0, 4)
+        self.gridSizer.AddGrowableCol(1)
+        dummyBox.Add(self.gridSizer, 0, wx.EXPAND)
+
+        for view in Graph.views:
+            view = view()
+            self.graphSelection.Append(view.name, view)
+
+        self.graphSelection.SetSelection(0)
+        self.fields = {}
+        self.select(0)
+        self.sl1 = wx.StaticLine(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL)
+        self.mainSizer.Add(self.sl1, 0, wx.EXPAND)
+        self.mainSizer.Add(self.fitList, 0, wx.EXPAND)
+
+        self.fitList.fitList.Bind(wx.EVT_LEFT_DCLICK, self.removeItem)
+        self.mainFrame.Bind(GE.FIT_CHANGED, self.draw)
+        self.Bind(wx.EVT_CLOSE, self.close)
+
+        self.Fit()
+        self.SetMinSize(self.GetSize())
+
+    def handleDrag(self, type, fitID):
+        if type == "fit":
+            self.AppendFitToList(fitID)
+
+    def close(self, event):
+        self.fitList.fitList.Unbind(wx.EVT_LEFT_DCLICK, handler=self.removeItem)
+        self.mainFrame.Unbind(GE.FIT_CHANGED, handler=self.draw)
+        event.Skip()
+
+    def getView(self):
+        return self.graphSelection.GetClientData(self.graphSelection.GetSelection())
+
+    def getValues(self):
+        values = {}
+        for fieldName, field in self.fields.iteritems():
+            values[fieldName] = field.GetValue()
+
+        return values
+
+    def select(self, index):
+        view = self.getView()
+        icons = view.getIcons()
+        labels = view.getLabels()
+        sizer = self.gridSizer
+        self.gridPanel.DestroyChildren()
+        self.fields.clear()
+
+        # Setup textboxes
+        for field, defaultVal in view.getFields().iteritems():
+
+            textBox = wx.TextCtrl(self.gridPanel, wx.ID_ANY, style=0)
+            self.fields[field] = textBox
+            textBox.Bind(wx.EVT_TEXT, self.onFieldChanged)
+            sizer.Add(textBox, 1, wx.EXPAND | wx.ALIGN_CENTER_VERTICAL | wx.ALL, 3)
+            if defaultVal is not None:
+                if not isinstance(defaultVal, basestring):
+                    defaultVal = ("%f" % defaultVal).rstrip("0")
+                    if defaultVal[-1:] == ".":
+                        defaultVal += "0"
+
+                textBox.ChangeValue(defaultVal)
+
+            imgLabelSizer = wx.BoxSizer(wx.HORIZONTAL)
+            if icons:
+                icon = icons.get(field)
+                if icon is not None:
+                    static = wx.StaticBitmap(self.gridPanel)
+                    static.SetBitmap(icon)
+                    imgLabelSizer.Add(static, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 1)
+
+            if labels:
+                label = labels.get(field)
+                label = label if label is not None else field
+            else:
+                label = field
+
+            imgLabelSizer.Add(wx.StaticText(self.gridPanel, wx.ID_ANY, label), 0,
+                              wx.LEFT | wx.RIGHT | wx.ALIGN_CENTER_VERTICAL, 3)
+            sizer.Add(imgLabelSizer, 0, wx.ALIGN_CENTER_VERTICAL)
+        self.draw()
+
+    def draw(self, event=None):
+        values = self.getValues()
+        view = self.getView()
+        self.subplot.clear()
+        self.subplot.grid(True)
+        legend = []
+
+        for fit in self.fits:
+            try:
+                success, status = view.getPoints(fit, values)
+                if not success:
+                    # TODO: Add a pwetty statys bar to report errors with
+                    self.SetStatusText(status)
+                    return
+
+                x, y = success, status
+
+                self.subplot.plot(x, y)
+                legend.append(fit.name)
+            except:
+                self.SetStatusText("Invalid values in '%s'" % fit.name)
+                self.canvas.draw()
+                return
+
+        if self.mpl_version < 2:
+            if self.legendFix and len(legend) > 0:
+                leg = self.subplot.legend(tuple(legend), "upper right", shadow=False)
+                for t in leg.get_texts():
+                    t.set_fontsize('small')
+
+                for l in leg.get_lines():
+                    l.set_linewidth(1)
+
+            elif not self.legendFix and len(legend) > 0:
+                leg = self.subplot.legend(tuple(legend), "upper right", shadow=False, frameon=False)
+                for t in leg.get_texts():
+                    t.set_fontsize('small')
+
+                for l in leg.get_lines():
+                    l.set_linewidth(1)
+        elif self.mpl_version >= 2:
+            legend2 = []
+            legend_colors = {
+                0: "blue",
+                1: "orange",
+                2: "green",
+                3: "red",
+                4: "purple",
+                5: "brown",
+                6: "pink",
+                7: "grey",
+            }
+
+            for i, i_name in enumerate(legend):
+                try:
+                    selected_color = legend_colors[i]
+                except:
+                    selected_color = None
+                legend2.append(Patch(color=selected_color, label=i_name))
+
+            if len(legend2) > 0:
+                leg = self.subplot.legend(handles=legend2)
+                for t in leg.get_texts():
+                    t.set_fontsize('small')
+
+                for l in leg.get_lines():
+                    l.set_linewidth(1)
+
+        self.canvas.draw()
+        self.SetStatusText("")
+        if event is not None:
+            event.Skip()
+
+    def onFieldChanged(self, event):
+        self.draw()
+
+    def AppendFitToList(self, fitID):
+        sFit = Fit.getInstance()
+        fit = sFit.getFit(fitID)
+        if fit not in self.fits:
+            self.fits.append(fit)
+
+        self.fitList.fitList.update(self.fits)
+        self.draw()
+
+    def removeItem(self, event):
+        row, _ = self.fitList.fitList.HitTest(event.Position)
+        if row != -1:
+            del self.fits[row]
+            self.fitList.fitList.update(self.fits)
+            self.draw()
