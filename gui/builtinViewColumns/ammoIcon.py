@@ -19,7 +19,7 @@
 
 from gui.viewColumn import ViewColumn
 import wx
-from eos.types import Module
+from eos.saveddata.module import Module
 
 
 class AmmoIcon(ViewColumn):

@@ -24,7 +24,7 @@ from gui import pygauge as PG
 import gui.mainFrame
 import gui.chromeTabs
 
-from eos.types import Hardpoint
+from eos.saveddata.module import Hardpoint
 
 from gui.utils.numberFormatter import formatAmount
 

@@ -19,7 +19,8 @@
 
 import wx
 
-from eos.types import Drone, Cargo
+from eos.saveddata.cargo import Cargo
+from eos.saveddata.drone import Drone
 from service.market import Market
 from gui.viewColumn import ViewColumn
 from gui.bitmapLoader import BitmapLoader

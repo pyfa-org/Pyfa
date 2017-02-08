@@ -22,7 +22,7 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import mapper, relation
 
 from eos.db import saveddata_meta
-from eos.types import Booster
+from eos.saveddata.booster import Booster
 
 boosters_table = Table("boosters", saveddata_meta,
                        Column("ID", Integer, primary_key=True),

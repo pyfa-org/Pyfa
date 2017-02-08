@@ -25,7 +25,6 @@ from sqlalchemy.orm import validates, reconstructor
 
 import eos
 import eos.db
-import eos.types
 from eos.effectHandlerHelpers import HandledItem, HandledImplantBoosterList
 
 logger = logging.getLogger(__name__)

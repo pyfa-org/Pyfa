@@ -24,7 +24,7 @@ import gui.mainFrame
 from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
 import globalEvents as GE
-from eos.types import ImplantLocation
+from eos.saveddata.fit import ImplantLocation
 from service.fit import Fit
 from service.market import Market
 

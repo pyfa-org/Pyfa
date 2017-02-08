@@ -25,7 +25,8 @@ import gui.display as d
 from gui.contextMenu import ContextMenu
 import gui.shipBrowser
 import gui.multiSwitch
-from eos.types import Slot, Rack, Module, Mode
+from eos.saveddata.mode import Mode
+from eos.saveddata.module import Module, Slot, Rack
 from gui.builtinViewColumns.state import State
 from gui.bitmapLoader import BitmapLoader
 import gui.builtinViews.emptyView

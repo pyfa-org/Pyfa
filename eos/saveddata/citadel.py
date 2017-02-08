@@ -19,7 +19,7 @@
 
 import logging
 
-from eos.types import Ship
+from eos.saveddata.ship import Ship
 
 logger = logging.getLogger(__name__)
 

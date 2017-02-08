@@ -7,7 +7,7 @@ import requests
 from service.port import Port
 from service.fit import Fit
 
-from eos.types import Cargo
+from eos.saveddata.cargo import Cargo
 from eos.db import getItem
 
 import gui.display as d

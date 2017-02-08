@@ -21,7 +21,7 @@ from sqlalchemy import Table, Column, Integer, ForeignKey, Boolean
 from sqlalchemy.orm import mapper
 
 from eos.db import saveddata_meta
-from eos.types import Drone
+from eos.saveddata.drone import Drone
 
 drones_table = Table("drones", saveddata_meta,
                      Column("groupID", Integer, primary_key=True),

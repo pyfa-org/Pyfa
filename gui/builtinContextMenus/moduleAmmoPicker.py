@@ -4,7 +4,7 @@ import wx
 
 from service.fit import Fit
 from service.market import Market
-from eos.types import Hardpoint
+from eos.saveddata.module import Hardpoint
 import gui.mainFrame
 import gui.globalEvents as GE
 from gui.contextMenu import ContextMenu

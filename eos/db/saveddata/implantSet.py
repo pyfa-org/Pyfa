@@ -23,7 +23,8 @@ from sqlalchemy.orm import relation, mapper
 from eos.db import saveddata_meta
 from eos.db.saveddata.implant import implantsSetMap_table
 from eos.effectHandlerHelpers import HandledImplantBoosterList
-from eos.types import Implant, ImplantSet
+from eos.saveddata.implant import Implant
+from eos.saveddata.implantSet import ImplantSet
 
 implant_set_table = Table("implantSets", saveddata_meta,
                           Column("ID", Integer, primary_key=True),
