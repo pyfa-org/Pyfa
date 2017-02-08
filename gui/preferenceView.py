@@ -37,5 +37,10 @@ class PreferenceView(object):
         return wx.NullBitmap
 
 
-from gui.builtinPreferenceViews import pyfaCrestPreferences, pyfaGeneralPreferences, \
-    pyfaHTMLExportPreferences, pyfaNetworkPreferences, pyfaUpdatePreferences
+from gui.builtinPreferenceViews import (# noqa: E402, F401
+    pyfaGeneralPreferences,
+    pyfaNetworkPreferences,
+    pyfaHTMLExportPreferences,
+    pyfaCrestPreferences,
+    pyfaUpdatePreferences
+)

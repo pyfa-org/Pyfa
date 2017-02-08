@@ -71,9 +71,6 @@ from service.port import Port
 from service.settings import HTMLExportSettings
 
 from time import gmtime, strftime
-import logging
-
-logger = logging.getLogger(__name__)
 
 import threading
 import webbrowser
@@ -91,7 +88,7 @@ if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION 
         print("Error loading Attribute Editor: %s.\nAccess to Attribute Editor is disabled." % e.message)
         disableOverrideEditor = True
 
-logger = logging.getLogger("pyfa.gui.mainFrame")
+logger = logging.getLogger(__name__)
 
 
 # dummy panel(no paint no erasebk)

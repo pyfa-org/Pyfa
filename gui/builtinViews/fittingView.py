@@ -31,7 +31,7 @@ from gui.builtinViewColumns.state import State
 from gui.bitmapLoader import BitmapLoader
 import gui.builtinViews.emptyView
 from gui.utils.exportHtml import exportHtml
-from logging import getLogger, Formatter
+from logging import getLogger
 
 from service.fit import Fit
 from service.market import Market

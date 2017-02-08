@@ -21,7 +21,6 @@ import wx
 
 import config
 from service.character import Character
-#import gui.graphFrame
 import gui.globalEvents as GE
 from gui.bitmapLoader import BitmapLoader
 

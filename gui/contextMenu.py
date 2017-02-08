@@ -58,7 +58,7 @@ class ContextMenu(object):
         rootMenu.selection = (selection,) if not hasattr(selection, "__iter__") else selection
         empty = True
         for i, fullContext in enumerate(fullContexts):
-            amount = 0
+            display_amount = 0
             srcContext = fullContext[0]
             try:
                 itemContext = fullContext[1]
@@ -68,7 +68,7 @@ class ContextMenu(object):
                 # loop through registered menus
                 m = menuHandler()
                 if m.display(srcContext, selection):
-                    amount += 1
+                    display_amount += 1
                     texts = m.getText(itemContext, selection)
 
                     if isinstance(texts, basestring):
@@ -115,7 +115,7 @@ class ContextMenu(object):
 
                     empty = False
 
-            if amount > 0 and i != len(fullContexts) - 1:
+            if display_amount > 0 and i != len(fullContexts) - 1:
                 rootMenu.AppendSeparator()
 
         debug_end = len(cls._ids)
@@ -177,6 +177,28 @@ class ContextMenu(object):
         return None
 
 
-from gui.builtinContextMenus import ammoPattern, amount, cargo, changeAffectingSkills, damagePattern, droneRemoveStack, \
-    droneSplit, factorReload, fighterAbilities, implantSets, itemRemove, itemStats, marketJump, metaSwap, moduleAmmoPicker, \
-    moduleGlobalAmmoPicker, openFit, priceClear, project, shipJump, tacticalMode, targetResists, whProjector
+from gui.builtinContextMenus import (  # noqa: E402,F401
+    ammoPattern,
+    amount,
+    cargo,
+    changeAffectingSkills,
+    damagePattern,
+    droneRemoveStack,
+    droneSplit,
+    factorReload,
+    fighterAbilities,
+    implantSets,
+    itemRemove,
+    itemStats,
+    marketJump,
+    metaSwap,
+    moduleAmmoPicker,
+    moduleGlobalAmmoPicker,
+    openFit,
+    priceClear,
+    project,
+    shipJump,
+    tacticalMode,
+    targetResists,
+    whProjector
+)

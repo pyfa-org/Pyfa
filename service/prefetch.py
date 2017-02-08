@@ -17,7 +17,6 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
-import threading
 import os
 
 import config
@@ -25,7 +24,6 @@ from eos import db
 from eos.db import migration
 from eos.db.saveddata.loadDefaultDatabaseValues import DefaultDatabaseValues
 from eos.db.saveddata.databaseRepair import DatabaseCleanup
-from eos.saveddata.character import Character as es_Character
 
 import logging
 

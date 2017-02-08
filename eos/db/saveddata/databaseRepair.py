@@ -85,7 +85,8 @@ class DatabaseCleanup:
                 logger.error("More than one uniform damage pattern found.")
             else:
                 uniform_damage_pattern_id = rows[0]['ID']
-                update_query = "UPDATE 'fits' SET 'damagePatternID' = {} WHERE damagePatternID NOT IN (SELECT ID FROM damagePatterns) OR damagePatternID IS NULL".format(uniform_damage_pattern_id)
+                update_query = "UPDATE 'fits' SET 'damagePatternID' = {} " \
+                               "WHERE damagePatternID NOT IN (SELECT ID FROM damagePatterns) OR damagePatternID IS NULL".format(uniform_damage_pattern_id)
                 update_results = DatabaseCleanup.ExecuteSQLQuery(saveddata_engine, update_query)
                 logger.error("Database corruption found. Cleaning up %d records.", update_results.rowcount)
 

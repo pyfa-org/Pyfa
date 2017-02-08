@@ -504,8 +504,8 @@ class Miscellanea(ViewColumn):
             for number_of_cycles in {5, 10, 25}:
                 tooltip = "{0}\n{1} charges lasts {2} seconds ({3} cycles)".format(
                     tooltip,
-                    formatAmount(number_of_cycles*cycles, 3, 0, 3),
-                    formatAmount((duration+reload_time)*number_of_cycles, 3, 0, 3),
+                    formatAmount(number_of_cycles * cycles, 3, 0, 3),
+                    formatAmount((duration + reload_time) * number_of_cycles, 3, 0, 3),
                     formatAmount(number_of_cycles, 3, 0, 3)
                 )
             text = "{0} / {1}s (+{2}s)".format(

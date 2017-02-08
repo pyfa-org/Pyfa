@@ -34,7 +34,6 @@ from eos.saveddata.module import Module as es_Module, State, Slot
 from eos.saveddata.fit import Fit as FitType
 from service.character import Character
 from service.damagePattern import DamagePattern
-from service.market import Market
 from service.settings import SettingsProvider
 
 logger = logging.getLogger(__name__)
