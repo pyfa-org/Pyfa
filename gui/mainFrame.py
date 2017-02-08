@@ -349,6 +349,13 @@ class MainFrame(wx.Frame):
         info = wx.AboutDialogInfo()
         info.Name = "pyfa"
         info.Version = gui.aboutData.versionString
+
+        try:
+            import matplotlib
+            matplotlib_version = matplotlib.__version__
+        except:
+            matplotlib_version = None
+
         info.Description = wordwrap(gui.aboutData.description + "\n\nDevelopers:\n\t" +
                                     "\n\t".join(gui.aboutData.developers) +
                                     "\n\nAdditional credits:\n\t" +
@@ -358,7 +365,8 @@ class MainFrame(wx.Frame):
                                     "\n\nEVE Data: \t" + gamedata_version +
                                     "\nPython: \t\t" + '{}.{}.{}'.format(v.major, v.minor, v.micro) +
                                     "\nwxPython: \t" + wx.__version__ +
-                                    "\nSQLAlchemy: \t" + sqlalchemy.__version__,
+                                    "\nSQLAlchemy: \t" + sqlalchemy.__version__ +
+                                    "\nmatplotlib: \t {}".format(matplotlib_version if matplotlib_version else "Not Installed"),
                                     500, wx.ClientDC(self))
         if "__WXGTK__" in wx.PlatformInfo:
             forumUrl = "http://forums.eveonline.com/default.aspx?g=posts&amp;t=466425"
