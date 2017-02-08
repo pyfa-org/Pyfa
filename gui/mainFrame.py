@@ -26,6 +26,7 @@ import wx
 import time
 
 from codecs import open
+from wx._core import PyDeadObjectError
 
 from wx.lib.wordwrap import wordwrap
 
@@ -70,6 +71,9 @@ from service.port import Port
 from service.settings import HTMLExportSettings
 
 from time import gmtime, strftime
+import logging
+
+logger = logging.getLogger(__name__)
 
 import threading
 import webbrowser
@@ -349,6 +353,13 @@ class MainFrame(wx.Frame):
         info = wx.AboutDialogInfo()
         info.Name = "pyfa"
         info.Version = gui.aboutData.versionString
+
+        try:
+            import matplotlib
+            matplotlib_version = matplotlib.__version__
+        except:
+            matplotlib_version = None
+
         info.Description = wordwrap(gui.aboutData.description + "\n\nDevelopers:\n\t" +
                                     "\n\t".join(gui.aboutData.developers) +
                                     "\n\nAdditional credits:\n\t" +
@@ -358,7 +369,8 @@ class MainFrame(wx.Frame):
                                     "\n\nEVE Data: \t" + gamedata_version +
                                     "\nPython: \t\t" + '{}.{}.{}'.format(v.major, v.minor, v.micro) +
                                     "\nwxPython: \t" + wx.__version__ +
-                                    "\nSQLAlchemy: \t" + sqlalchemy.__version__,
+                                    "\nSQLAlchemy: \t" + sqlalchemy.__version__ +
+                                    "\nmatplotlib: \t {}".format(matplotlib_version if matplotlib_version else "Not Installed"),
                                     500, wx.ClientDC(self))
         if "__WXGTK__" in wx.PlatformInfo:
             forumUrl = "http://forums.eveonline.com/default.aspx?g=posts&amp;t=466425"
@@ -381,7 +393,10 @@ class MainFrame(wx.Frame):
     def showDamagePatternEditor(self, event):
         dlg = DmgPatternEditorDlg(self)
         dlg.ShowModal()
-        dlg.Destroy()
+        try:
+            dlg.Destroy()
+        except PyDeadObjectError:
+            logger.error("Tried to destroy an object that doesn't exist in <showDamagePatternEditor>.")
 
     def showImplantSetEditor(self, event):
         ImplantSetEditorDlg(self)
@@ -406,14 +421,20 @@ class MainFrame(wx.Frame):
                     path += ".xml"
             else:
                 print("oops, invalid fit format %d" % format_)
-                dlg.Destroy()
+                try:
+                    dlg.Destroy()
+                except PyDeadObjectError:
+                    logger.error("Tried to destroy an object that doesn't exist in <showExportDialog>.")
                 return
 
             with open(path, "w", encoding="utf-8") as openfile:
                 openfile.write(output)
                 openfile.close()
 
-        dlg.Destroy()
+        try:
+            dlg.Destroy()
+        except PyDeadObjectError:
+            logger.error("Tried to destroy an object that doesn't exist in <showExportDialog>.")
 
     def showPreferenceDialog(self, event):
         dlg = PreferenceDialog(self)
@@ -724,7 +745,10 @@ class MainFrame(wx.Frame):
 
         CopySelectDict[selected]()
 
-        dlg.Destroy()
+        try:
+            dlg.Destroy()
+        except PyDeadObjectError:
+            logger.error("Tried to destroy an object that doesn't exist in <exportToClipboard>.")
 
     def exportSkillsNeeded(self, event):
         """ Exports skills needed for active fit and active character """
@@ -778,7 +802,10 @@ class MainFrame(wx.Frame):
             self.progressDialog.message = None
             sPort.importFitsThreaded(dlg.GetPaths(), self.fileImportCallback)
             self.progressDialog.ShowModal()
-            dlg.Destroy()
+            try:
+                dlg.Destroy()
+            except PyDeadObjectError:
+                logger.error("Tried to destroy an object that doesn't exist in <fileImportDialog>.")
 
     def backupToXml(self, event):
         """ Back up all fits to EVE XML file """
