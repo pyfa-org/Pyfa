@@ -15,8 +15,6 @@ def handler(fit, module, context):
 
     # Skip if there is no damage pattern. Example: projected ships or fleet boosters
     if damagePattern:
-        # logger.debug("Damage Pattern: %f/%f/%f/%f", damagePattern.emAmount, damagePattern.thermalAmount, damagePattern.kineticAmount, damagePattern.explosiveAmount)
-        # logger.debug("Original Armor Resists: %f/%f/%f/%f", fit.ship.getModifiedItemAttr('armorEmDamageResonance'), fit.ship.getModifiedItemAttr('armorThermalDamageResonance'), fit.ship.getModifiedItemAttr('armorKineticDamageResonance'), fit.ship.getModifiedItemAttr('armorExplosiveDamageResonance'))
 
         # Populate a tuple with the damage profile modified by current armor resists.
         baseDamageTaken = (
@@ -50,7 +48,6 @@ def handler(fit, module, context):
                 (2, baseDamageTaken[2] * RAHResistance[2], RAHResistance[2]),
                 (1, baseDamageTaken[1] * RAHResistance[1], RAHResistance[1]),
             ]
-            # logger.debug("Damage taken this cycle: %f/%f/%f/%f", damagePattern_tuples[0][1], damagePattern_tuples[3][1], damagePattern_tuples[2][1], damagePattern_tuples[1][1])
 
             # Sort the tuple to drop the highest damage value to the bottom
             sortedDamagePattern_tuples = sorted(damagePattern_tuples, key=lambda damagePattern: damagePattern[1])
