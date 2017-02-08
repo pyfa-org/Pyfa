@@ -56,6 +56,9 @@ if config.saveDB and os.path.isfile(config.saveDB):
     database_cleanup_instance.OrphanedFitDamagePatterns(db.saveddata_engine)
     database_cleanup_instance.NullDamagePatternNames(db.saveddata_engine)
     database_cleanup_instance.NullTargetResistNames(db.saveddata_engine)
+    database_cleanup_instance.OrphanedFitIDItemID(db.saveddata_engine)
+    database_cleanup_instance.NullDamageTargetPatternValues(db.saveddata_engine)
+    database_cleanup_instance.DuplicateSelectedAmmoName(db.saveddata_engine)
     logging.debug("Completed database validation.")
 
 else:
