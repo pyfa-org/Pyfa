@@ -19,8 +19,8 @@
 # =============================================================================
 
 import wx
-from eos.types import Drone, Cargo, Module, Slot, Rack, Implant, Fighter
-from service.fit import Fit
+from eos.types import Drone, Cargo, Module, Slot, Rack, Implant, Fighter, Fit
+from service.fit import Fit as FitSvc
 from gui.viewColumn import ViewColumn
 import gui.mainFrame
 
@@ -53,7 +53,7 @@ class BaseName(ViewColumn):
             else:
                 return "%s (%s)" % (stuff.name, stuff.ship.item.name)
         elif isinstance(stuff, Rack):
-            if Fit.getInstance().serviceFittingOptions["rackLabels"]:
+            if FitSvc.getInstance().serviceFittingOptions["rackLabels"]:
                 if stuff.slot == Slot.MODE:
                     return u'─ Tactical Mode ─'
                 else:
@@ -70,7 +70,7 @@ class BaseName(ViewColumn):
         else:
             item = getattr(stuff, "item", stuff)
 
-            if Fit.getInstance().serviceFittingOptions["showMarketShortcuts"]:
+            if FitSvc.getInstance().serviceFittingOptions["showMarketShortcuts"]:
                 marketShortcut = getattr(item, "marketShortcut", None)
 
                 if marketShortcut:
