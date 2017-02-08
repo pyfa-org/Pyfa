@@ -21,7 +21,7 @@ from sqlalchemy import Column, String, Integer, Table, ForeignKey
 from sqlalchemy.orm import relation, mapper, synonym
 
 from eos.db import gamedata_meta
-from eos.types import AlphaClone, AlphaCloneSkill
+from eos.gamedata import AlphaClone, AlphaCloneSkill
 
 alphaclones_table = Table(
         "alphaClones",
