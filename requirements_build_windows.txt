@@ -7,3 +7,4 @@ pyparsing >= 2.1.10
 pypiwin32 >= 219
 pytz >= 2016.10
 six >= 1.10.0
+tornado
