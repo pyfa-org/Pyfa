@@ -59,6 +59,7 @@ class GraphFrame(wx.Frame):
             from matplotlib.figure import Figure
             enabled = True
         except ImportError:
+            mpl = Canvas = Figure = None
             enabled = False
 
         self.legendFix = False

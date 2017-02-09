@@ -59,6 +59,7 @@ from gui.graphFrame import GraphFrame
 from gui.copySelectDialog import CopySelectDialog
 from gui.utils.clipboard import toClipboard, fromClipboard
 from gui.updateDialog import UpdateDialog
+# noinspection PyUnresolvedReferences
 from gui.builtinViews import emptyView, entityEditor, fittingView, implantEditor  # noqa: F401
 from gui import graphFrame
 

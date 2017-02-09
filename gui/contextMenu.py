@@ -178,6 +178,7 @@ class ContextMenu(object):
         return None
 
 
+# noinspection PyUnresolvedReferences
 from gui.builtinContextMenus import (  # noqa: E402,F401
     ammoPattern,
     amount,

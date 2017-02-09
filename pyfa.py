@@ -127,6 +127,7 @@ if __name__ == "__main__":
     import os.path
 
     import eos.db
+    # noinspection PyUnresolvedReferences
     import service.prefetch  # noqa: F401
     from gui.mainFrame import MainFrame
 

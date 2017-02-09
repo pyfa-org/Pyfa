@@ -20,10 +20,7 @@
 import threading
 
 from sqlalchemy import MetaData, create_engine
-from sqlalchemy.orm import sessionmaker, scoped_session
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import pool
-
+from sqlalchemy.orm import sessionmaker
 
 import migration
 from eos import config

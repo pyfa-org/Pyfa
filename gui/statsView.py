@@ -42,6 +42,7 @@ class StatsView(object):
         raise NotImplementedError()
 
 
+# noinspection PyUnresolvedReferences
 from gui.builtinStatsViews import (  # noqa: E402, F401
     resourcesViewFull,
     resistancesViewFull,

@@ -66,6 +66,7 @@ class ViewColumn(object):
         raise NotImplementedError()
 
 
+# noinspection PyUnresolvedReferences
 from gui.builtinViewColumns import (  # noqa: E402, F401
     abilities,
     ammo,
