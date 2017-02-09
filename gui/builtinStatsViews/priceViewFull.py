@@ -25,7 +25,6 @@ from gui.bitmapLoader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 import service
 from service import Price
-import gui.globalEvents as GE
 
 
 class PriceViewFull(StatsView):
@@ -74,55 +73,12 @@ class PriceViewFull(StatsView):
             setattr(self, "labelPrice%s" % type.capitalize(), lbl)
             hbox.Add(lbl, 0, wx.ALIGN_LEFT)
 
-        self.priceChoice = wx.Choice(contentPanel, choices=Price.systemsList.keys())
-        contentSizer.Add(self.priceChoice)
-        self.priceChoice.SetStringSelection("Jita")
-        self.priceChoice.Bind(wx.EVT_CHOICE, self.priceSelection)
-
-    def priceSelection(self, event):
-        Price.currentSystemId = Price.systemsList.get(self.priceChoice.GetString(self.priceChoice.GetSelection()))
-        fitID = self.mainFrame.getActiveFit()
-
-        mainFrame = gui.mainFrame.MainFrame.getInstance()
-        sFit = service.Fit.getInstance()
-        fit = sFit.getFit(mainFrame.getActiveFit())
-
-        typeIDs = self.fitItemsList(fit)
-
-        sMkt = service.Market.getInstance()
-        sMkt.getPrices(typeIDs, Price.invalidPrices)
-
-        self.refreshPanel(fit)
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
-
-    def fitItemsList(self, fit):
-        # Compose a list of all the data we need & request it
-        typeIDs = []
-        typeIDs.append(fit.ship.item.ID)
-
-        for mod in fit.modules:
-            if not mod.isEmpty:
-                typeIDs.append(mod.itemID)
-
-        for drone in fit.drones:
-            for _ in xrange(drone.amount):
-                typeIDs.append(drone.itemID)
-
-        for fighter in fit.fighters:
-            for _ in xrange(fighter.amountActive):
-                typeIDs.append(fighter.itemID)
-
-        for cargo in fit.cargo:
-            for _ in xrange(cargo.amount):
-                typeIDs.append(cargo.itemID)
-
-        return typeIDs
 
     def refreshPanel(self, fit):
         if fit is not None:
             self.fit = fit
 
-            typeIDs = self.fitItemsList(fit)
+            typeIDs = Price.fitItemsList(fit)
 
             sMkt = service.Market.getInstance()
             sMkt.getPrices(typeIDs, self.processPrices)

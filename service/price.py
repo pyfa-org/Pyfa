@@ -127,3 +127,27 @@ class Price():
             priceobj = priceMap[typeID]
             priceobj.time = time.time() + REREQUEST
             priceobj.failed = True
+
+    @classmethod
+    def fitItemsList(self, fit):
+        # Compose a list of all the data we need & request it
+        typeIDs = []
+        typeIDs.append(fit.ship.item.ID)
+
+        for mod in fit.modules:
+            if not mod.isEmpty:
+                typeIDs.append(mod.itemID)
+
+        for drone in fit.drones:
+            for _ in xrange(drone.amount):
+                typeIDs.append(drone.itemID)
+
+        for fighter in fit.fighters:
+            for _ in xrange(fighter.amountActive):
+                typeIDs.append(fighter.itemID)
+
+        for cargo in fit.cargo:
+            for _ in xrange(cargo.amount):
+                typeIDs.append(cargo.itemID)
+
+        return typeIDs
