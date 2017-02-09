@@ -19,6 +19,7 @@
 
 import os
 import logging
+import imp
 
 import wx
 
@@ -30,27 +31,18 @@ from gui.graph import Graph
 from gui.bitmapLoader import BitmapLoader
 from config import parsePath
 
+# Don't actually import the thing, since it takes for fucking ever
 try:
-    import matplotlib as mpl
-    if mpl.__version__[0] >= "2":
-        mpl.use('wxagg')
-        mplImported = True
-        from matplotlib.patches import Patch
-    else:
-        mplImported = False
-    from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as Canvas
-    from matplotlib.figure import Figure
+    imp.find_module('matplotlib')
     graphFrame_enabled = True
+    mplImported = True
 except ImportError:
-    mpl = None
-    Canvas = None
-    Figure = None
-    mplImported = False
     graphFrame_enabled = False
+    mplImported = False
+
+
 
 logger = logging.getLogger(__name__)
-if not graphFrame_enabled:
-    logger.info("Problems importing matplotlib; continuing without graphs")
 
 
 class GraphFrame(wx.Frame):
@@ -59,8 +51,27 @@ class GraphFrame(wx.Frame):
         global graphFrame_enabled
         global mplImported
 
+        try:
+            import matplotlib as mpl
+            if mpl.__version__[0] >= "2":
+                mpl.use('wxagg')
+                mplImported = True
+                from matplotlib.patches import Patch
+            else:
+                mplImported = False
+            from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as Canvas
+            from matplotlib.figure import Figure
+            graphFrame_enabled = True
+        except ImportError:
+            mpl = None
+            Canvas = None
+            Figure = None
+            mplImported = False
+            graphFrame_enabled = False
+
         self.legendFix = False
         if not graphFrame_enabled:
+            logger.info("Problems importing matplotlib; continuing without graphs")
             return
 
         try:
