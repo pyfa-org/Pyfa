@@ -164,26 +164,21 @@ class HandledModuleList(HandledList):
         for i in xrange(oldPos, len(self)):
             self[i].position -= 1
 
-    def toDummy(self, index):
-        mod = self[index]
-        if not mod.isEmpty:
-            pass
-            # TODO: This can't point to es_Module, cyclical import loop
-            '''
-            dummy = es_Module.buildEmpty(mod.slot)
-            dummy.position = index
-            self[index] = dummy
-            '''
-
     def toModule(self, index, mod):
         mod.position = index
         self[index] = mod
 
-    def freeSlot(self, slot):
+    def toDummy(self, index, dummy):
+        mod = self[index]
+        if not mod.isEmpty:
+            dummy.position = index
+            self[index] = dummy
+
+    def freeSlot(self, slot, dummy):
         for i in range(len(self)):
             mod = self[i]
             if mod.getModifiedItemAttr("subSystemSlot") == slot:
-                self.toDummy(i)
+                self.toDummy(i, dummy)
                 break
 
 
