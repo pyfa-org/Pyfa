@@ -10,7 +10,7 @@ from service.fit import Fit
 try:
     from collections import OrderedDict
 except ImportError:
-    from gui.utils.compat import OrderedDict
+    from utils.compat import OrderedDict
 
 
 class TargetResists(ContextMenu):

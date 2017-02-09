@@ -9,7 +9,7 @@ except ImportError:
 try:
     from _abcoll import KeysView, ValuesView, ItemsView
 except ImportError:
-    pass
+    KeysView = ValuesView = ItemsView = None
 
 
 class OrderedDict(dict):
@@ -250,12 +250,21 @@ class OrderedDict(dict):
 
     def viewkeys(self):
         "od.viewkeys() -> a set-like object providing a view on od's keys"
-        return KeysView(self)
+        if KeysView:
+            return KeysView(self)
+        else:
+            return None
 
     def viewvalues(self):
         "od.viewvalues() -> an object providing a view on od's values"
-        return ValuesView(self)
+        if ValuesView:
+            return ValuesView(self)
+        else:
+            return None
 
     def viewitems(self):
         "od.viewitems() -> a set-like object providing a view on od's items"
-        return ItemsView(self)
+        if ItemsView:
+            return ItemsView(self)
+        else:
+            return None
