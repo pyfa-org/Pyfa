@@ -89,7 +89,7 @@ class CheckUpdateThread(threading.Thread):
         return tuple(map(int, (v.split("."))))
 
 
-class Update():
+class Update(object):
     instance = None
 
     def CheckUpdate(self, callback):

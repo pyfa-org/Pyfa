@@ -43,7 +43,7 @@ class ChargeAttrShortcut(object):
 class ModifiedAttributeDict(collections.MutableMapping):
     OVERRIDES = False
 
-    class CalculationPlaceholder():
+    class CalculationPlaceholder(object):
         def __init__(self):
             pass
 
@@ -359,7 +359,7 @@ class ModifiedAttributeDict(collections.MutableMapping):
         self.__afflict(attributeName, u"\u2263", value)
 
 
-class Affliction():
+class Affliction(object):
     def __init__(self, type, amount):
         self.type = type
         self.amount = amount

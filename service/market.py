@@ -169,7 +169,7 @@ class SearchWorkerThread(threading.Thread):
         self.cv.release()
 
 
-class Market():
+class Market(object):
     instance = None
 
     def __init__(self):
@@ -179,7 +179,7 @@ class Market():
         serviceMarketRecentlyUsedModules = {"pyfaMarketRecentlyUsedModules": []}
 
         self.serviceMarketRecentlyUsedModules = SettingsProvider.getInstance().getSettings(
-            "pyfaMarketRecentlyUsedModules", serviceMarketRecentlyUsedModules)
+                "pyfaMarketRecentlyUsedModules", serviceMarketRecentlyUsedModules)
 
         # Start price fetcher
         self.priceWorkerThread = PriceWorkerThread()
@@ -209,41 +209,41 @@ class Market():
         self.les_grp.description = ""
         self.les_grp.icon = None
         self.ITEMS_FORCEGROUP = {
-            "Opux Luxury Yacht": self.les_grp,
+            "Opux Luxury Yacht"           : self.les_grp,
             # One of those is wedding present at CCP fanfest, another was hijacked from ISD guy during an event
-            "Silver Magnate": self.les_grp,  # Amarr Championship prize
-            "Gold Magnate": self.les_grp,  # Amarr Championship prize
-            "Armageddon Imperial Issue": self.les_grp,  # Amarr Championship prize
-            "Apocalypse Imperial Issue": self.les_grp,  # Amarr Championship prize
-            "Guardian-Vexor": self.les_grp,  # Illegal rewards for the Gallente Frontier Tour Lines event arc
-            "Megathron Federate Issue": self.les_grp,  # Reward during Crielere event
-            "Raven State Issue": self.les_grp,  # AT4 prize
-            "Tempest Tribal Issue": self.les_grp,  # AT4 prize
-            "Apotheosis": self.les_grp,  # 5th EVE anniversary present
-            "Zephyr": self.les_grp,  # 2010 new year gift
-            "Primae": self.les_grp,  # Promotion of planetary interaction
-            "Freki": self.les_grp,  # AT7 prize
-            "Mimir": self.les_grp,  # AT7 prize
-            "Utu": self.les_grp,  # AT8 prize
-            "Adrestia": self.les_grp,  # AT8 prize
-            "Echelon": self.les_grp,  # 2011 new year gift
-            "Malice": self.les_grp,  # AT9 prize
-            "Vangel": self.les_grp,  # AT9 prize
-            "Cambion": self.les_grp,  # AT10 prize
-            "Etana": self.les_grp,  # AT10 prize
-            "Chremoas": self.les_grp,  # AT11 prize :(
-            "Moracha": self.les_grp,  # AT11 prize
+            "Silver Magnate"              : self.les_grp,  # Amarr Championship prize
+            "Gold Magnate"                : self.les_grp,  # Amarr Championship prize
+            "Armageddon Imperial Issue"   : self.les_grp,  # Amarr Championship prize
+            "Apocalypse Imperial Issue"   : self.les_grp,  # Amarr Championship prize
+            "Guardian-Vexor"              : self.les_grp,  # Illegal rewards for the Gallente Frontier Tour Lines event arc
+            "Megathron Federate Issue"    : self.les_grp,  # Reward during Crielere event
+            "Raven State Issue"           : self.les_grp,  # AT4 prize
+            "Tempest Tribal Issue"        : self.les_grp,  # AT4 prize
+            "Apotheosis"                  : self.les_grp,  # 5th EVE anniversary present
+            "Zephyr"                      : self.les_grp,  # 2010 new year gift
+            "Primae"                      : self.les_grp,  # Promotion of planetary interaction
+            "Freki"                       : self.les_grp,  # AT7 prize
+            "Mimir"                       : self.les_grp,  # AT7 prize
+            "Utu"                         : self.les_grp,  # AT8 prize
+            "Adrestia"                    : self.les_grp,  # AT8 prize
+            "Echelon"                     : self.les_grp,  # 2011 new year gift
+            "Malice"                      : self.les_grp,  # AT9 prize
+            "Vangel"                      : self.les_grp,  # AT9 prize
+            "Cambion"                     : self.les_grp,  # AT10 prize
+            "Etana"                       : self.les_grp,  # AT10 prize
+            "Chremoas"                    : self.les_grp,  # AT11 prize :(
+            "Moracha"                     : self.les_grp,  # AT11 prize
             "Stratios Emergency Responder": self.les_grp,  # Issued for Somer Blink lottery
-            "Miasmos Quafe Ultra Edition": self.les_grp,  # Gift to people who purchased FF HD stream
-            "InterBus Shuttle": self.les_grp,
-            "Leopard": self.les_grp,  # 2013 new year gift
-            "Whiptail": self.les_grp,  # AT12 prize
-            "Chameleon": self.les_grp,  # AT12 prize
-            "Victorieux Luxury Yacht": self.les_grp,  # Worlds Collide prize \o/ chinese getting owned
-            "Imp": self.les_grp,  # AT13 prize
-            "Fiend": self.les_grp,  # AT13 prize
-            "Caedes": self.les_grp,  # AT14 prize
-            "Rabisu": self.les_grp,  # AT14 prize
+            "Miasmos Quafe Ultra Edition" : self.les_grp,  # Gift to people who purchased FF HD stream
+            "InterBus Shuttle"            : self.les_grp,
+            "Leopard"                     : self.les_grp,  # 2013 new year gift
+            "Whiptail"                    : self.les_grp,  # AT12 prize
+            "Chameleon"                   : self.les_grp,  # AT12 prize
+            "Victorieux Luxury Yacht"     : self.les_grp,  # Worlds Collide prize \o/ chinese getting owned
+            "Imp"                         : self.les_grp,  # AT13 prize
+            "Fiend"                       : self.les_grp,  # AT13 prize
+            "Caedes"                      : self.les_grp,  # AT14 prize
+            "Rabisu"                      : self.les_grp,  # AT14 prize
         }
 
         self.ITEMS_FORCEGROUP_R = self.__makeRevDict(self.ITEMS_FORCEGROUP)
@@ -252,26 +252,26 @@ class Market():
 
         # List of items which are forcibly published or hidden
         self.ITEMS_FORCEPUBLISHED = {
-            "Data Subverter I": False,  # Not used in EVE, probably will appear with Dust link
-            "QA Cross Protocol Analyzer": False,  # QA modules used by CCP internally
-            "QA Damage Module": False,
-            "QA ECCM": False,
-            "QA Immunity Module": False,
-            "QA Multiship Module - 10 Players": False,
-            "QA Multiship Module - 20 Players": False,
-            "QA Multiship Module - 40 Players": False,
-            "QA Multiship Module - 5 Players": False,
+            "Data Subverter I"                         : False,  # Not used in EVE, probably will appear with Dust link
+            "QA Cross Protocol Analyzer"               : False,  # QA modules used by CCP internally
+            "QA Damage Module"                         : False,
+            "QA ECCM"                                  : False,
+            "QA Immunity Module"                       : False,
+            "QA Multiship Module - 10 Players"         : False,
+            "QA Multiship Module - 20 Players"         : False,
+            "QA Multiship Module - 40 Players"         : False,
+            "QA Multiship Module - 5 Players"          : False,
             "QA Remote Armor Repair System - 5 Players": False,
-            "QA Shield Transporter - 5 Players": False,
-            "Goru's Shuttle": False,
-            "Guristas Shuttle": False,
-            "Mobile Decoy Unit": False,  # Seems to be left over test mod for deployables
-            "Tournament Micro Jump Unit": False,  # Normally seen only on tournament arenas
-            "Council Diplomatic Shuttle": False,  # CSM X celebration
-            "Civilian Gatling Railgun": True,
-            "Civilian Gatling Pulse Laser": True,
-            "Civilian Gatling Autocannon": True,
-            "Civilian Light Electron Blaster": True,
+            "QA Shield Transporter - 5 Players"        : False,
+            "Goru's Shuttle"                           : False,
+            "Guristas Shuttle"                         : False,
+            "Mobile Decoy Unit"                        : False,  # Seems to be left over test mod for deployables
+            "Tournament Micro Jump Unit"               : False,  # Normally seen only on tournament arenas
+            "Council Diplomatic Shuttle"               : False,  # CSM X celebration
+            "Civilian Gatling Railgun"                 : True,
+            "Civilian Gatling Pulse Laser"             : True,
+            "Civilian Gatling Autocannon"              : True,
+            "Civilian Light Electron Blaster"          : True,
         }
 
         # do not publish ships that we convert
@@ -289,16 +289,18 @@ class Market():
 
         # List of groups which are forcibly published
         self.GROUPS_FORCEPUBLISHED = {
-            "Prototype Exploration Ship": False}  # We moved the only ship from this group to other group anyway
+            "Prototype Exploration Ship": False
+        }  # We moved the only ship from this group to other group anyway
 
         # Dictionary of items with forced meta groups, uses following format:
         # Item name: (metagroup name, parent type name)
         self.ITEMS_FORCEDMETAGROUP = {
-            "'Habitat' Miner I": ("Storyline", "Miner I"),
-            "'Wild' Miner I": ("Storyline", "Miner I"),
-            "Medium Nano Armor Repair Unit I": ("Tech I", "Medium Armor Repairer I"),
+            "'Habitat' Miner I"                        : ("Storyline", "Miner I"),
+            "'Wild' Miner I"                           : ("Storyline", "Miner I"),
+            "Medium Nano Armor Repair Unit I"          : ("Tech I", "Medium Armor Repairer I"),
             "Large 'Reprieve' Vestment Reconstructer I": ("Storyline", "Large Armor Repairer I"),
-            "Khanid Navy Torpedo Launcher": ("Faction", "Torpedo Launcher I"), }
+            "Khanid Navy Torpedo Launcher"             : ("Faction", "Torpedo Launcher I"),
+        }
         # Parent type name: set(item names)
         self.ITEMS_FORCEDMETAGROUP_R = {}
         for item, value in self.ITEMS_FORCEDMETAGROUP.items():
@@ -309,57 +311,58 @@ class Market():
         # Dictionary of items with forced market group (service assumes they have no
         # market group assigned in db, otherwise they'll appear in both original and forced groups)
         self.ITEMS_FORCEDMARKETGROUP = {
-            "'Alpha' Data Analyzer I": 714,
+            "'Alpha' Data Analyzer I"                   : 714,
             # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
-            "'Codex' Data Analyzer I": 714,
+            "'Codex' Data Analyzer I"                   : 714,
             # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
-            "'Daemon' Data Analyzer I": 714,
+            "'Daemon' Data Analyzer I"                  : 714,
             # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
-            "'Libram' Data Analyzer I": 714,
+            "'Libram' Data Analyzer I"                  : 714,
             # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
-            "Advanced Cerebral Accelerator": 977,  # Implants & Boosters > Booster
-            "Civilian Damage Control": 615,  # Ship Equipment > Hull & Armor > Damage Controls
-            "Civilian EM Ward Field": 1695,  # Ship Equipment > Shield > Shield Hardeners > EM Shield Hardeners
-            "Civilian Explosive Deflection Field": 1694,
+            "Advanced Cerebral Accelerator"             : 977,  # Implants & Boosters > Booster
+            "Civilian Damage Control"                   : 615,  # Ship Equipment > Hull & Armor > Damage Controls
+            "Civilian EM Ward Field"                    : 1695,
+        # Ship Equipment > Shield > Shield Hardeners > EM Shield Hardeners
+            "Civilian Explosive Deflection Field"       : 1694,
             # Ship Equipment > Shield > Shield Hardeners > Explosive Shield Hardeners
-            "Civilian Hobgoblin": 837,  # Drones > Combat Drones > Light Scout Drones
-            "Civilian Kinetic Deflection Field": 1693,
+            "Civilian Hobgoblin"                        : 837,  # Drones > Combat Drones > Light Scout Drones
+            "Civilian Kinetic Deflection Field"         : 1693,
             # Ship Equipment > Shield > Shield Hardeners > Kinetic Shield Hardeners
-            "Civilian Light Missile Launcher": 640,
+            "Civilian Light Missile Launcher"           : 640,
             # Ship Equipment > Turrets & Bays > Missile Launchers > Light Missile Launchers
-            "Civilian Scourge Light Missile": 920,
+            "Civilian Scourge Light Missile"            : 920,
             # Ammunition & Charges > Missiles > Light Missiles > Standard Light Missiles
-            "Civilian Small Remote Armor Repairer": 1059,
+            "Civilian Small Remote Armor Repairer"      : 1059,
             # Ship Equipment > Hull & Armor > Remote Armor Repairers > Small
-            "Civilian Small Remote Shield Booster": 603,  # Ship Equipment > Shield > Remote Shield Boosters > Small
-            "Civilian Stasis Webifier": 683,  # Ship Equipment > Electronic Warfare > Stasis Webifiers
-            "Civilian Thermic Dissipation Field": 1692,
+            "Civilian Small Remote Shield Booster"      : 603,  # Ship Equipment > Shield > Remote Shield Boosters > Small
+            "Civilian Stasis Webifier"                  : 683,  # Ship Equipment > Electronic Warfare > Stasis Webifiers
+            "Civilian Thermic Dissipation Field"        : 1692,
             # Ship Equipment > Shield > Shield Hardeners > Thermal Shield Hardeners
-            "Civilian Warp Disruptor": 1935,  # Ship Equipment > Electronic Warfare > Warp Disruptors
-            "Hardwiring - Zainou 'Sharpshooter' ZMX10": 1493,
+            "Civilian Warp Disruptor"                   : 1935,  # Ship Equipment > Electronic Warfare > Warp Disruptors
+            "Hardwiring - Zainou 'Sharpshooter' ZMX10"  : 1493,
             # Implants & Boosters > Implants > Skill Hardwiring > Missile Implants > Implant Slot 06
-            "Hardwiring - Zainou 'Sharpshooter' ZMX100": 1493,
+            "Hardwiring - Zainou 'Sharpshooter' ZMX100" : 1493,
             # Implants & Boosters > Implants > Skill Hardwiring > Missile Implants > Implant Slot 06
             "Hardwiring - Zainou 'Sharpshooter' ZMX1000": 1493,
             # Implants & Boosters > Implants > Skill Hardwiring > Missile Implants > Implant Slot 06
-            "Hardwiring - Zainou 'Sharpshooter' ZMX11": 1493,
+            "Hardwiring - Zainou 'Sharpshooter' ZMX11"  : 1493,
             # Implants & Boosters > Implants > Skill Hardwiring > Missile Implants > Implant Slot 06
-            "Hardwiring - Zainou 'Sharpshooter' ZMX110": 1493,
+            "Hardwiring - Zainou 'Sharpshooter' ZMX110" : 1493,
             # Implants & Boosters > Implants > Skill Hardwiring > Missile Implants > Implant Slot 06
             "Hardwiring - Zainou 'Sharpshooter' ZMX1100": 1493,
             # Implants & Boosters > Implants > Skill Hardwiring > Missile Implants > Implant Slot 06
-            "Nugoehuvi Synth Blue Pill Booster": 977,  # Implants & Boosters > Booster
-            "Prototype Cerebral Accelerator": 977,  # Implants & Boosters > Booster
-            "Prototype Iris Probe Launcher": 712,  # Ship Equipment > Turrets & Bays > Scan Probe Launchers
-            "Shadow": 1310,  # Drones > Combat Drones > Fighter Bombers
-            "Sleeper Data Analyzer I": 714,
+            "Nugoehuvi Synth Blue Pill Booster"         : 977,  # Implants & Boosters > Booster
+            "Prototype Cerebral Accelerator"            : 977,  # Implants & Boosters > Booster
+            "Prototype Iris Probe Launcher"             : 712,  # Ship Equipment > Turrets & Bays > Scan Probe Launchers
+            "Shadow"                                    : 1310,  # Drones > Combat Drones > Fighter Bombers
+            "Sleeper Data Analyzer I"                   : 714,
             # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
-            "Standard Cerebral Accelerator": 977,  # Implants & Boosters > Booster
-            "Talocan Data Analyzer I": 714,
+            "Standard Cerebral Accelerator"             : 977,  # Implants & Boosters > Booster
+            "Talocan Data Analyzer I"                   : 714,
             # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
-            "Terran Data Analyzer I": 714,
+            "Terran Data Analyzer I"                    : 714,
             # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
-            "Tetrimon Data Analyzer I": 714
+            "Tetrimon Data Analyzer I"                  : 714
             # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
         }
 
@@ -617,7 +620,7 @@ class Market():
         if hasattr(group, 'addItems'):
             groupItems.update(group.addItems)
         items = set(
-            filter(lambda item: self.getPublicityByItem(item) and self.getGroupByItem(item) == group, groupItems))
+                filter(lambda item: self.getPublicityByItem(item) and self.getGroupByItem(item) == group, groupItems))
         return items
 
     def getItemsByMarketGroup(self, mg, vars_=True):

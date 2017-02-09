@@ -7,7 +7,7 @@ from service.fit import Fit
 from service.market import Market
 
 
-class exportHtml():
+class exportHtml(object):
     _instance = None
 
     @classmethod

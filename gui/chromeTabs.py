@@ -36,7 +36,7 @@ PageAdded, EVT_NOTEBOOK_PAGE_ADDED = wx.lib.newevent.NewEvent()
 PageClosed, EVT_NOTEBOOK_PAGE_CLOSED = wx.lib.newevent.NewEvent()
 
 
-class VetoAble():
+class VetoAble(object):
     def __init__(self):
         self.__vetoed = False
 
@@ -47,7 +47,7 @@ class VetoAble():
         return self.__vetoed
 
 
-class NotebookTabChangeEvent():
+class NotebookTabChangeEvent(object):
     def __init__(self, old, new):
         self.__old = old
         self.__new = new
@@ -337,7 +337,7 @@ class PFNotebook(wx.Panel):
         event.Skip()
 
 
-class PFTabRenderer:
+class PFTabRenderer(object):
     def __init__(self, size=(36, 24), text=wx.EmptyString, img=None, inclination=6, closeButton=True):
         """
         Renders a new tab
@@ -529,8 +529,8 @@ class PFTabRenderer:
         self.tabRegion = wx.RegionFromBitmap(self.tabBackBitmap)
         self.closeBtnRegion = wx.RegionFromBitmap(self.ctabCloseBmp)
         self.closeBtnRegion.Offset(
-            self.contentWidth + self.leftWidth - self.ctabCloseBmp.GetWidth() / 2,
-            (self.tabHeight - self.ctabCloseBmp.GetHeight()) / 2
+                self.contentWidth + self.leftWidth - self.ctabCloseBmp.GetWidth() / 2,
+                (self.tabHeight - self.ctabCloseBmp.GetHeight()) / 2
         )
 
     def InitColors(self):
@@ -593,9 +593,9 @@ class PFTabRenderer:
                 cbmp = wx.BitmapFromImage(cimg)
 
             mdc.DrawBitmap(
-                cbmp,
-                self.contentWidth + self.leftWidth - self.ctabCloseBmp.GetWidth() / 2,
-                (height - self.ctabCloseBmp.GetHeight()) / 2,
+                    cbmp,
+                    self.contentWidth + self.leftWidth - self.ctabCloseBmp.GetWidth() / 2,
+                    (height - self.ctabCloseBmp.GetHeight()) / 2,
             )
 
         mdc.SelectObject(wx.NullBitmap)
@@ -611,11 +611,11 @@ class PFTabRenderer:
 
     def __repr__(self):
         return "PFTabRenderer(text={}, disabled={}) at {}".format(
-            self.text, self.disabled, hex(id(self))
+                self.text, self.disabled, hex(id(self))
         )
 
 
-class PFAddRenderer:
+class PFAddRenderer(object):
     def __init__(self):
         """Renders the add tab button"""
         self.addImg = BitmapLoader.getImage("ctabadd", "gui")

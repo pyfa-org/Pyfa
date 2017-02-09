@@ -33,7 +33,7 @@ except ImportError:
     from utils.compat import OrderedDict
 
 
-class BitmapLoader():
+class BitmapLoader(object):
     try:
         archive = zipfile.ZipFile(config.getPyfaPath('imgs.zip'), 'r')
     except IOError:

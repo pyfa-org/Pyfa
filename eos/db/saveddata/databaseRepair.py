@@ -23,7 +23,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-class DatabaseCleanup:
+class DatabaseCleanup(object):
     def __init__(self):
         pass
 
@@ -86,7 +86,8 @@ class DatabaseCleanup:
             else:
                 uniform_damage_pattern_id = rows[0]['ID']
                 update_query = "UPDATE 'fits' SET 'damagePatternID' = {} " \
-                               "WHERE damagePatternID NOT IN (SELECT ID FROM damagePatterns) OR damagePatternID IS NULL".format(uniform_damage_pattern_id)
+                               "WHERE damagePatternID NOT IN (SELECT ID FROM damagePatterns) OR damagePatternID IS NULL".format(
+                    uniform_damage_pattern_id)
                 update_results = DatabaseCleanup.ExecuteSQLQuery(saveddata_engine, update_query)
                 logger.error("Database corruption found. Cleaning up %d records.", update_results.rowcount)
 
@@ -118,7 +119,7 @@ class DatabaseCleanup:
                 logger.error("More than one 'All 5' character found.")
             else:
                 all5_id = rows[0]['ID']
-                update_query = "UPDATE 'fits' SET 'characterID' = " + str(all5_id) +  \
+                update_query = "UPDATE 'fits' SET 'characterID' = " + str(all5_id) + \
                                " WHERE characterID not in (select ID from characters) OR characterID IS NULL"
                 update_results = DatabaseCleanup.ExecuteSQLQuery(saveddata_engine, update_query)
                 logger.error("Database corruption found. Cleaning up %d records.", update_results.rowcount)
@@ -167,7 +168,8 @@ class DatabaseCleanup:
         # See issue #954
         for table in ['drones', 'cargo', 'fighters']:
             logger.debug("Running database cleanup for orphaned %s items.", table)
-            query = "SELECT COUNT(*) AS num FROM {} WHERE itemID IS NULL OR itemID = '' or itemID = '0' or fitID IS NULL OR fitID = '' or fitID = '0'".format(table)
+            query = "SELECT COUNT(*) AS num FROM {} WHERE itemID IS NULL OR itemID = '' or itemID = '0' or fitID IS NULL OR fitID = '' or fitID = '0'".format(
+                table)
             results = DatabaseCleanup.ExecuteSQLQuery(saveddata_engine, query)
 
             if results is None:
@@ -176,13 +178,15 @@ class DatabaseCleanup:
             row = results.first()
 
             if row and row['num']:
-                query = "DELETE FROM {} WHERE itemID IS NULL OR itemID = '' or itemID = '0' or fitID IS NULL OR fitID = '' or fitID = '0'".format(table)
+                query = "DELETE FROM {} WHERE itemID IS NULL OR itemID = '' or itemID = '0' or fitID IS NULL OR fitID = '' or fitID = '0'".format(
+                    table)
                 delete = DatabaseCleanup.ExecuteSQLQuery(saveddata_engine, query)
                 logger.error("Database corruption found. Cleaning up %d records.", delete.rowcount)
 
         for table in ['modules']:
             logger.debug("Running database cleanup for orphaned %s items.", table)
-            query = "SELECT COUNT(*) AS num FROM {} WHERE itemID = '0' or fitID IS NULL OR fitID = '' or fitID = '0'".format(table)
+            query = "SELECT COUNT(*) AS num FROM {} WHERE itemID = '0' or fitID IS NULL OR fitID = '' or fitID = '0'".format(
+                table)
             results = DatabaseCleanup.ExecuteSQLQuery(saveddata_engine, query)
 
             if results is None:
@@ -202,7 +206,8 @@ class DatabaseCleanup:
         for profileType in ['damagePatterns', 'targetResists']:
             for damageType in ['em', 'thermal', 'kinetic', 'explosive']:
                 logger.debug("Running database cleanup for null %s values. (%s)", profileType, damageType)
-                query = "SELECT COUNT(*) AS num FROM {0} WHERE {1}Amount IS NULL OR {1}Amount = ''".format(profileType, damageType)
+                query = "SELECT COUNT(*) AS num FROM {0} WHERE {1}Amount IS NULL OR {1}Amount = ''".format(profileType,
+                                                                                                           damageType)
                 results = DatabaseCleanup.ExecuteSQLQuery(saveddata_engine, query)
 
                 if results is None:
@@ -211,7 +216,8 @@ class DatabaseCleanup:
                 row = results.first()
 
                 if row and row['num']:
-                    query = "UPDATE '{0}' SET '{1}Amount' = '0' WHERE {1}Amount IS NULL OR Amount = ''".format(profileType, damageType)
+                    query = "UPDATE '{0}' SET '{1}Amount' = '0' WHERE {1}Amount IS NULL OR Amount = ''".format(profileType,
+                                                                                                               damageType)
                     delete = DatabaseCleanup.ExecuteSQLQuery(saveddata_engine, query)
                     logger.error("Database corruption found. Cleaning up %d records.", delete.rowcount)
 

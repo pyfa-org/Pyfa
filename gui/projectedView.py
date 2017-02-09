@@ -31,13 +31,13 @@ from eos.saveddata.fighter import Fighter as es_Fighter
 from eos.saveddata.module import Module as es_Module
 
 
-class DummyItem:
+class DummyItem(object):
     def __init__(self, txt):
         self.name = txt
         self.icon = None
 
 
-class DummyEntry:
+class DummyEntry(object):
     def __init__(self, txt):
         self.item = DummyItem(txt)
 

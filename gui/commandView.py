@@ -29,13 +29,13 @@ from service.fit import Fit
 from eos.saveddata.drone import Drone as es_Drone
 
 
-class DummyItem:
+class DummyItem(object):
     def __init__(self, txt):
         self.name = txt
         self.icon = None
 
 
-class DummyEntry:
+class DummyEntry(object):
     def __init__(self, txt):
         self.item = DummyItem(txt)
 
