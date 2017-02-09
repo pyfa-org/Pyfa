@@ -665,7 +665,7 @@ class ItemCompare(wx.Panel):
                     value = item.attributes[attr].value
                     if self.toggleView != 1:
                         valueUnit = str(value)
-                    if info and info.unit:
+                    elif info and info.unit and self.toggleView == 1:
                         valueUnit = self.TranslateValueUnit(value, info.unit.displayName, info.unit.name)
                     else:
                         valueUnit = formatAmount(value, 3, 0, 0)
