@@ -400,7 +400,7 @@ class ItemView(Display):
         metagrpid = sMkt.getMetaGroupIdByItem(item)
         metatab = self.metaMap.get(metagrpid)
         metalvl = self.metalvls.get(item.ID, 0)
-        return (catname, mktgrpid, parentname, metatab, metalvl, item.name)
+        return catname, mktgrpid, parentname, metatab, metalvl, item.name
 
     def contextMenu(self, event):
         # Check if something is selected, if so, spawn the menu for it

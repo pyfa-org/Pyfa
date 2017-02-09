@@ -80,11 +80,11 @@ class PFListPane(wx.ScrolledWindow):
         new_vs_x, new_vs_y = -1, -1
 
         # is it before the left edge?
-        if cr.x < 0 and sppu_x > 0:
+        if cr.x < 0 < sppu_x:
             new_vs_x = vs_x + (cr.x / sppu_x)
 
         # is it above the top?
-        if cr.y < 0 and sppu_y > 0:
+        if cr.y < 0 < sppu_y:
             new_vs_y = vs_y + (cr.y / sppu_y)
 
         # For the right and bottom edges, scroll enough to show the

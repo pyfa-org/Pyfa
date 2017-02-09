@@ -43,7 +43,7 @@ def GetBrightnessO1(color):
     # Calculates the brightness of a color, different options
 
     r, g, b = color
-    return (0.299 * r + 0.587 * g + 0.114 * b)
+    return 0.299 * r + 0.587 * g + 0.114 * b
 
 
 def GetBrightnessO2(color):

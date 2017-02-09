@@ -794,7 +794,7 @@ class MainFrame(wx.Frame):
                       "All Files (*)|*"),
             style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST | wx.FD_MULTIPLE
         )
-        if (dlg.ShowModal() == wx.ID_OK):
+        if dlg.ShowModal() == wx.ID_OK:
             self.progressDialog = wx.ProgressDialog(
                 "Importing fits",
                 " " * 100,  # set some arbitrary spacing to create width in window

@@ -97,7 +97,7 @@ class StoppableHTTPServer(BaseHTTPServer.HTTPServer):
             try:
                 sock, addr = self.socket.accept()
                 sock.settimeout(None)
-                return (sock, addr)
+                return sock, addr
             except socket.timeout:
                 pass
 

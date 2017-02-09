@@ -144,7 +144,7 @@ class PyGauge(wx.PyWindow):
         """
         Sets the bar gradient. This overrides the BarColour.
 
-        :param `gradient`: a tuple containing the gradient start and end colours.
+        :param gradient: a tuple containing the gradient start and end colours.
         """
         if gradient is None:
             self._barGradient = None
@@ -163,7 +163,7 @@ class PyGauge(wx.PyWindow):
         """
         Sets the border padding.
 
-        :param `padding`: pixels between the border and the progress bar.
+        :param padding: pixels between the border and the progress bar.
         """
 
         self._border_padding = padding
@@ -189,7 +189,8 @@ class PyGauge(wx.PyWindow):
         Sets the range of the gauge. The gauge length is its
         value as a proportion of the range.
 
-        :param `range`: The maximum value of the gauge.
+        :param reinit:
+        :param range: The maximum value of the gauge.
         """
 
         if self._range == range:
@@ -267,7 +268,7 @@ class PyGauge(wx.PyWindow):
         """
         Handles the ``wx.EVT_ERASE_BACKGROUND`` event for L{PyGauge}.
 
-        :param `event`: a `wx.EraseEvent` event to be processed.
+        :param event: a `wx.EraseEvent` event to be processed.
 
         :note: This method is intentionally empty to reduce flicker.
         """
@@ -278,7 +279,7 @@ class PyGauge(wx.PyWindow):
         """
         Handles the ``wx.EVT_PAINT`` event for L{PyGauge}.
 
-        :param `event`: a `wx.PaintEvent` event to be processed.
+        :param event: a `wx.PaintEvent` event to be processed.
         """
 
         dc = wx.BufferedPaintDC(self)
@@ -409,7 +410,7 @@ class PyGauge(wx.PyWindow):
         """
         Handles the ``wx.EVT_TIMER`` event for L{PyfaGauge}.
 
-        :param `event`: a timer event
+        :param event: a timer event
         """
         oldValue = self._oldPercentage
         value = self._percentage

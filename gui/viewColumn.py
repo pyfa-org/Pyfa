@@ -22,11 +22,11 @@ import wx
 
 
 class ViewColumn(object):
-    '''
+    """
     Abstract class that columns can inherit from.
     Once the missing methods are correctly implemented,
     they can be used as columns in a view.
-    '''
+    """
     columns = {}
 
     def __init__(self, fittingView):

@@ -68,13 +68,13 @@ class CargoView(d.Display):
             self.Bind(wx.EVT_RIGHT_DOWN, self.scheduleMenu)
 
     def handleListDrag(self, x, y, data):
-        '''
+        """
         Handles dragging of items from various pyfa displays which support it
 
         data is list with two indices:
             data[0] is hard-coded str of originating source
             data[1] is typeID or index of data we want to manipulate
-        '''
+        """
 
         if data[0] == "fitting":
             self.swapModule(x, y, int(data[1]))
@@ -106,7 +106,7 @@ class CargoView(d.Display):
         event.Skip()
 
     def swapModule(self, x, y, modIdx):
-        '''Swap a module from fitting window with cargo'''
+        """Swap a module from fitting window with cargo"""
         sFit = Fit.getInstance()
         fit = sFit.getFit(self.mainFrame.getActiveFit())
         dstRow, _ = self.HitTest((x, y))

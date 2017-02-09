@@ -203,16 +203,14 @@ class TargetingMiscViewFull(StatsView):
                             label.SetToolTip(
                                 wx.ToolTip("Type: %s\n%.1f%% Chance of Jam" % (fit.scanType, fit.jamChance)))
                         else:
-                            label.SetToolTip(wx.ToolTip("Type: %s" % (fit.scanType)))
+                            label.SetToolTip(wx.ToolTip("Type: %s" % fit.scanType))
                     elif labelName == "labelFullAlignTime":
                         alignTime = "Align:\t%.3fs" % mainValue
                         mass = 'Mass:\t{:,.0f}kg'.format(fit.ship.getModifiedItemAttr("mass"))
                         agility = "Agility:\t%.3fx" % (fit.ship.getModifiedItemAttr("agility") or 0)
                         label.SetToolTip(wx.ToolTip("%s\n%s\n%s" % (alignTime, mass, agility)))
                     elif labelName == "labelFullCargo":
-                        tipLines = []
-                        tipLines.append(
-                            u"Cargohold: {:,.2f}m\u00B3 / {:,.2f}m\u00B3".format(fit.cargoBayUsed, newValues["main"]))
+                        tipLines = [u"Cargohold: {:,.2f}m\u00B3 / {:,.2f}m\u00B3".format(fit.cargoBayUsed, newValues["main"])]
                         for attrName, tipAlias in cargoNamesOrder.items():
                             if newValues[attrName] > 0:
                                 tipLines.append(u"{}: {:,.2f}m\u00B3".format(tipAlias, newValues[attrName]))
@@ -232,7 +230,7 @@ class TargetingMiscViewFull(StatsView):
                     if fit.jamChance > 0:
                         label.SetToolTip(wx.ToolTip("Type: %s\n%.1f%% Chance of Jam" % (fit.scanType, fit.jamChance)))
                     else:
-                        label.SetToolTip(wx.ToolTip("Type: %s" % (fit.scanType)))
+                        label.SetToolTip(wx.ToolTip("Type: %s" % fit.scanType))
                 else:
                     label.SetToolTip(wx.ToolTip(""))
             elif labelName == "labelFullCargo":
@@ -240,9 +238,7 @@ class TargetingMiscViewFull(StatsView):
                     cachedCargo = self._cachedValues[counter]
                     # if you add stuff to cargo, the capacity doesn't change and thus it is still cached
                     # This assures us that we force refresh of cargo tooltip
-                    tipLines = []
-                    tipLines.append(
-                        u"Cargohold: {:,.2f}m\u00B3 / {:,.2f}m\u00B3".format(fit.cargoBayUsed, cachedCargo["main"]))
+                    tipLines = [u"Cargohold: {:,.2f}m\u00B3 / {:,.2f}m\u00B3".format(fit.cargoBayUsed, cachedCargo["main"])]
                     for attrName, tipAlias in cargoNamesOrder.items():
                         if cachedCargo[attrName] > 0:
                             tipLines.append(u"{}: {:,.2f}m\u00B3".format(tipAlias, cachedCargo[attrName]))

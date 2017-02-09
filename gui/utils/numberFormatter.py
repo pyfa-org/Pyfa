@@ -67,7 +67,7 @@ def formatAmount(val, prec=3, lowest=0, highest=0, currency=False, forceSign=Fal
             except IndexError:
                 nextKey = 0
             # Check if mantissa with next suffix is in range [1, 1000)
-            if abs(val) < 10 ** (nextKey) and key >= lowest:
+            if abs(val) < 10 ** nextKey and key >= lowest:
                 mantissa, suffix = val / float(10 ** key), negSuffixMap[key]
                 # Do additional step to eliminate results like 0.9999 => 1000m
                 # Check if the key we're potentially switching to is greater than our

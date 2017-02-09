@@ -322,7 +322,7 @@ class Market(object):
             "Advanced Cerebral Accelerator"             : 977,  # Implants & Boosters > Booster
             "Civilian Damage Control"                   : 615,  # Ship Equipment > Hull & Armor > Damage Controls
             "Civilian EM Ward Field"                    : 1695,
-        # Ship Equipment > Shield > Shield Hardeners > EM Shield Hardeners
+            # Ship Equipment > Shield > Shield Hardeners > EM Shield Hardeners
             "Civilian Explosive Deflection Field"       : 1694,
             # Ship Equipment > Shield > Shield Hardeners > Explosive Shield Hardeners
             "Civilian Hobgoblin"                        : 837,  # Drones > Combat Drones > Light Scout Drones
@@ -588,8 +588,8 @@ class Market(object):
             parents.add(parent)
             # Check for overrides and add them if any
             if parent.name in self.ITEMS_FORCEDMETAGROUP_R:
-                for item in self.ITEMS_FORCEDMETAGROUP_R[parent.name]:
-                    i = self.getItem(item)
+                for _item in self.ITEMS_FORCEDMETAGROUP_R[parent.name]:
+                    i = self.getItem(_item)
                     if i:
                         variations.add(i)
         # Add all parents to variations set
@@ -766,7 +766,7 @@ class Market(object):
         overrides = eos.db.getAllOverrides()
         items = set()
         for x in overrides:
-            if (x.item is None):
+            if x.item is None:
                 eos.db.saveddata_session.delete(x)
                 eos.db.commit()
             else:

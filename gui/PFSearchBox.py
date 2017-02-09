@@ -103,14 +103,15 @@ class PFSearchBox(wx.Window):
         x, y = target
         px, py = position
         aX, aY = area
-        if (px > x and px < x + aX) and (py > y and py < y + aY):
+        if (x < px < x + aX) and (y < py < y + aY):
             return True
         return False
 
     def GetButtonsPos(self):
-        btnpos = []
-        btnpos.append((self.searchButtonX, self.searchButtonY))
-        btnpos.append((self.cancelButtonX, self.cancelButtonY))
+        btnpos = [
+            (self.searchButtonX, self.searchButtonY),
+            (self.cancelButtonX, self.cancelButtonY)
+        ]
         return btnpos
 
     def GetButtonsSize(self):

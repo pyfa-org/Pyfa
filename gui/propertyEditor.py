@@ -100,7 +100,7 @@ class AttributeEditor(wx.Frame):
         dlg = wx.FileDialog(self, "Import pyfa override file",
                             wildcard="pyfa override file (*.csv)|*.csv",
                             style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST)
-        if (dlg.ShowModal() == wx.ID_OK):
+        if dlg.ShowModal() == wx.ID_OK:
             path = dlg.GetPath()
             with open(path, 'rb') as csvfile:
                 spamreader = csv.reader(csvfile)

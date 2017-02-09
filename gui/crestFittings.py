@@ -149,7 +149,6 @@ class CrestFittings(wx.Frame):
         except requests.exceptions.ConnectionError:
             self.statusbar.SetStatusText("Connection error, please check your internet connection")
 
-
     def importFitting(self, event):
         selection = self.fitView.fitSelection
         if not selection:

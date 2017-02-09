@@ -81,13 +81,13 @@ class CommandView(d.Display):
         self.SetDropTarget(CommandViewDrop(self.handleListDrag))
 
     def handleListDrag(self, x, y, data):
-        '''
+        """
         Handles dragging of items from various pyfa displays which support it
 
         data is list with two indices:
             data[0] is hard-coded str of originating source
             data[1] is typeID or index of data we want to manipulate
-        '''
+        """
         pass
 
     def kbEvent(self, event):
@@ -153,7 +153,7 @@ class CommandView(d.Display):
             self.deselectItems()
 
         # todo: verify
-        if stuff == []:
+        if not stuff:
             stuff = [DummyEntry("Drag a fit to this area")]
 
         self.update(stuff)
@@ -161,7 +161,7 @@ class CommandView(d.Display):
     def get(self, row):
         numFits = len(self.fits)
 
-        if (numFits) == 0:
+        if numFits == 0:
             return None
 
         return self.fits[row]
@@ -193,7 +193,7 @@ class CommandView(d.Display):
             fitSrcContext = "commandFit"
             fitItemContext = item.name
             context = ((fitSrcContext, fitItemContext),)
-            context = context + (("command",),)
+            context += ("command",),
             menu = ContextMenu.getMenu((item,), *context)
         elif sel == -1:
             fitID = self.mainFrame.getActiveFit()

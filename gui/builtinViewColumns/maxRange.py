@@ -74,7 +74,7 @@ class MaxRange(ViewColumn):
         return -1
 
     def getParameters(self):
-        return (("displayName", bool, False), ("showIcon", bool, True))
+        return ("displayName", bool, False), ("showIcon", bool, True)
 
     def getToolTip(self, mod):
         return "Optimal + Falloff"

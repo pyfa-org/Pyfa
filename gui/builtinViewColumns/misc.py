@@ -59,7 +59,7 @@ class Miscellanea(ViewColumn):
         return -1
 
     def getParameters(self):
-        return (("displayName", bool, False), ("showIcon", bool, True))
+        return ("displayName", bool, False), ("showIcon", bool, True)
 
     def __getData(self, stuff):
         item = stuff.item

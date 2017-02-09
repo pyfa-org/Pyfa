@@ -192,13 +192,13 @@ class FighterDisplay(d.Display):
             dropSource.DoDragDrop()
 
     def handleDragDrop(self, x, y, data):
-        '''
+        """
         Handles dragging of items from various pyfa displays which support it
 
         data is list with two indices:
             data[0] is hard-coded str of originating source
             data[1] is typeID or index of data we want to manipulate
-        '''
+        """
         if data[0] == "fighter":  # we want to merge fighters
             srcRow = int(data[1])
             dstRow, _ = self.HitTest((x, y))

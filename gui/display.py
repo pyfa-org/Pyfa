@@ -89,11 +89,11 @@ class Display(wx.ListCtrl):
 
         # Did the point hit any item?
         if (flags & wx.LIST_HITTEST_ONITEM) == 0:
-            return (-1, 0, -1)
+            return -1, 0, -1
 
         # If it did hit an item and we are not in report mode, it must be the primary cell
         if not self.InReportView():
-            return (rowIndex, wx.LIST_HITTEST_ONITEM, 0)
+            return rowIndex, wx.LIST_HITTEST_ONITEM, 0
 
         # Find which subitem is hit
         right = 0
@@ -106,9 +106,9 @@ class Display(wx.ListCtrl):
                     flag = wx.LIST_HITTEST_ONITEMICON
                 else:
                     flag = wx.LIST_HITTEST_ONITEMLABEL
-                return (rowIndex, flag, i)
+                return rowIndex, flag, i
 
-        return (rowIndex, 0, -1)
+        return rowIndex, 0, -1
 
     def OnEraseBk(self, event):
         if self.GetItemCount() > 0:
@@ -219,7 +219,7 @@ class Display(wx.ListCtrl):
                     self.InsertStringItem(sys.maxint, "")
 
             if listItemCount > stuffItemCount:
-                if listItemCount - stuffItemCount > 20 and stuffItemCount < 20:
+                if listItemCount - stuffItemCount > 20 > stuffItemCount:
                     self.DeleteAllItems()
                     for i in range(stuffItemCount):
                         self.InsertStringItem(sys.maxint, "")

@@ -543,7 +543,7 @@ class Port(object):
             elif item.category.name == "Fighter":
                 extraAmount = int(extraAmount) if extraAmount is not None else 1
                 fighterItem = Fighter(item)
-                if (extraAmount > fighterItem.fighterSquadronMaxSize):  # Amount bigger then max fightergroup size
+                if extraAmount > fighterItem.fighterSquadronMaxSize:  # Amount bigger then max fightergroup size
                     extraAmount = fighterItem.fighterSquadronMaxSize
                 if fighterItem.fits(fit):
                     fit.fighters.append(fighterItem)
@@ -1092,7 +1092,7 @@ class Port(object):
 
     @staticmethod
     def exportMultiBuy(fit):
-        export = "%s\n" % (fit.ship.item.name)
+        export = "%s\n" % fit.ship.item.name
         stuff = {}
         sFit = svcFit.getInstance()
         for module in fit.modules:

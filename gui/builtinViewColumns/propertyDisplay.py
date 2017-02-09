@@ -56,7 +56,7 @@ class PropertyDisplay(ViewColumn):
     def getText(self, stuff):
         attr = getattr(stuff, self.propertyName, None)
         if attr:
-            return (formatAmount(attr, 3, 0, 3))
+            return formatAmount(attr, 3, 0, 3)
         else:
             return ""
 

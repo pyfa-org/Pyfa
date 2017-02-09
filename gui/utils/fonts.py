@@ -1,7 +1,7 @@
-'''
+"""
 Font file to handle the differences in font calculations between
 different wxPython versions
-'''
+"""
 
 # noinspection PyPackageRequirements
 import wx

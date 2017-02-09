@@ -68,13 +68,13 @@ class BoosterView(d.Display):
             self.Bind(wx.EVT_RIGHT_DOWN, self.scheduleMenu)
 
     def handleListDrag(self, x, y, data):
-        '''
+        """
         Handles dragging of items from various pyfa displays which support it
 
         data is list with two indices:
             data[0] is hard-coded str of originating source
             data[1] is typeID or index of data we want to manipulate
-        '''
+        """
 
         if data[0] == "market":
             wx.PostEvent(self.mainFrame, mb.ItemSelected(itemID=int(data[1])))

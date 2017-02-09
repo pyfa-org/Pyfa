@@ -197,7 +197,7 @@ class RaceSelector(wx.Window):
         padding = self.buttonsPadding
 
         for bmp in self.raceBmps:
-            if (mx > x and mx < x + bmp.GetWidth()) and (my > y and my < y + bmp.GetHeight()):
+            if (x < mx < x + bmp.GetWidth()) and (y < my < y + bmp.GetHeight()):
                 return self.raceBmps.index(bmp)
             if self.layout == wx.VERTICAL:
                 y += bmp.GetHeight() + padding
@@ -1191,8 +1191,7 @@ class ShipItem(SFItem.SFBrowserItem):
     def OnShowPopup(self, event):
         pos = event.GetPosition()
         pos = self.ScreenToClient(pos)
-        contexts = []
-        contexts.append(("baseShip", "Ship Basic"))
+        contexts = [("baseShip", "Ship Basic")]
         menu = ContextMenu.getMenu(self.baseItem, *contexts)
         self.PopupMenu(menu, pos)
 
@@ -1271,17 +1270,17 @@ class ShipItem(SFItem.SFBrowserItem):
         self.toolbarx = rect.width - self.toolbar.GetWidth() - self.padding
         self.toolbary = (rect.height - self.toolbar.GetHeight()) / 2
 
-        self.toolbarx = self.toolbarx + self.animCount
+        self.toolbarx += self.animCount
 
         self.shipEffx = self.padding + (rect.height - self.shipEffBk.GetWidth()) / 2
         self.shipEffy = (rect.height - self.shipEffBk.GetHeight()) / 2
 
-        self.shipEffx = self.shipEffx - self.animCount
+        self.shipEffx -= self.animCount
 
         self.shipBmpx = self.padding + (rect.height - self.shipBmp.GetWidth()) / 2
         self.shipBmpy = (rect.height - self.shipBmp.GetHeight()) / 2
 
-        self.shipBmpx = self.shipBmpx - self.animCount
+        self.shipBmpx -= self.animCount
 
         self.raceBmpx = self.shipEffx + self.shipEffBk.GetWidth() + self.padding
         self.raceBmpy = (rect.height - self.raceBmp.GetHeight()) / 2
@@ -1575,7 +1574,7 @@ class FitItem(SFItem.SFBrowserItem):
             self.mainFrame.additionsPane.select("Command")
 
     def OnMouseCaptureLost(self, event):
-        ''' Destroy drag information (GH issue #479)'''
+        """ Destroy drag information (GH issue #479)"""
         if self.dragging and self.dragged:
             self.dragging = False
             self.dragged = False
@@ -1585,7 +1584,7 @@ class FitItem(SFItem.SFBrowserItem):
             self.dragWindow = None
 
     def OnContextMenu(self, event):
-        ''' Handles context menu for fit. Dragging is handled by MouseLeftUp() '''
+        """ Handles context menu for fit. Dragging is handled by MouseLeftUp() """
         sFit = Fit.getInstance()
         fit = sFit.getFit(self.mainFrame.getActiveFit())
 
@@ -1815,17 +1814,17 @@ class FitItem(SFItem.SFBrowserItem):
         self.toolbarx = rect.width - self.toolbar.GetWidth() - self.padding
         self.toolbary = (rect.height - self.toolbar.GetHeight()) / 2
 
-        self.toolbarx = self.toolbarx + self.animCount
+        self.toolbarx += self.animCount
 
         self.shipEffx = self.padding + (rect.height - self.shipEffBk.GetWidth()) / 2
         self.shipEffy = (rect.height - self.shipEffBk.GetHeight()) / 2
 
-        self.shipEffx = self.shipEffx - self.animCount
+        self.shipEffx -= self.animCount
 
         self.shipBmpx = self.padding + (rect.height - self.shipBmp.GetWidth()) / 2
         self.shipBmpy = (rect.height - self.shipBmp.GetHeight()) / 2
 
-        self.shipBmpx = self.shipBmpx - self.animCount
+        self.shipBmpx -= self.animCount
 
         self.textStartx = self.shipEffx + self.shipEffBk.GetWidth() + self.padding
 

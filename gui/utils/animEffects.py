@@ -42,7 +42,7 @@ def IN_CUBIC(t, b, c, d):
     c = float(c)
     d = float(d)
 
-    t = t / d
+    t /= d
 
     return c * t * t * t + b
 

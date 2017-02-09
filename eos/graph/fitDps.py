@@ -179,4 +179,4 @@ class FitDpsGraph(Graph):
         turretFalloff = mod.falloff
         rangeEq = ((max(0, distance - turretOptimal)) / turretFalloff) ** 2
 
-        return 0.5 ** (rangeEq)
+        return 0.5 ** rangeEq

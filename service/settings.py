@@ -217,7 +217,7 @@ class NetworkSettings(object):
         if self.getMode() == self.PROXY_MODE_AUTODETECT:
             return self.autodetect()
         if self.getMode() == self.PROXY_MODE_MANUAL:
-            return (self.getAddress(), int(self.getPort()))
+            return self.getAddress(), int(self.getPort())
 
     def getProxyAuthDetails(self):
         if self.getMode() == self.PROXY_MODE_NONE:
@@ -225,7 +225,7 @@ class NetworkSettings(object):
         if (self.serviceNetworkSettings["login"] is None) or (self.serviceNetworkSettings["password"] is None):
             return None
         # in all other cases, return tuple of (login, password)
-        return (self.serviceNetworkSettings["login"], self.serviceNetworkSettings["password"])
+        return self.serviceNetworkSettings["login"], self.serviceNetworkSettings["password"]
 
     def setProxyAuthDetails(self, login, password):
         if (login is None) or (password is None):

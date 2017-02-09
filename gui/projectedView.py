@@ -87,13 +87,13 @@ class ProjectedView(d.Display):
         self.SetDropTarget(ProjectedViewDrop(self.handleListDrag))
 
     def handleListDrag(self, x, y, data):
-        '''
+        """
         Handles dragging of items from various pyfa displays which support it
 
         data is list with two indices:
             data[0] is hard-coded str of originating source
             data[1] is typeID or index of data we want to manipulate
-        '''
+        """
 
         if data[0] == "projected":
             # if source is coming from projected, we are trying to combine drones.
@@ -205,7 +205,7 @@ class ProjectedView(d.Display):
 
             self.deselectItems()
 
-        if stuff == []:
+        if not stuff:
             stuff = [DummyEntry("Drag an item or fit, or use right-click menu for system effects")]
 
         self.update(stuff)
@@ -278,7 +278,7 @@ class ProjectedView(d.Display):
                 fitSrcContext = "projectedFit"
                 fitItemContext = item.name
                 context = ((fitSrcContext, fitItemContext),)
-            context = context + (("projected",),)
+            context += ("projected",),
             menu = ContextMenu.getMenu((item,), *context)
         elif sel == -1:
             fitID = self.mainFrame.getActiveFit()

@@ -54,7 +54,7 @@ class CopySelectDialog(wx.Dialog):
         mainSizer.Add(selector, 0, wx.EXPAND | wx.ALL, 5)
 
         buttonSizer = self.CreateButtonSizer(wx.OK | wx.CANCEL)
-        if (buttonSizer):
+        if buttonSizer:
             mainSizer.Add(buttonSizer, 0, wx.EXPAND | wx.ALL, 5)
 
         self.SetSizer(mainSizer)

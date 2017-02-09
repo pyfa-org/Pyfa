@@ -52,7 +52,7 @@ class CheckUpdateThread(threading.Thread):
 
             for release in jsonResponse:
                 # Suppress pre releases
-                if (release['prerelease'] and self.settings.get('prerelease')):
+                if release['prerelease'] and self.settings.get('prerelease'):
                     continue
 
                 # Handle use-case of updating to suppressed version
@@ -60,7 +60,7 @@ class CheckUpdateThread(threading.Thread):
                     self.settings.set('version', None)
 
                 # Suppress version
-                if (release['tag_name'] == self.settings.get('version')):
+                if release['tag_name'] == self.settings.get('version'):
                     break
 
                 # Set the release version that we will be comparing with.

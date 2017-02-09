@@ -270,7 +270,7 @@ class Character(object):
 
     def getSkillLevel(self, charID, skillID):
         skill = eos.db.getCharacter(charID).getSkill(skillID)
-        return (skill.level if skill.learned else "Not learned", skill.isDirty)
+        return skill.level if skill.learned else "Not learned", skill.isDirty
 
     def getDirtySkills(self, charID):
         return eos.db.getCharacter(charID).dirtySkills
@@ -304,7 +304,7 @@ class Character(object):
             chars = json.loads(char.chars)
         else:
             chars = None
-        return (char.apiID or "", char.apiKey or "", char.defaultChar or "", chars or [])
+        return char.apiID or "", char.apiKey or "", char.defaultChar or "", chars or []
 
     def apiEnabled(self, charID):
         id_, key, default, _ = self.getApiDetails(charID)

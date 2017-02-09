@@ -640,7 +640,7 @@ class Fit(object):
                 total = fit.getNumSlots(fighter.slot)
                 standardAttackActive = False
                 for ability in fighter.abilities:
-                    if (ability.effect.isImplemented and ability.effect.handlerName == u'fighterabilityattackm'):
+                    if ability.effect.isImplemented and ability.effect.handlerName == u'fighterabilityattackm':
                         # Activate "standard attack" if available
                         ability.active = True
                         standardAttackActive = True

@@ -189,12 +189,12 @@ class ResistsEditorDlg(wx.Dialog):
         self.Destroy()
 
     def ValuesUpdated(self, event=None):
-        '''
+        """
         Event that is fired when resists values change. Iterates through all
         resist edit fields. If blank, sets it to 0.0. If it is not a proper
         decimal value, sets text color to red and refuses to save changes until
         issue is resolved
-        '''
+        """
         if self.block:
             return
 
@@ -238,7 +238,7 @@ class ResistsEditorDlg(wx.Dialog):
             self.Refresh()
 
     def patternChanged(self, event=None):
-        "Event fired when user selects pattern. Can also be called from script"
+        """Event fired when user selects pattern. Can also be called from script"""
 
         if not self.entityEditor.checkEntitiesExist():
             self.Destroy()
@@ -262,7 +262,7 @@ class ResistsEditorDlg(wx.Dialog):
         pass
 
     def importPatterns(self, event):
-        "Event fired when import from clipboard button is clicked"
+        """Event fired when import from clipboard button is clicked"""
 
         text = fromClipboard()
         if text:
@@ -280,7 +280,7 @@ class ResistsEditorDlg(wx.Dialog):
             self.stNotice.SetLabel("Could not import from clipboard")
 
     def exportPatterns(self, event):
-        "Event fired when export to clipboard button is clicked"
+        """Event fired when export to clipboard button is clicked"""
         sTR = TargetResists.getInstance()
         toClipboard(sTR.exportPatterns())
         self.stNotice.SetLabel("Patterns exported to clipboard")
