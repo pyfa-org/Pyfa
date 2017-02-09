@@ -443,9 +443,11 @@ class Fit(object):
         self.__modifier = currModifier
         self.__origin = origin
         if hasattr(currModifier, "itemModifiedAttributes"):
-            currModifier.itemModifiedAttributes.fit = origin or self
+            if hasattr(currModifier.itemModifiedAttributes, "fit"):
+                currModifier.itemModifiedAttributes.fit = origin or self
         if hasattr(currModifier, "chargeModifiedAttributes"):
-            currModifier.chargeModifiedAttributes.fit = origin or self
+            if hasattr(currModifier.itemModifiedAttributes, "fit"):
+                currModifier.chargeModifiedAttributes.fit = origin or self
 
     def getModifier(self):
         return self.__modifier
