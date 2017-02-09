@@ -26,7 +26,7 @@ from gui.cachingImageList import CachingImageList
 
 
 class Display(wx.ListCtrl):
-    DEFAULT_COLS =  None
+    DEFAULT_COLS = None
 
     def __init__(self, parent, size=wx.DefaultSize, style=0):
 

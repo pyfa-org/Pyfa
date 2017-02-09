@@ -699,7 +699,7 @@ class _Parser(object):
 
 
 class Element(object):
-    _name =  None
+    _name = None
 
     # Element is a namespace for attributes and nested tags
     def __str__(self):

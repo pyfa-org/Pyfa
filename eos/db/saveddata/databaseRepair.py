@@ -17,7 +17,6 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-import sqlalchemy
 from sqlalchemy.exc import DatabaseError
 import logging
 

@@ -213,7 +213,7 @@ class Item(EqBase):
     category = None
     ID = None
     __attributes = None
-    
+
     MOVE_ATTRS = (4,  # Mass
                   38,  # Capacity
                   161)  # Volume
