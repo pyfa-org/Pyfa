@@ -27,6 +27,7 @@ from xml.etree import ElementTree
 from xml.dom import minidom
 import gzip
 
+# noinspection PyPackageRequirements
 import wx
 
 import config

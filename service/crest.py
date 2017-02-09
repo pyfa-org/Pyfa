@@ -1,3 +1,4 @@
+# noinspection PyPackageRequirements
 import wx
 import thread
 import logging

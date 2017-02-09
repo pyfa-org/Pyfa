@@ -22,6 +22,7 @@ import threading
 import logging
 import Queue
 
+# noinspection PyPackageRequirements
 import wx
 from sqlalchemy.sql import or_
 

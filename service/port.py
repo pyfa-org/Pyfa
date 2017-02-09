@@ -33,6 +33,7 @@ import xml.parsers.expat
 from eos import db
 from service.fit import Fit as svcFit
 
+# noinspection PyPackageRequirements
 import wx
 
 from eos.saveddata.cargo import Cargo

@@ -21,7 +21,9 @@ import threading
 import json
 import calendar
 
+# noinspection PyPackageRequirements
 import wx
+# noinspection PyPackageRequirements
 import dateutil.parser
 
 import config

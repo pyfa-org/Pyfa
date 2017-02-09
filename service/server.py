@@ -4,6 +4,7 @@ import socket
 import thread
 import logging
 
+# noinspection PyPackageRequirements
 import wx
 
 from service.settings import CRESTSettings

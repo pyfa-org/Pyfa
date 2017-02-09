@@ -22,6 +22,7 @@ excludes = ['Tkinter', 'collections.abc', 'IPython', 'PyQt4', 'PIL', 'nose', 'to
 
 if __name__ == "__main__":
     import sys
+    # noinspection PyPackageRequirements
     from cx_Freeze import setup, Executable
     import config
 

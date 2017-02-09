@@ -94,6 +94,7 @@ if not hasattr(sys, 'frozen'):
 
     # check also for dateutil module installed.
     try:
+        # noinspection PyPackageRequirements
         import dateutil.parser  # noqa - Copied import statement from service/update.py
     except ImportError:
         print("Cannot find python-dateutil.\nYou can download python-dateutil from https://pypi.python.org/pypi/python-dateutil")
@@ -120,6 +121,7 @@ if __name__ == "__main__":
     logging.basicConfig()
 
     # Import everything
+    # noinspection PyPackageRequirements
     import wx
     import os
     import os.path
