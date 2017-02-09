@@ -82,6 +82,7 @@ class MarketBrowser(wx.Panel):
         p.SetSizer(box)
         vbox.Add(p, 0, wx.EXPAND)
         self.metaButtons = []
+        btn = None
         for name in self.sMkt.META_MAP.keys():
             btn = MetaButton(p, wx.ID_ANY, name.capitalize(), style=wx.BU_EXACTFIT)
             setattr(self, name, btn)

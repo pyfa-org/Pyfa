@@ -216,52 +216,61 @@ class ResourcesViewFull(StatsView):
             ("label%sTotalCargoBay", lambda: fit.ship.getModifiedItemAttr("capacity"), 3, 0, 9),
         )
         panel = "Full"
+
         usedTurretHardpoints = 0
+        labelUTH = ""
         totalTurretHardpoints = 0
+        labelTTH = ""
         usedLauncherHardpoints = 0
+        labelULH = ""
         totalLauncherHardPoints = 0
+        labelTLH = ""
+        usedDronesActive = 0
+        labelUDA = ""
+        totalDronesActive = 0
+        labelTDA = ""
+        usedFighterTubes = 0
+        labelUFT = ""
+        totalFighterTubes = 0
+        labelTFT = ""
+        usedCalibrationPoints = 0
+        labelUCP = ""
+        totalCalibrationPoints = 0
+        labelTCP = ""
 
         for labelName, value, prec, lowest, highest in stats:
             label = getattr(self, labelName % panel)
             value = value() if fit is not None else 0
             value = value if value is not None else 0
+
             if labelName % panel == "label%sUsedTurretHardpoints" % panel:
                 usedTurretHardpoints = value
                 labelUTH = label
-
-            if labelName % panel == "label%sTotalTurretHardpoints" % panel:
+            elif labelName % panel == "label%sTotalTurretHardpoints" % panel:
                 totalTurretHardpoints = value
                 labelTTH = label
-
-            if labelName % panel == "label%sUsedLauncherHardpoints" % panel:
+            elif labelName % panel == "label%sUsedLauncherHardpoints" % panel:
                 usedLauncherHardpoints = value
                 labelULH = label
-
-            if labelName % panel == "label%sTotalLauncherHardpoints" % panel:
+            elif labelName % panel == "label%sTotalLauncherHardpoints" % panel:
                 totalLauncherHardPoints = value
                 labelTLH = label
-
-            if labelName % panel == "label%sUsedDronesActive" % panel:
+            elif labelName % panel == "label%sUsedDronesActive" % panel:
                 usedDronesActive = value
                 labelUDA = label
-
-            if labelName % panel == "label%sTotalDronesActive" % panel:
+            elif labelName % panel == "label%sTotalDronesActive" % panel:
                 totalDronesActive = value
                 labelTDA = label
-
-            if labelName % panel == "label%sUsedFighterTubes" % panel:
+            elif labelName % panel == "label%sUsedFighterTubes" % panel:
                 usedFighterTubes = value
                 labelUFT = label
-
-            if labelName % panel == "label%sTotalFighterTubes" % panel:
+            elif labelName % panel == "label%sTotalFighterTubes" % panel:
                 totalFighterTubes = value
                 labelTFT = label
-
-            if labelName % panel == "label%sUsedCalibrationPoints" % panel:
+            elif labelName % panel == "label%sUsedCalibrationPoints" % panel:
                 usedCalibrationPoints = value
                 labelUCP = label
-
-            if labelName % panel == "label%sTotalCalibrationPoints" % panel:
+            elif labelName % panel == "label%sTotalCalibrationPoints" % panel:
                 totalCalibrationPoints = value
                 labelTCP = label
 
@@ -316,6 +325,8 @@ class ResourcesViewFull(StatsView):
                 lambda: fit.ship.getModifiedItemAttr("droneBandwidth"),
                 lambda: fit.ship.getModifiedItemAttr("capacity"),
             )
+        else:
+            resMax = None
 
         i = 0
         for resourceType in ("cpu", "pg", "droneBay", "fighterBay", "droneBandwidth", "cargoBay"):

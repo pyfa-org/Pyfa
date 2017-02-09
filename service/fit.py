@@ -421,9 +421,7 @@ class Fit(object):
             return False
 
         if m.item.category.name == "Subsystem":
-            slot = m.getModifiedItemAttr("subSystemSlot")
-            dummy_module = es_Module.buildEmpty(fit.modules[slot])
-            fit.modules.freeSlot(slot, dummy_module)
+            fit.modules.freeSlot(m.getModifiedItemAttr("subSystemSlot"), es_Module.buildEmpty(m.slot))
 
         if m.fits(fit):
             m.owner = fit
@@ -450,7 +448,7 @@ class Fit(object):
             return None
 
         numSlots = len(fit.modules)
-        dummy_module =  es_Module.buildEmpty(fit.modules[position].slot)
+        dummy_module = es_Module.buildEmpty(fit.modules[position].slot)
         fit.modules.toDummy(position, dummy_module)
         self.recalc(fit)
         self.checkStates(fit, None)

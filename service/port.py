@@ -115,6 +115,8 @@ class Port(object):
             # codepage then fallback to utf-16, cp1252
 
             if isinstance(srcString, str):
+                savebom = None
+
                 encoding_map = (
                     ('\xef\xbb\xbf', 'utf-8'),
                     ('\xff\xfe\0\0', 'utf-32'),

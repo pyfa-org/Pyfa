@@ -31,6 +31,7 @@ class OrderedDict(dict):
         because their insertion order is arbitrary.
 
         '''
+        super(OrderedDict, self).__init__(**kwds)
         if len(args) > 1:
             raise TypeError('expected at most 1 arguments, got %d' % len(args))
         try:
@@ -194,8 +195,10 @@ class OrderedDict(dict):
         self[key] = default
         return default
 
-    def __repr__(self, _repr_running={}):
+    def __repr__(self, _repr_running=None):
         'od.__repr__() <==> repr(od)'
+        if _repr_running is None:
+            _repr_running = {}
         call_key = id(self), _get_ident()
         if call_key in _repr_running:
             return '...'

@@ -17,12 +17,7 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-# from sqlalchemy.orm.attributes import flag_modified
 import logging
-# TODO: This can't point to es_Module, cyclical import loop
-# from eos.saveddata.module import Module as es_Module, State as es_State
-
-import eos.db
 
 logger = logging.getLogger(__name__)
 

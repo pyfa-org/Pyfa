@@ -97,7 +97,8 @@ FitSpawner.register()
 
 # Drag'n'drop handler
 class FittingViewDrop(wx.PyDropTarget):
-    def __init__(self, dropFn):
+    def __init__(self, dropFn, *args, **kwargs):
+        super(FittingViewDrop, self).__init__(*args, **kwargs)
         wx.PyDropTarget.__init__(self)
         self.dropFn = dropFn
         # this is really transferring an EVE itemID

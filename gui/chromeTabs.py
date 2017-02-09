@@ -1268,6 +1268,7 @@ class PFTabsContainer(wx.Panel):
 
         pos = tabsWidth
         selected = None
+        selpos = None
         for i in range(len(self.tabs) - 1, -1, -1):
             tab = self.tabs[i]
             width = tab.tabWidth - self.inclination * 2

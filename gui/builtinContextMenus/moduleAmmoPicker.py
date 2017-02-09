@@ -157,7 +157,7 @@ class ModuleAmmoPicker(ContextMenu):
                     item = self.addCharge(rootMenu if msw else m, charge)
                     items.append(item)
                 else:
-                    if sub is None:
+                    if sub is None and item and base:
                         sub = wx.Menu()
                         sub.Bind(wx.EVT_MENU, self.handleAmmoSwitch)
                         self.addSeperator(sub, "Less Damage")

@@ -55,7 +55,7 @@ from gui.graphFrame import GraphFrame
 from gui.copySelectDialog import CopySelectDialog
 from gui.utils.clipboard import toClipboard, fromClipboard
 from gui.updateDialog import UpdateDialog
-from gui.builtinViews import emptyView, entityEditor, fittingView, implantEditor
+from gui.builtinViews import emptyView, entityEditor, fittingView, implantEditor  # noqa: F401
 from gui import graphFrame
 
 from service.settings import SettingsProvider
@@ -136,7 +136,7 @@ class MainFrame(wx.Frame):
 
     @classmethod
     def getInstance(cls):
-        return cls.__instance if cls.__instance is not None else MainFrame()
+        return cls.__instance if cls.__instance is not None else MainFrame("")
 
     def __init__(self, title):
         self.title = title

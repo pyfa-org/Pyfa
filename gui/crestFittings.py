@@ -144,10 +144,10 @@ class CrestFittings(wx.Frame):
             self.updateCacheStatus(None)
             self.cacheTimer.Start(1000)
             self.fitTree.populateSkillTree(fittings)
+            del waitDialog
         except requests.exceptions.ConnectionError:
             self.statusbar.SetStatusText("Connection error, please check your internet connection")
-        finally:
-            del waitDialog
+
 
     def importFitting(self, event):
         selection = self.fitView.fitSelection

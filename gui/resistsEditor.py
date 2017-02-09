@@ -197,6 +197,8 @@ class ResistsEditorDlg(wx.Dialog):
         if self.block:
             return
 
+        editObj = None
+
         try:
             p = self.entityEditor.getActiveEntity()
 

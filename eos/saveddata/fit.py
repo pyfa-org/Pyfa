@@ -27,7 +27,6 @@ from sqlalchemy.orm import validates, reconstructor
 
 import eos.db
 from eos import capSim
-from eos.effectHandlerHelpers import *
 from eos.effectHandlerHelpers import HandledModuleList, HandledDroneCargoList, HandledImplantBoosterList, HandledProjectedDroneList, HandledProjectedModList
 from eos.enum import Enum
 from eos.saveddata.ship import Ship
@@ -39,15 +38,10 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-try:
-    from collections import OrderedDict
-except ImportError:
-    from utils.compat import OrderedDict
-
 
 class ImplantLocation(Enum):
     def __init__(self):
-        pass
+        Enum.__init__(self)
 
     FIT = 0
     CHARACTER = 1
@@ -727,7 +721,7 @@ class Fit(object):
                         self.register(item)
                         item.calculateModifiedAttributes(self, runTime, False)
 
-                    if projected is True and item not in chain.from_iterable(r):
+                    if projected is True and projectionInfo and item not in chain.from_iterable(r):
                         # apply effects onto target fit
                         for _ in xrange(projectionInfo.amount):
                             targetFit.register(item, origin=self)

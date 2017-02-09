@@ -9,6 +9,7 @@ from service.fit import Fit
 
 class ModuleGlobalAmmoPicker(ModuleAmmoPicker):
     def __init__(self):
+        super(ModuleGlobalAmmoPicker, self).__init__()
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     def getText(self, itmContext, selection):
