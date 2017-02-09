@@ -131,8 +131,8 @@ class CapacitorViewFull(StatsView):
         capStable = fit.capStable if fit is not None else False
         lblNameTime = "label%sCapacitorTime"
         lblNameState = "label%sCapacitorState"
-        if isinstance(capState, tuple):
-            t = "%.1f%%-%.1f%%" % capState
+        if isinstance(capState, tuple) and len(capState) >= 2:
+            t = ("{0}%-{1}%", capState[0], capState[1])
             s = ""
         else:
             if capStable:

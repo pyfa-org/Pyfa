@@ -856,7 +856,7 @@ class ItemEffects(wx.Panel):
         elif 'wxMac' in wx.PlatformInfo:
             os.system("open " + file_)
         else:
-            subprocess.call(["xdg-open", file_])
+            subprocess.call({"xdg-open": file_})
 
     def RefreshValues(self, event):
         self.Freeze()

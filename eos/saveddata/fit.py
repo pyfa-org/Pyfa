@@ -17,7 +17,6 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-import copy
 import time
 from copy import deepcopy
 from itertools import chain
@@ -645,7 +644,7 @@ class Fit(object):
                 shadow = True
                 # Don't inspect this, we genuinely want to reassign self
                 # noinspection PyMethodFirstArgAssignment
-                self = copy.deepcopy(self)
+                self = deepcopy(self)
                 logger.debug("Handling self projection - making shadow copy of fit. %r => %r", copied, self)
                 # we delete the fit because when we copy a fit, flush() is
                 # called to properly handle projection updates. However, we do
@@ -1257,16 +1256,16 @@ class Fit(object):
 
         return True
 
-    def __deepcopy__(self, memo):
-        copy = Fit()
+    def __deepcopy__(self, memo=None):
+        copy_ship = Fit()
         # Character and owner are not copied
-        copy.character = self.__character
-        copy.owner = self.owner
-        copy.ship = deepcopy(self.ship, memo)
-        copy.name = "%s copy" % self.name
-        copy.damagePattern = self.damagePattern
-        copy.targetResists = self.targetResists
-        copy.notes = self.notes
+        copy_ship.character = self.__character
+        copy_ship.owner = self.owner
+        copy_ship.ship = deepcopy(self.ship)
+        copy_ship.name = "%s copy" % self.name
+        copy_ship.damagePattern = self.damagePattern
+        copy_ship.targetResists = self.targetResists
+        copy_ship.notes = self.notes
 
         toCopy = (
             "modules",
@@ -1280,17 +1279,17 @@ class Fit(object):
             "projectedFighters")
         for name in toCopy:
             orig = getattr(self, name)
-            c = getattr(copy, name)
+            c = getattr(copy_ship, name)
             for i in orig:
-                c.append(deepcopy(i, memo))
+                c.append(deepcopy(i))
 
         for fit in self.projectedFits:
-            copy.__projectedFits[fit.ID] = fit
+            copy_ship.__projectedFits[fit.ID] = fit
             # this bit is required -- see GH issue # 83
             eos.db.saveddata_session.flush()
             eos.db.saveddata_session.refresh(fit)
 
-        return copy
+        return copy_ship
 
     def __repr__(self):
         return u"Fit(ID={}, ship={}, name={}) at {}".format(

@@ -29,11 +29,6 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-# The following code does not belong here, however until we rebuild skeletons
-# to include modified pyfa.py, this is the best place to put it. See GH issue
-# #176
-# @ todo: move this to pyfa.py
-
 # Make sure the saveddata db exists
 if config.savePath and not os.path.exists(config.savePath):
     os.mkdir(config.savePath)
