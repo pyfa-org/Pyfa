@@ -67,6 +67,7 @@ class Display(wx.ListCtrl):
             i += 1
 
         info = wx.ListItem()
+        # noinspection PyPropertyAccess
         info.m_mask = wx.LIST_MASK_WIDTH
         self.InsertColumnInfo(i, info)
         self.SetColumnWidth(i, 0)
