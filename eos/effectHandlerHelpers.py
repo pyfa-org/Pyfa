@@ -136,13 +136,6 @@ class HandledModuleList(HandledList):
             self.remove(mod)
             return
 
-        # fix for #529, where a module may be in incorrect state after CCP changes mechanics of module
-        # TODO: This can't point to es_module, cyclical import loop
-        '''
-        if not mod.isValidState(mod.state):
-            mod.state = es_State.ONLINE
-            '''
-
     def insert(self, index, mod):
         mod.position = index
         i = index

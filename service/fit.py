@@ -905,13 +905,17 @@ class Fit(object):
         changed = False
         for mod in fit.modules:
             if mod != base:
-                if not mod.canHaveState(mod.state):
+                # fix for #529, where a module may be in incorrect state after CCP changes mechanics of module
+                if not mod.canHaveState(mod.state) or not mod.isValidState(mod.state):
                     mod.state = State.ONLINE
                     changed = True
+
         for mod in fit.projectedModules:
-            if not mod.canHaveState(mod.state, fit):
+            # fix for #529, where a module may be in incorrect state after CCP changes mechanics of module
+            if not mod.canHaveState(mod.state, fit) or not mod.isValidState(mod.state):
                 mod.state = State.OFFLINE
                 changed = True
+
         for drone in fit.projectedDrones:
             if drone.amountActive > 0 and not drone.canBeApplied(fit):
                 drone.amountActive = 0
