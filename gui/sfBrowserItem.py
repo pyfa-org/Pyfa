@@ -137,7 +137,6 @@ class PFToolbar(object):
         return doRefresh
 
     def MouseClick(self, event):
-        mx, my = event.GetPosition()
         bx = self.toolbarX
         for button in self.buttons:
             if not button.IsVisible():

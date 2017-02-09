@@ -629,7 +629,6 @@ class ShipBrowser(wx.Panel):
         event.Skip()
 
     def SizeRefreshList(self, event):
-        ewidth, eheight = event.GetSize()
         self.Layout()
         self.lpane.Layout()
         self.lpane.RefreshList(True)
@@ -1870,8 +1869,6 @@ class FitItem(SFItem.SFBrowserItem):
         mdc.DrawBitmap(shipEffBk, self.shipEffx, self.shipEffy, 0)
 
         mdc.DrawBitmap(self.shipBmp, self.shipBmpx, self.shipBmpy, 0)
-
-        shipName, shipTrait, fittings, booster, timestamp = self.shipFittingInfo
 
         mdc.SetFont(self.fontNormal)
 

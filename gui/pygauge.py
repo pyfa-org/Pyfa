@@ -323,8 +323,6 @@ class PyGauge(wx.PyWindow):
                 # time on them if not needed. See GH issue #282
 
                 pv = value
-                xv = 1
-                transition = 0
 
                 if pv <= 100:
                     xv = pv / 100

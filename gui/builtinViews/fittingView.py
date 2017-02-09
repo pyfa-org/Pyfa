@@ -681,7 +681,6 @@ class FittingView(d.Display):
         isize = 16
         headerSize = max(isize, tdc.GetTextExtent("W")[0]) + padding * 2
 
-        maxWidth = 0
         maxRowHeight = isize
         rows = 0
         for st in self.mods:
@@ -775,8 +774,7 @@ class FittingView(d.Display):
                 bmp = col.bitmap
                 opts.m_labelBitmap = bmp
 
-            width = render.DrawHeaderButton(self, mdc, (cx, padding, columnsWidths[i], headerSize), wx.CONTROL_CURRENT,
-                                            sortArrow=wx.HDR_SORT_ICON_NONE, params=opts)
+            render.DrawHeaderButton(self, mdc, (cx, padding, columnsWidths[i], headerSize), wx.CONTROL_CURRENT, sortArrow=wx.HDR_SORT_ICON_NONE, params=opts)
 
             cx += columnsWidths[i]
 

@@ -179,7 +179,7 @@ class Effect(EqBase):
 
             t = t if isinstance(t, tuple) or t is None else (t,)
             self.__type = t
-        except (ImportError, AttributeError) as e:
+        except (ImportError, AttributeError):
             self.__handler = effectDummy
             self.__runTime = "normal"
             self.__activeByDefault = True

@@ -50,7 +50,6 @@ class AmountChanger(wx.Dialog):
         self.button.Bind(wx.EVT_BUTTON, self.change)
 
     def change(self, event):
-        sFit = Fit.getInstance()
         if self.input.GetLineText(0).strip() == '':
             event.Skip()
             return

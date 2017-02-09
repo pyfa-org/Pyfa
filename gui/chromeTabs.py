@@ -1123,8 +1123,6 @@ class PFTabsContainer(wx.Panel):
         else:
             mdc = wx.BufferedPaintDC(self)
 
-        selected = 0
-
         if 'wxMac' in wx.PlatformInfo and wx.VERSION < (3, 0):
             color = wx.Colour(0, 0, 0)
             brush = wx.Brush(color)
@@ -1260,7 +1258,7 @@ class PFTabsContainer(wx.Panel):
         if self.tabMinWidth < 1:
             self.tabMinWidth = 1
         for tab in self.tabs:
-            w, h = tab.GetSize()
+            tab.GetSize()
             tab.SetSize((self.tabMinWidth, self.height))
 
         if self.GetTabsCount() > 0:
