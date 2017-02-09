@@ -53,7 +53,7 @@ class GraphFrame(wx.Frame):
 
         try:
             import matplotlib as mpl
-            if mpl.__version__[0] >= "2":
+            if int(mpl.__version__[0]) >= 2:
                 mpl.use('wxagg')
                 mplImported = True
                 from matplotlib.patches import Patch
@@ -88,7 +88,7 @@ class GraphFrame(wx.Frame):
             mpl.use('wxagg')
 
         graphFrame_enabled = True
-        if mpl.__version__[0] < "1":
+        if int(mpl.__version__[0]) < 1:
             print("pyfa: Found matplotlib version ", mpl.__version__, " - activating OVER9000 workarounds")
             print("pyfa: Recommended minimum matplotlib version is 1.0.0")
             self.legendFix = True
