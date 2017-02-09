@@ -21,6 +21,9 @@ import re
 
 
 class DamagePattern(object):
+    name = None
+    ID = None
+    Name = None
     DAMAGE_TYPES = ("em", "thermal", "kinetic", "explosive")
 
     def __init__(self, emAmount=25, thermalAmount=25, kineticAmount=25, explosiveAmount=25):

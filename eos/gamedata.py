@@ -45,6 +45,9 @@ class Effect(EqBase):
     # Filter to change names of effects to valid python method names
     nameFilter = re.compile("[^A-Za-z0-9]")
 
+    def __init__(self):
+        self.name = None
+
     @reconstructor
     def init(self):
         """
@@ -201,11 +204,24 @@ def effectDummy(*args, **kwargs):
 
 
 class Item(EqBase):
+    typeID = None
+    name = None
+    group = None
+    effects = None
+    raceID = None
+    factionID = None
+    category = None
+    ID = None
+    __attributes = None
+    
     MOVE_ATTRS = (4,  # Mass
                   38,  # Capacity
                   161)  # Volume
 
     MOVE_ATTR_INFO = None
+
+    def __init__(self):
+        pass
 
     @classmethod
     def getMoveAttrInfo(cls):
@@ -435,18 +451,22 @@ class EffectInfo(EqBase):
 
 
 class AttributeInfo(EqBase):
-    pass
+    name = None
 
 
 class Attribute(EqBase):
-    pass
+    value = None
+    attributeID = None
 
 
 class Category(EqBase):
-    pass
+    name = None
 
 
 class AlphaClone(EqBase):
+    def __init__(self):
+        self.skills = None
+
     @reconstructor
     def init(self):
         self.skillCache = {}
@@ -466,7 +486,8 @@ class AlphaCloneSkill(EqBase):
 
 
 class Group(EqBase):
-    pass
+    category = None
+    name = None
 
 
 class Icon(EqBase):
@@ -474,6 +495,11 @@ class Icon(EqBase):
 
 
 class MarketGroup(EqBase):
+    def __init__(self):
+        self.parent = None
+        self.name = None
+        self.ID = None
+
     def __repr__(self):
         return u"MarketGroup(ID={}, name={}, parent={}) at {}".format(
             self.ID, self.name, getattr(self.parent, "name", None), self.name, hex(id(self))
@@ -485,6 +511,9 @@ class MetaGroup(EqBase):
 
 
 class MetaType(EqBase):
+    def __init__(self):
+        self.parent = None
+
     pass
 
 

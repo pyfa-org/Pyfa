@@ -33,6 +33,7 @@ logger = logging.getLogger(__name__)
 class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     DAMAGE_TYPES = ("em", "kinetic", "explosive", "thermal")
     DAMAGE_TYPES2 = ("EM", "Kin", "Exp", "Therm")
+    owner = None
 
     def __init__(self, item):
         """Initialize a fighter from the program"""

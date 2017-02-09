@@ -173,6 +173,7 @@ class Market(object):
     instance = None
 
     def __init__(self):
+        self.getPrice = None
         self.priceCache = {}
 
         # Init recently used module storage

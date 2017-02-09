@@ -55,6 +55,8 @@ class DmgPatternTextValidor(BaseValidator):
 class DmgPatternEntityEditor(EntityEditor):
     def __init__(self, parent):
         EntityEditor.__init__(self, parent, "Damage Profile")
+        self.btnDelete = None
+        self.btnRename = None
         self.SetEditorValidator(DmgPatternTextValidor)
 
     def getEntitiesFromContext(self):

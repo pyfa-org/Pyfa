@@ -90,6 +90,7 @@ if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION 
 
         disableOverrideEditor = False
     except ImportError as e:
+        AttributeEditor =  None
         print("Error loading Attribute Editor: %s.\nAccess to Attribute Editor is disabled." % e.message)
         disableOverrideEditor = True
 

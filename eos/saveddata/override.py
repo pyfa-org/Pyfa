@@ -28,6 +28,8 @@ logger = logging.getLogger(__name__)
 
 
 class Override(EqBase):
+    itemID = None
+
     def __init__(self, item, attr, value):
         self.itemID = item.ID
         self.__item = item

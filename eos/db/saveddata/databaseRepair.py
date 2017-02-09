@@ -18,6 +18,7 @@
 # ===============================================================================
 
 import sqlalchemy
+from sqlalchemy.exc import DatabaseError
 import logging
 
 logger = logging.getLogger(__name__)
@@ -32,7 +33,7 @@ class DatabaseCleanup(object):
         try:
             results = saveddata_engine.execute(query)
             return results
-        except sqlalchemy.exc.DatabaseError:
+        except DatabaseError:
             logger.error("Failed to connect to database or error executing query:\n%s", query)
             return None
 
