@@ -27,7 +27,6 @@ class ViewColumn(object):
     Once the missing methods are correctly implemented,
     they can be used as columns in a view.
     """
-    name = None
     columns = {}
 
     def __init__(self, fittingView):

@@ -29,8 +29,6 @@ logger = logging.getLogger(__name__)
 
 
 class Implant(HandledItem, ItemAttrShortcut):
-    ID = None
-
     def __init__(self, item):
         self.__item = item
 

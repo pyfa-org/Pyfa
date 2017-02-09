@@ -49,18 +49,6 @@ class ImplantLocation(Enum):
 class Fit(object):
     """Represents a fitting, with modules, ship, implants, etc."""
 
-    name = None
-    shipID = None
-    booster = None
-    ownerID = None
-    __projectedFits = None
-    __commandFits = None
-    projectedOnto = None
-    boostedOnto = None
-    ID = None
-    owner = None
-    notes = None
-
     PEAK_RECHARGE = 0.25
 
     def __init__(self, ship=None, name=""):

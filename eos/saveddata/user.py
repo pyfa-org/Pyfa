@@ -25,9 +25,6 @@ from sqlalchemy.orm import validates
 
 
 class User(object):
-    username = None
-    ID = None
-
     def __init__(self, username, password=None, admin=False):
         self.username = username
         if password is not None:

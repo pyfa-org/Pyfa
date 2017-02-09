@@ -31,13 +31,9 @@ logger = logging.getLogger(__name__)
 
 
 class Character(object):
-    ownerID = None
-    savedName = None
-    ID = None
     __itemList = None
     __itemIDMap = None
     __itemNameMap = None
-    apiID = None
 
     @classmethod
     def getSkillList(cls):

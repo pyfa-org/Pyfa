@@ -242,8 +242,6 @@ class HandledProjectedDroneList(HandledDroneCargoList):
 
 
 class HandledItem(object):
-    itemModifiedAttributes = None
-
     def preAssignItemAttr(self, *args, **kwargs):
         self.itemModifiedAttributes.preAssign(*args, **kwargs)
 
@@ -261,8 +259,6 @@ class HandledItem(object):
 
 
 class HandledCharge(object):
-    chargeModifiedAttributes = None
-
     def preAssignChargeAttr(self, *args, **kwargs):
         self.chargeModifiedAttributes.preAssign(*args, **kwargs)
 

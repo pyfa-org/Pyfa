@@ -22,8 +22,6 @@ import re
 
 class TargetResists(object):
     # also determined import/export order - VERY IMPORTANT
-    name = None
-    ID = None
     DAMAGE_TYPES = ("em", "thermal", "kinetic", "explosive")
 
     def __init__(self, emAmount=0, thermalAmount=0, kineticAmount=0, explosiveAmount=0):

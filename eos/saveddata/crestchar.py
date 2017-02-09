@@ -24,9 +24,6 @@ from sqlalchemy.orm import reconstructor
 
 
 class CrestChar(object):
-    name = None
-    ID = None
-
     def __init__(self, id, name, refresh_token=None):
         self.ID = id
         self.name = name

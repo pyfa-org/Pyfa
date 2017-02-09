@@ -46,7 +46,7 @@ class Effect(EqBase):
     nameFilter = re.compile("[^A-Za-z0-9]")
 
     def __init__(self):
-        self.name = None
+        pass
 
     @reconstructor
     def init(self):
@@ -204,16 +204,6 @@ def effectDummy(*args, **kwargs):
 
 
 class Item(EqBase):
-    typeID = None
-    name = None
-    group = None
-    effects = None
-    raceID = None
-    factionID = None
-    category = None
-    ID = None
-    __attributes = None
-
     MOVE_ATTRS = (4,  # Mass
                   38,  # Capacity
                   161)  # Volume
@@ -451,21 +441,20 @@ class EffectInfo(EqBase):
 
 
 class AttributeInfo(EqBase):
-    name = None
+    pass
 
 
 class Attribute(EqBase):
-    value = None
-    attributeID = None
+    pass
 
 
 class Category(EqBase):
-    name = None
+    pass
 
 
 class AlphaClone(EqBase):
     def __init__(self):
-        self.skills = None
+        pass
 
     @reconstructor
     def init(self):
@@ -486,8 +475,7 @@ class AlphaCloneSkill(EqBase):
 
 
 class Group(EqBase):
-    category = None
-    name = None
+    pass
 
 
 class Icon(EqBase):
@@ -496,9 +484,7 @@ class Icon(EqBase):
 
 class MarketGroup(EqBase):
     def __init__(self):
-        self.parent = None
-        self.name = None
-        self.ID = None
+        pass
 
     def __repr__(self):
         return u"MarketGroup(ID={}, name={}, parent={}) at {}".format(
@@ -512,7 +498,7 @@ class MetaGroup(EqBase):
 
 class MetaType(EqBase):
     def __init__(self):
-        self.parent = None
+        pass
 
     pass
 

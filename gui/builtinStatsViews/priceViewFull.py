@@ -30,9 +30,6 @@ class PriceViewFull(StatsView):
 
     def __init__(self, parent):
         StatsView.__init__(self)
-        self.labelPriceTotal = None
-        self.labelPriceFittings = None
-        self.labelPriceShip = None
         self.parent = parent
         self._cachedShip = 0
         self._cachedFittings = 0

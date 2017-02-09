@@ -41,7 +41,6 @@ logger = logging.getLogger(__name__)
 
 class Fit(object):
     instance = None
-    ID = None
 
     @classmethod
     def getInstance(cls):

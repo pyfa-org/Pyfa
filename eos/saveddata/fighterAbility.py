@@ -27,7 +27,6 @@ logger = logging.getLogger(__name__)
 class FighterAbility(object):
     DAMAGE_TYPES = ("em", "kinetic", "explosive", "thermal")
     DAMAGE_TYPES2 = ("EM", "Kin", "Exp", "Therm")
-    fighter = None
 
     # We aren't able to get data on the charges that can be stored with fighters. So we hardcode that data here, keyed
     # with the fighter squadron role

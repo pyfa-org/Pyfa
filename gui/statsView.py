@@ -19,7 +19,6 @@
 
 
 class StatsView(object):
-    name = None
     views = {}
 
     def __init__(self):
