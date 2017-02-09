@@ -144,6 +144,7 @@ class Display(wx.ListCtrl):
         else:
             event.Skip()
 
+    # noinspection PyPropertyAccess
     def addColumn(self, i, col):
         self.activeColumns.append(col)
         info = wx.ListItem()

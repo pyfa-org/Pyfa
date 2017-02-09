@@ -647,6 +647,7 @@ class FittingView(d.Display):
     def Snapshot(self):
         return self.FVsnapshot
 
+    # noinspection PyPropertyAccess
     def MakeSnapshot(self, maxColumns=1337):
 
         if self.FVsnapshot:
