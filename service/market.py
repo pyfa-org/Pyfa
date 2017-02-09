@@ -410,7 +410,8 @@ class Market(object):
             cls.instance = Market()
         return cls.instance
 
-    def __makeRevDict(self, orig):
+    @staticmethod
+    def __makeRevDict(orig):
         """Creates reverse dictionary"""
         rev = {}
         for item, value in orig.items():
@@ -419,7 +420,8 @@ class Market(object):
             rev[value].add(item)
         return rev
 
-    def getItem(self, identity, *args, **kwargs):
+    @staticmethod
+    def getItem(identity, *args, **kwargs):
         """Get item by its ID or name"""
         try:
             if isinstance(identity, types_Item):
@@ -461,7 +463,8 @@ class Market(object):
         else:
             raise TypeError("Need Group object, integer, float or string as argument")
 
-    def getCategory(self, identity, *args, **kwargs):
+    @staticmethod
+    def getCategory(identity, *args, **kwargs):
         """Get category by its ID or name"""
         if isinstance(identity, types_Category):
             category = identity
@@ -474,7 +477,8 @@ class Market(object):
             raise TypeError("Need Category object, integer, float or string as argument")
         return category
 
-    def getMetaGroup(self, identity, *args, **kwargs):
+    @staticmethod
+    def getMetaGroup(identity, *args, **kwargs):
         """Get meta group by its ID or name"""
         if isinstance(identity, types_MetaGroup):
             metaGroup = identity
@@ -487,7 +491,8 @@ class Market(object):
             raise TypeError("Need MetaGroup object, integer, float or string as argument")
         return metaGroup
 
-    def getMarketGroup(self, identity, *args, **kwargs):
+    @staticmethod
+    def getMarketGroup(identity, *args, **kwargs):
         """Get market group by its ID"""
         if isinstance(identity, types_MarketGroup):
             marketGroup = identity
@@ -605,7 +610,8 @@ class Market(object):
 
         return groups
 
-    def getMarketGroupChildren(self, mg):
+    @staticmethod
+    def getMarketGroupChildren(mg):
         """Get the children marketGroups of marketGroup."""
         children = set()
         for child in mg.children:
@@ -762,7 +768,8 @@ class Market(object):
         """Find items according to given text pattern"""
         self.searchWorkerThread.scheduleSearch(name, callback, filterOn)
 
-    def getItemsWithOverrides(self):
+    @staticmethod
+    def getItemsWithOverrides():
         overrides = eos.db.getAllOverrides()
         items = set()
         for x in overrides:
@@ -773,7 +780,8 @@ class Market(object):
                 items.add(x.item)
         return list(items)
 
-    def directAttrRequest(self, items, attribs):
+    @staticmethod
+    def directAttrRequest(items, attribs):
         try:
             itemIDs = tuple(map(lambda i: i.ID, items))
         except TypeError:

@@ -458,7 +458,8 @@ class NavigationPanel(SFItem.SFBrowserItem):
             stage, data = self.shipBrowser.browseHist.pop()
             self.gotoStage(stage, data)
 
-    def AdjustChannels(self, bitmap):
+    @staticmethod
+    def AdjustChannels(bitmap):
         img = wx.ImageFromBitmap(bitmap)
         img = img.AdjustChannels(1.05, 1.05, 1.05, 1)
         return wx.BitmapFromImage(img)
@@ -800,7 +801,8 @@ class ShipBrowser(wx.Panel):
         self.navpanel.ShowNewFitButton(False)
         self.navpanel.ShowSwitchEmptyGroupsButton(True)
 
-    def nameKey(self, info):
+    @staticmethod
+    def nameKey(info):
         return info[1]
 
     def stage3(self, event):
@@ -972,7 +974,8 @@ class PFStaticText(wx.Panel):
         self.SetSizer(mainSizer)
         self.Layout()
 
-    def GetType(self):
+    @staticmethod
+    def GetType():
         return -1
 
 
@@ -1031,7 +1034,8 @@ class CategoryItem(SFItem.SFBrowserItem):
             self.animTimer.Stop()
         self.Refresh()
 
-    def OUT_QUAD(self, t, b, c, d):
+    @staticmethod
+    def OUT_QUAD(t, b, c, d):
         t = float(t)
         b = float(b)
         c = float(c)
@@ -1204,7 +1208,8 @@ class ShipItem(SFItem.SFBrowserItem):
             self.animTimer.Stop()
         self.Refresh()
 
-    def OUT_QUAD(self, t, b, c, d):
+    @staticmethod
+    def OUT_QUAD(t, b, c, d):
         t = float(t)
         b = float(b)
         c = float(c)
@@ -1644,10 +1649,12 @@ class FitItem(SFItem.SFBrowserItem):
                 self.animTimer.Stop()
             self.Refresh()
 
-    def CalculateDelta(self, start, end, delta):
+    @staticmethod
+    def CalculateDelta(start, end, delta):
         return start + (end - start) * delta
 
-    def OUT_QUAD(self, t, b, c, d):
+    @staticmethod
+    def OUT_QUAD(t, b, c, d):
         t = float(t)
         b = float(b)
         c = float(c)

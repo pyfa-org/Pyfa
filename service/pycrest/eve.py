@@ -161,7 +161,8 @@ class APIConnection(object):
 
         return ret
 
-    def _get_expires(self, response):
+    @staticmethod
+    def _get_expires(response):
         if 'Cache-Control' not in response.headers:
             return 0
         if any([s in response.headers['Cache-Control'] for s in ['no-cache', 'no-store']]):

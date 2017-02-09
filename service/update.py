@@ -85,14 +85,16 @@ class CheckUpdateThread(threading.Thread):
         except:
             pass
 
-    def versiontuple(self, v):
+    @staticmethod
+    def versiontuple(v):
         return tuple(map(int, (v.split("."))))
 
 
 class Update(object):
     instance = None
 
-    def CheckUpdate(self, callback):
+    @staticmethod
+    def CheckUpdate(callback):
         thread = CheckUpdateThread(callback)
         thread.start()
 

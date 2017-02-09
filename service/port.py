@@ -81,15 +81,18 @@ class Port(object):
 
         return cls.instance
 
-    def backupFits(self, path, callback):
+    @staticmethod
+    def backupFits(path, callback):
         thread = FitBackupThread(path, callback)
         thread.start()
 
-    def importFitsThreaded(self, paths, callback):
+    @staticmethod
+    def importFitsThreaded(paths, callback):
         thread = FitImportThread(paths, callback)
         thread.start()
 
-    def importFitFromFiles(self, paths, callback=None):
+    @staticmethod
+    def importFitFromFiles(paths, callback=None):
         """
         Imports fits from file(s). First processes all provided paths and stores
         assembled fits into a list. This allows us to call back to the GUI as
@@ -185,7 +188,8 @@ class Port(object):
 
         return True, fits
 
-    def importFitFromBuffer(self, bufferStr, activeFit=None):
+    @staticmethod
+    def importFitFromBuffer(bufferStr, activeFit=None):
         sFit = svcFit.getInstance()
         _, fits = Port.importAuto(bufferStr, activeFit=activeFit)
         for fit in fits:

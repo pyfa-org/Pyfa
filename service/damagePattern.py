@@ -37,31 +37,38 @@ class DamagePattern(object):
 
         return cls.instance
 
-    def getDamagePatternList(self):
+    @staticmethod
+    def getDamagePatternList():
         return eos.db.getDamagePatternList()
 
-    def getDamagePattern(self, name):
+    @staticmethod
+    def getDamagePattern(name):
         return eos.db.getDamagePattern(name)
 
-    def newPattern(self, name):
+    @staticmethod
+    def newPattern(name):
         p = es_DamagePattern(0, 0, 0, 0)
         p.name = name
         eos.db.save(p)
         return p
 
-    def renamePattern(self, p, newName):
+    @staticmethod
+    def renamePattern(p, newName):
         p.name = newName
         eos.db.save(p)
 
-    def deletePattern(self, p):
+    @staticmethod
+    def deletePattern(p):
         eos.db.remove(p)
 
-    def copyPattern(self, p):
+    @staticmethod
+    def copyPattern(p):
         newP = copy.deepcopy(p)
         eos.db.save(newP)
         return newP
 
-    def saveChanges(self, p):
+    @staticmethod
+    def saveChanges(p):
         eos.db.save(p)
 
     def importPatterns(self, text):

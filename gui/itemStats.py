@@ -482,7 +482,8 @@ class ItemParams(wx.Panel):
         self.totalAttrsLabel.SetLabel("%d attributes. " % idCount)
         self.Layout()
 
-    def TranslateValueUnit(self, value, unitName, unitDisplayName):
+    @staticmethod
+    def TranslateValueUnit(value, unitName, unitDisplayName):
         def itemIDCallback():
             item = Market.getInstance().getItem(value)
             return "%s (%d)" % (item.name, value) if item is not None else str(value)
@@ -674,7 +675,8 @@ class ItemCompare(wx.Panel):
         self.paramList.RefreshRows()
         self.Layout()
 
-    def TranslateValueUnit(self, value, unitName, unitDisplayName):
+    @staticmethod
+    def TranslateValueUnit(value, unitName, unitDisplayName):
         def itemIDCallback():
             item = Market.getInstance().getItem(value)
             return "%s (%d)" % (item.name, value) if item is not None else str(value)
@@ -840,7 +842,8 @@ class ItemEffects(wx.Panel):
 
         self.RefreshValues(event)
 
-    def OnRightClick(self, event):
+    @staticmethod
+    def OnRightClick(event):
         """
         Debug use: open effect file with default application.
         If effect file does not exist, create it

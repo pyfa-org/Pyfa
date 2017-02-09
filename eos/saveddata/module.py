@@ -547,7 +547,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
         return validCharges
 
-    def __calculateHardpoint(self, item):
+    @staticmethod
+    def __calculateHardpoint(item):
         effectHardpointMap = {"turretFitted": Hardpoint.TURRET,
                               "launcherFitted": Hardpoint.MISSILE}
 
@@ -560,7 +561,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
         return Hardpoint.NONE
 
-    def __calculateSlot(self, item):
+    @staticmethod
+    def __calculateSlot(item):
         effectSlotMap = {"rigSlot": Slot.RIG,
                          "loPower": Slot.LOW,
                          "medPower": Slot.MED,

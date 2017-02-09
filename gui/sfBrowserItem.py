@@ -197,7 +197,8 @@ class PFToolbar(object):
 
         return height
 
-    def HitTest(self, target, position, area):
+    @staticmethod
+    def HitTest(target, position, area):
         x, y = target
         px, py = position
         aX, aY = area
@@ -355,7 +356,8 @@ class SFBrowserItem(wx.Window):
 
         event.Skip()
 
-    def GetType(self):
+    @staticmethod
+    def GetType():
         return -1
 
     def SetSelected(self, select=True):

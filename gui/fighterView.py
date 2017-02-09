@@ -207,7 +207,8 @@ class FighterDisplay(d.Display):
         elif data[0] == "market":
             wx.PostEvent(self.mainFrame, mb.ItemSelected(itemID=int(data[1])))
 
-    def _merge(self, src, dst):
+    @staticmethod
+    def _merge(src, dst):
         return
 
     '''

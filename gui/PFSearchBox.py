@@ -69,7 +69,8 @@ class PFSearchBox(wx.Window):
         wx.PostEvent(self, TextEnter())
         event.Skip()
 
-    def OnEditSetFocus(self, event):
+    @staticmethod
+    def OnEditSetFocus(event):
         # value = self.EditBox.GetValue()
         # if value == self.descriptiveText:
         #    self.EditBox.ChangeValue("")

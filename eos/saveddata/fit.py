@@ -796,7 +796,8 @@ class Fit(object):
                 x += 1
         return x
 
-    def getItemAttrSum(self, dict, attr):
+    @staticmethod
+    def getItemAttrSum(dict, attr):
         amount = 0
         for mod in dict:
             add = mod.getModifiedItemAttr(attr)
@@ -805,7 +806,8 @@ class Fit(object):
 
         return amount
 
-    def getItemAttrOnlineSum(self, dict, attr):
+    @staticmethod
+    def getItemAttrOnlineSum(dict, attr):
         amount = 0
         for mod in dict:
             add = mod.getModifiedItemAttr(attr) if mod.state >= State.ONLINE else None

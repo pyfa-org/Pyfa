@@ -97,7 +97,8 @@ class ModuleAmmoPicker(ContextMenu):
 
         return chargeDamageType, totalDamage
 
-    def numericConverter(self, string):
+    @staticmethod
+    def numericConverter(string):
         return int(string) if string.isdigit() else string
 
     def nameSorter(self, charge):
@@ -118,7 +119,8 @@ class ModuleAmmoPicker(ContextMenu):
 
         return item
 
-    def addSeperator(self, m, text):
+    @staticmethod
+    def addSeperator(m, text):
         id_ = ContextMenu.nextID()
         m.Append(id_, u'─ %s ─' % text)
         m.Enable(id_, False)

@@ -103,7 +103,8 @@ class Booster(HandledItem, ItemAttrShortcut):
     def item(self):
         return self.__item
 
-    def __calculateSlot(self, item):
+    @staticmethod
+    def __calculateSlot(item):
         if "boosterness" not in item.attributes:
             raise ValueError("Passed item is not a booster")
 

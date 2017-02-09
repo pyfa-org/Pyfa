@@ -264,7 +264,8 @@ class PyGauge(wx.PyWindow):
         self.Animate()
         self._tooltip.SetTip("%.2f/%.2f" % (self._value, self._range if self._range > 0.01 else 0))
 
-    def OnEraseBackground(self, event):
+    @staticmethod
+    def OnEraseBackground(event):
         """
         Handles the ``wx.EVT_ERASE_BACKGROUND`` event for L{PyGauge}.
 

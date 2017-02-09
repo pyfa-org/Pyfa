@@ -148,10 +148,12 @@ class ProjectedView(d.Display):
             if sFit.mergeDrones(fitID, self.get(src), dstDrone, True):
                 wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
-    def moduleSort(self, module):
+    @staticmethod
+    def moduleSort(module):
         return module.item.name
 
-    def fighterSort(self, fighter):
+    @staticmethod
+    def fighterSort(fighter):
         return fighter.item.name
 
     def droneSort(self, drone):
@@ -162,7 +164,8 @@ class ProjectedView(d.Display):
         return (self.droneView.DRONE_ORDER.index(item.marketGroup.name),
                 drone.item.name)
 
-    def fitSort(self, fit):
+    @staticmethod
+    def fitSort(fit):
         return fit.name
 
     def fitChanged(self, event):

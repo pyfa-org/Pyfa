@@ -93,7 +93,8 @@ class StatsPane(wx.Panel):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
 
-    def contextHandler(self, contentPanel):
+    @staticmethod
+    def contextHandler(contentPanel):
         viewName = contentPanel.viewName
 
         def handler(event):

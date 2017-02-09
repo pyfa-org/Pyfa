@@ -340,7 +340,8 @@ class CrestMgmt(wx.Dialog):
         self.lcCharacters.SetColumnWidth(0, wx.LIST_AUTOSIZE)
         self.lcCharacters.SetColumnWidth(1, wx.LIST_AUTOSIZE)
 
-    def addChar(self, event):
+    @staticmethod
+    def addChar(event):
         sCrest = Crest.getInstance()
         uri = sCrest.startServer()
         webbrowser.open(uri)

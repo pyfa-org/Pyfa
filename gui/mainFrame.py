@@ -442,13 +442,16 @@ class MainFrame(wx.Frame):
         dlg = PreferenceDialog(self)
         dlg.ShowModal()
 
-    def goWiki(self, event):
+    @staticmethod
+    def goWiki(event):
         webbrowser.open('https://github.com/pyfa-org/Pyfa/wiki')
 
-    def goForums(self, event):
+    @staticmethod
+    def goForums(event):
         webbrowser.open('https://forums.eveonline.com/default.aspx?g=posts&t=466425')
 
-    def loadDatabaseDefaults(self, event):
+    @staticmethod
+    def loadDatabaseDefaults(event):
         # Import values that must exist otherwise Pyfa breaks
         DefaultDatabaseValues.importRequiredDefaults()
         # Import default values for damage profiles

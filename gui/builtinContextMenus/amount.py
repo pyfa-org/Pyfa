@@ -71,7 +71,8 @@ class AmountChanger(wx.Dialog):
         event.Skip()
 
     # checks to make sure it's valid number
-    def onChar(self, event):
+    @staticmethod
+    def onChar(event):
         key = event.GetKeyCode()
 
         acceptable_characters = "1234567890"

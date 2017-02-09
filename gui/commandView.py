@@ -80,7 +80,8 @@ class CommandView(d.Display):
         self.Bind(wx.EVT_LIST_BEGIN_DRAG, self.startDrag)
         self.SetDropTarget(CommandViewDrop(self.handleListDrag))
 
-    def handleListDrag(self, x, y, data):
+    @staticmethod
+    def handleListDrag(x, y, data):
         """
         Handles dragging of items from various pyfa displays which support it
 
@@ -120,7 +121,8 @@ class CommandView(d.Display):
             dropSource.SetData(data)
             dropSource.DoDragDrop()
 
-    def fitSort(self, fit):
+    @staticmethod
+    def fitSort(fit):
         return fit.name
 
     def fitChanged(self, event):

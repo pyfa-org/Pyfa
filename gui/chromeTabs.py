@@ -148,7 +148,8 @@ class PFNotebook(wx.Panel):
         if self.activePage == page:
             self.ShowActive()
 
-    def GetBorders(self):
+    @staticmethod
+    def GetBorders():
         """Gets border widths to better determine page size in ShowActive()"""
 
         bx = wx.SystemSettings_GetMetric(wx.SYS_BORDER_X)
@@ -440,7 +441,8 @@ class PFTabRenderer(object):
     def SetTabImage(self, img):
         self.tabImg = img
 
-    def CopyRegion(self, region):
+    @staticmethod
+    def CopyRegion(region):
         rect = region.GetBox()
 
         newRegion = wx.Region(rect.X, rect.Y, rect.Width, rect.Height)
@@ -654,7 +656,8 @@ class PFAddRenderer(object):
         region = wx.RegionFromBitmap(self.tbmp)
         return region
 
-    def CopyRegion(self, region):
+    @staticmethod
+    def CopyRegion(region):
         rect = region.GetBox()
 
         newRegion = wx.Region(rect.X, rect.Y, rect.Width, rect.Height)
@@ -975,7 +978,8 @@ class PFTabsContainer(wx.Panel):
                 return tab
         return None
 
-    def TabHitTest(self, tab, x, y):
+    @staticmethod
+    def TabHitTest(tab, x, y):
         tabRegion = tab.GetTabRegion()
         tabPos = tab.GetPosition()
         tabPosX, tabPosY = tabPos

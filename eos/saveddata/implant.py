@@ -78,7 +78,8 @@ class Implant(HandledItem, ItemAttrShortcut):
     def item(self):
         return self.__item
 
-    def __calculateSlot(self, item):
+    @staticmethod
+    def __calculateSlot(item):
         if "implantness" not in item.attributes:
             raise ValueError("Passed item is not an implant")
 

@@ -95,7 +95,8 @@ class FitDpsGraph(Graph):
 
         return total
 
-    def calculateMissileMultiplier(self, mod, data):
+    @staticmethod
+    def calculateMissileMultiplier(mod, data):
         targetSigRad = data["signatureRadius"]
         targetVelocity = data["velocity"]
         explosionRadius = mod.getModifiedChargeAttr("aoeCloudSize")
@@ -126,7 +127,8 @@ class FitDpsGraph(Graph):
             multiplier = min(1, (float(targetSigRad) / dmgScaling) ** 2)
         return multiplier
 
-    def calculateFighterMissileMultiplier(self, ability, data):
+    @staticmethod
+    def calculateFighterMissileMultiplier(ability, data):
         prefix = ability.attrPrefix
 
         targetSigRad = data["signatureRadius"]
@@ -156,7 +158,8 @@ class FitDpsGraph(Graph):
 
         return min(sigRadiusFactor, velocityFactor, 1)
 
-    def calculateTurretChanceToHit(self, mod, data):
+    @staticmethod
+    def calculateTurretChanceToHit(mod, data):
         distance = data["distance"] * 1000
         tracking = mod.getModifiedItemAttr("trackingSpeed")
         turretOptimal = mod.maxRange
@@ -171,7 +174,8 @@ class FitDpsGraph(Graph):
 
         return 0.5 ** (trackingEq + rangeEq)
 
-    def calculateModuleMultiplier(self, mod, data):
+    @staticmethod
+    def calculateModuleMultiplier(mod, data):
         # Simplified formula, we make some assumptions about the module
         # This is basically the calculateTurretChanceToHit without tracking values
         distance = data["distance"] * 1000

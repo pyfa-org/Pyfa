@@ -75,11 +75,13 @@ class Fit(object):
         self.serviceFittingOptions = SettingsProvider.getInstance().getSettings(
             "pyfaServiceFittingOptions", serviceFittingDefaultOptions)
 
-    def getAllFits(self):
+    @staticmethod
+    def getAllFits():
         fits = eos.db.getFitList()
         return fits
 
-    def getFitsWithShip(self, shipID):
+    @staticmethod
+    def getFitsWithShip(shipID):
         """ Lists fits of shipID, used with shipBrowser """
         fits = eos.db.getFitsWithShip(shipID)
         names = []
@@ -88,7 +90,8 @@ class Fit(object):
 
         return names
 
-    def getBoosterFits(self):
+    @staticmethod
+    def getBoosterFits():
         """ Lists fits flagged as booster """
         fits = eos.db.getBoosterFits()
         names = []
@@ -97,14 +100,17 @@ class Fit(object):
 
         return names
 
-    def countAllFits(self):
+    @staticmethod
+    def countAllFits():
         return eos.db.countAllFits()
 
-    def countFitsWithShip(self, stuff):
+    @staticmethod
+    def countFitsWithShip(stuff):
         count = eos.db.countFitsWithShip(stuff)
         return count
 
-    def getModule(self, fitID, pos):
+    @staticmethod
+    def getModule(fitID, pos):
         fit = eos.db.getFit(fitID)
         return fit.modules[pos]
 
@@ -123,17 +129,20 @@ class Fit(object):
         self.recalc(fit)
         return fit.ID
 
-    def toggleBoostFit(self, fitID):
+    @staticmethod
+    def toggleBoostFit(fitID):
         fit = eos.db.getFit(fitID)
         fit.booster = not fit.booster
         eos.db.commit()
 
-    def renameFit(self, fitID, newName):
+    @staticmethod
+    def renameFit(fitID, newName):
         fit = eos.db.getFit(fitID)
         fit.name = newName
         eos.db.commit()
 
-    def deleteFit(self, fitID):
+    @staticmethod
+    def deleteFit(fitID):
         fit = eos.db.getFit(fitID)
 
         eos.db.remove(fit)
@@ -144,13 +153,15 @@ class Fit(object):
             if projection.victim_fit in eos.db.saveddata_session:  # GH issue #359
                 eos.db.saveddata_session.refresh(projection.victim_fit)
 
-    def copyFit(self, fitID):
+    @staticmethod
+    def copyFit(fitID):
         fit = eos.db.getFit(fitID)
         newFit = copy.deepcopy(fit)
         eos.db.save(newFit)
         return newFit.ID
 
-    def clearFit(self, fitID):
+    @staticmethod
+    def clearFit(fitID):
         if fitID is None:
             return None
 
@@ -214,7 +225,8 @@ class Fit(object):
             fit.inited = True
         return fit
 
-    def searchFits(self, name):
+    @staticmethod
+    def searchFits(name):
         results = eos.db.searchFits(name)
         fits = []
         for fit in results:
@@ -539,7 +551,8 @@ class Fit(object):
         eos.db.commit()
         self.recalc(fit)
 
-    def swapModules(self, fitID, src, dst):
+    @staticmethod
+    def swapModules(fitID, src, dst):
         fit = eos.db.getFit(fitID)
         # Gather modules
         srcMod = fit.modules[src]
@@ -720,7 +733,8 @@ class Fit(object):
         self.recalc(fit)
         return True
 
-    def splitDrones(self, fit, d, amount, l):
+    @staticmethod
+    def splitDrones(fit, d, amount, l):
         total = d.amount
         active = d.amountActive > 0
         d.amount = amount
@@ -824,7 +838,8 @@ class Fit(object):
         fit.character = self.character = eos.db.getCharacter(charID)
         self.recalc(fit)
 
-    def isAmmo(self, itemID):
+    @staticmethod
+    def isAmmo(itemID):
         return eos.db.getItem(itemID).category.name == "Charge"
 
     def setAmmo(self, fitID, ammoID, modules):
@@ -840,7 +855,8 @@ class Fit(object):
 
         self.recalc(fit)
 
-    def getTargetResists(self, fitID):
+    @staticmethod
+    def getTargetResists(fitID):
         if fitID is None:
             return
 
@@ -857,7 +873,8 @@ class Fit(object):
 
         self.recalc(fit)
 
-    def getDamagePattern(self, fitID):
+    @staticmethod
+    def getDamagePattern(fitID):
         if fitID is None:
             return
 

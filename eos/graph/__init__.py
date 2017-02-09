@@ -93,7 +93,8 @@ class Constant(object):
     def __iter__(self):
         yield self.value
 
-    def isConstant(self):
+    @staticmethod
+    def isConstant():
         return True
 
 
@@ -114,5 +115,6 @@ class Range(object):
             i += 1
             yield current
 
-    def isConstant(self):
+    @staticmethod
+    def isConstant():
         return False
