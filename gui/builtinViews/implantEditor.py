@@ -1,4 +1,6 @@
+# noinspection PyPackageRequirements
 import wx
+# noinspection PyPackageRequirements
 from wx.lib.buttons import GenBitmapButton
 
 from service.market import Market

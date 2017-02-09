@@ -22,6 +22,7 @@ import os.path
 import zipfile
 from config import parsePath
 
+# noinspection PyPackageRequirements
 import wx
 
 import config

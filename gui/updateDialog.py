@@ -17,7 +17,9 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
+# noinspection PyPackageRequirements
 import wx
+# noinspection PyPackageRequirements
 import dateutil.parser
 from service.settings import UpdateSettings as svc_UpdateSettings
 

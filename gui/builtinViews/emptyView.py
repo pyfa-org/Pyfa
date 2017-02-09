@@ -1,3 +1,4 @@
+# noinspection PyPackageRequirements
 import wx
 import gui.globalEvents as GE
 from gui.chromeTabs import EVT_NOTEBOOK_PAGE_CHANGED

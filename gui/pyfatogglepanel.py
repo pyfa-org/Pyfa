@@ -21,6 +21,7 @@
 # Notes: leave the commented code as it is, those line will be removed someday
 ###########################################################################
 
+# noinspection PyPackageRequirements
 import wx
 from gui.bitmapLoader import BitmapLoader
 

@@ -17,7 +17,9 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
+# noinspection PyPackageRequirements
 import wx
+# noinspection PyPackageRequirements
 import wx.lib.newevent
 import gui.utils.colorUtils as colorUtils
 import gui.utils.drawUtils as drawUtils
@@ -1123,6 +1125,7 @@ class PFTabsContainer(wx.Panel):
             color = wx.Colour(0, 0, 0)
             brush = wx.Brush(color)
 
+            # noinspection PyPackageRequirements
             from Carbon.Appearance import kThemeBrushDialogBackgroundActive
             brush.MacSetTheme(kThemeBrushDialogBackgroundActive)
         else:

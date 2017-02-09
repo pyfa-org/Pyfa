@@ -2,6 +2,7 @@ from gui.contextMenu import ContextMenu
 from eos.saveddata.fit import Fit as es_Fit
 import gui.mainFrame
 import gui.globalEvents as GE
+# noinspection PyPackageRequirements
 import wx
 from service.fit import Fit
 from eos.saveddata.cargo import Cargo as es_Cargo

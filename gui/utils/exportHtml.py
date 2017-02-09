@@ -1,5 +1,6 @@
 import threading
 import time
+# noinspection PyPackageRequirements
 import wx
 from service.settings import HTMLExportSettings
 from service.fit import Fit

@@ -18,6 +18,7 @@
 # =============================================================================
 
 from gui.viewColumn import ViewColumn
+# noinspection PyPackageRequirements
 import wx
 from eos.saveddata.module import Module
 

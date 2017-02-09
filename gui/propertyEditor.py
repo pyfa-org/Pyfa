@@ -1,9 +1,11 @@
 import csv
 import logging
 
+# noinspection PyPackageRequirements
 import wx
 
 try:
+    # noinspection PyPackageRequirements
     import wx.propgrid as wxpg
 except:
     if wx.VERSION < (2, 9):

@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 
+# noinspection PyPackageRequirements
 import wx
 import copy
 

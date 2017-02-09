@@ -22,13 +22,17 @@ import os.path
 import logging
 
 import sqlalchemy
+# noinspection PyPackageRequirements
 import wx
+# noinspection PyPackageRequirements
+from wx._core import PyDeadObjectError
+# noinspection PyPackageRequirements
+from wx.lib.wordwrap import wordwrap
+# noinspection PyPackageRequirements
+from wx.lib.inspection import InspectionTool
 import time
 
 from codecs import open
-from wx._core import PyDeadObjectError
-
-from wx.lib.wordwrap import wordwrap
 
 import config
 
@@ -949,7 +953,6 @@ class MainFrame(wx.Frame):
             self.graphFrame.SetFocus()
 
     def openWXInspectTool(self, event):
-        from wx.lib.inspection import InspectionTool
         if not InspectionTool().initialized:
             InspectionTool().Init()
 

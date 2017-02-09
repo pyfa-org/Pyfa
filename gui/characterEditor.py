@@ -17,9 +17,12 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
+# noinspection PyPackageRequirements
 import wx
 
+# noinspection PyPackageRequirements
 import wx.lib.newevent
+# noinspection PyPackageRequirements
 import wx.gizmos
 from gui.bitmapLoader import BitmapLoader
 from gui.contextMenu import ContextMenu

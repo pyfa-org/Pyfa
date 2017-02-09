@@ -18,6 +18,7 @@
 # =============================================================================
 
 import sys
+# noinspection PyPackageRequirements
 import wx
 import gui.mainFrame
 from gui.viewColumn import ViewColumn

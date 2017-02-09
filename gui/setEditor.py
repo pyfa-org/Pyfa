@@ -18,6 +18,7 @@
 # =============================================================================
 
 import logging
+# noinspection PyPackageRequirements
 import wx
 
 from service.implantSet import ImplantSets

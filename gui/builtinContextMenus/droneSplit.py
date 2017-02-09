@@ -2,6 +2,7 @@ from gui.contextMenu import ContextMenu
 import gui.mainFrame
 import gui.globalEvents as GE
 from service.fit import Fit
+# noinspection PyPackageRequirements
 import wx
 
 

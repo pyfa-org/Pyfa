@@ -1,3 +1,4 @@
+# noinspection PyPackageRequirements
 import wx
 import gui.utils.drawUtils as drawUtils
 

@@ -1,6 +1,7 @@
 import time
 import webbrowser
 import json
+# noinspection PyPackageRequirements
 import wx
 import requests
 

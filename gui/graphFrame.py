@@ -21,6 +21,7 @@ import os
 import logging
 import imp
 
+# noinspection PyPackageRequirements
 import wx
 
 from service.fit import Fit

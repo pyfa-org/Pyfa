@@ -11,6 +11,7 @@ PyfaGauge is a generic Gauge implementation tailored for PYFA (Python Fitting As
 It uses the easeOutQuad equation from caurina.transitions.Tweener to do the animation stuff
 """
 
+# noinspection PyPackageRequirements
 import wx
 import copy
 

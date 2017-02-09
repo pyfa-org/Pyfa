@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import gui.mainFrame
+# noinspection PyPackageRequirements
 import wx
 import gui.globalEvents as GE
 from gui.builtinContextMenus.moduleAmmoPicker import ModuleAmmoPicker

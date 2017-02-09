@@ -3,7 +3,9 @@
 import re
 import time
 
+# noinspection PyPackageRequirements
 import wx
+# noinspection PyPackageRequirements
 from wx.lib.buttons import GenBitmapButton
 
 from service.fit import Fit

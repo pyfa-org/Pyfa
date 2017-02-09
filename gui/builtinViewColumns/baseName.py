@@ -18,6 +18,7 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
+# noinspection PyPackageRequirements
 import wx
 from eos.saveddata.cargo import Cargo
 from eos.saveddata.implant import Implant

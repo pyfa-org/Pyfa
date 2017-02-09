@@ -23,8 +23,11 @@ import csv
 import sys
 import subprocess
 
+# noinspection PyPackageRequirements
 import wx
+# noinspection PyPackageRequirements
 import wx.html
+# noinspection PyPackageRequirements
 import wx.lib.mixins.listctrl as listmix
 
 import config
