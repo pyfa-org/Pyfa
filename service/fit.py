@@ -106,7 +106,8 @@ class Fit(object):
             "showTooltip": True,
             "showMarketShortcuts": False,
             "enableGaugeAnimation": True,
-            "exportCharges": True}
+            "exportCharges": True,
+            "priceSystem": "Jita"}
 
         self.serviceFittingOptions = SettingsProvider.getInstance().getSettings(
             "pyfaServiceFittingOptions", serviceFittingDefaultOptions)

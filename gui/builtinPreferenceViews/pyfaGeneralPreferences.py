@@ -84,7 +84,7 @@ class PFGeneralPref ( PreferenceView):
         self.cbMarketShortcuts.SetValue(self.sFit.serviceFittingOptions["showMarketShortcuts"] or False)
         self.cbGaugeAnimation.SetValue(self.sFit.serviceFittingOptions["enableGaugeAnimation"])
         self.cbExportCharges.SetValue(self.sFit.serviceFittingOptions["exportCharges"])
-        self.chPriceSystem.SetStringSelection("Jita")
+        self.chPriceSystem.SetStringSelection(self.sFit.serviceFittingOptions["priceSystem"])
 
         self.cbGlobalChar.Bind(wx.EVT_CHECKBOX, self.OnCBGlobalCharStateChange)
         self.cbGlobalDmgPattern.Bind(wx.EVT_CHECKBOX, self.OnCBGlobalDmgPatternStateChange)
@@ -168,11 +168,10 @@ class PFGeneralPref ( PreferenceView):
         return BitmapLoader.getBitmap("prefs_settings", "gui")
 
     def onPriceSelection(self, event):
-        Price.currentSystemId = Price.systemsList.get(
-            self.chPriceSystem.GetString(self.chPriceSystem.GetSelection())
-        )
+        system = self.chPriceSystem.GetString(self.chPriceSystem.GetSelection())
+        Price.currentSystemId = Price.systemsList.get(system)
+        self.sFit.serviceFittingOptions["priceSystem"] = system
 
-        mainFrame = gui.mainFrame.MainFrame.getInstance()
         sFit = service.Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
         fit = sFit.getFit(fitID)
