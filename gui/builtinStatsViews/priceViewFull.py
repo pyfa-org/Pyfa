@@ -18,7 +18,6 @@
 #===============================================================================
 
 import wx
-import gui.mainFrame
 from gui.statsView import StatsView
 from gui import builtinStatsViews
 from gui.bitmapLoader import BitmapLoader
@@ -35,7 +34,6 @@ class PriceViewFull(StatsView):
         self._cachedShip = 0
         self._cachedFittings = 0
         self._cachedTotal = 0
-        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     def getHeaderText(self, fit):
         return "Price"
