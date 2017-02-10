@@ -30,7 +30,6 @@ from service.fit import Fit
 class BoosterViewDrop(wx.PyDropTarget):
     def __init__(self, dropFn, *args, **kwargs):
         super(BoosterViewDrop, self).__init__(*args, **kwargs)
-        wx.PyDropTarget.__init__(self)
         self.dropFn = dropFn
         # this is really transferring an EVE itemID
         self.dropData = wx.PyTextDataObject()

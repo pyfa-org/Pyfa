@@ -34,7 +34,6 @@ from service.market import Market
 class FighterViewDrop(wx.PyDropTarget):
     def __init__(self, dropFn, *args, **kwargs):
         super(FighterViewDrop, self).__init__(*args, **kwargs)
-        wx.PyDropTarget.__init__(self)
         self.dropFn = dropFn
         # this is really transferring an EVE itemID
         self.dropData = wx.PyTextDataObject()
