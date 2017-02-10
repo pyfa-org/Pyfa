@@ -433,7 +433,7 @@ class Fit(object):
             return False
 
         if m.item.category.name == "Subsystem":
-            fit.modules.freeSlot(m.getModifiedItemAttr("subSystemSlot"), es_Module.buildEmpty(m.slot))
+            fit.modules.freeSlot(m.getModifiedItemAttr("subSystemSlot"))
 
         if m.fits(fit):
             m.owner = fit
@@ -460,8 +460,7 @@ class Fit(object):
             return None
 
         numSlots = len(fit.modules)
-        dummy_module = es_Module.buildEmpty(fit.modules[position].slot)
-        fit.modules.toDummy(position, dummy_module)
+        fit.modules.toDummy(position)
         self.recalc(fit)
         self.checkStates(fit, None)
         fit.fill()
@@ -472,8 +471,7 @@ class Fit(object):
         fit = eos.db.getFit(fitID)
 
         # Dummy it out in case the next bit fails
-        dummy_module = es_Module.buildEmpty(fit.modules[position].slot)
-        fit.modules.toDummy(position, dummy_module)
+        fit.modules.toDummy(position)
 
         item = eos.db.getItem(newItemID, eager=("attributes", "group.category"))
         try:

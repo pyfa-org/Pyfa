@@ -152,21 +152,23 @@ class HandledModuleList(HandledList):
         for i in xrange(oldPos, len(self)):
             self[i].position -= 1
 
+    def toDummy(self, index):
+        mod = self[index]
+        if not mod.isEmpty:
+            dummy = mod.buildEmpty(mod.slot)
+            dummy.position = index
+            self[index] = dummy
+
+
     def toModule(self, index, mod):
         mod.position = index
         self[index] = mod
 
-    def toDummy(self, index, dummy):
-        mod = self[index]
-        if not mod.isEmpty:
-            dummy.position = index
-            self[index] = dummy
-
-    def freeSlot(self, slot, dummy):
+    def freeSlot(self, slot):
         for i in range(len(self)):
             mod = self[i]
             if mod.getModifiedItemAttr("subSystemSlot") == slot:
-                self.toDummy(i, dummy)
+                self.toDummy(i)
                 break
 
 
