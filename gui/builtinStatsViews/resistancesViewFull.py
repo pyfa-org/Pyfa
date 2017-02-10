@@ -21,7 +21,7 @@
 import wx
 from gui.statsView import StatsView
 from gui.bitmapLoader import BitmapLoader
-from gui import pygauge as PG
+from gui.pygauge import PyGauge
 from gui.utils.numberFormatter import formatAmount
 import gui.mainFrame
 import gui.globalEvents as GE
@@ -133,7 +133,7 @@ class ResistancesViewFull(StatsView):
                 bc = pgColour[1]
                 currGColour += 1
 
-                lbl = PG.PyGauge(contentPanel, wx.ID_ANY, 100)
+                lbl = PyGauge(contentPanel, wx.ID_ANY, 100)
                 lbl.SetMinSize((48, 16))
                 lbl.SetBackgroundColour(wx.Colour(bc[0], bc[1], bc[2]))
                 lbl.SetBarColour(wx.Colour(fc[0], fc[1], fc[2]))

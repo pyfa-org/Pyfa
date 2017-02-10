@@ -17,6 +17,7 @@ from urlparse import urlparse, urlunparse, parse_qsl
 try:
     import pickle
 except ImportError:  # pragma: no cover
+    # noinspection PyPep8Naming
     import cPickle as pickle
 
 logger = logging.getLogger("pycrest.eve")
