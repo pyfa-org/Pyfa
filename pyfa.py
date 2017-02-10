@@ -59,6 +59,7 @@ if not hasattr(sys, 'frozen'):
     try:
         import wxversion
     except ImportError:
+        wxversion = None
         print("Cannot find wxPython\nYou can download wxPython (2.8+) from http://www.wxpython.org/")
         sys.exit(1)
 
@@ -89,6 +90,7 @@ if not hasattr(sys, 'frozen'):
             print("Unknown sqlalchemy version string format, skipping check")
 
     except ImportError:
+        sqlalchemy = None
         print("Cannot find sqlalchemy.\nYou can download sqlalchemy (0.6+) from http://www.sqlalchemy.org/")
         sys.exit(1)
 
@@ -97,6 +99,7 @@ if not hasattr(sys, 'frozen'):
         # noinspection PyPackageRequirements
         import dateutil.parser  # noqa - Copied import statement from service/update.py
     except ImportError:
+        dateutil = None
         print("Cannot find python-dateutil.\nYou can download python-dateutil from https://pypi.python.org/pypi/python-dateutil")
         sys.exit(1)
 
