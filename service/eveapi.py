@@ -346,6 +346,19 @@ class _Context(object):
         # perform arcane attribute majick trick
         return _Context(self._root, self._path + "/" + this, self.parameters)
 
+    def __call__(self, **kw):
+        if kw:
+            # specified keywords override contextual ones
+            for k, v in self.parameters.iteritems():
+                if k not in kw:
+                    kw[k] = v
+        else:
+            # no keywords provided, just update with contextual ones.
+            kw.update(self.parameters)
+
+        # now let the root context handle it further
+        return self._root(self._path, **kw)
+
 
 class _AuthContext(_Context):
     def character(self, characterID):
