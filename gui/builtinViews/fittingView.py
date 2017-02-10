@@ -406,13 +406,10 @@ class FittingView(d.Display):
             if mod1.slot != mod2.slot:
                 return
 
-            if not getattr(mod2, "modPosition"):
-                self.mods.modPosition = mod2.modPosition = dstRow
-
             if clone and mod2.isEmpty:
-                sFit.cloneModule(self.mainFrame.getActiveFit(), srcIdx, mod2.modPosition)
+                sFit.cloneModule(self.mainFrame.getActiveFit(), srcIdx, getattr(mod2, "modPosition", dstRow))
             else:
-                sFit.swapModules(self.mainFrame.getActiveFit(), srcIdx, mod2.modPosition)
+                sFit.swapModules(self.mainFrame.getActiveFit(), srcIdx, getattr(mod2, "modPosition", dstRow))
 
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
 
