@@ -212,11 +212,11 @@ class ModifiedAttributeDict(collections.MutableMapping):
         for penalizedMultipliers in penalizedMultiplierGroups.itervalues():
             # A quick explanation of how this works:
             # 1: Bonuses and penalties are calculated seperately, so we'll have to filter each of them
-            l1 = filter(lambda val: val > 1, penalizedMultipliers)
-            l2 = filter(lambda val: val < 1, penalizedMultipliers)
+            l1 = filter(lambda _val: _val > 1, penalizedMultipliers)
+            l2 = filter(lambda _val: _val < 1, penalizedMultipliers)
             # 2: The most significant bonuses take the smallest penalty,
             # This means we'll have to sort
-            abssort = lambda val: -abs(val - 1)
+            abssort = lambda _val: -abs(_val - 1)
             l1.sort(key=abssort)
             l2.sort(key=abssort)
             # 3: The first module doesn't get penalized at all

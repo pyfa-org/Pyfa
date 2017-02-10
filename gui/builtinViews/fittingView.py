@@ -431,7 +431,7 @@ class FittingView(d.Display):
 
         if fit is not None:
             self.mods = fit.modules[:]
-            self.mods.sort(key=lambda mod: (slotOrder.index(mod.slot), mod.position))
+            self.mods.sort(key=lambda _mod: (slotOrder.index(_mod.slot), _mod.position))
 
             # Blanks is a list of indexes that mark non-module positions (such
             # as Racks and tactical Modes. This allows us to skip over common
