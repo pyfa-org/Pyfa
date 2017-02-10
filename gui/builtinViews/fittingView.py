@@ -34,6 +34,7 @@ from gui.bitmapLoader import BitmapLoader
 import gui.builtinViews.emptyView
 from gui.utils.exportHtml import exportHtml
 from logging import getLogger
+from gui.chromeTabs import EVT_NOTEBOOK_PAGE_CHANGED
 
 from service.fit import Fit
 from service.market import Market
@@ -159,7 +160,7 @@ class FittingView(d.Display):
         self.Bind(wx.EVT_SHOW, self.OnShow)
         self.Bind(wx.EVT_MOTION, self.OnMouseMove)
         self.Bind(wx.EVT_LEAVE_WINDOW, self.OnLeaveWindow)
-        self.parent.Bind(gui.chromeTabs.EVT_NOTEBOOK_PAGE_CHANGED, self.pageChanged)
+        self.parent.Bind(EVT_NOTEBOOK_PAGE_CHANGED, self.pageChanged)
 
     def OnLeaveWindow(self, event):
         self.SetToolTip(None)
@@ -208,7 +209,7 @@ class FittingView(d.Display):
             wx.PostEvent(self.mainFrame, gui.shipBrowser.FitSelected(fitID=fitID))
 
     def Destroy(self):
-        self.parent.Unbind(gui.chromeTabs.EVT_NOTEBOOK_PAGE_CHANGED, handler=self.pageChanged)
+        self.parent.Unbind(EVT_NOTEBOOK_PAGE_CHANGED, handler=self.pageChanged)
         self.mainFrame.Unbind(GE.FIT_CHANGED, handler=self.fitChanged)
         self.mainFrame.Unbind(gui.shipBrowser.EVT_FIT_RENAMED, handler=self.fitRenamed)
         self.mainFrame.Unbind(gui.shipBrowser.EVT_FIT_REMOVED, handler=self.fitRemoved)
