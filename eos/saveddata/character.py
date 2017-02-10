@@ -377,8 +377,8 @@ class Skill(HandledItem):
         if hasattr(self, "_Skill__ro") and self.__ro is True and key != "characterID":
             raise ReadOnlyException()
 
-        map = {"characterID": lambda val: isinstance(val, int),
-               "skillID": lambda val: isinstance(val, int)}
+        map = {"characterID": lambda _val: isinstance(_val, int),
+               "skillID": lambda _val: isinstance(_val, int)}
 
         if not map[key](val):
             raise ValueError(str(val) + " is not a valid value for " + key)
