@@ -22,6 +22,7 @@ import wx
 
 import config
 from service.character import Character
+import gui.graphFrame
 import gui.globalEvents as GE
 from gui.bitmapLoader import BitmapLoader
 
@@ -115,6 +116,9 @@ class MainMenuBar(wx.MenuBar):
         graphFrameItem = wx.MenuItem(windowMenu, self.graphFrameId, "Graphs\tCTRL+G")
         graphFrameItem.SetBitmap(BitmapLoader.getBitmap("graphs_small", "gui"))
         windowMenu.AppendItem(graphFrameItem)
+
+        if not gui.graphFrame.graphFrame_enabled:
+            self.Enable(self.graphFrameId, False)
 
         preferencesShortCut = "CTRL+," if 'wxMac' in wx.PlatformInfo else "CTRL+P"
         preferencesItem = wx.MenuItem(windowMenu, wx.ID_PREFERENCES, "Preferences\t" + preferencesShortCut)

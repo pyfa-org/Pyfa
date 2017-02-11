@@ -954,7 +954,7 @@ class MainFrame(wx.Frame):
 
             if graphFrame.graphFrame_enabled:
                 self.graphFrame.Show()
-        else:
+        elif graphFrame.graphFrame_enabled:
             self.graphFrame.SetFocus()
 
     def openWXInspectTool(self, event):
