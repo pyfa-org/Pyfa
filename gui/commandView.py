@@ -43,7 +43,6 @@ class DummyEntry(object):
 class CommandViewDrop(wx.PyDropTarget):
     def __init__(self, dropFn, *args, **kwargs):
         super(CommandViewDrop, self).__init__(*args, **kwargs)
-        wx.PyDropTarget.__init__(self)
         self.dropFn = dropFn
         # this is really transferring an EVE itemID
         self.dropData = wx.PyTextDataObject()

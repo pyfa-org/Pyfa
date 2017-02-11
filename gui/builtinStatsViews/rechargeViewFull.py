@@ -23,7 +23,7 @@ from gui.statsView import StatsView
 from gui.bitmapLoader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 import gui.mainFrame
-import gui.builtinStatsViews.resistancesViewFull as rvf
+from gui.builtinStatsViews.resistancesViewFull import EFFECTIVE_HP_TOGGLED
 from service.fit import Fit
 
 
@@ -34,7 +34,7 @@ class RechargeViewFull(StatsView):
         StatsView.__init__(self)
         self.parent = parent
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.mainFrame.Bind(rvf.EFFECTIVE_HP_TOGGLED, self.toggleEffective)
+        self.mainFrame.Bind(EFFECTIVE_HP_TOGGLED, self.toggleEffective)
         self.effective = True
 
     def getHeaderText(self, fit):

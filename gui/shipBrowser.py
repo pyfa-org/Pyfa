@@ -685,7 +685,7 @@ class ShipBrowser(wx.Panel):
         if len(self.categoryList) == 0:
             # set cache of category list
             self.categoryList = list(sMkt.getShipRoot())
-            self.categoryList.sort(key=lambda ship: ship.name)
+            self.categoryList.sort(key=lambda _ship: _ship.name)
 
             # set map & cache of fittings per category
             for cat in self.categoryList:
@@ -928,7 +928,7 @@ class ShipBrowser(wx.Panel):
         fits = event.fits
 
         # sort by ship name, then fit name
-        fits.sort(key=lambda fit: (fit.ship.item.name, fit.name))
+        fits.sort(key=lambda _fit: (_fit.ship.item.name, _fit.name))
 
         self.lastdata = fits
         self.lpane.Freeze()

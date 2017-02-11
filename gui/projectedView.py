@@ -45,7 +45,6 @@ class DummyEntry(object):
 class ProjectedViewDrop(wx.PyDropTarget):
     def __init__(self, dropFn, *args, **kwargs):
         super(ProjectedViewDrop, self).__init__(*args, **kwargs)
-        wx.PyDropTarget.__init__(self)
         self.dropFn = dropFn
         # this is really transferring an EVE itemID
         self.dropData = wx.PyTextDataObject()

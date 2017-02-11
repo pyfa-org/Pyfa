@@ -38,7 +38,7 @@ class FitDpsGraph(Graph):
         fit = self.fit
         total = 0
         distance = data["distance"] * 1000
-        abssort = lambda val: -abs(val - 1)
+        abssort = lambda _val: -abs(_val - 1)
 
         for mod in fit.modules:
             if not mod.isEmpty and mod.state >= State.ACTIVE:

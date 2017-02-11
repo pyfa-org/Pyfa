@@ -21,7 +21,7 @@
 import wx
 from gui.statsView import StatsView
 from gui.bitmapLoader import BitmapLoader
-from gui import pygauge as PG
+from gui.pygauge import PyGauge
 import gui.mainFrame
 from gui.chromeTabs import EVT_NOTEBOOK_PAGE_CHANGED
 
@@ -176,7 +176,7 @@ class ResourcesViewFull(StatsView):
 
                 # Gauges modif. - Darriele
 
-                gauge = PG.PyGauge(parent, wx.ID_ANY, 1)
+                gauge = PyGauge(parent, wx.ID_ANY, 1)
                 gauge.SetValueRange(0, 0)
                 gauge.SetMinSize((self.getTextExtentW("1.999M/1.99M MW"), 23))
                 gauge.SetFractionDigits(2)

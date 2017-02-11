@@ -256,10 +256,10 @@ class Character(object):
 
     @validates("ID", "name", "apiKey", "ownerID")
     def validator(self, key, val):
-        map = {"ID": lambda val: isinstance(val, int),
-               "name": lambda val: True,
-               "apiKey": lambda val: val is None or (isinstance(val, basestring) and len(val) > 0),
-               "ownerID": lambda val: isinstance(val, int) or val is None}
+        map = {"ID": lambda _val: isinstance(_val, int),
+               "name": lambda _val: True,
+               "apiKey": lambda _val: _val is None or (isinstance(_val, basestring) and len(_val) > 0),
+               "ownerID": lambda _val: isinstance(_val, int) or _val is None}
 
         if not map[key](val):
             raise ValueError(str(val) + " is not a valid value for " + key)
@@ -377,8 +377,8 @@ class Skill(HandledItem):
         if hasattr(self, "_Skill__ro") and self.__ro is True and key != "characterID":
             raise ReadOnlyException()
 
-        map = {"characterID": lambda val: isinstance(val, int),
-               "skillID": lambda val: isinstance(val, int)}
+        map = {"characterID": lambda _val: isinstance(_val, int),
+               "skillID": lambda _val: isinstance(_val, int)}
 
         if not map[key](val):
             raise ValueError(str(val) + " is not a valid value for " + key)

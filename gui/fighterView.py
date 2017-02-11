@@ -21,7 +21,7 @@
 import wx
 
 import gui.globalEvents as GE
-import gui.marketBrowser as mb
+import gui.marketBrowser as marketBrowser
 import gui.mainFrame
 import gui.display as d
 from gui.builtinViewColumns.state import State
@@ -34,7 +34,6 @@ from service.market import Market
 class FighterViewDrop(wx.PyDropTarget):
     def __init__(self, dropFn, *args, **kwargs):
         super(FighterViewDrop, self).__init__(*args, **kwargs)
-        wx.PyDropTarget.__init__(self)
         self.dropFn = dropFn
         # this is really transferring an EVE itemID
         self.dropData = wx.PyTextDataObject()
@@ -128,7 +127,7 @@ class FighterDisplay(d.Display):
         self.hoveredColumn = None
 
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
-        self.mainFrame.Bind(mb.ITEM_SELECTED, self.addItem)
+        self.mainFrame.Bind(marketBrowser.ITEM_SELECTED, self.addItem)
         self.Bind(wx.EVT_LEFT_DCLICK, self.removeItem)
         self.Bind(wx.EVT_LEFT_DOWN, self.click)
         self.Bind(wx.EVT_KEY_UP, self.kbEvent)
@@ -205,7 +204,7 @@ class FighterDisplay(d.Display):
             if srcRow != -1 and dstRow != -1:
                 self._merge(srcRow, dstRow)
         elif data[0] == "market":
-            wx.PostEvent(self.mainFrame, mb.ItemSelected(itemID=int(data[1])))
+            wx.PostEvent(self.mainFrame, marketBrowser.ItemSelected(itemID=int(data[1])))
 
     @staticmethod
     def _merge(src, dst):

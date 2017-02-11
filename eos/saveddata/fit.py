@@ -364,9 +364,9 @@ class Fit(object):
 
     @validates("ID", "ownerID", "shipID")
     def validator(self, key, val):
-        map = {"ID": lambda val: isinstance(val, int),
-               "ownerID": lambda val: isinstance(val, int) or val is None,
-               "shipID": lambda val: isinstance(val, int) or val is None}
+        map = {"ID": lambda _val: isinstance(_val, int),
+               "ownerID": lambda _val: isinstance(_val, int) or _val is None,
+               "shipID": lambda _val: isinstance(_val, int) or _val is None}
 
         if not map[key](val):
             raise ValueError(str(val) + " is not a valid value for " + key)
@@ -1041,8 +1041,8 @@ class Fit(object):
                                     repairers.append(mod)
 
                 # Sort repairers by efficiency. We want to use the most efficient repairers first
-                repairers.sort(key=lambda mod: mod.getModifiedItemAttr(
-                    groupAttrMap[mod.item.group.name]) / mod.getModifiedItemAttr("capacitorNeed"), reverse=True)
+                repairers.sort(key=lambda _mod: _mod.getModifiedItemAttr(
+                    groupAttrMap[_mod.item.group.name]) / _mod.getModifiedItemAttr("capacitorNeed"), reverse=True)
 
                 # Loop through every module until we're above peak recharge
                 # Most efficient first, as we sorted earlier.

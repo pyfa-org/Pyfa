@@ -1127,8 +1127,9 @@ class PFTabsContainer(wx.Panel):
             color = wx.Colour(0, 0, 0)
             brush = wx.Brush(color)
 
-            # noinspection PyPackageRequirements
+            # noinspection PyPackageRequirements,PyUnresolvedReferences,PyUnresolvedReferences,PyUnresolvedReferences
             from Carbon.Appearance import kThemeBrushDialogBackgroundActive
+            # noinspection PyUnresolvedReferences
             brush.MacSetTheme(kThemeBrushDialogBackgroundActive)
         else:
             color = wx.SystemSettings_GetColour(wx.SYS_COLOUR_3DFACE)
