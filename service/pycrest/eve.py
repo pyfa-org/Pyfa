@@ -12,20 +12,13 @@ import config
 from service.pycrest.compat import bytes_, text_
 from service.pycrest.errors import APIException
 
-try:
-    from urllib.parse import urlparse, urlunparse, parse_qsl
-except ImportError:  # pragma: no cover
-    from urlparse import urlparse, urlunparse, parse_qsl
+from urlparse import urlparse, urlunparse, parse_qsl
 
 try:
     import pickle
 except ImportError:  # pragma: no cover
+    # noinspection PyPep8Naming
     import cPickle as pickle
-
-try:
-    from urllib.parse import quote
-except ImportError:  # pragma: no cover
-    from urllib import quote
 
 logger = logging.getLogger("pycrest.eve")
 cache_re = re.compile(r'max-age=([0-9]+)')
@@ -166,7 +159,8 @@ class APIConnection(object):
 
         return ret
 
-    def _get_expires(self, response):
+    @staticmethod
+    def _get_expires(response):
         if 'Cache-Control' not in response.headers:
             return 0
         if any([s in response.headers['Cache-Control'] for s in ['no-cache', 'no-store']]):

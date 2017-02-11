@@ -547,7 +547,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
         return validCharges
 
-    def __calculateHardpoint(self, item):
+    @staticmethod
+    def __calculateHardpoint(item):
         effectHardpointMap = {"turretFitted": Hardpoint.TURRET,
                               "launcherFitted": Hardpoint.MISSILE}
 
@@ -560,7 +561,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
         return Hardpoint.NONE
 
-    def __calculateSlot(self, item):
+    @staticmethod
+    def __calculateSlot(item):
         effectSlotMap = {"rigSlot": Slot.RIG,
                          "loPower": Slot.LOW,
                          "medPower": Slot.MED,
@@ -579,9 +581,9 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     @validates("ID", "itemID", "ammoID")
     def validator(self, key, val):
-        map = {"ID": lambda val: isinstance(val, int),
-               "itemID": lambda val: val is None or isinstance(val, int),
-               "ammoID": lambda val: isinstance(val, int)}
+        map = {"ID": lambda _val: isinstance(_val, int),
+               "itemID": lambda _val: _val is None or isinstance(_val, int),
+               "ammoID": lambda _val: isinstance(_val, int)}
 
         if not map[key](val):
             raise ValueError(str(val) + " is not a valid value for " + key)

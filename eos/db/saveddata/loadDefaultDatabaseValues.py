@@ -26,7 +26,7 @@ class ImportError(Exception):
     pass
 
 
-class DefaultDatabaseValues():
+class DefaultDatabaseValues(object):
     def __init__(self):
         pass
 

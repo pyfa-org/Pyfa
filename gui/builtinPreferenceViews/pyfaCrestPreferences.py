@@ -1,3 +1,4 @@
+# noinspection PyPackageRequirements
 import wx
 
 from gui.preferenceView import PreferenceView
@@ -7,6 +8,7 @@ import gui.mainFrame
 
 from service.settings import CRESTSettings
 
+# noinspection PyPackageRequirements
 from wx.lib.intctrl import IntCtrl
 
 if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3, 0)):

@@ -3,7 +3,9 @@
 import re
 import time
 
+# noinspection PyPackageRequirements
 import wx
+# noinspection PyPackageRequirements
 from wx.lib.buttons import GenBitmapButton
 
 from service.fit import Fit
@@ -195,7 +197,7 @@ class RaceSelector(wx.Window):
         padding = self.buttonsPadding
 
         for bmp in self.raceBmps:
-            if (mx > x and mx < x + bmp.GetWidth()) and (my > y and my < y + bmp.GetHeight()):
+            if (x < mx < x + bmp.GetWidth()) and (y < my < y + bmp.GetHeight()):
                 return self.raceBmps.index(bmp)
             if self.layout == wx.VERTICAL:
                 y += bmp.GetHeight() + padding
@@ -456,7 +458,8 @@ class NavigationPanel(SFItem.SFBrowserItem):
             stage, data = self.shipBrowser.browseHist.pop()
             self.gotoStage(stage, data)
 
-    def AdjustChannels(self, bitmap):
+    @staticmethod
+    def AdjustChannels(bitmap):
         img = wx.ImageFromBitmap(bitmap)
         img = img.AdjustChannels(1.05, 1.05, 1.05, 1)
         return wx.BitmapFromImage(img)
@@ -626,7 +629,6 @@ class ShipBrowser(wx.Panel):
         event.Skip()
 
     def SizeRefreshList(self, event):
-        ewidth, eheight = event.GetSize()
         self.Layout()
         self.lpane.Layout()
         self.lpane.RefreshList(True)
@@ -683,7 +685,7 @@ class ShipBrowser(wx.Panel):
         if len(self.categoryList) == 0:
             # set cache of category list
             self.categoryList = list(sMkt.getShipRoot())
-            self.categoryList.sort(key=lambda ship: ship.name)
+            self.categoryList.sort(key=lambda _ship: _ship.name)
 
             # set map & cache of fittings per category
             for cat in self.categoryList:
@@ -798,7 +800,8 @@ class ShipBrowser(wx.Panel):
         self.navpanel.ShowNewFitButton(False)
         self.navpanel.ShowSwitchEmptyGroupsButton(True)
 
-    def nameKey(self, info):
+    @staticmethod
+    def nameKey(info):
         return info[1]
 
     def stage3(self, event):
@@ -925,7 +928,7 @@ class ShipBrowser(wx.Panel):
         fits = event.fits
 
         # sort by ship name, then fit name
-        fits.sort(key=lambda fit: (fit.ship.item.name, fit.name))
+        fits.sort(key=lambda _fit: (_fit.ship.item.name, _fit.name))
 
         self.lastdata = fits
         self.lpane.Freeze()
@@ -970,7 +973,8 @@ class PFStaticText(wx.Panel):
         self.SetSizer(mainSizer)
         self.Layout()
 
-    def GetType(self):
+    @staticmethod
+    def GetType():
         return -1
 
 
@@ -1029,7 +1033,8 @@ class CategoryItem(SFItem.SFBrowserItem):
             self.animTimer.Stop()
         self.Refresh()
 
-    def OUT_QUAD(self, t, b, c, d):
+    @staticmethod
+    def OUT_QUAD(t, b, c, d):
         t = float(t)
         b = float(b)
         c = float(c)
@@ -1189,8 +1194,7 @@ class ShipItem(SFItem.SFBrowserItem):
     def OnShowPopup(self, event):
         pos = event.GetPosition()
         pos = self.ScreenToClient(pos)
-        contexts = []
-        contexts.append(("baseShip", "Ship Basic"))
+        contexts = [("baseShip", "Ship Basic")]
         menu = ContextMenu.getMenu(self.baseItem, *contexts)
         self.PopupMenu(menu, pos)
 
@@ -1203,7 +1207,8 @@ class ShipItem(SFItem.SFBrowserItem):
             self.animTimer.Stop()
         self.Refresh()
 
-    def OUT_QUAD(self, t, b, c, d):
+    @staticmethod
+    def OUT_QUAD(t, b, c, d):
         t = float(t)
         b = float(b)
         c = float(c)
@@ -1269,17 +1274,17 @@ class ShipItem(SFItem.SFBrowserItem):
         self.toolbarx = rect.width - self.toolbar.GetWidth() - self.padding
         self.toolbary = (rect.height - self.toolbar.GetHeight()) / 2
 
-        self.toolbarx = self.toolbarx + self.animCount
+        self.toolbarx += self.animCount
 
         self.shipEffx = self.padding + (rect.height - self.shipEffBk.GetWidth()) / 2
         self.shipEffy = (rect.height - self.shipEffBk.GetHeight()) / 2
 
-        self.shipEffx = self.shipEffx - self.animCount
+        self.shipEffx -= self.animCount
 
         self.shipBmpx = self.padding + (rect.height - self.shipBmp.GetWidth()) / 2
         self.shipBmpy = (rect.height - self.shipBmp.GetHeight()) / 2
 
-        self.shipBmpx = self.shipBmpx - self.animCount
+        self.shipBmpx -= self.animCount
 
         self.raceBmpx = self.shipEffx + self.shipEffBk.GetWidth() + self.padding
         self.raceBmpy = (rect.height - self.raceBmp.GetHeight()) / 2
@@ -1573,7 +1578,7 @@ class FitItem(SFItem.SFBrowserItem):
             self.mainFrame.additionsPane.select("Command")
 
     def OnMouseCaptureLost(self, event):
-        ''' Destroy drag information (GH issue #479)'''
+        """ Destroy drag information (GH issue #479)"""
         if self.dragging and self.dragged:
             self.dragging = False
             self.dragged = False
@@ -1583,7 +1588,7 @@ class FitItem(SFItem.SFBrowserItem):
             self.dragWindow = None
 
     def OnContextMenu(self, event):
-        ''' Handles context menu for fit. Dragging is handled by MouseLeftUp() '''
+        """ Handles context menu for fit. Dragging is handled by MouseLeftUp() """
         sFit = Fit.getInstance()
         fit = sFit.getFit(self.mainFrame.getActiveFit())
 
@@ -1643,10 +1648,12 @@ class FitItem(SFItem.SFBrowserItem):
                 self.animTimer.Stop()
             self.Refresh()
 
-    def CalculateDelta(self, start, end, delta):
+    @staticmethod
+    def CalculateDelta(start, end, delta):
         return start + (end - start) * delta
 
-    def OUT_QUAD(self, t, b, c, d):
+    @staticmethod
+    def OUT_QUAD(t, b, c, d):
         t = float(t)
         b = float(b)
         c = float(c)
@@ -1813,17 +1820,17 @@ class FitItem(SFItem.SFBrowserItem):
         self.toolbarx = rect.width - self.toolbar.GetWidth() - self.padding
         self.toolbary = (rect.height - self.toolbar.GetHeight()) / 2
 
-        self.toolbarx = self.toolbarx + self.animCount
+        self.toolbarx += self.animCount
 
         self.shipEffx = self.padding + (rect.height - self.shipEffBk.GetWidth()) / 2
         self.shipEffy = (rect.height - self.shipEffBk.GetHeight()) / 2
 
-        self.shipEffx = self.shipEffx - self.animCount
+        self.shipEffx -= self.animCount
 
         self.shipBmpx = self.padding + (rect.height - self.shipBmp.GetWidth()) / 2
         self.shipBmpy = (rect.height - self.shipBmp.GetHeight()) / 2
 
-        self.shipBmpx = self.shipBmpx - self.animCount
+        self.shipBmpx -= self.animCount
 
         self.textStartx = self.shipEffx + self.shipEffBk.GetWidth() + self.padding
 
@@ -1862,8 +1869,6 @@ class FitItem(SFItem.SFBrowserItem):
         mdc.DrawBitmap(shipEffBk, self.shipEffx, self.shipEffy, 0)
 
         mdc.DrawBitmap(self.shipBmp, self.shipBmpx, self.shipBmpy, 0)
-
-        shipName, shipTrait, fittings, booster, timestamp = self.shipFittingInfo
 
         mdc.SetFont(self.fontNormal)
 

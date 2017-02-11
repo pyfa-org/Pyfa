@@ -1,6 +1,7 @@
 import time
 import webbrowser
 import json
+# noinspection PyPackageRequirements
 import wx
 import requests
 
@@ -10,7 +11,7 @@ from service.fit import Fit
 from eos.saveddata.cargo import Cargo
 from eos.db import getItem
 
-import gui.display as d
+from gui.display import Display
 import gui.globalEvents as GE
 
 if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3, 0)):
@@ -144,10 +145,9 @@ class CrestFittings(wx.Frame):
             self.updateCacheStatus(None)
             self.cacheTimer.Start(1000)
             self.fitTree.populateSkillTree(fittings)
+            del waitDialog
         except requests.exceptions.ConnectionError:
             self.statusbar.SetStatusText("Connection error, please check your internet connection")
-        finally:
-            del waitDialog
 
     def importFitting(self, event):
         selection = self.fitView.fitSelection
@@ -340,7 +340,8 @@ class CrestMgmt(wx.Dialog):
         self.lcCharacters.SetColumnWidth(0, wx.LIST_AUTOSIZE)
         self.lcCharacters.SetColumnWidth(1, wx.LIST_AUTOSIZE)
 
-    def addChar(self, event):
+    @staticmethod
+    def addChar(event):
         sCrest = Crest.getInstance()
         uri = sCrest.startServer()
         webbrowser.open(uri)
@@ -411,10 +412,10 @@ class FittingsTreeView(wx.Panel):
         self.parent.fitView.update(list)
 
 
-class FitView(d.Display):
+class FitView(Display):
     DEFAULT_COLS = ["Base Icon",
                     "Base Name"]
 
     def __init__(self, parent):
-        d.Display.__init__(self, parent, style=wx.LC_SINGLE_SEL)
+        Display.__init__(self, parent, style=wx.LC_SINGLE_SEL)
         self.fitSelection = None

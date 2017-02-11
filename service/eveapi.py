@@ -712,6 +712,8 @@ class _Parser(object):
 
 
 class Element(object):
+    _name = None
+
     # Element is a namespace for attributes and nested tags
     def __str__(self):
         return "<Element '%s'>" % self._name
@@ -873,10 +875,10 @@ class Rowset(object):
         self._rows.sort(*args, **kw)
 
     def __str__(self):
-        return ("Rowset(columns=[%s], rows=%d)" % (','.join(self._cols), len(self)))
+        return "Rowset(columns=[%s], rows=%d)" % (','.join(self._cols), len(self))
 
     def __getstate__(self):
-        return (self._cols, self._rows)
+        return self._cols, self._rows
 
     def __setstate__(self, state):
         self._cols, self._rows = state
@@ -935,7 +937,7 @@ class IndexRowset(Rowset):
             self._items[row[self._ki]] = row
 
     def __getstate__(self):
-        return (Rowset.__getstate__(self), self._items, self._ki)
+        return Rowset.__getstate__(self), self._items, self._ki
 
     def __setstate__(self, state):
         state, self._items, self._ki = state
@@ -1003,7 +1005,7 @@ class FilterRowset(object):
         return Rowset(self._cols, self._items[i])
 
     def __getstate__(self):
-        return (self._cols, self._rows, self._items, self.key, self.key2)
+        return self._cols, self._rows, self._items, self.key, self.key2
 
     def __setstate__(self, state):
         self._cols, self._rows, self._items, self.key, self.key2 = state

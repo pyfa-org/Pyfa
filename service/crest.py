@@ -1,3 +1,4 @@
+# noinspection PyPackageRequirements
 import wx
 import thread
 import logging
@@ -27,9 +28,9 @@ class CrestModes(Enum):
     USER = 1
 
 
-class Crest():
+class Crest(object):
     clientIDs = {
-        Servers.TQ: 'f9be379951c046339dc13a00e6be7704',
+        Servers.TQ  : 'f9be379951c046339dc13a00e6be7704',
         Servers.SISI: 'af87365240d644f7950af563b8418bad'
     }
 
@@ -77,11 +78,11 @@ class Crest():
 
         # Base EVE connection that is copied to all characters
         self.eve = EVE(
-            client_id=self.settings.get('clientID') if self.settings.get(
-                'mode') == CrestModes.USER else self.clientIDs.get(self.settings.get('server')),
-            api_key=self.settings.get('clientSecret') if self.settings.get('mode') == CrestModes.USER else None,
-            redirect_uri=self.clientCallback,
-            testing=self.isTestServer
+                client_id=self.settings.get('clientID') if self.settings.get(
+                        'mode') == CrestModes.USER else self.clientIDs.get(self.settings.get('server')),
+                api_key=self.settings.get('clientSecret') if self.settings.get('mode') == CrestModes.USER else None,
+                redirect_uri=self.clientCallback,
+                testing=self.isTestServer
         )
 
         self.implicitCharacter = None
@@ -186,8 +187,8 @@ class Crest():
         if 'access_token' in message:  # implicit
             eve = copy.deepcopy(self.eve)
             eve.temptoken_authorize(
-                access_token=message['access_token'][0],
-                expires_in=int(message['expires_in'][0])
+                    access_token=message['access_token'][0],
+                    expires_in=int(message['expires_in'][0])
             )
             self.ssoTimer = threading.Timer(int(message['expires_in'][0]), self.logout)
             self.ssoTimer.start()

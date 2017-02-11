@@ -21,6 +21,7 @@
 # Notes: leave the commented code as it is, those line will be removed someday
 ###########################################################################
 
+# noinspection PyPackageRequirements
 import wx
 from gui.bitmapLoader import BitmapLoader
 
@@ -145,7 +146,7 @@ class TogglePanel(wx.Panel):
         """
         Handles the status changes (collapsing/expanding).
 
-        :param `sz`: an instance of `wx.Size`.
+        :param sz: an instance of `wx.Size`.
         """
 
         # minimal size has priority over the best size so set here our min size

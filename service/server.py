@@ -4,6 +4,7 @@ import socket
 import thread
 import logging
 
+# noinspection PyPackageRequirements
 import wx
 
 from service.settings import CRESTSettings
@@ -96,7 +97,7 @@ class StoppableHTTPServer(BaseHTTPServer.HTTPServer):
             try:
                 sock, addr = self.socket.accept()
                 sock.settimeout(None)
-                return (sock, addr)
+                return sock, addr
             except socket.timeout:
                 pass
 

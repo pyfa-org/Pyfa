@@ -51,7 +51,7 @@ class TimeoutError(StandardError):
     pass
 
 
-class Network():
+class Network(object):
     # Request constants - every request must supply this, as it is checked if
     # enabled or not via settings
     ENABLED = 1
@@ -90,8 +90,10 @@ class Network():
             # proxy_auth is a tuple of (login, password) or None
             if proxy_auth is not None:
                 # add login:password@ in front of proxy address
-                proxy_handler = urllib2.ProxyHandler({'https': '{0}:{1}@{2}:{3}'.format(
-                    proxy_auth[0], proxy_auth[1], proxy[0], proxy[1])})
+                proxy_handler = urllib2.ProxyHandler({
+                    'https': '{0}:{1}@{2}:{3}'.format(
+                            proxy_auth[0], proxy_auth[1], proxy[0], proxy[1])
+                })
             else:
                 # build proxy handler with no login/pass info
                 proxy_handler = urllib2.ProxyHandler({'https': "{0}:{1}".format(proxy[0], proxy[1])})

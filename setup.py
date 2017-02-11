@@ -9,7 +9,7 @@ import requests.certs
 # The modules that contain the bulk of teh source
 packages = ['eos', 'gui', 'service', 'utils']
 # Extra files that will be copied into the root directory
-include_files = ['eve.db', 'LICENSE', 'README.md', (requests.certs.where(),'cacert.pem')]
+include_files = ['eve.db', 'LICENSE', 'README.md', (requests.certs.where(), 'cacert.pem')]
 # this is read by dist.py to package the icons
 icon_dirs = ['gui', 'icons', 'renders']
 
@@ -22,9 +22,9 @@ excludes = ['Tkinter', 'collections.abc', 'IPython', 'PyQt4', 'PIL', 'nose', 'to
 
 if __name__ == "__main__":
     import sys
+    # noinspection PyPackageRequirements,PyUnresolvedReferences
     from cx_Freeze import setup, Executable
     import config
-
 
     app_name = 'pyfa'
     app_version = '{}'.format(config.version)
@@ -47,7 +47,6 @@ if __name__ == "__main__":
         'initial_target_dir': r'[ProgramFilesFolder]\{}'.format(app_name),
     }
 
-
     # Mac-specific options (untested)
     build_options_macapp = {
         'iconfile': 'dist_assets/mac/pyfa.icns',
@@ -59,13 +58,12 @@ if __name__ == "__main__":
         'applications-shortcut': True,
     }
 
-
     # Generic executable options
     executable_options = {
         'script': 'pyfa.py',
         # Following are windows-specific options, they are stored
         # on a per-executable basis
-        'base': 'Win32GUI' if sys.platform=='win32' else None,
+        'base': 'Win32GUI' if sys.platform == 'win32' else None,
         'icon': 'dist_assets/win/pyfa.ico',
         'shortcutDir': 'DesktopFolder',
         'shortcutName': app_name,
@@ -75,7 +73,7 @@ if __name__ == "__main__":
         name=app_name,
         version=app_version,
         description=app_description,
-        options = {
+        options={
             'build_exe': build_options_winexe,
             'bdist_msi': build_options_winmsi,
             'bdist_mac': build_options_macapp,

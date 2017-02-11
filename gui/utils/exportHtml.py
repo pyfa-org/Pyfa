@@ -1,12 +1,13 @@
 import threading
 import time
+# noinspection PyPackageRequirements
 import wx
 from service.settings import HTMLExportSettings
 from service.fit import Fit
 from service.market import Market
 
 
-class exportHtml():
+class exportHtml(object):
     _instance = None
 
     @classmethod
@@ -168,7 +169,7 @@ class exportHtmlThread(threading.Thread):
 """ % (time.time(), dnaUrl, localDate)
         HTML += '  <ul data-role="listview" class="ui-listview-outer" data-inset="true" data-filter="true">\n'
         categoryList = list(sMkt.getShipRoot())
-        categoryList.sort(key=lambda ship: ship.name)
+        categoryList.sort(key=lambda _ship: _ship.name)
 
         count = 0
 
@@ -177,7 +178,7 @@ class exportHtmlThread(threading.Thread):
             HTMLgroup = ''
 
             ships = list(sMkt.getShipList(group.ID))
-            ships.sort(key=lambda ship: ship.name)
+            ships.sort(key=lambda _ship: _ship.name)
 
             # Keep track of how many ships per group
             groupFits = 0
@@ -247,7 +248,7 @@ class exportHtmlThread(threading.Thread):
     def generateMinimalHTML(self, sMkt, sFit, dnaUrl):
         """ Generate a minimal HTML version of the fittings, without any javascript or styling"""
         categoryList = list(sMkt.getShipRoot())
-        categoryList.sort(key=lambda ship: ship.name)
+        categoryList.sort(key=lambda _ship: _ship.name)
 
         count = 0
         HTML = ''
@@ -255,9 +256,9 @@ class exportHtmlThread(threading.Thread):
             # init market group string to give ships something to attach to
 
             ships = list(sMkt.getShipList(group.ID))
-            ships.sort(key=lambda ship: ship.name)
+            ships.sort(key=lambda _ship: _ship.name)
 
-            ships.sort(key=lambda ship: ship.name)
+            ships.sort(key=lambda _ship: _ship.name)
 
             for ship in ships:
                 fits = sFit.getFitsWithShip(ship.ID)

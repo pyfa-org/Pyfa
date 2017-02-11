@@ -18,6 +18,7 @@
 # =============================================================================
 
 import logging
+# noinspection PyPackageRequirements
 import wx
 
 from service.implantSet import ImplantSets
@@ -187,7 +188,7 @@ class ImplantSetEditorDlg(wx.Dialog):
         pass
 
     def importPatterns(self, event):
-        "Event fired when import from clipboard button is clicked"
+        """Event fired when import from clipboard button is clicked"""
 
         text = fromClipboard()
         if text:
@@ -207,7 +208,7 @@ class ImplantSetEditorDlg(wx.Dialog):
             self.stNotice.SetLabel("Could not import from clipboard")
 
     def exportPatterns(self, event):
-        "Event fired when export to clipboard button is clicked"
+        """Event fired when export to clipboard button is clicked"""
 
         sIS = ImplantSets.getInstance()
         toClipboard(sIS.exportSets())

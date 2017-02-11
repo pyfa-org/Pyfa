@@ -42,4 +42,14 @@ class StatsView(object):
         raise NotImplementedError()
 
 
-from gui.builtinStatsViews import *  # noqa
+# noinspection PyUnresolvedReferences
+from gui.builtinStatsViews import (  # noqa: E402, F401
+    resourcesViewFull,
+    resistancesViewFull,
+    firepowerViewFull,
+    miningyieldViewFull,
+    capacitorViewFull,
+    rechargeViewFull,
+    targetingMiscViewFull,
+    priceViewFull,
+)

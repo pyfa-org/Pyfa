@@ -17,8 +17,8 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
+# noinspection PyPackageRequirements
 import wx
-import gui.mainFrame
 from gui.boosterView import BoosterView
 from gui.droneView import DroneView
 from gui.fighterView import FighterView
@@ -31,7 +31,7 @@ from gui.notesView import NotesView
 from gui.pyfatogglepanel import TogglePanel
 from gui.bitmapLoader import BitmapLoader
 
-import gui.chromeTabs
+from gui.chromeTabs import PFNotebook
 
 
 class AdditionsPane(TogglePanel):
@@ -45,9 +45,7 @@ class AdditionsPane(TogglePanel):
         baseSizer = wx.BoxSizer(wx.HORIZONTAL)
         pane.SetSizer(baseSizer)
 
-        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-
-        self.notebook = gui.chromeTabs.PFNotebook(pane, False)
+        self.notebook = PFNotebook(pane, False)
         self.notebook.SetMinSize((-1, 1000))
 
         baseSizer.Add(self.notebook, 1, wx.EXPAND)
@@ -91,9 +89,6 @@ class AdditionsPane(TogglePanel):
 
     def select(self, name):
         self.notebook.SetSelection(self.PANES.index(name))
-
-    def toggleBoosters(self, event):
-        self.notebook.ToggleShown(self.booster)
 
     def getName(self, idx):
         return self.PANES[idx]

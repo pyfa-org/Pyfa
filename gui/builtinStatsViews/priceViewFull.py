@@ -17,6 +17,7 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
+# noinspection PyPackageRequirements
 import wx
 from gui.statsView import StatsView
 from gui.bitmapLoader import BitmapLoader
@@ -74,8 +75,7 @@ class PriceViewFull(StatsView):
         if fit is not None:
             self.fit = fit
             # Compose a list of all the data we need & request it
-            typeIDs = []
-            typeIDs.append(fit.ship.item.ID)
+            typeIDs = [fit.ship.item.ID]
 
             for mod in fit.modules:
                 if not mod.isEmpty:

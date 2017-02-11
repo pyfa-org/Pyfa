@@ -140,7 +140,7 @@ mapper(es_Fit, fits_table,
            "_Fit__modules": relation(
                Module,
                collection_class=HandledModuleList,
-               primaryjoin=and_(modules_table.c.fitID == fits_table.c.ID, modules_table.c.projected == False), # noqa
+               primaryjoin=and_(modules_table.c.fitID == fits_table.c.ID, modules_table.c.projected == False),  # noqa
                order_by=modules_table.c.position,
                cascade='all, delete, delete-orphan'),
            "_Fit__projectedModules": relation(
@@ -148,7 +148,7 @@ mapper(es_Fit, fits_table,
                collection_class=HandledProjectedModList,
                cascade='all, delete, delete-orphan',
                single_parent=True,
-               primaryjoin=and_(modules_table.c.fitID == fits_table.c.ID, modules_table.c.projected == True)), # noqa
+               primaryjoin=and_(modules_table.c.fitID == fits_table.c.ID, modules_table.c.projected == True)),  # noqa
            "owner": relation(
                User,
                backref="fits"),
@@ -164,13 +164,13 @@ mapper(es_Fit, fits_table,
                collection_class=HandledDroneCargoList,
                cascade='all, delete, delete-orphan',
                single_parent=True,
-               primaryjoin=and_(drones_table.c.fitID == fits_table.c.ID, drones_table.c.projected == False)), # noqa
+               primaryjoin=and_(drones_table.c.fitID == fits_table.c.ID, drones_table.c.projected == False)),  # noqa
            "_Fit__fighters": relation(
                Fighter,
                collection_class=HandledDroneCargoList,
                cascade='all, delete, delete-orphan',
                single_parent=True,
-               primaryjoin=and_(fighters_table.c.fitID == fits_table.c.ID, fighters_table.c.projected == False)), # noqa
+               primaryjoin=and_(fighters_table.c.fitID == fits_table.c.ID, fighters_table.c.projected == False)),  # noqa
            "_Fit__cargo": relation(
                Cargo,
                collection_class=HandledDroneCargoList,
@@ -182,13 +182,13 @@ mapper(es_Fit, fits_table,
                collection_class=HandledProjectedDroneList,
                cascade='all, delete, delete-orphan',
                single_parent=True,
-               primaryjoin=and_(drones_table.c.fitID == fits_table.c.ID, drones_table.c.projected == True)), # noqa
+               primaryjoin=and_(drones_table.c.fitID == fits_table.c.ID, drones_table.c.projected == True)),  # noqa
            "_Fit__projectedFighters": relation(
                Fighter,
                collection_class=HandledProjectedDroneList,
                cascade='all, delete, delete-orphan',
                single_parent=True,
-               primaryjoin=and_(fighters_table.c.fitID == fits_table.c.ID, fighters_table.c.projected == True)), # noqa
+               primaryjoin=and_(fighters_table.c.fitID == fits_table.c.ID, fighters_table.c.projected == True)),  # noqa
            "_Fit__implants": relation(
                Implant,
                collection_class=HandledImplantBoosterList,

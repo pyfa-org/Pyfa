@@ -23,8 +23,11 @@ import csv
 import sys
 import subprocess
 
+# noinspection PyPackageRequirements
 import wx
+# noinspection PyPackageRequirements
 import wx.html
+# noinspection PyPackageRequirements
 import wx.lib.mixins.listctrl as listmix
 
 import config
@@ -479,7 +482,8 @@ class ItemParams(wx.Panel):
         self.totalAttrsLabel.SetLabel("%d attributes. " % idCount)
         self.Layout()
 
-    def TranslateValueUnit(self, value, unitName, unitDisplayName):
+    @staticmethod
+    def TranslateValueUnit(value, unitName, unitDisplayName):
         def itemIDCallback():
             item = Market.getInstance().getItem(value)
             return "%s (%d)" % (item.name, value) if item is not None else str(value)
@@ -625,17 +629,17 @@ class ItemCompare(wx.Panel):
 
         if sort is not None:
             if sort == 0:  # Name sort
-                func = lambda x: x.name
+                func = lambda _val: _val.name
             else:
                 try:
                     # Remember to reduce by 1, because the attrs array
                     # starts at 0 while the list has the item name as column 0.
                     attr = str(self.attrs.keys()[sort - 1])
-                    func = lambda x: x.attributes[attr].value if attr in x.attributes else None
+                    func = lambda _val: _val.attributes[attr].value if attr in _val.attributes else None
                 except IndexError:
                     # Clicked on a column that's not part of our array (price most likely)
                     self.sortReverse = False
-                    func = lambda x: x.attributes['metaLevel'].value if 'metaLevel' in x.attributes else None
+                    func = lambda _val: _val.attributes['metaLevel'].value if 'metaLevel' in _val.attributes else None
 
             self.items = sorted(self.items, key=func, reverse=self.sortReverse)
 
@@ -661,7 +665,7 @@ class ItemCompare(wx.Panel):
                     value = item.attributes[attr].value
                     if self.toggleView != 1:
                         valueUnit = str(value)
-                    if info and info.unit:
+                    elif info and info.unit and self.toggleView == 1:
                         valueUnit = self.TranslateValueUnit(value, info.unit.displayName, info.unit.name)
                     else:
                         valueUnit = formatAmount(value, 3, 0, 0)
@@ -671,7 +675,8 @@ class ItemCompare(wx.Panel):
         self.paramList.RefreshRows()
         self.Layout()
 
-    def TranslateValueUnit(self, value, unitName, unitDisplayName):
+    @staticmethod
+    def TranslateValueUnit(value, unitName, unitDisplayName):
         def itemIDCallback():
             item = Market.getInstance().getItem(value)
             return "%s (%d)" % (item.name, value) if item is not None else str(value)
@@ -837,7 +842,8 @@ class ItemEffects(wx.Panel):
 
         self.RefreshValues(event)
 
-    def OnRightClick(self, event):
+    @staticmethod
+    def OnRightClick(event):
         """
         Debug use: open effect file with default application.
         If effect file does not exist, create it

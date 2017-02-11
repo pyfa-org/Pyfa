@@ -1,3 +1,4 @@
+# noinspection PyPackageRequirements
 import wx
 from gui.contextMenu import ContextMenu
 import gui.mainFrame

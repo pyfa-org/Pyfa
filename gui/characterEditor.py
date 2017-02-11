@@ -17,9 +17,12 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
+# noinspection PyPackageRequirements
 import wx
 
+# noinspection PyPackageRequirements
 import wx.lib.newevent
+# noinspection PyPackageRequirements
 import wx.gizmos
 from gui.bitmapLoader import BitmapLoader
 from gui.contextMenu import ContextMenu
@@ -625,9 +628,9 @@ class APIView(wx.Panel):
         try:
             activeChar = self.charEditor.entityEditor.getActiveEntity()
             list = sChar.apiCharList(activeChar.ID, self.inputID.GetLineText(0), self.inputKey.GetLineText(0))
-        except AuthenticationError, e:
+        except AuthenticationError:
             self.stStatus.SetLabel("Authentication failure. Please check keyID and vCode combination.")
-        except TimeoutError, e:
+        except TimeoutError:
             self.stStatus.SetLabel("Request timed out. Please check network connectivity and/or proxy settings.")
         except Exception, e:
             self.stStatus.SetLabel("Error:\n%s" % e.message)

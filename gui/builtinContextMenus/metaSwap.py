@@ -1,5 +1,6 @@
 # coding: utf-8
 
+# noinspection PyPackageRequirements
 import wx
 
 from service.fit import Fit

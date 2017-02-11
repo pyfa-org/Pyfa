@@ -18,6 +18,7 @@
 # =============================================================================
 
 
+# noinspection PyPackageRequirements
 import wx
 
 from eos.saveddata.fit import Fit

@@ -17,6 +17,7 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
+# noinspection PyPackageRequirements
 import wx
 
 from service.fit import Fit
@@ -58,7 +59,7 @@ class Miscellanea(ViewColumn):
         return -1
 
     def getParameters(self):
-        return (("displayName", bool, False), ("showIcon", bool, True))
+        return ("displayName", bool, False), ("showIcon", bool, True)
 
     def __getData(self, stuff):
         item = stuff.item
@@ -504,8 +505,8 @@ class Miscellanea(ViewColumn):
             for number_of_cycles in {5, 10, 25}:
                 tooltip = "{0}\n{1} charges lasts {2} seconds ({3} cycles)".format(
                     tooltip,
-                    formatAmount(number_of_cycles*cycles, 3, 0, 3),
-                    formatAmount((duration+reload_time)*number_of_cycles, 3, 0, 3),
+                    formatAmount(number_of_cycles * cycles, 3, 0, 3),
+                    formatAmount((duration + reload_time) * number_of_cycles, 3, 0, 3),
                     formatAmount(number_of_cycles, 3, 0, 3)
                 )
             text = "{0} / {1}s (+{2}s)".format(

@@ -1,5 +1,6 @@
 from gui.contextMenu import ContextMenu
 import gui.mainFrame
+# noinspection PyPackageRequirements
 import wx
 import gui.globalEvents as GE
 from service.fit import Fit

@@ -2,6 +2,7 @@ from gui.contextMenu import ContextMenu
 from eos.saveddata.fit import Fit as es_Fit
 import gui.mainFrame
 import gui.globalEvents as GE
+# noinspection PyPackageRequirements
 import wx
 from service.fit import Fit
 from eos.saveddata.cargo import Cargo as es_Cargo
@@ -49,7 +50,6 @@ class AmountChanger(wx.Dialog):
         self.button.Bind(wx.EVT_BUTTON, self.change)
 
     def change(self, event):
-        sFit = Fit.getInstance()
         if self.input.GetLineText(0).strip() == '':
             event.Skip()
             return
@@ -70,7 +70,8 @@ class AmountChanger(wx.Dialog):
         event.Skip()
 
     # checks to make sure it's valid number
-    def onChar(self, event):
+    @staticmethod
+    def onChar(event):
         key = event.GetKeyCode()
 
         acceptable_characters = "1234567890"

@@ -17,18 +17,19 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
+# noinspection PyPackageRequirements
 import wx
 import gui.display as d
 import gui.globalEvents as GE
-import gui.marketBrowser as mb
+import gui.marketBrowser as marketBrowser
 from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
 from service.fit import Fit
 
 
 class BoosterViewDrop(wx.PyDropTarget):
-    def __init__(self, dropFn):
-        wx.PyDropTarget.__init__(self)
+    def __init__(self, dropFn, *args, **kwargs):
+        super(BoosterViewDrop, self).__init__(*args, **kwargs)
         self.dropFn = dropFn
         # this is really transferring an EVE itemID
         self.dropData = wx.PyTextDataObject()
@@ -52,7 +53,7 @@ class BoosterView(d.Display):
         self.lastFitId = None
 
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
-        self.mainFrame.Bind(mb.ITEM_SELECTED, self.addItem)
+        self.mainFrame.Bind(marketBrowser.ITEM_SELECTED, self.addItem)
 
         self.Bind(wx.EVT_LEFT_DCLICK, self.removeItem)
         self.Bind(wx.EVT_LEFT_DOWN, self.click)
@@ -66,16 +67,16 @@ class BoosterView(d.Display):
             self.Bind(wx.EVT_RIGHT_DOWN, self.scheduleMenu)
 
     def handleListDrag(self, x, y, data):
-        '''
+        """
         Handles dragging of items from various pyfa displays which support it
 
         data is list with two indices:
             data[0] is hard-coded str of originating source
             data[1] is typeID or index of data we want to manipulate
-        '''
+        """
 
         if data[0] == "market":
-            wx.PostEvent(self.mainFrame, mb.ItemSelected(itemID=int(data[1])))
+            wx.PostEvent(self.mainFrame, marketBrowser.ItemSelected(itemID=int(data[1])))
 
     def kbEvent(self, event):
         keycode = event.GetKeyCode()

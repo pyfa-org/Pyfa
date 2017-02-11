@@ -1,6 +1,7 @@
 from gui.contextMenu import ContextMenu
 import gui.mainFrame
 import gui.globalEvents as GE
+# noinspection PyPackageRequirements
 import wx
 from service.implantSet import ImplantSets as s_ImplantSets
 from service.character import Character

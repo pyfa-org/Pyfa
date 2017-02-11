@@ -1,3 +1,4 @@
+# noinspection PyPackageRequirements
 import wx
 import gui.utils.colorUtils as colorUtils
 
@@ -32,6 +33,7 @@ def DrawFilledBitmap(width, height, color):
     return canvas
 
 
+# noinspection PyPropertyAccess
 def DrawGradientBar(width, height, gStart, gEnd, gMid=None, fillRatio=4):
     # we need to have dimensions to draw
     # assert width > 0 and height > 0

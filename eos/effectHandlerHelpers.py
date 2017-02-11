@@ -17,12 +17,7 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-# from sqlalchemy.orm.attributes import flag_modified
 import logging
-# TODO: This can't point to es_Module, cyclical import loop
-# from eos.saveddata.module import Module as es_Module, State as es_State
-
-import eos.db
 
 logger = logging.getLogger(__name__)
 
@@ -141,13 +136,6 @@ class HandledModuleList(HandledList):
             self.remove(mod)
             return
 
-        # fix for #529, where a module may be in incorrect state after CCP changes mechanics of module
-        # TODO: This can't point to es_module, cyclical import loop
-        '''
-        if not mod.isValidState(mod.state):
-            mod.state = es_State.ONLINE
-            '''
-
     def insert(self, index, mod):
         mod.position = index
         i = index
@@ -167,13 +155,10 @@ class HandledModuleList(HandledList):
     def toDummy(self, index):
         mod = self[index]
         if not mod.isEmpty:
-            pass
-            # TODO: This can't point to es_Module, cyclical import loop
-            '''
-            dummy = es_Module.buildEmpty(mod.slot)
+            dummy = mod.buildEmpty(mod.slot)
             dummy.position = index
             self[index] = dummy
-            '''
+
 
     def toModule(self, index, mod):
         mod.position = index

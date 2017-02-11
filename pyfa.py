@@ -59,6 +59,7 @@ if not hasattr(sys, 'frozen'):
     try:
         import wxversion
     except ImportError:
+        wxversion = None
         print("Cannot find wxPython\nYou can download wxPython (2.8+) from http://www.wxpython.org/")
         sys.exit(1)
 
@@ -89,13 +90,16 @@ if not hasattr(sys, 'frozen'):
             print("Unknown sqlalchemy version string format, skipping check")
 
     except ImportError:
+        sqlalchemy = None
         print("Cannot find sqlalchemy.\nYou can download sqlalchemy (0.6+) from http://www.sqlalchemy.org/")
         sys.exit(1)
 
     # check also for dateutil module installed.
     try:
+        # noinspection PyPackageRequirements
         import dateutil.parser  # noqa - Copied import statement from service/update.py
     except ImportError:
+        dateutil = None
         print("Cannot find python-dateutil.\nYou can download python-dateutil from https://pypi.python.org/pypi/python-dateutil")
         sys.exit(1)
 
@@ -120,12 +124,14 @@ if __name__ == "__main__":
     logging.basicConfig()
 
     # Import everything
+    # noinspection PyPackageRequirements
     import wx
     import os
     import os.path
 
     import eos.db
-    import service.prefetch
+    # noinspection PyUnresolvedReferences
+    import service.prefetch  # noqa: F401
     from gui.mainFrame import MainFrame
 
     # Make sure the saveddata db exists

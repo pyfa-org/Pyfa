@@ -21,6 +21,7 @@ import os
 import logging
 import imp
 
+# noinspection PyPackageRequirements
 import wx
 
 from service.fit import Fit
@@ -58,6 +59,7 @@ class GraphFrame(wx.Frame):
             from matplotlib.figure import Figure
             enabled = True
         except ImportError:
+            mpl = Canvas = Figure = None
             enabled = False
 
         self.legendFix = False
