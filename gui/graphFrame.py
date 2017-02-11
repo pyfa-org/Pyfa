@@ -42,7 +42,6 @@ except ImportError:
     mplImported = False
 
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -69,9 +68,8 @@ class GraphFrame(wx.Frame):
             from matplotlib.figure import Figure
             graphFrame_enabled = True
         except ImportError:
-            mpl = Canvas = Figure = None
+            Patch = mpl = Canvas = Figure = None
             graphFrame_enabled = False
-
 
         self.legendFix = False
         if not graphFrame_enabled:
@@ -284,7 +282,7 @@ class GraphFrame(wx.Frame):
                     selected_color = legend_colors[i]
                 except:
                     selected_color = None
-                legend2.append(self.Patch(color=selected_color,label=i_name),)
+                legend2.append(self.Patch(color=selected_color, label=i_name), )
 
             if len(legend2) > 0:
                 leg = self.subplot.legend(handles=legend2)

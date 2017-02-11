@@ -142,7 +142,7 @@ class MainFrame(wx.Frame):
 
     @classmethod
     def getInstance(cls):
-        return cls.__instance if cls.__instance is not None else MainFrame()
+        return cls.__instance if cls.__instance is not None else MainFrame("")
 
     def __init__(self, title="pyfa"):
         self.title = title
