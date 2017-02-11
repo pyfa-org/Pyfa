@@ -738,9 +738,6 @@ class Fit(object):
                         # targetFit.register(item, origin=self)
                         item.calculateModifiedAttributes(targetFit, runTime, False, True)
 
-            print "Command: "
-            print self.commandBonuses
-
             if not withBoosters and self.commandBonuses:
                 self.__runCommandBoosts(runTime)
 

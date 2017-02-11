@@ -352,7 +352,9 @@ class NavigationPanel(SFItem.SFBrowserItem):
         self.btnSwitch = self.toolbar.AddButton(self.switchBmpD, "Hide empty ship groups",
                                                 clickCallback=self.ToggleEmptyGroupsView, hoverBitmap=self.switchBmpH,
                                                 show=False)
-        self.toolbar.AddButton(self.searchBmp, "Search fittings", clickCallback=self.ToggleSearchBox,
+
+        modifier = "CTRL" if 'wxMac' not in wx.PlatformInfo else "CMD"
+        self.toolbar.AddButton(self.searchBmp, "Search fittings ({}+F)".format(modifier), clickCallback=self.ToggleSearchBox,
                                hoverBitmap=self.searchBmpH)
 
         self.padding = 4
