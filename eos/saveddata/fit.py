@@ -39,9 +39,6 @@ logger = logging.getLogger(__name__)
 
 
 class ImplantLocation(Enum):
-    def __init__(self):
-        Enum.__init__(self)
-
     FIT = 0
     CHARACTER = 1
 
