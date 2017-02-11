@@ -159,7 +159,6 @@ class HandledModuleList(HandledList):
             dummy.position = index
             self[index] = dummy
 
-
     def toModule(self, index, mod):
         mod.position = index
         self[index] = mod
