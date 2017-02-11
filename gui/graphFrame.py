@@ -52,20 +52,26 @@ class GraphFrame(wx.Frame):
         global graphFrame_enabled
         global mplImported
 
+        self.Patch = None
+        self.mpl_version = -1
+
         try:
             import matplotlib as mpl
-            if int(mpl.__version__[0]) >= 2:
+            self.mpl_version = int(mpl.__version__[0])
+            if self.mpl_version >= 2:
                 mpl.use('wxagg')
                 mplImported = True
-                from matplotlib.patches import Patch
             else:
                 mplImported = False
+            from matplotlib.patches import Patch
+            self.Patch = Patch
             from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as Canvas
             from matplotlib.figure import Figure
             graphFrame_enabled = True
         except ImportError:
             mpl = Canvas = Figure = None
-            enabled = False
+            graphFrame_enabled = False
+
 
         self.legendFix = False
         if not graphFrame_enabled:
@@ -77,7 +83,7 @@ class GraphFrame(wx.Frame):
         except:
             cache_dir = os.path.expanduser(os.path.join("~", ".matplotlib"))
 
-        cache_file = config.parsePath(cache_dir, 'fontList.cache')
+        cache_file = parsePath(cache_dir, 'fontList.cache')
 
         if os.access(cache_dir, os.W_OK | os.X_OK) and os.path.isfile(cache_file):
             # remove matplotlib font cache, see #234
@@ -90,8 +96,6 @@ class GraphFrame(wx.Frame):
             print("pyfa: Found matplotlib version ", mpl.__version__, " - activating OVER9000 workarounds")
             print("pyfa: Recommended minimum matplotlib version is 1.0.0")
             self.legendFix = True
-
-        self.mpl_version = mpl.__version__[0]
 
         mplImported = True
 
@@ -280,7 +284,7 @@ class GraphFrame(wx.Frame):
                     selected_color = legend_colors[i]
                 except:
                     selected_color = None
-                legend2.append(Patch(color=selected_color,label=i_name),)
+                legend2.append(self.Patch(color=selected_color,label=i_name),)
 
             if len(legend2) > 0:
                 leg = self.subplot.legend(handles=legend2)

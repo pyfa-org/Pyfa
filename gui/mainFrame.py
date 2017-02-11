@@ -952,7 +952,7 @@ class MainFrame(wx.Frame):
         if not self.graphFrame:
             self.graphFrame = GraphFrame(self)
 
-            if graphFrame.enabled:
+            if graphFrame.graphFrame_enabled:
                 self.graphFrame.Show()
         else:
             self.graphFrame.SetFocus()
