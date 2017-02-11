@@ -17,16 +17,17 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-import logging
+from logbook import Logger
 
 from eos.saveddata.ship import Ship
 
-logger = logging.getLogger(__name__)
+pyfalog = Logger(__name__)
 
 
 class Citadel(Ship):
     def validate(self, item):
         if item.category.name != "Structure":
+            pyfalog.error("Passed item '{0}' (category: {1}) is not under Structure category",item.name, item.category.name)
             raise ValueError(
                 'Passed item "%s" (category: (%s)) is not under Structure category' % (item.name, item.category.name))
 

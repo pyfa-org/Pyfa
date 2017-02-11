@@ -19,10 +19,16 @@
 # ==============================================================================
 
 import sys
+import os
+import os.path
 import re
 import config
 
 from optparse import OptionParser, BadOptionError, AmbiguousOptionError
+
+from logbook import TimedRotatingFileHandler, Logger, StreamHandler, NestedSetup, FingersCrossedHandler, NullHandler, \
+    CRITICAL, ERROR, WARNING, DEBUG, INFO
+pyfalog = Logger(__name__)
 
 
 class PassThroughOptionParser(OptionParser):
@@ -36,8 +42,28 @@ class PassThroughOptionParser(OptionParser):
             try:
                 OptionParser._process_args(self, largs, rargs, values)
             except (BadOptionError, AmbiguousOptionError) as e:
+                pyfalog.error("Bad startup option passed.")
                 largs.append(e.opt_str)
 
+
+class LoggerWriter:
+    def __init__(self, level):
+        # self.level is really like using log.debug(message)
+        # at least in my case
+        self.level = level
+
+    def write(self, message):
+        # if statement reduces the amount of newlines that are
+        # printed to the logger
+        if message not in {'\n', '    '}:
+            self.level(message.replace("\n", ""))
+
+    def flush(self):
+        # create a flush method so things can be flushed when
+        # the system wants to. Not sure if simply 'printing'
+        # sys.stderr is the correct way to do it, but it seemed
+        # to work properly for me.
+        self.level(sys.stderr)
 
 # Parse command line options
 usage = "usage: %prog [--root]"
@@ -47,8 +73,22 @@ parser.add_option("-w", "--wx28", action="store_true", dest="force28", help="For
 parser.add_option("-d", "--debug", action="store_true", dest="debug", help="Set logger to debug level.", default=False)
 parser.add_option("-t", "--title", action="store", dest="title", help="Set Window Title", default=None)
 parser.add_option("-s", "--savepath", action="store", dest="savepath", help="Set the folder for savedata", default=None)
+parser.add_option("-l", "--logginglevel", action="store", dest="logginglevel", help="Set the desired logging level (Critical, Error, Warning, Info, Debug)", default="Error")
 
 (options, args) = parser.parse_args()
+
+if options.logginglevel == "Critical":
+    options.logginglevel = CRITICAL
+elif options.logginglevel == "Error":
+    options.logginglevel = ERROR
+elif options.logginglevel == "Warning":
+    options.logginglevel = WARNING
+elif options.logginglevel == "Info":
+    options.logginglevel = INFO
+elif options.logginglevel == "Debug":
+    options.logginglevel = DEBUG
+else:
+    options.logginglevel = ERROR
 
 if not hasattr(sys, 'frozen'):
 
@@ -120,26 +160,119 @@ if __name__ == "__main__":
     config.defPaths(options.savepath)
 
     # Basic logging initialization
-    import logging
-    logging.basicConfig()
 
-    # Import everything
-    # noinspection PyPackageRequirements
-    import wx
-    import os
-    import os.path
+    # Logging levels:
+    '''
+    logbook.CRITICAL
+    logbook.ERROR
+    logbook.WARNING
+    logbook.INFO
+    logbook.DEBUG
+    logbook.NOTSET
+    '''
 
-    import eos.db
-    # noinspection PyUnresolvedReferences
-    import service.prefetch  # noqa: F401
-    from gui.mainFrame import MainFrame
+    if options.debug:
+        savePath_filename = "Pyfa_debug.log"
+    else:
+        savePath_filename = "Pyfa.log"
 
-    # Make sure the saveddata db exists
-    if not os.path.exists(config.savePath):
-        os.mkdir(config.savePath)
+    savePath_Destination = config.getSavePath(savePath_filename)
 
-    eos.db.saveddata_meta.create_all()
+    try:
+        if options.debug:
+            logging_mode = "Debug"
+            logging_setup = NestedSetup([
+                # make sure we never bubble up to the stderr handler
+                # if we run out of setup handling
+                NullHandler(),
+                StreamHandler(
+                        sys.stdout,
+                        bubble=False,
+                        level=options.logginglevel
+                ),
+                TimedRotatingFileHandler(
+                        savePath_Destination,
+                        level=0,
+                        backup_count=3,
+                        bubble=True,
+                        date_format='%Y-%m-%d',
+                ),
+            ])
+        else:
+            logging_mode = "User"
+            logging_setup = NestedSetup([
+                # make sure we never bubble up to the stderr handler
+                # if we run out of setup handling
+                NullHandler(),
+                FingersCrossedHandler(
+                        TimedRotatingFileHandler(
+                                savePath_Destination,
+                                level=0,
+                                backup_count=3,
+                                bubble=False,
+                                date_format='%Y-%m-%d',
+                        ),
+                        action_level=ERROR,
+                        buffer_size=1000,
+                        # pull_information=True,
+                        # reset=False,
+                )
+            ])
+    except:
+        logging_mode = "Console Only"
+        logging_setup = NestedSetup([
+            # make sure we never bubble up to the stderr handler
+            # if we run out of setup handling
+            NullHandler(),
+            StreamHandler(
+                sys.stdout,
+                bubble=False
+            )
+        ])
 
-    pyfa = wx.App(False)
-    MainFrame(options.title)
-    pyfa.MainLoop()
+    with logging_setup.threadbound():
+        # Don't redirect if frozen
+        if not hasattr(sys, 'frozen') and not options.debug:
+            # Output all stdout (print) messages as warnings
+            try:
+                sys.stdout = LoggerWriter(pyfalog.warning)
+            except ValueError, Exception:
+                pyfalog.critical("Cannot access log file.  Continuing without writing stdout to log.")
+            # Output all stderr (stacktrace) messages as critical
+            try:
+                sys.stderr = LoggerWriter(pyfalog.critical)
+            except ValueError, Exception:
+                pyfalog.critical("Cannot access log file.  Continuing without writing stderr to log.")
+
+        pyfalog.info("Starting Pyfa")
+        pyfalog.info("Running in logging mode: {0}", logging_mode)
+
+        if hasattr(sys, 'frozen') and options.debug:
+            pyfalog.critical("Running in frozen mode with debug turned on. Forcing all output to be written to log.")
+
+        # Import everything
+        pyfalog.debug("Import wx")
+        # noinspection PyPackageRequirements
+        import wx
+
+        pyfalog.debug("Import eos.db")
+        import eos.db
+
+        pyfalog.debug("Run prefetch")
+        # noinspection PyUnresolvedReferences
+        import service.prefetch  # noqa: F401
+
+        if not os.path.exists(config.savePath):
+            pyfalog.debug("Saveddata path does not exist, creating new path")
+            os.mkdir(config.savePath)
+        else:
+            pyfalog.debug("Using existing saveddata path: {0}", config.savePath)
+
+        eos.db.saveddata_meta.create_all()
+
+        pyfa = wx.App(False)
+        pyfalog.debug("Show GUI")
+        from gui.mainFrame import MainFrame
+        MainFrame(options.title)
+        pyfalog.debug("Run MainLoop()")
+        pyfa.MainLoop()

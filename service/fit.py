@@ -18,7 +18,7 @@
 # ===============================================================================
 
 import copy
-import logging
+from logbook import Logger
 
 import eos.db
 from eos.saveddata.booster import Booster as es_Booster
@@ -36,7 +36,7 @@ from service.character import Character
 from service.damagePattern import DamagePattern
 from service.settings import SettingsProvider
 
-logger = logging.getLogger(__name__)
+pyfalog = Logger(__name__)
 
 
 class Fit(object):
@@ -50,6 +50,7 @@ class Fit(object):
         return cls.instance
 
     def __init__(self):
+        pyfalog.debug("Initialize Fit class")
         self.pattern = DamagePattern.getInstance().getDamagePattern("Uniform")
         self.targetResists = None
         self.character = saveddata_Character.getAll5()
@@ -1010,7 +1011,7 @@ class Fit(object):
         self.recalc(fit)
 
     def recalc(self, fit, withBoosters=True):
-        logger.debug("=" * 10 + "recalc" + "=" * 10)
+        pyfalog.debug("=" * 10 + "recalc" + "=" * 10)
         if fit.factorReload is not self.serviceFittingOptions["useGlobalForceReload"]:
             fit.factorReload = self.serviceFittingOptions["useGlobalForceReload"]
         fit.clear()

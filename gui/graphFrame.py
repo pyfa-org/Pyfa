@@ -18,7 +18,7 @@
 # =============================================================================
 
 import os
-import logging
+from logbook import Logger
 import imp
 
 # noinspection PyPackageRequirements
@@ -42,7 +42,7 @@ except ImportError:
     mplImported = False
 
 
-logger = logging.getLogger(__name__)
+pyfalog = Logger(__name__)
 
 
 class GraphFrame(wx.Frame):
@@ -73,7 +73,7 @@ class GraphFrame(wx.Frame):
 
         self.legendFix = False
         if not graphFrame_enabled:
-            logger.info("Problems importing matplotlib; continuing without graphs")
+            pyfalog.info("Problems importing matplotlib; continuing without graphs")
             return
 
         try:

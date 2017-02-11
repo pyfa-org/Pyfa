@@ -2,14 +2,13 @@ import BaseHTTPServer
 import urlparse
 import socket
 import thread
-import logging
+from logbook import Logger
 
 # noinspection PyPackageRequirements
 import wx
 
 from service.settings import CRESTSettings
-
-logger = logging.getLogger(__name__)
+pyfalog = Logger(__name__)
 
 # noinspection PyPep8
 HTML = '''
@@ -85,7 +84,7 @@ class StoppableHTTPServer(BaseHTTPServer.HTTPServer):
 
         # Allow listening for x seconds
         sec = self.settings.get('timeout')
-        logger.debug("Running server for %d seconds", sec)
+        pyfalog.debug("Running server for {0} seconds", sec)
 
         self.socket.settimeout(0.5)
         self.max_tries = sec / self.socket.gettimeout()
@@ -99,16 +98,17 @@ class StoppableHTTPServer(BaseHTTPServer.HTTPServer):
                 sock.settimeout(None)
                 return sock, addr
             except socket.timeout:
+                pyfalog.warning("Server timed out waiting for connection")
                 pass
 
     def stop(self):
         self.run = False
 
     def handle_timeout(self):
-        # logger.debug("Number of tries: %d"%self.tries)
+        # pyfalog.debug("Number of tries: %d"%self.tries)
         self.tries += 1
         if self.tries == self.max_tries:
-            logger.debug("Server timed out waiting for connection")
+            pyfalog.debug("Server timed out waiting for connection")
             self.stop()
 
     def serve(self, callback):
@@ -117,6 +117,7 @@ class StoppableHTTPServer(BaseHTTPServer.HTTPServer):
             try:
                 self.handle_request()
             except TypeError:
+                pyfalog.debug("Caught exception in serve")
                 pass
         self.server_close()
 

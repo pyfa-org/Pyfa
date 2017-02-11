@@ -14,6 +14,9 @@ from eos.db import getItem
 from gui.display import Display
 import gui.globalEvents as GE
 
+from logbook import Logger
+pyfalog = Logger(__name__)
+
 if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3, 0)):
     from service.crest import Crest, CrestModes
 
@@ -147,7 +150,9 @@ class CrestFittings(wx.Frame):
             self.fitTree.populateSkillTree(fittings)
             del waitDialog
         except requests.exceptions.ConnectionError:
-            self.statusbar.SetStatusText("Connection error, please check your internet connection")
+            msg = "Connection error, please check your internet connection"
+            pyfalog.error(msg)
+            self.statusbar.SetStatusText(msg)
 
     def importFitting(self, event):
         selection = self.fitView.fitSelection
@@ -173,7 +178,9 @@ class CrestFittings(wx.Frame):
             try:
                 sCrest.delFitting(self.getActiveCharacter(), data['fittingID'])
             except requests.exceptions.ConnectionError:
-                self.statusbar.SetStatusText("Connection error, please check your internet connection")
+                msg = "Connection error, please check your internet connection"
+                pyfalog.error(msg)
+                self.statusbar.SetStatusText(msg)
 
 
 class ExportToEve(wx.Frame):
@@ -281,9 +288,12 @@ class ExportToEve(wx.Frame):
                 text = json.loads(res.text)
                 self.statusbar.SetStatusText(text['message'], 1)
             except ValueError:
+                pyfalog.warning("Value error on loading JSON.")
                 self.statusbar.SetStatusText("", 1)
         except requests.exceptions.ConnectionError:
-            self.statusbar.SetStatusText("Connection error, please check your internet connection", 1)
+            msg = "Connection error, please check your internet connection"
+            pyfalog.error(msg)
+            self.statusbar.SetStatusText(msg)
 
 
 class CrestMgmt(wx.Dialog):
@@ -406,6 +416,7 @@ class FittingsTreeView(wx.Panel):
                 cargo.amount = item['quantity']
                 list.append(cargo)
             except:
+                pyfalog.error("Exception caught in displayFit")
                 pass
 
         self.parent.fitView.fitSelection = selection

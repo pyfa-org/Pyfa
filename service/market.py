@@ -19,7 +19,7 @@
 
 import re
 import threading
-import logging
+from logbook import Logger
 import Queue
 
 # noinspection PyPackageRequirements
@@ -41,7 +41,7 @@ try:
 except ImportError:
     from utils.compat import OrderedDict
 
-logger = logging.getLogger(__name__)
+pyfalog = Logger(__name__)
 
 # Event which tells threads dependent on Market that it's initialized
 mktRdy = threading.Event()
@@ -74,12 +74,12 @@ class ShipBrowserWorkerThread(threading.Thread):
 
                 wx.CallAfter(callback, (id_, set_))
             except:
-                pass
+                pyfalog.debug("Callback failed.")
             finally:
                 try:
                     queue.task_done()
                 except:
-                    pass
+                    pyfalog.debug("Queue task done failed.")
 
 
 class PriceWorkerThread(threading.Thread):
@@ -88,9 +88,11 @@ class PriceWorkerThread(threading.Thread):
         self.name = "PriceWorker"
 
     def run(self):
+        pyfalog.debug("Run start")
         self.queue = Queue.Queue()
         self.wait = {}
         self.processUpdates()
+        pyfalog.debug("Run end")
 
     def processUpdates(self):
         queue = self.queue
@@ -440,7 +442,7 @@ class Market(object):
             else:
                 raise TypeError("Need Item object, integer, float or string as argument")
         except:
-            logger.error("Could not get item: %s", identity)
+            pyfalog.error("Could not get item: %s", identity)
             raise
 
         return item
@@ -834,7 +836,7 @@ class Market(object):
             try:
                 callback(requests)
             except Exception:
-                pass
+                pyfalog.debug("Callback failed.")
             eos.db.commit()
 
         self.priceWorkerThread.trigger(requests, cb)
@@ -850,7 +852,7 @@ class Market(object):
             try:
                 callback(item)
             except:
-                pass
+                pyfalog.debug("Callback failed.")
 
         self.priceWorkerThread.setToWait(item.ID, cb)
 

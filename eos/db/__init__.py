@@ -24,6 +24,9 @@ from sqlalchemy.orm import sessionmaker
 
 import migration
 from eos import config
+from logbook import Logger
+
+pyfalog = Logger(__name__)
 
 
 class ReadOnlyException(Exception):
@@ -47,6 +50,7 @@ try:
         "SELECT `field_value` FROM `metadata` WHERE `field_name` LIKE 'client_build'"
     ).fetchone()[0]
 except:
+    pyfalog.warning("Missing gamedata version.")
     config.gamedata_version = None
 
 saveddata_connectionstring = config.saveddata_connectionstring

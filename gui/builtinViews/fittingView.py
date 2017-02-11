@@ -33,7 +33,7 @@ from gui.builtinViewColumns.state import State
 from gui.bitmapLoader import BitmapLoader
 import gui.builtinViews.emptyView
 from gui.utils.exportHtml import exportHtml
-from logging import getLogger
+from logbook import Logger
 from gui.chromeTabs import EVT_NOTEBOOK_PAGE_CHANGED
 
 from service.fit import Fit
@@ -41,7 +41,7 @@ from service.market import Market
 
 import gui.globalEvents as GE
 
-logger = getLogger(__name__)
+pyfalog = Logger(__name__)
 
 
 # Tab spawning handler
@@ -62,6 +62,7 @@ class FitSpawner(gui.multiSwitch.TabSpawner):
                     wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=event.fitID))
                     break
             except:
+                pyfalog.warning("Caught exception in fitSelected")
                 pass
         if count < 0:
             startup = getattr(event, "startup", False)  # see OpenFitsThread in gui.mainFrame
@@ -278,6 +279,7 @@ class FittingView(d.Display):
             sFit.refreshFit(self.getActiveFit())
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.activeFitID))
         except wx._core.PyDeadObjectError:
+            pyfalog.warning("Caught dead object")
             pass
 
         event.Skip()
@@ -414,7 +416,7 @@ class FittingView(d.Display):
 
                 wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
             else:
-                logger.error("Missing module position for: %s", str(getattr(mod2, "ID", "Unknown")))
+                pyfalog.error("Missing module position for: {0}", str(getattr(mod2, "ID", "Unknown")))
 
     def generateMods(self):
         """
@@ -483,7 +485,7 @@ class FittingView(d.Display):
 
             self.Show(self.activeFitID is not None and self.activeFitID == event.fitID)
         except wx._core.PyDeadObjectError:
-            pass
+            pyfalog.warning("Caught dead object")
         finally:
             event.Skip()
 
@@ -637,14 +639,14 @@ class FittingView(d.Display):
             try:
                 self.MakeSnapshot()
             except:
-                pass
+                pyfalog.warning("Failed to make snapshot")
 
     def OnShow(self, event):
         if event.GetShow():
             try:
                 self.MakeSnapshot()
             except:
-                pass
+                pyfalog.warning("Failed to make snapshot")
         event.Skip()
 
     def Snapshot(self):
@@ -670,7 +672,7 @@ class FittingView(d.Display):
         try:
             fit = sFit.getFit(self.activeFitID)
         except:
-            return
+            pyfalog.warning("Failed to get fit")
 
         if fit is None:
             return

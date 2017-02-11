@@ -25,8 +25,10 @@ import gui.utils.colorUtils as colorUtils
 import gui.utils.drawUtils as drawUtils
 import gui.utils.fonts as fonts
 from gui.bitmapLoader import BitmapLoader
-
+from logbook import Logger
 from service.fit import Fit
+
+pyfalog = Logger(__name__)
 
 _PageChanging, EVT_NOTEBOOK_PAGE_CHANGING = wx.lib.newevent.NewEvent()
 _PageChanged, EVT_NOTEBOOK_PAGE_CHANGED = wx.lib.newevent.NewEvent()
@@ -1094,6 +1096,7 @@ class PFTabsContainer(wx.Panel):
                             self.previewTimer.Start(500, True)
                             break
                     except:
+                        pyfalog.warning("Exception caught in CheckTabPreview.")
                         pass
 
     def CheckAddHighlighted(self, x, y):

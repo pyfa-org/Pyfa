@@ -18,7 +18,7 @@
 # ===============================================================================
 
 
-import logging
+from logbook import Logger
 from itertools import chain
 
 from sqlalchemy.orm import validates, reconstructor
@@ -27,7 +27,7 @@ import eos
 import eos.db
 from eos.effectHandlerHelpers import HandledItem, HandledImplantBoosterList
 
-logger = logging.getLogger(__name__)
+pyfalog = Logger(__name__)
 
 
 class Character(object):

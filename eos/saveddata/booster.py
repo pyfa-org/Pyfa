@@ -17,7 +17,7 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-import logging
+from logbook import Logger
 
 from sqlalchemy.orm import reconstructor, validates
 
@@ -25,7 +25,7 @@ import eos.db
 from eos.effectHandlerHelpers import HandledItem
 from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut
 
-logger = logging.getLogger(__name__)
+pyfalog = Logger(__name__)
 
 
 class Booster(HandledItem, ItemAttrShortcut):
@@ -47,11 +47,11 @@ class Booster(HandledItem, ItemAttrShortcut):
         if self.itemID:
             self.__item = eos.db.getItem(self.itemID)
             if self.__item is None:
-                logger.error("Item (id: %d) does not exist", self.itemID)
+                pyfalog.error("Item (id: %d) does not exist", self.itemID)
                 return
 
         if self.isInvalid:
-            logger.error("Item (id: %d) is not a Booser", self.itemID)
+            pyfalog.error("Item (id: %d) is not a Booser", self.itemID)
             return
 
         self.build()

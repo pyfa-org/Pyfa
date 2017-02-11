@@ -5,6 +5,9 @@ import wx
 from service.settings import HTMLExportSettings
 from service.fit import Fit
 from service.market import Market
+from logbook import Logger
+
+pyfalog = Logger(__name__)
 
 
 class exportHtml(object):
@@ -196,6 +199,7 @@ class exportHtmlThread(threading.Thread):
                             HTMLgroup += '        <li><a data-dna="' + dnaFit + '" target="_blank">' + ship.name + ": " + \
                                          fit[1] + '</a></li>\n'
                         except:
+                            pyfalog.warning("Failed to export line")
                             pass
                         finally:
                             if self.callback:
@@ -218,6 +222,7 @@ class exportHtmlThread(threading.Thread):
                                 HTMLship += '          <li><a data-dna="' + dnaFit + '" target="_blank">' + fit[
                                     1] + '</a></li>\n'
                             except:
+                                pyfalog.warning("Failed to export line")
                                 continue
                             finally:
                                 if self.callback:
@@ -270,6 +275,7 @@ class exportHtmlThread(threading.Thread):
                         HTML += '<a class="outOfGameBrowserLink" target="_blank" href="' + dnaUrl + dnaFit + '">' + ship.name + ': ' + \
                                 fit[1] + '</a><br> \n'
                     except:
+                        pyfalog.error("Failed to export line")
                         continue
                     finally:
                         if self.callback:

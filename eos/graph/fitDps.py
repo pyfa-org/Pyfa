@@ -21,6 +21,9 @@ from math import log, sin, radians, exp
 
 from eos.graph import Graph
 from eos.saveddata.module import State, Hardpoint
+from logbook import Logger
+
+pyfalog = Logger(__name__)
 
 
 class FitDpsGraph(Graph):
@@ -66,6 +69,7 @@ class FitDpsGraph(Graph):
                     val *= 1 + (bonus - 1) * exp(- i ** 2 / 7.1289)
                 data[attr] = val
             except:
+                pyfalog.warning("Caught exception in calcDPS.")
                 pass
 
         for mod in fit.modules:
