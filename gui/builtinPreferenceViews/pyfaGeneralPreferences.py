@@ -8,7 +8,8 @@ import gui.mainFrame
 import gui.globalEvents as GE
 from service.settings import SettingsProvider
 from service.fit import Fit
-
+from service.price import Price
+from service.market import Market
 
 class PFGeneralPref(PreferenceView):
     title = "General"
@@ -80,6 +81,11 @@ class PFGeneralPref(PreferenceView):
                                           wx.DefaultPosition, wx.DefaultSize, 0)
         mainSizer.Add(self.cbOpenFitInNew, 0, wx.ALL | wx.EXPAND, 5)
 
+        self.chPriceSystem = wx.Choice( panel, choices=Price.systemsList.keys())
+        mainSizer.Add( self.chPriceSystem, 0, wx.ALL|wx.EXPAND, 5)
+
+        defCharSizer = wx.BoxSizer( wx.HORIZONTAL )
+
         wx.BoxSizer(wx.HORIZONTAL)
 
         self.sFit = Fit.getInstance()
@@ -97,6 +103,7 @@ class PFGeneralPref(PreferenceView):
         self.cbGaugeAnimation.SetValue(self.sFit.serviceFittingOptions["enableGaugeAnimation"])
         self.cbExportCharges.SetValue(self.sFit.serviceFittingOptions["exportCharges"])
         self.cbOpenFitInNew.SetValue(self.sFit.serviceFittingOptions["openFitInNew"])
+        self.chPriceSystem.SetStringSelection(self.sFit.serviceFittingOptions["priceSystem"])
 
         self.cbGlobalChar.Bind(wx.EVT_CHECKBOX, self.OnCBGlobalCharStateChange)
         self.cbGlobalDmgPattern.Bind(wx.EVT_CHECKBOX, self.OnCBGlobalDmgPatternStateChange)
@@ -111,6 +118,7 @@ class PFGeneralPref(PreferenceView):
         self.cbGaugeAnimation.Bind(wx.EVT_CHECKBOX, self.onCBGaugeAnimation)
         self.cbExportCharges.Bind(wx.EVT_CHECKBOX, self.onCBExportCharges)
         self.cbOpenFitInNew.Bind(wx.EVT_CHECKBOX, self.onCBOpenFitInNew)
+        self.chPriceSystem.Bind(wx.EVT_CHOICE, self.onPriceSelection)
 
         self.cbRackLabels.Enable(self.sFit.serviceFittingOptions["rackSlots"] or False)
 
@@ -181,6 +189,21 @@ class PFGeneralPref(PreferenceView):
 
     def getImage(self):
         return BitmapLoader.getBitmap("prefs_settings", "gui")
+
+    def onPriceSelection(self, event):
+        system = self.chPriceSystem.GetString(self.chPriceSystem.GetSelection())
+        Price.currentSystemId = Price.systemsList.get(system)
+        self.sFit.serviceFittingOptions["priceSystem"] = system
+
+        fitID = self.mainFrame.getActiveFit()
+        fit = self.sFit.getFit(fitID)
+
+        sMkt = Market.getInstance()
+        typeIDs = Price.fitItemsList(fit)
+        sMkt.getPrices(typeIDs, Price.invalidPrices)
+
+        self.sFit.refreshFit(fitID)
+        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
 
 PFGeneralPref.register()
