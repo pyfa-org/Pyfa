@@ -81,12 +81,16 @@ class PFGeneralPref(PreferenceView):
                                           wx.DefaultPosition, wx.DefaultSize, 0)
         mainSizer.Add(self.cbOpenFitInNew, 0, wx.ALL | wx.EXPAND, 5)
 
+        priceSizer = wx.BoxSizer(wx.HORIZONTAL)
+
+        self.stDefaultSystem = wx.StaticText(panel, wx.ID_ANY, u"Default Market Prices:", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.stDefaultSystem.Wrap(-1)
+        priceSizer.Add(self.stDefaultSystem, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
+
         self.chPriceSystem = wx.Choice( panel, choices=Price.systemsList.keys())
-        mainSizer.Add( self.chPriceSystem, 0, wx.ALL|wx.EXPAND, 5)
+        priceSizer.Add(self.chPriceSystem, 1, wx.ALL | wx.EXPAND, 5)
 
-        defCharSizer = wx.BoxSizer( wx.HORIZONTAL )
-
-        wx.BoxSizer(wx.HORIZONTAL)
+        mainSizer.Add(priceSizer, 0, wx.ALL|wx.EXPAND, 0)
 
         self.sFit = Fit.getInstance()
 
@@ -196,14 +200,12 @@ class PFGeneralPref(PreferenceView):
         self.sFit.serviceFittingOptions["priceSystem"] = system
 
         fitID = self.mainFrame.getActiveFit()
-        fit = self.sFit.getFit(fitID)
 
         sMkt = Market.getInstance()
-        typeIDs = Price.fitItemsList(fit)
-        sMkt.getPrices(typeIDs, Price.invalidPrices)
+        sMkt.clearPriceCache()
 
         self.sFit.refreshFit(fitID)
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
-
+        event.Skip()
 
 PFGeneralPref.register()
