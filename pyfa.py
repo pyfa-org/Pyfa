@@ -232,17 +232,19 @@ if __name__ == "__main__":
 
     with logging_setup.threadbound():
         # Don't redirect if frozen
-        if not hasattr(sys, 'frozen') and not options.debug:
+        if not hasattr(sys, 'frozen'):
             # Output all stdout (print) messages as warnings
             try:
                 sys.stdout = LoggerWriter(pyfalog.warning)
             except ValueError, Exception:
                 pyfalog.critical("Cannot access log file.  Continuing without writing stdout to log.")
-            # Output all stderr (stacktrace) messages as critical
-            try:
-                sys.stderr = LoggerWriter(pyfalog.critical)
-            except ValueError, Exception:
-                pyfalog.critical("Cannot access log file.  Continuing without writing stderr to log.")
+
+            if not options.debug:
+                # Output all stderr (stacktrace) messages as critical
+                try:
+                    sys.stderr = LoggerWriter(pyfalog.critical)
+                except ValueError, Exception:
+                    pyfalog.critical("Cannot access log file.  Continuing without writing stderr to log.")
 
         pyfalog.info("Starting Pyfa")
         pyfalog.info("Running in logging mode: {0}", logging_mode)
