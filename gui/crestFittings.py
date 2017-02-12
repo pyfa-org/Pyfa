@@ -415,9 +415,9 @@ class FittingsTreeView(wx.Panel):
                 cargo = Cargo(getItem(item['type']['id']))
                 cargo.amount = item['quantity']
                 list.append(cargo)
-            except:
-                pyfalog.error("Exception caught in displayFit")
-                pass
+            except Exception as e:
+                pyfalog.critical("Exception caught in displayFit")
+                pyfalog.critical(e)
 
         self.parent.fitView.fitSelection = selection
         self.parent.fitView.update(list)

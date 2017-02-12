@@ -49,8 +49,9 @@ try:
     config.gamedata_version = gamedata_session.execute(
         "SELECT `field_value` FROM `metadata` WHERE `field_name` LIKE 'client_build'"
     ).fetchone()[0]
-except:
+except Exception as e:
     pyfalog.warning("Missing gamedata version.")
+    pyfalog.critical(e)
     config.gamedata_version = None
 
 saveddata_connectionstring = config.saveddata_connectionstring

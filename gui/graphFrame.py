@@ -244,6 +244,7 @@ class GraphFrame(wx.Frame):
                 self.subplot.plot(x, y)
                 legend.append(fit.name)
             except:
+                pyfalog.warning("Invalid values in '{0}'", fit.name)
                 self.SetStatusText("Invalid values in '%s'" % fit.name)
                 self.canvas.draw()
                 return

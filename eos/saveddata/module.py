@@ -639,6 +639,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                             effect.handler(fit, self, chargeContext, effect=effect)
                         except:
                             effect.handler(fit, self, chargeContext)
+                            pyfalog.debug("Applying effect handler for charge without effect.")
 
         if self.item:
             if self.state >= State.OVERHEATED:
@@ -662,6 +663,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                         effect.handler(fit, self, context, effect=effect)
                     except:
                         effect.handler(fit, self, context)
+                        pyfalog.debug("Applying effect handler without effect")
 
     @property
     def cycleTime(self):

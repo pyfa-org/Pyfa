@@ -1095,9 +1095,9 @@ class PFTabsContainer(wx.Panel):
                             self.previewTab = tab
                             self.previewTimer.Start(500, True)
                             break
-                    except:
-                        pyfalog.warning("Exception caught in CheckTabPreview.")
-                        pass
+                    except Exception as e:
+                        pyfalog.critical("Exception caught in CheckTabPreview.")
+                        pyfalog.critical(e)
 
     def CheckAddHighlighted(self, x, y):
         """

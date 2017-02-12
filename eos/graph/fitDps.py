@@ -68,9 +68,9 @@ class FitDpsGraph(Graph):
                     bonus = values[i]
                     val *= 1 + (bonus - 1) * exp(- i ** 2 / 7.1289)
                 data[attr] = val
-            except:
-                pyfalog.warning("Caught exception in calcDPS.")
-                pass
+            except Exception as e:
+                pyfalog.critical("Caught exception in calcDPS.")
+                pyfalog.critical(e)
 
         for mod in fit.modules:
             dps, _ = mod.damageStats(fit.targetResists)

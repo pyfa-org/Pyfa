@@ -114,10 +114,10 @@ class CharacterSelection(wx.Panel):
         if charName:
             try:
                 sChar.apiFetch(self.getActiveCharacter(), charName)
-            except:
+            except Exception as e:
                 # can we do a popup, notifying user of API error?
                 pyfalog.error("API fetch error")
-                pass
+                pyfalog.error(e)
         self.refreshCharacterList()
 
     def charChanged(self, event):

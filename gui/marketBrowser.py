@@ -187,8 +187,9 @@ class MarketTree(wx.TreeCtrl):
                 iconId = self.addImage(sMkt.getIconByMarketGroup(childMktGrp))
                 try:
                     childId = self.AppendItem(root, childMktGrp.name, iconId, data=wx.TreeItemData(childMktGrp.ID))
-                except:
+                except Exception as e:
                     pyfalog.debug("Error appending item.")
+                    pyfalog.debug(e)
                     continue
                 if sMkt.marketGroupHasTypesCheck(childMktGrp) is False:
                     self.AppendItem(childId, "dummy")

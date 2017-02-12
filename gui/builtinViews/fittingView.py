@@ -61,9 +61,9 @@ class FitSpawner(gui.multiSwitch.TabSpawner):
                     self.multiSwitch.SetSelection(index)
                     wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=event.fitID))
                     break
-            except:
-                pyfalog.warning("Caught exception in fitSelected")
-                pass
+            except Exception as e:
+                pyfalog.critical("Caught exception in fitSelected")
+                pyfalog.critical(e)
         if count < 0:
             startup = getattr(event, "startup", False)  # see OpenFitsThread in gui.mainFrame
             sFit = Fit.getInstance()
@@ -638,15 +638,17 @@ class FittingView(d.Display):
         if 'wxMac' in wx.PlatformInfo:
             try:
                 self.MakeSnapshot()
-            except:
-                pyfalog.warning("Failed to make snapshot")
+            except Exception as e:
+                pyfalog.critical("Failed to make snapshot")
+                pyfalog.critical(e)
 
     def OnShow(self, event):
         if event.GetShow():
             try:
                 self.MakeSnapshot()
-            except:
-                pyfalog.warning("Failed to make snapshot")
+            except Exception as e:
+                pyfalog.critical("Failed to make snapshot")
+                pyfalog.critical(e)
         event.Skip()
 
     def Snapshot(self):
@@ -671,8 +673,9 @@ class FittingView(d.Display):
         sFit = Fit.getInstance()
         try:
             fit = sFit.getFit(self.activeFitID)
-        except:
-            pyfalog.warning("Failed to get fit")
+        except Exception as e:
+            pyfalog.critical("Failed to get fit")
+            pyfalog.critical(e)
 
         if fit is None:
             return

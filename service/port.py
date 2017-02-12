@@ -166,8 +166,9 @@ class Port(object):
                 fits += fitsImport
             except xml.parsers.expat.ExpatError:
                 return False, "Malformed XML in %s" % path
-            except Exception:
-                pyfalog.exception("Unknown exception processing: %s", path)
+            except Exception as e:
+                pyfalog.critical("Unknown exception processing: %s", path)
+                pyfalog.critical(e)
                 return False, "Unknown Error while processing %s" % path
 
         IDs = []

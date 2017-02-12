@@ -73,13 +73,15 @@ class ShipBrowserWorkerThread(threading.Thread):
                     cache[id_] = set_
 
                 wx.CallAfter(callback, (id_, set_))
-            except:
-                pyfalog.debug("Callback failed.")
+            except Exception as e:
+                pyfalog.critical("Callback failed.")
+                pyfalog.critical(e)
             finally:
                 try:
                     queue.task_done()
-                except:
-                    pyfalog.debug("Queue task done failed.")
+                except Exception as e:
+                    pyfalog.critical("Queue task done failed.")
+                    pyfalog.critical(e)
 
 
 class PriceWorkerThread(threading.Thread):
@@ -835,8 +837,9 @@ class Market(object):
         def cb():
             try:
                 callback(requests)
-            except Exception:
-                pyfalog.debug("Callback failed.")
+            except Exception as e:
+                pyfalog.critical("Callback failed.")
+                pyfalog.critical(e)
             eos.db.commit()
 
         self.priceWorkerThread.trigger(requests, cb)
@@ -851,8 +854,9 @@ class Market(object):
         def cb():
             try:
                 callback(item)
-            except:
-                pyfalog.debug("Callback failed.")
+            except Exception as e:
+                pyfalog.critical("Callback failed.")
+                pyfalog.critical(e)
 
         self.priceWorkerThread.setToWait(item.ID, cb)
 
