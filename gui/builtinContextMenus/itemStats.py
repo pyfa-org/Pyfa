@@ -1,6 +1,7 @@
 from gui.contextMenu import ContextMenu
 from gui.itemStats import ItemStatsDialog
 import gui.mainFrame
+# noinspection PyPackageRequirements
 import wx
 from service.fit import Fit
 

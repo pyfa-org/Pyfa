@@ -17,7 +17,9 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
+# noinspection PyPackageRequirements
 import wx
+# noinspection PyPackageRequirements
 import wx.lib.newevent
 import gui.mainFrame
 import gui.marketBrowser
@@ -31,7 +33,8 @@ from gui.builtinViewColumns.state import State
 from gui.bitmapLoader import BitmapLoader
 import gui.builtinViews.emptyView
 from gui.utils.exportHtml import exportHtml
-from logging import getLogger, Formatter
+from logging import getLogger
+from gui.chromeTabs import EVT_NOTEBOOK_PAGE_CHANGED
 
 from service.fit import Fit
 from service.market import Market
@@ -97,8 +100,8 @@ FitSpawner.register()
 
 # Drag'n'drop handler
 class FittingViewDrop(wx.PyDropTarget):
-    def __init__(self, dropFn):
-        wx.PyDropTarget.__init__(self)
+    def __init__(self, dropFn, *args, **kwargs):
+        super(FittingViewDrop, self).__init__(*args, **kwargs)
         self.dropFn = dropFn
         # this is really transferring an EVE itemID
         self.dropData = wx.PyTextDataObject()
@@ -157,7 +160,7 @@ class FittingView(d.Display):
         self.Bind(wx.EVT_SHOW, self.OnShow)
         self.Bind(wx.EVT_MOTION, self.OnMouseMove)
         self.Bind(wx.EVT_LEAVE_WINDOW, self.OnLeaveWindow)
-        self.parent.Bind(gui.chromeTabs.EVT_NOTEBOOK_PAGE_CHANGED, self.pageChanged)
+        self.parent.Bind(EVT_NOTEBOOK_PAGE_CHANGED, self.pageChanged)
 
     def OnLeaveWindow(self, event):
         self.SetToolTip(None)
@@ -185,13 +188,13 @@ class FittingView(d.Display):
         event.Skip()
 
     def handleListDrag(self, x, y, data):
-        '''
+        """
         Handles dragging of items from various pyfa displays which support it
 
         data is list with two items:
             data[0] is hard-coded str of originating source
             data[1] is typeID or index of data we want to manipulate
-        '''
+        """
 
         if data[0] == "fitting":
             self.swapItems(x, y, int(data[1]))
@@ -206,7 +209,7 @@ class FittingView(d.Display):
             wx.PostEvent(self.mainFrame, gui.shipBrowser.FitSelected(fitID=fitID))
 
     def Destroy(self):
-        self.parent.Unbind(gui.chromeTabs.EVT_NOTEBOOK_PAGE_CHANGED, handler=self.pageChanged)
+        self.parent.Unbind(EVT_NOTEBOOK_PAGE_CHANGED, handler=self.pageChanged)
         self.mainFrame.Unbind(GE.FIT_CHANGED, handler=self.fitChanged)
         self.mainFrame.Unbind(gui.shipBrowser.EVT_FIT_RENAMED, handler=self.fitRenamed)
         self.mainFrame.Unbind(gui.shipBrowser.EVT_FIT_REMOVED, handler=self.fitRemoved)
@@ -259,11 +262,11 @@ class FittingView(d.Display):
         event.Skip()
 
     def fitRemoved(self, event):
-        '''
+        """
         If fit is removed and active, the page is deleted.
         We also refresh the fit of the new current page in case
         delete fit caused change in stats (projected)
-        '''
+        """
         fitID = event.fitID
 
         if fitID == self.getActiveFit():
@@ -355,7 +358,7 @@ class FittingView(d.Display):
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.activeFitID))
 
     def addModule(self, x, y, srcIdx):
-        '''Add a module from the market browser'''
+        """Add a module from the market browser"""
 
         dstRow, _ = self.HitTest((x, y))
         if dstRow != -1 and dstRow not in self.blanks:
@@ -368,7 +371,7 @@ class FittingView(d.Display):
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
 
     def swapCargo(self, x, y, srcIdx):
-        '''Swap a module from cargo to fitting window'''
+        """Swap a module from cargo to fitting window"""
         mstate = wx.GetMouseState()
 
         dstRow, _ = self.HitTest((x, y))
@@ -382,7 +385,7 @@ class FittingView(d.Display):
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
 
     def swapItems(self, x, y, srcIdx):
-        '''Swap two modules in fitting window'''
+        """Swap two modules in fitting window"""
         mstate = wx.GetMouseState()
         sFit = Fit.getInstance()
         fit = sFit.getFit(self.activeFitID)
@@ -403,20 +406,23 @@ class FittingView(d.Display):
             if mod1.slot != mod2.slot:
                 return
 
-            if clone and mod2.isEmpty:
-                sFit.cloneModule(self.mainFrame.getActiveFit(), srcIdx, mod2.modPosition)
-            else:
-                sFit.swapModules(self.mainFrame.getActiveFit(), srcIdx, mod2.modPosition)
+            if getattr(mod2, "modPosition"):
+                if clone and mod2.isEmpty:
+                    sFit.cloneModule(self.mainFrame.getActiveFit(), srcIdx, mod2.modPosition)
+                else:
+                    sFit.swapModules(self.mainFrame.getActiveFit(), srcIdx, mod2.modPosition)
 
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
+                wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
+            else:
+                logger.error("Missing module position for: %s", str(getattr(mod2, "ID", "Unknown")))
 
     def generateMods(self):
-        '''
+        """
         Generate module list.
 
         This also injects dummy modules to visually separate racks. These modules are only
         known to the display, and not the backend, so it's safe.
-        '''
+        """
 
         sFit = Fit.getInstance()
         fit = sFit.getFit(self.activeFitID)
@@ -425,7 +431,7 @@ class FittingView(d.Display):
 
         if fit is not None:
             self.mods = fit.modules[:]
-            self.mods.sort(key=lambda mod: (slotOrder.index(mod.slot), mod.position))
+            self.mods.sort(key=lambda _mod: (slotOrder.index(_mod.slot), _mod.position))
 
             # Blanks is a list of indexes that mark non-module positions (such
             # as Racks and tactical Modes. This allows us to skip over common
@@ -536,13 +542,13 @@ class FittingView(d.Display):
         self.PopupMenu(menu)
 
     def click(self, event):
-        '''
+        """
         Handle click event on modules.
 
         This is only useful for the State column. If multiple items are selected,
         and we have clicked the State column, iterate through the selections and
         change State
-        '''
+        """
         row, _, col = self.HitTestSubItem(event.Position)
 
         # only do State column and ignore invalid rows
@@ -584,12 +590,12 @@ class FittingView(d.Display):
         return self.slotColourMap.get(slot) or self.GetBackgroundColour()
 
     def refresh(self, stuff):
-        '''
+        """
         Displays fitting
 
         Sends data to d.Display.refresh where the rows and columns are set up, then does a
         bit of post-processing (colors)
-        '''
+        """
         self.Freeze()
         d.Display.refresh(self, stuff)
 
@@ -644,6 +650,7 @@ class FittingView(d.Display):
     def Snapshot(self):
         return self.FVsnapshot
 
+    # noinspection PyPropertyAccess
     def MakeSnapshot(self, maxColumns=1337):
 
         if self.FVsnapshot:
@@ -677,7 +684,6 @@ class FittingView(d.Display):
         isize = 16
         headerSize = max(isize, tdc.GetTextExtent("W")[0]) + padding * 2
 
-        maxWidth = 0
         maxRowHeight = isize
         rows = 0
         for st in self.mods:
@@ -741,7 +747,7 @@ class FittingView(d.Display):
             maxWidth += columnsWidths[i]
 
         mdc = wx.MemoryDC()
-        mbmp = wx.EmptyBitmap(maxWidth, (maxRowHeight) * rows + padding * 4 + headerSize)
+        mbmp = wx.EmptyBitmap(maxWidth, maxRowHeight * rows + padding * 4 + headerSize)
 
         mdc.SelectObject(mbmp)
 
@@ -771,8 +777,7 @@ class FittingView(d.Display):
                 bmp = col.bitmap
                 opts.m_labelBitmap = bmp
 
-            width = render.DrawHeaderButton(self, mdc, (cx, padding, columnsWidths[i], headerSize), wx.CONTROL_CURRENT,
-                                            sortArrow=wx.HDR_SORT_ICON_NONE, params=opts)
+            render.DrawHeaderButton(self, mdc, (cx, padding, columnsWidths[i], headerSize), wx.CONTROL_CURRENT, sortArrow=wx.HDR_SORT_ICON_NONE, params=opts)
 
             cx += columnsWidths[i]
 

@@ -17,6 +17,7 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
+# noinspection PyPackageRequirements
 import wx
 
 from eos.saveddata.mode import Mode
@@ -73,7 +74,7 @@ class MaxRange(ViewColumn):
         return -1
 
     def getParameters(self):
-        return (("displayName", bool, False), ("showIcon", bool, True))
+        return ("displayName", bool, False), ("showIcon", bool, True)
 
     def getToolTip(self, mod):
         return "Optimal + Falloff"

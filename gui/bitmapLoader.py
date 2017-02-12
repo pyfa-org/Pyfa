@@ -22,6 +22,7 @@ import os.path
 import zipfile
 from config import parsePath
 
+# noinspection PyPackageRequirements
 import wx
 
 import config
@@ -32,7 +33,7 @@ except ImportError:
     from utils.compat import OrderedDict
 
 
-class BitmapLoader():
+class BitmapLoader(object):
     try:
         archive = zipfile.ZipFile(config.getPyfaPath('imgs.zip'), 'r')
     except IOError:

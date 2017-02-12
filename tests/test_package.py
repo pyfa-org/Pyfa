@@ -4,6 +4,7 @@ import os
 import sys
 import importlib
 
+# noinspection PyPackageRequirements
 import pytest
 
 

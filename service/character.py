@@ -27,6 +27,7 @@ from xml.etree import ElementTree
 from xml.dom import minidom
 import gzip
 
+# noinspection PyPackageRequirements
 import wx
 
 import config
@@ -189,33 +190,40 @@ class Character(object):
 
         return prettydata
 
-    def backupSkills(self, path, saveFmt, activeFit, callback):
+    @staticmethod
+    def backupSkills(path, saveFmt, activeFit, callback):
         thread = SkillBackupThread(path, saveFmt, activeFit, callback)
         thread.start()
 
-    def importCharacter(self, path, callback):
+    @staticmethod
+    def importCharacter(path, callback):
         thread = CharacterImportThread(path, callback)
         thread.start()
 
-    def all0(self):
+    @staticmethod
+    def all0():
         return es_Character.getAll0()
 
     def all0ID(self):
         return self.all0().ID
 
-    def all5(self):
+    @staticmethod
+    def all5():
         return es_Character.getAll5()
 
     def all5ID(self):
         return self.all5().ID
 
-    def getAlphaCloneList(self):
+    @staticmethod
+    def getAlphaCloneList():
         return eos.db.getAlphaCloneList()
 
-    def getCharacterList(self):
+    @staticmethod
+    def getCharacterList():
         return eos.db.getCharacterList()
 
-    def getCharacter(self, charID):
+    @staticmethod
+    def getCharacter(charID):
         char = eos.db.getCharacter(charID)
         return char
 
@@ -226,7 +234,8 @@ class Character(object):
         char = eos.db.getCharacter(charID)
         char.saveLevels()
 
-    def saveCharacterAs(self, charID, newName):
+    @staticmethod
+    def saveCharacterAs(charID, newName):
         """Save edited skills as a new character"""
         char = eos.db.getCharacter(charID)
         newChar = copy.deepcopy(char)
@@ -236,12 +245,14 @@ class Character(object):
         # revert old char
         char.revertLevels()
 
-    def revertCharacter(self, charID):
+    @staticmethod
+    def revertCharacter(charID):
         """Rollback edited skills"""
         char = eos.db.getCharacter(charID)
         char.revertLevels()
 
-    def getSkillGroups(self):
+    @staticmethod
+    def getSkillGroups():
         cat = eos.db.getCategory(16)
         groups = []
         for grp in cat.groups:
@@ -249,7 +260,8 @@ class Character(object):
                 groups.append((grp.ID, grp.name))
         return groups
 
-    def getSkills(self, groupID):
+    @staticmethod
+    def getSkills(groupID):
         group = eos.db.getGroup(groupID)
         skills = []
         for skill in group.items:
@@ -257,59 +269,71 @@ class Character(object):
                 skills.append((skill.ID, skill.name))
         return skills
 
-    def setAlphaClone(self, char, cloneID):
+    @staticmethod
+    def setAlphaClone(char, cloneID):
         char.alphaCloneID = cloneID
         eos.db.commit()
 
-    def getSkillDescription(self, itemID):
+    @staticmethod
+    def getSkillDescription(itemID):
         return eos.db.getItem(itemID).description
 
-    def getGroupDescription(self, groupID):
+    @staticmethod
+    def getGroupDescription(groupID):
         return eos.db.getMarketGroup(groupID).description
 
-    def getSkillLevel(self, charID, skillID):
+    @staticmethod
+    def getSkillLevel(charID, skillID):
         skill = eos.db.getCharacter(charID).getSkill(skillID)
-        return (skill.level if skill.learned else "Not learned", skill.isDirty)
+        return skill.level if skill.learned else "Not learned", skill.isDirty
 
-    def getDirtySkills(self, charID):
+    @staticmethod
+    def getDirtySkills(charID):
         return eos.db.getCharacter(charID).dirtySkills
 
-    def getCharName(self, charID):
+    @staticmethod
+    def getCharName(charID):
         return eos.db.getCharacter(charID).name
 
-    def new(self, name="New Character"):
+    @staticmethod
+    def new(name="New Character"):
         char = es_Character(name)
         eos.db.save(char)
         return char
 
-    def rename(self, char, newName):
+    @staticmethod
+    def rename(char, newName):
         if char.name in ("All 0", "All 5"):
             logger.info("Cannot rename built in characters.")
         else:
             char.name = newName
             eos.db.commit()
 
-    def copy(self, char):
+    @staticmethod
+    def copy(char):
         newChar = copy.deepcopy(char)
         eos.db.save(newChar)
         return newChar
 
-    def delete(self, char):
+    @staticmethod
+    def delete(char):
         eos.db.remove(char)
 
-    def getApiDetails(self, charID):
+    @staticmethod
+    def getApiDetails(charID):
         char = eos.db.getCharacter(charID)
         if char.chars is not None:
             chars = json.loads(char.chars)
         else:
             chars = None
-        return (char.apiID or "", char.apiKey or "", char.defaultChar or "", chars or [])
+        return char.apiID or "", char.apiKey or "", char.defaultChar or "", chars or []
 
     def apiEnabled(self, charID):
         id_, key, default, _ = self.getApiDetails(charID)
         return id_ is not "" and key is not "" and default is not ""
 
-    def apiCharList(self, charID, userID, apiKey):
+    @staticmethod
+    def apiCharList(charID, userID, apiKey):
         char = eos.db.getCharacter(charID)
 
         char.apiID = userID
@@ -323,7 +347,8 @@ class Character(object):
         char.chars = json.dumps(charList)
         return charList
 
-    def apiFetch(self, charID, charName):
+    @staticmethod
+    def apiFetch(charID, charName):
         dbChar = eos.db.getCharacter(charID)
         dbChar.defaultChar = charName
 
@@ -343,12 +368,14 @@ class Character(object):
         dbChar.apiUpdateCharSheet(sheet.skills)
         eos.db.commit()
 
-    def apiUpdateCharSheet(self, charID, skills):
+    @staticmethod
+    def apiUpdateCharSheet(charID, skills):
         char = eos.db.getCharacter(charID)
         char.apiUpdateCharSheet(skills)
         eos.db.commit()
 
-    def changeLevel(self, charID, skillID, level, persist=False):
+    @staticmethod
+    def changeLevel(charID, skillID, level, persist=False):
         char = eos.db.getCharacter(charID)
         skill = char.getSkill(skillID)
         if isinstance(level, basestring) or level > 5 or level < 0:
@@ -361,17 +388,20 @@ class Character(object):
 
         eos.db.commit()
 
-    def revertLevel(self, charID, skillID):
+    @staticmethod
+    def revertLevel(charID, skillID):
         char = eos.db.getCharacter(charID)
         skill = char.getSkill(skillID)
         skill.revert()
 
-    def saveSkill(self, charID, skillID):
+    @staticmethod
+    def saveSkill(charID, skillID):
         char = eos.db.getCharacter(charID)
         skill = char.getSkill(skillID)
         skill.saveLevel()
 
-    def addImplant(self, charID, itemID):
+    @staticmethod
+    def addImplant(charID, itemID):
         char = eos.db.getCharacter(charID)
         if char.ro:
             logger.error("Trying to add implant to read-only character")
@@ -381,12 +411,14 @@ class Character(object):
         char.implants.append(implant)
         eos.db.commit()
 
-    def removeImplant(self, charID, implant):
+    @staticmethod
+    def removeImplant(charID, implant):
         char = eos.db.getCharacter(charID)
         char.implants.remove(implant)
         eos.db.commit()
 
-    def getImplants(self, charID):
+    @staticmethod
+    def getImplants(charID):
         char = eos.db.getCharacter(charID)
         return char.implants
 

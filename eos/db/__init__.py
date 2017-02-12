@@ -20,10 +20,7 @@
 import threading
 
 from sqlalchemy import MetaData, create_engine
-from sqlalchemy.orm import sessionmaker, scoped_session
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import pool
-
+from sqlalchemy.orm import sessionmaker
 
 import migration
 from eos import config
@@ -62,16 +59,22 @@ if saveddata_connectionstring is not None:
     saveddata_meta = MetaData()
     saveddata_meta.bind = saveddata_engine
     saveddata_session = sessionmaker(bind=saveddata_engine, autoflush=False, expire_on_commit=False)()
+else:
+    saveddata_meta = None
 
 # Lock controlling any changes introduced to session
 sd_lock = threading.Lock()
 
 # Import all the definitions for all our database stuff
-from eos.db.gamedata import *
-from eos.db.saveddata import *
+# noinspection PyPep8
+from eos.db.gamedata import alphaClones, attribute, category, effect, group, icon, item, marketGroup, metaData, metaGroup, queries, traits, unit
+# noinspection PyPep8
+from eos.db.saveddata import booster, cargo, character, crest, damagePattern, databaseRepair, drone, fighter, fit, implant, implantSet, loadDefaultDatabaseValues, miscData, module, override, price, queries, skill, targetResists, user
 
 # Import queries
+# noinspection PyPep8
 from eos.db.gamedata.queries import *
+# noinspection PyPep8
 from eos.db.saveddata.queries import *
 
 # If using in memory saveddata, you'll want to reflect it so the data structure is good.

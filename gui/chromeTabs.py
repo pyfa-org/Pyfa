@@ -17,7 +17,9 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
+# noinspection PyPackageRequirements
 import wx
+# noinspection PyPackageRequirements
 import wx.lib.newevent
 import gui.utils.colorUtils as colorUtils
 import gui.utils.drawUtils as drawUtils
@@ -34,7 +36,7 @@ PageAdded, EVT_NOTEBOOK_PAGE_ADDED = wx.lib.newevent.NewEvent()
 PageClosed, EVT_NOTEBOOK_PAGE_CLOSED = wx.lib.newevent.NewEvent()
 
 
-class VetoAble():
+class VetoAble(object):
     def __init__(self):
         self.__vetoed = False
 
@@ -45,7 +47,7 @@ class VetoAble():
         return self.__vetoed
 
 
-class NotebookTabChangeEvent():
+class NotebookTabChangeEvent(object):
     def __init__(self, old, new):
         self.__old = old
         self.__new = new
@@ -146,7 +148,8 @@ class PFNotebook(wx.Panel):
         if self.activePage == page:
             self.ShowActive()
 
-    def GetBorders(self):
+    @staticmethod
+    def GetBorders():
         """Gets border widths to better determine page size in ShowActive()"""
 
         bx = wx.SystemSettings_GetMetric(wx.SYS_BORDER_X)
@@ -335,7 +338,7 @@ class PFNotebook(wx.Panel):
         event.Skip()
 
 
-class PFTabRenderer:
+class PFTabRenderer(object):
     def __init__(self, size=(36, 24), text=wx.EmptyString, img=None, inclination=6, closeButton=True):
         """
         Renders a new tab
@@ -438,7 +441,8 @@ class PFTabRenderer:
     def SetTabImage(self, img):
         self.tabImg = img
 
-    def CopyRegion(self, region):
+    @staticmethod
+    def CopyRegion(region):
         rect = region.GetBox()
 
         newRegion = wx.Region(rect.X, rect.Y, rect.Width, rect.Height)
@@ -527,8 +531,8 @@ class PFTabRenderer:
         self.tabRegion = wx.RegionFromBitmap(self.tabBackBitmap)
         self.closeBtnRegion = wx.RegionFromBitmap(self.ctabCloseBmp)
         self.closeBtnRegion.Offset(
-            self.contentWidth + self.leftWidth - self.ctabCloseBmp.GetWidth() / 2,
-            (self.tabHeight - self.ctabCloseBmp.GetHeight()) / 2
+                self.contentWidth + self.leftWidth - self.ctabCloseBmp.GetWidth() / 2,
+                (self.tabHeight - self.ctabCloseBmp.GetHeight()) / 2
         )
 
     def InitColors(self):
@@ -591,9 +595,9 @@ class PFTabRenderer:
                 cbmp = wx.BitmapFromImage(cimg)
 
             mdc.DrawBitmap(
-                cbmp,
-                self.contentWidth + self.leftWidth - self.ctabCloseBmp.GetWidth() / 2,
-                (height - self.ctabCloseBmp.GetHeight()) / 2,
+                    cbmp,
+                    self.contentWidth + self.leftWidth - self.ctabCloseBmp.GetWidth() / 2,
+                    (height - self.ctabCloseBmp.GetHeight()) / 2,
             )
 
         mdc.SelectObject(wx.NullBitmap)
@@ -609,11 +613,11 @@ class PFTabRenderer:
 
     def __repr__(self):
         return "PFTabRenderer(text={}, disabled={}) at {}".format(
-            self.text, self.disabled, hex(id(self))
+                self.text, self.disabled, hex(id(self))
         )
 
 
-class PFAddRenderer:
+class PFAddRenderer(object):
     def __init__(self):
         """Renders the add tab button"""
         self.addImg = BitmapLoader.getImage("ctabadd", "gui")
@@ -652,7 +656,8 @@ class PFAddRenderer:
         region = wx.RegionFromBitmap(self.tbmp)
         return region
 
-    def CopyRegion(self, region):
+    @staticmethod
+    def CopyRegion(region):
         rect = region.GetBox()
 
         newRegion = wx.Region(rect.X, rect.Y, rect.Width, rect.Height)
@@ -973,7 +978,8 @@ class PFTabsContainer(wx.Panel):
                 return tab
         return None
 
-    def TabHitTest(self, tab, x, y):
+    @staticmethod
+    def TabHitTest(tab, x, y):
         tabRegion = tab.GetTabRegion()
         tabPos = tab.GetPosition()
         tabPosX, tabPosY = tabPos
@@ -1117,13 +1123,13 @@ class PFTabsContainer(wx.Panel):
         else:
             mdc = wx.BufferedPaintDC(self)
 
-        selected = 0
-
         if 'wxMac' in wx.PlatformInfo and wx.VERSION < (3, 0):
             color = wx.Colour(0, 0, 0)
             brush = wx.Brush(color)
 
+            # noinspection PyPackageRequirements,PyUnresolvedReferences,PyUnresolvedReferences,PyUnresolvedReferences
             from Carbon.Appearance import kThemeBrushDialogBackgroundActive
+            # noinspection PyUnresolvedReferences
             brush.MacSetTheme(kThemeBrushDialogBackgroundActive)
         else:
             color = wx.SystemSettings_GetColour(wx.SYS_COLOUR_3DFACE)
@@ -1253,7 +1259,7 @@ class PFTabsContainer(wx.Panel):
         if self.tabMinWidth < 1:
             self.tabMinWidth = 1
         for tab in self.tabs:
-            w, h = tab.GetSize()
+            tab.GetSize()
             tab.SetSize((self.tabMinWidth, self.height))
 
         if self.GetTabsCount() > 0:
@@ -1268,6 +1274,7 @@ class PFTabsContainer(wx.Panel):
 
         pos = tabsWidth
         selected = None
+        selpos = None
         for i in range(len(self.tabs) - 1, -1, -1):
             tab = self.tabs[i]
             width = tab.tabWidth - self.inclination * 2

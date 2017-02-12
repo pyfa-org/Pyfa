@@ -1,3 +1,4 @@
+# noinspection PyPackageRequirements
 import wx
 from eos.saveddata.implant import Implant
 from eos.saveddata.drone import Drone

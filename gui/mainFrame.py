@@ -22,20 +22,24 @@ import os.path
 import logging
 
 import sqlalchemy
+# noinspection PyPackageRequirements
 import wx
+# noinspection PyPackageRequirements
+from wx._core import PyDeadObjectError
+# noinspection PyPackageRequirements
+from wx.lib.wordwrap import wordwrap
+# noinspection PyPackageRequirements
+from wx.lib.inspection import InspectionTool
 import time
 
 from codecs import open
-from wx._core import PyDeadObjectError
-
-from wx.lib.wordwrap import wordwrap
 
 import config
 
 from eos.config import gamedata_version
 
 import gui.aboutData
-import gui.chromeTabs
+from gui.chromeTabs import PFNotebook
 import gui.globalEvents as GE
 
 from gui.bitmapLoader import BitmapLoader
@@ -55,7 +59,8 @@ from gui.graphFrame import GraphFrame
 from gui.copySelectDialog import CopySelectDialog
 from gui.utils.clipboard import toClipboard, fromClipboard
 from gui.updateDialog import UpdateDialog
-from gui.builtinViews import *  # TODO: unsure if this is needed here
+# noinspection PyUnresolvedReferences
+from gui.builtinViews import emptyView, entityEditor, fittingView, implantEditor  # noqa: F401
 from gui import graphFrame
 
 from service.settings import SettingsProvider
@@ -66,14 +71,11 @@ from service.update import Update
 # import this to access override setting
 from eos.modifiedAttributeDict import ModifiedAttributeDict
 from eos.db.saveddata.loadDefaultDatabaseValues import DefaultDatabaseValues
-from eos import db
+from eos.db.saveddata.queries import getFit as db_getFit
 from service.port import Port
 from service.settings import HTMLExportSettings
 
 from time import gmtime, strftime
-import logging
-
-logger = logging.getLogger(__name__)
 
 import threading
 import webbrowser
@@ -88,10 +90,11 @@ if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION 
 
         disableOverrideEditor = False
     except ImportError as e:
+        AttributeEditor = None
         print("Error loading Attribute Editor: %s.\nAccess to Attribute Editor is disabled." % e.message)
         disableOverrideEditor = True
 
-logger = logging.getLogger("pyfa.gui.mainFrame")
+logger = logging.getLogger(__name__)
 
 
 # dummy panel(no paint no erasebk)
@@ -141,7 +144,7 @@ class MainFrame(wx.Frame):
     def getInstance(cls):
         return cls.__instance if cls.__instance is not None else MainFrame()
 
-    def __init__(self, title):
+    def __init__(self, title="pyfa"):
         self.title = title
         wx.Frame.__init__(self, None, wx.ID_ANY, self.title)
 
@@ -171,7 +174,7 @@ class MainFrame(wx.Frame):
         self.fitMultiSwitch = MultiSwitch(self.fitting_additions_split)
         self.additionsPane = AdditionsPane(self.fitting_additions_split)
 
-        self.notebookBrowsers = gui.chromeTabs.PFNotebook(self.browser_fitting_split, False)
+        self.notebookBrowsers = PFNotebook(self.browser_fitting_split, False)
 
         marketImg = BitmapLoader.getImage("market_small", "gui")
         shipBrowserImg = BitmapLoader.getImage("ship_small", "gui")
@@ -440,13 +443,16 @@ class MainFrame(wx.Frame):
         dlg = PreferenceDialog(self)
         dlg.ShowModal()
 
-    def goWiki(self, event):
+    @staticmethod
+    def goWiki(event):
         webbrowser.open('https://github.com/pyfa-org/Pyfa/wiki')
 
-    def goForums(self, event):
+    @staticmethod
+    def goForums(event):
         webbrowser.open('https://forums.eveonline.com/default.aspx?g=posts&t=466425')
 
-    def loadDatabaseDefaults(self, event):
+    @staticmethod
+    def loadDatabaseDefaults(event):
         # Import values that must exist otherwise Pyfa breaks
         DefaultDatabaseValues.importRequiredDefaults()
         # Import default values for damage profiles
@@ -700,27 +706,27 @@ class MainFrame(wx.Frame):
             self.marketBrowser.search.Focus()
 
     def clipboardEft(self):
-        fit = db.getFit(self.getActiveFit())
+        fit = db_getFit(self.getActiveFit())
         toClipboard(Port.exportEft(fit))
 
     def clipboardEftImps(self):
-        fit = db.getFit(self.getActiveFit())
+        fit = db_getFit(self.getActiveFit())
         toClipboard(Port.exportEftImps(fit))
 
     def clipboardDna(self):
-        fit = db.getFit(self.getActiveFit())
+        fit = db_getFit(self.getActiveFit())
         toClipboard(Port.exportDna(fit))
 
     def clipboardCrest(self):
-        fit = db.getFit(self.getActiveFit())
+        fit = db_getFit(self.getActiveFit())
         toClipboard(Port.exportCrest(fit))
 
     def clipboardXml(self):
-        fit = db.getFit(self.getActiveFit())
+        fit = db_getFit(self.getActiveFit())
         toClipboard(Port.exportXml(None, fit))
 
     def clipboardMultiBuy(self):
-        fit = db.getFit(self.getActiveFit())
+        fit = db_getFit(self.getActiveFit())
         toClipboard(Port.exportMultiBuy(fit))
 
     def importFromClipboard(self, event):
@@ -792,7 +798,7 @@ class MainFrame(wx.Frame):
                       "All Files (*)|*"),
             style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST | wx.FD_MULTIPLE
         )
-        if (dlg.ShowModal() == wx.ID_OK):
+        if dlg.ShowModal() == wx.ID_OK:
             self.progressDialog = wx.ProgressDialog(
                 "Importing fits",
                 " " * 100,  # set some arbitrary spacing to create width in window
@@ -946,13 +952,12 @@ class MainFrame(wx.Frame):
         if not self.graphFrame:
             self.graphFrame = GraphFrame(self)
 
-            if graphFrame.enabled:
+            if graphFrame.graphFrame_enabled:
                 self.graphFrame.Show()
-        else:
+        elif graphFrame.graphFrame_enabled:
             self.graphFrame.SetFocus()
 
     def openWXInspectTool(self, event):
-        from wx.lib.inspection import InspectionTool
         if not InspectionTool().initialized:
             InspectionTool().Init()
 

@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 
+# noinspection PyPackageRequirements
 import wx
 import copy
 
@@ -425,7 +426,8 @@ class PFGaugePref(PreferenceView):
         self.SetColours()
         event.Skip()
 
-    def OnOk(self, event):
+    @staticmethod
+    def OnOk(event):
         # Apply New Settings
         event.Skip()
 

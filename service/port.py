@@ -33,6 +33,7 @@ import xml.parsers.expat
 from eos import db
 from service.fit import Fit as svcFit
 
+# noinspection PyPackageRequirements
 import wx
 
 from eos.saveddata.cargo import Cargo
@@ -80,15 +81,18 @@ class Port(object):
 
         return cls.instance
 
-    def backupFits(self, path, callback):
+    @staticmethod
+    def backupFits(path, callback):
         thread = FitBackupThread(path, callback)
         thread.start()
 
-    def importFitsThreaded(self, paths, callback):
+    @staticmethod
+    def importFitsThreaded(paths, callback):
         thread = FitImportThread(paths, callback)
         thread.start()
 
-    def importFitFromFiles(self, paths, callback=None):
+    @staticmethod
+    def importFitFromFiles(paths, callback=None):
         """
         Imports fits from file(s). First processes all provided paths and stores
         assembled fits into a list. This allows us to call back to the GUI as
@@ -115,6 +119,8 @@ class Port(object):
             # codepage then fallback to utf-16, cp1252
 
             if isinstance(srcString, str):
+                savebom = None
+
                 encoding_map = (
                     ('\xef\xbb\xbf', 'utf-8'),
                     ('\xff\xfe\0\0', 'utf-32'),
@@ -182,7 +188,8 @@ class Port(object):
 
         return True, fits
 
-    def importFitFromBuffer(self, bufferStr, activeFit=None):
+    @staticmethod
+    def importFitFromBuffer(bufferStr, activeFit=None):
         sFit = svcFit.getInstance()
         _, fits = Port.importAuto(bufferStr, activeFit=activeFit)
         for fit in fits:
@@ -540,7 +547,7 @@ class Port(object):
             elif item.category.name == "Fighter":
                 extraAmount = int(extraAmount) if extraAmount is not None else 1
                 fighterItem = Fighter(item)
-                if (extraAmount > fighterItem.fighterSquadronMaxSize):  # Amount bigger then max fightergroup size
+                if extraAmount > fighterItem.fighterSquadronMaxSize:  # Amount bigger then max fightergroup size
                     extraAmount = fighterItem.fighterSquadronMaxSize
                 if fighterItem.fits(fit):
                     fit.fighters.append(fighterItem)
@@ -1089,7 +1096,7 @@ class Port(object):
 
     @staticmethod
     def exportMultiBuy(fit):
-        export = "%s\n" % (fit.ship.item.name)
+        export = "%s\n" % fit.ship.item.name
         stuff = {}
         sFit = svcFit.getInstance()
         for module in fit.modules:

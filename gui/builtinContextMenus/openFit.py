@@ -1,5 +1,6 @@
 from gui.contextMenu import ContextMenu
 import gui.mainFrame
+# noinspection PyPackageRequirements
 import wx
 from gui.shipBrowser import FitSelected
 

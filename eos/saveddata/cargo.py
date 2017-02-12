@@ -71,9 +71,9 @@ class Cargo(HandledItem, ItemAttrShortcut):
 
     @validates("fitID", "itemID", "amount")
     def validator(self, key, val):
-        map = {"fitID": lambda val: isinstance(val, int),
-               "itemID": lambda val: isinstance(val, int),
-               "amount": lambda val: isinstance(val, int)}
+        map = {"fitID": lambda _val: isinstance(_val, int),
+               "itemID": lambda _val: isinstance(_val, int),
+               "amount": lambda _val: isinstance(_val, int)}
 
         if key == "amount" and val > sys.maxint:
             val = sys.maxint

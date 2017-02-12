@@ -39,44 +39,54 @@ class ImplantSets(object):
 
         return cls.instance
 
-    def getImplantSetList(self):
+    @staticmethod
+    def getImplantSetList():
         return eos.db.getImplantSetList(None)
 
-    def getImplantSet(self, name):
+    @staticmethod
+    def getImplantSet(name):
         return eos.db.getImplantSet(name)
 
-    def getImplants(self, setID):
+    @staticmethod
+    def getImplants(setID):
         return eos.db.getImplantSet(setID).implants
 
-    def addImplant(self, setID, itemID):
+    @staticmethod
+    def addImplant(setID, itemID):
         implant_set = eos.db.getImplantSet(setID)
         implant = es_Implant(eos.db.getItem(itemID))
         implant_set.implants.append(implant)
         eos.db.commit()
 
-    def removeImplant(self, setID, implant):
+    @staticmethod
+    def removeImplant(setID, implant):
         eos.db.getImplantSet(setID).implants.remove(implant)
         eos.db.commit()
 
-    def newSet(self, name):
+    @staticmethod
+    def newSet(name):
         implant_set = es_ImplantSet()
         implant_set.name = name
         eos.db.save(implant_set)
         return implant_set
 
-    def renameSet(self, implant_set, newName):
+    @staticmethod
+    def renameSet(implant_set, newName):
         implant_set.name = newName
         eos.db.save(implant_set)
 
-    def deleteSet(self, implant_set):
+    @staticmethod
+    def deleteSet(implant_set):
         eos.db.remove(implant_set)
 
-    def copySet(self, implant_set):
+    @staticmethod
+    def copySet(implant_set):
         newS = copy.deepcopy(implant_set)
         eos.db.save(newS)
         return newS
 
-    def saveChanges(self, implant_set):
+    @staticmethod
+    def saveChanges(implant_set):
         eos.db.save(implant_set)
 
     def importSets(self, text):

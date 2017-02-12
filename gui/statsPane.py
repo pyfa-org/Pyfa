@@ -17,6 +17,7 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
+# noinspection PyPackageRequirements
 import wx
 
 from service.fit import Fit
@@ -92,7 +93,8 @@ class StatsPane(wx.Panel):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
 
-    def contextHandler(self, contentPanel):
+    @staticmethod
+    def contextHandler(contentPanel):
         viewName = contentPanel.viewName
 
         def handler(event):

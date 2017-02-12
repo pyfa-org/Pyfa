@@ -4,8 +4,6 @@ Migration 17
 - Moves all fleet boosters to the new schema
 """
 
-import sqlalchemy
-
 
 def upgrade(saveddata_engine):
     from eos.db import saveddata_session

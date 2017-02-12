@@ -1,3 +1,4 @@
+# noinspection PyPackageRequirements
 import wx
 
 __all__ = ["pyfaGeneralPreferences", "pyfaHTMLExportPreferences", "pyfaUpdatePreferences",

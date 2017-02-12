@@ -1,6 +1,7 @@
 from gui.contextMenu import ContextMenu
 import gui.mainFrame
 import gui.globalEvents as GE
+# noinspection PyPackageRequirements
 import wx
 from gui.bitmapLoader import BitmapLoader
 from service.fit import Fit
@@ -9,7 +10,7 @@ from service.damagePattern import DamagePattern as import_DamagePattern
 try:
     from collections import OrderedDict
 except ImportError:
-    from gui.utils.compat import OrderedDict
+    from utils.compat import OrderedDict
 
 
 class DamagePattern(ContextMenu):

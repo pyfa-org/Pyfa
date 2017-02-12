@@ -62,7 +62,7 @@ class Data(object):
 
     def parseString(self, dataString):
         if not isinstance(dataString, basestring):
-            return (Constant(dataString),)
+            return Constant(dataString),
 
         dataList = []
         for data in dataString.split(";"):
@@ -93,7 +93,8 @@ class Constant(object):
     def __iter__(self):
         yield self.value
 
-    def isConstant(self):
+    @staticmethod
+    def isConstant():
         return True
 
 
@@ -114,5 +115,6 @@ class Range(object):
             i += 1
             yield current
 
-    def isConstant(self):
+    @staticmethod
+    def isConstant():
         return False

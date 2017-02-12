@@ -17,6 +17,7 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
+# noinspection PyPackageRequirements
 import wx
 import gui.display as d
 import gui.globalEvents as GE
@@ -30,20 +31,20 @@ from eos.saveddata.fighter import Fighter as es_Fighter
 from eos.saveddata.module import Module as es_Module
 
 
-class DummyItem:
+class DummyItem(object):
     def __init__(self, txt):
         self.name = txt
         self.icon = None
 
 
-class DummyEntry:
+class DummyEntry(object):
     def __init__(self, txt):
         self.item = DummyItem(txt)
 
 
 class ProjectedViewDrop(wx.PyDropTarget):
-    def __init__(self, dropFn):
-        wx.PyDropTarget.__init__(self)
+    def __init__(self, dropFn, *args, **kwargs):
+        super(ProjectedViewDrop, self).__init__(*args, **kwargs)
         self.dropFn = dropFn
         # this is really transferring an EVE itemID
         self.dropData = wx.PyTextDataObject()
@@ -85,13 +86,13 @@ class ProjectedView(d.Display):
         self.SetDropTarget(ProjectedViewDrop(self.handleListDrag))
 
     def handleListDrag(self, x, y, data):
-        '''
+        """
         Handles dragging of items from various pyfa displays which support it
 
         data is list with two indices:
             data[0] is hard-coded str of originating source
             data[1] is typeID or index of data we want to manipulate
-        '''
+        """
 
         if data[0] == "projected":
             # if source is coming from projected, we are trying to combine drones.
@@ -146,10 +147,12 @@ class ProjectedView(d.Display):
             if sFit.mergeDrones(fitID, self.get(src), dstDrone, True):
                 wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
-    def moduleSort(self, module):
+    @staticmethod
+    def moduleSort(module):
         return module.item.name
 
-    def fighterSort(self, fighter):
+    @staticmethod
+    def fighterSort(fighter):
         return fighter.item.name
 
     def droneSort(self, drone):
@@ -160,7 +163,8 @@ class ProjectedView(d.Display):
         return (self.droneView.DRONE_ORDER.index(item.marketGroup.name),
                 drone.item.name)
 
-    def fitSort(self, fit):
+    @staticmethod
+    def fitSort(fit):
         return fit.name
 
     def fitChanged(self, event):
@@ -203,7 +207,7 @@ class ProjectedView(d.Display):
 
             self.deselectItems()
 
-        if stuff == []:
+        if not stuff:
             stuff = [DummyEntry("Drag an item or fit, or use right-click menu for system effects")]
 
         self.update(stuff)
@@ -276,7 +280,7 @@ class ProjectedView(d.Display):
                 fitSrcContext = "projectedFit"
                 fitItemContext = item.name
                 context = ((fitSrcContext, fitItemContext),)
-            context = context + (("projected",),)
+            context += ("projected",),
             menu = ContextMenu.getMenu((item,), *context)
         elif sel == -1:
             fitID = self.mainFrame.getActiveFit()

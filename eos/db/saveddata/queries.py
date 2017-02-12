@@ -68,6 +68,7 @@ if configVal is True:
             def checkAndReturn(*args, **kwargs):
                 useCache = kwargs.pop("useCache", True)
                 cacheKey = []
+                items = None
                 cacheKey.extend(args)
                 for keyword in keywords:
                     cacheKey.append(kwargs.get(keyword))

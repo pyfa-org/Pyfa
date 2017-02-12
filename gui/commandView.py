@@ -17,6 +17,7 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
+# noinspection PyPackageRequirements
 import wx
 import gui.display as d
 import gui.globalEvents as GE
@@ -28,20 +29,20 @@ from service.fit import Fit
 from eos.saveddata.drone import Drone as es_Drone
 
 
-class DummyItem:
+class DummyItem(object):
     def __init__(self, txt):
         self.name = txt
         self.icon = None
 
 
-class DummyEntry:
+class DummyEntry(object):
     def __init__(self, txt):
         self.item = DummyItem(txt)
 
 
 class CommandViewDrop(wx.PyDropTarget):
-    def __init__(self, dropFn):
-        wx.PyDropTarget.__init__(self)
+    def __init__(self, dropFn, *args, **kwargs):
+        super(CommandViewDrop, self).__init__(*args, **kwargs)
         self.dropFn = dropFn
         # this is really transferring an EVE itemID
         self.dropData = wx.PyTextDataObject()
@@ -78,14 +79,15 @@ class CommandView(d.Display):
         self.Bind(wx.EVT_LIST_BEGIN_DRAG, self.startDrag)
         self.SetDropTarget(CommandViewDrop(self.handleListDrag))
 
-    def handleListDrag(self, x, y, data):
-        '''
+    @staticmethod
+    def handleListDrag(x, y, data):
+        """
         Handles dragging of items from various pyfa displays which support it
 
         data is list with two indices:
             data[0] is hard-coded str of originating source
             data[1] is typeID or index of data we want to manipulate
-        '''
+        """
         pass
 
     def kbEvent(self, event):
@@ -118,7 +120,8 @@ class CommandView(d.Display):
             dropSource.SetData(data)
             dropSource.DoDragDrop()
 
-    def fitSort(self, fit):
+    @staticmethod
+    def fitSort(fit):
         return fit.name
 
     def fitChanged(self, event):
@@ -151,7 +154,7 @@ class CommandView(d.Display):
             self.deselectItems()
 
         # todo: verify
-        if stuff == []:
+        if not stuff:
             stuff = [DummyEntry("Drag a fit to this area")]
 
         self.update(stuff)
@@ -159,7 +162,7 @@ class CommandView(d.Display):
     def get(self, row):
         numFits = len(self.fits)
 
-        if (numFits) == 0:
+        if numFits == 0:
             return None
 
         return self.fits[row]
@@ -191,7 +194,7 @@ class CommandView(d.Display):
             fitSrcContext = "commandFit"
             fitItemContext = item.name
             context = ((fitSrcContext, fitItemContext),)
-            context = context + (("command",),)
+            context += ("command",),
             menu = ContextMenu.getMenu((item,), *context)
         elif sel == -1:
             fitID = self.mainFrame.getActiveFit()
