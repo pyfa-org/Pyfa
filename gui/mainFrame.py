@@ -80,6 +80,8 @@ from time import gmtime, strftime
 import threading
 import webbrowser
 
+disableOverrideEditor = False
+
 if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3, 0)):
     from service.crest import Crest
     from service.crest import CrestModes
@@ -87,8 +89,6 @@ if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION 
 
     try:
         from gui.propertyEditor import AttributeEditor
-
-        disableOverrideEditor = False
     except ImportError as e:
         AttributeEditor = None
         print("Error loading Attribute Editor: %s.\nAccess to Attribute Editor is disabled." % e.message)
