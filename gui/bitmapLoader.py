@@ -38,8 +38,8 @@ except ImportError:
 
 class BitmapLoader(object):
     try:
-        logging.info("Using zipped image files.")
         archive = zipfile.ZipFile(config.getPyfaPath('imgs.zip'), 'r')
+        logging.info("Using zipped image files.")
     except IOError:
         logging.info("Using local image files.")
         archive = None
