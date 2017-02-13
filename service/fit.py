@@ -20,7 +20,8 @@
 import copy
 import logging
 
-import eos.db
+from eos.db.saveddata import queries as saveddata_queries
+from eos.db.gamedata import queries as gamedata_queries
 from eos.saveddata.booster import Booster as es_Booster
 from eos.saveddata.cargo import Cargo as es_Cargo
 from eos.saveddata.character import Character as saveddata_Character
@@ -78,13 +79,13 @@ class Fit(object):
 
     @staticmethod
     def getAllFits():
-        fits = eos.db.getFitList()
+        fits = saveddata_queries.getFitList()
         return fits
 
     @staticmethod
     def getFitsWithShip(shipID):
         """ Lists fits of shipID, used with shipBrowser """
-        fits = eos.db.getFitsWithShip(shipID)
+        fits = saveddata_queries.getFitsWithShip(shipID)
         names = []
         for fit in fits:
             names.append((fit.ID, fit.name, fit.booster, fit.timestamp))
@@ -94,7 +95,7 @@ class Fit(object):
     @staticmethod
     def getBoosterFits():
         """ Lists fits flagged as booster """
-        fits = eos.db.getBoosterFits()
+        fits = saveddata_queries.getBoosterFits()
         names = []
         for fit in fits:
             names.append((fit.ID, fit.name, fit.shipID))
@@ -103,62 +104,62 @@ class Fit(object):
 
     @staticmethod
     def countAllFits():
-        return eos.db.countAllFits()
+        return saveddata_queries.countAllFits()
 
     @staticmethod
     def countFitsWithShip(stuff):
-        count = eos.db.countFitsWithShip(stuff)
+        count = saveddata_queries.countFitsWithShip(stuff)
         return count
 
     @staticmethod
     def getModule(fitID, pos):
-        fit = eos.db.getFit(fitID)
+        fit = saveddata_queries.getFit(fitID)
         return fit.modules[pos]
 
     def newFit(self, shipID, name=None):
         try:
-            ship = es_Ship(eos.db.getItem(shipID))
+            ship = es_Ship(gamedata_queries.getItem(shipID))
         except ValueError:
-            ship = es_Citadel(eos.db.getItem(shipID))
+            ship = es_Citadel(gamedata_queries.getItem(shipID))
         fit = FitType(ship)
         fit.name = name if name is not None else "New %s" % fit.ship.item.name
         fit.damagePattern = self.pattern
         fit.targetResists = self.targetResists
         fit.character = self.character
         fit.booster = self.booster
-        eos.db.save(fit)
+        saveddata_queries.save(fit)
         self.recalc(fit)
         return fit.ID
 
     @staticmethod
     def toggleBoostFit(fitID):
-        fit = eos.db.getFit(fitID)
+        fit = saveddata_queries.getFit(fitID)
         fit.booster = not fit.booster
-        eos.db.commit()
+        saveddata_queries.commit()
 
     @staticmethod
     def renameFit(fitID, newName):
-        fit = eos.db.getFit(fitID)
+        fit = saveddata_queries.getFit(fitID)
         fit.name = newName
-        eos.db.commit()
+        saveddata_queries.commit()
 
     @staticmethod
     def deleteFit(fitID):
-        fit = eos.db.getFit(fitID)
+        fit = saveddata_queries.getFit(fitID)
 
-        eos.db.remove(fit)
+        saveddata_queries.remove(fit)
 
         # refresh any fits this fit is projected onto. Otherwise, if we have
         # already loaded those fits, they will not reflect the changes
         for projection in fit.projectedOnto.values():
-            if projection.victim_fit in eos.db.saveddata_session:  # GH issue #359
-                eos.db.saveddata_session.refresh(projection.victim_fit)
+            if projection.victim_fit in saveddata_queries.saveddata_session:  # GH issue #359
+                saveddata_queries.saveddata_session.refresh(projection.victim_fit)
 
     @staticmethod
     def copyFit(fitID):
-        fit = eos.db.getFit(fitID)
+        fit = saveddata_queries.getFit(fitID)
         newFit = copy.deepcopy(fit)
-        eos.db.save(newFit)
+        saveddata_queries.save(newFit)
         return newFit.ID
 
     @staticmethod
@@ -166,7 +167,7 @@ class Fit(object):
         if fitID is None:
             return None
 
-        fit = eos.db.getFit(fitID)
+        fit = saveddata_queries.getFit(fitID)
         fit.clear()
         return fit
 
@@ -174,16 +175,16 @@ class Fit(object):
         if fitID is None:
             return None
 
-        fit = eos.db.getFit(fitID)
+        fit = saveddata_queries.getFit(fitID)
         fit.factorReload = not fit.factorReload
-        eos.db.commit()
+        saveddata_queries.commit()
         self.recalc(fit)
 
     def switchFit(self, fitID):
         if fitID is None:
             return None
 
-        fit = eos.db.getFit(fitID)
+        fit = saveddata_queries.getFit(fitID)
 
         if self.serviceFittingOptions["useGlobalCharacter"]:
             if fit.character != self.character:
@@ -193,7 +194,7 @@ class Fit(object):
             if fit.damagePattern != self.pattern:
                 fit.damagePattern = self.pattern
 
-        eos.db.commit()
+        saveddata_queries.commit()
         self.recalc(fit, withBoosters=True)
 
     def getFit(self, fitID, projected=False, basic=False):
@@ -205,7 +206,7 @@ class Fit(object):
         """
         if fitID is None:
             return None
-        fit = eos.db.getFit(fitID)
+        fit = saveddata_queries.getFit(fitID)
 
         if basic:
             return fit
@@ -222,13 +223,13 @@ class Fit(object):
             # Check that the states of all modules are valid
             self.checkStates(fit, None)
 
-            eos.db.commit()
+            saveddata_queries.commit()
             fit.inited = True
         return fit
 
     @staticmethod
     def searchFits(name):
-        results = eos.db.searchFits(name)
+        results = saveddata_queries.searchFits(name)
         fits = []
         for fit in results:
             fits.append((
@@ -240,8 +241,8 @@ class Fit(object):
         if fitID is None:
             return False
 
-        fit = eos.db.getFit(fitID)
-        item = eos.db.getItem(itemID, eager="attributes")
+        fit = saveddata_queries.getFit(fitID)
+        item = gamedata_queries.getItem(itemID, eager="attributes")
         try:
             implant = es_Implant(item)
         except ValueError:
@@ -256,7 +257,7 @@ class Fit(object):
         if fitID is None:
             return False
 
-        fit = eos.db.getFit(fitID)
+        fit = saveddata_queries.getFit(fitID)
         implant = fit.implants[position]
         fit.implants.remove(implant)
         self.recalc(fit)
@@ -266,8 +267,8 @@ class Fit(object):
         if fitID is None:
             return False
 
-        fit = eos.db.getFit(fitID)
-        item = eos.db.getItem(itemID, eager="attributes")
+        fit = saveddata_queries.getFit(fitID)
+        item = gamedata_queries.getItem(itemID, eager="attributes")
         try:
             booster = es_Booster(item)
         except ValueError:
@@ -281,7 +282,7 @@ class Fit(object):
         if fitID is None:
             return False
 
-        fit = eos.db.getFit(fitID)
+        fit = saveddata_queries.getFit(fitID)
         booster = fit.boosters[position]
         fit.boosters.remove(booster)
         self.recalc(fit)
@@ -291,10 +292,10 @@ class Fit(object):
         if fitID is None:
             return
 
-        fit = eos.db.getFit(fitID)
+        fit = saveddata_queries.getFit(fitID)
 
         if isinstance(thing, int):
-            thing = eos.db.getItem(thing,
+            thing = gamedata_queries.getItem(thing,
                                    eager=("attributes", "group.category"))
 
         if isinstance(thing, FitType):
@@ -304,8 +305,8 @@ class Fit(object):
             fit.__projectedFits[thing.ID] = thing
 
             # this bit is required -- see GH issue # 83
-            eos.db.saveddata_session.flush()
-            eos.db.saveddata_session.refresh(thing)
+            saveddata_queries.saveddata_session.flush()
+            saveddata_queries.saveddata_session.refresh(thing)
         elif thing.category.name == "Drone":
             drone = None
             for d in fit.projectedDrones.find(thing):
@@ -332,7 +333,7 @@ class Fit(object):
                 module.state = State.OFFLINE
             fit.projectedModules.append(module)
 
-        eos.db.commit()
+        saveddata_queries.commit()
         self.recalc(fit)
         return True
 
@@ -340,7 +341,7 @@ class Fit(object):
         if fitID is None:
             return
 
-        fit = eos.db.getFit(fitID)
+        fit = saveddata_queries.getFit(fitID)
 
         if thing in fit.commandFits:
             return
@@ -348,15 +349,15 @@ class Fit(object):
         fit.__commandFits[thing.ID] = thing
 
         # this bit is required -- see GH issue # 83
-        eos.db.saveddata_session.flush()
-        eos.db.saveddata_session.refresh(thing)
+        saveddata_queries.saveddata_session.flush()
+        saveddata_queries.saveddata_session.refresh(thing)
 
-        eos.db.commit()
+        saveddata_queries.commit()
         self.recalc(fit)
         return True
 
     def toggleProjected(self, fitID, thing, click):
-        fit = eos.db.getFit(fitID)
+        fit = saveddata_queries.getFit(fitID)
         if isinstance(thing, es_Drone):
             if thing.amountActive == 0 and thing.canBeApplied(fit):
                 thing.amountActive = thing.amount
@@ -373,38 +374,38 @@ class Fit(object):
             if projectionInfo:
                 projectionInfo.active = not projectionInfo.active
 
-        eos.db.commit()
+        saveddata_queries.commit()
         self.recalc(fit)
 
     def toggleCommandFit(self, fitID, thing):
-        fit = eos.db.getFit(fitID)
+        fit = saveddata_queries.getFit(fitID)
         commandInfo = thing.getCommandInfo(fitID)
         if commandInfo:
             commandInfo.active = not commandInfo.active
 
-        eos.db.commit()
+        saveddata_queries.commit()
         self.recalc(fit)
 
     def changeAmount(self, fitID, projected_fit, amount):
         """Change amount of projected fits"""
-        fit = eos.db.getFit(fitID)
+        fit = saveddata_queries.getFit(fitID)
         amount = min(20, max(1, amount))  # 1 <= a <= 20
         projectionInfo = projected_fit.getProjectionInfo(fitID)
         if projectionInfo:
             projectionInfo.amount = amount
 
-        eos.db.commit()
+        saveddata_queries.commit()
         self.recalc(fit)
 
     def changeActiveFighters(self, fitID, fighter, amount):
-        fit = eos.db.getFit(fitID)
+        fit = saveddata_queries.getFit(fitID)
         fighter.amountActive = amount
 
-        eos.db.commit()
+        saveddata_queries.commit()
         self.recalc(fit)
 
     def removeProjected(self, fitID, thing):
-        fit = eos.db.getFit(fitID)
+        fit = saveddata_queries.getFit(fitID)
         if isinstance(thing, es_Drone):
             fit.projectedDrones.remove(thing)
         elif isinstance(thing, es_Module):
@@ -415,19 +416,19 @@ class Fit(object):
             del fit.__projectedFits[thing.ID]
             # fit.projectedFits.remove(thing)
 
-        eos.db.commit()
+        saveddata_queries.commit()
         self.recalc(fit)
 
     def removeCommand(self, fitID, thing):
-        fit = eos.db.getFit(fitID)
+        fit = saveddata_queries.getFit(fitID)
         del fit.__commandFits[thing.ID]
 
-        eos.db.commit()
+        saveddata_queries.commit()
         self.recalc(fit)
 
     def appendModule(self, fitID, itemID):
-        fit = eos.db.getFit(fitID)
-        item = eos.db.getItem(itemID, eager=("attributes", "group.category"))
+        fit = saveddata_queries.getFit(fitID)
+        item = gamedata_queries.getItem(itemID, eager=("attributes", "group.category"))
         try:
             m = es_Module(item)
         except ValueError:
@@ -449,14 +450,14 @@ class Fit(object):
             self.checkStates(fit, m)
 
             fit.fill()
-            eos.db.commit()
+            saveddata_queries.commit()
 
             return numSlots != len(fit.modules)
         else:
             return None
 
     def removeModule(self, fitID, position):
-        fit = eos.db.getFit(fitID)
+        fit = saveddata_queries.getFit(fitID)
         if fit.modules[position].isEmpty:
             return None
 
@@ -465,16 +466,16 @@ class Fit(object):
         self.recalc(fit)
         self.checkStates(fit, None)
         fit.fill()
-        eos.db.commit()
+        saveddata_queries.commit()
         return numSlots != len(fit.modules)
 
     def changeModule(self, fitID, position, newItemID):
-        fit = eos.db.getFit(fitID)
+        fit = saveddata_queries.getFit(fitID)
 
         # Dummy it out in case the next bit fails
         fit.modules.toDummy(position)
 
-        item = eos.db.getItem(newItemID, eager=("attributes", "group.category"))
+        item = gamedata_queries.getItem(newItemID, eager=("attributes", "group.category"))
         try:
             m = es_Module(item)
         except ValueError:
@@ -492,7 +493,7 @@ class Fit(object):
             self.checkStates(fit, m)
 
             fit.fill()
-            eos.db.commit()
+            saveddata_queries.commit()
 
             return True
         else:
@@ -506,7 +507,7 @@ class Fit(object):
         sanity checks as opposed to the GUI View. This is different than how the
         normal .swapModules() does things, which is mostly a blind swap.
         """
-        fit = eos.db.getFit(fitID)
+        fit = saveddata_queries.getFit(fitID)
 
         module = fit.modules[moduleIdx]
         cargo = fit.cargo[cargoIdx]
@@ -547,12 +548,12 @@ class Fit(object):
                 moduleP.amount = 1
                 fit.cargo.insert(cargoIdx, moduleP)
 
-        eos.db.commit()
+        saveddata_queries.commit()
         self.recalc(fit)
 
     @staticmethod
     def swapModules(fitID, src, dst):
-        fit = eos.db.getFit(fitID)
+        fit = saveddata_queries.getFit(fitID)
         # Gather modules
         srcMod = fit.modules[src]
         dstMod = fit.modules[dst]
@@ -563,7 +564,7 @@ class Fit(object):
         fit.modules.remove(dstMod)
         fit.modules.insert(src, dstMod)
 
-        eos.db.commit()
+        saveddata_queries.commit()
 
     def cloneModule(self, fitID, src, dst):
         """
@@ -571,7 +572,7 @@ class Fit(object):
         This will overwrite dst! Checking for empty module must be
         done at a higher level
         """
-        fit = eos.db.getFit(fitID)
+        fit = saveddata_queries.getFit(fitID)
         # Gather modules
         srcMod = fit.modules[src]
         dstMod = fit.modules[dst]  # should be a placeholder module
@@ -583,7 +584,7 @@ class Fit(object):
             fit.modules.remove(dstMod)
             fit.modules.insert(dst, new)
 
-            eos.db.commit()
+            saveddata_queries.commit()
             self.recalc(fit)
 
     def addCargo(self, fitID, itemID, amount=1, replace=False):
@@ -595,8 +596,8 @@ class Fit(object):
         if fitID is None:
             return False
 
-        fit = eos.db.getFit(fitID)
-        item = eos.db.getItem(itemID)
+        fit = saveddata_queries.getFit(fitID)
+        item = gamedata_queries.getItem(itemID)
         cargo = None
 
         # adding from market
@@ -618,7 +619,7 @@ class Fit(object):
             cargo.amount += amount
 
         self.recalc(fit)
-        eos.db.commit()
+        saveddata_queries.commit()
 
         return True
 
@@ -626,7 +627,7 @@ class Fit(object):
         if fitID is None:
             return False
 
-        fit = eos.db.getFit(fitID)
+        fit = saveddata_queries.getFit(fitID)
         charge = fit.cargo[position]
         fit.cargo.remove(charge)
         self.recalc(fit)
@@ -636,8 +637,8 @@ class Fit(object):
         if fitID is None:
             return False
 
-        fit = eos.db.getFit(fitID)
-        item = eos.db.getItem(itemID, eager=("attributes", "group.category"))
+        fit = saveddata_queries.getFit(fitID)
+        item = gamedata_queries.getItem(itemID, eager=("attributes", "group.category"))
         if item.category.name == "Fighter":
             fighter = None
             '''
@@ -672,18 +673,18 @@ class Fit(object):
                 else:
                     return False
 
-            eos.db.commit()
+            saveddata_queries.commit()
             self.recalc(fit)
             return True
         else:
             return False
 
     def removeFighter(self, fitID, i):
-        fit = eos.db.getFit(fitID)
+        fit = saveddata_queries.getFit(fitID)
         f = fit.fighters[i]
         fit.fighters.remove(f)
 
-        eos.db.commit()
+        saveddata_queries.commit()
         self.recalc(fit)
         return True
 
@@ -691,8 +692,8 @@ class Fit(object):
         if fitID is None:
             return False
 
-        fit = eos.db.getFit(fitID)
-        item = eos.db.getItem(itemID, eager=("attributes", "group.category"))
+        fit = saveddata_queries.getFit(fitID)
+        item = gamedata_queries.getItem(itemID, eager=("attributes", "group.category"))
         if item.category.name == "Drone":
             drone = None
             for d in fit.drones.find(item):
@@ -707,7 +708,7 @@ class Fit(object):
                 else:
                     return False
             drone.amount += 1
-            eos.db.commit()
+            saveddata_queries.commit()
             self.recalc(fit)
             return True
         else:
@@ -717,7 +718,7 @@ class Fit(object):
         if fitID is None:
             return False
 
-        fit = eos.db.getFit(fitID)
+        fit = saveddata_queries.getFit(fitID)
         if d1.item != d2.item:
             return False
 
@@ -728,7 +729,7 @@ class Fit(object):
 
         d2.amount += d1.amount
         d2.amountActive += d1.amountActive if d1.amountActive > 0 else -d2.amountActive
-        eos.db.commit()
+        saveddata_queries.commit()
         self.recalc(fit)
         return True
 
@@ -743,24 +744,24 @@ class Fit(object):
         newD.amount = total - amount
         newD.amountActive = newD.amount if active else 0
         l.append(newD)
-        eos.db.commit()
+        saveddata_queries.commit()
 
     def splitProjectedDroneStack(self, fitID, d, amount):
         if fitID is None:
             return False
 
-        fit = eos.db.getFit(fitID)
+        fit = saveddata_queries.getFit(fitID)
         self.splitDrones(fit, d, amount, fit.projectedDrones)
 
     def splitDroneStack(self, fitID, d, amount):
         if fitID is None:
             return False
 
-        fit = eos.db.getFit(fitID)
+        fit = saveddata_queries.getFit(fitID)
         self.splitDrones(fit, d, amount, fit.drones)
 
     def removeDrone(self, fitID, i, numDronesToRemove=1):
-        fit = eos.db.getFit(fitID)
+        fit = saveddata_queries.getFit(fitID)
         d = fit.drones[i]
         d.amount -= numDronesToRemove
         if d.amountActive > 0:
@@ -769,61 +770,61 @@ class Fit(object):
         if d.amount == 0:
             del fit.drones[i]
 
-        eos.db.commit()
+        saveddata_queries.commit()
         self.recalc(fit)
         return True
 
     def toggleDrone(self, fitID, i):
-        fit = eos.db.getFit(fitID)
+        fit = saveddata_queries.getFit(fitID)
         d = fit.drones[i]
         if d.amount == d.amountActive:
             d.amountActive = 0
         else:
             d.amountActive = d.amount
 
-        eos.db.commit()
+        saveddata_queries.commit()
         self.recalc(fit)
         return True
 
     def toggleFighter(self, fitID, i):
-        fit = eos.db.getFit(fitID)
+        fit = saveddata_queries.getFit(fitID)
         f = fit.fighters[i]
         f.active = not f.active
 
-        eos.db.commit()
+        saveddata_queries.commit()
         self.recalc(fit)
         return True
 
     def toggleImplant(self, fitID, i):
-        fit = eos.db.getFit(fitID)
+        fit = saveddata_queries.getFit(fitID)
         implant = fit.implants[i]
         implant.active = not implant.active
 
-        eos.db.commit()
+        saveddata_queries.commit()
         self.recalc(fit)
         return True
 
     def toggleImplantSource(self, fitID, source):
-        fit = eos.db.getFit(fitID)
+        fit = saveddata_queries.getFit(fitID)
         fit.implantSource = source
 
-        eos.db.commit()
+        saveddata_queries.commit()
         self.recalc(fit)
         return True
 
     def toggleBooster(self, fitID, i):
-        fit = eos.db.getFit(fitID)
+        fit = saveddata_queries.getFit(fitID)
         booster = fit.boosters[i]
         booster.active = not booster.active
 
-        eos.db.commit()
+        saveddata_queries.commit()
         self.recalc(fit)
         return True
 
     def toggleFighterAbility(self, fitID, ability):
-        fit = eos.db.getFit(fitID)
+        fit = saveddata_queries.getFit(fitID)
         ability.active = not ability.active
-        eos.db.commit()
+        saveddata_queries.commit()
         self.recalc(fit)
 
     def changeChar(self, fitID, charID):
@@ -833,20 +834,20 @@ class Fit(object):
 
             return
 
-        fit = eos.db.getFit(fitID)
-        fit.character = self.character = eos.db.getCharacter(charID)
+        fit = saveddata_queries.getFit(fitID)
+        fit.character = self.character = saveddata_queries.getCharacter(charID)
         self.recalc(fit)
 
     @staticmethod
     def isAmmo(itemID):
-        return eos.db.getItem(itemID).category.name == "Charge"
+        return gamedata_queries.getItem(itemID).category.name == "Charge"
 
     def setAmmo(self, fitID, ammoID, modules):
         if fitID is None:
             return
 
-        fit = eos.db.getFit(fitID)
-        ammo = eos.db.getItem(ammoID) if ammoID else None
+        fit = saveddata_queries.getFit(fitID)
+        ammo = gamedata_queries.getItem(ammoID) if ammoID else None
 
         for mod in modules:
             if mod.isValidCharge(ammo):
@@ -859,16 +860,16 @@ class Fit(object):
         if fitID is None:
             return
 
-        fit = eos.db.getFit(fitID)
+        fit = saveddata_queries.getFit(fitID)
         return fit.targetResists
 
     def setTargetResists(self, fitID, pattern):
         if fitID is None:
             return
 
-        fit = eos.db.getFit(fitID)
+        fit = saveddata_queries.getFit(fitID)
         fit.targetResists = pattern
-        eos.db.commit()
+        saveddata_queries.commit()
 
         self.recalc(fit)
 
@@ -877,16 +878,16 @@ class Fit(object):
         if fitID is None:
             return
 
-        fit = eos.db.getFit(fitID)
+        fit = saveddata_queries.getFit(fitID)
         return fit.damagePattern
 
     def setDamagePattern(self, fitID, pattern):
         if fitID is None:
             return
 
-        fit = eos.db.getFit(fitID)
+        fit = saveddata_queries.getFit(fitID)
         fit.damagePattern = self.pattern = pattern
-        eos.db.commit()
+        saveddata_queries.commit()
 
         self.recalc(fit)
 
@@ -894,9 +895,9 @@ class Fit(object):
         if fitID is None:
             return
 
-        fit = eos.db.getFit(fitID)
+        fit = saveddata_queries.getFit(fitID)
         fit.mode = mode
-        eos.db.commit()
+        saveddata_queries.commit()
 
         self.recalc(fit)
 
@@ -910,7 +911,7 @@ class Fit(object):
             dp = es_DamagePattern()
             dp.name = "Selected Ammo"
 
-        fit = eos.db.getFit(fitID)
+        fit = saveddata_queries.getFit(fitID)
         for attr in ("em", "thermal", "kinetic", "explosive"):
             setattr(dp, "%sAmount" % attr, ammo.getAttribute("%sDamage" % attr) or 0)
 
@@ -950,8 +951,8 @@ class Fit(object):
                     mod.state = self.__getProposedState(mod, click,
                                                         proposedState)
 
-        eos.db.commit()
-        fit = eos.db.getFit(fitID)
+        saveddata_queries.commit()
+        fit = saveddata_queries.getFit(fitID)
 
         # As some items may affect state-limiting attributes of the ship, calculate new attributes first
         self.recalc(fit)
@@ -1005,8 +1006,8 @@ class Fit(object):
         if fitID is None:
             return None
 
-        fit = eos.db.getFit(fitID)
-        eos.db.commit()
+        fit = saveddata_queries.getFit(fitID)
+        saveddata_queries.commit()
         self.recalc(fit)
 
     def recalc(self, fit, withBoosters=True):

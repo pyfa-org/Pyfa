@@ -17,7 +17,7 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-import eos.db
+from eos.db.saveddata import queries
 from eos.saveddata.damagePattern import DamagePattern as es_DamagePattern
 from eos.saveddata.targetResists import TargetResists as es_TargetResists
 
@@ -117,11 +117,11 @@ class DefaultDatabaseValues(object):
 
         for damageProfileRow in damageProfileList:
             name, em, therm, kin, exp = damageProfileRow
-            damageProfile = eos.db.getDamagePattern(name)
+            damageProfile = queries.getDamagePattern(name)
             if damageProfile is None:
                 damageProfile = es_DamagePattern(em, therm, kin, exp)
                 damageProfile.name = name
-                eos.db.save(damageProfile)
+                queries.save(damageProfile)
 
     @classmethod
     def importResistProfileDefaults(cls):
@@ -179,11 +179,11 @@ class DefaultDatabaseValues(object):
 
         for targetResistProfileRow in targetResistProfileList:
             name, em, therm, kin, exp = targetResistProfileRow
-            resistsProfile = eos.db.eos.db.getTargetResists(name)
+            resistsProfile = queries.getTargetResists(name)
             if resistsProfile is None:
                 resistsProfile = es_TargetResists(em, therm, kin, exp)
                 resistsProfile.name = name
-                eos.db.save(resistsProfile)
+                queries.save(resistsProfile)
 
     @classmethod
     def importRequiredDefaults(cls):
@@ -191,8 +191,8 @@ class DefaultDatabaseValues(object):
 
         for damageProfileRow in damageProfileList:
             name, em, therm, kin, exp = damageProfileRow
-            damageProfile = eos.db.getDamagePattern(name)
+            damageProfile = queries.getDamagePattern(name)
             if damageProfile is None:
                 damageProfile = es_DamagePattern(em, therm, kin, exp)
                 damageProfile.name = name
-                eos.db.save(damageProfile)
+                queries.save(damageProfile)

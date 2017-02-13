@@ -22,7 +22,7 @@ import logging
 
 from sqlalchemy.orm import validates, reconstructor
 
-import eos.db
+from eos.db.gamedata import queries
 from eos.effectHandlerHelpers import HandledItem
 from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut
 
@@ -45,7 +45,7 @@ class Cargo(HandledItem, ItemAttrShortcut):
         self.__item = None
 
         if self.itemID:
-            self.__item = eos.db.getItem(self.itemID)
+            self.__item = queries.getItem(self.itemID)
             if self.__item is None:
                 logger.error("Item (id: %d) does not exist", self.itemID)
                 return

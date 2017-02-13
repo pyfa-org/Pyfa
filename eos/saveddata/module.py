@@ -21,7 +21,7 @@ import logging
 
 from sqlalchemy.orm import validates, reconstructor
 
-import eos.db
+from eos.db.gamedata import queries as gamedata_queries
 from eos.effectHandlerHelpers import HandledItem, HandledCharge
 from eos.enum import Enum
 from eos.mathUtils import floorFloat
@@ -92,7 +92,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         self.__slot = self.dummySlot
 
         if self.itemID:
-            self.__item = eos.db.getItem(self.itemID)
+            self.__item = gamedata_queries.getItem(self.itemID)
             if self.__item is None:
                 logger.error("Item (id: %d) does not exist", self.itemID)
                 return
@@ -102,7 +102,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             return
 
         if self.chargeID:
-            self.__charge = eos.db.getItem(self.chargeID)
+            self.__charge = gamedata_queries.getItem(self.chargeID)
 
         self.build()
 
@@ -538,7 +538,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         for i in range(5):
             itemChargeGroup = self.getModifiedItemAttr('chargeGroup' + str(i))
             if itemChargeGroup is not None:
-                g = eos.db.getGroup(int(itemChargeGroup), eager=("items.icon", "items.attributes"))
+                g = gamedata_queries.getGroup(int(itemChargeGroup), eager=("items.icon", "items.attributes"))
                 if g is None:
                     continue
                 for singleItem in g.items:

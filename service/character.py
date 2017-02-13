@@ -31,7 +31,8 @@ import gzip
 import wx
 
 import config
-import eos.db
+from eos.db.saveddata import queries as saveddata_queries
+from eos.db.gamedata import queries as gamedata_queries
 from service.eveapi import EVEAPIConnection, ParseXML
 
 from eos.saveddata.implant import Implant as es_Implant
@@ -216,31 +217,31 @@ class Character(object):
 
     @staticmethod
     def getAlphaCloneList():
-        return eos.db.getAlphaCloneList()
+        return gamedata_queries.getAlphaCloneList()
 
     @staticmethod
     def getCharacterList():
-        return eos.db.getCharacterList()
+        return saveddata_queries.getCharacterList()
 
     @staticmethod
     def getCharacter(charID):
-        char = eos.db.getCharacter(charID)
+        char = saveddata_queries.getCharacter(charID)
         return char
 
     def saveCharacter(self, charID):
         """Save edited skills"""
         if charID == self.all5ID() or charID == self.all0ID():
             return
-        char = eos.db.getCharacter(charID)
+        char = saveddata_queries.getCharacter(charID)
         char.saveLevels()
 
     @staticmethod
     def saveCharacterAs(charID, newName):
         """Save edited skills as a new character"""
-        char = eos.db.getCharacter(charID)
+        char = saveddata_queries.getCharacter(charID)
         newChar = copy.deepcopy(char)
         newChar.name = newName
-        eos.db.save(newChar)
+        saveddata_queries.save(newChar)
 
         # revert old char
         char.revertLevels()
@@ -248,12 +249,12 @@ class Character(object):
     @staticmethod
     def revertCharacter(charID):
         """Rollback edited skills"""
-        char = eos.db.getCharacter(charID)
+        char = saveddata_queries.getCharacter(charID)
         char.revertLevels()
 
     @staticmethod
     def getSkillGroups():
-        cat = eos.db.getCategory(16)
+        cat = gamedata_queries.getCategory(16)
         groups = []
         for grp in cat.groups:
             if grp.published:
@@ -262,7 +263,7 @@ class Character(object):
 
     @staticmethod
     def getSkills(groupID):
-        group = eos.db.getGroup(groupID)
+        group = gamedata_queries.getGroup(groupID)
         skills = []
         for skill in group.items:
             if skill.published is True:
@@ -272,33 +273,33 @@ class Character(object):
     @staticmethod
     def setAlphaClone(char, cloneID):
         char.alphaCloneID = cloneID
-        eos.db.commit()
+        saveddata_queries.commit()
 
     @staticmethod
     def getSkillDescription(itemID):
-        return eos.db.getItem(itemID).description
+        return gamedata_queries.getItem(itemID).description
 
     @staticmethod
     def getGroupDescription(groupID):
-        return eos.db.getMarketGroup(groupID).description
+        return gamedata_queries.getMarketGroup(groupID).description
 
     @staticmethod
     def getSkillLevel(charID, skillID):
-        skill = eos.db.getCharacter(charID).getSkill(skillID)
+        skill = saveddata_queries.getCharacter(charID).getSkill(skillID)
         return skill.level if skill.learned else "Not learned", skill.isDirty
 
     @staticmethod
     def getDirtySkills(charID):
-        return eos.db.getCharacter(charID).dirtySkills
+        return saveddata_queries.getCharacter(charID).dirtySkills
 
     @staticmethod
     def getCharName(charID):
-        return eos.db.getCharacter(charID).name
+        return saveddata_queries.getCharacter(charID).name
 
     @staticmethod
     def new(name="New Character"):
         char = es_Character(name)
-        eos.db.save(char)
+        saveddata_queries.save(char)
         return char
 
     @staticmethod
@@ -307,21 +308,21 @@ class Character(object):
             logger.info("Cannot rename built in characters.")
         else:
             char.name = newName
-            eos.db.commit()
+            saveddata_queries.commit()
 
     @staticmethod
     def copy(char):
         newChar = copy.deepcopy(char)
-        eos.db.save(newChar)
+        saveddata_queries.save(newChar)
         return newChar
 
     @staticmethod
     def delete(char):
-        eos.db.remove(char)
+        saveddata_queries.remove(char)
 
     @staticmethod
     def getApiDetails(charID):
-        char = eos.db.getCharacter(charID)
+        char = saveddata_queries.getCharacter(charID)
         if char.chars is not None:
             chars = json.loads(char.chars)
         else:
@@ -334,7 +335,7 @@ class Character(object):
 
     @staticmethod
     def apiCharList(charID, userID, apiKey):
-        char = eos.db.getCharacter(charID)
+        char = saveddata_queries.getCharacter(charID)
 
         char.apiID = userID
         char.apiKey = apiKey
@@ -349,7 +350,7 @@ class Character(object):
 
     @staticmethod
     def apiFetch(charID, charName):
-        dbChar = eos.db.getCharacter(charID)
+        dbChar = saveddata_queries.getCharacter(charID)
         dbChar.defaultChar = charName
 
         api = EVEAPIConnection()
@@ -366,17 +367,17 @@ class Character(object):
         sheet = auth.character(charID).CharacterSheet()
 
         dbChar.apiUpdateCharSheet(sheet.skills)
-        eos.db.commit()
+        saveddata_queries.commit()
 
     @staticmethod
     def apiUpdateCharSheet(charID, skills):
-        char = eos.db.getCharacter(charID)
+        char = saveddata_queries.getCharacter(charID)
         char.apiUpdateCharSheet(skills)
-        eos.db.commit()
+        saveddata_queries.commit()
 
     @staticmethod
     def changeLevel(charID, skillID, level, persist=False):
-        char = eos.db.getCharacter(charID)
+        char = saveddata_queries.getCharacter(charID)
         skill = char.getSkill(skillID)
         if isinstance(level, basestring) or level > 5 or level < 0:
             skill.level = None
@@ -386,40 +387,40 @@ class Character(object):
         if persist:
             skill.saveLevel()
 
-        eos.db.commit()
+        saveddata_queries.commit()
 
     @staticmethod
     def revertLevel(charID, skillID):
-        char = eos.db.getCharacter(charID)
+        char = saveddata_queries.getCharacter(charID)
         skill = char.getSkill(skillID)
         skill.revert()
 
     @staticmethod
     def saveSkill(charID, skillID):
-        char = eos.db.getCharacter(charID)
+        char = saveddata_queries.getCharacter(charID)
         skill = char.getSkill(skillID)
         skill.saveLevel()
 
     @staticmethod
     def addImplant(charID, itemID):
-        char = eos.db.getCharacter(charID)
+        char = saveddata_queries.getCharacter(charID)
         if char.ro:
             logger.error("Trying to add implant to read-only character")
             return
 
-        implant = es_Implant(eos.db.getItem(itemID))
+        implant = es_Implant(gamedata_queries.getItem(itemID))
         char.implants.append(implant)
-        eos.db.commit()
+        saveddata_queries.commit()
 
     @staticmethod
     def removeImplant(charID, implant):
-        char = eos.db.getCharacter(charID)
+        char = saveddata_queries.getCharacter(charID)
         char.implants.remove(implant)
-        eos.db.commit()
+        saveddata_queries.commit()
 
     @staticmethod
     def getImplants(charID):
-        char = eos.db.getCharacter(charID)
+        char = saveddata_queries.getCharacter(charID)
         return char.implants
 
     def checkRequirements(self, fit):

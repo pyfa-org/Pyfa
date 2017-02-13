@@ -27,7 +27,8 @@ import wx
 from sqlalchemy.sql import or_
 
 import config
-import eos.db
+from eos.db.saveddata import queries as saveddata_queries
+from eos.db.gamedata import queries as gamedata_queries
 from service import conversions
 from service.settings import SettingsProvider
 from service.price import Price
@@ -151,7 +152,7 @@ class SearchWorkerThread(threading.Thread):
             else:
                 filter_ = None
 
-            results = eos.db.searchItems(request, where=filter_,
+            results = gamedata_queries.searchItems(request, where=filter_,
                                          join=(types_Item.group, types_Group.category),
                                          eager=("icon", "group.category", "metaGroup", "metaGroup.parent"))
 
@@ -427,16 +428,16 @@ class Market(object):
             if isinstance(identity, types_Item):
                 item = identity
             elif isinstance(identity, int):
-                item = eos.db.getItem(identity, *args, **kwargs)
+                item = gamedata_queries.getItem(identity, *args, **kwargs)
             elif isinstance(identity, basestring):
                 # We normally lookup with string when we are using import/export
                 # features. Check against overrides
                 identity = conversions.all.get(identity, identity)
-                item = eos.db.getItem(identity, *args, **kwargs)
+                item = gamedata_queries.getItem(identity, *args, **kwargs)
 
             elif isinstance(identity, float):
                 id_ = int(identity)
-                item = eos.db.getItem(id_, *args, **kwargs)
+                item = gamedata_queries.getItem(id_, *args, **kwargs)
             else:
                 raise TypeError("Need Item object, integer, float or string as argument")
         except:
@@ -459,7 +460,7 @@ class Market(object):
                     # Return first match
                     return cgrp
             # Return eos group if everything else returned nothing
-            return eos.db.getGroup(identity, *args, **kwargs)
+            return gamedata_queries.getGroup(identity, *args, **kwargs)
         else:
             raise TypeError("Need Group object, integer, float or string as argument")
 
@@ -469,10 +470,10 @@ class Market(object):
         if isinstance(identity, types_Category):
             category = identity
         elif isinstance(identity, (int, basestring)):
-            category = eos.db.getCategory(identity, *args, **kwargs)
+            category = gamedata_queries.getCategory(identity, *args, **kwargs)
         elif isinstance(identity, float):
             id_ = int(identity)
-            category = eos.db.getCategory(id_, *args, **kwargs)
+            category = gamedata_queries.getCategory(id_, *args, **kwargs)
         else:
             raise TypeError("Need Category object, integer, float or string as argument")
         return category
@@ -483,10 +484,10 @@ class Market(object):
         if isinstance(identity, types_MetaGroup):
             metaGroup = identity
         elif isinstance(identity, (int, basestring)):
-            metaGroup = eos.db.getMetaGroup(identity, *args, **kwargs)
+            metaGroup = gamedata_queries.getMetaGroup(identity, *args, **kwargs)
         elif isinstance(identity, float):
             id_ = int(identity)
-            metaGroup = eos.db.getMetaGroup(id_, *args, **kwargs)
+            metaGroup = gamedata_queries.getMetaGroup(id_, *args, **kwargs)
         else:
             raise TypeError("Need MetaGroup object, integer, float or string as argument")
         return metaGroup
@@ -498,7 +499,7 @@ class Market(object):
             marketGroup = identity
         elif isinstance(identity, (int, float)):
             id_ = int(identity)
-            marketGroup = eos.db.getMarketGroup(id_, *args, **kwargs)
+            marketGroup = gamedata_queries.getMarketGroup(id_, *args, **kwargs)
         else:
             raise TypeError("Need MarketGroup object, integer or float as argument")
         return marketGroup
@@ -601,7 +602,7 @@ class Market(object):
         variations.update(parents)
         # Add all variations of parents to the set
         parentids = tuple(item.ID for item in parents)
-        variations.update(eos.db.getVariations(parentids))
+        variations.update(gamedata_queries.getVariations(parentids))
         return variations
 
     def getGroupsByCategory(self, cat):
@@ -755,7 +756,7 @@ class Market(object):
     def searchShips(self, name):
         """Find ships according to given text pattern"""
         filter_ = types_Category.name.in_(["Ship", "Structure"])
-        results = eos.db.searchItems(name, where=filter_,
+        results = gamedata_queries.searchItems(name, where=filter_,
                                      join=(types_Item.group, types_Group.category),
                                      eager=("icon", "group.category", "metaGroup", "metaGroup.parent"))
         ships = set()
@@ -770,12 +771,12 @@ class Market(object):
 
     @staticmethod
     def getItemsWithOverrides():
-        overrides = eos.db.getAllOverrides()
+        overrides = saveddata_queries.getAllOverrides()
         items = set()
         for x in overrides:
             if x.item is None:
-                eos.db.saveddata_session.delete(x)
-                eos.db.commit()
+                saveddata_queries.saveddata_session.delete(x)
+                saveddata_queries.commit()
             else:
                 items.add(x.item)
         return list(items)
@@ -791,7 +792,7 @@ class Market(object):
         except TypeError:
             attrIDs = (attribs.ID,)
         info = {}
-        for itemID, typeID, val in eos.db.directAttributeRequest(itemIDs, attrIDs):
+        for itemID, typeID, val in gamedata_queries.directAttributeRequest(itemIDs, attrIDs):
             info[itemID] = val
 
         return info
@@ -810,10 +811,10 @@ class Market(object):
         """Get price for provided typeID"""
         price = self.priceCache.get(typeID)
         if price is None:
-            price = eos.db.getPrice(typeID)
+            price = saveddata_queries.getPrice(typeID)
             if price is None:
                 price = types_Price(typeID)
-                eos.db.add(price)
+                saveddata_queries.add(price)
 
             self.priceCache[typeID] = price
 
@@ -835,7 +836,7 @@ class Market(object):
                 callback(requests)
             except Exception:
                 pass
-            eos.db.commit()
+            saveddata_queries.commit()
 
         self.priceWorkerThread.trigger(requests, cb)
 
@@ -856,7 +857,7 @@ class Market(object):
 
     def clearPriceCache(self):
         self.priceCache.clear()
-        eos.db.clearPrices()
+        saveddata_queries.clearPrices()
 
     def getSystemWideEffects(self):
         """

@@ -23,8 +23,8 @@ from itertools import chain
 
 from sqlalchemy.orm import validates, reconstructor
 
-import eos
-import eos.db
+from eos.db.saveddata import queries as saveddata_queries
+from eos.db.gamedata import queries as gamedata_queries
 from eos.effectHandlerHelpers import HandledItem, HandledImplantBoosterList
 
 logger = logging.getLogger(__name__)
@@ -38,7 +38,7 @@ class Character(object):
     @classmethod
     def getSkillList(cls):
         if cls.__itemList is None:
-            cls.__itemList = eos.db.getItemsByCategory("Skill")
+            cls.__itemList = gamedata_queries.getItemsByCategory("Skill")
 
         return cls.__itemList
 
@@ -70,24 +70,24 @@ class Character(object):
 
     @classmethod
     def getAll5(cls):
-        all5 = eos.db.getCharacter("All 5")
+        all5 = saveddata_queries.getCharacter("All 5")
 
         if all5 is None:
             # We do not have to be afraid of committing here and saving
             # edited character data. If this ever runs, it will be during the
             # get character list phase when pyfa first starts
             all5 = Character("All 5", 5)
-            eos.db.save(all5)
+            saveddata_queries.save(all5)
 
         return all5
 
     @classmethod
     def getAll0(cls):
-        all0 = eos.db.getCharacter("All 0")
+        all0 = saveddata_queries.getCharacter("All 0")
 
         if all0 is None:
             all0 = Character("All 0")
-            eos.db.save(all0)
+            saveddata_queries.save(all0)
 
         return all0
 
@@ -118,7 +118,7 @@ class Character(object):
         self.alphaClone = None
 
         if self.alphaCloneID:
-            self.alphaClone = eos.db.getAlphaClone(self.alphaCloneID)
+            self.alphaClone = gamedata_queries.getAlphaClone(self.alphaCloneID)
 
     def apiUpdateCharSheet(self, skills):
         del self.__skills[:]
@@ -153,7 +153,7 @@ class Character(object):
     @alphaCloneID.setter
     def alphaCloneID(self, cloneID):
         self.__alphaCloneID = cloneID
-        self.alphaClone = eos.db.getAlphaClone(cloneID) if cloneID is not None else None
+        self.alphaClone = gamedata_queries.getAlphaClone(cloneID) if cloneID is not None else None
 
     @property
     def skills(self):
@@ -205,7 +205,7 @@ class Character(object):
             skill.saveLevel()
 
         self.dirtySkills = set()
-        eos.db.commit()
+        saveddata_queries.commit()
 
     def revertLevels(self):
         for skill in self.dirtySkills.copy():
