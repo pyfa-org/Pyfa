@@ -50,6 +50,7 @@ mktRdy = threading.Event()
 class ShipBrowserWorkerThread(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
+        pyfalog.debug("Initialize ShipBrowserWorkerThread.")
         self.name = "ShipBrowser"
 
     def run(self):
@@ -88,6 +89,7 @@ class PriceWorkerThread(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
         self.name = "PriceWorker"
+        pyfalog.debug("Initialize PriceWorkerThread.")
 
     def run(self):
         pyfalog.debug("Run start")
@@ -129,6 +131,7 @@ class SearchWorkerThread(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
         self.name = "SearchWorker"
+        pyfalog.debug("Initialize SearchWorkerThread.")
 
     def run(self):
         self.cv = threading.Condition()

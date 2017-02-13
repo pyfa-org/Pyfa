@@ -630,9 +630,7 @@ class Fit(object):
             del self.commandBonuses[warfareBuffID]
 
     def calculateModifiedAttributes(self, targetFit=None, withBoosters=False, dirtyStorage=None):
-        # TODO: Validate that remooving this doesn't break anything
-        # TODO: Keywords: logbook logging Ebag
-        # timer = Timer(u'Fit: {}, {}'.format(self.ID, self.name), logger)
+        timer = Timer(u'Fit: {}, {}'.format(self.ID, self.name), pyfalog)
         pyfalog.debug("Starting fit calculation on: {0}, withBoosters: {1}", self, withBoosters)
 
         shadow = False
@@ -732,14 +730,14 @@ class Fit(object):
                         # targetFit.register(item, origin=self)
                         item.calculateModifiedAttributes(targetFit, runTime, False, True)
 
-            print "Command: "
-            print self.commandBonuses
+            if len(self.commandBonuses) > 0:
+                pyfalog.info("Command bonuses applied.")
+                pyfalog.debug(self.commandBonuses)
 
             if not withBoosters and self.commandBonuses:
                 self.__runCommandBoosts(runTime)
 
-            # TODO: Tied with timer above
-            # timer.checkpoint('Done with runtime: %s' % runTime)
+            timer.checkpoint('Done with runtime: %s' % runTime)
 
         # Mark fit as calculated
         self.__calculated = True
@@ -750,8 +748,7 @@ class Fit(object):
                 if fit.getProjectionInfo(self.ID).active:
                     fit.calculateModifiedAttributes(self, withBoosters=withBoosters, dirtyStorage=dirtyStorage)
 
-        # TODO: Tied with timer above
-        # timer.checkpoint('Done with fit calculation')
+        timer.checkpoint('Done with fit calculation')
 
         if shadow:
             pyfalog.debug("Delete shadow fit object")

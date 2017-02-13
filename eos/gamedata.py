@@ -193,7 +193,7 @@ class Effect(EqBase):
             self.__activeByDefault = True
             self.__type = None
             pyfalog.debug("ImportError or AttributeError generating handler:")
-            pyfalog.warning(e)
+            pyfalog.debug(e)
         except Exception as e:
             pyfalog.critical("Exception generating handler:")
             pyfalog.critical(e)
