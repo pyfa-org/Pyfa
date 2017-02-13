@@ -18,7 +18,6 @@
 # ===============================================================================
 
 import re
-import traceback
 
 from sqlalchemy.orm import reconstructor
 

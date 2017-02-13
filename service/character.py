@@ -84,11 +84,12 @@ class CharacterImportThread(threading.Thread):
                                 "level": int(skill.getAttribute("level")),
                             })
                         else:
-                            pyfalog.error("Attempted to import unknown skill %s (ID: %s) (Level: %s)",
-                                         skill.getAttribute("name"),
-                                         skill.getAttribute("typeID"),
-                                         skill.getAttribute("level"),
-                                         )
+                            pyfalog.error(
+                                    "Attempted to import unknown skill {0} (ID: {1}) (Level: {2})",
+                                    skill.getAttribute("name"),
+                                    skill.getAttribute("typeID"),
+                                    skill.getAttribute("level"),
+                            )
                     char = sCharacter.new(name + " (EVEMon)")
                     sCharacter.apiUpdateCharSheet(char.ID, skills)
                 except Exception, e:

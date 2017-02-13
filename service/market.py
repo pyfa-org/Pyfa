@@ -447,7 +447,7 @@ class Market(object):
             else:
                 raise TypeError("Need Item object, integer, float or string as argument")
         except:
-            pyfalog.error("Could not get item: %s", identity)
+            pyfalog.error("Could not get item: {0}", identity)
             raise
 
         return item

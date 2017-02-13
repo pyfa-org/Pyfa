@@ -65,6 +65,7 @@ class LoggerWriter:
         # to work properly for me.
         self.level(sys.stderr)
 
+
 # Parse command line options
 usage = "usage: %prog [--root]"
 parser = PassThroughOptionParser(usage=usage)
@@ -73,7 +74,7 @@ parser.add_option("-w", "--wx28", action="store_true", dest="force28", help="For
 parser.add_option("-d", "--debug", action="store_true", dest="debug", help="Set logger to debug level.", default=False)
 parser.add_option("-t", "--title", action="store", dest="title", help="Set Window Title", default=None)
 parser.add_option("-s", "--savepath", action="store", dest="savepath", help="Set the folder for savedata", default=None)
-parser.add_option("-l", "--logginglevel", action="store", dest="logginglevel", help="Set the desired logging level (Critical, Error, Warning, Info, Debug)", default="Error")
+parser.add_option("-l", "--logginglevel", action="store", dest="logginglevel", help="Set desired logging level [Critical|Error|Warning|Info|Debug]", default="Error")
 
 (options, args) = parser.parse_args()
 

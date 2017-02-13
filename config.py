@@ -30,6 +30,7 @@ savePath = None
 saveDB = None
 gameDB = None
 
+
 def isFrozen():
     if hasattr(sys, 'frozen'):
         return True

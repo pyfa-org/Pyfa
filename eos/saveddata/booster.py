@@ -47,11 +47,11 @@ class Booster(HandledItem, ItemAttrShortcut):
         if self.itemID:
             self.__item = eos.db.getItem(self.itemID)
             if self.__item is None:
-                pyfalog.error("Item (id: %d) does not exist", self.itemID)
+                pyfalog.error("Item (id: {0}) does not exist", self.itemID)
                 return
 
         if self.isInvalid:
-            pyfalog.error("Item (id: %d) is not a Booser", self.itemID)
+            pyfalog.error("Item (id: {0}) is not a Booster", self.itemID)
             return
 
         self.build()

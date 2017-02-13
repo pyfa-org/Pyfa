@@ -105,7 +105,7 @@ class StoppableHTTPServer(BaseHTTPServer.HTTPServer):
         self.run = False
 
     def handle_timeout(self):
-        # pyfalog.debug("Number of tries: %d"%self.tries)
+        pyfalog.debug("Number of tries: {0}", self.tries)
         self.tries += 1
         if self.tries == self.max_tries:
             pyfalog.debug("Server timed out waiting for connection")

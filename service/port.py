@@ -134,21 +134,21 @@ class Port(object):
                         savebom = bom
 
                 if codec_found is None:
-                    pyfalog.info("Unicode BOM not found in file %s.", path)
+                    pyfalog.info("Unicode BOM not found in file {0}.", path)
                     attempt_codecs = (defcodepage, "utf-8", "utf-16", "cp1252")
 
                     for page in attempt_codecs:
                         try:
-                            pyfalog.info("Attempting to decode file %s using %s page.", path, page)
+                            pyfalog.info("Attempting to decode file {0} using {1} page.", path, page)
                             srcString = unicode(srcString, page)
                             codec_found = page
-                            pyfalog.info("File %s decoded using %s page.", path, page)
+                            pyfalog.info("File {0} decoded using {1} page.", path, page)
                         except UnicodeDecodeError:
-                            pyfalog.info("Error unicode decoding %s from page %s, trying next codec", path, page)
+                            pyfalog.info("Error unicode decoding {0} from page {1}, trying next codec", path, page)
                         else:
                             break
                 else:
-                    pyfalog.info("Unicode BOM detected in %s, using %s page.", path, codec_found)
+                    pyfalog.info("Unicode BOM detected in {0}, using {1} page.", path, codec_found)
                     srcString = unicode(srcString[len(savebom):], codec_found)
 
             else:
@@ -167,9 +167,9 @@ class Port(object):
             except xml.parsers.expat.ExpatError:
                 return False, "Malformed XML in %s" % path
             except Exception as e:
-                pyfalog.critical("Unknown exception processing: %s", path)
+                pyfalog.critical("Unknown exception processing: {0}", path)
                 pyfalog.critical(e)
-                return False, "Unknown Error while processing %s" % path
+                return False, "Unknown Error while processing {0}" % path
 
         IDs = []
         numFits = len(fits)

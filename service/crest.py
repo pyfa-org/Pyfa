@@ -182,7 +182,7 @@ class Crest(object):
             pyfalog.warn("OAUTH state mismatch")
             return
 
-        pyfalog.debug("Handling CREST login with: %s" % message)
+        pyfalog.debug("Handling CREST login with: {0}", message)
 
         if 'access_token' in message:  # implicit
             eve = copy.deepcopy(self.eve)
@@ -196,7 +196,7 @@ class Crest(object):
             eve()
             info = eve.whoami()
 
-            pyfalog.debug("Got character info: %s" % info)
+            pyfalog.debug("Got character info: {0}", info)
 
             self.implicitCharacter = CrestChar(info['CharacterID'], info['CharacterName'])
             self.implicitCharacter.eve = eve
@@ -209,7 +209,7 @@ class Crest(object):
             eve()
             info = eve.whoami()
 
-            pyfalog.debug("Got character info: %s" % info)
+            pyfalog.debug("Got character info: {0}", info)
 
             # check if we have character already. If so, simply replace refresh_token
             char = self.getCrestCharacter(int(info['CharacterID']))

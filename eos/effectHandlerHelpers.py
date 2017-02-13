@@ -198,7 +198,7 @@ class HandledImplantBoosterList(HandledList):
         # if needed, remove booster that was occupying slot
         oldObj = next((m for m in self if m.slot == thing.slot), None)
         if oldObj:
-            pyfalog.info("Slot %d occupied with %s, replacing with %s", thing.slot, oldObj.item.name, thing.item.name)
+            pyfalog.info("Slot {0} occupied with {1}, replacing with {2}", thing.slot, oldObj.item.name, thing.item.name)
             oldObj.itemID = 0  # hack to remove from DB. See GH issue #324
             self.remove(oldObj)
 
@@ -222,7 +222,7 @@ class HandledProjectedModList(HandledList):
             oldEffect = next((m for m in self if m.item.group.name == "Effect Beacon"), None)
 
             if oldEffect:
-                pyfalog.info("System effect occupied with %s, replacing with %s", oldEffect.item.name, proj.item.name)
+                pyfalog.info("System effect occupied with {0}, replacing with {1}", oldEffect.item.name, proj.item.name)
                 self.remove(oldEffect)
 
         HandledList.append(self, proj)

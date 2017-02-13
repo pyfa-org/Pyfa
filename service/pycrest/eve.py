@@ -119,7 +119,7 @@ class APIConnection(object):
             self.cache = DictCache()
 
     def get(self, resource, params=None):
-        pyfalog.debug('Getting resource %s', resource)
+        pyfalog.debug('Getting resource {0}', resource)
         if params is None:
             params = {}
 
@@ -139,18 +139,18 @@ class APIConnection(object):
         key = (resource, frozenset(self._session.headers.items()), frozenset(prms.items()))
         cached = self.cache.get(key)
         if cached and cached['cached_until'] > time.time():
-            pyfalog.debug('Cache hit for resource %s (params=%s)', resource, prms)
+            pyfalog.debug('Cache hit for resource {0} (params={1})', resource, prms)
             return cached
         elif cached:
-            pyfalog.debug('Cache stale for resource %s (params=%s)', resource, prms)
+            pyfalog.debug('Cache stale for resource {0} (params={1})', resource, prms)
             self.cache.invalidate(key)
         else:
-            pyfalog.debug('Cache miss for resource %s (params=%s', resource, prms)
+            pyfalog.debug('Cache miss for resource {0} (params={1})', resource, prms)
 
-        pyfalog.debug('Getting resource %s (params=%s)', resource, prms)
+        pyfalog.debug('Getting resource {0} (params={1})', resource, prms)
         res = self._session.get(resource, params=prms)
         if res.status_code != 200:
-            raise APIException("Got unexpected status code from server: %i" % res.status_code)
+            raise APIException("Got unexpected status code from server: {0}" % res.status_code)
 
         ret = res.json()
 
