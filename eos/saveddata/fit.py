@@ -24,7 +24,8 @@ from math import sqrt, log, asinh
 
 from sqlalchemy.orm import validates, reconstructor
 
-import eos.db
+from eos.db.saveddata import queries as saveddata_queries
+from eos.db.gamedata import queries as gamedata_queries
 from eos import capSim
 from eos.effectHandlerHelpers import HandledModuleList, HandledDroneCargoList, HandledImplantBoosterList, HandledProjectedDroneList, HandledProjectedModList
 from eos.enum import Enum
@@ -82,7 +83,7 @@ class Fit(object):
         self.__mode = None
 
         if self.shipID:
-            item = eos.db.getItem(self.shipID)
+            item = gamedata_queries.getItem(self.shipID)
             if item is None:
                 logger.error("Item (id: %d) does not exist", self.shipID)
                 return
@@ -101,7 +102,7 @@ class Fit(object):
                 return
 
         if self.modeID and self.__ship:
-            item = eos.db.getItem(self.modeID)
+            item = gamedata_queries.getItem(self.modeID)
             # Don't need to verify if it's a proper item, as validateModeItem assures this
             self.__mode = self.ship.validateModeItem(item)
         else:
@@ -648,7 +649,7 @@ class Fit(object):
                 # we delete the fit because when we copy a fit, flush() is
                 # called to properly handle projection updates. However, we do
                 # not want to save this fit to the database, so simply remove it
-                eos.db.saveddata_session.delete(self)
+                saveddata_queries.saveddata_session.delete(self)
 
         if self.commandFits and not withBoosters:
             for fit in self.commandFits:
@@ -1287,8 +1288,8 @@ class Fit(object):
         for fit in self.projectedFits:
             copy_ship.__projectedFits[fit.ID] = fit
             # this bit is required -- see GH issue # 83
-            eos.db.saveddata_session.flush()
-            eos.db.saveddata_session.refresh(fit)
+            saveddata_queries.saveddata_session.flush()
+            saveddata_queries.saveddata_session.refresh(fit)
 
         return copy_ship
 

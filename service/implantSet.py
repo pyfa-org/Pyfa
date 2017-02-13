@@ -19,7 +19,8 @@
 
 import copy
 
-import eos.db
+from eos.db.saveddata import queries as saveddata_queries
+from eos.db.gamedata import queries as gamedata_queries
 from service.market import Market
 from eos.saveddata.implant import Implant as es_Implant
 from eos.saveddata.implantSet import ImplantSet as es_ImplantSet
@@ -41,53 +42,53 @@ class ImplantSets(object):
 
     @staticmethod
     def getImplantSetList():
-        return eos.db.getImplantSetList(None)
+        return saveddata_queries.getImplantSetList(None)
 
     @staticmethod
     def getImplantSet(name):
-        return eos.db.getImplantSet(name)
+        return saveddata_queries.getImplantSet(name)
 
     @staticmethod
     def getImplants(setID):
-        return eos.db.getImplantSet(setID).implants
+        return saveddata_queries.getImplantSet(setID).implants
 
     @staticmethod
     def addImplant(setID, itemID):
-        implant_set = eos.db.getImplantSet(setID)
-        implant = es_Implant(eos.db.getItem(itemID))
+        implant_set = saveddata_queries.getImplantSet(setID)
+        implant = es_Implant(gamedata_queries.getItem(itemID))
         implant_set.implants.append(implant)
-        eos.db.commit()
+        saveddata_queries.commit()
 
     @staticmethod
     def removeImplant(setID, implant):
-        eos.db.getImplantSet(setID).implants.remove(implant)
-        eos.db.commit()
+        saveddata_queries.getImplantSet(setID).implants.remove(implant)
+        saveddata_queries.commit()
 
     @staticmethod
     def newSet(name):
         implant_set = es_ImplantSet()
         implant_set.name = name
-        eos.db.save(implant_set)
+        saveddata_queries.save(implant_set)
         return implant_set
 
     @staticmethod
     def renameSet(implant_set, newName):
         implant_set.name = newName
-        eos.db.save(implant_set)
+        saveddata_queries.save(implant_set)
 
     @staticmethod
     def deleteSet(implant_set):
-        eos.db.remove(implant_set)
+        saveddata_queries.remove(implant_set)
 
     @staticmethod
     def copySet(implant_set):
         newS = copy.deepcopy(implant_set)
-        eos.db.save(newS)
+        saveddata_queries.save(newS)
         return newS
 
     @staticmethod
     def saveChanges(implant_set):
-        eos.db.save(implant_set)
+        saveddata_queries.save(implant_set)
 
     def importSets(self, text):
         sMkt = Market.getInstance()
@@ -121,9 +122,9 @@ class ImplantSets(object):
                 for implant in implant_set.implants:
                     match.implants.append(es_Implant(implant.item))
             else:
-                eos.db.save(implant_set)
+                saveddata_queries.save(implant_set)
 
-        eos.db.commit()
+        saveddata_queries.commit()
 
         lenImports = len(newSets)
         if lenImports == 0:

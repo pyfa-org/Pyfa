@@ -19,7 +19,7 @@
 
 import copy
 
-import eos.db
+from eos.db.saveddata import queries as saveddata_queries
 from eos.saveddata.damagePattern import DamagePattern as es_DamagePattern
 
 
@@ -39,37 +39,37 @@ class DamagePattern(object):
 
     @staticmethod
     def getDamagePatternList():
-        return eos.db.getDamagePatternList()
+        return saveddata_queries.getDamagePatternList()
 
     @staticmethod
     def getDamagePattern(name):
-        return eos.db.getDamagePattern(name)
+        return saveddata_queries.getDamagePattern(name)
 
     @staticmethod
     def newPattern(name):
         p = es_DamagePattern(0, 0, 0, 0)
         p.name = name
-        eos.db.save(p)
+        saveddata_queries.save(p)
         return p
 
     @staticmethod
     def renamePattern(p, newName):
         p.name = newName
-        eos.db.save(p)
+        saveddata_queries.save(p)
 
     @staticmethod
     def deletePattern(p):
-        eos.db.remove(p)
+        saveddata_queries.remove(p)
 
     @staticmethod
     def copyPattern(p):
         newP = copy.deepcopy(p)
-        eos.db.save(newP)
+        saveddata_queries.save(newP)
         return newP
 
     @staticmethod
     def saveChanges(p):
-        eos.db.save(p)
+        saveddata_queries.save(p)
 
     def importPatterns(self, text):
         lookup = {}
@@ -83,8 +83,8 @@ class DamagePattern(object):
                 match = lookup[pattern.name]
                 match.__dict__.update(pattern.__dict__)
             else:
-                eos.db.save(pattern)
-        eos.db.commit()
+                saveddata_queries.save(pattern)
+        saveddata_queries.commit()
 
         lenImports = len(imports)
         if lenImports == 0:

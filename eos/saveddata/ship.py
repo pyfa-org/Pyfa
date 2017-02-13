@@ -19,7 +19,7 @@
 
 import logging
 
-import eos.db
+from eos.db.gamedata import queries as gamedata_queries
 from eos.effectHandlerHelpers import HandledItem
 from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut, cappingAttrKeyCache
 from eos.saveddata.mode import Mode
@@ -125,7 +125,7 @@ class Ship(ItemAttrShortcut, HandledItem):
             return None
 
         items = []
-        g = eos.db.getGroup("Ship Modifiers", eager=("items.icon", "items.attributes"))
+        g = gamedata_queries.getGroup("Ship Modifiers", eager=("items.icon", "items.attributes"))
         for item in g.items:
             # Rely on name detection because race is not reliable
             if item.name.lower().startswith(self.item.name.lower()):

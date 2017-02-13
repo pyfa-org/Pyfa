@@ -7,7 +7,7 @@ import copy
 import uuid
 import time
 
-import eos.db
+from eos.db.saveddata import queries as saveddata_queries
 from eos.enum import Enum
 from eos.saveddata.crestchar import CrestChar
 import gui.globalEvents as GE
@@ -100,20 +100,20 @@ class Crest(object):
         return self.settings.get('server') == Servers.SISI
 
     def delCrestCharacter(self, charID):
-        char = eos.db.getCrestCharacter(charID)
+        char = saveddata_queries.getCrestCharacter(charID)
         del self.charCache[char.ID]
-        eos.db.remove(char)
+        saveddata_queries.remove(char)
         wx.PostEvent(self.mainFrame, GE.SsoLogout(type=CrestModes.USER, numChars=len(self.charCache)))
 
     def delAllCharacters(self):
-        chars = eos.db.getCrestCharacters()
+        chars = saveddata_queries.getCrestCharacters()
         for char in chars:
-            eos.db.remove(char)
+            saveddata_queries.remove(char)
         self.charCache = {}
         wx.PostEvent(self.mainFrame, GE.SsoLogout(type=CrestModes.USER, numChars=0))
 
     def getCrestCharacters(self):
-        chars = eos.db.getCrestCharacters()
+        chars = saveddata_queries.getCrestCharacters()
         # I really need to figure out that DB cache problem, this is ridiculous
         chars2 = [self.getCrestCharacter(char.ID) for char in chars]
         return chars2
@@ -130,7 +130,7 @@ class Crest(object):
         if charID in self.charCache:
             return self.charCache.get(charID)
 
-        char = eos.db.getCrestCharacter(charID)
+        char = saveddata_queries.getCrestCharacter(charID)
         if char and not hasattr(char, "eve"):
             char.eve = copy.deepcopy(self.eve)
             char.eve.temptoken_authorize(refresh_token=char.refresh_token)
@@ -219,7 +219,7 @@ class Crest(object):
                 char = CrestChar(info['CharacterID'], info['CharacterName'], eve.refresh_token)
                 char.eve = eve
             self.charCache[int(info['CharacterID'])] = char
-            eos.db.save(char)
+            saveddata_queries.save(char)
 
             wx.PostEvent(self.mainFrame, GE.SsoLogin(type=CrestModes.USER))
 
