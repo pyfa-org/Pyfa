@@ -168,19 +168,23 @@ class Crest(object):
             self.stopServer()
             time.sleep(1)
             # we need this to ensure that the previous get_request finishes, and then the socket will close
-        self.httpd = StoppableHTTPServer(('', 6461), AuthHandler)
-        thread.start_new_thread(self.httpd.serve, (self.handleLogin,))
+        self.httpd = StoppableHTTPServer(('localhost', 6461), AuthHandler)
+
+        self.serverThread = threading.Thread(target=self.httpd.serve, args=(self.handleLogin,))
+        self.serverThread.name = "CRESTServer"
+        self.serverThread.daemon = True
+        self.serverThread.start()
 
         self.state = str(uuid.uuid4())
         return self.eve.auth_uri(scopes=self.scopes, state=self.state)
 
     def handleLogin(self, message):
         if not message:
-            return
+            raise Exception("Could not parse out querystring parameters.")
 
         if message['state'][0] != self.state:
             logger.warn("OAUTH state mismatch")
-            return
+            raise Exception("OAUTH State Mismatch.")
 
         logger.debug("Handling CREST login with: %s" % message)
 
@@ -222,5 +226,3 @@ class Crest(object):
             eos.db.save(char)
 
             wx.PostEvent(self.mainFrame, GE.SsoLogin(type=CrestModes.USER))
-
-        self.stopServer()

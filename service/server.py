@@ -1,11 +1,8 @@
 import BaseHTTPServer
 import urlparse
 import socket
-import thread
 import logging
-
-# noinspection PyPackageRequirements
-import wx
+import threading
 
 from service.settings import CRESTSettings
 
@@ -20,12 +17,13 @@ HTML = '''
     <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
     <title>pyfa Local Server</title>
     <style type="text/css">
-        body { text-align: center; padding: 150px; }
-        h1 { font-size: 40px; }
-        body { font: 20px Helvetica, sans-serif; color: #333; }
-        #article { display: block; text-align: left; width: 650px; margin: 0 auto; }
-        a { color: #dc8100; text-decoration: none; }
-        a:hover { color: #333; text-decoration: none; }
+        body {{ text-align: center; padding: 150px; }}
+        h1 {{ font-size: 40px; }}
+        h2 {{ font-size: 32px; }}
+        body {{ font: 20px Helvetica, sans-serif; color: #333; }}
+        #article {{ display: block; text-align: left; width: 650px; margin: 0 auto; }}
+        a {{ color: #dc8100; text-decoration: none; }}
+        a:hover {{ color: #333; text-decoration: none; }}
     </style>
 </head>
 
@@ -34,31 +32,28 @@ HTML = '''
 <!-- Layout from Short Circuit's CREST login. Shout out! https://github.com/farshield/shortcircuit -->
 <div id="article">
     <h1>pyfa</h1>
-    <div>
-        <p>If you see this message then it means you should be logged into CREST. You may close this window and return to the application.</p>
-    </div>
+    {0}
 </div>
 <script type="text/javascript">
-function extractFromHash(name, hash) {
+function extractFromHash(name, hash) {{
     var match = hash.match(new RegExp(name + "=([^&]+)"));
     return !!match && match[1];
-}
+}}
 
 var hash = window.location.hash;
 var token = extractFromHash("access_token", hash);
 
-if (token){
+if (token){{
     var redirect = window.location.origin.concat('/?', window.location.hash.substr(1));
     window.location = redirect;
-}
-else {
+}}
+else {{
     console.log("do nothing");
-}
+}}
 </script>
 </body>
 </html>
 '''
-
 
 # https://github.com/fuzzysteve/CREST-Market-Downloader/
 class AuthHandler(BaseHTTPServer.BaseHTTPRequestHandler):
@@ -67,11 +62,20 @@ class AuthHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             return
         parsed_path = urlparse.urlparse(self.path)
         parts = urlparse.parse_qs(parsed_path.query)
-        self.send_response(200)
-        self.end_headers()
-        self.wfile.write(HTML)
 
-        wx.CallAfter(self.server.callback, parts)
+        msg = ""
+
+        try:
+            self.server.callback(parts)
+            msg = "If you see this message then it means you should be logged into CREST. You may close this window and return to the application."
+        except Exception, ex:
+            msg = "<h2>Error</h2>\n<p>{}</p>".format(ex.message)
+        finally:
+            self.send_response(200)
+            self.end_headers()
+            self.wfile.write(HTML.format(msg))
+
+        self.server.stop()
 
     def log_message(self, format, *args):
         return
@@ -87,7 +91,7 @@ class StoppableHTTPServer(BaseHTTPServer.HTTPServer):
         sec = self.settings.get('timeout')
         logger.debug("Running server for %d seconds", sec)
 
-        self.socket.settimeout(0.5)
+        self.socket.settimeout(1)
         self.max_tries = sec / self.socket.gettimeout()
         self.tries = 0
         self.run = True
@@ -105,24 +109,25 @@ class StoppableHTTPServer(BaseHTTPServer.HTTPServer):
         self.run = False
 
     def handle_timeout(self):
-        # logger.debug("Number of tries: %d"%self.tries)
+        # logger.debug("Number of tries: %d" % self.tries)
         self.tries += 1
         if self.tries == self.max_tries:
             logger.debug("Server timed out waiting for connection")
             self.stop()
 
-    def serve(self, callback):
+    def serve(self, callback=None):
         self.callback = callback
         while self.run:
             try:
                 self.handle_request()
             except TypeError:
                 pass
+
         self.server_close()
 
 
 if __name__ == "__main__":
     httpd = StoppableHTTPServer(('', 6461), AuthHandler)
-    thread.start_new_thread(httpd.serve, ())
+    t = threading.Thread(target=httpd.serve)
     raw_input("Press <RETURN> to stop server\n")
     httpd.stop()
