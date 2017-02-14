@@ -196,7 +196,6 @@ class PFGeneralPref(PreferenceView):
 
     def onPriceSelection(self, event):
         system = self.chPriceSystem.GetString(self.chPriceSystem.GetSelection())
-        Price.currentSystemId = Price.systemsList.get(system)
         self.sFit.serviceFittingOptions["priceSystem"] = system
 
         fitID = self.mainFrame.getActiveFit()
