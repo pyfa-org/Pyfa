@@ -40,7 +40,7 @@ class Price(object):
     }
 
     @classmethod
-    def invalidPrices(self, prices):
+    def invalidPrices(cls, prices):
         for price in prices:
             price.time = 0
 
@@ -130,10 +130,9 @@ class Price(object):
             priceobj.failed = True
 
     @classmethod
-    def fitItemsList(self, fit):
+    def fitItemsList(cls, fit):
         # Compose a list of all the data we need & request it
-        typeIDs = []
-        typeIDs.append(fit.ship.item.ID)
+        typeIDs = [fit.ship.item.ID]
 
         for mod in fit.modules:
             if not mod.isEmpty:

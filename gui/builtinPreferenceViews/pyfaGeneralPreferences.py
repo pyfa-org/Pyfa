@@ -11,6 +11,7 @@ from service.fit import Fit
 from service.price import Price
 from service.market import Market
 
+
 class PFGeneralPref(PreferenceView):
     title = "General"
 
@@ -87,10 +88,10 @@ class PFGeneralPref(PreferenceView):
         self.stDefaultSystem.Wrap(-1)
         priceSizer.Add(self.stDefaultSystem, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
 
-        self.chPriceSystem = wx.Choice( panel, choices=Price.systemsList.keys())
+        self.chPriceSystem = wx.Choice(panel, choices=Price.systemsList.keys())
         priceSizer.Add(self.chPriceSystem, 1, wx.ALL | wx.EXPAND, 5)
 
-        mainSizer.Add(priceSizer, 0, wx.ALL|wx.EXPAND, 0)
+        mainSizer.Add(priceSizer, 0, wx.ALL | wx.EXPAND, 0)
 
         self.sFit = Fit.getInstance()
 
@@ -206,5 +207,6 @@ class PFGeneralPref(PreferenceView):
         self.sFit.refreshFit(fitID)
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
         event.Skip()
+
 
 PFGeneralPref.register()
