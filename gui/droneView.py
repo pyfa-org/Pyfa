@@ -147,6 +147,12 @@ class DroneView(Display):
     def _merge(self, src, dst):
         sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
+
+        # If either stack has active drones, make them all active. Fixes #728
+        if (getattr(self.drones[src], "amountActive", 0) + getattr(self.drones[dst], "amountActive", 0)) > 0:
+            self.drones[src].amountActive = getattr(self.drones[src], "amount", 0)
+            self.drones[dst].amountActive = getattr(self.drones[dst], "amount", 0)
+
         if sFit.mergeDrones(fitID, self.drones[src], self.drones[dst]):
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
