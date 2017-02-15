@@ -50,12 +50,15 @@ class SettingsProvider(object):
             p = config.parsePath(self.BASE_PATH, area)
 
             if os.path.exists(p):
+                # noinspection PyBroadException
                 try:
                     f = open(p, "rb")
                     info = cPickle.load(f)
                 except:
                     info = {}
                     # TODO: Add logging message that we failed to open the file
+            else:
+                info = {}
 
             s = Settings(p, info)
 
@@ -140,18 +143,18 @@ class NetworkSettings(object):
         self.serviceNetworkSettings = SettingsProvider.getInstance().getSettings(
             "pyfaServiceNetworkSettings", serviceNetworkDefaultSettings)
 
-    def isEnabled(self, type):
-        if type & self.serviceNetworkSettings["access"]:
+    def isEnabled(self, setting_type):
+        if setting_type & self.serviceNetworkSettings["access"]:
             return True
         return False
 
-    def toggleAccess(self, type, toggle=True):
+    def toggleAccess(self, setting_type, toggle=True):
         bitfield = self.serviceNetworkSettings["access"]
 
         if toggle:  # Turn bit on
-            self.serviceNetworkSettings["access"] = type | bitfield
+            self.serviceNetworkSettings["access"] = setting_type | bitfield
         else:  # Turn bit off
-            self.serviceNetworkSettings["access"] = ~type & bitfield
+            self.serviceNetworkSettings["access"] = ~setting_type & bitfield
 
     def getMode(self):
         return self.serviceNetworkSettings["mode"]
@@ -177,8 +180,8 @@ class NetworkSettings(object):
     def setPort(self, port):
         self.serviceNetworkSettings["port"] = port
 
-    def setType(self, type):
-        self.serviceNetworkSettings["type"] = type
+    def setType(self, setting_type):
+        self.serviceNetworkSettings["type"] = setting_type
 
     def setAccess(self, access):
         self.serviceNetworkSettings["access"] = access
@@ -302,11 +305,11 @@ class UpdateSettings(object):
             serviceUpdateDefaultSettings
         )
 
-    def get(self, type):
-        return self.serviceUpdateSettings[type]
+    def get(self, setting_type):
+        return self.serviceUpdateSettings[setting_type]
 
-    def set(self, type, value):
-        self.serviceUpdateSettings[type] = value
+    def set(self, setting_type, value):
+        self.serviceUpdateSettings[setting_type] = value
 
 
 class CRESTSettings(object):
@@ -330,10 +333,10 @@ class CRESTSettings(object):
             serviceCRESTDefaultSettings
         )
 
-    def get(self, type):
-        return self.serviceCRESTSettings[type]
+    def get(self, setting_type):
+        return self.serviceCRESTSettings[setting_type]
 
-    def set(self, type, value):
-        self.serviceCRESTSettings[type] = value
+    def set(self, setting_type, value):
+        self.serviceCRESTSettings[setting_type] = value
 
 # @todo: migrate fit settings (from fit service) here?
