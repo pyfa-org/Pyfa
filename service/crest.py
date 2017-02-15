@@ -1,6 +1,5 @@
 # noinspection PyPackageRequirements
 import wx
-import thread
 import logging
 import threading
 import copy
