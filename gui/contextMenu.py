@@ -195,7 +195,7 @@ from gui.builtinContextMenus import (  # noqa: E402,F401
     marketJump,
     metaSwap,
     moduleAmmoPicker,
-    moduleGlobalAmmoPicker,
+    #moduleGlobalAmmoPicker
     openFit,
     priceClear,
     project,
