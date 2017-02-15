@@ -42,31 +42,26 @@ class SettingsProvider(object):
 
     def getSettings(self, area, defaults=None):
 
+        if defaults is None:
+            defaults = []
+
         s = self.settings.get(area)
         if s is None:
             p = config.parsePath(self.BASE_PATH, area)
 
-            if not os.path.exists(p):
-                info = {}
-                if defaults:
-                    for item in defaults:
-                        info[item] = defaults[item]
-
-            else:
+            if os.path.exists(p):
                 try:
                     f = open(p, "rb")
                     info = cPickle.load(f)
-                    for item in defaults:
-                        if item not in info:
-                            info[item] = defaults[item]
-
                 except:
                     info = {}
-                    if defaults:
-                        for item in defaults:
-                            info[item] = defaults[item]
+                    # TODO: Add logging message that we failed to open the file
 
-            self.settings[area] = s = Settings(p, info)
+            s = Settings(p, info)
+
+        for item in defaults:
+            if item not in s.info:
+                s.info[item] = defaults[item]
 
         return s
 
