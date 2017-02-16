@@ -1,4 +1,4 @@
-# remoteWeaponDisruptEntity
+# npcEntityWeaponDisruptor
 #
 # Used by:
 # Drones named like: TD (3 of 3)

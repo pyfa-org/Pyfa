@@ -1,7 +1,4 @@
-# targetArmorRepair
-#
-# Used by:
-# Module: QA Remote Armor Repair System - 5 Players
+# Not used by any item
 type = "projected", "active"
 
 

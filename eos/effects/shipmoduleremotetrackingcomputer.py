@@ -1,4 +1,4 @@
-# remoteTrackingAssistFalloff
+# shipModuleRemoteTrackingComputer
 #
 # Used by:
 # Modules from group: Remote Tracking Computer (8 of 8)

@@ -1,4 +1,4 @@
-# remoteGuidanceDisruptFalloff
+# shipModuleGuidanceDisruptor
 #
 # Used by:
 # Variations of module: Guidance Disruptor I (6 of 6)
