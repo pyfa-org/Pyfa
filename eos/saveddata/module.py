@@ -701,15 +701,6 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         else:
             return 0
 
-    def getAmountPerSec(self, attribute):
-        amount = self.getModifiedItemAttr(attribute)
-        if not amount:
-            return 0
-        cycleTime = self.cycleTime
-        if not cycleTime:
-            return 0
-        return float(amount) * 1000 / cycleTime
-
     def __deepcopy__(self, memo):
         item = self.item
         if item is None:
