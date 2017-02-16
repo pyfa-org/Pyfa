@@ -62,10 +62,12 @@ class PFContextMenuPref(PreferenceView):
         rbSizerRow2.Add(self.rbBox4, 1, wx.TOP | wx.RIGHT, 5)
         self.rbBox4.Bind(wx.EVT_RADIOBOX, self.OnSetting4Change)
 
+        '''
         self.rbBox5 = wx.RadioBox(panel, -1, "Charge", wx.DefaultPosition, wx.DefaultSize, ['Disabled', 'Enabled'], 1, wx.RA_SPECIFY_COLS)
         self.rbBox5.SetSelection(self.settings.get('moduleAmmoPicker'))
         rbSizerRow2.Add(self.rbBox5, 1, wx.ALL, 5)
         self.rbBox5.Bind(wx.EVT_RADIOBOX, self.OnSetting5Change)
+        '''
 
         self.rbBox6 = wx.RadioBox(panel, -1, "Charge (All)", wx.DefaultPosition, wx.DefaultSize, ['Disabled', 'Enabled'], 1, wx.RA_SPECIFY_COLS)
         self.rbBox6.SetSelection(self.settings.get('moduleGlobalAmmoPicker'))
