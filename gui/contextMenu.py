@@ -180,27 +180,29 @@ class ContextMenu(object):
 
 # noinspection PyUnresolvedReferences
 from gui.builtinContextMenus import (  # noqa: E402,F401
-    ammoPattern,
-    amount,
-    cargo,
-    changeAffectingSkills,
-    damagePattern,
-    droneRemoveStack,
-    droneSplit,
-    factorReload,
-    fighterAbilities,
-    implantSets,
-    itemRemove,
-    itemStats,
-    marketJump,
-    metaSwap,
-    moduleAmmoPicker,
-    #moduleGlobalAmmoPicker
     openFit,
-    priceClear,
+    #moduleGlobalAmmoPicker,
+    moduleAmmoPicker,
+    itemStats,
+    damagePattern,
+    marketJump,
+    droneSplit,
+    itemRemove,
+    droneRemoveStack,
+    ammoPattern,
     project,
+    factorReload,
+    whProjector,
+    cargo,
     shipJump,
+    changeAffectingSkills,
     tacticalMode,
     targetResists,
-    whProjector
+    priceClear,
+    amount,
+    metaSwap,
+    implantSets,
+    fighterAbilities,
 )
+
+
