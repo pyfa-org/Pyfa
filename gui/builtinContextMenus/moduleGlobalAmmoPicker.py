@@ -6,12 +6,14 @@ import gui.globalEvents as GE
 from gui.builtinContextMenus.moduleAmmoPicker import ModuleAmmoPicker
 from eos.db.saveddata.queries import getFit as db_getFit
 from service.fit import Fit
+from service.settings import ContextMenuSettings
 
 
 class ModuleGlobalAmmoPicker(ModuleAmmoPicker):
     def __init__(self):
         super(ModuleGlobalAmmoPicker, self).__init__()
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+        self.settings = ContextMenuSettings.getInstance()
 
     def getText(self, itmContext, selection):
         return "Charge (All)"
@@ -42,6 +44,9 @@ class ModuleGlobalAmmoPicker(ModuleAmmoPicker):
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
     def display(self, srcContext, selection):
+        if not self.settings.get('moduleGlobalAmmoPicker'):
+            return False
+
         try:
             selectionLen = len(selection)
         except:

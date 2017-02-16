@@ -197,7 +197,7 @@ class TargetingMiscViewMinimal(StatsView):
                         label.SetToolTip(wx.ToolTip("Max Warp Distance: %.1f AU" % fit.maxWarpDistance))
                     elif labelName == "labelSensorStr":
                         if fit.jamChance > 0:
-                           label.SetToolTip(wx.ToolTip("Type: %s\n%.1f%% Chance of Jam" % (fit.scanType, fit.jamChance)))
+                            label.SetToolTip(wx.ToolTip("Type: %s\n%.1f%% Chance of Jam" % (fit.scanType, fit.jamChance)))
                         else:
                             label.SetToolTip(wx.ToolTip("Type: %s" % fit.scanType))
                     elif labelName == "labelFullAlignTime":

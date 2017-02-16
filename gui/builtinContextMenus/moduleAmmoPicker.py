@@ -10,6 +10,7 @@ import gui.mainFrame
 import gui.globalEvents as GE
 from gui.contextMenu import ContextMenu
 from gui.bitmapLoader import BitmapLoader
+from service.settings import ContextMenuSettings
 
 
 class ModuleAmmoPicker(ContextMenu):
@@ -18,8 +19,12 @@ class ModuleAmmoPicker(ContextMenu):
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+        self.settings = ContextMenuSettings.getInstance()
 
     def display(self, srcContext, selection):
+        if not self.settings.get('moduleAmmoPicker'):
+            return False
+
         if self.mainFrame.getActiveFit() is None or srcContext not in ("fittingModule", "projectedModule"):
             return False
 
