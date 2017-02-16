@@ -18,6 +18,7 @@
 # ===============================================================================
 
 import time
+import math
 from copy import deepcopy
 from itertools import chain
 from math import sqrt, log, asinh
@@ -127,6 +128,12 @@ class Fit(object):
         self.__capUsed = None
         self.__capRecharge = None
         self.__calculatedTargets = []
+        self.__remoteReps = {
+            "Armor": 0,
+            "Shield": 0,
+            "Hull": 0,
+            "Capacitor": 0,
+        }
         self.factorReload = False
         self.boostsFits = set()
         self.gangBoosts = None
@@ -391,6 +398,9 @@ class Fit(object):
         self.__capRecharge = None
         self.ecmProjectedStr = 1
         self.commandBonuses = {}
+
+        for remoterep_type in ("Armor", "Shield", "Hull", "Capacitor"):
+            self.__remoteReps[remoterep_type] = 0
 
         del self.__calculatedTargets[:]
         del self.__extraDrains[:]
@@ -1146,6 +1156,81 @@ class Fit(object):
         else:
             self.__capStable = True
             self.__capState = 100
+
+    @property
+    def remoteReps(self):
+        def amount_per_second(module_amount, module_duration, module_reload, module_chargerate, module_capacity, module_volume):
+            numcycles = math.floor(module_capacity / (module_volume * module_chargerate))
+
+            module_amount *= numcycles
+            module_duration = module_chargerate * numcycles + module_reload
+
+            return module_amount / module_duration
+
+        for module in self.modules:
+            # Skip empty modules
+            if module.isEmpty:
+                continue
+
+            module_group = getattr(module.item.group, "name")
+
+            # Skip modules that aren't online
+            if getattr(module, "state", 0) < 1:
+                continue
+
+            if module_group in ("Remote Armor Repairer", "Ancillary Remote Armor Repairer"):
+                # Remote Armor Reppers
+                hp = module.getModifiedItemAttr("armorDamageAmount", 0)
+                duration = module.getModifiedItemAttr("duration", 0) / 1000
+                reloadTime = module.getModifiedItemAttr("reloadTime", 0) / 1000
+                chargeRate = module.getModifiedItemAttr("chargeRate", 1)
+                fueledMultiplier = module.getModifiedItemAttr("chargedArmorDamageMultiplier", 1)
+                capacity = module.getModifiedItemAttr("capacity", 0)
+                volume = module.getModifiedChargeAttr("volume", 0)
+
+                if module.charge:
+                    hp *= fueledMultiplier
+                    hp_per_s = amount_per_second(hp, duration, reloadTime, chargeRate, capacity, volume)
+                else:
+                    hp_per_s = hp / duration
+
+                self.__remoteReps["Armor"] += hp_per_s
+
+            elif module_group in ("Remote Hull Repairer",):
+                # Remote Hull Reppers
+                hp = module.getModifiedItemAttr("structureDamageAmount", 0)
+                duration = module.getModifiedItemAttr("duration", 0) / 1000
+
+                hp_per_s = hp / duration
+
+                self.__remoteReps["Hull"] += hp_per_s
+
+            elif module_group in ("Remote Shield Booster", "Ancillary Remote Shield Booster"):
+                # Remote Shield Reppers
+                hp = module.getModifiedItemAttr("shieldBonus", 0)
+                duration = module.getModifiedItemAttr("duration", 0) / 1000
+                reloadTime = module.getModifiedItemAttr("reloadTime", 0) / 1000
+                chargeRate = module.getModifiedItemAttr("chargeRate", 1)
+                capacity = module.getModifiedItemAttr("capacity", 0)
+                volume = module.getModifiedChargeAttr("volume", 0)
+
+                if module.charge:
+                    hp_per_s = amount_per_second(hp, duration, reloadTime, chargeRate, capacity, volume)
+                else:
+                    hp_per_s = hp / duration
+
+                self.__remoteReps["Shield"] += hp_per_s
+
+            elif module_group in ("Remote Capacitor Transmitter",):
+                # Remote Capacitor Boosters
+                hp = module.getModifiedItemAttr("powerTransferAmount", 0)
+                duration = module.getModifiedItemAttr("duration", 0) / 1000
+
+                hp_per_s = hp / duration
+
+                self.__remoteReps["Capacitor"] += hp_per_s
+
+        return self.__remoteReps
 
     @property
     def hp(self):
