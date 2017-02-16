@@ -6,6 +6,7 @@ import wx
 from gui.bitmapLoader import BitmapLoader
 from service.targetResists import TargetResists as svc_TargetResists
 from service.fit import Fit
+from service.settings import ContextMenuSettings
 
 try:
     from collections import OrderedDict
@@ -16,8 +17,12 @@ except ImportError:
 class TargetResists(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+        self.settings = ContextMenuSettings.getInstance()
 
     def display(self, srcContext, selection):
+        if not self.settings.get('targetResists'):
+            return False
+
         if self.mainFrame.getActiveFit() is None or srcContext != "firepowerViewFull":
             return False
 

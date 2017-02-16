@@ -8,13 +8,17 @@ from service.market import Market
 import gui.mainFrame
 import gui.globalEvents as GE
 from gui.contextMenu import ContextMenu
+from service.settings import ContextMenuSettings
 
 
 class MetaSwap(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+        self.settings = ContextMenuSettings.getInstance()
 
     def display(self, srcContext, selection):
+        if not self.settings.get('metaSwap'):
+            return False
 
         if self.mainFrame.getActiveFit() is None or srcContext not in ("fittingModule",):
             return False

@@ -21,7 +21,7 @@
 import wx
 
 from service.fit import Fit
-from service.settings import Settings
+from service.settings import StatViewSettings
 import gui.mainFrame
 import gui.builtinStatsViews
 import gui.globalEvents as GE
@@ -50,7 +50,7 @@ class StatsPane(wx.Panel):
 
     DEFAULT_VIEWS = []
 
-    settings = Settings.statViewSettings.getInstance()
+    settings = StatViewSettings.getInstance()
 
     for aView in AVAILIBLE_VIEWS:
         if settings.get(aView) == 2:

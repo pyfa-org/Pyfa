@@ -7,13 +7,18 @@ import wx
 from service.fit import Fit
 from eos.saveddata.cargo import Cargo as es_Cargo
 from eos.saveddata.fighter import Fighter as es_Fighter
+from service.settings import ContextMenuSettings
 
 
 class ChangeAmount(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+        self.settings = ContextMenuSettings.getInstance()
 
     def display(self, srcContext, selection):
+        if not self.settings.get('amount'):
+            return False
+
         return srcContext in ("cargoItem", "projectedFit", "fighterItem", "projectedFighter")
 
     def getText(self, itmContext, selection):
