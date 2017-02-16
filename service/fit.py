@@ -726,8 +726,8 @@ class Fit(object):
         else:
             fit.drones.remove(d1)
 
-        d2.amount += getattr(d1, "amount", 0)
-        d2.amountActive += getattr(d1, "amountActive", 0)
+        d2.amount += d1.amount
+        d2.amountActive += d1.amountActive
 
         # If we have less than the total number of drones active, make them all active. Fixes #728
         # This could be removed if we ever add an enhancement to make drone stacks partially active.
