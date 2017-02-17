@@ -29,9 +29,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-# Make sure the saveddata db exists
-if config.savePath and not os.path.exists(config.savePath):
-    os.mkdir(config.savePath)
+# Make sure the saveddata folder exists
+config.getSavePath(None, True)
 
 if config.saveDB and os.path.isfile(config.saveDB):
     # If database exists, run migration after init'd database

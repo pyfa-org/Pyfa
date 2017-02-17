@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: latin-1 -*-
 # ==============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
@@ -47,8 +48,22 @@ parser.add_option("-w", "--wx28", action="store_true", dest="force28", help="For
 parser.add_option("-d", "--debug", action="store_true", dest="debug", help="Set logger to debug level.", default=False)
 parser.add_option("-t", "--title", action="store", dest="title", help="Set Window Title", default=None)
 parser.add_option("-s", "--savepath", action="store", dest="savepath", help="Set the folder for savedata", default=None)
+parser.add_option("-c", "--codec", action="store", dest="codec", help="Forces use of a particular language codec to run", default=None)
 
 (options, args) = parser.parse_args()
+
+# Configure paths
+if options.rootsavedata is True:
+    config.saveInRoot = True
+
+# set title if it wasn't supplied by argument
+if options.title is None:
+    options.title = "pyfa %s%s - Python Fitting Assistant" % (config.version, "" if config.tag.lower() != 'git' else " (git)")
+
+config.debug = options.debug
+config.codec = options.codec
+config.defPaths(options.savepath)
+
 
 if not hasattr(sys, 'frozen'):
 
@@ -105,20 +120,6 @@ if not hasattr(sys, 'frozen'):
 
 
 if __name__ == "__main__":
-    # Configure paths
-    if options.rootsavedata is True:
-        config.saveInRoot = True
-
-    # set title if it wasn't supplied by argument
-    if options.title is None:
-        options.title = "pyfa %s%s - Python Fitting Assistant" % (config.version, "" if config.tag.lower() != 'git' else " (git)")
-
-    config.debug = options.debug
-    # convert to unicode if it is set
-    if options.savepath is not None:
-        options.savepath = unicode(options.savepath)
-    config.defPaths(options.savepath)
-
     # Basic logging initialization
     import logging
     logging.basicConfig()
@@ -126,17 +127,11 @@ if __name__ == "__main__":
     # Import everything
     # noinspection PyPackageRequirements
     import wx
-    import os
-    import os.path
 
     import eos.db
     # noinspection PyUnresolvedReferences
     import service.prefetch  # noqa: F401
     from gui.mainFrame import MainFrame
-
-    # Make sure the saveddata db exists
-    if not os.path.exists(config.savePath):
-        os.mkdir(config.savePath)
 
     eos.db.saveddata_meta.create_all()
 
