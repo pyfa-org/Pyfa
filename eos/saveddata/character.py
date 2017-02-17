@@ -140,7 +140,17 @@ class Character(object):
 
     @property
     def name(self):
-        return self.savedName if not self.isDirty else "{} *".format(self.savedName)
+        name = self.savedName
+
+        if self.isDirty:
+            name += " *"
+
+        if self.alphaCloneID:
+            clone = eos.db.getAlphaClone(self.alphaCloneID)
+            type  = clone.alphaCloneName.split()[1]
+            name += u' (\u03B1{})'.format(type[0].upper())
+
+        return name
 
     @name.setter
     def name(self, name):
