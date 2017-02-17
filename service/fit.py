@@ -731,7 +731,7 @@ class Fit(object):
 
         # If we have less than the total number of drones active, make them all active. Fixes #728
         # This could be removed if we ever add an enhancement to make drone stacks partially active.
-        if d2.amount  > d2.amountActive:
+        if d2.amount > d2.amountActive:
             d2.amountActive = d2.amount
 
         eos.db.commit()
