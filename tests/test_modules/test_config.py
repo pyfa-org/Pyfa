@@ -24,4 +24,5 @@ def test_parsePath_with_append():
     assert create_result
     assert type(create_result) == unicode
     assert type(create_result) != str
-    assert create_result == "\\This\\Is\\A\\Fake\\Path\\file.py"
+    # On Linux this can show differently. Left side for Windows, right side for Linux.
+    assert (create_result == "\\This\\Is\\A\\Fake\\Path\\file.py" or create_result == "\This\Is\A\Fake\Path/file.py")
