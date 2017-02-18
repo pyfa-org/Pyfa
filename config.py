@@ -183,7 +183,7 @@ def parsePath(root, Append=None, Create=False):
             if codec_return and Create:
                 path_exists = parsePathCreateDir(codec_return)
 
-            if path_exists:
+            if path_exists and os.path.exists(path_exists):
                 return codec_return
 
         for test_codec in codecs:
@@ -195,7 +195,7 @@ def parsePath(root, Append=None, Create=False):
             if codec_return and Create:
                 path_exists = parsePathCreateDir(codec_return)
 
-            if path_exists:
+            if path_exists and os.path.exists(path_exists):
                 return codec_return
             else:
                 continue
