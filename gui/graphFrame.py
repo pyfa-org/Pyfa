@@ -19,7 +19,6 @@
 
 import os
 import logging
-import imp
 
 # noinspection PyPackageRequirements
 import wx
@@ -32,12 +31,24 @@ from gui.graph import Graph
 from gui.bitmapLoader import BitmapLoader
 from config import parsePath
 
-# Don't actually import the thing, since it takes for fucking ever
 try:
-    imp.find_module('matplotlib')
+    import matplotlib as mpl
+
+    mpl_version = int(mpl.__version__[0])
+    if mpl_version >= 2:
+        mpl.use('wxagg')
+        mplImported = True
+    else:
+        mplImported = False
+    from matplotlib.patches import Patch
+
+    from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as Canvas
+    from matplotlib.figure import Figure
+
     graphFrame_enabled = True
     mplImported = True
 except ImportError:
+    Patch = mpl = Canvas = Figure = None
     graphFrame_enabled = False
     mplImported = False
 
@@ -51,25 +62,7 @@ class GraphFrame(wx.Frame):
         global graphFrame_enabled
         global mplImported
 
-        self.Patch = None
-        self.mpl_version = -1
-
-        try:
-            import matplotlib as mpl
-            self.mpl_version = int(mpl.__version__[0])
-            if self.mpl_version >= 2:
-                mpl.use('wxagg')
-                mplImported = True
-            else:
-                mplImported = False
-            from matplotlib.patches import Patch
-            self.Patch = Patch
-            from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as Canvas
-            from matplotlib.figure import Figure
-            graphFrame_enabled = True
-        except ImportError:
-            Patch = mpl = Canvas = Figure = None
-            graphFrame_enabled = False
+        self.mpl_version = int(mpl.__version__[0])
 
         self.legendFix = False
         if not graphFrame_enabled:
@@ -282,7 +275,7 @@ class GraphFrame(wx.Frame):
                     selected_color = legend_colors[i]
                 except:
                     selected_color = None
-                legend2.append(self.Patch(color=selected_color, label=i_name), )
+                legend2.append(Patch(color=selected_color, label=i_name), )
 
             if len(legend2) > 0:
                 leg = self.subplot.legend(handles=legend2)
