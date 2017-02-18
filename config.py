@@ -136,14 +136,22 @@ def getPyfaPath(Append=None, Create=False):
     root = os.path.dirname(os.path.realpath(os.path.abspath(base)))
     path = parsePath(root, Append, Create)
 
-    return path
+    if path:
+        return path
+    else:
+        # TODO: add logging and handling when we fail to get a path correctly. Probably should bail and direct the user to how to force the codec.
+        return
 
 
 def getSavePath(Append=None, Create=False):
     root = savePath
     path = parsePath(root, Append, Create)
 
-    return path
+    if path:
+        return path
+    else:
+        # TODO: add logging and handling when we fail to get a path correctly. Probably should bail and direct the user to how to force the codec.
+        return
 
 
 def parsePath(root, Append=None, Create=False):
