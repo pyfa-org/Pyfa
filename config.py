@@ -144,8 +144,8 @@ def getPyfaPath(Append=None, Create=False):
 
 
 def getSavePath(Append=None, Create=False):
-    root = savePath
-    path = parsePath(root, Append, Create)
+    global savePath
+    path = parsePath(savePath, Append, Create)
 
     if path:
         return path
@@ -154,7 +154,7 @@ def getSavePath(Append=None, Create=False):
         return
 
 
-def parsePath(root, Append=None, Create=False):
+def parsePath(root, Append=None, Create=False, SkipValidation=False):
     global codec
 
     if Append:
@@ -191,7 +191,7 @@ def parsePath(root, Append=None, Create=False):
             if codec_return and Create:
                 path_exists = parsePathCreateDir(codec_return)
 
-            if path_exists and os.path.exists(path_exists):
+            if path_exists and (os.path.exists(path_exists) or os.path.isfile(path_exists) or SkipValidation):
                 return codec_return
 
         for test_codec in codecs:
@@ -203,7 +203,7 @@ def parsePath(root, Append=None, Create=False):
             if codec_return and Create:
                 path_exists = parsePathCreateDir(codec_return)
 
-            if path_exists and (os.path.exists(path_exists) or os.path.isfile(path_exists)):
+            if path_exists and (os.path.exists(path_exists) or os.path.isfile(path_exists) or SkipValidation):
                 return codec_return
             else:
                 continue
@@ -215,7 +215,7 @@ def parsePath(root, Append=None, Create=False):
         else:
             path_exists = root_path
 
-        if path_exists and (os.path.exists(path_exists) or os.path.isfile(path_exists)):
+        if path_exists and (os.path.exists(path_exists) or os.path.isfile(path_exists) or SkipValidation):
             return path_exists
         else:
             return None
