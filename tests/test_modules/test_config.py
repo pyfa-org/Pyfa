@@ -3,24 +3,25 @@ import os
 
 
 def test_parsePath():
-    base = "C:\This\Is\A\Fake\Path"
-    base = os.path.realpath(os.path.abspath(base))
+    basepath = "\This\Is\A\Fake\Path"
+    base = os.path.normpath(basepath)
 
     create_result = parsePath(base)
 
     assert create_result
     assert type(create_result) == unicode
     assert type(create_result) != str
-    assert create_result == "C:\\This\\Is\\A\\Fake\\Path"
+    assert create_result == "\\This\\Is\\A\\Fake\\Path"
+
 
 def test_parsePath_with_append():
-    base = "C:\This\Is\A\Fake\Path"
+    basepath = "\This\Is\A\Fake\Path"
     append = "file.py"
-    base = os.path.realpath(os.path.abspath(base))
+    base = os.path.normpath(basepath)
 
     create_result = parsePath(base, append)
 
     assert create_result
     assert type(create_result) == unicode
     assert type(create_result) != str
-    assert create_result == "C:\\This\\Is\\A\\Fake\\Path\\file.py"
+    assert create_result == "\\This\\Is\\A\\Fake\\Path\\file.py"
