@@ -34,6 +34,7 @@ HTML = '''
     <h1>pyfa</h1>
     {0}
 </div>
+
 <script type="text/javascript">
 function extractFromHash(name, hash) {{
     var match = hash.match(new RegExp(name + "=([^&]+)"));
@@ -42,13 +43,24 @@ function extractFromHash(name, hash) {{
 
 var hash = window.location.hash;
 var token = extractFromHash("access_token", hash);
+var step2 = extractFromHash("step2", hash);
 
-if (token){{
-    var redirect = window.location.origin.concat('/?', window.location.hash.substr(1));
-    window.location = redirect;
+function doRedirect() {{
+    if (token){{
+        // implicit authentication
+        var redirect = window.location.origin.concat('/?', window.location.hash.substr(1), '&step=2');
+        window.location = redirect;
+    }}
+    else {{
+        // user-defined
+        var redirect = window.location.href + '&step=2';
+        window.location = redirect;
+    }}
 }}
-else {{
-    console.log("do nothing");
+
+// do redirect if we are not already on step 2
+if (window.location.href.indexOf('step=2') == -1) {{
+    setTimeout(doRedirect(), 1000);
 }}
 </script>
 </body>
@@ -61,14 +73,20 @@ class AuthHandler(BaseHTTPServer.BaseHTTPRequestHandler):
     def do_GET(self):
         if self.path == "/favicon.ico":
             return
+
         parsed_path = urlparse.urlparse(self.path)
         parts = urlparse.parse_qs(parsed_path.query)
-
         msg = ""
 
+        step2 = 'step' in parts
+
         try:
-            self.server.callback(parts)
-            msg = "If you see this message then it means you should be logged into CREST. You may close this window and return to the application."
+            if step2:
+                self.server.callback(parts)
+                msg = "If you see this message then it means you should be logged into CREST. You may close this window and return to the application."
+            else:
+                # For implicit mode, we have to serve up the page which will take the hash and redirect useing a querystring
+                msg = "Processing response from EVE Online"
         except Exception, ex:
             msg = "<h2>Error</h2>\n<p>{}</p>".format(ex.message)
         finally:
@@ -76,7 +94,9 @@ class AuthHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(HTML.format(msg))
 
-        self.server.stop()
+        if step2:
+            # Only stop once if we've received something in the querystring
+            self.server.stop()
 
     def log_message(self, format, *args):
         return
