@@ -19,7 +19,11 @@
 
 import logging
 
-from sqlalchemy.orm import validates, reconstructor
+from sqlalchemy.orm import validates, reconstructor, mapper
+
+from eos.db.saveddata.mapper import (
+    Implants as implants_table,
+)
 
 from eos.db.gamedata import queries as gamedata_queries
 from eos.effectHandlerHelpers import HandledItem
@@ -38,6 +42,7 @@ class Implant(HandledItem, ItemAttrShortcut):
         self.itemID = item.ID if item is not None else None
         self.active = True
         self.build()
+        self.map_table()
 
     @reconstructor
     def init(self):
@@ -61,6 +66,9 @@ class Implant(HandledItem, ItemAttrShortcut):
         self.__itemModifiedAttributes.original = self.__item.attributes
         self.__itemModifiedAttributes.overrides = self.__item.overrides
         self.__slot = self.__calculateSlot(self.__item)
+
+    def map_table(self):
+        mapper(Implant, implants_table)
 
     @property
     def itemModifiedAttributes(self):

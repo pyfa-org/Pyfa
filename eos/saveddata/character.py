@@ -21,13 +21,28 @@
 import logging
 from itertools import chain
 
-from sqlalchemy.orm import validates, reconstructor
+from sqlalchemy.orm import validates, reconstructor, mapper, relation
 
+from eos.db.sqlAlchemy import sqlAlchemy
 from eos.db.saveddata import queries as saveddata_queries
 from eos.db.gamedata import queries as gamedata_queries
+from eos.db.saveddata.mapper import Characters as eds_Characters
+from eos.db.saveddata.queries import cachedQuery
+from eos.db.util import processEager
 from eos.effectHandlerHelpers import HandledItem, HandledImplantBoosterList
+from eos.db.saveddata.mapper import (
+    Characters as characters_table,
+    CharImplants as charImplants_table,
+    Implants as implant_table,
+)
+from eos.saveddata.implant import Implant
+from eos.saveddata.user import User
 
 logger = logging.getLogger(__name__)
+
+
+class ReadOnlyException(Exception):
+    pass
 
 
 class Character(object):
@@ -106,6 +121,27 @@ class Character(object):
 
         self.__implants = HandledImplantBoosterList()
         self.apiKey = None
+
+        mapper(Character, characters_table,
+               properties={
+                   "savedName": characters_table.c.name,
+                   "_Character__owner": relation(
+                       User,
+                       backref="characters"),
+                   "_Character__skills": relation(
+                       Character.Skill,
+                       backref="character",
+                       cascade="all,delete-orphan"),
+                   "_Character__implants": relation(
+                       Implant,
+                       collection_class=HandledImplantBoosterList,
+                       cascade='all,delete-orphan',
+                       backref='character',
+                       single_parent=True,
+                       primaryjoin=charImplants_table.charID == characters_table.c.ID,
+                       secondaryjoin=charImplants_table.implantID == implant_table.ID,
+                       secondary=charImplants_table),
+               })
 
     @reconstructor
     def init(self):
@@ -395,5 +431,42 @@ class Skill(HandledItem):
         )
 
 
-class ReadOnlyException(Exception):
-    pass
+@cachedQuery(Character, 1, "lookfor")
+def getCharacter(lookfor, eager=None):
+    if isinstance(lookfor, int):
+        if eager is None:
+            with sqlAlchemy.sd_lock:
+                character = sqlAlchemy.saveddata_session.query(eds_Characters).get(lookfor)
+        else:
+            eager = processEager(eager)
+            with sqlAlchemy.sd_lock:
+                character = sqlAlchemy.saveddata_session.query(eds_Characters).options(*eager).filter(
+                    eds_Characters.ID == lookfor).first()
+    elif isinstance(lookfor, basestring):
+        eager = processEager(eager)
+        with sqlAlchemy.sd_lock:
+            try:
+                character = sqlAlchemy.saveddata_session.query(eds_Characters).filter(eds_Characters.savedName == lookfor).first()
+            except AttributeError:
+                character = sqlAlchemy.saveddata_session.query(eds_Characters).first()
+    else:
+        raise TypeError("Need integer or string as argument")
+    return character
+
+
+def getCharacterList(eager=None):
+    eager = processEager(eager)
+    with sqlAlchemy.sd_lock:
+        characters = sqlAlchemy.saveddata_session.query(eds_Characters).options(*eager).all()
+    return characters
+
+
+def getCharactersForUser(lookfor, eager=None):
+    if isinstance(lookfor, int):
+        eager = processEager(eager)
+        with sqlAlchemy.sd_lock:
+            characters = sqlAlchemy.saveddata_session.query(eds_Characters).options(*eager).filter(
+                eds_Characters.ownerID == lookfor).all()
+    else:
+        raise TypeError("Need integer as argument")
+    return characters

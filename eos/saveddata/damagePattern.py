@@ -18,6 +18,13 @@
 # ===============================================================================
 
 import re
+from sqlalchemy.orm import mapper
+
+from eos.db.sqlAlchemy import sqlAlchemy
+from eos.db.saveddata.mapper import DamagePatterns as eds_DamagePatterns
+from eos.db.saveddata.queries import cachedQuery
+from eos.db.util import processEager
+from eos.db.saveddata.mapper import DamagePatterns as damagePatterns_table
 
 
 class DamagePattern(object):
@@ -28,6 +35,8 @@ class DamagePattern(object):
         self.thermalAmount = thermalAmount
         self.kineticAmount = kineticAmount
         self.explosiveAmount = explosiveAmount
+
+        mapper(DamagePattern, damagePatterns_table)
 
     def calculateEhp(self, fit):
         ehp = {}
@@ -119,3 +128,31 @@ class DamagePattern(object):
         p = DamagePattern(self.emAmount, self.thermalAmount, self.kineticAmount, self.explosiveAmount)
         p.name = "%s copy" % self.name
         return p
+
+
+def getDamagePatternList(eager=None):
+    eager = processEager(eager)
+    with sqlAlchemy.sd_lock:
+        patterns = sqlAlchemy.saveddata_session.query(eds_DamagePatterns).all()
+    return patterns
+
+
+@cachedQuery(DamagePattern, 1, "lookfor")
+def getDamagePattern(lookfor, eager=None):
+    if isinstance(lookfor, int):
+        if eager is None:
+            with sqlAlchemy.sd_lock:
+                pattern = sqlAlchemy.saveddata_session.query(DamagePattern).get(lookfor)
+        else:
+            eager = processEager(eager)
+            with sqlAlchemy.sd_lock:
+                pattern = sqlAlchemy.saveddata_session.query(DamagePattern).options(*eager).filter(
+                    DamagePattern.ID == lookfor).first()
+    elif isinstance(lookfor, basestring):
+        eager = processEager(eager)
+        with sqlAlchemy.sd_lock:
+            pattern = sqlAlchemy.saveddata_session.query(DamagePattern).options(*eager).filter(
+                DamagePattern.name == lookfor).first()
+    else:
+        raise TypeError("Need integer or string as argument")
+    return pattern

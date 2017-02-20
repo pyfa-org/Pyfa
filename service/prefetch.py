@@ -21,6 +21,7 @@ import os
 
 import config
 from eos import db
+from eos.db.sqlAlchemy import sqlAlchemy
 from eos.db import migration
 from eos.db.saveddata.loadDefaultDatabaseValues import DefaultDatabaseValues
 from eos.db.saveddata.databaseRepair import DatabaseCleanup
@@ -35,8 +36,9 @@ if config.savePath and not os.path.exists(config.savePath):
 
 if config.saveDB and os.path.isfile(config.saveDB):
     # If database exists, run migration after init'd database
-    db.saveddata_meta.create_all()
-    migration.update(db.saveddata_engine)
+    sqlAlchemy.saveddata_meta.create_all()
+    
+    migration.update(sqlAlchemy.saveddata_engine)
     # Import default database values
     # Import values that must exist otherwise Pyfa breaks
     DefaultDatabaseValues.importRequiredDefaults()
@@ -44,21 +46,21 @@ if config.saveDB and os.path.isfile(config.saveDB):
     # Finds and fixes database corruption issues.
     logging.debug("Starting database validation.")
     database_cleanup_instance = DatabaseCleanup()
-    database_cleanup_instance.OrphanedCharacterSkills(db.saveddata_engine)
-    database_cleanup_instance.OrphanedFitCharacterIDs(db.saveddata_engine)
-    database_cleanup_instance.OrphanedFitDamagePatterns(db.saveddata_engine)
-    database_cleanup_instance.NullDamagePatternNames(db.saveddata_engine)
-    database_cleanup_instance.NullTargetResistNames(db.saveddata_engine)
-    database_cleanup_instance.OrphanedFitIDItemID(db.saveddata_engine)
-    database_cleanup_instance.NullDamageTargetPatternValues(db.saveddata_engine)
-    database_cleanup_instance.DuplicateSelectedAmmoName(db.saveddata_engine)
+    database_cleanup_instance.OrphanedCharacterSkills(sqlAlchemy.saveddata_engine)
+    database_cleanup_instance.OrphanedFitCharacterIDs(sqlAlchemy.saveddata_engine)
+    database_cleanup_instance.OrphanedFitDamagePatterns(sqlAlchemy.saveddata_engine)
+    database_cleanup_instance.NullDamagePatternNames(sqlAlchemy.saveddata_engine)
+    database_cleanup_instance.NullTargetResistNames(sqlAlchemy.saveddata_engine)
+    database_cleanup_instance.OrphanedFitIDItemID(sqlAlchemy.saveddata_engine)
+    database_cleanup_instance.NullDamageTargetPatternValues(sqlAlchemy.saveddata_engine)
+    database_cleanup_instance.DuplicateSelectedAmmoName(sqlAlchemy.saveddata_engine)
     logging.debug("Completed database validation.")
 
 else:
     # If database does not exist, do not worry about migration. Simply
     # create and set version
-    db.saveddata_meta.create_all()
-    db.saveddata_engine.execute('PRAGMA user_version = {}'.format(migration.getAppVersion()))
+    sqlAlchemy.saveddata_meta.create_all()
+    sqlAlchemy.saveddata_engine.execute('PRAGMA user_version = {}'.format(migration.getAppVersion()))
     # Import default database values
     # Import values that must exist otherwise Pyfa breaks
     DefaultDatabaseValues.importRequiredDefaults()

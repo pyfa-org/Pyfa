@@ -17,6 +17,42 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
+
+from sqlalchemy.orm import mapper, relationship, relation
+from sqlalchemy.sql import and_
+from sqlalchemy.orm.collections import attribute_mapped_collection
+from sqlalchemy.ext.associationproxy import association_proxy
+
+from eos.db.sqlAlchemy import sqlAlchemy
+from eos.db.saveddata.queries import cachedQuery, removeInvalid
+from eos.db.util import processEager, processWhere
+from eos.saveddata.booster import Booster
+from eos.saveddata.drone import Drone
+from eos.saveddata.user import User
+from eos.saveddata.fighter import Fighter
+from eos.saveddata.fighterAbility import FighterAbility
+from eos.saveddata.implant import Implant
+from eos.saveddata.cargo import Cargo
+from eos.saveddata.damagePattern import DamagePattern
+from eos.saveddata.targetResists import TargetResists
+from eos.db.saveddata.mapper import ProjectedFit, CommandFit
+
+from eos.db.saveddata.mapper import (
+    Fits as fits_table,
+    Modules as modules_table,
+    # Boosters as boosters_table,
+    Drones as drones_table,
+    # Characters as characters_table,
+    # Users as users_table,
+    Fighters as fighters_table,
+    Implants as implants_table,
+    FitImplants as fitImplants_table,
+    ProjectedFits as projectedFits_table,
+    CommandFits as commandFits_table,
+    Cargo as cargo_table,
+)
+
+
 import time
 from copy import deepcopy
 from itertools import chain
@@ -75,6 +111,7 @@ class Fit(object):
         self.modeID = None
 
         self.build()
+        self.map_table()
 
     @reconstructor
     def init(self):
@@ -133,6 +170,138 @@ class Fit(object):
         self.gangBoosts = None
         self.ecmProjectedStr = 1
         self.commandBonuses = {}
+
+    def map_table(self):
+        mapper(
+            Fit,
+            fits_table,
+            properties={
+                "_Fit__modules": relation(
+                    Module,
+                    collection_class=HandledModuleList,
+                    primaryjoin=and_(modules_table.fitID == fits_table.ID,
+                                     modules_table.projected is False),
+                    order_by=modules_table.position,
+                    cascade='all, delete, delete-orphan'),
+                "_Fit__projectedModules": relation(
+                    Module,
+                    collection_class=HandledProjectedModList,
+                    cascade='all, delete, delete-orphan',
+                    single_parent=True,
+                    primaryjoin=and_(modules_table.fitID == fits_table.ID,
+                                     modules_table.projected is True)),
+                "owner": relation(
+                    User,
+                    backref="fits"),
+                "itemID": fits_table.shipID,
+                "shipID": fits_table.shipID,
+                "_Fit__boosters": relation(
+                    Booster,
+                    collection_class=HandledImplantBoosterList,
+                    cascade='all, delete, delete-orphan',
+                    single_parent=True),
+                "_Fit__drones": relation(
+                    Drone,
+                    collection_class=HandledDroneCargoList,
+                    cascade='all, delete, delete-orphan',
+                    single_parent=True,
+                    primaryjoin=and_(drones_table.fitID == fits_table.ID,
+                                     drones_table.projected is False)),
+                "_Fit__fighters": relation(
+                    Fighter,
+                    collection_class=HandledDroneCargoList,
+                    cascade='all, delete, delete-orphan',
+                    single_parent=True,
+                    primaryjoin=and_(fighters_table.fitID == fits_table.ID,
+                                     fighters_table.projected is False)),
+                "_Fit__cargo": relation(
+                    Cargo,
+                    collection_class=HandledDroneCargoList,
+                    cascade='all, delete, delete-orphan',
+                    single_parent=True,
+                    primaryjoin=and_(cargo_table.fitID == fits_table.ID)),
+                "_Fit__projectedDrones": relation(
+                    Drone,
+                    collection_class=HandledProjectedDroneList,
+                    cascade='all, delete, delete-orphan',
+                    single_parent=True,
+                    primaryjoin=and_(drones_table.fitID == fits_table.ID,
+                                     drones_table.projected is True)),
+                "_Fit__projectedFighters": relation(
+                    Fighter,
+                    collection_class=HandledProjectedDroneList,
+                    cascade='all, delete, delete-orphan',
+                    single_parent=True,
+                    primaryjoin=and_(fighters_table.fitID == fits_table.ID,
+                                     fighters_table.projected is True)),
+                "_Fit__implants": relation(
+                    Implant,
+                    collection_class=HandledImplantBoosterList,
+                    cascade='all, delete, delete-orphan',
+                    backref='fit',
+                    single_parent=True,
+                    primaryjoin=fitImplants_table.fitID == fits_table.ID,
+                    secondaryjoin=fitImplants_table.implantID == implants_table.ID,
+                    secondary=fitImplants_table),
+                "_Fit__character": relation(
+                    Character,
+                    backref="fits"),
+                "_Fit__damagePattern": relation(DamagePattern),
+                "_Fit__targetResists": relation(TargetResists),
+                "projectedOnto": relationship(
+                    ProjectedFit,
+                    primaryjoin=projectedFits_table.sourceID == fits_table.ID,
+                    backref='source_fit',
+                    collection_class=attribute_mapped_collection('victimID'),
+                    cascade='all, delete, delete-orphan'),
+                "victimOf": relationship(
+                    ProjectedFit,
+                    primaryjoin=fits_table.ID == projectedFits_table.victimID,
+                    backref='victim_fit',
+                    collection_class=attribute_mapped_collection('sourceID'),
+                    cascade='all, delete, delete-orphan'),
+                "boostedOnto": relationship(
+                    CommandFit,
+                    primaryjoin=commandFits_table.boosterID == fits_table.ID,
+                    backref='booster_fit',
+                    collection_class=attribute_mapped_collection('boostedID'),
+                    cascade='all, delete, delete-orphan'),
+                "boostedOf": relationship(
+                    CommandFit,
+                    primaryjoin=fits_table.ID == commandFits_table.boostedID,
+                    backref='boosted_fit',
+                    collection_class=attribute_mapped_collection('boosterID'),
+                    cascade='all, delete, delete-orphan'),
+            }
+        )
+
+        Fit._Fit__projectedFits = association_proxy(
+            "victimOf",  # look at the victimOf association...
+            "source_fit",  # .. and return the source fits
+            creator=lambda sourceID, source_fit: ProjectedFit(sourceID, source_fit)
+        )
+        Fit._Fit__commandFits = association_proxy(
+            "boostedOf",  # look at the boostedOf association...
+            "booster_fit",  # .. and return the booster fit
+            creator=lambda boosterID, booster_fit: CommandFit(boosterID, booster_fit)
+        )
+
+        mapper(ProjectedFit, projectedFits_table,
+               properties={"_ProjectedFit__amount": projectedFits_table.c.amount})
+
+        mapper(CommandFit, commandFits_table)
+
+        mapper(Module, modules_table,
+               properties={"owner": relation(Fit)})
+
+        mapper(Fighter, fighters_table,
+               properties={
+                   "owner": relation(Fit),
+                   "_Fighter__abilities": relation(
+                       FighterAbility,
+                       backref="fighter",
+                       cascade='all, delete, delete-orphan'),
+               })
 
     @property
     def targetResists(self):
@@ -1302,3 +1471,132 @@ class Fit(object):
         return u"{} ({})".format(
             self.name, self.ship.item.name
         ).encode('utf8')
+
+
+@cachedQuery(Fit, 1, "lookfor")
+def getFit(lookfor, eager=None):
+    if isinstance(lookfor, int):
+        if eager is None:
+            with sqlAlchemy.sd_lock:
+                fit = sqlAlchemy.saveddata_session.query(Fit).get(lookfor)
+        else:
+            eager = processEager(eager)
+            with sqlAlchemy.sd_lock:
+                fit = sqlAlchemy.saveddata_session.query(Fit).options(*eager).filter(Fit.ID == lookfor).first()
+    else:
+        raise TypeError("Need integer as argument")
+
+    if fit and fit.isInvalid:
+        with sqlAlchemy.sd_lock:
+            removeInvalid([fit])
+        return None
+
+    return fit
+
+
+def getFitsWithShip(shipID, ownerID=None, where=None, eager=None):
+    """
+    Get all the fits using a certain ship.
+    If no user is passed, do this for all users.
+    """
+    if isinstance(shipID, int):
+        if ownerID is not None and not isinstance(ownerID, int):
+            raise TypeError("OwnerID must be integer")
+        filter = Fit.shipID == shipID
+        if ownerID is not None:
+            filter = and_(filter, Fit.ownerID == ownerID)
+
+        filter = processWhere(filter, where)
+        eager = processEager(eager)
+        with sqlAlchemy.sd_lock:
+            fits = removeInvalid(sqlAlchemy.saveddata_session.query(Fit).options(*eager).filter(filter).all())
+    else:
+        raise TypeError("ShipID must be integer")
+
+    return fits
+
+
+def getBoosterFits(ownerID=None, where=None, eager=None):
+    """
+    Get all the fits that are flagged as a boosting ship
+    If no user is passed, do this for all users.
+    """
+
+    if ownerID is not None and not isinstance(ownerID, int):
+        raise TypeError("OwnerID must be integer")
+    filter = Fit.booster == 1
+    if ownerID is not None:
+        filter = and_(filter, Fit.ownerID == ownerID)
+
+    filter = processWhere(filter, where)
+    eager = processEager(eager)
+    with sqlAlchemy.sd_lock:
+        fits = removeInvalid(sqlAlchemy.saveddata_session.query(Fit).options(*eager).filter(filter).all())
+
+    return fits
+
+
+def countAllFits():
+    with sqlAlchemy.sd_lock:
+        count = sqlAlchemy.saveddata_session.query(Fit).count()
+    return count
+
+
+def countFitsWithShip(shipID, ownerID=None, where=None, eager=None):
+    """
+    Get all the fits using a certain ship.
+    If no user is passed, do this for all users.
+    """
+    if isinstance(shipID, int):
+        if ownerID is not None and not isinstance(ownerID, int):
+            raise TypeError("OwnerID must be integer")
+        filter = Fit.shipID == shipID
+        if ownerID is not None:
+            filter = and_(filter, Fit.ownerID == ownerID)
+
+        filter = processWhere(filter, where)
+        eager = processEager(eager)
+        with sqlAlchemy.sd_lock:
+            count = sqlAlchemy.saveddata_session.query(Fit).options(*eager).filter(filter).count()
+    else:
+        raise TypeError("ShipID must be integer")
+    return count
+
+
+def getFitList(eager=None):
+    eager = processEager(eager)
+    with sqlAlchemy.sd_lock:
+        fits = removeInvalid(sqlAlchemy.saveddata_session.query(Fit).options(*eager).all())
+
+    return fits
+
+
+def searchFits(nameLike, where=None, eager=None):
+    if not isinstance(nameLike, basestring):
+        raise TypeError("Need string as argument")
+    # Prepare our string for request
+    nameLike = u"%{0}%".format(sqlizeString(nameLike))
+
+    # Add any extra components to the search to our where clause
+    filter = processWhere(Fit.name.like(nameLike, escape="\\"), where)
+    eager = processEager(eager)
+    with sqlAlchemy.sd_lock:
+        fits = removeInvalid(sqlAlchemy.saveddata_session.query(Fit).options(*eager).filter(filter).all())
+
+    return fits
+
+
+def getProjectedFits(fitID):
+    # TODO: Import refactor.  Need to move this out of fit, or rewrite it to get this in another way.
+    # We *CANNOT* call mapper.
+    '''
+    if isinstance(fitID, int):
+        with sd_lock:
+            filter = and_(mapper.fits_table.projectedFits_table.c.sourceID == fitID,
+                          Fit.ID == mapper.fits_table.projectedFits_table.c.victimID)
+            fits = saveddata_session.query(Fit).filter(filter).all()
+            return fits
+    else:
+        raise TypeError("Need integer as argument")
+    '''
+    raise TypeError("Needs to be migrated. Import Refactor")

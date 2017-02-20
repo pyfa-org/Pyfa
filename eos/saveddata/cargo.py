@@ -20,11 +20,12 @@
 import sys
 import logging
 
-from sqlalchemy.orm import validates, reconstructor
+from sqlalchemy.orm import validates, reconstructor, mapper
 
 from eos.db.gamedata import queries
 from eos.effectHandlerHelpers import HandledItem
 from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut
+from eos.db.saveddata.mapper import Cargo as cargo_table
 
 logger = logging.getLogger(__name__)
 
@@ -38,6 +39,8 @@ class Cargo(HandledItem, ItemAttrShortcut):
         self.__itemModifiedAttributes = ModifiedAttributeDict()
         self.__itemModifiedAttributes.original = item.attributes
         self.__itemModifiedAttributes.overrides = item.overrides
+
+        mapper(Cargo, cargo_table)
 
     @reconstructor
     def init(self):
