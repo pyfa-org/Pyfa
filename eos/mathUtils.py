@@ -17,15 +17,9 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-import decimal
+from math import floor
 
 
 def floorFloat(value):
-    """Round float down to integer"""
-    # We have to convert float to str to keep compatibility with
-    # decimal module in python 2.6
-    value = str(value)
-    # Do the conversions for proper rounding down, avoiding float
-    # representation errors
-    result = int(decimal.Decimal(value).to_integral_value(rounding=decimal.ROUND_DOWN))
+    result = int(floor(value))
     return result

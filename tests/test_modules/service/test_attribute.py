@@ -1,5 +1,6 @@
 from service.attribute import Attribute
 
+
 def test_attribute():
     """
     We don't really have much to test here, to throw a generic attribute at it and validate we get the expected results
@@ -19,13 +20,13 @@ def test_attribute():
     assert type(info.description) is unicode
     assert info.displayName == 'Optimal Range'
     assert type(info.displayName) is unicode
-    assert info.highIsGood == True
+    assert info.highIsGood is True
     assert type(info.highIsGood) is bool
     assert info.iconID == 1391
     assert type(info.iconID) is int
     assert info.name == 'maxRange'
     assert type(info.name) is unicode
-    assert info.published == True
+    assert info.published is True
     assert type(info.published) is bool
     assert info.unitID == 1
     assert type(info.unitID) is int
