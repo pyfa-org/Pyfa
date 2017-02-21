@@ -9,4 +9,4 @@ def test_floorFloat():
     assert floorFloat(1.1) == 1
     assert floorFloat(1.9) == 1
     assert floorFloat(1.5) == 1
-    assert floorFloat(-1.5) == -1
+    assert floorFloat(-1.5) == -2
