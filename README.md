@@ -51,8 +51,7 @@ pyfa is licensed under the GNU GPL v3.0, see LICENSE
 
 ## Resources
 * Development repository: [https://github.com/pyfa-org/Pyfa](https://github.com/pyfa-org/Pyfa)
-* XMPP conference: [pyfa@conference.jabber.org](pyfa@conference.jabber.org)
-* [EVE forum thread](http://forums.eveonline.com/default.aspx?g=posts&t=247609)
+* [EVE forum thread](https://forums.eveonline.com/default.aspx?g=posts&t=466425)
 * [EVE University guide using pyfa](http://wiki.eveuniversity.org/Guide_to_using_PYFA)
 * [EVE Online website](http://www.eveonline.com/)
 
