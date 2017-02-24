@@ -16,6 +16,9 @@ except ImportError:
 debug = False
 # Defines if our saveddata will be in pyfa root or not
 saveInRoot = False
+# Defines if we use a hard set codec or not
+# See https://docs.python.org/2/library/codecs.html#standard-encodings
+codec = None
 
 # Version data
 version = "1.27.1"
@@ -53,11 +56,6 @@ def isFrozen():
         return False
 
 
-def __createDirs(path):
-    if not os.path.exists(path):
-        os.makedirs(path)
-
-
 def defPaths(customSavePath):
     global debug
     global pyfaPath
@@ -72,16 +70,15 @@ def defPaths(customSavePath):
         logLevel = logging.WARN
 
     # The main pyfa directory which contains run.py
-    # Python 2.X uses ANSI by default, so we need to convert the character encoding
     pyfaPath = getattr(configforced, "pyfaPath", pyfaPath)
     if pyfaPath is None:
-        pyfaPath = getPyfaPath()
+        pyfaPath = getPyfaPath(None, True)
 
     # Where we store the saved fits etc, default is the current users home directory
     if saveInRoot is True:
         savePath = getattr(configforced, "savePath", None)
         if savePath is None:
-            savePath = getPyfaPath("saveddata")
+            savePath = getPyfaPath("saveddata", True)
     else:
         savePath = getattr(configforced, "savePath", None)
         if savePath is None:
@@ -90,7 +87,7 @@ def defPaths(customSavePath):
             else:
                 savePath = customSavePath
 
-    __createDirs(savePath)
+    savePath = getSavePath(None, True)
 
     if isFrozen():
         certName = "cacert.pem"
@@ -134,39 +131,117 @@ def defPaths(customSavePath):
     eos.config.gamedata_connectionstring = "sqlite:///" + gameDB + "?check_same_thread=False"
 
 
-def getPyfaPath(Append=None):
+def getPyfaPath(Append=None, Create=False):
     base = getattr(sys.modules['__main__'], "__file__", sys.executable) if isFrozen() else sys.argv[0]
     root = os.path.dirname(os.path.realpath(os.path.abspath(base)))
+    path = parsePath(root, Append, Create)
+
+    if path:
+        return path
+    else:
+        # TODO: add logging and handling when we fail to get a path correctly. Probably should bail and direct the user to how to force the codec.
+        return
+
+
+def getSavePath(Append=None, Create=False):
+    global savePath
+    path = parsePath(savePath, Append, Create)
+
+    if path:
+        return path
+    else:
+        # TODO: add logging and handling when we fail to get a path correctly. Probably should bail and direct the user to how to force the codec.
+        return
+
+
+def parsePath(root, Append=None, Create=False, SkipValidation=False):
+    global codec
 
     if Append:
-        path = parsePath(root, Append)
+        root_path = os.path.join(root, Append)
     else:
-        path = parsePath(root)
+        root_path = root
 
-    return path
+    codecs = [
+        # Most commonly used
+        "utf_8",  # Generic Linux/Mac
+        "cp1252",  # Standard Windows
+        "cp1251",  # Russian
+        # Windows
+        "cp037", "cp424", "cp437", "cp500", "cp720", "cp737", "cp775", "cp850", "cp852", "cp855", "cp856", "cp857", "cp858", "cp860", "cp861", "cp862", "cp863",
+        "cp864", "cp865", "cp866", "cp869", "cp874", "cp875", "cp932", "cp949", "cp950", "cp1006", "cp1026", "cp1140", "cp1250", "cp1253",
+        "cp1254", "cp1255", "cp1256", "cp1257", "cp1258",
+        # Mac
+        "mac_cyrillic", "mac_greek", "mac_iceland", "mac_latin2", "mac_roman", "mac_turkish",
+        # UTF (universal)
+        "utf_16", "utf_32", "utf_32_be", "utf_32_le", "utf_16_be", "utf_16_le", "utf_7", "utf_8_sig",
+        # Other (AKA the "weird ones")
+        "scii", "big5", "big5hkscs", "euc_jp", "euc_jis_2004", "euc_jisx0213", "euc_kr", "gb2312", "gbk", "gb18030", "hz", "iso2022_jp", "iso2022_jp_1",
+        "iso2022_jp_2", "iso2022_jp_2004", "iso2022_jp_3", "iso2022_jp_ext", "iso2022_kr", "latin_1", "iso8859_2", "iso8859_3", "iso8859_4", "iso8859_5",
+        "iso8859_6", "iso8859_7", "iso8859_8", "iso8859_9", "iso8859_10", "iso8859_11", "iso8859_13", "iso8859_14", "iso8859_15", "iso8859_16", "johab", "koi8_r",
+        "koi8_u", "ptcp154", "shift_jis", "shift_jis_2004", "shift_jisx0213"
+    ]
 
+    if type(root_path) == str:  # leave unicode ones alone
+        path_exists = False
 
-def getSavePath(Append=None):
-    root = savePath
+        if codec:
+            codec_return = parsePathApplyCodec(root_path, codec)
 
-    if Append:
-        path = parsePath(root, Append)
+            if codec_return and Create:
+                path_exists = parsePathCreateDir(codec_return)
+
+            if path_exists and (os.path.exists(path_exists) or os.path.isfile(path_exists) or SkipValidation):
+                return codec_return
+
+        for test_codec in codecs:
+            codec_return = parsePathApplyCodec(root_path, test_codec)
+
+            if not Create:
+                return codec_return
+
+            if codec_return and Create:
+                path_exists = parsePathCreateDir(codec_return)
+
+            if path_exists and (os.path.exists(path_exists) or os.path.isfile(path_exists) or SkipValidation):
+                return codec_return
+            else:
+                continue
+
+        return None
     else:
-        path = parsePath(root)
+        if root_path and Create:
+            path_exists = parsePathCreateDir(root_path)
+        else:
+            path_exists = root_path
 
-    return path
+        if path_exists and (os.path.exists(path_exists) or os.path.isfile(path_exists) or SkipValidation):
+            return path_exists
+        else:
+            return None
 
 
-def parsePath(root, Append=None):
-    if Append:
-        path = os.path.join(root, Append)
-    else:
-        path = root
+def parsePathApplyCodec(root_path, apply_codec):
+    try:
+        codec_path = root_path.decode(apply_codec)
+    except (UnicodeDecodeError, UnicodeEncodeError, LookupError, UnicodeError, UnicodeTranslateError):
+        # TODO: Add logging when we have logbook in place
+        codec_path = None
 
-    if type(path) == str:  # leave unicode ones alone
-        try:
-            path = path.decode('utf8')
-        except UnicodeDecodeError:
-            path = path.decode('windows-1252')
+    return codec_path
 
-    return path
+
+def parsePathCreateDir(create_path):
+    # noinspection PyBroadException
+    try:
+        if not os.path.exists(create_path):
+            os.mkdir(create_path)
+        path_exists = create_path
+    except WindowsError:
+        path_exists = False
+    except Exception:  # as e
+        # We got some other error.
+        # TODO: Add logging when we have logbook in place
+        path_exists = False
+
+    return path_exists

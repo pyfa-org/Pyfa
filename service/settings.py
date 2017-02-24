@@ -25,7 +25,7 @@ import config
 
 
 class SettingsProvider(object):
-    BASE_PATH = config.getSavePath("settings")
+    BASE_PATH = config.getSavePath("settings", True)
     settings = {}
     _instance = None
 
@@ -35,10 +35,6 @@ class SettingsProvider(object):
             cls._instance = SettingsProvider()
 
         return cls._instance
-
-    def __init__(self):
-        if not os.path.exists(self.BASE_PATH):
-            os.mkdir(self.BASE_PATH)
 
     def getSettings(self, area, defaults=None):
 
