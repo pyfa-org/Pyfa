@@ -43,7 +43,7 @@ class FileCache(APICache):
             os.mkdir(self.path, 0o700)
 
     def _getpath(self, key):
-        return config.parsePath(self.path, str(hash(key)) + '.cache')
+        return os.path.join(self.path, str(hash(key)) + '.cache')
 
     def put(self, key, value):
         with open(self._getpath(key), 'wb') as f:
