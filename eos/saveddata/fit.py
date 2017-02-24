@@ -399,7 +399,7 @@ class Fit(object):
         self.ecmProjectedStr = 1
         self.commandBonuses = {}
 
-        for remoterep_type in ("Armor", "Shield", "Hull", "Capacitor"):
+        for remoterep_type in self.__remoteReps:
             self.__remoteReps[remoterep_type] = 0
 
         del self.__calculatedTargets[:]
