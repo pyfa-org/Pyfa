@@ -5,7 +5,7 @@ import platform
 from tests.test_locale.locale_functions import GetPath
 
 
-def test_codec():
+def test_codec_hebrew():
     use_codec = {
         "Windows": "cp1252",
         "Linux"  : "utf8",
