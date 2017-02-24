@@ -129,10 +129,10 @@ class Fit(object):
         self.__capRecharge = None
         self.__calculatedTargets = []
         self.__remoteReps = {
-            "Armor": 0,
-            "Shield": 0,
-            "Hull": 0,
-            "Capacitor": 0,
+            "Armor": None,
+            "Shield": None,
+            "Hull": None,
+            "Capacitor": None,
         }
         self.factorReload = False
         self.boostsFits = set()
@@ -308,6 +308,34 @@ class Fit(object):
         return self.droneYield + self.minerYield
 
     @property
+    def armorRR(self):
+        if self.__remoteReps["Armor"] is None:
+            self.calculateRemoteReps()
+
+        return self.__remoteReps["Armor"]
+
+    @property
+    def shieldRR(self):
+        if self.__remoteReps["Shield"] is None:
+            self.calculateRemoteReps()
+
+        return self.__remoteReps["Shield"]
+
+    @property
+    def hullRR(self):
+        if self.__remoteReps["Hull"] is None:
+            self.calculateRemoteReps()
+
+        return self.__remoteReps["Hull"]
+
+    @property
+    def capTransfer(self):
+        if self.__remoteReps["Capacitor"] is None:
+            self.calculateRemoteReps()
+
+        return self.__remoteReps["Capacitor"]
+
+    @property
     def maxTargets(self):
         return min(self.extraAttributes["maxTargetsLockedFromSkills"],
                    self.ship.getModifiedItemAttr("maxLockedTargets"))
@@ -400,7 +428,7 @@ class Fit(object):
         self.commandBonuses = {}
 
         for remoterep_type in self.__remoteReps:
-            self.__remoteReps[remoterep_type] = 0
+            self.__remoteReps[remoterep_type] = None
 
         del self.__calculatedTargets[:]
         del self.__extraDrains[:]
@@ -1157,8 +1185,7 @@ class Fit(object):
             self.__capStable = True
             self.__capState = 100
 
-    @property
-    def remoteReps(self):
+    def calculateRemoteReps(self):
         def amount_per_second(module_amount, module_duration, module_reload, module_chargerate, module_capacity, module_volume):
             numcycles = math.floor(module_capacity / (module_volume * module_chargerate))
 
@@ -1167,15 +1194,19 @@ class Fit(object):
 
             return module_amount / module_duration
 
+        for remoterep_type in self.__remoteReps:
+            # Set all to 0
+            self.__remoteReps[remoterep_type] = 0
+
         for module in self.modules:
             # Skip empty modules
             if module.isEmpty:
                 continue
 
-            module_group = getattr(module.item.group, "name")
+            module_group = module.item.group.name
 
             # Skip modules that aren't online
-            if getattr(module, "state", 0) < 1:
+            if module.state < State.ACTIVE:
                 continue
 
             if module_group in ("Remote Armor Repairer", "Ancillary Remote Armor Repairer"):
@@ -1229,8 +1260,6 @@ class Fit(object):
                 hp_per_s = hp / duration
 
                 self.__remoteReps["Capacitor"] += hp_per_s
-
-        return self.__remoteReps
 
     @property
     def hp(self):
