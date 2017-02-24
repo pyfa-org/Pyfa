@@ -101,8 +101,8 @@ def defPaths(customSavePath):
     __createDirs(savePath)
 
     if isFrozen():
-        os.environ["REQUESTS_CA_BUNDLE"] = os.path.join(pyfaPath, "cacert.pem")
-        os.environ["SSL_CERT_FILE"] = os.path.join(pyfaPath, "cacert.pem")
+        os.environ["REQUESTS_CA_BUNDLE"] = os.path.join(pyfaPath, "cacert.pem").encode('utf8')
+        os.environ["SSL_CERT_FILE"] = os.path.join(pyfaPath, "cacert.pem").encode('utf8')
 
     _format = '%(asctime)s %(name)-24s %(levelname)-8s %(message)s'
     logging.basicConfig(format=_format, level=logLevel)
@@ -141,6 +141,7 @@ def defPaths(customSavePath):
     eos.config.saveddata_connectionstring = "sqlite:///" + saveDB + "?check_same_thread=False"
     eos.config.gamedata_connectionstring = "sqlite:///" + gameDB + "?check_same_thread=False"
 
+# Keeping disabled code here for now until we can determine with decent certainty that this isn't needed
 '''
 def getPyfaPath(Append=None):
     base = getattr(sys.modules['__main__'], "__file__", sys.executable) if isFrozen() else sys.argv[0]
