@@ -1,5 +1,8 @@
 # -*- mode: python -*-
 
+# Note: This script is provided AS-IS for those that may be interested.
+# pyfa does not currently support pyInstaller (or any other build process) 100% at the moment
+
 # Command line to build:
 # (Run from directory where pyfa.py and pyfa.spec lives.)
 # c:\Python27\scripts\pyinstaller.exe --clean --noconfirm --windowed --upx-dir=.\scripts\upx.exe pyfa.spec
