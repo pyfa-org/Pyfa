@@ -4,7 +4,9 @@ import time
 import wx
 from service.settings import HTMLExportSettings
 from service.fit import Fit
+from service.port import Port
 from service.market import Market
+from eos.db import getFit
 
 
 class exportHtml(object):
@@ -173,6 +175,7 @@ class exportHtmlThread(threading.Thread):
 
         count = 0
 
+        #todo: logging for export exceptions
         for group in categoryList:
             # init market group string to give ships something to attach to
             HTMLgroup = ''
@@ -184,6 +187,7 @@ class exportHtmlThread(threading.Thread):
             groupFits = 0
             for ship in ships:
                 fits = sFit.getFitsWithShip(ship.ID)
+
                 if len(fits) > 0:
                     groupFits += len(fits)
 
@@ -192,11 +196,11 @@ class exportHtmlThread(threading.Thread):
                             return
                         fit = fits[0]
                         try:
-                            dnaFit = sFit.exportDna(fit[0])
+                            dnaFit = Port.exportDna(getFit(fit[0]))
                             HTMLgroup += '        <li><a data-dna="' + dnaFit + '" target="_blank">' + ship.name + ": " + \
                                          fit[1] + '</a></li>\n'
-                        except:
-                            pass
+                        except Exception, e:
+                            continue
                         finally:
                             if self.callback:
                                 wx.CallAfter(self.callback, count)
@@ -214,10 +218,11 @@ class exportHtmlThread(threading.Thread):
                             if self.stopRunning:
                                 return
                             try:
-                                dnaFit = sFit.exportDna(fit[0])
+                                dnaFit = Port.exportDna(getFit(fit[0]))
+                                print dnaFit
                                 HTMLship += '          <li><a data-dna="' + dnaFit + '" target="_blank">' + fit[
                                     1] + '</a></li>\n'
-                            except:
+                            except Exception, e:
                                 continue
                             finally:
                                 if self.callback:
@@ -266,10 +271,10 @@ class exportHtmlThread(threading.Thread):
                     if self.stopRunning:
                         return
                     try:
-                        dnaFit = sFit.exportDna(fit[0])
+                        dnaFit = Port.exportDna(getFit(fit[0]))
                         HTML += '<a class="outOfGameBrowserLink" target="_blank" href="' + dnaUrl + dnaFit + '">' + ship.name + ': ' + \
                                 fit[1] + '</a><br> \n'
-                    except:
+                    except Exception,  e:
                         continue
                     finally:
                         if self.callback:
