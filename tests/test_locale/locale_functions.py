@@ -74,8 +74,28 @@ system_names = {
 }
 
 
-def GetPath(root, file, codec):
+def GetPath(root, file=None, codec=None):
     # Replace this with the function we actually use for this
-    base_path = os.path.realpath(os.path.abspath(root))
-    path = os.path.join(base_path, file).decode(codec)
+    path = os.path.realpath(os.path.abspath(root))
+
+    if file:
+        path = os.path.join(path, file)
+
+    if codec:
+        path = path.decode(codec)
+
+    return path
+
+def GetUnicodePath(root, file=None, codec=None):
+    # Replace this with the function we actually use for this
+    path = os.path.realpath(os.path.abspath(root))
+
+    if file:
+        path = os.path.join(path, file)
+
+    if codec:
+        path = unicode(path, codec)
+    else:
+        path = unicode(path)
+
     return path
