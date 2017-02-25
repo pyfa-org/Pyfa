@@ -1365,8 +1365,6 @@ class ItemProperties(wx.Panel):
         self.paramList.SetColumnWidth(0, 110)
         self.paramList.SetColumnWidth(1, 1500)
         self.paramList.setResizeColumn(0)
-        #self.imageList = wx.ImageList(16, 16)
-        #self.paramList.SetImageList(self.imageList, wx.IMAGE_LIST_SMALL)
 
         if self.stuff:
             names = dir(self.stuff)
@@ -1374,7 +1372,6 @@ class ItemProperties(wx.Panel):
             names = dir(self.item)
 
         names = [a for a in names if not (a.startswith('__') and a.endswith('__'))]
-
 
         idNameMap = {}
         idCount = 0
@@ -1389,6 +1386,7 @@ class ItemProperties(wx.Panel):
             except Exception as e:
                 # TODO: Add logging to this.
                 # We couldn't get a property for some reason. Skip it for now.
+                print(e)
                 continue
 
             index = self.paramList.InsertStringItem(sys.maxint, attrName)
