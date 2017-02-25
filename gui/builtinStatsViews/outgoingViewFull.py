@@ -83,10 +83,10 @@ class OutgoingViewFull(StatsView):
         # If we did anything intresting, we'd update our labels to reflect the new fit's stats here
 
         stats = [
-            ("labelRemoteArmor", lambda: fit.remoteReps["Armor"], 3, 0, 0, u"%s HP/s", None),
-            ("labelRemoteShield", lambda: fit.remoteReps["Shield"], 3, 0, 0, u"%s HP/s", None),
-            ("labelRemoteHull", lambda: fit.remoteReps["Hull"], 3, 0, 0, u"%s HP/s", None),
-            ("labelRemoteCapacitor", lambda: fit.remoteReps["Capacitor"], 3, 0, 0, u"%s GJ/s", None),
+            ("labelRemoteArmor", lambda: fit.armorRR, 3, 0, 0, u"%s HP/s", None),
+            ("labelRemoteShield", lambda: fit.shieldRR, 3, 0, 0, u"%s HP/s", None),
+            ("labelRemoteHull", lambda: fit.hullRR, 3, 0, 0, u"%s HP/s", None),
+            ("labelRemoteCapacitor", lambda: fit.capTransfer, 3, 0, 0, u"%s GJ/s", None),
         ]
 
         counter = 0

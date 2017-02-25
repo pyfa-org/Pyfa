@@ -1169,14 +1169,11 @@ class Fit(object):
             return self.__remoteReps
 
         for module in self.modules:
-            # Skip empty modules
-            if module.isEmpty:
+            # Skip empty and non-Active modules
+            if module.isEmpty or module.state < State.ACTIVE:
                 continue
 
-            # Skip modules that aren't online
-            if getattr(module, "state", 0) < 1:
-                continue
-
+            # Covert cycleTime to seconds
             duration = module.cycleTime / 1000
 
             # Skip modules with no duration.
