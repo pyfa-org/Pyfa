@@ -114,31 +114,45 @@ if __name__ == "__main__":
         options.title = "pyfa %s%s - Python Fitting Assistant" % (config.version, "" if config.tag.lower() != 'git' else " (git)")
 
     config.debug = options.debug
-    # convert to unicode if it is set
-    if options.savepath is not None:
-        options.savepath = unicode(options.savepath)
-    config.defPaths(options.savepath)
 
-    # Basic logging initialization
     import logging
-    logging.basicConfig()
-
     # Import everything
     # noinspection PyPackageRequirements
     import wx
     import os
     import os.path
 
-    import eos.db
-    # noinspection PyUnresolvedReferences
-    import service.prefetch  # noqa: F401
+    try:
+        # convert to unicode if it is set
+        if options.savepath is not None:
+            options.savepath = unicode(options.savepath)
+        config.defPaths(options.savepath)
+
+        # Basic logging initialization
+        logging.basicConfig()
+
+        import eos.db
+        # noinspection PyUnresolvedReferences
+        import service.prefetch  # noqa: F401
+
+        # Make sure the saveddata db exists
+        if not os.path.exists(config.savePath):
+            os.mkdir(config.savePath)
+
+        eos.db.saveddata_meta.create_all()
+
+    except Exception, e:
+        import traceback
+        from gui.errorDialog import ErrorFrame
+
+        tb = traceback.format_exc()
+
+        pyfa = wx.App(False)
+        ErrorFrame(e, tb)
+        pyfa.MainLoop()
+        sys.exit()
+
     from gui.mainFrame import MainFrame
-
-    # Make sure the saveddata db exists
-    if not os.path.exists(config.savePath):
-        os.mkdir(config.savePath)
-
-    eos.db.saveddata_meta.create_all()
 
     pyfa = wx.App(False)
     MainFrame(options.title)
