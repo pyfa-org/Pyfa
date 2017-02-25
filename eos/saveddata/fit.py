@@ -1159,8 +1159,8 @@ class Fit(object):
     @property
     def remoteReps(self):
         force_recalc = False
-        for remoterep_type in self.__remoteReps:
-            if self.__remoteReps[remoterep_type] is None:
+        for remote_type in self.__remoteReps:
+            if self.__remoteReps[remote_type] is None:
                 force_recalc = True
                 break
 

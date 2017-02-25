@@ -25,7 +25,6 @@ from math import floor
 import eos.db
 from eos.effectHandlerHelpers import HandledItem, HandledCharge
 from eos.enum import Enum
-from eos.mathUtils import floorFloat
 from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut, ChargeAttrShortcut
 from eos.saveddata.citadel import Citadel
 
@@ -233,7 +232,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                 chance = self.getModifiedChargeAttr("crystalVolatilityChance")
                 damage = self.getModifiedChargeAttr("crystalVolatilityDamage")
                 crystals = self.numCharges
-                numShots = floorFloat(float(crystals * hp) / (damage * chance))
+                numShots = floor((crystals * hp) / (damage * chance))
             else:
                 # Set 0 (infinite) for permanent crystals like t1 laser crystals
                 numShots = 0
