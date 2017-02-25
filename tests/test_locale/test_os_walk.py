@@ -1,9 +1,8 @@
 import os
-import platform
 from tests.test_locale.locale_functions import GetPath
 
+
 def test_os_walk():
-    os_name = platform.system()
     current_directory = os.path.dirname(os.path.abspath(unicode(__file__)))
     subfolders = os.listdir(current_directory)
     subfolders = [e for e in subfolders if not (e.endswith(".py") or e.endswith(".pyc") or e.endswith(".md"))]
@@ -13,9 +12,11 @@ def test_os_walk():
         subdir = GetPath(current_directory, subfolder)
         testfile = GetPath(subdir, "testcodec")
 
+        # noinspection PyBroadException
         try:
             with open(testfile, 'r') as f:
                 read_data = f.read()
+            # noinspection PyStatementEffect
             f.closed
         except:
             assert False, "Failed to read file."
