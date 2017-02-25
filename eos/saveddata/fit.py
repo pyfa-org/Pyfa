@@ -515,7 +515,7 @@ class Fit(object):
                         self.modules.filteredItemBoost(lambda mod: mod.item.group.name == "Sensor Dampener",
                                                       attr, value)
 
-                    self.modules.filteredItemBoost(lambda mod: mod.item.gorup.name == "Target Painter",
+                    self.modules.filteredItemBoost(lambda mod: mod.item.group.name == "Target Painter",
                                                   "signatureRadiusBonus", value, stackingPenalties=True)
 
                 if warfareBuffID == 18:  # Information Burst: Electronic Hardening: Scan Strength

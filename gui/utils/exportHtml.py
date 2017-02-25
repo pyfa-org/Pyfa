@@ -4,10 +4,12 @@ import time
 import wx
 from service.settings import HTMLExportSettings
 from service.fit import Fit
+from service.port import Port
 from service.market import Market
 from logbook import Logger
 
 pyfalog = Logger(__name__)
+from eos.db import getFit
 
 
 class exportHtml(object):
@@ -187,6 +189,7 @@ class exportHtmlThread(threading.Thread):
             groupFits = 0
             for ship in ships:
                 fits = sFit.getFitsWithShip(ship.ID)
+
                 if len(fits) > 0:
                     groupFits += len(fits)
 
@@ -195,7 +198,7 @@ class exportHtmlThread(threading.Thread):
                             return
                         fit = fits[0]
                         try:
-                            dnaFit = sFit.exportDna(fit[0])
+                            dnaFit = Port.exportDna(getFit(fit[0]))
                             HTMLgroup += '        <li><a data-dna="' + dnaFit + '" target="_blank">' + ship.name + ": " + \
                                          fit[1] + '</a></li>\n'
                         except:
@@ -218,7 +221,8 @@ class exportHtmlThread(threading.Thread):
                             if self.stopRunning:
                                 return
                             try:
-                                dnaFit = sFit.exportDna(fit[0])
+                                dnaFit = Port.exportDna(getFit(fit[0]))
+                                print dnaFit
                                 HTMLship += '          <li><a data-dna="' + dnaFit + '" target="_blank">' + fit[
                                     1] + '</a></li>\n'
                             except:
@@ -271,7 +275,7 @@ class exportHtmlThread(threading.Thread):
                     if self.stopRunning:
                         return
                     try:
-                        dnaFit = sFit.exportDna(fit[0])
+                        dnaFit = Port.exportDna(getFit(fit[0]))
                         HTML += '<a class="outOfGameBrowserLink" target="_blank" href="' + dnaUrl + dnaFit + '">' + ship.name + ': ' + \
                                 fit[1] + '</a><br> \n'
                     except:

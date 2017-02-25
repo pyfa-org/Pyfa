@@ -47,9 +47,6 @@ class Effect(EqBase):
     # Filter to change names of effects to valid python method names
     nameFilter = re.compile("[^A-Za-z0-9]")
 
-    def __init__(self):
-        pass
-
     @reconstructor
     def init(self):
         """
@@ -216,9 +213,6 @@ class Item(EqBase):
                   161)  # Volume
 
     MOVE_ATTR_INFO = None
-
-    def __init__(self):
-        pass
 
     @classmethod
     def getMoveAttrInfo(cls):
@@ -460,8 +454,6 @@ class Category(EqBase):
 
 
 class AlphaClone(EqBase):
-    def __init__(self):
-        pass
 
     @reconstructor
     def init(self):
@@ -490,8 +482,6 @@ class Icon(EqBase):
 
 
 class MarketGroup(EqBase):
-    def __init__(self):
-        pass
 
     def __repr__(self):
         return u"MarketGroup(ID={}, name={}, parent={}) at {}".format(
@@ -504,9 +494,6 @@ class MetaGroup(EqBase):
 
 
 class MetaType(EqBase):
-    def __init__(self):
-        pass
-
     pass
 
 

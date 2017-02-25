@@ -356,7 +356,9 @@ class NavigationPanel(SFItem.SFBrowserItem):
         self.btnSwitch = self.toolbar.AddButton(self.switchBmpD, "Hide empty ship groups",
                                                 clickCallback=self.ToggleEmptyGroupsView, hoverBitmap=self.switchBmpH,
                                                 show=False)
-        self.toolbar.AddButton(self.searchBmp, "Search fittings", clickCallback=self.ToggleSearchBox,
+
+        modifier = "CTRL" if 'wxMac' not in wx.PlatformInfo else "CMD"
+        self.toolbar.AddButton(self.searchBmp, "Search fittings ({}+F)".format(modifier), clickCallback=self.ToggleSearchBox,
                                hoverBitmap=self.searchBmpH)
 
         self.padding = 4
@@ -693,7 +695,8 @@ class ShipBrowser(wx.Panel):
             # set map & cache of fittings per category
             for cat in self.categoryList:
                 itemIDs = [x.ID for x in cat.items]
-                self.categoryFitCache[cat.ID] = sFit.countFitsWithShip(itemIDs) > 1
+                num = sFit.countFitsWithShip(itemIDs)
+                self.categoryFitCache[cat.ID] = num > 0
 
         for ship in self.categoryList:
             if self.filterShipsWithNoFits and not self.categoryFitCache[ship.ID]:
@@ -939,7 +942,7 @@ class ShipBrowser(wx.Panel):
 
         if fits:
             for fit in fits:
-                shipTrait = fit.ship.traits.traitText if (fit.ship.traits is not None) else ""
+                shipTrait = fit.ship.item.traits.traitText if (fit.ship.item.traits is not None) else ""
                 # empty string if no traits
 
                 self.lpane.AddWidget(FitItem(

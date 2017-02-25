@@ -19,7 +19,6 @@
 
 import os
 from logbook import Logger
-import imp
 
 # noinspection PyPackageRequirements
 import wx
@@ -30,10 +29,37 @@ import gui.mainFrame
 import gui.globalEvents as GE
 from gui.graph import Graph
 from gui.bitmapLoader import BitmapLoader
-from config import parsePath
 
-# Don't actually import the thing, since it takes for fucking ever
+pyfalog = Logger(__name__)
+
 try:
+    import matplotlib as mpl
+
+    mpl_version = int(mpl.__version__[0])
+    if mpl_version >= 2:
+        mpl.use('wxagg')
+        mplImported = True
+    else:
+        mplImported = False
+    from matplotlib.patches import Patch
+
+    from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as Canvas
+    from matplotlib.figure import Figure
+
+    graphFrame_enabled = True
+    mplImported = True
+except ImportError:
+    Patch = mpl = Canvas = Figure = None
+    graphFrame_enabled = False
+    mplImported = False
+
+class GraphFrame(wx.Frame):
+    def __init__(self, parent, style=wx.DEFAULT_FRAME_STYLE | wx.NO_FULL_REPAINT_ON_RESIZE | wx.FRAME_FLOAT_ON_PARENT):
+
+        global graphFrame_enabled
+        global mplImported
+
+        self.mpl_version = int(mpl.__version__[0])
     imp.find_module('matplotlib')
     graphFrame_enabled = True
     mplImported = True
@@ -81,7 +107,7 @@ class GraphFrame(wx.Frame):
         except:
             cache_dir = os.path.expanduser(os.path.join("~", ".matplotlib"))
 
-        cache_file = parsePath(cache_dir, 'fontList.cache')
+        cache_file = path = os.path.join(cache_dir, 'fontList.cache')
 
         if os.access(cache_dir, os.W_OK | os.X_OK) and os.path.isfile(cache_file):
             # remove matplotlib font cache, see #234
@@ -283,7 +309,7 @@ class GraphFrame(wx.Frame):
                     selected_color = legend_colors[i]
                 except:
                     selected_color = None
-                legend2.append(self.Patch(color=selected_color, label=i_name), )
+                legend2.append(Patch(color=selected_color, label=i_name), )
 
             if len(legend2) > 0:
                 leg = self.subplot.legend(handles=legend2)

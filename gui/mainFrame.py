@@ -85,14 +85,14 @@ if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION 
     from service.crest import CrestModes
     from gui.crestFittings import CrestFittings, ExportToEve, CrestMgmt
 
-    try:
-        from gui.propertyEditor import AttributeEditor
+disableOverrideEditor = False
 
-        disableOverrideEditor = False
-    except ImportError as e:
-        AttributeEditor = None
-        print("Error loading Attribute Editor: %s.\nAccess to Attribute Editor is disabled." % e.message)
-        disableOverrideEditor = True
+try:
+    from gui.propertyEditor import AttributeEditor
+except ImportError as e:
+    AttributeEditor = None
+    print("Error loading Attribute Editor: %s.\nAccess to Attribute Editor is disabled." % e.message)
+    disableOverrideEditor = True
 
 pyfalog = Logger(__name__)
 

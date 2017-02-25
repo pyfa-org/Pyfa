@@ -155,81 +155,110 @@ if __name__ == "__main__":
         options.title = "pyfa %s%s - Python Fitting Assistant" % (config.version, "" if config.tag.lower() != 'git' else " (git)")
 
     config.debug = options.debug
-    # convert to unicode if it is set
-    if options.savepath is not None:
-        options.savepath = unicode(options.savepath)
-    config.defPaths(options.savepath)
 
-    # Basic logging initialization
-
-    # Logging levels:
-    '''
-    logbook.CRITICAL
-    logbook.ERROR
-    logbook.WARNING
-    logbook.INFO
-    logbook.DEBUG
-    logbook.NOTSET
-    '''
-
-    if options.debug:
-        savePath_filename = "Pyfa_debug.log"
-    else:
-        savePath_filename = "Pyfa.log"
-
-    savePath_Destination = config.getSavePath(savePath_filename)
+    # Import everything
+    # noinspection PyPackageRequirements
+    import wx
+    import os
+    import os.path
 
     try:
+        # convert to unicode if it is set
+        if options.savepath is not None:
+            options.savepath = unicode(options.savepath)
+        config.defPaths(options.savepath)
+
+        # Basic logging initialization
+
+        # Logging levels:
+        '''
+        logbook.CRITICAL
+        logbook.ERROR
+        logbook.WARNING
+        logbook.INFO
+        logbook.DEBUG
+        logbook.NOTSET
+        '''
+
         if options.debug:
-            logging_mode = "Debug"
-            logging_setup = NestedSetup([
-                # make sure we never bubble up to the stderr handler
-                # if we run out of setup handling
-                NullHandler(),
-                StreamHandler(
+            savePath_filename = "Pyfa_debug.log"
+        else:
+            savePath_filename = "Pyfa.log"
+
+        savePath_Destination = config.getSavePath(savePath_filename)
+
+        try:
+            if options.debug:
+                logging_mode = "Debug"
+                logging_setup = NestedSetup([
+                    # make sure we never bubble up to the stderr handler
+                    # if we run out of setup handling
+                    NullHandler(),
+                    StreamHandler(
                         sys.stdout,
                         bubble=False,
                         level=options.logginglevel
-                ),
-                TimedRotatingFileHandler(
+                    ),
+                    TimedRotatingFileHandler(
                         savePath_Destination,
                         level=0,
                         backup_count=3,
                         bubble=True,
                         date_format='%Y-%m-%d',
-                ),
-            ])
-        else:
-            logging_mode = "User"
-            logging_setup = NestedSetup([
-                # make sure we never bubble up to the stderr handler
-                # if we run out of setup handling
-                NullHandler(),
-                FingersCrossedHandler(
+                    ),
+                ])
+            else:
+                logging_mode = "User"
+                logging_setup = NestedSetup([
+                    # make sure we never bubble up to the stderr handler
+                    # if we run out of setup handling
+                    NullHandler(),
+                    FingersCrossedHandler(
                         TimedRotatingFileHandler(
-                                savePath_Destination,
-                                level=0,
-                                backup_count=3,
-                                bubble=False,
-                                date_format='%Y-%m-%d',
+                            savePath_Destination,
+                            level=0,
+                            backup_count=3,
+                            bubble=False,
+                            date_format='%Y-%m-%d',
                         ),
                         action_level=ERROR,
                         buffer_size=1000,
                         # pull_information=True,
                         # reset=False,
+                    )
+                ])
+        except:
+            logging_mode = "Console Only"
+            logging_setup = NestedSetup([
+                # make sure we never bubble up to the stderr handler
+                # if we run out of setup handling
+                NullHandler(),
+                StreamHandler(
+                    sys.stdout,
+                    bubble=False
                 )
             ])
-    except:
-        logging_mode = "Console Only"
-        logging_setup = NestedSetup([
-            # make sure we never bubble up to the stderr handler
-            # if we run out of setup handling
-            NullHandler(),
-            StreamHandler(
-                sys.stdout,
-                bubble=False
-            )
-        ])
+
+        import eos.db
+        # noinspection PyUnresolvedReferences
+        import service.prefetch  # noqa: F401
+
+        # Make sure the saveddata db exists
+        if not os.path.exists(config.savePath):
+            os.mkdir(config.savePath)
+
+        eos.db.saveddata_meta.create_all()
+
+    except Exception, e:
+        import traceback
+        from gui.errorDialog import ErrorFrame
+
+        tb = traceback.format_exc()
+
+        pyfa = wx.App(False)
+        ErrorFrame(e, tb)
+        pyfa.MainLoop()
+        sys.exit()
 
     with logging_setup.threadbound():
         # Don't redirect if frozen
@@ -253,29 +282,9 @@ if __name__ == "__main__":
         if hasattr(sys, 'frozen') and options.debug:
             pyfalog.critical("Running in frozen mode with debug turned on. Forcing all output to be written to log.")
 
-        # Import everything
-        pyfalog.debug("Import wx")
-        # noinspection PyPackageRequirements
-        import wx
 
-        pyfalog.debug("Import eos.db")
-        import eos.db
-
-        pyfalog.debug("Run prefetch")
-        # noinspection PyUnresolvedReferences
-        import service.prefetch  # noqa: F401
-
-        if not os.path.exists(config.savePath):
-            pyfalog.debug("Saveddata path does not exist, creating new path")
-            os.mkdir(config.savePath)
-        else:
-            pyfalog.debug("Using existing saveddata path: {0}", config.savePath)
-
-        eos.db.saveddata_meta.create_all()
+        from gui.mainFrame import MainFrame
 
         pyfa = wx.App(False)
-        pyfalog.debug("Show GUI")
-        from gui.mainFrame import MainFrame
         MainFrame(options.title)
-        pyfalog.debug("Run MainLoop()")
         pyfa.MainLoop()

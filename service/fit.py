@@ -728,7 +728,13 @@ class Fit(object):
             fit.drones.remove(d1)
 
         d2.amount += d1.amount
-        d2.amountActive += d1.amountActive if d1.amountActive > 0 else -d2.amountActive
+        d2.amountActive += d1.amountActive
+
+        # If we have less than the total number of drones active, make them all active. Fixes #728
+        # This could be removed if we ever add an enhancement to make drone stacks partially active.
+        if d2.amount > d2.amountActive:
+            d2.amountActive = d2.amount
+
         eos.db.commit()
         self.recalc(fit)
         return True
@@ -943,21 +949,27 @@ class Fit(object):
             self.recalc(fit)
 
     def toggleModulesState(self, fitID, base, modules, click):
+        changed = False
         proposedState = self.__getProposedState(base, click)
+
         if proposedState != base.state:
+            changed = True
             base.state = proposedState
             for mod in modules:
                 if mod != base:
-                    mod.state = self.__getProposedState(mod, click,
-                                                        proposedState)
+                    p = self.__getProposedState(mod, click, proposedState)
+                    mod.state = p
+                    if p != mod.state:
+                        changed = True
 
-        eos.db.commit()
-        fit = eos.db.getFit(fitID)
+        if changed:
+            eos.db.commit()
+            fit = eos.db.getFit(fitID)
 
-        # As some items may affect state-limiting attributes of the ship, calculate new attributes first
-        self.recalc(fit)
-        # Then, check states of all modules and change where needed. This will recalc if needed
-        self.checkStates(fit, base)
+            # As some items may affect state-limiting attributes of the ship, calculate new attributes first
+            self.recalc(fit)
+            # Then, check states of all modules and change where needed. This will recalc if needed
+            self.checkStates(fit, base)
 
     # Old state : New State
     localMap = {

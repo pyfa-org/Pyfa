@@ -1,7 +1,7 @@
 # armorRepairAmountBonusSubcap
 #
 # Used by:
-# Implants named like: Grade Asklepian (15 of 16)
+# Implants named like: grade Asklepian (15 of 18)
 type = "passive"
 
 

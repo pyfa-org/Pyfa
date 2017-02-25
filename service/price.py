@@ -25,6 +25,7 @@ from eos import db
 from service.network import Network, TimeoutError
 from logbook import Logger
 pyfalog = Logger(__name__)
+from service.fit import Fit
 
 VALIDITY = 24 * 60 * 60  # Price validity period, 24 hours
 REREQUEST = 4 * 60 * 60  # Re-request delay for failed fetches, 4 hours
@@ -39,8 +40,6 @@ class Price(object):
         "Rens": 30002510,
         "Hek": 30002053
     }
-
-    currentSystemId = ""
 
     @classmethod
     def invalidPrices(cls, prices):
@@ -80,9 +79,10 @@ class Price(object):
         # This will store POST data for eve-central
         data = []
 
+        sFit = Fit.getInstance()
         # Base request URL
         baseurl = "https://eve-central.com/api/marketstat"
-        data.append(("usesystem", Price.currentSystemId))  # Use Jita for market
+        data.append(("usesystem", cls.systemsList[sFit.serviceFittingOptions["priceSystem"]]))  # Use Jita for market
 
         for typeID in toRequest:  # Add all typeID arguments
             data.append(("typeid", typeID))
@@ -143,15 +143,12 @@ class Price(object):
                 typeIDs.append(mod.itemID)
 
         for drone in fit.drones:
-            for _ in xrange(drone.amount):
-                typeIDs.append(drone.itemID)
+            typeIDs.append(drone.itemID)
 
         for fighter in fit.fighters:
-            for _ in xrange(fighter.amountActive):
-                typeIDs.append(fighter.itemID)
+            typeIDs.append(fighter.itemID)
 
         for cargo in fit.cargo:
-            for _ in xrange(cargo.amount):
-                typeIDs.append(cargo.itemID)
+            typeIDs.append(cargo.itemID)
 
         return typeIDs
