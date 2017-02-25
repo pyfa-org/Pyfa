@@ -699,6 +699,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         else:
             """
             Currently no other modules would have a reactivation delay, so for sanities sake don't try and account for it.
+            Okay, technically cloaks do, but they also have 0 cycle time and cap usage so why do you care?
             """
             effective_reload_time = raw_reload_time
 
