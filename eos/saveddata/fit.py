@@ -129,10 +129,10 @@ class Fit(object):
         self.__capRecharge = None
         self.__calculatedTargets = []
         self.__remoteReps = {
-            "Armor": 0,
-            "Shield": 0,
-            "Hull": 0,
-            "Capacitor": 0,
+            "Armor": None,
+            "Shield": None,
+            "Hull": None,
+            "Capacitor": None,
         }
         self.factorReload = False
         self.boostsFits = set()
@@ -400,7 +400,7 @@ class Fit(object):
         self.commandBonuses = {}
 
         for remoterep_type in self.__remoteReps:
-            self.__remoteReps[remoterep_type] = 0
+            self.__remoteReps[remoterep_type] = None
 
         del self.__calculatedTargets[:]
         del self.__extraDrains[:]
@@ -1159,76 +1159,64 @@ class Fit(object):
 
     @property
     def remoteReps(self):
-        def amount_per_second(module_amount, module_duration, module_reload, module_chargerate, module_capacity, module_volume):
-            numcycles = math.floor(module_capacity / (module_volume * module_chargerate))
+        force_recalc = False
+        for remoterep_type in self.__remoteReps:
+            if self.__remoteReps[remoterep_type] is None:
+                force_recalc = True
+                break
 
-            module_amount *= numcycles
-            module_duration = module_chargerate * numcycles + module_reload
-
-            return module_amount / module_duration
+        if force_recalc is False:
+            return self.__remoteReps
 
         for module in self.modules:
             # Skip empty modules
             if module.isEmpty:
                 continue
 
-            module_group = getattr(module.item.group, "name")
-
             # Skip modules that aren't online
             if getattr(module, "state", 0) < 1:
                 continue
 
-            if module_group in ("Remote Armor Repairer", "Ancillary Remote Armor Repairer"):
-                # Remote Armor Reppers
-                hp = module.getModifiedItemAttr("armorDamageAmount", 0)
-                duration = module.getModifiedItemAttr("duration", 0) / 1000
-                reloadTime = module.getModifiedItemAttr("reloadTime", 0) / 1000
-                chargeRate = module.getModifiedItemAttr("chargeRate", 1)
-                fueledMultiplier = module.getModifiedItemAttr("chargedArmorDamageMultiplier", 1)
-                capacity = module.getModifiedItemAttr("capacity", 0)
-                volume = module.getModifiedChargeAttr("volume", 0)
+            duration = module.cycleTime / 1000
 
-                if module.charge:
-                    hp *= fueledMultiplier
-                    hp_per_s = amount_per_second(hp, duration, reloadTime, chargeRate, capacity, volume)
-                else:
-                    hp_per_s = hp / duration
+            # Skip modules with no duration.
+            if not duration:
+                continue
 
-                self.__remoteReps["Armor"] += hp_per_s
+            fueledMultiplier = module.getModifiedItemAttr("chargedArmorDamageMultiplier", 1)
 
-            elif module_group in ("Remote Hull Repairer",):
-                # Remote Hull Reppers
+            remote_module_groups = {
+                "Remote Armor Repairer"          : "Armor",
+                "Ancillary Remote Armor Repairer": "Armor",
+                "Remote Hull Repairer"           : "Hull",
+                "Remote Shield Booster"          : "Shield",
+                "Ancillary Remote Shield Booster": "Shield",
+                "Remote Capacitor Transmitter"   : "Capacitor",
+            }
+
+            module_group = module.item.group.name
+
+            if module_group in remote_module_groups:
+                remote_type = remote_module_groups[module_group]
+            else:
+                # Module isn't in our list of remote rep modules, bail
+                continue
+
+            if remote_type == "Hull":
                 hp = module.getModifiedItemAttr("structureDamageAmount", 0)
-                duration = module.getModifiedItemAttr("duration", 0) / 1000
-
-                hp_per_s = hp / duration
-
-                self.__remoteReps["Hull"] += hp_per_s
-
-            elif module_group in ("Remote Shield Booster", "Ancillary Remote Shield Booster"):
-                # Remote Shield Reppers
+            elif remote_type == "Armor":
+                hp = module.getModifiedItemAttr("armorDamageAmount", 0)
+            elif remote_type == "Shield":
                 hp = module.getModifiedItemAttr("shieldBonus", 0)
-                duration = module.getModifiedItemAttr("duration", 0) / 1000
-                reloadTime = module.getModifiedItemAttr("reloadTime", 0) / 1000
-                chargeRate = module.getModifiedItemAttr("chargeRate", 1)
-                capacity = module.getModifiedItemAttr("capacity", 0)
-                volume = module.getModifiedChargeAttr("volume", 0)
-
-                if module.charge:
-                    hp_per_s = amount_per_second(hp, duration, reloadTime, chargeRate, capacity, volume)
-                else:
-                    hp_per_s = hp / duration
-
-                self.__remoteReps["Shield"] += hp_per_s
-
-            elif module_group in ("Remote Capacitor Transmitter",):
-                # Remote Capacitor Boosters
+            elif remote_type == "Capacitor":
                 hp = module.getModifiedItemAttr("powerTransferAmount", 0)
-                duration = module.getModifiedItemAttr("duration", 0) / 1000
+            else:
+                hp = 0
 
-                hp_per_s = hp / duration
+            if self.__remoteReps[remote_type] is None:
+                self.__remoteReps[remote_type] = 0
 
-                self.__remoteReps["Capacitor"] += hp_per_s
+            self.__remoteReps[remote_type] += (hp * fueledMultiplier) / duration
 
         return self.__remoteReps
 

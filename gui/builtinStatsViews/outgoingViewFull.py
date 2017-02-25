@@ -53,10 +53,10 @@ class OutgoingViewFull(StatsView):
         counter = 0
 
         rr_list = [
-            ("RemoteArmor", "Armor:", "armorActive", "Armor hitpoints per second repaired remotely."),
-            ("RemoteShield", "Shield:", "shieldActive", "Shield hitpoints per second repaired remotely."),
-            ("RemoteHull", "Hull:", "hullActive", "Hull hitpoints per second repaired remotely."),
             ("RemoteCapacitor", "Capacitor:", "capacitorInfo", "Capacitor GJ/s per second transferred remotely."),
+            ("RemoteShield", "Shield:", "shieldActive", "Shield hitpoints per second repaired remotely."),
+            ("RemoteArmor", "Armor:", "armorActive", "Armor hitpoints per second repaired remotely."),
+            ("RemoteHull", "Hull:", "hullActive", "Hull hitpoints per second repaired remotely."),
         ]
 
         for outgoingType, label, image, tooltip in rr_list:
