@@ -1357,26 +1357,39 @@ class ItemProperties(wx.Panel):
         self.paramList.ClearAll()
         self.PopulateList()
         self.Thaw()
-        self.paramList.resizeLastColumn(100)
+        self.paramList.resizeLastColumn(1500)
 
     def PopulateList(self):
         self.paramList.InsertColumn(0, "Attribute")
         self.paramList.InsertColumn(1, "Current Value")
         self.paramList.SetColumnWidth(0, 110)
-        self.paramList.SetColumnWidth(1, 400)
+        self.paramList.SetColumnWidth(1, 1500)
         self.paramList.setResizeColumn(0)
-        self.imageList = wx.ImageList(16, 16)
-        self.paramList.SetImageList(self.imageList, wx.IMAGE_LIST_SMALL)
+        #self.imageList = wx.ImageList(16, 16)
+        #self.paramList.SetImageList(self.imageList, wx.IMAGE_LIST_SMALL)
 
-        names = dir(self.item)
+        if self.stuff:
+            names = dir(self.stuff)
+        else:
+            names = dir(self.item)
+
         names = [a for a in names if not (a.startswith('__') and a.endswith('__'))]
-        # names = names.sort()
+
 
         idNameMap = {}
         idCount = 0
         for name in names:
-            attrName = name.title()
-            value = getattr(self.item, name)
+            try:
+                if self.stuff:
+                    attrName = name.title()
+                    value = getattr(self.stuff, name)
+                else:
+                    attrName = name.title()
+                    value = getattr(self.item, name)
+            except Exception as e:
+                # TODO: Add logging to this.
+                # We couldn't get a property for some reason. Skip it for now.
+                continue
 
             index = self.paramList.InsertStringItem(sys.maxint, attrName)
             # index = self.paramList.InsertImageStringItem(sys.maxint, attrName)
