@@ -44,8 +44,6 @@ class OutgoingViewFull(StatsView):
         parent = self.panel = contentPanel
         self.headerPanel = headerPanel
 
-        panel = "full"
-
         sizerOutgoing = wx.GridSizer(1, 4)
 
         contentSizer.Add(sizerOutgoing, 0, wx.EXPAND, 0)
