@@ -47,25 +47,35 @@ class ErrorFrame(wx.Frame):
         headSizer.Add(self.headingText, 1, wx.ALL, 5)
         mainSizer.Add(headSizer, 0, wx.EXPAND, 5)
 
-        mainSizer.Add(wx.StaticLine(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL), 0, wx.EXPAND |wx.ALL, 5)
+        mainSizer.Add(wx.StaticLine(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL), 0, wx.EXPAND | wx.ALL, 5)
 
         descSizer = wx.BoxSizer(wx.HORIZONTAL)
-        self.descText = wx.TextCtrl( self, wx.ID_ANY, desc, wx.DefaultPosition, wx.DefaultSize, wx.TE_AUTO_URL|wx.TE_MULTILINE|wx.TE_READONLY|wx.BORDER_NONE|wx.TRANSPARENT_WINDOW )
+        self.descText = wx.TextCtrl(self, wx.ID_ANY, desc, wx.DefaultPosition, wx.DefaultSize, wx.TE_AUTO_URL|wx.TE_MULTILINE|wx.TE_READONLY|wx.BORDER_NONE|wx.TRANSPARENT_WINDOW )
         self.descText.SetFont(wx.Font(fonts.BIG, wx.SWISS, wx.NORMAL, wx.NORMAL))
-        descSizer.Add(self.descText, 1, wx.EXPAND|wx.ALL, 5)
-        mainSizer.Add(descSizer, 0, wx.EXPAND, 5)
+        descSizer.Add(self.descText, 1, wx.ALL, 5)
+        mainSizer.Add(descSizer, 1, wx.EXPAND, 5)
+
+        self.eveForums = wx.HyperlinkCtrl(self, wx.ID_ANY, "EVE Forums Thread", "https://forums.eveonline.com/default.aspx?g=posts&t=466425",
+                                         wx.DefaultPosition, wx.DefaultSize, wx.HL_DEFAULT_STYLE)
+
+        mainSizer.Add(self.eveForums, 0, wx.ALL, 2)
+
+        self.eveForums = wx.HyperlinkCtrl(self, wx.ID_ANY, "Github Issues", "https://github.com/pyfa-org/Pyfa/issues",
+                                          wx.DefaultPosition, wx.DefaultSize, wx.HL_DEFAULT_STYLE)
+
+        mainSizer.Add(self.eveForums, 0, wx.ALL, 2)
 
         #mainSizer.AddSpacer((0, 5), 0, wx.EXPAND, 5)
 
         self.errorTextCtrl = wx.TextCtrl(self, wx.ID_ANY, "", wx.DefaultPosition, wx.DefaultSize, wx.TE_MULTILINE|wx.TE_READONLY|wx.TE_RICH2|wx.TE_DONTWRAP)
         self.errorTextCtrl.SetFont(wx.Font(8, wx.FONTFAMILY_TELETYPE, wx.NORMAL, wx.NORMAL))
-        mainSizer.Add(self.errorTextCtrl, 1, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
+        mainSizer.Add(self.errorTextCtrl, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
 
         self.errorTextCtrl.AppendText("pyfa root: ")
-        self.errorTextCtrl.AppendText(config.pyfaPath)
+        self.errorTextCtrl.AppendText(config.pyfaPath or "Unknown")
         self.errorTextCtrl.AppendText('\n')
         self.errorTextCtrl.AppendText("save path: ")
-        self.errorTextCtrl.AppendText(config.savePath)
+        self.errorTextCtrl.AppendText(config.savePath or "Unknown")
         self.errorTextCtrl.AppendText('\n')
         self.errorTextCtrl.AppendText("fs encoding: ")
         self.errorTextCtrl.AppendText(sys.getfilesystemencoding())
