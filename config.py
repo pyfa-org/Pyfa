@@ -19,9 +19,9 @@ saveInRoot = False
 
 # Version data
 version = "1.27.1"
-tag = "git"
+tag = "Stable"
 expansionName = "YC119.2"
-expansionVersion = "1.2"
+expansionVersion = "1.4"
 evemonMinVersion = "4081"
 
 pyfaPath = None
