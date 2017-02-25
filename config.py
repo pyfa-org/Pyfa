@@ -64,6 +64,8 @@ def getPyfaRoot():
     root = unicode(root, sys.getfilesystemencoding())
     return root
 
+def getDefaultSave():
+    return unicode(os.path.expanduser(os.path.join("~", ".pyfa")), sys.getfilesystemencoding())
 
 def defPaths(customSavePath):
     global debug
@@ -93,8 +95,7 @@ def defPaths(customSavePath):
         savePath = getattr(configforced, "savePath", None)
         if savePath is None:
             if customSavePath is None:  # customSavePath is not overriden
-                savePath = unicode(os.path.expanduser(os.path.join("~", ".pyfa")),
-                                   sys.getfilesystemencoding())
+                savePath = getDefaultSave()
             else:
                 savePath = customSavePath
 
