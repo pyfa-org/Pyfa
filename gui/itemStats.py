@@ -1352,13 +1352,6 @@ class ItemProperties(wx.Panel):
         else:
             return
 
-    def UpdateList(self):
-        self.Freeze()
-        self.paramList.ClearAll()
-        self.PopulateList()
-        self.Thaw()
-        self.paramList.resizeLastColumn(1500)
-
     def PopulateList(self):
         self.paramList.InsertColumn(0, "Attribute")
         self.paramList.InsertColumn(1, "Current Value")
