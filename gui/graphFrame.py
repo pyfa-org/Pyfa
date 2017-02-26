@@ -92,7 +92,7 @@ class GraphFrame(wx.Frame):
         except:
             cache_dir = os.path.expanduser(os.path.join("~", ".matplotlib"))
 
-        cache_file = path = os.path.join(cache_dir, 'fontList.cache')
+        cache_file = os.path.join(cache_dir, 'fontList.cache')
 
         if os.access(cache_dir, os.W_OK | os.X_OK) and os.path.isfile(cache_file):
             # remove matplotlib font cache, see #234

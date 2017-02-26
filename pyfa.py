@@ -282,7 +282,6 @@ if __name__ == "__main__":
         if hasattr(sys, 'frozen') and options.debug:
             pyfalog.critical("Running in frozen mode with debug turned on. Forcing all output to be written to log.")
 
-
         from gui.mainFrame import MainFrame
 
         pyfa = wx.App(False)

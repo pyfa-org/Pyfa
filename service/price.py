@@ -23,9 +23,11 @@ from xml.dom import minidom
 
 from eos import db
 from service.network import Network, TimeoutError
-from logbook import Logger
-pyfalog = Logger(__name__)
 from service.fit import Fit
+from logbook import Logger
+
+pyfalog = Logger(__name__)
+
 
 VALIDITY = 24 * 60 * 60  # Price validity period, 24 hours
 REREQUEST = 4 * 60 * 60  # Re-request delay for failed fetches, 4 hours

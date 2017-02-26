@@ -97,7 +97,7 @@ def defPaths(customSavePath):
     # maintenance script
     gameDB = os.path.join(pyfaPath, "eve.db")
 
-    ## DON'T MODIFY ANYTHING BELOW ##
+    # DON'T MODIFY ANYTHING BELOW
     import eos.config
 
     # Caching modifiers, disable all gamedata caching, its unneeded.
@@ -105,43 +105,3 @@ def defPaths(customSavePath):
     # saveddata db location modifier, shouldn't ever need to touch this
     eos.config.saveddata_connectionstring = "sqlite:///" + saveDB + "?check_same_thread=False"
     eos.config.gamedata_connectionstring = "sqlite:///" + gameDB + "?check_same_thread=False"
-
-# Keeping disabled code here for now until we can determine with decent certainty that this isn't needed
-'''
-def getPyfaPath(Append=None):
-    base = getattr(sys.modules['__main__'], "__file__", sys.executable) if isFrozen() else sys.argv[0]
-    root = os.path.dirname(os.path.realpath(os.path.abspath(base)))
-
-    if Append:
-        path = parsePath(root, Append)
-    else:
-        path = parsePath(root)
-
-    return path
-
-
-def getSavePath(Append=None):
-    root = savePath
-
-    if Append:
-        path = parsePath(root, Append)
-    else:
-        path = parsePath(root)
-
-    return path
-
-
-def parsePath(root, Append=None):
-    if Append:
-        path = os.path.join(root, Append)
-    else:
-        path = root
-
-    if type(path) == str:  # leave unicode ones alone
-        try:
-            path = path.decode('utf8')
-        except UnicodeDecodeError:
-            path = path.decode('windows-1252')
-
-    return path
-'''

@@ -7,9 +7,9 @@ from service.fit import Fit
 from service.port import Port
 from service.market import Market
 from logbook import Logger
+from eos.db import getFit
 
 pyfalog = Logger(__name__)
-from eos.db import getFit
 
 
 class exportHtml(object):
