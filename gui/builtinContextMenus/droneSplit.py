@@ -4,13 +4,18 @@ import gui.globalEvents as GE
 from service.fit import Fit
 # noinspection PyPackageRequirements
 import wx
+from service.settings import ContextMenuSettings
 
 
 class DroneSplit(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+        self.settings = ContextMenuSettings.getInstance()
 
     def display(self, srcContext, selection):
+        if not self.settings.get('droneSplit'):
+            return False
+
         return srcContext in ("droneItem", "projectedDrone") and selection[0].amount > 1
 
     def getText(self, itmContext, selection):

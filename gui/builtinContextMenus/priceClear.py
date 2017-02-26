@@ -4,13 +4,18 @@ import gui.mainFrame
 import wx
 import gui.globalEvents as GE
 from service.market import Market
+from service.settings import ContextMenuSettings
 
 
 class PriceClear(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+        self.settings = ContextMenuSettings.getInstance()
 
     def display(self, srcContext, selection):
+        if not self.settings.get('priceClear'):
+            return False
+
         return srcContext == "priceViewFull"
 
     def getText(self, itmContext, selection):

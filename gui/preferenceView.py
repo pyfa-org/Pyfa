@@ -44,5 +44,10 @@ from gui.builtinPreferenceViews import (  # noqa: E402, F401
     pyfaNetworkPreferences,
     pyfaHTMLExportPreferences,
     pyfaCrestPreferences,
-    pyfaUpdatePreferences
+    pyfaContextMenuPreferences,
+    pyfaStatViewPreferences,
+    pyfaUpdatePreferences,
+    pyfaEnginePreferences,
+    pyfaDatabasePreferences,
+    pyfaLoggingPreferences
 )

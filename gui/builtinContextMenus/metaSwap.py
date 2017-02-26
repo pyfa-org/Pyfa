@@ -8,6 +8,7 @@ from service.market import Market
 import gui.mainFrame
 import gui.globalEvents as GE
 from gui.contextMenu import ContextMenu
+from service.settings import ContextMenuSettings
 from eos.saveddata.booster import Booster
 from eos.saveddata.module import Module
 from eos.saveddata.drone import Drone
@@ -18,8 +19,11 @@ from eos.saveddata.implant import Implant
 class MetaSwap(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+        self.settings = ContextMenuSettings.getInstance()
 
     def display(self, srcContext, selection):
+        if not self.settings.get('metaSwap'):
+            return False
 
         if self.mainFrame.getActiveFit() is None or srcContext not in (
                 "fittingModule",
