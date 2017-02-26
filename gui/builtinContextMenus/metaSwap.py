@@ -58,6 +58,17 @@ class MetaSwap(ContextMenu):
         def get_metagroup(x):
             return x.metaGroup.ID if x.metaGroup is not None else 0
 
+        def get_boosterrank(x):
+            # If we're returning a lot of items, sort my name
+            if len(self.variations) > 7:
+                return x.name
+            # Sort by booster chance to get some sort of pseudorank.
+            elif 'boosterEffectChance1' in x.attributes:
+                return x.attributes['boosterEffectChance1'].value
+            # the "first" rank (Synth) doesn't have boosterEffectChance1. If we're not pulling back all boosters, return 0 for proper sorting
+            else:
+                return 0
+
         m = wx.Menu()
 
         # If on Windows we need to bind out events into the root menu, on other
@@ -69,8 +80,17 @@ class MetaSwap(ContextMenu):
 
         # Sort items by metalevel, and group within that metalevel
         items = list(self.variations)
-        items.sort(key=get_metalevel)
-        items.sort(key=get_metagroup)
+        print context
+        if "implantItem" in context:
+            # sort implants based on name
+            items.sort(key=lambda x: x.name)
+        elif "boosterItem" in context:
+            # boosters don't have meta or anything concrete that we can rank by. Go by chance to inflict side effect
+            items.sort(key=get_boosterrank)
+        else:
+            # sort by group and meta level
+            items.sort(key=get_metalevel)
+            items.sort(key=get_metagroup)
 
         group = None
         for item in items:
@@ -80,7 +100,7 @@ class MetaSwap(ContextMenu):
             else:
                 thisgroup = item.metaGroup.name
 
-            if thisgroup != group:
+            if thisgroup != group and context not in ("implantItem", "boosterItem"):
                 group = thisgroup
                 id = ContextMenu.nextID()
                 m.Append(id, u'─ %s ─' % group)
