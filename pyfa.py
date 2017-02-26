@@ -185,7 +185,7 @@ if __name__ == "__main__":
         else:
             savePath_filename = "Pyfa.log"
 
-        savePath_Destination = config.getSavePath(savePath_filename)
+        savePath_Destination = os.path.join(config.savePath, savePath_filename)
 
         try:
             if options.debug:

@@ -53,21 +53,6 @@ except ImportError:
     graphFrame_enabled = False
     mplImported = False
 
-class GraphFrame(wx.Frame):
-    def __init__(self, parent, style=wx.DEFAULT_FRAME_STYLE | wx.NO_FULL_REPAINT_ON_RESIZE | wx.FRAME_FLOAT_ON_PARENT):
-
-        global graphFrame_enabled
-        global mplImported
-
-        self.mpl_version = int(mpl.__version__[0])
-    imp.find_module('matplotlib')
-    graphFrame_enabled = True
-    mplImported = True
-except ImportError:
-    graphFrame_enabled = False
-    mplImported = False
-
-
 pyfalog = Logger(__name__)
 
 
