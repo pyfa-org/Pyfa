@@ -64,8 +64,10 @@ def getPyfaRoot():
     root = unicode(root, sys.getfilesystemencoding())
     return root
 
+
 def getDefaultSave():
     return unicode(os.path.expanduser(os.path.join("~", ".pyfa")), sys.getfilesystemencoding())
+
 
 def defPaths(customSavePath):
     global debug
@@ -133,7 +135,7 @@ def defPaths(customSavePath):
     # maintenance script
     gameDB = os.path.join(pyfaPath, "eve.db")
 
-    ## DON'T MODIFY ANYTHING BELOW ##
+    # DON'T MODIFY ANYTHING BELOW
     import eos.config
 
     # Caching modifiers, disable all gamedata caching, its unneeded.
@@ -141,6 +143,7 @@ def defPaths(customSavePath):
     # saveddata db location modifier, shouldn't ever need to touch this
     eos.config.saveddata_connectionstring = "sqlite:///" + saveDB + "?check_same_thread=False"
     eos.config.gamedata_connectionstring = "sqlite:///" + gameDB + "?check_same_thread=False"
+
 
 # Keeping disabled code here for now until we can determine with decent certainty that this isn't needed
 '''
