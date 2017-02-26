@@ -2,7 +2,6 @@ import wx
 
 from gui.preferenceView import PreferenceView
 from gui.bitmapLoader import BitmapLoader
-
 import gui.mainFrame
 from service.settings import ContextMenuSettings
 
@@ -24,13 +23,15 @@ class PFContextMenuPref(PreferenceView):
 
         mainSizer.Add(self.stTitle, 0, wx.ALL, 5)
 
-        self.stInfo = wx.StaticText(panel, wx.ID_ANY, u"Disabling context menus can improve responsiveness.", wx.DefaultPosition, wx.DefaultSize, 0)
-        self.stInfo.Wrap(dlgWidth - 50)
-        mainSizer.Add(self.stInfo, 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 5)
+        self.stSubTitle = wx.StaticText(panel, wx.ID_ANY,
+                                        u"Disabling context menus can improve responsiveness.",
+                                        wx.DefaultPosition, wx.DefaultSize, 0)
+        self.stSubTitle.Wrap(-1)
+        mainSizer.Add(self.stSubTitle, 0, wx.ALL, 5)
 
         # Row 1
         self.m_staticline1 = wx.StaticLine(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL)
-        mainSizer.Add(self.m_staticline1, 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 5)
+        mainSizer.Add(self.m_staticline1, 0, wx.EXPAND | wx.ALL, 5)
 
         rbSizerRow1 = wx.BoxSizer(wx.HORIZONTAL)
 
@@ -52,9 +53,6 @@ class PFContextMenuPref(PreferenceView):
         mainSizer.Add(rbSizerRow1, 1, wx.ALL | wx.EXPAND, 0)
 
         # Row 2
-        self.m_staticline2 = wx.StaticLine(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL)
-        mainSizer.Add(self.m_staticline2, 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 5)
-
         rbSizerRow2 = wx.BoxSizer(wx.HORIZONTAL)
 
         self.rbBox4 = wx.RadioBox(panel, -1, "Variations", wx.DefaultPosition, wx.DefaultSize, ['Disabled', 'Enabled'], 1, wx.RA_SPECIFY_COLS)
@@ -77,9 +75,6 @@ class PFContextMenuPref(PreferenceView):
         mainSizer.Add(rbSizerRow2, 1, wx.ALL | wx.EXPAND, 0)
 
         # Row 3
-        self.m_staticline3 = wx.StaticLine(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL)
-        mainSizer.Add(self.m_staticline3, 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 5)
-
         rbSizerRow3 = wx.BoxSizer(wx.HORIZONTAL)
 
         self.rbBox7 = wx.RadioBox(panel, -1, "Project onto Fit", wx.DefaultPosition, wx.DefaultSize, ['Disabled', 'Enabled'], 1, wx.RA_SPECIFY_COLS)

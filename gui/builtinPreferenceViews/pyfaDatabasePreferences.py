@@ -2,7 +2,6 @@ import wx
 
 from gui.preferenceView import PreferenceView
 from gui.bitmapLoader import BitmapLoader
-
 import config
 
 import logging
@@ -24,11 +23,10 @@ class PFGeneralPref(PreferenceView):
         self.stTitle.SetFont(wx.Font(12, 70, 90, 90, False, wx.EmptyString))
         mainSizer.Add(self.stTitle, 0, wx.ALL, 5)
 
-        self.stSubTitle = wx.StaticText(panel, wx.ID_ANY, u"(Cannot be changed while Pyfa is running.  Set via command line switches.)",
+        self.stSubTitle = wx.StaticText(panel, wx.ID_ANY, u"(Cannot be changed while pyfa is running. Set via command line switches.)",
                                         wx.DefaultPosition, wx.DefaultSize, 0)
         self.stSubTitle.Wrap(-1)
-        self.stSubTitle.SetFont(wx.Font(10, 70, 90, 90, False, wx.EmptyString))
-        mainSizer.Add(self.stSubTitle, 0, wx.ALL, 5)
+        mainSizer.Add(self.stSubTitle, 0, wx.ALL, 3)
 
         self.m_staticline1 = wx.StaticLine(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL)
         mainSizer.Add(self.m_staticline1, 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 5)
@@ -38,7 +36,7 @@ class PFGeneralPref(PreferenceView):
         mainSizer.Add(self.cbsaveInRoot, 0, wx.ALL | wx.EXPAND, 5)
 
         # Database path
-        self.stSetUserPath = wx.StaticText(panel, wx.ID_ANY, u"Pyfa User Path:", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.stSetUserPath = wx.StaticText(panel, wx.ID_ANY, u"pyfa User Path:", wx.DefaultPosition, wx.DefaultSize, 0)
         self.stSetUserPath.Wrap(-1)
         mainSizer.Add(self.stSetUserPath, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
         self.inputUserPath = wx.TextCtrl(panel, wx.ID_ANY, config.savePath, wx.DefaultPosition, wx.DefaultSize, 0)
