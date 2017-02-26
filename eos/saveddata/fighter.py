@@ -17,7 +17,7 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-import logging
+from logbook import Logger
 
 from sqlalchemy.orm import validates, reconstructor
 
@@ -27,7 +27,7 @@ from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut, C
 from eos.saveddata.fighterAbility import FighterAbility
 from eos.saveddata.module import Slot
 
-logger = logging.getLogger(__name__)
+pyfalog = Logger(__name__)
 
 
 class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
@@ -61,11 +61,11 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         if self.itemID:
             self.__item = eos.db.getItem(self.itemID)
             if self.__item is None:
-                logger.error("Item (id: %d) does not exist", self.itemID)
+                pyfalog.error("Item (id: {0}) does not exist", self.itemID)
                 return
 
         if self.isInvalid:
-            logger.error("Item (id: %d) is not a Fighter", self.itemID)
+            pyfalog.error("Item (id: {0}) is not a Fighter", self.itemID)
             return
 
         self.build()

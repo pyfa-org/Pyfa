@@ -18,7 +18,6 @@
 # ===============================================================================
 
 import re
-import traceback
 
 from sqlalchemy.orm import reconstructor
 
@@ -29,6 +28,9 @@ try:
     from collections import OrderedDict
 except ImportError:
     from utils.compat import OrderedDict
+
+from logbook import Logger
+pyfalog = Logger(__name__)
 
 
 class Effect(EqBase):
@@ -63,6 +65,8 @@ class Effect(EqBase):
         """
         if not self.__generated:
             self.__generateHandler()
+
+        pyfalog.debug("Generating effect: {0} ({1}) [runTime: {2}]", self.name, self.effectID, self.runTime)
 
         return self.__handler
 
@@ -138,7 +142,7 @@ class Effect(EqBase):
     @property
     def isImplemented(self):
         """
-        Wether this effect is implemented in code or not,
+        Whether this effect is implemented in code or not,
         unimplemented effects simply do nothing at all when run
         """
         return self.handler != effectDummy
@@ -179,13 +183,16 @@ class Effect(EqBase):
 
             t = t if isinstance(t, tuple) or t is None else (t,)
             self.__type = t
-        except (ImportError, AttributeError):
+        except (ImportError, AttributeError) as e:
             self.__handler = effectDummy
             self.__runTime = "normal"
             self.__activeByDefault = True
             self.__type = None
+            pyfalog.debug("ImportError or AttributeError generating handler:")
+            pyfalog.debug(e)
         except Exception as e:
-            traceback.print_exc(e)
+            pyfalog.critical("Exception generating handler:")
+            pyfalog.critical(e)
 
         self.__generated = True
 

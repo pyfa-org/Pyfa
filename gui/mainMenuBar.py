@@ -26,6 +26,9 @@ import gui.graphFrame
 import gui.globalEvents as GE
 from gui.bitmapLoader import BitmapLoader
 
+from logbook import Logger
+pyfalog = Logger(__name__)
+
 if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3, 0)):
     from service.crest import Crest
     from service.crest import CrestModes
@@ -33,6 +36,7 @@ if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION 
 
 class MainMenuBar(wx.MenuBar):
     def __init__(self, mainFrame):
+        pyfalog.debug("Initialize MainMenuBar")
         self.characterEditorId = wx.NewId()
         self.damagePatternEditorId = wx.NewId()
         self.targetResistsEditorId = wx.NewId()
@@ -166,6 +170,7 @@ class MainMenuBar(wx.MenuBar):
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
 
     def fitChanged(self, event):
+        pyfalog.debug("fitChanged triggered")
         enable = event.fitID is not None
         self.Enable(wx.ID_SAVEAS, enable)
         self.Enable(wx.ID_COPY, enable)

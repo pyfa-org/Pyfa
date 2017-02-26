@@ -23,6 +23,8 @@ from xml.dom import minidom
 
 from eos import db
 from service.network import Network, TimeoutError
+from logbook import Logger
+pyfalog = Logger(__name__)
 from service.fit import Fit
 
 VALIDITY = 24 * 60 * 60  # Price validity period, 24 hours
@@ -114,6 +116,7 @@ class Price(object):
         # If getting or processing data returned any errors
         except TimeoutError:
             # Timeout error deserves special treatment
+            pyfalog.warning("Price fetch timout")
             for typeID in priceMap.keys():
                 priceobj = priceMap[typeID]
                 priceobj.time = time.time() + TIMEOUT
@@ -121,6 +124,7 @@ class Price(object):
                 del priceMap[typeID]
         except:
             # all other errors will pass and continue onward to the REREQUEST delay
+            pyfalog.warning("Caught exception in fetchPrices")
             pass
 
         # if we get to this point, then we've got an error. Set to REREQUEST delay

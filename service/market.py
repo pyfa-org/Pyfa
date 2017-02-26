@@ -19,7 +19,7 @@
 
 import re
 import threading
-import logging
+from logbook import Logger
 import Queue
 
 # noinspection PyPackageRequirements
@@ -41,7 +41,7 @@ try:
 except ImportError:
     from utils.compat import OrderedDict
 
-logger = logging.getLogger(__name__)
+pyfalog = Logger(__name__)
 
 # Event which tells threads dependent on Market that it's initialized
 mktRdy = threading.Event()
@@ -50,6 +50,7 @@ mktRdy = threading.Event()
 class ShipBrowserWorkerThread(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
+        pyfalog.debug("Initialize ShipBrowserWorkerThread.")
         self.name = "ShipBrowser"
 
     def run(self):
@@ -73,24 +74,29 @@ class ShipBrowserWorkerThread(threading.Thread):
                     cache[id_] = set_
 
                 wx.CallAfter(callback, (id_, set_))
-            except:
-                pass
+            except Exception as e:
+                pyfalog.critical("Callback failed.")
+                pyfalog.critical(e)
             finally:
                 try:
                     queue.task_done()
-                except:
-                    pass
+                except Exception as e:
+                    pyfalog.critical("Queue task done failed.")
+                    pyfalog.critical(e)
 
 
 class PriceWorkerThread(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
         self.name = "PriceWorker"
+        pyfalog.debug("Initialize PriceWorkerThread.")
 
     def run(self):
+        pyfalog.debug("Run start")
         self.queue = Queue.Queue()
         self.wait = {}
         self.processUpdates()
+        pyfalog.debug("Run end")
 
     def processUpdates(self):
         queue = self.queue
@@ -125,6 +131,7 @@ class SearchWorkerThread(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
         self.name = "SearchWorker"
+        pyfalog.debug("Initialize SearchWorkerThread.")
 
     def run(self):
         self.cv = threading.Condition()
@@ -440,7 +447,7 @@ class Market(object):
             else:
                 raise TypeError("Need Item object, integer, float or string as argument")
         except:
-            logger.error("Could not get item: %s", identity)
+            pyfalog.error("Could not get item: {0}", identity)
             raise
 
         return item
@@ -833,8 +840,9 @@ class Market(object):
         def cb():
             try:
                 callback(requests)
-            except Exception:
-                pass
+            except Exception as e:
+                pyfalog.critical("Callback failed.")
+                pyfalog.critical(e)
             eos.db.commit()
 
         self.priceWorkerThread.trigger(requests, cb)
@@ -849,8 +857,9 @@ class Market(object):
         def cb():
             try:
                 callback(item)
-            except:
-                pass
+            except Exception as e:
+                pyfalog.critical("Callback failed.")
+                pyfalog.critical(e)
 
         self.priceWorkerThread.setToWait(item.ID, cb)
 

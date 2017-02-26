@@ -1,16 +1,17 @@
 import os
 import sys
 
-# TODO: move all logging back to pyfa.py main loop
-# We moved it here just to avoid rebuilding windows skeleton for now (any change to pyfa.py needs it)
-import logging
-import logging.handlers
+from logbook import Logger
+
+pyfalog = Logger(__name__)
 
 # Load variable overrides specific to distribution type
 try:
     import configforced
 except ImportError:
+    pyfalog.warning("Failed to import: configforced")
     configforced = None
+
 
 # Turns on debug mode
 debug = False
@@ -28,22 +29,6 @@ pyfaPath = None
 savePath = None
 saveDB = None
 gameDB = None
-
-
-class StreamToLogger(object):
-    """
-    Fake file-like stream object that redirects writes to a logger instance.
-    From: http://www.electricmonk.nl/log/2011/08/14/redirect-stdout-and-stderr-to-a-logger-in-python/
-    """
-
-    def __init__(self, logger, log_level=logging.INFO):
-        self.logger = logger
-        self.log_level = log_level
-        self.linebuf = ''
-
-    def write(self, buf):
-        for line in buf.rstrip().splitlines():
-            self.logger.log(self.log_level, line.rstrip())
 
 
 def isFrozen():
@@ -64,8 +49,10 @@ def getPyfaRoot():
     root = unicode(root, sys.getfilesystemencoding())
     return root
 
+
 def getDefaultSave():
     return unicode(os.path.expanduser(os.path.join("~", ".pyfa")), sys.getfilesystemencoding())
+
 
 def defPaths(customSavePath):
     global debug
@@ -75,10 +62,7 @@ def defPaths(customSavePath):
     global gameDB
     global saveInRoot
 
-    if debug:
-        logLevel = logging.DEBUG
-    else:
-        logLevel = logging.WARN
+    pyfalog.debug("Configuring Pyfa")
 
     # The main pyfa directory which contains run.py
     # Python 2.X uses ANSI by default, so we need to convert the character encoding
@@ -104,26 +88,6 @@ def defPaths(customSavePath):
     if isFrozen():
         os.environ["REQUESTS_CA_BUNDLE"] = os.path.join(pyfaPath, "cacert.pem").encode('utf8')
         os.environ["SSL_CERT_FILE"] = os.path.join(pyfaPath, "cacert.pem").encode('utf8')
-
-    _format = '%(asctime)s %(name)-24s %(levelname)-8s %(message)s'
-    logging.basicConfig(format=_format, level=logLevel)
-    handler = logging.handlers.RotatingFileHandler(os.path.join(savePath, "log.txt"), maxBytes=1000000,
-                                                   backupCount=3)
-    formatter = logging.Formatter(_format)
-    handler.setFormatter(formatter)
-    logging.getLogger('').addHandler(handler)
-
-    logging.info("Starting pyfa")
-
-    if hasattr(sys, 'frozen'):
-        stdout_logger = logging.getLogger('STDOUT')
-        sl = StreamToLogger(stdout_logger, logging.INFO)
-        sys.stdout = sl
-
-        # This interferes with cx_Freeze's own handling of exceptions. Find a way to fix this.
-        # stderr_logger = logging.getLogger('STDERR')
-        # sl = StreamToLogger(stderr_logger, logging.ERROR)
-        # sys.stderr = sl
 
     # The database where we store all the fits etc
     saveDB = os.path.join(savePath, "saveddata.db")

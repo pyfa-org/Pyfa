@@ -23,6 +23,9 @@ from service.targetResists import TargetResists
 from gui.bitmapLoader import BitmapLoader
 from gui.utils.clipboard import toClipboard, fromClipboard
 from gui.builtinViews.entityEditor import EntityEditor, BaseValidator
+from logbook import Logger
+
+pyfalog = Logger(__name__)
 
 
 class TargetResistsTextValidor(BaseValidator):
@@ -45,6 +48,7 @@ class TargetResistsTextValidor(BaseValidator):
 
             return True
         except ValueError as e:
+            pyfalog.error(e)
             wx.MessageBox(u"{}".format(e), "Error")
             textCtrl.SetFocus()
             return False
@@ -230,10 +234,14 @@ class ResistsEditorDlg(wx.Dialog):
 
         except ValueError:
             editObj.SetForegroundColour(wx.RED)
-            self.stNotice.SetLabel("Incorrect Formatting (decimals only)")
+            msg = "Incorrect Formatting (decimals only)"
+            pyfalog.warning(msg)
+            self.stNotice.SetLabel(msg)
         except AssertionError:
             editObj.SetForegroundColour(wx.RED)
-            self.stNotice.SetLabel("Incorrect Range (must be 0-100)")
+            msg = "Incorrect Range (must be 0-100)"
+            pyfalog.warning(msg)
+            self.stNotice.SetLabel(msg)
         finally:  # Refresh for color changes to take effect immediately
             self.Refresh()
 
@@ -271,9 +279,13 @@ class ResistsEditorDlg(wx.Dialog):
                 sTR.importPatterns(text)
                 self.stNotice.SetLabel("Patterns successfully imported from clipboard")
             except ImportError as e:
+                pyfalog.error(e)
                 self.stNotice.SetLabel(str(e))
-            except Exception:
-                self.stNotice.SetLabel("Could not import from clipboard: unknown errors")
+            except Exception as e:
+                msg = "Could not import from clipboard:"
+                pyfalog.warning(msg)
+                pyfalog.error(e)
+                self.stNotice.SetLabel(msg)
             finally:
                 self.entityEditor.refreshEntityList()
         else:

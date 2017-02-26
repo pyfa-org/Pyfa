@@ -19,7 +19,7 @@
 
 import sys
 import os.path
-import logging
+from logbook import Logger
 
 import sqlalchemy
 # noinspection PyPackageRequirements
@@ -94,7 +94,7 @@ except ImportError as e:
     print("Error loading Attribute Editor: %s.\nAccess to Attribute Editor is disabled." % e.message)
     disableOverrideEditor = True
 
-logger = logging.getLogger(__name__)
+pyfalog = Logger(__name__)
 
 
 # dummy panel(no paint no erasebk)
@@ -145,6 +145,7 @@ class MainFrame(wx.Frame):
         return cls.__instance if cls.__instance is not None else MainFrame()
 
     def __init__(self, title="pyfa"):
+        pyfalog.debug("Initialize MainFrame")
         self.title = title
         wx.Frame.__init__(self, None, wx.ID_ANY, self.title)
 
@@ -399,7 +400,7 @@ class MainFrame(wx.Frame):
         try:
             dlg.Destroy()
         except PyDeadObjectError:
-            logger.error("Tried to destroy an object that doesn't exist in <showDamagePatternEditor>.")
+            pyfalog.error("Tried to destroy an object that doesn't exist in <showDamagePatternEditor>.")
 
     def showImplantSetEditor(self, event):
         ImplantSetEditorDlg(self)
@@ -427,7 +428,7 @@ class MainFrame(wx.Frame):
                 try:
                     dlg.Destroy()
                 except PyDeadObjectError:
-                    logger.error("Tried to destroy an object that doesn't exist in <showExportDialog>.")
+                    pyfalog.error("Tried to destroy an object that doesn't exist in <showExportDialog>.")
                 return
 
             with open(path, "w", encoding="utf-8") as openfile:
@@ -437,7 +438,7 @@ class MainFrame(wx.Frame):
         try:
             dlg.Destroy()
         except PyDeadObjectError:
-            logger.error("Tried to destroy an object that doesn't exist in <showExportDialog>.")
+            pyfalog.error("Tried to destroy an object that doesn't exist in <showExportDialog>.")
 
     def showPreferenceDialog(self, event):
         dlg = PreferenceDialog(self)
@@ -734,7 +735,7 @@ class MainFrame(wx.Frame):
         try:
             fits = Port().importFitFromBuffer(clipboard, self.getActiveFit())
         except:
-            logger.error("Attempt to import failed:\n%s", clipboard)
+            pyfalog.error("Attempt to import failed:\n{0}", clipboard)
         else:
             self._openAfterImport(fits)
 
@@ -754,7 +755,7 @@ class MainFrame(wx.Frame):
         try:
             dlg.Destroy()
         except PyDeadObjectError:
-            logger.error("Tried to destroy an object that doesn't exist in <exportToClipboard>.")
+            pyfalog.error("Tried to destroy an object that doesn't exist in <exportToClipboard>.")
 
     def exportSkillsNeeded(self, event):
         """ Exports skills needed for active fit and active character """
@@ -811,7 +812,7 @@ class MainFrame(wx.Frame):
             try:
                 dlg.Destroy()
             except PyDeadObjectError:
-                logger.error("Tried to destroy an object that doesn't exist in <fileImportDialog>.")
+                pyfalog.error("Tried to destroy an object that doesn't exist in <fileImportDialog>.")
 
     def backupToXml(self, event):
         """ Back up all fits to EVE XML file """
