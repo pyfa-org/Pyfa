@@ -19,7 +19,7 @@ saveInRoot = False
 
 # Version data
 version = "1.27.2"
-tag = "git"
+tag = "Stable"
 expansionName = "YC119.2"
 expansionVersion = "1.4"
 evemonMinVersion = "4081"
