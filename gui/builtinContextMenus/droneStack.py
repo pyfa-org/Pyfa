@@ -33,4 +33,5 @@ class CargoAmmo(ContextMenu):
         self.mainFrame.additionsPane.select("Drones")
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
+
 CargoAmmo.register()

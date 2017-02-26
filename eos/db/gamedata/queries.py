@@ -276,7 +276,6 @@ def getVariations(itemids, groupIDs=None, where=None, eager=None):
         return vars
 
 
-
 @cachedQuery(1, "attr")
 def getAttributeInfo(attr, eager=None):
     if isinstance(attr, basestring):

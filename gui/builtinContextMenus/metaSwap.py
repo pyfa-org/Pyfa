@@ -8,6 +8,11 @@ from service.market import Market
 import gui.mainFrame
 import gui.globalEvents as GE
 from gui.contextMenu import ContextMenu
+from eos.saveddata.booster import Booster
+from eos.saveddata.module import Module
+from eos.saveddata.drone import Drone
+from eos.saveddata.fighter import Fighter
+from eos.saveddata.implant import Implant
 
 
 class MetaSwap(ContextMenu):
@@ -124,13 +129,12 @@ class MetaSwap(ContextMenu):
         fit = sFit.getFit(fitID)
 
         for selected_item in self.selection:
-            if type(selected_item).__name__== 'Module':
+            if isinstance(selected_item, Module):
                 pos = fit.modules.index(selected_item)
                 sFit.changeModule(fitID, pos, item.ID)
 
-            elif type(selected_item).__name__== 'Drone':
+            elif isinstance(selected_item, Drone):
                 drone_count = None
-                drone_index = None
 
                 for idx, drone_stack in enumerate(fit.drones):
                     if drone_stack is selected_item:
@@ -141,9 +145,8 @@ class MetaSwap(ContextMenu):
                 if drone_count:
                     sFit.addDrone(fitID, item.ID, drone_count)
 
-            elif type(selected_item).__name__== 'Fighter':
+            elif isinstance(selected_item, Fighter):
                 fighter_count = None
-                fighter_index = None
 
                 for idx, fighter_stack in enumerate(fit.fighters):
                     # Right now fighters always will have max stack size.
@@ -162,14 +165,14 @@ class MetaSwap(ContextMenu):
 
                 sFit.addFighter(fitID, item.ID)
 
-            elif type(selected_item).__name__== 'Booster':
+            elif isinstance(selected_item, Booster):
                 for idx, booster_stack in enumerate(fit.boosters):
                     if booster_stack is selected_item:
                         sFit.removeBooster(fitID, idx)
                         sFit.addBooster(fitID, item.ID)
                         break
 
-            elif type(selected_item).__name__== 'Implant':
+            elif isinstance(selected_item, Implant):
                 for idx, implant_stack in enumerate(fit.implants):
                     if implant_stack is selected_item:
                         sFit.removeImplant(fitID, idx)

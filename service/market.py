@@ -616,13 +616,13 @@ class Market(object):
                 implant_remove_list.add("Strong ")
                 implant_remove_list.add("Synth ")
 
-                for implant_prefix in ("-6","-7","-8","-9","-10"):
+                for implant_prefix in ("-6", "-7", "-8", "-9", "-10"):
                     for i in range(50):
                         implant_remove_list.add(implant_prefix + str("%02d" % i))
 
                 for text_to_remove in implant_remove_list:
                     if text_to_remove in item.name:
-                        variations_limiter.add(item.name.replace(text_to_remove,""))
+                        variations_limiter.add(item.name.replace(text_to_remove, ""))
 
             # Get parent item
             if alreadyparent is False:
