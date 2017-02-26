@@ -37,7 +37,7 @@ except ImportError:
 
 class BitmapLoader(object):
     try:
-        archive = zipfile.ZipFile(os.path.join(config.pyfaPath, 'imgs.zip', 'r'))
+        archive = zipfile.ZipFile(os.path.join(config.pyfaPath, 'imgs.zip'), 'r')
         logging.info("Using zipped image files.")
     except IOError:
         logging.info("Using local image files.")
