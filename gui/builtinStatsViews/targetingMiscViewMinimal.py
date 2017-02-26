@@ -29,7 +29,7 @@ except ImportError:
 
 
 class TargetingMiscViewMinimal(StatsView):
-    name = "targetingmiscViewMinimal"
+    name = "targetingMiscViewMinimal"
 
     def __init__(self, parent):
         StatsView.__init__(self)

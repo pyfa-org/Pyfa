@@ -29,6 +29,9 @@ import gui.globalEvents as GE
 from gui.statsView import StatsView
 from gui.contextMenu import ContextMenu
 from gui.pyfatogglepanel import TogglePanel
+from logbook import Logger
+
+pyfalog = Logger(__name__)
 
 
 class StatsPane(wx.Panel):
@@ -38,7 +41,7 @@ class StatsPane(wx.Panel):
         "recharge",
         "firepower",
         "capacitor",
-        "targetingmisc",
+        "targetingMisc",
         "price",
     ]
 
@@ -55,14 +58,14 @@ class StatsPane(wx.Panel):
     for aView in AVAILIBLE_VIEWS:
         if settings.get(aView) == 2:
             DEFAULT_VIEWS.extend(["%sViewFull" % aView])
-
-        if settings.get(aView) == 1:
+            pyfalog.debug("Setting full view for: {0}", aView)
+        elif settings.get(aView) == 1:
             DEFAULT_VIEWS.extend(["%sViewMinimal" % aView])
-
-            # If it's 0, it's disabled and we don't do anything.
-
-            # TODO
-            # Add logging
+            pyfalog.debug("Setting minimal view for: {0}", aView)
+        elif settings.get(aView) == 0:
+            pyfalog.debug("Setting disabled view for: {0}", aView)
+        else:
+            pyfalog.error("Unknown setting for view: {0}", aView)
 
     def fitChanged(self, event):
         sFit = Fit.getInstance()
@@ -97,9 +100,9 @@ class StatsPane(wx.Panel):
 
             try:
                 view = StatsView.getView(viewName)(self)
+                pyfalog.debug("Load view: {0}", viewName)
             except KeyError:
-                # View doesn't exist. Skip to next view
-                continue
+                pyfalog.error("Attempted to load an invalid view: {0}", viewName)
 
             self.nameViewMap[viewName] = view
             self.views.append(view)

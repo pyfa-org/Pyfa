@@ -22,6 +22,9 @@ import os.path
 import urllib2
 
 import config
+from logbook import Logger
+
+pyfalog = Logger(__name__)
 
 
 class SettingsProvider(object):
@@ -87,7 +90,8 @@ class Settings(object):
     def __getitem__(self, k):
         try:
             return self.info[k]
-        except KeyError:
+        except KeyError as e:
+            pyfalog.warning("Failed to get setting for '{0}'. Exception: {1}", k, e)
             return None
 
     def __setitem__(self, k, v):
@@ -363,7 +367,7 @@ class StatViewSettings(object):
             "recharge"     : 2,
             "firepower"    : 2,
             "capacitor"    : 2,
-            "targetingmisc": 1,
+            "targetingMisc": 1,
             "price"        : 2,
             "miningyield"  : 2,
             "drones"       : 2
