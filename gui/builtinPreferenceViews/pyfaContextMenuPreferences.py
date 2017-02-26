@@ -14,7 +14,6 @@ class PFContextMenuPref(PreferenceView):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
         self.dirtySettings = False
-        dlgWidth = panel.GetParent().GetParent().ClientSize.width
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
         self.stTitle = wx.StaticText(panel, wx.ID_ANY, self.title, wx.DefaultPosition, wx.DefaultSize, 0)

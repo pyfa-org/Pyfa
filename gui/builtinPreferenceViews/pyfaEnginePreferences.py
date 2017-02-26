@@ -5,7 +5,6 @@ import wx
 from service.fit import Fit
 from gui.bitmapLoader import BitmapLoader
 from gui.preferenceView import PreferenceView
-import gui.utils.fonts as fonts
 
 logger = logging.getLogger(__name__)
 
@@ -33,7 +32,8 @@ class PFFittingEnginePref(PreferenceView):
         self.m_staticline1 = wx.StaticLine(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL)
         mainSizer.Add(self.m_staticline1, 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 5)
 
-        self.cbGlobalForceReload = wx.CheckBox(panel, wx.ID_ANY, u"Factor in reload time when calculating capacitor usage, damage, and tank.", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.cbGlobalForceReload = wx.CheckBox(panel, wx.ID_ANY, u"Factor in reload time when calculating capacitor usage, damage, and tank.",
+                                               wx.DefaultPosition, wx.DefaultSize, 0)
         mainSizer.Add(self.cbGlobalForceReload, 0, wx.ALL | wx.EXPAND, 5)
 
         # Future code once new cap sim is implemented
