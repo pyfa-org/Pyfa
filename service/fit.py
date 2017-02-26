@@ -688,7 +688,7 @@ class Fit(object):
         self.recalc(fit)
         return True
 
-    def addDrone(self, fitID, itemID):
+    def addDrone(self, fitID, itemID, numDronesToAdd=1):
         if fitID is None:
             return False
 
@@ -707,7 +707,7 @@ class Fit(object):
                     fit.drones.append(drone)
                 else:
                     return False
-            drone.amount += 1
+            drone.amount += numDronesToAdd
             eos.db.commit()
             self.recalc(fit)
             return True
