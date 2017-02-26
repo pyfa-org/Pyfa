@@ -40,6 +40,7 @@ class StatsPane(wx.Panel):
         "resistances",
         "recharge",
         "firepower",
+        "outgoingView",
         "capacitor",
         "targetingMisc",
         "price",

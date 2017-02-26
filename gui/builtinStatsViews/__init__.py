@@ -4,6 +4,7 @@ __all__ = [
     "rechargeViewFull",
     "firepowerViewFull",
     "capacitorViewFull",
+    "outgoingViewFull",
     "targetingMiscViewMinimal",
     "priceViewFull",
 ]
