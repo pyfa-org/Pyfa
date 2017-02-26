@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,25 +15,27 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
+# noinspection PyPackageRequirements
 import wx
-import service
 
+from eos.saveddata.mode import Mode
+from service.attribute import Attribute
 from gui.utils.numberFormatter import formatAmount
 from gui.viewColumn import ViewColumn
 from gui.bitmapLoader import BitmapLoader
-from eos.types import Mode
+
 
 class CapacitorUse(ViewColumn):
     name = "Capacitor Usage"
+
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
 
         self.mask = wx.LIST_MASK_IMAGE
 
-        sAttr = service.Attribute.getInstance()
-        info = sAttr.getAttributeInfo("capacitorNeed")
+        Attribute.getInstance().getAttributeInfo("capacitorNeed")
         self.imageId = fittingView.imageList.GetImageIndex("capacitorRecharge_small", "gui")
         self.bitmap = BitmapLoader.getBitmap("capacitorRecharge_small", "gui")
 
@@ -52,5 +54,6 @@ class CapacitorUse(ViewColumn):
 
     def getToolTip(self, mod):
         return self.name
+
 
 CapacitorUse.register()

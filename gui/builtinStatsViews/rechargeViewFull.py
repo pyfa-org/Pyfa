@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,35 +15,38 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
+# noinspection PyPackageRequirements
 import wx
 from gui.statsView import StatsView
 from gui.bitmapLoader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 import gui.mainFrame
-import gui.builtinStatsViews.resistancesViewFull as rvf
-import service
+from gui.builtinStatsViews.resistancesViewFull import EFFECTIVE_HP_TOGGLED
+from service.fit import Fit
+
 
 class RechargeViewFull(StatsView):
     name = "rechargeViewFull"
+
     def __init__(self, parent):
         StatsView.__init__(self)
         self.parent = parent
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.mainFrame.Bind(rvf.EFFECTIVE_HP_TOGGLED, self.toggleEffective)
+        self.mainFrame.Bind(EFFECTIVE_HP_TOGGLED, self.toggleEffective)
         self.effective = True
 
     def getHeaderText(self, fit):
         return "Recharge rates"
 
     def getTextExtentW(self, text):
-        width, height = self.parent.GetTextExtent( text )
+        width, height = self.parent.GetTextExtent(text)
         return width
 
     def toggleEffective(self, event):
         self.effective = event.effective
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         self.refreshPanel(sFit.getFit(self.mainFrame.getActiveFit()))
         event.Skip()
 
@@ -53,21 +56,22 @@ class RechargeViewFull(StatsView):
         self.panel = contentPanel
         self.headerPanel = headerPanel
         sizerTankStats = wx.FlexGridSizer(3, 5)
-        for i in xrange(4):
+        for i in range(4):
             sizerTankStats.AddGrowableCol(i + 1)
 
         contentSizer.Add(sizerTankStats, 0, wx.EXPAND, 0)
 
-        #Add an empty label first for correct alignment.
+        # Add an empty label first for correct alignment.
         sizerTankStats.Add(wx.StaticText(contentPanel, wx.ID_ANY, ""), 0)
-        toolTipText = {"shieldPassive" : "Passive shield recharge", "shieldActive" : "Active shield boost", "armorActive" : "Armor repair amount", "hullActive" : "Hull repair amount"}
+        toolTipText = {"shieldPassive": "Passive shield recharge", "shieldActive": "Active shield boost",
+                       "armorActive": "Armor repair amount", "hullActive": "Hull repair amount"}
         for tankType in ("shieldPassive", "shieldActive", "armorActive", "hullActive"):
             bitmap = BitmapLoader.getStaticBitmap("%s_big" % tankType, contentPanel, "gui")
             tooltip = wx.ToolTip(toolTipText[tankType])
             bitmap.SetToolTip(tooltip)
             sizerTankStats.Add(bitmap, 0, wx.ALIGN_CENTER)
 
-        toolTipText = {"reinforced" : "Reinforced", "sustained" : "Sustained"}
+        toolTipText = {"reinforced": "Reinforced", "sustained": "Sustained"}
         for stability in ("reinforced", "sustained"):
             bitmap = BitmapLoader.getStaticBitmap("regen%s_big" % stability.capitalize(), contentPanel, "gui")
             tooltip = wx.ToolTip(toolTipText[stability])
@@ -79,7 +83,7 @@ class RechargeViewFull(StatsView):
                     continue
 
                 tankTypeCap = tankType[0].capitalize() + tankType[1:]
-                lbl = wx.StaticText(contentPanel, wx.ID_ANY, "0.0", style = wx.ALIGN_RIGHT)
+                lbl = wx.StaticText(contentPanel, wx.ID_ANY, "0.0", style=wx.ALIGN_RIGHT)
                 setattr(self, "labelTank%s%s" % (stability.capitalize(), tankTypeCap), lbl)
 
                 box = wx.BoxSizer(wx.HORIZONTAL)
@@ -91,12 +95,12 @@ class RechargeViewFull(StatsView):
         contentPanel.Layout()
 
     def refreshPanel(self, fit):
-        #If we did anything intresting, we'd update our labels to reflect the new fit's stats here
+        # If we did anything intresting, we'd update our labels to reflect the new fit's stats here
 
         for stability in ("reinforced", "sustained"):
-            if stability == "reinforced" and fit != None:
+            if stability == "reinforced" and fit is not None:
                 tank = fit.effectiveTank if self.effective else fit.tank
-            elif stability == "sustained" and fit != None:
+            elif stability == "sustained" and fit is not None:
                 tank = fit.effectiveSustainableTank if self.effective else fit.sustainableTank
             else:
                 tank = None
@@ -121,5 +125,6 @@ class RechargeViewFull(StatsView):
         label.SetToolTip(wx.ToolTip("%.3f" % value))
         self.panel.Layout()
         self.headerPanel.Layout()
+
 
 RechargeViewFull.register()

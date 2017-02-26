@@ -1,6 +1,7 @@
+logbook
 matplotlib
 PyYAML
 python-dateutil
 urllib3
 requests==2.11.1
-sqlalchemy
+sqlalchemy>=1.0.5

@@ -18,14 +18,15 @@
 # ===============================================================================
 
 import eos.db
-import eos.types
+from eos.saveddata.damagePattern import DamagePattern as es_DamagePattern
+from eos.saveddata.targetResists import TargetResists as es_TargetResists
 
 
 class ImportError(Exception):
     pass
 
 
-class DefaultDatabaseValues():
+class DefaultDatabaseValues(object):
     def __init__(self):
         pass
 
@@ -118,7 +119,7 @@ class DefaultDatabaseValues():
             name, em, therm, kin, exp = damageProfileRow
             damageProfile = eos.db.getDamagePattern(name)
             if damageProfile is None:
-                damageProfile = eos.types.DamagePattern(em, therm, kin, exp)
+                damageProfile = es_DamagePattern(em, therm, kin, exp)
                 damageProfile.name = name
                 eos.db.save(damageProfile)
 
@@ -180,7 +181,7 @@ class DefaultDatabaseValues():
             name, em, therm, kin, exp = targetResistProfileRow
             resistsProfile = eos.db.eos.db.getTargetResists(name)
             if resistsProfile is None:
-                resistsProfile = eos.types.TargetResists(em, therm, kin, exp)
+                resistsProfile = es_TargetResists(em, therm, kin, exp)
                 resistsProfile.name = name
                 eos.db.save(resistsProfile)
 
@@ -192,6 +193,6 @@ class DefaultDatabaseValues():
             name, em, therm, kin, exp = damageProfileRow
             damageProfile = eos.db.getDamagePattern(name)
             if damageProfile is None:
-                damageProfile = eos.types.DamagePattern(em, therm, kin, exp)
+                damageProfile = es_DamagePattern(em, therm, kin, exp)
                 damageProfile.name = name
                 eos.db.save(damageProfile)

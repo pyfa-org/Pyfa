@@ -17,13 +17,9 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-# from sqlalchemy.orm.attributes import flag_modified
-import logging
+from logbook import Logger
 
-import eos.db
-import eos.types
-
-logger = logging.getLogger(__name__)
+pyfalog = Logger(__name__)
 
 
 class HandledList(list):
@@ -140,10 +136,6 @@ class HandledModuleList(HandledList):
             self.remove(mod)
             return
 
-        # fix for #529, where a module may be in incorrect state after CCP changes mechanics of module
-        if not mod.isValidState(mod.state):
-            mod.state = eos.types.State.ONLINE
-
     def insert(self, index, mod):
         mod.position = index
         i = index
@@ -163,7 +155,7 @@ class HandledModuleList(HandledList):
     def toDummy(self, index):
         mod = self[index]
         if not mod.isEmpty:
-            dummy = eos.types.Module.buildEmpty(mod.slot)
+            dummy = mod.buildEmpty(mod.slot)
             dummy.position = index
             self[index] = dummy
 
@@ -172,10 +164,11 @@ class HandledModuleList(HandledList):
         self[index] = mod
 
     def freeSlot(self, slot):
-        for i in range(len(self) - 1, -1, -1):
+        for i in range(len(self)):
             mod = self[i]
             if mod.getModifiedItemAttr("subSystemSlot") == slot:
-                del self[i]
+                self.toDummy(i)
+                break
 
 
 class HandledDroneCargoList(HandledList):
@@ -205,7 +198,7 @@ class HandledImplantBoosterList(HandledList):
         # if needed, remove booster that was occupying slot
         oldObj = next((m for m in self if m.slot == thing.slot), None)
         if oldObj:
-            logging.info("Slot %d occupied with %s, replacing with %s", thing.slot, oldObj.item.name, thing.item.name)
+            pyfalog.info("Slot {0} occupied with {1}, replacing with {2}", thing.slot, oldObj.item.name, thing.item.name)
             oldObj.itemID = 0  # hack to remove from DB. See GH issue #324
             self.remove(oldObj)
 
@@ -229,7 +222,7 @@ class HandledProjectedModList(HandledList):
             oldEffect = next((m for m in self if m.item.group.name == "Effect Beacon"), None)
 
             if oldEffect:
-                logging.info("System effect occupied with %s, replacing with %s", oldEffect.item.name, proj.item.name)
+                pyfalog.info("System effect occupied with {0}, replacing with {1}", oldEffect.item.name, proj.item.name)
                 self.remove(oldEffect)
 
         HandledList.append(self, proj)

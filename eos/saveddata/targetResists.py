@@ -18,6 +18,9 @@
 # ===============================================================================
 
 import re
+from logbook import Logger
+
+pyfalog = Logger(__name__)
 
 
 class TargetResists(object):
@@ -43,7 +46,7 @@ class TargetResists(object):
                 type, data = line.rsplit('=', 1)
                 type, data = type.strip(), data.split(',')
             except:
-                # Data isn't in correct format, continue to next line
+                pyfalog.warning("Data isn't in correct format, continue to next line.")
                 continue
 
             if type != "TargetResists":
@@ -59,6 +62,7 @@ class TargetResists(object):
                     assert 0 <= val <= 100
                     fields["%sAmount" % cls.DAMAGE_TYPES[index]] = val / 100
                 except:
+                    pyfalog.warning("Caught unhandled exception in import patterns.")
                     continue
 
             if len(fields) == 4:  # Avoid possible blank lines
@@ -77,7 +81,12 @@ class TargetResists(object):
         out += "# TargetResists = [name],[EM %],[Thermal %],[Kinetic %],[Explosive %]\n\n"
         for dp in patterns:
             out += cls.EXPORT_FORMAT % (
-            dp.name, dp.emAmount * 100, dp.thermalAmount * 100, dp.kineticAmount * 100, dp.explosiveAmount * 100)
+                dp.name,
+                dp.emAmount * 100,
+                dp.thermalAmount * 100,
+                dp.kineticAmount * 100,
+                dp.explosiveAmount * 100
+            )
 
         return out.strip()
 

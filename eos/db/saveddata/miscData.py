@@ -21,7 +21,7 @@ from sqlalchemy import Column, Table, String
 from sqlalchemy.orm import mapper
 
 from eos.db import saveddata_meta
-from eos.types import MiscData
+from eos.saveddata.miscData import MiscData
 
 miscdata_table = Table("miscdata", saveddata_meta,
                        Column("fieldName", String, primary_key=True),

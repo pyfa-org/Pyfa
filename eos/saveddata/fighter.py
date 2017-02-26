@@ -17,16 +17,17 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-import logging
+from logbook import Logger
 
 from sqlalchemy.orm import validates, reconstructor
 
 import eos.db
 from eos.effectHandlerHelpers import HandledItem, HandledCharge
 from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut, ChargeAttrShortcut
-from eos.types import FighterAbility, Slot
+from eos.saveddata.fighterAbility import FighterAbility
+from eos.saveddata.module import Slot
 
-logger = logging.getLogger(__name__)
+pyfalog = Logger(__name__)
 
 
 class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
@@ -60,11 +61,11 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         if self.itemID:
             self.__item = eos.db.getItem(self.itemID)
             if self.__item is None:
-                logger.error("Item (id: %d) does not exist", self.itemID)
+                pyfalog.error("Item (id: {0}) does not exist", self.itemID)
                 return
 
         if self.isInvalid:
-            logger.error("Item (id: %d) is not a Fighter", self.itemID)
+            pyfalog.error("Item (id: {0}) is not a Fighter", self.itemID)
             return
 
         self.build()
@@ -149,10 +150,6 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         return self.__item
 
     @property
-    def charge(self):
-        return self.__charge
-
-    @property
     def hasAmmo(self):
         return self.charge is not None
 
@@ -222,10 +219,10 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     @validates("ID", "itemID", "chargeID", "amount", "amountActive")
     def validator(self, key, val):
-        map = {"ID": lambda val: isinstance(val, int),
-               "itemID": lambda val: isinstance(val, int),
-               "chargeID": lambda val: isinstance(val, int),
-               "amount": lambda val: isinstance(val, int) and val >= -1,
+        map = {"ID": lambda _val: isinstance(_val, int),
+               "itemID": lambda _val: isinstance(_val, int),
+               "chargeID": lambda _val: isinstance(_val, int),
+               "amount": lambda _val: isinstance(_val, int) and _val >= -1,
                }
 
         if not map[key](val):
@@ -273,8 +270,7 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         for ability in self.abilities:
             if ability.active:
                 effect = ability.effect
-                if effect.runTime == runTime and \
-                effect.activeByDefault and \
+                if effect.runTime == runTime and effect.activeByDefault and \
                         ((projected and effect.isType("projected")) or not projected):
                     if ability.grouped:
                         effect.handler(fit, self, context)

@@ -1,6 +1,6 @@
+# noinspection PyPackageRequirements
 import wx
-import thread
-import logging
+from logbook import Logger
 import threading
 import copy
 import uuid
@@ -8,26 +8,28 @@ import time
 
 import eos.db
 from eos.enum import Enum
-from eos.types import CrestChar
-
-import service
-
+from eos.saveddata.crestchar import CrestChar
 import gui.globalEvents as GE
+from service.settings import CRESTSettings
+from service.server import StoppableHTTPServer, AuthHandler
+from service.pycrest.eve import EVE
 
-logger = logging.getLogger(__name__)
+pyfalog = Logger(__name__)
+
 
 class Servers(Enum):
     TQ = 0
     SISI = 1
 
+
 class CrestModes(Enum):
     IMPLICIT = 0
     USER = 1
 
-class Crest():
 
+class Crest(object):
     clientIDs = {
-        Servers.TQ: 'f9be379951c046339dc13a00e6be7704',
+        Servers.TQ  : 'f9be379951c046339dc13a00e6be7704',
         Servers.SISI: 'af87365240d644f7950af563b8418bad'
     }
 
@@ -36,9 +38,10 @@ class Crest():
     clientTest = True
 
     _instance = None
+
     @classmethod
     def getInstance(cls):
-        if cls._instance == None:
+        if cls._instance is None:
             cls._instance = Crest()
 
         return cls._instance
@@ -64,7 +67,7 @@ class Crest():
         characters still in the cache (if USER mode)
         """
 
-        self.settings = service.settings.CRESTSettings.getInstance()
+        self.settings = CRESTSettings.getInstance()
         self.scopes = ['characterFittingsRead', 'characterFittingsWrite']
 
         # these will be set when needed
@@ -73,11 +76,12 @@ class Crest():
         self.ssoTimer = None
 
         # Base EVE connection that is copied to all characters
-        self.eve = service.pycrest.EVE(
-            client_id=self.settings.get('clientID') if self.settings.get('mode') == CrestModes.USER else self.clientIDs.get(self.settings.get('server')),
-            api_key=self.settings.get('clientSecret') if self.settings.get('mode') == CrestModes.USER else None,
-            redirect_uri=self.clientCallback,
-            testing=self.isTestServer
+        self.eve = EVE(
+                client_id=self.settings.get('clientID') if self.settings.get(
+                        'mode') == CrestModes.USER else self.clientIDs.get(self.settings.get('server')),
+                api_key=self.settings.get('clientSecret') if self.settings.get('mode') == CrestModes.USER else None,
+                redirect_uri=self.clientCallback,
+                testing=self.isTestServer
         )
 
         self.implicitCharacter = None
@@ -114,9 +118,9 @@ class Crest():
         return chars2
 
     def getCrestCharacter(self, charID):
-        '''
+        """
         Get character, and modify to include the eve connection
-        '''
+        """
         if self.settings.get('mode') == CrestModes.IMPLICIT:
             if self.implicitCharacter.ID != charID:
                 raise ValueError("CharacterID does not match currently logged in character.")
@@ -134,54 +138,60 @@ class Crest():
 
     def getFittings(self, charID):
         char = self.getCrestCharacter(charID)
-        return char.eve.get('%scharacters/%d/fittings/'%(char.eve._authed_endpoint,char.ID))
+        return char.eve.get('%scharacters/%d/fittings/' % (char.eve._authed_endpoint, char.ID))
 
     def postFitting(self, charID, json):
-        #@todo: new fitting ID can be recovered from Location header, ie: Location -> https://api-sisi.testeveonline.com/characters/1611853631/fittings/37486494/
+        # @todo: new fitting ID can be recovered from Location header,
+        # ie: Location -> https://api-sisi.testeveonline.com/characters/1611853631/fittings/37486494/
         char = self.getCrestCharacter(charID)
-        return char.eve.post('%scharacters/%d/fittings/'%(char.eve._authed_endpoint,char.ID), data=json)
+        return char.eve.post('%scharacters/%d/fittings/' % (char.eve._authed_endpoint, char.ID), data=json)
 
     def delFitting(self, charID, fittingID):
         char = self.getCrestCharacter(charID)
-        return char.eve.delete('%scharacters/%d/fittings/%d/'%(char.eve._authed_endpoint, char.ID, fittingID))
+        return char.eve.delete('%scharacters/%d/fittings/%d/' % (char.eve._authed_endpoint, char.ID, fittingID))
 
     def logout(self):
         """Logout of implicit character"""
-        logging.debug("Character logout")
+        pyfalog.debug("Character logout")
         self.implicitCharacter = None
         wx.PostEvent(self.mainFrame, GE.SsoLogout(type=self.settings.get('mode')))
 
     def stopServer(self):
-        logging.debug("Stopping Server")
+        pyfalog.debug("Stopping Server")
         self.httpd.stop()
         self.httpd = None
 
     def startServer(self):
-        logging.debug("Starting server")
+        pyfalog.debug("Starting server")
         if self.httpd:
             self.stopServer()
-            time.sleep(1)  # we need this to ensure that the previous get_request finishes, and then the socket will close
-        self.httpd = service.StoppableHTTPServer(('', 6461), service.AuthHandler)
-        thread.start_new_thread(self.httpd.serve, (self.handleLogin,))
+            time.sleep(1)
+            # we need this to ensure that the previous get_request finishes, and then the socket will close
+        self.httpd = StoppableHTTPServer(('localhost', 6461), AuthHandler)
+
+        self.serverThread = threading.Thread(target=self.httpd.serve, args=(self.handleLogin,))
+        self.serverThread.name = "CRESTServer"
+        self.serverThread.daemon = True
+        self.serverThread.start()
 
         self.state = str(uuid.uuid4())
         return self.eve.auth_uri(scopes=self.scopes, state=self.state)
 
     def handleLogin(self, message):
         if not message:
-            return
+            raise Exception("Could not parse out querystring parameters.")
 
         if message['state'][0] != self.state:
-            logger.warn("OAUTH state mismatch")
-            return
+            pyfalog.warn("OAUTH state mismatch")
+            raise Exception("OAUTH State Mismatch.")
 
-        logger.debug("Handling CREST login with: %s"%message)
+        pyfalog.debug("Handling CREST login with: {0}", message)
 
         if 'access_token' in message:  # implicit
             eve = copy.deepcopy(self.eve)
             eve.temptoken_authorize(
-                access_token=message['access_token'][0],
-                expires_in=int(message['expires_in'][0])
+                    access_token=message['access_token'][0],
+                    expires_in=int(message['expires_in'][0])
             )
             self.ssoTimer = threading.Timer(int(message['expires_in'][0]), self.logout)
             self.ssoTimer.start()
@@ -189,11 +199,11 @@ class Crest():
             eve()
             info = eve.whoami()
 
-            logger.debug("Got character info: %s" % info)
+            pyfalog.debug("Got character info: {0}", info)
 
             self.implicitCharacter = CrestChar(info['CharacterID'], info['CharacterName'])
             self.implicitCharacter.eve = eve
-            #self.implicitCharacter.fetchImage()
+            # self.implicitCharacter.fetchImage()
 
             wx.PostEvent(self.mainFrame, GE.SsoLogin(type=CrestModes.IMPLICIT))
         elif 'code' in message:
@@ -202,7 +212,7 @@ class Crest():
             eve()
             info = eve.whoami()
 
-            logger.debug("Got character info: %s" % info)
+            pyfalog.debug("Got character info: {0}", info)
 
             # check if we have character already. If so, simply replace refresh_token
             char = self.getCrestCharacter(int(info['CharacterID']))
@@ -215,5 +225,3 @@ class Crest():
             eos.db.save(char)
 
             wx.PostEvent(self.mainFrame, GE.SsoLogin(type=CrestModes.USER))
-
-        self.stopServer()

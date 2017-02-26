@@ -1,10 +1,20 @@
 import threading
 import time
-import service
+# noinspection PyPackageRequirements
 import wx
+from service.settings import HTMLExportSettings
+from service.fit import Fit
+from service.port import Port
+from service.market import Market
+from logbook import Logger
+from eos.db import getFit
 
-class exportHtml():
+pyfalog = Logger(__name__)
+
+
+class exportHtml(object):
     _instance = None
+
     @classmethod
     def getInstance(cls):
         if cls._instance is None:
@@ -16,17 +26,18 @@ class exportHtml():
         self.thread = exportHtmlThread()
 
     def refreshFittingHtml(self, force=False, callback=False):
-        settings = service.settings.HTMLExportSettings.getInstance()
+        settings = HTMLExportSettings.getInstance()
 
         if force or settings.getEnabled():
             self.thread.stop()
             self.thread = exportHtmlThread(callback)
             self.thread.start()
 
-class exportHtmlThread(threading.Thread):
 
+class exportHtmlThread(threading.Thread):
     def __init__(self, callback=False):
         threading.Thread.__init__(self)
+        self.name = "HTMLExport"
         self.callback = callback
         self.stopRunning = False
 
@@ -39,39 +50,34 @@ class exportHtmlThread(threading.Thread):
         if self.stopRunning:
             return
 
-        sMkt = service.Market.getInstance()
-        sFit = service.Fit.getInstance()
-        settings = service.settings.HTMLExportSettings.getInstance()
+        sMkt = Market.getInstance()
+        sFit = Fit.getInstance()
+        settings = HTMLExportSettings.getInstance()
 
-        timestamp = time.localtime(time.time())
-        localDate = "%d/%02d/%02d %02d:%02d" % (timestamp[0], timestamp[1], timestamp[2], timestamp[3], timestamp[4])
-
-        minimal = settings.getMinimalEnabled();
+        minimal = settings.getMinimalEnabled()
         dnaUrl = "https://o.smium.org/loadout/dna/"
 
         if minimal:
-            HTML = self.generateMinimalHTML(sMkt,sFit, dnaUrl)
+            HTML = self.generateMinimalHTML(sMkt, sFit, dnaUrl)
         else:
-            HTML = self.generateFullHTML(sMkt,sFit, dnaUrl)
+            HTML = self.generateFullHTML(sMkt, sFit, dnaUrl)
 
         try:
             FILE = open(settings.getPath(), "w")
             FILE.write(HTML.encode('utf-8'))
             FILE.close()
         except IOError:
-            print "Failed to write to " + settings.getPath()
+            print("Failed to write to " + settings.getPath())
             pass
 
         if self.callback:
             wx.CallAfter(self.callback, -1)
 
-
-
-    def generateFullHTML(self,sMkt,sFit,dnaUrl):
+    def generateFullHTML(self, sMkt, sFit, dnaUrl):
         """ Generate the complete HTML with styling and javascript """
         timestamp = time.localtime(time.time())
         localDate = "%d/%02d/%02d %02d:%02d" % (timestamp[0], timestamp[1], timestamp[2], timestamp[3], timestamp[4])
-        
+
         HTML = """
 <!DOCTYPE html>
 <html>
@@ -150,7 +156,7 @@ class exportHtmlThread(threading.Thread):
       $('a[data-dna]').each(function( index ) {
         var dna = $(this).data('dna');
         if (typeof CCPEVE !== 'undefined') { // inside IGB
-          $(this).attr('href', 'javascript:CCPEVE.showFitting("'+dna+'");');} 
+          $(this).attr('href', 'javascript:CCPEVE.showFitting("'+dna+'");');}
         else {                               // outside IGB
           $(this).attr('href', '%s'+dna); }
       });
@@ -168,7 +174,7 @@ class exportHtmlThread(threading.Thread):
 """ % (time.time(), dnaUrl, localDate)
         HTML += '  <ul data-role="listview" class="ui-listview-outer" data-inset="true" data-filter="true">\n'
         categoryList = list(sMkt.getShipRoot())
-        categoryList.sort(key=lambda ship: ship.name)
+        categoryList.sort(key=lambda _ship: _ship.name)
 
         count = 0
 
@@ -177,12 +183,13 @@ class exportHtmlThread(threading.Thread):
             HTMLgroup = ''
 
             ships = list(sMkt.getShipList(group.ID))
-            ships.sort(key=lambda ship: ship.name)
+            ships.sort(key=lambda _ship: _ship.name)
 
             # Keep track of how many ships per group
             groupFits = 0
             for ship in ships:
                 fits = sFit.getFitsWithShip(ship.ID)
+
                 if len(fits) > 0:
                     groupFits += len(fits)
 
@@ -191,10 +198,11 @@ class exportHtmlThread(threading.Thread):
                             return
                         fit = fits[0]
                         try:
-                            dnaFit = sFit.exportDna(fit[0])
-                            HTMLgroup += (
-                            '        <li><a data-dna="' + dnaFit + '" target="_blank">' + ship.name + ": " + fit[1] + '</a></li>\n')
+                            dnaFit = Port.exportDna(getFit(fit[0]))
+                            HTMLgroup += '        <li><a data-dna="' + dnaFit + '" target="_blank">' + ship.name + ": " + \
+                                         fit[1] + '</a></li>\n'
                         except:
+                            pyfalog.warning("Failed to export line")
                             pass
                         finally:
                             if self.callback:
@@ -203,17 +211,22 @@ class exportHtmlThread(threading.Thread):
                     else:
                         # Ship group header
                         HTMLship = (
-                        '        <li data-role="collapsible" data-iconpos="right" data-shadow="false" data-corners="false">\n'
-                        '        <h2>' + ship.name + ' <span class="ui-li-count">'+str(len(fits))+'</span></h2>\n'
-                        '          <ul data-role="listview" data-shadow="false" data-inset="true" data-corners="false">\n')
+                            '        <li data-role="collapsible" data-iconpos="right" data-shadow="false" data-corners="false">\n'
+                            '        <h2>' + ship.name + ' <span class="ui-li-count">' + str(
+                                len(fits)) + '</span></h2>\n'
+                                             '          <ul data-role="listview" data-shadow="false" data-inset="true" data-corners="false">\n'
+                        )
 
                         for fit in fits:
                             if self.stopRunning:
                                 return
                             try:
-                                dnaFit = sFit.exportDna(fit[0])
-                                HTMLship += '          <li><a data-dna="' + dnaFit + '" target="_blank">' + fit[1] + '</a></li>\n'
+                                dnaFit = Port.exportDna(getFit(fit[0]))
+                                print dnaFit
+                                HTMLship += '          <li><a data-dna="' + dnaFit + '" target="_blank">' + fit[
+                                    1] + '</a></li>\n'
                             except:
+                                pyfalog.warning("Failed to export line")
                                 continue
                             finally:
                                 if self.callback:
@@ -225,12 +238,12 @@ class exportHtmlThread(threading.Thread):
             if groupFits > 0:
                 # Market group header
                 HTML += (
-                '    <li data-role="collapsible" data-iconpos="right" data-shadow="false" data-corners="false">\n'
-                '      <h2>' + group.groupName + ' <span class="ui-li-count">'+str(groupFits)+'</span></h2>\n'
-                '      <ul data-role="listview" data-shadow="false" data-inset="true" data-corners="false">\n'
-                + HTMLgroup +
-                '      </ul>\n'
-                '    </li>')
+                    '    <li data-role="collapsible" data-iconpos="right" data-shadow="false" data-corners="false">\n'
+                    '      <h2>' + group.groupName + ' <span class="ui-li-count">' + str(groupFits) + '</span></h2>\n'
+                    '      <ul data-role="listview" data-shadow="false" data-inset="true" data-corners="false">\n' + HTMLgroup +
+                    '      </ul>\n'
+                    '    </li>'
+                )
 
         HTML += """
   </ul>
@@ -241,21 +254,20 @@ class exportHtmlThread(threading.Thread):
 
         return HTML
 
-    def generateMinimalHTML(self,sMkt,sFit,dnaUrl):
+    def generateMinimalHTML(self, sMkt, sFit, dnaUrl):
         """ Generate a minimal HTML version of the fittings, without any javascript or styling"""
         categoryList = list(sMkt.getShipRoot())
-        categoryList.sort(key=lambda ship: ship.name)
+        categoryList.sort(key=lambda _ship: _ship.name)
 
         count = 0
         HTML = ''
         for group in categoryList:
             # init market group string to give ships something to attach to
-            
 
             ships = list(sMkt.getShipList(group.ID))
-            ships.sort(key=lambda ship: ship.name)
+            ships.sort(key=lambda _ship: _ship.name)
 
-            ships.sort(key=lambda ship: ship.name)
+            ships.sort(key=lambda _ship: _ship.name)
 
             for ship in ships:
                 fits = sFit.getFitsWithShip(ship.ID)
@@ -263,9 +275,11 @@ class exportHtmlThread(threading.Thread):
                     if self.stopRunning:
                         return
                     try:
-                        dnaFit = sFit.exportDna(fit[0])                  
-                        HTML += '<a class="outOfGameBrowserLink" target="_blank" href="' + dnaUrl + dnaFit + '">'+ship.name +': '+ fit[1]+ '</a><br> \n'
+                        dnaFit = Port.exportDna(getFit(fit[0]))
+                        HTML += '<a class="outOfGameBrowserLink" target="_blank" href="' + dnaUrl + dnaFit + '">' + ship.name + ': ' + \
+                                fit[1] + '</a><br> \n'
                     except:
+                        pyfalog.error("Failed to export line")
                         continue
                     finally:
                         if self.callback:

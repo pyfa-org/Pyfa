@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,19 +15,19 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
 from gui.viewColumn import ViewColumn
-from gui.bitmapLoader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
-import wx
-import service
+from service.attribute import Attribute
+
 
 class PropertyDisplay(ViewColumn):
     name = "prop"
+
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
-        sAttr = service.Attribute.getInstance()
+        sAttr = Attribute.getInstance()
         attributeSlave = params["attributeSlave"] or params["property"]
         # This function can throw an exception if the database isn't sane
         # We need to do a sanity check before this runs
@@ -56,7 +56,7 @@ class PropertyDisplay(ViewColumn):
     def getText(self, stuff):
         attr = getattr(stuff, self.propertyName, None)
         if attr:
-            return (formatAmount(attr, 3, 0, 3))
+            return formatAmount(attr, 3, 0, 3)
         else:
             return ""
 
@@ -66,5 +66,6 @@ class PropertyDisplay(ViewColumn):
                 ("attributeSlave", str, None),
                 ("displayName", bool, False),
                 ("showIcon", bool, True))
+
 
 PropertyDisplay.register()

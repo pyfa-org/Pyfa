@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,24 +15,32 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
-import os.path
-import config
-import wx
-import zipfile
 import cStringIO
+import os.path
+import zipfile
+
+# noinspection PyPackageRequirements
+import wx
+
+import config
+
+from logbook import Logger
+logging = Logger(__name__)
 
 try:
     from collections import OrderedDict
 except ImportError:
     from utils.compat import OrderedDict
 
-class BitmapLoader():
 
+class BitmapLoader(object):
     try:
         archive = zipfile.ZipFile(os.path.join(config.pyfaPath, 'imgs.zip'), 'r')
+        logging.info("Using zipped image files.")
     except IOError:
+        logging.info("Using local image files.")
         archive = None
 
     cachedBitmaps = OrderedDict()
@@ -42,7 +50,7 @@ class BitmapLoader():
     @classmethod
     def getStaticBitmap(cls, name, parent, location):
         static = wx.StaticBitmap(parent)
-        static.SetBitmap(cls.getBitmap(name,location))
+        static.SetBitmap(cls.getBitmap(name, location))
         return static
 
     @classmethod
@@ -83,11 +91,11 @@ class BitmapLoader():
                 sbuf = cStringIO.StringIO(img_data)
                 return wx.ImageFromStream(sbuf)
             except KeyError:
-                print "Missing icon file from zip: {0}".format(path)
+                print("Missing icon file from zip: {0}".format(path))
         else:
-            path = os.path.join(config.pyfaPath, 'imgs', location, filename)
+            path = os.path.join(config.pyfaPath, 'imgs' + os.sep + location + os.sep + filename)
 
             if os.path.exists(path):
                 return wx.Image(path)
             else:
-                print "Missing icon file: {0}".format(path)
+                print("Missing icon file: {0}".format(path))

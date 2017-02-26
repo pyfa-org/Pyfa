@@ -17,7 +17,7 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-import logging
+from logbook import Logger
 
 from sqlalchemy.orm import validates, reconstructor
 
@@ -26,15 +26,12 @@ from eos.effectHandlerHelpers import HandledItem, HandledCharge
 from eos.enum import Enum
 from eos.mathUtils import floorFloat
 from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut, ChargeAttrShortcut
-from eos.types import Citadel
+from eos.saveddata.citadel import Citadel
 
-logger = logging.getLogger(__name__)
+pyfalog = Logger(__name__)
 
 
 class State(Enum):
-    def __init__(self):
-        pass
-
     OFFLINE = -1
     ONLINE = 0
     ACTIVE = 1
@@ -42,9 +39,6 @@ class State(Enum):
 
 
 class Slot(Enum):
-    def __init__(self):
-        pass
-
     # These are self-explanatory
     LOW = 1
     MED = 2
@@ -65,9 +59,6 @@ class Slot(Enum):
 
 
 class Hardpoint(Enum):
-    def __init__(self):
-        pass
-
     NONE = 0
     MISSILE = 1
     TURRET = 2
@@ -103,11 +94,11 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         if self.itemID:
             self.__item = eos.db.getItem(self.itemID)
             if self.__item is None:
-                logger.error("Item (id: %d) does not exist", self.itemID)
+                pyfalog.error("Item (id: {0}) does not exist", self.itemID)
                 return
 
         if self.isInvalid:
-            logger.error("Item (id: %d) is not a Module", self.itemID)
+            pyfalog.error("Item (id: {0}) is not a Module", self.itemID)
             return
 
         if self.chargeID:
@@ -167,7 +158,9 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     def isInvalid(self):
         if self.isEmpty:
             return False
-        return self.__item is None or (self.__item.category.name not in ("Module", "Subsystem", "Structure Module") and self.__item.group.name != "Effect Beacon")
+        return self.__item is None or \
+               (self.__item.category.name not in ("Module", "Subsystem", "Structure Module") and
+                self.__item.group.name != "Effect Beacon")
 
     @property
     def numCharges(self):
@@ -200,6 +193,11 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             return self.__chargeCycles
         else:
             return self.__chargeCycles
+
+    @property
+    def modPosition(self):
+        if self.owner:
+            return self.owner.modules.index(self)
 
     @property
     def hpBeforeReload(self):
@@ -549,7 +547,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
         return validCharges
 
-    def __calculateHardpoint(self, item):
+    @staticmethod
+    def __calculateHardpoint(item):
         effectHardpointMap = {"turretFitted": Hardpoint.TURRET,
                               "launcherFitted": Hardpoint.MISSILE}
 
@@ -562,7 +561,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
         return Hardpoint.NONE
 
-    def __calculateSlot(self, item):
+    @staticmethod
+    def __calculateSlot(item):
         effectSlotMap = {"rigSlot": Slot.RIG,
                          "loPower": Slot.LOW,
                          "medPower": Slot.MED,
@@ -581,9 +581,9 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     @validates("ID", "itemID", "ammoID")
     def validator(self, key, val):
-        map = {"ID": lambda val: isinstance(val, int),
-               "itemID": lambda val: val is None or isinstance(val, int),
-               "ammoID": lambda val: isinstance(val, int)}
+        map = {"ID": lambda _val: isinstance(_val, int),
+               "itemID": lambda _val: _val is None or isinstance(_val, int),
+               "ammoID": lambda _val: isinstance(_val, int)}
 
         if not map[key](val):
             raise ValueError(str(val) + " is not a valid value for " + key)
@@ -600,9 +600,9 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         self.itemModifiedAttributes.clear()
         self.chargeModifiedAttributes.clear()
 
-    def calculateModifiedAttributes(self, fit, runTime, forceProjected = False, gang = False):
-        #We will run the effect when two conditions are met:
-        #1: It makes sense to run the effect
+    def calculateModifiedAttributes(self, fit, runTime, forceProjected=False, gang=False):
+        # We will run the effect when two conditions are met:
+        # 1: It makes sense to run the effect
         #    The effect is either offline
         #    or the effect is passive and the module is in the online state (or higher)
 
@@ -625,11 +625,11 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             if not projected or (self.projected and not forceProjected) or gang:
                 for effect in self.charge.effects.itervalues():
                     if effect.runTime == runTime and \
-                        effect.activeByDefault and \
-                        (effect.isType("offline") or
-                        (effect.isType("passive") and self.state >= State.ONLINE) or
-                        (effect.isType("active") and self.state >= State.ACTIVE)) and \
-                        (not gang or (gang and effect.isType("gang"))):
+                            effect.activeByDefault and \
+                            (effect.isType("offline") or
+                                (effect.isType("passive") and self.state >= State.ONLINE) or
+                                (effect.isType("active") and self.state >= State.ACTIVE)) and \
+                            (not gang or (gang and effect.isType("gang"))):
 
                         chargeContext = ("moduleCharge",)
                         # For gang effects, we pass in the effect itself as an argument. However, to avoid going through
@@ -655,9 +655,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                         effect.activeByDefault and \
                         (effect.isType("offline") or
                              (effect.isType("passive") and self.state >= State.ONLINE) or
-
-                             (effect.isType("active") and self.state >= State.ACTIVE))\
-                        and ((projected and effect.isType("projected")) or not projected)\
+                             (effect.isType("active") and self.state >= State.ACTIVE)) \
+                        and ((projected and effect.isType("projected")) or not projected) \
                         and ((gang and effect.isType("gang")) or not gang):
                     try:
                         effect.handler(fit, self, context, effect=effect)

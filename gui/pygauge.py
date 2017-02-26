@@ -11,16 +11,17 @@ PyfaGauge is a generic Gauge implementation tailored for PYFA (Python Fitting As
 It uses the easeOutQuad equation from caurina.transitions.Tweener to do the animation stuff
 """
 
+# noinspection PyPackageRequirements
 import wx
 import copy
-import math
 
 from gui.utils import colorUtils
 import gui.utils.drawUtils as drawUtils
 import gui.utils.animEffects as animEffects
 import gui.utils.fonts as fonts
 
-from service import fit
+from service.fit import Fit
+
 
 class PyGauge(wx.PyWindow):
     """
@@ -29,7 +30,7 @@ class PyGauge(wx.PyWindow):
     """
 
     def __init__(self, parent, id=wx.ID_ANY, range=100, pos=wx.DefaultPosition,
-                 size=(-1,30), style=0):
+                 size=(-1, 30), style=0):
         """
         Default class constructor.
 
@@ -46,8 +47,8 @@ class PyGauge(wx.PyWindow):
         self._size = size
 
         self._border_colour = wx.BLACK
-        self._barColour    = self._barColourSorted   = [wx.Colour(212,228,255)]
-        self._barGradient  = self._barGradientSorted = None
+        self._barColour = self._barColourSorted = [wx.Colour(212, 228, 255)]
+        self._barGradient = self._barGradientSorted = None
 
         self._border_padding = 0
         self._range = range
@@ -67,10 +68,10 @@ class PyGauge(wx.PyWindow):
         self._animDirection = 0
         self.animEffect = animEffects.OUT_QUAD
 
-        self.transitionsColors = [( wx.Colour(191, 191, 191, 255)  , wx.Colour(96, 191, 0, 255) ),
-                                 ( wx.Colour(191, 167, 96, 255)  ,  wx.Colour(255, 191, 0, 255) ),
-                                 ( wx.Colour(255, 191, 0, 255)  ,  wx.Colour(255, 128, 0, 255) ),
-                                 ( wx.Colour(255, 128, 0, 255)  ,  wx.Colour(255, 0, 0, 255) )]
+        self.transitionsColors = [(wx.Colour(191, 191, 191, 255), wx.Colour(96, 191, 0, 255)),
+                                  (wx.Colour(191, 167, 96, 255), wx.Colour(255, 191, 0, 255)),
+                                  (wx.Colour(255, 191, 0, 255), wx.Colour(255, 128, 0, 255)),
+                                  (wx.Colour(255, 128, 0, 255), wx.Colour(255, 0, 0, 255))]
         self.gradientEffect = -35
 
         self._percentage = 0
@@ -79,8 +80,8 @@ class PyGauge(wx.PyWindow):
 
         self.font = wx.Font(fonts.NORMAL, wx.SWISS, wx.NORMAL, wx.NORMAL, False)
 
-        self.SetBarGradient((wx.Colour(119,119,119),wx.Colour(153,153,153)))
-        self.SetBackgroundColour(wx.Colour(51,51,51))
+        self.SetBarGradient((wx.Colour(119, 119, 119), wx.Colour(153, 153, 153)))
+        self.SetBackgroundColour(wx.Colour(51, 51, 51))
         self._tooltip = wx.ToolTip("")
         self.SetToolTip(self._tooltip)
         self._tooltip.SetTip("0.00/100.00")
@@ -107,7 +108,6 @@ class PyGauge(wx.PyWindow):
 
         return wx.Size(self._size[0], self._size[1])
 
-
     def GetBorderColour(self):
         return self._border_colour
 
@@ -121,7 +121,7 @@ class PyGauge(wx.PyWindow):
         return self._barColour[0]
 
     def SetBarColour(self, colour):
-        if type(colour) != type([]):
+        if not isinstance(colour, list):
             self._barColour = [colour]
         else:
             self._barColour = list(colour)
@@ -130,30 +130,29 @@ class PyGauge(wx.PyWindow):
     GetBarColor = GetBarColour
 
     def SetFractionDigits(self, digits):
-        self._fractionDigits=digits
+        self._fractionDigits = digits
 
     def GetBarGradient(self):
         """ Returns a tuple containing the gradient start and end colours. """
 
-        if self._barGradient == None:
+        if self._barGradient is None:
             return None
 
         return self._barGradient[0]
 
-    def SetBarGradient(self, gradient = None):
+    def SetBarGradient(self, gradient=None):
         """
         Sets the bar gradient. This overrides the BarColour.
 
-        :param `gradient`: a tuple containing the gradient start and end colours.
+        :param gradient: a tuple containing the gradient start and end colours.
         """
-        if gradient == None:
+        if gradient is None:
             self._barGradient = None
         else:
-            if type(gradient) != type([]):
+            if not isinstance(gradient, list):
                 self._barGradient = [gradient]
             else:
                 self._barGradient = list(gradient)
-
 
     def GetBorderPadding(self):
         """ Gets the border padding. """
@@ -164,11 +163,10 @@ class PyGauge(wx.PyWindow):
         """
         Sets the border padding.
 
-        :param `padding`: pixels between the border and the progress bar.
+        :param padding: pixels between the border and the progress bar.
         """
 
         self._border_padding = padding
-
 
     def GetRange(self):
         """ Returns the maximum value of the gauge. """
@@ -176,7 +174,7 @@ class PyGauge(wx.PyWindow):
         return self._range
 
     def Animate(self):
-        sFit = fit.Fit.getInstance()
+        sFit = Fit.getInstance()
         if sFit.serviceFittingOptions["enableGaugeAnimation"]:
             if not self._timer:
                 self._timer = wx.Timer(self, self._timerId)
@@ -186,27 +184,28 @@ class PyGauge(wx.PyWindow):
             self._animValue = self._percentage
             self.Refresh()
 
-    def SetRange(self, range, reinit = False):
+    def SetRange(self, range, reinit=False):
         """
         Sets the range of the gauge. The gauge length is its
         value as a proportion of the range.
 
-        :param `range`: The maximum value of the gauge.
+        :param reinit:
+        :param range: The maximum value of the gauge.
         """
 
         if self._range == range:
             return
 
-        range = float(range)
+        range_ = float(range)
 
-        if range <= 0:
+        if range_ <= 0:
             self._range = 0.01
         else:
-            self._range = range
+            self._range = range_
 
         if reinit is False:
             self._oldPercentage = self._percentage
-            self._percentage = (self._value/self._range) * 100
+            self._percentage = (self._value / self._range) * 100
         else:
             self._oldPercentage = self._percentage
             self._percentage = 0
@@ -214,9 +213,7 @@ class PyGauge(wx.PyWindow):
 
         self.Animate()
 
-
-        self._tooltip.SetTip("%.2f/%.2f" % (self._value, self._range if self._range >0.01 else 0))
-
+        self._tooltip.SetTip("%.2f/%.2f" % (self._value, self._range if self._range > 0.01 else 0))
 
     def GetValue(self):
         """ Returns the current position of the gauge. """
@@ -233,22 +230,22 @@ class PyGauge(wx.PyWindow):
         self._value = value
         if value < 0:
             self._value = 0
-        self._percentage = (self._value/self._range) * 100
+        self._percentage = (self._value / self._range) * 100
 
         self.Animate()
 
         self._tooltip.SetTip("%.2f/%.2f" % (self._value, self._range))
 
-    def SetValueRange(self, value, range, reinit = False):
+    def SetValueRange(self, value, range, reinit=False):
         if self._value == value and self._range == range:
             return
 
-        range = float(range)
+        range_ = float(range)
 
-        if range <= 0:
+        if range_ <= 0:
             self._range = 0.01
         else:
-            self._range = range
+            self._range = range_
 
         value = float(value)
 
@@ -258,21 +255,21 @@ class PyGauge(wx.PyWindow):
 
         if reinit is False:
             self._oldPercentage = self._percentage
-            self._percentage = (self._value/self._range) * 100
+            self._percentage = (self._value / self._range) * 100
 
         else:
             self._oldPercentage = self._percentage
             self._percentage = 0
 
-
         self.Animate()
-        self._tooltip.SetTip("%.2f/%.2f" % (self._value, self._range if self._range >0.01 else 0))
+        self._tooltip.SetTip("%.2f/%.2f" % (self._value, self._range if self._range > 0.01 else 0))
 
-    def OnEraseBackground(self, event):
+    @staticmethod
+    def OnEraseBackground(event):
         """
         Handles the ``wx.EVT_ERASE_BACKGROUND`` event for L{PyGauge}.
 
-        :param `event`: a `wx.EraseEvent` event to be processed.
+        :param event: a `wx.EraseEvent` event to be processed.
 
         :note: This method is intentionally empty to reduce flicker.
         """
@@ -283,7 +280,7 @@ class PyGauge(wx.PyWindow):
         """
         Handles the ``wx.EVT_PAINT`` event for L{PyGauge}.
 
-        :param `event`: a `wx.PaintEvent` event to be processed.
+        :param event: a `wx.PaintEvent` event to be processed.
         """
 
         dc = wx.BufferedPaintDC(self)
@@ -308,7 +305,7 @@ class PyGauge(wx.PyWindow):
             dc.SetPen(wx.Pen(self.GetBorderColour()))
             dc.DrawRectangleRect(rect)
             pad = 1 + self.GetBorderPadding()
-            rect.Deflate(pad,pad)
+            rect.Deflate(pad, pad)
 
         if self.GetBarGradient():
 
@@ -326,48 +323,46 @@ class PyGauge(wx.PyWindow):
                 # time on them if not needed. See GH issue #282
 
                 pv = value
-                xv=1
-                transition = 0
 
                 if pv <= 100:
-                    xv = pv/100
+                    xv = pv / 100
                     transition = 0
 
-                elif pv <=101:
-                    xv = pv -100
+                elif pv <= 101:
+                    xv = pv - 100
                     transition = 1
 
                 elif pv <= 103:
-                    xv = (pv -101)/2
+                    xv = (pv - 101) / 2
                     transition = 2
 
                 elif pv <= 105:
-                    xv = (pv -103)/2
+                    xv = (pv - 103) / 2
                     transition = 3
 
                 else:
                     pv = 106
-                    xv = pv -100
+                    xv = pv - 100
                     transition = -1
 
                 if transition != -1:
-                    colorS,colorE = self.transitionsColors[transition]
+                    colorS, colorE = self.transitionsColors[transition]
                     color = colorUtils.CalculateTransitionColor(colorS, colorE, xv)
                 else:
-                    color = wx.Colour(191,48,48)
+                    color = wx.Colour(191, 48, 48)
 
                 if self.gradientEffect > 0:
-                    gcolor = colorUtils.BrightenColor(color,  float(self.gradientEffect) / 100)
-                    gMid = colorUtils.BrightenColor(color,  float(self.gradientEffect/2) / 100)
+                    gcolor = colorUtils.BrightenColor(color, float(self.gradientEffect) / 100)
+                    gMid = colorUtils.BrightenColor(color, float(self.gradientEffect / 2) / 100)
                 else:
-                    gcolor = colorUtils.DarkenColor(color,  float(-self.gradientEffect) / 100)
-                    gMid = colorUtils.DarkenColor(color,  float(-self.gradientEffect/2) / 100)
+                    gcolor = colorUtils.DarkenColor(color, float(-self.gradientEffect) / 100)
+                    gMid = colorUtils.DarkenColor(color, float(-self.gradientEffect / 2) / 100)
 
                 gBmp = drawUtils.DrawGradientBar(r.width, r.height, gMid, color, gcolor)
                 dc.DrawBitmap(gBmp, r.left, r.top)
 
         else:
-            colour=self.GetBarColour()
+            colour = self.GetBarColour()
             dc.SetBrush(wx.Brush(colour))
             dc.SetPen(wx.Pen(colour))
             if value > 100:
@@ -381,14 +376,14 @@ class PyGauge(wx.PyWindow):
         dc.SetFont(self.font)
 
         r = copy.copy(rect)
-        r.left +=1
-        r.top +=1
+        r.left += 1
+        r.top += 1
         if self._range == 0.01 and self._value > 0:
-            formatStr =  u'\u221e'
-            dc.SetTextForeground(wx.Colour(80,80,80))
+            formatStr = u'\u221e'
+            dc.SetTextForeground(wx.Colour(80, 80, 80))
             dc.DrawLabel(formatStr, r, wx.ALIGN_CENTER)
 
-            dc.SetTextForeground(wx.Colour(255,255,255))
+            dc.SetTextForeground(wx.Colour(255, 255, 255))
             dc.DrawLabel(formatStr, rect, wx.ALIGN_CENTER)
         else:
             if self.GetBarGradient() and self._showRemaining:
@@ -404,20 +399,20 @@ class PyGauge(wx.PyWindow):
             else:
                 formatStr = "{0:." + str(self._fractionDigits) + "f}%"
 
-            dc.SetTextForeground(wx.Colour(80,80,80))
+            dc.SetTextForeground(wx.Colour(80, 80, 80))
             dc.DrawLabel(formatStr.format(value), r, wx.ALIGN_CENTER)
 
-            dc.SetTextForeground(wx.Colour(255,255,255))
+            dc.SetTextForeground(wx.Colour(255, 255, 255))
             dc.DrawLabel(formatStr.format(value), rect, wx.ALIGN_CENTER)
 
-    def OnTimer(self,event):
+    def OnTimer(self, event):
         """
         Handles the ``wx.EVT_TIMER`` event for L{PyfaGauge}.
 
-        :param `event`: a timer event
+        :param event: a timer event
         """
-        oldValue=self._oldPercentage
-        value=self._percentage
+        oldValue = self._oldPercentage
+        value = self._percentage
         start = 0
 
         direction = 1 if oldValue < value else -1
@@ -436,13 +431,13 @@ class PyGauge(wx.PyWindow):
                 stop_timer = True
 
             if direction == 1:
-                if (oldValue+step) < value:
-                    self._animValue = oldValue+step
+                if (oldValue + step) < value:
+                    self._animValue = oldValue + step
                 else:
                     stop_timer = True
             else:
-                if (oldValue-step) > value:
-                    self._animValue = oldValue-step
+                if (oldValue - step) > value:
+                    self._animValue = oldValue - step
 
                 else:
                     stop_timer = True
@@ -451,4 +446,3 @@ class PyGauge(wx.PyWindow):
                 self._timer.Stop()
 
             self.Refresh()
-

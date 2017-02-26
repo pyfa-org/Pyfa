@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,16 +15,18 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
+# noinspection PyPackageRequirements
 import wx
-import logging
+from logbook import Logger
 
-logger = logging.getLogger(__name__)
+pyfalog = Logger(__name__)
+
 
 class ContextMenu(object):
     menus = []
-    _ids = [] #[wx.NewId() for x in xrange(200)]  # init with decent amount
+    _ids = []  # [wx.NewId() for x in xrange(200)]  # init with decent amount
     _idxid = -1
 
     @classmethod
@@ -57,7 +59,7 @@ class ContextMenu(object):
         rootMenu.selection = (selection,) if not hasattr(selection, "__iter__") else selection
         empty = True
         for i, fullContext in enumerate(fullContexts):
-            amount = 0
+            display_amount = 0
             srcContext = fullContext[0]
             try:
                 itemContext = fullContext[1]
@@ -67,7 +69,7 @@ class ContextMenu(object):
                 # loop through registered menus
                 m = menuHandler()
                 if m.display(srcContext, selection):
-                    amount += 1
+                    display_amount += 1
                     texts = m.getText(itemContext, selection)
 
                     if isinstance(texts, basestring):
@@ -114,12 +116,12 @@ class ContextMenu(object):
 
                     empty = False
 
-            if amount > 0 and i != len(fullContexts) - 1:
+            if display_amount > 0 and i != len(fullContexts) - 1:
                 rootMenu.AppendSeparator()
 
         debug_end = len(cls._ids)
-        if (debug_end - debug_start):
-            logger.debug("%d new IDs created for this menu" % (debug_end - debug_start))
+        if debug_end - debug_start:
+            pyfalog.debug("{0} new IDs created for this menu", (debug_end - debug_start))
 
         return rootMenu if empty is False else None
 
@@ -176,4 +178,29 @@ class ContextMenu(object):
         return None
 
 
-from gui.builtinContextMenus import *
+# noinspection PyUnresolvedReferences
+from gui.builtinContextMenus import (  # noqa: E402,F401
+    openFit,
+    # moduleGlobalAmmoPicker,
+    moduleAmmoPicker,
+    itemStats,
+    damagePattern,
+    marketJump,
+    droneSplit,
+    itemRemove,
+    droneRemoveStack,
+    ammoPattern,
+    project,
+    factorReload,
+    whProjector,
+    cargo,
+    shipJump,
+    changeAffectingSkills,
+    tacticalMode,
+    targetResists,
+    priceClear,
+    amount,
+    metaSwap,
+    implantSets,
+    fighterAbilities,
+)

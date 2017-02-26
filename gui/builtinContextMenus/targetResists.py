@@ -1,14 +1,17 @@
 from gui.contextMenu import ContextMenu
 import gui.mainFrame
-import service
 import gui.globalEvents as GE
+# noinspection PyPackageRequirements
 import wx
 from gui.bitmapLoader import BitmapLoader
+from service.targetResists import TargetResists as svc_TargetResists
+from service.fit import Fit
 
 try:
     from collections import OrderedDict
 except ImportError:
-    from gui.utils.compat import OrderedDict
+    from utils.compat import OrderedDict
+
 
 class TargetResists(ContextMenu):
     def __init__(self):
@@ -18,7 +21,7 @@ class TargetResists(ContextMenu):
         if self.mainFrame.getActiveFit() is None or srcContext != "firepowerViewFull":
             return False
 
-        sTR = service.TargetResists.getInstance()
+        sTR = svc_TargetResists.getInstance()
         self.patterns = sTR.getTargetResistsList()
         self.patterns.sort(key=lambda p: (p.name in ["None"], p.name))
 
@@ -33,7 +36,7 @@ class TargetResists(ContextMenu):
             event.Skip()
             return
 
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
         sFit.setTargetResists(fitID, pattern)
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
@@ -50,7 +53,7 @@ class TargetResists(ContextMenu):
         item.pattern = pattern
 
         # determine active pattern
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
         f = sFit.getFit(fitID)
         tr = f.targetResists
@@ -64,15 +67,15 @@ class TargetResists(ContextMenu):
         msw = True if "wxMSW" in wx.PlatformInfo else False
         self.patternIds = {}
         self.subMenus = OrderedDict()
-        self.singles  = []
+        self.singles = []
 
         sub = wx.Menu()
         for pattern in self.patterns:
             start, end = pattern.name.find('['), pattern.name.find(']')
             if start is not -1 and end is not -1:
-                currBase = pattern.name[start+1:end]
+                currBase = pattern.name[start + 1:end]
                 # set helper attr
-                setattr(pattern, "_name", pattern.name[end+1:].strip())
+                setattr(pattern, "_name", pattern.name[end + 1:].strip())
                 if currBase not in self.subMenus:
                     self.subMenus[currBase] = []
                 self.subMenus[currBase].append(pattern)
@@ -93,7 +96,7 @@ class TargetResists(ContextMenu):
 
             # Create menu for child items
             grandSub = wx.Menu()
-            #sub.Bind(wx.EVT_MENU, self.handleResistSwitch)
+            # sub.Bind(wx.EVT_MENU, self.handleResistSwitch)
 
             # Apply child menu to parent item
             item.SetSubMenu(grandSub)
@@ -101,8 +104,9 @@ class TargetResists(ContextMenu):
             # Append child items to child menu
             for pattern in patterns:
                 grandSub.AppendItem(self.addPattern(rootMenu if msw else grandSub, pattern))
-            sub.AppendItem(item)  #finally, append parent item to root menu
+            sub.AppendItem(item)  # finally, append parent item to root menu
 
         return sub
+
 
 TargetResists.register()

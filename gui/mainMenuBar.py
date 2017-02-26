@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,21 +15,28 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
+# noinspection PyPackageRequirements
 import wx
+
 import config
-from gui.bitmapLoader import BitmapLoader
-import gui.mainFrame
+from service.character import Character
 import gui.graphFrame
 import gui.globalEvents as GE
-import service
+from gui.bitmapLoader import BitmapLoader
 
-if not 'wxMac' in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3,0)):
+from logbook import Logger
+pyfalog = Logger(__name__)
+
+if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3, 0)):
+    from service.crest import Crest
     from service.crest import CrestModes
 
+
 class MainMenuBar(wx.MenuBar):
-    def __init__(self):
+    def __init__(self, mainFrame):
+        pyfalog.debug("Initialize MainMenuBar")
         self.characterEditorId = wx.NewId()
         self.damagePatternEditorId = wx.NewId()
         self.targetResistsEditorId = wx.NewId()
@@ -51,11 +58,11 @@ class MainMenuBar(wx.MenuBar):
         self.toggleOverridesId = wx.NewId()
         self.importDatabaseDefaultsId = wx.NewId()
 
-        if 'wxMac' in wx.PlatformInfo and wx.VERSION >= (3,0):
+        if 'wxMac' in wx.PlatformInfo and wx.VERSION >= (3, 0):
             wx.ID_COPY = wx.NewId()
             wx.ID_PASTE = wx.NewId()
 
-        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+        self.mainFrame = mainFrame
         wx.MenuBar.__init__(self)
 
         # File menu
@@ -80,8 +87,8 @@ class MainMenuBar(wx.MenuBar):
         editMenu = wx.Menu()
         self.Append(editMenu, "&Edit")
 
-        #editMenu.Append(wx.ID_UNDO)
-        #editMenu.Append(wx.ID_REDO)
+        # editMenu.Append(wx.ID_UNDO)
+        # editMenu.Append(wx.ID_REDO)
 
         editMenu.Append(wx.ID_COPY, "To Clipboard\tCTRL+C", "Export a fit to the clipboard")
         editMenu.Append(wx.ID_PASTE, "From Clipboard\tCTRL+V", "Import a fit from the clipboard")
@@ -114,13 +121,16 @@ class MainMenuBar(wx.MenuBar):
         graphFrameItem.SetBitmap(BitmapLoader.getBitmap("graphs_small", "gui"))
         windowMenu.AppendItem(graphFrameItem)
 
+        if not gui.graphFrame.graphFrame_enabled:
+            self.Enable(self.graphFrameId, False)
+
         preferencesShortCut = "CTRL+," if 'wxMac' in wx.PlatformInfo else "CTRL+P"
-        preferencesItem = wx.MenuItem(windowMenu, wx.ID_PREFERENCES, "Preferences\t"+preferencesShortCut)
+        preferencesItem = wx.MenuItem(windowMenu, wx.ID_PREFERENCES, "Preferences\t" + preferencesShortCut)
         preferencesItem.SetBitmap(BitmapLoader.getBitmap("preferences_small", "gui"))
         windowMenu.AppendItem(preferencesItem)
 
-        if not 'wxMac' in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3,0)):
-            self.sCrest = service.Crest.getInstance()
+        if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3, 0)):
+            self.sCrest = Crest.getInstance()
 
             # CREST Menu
             crestMenu = wx.Menu()
@@ -136,7 +146,7 @@ class MainMenuBar(wx.MenuBar):
                 self.Enable(self.eveFittingsId, False)
                 self.Enable(self.exportToEveId, False)
 
-            if not gui.mainFrame.disableOverrideEditor:
+            if not self.mainFrame.disableOverrideEditor:
                 windowMenu.AppendSeparator()
                 attrItem = wx.MenuItem(windowMenu, self.attrEditorId, "Attribute Overrides\tCTRL+B")
                 attrItem.SetBitmap(BitmapLoader.getBitmap("fit_rename_small", "gui"))
@@ -154,17 +164,19 @@ class MainMenuBar(wx.MenuBar):
         helpMenu.Append(wx.ID_ABOUT)
 
         if config.debug:
-            helpMenu.Append( self.mainFrame.widgetInspectMenuID, "Open Widgets Inspect tool", "Open Widgets Inspect tool")
+            helpMenu.Append(self.mainFrame.widgetInspectMenuID, "Open Widgets Inspect tool",
+                            "Open Widgets Inspect tool")
 
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
 
     def fitChanged(self, event):
+        pyfalog.debug("fitChanged triggered")
         enable = event.fitID is not None
         self.Enable(wx.ID_SAVEAS, enable)
         self.Enable(wx.ID_COPY, enable)
         self.Enable(self.exportSkillsNeededId, enable)
 
-        sChar = service.Character.getInstance()
+        sChar = Character.getInstance()
         charID = self.mainFrame.charSelection.getActiveCharacter()
         char = sChar.getCharacter(charID)
 
@@ -174,5 +186,3 @@ class MainMenuBar(wx.MenuBar):
         self.Enable(self.revertCharId, char.isDirty)
 
         event.Skip()
-
-

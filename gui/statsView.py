@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,10 +15,12 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
+
 
 class StatsView(object):
     views = {}
+
     def __init__(self):
         pass
 
@@ -39,4 +41,15 @@ class StatsView(object):
     def refreshPanel(self, fit):
         raise NotImplementedError()
 
-from gui.builtinStatsViews import *
+
+# noinspection PyUnresolvedReferences
+from gui.builtinStatsViews import (  # noqa: E402, F401
+    resourcesViewFull,
+    resistancesViewFull,
+    firepowerViewFull,
+    miningyieldViewFull,
+    capacitorViewFull,
+    rechargeViewFull,
+    targetingMiscViewFull,
+    priceViewFull,
+)

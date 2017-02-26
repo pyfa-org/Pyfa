@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,43 +15,49 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
+# noinspection PyPackageRequirements
 import wx
 
-import service
 import gui.globalEvents as GE
-import gui.marketBrowser as mb
-import gui.display as d
+from gui.marketBrowser import ITEM_SELECTED, ItemSelected
+from gui.display import Display
 from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
+from service.fit import Fit
+from service.market import Market
+
 
 class DroneViewDrop(wx.PyDropTarget):
-        def __init__(self, dropFn):
-            wx.PyDropTarget.__init__(self)
-            self.dropFn = dropFn
-            # this is really transferring an EVE itemID
-            self.dropData = wx.PyTextDataObject()
-            self.SetDataObject(self.dropData)
+    def __init__(self, dropFn, *args, **kwargs):
+        super(DroneViewDrop, self).__init__(*args, **kwargs)
+        self.dropFn = dropFn
+        # this is really transferring an EVE itemID
+        self.dropData = wx.PyTextDataObject()
+        self.SetDataObject(self.dropData)
 
-        def OnData(self, x, y, t):
-            if self.GetData():
-                data = self.dropData.GetText().split(':')
-                self.dropFn(x, y, data)
-            return t
+    def OnData(self, x, y, t):
+        if self.GetData():
+            data = self.dropData.GetText().split(':')
+            self.dropFn(x, y, data)
+        return t
 
-class DroneView(d.Display):
-    DEFAULT_COLS = ["State",
-                    #"Base Icon",
-                    "Base Name",
-                    # "prop:droneDps,droneBandwidth",
-                    "Max Range",
-                    "Miscellanea",
-                    "attr:maxVelocity",
-                    "Price",]
+
+class DroneView(Display):
+    DEFAULT_COLS = [
+        "State",
+        # "Base Icon",
+        "Base Name",
+        # "prop:droneDps,droneBandwidth",
+        "Max Range",
+        "Miscellanea",
+        "attr:maxVelocity",
+        "Price",
+    ]
 
     def __init__(self, parent):
-        d.Display.__init__(self, parent, style=wx.LC_SINGLE_SEL | wx.BORDER_NONE)
+        Display.__init__(self, parent, style=wx.LC_SINGLE_SEL | wx.BORDER_NONE)
 
         self.lastFitId = None
 
@@ -59,18 +65,17 @@ class DroneView(d.Display):
         self.hoveredColumn = None
 
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
-        self.mainFrame.Bind(mb.ITEM_SELECTED, self.addItem)
+        self.mainFrame.Bind(ITEM_SELECTED, self.addItem)
         self.Bind(wx.EVT_LEFT_DCLICK, self.removeItem)
         self.Bind(wx.EVT_LEFT_DOWN, self.click)
         self.Bind(wx.EVT_KEY_UP, self.kbEvent)
         self.Bind(wx.EVT_MOTION, self.OnMouseMove)
         self.Bind(wx.EVT_LEAVE_WINDOW, self.OnLeaveWindow)
 
-        if "__WXGTK__" in  wx.PlatformInfo:
+        if "__WXGTK__" in wx.PlatformInfo:
             self.Bind(wx.EVT_RIGHT_UP, self.scheduleMenu)
         else:
             self.Bind(wx.EVT_RIGHT_DOWN, self.scheduleMenu)
-
 
         self.Bind(wx.EVT_LIST_BEGIN_DRAG, self.startDrag)
         self.SetDropTarget(DroneViewDrop(self.handleDragDrop))
@@ -107,7 +112,6 @@ class DroneView(d.Display):
         keycode = event.GetKeyCode()
         if keycode == wx.WXK_DELETE or keycode == wx.WXK_NUMPAD_DELETE:
             row = self.GetFirstSelected()
-            firstSel = row
             if row != -1:
                 drone = self.drones[self.GetItemData(row)]
                 self.removeDrone(drone)
@@ -118,31 +122,32 @@ class DroneView(d.Display):
         row = event.GetIndex()
         if row != -1:
             data = wx.PyTextDataObject()
-            data.SetText("drone:"+str(row))
+            data.SetText("drone:" + str(row))
 
             dropSource = wx.DropSource(self)
             dropSource.SetData(data)
-            res = dropSource.DoDragDrop()
+            dropSource.DoDragDrop()
 
     def handleDragDrop(self, x, y, data):
-        '''
+        """
         Handles dragging of items from various pyfa displays which support it
 
         data is list with two indices:
             data[0] is hard-coded str of originating source
             data[1] is typeID or index of data we want to manipulate
-        '''
+        """
         if data[0] == "drone":  # we want to merge drones
             srcRow = int(data[1])
             dstRow, _ = self.HitTest((x, y))
             if srcRow != -1 and dstRow != -1:
                 self._merge(srcRow, dstRow)
         elif data[0] == "market":
-            wx.PostEvent(self.mainFrame, mb.ItemSelected(itemID=int(data[1])))
+            wx.PostEvent(self.mainFrame, ItemSelected(itemID=int(data[1])))
 
     def _merge(self, src, dst):
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
+
         if sFit.mergeDrones(fitID, self.drones[src], self.drones[dst]):
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
@@ -150,8 +155,9 @@ class DroneView(d.Display):
                    'Heavy Attack Drones', 'Sentry Drones', 'Fighters',
                    'Fighter Bombers', 'Combat Utility Drones',
                    'Electronic Warfare Drones', 'Logistic Drones', 'Mining Drones', 'Salvage Drones')
+
     def droneKey(self, drone):
-        sMkt = service.Market.getInstance()
+        sMkt = Market.getInstance()
 
         groupName = sMkt.getMarketGroupByItem(drone.item).name
 
@@ -159,12 +165,12 @@ class DroneView(d.Display):
                 drone.item.name)
 
     def fitChanged(self, event):
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fit = sFit.getFit(event.fitID)
 
         self.Parent.Parent.DisablePage(self, not fit or fit.isStructure)
 
-        #Clear list and get out if current fitId is None
+        # Clear list and get out if current fitId is None
         if event.fitID is None and self.lastFitId is not None:
             self.DeleteAllItems()
             self.lastFitId = None
@@ -176,7 +182,6 @@ class DroneView(d.Display):
 
         if stuff is not None:
             stuff.sort(key=self.droneKey)
-
 
         if event.fitID != self.lastFitId:
             self.lastFitId = event.fitID
@@ -191,9 +196,8 @@ class DroneView(d.Display):
         self.update(stuff)
         event.Skip()
 
-
     def addItem(self, event):
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
 
         fit = sFit.getFit(fitID)
@@ -218,7 +222,7 @@ class DroneView(d.Display):
 
     def removeDrone(self, drone):
         fitID = self.mainFrame.getActiveFit()
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         sFit.removeDrone(fitID, self.original.index(drone))
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
@@ -229,7 +233,7 @@ class DroneView(d.Display):
             col = self.getColumn(event.Position)
             if col == self.getColIndex(State):
                 fitID = self.mainFrame.getActiveFit()
-                sFit = service.Fit.getInstance()
+                sFit = Fit.getInstance()
                 drone = self.drones[row]
                 sFit.toggleDrone(fitID, self.original.index(drone))
                 wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
@@ -244,7 +248,7 @@ class DroneView(d.Display):
         if sel != -1:
             drone = self.drones[sel]
 
-            sMkt = service.Market.getInstance()
+            sMkt = Market.getInstance()
             sourceContext = "droneItem"
             itemContext = sMkt.getCategoryByItem(drone.item).name
             menu = ContextMenu.getMenu((drone,), (sourceContext, itemContext))

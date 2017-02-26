@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2014 Ryan Holmes
 #
 # This file is part of pyfa.
@@ -15,36 +15,43 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
-from service.settings import NetworkSettings
+
 import urllib2
 import urllib
-import config
 import socket
+
+import config
+from service.settings import NetworkSettings
 
 # network timeout, otherwise pyfa hangs for a long while if no internet connection
 timeout = 3
 socket.setdefaulttimeout(timeout)
 
+
 class Error(StandardError):
     def __init__(self, msg=None):
         self.message = msg
 
+
 class RequestError(StandardError):
     pass
+
 
 class AuthenticationError(StandardError):
     pass
 
+
 class ServerError(StandardError):
     pass
+
 
 class TimeoutError(StandardError):
     pass
 
 
-class Network():
+class Network(object):
     # Request constants - every request must supply this, as it is checked if
     # enabled or not via settings
     ENABLED = 1
@@ -53,16 +60,17 @@ class Network():
     UPDATE = 8
 
     _instance = None
+
     @classmethod
     def getInstance(cls):
-        if cls._instance == None:
+        if cls._instance is None:
             cls._instance = Network()
 
         return cls._instance
 
     def request(self, url, type, data=None):
         # URL is required to be https as of right now
-        #print "Starting request: %s\n\tType: %s\n\tPost Data: %s"%(url,type,data)
+        # print "Starting request: %s\n\tType: %s\n\tPost Data: %s"%(url,type,data)
 
         # Make sure request is enabled
         access = NetworkSettings.getInstance().getAccess()
@@ -71,8 +79,9 @@ class Network():
             raise Error("Access not enabled - please enable in Preferences > Network")
 
         # Set up some things for the request
-        versionString = "{0} {1} - {2} {3}".format(config.version, config.tag, config.expansionName, config.expansionVersion)
-        headers = {"User-Agent" : "pyfa {0} (Python-urllib2)".format(versionString)}
+        versionString = "{0} {1} - {2} {3}".format(config.version, config.tag, config.expansionName,
+                                                   config.expansionVersion)
+        headers = {"User-Agent": "pyfa {0} (Python-urllib2)".format(versionString)}
 
         proxy = NetworkSettings.getInstance().getProxySettings()
         if proxy is not None:
@@ -81,8 +90,10 @@ class Network():
             # proxy_auth is a tuple of (login, password) or None
             if proxy_auth is not None:
                 # add login:password@ in front of proxy address
-                proxy_handler = urllib2.ProxyHandler({'https': '{0}:{1}@{2}:{3}'.format(
-                    proxy_auth[0], proxy_auth[1], proxy[0], proxy[1])})
+                proxy_handler = urllib2.ProxyHandler({
+                    'https': '{0}:{1}@{2}:{3}'.format(
+                            proxy_auth[0], proxy_auth[1], proxy[0], proxy[1])
+                })
             else:
                 # build proxy handler with no login/pass info
                 proxy_handler = urllib2.ProxyHandler({'https': "{0}:{1}".format(proxy[0], proxy[1])})
@@ -101,14 +112,14 @@ class Network():
         request = urllib2.Request(url, headers=headers, data=urllib.urlencode(data) if data else None)
         try:
             return urllib2.urlopen(request)
-        except urllib2.HTTPError, error:
+        except urllib2.HTTPError as error:
             if error.code == 404:
                 raise RequestError()
             elif error.code == 403:
                 raise AuthenticationError()
             elif error.code >= 500:
                 raise ServerError()
-        except urllib2.URLError, error:
+        except urllib2.URLError as error:
             if "timed out" in error.reason:
                 raise TimeoutError()
             else:

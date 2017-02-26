@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,21 +15,25 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
-from gui import builtinViewColumns
+# noinspection PyPackageRequirements
+import wx
+
 from gui.viewColumn import ViewColumn
 from gui.bitmapLoader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 
-import service
-import wx
+from service.attribute import Attribute
+from service.market import Market
+
 
 class AttributeDisplay(ViewColumn):
     name = "attr"
+
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
-        sAttr = service.Attribute.getInstance()
+        sAttr = Attribute.getInstance()
         info = sAttr.getAttributeInfo(params["attribute"])
         self.info = info
         if params["showIcon"]:
@@ -57,9 +61,10 @@ class AttributeDisplay(ViewColumn):
             self.direct = True
             self.view = fittingView
             originalRefresh = fittingView.refresh
-            sMkt = service.Market.getInstance()
-            #Hack into our master view and add a callback for ourselves to know when to query
+            sMkt = Market.getInstance()
+
             def refresh(stuff):
+                # Hack into our master view and add a callback for ourselves to know when to query
                 self.directInfo = sMkt.directAttrRequest(stuff, info) if stuff else None
                 originalRefresh(stuff)
 
@@ -76,10 +81,10 @@ class AttributeDisplay(ViewColumn):
                 attr = mod.getAttribute(self.info.name)
 
         if self.info.name == "volume":
-            str = (formatAmount(attr, 3, 0, 3))
+            str_ = (formatAmount(attr, 3, 0, 3))
             if hasattr(mod, "amount"):
-                str = str + u"m\u00B3 (%s m\u00B3)"%(formatAmount(attr*mod.amount, 3, 0, 3))
-            attr = str
+                str_ += u"m\u00B3 (%s m\u00B3)" % (formatAmount(attr * mod.amount, 3, 0, 3))
+            attr = str_
 
         if isinstance(attr, (float, int)):
             attr = (formatAmount(attr, 3, 0, 3))
@@ -101,5 +106,6 @@ class AttributeDisplay(ViewColumn):
                 ("displayName", bool, False),
                 ("showIcon", bool, True),
                 ("direct", bool, False))
+
 
 AttributeDisplay.register()

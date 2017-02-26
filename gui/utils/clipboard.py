@@ -1,4 +1,6 @@
+# noinspection PyPackageRequirements
 import wx
+
 
 def toClipboard(text):
     clip = wx.TheClipboard
@@ -6,6 +8,7 @@ def toClipboard(text):
     data = wx.TextDataObject(text)
     clip.SetData(data)
     clip.Close()
+
 
 def fromClipboard():
     clip = wx.TheClipboard

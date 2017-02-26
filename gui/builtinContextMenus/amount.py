@@ -1,17 +1,20 @@
 from gui.contextMenu import ContextMenu
-from gui.itemStats import ItemStatsDialog
-import eos.types
+from eos.saveddata.fit import Fit as es_Fit
 import gui.mainFrame
-import service
 import gui.globalEvents as GE
+# noinspection PyPackageRequirements
 import wx
+from service.fit import Fit
+from eos.saveddata.cargo import Cargo as es_Cargo
+from eos.saveddata.fighter import Fighter as es_Fighter
+
 
 class ChangeAmount(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     def display(self, srcContext, selection):
-        return srcContext in ("cargoItem","projectedFit","fighterItem","projectedFighter")
+        return srcContext in ("cargoItem", "projectedFit", "fighterItem", "projectedFighter")
 
     def getText(self, itmContext, selection):
         return "Change {0} Quantity".format(itmContext)
@@ -21,10 +24,11 @@ class ChangeAmount(ContextMenu):
         dlg = AmountChanger(self.mainFrame, selection[0], srcContext)
         dlg.ShowModal()
 
+
 ChangeAmount.register()
 
-class AmountChanger(wx.Dialog):
 
+class AmountChanger(wx.Dialog):
     def __init__(self, parent, thing, context):
         wx.Dialog.__init__(self, parent, title="Select Amount", size=wx.Size(220, 60))
         self.thing = thing
@@ -46,31 +50,36 @@ class AmountChanger(wx.Dialog):
         self.button.Bind(wx.EVT_BUTTON, self.change)
 
     def change(self, event):
-        sFit = service.Fit.getInstance()
+        if self.input.GetLineText(0).strip() == '':
+            event.Skip()
+            self.Close()
+            return
+
+        sFit = Fit.getInstance()
         mainFrame = gui.mainFrame.MainFrame.getInstance()
         fitID = mainFrame.getActiveFit()
 
-        if isinstance(self.thing, eos.types.Cargo):
-            sFit.addCargo(fitID, self.thing.item.ID, int(self.input.GetLineText(0)), replace=True)
-        elif isinstance(self.thing, eos.types.Fit):
-            sFit.changeAmount(fitID, self.thing, int(self.input.GetLineText(0)))
-        elif isinstance(self.thing, eos.types.Fighter):
-            sFit.changeActiveFighters(fitID, self.thing, int(self.input.GetLineText(0)))
+        if isinstance(self.thing, es_Cargo):
+            sFit.addCargo(fitID, self.thing.item.ID, int(float(self.input.GetLineText(0))), replace=True)
+        elif isinstance(self.thing, es_Fit):
+            sFit.changeAmount(fitID, self.thing, int(float(self.input.GetLineText(0))))
+        elif isinstance(self.thing, es_Fighter):
+            sFit.changeActiveFighters(fitID, self.thing, int(float(self.input.GetLineText(0))))
 
         wx.PostEvent(mainFrame, GE.FitChanged(fitID=fitID))
 
         event.Skip()
         self.Close()
 
-    ## checks to make sure it's valid number
-    def onChar(self, event):
+    # checks to make sure it's valid number
+    @staticmethod
+    def onChar(event):
         key = event.GetKeyCode()
 
         acceptable_characters = "1234567890"
-        acceptable_keycode    = [3, 22, 13, 8, 127] # modifiers like delete, copy, paste
+        acceptable_keycode = [3, 22, 13, 8, 127]  # modifiers like delete, copy, paste
         if key in acceptable_keycode or key >= 255 or (key < 255 and chr(key) in acceptable_characters):
             event.Skip()
             return
         else:
             return False
-

@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,12 +15,14 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
 import eos.db
 
-class Attribute():
+
+class Attribute(object):
     instance = None
+
     @classmethod
     def getInstance(cls):
         if cls.instance is None:
@@ -28,10 +30,13 @@ class Attribute():
 
         return cls.instance
 
-    def getAttributeInfo(self, identity):
+    @staticmethod
+    def getAttributeInfo(identity):
         if isinstance(identity, (int, basestring)):
             info = eos.db.getAttributeInfo(identity, eager=("icon", "unit"))
         elif isinstance(identity, (int, float)):
-            id = int(identity)
-            info = eos.db.getAttributeInfo(id, eager=("icon", "unit"))
+            id_ = int(identity)
+            info = eos.db.getAttributeInfo(id_, eager=("icon", "unit"))
+        else:
+            info = None
         return info

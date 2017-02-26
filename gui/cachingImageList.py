@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,10 +15,13 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
+
+# noinspection PyPackageRequirements
 import wx
 from gui.bitmapLoader import BitmapLoader
+
 
 class CachingImageList(wx.ImageList):
     def __init__(self, width, height):
@@ -26,10 +29,10 @@ class CachingImageList(wx.ImageList):
         self.map = {}
 
     def GetImageIndex(self, *loaderArgs):
-        id = self.map.get(loaderArgs)
-        if id is None:
+        id_ = self.map.get(loaderArgs)
+        if id_ is None:
             bitmap = BitmapLoader.getBitmap(*loaderArgs)
             if bitmap is None:
                 return -1
-            id = self.map[loaderArgs] = wx.ImageList.Add(self,bitmap)
-        return id
+            id_ = self.map[loaderArgs] = wx.ImageList.Add(self, bitmap)
+        return id_

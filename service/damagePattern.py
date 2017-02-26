@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,19 +15,21 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
-import eos.db
-import eos.types
 import copy
 
-from eos.db.saveddata.loadDefaultDatabaseValues import DefaultDatabaseValues
+import eos.db
+from eos.saveddata.damagePattern import DamagePattern as es_DamagePattern
+
 
 class ImportError(Exception):
     pass
 
-class DamagePattern():
+
+class DamagePattern(object):
     instance = None
+
     @classmethod
     def getInstance(cls):
         if cls.instance is None:
@@ -35,31 +37,38 @@ class DamagePattern():
 
         return cls.instance
 
-    def getDamagePatternList(self):
+    @staticmethod
+    def getDamagePatternList():
         return eos.db.getDamagePatternList()
 
-    def getDamagePattern(self, name):
+    @staticmethod
+    def getDamagePattern(name):
         return eos.db.getDamagePattern(name)
 
-    def newPattern(self, name):
-        p = eos.types.DamagePattern(0, 0, 0, 0)
+    @staticmethod
+    def newPattern(name):
+        p = es_DamagePattern(0, 0, 0, 0)
         p.name = name
         eos.db.save(p)
         return p
 
-    def renamePattern(self, p, newName):
+    @staticmethod
+    def renamePattern(p, newName):
         p.name = newName
         eos.db.save(p)
 
-    def deletePattern(self, p):
+    @staticmethod
+    def deletePattern(p):
         eos.db.remove(p)
 
-    def copyPattern(self, p):
+    @staticmethod
+    def copyPattern(p):
         newP = copy.deepcopy(p)
         eos.db.save(newP)
         return newP
 
-    def saveChanges(self, p):
+    @staticmethod
+    def saveChanges(p):
         eos.db.save(p)
 
     def importPatterns(self, text):
@@ -68,7 +77,7 @@ class DamagePattern():
         for pattern in current:
             lookup[pattern.name] = pattern
 
-        imports, num = eos.types.DamagePattern.importPatterns(text)
+        imports, num = es_DamagePattern.importPatterns(text)
         for pattern in imports:
             if pattern.name in lookup:
                 match = lookup[pattern.name]
@@ -81,7 +90,7 @@ class DamagePattern():
         if lenImports == 0:
             raise ImportError("No patterns found for import")
         if lenImports != num:
-            raise ImportError("%d patterns imported from clipboard; %d had errors"%(num, num-lenImports))
+            raise ImportError("%d patterns imported from clipboard; %d had errors" % (num, num - lenImports))
 
     def exportPatterns(self):
         patterns = self.getDamagePatternList()
@@ -90,4 +99,4 @@ class DamagePattern():
                 del patterns[i]
 
         patterns.sort(key=lambda p: p.name)
-        return eos.types.DamagePattern.exportPatterns(*patterns)
+        return es_DamagePattern.exportPatterns(*patterns)

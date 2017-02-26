@@ -1,4 +1,4 @@
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 # eveapi - EVE Online API access
 #
 # Copyright (c)2007-2014 Jamie "Entity" van den Berge <jamie@hlekkir.com>
@@ -24,7 +24,7 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 # OTHER DEALINGS IN THE SOFTWARE
 #
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 #
 # Version: 1.3.0 - 27 May 2014
 # - Added set_user_agent() module-level function to set the User-Agent header
@@ -145,10 +145,10 @@
 # Requirements:
 #   Python 2.4+
 #
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 
 
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 # This eveapi has been modified for pyfa.
 #
 # Specifically, the entire network request/response has been substituted for
@@ -156,7 +156,7 @@
 #
 # Additionally, various other parts have been changed to support urllib2
 # responses instead of httplib
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 
 
 import urlparse
@@ -166,7 +166,7 @@ from xml.parsers import expat
 from time import strptime
 from calendar import timegm
 
-import service
+from service.network import Network
 
 proxy = None
 proxySSL = False
@@ -174,7 +174,9 @@ proxySSL = False
 _default_useragent = "eveapi.py/1.3"
 _useragent = None  # use set_user_agent() to set this.
 
-#-----------------------------------------------------------------------------
+
+# -----------------------------------------------------------------------------
+
 
 def set_cast_func(func):
     """Sets an alternative value casting function for the XML parser.
@@ -185,24 +187,29 @@ def set_cast_func(func):
     global _castfunc
     _castfunc = _autocast if func is None else func
 
+
 def set_user_agent(user_agent_string):
     """Sets a User-Agent for any requests sent by the library."""
     global _useragent
     _useragent = user_agent_string
 
 
-class Error(StandardError):
+class Error(Exception):
     def __init__(self, code, message):
         self.code = code
         self.args = (message.rstrip("."),)
+
     def __unicode__(self):
         return u'%s [code=%s]' % (self.args[0], self.code)
+
 
 class RequestError(Error):
     pass
 
+
 class AuthenticationError(Error):
     pass
+
 
 class ServerError(Error):
     pass
@@ -304,18 +311,16 @@ def _ParseXML(response, fromContext, storeFunc):
     return result
 
 
-
-
-
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 # API Classes
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+
 
 _listtypes = (list, tuple, dict)
 _unspecified = []
 
-class _Context(object):
 
+class _Context(object):
     def __init__(self, root, path, parentDict, newKeywords=None):
         self._root = root or self
         self._path = path
@@ -356,20 +361,18 @@ class _Context(object):
 
 
 class _AuthContext(_Context):
-
     def character(self, characterID):
         # returns a copy of this connection object but for every call made
         # through it, it will add the folder "/char" to the url, and the
         # characterID to the parameters passed.
-        return _Context(self._root, self._path + "/char", self.parameters, {"characterID":characterID})
+        return _Context(self._root, self._path + "/char", self.parameters, {"characterID": characterID})
 
     def corporation(self, characterID):
         # same as character except for the folder "/corp"
-        return _Context(self._root, self._path + "/corp", self.parameters, {"characterID":characterID})
+        return _Context(self._root, self._path + "/corp", self.parameters, {"characterID": characterID})
 
 
 class _RootContext(_Context):
-
     def auth(self, **kw):
         if len(kw) == 2 and (("keyID" in kw and "vCode" in kw) or ("userID" in kw and "apiKey" in kw)):
             return _AuthContext(self._root, self._path, self.parameters, kw)
@@ -395,9 +398,9 @@ class _RootContext(_Context):
             response = None
 
         if response is None:
-            network = service.Network.getInstance()
+            network = Network.getInstance()
 
-            req = self._scheme+'://'+self._host+path
+            req = self._scheme + '://' + self._host + path
 
             response = network.request(req, network.EVE, kw)
 
@@ -413,8 +416,9 @@ class _RootContext(_Context):
         if retrieve_fallback:
             # implementor is handling fallbacks...
             try:
-                return _ParseXML(response, True, store and (lambda obj: cache.store(self._host, path, kw, response, obj)))
-            except Error, e:
+                return _ParseXML(response, True,
+                                 store and (lambda obj: cache.store(self._host, path, kw, response, obj)))
+            except Error as e:
                 response = retrieve_fallback(self._host, path, kw, reason=e)
                 if response is not None:
                     return response
@@ -423,9 +427,11 @@ class _RootContext(_Context):
             # implementor is not handling fallbacks...
             return _ParseXML(response, True, store and (lambda obj: cache.store(self._host, path, kw, response, obj)))
 
-#-----------------------------------------------------------------------------
+
+# -----------------------------------------------------------------------------
 # XML Parser
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+
 
 def _autocast(key, value):
     # attempts to cast an XML string to the most probable type.
@@ -452,11 +458,11 @@ def _autocast(key, value):
     # couldn't cast. return string unchanged.
     return value
 
+
 _castfunc = _autocast
 
 
 class _Parser(object):
-
     def Parse(self, data, isStream=False):
         self.container = self.root = None
         self._cdata = False
@@ -474,7 +480,6 @@ class _Parser(object):
         else:
             p.Parse(data, True)
         return self.root
-
 
     def tag_cdatasection_enter(self):
         # encountered an explicit CDATA tag.
@@ -501,21 +506,20 @@ class _Parser(object):
         if name == "rowset":
             # for rowsets, use the given name
             try:
-                columns = attributes[attributes.index('columns')+1].replace(" ", "").split(",")
+                columns = attributes[attributes.index('columns') + 1].replace(" ", "").split(",")
             except ValueError:
                 # rowset did not have columns tag set (this is a bug in API)
                 # columns will be extracted from first row instead.
                 columns = []
 
             try:
-                priKey = attributes[attributes.index('key')+1]
+                priKey = attributes[attributes.index('key') + 1]
                 this = IndexRowset(cols=columns, key=priKey)
             except ValueError:
                 this = Rowset(cols=columns)
 
-
-            this._name = attributes[attributes.index('name')+1]
-            this.__catch = "row" # tag to auto-add to rowset.
+            this._name = attributes[attributes.index('name') + 1]
+            this.__catch = "row"  # tag to auto-add to rowset.
         else:
             this = Element()
             this._name = name
@@ -528,7 +532,7 @@ class _Parser(object):
             if name != "eveapi":
                 raise RuntimeError("Invalid API response")
             try:
-                this.version = attributes[attributes.index("version")+1]
+                this.version = attributes[attributes.index("version") + 1]
             except KeyError:
                 raise RuntimeError("Invalid API response")
             self.root = this
@@ -541,16 +545,18 @@ class _Parser(object):
             #   such as rawQuantity in the assets lists.
             # In either case the tag is assumed to be correct and the rowset's
             # columns are overwritten with the tag's version, if required.
-            numAttr = len(attributes)/2
+            numAttr = len(attributes) / 2
             numCols = len(self.container._cols)
             if numAttr < numCols and (attributes[-2] == self.container._cols[-1]):
                 # the row data is missing attributes that were defined in the rowset.
                 # missing attributes' values will be set to None.
                 fixed = []
-                row_idx = 0; hdr_idx = 0; numAttr*=2
+                row_idx = 0
+                hdr_idx = 0
+                numAttr *= 2
                 for col in self.container._cols:
                     if col == attributes[row_idx]:
-                        fixed.append(_castfunc(col, attributes[row_idx+1]))
+                        fixed.append(_castfunc(col, attributes[row_idx + 1]))
                         row_idx += 2
                     else:
                         fixed.append(None)
@@ -560,7 +566,9 @@ class _Parser(object):
                 if not self.container._cols or (numAttr > numCols):
                     # the row data contains more attributes than were defined.
                     self.container._cols = attributes[0::2]
-                self.container.append([_castfunc(attributes[i], attributes[i+1]) for i in xrange(0, len(attributes), 2)])
+                self.container.append(
+                    [_castfunc(attributes[i], attributes[i + 1]) for i in xrange(0, len(attributes), 2)]
+                )
             # </hack>
 
             this._isrow = True
@@ -611,7 +619,7 @@ class _Parser(object):
 
         if this is self.root:
             del this._attributes
-            #this.__dict__.pop("_attributes", None)
+            # this.__dict__.pop("_attributes", None)
             return
 
         # we're done with current tag, so we can pop it off. This means that
@@ -651,7 +659,7 @@ class _Parser(object):
                         e._name = this._name
                         setattr(self.container, this._name, e)
                         for i in xrange(0, len(attributes), 2):
-                            setattr(e, attributes[i], attributes[i+1])
+                            setattr(e, attributes[i], attributes[i + 1])
                     else:
                         # tag of the form: <tag />, treat as empty string.
                         setattr(self.container, this._name, "")
@@ -663,7 +671,7 @@ class _Parser(object):
             # multiples of some tag or attribute. Code below handles this case.
             elif isinstance(sibling, Rowset):
                 # its doppelganger is a rowset, append this as a row to that.
-                row = [_castfunc(attributes[i], attributes[i+1]) for i in xrange(0, len(attributes), 2)]
+                row = [_castfunc(attributes[i], attributes[i + 1]) for i in xrange(0, len(attributes), 2)]
                 row.extend([getattr(this, col) for col in attributes2])
                 sibling.append(row)
             elif isinstance(sibling, Element):
@@ -672,11 +680,13 @@ class _Parser(object):
                 # into a Rowset, adding the sibling element and this one.
                 rs = Rowset()
                 rs.__catch = rs._name = this._name
-                row = [_castfunc(attributes[i], attributes[i+1]) for i in xrange(0, len(attributes), 2)]+[getattr(this, col) for col in attributes2]
+                row = [_castfunc(attributes[i], attributes[i + 1]) for i in xrange(0, len(attributes), 2)] + \
+                      [getattr(this, col) for col in attributes2]
                 rs.append(row)
-                row = [getattr(sibling, attributes[i]) for i in xrange(0, len(attributes), 2)]+[getattr(sibling, col) for col in attributes2]
+                row = [getattr(sibling, attributes[i]) for i in xrange(0, len(attributes), 2)] + \
+                      [getattr(sibling, col) for col in attributes2]
                 rs.append(row)
-                rs._cols = [attributes[i] for i in xrange(0, len(attributes), 2)]+[col for col in attributes2]
+                rs._cols = [attributes[i] for i in xrange(0, len(attributes), 2)] + [col for col in attributes2]
                 setattr(self.container, this._name, rs)
             else:
                 # something else must have set this attribute already.
@@ -685,29 +695,33 @@ class _Parser(object):
 
         # Now fix up the attributes and be done with it.
         for i in xrange(0, len(attributes), 2):
-            this.__dict__[attributes[i]] = _castfunc(attributes[i], attributes[i+1])
+            this.__dict__[attributes[i]] = _castfunc(attributes[i], attributes[i + 1])
 
         return
 
 
-
-
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 # XML Data Containers
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 # The following classes are the various container types the XML data is
 # unpacked into.
 #
 # Note that objects returned by API calls are to be treated as read-only. This
 # is not enforced, but you have been warned.
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+
 
 class Element(object):
+    _name = None
+
     # Element is a namespace for attributes and nested tags
     def __str__(self):
         return "<Element '%s'>" % self._name
 
+
 _fmt = u"%s:%s".__mod__
+
+
 class Row(object):
     # A Row is a single database record associated with a Rowset.
     # The fields in the record are accessed as attributes by their respective
@@ -750,7 +764,7 @@ class Row(object):
         try:
             return self._row[self._cols.index(this)]
         except:
-            raise AttributeError, this
+            raise AttributeError(this)
 
     def __getitem__(self, this):
         return self._row[self._cols.index(this)]
@@ -823,7 +837,6 @@ class Rowset(object):
                 for line in self._rows:
                     yield [line[x] for x in i]
 
-
     # -------------
 
     def __init__(self, cols=None, rows=None):
@@ -862,14 +875,13 @@ class Rowset(object):
         self._rows.sort(*args, **kw)
 
     def __str__(self):
-        return ("Rowset(columns=[%s], rows=%d)" % (','.join(self._cols), len(self)))
+        return "Rowset(columns=[%s], rows=%d)" % (','.join(self._cols), len(self))
 
     def __getstate__(self):
-        return (self._cols, self._rows)
+        return self._cols, self._rows
 
     def __setstate__(self, state):
         self._cols, self._rows = state
-
 
 
 class IndexRowset(Rowset):
@@ -888,7 +900,7 @@ class IndexRowset(Rowset):
         if row is None:
             if default:
                 return default[0]
-            raise KeyError, key
+            raise KeyError(key)
         return Row(self._cols, row)
 
     # -------------
@@ -925,7 +937,7 @@ class IndexRowset(Rowset):
             self._items[row[self._ki]] = row
 
     def __getstate__(self):
-        return (Rowset.__getstate__(self), self._items, self._ki)
+        return Rowset.__getstate__(self), self._items, self._ki
 
     def __setstate__(self, state):
         state, self._items, self._ki = state
@@ -939,28 +951,28 @@ class FilterRowset(object):
     # - Each key maps to a Rowset, containing only the rows where the value
     #   of the column this FilterRowset was made on matches the key.
 
-    def __init__(self, cols=None, rows=None, key=None, key2=None, dict=None):
-        if dict is not None:
-            self._items = items = dict
+    def __init__(self, cols=None, rows=None, key=None, key2=None, dict_=None):
+        if dict_ is not None:
+            self._items = items = dict_
         elif cols is not None:
             self._items = items = {}
 
             idfield = cols.index(key)
             if not key2:
                 for row in rows:
-                    id = row[idfield]
-                    if id in items:
-                        items[id].append(row)
+                    id_ = row[idfield]
+                    if id_ in items:
+                        items[id_].append(row)
                     else:
-                        items[id] = [row]
+                        items[id_] = [row]
             else:
                 idfield2 = cols.index(key2)
                 for row in rows:
-                    id = row[idfield]
-                    if id in items:
-                        items[id][row[idfield2]] = row
+                    id_ = row[idfield]
+                    if id_ in items:
+                        items[id_][row[idfield2]] = row
                     else:
-                        items[id] = {row[idfield2]:row}
+                        items[id_] = {row[idfield2]: row}
 
         self._cols = cols
         self.key = key
@@ -977,7 +989,7 @@ class FilterRowset(object):
         self.__iter__ = items.__iter__
 
     def copy(self):
-        return FilterRowset(self._cols[:], None, self.key, self.key2, dict=copy.deepcopy(self._items))
+        return FilterRowset(self._cols[:], None, self.key, self.key2, dict_=copy.deepcopy(self._items))
 
     def get(self, key, default=_unspecified):
         try:
@@ -993,7 +1005,7 @@ class FilterRowset(object):
         return Rowset(self._cols, self._items[i])
 
     def __getstate__(self):
-        return (self._cols, self._rows, self._items, self.key, self.key2)
+        return self._cols, self._rows, self._items, self.key, self.key2
 
     def __setstate__(self, state):
         self._cols, self._rows, self._items, self.key, self.key2 = state

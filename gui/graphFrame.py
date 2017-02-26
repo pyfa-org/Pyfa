@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,56 +15,96 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
-import wx
 import os
-from gui.bitmapLoader import BitmapLoader
+from logbook import Logger
+
+# noinspection PyPackageRequirements
+import wx
+
+from service.fit import Fit
 import gui.display
-import gui.globalEvents as GE
-
-from gui.graph import Graph
-import service
 import gui.mainFrame
+import gui.globalEvents as GE
+from gui.graph import Graph
+from gui.bitmapLoader import BitmapLoader
 
-enabled = True
-mplImported = False
+pyfalog = Logger(__name__)
+
+try:
+    import matplotlib as mpl
+
+    mpl_version = int(mpl.__version__[0])
+    if mpl_version >= 2:
+        mpl.use('wxagg')
+        mplImported = True
+    else:
+        mplImported = False
+    from matplotlib.patches import Patch
+
+    from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as Canvas
+    from matplotlib.figure import Figure
+
+    graphFrame_enabled = True
+    mplImported = True
+except ImportError:
+    Patch = mpl = Canvas = Figure = None
+    graphFrame_enabled = False
+    mplImported = False
+
+pyfalog = Logger(__name__)
+
 
 class GraphFrame(wx.Frame):
     def __init__(self, parent, style=wx.DEFAULT_FRAME_STYLE | wx.NO_FULL_REPAINT_ON_RESIZE | wx.FRAME_FLOAT_ON_PARENT):
 
-        global enabled
+        global graphFrame_enabled
         global mplImported
 
-        self.legendFix = False
-        if not enabled:
-            return
+        self.Patch = None
+        self.mpl_version = -1
 
         try:
             import matplotlib as mpl
-
-            try:
-                cache_dir = mpl._get_cachedir()
-            except:
-                cache_dir = unicode(os.path.expanduser(os.path.join("~", ".matplotlib")))
-
-            cache_file = os.path.join(cache_dir, 'fontList.cache')
-            if os.access(cache_dir, os.W_OK | os.X_OK) and os.path.isfile(cache_file):
-                # remove matplotlib font cache, see #234
-                os.remove(cache_file)
-            if not mplImported:
+            self.mpl_version = int(mpl.__version__[0])
+            if self.mpl_version >= 2:
                 mpl.use('wxagg')
+                mplImported = True
+            else:
+                mplImported = False
+            from matplotlib.patches import Patch
+            self.Patch = Patch
             from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as Canvas
             from matplotlib.figure import Figure
-            enabled = True
-            if mpl.__version__[0] != "1":
-                print "pyfa: Found matplotlib version ",mpl.__version__, " - activating OVER9000 workarounds"
-                print "pyfa: Recommended minimum matplotlib version is 1.0.0"
-                self.legendFix = True
-        except:
-            print "Problems importing matplotlib; continuing without graphs"
-            enabled = False
+            graphFrame_enabled = True
+        except ImportError:
+            Patch = mpl = Canvas = Figure = None
+            graphFrame_enabled = False
+
+        self.legendFix = False
+        if not graphFrame_enabled:
+            pyfalog.info("Problems importing matplotlib; continuing without graphs")
             return
+
+        try:
+            cache_dir = mpl._get_cachedir()
+        except:
+            cache_dir = os.path.expanduser(os.path.join("~", ".matplotlib"))
+
+        cache_file = os.path.join(cache_dir, 'fontList.cache')
+
+        if os.access(cache_dir, os.W_OK | os.X_OK) and os.path.isfile(cache_file):
+            # remove matplotlib font cache, see #234
+            os.remove(cache_file)
+        if not mplImported:
+            mpl.use('wxagg')
+
+        graphFrame_enabled = True
+        if int(mpl.__version__[0]) < 1:
+            print("pyfa: Found matplotlib version ", mpl.__version__, " - activating OVER9000 workarounds")
+            print("pyfa: Recommended minimum matplotlib version is 1.0.0")
+            self.legendFix = True
 
         mplImported = True
 
@@ -78,7 +118,7 @@ class GraphFrame(wx.Frame):
         self.mainSizer = wx.BoxSizer(wx.VERTICAL)
         self.SetSizer(self.mainSizer)
 
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fit = sFit.getFit(self.mainFrame.getActiveFit())
         self.fits = [fit] if fit is not None else []
         self.fitList = FitList(self)
@@ -91,19 +131,20 @@ class GraphFrame(wx.Frame):
 
         self.figure = Figure(figsize=(4, 3))
 
-        rgbtuple = wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNFACE ).Get()
-        clr = [c/255. for c in rgbtuple]
-        self.figure.set_facecolor( clr )
-        self.figure.set_edgecolor( clr )
+        rgbtuple = wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE).Get()
+        clr = [c / 255. for c in rgbtuple]
+        self.figure.set_facecolor(clr)
+        self.figure.set_edgecolor(clr)
 
         self.canvas = Canvas(self, -1, self.figure)
-        self.canvas.SetBackgroundColour( wx.Colour( *rgbtuple ) )
+        self.canvas.SetBackgroundColour(wx.Colour(*rgbtuple))
 
         self.subplot = self.figure.add_subplot(111)
         self.subplot.grid(True)
 
         self.mainSizer.Add(self.canvas, 1, wx.EXPAND)
-        self.mainSizer.Add(wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL ), 0 , wx.EXPAND)
+        self.mainSizer.Add(wx.StaticLine(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL), 0,
+                           wx.EXPAND)
 
         self.gridPanel = wx.Panel(self)
         self.mainSizer.Add(self.gridPanel, 0, wx.EXPAND)
@@ -122,8 +163,8 @@ class GraphFrame(wx.Frame):
         self.graphSelection.SetSelection(0)
         self.fields = {}
         self.select(0)
-        self.sl1 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
-        self.mainSizer.Add(self.sl1,0, wx.EXPAND)
+        self.sl1 = wx.StaticLine(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL)
+        self.mainSizer.Add(self.sl1, 0, wx.EXPAND)
         self.mainSizer.Add(self.fitList, 0, wx.EXPAND)
 
         self.fitList.fitList.Bind(wx.EVT_LEFT_DCLICK, self.removeItem)
@@ -160,18 +201,18 @@ class GraphFrame(wx.Frame):
         self.gridPanel.DestroyChildren()
         self.fields.clear()
 
-        #Setup textboxes
+        # Setup textboxes
         for field, defaultVal in view.getFields().iteritems():
 
             textBox = wx.TextCtrl(self.gridPanel, wx.ID_ANY, style=0)
             self.fields[field] = textBox
             textBox.Bind(wx.EVT_TEXT, self.onFieldChanged)
-            sizer.Add(textBox, 1, wx.EXPAND | wx.ALIGN_CENTER_VERTICAL  | wx.ALL, 3)
+            sizer.Add(textBox, 1, wx.EXPAND | wx.ALIGN_CENTER_VERTICAL | wx.ALL, 3)
             if defaultVal is not None:
                 if not isinstance(defaultVal, basestring):
                     defaultVal = ("%f" % defaultVal).rstrip("0")
                     if defaultVal[-1:] == ".":
-                        defaultVal = defaultVal + "0"
+                        defaultVal += "0"
 
                 textBox.ChangeValue(defaultVal)
 
@@ -189,7 +230,8 @@ class GraphFrame(wx.Frame):
             else:
                 label = field
 
-            imgLabelSizer.Add(wx.StaticText(self.gridPanel, wx.ID_ANY, label), 0, wx.LEFT | wx.RIGHT | wx.ALIGN_CENTER_VERTICAL, 3)
+            imgLabelSizer.Add(wx.StaticText(self.gridPanel, wx.ID_ANY, label), 0,
+                              wx.LEFT | wx.RIGHT | wx.ALIGN_CENTER_VERTICAL, 3)
             sizer.Add(imgLabelSizer, 0, wx.ALIGN_CENTER_VERTICAL)
         self.draw()
 
@@ -204,7 +246,7 @@ class GraphFrame(wx.Frame):
             try:
                 success, status = view.getPoints(fit, values)
                 if not success:
-                    #TODO: Add a pwetty statys bar to report errors with
+                    # TODO: Add a pwetty statys bar to report errors with
                     self.SetStatusText(status)
                     return
 
@@ -213,25 +255,54 @@ class GraphFrame(wx.Frame):
                 self.subplot.plot(x, y)
                 legend.append(fit.name)
             except:
+                pyfalog.warning("Invalid values in '{0}'", fit.name)
                 self.SetStatusText("Invalid values in '%s'" % fit.name)
                 self.canvas.draw()
                 return
 
-        if self.legendFix and len(legend) > 0:
-            leg = self.subplot.legend(tuple(legend), "upper right" , shadow = False)
-            for t in leg.get_texts():
-                t.set_fontsize('small')
+        if self.mpl_version < 2:
+            if self.legendFix and len(legend) > 0:
+                leg = self.subplot.legend(tuple(legend), "upper right", shadow=False)
+                for t in leg.get_texts():
+                    t.set_fontsize('small')
 
-            for l in leg.get_lines():
-                l.set_linewidth(1)
+                for l in leg.get_lines():
+                    l.set_linewidth(1)
 
-        elif not self.legendFix and len(legend) >0:
-            leg = self.subplot.legend(tuple(legend), "upper right" , shadow = False, frameon = False)
-            for t in leg.get_texts():
-                t.set_fontsize('small')
+            elif not self.legendFix and len(legend) > 0:
+                leg = self.subplot.legend(tuple(legend), "upper right", shadow=False, frameon=False)
+                for t in leg.get_texts():
+                    t.set_fontsize('small')
 
-            for l in leg.get_lines():
-                l.set_linewidth(1)
+                for l in leg.get_lines():
+                    l.set_linewidth(1)
+        elif self.mpl_version >= 2:
+            legend2 = []
+            legend_colors = {
+                0: "blue",
+                1: "orange",
+                2: "green",
+                3: "red",
+                4: "purple",
+                5: "brown",
+                6: "pink",
+                7: "grey",
+            }
+
+            for i, i_name in enumerate(legend):
+                try:
+                    selected_color = legend_colors[i]
+                except:
+                    selected_color = None
+                legend2.append(Patch(color=selected_color, label=i_name), )
+
+            if len(legend2) > 0:
+                leg = self.subplot.legend(handles=legend2)
+                for t in leg.get_texts():
+                    t.set_fontsize('small')
+
+                for l in leg.get_lines():
+                    l.set_linewidth(1)
 
         self.canvas.draw()
         self.SetStatusText("")
@@ -242,7 +313,7 @@ class GraphFrame(wx.Frame):
         self.draw()
 
     def AppendFitToList(self, fitID):
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fit = sFit.getFit(fitID)
         if fit not in self.fits:
             self.fits.append(fit)
@@ -269,10 +340,10 @@ class FitList(wx.Panel):
         fitToolTip = wx.ToolTip("Drag a fit into this list to graph it")
         self.fitList.SetToolTip(fitToolTip)
 
+
 class FitDisplay(gui.display.Display):
     DEFAULT_COLS = ["Base Icon",
                     "Base Name"]
 
     def __init__(self, parent):
         gui.display.Display.__init__(self, parent)
-

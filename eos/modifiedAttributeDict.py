@@ -25,25 +25,25 @@ cappingAttrKeyCache = {}
 
 
 class ItemAttrShortcut(object):
-    def getModifiedItemAttr(self, key):
+    def getModifiedItemAttr(self, key, default=None):
         if key in self.itemModifiedAttributes:
             return self.itemModifiedAttributes[key]
         else:
-            return None
+            return default
 
 
 class ChargeAttrShortcut(object):
-    def getModifiedChargeAttr(self, key):
+    def getModifiedChargeAttr(self, key, default=None):
         if key in self.chargeModifiedAttributes:
             return self.chargeModifiedAttributes[key]
         else:
-            return None
+            return default
 
 
 class ModifiedAttributeDict(collections.MutableMapping):
     OVERRIDES = False
 
-    class CalculationPlaceholder():
+    class CalculationPlaceholder(object):
         def __init__(self):
             pass
 
@@ -132,8 +132,8 @@ class ModifiedAttributeDict(collections.MutableMapping):
         return (key for key in all)
 
     def __contains__(self, key):
-        return (
-               self.__original is not None and key in self.__original) or key in self.__modified or key in self.__intermediary
+        return (self.__original is not None and key in self.__original) or \
+            key in self.__modified or key in self.__intermediary
 
     def __placehold(self, key):
         """Create calculation placeholder in item's modified attribute dict"""
@@ -212,11 +212,11 @@ class ModifiedAttributeDict(collections.MutableMapping):
         for penalizedMultipliers in penalizedMultiplierGroups.itervalues():
             # A quick explanation of how this works:
             # 1: Bonuses and penalties are calculated seperately, so we'll have to filter each of them
-            l1 = filter(lambda val: val > 1, penalizedMultipliers)
-            l2 = filter(lambda val: val < 1, penalizedMultipliers)
+            l1 = filter(lambda _val: _val > 1, penalizedMultipliers)
+            l2 = filter(lambda _val: _val < 1, penalizedMultipliers)
             # 2: The most significant bonuses take the smallest penalty,
             # This means we'll have to sort
-            abssort = lambda val: -abs(val - 1)
+            abssort = lambda _val: -abs(_val - 1)
             l1.sort(key=abssort)
             l2.sort(key=abssort)
             # 3: The first module doesn't get penalized at all
@@ -359,7 +359,7 @@ class ModifiedAttributeDict(collections.MutableMapping):
         self.__afflict(attributeName, u"\u2263", value)
 
 
-class Affliction():
+class Affliction(object):
     def __init__(self, type, amount):
         self.type = type
         self.amount = amount

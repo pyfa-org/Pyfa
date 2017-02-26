@@ -1,11 +1,15 @@
-from gui import builtinViewColumns
-from gui.viewColumn import ViewColumn
-from gui.bitmapLoader import BitmapLoader
+# noinspection PyPackageRequirements
 import wx
-from eos.types import Drone, Fit, Module, Slot, Rack, Implant
+from eos.saveddata.implant import Implant
+from eos.saveddata.drone import Drone
+from eos.saveddata.module import Module, Slot, Rack
+from eos.saveddata.fit import Fit
+from gui.viewColumn import ViewColumn
+
 
 class BaseIcon(ViewColumn):
     name = "Base Icon"
+
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
         self.size = 24
@@ -17,18 +21,19 @@ class BaseIcon(ViewColumn):
     def getImageId(self, stuff):
         if isinstance(stuff, Drone):
             return -1
-        if isinstance(stuff, Fit):
+        elif isinstance(stuff, Fit):
             return self.shipImage
-        if isinstance(stuff, Rack):
+        elif isinstance(stuff, Rack):
             return -1
-        if isinstance(stuff, Implant):
+        elif isinstance(stuff, Implant):
             if stuff.character:  # if it has a character as it's parent
                 return self.fittingView.imageList.GetImageIndex("character_small", "gui")
             else:
                 return self.shipImage
-        if isinstance(stuff, Module):
+        elif isinstance(stuff, Module):
             if stuff.isEmpty:
-                return self.fittingView.imageList.GetImageIndex("slot_%s_small" % Slot.getName(stuff.slot).lower(), "gui")
+                return self.fittingView.imageList.GetImageIndex("slot_%s_small" % Slot.getName(stuff.slot).lower(),
+                                                                "gui")
             else:
                 return self.loadIconFile(stuff.item.icon.iconFile if stuff.item.icon else "")
 
@@ -40,5 +45,6 @@ class BaseIcon(ViewColumn):
             return self.fittingView.imageList.GetImageIndex(iconFile, "icons")
         else:
             return -1
+
 
 BaseIcon.register()

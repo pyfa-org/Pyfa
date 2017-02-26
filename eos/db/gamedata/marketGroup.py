@@ -21,7 +21,7 @@ from sqlalchemy import Column, String, Integer, Boolean, ForeignKey, Table
 from sqlalchemy.orm import relation, mapper, synonym, deferred
 
 from eos.db import gamedata_meta
-from eos.types import Item, MarketGroup, Icon
+from eos.gamedata import Icon, Item, MarketGroup
 
 marketgroups_table = Table("invmarketgroups", gamedata_meta,
                            Column("marketGroupID", Integer, primary_key=True),

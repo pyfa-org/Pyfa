@@ -17,7 +17,6 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-import copy
 import time
 from copy import deepcopy
 from itertools import chain
@@ -27,24 +26,19 @@ from sqlalchemy.orm import validates, reconstructor
 
 import eos.db
 from eos import capSim
-from eos.effectHandlerHelpers import *
+from eos.effectHandlerHelpers import HandledModuleList, HandledDroneCargoList, HandledImplantBoosterList, HandledProjectedDroneList, HandledProjectedModList
 from eos.enum import Enum
-from eos.saveddata.module import State, Hardpoint
-from eos.types import Ship, Character, Slot, Module, Citadel
+from eos.saveddata.ship import Ship
+from eos.saveddata.character import Character
+from eos.saveddata.citadel import Citadel
+from eos.saveddata.module import Module, State, Slot, Hardpoint
 from utils.timer import Timer
+from logbook import Logger
 
-logger = logging.getLogger(__name__)
-
-try:
-    from collections import OrderedDict
-except ImportError:
-    from utils.compat import OrderedDict
+pyfalog = Logger(__name__)
 
 
 class ImplantLocation(Enum):
-    def __init__(self):
-        pass
-
     FIT = 0
     CHARACTER = 1
 
@@ -90,7 +84,7 @@ class Fit(object):
         if self.shipID:
             item = eos.db.getItem(self.shipID)
             if item is None:
-                logger.error("Item (id: %d) does not exist", self.shipID)
+                pyfalog.error("Item (id: {0}) does not exist", self.shipID)
                 return
 
             try:
@@ -103,7 +97,7 @@ class Fit(object):
                 # change all instances in source). Remove this at some point
                 self.extraAttributes = self.__ship.itemModifiedAttributes
             except ValueError:
-                logger.error("Item (id: %d) is not a Ship", self.shipID)
+                pyfalog.error("Item (id: {0}) is not a Ship", self.shipID)
                 return
 
         if self.modeID and self.__ship:
@@ -370,9 +364,9 @@ class Fit(object):
 
     @validates("ID", "ownerID", "shipID")
     def validator(self, key, val):
-        map = {"ID": lambda val: isinstance(val, int),
-               "ownerID": lambda val: isinstance(val, int) or val is None,
-               "shipID": lambda val: isinstance(val, int) or val is None}
+        map = {"ID": lambda _val: isinstance(_val, int),
+               "ownerID": lambda _val: isinstance(_val, int) or _val is None,
+               "shipID": lambda _val: isinstance(_val, int) or _val is None}
 
         if not map[key](val):
             raise ValueError(str(val) + " is not a valid value for " + key)
@@ -434,9 +428,11 @@ class Fit(object):
         self.__modifier = currModifier
         self.__origin = origin
         if hasattr(currModifier, "itemModifiedAttributes"):
-            currModifier.itemModifiedAttributes.fit = origin or self
+            if hasattr(currModifier.itemModifiedAttributes, "fit"):
+                currModifier.itemModifiedAttributes.fit = origin or self
         if hasattr(currModifier, "chargeModifiedAttributes"):
-            currModifier.chargeModifiedAttributes.fit = origin or self
+            if hasattr(currModifier.itemModifiedAttributes, "fit"):
+                currModifier.chargeModifiedAttributes.fit = origin or self
 
     def getModifier(self):
         return self.__modifier
@@ -452,7 +448,7 @@ class Fit(object):
             self.commandBonuses[warfareBuffID] = (runTime, value, module, effect)
 
     def __runCommandBoosts(self, runTime="normal"):
-        logger.debug("Applying gang boosts for %r", self)
+        pyfalog.debug("Applying gang boosts for {0}", self)
         for warfareBuffID in self.commandBonuses.keys():
             # Unpack all data required to run effect properly
             effect_runTime, value, thing, effect = self.commandBonuses[warfareBuffID]
@@ -485,12 +481,12 @@ class Fit(object):
                         self.ship.boostItemAttr("armor%sDamageResonance" % damageType, value)
 
                 if warfareBuffID == 14:  # Armor Burst: Rapid Repair: Repair Duration/Capacitor
-                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill(
-                        "Remote Armor Repair Systems") or mod.item.requiresSkill("Repair Systems"),
-                                                  "capacitorNeed", value)
-                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill(
-                        "Remote Armor Repair Systems") or mod.item.requiresSkill("Repair Systems"), "duration",
-                                                  value)
+                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Remote Armor Repair Systems") or
+                                                               mod.item.requiresSkill("Repair Systems"),
+                                                   "capacitorNeed", value)
+                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Remote Armor Repair Systems") or
+                                                               mod.item.requiresSkill("Repair Systems"),
+                                                   "duration", value)
 
                 if warfareBuffID == 15:  # Armor Burst: Armor Reinforcement: Armor HP
                     self.ship.boostItemAttr("armorHP", value, stackingPenalties=True)
@@ -510,9 +506,8 @@ class Fit(object):
                                                       "scan%sStrengthBonus" % scanType, value,
                                                       stackingPenalties=True)
 
-                    for attr in (
-                    "missileVelocityBonus", "explosionDelayBonus", "aoeVelocityBonus", "falloffBonus",
-                    "maxRangeBonus", "aoeCloudSizeBonus", "trackingSpeedBonus"):
+                    for attr in ("missileVelocityBonus", "explosionDelayBonus", "aoeVelocityBonus", "falloffBonus",
+                                 "maxRangeBonus", "aoeCloudSizeBonus", "trackingSpeedBonus"):
                         self.modules.filteredItemBoost(lambda mod: mod.item.group.name == "Weapon Disruptor",
                                                       attr, value)
 
@@ -520,7 +515,7 @@ class Fit(object):
                         self.modules.filteredItemBoost(lambda mod: mod.item.group.name == "Sensor Dampener",
                                                       attr, value)
 
-                    self.modules.filteredItemBoost(lambda mod: mod.item.gorup.name == "Target Painter",
+                    self.modules.filteredItemBoost(lambda mod: mod.item.group.name == "Target Painter",
                                                   "signatureRadiusBonus", value, stackingPenalties=True)
 
                 if warfareBuffID == 18:  # Information Burst: Electronic Hardening: Scan Strength
@@ -625,38 +620,31 @@ class Fit(object):
                     self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Shield Emission Systems"), "shieldBonus", value, stackingPenalties=True)
 
                 if warfareBuffID == 53:  # Leviathan Effect Generator : Armor RR penalty
-                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Remote Armor Repair Systems"), "armorDamageAmount", value, stackingPenalties=True)
+                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Remote Armor Repair Systems"),
+                                                   "armorDamageAmount", value, stackingPenalties=True)
 
                 if warfareBuffID == 54:  # Ragnarok Effect Generator : Laser and Hybrid Optimal penalty
                     groups = ("Energy Weapon", "Hybrid Weapon")
                     self.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups, "maxRange", value, stackingPenalties=True)
 
-            else:
-                # Run effect, and get proper bonuses applied
-                try:
-                    self.register(thing)
-                    effect.handler(self, thing, context)
-                except:
-                    pass
-
             del self.commandBonuses[warfareBuffID]
 
     def calculateModifiedAttributes(self, targetFit=None, withBoosters=False, dirtyStorage=None):
-        timer = Timer(u'Fit: {}, {}'.format(self.ID, self.name), logger)
-        logger.debug("Starting fit calculation on: %r, withBoosters: %s", self, withBoosters)
+        timer = Timer(u'Fit: {}, {}'.format(self.ID, self.name), pyfalog)
+        pyfalog.debug("Starting fit calculation on: {0}, withBoosters: {1}", self, withBoosters)
 
         shadow = False
         if targetFit and not withBoosters:
-            logger.debug("Applying projections to target: %r", targetFit)
+            pyfalog.debug("Applying projections to target: {0}", targetFit)
             projectionInfo = self.getProjectionInfo(targetFit.ID)
-            logger.debug("ProjectionInfo: %s", projectionInfo)
+            pyfalog.debug("ProjectionInfo: {0}", projectionInfo)
             if self == targetFit:
                 copied = self  # original fit
                 shadow = True
                 # Don't inspect this, we genuinely want to reassign self
                 # noinspection PyMethodFirstArgAssignment
-                self = copy.deepcopy(self)
-                logger.debug("Handling self projection - making shadow copy of fit. %r => %r", copied, self)
+                self = deepcopy(self)
+                pyfalog.debug("Handling self projection - making shadow copy of fit. {0} => {1}", copied, self)
                 # we delete the fit because when we copy a fit, flush() is
                 # called to properly handle projection updates. However, we do
                 # not want to save this fit to the database, so simply remove it
@@ -691,7 +679,7 @@ class Fit(object):
         # projection have modifying stuff applied, such as gang boosts and other
         # local modules that may help
         if self.__calculated and not projected and not withBoosters:
-            logger.debug("Fit has already been calculated and is not projected, returning: %r", self)
+            pyfalog.debug("Fit has already been calculated and is not projected, returning: {0}", self)
             return
 
         for runTime in ("early", "normal", "late"):
@@ -731,7 +719,7 @@ class Fit(object):
                         self.register(item)
                         item.calculateModifiedAttributes(self, runTime, False)
 
-                    if projected is True and item not in chain.from_iterable(r):
+                    if projected is True and projectionInfo and item not in chain.from_iterable(r):
                         # apply effects onto target fit
                         for _ in xrange(projectionInfo.amount):
                             targetFit.register(item, origin=self)
@@ -742,19 +730,20 @@ class Fit(object):
                         # targetFit.register(item, origin=self)
                         item.calculateModifiedAttributes(targetFit, runTime, False, True)
 
-            print "Command: "
-            print self.commandBonuses
+            if len(self.commandBonuses) > 0:
+                pyfalog.info("Command bonuses applied.")
+                pyfalog.debug(self.commandBonuses)
 
             if not withBoosters and self.commandBonuses:
                 self.__runCommandBoosts(runTime)
 
-            timer.checkpoint('Done with runtime: %s'%runTime)
+            timer.checkpoint('Done with runtime: %s' % runTime)
 
         # Mark fit as calculated
         self.__calculated = True
 
         # Only apply projected fits if fit it not projected itself.
-        if not projected:
+        if not projected and not withBoosters:
             for fit in self.projectedFits:
                 if fit.getProjectionInfo(self.ID).active:
                     fit.calculateModifiedAttributes(self, withBoosters=withBoosters, dirtyStorage=dirtyStorage)
@@ -762,7 +751,7 @@ class Fit(object):
         timer.checkpoint('Done with fit calculation')
 
         if shadow:
-            logger.debug("Delete shadow fit object")
+            pyfalog.debug("Delete shadow fit object")
             del self
 
     def fill(self):
@@ -807,7 +796,8 @@ class Fit(object):
                 x += 1
         return x
 
-    def getItemAttrSum(self, dict, attr):
+    @staticmethod
+    def getItemAttrSum(dict, attr):
         amount = 0
         for mod in dict:
             add = mod.getModifiedItemAttr(attr)
@@ -816,7 +806,8 @@ class Fit(object):
 
         return amount
 
-    def getItemAttrOnlineSum(self, dict, attr):
+    @staticmethod
+    def getItemAttrOnlineSum(dict, attr):
         amount = 0
         for mod in dict:
             add = mod.getModifiedItemAttr(attr) if mod.state >= State.ONLINE else None
@@ -1051,8 +1042,8 @@ class Fit(object):
                                     repairers.append(mod)
 
                 # Sort repairers by efficiency. We want to use the most efficient repairers first
-                repairers.sort(key=lambda mod: mod.getModifiedItemAttr(
-                    groupAttrMap[mod.item.group.name]) / mod.getModifiedItemAttr("capacitorNeed"), reverse=True)
+                repairers.sort(key=lambda _mod: _mod.getModifiedItemAttr(
+                    groupAttrMap[_mod.item.group.name]) / _mod.getModifiedItemAttr("capacitorNeed"), reverse=True)
 
                 # Loop through every module until we're above peak recharge
                 # Most efficient first, as we sorted earlier.
@@ -1267,16 +1258,16 @@ class Fit(object):
 
         return True
 
-    def __deepcopy__(self, memo):
-        copy = Fit()
+    def __deepcopy__(self, memo=None):
+        copy_ship = Fit()
         # Character and owner are not copied
-        copy.character = self.__character
-        copy.owner = self.owner
-        copy.ship = deepcopy(self.ship, memo)
-        copy.name = "%s copy" % self.name
-        copy.damagePattern = self.damagePattern
-        copy.targetResists = self.targetResists
-        copy.notes = self.notes
+        copy_ship.character = self.__character
+        copy_ship.owner = self.owner
+        copy_ship.ship = deepcopy(self.ship)
+        copy_ship.name = "%s copy" % self.name
+        copy_ship.damagePattern = self.damagePattern
+        copy_ship.targetResists = self.targetResists
+        copy_ship.notes = self.notes
 
         toCopy = (
             "modules",
@@ -1290,17 +1281,17 @@ class Fit(object):
             "projectedFighters")
         for name in toCopy:
             orig = getattr(self, name)
-            c = getattr(copy, name)
+            c = getattr(copy_ship, name)
             for i in orig:
-                c.append(deepcopy(i, memo))
+                c.append(deepcopy(i))
 
         for fit in self.projectedFits:
-            copy.__projectedFits[fit.ID] = fit
+            copy_ship.__projectedFits[fit.ID] = fit
             # this bit is required -- see GH issue # 83
             eos.db.saveddata_session.flush()
             eos.db.saveddata_session.refresh(fit)
 
-        return copy
+        return copy_ship
 
     def __repr__(self):
         return u"Fit(ID={}, ship={}, name={}) at {}".format(

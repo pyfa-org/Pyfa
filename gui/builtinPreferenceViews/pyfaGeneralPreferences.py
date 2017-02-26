@@ -1,76 +1,99 @@
+# noinspection PyPackageRequirements
 import wx
 
 from gui.preferenceView import PreferenceView
 from gui.bitmapLoader import BitmapLoader
 
 import gui.mainFrame
-import service
 import gui.globalEvents as GE
+from service.settings import SettingsProvider
+from service.fit import Fit
+from service.price import Price
+from service.market import Market
 
 
-class PFGeneralPref ( PreferenceView):
+class PFGeneralPref(PreferenceView):
     title = "General"
 
-    def populatePanel( self, panel ):
+    def populatePanel(self, panel):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.dirtySettings = False
-        self.openFitsSettings = service.SettingsProvider.getInstance().getSettings("pyfaPrevOpenFits", {"enabled": False, "pyfaOpenFits": []})
+        self.openFitsSettings = SettingsProvider.getInstance().getSettings("pyfaPrevOpenFits",
+                                                                           {"enabled": False, "pyfaOpenFits": []})
 
-        mainSizer = wx.BoxSizer( wx.VERTICAL )
+        mainSizer = wx.BoxSizer(wx.VERTICAL)
 
-        self.stTitle = wx.StaticText( panel, wx.ID_ANY, self.title, wx.DefaultPosition, wx.DefaultSize, 0 )
-        self.stTitle.Wrap( -1 )
-        self.stTitle.SetFont( wx.Font( 12, 70, 90, 90, False, wx.EmptyString ) )
+        self.stTitle = wx.StaticText(panel, wx.ID_ANY, self.title, wx.DefaultPosition, wx.DefaultSize, 0)
+        self.stTitle.Wrap(-1)
+        self.stTitle.SetFont(wx.Font(12, 70, 90, 90, False, wx.EmptyString))
 
-        mainSizer.Add( self.stTitle, 0, wx.ALL, 5 )
+        mainSizer.Add(self.stTitle, 0, wx.ALL, 5)
 
-        self.m_staticline1 = wx.StaticLine( panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
-        mainSizer.Add( self.m_staticline1, 0, wx.EXPAND|wx.TOP|wx.BOTTOM, 5 )
+        self.m_staticline1 = wx.StaticLine(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL)
+        mainSizer.Add(self.m_staticline1, 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 5)
 
-        self.cbGlobalChar = wx.CheckBox( panel, wx.ID_ANY, u"Use global character", wx.DefaultPosition, wx.DefaultSize, 0 )
-        mainSizer.Add( self.cbGlobalChar, 0, wx.ALL|wx.EXPAND, 5 )
+        self.cbGlobalChar = wx.CheckBox(panel, wx.ID_ANY, u"Use global character", wx.DefaultPosition, wx.DefaultSize,
+                                        0)
+        mainSizer.Add(self.cbGlobalChar, 0, wx.ALL | wx.EXPAND, 5)
 
-        self.cbGlobalDmgPattern = wx.CheckBox( panel, wx.ID_ANY, u"Use global damage pattern", wx.DefaultPosition, wx.DefaultSize, 0 )
-        mainSizer.Add( self.cbGlobalDmgPattern, 0, wx.ALL|wx.EXPAND, 5 )
+        self.cbGlobalDmgPattern = wx.CheckBox(panel, wx.ID_ANY, u"Use global damage pattern", wx.DefaultPosition,
+                                              wx.DefaultSize, 0)
+        mainSizer.Add(self.cbGlobalDmgPattern, 0, wx.ALL | wx.EXPAND, 5)
 
-        self.cbGlobalForceReload = wx.CheckBox( panel, wx.ID_ANY, u"Factor in reload time", wx.DefaultPosition, wx.DefaultSize, 0 )
-        mainSizer.Add( self.cbGlobalForceReload, 0, wx.ALL|wx.EXPAND, 5 )
+        self.cbGlobalForceReload = wx.CheckBox(panel, wx.ID_ANY, u"Factor in reload time", wx.DefaultPosition,
+                                               wx.DefaultSize, 0)
+        mainSizer.Add(self.cbGlobalForceReload, 0, wx.ALL | wx.EXPAND, 5)
 
-        self.cbCompactSkills = wx.CheckBox( panel, wx.ID_ANY, u"Compact skills needed tooltip", wx.DefaultPosition, wx.DefaultSize, 0 )
-        mainSizer.Add( self.cbCompactSkills, 0, wx.ALL|wx.EXPAND, 5 )
+        self.cbCompactSkills = wx.CheckBox(panel, wx.ID_ANY, u"Compact skills needed tooltip", wx.DefaultPosition,
+                                           wx.DefaultSize, 0)
+        mainSizer.Add(self.cbCompactSkills, 0, wx.ALL | wx.EXPAND, 5)
 
-        self.cbFitColorSlots = wx.CheckBox( panel, wx.ID_ANY, u"Color fitting view by slot", wx.DefaultPosition, wx.DefaultSize, 0 )
-        mainSizer.Add( self.cbFitColorSlots, 0, wx.ALL|wx.EXPAND, 5 )
+        self.cbFitColorSlots = wx.CheckBox(panel, wx.ID_ANY, u"Color fitting view by slot", wx.DefaultPosition,
+                                           wx.DefaultSize, 0)
+        mainSizer.Add(self.cbFitColorSlots, 0, wx.ALL | wx.EXPAND, 5)
 
-        self.cbReopenFits = wx.CheckBox( panel, wx.ID_ANY, u"Reopen previous fits on startup", wx.DefaultPosition, wx.DefaultSize, 0 )
-        mainSizer.Add( self.cbReopenFits, 0, wx.ALL|wx.EXPAND, 5 )
+        self.cbReopenFits = wx.CheckBox(panel, wx.ID_ANY, u"Reopen previous fits on startup", wx.DefaultPosition,
+                                        wx.DefaultSize, 0)
+        mainSizer.Add(self.cbReopenFits, 0, wx.ALL | wx.EXPAND, 5)
 
-        self.cbRackSlots = wx.CheckBox( panel, wx.ID_ANY, u"Separate Racks", wx.DefaultPosition, wx.DefaultSize, 0 )
-        mainSizer.Add( self.cbRackSlots, 0, wx.ALL|wx.EXPAND, 5 )
+        self.cbRackSlots = wx.CheckBox(panel, wx.ID_ANY, u"Separate Racks", wx.DefaultPosition, wx.DefaultSize, 0)
+        mainSizer.Add(self.cbRackSlots, 0, wx.ALL | wx.EXPAND, 5)
 
-        labelSizer = wx.BoxSizer( wx.VERTICAL )
-        self.cbRackLabels = wx.CheckBox( panel, wx.ID_ANY, u"Show Rack Labels", wx.DefaultPosition, wx.DefaultSize, 0 )
-        labelSizer.Add( self.cbRackLabels, 0, wx.ALL|wx.EXPAND, 5 )
-        mainSizer.Add( labelSizer, 0, wx.LEFT|wx.EXPAND, 30 )
+        labelSizer = wx.BoxSizer(wx.VERTICAL)
+        self.cbRackLabels = wx.CheckBox(panel, wx.ID_ANY, u"Show Rack Labels", wx.DefaultPosition, wx.DefaultSize, 0)
+        labelSizer.Add(self.cbRackLabels, 0, wx.ALL | wx.EXPAND, 5)
+        mainSizer.Add(labelSizer, 0, wx.LEFT | wx.EXPAND, 30)
 
-        self.cbShowTooltip = wx.CheckBox( panel, wx.ID_ANY, u"Show tab tooltips", wx.DefaultPosition, wx.DefaultSize, 0 )
-        mainSizer.Add( self.cbShowTooltip, 0, wx.ALL|wx.EXPAND, 5 )
+        self.cbShowTooltip = wx.CheckBox(panel, wx.ID_ANY, u"Show tab tooltips", wx.DefaultPosition, wx.DefaultSize, 0)
+        mainSizer.Add(self.cbShowTooltip, 0, wx.ALL | wx.EXPAND, 5)
 
-        self.cbMarketShortcuts = wx.CheckBox( panel, wx.ID_ANY, u"Show market shortcuts", wx.DefaultPosition, wx.DefaultSize, 0 )
-        mainSizer.Add( self.cbMarketShortcuts, 0, wx.ALL|wx.EXPAND, 5 )
+        self.cbMarketShortcuts = wx.CheckBox(panel, wx.ID_ANY, u"Show market shortcuts", wx.DefaultPosition,
+                                             wx.DefaultSize, 0)
+        mainSizer.Add(self.cbMarketShortcuts, 0, wx.ALL | wx.EXPAND, 5)
 
-        self.cbGaugeAnimation = wx.CheckBox( panel, wx.ID_ANY, u"Animate gauges", wx.DefaultPosition, wx.DefaultSize, 0 )
-        mainSizer.Add( self.cbGaugeAnimation, 0, wx.ALL|wx.EXPAND, 5 )
+        self.cbGaugeAnimation = wx.CheckBox(panel, wx.ID_ANY, u"Animate gauges", wx.DefaultPosition, wx.DefaultSize, 0)
+        mainSizer.Add(self.cbGaugeAnimation, 0, wx.ALL | wx.EXPAND, 5)
 
-        self.cbExportCharges = wx.CheckBox( panel, wx.ID_ANY, u"Export loaded charges", wx.DefaultPosition, wx.DefaultSize, 0 )
-        mainSizer.Add( self.cbExportCharges, 0, wx.ALL|wx.EXPAND, 5 )
-        
-        self.cbOpenFitInNew = wx.CheckBox( panel, wx.ID_ANY, u"Open fittings in a new page by default", wx.DefaultPosition, wx.DefaultSize, 0 )
-        mainSizer.Add( self.cbOpenFitInNew, 0, wx.ALL|wx.EXPAND, 5 )
+        self.cbExportCharges = wx.CheckBox(panel, wx.ID_ANY, u"Export loaded charges", wx.DefaultPosition,
+                                           wx.DefaultSize, 0)
+        mainSizer.Add(self.cbExportCharges, 0, wx.ALL | wx.EXPAND, 5)
 
-        defCharSizer = wx.BoxSizer( wx.HORIZONTAL )
+        self.cbOpenFitInNew = wx.CheckBox(panel, wx.ID_ANY, u"Open fittings in a new page by default",
+                                          wx.DefaultPosition, wx.DefaultSize, 0)
+        mainSizer.Add(self.cbOpenFitInNew, 0, wx.ALL | wx.EXPAND, 5)
 
-        self.sFit = service.Fit.getInstance()
+        priceSizer = wx.BoxSizer(wx.HORIZONTAL)
+
+        self.stDefaultSystem = wx.StaticText(panel, wx.ID_ANY, u"Default Market Prices:", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.stDefaultSystem.Wrap(-1)
+        priceSizer.Add(self.stDefaultSystem, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
+
+        self.chPriceSystem = wx.Choice(panel, choices=Price.systemsList.keys())
+        priceSizer.Add(self.chPriceSystem, 1, wx.ALL | wx.EXPAND, 5)
+
+        mainSizer.Add(priceSizer, 0, wx.ALL | wx.EXPAND, 0)
+
+        self.sFit = Fit.getInstance()
 
         self.cbGlobalChar.SetValue(self.sFit.serviceFittingOptions["useGlobalCharacter"])
         self.cbGlobalDmgPattern.SetValue(self.sFit.serviceFittingOptions["useGlobalDamagePattern"])
@@ -85,6 +108,7 @@ class PFGeneralPref ( PreferenceView):
         self.cbGaugeAnimation.SetValue(self.sFit.serviceFittingOptions["enableGaugeAnimation"])
         self.cbExportCharges.SetValue(self.sFit.serviceFittingOptions["exportCharges"])
         self.cbOpenFitInNew.SetValue(self.sFit.serviceFittingOptions["openFitInNew"])
+        self.chPriceSystem.SetStringSelection(self.sFit.serviceFittingOptions["priceSystem"])
 
         self.cbGlobalChar.Bind(wx.EVT_CHECKBOX, self.OnCBGlobalCharStateChange)
         self.cbGlobalDmgPattern.Bind(wx.EVT_CHECKBOX, self.OnCBGlobalDmgPatternStateChange)
@@ -99,10 +123,11 @@ class PFGeneralPref ( PreferenceView):
         self.cbGaugeAnimation.Bind(wx.EVT_CHECKBOX, self.onCBGaugeAnimation)
         self.cbExportCharges.Bind(wx.EVT_CHECKBOX, self.onCBExportCharges)
         self.cbOpenFitInNew.Bind(wx.EVT_CHECKBOX, self.onCBOpenFitInNew)
+        self.chPriceSystem.Bind(wx.EVT_CHOICE, self.onPriceSelection)
 
         self.cbRackLabels.Enable(self.sFit.serviceFittingOptions["rackSlots"] or False)
 
-        panel.SetSizer( mainSizer )
+        panel.SetSizer(mainSizer)
         panel.Layout()
 
     def onCBGlobalColorBySlot(self, event):
@@ -163,11 +188,25 @@ class PFGeneralPref ( PreferenceView):
 
     def onCBExportCharges(self, event):
         self.sFit.serviceFittingOptions["exportCharges"] = self.cbExportCharges.GetValue()
-    
+
     def onCBOpenFitInNew(self, event):
         self.sFit.serviceFittingOptions["openFitInNew"] = self.cbOpenFitInNew.GetValue()
 
     def getImage(self):
         return BitmapLoader.getBitmap("prefs_settings", "gui")
+
+    def onPriceSelection(self, event):
+        system = self.chPriceSystem.GetString(self.chPriceSystem.GetSelection())
+        self.sFit.serviceFittingOptions["priceSystem"] = system
+
+        fitID = self.mainFrame.getActiveFit()
+
+        sMkt = Market.getInstance()
+        sMkt.clearPriceCache()
+
+        self.sFit.refreshFit(fitID)
+        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+        event.Skip()
+
 
 PFGeneralPref.register()

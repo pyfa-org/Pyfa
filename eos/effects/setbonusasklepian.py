@@ -1,8 +1,7 @@
 # setBonusAsklepian
 #
 # Used by:
-# Implants named like: Asklepian Omega (3 of 3)
-# Implants named like: Grade Asklepian (16 of 16)
+# Implants named like: grade Asklepian (18 of 18)
 runTime = "early"
 type = "passive"
 

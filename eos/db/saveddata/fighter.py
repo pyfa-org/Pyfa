@@ -18,11 +18,12 @@
 # ===============================================================================
 
 from sqlalchemy import Table, Column, Integer, ForeignKey, Boolean
-from sqlalchemy.orm import *
+from sqlalchemy.orm import mapper, relation
 
 from eos.db import saveddata_meta
-from eos.types import Fighter, Fit
-from eos.types import FighterAbility
+from eos.saveddata.fighterAbility import FighterAbility
+from eos.saveddata.fighter import Fighter
+from eos.saveddata.fit import Fit
 
 fighters_table = Table("fighters", saveddata_meta,
                        Column("groupID", Integer, primary_key=True),

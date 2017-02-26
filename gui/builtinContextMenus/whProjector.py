@@ -1,8 +1,11 @@
 from gui.contextMenu import ContextMenu
 import gui.mainFrame
 import gui.globalEvents as GE
-import service
+# noinspection PyPackageRequirements
 import wx
+from service.market import Market
+from service.fit import Fit
+
 
 class WhProjector(ContextMenu):
     def __init__(self):
@@ -16,7 +19,7 @@ class WhProjector(ContextMenu):
 
     def getSubMenu(self, context, selection, rootMenu, i, pitem):
         msw = True if "wxMSW" in wx.PlatformInfo else False
-        sMkt = service.Market.getInstance()
+        sMkt = Market.getInstance()
         effdata = sMkt.getSystemWideEffects()
 
         self.idmap = {}
@@ -41,16 +44,17 @@ class WhProjector(ContextMenu):
         return sub
 
     def handleSelection(self, event):
-        #Skip events ids that aren't mapped
+        # Skip events ids that aren't mapped
 
         swObj, swName = self.idmap.get(event.Id, (False, False))
         if not swObj and not swName:
             event.Skip()
             return
 
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
         sFit.project(fitID, swObj)
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+
 
 WhProjector.register()

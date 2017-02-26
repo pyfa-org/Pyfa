@@ -18,7 +18,6 @@
 # ===============================================================================
 
 import re
-import traceback
 
 from sqlalchemy.orm import reconstructor
 
@@ -29,6 +28,9 @@ try:
     from collections import OrderedDict
 except ImportError:
     from utils.compat import OrderedDict
+
+from logbook import Logger
+pyfalog = Logger(__name__)
 
 
 class Effect(EqBase):
@@ -63,6 +65,8 @@ class Effect(EqBase):
         """
         if not self.__generated:
             self.__generateHandler()
+
+        pyfalog.debug("Generating effect: {0} ({1}) [runTime: {2}]", self.name, self.effectID, self.runTime)
 
         return self.__handler
 
@@ -138,7 +142,7 @@ class Effect(EqBase):
     @property
     def isImplemented(self):
         """
-        Wether this effect is implemented in code or not,
+        Whether this effect is implemented in code or not,
         unimplemented effects simply do nothing at all when run
         """
         return self.handler != effectDummy
@@ -184,8 +188,11 @@ class Effect(EqBase):
             self.__runTime = "normal"
             self.__activeByDefault = True
             self.__type = None
+            pyfalog.debug("ImportError or AttributeError generating handler:")
+            pyfalog.debug(e)
         except Exception as e:
-            traceback.print_exc(e)
+            pyfalog.critical("Exception generating handler:")
+            pyfalog.critical(e)
 
         self.__generated = True
 
@@ -243,9 +250,11 @@ class Item(EqBase):
 
         return self.__attributes
 
-    def getAttribute(self, key):
+    def getAttribute(self, key, default=None):
         if key in self.attributes:
             return self.attributes[key].value
+        else:
+            return default
 
     def isType(self, type):
         for effect in self.effects.itervalues():
@@ -444,6 +453,26 @@ class Category(EqBase):
     pass
 
 
+class AlphaClone(EqBase):
+
+    @reconstructor
+    def init(self):
+        self.skillCache = {}
+
+        for x in self.skills:
+            self.skillCache[x.typeID] = x
+
+    def getSkillLevel(self, skill):
+        if skill.item.ID in self.skillCache:
+            return self.skillCache[skill.item.ID].level
+        else:
+            return None
+
+
+class AlphaCloneSkill(EqBase):
+    pass
+
+
 class Group(EqBase):
     pass
 
@@ -453,6 +482,7 @@ class Icon(EqBase):
 
 
 class MarketGroup(EqBase):
+
     def __repr__(self):
         return u"MarketGroup(ID={}, name={}, parent={}) at {}".format(
             self.ID, self.name, getattr(self.parent, "name", None), self.name, hex(id(self))

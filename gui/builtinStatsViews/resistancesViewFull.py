@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,23 +15,23 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
+# noinspection PyPackageRequirements
 import wx
 from gui.statsView import StatsView
-from gui import builtinStatsViews
 from gui.bitmapLoader import BitmapLoader
-from gui import pygauge as PG
+from gui.pygauge import PyGauge
 from gui.utils.numberFormatter import formatAmount
-import service
 import gui.mainFrame
-import gui.builtinViews.fittingView as fv
 import gui.globalEvents as GE
 
 EffectiveHpToggled, EFFECTIVE_HP_TOGGLED = wx.lib.newevent.NewEvent()
 
+
 class ResistancesViewFull(StatsView):
     name = "resistancesViewFull"
+
     def __init__(self, parent):
         StatsView.__init__(self)
         self.parent = parent
@@ -45,7 +45,7 @@ class ResistancesViewFull(StatsView):
         return "Resistances"
 
     def getTextExtentW(self, text):
-        width, height = self.parent.GetTextExtent( text )
+        width, height = self.parent.GetTextExtent(text)
         return width
 
     def populatePanel(self, contentPanel, headerPanel):
@@ -56,7 +56,7 @@ class ResistancesViewFull(StatsView):
         # Custom header  EHP
         headerContentSizer = wx.BoxSizer(wx.HORIZONTAL)
         hsizer = headerPanel.GetSizer()
-        hsizer.Add(headerContentSizer,0,0,0)
+        hsizer.Add(headerContentSizer, 0, 0, 0)
         self.stEff = wx.StaticText(headerPanel, wx.ID_ANY, "( Effective HP: ")
         headerContentSizer.Add(self.stEff)
         headerPanel.GetParent().AddToggleItem(self.stEff)
@@ -67,81 +67,83 @@ class ResistancesViewFull(StatsView):
 
         stCls = wx.StaticText(headerPanel, wx.ID_ANY, " )")
 
-        headerPanel.GetParent().AddToggleItem( stCls )
-        headerContentSizer.Add( stCls )
-#        headerContentSizer.Add(wx.StaticLine(headerPanel, wx.ID_ANY), 1, wx.ALIGN_CENTER)
+        headerPanel.GetParent().AddToggleItem(stCls)
+        headerContentSizer.Add(stCls)
+        #        headerContentSizer.Add(wx.StaticLine(headerPanel, wx.ID_ANY), 1, wx.ALIGN_CENTER)
 
         # Display table
         col = 0
         row = 0
         sizerResistances = wx.GridBagSizer()
-        contentSizer.Add( sizerResistances, 0, wx.EXPAND , 0)
+        contentSizer.Add(sizerResistances, 0, wx.EXPAND, 0)
 
         # Add an empty label, then the rest.
-        sizerResistances.Add(wx.StaticText(contentPanel, wx.ID_ANY), wx.GBPosition( row, col ), wx.GBSpan( 1, 1 ))
-        col+=1
-        toolTipText = {"em" : "Electromagnetic resistance", "thermal" : "Thermal resistance", "kinetic" : "Kinetic resistance", "explosive" : "Explosive resistance"}
+        sizerResistances.Add(wx.StaticText(contentPanel, wx.ID_ANY), wx.GBPosition(row, col), wx.GBSpan(1, 1))
+        col += 1
+        toolTipText = {"em": "Electromagnetic resistance", "thermal": "Thermal resistance",
+                       "kinetic": "Kinetic resistance", "explosive": "Explosive resistance"}
         for damageType in ("em", "thermal", "kinetic", "explosive"):
             bitmap = BitmapLoader.getStaticBitmap("%s_big" % damageType, contentPanel, "gui")
             tooltip = wx.ToolTip(toolTipText[damageType])
             bitmap.SetToolTip(tooltip)
-            sizerResistances.Add(bitmap, wx.GBPosition( row, col ), wx.GBSpan( 1, 1 ), wx.ALIGN_CENTER)
-            col+=1
-        self.stEHPs = wx.Button(contentPanel, style = wx.BU_EXACTFIT, label =  "EHP")
+            sizerResistances.Add(bitmap, wx.GBPosition(row, col), wx.GBSpan(1, 1), wx.ALIGN_CENTER)
+            col += 1
+        self.stEHPs = wx.Button(contentPanel, style=wx.BU_EXACTFIT, label="EHP")
         self.stEHPs.SetToolTip(wx.ToolTip("Click to toggle between effective HP and raw HP"))
 
         self.stEHPs.Bind(wx.EVT_BUTTON, self.toggleEHP)
 
         for i in xrange(4):
-            sizerResistances.AddGrowableCol(i+1)
+            sizerResistances.AddGrowableCol(i + 1)
 
-        sizerResistances.Add(self.stEHPs, wx.GBPosition( row, col ), wx.GBSpan( 1, 1 ), wx.ALIGN_CENTER)
-        col=0
-        row+=1
+        sizerResistances.Add(self.stEHPs, wx.GBPosition(row, col), wx.GBSpan(1, 1), wx.ALIGN_CENTER)
+        col = 0
+        row += 1
 
-        gaugeColours=( ((38,133,198),(52,86,98)), ((198,38,38),(83,65,67)), ((163,163,163),(74,90,93)), ((198,133,38),(81,83,67)) )
+        gaugeColours = (((38, 133, 198), (52, 86, 98)), ((198, 38, 38), (83, 65, 67)), ((163, 163, 163), (74, 90, 93)),
+                        ((198, 133, 38), (81, 83, 67)))
 
-        toolTipText = {"shield" : "Shield resistance", "armor" : "Armor resistance", "hull" : "Hull resistance", "damagePattern" : "Incoming damage pattern"}
+        toolTipText = {"shield": "Shield resistance", "armor": "Armor resistance", "hull": "Hull resistance",
+                       "damagePattern": "Incoming damage pattern"}
         for tankType in ("shield", "armor", "hull", "separator", "damagePattern"):
             if tankType != "separator":
                 bitmap = BitmapLoader.getStaticBitmap("%s_big" % tankType, contentPanel, "gui")
                 tooltip = wx.ToolTip(toolTipText[tankType])
                 bitmap.SetToolTip(tooltip)
-                sizerResistances.Add(bitmap, wx.GBPosition( row, col ), wx.GBSpan( 1, 1 ), wx.ALIGN_CENTER)
-                col+=1
+                sizerResistances.Add(bitmap, wx.GBPosition(row, col), wx.GBSpan(1, 1), wx.ALIGN_CENTER)
+                col += 1
 
             else:
-                sizerResistances.Add(wx.StaticLine(contentPanel, wx.ID_ANY), wx.GBPosition( row, col ), wx.GBSpan( 1, 6 ), wx.EXPAND|wx.ALIGN_CENTER)
-                row+=1
-                col=0
+                sizerResistances.Add(wx.StaticLine(contentPanel, wx.ID_ANY), wx.GBPosition(row, col), wx.GBSpan(1, 6),
+                                     wx.EXPAND | wx.ALIGN_CENTER)
+                row += 1
+                col = 0
 
                 continue
-            currGColour=0
+            currGColour = 0
 
             for damageType in ("em", "thermal", "kinetic", "explosive"):
-
                 box = wx.BoxSizer(wx.HORIZONTAL)
-                sizerResistances.Add(box, wx.GBPosition( row, col ), wx.GBSpan( 1, 1 ), wx.ALIGN_CENTER)
+                sizerResistances.Add(box, wx.GBPosition(row, col), wx.GBSpan(1, 1), wx.ALIGN_CENTER)
 
+                # Fancy gauges addon
 
-                #Fancy gauges addon
-
-                pgColour= gaugeColours[currGColour]
+                pgColour = gaugeColours[currGColour]
                 fc = pgColour[0]
                 bc = pgColour[1]
-                currGColour+=1
+                currGColour += 1
 
-                lbl = PG.PyGauge(contentPanel, wx.ID_ANY, 100)
+                lbl = PyGauge(contentPanel, wx.ID_ANY, 100)
                 lbl.SetMinSize((48, 16))
-                lbl.SetBackgroundColour(wx.Colour(bc[0],bc[1],bc[2]))
-                lbl.SetBarColour(wx.Colour(fc[0],fc[1],fc[2]))
+                lbl.SetBackgroundColour(wx.Colour(bc[0], bc[1], bc[2]))
+                lbl.SetBarColour(wx.Colour(fc[0], fc[1], fc[2]))
                 lbl.SetBarGradient()
                 lbl.SetFractionDigits(1)
 
                 setattr(self, "gaugeResistance%s%s" % (tankType.capitalize(), damageType.capitalize()), lbl)
                 box.Add(lbl, 0, wx.ALIGN_CENTER)
 
-                col+=1
+                col += 1
             box = wx.BoxSizer(wx.VERTICAL)
             box.SetMinSize(wx.Size(self.getTextExtentW("WWWWk"), -1))
 
@@ -149,9 +151,9 @@ class ResistancesViewFull(StatsView):
             box.Add(lbl, 0, wx.ALIGN_CENTER)
 
             setattr(self, "labelResistance%sEhp" % tankType.capitalize(), lbl)
-            sizerResistances.Add(box, wx.GBPosition( row, col ), wx.GBSpan( 1, 1 ), wx.ALIGN_CENTER)
-            row+=1
-            col=0
+            sizerResistances.Add(box, wx.GBPosition(row, col), wx.GBSpan(1, 1), wx.ALIGN_CENTER)
+            row += 1
+            col = 0
 
         self.stEHPs.SetToolTip(wx.ToolTip("Click to toggle between effective HP and raw HP"))
 
@@ -163,7 +165,7 @@ class ResistancesViewFull(StatsView):
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
 
     def refreshPanel(self, fit):
-        #If we did anything intresting, we'd update our labels to reflect the new fit's stats here
+        # If we did anything intresting, we'd update our labels to reflect the new fit's stats here
         if fit is None and not self.showEffective:
             self.showEffective = True
             wx.PostEvent(self.mainFrame, EffectiveHpToggled(effective=True))
@@ -194,10 +196,10 @@ class ResistancesViewFull(StatsView):
                 total += ehp[tankType]
                 rrFactor = fit.ehp[tankType] / fit.hp[tankType]
                 lbl.SetLabel(formatAmount(ehp[tankType], 3, 0, 9))
-                lbl.SetToolTip(wx.ToolTip("%s: %d\nResist Multiplier: x%.2f" % (tankType.capitalize(), ehp[tankType], rrFactor)))
+                lbl.SetToolTip(
+                    wx.ToolTip("%s: %d\nResist Multiplier: x%.2f" % (tankType.capitalize(), ehp[tankType], rrFactor)))
             else:
                 lbl.SetLabel("0")
-
 
         self.labelEhp.SetLabel("%s" % formatAmount(total, 3, 0, 9))
         if self.showEffective:
@@ -207,10 +209,9 @@ class ResistancesViewFull(StatsView):
             self.stEff.SetLabel("( Raw HP: ")
             self.labelEhp.SetToolTip(wx.ToolTip("Raw: %d HP" % total))
 
-
-        damagePattern = fit.damagePattern if fit is not None  and self.showEffective else None
+        damagePattern = fit.damagePattern if fit is not None and self.showEffective else None
         total = sum((damagePattern.emAmount, damagePattern.thermalAmount,
-                    damagePattern.kineticAmount, damagePattern.explosiveAmount)) if damagePattern is not None else 0
+                     damagePattern.kineticAmount, damagePattern.explosiveAmount)) if damagePattern is not None else 0
 
         for damageType in ("em", "thermal", "kinetic", "explosive"):
             lbl = getattr(self, "gaugeResistanceDamagepattern%s" % damageType.capitalize())
@@ -223,5 +224,5 @@ class ResistancesViewFull(StatsView):
         self.panel.Layout()
         self.headerPanel.Layout()
 
-ResistancesViewFull.register()
 
+ResistancesViewFull.register()

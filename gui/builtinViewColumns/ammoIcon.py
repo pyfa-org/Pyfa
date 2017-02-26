@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,16 +15,17 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
-from gui import builtinViewColumns
 from gui.viewColumn import ViewColumn
-from gui.bitmapLoader import BitmapLoader
+# noinspection PyPackageRequirements
 import wx
-from eos.types import Module
+from eos.saveddata.module import Module
+
 
 class AmmoIcon(ViewColumn):
     name = "Ammo Icon"
+
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
         self.size = 24
@@ -51,5 +52,6 @@ class AmmoIcon(ViewColumn):
     def getToolTip(self, mod):
         if isinstance(mod, Module) and mod.charge is not None:
             return mod.charge.name
+
 
 AmmoIcon.register()

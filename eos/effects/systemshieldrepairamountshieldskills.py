@@ -7,7 +7,7 @@ type = ("projected", "passive")
 
 
 def handler(fit, module, context):
-    fit.modules.filteredItemMultiply(lambda mod: mod.item.requiresSkill("Shield Operation")
-                                                 or mod.item.requiresSkill("Capital Shield Operation"),
+    fit.modules.filteredItemMultiply(lambda mod: mod.item.requiresSkill("Shield Operation") or
+                                                 mod.item.requiresSkill("Capital Shield Operation"),
                                      "shieldBonus", module.getModifiedItemAttr("shieldBonusMultiplier"),
                                      stackingPenalties=True, penaltyGroup="postMul")

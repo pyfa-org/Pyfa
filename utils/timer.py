@@ -1,6 +1,7 @@
 import time
 
-class Timer():
+
+class Timer(object):
     def __init__(self, name='', logger=None):
         self.name = name
         self.start = time.time()
@@ -9,24 +10,24 @@ class Timer():
 
     @property
     def elapsed(self):
-        return (time.time() - self.start)*1000
+        return (time.time() - self.start) * 1000
 
     @property
     def last(self):
-        return (time.time() - self.__last)*1000
+        return (time.time() - self.__last) * 1000
 
     def checkpoint(self, name=''):
         text = u'Timer - {timer} - {checkpoint} - {last:.2f}ms ({elapsed:.2f}ms elapsed)'.format(
-            timer=self.name,
-            checkpoint=unicode(name, "utf-8"),
-            last=self.last,
-            elapsed=self.elapsed
+                timer=self.name,
+                checkpoint=unicode(name, "utf-8"),
+                last=self.last,
+                elapsed=self.elapsed
         ).strip()
         self.__last = time.time()
         if self.logger:
             self.logger.debug(text)
         else:
-            print text
+            print(text)
 
     def __enter__(self):
         return self

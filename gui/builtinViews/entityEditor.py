@@ -1,6 +1,7 @@
+# noinspection PyPackageRequirements
 import wx
 from gui.bitmapLoader import BitmapLoader
-import service
+
 
 class BaseValidator(wx.PyValidator):
     def __init__(self):
@@ -15,6 +16,7 @@ class BaseValidator(wx.PyValidator):
     def TransferFromWindow(self):
         return True
 
+
 class TextEntryValidatedDialog(wx.TextEntryDialog):
     def __init__(self, parent, validator=None, *args, **kargs):
         wx.TextEntryDialog.__init__(self, parent, *args, **kargs)
@@ -24,7 +26,8 @@ class TextEntryValidatedDialog(wx.TextEntryDialog):
         if validator:
             self.txtctrl.SetValidator(validator())
 
-class EntityEditor (wx.Panel):
+
+class EntityEditor(wx.Panel):
     """
     Entity Editor is a panel that takes some sort of list as a source and populates a drop down with options to add/
     rename/clone/delete an entity. Comes with dialogs that take user input. Classes that derive this class must override
@@ -52,7 +55,7 @@ class EntityEditor (wx.Panel):
             bitmap = wx.ArtProvider.GetBitmap(art, wx.ART_BUTTON) if name != "rename" else art
             btn = wx.BitmapButton(self, wx.ID_ANY, bitmap)
             if size is None:
-                    size = btn.GetSize()
+                size = btn.GetSize()
 
             btn.SetMinSize(size)
             btn.SetMaxSize(size)
@@ -135,8 +138,9 @@ class EntityEditor (wx.Panel):
 
     def OnDelete(self, event):
         dlg = wx.MessageDialog(self,
-                 "Do you really want to delete the {} {}?".format(self.getActiveEntity().name, self.entityName),
-                 "Confirm Delete", wx.YES | wx.NO | wx.ICON_QUESTION)
+                               "Do you really want to delete the {} {}?".format(self.getActiveEntity().name,
+                                                                                self.entityName),
+                               "Confirm Delete", wx.YES | wx.NO | wx.ICON_QUESTION)
         dlg.CenterOnParent()
 
         if dlg.ShowModal() == wx.ID_YES:

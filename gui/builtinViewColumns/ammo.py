@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,17 +15,18 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
-from gui import builtinViewColumns
+# noinspection PyPackageRequirements
+import wx
+from eos.saveddata.fighter import Fighter
 from gui.viewColumn import ViewColumn
 from gui.bitmapLoader import BitmapLoader
-import wx
-from eos.types import Fighter
 
 
 class Ammo(ViewColumn):
     name = "Ammo"
+
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
         self.mask = wx.LIST_MASK_IMAGE
@@ -43,7 +44,7 @@ class Ammo(ViewColumn):
             charges = stuff.numCharges
             if charges > 0:
                 cycles = stuff.numShots
-                if cycles !=0 and charges != cycles:
+                if cycles != 0 and charges != cycles:
                     return "%s (%d, %d cycles)" % (stuff.charge.name, charges, cycles)
                 else:
                     return "%s (%d)" % (stuff.charge.name, charges)
@@ -54,5 +55,5 @@ class Ammo(ViewColumn):
     def getImageId(self, mod):
         return -1
 
-Ammo.register()
 
+Ammo.register()

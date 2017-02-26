@@ -1,8 +1,11 @@
+# noinspection PyPackageRequirements
 import wx
 from gui.contextMenu import ContextMenu
 import gui.mainFrame
-import service
+
 import gui.globalEvents as GE
+from service.fit import Fit
+
 
 class TacticalMode(ContextMenu):
     def __init__(self):
@@ -12,7 +15,7 @@ class TacticalMode(ContextMenu):
         if self.mainFrame.getActiveFit() is None or srcContext != "fittingShip":
             return False
 
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
         fit = sFit.getFit(fitID)
 
@@ -52,9 +55,10 @@ class TacticalMode(ContextMenu):
             event.Skip()
             return
 
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
         sFit.setMode(fitID, self.modeIds[event.Id])
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+
 
 TacticalMode.register()

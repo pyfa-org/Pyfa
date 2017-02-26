@@ -1,5 +1,5 @@
+# noinspection PyPackageRequirements
 import wx
-import gui.utils.colorUtils as colorUtils
 import gui.utils.drawUtils as drawUtils
 
 SB_ITEM_NORMAL = 0
@@ -7,14 +7,15 @@ SB_ITEM_SELECTED = 1
 SB_ITEM_HIGHLIGHTED = 2
 SB_ITEM_DISABLED = 4
 
-BTN_NORMAL   = 1
-BTN_PRESSED  = 2
-BTN_HOVER    = 4
+BTN_NORMAL = 1
+BTN_PRESSED = 2
+BTN_HOVER = 4
 BTN_DISABLED = 8
 
 
 class PFBaseButton(object):
-    def __init__(self, normalBitmap = wx.NullBitmap,label = "", callback = None, hoverBitmap = None, disabledBitmap = None, show = True):
+    def __init__(self, normalBitmap=wx.NullBitmap, label="", callback=None, hoverBitmap=None, disabledBitmap=None,
+                 show=True):
 
         self.normalBmp = normalBitmap
         self.dropShadowOpacity = 0.2
@@ -48,7 +49,7 @@ class PFBaseButton(object):
         if self.callback:
             self.callback()
 
-    def SetState(self, state = BTN_NORMAL):
+    def SetState(self, state=BTN_NORMAL):
         self.state = state
 
     def GetState(self):
@@ -57,7 +58,7 @@ class PFBaseButton(object):
     def GetSize(self):
         w = self.normalBmp.GetWidth()
         h = self.normalBmp.GetHeight()
-        return (w,h)
+        return w, h
 
     def GetBitmap(self):
         return self.normalBmp
@@ -70,22 +71,23 @@ class PFBaseButton(object):
         return self.label
 
     def GetHoverBitmap(self):
-        if self.hoverBmp == None:
+        if self.hoverBmp is None:
             return self.normalBmp
         return self.hoverBmp
 
     def GetDisabledBitmap(self):
-        if self.disabledBmp == None:
+        if self.disabledBmp is None:
             return self.normalBmp
         return self.disabledBmp
 
     def GetDropShadowBitmap(self):
         return self.dropShadowBmp
 
+
 class PFToolbar(object):
     def __init__(self, parent):
         self.Parent = parent
-        self.buttons =[]
+        self.buttons = []
         self.toolbarX = 0
         self.toolbarY = 0
         self.padding = 2
@@ -94,7 +96,7 @@ class PFToolbar(object):
     def SetPosition(self, pos):
         self.toolbarX, self.toolbarY = pos
 
-    def AddButton(self, btnBitmap, label = "", clickCallback = None, hoverBitmap = None, disabledBitmap = None, show = True):
+    def AddButton(self, btnBitmap, label="", clickCallback=None, hoverBitmap=None, disabledBitmap=None, show=True):
         btn = PFBaseButton(btnBitmap, label, clickCallback, hoverBitmap, disabledBitmap, show)
         self.buttons.append(btn)
         return btn
@@ -115,7 +117,7 @@ class PFToolbar(object):
                 continue
 
             state = button.GetState()
-            if self.HitTest( (bx, self.toolbarY), event.GetPosition(), button.GetSize()):
+            if self.HitTest((bx, self.toolbarY), event.GetPosition(), button.GetSize()):
                 changeCursor = True
                 if not state & BTN_HOVER:
                     button.SetState(state | BTN_HOVER)
@@ -135,7 +137,6 @@ class PFToolbar(object):
         return doRefresh
 
     def MouseClick(self, event):
-        mx,my = event.GetPosition()
         bx = self.toolbarX
         for button in self.buttons:
             if not button.IsVisible():
@@ -143,8 +144,8 @@ class PFToolbar(object):
 
             state = button.GetState()
             if state & BTN_PRESSED:
-                button.SetState(state ^ BTN_PRESSED )
-                if self.HitTest( (bx, self.toolbarY), event.GetPosition(), button.GetSize()):
+                button.SetState(state ^ BTN_PRESSED)
+                if self.HitTest((bx, self.toolbarY), event.GetPosition(), button.GetSize()):
                     return button
                 else:
                     return False
@@ -158,7 +159,7 @@ class PFToolbar(object):
 
             state = button.GetState()
 
-            if self.HitTest( (bx, self.toolbarY), event.GetPosition(), button.GetSize()):
+            if self.HitTest((bx, self.toolbarY), event.GetPosition(), button.GetSize()):
 
                 if event.LeftDown() or event.LeftDClick():
                     button.SetState(state | BTN_PRESSED)
@@ -195,11 +196,12 @@ class PFToolbar(object):
 
         return height
 
-    def HitTest(self, target, position, area):
+    @staticmethod
+    def HitTest(target, position, area):
         x, y = target
         px, py = position
         aX, aY = area
-        if (px > x and px < x + aX) and (py > y and py < y + aY):
+        if (x < px < x + aX) and (y < py < y + aY):
             return True
         return False
 
@@ -230,14 +232,14 @@ class PFToolbar(object):
 
             bmpWidth = bmp.GetWidth()
 
-            pdc.DrawBitmap(dropShadowBmp,bx + self.padding / 2, self.toolbarY + self.padding / 2)
+            pdc.DrawBitmap(dropShadowBmp, bx + self.padding / 2, self.toolbarY + self.padding / 2)
             pdc.DrawBitmap(bmp, tbx, by)
 
             bx += bmpWidth + self.padding
 
 
 class SFBrowserItem(wx.Window):
-    def __init__(self, parent, id = wx.ID_ANY, pos = wx.DefaultPosition, size = (0,16), style = 0):
+    def __init__(self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=(0, 16), style=0):
         wx.Window.__init__(self, parent, id, pos, size, style)
 
         self.highlighted = False
@@ -248,7 +250,6 @@ class SFBrowserItem(wx.Window):
 
         self.toolbar = PFToolbar(self)
 
-
         self.Bind(wx.EVT_PAINT, self.OnPaint)
         self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBackground)
         self.Bind(wx.EVT_LEFT_UP, self.OnLeftUp)
@@ -256,8 +257,7 @@ class SFBrowserItem(wx.Window):
         if "wxMSW" in wx.PlatformInfo:
             self.Bind(wx.EVT_LEFT_DCLICK, self.OnLeftDown)
 
-
-        self.Bind(wx.EVT_LEFT_DOWN,self.OnLeftDown)
+        self.Bind(wx.EVT_LEFT_DOWN, self.OnLeftDown)
         self.Bind(wx.EVT_ENTER_WINDOW, self.OnEnterWindow)
         self.Bind(wx.EVT_LEAVE_WINDOW, self.OnLeaveWindow)
         self.Bind(wx.EVT_MOTION, self.OnMotion)
@@ -271,7 +271,7 @@ class SFBrowserItem(wx.Window):
 
         self.RenderBackground()
 
-        mdc.DrawBitmap(self.bkBitmap, 0,0)
+        mdc.DrawBitmap(self.bkBitmap, 0, 0)
 
         self.DrawItem(mdc)
         self.toolbar.Render(mdc)
@@ -291,7 +291,7 @@ class SFBrowserItem(wx.Window):
     def MouseMove(self, event):
         pass
 
-    def SetDraggable(self, mode = True):
+    def SetDraggable(self, mode=True):
         self.canBeDragged = mode
 
     def OnLeftUp(self, event):
@@ -302,13 +302,12 @@ class SFBrowserItem(wx.Window):
             mposx, mposy = wx.GetMousePosition()
             rect = self.GetRect()
             rect.top = rect.left = 0
-            cx,cy = self.ScreenToClient((mposx,mposy))
-            if not rect.Contains((cx,cy)):
+            cx, cy = self.ScreenToClient((mposx, mposy))
+            if not rect.Contains((cx, cy)):
                 self.SetHighlighted(False)
                 self.toolbar.ClearState()
                 self.Refresh()
                 return
-
 
         btn = self.toolbar.MouseClick(event)
 
@@ -322,7 +321,6 @@ class SFBrowserItem(wx.Window):
             return
 
         self.MouseLeftUp(event)
-
 
     def OnLeftDown(self, event):
         if not self.HasCapture():
@@ -357,13 +355,14 @@ class SFBrowserItem(wx.Window):
 
         event.Skip()
 
-    def GetType(self):
+    @staticmethod
+    def GetType():
         return -1
 
-    def SetSelected(self, select = True):
+    def SetSelected(self, select=True):
         self.selected = select
 
-    def SetHighlighted(self, highlight = True):
+    def SetHighlighted(self, highlight=True):
         self.highlighted = highlight
 
     def GetState(self):
@@ -373,7 +372,7 @@ class SFBrowserItem(wx.Window):
 
         elif self.selected:
             if self.highlighted:
-                state = SB_ITEM_SELECTED  | SB_ITEM_HIGHLIGHTED
+                state = SB_ITEM_SELECTED | SB_ITEM_HIGHLIGHTED
             else:
                 state = SB_ITEM_SELECTED
         else:
@@ -396,7 +395,7 @@ class SFBrowserItem(wx.Window):
             mFactor = 0.45
             eFactor = 0.30
 
-        elif state == SB_ITEM_SELECTED  | SB_ITEM_HIGHLIGHTED:
+        elif state == SB_ITEM_SELECTED | SB_ITEM_HIGHLIGHTED:
             eFactor = 0.3
         elif state == SB_ITEM_SELECTED:
             eFactor = 0.15
@@ -405,7 +404,7 @@ class SFBrowserItem(wx.Window):
 
         if self.bkBitmap:
             if self.bkBitmap.eFactor == eFactor and self.bkBitmap.sFactor == sFactor and self.bkBitmap.mFactor == mFactor \
-             and rect.width == self.bkBitmap.GetWidth() and rect.height == self.bkBitmap.GetHeight() :
+                    and rect.width == self.bkBitmap.GetWidth() and rect.height == self.bkBitmap.GetHeight():
                 return
             else:
                 del self.bkBitmap

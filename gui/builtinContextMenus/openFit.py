@@ -1,7 +1,9 @@
 from gui.contextMenu import ContextMenu
 import gui.mainFrame
+# noinspection PyPackageRequirements
 import wx
 from gui.shipBrowser import FitSelected
+
 
 class OpenFit(ContextMenu):
     def __init__(self):
@@ -16,5 +18,6 @@ class OpenFit(ContextMenu):
     def activate(self, fullContext, selection, i):
         fit = selection[0]
         wx.PostEvent(self.mainFrame, FitSelected(fitID=fit.ID, startup=2))
+
 
 OpenFit.register()

@@ -3,6 +3,8 @@
 # Used by:
 # Modules from group: Titan Phenomena Generator (4 of 4)
 type = "active", "gang"
+
+
 def handler(fit, module, context, **kwargs):
     for x in xrange(1, 5):
         if module.getModifiedItemAttr("warfareBuff{}ID".format(x)):
@@ -11,7 +13,3 @@ def handler(fit, module, context, **kwargs):
 
             if id:
                 fit.addCommandBonus(id, value, module, kwargs['effect'])
-
-
-
-

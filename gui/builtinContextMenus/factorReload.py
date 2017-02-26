@@ -1,9 +1,11 @@
 from gui.contextMenu import ContextMenu
 import gui.mainFrame
-import service
 import gui.globalEvents as GE
+# noinspection PyPackageRequirements
 import wx
 from gui.bitmapLoader import BitmapLoader
+from service.fit import Fit
+
 
 class FactorReload(ContextMenu):
     def __init__(self):
@@ -16,14 +18,14 @@ class FactorReload(ContextMenu):
         return "Factor in Reload Time"
 
     def activate(self, fullContext, selection, i):
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         sFit.serviceFittingOptions["useGlobalForceReload"] = not sFit.serviceFittingOptions["useGlobalForceReload"]
         fitID = self.mainFrame.getActiveFit()
         sFit.refreshFit(fitID)
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
     def getBitmap(self, context, selection):
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
         fit = sFit.getFit(fitID)
         if fit.factorReload:

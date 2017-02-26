@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,14 +15,15 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
+# noinspection PyPackageRequirements
 import wx
 from gui.preferenceView import PreferenceView
 from gui.bitmapLoader import BitmapLoader
 
-class PreferenceDialog(wx.Dialog):
 
+class PreferenceDialog(wx.Dialog):
     def __init__(self, parent):
         wx.Dialog.__init__(self, parent, id=wx.ID_ANY, size=wx.DefaultSize, style=wx.DEFAULT_DIALOG_STYLE)
         self.SetTitle("pyfa - Preferences")
@@ -33,22 +34,22 @@ class PreferenceDialog(wx.Dialog):
         self.listbook = wx.Listbook(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LB_DEFAULT)
 
         self.listview = self.listbook.GetListView()
-        #self.listview.SetMinSize((500, -1))
-        #self.listview.SetSize((500, -1))
+        # self.listview.SetMinSize((500, -1))
+        # self.listview.SetSize((500, -1))
 
-        self.imageList = wx.ImageList(32,32)
+        self.imageList = wx.ImageList(32, 32)
         self.listbook.SetImageList(self.imageList)
 
-        mainSizer.Add(self.listbook, 1, wx.EXPAND | wx.TOP|wx.BOTTOM|wx.LEFT, 5)
+        mainSizer.Add(self.listbook, 1, wx.EXPAND | wx.TOP | wx.BOTTOM | wx.LEFT, 5)
 
-        self.m_staticline2 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
-        mainSizer.Add( self.m_staticline2, 0, wx.EXPAND, 5 )
+        self.m_staticline2 = wx.StaticLine(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL)
+        mainSizer.Add(self.m_staticline2, 0, wx.EXPAND, 5)
 
-        btnSizer = wx.BoxSizer( wx.HORIZONTAL )
-        btnSizer.AddSpacer( ( 0, 0), 1, wx.EXPAND, 5 )
-        self.btnOK = wx.Button( self, wx.ID_ANY, u"OK", wx.DefaultPosition, wx.DefaultSize, 0 )
-        btnSizer.Add( self.btnOK, 0, wx.ALL, 5 )
-        mainSizer.Add(btnSizer,0 , wx.EXPAND, 5)
+        btnSizer = wx.BoxSizer(wx.HORIZONTAL)
+        btnSizer.AddSpacer((0, 0), 1, wx.EXPAND, 5)
+        self.btnOK = wx.Button(self, wx.ID_ANY, u"OK", wx.DefaultPosition, wx.DefaultSize, 0)
+        btnSizer.Add(self.btnOK, 0, wx.ALL, 5)
+        mainSizer.Add(btnSizer, 0, wx.EXPAND, 5)
         self.SetSizer(mainSizer)
 
         self.Centre(wx.BOTH)
@@ -61,12 +62,12 @@ class PreferenceDialog(wx.Dialog):
             else:
                 imgID = -1
             prefView.populatePanel(page)
-            self.listbook.AddPage(page, prefView.title, imageId = imgID)
+            self.listbook.AddPage(page, prefView.title, imageId=imgID)
 
         # Set the height based on a condition. Can all the panels fit in the current height?
         # If not, use the .GetBestVirtualSize() to ensure that all content is available.
         minHeight = 360
-        bestFit   = self.GetBestVirtualSize()
+        bestFit = self.GetBestVirtualSize()
         if minHeight > bestFit[1]:
             self.SetSizeWH(450, minHeight)
         else:

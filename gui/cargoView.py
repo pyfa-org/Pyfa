@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,31 +15,34 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
+# noinspection PyPackageRequirements
 import wx
-import service
 import gui.display as d
-import gui.marketBrowser as mb
 from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
 import globalEvents as GE
+from service.fit import Fit
+from service.market import Market
+
 
 class CargoViewDrop(wx.PyDropTarget):
-        def __init__(self, dropFn):
-            wx.PyDropTarget.__init__(self)
-            self.dropFn = dropFn
-            # this is really transferring an EVE itemID
-            self.dropData = wx.PyTextDataObject()
-            self.SetDataObject(self.dropData)
+    def __init__(self, dropFn, *args, **kwargs):
+        super(CargoViewDrop, self).__init__(*args, **kwargs)
+        self.dropFn = dropFn
+        # this is really transferring an EVE itemID
+        self.dropData = wx.PyTextDataObject()
+        self.SetDataObject(self.dropData)
 
-        def OnData(self, x, y, t):
-            if self.GetData():
-                data = self.dropData.GetText().split(':')
-                self.dropFn(x, y, data)
-            return t
+    def OnData(self, x, y, t):
+        if self.GetData():
+            data = self.dropData.GetText().split(':')
+            self.dropFn(x, y, data)
+        return t
 
-#  @todo: Was copied form another class and modified. Look through entire file, refine
+
+# @todo: Was copied form another class and modified. Look through entire file, refine
 class CargoView(d.Display):
     DEFAULT_COLS = ["Base Icon",
                     "Base Name",
@@ -58,24 +61,24 @@ class CargoView(d.Display):
         self.SetDropTarget(CargoViewDrop(self.handleListDrag))
         self.Bind(wx.EVT_LIST_BEGIN_DRAG, self.startDrag)
 
-        if "__WXGTK__" in  wx.PlatformInfo:
+        if "__WXGTK__" in wx.PlatformInfo:
             self.Bind(wx.EVT_RIGHT_UP, self.scheduleMenu)
         else:
             self.Bind(wx.EVT_RIGHT_DOWN, self.scheduleMenu)
 
     def handleListDrag(self, x, y, data):
-        '''
+        """
         Handles dragging of items from various pyfa displays which support it
 
         data is list with two indices:
             data[0] is hard-coded str of originating source
             data[1] is typeID or index of data we want to manipulate
-        '''
+        """
 
         if data[0] == "fitting":
             self.swapModule(x, y, int(data[1]))
         elif data[0] == "market":
-            sFit = service.Fit.getInstance()
+            sFit = Fit.getInstance()
             sFit.addCargo(self.mainFrame.getActiveFit(), int(data[1]), 1)
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
 
@@ -84,17 +87,17 @@ class CargoView(d.Display):
 
         if row != -1:
             data = wx.PyTextDataObject()
-            data.SetText("cargo:"+str(row))
+            data.SetText("cargo:" + str(row))
 
             dropSource = wx.DropSource(self)
             dropSource.SetData(data)
-            res = dropSource.DoDragDrop()
+            dropSource.DoDragDrop()
 
-    def kbEvent(self,event):
+    def kbEvent(self, event):
         keycode = event.GetKeyCode()
         if keycode == wx.WXK_DELETE or keycode == wx.WXK_NUMPAD_DELETE:
             fitID = self.mainFrame.getActiveFit()
-            sFit = service.Fit.getInstance()
+            sFit = Fit.getInstance()
             row = self.GetFirstSelected()
             if row != -1:
                 sFit.removeCargo(fitID, self.GetItemData(row))
@@ -102,8 +105,8 @@ class CargoView(d.Display):
         event.Skip()
 
     def swapModule(self, x, y, modIdx):
-        '''Swap a module from fitting window with cargo'''
-        sFit = service.Fit.getInstance()
+        """Swap a module from fitting window with cargo"""
+        sFit = Fit.getInstance()
         fit = sFit.getFit(self.mainFrame.getActiveFit())
         dstRow, _ = self.HitTest((x, y))
         mstate = wx.GetMouseState()
@@ -111,26 +114,26 @@ class CargoView(d.Display):
         # Gather module information to get position
         module = fit.modules[modIdx]
 
-        if dstRow != -1: # we're swapping with cargo
-            if mstate.CmdDown(): # if copying, append to cargo
+        if dstRow != -1:  # we're swapping with cargo
+            if mstate.CmdDown():  # if copying, append to cargo
                 sFit.addCargo(self.mainFrame.getActiveFit(), module.item.ID)
-            else: # else, move / swap
+            else:  # else, move / swap
                 sFit.moveCargoToModule(self.mainFrame.getActiveFit(), module.position, dstRow)
-        else: # dragging to blank spot, append
+        else:  # dragging to blank spot, append
             sFit.addCargo(self.mainFrame.getActiveFit(), module.item.ID)
 
-            if not mstate.CmdDown(): # if not copying, remove module
-               sFit.removeModule(self.mainFrame.getActiveFit(), module.position)
+            if not mstate.CmdDown():  # if not copying, remove module
+                sFit.removeModule(self.mainFrame.getActiveFit(), module.position)
 
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
 
     def fitChanged(self, event):
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fit = sFit.getFit(event.fitID)
 
         self.Parent.Parent.DisablePage(self, not fit or fit.isStructure)
 
-        #Clear list and get out if current fitId is None
+        # Clear list and get out if current fitId is None
         if event.fitID is None and self.lastFitId is not None:
             self.DeleteAllItems()
             self.lastFitId = None
@@ -139,7 +142,8 @@ class CargoView(d.Display):
 
         self.original = fit.cargo if fit is not None else None
         self.cargo = stuff = fit.cargo if fit is not None else None
-        if stuff is not None: stuff.sort(key=lambda cargo: cargo.itemID)
+        if stuff is not None:
+            stuff.sort(key=lambda cargo: cargo.itemID)
 
         if event.fitID != self.lastFitId:
             self.lastFitId = event.fitID
@@ -161,7 +165,7 @@ class CargoView(d.Display):
             col = self.getColumn(event.Position)
             if col != self.getColIndex(State):
                 fitID = self.mainFrame.getActiveFit()
-                sFit = service.Fit.getInstance()
+                sFit = Fit.getInstance()
                 cargo = self.cargo[self.GetItemData(row)]
                 sFit.removeCargo(fitID, self.original.index(cargo))
                 wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
@@ -174,11 +178,11 @@ class CargoView(d.Display):
     def spawnMenu(self):
         sel = self.GetFirstSelected()
         if sel != -1:
-            sFit = service.Fit.getInstance()
+            sFit = Fit.getInstance()
             fit = sFit.getFit(self.mainFrame.getActiveFit())
             cargo = fit.cargo[sel]
 
-            sMkt = service.Market.getInstance()
+            sMkt = Market.getInstance()
             sourceContext = "cargoItem"
             itemContext = sMkt.getCategoryByItem(cargo.item).name
 

@@ -1,34 +1,26 @@
-import os
 import base64
+from logbook import Logger
+import os
+import re
 import time
 import zlib
 
 import requests
-
-from . import version
-from compat import bytes_, text_
-from errors import APIException
 from requests.adapters import HTTPAdapter
 
-try:
-    from urllib.parse import urlparse, urlunparse, parse_qsl
-except ImportError:  # pragma: no cover
-    from urlparse import urlparse, urlunparse, parse_qsl
+import config
+from service.pycrest.compat import bytes_, text_
+from service.pycrest.errors import APIException
+
+from urlparse import urlparse, urlunparse, parse_qsl
 
 try:
     import pickle
 except ImportError:  # pragma: no cover
+    # noinspection PyPep8Naming
     import cPickle as pickle
 
-try:
-    from urllib.parse import quote
-except ImportError:  # pragma: no cover
-    from urllib import quote
-import logging
-import re
-import config
-
-logger = logging.getLogger("pycrest.eve")
+pyfalog = Logger(__name__)
 cache_re = re.compile(r'max-age=([0-9]+)')
 
 
@@ -66,6 +58,7 @@ class FileCache(APICache):
             with open(self._getpath(key), 'rb') as f:
                 return pickle.loads(zlib.decompress(f.read()))
         except IOError as ex:
+            pyfalog.debug("IO error opening zip file. (May not exist yet)")
             if ex.errno == 2:  # file does not exist (yet)
                 return None
             else:
@@ -77,6 +70,8 @@ class FileCache(APICache):
         try:
             os.unlink(self._getpath(key))
         except OSError as ex:
+            pyfalog.debug("Caught exception in invalidate")
+            pyfalog.debug(ex)
             if ex.errno == 2:  # does not exist
                 pass
             else:
@@ -110,8 +105,7 @@ class APIConnection(object):
             "Accept": "application/json",
         })
         session.headers.update(additional_headers)
-        session.mount('https://public-crest.eveonline.com',
-                HTTPAdapter())
+        session.mount('https://public-crest.eveonline.com', HTTPAdapter())
         self._session = session
         if cache:
             if isinstance(cache, APICache):
@@ -125,7 +119,7 @@ class APIConnection(object):
             self.cache = DictCache()
 
     def get(self, resource, params=None):
-        logger.debug('Getting resource %s', resource)
+        pyfalog.debug('Getting resource {0}', resource)
         if params is None:
             params = {}
 
@@ -145,18 +139,18 @@ class APIConnection(object):
         key = (resource, frozenset(self._session.headers.items()), frozenset(prms.items()))
         cached = self.cache.get(key)
         if cached and cached['cached_until'] > time.time():
-            logger.debug('Cache hit for resource %s (params=%s)', resource, prms)
+            pyfalog.debug('Cache hit for resource {0} (params={1})', resource, prms)
             return cached
         elif cached:
-            logger.debug('Cache stale for resource %s (params=%s)', resource, prms)
+            pyfalog.debug('Cache stale for resource {0} (params={1})', resource, prms)
             self.cache.invalidate(key)
         else:
-            logger.debug('Cache miss for resource %s (params=%s', resource, prms)
+            pyfalog.debug('Cache miss for resource {0} (params={1})', resource, prms)
 
-        logger.debug('Getting resource %s (params=%s)', resource, prms)
+        pyfalog.debug('Getting resource {0} (params={1})', resource, prms)
         res = self._session.get(resource, params=prms)
         if res.status_code != 200:
-            raise APIException("Got unexpected status code from server: %i" % res.status_code)
+            raise APIException("Got unexpected status code from server: {0}" % res.status_code)
 
         ret = res.json()
 
@@ -168,7 +162,8 @@ class APIConnection(object):
 
         return ret
 
-    def _get_expires(self, response):
+    @staticmethod
+    def _get_expires(response):
         if 'Cache-Control' not in response.headers:
             return 0
         if any([s in response.headers['Cache-Control'] for s in ['no-cache', 'no-store']]):
@@ -249,19 +244,18 @@ class EVE(APIConnection):
 
     def temptoken_authorize(self, access_token=None, expires_in=0, refresh_token=None):
         self.set_auth_values({'access_token': access_token,
-                                 'refresh_token': refresh_token,
-                                 'expires_in': expires_in})
+                              'refresh_token': refresh_token,
+                              'expires_in': expires_in})
 
 
 class AuthedConnection(EVE):
-
     def __call__(self):
         if not self._data:
             self._data = APIObject(self.get(self._endpoint), self)
         return self._data
 
     def whoami(self):
-        #if 'whoami' not in self._cache:
+        # if 'whoami' not in self._cache:
         #    print "Setting this whoami cache"
         #    self._cache['whoami'] = self.get("%s/verify" % self._oauth_endpoint)
         return self.get("%s/verify" % self._oauth_endpoint)
@@ -280,6 +274,7 @@ class AuthedConnection(EVE):
         if self.refresh_token and int(time.time()) >= self.expires:
             self.refr_authorize(self.refresh_token)
         return self._session.delete(resource, params=params)
+
 
 class APIObject(object):
     def __init__(self, parent, connection):

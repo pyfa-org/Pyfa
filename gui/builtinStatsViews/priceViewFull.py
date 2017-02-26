@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,17 +15,20 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
+# noinspection PyPackageRequirements
 import wx
 from gui.statsView import StatsView
-from gui import builtinStatsViews
 from gui.bitmapLoader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
-import service
+from service.market import Market
+from service.price import Price
+
 
 class PriceViewFull(StatsView):
     name = "priceViewFull"
+
     def __init__(self, parent):
         StatsView.__init__(self)
         self.parent = parent
@@ -72,27 +75,10 @@ class PriceViewFull(StatsView):
     def refreshPanel(self, fit):
         if fit is not None:
             self.fit = fit
-            # Compose a list of all the data we need & request it
-            typeIDs = []
-            typeIDs.append(fit.ship.item.ID)
 
-            for mod in fit.modules:
-                if not mod.isEmpty:
-                    typeIDs.append(mod.itemID)
+            typeIDs = Price.fitItemsList(fit)
 
-            for drone in fit.drones:
-                for _ in xrange(drone.amount):
-                    typeIDs.append(drone.itemID)
-
-            for fighter in fit.fighters:
-                for _ in xrange(fighter.amountActive):
-                    typeIDs.append(fighter.itemID)
-
-            for cargo in fit.cargo:
-                for _ in xrange(cargo.amount):
-                    typeIDs.append(cargo.itemID)
-
-            sMkt = service.Market.getInstance()
+            sMkt = Market.getInstance()
             sMkt.getPrices(typeIDs, self.processPrices)
             self.labelEMStatus.SetLabel("Updating prices...")
         else:
@@ -117,10 +103,11 @@ class PriceViewFull(StatsView):
             self.labelPriceFittings.SetLabel("%s ISK" % formatAmount(modPrice, 3, 3, 9, currency=True))
             self.labelPriceFittings.SetToolTip(wx.ToolTip('{:,.2f}'.format(modPrice)))
             self._cachedFittings = modPrice
-        if self._cachedTotal != (shipPrice+modPrice):
+        if self._cachedTotal != (shipPrice + modPrice):
             self.labelPriceTotal.SetLabel("%s ISK" % formatAmount(shipPrice + modPrice, 3, 3, 9, currency=True))
             self.labelPriceTotal.SetToolTip(wx.ToolTip('{:,.2f}'.format(shipPrice + modPrice)))
             self._cachedTotal = shipPrice + modPrice
         self.panel.Layout()
+
 
 PriceViewFull.register()

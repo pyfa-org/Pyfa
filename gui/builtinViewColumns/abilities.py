@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -16,17 +15,19 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
+
+# noinspection PyPackageRequirements
+import wx
+from eos.saveddata.fighter import Fighter
 from gui.viewColumn import ViewColumn
 import gui.mainFrame
-
-import wx
-from eos.types import Fighter
 
 
 class Abilities(ViewColumn):
     name = "Fighter Abilities"
+
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
 
@@ -40,5 +41,6 @@ class Abilities(ViewColumn):
             if len(active) == 0:
                 return "None"
             return ", ".join(active)
+
 
 Abilities.register()

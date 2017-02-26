@@ -1,16 +1,17 @@
 import os
 import sys
 
-# TODO: move all logging back to pyfa.py main loop
-# We moved it here just to avoid rebuilding windows skeleton for now (any change to pyfa.py needs it)
-import logging
-import logging.handlers
+from logbook import Logger
+
+pyfalog = Logger(__name__)
 
 # Load variable overrides specific to distribution type
 try:
     import configforced
 except ImportError:
+    pyfalog.warning("Failed to import: configforced")
     configforced = None
+
 
 # Turns on debug mode
 debug = False
@@ -18,10 +19,10 @@ debug = False
 saveInRoot = False
 
 # Version data
-version = "1.26.1"
+version = "1.27.3"
 tag = "git"
-expansionName = "YC118.10"
-expansionVersion = "1.2"
+expansionName = "YC119.2"
+expansionVersion = "1.4"
 evemonMinVersion = "4081"
 
 pyfaPath = None
@@ -30,25 +31,17 @@ saveDB = None
 gameDB = None
 
 
-class StreamToLogger(object):
-   """
-   Fake file-like stream object that redirects writes to a logger instance.
-   From: http://www.electricmonk.nl/log/2011/08/14/redirect-stdout-and-stderr-to-a-logger-in-python/
-   """
-   def __init__(self, logger, log_level=logging.INFO):
-      self.logger = logger
-      self.log_level = log_level
-      self.linebuf = ''
-
-   def write(self, buf):
-      for line in buf.rstrip().splitlines():
-         self.logger.log(self.log_level, line.rstrip())
-
 def isFrozen():
     if hasattr(sys, 'frozen'):
         return True
     else:
         return False
+
+
+def __createDirs(path):
+    if not os.path.exists(path):
+        os.makedirs(path)
+
 
 def getPyfaRoot():
     base = getattr(sys.modules['__main__'], "__file__", sys.executable) if isFrozen() else sys.argv[0]
@@ -56,9 +49,10 @@ def getPyfaRoot():
     root = unicode(root, sys.getfilesystemencoding())
     return root
 
-def __createDirs(path):
-    if not os.path.exists(path):
-        os.makedirs(path)
+
+def getDefaultSave():
+    return unicode(os.path.expanduser(os.path.join("~", ".pyfa")), sys.getfilesystemencoding())
+
 
 def defPaths(customSavePath):
     global debug
@@ -68,10 +62,7 @@ def defPaths(customSavePath):
     global gameDB
     global saveInRoot
 
-    if debug:
-        logLevel = logging.DEBUG
-    else:
-        logLevel = logging.WARN
+    pyfalog.debug("Configuring Pyfa")
 
     # The main pyfa directory which contains run.py
     # Python 2.X uses ANSI by default, so we need to convert the character encoding
@@ -87,36 +78,16 @@ def defPaths(customSavePath):
     else:
         savePath = getattr(configforced, "savePath", None)
         if savePath is None:
-            if customSavePath is None: # customSavePath is not overriden
-                savePath = unicode(os.path.expanduser(os.path.join("~", ".pyfa")),
-                               sys.getfilesystemencoding())
+            if customSavePath is None:  # customSavePath is not overriden
+                savePath = getDefaultSave()
             else:
                 savePath = customSavePath
 
     __createDirs(savePath)
 
     if isFrozen():
-        os.environ["REQUESTS_CA_BUNDLE"] = os.path.join(pyfaPath, "cacert.pem")
-        os.environ["SSL_CERT_FILE"] = os.path.join(pyfaPath, "cacert.pem")
-
-    format = '%(asctime)s %(name)-24s %(levelname)-8s %(message)s'
-    logging.basicConfig(format=format, level=logLevel)
-    handler = logging.handlers.RotatingFileHandler(os.path.join(savePath, "log.txt"), maxBytes=1000000, backupCount=3)
-    formatter = logging.Formatter(format)
-    handler.setFormatter(formatter)
-    logging.getLogger('').addHandler(handler)
-
-    logging.info("Starting pyfa")
-
-    if hasattr(sys, 'frozen'):
-        stdout_logger = logging.getLogger('STDOUT')
-        sl = StreamToLogger(stdout_logger, logging.INFO)
-        sys.stdout = sl
-
-        # This interferes with cx_Freeze's own handling of exceptions. Find a way to fix this.
-        #stderr_logger = logging.getLogger('STDERR')
-        #sl = StreamToLogger(stderr_logger, logging.ERROR)
-        #sys.stderr = sl
+        os.environ["REQUESTS_CA_BUNDLE"] = os.path.join(pyfaPath, "cacert.pem").encode('utf8')
+        os.environ["SSL_CERT_FILE"] = os.path.join(pyfaPath, "cacert.pem").encode('utf8')
 
     # The database where we store all the fits etc
     saveDB = os.path.join(savePath, "saveddata.db")
@@ -126,10 +97,10 @@ def defPaths(customSavePath):
     # maintenance script
     gameDB = os.path.join(pyfaPath, "eve.db")
 
-    ## DON'T MODIFY ANYTHING BELOW ##
+    # DON'T MODIFY ANYTHING BELOW
     import eos.config
 
-    #Caching modifiers, disable all gamedata caching, its unneeded.
+    # Caching modifiers, disable all gamedata caching, its unneeded.
     eos.config.gamedataCache = False
     # saveddata db location modifier, shouldn't ever need to touch this
     eos.config.saveddata_connectionstring = "sqlite:///" + saveDB + "?check_same_thread=False"

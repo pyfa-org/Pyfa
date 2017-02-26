@@ -1,11 +1,16 @@
-# -*- coding: utf-8 -*-
-from gui.contextMenu import ContextMenu
-import gui.mainFrame
-import service
+# coding: utf-8
+
+# noinspection PyPackageRequirements
 import wx
-from gui.bitmapLoader import BitmapLoader
-from eos.types import Hardpoint
+
+from service.fit import Fit
+from service.market import Market
+from eos.saveddata.module import Hardpoint
+import gui.mainFrame
 import gui.globalEvents as GE
+from gui.contextMenu import ContextMenu
+from gui.bitmapLoader import BitmapLoader
+
 
 class ModuleAmmoPicker(ContextMenu):
     DAMAGE_TYPES = ("em", "explosive", "kinetic", "thermal")
@@ -40,7 +45,7 @@ class ModuleAmmoPicker(ContextMenu):
             return False
 
         self.modules = modules
-        self.charges = list(filter(lambda charge: service.Market.getInstance().getPublicityByItem(charge), validCharges))
+        self.charges = list(filter(lambda charge: Market.getInstance().getPublicityByItem(charge), validCharges))
         return len(self.charges) > 0
 
     def getText(self, itmContext, selection):
@@ -48,15 +53,17 @@ class ModuleAmmoPicker(ContextMenu):
 
     def turretSorter(self, charge):
         damage = 0
-        range = (self.module.getModifiedItemAttr("maxRange") or 0) * (charge.getAttribute("weaponRangeMultiplier") or 1)
-        falloff = (self.module.getModifiedItemAttr("falloff") or 0) * (charge.getAttribute("fallofMultiplier") or 1)
-        for type in self.DAMAGE_TYPES:
-            d = charge.getAttribute("%sDamage" % type)
+        range_ = (self.module.getModifiedItemAttr("maxRange") or 0) * \
+                 (charge.getAttribute("weaponRangeMultiplier") or 1)
+        falloff = (self.module.getModifiedItemAttr("falloff") or 0) * \
+                  (charge.getAttribute("fallofMultiplier") or 1)
+        for type_ in self.DAMAGE_TYPES:
+            d = charge.getAttribute("%sDamage" % type_)
             if d > 0:
                 damage += d
 
         # Take optimal and half falloff as range factor
-        rangeFactor = range + falloff / 2
+        rangeFactor = range_ + falloff / 2
 
         return - rangeFactor, charge.name.rsplit()[-2:], damage, charge.name
 
@@ -90,7 +97,8 @@ class ModuleAmmoPicker(ContextMenu):
 
         return chargeDamageType, totalDamage
 
-    def numericConverter(self, string):
+    @staticmethod
+    def numericConverter(string):
         return int(string) if string.isdigit() else string
 
     def nameSorter(self, charge):
@@ -98,10 +106,10 @@ class ModuleAmmoPicker(ContextMenu):
         return map(self.numericConverter, parts)
 
     def addCharge(self, menu, charge):
-        id = ContextMenu.nextID()
+        id_ = ContextMenu.nextID()
         name = charge.name if charge is not None else "Empty"
-        self.chargeIds[id] = charge
-        item = wx.MenuItem(menu, id, name)
+        self.chargeIds[id_] = charge
+        item = wx.MenuItem(menu, id_, name)
         menu.Bind(wx.EVT_MENU, self.handleAmmoSwitch, item)
         item.charge = charge
         if charge is not None and charge.icon is not None:
@@ -111,10 +119,11 @@ class ModuleAmmoPicker(ContextMenu):
 
         return item
 
-    def addSeperator(self, m, text):
-        id = ContextMenu.nextID()
-        m.Append(id, u'─ %s ─' % text)
-        m.Enable(id, False)
+    @staticmethod
+    def addSeperator(m, text):
+        id_ = ContextMenu.nextID()
+        m.Append(id_, u'─ %s ─' % text)
+        m.Enable(id_, False)
 
     def getSubMenu(self, context, selection, rootMenu, i, pitem):
         msw = True if "wxMSW" in wx.PlatformInfo else False
@@ -126,7 +135,7 @@ class ModuleAmmoPicker(ContextMenu):
         if hardpoint == Hardpoint.TURRET and self.module.getModifiedItemAttr("miningAmount") is None:
             self.addSeperator(m, "Long Range")
             items = []
-            range = None
+            range_ = None
             nameBase = None
             sub = None
             self.charges.sort(key=self.turretSorter)
@@ -135,23 +144,23 @@ class ModuleAmmoPicker(ContextMenu):
                 if "Orbital" in charge.name:
                     # uncomment if we ever want to include Oribital ammo in ammo picker - see issue #71
                     # This allows us to hide the ammo, but it's still loadable from the market
-                    #item = self.addCharge(m, charge)
-                    #items.append(item)
+                    # item = self.addCharge(m, charge)
+                    # items.append(item)
                     continue
                 currBase = charge.name.rsplit()[-2:]
                 currRange = charge.getAttribute("weaponRangeMultiplier")
-                if nameBase is None or range != currRange or nameBase != currBase:
+                if nameBase is None or range_ != currRange or nameBase != currBase:
                     if sub is not None:
                         self.addSeperator(sub, "More Damage")
 
                     sub = None
                     base = charge
                     nameBase = currBase
-                    range = currRange
+                    range_ = currRange
                     item = self.addCharge(rootMenu if msw else m, charge)
                     items.append(item)
                 else:
-                    if sub is None:
+                    if sub is None and item and base:
                         sub = wx.Menu()
                         sub.Bind(wx.EVT_MENU, self.handleAmmoSwitch)
                         self.addSeperator(sub, "Less Damage")
@@ -169,18 +178,18 @@ class ModuleAmmoPicker(ContextMenu):
             self.addSeperator(m, "Short Range")
         elif hardpoint == Hardpoint.MISSILE and moduleName != 'Festival Launcher':
             self.charges.sort(key=self.missileSorter)
-            type = None
+            type_ = None
             sub = None
             defender = None
             for charge in self.charges:
                 currType = self.damageInfo(charge)[0]
 
-                if currType != type or type is None:
+                if currType != type_ or type_ is None:
                     if sub is not None:
                         self.addSeperator(sub, "More Damage")
 
-                    type = currType
-                    item = wx.MenuItem(m, wx.ID_ANY, type.capitalize())
+                    type_ = currType
+                    item = wx.MenuItem(m, wx.ID_ANY, type_.capitalize())
                     bitmap = BitmapLoader.getBitmap("%s_small" % type, "gui")
                     if bitmap is not None:
                         item.SetBitmap(bitmap)
@@ -214,10 +223,11 @@ class ModuleAmmoPicker(ContextMenu):
             event.Skip()
             return
 
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
 
         sFit.setAmmo(fitID, charge.ID if charge is not None else None, self.modules)
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+
 
 ModuleAmmoPicker.register()

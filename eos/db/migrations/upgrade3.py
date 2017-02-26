@@ -6,6 +6,7 @@ Migration 3
 
 import sqlalchemy
 
+
 def upgrade(saveddata_engine):
     try:
         saveddata_engine.execute("SELECT modeID FROM fits LIMIT 1")

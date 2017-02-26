@@ -1,12 +1,16 @@
+# noinspection PyPackageRequirements
 import wx
-import service
-import gui.display as d
-from gui.bitmapLoader import BitmapLoader
-import gui.PFSearchBox as SBox
-from gui.marketBrowser import SearchBox
+# noinspection PyPackageRequirements
 from wx.lib.buttons import GenBitmapButton
 
-class BaseImplantEditorView (wx.Panel):
+from service.market import Market
+import gui.display as d
+import gui.PFSearchBox as SBox
+from gui.bitmapLoader import BitmapLoader
+from gui.marketBrowser import SearchBox
+
+
+class BaseImplantEditorView(wx.Panel):
     def addMarketViewImage(self, iconFile):
         if iconFile is None:
             return -1
@@ -17,7 +21,8 @@ class BaseImplantEditorView (wx.Panel):
             return self.availableImplantsImageList.Add(bitmap)
 
     def __init__(self, parent):
-        wx.Panel.__init__ (self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize, style=wx.TAB_TRAVERSAL)
+        wx.Panel.__init__(self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
+                          style=wx.TAB_TRAVERSAL)
         self.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW))
 
         pmainSizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -46,32 +51,32 @@ class BaseImplantEditorView (wx.Panel):
 
         availableSizer.Add(self.availableImplantsTree, 1, wx.EXPAND)
 
-
         pmainSizer.Add(availableSizer, 1, wx.ALL | wx.EXPAND, 5)
 
-
         buttonSizer = wx.BoxSizer(wx.VERTICAL)
-        buttonSizer.AddSpacer(( 0, 0), 1)
+        buttonSizer.AddSpacer((0, 0), 1)
 
-        self.btnAdd = GenBitmapButton(self, wx.ID_ADD, BitmapLoader.getBitmap("fit_add_small", "gui"), style = wx.BORDER_NONE)
+        self.btnAdd = GenBitmapButton(self, wx.ID_ADD, BitmapLoader.getBitmap("fit_add_small", "gui"),
+                                      style=wx.BORDER_NONE)
         buttonSizer.Add(self.btnAdd, 0)
 
-        self.btnRemove = GenBitmapButton(self, wx.ID_REMOVE, BitmapLoader.getBitmap("fit_delete_small", "gui"), style = wx.BORDER_NONE)
+        self.btnRemove = GenBitmapButton(self, wx.ID_REMOVE, BitmapLoader.getBitmap("fit_delete_small", "gui"),
+                                         style=wx.BORDER_NONE)
         buttonSizer.Add(self.btnRemove, 0)
 
-        buttonSizer.AddSpacer(( 0, 0), 1)
+        buttonSizer.AddSpacer((0, 0), 1)
         pmainSizer.Add(buttonSizer, 0, wx.EXPAND, 0)
 
         characterImplantSizer = wx.BoxSizer(wx.VERTICAL)
         self.pluggedImplantsTree = AvailableImplantsView(self)
-        characterImplantSizer.Add(self.pluggedImplantsTree, 1, wx.ALL|wx.EXPAND, 5)
+        characterImplantSizer.Add(self.pluggedImplantsTree, 1, wx.ALL | wx.EXPAND, 5)
         pmainSizer.Add(characterImplantSizer, 1, wx.EXPAND, 5)
 
         self.SetSizer(pmainSizer)
 
         # Populate the market tree
 
-        sMkt = service.Market.getInstance()
+        sMkt = Market.getInstance()
         for mktGrp in sMkt.getImplantTree():
             iconId = self.addMarketViewImage(sMkt.getIconByMarketGroup(mktGrp))
             childId = self.availableImplantsTree.AppendItem(root, mktGrp.name, iconId, data=wx.TreeItemData(mktGrp.ID))
@@ -80,13 +85,13 @@ class BaseImplantEditorView (wx.Panel):
 
         self.availableImplantsTree.SortChildren(self.availableRoot)
 
-        #Bind the event to replace dummies by real data
+        # Bind the event to replace dummies by real data
         self.availableImplantsTree.Bind(wx.EVT_TREE_ITEM_EXPANDING, self.expandLookup)
         self.availableImplantsTree.Bind(wx.EVT_TREE_ITEM_ACTIVATED, self.itemSelected)
 
         self.itemView.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.itemSelected)
 
-        #Bind add & remove buttons
+        # Bind add & remove buttons
         self.btnAdd.Bind(wx.EVT_BUTTON, self.itemSelected)
         self.btnRemove.Bind(wx.EVT_BUTTON, self.removeItem)
 
@@ -126,7 +131,7 @@ class BaseImplantEditorView (wx.Panel):
 
     def expandLookup(self, event):
         tree = self.availableImplantsTree
-        sMkt = service.Market.getInstance()
+        sMkt = Market.getInstance()
         parent = event.Item
         child, _ = tree.GetFirstChild(parent)
         text = tree.GetItemText(child)
@@ -136,7 +141,7 @@ class BaseImplantEditorView (wx.Panel):
 
         # if the dummy item is a market group, replace with actual market groups
         if text == "dummy":
-            #Add 'real stoof!' instead
+            # Add 'real stoof!' instead
             currentMktGrp = sMkt.getMarketGroup(tree.GetPyData(parent), eager="children")
             for childMktGrp in sMkt.getMarketGroupChildren(currentMktGrp):
                 iconId = self.addMarketViewImage(sMkt.getIconByMarketGroup(childMktGrp))
@@ -194,6 +199,7 @@ class BaseImplantEditorView (wx.Panel):
             self.removeImplantFromContext(self.implants[pos])
             self.update()
 
+
 class AvailableImplantsView(d.Display):
     DEFAULT_COLS = ["attr:implantness",
                     "Base Icon",
@@ -202,6 +208,7 @@ class AvailableImplantsView(d.Display):
     def __init__(self, parent):
         d.Display.__init__(self, parent, style=wx.LC_SINGLE_SEL)
         self.Bind(wx.EVT_LEFT_DCLICK, parent.removeItem)
+
 
 class ItemView(d.Display):
     DEFAULT_COLS = ["Base Icon",
@@ -235,7 +242,7 @@ class ItemView(d.Display):
         self.update(self.items)
 
     def scheduleSearch(self, event=None):
-        sMkt = service.Market.getInstance()
+        sMkt = Market.getInstance()
 
         search = self.searchBox.GetLineText(0)
         # Make sure we do not count wildcard as search symbol

@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,19 +15,22 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
 import sys
+# noinspection PyPackageRequirements
 import wx
 import gui.mainFrame
-
 from gui.viewColumn import ViewColumn
 from gui.cachingImageList import CachingImageList
 
-class Display(wx.ListCtrl):
-    def __init__(self, parent, size = wx.DefaultSize, style = 0):
 
-        wx.ListCtrl.__init__(self, parent,size = size, style=wx.LC_REPORT |  style )
+class Display(wx.ListCtrl):
+    DEFAULT_COLS = None
+
+    def __init__(self, parent, size=wx.DefaultSize, style=0):
+
+        wx.ListCtrl.__init__(self, parent, size=size, style=wx.LC_REPORT | style)
         self.imageList = CachingImageList(16, 16)
         self.SetImageList(self.imageList, wx.IMAGE_LIST_SMALL)
         self.activeColumns = []
@@ -64,15 +67,15 @@ class Display(wx.ListCtrl):
             i += 1
 
         info = wx.ListItem()
+        # noinspection PyPropertyAccess
         info.m_mask = wx.LIST_MASK_WIDTH
         self.InsertColumnInfo(i, info)
         self.SetColumnWidth(i, 0)
 
         self.imageListBase = self.imageList.ImageCount
 
-
-# Override native HitTestSubItem (doesn't work as it should on GTK)
-# Source: ObjectListView
+    # Override native HitTestSubItem (doesn't work as it should on GTK)
+    # Source: ObjectListView
 
     def HitTestSubItem(self, pt):
         """
@@ -89,11 +92,11 @@ class Display(wx.ListCtrl):
 
         # Did the point hit any item?
         if (flags & wx.LIST_HITTEST_ONITEM) == 0:
-            return (-1, 0, -1)
+            return -1, 0, -1
 
         # If it did hit an item and we are not in report mode, it must be the primary cell
         if not self.InReportView():
-            return (rowIndex, wx.LIST_HITTEST_ONITEM, 0)
+            return rowIndex, wx.LIST_HITTEST_ONITEM, 0
 
         # Find which subitem is hit
         right = 0
@@ -106,19 +109,18 @@ class Display(wx.ListCtrl):
                     flag = wx.LIST_HITTEST_ONITEMICON
                 else:
                     flag = wx.LIST_HITTEST_ONITEMLABEL
-                return (rowIndex, flag, i)
+                return rowIndex, flag, i
 
-        return (rowIndex, 0, -1)
+        return rowIndex, 0, -1
 
-
-    def OnEraseBk(self,event):
-        if self.GetItemCount() >0:
+    def OnEraseBk(self, event):
+        if self.GetItemCount() > 0:
             width, height = self.GetClientSize()
             dc = event.GetDC()
 
             dc.DestroyClippingRegion()
             dc.SetClippingRegion(0, 0, width, height)
-            x,y,w,h = dc.GetClippingBox()
+            x, y, w, h = dc.GetClippingBox()
 
             topItem = self.GetTopItem()
             bottomItem = topItem + self.GetCountPerPage()
@@ -129,10 +131,9 @@ class Display(wx.ListCtrl):
             topRect = self.GetItemRect(topItem, wx.LIST_RECT_LABEL)
             bottomRect = self.GetItemRect(bottomItem, wx.LIST_RECT_BOUNDS)
 
+            items_rect = wx.Rect(topRect.left, 0, bottomRect.right - topRect.left, bottomRect.bottom)
 
-            items_rect = wx.Rect(topRect.left, 0, bottomRect.right - topRect.left, bottomRect.bottom )
-
-            updateRegion = wx.Region(x,y,w,h)
+            updateRegion = wx.Region(x, y, w, h)
             updateRegion.SubtractRect(items_rect)
 
             dc.DestroyClippingRegion()
@@ -146,6 +147,7 @@ class Display(wx.ListCtrl):
         else:
             event.Skip()
 
+    # noinspection PyPropertyAccess
     def addColumn(self, i, col):
         self.activeColumns.append(col)
         info = wx.ListItem()
@@ -171,41 +173,37 @@ class Display(wx.ListCtrl):
         # we veto header cell resize by default till we find a way
         # to assure a minimal size for the resized header cell
         column = event.GetColumn()
-        wx.CallAfter(self.checkColumnSize,column)
+        wx.CallAfter(self.checkColumnSize, column)
         event.Skip()
 
     def resizeSkip(self, event):
         column = event.GetColumn()
-        if column > len (self.activeColumns)-1:
+        if column > len(self.activeColumns) - 1:
             self.SetColumnWidth(column, 0)
             event.Veto()
             return
-        colItem = self.activeColumns[column]
+        # colItem = self.activeColumns[column]
         if self.activeColumns[column].maxsize != -1:
             event.Veto()
         else:
             event.Skip()
 
-    def checkColumnSize(self,column):
+    def checkColumnSize(self, column):
         colItem = self.activeColumns[column]
         if self.GetColumnWidth(column) < self.columnsMinWidth[column]:
-            self.SetColumnWidth(column,self.columnsMinWidth[column])
+            self.SetColumnWidth(column, self.columnsMinWidth[column])
         colItem.resized = True
 
-    def getLastItem( self, state =  wx.LIST_STATE_DONTCARE):
-            lastFound = -1
-            while True:
-                    index = self.GetNextItem(
-                            lastFound,
-                            wx.LIST_NEXT_ALL,
-                            state,
-                    )
-                    if index == -1:
-                            break
-                    else:
-                            lastFound = index
+    def getLastItem(self, state=wx.LIST_STATE_DONTCARE):
+        lastFound = -1
+        while True:
+            index = self.GetNextItem(lastFound, wx.LIST_NEXT_ALL, state)
+            if index == -1:
+                break
+            else:
+                lastFound = index
 
-            return lastFound
+        return lastFound
 
     def deselectItems(self):
         sel = self.GetFirstSelected()
@@ -220,26 +218,25 @@ class Display(wx.ListCtrl):
             stuffItemCount = len(stuff)
 
             if listItemCount < stuffItemCount:
-                for i in xrange(stuffItemCount - listItemCount):
-                    index = self.InsertStringItem(sys.maxint, "")
+                for i in range(stuffItemCount - listItemCount):
+                    self.InsertStringItem(sys.maxint, "")
 
             if listItemCount > stuffItemCount:
-                if listItemCount - stuffItemCount > 20 and stuffItemCount < 20:
+                if listItemCount - stuffItemCount > 20 > stuffItemCount:
                     self.DeleteAllItems()
-                    for i in xrange(stuffItemCount):
-                        index = self.InsertStringItem(sys.maxint, "")
+                    for i in range(stuffItemCount):
+                        self.InsertStringItem(sys.maxint, "")
                 else:
-                    for i in xrange(listItemCount - stuffItemCount):
+                    for i in range(listItemCount - stuffItemCount):
                         self.DeleteItem(self.getLastItem())
                     self.Refresh()
 
-
     def refresh(self, stuff):
-        if stuff == None:
+        if stuff is None:
             return
 
         item = -1
-        for id, st in enumerate(stuff):
+        for id_, st in enumerate(stuff):
 
             item = self.GetNextItem(item)
 
@@ -270,11 +267,11 @@ class Display(wx.ListCtrl):
                     colItem.SetMask(mask)
                     self.SetItem(colItem)
 
-                self.SetItemData(item, id)
+                self.SetItemData(item, id_)
 
-#        self.Freeze()
+        # self.Freeze()
         if 'wxMSW' in wx.PlatformInfo:
-            for i,col in enumerate(self.activeColumns):
+            for i, col in enumerate(self.activeColumns):
                 if not col.resized:
                     self.SetColumnWidth(i, col.size)
         else:
@@ -289,9 +286,7 @@ class Display(wx.ListCtrl):
                             self.SetColumnWidth(i, headerWidth)
                     else:
                         self.SetColumnWidth(i, col.size)
-#        self.Thaw()
-
-
+                        # self.Thaw()
 
     def update(self, stuff):
         self.populate(stuff)

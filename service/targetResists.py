@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2014 Ryan Holmes
 #
 # This file is part of pyfa.
@@ -15,17 +15,21 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
-import eos.db
-import eos.types
 import copy
+
+from eos import db
+from eos.saveddata.targetResists import TargetResists as es_TargetResists
+
 
 class ImportError(Exception):
     pass
 
-class TargetResists():
+
+class TargetResists(object):
     instance = None
+
     @classmethod
     def getInstance(cls):
         if cls.instance is None:
@@ -33,32 +37,39 @@ class TargetResists():
 
         return cls.instance
 
-    def getTargetResistsList(self):
-        return eos.db.getTargetResistsList()
+    @staticmethod
+    def getTargetResistsList():
+        return db.getTargetResistsList()
 
-    def getTargetResists(self, name):
-        return eos.db.getTargetResists(name)
+    @staticmethod
+    def getTargetResists(name):
+        return db.getTargetResists(name)
 
-    def newPattern(self, name):
-        p = eos.types.TargetResists(0.0, 0.0, 0.0, 0.0)
+    @staticmethod
+    def newPattern(name):
+        p = es_TargetResists(0.0, 0.0, 0.0, 0.0)
         p.name = name
-        eos.db.save(p)
+        db.save(p)
         return p
 
-    def renamePattern(self, p, newName):
+    @staticmethod
+    def renamePattern(p, newName):
         p.name = newName
-        eos.db.save(p)
+        db.save(p)
 
-    def deletePattern(self, p):
-        eos.db.remove(p)
+    @staticmethod
+    def deletePattern(p):
+        db.remove(p)
 
-    def copyPattern(self, p):
+    @staticmethod
+    def copyPattern(p):
         newP = copy.deepcopy(p)
-        eos.db.save(newP)
+        db.save(newP)
         return newP
 
-    def saveChanges(self, p):
-        eos.db.save(p)
+    @staticmethod
+    def saveChanges(p):
+        db.save(p)
 
     def importPatterns(self, text):
         lookup = {}
@@ -66,23 +77,22 @@ class TargetResists():
         for pattern in current:
             lookup[pattern.name] = pattern
 
-        imports, num = eos.types.TargetResists.importPatterns(text)
+        imports, num = es_TargetResists.importPatterns(text)
         for pattern in imports:
             if pattern.name in lookup:
                 match = lookup[pattern.name]
                 match.__dict__.update(pattern.__dict__)
             else:
-                eos.db.save(pattern)
-        eos.db.commit()
+                db.save(pattern)
+        db.commit()
 
         lenImports = len(imports)
         if lenImports == 0:
             raise ImportError("No patterns found for import")
         if lenImports != num:
-            raise ImportError("%d patterns imported from clipboard; %d had errors"%(num, num-lenImports))
+            raise ImportError("%d patterns imported from clipboard; %d had errors" % (num, num - lenImports))
 
     def exportPatterns(self):
         patterns = self.getTargetResistsList()
         patterns.sort(key=lambda p: p.name)
-        return eos.types.TargetResists.exportPatterns(*patterns)
-
+        return es_TargetResists.exportPatterns(*patterns)

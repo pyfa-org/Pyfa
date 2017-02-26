@@ -1,8 +1,12 @@
 from gui.contextMenu import ContextMenu
 import gui.mainFrame
-import service
 import gui.globalEvents as GE
+# noinspection PyPackageRequirements
 import wx
+from service.implantSet import ImplantSets as s_ImplantSets
+from service.character import Character
+from service.fit import Fit
+
 
 class ImplantSets(ContextMenu):
     def __init__(self):
@@ -32,7 +36,7 @@ class ImplantSets(ContextMenu):
         m = wx.Menu()
         bindmenu = rootMenu if "wxMSW" in wx.PlatformInfo else m
 
-        sIS = service.ImplantSets.getInstance()
+        sIS = s_ImplantSets.getInstance()
         implantSets = sIS.getImplantSetList()
 
         self.context = context
@@ -59,7 +63,7 @@ class ImplantSets(ContextMenu):
 
         if self.context == "implantEditor":
             # we are calling from character editor, the implant source is different
-            sChar = service.Character.getInstance()
+            sChar = Character.getInstance()
             charID = self.selection.getActiveCharacter()
 
             for implant in set.implants:
@@ -67,7 +71,7 @@ class ImplantSets(ContextMenu):
 
             wx.PostEvent(self.selection, GE.CharChanged())
         else:
-            sFit = service.Fit.getInstance()
+            sFit = Fit.getInstance()
             fitID = self.mainFrame.getActiveFit()
             for implant in set.implants:
                 sFit.addImplant(fitID, implant.item.ID, recalc=implant == set.implants[-1])

@@ -1,17 +1,17 @@
+# noinspection PyPackageRequirements
 import wx
 import gui.utils.colorUtils as colorUtils
 import gui.utils.drawUtils as drawUtils
-from gui.bitmapLoader import BitmapLoader
-
 
 SearchButton, EVT_SEARCH_BTN = wx.lib.newevent.NewEvent()
 CancelButton, EVT_CANCEL_BTN = wx.lib.newevent.NewEvent()
 TextEnter, EVT_TEXT_ENTER = wx.lib.newevent.NewEvent()
 TextTyped, EVT_TEXT = wx.lib.newevent.NewEvent()
 
+
 class PFSearchBox(wx.Window):
-    def __init__(self, parent, id = wx.ID_ANY, value = "", pos = wx.DefaultPosition, size = wx.Size(-1,24), style = 0):
-        wx.Window.__init__(self, parent, id, pos, size, style = style)
+    def __init__(self, parent, id=wx.ID_ANY, value="", pos=wx.DefaultPosition, size=wx.Size(-1, 24), style=0):
+        wx.Window.__init__(self, parent, id, pos, size, style=style)
 
         self.isSearchButtonVisible = False
         self.isCancelButtonVisible = False
@@ -35,13 +35,14 @@ class PFSearchBox(wx.Window):
         self.editX = 0
         self.editY = 0
 
-
         self.padding = 4
 
         self._hl = False
 
-        w,h = size
-        self.EditBox = wx.TextCtrl(self, wx.ID_ANY, "", wx.DefaultPosition, (-1, h - 2 if 'wxGTK' in wx.PlatformInfo else -1 ), wx.TE_PROCESS_ENTER | (wx.BORDER_NONE if 'wxGTK' in wx.PlatformInfo else 0))
+        w, h = size
+        self.EditBox = wx.TextCtrl(self, wx.ID_ANY, "", wx.DefaultPosition,
+                                   (-1, h - 2 if 'wxGTK' in wx.PlatformInfo else -1),
+                                   wx.TE_PROCESS_ENTER | (wx.BORDER_NONE if 'wxGTK' in wx.PlatformInfo else 0))
 
         self.Bind(wx.EVT_PAINT, self.OnPaint)
         self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBk)
@@ -50,7 +51,7 @@ class PFSearchBox(wx.Window):
         self.Bind(wx.EVT_LEFT_DOWN, self.OnLeftDown)
         self.Bind(wx.EVT_LEFT_UP, self.OnLeftUp)
 
-#        self.EditBox.ChangeValue(self.descriptiveText)
+        # self.EditBox.ChangeValue(self.descriptiveText)
 
         self.EditBox.Bind(wx.EVT_SET_FOCUS, self.OnEditSetFocus)
         self.EditBox.Bind(wx.EVT_KILL_FOCUS, self.OnEditKillFocus)
@@ -68,11 +69,11 @@ class PFSearchBox(wx.Window):
         wx.PostEvent(self, TextEnter())
         event.Skip()
 
-
-    def OnEditSetFocus(self, event):
-#        value = self.EditBox.GetValue()
-#        if value == self.descriptiveText:
-#            self.EditBox.ChangeValue("")
+    @staticmethod
+    def OnEditSetFocus(event):
+        # value = self.EditBox.GetValue()
+        # if value == self.descriptiveText:
+        #    self.EditBox.ChangeValue("")
         event.Skip()
 
     def OnEditKillFocus(self, event):
@@ -80,10 +81,9 @@ class PFSearchBox(wx.Window):
             self.Clear()
         event.Skip()
 
-
     def Clear(self):
         self.EditBox.Clear()
-#        self.EditBox.ChangeValue(self.descriptiveText)
+        # self.EditBox.ChangeValue(self.descriptiveText)
 
     def Focus(self):
         self.EditBox.SetFocus()
@@ -104,14 +104,15 @@ class PFSearchBox(wx.Window):
         x, y = target
         px, py = position
         aX, aY = area
-        if (px > x and px < x + aX) and (py > y and py < y + aY):
+        if (x < px < x + aX) and (y < py < y + aY):
             return True
         return False
 
     def GetButtonsPos(self):
-        btnpos = []
-        btnpos.append( (self.searchButtonX, self.searchButtonY) )
-        btnpos.append( (self.cancelButtonX, self.cancelButtonY) )
+        btnpos = [
+            (self.searchButtonX, self.searchButtonY),
+            (self.cancelButtonX, self.cancelButtonY)
+        ]
         return btnpos
 
     def GetButtonsSize(self):
@@ -131,8 +132,8 @@ class PFSearchBox(wx.Window):
             cw = 0
             ch = 0
 
-        btnsize.append( (sw,sh))
-        btnsize.append( (cw,ch))
+        btnsize.append((sw, sh))
+        btnsize.append((cw, ch))
         return btnsize
 
     def OnLeftDown(self, event):
@@ -140,7 +141,7 @@ class PFSearchBox(wx.Window):
         btnsize = self.GetButtonsSize()
 
         self.CaptureMouse()
-        for btn in xrange(2):
+        for btn in range(2):
             if self.HitTest(btnpos[btn], event.GetPosition(), btnsize[btn]):
                 if btn == 0:
                     if not self.searchButtonPressed:
@@ -158,7 +159,7 @@ class PFSearchBox(wx.Window):
         if self.HasCapture():
             self.ReleaseMouse()
 
-        for btn in xrange(2):
+        for btn in range(2):
             if self.HitTest(btnpos[btn], event.GetPosition(), btnsize[btn]):
                 if btn == 0:
                     if self.searchButtonPressed:
@@ -218,9 +219,9 @@ class PFSearchBox(wx.Window):
 
         editWidth, editHeight = self.EditBox.GetSize()
 
-        self.editY = (cheight - editHeight)/2
+        self.editY = (cheight - editHeight) / 2
         self.EditBox.SetPosition((self.editX, self.editY))
-        self.EditBox.SetSize( (self.cancelButtonX - self.padding - self.editX, -1))
+        self.EditBox.SetSize((self.cancelButtonX - self.padding - self.editX, -1))
 
     def OnPaint(self, event):
         dc = wx.BufferedPaintDC(self)
@@ -246,7 +247,6 @@ class PFSearchBox(wx.Window):
                 dc.DrawBitmap(self.searchBitmapShadow, self.searchButtonX + 1, self.searchButtonY + 1)
                 dc.DrawBitmap(self.searchBitmap, self.searchButtonX + spad, self.searchButtonY + spad)
 
-
         if self.isCancelButtonVisible:
             if self.cancelBitmap:
                 if self.cancelButtonPressed:
@@ -256,8 +256,8 @@ class PFSearchBox(wx.Window):
                 dc.DrawBitmap(self.cancelBitmapShadow, self.cancelButtonX + 1, self.cancelButtonY + 1)
                 dc.DrawBitmap(self.cancelBitmap, self.cancelButtonX + cpad, self.cancelButtonY + cpad)
 
-        dc.SetPen(wx.Pen(sepColor,1))
-        dc.DrawLine(0,rect.height - 1, rect.width, rect.height - 1)
+        dc.SetPen(wx.Pen(sepColor, 1))
+        dc.DrawLine(0, rect.height - 1, rect.width, rect.height - 1)
 
     def SetSearchBitmap(self, bitmap):
         self.searchBitmap = bitmap
@@ -273,10 +273,10 @@ class PFSearchBox(wx.Window):
     def IsCancelButtonVisible(self):
         return self.isCancelButtonVisible
 
-    def ShowSearchButton(self, show = True):
+    def ShowSearchButton(self, show=True):
         self.isSearchButtonVisible = show
 
-    def ShowCancelButton(self, show = True):
+    def ShowCancelButton(self, show=True):
         self.isCancelButtonVisible = show
 
     def SetDescriptiveText(self, text):
@@ -284,4 +284,3 @@ class PFSearchBox(wx.Window):
 
     def GetDescriptiveText(self):
         return self.descriptiveText
-

@@ -11,8 +11,6 @@
 # Modules from group: Smart Bomb (118 of 118)
 # Modules from group: Warp Disrupt Field Generator (7 of 7)
 # Modules named like: Ancillary Remote (8 of 8)
-# Module: QA Remote Armor Repair System - 5 Players
-# Module: QA Shield Transporter - 5 Players
 # Module: Reactive Armor Hardener
 # Module: Target Spectrum Breaker
 type = "overheat"

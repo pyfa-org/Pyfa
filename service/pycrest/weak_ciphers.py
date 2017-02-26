@@ -1,36 +1,26 @@
 import datetime
 import ssl
-import sys
 import warnings
 
 from requests.adapters import HTTPAdapter
 
 try:
-  from requests.packages import urllib3
-  from requests.packages.urllib3.util import ssl_
-
-  from requests.packages.urllib3.exceptions import (
-      SystemTimeWarning,
-      SecurityWarning,
-  )
-  from requests.packages.urllib3.packages.ssl_match_hostname import \
-          match_hostname
+    from requests.packages import urllib3
+    from requests.packages.urllib3.util import ssl_
+    from requests.packages.urllib3.exceptions import (
+        SystemTimeWarning,
+        SecurityWarning,
+    )
+    from requests.packages.urllib3.packages.ssl_match_hostname import \
+        match_hostname
 except:
-  import urllib3
-  from urllib3.util import ssl_
-
-  from urllib3.exceptions import (
-      SystemTimeWarning,
-      SecurityWarning,
-  )
-  from urllib3.packages.ssl_match_hostname import \
-          match_hostname
+    import urllib3
+    from urllib3.util import ssl_
+    from urllib3.exceptions import SystemTimeWarning, SecurityWarning
+    from urllib3.packages.ssl_match_hostname import match_hostname
 
 
-
-
-class WeakCiphersHTTPSConnection(
-        urllib3.connection.VerifiedHTTPSConnection): # pragma: no cover
+class WeakCiphersHTTPSConnection(urllib3.connection.VerifiedHTTPSConnection):  # pragma: no cover
 
     # Python versions >=2.7.9 and >=3.4.1 do not (by default) allow ciphers
     # with MD5. Unfortunately, the CREST public server _only_ supports
@@ -77,22 +67,26 @@ class WeakCiphersHTTPSConnection(
             warnings.warn((
                 'System time is way off (before {0}). This will probably '
                 'lead to SSL verification errors').format(
-                    urllib3.connection.RECENT_DATE),
+                urllib3.connection.RECENT_DATE),
                 SystemTimeWarning
             )
 
         # Wrap socket using verification with the root certs in
         # trusted_root_certs
-        self.sock = ssl_.ssl_wrap_socket(conn, self.key_file, self.cert_file,
-                                    cert_reqs=resolved_cert_reqs,
-                                    ca_certs=self.ca_certs,
-                                    server_hostname=hostname,
-                                    ssl_version=resolved_ssl_version,
-                                    ciphers=self.ciphers)
+        self.sock = ssl_.ssl_wrap_socket(
+            conn,
+            self.key_file,
+            self.cert_file,
+            cert_reqs=resolved_cert_reqs,
+            ca_certs=self.ca_certs,
+            server_hostname=hostname,
+            ssl_version=resolved_ssl_version,
+            ciphers=self.ciphers,
+        )
 
         if self.assert_fingerprint:
             ssl_.assert_fingerprint(self.sock.getpeercert(binary_form=True),
-                               self.assert_fingerprint)
+                                    self.assert_fingerprint)
         elif resolved_cert_reqs != ssl.CERT_NONE \
                 and self.assert_hostname is not False:
             cert = self.sock.getpeercert()
@@ -105,36 +99,34 @@ class WeakCiphersHTTPSConnection(
                 )
             match_hostname(cert, self.assert_hostname or hostname)
 
-        self.is_verified = (resolved_cert_reqs == ssl.CERT_REQUIRED
-                            or self.assert_fingerprint is not None)
+        self.is_verified = (resolved_cert_reqs == ssl.CERT_REQUIRED or self.assert_fingerprint is not None)
 
 
-class WeakCiphersHTTPSConnectionPool(
-        urllib3.connectionpool.HTTPSConnectionPool):
-
+class WeakCiphersHTTPSConnectionPool(urllib3.connectionpool.HTTPSConnectionPool):
     ConnectionCls = WeakCiphersHTTPSConnection
 
 
 class WeakCiphersPoolManager(urllib3.poolmanager.PoolManager):
-
     def _new_pool(self, scheme, host, port):
         if scheme == 'https':
-            return WeakCiphersHTTPSConnectionPool(host, port,
-                    **(self.connection_pool_kw))
-        return super(WeakCiphersPoolManager, self)._new_pool(scheme, host,
-                port)
+            return WeakCiphersHTTPSConnectionPool(host, port, **self.connection_pool_kw)
+        return super(WeakCiphersPoolManager, self)._new_pool(scheme, host, port)
 
 
 class WeakCiphersAdapter(HTTPAdapter):
     """"Transport adapter" that allows us to use TLS_RSA_WITH_RC4_128_MD5."""
 
-    def init_poolmanager(self, connections, maxsize, block=False,
-            **pool_kwargs):
+    def init_poolmanager(self, connections, maxsize, block=False, **pool_kwargs):
         # Rewrite of the requests.adapters.HTTPAdapter.init_poolmanager method
         # to use WeakCiphersPoolManager instead of urllib3's PoolManager
         self._pool_connections = connections
         self._pool_maxsize = maxsize
         self._pool_block = block
 
-        self.poolmanager = WeakCiphersPoolManager(num_pools=connections,
-                maxsize=maxsize, block=block, strict=True, **pool_kwargs)
+        self.poolmanager = WeakCiphersPoolManager(
+            num_pools=connections,
+            maxsize=maxsize,
+            block=block,
+            strict=True,
+            **pool_kwargs
+        )

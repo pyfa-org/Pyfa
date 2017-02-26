@@ -1,4 +1,4 @@
-#===============================================================================
+# =============================================================================
 # Copyright (C) 2010 Diego Duclos
 #
 # This file is part of pyfa.
@@ -15,17 +15,20 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# =============================================================================
 
+# noinspection PyPackageRequirements
 import wx
-import service
 import gui.mainFrame
 from gui.statsView import StatsView
 from gui.bitmapLoader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
+from service.fit import Fit
+
 
 class FirepowerViewFull(StatsView):
     name = "firepowerViewFull"
+
     def __init__(self, parent):
         StatsView.__init__(self)
         self.parent = parent
@@ -35,7 +38,7 @@ class FirepowerViewFull(StatsView):
         return "Firepower"
 
     def getTextExtentW(self, text):
-        width, height = self.parent.GetTextExtent( text )
+        width, height = self.parent.GetTextExtent(text)
         return width
 
     def populatePanel(self, contentPanel, headerPanel):
@@ -84,7 +87,7 @@ class FirepowerViewFull(StatsView):
 
         baseBox.Add(BitmapLoader.getStaticBitmap("volley_big", parent, "gui"), 0, wx.ALIGN_CENTER)
 
-        gridS = wx.GridSizer(2,2,0,0)
+        gridS = wx.GridSizer(2, 2, 0, 0)
 
         baseBox.Add(gridS, 0)
 
@@ -114,7 +117,7 @@ class FirepowerViewFull(StatsView):
     def switchToMiningYieldView(self, event):
         # Getting the active fit
         mainFrame = gui.mainFrame.MainFrame.getInstance()
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fit = sFit.getFit(mainFrame.getActiveFit())
         # Remove ourselves from statsPane's view list
         self.parent.views.remove(self)
@@ -139,20 +142,20 @@ class FirepowerViewFull(StatsView):
         view.refreshPanel(fit)
 
     def refreshPanel(self, fit):
-        #If we did anything intresting, we'd update our labels to reflect the new fit's stats here
+        # If we did anything intresting, we'd update our labels to reflect the new fit's stats here
         if fit is not None and fit.targetResists is not None:
             self.stEff.Show()
         else:
             self.stEff.Hide()
 
-        stats = (("labelFullDpsWeapon", lambda: fit.weaponDPS, 3, 0, 0, "%s DPS",None),
+        stats = (("labelFullDpsWeapon", lambda: fit.weaponDPS, 3, 0, 0, "%s DPS", None),
                  ("labelFullDpsDrone", lambda: fit.droneDPS, 3, 0, 0, "%s DPS", None),
                  ("labelFullVolleyTotal", lambda: fit.totalVolley, 3, 0, 0, "%s", "Volley: %.1f"),
                  ("labelFullDpsTotal", lambda: fit.totalDPS, 3, 0, 0, "%s", None))
         # See GH issue #
-        #if fit is not None and fit.totalYield > 0:
+        # if fit is not None and fit.totalYield > 0:
         #    self.miningyield.Show()
-        #else:
+        # else:
         #    self.miningyield.Hide()
 
         counter = 0
@@ -166,9 +169,10 @@ class FirepowerViewFull(StatsView):
                 tipStr = valueFormat % valueStr if altFormat is None else altFormat % value
                 label.SetToolTip(wx.ToolTip(tipStr))
                 self._cachedValues[counter] = value
-            counter +=1
+            counter += 1
 
         self.panel.Layout()
         self.headerPanel.Layout()
+
 
 FirepowerViewFull.register()

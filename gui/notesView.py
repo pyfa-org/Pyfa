@@ -1,8 +1,10 @@
+# noinspection PyPackageRequirements
 import wx
 
-import service
+from service.fit import Fit
 import gui.globalEvents as GE
 import gui.mainFrame
+
 
 class NotesView(wx.Panel):
     def __init__(self, parent):
@@ -19,7 +21,7 @@ class NotesView(wx.Panel):
         self.Bind(wx.EVT_TIMER, self.delayedSave, self.saveTimer)
 
     def fitChanged(self, event):
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fit = sFit.getFit(event.fitID)
 
         self.Parent.Parent.DisablePage(self, not fit or fit.isStructure)
@@ -34,11 +36,11 @@ class NotesView(wx.Panel):
 
     def onText(self, event):
         # delay the save so we're not writing to sqlite on every keystroke
-        self.saveTimer.Stop() # cancel the existing timer
+        self.saveTimer.Stop()  # cancel the existing timer
         self.saveTimer.Start(1000, True)
 
     def delayedSave(self, event):
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fit = sFit.getFit(self.lastFitId)
         newNotes = self.editNotes.GetValue()
         fit.notes = newNotes

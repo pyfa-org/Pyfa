@@ -7,7 +7,6 @@ Migration 12
     modules with their new replacements
 """
 
-
 CONVERSIONS = {
     16457: (  # Crosslink Compact Ballistic Control System
         16459,  # Muon Coil Bolt Array I
@@ -330,11 +329,12 @@ CONVERSIONS = {
     ),
 }
 
-def upgrade(saveddata_engine):
 
+def upgrade(saveddata_engine):
     # Convert modules
     for replacement_item, list in CONVERSIONS.iteritems():
         for retired_item in list:
-            saveddata_engine.execute('UPDATE "modules" SET "itemID" = ? WHERE "itemID" = ?', (replacement_item, retired_item))
-            saveddata_engine.execute('UPDATE "cargo" SET "itemID" = ? WHERE "itemID" = ?', (replacement_item, retired_item))
-
+            saveddata_engine.execute('UPDATE "modules" SET "itemID" = ? WHERE "itemID" = ?',
+                                     (replacement_item, retired_item))
+            saveddata_engine.execute('UPDATE "cargo" SET "itemID" = ? WHERE "itemID" = ?',
+                                     (replacement_item, retired_item))
