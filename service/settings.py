@@ -25,7 +25,7 @@ import config
 
 
 class SettingsProvider(object):
-    BASE_PATH = config.getSavePath("settings")
+    BASE_PATH = os.path.join(config.savePath, 'settings')
     settings = {}
     _instance = None
 
@@ -44,7 +44,7 @@ class SettingsProvider(object):
 
         s = self.settings.get(area)
         if s is None:
-            p = config.parsePath(self.BASE_PATH, area)
+            p = os.path.join(self.BASE_PATH, area)
 
             if not os.path.exists(p):
                 info = {}

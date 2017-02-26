@@ -2,7 +2,6 @@
 #
 # Used by:
 # Modules from group: Automated Targeting System (6 of 6)
-# Module: QA Damage Module
 type = "passive"
 
 

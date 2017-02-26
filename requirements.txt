@@ -1,3 +1,4 @@
+logbook
 matplotlib
 PyYAML
 python-dateutil

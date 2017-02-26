@@ -1,5 +1,5 @@
 import csv
-import logging
+from logbook import Logger
 
 # noinspection PyPackageRequirements
 import wx
@@ -21,7 +21,7 @@ import gui.PFSearchBox as SBox
 from gui.marketBrowser import SearchBox
 from gui.bitmapLoader import BitmapLoader
 
-logger = logging.getLogger(__name__)
+pyfalog = Logger(__name__)
 
 
 class AttributeEditor(wx.Frame):
@@ -270,7 +270,7 @@ class AttributeGrid(wxpg.PropertyGrid):
 
         self.itemView.updateItems()
 
-        logger.debug('%s changed to "%s"' % (p.GetName(), p.GetValueAsString()))
+        pyfalog.debug('{0} changed to "{1}"', p.GetName(), p.GetValueAsString())
 
     def OnPropGridSelect(self, event):
         pass

@@ -17,7 +17,7 @@
 # along with pyfa.    If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
-import logging
+from logbook import Logger
 # noinspection PyPackageRequirements
 import wx
 
@@ -26,7 +26,7 @@ from gui.builtinViews.implantEditor import BaseImplantEditorView
 from gui.utils.clipboard import toClipboard, fromClipboard
 from gui.builtinViews.entityEditor import EntityEditor, BaseValidator
 
-logger = logging.getLogger(__name__)
+pyfalog = Logger(__name__)
 
 
 class ImplantTextValidor(BaseValidator):
@@ -49,6 +49,7 @@ class ImplantTextValidor(BaseValidator):
 
             return True
         except ValueError as e:
+            pyfalog.error(e)
             wx.MessageBox(u"{}".format(e), "Error")
             textCtrl.SetFocus()
             return False
@@ -198,9 +199,10 @@ class ImplantSetEditorDlg(wx.Dialog):
                 self.stNotice.SetLabel("Patterns successfully imported from clipboard")
                 self.showInput(False)
             except ImportError as e:
+                pyfalog.error(e)
                 self.stNotice.SetLabel(str(e))
             except Exception as e:
-                logging.exception("Unhandled Exception")
+                pyfalog.error(e)
                 self.stNotice.SetLabel("Could not import from clipboard: unknown errors")
             finally:
                 self.updateChoices()

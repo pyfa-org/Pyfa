@@ -29,6 +29,9 @@ import dateutil.parser
 import config
 from service.network import Network
 from service.settings import UpdateSettings
+from logbook import Logger
+
+pyfalog = Logger(__name__)
 
 
 class CheckUpdateThread(threading.Thread):
@@ -83,6 +86,7 @@ class CheckUpdateThread(threading.Thread):
                         wx.CallAfter(self.callback, release)  # Singularity -> Singularity
                 break
         except:
+            pyfalog.warning("Caught exception in run")
             pass
 
     @staticmethod
