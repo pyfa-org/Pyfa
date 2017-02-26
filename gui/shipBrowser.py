@@ -21,6 +21,8 @@ import gui.utils.animEffects as animEffects
 from gui.PFListPane import PFListPane
 from gui.contextMenu import ContextMenu
 from gui.bitmapLoader import BitmapLoader
+from logbook import Logger
+pyfalog = Logger(__name__)
 
 FitRenamed, EVT_FIT_RENAMED = wx.lib.newevent.NewEvent()
 FitSelected, EVT_FIT_SELECTED = wx.lib.newevent.NewEvent()
@@ -684,6 +686,7 @@ class ShipBrowser(wx.Panel):
         self.lpane.Freeze()
         self.lpane.RemoveAllChildren()
 
+        pyfalog.debug("Populate ship category list.")
         if len(self.categoryList) == 0:
             # set cache of category list
             self.categoryList = list(sMkt.getShipRoot())
@@ -692,7 +695,8 @@ class ShipBrowser(wx.Panel):
             # set map & cache of fittings per category
             for cat in self.categoryList:
                 itemIDs = [x.ID for x in cat.items]
-                self.categoryFitCache[cat.ID] = sFit.countFitsWithShip(itemIDs) > 1
+                num = sFit.countFitsWithShip(itemIDs)
+                self.categoryFitCache[cat.ID] = num > 0
 
         for ship in self.categoryList:
             if self.filterShipsWithNoFits and not self.categoryFitCache[ship.ID]:
@@ -938,7 +942,7 @@ class ShipBrowser(wx.Panel):
 
         if fits:
             for fit in fits:
-                shipTrait = fit.ship.traits.traitText if (fit.ship.traits is not None) else ""
+                shipTrait = fit.ship.item.traits.traitText if (fit.ship.item.traits is not None) else ""
                 # empty string if no traits
 
                 self.lpane.AddWidget(FitItem(

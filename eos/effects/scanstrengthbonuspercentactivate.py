@@ -1,7 +1,4 @@
-# scanStrengthBonusPercentActivate
-#
-# Used by:
-# Module: QA ECCM
+# Not used by any item
 type = "active"
 
 

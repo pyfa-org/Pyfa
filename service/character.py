@@ -20,7 +20,7 @@
 import copy
 import itertools
 import json
-import logging
+from logbook import Logger
 import threading
 from codecs import open
 from xml.etree import ElementTree
@@ -39,7 +39,7 @@ from eos.saveddata.character import Character as es_Character
 from eos.saveddata.module import Slot as es_Slot, Module as es_Module
 from eos.saveddata.fighter import Fighter as es_Fighter
 
-logger = logging.getLogger(__name__)
+pyfalog = Logger(__name__)
 
 
 class CharacterImportThread(threading.Thread):
@@ -72,7 +72,7 @@ class CharacterImportThread(threading.Thread):
                     charFile = open(path, mode='r').read()
                     doc = minidom.parseString(charFile)
                     if doc.documentElement.tagName not in ("SerializableCCPCharacter", "SerializableUriCharacter"):
-                        logger.error("Incorrect EVEMon XML sheet")
+                        pyfalog.error("Incorrect EVEMon XML sheet")
                         raise RuntimeError("Incorrect EVEMon XML sheet")
                     name = doc.getElementsByTagName("name")[0].firstChild.nodeValue
                     skill_els = doc.getElementsByTagName("skill")
@@ -84,16 +84,17 @@ class CharacterImportThread(threading.Thread):
                                 "level": int(skill.getAttribute("level")),
                             })
                         else:
-                            logger.error("Attempted to import unknown skill %s (ID: %s) (Level: %s)",
-                                         skill.getAttribute("name"),
-                                         skill.getAttribute("typeID"),
-                                         skill.getAttribute("level"),
-                                         )
+                            pyfalog.error(
+                                    "Attempted to import unknown skill {0} (ID: {1}) (Level: {2})",
+                                    skill.getAttribute("name"),
+                                    skill.getAttribute("typeID"),
+                                    skill.getAttribute("level"),
+                            )
                     char = sCharacter.new(name + " (EVEMon)")
                     sCharacter.apiUpdateCharSheet(char.ID, skills)
                 except Exception, e:
-                    logger.error("Exception on character import:")
-                    logger.error(e)
+                    pyfalog.error("Exception on character import:")
+                    pyfalog.error(e)
                     continue
 
         wx.CallAfter(self.callback)
@@ -304,7 +305,7 @@ class Character(object):
     @staticmethod
     def rename(char, newName):
         if char.name in ("All 0", "All 5"):
-            logger.info("Cannot rename built in characters.")
+            pyfalog.info("Cannot rename built in characters.")
         else:
             char.name = newName
             eos.db.commit()
@@ -404,7 +405,7 @@ class Character(object):
     def addImplant(charID, itemID):
         char = eos.db.getCharacter(charID)
         if char.ro:
-            logger.error("Trying to add implant to read-only character")
+            pyfalog.error("Trying to add implant to read-only character")
             return
 
         implant = es_Implant(eos.db.getItem(itemID))

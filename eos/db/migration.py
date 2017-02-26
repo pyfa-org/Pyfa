@@ -1,11 +1,11 @@
-import logging
+from logbook import Logger
 import shutil
 import time
 
 import config
 import migrations
 
-logger = logging.getLogger(__name__)
+pyfalog = Logger(__name__)
 
 
 def getVersion(db):
@@ -37,7 +37,7 @@ def update(saveddata_engine):
         for version in xrange(dbVersion, appVersion):
             func = migrations.updates[version + 1]
             if func:
-                logger.info("Applying database update: %d", version + 1)
+                pyfalog.info("Applying database update: {0}", version + 1)
                 func(saveddata_engine)
 
         # when all is said and done, set version to current

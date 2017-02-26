@@ -18,7 +18,7 @@
 # ===============================================================================
 
 import copy
-import logging
+from logbook import Logger
 
 import eos.db
 from eos.saveddata.booster import Booster as es_Booster
@@ -36,7 +36,7 @@ from service.character import Character
 from service.damagePattern import DamagePattern
 from service.settings import SettingsProvider
 
-logger = logging.getLogger(__name__)
+pyfalog = Logger(__name__)
 
 
 class Fit(object):
@@ -50,6 +50,7 @@ class Fit(object):
         return cls.instance
 
     def __init__(self):
+        pyfalog.debug("Initialize Fit class")
         self.pattern = DamagePattern.getInstance().getDamagePattern("Uniform")
         self.targetResists = None
         self.character = saveddata_Character.getAll5()
@@ -727,7 +728,13 @@ class Fit(object):
             fit.drones.remove(d1)
 
         d2.amount += d1.amount
-        d2.amountActive += d1.amountActive if d1.amountActive > 0 else -d2.amountActive
+        d2.amountActive += d1.amountActive
+
+        # If we have less than the total number of drones active, make them all active. Fixes #728
+        # This could be removed if we ever add an enhancement to make drone stacks partially active.
+        if d2.amount > d2.amountActive:
+            d2.amountActive = d2.amount
+
         eos.db.commit()
         self.recalc(fit)
         return True
@@ -1016,7 +1023,7 @@ class Fit(object):
         self.recalc(fit)
 
     def recalc(self, fit, withBoosters=True):
-        logger.debug("=" * 10 + "recalc" + "=" * 10)
+        pyfalog.info("=" * 10 + "recalc" + "=" * 10)
         if fit.factorReload is not self.serviceFittingOptions["useGlobalForceReload"]:
             fit.factorReload = self.serviceFittingOptions["useGlobalForceReload"]
         fit.clear()

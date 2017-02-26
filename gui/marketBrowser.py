@@ -26,6 +26,9 @@ import gui.PFSearchBox as SBox
 from gui.cachingImageList import CachingImageList
 from gui.contextMenu import ContextMenu
 from gui.bitmapLoader import BitmapLoader
+from logbook import Logger
+
+pyfalog = Logger(__name__)
 
 ItemSelected, ITEM_SELECTED = wx.lib.newevent.NewEvent()
 
@@ -56,6 +59,7 @@ class MetaButton(wx.ToggleButton):
 class MarketBrowser(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent)
+        pyfalog.debug("Initialize marketBrowser")
         vbox = wx.BoxSizer(wx.VERTICAL)
         self.SetSizer(vbox)
 
@@ -134,6 +138,7 @@ class SearchBox(SBox.PFSearchBox):
 class MarketTree(wx.TreeCtrl):
     def __init__(self, parent, marketBrowser):
         wx.TreeCtrl.__init__(self, parent, style=wx.TR_DEFAULT_STYLE | wx.TR_HIDE_ROOT)
+        pyfalog.debug("Initialize marketTree")
         self.root = self.AddRoot("root")
 
         self.imageList = CachingImageList(16, 16)
@@ -182,7 +187,9 @@ class MarketTree(wx.TreeCtrl):
                 iconId = self.addImage(sMkt.getIconByMarketGroup(childMktGrp))
                 try:
                     childId = self.AppendItem(root, childMktGrp.name, iconId, data=wx.TreeItemData(childMktGrp.ID))
-                except:
+                except Exception as e:
+                    pyfalog.debug("Error appending item.")
+                    pyfalog.debug(e)
                     continue
                 if sMkt.marketGroupHasTypesCheck(childMktGrp) is False:
                     self.AppendItem(childId, "dummy")
@@ -226,6 +233,7 @@ class ItemView(Display):
 
     def __init__(self, parent, marketBrowser):
         Display.__init__(self, parent)
+        pyfalog.debug("Initialize ItemView")
         marketBrowser.Bind(wx.EVT_TREE_SEL_CHANGED, self.selectionMade)
 
         self.unfilteredStore = set()
@@ -252,6 +260,7 @@ class ItemView(Display):
         self.metaMap = self.makeReverseMetaMap()
 
         # Fill up recently used modules set
+        pyfalog.debug("Fill up recently used modules set")
         for itemID in self.sMkt.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"]:
             self.recentlyUsedModules.add(self.sMkt.getItem(itemID))
 

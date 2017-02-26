@@ -147,6 +147,7 @@ class DroneView(Display):
     def _merge(self, src, dst):
         sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
+
         if sFit.mergeDrones(fitID, self.drones[src], self.drones[dst]):
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 

@@ -52,6 +52,7 @@ class AmountChanger(wx.Dialog):
     def change(self, event):
         if self.input.GetLineText(0).strip() == '':
             event.Skip()
+            self.Close()
             return
 
         sFit = Fit.getInstance()
@@ -68,6 +69,7 @@ class AmountChanger(wx.Dialog):
         wx.PostEvent(mainFrame, GE.FitChanged(fitID=fitID))
 
         event.Skip()
+        self.Close()
 
     # checks to make sure it's valid number
     @staticmethod

@@ -17,14 +17,14 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-import logging
+from logbook import Logger
 
 from sqlalchemy.orm import reconstructor
 
 import eos.db
 from eos.eqBase import EqBase
 
-logger = logging.getLogger(__name__)
+pyfalog = Logger(__name__)
 
 
 class Override(EqBase):
@@ -43,13 +43,13 @@ class Override(EqBase):
         if self.attrID:
             self.__attr = eos.db.getAttributeInfo(self.attrID)
             if self.__attr is None:
-                logger.error("Attribute (id: %d) does not exist", self.attrID)
+                pyfalog.error("Attribute (id: {0}) does not exist", self.attrID)
                 return
 
         if self.itemID:
             self.__item = eos.db.getItem(self.itemID)
             if self.__item is None:
-                logger.error("Item (id: %d) does not exist", self.itemID)
+                pyfalog.error("Item (id: {0}) does not exist", self.itemID)
                 return
 
     @property
