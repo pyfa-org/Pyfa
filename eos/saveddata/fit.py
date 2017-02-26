@@ -127,6 +127,12 @@ class Fit(object):
         self.__capUsed = None
         self.__capRecharge = None
         self.__calculatedTargets = []
+        self.__remoteReps = {
+            "Armor": None,
+            "Shield": None,
+            "Hull": None,
+            "Capacitor": None,
+        }
         self.factorReload = False
         self.boostsFits = set()
         self.gangBoosts = None
@@ -391,6 +397,9 @@ class Fit(object):
         self.__capRecharge = None
         self.ecmProjectedStr = 1
         self.commandBonuses = {}
+
+        for remoterep_type in self.__remoteReps:
+            self.__remoteReps[remoterep_type] = None
 
         del self.__calculatedTargets[:]
         del self.__extraDrains[:]
@@ -1150,6 +1159,67 @@ class Fit(object):
         else:
             self.__capStable = True
             self.__capState = 100
+
+    @property
+    def remoteReps(self):
+        force_recalc = False
+        for remote_type in self.__remoteReps:
+            if self.__remoteReps[remote_type] is None:
+                force_recalc = True
+                break
+
+        if force_recalc is False:
+            return self.__remoteReps
+
+        # We are rerunning the recalcs. Explicitly set to 0 to make sure we don't duplicate anything and correctly set all values to 0.
+        for remote_type in self.__remoteReps:
+            self.__remoteReps[remote_type] = 0
+
+        for module in self.modules:
+            # Skip empty and non-Active modules
+            if module.isEmpty or module.state < State.ACTIVE:
+                continue
+
+            # Covert cycleTime to seconds
+            duration = module.cycleTime / 1000
+
+            # Skip modules with no duration.
+            if not duration:
+                continue
+
+            fueledMultiplier = module.getModifiedItemAttr("chargedArmorDamageMultiplier", 1)
+
+            remote_module_groups = {
+                "Remote Armor Repairer"          : "Armor",
+                "Ancillary Remote Armor Repairer": "Armor",
+                "Remote Hull Repairer"           : "Hull",
+                "Remote Shield Booster"          : "Shield",
+                "Ancillary Remote Shield Booster": "Shield",
+                "Remote Capacitor Transmitter"   : "Capacitor",
+            }
+
+            module_group = module.item.group.name
+
+            if module_group in remote_module_groups:
+                remote_type = remote_module_groups[module_group]
+            else:
+                # Module isn't in our list of remote rep modules, bail
+                continue
+
+            if remote_type == "Hull":
+                hp = module.getModifiedItemAttr("structureDamageAmount", 0)
+            elif remote_type == "Armor":
+                hp = module.getModifiedItemAttr("armorDamageAmount", 0)
+            elif remote_type == "Shield":
+                hp = module.getModifiedItemAttr("shieldBonus", 0)
+            elif remote_type == "Capacitor":
+                hp = module.getModifiedItemAttr("powerTransferAmount", 0)
+            else:
+                hp = 0
+
+            self.__remoteReps[remote_type] += (hp * fueledMultiplier) / duration
+
+        return self.__remoteReps
 
     @property
     def hp(self):
