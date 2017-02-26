@@ -55,6 +55,7 @@ else {{
 </html>
 '''
 
+
 # https://github.com/fuzzysteve/CREST-Market-Downloader/
 class AuthHandler(BaseHTTPServer.BaseHTTPRequestHandler):
     def do_GET(self):
