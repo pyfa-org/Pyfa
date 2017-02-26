@@ -1,7 +1,6 @@
 # noinspection PyPackageRequirements
 import wx
 from logbook import Logger
-import logging
 import threading
 import copy
 import uuid

@@ -1171,6 +1171,10 @@ class Fit(object):
         if force_recalc is False:
             return self.__remoteReps
 
+        # We are rerunning the recalcs. Explicitly set to 0 to make sure we don't duplicate anything and correctly set all values to 0.
+        for remote_type in self.__remoteReps:
+            self.__remoteReps[remote_type] = 0
+
         for module in self.modules:
             # Skip empty and non-Active modules
             if module.isEmpty or module.state < State.ACTIVE:
@@ -1212,9 +1216,6 @@ class Fit(object):
                 hp = module.getModifiedItemAttr("powerTransferAmount", 0)
             else:
                 hp = 0
-
-            if self.__remoteReps[remote_type] is None:
-                self.__remoteReps[remote_type] = 0
 
             self.__remoteReps[remote_type] += (hp * fueledMultiplier) / duration
 
