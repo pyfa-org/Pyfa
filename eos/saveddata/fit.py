@@ -18,6 +18,7 @@
 # ===============================================================================
 
 import time
+import math
 from copy import deepcopy
 from itertools import chain
 from math import sqrt, log, asinh
@@ -127,6 +128,12 @@ class Fit(object):
         self.__capUsed = None
         self.__capRecharge = None
         self.__calculatedTargets = []
+        self.__remoteReps = {
+            "Armor": 0,
+            "Shield": 0,
+            "Hull": 0,
+            "Capacitor": 0,
+        }
         self.factorReload = False
         self.boostsFits = set()
         self.gangBoosts = None
@@ -1146,6 +1153,83 @@ class Fit(object):
         else:
             self.__capStable = True
             self.__capState = 100
+
+    @property
+    def remoteReps(self):
+        def amount_per_second(amount, duration, reload, chargerate, capacity, volume):
+            numcycles = math.floor(capacity / (volume * chargerate))
+
+            amount *= numcycles
+            duration = duration * numcycles + reload
+
+            return amount / duration
+
+        self.__remoteReps["Armor"] = 0
+        self.__remoteReps["Shield"] = 0
+        self.__remoteReps["Hull"] = 0
+        self.__remoteReps["Capacitor"] = 0
+
+        for module in self.modules:
+            module_group = getattr(module.item, "groupID", 0)
+
+            #Skip modules that aren't online
+            if getattr(module, "state", 0) < 1:
+                continue
+
+            if module_group in (325, 1698):
+                # Remote Armor Reppers
+                hp = module.getModifiedItemAttr("armorDamageAmount", 0)
+                duration = module.getModifiedItemAttr("duration", 0) / 1000
+                reload = module.getModifiedItemAttr("reloadTime", 0) / 1000
+                chargeRate = module.getModifiedItemAttr("chargeRate", 1)
+                fueledMultiplier = module.getModifiedItemAttr("chargedArmorDamageMultiplier", 1)
+                capacity = module.getModifiedItemAttr("capacity", 0)
+                volume = module.getModifiedChargeAttr("volume", 0)
+
+                if module.charge:
+                    hp *= fueledMultiplier
+                    hp_per_s = amount_per_second(hp, duration, reload, chargeRate, capacity, volume)
+                else:
+                    hp_per_s = hp / duration
+
+                self.__remoteReps["Armor"] += hp_per_s
+
+            elif module_group in (585,):
+                # Remote Hull Reppers
+                hp = module.getModifiedItemAttr("structureDamageAmount", 0)
+                duration = module.getModifiedItemAttr("duration", 0) / 1000
+
+                hp_per_s = hp / duration
+
+                self.__remoteReps["Hull"] += hp_per_s
+
+            elif module_group in (41, 1697):
+                # Remote Shield Reppers
+                hp = module.getModifiedItemAttr("shieldBonus", 0)
+                duration = module.getModifiedItemAttr("duration", 0) / 1000
+                reload = module.getModifiedItemAttr("reloadTime", 0) / 1000
+                chargeRate = module.getModifiedItemAttr("chargeRate", 1)
+                capacity = module.getModifiedItemAttr("capacity", 0)
+                volume = module.getModifiedChargeAttr("volume", 0)
+
+                if module.charge:
+                    hp_per_s = amount_per_second(hp, duration, reload, chargeRate, capacity, volume)
+                else:
+                    hp_per_s = hp / duration
+
+                self.__remoteReps["Shield"] += hp_per_s
+
+            elif module_group in (67,):
+                # Remote Capacitor Boosters
+                hp = module.getModifiedItemAttr("powerTransferAmount", 0)
+                duration = module.getModifiedItemAttr("duration", 0) / 1000
+
+                hp_per_s = hp / duration
+
+                self.__remoteReps["Capacitor"] += hp_per_s
+
+
+        return self.__remoteReps
 
     @property
     def hp(self):

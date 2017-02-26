@@ -33,7 +33,7 @@ from gui.pyfatogglepanel import TogglePanel
 class StatsPane(wx.Panel):
     DEFAULT_VIEWS = ["resourcesViewFull", "resistancesViewFull", "rechargeViewFull", "firepowerViewFull",
                      "capacitorViewFull", "targetingmiscViewFull",
-                     "priceViewFull"]
+                     "priceViewFull", "outgoingViewFull"]
 
     def fitChanged(self, event):
         sFit = Fit.getInstance()
