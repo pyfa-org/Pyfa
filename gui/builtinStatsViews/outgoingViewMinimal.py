@@ -25,7 +25,7 @@ from gui.utils.numberFormatter import formatAmount
 
 
 class OutgoingViewFull(StatsView):
-    name = "outgoingViewFull"
+    name = "outgoingViewMinimal"
 
     def __init__(self, parent):
         StatsView.__init__(self)

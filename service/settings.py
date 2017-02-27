@@ -370,7 +370,8 @@ class StatViewSettings(object):
             "targetingMisc": 1,
             "price"        : 2,
             "miningyield"  : 2,
-            "drones"       : 2
+            "drones"       : 2,
+            "outgoing"     : 2,
         }
 
         # We don't have these....yet
