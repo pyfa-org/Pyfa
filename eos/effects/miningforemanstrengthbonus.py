@@ -7,7 +7,7 @@ type = "passive"
 
 def handler(fit, src, context):
     lvl = src.level
-    fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Mining Foreman"), "warfareBuff4Value", src.getModifiedItemAttr("commandStrengthBonus") * lvl)
-    fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Mining Foreman"), "warfareBuff3Value", src.getModifiedItemAttr("commandStrengthBonus") * lvl)
-    fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Mining Foreman"), "warfareBuff2Value", src.getModifiedItemAttr("commandStrengthBonus") * lvl)
-    fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Mining Foreman"), "warfareBuff1Value", src.getModifiedItemAttr("commandStrengthBonus") * lvl)
+
+    attrs = ["warfareBuff1Value", "warfareBuff2Value", "warfareBuff3Value", "warfareBuff4Value"]
+    fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Mining Foreman"), attrs, src.getModifiedItemAttr("commandStrengthBonus") * lvl)
+

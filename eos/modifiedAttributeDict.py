@@ -281,13 +281,18 @@ class ModifiedAttributeDict(collections.MutableMapping):
         # Add current affliction to list
         affs.append((modifier, operation, bonus, used))
 
-    def preAssign(self, attributeName, value):
+    def preAssign(self, attributes, value):
         """Overwrites original value of the entity with given one, allowing further modification"""
-        self.__preAssigns[attributeName] = value
-        self.__placehold(attributeName)
-        self.__afflict(attributeName, "=", value, value != self.getOriginal(attributeName))
 
-    def increase(self, attributeName, increase, position="pre", skill=None):
+        if isinstance(attributes, basestring):
+            attributes = [attributes]
+
+        for attr in attributes:
+            self.__preAssigns[attr] = value
+            self.__placehold(attr)
+            self.__afflict(attr, "=", value, value != self.getOriginal(attr))
+
+    def increase(self, attributes, increase, position="pre", skill=None):
         """Increase value of given attribute by given number"""
         if skill:
             increase *= self.__handleSkill(skill)
@@ -300,13 +305,18 @@ class ModifiedAttributeDict(collections.MutableMapping):
             tbl = self.__postIncreases
         else:
             raise ValueError("position should be either pre or post")
-        if attributeName not in tbl:
-            tbl[attributeName] = 0
-        tbl[attributeName] += increase
-        self.__placehold(attributeName)
-        self.__afflict(attributeName, "+", increase, increase != 0)
 
-    def multiply(self, attributeName, multiplier, stackingPenalties=False, penaltyGroup="default", skill=None):
+        if isinstance(attributes, basestring):
+            attributes = [attributes]
+
+        for attr in attributes:
+            if attr not in tbl:
+                tbl[attr] = 0
+            tbl[attr] += increase
+            self.__placehold(attr)
+            self.__afflict(attr, "+", increase, increase != 0)
+
+    def multiply(self, attributes, multiplier, stackingPenalties=False, penaltyGroup="default", skill=None):
         """Multiply value of given attribute by given factor"""
         if multiplier is None:  # See GH issue 397
             return
@@ -314,25 +324,29 @@ class ModifiedAttributeDict(collections.MutableMapping):
         if skill:
             multiplier *= self.__handleSkill(skill)
 
-        # If we're asked to do stacking penalized multiplication, append values
-        # to per penalty group lists
-        if stackingPenalties:
-            if attributeName not in self.__penalizedMultipliers:
-                self.__penalizedMultipliers[attributeName] = {}
-            if penaltyGroup not in self.__penalizedMultipliers[attributeName]:
-                self.__penalizedMultipliers[attributeName][penaltyGroup] = []
-            tbl = self.__penalizedMultipliers[attributeName][penaltyGroup]
-            tbl.append(multiplier)
-        # Non-penalized multiplication factors go to the single list
-        else:
-            if attributeName not in self.__multipliers:
-                self.__multipliers[attributeName] = 1
-            self.__multipliers[attributeName] *= multiplier
+        if isinstance(attributes, basestring):
+            attributes = [attributes]
 
-        self.__placehold(attributeName)
-        self.__afflict(attributeName, "%s*" % ("s" if stackingPenalties else ""), multiplier, multiplier != 1)
+        for attr in attributes:
+            # If we're asked to do stacking penalized multiplication, append values
+            # to per penalty group lists
+            if stackingPenalties:
+                if attr not in self.__penalizedMultipliers:
+                    self.__penalizedMultipliers[attr] = {}
+                if penaltyGroup not in self.__penalizedMultipliers[attr]:
+                    self.__penalizedMultipliers[attr][penaltyGroup] = []
+                tbl = self.__penalizedMultipliers[attr][penaltyGroup]
+                tbl.append(multiplier)
+            # Non-penalized multiplication factors go to the single list
+            else:
+                if attr not in self.__multipliers:
+                    self.__multipliers[attr] = 1
+                self.__multipliers[attr] *= multiplier
 
-    def boost(self, attributeName, boostFactor, skill=None, remoteResists=False, *args, **kwargs):
+            self.__placehold(attr)
+            self.__afflict(attr, "%s*" % ("s" if stackingPenalties else ""), multiplier, multiplier != 1)
+
+    def boost(self, attributes, boostFactor, skill=None, remoteResists=False, *args, **kwargs):
         """Boost value by some percentage"""
         if skill:
             boostFactor *= self.__handleSkill(skill)
@@ -350,13 +364,17 @@ class ModifiedAttributeDict(collections.MutableMapping):
                 boostFactor *= resist.value
 
         # We just transform percentage boost into multiplication factor
-        self.multiply(attributeName, 1 + boostFactor / 100.0, *args, **kwargs)
+        self.multiply(attributes, 1 + boostFactor / 100.0, *args, **kwargs)
 
-    def force(self, attributeName, value):
+    def force(self, attributes, value):
         """Force value to attribute and prohibit any changes to it"""
-        self.__forced[attributeName] = value
-        self.__placehold(attributeName)
-        self.__afflict(attributeName, u"\u2263", value)
+        if isinstance(attributes, basestring):
+            attributes = [attributes]
+
+        for attr in attributes:
+            self.__forced[attr] = value
+            self.__placehold(attr)
+            self.__afflict(attr, u"\u2263", value)
 
 
 class Affliction(object):
