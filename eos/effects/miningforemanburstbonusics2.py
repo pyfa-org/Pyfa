@@ -6,13 +6,6 @@ type = "passive"
 
 
 def handler(fit, src, context):
-    fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Mining Foreman"), "warfareBuff4Value",
-                                  src.getModifiedItemAttr("shipBonusICS2"), skill="Industrial Command Ships")
-    fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Mining Foreman"), "warfareBuff1Value",
-                                  src.getModifiedItemAttr("shipBonusICS2"), skill="Industrial Command Ships")
-    fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Mining Foreman"), "buffDuration",
-                                  src.getModifiedItemAttr("shipBonusICS2"), skill="Industrial Command Ships")
-    fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Mining Foreman"), "warfareBuff3Value",
-                                  src.getModifiedItemAttr("shipBonusICS2"), skill="Industrial Command Ships")
-    fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Mining Foreman"), "warfareBuff2Value",
+    attrs = ["warfareBuff1Value", "warfareBuff2Value", "warfareBuff3Value", "warfareBuff4Value", "buffDuration"]
+    fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Mining Foreman"), attr,
                                   src.getModifiedItemAttr("shipBonusICS2"), skill="Industrial Command Ships")
