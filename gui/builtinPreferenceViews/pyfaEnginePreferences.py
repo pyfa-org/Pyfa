@@ -36,6 +36,10 @@ class PFFittingEnginePref(PreferenceView):
                                                wx.DefaultPosition, wx.DefaultSize, 0)
         mainSizer.Add(self.cbGlobalForceReload, 0, wx.ALL | wx.EXPAND, 5)
 
+        self.cbUniversalAdaptiveArmorHardener = wx.CheckBox(panel, wx.ID_ANY, u"When damage profile is even, set Reactive Armor Hardener to match (old behavior).",
+                                               wx.DefaultPosition, wx.DefaultSize, 0)
+        mainSizer.Add(self.cbUniversalAdaptiveArmorHardener, 0, wx.ALL | wx.EXPAND, 5)
+
         # Future code once new cap sim is implemented
         '''
         self.cbGlobalForceReactivationTimer = wx.CheckBox( panel, wx.ID_ANY, u"Factor in reactivation timer", wx.DefaultPosition, wx.DefaultSize, 0 )
@@ -63,14 +67,19 @@ class PFFittingEnginePref(PreferenceView):
         self.sFit = Fit.getInstance()
 
         self.cbGlobalForceReload.SetValue(self.sFit.serviceFittingOptions["useGlobalForceReload"])
-
         self.cbGlobalForceReload.Bind(wx.EVT_CHECKBOX, self.OnCBGlobalForceReloadStateChange)
+
+        self.cbUniversalAdaptiveArmorHardener.SetValue(self.sFit.serviceFittingOptions["useStaticAdaptiveArmorHardener"])
+        self.cbUniversalAdaptiveArmorHardener.Bind(wx.EVT_CHECKBOX, self.OnCBUniversalAdaptiveArmorHardenerChange)
 
         panel.SetSizer(mainSizer)
         panel.Layout()
 
     def OnCBGlobalForceReloadStateChange(self, event):
         self.sFit.serviceFittingOptions["useGlobalForceReload"] = self.cbGlobalForceReload.GetValue()
+
+    def OnCBUniversalAdaptiveArmorHardenerChange(self, event):
+        self.sFit.serviceFittingOptions["useStaticAdaptiveArmorHardener"] = self.cbUniversalAdaptiveArmorHardener.GetValue()
 
     def getImage(self):
         return BitmapLoader.getBitmap("prefs_settings", "gui")

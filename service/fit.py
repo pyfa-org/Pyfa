@@ -72,6 +72,7 @@ class Fit(object):
             "exportCharges": True,
             "openFitInNew": False,
             "priceSystem": "Jita",
+            "useStaticAdaptiveArmorHardener": False,
         }
 
         self.serviceFittingOptions = SettingsProvider.getInstance().getSettings(

@@ -46,7 +46,7 @@ class PassThroughOptionParser(OptionParser):
                 largs.append(e.opt_str)
 
 
-class LoggerWriter:
+class LoggerWriter(object):
     def __init__(self, level):
         # self.level is really like using log.debug(message)
         # at least in my case
@@ -159,8 +159,6 @@ if __name__ == "__main__":
     # Import everything
     # noinspection PyPackageRequirements
     import wx
-    import os
-    import os.path
 
     try:
         # convert to unicode if it is set
@@ -185,8 +183,9 @@ if __name__ == "__main__":
         else:
             savePath_filename = "Pyfa.log"
 
-        savePath_Destination = os.path.join(config.savePath, savePath_filename)
+        config.logPath = os.path.join(config.savePath, savePath_filename)
 
+        # noinspection PyBroadException
         try:
             if options.debug:
                 logging_mode = "Debug"
@@ -200,7 +199,7 @@ if __name__ == "__main__":
                         level=options.logginglevel
                     ),
                     TimedRotatingFileHandler(
-                        savePath_Destination,
+                        config.logPath,
                         level=0,
                         backup_count=3,
                         bubble=True,
@@ -215,7 +214,7 @@ if __name__ == "__main__":
                     NullHandler(),
                     FingersCrossedHandler(
                         TimedRotatingFileHandler(
-                            savePath_Destination,
+                            config.logPath,
                             level=0,
                             backup_count=3,
                             bubble=False,
@@ -266,15 +265,18 @@ if __name__ == "__main__":
             # Output all stdout (print) messages as warnings
             try:
                 sys.stdout = LoggerWriter(pyfalog.warning)
-            except ValueError, Exception:
+            except (ValueError, Exception) as e:
                 pyfalog.critical("Cannot access log file.  Continuing without writing stdout to log.")
+                pyfalog.critical(e)
 
+            # Don't redirect stderr (stacktrace) messages if we're in debug mode. Developers want to see them in the console.
             if not options.debug:
                 # Output all stderr (stacktrace) messages as critical
                 try:
                     sys.stderr = LoggerWriter(pyfalog.critical)
-                except ValueError, Exception:
+                except (ValueError, Exception) as e:
                     pyfalog.critical("Cannot access log file.  Continuing without writing stderr to log.")
+                    pyfalog.critical(e)
 
         pyfalog.info("Starting Pyfa")
         pyfalog.info("Running in logging mode: {0}", logging_mode)
