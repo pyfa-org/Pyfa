@@ -73,6 +73,7 @@ class Fit(object):
             "openFitInNew": False,
             "priceSystem": "Jita",
             "useStaticAdaptiveArmorHardener": False,
+            "showShipBrowserTooltip": True,
         }
 
         self.serviceFittingOptions = SettingsProvider.getInstance().getSettings(

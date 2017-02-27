@@ -1156,7 +1156,9 @@ class ShipItem(SFItem.SFBrowserItem):
 
         self.raceDropShadowBmp = drawUtils.CreateDropShadowBitmap(self.raceBmp, 0.2)
 
-        self.SetToolTip(wx.ToolTip(self.shipTrait))
+        sFit = Fit.getInstance()
+        if self.shipTrait and sFit.serviceFittingOptions["showShipBrowserTooltip"]:
+            self.SetToolTip(wx.ToolTip(self.shipTrait))
 
         self.shipBrowser = self.Parent.Parent
 
@@ -1492,7 +1494,9 @@ class FitItem(SFItem.SFBrowserItem):
         self.dragTLFBmp = None
 
         self.bkBitmap = None
-        if self.shipTrait != "":  # show no tooltip if no trait available
+        sFit = Fit.getInstance()
+        # show no tooltip if no trait available or setting is disabled
+        if self.shipTrait and sFit.serviceFittingOptions["showShipBrowserTooltip"]:
             self.SetToolTip(wx.ToolTip(u'{}\n{}\n{}'.format(self.shipName, u'─' * 20, self.shipTrait)))
         self.padding = 4
         self.editWidth = 150
