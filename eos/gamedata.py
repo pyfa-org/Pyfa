@@ -30,6 +30,7 @@ except ImportError:
     from utils.compat import OrderedDict
 
 from logbook import Logger
+
 pyfalog = Logger(__name__)
 
 
@@ -160,36 +161,27 @@ class Effect(EqBase):
         """
         try:
             self.__effectModule = effectModule = __import__('eos.effects.' + self.handlerName, fromlist=True)
-            try:
-                self.__handler = getattr(effectModule, "handler")
-            except AttributeError:
-                print "effect {} exists, but no handler".format(self.handlerName)
-                raise
-
-            try:
-                self.__runTime = getattr(effectModule, "runTime") or "normal"
-            except AttributeError:
-                self.__runTime = "normal"
-
-            try:
-                self.__activeByDefault = getattr(effectModule, "activeByDefault")
-            except AttributeError:
-                self.__activeByDefault = True
-
-            try:
-                t = getattr(effectModule, "type")
-            except AttributeError:
-                t = None
+            self.__handler = getattr(effectModule, "handler", effectDummy)
+            self.__runTime = getattr(effectModule, "runTime", "normal")
+            self.__activeByDefault = getattr(effectModule, "activeByDefault", True)
+            t = getattr(effectModule, "type", None)
 
             t = t if isinstance(t, tuple) or t is None else (t,)
             self.__type = t
-        except (ImportError, AttributeError) as e:
+        except (ImportError) as e:
+            # Effect probably doesn't exist, so create a dummy effect and flag it with a warning.
             self.__handler = effectDummy
             self.__runTime = "normal"
             self.__activeByDefault = True
             self.__type = None
-            pyfalog.debug("ImportError or AttributeError generating handler:")
-            pyfalog.debug(e)
+            pyfalog.warning("ImportError generating handler: {0}", e)
+        except (AttributeError) as e:
+            # Effect probably exists but there is an issue with it.  Turn it into a dummy effect so we can continue, but flag it with an error.
+            self.__handler = effectDummy
+            self.__runTime = "normal"
+            self.__activeByDefault = True
+            self.__type = None
+            pyfalog.error("AttributeError generating handler: {0}", e)
         except Exception as e:
             pyfalog.critical("Exception generating handler:")
             pyfalog.critical(e)
@@ -348,18 +340,20 @@ class Item(EqBase):
             # thus keep old mechanism for now
             except KeyError:
                 # Define race map
-                map = {1: "caldari",
-                       2: "minmatar",
-                       4: "amarr",
-                       5: "sansha",  # Caldari + Amarr
-                       6: "blood",  # Minmatar + Amarr
-                       8: "gallente",
-                       9: "guristas",  # Caldari + Gallente
-                       10: "angelserp",  # Minmatar + Gallente, final race depends on the order of skills
-                       12: "sisters",  # Amarr + Gallente
-                       16: "jove",
-                       32: "sansha",  # Incrusion Sansha
-                       128: "ore"}
+                map = {
+                    1  : "caldari",
+                    2  : "minmatar",
+                    4  : "amarr",
+                    5  : "sansha",  # Caldari + Amarr
+                    6  : "blood",  # Minmatar + Amarr
+                    8  : "gallente",
+                    9  : "guristas",  # Caldari + Gallente
+                    10 : "angelserp",  # Minmatar + Gallente, final race depends on the order of skills
+                    12 : "sisters",  # Amarr + Gallente
+                    16 : "jove",
+                    32 : "sansha",  # Incrusion Sansha
+                    128: "ore"
+                }
                 # Race is None by default
                 race = None
                 # Check primary and secondary required skills' races
@@ -429,7 +423,7 @@ class Item(EqBase):
 
     def __repr__(self):
         return "Item(ID={}, name={}) at {}".format(
-            self.ID, self.name, hex(id(self))
+                self.ID, self.name, hex(id(self))
         )
 
 
@@ -454,7 +448,6 @@ class Category(EqBase):
 
 
 class AlphaClone(EqBase):
-
     @reconstructor
     def init(self):
         self.skillCache = {}
@@ -482,10 +475,9 @@ class Icon(EqBase):
 
 
 class MarketGroup(EqBase):
-
     def __repr__(self):
         return u"MarketGroup(ID={}, name={}, parent={}) at {}".format(
-            self.ID, self.name, getattr(self.parent, "name", None), self.name, hex(id(self))
+                self.ID, self.name, getattr(self.parent, "name", None), self.name, hex(id(self))
         ).encode('utf8')
 
 
