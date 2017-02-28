@@ -82,11 +82,15 @@ class AuthHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         try:
             if step2:
                 self.server.callback(parts)
+                pyfalog.info("Successfully logged into CREST.")
                 msg = "If you see this message then it means you should be logged into CREST. You may close this window and return to the application."
             else:
                 # For implicit mode, we have to serve up the page which will take the hash and redirect useing a querystring
+                pyfalog.info("Processing response from EVE Online.")
                 msg = "Processing response from EVE Online"
         except Exception, ex:
+            pyfalog.error("Error in CREST AuthHandler")
+            pyfalog.error(ex)
             msg = "<h2>Error</h2>\n<p>{}</p>".format(ex.message)
         finally:
             self.send_response(200)
@@ -127,6 +131,7 @@ class StoppableHTTPServer(BaseHTTPServer.HTTPServer):
                 pass
 
     def stop(self):
+        pyfalog.warning("Setting CREST server to stop.")
         self.run = False
 
     def handle_timeout(self):

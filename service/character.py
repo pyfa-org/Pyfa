@@ -194,11 +194,13 @@ class Character(object):
     @staticmethod
     def backupSkills(path, saveFmt, activeFit, callback):
         thread = SkillBackupThread(path, saveFmt, activeFit, callback)
+        pyfalog.debug("Starting backup skills thread.")
         thread.start()
 
     @staticmethod
     def importCharacter(path, callback):
         thread = CharacterImportThread(path, callback)
+        pyfalog.debug("Starting import character thread.")
         thread.start()
 
     @staticmethod

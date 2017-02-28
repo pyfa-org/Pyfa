@@ -246,6 +246,7 @@ class Fit(object):
         try:
             implant = es_Implant(item)
         except ValueError:
+            pyfalog.warning("Invalid item: {0}", itemID)
             return False
 
         fit.implants.append(implant)
@@ -272,6 +273,7 @@ class Fit(object):
         try:
             booster = es_Booster(item)
         except ValueError:
+            pyfalog.warning("Invalid item: {0}", itemID)
             return False
 
         fit.boosters.append(booster)
@@ -432,6 +434,7 @@ class Fit(object):
         try:
             m = es_Module(item)
         except ValueError:
+            pyfalog.warning("Invalid item: {0}", itemID)
             return False
 
         if m.item.category.name == "Subsystem":
@@ -479,6 +482,7 @@ class Fit(object):
         try:
             m = es_Module(item)
         except ValueError:
+            pyfalog.warning("Invalid item: {0}", newItemID)
             return False
 
         if m.fits(fit):
@@ -519,6 +523,7 @@ class Fit(object):
             if cargoP.isValidState(State.ACTIVE):
                 cargoP.state = State.ACTIVE
         except:
+            pyfalog.warning("Invalid item: {0}", cargo.item)
             return
 
         if cargoP.slot != module.slot:  # can't swap modules to different racks
