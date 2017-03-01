@@ -21,9 +21,12 @@
 import urllib2
 import urllib
 import socket
+from logbook import Logger
 
 import config
 from service.settings import NetworkSettings
+
+pyfalog = Logger(__name__)
 
 # network timeout, otherwise pyfa hangs for a long while if no internet connection
 timeout = 3
@@ -76,6 +79,7 @@ class Network(object):
         access = NetworkSettings.getInstance().getAccess()
 
         if not self.ENABLED & access or not type & access:
+            pyfalog.warning("Access not enabled - please enable in Preferences > Network")
             raise Error("Access not enabled - please enable in Preferences > Network")
 
         # Set up some things for the request
@@ -113,6 +117,8 @@ class Network(object):
         try:
             return urllib2.urlopen(request)
         except urllib2.HTTPError as error:
+            pyfalog.warning("HTTPError:")
+            pyfalog.warning(error)
             if error.code == 404:
                 raise RequestError()
             elif error.code == 403:
@@ -120,6 +126,8 @@ class Network(object):
             elif error.code >= 500:
                 raise ServerError()
         except urllib2.URLError as error:
+            pyfalog.warning("Timed out or other URL error:")
+            pyfalog.warning(error)
             if "timed out" in error.reason:
                 raise TimeoutError()
             else:

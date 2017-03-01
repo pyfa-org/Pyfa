@@ -59,6 +59,7 @@ if config.saveDB and os.path.isfile(config.saveDB):
 else:
     # If database does not exist, do not worry about migration. Simply
     # create and set version
+    pyfalog.debug("Existing database not found, creating new database.")
     db.saveddata_meta.create_all()
     db.saveddata_engine.execute('PRAGMA user_version = {}'.format(migration.getAppVersion()))
     # Import default database values

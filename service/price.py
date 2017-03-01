@@ -104,6 +104,7 @@ class Price(object):
                 try:
                     percprice = float(sell.getElementsByTagName("percentile").item(0).firstChild.data)
                 except (TypeError, ValueError):
+                    pyfalog.warning("Failed to get price for: {0}", type_)
                     percprice = 0
 
                 # Fill price data
