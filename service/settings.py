@@ -22,6 +22,7 @@ import os.path
 import urllib2
 
 import config
+import eos.config
 from logbook import Logger
 
 pyfalog = Logger(__name__)
@@ -435,5 +436,24 @@ class ContextMenuSettings(object):
 
     def set(self, type, value):
         self.ContextMenuDefaultSettings[type] = value
+
+class EOSSettings(object):
+        _instance = None
+
+        @classmethod
+        def getInstance(cls):
+            if cls._instance is None:
+                cls._instance = EOSSettings()
+
+            return cls._instance
+
+        def __init__(self):
+            self.EOSSettings = SettingsProvider.getInstance().getSettings("pyfaEOSSettings", eos.config.settings)
+
+        def get(self, type):
+            return self.EOSSettings[type]
+
+        def set(self, type, value):
+            self.EOSSettings[type] = value
 
 # @todo: migrate fit settings (from fit service) here?
