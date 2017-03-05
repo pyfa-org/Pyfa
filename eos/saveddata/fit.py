@@ -927,20 +927,19 @@ class Fit(object):
 
         return amount
 
-    # Expresses how difficult a target is to probe down with scan probes
-    # If this is <1.08, the ship is unproabeable
     @property
     def probeSize(self):
+        """
+        Expresses how difficult a target is to probe down with scan probes
+        """
+
         sigRad = self.ship.getModifiedItemAttr("signatureRadius")
         sensorStr = float(self.scanStrength)
         probeSize = sigRad / sensorStr if sensorStr != 0 else None
         # http://www.eveonline.com/ingameboard.asp?a=topic&threadID=1532170&page=2#42
         if probeSize is not None:
-            # http://forum.eve-ru.com/index.php?showtopic=74195&view=findpost&p=1333691
-            # http://forum.eve-ru.com/index.php?showtopic=74195&view=findpost&p=1333763
-            # Tests by tester128 and several conclusions by me, prove that cap is in range
-            # from 1.1 to 1.12, we're picking average value
-            probeSize = max(probeSize, 1.11)
+            # Probe size is capped at 1.08
+            probeSize = max(probeSize, 1.08)
         return probeSize
 
     @property
