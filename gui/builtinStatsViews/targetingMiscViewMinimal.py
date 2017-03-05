@@ -191,8 +191,6 @@ class TargetingMiscViewMinimal(StatsView):
                             right = "%s [%d]" % (size, radius)
                             lockTime += "%5s\t%s\n" % (left, right)
                         label.SetToolTip(wx.ToolTip(lockTime))
-                    elif labelName == "labelFullSigRadius":
-                        label.SetToolTip(wx.ToolTip("Probe Size: %.3f" % (fit.probeSize or 0)))
                     elif labelName == "labelFullWarpSpeed":
                         label.SetToolTip(wx.ToolTip("Max Warp Distance: %.1f AU" % fit.maxWarpDistance))
                     elif labelName == "labelSensorStr":
@@ -242,8 +240,15 @@ class TargetingMiscViewMinimal(StatsView):
                 else:
                     label.SetToolTip(wx.ToolTip(""))
 
-            counter += 1
+            # forces update of probe size, since this stat is used by both sig radius and sensor str
+            if labelName == "labelFullSigRadius":
+                print "labelName"
+                if fit:
+                    label.SetToolTip(wx.ToolTip("Probe Size: %.3f" % (fit.probeSize or 0)))
+                else:
+                    label.SetToolTip(wx.ToolTip(""))
 
+            counter += 1
         self.panel.Layout()
         self.headerPanel.Layout()
 
