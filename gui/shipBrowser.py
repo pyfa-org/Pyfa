@@ -1555,7 +1555,7 @@ class FitItem(SFItem.SFBrowserItem):
         self.Bind(wx.EVT_MIDDLE_UP, self.OpenNewTab)
 
     def OpenNewTab(self, evt):
-        self.selectFit(newTab=True);
+        self.selectFit(newTab=True)
 
     def OnToggleBooster(self, event):
         sFit = Fit.getInstance()
