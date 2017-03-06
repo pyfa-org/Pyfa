@@ -408,7 +408,7 @@ class FittingView(d.Display):
             if mod1.slot != mod2.slot:
                 return
 
-            if getattr(mod2, "modPosition"):
+            if getattr(mod2, "modPosition") is not None:
                 if clone and mod2.isEmpty:
                     sFit.cloneModule(self.mainFrame.getActiveFit(), srcIdx, mod2.modPosition)
                 else:
