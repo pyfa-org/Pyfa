@@ -437,6 +437,7 @@ class ContextMenuSettings(object):
     def set(self, type, value):
         self.ContextMenuDefaultSettings[type] = value
 
+
 class EOSSettings(object):
         _instance = None
 
