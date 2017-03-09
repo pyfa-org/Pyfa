@@ -114,11 +114,10 @@ class CapacitorViewFull(StatsView):
             ("label%sCapacitorRecharge", lambda: fit.capRecharge, 3, 0, 0),
             ("label%sCapacitorDischarge", lambda: fit.capUsed, 3, 0, 0),
         )
-        if fit is None:
-            # Set default if fit is empty
-            neut_resist = 0
-        else:
+        if fit:
             neut_resist = fit.ship.getModifiedItemAttr("energyWarfareResistance", 0)
+        else:
+            neut_resist = 0
 
         panel = "Full"
         for labelName, value, prec, lowest, highest in stats:

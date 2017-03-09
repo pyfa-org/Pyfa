@@ -19,6 +19,7 @@
 
 import collections
 from math import exp
+from types import NoneType
 
 defaultValuesCache = {}
 cappingAttrKeyCache = {}
@@ -26,24 +27,22 @@ cappingAttrKeyCache = {}
 
 class ItemAttrShortcut(object):
     def getModifiedItemAttr(self, key, default=None):
-        try:
-            if key in self.itemModifiedAttributes:
-                return self.itemModifiedAttributes[key]
-            else:
-                return default
-        except AttributeError:
-            return default
+        return_value = self.itemModifiedAttributes.get(key)
+
+        if isinstance(return_value, NoneType) and not isinstance(default, NoneType):
+            return_value = default
+
+        return return_value
 
 
 class ChargeAttrShortcut(object):
     def getModifiedChargeAttr(self, key, default=None):
-        try:
-            if key in self.chargeModifiedAttributes:
-                return self.chargeModifiedAttributes[key]
-            else:
-                return default
-        except AttributeError:
-            return default
+        return_value = self.chargeModifiedAttributes.get(key)
+
+        if isinstance(return_value, NoneType) and not isinstance(default, NoneType):
+            return_value = default
+
+        return return_value
 
 
 class ModifiedAttributeDict(collections.MutableMapping):
@@ -102,17 +101,47 @@ class ModifiedAttributeDict(collections.MutableMapping):
     def overrides(self, val):
         self.__overrides = val
 
+    @property
+    def modified(self):
+        return self.__modified
+
+    @modified.setter
+    def modified(self, val):
+        self.__modified = val
+
     def __getitem__(self, key):
+        '''
         # Check if we have final calculated value
-        if key in self.__modified:
-            if self.__modified[key] == self.CalculationPlaceholder:
-                self.__modified[key] = self.__calculateValue(key)
-            return self.__modified[key]
+        if key in self.modified:
+            if self.modified[key] == self.CalculationPlaceholder:
+                self.modified[key] = self.__calculateValue(key)
+            return self.modified[key]
         # Then in values which are not yet calculated
         elif key in self.__intermediary:
             return self.__intermediary[key]
         # Original value is the least priority
         else:
+            return self.getOriginal(key)
+        '''
+
+        # Check if we have final calculated value
+        key_value = self.modified.get(key)
+        if key_value is self.CalculationPlaceholder:
+            key_value = self.modified[key] = self.__calculateValue(key)
+
+        if not isinstance(key_value, NoneType):
+            return key_value
+
+        # Then in values which are not yet calculated
+        if self.__intermediary:
+            val = self.__intermediary.get(key)
+        else:
+            val = None
+
+        if not isinstance(val, NoneType):
+            return val
+        else:
+            # Original value is the least priority
             return self.getOriginal(key)
 
     def __delitem__(self, key):
@@ -122,11 +151,18 @@ class ModifiedAttributeDict(collections.MutableMapping):
             del self.__intermediary[key]
 
     def getOriginal(self, key):
-        if self.OVERRIDES and key in self.__overrides:
-            return self.__overrides.get(key).value
-        val = self.__original.get(key)
-        if val is None:
-            return None
+        val = None
+
+        if self.__overrides:
+            val = self.__overrides.get(key, None)
+        elif self.overrides:
+            val = self.overrides.get(key, None)
+
+        if isinstance(val, NoneType):
+            if self.__original:
+                val = self.__original.get(key, None)
+            elif self.original:
+                val = self.original.get(key, None)
 
         return val.value if hasattr(val, "value") else val
 
@@ -134,12 +170,12 @@ class ModifiedAttributeDict(collections.MutableMapping):
         self.__intermediary[key] = val
 
     def __iter__(self):
-        all = dict(self.__original, **self.__modified)
-        return (key for key in all)
+        all_dict = dict(self.__original, **self.__modified)
+        return (key for key in all_dict)
 
     def __contains__(self, key):
         return (self.__original is not None and key in self.__original) or \
-            key in self.__modified or key in self.__intermediary
+               key in self.__modified or key in self.__intermediary
 
     def __placehold(self, key):
         """Create calculation placeholder in item's modified attribute dict"""
@@ -366,6 +402,6 @@ class ModifiedAttributeDict(collections.MutableMapping):
 
 
 class Affliction(object):
-    def __init__(self, type, amount):
-        self.type = type
+    def __init__(self, affliction_type, amount):
+        self.type = affliction_type
         self.amount = amount
