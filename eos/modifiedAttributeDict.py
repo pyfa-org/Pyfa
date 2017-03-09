@@ -23,6 +23,7 @@ from types import NoneType
 
 defaultValuesCache = {}
 cappingAttrKeyCache = {}
+calculate_value_time = 0
 
 
 class ItemAttrShortcut(object):
@@ -194,12 +195,8 @@ class ModifiedAttributeDict(collections.MutableMapping):
                 cappingKey = None if cappingAttrInfo is None else cappingAttrInfo.name
 
         if cappingKey:
-            if cappingKey in self.original:
-                #  some items come with their own caps (ie: carriers). If they do, use this
-                cappingValue = self.original.get(cappingKey).value
-            else:
-                # If not, get info about the default value
-                cappingValue = self.__calculateValue(cappingKey)
+            cappingValue = self.original.get(cappingKey, self.__calculateValue(cappingKey))
+            cappingValue = cappingValue.value if hasattr(cappingValue, "value") else cappingValue
         else:
             cappingValue = None
 
@@ -211,10 +208,10 @@ class ModifiedAttributeDict(collections.MutableMapping):
                 force = min(force, cappingValue)
             return force
         # Grab our values if they're there, otherwise we'll take default values
-        preIncrease = self.__preIncreases[key] if key in self.__preIncreases else 0
-        multiplier = self.__multipliers[key] if key in self.__multipliers else 1
-        penalizedMultiplierGroups = self.__penalizedMultipliers[key] if key in self.__penalizedMultipliers else {}
-        postIncrease = self.__postIncreases[key] if key in self.__postIncreases else 0
+        preIncrease = self.__preIncreases.get(key, 0)
+        multiplier = self.__multipliers.get(key, 1)
+        penalizedMultiplierGroups = self.__penalizedMultipliers.get(key, {})
+        postIncrease = self.__postIncreases.get(key, 0)
 
         # Grab initial value, priorities are:
         # Results of ongoing calculation > preAssign > original > 0
@@ -228,8 +225,12 @@ class ModifiedAttributeDict(collections.MutableMapping):
             else:
                 dv = attrInfo.defaultValue
                 default = defaultValuesCache[key] = dv if dv is not None else 0.0
-        val = self.__intermediary[key] if key in self.__intermediary else self.__preAssigns[
-            key] if key in self.__preAssigns else self.getOriginal(key) if key in self.__original else default
+
+        val = self.__intermediary.get(key,
+                                      self.__preAssigns.get(key,
+                                                            self.getOriginal(key) if key in self.__original else default
+                                                            )
+                                      )
 
         # We'll do stuff in the following order:
         # preIncrease > multiplier > stacking penalized multipliers > postIncrease
