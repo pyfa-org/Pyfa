@@ -16,4 +16,3 @@ settings = {
 
 # Autodetect path, only change if the autodetection bugs out.
 path = dirname(unicode(__file__, sys.getfilesystemencoding()))
-

@@ -816,7 +816,7 @@ class Port(object):
                 if callback:
                     wx.CallAfter(callback, None)
             # Skip fit silently if we get an exception
-            except Exception as  e:
+            except Exception as e:
                 pyfalog.error("Caught exception on fit.")
                 pyfalog.error(e)
                 pass
