@@ -29,7 +29,7 @@ except ImportError:
 
 
 class TargetingMiscViewFull(StatsView):
-    name = "targetingmiscViewFull"
+    name = "targetingMiscViewFull"
 
     def __init__(self, parent):
         StatsView.__init__(self)
