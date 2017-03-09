@@ -110,20 +110,6 @@ class ModifiedAttributeDict(collections.MutableMapping):
         self.__modified = val
 
     def __getitem__(self, key):
-        '''
-        # Check if we have final calculated value
-        if key in self.modified:
-            if self.modified[key] == self.CalculationPlaceholder:
-                self.modified[key] = self.__calculateValue(key)
-            return self.modified[key]
-        # Then in values which are not yet calculated
-        elif key in self.__intermediary:
-            return self.__intermediary[key]
-        # Original value is the least priority
-        else:
-            return self.getOriginal(key)
-        '''
-
         # Check if we have final calculated value
         key_value = self.modified.get(key)
         if key_value is self.CalculationPlaceholder:
