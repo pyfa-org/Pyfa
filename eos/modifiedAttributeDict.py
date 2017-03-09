@@ -283,7 +283,7 @@ class ModifiedAttributeDict(collections.MutableMapping):
         return skill.level
 
     def getAfflictions(self, key):
-        return self.__affectedBy[key] if key in self.__affectedBy else {}
+        return self.__affectedBy.get(key, {})
 
     def iterAfflictions(self):
         return self.__affectedBy.__iter__()
