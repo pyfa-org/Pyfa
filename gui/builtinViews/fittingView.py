@@ -55,15 +55,16 @@ class FitSpawner(gui.multiSwitch.TabSpawner):
     def fitSelected(self, event):
         count = -1
         for index, page in enumerate(self.multiSwitch.pages):
-            try:
-                if page.activeFitID == event.fitID:
-                    count += 1
-                    self.multiSwitch.SetSelection(index)
-                    wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=event.fitID))
-                    break
-            except Exception as e:
-                pyfalog.critical("Caught exception in fitSelected")
-                pyfalog.critical(e)
+            if not isinstance(page, gui.builtinViews.emptyView.BlankPage):  # Don't try and process it if it's a blank page.
+                try:
+                    if page.activeFitID == event.fitID:
+                        count += 1
+                        self.multiSwitch.SetSelection(index)
+                        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=event.fitID))
+                        break
+                except Exception as e:
+                    pyfalog.critical("Caught exception in fitSelected")
+                    pyfalog.critical(e)
         if count < 0:
             startup = getattr(event, "startup", False)  # see OpenFitsThread in gui.mainFrame
             sFit = Fit.getInstance()

@@ -689,7 +689,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
                 Currently would apply to bomb launchers and defender missiles
                 """
-                effective_reload_time = ((self.reactivationDelay * numShots) + raw_reload_time) / numShots
+                effective_reload_time = ((self.reactivationDelay * (numShots - 1)) + max(raw_reload_time, self.reactivationDelay, 0)) / numShots
             else:
                 """
                 Applies to MJD/MJFG
