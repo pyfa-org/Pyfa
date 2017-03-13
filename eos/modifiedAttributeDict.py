@@ -19,7 +19,6 @@
 
 import collections
 from math import exp
-from types import NoneType
 
 defaultValuesCache = {}
 cappingAttrKeyCache = {}
@@ -30,7 +29,7 @@ class ItemAttrShortcut(object):
     def getModifiedItemAttr(self, key, default=None):
         return_value = self.itemModifiedAttributes.get(key)
 
-        if isinstance(return_value, NoneType) and not isinstance(default, NoneType):
+        if return_value is None and default is not None:
             return_value = default
 
         return return_value
@@ -40,14 +39,14 @@ class ChargeAttrShortcut(object):
     def getModifiedChargeAttr(self, key, default=None):
         return_value = self.chargeModifiedAttributes.get(key)
 
-        if isinstance(return_value, NoneType) and not isinstance(default, NoneType):
+        if return_value is None and default is not None:
             return_value = default
 
         return return_value
 
 
 class ModifiedAttributeDict(collections.MutableMapping):
-    OVERRIDES = False
+    overrides_enabled = False
 
     class CalculationPlaceholder(object):
         def __init__(self):
@@ -102,21 +101,13 @@ class ModifiedAttributeDict(collections.MutableMapping):
     def overrides(self, val):
         self.__overrides = val
 
-    @property
-    def modified(self):
-        return self.__modified
-
-    @modified.setter
-    def modified(self, val):
-        self.__modified = val
-
     def __getitem__(self, key):
         # Check if we have final calculated value
-        key_value = self.modified.get(key)
+        key_value = self.__modified.get(key)
         if key_value is self.CalculationPlaceholder:
-            key_value = self.modified[key] = self.__calculateValue(key)
+            key_value = self.__modified[key] = self.__calculateValue(key)
 
-        if not isinstance(key_value, NoneType):
+        if key_value is not None:
             return key_value
 
         # Then in values which are not yet calculated
@@ -125,7 +116,7 @@ class ModifiedAttributeDict(collections.MutableMapping):
         else:
             val = None
 
-        if not isinstance(val, NoneType):
+        if val is not None:
             return val
         else:
             # Original value is the least priority
@@ -138,17 +129,14 @@ class ModifiedAttributeDict(collections.MutableMapping):
             del self.__intermediary[key]
 
     def getOriginal(self, key):
-        val = None
 
-        if self.__overrides:
-            val = self.__overrides.get(key, None)
-        elif self.overrides:
+        if self.overrides:
             val = self.overrides.get(key, None)
+        else:
+            val = None
 
-        if isinstance(val, NoneType):
-            if self.__original:
-                val = self.__original.get(key, None)
-            elif self.original:
+        if val is None:
+            if self.original:
                 val = self.original.get(key, None)
 
         return val.value if hasattr(val, "value") else val
@@ -157,11 +145,11 @@ class ModifiedAttributeDict(collections.MutableMapping):
         self.__intermediary[key] = val
 
     def __iter__(self):
-        all_dict = dict(self.__original, **self.__modified)
+        all_dict = dict(self.original, **self.__modified)
         return (key for key in all_dict)
 
     def __contains__(self, key):
-        return (self.__original is not None and key in self.__original) or \
+        return (self.original is not None and key in self.original) or \
                key in self.__modified or key in self.__intermediary
 
     def __placehold(self, key):
@@ -170,7 +158,7 @@ class ModifiedAttributeDict(collections.MutableMapping):
 
     def __len__(self):
         keys = set()
-        keys.update(self.__original.iterkeys())
+        keys.update(self.original.iterkeys())
         keys.update(self.__modified.iterkeys())
         keys.update(self.__intermediary.iterkeys())
         return len(keys)
@@ -228,7 +216,7 @@ class ModifiedAttributeDict(collections.MutableMapping):
 
         val = self.__intermediary.get(key,
                                       self.__preAssigns.get(key,
-                                                            self.getOriginal(key) if key in self.__original else default
+                                                            self.getOriginal(key) if key in self.original else default
                                                             )
                                       )
 
