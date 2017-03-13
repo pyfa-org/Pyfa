@@ -23,7 +23,6 @@ from eos.db.gamedata.queries import getAttributeInfo
 
 defaultValuesCache = {}
 cappingAttrKeyCache = {}
-calculate_value_time = 0
 
 
 class ItemAttrShortcut(object):
@@ -130,7 +129,6 @@ class ModifiedAttributeDict(collections.MutableMapping):
             del self.__intermediary[key]
 
     def getOriginal(self, key, default=None):
-
         if self.overrides_enabled and self.overrides:
             val = self.overrides.get(key, None)
         else:
