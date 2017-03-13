@@ -128,7 +128,7 @@ class ModifiedAttributeDict(collections.MutableMapping):
         if key in self.__intermediary:
             del self.__intermediary[key]
 
-    def getOriginal(self, key):
+    def getOriginal(self, key, default=None):
 
         if self.overrides:
             val = self.overrides.get(key, None)
@@ -138,6 +138,9 @@ class ModifiedAttributeDict(collections.MutableMapping):
         if val is None:
             if self.original:
                 val = self.original.get(key, None)
+
+        if val is None and val != default:
+            val = default
 
         return val.value if hasattr(val, "value") else val
 
@@ -216,7 +219,7 @@ class ModifiedAttributeDict(collections.MutableMapping):
 
         val = self.__intermediary.get(key,
                                       self.__preAssigns.get(key,
-                                                            self.getOriginal(key) if key in self.original else default
+                                                            self.getOriginal(key, default)
                                                             )
                                       )
 
