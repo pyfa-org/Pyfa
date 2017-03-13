@@ -19,6 +19,8 @@
 
 import collections
 from math import exp
+# TODO: This needs to be moved out, we shouldn't have *ANY* dependencies back to other modules/methods inside eos.
+# This also breaks writing any tests. :(
 from eos.db.gamedata.queries import getAttributeInfo
 
 defaultValuesCache = {}
