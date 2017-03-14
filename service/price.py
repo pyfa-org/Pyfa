@@ -137,21 +137,72 @@ class Price(object):
             priceobj.failed = True
 
     @classmethod
-    def fitItemsList(cls, fit):
-        # Compose a list of all the data we need & request it
-        typeIDs = [fit.ship.item.ID]
+    def fetchItemPrice(cls, item):
+        """Fetch all prices passed to this method"""
 
-        for mod in fit.modules:
-            if not mod.isEmpty:
-                typeIDs.append(mod.itemID)
+        # Check if price is valid (within the time frame) or failed.
+        if item.price.isValid and item.price.failed is not True:
+            return item.price.price
 
-        for drone in fit.drones:
-            typeIDs.append(drone.itemID)
+        # We're not going to request items only with market group, as eve-central
+        # doesn't provide any data for items not on the market
+        if item is None or not item.marketGroupID:
+            return 0
 
-        for fighter in fit.fighters:
-            typeIDs.append(fighter.itemID)
+        # This will store POST data for eve-central
+        data = []
 
-        for cargo in fit.cargo:
-            typeIDs.append(cargo.itemID)
+        sFit = Fit.getInstance()
+        # Base request URL
+        baseurl = "https://eve-central.com/api/marketstat"
+        data.append(("usesystem", cls.systemsList[sFit.serviceFittingOptions["priceSystem"]]))  # Use Jita for market
+        data.append(("typeid", item.ID))
 
-        return typeIDs
+        # Attempt to send request and process it
+        try:
+            network = Network.getInstance()
+            data = network.request(baseurl, network.PRICES, data)
+            xml = minidom.parse(data)
+            types = xml.getElementsByTagName("marketstat").item(0).getElementsByTagName("type")
+            # Cycle through all types we've got from request
+            for type_ in types:
+                # Get data out of each typeID details tree
+                typeID = int(type_.getAttribute("id"))
+                sell = type_.getElementsByTagName("sell").item(0)
+
+                if item.ID != typeID:
+                    pyfalog.warning("Type mismatch between passed in value ({0}) and returned value ({1}).", item.ID, typeID)
+                    percprice = 0
+                else:
+                    # If price data wasn't there, set price to zero
+                    try:
+                        percprice = float(sell.getElementsByTagName("percentile").item(0).firstChild.data)
+                    except (TypeError, ValueError):
+                        pyfalog.warning("Failed to get price for: {0}", type_)
+                        percprice = 0
+
+                # Fill price data
+                priceobj = item.price
+                priceobj.price = percprice
+                priceobj.time = time.time() + VALIDITY
+                priceobj.failed = None
+
+            return item.price.price
+
+        # If getting or processing data returned any errors
+        except TimeoutError:
+            # Timeout error deserves special treatment
+            pyfalog.warning("Price fetch timout")
+            priceobj = item.price
+            priceobj.time = time.time() + TIMEOUT
+            priceobj.failed = True
+            return 0
+        except:
+            # all other errors will pass and continue onward to the REREQUEST delay
+            pyfalog.warning("Caught exception in fetchPrices")
+
+        # if we get to this point, then we've got an error. Set to REREQUEST delay
+        priceobj = item.price
+        priceobj.time = time.time() + REREQUEST
+        priceobj.failed = True
+        return 0

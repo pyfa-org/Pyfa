@@ -868,10 +868,6 @@ class Market(object):
 
         return price
 
-    def getPricesNow(self, typeIDs):
-        """Return map of calls to get price against list of typeIDs"""
-        return map(self.getPrice, typeIDs)
-
     def getPrices(self, typeIDs, callback):
         """Get prices for multiple typeIDs"""
         requests = []

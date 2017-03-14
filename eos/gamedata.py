@@ -23,6 +23,7 @@ from sqlalchemy.orm import reconstructor
 
 import eos.db
 from eqBase import EqBase
+from eos.saveddata.price import Price as types_Price
 
 try:
     from collections import OrderedDict
@@ -418,6 +419,31 @@ class Item(EqBase):
                 return True
 
         return False
+
+    @property
+    def price(self):
+        try:
+            if not hasattr(self, "__price"):
+                self.__price = types_Price(self.ID)
+
+            price = eos.db.getPrice(self.ID)
+
+            if self.__price != price and price is not None:
+                self.__price = price
+
+            eos.db.add(self.__price)
+            eos.db.commit()
+
+            return self.__price
+        except Exception as e:
+            # We want to catch our failure and log it, but don't bail out for a single missing price tag.
+            pyfalog.error("Failed to get price for typeID: {0}", self.ID)
+            pyfalog.error(e)
+            return 0
+
+    @price.setter
+    def price(self, val):
+        self.__price = val
 
     def __repr__(self):
         return "Item(ID={}, name={}) at {}".format(

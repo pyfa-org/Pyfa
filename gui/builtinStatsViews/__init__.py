@@ -7,4 +7,5 @@ __all__ = [
     "outgoingViewFull",
     "targetingMiscViewMinimal",
     "priceViewFull",
+    "priceViewMinimal",
 ]

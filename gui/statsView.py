@@ -52,5 +52,6 @@ from gui.builtinStatsViews import (  # noqa: E402, F401
     rechargeViewFull,
     targetingMiscViewMinimal,
     priceViewFull,
+    priceViewMinimal,
     outgoingViewFull,
 )
