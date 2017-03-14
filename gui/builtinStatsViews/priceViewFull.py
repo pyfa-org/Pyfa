@@ -91,27 +91,27 @@ class PriceViewFull(StatsView):
             drone_price = 0
             if fit.drones:
                 for drone in fit.drones:
-                    drone_price = Price.fetchItemPrice(drone.item) * drone.amount
+                    drone_price += Price.fetchItemPrice(drone.item) * drone.amount
 
             fighter_price = 0
             if fit.fighters:
                 for fighter in fit.fighters:
-                    fighter_price = Price.fetchItemPrice(fighter.item) * fighter.amount
+                    fighter_price += Price.fetchItemPrice(fighter.item) * fighter.amount
 
             cargo_price = 0
             if fit.cargo:
                 for cargo in fit.cargo:
-                    cargo_price = Price.fetchItemPrice(cargo.item) * cargo.amount
+                    cargo_price += Price.fetchItemPrice(cargo.item) * cargo.amount
 
             booster_price = 0
             if fit.boosters:
                 for booster in fit.boosters:
-                    booster_price = Price.fetchItemPrice(booster.item)
+                    booster_price += Price.fetchItemPrice(booster.item)
 
             implant_price = 0
             if fit.implants:
                 for implant in fit.implants:
-                    implant_price = Price.fetchItemPrice(implant.item)
+                    implant_price += Price.fetchItemPrice(implant.item)
 
             fitting_price = module_price + drone_price + fighter_price + cargo_price + booster_price + implant_price
             total_price = ship_price + fitting_price
