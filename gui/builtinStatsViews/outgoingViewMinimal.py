@@ -24,7 +24,7 @@ from gui.bitmapLoader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 
 
-class OutgoingViewFull(StatsView):
+class OutgoingViewMinimal(StatsView):
     name = "outgoingViewMinimal"
 
     def __init__(self, parent):
@@ -60,7 +60,7 @@ class OutgoingViewFull(StatsView):
         for outgoingType, label, image, tooltip in rr_list:
             baseBox = wx.BoxSizer(wx.VERTICAL)
 
-            baseBox.Add(BitmapLoader.getStaticBitmap("%s_big" % image, parent, "gui"), 0, wx.ALIGN_CENTER)
+            baseBox.Add(wx.StaticText(contentPanel, wx.ID_ANY, label), 0, wx.ALIGN_CENTER)
 
             if "Capacitor" in outgoingType:
                 lbl = wx.StaticText(parent, wx.ID_ANY, u"0 GJ/s")
@@ -103,4 +103,4 @@ class OutgoingViewFull(StatsView):
         self.headerPanel.Layout()
 
 
-OutgoingViewFull.register()
+OutgoingViewMinimal.register()
