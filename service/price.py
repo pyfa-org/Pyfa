@@ -25,6 +25,7 @@ from eos import db
 from service.network import Network, TimeoutError
 from service.fit import Fit
 from logbook import Logger
+from service.settings import NetworkSettings
 
 pyfalog = Logger(__name__)
 
@@ -149,6 +150,16 @@ class Price(object):
         if item is None or not item.marketGroupID:
             return 0
 
+        network = Network.getInstance()
+        settings = NetworkSettings.getInstance()
+
+        if not settings.isEnabled(network.PRICES):
+            # Network settings for fetching prices is disabled. Try and return the cache or return nothing.
+            if item.price.price:
+                return item.price.price
+            else:
+                return 0
+
         # This will store POST data for eve-central
         data = []
 
@@ -160,7 +171,6 @@ class Price(object):
 
         # Attempt to send request and process it
         try:
-            network = Network.getInstance()
             data = network.request(baseurl, network.PRICES, data)
             xml = minidom.parse(data)
             types = xml.getElementsByTagName("marketstat").item(0).getElementsByTagName("type")
