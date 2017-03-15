@@ -279,4 +279,5 @@ class PriceWorkerThread(threading.Thread):
             pyfalog.debug("Price run end")
 
             # Sleep for 60 seconds
+            # TODO: Add this as an option
             time.sleep(60)
