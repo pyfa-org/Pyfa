@@ -154,7 +154,7 @@ class PFStatViewPref(PreferenceView):
         self.settings.set('drones', event.GetInt())
 
     def getImage(self):
-        return BitmapLoader.getBitmap("pref-gauges_big", "gui")
+        return BitmapLoader.getBitmap("settings_stats", "gui")
 
 
 PFStatViewPref.register()
