@@ -22,7 +22,7 @@ import wx
 
 from eos.saveddata.cargo import Cargo
 from eos.saveddata.drone import Drone
-from service.price import Price as sPrice
+from service.price import Price as ServicePrice
 from gui.viewColumn import ViewColumn
 from gui.bitmapLoader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
@@ -45,6 +45,7 @@ class Price(ViewColumn):
             if stuff.isEmpty:
                 return ""
 
+        sPrice = ServicePrice.getInstance()
         price = sPrice.fetchItemPrice(stuff.item)
 
         if not price:

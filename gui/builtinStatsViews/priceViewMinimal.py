@@ -52,8 +52,8 @@ class PriceViewMinimal(StatsView):
 
         gridPrice = wx.GridSizer(1, 3)
         contentSizer.Add(gridPrice, 0, wx.EXPAND | wx.ALL, 0)
-        for type in ("ship", "fittings", "total"):
-            image = "%sPrice_big" % type if type != "ship" else "ship_big"
+        for _type in ("ship", "fittings", "total"):
+            image = "%sPrice_big" % _type if _type != "ship" else "ship_big"
             box = wx.BoxSizer(wx.HORIZONTAL)
             gridPrice.Add(box, 0, wx.ALIGN_TOP)
 
@@ -62,50 +62,51 @@ class PriceViewMinimal(StatsView):
             vbox = wx.BoxSizer(wx.VERTICAL)
             box.Add(vbox, 1, wx.EXPAND)
 
-            vbox.Add(wx.StaticText(contentPanel, wx.ID_ANY, type.capitalize()), 0, wx.ALIGN_LEFT)
+            vbox.Add(wx.StaticText(contentPanel, wx.ID_ANY, _type.capitalize()), 0, wx.ALIGN_LEFT)
 
             hbox = wx.BoxSizer(wx.HORIZONTAL)
             vbox.Add(hbox)
 
             lbl = wx.StaticText(contentPanel, wx.ID_ANY, "0.00 ISK")
-            setattr(self, "labelPrice%s" % type.capitalize(), lbl)
+            setattr(self, "labelPrice%s" % _type.capitalize(), lbl)
             hbox.Add(lbl, 0, wx.ALIGN_LEFT)
 
     def refreshPanel(self, fit):
         if fit is not None:
             self.labelEMStatus.SetLabel("Updating prices...")
-            ship_price = Price.fetchItemPrice(fit.ship.item)
+            sPrice = Price.getInstance()
+            ship_price = sPrice.fetchItemPrice(fit.ship.item)
 
             module_price = 0
             if fit.modules:
                 for module in fit.modules:
                     if not module.isEmpty:
-                        module_price += Price.fetchItemPrice(module.item)
+                        module_price += sPrice.fetchItemPrice(module.item)
 
             drone_price = 0
             if fit.drones:
                 for drone in fit.drones:
-                    drone_price = Price.fetchItemPrice(drone.item) * drone.amount
+                    drone_price = sPrice.fetchItemPrice(drone.item) * drone.amount
 
             fighter_price = 0
             if fit.fighters:
                 for fighter in fit.fighters:
-                    fighter_price = Price.fetchItemPrice(fighter.item) * fighter.amount
+                    fighter_price = sPrice.fetchItemPrice(fighter.item) * fighter.amount
 
             cargo_price = 0
             if fit.cargo:
                 for cargo in fit.cargo:
-                    cargo_price = Price.fetchItemPrice(cargo.item) * cargo.amount
+                    cargo_price = sPrice.fetchItemPrice(cargo.item) * cargo.amount
 
             booster_price = 0
             if fit.boosters:
                 for booster in fit.boosters:
-                    booster_price = Price.fetchItemPrice(booster.item)
+                    booster_price = sPrice.fetchItemPrice(booster.item)
 
             implant_price = 0
             if fit.implants:
                 for implant in fit.implants:
-                    implant_price = Price.fetchItemPrice(implant.item)
+                    implant_price = sPrice.fetchItemPrice(implant.item)
 
             fitting_price = module_price + drone_price + fighter_price + cargo_price + booster_price + implant_price
             total_price = ship_price + fitting_price

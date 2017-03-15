@@ -43,7 +43,7 @@ from eos.saveddata.citadel import Citadel
 from eos.saveddata.fit import Fit
 from service.market import Market
 from service.attribute import Attribute
-from service.price import Price as sPrice
+from service.price import Price as ServicePrice
 import gui.mainFrame
 from gui.bitmapLoader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
@@ -673,6 +673,7 @@ class ItemCompare(wx.Panel):
                     self.paramList.SetStringItem(i, x + 1, valueUnit)
 
                 # Add prices
+                sPrice = ServicePrice.getInstance()
                 self.paramList.SetStringItem(i, len(self.attrs) + 1, formatAmount(sPrice.fetchItemPrice(item), 3, 3, 9, currency=True))
 
         self.paramList.RefreshRows()

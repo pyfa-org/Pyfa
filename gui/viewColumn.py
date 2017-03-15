@@ -46,9 +46,6 @@ class ViewColumn(object):
     def getColumn(cls, name):
         return ViewColumn.columns[name]
 
-    def getRestrictions(self):
-        raise NotImplementedError()
-
     def getText(self, mod):
         return ""
 
@@ -61,9 +58,6 @@ class ViewColumn(object):
     @staticmethod
     def getParameters():
         return tuple()
-
-    def delayedText(self, display, colItem):
-        raise NotImplementedError()
 
 
 # noinspection PyUnresolvedReferences
