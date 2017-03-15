@@ -98,8 +98,6 @@ class PFStatViewPref(PreferenceView):
         self.rbPrice.Bind(wx.EVT_RADIOBOX, self.OnPriceChange)
 
         self.rbOutgoing = wx.RadioBox(panel, -1, "Remote Reps", wx.DefaultPosition, wx.DefaultSize, ['None', 'Minimal', 'Full'], 1, wx.RA_SPECIFY_COLS)
-        # Disable minimal as we don't have a view for this yet
-        self.rbOutgoing .EnableItem(1, False)
         self.rbOutgoing.SetSelection(self.settings.get('outgoing'))
         rbSizerRow3.Add(self.rbOutgoing, 1, wx.TOP | wx.RIGHT, 5)
         self.rbOutgoing.Bind(wx.EVT_RADIOBOX, self.OnOutgoingChange)
