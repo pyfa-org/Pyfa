@@ -1,6 +1,6 @@
 __all__ = [
     "openFit",
-    # "moduleGlobalAmmoPicker",
+    "moduleGlobalAmmoPicker",
     "moduleAmmoPicker",
     "itemStats",
     "damagePattern",
@@ -23,5 +23,5 @@ __all__ = [
     "implantSets",
     "fighterAbilities",
     "cargoAmmo",
-    "droneStack"
+    "droneStack",
 ]
