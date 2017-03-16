@@ -285,12 +285,13 @@ if __name__ == "__main__":
 
             from gui.mainFrame import MainFrame
 
-        except Exception, e:
+        except Exception as e:
             tb = traceback.format_exc()
-
             pyfa = wx.App(False)
             ErrorFrame(e, tb)
             pyfa.MainLoop()
+            pyfalog.critical("Exception in main thread.")
+            pyfalog.critical(tb)
             raise
             sys.exit()
 
