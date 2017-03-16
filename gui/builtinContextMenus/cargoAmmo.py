@@ -3,13 +3,19 @@ import gui.mainFrame
 import service
 import gui.globalEvents as GE
 import wx
+from service.settings import ContextMenuSettings
+from service.fit import Fit
 
 
 class CargoAmmo(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+        self.settings = ContextMenuSettings.getInstance()
 
     def display(self, srcContext, selection):
+        if not self.settings.get('cargoAmmo'):
+            return False
+
         if srcContext not in ("marketItemGroup", "marketItemMisc") or self.mainFrame.getActiveFit() is None:
             return False
 
@@ -23,7 +29,7 @@ class CargoAmmo(ContextMenu):
         return "Add {0} to Cargo (x1000)".format(itmContext)
 
     def activate(self, fullContext, selection, i):
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
 
         typeID = int(selection[0].ID)
