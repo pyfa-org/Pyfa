@@ -150,7 +150,6 @@ class FittingView(d.Display):
         self.activeFitID = None
         self.FVsnapshot = None
         self.itemCount = 0
-        self.itemRect = 0
 
         self.hoveredRow = None
         self.hoveredColumn = None
@@ -634,7 +633,6 @@ class FittingView(d.Display):
 
         self.Thaw()
         self.itemCount = self.GetItemCount()
-        self.itemRect = self.GetItemRect(0)
 
         if 'wxMac' in wx.PlatformInfo:
             try:
