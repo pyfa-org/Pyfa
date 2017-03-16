@@ -4,13 +4,17 @@ import gui.mainFrame
 # noinspection PyPackageRequirements
 import wx
 from service.fit import Fit
+from service.settings import ContextMenuSettings
 
 
 class ItemStats(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+        self.settings = ContextMenuSettings.getInstance()
 
     def display(self, srcContext, selection):
+        if not self.settings.get('itemStats'):
+            return False
 
         return srcContext in ("marketItemGroup", "marketItemMisc",
                               "fittingModule", "fittingCharge",

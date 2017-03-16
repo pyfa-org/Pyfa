@@ -22,4 +22,6 @@ __all__ = [
     "metaSwap",
     "implantSets",
     "fighterAbilities",
+    "cargoAmmo",
+    "droneStack"
 ]

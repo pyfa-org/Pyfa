@@ -44,7 +44,7 @@ class PFUpdatePref(PreferenceView):
             self.versionSizer = wx.BoxSizer(wx.VERTICAL)
 
             self.versionTitle = wx.StaticText(panel, wx.ID_ANY, "Suppressing {0} Notifications".format(
-                self.UpdateSettings.get('version')), wx.DefaultPosition, wx.DefaultSize, 0)
+                    self.UpdateSettings.get('version')), wx.DefaultPosition, wx.DefaultSize, 0)
             self.versionTitle.Wrap(-1)
             self.versionTitle.SetFont(wx.Font(12, 70, 90, 90, False, wx.EmptyString))
 

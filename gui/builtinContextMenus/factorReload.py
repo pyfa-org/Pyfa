@@ -5,13 +5,18 @@ import gui.globalEvents as GE
 import wx
 from gui.bitmapLoader import BitmapLoader
 from service.fit import Fit
+from service.settings import ContextMenuSettings
 
 
 class FactorReload(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+        self.settings = ContextMenuSettings.getInstance()
 
     def display(self, srcContext, selection):
+        if not self.settings.get('factorReload'):
+            return False
+
         return srcContext == "firepowerViewFull" and self.mainFrame.getActiveFit() is not None
 
     def getText(self, itmContext, selection):

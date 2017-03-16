@@ -2,10 +2,10 @@
 
 import os
 import sys
-import importlib
+# import importlib
 
 # noinspection PyPackageRequirements
-import pytest
+# import pytest
 
 
 script_dir = os.path.dirname(os.path.abspath(__file__))

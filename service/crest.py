@@ -1,6 +1,6 @@
 # noinspection PyPackageRequirements
 import wx
-import logging
+from logbook import Logger
 import threading
 import copy
 import uuid
@@ -14,7 +14,7 @@ from service.settings import CRESTSettings
 from service.server import StoppableHTTPServer, AuthHandler
 from service.pycrest.eve import EVE
 
-logger = logging.getLogger(__name__)
+pyfalog = Logger(__name__)
 
 
 class Servers(Enum):
@@ -152,17 +152,17 @@ class Crest(object):
 
     def logout(self):
         """Logout of implicit character"""
-        logging.debug("Character logout")
+        pyfalog.debug("Character logout")
         self.implicitCharacter = None
         wx.PostEvent(self.mainFrame, GE.SsoLogout(type=self.settings.get('mode')))
 
     def stopServer(self):
-        logging.debug("Stopping Server")
+        pyfalog.debug("Stopping Server")
         self.httpd.stop()
         self.httpd = None
 
     def startServer(self):
-        logging.debug("Starting server")
+        pyfalog.debug("Starting server")
         if self.httpd:
             self.stopServer()
             time.sleep(1)
@@ -182,10 +182,10 @@ class Crest(object):
             raise Exception("Could not parse out querystring parameters.")
 
         if message['state'][0] != self.state:
-            logger.warn("OAUTH state mismatch")
+            pyfalog.warn("OAUTH state mismatch")
             raise Exception("OAUTH State Mismatch.")
 
-        logger.debug("Handling CREST login with: %s" % message)
+        pyfalog.debug("Handling CREST login with: {0}", message)
 
         if 'access_token' in message:  # implicit
             eve = copy.deepcopy(self.eve)
@@ -199,7 +199,7 @@ class Crest(object):
             eve()
             info = eve.whoami()
 
-            logger.debug("Got character info: %s" % info)
+            pyfalog.debug("Got character info: {0}", info)
 
             self.implicitCharacter = CrestChar(info['CharacterID'], info['CharacterName'])
             self.implicitCharacter.eve = eve
@@ -212,7 +212,7 @@ class Crest(object):
             eve()
             info = eve.whoami()
 
-            logger.debug("Got character info: %s" % info)
+            pyfalog.debug("Got character info: {0}", info)
 
             # check if we have character already. If so, simply replace refresh_token
             char = self.getCrestCharacter(int(info['CharacterID']))

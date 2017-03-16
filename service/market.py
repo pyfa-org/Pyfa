@@ -19,7 +19,7 @@
 
 import re
 import threading
-import logging
+from logbook import Logger
 import Queue
 
 # noinspection PyPackageRequirements
@@ -41,7 +41,7 @@ try:
 except ImportError:
     from utils.compat import OrderedDict
 
-logger = logging.getLogger(__name__)
+pyfalog = Logger(__name__)
 
 # Event which tells threads dependent on Market that it's initialized
 mktRdy = threading.Event()
@@ -50,6 +50,7 @@ mktRdy = threading.Event()
 class ShipBrowserWorkerThread(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
+        pyfalog.debug("Initialize ShipBrowserWorkerThread.")
         self.name = "ShipBrowser"
 
     def run(self):
@@ -73,24 +74,29 @@ class ShipBrowserWorkerThread(threading.Thread):
                     cache[id_] = set_
 
                 wx.CallAfter(callback, (id_, set_))
-            except:
-                pass
+            except Exception as e:
+                pyfalog.critical("Callback failed.")
+                pyfalog.critical(e)
             finally:
                 try:
                     queue.task_done()
-                except:
-                    pass
+                except Exception as e:
+                    pyfalog.critical("Queue task done failed.")
+                    pyfalog.critical(e)
 
 
 class PriceWorkerThread(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
         self.name = "PriceWorker"
+        pyfalog.debug("Initialize PriceWorkerThread.")
 
     def run(self):
+        pyfalog.debug("Run start")
         self.queue = Queue.Queue()
         self.wait = {}
         self.processUpdates()
+        pyfalog.debug("Run end")
 
     def processUpdates(self):
         queue = self.queue
@@ -125,6 +131,7 @@ class SearchWorkerThread(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
         self.name = "SearchWorker"
+        pyfalog.debug("Initialize SearchWorkerThread.")
 
     def run(self):
         self.cv = threading.Condition()
@@ -440,7 +447,7 @@ class Market(object):
             else:
                 raise TypeError("Need Item object, integer, float or string as argument")
         except:
-            logger.error("Could not get item: %s", identity)
+            pyfalog.error("Could not get item: {0}", identity)
             raise
 
         return item
@@ -583,7 +590,40 @@ class Market(object):
         parents = set()
         # Set-container for variables
         variations = set()
+        variations_limiter = set()
         for item in items:
+            if item.category.ID == 20:  # Implants and Boosters
+                implant_remove_list = set()
+                implant_remove_list.add("Low-Grade ")
+                implant_remove_list.add("Low-grade ")
+                implant_remove_list.add("Mid-Grade ")
+                implant_remove_list.add("Mid-grade ")
+                implant_remove_list.add("High-Grade ")
+                implant_remove_list.add("High-grade ")
+                implant_remove_list.add("Limited ")
+                implant_remove_list.add(" - Advanced")
+                implant_remove_list.add(" - Basic")
+                implant_remove_list.add(" - Elite")
+                implant_remove_list.add(" - Improved")
+                implant_remove_list.add(" - Standard")
+                implant_remove_list.add("Copper ")
+                implant_remove_list.add("Gold ")
+                implant_remove_list.add("Silver ")
+                implant_remove_list.add("Advanced ")
+                implant_remove_list.add("Improved ")
+                implant_remove_list.add("Prototype ")
+                implant_remove_list.add("Standard ")
+                implant_remove_list.add("Strong ")
+                implant_remove_list.add("Synth ")
+
+                for implant_prefix in ("-6", "-7", "-8", "-9", "-10"):
+                    for i in range(50):
+                        implant_remove_list.add(implant_prefix + str("%02d" % i))
+
+                for text_to_remove in implant_remove_list:
+                    if text_to_remove in item.name:
+                        variations_limiter.add(item.name.replace(text_to_remove, ""))
+
             # Get parent item
             if alreadyparent is False:
                 parent = self.getParentItemByItem(item)
@@ -601,7 +641,16 @@ class Market(object):
         variations.update(parents)
         # Add all variations of parents to the set
         parentids = tuple(item.ID for item in parents)
-        variations.update(eos.db.getVariations(parentids))
+        groupids = tuple(item.group.ID for item in parents)
+        variations_list = eos.db.getVariations(parentids, groupids)
+
+        if variations_limiter:
+            for limit in variations_limiter:
+                trimmed_variations_list = [variation_item for variation_item in variations_list if limit in variation_item.name]
+            if trimmed_variations_list:
+                variations_list = trimmed_variations_list
+
+        variations.update(variations_list)
         return variations
 
     def getGroupsByCategory(self, cat):
@@ -833,8 +882,9 @@ class Market(object):
         def cb():
             try:
                 callback(requests)
-            except Exception:
-                pass
+            except Exception as e:
+                pyfalog.critical("Callback failed.")
+                pyfalog.critical(e)
             eos.db.commit()
 
         self.priceWorkerThread.trigger(requests, cb)
@@ -849,8 +899,9 @@ class Market(object):
         def cb():
             try:
                 callback(item)
-            except:
-                pass
+            except Exception as e:
+                pyfalog.critical("Callback failed.")
+                pyfalog.critical(e)
 
         self.priceWorkerThread.setToWait(item.ID, cb)
 

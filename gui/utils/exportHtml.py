@@ -6,7 +6,10 @@ from service.settings import HTMLExportSettings
 from service.fit import Fit
 from service.port import Port
 from service.market import Market
+from logbook import Logger
 from eos.db import getFit
+
+pyfalog = Logger(__name__)
 
 
 class exportHtml(object):
@@ -175,7 +178,6 @@ class exportHtmlThread(threading.Thread):
 
         count = 0
 
-        # todo: logging for export exceptions
         for group in categoryList:
             # init market group string to give ships something to attach to
             HTMLgroup = ''
@@ -200,7 +202,8 @@ class exportHtmlThread(threading.Thread):
                             HTMLgroup += '        <li><a data-dna="' + dnaFit + '" target="_blank">' + ship.name + ": " + \
                                          fit[1] + '</a></li>\n'
                         except:
-                            continue
+                            pyfalog.warning("Failed to export line")
+                            pass
                         finally:
                             if self.callback:
                                 wx.CallAfter(self.callback, count)
@@ -223,6 +226,7 @@ class exportHtmlThread(threading.Thread):
                                 HTMLship += '          <li><a data-dna="' + dnaFit + '" target="_blank">' + fit[
                                     1] + '</a></li>\n'
                             except:
+                                pyfalog.warning("Failed to export line")
                                 continue
                             finally:
                                 if self.callback:
@@ -275,6 +279,7 @@ class exportHtmlThread(threading.Thread):
                         HTML += '<a class="outOfGameBrowserLink" target="_blank" href="' + dnaUrl + dnaFit + '">' + ship.name + ': ' + \
                                 fit[1] + '</a><br> \n'
                     except:
+                        pyfalog.error("Failed to export line")
                         continue
                     finally:
                         if self.callback:

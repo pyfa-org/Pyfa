@@ -33,9 +33,9 @@ from eos.saveddata.character import Character
 from eos.saveddata.citadel import Citadel
 from eos.saveddata.module import Module, State, Slot, Hardpoint
 from utils.timer import Timer
-import logging
+from logbook import Logger
 
-logger = logging.getLogger(__name__)
+pyfalog = Logger(__name__)
 
 
 class ImplantLocation(Enum):
@@ -84,7 +84,7 @@ class Fit(object):
         if self.shipID:
             item = eos.db.getItem(self.shipID)
             if item is None:
-                logger.error("Item (id: %d) does not exist", self.shipID)
+                pyfalog.error("Item (id: {0}) does not exist", self.shipID)
                 return
 
             try:
@@ -97,7 +97,7 @@ class Fit(object):
                 # change all instances in source). Remove this at some point
                 self.extraAttributes = self.__ship.itemModifiedAttributes
             except ValueError:
-                logger.error("Item (id: %d) is not a Ship", self.shipID)
+                pyfalog.error("Item (id: {0}) is not a Ship", self.shipID)
                 return
 
         if self.modeID and self.__ship:
@@ -127,6 +127,12 @@ class Fit(object):
         self.__capUsed = None
         self.__capRecharge = None
         self.__calculatedTargets = []
+        self.__remoteReps = {
+            "Armor": None,
+            "Shield": None,
+            "Hull": None,
+            "Capacitor": None,
+        }
         self.factorReload = False
         self.boostsFits = set()
         self.gangBoosts = None
@@ -392,6 +398,9 @@ class Fit(object):
         self.ecmProjectedStr = 1
         self.commandBonuses = {}
 
+        for remoterep_type in self.__remoteReps:
+            self.__remoteReps[remoterep_type] = None
+
         del self.__calculatedTargets[:]
         del self.__extraDrains[:]
 
@@ -448,7 +457,7 @@ class Fit(object):
             self.commandBonuses[warfareBuffID] = (runTime, value, module, effect)
 
     def __runCommandBoosts(self, runTime="normal"):
-        logger.debug("Applying gang boosts for %r", self)
+        pyfalog.debug("Applying gang boosts for {0}", self)
         for warfareBuffID in self.commandBonuses.keys():
             # Unpack all data required to run effect properly
             effect_runTime, value, thing, effect = self.commandBonuses[warfareBuffID]
@@ -539,26 +548,32 @@ class Fit(object):
 
                 if warfareBuffID == 22:  # Skirmish Burst: Rapid Deployment: AB/MWD Speed Increase
                     self.modules.filteredItemBoost(
-                        lambda mod: mod.item.requiresSkill("Afterburner") or mod.item.requiresSkill(
-                            "High Speed Maneuvering"), "speedFactor", value, stackingPenalties=True)
+                        lambda mod: mod.item.requiresSkill("Afterburner")
+                                    or mod.item.requiresSkill("High Speed Maneuvering"),
+                        "speedFactor", value, stackingPenalties=True)
 
                 if warfareBuffID == 23:  # Mining Burst: Mining Laser Field Enhancement: Mining/Survey Range
                     self.modules.filteredItemBoost(
-                        lambda mod: mod.item.requiresSkill("Mining") or mod.item.requiresSkill(
-                            "Ice Harvesting") or mod.item.requiresSkill("Gas Cloud Harvesting"), "maxRange",
-                        value, stackingPenalties=True)
+                        lambda mod: mod.item.requiresSkill("Mining") or
+                                    mod.item.requiresSkill("Ice Harvesting") or
+                                    mod.item.requiresSkill("Gas Cloud Harvesting"),
+                        "maxRange", value, stackingPenalties=True)
+
                     self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("CPU Management"),
                                                   "surveyScanRange", value, stackingPenalties=True)
 
                 if warfareBuffID == 24:  # Mining Burst: Mining Laser Optimization: Mining Capacitor/Duration
                     self.modules.filteredItemBoost(
-                        lambda mod: mod.item.requiresSkill("Mining") or mod.item.requiresSkill(
-                            "Ice Harvesting") or mod.item.requiresSkill("Gas Cloud Harvesting"),
+                        lambda mod: mod.item.requiresSkill("Mining") or
+                                    mod.item.requiresSkill("Ice Harvesting") or
+                                    mod.item.requiresSkill("Gas Cloud Harvesting"),
                         "capacitorNeed", value, stackingPenalties=True)
+
                     self.modules.filteredItemBoost(
-                        lambda mod: mod.item.requiresSkill("Mining") or mod.item.requiresSkill(
-                            "Ice Harvesting") or mod.item.requiresSkill("Gas Cloud Harvesting"), "duration",
-                        value, stackingPenalties=True)
+                        lambda mod: mod.item.requiresSkill("Mining") or
+                                    mod.item.requiresSkill("Ice Harvesting") or
+                                    mod.item.requiresSkill("Gas Cloud Harvesting"),
+                        "duration", value, stackingPenalties=True)
 
                 if warfareBuffID == 25:  # Mining Burst: Mining Equipment Preservation: Crystal Volatility
                     self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Mining"),
@@ -630,21 +645,21 @@ class Fit(object):
             del self.commandBonuses[warfareBuffID]
 
     def calculateModifiedAttributes(self, targetFit=None, withBoosters=False, dirtyStorage=None):
-        timer = Timer(u'Fit: {}, {}'.format(self.ID, self.name), logger)
-        logger.debug("Starting fit calculation on: %r, withBoosters: %s", self, withBoosters)
+        timer = Timer(u'Fit: {}, {}'.format(self.ID, self.name), pyfalog)
+        pyfalog.debug("Starting fit calculation on: {0}, withBoosters: {1}", self, withBoosters)
 
         shadow = False
         if targetFit and not withBoosters:
-            logger.debug("Applying projections to target: %r", targetFit)
+            pyfalog.debug("Applying projections to target: {0}", targetFit)
             projectionInfo = self.getProjectionInfo(targetFit.ID)
-            logger.debug("ProjectionInfo: %s", projectionInfo)
+            pyfalog.debug("ProjectionInfo: {0}", projectionInfo)
             if self == targetFit:
                 copied = self  # original fit
                 shadow = True
                 # Don't inspect this, we genuinely want to reassign self
                 # noinspection PyMethodFirstArgAssignment
                 self = deepcopy(self)
-                logger.debug("Handling self projection - making shadow copy of fit. %r => %r", copied, self)
+                pyfalog.debug("Handling self projection - making shadow copy of fit. {0} => {1}", copied, self)
                 # we delete the fit because when we copy a fit, flush() is
                 # called to properly handle projection updates. However, we do
                 # not want to save this fit to the database, so simply remove it
@@ -679,7 +694,7 @@ class Fit(object):
         # projection have modifying stuff applied, such as gang boosts and other
         # local modules that may help
         if self.__calculated and not projected and not withBoosters:
-            logger.debug("Fit has already been calculated and is not projected, returning: %r", self)
+            pyfalog.debug("Fit has already been calculated and is not projected, returning: {0}", self)
             return
 
         for runTime in ("early", "normal", "late"):
@@ -730,6 +745,10 @@ class Fit(object):
                         # targetFit.register(item, origin=self)
                         item.calculateModifiedAttributes(targetFit, runTime, False, True)
 
+            if len(self.commandBonuses) > 0:
+                pyfalog.info("Command bonuses applied.")
+                pyfalog.debug(self.commandBonuses)
+
             if not withBoosters and self.commandBonuses:
                 self.__runCommandBoosts(runTime)
 
@@ -747,7 +766,7 @@ class Fit(object):
         timer.checkpoint('Done with fit calculation')
 
         if shadow:
-            logger.debug("Delete shadow fit object")
+            pyfalog.debug("Delete shadow fit object")
             del self
 
     def fill(self):
@@ -914,20 +933,19 @@ class Fit(object):
 
         return amount
 
-    # Expresses how difficult a target is to probe down with scan probes
-    # If this is <1.08, the ship is unproabeable
     @property
     def probeSize(self):
+        """
+        Expresses how difficult a target is to probe down with scan probes
+        """
+
         sigRad = self.ship.getModifiedItemAttr("signatureRadius")
         sensorStr = float(self.scanStrength)
         probeSize = sigRad / sensorStr if sensorStr != 0 else None
         # http://www.eveonline.com/ingameboard.asp?a=topic&threadID=1532170&page=2#42
         if probeSize is not None:
-            # http://forum.eve-ru.com/index.php?showtopic=74195&view=findpost&p=1333691
-            # http://forum.eve-ru.com/index.php?showtopic=74195&view=findpost&p=1333763
-            # Tests by tester128 and several conclusions by me, prove that cap is in range
-            # from 1.1 to 1.12, we're picking average value
-            probeSize = max(probeSize, 1.11)
+            # Probe size is capped at 1.08
+            probeSize = max(probeSize, 1.08)
         return probeSize
 
     @property
@@ -1146,6 +1164,67 @@ class Fit(object):
         else:
             self.__capStable = True
             self.__capState = 100
+
+    @property
+    def remoteReps(self):
+        force_recalc = False
+        for remote_type in self.__remoteReps:
+            if self.__remoteReps[remote_type] is None:
+                force_recalc = True
+                break
+
+        if force_recalc is False:
+            return self.__remoteReps
+
+        # We are rerunning the recalcs. Explicitly set to 0 to make sure we don't duplicate anything and correctly set all values to 0.
+        for remote_type in self.__remoteReps:
+            self.__remoteReps[remote_type] = 0
+
+        for module in self.modules:
+            # Skip empty and non-Active modules
+            if module.isEmpty or module.state < State.ACTIVE:
+                continue
+
+            # Covert cycleTime to seconds
+            duration = module.cycleTime / 1000
+
+            # Skip modules with no duration.
+            if not duration:
+                continue
+
+            fueledMultiplier = module.getModifiedItemAttr("chargedArmorDamageMultiplier", 1)
+
+            remote_module_groups = {
+                "Remote Armor Repairer"          : "Armor",
+                "Ancillary Remote Armor Repairer": "Armor",
+                "Remote Hull Repairer"           : "Hull",
+                "Remote Shield Booster"          : "Shield",
+                "Ancillary Remote Shield Booster": "Shield",
+                "Remote Capacitor Transmitter"   : "Capacitor",
+            }
+
+            module_group = module.item.group.name
+
+            if module_group in remote_module_groups:
+                remote_type = remote_module_groups[module_group]
+            else:
+                # Module isn't in our list of remote rep modules, bail
+                continue
+
+            if remote_type == "Hull":
+                hp = module.getModifiedItemAttr("structureDamageAmount", 0)
+            elif remote_type == "Armor":
+                hp = module.getModifiedItemAttr("armorDamageAmount", 0)
+            elif remote_type == "Shield":
+                hp = module.getModifiedItemAttr("shieldBonus", 0)
+            elif remote_type == "Capacitor":
+                hp = module.getModifiedItemAttr("powerTransferAmount", 0)
+            else:
+                hp = 0
+
+            self.__remoteReps[remote_type] += (hp * fueledMultiplier) / duration
+
+        return self.__remoteReps
 
     @property
     def hp(self):

@@ -17,18 +17,18 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-import logging
+from logbook import Logger
 
 from sqlalchemy.orm import validates, reconstructor
+from math import floor
 
 import eos.db
 from eos.effectHandlerHelpers import HandledItem, HandledCharge
 from eos.enum import Enum
-from eos.mathUtils import floorFloat
 from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut, ChargeAttrShortcut
 from eos.saveddata.citadel import Citadel
 
-logger = logging.getLogger(__name__)
+pyfalog = Logger(__name__)
 
 
 class State(Enum):
@@ -94,11 +94,11 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         if self.itemID:
             self.__item = eos.db.getItem(self.itemID)
             if self.__item is None:
-                logger.error("Item (id: %d) does not exist", self.itemID)
+                pyfalog.error("Item (id: {0}) does not exist", self.itemID)
                 return
 
         if self.isInvalid:
-            logger.error("Item (id: %d) is not a Module", self.itemID)
+            pyfalog.error("Item (id: {0}) is not a Module", self.itemID)
             return
 
         if self.chargeID:
@@ -172,7 +172,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             if chargeVolume is None or containerCapacity is None:
                 charges = 0
             else:
-                charges = floorFloat(float(containerCapacity) / chargeVolume)
+                charges = floor(containerCapacity / chargeVolume)
         return charges
 
     @property
@@ -216,9 +216,10 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     def __calculateAmmoShots(self):
         if self.charge is not None:
             # Set number of cycles before reload is needed
+            # numcycles = math.floor(module_capacity / (module_volume * module_chargerate))
             chargeRate = self.getModifiedItemAttr("chargeRate")
             numCharges = self.numCharges
-            numShots = floorFloat(float(numCharges) / chargeRate)
+            numShots = floor(numCharges / chargeRate)
         else:
             numShots = None
         return numShots
@@ -231,7 +232,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                 chance = self.getModifiedChargeAttr("crystalVolatilityChance")
                 damage = self.getModifiedChargeAttr("crystalVolatilityDamage")
                 crystals = self.numCharges
-                numShots = floorFloat(float(crystals * hp) / (damage * chance))
+                numShots = floor((crystals * hp) / (damage * chance))
             else:
                 # Set 0 (infinite) for permanent crystals like t1 laser crystals
                 numShots = 0
@@ -665,31 +666,67 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     @property
     def cycleTime(self):
-        reactivation = (self.getModifiedItemAttr("moduleReactivationDelay") or 0)
-        # Reactivation time starts counting after end of module cycle
-        speed = self.rawCycleTime + reactivation
-        if self.charge:
-            reload = self.reloadTime
-        else:
-            reload = 0.0
         # Determine if we'll take into account reload time or not
         factorReload = self.owner.factorReload if self.forceReload is None else self.forceReload
-        # If reactivation is longer than 10 seconds then module can be reloaded
-        # during reactivation time, thus we may ignore reload
-        if factorReload and reactivation < reload:
-            numShots = self.numShots
-            # Time it takes to reload module after end of reactivation time,
-            # given that we started when module cycle has just over
-            additionalReloadTime = (reload - reactivation)
-            # Speed here already takes into consideration reactivation time
-            speed = (speed * numShots + additionalReloadTime) / numShots if numShots > 0 else speed
+
+        numShots = self.numShots
+        speed = self.rawCycleTime
+
+        if factorReload and self.charge:
+            raw_reload_time = self.reloadTime
+        else:
+            raw_reload_time = 0.0
+
+        # Module can only fire one shot at a time, think bomb launchers or defender launchers
+        if self.disallowRepeatingAction:
+            if numShots > 1:
+                """
+                The actual mechanics behind this is complex.  Behavior will be (for 3 ammo):
+                    fire, reactivation delay, fire, reactivation delay, fire, max(reactivation delay, reload)
+                so your effective reload time depends on where you are at in the cycle.
+
+                We can't do that, so instead we'll average it out.
+
+                Currently would apply to bomb launchers and defender missiles
+                """
+                effective_reload_time = ((self.reactivationDelay * (numShots - 1)) + max(raw_reload_time, self.reactivationDelay, 0)) / numShots
+            else:
+                """
+                Applies to MJD/MJFG
+                """
+                effective_reload_time = max(raw_reload_time, self.reactivationDelay, 0)
+        else:
+            """
+            Currently no other modules would have a reactivation delay, so for sanities sake don't try and account for it.
+            Okay, technically cloaks do, but they also have 0 cycle time and cap usage so why do you care?
+            """
+            effective_reload_time = raw_reload_time
+
+        if numShots > 0 and self.charge:
+            speed = (speed * numShots + effective_reload_time) / numShots
 
         return speed
 
     @property
     def rawCycleTime(self):
-        speed = self.getModifiedItemAttr("speed") or self.getModifiedItemAttr("duration")
+        speed = max(
+                self.getModifiedItemAttr("speed"),  # Most weapons
+                self.getModifiedItemAttr("duration"),  # Most average modules
+                self.getModifiedItemAttr("durationSensorDampeningBurstProjector"),
+                self.getModifiedItemAttr("durationTargetIlluminationBurstProjector"),
+                self.getModifiedItemAttr("durationECMJammerBurstProjector"),
+                self.getModifiedItemAttr("durationWeaponDisruptionBurstProjector"),
+                0,  # Return 0 if none of the above are valid
+        )
         return speed
+
+    @property
+    def disallowRepeatingAction(self):
+        return self.getModifiedItemAttr("disallowRepeatingAction", 0)
+
+    @property
+    def reactivationDelay(self):
+        return self.getModifiedItemAttr("moduleReactivationDelay", 0)
 
     @property
     def capUse(self):

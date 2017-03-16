@@ -21,6 +21,8 @@ import gui.utils.animEffects as animEffects
 from gui.PFListPane import PFListPane
 from gui.contextMenu import ContextMenu
 from gui.bitmapLoader import BitmapLoader
+from logbook import Logger
+pyfalog = Logger(__name__)
 
 FitRenamed, EVT_FIT_RENAMED = wx.lib.newevent.NewEvent()
 FitSelected, EVT_FIT_SELECTED = wx.lib.newevent.NewEvent()
@@ -684,6 +686,7 @@ class ShipBrowser(wx.Panel):
         self.lpane.Freeze()
         self.lpane.RemoveAllChildren()
 
+        pyfalog.debug("Populate ship category list.")
         if len(self.categoryList) == 0:
             # set cache of category list
             self.categoryList = list(sMkt.getShipRoot())
@@ -1552,6 +1555,10 @@ class FitItem(SFItem.SFBrowserItem):
         self.selTimer.Start(100)
 
         self.Bind(wx.EVT_RIGHT_UP, self.OnContextMenu)
+        self.Bind(wx.EVT_MIDDLE_UP, self.OpenNewTab)
+
+    def OpenNewTab(self, evt):
+        self.selectFit(newTab=True)
 
     def OnToggleBooster(self, event):
         sFit = Fit.getInstance()
@@ -1616,6 +1623,9 @@ class FitItem(SFItem.SFBrowserItem):
         #     menu.AppendSubMenu(boosterMenu, 'Set Booster')
 
         if fit:
+            newTabItem = menu.Append(wx.ID_ANY, "Open in new tab")
+            self.Bind(wx.EVT_MENU, self.OpenNewTab, newTabItem)
+
             projectedItem = menu.Append(wx.ID_ANY, "Project onto Active Fit")
             self.Bind(wx.EVT_MENU, self.OnProjectToFit, projectedItem)
 
@@ -1809,8 +1819,11 @@ class FitItem(SFItem.SFBrowserItem):
                 self.dragWindow.SetPosition(pos)
             return
 
-    def selectFit(self, event=None):
-        wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fitID))
+    def selectFit(self, event=None, newTab=False):
+        if newTab:
+            wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fitID, startup=2))
+        else:
+            wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fitID))
 
     def RestoreEditButton(self):
         self.tcFitName.Show(False)

@@ -29,6 +29,9 @@ import dateutil.parser
 import config
 from service.network import Network
 from service.settings import UpdateSettings
+from logbook import Logger
+
+pyfalog = Logger(__name__)
 
 
 class CheckUpdateThread(threading.Thread):
@@ -82,7 +85,9 @@ class CheckUpdateThread(threading.Thread):
                     if release['prerelease'] and rVersion > config.expansionVersion:
                         wx.CallAfter(self.callback, release)  # Singularity -> Singularity
                 break
-        except:
+        except Exception as e:
+            pyfalog.error("Caught exception in run")
+            pyfalog.error(e)
             pass
 
     @staticmethod
@@ -96,6 +101,7 @@ class Update(object):
     @staticmethod
     def CheckUpdate(callback):
         thread = CheckUpdateThread(callback)
+        pyfalog.debug("Starting Check Update Thread.")
         thread.start()
 
     @classmethod

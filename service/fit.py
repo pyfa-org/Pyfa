@@ -18,7 +18,7 @@
 # ===============================================================================
 
 import copy
-import logging
+from logbook import Logger
 
 import eos.db
 from eos.saveddata.booster import Booster as es_Booster
@@ -36,7 +36,7 @@ from service.character import Character
 from service.damagePattern import DamagePattern
 from service.settings import SettingsProvider
 
-logger = logging.getLogger(__name__)
+pyfalog = Logger(__name__)
 
 
 class Fit(object):
@@ -50,6 +50,7 @@ class Fit(object):
         return cls.instance
 
     def __init__(self):
+        pyfalog.debug("Initialize Fit class")
         self.pattern = DamagePattern.getInstance().getDamagePattern("Uniform")
         self.targetResists = None
         self.character = saveddata_Character.getAll5()
@@ -245,6 +246,7 @@ class Fit(object):
         try:
             implant = es_Implant(item)
         except ValueError:
+            pyfalog.warning("Invalid item: {0}", itemID)
             return False
 
         fit.implants.append(implant)
@@ -271,6 +273,7 @@ class Fit(object):
         try:
             booster = es_Booster(item)
         except ValueError:
+            pyfalog.warning("Invalid item: {0}", itemID)
             return False
 
         fit.boosters.append(booster)
@@ -431,6 +434,7 @@ class Fit(object):
         try:
             m = es_Module(item)
         except ValueError:
+            pyfalog.warning("Invalid item: {0}", itemID)
             return False
 
         if m.item.category.name == "Subsystem":
@@ -478,6 +482,7 @@ class Fit(object):
         try:
             m = es_Module(item)
         except ValueError:
+            pyfalog.warning("Invalid item: {0}", newItemID)
             return False
 
         if m.fits(fit):
@@ -518,6 +523,7 @@ class Fit(object):
             if cargoP.isValidState(State.ACTIVE):
                 cargoP.state = State.ACTIVE
         except:
+            pyfalog.warning("Invalid item: {0}", cargo.item)
             return
 
         if cargoP.slot != module.slot:  # can't swap modules to different racks
@@ -687,7 +693,7 @@ class Fit(object):
         self.recalc(fit)
         return True
 
-    def addDrone(self, fitID, itemID):
+    def addDrone(self, fitID, itemID, numDronesToAdd=1):
         if fitID is None:
             return False
 
@@ -706,7 +712,7 @@ class Fit(object):
                     fit.drones.append(drone)
                 else:
                     return False
-            drone.amount += 1
+            drone.amount += numDronesToAdd
             eos.db.commit()
             self.recalc(fit)
             return True
@@ -1022,7 +1028,7 @@ class Fit(object):
         self.recalc(fit)
 
     def recalc(self, fit, withBoosters=True):
-        logger.debug("=" * 10 + "recalc" + "=" * 10)
+        pyfalog.info("=" * 10 + "recalc" + "=" * 10)
         if fit.factorReload is not self.serviceFittingOptions["useGlobalForceReload"]:
             fit.factorReload = self.serviceFittingOptions["useGlobalForceReload"]
         fit.clear()

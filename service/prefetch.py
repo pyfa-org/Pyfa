@@ -25,9 +25,9 @@ from eos.db import migration
 from eos.db.saveddata.loadDefaultDatabaseValues import DefaultDatabaseValues
 from eos.db.saveddata.databaseRepair import DatabaseCleanup
 
-import logging
+from logbook import Logger
 
-logger = logging.getLogger(__name__)
+pyfalog = Logger(__name__)
 
 # Make sure the saveddata db exists
 if config.savePath and not os.path.exists(config.savePath):
@@ -35,14 +35,16 @@ if config.savePath and not os.path.exists(config.savePath):
 
 if config.saveDB and os.path.isfile(config.saveDB):
     # If database exists, run migration after init'd database
+    pyfalog.debug("Run database migration.")
     db.saveddata_meta.create_all()
     migration.update(db.saveddata_engine)
     # Import default database values
     # Import values that must exist otherwise Pyfa breaks
+    pyfalog.debug("Import Required Database Values.")
     DefaultDatabaseValues.importRequiredDefaults()
 
     # Finds and fixes database corruption issues.
-    logging.debug("Starting database validation.")
+    pyfalog.debug("Starting database validation.")
     database_cleanup_instance = DatabaseCleanup()
     database_cleanup_instance.OrphanedCharacterSkills(db.saveddata_engine)
     database_cleanup_instance.OrphanedFitCharacterIDs(db.saveddata_engine)
@@ -52,11 +54,12 @@ if config.saveDB and os.path.isfile(config.saveDB):
     database_cleanup_instance.OrphanedFitIDItemID(db.saveddata_engine)
     database_cleanup_instance.NullDamageTargetPatternValues(db.saveddata_engine)
     database_cleanup_instance.DuplicateSelectedAmmoName(db.saveddata_engine)
-    logging.debug("Completed database validation.")
+    pyfalog.debug("Completed database validation.")
 
 else:
     # If database does not exist, do not worry about migration. Simply
     # create and set version
+    pyfalog.debug("Existing database not found, creating new database.")
     db.saveddata_meta.create_all()
     db.saveddata_engine.execute('PRAGMA user_version = {}'.format(migration.getAppVersion()))
     # Import default database values
