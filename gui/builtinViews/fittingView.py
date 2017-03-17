@@ -216,8 +216,6 @@ class FittingView(d.Display):
         self.mainFrame.Unbind(gui.shipBrowser.EVT_FIT_REMOVED, handler=self.fitRemoved)
         self.mainFrame.Unbind(gui.marketBrowser.ITEM_SELECTED, handler=self.appendItem)
 
-        d.Display.Destroy(self)
-
     def pageChanged(self, event):
         if self.parent.IsActive(self):
             fitID = self.getActiveFit()
