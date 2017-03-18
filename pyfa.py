@@ -242,9 +242,9 @@ if __name__ == "__main__":
         except ValueError, Exception:
             pyfalog.critical("Cannot redirect.  Continuing without writing stderr to log.")
 
-        if sys.version_info < (2, 6) or sys.version_info > (3, 0):
-            exit_message = "\nPyfa requires python 2.x branch ( >= 2.6 )\nExiting."
-            pyfalog.critical(exit_message)
+        pyfalog.info("Python version: {0}", sys.version)
+        if sys.version_info < (2, 7) or sys.version_info > (3, 0):
+            exit_message = "Pyfa requires python 2.x branch ( >= 2.7 ).\nExiting."
             raise Exception(exit_message)
 
         if hasattr(sys, 'frozen'):
@@ -257,7 +257,6 @@ if __name__ == "__main__":
             pyfalog.debug("wxPython version: {0}.", wxversion.getInstalled())
         elif wx is None or wxversion is None:
             exit_message = "\nCannot find wxPython\nYou can download wxPython (2.8+) from http://www.wxpython.org/"
-            pyfalog.critical(exit_message)
             raise Exception(exit_message)
         else:
             if options.force28 is True and wxversion.checkInstalled('2.8'):
@@ -270,7 +269,6 @@ if __name__ == "__main__":
 
         if sqlalchemy is None:
             exit_message = "\nCannot find sqlalchemy.\nYou can download sqlalchemy (0.6+) from http://www.sqlalchemy.org/"
-            pyfalog.critical(exit_message)
             raise Exception(exit_message)
         else:
             saVersion = sqlalchemy.__version__

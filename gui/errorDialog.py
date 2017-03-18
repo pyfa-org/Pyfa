@@ -90,6 +90,8 @@ class ErrorFrame(wx.Frame):
         errorTextCtrl.AppendText('\n')
         errorTextCtrl.AppendText("fs encoding: " + str(sys.getfilesystemencoding() or "Unknown"))
         errorTextCtrl.AppendText('\n\n')
+        errorTextCtrl.AppendText("EXCEPTION: " + str(exception or "Unknown"))
+        errorTextCtrl.AppendText('\n\n')
         if tb:
             for line in tb:
                 errorTextCtrl.AppendText(line)
